@@ -1,0 +1,150 @@
+import React, { useState, useEffect, useRef } from 'react';
+import { motion, AnimatePresence } from 'motion/react';
+import { Globe, Moon, Sun, Bookmark, MapPin, Bell, BellOff, ChevronDown, Waves } from 'lucide-react';
+import { LanguageCode, Theme, Island } from '../types';
+import { Translation } from '../types';
+
+interface HeaderProps {
+  t: Translation;
+  language: LanguageCode;
+  onLanguageChange: (lang: LanguageCode) => void;
+  isScrolled?: boolean;
+  isTransitioning?: boolean;
+  savedItinerariesCount: number;
+  onOpenSavedItineraries: () => void;
+  selectedIslandName: string;
+  onOpenIslandSelector: () => void;
+  onToggleNotifications?: () => void;
+  notificationStatus?: NotificationPermission;
+  isSubscribed?: boolean;
+  theme: 'light' | 'dark';
+  onThemeChange: () => void;
+  isWinter: boolean;
+}
+
+const languages: { code: LanguageCode; name: string; flag: string }[] = [
+  { code: 'en', name: 'EN', flag: '🇬🇧' },
+  { code: 'gr', name: 'GR', flag: '🇬🇷' },
+  { code: 'fr', name: 'FR', flag: '🇫🇷' },
+  { code: 'de', name: 'DE', flag: '🇩🇪' },
+  { code: 'it', name: 'IT', flag: '🇮🇹' },
+];
+
+const ThemeToggle: React.FC<{ theme: 'light' | 'dark'; onThemeChange: () => void; t: Translation; }> = ({ theme, onThemeChange, t }) => {
+  const isDark = theme === 'dark';
+  return (
+    <button
+      onClick={onThemeChange}
+      className="p-2.5 text-slate-400 dark:text-slate-500 hover:text-primary dark:hover:text-primary hover:bg-sky-50 dark:hover:bg-slate-800 rounded-xl transition-all flex-shrink-0 group cursor-pointer"
+      title={isDark ? t.themeToggle.light : t.themeToggle.dark}
+      aria-label={isDark ? 'Switch to light mode' : 'Switch to dark mode'}
+    >
+      {isDark ? (
+        <Sun className="w-5 h-5 group-hover:rotate-45 transition-transform duration-300" />
+      ) : (
+        <Moon className="w-5 h-5 group-hover:-rotate-12 transition-transform duration-300" />
+      )}
+    </button>
+  );
+};
+
+const Header: React.FC<HeaderProps> = ({ t, language, onLanguageChange, isScrolled = false, isTransitioning = false, savedItinerariesCount, onOpenSavedItineraries, selectedIslandName, onOpenIslandSelector, onToggleNotifications, notificationStatus, isSubscribed = false, theme, onThemeChange, isWinter }) => {
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+  const dropdownRef = useRef<HTMLDivElement>(null);
+  
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
+        setIsDropdownOpen(false);
+      }
+    };
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, []);
+
+  const currentLanguage = languages.find(l => l.code === language) || languages[0];
+
+  return (
+    <header className="fixed top-0 left-0 right-0 z-50 transition-all duration-500 py-2 sm:py-4">
+      <div className="max-w-7xl mx-auto px-3 sm:px-4 lg:px-6">
+        <div className="relative glass dark:glass-dark rounded-xl sm:rounded-2xl border border-white/40 dark:border-slate-800/50 shadow-lg transition-all duration-500 px-3 py-2.5 sm:px-5 sm:py-3">
+          <div className="flex justify-between items-center w-full gap-1 sm:gap-2">
+            {/* Logo - Mobile optimized */}
+            <div 
+              className="flex items-center gap-2 min-w-0 cursor-pointer select-none group flex-shrink-0"
+              onClick={onOpenIslandSelector}
+            >
+              <div className="relative flex-shrink-0">
+                <div className="w-8 h-8 sm:w-10 sm:h-10 bg-gradient-to-br from-sky-400 to-cyan-600 rounded-lg sm:rounded-xl flex items-center justify-center shadow-md group-hover:shadow-lg group-hover:scale-105 transition-all duration-300">
+                  <Waves className="w-4 h-4 sm:w-5 sm:h-5 text-white" />
+                </div>
+              </div>
+              <div className="flex flex-col min-w-0">
+                <h1 className="font-heading font-bold text-base sm:text-lg lg:text-xl text-slate-900 dark:text-white tracking-tight truncate">
+                  Beach Now Greece
+                </h1>
+                <button 
+                  onClick={(e) => { e.stopPropagation(); onOpenIslandSelector(); }}
+                  className="flex items-center gap-1 flex-shrink-0 mt-0.5 cursor-pointer"
+                >
+                  <MapPin className="w-2 h-2 sm:w-2.5 sm:h-2.5" />
+                  <span className="text-[9px] sm:text-[10px] font-semibold text-slate-400 hover:text-primary transition-colors truncate max-w-[120px] sm:max-w-none">
+                    {selectedIslandName}
+                  </span>
+                </button>
+              </div>
+            </div>
+
+            {/* Actions - Mobile optimized */}
+            <div className="flex items-center gap-1 flex-shrink-0">
+              <ThemeToggle theme={theme} onThemeChange={onThemeChange} t={t} />
+
+              <button 
+                onClick={onOpenSavedItineraries} 
+                className="relative p-2 sm:p-2.5 text-slate-400 dark:text-slate-500 hover:text-primary dark:hover:text-primary hover:bg-sky-50 dark:hover:bg-slate-800 rounded-lg sm:rounded-xl transition-all cursor-pointer flex-shrink-0" 
+                aria-label="Saved itineraries"
+              >
+                <Bookmark className="w-4 h-4 sm:w-5 sm:h-5" />
+                {savedItinerariesCount > 0 && (
+                  <span className="absolute top-1 right-1 sm:top-1.5 sm:right-1 h-3 w-3 sm:h-4 sm:w-4 flex items-center justify-center rounded-full bg-cta text-white text-[8px] sm:text-[9px] font-bold ring-2 ring-white dark:ring-slate-900">
+                    {savedItinerariesCount}
+                  </span>
+                )}
+              </button>
+
+              {/* Language - Mobile optimized */}
+              <div className="relative" ref={dropdownRef}>
+                <button
+                  onClick={() => setIsDropdownOpen(!isDropdownOpen)}
+                  className="flex items-center gap-1 px-2 sm:px-3 py-2 hover:bg-sky-50 dark:hover:bg-slate-800 rounded-lg sm:rounded-xl text-[9px] sm:text-xs font-semibold text-slate-500 dark:text-slate-400 transition-all cursor-pointer flex-shrink-0"
+                  aria-label="Change language"
+                >
+                  <Globe className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
+                  <span className="hidden md:inline uppercase tracking-wider">{currentLanguage.name}</span>
+                  <ChevronDown className={`w-2.5 h-2.5 sm:w-3 sm:h-3 transition-transform duration-300 ${isDropdownOpen ? 'rotate-180' : ''}`} />
+                </button>
+
+                {isDropdownOpen && (
+                  <div className="absolute right-0 mt-2 w-40 bg-white dark:bg-slate-900 rounded-lg sm:rounded-xl shadow-xl ring-1 ring-black/5 z-[100] border border-slate-100 dark:border-slate-800 p-1.5 overflow-hidden">
+                    {languages.map(lang => (
+                      <button
+                        key={lang.code}
+                        onClick={() => { onLanguageChange(lang.code); setIsDropdownOpen(false); }}
+                        className={`w-full text-left px-3 py-2.5 text-xs font-semibold rounded-lg flex items-center gap-2.5 transition-colors cursor-pointer ${language === lang.code ? 'bg-sky-50 dark:bg-sky-900/20 text-primary' : 'hover:bg-slate-50 dark:hover:bg-slate-800 text-slate-600 dark:text-slate-400'}`}
+                      >
+                        <span className="text-base">{lang.flag}</span>
+                        <span className="uppercase tracking-wider">{lang.name}</span>
+                      </button>
+                    ))}
+                  </div>
+                )}
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </header>
+  );
+};
+
+export default Header;
