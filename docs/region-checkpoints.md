@@ -9,8 +9,50 @@ Last updated: 2026-05-10
 - `d43b1a2` - Evia data audit checkpoint: first Evia/Skyros pass and persistent region tracking.
 - `ce8c6c1` - Central Greece mainland data audit checkpoint: Fokida, Fthiotida, and Viotia first pass.
 - `3b1aa4b` - Thessaly data audit checkpoint: Sporades, Pelion, and Larissa Coast first pass.
+- `15499dc` - Ionian Islands data audit checkpoint: Corfu, Paxos, Kefalonia, Lefkada, Zakynthos, and Ithaca first pass.
 
 ## Latest region checkpoint
+
+### South Aegean / Cyclades and Dodecanese
+
+Status: first pass completed.
+
+Areas included:
+- Cyclades: 532 beach records after removing clear duplicate cards and moving Malli from Andros to Tinos.
+- Dodecanese: 250 beach records after collapsing clear same-beach duplicates in Karpathos, Kos, and Rhodes.
+- South Aegean total: 782 beach records, down from 801 before this checkpoint.
+
+Cyclades island counts:
+- Amorgos: 14, Anafi: 15, Andros: 41, Antiparos: 12, Folegandros: 16, Ios: 49, Kea: 34, Kimolos: 31, Kythnos: 40, Milos: 34, Mykonos: 42, Naxos: 15, Paros: 37, Santorini: 13, Serifos: 27, Sifnos: 10, Sikinos: 5, Syros: 26, Tinos: 39, Donousa: 4, Koufonisia: 18, Schinoussa: 8, Iraklia: 2.
+
+Dodecanese island counts:
+- Agathonisi: 5, Astypalaia: 20, Halki: 2, Kalymnos: 20, Karpathos: 45, Kastellorizo: 3, Kos: 34, Leros: 11, Lipsi: 18, Nisyros: 2, Patmos: 15, Rhodes: 38, Symi: 8, Tilos: 12, Kasos: 5, Pserimos: 3, Telendos: 5, Arki: 2, Marathi: 2.
+
+What has been checked:
+- JSON mirrors are synced between `src/data/greek_beaches.json` and `public/greek_beaches.json`.
+- The clearest same-island repeated beach cards were removed so filters and scroll sections do not show the same beach again and again.
+- User-facing difficult access wording still avoids absolute "4x4 only" copy; Malli in Tinos now says cautious dirt-road driving instead of implying a required special vehicle.
+- Source spot-checks covered Tinosecret, Santorini-Net / Santorinika, Kos.gr, Visit Rhodes, KarpathosInfo, Andros Secrets, GoParos, Go-Amorgos, and AllOverGreece.
+
+Focused fixes in this checkpoint:
+- Amorgos: removed the second `Καμπί` entry and kept the Agia Anna / Syrma-side Kambi record.
+- Andros: removed the duplicate `Βιτάλι`; moved `Μαλλί` out of Andros and removed `Παραλία Μαλλί`.
+- Tinos: added `Μαλλί` as the canonical Tinos beach with passable dirt-road wording and cautious-driving notes.
+- Paros: removed the duplicate `Λωλαντώνης` and refreshed its quiet south-east bay / limited seasonal services metadata.
+- Santorini: collapsed `Λευκή Παραλία` to the source-aligned White Beach coordinates and kept boat-access wording.
+- Donousa: removed the duplicate `Λιβάδι` and clarified the Mersini - Livadi footpath access.
+- Karpathos: removed duplicate `Καστέλια`; collapsed `Κάτω Λάκκος` to the source-aligned coordinates and changed access to difficult path / boat-trip wording.
+- Kos: collapsed duplicate `Μαρμάρι`, `Παραλία Παράδεισος`, and `Πολέμι`; aligned Marmari and Paradise with Kos.gr coordinates.
+- Rhodes: collapsed eight `Φαληράκι` / `Παραλία Φαληράκι` / numbered Faliraki records into one canonical card; collapsed duplicate `Παραλία Ιξιάς`.
+
+Remaining risks:
+- Tinos still has two `Βαθύ` records about 5.5 km apart; they need a local-source pass before deciding whether they are distinct coves.
+- Koufonisia still has three `Λίμνη` records; the island grouping may include neighboring Ano/Kato Koufonisi coves, so this needs a dedicated Koufonisia pass.
+- Astypalaia still has two `Άγιος Ιωάννης` records far apart; likely distinct local spots, but not promoted without a source check.
+- Many small Cyclades and Dodecanese coves remain medium or low confidence and should be reviewed island-by-island before launch.
+- Seasonal services in the South Aegean vary heavily by month, so amenities remain phrased as seasonal or nearby.
+
+## Previous region checkpoint
 
 ### Ionian Islands / Corfu, Paxos, Kefalonia, Lefkada, Zakynthos, Ithaca
 
@@ -54,7 +96,7 @@ Remaining risks:
 - Seasonal organization on small Ionian beaches can vary by year, so amenities stay phrased as seasonal or nearby.
 - Navagio restrictions are current as of the 2026 source check, but should be rechecked before launch because access rules are policy-driven.
 
-## Previous region checkpoint
+## Earlier region checkpoint
 
 ### Thessaly / Sporades, Pelion, Larissa Coast
 
@@ -148,14 +190,13 @@ Remaining risks:
 
 Recommended next order:
 
-1. South Aegean: Cyclades and Dodecanese.
-2. Crete.
-3. Peloponnese.
-4. North Aegean.
-5. Epirus.
-6. Macedonia / Thrace regions.
-7. West Greece and West Macedonia.
-8. Attica final pass after mainland/island grouping stabilizes.
+1. Crete.
+2. Peloponnese.
+3. North Aegean.
+4. Epirus.
+5. Macedonia / Thrace regions.
+6. West Greece and West Macedonia.
+7. Attica final pass after mainland/island grouping stabilizes.
 
 ## Durable data rules
 
