@@ -7,7 +7,7 @@ import {
 } from 'lucide-react';
 import { 
   Beach, LanguageCode, Translation, WindDirection, 
-  ForecastItem, WaveCondition, BeachType, WeatherData, DailyForecast, UserPreferences 
+  ForecastItem, BeachType, WeatherData, DailyForecast, UserPreferences 
 } from '../types';
 import { 
   calculateBestBeachTime, 
@@ -17,9 +17,10 @@ import {
 } from '../services/recommendationService';
 import { generateBeachDayPlan } from '../services/beachPlannerService';
 import { BeachDayPlanner } from '../components/BeachDayPlanner';
-import { degToCompass, getWaveCondition, calculateDistance } from '../utils/weatherUtils';
+import { degToCompass, calculateDistance } from '../utils/weatherUtils';
 import { StarRating } from '../components/BeachCard';
 import { trackEvent, storeFeedback } from '../services/analyticsService';
+import { calculateSeaConditionScore } from '../utils/seaConditions';
 
 // Lazy load map to avoid blocking main thread
 const BeachMap = React.lazy(() => import('../components/BeachMap'));
@@ -33,6 +34,55 @@ const forecastToWeather = (item: ForecastItem): WeatherData => ({
   weather: item.weather[0],
   main: { temp: item.main.temp }
 });
+
+type RecommendationTone = 'excellent' | 'good' | 'watch' | 'poor';
+
+const getRecommendationTone = (score: number, seaScore: number, isExposed: boolean): RecommendationTone => {
+  if (seaScore < 5 || score < 55) return 'poor';
+  if (seaScore < 8 || isExposed || score < 75) return 'watch';
+  if (score > 85) return 'excellent';
+  return 'good';
+};
+
+const getRecommendationLabel = (tone: RecommendationTone, language: LanguageCode): string => {
+  const labels: Record<RecommendationTone, Record<LanguageCode, string>> = {
+    excellent: { en: 'Excellent Today', gr: 'Εξαιρετική επιλογή σήμερα', de: 'Heute ausgezeichnet', it: 'Eccellente oggi', fr: 'Excellent aujourd hui' },
+    good: { en: 'Good Today', gr: 'Καλή επιλογή σήμερα', de: 'Heute gut', it: 'Buona scelta oggi', fr: 'Bon choix aujourd hui' },
+    watch: { en: 'Check conditions today', gr: 'Μέτρια επιλογή σήμερα', de: 'Heute prüfen', it: 'Controlla oggi', fr: 'A verifier aujourd hui' },
+    poor: { en: 'Not ideal today', gr: 'Όχι ιδανική σήμερα', de: 'Heute nicht ideal', it: 'Non ideale oggi', fr: 'Pas ideal aujourd hui' },
+  };
+  return labels[tone][language];
+};
+
+const recommendationBadgeClass: Record<RecommendationTone, string> = {
+  excellent: 'bg-emerald-50 text-emerald-700',
+  good: 'bg-cyan-50 text-cyan-700',
+  watch: 'bg-amber-50 text-amber-700',
+  poor: 'bg-rose-50 text-rose-700',
+};
+
+const getSeaConditionDisplay = (seaScore: number, isExposed: boolean, language: LanguageCode) => {
+  if (seaScore >= 8) {
+    return {
+      value: { en: 'Excellent', gr: 'Εξαιρετικές', de: 'Ausgezeichnet', it: 'Eccellenti', fr: 'Excellentes' }[language],
+      subValue: { en: 'Calm, protected water', gr: 'Ήρεμα, προστατευμένα νερά', de: 'Ruhiges, geschutztes Wasser', it: 'Acqua calma e riparata', fr: 'Eau calme et abritee' }[language],
+    };
+  }
+
+  if (seaScore >= 5) {
+    return {
+      value: { en: 'Moderate', gr: 'Μέτριες', de: 'Mittel', it: 'Moderate', fr: 'Moyennes' }[language],
+      subValue: isExposed
+        ? { en: 'Low wind protection', gr: 'Χαμηλή προστασία ανέμου', de: 'Wenig Windschutz', it: 'Poca protezione dal vento', fr: 'Peu abritee du vent' }[language]
+        : { en: 'Some wind or wave risk', gr: 'Λίγος κίνδυνος από άνεμο ή κύμα', de: 'Etwas Wind- oder Wellenrisiko', it: 'Un po di rischio vento o onde', fr: 'Un peu de risque vent ou vagues' }[language],
+    };
+  }
+
+  return {
+    value: { en: 'Poor', gr: 'Κακές', de: 'Schlecht', it: 'Scarse', fr: 'Mauvaises' }[language],
+    subValue: { en: 'Choose a more sheltered beach', gr: 'Προτίμησε πιο απάνεμη παραλία', de: 'Wahle einen geschutzteren Strand', it: 'Scegli una spiaggia piu riparata', fr: 'Choisis une plage plus abritee' }[language],
+  };
+};
 
 import { openNavigation } from '../utils/navigation';
 import { displayBeachName } from '../utils/localization';
@@ -132,18 +182,12 @@ export const BeachDetailPage: React.FC<BeachDetailPageProps> = ({
   const windSpeedKmh = weatherData.wind.speed * 3.6;
   const windDir = degToCompass(weatherData.wind.deg);
   const isExposed = !beach.protectedFrom.includes(windDir as WindDirection);
-  const waveCondition = getWaveCondition(isExposed, windSpeedKmh);
   const windDirectionLabel = t.windDirections[windDir as WindDirection] || windDir;
-  const waveConditionLabel = t.waveConditions[waveCondition];
-  const conditionSubValue = {
-    calm: { en: 'Calm waters', gr: 'Ήρεμα νερά', de: 'Ruhiges Wasser', it: 'Acque calme', fr: 'Eaux calmes' },
-    moderate: { en: 'Moderate waves', gr: 'Μέτριος κυματισμός', de: 'Massige Wellen', it: 'Onde moderate', fr: 'Vagues moderees' },
-    rough: { en: 'Rough waters', gr: 'Έντονος κυματισμός', de: 'Unruhiges Wasser', it: 'Mare mosso', fr: 'Mer agitee' },
-  }[waveCondition][language];
   const { score, crowdLevel, exposureLevel } = calculateBeachScore(beach, weatherData, userLocation, preferences);
-  const scoreTodayLabel = score > 85
-    ? { en: 'Excellent Today', gr: 'Εξαιρετικά σήμερα', de: 'Heute ausgezeichnet', it: 'Eccellente oggi', fr: 'Excellent aujourd hui' }[language]
-    : { en: 'Good Today', gr: 'Καλή επιλογή σήμερα', de: 'Heute gut', it: 'Buona scelta oggi', fr: 'Bon choix aujourd hui' }[language];
+  const seaConditionScore = calculateSeaConditionScore(isExposed, windSpeedKmh, exposureLevel);
+  const recommendationTone = getRecommendationTone(score, seaConditionScore, isExposed);
+  const scoreTodayLabel = getRecommendationLabel(recommendationTone, language);
+  const seaConditionDisplay = getSeaConditionDisplay(seaConditionScore, isExposed, language);
   const aiExplanation = generateBeachExplanation(beach, weatherData, score, userLocation, language);
 
   // Real beach photos (from Wikimedia Commons) or empty array for fallback
@@ -225,7 +269,7 @@ export const BeachDetailPage: React.FC<BeachDetailPageProps> = ({
           <div className="flex flex-col space-y-2">
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-2">
-                <span className="text-xs font-black text-cyan-600 bg-cyan-50 px-3 py-1 rounded-full">
+                <span className={`rounded-full px-3 py-1 text-xs font-black ${recommendationBadgeClass[recommendationTone]}`}>
                   {scoreTodayLabel}
                 </span>
                 
@@ -324,8 +368,8 @@ export const BeachDetailPage: React.FC<BeachDetailPageProps> = ({
           <ConditionCard 
             icon={<Waves className="w-5 h-5 text-cyan-500" />}
             label={copy.sea[language]}
-            value={waveConditionLabel}
-            subValue={conditionSubValue}
+            value={seaConditionDisplay.value}
+            subValue={seaConditionDisplay.subValue}
           />
           <ConditionCard 
             icon={<Thermometer className="w-5 h-5 text-orange-500" />}
@@ -481,7 +525,12 @@ export const BeachDetailPage: React.FC<BeachDetailPageProps> = ({
                         <div>
                           <h4 className="font-bold text-slate-900">{displayBeachName(item.beach.name, language)}</h4>
                           <p className="text-xs text-slate-500">
-                            {item.distance?.toFixed(1)} km {{ en: 'away', gr: 'μακριά', de: 'entfernt', it: 'di distanza', fr: 'de distance' }[language]} • {item.score >= 80 ? scoreTodayLabel : { en: 'Good Today', gr: 'Καλή σήμερα', de: 'Heute gut', it: 'Buona oggi', fr: 'Bonne aujourd hui' }[language]}
+                            {(() => {
+                              const itemIsExposed = !item.beach.protectedFrom.includes(windDir as WindDirection);
+                              const itemSeaScore = calculateSeaConditionScore(itemIsExposed, windSpeedKmh, item.exposureLevel);
+                              const itemTone = getRecommendationTone(item.score, itemSeaScore, itemIsExposed);
+                              return `${item.distance?.toFixed(1)} km ${{ en: 'away', gr: 'μακριά', de: 'entfernt', it: 'di distanza', fr: 'de distance' }[language]} • ${getRecommendationLabel(itemTone, language)}`;
+                            })()}
                           </p>
                         </div>
                       </div>

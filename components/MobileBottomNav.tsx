@@ -81,6 +81,11 @@ export const MobileBottomNav: React.FC<MobileBottomNavProps> = ({
                       {tab.badge}
                     </span>
                   )}
+                  {tab.id === 'planner' && (
+                    <span className="absolute -top-1.5 -right-2 flex h-4 min-w-4 items-center justify-center rounded-full bg-slate-900 px-1 text-[8px] font-black text-white">
+                      Pro
+                    </span>
+                  )}
                 </div>
                 <span
                   className={`text-[10px] font-semibold transition-colors duration-200 ${

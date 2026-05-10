@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
-import { Bot, Send, Sparkles, MapPin, Waves, Wind } from 'lucide-react';
+import { Send, Sparkles, MapPin, Waves, Wind } from 'lucide-react';
 import { Island, WeatherData, DailyForecast, LanguageCode } from '../types';
 import { getBeachAdvice, AiAdviceResponse } from '../services/aiAdvisorService';
 import { trackEvent } from '../services/analyticsService';
@@ -62,9 +62,6 @@ export const AiBeachAdvisor: React.FC<AiBeachAdvisorProps> = ({
     <div className="overflow-hidden rounded-[1.75rem] border border-white/60 bg-white/70 shadow-lg shadow-sky-900/10 backdrop-blur-xl dark:border-slate-700/60 dark:bg-slate-900/70">
       <div className="bg-gradient-to-br from-cyan-500/90 via-sky-500/90 to-blue-600/90 p-5 text-white sm:p-6">
         <div className="flex items-center gap-3 mb-2">
-          <div className="rounded-2xl bg-white/20 p-2 shadow-sm backdrop-blur-sm">
-            <Bot className="h-5 w-5 sm:h-6 sm:w-6" />
-          </div>
           <h2 className="font-heading text-lg font-bold sm:text-xl">
             {language === 'gr' ? 'Ρώτα τον Beach Buddy' : 'Beach Buddy Advisor'}
           </h2>

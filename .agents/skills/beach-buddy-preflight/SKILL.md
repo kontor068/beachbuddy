@@ -38,6 +38,7 @@ Use only the relevant agents from this list:
 - devops_release_engineer
 - analytics_insights
 - api_integration_specialist
+- revenue_pricing_strategist
 
 ## What to do before coding
 

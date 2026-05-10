@@ -66,13 +66,16 @@ const Header: React.FC<HeaderProps> = ({ t, language, onLanguageChange, selected
 
             <button
               onClick={onOpenIslandSelector}
-              className="flex w-full min-w-0 max-w-xl items-center justify-center justify-self-center gap-1.5 rounded-xl px-1.5 py-1.5 text-slate-700 transition-all hover:bg-white/60 hover:text-primary sm:gap-2 sm:px-3"
+              className="flex w-full min-w-0 max-w-xl items-center justify-center justify-self-center rounded-xl px-1.5 py-1.5 text-slate-700 transition-all hover:bg-white/60 hover:text-primary sm:px-3"
               aria-label={language === 'gr' ? 'Αλλαγή τοποθεσίας' : 'Change location'}
             >
-              <MapPin className="h-4 w-4 shrink-0" />
               <span className="min-w-0 text-center">
-                <span className="block truncate font-heading text-sm font-extrabold leading-tight text-slate-900 min-[360px]:text-base sm:text-lg">
-                  {selectedIslandName || (language === 'gr' ? 'Τοποθεσία' : 'Location')}
+                <span className="flex min-w-0 items-center justify-center gap-1.5 sm:gap-2">
+                  <MapPin className="h-4 w-4 shrink-0" />
+                  <span className="truncate font-heading text-sm font-extrabold leading-tight text-slate-900 min-[360px]:text-base sm:text-lg">
+                    {selectedIslandName || (language === 'gr' ? 'Τοποθεσία' : 'Location')}
+                  </span>
+                  <ChevronDown className="h-3 w-3 shrink-0 max-[340px]:hidden" />
                 </span>
                 {selectedIslandMeta && (
                   <span className="mt-0.5 block max-w-[11.5rem] whitespace-normal break-words text-center text-[9px] font-semibold leading-snug text-slate-500 min-[390px]:max-w-[13rem] min-[390px]:text-[10px] sm:max-w-none sm:truncate sm:whitespace-nowrap sm:text-[11px]">
@@ -80,7 +83,6 @@ const Header: React.FC<HeaderProps> = ({ t, language, onLanguageChange, selected
                   </span>
                 )}
               </span>
-              <ChevronDown className="h-3 w-3 shrink-0 max-[340px]:hidden" />
             </button>
 
             {/* Actions */}

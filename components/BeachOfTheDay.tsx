@@ -140,7 +140,7 @@ const BeachOfTheDay: React.FC<BeachOfTheDayProps> = ({ topBeach, language, t, on
 
             {/* Best time banner */}
             {bestBeachTime && (
-              <div className="flex items-center gap-2.5 p-3 bg-sky-50/70 dark:bg-sky-950/20 rounded-xl border border-sky-100/50 dark:border-sky-800/30">
+              <div className="inline-flex w-fit max-w-full items-center gap-2 rounded-lg border border-sky-100/50 bg-sky-50/70 px-2.5 py-1.5 dark:border-sky-800/30 dark:bg-sky-950/20">
                 <Clock className="w-4 h-4 text-sky-400 flex-shrink-0" />
                 <p className="text-xs font-medium text-sky-700 dark:text-sky-300">
                   {{ en: 'Best time', gr: 'Καλύτερη ώρα', de: 'Beste Zeit', it: 'Ora migliore', fr: 'Meilleur moment' }[language]}: <span className="font-bold">{bestTimeValue}</span>

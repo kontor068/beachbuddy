@@ -6,6 +6,7 @@ import { ExposureLevel } from '../utils/windExposure';
 import { getNegativeFeedbackCount } from './analyticsService';
 import { displayBeachName } from '../utils/localization';
 import { isSearchMatch } from '../utils/searchNormalize';
+import { calculateSeaConditionScore } from '../utils/seaConditions';
 
 export interface BeachScore {
   beachId: number;
@@ -33,6 +34,10 @@ export interface BeachRecommendation {
   exposureLevel?: ExposureLevel;
   orientation?: number | null;
 }
+
+const hasActivePreferences = (preferences?: UserPreferences): boolean => (
+  Boolean(preferences && Object.values(preferences).some(Boolean))
+);
 
 const greekWindDirectionsAccusative: Record<WindDirection, string> = {
   [WindDirection.N]: 'βόρειους',
@@ -357,13 +362,13 @@ export const calculateBeachScore = (
     }
   }
 
-  // Weather score is now calculated. Let's ensure it's at least 70% of the weight.
-  // We'll normalize the weather score to 0-70.
+  // Weather score is the base recommendation signal.
   const weatherScore = Math.max(0, Math.min(100, score));
   
   // 6. User Preferences (Max 30 points)
   let preferenceScore = 0;
-  if (preferences) {
+  const hasPreferences = hasActivePreferences(preferences);
+  if (hasPreferences && preferences) {
     if (preferences.sandy) {
       if (beach.beachType === 'sandy') preferenceScore += 10;
       else if (beach.beachType === 'sandy-pebbles') preferenceScore += 5;
@@ -386,8 +391,9 @@ export const calculateBeachScore = (
     }
   }
 
-  // Final Score = (WeatherScore * 0.7) + PreferenceScore
-  let finalScore = (weatherScore * 0.7) + preferenceScore;
+  // If no preference is active, do not cap excellent weather/sea conditions at 70.
+  // Apply the 70/30 weighting only when user preferences are actually filtering intent.
+  let finalScore = hasPreferences ? (weatherScore * 0.7) + preferenceScore : weatherScore;
 
   // 7. Crowd Prediction Integration
   const crowdInfo = calculateCrowdLevel(beach, weather, new Date());
@@ -540,6 +546,11 @@ const generateLocalizedBeachExplanation = (
       : 25;
 
   const isProtected = beach.protectedFrom.includes(windDir);
+  const beachOrientation = estimateBeachOrientation(beach.protectedFrom);
+  const exposureLevel = beachOrientation !== null
+    ? calculateWindExposure(beachOrientation, weather.wind.deg).exposureLevel
+    : (isProtected ? 'protected' : 'exposed');
+  const seaScore = calculateSeaConditionScore(!isProtected, windSpeedKmph, exposureLevel);
   const beachName = displayBeachName(beach.name, language);
   let explanation = '';
 
@@ -549,9 +560,13 @@ const generateLocalizedBeachExplanation = (
         ? `Η ${beachName} είναι εξαιρετική επιλογή γιατί προστατεύεται από τους δυνατούς ${greekWindDirectionsAccusative[windDir]} ανέμους σήμερα.`
         : `Η ${beachName} έχει ήρεμα νερά σήμερα, προστατευμένη από τον ${greekWindDirectionsSingular[windDir]} άνεμο.`;
     } else {
-      explanation = windSpeedKmph < 12
-        ? `Η ${beachName} έχει ελαφρύ αεράκι σήμερα και παραμένει ιδανική για επίσκεψη.`
-        : `Η ${beachName} μπορεί να έχει λίγο αέρα λόγω ${greekWindDirectionsAccusative[windDir]} ανέμων, αλλά παραμένει απολαυστική.`;
+      if (seaScore < 5) {
+        explanation = `Η ${beachName} είναι αρκετά εκτεθειμένη στους ${greekWindDirectionsAccusative[windDir]} ανέμους σήμερα, οπότε δεν είναι από τις πιο άνετες επιλογές για ήρεμο μπάνιο.`;
+      } else if (seaScore < 8) {
+        explanation = `Η ${beachName} έχει χαμηλή προστασία από τους ${greekWindDirectionsAccusative[windDir]} ανέμους. Μπορεί να είναι οκ όσο ο άνεμος μένει χαμηλός, αλλά είναι μέτρια επιλογή αν θέλετε σίγουρα ήρεμα νερά.`;
+      } else {
+        explanation = `Η ${beachName} έχει ελαφρύ αεράκι σήμερα και οι συνθήκες παραμένουν άνετες για επίσκεψη.`;
+      }
     }
 
     if (temp >= 25 && temp <= 32) {
@@ -573,9 +588,9 @@ const generateLocalizedBeachExplanation = (
   if (language === 'de') {
     explanation = isProtected
       ? `${beachName} ist heute eine gute Wahl, weil der Strand vor dem Wind geschutzt ist.`
-      : windSpeedKmph < 12
-        ? `${beachName} hat heute nur eine leichte Brise und bleibt angenehm fur einen Strandbesuch.`
-        : `${beachName} kann heute etwas windig sein, bleibt aber eine brauchbare Option.`;
+      : seaScore < 8
+        ? `${beachName} ist heute wenig vor Wind geschutzt. Es kann okay sein, solange der Wind schwach bleibt, ist aber keine sichere Wahl fur ganz ruhiges Wasser.`
+        : `${beachName} hat heute nur eine leichte Brise und bleibt angenehm fur einen Strandbesuch.`;
     explanation += temp >= 25 && temp <= 32
       ? ` Die Temperatur liegt bei ${temp}°C, ideal zum Schwimmen.`
       : temp > 32
@@ -587,9 +602,9 @@ const generateLocalizedBeachExplanation = (
   if (language === 'it') {
     explanation = isProtected
       ? `${beachName} e una buona scelta oggi perche e riparata dal vento.`
-      : windSpeedKmph < 12
-        ? `${beachName} ha una brezza leggera oggi ed e piacevole per una visita.`
-        : `${beachName} puo essere un po ventosa oggi, ma resta una buona opzione.`;
+      : seaScore < 8
+        ? `${beachName} e poco riparata dal vento oggi. Puo andare bene se il vento resta leggero, ma non e la scelta piu sicura per acqua calma.`
+        : `${beachName} ha una brezza leggera oggi ed e piacevole per una visita.`;
     explanation += temp >= 25 && temp <= 32
       ? ` La temperatura e ${temp}°C, ideale per nuotare.`
       : temp > 32
@@ -601,9 +616,9 @@ const generateLocalizedBeachExplanation = (
   if (language === 'fr') {
     explanation = isProtected
       ? `${beachName} est un bon choix aujourd hui car la plage est abritee du vent.`
-      : windSpeedKmph < 12
-        ? `${beachName} a seulement une legere brise aujourd hui et reste agreable.`
-        : `${beachName} peut etre un peu ventee aujourd hui, mais reste une option correcte.`;
+      : seaScore < 8
+        ? `${beachName} est peu abritee du vent aujourd hui. Cela peut rester correct si le vent reste faible, mais ce n est pas le choix le plus sur pour une eau calme.`
+        : `${beachName} a seulement une legere brise aujourd hui et reste agreable.`;
     explanation += temp >= 25 && temp <= 32
       ? ` La temperature est de ${temp}°C, ideale pour se baigner.`
       : temp > 32
@@ -617,9 +632,13 @@ const generateLocalizedBeachExplanation = (
       ? `${beachName} is a great choice because it is sheltered from the strong ${windDir} winds today.`
       : `${beachName} has calm waters today, protected from the ${windDir} breeze.`;
   } else {
-    explanation = windSpeedKmph < 12
-      ? `${beachName} has a gentle breeze today, making it pleasant for a visit.`
-      : `${beachName} might be a bit breezy today due to ${windDir} winds, but still enjoyable.`;
+    if (seaScore < 5) {
+      explanation = `${beachName} is exposed to the ${windDir} wind today, so it is not one of the most comfortable choices for calm swimming.`;
+    } else if (seaScore < 8) {
+      explanation = `${beachName} has low wind protection today. It may be okay while the wind stays light, but it is a moderate choice if you want reliably calm water.`;
+    } else {
+      explanation = `${beachName} has a gentle breeze today, making it pleasant for a visit.`;
+    }
   }
 
   if (temp >= 25 && temp <= 32) {

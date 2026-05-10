@@ -117,6 +117,29 @@ export const App: React.FC = () => {
     tripPlanner: { en: 'Trip planner', gr: 'Σχεδιασμός ταξιδιού', de: 'Reiseplaner', it: 'Pianificatore viaggio', fr: 'Planificateur de voyage' },
     aiAssistant: { en: 'AI Assistant', gr: 'AI Βοηθός', de: 'KI-Assistent', it: 'Assistente AI', fr: 'Assistant IA' },
   };
+  const plannerProCopy = {
+    title: {
+      en: 'Holiday Planner is a Pro feature',
+      gr: 'Το Planner είναι λειτουργία Pro',
+      de: 'Der Urlaubsplaner ist eine Pro-Funktion',
+      it: 'Il Planner vacanze e una funzione Pro',
+      fr: 'Le planificateur de vacances est une fonction Pro',
+    },
+    description: {
+      en: 'Pro creates a weather-aware holiday plan for each destination, matching beach days, calmer hours and backup ideas to the forecast.',
+      gr: 'Στο Pro θα φτιάχνει πρόγραμμα διακοπών για κάθε μέρος, με βάση τον καιρό, τη θάλασσα, τις καλύτερες ώρες για παραλία και εναλλακτικές επιλογές.',
+      de: 'Pro erstellt einen wetterbasierten Urlaubsplan je Reiseziel, mit Strandtagen, ruhigen Zeitfenstern und Alternativen passend zur Vorhersage.',
+      it: 'Pro crea un programma vacanze per ogni destinazione in base a meteo, mare, orari migliori per la spiaggia e alternative.',
+      fr: 'Pro cree un programme de vacances par destination selon la meteo, la mer, les meilleurs moments de plage et des alternatives.',
+    },
+    cta: {
+      en: 'Available on Pro',
+      gr: 'Διαθέσιμο στο Pro',
+      de: 'In Pro verfugbar',
+      it: 'Disponibile in Pro',
+      fr: 'Disponible avec Pro',
+    },
+  };
 
   // --- Beach & Weather Data (Custom Hooks) ---
   const { allIslands, loading: beachesLoading, error: beachesError, getFilteredBeaches } = useBeaches(language);
@@ -310,7 +333,18 @@ export const App: React.FC = () => {
     setMobileTab(tab);
     if (tab === 'chat') { setIsChatOpen(true); return; }
     if (tab === 'planner') { setIsPlannerOpen(true); return; }
-    if (tab === 'home' && view === 'detail') { setView('home'); }
+    if (tab === 'home') {
+      setIsChatOpen(false);
+      setIsPlannerOpen(false);
+      setIsFilterModalOpen(false);
+      setIsIslandSelectorOpen(false);
+      setIsItinerariesOpen(false);
+      if (view === 'detail') setView('home');
+      requestAnimationFrame(() => {
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      });
+      return;
+    }
     // map and favorites scroll to their sections
     if (tab === 'map') {
       document.getElementById('map-section')?.scrollIntoView({ behavior: 'smooth' });
@@ -634,8 +668,11 @@ export const App: React.FC = () => {
           aria-label={homeCopy.tripPlanner[language]}
         >
           <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}><path d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" /></svg>
+          <span className="absolute -right-1 -top-1 rounded-full bg-slate-900 px-1.5 py-0.5 text-[9px] font-black uppercase tracking-wide text-white">
+            Pro
+          </span>
           <span className="absolute right-full mr-3 top-1/2 -translate-y-1/2 px-3 py-1.5 bg-slate-900 text-white text-xs font-heading font-semibold rounded-lg opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap pointer-events-none">
-            {language === 'gr' ? 'Planner' : 'Planner'}
+            {language === 'gr' ? 'Planner Pro' : 'Planner Pro'}
           </span>
         </motion.button>
 
@@ -659,6 +696,56 @@ export const App: React.FC = () => {
         onSend={handleChatSend} t={t} isLoading={chatMessages.some(m => m.id.startsWith('bot-loading'))}
         onNewChat={() => setChatMessages([])} suggestions={['Ποιες παραλίες είναι απάνεμες σήμερα;', 'Πού να πάω για snorkeling;']}
       />
+
+      {isPlannerOpen && (
+        <div
+          className="fixed inset-0 z-[90] flex items-end justify-center bg-black/60 sm:items-center"
+          onClick={() => setIsPlannerOpen(false)}
+        >
+          <div
+            className="w-full max-w-md rounded-t-2xl bg-white p-6 shadow-2xl sm:rounded-2xl dark:bg-slate-900"
+            onClick={(event) => event.stopPropagation()}
+            role="dialog"
+            aria-modal="true"
+            aria-labelledby="planner-pro-title"
+          >
+            <div className="mb-4 flex items-start gap-4">
+              <div className="grid h-12 w-12 shrink-0 place-items-center rounded-xl bg-slate-900 text-white shadow-lg">
+                <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M16 11V8a4 4 0 00-8 0v3m-2 0h12a1 1 0 011 1v8a1 1 0 01-1 1H6a1 1 0 01-1-1v-8a1 1 0 011-1z" />
+                </svg>
+              </div>
+              <div>
+                <div className="mb-1 inline-flex rounded-full bg-cyan-50 px-2.5 py-1 text-[10px] font-black uppercase tracking-wide text-cyan-700">
+                  Pro
+                </div>
+                <h2 id="planner-pro-title" className="text-xl font-extrabold text-slate-900 dark:text-white">
+                  {plannerProCopy.title[language]}
+                </h2>
+              </div>
+            </div>
+            <p className="text-sm leading-relaxed text-slate-600 dark:text-slate-300">
+              {plannerProCopy.description[language]}
+            </p>
+            <div className="mt-6 flex gap-3">
+              <button
+                type="button"
+                className="flex-1 rounded-xl bg-slate-900 px-4 py-3 text-sm font-bold text-white"
+                disabled
+              >
+                {plannerProCopy.cta[language]}
+              </button>
+              <button
+                type="button"
+                onClick={() => setIsPlannerOpen(false)}
+                className="rounded-xl border border-slate-200 px-4 py-3 text-sm font-bold text-slate-600 dark:border-slate-700 dark:text-slate-300"
+              >
+                {t.closeModalLabel}
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
 
       <IslandSelectorModal isOpen={isIslandSelectorOpen} onClose={() => setIsIslandSelectorOpen(false)} islands={allIslands} onSelect={selectIsland} t={t} language={language} onSelectNearest={handleSelectNearest} isFindingNearest={isFindingNearest} findNearestError={findNearestError} />
 

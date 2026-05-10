@@ -102,6 +102,8 @@ const BEACH_PHOTOS: Record<string, string[]> = {
   'Papafragas': [wm('Papafragas beach, Milos.jpg')],
   'Τσιγκράδο': [wm('Moonscape surrounding Sarakiniko Beach on Milos Island, Greece.jpg')],
   'Tsigrado': [wm('Moonscape surrounding Sarakiniko Beach on Milos Island, Greece.jpg')],
+  'Agia Kyriaki': [wm('Milossouth.JPG')],
+  'Agia Kiriaki': [wm('Milossouth.JPG')],
 
   // --- Ios ---
   'Μυλοπότας': [wm('Mylopotas Beach Ios.jpg'), wm('Ios Milopotas.JPG')],
@@ -502,6 +504,8 @@ const MILOS_BEACH_PHOTOS: Record<string, string[]> = {
     wm('Aerial view of Tsigrado Beach on Milos Island, Greece.jpg'),
     wm('Tsigrado Beach on Milos Island, Greece.jpg'),
   ],
+  'Agia Kyriaki': [wm('Milossouth.JPG')],
+  'Agia Kiriaki': [wm('Milossouth.JPG')],
   'Παλαιοχώρι': [
     wm('Cyclades Milos Paleochori Plage - panoramio.jpg'),
     wm('Milos Paleochori.JPG'),
