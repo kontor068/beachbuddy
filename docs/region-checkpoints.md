@@ -8,8 +8,53 @@ Last updated: 2026-05-10
 - `3febdb3` - UI and data-quality checkpoint: difficult access wording, duplicate home recommendations, bookmark icon removal, title-cased Greek metadata chips, planner preview, Milos photo candidates, and synced beach JSON mirrors.
 - `d43b1a2` - Evia data audit checkpoint: first Evia/Skyros pass and persistent region tracking.
 - `ce8c6c1` - Central Greece mainland data audit checkpoint: Fokida, Fthiotida, and Viotia first pass.
+- `3b1aa4b` - Thessaly data audit checkpoint: Sporades, Pelion, and Larissa Coast first pass.
 
 ## Latest region checkpoint
+
+### Ionian Islands / Corfu, Paxos, Kefalonia, Lefkada, Zakynthos, Ithaca
+
+Status: first pass completed.
+
+Areas included:
+- Corfu: 92 beach records after removing duplicate Agios Spyridon, Agios Petros, and Kolias records.
+- Paxos: 25 beach records after removing two low-confidence Mesorachi / Missorachi overlaps around Kanoni.
+- Antipaxos: 13 beach records.
+- Othonoi: 3 beach records.
+- Erikoussa: 2 beach records.
+- Mathraki: 1 beach record.
+- Kefalonia: 71 beach records after removing one duplicate Skala record.
+- Lefkada: 36 beach records after merging Agios Ioannis / Ai Giannis.
+- Meganisi: 8 beach records.
+- Zakynthos: 39 beach records.
+- Ithaca: 30 beach records after removing duplicate Pera Pigadi and Filiatro records.
+
+What has been checked:
+- JSON mirrors are synced between `src/data/greek_beaches.json` and `public/greek_beaches.json`.
+- The clearest same-island duplicate cards were removed so the user does not see repeated beaches while scrolling.
+- `Παραλία Αγίου Σπυρίδωνα` is kept as the north Corfu / Antinioti record; the separate Paleokastritsa Agios Spyridon record remains.
+- `Κανόνι` in Paxos is kept as the Lakka bay beach and now uses easy walking access instead of a dirt-road framing.
+- `Παραλία Σκάλας`, `Άγιος Ιωάννης`, `Παραλία Φιλιατρό`, and `Πέρα Πηγάδι` were source-checked and kept as the canonical records.
+- `Ναυάγιο` already carries 2026 no-landing / viewing-only wording and remains boat/viewing focused.
+
+Focused fixes in this checkpoint:
+- Corfu: removed `Agios Spyridon Beach`, `Παραλία Αγ. Πέτρος`, and the second `Κόλιας` record.
+- Παξοί: removed `Mesorachi` and `Missorachi Beach` because both overlapped the Kanoni/Lakka area at low confidence.
+- Κόλιας (Corfu): corrected practical access to boat-only and removed the duplicate local-cove record.
+- Παραλία Αγίου Σπυρίδωνα (Corfu): aligned coordinates and metadata with the north Corfu / Antinioti beach.
+- Παραλία Άγιος Πέτρος (Λευκίμμη): kept the precise Lefkimmi record and promoted confidence after source check.
+- Παραλία Σκάλας (Kefalonia): kept the beach-specific record, removed `Σκάλα`, and refreshed organized amenities.
+- Άγιος Ιωάννης (Lefkada): merged `Άι Γιάννης`, corrected coordinates, and kept Ai Giannis as an alias in notes.
+- Πέρα Πηγάδι (Ithaca): removed `Παραλία Πέρα Πηγάδι` and changed access to difficult path / private-boat wording.
+- Παραλία Φιλιατρό (Ithaca): removed the duplicate `Φιλιατρό` record and promoted the Vathy-side record.
+
+Remaining risks:
+- Kefalonia still has two `Λυγιά` records in different coastal positions; this needs a deeper local-source pass before removal.
+- Several Corfu western micro-coves around Liapades / Paleokastritsa remain low-confidence and should be reviewed with local maps.
+- Seasonal organization on small Ionian beaches can vary by year, so amenities stay phrased as seasonal or nearby.
+- Navagio restrictions are current as of the 2026 source check, but should be rechecked before launch because access rules are policy-driven.
+
+## Previous region checkpoint
 
 ### Thessaly / Sporades, Pelion, Larissa Coast
 
@@ -43,7 +88,7 @@ Remaining risks:
 - Larissa Coast was inventoried but not deeply expanded; Agiokampos, Velika, Sotiritsa, Kokkino Nero, Mesangala, and Kastri Loutro should be checked next time Thessaly is revisited.
 - Seasonal services in Pelion and the Sporades can change, so amenities remain phrased as seasonal or nearby.
 
-## Previous region checkpoint
+## Earlier region checkpoint
 
 ### Central Greece / Fokida, Fthiotida, Viotia
 
@@ -103,15 +148,14 @@ Remaining risks:
 
 Recommended next order:
 
-1. Ionian Islands.
-2. South Aegean: Cyclades and Dodecanese.
-3. Crete.
-4. Peloponnese.
-5. North Aegean.
-6. Epirus.
-7. Macedonia / Thrace regions.
-8. West Greece and West Macedonia.
-9. Attica final pass after mainland/island grouping stabilizes.
+1. South Aegean: Cyclades and Dodecanese.
+2. Crete.
+3. Peloponnese.
+4. North Aegean.
+5. Epirus.
+6. Macedonia / Thrace regions.
+7. West Greece and West Macedonia.
+8. Attica final pass after mainland/island grouping stabilizes.
 
 ## Durable data rules
 
