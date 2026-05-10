@@ -7,8 +7,43 @@ Last updated: 2026-05-10
 - `e0512bb` - Initial Beach Buddy baseline.
 - `3febdb3` - UI and data-quality checkpoint: difficult access wording, duplicate home recommendations, bookmark icon removal, title-cased Greek metadata chips, planner preview, Milos photo candidates, and synced beach JSON mirrors.
 - `d43b1a2` - Evia data audit checkpoint: first Evia/Skyros pass and persistent region tracking.
+- `ce8c6c1` - Central Greece mainland data audit checkpoint: Fokida, Fthiotida, and Viotia first pass.
 
 ## Latest region checkpoint
+
+### Thessaly / Sporades, Pelion, Larissa Coast
+
+Status: first pass completed.
+
+Areas included:
+- Alonissos: 35 beach records after removing one duplicate Megali Ammos record.
+- Skiathos: 35 beach records after removing duplicate Lalaria and Megas Gialos records.
+- Skopelos: 19 beach records.
+- Magnesia mainland / Pelion: 60 beach records.
+- Larissa Coast (Agia - Kissavos): 14 beach records.
+
+What has been checked:
+- JSON mirrors are synced between `src/data/greek_beaches.json` and `public/greek_beaches.json`.
+- `Λαλάρια` is kept as the single Lalaria record and remains boat-only / unorganized.
+- `Μέγας Γιαλός` is kept as the single Megas Gialos record with corrected north-Skiathos coordinates.
+- `Μεγάλη Άμμος` in Alonissos no longer appears twice and uses `Δύσβατος δρόμος` as user-facing access copy.
+- `Χόβολο` is corrected to the Neo Klima / Elios side of Skopelos instead of the old Stafylos-side coordinates.
+
+Focused fixes in this checkpoint:
+- Μεγάλη Άμμος (Alonissos): removed `Στη Μεγάλη Άμμο`, corrected coordinates, difficult-road access, pebble terrain, limited parking, and deep-water signal.
+- Μέγας Γιαλός (Skiathos): removed duplicate `Μέγα Γιαλός`, corrected coordinates, sandy terrain, no-organization signal, and short final-walk note.
+- Λαλάρια (Skiathos): removed duplicate `Παραλία Λαλάριας` and kept the boat-only record.
+- Χόβολο (Skopelos): corrected coordinates, access note, terrain, and organized status.
+- Άγιοι Σαράντα (Pelion): promoted to medium confidence with easy road access, organized seasonal amenities, and correct mixed sand/pebble terrain.
+- Μυλοπόταμος (Pelion): added road-and-steps access wording and corrected deep-water metadata.
+
+Remaining risks:
+- Smaller Alonissos cove names around Votsi / Chrysi Milia remain low-confidence and need a deeper local-source pass before promotion.
+- Some Skiathos records still have generated close coordinates for neighboring coves and should be checked in a second Sporades pass.
+- Larissa Coast was inventoried but not deeply expanded; Agiokampos, Velika, Sotiritsa, Kokkino Nero, Mesangala, and Kastri Loutro should be checked next time Thessaly is revisited.
+- Seasonal services in Pelion and the Sporades can change, so amenities remain phrased as seasonal or nearby.
+
+## Previous region checkpoint
 
 ### Central Greece / Fokida, Fthiotida, Viotia
 
@@ -37,7 +72,7 @@ Remaining risks:
 - Fthiotida coastline should get a second pass for smaller Kamena Vourla / Agios Konstantinos coves.
 - Viotia access can change after road maintenance or winter damage, especially remote dirt roads.
 
-## Previous region checkpoint
+## Earlier region checkpoint
 
 ### Central Greece / Evia
 
@@ -68,16 +103,15 @@ Remaining risks:
 
 Recommended next order:
 
-1. Thessaly: mainland Thessaly and Sporades-adjacent grouping checks.
-2. Ionian Islands.
-3. South Aegean: Cyclades and Dodecanese.
-4. Crete.
-5. Peloponnese.
-6. North Aegean.
-7. Epirus.
-8. Macedonia / Thrace regions.
-9. West Greece and West Macedonia.
-10. Attica final pass after mainland/island grouping stabilizes.
+1. Ionian Islands.
+2. South Aegean: Cyclades and Dodecanese.
+3. Crete.
+4. Peloponnese.
+5. North Aegean.
+6. Epirus.
+7. Macedonia / Thrace regions.
+8. West Greece and West Macedonia.
+9. Attica final pass after mainland/island grouping stabilizes.
 
 ## Durable data rules
 
