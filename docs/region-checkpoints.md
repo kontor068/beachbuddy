@@ -11,8 +11,43 @@ Last updated: 2026-05-10
 - `3b1aa4b` - Thessaly data audit checkpoint: Sporades, Pelion, and Larissa Coast first pass.
 - `15499dc` - Ionian Islands data audit checkpoint: Corfu, Paxos, Kefalonia, Lefkada, Zakynthos, and Ithaca first pass.
 - `0440443` - South Aegean data audit checkpoint: Cyclades and Dodecanese first pass.
+- `f8137d9` - Crete data audit checkpoint: Chania, Gavdos, Heraklion, Rethymno, and Lasithi first pass.
 
 ## Latest region checkpoint
+
+### Peloponnese / Argolida, Arkadia, Korinthia, Lakonia, Messinia
+
+Status: first pass completed.
+
+Areas included:
+- Argolida mainland: 26 beach records after collapsing the clear Kondyli / Agios Nikolaos duplicate.
+- Arkadia mainland: 16 beach records after removing duplicate Thiopauto and Paralio Astros cards.
+- Korinthia mainland: 21 beach records after collapsing the duplicate Agioi Theodoroi beach card.
+- Lakonia mainland: 61 beach records after collapsing duplicate naturist, Elia/Kavos, and Plytra/Pachia Ammos overlaps.
+- Messinia mainland: 54 beach records after collapsing duplicate Gialova, Kalamata, Ritsa, Vasilitsi/Kryoneri, and Santova/Hobo records.
+- Peloponnese total: 178 beach records, down from 194 before this checkpoint.
+
+What has been checked:
+- JSON mirrors are synced between `src/data/greek_beaches.json` and `public/greek_beaches.json`.
+- The clearest repeated beach cards were removed so filters and scrolling do not show the same Peloponnese beach again and again.
+- `Παραλία Μυλοκοπή` and `Τηγάνια` still use internal difficult-road access with user-facing `Δύσβατος δρόμος`, not "4x4 only" wording.
+- Source spot-checks covered Visit Greece, Visit Peloponnese, Peloponnisos Search, Blue Flag Greece, inLaconia, All About Peloponnisos, Kalamata local tourism content, DIVELOG, and the Municipality of Pylos-Nestor guide.
+
+Focused fixes in this checkpoint:
+- Argolida: collapsed `Παραλία Κονδύλι` into `Παραλία Αγίου Νικολάου - Κονδύλι`, aligned the canonical coordinates with source-backed Kondyli / Agios Nikolaos data, and added seasonal water-sports amenities.
+- Arkadia: removed the duplicate `Θιόπαυτο` record and the second `Πλαζ Παράλιου Άστρους` record.
+- Korinthia: removed the second `Παραλία Αγίων Θεωδώρων` record and clarified the canonical card as the long urban beach / Pefkakia-side resort area.
+- Lakonia: removed the duplicate generic `Γυμνιστική Παραλία`, removed the low-confidence `Κάβος` overlap beside `Παραλία Ελιάς`, collapsed the Plytra cluster into `Πλύτρα - Παχιά Άμμος`, and renamed the separate Mani-side `Καραβοστάσι` to `Καραβοστάσι Οιτύλου`.
+- Messinia: collapsed three Gialova-side records into one `Παραλία Γιάλοβα`; collapsed three `Παραλία Καλαμάτας` records into one city-beach card; removed `Παραλία Ριτσά 2η`, `Παραλία Ριτσά 3η`, and `Hobo`; removed generic `Παραλία Βασιλιτσίου` after confirming `Κρυονέρι` is the source-backed Vasilitsi-community beach.
+- Argolida: kept both `Παραλία Βαγιωνία` and `Καλαμάκι` because Visit Greece describes them as nearby but distinct Epidavros beaches.
+
+Remaining risks:
+- Many Peloponnese low-confidence micro-coves remain in Lakonia, Messinia, Argolida, and Arkadia; they should get a second local-source pass before promotion.
+- Some long urban beaches, especially Kalamata and Agioi Theodoroi, may have named sub-sections that can be added later only if they improve choice rather than duplicate the main card.
+- Remote Mani and Korinthia dirt-road access can change after storms or maintenance, so difficult-road wording should stay conservative.
+- Seasonal organization on Peloponnese beaches varies by summer month, so amenities remain phrased as seasonal or nearby.
+
+## Previous region checkpoint
 
 ### Crete / Chania, Gavdos, Heraklion, Rethymno, Lasithi
 
@@ -45,7 +80,7 @@ Remaining risks:
 - This was a cleanup checkpoint, not a Crete expansion pass; major missing beaches should be added in a separate controlled import.
 - Seasonal services in Crete can change by month, so amenities remain phrased as seasonal or nearby.
 
-## Previous region checkpoint
+## Earlier region checkpoint
 
 ### South Aegean / Cyclades and Dodecanese
 
@@ -224,12 +259,11 @@ Remaining risks:
 
 Recommended next order:
 
-1. Peloponnese.
-2. North Aegean.
-3. Epirus.
-4. Macedonia / Thrace regions.
-5. West Greece and West Macedonia.
-6. Attica final pass after mainland/island grouping stabilizes.
+1. North Aegean.
+2. Epirus.
+3. Macedonia / Thrace regions.
+4. West Greece and West Macedonia.
+5. Attica final pass after mainland/island grouping stabilizes.
 
 ## Durable data rules
 
