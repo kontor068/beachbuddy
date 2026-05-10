@@ -12,8 +12,52 @@ Last updated: 2026-05-10
 - `15499dc` - Ionian Islands data audit checkpoint: Corfu, Paxos, Kefalonia, Lefkada, Zakynthos, and Ithaca first pass.
 - `0440443` - South Aegean data audit checkpoint: Cyclades and Dodecanese first pass.
 - `f8137d9` - Crete data audit checkpoint: Chania, Gavdos, Heraklion, Rethymno, and Lasithi first pass.
+- `c54ea85` - Peloponnese data audit checkpoint: Argolida, Arkadia, Korinthia, Lakonia, and Messinia first pass.
 
 ## Latest region checkpoint
+
+### North Aegean / Chios, Psara, Oinousses, Ikaria, Fournoi, Lesvos, Samos, Agios Efstratios, Lemnos
+
+Status: first pass completed.
+
+Areas included:
+- Chios mainland: 34 beach records after collapsing Agia Dynami and Karynta same-beach cove duplicates, and clarifying the separate Pyrgi-side Avlonia.
+- Psara: 6 beach records.
+- Oinousses: 8 beach records.
+- Ikaria: 19 beach records.
+- Fournoi: 7 beach records.
+- Lesvos: 60 beach records.
+- Samos: 40 beach records after collapsing the duplicate Tsabou cove card and clarifying Agios Ioannis Eleimonas / Klima as neighboring coves.
+- Agios Efstratios: 12 beach records.
+- Lemnos: 40 beach records after collapsing duplicate Avlonas, Gomati, Keros, and Fanaraki cards.
+- North Aegean total: 226 beach records, down from 237 before this checkpoint.
+
+What has been checked:
+- JSON mirrors are synced between `src/data/greek_beaches.json` and `public/greek_beaches.json`.
+- The clearest repeated beach cards were removed so filters and scrolling do not show the same North Aegean beach again and again.
+- No North Aegean records currently use internal `4x4_only`; difficult paths and dirt roads remain phrased without "4x4 only" wording.
+- Source spot-checks covered Chios.gr, Discover Greece, iSamos, SamosIn, Lemnos Geomonuments, Evgatis Lemnos, limnos.mobi, Terrabook, and Surf Club Keros.
+
+Focused fixes in this checkpoint:
+- Chios: collapsed `Αγία Δύναμη (βόρειος όρμος)` into `Αγία Δύναμη`, because sources describe the Agia Dynami / Agia Theodosia bay as one beach area.
+- Chios: collapsed `Καρύντα (νότιος όρμος)` into `Παραλία Καρύντα`.
+- Chios: renamed the low-confidence second `Παραλία Αυλωνιά` to `Αυλωνιά Πυργίου`, and changed access to easy footpath wording because this is the separate Pyrgi-side Avlonia, not the organized Mesta-side Avlonia.
+- Samos: collapsed `Τσάμπου (ανατολικός όρμος)` into `Τσάμπου`, keeping a single card with notes about the left-side caves / sea-only side.
+- Samos: renamed `Άγιος Ιωάννης` to `Άγιος Ιωάννης Ελεήμονας`, renamed `Αμπελάκια` to `Κλήμα`, and corrected both to dirt-road plus short-walk access after source check.
+- Samos: cleaned stale "second entry" wording from `Τσαμαδού` and `Ψιλή Άμμος Μαραθοκάμπου`.
+- Lemnos: collapsed north/south `Αυλώνας` into one canonical `Αυλώνας` record.
+- Lemnos: collapsed north/south `Γομάτι` into one canonical `Γομάτι` record tied to the Ammothines / sand dunes area.
+- Lemnos: collapsed five Keros section cards into one `Κέρος` record with surf/kite/windsurf context.
+- Lemnos: kept only the source-backed `Μικρό Φαναράκι` and `Μεγάλο Φαναράκι`, removing generic `Φαναράκι` and misnamed `Μικρό Φανάρι`.
+- Lemnos: kept `Διαπόρι (δυτική ακτή)` and `Διαπόρι (ανατολική ακτή)` as distinct sides of the isthmus, with clearer notes for wind-sensitive recommendations.
+
+Remaining risks:
+- `Άγιος Ιωάννης Ελεήμονας` and `Κλήμα` in Samos are only about 166 m apart, but source-checks describe them as neighboring distinct coves, so they were not merged.
+- Chios north-east micro-coves around Pyrgia and Lemnos south/Fakos coves such as Kokkina remain grouped by local cove names and should get a second local-source pass before launch.
+- Lesvos has many low-confidence western and southern micro-coves that were inventoried but not deeply expanded in this pass.
+- Seasonal services in the North Aegean vary heavily, especially on smaller islands, so amenities remain phrased as seasonal or nearby.
+
+## Previous region checkpoint
 
 ### Peloponnese / Argolida, Arkadia, Korinthia, Lakonia, Messinia
 
@@ -47,7 +91,7 @@ Remaining risks:
 - Remote Mani and Korinthia dirt-road access can change after storms or maintenance, so difficult-road wording should stay conservative.
 - Seasonal organization on Peloponnese beaches varies by summer month, so amenities remain phrased as seasonal or nearby.
 
-## Previous region checkpoint
+## Earlier region checkpoint
 
 ### Crete / Chania, Gavdos, Heraklion, Rethymno, Lasithi
 
@@ -259,11 +303,10 @@ Remaining risks:
 
 Recommended next order:
 
-1. North Aegean.
-2. Epirus.
-3. Macedonia / Thrace regions.
-4. West Greece and West Macedonia.
-5. Attica final pass after mainland/island grouping stabilizes.
+1. Epirus.
+2. Macedonia / Thrace regions.
+3. West Greece and West Macedonia.
+4. Attica final pass after mainland/island grouping stabilizes.
 
 ## Durable data rules
 
