@@ -10,8 +10,42 @@ Last updated: 2026-05-10
 - `ce8c6c1` - Central Greece mainland data audit checkpoint: Fokida, Fthiotida, and Viotia first pass.
 - `3b1aa4b` - Thessaly data audit checkpoint: Sporades, Pelion, and Larissa Coast first pass.
 - `15499dc` - Ionian Islands data audit checkpoint: Corfu, Paxos, Kefalonia, Lefkada, Zakynthos, and Ithaca first pass.
+- `0440443` - South Aegean data audit checkpoint: Cyclades and Dodecanese first pass.
 
 ## Latest region checkpoint
+
+### Crete / Chania, Gavdos, Heraklion, Rethymno, Lasithi
+
+Status: first pass completed.
+
+Areas included:
+- Chania mainland: 41 beach records after removing clear Blue Coast / Kyani Akti and Anidri / Gialiskari duplicate-alias records.
+- Gavdos: 9 beach records.
+- Heraklion: 13 beach records.
+- Rethymno: 17 beach records.
+- Lasithi: 53 beach records.
+- Crete total: 133 beach records, down from 135 before this checkpoint.
+
+What has been checked:
+- JSON mirrors are synced between `src/data/greek_beaches.json` and `public/greek_beaches.json`.
+- The clearest same-area repeated beach cards were removed so filters and scrolling do not show duplicate aliases.
+- `Balos`, `Μένιες (Δίκτυννα)`, and `Τρυπητή` in Heraklion now use internal difficult-road access with user-facing `Δύσβατος δρόμος`, not "4x4 only" wording.
+- Source spot-checks covered Destination Crete, Paleochora Discover, Terrabook, Discover Crete, UNESCO Sites in Crete, and Cretan Beaches / local Crete guides.
+
+Focused fixes in this checkpoint:
+- Chania: removed `Blue Coast` and kept `Κυανή Ακτή` as the canonical Kiani Akti / Blue Coast record with source-backed organized beach metadata.
+- Chania: removed `Anidri` and kept `Γιαλισκάρι` as the canonical Gialiskari / Anydroi beach-complex record.
+- Chania: changed `Balos` from passable dirt-road framing to `Δύσβατος δρόμος`, with boat-from-Kissamos alternative and rental-car caution.
+- Chania: renamed `Diktina` to `Μένιες (Δίκτυννα)` and changed access to `Δύσβατος δρόμος` because the Rodopou route is a long rugged dirt road.
+- Heraklion: changed `Τρυπητή` to `Δύσβατος δρόμος` because the Lendas / Vasiliki access uses a long rough dirt road with narrow passages.
+
+Remaining risks:
+- Xerokampos micro-coves such as `Γεροντόλακκος`, `Άργιλος`, `Χιόνα Ξερόκαμπου`, and `Βουρλιά` are very close but source-checks indicate distinct neighboring coves, so they were not merged.
+- Grammeno peninsula and Sissi / Milatos-area small coves remain close together and should get a second local-source pass before launch.
+- This was a cleanup checkpoint, not a Crete expansion pass; major missing beaches should be added in a separate controlled import.
+- Seasonal services in Crete can change by month, so amenities remain phrased as seasonal or nearby.
+
+## Previous region checkpoint
 
 ### South Aegean / Cyclades and Dodecanese
 
@@ -52,7 +86,7 @@ Remaining risks:
 - Many small Cyclades and Dodecanese coves remain medium or low confidence and should be reviewed island-by-island before launch.
 - Seasonal services in the South Aegean vary heavily by month, so amenities remain phrased as seasonal or nearby.
 
-## Previous region checkpoint
+## Earlier region checkpoint
 
 ### Ionian Islands / Corfu, Paxos, Kefalonia, Lefkada, Zakynthos, Ithaca
 
@@ -190,13 +224,12 @@ Remaining risks:
 
 Recommended next order:
 
-1. Crete.
-2. Peloponnese.
-3. North Aegean.
-4. Epirus.
-5. Macedonia / Thrace regions.
-6. West Greece and West Macedonia.
-7. Attica final pass after mainland/island grouping stabilizes.
+1. Peloponnese.
+2. North Aegean.
+3. Epirus.
+4. Macedonia / Thrace regions.
+5. West Greece and West Macedonia.
+6. Attica final pass after mainland/island grouping stabilizes.
 
 ## Durable data rules
 
