@@ -4,6 +4,16 @@ Use this before choosing project agents or starting any non-trivial Beach Buddy 
 
 This file adapts the workflow notes from the user's reference image for this repo. The goal is not more ceremony. The goal is fewer repeated mistakes, cleaner context, and more reliable delivery.
 
+Before non-trivial CalmBeach / Beach Buddy work, read:
+- `docs/BEACH_BUDDY_AGENT_CONTEXT.md`
+- `docs/AGENT_SOURCE_MAP.md`
+- `docs/WIND_PROFILE_GUIDELINES.md`
+- `docs/VALIDATION_PLAYBOOK.md`
+
+Use these as shared source of truth for product goals, agent responsibilities, source lookup rules, windProfile rules, confidence handling, and validation requirements. `docs/AGENT_SOURCE_MAP.md` is mandatory for agent responsibilities and information sources. For scoring, windProfile, weather, recommendations, or local beach behavior, `docs/WIND_PROFILE_GUIDELINES.md` and `docs/VALIDATION_PLAYBOOK.md` are mandatory.
+
+For all non-trivial work, correct beach prediction and recommendation comes first. Do not add complexity unless it improves recommendation accuracy, trust, or clarity. Unknown is better than false certainty. Do not create false calm/protected/safe/ideal claims.
+
 ## 1. Plan-First Default
 
 Use a lightweight plan for any non-trivial task.
@@ -55,6 +65,31 @@ After a correction:
 Current durable lessons:
 - Do not describe difficult beach access as "4x4 only" in user-facing copy. Prefer "Difficult road" / "Dusvatos dromos" style wording unless verified as strictly impossible for normal vehicles.
 - Avoid repeating the same beach cards in multiple home-screen sections. The user should not scroll past duplicate recommendations.
+- Warning chips must not contradict the main condition summary. Only show wave warnings when the beach has real wave risk after protection/exposure is considered, and use specific wording such as "Some waves" or "High waves" instead of vague "Wave today" copy.
+- When sea condition scores depend on exposure/protection as well as wave height, compact cards must show that context so equal wave heights do not look inconsistent across beaches.
+- Top recommendations must prioritize wind-protected beaches. Do not rank partially protected or exposed beaches above protected options when protected options exist in the selected area.
+- The default beach list should show wind-protected beaches, not all beaches. Only default to all beaches when the weather is good/light wind and every beach in the selected area is protected for the current wind direction.
+- When severe weather or rough sea makes every beach unsuitable, show an explicit no-swimming message instead of a generic empty beach list.
+- Protected beach badges should use the full Greek label "Προστατευμένη" and must not truncate the word on mobile cards.
+- Top picks should be time-aware when hourly data exists: show until when the current pick remains strong, and prefer active/upcoming beach windows over expired ones.
+- Do not show raw suitability percentages such as "71%" in the top pick hero; use human-readable reasons and timing instead.
+- Map beach detail panels must reserve space for the close button; badges and labels should truncate before overlapping the X control.
+- Maps should show wind direction visually with a compact compass/flow arrow when wind data exists, without blocking markers, popups, or map controls.
+- The daily top recommendation must be stable for the same island and weather. Do not let user distance, stored preferences, or local client state change the "best beach today"; those can affect explore/filtering instead.
+- When weather suitability is close, top recommendations should prefer mainstream, easy, practical beaches using existing signals such as popularity, rating, access, family fit, and facilities. Do not let this override clearly better wind/sea safety.
+- Do not mechanically transliterate Latin/Greeklish beach names into Greek display text. Use verified Greek names where available; otherwise keep the Latin source name until it is verified. Always normalize final sigma in Greek beach names.
+- Hero/background photos must be specific to each selectable island or area whenever a license-safe source exists. Do not reuse one regional photo across distinct islands unless the fallback is clearly documented.
+- Beach cards should prefer one verified photo per beach. Island-level fallback photos are only temporary coverage and should not be treated as each beach's own photo.
+- Greek generated beach copy must use inflected area/island phrases, not raw nominative labels. Prefer explicit forms like "της Μήλου", "στη Μήλο", "των Χανίων", "στο Ρέθυμνο" in label metadata.
+
+- Map wind-exposure colors should only become cautionary when wind is meaningful. At 0-3 Bft, show a calm/neutral map state instead of marking beaches as exposed; from 4 Bft upward, protected/partial/exposed colors can guide the decision.
+- At 0-3 Bft, never force a single "top beach today" recommendation. Show a light-wind/calm-all-around message and let users choose by preference, access, and vibe. From 4 Bft upward, wind can drive top recommendations.
+- Calm/light-wind messages should be short and direct. At 0-2 Bft, treat the day as broadly suitable and keep the title/count aligned, e.g. "2 μποφόρ σήμερα. Όλες οι παραλίες είναι κατάλληλες!" with an all-beaches count.
+- Detail-page planner warnings must not contradict the home summary. At 0-2 Bft with normal swimming temperatures, do not show "conditions are not ideal" unless there is a real critical warning such as storm, rain, winter unsafe conditions, or missing forecast data.
+- Home top picks and detail pages must use the same forecast source. If a top pick is selected with beach-specific forecast data, pass that same beach-specific day/hourly forecast into the detail page and planner so the app never recommends a beach while the detail page says conditions are not ideal.
+- Detail-page crowd labels must not look like weather-condition labels. Use explicit wording such as "Μέτρια κίνηση" and avoid amber warning styling for normal medium crowd levels.
+- Do not defer the core beach list or the map behind artificial loading gates. Lightweight optimizations are fine, but the first beach-decision UI should appear as soon as beach data is available, even while weather details continue loading.
+- Do not label a beach as "quiet" when it has a beach bar. In filters and generated copy, beach bar overrides quiet-style wording because the combination feels contradictory to users.
 
 ## 4. Verification Before Done
 

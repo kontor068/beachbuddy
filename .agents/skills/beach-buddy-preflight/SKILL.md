@@ -24,21 +24,25 @@ The product must remain:
 Use only the relevant agents from this list:
 
 - product_lead
+- beach_buddy_supervisor
 - cto_architect
 - ux_director
 - mobile_engineer
 - beach_scoring_scientist
 - weather_marine_expert
+- swimming_meteorologist
 - geospatial_engineer
+- local_beach_expert
 - beach_content_director
 - growth_strategist
+- revenue_pricing_strategist
 - qa_lead
 - data_quality_trust
 - security_privacy_gdpr
 - devops_release_engineer
 - analytics_insights
 - api_integration_specialist
-- revenue_pricing_strategist
+- tourist_experience_advocate
 
 ## What to do before coding
 
@@ -47,6 +51,16 @@ Before choosing or calling agents, apply the workflow overlay in:
 - `.codex/WORKFLOW_ORCHESTRATION.md`
 
 Use it to decide whether the task is tiny, non-trivial, or complex; whether agents are actually useful; and what verification is required before done.
+
+Before non-trivial CalmBeach / Beach Buddy work, read:
+- `docs/BEACH_BUDDY_AGENT_CONTEXT.md`
+- `docs/AGENT_SOURCE_MAP.md`
+- `docs/WIND_PROFILE_GUIDELINES.md`
+- `docs/VALIDATION_PLAYBOOK.md`
+
+Use these as shared source of truth for product goals, agent responsibilities, source lookup rules, windProfile rules, confidence handling, and validation requirements. `docs/AGENT_SOURCE_MAP.md` is mandatory for agent responsibilities and information sources. For scoring, windProfile, weather, recommendations, or local beach behavior, `docs/WIND_PROFILE_GUIDELINES.md` and `docs/VALIDATION_PLAYBOOK.md` are mandatory.
+
+For all non-trivial work, correct beach prediction and recommendation comes first. Do not add complexity unless it improves recommendation accuracy, trust, or clarity. Unknown is better than false certainty. Do not create false calm/protected/safe/ideal claims.
 
 Before implementing anything:
 

@@ -110,6 +110,16 @@ Every score should produce:
 
 Before choosing or calling project agents, consult `.codex/WORKFLOW_ORCHESTRATION.md`.
 
+Before non-trivial CalmBeach / Beach Buddy work, read:
+- `docs/BEACH_BUDDY_AGENT_CONTEXT.md`
+- `docs/AGENT_SOURCE_MAP.md`
+- `docs/WIND_PROFILE_GUIDELINES.md`
+- `docs/VALIDATION_PLAYBOOK.md`
+
+Use these as shared source of truth for product goals, agent responsibilities, source lookup rules, windProfile rules, confidence handling, and validation requirements. `docs/AGENT_SOURCE_MAP.md` is mandatory for agent responsibilities and information sources. For scoring, windProfile, weather, recommendations, or local beach behavior, `docs/WIND_PROFILE_GUIDELINES.md` and `docs/VALIDATION_PLAYBOOK.md` are mandatory.
+
+For all non-trivial work, correct beach prediction and recommendation comes first. Do not add complexity unless it improves recommendation accuracy, trust, or clarity. Unknown is better than false certainty. Do not create false calm/protected/safe/ideal claims.
+
 When asked to build a feature, first produce:
 1. brief plan
 2. files likely to change
