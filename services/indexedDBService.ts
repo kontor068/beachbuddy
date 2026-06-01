@@ -1,4 +1,4 @@
-import { RawBeach } from './beachService';
+import type { RawBeach } from './beachService';
 
 const DB_NAME = 'BeachBuddyDB';
 const DB_VERSION = 1;

@@ -1,14 +1,10 @@
-
-import React, { useState, useEffect, useRef } from 'react';
-import { motion, AnimatePresence } from 'motion/react';
-import { Globe, ChevronDown, Waves, MapPin } from 'lucide-react';
-import { LanguageCode } from '../types';
-import { Translation } from '../types';
+import React, { useEffect, useRef, useState } from 'react';
+import { Check, ChevronDown, Languages, Waves } from 'lucide-react';
+import { SUPPORTED_LANGUAGES, type SupportedLanguage } from '../utils/i18n';
 
 interface HeaderProps {
-  t: Translation;
-  language: LanguageCode;
-  onLanguageChange: (lang: LanguageCode) => void;
+  language: SupportedLanguage;
+  onLanguageChange: (lang: SupportedLanguage) => void;
   isScrolled?: boolean;
   isTransitioning?: boolean;
   selectedIslandName: string;
@@ -18,114 +14,114 @@ interface HeaderProps {
   notificationStatus?: NotificationPermission;
   isSubscribed?: boolean;
   isWinter: boolean;
+  forecastSlot?: React.ReactNode;
+  onOpenFavorites?: () => void;
 }
 
-const languages: { code: LanguageCode; name: string; flag: string }[] = [
-  { code: 'en', name: 'EN', flag: '🇬🇧' },
-  { code: 'gr', name: 'GR', flag: '🇬🇷' },
-  { code: 'fr', name: 'FR', flag: '🇫🇷' },
-  { code: 'de', name: 'DE', flag: '🇩🇪' },
-  { code: 'it', name: 'IT', flag: '🇮🇹' },
-];
+const languageLabels: Record<SupportedLanguage, { short: string; label: string }> = {
+  en: { short: 'EN', label: 'English' },
+  gr: { short: 'GR', label: 'Ελληνικά' },
+  fr: { short: 'FR', label: 'Français' },
+  de: { short: 'DE', label: 'Deutsch' },
+  it: { short: 'IT', label: 'Italiano' },
+};
 
+const Header: React.FC<HeaderProps> = ({
+  language,
+  onLanguageChange,
+  forecastSlot,
+}) => {
+  const [isLanguageMenuOpen, setIsLanguageMenuOpen] = useState(false);
+  const languageMenuRef = useRef<HTMLDivElement>(null);
+  const languageLabel = languageLabels[language].label;
+  const switchLanguageLabel = language === 'gr' ? 'Αλλαγή γλώσσας' : 'Change language';
 
-
-const Header: React.FC<HeaderProps> = ({ t, language, onLanguageChange, selectedIslandName, selectedIslandMeta, onOpenIslandSelector, isWinter }) => {
-  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
-  const dropdownRef = useRef<HTMLDivElement>(null);
-  
   useEffect(() => {
-    const handleClickOutside = (event: MouseEvent) => {
-      if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
-        setIsDropdownOpen(false);
+    if (!isLanguageMenuOpen) return undefined;
+
+    const handlePointerDown = (event: PointerEvent) => {
+      if (!languageMenuRef.current?.contains(event.target as Node)) {
+        setIsLanguageMenuOpen(false);
       }
     };
-    document.addEventListener('mousedown', handleClickOutside);
-    return () => document.removeEventListener('mousedown', handleClickOutside);
-  }, []);
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (event.key === 'Escape') setIsLanguageMenuOpen(false);
+    };
 
-  const currentLanguage = languages.find(l => l.code === language) || languages[0];
+    document.addEventListener('pointerdown', handlePointerDown);
+    document.addEventListener('keydown', handleKeyDown);
+    return () => {
+      document.removeEventListener('pointerdown', handlePointerDown);
+      document.removeEventListener('keydown', handleKeyDown);
+    };
+  }, [isLanguageMenuOpen]);
 
   return (
-    <header className="absolute top-0 left-0 right-0 z-50 transition-all duration-500 py-2 sm:py-4">
-      <div className="max-w-7xl mx-auto px-3 sm:px-4">
-        <div className="glass dark:glass-dark rounded-2xl border border-white/40 dark:border-slate-800/50 shadow-lg transition-all duration-500 px-3 py-2.5 sm:px-5 sm:py-3">
-          <div className="grid w-full grid-cols-[minmax(0,1fr)_minmax(0,1.35fr)_minmax(0,1fr)] items-center gap-2 sm:gap-3">
-            {/* Logo */}
-            <div className="flex min-w-0 items-center justify-self-start gap-2 sm:gap-3 select-none group">
-              <div className="relative shrink-0">
-                <div className="w-9 h-9 sm:w-10 sm:h-10 bg-gradient-to-br from-sky-400 to-cyan-600 rounded-xl flex items-center justify-center shadow-md">
-                  <Waves className="w-4 h-4 sm:w-5 sm:h-5 text-white" />
-                </div>
-              </div>
-              <h1 className="hidden min-[430px]:block truncate whitespace-nowrap font-heading font-bold text-sm sm:text-xl text-slate-900 dark:text-white tracking-tight">
-                <span className="sm:hidden">Beach Now Greece</span>
-                <span className="hidden sm:inline">Beach Now Greece</span>
-              </h1>
+    <header className="relative z-50">
+      <div className="sticky top-0 z-50 border-b border-white/70 bg-white/82 text-slate-800 shadow-sm shadow-sky-900/5 backdrop-blur-xl">
+        <div className="mx-auto flex h-[56px] max-w-[120rem] items-center justify-between gap-3 px-4 sm:px-6">
+          <div className="flex min-w-0 items-center gap-3">
+            <div className="grid h-8 w-8 shrink-0 place-items-center rounded-full bg-[#0098b0] text-white shadow-sm shadow-cyan-900/10 ring-1 ring-cyan-700/10">
+              <Waves className="h-5 w-5" aria-hidden="true" />
             </div>
+            <span className="truncate text-lg font-extrabold tracking-normal text-[#007a83] sm:text-xl">
+              Calm Beach Greece
+            </span>
+          </div>
 
-            <button
-              onClick={onOpenIslandSelector}
-              className="flex w-full min-w-0 max-w-xl items-center justify-center justify-self-center rounded-xl px-1.5 py-1.5 text-slate-700 transition-all hover:bg-white/60 hover:text-primary sm:px-3"
-              aria-label={language === 'gr' ? 'Αλλαγή τοποθεσίας' : 'Change location'}
-            >
-              <span className="min-w-0 text-center">
-                <span className="flex min-w-0 items-center justify-center gap-1.5 sm:gap-2">
-                  <MapPin className="h-4 w-4 shrink-0" />
-                  <span className="truncate font-heading text-sm font-extrabold leading-tight text-slate-900 min-[360px]:text-base sm:text-lg">
-                    {selectedIslandName || (language === 'gr' ? 'Τοποθεσία' : 'Location')}
-                  </span>
-                  <ChevronDown className="h-3 w-3 shrink-0 max-[340px]:hidden" />
-                </span>
-                {selectedIslandMeta && (
-                  <span className="mt-0.5 block max-w-[11.5rem] whitespace-normal break-words text-center text-[9px] font-semibold leading-snug text-slate-500 min-[390px]:max-w-[13rem] min-[390px]:text-[10px] sm:max-w-none sm:truncate sm:whitespace-nowrap sm:text-[11px]">
-                    {selectedIslandMeta}
-                  </span>
-                )}
-              </span>
-            </button>
+          <div className="flex shrink-0 items-center gap-2 text-sm font-semibold text-slate-700 sm:gap-3">
+            <div ref={languageMenuRef} className="relative">
+              <button
+                type="button"
+                onClick={() => setIsLanguageMenuOpen(open => !open)}
+                className="inline-flex min-h-10 items-center gap-2 rounded-full px-3 transition hover:bg-sky-50 hover:text-[#007a83] focus:outline-none focus-visible:ring-2 focus-visible:ring-cyan-700/30"
+                aria-label={switchLanguageLabel}
+                aria-haspopup="listbox"
+                aria-expanded={isLanguageMenuOpen}
+              >
+                <Languages className="h-4 w-4 text-[#007a83]" aria-hidden="true" />
+                <span className="hidden sm:inline">{languageLabel}</span>
+                <span className="sm:hidden">{languageLabels[language].short}</span>
+                <ChevronDown className={`h-3.5 w-3.5 text-slate-500 transition-transform ${isLanguageMenuOpen ? 'rotate-180' : ''}`} aria-hidden="true" />
+              </button>
 
-            {/* Actions */}
-            <div className="flex min-w-0 shrink-0 items-center justify-self-end gap-1">
-              {/* Language */}
-              <div className="relative" ref={dropdownRef}>
-                <button
-                  onClick={() => setIsDropdownOpen(!isDropdownOpen)}
-                  className="flex items-center gap-1.5 px-2 py-2 sm:px-3 hover:bg-sky-50 dark:hover:bg-slate-800 rounded-xl text-xs font-semibold text-slate-500 dark:text-slate-400 transition-all cursor-pointer"
-                  aria-label="Change language"
+              {isLanguageMenuOpen && (
+                <div
+                  role="listbox"
+                  aria-label={switchLanguageLabel}
+                  className="absolute right-0 top-full z-[60] mt-2 w-44 overflow-hidden rounded-2xl border border-cyan-100 bg-white/96 p-1.5 text-sm font-bold text-slate-700 shadow-xl shadow-sky-900/14 ring-1 ring-white/70 backdrop-blur-xl"
                 >
-                  <Globe className="w-4 h-4" />
-                  <span className="hidden sm:inline uppercase tracking-wider">{currentLanguage.name}</span>
-                  <ChevronDown className={`w-3 h-3 transition-transform duration-300 ${isDropdownOpen ? 'rotate-180' : ''}`} />
-                </button>
-
-                <AnimatePresence>
-                  {isDropdownOpen && (
-                    <motion.div
-                      initial={{ opacity: 0, y: 8, scale: 0.96 }}
-                      animate={{ opacity: 1, y: 0, scale: 1 }}
-                      exit={{ opacity: 0, y: 8, scale: 0.96 }}
-                      transition={{ duration: 0.2 }}
-                      className="absolute right-0 mt-2 w-40 bg-white dark:bg-slate-900 rounded-xl shadow-xl ring-1 ring-black/5 z-[100] border border-slate-100 dark:border-slate-800 p-1.5 overflow-hidden"
-                    >
-                      {languages.map(lang => (
-                        <button
-                          key={lang.code}
-                          onClick={() => { onLanguageChange(lang.code); setIsDropdownOpen(false); }}
-                          className={`w-full text-left px-3 py-2.5 text-xs font-semibold rounded-lg flex items-center gap-2.5 transition-colors cursor-pointer ${language === lang.code ? 'bg-sky-50 dark:bg-sky-900/20 text-primary' : 'hover:bg-slate-50 dark:hover:bg-slate-800 text-slate-600 dark:text-slate-400'}`}
-                        >
-                          <span className="text-base">{lang.flag}</span>
-                          <span className="uppercase tracking-wider">{lang.name}</span>
-                        </button>
-                      ))}
-                    </motion.div>
-                  )}
-                </AnimatePresence>
-              </div>
+                  {SUPPORTED_LANGUAGES.map(lang => {
+                    const selected = lang === language;
+                    return (
+                      <button
+                        key={lang}
+                        type="button"
+                        role="option"
+                        aria-selected={selected}
+                        onClick={() => {
+                          onLanguageChange(lang);
+                          setIsLanguageMenuOpen(false);
+                        }}
+                        className={`flex min-h-10 w-full items-center justify-between gap-3 rounded-xl px-3 text-left transition focus:outline-none focus-visible:ring-2 focus-visible:ring-cyan-700/30 ${
+                          selected ? 'bg-cyan-50 text-[#007a83]' : 'text-slate-600 hover:bg-cyan-50/70 hover:text-[#007a83]'
+                        }`}
+                      >
+                        <span className="min-w-0 truncate">{languageLabels[lang].label}</span>
+                        <span className="inline-flex items-center gap-2 text-xs font-extrabold">
+                          {languageLabels[lang].short}
+                          {selected && <Check className="h-3.5 w-3.5" aria-hidden="true" />}
+                        </span>
+                      </button>
+                    );
+                  })}
+                </div>
+              )}
             </div>
           </div>
         </div>
       </div>
+      {forecastSlot}
     </header>
   );
 };

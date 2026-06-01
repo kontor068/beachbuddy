@@ -1,0 +1,2208 @@
+{
+  "generatedAt": "2026-06-01T17:31:33.118Z",
+  "source": "/greek_beaches.json",
+  "appSchemaVersion": 1,
+  "totalBeachCount": 2720,
+  "regions": [
+    {
+      "id": "attica-athens-area-mainland",
+      "region": "Attica",
+      "prefecture": "Athens area (mainland)",
+      "beachCount": 25,
+      "coordinates": {
+        "lat": 37.8545952,
+        "lon": 23.747603599999998
+      },
+      "dataPath": "/data/beaches/attica-athens-area-mainland.json",
+      "appDataPath": "/data/beaches/app/attica-athens-area-mainland.json",
+      "name": {
+        "en": "Athens area",
+        "gr": "Περιοχή Αθήνας",
+        "fr": "Athens area",
+        "de": "Athens area",
+        "it": "Athens area"
+      },
+      "group": "attica"
+    },
+    {
+      "id": "attica-east-attica-mainland",
+      "region": "Attica",
+      "prefecture": "East Attica (mainland)",
+      "beachCount": 55,
+      "coordinates": {
+        "lat": 37.876280909090895,
+        "lon": 23.96609763636363
+      },
+      "dataPath": "/data/beaches/attica-east-attica-mainland.json",
+      "appDataPath": "/data/beaches/app/attica-east-attica-mainland.json",
+      "name": {
+        "en": "East Attica",
+        "gr": "Ανατολική Αττική",
+        "fr": "East Attica",
+        "de": "East Attica",
+        "it": "East Attica"
+      },
+      "group": "attica"
+    },
+    {
+      "id": "attica-aegina",
+      "region": "Attica",
+      "prefecture": "Aegina",
+      "beachCount": 15,
+      "coordinates": {
+        "lat": 37.73927666666667,
+        "lon": 23.480771333333333
+      },
+      "dataPath": "/data/beaches/attica-aegina.json",
+      "appDataPath": "/data/beaches/app/attica-aegina.json",
+      "name": {
+        "en": "Aegina",
+        "gr": "Αίγινα",
+        "fr": "Aegina",
+        "de": "Aegina",
+        "it": "Aegina"
+      },
+      "group": "argosaronic"
+    },
+    {
+      "id": "attica-agistri",
+      "region": "Attica",
+      "prefecture": "Agistri",
+      "beachCount": 6,
+      "coordinates": {
+        "lat": 37.697315,
+        "lon": 23.346561666666663
+      },
+      "dataPath": "/data/beaches/attica-agistri.json",
+      "appDataPath": "/data/beaches/app/attica-agistri.json",
+      "name": {
+        "en": "Agistri",
+        "gr": "Αγκίστρι",
+        "fr": "Agistri",
+        "de": "Agistri",
+        "it": "Agistri"
+      },
+      "group": "argosaronic"
+    },
+    {
+      "id": "attica-hydra",
+      "region": "Attica",
+      "prefecture": "Hydra",
+      "beachCount": 9,
+      "coordinates": {
+        "lat": 37.32975999999999,
+        "lon": 23.425891111111113
+      },
+      "dataPath": "/data/beaches/attica-hydra.json",
+      "appDataPath": "/data/beaches/app/attica-hydra.json",
+      "name": {
+        "en": "Hydra",
+        "gr": "Ύδρα",
+        "fr": "Hydra",
+        "de": "Hydra",
+        "it": "Hydra"
+      },
+      "group": "argosaronic"
+    },
+    {
+      "id": "attica-kythira",
+      "region": "Attica",
+      "prefecture": "Kythira",
+      "beachCount": 42,
+      "coordinates": {
+        "lat": 36.25091952380952,
+        "lon": 22.992635952380958
+      },
+      "dataPath": "/data/beaches/attica-kythira.json",
+      "appDataPath": "/data/beaches/app/attica-kythira.json",
+      "name": {
+        "en": "Kythira",
+        "gr": "Κύθηρα",
+        "fr": "Kythira",
+        "de": "Kythira",
+        "it": "Kythira"
+      },
+      "group": "ionian"
+    },
+    {
+      "id": "attica-poros",
+      "region": "Attica",
+      "prefecture": "Poros",
+      "beachCount": 11,
+      "coordinates": {
+        "lat": 37.50745636363637,
+        "lon": 23.4602
+      },
+      "dataPath": "/data/beaches/attica-poros.json",
+      "appDataPath": "/data/beaches/app/attica-poros.json",
+      "name": {
+        "en": "Poros",
+        "gr": "Πόρος",
+        "fr": "Poros",
+        "de": "Poros",
+        "it": "Poros"
+      },
+      "group": "argosaronic"
+    },
+    {
+      "id": "attica-salamina",
+      "region": "Attica",
+      "prefecture": "Salamina",
+      "beachCount": 3,
+      "coordinates": {
+        "lat": 37.89019666666667,
+        "lon": 23.432993333333332
+      },
+      "dataPath": "/data/beaches/attica-salamina.json",
+      "appDataPath": "/data/beaches/app/attica-salamina.json",
+      "name": {
+        "en": "Salamina",
+        "gr": "Σαλαμίνα",
+        "fr": "Salamina",
+        "de": "Salamina",
+        "it": "Salamina"
+      },
+      "group": "argosaronic"
+    },
+    {
+      "id": "attica-spetses",
+      "region": "Attica",
+      "prefecture": "Spetses",
+      "beachCount": 12,
+      "coordinates": {
+        "lat": 37.263954999999996,
+        "lon": 23.129559166666667
+      },
+      "dataPath": "/data/beaches/attica-spetses.json",
+      "appDataPath": "/data/beaches/app/attica-spetses.json",
+      "name": {
+        "en": "Spetses",
+        "gr": "Σπέτσες",
+        "fr": "Spetses",
+        "de": "Spetses",
+        "it": "Spetses"
+      },
+      "group": "argosaronic"
+    },
+    {
+      "id": "attica-methana",
+      "region": "Attica",
+      "prefecture": "Methana",
+      "beachCount": 4,
+      "coordinates": {
+        "lat": 37.564620000000005,
+        "lon": 23.32408
+      },
+      "dataPath": "/data/beaches/attica-methana.json",
+      "appDataPath": "/data/beaches/app/attica-methana.json",
+      "name": {
+        "en": "Methana",
+        "gr": "Μέθανα",
+        "fr": "Methana",
+        "de": "Methana",
+        "it": "Methana"
+      },
+      "group": "argosaronic"
+    },
+    {
+      "id": "attica-piraeus-area",
+      "region": "Attica",
+      "prefecture": "Piraeus area",
+      "beachCount": 5,
+      "coordinates": {
+        "lat": 37.940854,
+        "lon": 23.621316
+      },
+      "dataPath": "/data/beaches/attica-piraeus-area.json",
+      "appDataPath": "/data/beaches/app/attica-piraeus-area.json",
+      "name": {
+        "en": "Piraeus area",
+        "gr": "Περιοχή Πειραιά",
+        "fr": "Piraeus area",
+        "de": "Piraeus area",
+        "it": "Piraeus area"
+      },
+      "group": "attica"
+    },
+    {
+      "id": "attica-west-attica-mainland",
+      "region": "Attica",
+      "prefecture": "West Attica (mainland)",
+      "beachCount": 6,
+      "coordinates": {
+        "lat": 38.091393333333336,
+        "lon": 23.25851
+      },
+      "dataPath": "/data/beaches/attica-west-attica-mainland.json",
+      "appDataPath": "/data/beaches/app/attica-west-attica-mainland.json",
+      "name": {
+        "en": "West Attica",
+        "gr": "Δυτική Αττική",
+        "fr": "West Attica",
+        "de": "West Attica",
+        "it": "West Attica"
+      },
+      "group": "attica"
+    },
+    {
+      "id": "central-greece-evia",
+      "region": "Central Greece",
+      "prefecture": "Evia",
+      "beachCount": 122,
+      "coordinates": {
+        "lat": 38.44044864918034,
+        "lon": 23.92716652786885
+      },
+      "dataPath": "/data/beaches/central-greece-evia.json",
+      "appDataPath": "/data/beaches/app/central-greece-evia.json",
+      "name": {
+        "en": "Evia",
+        "gr": "Εύβοια",
+        "fr": "Evia",
+        "de": "Evia",
+        "it": "Evia"
+      },
+      "group": "euboea"
+    },
+    {
+      "id": "central-greece-skyros",
+      "region": "Central Greece",
+      "prefecture": "Skyros",
+      "beachCount": 21,
+      "coordinates": {
+        "lat": 38.897809523809514,
+        "lon": 24.530868571428577
+      },
+      "dataPath": "/data/beaches/central-greece-skyros.json",
+      "appDataPath": "/data/beaches/app/central-greece-skyros.json",
+      "name": {
+        "en": "Skyros",
+        "gr": "Σκύρος",
+        "fr": "Skyros",
+        "de": "Skyros",
+        "it": "Skyros"
+      },
+      "group": "sporades"
+    },
+    {
+      "id": "central-greece-fokida-mainland",
+      "region": "Central Greece",
+      "prefecture": "Fokida (mainland)",
+      "beachCount": 18,
+      "coordinates": {
+        "lat": 38.37544666666667,
+        "lon": 22.290950000000002
+      },
+      "dataPath": "/data/beaches/central-greece-fokida-mainland.json",
+      "appDataPath": "/data/beaches/app/central-greece-fokida-mainland.json",
+      "name": {
+        "en": "Fokida",
+        "gr": "Φωκίδα",
+        "fr": "Fokida",
+        "de": "Fokida",
+        "it": "Fokida"
+      },
+      "group": "mainland_central"
+    },
+    {
+      "id": "central-greece-fthiotida-mainland",
+      "region": "Central Greece",
+      "prefecture": "Fthiotida (mainland)",
+      "beachCount": 16,
+      "coordinates": {
+        "lat": 38.740629375000005,
+        "lon": 23.00917625
+      },
+      "dataPath": "/data/beaches/central-greece-fthiotida-mainland.json",
+      "appDataPath": "/data/beaches/app/central-greece-fthiotida-mainland.json",
+      "name": {
+        "en": "Fthiotida",
+        "gr": "Φθιώτιδα",
+        "fr": "Fthiotida",
+        "de": "Fthiotida",
+        "it": "Fthiotida"
+      },
+      "group": "mainland_central"
+    },
+    {
+      "id": "central-greece-viotia-mainland",
+      "region": "Central Greece",
+      "prefecture": "Viotia (mainland)",
+      "beachCount": 7,
+      "coordinates": {
+        "lat": 38.22652285714286,
+        "lon": 22.93494142857143
+      },
+      "dataPath": "/data/beaches/central-greece-viotia-mainland.json",
+      "appDataPath": "/data/beaches/app/central-greece-viotia-mainland.json",
+      "name": {
+        "en": "Viotia",
+        "gr": "Βοιωτία",
+        "fr": "Viotia",
+        "de": "Viotia",
+        "it": "Viotia"
+      },
+      "group": "mainland_central"
+    },
+    {
+      "id": "central-macedonia-halkidiki-mainland",
+      "region": "Central Macedonia",
+      "prefecture": "Halkidiki (mainland)",
+      "beachCount": 125,
+      "coordinates": {
+        "lat": 40.19991848079999,
+        "lon": 23.741837872000005
+      },
+      "dataPath": "/data/beaches/central-macedonia-halkidiki-mainland.json",
+      "appDataPath": "/data/beaches/app/central-macedonia-halkidiki-mainland.json",
+      "name": {
+        "en": "Halkidiki",
+        "gr": "Χαλκιδική",
+        "fr": "Halkidiki",
+        "de": "Halkidiki",
+        "it": "Halkidiki"
+      },
+      "group": "mainland_macedonia"
+    },
+    {
+      "id": "central-macedonia-pieria-mainland",
+      "region": "Central Macedonia",
+      "prefecture": "Pieria (mainland)",
+      "beachCount": 8,
+      "coordinates": {
+        "lat": 40.221954999999994,
+        "lon": 22.60202625
+      },
+      "dataPath": "/data/beaches/central-macedonia-pieria-mainland.json",
+      "appDataPath": "/data/beaches/app/central-macedonia-pieria-mainland.json",
+      "name": {
+        "en": "Pieria",
+        "gr": "Πιερία",
+        "fr": "Pieria",
+        "de": "Pieria",
+        "it": "Pieria"
+      },
+      "group": "mainland_macedonia"
+    },
+    {
+      "id": "central-macedonia-thessaloniki-area",
+      "region": "Central Macedonia",
+      "prefecture": "Thessaloniki area",
+      "beachCount": 16,
+      "coordinates": {
+        "lat": 40.591816875,
+        "lon": 23.434608125000004
+      },
+      "dataPath": "/data/beaches/central-macedonia-thessaloniki-area.json",
+      "appDataPath": "/data/beaches/app/central-macedonia-thessaloniki-area.json",
+      "name": {
+        "en": "Thessaloniki area",
+        "gr": "Περιοχή Θεσσαλονίκης",
+        "fr": "Thessaloniki area",
+        "de": "Thessaloniki area",
+        "it": "Thessaloniki area"
+      },
+      "group": "mainland_macedonia"
+    },
+    {
+      "id": "crete-crete-chania",
+      "region": "Crete",
+      "prefecture": "Crete (Chania)",
+      "beachCount": 84,
+      "coordinates": {
+        "lat": 35.377717132142855,
+        "lon": 23.920882835714274
+      },
+      "dataPath": "/data/beaches/crete-crete-chania.json",
+      "appDataPath": "/data/beaches/app/crete-crete-chania.json",
+      "name": {
+        "en": "Chania",
+        "gr": "Χανιά",
+        "fr": "Chania",
+        "de": "Chania",
+        "it": "Chania"
+      },
+      "group": "crete"
+    },
+    {
+      "id": "crete-gavdos",
+      "region": "Crete",
+      "prefecture": "Gavdos",
+      "beachCount": 9,
+      "coordinates": {
+        "lat": 34.84928222222223,
+        "lon": 24.09414222222222
+      },
+      "dataPath": "/data/beaches/crete-gavdos.json",
+      "appDataPath": "/data/beaches/app/crete-gavdos.json",
+      "name": {
+        "en": "Gavdos",
+        "gr": "Γαύδος",
+        "fr": "Gavdos",
+        "de": "Gavdos",
+        "it": "Gavdos"
+      },
+      "group": "crete"
+    },
+    {
+      "id": "crete-crete-heraklion",
+      "region": "Crete",
+      "prefecture": "Crete (Heraklion)",
+      "beachCount": 52,
+      "coordinates": {
+        "lat": 35.11178628269231,
+        "lon": 25.05280697884615
+      },
+      "dataPath": "/data/beaches/crete-crete-heraklion.json",
+      "appDataPath": "/data/beaches/app/crete-crete-heraklion.json",
+      "name": {
+        "en": "Heraklion",
+        "gr": "Ηράκλειο",
+        "fr": "Heraklion",
+        "de": "Heraklion",
+        "it": "Heraklion"
+      },
+      "group": "crete"
+    },
+    {
+      "id": "crete-crete-rethymno",
+      "region": "Crete",
+      "prefecture": "Crete (Rethymno)",
+      "beachCount": 44,
+      "coordinates": {
+        "lat": 35.21821634090908,
+        "lon": 24.500962529545458
+      },
+      "dataPath": "/data/beaches/crete-crete-rethymno.json",
+      "appDataPath": "/data/beaches/app/crete-crete-rethymno.json",
+      "name": {
+        "en": "Rethymno",
+        "gr": "Ρέθυμνο",
+        "fr": "Rethymno",
+        "de": "Rethymno",
+        "it": "Rethymno"
+      },
+      "group": "crete"
+    },
+    {
+      "id": "crete-crete-lasithi",
+      "region": "Crete",
+      "prefecture": "Crete (Lasithi)",
+      "beachCount": 59,
+      "coordinates": {
+        "lat": 35.13939726271186,
+        "lon": 25.933294071186438
+      },
+      "dataPath": "/data/beaches/crete-crete-lasithi.json",
+      "appDataPath": "/data/beaches/app/crete-crete-lasithi.json",
+      "name": {
+        "en": "Lasithi",
+        "gr": "Λασίθι",
+        "fr": "Lasithi",
+        "de": "Lasithi",
+        "it": "Lasithi"
+      },
+      "group": "crete"
+    },
+    {
+      "id": "east-macedonia-and-thrace-evros-mainland",
+      "region": "East Macedonia and Thrace",
+      "prefecture": "Evros (mainland)",
+      "beachCount": 4,
+      "coordinates": {
+        "lat": 40.8483825,
+        "lon": 25.7842975
+      },
+      "dataPath": "/data/beaches/east-macedonia-and-thrace-evros-mainland.json",
+      "appDataPath": "/data/beaches/app/east-macedonia-and-thrace-evros-mainland.json",
+      "name": {
+        "en": "Evros",
+        "gr": "Έβρος",
+        "fr": "Evros",
+        "de": "Evros",
+        "it": "Evros"
+      },
+      "group": "mainland_thrace"
+    },
+    {
+      "id": "east-macedonia-and-thrace-samothraki",
+      "region": "East Macedonia and Thrace",
+      "prefecture": "Samothraki",
+      "beachCount": 3,
+      "coordinates": {
+        "lat": 40.40524666666666,
+        "lon": 25.56797333333333
+      },
+      "dataPath": "/data/beaches/east-macedonia-and-thrace-samothraki.json",
+      "appDataPath": "/data/beaches/app/east-macedonia-and-thrace-samothraki.json",
+      "name": {
+        "en": "Samothraki",
+        "gr": "Σαμοθράκη",
+        "fr": "Samothraki",
+        "de": "Samothraki",
+        "it": "Samothraki"
+      },
+      "group": "north_aegean"
+    },
+    {
+      "id": "east-macedonia-and-thrace-kavala-mainland",
+      "region": "East Macedonia and Thrace",
+      "prefecture": "Kavala (mainland)",
+      "beachCount": 15,
+      "coordinates": {
+        "lat": 40.860376,
+        "lon": 24.31882266666667
+      },
+      "dataPath": "/data/beaches/east-macedonia-and-thrace-kavala-mainland.json",
+      "appDataPath": "/data/beaches/app/east-macedonia-and-thrace-kavala-mainland.json",
+      "name": {
+        "en": "Kavala",
+        "gr": "Καβάλα",
+        "fr": "Kavala",
+        "de": "Kavala",
+        "it": "Kavala"
+      },
+      "group": "mainland_macedonia"
+    },
+    {
+      "id": "east-macedonia-and-thrace-rodopi-mainland",
+      "region": "East Macedonia and Thrace",
+      "prefecture": "Rodopi (mainland)",
+      "beachCount": 4,
+      "coordinates": {
+        "lat": 40.88802,
+        "lon": 25.480385000000002
+      },
+      "dataPath": "/data/beaches/east-macedonia-and-thrace-rodopi-mainland.json",
+      "appDataPath": "/data/beaches/app/east-macedonia-and-thrace-rodopi-mainland.json",
+      "name": {
+        "en": "Rodopi",
+        "gr": "Ροδόπη",
+        "fr": "Rodopi",
+        "de": "Rodopi",
+        "it": "Rodopi"
+      },
+      "group": "mainland_thrace"
+    },
+    {
+      "id": "east-macedonia-and-thrace-thasos",
+      "region": "East Macedonia and Thrace",
+      "prefecture": "Thasos",
+      "beachCount": 57,
+      "coordinates": {
+        "lat": 40.68254333333333,
+        "lon": 24.645434210526314
+      },
+      "dataPath": "/data/beaches/east-macedonia-and-thrace-thasos.json",
+      "appDataPath": "/data/beaches/app/east-macedonia-and-thrace-thasos.json",
+      "name": {
+        "en": "Thasos",
+        "gr": "Θάσος",
+        "fr": "Thasos",
+        "de": "Thasos",
+        "it": "Thasos"
+      },
+      "group": "mainland_thrace"
+    },
+    {
+      "id": "east-macedonia-and-thrace-xanthi-mainland",
+      "region": "East Macedonia and Thrace",
+      "prefecture": "Xanthi (mainland)",
+      "beachCount": 2,
+      "coordinates": {
+        "lat": 41.011025000000004,
+        "lon": 24.852815
+      },
+      "dataPath": "/data/beaches/east-macedonia-and-thrace-xanthi-mainland.json",
+      "appDataPath": "/data/beaches/app/east-macedonia-and-thrace-xanthi-mainland.json",
+      "name": {
+        "en": "Xanthi",
+        "gr": "Ξάνθη",
+        "fr": "Xanthi",
+        "de": "Xanthi",
+        "it": "Xanthi"
+      },
+      "group": "mainland_thrace"
+    },
+    {
+      "id": "epirus-arta-mainland",
+      "region": "Epirus",
+      "prefecture": "Arta (mainland)",
+      "beachCount": 2,
+      "coordinates": {
+        "lat": 39.022225000000006,
+        "lon": 20.89192
+      },
+      "dataPath": "/data/beaches/epirus-arta-mainland.json",
+      "appDataPath": "/data/beaches/app/epirus-arta-mainland.json",
+      "name": {
+        "en": "Arta",
+        "gr": "Άρτα",
+        "fr": "Arta",
+        "de": "Arta",
+        "it": "Arta"
+      },
+      "group": "mainland_epirus"
+    },
+    {
+      "id": "epirus-preveza-mainland",
+      "region": "Epirus",
+      "prefecture": "Preveza (mainland)",
+      "beachCount": 26,
+      "coordinates": {
+        "lat": 39.157676538461544,
+        "lon": 20.53990192307692
+      },
+      "dataPath": "/data/beaches/epirus-preveza-mainland.json",
+      "appDataPath": "/data/beaches/app/epirus-preveza-mainland.json",
+      "name": {
+        "en": "Preveza",
+        "gr": "Πρέβεζα",
+        "fr": "Preveza",
+        "de": "Preveza",
+        "it": "Preveza"
+      },
+      "group": "mainland_epirus"
+    },
+    {
+      "id": "epirus-thesprotia-mainland",
+      "region": "Epirus",
+      "prefecture": "Thesprotia (mainland)",
+      "beachCount": 39,
+      "coordinates": {
+        "lat": 39.43088666666666,
+        "lon": 20.243859487179495
+      },
+      "dataPath": "/data/beaches/epirus-thesprotia-mainland.json",
+      "appDataPath": "/data/beaches/app/epirus-thesprotia-mainland.json",
+      "name": {
+        "en": "Thesprotia",
+        "gr": "Θεσπρωτία",
+        "fr": "Thesprotia",
+        "de": "Thesprotia",
+        "it": "Thesprotia"
+      },
+      "group": "mainland_epirus"
+    },
+    {
+      "id": "ionian-islands-corfu",
+      "region": "Ionian Islands",
+      "prefecture": "Corfu",
+      "beachCount": 91,
+      "coordinates": {
+        "lat": 39.62123802197802,
+        "lon": 19.8609076923077
+      },
+      "dataPath": "/data/beaches/ionian-islands-corfu.json",
+      "appDataPath": "/data/beaches/app/ionian-islands-corfu.json",
+      "name": {
+        "en": "Corfu",
+        "gr": "Κέρκυρα",
+        "fr": "Corfu",
+        "de": "Corfu",
+        "it": "Corfu"
+      },
+      "group": "ionian"
+    },
+    {
+      "id": "ionian-islands-paxos",
+      "region": "Ionian Islands",
+      "prefecture": "Paxos",
+      "beachCount": 25,
+      "coordinates": {
+        "lat": 39.21257959999999,
+        "lon": 20.167592800000005
+      },
+      "dataPath": "/data/beaches/ionian-islands-paxos.json",
+      "appDataPath": "/data/beaches/app/ionian-islands-paxos.json",
+      "name": {
+        "en": "Paxos",
+        "gr": "Παξοί",
+        "fr": "Paxos",
+        "de": "Paxos",
+        "it": "Paxos"
+      },
+      "group": "ionian"
+    },
+    {
+      "id": "ionian-islands-antipaxos",
+      "region": "Ionian Islands",
+      "prefecture": "Antipaxos",
+      "beachCount": 13,
+      "coordinates": {
+        "lat": 39.151023076923074,
+        "lon": 20.23189769230769
+      },
+      "dataPath": "/data/beaches/ionian-islands-antipaxos.json",
+      "appDataPath": "/data/beaches/app/ionian-islands-antipaxos.json",
+      "name": {
+        "en": "Antipaxos",
+        "gr": "Αντίπαξοι",
+        "fr": "Antipaxos",
+        "de": "Antipaxos",
+        "it": "Antipaxos"
+      },
+      "group": "ionian"
+    },
+    {
+      "id": "ionian-islands-othonoi",
+      "region": "Ionian Islands",
+      "prefecture": "Othonoi",
+      "beachCount": 3,
+      "coordinates": {
+        "lat": 39.84131666666667,
+        "lon": 19.39812
+      },
+      "dataPath": "/data/beaches/ionian-islands-othonoi.json",
+      "appDataPath": "/data/beaches/app/ionian-islands-othonoi.json",
+      "name": {
+        "en": "Othonoi",
+        "gr": "Οθωνοί",
+        "fr": "Othonoi",
+        "de": "Othonoi",
+        "it": "Othonoi"
+      },
+      "group": "ionian"
+    },
+    {
+      "id": "ionian-islands-erikoussa",
+      "region": "Ionian Islands",
+      "prefecture": "Erikoussa",
+      "beachCount": 2,
+      "coordinates": {
+        "lat": 39.877624999999995,
+        "lon": 19.58039
+      },
+      "dataPath": "/data/beaches/ionian-islands-erikoussa.json",
+      "appDataPath": "/data/beaches/app/ionian-islands-erikoussa.json",
+      "name": {
+        "en": "Erikoussa",
+        "gr": "Ερείκουσα",
+        "fr": "Erikoussa",
+        "de": "Erikoussa",
+        "it": "Erikoussa"
+      },
+      "group": "ionian"
+    },
+    {
+      "id": "ionian-islands-mathraki",
+      "region": "Ionian Islands",
+      "prefecture": "Mathraki",
+      "beachCount": 1,
+      "coordinates": {
+        "lat": 39.77496,
+        "lon": 19.52361
+      },
+      "dataPath": "/data/beaches/ionian-islands-mathraki.json",
+      "appDataPath": "/data/beaches/app/ionian-islands-mathraki.json",
+      "name": {
+        "en": "Mathraki",
+        "gr": "Μαθράκι",
+        "fr": "Mathraki",
+        "de": "Mathraki",
+        "it": "Mathraki"
+      },
+      "group": "ionian"
+    },
+    {
+      "id": "ionian-islands-kefalonia",
+      "region": "Ionian Islands",
+      "prefecture": "Kefalonia",
+      "beachCount": 76,
+      "coordinates": {
+        "lat": 38.20807434210526,
+        "lon": 20.565760394736838
+      },
+      "dataPath": "/data/beaches/ionian-islands-kefalonia.json",
+      "appDataPath": "/data/beaches/app/ionian-islands-kefalonia.json",
+      "name": {
+        "en": "Kefalonia",
+        "gr": "Κεφαλονιά",
+        "fr": "Kefalonia",
+        "de": "Kefalonia",
+        "it": "Kefalonia"
+      },
+      "group": "ionian"
+    },
+    {
+      "id": "ionian-islands-lefkada",
+      "region": "Ionian Islands",
+      "prefecture": "Lefkada",
+      "beachCount": 36,
+      "coordinates": {
+        "lat": 38.74037341666668,
+        "lon": 20.670894888888895
+      },
+      "dataPath": "/data/beaches/ionian-islands-lefkada.json",
+      "appDataPath": "/data/beaches/app/ionian-islands-lefkada.json",
+      "name": {
+        "en": "Lefkada",
+        "gr": "Λευκάδα",
+        "fr": "Lefkada",
+        "de": "Lefkada",
+        "it": "Lefkada"
+      },
+      "group": "ionian"
+    },
+    {
+      "id": "ionian-islands-meganisi",
+      "region": "Ionian Islands",
+      "prefecture": "Meganisi",
+      "beachCount": 8,
+      "coordinates": {
+        "lat": 38.658519475000006,
+        "lon": 20.782623025
+      },
+      "dataPath": "/data/beaches/ionian-islands-meganisi.json",
+      "appDataPath": "/data/beaches/app/ionian-islands-meganisi.json",
+      "name": {
+        "en": "Meganisi",
+        "gr": "Μεγανήσι",
+        "fr": "Meganisi",
+        "de": "Meganisi",
+        "it": "Meganisi"
+      },
+      "group": "ionian"
+    },
+    {
+      "id": "ionian-islands-zakynthos",
+      "region": "Ionian Islands",
+      "prefecture": "Zakynthos",
+      "beachCount": 39,
+      "coordinates": {
+        "lat": 37.78008794871794,
+        "lon": 20.81795384615385
+      },
+      "dataPath": "/data/beaches/ionian-islands-zakynthos.json",
+      "appDataPath": "/data/beaches/app/ionian-islands-zakynthos.json",
+      "name": {
+        "en": "Zakynthos",
+        "gr": "Ζάκυνθος",
+        "fr": "Zakynthos",
+        "de": "Zakynthos",
+        "it": "Zakynthos"
+      },
+      "group": "ionian"
+    },
+    {
+      "id": "ionian-islands-ithaca",
+      "region": "Ionian Islands",
+      "prefecture": "Ithaca",
+      "beachCount": 24,
+      "coordinates": {
+        "lat": 38.4091075,
+        "lon": 20.690057499999998
+      },
+      "dataPath": "/data/beaches/ionian-islands-ithaca.json",
+      "appDataPath": "/data/beaches/app/ionian-islands-ithaca.json",
+      "name": {
+        "en": "Ithaca",
+        "gr": "Ιθάκη",
+        "fr": "Ithaca",
+        "de": "Ithaca",
+        "it": "Ithaca"
+      },
+      "group": "ionian"
+    },
+    {
+      "id": "north-aegean-chios",
+      "region": "North Aegean",
+      "prefecture": "Chios",
+      "beachCount": 34,
+      "coordinates": {
+        "lat": 38.336672647058826,
+        "lon": 26.024399117647057
+      },
+      "dataPath": "/data/beaches/north-aegean-chios.json",
+      "appDataPath": "/data/beaches/app/north-aegean-chios.json",
+      "name": {
+        "en": "Chios",
+        "gr": "Χίος",
+        "fr": "Chios",
+        "de": "Chios",
+        "it": "Chios"
+      },
+      "group": "north_aegean"
+    },
+    {
+      "id": "north-aegean-psara",
+      "region": "North Aegean",
+      "prefecture": "Psara",
+      "beachCount": 6,
+      "coordinates": {
+        "lat": 38.546681666666665,
+        "lon": 25.559351666666668
+      },
+      "dataPath": "/data/beaches/north-aegean-psara.json",
+      "appDataPath": "/data/beaches/app/north-aegean-psara.json",
+      "name": {
+        "en": "Psara",
+        "gr": "Ψαρά",
+        "fr": "Psara",
+        "de": "Psara",
+        "it": "Psara"
+      },
+      "group": "north_aegean"
+    },
+    {
+      "id": "north-aegean-oinousses",
+      "region": "North Aegean",
+      "prefecture": "Oinousses",
+      "beachCount": 8,
+      "coordinates": {
+        "lat": 38.52602375,
+        "lon": 26.2060325
+      },
+      "dataPath": "/data/beaches/north-aegean-oinousses.json",
+      "appDataPath": "/data/beaches/app/north-aegean-oinousses.json",
+      "name": {
+        "en": "Oinousses",
+        "gr": "Οινούσσες",
+        "fr": "Oinousses",
+        "de": "Oinousses",
+        "it": "Oinousses"
+      },
+      "group": "north_aegean"
+    },
+    {
+      "id": "north-aegean-ikaria",
+      "region": "North Aegean",
+      "prefecture": "Ikaria",
+      "beachCount": 19,
+      "coordinates": {
+        "lat": 37.626237894736846,
+        "lon": 26.20736052631579
+      },
+      "dataPath": "/data/beaches/north-aegean-ikaria.json",
+      "appDataPath": "/data/beaches/app/north-aegean-ikaria.json",
+      "name": {
+        "en": "Ikaria",
+        "gr": "Ικαρία",
+        "fr": "Ikaria",
+        "de": "Ikaria",
+        "it": "Ikaria"
+      },
+      "group": "north_aegean"
+    },
+    {
+      "id": "north-aegean-fournoi",
+      "region": "North Aegean",
+      "prefecture": "Fournoi",
+      "beachCount": 7,
+      "coordinates": {
+        "lat": 37.55638714285714,
+        "lon": 26.49238857142857
+      },
+      "dataPath": "/data/beaches/north-aegean-fournoi.json",
+      "appDataPath": "/data/beaches/app/north-aegean-fournoi.json",
+      "name": {
+        "en": "Fournoi",
+        "gr": "Φούρνοι",
+        "fr": "Fournoi",
+        "de": "Fournoi",
+        "it": "Fournoi"
+      },
+      "group": "north_aegean"
+    },
+    {
+      "id": "north-aegean-lesvos",
+      "region": "North Aegean",
+      "prefecture": "Lesvos",
+      "beachCount": 60,
+      "coordinates": {
+        "lat": 39.144272500000014,
+        "lon": 26.242659333333332
+      },
+      "dataPath": "/data/beaches/north-aegean-lesvos.json",
+      "appDataPath": "/data/beaches/app/north-aegean-lesvos.json",
+      "name": {
+        "en": "Lesvos",
+        "gr": "Λέσβος",
+        "fr": "Lesvos",
+        "de": "Lesvos",
+        "it": "Lesvos"
+      },
+      "group": "north_aegean"
+    },
+    {
+      "id": "north-aegean-samos",
+      "region": "North Aegean",
+      "prefecture": "Samos",
+      "beachCount": 40,
+      "coordinates": {
+        "lat": 37.72408250000001,
+        "lon": 26.788975
+      },
+      "dataPath": "/data/beaches/north-aegean-samos.json",
+      "appDataPath": "/data/beaches/app/north-aegean-samos.json",
+      "name": {
+        "en": "Samos",
+        "gr": "Σάμος",
+        "fr": "Samos",
+        "de": "Samos",
+        "it": "Samos"
+      },
+      "group": "north_aegean"
+    },
+    {
+      "id": "north-aegean-agios-efstratios",
+      "region": "North Aegean",
+      "prefecture": "Agios Efstratios",
+      "beachCount": 12,
+      "coordinates": {
+        "lat": 39.50706666666667,
+        "lon": 24.983680833333334
+      },
+      "dataPath": "/data/beaches/north-aegean-agios-efstratios.json",
+      "appDataPath": "/data/beaches/app/north-aegean-agios-efstratios.json",
+      "name": {
+        "en": "Agios Efstratios",
+        "gr": "Άγιος Ευστράτιος",
+        "fr": "Agios Efstratios",
+        "de": "Agios Efstratios",
+        "it": "Agios Efstratios"
+      },
+      "group": "north_aegean"
+    },
+    {
+      "id": "north-aegean-lemnos",
+      "region": "North Aegean",
+      "prefecture": "Lemnos",
+      "beachCount": 40,
+      "coordinates": {
+        "lat": 39.90030975,
+        "lon": 25.214937
+      },
+      "dataPath": "/data/beaches/north-aegean-lemnos.json",
+      "appDataPath": "/data/beaches/app/north-aegean-lemnos.json",
+      "name": {
+        "en": "Lemnos",
+        "gr": "Λήμνος",
+        "fr": "Lemnos",
+        "de": "Lemnos",
+        "it": "Lemnos"
+      },
+      "group": "north_aegean"
+    },
+    {
+      "id": "peloponnese-argolida-mainland",
+      "region": "Peloponnese",
+      "prefecture": "Argolida (mainland)",
+      "beachCount": 34,
+      "coordinates": {
+        "lat": 37.49553938235295,
+        "lon": 23.01322238235295
+      },
+      "dataPath": "/data/beaches/peloponnese-argolida-mainland.json",
+      "appDataPath": "/data/beaches/app/peloponnese-argolida-mainland.json",
+      "name": {
+        "en": "Argolida",
+        "gr": "Αργολίδα",
+        "fr": "Argolida",
+        "de": "Argolida",
+        "it": "Argolida"
+      },
+      "group": "mainland_peloponnese"
+    },
+    {
+      "id": "peloponnese-arkadia-mainland",
+      "region": "Peloponnese",
+      "prefecture": "Arkadia (mainland)",
+      "beachCount": 16,
+      "coordinates": {
+        "lat": 37.349545000000006,
+        "lon": 22.801489375000003
+      },
+      "dataPath": "/data/beaches/peloponnese-arkadia-mainland.json",
+      "appDataPath": "/data/beaches/app/peloponnese-arkadia-mainland.json",
+      "name": {
+        "en": "Arkadia",
+        "gr": "Αρκαδία",
+        "fr": "Arkadia",
+        "de": "Arkadia",
+        "it": "Arkadia"
+      },
+      "group": "mainland_peloponnese"
+    },
+    {
+      "id": "peloponnese-korinthia-mainland",
+      "region": "Peloponnese",
+      "prefecture": "Korinthia (mainland)",
+      "beachCount": 21,
+      "coordinates": {
+        "lat": 37.96385428571429,
+        "lon": 22.96271523809524
+      },
+      "dataPath": "/data/beaches/peloponnese-korinthia-mainland.json",
+      "appDataPath": "/data/beaches/app/peloponnese-korinthia-mainland.json",
+      "name": {
+        "en": "Korinthia",
+        "gr": "Κορινθία",
+        "fr": "Korinthia",
+        "de": "Korinthia",
+        "it": "Korinthia"
+      },
+      "group": "mainland_peloponnese"
+    },
+    {
+      "id": "peloponnese-lakonia-mainland",
+      "region": "Peloponnese",
+      "prefecture": "Lakonia (mainland)",
+      "beachCount": 61,
+      "coordinates": {
+        "lat": 36.673808852459004,
+        "lon": 22.7700406557377
+      },
+      "dataPath": "/data/beaches/peloponnese-lakonia-mainland.json",
+      "appDataPath": "/data/beaches/app/peloponnese-lakonia-mainland.json",
+      "name": {
+        "en": "Lakonia",
+        "gr": "Λακωνία",
+        "fr": "Lakonia",
+        "de": "Lakonia",
+        "it": "Lakonia"
+      },
+      "group": "mainland_peloponnese"
+    },
+    {
+      "id": "peloponnese-messinia-mainland",
+      "region": "Peloponnese",
+      "prefecture": "Messinia (mainland)",
+      "beachCount": 54,
+      "coordinates": {
+        "lat": 36.8896537037037,
+        "lon": 21.900467222222215
+      },
+      "dataPath": "/data/beaches/peloponnese-messinia-mainland.json",
+      "appDataPath": "/data/beaches/app/peloponnese-messinia-mainland.json",
+      "name": {
+        "en": "Messinia",
+        "gr": "Μεσσηνία",
+        "fr": "Messinia",
+        "de": "Messinia",
+        "it": "Messinia"
+      },
+      "group": "mainland_peloponnese"
+    },
+    {
+      "id": "south-aegean-amorgos",
+      "region": "South Aegean",
+      "prefecture": "Amorgos",
+      "beachCount": 14,
+      "coordinates": {
+        "lat": 36.84945571428572,
+        "lon": 25.883652142857137
+      },
+      "dataPath": "/data/beaches/south-aegean-amorgos.json",
+      "appDataPath": "/data/beaches/app/south-aegean-amorgos.json",
+      "name": {
+        "en": "Amorgos",
+        "gr": "Αμοργός",
+        "fr": "Amorgos",
+        "de": "Amorgos",
+        "it": "Amorgos"
+      },
+      "group": "cyclades"
+    },
+    {
+      "id": "south-aegean-anafi",
+      "region": "South Aegean",
+      "prefecture": "Anafi",
+      "beachCount": 15,
+      "coordinates": {
+        "lat": 36.35679666666667,
+        "lon": 25.78274666666667
+      },
+      "dataPath": "/data/beaches/south-aegean-anafi.json",
+      "appDataPath": "/data/beaches/app/south-aegean-anafi.json",
+      "name": {
+        "en": "Anafi",
+        "gr": "Ανάφη",
+        "fr": "Anafi",
+        "de": "Anafi",
+        "it": "Anafi"
+      },
+      "group": "cyclades"
+    },
+    {
+      "id": "south-aegean-andros",
+      "region": "South Aegean",
+      "prefecture": "Andros",
+      "beachCount": 41,
+      "coordinates": {
+        "lat": 37.881630634287035,
+        "lon": 24.82770566121947
+      },
+      "dataPath": "/data/beaches/south-aegean-andros.json",
+      "appDataPath": "/data/beaches/app/south-aegean-andros.json",
+      "name": {
+        "en": "Andros",
+        "gr": "Άνδρος",
+        "fr": "Andros",
+        "de": "Andros",
+        "it": "Andros"
+      },
+      "group": "cyclades"
+    },
+    {
+      "id": "south-aegean-antiparos",
+      "region": "South Aegean",
+      "prefecture": "Antiparos",
+      "beachCount": 12,
+      "coordinates": {
+        "lat": 36.99700583333333,
+        "lon": 25.062095
+      },
+      "dataPath": "/data/beaches/south-aegean-antiparos.json",
+      "appDataPath": "/data/beaches/app/south-aegean-antiparos.json",
+      "name": {
+        "en": "Antiparos",
+        "gr": "Αντίπαρος",
+        "fr": "Antiparos",
+        "de": "Antiparos",
+        "it": "Antiparos"
+      },
+      "group": "cyclades"
+    },
+    {
+      "id": "south-aegean-folegandros",
+      "region": "South Aegean",
+      "prefecture": "Folegandros",
+      "beachCount": 16,
+      "coordinates": {
+        "lat": 36.62704875,
+        "lon": 24.909226875
+      },
+      "dataPath": "/data/beaches/south-aegean-folegandros.json",
+      "appDataPath": "/data/beaches/app/south-aegean-folegandros.json",
+      "name": {
+        "en": "Folegandros",
+        "gr": "Φολέγανδρος",
+        "fr": "Folegandros",
+        "de": "Folegandros",
+        "it": "Folegandros"
+      },
+      "group": "cyclades"
+    },
+    {
+      "id": "south-aegean-ios",
+      "region": "South Aegean",
+      "prefecture": "Ios",
+      "beachCount": 40,
+      "coordinates": {
+        "lat": 36.71553474999999,
+        "lon": 25.33100949999999
+      },
+      "dataPath": "/data/beaches/south-aegean-ios.json",
+      "appDataPath": "/data/beaches/app/south-aegean-ios.json",
+      "name": {
+        "en": "Ios",
+        "gr": "Ίος",
+        "fr": "Ios",
+        "de": "Ios",
+        "it": "Ios"
+      },
+      "group": "cyclades"
+    },
+    {
+      "id": "south-aegean-kea",
+      "region": "South Aegean",
+      "prefecture": "Kea",
+      "beachCount": 34,
+      "coordinates": {
+        "lat": 37.598823823529415,
+        "lon": 24.326118235294118
+      },
+      "dataPath": "/data/beaches/south-aegean-kea.json",
+      "appDataPath": "/data/beaches/app/south-aegean-kea.json",
+      "name": {
+        "en": "Kea",
+        "gr": "Κέα",
+        "fr": "Kea",
+        "de": "Kea",
+        "it": "Kea"
+      },
+      "group": "cyclades"
+    },
+    {
+      "id": "south-aegean-kimolos",
+      "region": "South Aegean",
+      "prefecture": "Kimolos",
+      "beachCount": 20,
+      "coordinates": {
+        "lat": 36.8107325,
+        "lon": 24.557761499999998
+      },
+      "dataPath": "/data/beaches/south-aegean-kimolos.json",
+      "appDataPath": "/data/beaches/app/south-aegean-kimolos.json",
+      "name": {
+        "en": "Kimolos",
+        "gr": "Κίμωλος",
+        "fr": "Kimolos",
+        "de": "Kimolos",
+        "it": "Kimolos"
+      },
+      "group": "cyclades"
+    },
+    {
+      "id": "south-aegean-kythnos",
+      "region": "South Aegean",
+      "prefecture": "Kythnos",
+      "beachCount": 40,
+      "coordinates": {
+        "lat": 37.380430499999996,
+        "lon": 24.421918499999997
+      },
+      "dataPath": "/data/beaches/south-aegean-kythnos.json",
+      "appDataPath": "/data/beaches/app/south-aegean-kythnos.json",
+      "name": {
+        "en": "Kythnos",
+        "gr": "Κύθνος",
+        "fr": "Kythnos",
+        "de": "Kythnos",
+        "it": "Kythnos"
+      },
+      "group": "cyclades"
+    },
+    {
+      "id": "south-aegean-milos",
+      "region": "South Aegean",
+      "prefecture": "Milos",
+      "beachCount": 41,
+      "coordinates": {
+        "lat": 36.70893373902438,
+        "lon": 24.454159278048778
+      },
+      "dataPath": "/data/beaches/south-aegean-milos.json",
+      "appDataPath": "/data/beaches/app/south-aegean-milos.json",
+      "name": {
+        "en": "Milos",
+        "gr": "Μήλος",
+        "fr": "Milos",
+        "de": "Milos",
+        "it": "Milos"
+      },
+      "group": "cyclades"
+    },
+    {
+      "id": "south-aegean-mykonos",
+      "region": "South Aegean",
+      "prefecture": "Mykonos",
+      "beachCount": 39,
+      "coordinates": {
+        "lat": 37.442503333333335,
+        "lon": 25.377172051282052
+      },
+      "dataPath": "/data/beaches/south-aegean-mykonos.json",
+      "appDataPath": "/data/beaches/app/south-aegean-mykonos.json",
+      "name": {
+        "en": "Mykonos",
+        "gr": "Μύκονος",
+        "fr": "Mykonos",
+        "de": "Mykonos",
+        "it": "Mykonos"
+      },
+      "group": "cyclades"
+    },
+    {
+      "id": "south-aegean-naxos",
+      "region": "South Aegean",
+      "prefecture": "Naxos",
+      "beachCount": 39,
+      "coordinates": {
+        "lat": 37.059500892307696,
+        "lon": 25.4620881897436
+      },
+      "dataPath": "/data/beaches/south-aegean-naxos.json",
+      "appDataPath": "/data/beaches/app/south-aegean-naxos.json",
+      "name": {
+        "en": "Naxos",
+        "gr": "Νάξος",
+        "fr": "Naxos",
+        "de": "Naxos",
+        "it": "Naxos"
+      },
+      "group": "cyclades"
+    },
+    {
+      "id": "south-aegean-paros",
+      "region": "South Aegean",
+      "prefecture": "Paros",
+      "beachCount": 37,
+      "coordinates": {
+        "lat": 37.07085702702702,
+        "lon": 25.21302621621621
+      },
+      "dataPath": "/data/beaches/south-aegean-paros.json",
+      "appDataPath": "/data/beaches/app/south-aegean-paros.json",
+      "name": {
+        "en": "Paros",
+        "gr": "Πάρος",
+        "fr": "Paros",
+        "de": "Paros",
+        "it": "Paros"
+      },
+      "group": "cyclades"
+    },
+    {
+      "id": "south-aegean-santorini",
+      "region": "South Aegean",
+      "prefecture": "Santorini",
+      "beachCount": 13,
+      "coordinates": {
+        "lat": 36.382226153846155,
+        "lon": 25.428383076923076
+      },
+      "dataPath": "/data/beaches/south-aegean-santorini.json",
+      "appDataPath": "/data/beaches/app/south-aegean-santorini.json",
+      "name": {
+        "en": "Santorini",
+        "gr": "Σαντορίνη",
+        "fr": "Santorini",
+        "de": "Santorini",
+        "it": "Santorini"
+      },
+      "group": "cyclades"
+    },
+    {
+      "id": "south-aegean-serifos",
+      "region": "South Aegean",
+      "prefecture": "Serifos",
+      "beachCount": 25,
+      "coordinates": {
+        "lat": 37.1588424,
+        "lon": 24.486708
+      },
+      "dataPath": "/data/beaches/south-aegean-serifos.json",
+      "appDataPath": "/data/beaches/app/south-aegean-serifos.json",
+      "name": {
+        "en": "Serifos",
+        "gr": "Σέριφος",
+        "fr": "Serifos",
+        "de": "Serifos",
+        "it": "Serifos"
+      },
+      "group": "cyclades"
+    },
+    {
+      "id": "south-aegean-sifnos",
+      "region": "South Aegean",
+      "prefecture": "Sifnos",
+      "beachCount": 20,
+      "coordinates": {
+        "lat": 36.960901099999994,
+        "lon": 24.7052947
+      },
+      "dataPath": "/data/beaches/south-aegean-sifnos.json",
+      "appDataPath": "/data/beaches/app/south-aegean-sifnos.json",
+      "name": {
+        "en": "Sifnos",
+        "gr": "Σίφνος",
+        "fr": "Sifnos",
+        "de": "Sifnos",
+        "it": "Sifnos"
+      },
+      "group": "cyclades"
+    },
+    {
+      "id": "south-aegean-sikinos",
+      "region": "South Aegean",
+      "prefecture": "Sikinos",
+      "beachCount": 5,
+      "coordinates": {
+        "lat": 36.680127999999996,
+        "lon": 25.146254
+      },
+      "dataPath": "/data/beaches/south-aegean-sikinos.json",
+      "appDataPath": "/data/beaches/app/south-aegean-sikinos.json",
+      "name": {
+        "en": "Sikinos",
+        "gr": "Σίκινος",
+        "fr": "Sikinos",
+        "de": "Sikinos",
+        "it": "Sikinos"
+      },
+      "group": "cyclades"
+    },
+    {
+      "id": "south-aegean-syros",
+      "region": "South Aegean",
+      "prefecture": "Syros",
+      "beachCount": 23,
+      "coordinates": {
+        "lat": 37.43211248695652,
+        "lon": 24.907037608695646
+      },
+      "dataPath": "/data/beaches/south-aegean-syros.json",
+      "appDataPath": "/data/beaches/app/south-aegean-syros.json",
+      "name": {
+        "en": "Syros",
+        "gr": "Σύρος",
+        "fr": "Syros",
+        "de": "Syros",
+        "it": "Syros"
+      },
+      "group": "cyclades"
+    },
+    {
+      "id": "south-aegean-tinos",
+      "region": "South Aegean",
+      "prefecture": "Tinos",
+      "beachCount": 40,
+      "coordinates": {
+        "lat": 37.59390325,
+        "lon": 25.12349375
+      },
+      "dataPath": "/data/beaches/south-aegean-tinos.json",
+      "appDataPath": "/data/beaches/app/south-aegean-tinos.json",
+      "name": {
+        "en": "Tinos",
+        "gr": "Τήνος",
+        "fr": "Tinos",
+        "de": "Tinos",
+        "it": "Tinos"
+      },
+      "group": "cyclades"
+    },
+    {
+      "id": "south-aegean-donousa",
+      "region": "South Aegean",
+      "prefecture": "Donousa",
+      "beachCount": 4,
+      "coordinates": {
+        "lat": 37.09523,
+        "lon": 25.808945
+      },
+      "dataPath": "/data/beaches/south-aegean-donousa.json",
+      "appDataPath": "/data/beaches/app/south-aegean-donousa.json",
+      "name": {
+        "en": "Donousa",
+        "gr": "Δονούσα",
+        "fr": "Donousa",
+        "de": "Donousa",
+        "it": "Donousa"
+      },
+      "group": "cyclades"
+    },
+    {
+      "id": "south-aegean-koufonisia",
+      "region": "South Aegean",
+      "prefecture": "Koufonisia",
+      "beachCount": 17,
+      "coordinates": {
+        "lat": 36.92148352941177,
+        "lon": 25.593650588235292
+      },
+      "dataPath": "/data/beaches/south-aegean-koufonisia.json",
+      "appDataPath": "/data/beaches/app/south-aegean-koufonisia.json",
+      "name": {
+        "en": "Koufonisia",
+        "gr": "Κουφονήσια",
+        "fr": "Koufonisia",
+        "de": "Koufonisia",
+        "it": "Koufonisia"
+      },
+      "group": "cyclades"
+    },
+    {
+      "id": "south-aegean-schinoussa",
+      "region": "South Aegean",
+      "prefecture": "Schinoussa",
+      "beachCount": 8,
+      "coordinates": {
+        "lat": 36.870876249999995,
+        "lon": 25.52453
+      },
+      "dataPath": "/data/beaches/south-aegean-schinoussa.json",
+      "appDataPath": "/data/beaches/app/south-aegean-schinoussa.json",
+      "name": {
+        "en": "Schinoussa",
+        "gr": "Σχοινούσα",
+        "fr": "Schinoussa",
+        "de": "Schinoussa",
+        "it": "Schinoussa"
+      },
+      "group": "cyclades"
+    },
+    {
+      "id": "south-aegean-iraklia",
+      "region": "South Aegean",
+      "prefecture": "Iraklia",
+      "beachCount": 2,
+      "coordinates": {
+        "lat": 36.85238,
+        "lon": 25.46277
+      },
+      "dataPath": "/data/beaches/south-aegean-iraklia.json",
+      "appDataPath": "/data/beaches/app/south-aegean-iraklia.json",
+      "name": {
+        "en": "Iraklia",
+        "gr": "Ηρακλειά",
+        "fr": "Iraklia",
+        "de": "Iraklia",
+        "it": "Iraklia"
+      },
+      "group": "cyclades"
+    },
+    {
+      "id": "south-aegean-polyaigos",
+      "region": "South Aegean",
+      "prefecture": "Polyaigos",
+      "beachCount": 4,
+      "coordinates": {
+        "lat": 36.771185,
+        "lon": 24.62544
+      },
+      "dataPath": "/data/beaches/south-aegean-polyaigos.json",
+      "appDataPath": "/data/beaches/app/south-aegean-polyaigos.json",
+      "name": {
+        "en": "Polyaigos",
+        "gr": "Πολύαιγος",
+        "fr": "Polyaigos",
+        "de": "Polyaigos",
+        "it": "Polyaigos"
+      },
+      "group": "cyclades"
+    },
+    {
+      "id": "south-aegean-agathonisi",
+      "region": "South Aegean",
+      "prefecture": "Agathonisi",
+      "beachCount": 5,
+      "coordinates": {
+        "lat": 37.45565,
+        "lon": 26.975222000000002
+      },
+      "dataPath": "/data/beaches/south-aegean-agathonisi.json",
+      "appDataPath": "/data/beaches/app/south-aegean-agathonisi.json",
+      "name": {
+        "en": "Agathonisi",
+        "gr": "Αγαθονήσι",
+        "fr": "Agathonisi",
+        "de": "Agathonisi",
+        "it": "Agathonisi"
+      },
+      "group": "dodecanese"
+    },
+    {
+      "id": "south-aegean-astypalaia",
+      "region": "South Aegean",
+      "prefecture": "Astypalaia",
+      "beachCount": 20,
+      "coordinates": {
+        "lat": 36.5526785,
+        "lon": 26.343629
+      },
+      "dataPath": "/data/beaches/south-aegean-astypalaia.json",
+      "appDataPath": "/data/beaches/app/south-aegean-astypalaia.json",
+      "name": {
+        "en": "Astypalaia",
+        "gr": "Αστυπάλαια",
+        "fr": "Astypalaia",
+        "de": "Astypalaia",
+        "it": "Astypalaia"
+      },
+      "group": "dodecanese"
+    },
+    {
+      "id": "south-aegean-halki",
+      "region": "South Aegean",
+      "prefecture": "Halki",
+      "beachCount": 2,
+      "coordinates": {
+        "lat": 36.225505,
+        "lon": 27.617330000000003
+      },
+      "dataPath": "/data/beaches/south-aegean-halki.json",
+      "appDataPath": "/data/beaches/app/south-aegean-halki.json",
+      "name": {
+        "en": "Halki",
+        "gr": "Χάλκη",
+        "fr": "Halki",
+        "de": "Halki",
+        "it": "Halki"
+      },
+      "group": "dodecanese"
+    },
+    {
+      "id": "south-aegean-kalymnos",
+      "region": "South Aegean",
+      "prefecture": "Kalymnos",
+      "beachCount": 20,
+      "coordinates": {
+        "lat": 37.0020445,
+        "lon": 26.975273000000005
+      },
+      "dataPath": "/data/beaches/south-aegean-kalymnos.json",
+      "appDataPath": "/data/beaches/app/south-aegean-kalymnos.json",
+      "name": {
+        "en": "Kalymnos",
+        "gr": "Κάλυμνος",
+        "fr": "Kalymnos",
+        "de": "Kalymnos",
+        "it": "Kalymnos"
+      },
+      "group": "dodecanese"
+    },
+    {
+      "id": "south-aegean-karpathos",
+      "region": "South Aegean",
+      "prefecture": "Karpathos",
+      "beachCount": 45,
+      "coordinates": {
+        "lat": 35.59337080000001,
+        "lon": 27.16465675555554
+      },
+      "dataPath": "/data/beaches/south-aegean-karpathos.json",
+      "appDataPath": "/data/beaches/app/south-aegean-karpathos.json",
+      "name": {
+        "en": "Karpathos",
+        "gr": "Κάρπαθος",
+        "fr": "Karpathos",
+        "de": "Karpathos",
+        "it": "Karpathos"
+      },
+      "group": "dodecanese"
+    },
+    {
+      "id": "south-aegean-kastellorizo",
+      "region": "South Aegean",
+      "prefecture": "Kastellorizo",
+      "beachCount": 3,
+      "coordinates": {
+        "lat": 36.152476666666665,
+        "lon": 29.599553333333333
+      },
+      "dataPath": "/data/beaches/south-aegean-kastellorizo.json",
+      "appDataPath": "/data/beaches/app/south-aegean-kastellorizo.json",
+      "name": {
+        "en": "Kastellorizo",
+        "gr": "Καστελλόριζο",
+        "fr": "Kastellorizo",
+        "de": "Kastellorizo",
+        "it": "Kastellorizo"
+      },
+      "group": "dodecanese"
+    },
+    {
+      "id": "south-aegean-kos",
+      "region": "South Aegean",
+      "prefecture": "Kos",
+      "beachCount": 38,
+      "coordinates": {
+        "lat": 36.80532730263158,
+        "lon": 27.10635861578948
+      },
+      "dataPath": "/data/beaches/south-aegean-kos.json",
+      "appDataPath": "/data/beaches/app/south-aegean-kos.json",
+      "name": {
+        "en": "Kos",
+        "gr": "Κως",
+        "fr": "Kos",
+        "de": "Kos",
+        "it": "Kos"
+      },
+      "group": "dodecanese"
+    },
+    {
+      "id": "south-aegean-leros",
+      "region": "South Aegean",
+      "prefecture": "Leros",
+      "beachCount": 11,
+      "coordinates": {
+        "lat": 37.16354454545454,
+        "lon": 26.83335
+      },
+      "dataPath": "/data/beaches/south-aegean-leros.json",
+      "appDataPath": "/data/beaches/app/south-aegean-leros.json",
+      "name": {
+        "en": "Leros",
+        "gr": "Λέρος",
+        "fr": "Leros",
+        "de": "Leros",
+        "it": "Leros"
+      },
+      "group": "dodecanese"
+    },
+    {
+      "id": "south-aegean-lipsi",
+      "region": "South Aegean",
+      "prefecture": "Lipsi",
+      "beachCount": 18,
+      "coordinates": {
+        "lat": 37.29222722222223,
+        "lon": 26.772731111111113
+      },
+      "dataPath": "/data/beaches/south-aegean-lipsi.json",
+      "appDataPath": "/data/beaches/app/south-aegean-lipsi.json",
+      "name": {
+        "en": "Lipsi",
+        "gr": "Λειψοί",
+        "fr": "Lipsi",
+        "de": "Lipsi",
+        "it": "Lipsi"
+      },
+      "group": "dodecanese"
+    },
+    {
+      "id": "south-aegean-nisyros",
+      "region": "South Aegean",
+      "prefecture": "Nisyros",
+      "beachCount": 2,
+      "coordinates": {
+        "lat": 36.599885,
+        "lon": 27.16922
+      },
+      "dataPath": "/data/beaches/south-aegean-nisyros.json",
+      "appDataPath": "/data/beaches/app/south-aegean-nisyros.json",
+      "name": {
+        "en": "Nisyros",
+        "gr": "Νίσυρος",
+        "fr": "Nisyros",
+        "de": "Nisyros",
+        "it": "Nisyros"
+      },
+      "group": "dodecanese"
+    },
+    {
+      "id": "south-aegean-patmos",
+      "region": "South Aegean",
+      "prefecture": "Patmos",
+      "beachCount": 15,
+      "coordinates": {
+        "lat": 37.33270466666667,
+        "lon": 26.560729333333327
+      },
+      "dataPath": "/data/beaches/south-aegean-patmos.json",
+      "appDataPath": "/data/beaches/app/south-aegean-patmos.json",
+      "name": {
+        "en": "Patmos",
+        "gr": "Πάτμος",
+        "fr": "Patmos",
+        "de": "Patmos",
+        "it": "Patmos"
+      },
+      "group": "dodecanese"
+    },
+    {
+      "id": "south-aegean-rhodes",
+      "region": "South Aegean",
+      "prefecture": "Rhodes",
+      "beachCount": 61,
+      "coordinates": {
+        "lat": 36.180091081967205,
+        "lon": 28.043903001639347
+      },
+      "dataPath": "/data/beaches/south-aegean-rhodes.json",
+      "appDataPath": "/data/beaches/app/south-aegean-rhodes.json",
+      "name": {
+        "en": "Rhodes",
+        "gr": "Ρόδος",
+        "fr": "Rhodes",
+        "de": "Rhodes",
+        "it": "Rhodes"
+      },
+      "group": "dodecanese"
+    },
+    {
+      "id": "south-aegean-symi",
+      "region": "South Aegean",
+      "prefecture": "Symi",
+      "beachCount": 8,
+      "coordinates": {
+        "lat": 36.60802625,
+        "lon": 27.84796375
+      },
+      "dataPath": "/data/beaches/south-aegean-symi.json",
+      "appDataPath": "/data/beaches/app/south-aegean-symi.json",
+      "name": {
+        "en": "Symi",
+        "gr": "Σύμη",
+        "fr": "Symi",
+        "de": "Symi",
+        "it": "Symi"
+      },
+      "group": "dodecanese"
+    },
+    {
+      "id": "south-aegean-tilos",
+      "region": "South Aegean",
+      "prefecture": "Tilos",
+      "beachCount": 12,
+      "coordinates": {
+        "lat": 36.429775,
+        "lon": 27.362315000000006
+      },
+      "dataPath": "/data/beaches/south-aegean-tilos.json",
+      "appDataPath": "/data/beaches/app/south-aegean-tilos.json",
+      "name": {
+        "en": "Tilos",
+        "gr": "Τήλος",
+        "fr": "Tilos",
+        "de": "Tilos",
+        "it": "Tilos"
+      },
+      "group": "dodecanese"
+    },
+    {
+      "id": "south-aegean-kasos",
+      "region": "South Aegean",
+      "prefecture": "Kasos",
+      "beachCount": 5,
+      "coordinates": {
+        "lat": 35.36748,
+        "lon": 26.868794
+      },
+      "dataPath": "/data/beaches/south-aegean-kasos.json",
+      "appDataPath": "/data/beaches/app/south-aegean-kasos.json",
+      "name": {
+        "en": "Kasos",
+        "gr": "Κάσος",
+        "fr": "Kasos",
+        "de": "Kasos",
+        "it": "Kasos"
+      },
+      "group": "dodecanese"
+    },
+    {
+      "id": "south-aegean-pserimos",
+      "region": "South Aegean",
+      "prefecture": "Pserimos",
+      "beachCount": 3,
+      "coordinates": {
+        "lat": 36.939373333333336,
+        "lon": 27.141693333333336
+      },
+      "dataPath": "/data/beaches/south-aegean-pserimos.json",
+      "appDataPath": "/data/beaches/app/south-aegean-pserimos.json",
+      "name": {
+        "en": "Pserimos",
+        "gr": "Ψέριμος",
+        "fr": "Pserimos",
+        "de": "Pserimos",
+        "it": "Pserimos"
+      },
+      "group": "dodecanese"
+    },
+    {
+      "id": "south-aegean-telendos",
+      "region": "South Aegean",
+      "prefecture": "Telendos",
+      "beachCount": 5,
+      "coordinates": {
+        "lat": 36.999772,
+        "lon": 26.920668
+      },
+      "dataPath": "/data/beaches/south-aegean-telendos.json",
+      "appDataPath": "/data/beaches/app/south-aegean-telendos.json",
+      "name": {
+        "en": "Telendos",
+        "gr": "Τέλενδος",
+        "fr": "Telendos",
+        "de": "Telendos",
+        "it": "Telendos"
+      },
+      "group": "dodecanese"
+    },
+    {
+      "id": "south-aegean-arki",
+      "region": "South Aegean",
+      "prefecture": "Arki",
+      "beachCount": 2,
+      "coordinates": {
+        "lat": 37.384425,
+        "lon": 26.7348
+      },
+      "dataPath": "/data/beaches/south-aegean-arki.json",
+      "appDataPath": "/data/beaches/app/south-aegean-arki.json",
+      "name": {
+        "en": "Arki",
+        "gr": "Αρκοί",
+        "fr": "Arki",
+        "de": "Arki",
+        "it": "Arki"
+      },
+      "group": "dodecanese"
+    },
+    {
+      "id": "south-aegean-marathi",
+      "region": "South Aegean",
+      "prefecture": "Marathi",
+      "beachCount": 2,
+      "coordinates": {
+        "lat": 37.367085,
+        "lon": 26.73554
+      },
+      "dataPath": "/data/beaches/south-aegean-marathi.json",
+      "appDataPath": "/data/beaches/app/south-aegean-marathi.json",
+      "name": {
+        "en": "Marathi",
+        "gr": "Μαράθι",
+        "fr": "Marathi",
+        "de": "Marathi",
+        "it": "Marathi"
+      },
+      "group": "dodecanese"
+    },
+    {
+      "id": "west-greece-achaia-mainland",
+      "region": "West Greece",
+      "prefecture": "Achaia (mainland)",
+      "beachCount": 15,
+      "coordinates": {
+        "lat": 38.21773733333334,
+        "lon": 21.929644
+      },
+      "dataPath": "/data/beaches/west-greece-achaia-mainland.json",
+      "appDataPath": "/data/beaches/app/west-greece-achaia-mainland.json",
+      "name": {
+        "en": "Achaia",
+        "gr": "Αχαΐα",
+        "fr": "Achaia",
+        "de": "Achaia",
+        "it": "Achaia"
+      },
+      "group": "mainland_peloponnese"
+    },
+    {
+      "id": "west-greece-aetolia-acarnania-mainland",
+      "region": "West Greece",
+      "prefecture": "Aetolia-Acarnania (mainland)",
+      "beachCount": 48,
+      "coordinates": {
+        "lat": 38.572345000000006,
+        "lon": 21.25181916666667
+      },
+      "dataPath": "/data/beaches/west-greece-aetolia-acarnania-mainland.json",
+      "appDataPath": "/data/beaches/app/west-greece-aetolia-acarnania-mainland.json",
+      "name": {
+        "en": "Aetolia-Acarnania",
+        "gr": "Αιτωλοακαρνανία",
+        "fr": "Aetolia-Acarnania",
+        "de": "Aetolia-Acarnania",
+        "it": "Aetolia-Acarnania"
+      },
+      "group": "mainland_central"
+    },
+    {
+      "id": "west-greece-ileia-mainland",
+      "region": "West Greece",
+      "prefecture": "Ileia (mainland)",
+      "beachCount": 15,
+      "coordinates": {
+        "lat": 37.84765133333333,
+        "lon": 21.276602666666673
+      },
+      "dataPath": "/data/beaches/west-greece-ileia-mainland.json",
+      "appDataPath": "/data/beaches/app/west-greece-ileia-mainland.json",
+      "name": {
+        "en": "Ileia",
+        "gr": "Ηλεία",
+        "fr": "Ileia",
+        "de": "Ileia",
+        "it": "Ileia"
+      },
+      "group": "mainland_central"
+    },
+    {
+      "id": "thessaly-alonissos",
+      "region": "Thessaly",
+      "prefecture": "Alonissos",
+      "beachCount": 35,
+      "coordinates": {
+        "lat": 39.1463457142857,
+        "lon": 23.866008571428576
+      },
+      "dataPath": "/data/beaches/thessaly-alonissos.json",
+      "appDataPath": "/data/beaches/app/thessaly-alonissos.json",
+      "name": {
+        "en": "Alonissos",
+        "gr": "Αλόννησος",
+        "fr": "Alonissos",
+        "de": "Alonissos",
+        "it": "Alonissos"
+      },
+      "group": "sporades"
+    },
+    {
+      "id": "thessaly-skiathos",
+      "region": "Thessaly",
+      "prefecture": "Skiathos",
+      "beachCount": 32,
+      "coordinates": {
+        "lat": 39.16139978750001,
+        "lon": 23.442681596874998
+      },
+      "dataPath": "/data/beaches/thessaly-skiathos.json",
+      "appDataPath": "/data/beaches/app/thessaly-skiathos.json",
+      "name": {
+        "en": "Skiathos",
+        "gr": "Σκιάθος",
+        "fr": "Skiathos",
+        "de": "Skiathos",
+        "it": "Skiathos"
+      },
+      "group": "sporades"
+    },
+    {
+      "id": "thessaly-skopelos",
+      "region": "Thessaly",
+      "prefecture": "Skopelos",
+      "beachCount": 19,
+      "coordinates": {
+        "lat": 39.10877431578948,
+        "lon": 23.697751157894736
+      },
+      "dataPath": "/data/beaches/thessaly-skopelos.json",
+      "appDataPath": "/data/beaches/app/thessaly-skopelos.json",
+      "name": {
+        "en": "Skopelos",
+        "gr": "Σκόπελος",
+        "fr": "Skopelos",
+        "de": "Skopelos",
+        "it": "Skopelos"
+      },
+      "group": "sporades"
+    },
+    {
+      "id": "thessaly-magnesia-mainland---pelion",
+      "region": "Thessaly",
+      "prefecture": "Magnesia (mainland - Pelion)",
+      "beachCount": 60,
+      "coordinates": {
+        "lat": 39.255758333333326,
+        "lon": 23.18285000000001
+      },
+      "dataPath": "/data/beaches/thessaly-magnesia-mainland---pelion.json",
+      "appDataPath": "/data/beaches/app/thessaly-magnesia-mainland---pelion.json",
+      "name": {
+        "en": "Magnesia (Pelion)",
+        "gr": "Μαγνησία (Πήλιο)",
+        "fr": "Magnesia (Pelion)",
+        "de": "Magnesia (Pelion)",
+        "it": "Magnesia (Pelion)"
+      },
+      "group": "mainland_thessaly"
+    },
+    {
+      "id": "thessaly-larissa-coast-agia---kissavos",
+      "region": "Thessaly",
+      "prefecture": "Larissa Coast (Agia - Kissavos)",
+      "beachCount": 14,
+      "coordinates": {
+        "lat": 39.74021428571429,
+        "lon": 22.738357142857147
+      },
+      "dataPath": "/data/beaches/thessaly-larissa-coast-agia---kissavos.json",
+      "appDataPath": "/data/beaches/app/thessaly-larissa-coast-agia---kissavos.json",
+      "name": {
+        "en": "Larissa Coast (Agia - Kissavos)",
+        "gr": "Παράλια Λάρισας (Αγιά - Κίσσαβος)",
+        "fr": "Larissa Coast (Agia - Kissavos)",
+        "de": "Larissa Coast (Agia - Kissavos)",
+        "it": "Larissa Coast (Agia - Kissavos)"
+      },
+      "group": "mainland_thessaly"
+    }
+  ]
+}

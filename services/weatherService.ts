@@ -1,30 +1,42 @@
 
-import { WeatherData, ForecastItem } from '../types';
+import { WeatherData, ForecastItem, MarineForecast } from '../types';
 
-const CACHE_DURATION = 15 * 60 * 1000; // 15 λεπτά σε milliseconds
+const CACHE_DURATION = 15 * 60 * 1000;
+const STALE_CACHE_DURATION = 6 * 60 * 60 * 1000;
+const WEATHER_REQUEST_TIMEOUT_MS = 8000;
 
 interface CacheEntry<T> {
   timestamp: number;
   data: T;
 }
 
-// Helper to manage local storage caching
-const getFromCache = <T>(key: string): T | null => {
+const getCacheEntry = <T>(key: string): CacheEntry<T> | null => {
   const cached = localStorage.getItem(key);
   if (!cached) return null;
 
   try {
-    const entry: CacheEntry<T> = JSON.parse(cached);
-    const isExpired = Date.now() - entry.timestamp > CACHE_DURATION;
-    
-    if (isExpired) {
-      localStorage.removeItem(key);
-      return null;
-    }
-    return entry.data;
+    return JSON.parse(cached) as CacheEntry<T>;
   } catch (e) {
+    localStorage.removeItem(key);
     return null;
   }
+};
+
+const getFromCache = <T>(key: string): T | null => {
+  const entry = getCacheEntry<T>(key);
+  if (!entry) return null;
+  const isExpired = Date.now() - entry.timestamp > CACHE_DURATION;
+  return isExpired ? null : entry.data;
+};
+
+const getStaleFromCache = <T>(key: string): { data: T; ageMs: number } | null => {
+  const entry = getCacheEntry<T>(key);
+  if (!entry) return null;
+
+  const ageMs = Date.now() - entry.timestamp;
+  if (ageMs > STALE_CACHE_DURATION) return null;
+
+  return { data: entry.data, ageMs };
 };
 
 const saveToCache = <T>(key: string, data: T) => {
@@ -32,8 +44,97 @@ const saveToCache = <T>(key: string, data: T) => {
     timestamp: Date.now(),
     data
   };
-  localStorage.setItem(key, JSON.stringify(entry));
+
+  try {
+    localStorage.setItem(key, JSON.stringify(entry));
+  } catch (error) {
+    const isQuotaError = error instanceof DOMException && (
+      error.name === 'QuotaExceededError' ||
+      error.name === 'NS_ERROR_DOM_QUOTA_REACHED'
+    );
+
+    if (!isQuotaError) {
+      console.warn('Weather cache write skipped:', error);
+      return;
+    }
+
+    Object.keys(localStorage)
+      .filter(storageKey => storageKey.startsWith('forecast_') || storageKey.startsWith('marine_') || storageKey.startsWith('weather_'))
+      .forEach(storageKey => localStorage.removeItem(storageKey));
+
+    try {
+      localStorage.setItem(key, JSON.stringify(entry));
+    } catch {
+      console.warn('Weather cache write skipped: browser storage quota exceeded.');
+    }
+  }
 };
+
+const optionalNumber = (value: unknown): number | undefined => {
+  return typeof value === 'number' && Number.isFinite(value) ? value : undefined;
+};
+
+const describeError = (error: unknown): string => {
+  if (error instanceof Error) return `${error.name}: ${error.message}`;
+  return String(error);
+};
+
+const fetchJson = async <T>(url: string, source: string, lat: number, lon: number): Promise<T> => {
+  const controller = new AbortController();
+  const timeout = window.setTimeout(() => controller.abort(), WEATHER_REQUEST_TIMEOUT_MS);
+
+  try {
+    const response = await fetch(url, {
+      signal: controller.signal,
+      cache: 'no-store',
+    });
+
+    if (!response.ok) {
+      throw new Error(`${source} fetch failed: ${response.status} ${response.statusText}`);
+    }
+
+    return await response.json() as T;
+  } finally {
+    window.clearTimeout(timeout);
+  }
+};
+
+const handleWeatherRequestFailure = <T>(
+  source: string,
+  url: string,
+  lat: number,
+  lon: number,
+  cacheKey: string,
+  error: unknown
+): T => {
+  const stale = getStaleFromCache<T>(cacheKey);
+
+  console.warn('[weather] Open-Meteo request failed', {
+    source,
+    lat,
+    lon,
+    url,
+    error: describeError(error),
+    staleCacheAvailable: Boolean(stale),
+    staleCacheAgeMinutes: stale ? Math.round(stale.ageMs / 60000) : null,
+  });
+
+  if (stale) {
+    console.warn('[weather] Using stale cached weather data after request failure', {
+      source,
+      cacheKey,
+      ageMinutes: Math.round(stale.ageMs / 60000),
+    });
+    return stale.data;
+  }
+
+  throw error;
+};
+
+export interface MarineForecastItem {
+  dt_txt: string;
+  marine: MarineForecast;
+}
 
 // Mapping WMO Weather codes to OpenWeather-style objects for UI compatibility
 const mapWmoToWeather = (code: number, isDay: boolean = true) => {
@@ -83,11 +184,9 @@ export const fetchWeatherData = async (lat: number, lon: number): Promise<Weathe
   const API_URL = `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&current=temperature_2m,is_day,weather_code,wind_speed_10m,wind_direction_10m&wind_speed_unit=ms&timezone=auto`;
 
   try {
-    const response = await fetch(API_URL);
-    if (!response.ok) throw new Error(`Weather fetch failed: ${response.statusText}`);
-    
-    const data = await response.json();
+    const data = await fetchJson<any>(API_URL, 'current-weather', lat, lon);
     const current = data.current;
+    if (!current) throw new Error('Weather fetch failed: missing current data');
 
     const weatherResult: WeatherData = {
       wind: {
@@ -103,8 +202,7 @@ export const fetchWeatherData = async (lat: number, lon: number): Promise<Weathe
     saveToCache(cacheKey, weatherResult);
     return weatherResult;
   } catch (error) {
-    console.error('Weather Service Error:', error);
-    throw error;
+    return handleWeatherRequestFailure<WeatherData>('current-weather', API_URL, lat, lon, cacheKey, error);
   }
 };
 
@@ -123,11 +221,11 @@ export const fetchForecastData = async (lat: number, lon: number): Promise<Forec
   const API_URL = `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&hourly=temperature_2m,weather_code,wind_speed_10m,wind_direction_10m,pressure_msl&wind_speed_unit=ms&timezone=auto`;
 
   try {
-    const response = await fetch(API_URL);
-    if (!response.ok) throw new Error(`Forecast fetch failed: ${response.statusText}`);
-    
-    const data = await response.json();
+    const data = await fetchJson<any>(API_URL, 'hourly-forecast', lat, lon);
     const hourly = data.hourly;
+    if (!hourly?.time || !Array.isArray(hourly.time)) {
+      throw new Error('Forecast fetch failed: missing hourly data');
+    }
 
     const forecastResult: ForecastItem[] = hourly.time.map((timeStr: string, index: number): ForecastItem => {
       const date = new Date(timeStr);
@@ -162,9 +260,82 @@ export const fetchForecastData = async (lat: number, lon: number): Promise<Forec
     saveToCache(cacheKey, forecastResult);
     return forecastResult;
   } catch (error) {
-    console.error('Forecast Service Error:', error);
-    throw error;
+    return handleWeatherRequestFailure<ForecastItem[]>('hourly-forecast', API_URL, lat, lon, cacheKey, error);
   }
+};
+
+/**
+ * Fetches marine forecast data from Open-Meteo Marine.
+ * This is intentionally separate from the weather forecast so a marine outage
+ * does not force the app into mock weather mode.
+ */
+export const fetchMarineForecastData = async (lat: number, lon: number): Promise<MarineForecastItem[]> => {
+  const cacheKey = `marine_${lat.toFixed(3)}_${lon.toFixed(3)}`;
+  const cachedData = getFromCache<MarineForecastItem[]>(cacheKey);
+
+  if (cachedData) {
+    console.log('Returning cached marine data');
+    return cachedData;
+  }
+
+  const hourly = [
+    'wave_height',
+    'wave_direction',
+    'wave_period',
+    'swell_wave_height',
+    'swell_wave_direction',
+    'sea_surface_temperature',
+  ].join(',');
+  const API_URL = `https://marine-api.open-meteo.com/v1/marine?latitude=${lat}&longitude=${lon}&hourly=${hourly}&timezone=auto&forecast_days=6&cell_selection=sea`;
+
+  try {
+    const data = await fetchJson<any>(API_URL, 'marine-forecast', lat, lon);
+    const marineHourly = data.hourly;
+
+    if (!marineHourly?.time || !Array.isArray(marineHourly.time)) {
+      throw new Error('Marine fetch failed: missing hourly data');
+    }
+
+    const marineResult: MarineForecastItem[] = marineHourly.time
+      .map((timeStr: string, index: number): MarineForecastItem => ({
+        dt_txt: timeStr.replace('T', ' '),
+        marine: {
+          waveHeightM: optionalNumber(marineHourly.wave_height?.[index]),
+          waveDirectionDeg: optionalNumber(marineHourly.wave_direction?.[index]),
+          wavePeriodS: optionalNumber(marineHourly.wave_period?.[index]),
+          swellWaveHeightM: optionalNumber(marineHourly.swell_wave_height?.[index]),
+          swellWaveDirectionDeg: optionalNumber(marineHourly.swell_wave_direction?.[index]),
+          seaSurfaceTemperatureC: optionalNumber(marineHourly.sea_surface_temperature?.[index]),
+          source: 'open-meteo-marine',
+        },
+      }))
+      .filter(item => (
+        item.marine.waveHeightM !== undefined ||
+        item.marine.waveDirectionDeg !== undefined ||
+        item.marine.wavePeriodS !== undefined ||
+        item.marine.swellWaveHeightM !== undefined ||
+        item.marine.swellWaveDirectionDeg !== undefined ||
+        item.marine.seaSurfaceTemperatureC !== undefined
+      ));
+
+    saveToCache(cacheKey, marineResult);
+    return marineResult;
+  } catch (error) {
+    return handleWeatherRequestFailure<MarineForecastItem[]>('marine-forecast', API_URL, lat, lon, cacheKey, error);
+  }
+};
+
+export const mergeMarineForecastData = (
+  forecastItems: ForecastItem[],
+  marineItems: MarineForecastItem[]
+): ForecastItem[] => {
+  if (!marineItems.length) return forecastItems;
+
+  const marineByTime = new Map(marineItems.map(item => [item.dt_txt, item.marine]));
+  return forecastItems.map(item => ({
+    ...item,
+    marine: marineByTime.get(item.dt_txt) || item.marine,
+  }));
 };
 
 export const getMockForecastData = (): ForecastItem[] => {

@@ -1,21 +1,22 @@
-import { useState, useEffect } from 'react';
+import { useMemo, useState } from 'react';
 import { Island } from '../types';
+import { getActiveWeatherFixtureTargetRegionId } from '../utils/weatherFixtures';
 
 export const useLocation = (allIslands: Island[]) => {
-  const [selectedIsland, setSelectedIsland] = useState<Island | undefined>(undefined);
+  const [selectedIslandId, setSelectedIslandId] = useState<string | undefined>(() => (
+    getActiveWeatherFixtureTargetRegionId() || localStorage.getItem('selectedIslandId') || undefined
+  ));
 
-  useEffect(() => {
-    if (allIslands.length > 0 && !selectedIsland) {
-        const savedId = localStorage.getItem('selectedIslandId');
-        const initialSelection = allIslands.find(i => i.id === savedId) || allIslands.find(i => i.id === 'milos') || allIslands[0];
-        if (initialSelection) {
-            setSelectedIsland(initialSelection);
-        }
-    }
-  }, [allIslands]);
+  const selectedIsland = useMemo(() => {
+    if (allIslands.length === 0) return undefined;
+    return allIslands.find(i => i.id === selectedIslandId)
+      || allIslands.find(i => i.id === 'milos')
+      || allIslands.find(i => i.id.endsWith('-milos') || i.name.en === 'Milos')
+      || allIslands[0];
+  }, [allIslands, selectedIslandId]);
 
   const selectIsland = (island: Island) => {
-    setSelectedIsland(island);
+    setSelectedIslandId(island.id);
     localStorage.setItem('selectedIslandId', island.id);
   };
 

@@ -1,0 +1,44 @@
+{
+  "timestamp": "2026-05-19T17:45:02.621Z",
+  "apisConfigured": [
+    "pexels"
+  ],
+  "apisSkipped": [
+    {
+      "source": "wikimedia_enterprise",
+      "reason": "WIKIMEDIA_ENTERPRISE_ACCESS_TOKEN or WIKIMEDIA_ENTERPRISE_USERNAME/WIKIMEDIA_ENTERPRISE_PASSWORD is not set"
+    },
+    {
+      "source": "pixabay",
+      "reason": "PIXABAY_API_KEY is not set"
+    },
+    {
+      "source": "unsplash",
+      "reason": "UNSPLASH_ACCESS_KEY is not set"
+    }
+  ],
+  "totalBeachesProcessed": 34,
+  "totalMilosBeaches": 34,
+  "stockQueryLimitPerBeach": 6,
+  "wikimediaEnterpriseQueryLimitPerBeach": 3,
+  "verifiedBefore": 12,
+  "verifiedAfter": 12,
+  "candidatesBefore": 2,
+  "candidatesAfter": 2,
+  "missingBefore": 20,
+  "missingAfter": 20,
+  "apiRequestCounts": {},
+  "cacheHits": {
+    "wikimedia_commons": 231,
+    "pexels": 132
+  },
+  "rateLimits": {},
+  "riskyMatchesExcluded": 1342,
+  "errors": [],
+  "stockApiRequestsSkippedBecauseMissingKeys": 330,
+  "pixabayAssetsDownloaded": 0,
+  "pixabayAssetCacheHits": 0,
+  "newVerifiedImages": [],
+  "genericImagesAdded": false,
+  "uiRuntimePhotoApiCalls": false
+}

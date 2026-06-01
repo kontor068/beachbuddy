@@ -91,7 +91,8 @@ export const isSearchMatch = (query: string, values: Array<string | undefined | 
       valueVariants.some(valueVariant =>
         valueVariant.includes(queryVariant) ||
         queryVariant.includes(valueVariant) ||
-        valueVariant.split(' ').some(word => word.startsWith(queryVariant))
+        valueVariant.split(' ').some(word => word.startsWith(queryVariant)) ||
+        (queryVariant.length >= 4 && fuzzySearchScore(queryVariant, valueVariant) >= 50)
       )
     );
   });

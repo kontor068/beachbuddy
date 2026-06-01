@@ -1,4 +1,38 @@
-import { WindDirection, WaveCondition, ForecastItem, DailyForecast } from '../types';
+import { WindDirection, WaveCondition, ForecastItem, DailyForecast, MarineForecast } from '../types';
+
+const maxNumber = (values: Array<number | undefined>): number | undefined => {
+  const valid = values.filter((value): value is number => typeof value === 'number' && Number.isFinite(value));
+  return valid.length > 0 ? Math.max(...valid) : undefined;
+};
+
+const averageNumber = (values: Array<number | undefined>): number | undefined => {
+  const valid = values.filter((value): value is number => typeof value === 'number' && Number.isFinite(value));
+  if (valid.length === 0) return undefined;
+  return valid.reduce((sum, value) => sum + value, 0) / valid.length;
+};
+
+const summarizeDailyMarine = (items: ForecastItem[]): MarineForecast | undefined => {
+  const marineItems = items
+    .map(item => item.marine)
+    .filter((marine): marine is MarineForecast => Boolean(marine));
+
+  if (marineItems.length === 0) return undefined;
+
+  const maxWaveHeight = maxNumber(marineItems.map(item => item.waveHeightM));
+  const maxSwellHeight = maxNumber(marineItems.map(item => item.swellWaveHeightM));
+  const maxWavePeriod = maxNumber(marineItems.map(item => item.wavePeriodS));
+  const highestWaveItem = marineItems.find(item => item.waveHeightM === maxWaveHeight) || marineItems[0];
+
+  return {
+    waveHeightM: maxWaveHeight,
+    waveDirectionDeg: highestWaveItem.waveDirectionDeg,
+    wavePeriodS: maxWavePeriod,
+    swellWaveHeightM: maxSwellHeight,
+    swellWaveDirectionDeg: highestWaveItem.swellWaveDirectionDeg,
+    seaSurfaceTemperatureC: averageNumber(marineItems.map(item => item.seaSurfaceTemperatureC)),
+    source: 'open-meteo-marine',
+  };
+};
 
 export const processForecastData = (forecastItems: ForecastItem[]): DailyForecast[] => {
   if (!forecastItems || forecastItems.length === 0) return [];
@@ -20,7 +54,8 @@ export const processForecastData = (forecastItems: ForecastItem[]): DailyForecas
       weather: midday.weather[0], 
       temp_max: info.temps.length > 0 ? Math.max(...info.temps) : 25, 
       temp_min: info.temps.length > 0 ? Math.min(...info.temps) : 15, 
-      hourly: info.items 
+      hourly: info.items,
+      marine: summarizeDailyMarine(info.items)
     };
   }).slice(0, 6);
 };

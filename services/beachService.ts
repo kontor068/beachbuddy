@@ -555,6 +555,111 @@ const transliterateToGreek = (text: string): string => {
     return translatedParts.join(' ');
 };
 
+const normalizeGreekFinalSigma = (text: string): string =>
+    text.replace(/σ(?=([\s)\],.:;!?»"']|$))/g, 'ς');
+
+const normalizeBeachNameLookupKey = (text: string): string =>
+    cleanBeachName(text)
+        .normalize('NFD')
+        .replace(/[\u0300-\u036f]/g, '')
+        .toLowerCase()
+        .replace(/[^a-z0-9]+/g, ' ')
+        .trim();
+
+const VERIFIED_GREEK_BEACH_NAMES: Record<string, string> = {
+    // Chania / Crete names that appear in the current curated dataset as Latin/Greeklish.
+    afrata: 'Αφράτα',
+    'agios onoufrios': 'Άγιος Ονούφριος',
+    alonaki: 'Αλωνάκι',
+    ammos: 'Άμμος',
+    aptera: 'Άπτερα',
+    'aspri limni': 'Άσπρη Λίμνη',
+    astropelekitá: 'Αστροπελεκητά',
+    astropelekita: 'Αστροπελεκητά',
+    balos: 'Μπάλος',
+    'chrysi akti': 'Χρυσή Ακτή',
+    elafonisi: 'Ελαφονήσι',
+    falasarna: 'Φαλάσαρνα',
+    finikas: 'Φοίνικας',
+    georgioupoli: 'Γεωργιούπολη',
+    grammeno: 'Γραμμένο',
+    ilingas: 'Ίλιγγας',
+    kalami: 'Καλάμι',
+    kalathas: 'Καλαθάς',
+    kalyves: 'Καλύβες',
+    kedrodasos: 'Κεδρόδασος',
+    kera: 'Κερά',
+
+    // Common/famous names present in multiple regions. Only include high-confidence Greek forms.
+    achlada: 'Αχλάδα',
+    'agios georgios': 'Άγιος Γεώργιος',
+    'agios nikolaos': 'Άγιος Νικόλαος',
+    alyki: 'Αλυκή',
+    'akti kalogrias': 'Ακτή Καλογριάς',
+    'chrysi ammoudia': 'Χρυσή Αμμουδιά',
+    diaporti: 'Διαπόρτι',
+    drenia: 'Δρένια',
+    hanioti: 'Χανιώτη',
+    iliovasilema: 'Ηλιοβασίλεμα',
+    kakoudia: 'Κακούδια',
+    kalamitsi: 'Καλαμίτσι',
+    kallithea: 'Καλλιθέα',
+    kalopigado: 'Καλοπήγαδο',
+    karagatsia: 'Καραγάτσια',
+    kavouri: 'Καβούρι',
+    kavourotrypes: 'Καβουρότρυπες',
+    kefalas: 'Κεφαλάς',
+    klimataria: 'Κληματαριά',
+    komitsa: 'Κομίτσα',
+    'kryfos paradeisos': 'Κρυφός Παράδεισος',
+    lagomandra: 'Λαγόμανδρα',
+    lemos: 'Λαιμός',
+    likithos: 'Λήκυθος',
+    limanaki: 'Λιμανάκι',
+    limani: 'Λιμάνι',
+    linaraki: 'Λιναράκι',
+    livadi: 'Λιβάδι',
+    marathias: 'Μαραθιάς',
+    'megali ammos': 'Μεγάλη Άμμος',
+    'mikri elia': 'Μικρή Ελιά',
+    myti: 'Μύτη',
+    ouranoupoli: 'Ουρανούπολη',
+    paradisos: 'Παράδεισος',
+    pefkochori: 'Πευκοχώρι',
+    platania: 'Πλατάνια',
+    platanitsi: 'Πλατανίτσι',
+    psakoudia: 'Ψακούδια',
+    sarti: 'Σάρτη',
+    sykia: 'Συκιά',
+    tigania: 'Τηγάνια',
+    tourkolimnionas: 'Τουρκολιμνιώνας',
+    'trani ammouda': 'Τρανή Αμμούδα',
+    varkes: 'Βάρκες',
+    vourvourou: 'Βουρβουρού',
+    panteleimonas: 'Παντελεήμονας',
+    skotina: 'Σκοτίνα',
+    aretsou: 'Αρετσού',
+    patoma: 'Πάτωμα',
+    peraia: 'Περαία',
+    trapezi: 'Τραπέζι',
+};
+
+export const getGreekDisplayBeachName = (rawName: string): string => {
+    const cleaned = cleanBeachName(rawName);
+    if (/[α-ωΑ-Ωά-ώ]/.test(cleaned)) {
+        return normalizeGreekFinalSigma(cleaned);
+    }
+
+    const exact = VERIFIED_GREEK_BEACH_NAMES[cleaned.toLowerCase()];
+    if (exact) return exact;
+
+    const normalized = VERIFIED_GREEK_BEACH_NAMES[normalizeBeachNameLookupKey(cleaned)];
+    if (normalized) return normalized;
+
+    // Do not show unverified Greeklish as Greek text. Latin is safer than wrong Greek.
+    return cleaned;
+};
+
 /**
  * Converts Greek text to readable Greeklish for display (e.g. "Παραλία Σαρακίνικο" → "Paralia Sarakiniko")
  * If the text is already Latin, returns it as-is.
@@ -1057,6 +1162,27 @@ type JsonBeachRecord = {
   metadata?: unknown;
 };
 
+export interface BeachRegionIndexEntry {
+  id: string;
+  region: string;
+  prefecture: string;
+  beachCount: number;
+  coordinates: { lat: number; lon: number };
+  dataPath: string;
+}
+
+type BeachRegionIndexPayload = {
+  regions?: BeachRegionIndexEntry[];
+};
+
+const BEACH_REGION_INDEX_PATH = '/data/beaches/index.json';
+
+export const getBeachRegionId = (region: string | null | undefined, prefecture: string | null | undefined, fallbackId: number | string = 'unknown') => {
+  const base = `${region || 'Unknown'}-${prefecture || region || 'Unknown'}`;
+  const normalized = base.toLowerCase().trim().replace(/\s+/g, '-').replace(/[^a-z0-9-]/g, '');
+  return normalized || `unknown-${fallbackId}`;
+};
+
 const isBeachMetadata = (value: unknown): value is BeachMetadata => {
   if (!value || typeof value !== 'object') return false;
   const metadata = value as Partial<BeachMetadata>;
@@ -1120,48 +1246,121 @@ const parseBeachPayload = (beachData: unknown): RawBeach[] => {
   return allBeaches;
 };
 
-export const loadBeaches = async (): Promise<RawBeach[]> => {
-  // Load beach data from greek_beaches.json which contains comprehensive Greek beaches data.
-  try {
-      let beachData: unknown;
-      const response = await fetch('/greek_beaches.json');
-      if (response.ok) {
-          beachData = await response.json();
-      } else {
-          // Fallback when public asset is unavailable/misconfigured.
-          const jsonModule = await import('../src/data/greek_beaches.json');
-          beachData = jsonModule.default;
-      }
+const dedupeBeaches = (allBeaches: RawBeach[]): RawBeach[] => {
+  // Deduplicate only exact duplicates. We keep beaches that share coordinates
+  // but have different names because they are distinct entries in the source data.
+  const uniqueBeaches: RawBeach[] = [];
+  const seenKeys = new Set<string>();
 
-      const allBeaches = parseBeachPayload(beachData);
-      
-      // Deduplicate only exact duplicates. We keep beaches that share coordinates
-      // but have different names because they are distinct entries in the source data.
-      const uniqueBeaches: RawBeach[] = [];
-      const seenKeys = new Set<string>();
-
-      allBeaches.forEach(beach => {
-          const exactKey = `${beach.region}|${beach.prefecture}|${beach.name}|${beach.lat.toFixed(6)}|${beach.lon.toFixed(6)}`;
-          if (!seenKeys.has(exactKey)) {
-              uniqueBeaches.push(beach);
-              seenKeys.add(exactKey);
-          }
-      });
-    
-    console.log(`Total beaches loaded: ${uniqueBeaches.length}`);
-    
-    // Cache the loaded beaches
-    if (uniqueBeaches.length > 0) {
-      cacheBeaches(uniqueBeaches);
+  allBeaches.forEach(beach => {
+    const exactKey = `${beach.region}|${beach.prefecture}|${beach.name}|${beach.lat.toFixed(6)}|${beach.lon.toFixed(6)}`;
+    if (!seenKeys.has(exactKey)) {
+      uniqueBeaches.push(beach);
+      seenKeys.add(exactKey);
     }
-    
-    return uniqueBeaches;
+  });
+
+  return uniqueBeaches;
+};
+
+export const loadBeachRegionIndex = async (): Promise<BeachRegionIndexEntry[]> => {
+  const response = await fetch(BEACH_REGION_INDEX_PATH);
+  if (!response.ok) {
+    throw new Error(`Failed to fetch ${BEACH_REGION_INDEX_PATH}: ${response.status}`);
+  }
+
+  const payload = await response.json() as BeachRegionIndexPayload;
+  if (!Array.isArray(payload.regions)) {
+    throw new Error(`${BEACH_REGION_INDEX_PATH} is missing regions[]`);
+  }
+
+  return payload.regions.filter(region =>
+    region &&
+    typeof region.id === 'string' &&
+    typeof region.region === 'string' &&
+    typeof region.prefecture === 'string' &&
+    typeof region.beachCount === 'number' &&
+    region.coordinates &&
+    Number.isFinite(region.coordinates.lat) &&
+    Number.isFinite(region.coordinates.lon) &&
+    typeof region.dataPath === 'string'
+  );
+};
+
+export const loadBeachesForRegion = async (regionId: string): Promise<RawBeach[]> => {
+  const path = `/data/beaches/${encodeURIComponent(regionId)}.json`;
+
+  try {
+    const response = await fetch(path);
+    if (!response.ok) {
+      throw new Error(`Failed to fetch ${path}: ${response.status}`);
+    }
+
+    const payload = await response.json();
+    if (!Array.isArray(payload)) {
+      throw new Error(`${path} is not a beach array`);
+    }
+
+    return dedupeBeaches(payload as RawBeach[]);
+  } catch (error) {
+    console.warn('Region beach file unavailable; falling back to full beach dataset.', {
+      regionId,
+      error,
+    });
+    const fullDataset = await loadBeaches();
+    return fullDataset.filter(beach => getBeachRegionId(beach.region, beach.prefecture, beach.id) === regionId);
+  }
+};
+
+const fetchBeachDataset = async (): Promise<RawBeach[]> => {
+  let beachData: unknown;
+  const response = await fetch('/greek_beaches.json');
+  if (!response.ok) {
+    throw new Error(`Failed to fetch /greek_beaches.json: ${response.status}`);
+  }
+  beachData = await response.json();
+
+  const allBeaches = parseBeachPayload(beachData);
+  const uniqueBeaches = dedupeBeaches(allBeaches);
+
+  console.log(`Total beaches loaded: ${uniqueBeaches.length}`);
+
+  if (uniqueBeaches.length > 0) {
+    void cacheBeaches(uniqueBeaches);
+  }
+
+  return uniqueBeaches;
+};
+
+const getCachedBeachesQuickly = async (): Promise<RawBeach[] | null> => {
+  // Cache should improve repeat visits, not block the first beach list.
+  return Promise.race([
+    getCachedBeaches(),
+    new Promise<null>(resolve => globalThis.setTimeout(() => resolve(null), 300)),
+  ]);
+};
+
+export const loadBeaches = async (): Promise<RawBeach[]> => {
+  // Start the static JSON fetch immediately; IndexedDB can be slow or unavailable on fresh sessions.
+  const freshBeachesRequest = fetchBeachDataset();
+  const cachedBeaches = await getCachedBeachesQuickly();
+
+  if (cachedBeaches && cachedBeaches.length > 0) {
+    freshBeachesRequest.catch(error => {
+      console.warn('Beach data refresh failed; keeping cached dataset.', error);
+    });
+    console.log(`Loaded ${cachedBeaches.length} beaches from IndexedDB cache.`);
+    return cachedBeaches;
+  }
+
+  try {
+    return await freshBeachesRequest;
   } catch (error) {
     console.error("Critical error loading beach data, falling back to IndexedDB cache:", error);
-    const cachedBeaches = await getCachedBeaches();
-    if (cachedBeaches && cachedBeaches.length > 0) {
-      console.log(`Loaded ${cachedBeaches.length} beaches from IndexedDB cache.`);
-      return cachedBeaches;
+    const fallbackCachedBeaches = await getCachedBeaches();
+    if (fallbackCachedBeaches && fallbackCachedBeaches.length > 0) {
+      console.log(`Loaded ${fallbackCachedBeaches.length} beaches from IndexedDB cache.`);
+      return fallbackCachedBeaches;
     }
     return [];
   }
@@ -1247,8 +1446,8 @@ const FAMOUS_DESCRIPTIONS: Record<string, { en: string, gr: string }> = {
         gr: "Πολυβραβευμένη παραλία με εκτυφλωτικά λευκά βότσαλα και ηλεκτρίκ μπλε νερά."
     },
     'Voidokilia': {
-        en: "A perfect Omega-shaped bay with golden sand dunes and shallow calm waters.",
-        gr: "Ένας τέλειος κόλπος σε σχήμα Ωμέγα με αμμόλοφους και ρηχά ήρεμα νερά."
+        en: "An Omega-shaped bay with golden sand dunes and shallow water that is generally pleasant in settled weather.",
+        gr: "Κόλπος σε σχήμα Ωμέγα με αμμόλοφους και ρηχά νερά που είναι γενικά ευχάριστα σε ήπιες συνθήκες."
     },
     'Simos (Elafonisos)': {
         en: "Spectacular double bay with fine golden sand and dunes. Caribbean-style waters.",
@@ -1437,10 +1636,10 @@ const CURATED_BEACH_NARRATIVES: CuratedBeachNarrative[] = [
     ),
     makeBeachNarrative(
         ['Voidokilia'],
-        'Its near-perfect horseshoe shape is only half the story. Voidokilia also backs onto the Gialova lagoon, one of Greece\'s most important wetlands.',
-        'Το σχεδόν τέλειο πεταλοειδές σχήμα της είναι μόνο η μισή ιστορία. Η Βοϊδοκοιλιά ακουμπά και στη λιμνοθάλασσα της Γιάλοβας, έναν από τους σημαντικότερους υγροτόπους της Ελλάδας.',
-        'Voidokilia feels iconic from above, but on the ground it is the pairing of golden sand, calm water and the protected wetland behind it that makes it special. If you keep exploring, the area keeps unfolding with viewpoints and castle remains above the bay.',
-        'Η Βοϊδοκοιλιά είναι εμβληματική από ψηλά, όμως από κοντά αυτό που την κάνει μοναδική είναι ο συνδυασμός χρυσαφένιας άμμου, ήρεμου νερού και προστατευμένου υγροτόπου ακριβώς από πίσω. Αν συνεχίσεις την εξερεύνηση, η περιοχή ανοίγει με θέες και ίχνη κάστρου πάνω από τον κόλπο.'
+        'Its distinctive horseshoe shape is only half the story. Voidokilia also backs onto the Gialova lagoon, one of Greece\'s most important wetlands.',
+        'Το ξεχωριστό πεταλοειδές σχήμα της είναι μόνο η μισή ιστορία. Η Βοϊδοκοιλιά ακουμπά και στη λιμνοθάλασσα της Γιάλοβας, έναν από τους σημαντικότερους υγροτόπους της Ελλάδας.',
+        'Voidokilia feels iconic from above, but on the ground it is the pairing of golden sand, shallow water and the protected wetland behind it that makes it special. If you keep exploring, the area keeps unfolding with viewpoints and castle remains above the bay.',
+        'Η Βοϊδοκοιλιά είναι εμβληματική από ψηλά, όμως από κοντά αυτό που την κάνει μοναδική είναι ο συνδυασμός χρυσαφένιας άμμου, ρηχού νερού και προστατευμένου υγροτόπου ακριβώς από πίσω. Αν συνεχίσεις την εξερεύνηση, η περιοχή ανοίγει με θέες και ίχνη κάστρου πάνω από τον κόλπο.'
     ),
     makeBeachNarrative(
         ['Matala'],
@@ -1483,8 +1682,8 @@ const CURATED_BEACH_NARRATIVES: CuratedBeachNarrative[] = [
     ),
     makeBeachNarrative(
         ['Beach Vravrona', 'Vravrona', 'Brauron', 'Βραυρώνα'],
-        'A calmer east-Attica swim spot tied to the Vravrona wetland and the nearby sanctuary of Artemis rather than to beach-bar culture.',
-        'Πιο ήρεμο σημείο για μπάνιο στην ανατολική Αττική, δεμένο περισσότερο με τον υγρότοπο της Βραυρώνας και το κοντινό ιερό της Αρτέμιδος παρά με beach-bar κουλτούρα.',
+        'A lower-key east-Attica swim spot tied to the Vravrona wetland and the nearby sanctuary of Artemis rather than to beach-bar culture.',
+        'Πιο χαμηλών τόνων σημείο για μπάνιο στην ανατολική Αττική, δεμένο περισσότερο με τον υγρότοπο της Βραυρώνας και το κοντινό ιερό της Αρτέμιδος παρά με beach-bar κουλτούρα.',
         'Vravrona has a sense of place that many Attica beaches lack. The beach sits beside one of the region\'s important wetlands, while just inland is the archaeological site of Artemis Vravronia, so the area feels ecological and historical at the same time.',
         'Η Βραυρώνα έχει μια αίσθηση τόπου που λείπει από πολλές παραλίες της Αττικής. Η ακτή βρίσκεται δίπλα σε έναν από τους σημαντικούς υγροτόπους της περιοχής, ενώ λίγο πιο μέσα είναι και ο αρχαιολογικός χώρος της Αρτέμιδος Βραυρωνίας, οπότε το μέρος διαβάζεται ταυτόχρονα οικολογικά και ιστορικά.'
     ),
@@ -1506,8 +1705,8 @@ const CURATED_BEACH_NARRATIVES: CuratedBeachNarrative[] = [
         ['Aponissos Beach', 'Aponisos', 'Aponissos', 'Απονήσος'],
         'Agistri\'s postcard beach: a tiny turquoise bay linked to a little islet, popular with swimmers, boats and easy island-day-trip energy.',
         'Η καρτποσταλική παραλία του Αγκιστρίου: μικρός τιρκουάζ όρμος δεμένος με νησάκι, αγαπημένος για μπάνιο, σκάφη και εύκολη ημερήσια εκδρομή.',
-        'Aponissos feels almost custom-built for a Saronic escape. The water is vividly clear, the bay is naturally sheltered and the small islet opposite gives the whole place that neat, enclosed, island-lagoon look.',
-        'Η Απονήσος μοιάζει σχεδόν φτιαγμένη για απόδραση στον Σαρωνικό. Το νερό είναι εντυπωσιακά καθαρό, ο όρμος είναι φυσικά προφυλαγμένος και το μικρό νησάκι απέναντι δίνει σε όλο το τοπίο αυτή την κλειστή, σχεδόν λιμνοθαλασσινή αίσθηση.'
+        'Aponissos feels almost custom-built for a Saronic escape. The water is vividly clear, the bay has an enclosed shape and the small islet opposite gives the whole place that neat, island-lagoon look.',
+        'Η Απονήσος μοιάζει σχεδόν φτιαγμένη για απόδραση στον Σαρωνικό. Το νερό είναι εντυπωσιακά καθαρό, ο όρμος έχει κλειστό σχήμα και το μικρό νησάκι απέναντι δίνει σε όλο το τοπίο αυτή τη σχεδόν λιμνοθαλασσινή αίσθηση.'
     ),
     makeBeachNarrative(
         ['Porto Germeno'],
@@ -1565,8 +1764,8 @@ const CURATED_BEACH_NARRATIVES: CuratedBeachNarrative[] = [
     ),
     makeBeachNarrative(
         ['Ψαρρού', 'Psarou'],
-        'Mykonos\' most exclusive beach — a sheltered bay with crystal water where luxury yachts anchor and high-end beach clubs set the tone.',
-        'Η πιο exclusive παραλία της Μυκόνου — ένας προφυλαγμένος όρμος με κρυστάλλινα νερά όπου αγκυροβολούν πολυτελή γιοτ και τα beach clubs δίνουν τον τόνο.'
+        'Mykonos\' most exclusive beach — a polished bay setting with crystal water where luxury yachts anchor and high-end beach clubs set the tone.',
+        'Η πιο exclusive παραλία της Μυκόνου — ένας προσεγμένος όρμος με κρυστάλλινα νερά όπου αγκυροβολούν πολυτελή γιοτ και τα beach clubs δίνουν τον τόνο.'
     ),
     makeBeachNarrative(
         ['Πλατύς Γιαλός', 'Platis Gialos'],
@@ -1575,13 +1774,13 @@ const CURATED_BEACH_NARRATIVES: CuratedBeachNarrative[] = [
     ),
     makeBeachNarrative(
         ['Όρνος', 'Ornos'],
-        'A family-friendly bay close to Mykonos town, with calm shallow water, tavernas on the waterfront and a relaxed, less hectic vibe.',
-        'Οικογενειακός κόλπος κοντά στη Χώρα Μυκόνου, με ήρεμα ρηχά νερά, ταβέρνες στο νερό και χαλαρή, λιγότερο φρενήρη ατμόσφαιρα.'
+        'A family-oriented bay close to Mykonos town, with shallow water, tavernas on the waterfront and a relaxed, less hectic vibe.',
+        'Οικογενειακός κόλπος κοντά στη Χώρα Μυκόνου, με ρηχά νερά, ταβέρνες στο νερό και χαλαρή, λιγότερο φρενήρη ατμόσφαιρα.'
     ),
     makeBeachNarrative(
         ['Άγιος Στέφανος'],
         'One of the closest beaches to Mykonos town and the old port, with views of Delos island and a mellow sunset-watching character.',
-        'Από τις πιο κοντινές παραλίες στη Χώρα Μυκόνου και το παλιό λιμάνι, με θέα τη Δήλο και ήρεμο χαρακτήρα ηλιοβασιλέματος.'
+        'Από τις πιο κοντινές παραλίες στη Χώρα Μυκόνου και το παλιό λιμάνι, με θέα τη Δήλο και χαλαρό χαρακτήρα ηλιοβασιλέματος.'
     ),
 
     // --- Naxos ---
@@ -1602,8 +1801,8 @@ const CURATED_BEACH_NARRATIVES: CuratedBeachNarrative[] = [
     ),
     makeBeachNarrative(
         ['Mikri Vigla', 'Μικρή Βίγλα'],
-        'A windsurfer\'s paradise split into two sides by a rocky headland: one calm for swimming, one windy for kitesurfing and windsurfing.',
-        'Παράδεισος για windsurfers χωρισμένος σε δύο πλευρές από βραχώδες ακρωτήρι: μία ήρεμη για κολύμπι, μία φυσαγμένη για kitesurfing και windsurfing.'
+        'A windsurfer\'s paradise split into two sides by a rocky headland: one commonly used for swimming in suitable conditions, one windy for kitesurfing and windsurfing.',
+        'Παράδεισος για windsurfers χωρισμένος σε δύο πλευρές από βραχώδες ακρωτήρι: μία που χρησιμοποιείται συχνά για κολύμπι σε κατάλληλες συνθήκες, μία φυσαγμένη για kitesurfing και windsurfing.'
     ),
 
     // --- Paros ---
@@ -1611,7 +1810,7 @@ const CURATED_BEACH_NARRATIVES: CuratedBeachNarrative[] = [
         ['Kolymbithres', 'Κολυμπήθρες'],
         'Smooth granite boulders sculpted by wind and sea create natural rock pools and hidden coves — Paros\' most photogenic and distinctive beach.',
         'Λείοι γρανιτένιοι ογκόλιθοι σμιλεμένοι από τον αέρα και τη θάλασσα δημιουργούν φυσικές πισίνες και κρυφούς κόλπους — η πιο φωτογενής και ιδιαίτερη παραλία της Πάρου.',
-        'The wind-carved granite is what makes Kolymbithres unique in the Cyclades. Small coves between smooth boulders create natural pools that feel intimate and sheltered, even when the rest of Paros is breezy.',
+        'The wind-carved granite is what makes Kolymbithres unique in the Cyclades. Small coves between smooth boulders create natural pool-like pockets that can feel more enclosed than open beaches, depending on wind direction.',
         'Ο γρανίτης σμιλεμένος από τον αέρα κάνει τις Κολυμπήθρες μοναδικές στις Κυκλάδες. Μικροί κόλποι ανάμεσα σε λείους ογκόλιθους δημιουργούν φυσικές πισίνες που δίνουν αίσθηση οικειότητας και προστασίας, ακόμα κι όταν φυσά στην υπόλοιπη Πάρο.'
     ),
     makeBeachNarrative(
@@ -1628,8 +1827,8 @@ const CURATED_BEACH_NARRATIVES: CuratedBeachNarrative[] = [
     // --- Milos ---
     makeBeachNarrative(
         ['Firiplaka', 'Φυριπλάκα'],
-        'Colourful volcanic cliffs in reds, yellows and whites frame this sheltered sandy beach — one of Milos\' most vivid coastal compositions.',
-        'Πολύχρωμοι ηφαιστειακοί βράχοι σε κόκκινα, κίτρινα και λευκά πλαισιώνουν αυτή την προφυλαγμένη αμμουδιά — μια από τις πιο ζωηρές παράκτιες συνθέσεις της Μήλου.'
+        'Colourful volcanic cliffs in reds, yellows and whites frame this sandy south-coast beach — one of Milos\' most vivid coastal compositions.',
+        'Πολύχρωμοι ηφαιστειακοί βράχοι σε κόκκινα, κίτρινα και λευκά πλαισιώνουν αυτή τη νότια αμμουδιά — μια από τις πιο ζωηρές παράκτιες συνθέσεις της Μήλου.'
     ),
     makeBeachNarrative(
         ['Papafragas', 'Παπάφραγκας'],
@@ -1645,8 +1844,8 @@ const CURATED_BEACH_NARRATIVES: CuratedBeachNarrative[] = [
     ),
     makeBeachNarrative(
         ['Manganari', 'Μαγγανάρι'],
-        'A cluster of sheltered coves on the south coast of Ios with emerald water and white sand — far from the party scene, purely about nature.',
-        'Σύμπλεγμα προφυλαγμένων κόλπων στη νότια ακτή της Ίου με σμαραγδένια νερά και λευκή άμμο — μακριά από τα πάρτι, αποκλειστικά για φύση.'
+        'A cluster of south-coast coves on Ios with emerald water and white sand — far from the party scene, purely about nature.',
+        'Σύμπλεγμα νότιων κόλπων στην ακτή της Ίου με σμαραγδένια νερά και λευκή άμμο — μακριά από τα πάρτι, αποκλειστικά για φύση.'
     ),
 
     // --- Folegandros ---
@@ -1671,8 +1870,8 @@ const CURATED_BEACH_NARRATIVES: CuratedBeachNarrative[] = [
     // --- Tinos ---
     makeBeachNarrative(
         ['Κολυμπήθρα', 'Kolympithra'],
-        'Tinos\' most famous beach: twin bays offering a calmer west side for families and a wilder east side loved by surfers when the meltemi blows.',
-        'Η πιο γνωστή παραλία της Τήνου: δύο κόλποι με μια πιο ήρεμη δυτική πλευρά για οικογένειες και μια πιο άγρια ανατολική που αγαπούν οι surfers όταν φυσά μελτέμι.'
+        'Tinos\' most famous beach: twin bays with a more family-oriented west side and a wilder east side loved by surfers when the meltemi blows.',
+        'Η πιο γνωστή παραλία της Τήνου: δύο κόλποι με μια πιο οικογενειακή δυτική πλευρά και μια πιο άγρια ανατολική που αγαπούν οι surfers όταν φυσά μελτέμι.'
     ),
 
     // --- Andros ---
@@ -1709,8 +1908,8 @@ const CURATED_BEACH_NARRATIVES: CuratedBeachNarrative[] = [
     // --- Sifnos ---
     makeBeachNarrative(
         ['Vathy', 'Βαθύ'],
-        'A sheltered bay surrounded by olive groves and traditional pottery workshops — Sifnos\' most photogenic coastal village with a sandy beach.',
-        'Προφυλαγμένος κόλπος τριγυρισμένος από ελαιώνες και παραδοσιακά κεραμικά εργαστήρια — το πιο φωτογενές παραλιακό χωριό της Σίφνου με αμμουδιά.'
+        'A bay village surrounded by olive groves and traditional pottery workshops — Sifnos\' most photogenic coastal village with a sandy beach.',
+        'Παραθαλάσσιος κόλπος τριγυρισμένος από ελαιώνες και παραδοσιακά κεραμικά εργαστήρια — το πιο φωτογενές παραλιακό χωριό της Σίφνου με αμμουδιά.'
     ),
 
     // --- Koufonisia ---
@@ -1810,24 +2009,24 @@ const ATTICA_SHORT_DESCRIPTIONS: Record<string, { en: string; gr: string }> = {
         gr: "Φαρδιά παραλία της Βούλας στην Αθηναϊκή Ριβιέρα, δημοφιλής για την εύκολη πρόσβαση, τα ρηχά νερά και τον οικογενειακό ρυθμό."
     },
     "Β' πλαζ Βούλας": {
-        en: "Voula's second beach section, a classic organized Riviera stop with sunbeds, services and calm water on many days.",
-        gr: "Η δεύτερη πλαζ της Βούλας, κλασική οργανωμένη στάση της Ριβιέρας με ξαπλώστρες, παροχές και συχνά ήρεμα νερά."
+        en: "Voula's second beach section, a classic organized Riviera stop with sunbeds, services and water that is often pleasant in settled weather.",
+        gr: "Η δεύτερη πλαζ της Βούλας, κλασική οργανωμένη στάση της Ριβιέρας με ξαπλώστρες, παροχές και νερά που συχνά είναι πιο ήπια σε κατάλληλες συνθήκες."
     },
     "Μικρό Καβούρι": {
-        en: "A sheltered Kavouri cove with shallow clear water, small sandy pockets and one of the Riviera's easiest family swims.",
-        gr: "Προστατευμένος κολπίσκος στο Καβούρι με ρηχά καθαρά νερά, μικρές αμμουδιές και από τις πιο εύκολες οικογενειακές βουτιές της Ριβιέρας."
+        en: "A compact Kavouri cove with shallow clear water, small sandy pockets and one of the Riviera's easiest family swims.",
+        gr: "Μικρός κολπίσκος στο Καβούρι με ρηχά καθαρά νερά, μικρές αμμουδιές και από τις πιο εύκολες οικογενειακές βουτιές της Ριβιέρας."
     },
     "Παραλία Βάρκιζας": {
         en: "A large sandy Varkiza beach with organized sections and water-sports energy, especially lively in summer.",
         gr: "Μεγάλη αμμουδερή παραλία στη Βάρκιζα με οργανωμένα τμήματα και έντονη παρουσία θαλάσσιων σπορ, ιδιαίτερα ζωντανή το καλοκαίρι."
     },
     "Μεγάλο Καβούρι": {
-        en: "A wide Kavouri bay with calm shallow water, pine-framed edges and a relaxed south-suburbs beach mood.",
-        gr: "Μεγάλος κόλπος στο Καβούρι με ήρεμα ρηχά νερά, πεύκα στις άκρες και χαλαρή ατμόσφαιρα νότιων προαστίων."
+        en: "A wide Kavouri bay with shallow water that is generally pleasant in settled weather, pine-framed edges and a relaxed south-suburbs beach mood.",
+        gr: "Μεγάλος κόλπος στο Καβούρι με ρηχά νερά που είναι γενικά ευχάριστα σε ήπιες συνθήκες, πεύκα στις άκρες και χαλαρή ατμόσφαιρα νότιων προαστίων."
     },
     "Νηρηίδες": {
         en: "A small Vouliagmeni cove near Kavouri, known for clear water, rocks around the edges and a quieter feel.",
-        gr: "Μικρός κολπίσκος στη Βουλιαγμένη κοντά στο Καβούρι, γνωστός για καθαρά νερά, βράχια στα άκρα και πιο ήρεμη αίσθηση."
+        gr: "Μικρός κολπίσκος στη Βουλιαγμένη κοντά στο Καβούρι, γνωστός για καθαρά νερά, βράχια στα άκρα και πιο χαμηλών τόνων αίσθηση."
     },
     "Αστέρας Βουλιαγμένης": {
         en: "The premium Astir beach of Vouliagmeni, famous for polished facilities, fine sand and the classic luxury-Riviera setting.",
@@ -1839,7 +2038,7 @@ const ATTICA_SHORT_DESCRIPTIONS: Record<string, { en: string; gr: string }> = {
     },
     "Παναγίτσα η Δύτισσα": {
         en: "A tiny Vouliagmeni spot by the sea chapel, with rocks, clear water and a quiet local identity.",
-        gr: "Μικρό σημείο στη Βουλιαγμένη δίπλα στο θαλασσινό εκκλησάκι, με βράχια, καθαρά νερά και ήρεμη τοπική ταυτότητα."
+        gr: "Μικρό σημείο στη Βουλιαγμένη δίπλα στο θαλασσινό εκκλησάκι, με βράχια, καθαρά νερά και χαμηλών τόνων τοπική ταυτότητα."
     },
     "Λιμανάκια Βουλιαγμένης": {
         en: "Rocky coves below the Vouliagmeni road, loved for deep blue water, diving rocks and a wilder Riviera feel.",
@@ -1867,11 +2066,11 @@ const ATTICA_SHORT_DESCRIPTIONS: Record<string, { en: string; gr: string }> = {
     },
     "Παραλία Αγίου Κωνσταντίνου": {
         en: "A small Lavrio-area beach by Agios Konstantinos, close to old mining settlements and quiet Saronic views.",
-        gr: "Μικρή παραλία στην περιοχή του Αγίου Κωνσταντίνου Λαυρίου, κοντά σε παλιούς μεταλλευτικούς οικισμούς και ήρεμη θέα στον Σαρωνικό."
+        gr: "Μικρή παραλία στην περιοχή του Αγίου Κωνσταντίνου Λαυρίου, κοντά σε παλιούς μεταλλευτικούς οικισμούς και χαλαρή θέα στον Σαρωνικό."
     },
     "Παραλία Αγκώνα": {
         en: "A low-key East Attica cove, more useful for a peaceful local swim than for organized beach facilities.",
-        gr: "Χαμηλών τόνων κολπίσκος στην ανατολική Αττική, περισσότερο για ήρεμη τοπική βουτιά παρά για οργανωμένες παροχές."
+        gr: "Χαμηλών τόνων κολπίσκος στην ανατολική Αττική, περισσότερο για απλή τοπική βουτιά παρά για οργανωμένες παροχές."
     },
     "Μικρό Σέσι": {
         en: "A small cove near Sesi and Grammatiko, usually quieter than the main beach and framed by a natural coastline.",
@@ -1918,16 +2117,16 @@ const ATTICA_SHORT_DESCRIPTIONS: Record<string, { en: string; gr: string }> = {
         gr: "Μικρός κολπίσκος στη Χαμολιά με καθαρά νερά και πιο απομονωμένη διάθεση από την κεντρική παραλία."
     },
     "Παραλία Χαμολιά": {
-        en: "A local Vravrona beach with pebbly-sandy shore, clear water and a calm, residential atmosphere.",
-        gr: "Τοπική παραλία της Βραυρώνας με αμμοβότσαλο, καθαρά νερά και ήρεμη οικιστική ατμόσφαιρα."
+        en: "A local Vravrona beach with pebbly-sandy shore, clear water and a relaxed, residential atmosphere.",
+        gr: "Τοπική παραλία της Βραυρώνας με αμμοβότσαλο, καθαρά νερά και χαλαρή οικιστική ατμόσφαιρα."
     },
     "Παραλία Αράχνες": {
         en: "A small cove near Porto Rafti, known mostly by locals and suited to a quieter swim away from the main bays.",
         gr: "Μικρός κολπίσκος κοντά στο Πόρτο Ράφτη, γνωστός κυρίως σε ντόπιους και κατάλληλος για πιο ήσυχη βουτιά μακριά από τους βασικούς κόλπους."
     },
     "Ερωτοσπηλιά": {
-        en: "One of Porto Rafti's prettiest small beaches, with a sheltered cove, pale sand and clear turquoise water.",
-        gr: "Μία από τις ομορφότερες μικρές παραλίες του Πόρτο Ράφτη, με προστατευμένο κολπίσκο, ανοιχτόχρωμη άμμο και καθαρά τιρκουάζ νερά."
+        en: "One of Porto Rafti's prettiest small beaches, with a compact cove shape, pale sand and clear turquoise water.",
+        gr: "Μία από τις ομορφότερες μικρές παραλίες του Πόρτο Ράφτη, με μικρό κολπίσκο, ανοιχτόχρωμη άμμο και καθαρά τιρκουάζ νερά."
     },
     "Παραλία Αγίου Σπυρίδωνα": {
         en: "A central Porto Rafti beach by the church of Agios Spyridon, easy for families and evening swims.",
@@ -1942,8 +2141,8 @@ const ATTICA_SHORT_DESCRIPTIONS: Record<string, { en: string; gr: string }> = {
         gr: "Δημοφιλής οργανωμένη παραλία στο Πόρτο Ράφτη με καθαρά νερά, παροχές και μεγάλο κόλπο που βολεύει οικογένειες."
     },
     "Πανόραμα": {
-        en: "A small coastal spot near Porto Rafti with open views, mostly chosen for a simple swim and a calmer setting.",
-        gr: "Μικρό παραλιακό σημείο κοντά στο Πόρτο Ράφτη με ανοιχτή θέα, κυρίως για απλή βουτιά και πιο ήρεμο περιβάλλον."
+        en: "A small coastal spot near Porto Rafti with open views, mostly chosen for a simple swim and a quieter setting.",
+        gr: "Μικρό παραλιακό σημείο κοντά στο Πόρτο Ράφτη με ανοιχτή θέα, κυρίως για απλή βουτιά και πιο χαμηλών τόνων περιβάλλον."
     },
     "Κακιά Θάλασσα": {
         en: "A well-known Keratea bay with dramatic rocky sides, clear water and an organized beach area.",
@@ -1982,12 +2181,12 @@ const ATTICA_SHORT_DESCRIPTIONS: Record<string, { en: string; gr: string }> = {
         gr: "Ήσυχος κολπίσκος στο Λαγονήσι με καθαρά νερά, μικρές κατοικίες γύρω του και παραθεριστική ατμόσφαιρα."
     },
     "Πεύκο": {
-        en: "A modest Lagonisi beach marked by pines and low-key swimming, useful for a calm stop on the coast road.",
-        gr: "Σεμνή παραλία στο Λαγονήσι με πεύκα και χαμηλών τόνων μπάνιο, καλή για ήρεμη στάση στον παραλιακό δρόμο."
+        en: "A modest Lagonisi beach marked by pines and low-key swimming, useful for a quiet stop on the coast road.",
+        gr: "Σεμνή παραλία στο Λαγονήσι με πεύκα και χαμηλών τόνων μπάνιο, καλή για σύντομη στάση στον παραλιακό δρόμο."
     },
     "Lagonissi Grand Resort": {
-        en: "A resort beach on the Lagonisi peninsula, with polished facilities and some of the most sheltered coves in the area.",
-        gr: "Resort παραλία στη χερσόνησο του Λαγονησίου, με προσεγμένες παροχές και μερικούς από τους πιο προστατευμένους κολπίσκους της περιοχής."
+        en: "A resort beach on the Lagonisi peninsula, with polished facilities and several enclosed-feeling coves in the area.",
+        gr: "Resort παραλία στη χερσόνησο του Λαγονησίου, με προσεγμένες παροχές και μερικούς κολπίσκους με πιο κλειστή αίσθηση στην περιοχή."
     },
     "Καλοπήγαδο": {
         en: "A small East Attica beach with clear water and a quiet coastal road setting between Lagonisi and Saronida.",
@@ -1998,16 +2197,16 @@ const ATTICA_SHORT_DESCRIPTIONS: Record<string, { en: string; gr: string }> = {
         gr: "Τοπική ακτή που παίρνει το όνομά της από τους ευκαλύπτους της περιοχής, με απλή και κάπως σκιερή αίσθηση δίπλα στο νερό."
     },
     "Τσονίμα": {
-        en: "A small Lavreotiki settlement beach with a sheltered bay and an easygoing local summer mood.",
-        gr: "Μικρή παραλία οικισμού στη Λαυρεωτική, με προστατευμένο κόλπο και χαλαρή τοπική καλοκαιρινή διάθεση."
+        en: "A small Lavreotiki settlement beach with a bay-shaped setting and an easygoing local summer mood.",
+        gr: "Μικρή παραλία οικισμού στη Λαυρεωτική, με σχήμα κόλπου και χαλαρή τοπική καλοκαιρινή διάθεση."
     },
     "Κεντρική παραλία Σαρωνίδας": {
         en: "Saronida's main beach, practical and social, with cafes close by and a broad view across the Saronic Gulf.",
         gr: "Η κεντρική παραλία της Σαρωνίδας, πρακτική και κοινωνική, με καφέ κοντά και πλατιά θέα στον Σαρωνικό."
     },
     "Δεύτερη Παραλία Σαρωνίδας": {
-        en: "A secondary Saronida beach section, often calmer than the main beach while still close to the town.",
-        gr: "Δεύτερο τμήμα της παραλίας Σαρωνίδας, συχνά πιο ήρεμο από την κεντρική ακτή αλλά ακόμη κοντά στον οικισμό."
+        en: "A secondary Saronida beach section, a little more tucked away while still close to the town.",
+        gr: "Δεύτερο τμήμα της παραλίας Σαρωνίδας, λίγο πιο μαζεμένο αλλά ακόμη κοντά στον οικισμό."
     },
     "Παραλία Μαύρο Λιθάρι": {
         en: "A popular Saronida-Anavyssos beach named after its dark rock, with beach bars and clear water.",
@@ -2026,16 +2225,16 @@ const ATTICA_SHORT_DESCRIPTIONS: Record<string, { en: string; gr: string }> = {
         gr: "Μεγάλος αμμουδερός κόλπος γνωστός για windsurfing και ρηχά νερά σε μήκος, από τις κλασικές παραλίες νότια της Αθήνας."
     },
     "Όρμος Αγίου Νικολάου": {
-        en: "A sheltered Anavyssos bay near the Agios Nikolaos church, with calm water and a more intimate scale.",
-        gr: "Προστατευμένος κόλπος στην Ανάβυσσο κοντά στον Άγιο Νικόλαο, με ήρεμα νερά και πιο μικρή, οικεία κλίμακα."
+        en: "An Anavyssos bay near the Agios Nikolaos church, with a more intimate scale and water that can be pleasant in settled weather.",
+        gr: "Κόλπος στην Ανάβυσσο κοντά στον Άγιο Νικόλαο, με πιο μικρή, οικεία κλίμακα και νερά που μπορούν να είναι ευχάριστα σε ήπιες συνθήκες."
     },
     "Σκαλάκια Αναβύσσου": {
         en: "A small rocky access point near Anavyssos, reached by steps and suited to clear-water swims rather than lounging.",
         gr: "Μικρό βραχώδες σημείο πρόσβασης κοντά στην Ανάβυσσο, με σκαλάκια και χαρακτήρα για καθαρές βουτιές παρά για άπλωμα στην άμμο."
     },
     "Παραλία Αγίου Νικολάου": {
-        en: "A small beach at Agios Nikolaos in Anavyssos, close to the chapel and often calmer than the open bay.",
-        gr: "Μικρή παραλία στον Άγιο Νικόλαο Αναβύσσου, κοντά στο εκκλησάκι και συχνά πιο ήρεμη από τον ανοιχτό κόλπο."
+        en: "A small beach at Agios Nikolaos in Anavyssos, close to the chapel and set apart from the open bay.",
+        gr: "Μικρή παραλία στον Άγιο Νικόλαο Αναβύσσου, κοντά στο εκκλησάκι και πιο ξεχωριστή από τον ανοιχτό κόλπο."
     },
     "Θυμάρι": {
         en: "A long, low-key coast south of Anavyssos, with clear water and a quieter holiday-home atmosphere.",
@@ -2058,8 +2257,8 @@ const ATTICA_SHORT_DESCRIPTIONS: Record<string, { en: string; gr: string }> = {
         gr: "Μικρή παραλία προς το Λαύριο με καθαρά νερά και χαλαρό χαρακτήρα τοπικής ακτογραμμής."
     },
     "Χάρακας": {
-        en: "A beautiful sandy beach on the road to Sounio, known for clear water, a wide bay and a calmer feel than KAPE.",
-        gr: "Όμορφη αμμουδερή παραλία στον δρόμο για το Σούνιο, γνωστή για καθαρά νερά, μεγάλο κόλπο και πιο ήρεμη αίσθηση από το ΚΑΠΕ."
+        en: "A beautiful sandy beach on the road to Sounio, known for clear water, a wide bay and a more settled feel than KAPE.",
+        gr: "Όμορφη αμμουδερή παραλία στον δρόμο για το Σούνιο, γνωστή για καθαρά νερά, μεγάλο κόλπο και πιο χαμηλών τόνων αίσθηση από το ΚΑΠΕ."
     },
     "Παραλία Λεγραινών": {
         en: "A long beach near Legrena with open sea views, clear water and space to spread out even in summer.",
@@ -2103,7 +2302,7 @@ const ATTICA_SHORT_DESCRIPTIONS: Record<string, { en: string; gr: string }> = {
     },
     "Ακρογιάλι": {
         en: "A small West Attica seaside stop with a simple shore and a quieter feel than the busier Kineta sections.",
-        gr: "Μικρή παραθαλάσσια στάση στη δυτική Αττική με απλή ακτή και πιο ήρεμη αίσθηση από τα πολυσύχναστα σημεία της Κινέτας."
+        gr: "Μικρή παραθαλάσσια στάση στη δυτική Αττική με απλή ακτή και πιο χαμηλών τόνων αίσθηση από τα πολυσύχναστα σημεία της Κινέτας."
     },
     "Παραλία Κινέτας": {
         en: "A long West Attica beach on the Corinthian Gulf, known for clear water, pebbles and easy access from the old national road.",
@@ -2159,8 +2358,8 @@ const SARONIC_SHORT_DESCRIPTIONS: Record<string, ContextualShortDescription> = {
                 gr: "Η μεγαλύτερη οργανωμένη αμμουδερή παραλία της Αίγινας, γνωστή για ρηχά νερά, τουριστικές παροχές και σύνδεση με τη διαδρομή προς τον Ναό της Αφαίας."
             },
             Spetses: {
-                en: "The Spetses cove often known as Paradise, close to town but with clearer, more sheltered water than the harbour-side beaches.",
-                gr: "Ο κολπίσκος των Σπετσών που συχνά λέγεται Paradise, κοντά στη χώρα αλλά με πιο καθαρά και προστατευμένα νερά από τις ακτές δίπλα στο λιμάνι."
+                en: "The Spetses cove often known as Paradise, close to town but with clearer water and a more enclosed feel than the harbour-side beaches.",
+                gr: "Ο κολπίσκος των Σπετσών που συχνά λέγεται Paradise, κοντά στη χώρα αλλά με πιο καθαρά νερά και πιο κλειστή αίσθηση από τις ακτές δίπλα στο λιμάνι."
             }
         }
     },
@@ -2171,8 +2370,8 @@ const SARONIC_SHORT_DESCRIPTIONS: Record<string, ContextualShortDescription> = {
     },
     "Αύρα": {
         islands: ["Aegina"],
-        en: "A small town beach beside Aegina port and Kolona, ideal for a quick swim without leaving the harbour area.",
-        gr: "Μικρή αστική παραλία δίπλα στο λιμάνι της Αίγινας και την Κολώνα, ιδανική για γρήγορη βουτιά χωρίς να φύγεις από τη χώρα."
+        en: "A small town beach beside Aegina port and Kolona, practical for a quick swim without leaving the harbour area.",
+        gr: "Μικρή αστική παραλία δίπλα στο λιμάνι της Αίγινας και την Κολώνα, πρακτική για γρήγορη βουτιά χωρίς να φύγεις από τη χώρα."
     },
     "Βοτσαλωτή Παραλία": {
         islands: ["Aegina"],
@@ -2186,8 +2385,8 @@ const SARONIC_SHORT_DESCRIPTIONS: Record<string, ContextualShortDescription> = {
     },
     "Λουτρά": {
         islands: ["Aegina"],
-        en: "A Souvala-side beach tied to the area's old thermal-spa identity, with a calm local coastline.",
-        gr: "Παραλία προς τη Σουβάλα, δεμένη με την παλιά ιαματική ταυτότητα της περιοχής και μια ήρεμη τοπική ακτογραμμή."
+        en: "A Souvala-side beach tied to the area's old thermal-spa identity, with a relaxed local coastline.",
+        gr: "Παραλία προς τη Σουβάλα, δεμένη με την παλιά ιαματική ταυτότητα της περιοχής και μια χαλαρή τοπική ακτογραμμή."
     },
     "Παραλία Ζινόβι": {
         islands: ["Aegina"],
@@ -2216,13 +2415,13 @@ const SARONIC_SHORT_DESCRIPTIONS: Record<string, ContextualShortDescription> = {
     },
     "Παραλία Μαραθώνα Β": {
         islands: ["Aegina"],
-        en: "The second Marathonas section, a little more spread out, with the same calm west-coast family character.",
-        gr: "Το δεύτερο τμήμα του Μαραθώνα, λίγο πιο απλωμένο, με τον ίδιο ήρεμο οικογενειακό χαρακτήρα της δυτικής ακτής."
+        en: "The second Marathonas section, a little more spread out, with the same relaxed west-coast family character.",
+        gr: "Το δεύτερο τμήμα του Μαραθώνα, λίγο πιο απλωμένο, με τον ίδιο χαλαρό οικογενειακό χαρακτήρα της δυτικής ακτής."
     },
     "Παραλία Σαρπά": {
         islands: ["Aegina"],
         en: "A small beach near Perdika, known for clear water, sunset light and a quieter south-west Aegina mood.",
-        gr: "Μικρή παραλία κοντά στην Πέρδικα, γνωστή για καθαρά νερά, φως ηλιοβασιλέματος και πιο ήρεμη νοτιοδυτική αίσθηση Αίγινας."
+        gr: "Μικρή παραλία κοντά στην Πέρδικα, γνωστή για καθαρά νερά, φως ηλιοβασιλέματος και πιο χαμηλών τόνων νοτιοδυτική αίσθηση Αίγινας."
     },
     "Τούρλος": {
         islands: ["Aegina"],
@@ -2236,8 +2435,8 @@ const SARONIC_SHORT_DESCRIPTIONS: Record<string, ContextualShortDescription> = {
     },
     "Παραλία Μεγαλοχωρίου": {
         islands: ["Agistri"],
-        en: "A practical Agistri beach by Megalochori, close to the harbour and ideal for a simple swim after arrival.",
-        gr: "Πρακτική παραλία στο Μεγαλοχώρι Αγκιστρίου, κοντά στο λιμανάκι και ιδανική για απλή βουτιά μετά την άφιξη."
+        en: "A practical Agistri beach by Megalochori, close to the harbour and useful for a simple swim after arrival.",
+        gr: "Πρακτική παραλία στο Μεγαλοχώρι Αγκιστρίου, κοντά στο λιμανάκι και χρήσιμη για απλή βουτιά μετά την άφιξη."
     },
     "Σκληρή": {
         islands: ["Agistri"],
@@ -2266,8 +2465,8 @@ const SARONIC_SHORT_DESCRIPTIONS: Record<string, ContextualShortDescription> = {
     },
     "Καμίνια": {
         islands: ["Hydra"],
-        en: "A small beach by the fishing harbour of Kamini, combining a village walk, tavernas and calm evening swims.",
-        gr: "Μικρή παραλία στο ψαρολίμανο Καμίνι, που συνδυάζει βόλτα σε χωριό, ταβέρνες και ήρεμες απογευματινές βουτιές."
+        en: "A small beach by the fishing harbour of Kamini, combining a village walk, tavernas and evening swims in suitable conditions.",
+        gr: "Μικρή παραλία στο ψαρολίμανο Καμίνι, που συνδυάζει βόλτα σε χωριό, ταβέρνες και απογευματινές βουτιές σε κατάλληλες συνθήκες."
     },
     "Πλάκες": {
         islands: ["Hydra"],
@@ -2291,8 +2490,8 @@ const SARONIC_SHORT_DESCRIPTIONS: Record<string, ContextualShortDescription> = {
     },
     "Αλυκή": {
         islands: ["Poros"],
-        en: "A calm beach on the Galatas side facing Poros, with shallow water and a lagoon-like coastal feel.",
-        gr: "Ήρεμη παραλία στην πλευρά του Γαλατά απέναντι από τον Πόρο, με ρηχά νερά και αίσθηση λιμνοθαλασσινής ακτής."
+        en: "A low-key beach on the Galatas side facing Poros, with shallow water and a lagoon-like coastal feel.",
+        gr: "Χαμηλών τόνων παραλία στην πλευρά του Γαλατά απέναντι από τον Πόρο, με ρηχά νερά και αίσθηση λιμνοθαλασσινής ακτής."
     },
     "Ασκέλι": {
         islands: ["Poros"],
@@ -2311,8 +2510,8 @@ const SARONIC_SHORT_DESCRIPTIONS: Record<string, ContextualShortDescription> = {
     },
     "Μεγάλο Νεώριο": {
         islands: ["Poros"],
-        en: "A sheltered Neorio bay with pine shade, calm water and classic views back toward Poros town.",
-        gr: "Προστατευμένος κόλπος στο Νεώριο με πεύκα για σκιά, ήρεμα νερά και κλασική θέα προς τη χώρα του Πόρου."
+        en: "A Neorio bay with pine shade, water that is often pleasant in settled weather and classic views back toward Poros town.",
+        gr: "Κόλπος στο Νεώριο με πεύκα για σκιά, νερά που συχνά είναι ευχάριστα σε ήπιες συνθήκες και κλασική θέα προς τη χώρα του Πόρου."
     },
     "Μικρό Νεώριο": {
         islands: ["Poros"],
@@ -2326,13 +2525,13 @@ const SARONIC_SHORT_DESCRIPTIONS: Record<string, ContextualShortDescription> = {
     },
     "Παραλία Ρώσικος Ναύσταθμος": {
         islands: ["Poros"],
-        en: "A historic Poros bay beside the ruins of the Russian naval station, mixing calm water with a rare Saronic landmark.",
-        gr: "Ιστορικός κόλπος του Πόρου δίπλα στα ερείπια του Ρώσικου Ναυστάθμου, που συνδυάζει ήρεμα νερά με σπάνιο σαρωνικό τοπόσημο."
+        en: "A historic Poros bay beside the ruins of the Russian naval station, mixing a bay setting with a rare Saronic landmark.",
+        gr: "Ιστορικός κόλπος του Πόρου δίπλα στα ερείπια του Ρώσικου Ναυστάθμου, που συνδυάζει σχήμα κόλπου με σπάνιο σαρωνικό τοπόσημο."
     },
     "Πλάκα": {
         islands: ["Poros"],
         en: "A small Galatas-side beach facing Poros, with easy water access and a quiet mainland-coast feel.",
-        gr: "Μικρή παραλία στην πλευρά του Γαλατά απέναντι από τον Πόρο, με εύκολη πρόσβαση στο νερό και ήρεμη αίσθηση ηπειρωτικής ακτής."
+        gr: "Μικρή παραλία στην πλευρά του Γαλατά απέναντι από τον Πόρο, με εύκολη πρόσβαση στο νερό και χαλαρή αίσθηση ηπειρωτικής ακτής."
     },
     "Μικρό Λαμπρανό": {
         islands: ["Salamina"],
@@ -2341,8 +2540,8 @@ const SARONIC_SHORT_DESCRIPTIONS: Record<string, ContextualShortDescription> = {
     },
     "Παραλία Αγίου Νικολάου": {
         islands: ["Salamina"],
-        en: "A local Salamina beach named after Agios Nikolaos, with simple access and a calm neighbourhood character.",
-        gr: "Τοπική παραλία της Σαλαμίνας που παίρνει το όνομά της από τον Άγιο Νικόλαο, με απλή πρόσβαση και ήρεμο χαρακτήρα γειτονιάς."
+        en: "A local Salamina beach named after Agios Nikolaos, with simple access and a neighbourhood character.",
+        gr: "Τοπική παραλία της Σαλαμίνας που παίρνει το όνομά της από τον Άγιο Νικόλαο, με απλή πρόσβαση και χαρακτήρα γειτονιάς."
     },
     "Παραλία Κανάκια": {
         islands: ["Salamina"],
@@ -2386,8 +2585,8 @@ const SARONIC_SHORT_DESCRIPTIONS: Record<string, ContextualShortDescription> = {
     },
     "Λιγονέρι": {
         islands: ["Spetses"],
-        en: "A north-coast Spetses beach with pebbles, clear water and a calmer mood than the central organized beaches.",
-        gr: "Βόρεια παραλία των Σπετσών με βότσαλο, καθαρά νερά και πιο ήρεμη διάθεση από τις κεντρικές οργανωμένες ακτές."
+        en: "A north-coast Spetses beach with pebbles, clear water and a quieter mood than the central organized beaches.",
+        gr: "Βόρεια παραλία των Σπετσών με βότσαλο, καθαρά νερά και πιο χαμηλών τόνων διάθεση από τις κεντρικές οργανωμένες ακτές."
     },
     "Μεγάλη Ζωγερία": {
         islands: ["Spetses"],
@@ -2428,19 +2627,31 @@ const getSaronicShortDescription = (name: string, area: string): LocalizedBeachT
         : entry ? makeLocalizedBeachText(entry.en, entry.gr) : null;
 };
 
-const IONIAN_ISLAND_LABELS: Record<string, { en: string; gr: string }> = {
-    corfu: { en: 'Corfu', gr: 'Κέρκυρα' },
-    paxos: { en: 'Paxos', gr: 'Παξούς' },
-    antipaxos: { en: 'Antipaxos', gr: 'Αντίπαξους' },
-    kefalonia: { en: 'Kefalonia', gr: 'Κεφαλονιά' },
-    ithaca: { en: 'Ithaca', gr: 'Ιθάκη' },
-    ithaki: { en: 'Ithaca', gr: 'Ιθάκη' },
-    lefkada: { en: 'Lefkada', gr: 'Λευκάδα' },
-    meganisi: { en: 'Meganisi', gr: 'Μεγανήσι' },
-    othonoi: { en: 'Othonoi', gr: 'Οθωνούς' },
-    erikoussa: { en: 'Erikoussa', gr: 'Ερείκουσσα' },
-    mathraki: { en: 'Mathraki', gr: 'Μαθράκι' },
-    zakynthos: { en: 'Zakynthos', gr: 'Ζάκυνθο' }
+type GreekAreaLabel = {
+    en: string;
+    gr: string;
+    genitivePhraseGr?: string;
+    locativeGr?: string;
+    regionPhraseGr?: string;
+};
+
+const greekGenitivePhrase = (label: GreekAreaLabel): string => label.genitivePhraseGr || `της ${label.gr}`;
+const greekLocativePhrase = (label: GreekAreaLabel): string => label.locativeGr || `στην ${label.gr}`;
+const greekRegionPhrase = (label: GreekAreaLabel): string => label.regionPhraseGr || `στην περιοχή ${greekGenitivePhrase(label)}`;
+
+const IONIAN_ISLAND_LABELS: Record<string, GreekAreaLabel> = {
+    corfu: { en: 'Corfu', gr: 'Κέρκυρα', locativeGr: 'στην Κέρκυρα', genitivePhraseGr: 'της Κέρκυρας' },
+    paxos: { en: 'Paxos', gr: 'Παξούς', locativeGr: 'στους Παξούς', genitivePhraseGr: 'των Παξών' },
+    antipaxos: { en: 'Antipaxos', gr: 'Αντίπαξους', locativeGr: 'στους Αντίπαξους', genitivePhraseGr: 'των Αντίπαξων' },
+    kefalonia: { en: 'Kefalonia', gr: 'Κεφαλονιά', locativeGr: 'στην Κεφαλονιά', genitivePhraseGr: 'της Κεφαλονιάς' },
+    ithaca: { en: 'Ithaca', gr: 'Ιθάκη', locativeGr: 'στην Ιθάκη', genitivePhraseGr: 'της Ιθάκης' },
+    ithaki: { en: 'Ithaca', gr: 'Ιθάκη', locativeGr: 'στην Ιθάκη', genitivePhraseGr: 'της Ιθάκης' },
+    lefkada: { en: 'Lefkada', gr: 'Λευκάδα', locativeGr: 'στη Λευκάδα', genitivePhraseGr: 'της Λευκάδας' },
+    meganisi: { en: 'Meganisi', gr: 'Μεγανήσι', locativeGr: 'στο Μεγανήσι', genitivePhraseGr: 'του Μεγανησίου' },
+    othonoi: { en: 'Othonoi', gr: 'Οθωνούς', locativeGr: 'στους Οθωνούς', genitivePhraseGr: 'των Οθωνών' },
+    erikoussa: { en: 'Erikoussa', gr: 'Ερείκουσσα', locativeGr: 'στην Ερείκουσσα', genitivePhraseGr: 'της Ερείκουσσας' },
+    mathraki: { en: 'Mathraki', gr: 'Μαθράκι', locativeGr: 'στο Μαθράκι', genitivePhraseGr: 'του Μαθρακίου' },
+    zakynthos: { en: 'Zakynthos', gr: 'Ζάκυνθο', locativeGr: 'στη Ζάκυνθο', genitivePhraseGr: 'της Ζακύνθου' }
 };
 
 const IONIAN_NOTABLE_DESCRIPTIONS: Record<string, ContextualShortDescription> = {
@@ -2492,7 +2703,7 @@ const IONIAN_NOTABLE_DESCRIPTIONS: Record<string, ContextualShortDescription> = 
     "Dafni Beach": {
         islands: ["Zakynthos"],
         en: "A Vasilikos beach inside the marine-park zone, known for turtle nesting and a slower, more natural pace.",
-        gr: "Παραλία του Βασιλικού μέσα στη ζώνη του θαλάσσιου πάρκου, γνωστή για ωοτοκία χελωνών και πιο φυσικό, ήρεμο ρυθμό."
+        gr: "Παραλία του Βασιλικού μέσα στη ζώνη του θαλάσσιου πάρκου, γνωστή για ωοτοκία χελωνών και πιο φυσικό, χαμηλών τόνων ρυθμό."
     },
     "Παραλία Μαραθονήσι": {
         islands: ["Zakynthos"],
@@ -2652,47 +2863,47 @@ const getIonianShortDescription = (name: string, area: string): LocalizedBeachTe
     if (lowerName.includes('gialos') || lowerName.includes('γιαλος') || lowerName.includes('γιαλου')) {
         return makeLocalizedBeachText(
             `${beachLabel} is a small Ionian shore on ${island.en}, shaped around a local bay rather than a big resort strip.`,
-            `Η ${beachLabel} είναι μικρή ιονική ακτή στην ${island.gr}, με χαρακτήρα τοπικού όρμου αντί για μεγάλη οργανωμένη ζώνη.`
+            `Η ${beachLabel} είναι μικρή ιονική ακτή ${greekLocativePhrase(island)}, με χαρακτήρα τοπικού όρμου αντί για μεγάλη οργανωμένη ζώνη.`
         );
     }
 
     if (lowerName.includes('porto') || lowerName.includes('πορτο') || lowerName.includes('ορμος') || lowerName.includes('bay')) {
         return makeLocalizedBeachText(
-            `${beachLabel} has the feel of a sheltered Ionian inlet on ${island.en}, best for clear-water swimming when the sea is calm.`,
-            `Η ${beachLabel} έχει αίσθηση προστατευμένου ιονικού όρμου στην ${island.gr}, ιδανική για καθαρή βουτιά όταν η θάλασσα είναι ήρεμη.`
+            `${beachLabel} has the feel of an Ionian inlet on ${island.en}, best for clear-water swimming when wind and sea conditions are suitable.`,
+            `Η ${beachLabel} έχει αίσθηση ιονικού όρμου ${greekLocativePhrase(island)}, καλή για καθαρή βουτιά όταν ο άνεμος και η θάλασσα το επιτρέπουν.`
         );
     }
 
     if (lowerName.includes('ammos') || lowerName.includes('αμμος') || lowerName.includes('αμμου')) {
         return makeLocalizedBeachText(
             `${beachLabel} stands out on ${island.en} for its sandier shore, making it easier for families and longer swims.`,
-            `Η ${beachLabel} ξεχωρίζει στην ${island.gr} για την πιο αμμουδερή ακτή της, που βολεύει οικογένειες και μεγαλύτερες βουτιές.`
+            `Η ${beachLabel} ξεχωρίζει ${greekLocativePhrase(island)} για την πιο αμμουδερή ακτή της, που βολεύει οικογένειες και μεγαλύτερες βουτιές.`
         );
     }
 
     if (lowerName.includes('nudist') || lowerName.includes('naturist') || lowerName.includes('γυμνιστων')) {
         return makeLocalizedBeachText(
             `${beachLabel} is a more discreet ${island.en} swimming spot, usually chosen by people looking for a quieter, freer beach mood.`,
-            `Η ${beachLabel} είναι πιο διακριτικό σημείο για μπάνιο στην ${island.gr}, συνήθως για όσους θέλουν ησυχία και πιο ελεύθερη ατμόσφαιρα.`
+            `Η ${beachLabel} είναι πιο διακριτικό σημείο για μπάνιο ${greekLocativePhrase(island)}, συνήθως για όσους θέλουν ησυχία και πιο ελεύθερη ατμόσφαιρα.`
         );
     }
 
     const variants = [
         {
-            en: `${beachLabel} is a local ${island.en} beach with clear Ionian water and a calmer feel than the island's headline beaches.`,
-            gr: `Η ${beachLabel} είναι τοπική παραλία στην ${island.gr}, με καθαρά ιονικά νερά και πιο ήρεμη αίσθηση από τις διάσημες ακτές του νησιού.`
+            en: `${beachLabel} is a local ${island.en} beach with clear Ionian water and a quieter feel than the island's headline beaches.`,
+            gr: `Η ${beachLabel} είναι τοπική παραλία ${greekLocativePhrase(island)}, με καθαρά ιονικά νερά και πιο χαμηλών τόνων αίσθηση από τις διάσημες ακτές του νησιού.`
         },
         {
             en: `${beachLabel} gives ${island.en} a quieter coastal stop, useful when you want the island's sea without the busiest beach scene.`,
-            gr: `Η ${beachLabel} προσφέρει στην ${island.gr} μια πιο ήσυχη παραλιακή στάση, για μπάνιο χωρίς τον πολύ κόσμο των πιο γνωστών σημείων.`
+            gr: `Η ${beachLabel} προσφέρει ${greekLocativePhrase(island)} μια πιο ήσυχη παραλιακή στάση, για μπάνιο χωρίς τον πολύ κόσμο των πιο γνωστών σημείων.`
         },
         {
             en: `${beachLabel} is one of those smaller ${island.en} shores where the main appeal is simple access to clean Ionian water.`,
-            gr: `Η ${beachLabel} είναι από τις μικρότερες ακτές στην ${island.gr}, όπου το βασικό προτέρημα είναι η απλή πρόσβαση σε καθαρό Ιόνιο νερό.`
+            gr: `Η ${beachLabel} είναι από τις μικρότερες ακτές ${greekLocativePhrase(island)}, όπου το βασικό προτέρημα είναι η απλή πρόσβαση σε καθαρό Ιόνιο νερό.`
         },
         {
             en: `${beachLabel} works as a low-key ${island.en} swim stop, with the landscape doing more of the talking than the facilities.`,
-            gr: `Η ${beachLabel} λειτουργεί ως χαμηλών τόνων στάση για μπάνιο στην ${island.gr}, με το τοπίο να μετρά περισσότερο από τις παροχές.`
+            gr: `Η ${beachLabel} λειτουργεί ως χαμηλών τόνων στάση για μπάνιο ${greekLocativePhrase(island)}, με το τοπίο να μετρά περισσότερο από τις παροχές.`
         }
     ];
     const index = Math.abs(normalizedName.split('').reduce((sum, char) => sum + char.charCodeAt(0), 0)) % variants.length;
@@ -2733,12 +2944,12 @@ const EVIA_NOTABLE_DESCRIPTIONS: Record<string, { en: string; gr: string }> = {
         gr: "Ήσυχη παραλία κοντά στον Κάλαμο και την Κορασίδα, με καθαρά νερά και λιγότερο πολυσύχναστη ανατολική αίσθηση."
     },
     "Λημνιώνας": {
-        en: "A sheltered bay in south Evia near Styra, with calm water and a small-harbour atmosphere.",
-        gr: "Προστατευμένος κόλπος στη νότια Εύβοια κοντά στα Στύρα, με ήρεμα νερά και αίσθηση μικρού λιμανιού."
+        en: "A south Evia bay near Styra, with a small-harbour atmosphere and water that is often comfortable in settled weather.",
+        gr: "Κόλπος στη νότια Εύβοια κοντά στα Στύρα, με αίσθηση μικρού λιμανιού και νερά που συχνά είναι άνετα σε ήπιες συνθήκες."
     },
     "Λιμνιώνας": {
-        en: "A north-west Evia beach near Limni, with easy access, local tavernas and calm Euboean Gulf water.",
-        gr: "Παραλία της βορειοδυτικής Εύβοιας κοντά στη Λίμνη, με εύκολη πρόσβαση, τοπικές ταβέρνες και ήρεμα νερά του Ευβοϊκού."
+        en: "A north-west Evia beach near Limni, with easy access, local tavernas and Euboean Gulf water that is often gentle in settled weather.",
+        gr: "Παραλία της βορειοδυτικής Εύβοιας κοντά στη Λίμνη, με εύκολη πρόσβαση, τοπικές ταβέρνες και νερά του Ευβοϊκού που συχνά είναι πιο ήπια σε κατάλληλες συνθήκες."
     },
     "Αρχάμπολη": {
         en: "A remote south Evia cove tied to ancient quarrying landscapes, reached through a wilder Karystos-side route.",
@@ -2753,8 +2964,8 @@ const EVIA_NOTABLE_DESCRIPTIONS: Record<string, { en: string; gr: string }> = {
         gr: "Αμμουδερή παραλία της νότιας Εύβοιας κοντά στο Μαρμάρι, γνωστή για αέρα, ρηχά σημεία και συνθήκες για kite."
     },
     "Ζάστανα": {
-        en: "A small south Evia beach near Marmari, usually calmer and more local than the larger exposed shores nearby.",
-        gr: "Μικρή παραλία της νότιας Εύβοιας κοντά στο Μαρμάρι, συνήθως πιο ήρεμη και τοπική από τις μεγάλες εκτεθειμένες ακτές γύρω της."
+        en: "A small south Evia beach near Marmari, usually more local and tucked away than the larger exposed shores nearby.",
+        gr: "Μικρή παραλία της νότιας Εύβοιας κοντά στο Μαρμάρι, συνήθως πιο τοπική και μαζεμένη από τις μεγάλες εκτεθειμένες ακτές γύρω της."
     },
     "Πλατύς Γιαλός": {
         en: "A south Evia shore with open Aegean views, chosen for a quieter swim on the Karystos side.",
@@ -2770,11 +2981,11 @@ const EVIA_NOTABLE_DESCRIPTIONS: Record<string, { en: string; gr: string }> = {
     },
     "Παραλία Μετοχίου": {
         en: "A broad east Evia beach below the village of Metochi, with open sea, pebbles and a quieter local rhythm.",
-        gr: "Μεγάλη ανατολική παραλία κάτω από το Μετόχι, με ανοιχτή θάλασσα, βότσαλο και πιο ήρεμο τοπικό ρυθμό."
+        gr: "Μεγάλη ανατολική παραλία κάτω από το Μετόχι, με ανοιχτή θάλασσα, βότσαλο και πιο χαμηλών τόνων τοπικό ρυθμό."
     },
     "Τσίλαρος": {
-        en: "A remote central Evia bay near Thapsa, with dramatic slopes and water that turns bright blue in calm weather.",
-        gr: "Απόμερος κόλπος της κεντρικής Εύβοιας κοντά στα Θαψά, με εντυπωσιακές πλαγιές και νερά που γίνονται έντονα μπλε όταν έχει άπνοια."
+        en: "A remote central Evia bay near Thapsa, with dramatic slopes and water that turns bright blue in settled weather.",
+        gr: "Απόμερος κόλπος της κεντρικής Εύβοιας κοντά στα Θαψά, με εντυπωσιακές πλαγιές και νερά που γίνονται έντονα μπλε σε ήπιες συνθήκες."
     },
     "Παραλία Καλλιανού": {
         en: "A south Evia beach on the Cavo Doro side, with a wild road-trip feel and open Aegean exposure.",
@@ -2839,8 +3050,8 @@ const getEviaShortDescription = (name: string, area: string): LocalizedBeachText
 
     if (lowerName.includes('ποταμι') || lowerName.includes('λιμν') || lowerName.includes('ορμος')) {
         return makeLocalizedBeachText(
-            `${beachLabel} has a sheltered local-bay feel, showing the calmer side of Evia's long and varied coastline.`,
-            `Η ${beachLabel} έχει αίσθηση προστατευμένου τοπικού όρμου, δείχνοντας την πιο ήρεμη πλευρά της μεγάλης και ποικίλης ακτογραμμής της Εύβοιας.`
+            `${beachLabel} has a local-bay feel, showing a more enclosed side of Evia's long and varied coastline.`,
+            `Η ${beachLabel} έχει αίσθηση τοπικού όρμου, δείχνοντας μια πιο κλειστή πλευρά της μεγάλης και ποικίλης ακτογραμμής της Εύβοιας.`
         );
     }
 
@@ -2869,8 +3080,8 @@ const getEviaShortDescription = (name: string, area: string): LocalizedBeachText
 const CENTRAL_GREECE_MAINLAND_DESCRIPTIONS: Record<string, { areas: string[]; en: string; gr: string }> = {
     "Μονιά": {
         areas: ["Fokida", "Fokida (mainland)"],
-        en: "A small Galaxidi-side cove on the Corinthian Gulf, with calm water and a quiet local feel.",
-        gr: "Μικρός κολπίσκος προς το Γαλαξίδι στον Κορινθιακό, με ήρεμα νερά και ήσυχο τοπικό χαρακτήρα."
+        en: "A small Galaxidi-side cove on the Corinthian Gulf, with water that is often gentle in settled weather and a quiet local feel.",
+        gr: "Μικρός κολπίσκος προς το Γαλαξίδι στον Κορινθιακό, με νερά που συχνά είναι πιο ήπια σε κατάλληλες συνθήκες και ήσυχο τοπικό χαρακτήρα."
     },
     "Σκούλες Μικρή και Μεγάλη": {
         areas: ["Fokida", "Fokida (mainland)"],
@@ -2894,8 +3105,8 @@ const CENTRAL_GREECE_MAINLAND_DESCRIPTIONS: Record<string, { areas: string[]; en
     },
     "Γιάννακης": {
         areas: ["Fokida", "Fokida (mainland)"],
-        en: "A low-key Galaxidi-area swim spot with calm Corinthian Gulf water and a local summer rhythm.",
-        gr: "Χαμηλών τόνων σημείο για μπάνιο στην περιοχή Γαλαξιδίου, με ήρεμα νερά Κορινθιακού και τοπικό καλοκαιρινό ρυθμό."
+        en: "A low-key Galaxidi-area swim spot with Corinthian Gulf water that is often gentle in settled weather and a local summer rhythm.",
+        gr: "Χαμηλών τόνων σημείο για μπάνιο στην περιοχή Γαλαξιδίου, με νερά Κορινθιακού που συχνά είναι πιο ήπια σε κατάλληλες συνθήκες και τοπικό καλοκαιρινό ρυθμό."
     },
     "Καλαφάτης": {
         areas: ["Fokida", "Fokida (mainland)"],
@@ -2905,7 +3116,7 @@ const CENTRAL_GREECE_MAINLAND_DESCRIPTIONS: Record<string, { areas: string[]; en
     "Κεντρί": {
         areas: ["Fokida", "Fokida (mainland)"],
         en: "A compact local beach by Galaxidi's coastline, best for a quiet stop and clean water.",
-        gr: "Μικρή τοπική παραλία στην ακτογραμμή του Γαλαξιδίου, ιδανική για ήσυχη στάση και καθαρά νερά."
+        gr: "Μικρή τοπική παραλία στην ακτογραμμή του Γαλαξιδίου, καλή για σύντομη στάση και καθαρά νερά."
     },
     "Παραλία Αγίου Ανδρέα": {
         areas: ["Fokida", "Fokida (mainland)"],
@@ -2914,8 +3125,8 @@ const CENTRAL_GREECE_MAINLAND_DESCRIPTIONS: Record<string, { areas: string[]; en
     },
     "Παραλία Αγίου Μηνά": {
         areas: ["Fokida", "Fokida (mainland)"],
-        en: "A small Galaxidi-side beach with calm water and the quiet mood of the north Corinthian Gulf.",
-        gr: "Μικρή παραλία προς το Γαλαξίδι με ήρεμα νερά και την ήσυχη ατμόσφαιρα του βόρειου Κορινθιακού."
+        en: "A small Galaxidi-side beach with water that is often gentle in settled weather and the quiet mood of the north Corinthian Gulf.",
+        gr: "Μικρή παραλία προς το Γαλαξίδι με νερά που συχνά είναι πιο ήπια σε κατάλληλες συνθήκες και την ήσυχη ατμόσφαιρα του βόρειου Κορινθιακού."
     },
     "Παραλία Αστέρι": {
         areas: ["Fokida", "Fokida (mainland)"],
@@ -2924,8 +3135,8 @@ const CENTRAL_GREECE_MAINLAND_DESCRIPTIONS: Record<string, { areas: string[]; en
     },
     "Άι Γιάννης": {
         areas: ["Fthiotida", "Fthiotida (mainland)"],
-        en: "A Maliakos Gulf beach with calm water and a local village-coast atmosphere.",
-        gr: "Παραλία του Μαλιακού με ήρεμα νερά και τοπική ατμόσφαιρα παραθαλάσσιου χωριού."
+        en: "A Maliakos Gulf beach with water that is often gentle in settled weather and a local village-coast atmosphere.",
+        gr: "Παραλία του Μαλιακού με νερά που συχνά είναι πιο ήπια σε κατάλληλες συνθήκες και τοπική ατμόσφαιρα παραθαλάσσιου χωριού."
     },
     "Αγιόνερο": {
         areas: ["Fthiotida", "Fthiotida (mainland)"],
@@ -2944,8 +3155,8 @@ const CENTRAL_GREECE_MAINLAND_DESCRIPTIONS: Record<string, { areas: string[]; en
     },
     "Κέδρος": {
         areas: ["Fthiotida", "Fthiotida (mainland)"],
-        en: "A quiet Lichada-area beach with clear water and a calmer north-coast feel.",
-        gr: "Ήσυχη παραλία στην περιοχή της Λιχάδας, με καθαρά νερά και πιο ήρεμη βόρεια ακτογραμμή."
+        en: "A quiet Lichada-area beach with clear water and a low-key north-coast feel.",
+        gr: "Ήσυχη παραλία στην περιοχή της Λιχάδας, με καθαρά νερά και χαμηλών τόνων βόρεια ακτογραμμή."
     },
     "Καραβόμυλος": {
         areas: ["Fthiotida", "Fthiotida (mainland)"],
@@ -2954,8 +3165,8 @@ const CENTRAL_GREECE_MAINLAND_DESCRIPTIONS: Record<string, { areas: string[]; en
     },
     "Μεγάλη Σουβάλα": {
         areas: ["Fthiotida", "Fthiotida (mainland)"],
-        en: "One of the two Souvala coves in Fthiotida, with calm water and a small local-bay scale.",
-        gr: "Ένας από τους δύο κολπίσκους της Σουβάλας στη Φθιώτιδα, με ήρεμα νερά και μικρή τοπική κλίμακα."
+        en: "One of the two Souvala coves in Fthiotida, with a small local-bay scale and water that is often gentle in settled weather.",
+        gr: "Ένας από τους δύο κολπίσκους της Σουβάλας στη Φθιώτιδα, με μικρή τοπική κλίμακα και νερά που συχνά είναι πιο ήπια σε κατάλληλες συνθήκες."
     },
     "Μικρή Σουβάλα": {
         areas: ["Fthiotida", "Fthiotida (mainland)"],
@@ -2969,13 +3180,13 @@ const CENTRAL_GREECE_MAINLAND_DESCRIPTIONS: Record<string, { areas: string[]; en
     },
     "Παραλία Αγίου Νικολάου": {
         areas: ["Fthiotida", "Fthiotida (mainland)"],
-        en: "A small Lichada-area beach with sheltered water and views toward the Evia channel.",
-        gr: "Μικρή παραλία στην περιοχή της Λιχάδας, με προστατευμένα νερά και θέα προς τον δίαυλο της Εύβοιας."
+        en: "A small Lichada-area beach with views toward the Evia channel and water that can be gentler in suitable conditions.",
+        gr: "Μικρή παραλία στην περιοχή της Λιχάδας, με θέα προς τον δίαυλο της Εύβοιας και νερά που μπορούν να είναι πιο ήπια σε κατάλληλες συνθήκες."
     },
     "Παραλία Αγίου Σεραφείμ": {
         areas: ["Fthiotida", "Fthiotida (mainland)"],
-        en: "A calm Maliakos Gulf beach near Kamena Vourla, practical for an easy family swim.",
-        gr: "Ήρεμη παραλία του Μαλιακού κοντά στα Καμένα Βούρλα, πρακτική για εύκολη οικογενειακή βουτιά."
+        en: "A low-key Maliakos Gulf beach near Kamena Vourla, practical for an easy family swim in suitable conditions.",
+        gr: "Χαμηλών τόνων παραλία του Μαλιακού κοντά στα Καμένα Βούρλα, πρακτική για εύκολη οικογενειακή βουτιά σε κατάλληλες συνθήκες."
     },
     "Παραλία Βουγιουκλάκη": {
         areas: ["Fthiotida", "Fthiotida (mainland)"],
@@ -3004,8 +3215,8 @@ const CENTRAL_GREECE_MAINLAND_DESCRIPTIONS: Record<string, { areas: string[]; en
     },
     "Σχοινιά": {
         areas: ["Fthiotida", "Fthiotida (mainland)"],
-        en: "A quiet beach on the Lichada coast, with calm water and a low-key local rhythm.",
-        gr: "Ήσυχη παραλία στην ακτή της Λιχάδας, με ήρεμα νερά και χαμηλών τόνων τοπικό ρυθμό."
+        en: "A quiet beach on the Lichada coast, with a low-key local rhythm and water that is often gentle in settled weather.",
+        gr: "Ήσυχη παραλία στην ακτή της Λιχάδας, με χαμηλών τόνων τοπικό ρυθμό και νερά που συχνά είναι πιο ήπια σε κατάλληλες συνθήκες."
     },
     "Τραγάνα": {
         areas: ["Fthiotida", "Fthiotida (mainland)"],
@@ -3039,8 +3250,8 @@ const CENTRAL_GREECE_MAINLAND_DESCRIPTIONS: Record<string, { areas: string[]; en
     },
     "Λαιμός": {
         areas: ["Viotia", "Viotia (mainland)"],
-        en: "A narrow coastal spot near Livadostras, with calm Corinthian Gulf water and a local escape feel.",
-        gr: "Στενό παραλιακό σημείο κοντά στη Λιβαδόστρα, με ήρεμα νερά Κορινθιακού και αίσθηση τοπικής απόδρασης."
+        en: "A narrow coastal spot near Livadostras, with Corinthian Gulf water that is often gentle in settled weather and a local escape feel.",
+        gr: "Στενό παραλιακό σημείο κοντά στη Λιβαδόστρα, με νερά Κορινθιακού που συχνά είναι πιο ήπια σε κατάλληλες συνθήκες και αίσθηση τοπικής απόδρασης."
     },
     "Παραλία Κορομίλι": {
         areas: ["Viotia", "Viotia (mainland)"],
@@ -3049,8 +3260,8 @@ const CENTRAL_GREECE_MAINLAND_DESCRIPTIONS: Record<string, { areas: string[]; en
     },
     "Παραλία Λιβαδόστρας": {
         areas: ["Viotia", "Viotia (mainland)"],
-        en: "A historic Corinthian Gulf beach below ancient Kreusis, with calm water and a sheltered bay shape.",
-        gr: "Ιστορική παραλία του Κορινθιακού κάτω από την αρχαία Κρεύσιδα, με ήρεμα νερά και προστατευμένο σχήμα κόλπου."
+        en: "A historic Corinthian Gulf beach below ancient Kreusis, with a bay-shaped setting and water that is often gentle in settled weather.",
+        gr: "Ιστορική παραλία του Κορινθιακού κάτω από την αρχαία Κρεύσιδα, με σχήμα κόλπου και νερά που συχνά είναι πιο ήπια σε κατάλληλες συνθήκες."
     },
     "Παραλία Σαράντη": {
         areas: ["Viotia", "Viotia (mainland)"],
@@ -3074,29 +3285,29 @@ const getCentralGreeceMainlandDescription = (name: string, area: string): Locali
     return entry ? makeLocalizedBeachText(entry.en, entry.gr) : null;
 };
 
-const CYCLADES_AREA_LABELS: Record<string, { en: string; gr: string }> = {
-    amorgos: { en: 'Amorgos', gr: 'Αμοργός' },
-    anafi: { en: 'Anafi', gr: 'Ανάφη' },
-    andros: { en: 'Andros', gr: 'Άνδρος' },
-    antiparos: { en: 'Antiparos', gr: 'Αντίπαρος' },
-    donousa: { en: 'Donousa', gr: 'Δονούσα' },
-    folegandros: { en: 'Folegandros', gr: 'Φολέγανδρος' },
-    iraklia: { en: 'Iraklia', gr: 'Ηρακλειά' },
-    kea: { en: 'Kea', gr: 'Κέα' },
-    kimolos: { en: 'Kimolos', gr: 'Κίμωλος' },
-    koufonisia: { en: 'Koufonisia', gr: 'Κουφονήσια' },
-    kythnos: { en: 'Kythnos', gr: 'Κύθνος' },
-    milos: { en: 'Milos', gr: 'Μήλος' },
-    mykonos: { en: 'Mykonos', gr: 'Μύκονος' },
-    naxos: { en: 'Naxos', gr: 'Νάξος' },
-    paros: { en: 'Paros', gr: 'Πάρος' },
-    santorini: { en: 'Santorini', gr: 'Σαντορίνη' },
-    schinoussa: { en: 'Schinoussa', gr: 'Σχοινούσα' },
-    serifos: { en: 'Serifos', gr: 'Σέριφος' },
-    sifnos: { en: 'Sifnos', gr: 'Σίφνος' },
-    sikinos: { en: 'Sikinos', gr: 'Σίκινος' },
-    syros: { en: 'Syros', gr: 'Σύρος' },
-    tinos: { en: 'Tinos', gr: 'Τήνος' }
+const CYCLADES_AREA_LABELS: Record<string, GreekAreaLabel> = {
+    amorgos: { en: 'Amorgos', gr: 'Αμοργός', locativeGr: 'στην Αμοργό', genitivePhraseGr: 'της Αμοργού' },
+    anafi: { en: 'Anafi', gr: 'Ανάφη', locativeGr: 'στην Ανάφη', genitivePhraseGr: 'της Ανάφης' },
+    andros: { en: 'Andros', gr: 'Άνδρος', locativeGr: 'στην Άνδρο', genitivePhraseGr: 'της Άνδρου' },
+    antiparos: { en: 'Antiparos', gr: 'Αντίπαρος', locativeGr: 'στην Αντίπαρο', genitivePhraseGr: 'της Αντιπάρου' },
+    donousa: { en: 'Donousa', gr: 'Δονούσα', locativeGr: 'στη Δονούσα', genitivePhraseGr: 'της Δονούσας' },
+    folegandros: { en: 'Folegandros', gr: 'Φολέγανδρος', locativeGr: 'στη Φολέγανδρο', genitivePhraseGr: 'της Φολεγάνδρου' },
+    iraklia: { en: 'Iraklia', gr: 'Ηρακλειά', locativeGr: 'στην Ηρακλειά', genitivePhraseGr: 'της Ηρακλειάς' },
+    kea: { en: 'Kea', gr: 'Κέα', locativeGr: 'στην Κέα', genitivePhraseGr: 'της Κέας' },
+    kimolos: { en: 'Kimolos', gr: 'Κίμωλος', locativeGr: 'στην Κίμωλο', genitivePhraseGr: 'της Κιμώλου' },
+    koufonisia: { en: 'Koufonisia', gr: 'Κουφονήσια', locativeGr: 'στα Κουφονήσια', genitivePhraseGr: 'των Κουφονησίων' },
+    kythnos: { en: 'Kythnos', gr: 'Κύθνος', locativeGr: 'στην Κύθνο', genitivePhraseGr: 'της Κύθνου' },
+    milos: { en: 'Milos', gr: 'Μήλος', locativeGr: 'στη Μήλο', genitivePhraseGr: 'της Μήλου' },
+    mykonos: { en: 'Mykonos', gr: 'Μύκονος', locativeGr: 'στη Μύκονο', genitivePhraseGr: 'της Μυκόνου' },
+    naxos: { en: 'Naxos', gr: 'Νάξος', locativeGr: 'στη Νάξο', genitivePhraseGr: 'της Νάξου' },
+    paros: { en: 'Paros', gr: 'Πάρος', locativeGr: 'στην Πάρο', genitivePhraseGr: 'της Πάρου' },
+    santorini: { en: 'Santorini', gr: 'Σαντορίνη', locativeGr: 'στη Σαντορίνη', genitivePhraseGr: 'της Σαντορίνης' },
+    schinoussa: { en: 'Schinoussa', gr: 'Σχοινούσα', locativeGr: 'στη Σχοινούσα', genitivePhraseGr: 'της Σχοινούσας' },
+    serifos: { en: 'Serifos', gr: 'Σέριφος', locativeGr: 'στη Σέριφο', genitivePhraseGr: 'της Σερίφου' },
+    sifnos: { en: 'Sifnos', gr: 'Σίφνος', locativeGr: 'στη Σίφνο', genitivePhraseGr: 'της Σίφνου' },
+    sikinos: { en: 'Sikinos', gr: 'Σίκινος', locativeGr: 'στη Σίκινο', genitivePhraseGr: 'της Σικίνου' },
+    syros: { en: 'Syros', gr: 'Σύρος', locativeGr: 'στη Σύρο', genitivePhraseGr: 'της Σύρου' },
+    tinos: { en: 'Tinos', gr: 'Τήνος', locativeGr: 'στην Τήνο', genitivePhraseGr: 'της Τήνου' }
 };
 
 const CYCLADES_NOTABLE_DESCRIPTIONS: Array<{ aliases: string[]; areas?: string[]; en: string; gr: string }> = [
@@ -3163,8 +3374,8 @@ const CYCLADES_NOTABLE_DESCRIPTIONS: Array<{ aliases: string[]; areas?: string[]
     {
         aliases: ['Μαγγανάρι', 'Manganari'],
         areas: ['ios'],
-        en: 'A quieter south-Ios beach cluster with pale sand, protected coves and clear water away from the party side.',
-        gr: 'Πιο ήσυχη ζώνη παραλιών στη νότια Ίο, με ανοιχτόχρωμη άμμο, προφυλαγμένους κολπίσκους και καθαρά νερά μακριά από τα πάρτι.'
+        en: 'A quieter south-Ios beach cluster with pale sand, south-coast coves and clear water away from the party side.',
+        gr: 'Πιο ήσυχη ζώνη παραλιών στη νότια Ίο, με ανοιχτόχρωμη άμμο, νότιους κολπίσκους και καθαρά νερά μακριά από τα πάρτι.'
     },
     {
         aliases: ['Κάτεργο', 'Katergo'],
@@ -3181,8 +3392,8 @@ const CYCLADES_NOTABLE_DESCRIPTIONS: Array<{ aliases: string[]; areas?: string[]
     {
         aliases: ['Κολυμπήθρα', 'Kolympithra'],
         areas: ['tinos'],
-        en: 'Tinos’ famous double bay, with a calmer side and a wilder surf-friendly side when the meltemi blows.',
-        gr: 'Ο γνωστός διπλός κόλπος της Τήνου, με πιο ήρεμη πλευρά και πιο άγρια πλευρά που αγαπούν οι surfers όταν φυσά μελτέμι.'
+        en: 'Tinos’ famous double bay, with a more family-oriented side and a wilder surf-friendly side when the meltemi blows.',
+        gr: 'Ο γνωστός διπλός κόλπος της Τήνου, με πιο οικογενειακή πλευρά και πιο άγρια πλευρά που αγαπούν οι surfers όταν φυσά μελτέμι.'
     },
     {
         aliases: ['Της γριας το πήδημα', 'Της γριάς το πήδημα'],
@@ -3217,8 +3428,8 @@ const CYCLADES_NOTABLE_DESCRIPTIONS: Array<{ aliases: string[]; areas?: string[]
     {
         aliases: ['Τσιγκούρι', 'Λιβάδι', 'Λιόλιου'],
         areas: ['schinoussa'],
-        en: 'A Schinoussa beach with calm Cycladic water and a low-key Small Cyclades atmosphere.',
-        gr: 'Παραλία της Σχοινούσας με ήρεμα κυκλαδίτικα νερά και χαμηλών τόνων ατμόσφαιρα Μικρών Κυκλάδων.'
+        en: 'A Schinoussa beach with clear Cycladic water and a low-key Small Cyclades atmosphere.',
+        gr: 'Παραλία της Σχοινούσας με καθαρά κυκλαδίτικα νερά και χαμηλών τόνων ατμόσφαιρα Μικρών Κυκλάδων.'
     },
     {
         aliases: ['Κέδρος', 'Λιβάδι', 'Σταυρός'],
@@ -3229,8 +3440,8 @@ const CYCLADES_NOTABLE_DESCRIPTIONS: Array<{ aliases: string[]; areas?: string[]
     {
         aliases: ['Λιβάδι', 'Βορεινή Σπηλιά'],
         areas: ['iraklia'],
-        en: 'An Iraklia beach with peaceful water, sparse development and a genuinely small-island feel.',
-        gr: 'Παραλία της Ηρακλειάς με ήρεμα νερά, λίγες παρεμβάσεις και γνήσια αίσθηση μικρού νησιού.'
+        en: 'An Iraklia beach with sparse development and a genuinely small-island feel, often pleasant in settled weather.',
+        gr: 'Παραλία της Ηρακλειάς με λίγες παρεμβάσεις και γνήσια αίσθηση μικρού νησιού, συχνά ευχάριστη σε ήπιες συνθήκες.'
     },
     {
         aliases: ['Κολώνα'],
@@ -3247,14 +3458,14 @@ const CYCLADES_NOTABLE_DESCRIPTIONS: Array<{ aliases: string[]; areas?: string[]
     {
         aliases: ['Βαθύ', 'Πλατύς Γιαλός', 'Καμάρες', 'Φάρος'],
         areas: ['sifnos'],
-        en: 'A Sifnos beach tied to village life, sheltered bays and the island’s gentle food-and-pottery character.',
-        gr: 'Παραλία της Σίφνου δεμένη με οικισμό, προφυλαγμένους κόλπους και τον ήπιο χαρακτήρα φαγητού και κεραμικής του νησιού.'
+        en: 'A Sifnos beach tied to village life, bay settings and the island’s gentle food-and-pottery character.',
+        gr: 'Παραλία της Σίφνου δεμένη με οικισμό, κόλπους και τον ήπιο χαρακτήρα φαγητού και κεραμικής του νησιού.'
     },
     {
         aliases: ['Γαλησσάς', 'Κίνι', 'Αγκαθωπές', 'Βάρη'],
         areas: ['syros'],
-        en: 'A Syros beach with easy access, calm water and the convenience of being close to Ermoupoli’s island life.',
-        gr: 'Παραλία της Σύρου με εύκολη πρόσβαση, ήρεμα νερά και την άνεση της κοντινής ζωής της Ερμούπολης.'
+        en: 'A Syros beach with easy access, clear water and the convenience of being close to Ermoupoli’s island life.',
+        gr: 'Παραλία της Σύρου με εύκολη πρόσβαση, καθαρά νερά και την άνεση της κοντινής ζωής της Ερμούπολης.'
     }
 ];
 
@@ -3282,33 +3493,33 @@ const getCycladesDescription = (name: string, area: string): LocalizedBeachText 
     const label = CYCLADES_AREA_LABELS[areaKey];
     return makeLocalizedBeachText(
         `A ${label.en} beach with clear Aegean water, rocky Cycladic scenery and a relaxed island rhythm.`,
-        `Παραλία της ${label.gr} με καθαρά νερά Αιγαίου, βραχώδες κυκλαδίτικο τοπίο και χαλαρό νησιώτικο ρυθμό.`
+        `Παραλία ${greekGenitivePhrase(label)} με καθαρά νερά Αιγαίου, βραχώδες κυκλαδίτικο τοπίο και χαλαρό νησιώτικο ρυθμό.`
     );
 };
 
-const DODECANESE_AREA_LABELS: Record<string, { en: string; gr: string }> = {
-    agathonisi: { en: 'Agathonisi', gr: 'Αγαθονήσι' },
-    astypalaia: { en: 'Astypalaia', gr: 'Αστυπάλαια' },
-    halki: { en: 'Halki', gr: 'Χάλκη' },
-    kalymnos: { en: 'Kalymnos', gr: 'Κάλυμνο' },
-    karpathos: { en: 'Karpathos', gr: 'Κάρπαθο' },
-    kasos: { en: 'Kasos', gr: 'Κάσο' },
-    kassos: { en: 'Kasos', gr: 'Κάσο' },
-    kastellorizo: { en: 'Kastellorizo', gr: 'Καστελλόριζο' },
-    megisti: { en: 'Kastellorizo', gr: 'Καστελλόριζο' },
-    kos: { en: 'Kos', gr: 'Κω' },
-    leros: { en: 'Leros', gr: 'Λέρο' },
-    lipsi: { en: 'Lipsi', gr: 'Λειψούς' },
-    pserimos: { en: 'Pserimos', gr: 'Ψέριμο' },
-    telendos: { en: 'Telendos', gr: 'Τέλενδο' },
-    arki: { en: 'Arki', gr: 'Αρκιούς' },
-    arkoi: { en: 'Arki', gr: 'Αρκιούς' },
-    marathi: { en: 'Marathi', gr: 'Μαράθι' },
-    nisyros: { en: 'Nisyros', gr: 'Νίσυρο' },
-    patmos: { en: 'Patmos', gr: 'Πάτμο' },
-    rhodes: { en: 'Rhodes', gr: 'Ρόδο' },
-    symi: { en: 'Symi', gr: 'Σύμη' },
-    tilos: { en: 'Tilos', gr: 'Τήλο' }
+const DODECANESE_AREA_LABELS: Record<string, GreekAreaLabel> = {
+    agathonisi: { en: 'Agathonisi', gr: 'Αγαθονήσι', locativeGr: 'στο Αγαθονήσι', genitivePhraseGr: 'του Αγαθονησίου' },
+    astypalaia: { en: 'Astypalaia', gr: 'Αστυπάλαια', locativeGr: 'στην Αστυπάλαια', genitivePhraseGr: 'της Αστυπάλαιας' },
+    halki: { en: 'Halki', gr: 'Χάλκη', locativeGr: 'στη Χάλκη', genitivePhraseGr: 'της Χάλκης' },
+    kalymnos: { en: 'Kalymnos', gr: 'Κάλυμνο', locativeGr: 'στην Κάλυμνο', genitivePhraseGr: 'της Καλύμνου' },
+    karpathos: { en: 'Karpathos', gr: 'Κάρπαθο', locativeGr: 'στην Κάρπαθο', genitivePhraseGr: 'της Καρπάθου' },
+    kasos: { en: 'Kasos', gr: 'Κάσο', locativeGr: 'στην Κάσο', genitivePhraseGr: 'της Κάσου' },
+    kassos: { en: 'Kasos', gr: 'Κάσο', locativeGr: 'στην Κάσο', genitivePhraseGr: 'της Κάσου' },
+    kastellorizo: { en: 'Kastellorizo', gr: 'Καστελλόριζο', locativeGr: 'στο Καστελλόριζο', genitivePhraseGr: 'του Καστελλόριζου' },
+    megisti: { en: 'Kastellorizo', gr: 'Καστελλόριζο', locativeGr: 'στο Καστελλόριζο', genitivePhraseGr: 'του Καστελλόριζου' },
+    kos: { en: 'Kos', gr: 'Κω', locativeGr: 'στην Κω', genitivePhraseGr: 'της Κω' },
+    leros: { en: 'Leros', gr: 'Λέρο', locativeGr: 'στη Λέρο', genitivePhraseGr: 'της Λέρου' },
+    lipsi: { en: 'Lipsi', gr: 'Λειψούς', locativeGr: 'στους Λειψούς', genitivePhraseGr: 'των Λειψών' },
+    pserimos: { en: 'Pserimos', gr: 'Ψέριμο', locativeGr: 'στην Ψέριμο', genitivePhraseGr: 'της Ψερίμου' },
+    telendos: { en: 'Telendos', gr: 'Τέλενδο', locativeGr: 'στην Τέλενδο', genitivePhraseGr: 'της Τελένδου' },
+    arki: { en: 'Arki', gr: 'Αρκιούς', locativeGr: 'στους Αρκιούς', genitivePhraseGr: 'των Αρκιών' },
+    arkoi: { en: 'Arki', gr: 'Αρκιούς', locativeGr: 'στους Αρκιούς', genitivePhraseGr: 'των Αρκιών' },
+    marathi: { en: 'Marathi', gr: 'Μαράθι', locativeGr: 'στο Μαράθι', genitivePhraseGr: 'του Μαραθιού' },
+    nisyros: { en: 'Nisyros', gr: 'Νίσυρο', locativeGr: 'στη Νίσυρο', genitivePhraseGr: 'της Νισύρου' },
+    patmos: { en: 'Patmos', gr: 'Πάτμο', locativeGr: 'στην Πάτμο', genitivePhraseGr: 'της Πάτμου' },
+    rhodes: { en: 'Rhodes', gr: 'Ρόδο', locativeGr: 'στη Ρόδο', genitivePhraseGr: 'της Ρόδου' },
+    symi: { en: 'Symi', gr: 'Σύμη', locativeGr: 'στη Σύμη', genitivePhraseGr: 'της Σύμης' },
+    tilos: { en: 'Tilos', gr: 'Τήλο', locativeGr: 'στην Τήλο', genitivePhraseGr: 'της Τήλου' }
 };
 
 const DODECANESE_NOTABLE_DESCRIPTIONS: Array<{ aliases: string[]; areas?: string[]; en: string; gr: string }> = [
@@ -3327,8 +3538,8 @@ const DODECANESE_NOTABLE_DESCRIPTIONS: Array<{ aliases: string[]; areas?: string
     {
         aliases: ['Άντονι Κουίν', 'Anthony Quinn', 'Λαδικό', 'Ladiko'],
         areas: ['rhodes'],
-        en: 'A compact rocky Rhodes bay with emerald water, sheltered swimming and one of the island’s most recognizable coves.',
-        gr: 'Μικρός βραχώδης κόλπος της Ρόδου με σμαραγδένια νερά, απάνεμο μπάνιο και από τα πιο αναγνωρίσιμα τοπία του νησιού.'
+        en: 'A compact rocky Rhodes bay with emerald water and one of the island’s most recognizable coves.',
+        gr: 'Μικρός βραχώδης κόλπος της Ρόδου με σμαραγδένια νερά και από τα πιο αναγνωρίσιμα τοπία του νησιού.'
     },
     {
         aliases: ['Καλλιθέα', 'Kallithea', 'Nicolas', 'Oasis', 'Tassos'],
@@ -3375,8 +3586,8 @@ const DODECANESE_NOTABLE_DESCRIPTIONS: Array<{ aliases: string[]; areas?: string
     {
         aliases: ['Ψιλή Άμμος', 'Psili Ammos', 'Λαμπή', 'Lambi', 'Γροίκος', 'Grikos', 'Κάμπος', 'Kampos'],
         areas: ['patmos'],
-        en: 'A Patmos beach with calm island character, clear water and scenery shaped by bays, low hills and quiet chapels.',
-        gr: 'Παραλία της Πάτμου με ήρεμο νησιώτικο χαρακτήρα, καθαρά νερά και τοπίο από κόλπους, χαμηλούς λόφους και ήσυχα ξωκλήσια.'
+        en: 'A Patmos beach with quiet island character, clear water and scenery shaped by bays, low hills and chapels.',
+        gr: 'Παραλία της Πάτμου με χαμηλών τόνων νησιώτικο χαρακτήρα, καθαρά νερά και τοπίο από κόλπους, χαμηλούς λόφους και ήσυχα ξωκλήσια.'
     },
     {
         aliases: ['Μασούρι', 'Masouri', 'Καντούνι', 'Kantouni', 'Αργινώντα', 'Arginonta', 'Παλιόνησος', 'Palionisos', 'Συκάτη', 'Sykati'],
@@ -3387,8 +3598,8 @@ const DODECANESE_NOTABLE_DESCRIPTIONS: Array<{ aliases: string[]; areas?: string
     {
         aliases: ['Δύο Λισκάρια', 'Dyo Liskaria', 'Γούρνα', 'Gourna', 'Βρομόλιθος', 'Vromolithos', 'Κιούρα', 'Kioura'],
         areas: ['leros'],
-        en: 'A Leros beach with gentle water, low-key island life and bays that feel naturally sheltered.',
-        gr: 'Παραλία της Λέρου με ήρεμα νερά, χαμηλούς ρυθμούς και κόλπους που δίνουν φυσική αίσθηση προστασίας.'
+        en: 'A Leros beach with low-key island life and bays that can feel more enclosed than open coasts.',
+        gr: 'Παραλία της Λέρου με χαμηλούς ρυθμούς και κόλπους που μπορούν να δίνουν πιο κλειστή αίσθηση από ανοιχτές ακτές.'
     },
     {
         aliases: ['Άγιος Γεώργιος', 'Agios Georgios', 'Νανού', 'Nanou', 'Νος', 'Nos', 'Πέδι', 'Pedi'],
@@ -3411,8 +3622,8 @@ const DODECANESE_NOTABLE_DESCRIPTIONS: Array<{ aliases: string[]; areas?: string
     {
         aliases: ['Έριστος', 'Eristos', 'Λιβάδια', 'Livadia', 'Πλάκα', 'Plaka', 'Άγιος Σέργιος', 'Agios Sergios'],
         areas: ['tilos'],
-        en: 'A Tilos beach with calm water, sparse development and the island’s protected, nature-forward atmosphere.',
-        gr: 'Παραλία της Τήλου με ήρεμα νερά, λίγη δόμηση και την προστατευμένη, φυσιολατρική ατμόσφαιρα του νησιού.'
+        en: 'A Tilos beach with sparse development and the island’s nature-forward atmosphere.',
+        gr: 'Παραλία της Τήλου με λίγη δόμηση και τη φυσιολατρική ατμόσφαιρα του νησιού.'
     },
     {
         aliases: ['Παχιά Άμμος', 'Pachia Ammos', 'Χοχλάκοι', 'Chochlakoi'],
@@ -3423,8 +3634,8 @@ const DODECANESE_NOTABLE_DESCRIPTIONS: Array<{ aliases: string[]; areas?: string
     {
         aliases: ['Φτενάγια', 'Ftenagia', 'Ftenegia', 'Κάνια', 'Kania'],
         areas: ['halki'],
-        en: 'A small Halki beach with clear sheltered water and the slow, simple rhythm of the island.',
-        gr: 'Μικρή παραλία της Χάλκης με καθαρά απάνεμα νερά και τον αργό, λιτό ρυθμό του νησιού.'
+        en: 'A small Halki beach with clear water and the slow, simple rhythm of the island.',
+        gr: 'Μικρή παραλία της Χάλκης με καθαρά νερά και τον αργό, λιτό ρυθμό του νησιού.'
     },
     {
         aliases: ['Μανδράκι', 'Mandraki', 'Άγιος Γεώργιος', 'Agios Georgios', 'Πλάκες', 'Plakes'],
@@ -3464,20 +3675,20 @@ const getDodecaneseDescription = (name: string, area: string): LocalizedBeachTex
     const label = DODECANESE_AREA_LABELS[areaKey];
     return makeLocalizedBeachText(
         `A ${label.en} beach with clear Dodecanese water, a sunny Aegean setting and an easy island pace.`,
-        `Παραλία στην ${label.gr} με καθαρά νερά Δωδεκανήσου, φωτεινό αιγαιοπελαγίτικο τοπίο και ήρεμο νησιώτικο ρυθμό.`
+        `Παραλία ${greekLocativePhrase(label)} με καθαρά νερά Δωδεκανήσου, φωτεινό αιγαιοπελαγίτικο τοπίο και χαμηλών τόνων νησιώτικο ρυθμό.`
     );
 };
 
-const SPORADES_THESSALY_AREA_LABELS: Record<string, { en: string; gr: string; kind: 'sporades' | 'thessaly' }> = {
-    alonissos: { en: 'Alonissos', gr: 'Αλόννησο', kind: 'sporades' },
-    skiathos: { en: 'Skiathos', gr: 'Σκιάθο', kind: 'sporades' },
-    skopelos: { en: 'Skopelos', gr: 'Σκόπελο', kind: 'sporades' },
-    skyros: { en: 'Skyros', gr: 'Σκύρο', kind: 'sporades' },
-    magnesia: { en: 'Magnesia and Pelion', gr: 'Μαγνησία και το Πήλιο', kind: 'thessaly' },
-    pelion: { en: 'Pelion', gr: 'Πήλιο', kind: 'thessaly' },
-    larissa: { en: 'Larissa coast', gr: 'ακτογραμμή της Λάρισας', kind: 'thessaly' },
-    agia: { en: 'Larissa coast', gr: 'ακτογραμμή της Λάρισας', kind: 'thessaly' },
-    kissavos: { en: 'Larissa coast', gr: 'ακτογραμμή της Λάρισας', kind: 'thessaly' }
+const SPORADES_THESSALY_AREA_LABELS: Record<string, GreekAreaLabel & { kind: 'sporades' | 'thessaly' }> = {
+    alonissos: { en: 'Alonissos', gr: 'Αλόννησο', kind: 'sporades', locativeGr: 'στην Αλόννησο', genitivePhraseGr: 'της Αλοννήσου' },
+    skiathos: { en: 'Skiathos', gr: 'Σκιάθο', kind: 'sporades', locativeGr: 'στη Σκιάθο', genitivePhraseGr: 'της Σκιάθου' },
+    skopelos: { en: 'Skopelos', gr: 'Σκόπελο', kind: 'sporades', locativeGr: 'στη Σκόπελο', genitivePhraseGr: 'της Σκοπέλου' },
+    skyros: { en: 'Skyros', gr: 'Σκύρο', kind: 'sporades', locativeGr: 'στη Σκύρο', genitivePhraseGr: 'της Σκύρου' },
+    magnesia: { en: 'Magnesia and Pelion', gr: 'Μαγνησία και το Πήλιο', kind: 'thessaly', locativeGr: 'στη Μαγνησία και το Πήλιο', genitivePhraseGr: 'της Μαγνησίας και του Πηλίου' },
+    pelion: { en: 'Pelion', gr: 'Πήλιο', kind: 'thessaly', locativeGr: 'στο Πήλιο', genitivePhraseGr: 'του Πηλίου' },
+    larissa: { en: 'Larissa coast', gr: 'ακτογραμμή της Λάρισας', kind: 'thessaly', locativeGr: 'στην ακτογραμμή της Λάρισας', genitivePhraseGr: 'της ακτογραμμής της Λάρισας' },
+    agia: { en: 'Larissa coast', gr: 'ακτογραμμή της Λάρισας', kind: 'thessaly', locativeGr: 'στην ακτογραμμή της Λάρισας', genitivePhraseGr: 'της ακτογραμμής της Λάρισας' },
+    kissavos: { en: 'Larissa coast', gr: 'ακτογραμμή της Λάρισας', kind: 'thessaly', locativeGr: 'στην ακτογραμμή της Λάρισας', genitivePhraseGr: 'της ακτογραμμής της Λάρισας' }
 };
 
 const SPORADES_THESSALY_NOTABLE_DESCRIPTIONS: Array<{ aliases: string[]; areas?: string[]; en: string; gr: string }> = [
@@ -3508,8 +3719,8 @@ const SPORADES_THESSALY_NOTABLE_DESCRIPTIONS: Array<{ aliases: string[]; areas?:
     {
         aliases: ['Λεφτός Γιαλός', 'Λεφτό Γιαλός', 'Leftos Gialos', 'Χρυσή Μηλιά', 'Chrissi Milia', 'Μεγάλος Μουρτιάς', 'Megalos Mourtias', 'Γέρακας', 'Gerakas'],
         areas: ['alonissos'],
-        en: 'An Alonissos beach with clear protected water, pine or olive-green surroundings and the quiet rhythm of the marine-park island.',
-        gr: 'Παραλία της Αλοννήσου με καθαρά προστατευμένα νερά, πράσινο από πεύκα ή ελιές γύρω της και τον ήσυχο ρυθμό του νησιού του θαλάσσιου πάρκου.'
+        en: 'An Alonissos beach with clear water, pine or olive-green surroundings and the quiet rhythm of the marine-park island.',
+        gr: 'Παραλία της Αλοννήσου με καθαρά νερά, πράσινο από πεύκα ή ελιές γύρω της και τον ήσυχο ρυθμό του νησιού του θαλάσσιου πάρκου.'
     },
     {
         aliases: ['Καστάνη', 'Kastani'],
@@ -3520,8 +3731,8 @@ const SPORADES_THESSALY_NOTABLE_DESCRIPTIONS: Array<{ aliases: string[]; areas?:
     {
         aliases: ['Μηλιά', 'Milia', 'Πάνορμος', 'Panormos', 'Στάφυλος', 'Stafylos', 'Βελανιό', 'Velanio', 'Λιμνονάρι', 'Limnonari', 'Χόβολο', 'Hovolo', 'Γλυστέρι', 'Glysteri'],
         areas: ['skopelos'],
-        en: 'A Skopelos beach with green-blue water, thick coastal vegetation and the sheltered feel of the island’s coves.',
-        gr: 'Παραλία της Σκοπέλου με πρασινογάλαζα νερά, πυκνή βλάστηση κοντά στην ακτή και την απάνεμη αίσθηση των κόλπων του νησιού.'
+        en: 'A Skopelos beach with green-blue water, thick coastal vegetation and the enclosed feel of the island’s coves.',
+        gr: 'Παραλία της Σκοπέλου με πρασινογάλαζα νερά, πυκνή βλάστηση κοντά στην ακτή και την πιο κλειστή αίσθηση των κόλπων του νησιού.'
     },
     {
         aliases: ['Μυλοπόταμος', 'Mylopotamos'],
@@ -3538,8 +3749,8 @@ const SPORADES_THESSALY_NOTABLE_DESCRIPTIONS: Array<{ aliases: string[]; areas?:
     {
         aliases: ['Κορόπη', 'Koropi', 'Λεφόκαστρο', 'Lefokastro', 'Αμποβός', 'Abovos', 'Άναυρος', 'Anavros', 'Αλυκές', 'Alykes', 'Νέα Αγχίαλος', 'Nea Anchialos'],
         areas: ['magnesia', 'pelion'],
-        en: 'A Magnesia beach with easier road access, calmer Pagasetic-side water and a practical mainland-summer character.',
-        gr: 'Παραλία της Μαγνησίας με πιο εύκολη οδική πρόσβαση, ηπιότερα νερά στον Παγασητικό και πρακτικό χαρακτήρα θερινού προορισμού.'
+        en: 'A Magnesia beach with easier road access, Pagasetic-side water and a practical mainland-summer character.',
+        gr: 'Παραλία της Μαγνησίας με πιο εύκολη οδική πρόσβαση, νερά στον Παγασητικό και πρακτικό χαρακτήρα θερινού προορισμού.'
     },
     {
         aliases: ['Αγιόκαμπος', 'Agiokampos', 'Σωτηρίτσα', 'Sotiritsa', 'Βελίκα', 'Velika'],
@@ -3580,25 +3791,25 @@ const getSporadesThessalyDescription = (name: string, area: string): LocalizedBe
     if (label.kind === 'sporades') {
         return makeLocalizedBeachText(
             `A ${label.en} beach with clear Sporades water, green island scenery and a relaxed northern-Aegean feel.`,
-            `Παραλία στην ${label.gr} με καθαρά νερά Σποράδων, πράσινο νησιώτικο τοπίο και χαλαρή αίσθηση βόρειου Αιγαίου.`
+            `Παραλία ${greekLocativePhrase(label)} με καθαρά νερά Σποράδων, πράσινο νησιώτικο τοπίο και χαλαρή αίσθηση βόρειου Αιγαίου.`
         );
     }
 
     return makeLocalizedBeachText(
         `A ${label.en} beach with clear Thessalian water, mountain-backed scenery and an easy mainland summer rhythm.`,
-        `Παραλία στην ${label.gr} με καθαρά νερά Θεσσαλίας, τοπίο με βουνό στο φόντο και άνετο ηπειρωτικό καλοκαιρινό ρυθμό.`
+        `Παραλία ${greekLocativePhrase(label)} με καθαρά νερά Θεσσαλίας, τοπίο με βουνό στο φόντο και άνετο ηπειρωτικό καλοκαιρινό ρυθμό.`
     );
 };
 
-const PELOPONNESE_AREA_LABELS: Record<string, { en: string; gr: string }> = {
-    argolida: { en: 'Argolida', gr: 'Αργολίδα' },
-    arkadia: { en: 'Arkadia', gr: 'Αρκαδία' },
-    korinthia: { en: 'Korinthia', gr: 'Κορινθία' },
-    lakonia: { en: 'Lakonia', gr: 'Λακωνία' },
-    messinia: { en: 'Messinia', gr: 'Μεσσηνία' },
-    achaia: { en: 'Achaia', gr: 'Αχαΐα' },
-    ileia: { en: 'Ilia', gr: 'Ηλεία' },
-    ilia: { en: 'Ilia', gr: 'Ηλεία' }
+const PELOPONNESE_AREA_LABELS: Record<string, GreekAreaLabel> = {
+    argolida: { en: 'Argolida', gr: 'Αργολίδα', locativeGr: 'στην Αργολίδα', genitivePhraseGr: 'της Αργολίδας' },
+    arkadia: { en: 'Arkadia', gr: 'Αρκαδία', locativeGr: 'στην Αρκαδία', genitivePhraseGr: 'της Αρκαδίας' },
+    korinthia: { en: 'Korinthia', gr: 'Κορινθία', locativeGr: 'στην Κορινθία', genitivePhraseGr: 'της Κορινθίας' },
+    lakonia: { en: 'Lakonia', gr: 'Λακωνία', locativeGr: 'στη Λακωνία', genitivePhraseGr: 'της Λακωνίας' },
+    messinia: { en: 'Messinia', gr: 'Μεσσηνία', locativeGr: 'στη Μεσσηνία', genitivePhraseGr: 'της Μεσσηνίας' },
+    achaia: { en: 'Achaia', gr: 'Αχαΐα', locativeGr: 'στην Αχαΐα', genitivePhraseGr: 'της Αχαΐας' },
+    ileia: { en: 'Ilia', gr: 'Ηλεία', locativeGr: 'στην Ηλεία', genitivePhraseGr: 'της Ηλείας' },
+    ilia: { en: 'Ilia', gr: 'Ηλεία', locativeGr: 'στην Ηλεία', genitivePhraseGr: 'της Ηλείας' }
 };
 
 const PELOPONNESE_NOTABLE_DESCRIPTIONS: Array<{ aliases: string[]; areas?: string[]; en: string; gr: string }> = [
@@ -3653,8 +3864,8 @@ const PELOPONNESE_NOTABLE_DESCRIPTIONS: Array<{ aliases: string[]; areas?: strin
     {
         aliases: ['Παραλία Γιάλοβα', 'Διβάρι', 'Divari'],
         areas: ['messinia'],
-        en: 'A quiet Navarino-side beach connected with the Gialova lagoon landscape, good for calmer swims and bird-rich scenery.',
-        gr: 'Ήρεμη παραλία στην πλευρά του Ναβαρίνου, δεμένη με το τοπίο της λιμνοθάλασσας Γιάλοβας, για πιο χαλαρό μπάνιο και φυσική παρατήρηση.'
+        en: 'A quiet Navarino-side beach connected with the Gialova lagoon landscape, good for settled-weather swims and bird-rich scenery.',
+        gr: 'Ήσυχη παραλία στην πλευρά του Ναβαρίνου, δεμένη με το τοπίο της λιμνοθάλασσας Γιάλοβας, για μπάνιο σε ήπιες συνθήκες και φυσική παρατήρηση.'
     },
     {
         aliases: ['Λαγκουβαρδος', 'Λαγκούβαρδος'],
@@ -3677,8 +3888,8 @@ const PELOPONNESE_NOTABLE_DESCRIPTIONS: Array<{ aliases: string[]; areas?: strin
     {
         aliases: ['Πλαζ Λίμνης Ηραίου', 'Ηραίο'],
         areas: ['korinthia'],
-        en: 'A lake-and-sea setting by Heraion, combining a sheltered swim with one of Corinthia’s most distinctive archaeological landscapes.',
-        gr: 'Σημείο με λίμνη και θάλασσα δίπλα στο Ηραίο, που συνδυάζει προστατευμένο μπάνιο με ένα από τα πιο ιδιαίτερα αρχαιολογικά τοπία της Κορινθίας.'
+        en: 'A lake-and-sea setting by Heraion, combining a distinctive swim setting with one of Corinthia’s most notable archaeological landscapes.',
+        gr: 'Σημείο με λίμνη και θάλασσα δίπλα στο Ηραίο, που συνδυάζει ξεχωριστό σκηνικό για μπάνιο με ένα από τα πιο ιδιαίτερα αρχαιολογικά τοπία της Κορινθίας.'
     },
     {
         aliases: ['Παραλία Μυλοκοπή', 'Μυλοκοπή'],
@@ -3701,8 +3912,8 @@ const PELOPONNESE_NOTABLE_DESCRIPTIONS: Array<{ aliases: string[]; areas?: strin
     {
         aliases: ['Παραλία Αρβανιτιά', 'Αρβανιτιά'],
         areas: ['argolida'],
-        en: 'A compact Nafplio beach below the Palamidi side, ideal for a quick swim with a strong old-town backdrop.',
-        gr: 'Μικρή παραλία του Ναυπλίου κάτω από την πλευρά του Παλαμηδιού, ιδανική για γρήγορο μπάνιο με έντονο σκηνικό παλιάς πόλης.'
+        en: 'A compact Nafplio beach below the Palamidi side, practical for a quick swim with a strong old-town backdrop.',
+        gr: 'Μικρή παραλία του Ναυπλίου κάτω από την πλευρά του Παλαμηδιού, πρακτική για γρήγορο μπάνιο με έντονο σκηνικό παλιάς πόλης.'
     },
     {
         aliases: ['Παραλία Κονδύλι', 'Παραλία Αγίου Νικολάου - Κονδύλι'],
@@ -3814,16 +4025,16 @@ const getPeloponneseDescription = (name: string, area: string): LocalizedBeachTe
     const label = PELOPONNESE_AREA_LABELS[areaKey];
     return makeLocalizedBeachText(
         `A ${label.en} beach with clear Greek mainland water and a relaxed Peloponnese coastal character.`,
-        `Παραλία της ${label.gr} με καθαρά νερά και χαλαρό παράκτιο χαρακτήρα Πελοποννήσου.`
+        `Παραλία ${greekGenitivePhrase(label)} με καθαρά νερά και χαλαρό παράκτιο χαρακτήρα Πελοποννήσου.`
     );
 };
 
-const CRETE_AREA_LABELS: Record<string, { en: string; gr: string }> = {
-    chania: { en: 'Chania', gr: 'Χανιά' },
-    rethymno: { en: 'Rethymno', gr: 'Ρέθυμνο' },
-    heraklion: { en: 'Heraklion', gr: 'Ηράκλειο' },
-    lasithi: { en: 'Lasithi', gr: 'Λασίθι' },
-    gavdos: { en: 'Gavdos', gr: 'Γαύδο' }
+const CRETE_AREA_LABELS: Record<string, GreekAreaLabel> = {
+    chania: { en: 'Chania', gr: 'Χανιά', locativeGr: 'στα Χανιά', genitivePhraseGr: 'των Χανίων' },
+    rethymno: { en: 'Rethymno', gr: 'Ρέθυμνο', locativeGr: 'στο Ρέθυμνο', genitivePhraseGr: 'του Ρεθύμνου' },
+    heraklion: { en: 'Heraklion', gr: 'Ηράκλειο', locativeGr: 'στο Ηράκλειο', genitivePhraseGr: 'του Ηρακλείου' },
+    lasithi: { en: 'Lasithi', gr: 'Λασίθι', locativeGr: 'στο Λασίθι', genitivePhraseGr: 'του Λασιθίου' },
+    gavdos: { en: 'Gavdos', gr: 'Γαύδο', locativeGr: 'στη Γαύδο', genitivePhraseGr: 'της Γαύδου' }
 };
 
 const CRETE_NOTABLE_DESCRIPTIONS: Record<string, { areas: string[]; en: string; gr: string }> = {
@@ -3834,8 +4045,8 @@ const CRETE_NOTABLE_DESCRIPTIONS: Record<string, { areas: string[]; en: string; 
     },
     Elafonisi: {
         areas: ['Chania', 'Crete (Chania)'],
-        en: 'A protected lagoon beach with pale sand, pink tones in places and very shallow water that changes color through the day.',
-        gr: 'Προστατευμένη λιμνοθαλάσσια παραλία με ανοιχτόχρωμη άμμο, ροζ τόνους κατά σημεία και πολύ ρηχά νερά που αλλάζουν χρώμα μέσα στη μέρα.'
+        en: 'A lagoon beach in a protected landscape, with pale sand, pink tones in places and very shallow water that changes color through the day.',
+        gr: 'Λιμνοθαλάσσια παραλία σε προστατευμένο τοπίο, με ανοιχτόχρωμη άμμο, ροζ τόνους κατά σημεία και πολύ ρηχά νερά που αλλάζουν χρώμα μέσα στη μέρα.'
     },
     Kedrodasos: {
         areas: ['Chania', 'Crete (Chania)'],
@@ -3854,13 +4065,13 @@ const CRETE_NOTABLE_DESCRIPTIONS: Record<string, { areas: string[]; en: string; 
     },
     Stavros: {
         areas: ['Chania', 'Crete (Chania)'],
-        en: 'A sheltered Akrotiri bay below the famous mountain backdrop, with calm water and a classic film-history connection.',
-        gr: 'Προστατευμένος κόλπος στο Ακρωτήρι κάτω από το χαρακτηριστικό βουνό, με ήρεμα νερά και γνωστή κινηματογραφική ιστορία.'
+        en: 'An Akrotiri bay below the famous mountain backdrop, with a classic film-history connection and water that can be pleasant in settled weather.',
+        gr: 'Κόλπος στο Ακρωτήρι κάτω από το χαρακτηριστικό βουνό, με γνωστή κινηματογραφική ιστορία και νερά που μπορούν να είναι ευχάριστα σε ήπιες συνθήκες.'
     },
     Marathi: {
         areas: ['Chania', 'Crete (Chania)'],
-        en: 'A family-friendly Akrotiri beach with calm water, tavernas and views across Souda Bay.',
-        gr: 'Οικογενειακή παραλία στο Ακρωτήρι με ήρεμα νερά, ταβέρνες και θέα προς τον κόλπο της Σούδας.'
+        en: 'A family-oriented Akrotiri beach with tavernas and views across Souda Bay.',
+        gr: 'Οικογενειακή παραλία στο Ακρωτήρι με ταβέρνες και θέα προς τον κόλπο της Σούδας.'
     },
     Diktina: {
         areas: ['Chania', 'Crete (Chania)'],
@@ -3924,7 +4135,7 @@ const CRETE_NOTABLE_DESCRIPTIONS: Record<string, { areas: string[]; en: string; 
     },
     Damnoni: {
         areas: ['Rethymno', 'Crete (Rethymno)'],
-        en: 'A spacious beach east of Plakias, useful as a base for calm swims and the smaller Ammoudi coves around it.',
+        en: 'A spacious beach east of Plakias, useful as a base for settled-weather swims and the smaller Ammoudi coves around it.',
         gr: 'Ευρύχωρη παραλία ανατολικά του Πλακιά, καλή βάση για βουτιές και για τους μικρότερους κολπίσκους Αμμούδι γύρω της.'
     },
     Schinaria: {
@@ -3964,12 +4175,12 @@ const CRETE_NOTABLE_DESCRIPTIONS: Record<string, { areas: string[]; en: string; 
     },
     'Αγία Φωτιά': {
         areas: ['Lasithi', 'Crete (Lasithi)'],
-        en: 'A sheltered south-Lasithi beach east of Ierapetra, with pebbly sand and a relaxed taverna-backed setting.',
-        gr: 'Προστατευμένη νότια παραλία ανατολικά της Ιεράπετρας, με αμμοβότσαλο και χαλαρό σκηνικό με ταβέρνα από πίσω.'
+        en: 'A south-Lasithi beach east of Ierapetra, with pebbly sand and a relaxed taverna-backed setting.',
+        gr: 'Νότια παραλία ανατολικά της Ιεράπετρας, με αμμοβότσαλο και χαλαρό σκηνικό με ταβέρνα από πίσω.'
     },
     'Μαζιδά Άμμος': {
         areas: ['Lasithi', 'Crete (Lasithi)'],
-        en: 'A wide Xerokampos beach with soft pale sand, shallow water and the remote calm of far eastern Crete.',
+        en: 'A wide Xerokampos beach with soft pale sand, shallow water and the remote feel of far eastern Crete.',
         gr: 'Μεγάλη παραλία του Ξερόκαμπου με ανοιχτόχρωμη άμμο, ρηχά νερά και την απομονωμένη ηρεμία της άκρας ανατολικής Κρήτης.'
     },
     Κουρεμένος: {
@@ -3985,11 +4196,11 @@ const CRETE_NOTABLE_DESCRIPTIONS: Record<string, { areas: string[]; en: string; 
     Καρούμες: {
         areas: ['Lasithi', 'Crete (Lasithi)'],
         en: 'A remote beach reached through the Chochlakies gorge, suited to hikers and quiet swims far from road traffic.',
-        gr: 'Απομονωμένη παραλία που προσεγγίζεται από το φαράγγι των Χοχλακιών, ιδανική για πεζοπόρους και ήσυχες βουτιές μακριά από δρόμους.'
+        gr: 'Απομονωμένη παραλία που προσεγγίζεται από το φαράγγι των Χοχλακιών, καλή για πεζοπόρους και βουτιές μακριά από δρόμους όταν οι συνθήκες είναι κατάλληλες.'
     },
     Θόλος: {
         areas: ['Lasithi', 'Crete (Lasithi)'],
-        en: 'A low-key beach on the Mirabello side of Lasithi, with a calmer local rhythm and views across the bay.',
+        en: 'A low-key beach on the Mirabello side of Lasithi, with a relaxed local rhythm and views across the bay.',
         gr: 'Χαμηλών τόνων παραλία στην πλευρά του Μιραμπέλλου, με πιο τοπικό ρυθμό και θέα στον κόλπο.'
     },
     'Richtis Beach': {
@@ -4026,11 +4237,11 @@ const getLasithiDescription = (name: string): LocalizedBeachText => {
             gr: '\u039c\u03b9\u03ba\u03c1\u03ae \u03c0\u03b1\u03c1\u03b1\u03bb\u03af\u03b1 \u03c3\u03c4\u03b7 \u03c7\u03b5\u03c1\u03c3\u03cc\u03bd\u03b7\u03c3\u03bf \u03c4\u03b7\u03c2 \u0395\u03bb\u03bf\u03cd\u03bd\u03c4\u03b1\u03c2, \u03bc\u03b5 \u03ba\u03b1\u03b8\u03b1\u03c1\u03ac \u03bd\u03b5\u03c1\u03ac \u03ba\u03b1\u03b9 \u03b1\u03af\u03c3\u03b8\u03b7\u03c3\u03b7 \u03b5\u03ba\u03b4\u03c1\u03bf\u03bc\u03ae\u03c2 \u03bc\u03b5 \u03ba\u03b1\u03ca\u03ba\u03b9 \u03b1\u03c0\u03ad\u03bd\u03b1\u03bd\u03c4\u03b9 \u03b1\u03c0\u03cc \u03c4\u03b7 \u03a3\u03c0\u03b9\u03bd\u03b1\u03bb\u03cc\u03b3\u03ba\u03b1.'
         },
         [normalizeBeachLookup('\u0391\u03b3\u03af\u03b1 \u03a6\u03c9\u03c4\u03b9\u03ac')]: {
-            en: 'A sheltered south-Lasithi beach east of Ierapetra, with pebbly sand and a relaxed taverna-backed setting.',
+            en: 'A south-Lasithi beach east of Ierapetra, with pebbly sand and a relaxed taverna-backed setting.',
             gr: '\u03a0\u03c1\u03bf\u03c3\u03c4\u03b1\u03c4\u03b5\u03c5\u03bc\u03ad\u03bd\u03b7 \u03bd\u03cc\u03c4\u03b9\u03b1 \u03c0\u03b1\u03c1\u03b1\u03bb\u03af\u03b1 \u03b1\u03bd\u03b1\u03c4\u03bf\u03bb\u03b9\u03ba\u03ac \u03c4\u03b7\u03c2 \u0399\u03b5\u03c1\u03ac\u03c0\u03b5\u03c4\u03c1\u03b1\u03c2, \u03bc\u03b5 \u03b1\u03bc\u03bc\u03bf\u03b2\u03cc\u03c4\u03c3\u03b1\u03bb\u03bf \u03ba\u03b1\u03b9 \u03c7\u03b1\u03bb\u03b1\u03c1\u03cc \u03c3\u03ba\u03b7\u03bd\u03b9\u03ba\u03cc \u03bc\u03b5 \u03c4\u03b1\u03b2\u03ad\u03c1\u03bd\u03b1 \u03b1\u03c0\u03cc \u03c0\u03af\u03c3\u03c9.'
         },
         [normalizeBeachLookup('\u039c\u03b1\u03b6\u03b9\u03b4\u03ac \u0386\u03bc\u03bc\u03bf\u03c2')]: {
-            en: 'A wide Xerokampos beach with soft pale sand, shallow water and the remote calm of far eastern Crete.',
+            en: 'A wide Xerokampos beach with soft pale sand, shallow water and the remote feel of far eastern Crete.',
             gr: '\u039c\u03b5\u03b3\u03ac\u03bb\u03b7 \u03c0\u03b1\u03c1\u03b1\u03bb\u03af\u03b1 \u03c4\u03bf\u03c5 \u039e\u03b5\u03c1\u03cc\u03ba\u03b1\u03bc\u03c0\u03bf\u03c5 \u03bc\u03b5 \u03b1\u03bd\u03bf\u03b9\u03c7\u03c4\u03cc\u03c7\u03c1\u03c9\u03bc\u03b7 \u03ac\u03bc\u03bc\u03bf, \u03c1\u03b7\u03c7\u03ac \u03bd\u03b5\u03c1\u03ac \u03ba\u03b1\u03b9 \u03c4\u03b7\u03bd \u03b1\u03c0\u03bf\u03bc\u03bf\u03bd\u03c9\u03bc\u03ad\u03bd\u03b7 \u03b7\u03c1\u03b5\u03bc\u03af\u03b1 \u03c4\u03b7\u03c2 \u03ac\u03ba\u03c1\u03b1\u03c2 \u03b1\u03bd\u03b1\u03c4\u03bf\u03bb\u03b9\u03ba\u03ae\u03c2 \u039a\u03c1\u03ae\u03c4\u03b7\u03c2.'
         },
         [normalizeBeachLookup('\u039a\u03bf\u03c5\u03c1\u03b5\u03bc\u03ad\u03bd\u03bf\u03c2')]: {
@@ -4088,54 +4299,54 @@ const getCreteDescription = (name: string, area: string): LocalizedBeachText | n
     if (lowerName.includes('ammos') || lowerName.includes('amoudi') || lowerName.includes('akti') || lowerName.includes('αμμος') || lowerName.includes('ακτη')) {
         return makeLocalizedBeachText(
             `${beachLabel} is a sandy Cretan beach in ${areaLabel.en}, best for an easy swim when the wind is gentle.`,
-            `Η ${beachLabel} είναι αμμουδερή κρητική παραλία στα ${areaLabel.gr}, καλύτερη για άνετη βουτιά όταν ο αέρας είναι ήπιος.`
+            `Η ${beachLabel} είναι αμμουδερή κρητική παραλία ${greekLocativePhrase(areaLabel)}, καλύτερη για άνετη βουτιά όταν ο αέρας είναι ήπιος.`
         );
     }
 
     if (lowerName.includes('limani') || lowerName.includes('gulf') || lowerName.includes('kolpos') || lowerName.includes('λιμαν') || lowerName.includes('κολπος')) {
         return makeLocalizedBeachText(
-            `${beachLabel} has a sheltered cove feeling on the ${areaLabel.en} coast, with calmer water than the open beaches nearby.`,
-            `Η ${beachLabel} έχει αίσθηση προστατευμένου κολπίσκου στην ακτή των ${areaLabel.gr}, με πιο ήρεμα νερά από τις ανοιχτές παραλίες γύρω της.`
+            `${beachLabel} has a cove-like feel on the ${areaLabel.en} coast, with swim comfort best judged by today's wind and sea.`,
+            `Η ${beachLabel} έχει αίσθηση κολπίσκου στην ακτή ${greekGenitivePhrase(areaLabel)}, με την άνεση για μπάνιο να εξαρτάται από τον σημερινό άνεμο και τη θάλασσα.`
         );
     }
 
     if (lowerName.includes('nudist')) {
         return makeLocalizedBeachText(
             `${beachLabel} is one of the quieter clothes-optional swim spots in ${areaLabel.en}, better for low-key beach time than heavy organization.`,
-            `Η ${beachLabel} είναι από τα πιο ήσυχα σημεία γυμνιστών στα ${areaLabel.gr}, περισσότερο για χαλαρή παραμονή παρά για έντονη οργάνωση.`
+            `Η ${beachLabel} είναι από τα πιο ήσυχα σημεία γυμνιστών ${greekLocativePhrase(areaLabel)}, περισσότερο για χαλαρή παραμονή παρά για έντονη οργάνωση.`
         );
     }
 
     const variants = [
         {
             en: `${beachLabel} is a local Crete beach in ${areaLabel.en}, useful for a straightforward swim without the postcard crowds.`,
-            gr: `Η ${beachLabel} είναι τοπική παραλία της Κρήτης στα ${areaLabel.gr}, καλή για απλή βουτιά χωρίς την πολυκοσμία των πιο διάσημων σημείων.`
+            gr: `Η ${beachLabel} είναι τοπική παραλία της Κρήτης ${greekLocativePhrase(areaLabel)}, καλή για απλή βουτιά χωρίς την πολυκοσμία των πιο διάσημων σημείων.`
         },
         {
             en: `${beachLabel} gives the ${areaLabel.en} coast a quieter stop, with the appeal mostly in the landscape and the easy contact with the sea.`,
-            gr: `Η ${beachLabel} δίνει στην ακτή των ${areaLabel.gr} μια πιο ήσυχη στάση, με βασική αξία το τοπίο και την άμεση επαφή με τη θάλασσα.`
+            gr: `Η ${beachLabel} δίνει στην ακτή ${greekGenitivePhrase(areaLabel)} μια πιο ήσυχη στάση, με βασική αξία το τοπίο και την άμεση επαφή με τη θάλασσα.`
         },
         {
             en: `${beachLabel} works well as a small Cretan detour while exploring the wider ${areaLabel.en} shoreline.`,
-            gr: `Η ${beachLabel} λειτουργεί ωραία σαν μικρή κρητική παράκαμψη όταν εξερευνάς την ευρύτερη ακτογραμμή των ${areaLabel.gr}.`
+            gr: `Η ${beachLabel} λειτουργεί ωραία σαν μικρή κρητική παράκαμψη όταν εξερευνάς την ευρύτερη ακτογραμμή ${greekGenitivePhrase(areaLabel)}.`
         },
         {
             en: `${beachLabel} is one of the less formal swim spots in ${areaLabel.en}, with a simple coast-first character.`,
-            gr: `Η ${beachLabel} είναι από τα λιγότερο τυπικά σημεία για μπάνιο στα ${areaLabel.gr}, με απλό χαρακτήρα καθαρής ακτογραμμής.`
+            gr: `Η ${beachLabel} είναι από τα λιγότερο τυπικά σημεία για μπάνιο ${greekLocativePhrase(areaLabel)}, με απλό χαρακτήρα καθαρής ακτογραμμής.`
         }
     ];
     const index = Math.abs(normalizedName.split('').reduce((sum, char) => sum + char.charCodeAt(0), 0)) % variants.length;
     return makeLocalizedBeachText(variants[index].en, variants[index].gr);
 };
 
-const MACEDONIA_AREA_LABELS: Record<string, { en: string; gr: string }> = {
-    halkidiki: { en: 'Halkidiki', gr: 'Χαλκιδική' },
-    kilkis: { en: 'Kilkis', gr: 'Κιλκίς' },
-    pieria: { en: 'Pieria', gr: 'Πιερία' },
-    thessaloniki: { en: 'Thessaloniki', gr: 'Θεσσαλονίκη' },
-    kavala: { en: 'Kavala', gr: 'Καβάλα' },
-    thasos: { en: 'Thasos', gr: 'Θάσο' },
-    kastoria: { en: 'Kastoria', gr: 'Καστοριά' }
+const MACEDONIA_AREA_LABELS: Record<string, GreekAreaLabel> = {
+    halkidiki: { en: 'Halkidiki', gr: 'Χαλκιδική', locativeGr: 'στη Χαλκιδική', genitivePhraseGr: 'της Χαλκιδικής' },
+    kilkis: { en: 'Kilkis', gr: 'Κιλκίς', locativeGr: 'στο Κιλκίς', genitivePhraseGr: 'του Κιλκίς' },
+    pieria: { en: 'Pieria', gr: 'Πιερία', locativeGr: 'στην Πιερία', genitivePhraseGr: 'της Πιερίας' },
+    thessaloniki: { en: 'Thessaloniki', gr: 'Θεσσαλονίκη', locativeGr: 'στη Θεσσαλονίκη', genitivePhraseGr: 'της Θεσσαλονίκης' },
+    kavala: { en: 'Kavala', gr: 'Καβάλα', locativeGr: 'στην Καβάλα', genitivePhraseGr: 'της Καβάλας' },
+    thasos: { en: 'Thasos', gr: 'Θάσο', locativeGr: 'στη Θάσο', genitivePhraseGr: 'της Θάσου' },
+    kastoria: { en: 'Kastoria', gr: 'Καστοριά', locativeGr: 'στην Καστοριά', genitivePhraseGr: 'της Καστοριάς' }
 };
 
 const MACEDONIA_NOTABLE_DESCRIPTIONS: Record<string, { areas: string[]; en: string; gr: string }> = {
@@ -4156,8 +4367,8 @@ const MACEDONIA_NOTABLE_DESCRIPTIONS: Record<string, { areas: string[]; en: stri
     },
     "Porto Koufo": {
         areas: ["Halkidiki", "Halkidiki (mainland)"],
-        en: "One of Greece's safest natural harbours, a deep sheltered bay with fishing boats and calm water in south Sithonia.",
-        gr: "Ένα από τα ασφαλέστερα φυσικά λιμάνια της Ελλάδας, βαθύς προστατευμένος κόλπος με ψαρόβαρκες και ήρεμα νερά στη νότια Σιθωνία."
+        en: "A deep natural harbour in south Sithonia, with fishing boats, enclosed-bay scenery and a distinctive coastal character.",
+        gr: "Βαθύ φυσικό λιμάνι στη νότια Σιθωνία, με ψαρόβαρκες, κλειστή αίσθηση κόλπου και ξεχωριστό παράκτιο χαρακτήρα."
     },
     "Kalamitsi": {
         areas: ["Halkidiki", "Halkidiki (mainland)"],
@@ -4171,8 +4382,8 @@ const MACEDONIA_NOTABLE_DESCRIPTIONS: Record<string, { areas: string[]; en: stri
     },
     "Vourvourou": {
         areas: ["Halkidiki", "Halkidiki (mainland)"],
-        en: "A sheltered Sithonia lagoon-like coast, famous for calm water and boat trips around the Diaporos islets.",
-        gr: "Προστατευμένη ακτογραμμή της Σιθωνίας με λιμνοθαλασσινή αίσθηση, γνωστή για ήρεμα νερά και βαρκάδες στα νησάκια του Διάπορου."
+        en: "A Sithonia lagoon-like coast, known for boat trips around the Diaporos islets and an enclosed coastal feel.",
+        gr: "Ακτογραμμή της Σιθωνίας με λιμνοθαλασσινή αίσθηση, γνωστή για βαρκάδες στα νησάκια του Διάπορου και πιο κλειστό παράκτιο χαρακτήρα."
     },
     "Ouranoupoli": {
         areas: ["Halkidiki", "Halkidiki (mainland)"],
@@ -4186,8 +4397,8 @@ const MACEDONIA_NOTABLE_DESCRIPTIONS: Record<string, { areas: string[]; en: stri
     },
     "Τόσκα": {
         areas: ["Kavala", "Kavala (mainland)"],
-        en: "A sheltered beach just west of Kavala, with green slopes around it and easy access from the coastal road.",
-        gr: "Προστατευμένη παραλία λίγο δυτικά της Καβάλας, με πράσινες πλαγιές γύρω της και εύκολη πρόσβαση από τον παραλιακό δρόμο."
+        en: "A beach just west of Kavala, with green slopes around it and easy access from the coastal road.",
+        gr: "Παραλία λίγο δυτικά της Καβάλας, με πράσινες πλαγιές γύρω της και εύκολη πρόσβαση από τον παραλιακό δρόμο."
     },
     "Παραλία Καλαμίτσας": {
         areas: ["Kavala", "Kavala (mainland)"],
@@ -4211,8 +4422,8 @@ const MACEDONIA_NOTABLE_DESCRIPTIONS: Record<string, { areas: string[]; en: stri
     },
     "Χρυσή Αμμουδιά": {
         areas: ["Thasos"],
-        en: "A long sandy bay on east Thasos, backed by green mountains and ideal for easy family swimming.",
-        gr: "Μεγάλος αμμουδερός κόλπος στην ανατολική Θάσο, με πράσινα βουνά από πίσω και εύκολη οικογενειακή βουτιά."
+        en: "A long sandy bay on east Thasos, backed by green mountains and popular with families thanks to its broad beach setting.",
+        gr: "Μεγάλος αμμουδερός κόλπος στην ανατολική Θάσο, με πράσινα βουνά από πίσω και οικογενειακό χαρακτήρα χάρη στη φαρδιά παραλία."
     },
     "Παραδείσος": {
         areas: ["Thasos"],
@@ -4263,36 +4474,36 @@ const getMacedoniaDescription = (name: string, area: string): LocalizedBeachText
     if (lowerName.includes('ammos') || lowerName.includes('αμμος') || lowerName.includes('αμμουδια') || lowerName.includes('ακτη')) {
         return makeLocalizedBeachText(
             `${beachLabel} is a sandy Macedonia beach in ${areaLabel.en}, suited to easy swimming and a relaxed summer rhythm.`,
-            `Η ${beachLabel} είναι αμμουδερή μακεδονική παραλία στη ${areaLabel.gr}, κατάλληλη για εύκολη βουτιά και χαλαρό καλοκαιρινό ρυθμό.`
+            `Η ${beachLabel} είναι αμμουδερή μακεδονική παραλία ${greekLocativePhrase(areaLabel)}, κατάλληλη για εύκολη βουτιά και χαλαρό καλοκαιρινό ρυθμό.`
         );
     }
 
     if (lowerName.includes('limani') || lowerName.includes('λιμαν') || lowerName.includes('porto') || lowerName.includes('ορμος')) {
         return makeLocalizedBeachText(
-            `${beachLabel} has a sheltered harbour-or-cove feel on the ${areaLabel.en} coast, better for calm-water swims.`,
-            `Η ${beachLabel} έχει αίσθηση προστατευμένου λιμανιού ή όρμου στην ακτή της ${areaLabel.gr}, πιο κατάλληλη για ήρεμα νερά.`
+            `${beachLabel} has a harbour-or-cove feel on the ${areaLabel.en} coast, with swim comfort depending on today's wind and sea.`,
+            `Η ${beachLabel} έχει αίσθηση λιμανιού ή όρμου στην ακτή ${greekGenitivePhrase(areaLabel)}, με την άνεση για μπάνιο να εξαρτάται από τον σημερινό άνεμο και τη θάλασσα.`
         );
     }
 
     if (lowerName.includes('plaz') || lowerName.includes('πλαζ')) {
         return makeLocalizedBeachText(
             `${beachLabel} is a practical organized swim stop in ${areaLabel.en}, with easier access than the wilder coves nearby.`,
-            `Η ${beachLabel} είναι πρακτική οργανωμένη στάση για μπάνιο στη ${areaLabel.gr}, με ευκολότερη πρόσβαση από τους πιο άγριους κολπίσκους γύρω της.`
+            `Η ${beachLabel} είναι πρακτική οργανωμένη στάση για μπάνιο ${greekLocativePhrase(areaLabel)}, με ευκολότερη πρόσβαση από τους πιο άγριους κολπίσκους γύρω της.`
         );
     }
 
     const variants = [
         {
-            en: `${beachLabel} is a local beach in ${areaLabel.en}, with a simple northern-Greece summer feel and clean water when conditions are calm.`,
-            gr: `Η ${beachLabel} είναι τοπική παραλία στη ${areaLabel.gr}, με απλή βορειοελλαδίτικη καλοκαιρινή αίσθηση και καθαρά νερά όταν ο καιρός βοηθά.`
+            en: `${beachLabel} is a local beach in ${areaLabel.en}, with a simple northern-Greece summer feel and clean water when conditions are suitable.`,
+            gr: `Η ${beachLabel} είναι τοπική παραλία ${greekLocativePhrase(areaLabel)}, με απλή βορειοελλαδίτικη καλοκαιρινή αίσθηση και καθαρά νερά όταν ο καιρός βοηθά.`
         },
         {
             en: `${beachLabel} works as a low-key ${areaLabel.en} coastal stop, useful for a swim while exploring the wider Macedonia shoreline.`,
-            gr: `Η ${beachLabel} λειτουργεί ως χαμηλών τόνων παραλιακή στάση στη ${areaLabel.gr}, χρήσιμη για βουτιά εξερευνώντας την ακτογραμμή της Μακεδονίας.`
+            gr: `Η ${beachLabel} λειτουργεί ως χαμηλών τόνων παραλιακή στάση ${greekLocativePhrase(areaLabel)}, χρήσιμη για βουτιά εξερευνώντας την ακτογραμμή της Μακεδονίας.`
         },
         {
             en: `${beachLabel} gives the ${areaLabel.en} coast a quieter option away from the most photographed beaches.`,
-            gr: `Η ${beachLabel} δίνει στην ακτή της ${areaLabel.gr} μια πιο ήσυχη επιλογή μακριά από τις πιο φωτογραφημένες παραλίες.`
+            gr: `Η ${beachLabel} δίνει στην ακτή ${greekGenitivePhrase(areaLabel)} μια πιο ήσυχη επιλογή μακριά από τις πιο φωτογραφημένες παραλίες.`
         },
         {
             en: `${beachLabel} is one of the smaller Macedonia swim spots where the main appeal is straightforward access to the sea.`,
@@ -4303,11 +4514,11 @@ const getMacedoniaDescription = (name: string, area: string): LocalizedBeachText
     return makeLocalizedBeachText(variants[index].en, variants[index].gr);
 };
 
-const THRACE_AREA_LABELS: Record<string, { en: string; gr: string }> = {
-    evros: { en: 'Evros', gr: 'Έβρος' },
-    rodopi: { en: 'Rodopi', gr: 'Ροδόπη' },
-    xanthi: { en: 'Xanthi', gr: 'Ξάνθη' },
-    samothraki: { en: 'Samothraki', gr: 'Σαμοθράκη' }
+const THRACE_AREA_LABELS: Record<string, GreekAreaLabel> = {
+    evros: { en: 'Evros', gr: 'Έβρος', locativeGr: 'στον Έβρο', genitivePhraseGr: 'του Έβρου', regionPhraseGr: 'στην περιοχή του Έβρου' },
+    rodopi: { en: 'Rodopi', gr: 'Ροδόπη', locativeGr: 'στη Ροδόπη', genitivePhraseGr: 'της Ροδόπης', regionPhraseGr: 'στην περιοχή της Ροδόπης' },
+    xanthi: { en: 'Xanthi', gr: 'Ξάνθη', locativeGr: 'στην Ξάνθη', genitivePhraseGr: 'της Ξάνθης', regionPhraseGr: 'στην περιοχή της Ξάνθης' },
+    samothraki: { en: 'Samothraki', gr: 'Σαμοθράκη', locativeGr: 'στη Σαμοθράκη', genitivePhraseGr: 'της Σαμοθράκης', regionPhraseGr: 'στην περιοχή της Σαμοθράκης' }
 };
 
 const THRACE_NOTABLE_DESCRIPTIONS: Record<string, { areas: string[]; en: string; gr: string }> = {
@@ -4409,31 +4620,31 @@ const getThraceDescription = (name: string, area: string): LocalizedBeachText | 
     const variants = [
         {
             en: `${beachLabel} is a low-key Thracian coast beach in ${areaLabel.en}, suited to simple swims and open horizons.`,
-            gr: `Η ${beachLabel} είναι χαμηλών τόνων παραλία της Θράκης στην περιοχή ${areaLabel.gr}, κατάλληλη για απλές βουτιές και ανοιχτό ορίζοντα.`
+            gr: `Η ${beachLabel} είναι χαμηλών τόνων παραλία της Θράκης ${greekRegionPhrase(areaLabel)}, κατάλληλη για απλές βουτιές και ανοιχτό ορίζοντα.`
         },
         {
             en: `${beachLabel} works as a quiet ${areaLabel.en} beach stop, with the landscape carrying more weight than heavy organization.`,
-            gr: `Η ${beachLabel} λειτουργεί ως ήσυχη παραλιακή στάση στην περιοχή ${areaLabel.gr}, όπου το τοπίο μετρά περισσότερο από την έντονη οργάνωση.`
+            gr: `Η ${beachLabel} λειτουργεί ως ήσυχη παραλιακή στάση ${greekRegionPhrase(areaLabel)}, όπου το τοπίο μετρά περισσότερο από την έντονη οργάνωση.`
         },
         {
             en: `${beachLabel} gives the Thracian Sea shoreline a straightforward local swim option in ${areaLabel.en}.`,
-            gr: `Η ${beachLabel} δίνει στην ακτογραμμή του Θρακικού πελάγους μια απλή τοπική επιλογή για μπάνιο στην περιοχή ${areaLabel.gr}.`
+            gr: `Η ${beachLabel} δίνει στην ακτογραμμή του Θρακικού πελάγους μια απλή τοπική επιλογή για μπάνιο ${greekRegionPhrase(areaLabel)}.`
         }
     ];
     const index = Math.abs(normalizedName.split('').reduce((sum, char) => sum + char.charCodeAt(0), 0)) % variants.length;
     return makeLocalizedBeachText(variants[index].en, variants[index].gr);
 };
 
-const NORTH_AEGEAN_AREA_LABELS: Record<string, { en: string; gr: string }> = {
-    chios: { en: 'Chios', gr: '\u03a7\u03af\u03bf' },
-    psara: { en: 'Psara', gr: '\u03a8\u03b1\u03c1\u03ac' },
-    ikaria: { en: 'Ikaria', gr: '\u0399\u03ba\u03b1\u03c1\u03af\u03b1' },
-    lesvos: { en: 'Lesvos', gr: '\u039b\u03ad\u03c3\u03b2\u03bf' },
-    lemnos: { en: 'Lemnos', gr: '\u039b\u03ae\u03bc\u03bd\u03bf' },
-    agios_efstratios: { en: 'Agios Efstratios', gr: '\u0386\u03b3\u03b9\u03bf \u0395\u03c5\u03c3\u03c4\u03c1\u03ac\u03c4\u03b9\u03bf' },
-    fournoi: { en: 'Fournoi', gr: 'Φούρνους' },
-    oinousses: { en: 'Oinousses', gr: 'Οινούσσες' },
-    samos: { en: 'Samos', gr: '\u03a3\u03ac\u03bc\u03bf' }
+const NORTH_AEGEAN_AREA_LABELS: Record<string, GreekAreaLabel> = {
+    chios: { en: 'Chios', gr: '\u03a7\u03af\u03bf', locativeGr: 'στη Χίο', genitivePhraseGr: 'της Χίου' },
+    psara: { en: 'Psara', gr: '\u03a8\u03b1\u03c1\u03ac', locativeGr: 'στα Ψαρά', genitivePhraseGr: 'των Ψαρών' },
+    ikaria: { en: 'Ikaria', gr: '\u0399\u03ba\u03b1\u03c1\u03af\u03b1', locativeGr: 'στην Ικαρία', genitivePhraseGr: 'της Ικαρίας' },
+    lesvos: { en: 'Lesvos', gr: '\u039b\u03ad\u03c3\u03b2\u03bf', locativeGr: 'στη Λέσβο', genitivePhraseGr: 'της Λέσβου' },
+    lemnos: { en: 'Lemnos', gr: '\u039b\u03ae\u03bc\u03bd\u03bf', locativeGr: 'στη Λήμνο', genitivePhraseGr: 'της Λήμνου' },
+    agios_efstratios: { en: 'Agios Efstratios', gr: '\u0386\u03b3\u03b9\u03bf \u0395\u03c5\u03c3\u03c4\u03c1\u03ac\u03c4\u03b9\u03bf', locativeGr: 'στον Άγιο Ευστράτιο', genitivePhraseGr: 'του Αγίου Ευστρατίου' },
+    fournoi: { en: 'Fournoi', gr: 'Φούρνους', locativeGr: 'στους Φούρνους', genitivePhraseGr: 'των Φούρνων' },
+    oinousses: { en: 'Oinousses', gr: 'Οινούσσες', locativeGr: 'στις Οινούσσες', genitivePhraseGr: 'των Οινουσσών' },
+    samos: { en: 'Samos', gr: '\u03a3\u03ac\u03bc\u03bf', locativeGr: 'στη Σάμο', genitivePhraseGr: 'της Σάμου' }
 };
 
 const getNorthAegeanAreaKey = (area: string): string | null => {
@@ -4494,15 +4705,15 @@ const getNorthAegeanDescription = (name: string, area: string): LocalizedBeachTe
     const variants = [
         {
             en: `${beachLabel} is a North Aegean beach on ${areaLabel.en}, useful for a straightforward swim with local island character.`,
-            gr: `\u0397 ${beachLabel} \u03b5\u03af\u03bd\u03b1\u03b9 \u03c0\u03b1\u03c1\u03b1\u03bb\u03af\u03b1 \u03c4\u03bf\u03c5 \u0392\u03bf\u03c1\u03b5\u03af\u03bf\u03c5 \u0391\u03b9\u03b3\u03b1\u03af\u03bf\u03c5 \u03c3\u03c4\u03b7\u03bd ${areaLabel.gr}, \u03ba\u03b1\u03bb\u03ae \u03b3\u03b9\u03b1 \u03b1\u03c0\u03bb\u03ae \u03b2\u03bf\u03c5\u03c4\u03b9\u03ac \u03bc\u03b5 \u03c4\u03bf\u03c0\u03b9\u03ba\u03cc \u03bd\u03b7\u03c3\u03b9\u03ce\u03c4\u03b9\u03ba\u03bf \u03c7\u03b1\u03c1\u03b1\u03ba\u03c4\u03ae\u03c1\u03b1.`
+            gr: `\u0397 ${beachLabel} \u03b5\u03af\u03bd\u03b1\u03b9 \u03c0\u03b1\u03c1\u03b1\u03bb\u03af\u03b1 \u03c4\u03bf\u03c5 \u0392\u03bf\u03c1\u03b5\u03af\u03bf\u03c5 \u0391\u03b9\u03b3\u03b1\u03af\u03bf\u03c5 ${greekLocativePhrase(areaLabel)}, \u03ba\u03b1\u03bb\u03ae \u03b3\u03b9\u03b1 \u03b1\u03c0\u03bb\u03ae \u03b2\u03bf\u03c5\u03c4\u03b9\u03ac \u03bc\u03b5 \u03c4\u03bf\u03c0\u03b9\u03ba\u03cc \u03bd\u03b7\u03c3\u03b9\u03ce\u03c4\u03b9\u03ba\u03bf \u03c7\u03b1\u03c1\u03b1\u03ba\u03c4\u03ae\u03c1\u03b1.`
         },
         {
             en: `${beachLabel} gives ${areaLabel.en} a quieter coastal stop, away from the best-known resort beaches.`,
-            gr: `\u0397 ${beachLabel} \u03b4\u03af\u03bd\u03b5\u03b9 \u03c3\u03c4\u03b7\u03bd ${areaLabel.gr} \u03bc\u03b9\u03b1 \u03c0\u03b9\u03bf \u03ae\u03c3\u03c5\u03c7\u03b7 \u03c0\u03b1\u03c1\u03b1\u03bb\u03b9\u03b1\u03ba\u03ae \u03c3\u03c4\u03ac\u03c3\u03b7, \u03bc\u03b1\u03ba\u03c1\u03b9\u03ac \u03b1\u03c0\u03cc \u03c4\u03b9\u03c2 \u03c0\u03b9\u03bf \u03b3\u03bd\u03c9\u03c3\u03c4\u03ad\u03c2 \u03bf\u03c1\u03b3\u03b1\u03bd\u03c9\u03bc\u03ad\u03bd\u03b5\u03c2 \u03b1\u03ba\u03c4\u03ad\u03c2.`
+            gr: `\u0397 ${beachLabel} \u03b4\u03af\u03bd\u03b5\u03b9 ${greekLocativePhrase(areaLabel)} \u03bc\u03b9\u03b1 \u03c0\u03b9\u03bf \u03ae\u03c3\u03c5\u03c7\u03b7 \u03c0\u03b1\u03c1\u03b1\u03bb\u03b9\u03b1\u03ba\u03ae \u03c3\u03c4\u03ac\u03c3\u03b7, \u03bc\u03b1\u03ba\u03c1\u03b9\u03ac \u03b1\u03c0\u03cc \u03c4\u03b9\u03c2 \u03c0\u03b9\u03bf \u03b3\u03bd\u03c9\u03c3\u03c4\u03ad\u03c2 \u03bf\u03c1\u03b3\u03b1\u03bd\u03c9\u03bc\u03ad\u03bd\u03b5\u03c2 \u03b1\u03ba\u03c4\u03ad\u03c2.`
         },
         {
             en: `${beachLabel} works as a simple island-coast detour while exploring the beaches of ${areaLabel.en}.`,
-            gr: `\u0397 ${beachLabel} \u03bb\u03b5\u03b9\u03c4\u03bf\u03c5\u03c1\u03b3\u03b5\u03af \u03c3\u03b1\u03bd \u03b1\u03c0\u03bb\u03ae \u03bd\u03b7\u03c3\u03b9\u03ce\u03c4\u03b9\u03ba\u03b7 \u03c0\u03b1\u03c1\u03ac\u03ba\u03b1\u03bc\u03c8\u03b7 \u03cc\u03c4\u03b1\u03bd \u03b5\u03be\u03b5\u03c1\u03b5\u03c5\u03bd\u03ac\u03c2 \u03c4\u03b9\u03c2 \u03b1\u03ba\u03c4\u03ad\u03c2 \u03c4\u03b7\u03c2 ${areaLabel.gr}.`
+            gr: `\u0397 ${beachLabel} \u03bb\u03b5\u03b9\u03c4\u03bf\u03c5\u03c1\u03b3\u03b5\u03af \u03c3\u03b1\u03bd \u03b1\u03c0\u03bb\u03ae \u03bd\u03b7\u03c3\u03b9\u03ce\u03c4\u03b9\u03ba\u03b7 \u03c0\u03b1\u03c1\u03ac\u03ba\u03b1\u03bc\u03c8\u03b7 \u03cc\u03c4\u03b1\u03bd \u03b5\u03be\u03b5\u03c1\u03b5\u03c5\u03bd\u03ac\u03c2 \u03c4\u03b9\u03c2 \u03b1\u03ba\u03c4\u03ad\u03c2 ${greekGenitivePhrase(areaLabel)}.`
         }
     ];
     const index = Math.abs(normalizedName.split('').reduce((sum, char) => sum + char.charCodeAt(0), 0)) % variants.length;
@@ -4595,7 +4806,7 @@ export const generateSmartDescription = (name: string, area: string): { [key in 
         if (nameLower.includes('nudist') || nameLower.includes('nude') || nameLower.includes('fkk') || nameLower.includes('γυμνιστική')) {
             keywordDesc = {
                 en: `A peaceful nudist beach in ${areaEn}, offering freedom and natural beauty in a relaxed atmosphere.`,
-                gr: `Μια ήρεμη γυμνιστική παραλία στην ${areaGr}, που προσφέρει ελευθερία και φυσική ομορφιά σε χαλαρό περιβάλλον.`
+                gr: `Μια χαμηλών τόνων γυμνιστική παραλία στην ${areaGr}, που προσφέρει ελευθερία και φυσική ομορφιά σε χαλαρό περιβάλλον.`
             };
         }
         // Resort/organized beaches
@@ -4615,8 +4826,8 @@ export const generateSmartDescription = (name: string, area: string): { [key in 
         // Cave beaches
         else if (nameLower.includes('cave') || nameLower.includes('spel') || nameLower.includes('σπηλιά')) {
             keywordDesc = {
-                en: `A unique cave beach in ${areaEn}, featuring natural rock formations and sheltered waters.`,
-                gr: `Μια μοναδική παραλία σπηλιάς στην ${areaGr}, με φυσικούς βραχώδεις σχηματισμούς και προστατευμένα νερά.`
+                en: `A unique cave beach in ${areaEn}, featuring natural rock formations and a more enclosed setting.`,
+                gr: `Μια μοναδική παραλία σπηλιάς στην ${areaGr}, με φυσικούς βραχώδεις σχηματισμούς και πιο κλειστή αίσθηση.`
             };
         }
         // Rocky/pebbled beaches
@@ -4636,8 +4847,8 @@ export const generateSmartDescription = (name: string, area: string): { [key in 
         // Bay beaches
         else if (nameLower.includes('bay') || nameLower.includes('όρμος') || nameLower.includes('κολπος')) {
             keywordDesc = {
-                en: `A picturesque bay beach in ${areaEn}, offering sheltered waters and scenic coastal views.`,
-                gr: `Μια γραφική παραλία κόλπου στην ${areaGr}, που προσφέρει προστατευμένα νερά και εντυπωσιακή θέα στην ακτή.`
+                en: `A picturesque bay beach in ${areaEn}, with a bay-shaped setting and scenic coastal views.`,
+                gr: `Μια γραφική παραλία κόλπου στην ${areaGr}, με σχήμα κόλπου και εντυπωσιακή θέα στην ακτή.`
             };
         }
         // Cove beaches
@@ -4650,8 +4861,8 @@ export const generateSmartDescription = (name: string, area: string): { [key in 
         // Lagoon beaches
         else if (nameLower.includes('lagoon') || nameLower.includes('λιμνοθάλασσα')) {
             keywordDesc = {
-                en: `A serene lagoon beach in ${areaEn}, featuring calm shallow waters and unique natural formations.`,
-                gr: `Μια ήρεμη παραλία λιμνοθάλασσας στην ${areaGr}, με ήρεμα ρηχά νερά και μοναδικούς φυσικούς σχηματισμούς.`
+                en: `A low-key lagoon beach in ${areaEn}, featuring shallow-looking water and unique natural formations.`,
+                gr: `Μια χαμηλών τόνων παραλία λιμνοθάλασσας στην ${areaGr}, με ρηχή ακτή και μοναδικούς φυσικούς σχηματισμούς.`
             };
         }
         // Rhodes beaches
@@ -4683,19 +4894,19 @@ export const generateSmartDescription = (name: string, area: string): { [key in 
                 en: [
                     `A charming beach in the ${areaEn} region, offering crystal-clear waters and a peaceful atmosphere.`,
                     `Discover this hidden gem in ${areaEn} with its pristine sands and Mediterranean charm.`,
-                    `A picturesque coastal spot in ${areaEn}, perfect for swimming and sunbathing.`,
+                    `A picturesque coastal spot in ${areaEn}, useful for a simple swim and beach time when conditions are suitable.`,
                     `Experience the beauty of ${areaEn} at this serene beach with turquoise waters.`,
-                    `A tranquil retreat in ${areaEn}, featuring soft sands and gentle waves.`,
+                    `A tranquil retreat in ${areaEn}, featuring soft sands and a simple coastal feel.`,
                     `This ${areaEn} beach boasts stunning views and inviting shallow waters.`,
                     `A natural paradise in ${areaEn} with golden sands and refreshing sea breezes.`,
                     `Escape to this idyllic ${areaEn} beach, where relaxation meets natural beauty.`
                 ],
                 gr: [
-                    `Μια γοητευτική παραλία στην περιοχή ${areaGr}, με κρυστάλλινα νερά και ήρεμη ατμόσφαιρα.`,
+                    `Μια γοητευτική παραλία στην περιοχή ${areaGr}, με κρυστάλλινα νερά και χαλαρή ατμόσφαιρα.`,
                     `Ανακαλύψτε αυτό το κρυμμένο διαμάντι στην ${areaGr} με τις απαράμιλλες αμμουδιές και τη μεσογειακή γοητεία.`,
-                    `Ένα γραφικό παραθαλάσσιο σημείο στην ${areaGr}, ιδανικό για κολύμπι και ηλιοθεραπεία.`,
-                    `Ζήστε την ομορφιά της ${areaGr} σε αυτή την ήρεμη παραλία με τιρκουάζ νερά.`,
-                    `Ένα ήσυχο καταφύγιο στην ${areaGr}, με μαλακές αμμουδιές και απαλά κύματα.`,
+                    `Ένα γραφικό παραθαλάσσιο σημείο στην ${areaGr}, χρήσιμο για απλό κολύμπι και παραλία όταν οι συνθήκες είναι κατάλληλες.`,
+                    `Ζήστε την ομορφιά της ${areaGr} σε αυτή την χαμηλών τόνων παραλία με τιρκουάζ νερά.`,
+                    `Ένα ήσυχο καταφύγιο στην ${areaGr}, με μαλακές αμμουδιές και απλή παραθαλάσσια αίσθηση.`,
                     `Αυτή η παραλία στην ${areaGr} διαθέτει εκπληκτική θέα και ρηχά νερά.`,
                     `Ένας φυσικός παράδεισος στην ${areaGr} με χρυσές αμμουδιές και δροσιστικές θαλασσινές αύρες.`,
                     `Δραπετεύστε σε αυτή την ειδυλλιακή παραλία στην ${areaGr}, όπου η χαλάρωση συναντά τη φυσική ομορφιά.`

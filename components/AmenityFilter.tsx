@@ -18,7 +18,6 @@ import {
   ArrowUp, 
   CheckCircle2, 
   Globe,
-  ThumbsUp,
   Star,
   MapPin,
   List
@@ -41,7 +40,6 @@ const filterIcons: Record<string, React.ReactNode> = {
   taverna: <Utensils className="h-5 w-5 mr-2" />,
   beachBar: <Waves className="h-5 w-5 mr-2" />,
   sunbeds: <Umbrella className="h-5 w-5 mr-2" />,
-  restaurant: <Utensils className="h-5 w-5 mr-2" />,
   parking: <ParkingCircle className="h-5 w-5 mr-2" />,
   sandy: <Sparkles className="h-5 w-5 mr-2" />,
   pebbles: <CircleDot className="h-5 w-5 mr-2" />,
@@ -102,7 +100,7 @@ export const CombinedFilter: React.FC<CombinedFilterProps> = ({
 
     const handleReset = () => {
         setTempFilters([]);
-        setTempSortBy('recommended');
+        setTempSortBy('all');
     };
     
     const handleResetClick = () => {
@@ -118,7 +116,8 @@ export const CombinedFilter: React.FC<CombinedFilterProps> = ({
         onApplyFilters(tempFilters, tempSortBy);
     };
 
-    const filters = Object.keys(t.filterOptions).filter(k => k !== 'showAll') as (keyof typeof t.filterOptions)[];
+    const filters = Object.keys(t.filterOptions)
+        .filter(k => k !== 'showAll' && k !== 'restaurant') as (keyof typeof t.filterOptions)[];
 
     const CheckmarkIcon = () => (
         <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 ml-2 flex-shrink-0" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
@@ -159,17 +158,6 @@ export const CombinedFilter: React.FC<CombinedFilterProps> = ({
                 <div className="pt-4 border-t border-slate-200/60">
                     <h4 id="sort-heading" className="text-sm font-bold text-slate-600 mb-3">{t.sortByTitle}</h4>
                     <div className="flex flex-wrap gap-3" role="group" aria-labelledby="sort-heading">
-                    <button
-                        onClick={() => handleSortChange('recommended')}
-                        className={`flex items-center px-4 py-2 text-sm font-semibold rounded-lg border-2 transition-all duration-200 transform focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-cyan-500 ${
-                        tempSortBy === 'recommended'
-                            ? 'bg-cyan-600 border-cyan-600 text-white shadow-lg shadow-cyan-600/40 hover:shadow-xl hover:scale-[1.03]'
-                            : 'bg-white border-slate-200 text-slate-700 hover:border-cyan-400 hover:scale-[1.03]'
-                        }`}
-                    >
-                        <ThumbsUp className="h-5 w-5 mr-2" />
-                        {t.sortByRecommended}
-                    </button>
                     <button
                         onClick={() => handleSortChange('all')}
                         className={`flex items-center px-4 py-2 text-sm font-semibold rounded-lg border-2 transition-all duration-200 transform focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-cyan-500 ${

@@ -1,10 +1,14 @@
-@import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500&family=Manrope:wght@300;400;500;600;700;800&family=Plus+Jakarta+Sans:wght@500;600;700;800&display=swap');
 @import "tailwindcss";
 
+@source not "./test-results";
+@source not "./reports";
+
+@custom-variant dark (&:where(.dark, .dark *));
+
 @theme {
-  --font-sans: "Manrope", ui-sans-serif, system-ui, sans-serif;
-  --font-heading: "Plus Jakarta Sans", ui-sans-serif, system-ui, sans-serif;
-  --font-mono: "JetBrains Mono", ui-monospace, SFMono-Regular, monospace;
+  --font-sans: ui-rounded, "SF Pro Rounded", "Nunito", "Inter", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  --font-heading: ui-rounded, "SF Pro Rounded", "Nunito", "Inter", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  --font-mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
 
   --color-background: #F0F9FF;
   --color-foreground: #ffffff;
@@ -24,27 +28,30 @@
 @layer base {
   body {
     @apply font-sans antialiased text-slate-900;
+    font-family: var(--font-sans);
+    font-feature-settings: "kern" 1;
     background: linear-gradient(180deg, #F0F9FF 0%, #E0F2FE 40%, #F0F9FF 100%);
-    background-attachment: fixed;
+    background-attachment: scroll;
   }
 
   h1, h2, h3, h4, h5, h6 {
-    font-family: "Plus Jakarta Sans", ui-sans-serif, system-ui, sans-serif;
+    font-family: var(--font-heading);
+    letter-spacing: 0;
   }
 }
 
 @layer components {
   .beach-card {
-    @apply bg-white/90 backdrop-blur-md border border-white/60 rounded-3xl transition-all duration-500;
-    box-shadow: 0 4px 24px -4px rgba(14, 165, 233, 0.08), 0 1px 2px rgba(0, 0, 0, 0.04);
+    @apply bg-white/82 backdrop-blur-lg border border-white/70 rounded-3xl transition-all duration-300;
+    box-shadow: 0 10px 34px -18px rgba(8, 145, 178, 0.28), 0 1px 2px rgba(15, 23, 42, 0.04);
   }
 
   .beach-card:hover {
-    box-shadow: 0 20px 60px -12px rgba(14, 165, 233, 0.18), 0 4px 12px rgba(0, 0, 0, 0.06);
+    box-shadow: 0 20px 54px -24px rgba(8, 145, 178, 0.34), 0 8px 20px -18px rgba(15, 23, 42, 0.2);
   }
 
   .glass {
-    background: rgba(255, 255, 255, 0.75);
+    background: rgba(255, 255, 255, 0.78);
     backdrop-filter: blur(16px);
     -webkit-backdrop-filter: blur(16px);
   }
@@ -74,7 +81,7 @@
   }
 
   .section-title {
-    @apply font-heading text-[1.72rem] sm:text-3xl md:text-[2.15rem] font-extrabold leading-[1.08] text-slate-950 dark:text-white;
+    @apply font-heading text-[1.72rem] sm:text-3xl md:text-[2.15rem] font-bold leading-[1.1] text-slate-950 dark:text-white;
     letter-spacing: 0;
     text-wrap: balance;
   }
@@ -102,19 +109,76 @@
     var(--cyclades-bg);
   background-size: cover;
   background-position: center 36%;
-  background-attachment: fixed;
+  background-attachment: scroll;
+  transform: none;
+  will-change: auto;
+}
+
+@media (hover: none), (pointer: coarse) {
+  .atmosphere {
+    position: absolute;
+    height: 100svh;
+    min-height: 720px;
+  }
+
+  .atmosphere.cyclades-atmosphere {
+    background-position: center top;
+  }
+}
+
+@media (max-width: 640px) {
+  .glass {
+    background: rgba(255, 255, 255, 0.88);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+  }
+
+  .beach-card {
+    @apply bg-white/84 border-white/70 backdrop-blur-xl;
+    box-shadow: 0 12px 32px -20px rgba(8, 145, 178, 0.3), 0 1px 2px rgba(15, 23, 42, 0.06);
+  }
+
+  .atmosphere.cyclades-atmosphere {
+    background:
+      linear-gradient(180deg, rgba(240, 249, 255, 0.5) 0%, rgba(224, 242, 254, 0.64) 42%, rgba(240, 249, 255, 0.86) 100%),
+      linear-gradient(90deg, rgba(2, 8, 23, 0.08) 0%, rgba(240, 249, 255, 0.12) 46%, rgba(2, 8, 23, 0.08) 100%),
+      var(--cyclades-bg);
+    background-position: center top;
+    background-attachment: scroll;
+  }
 }
 
 /* Smooth scroll & mobile safety */
 html {
   scroll-behavior: smooth;
   overflow-x: hidden;
+  scrollbar-gutter: stable;
   -webkit-text-size-adjust: 100%;
+  color-scheme: light;
 }
 
 body {
   overflow-x: hidden;
   -webkit-tap-highlight-color: transparent;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+}
+
+.overflow-y-auto,
+.overflow-x-auto {
+  -webkit-overflow-scrolling: touch;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  *,
+  *::before,
+  *::after {
+    scroll-behavior: auto !important;
+  }
 }
 
 /* Hide scrollbar utility */
@@ -153,6 +217,99 @@ body {
 @keyframes shimmer {
   0% { background-position: -200% 0; }
   100% { background-position: 200% 0; }
+}
+
+.wind-flow-overlay {
+  position: absolute;
+  inset: 0;
+  z-index: 760;
+  pointer-events: none;
+  overflow: hidden;
+  mix-blend-mode: screen;
+  opacity: 0.96;
+}
+
+.wind-flow-canvas {
+  display: block;
+  width: 100%;
+  height: 100%;
+  filter: saturate(1.08) contrast(1.04);
+}
+
+.leaflet-tooltip.beach-map-label {
+  overflow: visible;
+  border: 0;
+  background: transparent;
+  box-shadow: none;
+  padding: 4px 8px;
+  pointer-events: none;
+  white-space: nowrap;
+}
+
+.leaflet-tooltip.beach-map-label::before {
+  display: none;
+}
+
+.beach-map-label__inner {
+  display: block;
+  max-width: 132px;
+  overflow: hidden;
+  border: 1px solid rgba(125, 211, 252, 0.34);
+  border-radius: 999px;
+  background:
+    linear-gradient(135deg, rgba(8, 47, 73, 0.78), rgba(14, 116, 144, 0.68));
+  box-shadow:
+    0 10px 24px rgba(8, 47, 73, 0.2),
+    inset 0 1px 0 rgba(255, 255, 255, 0.18);
+  color: rgba(255, 255, 255, 0.96);
+  font-size: 10.5px;
+  font-weight: 800;
+  letter-spacing: 0;
+  line-height: 1.15;
+  padding: 4px 8px;
+  text-overflow: ellipsis;
+  transform-origin: center bottom;
+  text-shadow: 0 1px 1px rgba(8, 47, 73, 0.35);
+  transition:
+    opacity 80ms linear,
+    filter 80ms linear,
+    transform 80ms linear;
+  -webkit-backdrop-filter: blur(10px) saturate(1.15);
+  backdrop-filter: blur(10px) saturate(1.15);
+}
+
+.leaflet-tooltip.beach-map-label--compact .beach-map-label__inner {
+  max-width: 108px;
+  font-size: 9.5px;
+  padding: 3.5px 7px;
+}
+
+@media (max-width: 640px) {
+  .leaflet-tooltip.beach-map-label .beach-map-label__inner {
+    max-width: 94px;
+    border-color: rgba(125, 211, 252, 0.28);
+    background:
+      linear-gradient(135deg, rgba(8, 47, 73, 0.74), rgba(14, 116, 144, 0.62));
+    box-shadow:
+      0 8px 18px rgba(8, 47, 73, 0.18),
+      inset 0 1px 0 rgba(255, 255, 255, 0.16);
+    font-size: 9px;
+    padding: 3px 6px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .wind-flow-overlay {
+    opacity: 0.58;
+  }
+
+  .leaflet-tooltip.beach-map-label {
+    transition: none;
+  }
+
+  .beach-map-label__inner {
+    transition: none;
+  }
 }
 
 .wave-animation {

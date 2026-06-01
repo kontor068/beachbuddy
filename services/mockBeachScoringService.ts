@@ -100,14 +100,14 @@ const scoreWindProtection = (
   }
 
   if (protectedFromWind) {
-    topReasons.push(`Protected from today's ${weather.windDirection} wind.`);
+    topReasons.push('Local wind exposure needs confirmation before calling this sheltered.');
   } else if (facingWind) {
     warnings.push({
       type: 'exposed_to_wind',
       severity: weather.windSpeedKmh >= 28 ? 'warning' : 'info',
       message: `This beach faces the ${weather.windDirection} wind.`,
     });
-    reducedBy.push(`Exposed to today's ${weather.windDirection} wind.`);
+    reducedBy.push(`More open to today's ${weather.windDirection} wind.`);
   }
 
   if (beach.orientation.confidence === 'low') {
@@ -231,6 +231,8 @@ const preferenceMatchesBeach = (beach: MockBeach, key: string) => {
       return beach.snorkeling;
     case 'parking':
       return beach.parking;
+    case 'easyAccess':
+      return beach.accessibility === Accessibility.EASY;
     default:
       return false;
   }
@@ -311,7 +313,7 @@ const scoreAmenities = (
       severity: 'warning',
       message: 'Access is difficult and may not suit every visitor.',
     });
-    reducedBy.push('Difficult access reduces practicality.');
+    reducedBy.push('More challenging access needs a little extra planning.');
   }
   if (beach.accessibility === Accessibility.BOAT_ONLY) {
     score -= 35;

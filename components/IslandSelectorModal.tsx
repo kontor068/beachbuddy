@@ -1,7 +1,6 @@
-
-import React, { useState, useMemo } from 'react';
-import { Island, LanguageCode } from '../types';
-import { Translation } from '../types';
+import React, { useEffect, useMemo, useRef, useState } from 'react';
+import { ChevronRight, LocateFixed, Search, X } from 'lucide-react';
+import { Island, LanguageCode, Translation } from '../types';
 import { fuzzySearchScore } from '../utils/searchNormalize';
 
 interface IslandSelectorModalProps {
@@ -16,10 +15,90 @@ interface IslandSelectorModalProps {
   findNearestError: string | null;
 }
 
-export const IslandSelectorModal: React.FC<IslandSelectorModalProps> = ({ isOpen, onClose, islands, onSelect, t, language, onSelectNearest, isFindingNearest, findNearestError }) => {
+type IslandSection = {
+  group: string;
+  list: Island[];
+};
+
+const groupOrder = [
+  'attica',
+  'argosaronic',
+  'cyclades',
+  'dodecanese',
+  'crete',
+  'ionian',
+  'sporades',
+  'north_aegean',
+  'euboea',
+  'mainland_peloponnese',
+  'mainland_central',
+  'mainland_thessaly',
+  'mainland_epirus',
+  'mainland_macedonia',
+  'mainland_thrace',
+];
+
+const destinationOrderByGroup: Record<string, string[]> = {
+  attica: [
+    'attica-east-attica-mainland',
+    'attica-piraeus-area',
+    'attica-west-attica-mainland',
+  ],
+  argosaronic: [
+    'attica-aegina',
+    'attica-agistri',
+    'attica-hydra',
+    'attica-poros',
+    'attica-salamina',
+  ],
+};
+
+const getGroupRank = (group: string): number => {
+  const rank = groupOrder.indexOf(group);
+  return rank === -1 ? groupOrder.length : rank;
+};
+
+const sortDestinationsForGroup = (group: string, list: Island[], language: LanguageCode): Island[] => {
+  const preferredOrder = destinationOrderByGroup[group] || [];
+  return [...list].sort((a, b) => {
+    const aRank = preferredOrder.indexOf(a.id);
+    const bRank = preferredOrder.indexOf(b.id);
+    const safeARank = aRank === -1 ? preferredOrder.length : aRank;
+    const safeBRank = bRank === -1 ? preferredOrder.length : bRank;
+    return safeARank - safeBRank || a.name[language].localeCompare(b.name[language]);
+  });
+};
+
+const getGroupLabel = (group: string, language: LanguageCode, t: Translation): string => {
+  if (group === 'attica') {
+    return language === 'gr' ? 'Περιοχές Αττικής' : 'Attica regions';
+  }
+  return t.islandSelector.groups[group as keyof typeof t.islandSelector.groups] || group;
+};
+
+export const IslandSelectorModal: React.FC<IslandSelectorModalProps> = ({
+  isOpen,
+  onClose,
+  islands,
+  onSelect,
+  t,
+  language,
+  onSelectNearest,
+  isFindingNearest,
+  findNearestError,
+}) => {
   const [searchTerm, setSearchTerm] = useState('');
-  
-  const groupedIslands = useMemo(() => {
+  const dialogRef = useRef<HTMLDivElement>(null);
+  const previouslyFocusedElementRef = useRef<HTMLElement | null>(null);
+  const isGreek = language === 'gr';
+  const copy = {
+    close: isGreek ? 'Κλείσιμο επιλογής περιοχής' : 'Close location selector',
+    search: isGreek ? 'Αναζήτηση νησιού ή περιοχής' : 'Search island or region',
+    noResults: isGreek ? 'Δεν βρέθηκαν νησιά ή περιοχές.' : 'No islands or regions found.',
+    findingLocation: isGreek ? 'Εύρεση κοντινής περιοχής' : 'Finding nearby region',
+  };
+
+  const islandSections = useMemo<IslandSection[]>(() => {
     const query = searchTerm.trim();
     const filtered = query
       ? islands
@@ -36,46 +115,165 @@ export const IslandSelectorModal: React.FC<IslandSelectorModalProps> = ({ isOpen
           .map(item => item.island)
       : islands;
 
-    return filtered.reduce((acc, island) => {
+    const grouped = filtered.reduce((acc, island) => {
       const group = island.group || 'other';
       if (!acc[group]) acc[group] = [];
       acc[group].push(island);
       return acc;
     }, {} as Record<string, Island[]>);
+
+    return (Object.entries(grouped) as [string, Island[]][])
+      .sort(([a], [b]) => getGroupRank(a) - getGroupRank(b) || a.localeCompare(b))
+      .map(([group, list]) => ({
+        group,
+        list: sortDestinationsForGroup(group, list, language),
+      }));
   }, [islands, searchTerm, language]);
+
+  useEffect(() => {
+    if (!isOpen) return undefined;
+
+    previouslyFocusedElementRef.current = document.activeElement instanceof HTMLElement
+      ? document.activeElement
+      : null;
+
+    const focusDialog = window.requestAnimationFrame(() => {
+      dialogRef.current?.focus();
+    });
+
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (event.key === 'Escape') {
+        event.preventDefault();
+        onClose();
+        return;
+      }
+
+      if (event.key !== 'Tab' || !dialogRef.current) return;
+
+      const focusableElements = Array.from(
+        dialogRef.current.querySelectorAll<HTMLElement>(
+          'button:not([disabled]), input:not([disabled]), [href], [tabindex]:not([tabindex="-1"])'
+        )
+      ).filter(element => element.offsetParent !== null);
+
+      if (focusableElements.length === 0) return;
+
+      const firstElement = focusableElements[0];
+      const lastElement = focusableElements[focusableElements.length - 1];
+      const activeElement = document.activeElement;
+
+      if (event.shiftKey && activeElement === firstElement) {
+        event.preventDefault();
+        lastElement.focus();
+      } else if (!event.shiftKey && activeElement === lastElement) {
+        event.preventDefault();
+        firstElement.focus();
+      } else if (!dialogRef.current.contains(activeElement)) {
+        event.preventDefault();
+        firstElement.focus();
+      }
+    };
+
+    document.addEventListener('keydown', handleKeyDown);
+
+    return () => {
+      window.cancelAnimationFrame(focusDialog);
+      document.removeEventListener('keydown', handleKeyDown);
+      previouslyFocusedElementRef.current?.focus();
+    };
+  }, [isOpen, onClose]);
 
   if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 bg-black/60 flex items-end sm:items-center justify-center z-[90] animate-fade-in" onClick={onClose}>
-      <div className="bg-[var(--color-background)] rounded-t-2xl sm:rounded-2xl shadow-2xl w-full sm:max-w-md h-[85vh] sm:h-[70vh] flex flex-col animate-slide-up" onClick={e => e.stopPropagation()}>
-        <header className="p-4 border-b flex justify-between items-center">
-          <h2 className="text-xl font-bold">{t.islandSelector.title}</h2>
-          <button onClick={onClose} className="p-2 hover:bg-slate-100 rounded-full"><svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" /></svg></button>
-        </header>
-        <div className="p-4 space-y-4">
-          <button onClick={onSelectNearest} disabled={isFindingNearest} className="w-full py-3 bg-cyan-600 text-white rounded-xl font-bold flex justify-center items-center gap-2 hover:bg-cyan-700 transition-colors disabled:opacity-50">
-            {isFindingNearest ? <span className="animate-spin text-xl">◌</span> : <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor"><path fillRule="evenodd" d="M5.05 4.05a7 7 0 119.9 9.9L10 18.9l-4.95-4.95a7 7 0 010-9.9z" clipRule="evenodd" /></svg>}
+    <div className="fixed inset-0 z-[90] flex animate-fade-in items-end justify-center bg-slate-950/58 px-0 sm:items-center sm:px-4" onClick={onClose}>
+      <div
+        ref={dialogRef}
+        tabIndex={-1}
+        className="flex h-[88dvh] w-full animate-slide-up flex-col overflow-hidden rounded-t-[1.65rem] bg-[var(--color-background)] shadow-2xl ring-1 ring-white/30 sm:h-[74vh] sm:max-h-[720px] sm:max-w-md sm:rounded-[1.65rem]"
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="island-selector-title"
+        onClick={event => event.stopPropagation()}
+      >
+        <div className="shrink-0 border-b border-white/70 bg-white/78 p-4 shadow-sm shadow-sky-900/5 backdrop-blur-xl dark:border-slate-800 dark:bg-slate-950/88">
+          <header className="flex items-start justify-between gap-3">
+            <div className="min-w-0 flex-1">
+              <h2 id="island-selector-title" className="font-heading text-xl font-black leading-tight text-slate-950 dark:text-white">
+                {t.islandSelector.title}
+              </h2>
+            </div>
+            <button
+              type="button"
+              onClick={onClose}
+              aria-label={copy.close}
+              className="flex min-h-11 min-w-11 shrink-0 items-center justify-center rounded-full text-slate-500 transition hover:bg-white hover:text-slate-800 focus:outline-none focus-visible:ring-2 focus-visible:ring-cyan-500 dark:text-slate-300 dark:hover:bg-slate-800 dark:hover:text-white"
+            >
+              <X className="h-5 w-5" aria-hidden="true" />
+            </button>
+          </header>
+
+          <button
+            type="button"
+            onClick={onSelectNearest}
+            disabled={isFindingNearest}
+            aria-label={isFindingNearest ? copy.findingLocation : t.islandSelector.useCurrentLocation}
+            className="mt-4 flex min-h-12 w-full items-center justify-center gap-2 rounded-2xl bg-cyan-600 px-4 py-3 text-sm font-black text-white shadow-sm shadow-cyan-900/15 transition hover:bg-cyan-700 active:scale-[0.995] focus:outline-none focus-visible:ring-2 focus-visible:ring-cyan-500 focus-visible:ring-offset-2 disabled:opacity-50"
+          >
+            {isFindingNearest ? (
+              <span className="h-5 w-5 animate-spin rounded-full border-2 border-white/35 border-t-white" aria-hidden="true" />
+            ) : (
+              <LocateFixed className="h-5 w-5" aria-hidden="true" />
+            )}
             {t.islandSelector.useCurrentLocation}
           </button>
+
           {findNearestError && (
-            <p className="text-sm text-red-500 text-center">{findNearestError}</p>
+            <p className="mt-3 rounded-2xl bg-red-50 px-3 py-2 text-center text-sm font-semibold text-red-600" role="alert">
+              {findNearestError}
+            </p>
           )}
-          <input value={searchTerm} onChange={e => setSearchTerm(e.target.value)} placeholder={t.islandSelector.searchPlaceholder} className="w-full px-4 py-2 border rounded-full focus:ring-2 focus:ring-cyan-500 outline-none dark:bg-slate-800 dark:border-slate-700" />
+
+          <div className="relative mt-3">
+            <label htmlFor="island-selector-search" className="sr-only">{copy.search}</label>
+            <Search className="pointer-events-none absolute left-4 top-1/2 h-4 w-4 -translate-y-1/2 text-slate-400" aria-hidden="true" />
+            <input
+              id="island-selector-search"
+              value={searchTerm}
+              onChange={event => setSearchTerm(event.target.value)}
+              placeholder={t.islandSelector.searchPlaceholder}
+              aria-label={copy.search}
+              className="min-h-11 w-full rounded-full border border-white/70 bg-white/90 py-2.5 pl-11 pr-4 text-sm font-semibold text-slate-800 shadow-sm outline-none ring-1 ring-white/45 transition placeholder:text-slate-400 focus:ring-2 focus:ring-cyan-400/75 dark:border-slate-700 dark:bg-slate-900 dark:text-white dark:ring-slate-800"
+            />
+          </div>
         </div>
-        <div className="flex-1 overflow-y-auto p-4 space-y-6 no-scrollbar">
-          {Object.keys(groupedIslands).length === 0 ? (
-             <p className="text-center text-slate-500 p-4">No results found.</p>
+
+        <div className="min-h-0 flex-1 space-y-5 overflow-y-auto overscroll-contain px-4 pb-[calc(env(safe-area-inset-bottom)+1rem)] pt-4">
+          {islandSections.length === 0 ? (
+            <p className="text-center text-slate-500 p-4" role="status">{copy.noResults}</p>
           ) : (
-            (Object.entries(groupedIslands) as [string, Island[]][]).map(([group, list]) => (
-                <div key={group}>
-                <h3 className="text-xs font-bold text-slate-500 mb-2">{t.islandSelector.groups[group as keyof typeof t.islandSelector.groups] || group}</h3>
-                <div className="grid grid-cols-1 gap-1">
-                    {list.map(i => (
-                    <button key={i.id} onClick={() => { onSelect(i); onClose(); }} className="text-left px-4 py-3 hover:bg-cyan-50 dark:hover:bg-slate-700 active:bg-cyan-100 dark:active:bg-slate-600 rounded-lg font-medium transition-colors min-h-[44px]">{i.name[language]}</button>
-                    ))}
+            islandSections.map(({ group, list }) => (
+              <div key={group}>
+                <h3 className="mb-2 px-1 text-[11px] font-black uppercase tracking-[0.08em] text-slate-500 dark:text-slate-400">
+                  {getGroupLabel(group, language, t)}
+                </h3>
+                <div className="grid grid-cols-1 gap-1.5">
+                  {list.map(island => (
+                    <button
+                      key={island.id}
+                      type="button"
+                      onClick={() => {
+                        onSelect(island);
+                        onClose();
+                      }}
+                      className="group flex min-h-12 w-full items-center justify-between gap-3 rounded-2xl bg-white/62 px-4 py-3 text-left font-bold text-slate-800 shadow-sm ring-1 ring-white/55 transition hover:bg-cyan-50 hover:text-cyan-800 active:scale-[0.995] active:bg-cyan-100 focus:outline-none focus-visible:ring-2 focus-visible:ring-cyan-500 dark:bg-slate-900/70 dark:text-slate-100 dark:ring-slate-800 dark:hover:bg-slate-800"
+                    >
+                      <span className="min-w-0 truncate">{island.name[language]}</span>
+                      <ChevronRight className="h-4 w-4 shrink-0 text-slate-300 transition group-hover:translate-x-0.5 group-hover:text-cyan-600 dark:text-slate-600" aria-hidden="true" />
+                    </button>
+                  ))}
                 </div>
-                </div>
+              </div>
             ))
           )}
         </div>

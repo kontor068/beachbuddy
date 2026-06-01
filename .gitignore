@@ -12,6 +12,9 @@ dist
 dist-ssr
 *.local
 *.pid
+.env
+.env.*
+!.env.example
 
 # Python / local virtual environments
 .venv
@@ -19,6 +22,8 @@ __pycache__/
 *.py[cod]
 
 # Local assistant/tooling caches and generated backups
+.cache/
+.tmp/
 .claude/
 .continue/
 .codex/undo-*/
@@ -34,3 +39,12 @@ migrated_prompt_history/
 *.njsproj
 *.sln
 *.sw?
+.env
+.env.local
+node_modules/
+dist/
+*.log
+*.pid
+.codex/
+.agents/
+test-results/

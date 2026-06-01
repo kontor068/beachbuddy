@@ -2,6 +2,7 @@ import React from 'react';
 import { motion } from 'motion/react';
 import { Star, ChevronRight } from 'lucide-react';
 import { Beach } from '../types';
+import { displayBeachName } from '../utils/localization';
 
 interface TouristSearchResultsProps {
   results: Array<{ beach: Beach; score: number; explanation: string }>;
@@ -35,7 +36,7 @@ export const TouristSearchResults: React.FC<TouristSearchResultsProps> = ({ resu
               </div>
               <div>
                 <h4 className="font-heading font-bold text-slate-900 dark:text-white group-hover:text-primary transition-colors">
-                  {item.beach.name.gr || item.beach.name.en}
+                  {displayBeachName(item.beach.name, 'gr')}
                 </h4>
                 <div className="flex items-center gap-2 mt-0.5">
                   <Star className="w-3 h-3 fill-amber-400 text-amber-400" />

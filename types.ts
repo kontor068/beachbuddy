@@ -25,13 +25,23 @@ export type WindUnit = 'beaufort' | 'mph';
 export type WaveCondition = 'calm' | 'moderate' | 'rough';
 export type BeachType = 'sandy' | 'pebbles' | 'sandy-pebbles' | 'rocky';
 export type WaterDepth = 'shallow' | 'medium' | 'deep';
-export type BeachAccessType = 'asphalt_road' | 'passable_dirt_road' | '4x4_only' | 'hiking_path_easy' | 'hiking_path_difficult' | 'boat_only';
+export type BeachAccessType = 'asphalt_road' | 'passable_dirt_road' | 'difficult_dirt_road' | '4x4_only' | 'hiking_path_easy' | 'hiking_path_difficult' | 'boat_only' | 'unknown';
 export type BeachTerrainType = 'fine_sand' | 'coarse_sand' | 'pebbles' | 'large_stones' | 'rocks';
 export type TravelStyle = 'family' | 'couple' | 'friends' | 'solo';
-export type SortOption = 'recommended' | 'all' | 'rating' | 'distance';
+export type SortOption = 'recommended' | 'all' | 'protected' | 'rating' | 'distance';
 export type FilterKey = keyof Beach['amenities'] | keyof Beach['characteristics'] | 'easyAccess' | BeachType | 'showAll';
 export type Theme = 'light' | 'dark' | 'system';
 export type DataConfidence = 'high' | 'medium' | 'low';
+export type WeatherSource = 'beach-cluster' | 'island-fallback';
+export type ForecastConfidence = DataConfidence;
+export type WindSector = 'N' | 'NE' | 'E' | 'SE' | 'S' | 'SW' | 'W' | 'NW';
+export type ShelterLevel = 'open' | 'semi_sheltered' | 'sheltered' | 'very_sheltered' | 'unknown';
+export type FetchExposure = 'low' | 'medium' | 'high' | 'unknown';
+export type LocalWindAmplification = 'low' | 'medium' | 'high' | 'unknown';
+export type SeabedSlope = 'shallow_gradual' | 'moderate' | 'steep' | 'unknown';
+export type WaterEntry = 'easy' | 'moderate' | 'difficult' | 'rocks_only' | 'unknown';
+export type WaterQualityRiskAfterRain = 'low' | 'medium' | 'high';
+export type SwimmingComfort = 'excellent' | 'good' | 'caution' | 'avoid_swimming';
 
 export interface BeachLocation {
   lat: number;
@@ -50,11 +60,24 @@ export interface BeachOrientation {
   notes?: string;
 }
 
+export interface WindProfile {
+  beachFacingDirection: number | null;
+  shelterLevel: ShelterLevel;
+  fetchExposure: FetchExposure;
+  exposedToWindDirections: WindSector[];
+  protectedFromWindDirections: WindSector[];
+  knownWindSportSpot: boolean;
+  localWindAmplification: LocalWindAmplification;
+  confidence: DataConfidence;
+  notes: string;
+}
+
 export interface WeatherConditions {
   timestamp: string;
   windDirection: WindDirection;
   windSpeedKmh: number;
   windGustKmh?: number;
+  windGustKnots?: number;
   temperatureC: number;
   cloudCoverPercent?: number;
   rainProbabilityPercent?: number;
@@ -70,6 +93,23 @@ export interface MarineConditions {
   notes?: string;
 }
 
+export interface MarineForecast {
+  waveHeightM?: number;
+  waveDirectionDeg?: number;
+  wavePeriodS?: number;
+  swellWaveHeightM?: number;
+  swellWaveDirectionDeg?: number;
+  seaSurfaceTemperatureC?: number;
+  source?: 'open-meteo-marine';
+}
+
+export interface RecommendationConfidence {
+  level: DataConfidence;
+  score: number;
+  source: WeatherSource;
+  reasons: string[];
+}
+
 export interface RecommendationExplanation {
   summary: string;
   topReasons: string[];
@@ -79,14 +119,22 @@ export interface RecommendationExplanation {
 
 export type WarningFlagType =
   | 'strong_wind'
+  | 'gusty_wind'
   | 'rough_sea'
   | 'exposed_to_wind'
+  | 'offshore_wind'
+  | 'onshore_chop'
+  | 'direct_swell'
   | 'difficult_access'
   | 'boat_only'
   | 'crowded'
   | 'missing_data'
   | 'rain_risk'
-  | 'low_confidence';
+  | 'water_quality_risk'
+  | 'official_warning'
+  | 'heat_uv'
+  | 'low_confidence'
+  | 'wind_sport_spot';
 
 export interface WarningFlag {
   type: WarningFlagType;
@@ -97,6 +145,16 @@ export interface WarningFlag {
 export interface BeachScore {
   beachId: number;
   total: number;
+  swimmingScore?: number;
+  experienceScore?: number;
+  preferenceScore?: number;
+  finalSuitabilityScore?: number;
+  swimmingComfort?: SwimmingComfort;
+  forecastConfidence?: ForecastConfidence;
+  confidenceReasons?: string[];
+  bestTimeWindow?: string;
+  avoidTimeWindow?: string;
+  timeReason?: string;
   windProtection: number;
   seaComfort: number;
   weatherComfort: number;
@@ -108,6 +166,7 @@ export interface BeachScore {
 }
 
 export interface UserPreferences {
+  blueFlag2026: boolean;
   sandy: boolean;
   pebbles: boolean;
   quiet: boolean;
@@ -118,6 +177,7 @@ export interface UserPreferences {
   shallowWater: boolean;
   surfing: boolean;
   parking: boolean;
+  easyAccess: boolean;
 }
 
 export interface Beach {
@@ -128,6 +188,7 @@ export interface Beach {
   detailedDescription?: { [key in LanguageCode]?: string };
   accessNotes?: { [key in LanguageCode]?: string };
   protectedFrom: WindDirection[];
+  orientation?: BeachOrientation;
   accessibility: Accessibility;
   amenities: { 
     organized: boolean; 
@@ -155,8 +216,27 @@ export interface Beach {
   };
   popularityScore: number;
   coordinates: { lat: number; lon: number; };
+  location?: Partial<BeachLocation>;
   crowdLevel?: CrowdLevel;
   crowdScore?: number;
+  fetchExposure?: FetchExposure;
+  seabedSlope?: SeabedSlope;
+  waterEntry?: WaterEntry;
+  waterQualityRiskAfterRain?: WaterQualityRiskAfterRain;
+  nearStreamOrDrain?: boolean;
+  nearPort?: boolean;
+  urbanRunoffRisk?: boolean;
+  officialWarningOverride?: boolean;
+  officialWarningReason?: string;
+  windProfile?: WindProfile;
+  blueFlag2026?: BeachMetadata['blueFlag2026'];
+  aliases?: string[];
+  staticLabels?: {
+    beachType?: string;
+    accessType?: string;
+    terrain?: string;
+    waterDepth?: string;
+  };
   metadata?: BeachMetadata;
 }
 
@@ -177,9 +257,43 @@ export interface BeachMetadata {
     label: string;
     notes?: string;
   };
+  fetchExposure?: FetchExposure;
+  seabedSlope?: SeabedSlope;
+  waterEntry?: WaterEntry;
+  waterQualityRiskAfterRain?: WaterQualityRiskAfterRain;
+  nearStreamOrDrain?: boolean;
+  nearPort?: boolean;
+  urbanRunoffRisk?: boolean;
+  officialWarningOverride?: boolean;
+  officialWarningReason?: string;
   organized: boolean;
   shade: boolean;
   amenities: string[];
+  blueFlag2026?: {
+    awarded: true;
+    year: 2026;
+    awardCount: number;
+    source: string;
+    sourceUrl: string;
+    importedAt: string;
+    officialEntries: Array<{
+      officialNameGr: string;
+      officialNameEn: string;
+      regionalUnitGr: string;
+      regionalUnitEn: string;
+      municipalityGr: string;
+      municipalityEn: string;
+      officialLat?: number;
+      officialLon?: number;
+      matchMethod: string;
+      matchScore: number;
+      matchDistanceKm?: number;
+    }>;
+  };
+  sourceUrls?: string[];
+  sourceNotes?: string | string[];
+  orientation?: Partial<BeachOrientation>;
+  windProfile?: WindProfile;
   confidence?: 'high' | 'medium' | 'low';
   language?: string;
   batch?: string;
@@ -191,15 +305,41 @@ export interface SuitableBeach {
   beachId: number;
   name: string;
   score: number;
+  swimmingScore?: number;
+  experienceScore?: number;
+  preferenceScore?: number;
+  finalSuitabilityScore?: number;
+  swimmingComfort?: SwimmingComfort;
+  forecastConfidence?: ForecastConfidence;
+  confidenceReasons?: string[];
   explanation: string;
   distance?: number;
   beach: Beach;
   bestBeachTime?: any;
+  bestTimeWindow?: string;
+  avoidTimeWindow?: string;
+  timeReason?: string;
   isExposed: boolean;
   crowdLevel?: CrowdLevel;
   crowdScore?: number;
   exposureLevel?: ExposureLevel;
   orientation?: number | null;
+  marine?: MarineForecast;
+  waveHeightM?: number;
+  warnings?: WarningFlag[];
+  confidence?: RecommendationConfidence;
+  weatherSource?: WeatherSource;
+  hourlySeaScore?: number;
+  windProfile?: WindProfile;
+  windSector?: WindSector;
+  canClaimWindProtection?: boolean;
+  seaCalmClaimAllowed?: boolean;
+}
+
+export interface BeachForecastContext {
+  forecast: DailyForecast[];
+  source: WeatherSource;
+  clusterKey: string;
 }
 
 export interface SecretBeach {
@@ -222,9 +362,10 @@ export interface Island {
 }
 
 export interface WeatherData {
-  wind: { speed: number; deg: number; };
+  wind: { speed: number; deg: number; gust?: number; gustKnots?: number; windGustKnots?: number; };
   weather: { main: string; description: string; icon: string; };
   main: { temp: number; };
+  marine?: MarineForecast;
 }
 
 export interface ForecastItem {
@@ -232,20 +373,23 @@ export interface ForecastItem {
   main: { temp: number; temp_min: number; temp_max: number; pressure: number; sea_level: number; grnd_level: number; humidity: number; temp_kf: number; };
   weather: { id: number; main: string; description: string; icon: string; }[];
   clouds: { all: number; };
-  wind: { speed: number; deg: number; gust: number; };
+  wind: { speed: number; deg: number; gust: number; gustKnots?: number; };
+  rain?: { '3h'?: number };
   visibility: number;
   pop: number;
   sys: { pod: 'd' | 'n'; };
   dt_txt: string;
+  marine?: MarineForecast;
 }
 
 export interface DailyForecast {
   date: Date;
-  wind: { speed: number; deg: number; };
+  wind: { speed: number; deg: number; gust?: number; gustKnots?: number; windGustKnots?: number; };
   weather: { main: string; description: string; icon: string; };
   temp_min: number;
   temp_max: number;
   hourly: ForecastItem[];
+  marine?: MarineForecast;
 }
 
 export interface SavedItinerary {
@@ -322,9 +466,21 @@ export type Translation = {
   sortByTitle: string;
   sortByRecommended: string;
   sortByAll: string;
+  sortByProtected: string;
   sortByTopRated: string;
   sortByDistance: string;
   sortedByDistance: string;
+  beachSearchFilters: {
+    searchLabel: string;
+    searchPlaceholder: string;
+    resultCount: (count: number) => string;
+    activeFiltersLabel: string;
+    clearAll: string;
+    clearSearch: string;
+    removeFilter: (label: string) => string;
+    emptyTitle: string;
+    emptyDescription: string;
+  };
   gettingLocation: string;
   locationErrorPermission: string;
   locationErrorUnavailable: string;
@@ -433,6 +589,8 @@ export type Translation = {
     time: string;
     direction: string;
     strength: string;
+    showDetails: string;
+    hideDetails: string;
   };
   sharing: {
     buttonLabel: string;
@@ -536,6 +694,7 @@ export type Translation = {
   userPreferences: {
     title: string;
     subtitle: string;
+    blueFlag2026?: string;
     sandy: string;
     pebbles: string;
     quiet: string;
@@ -546,6 +705,7 @@ export type Translation = {
     shallowWater: string;
     surfing: string;
     parking: string;
+    easyAccess: string;
   };
   crowdLevels: {
     low: string;

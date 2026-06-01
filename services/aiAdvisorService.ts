@@ -62,7 +62,12 @@ export const getBeachAdvice = (
   }
 
   if (preferences.quiet || preferences.hidden) {
-    filteredBeaches = filteredBeaches.filter(b => !b.amenities.organized && !b.amenities.taverna);
+    filteredBeaches = filteredBeaches.filter(b =>
+      !b.amenities.organized &&
+      !b.amenities.taverna &&
+      !b.amenities.restaurant &&
+      !b.amenities.beachBar
+    );
   }
   if (preferences.sandy) {
     filteredBeaches = filteredBeaches.filter(b => b.beachType === 'sandy');
@@ -77,7 +82,7 @@ export const getBeachAdvice = (
     filteredBeaches = filteredBeaches.filter(b => b.characteristics.deepWaters || b.beachType === 'rocky' || b.beachType === 'pebbles');
   }
   if (preferences.beachBar) {
-    filteredBeaches = filteredBeaches.filter(b => b.amenities.organized || b.amenities.taverna);
+    filteredBeaches = filteredBeaches.filter(b => b.amenities.beachBar);
   }
 
   // 4. Calculate scores and sort

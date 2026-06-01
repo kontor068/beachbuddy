@@ -1,20 +1,24 @@
 import React from 'react';
 import { motion } from 'motion/react';
-import { Home, Map, Heart, MessageCircle, Calendar } from 'lucide-react';
+import { Calendar, Heart, Home, Map, MessageCircle } from 'lucide-react';
 import { LanguageCode } from '../types';
+
+type MobileTab = 'home' | 'map' | 'favorites' | 'chat' | 'planner';
 
 interface MobileBottomNavProps {
   language: LanguageCode;
-  activeTab: 'home' | 'map' | 'favorites' | 'chat' | 'planner';
-  onTabChange: (tab: 'home' | 'map' | 'favorites' | 'chat' | 'planner') => void;
-  favoritesCount: number;
+  activeTab: MobileTab;
+  onTabChange: (tab: MobileTab) => void;
+  showBuddy?: boolean;
+  showPlanner?: boolean;
 }
 
 export const MobileBottomNav: React.FC<MobileBottomNavProps> = ({
   language,
   activeTab,
   onTabChange,
-  favoritesCount
+  showBuddy = true,
+  showPlanner = true
 }) => {
   const tabs = [
     {
@@ -30,19 +34,19 @@ export const MobileBottomNav: React.FC<MobileBottomNavProps> = ({
     {
       id: 'favorites' as const,
       icon: Heart,
+      badge: undefined,
       label: language === 'gr' ? 'Αγαπημένα' : 'Favorites',
-      badge: favoritesCount > 0 ? favoritesCount : undefined,
     },
-    {
+    ...(showBuddy ? [{
       id: 'chat' as const,
       icon: MessageCircle,
       label: 'Buddy',
-    },
-    {
+    }] : []),
+    ...(showPlanner ? [{
       id: 'planner' as const,
       icon: Calendar,
       label: 'Planner',
-    },
+    }] : []),
   ];
 
   return (
@@ -53,12 +57,13 @@ export const MobileBottomNav: React.FC<MobileBottomNavProps> = ({
           {tabs.map((tab) => {
             const isActive = activeTab === tab.id;
             const Icon = tab.icon;
+            const tabLabel = tab.label;
             return (
               <button
                 key={tab.id}
                 onClick={() => onTabChange(tab.id)}
                 className="relative flex flex-col items-center justify-center w-full h-full gap-0.5 cursor-pointer group"
-                aria-label={tab.label}
+                aria-label={tabLabel}
               >
                 {isActive && (
                   <motion.div
@@ -74,7 +79,7 @@ export const MobileBottomNav: React.FC<MobileBottomNavProps> = ({
                         ? 'text-primary-dark'
                         : 'text-slate-600 group-active:text-primary-dark'
                     }`}
-                    fill={tab.id === 'favorites' && isActive ? 'currentColor' : 'none'}
+                    fill="none"
                   />
                   {tab.badge && (
                     <span className="absolute -top-1.5 -right-2 h-4 min-w-4 flex items-center justify-center rounded-full bg-cta text-white text-[9px] font-bold px-1">
@@ -94,7 +99,7 @@ export const MobileBottomNav: React.FC<MobileBottomNavProps> = ({
                       : 'text-slate-600'
                   }`}
                 >
-                  {tab.label}
+                  {tabLabel}
                 </span>
               </button>
             );

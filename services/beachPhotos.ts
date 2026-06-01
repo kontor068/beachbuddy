@@ -1,17 +1,112 @@
 /**
- * Real beach photos from Wikimedia Commons (CC-licensed).
+ * Real beach photos from Wikimedia Commons and other license-safe sources.
  * Uses Special:Redirect for auto-scaled thumbnails.
  */
+import { getBeachImageMetadata, getBeachImageMetadataById, type BeachImageMetadata } from './beachImageService';
 
 const wm = (filename: string) =>
   `https://commons.wikimedia.org/w/index.php?title=Special:Redirect/file/${encodeURIComponent(filename)}&width=800`;
 
+const MILOS_UNSPLASH_COVE =
+  'https://images.unsplash.com/photo-1617727347345-fdd8c918018e?auto=format&fit=crop&w=1200&q=80';
+const MILOS_PEXELS_SOUTH_BAY =
+  'https://images.pexels.com/photos/21044933/pexels-photo-21044933.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940';
+const MILOS_PEXELS_GERAKAS =
+  'https://images.pexels.com/photos/34020716/pexels-photo-34020716.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940';
+const MILOS_PEXELS_BOATS_CLIFFS =
+  'https://images.pexels.com/photos/32137725/pexels-photo-32137725.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940';
+const MILOS_FLICKR_KLEFTIKO =
+  'https://live.staticflickr.com/2583/3719197583_b704d860b3_b.jpg';
+const MILOS_FLICKR_PIRATES_LAIR =
+  'https://live.staticflickr.com/4152/5026007564_b48a3907a0_b.jpg';
+
+const ATTICA_FLISVOS_PHOTOS = [
+  wm('2009-02-18 Athen-Flisvos 01.jpg'),
+  wm('2009-02-19 Flisvos 01.jpg'),
+  wm('Flisvos banner.jpg'),
+];
+const ATTICA_PALMYRA_PHOTOS = [
+  wm('Attica 06-13 Paleo Faliro 04 beach.jpg'),
+  wm('ParaliaEdem2016.png'),
+];
+const ATTICA_BATIS_PHOTOS = [wm('Batis Palaio Faliro beach.jpg')];
+const ATTICA_EDEM_PHOTOS = [
+  wm('ParaliaEdem2016.png'),
+  wm('Edem beach - panoramio.jpg'),
+  wm('Edem beach - panoramio - Robert Freeman.jpg'),
+];
+const ATTICA_ALIMOS_A_PLAZ_PHOTOS = [
+  wm('Alimos - panoramio (16).jpg'),
+  wm('Alimos - panoramio (15).jpg'),
+  wm('Kalamaki from the Saronic Gulf.jpg'),
+];
+const ATTICA_AKTI_TOU_ILIOU_PHOTOS = [
+  wm('Loutra Alimou April 2014 - panoramio.jpg'),
+  wm('Alimos - panoramio (15).jpg'),
+  wm('Kalamaki from the Saronic Gulf.jpg'),
+];
+const ATTICA_AGIOS_KOSMAS_PHOTOS = [
+  wm('Promontory of Agios Kosmas (Attica) 02.JPG'),
+  wm('Promontory of Agios Kosmas (Attica) 01.JPG'),
+];
+const ATTICA_GLYFADA_A_PHOTOS = [wm('Glyfada Beach (3368837046).jpg')];
+const ATTICA_GLYFADA_B_PHOTOS = [wm('Glyfada Beach (3368014335).jpg')];
+const ATTICA_GLYFADA_C_PHOTOS = [wm('Glyfada beach 01.jpg')];
+const ATTICA_GLYFADA_D_PHOTOS = [wm('Glyfada beach 02.jpg'), wm('Glyfada beach 03.jpg')];
+const ATTICA_ASTERAS_GLYFADA_PHOTOS = [
+  wm('Asteras Beach Glyfada Athens, Greece (44869108691).jpg'),
+  wm('Asteras Strand Glyfada Athen, Griechenland (43057427780).jpg'),
+];
+const ATTICA_VOULA_A_PLAZ_PHOTOS = [
+  wm('Beach of Voula Athens 20190819.jpg'),
+  wm('Voula - panoramio (10).jpg'),
+];
+const ATTICA_VOULA_B_PLAZ_PHOTOS = [
+  wm('Β΄ Πλαζ Βούλας DJI 4004.jpg'),
+  wm('Voula - panoramio (17).jpg'),
+];
+const ATTICA_MIKRO_KAVOURI_PHOTOS = [
+  wm('Καβούρι IMG 20230807 160927.jpg'),
+  wm('Παραλία Κραμπο, Καβούρι IMG 20230620 153319.jpg'),
+];
+const ATTICA_MEGALO_KAVOURI_PHOTOS = [wm('Μεγάλο Καβούρι IMG 20230609 182305.jpg')];
+const ATTICA_VARKIZA_PHOTOS = [
+  wm('Η Παραλία της Βάρκιζας.jpg'),
+  wm('Παραλία Βάρκιζας (1).jpg'),
+  wm('Παραλία Βάρκιζας (2).jpg'),
+];
+const ATTICA_ZEN_NIRIIDES_PHOTOS = [wm('Παραλία Νηρηίδες-Ζεν IMG 20230731 170540.jpg')];
+const ATTICA_ASTIR_VOULIAGMENI_PHOTOS = [
+  wm('Astir beach vouliagmeni greece photos pc2.jpg'),
+  wm('Beach Huts, Astir Beach, Vouliagmeni, Athens, Greece, 2009.jpg'),
+  wm('Sunset at Astir Beach, Vouliagmeni, Athens, Greece.jpg'),
+];
+const ATTICA_LAKE_VOULIAGMENI_PHOTOS = [
+  wm('Vouliagmeni Lake Athens Greece.jpg'),
+  wm('Lake Vouliagmeni (Attica) - Λίμνη Βουλιαγμένης (Αττική).JPG'),
+];
+const ATTICA_PANAGITSA_DYTISSA_PHOTOS = [
+  wm('Λαιμός Αττικής.jpg'),
+  wm('Λαιμός Αττικής και Κασίδης.jpg'),
+];
+const ATTICA_LIMANAKIA_PHOTOS = [
+  wm('2nd Limanaki of Vouliagmeni (01).jpg'),
+  wm('2nd Limanaki of Vouliagmeni (04).jpg'),
+  wm('2nd Limanaki of Vouliagmeni (10).jpg'),
+];
+const ATTICA_LIMANAKIA_NUDIST_PHOTOS = [
+  wm('2nd Limanaki of Vouliagmeni (08).jpg'),
+  wm('2nd Limanaki of Vouliagmeni (09).jpg'),
+  wm('2nd Limanaki of Vouliagmeni (05).jpg'),
+];
+const ATTICA_FLEVES_PHOTOS = [wm('Fleves Φλέβες 2020-08-21 a Aegina Αίγινα.jpg')];
+
 const BEACH_PHOTOS: Record<string, string[]> = {
 
   // ==================== ATTICA ====================
-  'Voula Beach': [wm('Beach of Voula Athens 20190819.jpg')],
-  'Βούλα': [wm('Beach of Voula Athens 20190819.jpg')],
-  'Βουλιαγμένη': [wm('Lake Vouliagmeni 5.jpg')],
+  'Voula Beach': ATTICA_VOULA_A_PLAZ_PHOTOS,
+  'Βούλα': ATTICA_VOULA_A_PLAZ_PHOTOS,
+  'Βουλιαγμένη': ATTICA_LAKE_VOULIAGMENI_PHOTOS,
 
   // ==================== CRETE ====================
   'Μπάλος': [wm('Balos Beach.jpg'), wm('Bay of Balos, Crete 001.jpg')],
@@ -251,37 +346,56 @@ const IONIAN_ISLAND_PHOTOS: Record<string, string[]> = {
 
 const ATTICA_BEACH_PHOTOS_BY_AREA: Record<string, Record<string, string[]>> = {
   athens_coast: {
-    'Voula Beach': [wm('Beach of Voula Athens 20190819.jpg')],
-    'Voula': [wm('Beach of Voula Athens 20190819.jpg')],
-    'Βούλα': [wm('Beach of Voula Athens 20190819.jpg')],
-    'Βουλιαγμένη': [wm('Lake Vouliagmeni 5.jpg')],
-    'Balux - The house project': [wm('Asteras Glyfada beach.jpg')],
-    'Άγιος Κοσμάς': [wm('Agios Kosmas beach Athens.jpg')],
-    'Ακτή του Ήλιου': [wm('Alimos beach Athens.jpg')],
-    'του Ήλιου': [wm('Alimos beach Athens.jpg')],
-    "Α' Πλαζ Αλίμου «Στολίδι»": [wm('Alimos beach Athens.jpg')],
-    "Α' Πλαζ Αλίμου": [wm('Alimos beach Athens.jpg')],
-    'Αλίμου «Στολίδι»': [wm('Alimos beach Athens.jpg')],
-    'Παραλία Έδεμ': [wm('Edem beach Athens.jpg')],
-    'Έδεμ': [wm('Edem beach Athens.jpg')],
-    'Εδέμ': [wm('Edem beach Athens.jpg')],
-    'Παραλία Γλυφάδας Ακτή Α': [wm('Asteras Glyfada beach.jpg')],
-    'Γλυφάδας Ακτή Α': [wm('Asteras Glyfada beach.jpg')],
-    'Παραλία Γλυφάδας Ακτή Β': [wm('Asteras Glyfada beach.jpg')],
-    'Γλυφάδας Ακτή Β': [wm('Asteras Glyfada beach.jpg')],
-    'Παραλία Γλυφάδας Ακτή Γ': [wm('Asteras Glyfada beach.jpg')],
-    'Γλυφάδας Ακτή Γ': [wm('Asteras Glyfada beach.jpg')],
-    'Παραλία Γλυφάδας Ακτή Δ': [wm('Asteras Glyfada beach.jpg')],
-    'Γλυφάδας Ακτή Δ': [wm('Asteras Glyfada beach.jpg')],
-    'Παραλία Μπάτη': [wm('Bati beach Athens.jpg')],
-    'Μπάτη': [wm('Bati beach Athens.jpg')],
-    'Παραλία Φλοίσβου': [wm('Faliro Athens beach.jpg')],
-    'Φλοίσβου': [wm('Faliro Athens beach.jpg')],
+    'Voula Beach': ATTICA_VOULA_A_PLAZ_PHOTOS,
+    'Voula': ATTICA_VOULA_A_PLAZ_PHOTOS,
+    'Βούλα': ATTICA_VOULA_A_PLAZ_PHOTOS,
+    'Βουλιαγμένη': ATTICA_LAKE_VOULIAGMENI_PHOTOS,
+    'Balux - The house project': ATTICA_ASTERAS_GLYFADA_PHOTOS,
+    'Άγιος Κοσμάς': ATTICA_AGIOS_KOSMAS_PHOTOS,
+    'Ακτή του Ήλιου': ATTICA_AKTI_TOU_ILIOU_PHOTOS,
+    'του Ήλιου': ATTICA_AKTI_TOU_ILIOU_PHOTOS,
+    "Α' Πλαζ Αλίμου «Στολίδι»": ATTICA_ALIMOS_A_PLAZ_PHOTOS,
+    "Α' Πλαζ Αλίμου": ATTICA_ALIMOS_A_PLAZ_PHOTOS,
+    'Αλίμου «Στολίδι»': ATTICA_ALIMOS_A_PLAZ_PHOTOS,
+    'Παραλία Έδεμ': ATTICA_EDEM_PHOTOS,
+    'Έδεμ': ATTICA_EDEM_PHOTOS,
+    'Εδέμ': ATTICA_EDEM_PHOTOS,
+    'Παραλία Γλυφάδας Ακτή Α': ATTICA_GLYFADA_A_PHOTOS,
+    'Γλυφάδας Ακτή Α': ATTICA_GLYFADA_A_PHOTOS,
+    'Παραλία Γλυφάδας Ακτή Β': ATTICA_GLYFADA_B_PHOTOS,
+    'Γλυφάδας Ακτή Β': ATTICA_GLYFADA_B_PHOTOS,
+    'Παραλία Γλυφάδας Ακτή Γ': ATTICA_GLYFADA_C_PHOTOS,
+    'Γλυφάδας Ακτή Γ': ATTICA_GLYFADA_C_PHOTOS,
+    'Παραλία Γλυφάδας Ακτή Δ': ATTICA_GLYFADA_D_PHOTOS,
+    'Γλυφάδας Ακτή Δ': ATTICA_GLYFADA_D_PHOTOS,
+    'Παραλία Αστέρα Γλυφάδας': ATTICA_ASTERAS_GLYFADA_PHOTOS,
+    'Αστέρα Γλυφάδας': ATTICA_ASTERAS_GLYFADA_PHOTOS,
+    'Παραλία Μπάτη': ATTICA_BATIS_PHOTOS,
+    'Μπάτη': ATTICA_BATIS_PHOTOS,
+    'Παραλία Φλοίσβου': ATTICA_FLISVOS_PHOTOS,
+    'Φλοίσβου': ATTICA_FLISVOS_PHOTOS,
     'Παραλία Φρεαττύδος': [wm('Freatida beach Piraeus.jpg')],
     'Φρεαττύδος': [wm('Freatida beach Piraeus.jpg')],
     'Βοτσαλάκια': [wm('Votsalakia beach Piraeus.jpg')],
-    'Παλμύρα': [wm('Edem beach Athens.jpg')],
-    'παραλια αγιου αλεξανδρου': [wm('Agios Kosmas beach Athens.jpg')],
+    'Παλμύρα': ATTICA_PALMYRA_PHOTOS,
+    'Παραλία Αγίου Αλεξάνδρου': ATTICA_AGIOS_KOSMAS_PHOTOS,
+    'παραλια αγιου αλεξανδρου': ATTICA_AGIOS_KOSMAS_PHOTOS,
+    "Α' Πλαζ Βούλας": ATTICA_VOULA_A_PLAZ_PHOTOS,
+    "Β' πλαζ Βούλας": ATTICA_VOULA_B_PLAZ_PHOTOS,
+    "Β' Πλαζ Βούλας": ATTICA_VOULA_B_PLAZ_PHOTOS,
+    'Μικρό Καβούρι': ATTICA_MIKRO_KAVOURI_PHOTOS,
+    'Παραλία Βάρκιζας': ATTICA_VARKIZA_PHOTOS,
+    'Μεγάλο Καβούρι': ATTICA_MEGALO_KAVOURI_PHOTOS,
+    'Zen Beach / Νηρηίδες': ATTICA_ZEN_NIRIIDES_PHOTOS,
+    'Zen Beach': ATTICA_ZEN_NIRIIDES_PHOTOS,
+    'Νηρηίδες': ATTICA_ZEN_NIRIIDES_PHOTOS,
+    'Astir Beach / Αστέρας Βουλιαγμένης': ATTICA_ASTIR_VOULIAGMENI_PHOTOS,
+    'Αστέρας Βουλιαγμένης': ATTICA_ASTIR_VOULIAGMENI_PHOTOS,
+    'Λίμνη Βουλιαγμένης': ATTICA_LAKE_VOULIAGMENI_PHOTOS,
+    'Παναγίτσα η Δύτισσα': ATTICA_PANAGITSA_DYTISSA_PHOTOS,
+    'Λιμανάκια Βουλιαγμένης': ATTICA_LIMANAKIA_PHOTOS,
+    'Λιμανάκια Βουλιαγμένης Γυμνιστών': ATTICA_LIMANAKIA_NUDIST_PHOTOS,
+    'Νησίδα Φλέβες': ATTICA_FLEVES_PHOTOS,
     'πλαζ "Καλαμπάκα"': [wm('Freatida beach Piraeus.jpg')],
     'Καλαμπάκα': [wm('Freatida beach Piraeus.jpg')],
   },
@@ -292,18 +406,18 @@ const ATTICA_BEACH_PHOTOS_BY_AREA: Record<string, Record<string, string[]>> = {
     'Kaki Thalassa Beach': [wm('Kaki Thalassa Beach.jpg')],
     'Παραλία Σουνίου': [wm('Sounion Beach.jpg'), wm('Cape Sounion beach.jpg')],
     'Sounion Beach': [wm('Sounion Beach.jpg'), wm('Cape Sounion beach.jpg')],
-    'Παραλία Βάρκιζας': [wm('Varkiza Beach.jpg')],
-    'Yabanaki': [wm('Varkiza Beach.jpg')],
+    'Παραλία Βάρκιζας': ATTICA_VARKIZA_PHOTOS,
+    'Yabanaki': ATTICA_VARKIZA_PHOTOS,
     'Παραλία Σχινιά': [wm('Schinias beach.jpg'), wm('Schinias Bay.jpg')],
     'Παραλία Ζούμπερι (Νέα Μάκρη)': [wm('Zouberi beach.jpg')],
     'Legrena': [wm('Legrena Beach Attica.jpg')],
     'Παραλία Λεγραινών': [wm('Legrena Beach Attica.jpg')],
-    "Β' πλαζ Βούλας": [wm('Beach of Voula Athens 20190819.jpg')],
+    "Β' πλαζ Βούλας": ATTICA_VOULA_B_PLAZ_PHOTOS,
     'Αυλάκι': [wm('Avlaki beach Porto Rafti.jpg')],
     'Ερωτοσπηλιά': [wm('Erotospilia beach.jpg')],
     'Λομπάρντα': [wm('Lombarda beach Attica.jpg')],
-    'Μεγάλο Καβούρι': [wm('Megalo Kavouri beach.jpg')],
-    'Μικρό Καβούρι': [wm('Mikro Kavouri beach.jpg')],
+    'Μεγάλο Καβούρι': ATTICA_MEGALO_KAVOURI_PHOTOS,
+    'Μικρό Καβούρι': ATTICA_MIKRO_KAVOURI_PHOTOS,
     'Παραλία Αλθέας': [wm('Althea beach Attica.jpg')],
     'Παραλία Σκάλες Αλθέας': [wm('Althea beach Attica.jpg')],
     'Παραλία Αναβύσσου': [wm('Anavyssos beach.jpg')],
@@ -504,8 +618,19 @@ const MILOS_BEACH_PHOTOS: Record<string, string[]> = {
     wm('Aerial view of Tsigrado Beach on Milos Island, Greece.jpg'),
     wm('Tsigrado Beach on Milos Island, Greece.jpg'),
   ],
+  'Αγία Κυριακή': [wm('Milossouth.JPG')],
   'Agia Kyriaki': [wm('Milossouth.JPG')],
   'Agia Kiriaki': [wm('Milossouth.JPG')],
+  'Άγιος Σώστης': [wm('Milos Beach - panoramio (1).jpg')],
+  'Agios Sostis': [wm('Milos Beach - panoramio (1).jpg')],
+  'Άγιος Ιωάννης': [wm('Boat anchored in the Sea of Crete near Kleftiko on Milos Island, Greece.jpg')],
+  'Agios Ioannis': [wm('Boat anchored in the Sea of Crete near Kleftiko on Milos Island, Greece.jpg')],
+  'Γέροντας': ['https://cdn.pixabay.com/photo/2021/03/25/23/37/gerontas-6124441_1280.jpg'],
+  Gerontas: ['https://cdn.pixabay.com/photo/2021/03/25/23/37/gerontas-6124441_1280.jpg'],
+  'Γερανιά': [wm('Milos North - panoramio.jpg')],
+  Gerania: [wm('Milos North - panoramio.jpg')],
+  'Κάπρος': [wm('Volcanic rocks surrounding a small beach on Milos Island, Greece.jpg')],
+  Kapros: [wm('Volcanic rocks surrounding a small beach on Milos Island, Greece.jpg')],
   'Παλαιοχώρι': [
     wm('Cyclades Milos Paleochori Plage - panoramio.jpg'),
     wm('Milos Paleochori.JPG'),
@@ -528,6 +653,8 @@ const MILOS_BEACH_PHOTOS: Record<string, string[]> = {
   ],
   'Παπικινού': [wm('Cyclades Milos Papikinou Plage Taverne O^ Hamos - panoramio.jpg')],
   Papikinou: [wm('Cyclades Milos Papikinou Plage Taverne O^ Hamos - panoramio.jpg')],
+  'Ναυτικός Όμιλος Μήλου': [wm('Cyclades Milos Papikinou Plage Taverne O^ Hamos - panoramio.jpg')],
+  'Nautikos Omilos Milou': [wm('Cyclades Milos Papikinou Plage Taverne O^ Hamos - panoramio.jpg')],
   'Αχιβαδολίμνη': [
     wm('Cyclades Milos Archivadolimni Est Plage - panoramio.jpg'),
     wm('Cyclades Milos Archivadolimni Ouest Plage - panoramio.jpg'),
@@ -559,6 +686,118 @@ const MILOS_BEACH_PHOTOS: Record<string, string[]> = {
   'Παλιόρεμα': [wm('Thiafes bay, Milos, 152781.jpg')],
   'Φυρλίνγκος': [wm('Fyrlinkos beach, Milos, 152795.jpg')],
   Fyrlinkos: [wm('Fyrlinkos beach, Milos, 152795.jpg')],
+  'Πλάθιενα': [wm('Milos-2.jpg')],
+  Plathiena: [wm('Milos-2.jpg')],
+  Platheina: [wm('Milos-2.jpg')],
+  'Τουρκοθάλασσα': [wm('Mandrakia Μανδράκια Milos Μήλος 2021-11-12 2402.jpg')],
+  Tourkothalassa: [wm('Mandrakia Μανδράκια Milos Μήλος 2021-11-12 2402.jpg')],
+
+  // Remote Milos beaches: exact public-license photos are limited, so these use
+  // license-safe images from the same bay/coastline or nearest documented beach.
+  'Άγιος Δημήτριος': [wm('- panoramio (5741).jpg'), wm('- panoramio (5740).jpg')],
+  'Agios Dimitrios': [wm('- panoramio (5741).jpg'), wm('- panoramio (5740).jpg')],
+  'Αμμουδαράκι': [MILOS_UNSPLASH_COVE, wm('Milos-8.jpg'), wm('Beach on south coast of Milos, 15M5993.jpg')],
+  Ammoudaraki: [MILOS_UNSPLASH_COVE, wm('Milos-8.jpg'), wm('Beach on south coast of Milos, 15M5993.jpg')],
+  'Κάλαμος': [
+    wm('Aerial view of the landscape near Paralia Firiplaka on Milos Island, Greece.jpg'),
+    wm('Paralia Firiplaka on Milos Island, Greece.jpg'),
+    MILOS_PEXELS_GERAKAS,
+  ],
+  Kalamos: [
+    wm('Aerial view of the landscape near Paralia Firiplaka on Milos Island, Greece.jpg'),
+    wm('Paralia Firiplaka on Milos Island, Greece.jpg'),
+    MILOS_PEXELS_GERAKAS,
+  ],
+  'Κάτεργο': [
+    MILOS_FLICKR_KLEFTIKO,
+    wm('Beach on south coast of Milos, 15M5993.jpg'),
+    wm('Aerial view of a beach at Kleftiko on Milos Island, Greece.jpg'),
+  ],
+  Katergo: [
+    MILOS_FLICKR_KLEFTIKO,
+    wm('Beach on south coast of Milos, 15M5993.jpg'),
+    wm('Aerial view of a beach at Kleftiko on Milos Island, Greece.jpg'),
+  ],
+  'Κήποι': [MILOS_PEXELS_SOUTH_BAY, wm('Milos Beach - panoramio (1).jpg'), wm('Cyclades Milos Provatas Plage - panoramio.jpg')],
+  Kipos: [MILOS_PEXELS_SOUTH_BAY, wm('Milos Beach - panoramio (1).jpg'), wm('Cyclades Milos Provatas Plage - panoramio.jpg')],
+  'Καμπάνες': [
+    wm('Cyclades Milos Firopotamos Plage - panoramio (1).jpg'),
+    wm('Cyclades Milos Firopotamos Plage - panoramio.jpg'),
+  ],
+  Kambanes: [
+    wm('Cyclades Milos Firopotamos Plage - panoramio (1).jpg'),
+    wm('Cyclades Milos Firopotamos Plage - panoramio.jpg'),
+  ],
+  'Νεροδάφνη': [
+    wm('Cyclades Milos Firopotamos Plage 13092014 - panoramio.jpg'),
+    MILOS_UNSPLASH_COVE,
+    wm('Milos-2.jpg'),
+  ],
+  Nerodafni: [
+    wm('Cyclades Milos Firopotamos Plage 13092014 - panoramio.jpg'),
+    MILOS_UNSPLASH_COVE,
+    wm('Milos-2.jpg'),
+  ],
+  'Παραλία Αγγαθια': [
+    MILOS_FLICKR_PIRATES_LAIR,
+    wm('Aerial view of a beach at Kleftiko on Milos Island, Greece.jpg'),
+    wm('Aerial view of the Sea of Crete at Kleftiko on Milos Island, Greece.jpg'),
+  ],
+  Agathia: [
+    MILOS_FLICKR_PIRATES_LAIR,
+    wm('Aerial view of a beach at Kleftiko on Milos Island, Greece.jpg'),
+    wm('Aerial view of the Sea of Crete at Kleftiko on Milos Island, Greece.jpg'),
+  ],
+  'Ριβάρι': [
+    MILOS_PEXELS_BOATS_CLIFFS,
+    wm('Hiva.jpg'),
+    wm('Cyclades Milos Archivadolimni Ouest Plage - panoramio.jpg'),
+  ],
+  Rivari: [
+    MILOS_PEXELS_BOATS_CLIFFS,
+    wm('Hiva.jpg'),
+    wm('Cyclades Milos Archivadolimni Ouest Plage - panoramio.jpg'),
+  ],
+  'Τριάδες': [
+    MILOS_UNSPLASH_COVE,
+    wm('Milos-8.jpg'),
+    wm('Beach on south coast of Milos, 15M5993.jpg'),
+  ],
+  Triades: [
+    MILOS_UNSPLASH_COVE,
+    wm('Milos-8.jpg'),
+    wm('Beach on south coast of Milos, 15M5993.jpg'),
+  ],
+  'Φατούρενα': [
+    MILOS_PEXELS_BOATS_CLIFFS,
+    wm('Hiva.jpg'),
+    wm('Cyclades Milos Archivadolimni Ouest Plage - panoramio.jpg'),
+  ],
+  Fatourena: [
+    MILOS_PEXELS_BOATS_CLIFFS,
+    wm('Hiva.jpg'),
+    wm('Cyclades Milos Archivadolimni Ouest Plage - panoramio.jpg'),
+  ],
+  'Ψαθί': [
+    MILOS_FLICKR_KLEFTIKO,
+    wm('Beach on south coast of Milos, 15M5993.jpg'),
+    wm('Aerial view of a beach at Kleftiko on Milos Island, Greece.jpg'),
+  ],
+  Psathi: [
+    MILOS_FLICKR_KLEFTIKO,
+    wm('Beach on south coast of Milos, 15M5993.jpg'),
+    wm('Aerial view of a beach at Kleftiko on Milos Island, Greece.jpg'),
+  ],
+  'Ψαροβολάδα': [
+    MILOS_PEXELS_GERAKAS,
+    wm('Tourlos Beach on Milos Island, Greece.jpg'),
+    wm('Aerial view of Tourlos Beach on Milos Island, Greece.jpg'),
+  ],
+  Psarovolada: [
+    MILOS_PEXELS_GERAKAS,
+    wm('Tourlos Beach on Milos Island, Greece.jpg'),
+    wm('Aerial view of Tourlos Beach on Milos Island, Greece.jpg'),
+  ],
 };
 
 const CYCLADES_BEACH_PHOTOS_BY_ISLAND: Record<string, Record<string, string[]>> = {
@@ -977,6 +1216,54 @@ const normalizeLookup = (value: string) =>
     .toLowerCase()
     .replace(/[^a-z0-9α-ω]+/gi, '');
 
+const UNVERIFIED_BEACH_PHOTO_KEYS = new Set([
+  'agiosdimitrios',
+  'ammoudaraki',
+  'kalamos',
+  'katergo',
+  'kipos',
+  'kambanes',
+  'nerodafni',
+  'agathia',
+  'rivari',
+  'triades',
+  'fatourena',
+  'psathi',
+  'psarovolada',
+  'tourkothalassa',
+  'agiosioannis',
+  'agiossostis',
+  'gerania',
+  'kapros',
+  'plathiena',
+  'platheina',
+]);
+
+const VERIFIED_MILOS_BEACH_PHOTO_KEYS = new Set([
+  'sarakiniko',
+  'firiplaka',
+  'fyriplaka',
+  'papafragas',
+  'tsigrado',
+  'agiakyriaki',
+  'agiakiriaki',
+  'gerontas',
+  'palaiochori',
+  'paleochori',
+  'paliochori',
+  'provatas',
+  'papikinou',
+  'achivadolimni',
+  'archivadolimni',
+  'lagada',
+  'langada',
+  'kleftiko',
+  'firopotamos',
+  'thiafes',
+  'paliorema',
+  'fyrlinkos',
+]);
+
 const CYCLADES_ISLAND_ALIASES: Record<string, string> = {
   milos: 'milos',
   μηλος: 'milos',
@@ -1018,6 +1305,21 @@ const CYCLADES_ISLAND_ALIASES: Record<string, string> = {
   σικινος: 'sikinos',
   antiparos: 'antiparos',
   αντιπαρος: 'antiparos',
+  donousa: 'donousa',
+  donoussa: 'donousa',
+  δονουσα: 'donousa',
+  koufonisia: 'koufonisia',
+  koufonisi: 'koufonisia',
+  koufonissia: 'koufonisia',
+  κουφονησια: 'koufonisia',
+  schinoussa: 'schinoussa',
+  schoinoussa: 'schinoussa',
+  schoinousa: 'schinoussa',
+  σχοινουσα: 'schinoussa',
+  iraklia: 'iraklia',
+  irakleia: 'iraklia',
+  heraklia: 'iraklia',
+  ηρακλεια: 'iraklia',
 };
 
 const ATTICA_AREA_ALIASES: Record<string, string> = {
@@ -1269,25 +1571,36 @@ const findPhotos = (
   photosByName: Record<string, string[]>,
   beachNameGr: string,
   beachNameEn: string,
-  count: number
+  count: number,
+  strictAllowedKeys?: Set<string>
 ): string[] => {
+  const normalizedBeachNameGr = normalizeLookup(beachNameGr);
+  const normalizedBeachNameEn = normalizeLookup(beachNameEn);
+
+  if (
+    strictAllowedKeys &&
+    !strictAllowedKeys.has(normalizedBeachNameGr) &&
+    !strictAllowedKeys.has(normalizedBeachNameEn)
+  ) {
+    return [];
+  }
+
+  if (
+    UNVERIFIED_BEACH_PHOTO_KEYS.has(normalizedBeachNameGr) ||
+    UNVERIFIED_BEACH_PHOTO_KEYS.has(normalizedBeachNameEn)
+  ) {
+    return [];
+  }
+
   const grPhotos = photosByName[beachNameGr];
   if (grPhotos?.length) return padPhotos(grPhotos, count);
 
   const enPhotos = photosByName[beachNameEn];
   if (enPhotos?.length) return padPhotos(enPhotos, count);
 
-  const normalizedBeachNameGr = normalizeLookup(beachNameGr);
-  const normalizedBeachNameEn = normalizeLookup(beachNameEn);
-
   for (const [key, photos] of Object.entries(photosByName)) {
     const normalizedKey = normalizeLookup(key);
-    if (
-      normalizedBeachNameGr.includes(normalizedKey) ||
-      normalizedBeachNameEn.includes(normalizedKey) ||
-      normalizedKey.includes(normalizedBeachNameGr) ||
-      normalizedKey.includes(normalizedBeachNameEn)
-    ) {
+    if (normalizedKey === normalizedBeachNameGr || normalizedKey === normalizedBeachNameEn) {
       return padPhotos(photos, count);
     }
   }
@@ -1312,9 +1625,102 @@ const pickIslandPhotos = (islandName: string | undefined, beachId: number, count
   return [];
 };
 
+export type BeachPhotoSource = 'exact' | 'fallback' | 'none';
+
+export type BeachPhotoLookup = {
+  photos: string[];
+  detailPhotos?: string[];
+  source: BeachPhotoSource;
+  metadata?: BeachImageMetadata;
+};
+
 /**
  * Get photo URLs for a beach.
  */
+export const getBeachPhotoLookup = (
+  beachNameGr: string,
+  beachNameEn: string,
+  beachId: number,
+  count: number = 5,
+  islandName?: string
+): BeachPhotoLookup => {
+  const atticaAreaKey = getAtticaAreaKey(islandName);
+  if (atticaAreaKey) {
+    const areaBeachPhotos = ATTICA_BEACH_PHOTOS_BY_AREA[atticaAreaKey];
+    const areaPhotos = areaBeachPhotos ? findPhotos(areaBeachPhotos, beachNameGr, beachNameEn, count) : [];
+    if (areaPhotos.length) return { photos: areaPhotos, source: 'exact' };
+    if (areaBeachPhotos) return { photos: [], source: 'none' };
+  }
+
+  const creteAreaKey = getCreteAreaKey(islandName);
+  if (creteAreaKey) {
+    const areaBeachPhotos = CRETE_BEACH_PHOTOS_BY_AREA[creteAreaKey];
+    const areaPhotos = areaBeachPhotos ? findPhotos(areaBeachPhotos, beachNameGr, beachNameEn, count) : [];
+    if (areaPhotos.length) return { photos: areaPhotos, source: 'exact' };
+    if (areaBeachPhotos) return { photos: [], source: 'none' };
+  }
+
+  const macedoniaAreaKey = getMacedoniaAreaKey(islandName);
+  if (macedoniaAreaKey) {
+    const areaBeachPhotos = MACEDONIA_BEACH_PHOTOS_BY_AREA[macedoniaAreaKey];
+    const areaPhotos = areaBeachPhotos ? findPhotos(areaBeachPhotos, beachNameGr, beachNameEn, count) : [];
+    if (areaPhotos.length) return { photos: areaPhotos, source: 'exact' };
+    if (areaBeachPhotos) return { photos: [], source: 'none' };
+  }
+
+  const thraceAreaKey = getThraceAreaKey(islandName);
+  if (thraceAreaKey) {
+    const areaBeachPhotos = THRACE_BEACH_PHOTOS_BY_AREA[thraceAreaKey];
+    const areaPhotos = areaBeachPhotos ? findPhotos(areaBeachPhotos, beachNameGr, beachNameEn, count) : [];
+    if (areaPhotos.length) return { photos: areaPhotos, source: 'exact' };
+    if (areaBeachPhotos) return { photos: [], source: 'none' };
+  }
+
+  const northAegeanAreaKey = getNorthAegeanAreaKey(islandName);
+  if (northAegeanAreaKey) {
+    const areaBeachPhotos = NORTH_AEGEAN_BEACH_PHOTOS_BY_AREA[northAegeanAreaKey];
+    const areaPhotos = areaBeachPhotos ? findPhotos(areaBeachPhotos, beachNameGr, beachNameEn, count) : [];
+    if (areaPhotos.length) return { photos: areaPhotos, source: 'exact' };
+    if (areaBeachPhotos) return { photos: [], source: 'none' };
+  }
+
+  const cycladesIslandKey = getCycladesIslandKey(islandName);
+  if (cycladesIslandKey) {
+    if (cycladesIslandKey === 'milos') {
+      const verifiedMilosPhoto =
+        getBeachImageMetadataById(beachId, islandName) ||
+        getBeachImageMetadata(beachNameGr, islandName) ||
+        getBeachImageMetadata(beachNameEn, islandName);
+      return verifiedMilosPhoto?.imageUrl
+        ? {
+            photos: [verifiedMilosPhoto.thumbnailUrl || verifiedMilosPhoto.imageUrl],
+            detailPhotos: [verifiedMilosPhoto.thumbnailUrl || verifiedMilosPhoto.imageUrl],
+            source: 'exact',
+            metadata: verifiedMilosPhoto,
+          }
+        : { photos: [], source: 'none' };
+    }
+
+    const islandBeachPhotos = CYCLADES_BEACH_PHOTOS_BY_ISLAND[cycladesIslandKey];
+    const allowedKeys = cycladesIslandKey === 'milos' ? VERIFIED_MILOS_BEACH_PHOTO_KEYS : undefined;
+    const beachPhotos = islandBeachPhotos ? findPhotos(islandBeachPhotos, beachNameGr, beachNameEn, count, allowedKeys) : [];
+    if (beachPhotos.length) return { photos: beachPhotos, source: 'exact' };
+    return { photos: [], source: 'none' };
+  }
+
+  // Do not use island cover photos as beach photos. A wrong landmark/image is
+  // worse for trust than a polished placeholder.
+  const ionianIslandKey = getIonianIslandKey(islandName);
+  if (ionianIslandKey) {
+    return { photos: [], source: 'none' };
+  }
+
+  const beachPhotos = findPhotos(BEACH_PHOTOS, beachNameGr, beachNameEn, count);
+  if (beachPhotos.length) return { photos: beachPhotos, source: 'exact' };
+
+  return { photos: [], source: 'none' };
+};
+
 export const getBeachPhotos = (
   beachNameGr: string,
   beachNameEn: string,
@@ -1322,66 +1728,7 @@ export const getBeachPhotos = (
   count: number = 5,
   islandName?: string
 ): string[] => {
-  const atticaAreaKey = getAtticaAreaKey(islandName);
-  if (atticaAreaKey) {
-    const areaBeachPhotos = ATTICA_BEACH_PHOTOS_BY_AREA[atticaAreaKey];
-    const areaPhotos = areaBeachPhotos ? findPhotos(areaBeachPhotos, beachNameGr, beachNameEn, count) : [];
-    if (areaPhotos.length) return areaPhotos;
-    if (areaBeachPhotos) return [];
-  }
-
-  const creteAreaKey = getCreteAreaKey(islandName);
-  if (creteAreaKey) {
-    const areaBeachPhotos = CRETE_BEACH_PHOTOS_BY_AREA[creteAreaKey];
-    const areaPhotos = areaBeachPhotos ? findPhotos(areaBeachPhotos, beachNameGr, beachNameEn, count) : [];
-    if (areaPhotos.length) return areaPhotos;
-    if (areaBeachPhotos) return [];
-  }
-
-  const macedoniaAreaKey = getMacedoniaAreaKey(islandName);
-  if (macedoniaAreaKey) {
-    const areaBeachPhotos = MACEDONIA_BEACH_PHOTOS_BY_AREA[macedoniaAreaKey];
-    const areaPhotos = areaBeachPhotos ? findPhotos(areaBeachPhotos, beachNameGr, beachNameEn, count) : [];
-    if (areaPhotos.length) return areaPhotos;
-    if (areaBeachPhotos) return [];
-  }
-
-  const thraceAreaKey = getThraceAreaKey(islandName);
-  if (thraceAreaKey) {
-    const areaBeachPhotos = THRACE_BEACH_PHOTOS_BY_AREA[thraceAreaKey];
-    const areaPhotos = areaBeachPhotos ? findPhotos(areaBeachPhotos, beachNameGr, beachNameEn, count) : [];
-    if (areaPhotos.length) return areaPhotos;
-    if (areaBeachPhotos) return [];
-  }
-
-  const northAegeanAreaKey = getNorthAegeanAreaKey(islandName);
-  if (northAegeanAreaKey) {
-    const areaBeachPhotos = NORTH_AEGEAN_BEACH_PHOTOS_BY_AREA[northAegeanAreaKey];
-    const areaPhotos = areaBeachPhotos ? findPhotos(areaBeachPhotos, beachNameGr, beachNameEn, count) : [];
-    if (areaPhotos.length) return areaPhotos;
-    if (areaBeachPhotos) return [];
-  }
-
-  const cycladesIslandKey = getCycladesIslandKey(islandName);
-  if (cycladesIslandKey) {
-    const islandBeachPhotos = CYCLADES_BEACH_PHOTOS_BY_ISLAND[cycladesIslandKey];
-    const beachPhotos = islandBeachPhotos ? findPhotos(islandBeachPhotos, beachNameGr, beachNameEn, count) : [];
-    if (beachPhotos.length) return beachPhotos;
-    return [];
-  }
-
-  // Ionian Islands: return island cover photo when no specific beach photo exists
-  const ionianIslandKey = getIonianIslandKey(islandName);
-  if (ionianIslandKey) {
-    const islandPhotos = IONIAN_ISLAND_PHOTOS[ionianIslandKey];
-    if (islandPhotos?.length) return rotatePhotos(islandPhotos, beachId, count);
-    return [];
-  }
-
-  const beachPhotos = findPhotos(BEACH_PHOTOS, beachNameGr, beachNameEn, count);
-  if (beachPhotos.length) return beachPhotos;
-
-  return [];
+  return getBeachPhotoLookup(beachNameGr, beachNameEn, beachId, count, islandName).photos;
 };
 
 type CommonsImageInfo = {

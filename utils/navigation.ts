@@ -1,6 +1,4 @@
 export const openNavigation = (beach: any) => {
-  alert("Opening navigation in Google Maps...");
-  
   const lat = beach.latitude || beach.coordinates?.lat;
   const lon = beach.longitude || beach.coordinates?.lon;
   

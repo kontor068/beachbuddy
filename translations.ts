@@ -6,7 +6,7 @@ import { WindDirection, Accessibility, LanguageCode, Translation } from './types
 
 // Define English translations separately to reuse them
 const enTranslation: Translation = {
-    headerTitlePart1: 'Beach Now Greece',
+    headerTitlePart1: 'Beach Finder Greece',
           headerTitlePart2: '',
           headerStudioName: '',
     headerSubtitle: "Find the perfect beach based on today's wind",
@@ -20,7 +20,7 @@ const enTranslation: Translation = {
       ? `With the current ${enTranslation.windDirections[windDirection].toLowerCase()} wind, these beaches are your best bet for calm waters.`
       : `With a forecast ${enTranslation.windDirections[windDirection].toLowerCase()} wind ${dayContext}, these beaches are your best bet for calm waters.`,
     noShelteredBeaches: 'No suitable beaches found for the current filters.',
-    noWeatherRecommendedBeaches: 'No recommended beaches were found based on today\'s weather and sea conditions.',
+    noWeatherRecommendedBeaches: 'Weather data is not available yet. Showing beaches without live weather ranking.',
     exposedTitle: 'Beaches to Reconsider',
     exposedDescription: (windDirection, dayContext, isToday) => isToday
       ? `These beaches are exposed to the ${enTranslation.windDirections[windDirection].toLowerCase()} wind and may have choppy waters.`
@@ -80,9 +80,21 @@ const enTranslation: Translation = {
     sortByTitle: 'Sort by',
     sortByRecommended: 'Recommended',
     sortByAll: 'All',
+    sortByProtected: 'Less exposed',
     sortByTopRated: 'Top Rated',
     sortByDistance: 'Distance (Near Me)',
     sortedByDistance: 'Sorted by Distance',
+    beachSearchFilters: {
+      searchLabel: 'Search beaches',
+      searchPlaceholder: 'Search by beach name...',
+      resultCount: (count: number) => `${count} ${count === 1 ? 'beach' : 'beaches'}`,
+      activeFiltersLabel: 'Active filters',
+      clearAll: 'Clear all',
+      clearSearch: 'Clear search',
+      removeFilter: (label: string) => `Remove ${label}`,
+      emptyTitle: 'No beaches match these filters',
+      emptyDescription: 'Try clearing search or filters to see more beaches.',
+    },
     gettingLocation: 'Getting location...',
     locationErrorPermission: 'Location access denied. Check your browser and site settings.',
     locationErrorUnavailable: 'Your location could not be determined at this time. Please try again.',
@@ -255,11 +267,13 @@ const enTranslation: Translation = {
       time: "Time",
       direction: "Direction",
       strength: "Strength",
+      showDetails: "Show details",
+      hideDetails: "Hide details",
     },
     sharing: {
               buttonLabel: 'Share',
-              title: 'Beach Now Greece',
-              text: (beachName: string) => `Found the perfect spot: ${beachName}! Sheltered from the wind and looking amazing. Check it out on Beach Now Greece.`,
+              title: 'Beach Finder Greece',
+              text: (beachName: string) => `Found the perfect spot: ${beachName}! Sheltered from the wind and looking amazing. Check it out on Beach Finder Greece.`,
             },
     savedItineraries: {
       title: 'Saved Itineraries',
@@ -271,7 +285,7 @@ const enTranslation: Translation = {
       deleteButton: 'Delete',
       shareButton: 'Share',
       viewPlan: 'View Plan',
-      sharingText: (planName: string) => `Check out this island itinerary I made: ${planName}. Created with Beach Now Greece!`,
+      sharingText: (planName: string) => `Check out this island itinerary I made: ${planName}. Created with Beach Finder Greece!`,
       editButton: 'Edit',
       saveChangesButton: 'Save Changes',
       cancelButton: 'Cancel',
@@ -368,6 +382,7 @@ const enTranslation: Translation = {
       shallowWater: 'Shallow Water',
       surfing: 'Surfing',
       parking: 'Parking',
+      easyAccess: 'Easy Access',
     },
     crowdLevels: {
       low: '🟢 Quiet',
@@ -389,7 +404,6 @@ const deTranslation: Translation = {
       ? `Bei aktuellem ${deTranslation.windDirections[windDirection].toLowerCase()}wind sind diese Strände die beste Wahl für ruhigeres Wasser.`
       : `Bei vorhergesagtem ${deTranslation.windDirections[windDirection].toLowerCase()}wind ${dayContext} sind diese Strände die beste Wahl für ruhigeres Wasser.`,
     noShelteredBeaches: "Für die aktuellen Filter wurden keine passenden Strände gefunden.",
-    noWeatherRecommendedBeaches: "Basierend auf dem heutigen Wetter und den Meeresbedingungen wurden keine empfohlenen Strände gefunden.",
     exposedTitle: "Strände zum Überdenken",
     exposedDescription: (windDirection, dayContext, isToday) => isToday
       ? `Diese Strände sind dem ${deTranslation.windDirections[windDirection].toLowerCase()}wind ausgesetzt und können unruhigeres Wasser haben.`
@@ -446,7 +460,6 @@ const deTranslation: Translation = {
     itineraryError: "Der Plan konnte gerade nicht erstellt werden. Bitte versuche es später erneut.",
     sortByTitle: "Sortieren nach",
     sortByRecommended: "Empfohlen",
-    sortByAll: "Alle",
     sortByTopRated: "Bestbewertet",
     sortByDistance: "Entfernung (in meiner Nähe)",
     sortedByDistance: "Nach Entfernung sortiert",
@@ -622,10 +635,12 @@ const deTranslation: Translation = {
       time: "Uhrzeit",
       direction: "Richtung",
       strength: "Stärke",
+      showDetails: "Details anzeigen",
+      hideDetails: "Details ausblenden",
     },
     sharing: {
           buttonLabel: "Teilen",
-          title: "Beach Now Greece",
+          title: "Beach Finder Greece",
           text: (beachName: string) => `Perfekten Strand gefunden: ${beachName}. Geschützt vor dem Wind und heute eine gute Wahl.`,
         },
     savedItineraries: {
@@ -638,7 +653,7 @@ const deTranslation: Translation = {
       deleteButton: "Löschen",
       shareButton: "Teilen",
       viewPlan: "Plan ansehen",
-      sharingText: (planName: string) => `Schau dir diesen Inselplan an: ${planName}. Erstellt mit Beach Now Greece!`,
+      sharingText: (planName: string) => `Schau dir diesen Inselplan an: ${planName}. Erstellt mit Beach Finder Greece!`,
       editButton: "Bearbeiten",
       saveChangesButton: "Änderungen speichern",
       cancelButton: "Abbrechen",
@@ -735,6 +750,7 @@ const deTranslation: Translation = {
       shallowWater: "Flaches Wasser",
       surfing: "Surfen",
       parking: "Parkplatz",
+      easyAccess: "Einfacher Zugang",
     },
     crowdLevels: {
       low: "Ruhig",
@@ -756,7 +772,6 @@ const itTranslation: Translation = {
       ? `Con il vento attuale da ${itTranslation.windDirections[windDirection].toLowerCase()}, queste spiagge sono la scelta migliore per acque più calme.`
       : `Con vento previsto da ${itTranslation.windDirections[windDirection].toLowerCase()} ${dayContext}, queste spiagge sono la scelta migliore per acque più calme.`,
     noShelteredBeaches: "Nessuna spiaggia adatta trovata con i filtri attuali.",
-    noWeatherRecommendedBeaches: "Non sono state trovate spiagge consigliate in base al meteo e alle condizioni del mare di oggi.",
     exposedTitle: "Spiagge da valutare con attenzione",
     exposedDescription: (windDirection, dayContext, isToday) => isToday
       ? `Queste spiagge sono esposte al vento da ${itTranslation.windDirections[windDirection].toLowerCase()} e potrebbero avere mare mosso.`
@@ -813,7 +828,6 @@ const itTranslation: Translation = {
     itineraryError: "Non siamo riusciti a creare un itinerario in questo momento. Riprova più tardi.",
     sortByTitle: "Ordina per",
     sortByRecommended: "Consigliate",
-    sortByAll: "Tutte",
     sortByTopRated: "Miglior voto",
     sortByDistance: "Distanza (vicino a me)",
     sortedByDistance: "Ordinate per distanza",
@@ -989,10 +1003,12 @@ const itTranslation: Translation = {
       time: "Ora",
       direction: "Direzione",
       strength: "Forza",
+      showDetails: "Mostra dettagli",
+      hideDetails: "Nascondi dettagli",
     },
     sharing: {
           buttonLabel: "Condividi",
-          title: "Beach Now Greece",
+          title: "Beach Finder Greece",
           text: (beachName: string) => `Trovata la spiaggia perfetta: ${beachName}. Riparata dal vento e ottima per oggi.`,
         },
     savedItineraries: {
@@ -1005,7 +1021,7 @@ const itTranslation: Translation = {
       deleteButton: "Elimina",
       shareButton: "Condividi",
       viewPlan: "Vedi piano",
-      sharingText: (planName: string) => `Guarda questo itinerario: ${planName}. Creato con Beach Now Greece.`,
+      sharingText: (planName: string) => `Guarda questo itinerario: ${planName}. Creato con Beach Finder Greece.`,
       editButton: "Modifica",
       saveChangesButton: "Salva modifiche",
       cancelButton: "Annulla",
@@ -1102,6 +1118,7 @@ const itTranslation: Translation = {
       shallowWater: "Acqua bassa",
       surfing: "Surf",
       parking: "Parcheggio",
+      easyAccess: "Accesso facile",
     },
     crowdLevels: {
       low: "Tranquilla",
@@ -1113,7 +1130,7 @@ const itTranslation: Translation = {
 export const translations: Record<LanguageCode, Translation> = {
   en: enTranslation,
   gr: {
-    headerTitlePart1: 'Beach Now Greece',
+    headerTitlePart1: 'Beach Finder Greece',
           headerTitlePart2: '',
           headerStudioName: '',
     headerSubtitle: 'Βρείτε την ιδανική παραλία με βάση τον σημερινό άνεμο',
@@ -1127,7 +1144,7 @@ export const translations: Record<LanguageCode, Translation> = {
       ? `Με τον τρέχοντα ${translations.gr.windDirectionsAccusative[windDirection]} άνεμο, αυτές οι παραλίες είναι η καλύτερη επιλογή για ήρεμα νερά.`
       : `Με προβλεπόμενο ${translations.gr.windDirectionsAccusative[windDirection]} άνεμο ${dayContext}, αυτές οι παραλίες είναι η καλύτερη επιλογή για ήρεμα νερά.`,
     noShelteredBeaches: 'Δεν βρέθηκαν κατάλληλες παραλίες για τα επιλεγμένα φίλτρα.',
-    noWeatherRecommendedBeaches: 'Δεν βρέθηκαν προτεινόμενες παραλίες βάσει του σημερινού καιρού και των θαλάσσιων συνθηκών.',
+    noWeatherRecommendedBeaches: 'Δεν υπάρχουν ακόμη διαθέσιμα δεδομένα καιρού. Εμφανίζονται παραλίες χωρίς ζωντανή κατάταξη καιρού.',
     exposedTitle: 'Εκτεθειμένες',
     exposedDescription: (windDirection, dayContext, isToday) => isToday
       ? `Αυτές οι παραλίες είναι εκτεθειμένες στον ${translations.gr.windDirectionsAccusative[windDirection]} άνεμο και ενδέχεται να έχουν κυματισμό.`
@@ -1187,9 +1204,21 @@ export const translations: Record<LanguageCode, Translation> = {
     sortByTitle: 'Ταξινόμηση κατά',
     sortByRecommended: 'Προτεινόμενη',
     sortByAll: 'Όλες',
+    sortByProtected: 'Λιγότερο εκτεθειμένες',
     sortByTopRated: 'Κορυφαία Βαθμολογία',
     sortByDistance: 'Απόσταση (Κοντά μου)',
     sortedByDistance: 'Ταξινόμηση κατά Απόσταση',
+    beachSearchFilters: {
+      searchLabel: 'Αναζήτηση παραλιών',
+      searchPlaceholder: 'Αναζήτηση με όνομα παραλίας...',
+      resultCount: (count: number) => `${count} ${count === 1 ? 'παραλία' : 'παραλίες'}`,
+      activeFiltersLabel: 'Ενεργά φίλτρα',
+      clearAll: 'Καθαρισμός όλων',
+      clearSearch: 'Καθαρισμός αναζήτησης',
+      removeFilter: (label: string) => `Αφαίρεση ${label}`,
+      emptyTitle: 'Δεν ταιριάζουν παραλίες με αυτά τα φίλτρα',
+      emptyDescription: 'Δοκιμάστε να καθαρίσετε την αναζήτηση ή τα φίλτρα για να δείτε περισσότερες παραλίες.',
+    },
     gettingLocation: 'Λήψη τοποθεσίας...',
     locationErrorPermission: 'Η πρόσβαση στην τοποθεσία απορρίφθηκε. Ελέγξτε τις ρυθμίσεις του προγράμματος περιήγησης και του ιστότοπου.',
     locationErrorUnavailable: 'Δεν ήταν δυνατός ο προσδιορισμός της τοποθεσίας σας αυτή τη στιγμή. Παρακαλώ δοκιμάστε ξανά.',
@@ -1362,11 +1391,13 @@ export const translations: Record<LanguageCode, Translation> = {
       time: "Ώρα",
       direction: "Κατεύθυνση",
       strength: "Ένταση",
+      showDetails: "Εμφάνιση λεπτομερειών",
+      hideDetails: "Απόκρυψη λεπτομερειών",
     },
     sharing: {
           buttonLabel: 'Μοιραστείτε',
-          title: 'Beach Now Greece',
-          text: (beachName: string) => `Βρήκα το τέλειο μέρος: ${beachName}! Προστατευμένο από τον άνεμο και φαίνεται καταπληκτικό. Δείτε το στο Beach Now Greece.`,
+          title: 'Beach Finder Greece',
+          text: (beachName: string) => `Βρήκα το τέλειο μέρος: ${beachName}! Προστατευμένο από τον άνεμο και φαίνεται καταπληκτικό. Δείτε το στο Beach Finder Greece.`,
         },
     savedItineraries: {
       title: 'Αποθηκευμένα Προγράμματα',
@@ -1378,7 +1409,7 @@ export const translations: Record<LanguageCode, Translation> = {
       deleteButton: 'Διαγραφή',
       shareButton: 'Κοινοποίηση',
       viewPlan: 'Προβολή',
-      sharingText: (planName: string) => `Δες αυτό το πρόγραμμα που έφτιαξα: ${planName}. Δημιουργήθηκε με το Beach Now Greece!`,
+      sharingText: (planName: string) => `Δες αυτό το πρόγραμμα που έφτιαξα: ${planName}. Δημιουργήθηκε με το Beach Finder Greece!`,
       editButton: 'Επεξεργασία',
       saveChangesButton: 'Αποθήκευση',
       cancelButton: 'Ακύρωση',
@@ -1475,6 +1506,7 @@ export const translations: Record<LanguageCode, Translation> = {
       shallowWater: 'Ρηχά Νερά',
       surfing: 'Surfing',
       parking: 'Πάρκινγκ',
+      easyAccess: 'Εύκολη πρόσβαση',
     },
     crowdLevels: {
       low: '🟢 Ήσυχα',
@@ -1483,7 +1515,7 @@ export const translations: Record<LanguageCode, Translation> = {
     },
   },
   fr: {
-    headerTitlePart1: 'Beach Now Greece',
+    headerTitlePart1: 'Beach Finder Greece',
           headerTitlePart2: '',
           headerStudioName: '',
     headerSubtitle: 'Trouvez la plage parfaite en fonction du vent d\'aujourd\'hui',
@@ -1500,7 +1532,7 @@ export const translations: Record<LanguageCode, Translation> = {
       ? `Avec le vent actuel du ${translations.fr.windDirections[windDirection].toLowerCase()}, ces plages sont votre meilleur choix pour des eaux calmes.`
       : `Avec un vent prévu du ${translations.fr.windDirections[windDirection].toLowerCase()} ${dayContext}, ces plages sont votre meilleur choix pour des eaux calmes.`,
     noShelteredBeaches: 'Aucune plage appropriée trouvée pour les filtres sélectionnés.',
-    noWeatherRecommendedBeaches: 'Aucune plage recommandée n\'a été trouvée selon la météo et les conditions de mer du jour.',
+    noWeatherRecommendedBeaches: 'Les données météo ne sont pas encore disponibles. Affichage des plages sans classement météo en direct.',
     exposedTitle: 'Plages à Reconsidérer',
     exposedDescription: (windDirection, dayContext, isToday) => isToday
       ? `Ces plages sont exposées au vent du ${translations.fr.windDirections[windDirection].toLowerCase()} et peuvent avoir des eaux agitées.`
@@ -1560,9 +1592,21 @@ export const translations: Record<LanguageCode, Translation> = {
     sortByTitle: 'Trier par',
     sortByRecommended: 'Recommandé',
     sortByAll: 'Toutes',
+    sortByProtected: 'Moins exposées',
     sortByTopRated: 'Mieux Noté',
     sortByDistance: 'Distance (Près de Moi)',
     sortedByDistance: 'Trié par Distance',
+    beachSearchFilters: {
+      searchLabel: 'Rechercher des plages',
+      searchPlaceholder: 'Rechercher par nom de plage...',
+      resultCount: (count: number) => `${count} ${count === 1 ? 'plage' : 'plages'}`,
+      activeFiltersLabel: 'Filtres actifs',
+      clearAll: 'Tout effacer',
+      clearSearch: 'Effacer la recherche',
+      removeFilter: (label: string) => `Supprimer ${label}`,
+      emptyTitle: 'Aucune plage ne correspond à ces filtres',
+      emptyDescription: 'Essayez de vider la recherche ou les filtres pour voir plus de plages.',
+    },
     gettingLocation: 'Obtention de la localisation...',
     locationErrorPermission: 'Accès à la localisation refusé. Vérifiez vos paramètres de navigateur et de site.',
     locationErrorUnavailable: 'Votre localisation n\'a pas pu être déterminée pour le moment. Veuillez réessayer.',
@@ -1714,11 +1758,13 @@ export const translations: Record<LanguageCode, Translation> = {
       time: "Heure",
       direction: "Direction",
       strength: "Force",
+      showDetails: "Afficher les détails",
+      hideDetails: "Masquer les détails",
     },
     sharing: {
       buttonLabel: 'Partager',
-      title: 'Beach Now Greece',
-      text: (beachName: string) => `J\'ai trouvé l\'endroit parfait: ${beachName}! Abritée du vent et magnifique. Consultez-le sur Beach Now Greece.`,
+      title: 'Beach Finder',
+      text: (beachName: string) => `J\'ai trouvé l\'endroit parfait: ${beachName}! Abritée du vent et magnifique. Consultez-le sur Beach Finder.`,
     },
     savedItineraries: {
       title: 'Itinéraires Sauvegardés',
@@ -1730,7 +1776,7 @@ export const translations: Record<LanguageCode, Translation> = {
       deleteButton: 'Supprimer',
       shareButton: 'Partager',
       viewPlan: 'Afficher le Plan',
-      sharingText: (planName: string) => `Consultez cet itinéraire insulaire que j\'ai créé: ${planName}. Créé avec Beach Now Greece!`,
+      sharingText: (planName: string) => `Consultez cet itinéraire insulaire que j\'ai créé: ${planName}. Créé avec Beach Finder Greece!`,
       editButton: 'Modifier',
       saveChangesButton: 'Enregistrer les Modifications',
       cancelButton: 'Annuler',
@@ -1827,6 +1873,7 @@ export const translations: Record<LanguageCode, Translation> = {
       shallowWater: 'Eaux Peu Profondes',
       surfing: 'Surf',
       parking: 'Parking',
+      easyAccess: 'Accès facile',
     },
     crowdLevels: {
       low: '🟢 Tranquille',

@@ -1,9 +1,14 @@
 /**
  * Fetches ONE representative cover photo from Pexels for each Ionian island.
- * Run with: node scripts/fetch_pexels_ionian.mjs
+ * Run with: PEXELS_API_KEY=... node scripts/fetch_pexels_ionian.mjs
  */
 
-const PEXELS_API_KEY = 'OQyw7Bq74dHcJsHNm0UPs5HyqomjOVdBRHzjvhxKs194NcjqSQ8X0IhW';
+const PEXELS_API_KEY = process.env.PEXELS_API_KEY;
+
+if (!PEXELS_API_KEY) {
+  console.error('Missing PEXELS_API_KEY environment variable.');
+  process.exit(1);
+}
 
 const IONIAN_ISLANDS = [
   { key: 'corfu',      en: 'Corfu',      gr: 'Κέρκυρα',    query: 'Corfu beach Greece' },

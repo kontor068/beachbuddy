@@ -18,7 +18,8 @@ const PREFERENCE_KEYWORDS: Record<string, FilterKey> = {
   'pebbly': 'pebbles',
   'pebble': 'pebbles',
   'rocky': 'rocky',
-  'bar': 'taverna', // Approximation
+  'bar': 'beachBar',
+  'beachbar': 'beachBar',
   'taverna': 'taverna',
   'food': 'taverna',
   'restaurant': 'taverna',

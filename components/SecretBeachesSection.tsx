@@ -80,12 +80,23 @@ export const SecretBeachesSection: React.FC<SecretBeachesSectionProps> = ({
             <div className="pt-4 flex items-center justify-between border-t border-slate-50 dark:border-slate-800">
               <div className="flex items-center gap-4">
                 <div className="flex items-center gap-2">
-                  <div className={`w-2 h-2 rounded-full ${item.isExposed ? 'bg-amber-400' : 'bg-emerald-500'}`} />
-                  <span className="text-[10px] font-bold text-slate-400">
-                    {item.isExposed
-                      ? (language === 'gr' ? 'Εκτεθειμένη' : 'Exposed')
-                      : (language === 'gr' ? 'Προστατευμένη' : 'Sheltered')}
-                  </span>
+                  {(() => {
+                    const canClaimWindProtection = (item as { canClaimWindProtection?: boolean }).canClaimWindProtection === true;
+                    const label = item.isExposed
+                      ? (language === 'gr' ? 'Πιο ανοιχτή στον άνεμο' : 'More open to wind')
+                      : canClaimWindProtection
+                        ? (language === 'gr' ? 'Πιο προστατευμένη' : 'Likely sheltered')
+                        : (language === 'gr' ? 'Έλεγχος τοπικής έκθεσης' : 'Check local exposure');
+
+                    return (
+                      <>
+                        <div className={`w-2 h-2 rounded-full ${canClaimWindProtection ? 'bg-emerald-500' : 'bg-amber-400'}`} />
+                        <span className="text-[10px] font-bold text-slate-400">
+                          {label}
+                        </span>
+                      </>
+                    );
+                  })()}
                 </div>
                 
                 {item.crowdLevel && (

@@ -13,6 +13,31 @@ interface AiBeachAdvisorProps {
   language: LanguageCode;
 }
 
+const greekNeuterPluralPlaces = new Set(['Κύθηρα', 'Αντικύθηρα', 'Κουφονήσια', 'Μέθανα']);
+
+const greekFinalNuInitials = /^[ΑΕΗΙΟΩΥΆΈΉΊΌΏΎΚΠΤΞΨ]/;
+
+const toGreekAccusativePlaceName = (name: string) => {
+  if (greekNeuterPluralPlaces.has(name)) return name;
+  if (name.endsWith('ος')) return `${name.slice(0, -2)}ο`;
+  if (name.endsWith('ης') || name.endsWith('ας')) return name.slice(0, -1);
+  return name;
+};
+
+const getGreekPlacePhrase = (island?: Island | null) => {
+  if (!island) return 'στην περιοχή μου';
+
+  const name = island.name.gr || island.name.en;
+  if (greekNeuterPluralPlaces.has(name)) return `στα ${name}`;
+  if (name.endsWith('ες')) return `στις ${name}`;
+  if (name.endsWith('ι') || name.endsWith('ο')) return `στο ${name}`;
+
+  const accusativeName = toGreekAccusativePlaceName(name);
+  const preposition = greekFinalNuInitials.test(accusativeName) ? 'στην' : 'στη';
+
+  return `${preposition} ${accusativeName}`;
+};
+
 export const AiBeachAdvisor: React.FC<AiBeachAdvisorProps> = ({
   allIslands,
   selectedIsland,
@@ -43,11 +68,12 @@ export const AiBeachAdvisor: React.FC<AiBeachAdvisorProps> = ({
   };
 
   const placeName = selectedIsland?.name[language] || selectedIsland?.name.en || (language === 'gr' ? 'την περιοχή μου' : 'my current area');
+  const greekPlacePhrase = getGreekPlacePhrase(selectedIsland);
   const suggestions = language === 'gr' ? [
-    `Ποια παραλία είναι ήρεμη σήμερα στην ${placeName};`,
-    `Πού να πάω με παιδιά στην ${placeName};`,
-    `Ήσυχες παραλίες στην ${placeName}`,
-    `Καλύτερη αμμώδης παραλία στην ${placeName}`
+    `Ποια παραλία είναι ήρεμη σήμερα ${greekPlacePhrase};`,
+    `Πού να πάω με παιδιά ${greekPlacePhrase};`,
+    `Ήσυχες παραλίες ${greekPlacePhrase}`,
+    `Καλύτερη αμμώδης παραλία ${greekPlacePhrase}`
   ] : [
     `Which beach is calm today in ${placeName}?`,
     `Where should I go with kids in ${placeName}?`,
@@ -55,7 +81,7 @@ export const AiBeachAdvisor: React.FC<AiBeachAdvisorProps> = ({
     `Best sandy beach in ${placeName}`
   ];
   const placeholder = language === 'gr'
-    ? `π.χ., Καλύτερη παραλία στην ${placeName} σήμερα;`
+    ? `π.χ., Καλύτερη παραλία ${greekPlacePhrase} σήμερα;`
     : `e.g., Best beach in ${placeName} today?`;
 
   return (
@@ -63,7 +89,7 @@ export const AiBeachAdvisor: React.FC<AiBeachAdvisorProps> = ({
       <div className="bg-gradient-to-br from-cyan-500/90 via-sky-500/90 to-blue-600/90 p-5 text-white sm:p-6">
         <div className="flex items-center gap-3 mb-2">
           <h2 className="font-heading text-lg font-bold sm:text-xl">
-            {language === 'gr' ? 'Ρώτα τον Beach Buddy' : 'Beach Buddy Advisor'}
+            {language === 'gr' ? 'Ρώτα με οτιδήποτε για την περιοχή' : 'Ask me anything about the area'}
           </h2>
         </div>
         <p className="max-w-xl text-sm leading-relaxed text-white/90">

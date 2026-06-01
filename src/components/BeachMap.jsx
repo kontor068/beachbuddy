@@ -25,6 +25,7 @@ const BeachMap = () => {
       <MapContainer 
         center={centerPosition} 
         zoom={7} 
+        scrollWheelZoom={false}
         style={{ height: '100%', width: '100%' }}
       >
         <TileLayer

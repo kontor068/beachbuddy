@@ -1,6 +1,7 @@
 
 import React from 'react';
 import { Beach, LanguageCode } from '../types';
+import { displayBeachName } from '../utils/localization';
 
 interface AudioGuideToastProps {
   isVisible: boolean;
@@ -15,6 +16,7 @@ interface AudioGuideToastProps {
 
 const AudioGuideToast: React.FC<AudioGuideToastProps> = ({ isVisible, beach, story, isLoading, onPlay, onStop, language, t }) => {
   const isPlaying = !!story;
+  const beachDisplayName = beach ? displayBeachName(beach.name, language) : '';
 
   return (
     <div
@@ -34,7 +36,7 @@ const AudioGuideToast: React.FC<AudioGuideToastProps> = ({ isVisible, beach, sto
             </div>
           </div>
           <div className="flex-1">
-            <h3 className="font-bold text-base">{t.audioGuide.title(beach.name[language])}</h3>
+            <h3 className="font-bold text-base">{t.audioGuide.title(beachDisplayName)}</h3>
             <div className="flex items-center gap-3 mt-2">
               {isPlaying ? (
                 <button

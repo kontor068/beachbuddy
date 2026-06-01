@@ -9,7 +9,7 @@ interface ErrorDisplayProps {
 
 const ErrorDisplay: React.FC<ErrorDisplayProps> = ({ message, onRetry, t }) => {
   return (
-    <div className="bg-red-50 p-6 m-4 md:m-6 rounded-xl shadow-lg border border-red-200" role="alert">
+    <div className="bg-red-50 p-6 m-4 md:m-6 rounded-xl shadow-lg border border-red-200" role="alert" aria-live="assertive">
       <div className="flex">
         <div className="flex-shrink-0">
           <svg className="h-6 w-6 text-red-400" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
@@ -23,8 +23,9 @@ const ErrorDisplay: React.FC<ErrorDisplayProps> = ({ message, onRetry, t }) => {
           </div>
           <div className="mt-4 md:mt-0 md:ml-6">
             <button
+              type="button"
               onClick={onRetry}
-              className="w-full md:w-auto px-4 py-2 bg-red-600 text-white font-semibold rounded-lg hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2 focus:ring-offset-red-50 transition-colors"
+              className="min-h-11 w-full md:w-auto px-4 py-2 bg-red-600 text-white font-semibold rounded-lg hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2 focus:ring-offset-red-50 transition-colors"
             >
               {t.tryAgain}
             </button>

@@ -1,4 +1,5 @@
 import { Beach, LanguageCode } from '../types';
+import { getGreekBeachNameDisplay } from './greekBeachNames';
 
 const greeklishPairs: Array<[string, string]> = [
   ['αι', 'ai'], ['ει', 'ei'], ['οι', 'oi'], ['ου', 'ou'], ['αυ', 'av'], ['ευ', 'ev'],
@@ -24,7 +25,7 @@ export const toGreeklish = (value: string | undefined): string => {
 };
 
 export const displayBeachName = (name: Beach['name'], language: LanguageCode): string => {
-  if (language === 'gr') return name.gr || name.en;
+  if (language === 'gr') return getGreekBeachNameDisplay(name.gr, name.en);
   return toGreeklish(name.gr || name.en) || name.en;
 };
 
@@ -48,12 +49,13 @@ const waterDepthLabels: Record<string, Record<LanguageCode, string>> = {
 };
 
 const accessLabels: Record<string, Record<LanguageCode, string>> = {
-  asphalt_road: { en: 'Asphalt access', gr: 'Πρόσβαση με άσφαλτο', de: 'Zugang uber Asphalt', it: 'Accesso asfaltato', fr: 'Acces par route goudronnee' },
-  passable_dirt_road: { en: 'Dirt road access', gr: 'Πρόσβαση από χωματόδρομο', de: 'Zugang uber Feldweg', it: 'Accesso da sterrato', fr: 'Acces par piste' },
-  '4x4_only': { en: 'Difficult road', gr: 'Δύσβατος δρόμος', de: 'Schwierige Zufahrt', it: 'Strada difficoltosa', fr: 'Route difficile' },
+  asphalt_road: { en: 'Easy road access', gr: 'Εύκολη πρόσβαση', de: 'Zugang uber Asphalt', it: 'Accesso asfaltato', fr: 'Acces par route goudronnee' },
+  passable_dirt_road: { en: 'Dirt road', gr: 'Χωματόδρομος', de: 'Zugang uber Feldweg', it: 'Accesso da sterrato', fr: 'Acces par piste' },
+  '4x4_only': { en: 'More challenging access', gr: 'Πιο δύσκολη πρόσβαση', de: 'Schwierige Zufahrt', it: 'Strada difficoltosa', fr: 'Route difficile' },
   hiking_path_easy: { en: 'Easy path', gr: 'Εύκολο μονοπάτι', de: 'Einfacher Weg', it: 'Sentiero facile', fr: 'Sentier facile' },
-  hiking_path_difficult: { en: 'Difficult path', gr: 'Δύσκολο μονοπάτι', de: 'Schwieriger Weg', it: 'Sentiero difficile', fr: 'Sentier difficile' },
+  hiking_path_difficult: { en: 'More challenging path', gr: 'Πιο δύσκολο μονοπάτι', de: 'Schwieriger Weg', it: 'Sentiero difficile', fr: 'Sentier difficile' },
   boat_only: { en: 'Boat access only', gr: 'Μόνο με σκάφος', de: 'Nur per Boot', it: 'Solo in barca', fr: 'Acces en bateau uniquement' },
+  unknown: { en: 'Access not verified', gr: '\u039c\u03b7 \u03b5\u03c0\u03b9\u03b2\u03b5\u03b2\u03b1\u03b9\u03c9\u03bc\u03ad\u03bd\u03b7 \u03c0\u03c1\u03cc\u03c3\u03b2\u03b1\u03c3\u03b7', de: 'Zugang nicht verifiziert', it: 'Accesso non verificato', fr: 'Acces non verifie' },
 };
 
 export const localizedTerrainLabel = (type: string, language: LanguageCode) =>
@@ -81,8 +83,8 @@ const capitalizeFirstLetter = (value: string): string => {
 
 export const localizedOrganizationLabel = (organized: boolean, language: LanguageCode) => {
   const labels = organized
-    ? { en: 'Organized', gr: 'Οργανωμένη', de: 'Organisiert', it: 'Organizzata', fr: 'Organisee' }
-    : { en: 'Unorganized', gr: 'Μη οργανωμένη', de: 'Nicht organisiert', it: 'Non organizzata', fr: 'Non amenagee' };
+    ? { en: 'Facilities available', gr: 'Παροχές διαθέσιμες', de: 'Organisiert', it: 'Organizzata', fr: 'Organisee' }
+    : { en: 'No beach facilities', gr: 'Χωρίς οργανωμένες παροχές', de: 'Nicht organisiert', it: 'Non organizzata', fr: 'Non amenagee' };
   return labels[language];
 };
 
@@ -95,22 +97,43 @@ export const localizedShadeLabel = (language: LanguageCode) => ({
 }[language]);
 
 export const localizedAmenityText = (value: string, language: LanguageCode): string => {
-  if (language === 'gr') return capitalizeFirstLetter(value);
   const normalized = value.toLowerCase();
+  if (language === 'gr') {
+    if (/καμία|καμια|χωρίς|χωρις/.test(normalized)) return 'Χωρίς οργανωμένες παροχές';
+    if (/beach\s*bar|beachbar|beach club|μπαρ παραλίας|μπαρ παραλιας/.test(normalized)) return 'Beach bar';
+    if (/καντίνα|καντινα|snack\s*bar|\bbar\b/.test(normalized)) return 'Καντίνα κοντά';
+    if (/καφέ|καφε|cafe|coffee/.test(normalized)) return 'Καφέ κοντά';
+    if (/ταβέρνα|ταβερνα|ταβέρνες|ταβερνες/.test(normalized)) return 'Ταβέρνες κοντά';
+    if (/restaurant|εστιατόριο|εστιατοριο/.test(normalized)) return 'Ταβέρνες κοντά';
+    if (/food|snack/.test(normalized)) return 'Φαγητό κοντά';
+    return capitalizeFirstLetter(value);
+  }
   if (/parking|παρκ|στάθμευση|σταθμευση/.test(normalized)) {
     return { en: 'Parking nearby', de: 'Parken in der Nahe', it: 'Parcheggio vicino', fr: 'Parking a proximite' }[language];
   }
-  if (/beach bar|καντίνα|καντινα|καφέ|καφε|bar/.test(normalized)) {
+  if (/beach\s*bar|beachbar|beach club|μπαρ παραλίας|μπαρ παραλιας/.test(normalized)) {
     return { en: 'Beach bar nearby', de: 'Beachbar in der Nahe', it: 'Beach bar vicino', fr: 'Bar de plage a proximite' }[language];
+  }
+  if (/καντίνα|καντινα|snack\s*bar|\bbar\b/.test(normalized)) {
+    return { en: 'Snack bar nearby', de: 'Snack-Bar in der Nahe', it: 'Snack bar vicino', fr: 'Snack-bar a proximite' }[language];
+  }
+  if (/καφέ|καφε|cafe|coffee/.test(normalized)) {
+    return { en: 'Cafe nearby', de: 'Cafe in der Nahe', it: 'Cafe vicino', fr: 'Cafe a proximite' }[language];
   }
   if (/ξαπλώστρες|ξαπλωστρες|ομπρέλες|ομπρελες|sunbeds/.test(normalized)) {
     return { en: 'Sunbeds seasonally', de: 'Sonnenliegen saisonal', it: 'Lettini stagionali', fr: 'Transats en saison' }[language];
   }
-  if (/ταβέρνα|ταβερνα|restaurant|εστιατόριο|εστιατοριο/.test(normalized)) {
+  if (/ταβέρνα|ταβερνα/.test(normalized)) {
+    return { en: 'Tavernas nearby', de: 'Tavernen in der Nahe', it: 'Taverne vicine', fr: 'Tavernes a proximite' }[language];
+  }
+  if (/restaurant|εστιατόριο|εστιατοριο/.test(normalized)) {
+    return { en: 'Tavernas nearby', de: 'Tavernen in der Nahe', it: 'Taverne vicine', fr: 'Tavernes a proximite' }[language];
+  }
+  if (/food|snack/.test(normalized)) {
     return { en: 'Food nearby', de: 'Essen in der Nahe', it: 'Cibo vicino', fr: 'Restauration a proximite' }[language];
   }
   if (/καμία|καμια|χωρίς|χωρις/.test(normalized)) {
-    return { en: 'No organized services', de: 'Keine organisierten Angebote', it: 'Nessun servizio organizzato', fr: 'Pas de services organises' }[language];
+    return { en: 'No beach facilities', de: 'Keine organisierten Angebote', it: 'Nessun servizio organizzato', fr: 'Pas de services organises' }[language];
   }
   return capitalizeFirstLetter(toGreeklish(value) || value);
 };

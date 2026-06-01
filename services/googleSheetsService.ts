@@ -71,6 +71,7 @@ export const fetchIslandsDirectlyFromSheets = async (): Promise<Island[]> => {
 
             const beachId = 10000 + index;
             const isDeep = getDeterministicValue(beachId, 'depth') > 0.5;
+            const hasBeachBar = getDeterministicValue(beachId, 'beachBar') > 0.5;
 
             islandsMap[islandId].beaches.push({
                 id: beachId,
@@ -84,7 +85,7 @@ export const fetchIslandsDirectlyFromSheets = async (): Promise<Island[]> => {
                     organized: getDeterministicValue(beachId, 'organized') > 0.5, 
                     naturalShade: getDeterministicValue(beachId, 'shade') > 0.5, 
                     taverna: getDeterministicValue(beachId, 'taverna') > 0.5,
-                    beachBar: getDeterministicValue(beachId, 'beachBar') > 0.5,
+                    beachBar: hasBeachBar,
                     sunbeds: getDeterministicValue(beachId, 'sunbeds') > 0.5,
                     restaurant: getDeterministicValue(beachId, 'restaurant') > 0.5,
                     parking: getDeterministicValue(beachId, 'parking') > 0.5
@@ -96,7 +97,7 @@ export const fetchIslandsDirectlyFromSheets = async (): Promise<Island[]> => {
                     surfing: getDeterministicValue(beachId, 'surfing') > 0.8
                 },
                 environment: {
-                    quiet: getDeterministicValue(beachId, 'quiet') > 0.5,
+                    quiet: !hasBeachBar && getDeterministicValue(beachId, 'quiet') > 0.5,
                     remote: getDeterministicValue(beachId, 'remote') > 0.7,
                     familyFriendly: getDeterministicValue(beachId, 'family') > 0.4
                 },

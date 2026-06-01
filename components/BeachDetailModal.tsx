@@ -5,6 +5,7 @@ import { Translation } from '../types';
 import { StarRating } from './BeachCard';
 import { generateBeachDayPlan } from '../services/beachPlannerService';
 import { BeachDayPlanner } from './BeachDayPlanner';
+import { displayBeachName } from '../utils/localization';
 
 interface BeachDetailModalProps {
   beach: Beach | null;
@@ -326,29 +327,39 @@ const getStaticDetails = (beach: Beach, language: LanguageCode, windInfo: string
         if (!beach.amenities.organized) pack.push("Ομπρέλα", "Σνακ/Φαγητό");
         if (beach.amenities.organized) pack.push("Πετσέτα θαλάσσης");
         if (beach.beachType.includes('pebbles') || beach.beachType.includes('rocky')) pack.push("Παπούτσια θάλασσας");
-        if (beach.characteristics.deepWaters) pack.push("Μάσκα & Αναπνευστήρα");
+        if (beach.activities?.snorkeling) pack.push("Μάσκα & Αναπνευστήρα");
         if (beach.accessNotes?.gr?.includes('boat')) pack.push("Εισιτήριο για καραβάκι");
     } else {
         pack.push("Sunscreen", "Water");
         if (!beach.amenities.organized) pack.push("Umbrella", "Snacks");
         if (beach.amenities.organized) pack.push("Beach Towel");
         if (beach.beachType.includes('pebbles') || beach.beachType.includes('rocky')) pack.push("Water shoes");
-        if (beach.characteristics.deepWaters) pack.push("Snorkeling gear");
+        if (beach.activities?.snorkeling) pack.push("Snorkeling gear");
         if (beach.accessNotes?.en?.includes('boat')) pack.push("Boat ticket money");
     }
 
     // --- Tip Logic (Enhanced Generic) ---
     // Generate a more "characteristic" tip based on attributes
-    const surface = beach.beachType === 'sandy' ? (language === 'gr' ? 'αμμουδερή' : 'sandy') : 
-                    beach.beachType === 'sandy-pebbles' ? (language === 'gr' ? 'με άμμο και βότσαλο' : 'sand & pebbles') :
-                    (language === 'gr' ? 'με βότσαλο' : 'pebbles');
-    const water = beach.characteristics.shallowWaters ? (language === 'gr' ? 'ρηχά νερά' : 'shallow waters') : (language === 'gr' ? 'βαθιά νερά' : 'deep waters');
+    const surface =
+        beach.beachType === 'sandy'
+            ? (language === 'gr' ? 'αμμουδερή' : 'sandy')
+            : beach.beachType === 'sandy-pebbles'
+                ? (language === 'gr' ? 'με άμμο και βότσαλο' : 'sand & pebbles')
+                : beach.beachType === 'rocky'
+                    ? (language === 'gr' ? 'βραχώδη' : 'rocky')
+                    : (language === 'gr' ? 'με βότσαλο' : 'pebbles');
+    const water =
+        beach.waterDepth === 'shallow'
+            ? (language === 'gr' ? 'ρηχά νερά' : 'shallow waters')
+            : beach.waterDepth === 'medium'
+                ? (language === 'gr' ? 'μεσαίο βάθος' : 'moderate depth')
+                : (language === 'gr' ? 'βαθιά νερά' : 'deep waters');
     
     if (language === 'gr') {
         if (!beach.amenities.organized && beach.amenities.naturalShade) {
-            tip = `Καθώς είναι ανοργάνωτη αλλά έχει δέντρα, φροντίστε να φτάσετε νωρίς για να προλάβετε φυσική σκιά.`;
+            tip = `Είναι φυσική παραλία χωρίς οργανωμένες παροχές, αλλά έχει δέντρα. Πήγαινε λίγο νωρίτερα για να βρεις φυσική σκιά.`;
         } else if (!beach.amenities.organized) {
-            tip = `Είναι ${surface} παραλία και εντελώς ανοργάνωτη. Απαραίτητο να έχετε μαζί σας ομπρέλα και νερό.`;
+            tip = `Είναι ${surface} φυσική παραλία χωρίς οργανωμένες παροχές. Πάρε μαζί σου ομπρέλα και αρκετό νερό.`;
         } else if (beach.amenities.taverna) {
             tip = `Μετά το μπάνιο στα ${water}, η ταβέρνα της περιοχής είναι ιδανική για φαγητό.`;
         } else {
@@ -356,9 +367,9 @@ const getStaticDetails = (beach: Beach, language: LanguageCode, windInfo: string
         }
     } else {
         if (!beach.amenities.organized && beach.amenities.naturalShade) {
-            tip = `Since it's unorganized but has trees, make sure to arrive early to grab a spot with natural shade.`;
+            tip = `This is a natural beach with no beach facilities, but there are trees. Arrive a little earlier to find natural shade.`;
         } else if (!beach.amenities.organized) {
-            tip = `It's a ${surface} beach and completely unorganized. Essential to bring an umbrella and plenty of water.`;
+            tip = `It's a natural ${surface} beach with no beach facilities. Bring an umbrella and plenty of water.`;
         } else if (beach.amenities.taverna) {
             tip = `After swimming in the ${water}, the local tavern is perfect for a meal.`;
         } else {
@@ -422,12 +433,14 @@ export const BeachDetailModal: React.FC<BeachDetailModalProps> = ({ beach, isOpe
 
   if (!isOpen || !beach || !details) return null;
 
+  const beachDisplayName = displayBeachName(beach.name, language);
+
   const handleShare = async () => {
     const shareUrl = window.location.origin + window.location.pathname;
     if (navigator.share && beach) {
       try {
         await navigator.share({
-          text: t.sharing.text(beach.name[language]),
+          text: t.sharing.text(beachDisplayName),
           url: shareUrl,
         });
       } catch (error: any) {
@@ -450,35 +463,48 @@ export const BeachDetailModal: React.FC<BeachDetailModalProps> = ({ beach, isOpe
         className="bg-slate-50 rounded-t-2xl sm:rounded-2xl shadow-2xl w-full max-w-2xl max-h-[90vh] flex flex-col animate-slide-up overflow-hidden"
         onClick={(e) => e.stopPropagation()}
       >
-        {/* Beach Image Header OR Gradient Fallback */}
-        <div className={`relative h-48 sm:h-64 w-full flex-shrink-0 ${!details.image ? 'bg-gradient-to-br from-cyan-500 to-blue-600' : ''}`}>
-            {details.image && (
-                <>
-                    <img 
-                        src={details.image} 
-                        alt={beach.name[language]} 
-                        className="w-full h-full object-cover"
-                        loading="lazy"
-                    />
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent"></div>
-                </>
-            )}
-            
-            <button
-                onClick={onClose}
-                className="absolute top-4 right-4 p-2 bg-black/40 hover:bg-black/60 text-white rounded-full transition-colors backdrop-blur-sm"
-                aria-label={t.closeModalLabel}
-            >
-                <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" /></svg>
-            </button>
-            <div className="absolute bottom-4 left-6 right-6">
-                <h2 id="beach-detail-title" className="text-2xl sm:text-3xl font-extrabold text-white shadow-sm mb-1">{beach.name[language]}</h2>
-                <div className="flex items-center gap-2 text-white/90 text-sm">
-                    <StarRating rating={beach.rating} colorClassName="text-yellow-400" />
-                    <span className="font-bold">{beach.rating.toFixed(1)}</span>
-                </div>
-            </div>
-        </div>
+        {details.image ? (
+          <div className="relative h-48 sm:h-64 w-full flex-shrink-0">
+              <img
+                  src={details.image}
+                  alt={beachDisplayName}
+                  className="w-full h-full object-cover"
+                  loading="lazy"
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent"></div>
+              <button
+                  onClick={onClose}
+                  className="absolute top-4 right-4 p-2 bg-black/40 hover:bg-black/60 text-white rounded-full transition-colors backdrop-blur-sm"
+                  aria-label={t.closeModalLabel}
+              >
+                  <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" /></svg>
+              </button>
+              <div className="absolute bottom-4 left-6 right-6">
+                  <h2 id="beach-detail-title" className="text-2xl sm:text-3xl font-extrabold text-white shadow-sm mb-1">{beachDisplayName}</h2>
+                  <div className="flex items-center gap-2 text-white/90 text-sm">
+                      <StarRating rating={beach.rating} colorClassName="text-yellow-400" />
+                      <span className="font-bold">{beach.rating.toFixed(1)}</span>
+                  </div>
+              </div>
+          </div>
+        ) : (
+          <div className="flex flex-shrink-0 items-start justify-between gap-4 border-b border-slate-200 bg-white px-6 py-5">
+              <div className="min-w-0">
+                  <h2 id="beach-detail-title" className="text-2xl font-extrabold text-slate-950">{beachDisplayName}</h2>
+                  <div className="mt-1 flex items-center gap-2 text-sm text-slate-600">
+                      <StarRating rating={beach.rating} />
+                      <span className="font-bold">{beach.rating.toFixed(1)}</span>
+                  </div>
+              </div>
+              <button
+                  onClick={onClose}
+                  className="flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-full bg-slate-100 text-slate-600 transition-colors hover:bg-slate-200"
+                  aria-label={t.closeModalLabel}
+              >
+                  <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" /></svg>
+              </button>
+          </div>
+        )}
 
         <div className="overflow-y-auto p-6 flex-1">
             <div className="prose prose-slate max-w-none text-slate-600 leading-relaxed mb-6 text-sm sm:text-base">
@@ -487,7 +513,7 @@ export const BeachDetailModal: React.FC<BeachDetailModalProps> = ({ beach, isOpe
             
             {dayPlan && (
               <div className="mb-6">
-                <BeachDayPlanner plan={dayPlan} beachName={beach.name[language]} />
+                <BeachDayPlanner plan={dayPlan} beachName={beachDisplayName} />
               </div>
             )}
             
@@ -539,7 +565,7 @@ export const BeachDetailModal: React.FC<BeachDetailModalProps> = ({ beach, isOpe
             )}
             <button
                 onClick={() => openNavigation(beach)}
-                aria-label={t.navigateToLabel(beach.name[language])}
+                aria-label={t.navigateToLabel(beachDisplayName)}
                 className="inline-flex items-center justify-center px-4 py-2 bg-cyan-600 text-white font-semibold rounded-lg hover:bg-cyan-700 focus:outline-none focus:ring-2 focus:ring-cyan-500 focus:ring-offset-2 transition-all duration-200 shadow-md hover:shadow-lg"
             >
                 <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 mr-2" viewBox="0 0 20 20" fill="currentColor">

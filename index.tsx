@@ -2,6 +2,9 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import { App } from './App';
+import './index.css';
+import { initializeAnalytics } from './services/analyticsService';
+import { isChunkLoadError, recoverFromChunkLoadError, registerChunkLoadErrorHandler } from './utils/chunkLoadRecovery';
 
 type RootErrorBoundaryProps = {
   children: React.ReactNode;
@@ -27,6 +30,9 @@ class RootErrorBoundary extends React.Component<RootErrorBoundaryProps, RootErro
 
   componentDidCatch(error: Error, info: React.ErrorInfo) {
     console.error('RootErrorBoundary', error, info);
+    if (isChunkLoadError(error)) {
+      void recoverFromChunkLoadError(error, 'RootErrorBoundary');
+    }
   }
 
   private handleReset = () => {
@@ -80,6 +86,9 @@ root.render(
     </RootErrorBoundary>
   </React.StrictMode>
 );
+
+initializeAnalytics();
+registerChunkLoadErrorHandler();
 
 if ('serviceWorker' in navigator) {
   if (import.meta.env.PROD) {

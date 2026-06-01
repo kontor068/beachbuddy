@@ -7,6 +7,8 @@ interface WeatherSummaryProps {
   selectedDayIndex: number;
   onDaySelect: (index: number) => void;
   t: Translation;
+  islandName?: string;
+  variant?: 'default' | 'heroCompact' | 'header' | 'summaryStrip';
 }
 
 export const WeatherSummary: React.FC<WeatherSummaryProps> = ({
@@ -14,6 +16,8 @@ export const WeatherSummary: React.FC<WeatherSummaryProps> = ({
   selectedDayIndex,
   onDaySelect,
   t,
+  islandName,
+  variant = 'default',
 }) => {
   if (!forecast || forecast.length === 0 || !forecast[selectedDayIndex]) return null;
 
@@ -23,6 +27,8 @@ export const WeatherSummary: React.FC<WeatherSummaryProps> = ({
       selectedDayIndex={selectedDayIndex} 
       onDaySelect={onDaySelect} 
       t={t} 
+      islandName={islandName}
+      variant={variant}
     />
   );
 };

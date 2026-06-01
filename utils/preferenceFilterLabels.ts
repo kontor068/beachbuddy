@@ -1,0 +1,61 @@
+import { LanguageCode, Translation, UserPreferences } from '../types';
+
+export const QUICK_PREFERENCE_FILTERS = [
+  'blueFlag2026',
+  'sandy',
+  'pebbles',
+  'quiet',
+  'beachBar',
+  'easyAccess',
+  'snorkeling',
+  'familyFriendly',
+  'deepWater',
+  'shallowWater',
+] as const satisfies readonly (keyof UserPreferences)[];
+
+export type QuickPreferenceFilter = (typeof QUICK_PREFERENCE_FILTERS)[number];
+
+const compactPreferenceLabels: Record<'gr' | 'en', Partial<Record<keyof UserPreferences, string>>> = {
+  gr: {
+    blueFlag2026: 'Γαλάζια Σημαία',
+    sandy: 'Άμμος',
+    pebbles: 'Βότσαλο',
+    quiet: 'Ήσυχη',
+    beachBar: 'Beach bar',
+    easyAccess: 'Εύκολη πρόσβαση',
+    snorkeling: 'Snorkeling',
+    familyFriendly: 'Οικογένεια',
+    deepWater: 'Βαθιά',
+    shallowWater: 'Ρηχά',
+  },
+  en: {
+    blueFlag2026: 'Blue Flag',
+    sandy: 'Sandy',
+    pebbles: 'Pebbles',
+    quiet: 'Quiet',
+    beachBar: 'Beach bar',
+    easyAccess: 'Easy access',
+    snorkeling: 'Snorkeling',
+    familyFriendly: 'Family-friendly',
+    deepWater: 'Deep water',
+    shallowWater: 'Shallow water',
+  },
+};
+
+export const getPreferenceFilterLabel = (
+  key: keyof UserPreferences,
+  language: LanguageCode,
+  t: Translation
+): string => {
+  const copyLanguage = language === 'gr' ? 'gr' : 'en';
+  return compactPreferenceLabels[copyLanguage][key] || t.userPreferences[key] || String(key);
+};
+
+export const getActivePreferenceFilters = (
+  preferences: UserPreferences,
+  language: LanguageCode,
+  t: Translation
+): Array<{ key: QuickPreferenceFilter; label: string }> =>
+  QUICK_PREFERENCE_FILTERS
+    .filter(key => preferences[key])
+    .map(key => ({ key, label: getPreferenceFilterLabel(key, language, t) }));

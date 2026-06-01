@@ -81,7 +81,7 @@ const Header: React.FC<HeaderProps> = ({ t, language, onLanguageChange, isScroll
               </div>
               <div className="flex flex-col min-w-0">
                 <h1 className="font-heading font-bold text-base sm:text-lg lg:text-xl text-slate-900 dark:text-white tracking-tight truncate">
-                  Beach Now Greece
+                  Calm Beach Greece
                 </h1>
                 <button 
                   onClick={(e) => { e.stopPropagation(); onOpenIslandSelector(); }}

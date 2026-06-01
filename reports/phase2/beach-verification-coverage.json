@@ -1,0 +1,126 @@
+{
+  "generatedAt": "2026-05-28T18:00:58.111Z",
+  "source": "public\\greek_beaches.json",
+  "totals": {
+    "beaches": 2720,
+    "withSourceUrl": 2720,
+    "withAnyEvidence": 2720,
+    "withoutAnyEvidence": 0,
+    "findings": 0,
+    "bySeverity": {},
+    "byType": {}
+  },
+  "claimCoverage": {
+    "lifeguard": {
+      "total": 40,
+      "withUrl": 40,
+      "withAnyEvidence": 40
+    },
+    "hard_access": {
+      "total": 265,
+      "withUrl": 265,
+      "withAnyEvidence": 265
+    },
+    "moderate_access": {
+      "total": 329,
+      "withUrl": 329,
+      "withAnyEvidence": 329
+    },
+    "beach_bar": {
+      "total": 414,
+      "withUrl": 414,
+      "withAnyEvidence": 414
+    },
+    "organized": {
+      "total": 736,
+      "withUrl": 736,
+      "withAnyEvidence": 736
+    },
+    "high_confidence": {
+      "total": 27,
+      "withUrl": 27,
+      "withAnyEvidence": 27
+    },
+    "medium_confidence": {
+      "total": 1672,
+      "withUrl": 1672,
+      "withAnyEvidence": 1672
+    }
+  },
+  "byRegion": {
+    "Attica": {
+      "beaches": 193,
+      "withoutEvidence": 0,
+      "withUrl": 193,
+      "highPriority": 0
+    },
+    "Central Greece": {
+      "beaches": 184,
+      "withoutEvidence": 0,
+      "withUrl": 184,
+      "highPriority": 0
+    },
+    "Central Macedonia": {
+      "beaches": 149,
+      "withoutEvidence": 0,
+      "withUrl": 149,
+      "highPriority": 0
+    },
+    "Crete": {
+      "beaches": 248,
+      "withoutEvidence": 0,
+      "withUrl": 248,
+      "highPriority": 0
+    },
+    "East Macedonia and Thrace": {
+      "beaches": 85,
+      "withoutEvidence": 0,
+      "withUrl": 85,
+      "highPriority": 0
+    },
+    "Epirus": {
+      "beaches": 67,
+      "withoutEvidence": 0,
+      "withUrl": 67,
+      "highPriority": 0
+    },
+    "Ionian Islands": {
+      "beaches": 318,
+      "withoutEvidence": 0,
+      "withUrl": 318,
+      "highPriority": 0
+    },
+    "North Aegean": {
+      "beaches": 226,
+      "withoutEvidence": 0,
+      "withUrl": 226,
+      "highPriority": 0
+    },
+    "Peloponnese": {
+      "beaches": 186,
+      "withoutEvidence": 0,
+      "withUrl": 186,
+      "highPriority": 0
+    },
+    "South Aegean": {
+      "beaches": 826,
+      "withoutEvidence": 0,
+      "withUrl": 826,
+      "highPriority": 0
+    },
+    "West Greece": {
+      "beaches": 78,
+      "withoutEvidence": 0,
+      "withUrl": 78,
+      "highPriority": 0
+    },
+    "Thessaly": {
+      "beaches": 160,
+      "withoutEvidence": 0,
+      "withUrl": 160,
+      "highPriority": 0
+    }
+  },
+  "topPriority": [],
+  "findings": []
+}

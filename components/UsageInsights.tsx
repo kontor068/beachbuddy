@@ -2,6 +2,7 @@ import React, { useMemo } from 'react';
 import { getAnalyticsInsights } from '../services/analyticsService';
 import { Beach, LanguageCode } from '../types';
 import { motion } from 'motion/react';
+import { displayBeachName } from '../utils/localization';
 
 interface UsageInsightsProps {
   allBeaches: Beach[];
@@ -14,7 +15,7 @@ export const UsageInsights: React.FC<UsageInsightsProps> = ({ allBeaches, langua
 
   const getBeachName = (id: number | string) => {
     const beach = allBeaches.find(b => b.id === Number(id));
-    return beach ? beach.name[language] || beach.name['en'] : `Beach ${id}`;
+    return beach ? displayBeachName(beach.name, language) : `Beach ${id}`;
   };
 
   const topBeaches = Object.entries(insights.beachViews)

@@ -10,7 +10,7 @@ export default defineConfig(({ mode }) => {
         port: 3000,
         strictPort: true,
         host: '0.0.0.0',
-        open: true,
+        open: 'http://localhost:3000/',
       },
       plugins: [react(), tailwindcss()],
       define: {

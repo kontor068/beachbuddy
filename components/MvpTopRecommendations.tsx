@@ -129,7 +129,7 @@ const greekBeachContent: Record<string, {
   },
   'mock-mykonos-agios-sostis': {
     description: 'Πιο ήσυχη και λιγότερο οργανωμένη παραλία της Μυκόνου, με πιο φυσικό χαρακτήρα.',
-    windProtectionNotes: 'Βλέπει βόρεια και μπορεί να είναι εκτεθειμένη στο μελτέμι. Καλύτερη σε ήρεμες μέρες.',
+    windProtectionNotes: 'Βλέπει βόρεια και είναι πιο ανοιχτή στο μελτέμι. Καλύτερη σε ήρεμες μέρες.',
     amenities: ['ταβέρνα κοντά'],
   },
   'mock-aegina-agia-marina': {
@@ -182,10 +182,10 @@ const getPrimaryExplanation = (result: MockBeachScoreResult, beach: MockBeach, l
 
   const wind = greekWindDirections[mockWeatherConditions.windDirection] || 'σημερινό';
   if (beach.orientation.protectedFrom.includes(mockWeatherConditions.windDirection)) {
-    return `Προστατευμένη από τον σημερινό ${wind} άνεμο.`;
+    return 'Χρειάζεται επιβεβαίωση τοπικής έκθεσης στον άνεμο.';
   }
   if (beach.orientation.faces.includes(mockWeatherConditions.windDirection)) {
-    return `Είναι πιο εκτεθειμένη στον σημερινό ${wind} άνεμο.`;
+    return `Είναι πιο ανοιχτή στον σημερινό ${wind} άνεμο.`;
   }
   return 'Καλή επιλογή για σήμερα με βάση άνεμο, θάλασσα και προτιμήσεις.';
 };
@@ -194,10 +194,10 @@ const localizeReducedReason = (reason: string, language: LanguageCode) => {
   if (language !== 'gr') return reason;
   if (reason.includes('Long distance')) return 'Μεγάλη απόσταση από την τοποθεσία σου.';
   if (reason.includes('Further away')) return 'Πιο μακριά από κοντινότερες επιλογές.';
-  if (reason.includes('Difficult access')) return 'Η πρόσβαση είναι πιο δύσκολη.';
+  if (reason.includes('Difficult access') || reason.includes('More challenging access')) return 'Η πρόσβαση θέλει λίγο περισσότερη προσοχή.';
   if (reason.includes('Misses')) return 'Δεν ταιριάζει με όλες τις επιλεγμένες προτιμήσεις.';
-  if (reason.includes('Exposed')) return 'Είναι πιο εκτεθειμένη στον σημερινό άνεμο.';
-  if (reason.includes('Sea comfort')) return 'Οι συνθήκες στη θάλασσα δεν είναι ιδανικές.';
+  if (reason.includes('Exposed') || reason.includes('More open')) return 'Είναι πιο ανοιχτή στον σημερινό άνεμο.';
+  if (reason.includes('Sea comfort')) return 'Η θάλασσα δεν δείχνει ιδανική σήμερα.';
   if (reason.includes('Rain risk')) return 'Η πιθανότητα βροχής μειώνει την πρόταση.';
   if (reason.includes('Temperature')) return 'Η θερμοκρασία δεν είναι τόσο άνετη για παραλία.';
   return reason;

@@ -1,4 +1,9 @@
 import { Beach, ForecastItem } from '../types';
+import { hasHourlyRainRisk, type BestBeachTime } from './recommendationService';
+import { degToCompass, getBeaufortLevel } from '../utils/weatherUtils';
+import { calculateSeaConditionScore } from '../utils/seaConditions';
+import type { ExposureLevel } from '../utils/windExposure';
+import { assessBeachWindExposure } from '../utils/windExposureEngine';
 
 export interface BeachDayPlan {
   beachId: number;
@@ -10,8 +15,229 @@ export interface BeachDayPlan {
   isGoodDay: boolean;
 }
 
-export const generateBeachDayPlan = (beach: Beach, hourlyForecast: ForecastItem[]): BeachDayPlan => {
+export interface BeachDayPlanContext {
+  windSpeedKmh?: number;
+  temperatureC?: number;
+  weatherMain?: string;
+  weatherDescription?: string;
+  isExposed?: boolean;
+  exposureLevel?: ExposureLevel;
+  waveHeightM?: number;
+  seaConditionScore?: number;
+}
+
+const MIN_SWIMMING_TEMP_C = 20;
+const MAX_SWIMMING_TEMP_C = 35;
+const LIGHT_WIND_GOOD_DAY_BFT = 2;
+const MIN_GOOD_SEA_CONDITION_SCORE = 7;
+const LOW_WAVE_MAX_M = 0.5;
+const CHOPPY_WAVE_MIN_M = 0.8;
+const ROUGH_WAVE_MIN_M = 1.2;
+const MAX_PERFECT_CONDITIONS_BFT = 3;
+
+type PlannerSeaTone = 'unknown' | 'easy' | 'some_chop' | 'choppy' | 'rough';
+
+const hasUsefulBestBeachTime = (bestBeachTime?: BestBeachTime): bestBeachTime is BestBeachTime & { bestStart: string; bestEnd: string } => (
+  Boolean(bestBeachTime?.bestStart && bestBeachTime?.bestEnd && bestBeachTime.bestStart !== bestBeachTime.bestEnd)
+);
+
+const hasBadWeather = (context?: BeachDayPlanContext): boolean => {
+  const weatherText = `${context?.weatherMain || ''} ${context?.weatherDescription || ''}`.toLowerCase();
+  return /rain|storm|thunder|snow|drizzle/.test(weatherText);
+};
+
+const getFiniteNumber = (value?: number): number | undefined => (
+  typeof value === 'number' && Number.isFinite(value) ? value : undefined
+);
+
+const getPlannerSeaTone = (waveHeightM?: number): PlannerSeaTone => {
+  const waveHeight = getFiniteNumber(waveHeightM);
+  if (waveHeight === undefined) return 'unknown';
+  if (waveHeight >= ROUGH_WAVE_MIN_M) return 'rough';
+  if (waveHeight >= CHOPPY_WAVE_MIN_M) return 'choppy';
+  if (waveHeight >= LOW_WAVE_MAX_M) return 'some_chop';
+  return 'easy';
+};
+
+const getContextBeaufort = (context?: BeachDayPlanContext): number | undefined => {
+  const windSpeedKmh = getFiniteNumber(context?.windSpeedKmh);
+  return windSpeedKmh === undefined ? undefined : getBeaufortLevel(windSpeedKmh);
+};
+
+const hasRoughPlannerConditions = (context?: BeachDayPlanContext): boolean => {
+  const seaTone = getPlannerSeaTone(context?.waveHeightM);
+  const beaufort = getContextBeaufort(context);
+  return seaTone === 'rough' || (beaufort !== undefined && beaufort >= 5);
+};
+
+const getMaxForecastWaveHeight = (items: ForecastItem[]): number | undefined => {
+  const waveHeights = items
+    .map(item => getFiniteNumber(item.marine?.waveHeightM))
+    .filter((value): value is number => value !== undefined);
+
+  return waveHeights.length > 0 ? Math.max(...waveHeights) : undefined;
+};
+
+const getMaxForecastWindSpeedKmh = (items: ForecastItem[]): number | undefined => {
+  const windSpeeds = items
+    .map(item => getFiniteNumber(item.wind?.speed))
+    .filter((value): value is number => value !== undefined)
+    .map(speedMps => speedMps * 3.6);
+
+  return windSpeeds.length > 0 ? Math.max(...windSpeeds) : undefined;
+};
+
+const getPlannerSummaryContext = (
+  context: BeachDayPlanContext | undefined,
+  relevantHours: ForecastItem[]
+): BeachDayPlanContext => {
+  const summaryContext: BeachDayPlanContext = { ...(context || {}) };
+  const maxWaveHeightM = getMaxForecastWaveHeight(relevantHours);
+  const maxWindSpeedKmh = getMaxForecastWindSpeedKmh(relevantHours);
+
+  if (maxWaveHeightM !== undefined) {
+    summaryContext.waveHeightM = maxWaveHeightM;
+  }
+
+  if (maxWindSpeedKmh !== undefined) {
+    summaryContext.windSpeedKmh = maxWindSpeedKmh;
+  }
+
+  return summaryContext;
+};
+
+const getGoodDaySummary = (
+  bestBeachTime: BestBeachTime | undefined,
+  context: BeachDayPlanContext | undefined,
+  isFullDayWindow: boolean
+): string => {
+  const seaTone = getPlannerSeaTone(context?.waveHeightM);
+  const beaufort = getContextBeaufort(context);
+  const canCallPerfect = isFullDayWindow &&
+    seaTone === 'easy' &&
+    (beaufort === undefined || beaufort <= MAX_PERFECT_CONDITIONS_BFT) &&
+    !hasBadWeather(context);
+
+  if (seaTone === 'rough' || (beaufort !== undefined && beaufort >= 5)) {
+    return 'Conditions may remain windy or choppy through the day.';
+  }
+
+  if (seaTone === 'choppy') {
+    return 'Prefer the calmer part of the day and use caution if the sea feels choppy.';
+  }
+
+  if (seaTone === 'some_chop') {
+    return 'Good beach window today, but expect some chop.';
+  }
+
+  if (canCallPerfect) {
+    return 'Perfect conditions all day! Arrive anytime and stay as long as you like.';
+  }
+
+  if (hasUsefulBestBeachTime(bestBeachTime)) {
+    return `Good conditions today. The best swim window is ${bestBeachTime.bestStart} - ${bestBeachTime.bestEnd}.`;
+  }
+
+  return 'Good conditions today. Arrive anytime during the main beach hours.';
+};
+
+const isComfortableLightWindDay = (context?: BeachDayPlanContext): boolean => {
+  if (
+    typeof context?.windSpeedKmh !== 'number' ||
+    typeof context.temperatureC !== 'number' ||
+    hasBadWeather(context)
+  ) {
+    return false;
+  }
+
+  return getBeaufortLevel(context.windSpeedKmh) <= LIGHT_WIND_GOOD_DAY_BFT &&
+    context.temperatureC >= MIN_SWIMMING_TEMP_C &&
+    context.temperatureC <= MAX_SWIMMING_TEMP_C;
+};
+
+const hasGoodContextSeaConditions = (context?: BeachDayPlanContext): boolean => (
+  !hasBadWeather(context) &&
+  typeof context?.temperatureC === 'number' &&
+  context.temperatureC >= MIN_SWIMMING_TEMP_C &&
+  context.temperatureC <= MAX_SWIMMING_TEMP_C &&
+  typeof context.seaConditionScore === 'number' &&
+  context.seaConditionScore >= MIN_GOOD_SEA_CONDITION_SCORE
+);
+
+const getPlannerExposureLevel = (
+  beach: Beach,
+  item: ForecastItem,
+  fallbackExposureLevel?: ExposureLevel
+): ExposureLevel => {
+  const windSpeedKmh = item.wind.speed * 3.6;
+  const assessment = assessBeachWindExposure({
+    beach,
+    windDirectionDeg: item.wind.deg,
+    windDirection: degToCompass(item.wind.deg),
+    windSpeedKmh,
+    beaufort: getBeaufortLevel(windSpeedKmh),
+    waveHeightMeters: item.marine?.waveHeightM,
+    waveDirectionDegrees: item.marine?.waveDirectionDeg,
+    wavePeriodSeconds: item.marine?.wavePeriodS,
+    swellHeightMeters: item.marine?.swellWaveHeightM,
+    swellDirectionDegrees: item.marine?.swellWaveDirectionDeg,
+    seaSurfaceTemperature: item.marine?.seaSurfaceTemperatureC,
+  });
+
+  return assessment.exposureLevel || fallbackExposureLevel || 'exposed';
+};
+
+const hasBadHourlyWeather = (item: ForecastItem): boolean => {
+  const weatherText = (item.weather || [])
+    .map(entry => `${entry.main || ''} ${entry.description || ''}`)
+    .join(' ')
+    .toLowerCase();
+  return /rain|storm|thunder|snow|drizzle/.test(weatherText) || hasHourlyRainRisk(item);
+};
+
+const getRainBlockedPlan = (beachId: number, rainyTimes: string[]): BeachDayPlan => ({
+  beachId,
+  arrivalTime: 'N/A',
+  bestSwimWindow: 'No recommended beach window due to possible rain',
+  conditionsChangeAt: null,
+  departureTime: 'N/A',
+  summary: rainyTimes.length > 0
+    ? `Because rain is possible around ${rainyTimes.slice(0, 4).join(', ')}, no beach is recommended for swimming in that window.`
+    : 'Because rain is possible during the main beach hours, no beach is recommended for swimming in that window.',
+  isGoodDay: false,
+});
+
+const createGoodDayPlan = (
+  beachId: number,
+  bestBeachTime?: BestBeachTime,
+  context?: BeachDayPlanContext
+): BeachDayPlan => {
+  const usefulBestBeachTime = hasUsefulBestBeachTime(bestBeachTime);
+  const arrivalTime = usefulBestBeachTime ? bestBeachTime.bestStart : '10:00';
+  const departureTime = usefulBestBeachTime ? bestBeachTime.bestEnd : '18:00';
+
+  return {
+    beachId,
+    arrivalTime,
+    bestSwimWindow: `${arrivalTime} - ${departureTime}`,
+    conditionsChangeAt: null,
+    departureTime,
+    summary: getGoodDaySummary(bestBeachTime, context, false),
+    isGoodDay: true
+  };
+};
+
+export const generateBeachDayPlan = (
+  beach: Beach,
+  hourlyForecast: ForecastItem[],
+  bestBeachTime?: BestBeachTime,
+  context?: BeachDayPlanContext
+): BeachDayPlan => {
   if (!hourlyForecast || hourlyForecast.length === 0) {
+    if (isComfortableLightWindDay(context) || hasGoodContextSeaConditions(context)) {
+      return createGoodDayPlan(beach.id, bestBeachTime, context);
+    }
+
     return {
       beachId: beach.id,
       arrivalTime: "N/A",
@@ -36,6 +262,10 @@ export const generateBeachDayPlan = (beach: Beach, hourlyForecast: ForecastItem[
   });
 
   if (relevantHours.length === 0) {
+    if (isComfortableLightWindDay(context) || hasGoodContextSeaConditions(context)) {
+      return createGoodDayPlan(beach.id, bestBeachTime, context);
+    }
+
      return {
       beachId: beach.id,
       arrivalTime: "N/A",
@@ -47,13 +277,32 @@ export const generateBeachDayPlan = (beach: Beach, hourlyForecast: ForecastItem[
     };
   }
 
-  // Define "Good" conditions
-  // Wind < 18 km/h (approx 5 m/s)
-  // Temp 22-32
+  const rainyRelevantHours = relevantHours.filter(hasHourlyRainRisk);
+  if (rainyRelevantHours.length === relevantHours.length) {
+    const rainyTimes = rainyRelevantHours.map(item => (
+      item.dt_txt && item.dt_txt.includes(' ') && item.dt_txt.split(' ').length > 1
+        ? item.dt_txt.split(' ')[1].substring(0, 5)
+        : new Date(item.dt * 1000).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hour12: false })
+    ));
+    return getRainBlockedPlan(beach.id, rainyTimes);
+  }
+
+  // Keep this aligned with the home-screen light-wind rule: at 0-2 Bft,
+  // do not mark a normal warm beach day as "not ideal".
   const isGoodCondition = (item: ForecastItem) => {
     const windSpeedKmh = item.wind.speed * 3.6;
     const temp = item.main.temp;
-    return windSpeedKmh < 18 && temp >= 22 && temp <= 35; // Extended upper limit slightly for Greece
+    const comfortableTemperature = temp >= MIN_SWIMMING_TEMP_C && temp <= MAX_SWIMMING_TEMP_C;
+    if (!comfortableTemperature || hasBadHourlyWeather(item)) return false;
+
+    const beaufort = getBeaufortLevel(windSpeedKmh);
+    if (beaufort <= LIGHT_WIND_GOOD_DAY_BFT) return true;
+
+    const exposureLevel = getPlannerExposureLevel(beach, item, context?.exposureLevel);
+    const isExposed = exposureLevel !== 'protected';
+    const waveHeightM = item.marine?.waveHeightM ?? context?.waveHeightM;
+    const seaScore = calculateSeaConditionScore(isExposed, windSpeedKmh, exposureLevel, waveHeightM);
+    return seaScore >= MIN_GOOD_SEA_CONDITION_SCORE;
   };
 
   let bestWindowStart: number | null = null;
@@ -90,7 +339,20 @@ export const generateBeachDayPlan = (beach: Beach, hourlyForecast: ForecastItem[
     }
   }
 
+  const summaryContext = getPlannerSummaryContext(context, relevantHours);
+
   if (bestWindowStart === null) {
+    if (
+      !hasRoughPlannerConditions(summaryContext) &&
+      (
+        hasUsefulBestBeachTime(bestBeachTime) ||
+        isComfortableLightWindDay(summaryContext) ||
+        hasGoodContextSeaConditions(summaryContext)
+      )
+    ) {
+      return createGoodDayPlan(beach.id, bestBeachTime, summaryContext);
+    }
+
     // No good window found
     return {
       beachId: beach.id,
@@ -98,7 +360,7 @@ export const generateBeachDayPlan = (beach: Beach, hourlyForecast: ForecastItem[
       bestSwimWindow: "Conditions not ideal today",
       conditionsChangeAt: null,
       departureTime: "N/A",
-      summary: "Weather conditions (wind or temperature) are not ideal for swimming today.",
+      summary: "Wind and sea conditions are not ideal for swimming today.",
       isGoodDay: false
     };
   }
@@ -138,7 +400,12 @@ export const generateBeachDayPlan = (beach: Beach, hourlyForecast: ForecastItem[
   endDate.setHours(endDate.getHours() + step);
   const departureTime = `${endDate.getHours().toString().padStart(2, '0')}:${endDate.getMinutes().toString().padStart(2, '0')}`;
 
-  const bestSwimWindow = `${startTimeStr} - ${departureTime}`;
+  const usefulBestBeachTime = hasUsefulBestBeachTime(bestBeachTime);
+  const bestSwimWindow = usefulBestBeachTime
+    ? `${bestBeachTime.bestStart} - ${bestBeachTime.bestEnd}`
+    : `${startTimeStr} - ${departureTime}`;
+  const planArrivalTime = usefulBestBeachTime ? bestBeachTime.bestStart : arrivalTime;
+  const planDepartureTime = usefulBestBeachTime ? bestBeachTime.bestEnd : departureTime;
 
   // Check for conditions worsening
   let conditionsChangeAt: string | null = null;
@@ -151,6 +418,7 @@ export const generateBeachDayPlan = (beach: Beach, hourlyForecast: ForecastItem[
         : new Date(nextItem.dt * 1000).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hour12: false });
       
       if (nextItem.wind.speed * 3.6 >= 18) worseReason = "wind picks up";
+      else if (hasHourlyRainRisk(nextItem)) worseReason = "possible rain starts";
       else if (nextItem.main.temp < 22) worseReason = "gets too cool";
       else if (nextItem.main.temp > 35) worseReason = "gets too hot";
       else worseReason = "conditions change";
@@ -158,19 +426,19 @@ export const generateBeachDayPlan = (beach: Beach, hourlyForecast: ForecastItem[
 
   let summary = "";
   if (maxWindowLength >= relevantHours.length) {
-      summary = "Perfect conditions all day! Arrive anytime and stay as long as you like.";
+      summary = getGoodDaySummary(bestBeachTime, summaryContext, true);
   } else if (bestWindowStart === 0) {
-      summary = `Arrive early (${arrivalTime}) for the best conditions. ${worseReason ? `It ${worseReason} around ${conditionsChangeAt}.` : "Conditions change later."}`;
+      summary = `Arrive early (${planArrivalTime}) for the best conditions. ${worseReason ? `It ${worseReason} around ${conditionsChangeAt}.` : "Conditions change later."}`;
   } else {
-      summary = `The best time to swim is from ${startTimeStr}. ${worseReason ? `Conditions worsen after ${departureTime}.` : ""}`;
+      summary = `The best time to swim is from ${planArrivalTime}. ${worseReason ? `Conditions worsen after ${planDepartureTime}.` : ""}`;
   }
 
   return {
     beachId: beach.id,
-    arrivalTime,
+    arrivalTime: planArrivalTime,
     bestSwimWindow,
     conditionsChangeAt,
-    departureTime,
+    departureTime: planDepartureTime,
     summary,
     isGoodDay: true
   };

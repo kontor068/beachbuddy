@@ -2,6 +2,7 @@ import { GoogleGenAI, Chat } from '@google/genai';
 import { Beach, LanguageCode, TravelStyle } from '../types';
 
 const DEFAULT_LOCAL_LLM_URL = 'http://localhost:1234/v1/chat/completions';
+const ANDROID_EMULATOR_LOCAL_LLM_URL = 'http://10.0.2.2:1234/v1/chat/completions'; // IP για Android Emulator
 const DEFAULT_LOCAL_LLM_MODEL = 'local-model';
 const DEFAULT_LOCAL_MAX_TOKENS = 2048;
 const DEFAULT_LOCAL_TIMEOUT_MS = 90_000;
@@ -35,6 +36,8 @@ const getLocalTimeoutMs = (): number => {
 };
 
 const getGeminiApiKey = (): string => {
+  // ΠΡΟΣΟΧΗ: Για παραγωγή (App Store/Google Play), προτείνεται η χρήση backend proxy
+  // αντί για απευθείας χρήση του API Key στο frontend.
   const fromVite = (import.meta as any)?.env?.VITE_GEMINI_API_KEY;
   if (typeof fromVite === 'string') return fromVite;
 
@@ -220,6 +223,11 @@ export const sendMessage = async (
   message: string,
   modelType: string = 'google'
 ): Promise<string> => {
+  // Έλεγχος συνδεσιμότητας (προαιρετικό αλλά προτεινόμενο για mobile)
+  if (typeof navigator !== 'undefined' && !navigator.onLine && modelType === 'google') {
+    return 'Δεν υπάρχει σύνδεση στο διαδίκτυο. Παρακαλώ ελέγξτε το δίκτυό σας.';
+  }
+
   if (modelType === 'ollama') {
     try {
       return await sendLocalMessage(message);
