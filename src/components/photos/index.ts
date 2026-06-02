@@ -1,0 +1,1 @@
+export { CuratedPhotoImage } from './CuratedPhotoImage';
