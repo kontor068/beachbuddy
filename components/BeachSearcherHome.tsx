@@ -42,8 +42,8 @@ import { getBeachFilterDirectoryTitle } from '../utils/filterSummary';
 import { openNavigation } from '../utils/navigation';
 import { WeatherSummary } from './WeatherSummary';
 import { BeachCard } from './BeachCard';
-import { CuratedPhotoImage } from '../src/components/photos';
-import { getIslandDestinationPhoto } from '../src/data/destinationPhotoAdapter';
+import { CuratedPhotoImage } from './photos';
+import { getIslandDestinationPhoto } from '../data/destinationPhotoAdapter';
 
 export type DirectoryCategory = 'all' | QuickPreferenceFilter;
 
