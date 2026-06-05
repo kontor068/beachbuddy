@@ -957,6 +957,12 @@ Recommended next order:
 - Unsupported shallow/deep-water certainty was neutralized to medium for all four promoted records where the reviewed sources do not document a precise stable depth class. Kastraki access was corrected to a short passable dirt-road approach with no organized facilities, Poulithra was corrected to pebbly/unorganized village-beach context, Vivari keeps source-backed sand/rocky-parts services and normal depth, and Tigani keeps source-backed pebbly organized seasonal-service context. Source scenic/calm/clear wording was not imported into scoring, windProfile, photos, water-quality, or live condition claims.
 - Across all public beach data after this pass: 2199 high, 227 medium, 314 low. Total non-high remaining: 541.
 
+## Popular-source confidence pass CQ3 - 2026-06-05
+
+- Korinthia / Kalamaki, Megalo Amoni, Mikro Amoni and Siderona promoted from medium/low to high confidence for static beach facts only after reviewing Visit Loutraki, Corintha, Visit Corinth, Epidavros Villas, In2life and Villa Iokasti direct or local beach sources.
+- Kalamaki keeps source-backed sand/small-pebble, shallow-water, easy-access and seasonal-service context. Megalo Amoni and Mikro Amoni keep source-backed Amoni-cluster identity with unorganized beach context, while unsupported public road-surface and precise depth certainty were neutralized where needed. Siderona was corrected to a small pebbly cove with a tavern nearby, while unsupported access-surface, deep-water, shade and snorkeling certainty were removed or neutralized. Source scenic/calm/clear wording was not imported into scoring, windProfile, photos, water-quality, or live condition claims.
+- Across all public beach data after this pass: 2203 high, 225 medium, 312 low. Total non-high remaining: 537.
+
 ## Durable data rules
 
 - Do not show "4x4 only" as user-facing copy unless it is strictly verified and unavoidable. Prefer `Δύσβατος δρόμος`.
