@@ -921,6 +921,12 @@ Recommended next order:
 - This pass keeps calm/clear/protected/wind wording out of scoring and windProfile. Unsupported shallow certainty was neutralized to medium for Agios Sostis, Kaloudia, Livadi Despotiko, Livadia, and Panagia Despotikou. Theologos keeps source-backed shallow context from municipality/beach references; the Faneromeni alias keeps its existing `excludeFromApp` flag unchanged.
 - Across all public beach data after this pass: 2171 high, 254 medium, 315 low. Total non-high remaining: 569.
 
+## Popular-source confidence pass CM - 2026-06-05
+
+- Anafi / Agioi Anargyroi, Vagia, Exo Roukounas, Kalagathi, Katalimatsa, Livoskopos, and Prasies promoted from medium to high confidence for static beach facts only after reviewing Anafi municipality, AllOverGreece, Exploring Greece and direct island/beach sources.
+- Xetripiti was intentionally left at medium because the available evidence is weak trail/map context rather than a direct beach-specific source. This pass keeps calm/clear/protected/wind wording out of scoring and windProfile. Unsupported shallow certainty was neutralized to medium for Agioi Anargyroi, Exo Roukounas, Kalagathi, Katalimatsa, Livoskopos, and Prasies.
+- Across all public beach data after this pass: 2178 high, 247 medium, 315 low. Total non-high remaining: 562.
+
 ## Durable data rules
 
 - Do not show "4x4 only" as user-facing copy unless it is strictly verified and unavoidable. Prefer `Δύσβατος δρόμος`.
