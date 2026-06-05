@@ -969,6 +969,12 @@ Recommended next order:
 - This island-only pass keeps OSM-only Kythira records at low confidence until direct beach-specific sources are found. Kalami keeps difficult final path/no-service context, Lygia keeps dirt-road/deep-water/no-service context, Kapsali Piso Gialos keeps settlement-service/seasonal organized context, and Xeropotamos keeps sandy Antikythera beach identity while final access remains unknown. Source scenic/calm/clear/protected wording was not imported into scoring, windProfile, photos, water-quality, or live condition claims.
 - Across all public beach data after this pass: 2207 high, 222 medium, 311 low. Total non-high remaining: 533. Island-only non-high remaining: 340 of 2028.
 
+## Popular-source confidence pass CS - 2026-06-05
+
+- Donousa / Kedros, Livadi, Limenari and Stavros; Sikinos / Agios Georgios, Agios Panteleimonas, Dialiskari, Malta and Santorineika; Iraklia / Vorini Spilia and Livadi; Halki / Ftenagia and Kania; Nisyros / Pachia Ammos and Chochlakoi; and Agathonisi / Vathi Pigadi, Palos and Tsangari promoted from medium to high confidence for static beach facts only after reviewing existing direct island/beach source coverage.
+- This small-island pass only changed confidence metadata and audit notes. Existing direct AllOverGreece, Naxos/Small Cyclades, Exploring Greece, Discover Greece, Nisyrosinfo, Hellenic Travel Group and related source URLs already support identity/location plus recorded access, terrain and service context. Source scenic/calm/clear/protected wording was not imported into scoring, windProfile, photos, water-quality, or live condition claims.
+- Across all public beach data after this pass: 2225 high, 204 medium, 311 low. Total non-high remaining: 515. Island-only non-high remaining: 322 of 2028.
+
 ## Durable data rules
 
 - Do not show "4x4 only" as user-facing copy unless it is strictly verified and unavoidable. Prefer `Δύσβατος δρόμος`.
