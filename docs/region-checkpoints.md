@@ -915,6 +915,12 @@ Recommended next order:
 - This pass keeps calm/clear/protected/wind wording out of scoring and windProfile. Livadi, Lioliou, Gerolimnionas, Psili Ammos and Fykio had unsupported shallow certainty neutralized to medium. Tsigouri keeps source-backed shallow-water, organized beach-bar/taverna/sunbed context and easy local access; Fountana keeps the short-path and single-tree shade context.
 - Across all public beach data after this pass: 2164 high, 261 medium, 315 low. Total non-high remaining: 576.
 
+## Popular-source confidence pass CM - 2026-06-05
+
+- Antiparos / Agios Sostis, Faneromeni alias, Theologos, Kaloudia, Livadi Despotiko, Livadia, and Panagia Despotikou promoted from medium to high confidence for static beach facts only after reviewing Antiparos municipality, Antiparos.com, Antiparos Routes and direct beach/travel sources.
+- This pass keeps calm/clear/protected/wind wording out of scoring and windProfile. Unsupported shallow certainty was neutralized to medium for Agios Sostis, Kaloudia, Livadi Despotiko, Livadia, and Panagia Despotikou. Theologos keeps source-backed shallow context from municipality/beach references; the Faneromeni alias keeps its existing `excludeFromApp` flag unchanged.
+- Across all public beach data after this pass: 2171 high, 254 medium, 315 low. Total non-high remaining: 569.
+
 ## Durable data rules
 
 - Do not show "4x4 only" as user-facing copy unless it is strictly verified and unavoidable. Prefer `Δύσβατος δρόμος`.
