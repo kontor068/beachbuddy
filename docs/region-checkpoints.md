@@ -951,6 +951,12 @@ Recommended next order:
 - Akoli was corrected to pebbly terrain and deep-water static context, with unsupported nearby taverna/cafe/parking and shade certainty removed. Gianniskari keeps difficult gravel-road access plus seasonal beach-bar/sunbed/umbrella/parking context. Kalogria keeps source-backed sandy, organized, shallow-water and seasonal-service context. Mikro Drafi was corrected away from unsupported shade/deep-water certainty to pebbly terrain, no organized services and neutral medium depth. Source scenic/descriptive water wording was not imported into scoring, windProfile, photos, water-quality, or live condition claims.
 - Across all public beach data after this pass: 2195 high, 230 medium, 315 low. Total non-high remaining: 545.
 
+## Popular-source confidence pass CQ2 - 2026-06-05
+
+- Arkadia / Tigani (Fournaka) and Poulithra plus Argolida / Vivari and Kastraki promoted from medium/low to high confidence for static beach facts only after reviewing AllOverGreece, All About Peloponnisos, Explore South Kynouria, Travelfind, Peloponnisos Search and Tolo.gr direct beach sources.
+- Unsupported shallow/deep-water certainty was neutralized to medium for all four promoted records where the reviewed sources do not document a precise stable depth class. Kastraki access was corrected to a short passable dirt-road approach with no organized facilities, Poulithra was corrected to pebbly/unorganized village-beach context, Vivari keeps source-backed sand/rocky-parts services and normal depth, and Tigani keeps source-backed pebbly organized seasonal-service context. Source scenic/calm/clear wording was not imported into scoring, windProfile, photos, water-quality, or live condition claims.
+- Across all public beach data after this pass: 2199 high, 227 medium, 314 low. Total non-high remaining: 541.
+
 ## Durable data rules
 
 - Do not show "4x4 only" as user-facing copy unless it is strictly verified and unavoidable. Prefer `Δύσβατος δρόμος`.
