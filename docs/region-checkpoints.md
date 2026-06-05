@@ -891,6 +891,12 @@ Recommended next order:
 - Agios Sergios, Lethra, Plaka, and Tholos had unsupported shallow/deep-water certainty neutralized to medium. Plaka was corrected away from unsupported asphalt-road/nearby-service certainty to path access from Agios Antonios and no organized services. The existing public/source mismatch for Skafi was synced into `src/data/greek_beaches.json` without changing public counts. Source calm/tranquil/protected wording was not imported as scoring, windProfile, photos, water-quality, or live calm/protected/safe claims.
 - Across all public beach data after this pass: 2134 high, 283 medium, 323 low. Total non-high remaining: 606.
 
+## Popular-source confidence pass CJ - 2026-06-05
+
+- Lipsi / Kamares, Koimisi, Liendou, Kserokampos, Papandria, Platis Gialos, Tourkomnima, and Hohlakoura promoted from low/medium to high confidence for static beach facts only after reviewing the official Municipality of Lipsi beach page.
+- This pass keeps wind/shelter/calm wording out of scoring and windProfile. Platis Gialos has source-backed car/bus access, sandy shallow-water family context, tamarisk shade and nearby taverna context, but the source's sheltered-from-north-wind wording was not imported. Kamares/Koimisi/Hohlakoura keep access limitations and no organized-service claims. Kserokampos/Tourkomnima keep shared-source sand/pebble/small-tree context with neutral water depth.
+- Across all public beach data after this pass: 2142 high, 282 medium, 316 low. Total non-high remaining: 598.
+
 ## Durable data rules
 
 - Do not show "4x4 only" as user-facing copy unless it is strictly verified and unavoidable. Prefer `Δύσβατος δρόμος`.
