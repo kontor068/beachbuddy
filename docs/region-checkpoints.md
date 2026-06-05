@@ -1053,6 +1053,12 @@ Recommended next order:
 - This island pass reconciled static metadata where the direct source coverage was stronger than older records: Marathi now keeps sea-only access, no-road island context and nearby tavern/settlement context; Tiganakia now keeps boat-only/no-road access, sand/pebble terrain and no stable beach services. Unsupported shade was removed from both records. Existing depth metadata was not newly verified by this pass and remains for a separate water-depth audit. Ambiguous or coordinate-mismatch candidates in Ios, Antipaxos, Karpathos and Paxos were intentionally left medium/low. Source scenic/calm/clear/protected wording was not imported into scoring, windProfile, photos, water-quality, or live condition claims.
 - Across all public beach data after this pass: 2301 high, 131 medium, 308 low. Total non-high remaining: 439. Island-only non-high remaining: 253 of 2042.
 
+## Popular-source confidence pass DG - 2026-06-05
+
+- Astypalaia / Mamounia promoted from medium to high confidence for static beach facts only after reviewing direct Marmari/Mamounia source coverage.
+- This island pass reconciled the legacy mirror and static metadata: Mamounia now maps to the Marmari/Mamounia beach zone near the main road after Astypalaia Camping, keeps sand/pebble terrain, no full organized-beach profile and a beach-bar/snack context. The old src/data boat-only wording was corrected. Ambiguous Kythnos, Antipaxos, Ios and Spetses candidates were intentionally left medium/low. Source scenic/calm/clear/protected wording was not imported into scoring, windProfile, photos, water-quality, or live condition claims.
+- Across all public beach data after this pass: 2302 high, 130 medium, 308 low. Total non-high remaining: 438. Island-only non-high remaining: 252 of 2042.
+
 ## Durable data rules
 
 - Do not show "4x4 only" as user-facing copy unless it is strictly verified and unavoidable. Prefer `Δύσβατος δρόμος`.
