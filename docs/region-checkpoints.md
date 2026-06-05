@@ -933,6 +933,12 @@ Recommended next order:
 - Exo Almyres, Chali, Tichi, and Elia were intentionally left low because the available evidence is OSM-only identity/location context. This pass keeps calm/clear/protected/wind wording out of scoring and windProfile. Unsupported deep certainty was neutralized to medium for Kalamies, Byzotos, Alexis, Syki, and Sykati.
 - Across all public beach data after this pass: 2185 high, 240 medium, 315 low. Total non-high remaining: 555.
 
+## Popular-source confidence pass CO - 2026-06-05
+
+- Antipaxos / Mikro Agni, Megalo Agni, Rodovanopoulo, and Plaka promoted from medium to high confidence for static beach facts only after reviewing Lithari Villas direct Antipaxos beach pages plus Visit Paxi / Visit Paxos context.
+- Fyki, Kalamitsa, Skidi, and Agriapidia were intentionally left medium because the available evidence is not yet specific enough for each beach record. This pass corrected the promoted records to source-backed pebble terrain, no organized services, no nearby tavern and no shade, and neutralized unsupported deep-water certainty to medium. Source idyllic/sheltered/calm/clear wording was not imported into scoring, windProfile, photos, water-quality, or live calm/protected/safe claims.
+- Across all public beach data after this pass: 2189 high, 236 medium, 315 low. Total non-high remaining: 551.
+
 ## Durable data rules
 
 - Do not show "4x4 only" as user-facing copy unless it is strictly verified and unavoidable. Prefer `Δύσβατος δρόμος`.
