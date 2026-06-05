@@ -1023,6 +1023,12 @@ Recommended next order:
 - This island pass only changed confidence metadata and audit notes. Existing Terrabook/Corfu local-source coverage supports Portelo identity/location plus sandy Mathraki beach context. Existing Exploring Greece and Koufonisia.net source URLs support Kato Koufonisi Limni/Fykio identity/location plus path access, terrain, depth and unorganized/secluded context. Existing Kimolos official Polyaigos context and GoSailing source coverage support Amoura as a Polyaigos swim stop with boat-oriented access and no public-service claim. OSM-only Koufonisia records were intentionally left low. The legacy `src/data/greek_beaches.json` mirror does not contain the Fykio record, so this pass mirrored only the three matching legacy records there. Source scenic/calm/clear/protected wording was not imported into scoring, windProfile, photos, water-quality, or live condition claims.
 - Across all public beach data after this pass: 2282 high, 147 medium, 311 low. Total non-high remaining: 458. Island-only non-high remaining: 272 of 2042.
 
+## Popular-source confidence pass DB - 2026-06-05
+
+- Kea / Vlanti and Mavia; Kythnos / Sklavos; and Ikaria / Syrtiko promoted from medium to high confidence for static beach facts only after reviewing existing route/local source coverage.
+- This island pass only changed confidence metadata and audit notes. Existing Wikiloc southeastern-coast route source plus BeachNearby/Mapcarta support Vlanti and Mavia identity/location with difficult-path context. Existing OSM/Mapcarta plus Wikivoyage support Sklavos identity/location near the Castle of Kythnos and remote/boat-oriented access. Existing ERT and Ikariaki source URLs support Syrtiko identity/local context, no-easy-swimmer-access wording and the old Geronton footpath context. Unknown-access, OSM-only and accommodation/listing-only records in these islands were intentionally left medium/low. Source scenic/calm/clear/protected wording was not imported into scoring, windProfile, photos, water-quality, or live condition claims.
+- Across all public beach data after this pass: 2286 high, 143 medium, 311 low. Total non-high remaining: 454. Island-only non-high remaining: 268 of 2042.
+
 ## Durable data rules
 
 - Do not show "4x4 only" as user-facing copy unless it is strictly verified and unavoidable. Prefer `Δύσβατος δρόμος`.
