@@ -987,6 +987,12 @@ Recommended next order:
 - This island pass only changed confidence metadata and audit notes. Existing direct Municipality of Agios Efstratios, GreeceDestination, Leros island, Lerosinfo, Leros municipality and AllOverGreece source URLs support identity/location plus recorded access, terrain, shade and service context. Duplicate-like Kioura/Agia Kioura records were not merged in this pass. Source scenic/calm/clear/protected wording was not imported into scoring, windProfile, photos, water-quality, or live condition claims.
 - Across all public beach data after this pass: 2248 high, 181 medium, 311 low. Total non-high remaining: 492. Island-only non-high remaining: 306 of 2042.
 
+## Popular-source confidence pass CV - 2026-06-05
+
+- Hydra / Bisti, Plakes and Spilia; Methana / Akti Agapis, Votsalakia and Nisiza; Kastellorizo / Agios Georgios and Plakes; Pserimos / Avlakia and Marathounda; Fournoi / Vlychada; Othonoi / Aspri Ammos; and Oinousses / Chochlakas and Katsika promoted from medium to high confidence for static beach facts only after reviewing existing direct island/beach source coverage.
+- This island pass only changed confidence metadata and audit notes. Existing direct Athens Attica, AllOverGreece, Exploring Greece, Epidavros Villas, Katheti, local Kastellorizo/Fournoi/Othonoi sources and in.gr source URLs support identity/location plus recorded access, terrain, depth and service context. OSM-only and identity-only nearby records were intentionally left medium/low. Source scenic/calm/clear/protected/safe/wind-exposure wording was not imported into scoring, windProfile, photos, water-quality, or live condition claims.
+- Across all public beach data after this pass: 2262 high, 167 medium, 311 low. Total non-high remaining: 478. Island-only non-high remaining: 292 of 2042.
+
 ## Durable data rules
 
 - Do not show "4x4 only" as user-facing copy unless it is strictly verified and unavoidable. Prefer `Δύσβατος δρόμος`.
