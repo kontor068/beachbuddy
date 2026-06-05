@@ -885,6 +885,12 @@ Recommended next order:
 - This pass corrected Pigados away from unsupported full road/sandy/shallow-service certainty to car/bus plus short path, pebbly terrain, partial tamarisk shade and neutral water depth. Soufi now records source-backed sandy terrain, tamarisk shade, unorganized status and neutral water depth. Source calm/leeward/protected/north-wind wording was not imported as scoring, windProfile, photos, water-quality, or live calm/protected/safe claims.
 - Across all public beach data after this pass: 2125 high, 292 medium, 323 low. Total non-high remaining: 615.
 
+## Popular-source confidence pass CI - 2026-06-05
+
+- Tilos / Stavros, Agios Sergios, Eristos, Lethra, Livadia, Limenari, Kokkini, Plaka, and Tholos promoted from medium to high confidence for static beach facts only after reviewing the official Municipality of Tilos swimming page plus direct Tilos beach guides from AllOverGreece, In2Greece, Passionegrecia, Travel.gr, Ecotourism Greece/Kathimerini, and existing mapped traces where relevant.
+- Agios Sergios, Lethra, Plaka, and Tholos had unsupported shallow/deep-water certainty neutralized to medium. Plaka was corrected away from unsupported asphalt-road/nearby-service certainty to path access from Agios Antonios and no organized services. The existing public/source mismatch for Skafi was synced into `src/data/greek_beaches.json` without changing public counts. Source calm/tranquil/protected wording was not imported as scoring, windProfile, photos, water-quality, or live calm/protected/safe claims.
+- Across all public beach data after this pass: 2134 high, 283 medium, 323 low. Total non-high remaining: 606.
+
 ## Durable data rules
 
 - Do not show "4x4 only" as user-facing copy unless it is strictly verified and unavoidable. Prefer `Δύσβατος δρόμος`.
