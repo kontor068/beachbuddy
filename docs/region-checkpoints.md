@@ -1029,6 +1029,12 @@ Recommended next order:
 - This island pass only changed confidence metadata and audit notes. Existing Wikiloc southeastern-coast route source plus BeachNearby/Mapcarta support Vlanti and Mavia identity/location with difficult-path context. Existing OSM/Mapcarta plus Wikivoyage support Sklavos identity/location near the Castle of Kythnos and remote/boat-oriented access. Existing ERT and Ikariaki source URLs support Syrtiko identity/local context, no-easy-swimmer-access wording and the old Geronton footpath context. Unknown-access, OSM-only and accommodation/listing-only records in these islands were intentionally left medium/low. Source scenic/calm/clear/protected wording was not imported into scoring, windProfile, photos, water-quality, or live condition claims.
 - Across all public beach data after this pass: 2286 high, 143 medium, 311 low. Total non-high remaining: 454. Island-only non-high remaining: 268 of 2042.
 
+## Popular-source confidence pass DC - 2026-06-05
+
+- Amorgos / Nikouria; Folegandros / Livadaki; Psara / Psili; and Patmos / Psili Ammos promoted from medium to high confidence for static beach facts only after reviewing existing direct island/beach source coverage.
+- This island pass also reconciled Nikouria static service metadata from the official Amorgos source: no shade and beach-bar/transfer-boat context are now reflected in the record. Existing Amorgos municipality, Folegandros.com, AllOverGreece and All About Patmos source URLs support identity/location plus recorded access, terrain, shade and service context. Skopelos/Pelion-risk records and OSM-only records were intentionally left medium/low. Source scenic/calm/clear/wave wording was not imported into scoring, windProfile, photos, water-quality, or live condition claims.
+- Across all public beach data after this pass: 2290 high, 139 medium, 311 low. Total non-high remaining: 450. Island-only non-high remaining: 264 of 2042.
+
 ## Durable data rules
 
 - Do not show "4x4 only" as user-facing copy unless it is strictly verified and unavoidable. Prefer `Δύσβατος δρόμος`.
