@@ -1047,6 +1047,12 @@ Recommended next order:
 - This island pass reconciled static metadata where direct Fournoi source pages were stronger than older records: Kampi now keeps beach-bar, parking and small-harbor context; Koumara is recorded as sandy and car-reachable from the port; Vitsila keeps rocky/pebbly terrain and tree-shade context; Kasidi keeps walking-path or boat access, sandy terrain and natural-shade context. Elidaki was intentionally left low because the direct page has a title/body naming mismatch with Vlychada. Source scenic/calm/clear wording was not imported into scoring, windProfile, photos, water-quality, or live condition claims.
 - Across all public beach data after this pass: 2299 high, 133 medium, 308 low. Total non-high remaining: 441. Island-only non-high remaining: 255 of 2042.
 
+## Popular-source confidence pass DF - 2026-06-05
+
+- Marathi / Marathi and Tiganakia promoted from medium to high confidence for static beach facts only after reviewing direct island/beach source coverage.
+- This island pass reconciled static metadata where the direct source coverage was stronger than older records: Marathi now keeps sea-only access, no-road island context and nearby tavern/settlement context; Tiganakia now keeps boat-only/no-road access, sand/pebble terrain and no stable beach services. Unsupported shade was removed from both records. Existing depth metadata was not newly verified by this pass and remains for a separate water-depth audit. Ambiguous or coordinate-mismatch candidates in Ios, Antipaxos, Karpathos and Paxos were intentionally left medium/low. Source scenic/calm/clear/protected wording was not imported into scoring, windProfile, photos, water-quality, or live condition claims.
+- Across all public beach data after this pass: 2301 high, 131 medium, 308 low. Total non-high remaining: 439. Island-only non-high remaining: 253 of 2042.
+
 ## Durable data rules
 
 - Do not show "4x4 only" as user-facing copy unless it is strictly verified and unavoidable. Prefer `Δύσβατος δρόμος`.
