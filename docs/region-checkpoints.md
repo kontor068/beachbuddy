@@ -999,6 +999,12 @@ Recommended next order:
 - This island pass only changed confidence metadata and audit notes. Existing direct Amorgos municipality, Amorgos Island, Go Amorgos, AllOverGreece, Visit Greece and Gavdos trekking/beach source URLs support identity/location plus recorded access, terrain, shade, depth and service context. Nikouria was intentionally left medium until seasonal beach-bar/service metadata is reconciled. OSM-only Gavdos records were intentionally left low. Source scenic/calm/clear/protected/safe wording was not imported into scoring, windProfile, photos, water-quality, or live condition claims.
 - Across all public beach data after this pass: 2268 high, 161 medium, 311 low. Total non-high remaining: 472. Island-only non-high remaining: 286 of 2042.
 
+## Popular-source confidence pass CX - 2026-06-05
+
+- Kea / Kalydonychi and Stefa; and Kythnos / Agkoritsa and Lagkousi promoted from medium to high confidence for static beach facts only after reviewing existing direct island/beach source coverage.
+- This island pass only changed confidence metadata and audit notes. Existing Destination Kea beach-source URLs support identity/location plus Kalydonychi dirt-road fork access and Stefa boat-only access. Existing Kythnos.net anchorage-guide source supports Agkoritsa and Lagkousi identity/location in the Agios Ioanis bay area plus vessel-oriented access context. OSM-only, booking/listing-only and unknown-access records were intentionally left medium/low. Source scenic/calm/clear/protected/wind-shelter wording was not imported into scoring, windProfile, photos, water-quality, or live condition claims.
+- Across all public beach data after this pass: 2272 high, 157 medium, 311 low. Total non-high remaining: 468. Island-only non-high remaining: 282 of 2042.
+
 ## Durable data rules
 
 - Do not show "4x4 only" as user-facing copy unless it is strictly verified and unavoidable. Prefer `Δύσβατος δρόμος`.
