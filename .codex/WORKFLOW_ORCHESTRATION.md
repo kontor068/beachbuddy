@@ -82,7 +82,11 @@ Current durable lessons:
 - Beach cards should prefer one verified photo per beach. Island-level fallback photos are only temporary coverage and should not be treated as each beach's own photo.
 - Greek generated beach copy must use inflected area/island phrases, not raw nominative labels. Prefer explicit forms like "της Μήλου", "στη Μήλο", "των Χανίων", "στο Ρέθυμνο" in label metadata.
 
-- Map wind-exposure colors should only become cautionary when wind is meaningful. At 0-3 Bft, show a calm/neutral map state instead of marking beaches as exposed; from 4 Bft upward, protected/partial/exposed colors can guide the decision.
+- Map wind-exposure colors should follow the explicit Beaufort legend: 0-2 Bft all blue; 3-4 Bft protected blue and exposed/partial yellow; 5-6 Bft protected yellow and exposed/partial orange; 7-10 Bft all red. Keep the legend visible and do not imply that blue means guaranteed safety.
+- Map color explanations should only describe colors visible for the current forecast. Do not show red/orange legend rows on a 3-4 Bft map where users only see blue/yellow markers.
+- Map color explanations should show the marker colors as colored dots next to meaning labels such as protected/exposed. Avoid writing visible color words like blue/yellow/orange/red in the compact legend.
+- Map color explanations should be shown directly without a heading such as "Color guide" / "Επεξήγηση Χρωμάτων" when displayed below the map.
+- Map markers should respect active search, filters, and filter-like sort modes. When users filter the beach list, hide non-matching markers instead of leaving irrelevant colored points on the map.
 - At 0-3 Bft, never force a single "top beach today" recommendation. Show a light-wind/calm-all-around message and let users choose by preference, access, and vibe. From 4 Bft upward, wind can drive top recommendations.
 - Calm/light-wind messages should be short and direct. At 0-2 Bft, treat the day as broadly suitable and keep the title/count aligned, e.g. "2 μποφόρ σήμερα. Όλες οι παραλίες είναι κατάλληλες!" with an all-beaches count.
 - Detail-page planner warnings must not contradict the home summary. At 0-2 Bft with normal swimming temperatures, do not show "conditions are not ideal" unless there is a real critical warning such as storm, rain, winter unsafe conditions, or missing forecast data.
@@ -90,6 +94,7 @@ Current durable lessons:
 - Detail-page crowd labels must not look like weather-condition labels. Use explicit wording such as "Μέτρια κίνηση" and avoid amber warning styling for normal medium crowd levels.
 - Do not defer the core beach list or the map behind artificial loading gates. Lightweight optimizations are fine, but the first beach-decision UI should appear as soon as beach data is available, even while weather details continue loading.
 - Do not label a beach as "quiet" when it has a beach bar. In filters and generated copy, beach bar overrides quiet-style wording because the combination feels contradictory to users.
+- Do not show difficult-access beaches as ideal/top recommendations when any practical-access beach is recommendable. Hard access is only a fallback when no practical option passes the wind/sea checks.
 
 ## 4. Verification Before Done
 
