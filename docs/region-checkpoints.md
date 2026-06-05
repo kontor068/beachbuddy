@@ -1065,6 +1065,12 @@ Recommended next order:
 - This island pass reconciled static metadata where direct source pages were stronger than older OSM-only records: Pouria now keeps sand/rock coastal-swim character, very easy access, non-organized status, no shade and listed basic facilities; Kalogria now keeps sandy terrain, very easy access, non-organized status, no shade and listed basic facilities near Kyra Panagia. Achilli, Fokiotrypa, Basales, Petritsa and Markesi were intentionally left low because current evidence is still identity-only or too thin for access/terrain/service confidence. Source scenic/calm/clear/protected wording was not imported into scoring, windProfile, photos, water-quality, or live condition claims.
 - Across all public beach data after this pass: 2304 high, 130 medium, 306 low. Total non-high remaining: 436 of 2740 (15.9%).
 
+## Popular-source confidence pass DI - 2026-06-05
+
+- Skyros / Achilli and Petritsa promoted from low to high confidence for static beach facts only after reviewing direct Skyros beach/source coverage.
+- This island pass reconciled static metadata where direct source coverage was stronger than older OSM-only records: Achilli now keeps small-bay/Aspous-area context, road access, sandy terrain, no sunbeds/umbrellas and nearby tavernas; its water depth was changed to medium because the reviewed sources do not support a shallow-water claim. Petritsa now keeps pebble terrain, very easy access, non-organized/no-shade status, listed basic facilities and no taverns/cafes on the beach. Fokiotrypa, Basales and Markesi were intentionally left low because current evidence is still identity-only, pollution-risk, or name/coordinate ambiguous. Source scenic/calm/clear/protected wording was not imported into scoring, windProfile, photos, water-quality, or live condition claims.
+- Across all public beach data after this pass: 2306 high, 130 medium, 304 low. Total non-high remaining: 434 of 2740 (15.8%).
+
 ## Durable data rules
 
 - Do not show "4x4 only" as user-facing copy unless it is strictly verified and unavoidable. Prefer `Δύσβατος δρόμος`.
