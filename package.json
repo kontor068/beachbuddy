@@ -16,7 +16,8 @@
     "build": "vite build",
     "lint": "tsc --noEmit",
     "preview": "vite preview",
-    "images:backgrounds": "node scripts/optimizeBackgroundImages.mjs"
+    "images:backgrounds": "node scripts/optimizeBackgroundImages.mjs",
+    "photos:destinations:cards": "node scripts/optimizeDestinationCardImages.mjs"
   },
   "dependencies": {
     "@google/genai": "^1.16.0",
