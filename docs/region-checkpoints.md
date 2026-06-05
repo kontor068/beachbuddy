@@ -1017,6 +1017,12 @@ Recommended next order:
 - This island pass only changed confidence metadata and audit notes. Existing official Astypalaia route, Aegean Islands, Travel.gr, Athinorama, Astypalea.net and FotoTravel source URLs support identity/location plus recorded hiking/path access and sand/pebble terrain context. Mamounia was intentionally left medium because it still needs a separate Marmari/Mamounia alias cleanup. OSM-only Astypalaia records were intentionally left low. Source scenic/calm/clear/protected wording was not imported into scoring, windProfile, photos, water-quality, or live condition claims.
 - Across all public beach data after this pass: 2278 high, 151 medium, 311 low. Total non-high remaining: 462. Island-only non-high remaining: 276 of 2042.
 
+## Popular-source confidence pass DA - 2026-06-05
+
+- Mathraki / Portelo; Koufonisia / Limni Kato Koufonisiou and Fykio; and Polyaigos / Amoura promoted from medium to high confidence for static beach facts only after reviewing existing direct island/beach source coverage.
+- This island pass only changed confidence metadata and audit notes. Existing Terrabook/Corfu local-source coverage supports Portelo identity/location plus sandy Mathraki beach context. Existing Exploring Greece and Koufonisia.net source URLs support Kato Koufonisi Limni/Fykio identity/location plus path access, terrain, depth and unorganized/secluded context. Existing Kimolos official Polyaigos context and GoSailing source coverage support Amoura as a Polyaigos swim stop with boat-oriented access and no public-service claim. OSM-only Koufonisia records were intentionally left low. The legacy `src/data/greek_beaches.json` mirror does not contain the Fykio record, so this pass mirrored only the three matching legacy records there. Source scenic/calm/clear/protected wording was not imported into scoring, windProfile, photos, water-quality, or live condition claims.
+- Across all public beach data after this pass: 2282 high, 147 medium, 311 low. Total non-high remaining: 458. Island-only non-high remaining: 272 of 2042.
+
 ## Durable data rules
 
 - Do not show "4x4 only" as user-facing copy unless it is strictly verified and unavoidable. Prefer `Δύσβατος δρόμος`.
