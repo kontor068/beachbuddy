@@ -1059,6 +1059,12 @@ Recommended next order:
 - This island pass reconciled the legacy mirror and static metadata: Mamounia now maps to the Marmari/Mamounia beach zone near the main road after Astypalaia Camping, keeps sand/pebble terrain, no full organized-beach profile and a beach-bar/snack context. The old src/data boat-only wording was corrected. Ambiguous Kythnos, Antipaxos, Ios and Spetses candidates were intentionally left medium/low. Source scenic/calm/clear/protected wording was not imported into scoring, windProfile, photos, water-quality, or live condition claims.
 - Across all public beach data after this pass: 2302 high, 130 medium, 308 low. Total non-high remaining: 438. Island-only non-high remaining: 252 of 2042.
 
+## Popular-source confidence pass DH - 2026-06-05
+
+- Skyros / Pouria and Kalogria promoted from low to high confidence for static beach facts only after reviewing direct AllOverGreece beach-source coverage.
+- This island pass reconciled static metadata where direct source pages were stronger than older OSM-only records: Pouria now keeps sand/rock coastal-swim character, very easy access, non-organized status, no shade and listed basic facilities; Kalogria now keeps sandy terrain, very easy access, non-organized status, no shade and listed basic facilities near Kyra Panagia. Achilli, Fokiotrypa, Basales, Petritsa and Markesi were intentionally left low because current evidence is still identity-only or too thin for access/terrain/service confidence. Source scenic/calm/clear/protected wording was not imported into scoring, windProfile, photos, water-quality, or live condition claims.
+- Across all public beach data after this pass: 2304 high, 130 medium, 306 low. Total non-high remaining: 436 of 2740 (15.9%).
+
 ## Durable data rules
 
 - Do not show "4x4 only" as user-facing copy unless it is strictly verified and unavoidable. Prefer `Δύσβατος δρόμος`.
