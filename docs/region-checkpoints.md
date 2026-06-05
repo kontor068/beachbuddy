@@ -981,6 +981,12 @@ Recommended next order:
 - This island pass only changed confidence metadata and audit notes. Existing direct Visit Greece, Skyros municipality, Fish&Chill, Travel.gr, Samosin, Municipality of East Samos guide and related source URLs support identity/location plus recorded access, terrain and service context. OSM-only island records were intentionally left medium/low. Source scenic/calm/clear/protected wording was not imported into scoring, windProfile, photos, water-quality, or live condition claims.
 - Across all public beach data after this pass: 2236 high, 193 medium, 311 low. Total non-high remaining: 504. Island-only non-high remaining: 318 of 2042.
 
+## Popular-source confidence pass CU - 2026-06-05
+
+- Agios Efstratios / Agios Dimitrios, Agios Antonios, Agios Nikolaos, Gournia, Mouroulia and Tripiti; and Leros / Dyo Liskaria, Kioura, Vromolithos, Agia Kioura beach, Kryfos and Belfoutis promoted from medium to high confidence for static beach facts only after reviewing existing direct island/beach source coverage.
+- This island pass only changed confidence metadata and audit notes. Existing direct Municipality of Agios Efstratios, GreeceDestination, Leros island, Lerosinfo, Leros municipality and AllOverGreece source URLs support identity/location plus recorded access, terrain, shade and service context. Duplicate-like Kioura/Agia Kioura records were not merged in this pass. Source scenic/calm/clear/protected wording was not imported into scoring, windProfile, photos, water-quality, or live condition claims.
+- Across all public beach data after this pass: 2248 high, 181 medium, 311 low. Total non-high remaining: 492. Island-only non-high remaining: 306 of 2042.
+
 ## Durable data rules
 
 - Do not show "4x4 only" as user-facing copy unless it is strictly verified and unavoidable. Prefer `Δύσβατος δρόμος`.
