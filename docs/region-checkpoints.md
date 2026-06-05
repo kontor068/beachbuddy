@@ -927,6 +927,12 @@ Recommended next order:
 - Xetripiti was intentionally left at medium because the available evidence is weak trail/map context rather than a direct beach-specific source. This pass keeps calm/clear/protected/wind wording out of scoring and windProfile. Unsupported shallow certainty was neutralized to medium for Agioi Anargyroi, Exo Roukounas, Kalagathi, Katalimatsa, Livoskopos, and Prasies.
 - Across all public beach data after this pass: 2178 high, 247 medium, 315 low. Total non-high remaining: 562.
 
+## Popular-source confidence pass CN - 2026-06-05
+
+- Kalymnos / Kalamies, Byzotos, Alexis, Megales Almyres, Mikres Almyres, Syki, and Sykati promoted from medium to high confidence for static beach facts only after reviewing AllOverGreece, Greece Destination, climbing/hiking route references and direct beach sources.
+- Exo Almyres, Chali, Tichi, and Elia were intentionally left low because the available evidence is OSM-only identity/location context. This pass keeps calm/clear/protected/wind wording out of scoring and windProfile. Unsupported deep certainty was neutralized to medium for Kalamies, Byzotos, Alexis, Syki, and Sykati.
+- Across all public beach data after this pass: 2185 high, 240 medium, 315 low. Total non-high remaining: 555.
+
 ## Durable data rules
 
 - Do not show "4x4 only" as user-facing copy unless it is strictly verified and unavoidable. Prefer `Δύσβατος δρόμος`.
