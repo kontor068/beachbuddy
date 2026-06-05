@@ -963,6 +963,12 @@ Recommended next order:
 - Kalamaki keeps source-backed sand/small-pebble, shallow-water, easy-access and seasonal-service context. Megalo Amoni and Mikro Amoni keep source-backed Amoni-cluster identity with unorganized beach context, while unsupported public road-surface and precise depth certainty were neutralized where needed. Siderona was corrected to a small pebbly cove with a tavern nearby, while unsupported access-surface, deep-water, shade and snorkeling certainty were removed or neutralized. Source scenic/calm/clear wording was not imported into scoring, windProfile, photos, water-quality, or live condition claims.
 - Across all public beach data after this pass: 2203 high, 225 medium, 312 low. Total non-high remaining: 537.
 
+## Popular-source confidence pass CR - 2026-06-05
+
+- Kythira / Kalami, Lygia, Kapsali Piso Gialos and Antikythera / Xeropotamos promoted from medium/low to high confidence for static beach facts only after reviewing Destination Kythira, Kithera.gr, Ferryhopper and Kythira-Antikythera tourist-guide sources.
+- This island-only pass keeps OSM-only Kythira records at low confidence until direct beach-specific sources are found. Kalami keeps difficult final path/no-service context, Lygia keeps dirt-road/deep-water/no-service context, Kapsali Piso Gialos keeps settlement-service/seasonal organized context, and Xeropotamos keeps sandy Antikythera beach identity while final access remains unknown. Source scenic/calm/clear/protected wording was not imported into scoring, windProfile, photos, water-quality, or live condition claims.
+- Across all public beach data after this pass: 2207 high, 222 medium, 311 low. Total non-high remaining: 533. Island-only non-high remaining: 340 of 2028.
+
 ## Durable data rules
 
 - Do not show "4x4 only" as user-facing copy unless it is strictly verified and unavoidable. Prefer `Δύσβατος δρόμος`.
