@@ -1041,6 +1041,12 @@ Recommended next order:
 - This island pass also reconciled static metadata where sources were stronger than older records: Mandraki now uses sand/pebble, shallow-water and no-shade context; Potha and Paradise no longer carry unsupported parking and now keep foot/boat access plus seasonal organized context. Existing Greek Travel Pages, Ferryhopper, GetGreece, Mamaka Tours and CavoBlue source URLs support identity/location plus recorded access, terrain, depth, shade and service context. Bragini and identity-only/geodata-risk records were intentionally left medium/low. Source scenic/calm/clear/wave wording was not imported into scoring, windProfile, photos, water-quality, or live condition claims.
 - Across all public beach data after this pass: 2295 high, 134 medium, 311 low. Total non-high remaining: 445. Island-only non-high remaining: 259 of 2042.
 
+## Popular-source confidence pass DE - 2026-06-05
+
+- Fournoi / Kampi, Koumara, Vitsila and Kasidi promoted from medium/low to high confidence for static beach facts only after reviewing direct Explore Fourni destination/source coverage.
+- This island pass reconciled static metadata where direct Fournoi source pages were stronger than older records: Kampi now keeps beach-bar, parking and small-harbor context; Koumara is recorded as sandy and car-reachable from the port; Vitsila keeps rocky/pebbly terrain and tree-shade context; Kasidi keeps walking-path or boat access, sandy terrain and natural-shade context. Elidaki was intentionally left low because the direct page has a title/body naming mismatch with Vlychada. Source scenic/calm/clear wording was not imported into scoring, windProfile, photos, water-quality, or live condition claims.
+- Across all public beach data after this pass: 2299 high, 133 medium, 308 low. Total non-high remaining: 441. Island-only non-high remaining: 255 of 2042.
+
 ## Durable data rules
 
 - Do not show "4x4 only" as user-facing copy unless it is strictly verified and unavoidable. Prefer `Δύσβατος δρόμος`.
