@@ -1005,6 +1005,12 @@ Recommended next order:
 - This island pass only changed confidence metadata and audit notes. Existing Destination Kea beach-source URLs support identity/location plus Kalydonychi dirt-road fork access and Stefa boat-only access. Existing Kythnos.net anchorage-guide source supports Agkoritsa and Lagkousi identity/location in the Agios Ioanis bay area plus vessel-oriented access context. OSM-only, booking/listing-only and unknown-access records were intentionally left medium/low. Source scenic/calm/clear/protected/wind-shelter wording was not imported into scoring, windProfile, photos, water-quality, or live condition claims.
 - Across all public beach data after this pass: 2272 high, 157 medium, 311 low. Total non-high remaining: 468. Island-only non-high remaining: 282 of 2042.
 
+## Popular-source confidence pass CY - 2026-06-05
+
+- Arki / Patelia and Limnari; and Samothraki / Makrilies promoted from medium to high confidence for static beach facts only after reviewing existing direct island/beach source coverage.
+- This island pass only changed confidence metadata and audit notes. Existing Exploring Greece and Ferryscanner source URLs support Patelia and Limnari identity/location plus foot-access, terrain and depth context. Existing Samothraki.com and AllOverGreece source URLs support Makrilies identity/location plus road access, pebbled shoreline, seasonal organized beach-bar/sunbed/water-sports context, nearby tavernas/diving context and deeper-water context. Marathi/Tiganakia records were intentionally left medium pending area-bucket cleanup. Source scenic/calm/clear/serene/protected wording was not imported into scoring, windProfile, photos, water-quality, or live condition claims.
+- Across all public beach data after this pass: 2275 high, 154 medium, 311 low. Total non-high remaining: 465. Island-only non-high remaining: 279 of 2042.
+
 ## Durable data rules
 
 - Do not show "4x4 only" as user-facing copy unless it is strictly verified and unavoidable. Prefer `Δύσβατος δρόμος`.
