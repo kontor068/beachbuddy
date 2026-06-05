@@ -945,6 +945,12 @@ Recommended next order:
 - Lantes, Magazaki, Mamounia and Papou were intentionally left medium because the available evidence is mostly trail/general guide context or does not yet support all static facts for a full high-confidence promotion. Vai, Mikres Vatses, Panormos, Pachia Ammos and Psili Ammos remain low as OSM-only. This pass corrected Mple Limanaki away from unsupported road/shade/shallow certainty to path access, pebbled terrain, no organized services, no explicit shade support and neutral medium depth. Source quiet/secluded/beautiful/clear wording was not imported into scoring, windProfile, photos, water-quality, or live calm/protected/safe claims.
 - Across all public beach data after this pass: 2191 high, 234 medium, 315 low. Total non-high remaining: 549.
 
+## Popular-source confidence pass CQ - 2026-06-05
+
+- Achaia / Akoli, Gianniskari and Kalogria plus Thesprotia / Mikro Drafi promoted from medium to high confidence for static beach facts only after reviewing Discover Aigialeia, All About Peloponnisos, PatrasInfo, Hellas Beach and Sivotahomes direct beach sources.
+- Akoli was corrected to pebbly terrain and deep-water static context, with unsupported nearby taverna/cafe/parking and shade certainty removed. Gianniskari keeps difficult gravel-road access plus seasonal beach-bar/sunbed/umbrella/parking context. Kalogria keeps source-backed sandy, organized, shallow-water and seasonal-service context. Mikro Drafi was corrected away from unsupported shade/deep-water certainty to pebbly terrain, no organized services and neutral medium depth. Source scenic/descriptive water wording was not imported into scoring, windProfile, photos, water-quality, or live condition claims.
+- Across all public beach data after this pass: 2195 high, 230 medium, 315 low. Total non-high remaining: 545.
+
 ## Durable data rules
 
 - Do not show "4x4 only" as user-facing copy unless it is strictly verified and unavoidable. Prefer `Δύσβατος δρόμος`.
