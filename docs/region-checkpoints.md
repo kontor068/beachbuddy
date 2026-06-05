@@ -865,6 +865,12 @@ Recommended next order:
 - The naturist status remains treated as unofficial/visitor-guide context, not as an official beach designation. Clean-water, relaxed-use and live-condition wording from reviewed sources was not imported as scoring, windProfile, photos, water-quality, or live calm/protected/safe claims.
 - Across the tracked popular Phase 1 regions, 60 beaches remain non-high: 32 medium and 28 low.
 
+## Popular-source confidence pass CF - 2026-06-05
+
+- Ikaria / Kampos, Messakti, Xylosyrtis, and Seychelles promoted from medium to high confidence for static beach facts only after direct Visit Ikaria review. Official pages support each beach identity plus access and static terrain/service context: Kampos as a large all-sand organized family/tourist beach with easy car/taxi/bus access, Messakti as a long fine-sand organized beach with beach bar/surfing context and steps from the asphalt road, Xylosyrtis as a pebbly unorganized beach with beach bar and small path/steps from the village, and Seychelles as an unorganized pebbles/sand beach near Magganitis with difficult foot access from the main road.
+- Source current/caution/surf/live sea-condition wording was not imported as scoring, windProfile, photos, water-quality, or live calm/protected/safe claims.
+- Across all public beach data after this pass: 2108 high, 306 medium, 326 low. Total non-high remaining: 632.
+
 ## Durable data rules
 
 - Do not show "4x4 only" as user-facing copy unless it is strictly verified and unavoidable. Prefer `Δύσβατος δρόμος`.
