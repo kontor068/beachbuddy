@@ -975,6 +975,12 @@ Recommended next order:
 - This small-island pass only changed confidence metadata and audit notes. Existing direct AllOverGreece, Naxos/Small Cyclades, Exploring Greece, Discover Greece, Nisyrosinfo, Hellenic Travel Group and related source URLs already support identity/location plus recorded access, terrain and service context. Source scenic/calm/clear/protected wording was not imported into scoring, windProfile, photos, water-quality, or live condition claims.
 - Across all public beach data after this pass: 2225 high, 204 medium, 311 low. Total non-high remaining: 515. Island-only non-high remaining: 322 of 2028.
 
+## Popular-source confidence pass CT - 2026-06-05
+
+- Skyros / Glyfada, Renes, Mikri Agalipa and Agalipa; Lesvos / Vathrachia, Bakeros and Chrousos naturist beach; and Samos / Aspres west coast, Chantaki, Platana and Trypiti promoted from medium/low to high confidence for static beach facts only after reviewing existing direct island/beach source coverage.
+- This island pass only changed confidence metadata and audit notes. Existing direct Visit Greece, Skyros municipality, Fish&Chill, Travel.gr, Samosin, Municipality of East Samos guide and related source URLs support identity/location plus recorded access, terrain and service context. OSM-only island records were intentionally left medium/low. Source scenic/calm/clear/protected wording was not imported into scoring, windProfile, photos, water-quality, or live condition claims.
+- Across all public beach data after this pass: 2236 high, 193 medium, 311 low. Total non-high remaining: 504. Island-only non-high remaining: 318 of 2042.
+
 ## Durable data rules
 
 - Do not show "4x4 only" as user-facing copy unless it is strictly verified and unavoidable. Prefer `Δύσβατος δρόμος`.
