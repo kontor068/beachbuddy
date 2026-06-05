@@ -10,7 +10,7 @@ interface UsageInsightsProps {
   t: any;
 }
 
-export const UsageInsights: React.FC<UsageInsightsProps> = ({ allBeaches, language, t }) => {
+export const UsageInsights: React.FC<UsageInsightsProps> = ({ allBeaches, language }) => {
   const insights = useMemo(() => getAnalyticsInsights(), []);
 
   const getBeachName = (id: number | string) => {

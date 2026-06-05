@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
-import { Send, Sparkles, MapPin, Waves, Wind } from 'lucide-react';
+import { Send, Sparkles } from 'lucide-react';
 import { Island, WeatherData, DailyForecast, LanguageCode } from '../types';
 import { getBeachAdvice, AiAdviceResponse } from '../services/aiAdvisorService';
 import { trackEvent } from '../services/analyticsService';

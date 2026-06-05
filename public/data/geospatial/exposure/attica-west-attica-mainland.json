@@ -1,0 +1,408 @@
+{
+  "schemaVersion": 1,
+  "generatedAt": "2026-06-02T21:57:20.558Z",
+  "region": {
+    "id": "attica-west-attica-mainland",
+    "name": "West Attica"
+  },
+  "source": {
+    "indexPath": "/data/geospatial/exposure/index.json"
+  },
+  "settings": {
+    "maxFetchKm": 25,
+    "stepKm": 1,
+    "nearshoreLandGraceKm": 1,
+    "nearshoreWaterSearchKm": 12,
+    "nearshoreWaterSearchStepKm": 0.5,
+    "fanAnglesDeg": [
+      -30,
+      -15,
+      0,
+      15,
+      30
+    ],
+    "sectors": [
+      "N",
+      "NE",
+      "E",
+      "SE",
+      "S",
+      "SW",
+      "W",
+      "NW"
+    ]
+  },
+  "summary": {
+    "beachCount": 6,
+    "generatedProfiles": 6,
+    "missingCoordinates": 0,
+    "sectors": {
+      "N": {
+        "protected": 6,
+        "partial": 0,
+        "exposed": 0
+      },
+      "NE": {
+        "protected": 5,
+        "partial": 1,
+        "exposed": 0
+      },
+      "E": {
+        "protected": 4,
+        "partial": 2,
+        "exposed": 0
+      },
+      "SE": {
+        "protected": 4,
+        "partial": 1,
+        "exposed": 1
+      },
+      "S": {
+        "protected": 4,
+        "partial": 2,
+        "exposed": 0
+      },
+      "SW": {
+        "protected": 1,
+        "partial": 5,
+        "exposed": 0
+      },
+      "W": {
+        "protected": 1,
+        "partial": 5,
+        "exposed": 0
+      },
+      "NW": {
+        "protected": 3,
+        "partial": 3,
+        "exposed": 0
+      }
+    }
+  },
+  "profiles": {
+    "187": {
+      "beachId": 187,
+      "name": {
+        "en": "Akrogiali",
+        "gr": "Ακρογιάλι"
+      },
+      "coordinates": {
+        "lat": 38.00926,
+        "lon": 23.43429
+      },
+      "sectors": {
+        "N": {
+          "level": "protected",
+          "fetchKm": 1,
+          "blockedRayRatio": 1
+        },
+        "NE": {
+          "level": "partial",
+          "fetchKm": 4,
+          "blockedRayRatio": 1
+        },
+        "E": {
+          "level": "partial",
+          "fetchKm": 7.4,
+          "blockedRayRatio": 1
+        },
+        "SE": {
+          "level": "partial",
+          "fetchKm": 3,
+          "blockedRayRatio": 1
+        },
+        "S": {
+          "level": "partial",
+          "fetchKm": 7.2,
+          "blockedRayRatio": 0.8
+        },
+        "SW": {
+          "level": "partial",
+          "fetchKm": 6.6,
+          "blockedRayRatio": 0.8
+        },
+        "W": {
+          "level": "protected",
+          "fetchKm": 1,
+          "blockedRayRatio": 1
+        },
+        "NW": {
+          "level": "protected",
+          "fetchKm": 1,
+          "blockedRayRatio": 1
+        }
+      },
+      "confidence": "low"
+    },
+    "188": {
+      "beachId": 188,
+      "name": {
+        "en": "Paralia Kinetas",
+        "gr": "Παραλία Κινέτας"
+      },
+      "coordinates": {
+        "lat": 37.9744,
+        "lon": 23.23986
+      },
+      "sectors": {
+        "N": {
+          "level": "protected",
+          "fetchKm": 1,
+          "blockedRayRatio": 1
+        },
+        "NE": {
+          "level": "protected",
+          "fetchKm": 1,
+          "blockedRayRatio": 1
+        },
+        "E": {
+          "level": "partial",
+          "fetchKm": 12.2,
+          "blockedRayRatio": 0.8
+        },
+        "SE": {
+          "level": "exposed",
+          "fetchKm": 23.2,
+          "blockedRayRatio": 0.2
+        },
+        "S": {
+          "level": "partial",
+          "fetchKm": 22.8,
+          "blockedRayRatio": 0.4
+        },
+        "SW": {
+          "level": "partial",
+          "fetchKm": 17,
+          "blockedRayRatio": 1
+        },
+        "W": {
+          "level": "partial",
+          "fetchKm": 5.8,
+          "blockedRayRatio": 1
+        },
+        "NW": {
+          "level": "protected",
+          "fetchKm": 1,
+          "blockedRayRatio": 1
+        }
+      },
+      "confidence": "low"
+    },
+    "189": {
+      "beachId": 189,
+      "name": {
+        "en": "Paralia Porto Germeno",
+        "gr": "Παραλία Πόρτο Γερμενό"
+      },
+      "coordinates": {
+        "lat": 38.14979,
+        "lon": 23.22466
+      },
+      "sectors": {
+        "N": {
+          "level": "protected",
+          "fetchKm": 1,
+          "blockedRayRatio": 1
+        },
+        "NE": {
+          "level": "protected",
+          "fetchKm": 1,
+          "blockedRayRatio": 1
+        },
+        "E": {
+          "level": "protected",
+          "fetchKm": 1,
+          "blockedRayRatio": 1
+        },
+        "SE": {
+          "level": "protected",
+          "fetchKm": 1,
+          "blockedRayRatio": 1
+        },
+        "S": {
+          "level": "protected",
+          "fetchKm": 1,
+          "blockedRayRatio": 1
+        },
+        "SW": {
+          "level": "protected",
+          "fetchKm": 1,
+          "blockedRayRatio": 1
+        },
+        "W": {
+          "level": "partial",
+          "fetchKm": 7,
+          "blockedRayRatio": 0.8
+        },
+        "NW": {
+          "level": "partial",
+          "fetchKm": 2.2,
+          "blockedRayRatio": 1
+        }
+      },
+      "confidence": "low"
+    },
+    "190": {
+      "beachId": 190,
+      "name": {
+        "en": "Paralia Porto Germeno (notio tmima)",
+        "gr": "Παραλία Πόρτο Γερμενό (νότιο τμήμα)"
+      },
+      "coordinates": {
+        "lat": 38.14636,
+        "lon": 23.22359
+      },
+      "sectors": {
+        "N": {
+          "level": "protected",
+          "fetchKm": 1,
+          "blockedRayRatio": 1
+        },
+        "NE": {
+          "level": "protected",
+          "fetchKm": 1,
+          "blockedRayRatio": 1
+        },
+        "E": {
+          "level": "protected",
+          "fetchKm": 1,
+          "blockedRayRatio": 1
+        },
+        "SE": {
+          "level": "protected",
+          "fetchKm": 1,
+          "blockedRayRatio": 1
+        },
+        "S": {
+          "level": "protected",
+          "fetchKm": 1,
+          "blockedRayRatio": 1
+        },
+        "SW": {
+          "level": "partial",
+          "fetchKm": 5.8,
+          "blockedRayRatio": 0.8
+        },
+        "W": {
+          "level": "partial",
+          "fetchKm": 13.2,
+          "blockedRayRatio": 0.6
+        },
+        "NW": {
+          "level": "partial",
+          "fetchKm": 3.6,
+          "blockedRayRatio": 1
+        }
+      },
+      "confidence": "low"
+    },
+    "191": {
+      "beachId": 191,
+      "name": {
+        "en": "Prosili",
+        "gr": "Προσήλι"
+      },
+      "coordinates": {
+        "lat": 38.16026,
+        "lon": 23.21157
+      },
+      "sectors": {
+        "N": {
+          "level": "protected",
+          "fetchKm": 1,
+          "blockedRayRatio": 1
+        },
+        "NE": {
+          "level": "protected",
+          "fetchKm": 1,
+          "blockedRayRatio": 1
+        },
+        "E": {
+          "level": "protected",
+          "fetchKm": 1,
+          "blockedRayRatio": 1
+        },
+        "SE": {
+          "level": "protected",
+          "fetchKm": 1,
+          "blockedRayRatio": 1
+        },
+        "S": {
+          "level": "protected",
+          "fetchKm": 1,
+          "blockedRayRatio": 1
+        },
+        "SW": {
+          "level": "partial",
+          "fetchKm": 9.8,
+          "blockedRayRatio": 0.8
+        },
+        "W": {
+          "level": "partial",
+          "fetchKm": 14.4,
+          "blockedRayRatio": 0.6
+        },
+        "NW": {
+          "level": "protected",
+          "fetchKm": 1,
+          "blockedRayRatio": 1
+        }
+      },
+      "confidence": "low"
+    },
+    "192": {
+      "beachId": 192,
+      "name": {
+        "en": "Psatha",
+        "gr": "Ψάθα"
+      },
+      "coordinates": {
+        "lat": 38.10829,
+        "lon": 23.21709
+      },
+      "sectors": {
+        "N": {
+          "level": "protected",
+          "fetchKm": 1.2,
+          "blockedRayRatio": 1
+        },
+        "NE": {
+          "level": "protected",
+          "fetchKm": 1,
+          "blockedRayRatio": 1
+        },
+        "E": {
+          "level": "protected",
+          "fetchKm": 1,
+          "blockedRayRatio": 1
+        },
+        "SE": {
+          "level": "protected",
+          "fetchKm": 1,
+          "blockedRayRatio": 1
+        },
+        "S": {
+          "level": "protected",
+          "fetchKm": 1,
+          "blockedRayRatio": 1
+        },
+        "SW": {
+          "level": "partial",
+          "fetchKm": 3.8,
+          "blockedRayRatio": 1
+        },
+        "W": {
+          "level": "partial",
+          "fetchKm": 18.2,
+          "blockedRayRatio": 0.4
+        },
+        "NW": {
+          "level": "partial",
+          "fetchKm": 13.4,
+          "blockedRayRatio": 0.6
+        }
+      },
+      "confidence": "low"
+    }
+  }
+}

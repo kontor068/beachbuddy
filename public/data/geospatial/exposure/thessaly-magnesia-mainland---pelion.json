@@ -1,0 +1,3324 @@
+{
+  "schemaVersion": 1,
+  "generatedAt": "2026-06-02T22:00:17.941Z",
+  "region": {
+    "id": "thessaly-magnesia-mainland---pelion",
+    "name": "Magnesia (Pelion)"
+  },
+  "source": {
+    "indexPath": "/data/geospatial/exposure/index.json"
+  },
+  "settings": {
+    "maxFetchKm": 25,
+    "stepKm": 1,
+    "nearshoreLandGraceKm": 1,
+    "nearshoreWaterSearchKm": 12,
+    "nearshoreWaterSearchStepKm": 0.5,
+    "fanAnglesDeg": [
+      -30,
+      -15,
+      0,
+      15,
+      30
+    ],
+    "sectors": [
+      "N",
+      "NE",
+      "E",
+      "SE",
+      "S",
+      "SW",
+      "W",
+      "NW"
+    ]
+  },
+  "summary": {
+    "beachCount": 60,
+    "generatedProfiles": 60,
+    "missingCoordinates": 0,
+    "sectors": {
+      "N": {
+        "protected": 24,
+        "partial": 6,
+        "exposed": 30
+      },
+      "NE": {
+        "protected": 7,
+        "partial": 23,
+        "exposed": 30
+      },
+      "E": {
+        "protected": 3,
+        "partial": 41,
+        "exposed": 16
+      },
+      "SE": {
+        "protected": 0,
+        "partial": 52,
+        "exposed": 8
+      },
+      "S": {
+        "protected": 15,
+        "partial": 45,
+        "exposed": 0
+      },
+      "SW": {
+        "protected": 34,
+        "partial": 26,
+        "exposed": 0
+      },
+      "W": {
+        "protected": 45,
+        "partial": 15,
+        "exposed": 0
+      },
+      "NW": {
+        "protected": 25,
+        "partial": 35,
+        "exposed": 0
+      }
+    }
+  },
+  "profiles": {
+    "2666": {
+      "beachId": 2666,
+      "name": {
+        "en": "Dermaria (Pteleos)",
+        "gr": "Δερμαριά (Πτελεός)"
+      },
+      "coordinates": {
+        "lat": 39.118,
+        "lon": 23.208
+      },
+      "sectors": {
+        "N": {
+          "level": "protected",
+          "fetchKm": 2,
+          "blockedRayRatio": 1
+        },
+        "NE": {
+          "level": "partial",
+          "fetchKm": 9.8,
+          "blockedRayRatio": 0.8
+        },
+        "E": {
+          "level": "exposed",
+          "fetchKm": 23,
+          "blockedRayRatio": 0.2
+        },
+        "SE": {
+          "level": "partial",
+          "fetchKm": 16.4,
+          "blockedRayRatio": 0.6
+        },
+        "S": {
+          "level": "partial",
+          "fetchKm": 10.8,
+          "blockedRayRatio": 1
+        },
+        "SW": {
+          "level": "partial",
+          "fetchKm": 13.4,
+          "blockedRayRatio": 0.8
+        },
+        "W": {
+          "level": "partial",
+          "fetchKm": 4,
+          "blockedRayRatio": 1
+        },
+        "NW": {
+          "level": "protected",
+          "fetchKm": 1.2,
+          "blockedRayRatio": 1
+        }
+      },
+      "confidence": "low"
+    },
+    "2667": {
+      "beachId": 2667,
+      "name": {
+        "en": "Izgkoyd (Trikeri)",
+        "gr": "Ιζγκούδ (Τρίκερι)"
+      },
+      "coordinates": {
+        "lat": 39.1,
+        "lon": 23.0595
+      },
+      "sectors": {
+        "N": {
+          "level": "partial",
+          "fetchKm": 15.2,
+          "blockedRayRatio": 0.6
+        },
+        "NE": {
+          "level": "protected",
+          "fetchKm": 1,
+          "blockedRayRatio": 1
+        },
+        "E": {
+          "level": "partial",
+          "fetchKm": 8.8,
+          "blockedRayRatio": 0.8
+        },
+        "SE": {
+          "level": "partial",
+          "fetchKm": 15.4,
+          "blockedRayRatio": 0.8
+        },
+        "S": {
+          "level": "partial",
+          "fetchKm": 8.6,
+          "blockedRayRatio": 1
+        },
+        "SW": {
+          "level": "partial",
+          "fetchKm": 7.6,
+          "blockedRayRatio": 1
+        },
+        "W": {
+          "level": "partial",
+          "fetchKm": 8.2,
+          "blockedRayRatio": 1
+        },
+        "NW": {
+          "level": "partial",
+          "fetchKm": 19.4,
+          "blockedRayRatio": 0.4
+        }
+      },
+      "confidence": "low"
+    },
+    "2668": {
+      "beachId": 2668,
+      "name": {
+        "en": "Koropi",
+        "gr": "Κορόπη"
+      },
+      "coordinates": {
+        "lat": 39.1885,
+        "lon": 23.287
+      },
+      "sectors": {
+        "N": {
+          "level": "protected",
+          "fetchKm": 1,
+          "blockedRayRatio": 1
+        },
+        "NE": {
+          "level": "partial",
+          "fetchKm": 12.4,
+          "blockedRayRatio": 0.6
+        },
+        "E": {
+          "level": "partial",
+          "fetchKm": 15.4,
+          "blockedRayRatio": 0.6
+        },
+        "SE": {
+          "level": "partial",
+          "fetchKm": 20.6,
+          "blockedRayRatio": 0.4
+        },
+        "S": {
+          "level": "partial",
+          "fetchKm": 17.8,
+          "blockedRayRatio": 0.8
+        },
+        "SW": {
+          "level": "partial",
+          "fetchKm": 12,
+          "blockedRayRatio": 0.8
+        },
+        "W": {
+          "level": "protected",
+          "fetchKm": 1,
+          "blockedRayRatio": 1
+        },
+        "NW": {
+          "level": "protected",
+          "fetchKm": 1,
+          "blockedRayRatio": 1
+        }
+      },
+      "confidence": "low"
+    },
+    "2669": {
+      "beachId": 2669,
+      "name": {
+        "en": "Elia",
+        "gr": "Ελιά"
+      },
+      "coordinates": {
+        "lat": 39.185,
+        "lon": 23.281
+      },
+      "sectors": {
+        "N": {
+          "level": "protected",
+          "fetchKm": 1,
+          "blockedRayRatio": 1
+        },
+        "NE": {
+          "level": "partial",
+          "fetchKm": 7.6,
+          "blockedRayRatio": 0.8
+        },
+        "E": {
+          "level": "partial",
+          "fetchKm": 18.4,
+          "blockedRayRatio": 0.4
+        },
+        "SE": {
+          "level": "exposed",
+          "fetchKm": 23.2,
+          "blockedRayRatio": 0.2
+        },
+        "S": {
+          "level": "partial",
+          "fetchKm": 17.2,
+          "blockedRayRatio": 0.8
+        },
+        "SW": {
+          "level": "partial",
+          "fetchKm": 11.8,
+          "blockedRayRatio": 0.8
+        },
+        "W": {
+          "level": "protected",
+          "fetchKm": 1,
+          "blockedRayRatio": 1
+        },
+        "NW": {
+          "level": "protected",
+          "fetchKm": 1,
+          "blockedRayRatio": 1
+        }
+      },
+      "confidence": "low"
+    },
+    "2670": {
+      "beachId": 2670,
+      "name": {
+        "en": "Agios Ioannis",
+        "gr": "Άγιος Ιωάννης"
+      },
+      "coordinates": {
+        "lat": 39.255,
+        "lon": 23.075
+      },
+      "sectors": {
+        "N": {
+          "level": "partial",
+          "fetchKm": 6.2,
+          "blockedRayRatio": 1
+        },
+        "NE": {
+          "level": "partial",
+          "fetchKm": 6.4,
+          "blockedRayRatio": 1
+        },
+        "E": {
+          "level": "partial",
+          "fetchKm": 8.6,
+          "blockedRayRatio": 1
+        },
+        "SE": {
+          "level": "partial",
+          "fetchKm": 12.4,
+          "blockedRayRatio": 1
+        },
+        "S": {
+          "level": "partial",
+          "fetchKm": 16.2,
+          "blockedRayRatio": 0.8
+        },
+        "SW": {
+          "level": "partial",
+          "fetchKm": 20,
+          "blockedRayRatio": 0.8
+        },
+        "W": {
+          "level": "partial",
+          "fetchKm": 18,
+          "blockedRayRatio": 1
+        },
+        "NW": {
+          "level": "partial",
+          "fetchKm": 12,
+          "blockedRayRatio": 1
+        }
+      },
+      "confidence": "low"
+    },
+    "2671": {
+      "beachId": 2671,
+      "name": {
+        "en": "Plakes (Volos)",
+        "gr": "Πλάκες (Βόλος)"
+      },
+      "coordinates": {
+        "lat": 39.3025,
+        "lon": 22.894
+      },
+      "sectors": {
+        "N": {
+          "level": "protected",
+          "fetchKm": 1,
+          "blockedRayRatio": 1
+        },
+        "NE": {
+          "level": "protected",
+          "fetchKm": 1,
+          "blockedRayRatio": 1
+        },
+        "E": {
+          "level": "partial",
+          "fetchKm": 14.2,
+          "blockedRayRatio": 0.8
+        },
+        "SE": {
+          "level": "partial",
+          "fetchKm": 23.4,
+          "blockedRayRatio": 0.6
+        },
+        "S": {
+          "level": "partial",
+          "fetchKm": 17,
+          "blockedRayRatio": 0.8
+        },
+        "SW": {
+          "level": "partial",
+          "fetchKm": 9.4,
+          "blockedRayRatio": 1
+        },
+        "W": {
+          "level": "partial",
+          "fetchKm": 3,
+          "blockedRayRatio": 1
+        },
+        "NW": {
+          "level": "protected",
+          "fetchKm": 1,
+          "blockedRayRatio": 1
+        }
+      },
+      "confidence": "low"
+    },
+    "2672": {
+      "beachId": 2672,
+      "name": {
+        "en": "Sykitsa (Soyrpi)",
+        "gr": "Συκίτσα (Σούρπη)"
+      },
+      "coordinates": {
+        "lat": 39.0885,
+        "lon": 22.9715
+      },
+      "sectors": {
+        "N": {
+          "level": "partial",
+          "fetchKm": 19.8,
+          "blockedRayRatio": 0.4
+        },
+        "NE": {
+          "level": "partial",
+          "fetchKm": 18,
+          "blockedRayRatio": 0.6
+        },
+        "E": {
+          "level": "partial",
+          "fetchKm": 13.4,
+          "blockedRayRatio": 0.8
+        },
+        "SE": {
+          "level": "partial",
+          "fetchKm": 11,
+          "blockedRayRatio": 0.8
+        },
+        "S": {
+          "level": "protected",
+          "fetchKm": 1.2,
+          "blockedRayRatio": 1
+        },
+        "SW": {
+          "level": "protected",
+          "fetchKm": 1,
+          "blockedRayRatio": 1
+        },
+        "W": {
+          "level": "protected",
+          "fetchKm": 1,
+          "blockedRayRatio": 1
+        },
+        "NW": {
+          "level": "partial",
+          "fetchKm": 5.4,
+          "blockedRayRatio": 1
+        }
+      },
+      "confidence": "low"
+    },
+    "2673": {
+      "beachId": 2673,
+      "name": {
+        "en": "Agioi Saranta",
+        "gr": "Άγιοι Σαράντα"
+      },
+      "coordinates": {
+        "lat": 39.424,
+        "lon": 23.135
+      },
+      "sectors": {
+        "N": {
+          "level": "exposed",
+          "fetchKm": 21.2,
+          "blockedRayRatio": 0.2
+        },
+        "NE": {
+          "level": "exposed",
+          "fetchKm": 25,
+          "blockedRayRatio": 0
+        },
+        "E": {
+          "level": "exposed",
+          "fetchKm": 25,
+          "blockedRayRatio": 0
+        },
+        "SE": {
+          "level": "partial",
+          "fetchKm": 15.4,
+          "blockedRayRatio": 0.4
+        },
+        "S": {
+          "level": "protected",
+          "fetchKm": 1,
+          "blockedRayRatio": 1
+        },
+        "SW": {
+          "level": "protected",
+          "fetchKm": 1,
+          "blockedRayRatio": 1
+        },
+        "W": {
+          "level": "protected",
+          "fetchKm": 1,
+          "blockedRayRatio": 1
+        },
+        "NW": {
+          "level": "partial",
+          "fetchKm": 6.8,
+          "blockedRayRatio": 0.8
+        }
+      },
+      "confidence": "low"
+    },
+    "2674": {
+      "beachId": 2674,
+      "name": {
+        "en": "Agios Ioannis (Zagora)",
+        "gr": "Άγιος Ιωάννης (Ζαγορά)"
+      },
+      "coordinates": {
+        "lat": 39.415,
+        "lon": 23.108
+      },
+      "sectors": {
+        "N": {
+          "level": "exposed",
+          "fetchKm": 20.8,
+          "blockedRayRatio": 0.2
+        },
+        "NE": {
+          "level": "exposed",
+          "fetchKm": 25,
+          "blockedRayRatio": 0
+        },
+        "E": {
+          "level": "exposed",
+          "fetchKm": 25,
+          "blockedRayRatio": 0
+        },
+        "SE": {
+          "level": "partial",
+          "fetchKm": 15.4,
+          "blockedRayRatio": 0.4
+        },
+        "S": {
+          "level": "protected",
+          "fetchKm": 1,
+          "blockedRayRatio": 1
+        },
+        "SW": {
+          "level": "protected",
+          "fetchKm": 1,
+          "blockedRayRatio": 1
+        },
+        "W": {
+          "level": "protected",
+          "fetchKm": 1,
+          "blockedRayRatio": 1
+        },
+        "NW": {
+          "level": "partial",
+          "fetchKm": 6.4,
+          "blockedRayRatio": 0.8
+        }
+      },
+      "confidence": "low"
+    },
+    "2675": {
+      "beachId": 2675,
+      "name": {
+        "en": "Anavros",
+        "gr": "Άναυρος"
+      },
+      "coordinates": {
+        "lat": 39.3605,
+        "lon": 22.954
+      },
+      "sectors": {
+        "N": {
+          "level": "protected",
+          "fetchKm": 1,
+          "blockedRayRatio": 1
+        },
+        "NE": {
+          "level": "protected",
+          "fetchKm": 1,
+          "blockedRayRatio": 1
+        },
+        "E": {
+          "level": "partial",
+          "fetchKm": 3,
+          "blockedRayRatio": 1
+        },
+        "SE": {
+          "level": "partial",
+          "fetchKm": 17,
+          "blockedRayRatio": 0.4
+        },
+        "S": {
+          "level": "partial",
+          "fetchKm": 16.8,
+          "blockedRayRatio": 0.4
+        },
+        "SW": {
+          "level": "partial",
+          "fetchKm": 2.4,
+          "blockedRayRatio": 1
+        },
+        "W": {
+          "level": "protected",
+          "fetchKm": 1,
+          "blockedRayRatio": 1
+        },
+        "NW": {
+          "level": "protected",
+          "fetchKm": 1,
+          "blockedRayRatio": 1
+        }
+      },
+      "confidence": "low"
+    },
+    "2676": {
+      "beachId": 2676,
+      "name": {
+        "en": "Agia Thymia",
+        "gr": "Αγιά Θυμιά"
+      },
+      "coordinates": {
+        "lat": 39.212,
+        "lon": 23.295
+      },
+      "sectors": {
+        "N": {
+          "level": "exposed",
+          "fetchKm": 20.6,
+          "blockedRayRatio": 0.2
+        },
+        "NE": {
+          "level": "exposed",
+          "fetchKm": 25,
+          "blockedRayRatio": 0
+        },
+        "E": {
+          "level": "partial",
+          "fetchKm": 19.4,
+          "blockedRayRatio": 0.4
+        },
+        "SE": {
+          "level": "partial",
+          "fetchKm": 11.6,
+          "blockedRayRatio": 0.8
+        },
+        "S": {
+          "level": "partial",
+          "fetchKm": 5.8,
+          "blockedRayRatio": 0.8
+        },
+        "SW": {
+          "level": "protected",
+          "fetchKm": 1,
+          "blockedRayRatio": 1
+        },
+        "W": {
+          "level": "protected",
+          "fetchKm": 1,
+          "blockedRayRatio": 1
+        },
+        "NW": {
+          "level": "partial",
+          "fetchKm": 6.2,
+          "blockedRayRatio": 0.8
+        }
+      },
+      "confidence": "low"
+    },
+    "2677": {
+      "beachId": 2677,
+      "name": {
+        "en": "Alykes (Volos)",
+        "gr": "Αλυκές (Βόλος)"
+      },
+      "coordinates": {
+        "lat": 39.338,
+        "lon": 22.9255
+      },
+      "sectors": {
+        "N": {
+          "level": "protected",
+          "fetchKm": 1.4,
+          "blockedRayRatio": 1
+        },
+        "NE": {
+          "level": "partial",
+          "fetchKm": 3.2,
+          "blockedRayRatio": 1
+        },
+        "E": {
+          "level": "partial",
+          "fetchKm": 9.2,
+          "blockedRayRatio": 1
+        },
+        "SE": {
+          "level": "partial",
+          "fetchKm": 21,
+          "blockedRayRatio": 0.6
+        },
+        "S": {
+          "level": "partial",
+          "fetchKm": 14.8,
+          "blockedRayRatio": 0.8
+        },
+        "SW": {
+          "level": "protected",
+          "fetchKm": 1.2,
+          "blockedRayRatio": 1
+        },
+        "W": {
+          "level": "protected",
+          "fetchKm": 1,
+          "blockedRayRatio": 1
+        },
+        "NW": {
+          "level": "protected",
+          "fetchKm": 1,
+          "blockedRayRatio": 1
+        }
+      },
+      "confidence": "low"
+    },
+    "2678": {
+      "beachId": 2678,
+      "name": {
+        "en": "Ampovos",
+        "gr": "Αμποβός"
+      },
+      "coordinates": {
+        "lat": 39.177,
+        "lon": 23.288
+      },
+      "sectors": {
+        "N": {
+          "level": "protected",
+          "fetchKm": 1,
+          "blockedRayRatio": 1
+        },
+        "NE": {
+          "level": "partial",
+          "fetchKm": 7.8,
+          "blockedRayRatio": 0.8
+        },
+        "E": {
+          "level": "partial",
+          "fetchKm": 18.4,
+          "blockedRayRatio": 0.4
+        },
+        "SE": {
+          "level": "exposed",
+          "fetchKm": 23.2,
+          "blockedRayRatio": 0.2
+        },
+        "S": {
+          "level": "partial",
+          "fetchKm": 17.2,
+          "blockedRayRatio": 0.8
+        },
+        "SW": {
+          "level": "partial",
+          "fetchKm": 13.2,
+          "blockedRayRatio": 0.8
+        },
+        "W": {
+          "level": "partial",
+          "fetchKm": 2.4,
+          "blockedRayRatio": 1
+        },
+        "NW": {
+          "level": "protected",
+          "fetchKm": 1,
+          "blockedRayRatio": 1
+        }
+      },
+      "confidence": "low"
+    },
+    "2679": {
+      "beachId": 2679,
+      "name": {
+        "en": "Vathia Spilia",
+        "gr": "Βαθιά Σπηλιά"
+      },
+      "coordinates": {
+        "lat": 39.189,
+        "lon": 23.299
+      },
+      "sectors": {
+        "N": {
+          "level": "partial",
+          "fetchKm": 5.8,
+          "blockedRayRatio": 0.8
+        },
+        "NE": {
+          "level": "partial",
+          "fetchKm": 17,
+          "blockedRayRatio": 0.4
+        },
+        "E": {
+          "level": "partial",
+          "fetchKm": 14.2,
+          "blockedRayRatio": 0.6
+        },
+        "SE": {
+          "level": "partial",
+          "fetchKm": 20.8,
+          "blockedRayRatio": 0.4
+        },
+        "S": {
+          "level": "partial",
+          "fetchKm": 20,
+          "blockedRayRatio": 0.8
+        },
+        "SW": {
+          "level": "partial",
+          "fetchKm": 12.4,
+          "blockedRayRatio": 0.8
+        },
+        "W": {
+          "level": "protected",
+          "fetchKm": 1,
+          "blockedRayRatio": 1
+        },
+        "NW": {
+          "level": "protected",
+          "fetchKm": 1,
+          "blockedRayRatio": 1
+        }
+      },
+      "confidence": "low"
+    },
+    "2680": {
+      "beachId": 2680,
+      "name": {
+        "en": "Vlachorema",
+        "gr": "Βλαχόρεμα"
+      },
+      "coordinates": {
+        "lat": 39.194,
+        "lon": 23.283
+      },
+      "sectors": {
+        "N": {
+          "level": "exposed",
+          "fetchKm": 20.2,
+          "blockedRayRatio": 0.2
+        },
+        "NE": {
+          "level": "exposed",
+          "fetchKm": 25,
+          "blockedRayRatio": 0
+        },
+        "E": {
+          "level": "partial",
+          "fetchKm": 18.6,
+          "blockedRayRatio": 0.4
+        },
+        "SE": {
+          "level": "partial",
+          "fetchKm": 10.4,
+          "blockedRayRatio": 0.8
+        },
+        "S": {
+          "level": "partial",
+          "fetchKm": 5.8,
+          "blockedRayRatio": 0.8
+        },
+        "SW": {
+          "level": "protected",
+          "fetchKm": 1,
+          "blockedRayRatio": 1
+        },
+        "W": {
+          "level": "protected",
+          "fetchKm": 1,
+          "blockedRayRatio": 1
+        },
+        "NW": {
+          "level": "partial",
+          "fetchKm": 5.8,
+          "blockedRayRatio": 0.8
+        }
+      },
+      "confidence": "low"
+    },
+    "2681": {
+      "beachId": 2681,
+      "name": {
+        "en": "Vromoneri",
+        "gr": "Βρωμονέρι"
+      },
+      "coordinates": {
+        "lat": 39.173,
+        "lon": 23.278
+      },
+      "sectors": {
+        "N": {
+          "level": "protected",
+          "fetchKm": 1,
+          "blockedRayRatio": 1
+        },
+        "NE": {
+          "level": "partial",
+          "fetchKm": 8,
+          "blockedRayRatio": 0.8
+        },
+        "E": {
+          "level": "partial",
+          "fetchKm": 19,
+          "blockedRayRatio": 0.4
+        },
+        "SE": {
+          "level": "exposed",
+          "fetchKm": 22.8,
+          "blockedRayRatio": 0.2
+        },
+        "S": {
+          "level": "partial",
+          "fetchKm": 16.2,
+          "blockedRayRatio": 0.8
+        },
+        "SW": {
+          "level": "partial",
+          "fetchKm": 13.8,
+          "blockedRayRatio": 0.8
+        },
+        "W": {
+          "level": "partial",
+          "fetchKm": 3.2,
+          "blockedRayRatio": 1
+        },
+        "NW": {
+          "level": "protected",
+          "fetchKm": 1,
+          "blockedRayRatio": 1
+        }
+      },
+      "confidence": "low"
+    },
+    "2682": {
+      "beachId": 2682,
+      "name": {
+        "en": "Goyrna",
+        "gr": "Γούρνα"
+      },
+      "coordinates": {
+        "lat": 39.182,
+        "lon": 23.289
+      },
+      "sectors": {
+        "N": {
+          "level": "protected",
+          "fetchKm": 1,
+          "blockedRayRatio": 1
+        },
+        "NE": {
+          "level": "partial",
+          "fetchKm": 7.4,
+          "blockedRayRatio": 0.8
+        },
+        "E": {
+          "level": "partial",
+          "fetchKm": 14.2,
+          "blockedRayRatio": 0.6
+        },
+        "SE": {
+          "level": "partial",
+          "fetchKm": 19.8,
+          "blockedRayRatio": 0.4
+        },
+        "S": {
+          "level": "partial",
+          "fetchKm": 18.2,
+          "blockedRayRatio": 0.8
+        },
+        "SW": {
+          "level": "partial",
+          "fetchKm": 12,
+          "blockedRayRatio": 0.8
+        },
+        "W": {
+          "level": "protected",
+          "fetchKm": 1,
+          "blockedRayRatio": 1
+        },
+        "NW": {
+          "level": "protected",
+          "fetchKm": 1,
+          "blockedRayRatio": 1
+        }
+      },
+      "confidence": "low"
+    },
+    "2683": {
+      "beachId": 2683,
+      "name": {
+        "en": "Theotokos",
+        "gr": "Θεοτόκος"
+      },
+      "coordinates": {
+        "lat": 39.175,
+        "lon": 23.276
+      },
+      "sectors": {
+        "N": {
+          "level": "protected",
+          "fetchKm": 1,
+          "blockedRayRatio": 1
+        },
+        "NE": {
+          "level": "partial",
+          "fetchKm": 8,
+          "blockedRayRatio": 0.8
+        },
+        "E": {
+          "level": "partial",
+          "fetchKm": 18.6,
+          "blockedRayRatio": 0.4
+        },
+        "SE": {
+          "level": "exposed",
+          "fetchKm": 23,
+          "blockedRayRatio": 0.2
+        },
+        "S": {
+          "level": "partial",
+          "fetchKm": 16.6,
+          "blockedRayRatio": 0.8
+        },
+        "SW": {
+          "level": "partial",
+          "fetchKm": 12.8,
+          "blockedRayRatio": 0.8
+        },
+        "W": {
+          "level": "partial",
+          "fetchKm": 2.2,
+          "blockedRayRatio": 1
+        },
+        "NW": {
+          "level": "protected",
+          "fetchKm": 1,
+          "blockedRayRatio": 1
+        }
+      },
+      "confidence": "low"
+    },
+    "2684": {
+      "beachId": 2684,
+      "name": {
+        "en": "Kalamies (Agria)",
+        "gr": "Καλαμιές (Αγριά)"
+      },
+      "coordinates": {
+        "lat": 39.3425,
+        "lon": 22.989
+      },
+      "sectors": {
+        "N": {
+          "level": "protected",
+          "fetchKm": 1,
+          "blockedRayRatio": 1
+        },
+        "NE": {
+          "level": "protected",
+          "fetchKm": 1,
+          "blockedRayRatio": 1
+        },
+        "E": {
+          "level": "protected",
+          "fetchKm": 1.6,
+          "blockedRayRatio": 1
+        },
+        "SE": {
+          "level": "partial",
+          "fetchKm": 16,
+          "blockedRayRatio": 0.4
+        },
+        "S": {
+          "level": "partial",
+          "fetchKm": 24.2,
+          "blockedRayRatio": 0.4
+        },
+        "SW": {
+          "level": "partial",
+          "fetchKm": 12.2,
+          "blockedRayRatio": 1
+        },
+        "W": {
+          "level": "partial",
+          "fetchKm": 4.2,
+          "blockedRayRatio": 1
+        },
+        "NW": {
+          "level": "partial",
+          "fetchKm": 2.2,
+          "blockedRayRatio": 1
+        }
+      },
+      "confidence": "low"
+    },
+    "2685": {
+      "beachId": 2685,
+      "name": {
+        "en": "Kallifteri",
+        "gr": "Καλλιφτέρη"
+      },
+      "coordinates": {
+        "lat": 39.191,
+        "lon": 23.294
+      },
+      "sectors": {
+        "N": {
+          "level": "exposed",
+          "fetchKm": 20.2,
+          "blockedRayRatio": 0.2
+        },
+        "NE": {
+          "level": "exposed",
+          "fetchKm": 25,
+          "blockedRayRatio": 0
+        },
+        "E": {
+          "level": "partial",
+          "fetchKm": 18.8,
+          "blockedRayRatio": 0.4
+        },
+        "SE": {
+          "level": "partial",
+          "fetchKm": 10.6,
+          "blockedRayRatio": 0.8
+        },
+        "S": {
+          "level": "partial",
+          "fetchKm": 5.8,
+          "blockedRayRatio": 0.8
+        },
+        "SW": {
+          "level": "protected",
+          "fetchKm": 1,
+          "blockedRayRatio": 1
+        },
+        "W": {
+          "level": "protected",
+          "fetchKm": 1,
+          "blockedRayRatio": 1
+        },
+        "NW": {
+          "level": "partial",
+          "fetchKm": 5.8,
+          "blockedRayRatio": 0.8
+        }
+      },
+      "confidence": "low"
+    },
+    "2686": {
+      "beachId": 2686,
+      "name": {
+        "en": "Karnagio (Agria)",
+        "gr": "Καρνάγιο (Αγριά)"
+      },
+      "coordinates": {
+        "lat": 39.348,
+        "lon": 22.986
+      },
+      "sectors": {
+        "N": {
+          "level": "protected",
+          "fetchKm": 1,
+          "blockedRayRatio": 1
+        },
+        "NE": {
+          "level": "protected",
+          "fetchKm": 1,
+          "blockedRayRatio": 1
+        },
+        "E": {
+          "level": "protected",
+          "fetchKm": 1.4,
+          "blockedRayRatio": 1
+        },
+        "SE": {
+          "level": "partial",
+          "fetchKm": 15.8,
+          "blockedRayRatio": 0.4
+        },
+        "S": {
+          "level": "partial",
+          "fetchKm": 24.2,
+          "blockedRayRatio": 0.4
+        },
+        "SW": {
+          "level": "partial",
+          "fetchKm": 12.2,
+          "blockedRayRatio": 1
+        },
+        "W": {
+          "level": "partial",
+          "fetchKm": 3.6,
+          "blockedRayRatio": 1
+        },
+        "NW": {
+          "level": "protected",
+          "fetchKm": 1.8,
+          "blockedRayRatio": 1
+        }
+      },
+      "confidence": "low"
+    },
+    "2687": {
+      "beachId": 2687,
+      "name": {
+        "en": "Kastri",
+        "gr": "Καστρί"
+      },
+      "coordinates": {
+        "lat": 39.205,
+        "lon": 23.302
+      },
+      "sectors": {
+        "N": {
+          "level": "exposed",
+          "fetchKm": 20.2,
+          "blockedRayRatio": 0.2
+        },
+        "NE": {
+          "level": "exposed",
+          "fetchKm": 25,
+          "blockedRayRatio": 0
+        },
+        "E": {
+          "level": "partial",
+          "fetchKm": 18.8,
+          "blockedRayRatio": 0.4
+        },
+        "SE": {
+          "level": "partial",
+          "fetchKm": 10.6,
+          "blockedRayRatio": 0.8
+        },
+        "S": {
+          "level": "partial",
+          "fetchKm": 5.8,
+          "blockedRayRatio": 0.8
+        },
+        "SW": {
+          "level": "protected",
+          "fetchKm": 1,
+          "blockedRayRatio": 1
+        },
+        "W": {
+          "level": "protected",
+          "fetchKm": 1,
+          "blockedRayRatio": 1
+        },
+        "NW": {
+          "level": "partial",
+          "fetchKm": 5.8,
+          "blockedRayRatio": 0.8
+        }
+      },
+      "confidence": "low"
+    },
+    "2688": {
+      "beachId": 2688,
+      "name": {
+        "en": "Klossoy",
+        "gr": "Κλωσσού"
+      },
+      "coordinates": {
+        "lat": 39.197,
+        "lon": 23.3
+      },
+      "sectors": {
+        "N": {
+          "level": "exposed",
+          "fetchKm": 21,
+          "blockedRayRatio": 0.2
+        },
+        "NE": {
+          "level": "exposed",
+          "fetchKm": 25,
+          "blockedRayRatio": 0
+        },
+        "E": {
+          "level": "partial",
+          "fetchKm": 18.8,
+          "blockedRayRatio": 0.4
+        },
+        "SE": {
+          "level": "partial",
+          "fetchKm": 10.6,
+          "blockedRayRatio": 0.8
+        },
+        "S": {
+          "level": "partial",
+          "fetchKm": 5.8,
+          "blockedRayRatio": 0.8
+        },
+        "SW": {
+          "level": "protected",
+          "fetchKm": 1,
+          "blockedRayRatio": 1
+        },
+        "W": {
+          "level": "protected",
+          "fetchKm": 1,
+          "blockedRayRatio": 1
+        },
+        "NW": {
+          "level": "partial",
+          "fetchKm": 6.6,
+          "blockedRayRatio": 0.8
+        }
+      },
+      "confidence": "low"
+    },
+    "2689": {
+      "beachId": 2689,
+      "name": {
+        "en": "Komos",
+        "gr": "Κομός"
+      },
+      "coordinates": {
+        "lat": 39.21,
+        "lon": 23.296
+      },
+      "sectors": {
+        "N": {
+          "level": "exposed",
+          "fetchKm": 20.6,
+          "blockedRayRatio": 0.2
+        },
+        "NE": {
+          "level": "exposed",
+          "fetchKm": 25,
+          "blockedRayRatio": 0
+        },
+        "E": {
+          "level": "partial",
+          "fetchKm": 19.2,
+          "blockedRayRatio": 0.4
+        },
+        "SE": {
+          "level": "partial",
+          "fetchKm": 11.2,
+          "blockedRayRatio": 0.8
+        },
+        "S": {
+          "level": "partial",
+          "fetchKm": 5.8,
+          "blockedRayRatio": 0.8
+        },
+        "SW": {
+          "level": "protected",
+          "fetchKm": 1,
+          "blockedRayRatio": 1
+        },
+        "W": {
+          "level": "protected",
+          "fetchKm": 1,
+          "blockedRayRatio": 1
+        },
+        "NW": {
+          "level": "partial",
+          "fetchKm": 6.2,
+          "blockedRayRatio": 0.8
+        }
+      },
+      "confidence": "low"
+    },
+    "2690": {
+      "beachId": 2690,
+      "name": {
+        "en": "Lithos",
+        "gr": "Λίθος"
+      },
+      "coordinates": {
+        "lat": 39.218,
+        "lon": 23.293
+      },
+      "sectors": {
+        "N": {
+          "level": "exposed",
+          "fetchKm": 20.2,
+          "blockedRayRatio": 0.2
+        },
+        "NE": {
+          "level": "exposed",
+          "fetchKm": 25,
+          "blockedRayRatio": 0
+        },
+        "E": {
+          "level": "partial",
+          "fetchKm": 20,
+          "blockedRayRatio": 0.4
+        },
+        "SE": {
+          "level": "partial",
+          "fetchKm": 12.4,
+          "blockedRayRatio": 0.8
+        },
+        "S": {
+          "level": "partial",
+          "fetchKm": 5.8,
+          "blockedRayRatio": 0.8
+        },
+        "SW": {
+          "level": "protected",
+          "fetchKm": 1,
+          "blockedRayRatio": 1
+        },
+        "W": {
+          "level": "protected",
+          "fetchKm": 1,
+          "blockedRayRatio": 1
+        },
+        "NW": {
+          "level": "partial",
+          "fetchKm": 5.8,
+          "blockedRayRatio": 0.8
+        }
+      },
+      "confidence": "low"
+    },
+    "2691": {
+      "beachId": 2691,
+      "name": {
+        "en": "Lagoydi",
+        "gr": "Λαγούδι"
+      },
+      "coordinates": {
+        "lat": 39.207,
+        "lon": 23.2985
+      },
+      "sectors": {
+        "N": {
+          "level": "exposed",
+          "fetchKm": 20.6,
+          "blockedRayRatio": 0.2
+        },
+        "NE": {
+          "level": "exposed",
+          "fetchKm": 25,
+          "blockedRayRatio": 0
+        },
+        "E": {
+          "level": "partial",
+          "fetchKm": 19.2,
+          "blockedRayRatio": 0.4
+        },
+        "SE": {
+          "level": "partial",
+          "fetchKm": 11.2,
+          "blockedRayRatio": 0.8
+        },
+        "S": {
+          "level": "partial",
+          "fetchKm": 5.8,
+          "blockedRayRatio": 0.8
+        },
+        "SW": {
+          "level": "protected",
+          "fetchKm": 1,
+          "blockedRayRatio": 1
+        },
+        "W": {
+          "level": "protected",
+          "fetchKm": 1,
+          "blockedRayRatio": 1
+        },
+        "NW": {
+          "level": "partial",
+          "fetchKm": 6.2,
+          "blockedRayRatio": 0.8
+        }
+      },
+      "confidence": "low"
+    },
+    "2692": {
+      "beachId": 2692,
+      "name": {
+        "en": "Lepetoys",
+        "gr": "Λεπετούς"
+      },
+      "coordinates": {
+        "lat": 39.196,
+        "lon": 23.285
+      },
+      "sectors": {
+        "N": {
+          "level": "exposed",
+          "fetchKm": 20.2,
+          "blockedRayRatio": 0.2
+        },
+        "NE": {
+          "level": "exposed",
+          "fetchKm": 25,
+          "blockedRayRatio": 0
+        },
+        "E": {
+          "level": "partial",
+          "fetchKm": 19.2,
+          "blockedRayRatio": 0.4
+        },
+        "SE": {
+          "level": "partial",
+          "fetchKm": 11.2,
+          "blockedRayRatio": 0.8
+        },
+        "S": {
+          "level": "partial",
+          "fetchKm": 5.8,
+          "blockedRayRatio": 0.8
+        },
+        "SW": {
+          "level": "protected",
+          "fetchKm": 1,
+          "blockedRayRatio": 1
+        },
+        "W": {
+          "level": "protected",
+          "fetchKm": 1,
+          "blockedRayRatio": 1
+        },
+        "NW": {
+          "level": "partial",
+          "fetchKm": 5.8,
+          "blockedRayRatio": 0.8
+        }
+      },
+      "confidence": "low"
+    },
+    "2693": {
+      "beachId": 2693,
+      "name": {
+        "en": "Lefokastro",
+        "gr": "Λεφόκαστρο"
+      },
+      "coordinates": {
+        "lat": 39.178,
+        "lon": 23.287
+      },
+      "sectors": {
+        "N": {
+          "level": "protected",
+          "fetchKm": 1,
+          "blockedRayRatio": 1
+        },
+        "NE": {
+          "level": "partial",
+          "fetchKm": 12.2,
+          "blockedRayRatio": 0.6
+        },
+        "E": {
+          "level": "partial",
+          "fetchKm": 15.2,
+          "blockedRayRatio": 0.6
+        },
+        "SE": {
+          "level": "partial",
+          "fetchKm": 20.6,
+          "blockedRayRatio": 0.4
+        },
+        "S": {
+          "level": "partial",
+          "fetchKm": 18,
+          "blockedRayRatio": 0.8
+        },
+        "SW": {
+          "level": "partial",
+          "fetchKm": 12,
+          "blockedRayRatio": 0.8
+        },
+        "W": {
+          "level": "protected",
+          "fetchKm": 1,
+          "blockedRayRatio": 1
+        },
+        "NW": {
+          "level": "protected",
+          "fetchKm": 1,
+          "blockedRayRatio": 1
+        }
+      },
+      "confidence": "low"
+    },
+    "2694": {
+      "beachId": 2694,
+      "name": {
+        "en": "Limnionas",
+        "gr": "Λημνιώνας"
+      },
+      "coordinates": {
+        "lat": 39.186,
+        "lon": 23.288
+      },
+      "sectors": {
+        "N": {
+          "level": "protected",
+          "fetchKm": 1,
+          "blockedRayRatio": 1
+        },
+        "NE": {
+          "level": "partial",
+          "fetchKm": 12.2,
+          "blockedRayRatio": 0.6
+        },
+        "E": {
+          "level": "partial",
+          "fetchKm": 14.2,
+          "blockedRayRatio": 0.6
+        },
+        "SE": {
+          "level": "partial",
+          "fetchKm": 20.8,
+          "blockedRayRatio": 0.4
+        },
+        "S": {
+          "level": "partial",
+          "fetchKm": 19.4,
+          "blockedRayRatio": 0.8
+        },
+        "SW": {
+          "level": "partial",
+          "fetchKm": 12,
+          "blockedRayRatio": 0.8
+        },
+        "W": {
+          "level": "protected",
+          "fetchKm": 1,
+          "blockedRayRatio": 1
+        },
+        "NW": {
+          "level": "protected",
+          "fetchKm": 1,
+          "blockedRayRatio": 1
+        }
+      },
+      "confidence": "low"
+    },
+    "2695": {
+      "beachId": 2695,
+      "name": {
+        "en": "Lyri",
+        "gr": "Λύρη"
+      },
+      "coordinates": {
+        "lat": 39.203,
+        "lon": 23.291
+      },
+      "sectors": {
+        "N": {
+          "level": "exposed",
+          "fetchKm": 20.2,
+          "blockedRayRatio": 0.2
+        },
+        "NE": {
+          "level": "exposed",
+          "fetchKm": 25,
+          "blockedRayRatio": 0
+        },
+        "E": {
+          "level": "partial",
+          "fetchKm": 18.8,
+          "blockedRayRatio": 0.4
+        },
+        "SE": {
+          "level": "partial",
+          "fetchKm": 10.6,
+          "blockedRayRatio": 0.8
+        },
+        "S": {
+          "level": "partial",
+          "fetchKm": 5.8,
+          "blockedRayRatio": 0.8
+        },
+        "SW": {
+          "level": "protected",
+          "fetchKm": 1,
+          "blockedRayRatio": 1
+        },
+        "W": {
+          "level": "protected",
+          "fetchKm": 1,
+          "blockedRayRatio": 1
+        },
+        "NW": {
+          "level": "partial",
+          "fetchKm": 5.8,
+          "blockedRayRatio": 0.8
+        }
+      },
+      "confidence": "low"
+    },
+    "2696": {
+      "beachId": 2696,
+      "name": {
+        "en": "Melani",
+        "gr": "Μελανή"
+      },
+      "coordinates": {
+        "lat": 39.22,
+        "lon": 23.2875
+      },
+      "sectors": {
+        "N": {
+          "level": "exposed",
+          "fetchKm": 20.2,
+          "blockedRayRatio": 0.2
+        },
+        "NE": {
+          "level": "exposed",
+          "fetchKm": 25,
+          "blockedRayRatio": 0
+        },
+        "E": {
+          "level": "partial",
+          "fetchKm": 20,
+          "blockedRayRatio": 0.4
+        },
+        "SE": {
+          "level": "partial",
+          "fetchKm": 12.4,
+          "blockedRayRatio": 0.8
+        },
+        "S": {
+          "level": "partial",
+          "fetchKm": 5.8,
+          "blockedRayRatio": 0.8
+        },
+        "SW": {
+          "level": "protected",
+          "fetchKm": 1,
+          "blockedRayRatio": 1
+        },
+        "W": {
+          "level": "protected",
+          "fetchKm": 1,
+          "blockedRayRatio": 1
+        },
+        "NW": {
+          "level": "partial",
+          "fetchKm": 5.8,
+          "blockedRayRatio": 0.8
+        }
+      },
+      "confidence": "low"
+    },
+    "2697": {
+      "beachId": 2697,
+      "name": {
+        "en": "Mikro",
+        "gr": "Μικρό"
+      },
+      "coordinates": {
+        "lat": 39.2015,
+        "lon": 23.2855
+      },
+      "sectors": {
+        "N": {
+          "level": "exposed",
+          "fetchKm": 20.2,
+          "blockedRayRatio": 0.2
+        },
+        "NE": {
+          "level": "exposed",
+          "fetchKm": 25,
+          "blockedRayRatio": 0
+        },
+        "E": {
+          "level": "partial",
+          "fetchKm": 19,
+          "blockedRayRatio": 0.4
+        },
+        "SE": {
+          "level": "partial",
+          "fetchKm": 10.8,
+          "blockedRayRatio": 0.8
+        },
+        "S": {
+          "level": "partial",
+          "fetchKm": 5.8,
+          "blockedRayRatio": 0.8
+        },
+        "SW": {
+          "level": "protected",
+          "fetchKm": 1,
+          "blockedRayRatio": 1
+        },
+        "W": {
+          "level": "protected",
+          "fetchKm": 1,
+          "blockedRayRatio": 1
+        },
+        "NW": {
+          "level": "partial",
+          "fetchKm": 5.8,
+          "blockedRayRatio": 0.8
+        }
+      },
+      "confidence": "low"
+    },
+    "2698": {
+      "beachId": 2698,
+      "name": {
+        "en": "Mortitsa",
+        "gr": "Μορτίτσα"
+      },
+      "coordinates": {
+        "lat": 39.183,
+        "lon": 23.291
+      },
+      "sectors": {
+        "N": {
+          "level": "protected",
+          "fetchKm": 1,
+          "blockedRayRatio": 1
+        },
+        "NE": {
+          "level": "partial",
+          "fetchKm": 7.4,
+          "blockedRayRatio": 0.8
+        },
+        "E": {
+          "level": "partial",
+          "fetchKm": 14.2,
+          "blockedRayRatio": 0.6
+        },
+        "SE": {
+          "level": "partial",
+          "fetchKm": 20.8,
+          "blockedRayRatio": 0.4
+        },
+        "S": {
+          "level": "partial",
+          "fetchKm": 19.2,
+          "blockedRayRatio": 0.8
+        },
+        "SW": {
+          "level": "partial",
+          "fetchKm": 12,
+          "blockedRayRatio": 0.8
+        },
+        "W": {
+          "level": "protected",
+          "fetchKm": 1,
+          "blockedRayRatio": 1
+        },
+        "NW": {
+          "level": "protected",
+          "fetchKm": 1,
+          "blockedRayRatio": 1
+        }
+      },
+      "confidence": "low"
+    },
+    "2699": {
+      "beachId": 2699,
+      "name": {
+        "en": "Mourtias",
+        "gr": "Μουρτιάς"
+      },
+      "coordinates": {
+        "lat": 39.1835,
+        "lon": 23.2925
+      },
+      "sectors": {
+        "N": {
+          "level": "protected",
+          "fetchKm": 1,
+          "blockedRayRatio": 1
+        },
+        "NE": {
+          "level": "partial",
+          "fetchKm": 12.2,
+          "blockedRayRatio": 0.6
+        },
+        "E": {
+          "level": "partial",
+          "fetchKm": 14.2,
+          "blockedRayRatio": 0.6
+        },
+        "SE": {
+          "level": "partial",
+          "fetchKm": 20.8,
+          "blockedRayRatio": 0.4
+        },
+        "S": {
+          "level": "partial",
+          "fetchKm": 19.4,
+          "blockedRayRatio": 0.8
+        },
+        "SW": {
+          "level": "partial",
+          "fetchKm": 12,
+          "blockedRayRatio": 0.8
+        },
+        "W": {
+          "level": "protected",
+          "fetchKm": 1,
+          "blockedRayRatio": 1
+        },
+        "NW": {
+          "level": "protected",
+          "fetchKm": 1,
+          "blockedRayRatio": 1
+        }
+      },
+      "confidence": "low"
+    },
+    "2700": {
+      "beachId": 2700,
+      "name": {
+        "en": "Mylopotamos",
+        "gr": "Μυλοπόταμος"
+      },
+      "coordinates": {
+        "lat": 39.389,
+        "lon": 23.123
+      },
+      "sectors": {
+        "N": {
+          "level": "exposed",
+          "fetchKm": 25,
+          "blockedRayRatio": 0
+        },
+        "NE": {
+          "level": "exposed",
+          "fetchKm": 25,
+          "blockedRayRatio": 0
+        },
+        "E": {
+          "level": "exposed",
+          "fetchKm": 25,
+          "blockedRayRatio": 0
+        },
+        "SE": {
+          "level": "partial",
+          "fetchKm": 15.4,
+          "blockedRayRatio": 0.4
+        },
+        "S": {
+          "level": "protected",
+          "fetchKm": 1,
+          "blockedRayRatio": 1
+        },
+        "SW": {
+          "level": "protected",
+          "fetchKm": 1,
+          "blockedRayRatio": 1
+        },
+        "W": {
+          "level": "protected",
+          "fetchKm": 1,
+          "blockedRayRatio": 1
+        },
+        "NW": {
+          "level": "partial",
+          "fetchKm": 10.6,
+          "blockedRayRatio": 0.6
+        }
+      },
+      "confidence": "low"
+    },
+    "2701": {
+      "beachId": 2701,
+      "name": {
+        "en": "Nea Agchialos",
+        "gr": "Νέα Αγχίαλος"
+      },
+      "coordinates": {
+        "lat": 39.2845,
+        "lon": 22.838
+      },
+      "sectors": {
+        "N": {
+          "level": "protected",
+          "fetchKm": 1,
+          "blockedRayRatio": 1
+        },
+        "NE": {
+          "level": "protected",
+          "fetchKm": 1.4,
+          "blockedRayRatio": 1
+        },
+        "E": {
+          "level": "partial",
+          "fetchKm": 15.8,
+          "blockedRayRatio": 0.4
+        },
+        "SE": {
+          "level": "exposed",
+          "fetchKm": 22.4,
+          "blockedRayRatio": 0.2
+        },
+        "S": {
+          "level": "partial",
+          "fetchKm": 11,
+          "blockedRayRatio": 0.8
+        },
+        "SW": {
+          "level": "protected",
+          "fetchKm": 2,
+          "blockedRayRatio": 1
+        },
+        "W": {
+          "level": "protected",
+          "fetchKm": 1,
+          "blockedRayRatio": 1
+        },
+        "NW": {
+          "level": "protected",
+          "fetchKm": 1,
+          "blockedRayRatio": 1
+        }
+      },
+      "confidence": "low"
+    },
+    "2702": {
+      "beachId": 2702,
+      "name": {
+        "en": "Ntamoychari",
+        "gr": "Νταμούχαρη"
+      },
+      "coordinates": {
+        "lat": 39.398,
+        "lon": 23.106
+      },
+      "sectors": {
+        "N": {
+          "level": "exposed",
+          "fetchKm": 25,
+          "blockedRayRatio": 0
+        },
+        "NE": {
+          "level": "exposed",
+          "fetchKm": 25,
+          "blockedRayRatio": 0
+        },
+        "E": {
+          "level": "exposed",
+          "fetchKm": 25,
+          "blockedRayRatio": 0
+        },
+        "SE": {
+          "level": "partial",
+          "fetchKm": 15.4,
+          "blockedRayRatio": 0.4
+        },
+        "S": {
+          "level": "protected",
+          "fetchKm": 1,
+          "blockedRayRatio": 1
+        },
+        "SW": {
+          "level": "protected",
+          "fetchKm": 1,
+          "blockedRayRatio": 1
+        },
+        "W": {
+          "level": "protected",
+          "fetchKm": 1,
+          "blockedRayRatio": 1
+        },
+        "NW": {
+          "level": "partial",
+          "fetchKm": 10.6,
+          "blockedRayRatio": 0.6
+        }
+      },
+      "confidence": "low"
+    },
+    "2703": {
+      "beachId": 2703,
+      "name": {
+        "en": "Paltsi",
+        "gr": "Πάλτση"
+      },
+      "coordinates": {
+        "lat": 39.17,
+        "lon": 23.275
+      },
+      "sectors": {
+        "N": {
+          "level": "protected",
+          "fetchKm": 1,
+          "blockedRayRatio": 1
+        },
+        "NE": {
+          "level": "partial",
+          "fetchKm": 7.8,
+          "blockedRayRatio": 0.8
+        },
+        "E": {
+          "level": "partial",
+          "fetchKm": 19.6,
+          "blockedRayRatio": 0.4
+        },
+        "SE": {
+          "level": "exposed",
+          "fetchKm": 22.8,
+          "blockedRayRatio": 0.2
+        },
+        "S": {
+          "level": "partial",
+          "fetchKm": 16,
+          "blockedRayRatio": 0.8
+        },
+        "SW": {
+          "level": "partial",
+          "fetchKm": 14,
+          "blockedRayRatio": 0.8
+        },
+        "W": {
+          "level": "partial",
+          "fetchKm": 3.6,
+          "blockedRayRatio": 1
+        },
+        "NW": {
+          "level": "protected",
+          "fetchKm": 1,
+          "blockedRayRatio": 1
+        }
+      },
+      "confidence": "low"
+    },
+    "2704": {
+      "beachId": 2704,
+      "name": {
+        "en": "Papa Nero",
+        "gr": "Παπά Νερό"
+      },
+      "coordinates": {
+        "lat": 39.395,
+        "lon": 23.1175
+      },
+      "sectors": {
+        "N": {
+          "level": "exposed",
+          "fetchKm": 25,
+          "blockedRayRatio": 0
+        },
+        "NE": {
+          "level": "exposed",
+          "fetchKm": 25,
+          "blockedRayRatio": 0
+        },
+        "E": {
+          "level": "exposed",
+          "fetchKm": 25,
+          "blockedRayRatio": 0
+        },
+        "SE": {
+          "level": "partial",
+          "fetchKm": 15.4,
+          "blockedRayRatio": 0.4
+        },
+        "S": {
+          "level": "protected",
+          "fetchKm": 1,
+          "blockedRayRatio": 1
+        },
+        "SW": {
+          "level": "protected",
+          "fetchKm": 1,
+          "blockedRayRatio": 1
+        },
+        "W": {
+          "level": "protected",
+          "fetchKm": 1,
+          "blockedRayRatio": 1
+        },
+        "NW": {
+          "level": "partial",
+          "fetchKm": 10.6,
+          "blockedRayRatio": 0.6
+        }
+      },
+      "confidence": "low"
+    },
+    "2705": {
+      "beachId": 2705,
+      "name": {
+        "en": "Parisaina",
+        "gr": "Παρίσαινα"
+      },
+      "coordinates": {
+        "lat": 39.385,
+        "lon": 23.1295
+      },
+      "sectors": {
+        "N": {
+          "level": "exposed",
+          "fetchKm": 25,
+          "blockedRayRatio": 0
+        },
+        "NE": {
+          "level": "exposed",
+          "fetchKm": 25,
+          "blockedRayRatio": 0
+        },
+        "E": {
+          "level": "exposed",
+          "fetchKm": 25,
+          "blockedRayRatio": 0
+        },
+        "SE": {
+          "level": "partial",
+          "fetchKm": 15.4,
+          "blockedRayRatio": 0.4
+        },
+        "S": {
+          "level": "protected",
+          "fetchKm": 1,
+          "blockedRayRatio": 1
+        },
+        "SW": {
+          "level": "protected",
+          "fetchKm": 1,
+          "blockedRayRatio": 1
+        },
+        "W": {
+          "level": "protected",
+          "fetchKm": 1,
+          "blockedRayRatio": 1
+        },
+        "NW": {
+          "level": "partial",
+          "fetchKm": 10.8,
+          "blockedRayRatio": 0.6
+        }
+      },
+      "confidence": "low"
+    },
+    "2706": {
+      "beachId": 2706,
+      "name": {
+        "en": "Paralia Analipsis",
+        "gr": "Παραλία Ανάληψης"
+      },
+      "coordinates": {
+        "lat": 39.41,
+        "lon": 23.119
+      },
+      "sectors": {
+        "N": {
+          "level": "exposed",
+          "fetchKm": 21.2,
+          "blockedRayRatio": 0.2
+        },
+        "NE": {
+          "level": "exposed",
+          "fetchKm": 25,
+          "blockedRayRatio": 0
+        },
+        "E": {
+          "level": "exposed",
+          "fetchKm": 25,
+          "blockedRayRatio": 0
+        },
+        "SE": {
+          "level": "partial",
+          "fetchKm": 15.4,
+          "blockedRayRatio": 0.4
+        },
+        "S": {
+          "level": "protected",
+          "fetchKm": 1,
+          "blockedRayRatio": 1
+        },
+        "SW": {
+          "level": "protected",
+          "fetchKm": 1,
+          "blockedRayRatio": 1
+        },
+        "W": {
+          "level": "protected",
+          "fetchKm": 1,
+          "blockedRayRatio": 1
+        },
+        "NW": {
+          "level": "partial",
+          "fetchKm": 6.8,
+          "blockedRayRatio": 0.8
+        }
+      },
+      "confidence": "low"
+    },
+    "2707": {
+      "beachId": 2707,
+      "name": {
+        "en": "Paralia Elitsa",
+        "gr": "Παραλία Ελίτσα"
+      },
+      "coordinates": {
+        "lat": 39.419,
+        "lon": 23.105
+      },
+      "sectors": {
+        "N": {
+          "level": "exposed",
+          "fetchKm": 21,
+          "blockedRayRatio": 0.2
+        },
+        "NE": {
+          "level": "exposed",
+          "fetchKm": 25,
+          "blockedRayRatio": 0
+        },
+        "E": {
+          "level": "exposed",
+          "fetchKm": 25,
+          "blockedRayRatio": 0
+        },
+        "SE": {
+          "level": "partial",
+          "fetchKm": 15.4,
+          "blockedRayRatio": 0.4
+        },
+        "S": {
+          "level": "protected",
+          "fetchKm": 1,
+          "blockedRayRatio": 1
+        },
+        "SW": {
+          "level": "protected",
+          "fetchKm": 1,
+          "blockedRayRatio": 1
+        },
+        "W": {
+          "level": "protected",
+          "fetchKm": 1,
+          "blockedRayRatio": 1
+        },
+        "NW": {
+          "level": "partial",
+          "fetchKm": 6.6,
+          "blockedRayRatio": 0.8
+        }
+      },
+      "confidence": "low"
+    },
+    "2708": {
+      "beachId": 2708,
+      "name": {
+        "en": "Paralia Kalamaki",
+        "gr": "Παραλία Καλαμάκι"
+      },
+      "coordinates": {
+        "lat": 39.174,
+        "lon": 23.283
+      },
+      "sectors": {
+        "N": {
+          "level": "protected",
+          "fetchKm": 1,
+          "blockedRayRatio": 1
+        },
+        "NE": {
+          "level": "partial",
+          "fetchKm": 8,
+          "blockedRayRatio": 0.8
+        },
+        "E": {
+          "level": "partial",
+          "fetchKm": 18.6,
+          "blockedRayRatio": 0.4
+        },
+        "SE": {
+          "level": "exposed",
+          "fetchKm": 23,
+          "blockedRayRatio": 0.2
+        },
+        "S": {
+          "level": "partial",
+          "fetchKm": 16.6,
+          "blockedRayRatio": 0.8
+        },
+        "SW": {
+          "level": "partial",
+          "fetchKm": 12.8,
+          "blockedRayRatio": 0.8
+        },
+        "W": {
+          "level": "partial",
+          "fetchKm": 2.2,
+          "blockedRayRatio": 1
+        },
+        "NW": {
+          "level": "protected",
+          "fetchKm": 1,
+          "blockedRayRatio": 1
+        }
+      },
+      "confidence": "low"
+    },
+    "2709": {
+      "beachId": 2709,
+      "name": {
+        "en": "Paralia Kornelia",
+        "gr": "Παραλία Κορνέλια"
+      },
+      "coordinates": {
+        "lat": 39.19,
+        "lon": 23.292
+      },
+      "sectors": {
+        "N": {
+          "level": "partial",
+          "fetchKm": 5.8,
+          "blockedRayRatio": 0.8
+        },
+        "NE": {
+          "level": "partial",
+          "fetchKm": 17,
+          "blockedRayRatio": 0.4
+        },
+        "E": {
+          "level": "partial",
+          "fetchKm": 14.2,
+          "blockedRayRatio": 0.6
+        },
+        "SE": {
+          "level": "partial",
+          "fetchKm": 20.8,
+          "blockedRayRatio": 0.4
+        },
+        "S": {
+          "level": "partial",
+          "fetchKm": 20,
+          "blockedRayRatio": 0.8
+        },
+        "SW": {
+          "level": "partial",
+          "fetchKm": 12.4,
+          "blockedRayRatio": 0.8
+        },
+        "W": {
+          "level": "protected",
+          "fetchKm": 1,
+          "blockedRayRatio": 1
+        },
+        "NW": {
+          "level": "protected",
+          "fetchKm": 1,
+          "blockedRayRatio": 1
+        }
+      },
+      "confidence": "low"
+    },
+    "2710": {
+      "beachId": 2710,
+      "name": {
+        "en": "Paralia Kritharia",
+        "gr": "Παραλία Κριθάρια"
+      },
+      "coordinates": {
+        "lat": 39.322,
+        "lon": 22.91
+      },
+      "sectors": {
+        "N": {
+          "level": "protected",
+          "fetchKm": 1.6,
+          "blockedRayRatio": 1
+        },
+        "NE": {
+          "level": "partial",
+          "fetchKm": 4.2,
+          "blockedRayRatio": 1
+        },
+        "E": {
+          "level": "partial",
+          "fetchKm": 12.6,
+          "blockedRayRatio": 0.8
+        },
+        "SE": {
+          "level": "partial",
+          "fetchKm": 23.4,
+          "blockedRayRatio": 0.4
+        },
+        "S": {
+          "level": "partial",
+          "fetchKm": 10.2,
+          "blockedRayRatio": 0.8
+        },
+        "SW": {
+          "level": "protected",
+          "fetchKm": 1,
+          "blockedRayRatio": 1
+        },
+        "W": {
+          "level": "protected",
+          "fetchKm": 1,
+          "blockedRayRatio": 1
+        },
+        "NW": {
+          "level": "protected",
+          "fetchKm": 1,
+          "blockedRayRatio": 1
+        }
+      },
+      "confidence": "low"
+    },
+    "2711": {
+      "beachId": 2711,
+      "name": {
+        "en": "Paralia Lampinoy",
+        "gr": "Παραλία Λαμπινού"
+      },
+      "coordinates": {
+        "lat": 39.1815,
+        "lon": 23.2895
+      },
+      "sectors": {
+        "N": {
+          "level": "protected",
+          "fetchKm": 1,
+          "blockedRayRatio": 1
+        },
+        "NE": {
+          "level": "partial",
+          "fetchKm": 7.4,
+          "blockedRayRatio": 0.8
+        },
+        "E": {
+          "level": "partial",
+          "fetchKm": 14.2,
+          "blockedRayRatio": 0.6
+        },
+        "SE": {
+          "level": "partial",
+          "fetchKm": 20.8,
+          "blockedRayRatio": 0.4
+        },
+        "S": {
+          "level": "partial",
+          "fetchKm": 19.2,
+          "blockedRayRatio": 0.8
+        },
+        "SW": {
+          "level": "partial",
+          "fetchKm": 12,
+          "blockedRayRatio": 0.8
+        },
+        "W": {
+          "level": "protected",
+          "fetchKm": 1,
+          "blockedRayRatio": 1
+        },
+        "NW": {
+          "level": "protected",
+          "fetchKm": 1,
+          "blockedRayRatio": 1
+        }
+      },
+      "confidence": "low"
+    },
+    "2712": {
+      "beachId": 2712,
+      "name": {
+        "en": "Paralia Mpanikas",
+        "gr": "Παραλία Μπάνικας"
+      },
+      "coordinates": {
+        "lat": 39.392,
+        "lon": 23.125
+      },
+      "sectors": {
+        "N": {
+          "level": "exposed",
+          "fetchKm": 25,
+          "blockedRayRatio": 0
+        },
+        "NE": {
+          "level": "exposed",
+          "fetchKm": 25,
+          "blockedRayRatio": 0
+        },
+        "E": {
+          "level": "exposed",
+          "fetchKm": 25,
+          "blockedRayRatio": 0
+        },
+        "SE": {
+          "level": "partial",
+          "fetchKm": 15.4,
+          "blockedRayRatio": 0.4
+        },
+        "S": {
+          "level": "protected",
+          "fetchKm": 1,
+          "blockedRayRatio": 1
+        },
+        "SW": {
+          "level": "protected",
+          "fetchKm": 1,
+          "blockedRayRatio": 1
+        },
+        "W": {
+          "level": "protected",
+          "fetchKm": 1,
+          "blockedRayRatio": 1
+        },
+        "NW": {
+          "level": "partial",
+          "fetchKm": 10.6,
+          "blockedRayRatio": 0.6
+        }
+      },
+      "confidence": "low"
+    },
+    "2713": {
+      "beachId": 2713,
+      "name": {
+        "en": "Paralia Mprianou",
+        "gr": "Παραλία Μπριάνου"
+      },
+      "coordinates": {
+        "lat": 39.396,
+        "lon": 23.127
+      },
+      "sectors": {
+        "N": {
+          "level": "exposed",
+          "fetchKm": 25,
+          "blockedRayRatio": 0
+        },
+        "NE": {
+          "level": "exposed",
+          "fetchKm": 25,
+          "blockedRayRatio": 0
+        },
+        "E": {
+          "level": "exposed",
+          "fetchKm": 25,
+          "blockedRayRatio": 0
+        },
+        "SE": {
+          "level": "partial",
+          "fetchKm": 15.4,
+          "blockedRayRatio": 0.4
+        },
+        "S": {
+          "level": "protected",
+          "fetchKm": 1,
+          "blockedRayRatio": 1
+        },
+        "SW": {
+          "level": "protected",
+          "fetchKm": 1,
+          "blockedRayRatio": 1
+        },
+        "W": {
+          "level": "protected",
+          "fetchKm": 1,
+          "blockedRayRatio": 1
+        },
+        "NW": {
+          "level": "partial",
+          "fetchKm": 10.6,
+          "blockedRayRatio": 0.6
+        }
+      },
+      "confidence": "low"
+    },
+    "2714": {
+      "beachId": 2714,
+      "name": {
+        "en": "Paralia Rakopotamou",
+        "gr": "Παραλία Ρακοποτάμου"
+      },
+      "coordinates": {
+        "lat": 39.246,
+        "lon": 23.058
+      },
+      "sectors": {
+        "N": {
+          "level": "partial",
+          "fetchKm": 8.8,
+          "blockedRayRatio": 1
+        },
+        "NE": {
+          "level": "partial",
+          "fetchKm": 8.2,
+          "blockedRayRatio": 1
+        },
+        "E": {
+          "level": "partial",
+          "fetchKm": 10.8,
+          "blockedRayRatio": 1
+        },
+        "SE": {
+          "level": "partial",
+          "fetchKm": 13,
+          "blockedRayRatio": 1
+        },
+        "S": {
+          "level": "partial",
+          "fetchKm": 15.4,
+          "blockedRayRatio": 1
+        },
+        "SW": {
+          "level": "partial",
+          "fetchKm": 17.6,
+          "blockedRayRatio": 1
+        },
+        "W": {
+          "level": "partial",
+          "fetchKm": 16.8,
+          "blockedRayRatio": 1
+        },
+        "NW": {
+          "level": "partial",
+          "fetchKm": 13.2,
+          "blockedRayRatio": 1
+        }
+      },
+      "confidence": "low"
+    },
+    "2715": {
+      "beachId": 2715,
+      "name": {
+        "en": "Paralia Tourkopigis",
+        "gr": "Παραλία Τουρκοπηγής"
+      },
+      "coordinates": {
+        "lat": 39.387,
+        "lon": 23.131
+      },
+      "sectors": {
+        "N": {
+          "level": "exposed",
+          "fetchKm": 25,
+          "blockedRayRatio": 0
+        },
+        "NE": {
+          "level": "exposed",
+          "fetchKm": 25,
+          "blockedRayRatio": 0
+        },
+        "E": {
+          "level": "exposed",
+          "fetchKm": 25,
+          "blockedRayRatio": 0
+        },
+        "SE": {
+          "level": "partial",
+          "fetchKm": 15.4,
+          "blockedRayRatio": 0.4
+        },
+        "S": {
+          "level": "protected",
+          "fetchKm": 1,
+          "blockedRayRatio": 1
+        },
+        "SW": {
+          "level": "protected",
+          "fetchKm": 1,
+          "blockedRayRatio": 1
+        },
+        "W": {
+          "level": "protected",
+          "fetchKm": 1,
+          "blockedRayRatio": 1
+        },
+        "NW": {
+          "level": "partial",
+          "fetchKm": 10.8,
+          "blockedRayRatio": 0.6
+        }
+      },
+      "confidence": "low"
+    },
+    "2716": {
+      "beachId": 2716,
+      "name": {
+        "en": "Plaka (Zagora)",
+        "gr": "Πλάκα (Ζαγορά)"
+      },
+      "coordinates": {
+        "lat": 39.406,
+        "lon": 23.109
+      },
+      "sectors": {
+        "N": {
+          "level": "exposed",
+          "fetchKm": 21,
+          "blockedRayRatio": 0.2
+        },
+        "NE": {
+          "level": "exposed",
+          "fetchKm": 25,
+          "blockedRayRatio": 0
+        },
+        "E": {
+          "level": "exposed",
+          "fetchKm": 25,
+          "blockedRayRatio": 0
+        },
+        "SE": {
+          "level": "partial",
+          "fetchKm": 15.4,
+          "blockedRayRatio": 0.4
+        },
+        "S": {
+          "level": "protected",
+          "fetchKm": 1,
+          "blockedRayRatio": 1
+        },
+        "SW": {
+          "level": "protected",
+          "fetchKm": 1,
+          "blockedRayRatio": 1
+        },
+        "W": {
+          "level": "protected",
+          "fetchKm": 1,
+          "blockedRayRatio": 1
+        },
+        "NW": {
+          "level": "partial",
+          "fetchKm": 6.6,
+          "blockedRayRatio": 0.8
+        }
+      },
+      "confidence": "low"
+    },
+    "2717": {
+      "beachId": 2717,
+      "name": {
+        "en": "Potistika",
+        "gr": "Ποτιστικά"
+      },
+      "coordinates": {
+        "lat": 39.172,
+        "lon": 23.285
+      },
+      "sectors": {
+        "N": {
+          "level": "protected",
+          "fetchKm": 1,
+          "blockedRayRatio": 1
+        },
+        "NE": {
+          "level": "partial",
+          "fetchKm": 12.4,
+          "blockedRayRatio": 0.6
+        },
+        "E": {
+          "level": "partial",
+          "fetchKm": 18.4,
+          "blockedRayRatio": 0.4
+        },
+        "SE": {
+          "level": "exposed",
+          "fetchKm": 23.2,
+          "blockedRayRatio": 0.2
+        },
+        "S": {
+          "level": "partial",
+          "fetchKm": 17.2,
+          "blockedRayRatio": 0.8
+        },
+        "SW": {
+          "level": "partial",
+          "fetchKm": 13.2,
+          "blockedRayRatio": 0.8
+        },
+        "W": {
+          "level": "partial",
+          "fetchKm": 2.4,
+          "blockedRayRatio": 1
+        },
+        "NW": {
+          "level": "protected",
+          "fetchKm": 1,
+          "blockedRayRatio": 1
+        }
+      },
+      "confidence": "low"
+    },
+    "2718": {
+      "beachId": 2718,
+      "name": {
+        "en": "Potoki",
+        "gr": "Ποτόκι"
+      },
+      "coordinates": {
+        "lat": 39.202,
+        "lon": 23.288
+      },
+      "sectors": {
+        "N": {
+          "level": "exposed",
+          "fetchKm": 20.2,
+          "blockedRayRatio": 0.2
+        },
+        "NE": {
+          "level": "exposed",
+          "fetchKm": 25,
+          "blockedRayRatio": 0
+        },
+        "E": {
+          "level": "partial",
+          "fetchKm": 19.2,
+          "blockedRayRatio": 0.4
+        },
+        "SE": {
+          "level": "partial",
+          "fetchKm": 11.2,
+          "blockedRayRatio": 0.8
+        },
+        "S": {
+          "level": "partial",
+          "fetchKm": 5.8,
+          "blockedRayRatio": 0.8
+        },
+        "SW": {
+          "level": "protected",
+          "fetchKm": 1,
+          "blockedRayRatio": 1
+        },
+        "W": {
+          "level": "protected",
+          "fetchKm": 1,
+          "blockedRayRatio": 1
+        },
+        "NW": {
+          "level": "partial",
+          "fetchKm": 5.8,
+          "blockedRayRatio": 0.8
+        }
+      },
+      "confidence": "low"
+    },
+    "2719": {
+      "beachId": 2719,
+      "name": {
+        "en": "Razi",
+        "gr": "Ραζή"
+      },
+      "coordinates": {
+        "lat": 39.215,
+        "lon": 23.2905
+      },
+      "sectors": {
+        "N": {
+          "level": "exposed",
+          "fetchKm": 20.2,
+          "blockedRayRatio": 0.2
+        },
+        "NE": {
+          "level": "exposed",
+          "fetchKm": 25,
+          "blockedRayRatio": 0
+        },
+        "E": {
+          "level": "partial",
+          "fetchKm": 19.6,
+          "blockedRayRatio": 0.4
+        },
+        "SE": {
+          "level": "partial",
+          "fetchKm": 11.8,
+          "blockedRayRatio": 0.8
+        },
+        "S": {
+          "level": "partial",
+          "fetchKm": 5.8,
+          "blockedRayRatio": 0.8
+        },
+        "SW": {
+          "level": "protected",
+          "fetchKm": 1,
+          "blockedRayRatio": 1
+        },
+        "W": {
+          "level": "protected",
+          "fetchKm": 1,
+          "blockedRayRatio": 1
+        },
+        "NW": {
+          "level": "partial",
+          "fetchKm": 5.8,
+          "blockedRayRatio": 0.8
+        }
+      },
+      "confidence": "low"
+    },
+    "2720": {
+      "beachId": 2720,
+      "name": {
+        "en": "Soutrali (Agria)",
+        "gr": "Σουτραλί (Αγριά)"
+      },
+      "coordinates": {
+        "lat": 39.3455,
+        "lon": 22.9885
+      },
+      "sectors": {
+        "N": {
+          "level": "protected",
+          "fetchKm": 1,
+          "blockedRayRatio": 1
+        },
+        "NE": {
+          "level": "protected",
+          "fetchKm": 1,
+          "blockedRayRatio": 1
+        },
+        "E": {
+          "level": "protected",
+          "fetchKm": 1.2,
+          "blockedRayRatio": 1
+        },
+        "SE": {
+          "level": "partial",
+          "fetchKm": 11.2,
+          "blockedRayRatio": 0.6
+        },
+        "S": {
+          "level": "partial",
+          "fetchKm": 24.2,
+          "blockedRayRatio": 0.4
+        },
+        "SW": {
+          "level": "partial",
+          "fetchKm": 12.4,
+          "blockedRayRatio": 1
+        },
+        "W": {
+          "level": "partial",
+          "fetchKm": 3.8,
+          "blockedRayRatio": 1
+        },
+        "NW": {
+          "level": "protected",
+          "fetchKm": 1.8,
+          "blockedRayRatio": 1
+        }
+      },
+      "confidence": "low"
+    },
+    "2721": {
+      "beachId": 2721,
+      "name": {
+        "en": "Fakistra",
+        "gr": "Φακίστρα"
+      },
+      "coordinates": {
+        "lat": 39.417,
+        "lon": 23.112
+      },
+      "sectors": {
+        "N": {
+          "level": "exposed",
+          "fetchKm": 21,
+          "blockedRayRatio": 0.2
+        },
+        "NE": {
+          "level": "exposed",
+          "fetchKm": 25,
+          "blockedRayRatio": 0
+        },
+        "E": {
+          "level": "exposed",
+          "fetchKm": 25,
+          "blockedRayRatio": 0
+        },
+        "SE": {
+          "level": "partial",
+          "fetchKm": 15.4,
+          "blockedRayRatio": 0.4
+        },
+        "S": {
+          "level": "protected",
+          "fetchKm": 1,
+          "blockedRayRatio": 1
+        },
+        "SW": {
+          "level": "protected",
+          "fetchKm": 1,
+          "blockedRayRatio": 1
+        },
+        "W": {
+          "level": "protected",
+          "fetchKm": 1,
+          "blockedRayRatio": 1
+        },
+        "NW": {
+          "level": "partial",
+          "fetchKm": 6.6,
+          "blockedRayRatio": 0.8
+        }
+      },
+      "confidence": "low"
+    },
+    "2722": {
+      "beachId": 2722,
+      "name": {
+        "en": "Faprikezaina (Pteleos)",
+        "gr": "Φαπρικεζαίνα (Πτελεός)"
+      },
+      "coordinates": {
+        "lat": 39.112,
+        "lon": 23.215
+      },
+      "sectors": {
+        "N": {
+          "level": "protected",
+          "fetchKm": 1.8,
+          "blockedRayRatio": 1
+        },
+        "NE": {
+          "level": "partial",
+          "fetchKm": 10,
+          "blockedRayRatio": 0.8
+        },
+        "E": {
+          "level": "exposed",
+          "fetchKm": 23.2,
+          "blockedRayRatio": 0.2
+        },
+        "SE": {
+          "level": "partial",
+          "fetchKm": 16.4,
+          "blockedRayRatio": 0.6
+        },
+        "S": {
+          "level": "partial",
+          "fetchKm": 10.4,
+          "blockedRayRatio": 1
+        },
+        "SW": {
+          "level": "partial",
+          "fetchKm": 14.2,
+          "blockedRayRatio": 0.8
+        },
+        "W": {
+          "level": "partial",
+          "fetchKm": 5,
+          "blockedRayRatio": 1
+        },
+        "NW": {
+          "level": "protected",
+          "fetchKm": 1,
+          "blockedRayRatio": 1
+        }
+      },
+      "confidence": "low"
+    },
+    "2723": {
+      "beachId": 2723,
+      "name": {
+        "en": "Ftelia",
+        "gr": "Φτελιά"
+      },
+      "coordinates": {
+        "lat": 39.193,
+        "lon": 23.284
+      },
+      "sectors": {
+        "N": {
+          "level": "exposed",
+          "fetchKm": 20.2,
+          "blockedRayRatio": 0.2
+        },
+        "NE": {
+          "level": "exposed",
+          "fetchKm": 25,
+          "blockedRayRatio": 0
+        },
+        "E": {
+          "level": "partial",
+          "fetchKm": 18.6,
+          "blockedRayRatio": 0.4
+        },
+        "SE": {
+          "level": "partial",
+          "fetchKm": 10.4,
+          "blockedRayRatio": 0.8
+        },
+        "S": {
+          "level": "partial",
+          "fetchKm": 5.8,
+          "blockedRayRatio": 0.8
+        },
+        "SW": {
+          "level": "protected",
+          "fetchKm": 1,
+          "blockedRayRatio": 1
+        },
+        "W": {
+          "level": "protected",
+          "fetchKm": 1,
+          "blockedRayRatio": 1
+        },
+        "NW": {
+          "level": "partial",
+          "fetchKm": 5.8,
+          "blockedRayRatio": 0.8
+        }
+      },
+      "confidence": "low"
+    },
+    "2724": {
+      "beachId": 2724,
+      "name": {
+        "en": "Chondri Ammos",
+        "gr": "Χονδρή Άμμος"
+      },
+      "coordinates": {
+        "lat": 39.1955,
+        "lon": 23.287
+      },
+      "sectors": {
+        "N": {
+          "level": "exposed",
+          "fetchKm": 20.6,
+          "blockedRayRatio": 0.2
+        },
+        "NE": {
+          "level": "exposed",
+          "fetchKm": 25,
+          "blockedRayRatio": 0
+        },
+        "E": {
+          "level": "partial",
+          "fetchKm": 19,
+          "blockedRayRatio": 0.4
+        },
+        "SE": {
+          "level": "partial",
+          "fetchKm": 11,
+          "blockedRayRatio": 0.8
+        },
+        "S": {
+          "level": "partial",
+          "fetchKm": 5.8,
+          "blockedRayRatio": 0.8
+        },
+        "SW": {
+          "level": "protected",
+          "fetchKm": 1,
+          "blockedRayRatio": 1
+        },
+        "W": {
+          "level": "protected",
+          "fetchKm": 1,
+          "blockedRayRatio": 1
+        },
+        "NW": {
+          "level": "partial",
+          "fetchKm": 6.2,
+          "blockedRayRatio": 0.8
+        }
+      },
+      "confidence": "low"
+    },
+    "2725": {
+      "beachId": 2725,
+      "name": {
+        "en": "Chorevto",
+        "gr": "Χορευτό"
+      },
+      "coordinates": {
+        "lat": 39.402,
+        "lon": 23.111
+      },
+      "sectors": {
+        "N": {
+          "level": "exposed",
+          "fetchKm": 25,
+          "blockedRayRatio": 0
+        },
+        "NE": {
+          "level": "exposed",
+          "fetchKm": 25,
+          "blockedRayRatio": 0
+        },
+        "E": {
+          "level": "exposed",
+          "fetchKm": 25,
+          "blockedRayRatio": 0
+        },
+        "SE": {
+          "level": "partial",
+          "fetchKm": 15.4,
+          "blockedRayRatio": 0.4
+        },
+        "S": {
+          "level": "protected",
+          "fetchKm": 1,
+          "blockedRayRatio": 1
+        },
+        "SW": {
+          "level": "protected",
+          "fetchKm": 1,
+          "blockedRayRatio": 1
+        },
+        "W": {
+          "level": "protected",
+          "fetchKm": 1,
+          "blockedRayRatio": 1
+        },
+        "NW": {
+          "level": "partial",
+          "fetchKm": 11,
+          "blockedRayRatio": 0.6
+        }
+      },
+      "confidence": "low"
+    }
+  }
+}

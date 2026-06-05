@@ -1,0 +1,192 @@
+{
+  "schemaVersion": 1,
+  "generatedAt": "2026-06-02T21:59:36.823Z",
+  "region": {
+    "id": "south-aegean-marathi",
+    "name": "Marathi"
+  },
+  "source": {
+    "indexPath": "/data/geospatial/exposure/index.json"
+  },
+  "settings": {
+    "maxFetchKm": 25,
+    "stepKm": 1,
+    "nearshoreLandGraceKm": 1,
+    "nearshoreWaterSearchKm": 12,
+    "nearshoreWaterSearchStepKm": 0.5,
+    "fanAnglesDeg": [
+      -30,
+      -15,
+      0,
+      15,
+      30
+    ],
+    "sectors": [
+      "N",
+      "NE",
+      "E",
+      "SE",
+      "S",
+      "SW",
+      "W",
+      "NW"
+    ]
+  },
+  "summary": {
+    "beachCount": 2,
+    "generatedProfiles": 2,
+    "missingCoordinates": 0,
+    "sectors": {
+      "N": {
+        "protected": 0,
+        "partial": 1,
+        "exposed": 1
+      },
+      "NE": {
+        "protected": 1,
+        "partial": 0,
+        "exposed": 1
+      },
+      "E": {
+        "protected": 0,
+        "partial": 1,
+        "exposed": 1
+      },
+      "SE": {
+        "protected": 0,
+        "partial": 1,
+        "exposed": 1
+      },
+      "S": {
+        "protected": 0,
+        "partial": 2,
+        "exposed": 0
+      },
+      "SW": {
+        "protected": 0,
+        "partial": 2,
+        "exposed": 0
+      },
+      "W": {
+        "protected": 0,
+        "partial": 2,
+        "exposed": 0
+      },
+      "NW": {
+        "protected": 0,
+        "partial": 1,
+        "exposed": 1
+      }
+    }
+  },
+  "profiles": {
+    "2500": {
+      "beachId": 2500,
+      "name": {
+        "en": "Marathi",
+        "gr": "Μαράθι"
+      },
+      "coordinates": {
+        "lat": 37.36664,
+        "lon": 26.72496
+      },
+      "sectors": {
+        "N": {
+          "level": "partial",
+          "fetchKm": 6.4,
+          "blockedRayRatio": 0.8
+        },
+        "NE": {
+          "level": "protected",
+          "fetchKm": 1,
+          "blockedRayRatio": 1
+        },
+        "E": {
+          "level": "partial",
+          "fetchKm": 10.6,
+          "blockedRayRatio": 0.6
+        },
+        "SE": {
+          "level": "partial",
+          "fetchKm": 17.4,
+          "blockedRayRatio": 0.4
+        },
+        "S": {
+          "level": "partial",
+          "fetchKm": 13.2,
+          "blockedRayRatio": 0.6
+        },
+        "SW": {
+          "level": "partial",
+          "fetchKm": 20.2,
+          "blockedRayRatio": 0.4
+        },
+        "W": {
+          "level": "partial",
+          "fetchKm": 17.6,
+          "blockedRayRatio": 0.6
+        },
+        "NW": {
+          "level": "exposed",
+          "fetchKm": 20.6,
+          "blockedRayRatio": 0.2
+        }
+      },
+      "confidence": "low"
+    },
+    "2501": {
+      "beachId": 2501,
+      "name": {
+        "en": "Tiganakia",
+        "gr": "Τηγανάκια"
+      },
+      "coordinates": {
+        "lat": 37.36753,
+        "lon": 26.74612
+      },
+      "sectors": {
+        "N": {
+          "level": "exposed",
+          "fetchKm": 20.2,
+          "blockedRayRatio": 0.2
+        },
+        "NE": {
+          "level": "exposed",
+          "fetchKm": 23.8,
+          "blockedRayRatio": 0.2
+        },
+        "E": {
+          "level": "exposed",
+          "fetchKm": 23.8,
+          "blockedRayRatio": 0.2
+        },
+        "SE": {
+          "level": "exposed",
+          "fetchKm": 21.4,
+          "blockedRayRatio": 0.2
+        },
+        "S": {
+          "level": "partial",
+          "fetchKm": 9.8,
+          "blockedRayRatio": 0.8
+        },
+        "SW": {
+          "level": "partial",
+          "fetchKm": 14.2,
+          "blockedRayRatio": 0.8
+        },
+        "W": {
+          "level": "partial",
+          "fetchKm": 15,
+          "blockedRayRatio": 0.8
+        },
+        "NW": {
+          "level": "partial",
+          "fetchKm": 10.6,
+          "blockedRayRatio": 0.6
+        }
+      },
+      "confidence": "low"
+    }
+  }
+}

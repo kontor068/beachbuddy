@@ -18,8 +18,7 @@ const SavedItineraryItem: React.FC<{
   onDelete: (id: string) => void;
   onUpdate: (itinerary: SavedItinerary) => void;
   t: any;
-  language: LanguageCode;
-}> = ({ itinerary, onDelete, onUpdate, t, language }) => {
+}> = ({ itinerary, onDelete, onUpdate, t }) => {
   const [isOpen, setIsOpen] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
   const [editedName, setEditedName] = useState(itinerary.name);
@@ -208,7 +207,7 @@ const SavedItineraryItem: React.FC<{
 };
 
 
-const SavedItinerariesModal: React.FC<SavedItinerariesModalProps> = ({ isOpen, onClose, savedItineraries, onDelete, onUpdate, t, language }) => {
+const SavedItinerariesModal: React.FC<SavedItinerariesModalProps> = ({ isOpen, onClose, savedItineraries, onDelete, onUpdate, t }) => {
   useEffect(() => {
     const handleKeyDown = (event: KeyboardEvent) => {
       if (event.key === 'Escape') {
@@ -263,7 +262,6 @@ const SavedItinerariesModal: React.FC<SavedItinerariesModalProps> = ({ isOpen, o
                   onDelete={onDelete}
                   onUpdate={onUpdate}
                   t={t}
-                  language={language}
                 />
               ))}
             </div>

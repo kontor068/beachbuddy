@@ -1,0 +1,192 @@
+{
+  "schemaVersion": 1,
+  "generatedAt": "2026-06-02T21:58:07.078Z",
+  "region": {
+    "id": "east-macedonia-and-thrace-xanthi-mainland",
+    "name": "Xanthi"
+  },
+  "source": {
+    "indexPath": "/data/geospatial/exposure/index.json"
+  },
+  "settings": {
+    "maxFetchKm": 25,
+    "stepKm": 1,
+    "nearshoreLandGraceKm": 1,
+    "nearshoreWaterSearchKm": 12,
+    "nearshoreWaterSearchStepKm": 0.5,
+    "fanAnglesDeg": [
+      -30,
+      -15,
+      0,
+      15,
+      30
+    ],
+    "sectors": [
+      "N",
+      "NE",
+      "E",
+      "SE",
+      "S",
+      "SW",
+      "W",
+      "NW"
+    ]
+  },
+  "summary": {
+    "beachCount": 2,
+    "generatedProfiles": 2,
+    "missingCoordinates": 0,
+    "sectors": {
+      "N": {
+        "protected": 2,
+        "partial": 0,
+        "exposed": 0
+      },
+      "NE": {
+        "protected": 1,
+        "partial": 1,
+        "exposed": 0
+      },
+      "E": {
+        "protected": 1,
+        "partial": 1,
+        "exposed": 0
+      },
+      "SE": {
+        "protected": 1,
+        "partial": 0,
+        "exposed": 1
+      },
+      "S": {
+        "protected": 1,
+        "partial": 0,
+        "exposed": 1
+      },
+      "SW": {
+        "protected": 1,
+        "partial": 1,
+        "exposed": 0
+      },
+      "W": {
+        "protected": 1,
+        "partial": 1,
+        "exposed": 0
+      },
+      "NW": {
+        "protected": 2,
+        "partial": 0,
+        "exposed": 0
+      }
+    }
+  },
+  "profiles": {
+    "858": {
+      "beachId": 858,
+      "name": {
+        "en": "Paralia Myrodatou",
+        "gr": "Παραλία Μυρωδάτου"
+      },
+      "coordinates": {
+        "lat": 40.92967,
+        "lon": 24.94677
+      },
+      "sectors": {
+        "N": {
+          "level": "protected",
+          "fetchKm": 1,
+          "blockedRayRatio": 1
+        },
+        "NE": {
+          "level": "partial",
+          "fetchKm": 4.2,
+          "blockedRayRatio": 1
+        },
+        "E": {
+          "level": "partial",
+          "fetchKm": 18.6,
+          "blockedRayRatio": 0.4
+        },
+        "SE": {
+          "level": "exposed",
+          "fetchKm": 25,
+          "blockedRayRatio": 0
+        },
+        "S": {
+          "level": "exposed",
+          "fetchKm": 25,
+          "blockedRayRatio": 0
+        },
+        "SW": {
+          "level": "partial",
+          "fetchKm": 17.8,
+          "blockedRayRatio": 0.6
+        },
+        "W": {
+          "level": "partial",
+          "fetchKm": 3.8,
+          "blockedRayRatio": 1
+        },
+        "NW": {
+          "level": "protected",
+          "fetchKm": 1,
+          "blockedRayRatio": 1
+        }
+      },
+      "confidence": "low"
+    },
+    "859": {
+      "beachId": 859,
+      "name": {
+        "en": "Paralia Galanis Nestou",
+        "gr": "Παραλία Γαλάνης Νέστου"
+      },
+      "coordinates": {
+        "lat": 41.09238,
+        "lon": 24.75886
+      },
+      "sectors": {
+        "N": {
+          "level": "protected",
+          "fetchKm": 1,
+          "blockedRayRatio": 1
+        },
+        "NE": {
+          "level": "protected",
+          "fetchKm": 1,
+          "blockedRayRatio": 1
+        },
+        "E": {
+          "level": "protected",
+          "fetchKm": 1,
+          "blockedRayRatio": 1
+        },
+        "SE": {
+          "level": "protected",
+          "fetchKm": 1,
+          "blockedRayRatio": 1
+        },
+        "S": {
+          "level": "protected",
+          "fetchKm": 1,
+          "blockedRayRatio": 1
+        },
+        "SW": {
+          "level": "protected",
+          "fetchKm": 1,
+          "blockedRayRatio": 1
+        },
+        "W": {
+          "level": "protected",
+          "fetchKm": 1,
+          "blockedRayRatio": 1
+        },
+        "NW": {
+          "level": "protected",
+          "fetchKm": 1,
+          "blockedRayRatio": 1
+        }
+      },
+      "confidence": "low"
+    }
+  }
+}

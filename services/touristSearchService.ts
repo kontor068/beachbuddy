@@ -1,4 +1,4 @@
-import { Beach, Island, FilterKey, LanguageCode } from '../types';
+import { Beach, Island, LanguageCode } from '../types';
 import { ParsedSearch } from '../utils/searchParser';
 import { calculateDistance } from '../utils/weatherUtils';
 

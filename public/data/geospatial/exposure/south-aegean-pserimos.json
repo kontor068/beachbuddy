@@ -1,0 +1,246 @@
+{
+  "schemaVersion": 1,
+  "generatedAt": "2026-06-02T21:59:49.896Z",
+  "region": {
+    "id": "south-aegean-pserimos",
+    "name": "Pserimos"
+  },
+  "source": {
+    "indexPath": "/data/geospatial/exposure/index.json"
+  },
+  "settings": {
+    "maxFetchKm": 25,
+    "stepKm": 1,
+    "nearshoreLandGraceKm": 1,
+    "nearshoreWaterSearchKm": 12,
+    "nearshoreWaterSearchStepKm": 0.5,
+    "fanAnglesDeg": [
+      -30,
+      -15,
+      0,
+      15,
+      30
+    ],
+    "sectors": [
+      "N",
+      "NE",
+      "E",
+      "SE",
+      "S",
+      "SW",
+      "W",
+      "NW"
+    ]
+  },
+  "summary": {
+    "beachCount": 3,
+    "generatedProfiles": 3,
+    "missingCoordinates": 0,
+    "sectors": {
+      "N": {
+        "protected": 1,
+        "partial": 1,
+        "exposed": 1
+      },
+      "NE": {
+        "protected": 1,
+        "partial": 2,
+        "exposed": 0
+      },
+      "E": {
+        "protected": 0,
+        "partial": 3,
+        "exposed": 0
+      },
+      "SE": {
+        "protected": 1,
+        "partial": 2,
+        "exposed": 0
+      },
+      "S": {
+        "protected": 1,
+        "partial": 2,
+        "exposed": 0
+      },
+      "SW": {
+        "protected": 1,
+        "partial": 2,
+        "exposed": 0
+      },
+      "W": {
+        "protected": 1,
+        "partial": 2,
+        "exposed": 0
+      },
+      "NW": {
+        "protected": 0,
+        "partial": 3,
+        "exposed": 0
+      }
+    }
+  },
+  "profiles": {
+    "2490": {
+      "beachId": 2490,
+      "name": {
+        "en": "Paralia Avlakia",
+        "gr": "Παραλία Αυλάκια"
+      },
+      "coordinates": {
+        "lat": 36.93252,
+        "lon": 27.13312
+      },
+      "sectors": {
+        "N": {
+          "level": "protected",
+          "fetchKm": 1,
+          "blockedRayRatio": 1
+        },
+        "NE": {
+          "level": "protected",
+          "fetchKm": 1,
+          "blockedRayRatio": 1
+        },
+        "E": {
+          "level": "partial",
+          "fetchKm": 4.2,
+          "blockedRayRatio": 1
+        },
+        "SE": {
+          "level": "partial",
+          "fetchKm": 6.6,
+          "blockedRayRatio": 1
+        },
+        "S": {
+          "level": "partial",
+          "fetchKm": 6.6,
+          "blockedRayRatio": 1
+        },
+        "SW": {
+          "level": "partial",
+          "fetchKm": 18.4,
+          "blockedRayRatio": 0.4
+        },
+        "W": {
+          "level": "partial",
+          "fetchKm": 16,
+          "blockedRayRatio": 0.6
+        },
+        "NW": {
+          "level": "partial",
+          "fetchKm": 5.8,
+          "blockedRayRatio": 1
+        }
+      },
+      "confidence": "low"
+    },
+    "2491": {
+      "beachId": 2491,
+      "name": {
+        "en": "Vathy",
+        "gr": "Βαθύ"
+      },
+      "coordinates": {
+        "lat": 36.93614,
+        "lon": 27.15062
+      },
+      "sectors": {
+        "N": {
+          "level": "partial",
+          "fetchKm": 17.6,
+          "blockedRayRatio": 0.4
+        },
+        "NE": {
+          "level": "partial",
+          "fetchKm": 12.6,
+          "blockedRayRatio": 0.8
+        },
+        "E": {
+          "level": "partial",
+          "fetchKm": 14.8,
+          "blockedRayRatio": 0.6
+        },
+        "SE": {
+          "level": "partial",
+          "fetchKm": 10,
+          "blockedRayRatio": 0.8
+        },
+        "S": {
+          "level": "partial",
+          "fetchKm": 4,
+          "blockedRayRatio": 1
+        },
+        "SW": {
+          "level": "partial",
+          "fetchKm": 2.2,
+          "blockedRayRatio": 1
+        },
+        "W": {
+          "level": "protected",
+          "fetchKm": 1,
+          "blockedRayRatio": 1
+        },
+        "NW": {
+          "level": "partial",
+          "fetchKm": 5.8,
+          "blockedRayRatio": 0.8
+        }
+      },
+      "confidence": "low"
+    },
+    "2492": {
+      "beachId": 2492,
+      "name": {
+        "en": "Paralia Marathoynta",
+        "gr": "Παραλία Μαραθούντα"
+      },
+      "coordinates": {
+        "lat": 36.94946,
+        "lon": 27.14134
+      },
+      "sectors": {
+        "N": {
+          "level": "exposed",
+          "fetchKm": 25,
+          "blockedRayRatio": 0
+        },
+        "NE": {
+          "level": "partial",
+          "fetchKm": 16.4,
+          "blockedRayRatio": 0.6
+        },
+        "E": {
+          "level": "partial",
+          "fetchKm": 9.4,
+          "blockedRayRatio": 0.8
+        },
+        "SE": {
+          "level": "protected",
+          "fetchKm": 1,
+          "blockedRayRatio": 1
+        },
+        "S": {
+          "level": "protected",
+          "fetchKm": 1,
+          "blockedRayRatio": 1
+        },
+        "SW": {
+          "level": "protected",
+          "fetchKm": 1,
+          "blockedRayRatio": 1
+        },
+        "W": {
+          "level": "partial",
+          "fetchKm": 6,
+          "blockedRayRatio": 1
+        },
+        "NW": {
+          "level": "partial",
+          "fetchKm": 18.8,
+          "blockedRayRatio": 0.4
+        }
+      },
+      "confidence": "low"
+    }
+  }
+}

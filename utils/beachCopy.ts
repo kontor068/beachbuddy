@@ -134,7 +134,6 @@ const getFacts = ({
   // Partial exposure can come from lower-confidence fallbacks, so copy frames it as caution, not verified shelter.
   const partiallyProtected = exposureLevel === 'partial';
   const exposedToday = exposureLevel ? exposureLevel === 'exposed' : isExposed;
-  const numericLowWave = typeof waveHeightM === 'number' && Number.isFinite(waveHeightM) && waveHeightM < 0.5;
   const numericModerateWave = typeof waveHeightM === 'number' && Number.isFinite(waveHeightM) && waveHeightM >= 0.5 && waveHeightM < 0.9;
   const numericRoughWave = typeof waveHeightM === 'number' && Number.isFinite(waveHeightM) && waveHeightM >= 0.9;
   const roughWarning = warnings.some(warning => warning.type === 'rough_sea' && warning.severity !== 'info');

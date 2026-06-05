@@ -21,7 +21,34 @@ interface ForecastProps {
   variant?: 'default' | 'heroCompact' | 'header' | 'summaryStrip';
 }
 
-const EVENING_TODAY_CUTOFF_HOUR = 21;
+const EVENING_TODAY_CUTOFF_HOUR = 20;
+const DAY_IN_MS = 24 * 60 * 60 * 1000;
+
+const startOfLocalDay = (date: Date): number =>
+  new Date(date.getFullYear(), date.getMonth(), date.getDate()).getTime();
+
+const getForecastDayOffset = (date: Date, now: Date): number =>
+  Math.round((startOfLocalDay(date) - startOfLocalDay(now)) / DAY_IN_MS);
+
+const getRelativeForecastLabel = (date: Date, now: Date, t: any): string | undefined => {
+  const offset = getForecastDayOffset(date, now);
+  const locale = String(t.locale || '').toLowerCase();
+  const isGreek = locale.startsWith('el');
+
+  if (offset === 0) {
+    return t.today || (isGreek ? 'Σήμερα' : 'Today');
+  }
+
+  if (offset === 1) {
+    return isGreek ? 'Αύριο' : 'Tomorrow';
+  }
+
+  if (offset === 2) {
+    return isGreek ? 'Μεθαύριο' : 'Day after tomorrow';
+  }
+
+  return undefined;
+};
 
 const isTodayDisabledAfterEvening = (index: number, now: Date = new Date()): boolean =>
   index === 0 && now.getHours() >= EVENING_TODAY_CUTOFF_HOUR;
@@ -100,17 +127,19 @@ const ForecastCard: React.FC<{
   isToday: boolean;
   t: any;
   index: number;
+  currentTime: Date;
   variant?: 'stacked' | 'pill' | 'mini';
   disabled?: boolean;
-}> = ({ forecast, isSelected, onClick, isToday, t, index, variant = 'stacked', disabled = false }) => {
+}> = ({ forecast, isSelected, onClick, isToday, t, index, currentTime, variant = 'stacked', disabled = false }) => {
   const iconUrl = `https://openweathermap.org/img/wn/${forecast.weather.icon}@2x.png`;
   const dayFormatter = new Intl.DateTimeFormat(t.locale, { weekday: 'short' });
   const dateFormatter = new Intl.DateTimeFormat(t.locale, { month: 'short', day: 'numeric' });
+  const dayLabel = getRelativeForecastLabel(forecast.date, currentTime, t) || dayFormatter.format(forecast.date);
   
   const windDirection = degToCompass(forecast.wind.deg);
   const windSpeedKmph = forecast.wind.speed * 3.6;
   const beaufortLevel = getBeaufortLevel(windSpeedKmph);
-  const buttonLabel = `${t.forecastFor} ${dayFormatter.format(forecast.date)}, ${dateFormatter.format(forecast.date)}: ${Math.round(forecast.temp_max)}°C, ${beaufortLevel} ${t.units.beaufort}`;
+  const buttonLabel = `${t.forecastFor} ${dayLabel}, ${dateFormatter.format(forecast.date)}: ${Math.round(forecast.temp_max)}°C, ${beaufortLevel} ${t.units.beaufort}`;
 
   if (variant === 'mini') {
     return (
@@ -119,7 +148,7 @@ const ForecastCard: React.FC<{
         onClick={onClick}
         disabled={disabled}
         aria-pressed={isSelected}
-        aria-label={isToday ? `${t.today}. ${buttonLabel}` : buttonLabel}
+        aria-label={buttonLabel}
         initial={{ opacity: 0, y: 8 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: index * 0.035 }}
@@ -133,7 +162,7 @@ const ForecastCard: React.FC<{
         }`}
       >
         <span className={`max-w-full truncate text-[10px] font-extrabold leading-none sm:hidden ${isSelected ? 'text-sky-700' : 'text-slate-700'}`}>
-          {isToday ? t.today : dayFormatter.format(forecast.date)}
+          {dayLabel}
         </span>
         <span className="flex min-w-0 items-center justify-center gap-0.5 sm:gap-2">
           <img
@@ -146,7 +175,7 @@ const ForecastCard: React.FC<{
           />
           <span className="flex min-w-0 flex-col items-start leading-none">
             <span className={`hidden max-w-[3.8rem] truncate text-[11px] font-extrabold sm:block ${isSelected ? 'text-sky-700' : 'text-slate-700'}`}>
-              {isToday ? t.today : dayFormatter.format(forecast.date)}
+              {dayLabel}
             </span>
             <span className="text-[10px] font-black text-slate-700 sm:mt-1">
               {Math.round(forecast.temp_max)}°C
@@ -164,7 +193,7 @@ const ForecastCard: React.FC<{
         onClick={onClick}
         disabled={disabled}
         aria-pressed={isSelected}
-        aria-label={isToday ? `${t.today}. ${buttonLabel}` : buttonLabel}
+        aria-label={buttonLabel}
         initial={{ opacity: 0, y: 8 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: index * 0.035 }}
@@ -187,7 +216,7 @@ const ForecastCard: React.FC<{
         />
         <span className="flex min-w-0 max-w-full flex-col items-center leading-none sm:items-start">
           <span className={`max-w-full truncate text-[10px] font-extrabold sm:max-w-[3.8rem] sm:text-[11px] ${isSelected ? 'text-sky-700' : 'text-slate-700'}`}>
-            {isToday ? t.today : dayFormatter.format(forecast.date)}
+            {dayLabel}
           </span>
           <span className="mt-0.5 text-[10px] font-black text-slate-700 sm:mt-1">
             {Math.round(forecast.temp_max)}°C
@@ -203,7 +232,7 @@ const ForecastCard: React.FC<{
         onClick={onClick}
         disabled={disabled}
         aria-pressed={isSelected}
-        aria-label={isToday ? `${t.today}. ${buttonLabel}` : buttonLabel}
+        aria-label={buttonLabel}
         initial={{ opacity: 0, y: 15 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: index * 0.05 }}
@@ -226,7 +255,7 @@ const ForecastCard: React.FC<{
         )}
 
         <span className="mb-0.5 max-w-full truncate font-heading text-[10px] font-bold text-slate-900 min-[390px]:text-[11px] md:text-xs dark:text-white">
-          {dayFormatter.format(forecast.date)}
+          {dayLabel}
         </span>
         <span className="mb-0.5 max-w-full truncate text-[9px] font-semibold text-slate-500 min-[390px]:text-[10px] sm:mb-1 md:text-[11px] dark:text-white">
           {dateFormatter.format(forecast.date)}
@@ -290,6 +319,13 @@ const Forecast: React.FC<ForecastProps> = ({ displayForecasts, selectedDayIndex,
 
   const selectedForecast = displayForecasts[selectedDayIndex];
   const hasHourlyData = selectedForecast?.hourly?.length > 0;
+  const selectedForecastDateFormatter = new Intl.DateTimeFormat(t.locale, { weekday: 'long', month: 'long', day: 'numeric' });
+  const selectedForecastRelativeLabel = selectedForecast
+    ? getRelativeForecastLabel(selectedForecast.date, currentTime, t)
+    : undefined;
+  const selectedForecastDateLabel = selectedForecast
+    ? `${selectedForecastRelativeLabel ? `${selectedForecastRelativeLabel}, ` : ''}${selectedForecastDateFormatter.format(selectedForecast.date)}`
+    : '';
   const hourlyTitle = t.hourlyForecast?.title || (t.locale === 'el-GR' ? 'Ωριαία πρόγνωση ανέμου' : 'Hourly wind forecast');
   const showDetailsLabel = t.hourlyForecast?.showDetails || (t.locale === 'el-GR' ? 'Δες αναλυτικά' : 'Show details');
   const hideDetailsLabel = t.hourlyForecast?.hideDetails || (t.locale === 'el-GR' ? 'Απόκρυψη' : 'Hide details');
@@ -319,6 +355,7 @@ const Forecast: React.FC<ForecastProps> = ({ displayForecasts, selectedDayIndex,
             isToday={index === 0}
             t={t}
             index={index}
+            currentTime={currentTime}
             variant="mini"
             disabled={isTodayDisabledAfterEvening(index, currentTime)}
           />
@@ -343,7 +380,8 @@ const Forecast: React.FC<ForecastProps> = ({ displayForecasts, selectedDayIndex,
             const isSelected = selectedDayIndex === index;
             const isDisabled = isTodayDisabledAfterEvening(index, currentTime);
             const iconUrl = `https://openweathermap.org/img/wn/${forecast.weather.icon}@2x.png`;
-            const buttonLabel = `${t.forecastFor} ${dayFormatter.format(forecast.date)}, ${dateFormatter.format(forecast.date)}: ${Math.round(forecast.temp_max)}°C, ${beaufortLevel} ${t.units.beaufort}`;
+            const dayLabel = getRelativeForecastLabel(forecast.date, currentTime, t) || dayFormatter.format(forecast.date);
+            const buttonLabel = `${t.forecastFor} ${dayLabel}, ${dateFormatter.format(forecast.date)}: ${Math.round(forecast.temp_max)}°C, ${beaufortLevel} ${t.units.beaufort}`;
 
             return (
               <button
@@ -352,7 +390,7 @@ const Forecast: React.FC<ForecastProps> = ({ displayForecasts, selectedDayIndex,
                 onClick={() => onDaySelect(index)}
                 disabled={isDisabled}
                 aria-pressed={isSelected}
-                aria-label={index === 0 ? `${t.today}. ${buttonLabel}` : buttonLabel}
+                aria-label={buttonLabel}
                 className={`relative flex min-h-[56px] min-w-0 flex-col items-center justify-center rounded-xl border px-0.5 py-1 text-center transition focus:outline-none focus-visible:ring-2 focus-visible:ring-cyan-500 sm:min-h-[62px] sm:px-1 ${
                   isDisabled
                     ? 'cursor-not-allowed border-white/20 bg-white/10 text-slate-400 opacity-40 grayscale'
@@ -367,7 +405,7 @@ const Forecast: React.FC<ForecastProps> = ({ displayForecasts, selectedDayIndex,
                   </span>
                 )}
                 <span className="max-w-full truncate font-heading text-[8px] font-bold leading-tight text-slate-900 sm:text-[9px]">
-                  {dayFormatter.format(forecast.date)}
+                  {dayLabel}
                 </span>
                 <span className="max-w-full truncate text-[7px] font-semibold leading-tight text-slate-500 sm:text-[8px]">
                   {dateFormatter.format(forecast.date)}
@@ -447,6 +485,7 @@ const Forecast: React.FC<ForecastProps> = ({ displayForecasts, selectedDayIndex,
                 isToday={index === 0}
                 t={t}
                 index={index}
+                currentTime={currentTime}
                 variant="mini"
                 disabled={isTodayDisabledAfterEvening(index, currentTime)}
               />
@@ -501,7 +540,7 @@ const Forecast: React.FC<ForecastProps> = ({ displayForecasts, selectedDayIndex,
                       {hourlyTitle}
                     </h3>
                     <span className="ml-auto hidden truncate text-xs font-semibold text-slate-500 sm:block">
-                      {new Intl.DateTimeFormat(t.locale, { weekday: 'long', month: 'long', day: 'numeric' }).format(selectedForecast.date)}
+                      {selectedForecastDateLabel}
                     </span>
                   </div>
                   <HourlyForecastDetail hourlyData={selectedForecast.hourly} t={t} />
@@ -540,6 +579,7 @@ const Forecast: React.FC<ForecastProps> = ({ displayForecasts, selectedDayIndex,
                 isToday={index === 0}
                 t={t}
                 index={index}
+                currentTime={currentTime}
                 variant="pill"
                 disabled={isTodayDisabledAfterEvening(index, currentTime)}
               />
@@ -580,7 +620,7 @@ const Forecast: React.FC<ForecastProps> = ({ displayForecasts, selectedDayIndex,
                   {hourlyTitle}
                 </h3>
                 <span className="ml-auto hidden truncate text-xs font-semibold text-slate-500 sm:block">
-                  {new Intl.DateTimeFormat(t.locale, { weekday: 'long', month: 'long', day: 'numeric' }).format(selectedForecast.date)}
+                  {selectedForecastDateLabel}
                 </span>
               </div>
               <HourlyForecastDetail hourlyData={selectedForecast.hourly} t={t} />

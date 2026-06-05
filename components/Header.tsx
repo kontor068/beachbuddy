@@ -1,6 +1,7 @@
-import React, { useEffect, useRef, useState } from 'react';
-import { Check, ChevronDown, Languages, Waves } from 'lucide-react';
-import { SUPPORTED_LANGUAGES, type SupportedLanguage } from '../utils/i18n';
+import React, { useEffect, useMemo, useRef, useState } from 'react';
+import { CalendarDays, Check, ChevronDown, CloudSun, Languages, Waves } from 'lucide-react';
+import { getLocalizedCopy, languageToDateLocale, SUPPORTED_LANGUAGES, type SupportedLanguage } from '../utils/i18n';
+import { getSelectedDayOffset, getSelectedDaySentencePrefix } from '../utils/dateLabels';
 
 interface HeaderProps {
   language: SupportedLanguage;
@@ -9,6 +10,7 @@ interface HeaderProps {
   isTransitioning?: boolean;
   selectedIslandName: string;
   selectedIslandMeta?: string;
+  selectedDate?: Date;
   onOpenIslandSelector: () => void;
   onToggleNotifications?: () => void;
   notificationStatus?: NotificationPermission;
@@ -26,15 +28,62 @@ const languageLabels: Record<SupportedLanguage, { short: string; label: string }
   it: { short: 'IT', label: 'Italiano' },
 };
 
+const headerCopy: Record<SupportedLanguage, { changeLanguage: string }> = {
+  en: { changeLanguage: 'Change language' },
+  gr: { changeLanguage: 'Αλλαγή γλώσσας' },
+  fr: { changeLanguage: 'Changer de langue' },
+  de: { changeLanguage: 'Sprache ändern' },
+  it: { changeLanguage: 'Cambia lingua' },
+};
+
+const getNextLocalMidnightDelay = (date: Date = new Date()): number => {
+  const nextMidnight = new Date(date);
+  nextMidnight.setDate(nextMidnight.getDate() + 1);
+  nextMidnight.setHours(0, 0, 0, 0);
+
+  return Math.max(1000, nextMidnight.getTime() - date.getTime() + 1000);
+};
+
 const Header: React.FC<HeaderProps> = ({
   language,
   onLanguageChange,
+  selectedIslandMeta,
+  selectedDate,
   forecastSlot,
 }) => {
   const [isLanguageMenuOpen, setIsLanguageMenuOpen] = useState(false);
+  const [currentDate, setCurrentDate] = useState(() => new Date());
   const languageMenuRef = useRef<HTMLDivElement>(null);
   const languageLabel = languageLabels[language].label;
-  const switchLanguageLabel = language === 'gr' ? 'Αλλαγή γλώσσας' : 'Change language';
+  const switchLanguageLabel = getLocalizedCopy(language, headerCopy).changeLanguage;
+  const headerDateLabel = useMemo(() => {
+    return new Intl.DateTimeFormat(languageToDateLocale(language), {
+      weekday: 'long',
+      day: 'numeric',
+      month: 'long',
+    }).format(currentDate);
+  }, [language, currentDate]);
+
+  const selectedIslandMetaLabel = useMemo(() => {
+    if (!selectedIslandMeta) return undefined;
+    if (!selectedDate) return selectedIslandMeta;
+
+    const dayOffset = getSelectedDayOffset(selectedDate, currentDate);
+    if (dayOffset === 0) {
+      return selectedIslandMeta;
+    }
+
+    return `${getSelectedDaySentencePrefix(selectedDate, currentDate, language)}: ${selectedIslandMeta}`;
+  }, [currentDate, language, selectedDate, selectedIslandMeta]);
+  const showHeaderConditions = Boolean(headerDateLabel || selectedIslandMetaLabel);
+
+  useEffect(() => {
+    const timeoutId = window.setTimeout(() => {
+      setCurrentDate(new Date());
+    }, getNextLocalMidnightDelay(currentDate));
+
+    return () => window.clearTimeout(timeoutId);
+  }, [currentDate]);
 
   useEffect(() => {
     if (!isLanguageMenuOpen) return undefined;
@@ -59,8 +108,8 @@ const Header: React.FC<HeaderProps> = ({
   return (
     <header className="relative z-50">
       <div className="sticky top-0 z-50 border-b border-white/70 bg-white/82 text-slate-800 shadow-sm shadow-sky-900/5 backdrop-blur-xl">
-        <div className="mx-auto flex h-[56px] max-w-[120rem] items-center justify-between gap-3 px-4 sm:px-6">
-          <div className="flex min-w-0 items-center gap-3">
+        <div className="relative mx-auto flex h-[56px] max-w-[120rem] items-center gap-2 px-4 sm:gap-3 sm:px-6">
+          <div className="flex min-w-0 shrink-0 items-center gap-3">
             <div className="grid h-8 w-8 shrink-0 place-items-center rounded-full bg-[#0098b0] text-white shadow-sm shadow-cyan-900/10 ring-1 ring-cyan-700/10">
               <Waves className="h-5 w-5" aria-hidden="true" />
             </div>
@@ -69,7 +118,29 @@ const Header: React.FC<HeaderProps> = ({
             </span>
           </div>
 
-          <div className="flex shrink-0 items-center gap-2 text-sm font-semibold text-slate-700 sm:gap-3">
+          <div className="pointer-events-none absolute left-1/2 top-1/2 hidden min-w-0 -translate-x-1/2 -translate-y-1/2 justify-center lg:flex">
+            {showHeaderConditions && (
+              <div className="pointer-events-auto flex max-w-[min(54rem,calc(100vw-34rem))] min-w-0 items-center gap-3 rounded-full border border-sky-100 bg-sky-50/70 px-3.5 py-1.5 text-xs font-extrabold text-slate-700 shadow-sm shadow-sky-900/5 ring-1 ring-white/60">
+                {headerDateLabel && (
+                  <span className="inline-flex min-w-0 items-center gap-1.5 text-slate-900">
+                    <CalendarDays className="h-3.5 w-3.5 shrink-0 text-[#007a83]" aria-hidden="true" />
+                    <span className="truncate">{headerDateLabel}</span>
+                  </span>
+                )}
+                {headerDateLabel && selectedIslandMetaLabel && (
+                  <span className="h-4 w-px shrink-0 bg-sky-200" aria-hidden="true" />
+                )}
+                {selectedIslandMetaLabel && (
+                  <span className="inline-flex min-w-0 items-center gap-1.5 text-slate-600">
+                    <CloudSun className="h-3.5 w-3.5 shrink-0 text-[#007a83]" aria-hidden="true" />
+                    <span className="truncate">{selectedIslandMetaLabel}</span>
+                  </span>
+                )}
+              </div>
+            )}
+          </div>
+
+          <div className="ml-auto flex shrink-0 items-center gap-2 text-sm font-semibold text-slate-700 sm:gap-3">
             <div ref={languageMenuRef} className="relative">
               <button
                 type="button"

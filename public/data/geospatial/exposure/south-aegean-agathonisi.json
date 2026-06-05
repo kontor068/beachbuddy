@@ -1,0 +1,354 @@
+{
+  "schemaVersion": 1,
+  "generatedAt": "2026-06-02T21:59:03.162Z",
+  "region": {
+    "id": "south-aegean-agathonisi",
+    "name": "Agathonisi"
+  },
+  "source": {
+    "indexPath": "/data/geospatial/exposure/index.json"
+  },
+  "settings": {
+    "maxFetchKm": 25,
+    "stepKm": 1,
+    "nearshoreLandGraceKm": 1,
+    "nearshoreWaterSearchKm": 12,
+    "nearshoreWaterSearchStepKm": 0.5,
+    "fanAnglesDeg": [
+      -30,
+      -15,
+      0,
+      15,
+      30
+    ],
+    "sectors": [
+      "N",
+      "NE",
+      "E",
+      "SE",
+      "S",
+      "SW",
+      "W",
+      "NW"
+    ]
+  },
+  "summary": {
+    "beachCount": 5,
+    "generatedProfiles": 5,
+    "missingCoordinates": 0,
+    "sectors": {
+      "N": {
+        "protected": 3,
+        "partial": 2,
+        "exposed": 0
+      },
+      "NE": {
+        "protected": 3,
+        "partial": 2,
+        "exposed": 0
+      },
+      "E": {
+        "protected": 0,
+        "partial": 5,
+        "exposed": 0
+      },
+      "SE": {
+        "protected": 0,
+        "partial": 5,
+        "exposed": 0
+      },
+      "S": {
+        "protected": 0,
+        "partial": 0,
+        "exposed": 5
+      },
+      "SW": {
+        "protected": 0,
+        "partial": 4,
+        "exposed": 1
+      },
+      "W": {
+        "protected": 0,
+        "partial": 5,
+        "exposed": 0
+      },
+      "NW": {
+        "protected": 3,
+        "partial": 2,
+        "exposed": 0
+      }
+    }
+  },
+  "profiles": {
+    "2225": {
+      "beachId": 2225,
+      "name": {
+        "en": "Vathy Pigadi",
+        "gr": "Βαθύ Πηγάδι"
+      },
+      "coordinates": {
+        "lat": 37.45786,
+        "lon": 26.99531
+      },
+      "sectors": {
+        "N": {
+          "level": "partial",
+          "fetchKm": 19,
+          "blockedRayRatio": 0.6
+        },
+        "NE": {
+          "level": "partial",
+          "fetchKm": 20.4,
+          "blockedRayRatio": 1
+        },
+        "E": {
+          "level": "partial",
+          "fetchKm": 18.8,
+          "blockedRayRatio": 1
+        },
+        "SE": {
+          "level": "partial",
+          "fetchKm": 23,
+          "blockedRayRatio": 0.4
+        },
+        "S": {
+          "level": "exposed",
+          "fetchKm": 25,
+          "blockedRayRatio": 0
+        },
+        "SW": {
+          "level": "exposed",
+          "fetchKm": 20.2,
+          "blockedRayRatio": 0.2
+        },
+        "W": {
+          "level": "partial",
+          "fetchKm": 5.8,
+          "blockedRayRatio": 0.8
+        },
+        "NW": {
+          "level": "partial",
+          "fetchKm": 5.8,
+          "blockedRayRatio": 0.8
+        }
+      },
+      "confidence": "low"
+    },
+    "2226": {
+      "beachId": 2226,
+      "name": {
+        "en": "Gadourolakkos",
+        "gr": "Γαδουρόλακκος"
+      },
+      "coordinates": {
+        "lat": 37.45421,
+        "lon": 26.96046
+      },
+      "sectors": {
+        "N": {
+          "level": "protected",
+          "fetchKm": 1,
+          "blockedRayRatio": 1
+        },
+        "NE": {
+          "level": "protected",
+          "fetchKm": 1.2,
+          "blockedRayRatio": 1
+        },
+        "E": {
+          "level": "partial",
+          "fetchKm": 10.4,
+          "blockedRayRatio": 0.8
+        },
+        "SE": {
+          "level": "partial",
+          "fetchKm": 23.4,
+          "blockedRayRatio": 0.4
+        },
+        "S": {
+          "level": "exposed",
+          "fetchKm": 24,
+          "blockedRayRatio": 0.2
+        },
+        "SW": {
+          "level": "partial",
+          "fetchKm": 23.8,
+          "blockedRayRatio": 0.4
+        },
+        "W": {
+          "level": "partial",
+          "fetchKm": 14.8,
+          "blockedRayRatio": 0.6
+        },
+        "NW": {
+          "level": "protected",
+          "fetchKm": 1,
+          "blockedRayRatio": 1
+        }
+      },
+      "confidence": "low"
+    },
+    "2227": {
+      "beachId": 2227,
+      "name": {
+        "en": "Palos",
+        "gr": "Πάλος"
+      },
+      "coordinates": {
+        "lat": 37.4585,
+        "lon": 26.98515
+      },
+      "sectors": {
+        "N": {
+          "level": "partial",
+          "fetchKm": 19,
+          "blockedRayRatio": 0.6
+        },
+        "NE": {
+          "level": "partial",
+          "fetchKm": 20.2,
+          "blockedRayRatio": 1
+        },
+        "E": {
+          "level": "partial",
+          "fetchKm": 19.8,
+          "blockedRayRatio": 1
+        },
+        "SE": {
+          "level": "partial",
+          "fetchKm": 23.4,
+          "blockedRayRatio": 0.4
+        },
+        "S": {
+          "level": "exposed",
+          "fetchKm": 25,
+          "blockedRayRatio": 0
+        },
+        "SW": {
+          "level": "partial",
+          "fetchKm": 20,
+          "blockedRayRatio": 0.4
+        },
+        "W": {
+          "level": "partial",
+          "fetchKm": 5.8,
+          "blockedRayRatio": 0.8
+        },
+        "NW": {
+          "level": "partial",
+          "fetchKm": 5.8,
+          "blockedRayRatio": 0.8
+        }
+      },
+      "confidence": "low"
+    },
+    "2228": {
+      "beachId": 2228,
+      "name": {
+        "en": "Paralia Spilias",
+        "gr": "Παραλία Σπηλιάς"
+      },
+      "coordinates": {
+        "lat": 37.45551,
+        "lon": 26.96252
+      },
+      "sectors": {
+        "N": {
+          "level": "protected",
+          "fetchKm": 1,
+          "blockedRayRatio": 1
+        },
+        "NE": {
+          "level": "protected",
+          "fetchKm": 1.2,
+          "blockedRayRatio": 1
+        },
+        "E": {
+          "level": "partial",
+          "fetchKm": 14.4,
+          "blockedRayRatio": 0.8
+        },
+        "SE": {
+          "level": "partial",
+          "fetchKm": 23.4,
+          "blockedRayRatio": 0.4
+        },
+        "S": {
+          "level": "exposed",
+          "fetchKm": 24,
+          "blockedRayRatio": 0.2
+        },
+        "SW": {
+          "level": "partial",
+          "fetchKm": 23.8,
+          "blockedRayRatio": 0.4
+        },
+        "W": {
+          "level": "partial",
+          "fetchKm": 14.8,
+          "blockedRayRatio": 0.6
+        },
+        "NW": {
+          "level": "protected",
+          "fetchKm": 1,
+          "blockedRayRatio": 1
+        }
+      },
+      "confidence": "low"
+    },
+    "2229": {
+      "beachId": 2229,
+      "name": {
+        "en": "Tsagkari",
+        "gr": "Τσαγκάρι"
+      },
+      "coordinates": {
+        "lat": 37.45217,
+        "lon": 26.97267
+      },
+      "sectors": {
+        "N": {
+          "level": "protected",
+          "fetchKm": 1,
+          "blockedRayRatio": 1
+        },
+        "NE": {
+          "level": "protected",
+          "fetchKm": 1.4,
+          "blockedRayRatio": 1
+        },
+        "E": {
+          "level": "partial",
+          "fetchKm": 14.2,
+          "blockedRayRatio": 0.8
+        },
+        "SE": {
+          "level": "partial",
+          "fetchKm": 23,
+          "blockedRayRatio": 0.4
+        },
+        "S": {
+          "level": "exposed",
+          "fetchKm": 23.8,
+          "blockedRayRatio": 0.2
+        },
+        "SW": {
+          "level": "partial",
+          "fetchKm": 23.6,
+          "blockedRayRatio": 0.4
+        },
+        "W": {
+          "level": "partial",
+          "fetchKm": 14.6,
+          "blockedRayRatio": 0.6
+        },
+        "NW": {
+          "level": "protected",
+          "fetchKm": 1,
+          "blockedRayRatio": 1
+        }
+      },
+      "confidence": "low"
+    }
+  }
+}

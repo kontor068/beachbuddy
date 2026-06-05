@@ -2,6 +2,7 @@ import React from 'react';
 import { motion } from 'motion/react';
 import { Calendar, Heart, Home, Map, MessageCircle } from 'lucide-react';
 import { LanguageCode } from '../types';
+import { getLocalizedCopy } from '../utils/i18n';
 
 type MobileTab = 'home' | 'map' | 'favorites' | 'chat' | 'planner';
 
@@ -13,6 +14,20 @@ interface MobileBottomNavProps {
   showPlanner?: boolean;
 }
 
+const navCopy: Record<LanguageCode, {
+  home: string;
+  map: string;
+  favorites: string;
+  buddy: string;
+  planner: string;
+}> = {
+  en: { home: 'Home', map: 'Map', favorites: 'Favorites', buddy: 'Buddy', planner: 'Planner' },
+  gr: { home: 'Αρχική', map: 'Χάρτης', favorites: 'Αγαπημένα', buddy: 'Buddy', planner: 'Planner' },
+  fr: { home: 'Accueil', map: 'Carte', favorites: 'Favoris', buddy: 'Buddy', planner: 'Planner' },
+  de: { home: 'Start', map: 'Karte', favorites: 'Favoriten', buddy: 'Buddy', planner: 'Planner' },
+  it: { home: 'Home', map: 'Mappa', favorites: 'Preferiti', buddy: 'Buddy', planner: 'Planner' },
+};
+
 export const MobileBottomNav: React.FC<MobileBottomNavProps> = ({
   language,
   activeTab,
@@ -20,32 +35,33 @@ export const MobileBottomNav: React.FC<MobileBottomNavProps> = ({
   showBuddy = true,
   showPlanner = true
 }) => {
+  const copy = getLocalizedCopy(language, navCopy);
   const tabs = [
     {
       id: 'home' as const,
       icon: Home,
-      label: language === 'gr' ? 'Αρχική' : 'Home',
+      label: copy.home,
     },
     {
       id: 'map' as const,
       icon: Map,
-      label: language === 'gr' ? 'Χάρτης' : 'Map',
+      label: copy.map,
     },
     {
       id: 'favorites' as const,
       icon: Heart,
       badge: undefined,
-      label: language === 'gr' ? 'Αγαπημένα' : 'Favorites',
+      label: copy.favorites,
     },
     ...(showBuddy ? [{
       id: 'chat' as const,
       icon: MessageCircle,
-      label: 'Buddy',
+      label: copy.buddy,
     }] : []),
     ...(showPlanner ? [{
       id: 'planner' as const,
       icon: Calendar,
-      label: 'Planner',
+      label: copy.planner,
     }] : []),
   ];
 

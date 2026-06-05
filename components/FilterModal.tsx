@@ -6,9 +6,10 @@ interface FilterModalProps {
   onClose: () => void;
   t: Translation;
   children: React.ReactNode;
+  resultCount?: number;
 }
 
-const FilterModal: React.FC<FilterModalProps> = ({ isOpen, onClose, t, children }) => {
+const FilterModal: React.FC<FilterModalProps> = ({ isOpen, onClose, t, children, resultCount }) => {
   useEffect(() => {
     const handleKeyDown = (event: KeyboardEvent) => {
       if (event.key === 'Escape') {
@@ -43,8 +44,15 @@ const FilterModal: React.FC<FilterModalProps> = ({ isOpen, onClose, t, children 
         className="bg-slate-50 rounded-t-2xl sm:rounded-2xl shadow-2xl w-full max-w-2xl max-h-[85vh] flex flex-col transform transition-transform duration-300 animate-slide-up"
         onClick={(e) => e.stopPropagation()}
       >
-        <header className="flex items-center justify-between p-4 border-b border-slate-200 flex-shrink-0">
-          <h2 id="filter-modal-title" className="text-xl font-bold text-slate-800">{t.filterTitle}</h2>
+        <header className="flex items-center justify-between gap-3 p-4 border-b border-slate-200 flex-shrink-0">
+          <h2 id="filter-modal-title" className="flex min-w-0 items-center gap-2 text-xl font-bold text-slate-800">
+            <span className="min-w-0 truncate">{t.filterTitle}</span>
+            {typeof resultCount === 'number' && (
+              <span className="shrink-0 rounded-full bg-cyan-50 px-2.5 py-1 text-xs font-extrabold text-cyan-700 ring-1 ring-cyan-100">
+                {resultCount}
+              </span>
+            )}
+          </h2>
           <button
             onClick={onClose}
             className="p-2.5 text-slate-500 hover:bg-slate-200 rounded-full"

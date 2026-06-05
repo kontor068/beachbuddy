@@ -372,10 +372,6 @@ export const generateBeachDayPlan = (
     ? startItem.dt_txt.split(' ')[1].substring(0, 5) 
     : new Date(startItem.dt * 1000).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hour12: false });
     
-  const endTimeStr = (endItem.dt_txt && endItem.dt_txt.includes(' ') && endItem.dt_txt.split(' ').length > 1) 
-    ? endItem.dt_txt.split(' ')[1].substring(0, 5) 
-    : new Date(endItem.dt * 1000).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hour12: false });
-  
   // Add 3 hours to end time because forecast items are usually 3-hour steps? 
   // Wait, types says "hourly", but OpenWeatherMap free is 3-hourly. 
   // Let's assume the list is hourly if it says "hourlyForecast", but if it's 3-hourly steps, we need to adjust.

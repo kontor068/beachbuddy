@@ -29,7 +29,14 @@ export type BeachAccessType = 'asphalt_road' | 'passable_dirt_road' | 'difficult
 export type BeachTerrainType = 'fine_sand' | 'coarse_sand' | 'pebbles' | 'large_stones' | 'rocks';
 export type TravelStyle = 'family' | 'couple' | 'friends' | 'solo';
 export type SortOption = 'recommended' | 'all' | 'protected' | 'rating' | 'distance';
-export type FilterKey = keyof Beach['amenities'] | keyof Beach['characteristics'] | 'easyAccess' | BeachType | 'showAll';
+export type FilterKey =
+  | keyof Beach['amenities']
+  | keyof Beach['characteristics']
+  | keyof Beach['activities']
+  | keyof Beach['environment']
+  | 'easyAccess'
+  | BeachType
+  | 'showAll';
 export type Theme = 'light' | 'dark' | 'system';
 export type DataConfidence = 'high' | 'medium' | 'low';
 export type WeatherSource = 'beach-cluster' | 'island-fallback';
@@ -42,6 +49,15 @@ export type SeabedSlope = 'shallow_gradual' | 'moderate' | 'steep' | 'unknown';
 export type WaterEntry = 'easy' | 'moderate' | 'difficult' | 'rocks_only' | 'unknown';
 export type WaterQualityRiskAfterRain = 'low' | 'medium' | 'high';
 export type SwimmingComfort = 'excellent' | 'good' | 'caution' | 'avoid_swimming';
+
+export interface BeachMapCoordinates {
+  lat: number;
+  lon: number;
+  source?: string;
+  sourceUrl?: string;
+  confidence?: DataConfidence;
+  notes?: string;
+}
 
 export interface BeachLocation {
   lat: number;
@@ -71,6 +87,8 @@ export interface WindProfile {
   confidence: DataConfidence;
   notes: string;
 }
+
+export type WindProfileSource = 'override' | 'beach' | 'metadata' | 'unknown';
 
 export interface WeatherConditions {
   timestamp: string;
@@ -216,6 +234,7 @@ export interface Beach {
   };
   popularityScore: number;
   coordinates: { lat: number; lon: number; };
+  mapCoordinates?: BeachMapCoordinates;
   location?: Partial<BeachLocation>;
   crowdLevel?: CrowdLevel;
   crowdScore?: number;
@@ -292,6 +311,7 @@ export interface BeachMetadata {
   };
   sourceUrls?: string[];
   sourceNotes?: string | string[];
+  mapCoordinates?: BeachMapCoordinates;
   orientation?: Partial<BeachOrientation>;
   windProfile?: WindProfile;
   confidence?: 'high' | 'medium' | 'low';
@@ -300,6 +320,19 @@ export interface BeachMetadata {
 }
 
 import { ExposureLevel } from './utils/windExposure';
+
+export interface GeospatialExposureSector {
+  level: ExposureLevel;
+  fetchKm: number;
+  blockedRayRatio: number;
+}
+
+export interface GeospatialExposureProfile {
+  beachId: number;
+  sectors: Record<WindSector, GeospatialExposureSector>;
+  confidence: DataConfidence;
+  source: 'natural-earth-baseline';
+}
 
 export interface SuitableBeach {
   beachId: number;
@@ -331,9 +364,11 @@ export interface SuitableBeach {
   weatherSource?: WeatherSource;
   hourlySeaScore?: number;
   windProfile?: WindProfile;
+  windProfileSource?: WindProfileSource;
   windSector?: WindSector;
   canClaimWindProtection?: boolean;
   seaCalmClaimAllowed?: boolean;
+  geospatialExposure?: GeospatialExposureProfile;
 }
 
 export interface BeachForecastContext {
@@ -547,6 +582,9 @@ export type Translation = {
     parking: string;
     sandy: string;
     pebbles: string;
+    quiet: string;
+    snorkeling: string;
+    familyFriendly: string;
     'sandy-pebbles': string;
     rocky: string;
     deepWaters: string;

@@ -26,6 +26,7 @@ interface BeachListProps {
   temperature?: number;
   selectedDate?: Date;
   islandName: string;
+  regionId?: string;
   onBeachClick: (beach: Beach) => void;
   favorites: number[];
   onToggleFavorite: (beachId: number) => void;
@@ -124,11 +125,11 @@ export const BeachList: React.FC<BeachListProps> = ({
   language,
   t,
   windSpeed,
-  windDirection,
   waveHeightM,
   temperature,
   selectedDate,
   islandName,
+  regionId,
   onBeachClick,
   favorites,
   onToggleFavorite,
@@ -231,6 +232,7 @@ export const BeachList: React.FC<BeachListProps> = ({
               favorites={favorites} 
               onToggleFavorite={onToggleFavorite} 
               islandName={islandName} 
+              regionId={regionId}
               isCalm={b.seaCalmClaimAllowed === true}
               isExposed={isExposed}
               onClick={() => onBeachClick(b)}

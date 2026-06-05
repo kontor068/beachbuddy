@@ -1,6 +1,6 @@
 
 import React, { useMemo, useEffect } from 'react';
-import { Beach, LanguageCode, Accessibility, ForecastItem } from '../types';
+import { Beach, LanguageCode, ForecastItem } from '../types';
 import { Translation } from '../types';
 import { StarRating } from './BeachCard';
 import { generateBeachDayPlan } from '../services/beachPlannerService';
@@ -400,7 +400,7 @@ const getStaticDetails = (beach: Beach, language: LanguageCode, windInfo: string
 
 import { openNavigation } from '../utils/navigation';
 
-export const BeachDetailModal: React.FC<BeachDetailModalProps> = ({ beach, isOpen, onClose, language, t, windInfo, islandName, hourlyForecast }) => {
+export const BeachDetailModal: React.FC<BeachDetailModalProps> = ({ beach, isOpen, onClose, language, t, windInfo, hourlyForecast }) => {
   const details = useMemo(() => {
       if (!beach) return null;
       return getStaticDetails(beach, language, windInfo);

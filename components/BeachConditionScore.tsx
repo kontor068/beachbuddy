@@ -4,6 +4,7 @@ import { ExposureLevel } from '../utils/windExposure';
 import { LanguageCode } from '../types';
 import { calculateSeaConditionScore, getSeaExposureLevel } from '../utils/seaConditions';
 import { getSelectedDayPrefix } from '../utils/dateLabels';
+import { getLocalizedCopy } from '../utils/i18n';
 import { getBeaufortLevel } from '../utils/weatherUtils';
 
 interface BeachConditionScoreProps {
@@ -17,6 +18,148 @@ interface BeachConditionScoreProps {
   selectedDate?: Date;
   canClaimWindProtection?: boolean;
 }
+
+type ConditionCopy = {
+  exposedToWind: string;
+  openBeachCaution: (day: string) => string;
+  betterSheltered: (day: string) => string;
+  betterProtected: (day: string) => string;
+  mayFeelBreezy: string;
+  moreOpenToWind: string;
+  roughSea: string;
+  choppy: string;
+  manageableSea: string;
+  betterWindOption: string;
+  great: (day: string) => string;
+  veryGood: string;
+  goodConditions: string;
+  useCaution: string;
+  notIdeal: (day: string) => string;
+  seaConditionsCompact: string;
+  seaConditionsTitle: (day: string) => string;
+  windProtection: string;
+  waveHeight: string;
+  windSpeed: string;
+  temperature: string;
+};
+
+const conditionCopy: Record<LanguageCode, ConditionCopy> = {
+  en: {
+    exposedToWind: 'Exposed to wind',
+    openBeachCaution: (day) => `Open beach - use caution ${day}`,
+    betterSheltered: (day) => `Better out of the wind ${day}`,
+    betterProtected: (day) => `Better sheltered ${day}`,
+    mayFeelBreezy: 'May feel breezy',
+    moreOpenToWind: 'More open to wind',
+    roughSea: 'Rough sea',
+    choppy: 'Choppy',
+    manageableSea: 'Manageable sea',
+    betterWindOption: 'Better wind option',
+    great: (day) => `Great ${day}`,
+    veryGood: 'Very good',
+    goodConditions: 'Good conditions',
+    useCaution: 'Use caution',
+    notIdeal: (day) => `Not ideal ${day}`,
+    seaConditionsCompact: 'Sea Conditions',
+    seaConditionsTitle: (day) => `Sea conditions ${day}`,
+    windProtection: 'Wind Protection',
+    waveHeight: 'Wave Height',
+    windSpeed: 'Wind Speed',
+    temperature: 'Temperature',
+  },
+  gr: {
+    exposedToWind: 'Εκτεθειμένη στον άνεμο',
+    openBeachCaution: (day) => `Ανοιχτή παραλία - ${day} θέλει προσοχή`,
+    betterSheltered: (day) => `Πιο υπήνεμη ${day}`,
+    betterProtected: (day) => `Πιο προστατευμένη ${day}`,
+    mayFeelBreezy: 'Μπορεί να έχει αέρα',
+    moreOpenToWind: 'Πιο ανοιχτή στον άνεμο',
+    roughSea: 'Έντονος κυματισμός',
+    choppy: 'Κυματισμός',
+    manageableSea: 'Πιο ήπια θάλασσα',
+    betterWindOption: 'Πιο υπήνεμη επιλογή',
+    great: (day) => `Πολύ καλές ${day}`,
+    veryGood: 'Πολύ καλές',
+    goodConditions: 'Καλές συνθήκες',
+    useCaution: 'Με προσοχή',
+    notIdeal: (day) => `Όχι ιδανικές ${day}`,
+    seaConditionsCompact: 'Θαλάσσιες Συνθήκες',
+    seaConditionsTitle: (day) => `Θαλάσσιες συνθήκες ${day}`,
+    windProtection: 'Προστασία Ανέμου',
+    waveHeight: 'Ύψος Κύματος',
+    windSpeed: 'Ταχύτητα Ανέμου',
+    temperature: 'Θερμοκρασία',
+  },
+  fr: {
+    exposedToWind: 'Exposée au vent',
+    openBeachCaution: (day) => `Plage ouverte - prudence ${day}`,
+    betterSheltered: (day) => `Plus à l'abri du vent ${day}`,
+    betterProtected: (day) => `Plus abritée ${day}`,
+    mayFeelBreezy: 'Peut être venteuse',
+    moreOpenToWind: 'Plus ouverte au vent',
+    roughSea: 'Mer agitée',
+    choppy: 'Clapot',
+    manageableSea: 'Mer praticable',
+    betterWindOption: 'Option plus abritée',
+    great: (day) => `Très bonnes ${day}`,
+    veryGood: 'Très bonnes',
+    goodConditions: 'Bonnes conditions',
+    useCaution: 'Prudence',
+    notIdeal: (day) => `Pas idéales ${day}`,
+    seaConditionsCompact: 'Conditions de mer',
+    seaConditionsTitle: (day) => `Conditions de mer ${day}`,
+    windProtection: 'Protection du vent',
+    waveHeight: 'Hauteur des vagues',
+    windSpeed: 'Vitesse du vent',
+    temperature: 'Température',
+  },
+  de: {
+    exposedToWind: 'Windexponiert',
+    openBeachCaution: (day) => `Offener Strand - Vorsicht ${day}`,
+    betterSheltered: (day) => `Mehr aus dem Wind ${day}`,
+    betterProtected: (day) => `Besser geschützt ${day}`,
+    mayFeelBreezy: 'Kann windig wirken',
+    moreOpenToWind: 'Offener zum Wind',
+    roughSea: 'Raue See',
+    choppy: 'Kabbelig',
+    manageableSea: 'Gut machbare See',
+    betterWindOption: 'Windgeschütztere Option',
+    great: (day) => `Sehr gut ${day}`,
+    veryGood: 'Sehr gut',
+    goodConditions: 'Gute Bedingungen',
+    useCaution: 'Vorsicht',
+    notIdeal: (day) => `Nicht ideal ${day}`,
+    seaConditionsCompact: 'Meeresbedingungen',
+    seaConditionsTitle: (day) => `Meeresbedingungen ${day}`,
+    windProtection: 'Windschutz',
+    waveHeight: 'Wellenhöhe',
+    windSpeed: 'Windgeschwindigkeit',
+    temperature: 'Temperatur',
+  },
+  it: {
+    exposedToWind: 'Esposta al vento',
+    openBeachCaution: (day) => `Spiaggia aperta - prudenza ${day}`,
+    betterSheltered: (day) => `Più riparata dal vento ${day}`,
+    betterProtected: (day) => `Più protetta ${day}`,
+    mayFeelBreezy: 'Può essere ventilata',
+    moreOpenToWind: 'Più aperta al vento',
+    roughSea: 'Mare mosso',
+    choppy: 'Mare increspato',
+    manageableSea: 'Mare gestibile',
+    betterWindOption: 'Opzione più riparata',
+    great: (day) => `Molto buone ${day}`,
+    veryGood: 'Molto buone',
+    goodConditions: 'Buone condizioni',
+    useCaution: 'Prudenza',
+    notIdeal: (day) => `Non ideali ${day}`,
+    seaConditionsCompact: 'Condizioni mare',
+    seaConditionsTitle: (day) => `Condizioni mare ${day}`,
+    windProtection: 'Protezione dal vento',
+    waveHeight: 'Altezza onde',
+    windSpeed: 'Velocità vento',
+    temperature: 'Temperatura',
+  },
+};
 
 export const BeachConditionScore: React.FC<BeachConditionScoreProps> = ({
   isExposed,
@@ -106,36 +249,29 @@ export const BeachConditionScore: React.FC<BeachConditionScoreProps> = ({
     ? `${waveHeightM.toFixed(1)} m`
     : null;
   const day = getSelectedDayPrefix(selectedDate, new Date(), language);
+  const copy = getLocalizedCopy(language, conditionCopy);
   const exposureContextLabel = (() => {
     if (seaExposureLevel === 'exposed' && windBeaufort >= 5) {
       if (windBeaufort === 5) {
-        return language === 'gr' ? 'Εκτεθειμένη στον άνεμο' : 'Exposed to wind';
+        return copy.exposedToWind;
       }
-      return language === 'gr'
-        ? `Ανοιχτή παραλία — ${day} θέλει προσοχή`
-        : `Open beach — use caution ${day}`;
+      return copy.openBeachCaution(day);
     }
 
-    if (language === 'gr') {
-      if (seaExposureLevel === 'partial' && windBeaufort >= 4) return `Πιο υπήνεμη ${day}`;
-      if (seaExposureLevel === 'protected') return `Πιο προστατευμένη ${day}`;
-      if (seaExposureLevel === 'partial') return windBeaufort >= 5 ? `Πιο υπήνεμη ${day}` : 'Μπορεί να έχει αέρα';
-      return windBeaufort >= 5 ? `Εκτεθειμένη στον άνεμο ${day}` : 'Πιο ανοιχτή στον άνεμο';
-    }
-    if (seaExposureLevel === 'protected') return `Better sheltered ${day}`;
-    if (seaExposureLevel === 'partial') return windBeaufort >= 4 ? `Better out of the wind ${day}` : 'May feel breezy';
-    return windBeaufort >= 5 ? `Exposed to wind ${day}` : 'More open to wind';
+    if (seaExposureLevel === 'protected') return copy.betterProtected(day);
+    if (seaExposureLevel === 'partial') return windBeaufort >= 4 ? copy.betterSheltered(day) : copy.mayFeelBreezy;
+    return windBeaufort >= 5 ? `${copy.exposedToWind} ${day}` : copy.moreOpenToWind;
   })();
   const seaStateLabel = (() => {
     if (windBeaufort === 5) {
-      if (seaExposureLevel === 'exposed') return language === 'gr' ? 'Κυματισμός' : 'Choppy';
+      if (seaExposureLevel === 'exposed') return copy.choppy;
       return undefined;
     }
 
     if (typeof waveHeightM === 'number' && Number.isFinite(waveHeightM)) {
-      if (waveHeightM >= 1.2) return language === 'gr' ? 'Έντονος κυματισμός' : 'Rough sea';
-      if (waveHeightM >= 0.8) return language === 'gr' ? 'Κυματισμός' : 'Choppy';
-      return language === 'gr' ? 'Πιο ήπια θάλασσα' : 'Manageable sea';
+      if (waveHeightM >= 1.2) return copy.roughSea;
+      if (waveHeightM >= 0.8) return copy.choppy;
+      return copy.manageableSea;
     }
     return undefined;
   })();
@@ -161,16 +297,10 @@ export const BeachConditionScore: React.FC<BeachConditionScoreProps> = ({
   const getScoreLabel = (score: number) => {
     const day = getSelectedDayPrefix(selectedDate, new Date(), language);
     if (seaStateLabel && (score < 8 || windBeaufort >= 5)) return seaStateLabel;
-    if (language === 'gr') {
-      if (windBeaufort === 5 && seaExposureLevel !== 'exposed') return 'Πιο υπήνεμη επιλογή';
-      if (score >= 8) return 'Πολύ καλές';
-      if (score >= 5) return windBeaufort < 4 ? 'Καλές συνθήκες' : (windBeaufort === 5 ? 'Κυματισμός' : 'Με προσοχή');
-      return `Όχι ιδανικές ${day}`;
-    }
-    if (windBeaufort === 5 && seaExposureLevel !== 'exposed') return 'Better wind option';
-    if (score >= 8) return `Great ${day}`;
-    if (score >= 5) return windBeaufort < 4 ? 'Good conditions' : (windBeaufort === 5 ? 'Choppy' : 'Use caution');
-    return `Not ideal ${day}`;
+    if (windBeaufort === 5 && seaExposureLevel !== 'exposed') return copy.betterWindOption;
+    if (score >= 8) return compact ? copy.veryGood : copy.great(day);
+    if (score >= 5) return windBeaufort < 4 ? copy.goodConditions : (windBeaufort === 5 ? copy.choppy : copy.useCaution);
+    return copy.notIdeal(day);
   };
 
   const getIndicatorIcon = (score: number) => {
@@ -193,7 +323,7 @@ export const BeachConditionScore: React.FC<BeachConditionScoreProps> = ({
         </div>
         <div className="flex flex-col">
           <span className="text-xs font-semibold text-slate-700 dark:text-slate-200 leading-tight">
-            {language === 'gr' ? 'Θαλάσσιες Συνθήκες' : 'Sea Conditions'}
+            {copy.seaConditionsCompact}
           </span>
           <span className={`text-xs font-medium ${getScoreColor(totalScore)} leading-tight`}>
             {compactConditionParts.join(' · ')}
@@ -208,7 +338,7 @@ export const BeachConditionScore: React.FC<BeachConditionScoreProps> = ({
       <div className="flex items-center justify-between mb-4 pb-4 border-b border-slate-100 dark:border-slate-700">
         <div>
           <h3 className="text-sm font-semibold text-slate-500 dark:text-slate-400 mb-1">
-            {language === 'gr' ? `Θαλάσσιες συνθήκες ${getSelectedDayPrefix(selectedDate, new Date(), language)}` : `Sea conditions ${getSelectedDayPrefix(selectedDate, new Date(), language)}`}
+            {copy.seaConditionsTitle(getSelectedDayPrefix(selectedDate, new Date(), language))}
           </h3>
           <div className="flex items-baseline gap-2">
             <span className={`text-2xl font-heading font-bold ${getScoreColor(totalScore)}`}>
@@ -225,7 +355,7 @@ export const BeachConditionScore: React.FC<BeachConditionScoreProps> = ({
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-2 text-slate-600 dark:text-slate-300">
             {seaExposureLevel === 'exposed' ? <ShieldAlert className="w-4 h-4" /> : <ShieldCheck className="w-4 h-4" />}
-            <span className="text-sm font-medium">{language === 'gr' ? 'Προστασία Ανέμου' : 'Wind Protection'}</span>
+            <span className="text-sm font-medium">{copy.windProtection}</span>
           </div>
           <span className="text-sm">{getIndicatorIcon(protectionScore)}</span>
         </div>
@@ -233,7 +363,7 @@ export const BeachConditionScore: React.FC<BeachConditionScoreProps> = ({
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-2 text-slate-600 dark:text-slate-300">
             <Waves className="w-4 h-4" />
-            <span className="text-sm font-medium">{language === 'gr' ? 'Ύψος Κύματος' : 'Wave Height'}</span>
+            <span className="text-sm font-medium">{copy.waveHeight}</span>
           </div>
           <span className="text-sm">{waveHeightLabel ? `${waveHeightLabel} ${getIndicatorIcon(waveScore)}` : getIndicatorIcon(waveScore)}</span>
         </div>
@@ -241,7 +371,7 @@ export const BeachConditionScore: React.FC<BeachConditionScoreProps> = ({
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-2 text-slate-600 dark:text-slate-300">
             <Wind className="w-4 h-4" />
-            <span className="text-sm font-medium">{language === 'gr' ? 'Ταχύτητα Ανέμου' : 'Wind Speed'}</span>
+            <span className="text-sm font-medium">{copy.windSpeed}</span>
           </div>
           <span className="text-sm">{getIndicatorIcon(windScore)}</span>
         </div>
@@ -249,7 +379,7 @@ export const BeachConditionScore: React.FC<BeachConditionScoreProps> = ({
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-2 text-slate-600 dark:text-slate-300">
             <Thermometer className="w-4 h-4" />
-            <span className="text-sm font-medium">{language === 'gr' ? 'Θερμοκρασία' : 'Temperature'}</span>
+            <span className="text-sm font-medium">{copy.temperature}</span>
           </div>
           <span className="text-sm">{getIndicatorIcon(tempScore)}</span>
         </div>

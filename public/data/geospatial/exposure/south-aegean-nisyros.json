@@ -1,0 +1,192 @@
+{
+  "schemaVersion": 1,
+  "generatedAt": "2026-06-02T21:59:45.923Z",
+  "region": {
+    "id": "south-aegean-nisyros",
+    "name": "Nisyros"
+  },
+  "source": {
+    "indexPath": "/data/geospatial/exposure/index.json"
+  },
+  "settings": {
+    "maxFetchKm": 25,
+    "stepKm": 1,
+    "nearshoreLandGraceKm": 1,
+    "nearshoreWaterSearchKm": 12,
+    "nearshoreWaterSearchStepKm": 0.5,
+    "fanAnglesDeg": [
+      -30,
+      -15,
+      0,
+      15,
+      30
+    ],
+    "sectors": [
+      "N",
+      "NE",
+      "E",
+      "SE",
+      "S",
+      "SW",
+      "W",
+      "NW"
+    ]
+  },
+  "summary": {
+    "beachCount": 2,
+    "generatedProfiles": 2,
+    "missingCoordinates": 0,
+    "sectors": {
+      "N": {
+        "protected": 0,
+        "partial": 2,
+        "exposed": 0
+      },
+      "NE": {
+        "protected": 0,
+        "partial": 1,
+        "exposed": 1
+      },
+      "E": {
+        "protected": 0,
+        "partial": 1,
+        "exposed": 1
+      },
+      "SE": {
+        "protected": 1,
+        "partial": 1,
+        "exposed": 0
+      },
+      "S": {
+        "protected": 0,
+        "partial": 2,
+        "exposed": 0
+      },
+      "SW": {
+        "protected": 0,
+        "partial": 1,
+        "exposed": 1
+      },
+      "W": {
+        "protected": 1,
+        "partial": 0,
+        "exposed": 1
+      },
+      "NW": {
+        "protected": 0,
+        "partial": 2,
+        "exposed": 0
+      }
+    }
+  },
+  "profiles": {
+    "2387": {
+      "beachId": 2387,
+      "name": {
+        "en": "Pachia Ammos",
+        "gr": "Παχιά Άμμος"
+      },
+      "coordinates": {
+        "lat": 36.59026,
+        "lon": 27.20843
+      },
+      "sectors": {
+        "N": {
+          "level": "partial",
+          "fetchKm": 23.4,
+          "blockedRayRatio": 0.4
+        },
+        "NE": {
+          "level": "partial",
+          "fetchKm": 22.4,
+          "blockedRayRatio": 0.4
+        },
+        "E": {
+          "level": "exposed",
+          "fetchKm": 23.8,
+          "blockedRayRatio": 0.2
+        },
+        "SE": {
+          "level": "partial",
+          "fetchKm": 21.4,
+          "blockedRayRatio": 0.4
+        },
+        "S": {
+          "level": "partial",
+          "fetchKm": 18.2,
+          "blockedRayRatio": 0.4
+        },
+        "SW": {
+          "level": "partial",
+          "fetchKm": 5.8,
+          "blockedRayRatio": 0.8
+        },
+        "W": {
+          "level": "protected",
+          "fetchKm": 1,
+          "blockedRayRatio": 1
+        },
+        "NW": {
+          "level": "partial",
+          "fetchKm": 9,
+          "blockedRayRatio": 1
+        }
+      },
+      "confidence": "low"
+    },
+    "2388": {
+      "beachId": 2388,
+      "name": {
+        "en": "Chochlakoi",
+        "gr": "Χοχλάκοι"
+      },
+      "coordinates": {
+        "lat": 36.60951,
+        "lon": 27.13001
+      },
+      "sectors": {
+        "N": {
+          "level": "partial",
+          "fetchKm": 20,
+          "blockedRayRatio": 0.8
+        },
+        "NE": {
+          "level": "exposed",
+          "fetchKm": 24.6,
+          "blockedRayRatio": 0.2
+        },
+        "E": {
+          "level": "partial",
+          "fetchKm": 10.8,
+          "blockedRayRatio": 0.6
+        },
+        "SE": {
+          "level": "protected",
+          "fetchKm": 1,
+          "blockedRayRatio": 1
+        },
+        "S": {
+          "level": "partial",
+          "fetchKm": 10.8,
+          "blockedRayRatio": 0.6
+        },
+        "SW": {
+          "level": "exposed",
+          "fetchKm": 25,
+          "blockedRayRatio": 0
+        },
+        "W": {
+          "level": "exposed",
+          "fetchKm": 23.2,
+          "blockedRayRatio": 0.2
+        },
+        "NW": {
+          "level": "partial",
+          "fetchKm": 19,
+          "blockedRayRatio": 0.8
+        }
+      },
+      "confidence": "low"
+    }
+  }
+}

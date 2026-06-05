@@ -27,7 +27,7 @@ const getLanguageName = (langCode: LanguageCode): string => {
 export const generateItinerary = async (
     islandName: string,
     dailyData: DailyInfo[],
-    allBeaches: Beach[],
+    _allBeaches: Beach[],
     language: LanguageCode,
     travelStyle: TravelStyle,
     targetDuration: number,
@@ -72,7 +72,7 @@ export const generateItinerary = async (
     }
 };
 
-export const initializeChat = (islandName: string, beaches: Beach[], language: LanguageCode, t: any) => {
+export const initializeChat = (islandName: string, beaches: Beach[], language: LanguageCode, _t: any) => {
     // Simple chat state holder for Ollama
     return {
         islandName,
@@ -141,7 +141,7 @@ export const sendMessageStream = async (chat: any, message: string) => {
     }
 };
 
-export const generateBeachDetails = async (beach: Beach, windInfo: string, language: LanguageCode, t: any): Promise<BeachDetailsAIResponse | null> => {
+export const generateBeachDetails = async (beach: Beach, windInfo: string, language: LanguageCode, _t: any): Promise<BeachDetailsAIResponse | null> => {
     const languageName = getLanguageName(language);
     
     const prompt = `

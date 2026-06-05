@@ -79,7 +79,7 @@ const describeError = (error: unknown): string => {
   return String(error);
 };
 
-const fetchJson = async <T>(url: string, source: string, lat: number, lon: number): Promise<T> => {
+const fetchJson = async <T>(url: string, source: string): Promise<T> => {
   const controller = new AbortController();
   const timeout = window.setTimeout(() => controller.abort(), WEATHER_REQUEST_TIMEOUT_MS);
 
@@ -184,7 +184,7 @@ export const fetchWeatherData = async (lat: number, lon: number): Promise<Weathe
   const API_URL = `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&current=temperature_2m,is_day,weather_code,wind_speed_10m,wind_direction_10m&wind_speed_unit=ms&timezone=auto`;
 
   try {
-    const data = await fetchJson<any>(API_URL, 'current-weather', lat, lon);
+    const data = await fetchJson<any>(API_URL, 'current-weather');
     const current = data.current;
     if (!current) throw new Error('Weather fetch failed: missing current data');
 
@@ -221,7 +221,7 @@ export const fetchForecastData = async (lat: number, lon: number): Promise<Forec
   const API_URL = `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&hourly=temperature_2m,weather_code,wind_speed_10m,wind_direction_10m,pressure_msl&wind_speed_unit=ms&timezone=auto`;
 
   try {
-    const data = await fetchJson<any>(API_URL, 'hourly-forecast', lat, lon);
+    const data = await fetchJson<any>(API_URL, 'hourly-forecast');
     const hourly = data.hourly;
     if (!hourly?.time || !Array.isArray(hourly.time)) {
       throw new Error('Forecast fetch failed: missing hourly data');
@@ -289,7 +289,7 @@ export const fetchMarineForecastData = async (lat: number, lon: number): Promise
   const API_URL = `https://marine-api.open-meteo.com/v1/marine?latitude=${lat}&longitude=${lon}&hourly=${hourly}&timezone=auto&forecast_days=6&cell_selection=sea`;
 
   try {
-    const data = await fetchJson<any>(API_URL, 'marine-forecast', lat, lon);
+    const data = await fetchJson<any>(API_URL, 'marine-forecast');
     const marineHourly = data.hourly;
 
     if (!marineHourly?.time || !Array.isArray(marineHourly.time)) {

@@ -1,7 +1,6 @@
 
 import React, { useState, useEffect, useCallback } from 'react';
 import { FilterKey, SortOption } from '../types';
-import { ConfirmationModal } from './ConfirmationModal';
 import { Translation } from '../types';
 import { 
   Umbrella, 
@@ -14,23 +13,34 @@ import {
   Mountain, 
   Sparkles,
   BadgeCheck,
+  Search,
+  Users,
+  VolumeX,
   ArrowDown, 
   ArrowUp, 
   CheckCircle2, 
   Globe,
-  Star,
   MapPin,
-  List
+  ShieldCheck
 } from 'lucide-react';
 
 interface CombinedFilterProps {
   initialSelectedFilters: FilterKey[];
   initialSortBy: SortOption;
-  onApplyFilters: (filters: FilterKey[], sortBy: SortOption) => void;
+  initialDistanceWithinSuitable?: boolean;
+  onApplyFilters: (
+    filters: FilterKey[],
+    sortBy: SortOption,
+    options?: { distanceWithinSuitable?: boolean }
+  ) => void;
   onClose: () => void;
   t: Translation;
   isGettingLocation: boolean;
   locationError: string | null;
+  availableFilters?: FilterKey[];
+  protectedSortLabel?: string;
+  getResultCount?: (filters: FilterKey[], sortBy: SortOption) => number;
+  onResultCountChange?: (count: number) => void;
 }
 
 
@@ -43,6 +53,9 @@ const filterIcons: Record<string, React.ReactNode> = {
   parking: <ParkingCircle className="h-5 w-5 mr-2" />,
   sandy: <Sparkles className="h-5 w-5 mr-2" />,
   pebbles: <CircleDot className="h-5 w-5 mr-2" />,
+  quiet: <VolumeX className="h-5 w-5 mr-2" />,
+  snorkeling: <Search className="h-5 w-5 mr-2" />,
+  familyFriendly: <Users className="h-5 w-5 mr-2" />,
   'sandy-pebbles': <Layers className="h-5 w-5 mr-2" />,
   rocky: <Mountain className="h-5 w-5 mr-2" />,
   deepWaters: <ArrowDown className="h-5 w-5 mr-2" />,
@@ -54,22 +67,32 @@ const filterIcons: Record<string, React.ReactNode> = {
 export const CombinedFilter: React.FC<CombinedFilterProps> = ({ 
     initialSelectedFilters, 
     initialSortBy, 
+    initialDistanceWithinSuitable = false,
     onApplyFilters,
-    onClose,
     t,
     isGettingLocation,
     locationError,
+    availableFilters,
+    protectedSortLabel,
+    getResultCount,
+    onResultCountChange,
 }) => {
     // Internal state for temporary changes
     const [tempFilters, setTempFilters] = useState<FilterKey[]>(initialSelectedFilters);
     const [tempSortBy, setTempSortBy] = useState<SortOption>(initialSortBy);
-    const [isConfirmOpen, setIsConfirmOpen] = useState(false);
+    const [tempDistanceWithinSuitable, setTempDistanceWithinSuitable] = useState(initialDistanceWithinSuitable);
 
     // Sync internal state if the modal is reopened with different initial props
     useEffect(() => {
         setTempFilters(initialSelectedFilters);
         setTempSortBy(initialSortBy);
-    }, [initialSelectedFilters, initialSortBy]);
+        setTempDistanceWithinSuitable(initialDistanceWithinSuitable);
+    }, [initialDistanceWithinSuitable, initialSelectedFilters, initialSortBy]);
+
+    useEffect(() => {
+        if (!getResultCount || !onResultCountChange) return;
+        onResultCountChange(getResultCount(tempFilters, tempSortBy));
+    }, [getResultCount, onResultCountChange, tempFilters, tempSortBy]);
 
     const handleFilterChange = useCallback((filter: FilterKey | 'all') => {
         if (filter === 'all') {
@@ -94,30 +117,47 @@ export const CombinedFilter: React.FC<CombinedFilterProps> = ({
         });
     }, []);
 
-    const handleSortChange = useCallback((option: SortOption) => {
-        setTempSortBy(option);
+    const handleProtectedSortClick = useCallback(() => {
+        if (tempSortBy === 'distance') {
+            setTempDistanceWithinSuitable(true);
+        }
+        setTempSortBy('protected');
+    }, [tempSortBy]);
+
+    const handleAllSortClick = useCallback(() => {
+        if (tempSortBy === 'protected' && tempDistanceWithinSuitable) {
+            setTempSortBy('distance');
+        } else if (tempSortBy !== 'distance') {
+            setTempSortBy('all');
+        }
+        setTempDistanceWithinSuitable(false);
+    }, [tempDistanceWithinSuitable, tempSortBy]);
+
+    const handleDistanceSortClick = useCallback(() => {
+        if (tempSortBy === 'protected') {
+            setTempDistanceWithinSuitable(current => !current);
+            return;
+        }
+
+        setTempSortBy(current => current === 'distance' ? 'all' : 'distance');
+        setTempDistanceWithinSuitable(false);
     }, []);
 
     const handleReset = () => {
         setTempFilters([]);
-        setTempSortBy('all');
+        setTempSortBy('protected');
+        setTempDistanceWithinSuitable(false);
     };
-    
-    const handleResetClick = () => {
-        setIsConfirmOpen(true);
-    };
-    
-    const handleConfirmReset = () => {
-        handleReset();
-        setIsConfirmOpen(false);
-    };
-
     const handleApply = () => {
-        onApplyFilters(tempFilters, tempSortBy);
+        onApplyFilters(tempFilters, tempSortBy, {
+            distanceWithinSuitable: tempSortBy === 'protected' && tempDistanceWithinSuitable,
+        });
     };
 
-    const filters = Object.keys(t.filterOptions)
-        .filter(k => k !== 'showAll' && k !== 'restaurant') as (keyof typeof t.filterOptions)[];
+    const availableFilterSet = availableFilters ? new Set<FilterKey>(availableFilters) : undefined;
+    const filters = (Object.keys(t.filterOptions)
+        .filter(k => k !== 'showAll' && k !== 'restaurant') as FilterKey[])
+        .filter(filter => !availableFilterSet || availableFilterSet.has(filter) || tempFilters.includes(filter));
 
     const CheckmarkIcon = () => (
         <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 ml-2 flex-shrink-0" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
@@ -159,32 +199,32 @@ export const CombinedFilter: React.FC<CombinedFilterProps> = ({
                     <h4 id="sort-heading" className="text-sm font-bold text-slate-600 mb-3">{t.sortByTitle}</h4>
                     <div className="flex flex-wrap gap-3" role="group" aria-labelledby="sort-heading">
                     <button
-                        onClick={() => handleSortChange('all')}
+                        onClick={handleAllSortClick}
                         className={`flex items-center px-4 py-2 text-sm font-semibold rounded-lg border-2 transition-all duration-200 transform focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-cyan-500 ${
-                        tempSortBy === 'all'
+                        tempSortBy === 'all' || tempSortBy === 'distance'
                             ? 'bg-cyan-600 border-cyan-600 text-white shadow-lg shadow-cyan-600/40 hover:shadow-xl hover:scale-[1.03]'
                             : 'bg-white border-slate-200 text-slate-700 hover:border-cyan-400 hover:scale-[1.03]'
                         }`}
                     >
-                        <List className="h-5 w-5 mr-2" />
+                        <Globe className="h-5 w-5 mr-2" />
                         {t.sortByAll}
                     </button>
                     <button
-                        onClick={() => handleSortChange('rating')}
+                        onClick={handleProtectedSortClick}
                         className={`flex items-center px-4 py-2 text-sm font-semibold rounded-lg border-2 transition-all duration-200 transform focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-cyan-500 ${
-                        tempSortBy === 'rating'
+                        tempSortBy === 'protected'
                             ? 'bg-cyan-600 border-cyan-600 text-white shadow-lg shadow-cyan-600/40 hover:shadow-xl hover:scale-[1.03]'
                             : 'bg-white border-slate-200 text-slate-700 hover:border-cyan-400 hover:scale-[1.03]'
                         }`}
                     >
-                        <Star className="h-5 w-5 mr-2" />
-                        {t.sortByTopRated}
+                        <ShieldCheck className="h-5 w-5 mr-2" />
+                        {protectedSortLabel ?? t.sortByProtected}
                     </button>
                     <button
-                        onClick={() => handleSortChange('distance')}
+                        onClick={handleDistanceSortClick}
                         disabled={isGettingLocation}
                         className={`flex items-center px-4 py-2 text-sm font-semibold rounded-lg border-2 transition-all duration-200 transform focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-cyan-500 disabled:opacity-60 disabled:cursor-wait ${
-                        tempSortBy === 'distance'
+                        tempSortBy === 'distance' || (tempSortBy === 'protected' && tempDistanceWithinSuitable)
                             ? 'bg-cyan-600 border-cyan-600 text-white shadow-lg shadow-cyan-600/40 hover:shadow-xl hover:scale-[1.03]'
                             : 'bg-white border-slate-200 text-slate-700 hover:border-cyan-400 hover:scale-[1.03]'
                         }`}
@@ -199,23 +239,13 @@ export const CombinedFilter: React.FC<CombinedFilterProps> = ({
                 </div>
             </div>
             <div className="pt-6 mt-6 border-t border-slate-200/80 flex items-center justify-between gap-3">
-                <button onClick={handleResetClick} className="px-5 py-2.5 text-sm font-semibold text-slate-700 bg-slate-100 rounded-lg hover:bg-slate-200 transition-colors focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-slate-400">
+                <button onClick={handleReset} className="px-5 py-2.5 text-sm font-semibold text-slate-700 bg-slate-100 rounded-lg hover:bg-slate-200 transition-colors focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-slate-400">
                     {t.resetFilters}
                 </button>
                 <button onClick={handleApply} className="flex-1 sm:flex-none px-5 py-2.5 text-sm font-semibold text-white bg-cyan-600 rounded-lg hover:bg-cyan-700 transition-colors focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-cyan-500 shadow-md hover:shadow-lg">
                     {t.applyFilters}
                 </button>
             </div>
-            <ConfirmationModal
-                isOpen={isConfirmOpen}
-                onClose={() => setIsConfirmOpen(false)}
-                onConfirm={handleConfirmReset}
-                title={t.confirmation.resetFiltersTitle}
-                message={t.confirmation.resetFiltersMessage}
-                confirmButtonText={t.confirmation.confirmButton}
-                cancelButtonText={t.confirmation.cancelButton}
-                t={t}
-            />
         </>
     );
 };

@@ -1,0 +1,246 @@
+{
+  "schemaVersion": 1,
+  "generatedAt": "2026-06-02T21:59:22.269Z",
+  "region": {
+    "id": "south-aegean-kastellorizo",
+    "name": "Kastellorizo"
+  },
+  "source": {
+    "indexPath": "/data/geospatial/exposure/index.json"
+  },
+  "settings": {
+    "maxFetchKm": 25,
+    "stepKm": 1,
+    "nearshoreLandGraceKm": 1,
+    "nearshoreWaterSearchKm": 12,
+    "nearshoreWaterSearchStepKm": 0.5,
+    "fanAnglesDeg": [
+      -30,
+      -15,
+      0,
+      15,
+      30
+    ],
+    "sectors": [
+      "N",
+      "NE",
+      "E",
+      "SE",
+      "S",
+      "SW",
+      "W",
+      "NW"
+    ]
+  },
+  "summary": {
+    "beachCount": 3,
+    "generatedProfiles": 3,
+    "missingCoordinates": 0,
+    "sectors": {
+      "N": {
+        "protected": 0,
+        "partial": 3,
+        "exposed": 0
+      },
+      "NE": {
+        "protected": 0,
+        "partial": 3,
+        "exposed": 0
+      },
+      "E": {
+        "protected": 0,
+        "partial": 3,
+        "exposed": 0
+      },
+      "SE": {
+        "protected": 0,
+        "partial": 0,
+        "exposed": 3
+      },
+      "S": {
+        "protected": 0,
+        "partial": 1,
+        "exposed": 2
+      },
+      "SW": {
+        "protected": 1,
+        "partial": 2,
+        "exposed": 0
+      },
+      "W": {
+        "protected": 2,
+        "partial": 1,
+        "exposed": 0
+      },
+      "NW": {
+        "protected": 1,
+        "partial": 2,
+        "exposed": 0
+      }
+    }
+  },
+  "profiles": {
+    "2317": {
+      "beachId": 2317,
+      "name": {
+        "en": "Mandraki",
+        "gr": "Μανδράκι"
+      },
+      "coordinates": {
+        "lat": 36.14749,
+        "lon": 29.59848
+      },
+      "sectors": {
+        "N": {
+          "level": "partial",
+          "fetchKm": 4,
+          "blockedRayRatio": 1
+        },
+        "NE": {
+          "level": "partial",
+          "fetchKm": 3.8,
+          "blockedRayRatio": 1
+        },
+        "E": {
+          "level": "partial",
+          "fetchKm": 8.2,
+          "blockedRayRatio": 0.8
+        },
+        "SE": {
+          "level": "exposed",
+          "fetchKm": 21.2,
+          "blockedRayRatio": 0.2
+        },
+        "S": {
+          "level": "exposed",
+          "fetchKm": 20.2,
+          "blockedRayRatio": 0.2
+        },
+        "SW": {
+          "level": "partial",
+          "fetchKm": 5.8,
+          "blockedRayRatio": 0.8
+        },
+        "W": {
+          "level": "protected",
+          "fetchKm": 1,
+          "blockedRayRatio": 1
+        },
+        "NW": {
+          "level": "partial",
+          "fetchKm": 3.8,
+          "blockedRayRatio": 1
+        }
+      },
+      "confidence": "low"
+    },
+    "2318": {
+      "beachId": 2318,
+      "name": {
+        "en": "Paralia Agiou Georgiou",
+        "gr": "Παραλία Αγίου Γεωργίου"
+      },
+      "coordinates": {
+        "lat": 36.14967,
+        "lon": 29.60247
+      },
+      "sectors": {
+        "N": {
+          "level": "partial",
+          "fetchKm": 3.6,
+          "blockedRayRatio": 1
+        },
+        "NE": {
+          "level": "partial",
+          "fetchKm": 3.8,
+          "blockedRayRatio": 1
+        },
+        "E": {
+          "level": "partial",
+          "fetchKm": 8,
+          "blockedRayRatio": 0.8
+        },
+        "SE": {
+          "level": "exposed",
+          "fetchKm": 21.2,
+          "blockedRayRatio": 0.2
+        },
+        "S": {
+          "level": "exposed",
+          "fetchKm": 25,
+          "blockedRayRatio": 0
+        },
+        "SW": {
+          "level": "partial",
+          "fetchKm": 10.6,
+          "blockedRayRatio": 0.6
+        },
+        "W": {
+          "level": "protected",
+          "fetchKm": 1,
+          "blockedRayRatio": 1
+        },
+        "NW": {
+          "level": "protected",
+          "fetchKm": 1.6,
+          "blockedRayRatio": 1
+        }
+      },
+      "confidence": "low"
+    },
+    "2319": {
+      "beachId": 2319,
+      "name": {
+        "en": "Plakes",
+        "gr": "Πλάκες"
+      },
+      "coordinates": {
+        "lat": 36.16027,
+        "lon": 29.59771
+      },
+      "sectors": {
+        "N": {
+          "level": "partial",
+          "fetchKm": 3,
+          "blockedRayRatio": 1
+        },
+        "NE": {
+          "level": "partial",
+          "fetchKm": 2.8,
+          "blockedRayRatio": 1
+        },
+        "E": {
+          "level": "partial",
+          "fetchKm": 7.4,
+          "blockedRayRatio": 0.8
+        },
+        "SE": {
+          "level": "exposed",
+          "fetchKm": 21,
+          "blockedRayRatio": 0.2
+        },
+        "S": {
+          "level": "partial",
+          "fetchKm": 10.6,
+          "blockedRayRatio": 0.6
+        },
+        "SW": {
+          "level": "protected",
+          "fetchKm": 1,
+          "blockedRayRatio": 1
+        },
+        "W": {
+          "level": "partial",
+          "fetchKm": 13.2,
+          "blockedRayRatio": 0.8
+        },
+        "NW": {
+          "level": "partial",
+          "fetchKm": 10.6,
+          "blockedRayRatio": 1
+        }
+      },
+      "confidence": "low"
+    }
+  }
+}

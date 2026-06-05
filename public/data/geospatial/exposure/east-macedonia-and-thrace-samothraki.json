@@ -1,0 +1,246 @@
+{
+  "schemaVersion": 1,
+  "generatedAt": "2026-06-02T21:58:02.623Z",
+  "region": {
+    "id": "east-macedonia-and-thrace-samothraki",
+    "name": "Samothraki"
+  },
+  "source": {
+    "indexPath": "/data/geospatial/exposure/index.json"
+  },
+  "settings": {
+    "maxFetchKm": 25,
+    "stepKm": 1,
+    "nearshoreLandGraceKm": 1,
+    "nearshoreWaterSearchKm": 12,
+    "nearshoreWaterSearchStepKm": 0.5,
+    "fanAnglesDeg": [
+      -30,
+      -15,
+      0,
+      15,
+      30
+    ],
+    "sectors": [
+      "N",
+      "NE",
+      "E",
+      "SE",
+      "S",
+      "SW",
+      "W",
+      "NW"
+    ]
+  },
+  "summary": {
+    "beachCount": 3,
+    "generatedProfiles": 3,
+    "missingCoordinates": 0,
+    "sectors": {
+      "N": {
+        "protected": 3,
+        "partial": 0,
+        "exposed": 0
+      },
+      "NE": {
+        "protected": 1,
+        "partial": 2,
+        "exposed": 0
+      },
+      "E": {
+        "protected": 1,
+        "partial": 0,
+        "exposed": 2
+      },
+      "SE": {
+        "protected": 0,
+        "partial": 1,
+        "exposed": 2
+      },
+      "S": {
+        "protected": 0,
+        "partial": 0,
+        "exposed": 3
+      },
+      "SW": {
+        "protected": 0,
+        "partial": 0,
+        "exposed": 3
+      },
+      "W": {
+        "protected": 0,
+        "partial": 1,
+        "exposed": 2
+      },
+      "NW": {
+        "protected": 1,
+        "partial": 2,
+        "exposed": 0
+      }
+    }
+  },
+  "profiles": {
+    "779": {
+      "beachId": 779,
+      "name": {
+        "en": "Vatos",
+        "gr": "Βάτος"
+      },
+      "coordinates": {
+        "lat": 40.39693,
+        "lon": 25.60638
+      },
+      "sectors": {
+        "N": {
+          "level": "protected",
+          "fetchKm": 1,
+          "blockedRayRatio": 1
+        },
+        "NE": {
+          "level": "partial",
+          "fetchKm": 6.2,
+          "blockedRayRatio": 0.8
+        },
+        "E": {
+          "level": "exposed",
+          "fetchKm": 20.6,
+          "blockedRayRatio": 0.2
+        },
+        "SE": {
+          "level": "exposed",
+          "fetchKm": 24.8,
+          "blockedRayRatio": 0.2
+        },
+        "S": {
+          "level": "exposed",
+          "fetchKm": 24.8,
+          "blockedRayRatio": 0.2
+        },
+        "SW": {
+          "level": "exposed",
+          "fetchKm": 25,
+          "blockedRayRatio": 0
+        },
+        "W": {
+          "level": "partial",
+          "fetchKm": 15.4,
+          "blockedRayRatio": 0.4
+        },
+        "NW": {
+          "level": "protected",
+          "fetchKm": 1,
+          "blockedRayRatio": 1
+        }
+      },
+      "confidence": "low"
+    },
+    "780": {
+      "beachId": 780,
+      "name": {
+        "en": "Paralia Makrylies",
+        "gr": "Παραλία Μακρυλιές"
+      },
+      "coordinates": {
+        "lat": 40.42366,
+        "lon": 25.51723
+      },
+      "sectors": {
+        "N": {
+          "level": "protected",
+          "fetchKm": 1,
+          "blockedRayRatio": 1
+        },
+        "NE": {
+          "level": "protected",
+          "fetchKm": 1,
+          "blockedRayRatio": 1
+        },
+        "E": {
+          "level": "protected",
+          "fetchKm": 1,
+          "blockedRayRatio": 1
+        },
+        "SE": {
+          "level": "partial",
+          "fetchKm": 15.4,
+          "blockedRayRatio": 0.4
+        },
+        "S": {
+          "level": "exposed",
+          "fetchKm": 25,
+          "blockedRayRatio": 0
+        },
+        "SW": {
+          "level": "exposed",
+          "fetchKm": 25,
+          "blockedRayRatio": 0
+        },
+        "W": {
+          "level": "exposed",
+          "fetchKm": 25,
+          "blockedRayRatio": 0
+        },
+        "NW": {
+          "level": "partial",
+          "fetchKm": 10.6,
+          "blockedRayRatio": 0.6
+        }
+      },
+      "confidence": "low"
+    },
+    "781": {
+      "beachId": 781,
+      "name": {
+        "en": "Pachia Ammos",
+        "gr": "Παχιά Άμμος"
+      },
+      "coordinates": {
+        "lat": 40.39515,
+        "lon": 25.58031
+      },
+      "sectors": {
+        "N": {
+          "level": "protected",
+          "fetchKm": 1,
+          "blockedRayRatio": 1
+        },
+        "NE": {
+          "level": "partial",
+          "fetchKm": 5.8,
+          "blockedRayRatio": 0.8
+        },
+        "E": {
+          "level": "exposed",
+          "fetchKm": 20.2,
+          "blockedRayRatio": 0.2
+        },
+        "SE": {
+          "level": "exposed",
+          "fetchKm": 25,
+          "blockedRayRatio": 0
+        },
+        "S": {
+          "level": "exposed",
+          "fetchKm": 25,
+          "blockedRayRatio": 0
+        },
+        "SW": {
+          "level": "exposed",
+          "fetchKm": 25,
+          "blockedRayRatio": 0
+        },
+        "W": {
+          "level": "exposed",
+          "fetchKm": 20.2,
+          "blockedRayRatio": 0.2
+        },
+        "NW": {
+          "level": "partial",
+          "fetchKm": 5.8,
+          "blockedRayRatio": 0.8
+        }
+      },
+      "confidence": "low"
+    }
+  }
+}

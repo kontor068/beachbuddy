@@ -49,65 +49,74 @@ const normalize = (value: string | undefined): string =>
     .normalize('NFD')
     .replace(/[\u0300-\u036f]/g, '');
 
-const localized = (language: LanguageCode, gr: string, en: string): string =>
-  language === 'gr' ? gr : en;
+type LocalizedAmenityText = Record<LanguageCode, string>;
 
-const amenityLabels: Record<SpecificAmenityKey, { gr: string; en: string }> = {
-  beachBar: { gr: 'Beach bar', en: 'Beach bar' },
-  sunbeds: { gr: 'Ξαπλώστρες', en: 'Sunbeds' },
-  foodNearby: { gr: 'Ταβέρνες κοντά', en: 'Tavernas nearby' },
-  cafeNearby: { gr: 'Καφέ κοντά', en: 'Café nearby' },
-  parking: { gr: 'Parking κοντά', en: 'Parking nearby' },
+const localized = (language: LanguageCode, copy: LocalizedAmenityText): string =>
+  copy[language] ?? copy.en;
+
+const amenityLabels: Record<SpecificAmenityKey, LocalizedAmenityText> = {
+  beachBar: { en: 'Beach bar', gr: 'Beach bar', fr: 'Bar de plage', de: 'Beach Bar', it: 'Beach bar' },
+  sunbeds: { en: 'Sunbeds', gr: 'Ξαπλώστρες', fr: 'Transats', de: 'Liegen', it: 'Lettini' },
+  foodNearby: { en: 'Tavernas nearby', gr: 'Ταβέρνες κοντά', fr: 'Tavernes proches', de: 'Tavernen in der Nähe', it: 'Taverne vicine' },
+  cafeNearby: { en: 'Café nearby', gr: 'Καφέ κοντά', fr: 'Café proche', de: 'Café in der Nähe', it: 'Caffè vicino' },
+  parking: { en: 'Parking nearby', gr: 'Parking κοντά', fr: 'Parking proche', de: 'Parken in der Nähe', it: 'Parcheggio vicino' },
 };
 
-const rowLabels: Record<SpecificAmenityKey, { gr: string; en: string }> = {
+const rowLabels: Record<SpecificAmenityKey, LocalizedAmenityText> = {
   ...amenityLabels,
-  parking: { gr: 'Parking', en: 'Parking' },
+  parking: { en: 'Parking', gr: 'Parking', fr: 'Parking', de: 'Parken', it: 'Parcheggio' },
 };
 
 const getLabel = (key: SpecificAmenityKey, language: LanguageCode): string => {
   const label = amenityLabels[key];
-  return localized(language, label.gr, label.en);
+  return localized(language, label);
 };
 
 const getChipLabel = (key: AmenityChipKey, status: AmenityStatus, language: LanguageCode): string => {
   if (key === 'organizedFacilities') {
-    return localized(language, 'Παροχές διαθέσιμες', 'Facilities available');
+    return localized(language, { en: 'Facilities available', gr: 'Παροχές διαθέσιμες', fr: 'Services disponibles', de: 'Ausstattung verfügbar', it: 'Servizi disponibili' });
   }
   if (key === 'noFacilities') {
-    return localized(language, 'Χωρίς οργανωμένες παροχές', 'No beach facilities');
+    return localized(language, { en: 'No beach facilities', gr: 'Χωρίς οργανωμένες παροχές', fr: 'Pas de services de plage', de: 'Keine Strandausstattung', it: 'Nessun servizio in spiaggia' });
   }
   if (key === 'seasonalFacilities') {
-    return localized(language, 'Εποχικές παροχές', 'Seasonal facilities');
+    return localized(language, { en: 'Seasonal facilities', gr: 'Εποχικές παροχές', fr: 'Services saisonniers', de: 'Saisonale Ausstattung', it: 'Servizi stagionali' });
   }
   if (key === 'unknownFacilities') {
-    return localized(language, 'Άγνωστες παροχές', 'Facilities unknown');
+    return localized(language, { en: 'Facilities unknown', gr: 'Άγνωστες παροχές', fr: 'Services inconnus', de: 'Ausstattung unbekannt', it: 'Servizi non verificati' });
   }
 
   const base = getLabel(key, language);
   if (status === 'seasonal') {
-    return localized(language, `${base} εποχικά`, `${base} seasonally`);
+    const seasonalSuffix: Record<LanguageCode, string> = {
+      en: `${base} seasonally`,
+      gr: `${base} εποχικά`,
+      fr: `${base} en saison`,
+      de: `${base} saisonal`,
+      it: `${base} stagionale`,
+    };
+    return seasonalSuffix[language];
   }
   if (status === 'limited' && key === 'parking') {
-    return localized(language, 'Parking περιορισμένο', 'Limited parking');
+    return localized(language, { en: 'Limited parking', gr: 'Parking περιορισμένο', fr: 'Parking limité', de: 'Begrenztes Parken', it: 'Parcheggio limitato' });
   }
   return base;
 };
 
 const getRowLabel = (key: SpecificAmenityKey, language: LanguageCode): string => {
   const label = rowLabels[key];
-  return localized(language, label.gr, label.en);
+  return localized(language, label);
 };
 
 const getStatusValue = (status: AmenityStatus, language: LanguageCode): string => {
-  const values: Record<AmenityStatus, { gr: string; en: string }> = {
-    yes: { gr: 'Ναι', en: 'Yes' },
-    seasonal: { gr: 'Εποχικά', en: 'Seasonal' },
-    no: { gr: 'Όχι', en: 'No' },
-    unknown: { gr: 'Άγνωστο', en: 'Unknown' },
-    limited: { gr: 'Περιορισμένο', en: 'Limited' },
+  const values: Record<AmenityStatus, LocalizedAmenityText> = {
+    yes: { en: 'Yes', gr: 'Ναι', fr: 'Oui', de: 'Ja', it: 'Sì' },
+    seasonal: { en: 'Seasonal', gr: 'Εποχικά', fr: 'Saisonnier', de: 'Saisonal', it: 'Stagionale' },
+    no: { en: 'No', gr: 'Όχι', fr: 'Non', de: 'Nein', it: 'No' },
+    unknown: { en: 'Unknown', gr: 'Άγνωστο', fr: 'Inconnu', de: 'Unbekannt', it: 'Sconosciuto' },
+    limited: { en: 'Limited', gr: 'Περιορισμένο', fr: 'Limité', de: 'Begrenzt', it: 'Limitato' },
   };
-  return localized(language, values[status].gr, values[status].en);
+  return localized(language, values[status]);
 };
 
 const getAmenityTextItems = (beach: Beach): string[] => {
@@ -144,7 +153,13 @@ const hasTavernaSignal = (beach: Beach): boolean =>
 
 const getFoodNearbyLabel = (beach: Beach, language: LanguageCode): string => {
   if (hasTavernaSignal(beach)) {
-    return localized(language, 'Ταβέρνες κοντά', 'Tavernas nearby');
+    return localized(language, {
+      en: 'Tavernas nearby',
+      gr: 'Ταβέρνες κοντά',
+      fr: 'Tavernes proches',
+      de: 'Tavernen in der Nähe',
+      it: 'Taverne vicine',
+    });
   }
   return getLabel('foodNearby', language);
 };
@@ -152,7 +167,13 @@ const getFoodNearbyLabel = (beach: Beach, language: LanguageCode): string => {
 const getFoodNearbyChipLabel = (beach: Beach, status: AmenityStatus, language: LanguageCode): string => {
   const base = getFoodNearbyLabel(beach, language);
   if (status === 'seasonal') {
-    return localized(language, `${base} εποχικά`, `${base} seasonally`);
+    return {
+      en: `${base} seasonally`,
+      gr: `${base} εποχικά`,
+      fr: `${base} en saison`,
+      de: `${base} saisonal`,
+      it: `${base} stagionale`,
+    }[language];
   }
   return base;
 };
@@ -216,12 +237,6 @@ const getSpecificAmenityStatus = (beach: Beach, key: SpecificAmenityKey): Amenit
 
   return fieldStatus || 'unknown';
 };
-
-const hasAnySpecificAmenity = (beach: Beach): boolean =>
-  specificAmenityOrder.some(key => {
-    const status = getSpecificAmenityStatus(beach, key);
-    return status === 'yes' || status === 'seasonal' || status === 'limited';
-  });
 
 export const hasSeasonalAmenitySignal = (beach: Beach): boolean => {
   const looseBeach = beach as Beach & { seasonal?: boolean };
@@ -291,7 +306,13 @@ export const getAmenityStatusRows = (beach: Beach, language: LanguageCode): Amen
   });
 
 export const getAmenityDisclaimer = (language: LanguageCode): string =>
-  localized(language, 'Οι παροχές μπορεί να διαφέρουν ανά εποχή.', 'Facilities can vary by season.');
+  localized(language, {
+    en: 'Facilities can vary by season.',
+    gr: 'Οι παροχές μπορεί να διαφέρουν ανά εποχή.',
+    fr: 'Les services peuvent varier selon la saison.',
+    de: 'Ausstattung kann je nach Saison variieren.',
+    it: 'I servizi possono variare in base alla stagione.',
+  });
 
 export const shouldShowAmenityDisclaimer = (beach: Beach): boolean => {
   if (hasSeasonalAmenitySignal(beach)) return true;

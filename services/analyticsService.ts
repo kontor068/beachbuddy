@@ -293,8 +293,7 @@ export const canTrackAnalytics = () => getAnalyticsConsent() === 'accepted';
 export const trackEvent = (
   event: AnalyticsEvent, 
   beachId?: number | string, 
-  metadata?: any,
-  userLocation?: { lat: number; lon: number }
+  metadata?: any
 ) => {
   if (!canTrackAnalytics()) return;
 

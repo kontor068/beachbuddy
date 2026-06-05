@@ -6,12 +6,11 @@ import {
   WarningFlag,
   WindDirection,
   WindProfile,
+  WindProfileSource,
   WindSector,
 } from '../types';
 import { calculateWindExposure, ExposureLevel } from './windExposure';
 import { getWindProfileOverride } from './windProfileOverrides';
-
-type WindProfileSource = 'override' | 'beach' | 'metadata' | 'unknown';
 
 export interface BeachWindExposureInput {
   beach: Beach;

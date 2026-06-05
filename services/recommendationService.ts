@@ -20,6 +20,7 @@ import {
   WeatherData,
   WeatherSource,
   WindProfile,
+  WindProfileSource,
   WindSector,
   WindDirection,
 } from '../types';
@@ -33,7 +34,8 @@ import { isSearchMatch } from '../utils/searchNormalize';
 import { calculateSeaConditionScore } from '../utils/seaConditions';
 import { getSelectedDayPrefix } from '../utils/dateLabels';
 import { assessBeachWindExposure } from '../utils/windExposureEngine';
-import { hasTrulyEasyAccess } from '../utils/access';
+import { hasDifficultTopPickAccess, hasTrulyEasyAccess } from '../utils/access';
+import { getBeachTouristRecognitionScore } from '../utils/touristPriority';
 
 export interface BeachScore {
   beachId: number;
@@ -60,6 +62,7 @@ export interface BeachScore {
   avoidTimeWindow?: string;
   timeReason?: string;
   windProfile?: WindProfile;
+  windProfileSource?: WindProfileSource;
   windSector?: WindSector;
   canClaimWindProtection?: boolean;
   seaCalmClaimAllowed?: boolean;
@@ -100,6 +103,7 @@ export interface BeachRecommendation {
   weatherSource?: WeatherSource;
   hourlySeaScore?: number;
   windProfile?: WindProfile;
+  windProfileSource?: WindProfileSource;
   windSector?: WindSector;
   canClaimWindProtection?: boolean;
   seaCalmClaimAllowed?: boolean;
@@ -543,78 +547,136 @@ const hasMainstreamFacilities = (beach: Beach): boolean => Boolean(
   (beach.amenities?.organized || beach.amenities?.beachBar || beach.amenities?.sunbeds || beach.amenities?.taverna || beach.amenities?.restaurant)
 );
 
-const mainstreamScore = (beach: Beach): number => {
-  const popularity = typeof beach.popularityScore === 'number' ? beach.popularityScore : 0;
-  const ratingSignal = Math.max(0, Math.min(20, (beach.rating - 4) * 20));
-  const accessSignal = isEasyMainstreamAccess(beach) ? 18 : beach.metadata?.access?.type === 'passable_dirt_road' ? 8 : 0;
-  const facilitiesSignal = hasMainstreamFacilities(beach) ? 14 : beach.amenities?.parking ? 5 : 0;
-  const familySignal = beach.environment?.familyFriendly ? 6 : 0;
-  const remotePenalty = beach.environment?.remote ? 18 : 0;
-  const difficultAccessPenalty = beach.accessibility === Accessibility.DIFFICULT || beach.metadata?.access?.type === '4x4_only' || beach.metadata?.access?.type === 'hiking_path_difficult' ? 35 : 0;
-
-  return popularity + ratingSignal + accessSignal + facilitiesSignal + familySignal - remotePenalty - difficultAccessPenalty;
+const topPickPopularityScore = (beach: Beach): number => {
+  return getBeachTouristRecognitionScore(beach);
 };
 
-const compareRecommendationPriority = <T extends { score: number; exposureLevel?: ExposureLevel; beach?: Beach }>(
+const topPickAccessPriority = (beach: Beach): number => {
+  if (hasDifficultTopPickAccess(beach)) return 5;
+  if (beach.metadata?.access?.type === 'asphalt_road' || beach.accessibility === Accessibility.EASY) return 0;
+  if (beach.metadata?.access?.type === 'passable_dirt_road' || beach.accessibility === Accessibility.MODERATE) return 1;
+  if (beach.metadata?.access?.type === 'hiking_path_easy') return 2;
+  if (isEasyMainstreamAccess(beach)) return 3;
+  return 4;
+};
+
+const topPickAmenitiesScore = (beach: Beach): number => {
+  let score = 0;
+  if (hasMainstreamFacilities(beach)) score += 8;
+  if (hasTopPickVisitorServices(beach)) score += 6;
+  if (beach.amenities?.parking) score += 4;
+  if (beach.amenities?.naturalShade) score += 2;
+  if (beach.environment?.familyFriendly) score += 2;
+  return score;
+};
+
+const hasTopPickVisitorServices = (beach: Beach): boolean => {
+  const metadataAmenities = beach.metadata?.amenities?.join(' ').toLowerCase() || '';
+
+  return Boolean(
+    beach.metadata?.organized === true ||
+    beach.amenities?.organized ||
+    beach.amenities?.beachBar ||
+    beach.amenities?.sunbeds ||
+    beach.amenities?.taverna ||
+    beach.amenities?.restaurant ||
+    /beach bar|sunbed|ξαπλώστρ|ομπρέλ|καφέ|cafe|ταβέρν|taverna|restaurant|εστιατόρ/.test(metadataAmenities)
+  );
+};
+
+const getPriorityBeach = <T extends { beachId?: number; beach?: Beach }>(
+  item: T,
+  beachById?: Map<number, Beach>
+): Beach | undefined => (
+  item.beach ?? (item.beachId !== undefined ? beachById?.get(Number(item.beachId)) : undefined)
+);
+
+const visibleExposurePriority = (item: { exposureLevel?: ExposureLevel; canClaimWindProtection?: boolean }): number => {
+  if (item.exposureLevel === 'protected' && item.canClaimWindProtection === false) return 1;
+  return exposurePriority(item.exposureLevel);
+};
+
+const topPickProfilePriority = <T extends { exposureLevel?: ExposureLevel; canClaimWindProtection?: boolean; beachId?: number; beach?: Beach }>(
+  item: T,
+  beachById?: Map<number, Beach>
+): number => {
+  void beachById;
+  return visibleExposurePriority(item);
+};
+
+const compareOptionalDistance = <T extends { distance?: number }>(a: T, b: T): number => {
+  const aDistance = typeof a.distance === 'number' && Number.isFinite(a.distance) ? a.distance : undefined;
+  const bDistance = typeof b.distance === 'number' && Number.isFinite(b.distance) ? b.distance : undefined;
+
+  if (aDistance === undefined || bDistance === undefined) return 0;
+  return aDistance - bDistance;
+};
+
+const compareRecommendationPriority = <T extends { score: number; exposureLevel?: ExposureLevel; canClaimWindProtection?: boolean; beach?: Beach; distance?: number }>(
   a: T,
   b: T,
   beachById?: Map<number, Beach>,
   windBeaufort: number = PROTECTED_FIRST_BEAUFORT
 ): number => {
-  const exposureDiff = exposurePriority(a.exposureLevel) - exposurePriority(b.exposureLevel);
+  const profileDiff = topPickProfilePriority(a, beachById) - topPickProfilePriority(b, beachById);
+  const exposureDiff = visibleExposurePriority(a) - visibleExposurePriority(b);
   const scoreDiff = b.score - a.score;
-  const beachA = a.beach ?? ('beachId' in a ? beachById?.get(Number(a.beachId)) : undefined);
-  const beachB = b.beach ?? ('beachId' in b ? beachById?.get(Number(b.beachId)) : undefined);
+  const beachA = getPriorityBeach(a, beachById);
+  const beachB = getPriorityBeach(b, beachById);
 
-  const compareMainstream = (): number => {
+  const compareTouristPriority = (): number => {
     if (!beachA || !beachB) return 0;
-    const mainstreamDiff = mainstreamScore(beachB) - mainstreamScore(beachA);
-    if (mainstreamDiff !== 0) return mainstreamDiff;
-    const ratingDiff = beachB.rating - beachA.rating;
-    if (ratingDiff !== 0) return ratingDiff;
+    const popularityDiff = topPickPopularityScore(beachB) - topPickPopularityScore(beachA);
+    if (Math.abs(popularityDiff) >= 1) return popularityDiff;
+
+    const accessPriorityDiff = topPickAccessPriority(beachA) - topPickAccessPriority(beachB);
+    if (accessPriorityDiff !== 0) return accessPriorityDiff;
+
+    const distanceDiff = compareOptionalDistance(a, b);
+    if (distanceDiff !== 0) return distanceDiff;
+
+    const amenitiesDiff = topPickAmenitiesScore(beachB) - topPickAmenitiesScore(beachA);
+    if (amenitiesDiff !== 0) return amenitiesDiff;
+
     return beachA.id - beachB.id;
   };
 
+  if (windBeaufort >= MEANINGFUL_WIND_TOP_PICK_BEAUFORT && profileDiff !== 0) return profileDiff;
+
   if (windBeaufort >= PROTECTED_FIRST_BEAUFORT) {
     if (exposureDiff !== 0) return exposureDiff;
-    if (Math.abs(scoreDiff) > 14) return scoreDiff;
-    const mainstreamDiff = compareMainstream();
-    return mainstreamDiff || scoreDiff;
+    const touristDiff = compareTouristPriority();
+    return touristDiff || scoreDiff;
   }
 
   if (windBeaufort >= MEANINGFUL_WIND_TOP_PICK_BEAUFORT) {
     if (exposureDiff !== 0 && Math.abs(scoreDiff) <= 12) return exposureDiff;
-    if (Math.abs(scoreDiff) > 12) return scoreDiff;
-    const mainstreamDiff = compareMainstream();
-    return mainstreamDiff || exposureDiff || scoreDiff;
+    const touristDiff = compareTouristPriority();
+    return touristDiff || exposureDiff || scoreDiff;
   }
 
   if (Math.abs(scoreDiff) > 5) return scoreDiff;
-  const mainstreamDiff = compareMainstream();
-  return mainstreamDiff || scoreDiff || exposureDiff;
+  const touristDiff = compareTouristPriority();
+  return touristDiff || scoreDiff || exposureDiff;
 };
 
-const bestShelteredRecommendationGroup = <T extends { score: number; exposureLevel?: ExposureLevel; beach?: Beach }>(
+const bestShelteredRecommendationGroup = <T extends { score: number; exposureLevel?: ExposureLevel; canClaimWindProtection?: boolean; beachId?: number; beach?: Beach }>(
   items: T[],
-  windBeaufort: number
+  windBeaufort: number,
+  beachById?: Map<number, Beach>
 ): T[] => {
-  if (windBeaufort < PROTECTED_FIRST_BEAUFORT) return items;
+  if (windBeaufort < MEANINGFUL_WIND_TOP_PICK_BEAUFORT || items.length === 0) return items;
 
-  const protectedItems = items.filter(item => item.exposureLevel === 'protected');
-  if (protectedItems.length > 0) return protectedItems;
-
-  const partiallyProtectedItems = items.filter(item => item.exposureLevel === 'partial');
-  if (partiallyProtectedItems.length > 0) return partiallyProtectedItems;
-
-  return [];
+  const bestPriority = Math.min(...items.map(item => topPickProfilePriority(item, beachById)));
+  return items.filter(item => topPickProfilePriority(item, beachById) === bestPriority);
 };
 
-const prioritizeProtectedBeachRecommendations = <T extends { score: number; exposureLevel?: ExposureLevel; beach?: Beach }>(
+const prioritizeProtectedBeachRecommendations = <T extends { score: number; exposureLevel?: ExposureLevel; canClaimWindProtection?: boolean; beachId?: number; beach?: Beach }>(
   items: T[],
   beachById?: Map<number, Beach>,
   windBeaufort: number = 0
 ): T[] => {
-  const candidates = bestShelteredRecommendationGroup(items, windBeaufort);
+  const candidates = bestShelteredRecommendationGroup(items, windBeaufort, beachById);
   return [...candidates].sort((a, b) => compareRecommendationPriority(a, b, beachById, windBeaufort));
 };
 
@@ -627,17 +689,6 @@ const greekWindDirectionsAccusative: Record<WindDirection, string> = {
   [WindDirection.SW]: 'νοτιοδυτικούς',
   [WindDirection.W]: 'δυτικούς',
   [WindDirection.NW]: 'βορειοδυτικούς',
-};
-
-const greekWindDirectionsSingular: Record<WindDirection, string> = {
-  [WindDirection.N]: 'βόρειο',
-  [WindDirection.NE]: 'βορειοανατολικό',
-  [WindDirection.E]: 'ανατολικό',
-  [WindDirection.SE]: 'νοτιοανατολικό',
-  [WindDirection.S]: 'νότιο',
-  [WindDirection.SW]: 'νοτιοδυτικό',
-  [WindDirection.W]: 'δυτικό',
-  [WindDirection.NW]: 'βορειοδυτικό',
 };
 
 /**
@@ -798,6 +849,9 @@ export const filterBeaches = (
         const filterName = f as string;
         if (f === 'easyAccess') return hasTrulyEasyAccess(b);
         if (filterName === 'quiet') return isQuietBeach(b);
+        if (filterName === 'familyFriendly') return isFamilyFriendlyBeach(b);
+        if (filterName === 'snorkeling') return isSnorkelingBeach(b);
+        if (filterName === 'beachBar') return hasBeachBarAmenity(b);
         if (isSurfaceFilter(f)) return matchesSurfaceFilter(b, f);
         // Check amenities
         if (b.amenities && f in b.amenities) return b.amenities[f as keyof typeof b.amenities];
@@ -821,7 +875,6 @@ export const filterBeaches = (
 export const sortBeaches = (
   beaches: Beach[],
   sortBy: SortOption,
-  windDirection: WindDirection,
   userLocation?: { lat: number; lon: number }
 ): Beach[] => {
   const sorted = [...beaches];
@@ -843,13 +896,23 @@ export const sortBeaches = (
       break;
       
     case 'distance':
-      if (userLocation) {
-        sorted.sort((a, b) => {
-          const distA = calculateDistance(userLocation.lat, userLocation.lon, a.coordinates.lat, a.coordinates.lon);
-          const distB = calculateDistance(userLocation.lat, userLocation.lon, b.coordinates.lat, b.coordinates.lon);
-          return distA - distB;
-        });
-      }
+      sorted.sort((a, b) => {
+        const existingDistanceA = (a as Beach & { distance?: number }).distance;
+        const existingDistanceB = (b as Beach & { distance?: number }).distance;
+        const distA = typeof existingDistanceA === 'number' && Number.isFinite(existingDistanceA)
+          ? existingDistanceA
+          : userLocation
+            ? calculateDistance(userLocation.lat, userLocation.lon, a.coordinates.lat, a.coordinates.lon)
+            : Number.POSITIVE_INFINITY;
+        const distB = typeof existingDistanceB === 'number' && Number.isFinite(existingDistanceB)
+          ? existingDistanceB
+          : userLocation
+            ? calculateDistance(userLocation.lat, userLocation.lon, b.coordinates.lat, b.coordinates.lon)
+            : Number.POSITIVE_INFINITY;
+
+        if (distA !== distB) return distA - distB;
+        return b.rating - a.rating;
+      });
       break;
   }
 
@@ -1427,6 +1490,7 @@ export const calculateBeachScore = (
     avoidTimeWindow: bestBeachTime?.avoidTimeWindow,
     timeReason: bestBeachTime?.timeReason,
     windProfile: windAssessment.windProfile,
+    windProfileSource: windAssessment.source,
     windSector: windAssessment.windSector,
     canClaimWindProtection: windAssessment.canClaimProtected,
     seaCalmClaimAllowed: windAssessment.seaCalmClaimAllowed,
@@ -1770,6 +1834,7 @@ export const getTopRecommendedBeaches = (
       weatherSource: scoreResult.weatherSource,
       hourlySeaScore: scoreResult.hourlySeaScore,
       windProfile: scoreResult.windProfile,
+      windProfileSource: scoreResult.windProfileSource,
       windSector: scoreResult.windSector,
       canClaimWindProtection: scoreResult.canClaimWindProtection,
       seaCalmClaimAllowed: scoreResult.seaCalmClaimAllowed
@@ -1899,6 +1964,7 @@ export const getSuitableBeaches = (
         weatherSource: scoreResult.weatherSource,
         hourlySeaScore: scoreResult.hourlySeaScore,
         windProfile: scoreResult.windProfile,
+        windProfileSource: scoreResult.windProfileSource,
         windSector: scoreResult.windSector,
         canClaimWindProtection: scoreResult.canClaimWindProtection,
         seaCalmClaimAllowed: scoreResult.seaCalmClaimAllowed

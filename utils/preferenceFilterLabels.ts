@@ -15,7 +15,7 @@ export const QUICK_PREFERENCE_FILTERS = [
 
 export type QuickPreferenceFilter = (typeof QUICK_PREFERENCE_FILTERS)[number];
 
-const compactPreferenceLabels: Record<'gr' | 'en', Partial<Record<keyof UserPreferences, string>>> = {
+const compactPreferenceLabels: Record<LanguageCode, Partial<Record<keyof UserPreferences, string>>> = {
   gr: {
     blueFlag2026: 'Γαλάζια Σημαία',
     sandy: 'Άμμος',
@@ -40,6 +40,42 @@ const compactPreferenceLabels: Record<'gr' | 'en', Partial<Record<keyof UserPref
     deepWater: 'Deep water',
     shallowWater: 'Shallow water',
   },
+  fr: {
+    blueFlag2026: 'Pavillon Bleu',
+    sandy: 'Sable',
+    pebbles: 'Galets',
+    quiet: 'Calme',
+    beachBar: 'Bar de plage',
+    easyAccess: 'Accès facile',
+    snorkeling: 'Snorkeling',
+    familyFriendly: 'Famille',
+    deepWater: 'Eau profonde',
+    shallowWater: 'Eau peu profonde',
+  },
+  de: {
+    blueFlag2026: 'Blaue Flagge',
+    sandy: 'Sand',
+    pebbles: 'Kiesel',
+    quiet: 'Ruhig',
+    beachBar: 'Beach Bar',
+    easyAccess: 'Einfacher Zugang',
+    snorkeling: 'Schnorcheln',
+    familyFriendly: 'Familie',
+    deepWater: 'Tiefes Wasser',
+    shallowWater: 'Flaches Wasser',
+  },
+  it: {
+    blueFlag2026: 'Bandiera Blu',
+    sandy: 'Sabbia',
+    pebbles: 'Ciottoli',
+    quiet: 'Tranquilla',
+    beachBar: 'Beach bar',
+    easyAccess: 'Accesso facile',
+    snorkeling: 'Snorkeling',
+    familyFriendly: 'Famiglia',
+    deepWater: 'Acqua profonda',
+    shallowWater: 'Acqua bassa',
+  },
 };
 
 export const getPreferenceFilterLabel = (
@@ -47,8 +83,7 @@ export const getPreferenceFilterLabel = (
   language: LanguageCode,
   t: Translation
 ): string => {
-  const copyLanguage = language === 'gr' ? 'gr' : 'en';
-  return compactPreferenceLabels[copyLanguage][key] || t.userPreferences[key] || String(key);
+  return compactPreferenceLabels[language][key] || t.userPreferences[key] || String(key);
 };
 
 export const getActivePreferenceFilters = (

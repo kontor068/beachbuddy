@@ -2,7 +2,6 @@ import { GoogleGenAI, Chat } from '@google/genai';
 import { Beach, LanguageCode, TravelStyle } from '../types';
 
 const DEFAULT_LOCAL_LLM_URL = 'http://localhost:1234/v1/chat/completions';
-const ANDROID_EMULATOR_LOCAL_LLM_URL = 'http://10.0.2.2:1234/v1/chat/completions'; // IP για Android Emulator
 const DEFAULT_LOCAL_LLM_MODEL = 'local-model';
 const DEFAULT_LOCAL_MAX_TOKENS = 2048;
 const DEFAULT_LOCAL_TIMEOUT_MS = 90_000;
@@ -248,9 +247,9 @@ export const sendMessageStream = sendMessage;
 
 export const initializeChat = (
   islandName: string,
-  beaches: Beach[],
-  language: LanguageCode,
-  t: any
+  _beaches: Beach[],
+  _language: LanguageCode,
+  _t: any
 ): Chat => {
   const ai = new GoogleGenAI({ apiKey: getGeminiApiKey() });
   return ai.chats.create({
@@ -263,13 +262,13 @@ export const initializeChat = (
 
 export const generateItinerary = async (
   islandName: string,
-  dailyData: any[],
-  beaches: Beach[],
-  language: LanguageCode,
-  travelStyle: TravelStyle,
-  targetDuration: number,
-  t: any,
-  isWinter: boolean
+  _dailyData: any[],
+  _beaches: Beach[],
+  _language: LanguageCode,
+  _travelStyle: TravelStyle,
+  _targetDuration: number,
+  _t: any,
+  _isWinter: boolean
 ): Promise<string> => {
   const ai = new GoogleGenAI({ apiKey: getGeminiApiKey() });
   const prompt = `Φτιάξε πλάνο διακοπών για ${islandName}.`;

@@ -1,0 +1,5328 @@
+{
+  "schemaVersion": 1,
+  "generatedAt": "2026-06-02T22:00:26.604Z",
+  "purpose": "Offline directional geospatial exposure baseline for CalmBeach. Not user-facing proof of calm/protected conditions.",
+  "source": {
+    "landMask": {
+      "name": "Natural Earth 1:10m land polygons",
+      "url": "https://raw.githubusercontent.com/nvkelso/natural-earth-vector/master/geojson/ne_10m_land.geojson",
+      "license": "Public domain",
+      "confidence": "low",
+      "notes": "Baseline all-Greece land mask. Use OSM/coastline upgrades for high-detail island/cove decisions."
+    },
+    "appBeachData": "/public/data/beaches/app/*.json"
+  },
+  "settings": {
+    "maxFetchKm": 25,
+    "stepKm": 1,
+    "nearshoreLandGraceKm": 1,
+    "nearshoreWaterSearchKm": 12,
+    "nearshoreWaterSearchStepKm": 0.5,
+    "fanAnglesDeg": [
+      -30,
+      -15,
+      0,
+      15,
+      30
+    ],
+    "sectors": [
+      "N",
+      "NE",
+      "E",
+      "SE",
+      "S",
+      "SW",
+      "W",
+      "NW"
+    ]
+  },
+  "summary": {
+    "regionCount": 110,
+    "beachCount": 2719,
+    "generatedProfiles": 2719,
+    "missingCoordinates": 0,
+    "indexedLandPolygons": 125,
+    "regions": {
+      "attica-aegina": {
+        "regionName": "Aegina",
+        "beachCount": 15,
+        "generatedProfiles": 15,
+        "missingCoordinates": 0,
+        "sectors": {
+          "N": {
+            "protected": 5,
+            "partial": 10,
+            "exposed": 0
+          },
+          "NE": {
+            "protected": 5,
+            "partial": 8,
+            "exposed": 2
+          },
+          "E": {
+            "protected": 5,
+            "partial": 7,
+            "exposed": 3
+          },
+          "SE": {
+            "protected": 7,
+            "partial": 4,
+            "exposed": 4
+          },
+          "S": {
+            "protected": 4,
+            "partial": 11,
+            "exposed": 0
+          },
+          "SW": {
+            "protected": 3,
+            "partial": 12,
+            "exposed": 0
+          },
+          "W": {
+            "protected": 3,
+            "partial": 7,
+            "exposed": 5
+          },
+          "NW": {
+            "protected": 2,
+            "partial": 6,
+            "exposed": 7
+          }
+        }
+      },
+      "attica-agistri": {
+        "regionName": "Agistri",
+        "beachCount": 6,
+        "generatedProfiles": 6,
+        "missingCoordinates": 0,
+        "sectors": {
+          "N": {
+            "protected": 0,
+            "partial": 2,
+            "exposed": 4
+          },
+          "NE": {
+            "protected": 0,
+            "partial": 6,
+            "exposed": 0
+          },
+          "E": {
+            "protected": 0,
+            "partial": 6,
+            "exposed": 0
+          },
+          "SE": {
+            "protected": 0,
+            "partial": 6,
+            "exposed": 0
+          },
+          "S": {
+            "protected": 0,
+            "partial": 6,
+            "exposed": 0
+          },
+          "SW": {
+            "protected": 0,
+            "partial": 6,
+            "exposed": 0
+          },
+          "W": {
+            "protected": 0,
+            "partial": 6,
+            "exposed": 0
+          },
+          "NW": {
+            "protected": 0,
+            "partial": 6,
+            "exposed": 0
+          }
+        }
+      },
+      "attica-athens-area-mainland": {
+        "regionName": "Athens area",
+        "beachCount": 25,
+        "generatedProfiles": 25,
+        "missingCoordinates": 0,
+        "sectors": {
+          "N": {
+            "protected": 13,
+            "partial": 12,
+            "exposed": 0
+          },
+          "NE": {
+            "protected": 22,
+            "partial": 3,
+            "exposed": 0
+          },
+          "E": {
+            "protected": 18,
+            "partial": 7,
+            "exposed": 0
+          },
+          "SE": {
+            "protected": 0,
+            "partial": 25,
+            "exposed": 0
+          },
+          "S": {
+            "protected": 0,
+            "partial": 4,
+            "exposed": 21
+          },
+          "SW": {
+            "protected": 0,
+            "partial": 10,
+            "exposed": 15
+          },
+          "W": {
+            "protected": 1,
+            "partial": 20,
+            "exposed": 4
+          },
+          "NW": {
+            "protected": 1,
+            "partial": 24,
+            "exposed": 0
+          }
+        }
+      },
+      "attica-east-attica-mainland": {
+        "regionName": "East Attica",
+        "beachCount": 55,
+        "generatedProfiles": 55,
+        "missingCoordinates": 0,
+        "sectors": {
+          "N": {
+            "protected": 20,
+            "partial": 35,
+            "exposed": 0
+          },
+          "NE": {
+            "protected": 22,
+            "partial": 23,
+            "exposed": 10
+          },
+          "E": {
+            "protected": 16,
+            "partial": 25,
+            "exposed": 14
+          },
+          "SE": {
+            "protected": 7,
+            "partial": 39,
+            "exposed": 9
+          },
+          "S": {
+            "protected": 15,
+            "partial": 23,
+            "exposed": 17
+          },
+          "SW": {
+            "protected": 28,
+            "partial": 8,
+            "exposed": 19
+          },
+          "W": {
+            "protected": 29,
+            "partial": 16,
+            "exposed": 10
+          },
+          "NW": {
+            "protected": 23,
+            "partial": 32,
+            "exposed": 0
+          }
+        }
+      },
+      "attica-hydra": {
+        "regionName": "Hydra",
+        "beachCount": 9,
+        "generatedProfiles": 9,
+        "missingCoordinates": 0,
+        "sectors": {
+          "N": {
+            "protected": 0,
+            "partial": 9,
+            "exposed": 0
+          },
+          "NE": {
+            "protected": 0,
+            "partial": 8,
+            "exposed": 1
+          },
+          "E": {
+            "protected": 1,
+            "partial": 8,
+            "exposed": 0
+          },
+          "SE": {
+            "protected": 6,
+            "partial": 0,
+            "exposed": 3
+          },
+          "S": {
+            "protected": 6,
+            "partial": 0,
+            "exposed": 3
+          },
+          "SW": {
+            "protected": 0,
+            "partial": 6,
+            "exposed": 3
+          },
+          "W": {
+            "protected": 0,
+            "partial": 9,
+            "exposed": 0
+          },
+          "NW": {
+            "protected": 0,
+            "partial": 9,
+            "exposed": 0
+          }
+        }
+      },
+      "attica-kythira": {
+        "regionName": "Kythira",
+        "beachCount": 42,
+        "generatedProfiles": 42,
+        "missingCoordinates": 0,
+        "sectors": {
+          "N": {
+            "protected": 11,
+            "partial": 30,
+            "exposed": 1
+          },
+          "NE": {
+            "protected": 13,
+            "partial": 24,
+            "exposed": 5
+          },
+          "E": {
+            "protected": 10,
+            "partial": 9,
+            "exposed": 23
+          },
+          "SE": {
+            "protected": 10,
+            "partial": 16,
+            "exposed": 16
+          },
+          "S": {
+            "protected": 12,
+            "partial": 20,
+            "exposed": 10
+          },
+          "SW": {
+            "protected": 18,
+            "partial": 3,
+            "exposed": 21
+          },
+          "W": {
+            "protected": 17,
+            "partial": 6,
+            "exposed": 19
+          },
+          "NW": {
+            "protected": 12,
+            "partial": 15,
+            "exposed": 15
+          }
+        }
+      },
+      "attica-methana": {
+        "regionName": "Methana",
+        "beachCount": 4,
+        "generatedProfiles": 4,
+        "missingCoordinates": 0,
+        "sectors": {
+          "N": {
+            "protected": 0,
+            "partial": 4,
+            "exposed": 0
+          },
+          "NE": {
+            "protected": 0,
+            "partial": 4,
+            "exposed": 0
+          },
+          "E": {
+            "protected": 0,
+            "partial": 3,
+            "exposed": 1
+          },
+          "SE": {
+            "protected": 0,
+            "partial": 4,
+            "exposed": 0
+          },
+          "S": {
+            "protected": 3,
+            "partial": 1,
+            "exposed": 0
+          },
+          "SW": {
+            "protected": 4,
+            "partial": 0,
+            "exposed": 0
+          },
+          "W": {
+            "protected": 3,
+            "partial": 1,
+            "exposed": 0
+          },
+          "NW": {
+            "protected": 2,
+            "partial": 2,
+            "exposed": 0
+          }
+        }
+      },
+      "attica-piraeus-area": {
+        "regionName": "Piraeus area",
+        "beachCount": 5,
+        "generatedProfiles": 5,
+        "missingCoordinates": 0,
+        "sectors": {
+          "N": {
+            "protected": 3,
+            "partial": 2,
+            "exposed": 0
+          },
+          "NE": {
+            "protected": 4,
+            "partial": 1,
+            "exposed": 0
+          },
+          "E": {
+            "protected": 0,
+            "partial": 5,
+            "exposed": 0
+          },
+          "SE": {
+            "protected": 0,
+            "partial": 5,
+            "exposed": 0
+          },
+          "S": {
+            "protected": 0,
+            "partial": 3,
+            "exposed": 2
+          },
+          "SW": {
+            "protected": 1,
+            "partial": 4,
+            "exposed": 0
+          },
+          "W": {
+            "protected": 1,
+            "partial": 4,
+            "exposed": 0
+          },
+          "NW": {
+            "protected": 1,
+            "partial": 4,
+            "exposed": 0
+          }
+        }
+      },
+      "attica-poros": {
+        "regionName": "Poros",
+        "beachCount": 11,
+        "generatedProfiles": 11,
+        "missingCoordinates": 0,
+        "sectors": {
+          "N": {
+            "protected": 6,
+            "partial": 4,
+            "exposed": 1
+          },
+          "NE": {
+            "protected": 5,
+            "partial": 5,
+            "exposed": 1
+          },
+          "E": {
+            "protected": 0,
+            "partial": 7,
+            "exposed": 4
+          },
+          "SE": {
+            "protected": 0,
+            "partial": 11,
+            "exposed": 0
+          },
+          "S": {
+            "protected": 11,
+            "partial": 0,
+            "exposed": 0
+          },
+          "SW": {
+            "protected": 11,
+            "partial": 0,
+            "exposed": 0
+          },
+          "W": {
+            "protected": 5,
+            "partial": 6,
+            "exposed": 0
+          },
+          "NW": {
+            "protected": 1,
+            "partial": 10,
+            "exposed": 0
+          }
+        }
+      },
+      "attica-salamina": {
+        "regionName": "Salamina",
+        "beachCount": 3,
+        "generatedProfiles": 3,
+        "missingCoordinates": 0,
+        "sectors": {
+          "N": {
+            "protected": 2,
+            "partial": 1,
+            "exposed": 0
+          },
+          "NE": {
+            "protected": 2,
+            "partial": 1,
+            "exposed": 0
+          },
+          "E": {
+            "protected": 0,
+            "partial": 3,
+            "exposed": 0
+          },
+          "SE": {
+            "protected": 0,
+            "partial": 3,
+            "exposed": 0
+          },
+          "S": {
+            "protected": 0,
+            "partial": 3,
+            "exposed": 0
+          },
+          "SW": {
+            "protected": 0,
+            "partial": 0,
+            "exposed": 3
+          },
+          "W": {
+            "protected": 0,
+            "partial": 2,
+            "exposed": 1
+          },
+          "NW": {
+            "protected": 0,
+            "partial": 3,
+            "exposed": 0
+          }
+        }
+      },
+      "attica-spetses": {
+        "regionName": "Spetses",
+        "beachCount": 12,
+        "generatedProfiles": 12,
+        "missingCoordinates": 0,
+        "sectors": {
+          "N": {
+            "protected": 3,
+            "partial": 9,
+            "exposed": 0
+          },
+          "NE": {
+            "protected": 4,
+            "partial": 8,
+            "exposed": 0
+          },
+          "E": {
+            "protected": 5,
+            "partial": 2,
+            "exposed": 5
+          },
+          "SE": {
+            "protected": 0,
+            "partial": 8,
+            "exposed": 4
+          },
+          "S": {
+            "protected": 3,
+            "partial": 3,
+            "exposed": 6
+          },
+          "SW": {
+            "protected": 3,
+            "partial": 9,
+            "exposed": 0
+          },
+          "W": {
+            "protected": 2,
+            "partial": 10,
+            "exposed": 0
+          },
+          "NW": {
+            "protected": 2,
+            "partial": 6,
+            "exposed": 4
+          }
+        }
+      },
+      "attica-west-attica-mainland": {
+        "regionName": "West Attica",
+        "beachCount": 6,
+        "generatedProfiles": 6,
+        "missingCoordinates": 0,
+        "sectors": {
+          "N": {
+            "protected": 6,
+            "partial": 0,
+            "exposed": 0
+          },
+          "NE": {
+            "protected": 5,
+            "partial": 1,
+            "exposed": 0
+          },
+          "E": {
+            "protected": 4,
+            "partial": 2,
+            "exposed": 0
+          },
+          "SE": {
+            "protected": 4,
+            "partial": 1,
+            "exposed": 1
+          },
+          "S": {
+            "protected": 4,
+            "partial": 2,
+            "exposed": 0
+          },
+          "SW": {
+            "protected": 1,
+            "partial": 5,
+            "exposed": 0
+          },
+          "W": {
+            "protected": 1,
+            "partial": 5,
+            "exposed": 0
+          },
+          "NW": {
+            "protected": 3,
+            "partial": 3,
+            "exposed": 0
+          }
+        }
+      },
+      "central-greece-evia": {
+        "regionName": "Evia",
+        "beachCount": 122,
+        "generatedProfiles": 122,
+        "missingCoordinates": 0,
+        "sectors": {
+          "N": {
+            "protected": 38,
+            "partial": 52,
+            "exposed": 32
+          },
+          "NE": {
+            "protected": 31,
+            "partial": 38,
+            "exposed": 53
+          },
+          "E": {
+            "protected": 33,
+            "partial": 57,
+            "exposed": 32
+          },
+          "SE": {
+            "protected": 24,
+            "partial": 81,
+            "exposed": 17
+          },
+          "S": {
+            "protected": 52,
+            "partial": 46,
+            "exposed": 24
+          },
+          "SW": {
+            "protected": 75,
+            "partial": 35,
+            "exposed": 12
+          },
+          "W": {
+            "protected": 62,
+            "partial": 57,
+            "exposed": 3
+          },
+          "NW": {
+            "protected": 44,
+            "partial": 71,
+            "exposed": 7
+          }
+        }
+      },
+      "central-greece-fokida-mainland": {
+        "regionName": "Fokida",
+        "beachCount": 19,
+        "generatedProfiles": 19,
+        "missingCoordinates": 0,
+        "sectors": {
+          "N": {
+            "protected": 10,
+            "partial": 9,
+            "exposed": 0
+          },
+          "NE": {
+            "protected": 7,
+            "partial": 12,
+            "exposed": 0
+          },
+          "E": {
+            "protected": 2,
+            "partial": 17,
+            "exposed": 0
+          },
+          "SE": {
+            "protected": 0,
+            "partial": 18,
+            "exposed": 1
+          },
+          "S": {
+            "protected": 1,
+            "partial": 16,
+            "exposed": 2
+          },
+          "SW": {
+            "protected": 4,
+            "partial": 14,
+            "exposed": 1
+          },
+          "W": {
+            "protected": 8,
+            "partial": 11,
+            "exposed": 0
+          },
+          "NW": {
+            "protected": 12,
+            "partial": 7,
+            "exposed": 0
+          }
+        }
+      },
+      "central-greece-fthiotida-mainland": {
+        "regionName": "Fthiotida",
+        "beachCount": 16,
+        "generatedProfiles": 16,
+        "missingCoordinates": 0,
+        "sectors": {
+          "N": {
+            "protected": 2,
+            "partial": 14,
+            "exposed": 0
+          },
+          "NE": {
+            "protected": 3,
+            "partial": 13,
+            "exposed": 0
+          },
+          "E": {
+            "protected": 5,
+            "partial": 11,
+            "exposed": 0
+          },
+          "SE": {
+            "protected": 8,
+            "partial": 8,
+            "exposed": 0
+          },
+          "S": {
+            "protected": 12,
+            "partial": 4,
+            "exposed": 0
+          },
+          "SW": {
+            "protected": 13,
+            "partial": 3,
+            "exposed": 0
+          },
+          "W": {
+            "protected": 4,
+            "partial": 12,
+            "exposed": 0
+          },
+          "NW": {
+            "protected": 2,
+            "partial": 14,
+            "exposed": 0
+          }
+        }
+      },
+      "central-greece-skyros": {
+        "regionName": "Skyros",
+        "beachCount": 21,
+        "generatedProfiles": 21,
+        "missingCoordinates": 0,
+        "sectors": {
+          "N": {
+            "protected": 6,
+            "partial": 6,
+            "exposed": 9
+          },
+          "NE": {
+            "protected": 8,
+            "partial": 3,
+            "exposed": 10
+          },
+          "E": {
+            "protected": 8,
+            "partial": 4,
+            "exposed": 9
+          },
+          "SE": {
+            "protected": 7,
+            "partial": 12,
+            "exposed": 2
+          },
+          "S": {
+            "protected": 5,
+            "partial": 12,
+            "exposed": 4
+          },
+          "SW": {
+            "protected": 8,
+            "partial": 4,
+            "exposed": 9
+          },
+          "W": {
+            "protected": 8,
+            "partial": 5,
+            "exposed": 8
+          },
+          "NW": {
+            "protected": 6,
+            "partial": 9,
+            "exposed": 6
+          }
+        }
+      },
+      "central-greece-viotia-mainland": {
+        "regionName": "Viotia",
+        "beachCount": 7,
+        "generatedProfiles": 7,
+        "missingCoordinates": 0,
+        "sectors": {
+          "N": {
+            "protected": 7,
+            "partial": 0,
+            "exposed": 0
+          },
+          "NE": {
+            "protected": 5,
+            "partial": 2,
+            "exposed": 0
+          },
+          "E": {
+            "protected": 4,
+            "partial": 3,
+            "exposed": 0
+          },
+          "SE": {
+            "protected": 1,
+            "partial": 6,
+            "exposed": 0
+          },
+          "S": {
+            "protected": 1,
+            "partial": 6,
+            "exposed": 0
+          },
+          "SW": {
+            "protected": 0,
+            "partial": 6,
+            "exposed": 1
+          },
+          "W": {
+            "protected": 1,
+            "partial": 6,
+            "exposed": 0
+          },
+          "NW": {
+            "protected": 3,
+            "partial": 4,
+            "exposed": 0
+          }
+        }
+      },
+      "central-macedonia-halkidiki-mainland": {
+        "regionName": "Halkidiki",
+        "beachCount": 125,
+        "generatedProfiles": 125,
+        "missingCoordinates": 0,
+        "sectors": {
+          "N": {
+            "protected": 44,
+            "partial": 80,
+            "exposed": 1
+          },
+          "NE": {
+            "protected": 43,
+            "partial": 72,
+            "exposed": 10
+          },
+          "E": {
+            "protected": 29,
+            "partial": 61,
+            "exposed": 35
+          },
+          "SE": {
+            "protected": 12,
+            "partial": 92,
+            "exposed": 21
+          },
+          "S": {
+            "protected": 56,
+            "partial": 47,
+            "exposed": 22
+          },
+          "SW": {
+            "protected": 66,
+            "partial": 38,
+            "exposed": 21
+          },
+          "W": {
+            "protected": 59,
+            "partial": 46,
+            "exposed": 20
+          },
+          "NW": {
+            "protected": 26,
+            "partial": 96,
+            "exposed": 3
+          }
+        }
+      },
+      "central-macedonia-pieria-mainland": {
+        "regionName": "Pieria",
+        "beachCount": 8,
+        "generatedProfiles": 8,
+        "missingCoordinates": 0,
+        "sectors": {
+          "N": {
+            "protected": 0,
+            "partial": 8,
+            "exposed": 0
+          },
+          "NE": {
+            "protected": 0,
+            "partial": 3,
+            "exposed": 5
+          },
+          "E": {
+            "protected": 0,
+            "partial": 3,
+            "exposed": 5
+          },
+          "SE": {
+            "protected": 0,
+            "partial": 6,
+            "exposed": 2
+          },
+          "S": {
+            "protected": 5,
+            "partial": 3,
+            "exposed": 0
+          },
+          "SW": {
+            "protected": 7,
+            "partial": 1,
+            "exposed": 0
+          },
+          "W": {
+            "protected": 8,
+            "partial": 0,
+            "exposed": 0
+          },
+          "NW": {
+            "protected": 3,
+            "partial": 5,
+            "exposed": 0
+          }
+        }
+      },
+      "central-macedonia-thessaloniki-area": {
+        "regionName": "Thessaloniki area",
+        "beachCount": 16,
+        "generatedProfiles": 16,
+        "missingCoordinates": 0,
+        "sectors": {
+          "N": {
+            "protected": 7,
+            "partial": 9,
+            "exposed": 0
+          },
+          "NE": {
+            "protected": 5,
+            "partial": 11,
+            "exposed": 0
+          },
+          "E": {
+            "protected": 4,
+            "partial": 8,
+            "exposed": 4
+          },
+          "SE": {
+            "protected": 1,
+            "partial": 14,
+            "exposed": 1
+          },
+          "S": {
+            "protected": 7,
+            "partial": 5,
+            "exposed": 4
+          },
+          "SW": {
+            "protected": 8,
+            "partial": 5,
+            "exposed": 3
+          },
+          "W": {
+            "protected": 9,
+            "partial": 6,
+            "exposed": 1
+          },
+          "NW": {
+            "protected": 6,
+            "partial": 10,
+            "exposed": 0
+          }
+        }
+      },
+      "crete-crete-chania": {
+        "regionName": "Chania",
+        "beachCount": 84,
+        "generatedProfiles": 84,
+        "missingCoordinates": 0,
+        "sectors": {
+          "N": {
+            "protected": 41,
+            "partial": 23,
+            "exposed": 20
+          },
+          "NE": {
+            "protected": 48,
+            "partial": 19,
+            "exposed": 17
+          },
+          "E": {
+            "protected": 19,
+            "partial": 60,
+            "exposed": 5
+          },
+          "SE": {
+            "protected": 34,
+            "partial": 15,
+            "exposed": 35
+          },
+          "S": {
+            "protected": 33,
+            "partial": 13,
+            "exposed": 38
+          },
+          "SW": {
+            "protected": 31,
+            "partial": 10,
+            "exposed": 43
+          },
+          "W": {
+            "protected": 13,
+            "partial": 61,
+            "exposed": 10
+          },
+          "NW": {
+            "protected": 40,
+            "partial": 25,
+            "exposed": 19
+          }
+        }
+      },
+      "crete-crete-heraklion": {
+        "regionName": "Heraklion",
+        "beachCount": 52,
+        "generatedProfiles": 52,
+        "missingCoordinates": 0,
+        "sectors": {
+          "N": {
+            "protected": 26,
+            "partial": 9,
+            "exposed": 17
+          },
+          "NE": {
+            "protected": 30,
+            "partial": 3,
+            "exposed": 19
+          },
+          "E": {
+            "protected": 7,
+            "partial": 45,
+            "exposed": 0
+          },
+          "SE": {
+            "protected": 16,
+            "partial": 10,
+            "exposed": 26
+          },
+          "S": {
+            "protected": 21,
+            "partial": 5,
+            "exposed": 26
+          },
+          "SW": {
+            "protected": 20,
+            "partial": 3,
+            "exposed": 29
+          },
+          "W": {
+            "protected": 9,
+            "partial": 37,
+            "exposed": 6
+          },
+          "NW": {
+            "protected": 27,
+            "partial": 15,
+            "exposed": 10
+          }
+        }
+      },
+      "crete-crete-lasithi": {
+        "regionName": "Lasithi",
+        "beachCount": 59,
+        "generatedProfiles": 59,
+        "missingCoordinates": 0,
+        "sectors": {
+          "N": {
+            "protected": 24,
+            "partial": 24,
+            "exposed": 11
+          },
+          "NE": {
+            "protected": 10,
+            "partial": 20,
+            "exposed": 29
+          },
+          "E": {
+            "protected": 6,
+            "partial": 29,
+            "exposed": 24
+          },
+          "SE": {
+            "protected": 13,
+            "partial": 21,
+            "exposed": 25
+          },
+          "S": {
+            "protected": 20,
+            "partial": 14,
+            "exposed": 25
+          },
+          "SW": {
+            "protected": 23,
+            "partial": 25,
+            "exposed": 11
+          },
+          "W": {
+            "protected": 28,
+            "partial": 30,
+            "exposed": 1
+          },
+          "NW": {
+            "protected": 43,
+            "partial": 7,
+            "exposed": 9
+          }
+        }
+      },
+      "crete-crete-rethymno": {
+        "regionName": "Rethymno",
+        "beachCount": 44,
+        "generatedProfiles": 44,
+        "missingCoordinates": 0,
+        "sectors": {
+          "N": {
+            "protected": 33,
+            "partial": 0,
+            "exposed": 11
+          },
+          "NE": {
+            "protected": 33,
+            "partial": 0,
+            "exposed": 11
+          },
+          "E": {
+            "protected": 13,
+            "partial": 31,
+            "exposed": 0
+          },
+          "SE": {
+            "protected": 11,
+            "partial": 20,
+            "exposed": 13
+          },
+          "S": {
+            "protected": 11,
+            "partial": 0,
+            "exposed": 33
+          },
+          "SW": {
+            "protected": 8,
+            "partial": 3,
+            "exposed": 33
+          },
+          "W": {
+            "protected": 0,
+            "partial": 38,
+            "exposed": 6
+          },
+          "NW": {
+            "protected": 22,
+            "partial": 12,
+            "exposed": 10
+          }
+        }
+      },
+      "crete-gavdos": {
+        "regionName": "Gavdos",
+        "beachCount": 9,
+        "generatedProfiles": 9,
+        "missingCoordinates": 0,
+        "sectors": {
+          "N": {
+            "protected": 1,
+            "partial": 2,
+            "exposed": 6
+          },
+          "NE": {
+            "protected": 0,
+            "partial": 2,
+            "exposed": 7
+          },
+          "E": {
+            "protected": 1,
+            "partial": 3,
+            "exposed": 5
+          },
+          "SE": {
+            "protected": 4,
+            "partial": 2,
+            "exposed": 3
+          },
+          "S": {
+            "protected": 5,
+            "partial": 2,
+            "exposed": 2
+          },
+          "SW": {
+            "protected": 2,
+            "partial": 4,
+            "exposed": 3
+          },
+          "W": {
+            "protected": 1,
+            "partial": 2,
+            "exposed": 6
+          },
+          "NW": {
+            "protected": 2,
+            "partial": 1,
+            "exposed": 6
+          }
+        }
+      },
+      "east-macedonia-and-thrace-evros-mainland": {
+        "regionName": "Evros",
+        "beachCount": 4,
+        "generatedProfiles": 4,
+        "missingCoordinates": 0,
+        "sectors": {
+          "N": {
+            "protected": 4,
+            "partial": 0,
+            "exposed": 0
+          },
+          "NE": {
+            "protected": 4,
+            "partial": 0,
+            "exposed": 0
+          },
+          "E": {
+            "protected": 0,
+            "partial": 4,
+            "exposed": 0
+          },
+          "SE": {
+            "protected": 0,
+            "partial": 2,
+            "exposed": 2
+          },
+          "S": {
+            "protected": 0,
+            "partial": 0,
+            "exposed": 4
+          },
+          "SW": {
+            "protected": 0,
+            "partial": 0,
+            "exposed": 4
+          },
+          "W": {
+            "protected": 0,
+            "partial": 4,
+            "exposed": 0
+          },
+          "NW": {
+            "protected": 3,
+            "partial": 1,
+            "exposed": 0
+          }
+        }
+      },
+      "east-macedonia-and-thrace-kavala-mainland": {
+        "regionName": "Kavala",
+        "beachCount": 15,
+        "generatedProfiles": 15,
+        "missingCoordinates": 0,
+        "sectors": {
+          "N": {
+            "protected": 14,
+            "partial": 1,
+            "exposed": 0
+          },
+          "NE": {
+            "protected": 6,
+            "partial": 9,
+            "exposed": 0
+          },
+          "E": {
+            "protected": 0,
+            "partial": 14,
+            "exposed": 1
+          },
+          "SE": {
+            "protected": 0,
+            "partial": 10,
+            "exposed": 5
+          },
+          "S": {
+            "protected": 1,
+            "partial": 6,
+            "exposed": 8
+          },
+          "SW": {
+            "protected": 3,
+            "partial": 11,
+            "exposed": 1
+          },
+          "W": {
+            "protected": 8,
+            "partial": 7,
+            "exposed": 0
+          },
+          "NW": {
+            "protected": 12,
+            "partial": 3,
+            "exposed": 0
+          }
+        }
+      },
+      "east-macedonia-and-thrace-rodopi-mainland": {
+        "regionName": "Rodopi",
+        "beachCount": 4,
+        "generatedProfiles": 4,
+        "missingCoordinates": 0,
+        "sectors": {
+          "N": {
+            "protected": 4,
+            "partial": 0,
+            "exposed": 0
+          },
+          "NE": {
+            "protected": 4,
+            "partial": 0,
+            "exposed": 0
+          },
+          "E": {
+            "protected": 1,
+            "partial": 3,
+            "exposed": 0
+          },
+          "SE": {
+            "protected": 0,
+            "partial": 1,
+            "exposed": 3
+          },
+          "S": {
+            "protected": 0,
+            "partial": 0,
+            "exposed": 4
+          },
+          "SW": {
+            "protected": 0,
+            "partial": 0,
+            "exposed": 4
+          },
+          "W": {
+            "protected": 0,
+            "partial": 2,
+            "exposed": 2
+          },
+          "NW": {
+            "protected": 1,
+            "partial": 3,
+            "exposed": 0
+          }
+        }
+      },
+      "east-macedonia-and-thrace-samothraki": {
+        "regionName": "Samothraki",
+        "beachCount": 3,
+        "generatedProfiles": 3,
+        "missingCoordinates": 0,
+        "sectors": {
+          "N": {
+            "protected": 3,
+            "partial": 0,
+            "exposed": 0
+          },
+          "NE": {
+            "protected": 1,
+            "partial": 2,
+            "exposed": 0
+          },
+          "E": {
+            "protected": 1,
+            "partial": 0,
+            "exposed": 2
+          },
+          "SE": {
+            "protected": 0,
+            "partial": 1,
+            "exposed": 2
+          },
+          "S": {
+            "protected": 0,
+            "partial": 0,
+            "exposed": 3
+          },
+          "SW": {
+            "protected": 0,
+            "partial": 0,
+            "exposed": 3
+          },
+          "W": {
+            "protected": 0,
+            "partial": 1,
+            "exposed": 2
+          },
+          "NW": {
+            "protected": 1,
+            "partial": 2,
+            "exposed": 0
+          }
+        }
+      },
+      "east-macedonia-and-thrace-thasos": {
+        "regionName": "Thasos",
+        "beachCount": 57,
+        "generatedProfiles": 57,
+        "missingCoordinates": 0,
+        "sectors": {
+          "N": {
+            "protected": 26,
+            "partial": 31,
+            "exposed": 0
+          },
+          "NE": {
+            "protected": 24,
+            "partial": 31,
+            "exposed": 2
+          },
+          "E": {
+            "protected": 22,
+            "partial": 18,
+            "exposed": 17
+          },
+          "SE": {
+            "protected": 17,
+            "partial": 25,
+            "exposed": 15
+          },
+          "S": {
+            "protected": 20,
+            "partial": 9,
+            "exposed": 28
+          },
+          "SW": {
+            "protected": 18,
+            "partial": 9,
+            "exposed": 30
+          },
+          "W": {
+            "protected": 12,
+            "partial": 19,
+            "exposed": 26
+          },
+          "NW": {
+            "protected": 15,
+            "partial": 37,
+            "exposed": 5
+          }
+        }
+      },
+      "east-macedonia-and-thrace-xanthi-mainland": {
+        "regionName": "Xanthi",
+        "beachCount": 2,
+        "generatedProfiles": 2,
+        "missingCoordinates": 0,
+        "sectors": {
+          "N": {
+            "protected": 2,
+            "partial": 0,
+            "exposed": 0
+          },
+          "NE": {
+            "protected": 1,
+            "partial": 1,
+            "exposed": 0
+          },
+          "E": {
+            "protected": 1,
+            "partial": 1,
+            "exposed": 0
+          },
+          "SE": {
+            "protected": 1,
+            "partial": 0,
+            "exposed": 1
+          },
+          "S": {
+            "protected": 1,
+            "partial": 0,
+            "exposed": 1
+          },
+          "SW": {
+            "protected": 1,
+            "partial": 1,
+            "exposed": 0
+          },
+          "W": {
+            "protected": 1,
+            "partial": 1,
+            "exposed": 0
+          },
+          "NW": {
+            "protected": 2,
+            "partial": 0,
+            "exposed": 0
+          }
+        }
+      },
+      "epirus-arta-mainland": {
+        "regionName": "Arta",
+        "beachCount": 2,
+        "generatedProfiles": 2,
+        "missingCoordinates": 0,
+        "sectors": {
+          "N": {
+            "protected": 0,
+            "partial": 2,
+            "exposed": 0
+          },
+          "NE": {
+            "protected": 0,
+            "partial": 2,
+            "exposed": 0
+          },
+          "E": {
+            "protected": 0,
+            "partial": 2,
+            "exposed": 0
+          },
+          "SE": {
+            "protected": 0,
+            "partial": 2,
+            "exposed": 0
+          },
+          "S": {
+            "protected": 0,
+            "partial": 2,
+            "exposed": 0
+          },
+          "SW": {
+            "protected": 0,
+            "partial": 2,
+            "exposed": 0
+          },
+          "W": {
+            "protected": 0,
+            "partial": 2,
+            "exposed": 0
+          },
+          "NW": {
+            "protected": 0,
+            "partial": 2,
+            "exposed": 0
+          }
+        }
+      },
+      "epirus-preveza-mainland": {
+        "regionName": "Preveza",
+        "beachCount": 26,
+        "generatedProfiles": 26,
+        "missingCoordinates": 0,
+        "sectors": {
+          "N": {
+            "protected": 15,
+            "partial": 11,
+            "exposed": 0
+          },
+          "NE": {
+            "protected": 23,
+            "partial": 3,
+            "exposed": 0
+          },
+          "E": {
+            "protected": 16,
+            "partial": 10,
+            "exposed": 0
+          },
+          "SE": {
+            "protected": 3,
+            "partial": 23,
+            "exposed": 0
+          },
+          "S": {
+            "protected": 0,
+            "partial": 9,
+            "exposed": 17
+          },
+          "SW": {
+            "protected": 0,
+            "partial": 10,
+            "exposed": 16
+          },
+          "W": {
+            "protected": 0,
+            "partial": 9,
+            "exposed": 17
+          },
+          "NW": {
+            "protected": 5,
+            "partial": 21,
+            "exposed": 0
+          }
+        }
+      },
+      "epirus-thesprotia-mainland": {
+        "regionName": "Thesprotia",
+        "beachCount": 39,
+        "generatedProfiles": 39,
+        "missingCoordinates": 0,
+        "sectors": {
+          "N": {
+            "protected": 23,
+            "partial": 16,
+            "exposed": 0
+          },
+          "NE": {
+            "protected": 38,
+            "partial": 1,
+            "exposed": 0
+          },
+          "E": {
+            "protected": 35,
+            "partial": 4,
+            "exposed": 0
+          },
+          "SE": {
+            "protected": 10,
+            "partial": 29,
+            "exposed": 0
+          },
+          "S": {
+            "protected": 6,
+            "partial": 26,
+            "exposed": 7
+          },
+          "SW": {
+            "protected": 2,
+            "partial": 31,
+            "exposed": 6
+          },
+          "W": {
+            "protected": 0,
+            "partial": 37,
+            "exposed": 2
+          },
+          "NW": {
+            "protected": 1,
+            "partial": 38,
+            "exposed": 0
+          }
+        }
+      },
+      "ionian-islands-antipaxos": {
+        "regionName": "Antipaxos",
+        "beachCount": 13,
+        "generatedProfiles": 13,
+        "missingCoordinates": 0,
+        "sectors": {
+          "N": {
+            "protected": 0,
+            "partial": 13,
+            "exposed": 0
+          },
+          "NE": {
+            "protected": 0,
+            "partial": 13,
+            "exposed": 0
+          },
+          "E": {
+            "protected": 0,
+            "partial": 10,
+            "exposed": 3
+          },
+          "SE": {
+            "protected": 0,
+            "partial": 10,
+            "exposed": 3
+          },
+          "S": {
+            "protected": 0,
+            "partial": 8,
+            "exposed": 5
+          },
+          "SW": {
+            "protected": 0,
+            "partial": 0,
+            "exposed": 13
+          },
+          "W": {
+            "protected": 0,
+            "partial": 3,
+            "exposed": 10
+          },
+          "NW": {
+            "protected": 0,
+            "partial": 8,
+            "exposed": 5
+          }
+        }
+      },
+      "ionian-islands-corfu": {
+        "regionName": "Corfu",
+        "beachCount": 91,
+        "generatedProfiles": 91,
+        "missingCoordinates": 0,
+        "sectors": {
+          "N": {
+            "protected": 38,
+            "partial": 44,
+            "exposed": 9
+          },
+          "NE": {
+            "protected": 39,
+            "partial": 48,
+            "exposed": 4
+          },
+          "E": {
+            "protected": 33,
+            "partial": 58,
+            "exposed": 0
+          },
+          "SE": {
+            "protected": 19,
+            "partial": 66,
+            "exposed": 6
+          },
+          "S": {
+            "protected": 30,
+            "partial": 25,
+            "exposed": 36
+          },
+          "SW": {
+            "protected": 38,
+            "partial": 12,
+            "exposed": 41
+          },
+          "W": {
+            "protected": 24,
+            "partial": 31,
+            "exposed": 36
+          },
+          "NW": {
+            "protected": 20,
+            "partial": 58,
+            "exposed": 13
+          }
+        }
+      },
+      "ionian-islands-erikoussa": {
+        "regionName": "Erikoussa",
+        "beachCount": 2,
+        "generatedProfiles": 2,
+        "missingCoordinates": 0,
+        "sectors": {
+          "N": {
+            "protected": 1,
+            "partial": 1,
+            "exposed": 0
+          },
+          "NE": {
+            "protected": 0,
+            "partial": 1,
+            "exposed": 1
+          },
+          "E": {
+            "protected": 0,
+            "partial": 1,
+            "exposed": 1
+          },
+          "SE": {
+            "protected": 0,
+            "partial": 2,
+            "exposed": 0
+          },
+          "S": {
+            "protected": 0,
+            "partial": 1,
+            "exposed": 1
+          },
+          "SW": {
+            "protected": 0,
+            "partial": 0,
+            "exposed": 2
+          },
+          "W": {
+            "protected": 0,
+            "partial": 0,
+            "exposed": 2
+          },
+          "NW": {
+            "protected": 0,
+            "partial": 2,
+            "exposed": 0
+          }
+        }
+      },
+      "ionian-islands-ithaca": {
+        "regionName": "Ithaca",
+        "beachCount": 24,
+        "generatedProfiles": 24,
+        "missingCoordinates": 0,
+        "sectors": {
+          "N": {
+            "protected": 2,
+            "partial": 20,
+            "exposed": 2
+          },
+          "NE": {
+            "protected": 5,
+            "partial": 8,
+            "exposed": 11
+          },
+          "E": {
+            "protected": 8,
+            "partial": 5,
+            "exposed": 11
+          },
+          "SE": {
+            "protected": 6,
+            "partial": 14,
+            "exposed": 4
+          },
+          "S": {
+            "protected": 13,
+            "partial": 11,
+            "exposed": 0
+          },
+          "SW": {
+            "protected": 15,
+            "partial": 9,
+            "exposed": 0
+          },
+          "W": {
+            "protected": 14,
+            "partial": 10,
+            "exposed": 0
+          },
+          "NW": {
+            "protected": 8,
+            "partial": 16,
+            "exposed": 0
+          }
+        }
+      },
+      "ionian-islands-kefalonia": {
+        "regionName": "Kefalonia",
+        "beachCount": 76,
+        "generatedProfiles": 76,
+        "missingCoordinates": 0,
+        "sectors": {
+          "N": {
+            "protected": 32,
+            "partial": 40,
+            "exposed": 4
+          },
+          "NE": {
+            "protected": 37,
+            "partial": 32,
+            "exposed": 7
+          },
+          "E": {
+            "protected": 25,
+            "partial": 41,
+            "exposed": 10
+          },
+          "SE": {
+            "protected": 15,
+            "partial": 46,
+            "exposed": 15
+          },
+          "S": {
+            "protected": 17,
+            "partial": 30,
+            "exposed": 29
+          },
+          "SW": {
+            "protected": 24,
+            "partial": 20,
+            "exposed": 32
+          },
+          "W": {
+            "protected": 28,
+            "partial": 28,
+            "exposed": 20
+          },
+          "NW": {
+            "protected": 24,
+            "partial": 40,
+            "exposed": 12
+          }
+        }
+      },
+      "ionian-islands-lefkada": {
+        "regionName": "Lefkada",
+        "beachCount": 35,
+        "generatedProfiles": 35,
+        "missingCoordinates": 0,
+        "sectors": {
+          "N": {
+            "protected": 7,
+            "partial": 21,
+            "exposed": 7
+          },
+          "NE": {
+            "protected": 12,
+            "partial": 23,
+            "exposed": 0
+          },
+          "E": {
+            "protected": 16,
+            "partial": 19,
+            "exposed": 0
+          },
+          "SE": {
+            "protected": 15,
+            "partial": 18,
+            "exposed": 2
+          },
+          "S": {
+            "protected": 6,
+            "partial": 29,
+            "exposed": 0
+          },
+          "SW": {
+            "protected": 10,
+            "partial": 16,
+            "exposed": 9
+          },
+          "W": {
+            "protected": 12,
+            "partial": 9,
+            "exposed": 14
+          },
+          "NW": {
+            "protected": 13,
+            "partial": 4,
+            "exposed": 18
+          }
+        }
+      },
+      "ionian-islands-mathraki": {
+        "regionName": "Mathraki",
+        "beachCount": 1,
+        "generatedProfiles": 1,
+        "missingCoordinates": 0,
+        "sectors": {
+          "N": {
+            "protected": 0,
+            "partial": 0,
+            "exposed": 1
+          },
+          "NE": {
+            "protected": 0,
+            "partial": 0,
+            "exposed": 1
+          },
+          "E": {
+            "protected": 0,
+            "partial": 1,
+            "exposed": 0
+          },
+          "SE": {
+            "protected": 0,
+            "partial": 1,
+            "exposed": 0
+          },
+          "S": {
+            "protected": 0,
+            "partial": 1,
+            "exposed": 0
+          },
+          "SW": {
+            "protected": 0,
+            "partial": 0,
+            "exposed": 1
+          },
+          "W": {
+            "protected": 0,
+            "partial": 0,
+            "exposed": 1
+          },
+          "NW": {
+            "protected": 0,
+            "partial": 0,
+            "exposed": 1
+          }
+        }
+      },
+      "ionian-islands-meganisi": {
+        "regionName": "Meganisi",
+        "beachCount": 8,
+        "generatedProfiles": 8,
+        "missingCoordinates": 0,
+        "sectors": {
+          "N": {
+            "protected": 0,
+            "partial": 8,
+            "exposed": 0
+          },
+          "NE": {
+            "protected": 0,
+            "partial": 8,
+            "exposed": 0
+          },
+          "E": {
+            "protected": 1,
+            "partial": 7,
+            "exposed": 0
+          },
+          "SE": {
+            "protected": 1,
+            "partial": 7,
+            "exposed": 0
+          },
+          "S": {
+            "protected": 2,
+            "partial": 4,
+            "exposed": 2
+          },
+          "SW": {
+            "protected": 5,
+            "partial": 3,
+            "exposed": 0
+          },
+          "W": {
+            "protected": 3,
+            "partial": 5,
+            "exposed": 0
+          },
+          "NW": {
+            "protected": 2,
+            "partial": 6,
+            "exposed": 0
+          }
+        }
+      },
+      "ionian-islands-othonoi": {
+        "regionName": "Othonoi",
+        "beachCount": 3,
+        "generatedProfiles": 3,
+        "missingCoordinates": 0,
+        "sectors": {
+          "N": {
+            "protected": 2,
+            "partial": 1,
+            "exposed": 0
+          },
+          "NE": {
+            "protected": 1,
+            "partial": 2,
+            "exposed": 0
+          },
+          "E": {
+            "protected": 0,
+            "partial": 3,
+            "exposed": 0
+          },
+          "SE": {
+            "protected": 0,
+            "partial": 2,
+            "exposed": 1
+          },
+          "S": {
+            "protected": 0,
+            "partial": 0,
+            "exposed": 3
+          },
+          "SW": {
+            "protected": 0,
+            "partial": 0,
+            "exposed": 3
+          },
+          "W": {
+            "protected": 0,
+            "partial": 2,
+            "exposed": 1
+          },
+          "NW": {
+            "protected": 2,
+            "partial": 0,
+            "exposed": 1
+          }
+        }
+      },
+      "ionian-islands-paxos": {
+        "regionName": "Paxos",
+        "beachCount": 25,
+        "generatedProfiles": 25,
+        "missingCoordinates": 0,
+        "sectors": {
+          "N": {
+            "protected": 3,
+            "partial": 22,
+            "exposed": 0
+          },
+          "NE": {
+            "protected": 3,
+            "partial": 22,
+            "exposed": 0
+          },
+          "E": {
+            "protected": 1,
+            "partial": 15,
+            "exposed": 9
+          },
+          "SE": {
+            "protected": 0,
+            "partial": 20,
+            "exposed": 5
+          },
+          "S": {
+            "protected": 13,
+            "partial": 5,
+            "exposed": 7
+          },
+          "SW": {
+            "protected": 11,
+            "partial": 5,
+            "exposed": 9
+          },
+          "W": {
+            "protected": 12,
+            "partial": 4,
+            "exposed": 9
+          },
+          "NW": {
+            "protected": 0,
+            "partial": 25,
+            "exposed": 0
+          }
+        }
+      },
+      "ionian-islands-zakynthos": {
+        "regionName": "Zakynthos",
+        "beachCount": 39,
+        "generatedProfiles": 39,
+        "missingCoordinates": 0,
+        "sectors": {
+          "N": {
+            "protected": 12,
+            "partial": 14,
+            "exposed": 13
+          },
+          "NE": {
+            "protected": 12,
+            "partial": 15,
+            "exposed": 12
+          },
+          "E": {
+            "protected": 10,
+            "partial": 10,
+            "exposed": 19
+          },
+          "SE": {
+            "protected": 6,
+            "partial": 20,
+            "exposed": 13
+          },
+          "S": {
+            "protected": 16,
+            "partial": 7,
+            "exposed": 16
+          },
+          "SW": {
+            "protected": 19,
+            "partial": 11,
+            "exposed": 9
+          },
+          "W": {
+            "protected": 21,
+            "partial": 8,
+            "exposed": 10
+          },
+          "NW": {
+            "protected": 8,
+            "partial": 27,
+            "exposed": 4
+          }
+        }
+      },
+      "north-aegean-agios-efstratios": {
+        "regionName": "Agios Efstratios",
+        "beachCount": 12,
+        "generatedProfiles": 12,
+        "missingCoordinates": 0,
+        "sectors": {
+          "N": {
+            "protected": 0,
+            "partial": 9,
+            "exposed": 3
+          },
+          "NE": {
+            "protected": 7,
+            "partial": 4,
+            "exposed": 1
+          },
+          "E": {
+            "protected": 9,
+            "partial": 0,
+            "exposed": 3
+          },
+          "SE": {
+            "protected": 6,
+            "partial": 3,
+            "exposed": 3
+          },
+          "S": {
+            "protected": 1,
+            "partial": 5,
+            "exposed": 6
+          },
+          "SW": {
+            "protected": 0,
+            "partial": 2,
+            "exposed": 10
+          },
+          "W": {
+            "protected": 1,
+            "partial": 0,
+            "exposed": 11
+          },
+          "NW": {
+            "protected": 0,
+            "partial": 1,
+            "exposed": 11
+          }
+        }
+      },
+      "north-aegean-chios": {
+        "regionName": "Chios",
+        "beachCount": 34,
+        "generatedProfiles": 34,
+        "missingCoordinates": 0,
+        "sectors": {
+          "N": {
+            "protected": 19,
+            "partial": 12,
+            "exposed": 3
+          },
+          "NE": {
+            "protected": 16,
+            "partial": 15,
+            "exposed": 3
+          },
+          "E": {
+            "protected": 16,
+            "partial": 15,
+            "exposed": 3
+          },
+          "SE": {
+            "protected": 9,
+            "partial": 17,
+            "exposed": 8
+          },
+          "S": {
+            "protected": 6,
+            "partial": 17,
+            "exposed": 11
+          },
+          "SW": {
+            "protected": 13,
+            "partial": 10,
+            "exposed": 11
+          },
+          "W": {
+            "protected": 14,
+            "partial": 5,
+            "exposed": 15
+          },
+          "NW": {
+            "protected": 14,
+            "partial": 16,
+            "exposed": 4
+          }
+        }
+      },
+      "north-aegean-fournoi": {
+        "regionName": "Fournoi",
+        "beachCount": 7,
+        "generatedProfiles": 7,
+        "missingCoordinates": 0,
+        "sectors": {
+          "N": {
+            "protected": 0,
+            "partial": 7,
+            "exposed": 0
+          },
+          "NE": {
+            "protected": 1,
+            "partial": 6,
+            "exposed": 0
+          },
+          "E": {
+            "protected": 2,
+            "partial": 2,
+            "exposed": 3
+          },
+          "SE": {
+            "protected": 0,
+            "partial": 4,
+            "exposed": 3
+          },
+          "S": {
+            "protected": 0,
+            "partial": 5,
+            "exposed": 2
+          },
+          "SW": {
+            "protected": 1,
+            "partial": 1,
+            "exposed": 5
+          },
+          "W": {
+            "protected": 0,
+            "partial": 7,
+            "exposed": 0
+          },
+          "NW": {
+            "protected": 2,
+            "partial": 5,
+            "exposed": 0
+          }
+        }
+      },
+      "north-aegean-ikaria": {
+        "regionName": "Ikaria",
+        "beachCount": 19,
+        "generatedProfiles": 19,
+        "missingCoordinates": 0,
+        "sectors": {
+          "N": {
+            "protected": 6,
+            "partial": 1,
+            "exposed": 12
+          },
+          "NE": {
+            "protected": 2,
+            "partial": 8,
+            "exposed": 9
+          },
+          "E": {
+            "protected": 2,
+            "partial": 17,
+            "exposed": 0
+          },
+          "SE": {
+            "protected": 10,
+            "partial": 5,
+            "exposed": 4
+          },
+          "S": {
+            "protected": 10,
+            "partial": 1,
+            "exposed": 8
+          },
+          "SW": {
+            "protected": 9,
+            "partial": 9,
+            "exposed": 1
+          },
+          "W": {
+            "protected": 6,
+            "partial": 11,
+            "exposed": 2
+          },
+          "NW": {
+            "protected": 7,
+            "partial": 0,
+            "exposed": 12
+          }
+        }
+      },
+      "north-aegean-lemnos": {
+        "regionName": "Lemnos",
+        "beachCount": 40,
+        "generatedProfiles": 40,
+        "missingCoordinates": 0,
+        "sectors": {
+          "N": {
+            "protected": 13,
+            "partial": 15,
+            "exposed": 12
+          },
+          "NE": {
+            "protected": 16,
+            "partial": 13,
+            "exposed": 11
+          },
+          "E": {
+            "protected": 20,
+            "partial": 13,
+            "exposed": 7
+          },
+          "SE": {
+            "protected": 17,
+            "partial": 14,
+            "exposed": 9
+          },
+          "S": {
+            "protected": 14,
+            "partial": 13,
+            "exposed": 13
+          },
+          "SW": {
+            "protected": 14,
+            "partial": 11,
+            "exposed": 15
+          },
+          "W": {
+            "protected": 7,
+            "partial": 23,
+            "exposed": 10
+          },
+          "NW": {
+            "protected": 12,
+            "partial": 12,
+            "exposed": 16
+          }
+        }
+      },
+      "north-aegean-lesvos": {
+        "regionName": "Lesvos",
+        "beachCount": 60,
+        "generatedProfiles": 60,
+        "missingCoordinates": 0,
+        "sectors": {
+          "N": {
+            "protected": 29,
+            "partial": 26,
+            "exposed": 5
+          },
+          "NE": {
+            "protected": 28,
+            "partial": 30,
+            "exposed": 2
+          },
+          "E": {
+            "protected": 13,
+            "partial": 43,
+            "exposed": 4
+          },
+          "SE": {
+            "protected": 21,
+            "partial": 18,
+            "exposed": 21
+          },
+          "S": {
+            "protected": 22,
+            "partial": 12,
+            "exposed": 26
+          },
+          "SW": {
+            "protected": 23,
+            "partial": 8,
+            "exposed": 29
+          },
+          "W": {
+            "protected": 16,
+            "partial": 26,
+            "exposed": 18
+          },
+          "NW": {
+            "protected": 18,
+            "partial": 30,
+            "exposed": 12
+          }
+        }
+      },
+      "north-aegean-oinousses": {
+        "regionName": "Oinousses",
+        "beachCount": 8,
+        "generatedProfiles": 8,
+        "missingCoordinates": 0,
+        "sectors": {
+          "N": {
+            "protected": 3,
+            "partial": 2,
+            "exposed": 3
+          },
+          "NE": {
+            "protected": 4,
+            "partial": 4,
+            "exposed": 0
+          },
+          "E": {
+            "protected": 1,
+            "partial": 7,
+            "exposed": 0
+          },
+          "SE": {
+            "protected": 1,
+            "partial": 7,
+            "exposed": 0
+          },
+          "S": {
+            "protected": 2,
+            "partial": 6,
+            "exposed": 0
+          },
+          "SW": {
+            "protected": 0,
+            "partial": 8,
+            "exposed": 0
+          },
+          "W": {
+            "protected": 0,
+            "partial": 8,
+            "exposed": 0
+          },
+          "NW": {
+            "protected": 0,
+            "partial": 6,
+            "exposed": 2
+          }
+        }
+      },
+      "north-aegean-psara": {
+        "regionName": "Psara",
+        "beachCount": 6,
+        "generatedProfiles": 6,
+        "missingCoordinates": 0,
+        "sectors": {
+          "N": {
+            "protected": 5,
+            "partial": 1,
+            "exposed": 0
+          },
+          "NE": {
+            "protected": 5,
+            "partial": 1,
+            "exposed": 0
+          },
+          "E": {
+            "protected": 2,
+            "partial": 4,
+            "exposed": 0
+          },
+          "SE": {
+            "protected": 1,
+            "partial": 1,
+            "exposed": 4
+          },
+          "S": {
+            "protected": 0,
+            "partial": 1,
+            "exposed": 5
+          },
+          "SW": {
+            "protected": 0,
+            "partial": 2,
+            "exposed": 4
+          },
+          "W": {
+            "protected": 0,
+            "partial": 3,
+            "exposed": 3
+          },
+          "NW": {
+            "protected": 0,
+            "partial": 6,
+            "exposed": 0
+          }
+        }
+      },
+      "north-aegean-samos": {
+        "regionName": "Samos",
+        "beachCount": 40,
+        "generatedProfiles": 40,
+        "missingCoordinates": 0,
+        "sectors": {
+          "N": {
+            "protected": 22,
+            "partial": 4,
+            "exposed": 14
+          },
+          "NE": {
+            "protected": 18,
+            "partial": 13,
+            "exposed": 9
+          },
+          "E": {
+            "protected": 10,
+            "partial": 30,
+            "exposed": 0
+          },
+          "SE": {
+            "protected": 8,
+            "partial": 22,
+            "exposed": 10
+          },
+          "S": {
+            "protected": 16,
+            "partial": 5,
+            "exposed": 19
+          },
+          "SW": {
+            "protected": 13,
+            "partial": 21,
+            "exposed": 6
+          },
+          "W": {
+            "protected": 15,
+            "partial": 20,
+            "exposed": 5
+          },
+          "NW": {
+            "protected": 18,
+            "partial": 10,
+            "exposed": 12
+          }
+        }
+      },
+      "peloponnese-argolida-mainland": {
+        "regionName": "Argolida",
+        "beachCount": 34,
+        "generatedProfiles": 34,
+        "missingCoordinates": 0,
+        "sectors": {
+          "N": {
+            "protected": 23,
+            "partial": 11,
+            "exposed": 0
+          },
+          "NE": {
+            "protected": 23,
+            "partial": 5,
+            "exposed": 6
+          },
+          "E": {
+            "protected": 14,
+            "partial": 20,
+            "exposed": 0
+          },
+          "SE": {
+            "protected": 3,
+            "partial": 27,
+            "exposed": 4
+          },
+          "S": {
+            "protected": 6,
+            "partial": 22,
+            "exposed": 6
+          },
+          "SW": {
+            "protected": 12,
+            "partial": 22,
+            "exposed": 0
+          },
+          "W": {
+            "protected": 18,
+            "partial": 13,
+            "exposed": 3
+          },
+          "NW": {
+            "protected": 23,
+            "partial": 11,
+            "exposed": 0
+          }
+        }
+      },
+      "peloponnese-arkadia-mainland": {
+        "regionName": "Arkadia",
+        "beachCount": 16,
+        "generatedProfiles": 16,
+        "missingCoordinates": 0,
+        "sectors": {
+          "N": {
+            "protected": 0,
+            "partial": 11,
+            "exposed": 5
+          },
+          "NE": {
+            "protected": 0,
+            "partial": 9,
+            "exposed": 7
+          },
+          "E": {
+            "protected": 0,
+            "partial": 12,
+            "exposed": 4
+          },
+          "SE": {
+            "protected": 1,
+            "partial": 5,
+            "exposed": 10
+          },
+          "S": {
+            "protected": 6,
+            "partial": 10,
+            "exposed": 0
+          },
+          "SW": {
+            "protected": 16,
+            "partial": 0,
+            "exposed": 0
+          },
+          "W": {
+            "protected": 16,
+            "partial": 0,
+            "exposed": 0
+          },
+          "NW": {
+            "protected": 9,
+            "partial": 7,
+            "exposed": 0
+          }
+        }
+      },
+      "peloponnese-korinthia-mainland": {
+        "regionName": "Korinthia",
+        "beachCount": 21,
+        "generatedProfiles": 21,
+        "missingCoordinates": 0,
+        "sectors": {
+          "N": {
+            "protected": 4,
+            "partial": 16,
+            "exposed": 1
+          },
+          "NE": {
+            "protected": 4,
+            "partial": 15,
+            "exposed": 2
+          },
+          "E": {
+            "protected": 4,
+            "partial": 13,
+            "exposed": 4
+          },
+          "SE": {
+            "protected": 12,
+            "partial": 8,
+            "exposed": 1
+          },
+          "S": {
+            "protected": 17,
+            "partial": 4,
+            "exposed": 0
+          },
+          "SW": {
+            "protected": 15,
+            "partial": 6,
+            "exposed": 0
+          },
+          "W": {
+            "protected": 7,
+            "partial": 14,
+            "exposed": 0
+          },
+          "NW": {
+            "protected": 3,
+            "partial": 16,
+            "exposed": 2
+          }
+        }
+      },
+      "peloponnese-lakonia-mainland": {
+        "regionName": "Lakonia",
+        "beachCount": 61,
+        "generatedProfiles": 61,
+        "missingCoordinates": 0,
+        "sectors": {
+          "N": {
+            "protected": 29,
+            "partial": 31,
+            "exposed": 1
+          },
+          "NE": {
+            "protected": 26,
+            "partial": 19,
+            "exposed": 16
+          },
+          "E": {
+            "protected": 19,
+            "partial": 18,
+            "exposed": 24
+          },
+          "SE": {
+            "protected": 13,
+            "partial": 32,
+            "exposed": 16
+          },
+          "S": {
+            "protected": 14,
+            "partial": 42,
+            "exposed": 5
+          },
+          "SW": {
+            "protected": 32,
+            "partial": 13,
+            "exposed": 16
+          },
+          "W": {
+            "protected": 35,
+            "partial": 16,
+            "exposed": 10
+          },
+          "NW": {
+            "protected": 38,
+            "partial": 20,
+            "exposed": 3
+          }
+        }
+      },
+      "peloponnese-messinia-mainland": {
+        "regionName": "Messinia",
+        "beachCount": 54,
+        "generatedProfiles": 54,
+        "missingCoordinates": 0,
+        "sectors": {
+          "N": {
+            "protected": 28,
+            "partial": 25,
+            "exposed": 1
+          },
+          "NE": {
+            "protected": 34,
+            "partial": 20,
+            "exposed": 0
+          },
+          "E": {
+            "protected": 31,
+            "partial": 11,
+            "exposed": 12
+          },
+          "SE": {
+            "protected": 7,
+            "partial": 38,
+            "exposed": 9
+          },
+          "S": {
+            "protected": 6,
+            "partial": 21,
+            "exposed": 27
+          },
+          "SW": {
+            "protected": 7,
+            "partial": 24,
+            "exposed": 23
+          },
+          "W": {
+            "protected": 15,
+            "partial": 16,
+            "exposed": 23
+          },
+          "NW": {
+            "protected": 18,
+            "partial": 31,
+            "exposed": 5
+          }
+        }
+      },
+      "south-aegean-agathonisi": {
+        "regionName": "Agathonisi",
+        "beachCount": 5,
+        "generatedProfiles": 5,
+        "missingCoordinates": 0,
+        "sectors": {
+          "N": {
+            "protected": 3,
+            "partial": 2,
+            "exposed": 0
+          },
+          "NE": {
+            "protected": 3,
+            "partial": 2,
+            "exposed": 0
+          },
+          "E": {
+            "protected": 0,
+            "partial": 5,
+            "exposed": 0
+          },
+          "SE": {
+            "protected": 0,
+            "partial": 5,
+            "exposed": 0
+          },
+          "S": {
+            "protected": 0,
+            "partial": 0,
+            "exposed": 5
+          },
+          "SW": {
+            "protected": 0,
+            "partial": 4,
+            "exposed": 1
+          },
+          "W": {
+            "protected": 0,
+            "partial": 5,
+            "exposed": 0
+          },
+          "NW": {
+            "protected": 3,
+            "partial": 2,
+            "exposed": 0
+          }
+        }
+      },
+      "south-aegean-amorgos": {
+        "regionName": "Amorgos",
+        "beachCount": 14,
+        "generatedProfiles": 14,
+        "missingCoordinates": 0,
+        "sectors": {
+          "N": {
+            "protected": 4,
+            "partial": 4,
+            "exposed": 6
+          },
+          "NE": {
+            "protected": 5,
+            "partial": 8,
+            "exposed": 1
+          },
+          "E": {
+            "protected": 7,
+            "partial": 4,
+            "exposed": 3
+          },
+          "SE": {
+            "protected": 10,
+            "partial": 1,
+            "exposed": 3
+          },
+          "S": {
+            "protected": 10,
+            "partial": 0,
+            "exposed": 4
+          },
+          "SW": {
+            "protected": 1,
+            "partial": 11,
+            "exposed": 2
+          },
+          "W": {
+            "protected": 2,
+            "partial": 6,
+            "exposed": 6
+          },
+          "NW": {
+            "protected": 3,
+            "partial": 6,
+            "exposed": 5
+          }
+        }
+      },
+      "south-aegean-anafi": {
+        "regionName": "Anafi",
+        "beachCount": 15,
+        "generatedProfiles": 15,
+        "missingCoordinates": 0,
+        "sectors": {
+          "N": {
+            "protected": 10,
+            "partial": 2,
+            "exposed": 3
+          },
+          "NE": {
+            "protected": 5,
+            "partial": 9,
+            "exposed": 1
+          },
+          "E": {
+            "protected": 3,
+            "partial": 11,
+            "exposed": 1
+          },
+          "SE": {
+            "protected": 2,
+            "partial": 2,
+            "exposed": 11
+          },
+          "S": {
+            "protected": 2,
+            "partial": 1,
+            "exposed": 12
+          },
+          "SW": {
+            "protected": 0,
+            "partial": 2,
+            "exposed": 13
+          },
+          "W": {
+            "protected": 0,
+            "partial": 5,
+            "exposed": 10
+          },
+          "NW": {
+            "protected": 4,
+            "partial": 7,
+            "exposed": 4
+          }
+        }
+      },
+      "south-aegean-andros": {
+        "regionName": "Andros",
+        "beachCount": 41,
+        "generatedProfiles": 41,
+        "missingCoordinates": 0,
+        "sectors": {
+          "N": {
+            "protected": 10,
+            "partial": 21,
+            "exposed": 10
+          },
+          "NE": {
+            "protected": 16,
+            "partial": 2,
+            "exposed": 23
+          },
+          "E": {
+            "protected": 15,
+            "partial": 9,
+            "exposed": 17
+          },
+          "SE": {
+            "protected": 12,
+            "partial": 28,
+            "exposed": 1
+          },
+          "S": {
+            "protected": 21,
+            "partial": 8,
+            "exposed": 12
+          },
+          "SW": {
+            "protected": 20,
+            "partial": 5,
+            "exposed": 16
+          },
+          "W": {
+            "protected": 18,
+            "partial": 13,
+            "exposed": 10
+          },
+          "NW": {
+            "protected": 15,
+            "partial": 26,
+            "exposed": 0
+          }
+        }
+      },
+      "south-aegean-antiparos": {
+        "regionName": "Antiparos",
+        "beachCount": 12,
+        "generatedProfiles": 12,
+        "missingCoordinates": 0,
+        "sectors": {
+          "N": {
+            "protected": 0,
+            "partial": 5,
+            "exposed": 7
+          },
+          "NE": {
+            "protected": 1,
+            "partial": 11,
+            "exposed": 0
+          },
+          "E": {
+            "protected": 5,
+            "partial": 4,
+            "exposed": 3
+          },
+          "SE": {
+            "protected": 1,
+            "partial": 6,
+            "exposed": 5
+          },
+          "S": {
+            "protected": 1,
+            "partial": 6,
+            "exposed": 5
+          },
+          "SW": {
+            "protected": 0,
+            "partial": 6,
+            "exposed": 6
+          },
+          "W": {
+            "protected": 0,
+            "partial": 3,
+            "exposed": 9
+          },
+          "NW": {
+            "protected": 1,
+            "partial": 3,
+            "exposed": 8
+          }
+        }
+      },
+      "south-aegean-arki": {
+        "regionName": "Arki",
+        "beachCount": 2,
+        "generatedProfiles": 2,
+        "missingCoordinates": 0,
+        "sectors": {
+          "N": {
+            "protected": 0,
+            "partial": 1,
+            "exposed": 1
+          },
+          "NE": {
+            "protected": 0,
+            "partial": 1,
+            "exposed": 1
+          },
+          "E": {
+            "protected": 0,
+            "partial": 1,
+            "exposed": 1
+          },
+          "SE": {
+            "protected": 0,
+            "partial": 2,
+            "exposed": 0
+          },
+          "S": {
+            "protected": 0,
+            "partial": 2,
+            "exposed": 0
+          },
+          "SW": {
+            "protected": 0,
+            "partial": 2,
+            "exposed": 0
+          },
+          "W": {
+            "protected": 0,
+            "partial": 2,
+            "exposed": 0
+          },
+          "NW": {
+            "protected": 0,
+            "partial": 2,
+            "exposed": 0
+          }
+        }
+      },
+      "south-aegean-astypalaia": {
+        "regionName": "Astypalaia",
+        "beachCount": 20,
+        "generatedProfiles": 20,
+        "missingCoordinates": 0,
+        "sectors": {
+          "N": {
+            "protected": 9,
+            "partial": 8,
+            "exposed": 3
+          },
+          "NE": {
+            "protected": 9,
+            "partial": 10,
+            "exposed": 1
+          },
+          "E": {
+            "protected": 2,
+            "partial": 10,
+            "exposed": 8
+          },
+          "SE": {
+            "protected": 3,
+            "partial": 2,
+            "exposed": 15
+          },
+          "S": {
+            "protected": 3,
+            "partial": 4,
+            "exposed": 13
+          },
+          "SW": {
+            "protected": 5,
+            "partial": 9,
+            "exposed": 6
+          },
+          "W": {
+            "protected": 7,
+            "partial": 7,
+            "exposed": 6
+          },
+          "NW": {
+            "protected": 7,
+            "partial": 8,
+            "exposed": 5
+          }
+        }
+      },
+      "south-aegean-donousa": {
+        "regionName": "Donousa",
+        "beachCount": 4,
+        "generatedProfiles": 4,
+        "missingCoordinates": 0,
+        "sectors": {
+          "N": {
+            "protected": 3,
+            "partial": 1,
+            "exposed": 0
+          },
+          "NE": {
+            "protected": 2,
+            "partial": 2,
+            "exposed": 0
+          },
+          "E": {
+            "protected": 0,
+            "partial": 2,
+            "exposed": 2
+          },
+          "SE": {
+            "protected": 0,
+            "partial": 0,
+            "exposed": 4
+          },
+          "S": {
+            "protected": 0,
+            "partial": 0,
+            "exposed": 4
+          },
+          "SW": {
+            "protected": 0,
+            "partial": 3,
+            "exposed": 1
+          },
+          "W": {
+            "protected": 0,
+            "partial": 4,
+            "exposed": 0
+          },
+          "NW": {
+            "protected": 1,
+            "partial": 3,
+            "exposed": 0
+          }
+        }
+      },
+      "south-aegean-folegandros": {
+        "regionName": "Folegandros",
+        "beachCount": 16,
+        "generatedProfiles": 16,
+        "missingCoordinates": 0,
+        "sectors": {
+          "N": {
+            "protected": 5,
+            "partial": 1,
+            "exposed": 10
+          },
+          "NE": {
+            "protected": 5,
+            "partial": 8,
+            "exposed": 3
+          },
+          "E": {
+            "protected": 6,
+            "partial": 8,
+            "exposed": 2
+          },
+          "SE": {
+            "protected": 0,
+            "partial": 9,
+            "exposed": 7
+          },
+          "S": {
+            "protected": 2,
+            "partial": 7,
+            "exposed": 7
+          },
+          "SW": {
+            "protected": 7,
+            "partial": 1,
+            "exposed": 8
+          },
+          "W": {
+            "protected": 7,
+            "partial": 0,
+            "exposed": 9
+          },
+          "NW": {
+            "protected": 0,
+            "partial": 13,
+            "exposed": 3
+          }
+        }
+      },
+      "south-aegean-halki": {
+        "regionName": "Halki",
+        "beachCount": 2,
+        "generatedProfiles": 2,
+        "missingCoordinates": 0,
+        "sectors": {
+          "N": {
+            "protected": 0,
+            "partial": 1,
+            "exposed": 1
+          },
+          "NE": {
+            "protected": 0,
+            "partial": 2,
+            "exposed": 0
+          },
+          "E": {
+            "protected": 0,
+            "partial": 2,
+            "exposed": 0
+          },
+          "SE": {
+            "protected": 0,
+            "partial": 2,
+            "exposed": 0
+          },
+          "S": {
+            "protected": 0,
+            "partial": 1,
+            "exposed": 1
+          },
+          "SW": {
+            "protected": 1,
+            "partial": 0,
+            "exposed": 1
+          },
+          "W": {
+            "protected": 0,
+            "partial": 2,
+            "exposed": 0
+          },
+          "NW": {
+            "protected": 1,
+            "partial": 1,
+            "exposed": 0
+          }
+        }
+      },
+      "south-aegean-ios": {
+        "regionName": "Ios",
+        "beachCount": 40,
+        "generatedProfiles": 40,
+        "missingCoordinates": 0,
+        "sectors": {
+          "N": {
+            "protected": 15,
+            "partial": 21,
+            "exposed": 4
+          },
+          "NE": {
+            "protected": 14,
+            "partial": 19,
+            "exposed": 7
+          },
+          "E": {
+            "protected": 12,
+            "partial": 6,
+            "exposed": 22
+          },
+          "SE": {
+            "protected": 6,
+            "partial": 21,
+            "exposed": 13
+          },
+          "S": {
+            "protected": 11,
+            "partial": 12,
+            "exposed": 17
+          },
+          "SW": {
+            "protected": 12,
+            "partial": 12,
+            "exposed": 16
+          },
+          "W": {
+            "protected": 14,
+            "partial": 18,
+            "exposed": 8
+          },
+          "NW": {
+            "protected": 8,
+            "partial": 23,
+            "exposed": 9
+          }
+        }
+      },
+      "south-aegean-iraklia": {
+        "regionName": "Iraklia",
+        "beachCount": 2,
+        "generatedProfiles": 2,
+        "missingCoordinates": 0,
+        "sectors": {
+          "N": {
+            "protected": 0,
+            "partial": 2,
+            "exposed": 0
+          },
+          "NE": {
+            "protected": 0,
+            "partial": 2,
+            "exposed": 0
+          },
+          "E": {
+            "protected": 0,
+            "partial": 1,
+            "exposed": 1
+          },
+          "SE": {
+            "protected": 1,
+            "partial": 0,
+            "exposed": 1
+          },
+          "S": {
+            "protected": 1,
+            "partial": 1,
+            "exposed": 0
+          },
+          "SW": {
+            "protected": 1,
+            "partial": 1,
+            "exposed": 0
+          },
+          "W": {
+            "protected": 1,
+            "partial": 0,
+            "exposed": 1
+          },
+          "NW": {
+            "protected": 0,
+            "partial": 1,
+            "exposed": 1
+          }
+        }
+      },
+      "south-aegean-kalymnos": {
+        "regionName": "Kalymnos",
+        "beachCount": 20,
+        "generatedProfiles": 20,
+        "missingCoordinates": 0,
+        "sectors": {
+          "N": {
+            "protected": 7,
+            "partial": 7,
+            "exposed": 6
+          },
+          "NE": {
+            "protected": 10,
+            "partial": 5,
+            "exposed": 5
+          },
+          "E": {
+            "protected": 8,
+            "partial": 11,
+            "exposed": 1
+          },
+          "SE": {
+            "protected": 7,
+            "partial": 13,
+            "exposed": 0
+          },
+          "S": {
+            "protected": 9,
+            "partial": 11,
+            "exposed": 0
+          },
+          "SW": {
+            "protected": 9,
+            "partial": 7,
+            "exposed": 4
+          },
+          "W": {
+            "protected": 12,
+            "partial": 3,
+            "exposed": 5
+          },
+          "NW": {
+            "protected": 7,
+            "partial": 13,
+            "exposed": 0
+          }
+        }
+      },
+      "south-aegean-karpathos": {
+        "regionName": "Karpathos",
+        "beachCount": 45,
+        "generatedProfiles": 45,
+        "missingCoordinates": 0,
+        "sectors": {
+          "N": {
+            "protected": 19,
+            "partial": 22,
+            "exposed": 4
+          },
+          "NE": {
+            "protected": 18,
+            "partial": 13,
+            "exposed": 14
+          },
+          "E": {
+            "protected": 15,
+            "partial": 6,
+            "exposed": 24
+          },
+          "SE": {
+            "protected": 8,
+            "partial": 10,
+            "exposed": 27
+          },
+          "S": {
+            "protected": 8,
+            "partial": 27,
+            "exposed": 10
+          },
+          "SW": {
+            "protected": 11,
+            "partial": 26,
+            "exposed": 8
+          },
+          "W": {
+            "protected": 27,
+            "partial": 4,
+            "exposed": 14
+          },
+          "NW": {
+            "protected": 24,
+            "partial": 7,
+            "exposed": 14
+          }
+        }
+      },
+      "south-aegean-kasos": {
+        "regionName": "Kasos",
+        "beachCount": 5,
+        "generatedProfiles": 5,
+        "missingCoordinates": 0,
+        "sectors": {
+          "N": {
+            "protected": 1,
+            "partial": 2,
+            "exposed": 2
+          },
+          "NE": {
+            "protected": 2,
+            "partial": 3,
+            "exposed": 0
+          },
+          "E": {
+            "protected": 2,
+            "partial": 3,
+            "exposed": 0
+          },
+          "SE": {
+            "protected": 2,
+            "partial": 0,
+            "exposed": 3
+          },
+          "S": {
+            "protected": 2,
+            "partial": 0,
+            "exposed": 3
+          },
+          "SW": {
+            "protected": 0,
+            "partial": 2,
+            "exposed": 3
+          },
+          "W": {
+            "protected": 0,
+            "partial": 0,
+            "exposed": 5
+          },
+          "NW": {
+            "protected": 0,
+            "partial": 1,
+            "exposed": 4
+          }
+        }
+      },
+      "south-aegean-kastellorizo": {
+        "regionName": "Kastellorizo",
+        "beachCount": 3,
+        "generatedProfiles": 3,
+        "missingCoordinates": 0,
+        "sectors": {
+          "N": {
+            "protected": 0,
+            "partial": 3,
+            "exposed": 0
+          },
+          "NE": {
+            "protected": 0,
+            "partial": 3,
+            "exposed": 0
+          },
+          "E": {
+            "protected": 0,
+            "partial": 3,
+            "exposed": 0
+          },
+          "SE": {
+            "protected": 0,
+            "partial": 0,
+            "exposed": 3
+          },
+          "S": {
+            "protected": 0,
+            "partial": 1,
+            "exposed": 2
+          },
+          "SW": {
+            "protected": 1,
+            "partial": 2,
+            "exposed": 0
+          },
+          "W": {
+            "protected": 2,
+            "partial": 1,
+            "exposed": 0
+          },
+          "NW": {
+            "protected": 1,
+            "partial": 2,
+            "exposed": 0
+          }
+        }
+      },
+      "south-aegean-kea": {
+        "regionName": "Kea",
+        "beachCount": 34,
+        "generatedProfiles": 34,
+        "missingCoordinates": 0,
+        "sectors": {
+          "N": {
+            "protected": 9,
+            "partial": 15,
+            "exposed": 10
+          },
+          "NE": {
+            "protected": 10,
+            "partial": 14,
+            "exposed": 10
+          },
+          "E": {
+            "protected": 15,
+            "partial": 2,
+            "exposed": 17
+          },
+          "SE": {
+            "protected": 16,
+            "partial": 9,
+            "exposed": 9
+          },
+          "S": {
+            "protected": 3,
+            "partial": 30,
+            "exposed": 1
+          },
+          "SW": {
+            "protected": 4,
+            "partial": 15,
+            "exposed": 15
+          },
+          "W": {
+            "protected": 16,
+            "partial": 9,
+            "exposed": 9
+          },
+          "NW": {
+            "protected": 14,
+            "partial": 18,
+            "exposed": 2
+          }
+        }
+      },
+      "south-aegean-kimolos": {
+        "regionName": "Kimolos",
+        "beachCount": 20,
+        "generatedProfiles": 20,
+        "missingCoordinates": 0,
+        "sectors": {
+          "N": {
+            "protected": 3,
+            "partial": 10,
+            "exposed": 7
+          },
+          "NE": {
+            "protected": 6,
+            "partial": 14,
+            "exposed": 0
+          },
+          "E": {
+            "protected": 7,
+            "partial": 8,
+            "exposed": 5
+          },
+          "SE": {
+            "protected": 5,
+            "partial": 13,
+            "exposed": 2
+          },
+          "S": {
+            "protected": 5,
+            "partial": 12,
+            "exposed": 3
+          },
+          "SW": {
+            "protected": 4,
+            "partial": 16,
+            "exposed": 0
+          },
+          "W": {
+            "protected": 5,
+            "partial": 8,
+            "exposed": 7
+          },
+          "NW": {
+            "protected": 4,
+            "partial": 3,
+            "exposed": 13
+          }
+        }
+      },
+      "south-aegean-kos": {
+        "regionName": "Kos",
+        "beachCount": 38,
+        "generatedProfiles": 38,
+        "missingCoordinates": 0,
+        "sectors": {
+          "N": {
+            "protected": 15,
+            "partial": 23,
+            "exposed": 0
+          },
+          "NE": {
+            "protected": 11,
+            "partial": 27,
+            "exposed": 0
+          },
+          "E": {
+            "protected": 11,
+            "partial": 23,
+            "exposed": 4
+          },
+          "SE": {
+            "protected": 14,
+            "partial": 17,
+            "exposed": 7
+          },
+          "S": {
+            "protected": 16,
+            "partial": 11,
+            "exposed": 11
+          },
+          "SW": {
+            "protected": 9,
+            "partial": 23,
+            "exposed": 6
+          },
+          "W": {
+            "protected": 10,
+            "partial": 16,
+            "exposed": 12
+          },
+          "NW": {
+            "protected": 13,
+            "partial": 20,
+            "exposed": 5
+          }
+        }
+      },
+      "south-aegean-koufonisia": {
+        "regionName": "Koufonisia",
+        "beachCount": 17,
+        "generatedProfiles": 17,
+        "missingCoordinates": 0,
+        "sectors": {
+          "N": {
+            "protected": 0,
+            "partial": 17,
+            "exposed": 0
+          },
+          "NE": {
+            "protected": 0,
+            "partial": 0,
+            "exposed": 17
+          },
+          "E": {
+            "protected": 0,
+            "partial": 9,
+            "exposed": 8
+          },
+          "SE": {
+            "protected": 0,
+            "partial": 17,
+            "exposed": 0
+          },
+          "S": {
+            "protected": 0,
+            "partial": 7,
+            "exposed": 10
+          },
+          "SW": {
+            "protected": 0,
+            "partial": 1,
+            "exposed": 16
+          },
+          "W": {
+            "protected": 0,
+            "partial": 17,
+            "exposed": 0
+          },
+          "NW": {
+            "protected": 0,
+            "partial": 17,
+            "exposed": 0
+          }
+        }
+      },
+      "south-aegean-kythnos": {
+        "regionName": "Kythnos",
+        "beachCount": 40,
+        "generatedProfiles": 40,
+        "missingCoordinates": 0,
+        "sectors": {
+          "N": {
+            "protected": 18,
+            "partial": 22,
+            "exposed": 0
+          },
+          "NE": {
+            "protected": 10,
+            "partial": 20,
+            "exposed": 10
+          },
+          "E": {
+            "protected": 10,
+            "partial": 1,
+            "exposed": 29
+          },
+          "SE": {
+            "protected": 9,
+            "partial": 17,
+            "exposed": 14
+          },
+          "S": {
+            "protected": 10,
+            "partial": 28,
+            "exposed": 2
+          },
+          "SW": {
+            "protected": 8,
+            "partial": 19,
+            "exposed": 13
+          },
+          "W": {
+            "protected": 24,
+            "partial": 3,
+            "exposed": 13
+          },
+          "NW": {
+            "protected": 27,
+            "partial": 7,
+            "exposed": 6
+          }
+        }
+      },
+      "south-aegean-leros": {
+        "regionName": "Leros",
+        "beachCount": 11,
+        "generatedProfiles": 11,
+        "missingCoordinates": 0,
+        "sectors": {
+          "N": {
+            "protected": 3,
+            "partial": 5,
+            "exposed": 3
+          },
+          "NE": {
+            "protected": 3,
+            "partial": 0,
+            "exposed": 8
+          },
+          "E": {
+            "protected": 3,
+            "partial": 1,
+            "exposed": 7
+          },
+          "SE": {
+            "protected": 2,
+            "partial": 9,
+            "exposed": 0
+          },
+          "S": {
+            "protected": 5,
+            "partial": 5,
+            "exposed": 1
+          },
+          "SW": {
+            "protected": 6,
+            "partial": 2,
+            "exposed": 3
+          },
+          "W": {
+            "protected": 4,
+            "partial": 3,
+            "exposed": 4
+          },
+          "NW": {
+            "protected": 2,
+            "partial": 9,
+            "exposed": 0
+          }
+        }
+      },
+      "south-aegean-lipsi": {
+        "regionName": "Lipsi",
+        "beachCount": 18,
+        "generatedProfiles": 18,
+        "missingCoordinates": 0,
+        "sectors": {
+          "N": {
+            "protected": 5,
+            "partial": 6,
+            "exposed": 7
+          },
+          "NE": {
+            "protected": 0,
+            "partial": 10,
+            "exposed": 8
+          },
+          "E": {
+            "protected": 3,
+            "partial": 1,
+            "exposed": 14
+          },
+          "SE": {
+            "protected": 1,
+            "partial": 10,
+            "exposed": 7
+          },
+          "S": {
+            "protected": 2,
+            "partial": 16,
+            "exposed": 0
+          },
+          "SW": {
+            "protected": 2,
+            "partial": 6,
+            "exposed": 10
+          },
+          "W": {
+            "protected": 4,
+            "partial": 14,
+            "exposed": 0
+          },
+          "NW": {
+            "protected": 3,
+            "partial": 15,
+            "exposed": 0
+          }
+        }
+      },
+      "south-aegean-marathi": {
+        "regionName": "Marathi",
+        "beachCount": 2,
+        "generatedProfiles": 2,
+        "missingCoordinates": 0,
+        "sectors": {
+          "N": {
+            "protected": 0,
+            "partial": 1,
+            "exposed": 1
+          },
+          "NE": {
+            "protected": 1,
+            "partial": 0,
+            "exposed": 1
+          },
+          "E": {
+            "protected": 0,
+            "partial": 1,
+            "exposed": 1
+          },
+          "SE": {
+            "protected": 0,
+            "partial": 1,
+            "exposed": 1
+          },
+          "S": {
+            "protected": 0,
+            "partial": 2,
+            "exposed": 0
+          },
+          "SW": {
+            "protected": 0,
+            "partial": 2,
+            "exposed": 0
+          },
+          "W": {
+            "protected": 0,
+            "partial": 2,
+            "exposed": 0
+          },
+          "NW": {
+            "protected": 0,
+            "partial": 1,
+            "exposed": 1
+          }
+        }
+      },
+      "south-aegean-milos": {
+        "regionName": "Milos",
+        "beachCount": 41,
+        "generatedProfiles": 41,
+        "missingCoordinates": 0,
+        "sectors": {
+          "N": {
+            "protected": 15,
+            "partial": 16,
+            "exposed": 10
+          },
+          "NE": {
+            "protected": 15,
+            "partial": 26,
+            "exposed": 0
+          },
+          "E": {
+            "protected": 9,
+            "partial": 23,
+            "exposed": 9
+          },
+          "SE": {
+            "protected": 16,
+            "partial": 5,
+            "exposed": 20
+          },
+          "S": {
+            "protected": 13,
+            "partial": 14,
+            "exposed": 14
+          },
+          "SW": {
+            "protected": 17,
+            "partial": 7,
+            "exposed": 17
+          },
+          "W": {
+            "protected": 12,
+            "partial": 23,
+            "exposed": 6
+          },
+          "NW": {
+            "protected": 21,
+            "partial": 8,
+            "exposed": 12
+          }
+        }
+      },
+      "south-aegean-mykonos": {
+        "regionName": "Mykonos",
+        "beachCount": 39,
+        "generatedProfiles": 39,
+        "missingCoordinates": 0,
+        "sectors": {
+          "N": {
+            "protected": 19,
+            "partial": 10,
+            "exposed": 10
+          },
+          "NE": {
+            "protected": 18,
+            "partial": 11,
+            "exposed": 10
+          },
+          "E": {
+            "protected": 9,
+            "partial": 13,
+            "exposed": 17
+          },
+          "SE": {
+            "protected": 10,
+            "partial": 5,
+            "exposed": 24
+          },
+          "S": {
+            "protected": 11,
+            "partial": 4,
+            "exposed": 24
+          },
+          "SW": {
+            "protected": 9,
+            "partial": 12,
+            "exposed": 18
+          },
+          "W": {
+            "protected": 13,
+            "partial": 15,
+            "exposed": 11
+          },
+          "NW": {
+            "protected": 17,
+            "partial": 22,
+            "exposed": 0
+          }
+        }
+      },
+      "south-aegean-naxos": {
+        "regionName": "Naxos",
+        "beachCount": 39,
+        "generatedProfiles": 39,
+        "missingCoordinates": 0,
+        "sectors": {
+          "N": {
+            "protected": 6,
+            "partial": 19,
+            "exposed": 14
+          },
+          "NE": {
+            "protected": 12,
+            "partial": 16,
+            "exposed": 11
+          },
+          "E": {
+            "protected": 22,
+            "partial": 5,
+            "exposed": 12
+          },
+          "SE": {
+            "protected": 12,
+            "partial": 17,
+            "exposed": 10
+          },
+          "S": {
+            "protected": 12,
+            "partial": 23,
+            "exposed": 4
+          },
+          "SW": {
+            "protected": 7,
+            "partial": 21,
+            "exposed": 11
+          },
+          "W": {
+            "protected": 12,
+            "partial": 27,
+            "exposed": 0
+          },
+          "NW": {
+            "protected": 12,
+            "partial": 18,
+            "exposed": 9
+          }
+        }
+      },
+      "south-aegean-nisyros": {
+        "regionName": "Nisyros",
+        "beachCount": 2,
+        "generatedProfiles": 2,
+        "missingCoordinates": 0,
+        "sectors": {
+          "N": {
+            "protected": 0,
+            "partial": 2,
+            "exposed": 0
+          },
+          "NE": {
+            "protected": 0,
+            "partial": 1,
+            "exposed": 1
+          },
+          "E": {
+            "protected": 0,
+            "partial": 1,
+            "exposed": 1
+          },
+          "SE": {
+            "protected": 1,
+            "partial": 1,
+            "exposed": 0
+          },
+          "S": {
+            "protected": 0,
+            "partial": 2,
+            "exposed": 0
+          },
+          "SW": {
+            "protected": 0,
+            "partial": 1,
+            "exposed": 1
+          },
+          "W": {
+            "protected": 1,
+            "partial": 0,
+            "exposed": 1
+          },
+          "NW": {
+            "protected": 0,
+            "partial": 2,
+            "exposed": 0
+          }
+        }
+      },
+      "south-aegean-paros": {
+        "regionName": "Paros",
+        "beachCount": 37,
+        "generatedProfiles": 37,
+        "missingCoordinates": 0,
+        "sectors": {
+          "N": {
+            "protected": 11,
+            "partial": 15,
+            "exposed": 11
+          },
+          "NE": {
+            "protected": 8,
+            "partial": 24,
+            "exposed": 5
+          },
+          "E": {
+            "protected": 11,
+            "partial": 26,
+            "exposed": 0
+          },
+          "SE": {
+            "protected": 13,
+            "partial": 18,
+            "exposed": 6
+          },
+          "S": {
+            "protected": 15,
+            "partial": 9,
+            "exposed": 13
+          },
+          "SW": {
+            "protected": 13,
+            "partial": 20,
+            "exposed": 4
+          },
+          "W": {
+            "protected": 16,
+            "partial": 12,
+            "exposed": 9
+          },
+          "NW": {
+            "protected": 16,
+            "partial": 8,
+            "exposed": 13
+          }
+        }
+      },
+      "south-aegean-patmos": {
+        "regionName": "Patmos",
+        "beachCount": 15,
+        "generatedProfiles": 15,
+        "missingCoordinates": 0,
+        "sectors": {
+          "N": {
+            "protected": 7,
+            "partial": 6,
+            "exposed": 2
+          },
+          "NE": {
+            "protected": 4,
+            "partial": 9,
+            "exposed": 2
+          },
+          "E": {
+            "protected": 1,
+            "partial": 14,
+            "exposed": 0
+          },
+          "SE": {
+            "protected": 2,
+            "partial": 6,
+            "exposed": 7
+          },
+          "S": {
+            "protected": 2,
+            "partial": 11,
+            "exposed": 2
+          },
+          "SW": {
+            "protected": 7,
+            "partial": 5,
+            "exposed": 3
+          },
+          "W": {
+            "protected": 8,
+            "partial": 3,
+            "exposed": 4
+          },
+          "NW": {
+            "protected": 8,
+            "partial": 3,
+            "exposed": 4
+          }
+        }
+      },
+      "south-aegean-polyaigos": {
+        "regionName": "Polyaigos",
+        "beachCount": 4,
+        "generatedProfiles": 4,
+        "missingCoordinates": 0,
+        "sectors": {
+          "N": {
+            "protected": 1,
+            "partial": 2,
+            "exposed": 1
+          },
+          "NE": {
+            "protected": 2,
+            "partial": 1,
+            "exposed": 1
+          },
+          "E": {
+            "protected": 3,
+            "partial": 0,
+            "exposed": 1
+          },
+          "SE": {
+            "protected": 0,
+            "partial": 3,
+            "exposed": 1
+          },
+          "S": {
+            "protected": 0,
+            "partial": 2,
+            "exposed": 2
+          },
+          "SW": {
+            "protected": 1,
+            "partial": 3,
+            "exposed": 0
+          },
+          "W": {
+            "protected": 1,
+            "partial": 3,
+            "exposed": 0
+          },
+          "NW": {
+            "protected": 0,
+            "partial": 4,
+            "exposed": 0
+          }
+        }
+      },
+      "south-aegean-pserimos": {
+        "regionName": "Pserimos",
+        "beachCount": 3,
+        "generatedProfiles": 3,
+        "missingCoordinates": 0,
+        "sectors": {
+          "N": {
+            "protected": 1,
+            "partial": 1,
+            "exposed": 1
+          },
+          "NE": {
+            "protected": 1,
+            "partial": 2,
+            "exposed": 0
+          },
+          "E": {
+            "protected": 0,
+            "partial": 3,
+            "exposed": 0
+          },
+          "SE": {
+            "protected": 1,
+            "partial": 2,
+            "exposed": 0
+          },
+          "S": {
+            "protected": 1,
+            "partial": 2,
+            "exposed": 0
+          },
+          "SW": {
+            "protected": 1,
+            "partial": 2,
+            "exposed": 0
+          },
+          "W": {
+            "protected": 1,
+            "partial": 2,
+            "exposed": 0
+          },
+          "NW": {
+            "protected": 0,
+            "partial": 3,
+            "exposed": 0
+          }
+        }
+      },
+      "south-aegean-rhodes": {
+        "regionName": "Rhodes",
+        "beachCount": 61,
+        "generatedProfiles": 61,
+        "missingCoordinates": 0,
+        "sectors": {
+          "N": {
+            "protected": 29,
+            "partial": 29,
+            "exposed": 3
+          },
+          "NE": {
+            "protected": 15,
+            "partial": 23,
+            "exposed": 23
+          },
+          "E": {
+            "protected": 8,
+            "partial": 14,
+            "exposed": 39
+          },
+          "SE": {
+            "protected": 9,
+            "partial": 5,
+            "exposed": 47
+          },
+          "S": {
+            "protected": 8,
+            "partial": 19,
+            "exposed": 34
+          },
+          "SW": {
+            "protected": 11,
+            "partial": 42,
+            "exposed": 8
+          },
+          "W": {
+            "protected": 41,
+            "partial": 10,
+            "exposed": 10
+          },
+          "NW": {
+            "protected": 44,
+            "partial": 13,
+            "exposed": 4
+          }
+        }
+      },
+      "south-aegean-santorini": {
+        "regionName": "Santorini",
+        "beachCount": 13,
+        "generatedProfiles": 13,
+        "missingCoordinates": 0,
+        "sectors": {
+          "N": {
+            "protected": 4,
+            "partial": 5,
+            "exposed": 4
+          },
+          "NE": {
+            "protected": 2,
+            "partial": 6,
+            "exposed": 5
+          },
+          "E": {
+            "protected": 1,
+            "partial": 5,
+            "exposed": 7
+          },
+          "SE": {
+            "protected": 0,
+            "partial": 5,
+            "exposed": 8
+          },
+          "S": {
+            "protected": 2,
+            "partial": 2,
+            "exposed": 9
+          },
+          "SW": {
+            "protected": 2,
+            "partial": 3,
+            "exposed": 8
+          },
+          "W": {
+            "protected": 3,
+            "partial": 5,
+            "exposed": 5
+          },
+          "NW": {
+            "protected": 5,
+            "partial": 5,
+            "exposed": 3
+          }
+        }
+      },
+      "south-aegean-schinoussa": {
+        "regionName": "Schinoussa",
+        "beachCount": 8,
+        "generatedProfiles": 8,
+        "missingCoordinates": 0,
+        "sectors": {
+          "N": {
+            "protected": 0,
+            "partial": 8,
+            "exposed": 0
+          },
+          "NE": {
+            "protected": 0,
+            "partial": 5,
+            "exposed": 3
+          },
+          "E": {
+            "protected": 0,
+            "partial": 7,
+            "exposed": 1
+          },
+          "SE": {
+            "protected": 0,
+            "partial": 0,
+            "exposed": 8
+          },
+          "S": {
+            "protected": 0,
+            "partial": 0,
+            "exposed": 8
+          },
+          "SW": {
+            "protected": 0,
+            "partial": 8,
+            "exposed": 0
+          },
+          "W": {
+            "protected": 0,
+            "partial": 6,
+            "exposed": 2
+          },
+          "NW": {
+            "protected": 0,
+            "partial": 8,
+            "exposed": 0
+          }
+        }
+      },
+      "south-aegean-serifos": {
+        "regionName": "Serifos",
+        "beachCount": 25,
+        "generatedProfiles": 25,
+        "missingCoordinates": 0,
+        "sectors": {
+          "N": {
+            "protected": 8,
+            "partial": 16,
+            "exposed": 1
+          },
+          "NE": {
+            "protected": 8,
+            "partial": 4,
+            "exposed": 13
+          },
+          "E": {
+            "protected": 3,
+            "partial": 10,
+            "exposed": 12
+          },
+          "SE": {
+            "protected": 5,
+            "partial": 12,
+            "exposed": 8
+          },
+          "S": {
+            "protected": 7,
+            "partial": 6,
+            "exposed": 12
+          },
+          "SW": {
+            "protected": 8,
+            "partial": 7,
+            "exposed": 10
+          },
+          "W": {
+            "protected": 8,
+            "partial": 9,
+            "exposed": 8
+          },
+          "NW": {
+            "protected": 11,
+            "partial": 10,
+            "exposed": 4
+          }
+        }
+      },
+      "south-aegean-sifnos": {
+        "regionName": "Sifnos",
+        "beachCount": 20,
+        "generatedProfiles": 20,
+        "missingCoordinates": 0,
+        "sectors": {
+          "N": {
+            "protected": 9,
+            "partial": 9,
+            "exposed": 2
+          },
+          "NE": {
+            "protected": 10,
+            "partial": 7,
+            "exposed": 3
+          },
+          "E": {
+            "protected": 10,
+            "partial": 0,
+            "exposed": 10
+          },
+          "SE": {
+            "protected": 3,
+            "partial": 7,
+            "exposed": 10
+          },
+          "S": {
+            "protected": 0,
+            "partial": 11,
+            "exposed": 9
+          },
+          "SW": {
+            "protected": 2,
+            "partial": 12,
+            "exposed": 6
+          },
+          "W": {
+            "protected": 9,
+            "partial": 0,
+            "exposed": 11
+          },
+          "NW": {
+            "protected": 7,
+            "partial": 8,
+            "exposed": 5
+          }
+        }
+      },
+      "south-aegean-sikinos": {
+        "regionName": "Sikinos",
+        "beachCount": 5,
+        "generatedProfiles": 5,
+        "missingCoordinates": 0,
+        "sectors": {
+          "N": {
+            "protected": 3,
+            "partial": 1,
+            "exposed": 1
+          },
+          "NE": {
+            "protected": 0,
+            "partial": 5,
+            "exposed": 0
+          },
+          "E": {
+            "protected": 0,
+            "partial": 5,
+            "exposed": 0
+          },
+          "SE": {
+            "protected": 0,
+            "partial": 0,
+            "exposed": 5
+          },
+          "S": {
+            "protected": 0,
+            "partial": 0,
+            "exposed": 5
+          },
+          "SW": {
+            "protected": 0,
+            "partial": 5,
+            "exposed": 0
+          },
+          "W": {
+            "protected": 4,
+            "partial": 1,
+            "exposed": 0
+          },
+          "NW": {
+            "protected": 4,
+            "partial": 0,
+            "exposed": 1
+          }
+        }
+      },
+      "south-aegean-symi": {
+        "regionName": "Symi",
+        "beachCount": 8,
+        "generatedProfiles": 8,
+        "missingCoordinates": 0,
+        "sectors": {
+          "N": {
+            "protected": 2,
+            "partial": 6,
+            "exposed": 0
+          },
+          "NE": {
+            "protected": 1,
+            "partial": 7,
+            "exposed": 0
+          },
+          "E": {
+            "protected": 1,
+            "partial": 7,
+            "exposed": 0
+          },
+          "SE": {
+            "protected": 3,
+            "partial": 3,
+            "exposed": 2
+          },
+          "S": {
+            "protected": 4,
+            "partial": 3,
+            "exposed": 1
+          },
+          "SW": {
+            "protected": 7,
+            "partial": 0,
+            "exposed": 1
+          },
+          "W": {
+            "protected": 5,
+            "partial": 3,
+            "exposed": 0
+          },
+          "NW": {
+            "protected": 5,
+            "partial": 3,
+            "exposed": 0
+          }
+        }
+      },
+      "south-aegean-syros": {
+        "regionName": "Syros",
+        "beachCount": 23,
+        "generatedProfiles": 23,
+        "missingCoordinates": 0,
+        "sectors": {
+          "N": {
+            "protected": 7,
+            "partial": 16,
+            "exposed": 0
+          },
+          "NE": {
+            "protected": 11,
+            "partial": 12,
+            "exposed": 0
+          },
+          "E": {
+            "protected": 14,
+            "partial": 1,
+            "exposed": 8
+          },
+          "SE": {
+            "protected": 14,
+            "partial": 1,
+            "exposed": 8
+          },
+          "S": {
+            "protected": 5,
+            "partial": 11,
+            "exposed": 7
+          },
+          "SW": {
+            "protected": 2,
+            "partial": 5,
+            "exposed": 16
+          },
+          "W": {
+            "protected": 3,
+            "partial": 5,
+            "exposed": 15
+          },
+          "NW": {
+            "protected": 8,
+            "partial": 3,
+            "exposed": 12
+          }
+        }
+      },
+      "south-aegean-telendos": {
+        "regionName": "Telendos",
+        "beachCount": 5,
+        "generatedProfiles": 5,
+        "missingCoordinates": 0,
+        "sectors": {
+          "N": {
+            "protected": 0,
+            "partial": 5,
+            "exposed": 0
+          },
+          "NE": {
+            "protected": 0,
+            "partial": 5,
+            "exposed": 0
+          },
+          "E": {
+            "protected": 5,
+            "partial": 0,
+            "exposed": 0
+          },
+          "SE": {
+            "protected": 5,
+            "partial": 0,
+            "exposed": 0
+          },
+          "S": {
+            "protected": 0,
+            "partial": 5,
+            "exposed": 0
+          },
+          "SW": {
+            "protected": 0,
+            "partial": 0,
+            "exposed": 5
+          },
+          "W": {
+            "protected": 0,
+            "partial": 0,
+            "exposed": 5
+          },
+          "NW": {
+            "protected": 0,
+            "partial": 5,
+            "exposed": 0
+          }
+        }
+      },
+      "south-aegean-tilos": {
+        "regionName": "Tilos",
+        "beachCount": 12,
+        "generatedProfiles": 12,
+        "missingCoordinates": 0,
+        "sectors": {
+          "N": {
+            "protected": 6,
+            "partial": 4,
+            "exposed": 2
+          },
+          "NE": {
+            "protected": 5,
+            "partial": 3,
+            "exposed": 4
+          },
+          "E": {
+            "protected": 3,
+            "partial": 4,
+            "exposed": 5
+          },
+          "SE": {
+            "protected": 3,
+            "partial": 8,
+            "exposed": 1
+          },
+          "S": {
+            "protected": 3,
+            "partial": 4,
+            "exposed": 5
+          },
+          "SW": {
+            "protected": 3,
+            "partial": 4,
+            "exposed": 5
+          },
+          "W": {
+            "protected": 5,
+            "partial": 3,
+            "exposed": 4
+          },
+          "NW": {
+            "protected": 4,
+            "partial": 6,
+            "exposed": 2
+          }
+        }
+      },
+      "south-aegean-tinos": {
+        "regionName": "Tinos",
+        "beachCount": 40,
+        "generatedProfiles": 40,
+        "missingCoordinates": 0,
+        "sectors": {
+          "N": {
+            "protected": 23,
+            "partial": 6,
+            "exposed": 11
+          },
+          "NE": {
+            "protected": 19,
+            "partial": 6,
+            "exposed": 15
+          },
+          "E": {
+            "protected": 12,
+            "partial": 20,
+            "exposed": 8
+          },
+          "SE": {
+            "protected": 12,
+            "partial": 28,
+            "exposed": 0
+          },
+          "S": {
+            "protected": 14,
+            "partial": 5,
+            "exposed": 21
+          },
+          "SW": {
+            "protected": 13,
+            "partial": 23,
+            "exposed": 4
+          },
+          "W": {
+            "protected": 12,
+            "partial": 17,
+            "exposed": 11
+          },
+          "NW": {
+            "protected": 8,
+            "partial": 32,
+            "exposed": 0
+          }
+        }
+      },
+      "thessaly-alonissos": {
+        "regionName": "Alonissos",
+        "beachCount": 35,
+        "generatedProfiles": 35,
+        "missingCoordinates": 0,
+        "sectors": {
+          "N": {
+            "protected": 26,
+            "partial": 5,
+            "exposed": 4
+          },
+          "NE": {
+            "protected": 0,
+            "partial": 34,
+            "exposed": 1
+          },
+          "E": {
+            "protected": 4,
+            "partial": 0,
+            "exposed": 31
+          },
+          "SE": {
+            "protected": 4,
+            "partial": 0,
+            "exposed": 31
+          },
+          "S": {
+            "protected": 4,
+            "partial": 0,
+            "exposed": 31
+          },
+          "SW": {
+            "protected": 0,
+            "partial": 29,
+            "exposed": 6
+          },
+          "W": {
+            "protected": 5,
+            "partial": 30,
+            "exposed": 0
+          },
+          "NW": {
+            "protected": 19,
+            "partial": 12,
+            "exposed": 4
+          }
+        }
+      },
+      "thessaly-larissa-coast-agia---kissavos": {
+        "regionName": "Larissa Coast (Agia - Kissavos)",
+        "beachCount": 14,
+        "generatedProfiles": 14,
+        "missingCoordinates": 0,
+        "sectors": {
+          "N": {
+            "protected": 0,
+            "partial": 7,
+            "exposed": 7
+          },
+          "NE": {
+            "protected": 0,
+            "partial": 0,
+            "exposed": 14
+          },
+          "E": {
+            "protected": 0,
+            "partial": 0,
+            "exposed": 14
+          },
+          "SE": {
+            "protected": 0,
+            "partial": 8,
+            "exposed": 6
+          },
+          "S": {
+            "protected": 3,
+            "partial": 11,
+            "exposed": 0
+          },
+          "SW": {
+            "protected": 14,
+            "partial": 0,
+            "exposed": 0
+          },
+          "W": {
+            "protected": 14,
+            "partial": 0,
+            "exposed": 0
+          },
+          "NW": {
+            "protected": 7,
+            "partial": 7,
+            "exposed": 0
+          }
+        }
+      },
+      "thessaly-magnesia-mainland---pelion": {
+        "regionName": "Magnesia (Pelion)",
+        "beachCount": 60,
+        "generatedProfiles": 60,
+        "missingCoordinates": 0,
+        "sectors": {
+          "N": {
+            "protected": 24,
+            "partial": 6,
+            "exposed": 30
+          },
+          "NE": {
+            "protected": 7,
+            "partial": 23,
+            "exposed": 30
+          },
+          "E": {
+            "protected": 3,
+            "partial": 41,
+            "exposed": 16
+          },
+          "SE": {
+            "protected": 0,
+            "partial": 52,
+            "exposed": 8
+          },
+          "S": {
+            "protected": 15,
+            "partial": 45,
+            "exposed": 0
+          },
+          "SW": {
+            "protected": 34,
+            "partial": 26,
+            "exposed": 0
+          },
+          "W": {
+            "protected": 45,
+            "partial": 15,
+            "exposed": 0
+          },
+          "NW": {
+            "protected": 25,
+            "partial": 35,
+            "exposed": 0
+          }
+        }
+      },
+      "thessaly-skiathos": {
+        "regionName": "Skiathos",
+        "beachCount": 32,
+        "generatedProfiles": 32,
+        "missingCoordinates": 0,
+        "sectors": {
+          "N": {
+            "protected": 10,
+            "partial": 6,
+            "exposed": 16
+          },
+          "NE": {
+            "protected": 8,
+            "partial": 17,
+            "exposed": 7
+          },
+          "E": {
+            "protected": 9,
+            "partial": 23,
+            "exposed": 0
+          },
+          "SE": {
+            "protected": 6,
+            "partial": 10,
+            "exposed": 16
+          },
+          "S": {
+            "protected": 8,
+            "partial": 23,
+            "exposed": 1
+          },
+          "SW": {
+            "protected": 5,
+            "partial": 27,
+            "exposed": 0
+          },
+          "W": {
+            "protected": 7,
+            "partial": 25,
+            "exposed": 0
+          },
+          "NW": {
+            "protected": 5,
+            "partial": 27,
+            "exposed": 0
+          }
+        }
+      },
+      "thessaly-skopelos": {
+        "regionName": "Skopelos",
+        "beachCount": 19,
+        "generatedProfiles": 19,
+        "missingCoordinates": 0,
+        "sectors": {
+          "N": {
+            "protected": 9,
+            "partial": 4,
+            "exposed": 6
+          },
+          "NE": {
+            "protected": 8,
+            "partial": 10,
+            "exposed": 1
+          },
+          "E": {
+            "protected": 4,
+            "partial": 11,
+            "exposed": 4
+          },
+          "SE": {
+            "protected": 5,
+            "partial": 5,
+            "exposed": 9
+          },
+          "S": {
+            "protected": 6,
+            "partial": 0,
+            "exposed": 13
+          },
+          "SW": {
+            "protected": 6,
+            "partial": 0,
+            "exposed": 13
+          },
+          "W": {
+            "protected": 6,
+            "partial": 10,
+            "exposed": 3
+          },
+          "NW": {
+            "protected": 4,
+            "partial": 15,
+            "exposed": 0
+          }
+        }
+      },
+      "west-greece-achaia-mainland": {
+        "regionName": "Achaia",
+        "beachCount": 15,
+        "generatedProfiles": 15,
+        "missingCoordinates": 0,
+        "sectors": {
+          "N": {
+            "protected": 1,
+            "partial": 14,
+            "exposed": 0
+          },
+          "NE": {
+            "protected": 4,
+            "partial": 10,
+            "exposed": 1
+          },
+          "E": {
+            "protected": 5,
+            "partial": 8,
+            "exposed": 2
+          },
+          "SE": {
+            "protected": 8,
+            "partial": 7,
+            "exposed": 0
+          },
+          "S": {
+            "protected": 9,
+            "partial": 6,
+            "exposed": 0
+          },
+          "SW": {
+            "protected": 9,
+            "partial": 3,
+            "exposed": 3
+          },
+          "W": {
+            "protected": 5,
+            "partial": 6,
+            "exposed": 4
+          },
+          "NW": {
+            "protected": 0,
+            "partial": 14,
+            "exposed": 1
+          }
+        }
+      },
+      "west-greece-aetolia-acarnania-mainland": {
+        "regionName": "Aetolia-Acarnania",
+        "beachCount": 47,
+        "generatedProfiles": 47,
+        "missingCoordinates": 0,
+        "sectors": {
+          "N": {
+            "protected": 17,
+            "partial": 30,
+            "exposed": 0
+          },
+          "NE": {
+            "protected": 24,
+            "partial": 23,
+            "exposed": 0
+          },
+          "E": {
+            "protected": 21,
+            "partial": 26,
+            "exposed": 0
+          },
+          "SE": {
+            "protected": 10,
+            "partial": 36,
+            "exposed": 1
+          },
+          "S": {
+            "protected": 13,
+            "partial": 25,
+            "exposed": 9
+          },
+          "SW": {
+            "protected": 13,
+            "partial": 25,
+            "exposed": 9
+          },
+          "W": {
+            "protected": 18,
+            "partial": 26,
+            "exposed": 3
+          },
+          "NW": {
+            "protected": 16,
+            "partial": 30,
+            "exposed": 1
+          }
+        }
+      },
+      "west-greece-ileia-mainland": {
+        "regionName": "Ileia",
+        "beachCount": 15,
+        "generatedProfiles": 15,
+        "missingCoordinates": 0,
+        "sectors": {
+          "N": {
+            "protected": 2,
+            "partial": 10,
+            "exposed": 3
+          },
+          "NE": {
+            "protected": 9,
+            "partial": 6,
+            "exposed": 0
+          },
+          "E": {
+            "protected": 12,
+            "partial": 3,
+            "exposed": 0
+          },
+          "SE": {
+            "protected": 11,
+            "partial": 4,
+            "exposed": 0
+          },
+          "S": {
+            "protected": 3,
+            "partial": 10,
+            "exposed": 2
+          },
+          "SW": {
+            "protected": 0,
+            "partial": 7,
+            "exposed": 8
+          },
+          "W": {
+            "protected": 0,
+            "partial": 2,
+            "exposed": 13
+          },
+          "NW": {
+            "protected": 0,
+            "partial": 8,
+            "exposed": 7
+          }
+        }
+      }
+    }
+  }
+}

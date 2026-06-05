@@ -1,6 +1,6 @@
 import React from 'react';
 import { motion } from 'motion/react';
-import { MapPin, Star, Wind, Navigation, Compass } from 'lucide-react';
+import { Star, Navigation, Compass } from 'lucide-react';
 import { SecretBeach, LanguageCode, Translation } from '../types';
 
 interface SecretBeachesSectionProps {

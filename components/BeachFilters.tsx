@@ -37,10 +37,9 @@ export const BeachFilters: React.FC<BeachFiltersProps> = ({
   hasActiveSearchOrFilters,
   variant = 'default',
   searchSuggestions = [],
-  protectedSortLabel,
-  sortResultCounts
+  protectedSortLabel
 }) => {
-  const selectedSortBy = sortBy === 'recommended' ? 'all' : sortBy;
+  const selectedSortBy = sortBy === 'recommended' || sortBy === 'all' ? 'protected' : sortBy;
   const isPanel = variant === 'panel';
   const [isSortOpen, setIsSortOpen] = React.useState(false);
   const searchListId = React.useId();
@@ -60,16 +59,12 @@ export const BeachFilters: React.FC<BeachFiltersProps> = ({
       label: t.filterOptions[filter as keyof typeof t.filterOptions] || String(filter),
     }));
   const hasActiveChips = activePreferenceFilters.length > 0 || activeAdvancedFilters.length > 0;
-  const withCount = (value: SortOption, label: string) => (
-    typeof sortResultCounts?.[value] === 'number' ? `${label} (${sortResultCounts[value]})` : label
-  );
   const sortOptions: Array<{ value: SortOption; label: string }> = [
-    { value: 'all', label: withCount('all', t.sortByAll) },
-    { value: 'protected', label: withCount('protected', protectedSortLabel ?? t.sortByProtected) },
+    { value: 'protected', label: protectedSortLabel ?? t.sortByProtected },
     { value: 'rating', label: t.sortByTopRated },
     { value: 'distance', label: t.sortByDistance },
   ];
-  const selectedSortLabel = sortOptions.find(option => option.value === selectedSortBy)?.label || t.sortByAll;
+  const selectedSortLabel = sortOptions.find(option => option.value === selectedSortBy)?.label || (protectedSortLabel ?? t.sortByProtected);
 
   React.useEffect(() => {
     if (!isSortOpen) return undefined;

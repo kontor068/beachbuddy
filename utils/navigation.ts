@@ -1,8 +1,8 @@
 export const openNavigation = (beach: any) => {
-  const lat = beach.latitude || beach.coordinates?.lat;
-  const lon = beach.longitude || beach.coordinates?.lon;
+  const lat = beach.mapCoordinates?.lat ?? beach.latitude ?? beach.coordinates?.lat;
+  const lon = beach.mapCoordinates?.lon ?? beach.longitude ?? beach.coordinates?.lon;
   
-  if (!lat || !lon) {
+  if (!Number.isFinite(lat) || !Number.isFinite(lon)) {
     console.error("Coordinates not found for navigation");
     return;
   }

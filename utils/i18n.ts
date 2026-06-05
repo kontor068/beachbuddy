@@ -5,11 +5,23 @@ export const SUPPORTED_LANGUAGES = ['en', 'gr', 'fr', 'de', 'it'] as const satis
 
 export type SupportedLanguage = (typeof SUPPORTED_LANGUAGES)[number];
 export type SupportedLocale = 'en' | 'el' | 'fr' | 'de' | 'it';
+export type LocalizedCopy<T> = Partial<Record<LanguageCode, T>> & { en: T };
 
 export const languageToLocale = (language: SupportedLanguage): SupportedLocale => {
   if (language === 'gr') return 'el';
   return language;
 };
+
+export const languageToDateLocale = (language: LanguageCode): string => ({
+  en: 'en-US',
+  gr: 'el-GR',
+  fr: 'fr-FR',
+  de: 'de-DE',
+  it: 'it-IT',
+}[language]);
+
+export const getLocalizedCopy = <T>(language: LanguageCode, copy: LocalizedCopy<T>): T =>
+  copy[language] ?? copy.en;
 
 export const isSupportedLanguage = (value: unknown): value is SupportedLanguage =>
   typeof value === 'string' && (SUPPORTED_LANGUAGES as readonly string[]).includes(value);

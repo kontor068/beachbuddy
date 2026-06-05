@@ -39,6 +39,22 @@ export const hasChallengingAccess = (beach: Pick<Beach, 'accessibility' | 'metad
   beach.metadata?.access?.type === 'hiking_path_difficult'
 );
 
+export const hasDifficultTopPickAccess = (beach: Pick<Beach, 'accessibility' | 'metadata'>): boolean => (
+  hasBoatOnlyAccess(beach) || hasChallengingAccess(beach)
+);
+
+export const hasPracticalTopPickAccess = (beach: Pick<Beach, 'accessibility' | 'metadata'>): boolean => {
+  if (hasDifficultTopPickAccess(beach)) return false;
+
+  const accessType = beach.metadata?.access?.type;
+  return (
+    accessType === 'asphalt_road' ||
+    accessType === 'passable_dirt_road' ||
+    accessType === 'hiking_path_easy' ||
+    (!accessType && (beach.accessibility === Accessibility.EASY || beach.accessibility === Accessibility.MODERATE))
+  );
+};
+
 export const hasTrulyEasyAccess = (beach: Pick<Beach, 'accessibility' | 'metadata' | 'accessNotes'>): boolean => {
   if (hasDirtRoadAccess(beach)) return false;
   if (hasBoatOnlyAccess(beach) || hasChallengingAccess(beach)) return false;

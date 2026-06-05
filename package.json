@@ -13,11 +13,11 @@
     "quality:auto": "node scripts/runCriticalQualityChecks.mjs --auto --max-attempts=3",
     "content:audit": "node scripts/auditStaticBeachContent.mjs",
     "photos:milos": "node scripts/findMilosBeachImages.mjs",
-    "build": "vite build",
-    "lint": "tsc --noEmit",
-    "preview": "vite preview",
+    "photos:destinations:cards": "node scripts/optimizeDestinationCardImages.mjs",
     "images:backgrounds": "node scripts/optimizeBackgroundImages.mjs",
-    "photos:destinations:cards": "node scripts/optimizeDestinationCardImages.mjs"
+    "build": "vite build && node scripts/prerenderBeachPages.mjs",
+    "lint": "tsc --noEmit",
+    "preview": "vite preview"
   },
   "dependencies": {
     "@google/genai": "^1.16.0",
@@ -42,8 +42,8 @@
     "@types/react-virtualized-auto-sizer": "^1.0.4",
     "@types/react-window": "^1.8.8",
     "@vitejs/plugin-react": "^5.0.0",
+    "sharp": "^0.34.5",
     "typescript": "~5.8.2",
-    "vite": "^6.2.0",
-    "sharp": "^0.34.5"
+    "vite": "^6.2.0"
   }
 }

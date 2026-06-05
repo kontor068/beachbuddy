@@ -1,0 +1,246 @@
+{
+  "schemaVersion": 1,
+  "generatedAt": "2026-06-02T21:58:29.082Z",
+  "region": {
+    "id": "ionian-islands-othonoi",
+    "name": "Othonoi"
+  },
+  "source": {
+    "indexPath": "/data/geospatial/exposure/index.json"
+  },
+  "settings": {
+    "maxFetchKm": 25,
+    "stepKm": 1,
+    "nearshoreLandGraceKm": 1,
+    "nearshoreWaterSearchKm": 12,
+    "nearshoreWaterSearchStepKm": 0.5,
+    "fanAnglesDeg": [
+      -30,
+      -15,
+      0,
+      15,
+      30
+    ],
+    "sectors": [
+      "N",
+      "NE",
+      "E",
+      "SE",
+      "S",
+      "SW",
+      "W",
+      "NW"
+    ]
+  },
+  "summary": {
+    "beachCount": 3,
+    "generatedProfiles": 3,
+    "missingCoordinates": 0,
+    "sectors": {
+      "N": {
+        "protected": 2,
+        "partial": 1,
+        "exposed": 0
+      },
+      "NE": {
+        "protected": 1,
+        "partial": 2,
+        "exposed": 0
+      },
+      "E": {
+        "protected": 0,
+        "partial": 3,
+        "exposed": 0
+      },
+      "SE": {
+        "protected": 0,
+        "partial": 2,
+        "exposed": 1
+      },
+      "S": {
+        "protected": 0,
+        "partial": 0,
+        "exposed": 3
+      },
+      "SW": {
+        "protected": 0,
+        "partial": 0,
+        "exposed": 3
+      },
+      "W": {
+        "protected": 0,
+        "partial": 2,
+        "exposed": 1
+      },
+      "NW": {
+        "protected": 2,
+        "partial": 0,
+        "exposed": 1
+      }
+    }
+  },
+  "profiles": {
+    "1056": {
+      "beachId": 1056,
+      "name": {
+        "en": "Agia Triada",
+        "gr": "Αγία Τριάδα"
+      },
+      "coordinates": {
+        "lat": 39.8402,
+        "lon": 19.40793
+      },
+      "sectors": {
+        "N": {
+          "level": "protected",
+          "fetchKm": 1,
+          "blockedRayRatio": 1
+        },
+        "NE": {
+          "level": "partial",
+          "fetchKm": 15.4,
+          "blockedRayRatio": 0.4
+        },
+        "E": {
+          "level": "partial",
+          "fetchKm": 24.2,
+          "blockedRayRatio": 0.4
+        },
+        "SE": {
+          "level": "partial",
+          "fetchKm": 24.2,
+          "blockedRayRatio": 0.4
+        },
+        "S": {
+          "level": "exposed",
+          "fetchKm": 25,
+          "blockedRayRatio": 0
+        },
+        "SW": {
+          "level": "exposed",
+          "fetchKm": 25,
+          "blockedRayRatio": 0
+        },
+        "W": {
+          "level": "partial",
+          "fetchKm": 15.4,
+          "blockedRayRatio": 0.4
+        },
+        "NW": {
+          "level": "protected",
+          "fetchKm": 1,
+          "blockedRayRatio": 1
+        }
+      },
+      "confidence": "low"
+    },
+    "1057": {
+      "beachId": 1057,
+      "name": {
+        "en": "Molos",
+        "gr": "Μόλος"
+      },
+      "coordinates": {
+        "lat": 39.84158,
+        "lon": 19.40322
+      },
+      "sectors": {
+        "N": {
+          "level": "protected",
+          "fetchKm": 1,
+          "blockedRayRatio": 1
+        },
+        "NE": {
+          "level": "partial",
+          "fetchKm": 15.4,
+          "blockedRayRatio": 0.4
+        },
+        "E": {
+          "level": "partial",
+          "fetchKm": 24.2,
+          "blockedRayRatio": 0.4
+        },
+        "SE": {
+          "level": "partial",
+          "fetchKm": 24.2,
+          "blockedRayRatio": 0.4
+        },
+        "S": {
+          "level": "exposed",
+          "fetchKm": 25,
+          "blockedRayRatio": 0
+        },
+        "SW": {
+          "level": "exposed",
+          "fetchKm": 25,
+          "blockedRayRatio": 0
+        },
+        "W": {
+          "level": "partial",
+          "fetchKm": 15.4,
+          "blockedRayRatio": 0.4
+        },
+        "NW": {
+          "level": "protected",
+          "fetchKm": 1,
+          "blockedRayRatio": 1
+        }
+      },
+      "confidence": "low"
+    },
+    "1058": {
+      "beachId": 1058,
+      "name": {
+        "en": "Aspri Ammos",
+        "gr": "Άσπρη Άμμος"
+      },
+      "coordinates": {
+        "lat": 39.84217,
+        "lon": 19.38321
+      },
+      "sectors": {
+        "N": {
+          "level": "partial",
+          "fetchKm": 10.6,
+          "blockedRayRatio": 0.6
+        },
+        "NE": {
+          "level": "protected",
+          "fetchKm": 1,
+          "blockedRayRatio": 1
+        },
+        "E": {
+          "level": "partial",
+          "fetchKm": 10.4,
+          "blockedRayRatio": 0.8
+        },
+        "SE": {
+          "level": "exposed",
+          "fetchKm": 24.8,
+          "blockedRayRatio": 0.2
+        },
+        "S": {
+          "level": "exposed",
+          "fetchKm": 25,
+          "blockedRayRatio": 0
+        },
+        "SW": {
+          "level": "exposed",
+          "fetchKm": 25,
+          "blockedRayRatio": 0
+        },
+        "W": {
+          "level": "exposed",
+          "fetchKm": 25,
+          "blockedRayRatio": 0
+        },
+        "NW": {
+          "level": "exposed",
+          "fetchKm": 25,
+          "blockedRayRatio": 0
+        }
+      },
+      "confidence": "low"
+    }
+  }
+}

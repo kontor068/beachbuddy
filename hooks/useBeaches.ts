@@ -1,8 +1,7 @@
 import { useState, useEffect, useMemo, useCallback } from 'react';
 import { Island, Beach, FilterKey, SortOption, WindDirection, LanguageCode, WeatherData, DailyForecast, UserPreferences } from '../types';
 import { filterBeaches, sortBeaches, calculateBeachScore } from '../services/recommendationService';
-import { getBeaufortLevel } from '../utils/weatherUtils';
-import { calculateWindExposure } from '../utils/windExposure';
+import { calculateDistance, getBeaufortLevel } from '../utils/weatherUtils';
 import {
   buildIslandShellFromIndexEntry,
   getPreferredInitialRegionId,
@@ -10,17 +9,7 @@ import {
   loadBeachRegionIndex,
 } from '../services/beachDataLoader';
 import type { BeachRegionIndexEntry } from '../services/beachDataLoader';
-
-const windSectorToDirection: Record<string, WindDirection> = {
-  N: WindDirection.N,
-  NE: WindDirection.NE,
-  E: WindDirection.E,
-  SE: WindDirection.SE,
-  S: WindDirection.S,
-  SW: WindDirection.SW,
-  W: WindDirection.W,
-  NW: WindDirection.NW,
-};
+import { getLocalizedCopy } from '../utils/i18n';
 
 const loadRegionIsland = async (
   regionId: string,
@@ -41,7 +30,7 @@ const loadRegionIsland = async (
 
 type BeachDataErrorKey = 'region' | 'empty' | 'app';
 
-const beachDataErrorMessages: Record<'en' | 'gr', Record<BeachDataErrorKey, string>> = {
+const beachDataErrorMessages: Record<LanguageCode, Record<BeachDataErrorKey, string>> = {
   en: {
     region: 'Beach data for this region could not be loaded. Please try again.',
     empty: 'No beach data was found. Please try again in a moment.',
@@ -52,10 +41,25 @@ const beachDataErrorMessages: Record<'en' | 'gr', Record<BeachDataErrorKey, stri
     empty: 'Δεν βρέθηκαν δεδομένα παραλιών. Δοκίμασε ξανά σε λίγο.',
     app: 'Δεν φορτώθηκαν τα δεδομένα της εφαρμογής. Δοκίμασε ξανά.',
   },
+  fr: {
+    region: "Les données de plage pour cette région n'ont pas pu être chargées. Veuillez réessayer.",
+    empty: "Aucune donnée de plage n'a été trouvée. Réessayez dans un instant.",
+    app: "Les données de plage de l'application n'ont pas pu être chargées. Veuillez réessayer.",
+  },
+  de: {
+    region: 'Stranddaten für diese Region konnten nicht geladen werden. Bitte versuche es erneut.',
+    empty: 'Es wurden keine Stranddaten gefunden. Bitte versuche es gleich erneut.',
+    app: 'Die Stranddaten der App konnten nicht geladen werden. Bitte versuche es erneut.',
+  },
+  it: {
+    region: 'I dati spiaggia per questa regione non possono essere caricati. Riprova.',
+    empty: 'Nessun dato spiaggia trovato. Riprova tra poco.',
+    app: "I dati spiaggia dell'app non possono essere caricati. Riprova.",
+  },
 };
 
 const getBeachDataErrorMessage = (language: LanguageCode, key: BeachDataErrorKey) => (
-  beachDataErrorMessages[language === 'gr' ? 'gr' : 'en'][key]
+  getLocalizedCopy(language, beachDataErrorMessages)[key]
 );
 
 export const useBeaches = (language: LanguageCode) => {
@@ -140,15 +144,19 @@ export const useBeaches = (language: LanguageCode) => {
     filters: FilterKey[],
     searchQuery: string,
     sortBy: SortOption,
-    windDirection: WindDirection,
+    _windDirection: WindDirection,
     weather?: WeatherData | DailyForecast,
     userLocation?: { lat: number; lon: number },
     preferences?: UserPreferences
   ) => {
     const beachesWithCrowd = weather ? beaches.map(beach => {
       const scoreResult = calculateBeachScore(beach, weather, userLocation, preferences);
+      const distance = userLocation
+        ? calculateDistance(userLocation.lat, userLocation.lon, beach.coordinates.lat, beach.coordinates.lon)
+        : undefined;
       return {
         ...beach,
+        distance,
         crowdLevel: scoreResult.crowdLevel,
         crowdScore: scoreResult.crowdScore,
         exposureLevel: scoreResult.exposureLevel,
@@ -162,7 +170,12 @@ export const useBeaches = (language: LanguageCode) => {
         canClaimWindProtection: scoreResult.canClaimWindProtection,
         seaCalmClaimAllowed: scoreResult.seaCalmClaimAllowed,
       };
-    }) : beaches;
+    }) : userLocation
+      ? beaches.map(beach => ({
+        ...beach,
+        distance: calculateDistance(userLocation.lat, userLocation.lon, beach.coordinates.lat, beach.coordinates.lon),
+      }))
+      : beaches;
 
     const filtered = filterBeaches(beachesWithCrowd, filters, searchQuery, language) as Array<Beach & {
       exposureLevel?: string;
@@ -183,82 +196,15 @@ export const useBeaches = (language: LanguageCode) => {
     }>;
     const weatherBeaufort = weather ? getBeaufortLevel(weather.wind.speed * 3.6) : 0;
     const windMattersForProtection = weatherBeaufort >= 4;
-    const isLessExposed = (beach: {
-      exposureLevel?: string;
-      canClaimWindProtection?: boolean;
-      windOrientationDeg?: number;
-      warnings?: Array<{ type?: string }>;
-      windProfile?: {
-        protectedFromWindDirections?: string[];
-        exposedToWindDirections?: string[];
-        shelterLevel?: string;
-        fetchExposure?: string;
-        beachFacingDirection?: number;
-        confidence?: string;
-      };
-      windSector?: string;
-      protectedFrom?: WindDirection[];
-    }) => {
-      const hasCurrentWindExposureWarning = beach.warnings?.some(warning => (
-        warning.type === 'exposed_to_wind' ||
-        warning.type === 'onshore_chop' ||
-        warning.type === 'wind_sport_spot'
-      ));
-      if (hasCurrentWindExposureWarning) return false;
-
-      const angularExposure = (
-        typeof beach.windOrientationDeg === 'number' &&
-        Number.isFinite(beach.windOrientationDeg) &&
-        weather
-      )
-        ? calculateWindExposure(beach.windOrientationDeg, weather.wind.deg).exposureLevel
-        : undefined;
-      const hasReliableExposureProfile = Boolean(
-        beach.windProfile &&
-        beach.windProfile.confidence !== 'low' &&
-        (
-          (beach.windProfile.exposedToWindDirections?.length ?? 0) > 0 ||
-          (beach.windProfile.protectedFromWindDirections?.length ?? 0) > 0 ||
-          beach.windProfile.shelterLevel === 'sheltered' ||
-          beach.windProfile.shelterLevel === 'very_sheltered'
-        )
-      );
-      const canUseMildWindGeometryFallback = weatherBeaufort <= 3 && angularExposure === 'protected';
-      const mildWindLegacyProtectionFallback = Boolean(
-        weatherBeaufort <= 3 &&
-        !hasReliableExposureProfile &&
-        beach.windSector &&
-        beach.protectedFrom?.includes(windSectorToDirection[beach.windSector])
-      );
-
-      if (
-        beach.windSector &&
-        beach.windProfile?.exposedToWindDirections?.includes(beach.windSector) &&
-        hasReliableExposureProfile
-      ) return false;
-      if (beach.exposureLevel === 'exposed' && !(canUseMildWindGeometryFallback && !hasReliableExposureProfile)) return false;
-      if (beach.windSector && beach.windProfile?.protectedFromWindDirections?.includes(beach.windSector)) return true;
-      if (mildWindLegacyProtectionFallback) return true;
-
-      if (beach.exposureLevel === 'protected' && beach.canClaimWindProtection === true) return true;
-
-      if (angularExposure) return angularExposure === 'protected';
-
-      return false;
-    };
     const exposureSortRank = (beach: { exposureLevel?: string; canClaimWindProtection?: boolean }) => {
       if (beach.exposureLevel === 'protected' && beach.canClaimWindProtection === true) return 0;
+      if (beach.exposureLevel === 'protected') return 0;
       if (beach.exposureLevel === 'partial') return 1;
       return 2;
     };
-    const lessExposedBeaches = sortBy === 'protected' && weather
-      ? filtered.filter(isLessExposed)
-      : [];
-    const visibleBeaches = sortBy === 'protected' && weather
-      ? lessExposedBeaches
-      : filtered;
+    const visibleBeaches = filtered;
 
-    if ((sortBy === 'recommended' || sortBy === 'protected') && weather) {
+    if (sortBy === 'recommended' && weather) {
       return [...visibleBeaches].sort((a, b) => {
         const aProtected = a.exposureLevel === 'protected' && a.canClaimWindProtection === true;
         const bProtected = b.exposureLevel === 'protected' && b.canClaimWindProtection === true;
@@ -272,7 +218,7 @@ export const useBeaches = (language: LanguageCode) => {
       });
     }
 
-    if (sortBy === 'all' && weather && windMattersForProtection) {
+    if ((sortBy === 'all' || sortBy === 'protected') && weather) {
       return [...visibleBeaches].sort((a, b) => {
         const exposureDiff = exposureSortRank(a) - exposureSortRank(b);
         if (exposureDiff !== 0) return exposureDiff;
@@ -280,7 +226,7 @@ export const useBeaches = (language: LanguageCode) => {
       });
     }
 
-    return sortBeaches(visibleBeaches, sortBy, windDirection);
+    return sortBeaches(visibleBeaches, sortBy, userLocation);
   }, [language]);
 
   return {

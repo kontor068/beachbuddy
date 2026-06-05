@@ -16,7 +16,67 @@ export const isSelectedDateToday = (selectedDate?: Date, currentDate: Date = new
 const greekWeekdayAccusative = ['την Κυριακή', 'τη Δευτέρα', 'την Τρίτη', 'την Τετάρτη', 'την Πέμπτη', 'την Παρασκευή', 'το Σάββατο'];
 const greekWeekdayGenitive = ['της Κυριακής', 'της Δευτέρας', 'της Τρίτης', 'της Τετάρτης', 'της Πέμπτης', 'της Παρασκευής', 'του Σαββάτου'];
 
-const englishWeekday = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+type NonGreekLanguage = Exclude<LanguageCode, 'gr'>;
+
+const dayTextByLanguage: Record<NonGreekLanguage, {
+  today: string;
+  tomorrow: string;
+  dayAfterTomorrow: string;
+  weekdays: string[];
+  prefixWeekdays: string[];
+  adjectiveToday: string;
+  adjectiveTomorrow: string;
+  adjectiveDayAfterTomorrow: string;
+  adjectiveWeekdays: string[];
+}> = {
+  en: {
+    today: 'today',
+    tomorrow: 'tomorrow',
+    dayAfterTomorrow: 'the day after tomorrow',
+    weekdays: ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'],
+    prefixWeekdays: ['on Sunday', 'on Monday', 'on Tuesday', 'on Wednesday', 'on Thursday', 'on Friday', 'on Saturday'],
+    adjectiveToday: "today's",
+    adjectiveTomorrow: "tomorrow's",
+    adjectiveDayAfterTomorrow: "the day after tomorrow's",
+    adjectiveWeekdays: ["Sunday's", "Monday's", "Tuesday's", "Wednesday's", "Thursday's", "Friday's", "Saturday's"],
+  },
+  fr: {
+    today: "aujourd'hui",
+    tomorrow: 'demain',
+    dayAfterTomorrow: 'après-demain',
+    weekdays: ['dimanche', 'lundi', 'mardi', 'mercredi', 'jeudi', 'vendredi', 'samedi'],
+    prefixWeekdays: ['dimanche', 'lundi', 'mardi', 'mercredi', 'jeudi', 'vendredi', 'samedi'],
+    adjectiveToday: "d'aujourd'hui",
+    adjectiveTomorrow: 'de demain',
+    adjectiveDayAfterTomorrow: "d'après-demain",
+    adjectiveWeekdays: ['de dimanche', 'de lundi', 'de mardi', 'de mercredi', 'de jeudi', 'de vendredi', 'de samedi'],
+  },
+  de: {
+    today: 'heute',
+    tomorrow: 'morgen',
+    dayAfterTomorrow: 'übermorgen',
+    weekdays: ['Sonntag', 'Montag', 'Dienstag', 'Mittwoch', 'Donnerstag', 'Freitag', 'Samstag'],
+    prefixWeekdays: ['am Sonntag', 'am Montag', 'am Dienstag', 'am Mittwoch', 'am Donnerstag', 'am Freitag', 'am Samstag'],
+    adjectiveToday: 'heutige',
+    adjectiveTomorrow: 'morgige',
+    adjectiveDayAfterTomorrow: 'übermorgige',
+    adjectiveWeekdays: ['vom Sonntag', 'vom Montag', 'vom Dienstag', 'vom Mittwoch', 'vom Donnerstag', 'vom Freitag', 'vom Samstag'],
+  },
+  it: {
+    today: 'oggi',
+    tomorrow: 'domani',
+    dayAfterTomorrow: 'dopodomani',
+    weekdays: ['domenica', 'lunedì', 'martedì', 'mercoledì', 'giovedì', 'venerdì', 'sabato'],
+    prefixWeekdays: ['domenica', 'lunedì', 'martedì', 'mercoledì', 'giovedì', 'venerdì', 'sabato'],
+    adjectiveToday: 'di oggi',
+    adjectiveTomorrow: 'di domani',
+    adjectiveDayAfterTomorrow: 'di dopodomani',
+    adjectiveWeekdays: ['di domenica', 'di lunedì', 'di martedì', 'di mercoledì', 'di giovedì', 'di venerdì', 'di sabato'],
+  },
+};
+
+const getNonGreekDayText = (language: LanguageCode) =>
+  dayTextByLanguage[language === 'gr' ? 'en' : language];
 
 const capitalizeFirst = (value: string): string =>
   value ? `${value.charAt(0).toUpperCase()}${value.slice(1)}` : value;
@@ -34,10 +94,11 @@ export const getSelectedDayLabel = (
     return selectedDate ? greekWeekdayAccusative[selectedDate.getDay()].replace(/^(τη|την|το)\s+/, '') : 'σήμερα';
   }
 
-  if (offset === 0) return 'today';
-  if (offset === 1) return 'tomorrow';
-  if (offset === 2) return 'the day after tomorrow';
-  return selectedDate ? englishWeekday[selectedDate.getDay()] : 'today';
+  const labels = getNonGreekDayText(language);
+  if (offset === 0) return labels.today;
+  if (offset === 1) return labels.tomorrow;
+  if (offset === 2) return labels.dayAfterTomorrow;
+  return selectedDate ? labels.weekdays[selectedDate.getDay()] : labels.today;
 };
 
 export const getSelectedDayPrefix = (
@@ -53,10 +114,11 @@ export const getSelectedDayPrefix = (
     return selectedDate ? greekWeekdayAccusative[selectedDate.getDay()] : 'σήμερα';
   }
 
-  if (offset === 0) return 'today';
-  if (offset === 1) return 'tomorrow';
-  if (offset === 2) return 'the day after tomorrow';
-  return selectedDate ? `on ${englishWeekday[selectedDate.getDay()]}` : 'today';
+  const labels = getNonGreekDayText(language);
+  if (offset === 0) return labels.today;
+  if (offset === 1) return labels.tomorrow;
+  if (offset === 2) return labels.dayAfterTomorrow;
+  return selectedDate ? labels.prefixWeekdays[selectedDate.getDay()] : labels.today;
 };
 
 export const getSelectedDaySentencePrefix = (
@@ -78,10 +140,53 @@ export const getSelectedDayAdjective = (
     return selectedDate ? greekWeekdayGenitive[selectedDate.getDay()] : 'σημερινός';
   }
 
-  if (offset === 0) return "today's";
-  if (offset === 1) return "tomorrow's";
-  if (offset === 2) return "the day after tomorrow's";
-  return selectedDate ? `${englishWeekday[selectedDate.getDay()]}'s` : "today's";
+  const labels = getNonGreekDayText(language);
+  if (offset === 0) return labels.adjectiveToday;
+  if (offset === 1) return labels.adjectiveTomorrow;
+  if (offset === 2) return labels.adjectiveDayAfterTomorrow;
+  return selectedDate ? labels.adjectiveWeekdays[selectedDate.getDay()] : labels.adjectiveToday;
+};
+
+const forecastLeadCopy: Record<NonGreekLanguage, {
+  manyToday: (beaufort: number) => string;
+  manyOther: (beaufort: number, prefix: string) => string;
+  mostBeaches: string;
+  allBeaches: string;
+  suitableToday: (beaufort: number, beachesText: string) => string;
+  suitableOther: (beaufort: number, prefix: string, beachesText: string) => string;
+}> = {
+  en: {
+    manyToday: (beaufort) => `${beaufort} Beaufort today. Many beaches are usable, with some better comfort picks.`,
+    manyOther: (beaufort, prefix) => `${beaufort} Beaufort ${prefix}. Many beaches look usable, with some better comfort picks.`,
+    mostBeaches: 'Most beaches',
+    allBeaches: 'All beaches',
+    suitableToday: (beaufort, beachesText) => `${beaufort} Beaufort today. ${beachesText} are suitable.`,
+    suitableOther: (beaufort, prefix, beachesText) => `${beaufort} Beaufort ${prefix}. ${beachesText} look suitable.`,
+  },
+  fr: {
+    manyToday: (beaufort) => `${beaufort} Beaufort aujourd'hui. Plusieurs plages restent praticables, avec quelques options plus confortables.`,
+    manyOther: (beaufort, prefix) => `${beaufort} Beaufort ${prefix}. Plusieurs plages semblent praticables, avec quelques options plus confortables.`,
+    mostBeaches: 'La plupart des plages',
+    allBeaches: 'Toutes les plages',
+    suitableToday: (beaufort, beachesText) => `${beaufort} Beaufort aujourd'hui. ${beachesText} sont adaptées.`,
+    suitableOther: (beaufort, prefix, beachesText) => `${beaufort} Beaufort ${prefix}. ${beachesText} semblent adaptées.`,
+  },
+  de: {
+    manyToday: (beaufort) => `${beaufort} Bft heute. Viele Strände sind nutzbar, einige bieten aber mehr Komfort.`,
+    manyOther: (beaufort, prefix) => `${beaufort} Bft ${prefix}. Viele Strände wirken nutzbar, einige bieten aber mehr Komfort.`,
+    mostBeaches: 'Die meisten Strände',
+    allBeaches: 'Alle Strände',
+    suitableToday: (beaufort, beachesText) => `${beaufort} Bft heute. ${beachesText} sind geeignet.`,
+    suitableOther: (beaufort, prefix, beachesText) => `${beaufort} Bft ${prefix}. ${beachesText} wirken geeignet.`,
+  },
+  it: {
+    manyToday: (beaufort) => `${beaufort} Beaufort oggi. Molte spiagge sono utilizzabili, con alcune opzioni più comode.`,
+    manyOther: (beaufort, prefix) => `${beaufort} Beaufort ${prefix}. Molte spiagge sembrano utilizzabili, con alcune opzioni più comode.`,
+    mostBeaches: 'La maggior parte delle spiagge',
+    allBeaches: 'Tutte le spiagge',
+    suitableToday: (beaufort, beachesText) => `${beaufort} Beaufort oggi. ${beachesText} sono adatte.`,
+    suitableOther: (beaufort, prefix, beachesText) => `${beaufort} Beaufort ${prefix}. ${beachesText} sembrano adatte.`,
+  },
 };
 
 export const formatDateAwareForecastLead = (
@@ -140,14 +245,15 @@ export const formatDateAwareForecastLead = (
     return `${sentencePrefix} προβλέπονται ${beaufort} μποφόρ. ${beachesText}`;
   }
 
+  const copy = forecastLeadCopy[language];
   if (!options.allBeaches && !options.mostBeaches) {
     return isToday
-      ? `${beaufort} Beaufort today. Many beaches are usable, with some better comfort picks.`
-      : `${beaufort} Beaufort ${prefix}. Many beaches look usable, with some better comfort picks.`;
+      ? copy.manyToday(beaufort)
+      : copy.manyOther(beaufort, prefix);
   }
 
-  const beachesText = options.mostBeaches ? 'Most beaches' : 'All beaches';
+  const beachesText = options.mostBeaches ? copy.mostBeaches : copy.allBeaches;
   return isToday
-    ? `${beaufort} Beaufort today. ${beachesText} are suitable.`
-    : `${beaufort} Beaufort ${prefix}. ${beachesText} look suitable.`;
+    ? copy.suitableToday(beaufort, beachesText)
+    : copy.suitableOther(beaufort, prefix, beachesText);
 };

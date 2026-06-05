@@ -3,6 +3,7 @@ import type { RawBeach } from './beachService';
 import regionDisplayNames from '../utils/regionDisplayNames.json';
 import { getGreekBeachNameDisplay } from '../utils/greekBeachNames';
 import { getActiveWeatherFixtureTargetRegionId } from '../utils/weatherFixtures';
+import { parseBeachDetailPath } from '../utils/beachUrls';
 
 export interface BeachRegionIndexEntry {
   id: string;
@@ -149,6 +150,11 @@ export const buildIslandShellFromIndexEntry = (entry: BeachRegionIndexEntry): Is
 });
 
 export const getPreferredInitialRegionId = (islands: Island[]): string | undefined => {
+  const route = parseBeachDetailPath();
+  if (route && islands.some(island => island.id === route.regionId)) {
+    return route.regionId;
+  }
+
   const fixtureRegionId = getActiveWeatherFixtureTargetRegionId();
   if (fixtureRegionId && islands.some(island => island.id === fixtureRegionId)) {
     return fixtureRegionId;
@@ -253,6 +259,7 @@ export const mergeBeachDetailData = (summary: Beach, detail: BeachDetailData): B
     activities: { ...summary.activities, ...(detail.activities || {}) },
     environment: { ...summary.environment, ...(detail.environment || {}) },
     coordinates: detail.coordinates || summary.coordinates,
+    mapCoordinates: detail.mapCoordinates || summary.mapCoordinates,
     metadata: detail.metadata || summary.metadata,
   };
 };

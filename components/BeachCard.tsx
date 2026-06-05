@@ -1,8 +1,8 @@
 
 import React, { useEffect, useState } from 'react';
-import { motion, AnimatePresence } from 'motion/react';
-import { MapPin, Star, Share2, Heart, Navigation, Info, ChevronDown, ChevronUp, Waves, Utensils, Trees, Umbrella, CircleDot, CircleDotDashed, Layers, Mountain, Droplets, ArrowDown, Sparkles, BadgeCheck, Leaf, Shield, Users, Clock3, Flag } from 'lucide-react';
-import { Beach, Accessibility, LanguageCode, WaveCondition, BeachType, CrowdLevel, WarningFlag, RecommendationConfidence, SwimmingComfort } from '../types';
+import { motion } from 'motion/react';
+import { AlertTriangle, MapPin, Star, Share2, Heart, Navigation, Info, Waves, Utensils, Trees, Umbrella, CircleDot, CircleDotDashed, Layers, Mountain, Droplets, ArrowDown, Sparkles, BadgeCheck, Leaf, Shield, Users, Clock3, Flag, Footprints, Wind } from 'lucide-react';
+import { Beach, Accessibility, LanguageCode, BeachType, CrowdLevel, WarningFlag, RecommendationConfidence, SwimmingComfort } from '../types';
 import { getBeaufortLevel } from '../utils/weatherUtils';
 import { Translation } from '../types';
 
@@ -12,8 +12,10 @@ import { TodayScoreBadge } from './TodayScoreBadge';
 import { getBeachPhotoLookup } from '../services/beachPhotos';
 import { trackEvent } from '../services/analyticsService';
 import { ExposureLevel } from '../utils/windExposure';
-import { hasDirtRoadAccess, hasTrulyEasyAccess } from '../utils/access';
+import { hasDirtRoadAccess } from '../utils/access';
 import { getSelectedDayPrefix, getSelectedDaySentencePrefix } from '../utils/dateLabels';
+import { getLocalizedCopy, languageToLocale } from '../utils/i18n';
+import { buildBeachShareUrl } from '../utils/beachUrls';
 import {
   displayBeachName,
   localizedAccessLabel,
@@ -37,6 +39,7 @@ interface BeachCardProps {
   favorites: number[];
   onToggleFavorite: (id: number) => void;
   islandName: string;
+  regionId?: string;
   showIslandName?: boolean;
   onClick?: () => void;
   todayScore?: number;
@@ -57,7 +60,404 @@ interface BeachCardProps {
   seaCalmClaimAllowed?: boolean;
   strongWindContext?: boolean;
   lessExposedToday?: boolean;
+  showTodayScoreBadge?: boolean;
 }
+
+type CardCopy = {
+  shelteredChip: (sentenceDay: string) => string;
+  shelteredChipA11y: (sentenceDay: string) => string;
+  blueFlag: string;
+  dirtRoad: string;
+  localExposureCheck: string;
+  moreOpenToWind: string;
+  exposedToWind: string;
+  favorite: string;
+  unfavorite: string;
+  share: string;
+  warnings: {
+    seaEstimate: string;
+    highWaves: string;
+    someWaves: string;
+    strongWind: string;
+    windSportSpot: string;
+    exposedToWind: (day: string) => string;
+    breezy: string;
+    difficultAccess: string;
+    boatOnly: string;
+    lowConfidence: string;
+    roughSea: string;
+    choppy: string;
+  };
+  compact: {
+    calmWaters: string;
+    goodSea: string;
+    protected: (sentenceDay: string) => string;
+    lightWind: string;
+    mildlyBreezy: string;
+    windyExposed: string;
+    partlyShelteredToday: (day: string) => string;
+    slightlyExposed: string;
+    familyFriendly: string;
+    shallowWaters: string;
+    shallowWatersCaution: string;
+    easyAccess: string;
+    facilities: string;
+    noFacilities: string;
+    naturalShade: string;
+    goodWithWind: string;
+    calmButWindier: string;
+    visitorRating: string;
+  };
+  access: {
+    asphaltRoad: string;
+    dirtRoad: string;
+    difficultDirtRoad: string;
+    difficultRoad: string;
+    pathAccess: string;
+    hardPath: string;
+    boatOnly: string;
+    moderateAccess: string;
+  };
+  amenities: Record<AmenityChip['key'], string>;
+};
+
+const cardCopy: Record<LanguageCode, CardCopy> = {
+  en: {
+    shelteredChip: (sentenceDay) => `${sentenceDay}: better sheltered`,
+    shelteredChipA11y: (sentenceDay) => `${sentenceDay}: better sheltered option`,
+    blueFlag: 'Blue Flag',
+    dirtRoad: 'Dirt road',
+    localExposureCheck: 'Check local exposure',
+    moreOpenToWind: 'More open to wind',
+    exposedToWind: 'Exposed to wind',
+    favorite: 'Add to favorites',
+    unfavorite: 'Remove from favorites',
+    share: 'Share',
+    warnings: {
+      seaEstimate: 'Sea estimate',
+      highWaves: 'High waves',
+      someWaves: 'Some waves',
+      strongWind: 'Strong wind',
+      windSportSpot: 'Wind/watersports spot',
+      exposedToWind: (day) => `Exposed to wind ${day}`,
+      breezy: 'May feel breezy',
+      difficultAccess: 'More challenging access',
+      boatOnly: 'Boat only',
+      lowConfidence: 'Local exposure unverified',
+      roughSea: 'Rough sea',
+      choppy: 'Choppy',
+    },
+    compact: {
+      calmWaters: 'Low waves',
+      goodSea: 'Good sea',
+      protected: (sentenceDay) => `${sentenceDay}: better sheltered`,
+      lightWind: 'Light wind',
+      mildlyBreezy: 'May feel breezy',
+      windyExposed: 'Windy / exposed',
+      partlyShelteredToday: (day) => `Better out of the wind ${day}`,
+      slightlyExposed: 'May feel breezy',
+      familyFriendly: 'Family',
+      shallowWaters: 'Shallow water',
+      shallowWatersCaution: 'Shallow water',
+      easyAccess: 'Easy access',
+      facilities: 'Facilities',
+      noFacilities: 'No facilities',
+      naturalShade: 'Natural shade',
+      goodWithWind: 'Good option, with a little more wind',
+      calmButWindier: 'Low waves, but a little windier',
+      visitorRating: 'Visitor rating',
+    },
+    access: {
+      asphaltRoad: 'Easy access',
+      dirtRoad: 'Dirt road',
+      difficultDirtRoad: 'Rough dirt road',
+      difficultRoad: 'Difficult road',
+      pathAccess: 'Path access',
+      hardPath: 'Hard path',
+      boatOnly: 'Boat only',
+      moderateAccess: 'Moderate access',
+    },
+    amenities: {
+      beachBar: 'Beach bar',
+      sunbeds: 'Sunbeds',
+      foodNearby: 'Taverna',
+      cafeNearby: 'Cafe',
+      parking: 'Parking',
+      organizedFacilities: 'Facilities',
+      noFacilities: 'No facilities',
+      seasonalFacilities: 'Seasonal',
+      unknownFacilities: 'Unknown',
+    },
+  },
+  gr: {
+    shelteredChip: () => 'Υπήνεμη',
+    shelteredChipA11y: (sentenceDay) => `${sentenceDay}: πιο υπήνεμη επιλογή`,
+    blueFlag: 'Γαλάζια Σημαία',
+    dirtRoad: 'Χωματόδρομος',
+    localExposureCheck: 'Έλεγχος τοπικής έκθεσης',
+    moreOpenToWind: 'Πιο ανοιχτή στον άνεμο',
+    exposedToWind: 'Εκτεθειμένη στον άνεμο',
+    favorite: 'Προσθήκη στα αγαπημένα',
+    unfavorite: 'Αφαίρεση από τα αγαπημένα',
+    share: 'Κοινοποίηση',
+    warnings: {
+      seaEstimate: 'Εκτίμηση θάλασσας',
+      highWaves: 'Υψηλό κύμα',
+      someWaves: 'Λίγο κύμα',
+      strongWind: 'Δυνατός αέρας',
+      windSportSpot: 'Παραλία για wind sports',
+      exposedToWind: (day) => `Εκτεθειμένη στον άνεμο ${day}`,
+      breezy: 'Μπορεί να έχει αέρα',
+      difficultAccess: 'Πιο δύσκολη πρόσβαση',
+      boatOnly: 'Μόνο με σκάφος',
+      lowConfidence: 'Θέλει επιβεβαίωση τοπικά',
+      roughSea: 'Έντονος κυματισμός',
+      choppy: 'Κυματισμός',
+    },
+    compact: {
+      calmWaters: 'Χαμηλό κύμα',
+      goodSea: 'Καλή θάλασσα',
+      protected: () => 'Υπήνεμη',
+      lightWind: 'Ήπιος άνεμος',
+      mildlyBreezy: 'Μπορεί να έχει αέρα',
+      windyExposed: 'Εκτεθειμένη στον άνεμο',
+      partlyShelteredToday: () => 'Υπήνεμη',
+      slightlyExposed: 'Μπορεί να έχει αέρα',
+      familyFriendly: 'Για παιδιά',
+      shallowWaters: 'Ρηχά νερά',
+      shallowWatersCaution: 'Ρηχά νερά',
+      easyAccess: 'Εύκολα',
+      facilities: 'Παροχές',
+      noFacilities: 'Χωρίς παροχές',
+      naturalShade: 'Φυσική σκιά',
+      goodWithWind: 'Καλή επιλογή, με λίγο περισσότερο αέρα',
+      calmButWindier: 'Χαμηλό κύμα, αλλά περισσότερος αέρας',
+      visitorRating: 'Βαθμολογία επισκεπτών',
+    },
+    access: {
+      asphaltRoad: 'Εύκολα',
+      dirtRoad: 'Χωματόδρομος',
+      difficultDirtRoad: 'Κακός χωματόδρομος',
+      difficultRoad: 'Δύσκολα',
+      pathAccess: 'Μονοπάτι',
+      hardPath: 'Δύσκολο μονοπάτι',
+      boatOnly: 'Με σκάφος',
+      moderateAccess: 'Μέτρια',
+    },
+    amenities: {
+      beachBar: 'Beach bar',
+      sunbeds: 'Ξαπλώστρες',
+      foodNearby: 'Ταβέρνα',
+      cafeNearby: 'Καφέ',
+      parking: 'Parking',
+      organizedFacilities: 'Παροχές',
+      noFacilities: 'Χωρίς παροχές',
+      seasonalFacilities: 'Εποχικές παροχές',
+      unknownFacilities: 'Άγνωστες παροχές',
+    },
+  },
+  fr: {
+    shelteredChip: (sentenceDay) => `${sentenceDay}: plus abritée`,
+    shelteredChipA11y: (sentenceDay) => `${sentenceDay}: option plus abritée`,
+    blueFlag: 'Pavillon Bleu',
+    dirtRoad: 'Piste',
+    localExposureCheck: "Exposition locale à vérifier",
+    moreOpenToWind: 'Plus ouverte au vent',
+    exposedToWind: 'Exposée au vent',
+    favorite: 'Ajouter aux favoris',
+    unfavorite: 'Retirer des favoris',
+    share: 'Partager',
+    warnings: {
+      seaEstimate: 'Estimation de mer',
+      highWaves: 'Vagues hautes',
+      someWaves: 'Un peu de clapot',
+      strongWind: 'Vent fort',
+      windSportSpot: 'Spot de sports nautiques',
+      exposedToWind: (day) => `Exposée au vent ${day}`,
+      breezy: 'Peut être venteuse',
+      difficultAccess: 'Accès plus difficile',
+      boatOnly: 'Bateau uniquement',
+      lowConfidence: 'Exposition locale non vérifiée',
+      roughSea: 'Mer agitée',
+      choppy: 'Clapot',
+    },
+    compact: {
+      calmWaters: 'Vagues basses',
+      goodSea: 'Mer correcte',
+      protected: (sentenceDay) => `${sentenceDay}: plus abritée`,
+      lightWind: 'Vent léger',
+      mildlyBreezy: 'Peut être venteuse',
+      windyExposed: 'Venteuse / exposée',
+      partlyShelteredToday: (day) => `Plus à l'abri du vent ${day}`,
+      slightlyExposed: 'Peut être venteuse',
+      familyFriendly: 'Famille',
+      shallowWaters: 'Eau peu profonde',
+      shallowWatersCaution: 'Eau peu profonde',
+      easyAccess: 'Accès facile',
+      facilities: 'Services',
+      noFacilities: 'Sans services',
+      naturalShade: 'Ombre naturelle',
+      goodWithWind: 'Bonne option, un peu plus de vent',
+      calmButWindier: 'Vagues basses, mais un peu plus de vent',
+      visitorRating: 'Note visiteurs',
+    },
+    access: {
+      asphaltRoad: 'Accès facile',
+      dirtRoad: 'Piste',
+      difficultDirtRoad: 'Piste difficile',
+      difficultRoad: 'Route difficile',
+      pathAccess: 'Sentier',
+      hardPath: 'Sentier difficile',
+      boatOnly: 'Bateau uniquement',
+      moderateAccess: 'Accès moyen',
+    },
+    amenities: {
+      beachBar: 'Bar de plage',
+      sunbeds: 'Transats',
+      foodNearby: 'Taverne',
+      cafeNearby: 'Café',
+      parking: 'Parking',
+      organizedFacilities: 'Services',
+      noFacilities: 'Sans services',
+      seasonalFacilities: 'Saisonnier',
+      unknownFacilities: 'Inconnu',
+    },
+  },
+  de: {
+    shelteredChip: (sentenceDay) => `${sentenceDay}: geschützter`,
+    shelteredChipA11y: (sentenceDay) => `${sentenceDay}: windgeschütztere Option`,
+    blueFlag: 'Blaue Flagge',
+    dirtRoad: 'Schotterweg',
+    localExposureCheck: 'Lokale Exposition prüfen',
+    moreOpenToWind: 'Offener zum Wind',
+    exposedToWind: 'Windexponiert',
+    favorite: 'Zu Favoriten hinzufügen',
+    unfavorite: 'Aus Favoriten entfernen',
+    share: 'Teilen',
+    warnings: {
+      seaEstimate: 'Meeres-Schätzung',
+      highWaves: 'Hohe Wellen',
+      someWaves: 'Etwas Welle',
+      strongWind: 'Starker Wind',
+      windSportSpot: 'Wind-/Wassersportspot',
+      exposedToWind: (day) => `Windexponiert ${day}`,
+      breezy: 'Kann windig wirken',
+      difficultAccess: 'Schwieriger Zugang',
+      boatOnly: 'Nur per Boot',
+      lowConfidence: 'Lokale Exposition nicht verifiziert',
+      roughSea: 'Raue See',
+      choppy: 'Kabbelig',
+    },
+    compact: {
+      calmWaters: 'Niedrige Wellen',
+      goodSea: 'Gute See',
+      protected: (sentenceDay) => `${sentenceDay}: geschützter`,
+      lightWind: 'Leichter Wind',
+      mildlyBreezy: 'Kann windig wirken',
+      windyExposed: 'Windig / exponiert',
+      partlyShelteredToday: (day) => `Mehr aus dem Wind ${day}`,
+      slightlyExposed: 'Kann windig wirken',
+      familyFriendly: 'Familie',
+      shallowWaters: 'Flaches Wasser',
+      shallowWatersCaution: 'Flaches Wasser',
+      easyAccess: 'Einfach',
+      facilities: 'Ausstattung',
+      noFacilities: 'Keine Ausstattung',
+      naturalShade: 'Naturschatten',
+      goodWithWind: 'Gute Option, etwas windiger',
+      calmButWindier: 'Niedrige Wellen, aber etwas windiger',
+      visitorRating: 'Besucherwertung',
+    },
+    access: {
+      asphaltRoad: 'Einfach',
+      dirtRoad: 'Schotterweg',
+      difficultDirtRoad: 'Schwieriger Schotterweg',
+      difficultRoad: 'Schwierige Straße',
+      pathAccess: 'Fußweg',
+      hardPath: 'Schwieriger Fußweg',
+      boatOnly: 'Nur Boot',
+      moderateAccess: 'Mittlerer Zugang',
+    },
+    amenities: {
+      beachBar: 'Beach Bar',
+      sunbeds: 'Liegen',
+      foodNearby: 'Taverne',
+      cafeNearby: 'Café',
+      parking: 'Parken',
+      organizedFacilities: 'Ausstattung',
+      noFacilities: 'Keine Ausstattung',
+      seasonalFacilities: 'Saisonal',
+      unknownFacilities: 'Unbekannt',
+    },
+  },
+  it: {
+    shelteredChip: (sentenceDay) => `${sentenceDay}: più riparata`,
+    shelteredChipA11y: (sentenceDay) => `${sentenceDay}: opzione più riparata`,
+    blueFlag: 'Bandiera Blu',
+    dirtRoad: 'Strada sterrata',
+    localExposureCheck: 'Verifica esposizione locale',
+    moreOpenToWind: 'Più aperta al vento',
+    exposedToWind: 'Esposta al vento',
+    favorite: 'Aggiungi ai preferiti',
+    unfavorite: 'Rimuovi dai preferiti',
+    share: 'Condividi',
+    warnings: {
+      seaEstimate: 'Stima mare',
+      highWaves: 'Onde alte',
+      someWaves: 'Un po’ di onda',
+      strongWind: 'Vento forte',
+      windSportSpot: 'Spot wind/watersport',
+      exposedToWind: (day) => `Esposta al vento ${day}`,
+      breezy: 'Può essere ventilata',
+      difficultAccess: 'Accesso più difficile',
+      boatOnly: 'Solo in barca',
+      lowConfidence: 'Esposizione locale non verificata',
+      roughSea: 'Mare mosso',
+      choppy: 'Mare increspato',
+    },
+    compact: {
+      calmWaters: 'Onde basse',
+      goodSea: 'Mare buono',
+      protected: (sentenceDay) => `${sentenceDay}: più riparata`,
+      lightWind: 'Vento leggero',
+      mildlyBreezy: 'Può essere ventilata',
+      windyExposed: 'Ventosa / esposta',
+      partlyShelteredToday: (day) => `Più riparata dal vento ${day}`,
+      slightlyExposed: 'Può essere ventilata',
+      familyFriendly: 'Famiglia',
+      shallowWaters: 'Acqua bassa',
+      shallowWatersCaution: 'Acqua bassa',
+      easyAccess: 'Facile',
+      facilities: 'Servizi',
+      noFacilities: 'Senza servizi',
+      naturalShade: 'Ombra naturale',
+      goodWithWind: 'Buona opzione, un po’ più ventosa',
+      calmButWindier: 'Onde basse, ma un po’ più ventosa',
+      visitorRating: 'Voto visitatori',
+    },
+    access: {
+      asphaltRoad: 'Facile',
+      dirtRoad: 'Sterrato',
+      difficultDirtRoad: 'Sterrato difficile',
+      difficultRoad: 'Strada difficile',
+      pathAccess: 'Sentiero',
+      hardPath: 'Sentiero difficile',
+      boatOnly: 'Solo barca',
+      moderateAccess: 'Accesso medio',
+    },
+    amenities: {
+      beachBar: 'Beach bar',
+      sunbeds: 'Lettini',
+      foodNearby: 'Taverna',
+      cafeNearby: 'Caffè',
+      parking: 'Parcheggio',
+      organizedFacilities: 'Servizi',
+      noFacilities: 'Senza servizi',
+      seasonalFacilities: 'Stagionale',
+      unknownFacilities: 'Sconosciuto',
+    },
+  },
+};
 
 interface StarRatingProps {
   rating: number;
@@ -143,7 +543,7 @@ export const AccessibilityInfo: React.FC<{ accessibility: Accessibility; t: Tran
     switch (accessibility) {
       case Accessibility.EASY:
         return {
-          icon: <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 mr-2 text-green-500" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true"><path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" /></svg>,
+          icon: <Footprints className="h-5 w-5 mr-2 text-green-500" aria-hidden="true" />,
           text: t.accessibility[Accessibility.EASY],
           className: 'text-green-700 bg-green-100/80',
         };
@@ -169,53 +569,6 @@ export const AccessibilityInfo: React.FC<{ accessibility: Accessibility; t: Tran
   };
 
   const details = getAccessibilityDetails();
-  if (!details) return null;
-
-  return (
-    <div className={`inline-flex items-center text-sm font-medium px-3 py-1 rounded-full ${details.className}`}>
-      {details.icon}
-      <span>{details.text}</span>
-    </div>
-  );
-};
-
-const AccessNotes: React.FC<{ notes?: Beach['accessNotes'], language: LanguageCode, t: Translation }> = ({ notes, language, t }) => {
-  if (!notes || !notes[language]) return null;
-
-  return (
-    <div className="mt-3 p-3 bg-amber-50 border-l-4 border-amber-400 text-amber-800 rounded-r-lg">
-      <div className="flex items-start">
-        <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 mr-2 mt-0.5 flex-shrink-0 text-amber-500" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
-          <path fillRule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clipRule="evenodd" />
-        </svg>
-        <div>
-          <h5 className="font-bold text-sm">{t.accessNotesTitle}</h5>
-          <p className="text-sm">{notes[language]}</p>
-        </div>
-      </div>
-    </div>
-  );
-};
-
-const WaveInfo: React.FC<{ condition: WaveCondition; t: Translation }> = ({ condition, t }) => {
-  const details = {
-    calm: {
-      icon: <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="1.5" aria-hidden="true"><path strokeLinecap="round" strokeLinejoin="round" d="M4 12c2-1 4-1 6 0s4 1 6 0 4-1 6 0" /></svg>,
-      text: t.waveConditions.calm,
-      className: 'text-cyan-700 bg-cyan-100/80',
-    },
-    moderate: {
-      icon: <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="1.5" aria-hidden="true"><path strokeLinecap="round" strokeLinejoin="round" d="M4 12c2-2 4-2 6 0s4 2 6 0 4-2 6 0" /></svg>,
-      text: t.waveConditions.moderate,
-      className: 'text-amber-700 bg-amber-100/80',
-    },
-    rough: {
-      icon: <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="1.5" aria-hidden="true"><path strokeLinecap="round" strokeLinejoin="round" d="M4 12c2-3 4-3 6 0s4 3 6 0 4-3 6 0" /></svg>,
-      text: t.waveConditions.rough,
-      className: 'text-red-700 bg-red-100/80',
-    },
-  }[condition];
-
   if (!details) return null;
 
   return (
@@ -299,8 +652,9 @@ const AmenityTags: React.FC<{ beach: Beach; language: LanguageCode }> = ({ beach
 
 const ProtectedBeachMarker: React.FC<{ language: LanguageCode; selectedDate?: Date }> = ({ language, selectedDate }) => {
   const day = getSelectedDaySentencePrefix(selectedDate, new Date(), language);
-  const label = language === 'gr' ? `${day}: πιο υπήνεμη` : `${day}: better sheltered`;
-  const accessibleLabel = language === 'gr' ? `${day}: πιο υπήνεμη επιλογή` : `${day}: better sheltered option`;
+  const copy = getLocalizedCopy(language, cardCopy);
+  const label = copy.shelteredChip(day);
+  const accessibleLabel = copy.shelteredChipA11y(day);
 
   return (
     <span
@@ -315,7 +669,7 @@ const ProtectedBeachMarker: React.FC<{ language: LanguageCode; selectedDate?: Da
 };
 
 const BlueFlagBadge: React.FC<{ language: LanguageCode; compact?: boolean }> = ({ language, compact = false }) => {
-  const label = language === 'gr' ? 'Γαλάζια Σημαία' : 'Blue Flag';
+  const label = getLocalizedCopy(language, cardCopy).blueFlag;
 
   return (
     <span
@@ -398,13 +752,14 @@ const MetadataAccessInfo: React.FC<{ metadata: NonNullable<Beach['metadata']>; l
   const tone = isDirtRoad
     ? metadataAccessTone.passable_dirt_road
     : metadataAccessTone[metadata.access.type] || metadataAccessTone.asphalt_road;
+  const copy = getLocalizedCopy(language, cardCopy);
   const label = isDirtRoad
-    ? (language === 'gr' ? 'Χωματόδρομος' : 'Dirt road')
+    ? copy.dirtRoad
     : localizedAccessLabel(metadata.access.type, metadata.access.label, language);
 
   return (
     <div className={`inline-flex items-center text-sm font-medium px-3 py-1 rounded-full ${tone.className}`} title={metadata.access.notes}>
-      <MapPin className={`h-4 w-4 mr-2 ${tone.iconClassName}`} />
+      <Footprints className={`h-4 w-4 mr-2 ${tone.iconClassName}`} />
       <span>{label}</span>
     </div>
   );
@@ -450,52 +805,40 @@ const MetadataTags: React.FC<{ beach: Beach; language: LanguageCode }> = ({ beac
   );
 };
 
-const shelteredGradients: Record<BeachType, string> = {
-  sandy: 'from-sky-200 via-cyan-100 to-emerald-100',
-  pebbles: 'from-sky-300 via-cyan-200 to-teal-100',
-  'sandy-pebbles': 'from-sky-200 via-cyan-100 to-teal-100',
-  rocky: 'from-sky-300 via-slate-200 to-cyan-200',
-};
-const exposedGradients: Record<BeachType, string> = {
-  sandy: 'from-amber-200 via-orange-100 to-rose-100',
-  pebbles: 'from-slate-300 via-amber-100 to-orange-100',
-  'sandy-pebbles': 'from-amber-200 via-orange-100 to-slate-200',
-  rocky: 'from-stone-300 via-amber-100 to-orange-100',
-};
-
 const warningLabel = (warning: WarningFlag, language: LanguageCode, selectedDate?: Date): string => {
-  const isGreek = language === 'gr';
+  const copy = getLocalizedCopy(language, cardCopy).warnings;
   const day = getSelectedDayPrefix(selectedDate, new Date(), language);
   switch (warning.type) {
     case 'missing_data':
-      return isGreek ? 'Εκτίμηση θάλασσας' : 'Sea estimate';
+      return copy.seaEstimate;
     case 'rough_sea':
       return warning.severity === 'critical'
-        ? (isGreek ? 'Υψηλό κύμα' : 'High waves')
-        : (isGreek ? 'Λίγο κύμα' : 'Some waves');
+        ? copy.highWaves
+        : copy.someWaves;
     case 'strong_wind':
-      return isGreek ? 'Δυνατός αέρας' : 'Strong wind';
+      return copy.strongWind;
     case 'wind_sport_spot':
-      return isGreek ? 'Παραλία για wind sports' : 'Wind/watersports spot';
+      return copy.windSportSpot;
     case 'exposed_to_wind':
       return warning.severity === 'warning'
-        ? (isGreek ? `Εκτεθειμένη στον άνεμο ${day}` : `Exposed to wind ${day}`)
-        : (isGreek ? 'Μπορεί να έχει αέρα' : 'May feel breezy');
+        ? copy.exposedToWind(day)
+        : copy.breezy;
     case 'difficult_access':
-      return isGreek ? 'Πιο δύσκολη πρόσβαση' : 'More challenging access';
+      return copy.difficultAccess;
     case 'boat_only':
-      return isGreek ? 'Μόνο με σκάφος' : 'Boat only';
+      return copy.boatOnly;
     case 'low_confidence':
-      return isGreek ? 'Θέλει επιβεβαίωση τοπικά' : 'Local exposure unverified';
+      return copy.lowConfidence;
     default:
       return warning.message;
   }
 };
 
 const waveWarningLabel = (warning: WarningFlag, waveHeightM: number | undefined, language: LanguageCode, selectedDate?: Date): string => {
+  const copy = getLocalizedCopy(language, cardCopy).warnings;
   if (typeof waveHeightM === 'number' && Number.isFinite(waveHeightM)) {
-    if (waveHeightM >= 1.2) return language === 'gr' ? 'Έντονος κυματισμός' : 'Rough sea';
-    if (waveHeightM >= 0.8) return language === 'gr' ? 'Κυματισμός' : 'Choppy';
+    if (waveHeightM >= 1.2) return copy.roughSea;
+    if (waveHeightM >= 0.8) return copy.choppy;
   }
 
   return warningLabel(warning, language, selectedDate);
@@ -510,26 +853,27 @@ const warningToneClass = (warning: WarningFlag): string => {
 const compactLabels = (language: LanguageCode, selectedDate?: Date) => {
   const day = getSelectedDayPrefix(selectedDate, new Date(), language);
   const sentenceDay = getSelectedDaySentencePrefix(selectedDate, new Date(), language);
+  const copy = getLocalizedCopy(language, cardCopy).compact;
 
   return ({
-  calmWaters: language === 'gr' ? 'Χαμηλό κύμα' : 'Low waves',
-  goodSea: language === 'gr' ? 'Καλή θάλασσα' : 'Good sea',
-  protected: language === 'gr' ? `${sentenceDay}: πιο υπήνεμη` : `${sentenceDay}: better sheltered`,
-  lightWind: language === 'gr' ? 'Ήπιος άνεμος' : 'Light wind',
-  mildlyBreezy: language === 'gr' ? 'Μπορεί να έχει αέρα' : 'May feel breezy',
-  windyExposed: language === 'gr' ? 'Εκτεθειμένη στον άνεμο' : 'Windy / exposed',
-  partlyShelteredToday: language === 'gr' ? `Πιο υπήνεμη ${day}` : `Better out of the wind ${day}`,
-  slightlyExposed: language === 'gr' ? 'Μπορεί να έχει αέρα' : 'May feel breezy',
-  familyFriendly: language === 'gr' ? 'Για παιδιά' : 'Family',
-  shallowWaters: language === 'gr' ? 'Ρηχά νερά' : 'Shallow water',
-  shallowWatersCaution: language === 'gr' ? 'Ρηχά νερά' : 'Shallow water',
-  easyAccess: language === 'gr' ? 'Εύκολη πρόσβαση' : 'Easy access',
-  facilities: language === 'gr' ? 'Παροχές' : 'Facilities',
-  noFacilities: language === 'gr' ? 'Χωρίς παροχές' : 'No facilities',
-  naturalShade: language === 'gr' ? 'Φυσική σκιά' : 'Natural shade',
-  goodWithWind: language === 'gr' ? 'Καλή επιλογή, με λίγο περισσότερο αέρα' : 'Good option, with a little more wind',
-  calmButWindier: language === 'gr' ? 'Χαμηλό κύμα, αλλά περισσότερος αέρας' : 'Low waves, but a little windier',
-  visitorRating: language === 'gr' ? 'Βαθμολογία επισκεπτών' : 'Visitor rating',
+  calmWaters: copy.calmWaters,
+  goodSea: copy.goodSea,
+  protected: copy.protected(sentenceDay),
+  lightWind: copy.lightWind,
+  mildlyBreezy: copy.mildlyBreezy,
+  windyExposed: copy.windyExposed,
+  partlyShelteredToday: copy.partlyShelteredToday(day),
+  slightlyExposed: copy.slightlyExposed,
+  familyFriendly: copy.familyFriendly,
+  shallowWaters: copy.shallowWaters,
+  shallowWatersCaution: copy.shallowWatersCaution,
+  easyAccess: copy.easyAccess,
+  facilities: copy.facilities,
+  noFacilities: copy.noFacilities,
+  naturalShade: copy.naturalShade,
+  goodWithWind: copy.goodWithWind,
+  calmButWindier: copy.calmButWindier,
+  visitorRating: copy.visitorRating,
   });
 };
 
@@ -540,68 +884,31 @@ const compactAccessLabel = (
   isDirtRoad: boolean,
   fallback: string
 ): string => {
+  const copy = getLocalizedCopy(language, cardCopy).access;
   if (isDirtRoad) {
-    return language === 'gr' ? 'Χωματόδρομος' : 'Dirt road';
-  }
-
-  if (language === 'gr') {
-    const metadataLabels: Record<string, string> = {
-      asphalt_road: 'Εύκολη πρόσβαση',
-      passable_dirt_road: 'Χωματόδρομος',
-      '4x4_only': 'Δύσκολη πρόσβαση',
-      hiking_path_easy: 'Μονοπάτι',
-      hiking_path_difficult: 'Δύσκολο μονοπάτι',
-      boat_only: 'Με σκάφος',
-    };
-    const accessibilityLabels: Record<Accessibility, string> = {
-      [Accessibility.EASY]: 'Εύκολη πρόσβαση',
-      [Accessibility.MODERATE]: 'Μέτρια πρόσβαση',
-      [Accessibility.DIFFICULT]: 'Δύσκολη πρόσβαση',
-      [Accessibility.BOAT_ONLY]: 'Με σκάφος',
-    };
-    return (accessType && metadataLabels[accessType]) || accessibilityLabels[accessibility] || fallback;
+    return copy.dirtRoad;
   }
 
   const metadataLabels: Record<string, string> = {
-    asphalt_road: 'Easy access',
-    passable_dirt_road: 'Dirt road',
-    '4x4_only': 'Difficult road',
-    hiking_path_easy: 'Path access',
-    hiking_path_difficult: 'Hard path',
-    boat_only: 'Boat only',
+    asphalt_road: copy.asphaltRoad,
+    passable_dirt_road: copy.dirtRoad,
+    difficult_dirt_road: copy.difficultDirtRoad,
+    '4x4_only': copy.difficultRoad,
+    hiking_path_easy: copy.pathAccess,
+    hiking_path_difficult: copy.hardPath,
+    boat_only: copy.boatOnly,
   };
-  return (accessType && metadataLabels[accessType]) || fallback;
+  const accessibilityLabels: Record<Accessibility, string> = {
+    [Accessibility.EASY]: copy.asphaltRoad,
+    [Accessibility.MODERATE]: copy.moderateAccess,
+    [Accessibility.DIFFICULT]: copy.difficultRoad,
+    [Accessibility.BOAT_ONLY]: copy.boatOnly,
+  };
+  return (accessType && metadataLabels[accessType]) || accessibilityLabels[accessibility] || fallback;
 };
 
 const compactAmenityLabel = (chip: AmenityChip, language: LanguageCode): string => {
-  if (chip.key === 'foodNearby') return language === 'gr' ? 'Ταβέρνα' : 'Taverna';
-
-  if (language === 'gr') {
-    const labels: Record<AmenityChip['key'], string> = {
-      beachBar: 'Beach bar',
-      sunbeds: 'Ξαπλώστρες',
-      foodNearby: 'Ταβέρνα',
-      cafeNearby: 'Καφέ',
-      parking: 'Parking',
-      organizedFacilities: 'Παροχές',
-      noFacilities: 'Χωρίς παροχές',
-      seasonalFacilities: 'Εποχικές παροχές',
-      unknownFacilities: 'Άγνωστες παροχές',
-    };
-    return labels[chip.key] || chip.label;
-  }
-
-  const labels: Record<AmenityChip['key'], string> = {
-    beachBar: 'Beach bar',
-    sunbeds: 'Sunbeds',
-    foodNearby: 'Taverna',
-    cafeNearby: 'Cafe',
-    parking: 'Parking',
-    organizedFacilities: 'Facilities',
-    noFacilities: 'No facilities',
-    seasonalFacilities: 'Seasonal',
-    unknownFacilities: 'Unknown',
-  };
+  const labels = getLocalizedCopy(language, cardCopy).amenities;
   return labels[chip.key] || chip.label;
 };
 
@@ -610,13 +917,13 @@ export const BeachCard: React.FC<BeachCardProps> = ({
   isExposed = false,
   language,
   t,
-  isCalm = false,
   windSpeed,
   waveHeightM,
   temperature,
   favorites,
   onToggleFavorite,
   islandName,
+  regionId,
   showIslandName = true,
   onClick,
   todayScore,
@@ -625,7 +932,6 @@ export const BeachCard: React.FC<BeachCardProps> = ({
   recommendationRank,
   recommendationLabel,
   bestSwimWindow,
-  bestBeachTime,
   topPickTimeLabel,
   selectedDate,
   crowdLevel,
@@ -636,29 +942,35 @@ export const BeachCard: React.FC<BeachCardProps> = ({
   seaCalmClaimAllowed = false,
   strongWindContext = false,
   lessExposedToday,
+  showTodayScoreBadge = true,
 }) => {
-  const [animateHeart, setAnimateHeart] = useState(false);
   const [photoIndex, setPhotoIndex] = useState(0);
   const isCompact = density === 'compact';
-  const { name, rating, description, amenities, accessibility, distance, beachType, characteristics, coordinates, metadata } = beach;
+  const { name, rating, amenities, accessibility, distance, beachType, characteristics, metadata } = beach;
   const beachDisplayName = displayBeachName(name, language);
   const hasBlueFlag2026 = beach.blueFlag2026?.awarded === true || metadata?.blueFlag2026?.awarded === true;
-  const isTrulyExposedToday = exposureLevel ? exposureLevel === 'exposed' : isExposed;
   const isPartlyShelteredToday = exposureLevel === 'partial';
   const windBeaufort = getBeaufortLevel(windSpeed * 3.6);
   const isFavorite = favorites.includes(beach.id);
   const labels = compactLabels(language, selectedDate);
+  const localizedCardCopy = getLocalizedCopy(language, cardCopy);
+  const visitTimeLabel = getLocalizedCopy(language, {
+    en: 'Best time',
+    gr: 'Ώρα επίσκεψης',
+    fr: 'Meilleur moment',
+    de: 'Beste Zeit',
+    it: 'Ora migliore',
+  });
   const noIdealSwimmingWindow = swimmingComfort === 'avoid_swimming' || Boolean(
     warnings.some(warning => warning.type === 'rough_sea' && warning.severity === 'critical') ||
     (typeof waveHeightM === 'number' && Number.isFinite(waveHeightM) && waveHeightM >= 1.2)
   );
-  const favoriteLabel = language === 'gr' ? 'Προσθήκη στα αγαπημένα' : 'Add to favorites';
-  const unfavoriteLabel = language === 'gr' ? 'Αφαίρεση από τα αγαπημένα' : 'Remove from favorites';
-  const shareLabel = language === 'gr' ? 'Κοινοποίηση' : 'Share';
+  const favoriteLabel = localizedCardCopy.favorite;
+  const unfavoriteLabel = localizedCardCopy.unfavorite;
+  const shareLabel = localizedCardCopy.share;
 
   const handleFavoriteClick = (e: React.MouseEvent) => {
     e.stopPropagation();
-    if (!isFavorite) setAnimateHeart(true);
     onToggleFavorite(beach.id);
   };
 
@@ -672,11 +984,13 @@ export const BeachCard: React.FC<BeachCardProps> = ({
 
   const handleShare = async (e: React.MouseEvent) => {
     e.stopPropagation();
-    const shareUrl = window.location.origin + window.location.pathname;
+    const shareUrl = regionId
+      ? buildBeachShareUrl(window.location.origin, regionId, beach)
+      : window.location.origin + window.location.pathname;
     if (navigator.share) {
       try {
         trackEvent('share_clicked', beach.id, {
-          locale: language === 'gr' ? 'el' : 'en',
+          locale: languageToLocale(language),
           region: islandName,
           beach_name: name.en,
           source: 'beach_card',
@@ -694,7 +1008,7 @@ export const BeachCard: React.FC<BeachCardProps> = ({
   const handleNavigationClick = (e: React.MouseEvent) => {
     e.stopPropagation();
     trackEvent('navigation_clicked', beach.id, {
-      locale: language === 'gr' ? 'el' : 'en',
+      locale: languageToLocale(language),
       region: islandName,
       beach_name: name.en,
       source: 'beach_card',
@@ -712,13 +1026,11 @@ export const BeachCard: React.FC<BeachCardProps> = ({
   const seaLabel = roughSeaWarning ? waveWarningLabel(roughSeaWarning, waveHeightM, language, selectedDate) : (seaCalmClaimAllowed ? labels.calmWaters : labels.goodSea);
   const isFiveBeaufort = windBeaufort === 5;
   const isLessExposedToday = lessExposedToday ?? (isProtectedToday || isPartlyShelteredToday);
-  const strongOpenBeachLabel = language === 'gr' ? 'Εκτεθειμένη στον άνεμο' : 'Exposed to wind';
+  const strongOpenBeachLabel = localizedCardCopy.exposedToWind;
   const displayStrongOpenBeachLabel = strongOpenBeachLabel;
   const displayOpenBeachLabel = windBeaufort >= 4 || cautionWaterConditions
     ? displayStrongOpenBeachLabel
-    : language === 'gr'
-      ? 'Πιο ανοιχτή στον άνεμο'
-      : 'More open to wind';
+    : localizedCardCopy.moreOpenToWind;
   const protectionLabel = isProtectedToday
     ? labels.protected
     : strongWindContext && isLessExposedToday && isPartlyShelteredToday
@@ -732,15 +1044,24 @@ export const BeachCard: React.FC<BeachCardProps> = ({
           ? labels.partlyShelteredToday
           : labels.windyExposed
         : labels.mildlyBreezy;
+  const isLightWindConditionChip = windBeaufort < 4 && protectionLabel === labels.lightWind;
+  const isExposedConditionChip = !isLightWindConditionChip && !isProtectedToday && (
+    exposureLevel === 'exposed' ||
+    protectionLabel === displayOpenBeachLabel ||
+    protectionLabel === labels.windyExposed
+  );
   const hideDuplicateShelterChip = isFiveBeaufort && isLessExposedToday && isPartlyShelteredToday && todayScore !== undefined;
   const hideMildWindChip = todayScore !== undefined && !strongWindContext && !isProtectedToday && !roughSeaWarning && windBeaufort < 4;
   const hideConditionChip = hideDuplicateShelterChip || hideMildWindChip;
-  const protectionChipTone = isProtectedToday || (strongWindContext && isLessExposedToday)
-    ? 'border-emerald-200/80 bg-emerald-50/72 text-emerald-700 dark:border-emerald-900/50 dark:bg-emerald-950/30 dark:text-emerald-300'
-    : roughSeaWarning
+  const protectionChipTone = isLightWindConditionChip
+    ? 'border-cyan-200/80 bg-cyan-50/70 text-cyan-700 dark:border-cyan-900/50 dark:bg-cyan-950/30 dark:text-cyan-300'
+    : isExposedConditionChip
+    ? 'border-rose-200/90 bg-rose-50/78 text-rose-700 dark:border-rose-900/50 dark:bg-rose-950/30 dark:text-rose-300'
+    : isProtectedToday || (strongWindContext && isLessExposedToday)
+      ? 'border-emerald-200/80 bg-emerald-50/72 text-emerald-700 dark:border-emerald-900/50 dark:bg-emerald-950/30 dark:text-emerald-300'
+      : roughSeaWarning
       ? warningToneClass(roughSeaWarning)
       : 'border-cyan-200/80 bg-cyan-50/70 text-cyan-700 dark:border-cyan-900/50 dark:bg-cyan-950/30 dark:text-cyan-300';
-  const isEasyAccess = hasTrulyEasyAccess(beach);
   const hasNaturalShade = Boolean(metadata?.shade ?? amenities.naturalShade);
   const hasShallowWater = Boolean(metadata?.waterDepth?.type === 'shallow' || characteristics.shallowWaters);
   const beachTypeFeatureIcons: Record<BeachType, React.ReactNode> = {
@@ -827,6 +1148,7 @@ export const BeachCard: React.FC<BeachCardProps> = ({
             )}
           </div>
 
+          {showTodayScoreBadge && (
           <div className={`grid grid-cols-1 ${isCompact ? 'gap-2 lg:gap-1.5' : 'gap-2'}`}>
             {todayScore !== undefined ? (
               <TodayScoreBadge
@@ -845,22 +1167,44 @@ export const BeachCard: React.FC<BeachCardProps> = ({
                 <span>{rating.toFixed(1)}</span>
               </div>
             )}
-            {topPickTimeLabel && (
-              <div className="inline-flex min-h-8 w-full min-w-0 items-center justify-center gap-1.5 rounded-full border border-emerald-100 bg-emerald-50/78 px-3 py-1 text-xs font-bold leading-tight text-emerald-700 dark:border-emerald-900/45 dark:bg-emerald-950/25 dark:text-emerald-300">
-                <Clock3 className="h-3.5 w-3.5 shrink-0" aria-hidden="true" />
-                <span className="truncate whitespace-nowrap">{topPickTimeLabel}</span>
-              </div>
-            )}
           </div>
+          )}
+
+          {topPickTimeLabel && (
+            <div
+              className="flex min-h-12 w-full min-w-0 items-center gap-2.5 rounded-xl border border-cyan-200/80 bg-cyan-50/85 px-3 py-2 text-left shadow-sm shadow-sky-900/5 dark:border-cyan-900/45 dark:bg-cyan-950/25"
+              aria-label={`${visitTimeLabel}: ${topPickTimeLabel}`}
+            >
+              <span className="grid h-8 w-8 shrink-0 place-items-center rounded-lg bg-white/85 text-cyan-700 shadow-sm ring-1 ring-cyan-100/70 dark:bg-slate-900 dark:text-cyan-300 dark:ring-cyan-900/45">
+                <Clock3 className="h-4 w-4" aria-hidden="true" />
+              </span>
+              <span className="min-w-0">
+                <span className="block text-[0.68rem] font-bold leading-tight text-cyan-700/80 dark:text-cyan-300/80">
+                  {visitTimeLabel}
+                </span>
+                <span className="block truncate text-sm font-extrabold leading-tight text-slate-950 dark:text-white">
+                  {topPickTimeLabel}
+                </span>
+              </span>
+            </div>
+          )}
 
           <div className="grid grid-cols-2 gap-1.5">
             <span className={`${compactChipBase} ${hideConditionChip ? 'col-span-2' : ''} border-slate-200/70 bg-white/58 text-slate-600 dark:border-slate-800 dark:bg-slate-900 dark:text-slate-200`}>
-              <MapPin className="h-3.5 w-3.5 shrink-0" />
+              <Footprints className="h-3.5 w-3.5 shrink-0" />
               <span className="truncate whitespace-nowrap">{accessLabel}</span>
             </span>
             {!hideConditionChip && (
               <span className={`${compactChipBase} ${protectionChipTone}`}>
-                {isProtectedToday ? <Waves className="h-3.5 w-3.5 shrink-0" /> : <Shield className="h-3.5 w-3.5 shrink-0" />}
+                {isProtectedToday ? (
+                  <Waves className="h-3.5 w-3.5 shrink-0" />
+                ) : isLightWindConditionChip ? (
+                  <Wind className="h-3.5 w-3.5 shrink-0" />
+                ) : isExposedConditionChip ? (
+                  <AlertTriangle className="h-3.5 w-3.5 shrink-0" />
+                ) : (
+                  <Shield className="h-3.5 w-3.5 shrink-0" />
+                )}
                 <span className="truncate whitespace-nowrap">{isProtectedToday ? seaLabel : protectionLabel}</span>
               </span>
             )}
@@ -955,7 +1299,7 @@ export const BeachCard: React.FC<BeachCardProps> = ({
           }`}>
             {isProtectedToday
               ? t.shelteredTooltip
-              : (isExposed ? t.exposedTooltip : (language === 'gr' ? 'Έλεγχος τοπικής έκθεσης' : 'Check local exposure'))}
+              : (isExposed ? t.exposedTooltip : localizedCardCopy.localExposureCheck)}
           </div>
           {hasBlueFlag2026 && <BlueFlagBadge language={language} compact />}
         </div>

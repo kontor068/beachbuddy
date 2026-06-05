@@ -2,6 +2,7 @@ import React, { useEffect, useMemo, useRef, useState } from 'react';
 import { ChevronRight, LocateFixed, Search, X } from 'lucide-react';
 import { Island, LanguageCode, Translation } from '../types';
 import { fuzzySearchScore } from '../utils/searchNormalize';
+import { getLocalizedCopy } from '../utils/i18n';
 
 interface IslandSelectorModalProps {
   isOpen: boolean;
@@ -71,7 +72,13 @@ const sortDestinationsForGroup = (group: string, list: Island[], language: Langu
 
 const getGroupLabel = (group: string, language: LanguageCode, t: Translation): string => {
   if (group === 'attica') {
-    return language === 'gr' ? 'Περιοχές Αττικής' : 'Attica regions';
+    return getLocalizedCopy(language, {
+      en: 'Attica regions',
+      gr: 'Περιοχές Αττικής',
+      fr: 'Régions de l’Attique',
+      de: 'Attika-Regionen',
+      it: 'Regioni dell’Attica',
+    });
   }
   return t.islandSelector.groups[group as keyof typeof t.islandSelector.groups] || group;
 };
@@ -90,13 +97,38 @@ export const IslandSelectorModal: React.FC<IslandSelectorModalProps> = ({
   const [searchTerm, setSearchTerm] = useState('');
   const dialogRef = useRef<HTMLDivElement>(null);
   const previouslyFocusedElementRef = useRef<HTMLElement | null>(null);
-  const isGreek = language === 'gr';
-  const copy = {
-    close: isGreek ? 'Κλείσιμο επιλογής περιοχής' : 'Close location selector',
-    search: isGreek ? 'Αναζήτηση νησιού ή περιοχής' : 'Search island or region',
-    noResults: isGreek ? 'Δεν βρέθηκαν νησιά ή περιοχές.' : 'No islands or regions found.',
-    findingLocation: isGreek ? 'Εύρεση κοντινής περιοχής' : 'Finding nearby region',
-  };
+  const copy = getLocalizedCopy(language, {
+    en: {
+      close: 'Close location selector',
+      search: 'Search island or region',
+      noResults: 'No islands or regions found.',
+      findingLocation: 'Finding nearby region',
+    },
+    gr: {
+      close: 'Κλείσιμο επιλογής περιοχής',
+      search: 'Αναζήτηση νησιού ή περιοχής',
+      noResults: 'Δεν βρέθηκαν νησιά ή περιοχές.',
+      findingLocation: 'Εύρεση κοντινής περιοχής',
+    },
+    fr: {
+      close: 'Fermer le sélecteur',
+      search: 'Rechercher une île ou région',
+      noResults: 'Aucune île ou région trouvée.',
+      findingLocation: 'Recherche de la région proche',
+    },
+    de: {
+      close: 'Standortauswahl schließen',
+      search: 'Insel oder Region suchen',
+      noResults: 'Keine Inseln oder Regionen gefunden.',
+      findingLocation: 'Nahe Region wird gesucht',
+    },
+    it: {
+      close: 'Chiudi selettore località',
+      search: 'Cerca isola o regione',
+      noResults: 'Nessuna isola o regione trovata.',
+      findingLocation: 'Ricerca regione vicina',
+    },
+  });
 
   const islandSections = useMemo<IslandSection[]>(() => {
     const query = searchTerm.trim();

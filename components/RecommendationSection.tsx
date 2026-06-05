@@ -2,6 +2,8 @@ import React from 'react';
 import { Beach, LanguageCode, Translation, WindDirection, SortOption, FilterKey, UserPreferences } from '../types';
 import { BeachList } from './BeachList';
 import { BeachFilters } from './BeachFilters';
+import { getLocalizedCopy } from '../utils/i18n';
+import { getBeachFilterDirectoryTitle } from '../utils/filterSummary';
 
 interface RecommendationSectionProps {
   beaches: Beach[];
@@ -13,6 +15,7 @@ interface RecommendationSectionProps {
   temperature?: number;
   selectedDate?: Date;
   islandName: string;
+  regionId?: string;
   onBeachClick: (beach: Beach) => void;
   searchQuery: string;
   onSearchChange: (query: string) => void;
@@ -51,6 +54,7 @@ export const RecommendationSection: React.FC<RecommendationSectionProps> = ({
   temperature,
   selectedDate,
   islandName,
+  regionId,
   onBeachClick,
   searchQuery,
   onSearchChange,
@@ -76,10 +80,20 @@ export const RecommendationSection: React.FC<RecommendationSectionProps> = ({
   sortResultCounts
 }) => {
   const isDirectoryLayout = !showControls;
-  const directoryTitle = language === 'gr' ? 'Όλες οι υπόλοιπες παραλίες' : 'All other beaches';
-  const directorySubtitle = language === 'gr'
-    ? 'Δες τις υπόλοιπες επιλογές με τα ίδια σημερινά δεδομένα και φίλτρα.'
-    : "Browse the remaining options with today's conditions and filters.";
+  const copy = getLocalizedCopy(language, {
+    en: { directoryTitle: 'All other beaches', beachCount: (count: number) => `${count} ${count === 1 ? 'beach' : 'beaches'}` },
+    gr: { directoryTitle: 'Όλες οι υπόλοιπες παραλίες', beachCount: (count: number) => `${count} ${count === 1 ? 'παραλία' : 'παραλίες'}` },
+    fr: { directoryTitle: 'Toutes les autres plages', beachCount: (count: number) => `${count} ${count === 1 ? 'plage' : 'plages'}` },
+    de: { directoryTitle: 'Alle weiteren Strände', beachCount: (count: number) => `${count} ${count === 1 ? 'Strand' : 'Strände'}` },
+    it: { directoryTitle: 'Tutte le altre spiagge', beachCount: (count: number) => `${count} ${count === 1 ? 'spiaggia' : 'spiagge'}` },
+  });
+  const directoryTitle = getBeachFilterDirectoryTitle({
+    activeFilters,
+    fallbackTitle: copy.directoryTitle,
+    language,
+    preferences,
+    t,
+  });
 
   return (
     <section
@@ -118,12 +132,9 @@ export const RecommendationSection: React.FC<RecommendationSectionProps> = ({
               <h2 className="text-xl font-bold leading-tight text-slate-950">
                 {directoryTitle}
               </h2>
-              <p className="mt-1 max-w-2xl text-sm font-medium leading-relaxed text-slate-600">
-                {directorySubtitle}
-              </p>
             </div>
             <span className="rounded-full border border-sky-100 bg-sky-50 px-3 py-1.5 text-xs font-extrabold text-[#007a83]">
-              {beaches.length} {language === 'gr' ? 'παραλίες' : 'beaches'}
+              {copy.beachCount(beaches.length)}
             </span>
           </div>
         )}
@@ -137,6 +148,7 @@ export const RecommendationSection: React.FC<RecommendationSectionProps> = ({
           temperature={temperature}
           selectedDate={selectedDate}
           islandName={islandName}
+          regionId={regionId}
           onBeachClick={onBeachClick}
           favorites={favorites}
           onToggleFavorite={onToggleFavorite}

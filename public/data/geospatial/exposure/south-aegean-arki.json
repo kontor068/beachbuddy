@@ -1,0 +1,192 @@
+{
+  "schemaVersion": 1,
+  "generatedAt": "2026-06-02T21:59:09.774Z",
+  "region": {
+    "id": "south-aegean-arki",
+    "name": "Arki"
+  },
+  "source": {
+    "indexPath": "/data/geospatial/exposure/index.json"
+  },
+  "settings": {
+    "maxFetchKm": 25,
+    "stepKm": 1,
+    "nearshoreLandGraceKm": 1,
+    "nearshoreWaterSearchKm": 12,
+    "nearshoreWaterSearchStepKm": 0.5,
+    "fanAnglesDeg": [
+      -30,
+      -15,
+      0,
+      15,
+      30
+    ],
+    "sectors": [
+      "N",
+      "NE",
+      "E",
+      "SE",
+      "S",
+      "SW",
+      "W",
+      "NW"
+    ]
+  },
+  "summary": {
+    "beachCount": 2,
+    "generatedProfiles": 2,
+    "missingCoordinates": 0,
+    "sectors": {
+      "N": {
+        "protected": 0,
+        "partial": 1,
+        "exposed": 1
+      },
+      "NE": {
+        "protected": 0,
+        "partial": 1,
+        "exposed": 1
+      },
+      "E": {
+        "protected": 0,
+        "partial": 1,
+        "exposed": 1
+      },
+      "SE": {
+        "protected": 0,
+        "partial": 2,
+        "exposed": 0
+      },
+      "S": {
+        "protected": 0,
+        "partial": 2,
+        "exposed": 0
+      },
+      "SW": {
+        "protected": 0,
+        "partial": 2,
+        "exposed": 0
+      },
+      "W": {
+        "protected": 0,
+        "partial": 2,
+        "exposed": 0
+      },
+      "NW": {
+        "protected": 0,
+        "partial": 2,
+        "exposed": 0
+      }
+    }
+  },
+  "profiles": {
+    "2498": {
+      "beachId": 2498,
+      "name": {
+        "en": "Patelia",
+        "gr": "Πατελιά"
+      },
+      "coordinates": {
+        "lat": 37.37942,
+        "lon": 26.73284
+      },
+      "sectors": {
+        "N": {
+          "level": "partial",
+          "fetchKm": 10.6,
+          "blockedRayRatio": 0.6
+        },
+        "NE": {
+          "level": "partial",
+          "fetchKm": 19.2,
+          "blockedRayRatio": 0.4
+        },
+        "E": {
+          "level": "partial",
+          "fetchKm": 14.4,
+          "blockedRayRatio": 0.6
+        },
+        "SE": {
+          "level": "partial",
+          "fetchKm": 18,
+          "blockedRayRatio": 0.4
+        },
+        "S": {
+          "level": "partial",
+          "fetchKm": 10.2,
+          "blockedRayRatio": 0.8
+        },
+        "SW": {
+          "level": "partial",
+          "fetchKm": 16.8,
+          "blockedRayRatio": 0.6
+        },
+        "W": {
+          "level": "partial",
+          "fetchKm": 20.6,
+          "blockedRayRatio": 0.4
+        },
+        "NW": {
+          "level": "partial",
+          "fetchKm": 15.4,
+          "blockedRayRatio": 0.4
+        }
+      },
+      "confidence": "low"
+    },
+    "2499": {
+      "beachId": 2499,
+      "name": {
+        "en": "Limnari",
+        "gr": "Λιμνάρι"
+      },
+      "coordinates": {
+        "lat": 37.38943,
+        "lon": 26.73676
+      },
+      "sectors": {
+        "N": {
+          "level": "exposed",
+          "fetchKm": 25,
+          "blockedRayRatio": 0
+        },
+        "NE": {
+          "level": "exposed",
+          "fetchKm": 25,
+          "blockedRayRatio": 0
+        },
+        "E": {
+          "level": "exposed",
+          "fetchKm": 25,
+          "blockedRayRatio": 0
+        },
+        "SE": {
+          "level": "partial",
+          "fetchKm": 10.6,
+          "blockedRayRatio": 0.6
+        },
+        "S": {
+          "level": "partial",
+          "fetchKm": 7.2,
+          "blockedRayRatio": 0.8
+        },
+        "SW": {
+          "level": "partial",
+          "fetchKm": 17.8,
+          "blockedRayRatio": 0.6
+        },
+        "W": {
+          "level": "partial",
+          "fetchKm": 11.6,
+          "blockedRayRatio": 0.8
+        },
+        "NW": {
+          "level": "partial",
+          "fetchKm": 15.4,
+          "blockedRayRatio": 0.4
+        }
+      },
+      "confidence": "low"
+    }
+  }
+}

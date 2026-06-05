@@ -1,11 +1,15 @@
 import { readFileSync } from 'node:fs';
 import path from 'node:path';
-import { Accessibility, Beach, BeachType, WaterDepth, WindDirection, WindProfile } from '../types';
+import { Accessibility, Beach, BeachType, GeospatialExposureProfile, WaterDepth, WindDirection, WindProfile, WindSector } from '../types';
 import { generateBeachCopy } from '../utils/beachCopy';
+import { assessGeospatialWindExposure, type LandMask } from '../utils/geospatialExposureModel';
+import { getVisibleMapExposureLevel } from '../utils/mapExposure';
+import type { ExposureLevel } from '../utils/windExposure';
 import { assessBeachWindExposure } from '../utils/windExposureEngine';
 
 type ScenarioBeach = Pick<Beach, 'id' | 'location' | 'windProfile'> & {
   name: { en: string; gr: string };
+  protectedFrom?: WindDirection[];
 };
 
 const assert = (condition: boolean, message: string) => {
@@ -29,6 +33,15 @@ const assertNoProtectedCalmClaims = (text: string, context: string) => {
   assert(!forbidden.test(text), `${context}: must not claim protected/calm. Got: ${text}`);
 };
 
+const syntheticLandMask = (
+  source: string,
+  isLand: LandMask['isLand']
+): LandMask => ({
+  source,
+  confidence: 'medium',
+  isLand,
+});
+
 const baseBeach = (input: ScenarioBeach): Beach => ({
   id: input.id,
   rating: 4.5,
@@ -46,7 +59,7 @@ const baseBeach = (input: ScenarioBeach): Beach => ({
     de: input.name.en,
     it: input.name.en,
   },
-  protectedFrom: [],
+  protectedFrom: input.protectedFrom || [],
   accessibility: Accessibility.EASY,
   amenities: {
     organized: false,
@@ -142,15 +155,74 @@ const milosSouthFiveBeaufort = {
   waveHeightMeters: 1.4,
 };
 
+const milosSouthwestFourBeaufort = {
+  windDirectionDeg: 225,
+  windDirection: WindDirection.SW,
+  windSpeedKmh: 19,
+  beaufort: 4,
+  waveHeightMeters: 0.9,
+};
+
 const visibleLabelDecision = (assessment: ReturnType<typeof assessBeachWindExposure>) => ({
   protectedLabel: assessment.exposureLevel === 'protected' && assessment.canClaimProtected,
   calmLabel: assessment.seaCalmClaimAllowed,
 });
 
+const visibleMapExposureDecision = (
+  beach: Beach,
+  assessment: ReturnType<typeof assessBeachWindExposure>,
+  scenario: { beaufort: number; windDirectionDeg: number },
+  geospatialExposure?: GeospatialExposureProfile
+) => getVisibleMapExposureLevel({
+  beach,
+  exposureLevel: assessment.exposureLevel,
+  orientation: assessment.windProfile.beachFacingDirection,
+  windProfile: assessment.windProfile,
+  windProfileSource: assessment.source,
+  windSector: assessment.windSector,
+  warnings: assessment.warnings,
+  geospatialExposure,
+}, scenario.beaufort, scenario.windDirectionDeg);
+
 const loadAppRegionBeaches = (regionId: string): Beach[] => {
   const filePath = path.join(process.cwd(), 'public', 'data', 'beaches', 'app', `${regionId}.json`);
   const payload = JSON.parse(readFileSync(filePath, 'utf8'));
   return payload.island.beaches as Beach[];
+};
+
+const windSectorKeys: WindSector[] = ['N', 'NE', 'E', 'SE', 'S', 'SW', 'W', 'NW'];
+
+const geospatialProfile = (
+  beachId: number,
+  overrides: Partial<Record<WindSector, ExposureLevel>>
+): GeospatialExposureProfile => ({
+  beachId,
+  confidence: 'low',
+  source: 'natural-earth-baseline',
+  sectors: windSectorKeys.reduce<GeospatialExposureProfile['sectors']>((sectors, sector) => {
+    const level = overrides[sector] || 'partial';
+    sectors[sector] = {
+      level,
+      fetchKm: level === 'protected' ? 1 : level === 'exposed' ? 25 : 5,
+      blockedRayRatio: level === 'protected' ? 1 : level === 'exposed' ? 0 : 0.5,
+    };
+    return sectors;
+  }, {} as GeospatialExposureProfile['sectors']),
+});
+
+const loadGeneratedGeospatialProfiles = (regionId: string): Record<number, GeospatialExposureProfile> => {
+  const filePath = path.join(process.cwd(), 'public', 'data', 'geospatial', 'exposure', `${regionId}.json`);
+  const payload = JSON.parse(readFileSync(filePath, 'utf8')) as {
+    profiles: Record<string, Omit<GeospatialExposureProfile, 'source'>>;
+  };
+
+  return Object.values(payload.profiles).reduce<Record<number, GeospatialExposureProfile>>((lookup, profile) => {
+    lookup[profile.beachId] = {
+      ...profile,
+      source: 'natural-earth-baseline',
+    };
+    return lookup;
+  }, {});
 };
 
 const scenarioScore = (beach: Beach, scenario = northFiveBeaufort): number => {
@@ -259,6 +331,13 @@ const genericUnknown = baseBeach({
   location: { island: 'Generic', region: 'Generic' },
 });
 
+const genericLegacyNorthProtected = baseBeach({
+  id: 3005,
+  name: { en: 'Legacy North Protected', gr: 'Legacy North Protected' },
+  location: { island: 'Generic', region: 'Generic' },
+  protectedFrom: [WindDirection.N],
+});
+
 const genericLowConfidenceShelter = baseBeach({
   id: 3004,
   name: { en: 'Low Confidence Shelter', gr: 'Low Confidence Shelter' },
@@ -320,6 +399,7 @@ const naxosEastExposedNames = [
 const parosBeaches = loadAppRegionBeaches('south-aegean-paros');
 const androsBeaches = loadAppRegionBeaches('south-aegean-andros');
 const milosBeaches = loadAppRegionBeaches('south-aegean-milos');
+const milosGeospatialProfiles = loadGeneratedGeospatialProfiles('south-aegean-milos');
 const naxosBeaches = loadAppRegionBeaches('south-aegean-naxos');
 
 const byId = (beaches: Beach[], id: number): Beach => {
@@ -402,6 +482,10 @@ const milosSouthFiveTop3 = [...milosBeaches]
   .sort((a, b) => scenarioScore(b, milosSouthFiveBeaufort) - scenarioScore(a, milosSouthFiveBeaufort))
   .slice(0, 3)
   .map(beach => beach.id);
+const milosSouthwestFourMapLevels = new Map(milosBeaches.map(beach => {
+  const assessment = assessBeachWindExposure({ beach, ...milosSouthwestFourBeaufort });
+  return [beach.id, visibleMapExposureDecision(beach, assessment, milosSouthwestFourBeaufort)];
+}));
 const p0WindProfilesCovered = parosCoverage.p0Profiles + androsCoverage.p0Profiles;
 const phase21WindProfilesAdded = parosCoverage.phase21Profiles + androsCoverage.phase21Profiles;
 const allProfilesCovered = parosCoverage.overrideProfiles + androsCoverage.overrideProfiles;
@@ -733,6 +817,18 @@ milosPhase3CoverageAssessments.forEach(assessment => {
     'Milos trust: Phase 3 low-confidence profiles must avoid protected/calm labels.'
   );
 });
+milosNorthExposedIds.forEach(id => {
+  assert(
+    milosSouthwestFourMapLevels.get(id) === 'protected',
+    'Milos SW 4 Bft map: known north/northwest P0 beaches should show as less exposed than south-facing beaches.'
+  );
+});
+milosSouthFacingIds.forEach(id => {
+  assert(
+    milosSouthwestFourMapLevels.get(id) !== 'protected',
+    'Milos SW 4 Bft map: south-facing beaches must not render as protected in southwest wind.'
+  );
+});
 naxosNorthExposedAssessments.forEach((assessment, index) => {
   const beachId = naxosNorthExposedIds[index];
   const labels = visibleLabelDecision(assessment);
@@ -781,16 +877,71 @@ const openScore = scenarioScore(genericOpen);
 const shelteredScore = scenarioScore(genericSheltered);
 const unknownAssessment = assessBeachWindExposure({ beach: genericUnknown, ...northFiveBeaufort });
 const unknownThreeAssessment = assessBeachWindExposure({ beach: genericUnknown, ...northThreeBeaufort });
+const legacyNorthProtectedNorthAssessment = assessBeachWindExposure({ beach: genericLegacyNorthProtected, ...northFiveBeaufort });
+const legacyNorthProtectedSouthAssessment = assessBeachWindExposure({ beach: genericLegacyNorthProtected, ...milosSouthFiveBeaufort });
+const legacyNorthProtectedNorthMapLevel = visibleMapExposureDecision(
+  genericLegacyNorthProtected,
+  legacyNorthProtectedNorthAssessment,
+  northFiveBeaufort
+);
+const legacyNorthProtectedSouthMapLevel = visibleMapExposureDecision(
+  genericLegacyNorthProtected,
+  legacyNorthProtectedSouthAssessment,
+  milosSouthFiveBeaufort
+);
 const chrysiLabels = visibleLabelDecision(chrysiAssessment);
 const unknownLowWaveAssessment = assessBeachWindExposure({ beach: genericUnknown, ...northFiveBeaufort, waveHeightMeters: 0.3 });
 const unknownLabels = visibleLabelDecision(unknownLowWaveAssessment);
 const unknownThreeLabels = visibleLabelDecision(unknownThreeAssessment);
+const legacyNorthProtectedLabels = visibleLabelDecision(legacyNorthProtectedNorthAssessment);
 const lowConfidenceShelterAssessment = assessBeachWindExposure({
   beach: genericLowConfidenceShelter,
   ...northFiveBeaufort,
   waveHeightMeters: 0.3,
 });
 const lowConfidenceShelterLabels = visibleLabelDecision(lowConfidenceShelterAssessment);
+const geospatialProtectedMapLevel = visibleMapExposureDecision(
+  genericUnknown,
+  unknownAssessment,
+  northFiveBeaufort,
+  geospatialProfile(genericUnknown.id, { N: 'protected' })
+);
+const geospatialExposedMapLevel = visibleMapExposureDecision(
+  genericUnknown,
+  unknownAssessment,
+  northFiveBeaufort,
+  geospatialProfile(genericUnknown.id, { N: 'exposed' })
+);
+const geospatialOpenFetchOverridesLowConfidenceShelterMapLevel = visibleMapExposureDecision(
+  genericLowConfidenceShelter,
+  lowConfidenceShelterAssessment,
+  northFiveBeaufort,
+  geospatialProfile(genericLowConfidenceShelter.id, { N: 'exposed' })
+);
+const geospatialPartialAllowsDirectionalProtectedMapLevel = visibleMapExposureDecision(
+  genericLegacyNorthProtected,
+  legacyNorthProtectedNorthAssessment,
+  northFiveBeaufort,
+  geospatialProfile(genericLegacyNorthProtected.id, { N: 'partial' })
+);
+const geospatialPartialAllowsDirectionalExposedMapLevel = visibleMapExposureDecision(
+  genericLegacyNorthProtected,
+  legacyNorthProtectedSouthAssessment,
+  milosSouthFiveBeaufort,
+  geospatialProfile(genericLegacyNorthProtected.id, { S: 'partial' })
+);
+const sarakinikoGeneratedGeospatialNorthMapLevel = visibleMapExposureDecision(
+  sarakiniko,
+  sarakinikoNorthFiveAssessment,
+  milosNorthFiveBeaufort,
+  milosGeospatialProfiles[sarakiniko.id]
+);
+const papikinouGeneratedGeospatialNorthMapLevel = visibleMapExposureDecision(
+  papikinou,
+  papikinouNorthFiveAssessment,
+  milosNorthFiveBeaufort,
+  milosGeospatialProfiles[papikinou.id]
+);
 const shelteredCalmAssessment = assessBeachWindExposure({ beach: genericSheltered, ...northFiveBeaufort, waveHeightMeters: 0.3 });
 const shelteredLabels = visibleLabelDecision(shelteredCalmAssessment);
 const phase21LowWaveAssessments = phase21Beaches.map(beach => assessBeachWindExposure({
@@ -820,6 +971,17 @@ assert(!unknownThreeAssessment.canClaimProtected, 'Generic 3 Bft: unknown windPr
 assert(!unknownThreeLabels.protectedLabel && !unknownThreeLabels.calmLabel, 'Generic 3 Bft: unknown windProfile must not create protected/calm labels.');
 assert(unknownThreeAssessment.finalScoreCap === undefined, 'Generic 3 Bft: unknown windProfile must not receive a harsh score cap.');
 assert(scenarioScore(genericUnknown, northThreeBeaufort) >= 70, 'Generic 3 Bft: unknown windProfile should not be punished too heavily.');
+assert(legacyNorthProtectedNorthMapLevel === 'protected', 'Map fallback: legacy north-protected beach should show less exposed in north/offshore wind.');
+assert(legacyNorthProtectedSouthMapLevel === 'exposed', 'Map fallback: legacy north-protected beach should show exposed in south/onshore wind.');
+assert(!legacyNorthProtectedNorthAssessment.canClaimProtected, 'Map fallback: legacy protectedFrom must not create verified wind protection claims.');
+assert(!legacyNorthProtectedLabels.protectedLabel && !legacyNorthProtectedLabels.calmLabel, 'Map fallback: legacy protectedFrom must not create protected/calm labels.');
+assert(geospatialProtectedMapLevel === 'protected', 'Map geospatial fallback: low-confidence profile may provide less-exposed map color only.');
+assert(geospatialExposedMapLevel === 'exposed', 'Map geospatial fallback: open upwind fetch should remain exposed.');
+assert(geospatialOpenFetchOverridesLowConfidenceShelterMapLevel === 'exposed', 'Map geospatial fallback: open fetch should prevent low-confidence shelter from showing less exposed.');
+assert(geospatialPartialAllowsDirectionalProtectedMapLevel === 'protected', 'Map directional fallback: partial geospatial must not hide clear offshore/protected geometry.');
+assert(geospatialPartialAllowsDirectionalExposedMapLevel === 'exposed', 'Map directional fallback: partial geospatial must not hide clear onshore/exposed geometry.');
+assert(sarakinikoGeneratedGeospatialNorthMapLevel === 'exposed', 'Milos generated geospatial: Sarakiniko should remain exposed in north wind on the map.');
+assert(papikinouGeneratedGeospatialNorthMapLevel === 'protected', 'Milos generated geospatial: Papikinoy should show less exposed in north wind on the map.');
 assertNoProtectedCalmClaims(
   generatedCopyText(genericUnknown, unknownLowWaveAssessment, { ...northFiveBeaufort, waveHeightMeters: 0.3 }),
   'Generic unknown 5 Bft low-wave generated copy'
@@ -845,6 +1007,44 @@ assert(unknownFieldProfileAssessments.every(assessment => (
   assessment.windProfile.protectedFromWindDirections.length === 0 &&
   !assessment.canClaimProtected
 )), 'Safety: unknown shelter/fetch profiles must stay low-confidence with no wind-direction claims.');
+
+const syntheticBeachPoint = { lat: 37, lon: 25 };
+const closeNorthLandMask = syntheticLandMask(
+  'synthetic north land blocker',
+  point => point.lat >= 37.01
+);
+const openNorthWaterMask = syntheticLandMask(
+  'synthetic open north fetch',
+  point => point.lat <= 36.99
+);
+const mediumNorthFetchMask = syntheticLandMask(
+  'synthetic medium north fetch',
+  point => point.lat >= 37.04
+);
+const geospatialNorthProtected = assessGeospatialWindExposure({
+  beach: syntheticBeachPoint,
+  windDirectionDeg: 0,
+  landMask: closeNorthLandMask,
+  maxFetchKm: 12,
+});
+const geospatialNorthExposed = assessGeospatialWindExposure({
+  beach: syntheticBeachPoint,
+  windDirectionDeg: 0,
+  landMask: openNorthWaterMask,
+  maxFetchKm: 12,
+});
+const geospatialNorthPartial = assessGeospatialWindExposure({
+  beach: syntheticBeachPoint,
+  windDirectionDeg: 0,
+  landMask: mediumNorthFetchMask,
+  maxFetchKm: 12,
+});
+
+assert(geospatialNorthProtected.exposureLevel === 'protected', 'Geospatial model: close upwind land should classify as protected.');
+assert(geospatialNorthProtected.openWaterFetchKm <= 2, 'Geospatial model: close upwind land should produce short fetch.');
+assert(geospatialNorthExposed.exposureLevel === 'exposed', 'Geospatial model: open upwind water should classify as exposed.');
+assert(geospatialNorthExposed.openWaterFetchKm >= 8, 'Geospatial model: open upwind water should produce long fetch.');
+assert(geospatialNorthPartial.exposureLevel === 'partial', 'Geospatial model: medium upwind fetch should classify as partial.');
 
 console.log(JSON.stringify({
   coverage: {
@@ -1063,5 +1263,31 @@ console.log(JSON.stringify({
     },
     lowConfidenceShelterLabels,
     shelteredVisibleLabels: shelteredLabels,
+  },
+  geospatialExposureModel: {
+    mapFallback: {
+      syntheticProtectedMapLevel: geospatialProtectedMapLevel,
+      syntheticExposedMapLevel: geospatialExposedMapLevel,
+      lowConfidenceShelterWithOpenFetchMapLevel: geospatialOpenFetchOverridesLowConfidenceShelterMapLevel,
+      partialAllowsDirectionalProtectedMapLevel: geospatialPartialAllowsDirectionalProtectedMapLevel,
+      partialAllowsDirectionalExposedMapLevel: geospatialPartialAllowsDirectionalExposedMapLevel,
+      milosSarakinikoNorthMapLevel: sarakinikoGeneratedGeospatialNorthMapLevel,
+      milosPapikinoyNorthMapLevel: papikinouGeneratedGeospatialNorthMapLevel,
+    },
+    protected: {
+      exposureLevel: geospatialNorthProtected.exposureLevel,
+      openWaterFetchKm: geospatialNorthProtected.openWaterFetchKm,
+      blockedRayRatio: geospatialNorthProtected.blockedRayRatio,
+    },
+    exposed: {
+      exposureLevel: geospatialNorthExposed.exposureLevel,
+      openWaterFetchKm: geospatialNorthExposed.openWaterFetchKm,
+      blockedRayRatio: geospatialNorthExposed.blockedRayRatio,
+    },
+    partial: {
+      exposureLevel: geospatialNorthPartial.exposureLevel,
+      openWaterFetchKm: geospatialNorthPartial.openWaterFetchKm,
+      blockedRayRatio: geospatialNorthPartial.blockedRayRatio,
+    },
   },
 }, null, 2));

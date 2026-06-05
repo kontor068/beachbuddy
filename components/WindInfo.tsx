@@ -1,8 +1,9 @@
 
 import React, { useState, useEffect } from 'react';
 import { motion } from 'motion/react';
-import { RefreshCw, Wind, Thermometer, Clock, Compass as CompassIcon, Droplets } from 'lucide-react';
+import { RefreshCw, Wind, Thermometer, Clock, Droplets } from 'lucide-react';
 import { WeatherData, WindDirection, LanguageCode, WindUnit, DailyForecast } from '../types';
+import { getLocalizedCopy } from '../utils/i18n';
 
 interface WindInfoProps {
   weather: WeatherData | DailyForecast;
@@ -21,9 +22,13 @@ interface WindInfoProps {
 }
 
 const Compass: React.FC<{ deg: number; language: LanguageCode }> = ({ deg, language }) => {
-  const labels = language === 'gr'
-    ? { north: 'β', south: 'ν', east: 'α', west: 'δ' }
-    : { north: 'n', south: 's', east: 'e', west: 'w' };
+  const labels = getLocalizedCopy(language, {
+    en: { north: 'n', south: 's', east: 'e', west: 'w' },
+    gr: { north: 'β', south: 'ν', east: 'α', west: 'δ' },
+    fr: { north: 'n', south: 's', east: 'e', west: 'o' },
+    de: { north: 'n', south: 's', east: 'o', west: 'w' },
+    it: { north: 'n', south: 's', east: 'e', west: 'o' },
+  });
 
   return (
     <div className="relative w-16 h-16 sm:w-20 sm:h-20 flex-shrink-0" aria-label="Wind compass">
@@ -113,7 +118,7 @@ const useRelativeTime = (date: Date | null, t: any) => {
 };
 
 
-export const WindInfo: React.FC<WindInfoProps> = ({ weather, windDirection, t, lastUpdated, onRefresh, isLoading, language, isUsingMockData, error, windUnit, onWindUnitChange, isToday, isWinter }) => {
+export const WindInfo: React.FC<WindInfoProps> = ({ weather, windDirection, t, lastUpdated, onRefresh, isLoading, language, windUnit, onWindUnitChange, isToday, isWinter }) => {
   const windSpeedKmph = (weather.wind.speed * 3.6).toFixed(1);
   const windSpeedMph = (weather.wind.speed * 2.23694).toFixed(1);
   const relativeTime = useRelativeTime(lastUpdated, t);

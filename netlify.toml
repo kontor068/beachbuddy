@@ -2,6 +2,16 @@
   command = "npm run build"
   publish = "dist"
 
+[[redirects]]
+  from = "/beaches/:region/:beach"
+  to = "/beaches/:region/:beach/"
+  status = 301
+
+[[redirects]]
+  from = "/beaches/:region"
+  to = "/beaches/:region/"
+  status = 301
+
 [build.environment]
   SECRETS_SCAN_SMART_DETECTION_ENABLED = "true"
   SECRETS_SCAN_SMART_DETECTION_OMIT_VALUES = "AIzaSyDOCAbC123dEf456GhI789jKl012-MnO,AIza...."
