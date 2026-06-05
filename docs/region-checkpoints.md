@@ -897,6 +897,12 @@ Recommended next order:
 - This pass keeps wind/shelter/calm wording out of scoring and windProfile. Platis Gialos has source-backed car/bus access, sandy shallow-water family context, tamarisk shade and nearby taverna context, but the source's sheltered-from-north-wind wording was not imported. Kamares/Koimisi/Hohlakoura keep access limitations and no organized-service claims. Kserokampos/Tourkomnima keep shared-source sand/pebble/small-tree context with neutral water depth.
 - Across all public beach data after this pass: 2142 high, 282 medium, 316 low. Total non-high remaining: 598.
 
+## Popular-source confidence pass CK - 2026-06-05
+
+- Aetolia-Acarnania / Agrilia, Marathaki, Agios Ioannis, Koulouri, Riza, and Rouga promoted from low/medium to high confidence for static beach facts only after reviewing the Greece Destination Aetolia-Acarnania beach guide.
+- This pass keeps calm/sheltered/wind-exposure wording out of scoring and windProfile. Koulouri/Riza/Rouga keep source-backed shallow or neutral depth, pebbly terrain, shade/service context and easy road access. Agios Ioannis keeps passable dirt-road access and unorganized status without importing live sea or protection claims.
+- Across all public beach data after this pass: 2148 high, 277 medium, 315 low. Total non-high remaining: 592.
+
 ## Durable data rules
 
 - Do not show "4x4 only" as user-facing copy unless it is strictly verified and unavoidable. Prefer `Δύσβατος δρόμος`.
