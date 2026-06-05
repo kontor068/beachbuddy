@@ -879,6 +879,12 @@ Recommended next order:
 - Kiriakou remains a hard-access beach; high confidence here means the static facts are better sourced, not that it becomes a mainstream or top-pick beach. Source quiet/no-waves/live sea-condition wording was not imported as scoring, windProfile, photos, water-quality, or live calm/protected/safe claims.
 - Across all public beach data after this pass: 2110 high, 304 medium, 326 low. Total non-high remaining: 630.
 
+## Popular-source confidence pass CH - 2026-06-05
+
+- Kimolos / Agioklima, Vroulidi, Therma, Makropounta, Monastiria, Pigados, and Soufi promoted from medium to high confidence for static beach facts only after reviewing the official Municipality of Kimolos beaches page, Greece Destination's Kimolos beach guide, existing OSM traces, and Cyclades Map for Soufi/Monastiria context.
+- This pass corrected Pigados away from unsupported full road/sandy/shallow-service certainty to car/bus plus short path, pebbly terrain, partial tamarisk shade and neutral water depth. Soufi now records source-backed sandy terrain, tamarisk shade, unorganized status and neutral water depth. Source calm/leeward/protected/north-wind wording was not imported as scoring, windProfile, photos, water-quality, or live calm/protected/safe claims.
+- Across all public beach data after this pass: 2125 high, 292 medium, 323 low. Total non-high remaining: 615.
+
 ## Durable data rules
 
 - Do not show "4x4 only" as user-facing copy unless it is strictly verified and unavoidable. Prefer `Δύσβατος δρόμος`.
