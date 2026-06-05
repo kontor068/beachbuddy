@@ -1035,6 +1035,12 @@ Recommended next order:
 - This island pass also reconciled Nikouria static service metadata from the official Amorgos source: no shade and beach-bar/transfer-boat context are now reflected in the record. Existing Amorgos municipality, Folegandros.com, AllOverGreece and All About Patmos source URLs support identity/location plus recorded access, terrain, shade and service context. Skopelos/Pelion-risk records and OSM-only records were intentionally left medium/low. Source scenic/calm/clear/wave wording was not imported into scoring, windProfile, photos, water-quality, or live condition claims.
 - Across all public beach data after this pass: 2290 high, 139 medium, 311 low. Total non-high remaining: 450. Island-only non-high remaining: 264 of 2042.
 
+## Popular-source confidence pass DD - 2026-06-05
+
+- Erikoussa / Porto; Othonoi / Molos; Kastellorizo / Mandraki; and Telendos / Potha and Paradise promoted from medium to high confidence for static beach facts only after reviewing existing direct island/beach source coverage.
+- This island pass also reconciled static metadata where sources were stronger than older records: Mandraki now uses sand/pebble, shallow-water and no-shade context; Potha and Paradise no longer carry unsupported parking and now keep foot/boat access plus seasonal organized context. Existing Greek Travel Pages, Ferryhopper, GetGreece, Mamaka Tours and CavoBlue source URLs support identity/location plus recorded access, terrain, depth, shade and service context. Bragini and identity-only/geodata-risk records were intentionally left medium/low. Source scenic/calm/clear/wave wording was not imported into scoring, windProfile, photos, water-quality, or live condition claims.
+- Across all public beach data after this pass: 2295 high, 134 medium, 311 low. Total non-high remaining: 445. Island-only non-high remaining: 259 of 2042.
+
 ## Durable data rules
 
 - Do not show "4x4 only" as user-facing copy unless it is strictly verified and unavoidable. Prefer `Δύσβατος δρόμος`.
