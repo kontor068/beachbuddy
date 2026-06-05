@@ -909,6 +909,12 @@ Recommended next order:
 - This pass made depth more conservative where the source did not directly support shallow/deep certainty: Nos, Pedi, Agios Vasilios, Nanou, Agios Georgios, and Sara now use neutral medium depth. Agios Georgios was corrected to no shade/no organized services, while Agios Nikolaos keeps source-backed shallow-water, organized-service and shade context. Source calm/clear/safe/protected wording was not imported as scoring, windProfile, photos, water-quality, or live calm/protected/safe claims.
 - Across all public beach data after this pass: 2156 high, 269 medium, 315 low. Total non-high remaining: 584.
 
+## Popular-source confidence pass CM - 2026-06-05
+
+- Schinoussa / Gerolimnionas, Livadi, Lioliou, Portokali, Tsigouri, Fountana, Fykio, and Psili Ammos promoted from medium to high confidence for static beach facts only after reviewing Schinoussa.com, Travel.gr, Exploring Greece, Aegean Islands, Cyclades Map, AllOverGreece and direct local beach sources.
+- This pass keeps calm/clear/protected/wind wording out of scoring and windProfile. Livadi, Lioliou, Gerolimnionas, Psili Ammos and Fykio had unsupported shallow certainty neutralized to medium. Tsigouri keeps source-backed shallow-water, organized beach-bar/taverna/sunbed context and easy local access; Fountana keeps the short-path and single-tree shade context.
+- Across all public beach data after this pass: 2164 high, 261 medium, 315 low. Total non-high remaining: 576.
+
 ## Durable data rules
 
 - Do not show "4x4 only" as user-facing copy unless it is strictly verified and unavoidable. Prefer `Δύσβατος δρόμος`.
