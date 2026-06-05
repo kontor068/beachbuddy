@@ -871,6 +871,12 @@ Recommended next order:
 - Source current/caution/surf/live sea-condition wording was not imported as scoring, windProfile, photos, water-quality, or live calm/protected/safe claims.
 - Across all public beach data after this pass: 2108 high, 306 medium, 326 low. Total non-high remaining: 632.
 
+## Popular-source confidence pass CG - 2026-06-05
+
+- Samos / Koukounara and Kiriakou promoted from medium to high confidence for static beach facts only after direct SamosIn dedicated beach-profile review. Koukounara now has source-backed organization, seasonal amenities, parking/bus/taxi context, pebble terrain, some natural shade and gradual water entry. Kiriakou now has source-backed remote/no-facility character, difficult dirt-road access, pebble/sand/stone terrain, some natural shade, snorkeling context and gradual water entry.
+- Kiriakou remains a hard-access beach; high confidence here means the static facts are better sourced, not that it becomes a mainstream or top-pick beach. Source quiet/no-waves/live sea-condition wording was not imported as scoring, windProfile, photos, water-quality, or live calm/protected/safe claims.
+- Across all public beach data after this pass: 2110 high, 304 medium, 326 low. Total non-high remaining: 630.
+
 ## Durable data rules
 
 - Do not show "4x4 only" as user-facing copy unless it is strictly verified and unavoidable. Prefer `Δύσβατος δρόμος`.
