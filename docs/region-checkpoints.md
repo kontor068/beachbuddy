@@ -903,6 +903,12 @@ Recommended next order:
 - This pass keeps calm/sheltered/wind-exposure wording out of scoring and windProfile. Koulouri/Riza/Rouga keep source-backed shallow or neutral depth, pebbly terrain, shade/service context and easy road access. Agios Ioannis keeps passable dirt-road access and unorganized status without importing live sea or protection claims.
 - Across all public beach data after this pass: 2148 high, 277 medium, 315 low. Total non-high remaining: 592.
 
+## Popular-source confidence pass CL - 2026-06-05
+
+- Symi / Nos, Nos naturist area, Pedi, Agios Vasilios, Agios Nikolaos, Nanou, Agios Georgios, and Sara promoted from medium to high confidence for static beach facts only after reviewing Visit Symi, SymiTop, Aegli Apartments Symi, AllOverGreece, Symi Day Cruises, Travelfind, and BeachAtlas sources.
+- This pass made depth more conservative where the source did not directly support shallow/deep certainty: Nos, Pedi, Agios Vasilios, Nanou, Agios Georgios, and Sara now use neutral medium depth. Agios Georgios was corrected to no shade/no organized services, while Agios Nikolaos keeps source-backed shallow-water, organized-service and shade context. Source calm/clear/safe/protected wording was not imported as scoring, windProfile, photos, water-quality, or live calm/protected/safe claims.
+- Across all public beach data after this pass: 2156 high, 269 medium, 315 low. Total non-high remaining: 584.
+
 ## Durable data rules
 
 - Do not show "4x4 only" as user-facing copy unless it is strictly verified and unavoidable. Prefer `Δύσβατος δρόμος`.
