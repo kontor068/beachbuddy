@@ -214,6 +214,11 @@ const hardQuietAccessTypes = new Set(['4x4_only', 'difficult_dirt_road', 'hiking
 const terrainSupportsSnorkeling = types =>
   (types || []).some(type => type === 'rocks' || type === 'large_stones');
 
+const getMetadataActivityOverride = (metadata, activity) => {
+  const value = metadata?.activities?.[activity];
+  return typeof value === 'boolean' ? value : undefined;
+};
+
 const inferQuietFromMetadata = ({
   metadata,
   accessType,
@@ -301,8 +306,29 @@ const makeSearchAliases = (name, areaName, extraAliases = []) => Array.from(new 
   'Paralia',
 ].filter(Boolean)));
 
+const getMapCoordinates = metadata => {
+  const mapCoordinates = metadata?.mapCoordinates;
+  if (
+    !mapCoordinates ||
+    !Number.isFinite(mapCoordinates.lat) ||
+    !Number.isFinite(mapCoordinates.lon)
+  ) {
+    return undefined;
+  }
+
+  return {
+    lat: mapCoordinates.lat,
+    lon: mapCoordinates.lon,
+    ...(mapCoordinates.source ? { source: mapCoordinates.source } : {}),
+    ...(mapCoordinates.sourceUrl ? { sourceUrl: mapCoordinates.sourceUrl } : {}),
+    ...(mapCoordinates.confidence ? { confidence: mapCoordinates.confidence } : {}),
+    ...(mapCoordinates.notes ? { notes: mapCoordinates.notes } : {}),
+  };
+};
+
 const buildBeach = (rawBeach, island) => {
   const metadata = rawBeach.metadata;
+  const mapCoordinates = getMapCoordinates(metadata);
   const verifiedOrientation = getVerifiedOrientation(metadata);
   const autoProtection = getAutoProt(rawBeach.lat, rawBeach.lon, island.coordinates.lat, island.coordinates.lon);
   const protection = verifiedOrientation?.protectedFrom.length ? verifiedOrientation.protectedFrom : autoProtection;
@@ -323,6 +349,8 @@ const buildBeach = (rawBeach, island) => {
   const typeVal = getDeterministicValue(rawBeach.id, 'type');
   const isDeepWater = getDeterministicValue(rawBeach.id, 'depth') > 0.5;
   const beachType = metadata ? metadataTerrainToBeachType(metadata.terrain.types) : (typeVal > 0.85 ? 'rocky' : (typeVal > 0.65 ? 'pebbles' : (typeVal > 0.45 ? 'sandy-pebbles' : 'sandy')));
+  const snorkelingOverride = getMetadataActivityOverride(metadata, 'snorkeling');
+  const surfingOverride = getMetadataActivityOverride(metadata, 'surfing');
   const depth = metadata?.waterDepth?.type
     ? metadataWaterDepthToCharacteristics(metadata.waterDepth.type)
     : metadata ? metadataTerrainToDepth(metadata.terrain.types) : {
@@ -363,8 +391,8 @@ const buildBeach = (rawBeach, island) => {
     },
     waterDepth: depth.waterDepth,
     activities: {
-      snorkeling: metadata ? terrainSupportsSnorkeling(metadata.terrain.types) : getDeterministicValue(rawBeach.id, 'snorkeling') > 0.4,
-      surfing: getDeterministicValue(rawBeach.id, 'surfing') > 0.8,
+      snorkeling: snorkelingOverride ?? (metadata ? terrainSupportsSnorkeling(metadata.terrain.types) : getDeterministicValue(rawBeach.id, 'snorkeling') > 0.4),
+      surfing: surfingOverride ?? (getDeterministicValue(rawBeach.id, 'surfing') > 0.8),
     },
     environment: {
       quiet,
@@ -373,6 +401,7 @@ const buildBeach = (rawBeach, island) => {
     },
     popularityScore: Math.floor(getDeterministicValue(rawBeach.id, 'pop') * 100),
     coordinates: { lat: rawBeach.lat, lon: rawBeach.lon },
+    ...(mapCoordinates ? { mapCoordinates } : {}),
     location: {
       region: rawBeach.region,
       island: rawBeach.prefecture,
@@ -406,6 +435,7 @@ const buildSummaryBeach = beach => {
     environment: beach.environment,
     popularityScore: beach.popularityScore,
     coordinates: beach.coordinates,
+    ...(beach.mapCoordinates ? { mapCoordinates: beach.mapCoordinates } : {}),
     location: beach.location,
     aliases: beach.aliases,
     ...(beach.metadata?.blueFlag2026 ? { blueFlag2026: beach.metadata.blueFlag2026 } : {}),
@@ -427,6 +457,7 @@ const buildDetailBeach = beach => ({
   activities: beach.activities,
   environment: beach.environment,
   location: beach.location,
+  ...(beach.mapCoordinates ? { mapCoordinates: beach.mapCoordinates } : {}),
   aliases: beach.aliases,
   staticLabels: beach.staticLabels,
   metadata: beach.metadata,
