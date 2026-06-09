@@ -108,7 +108,7 @@ const Header: React.FC<HeaderProps> = ({
   return (
     <header className="relative z-50">
       <div className="sticky top-0 z-50 border-b border-white/70 bg-white/82 text-slate-800 shadow-sm shadow-sky-900/5 backdrop-blur-xl">
-        <div className="relative mx-auto flex h-[56px] max-w-[120rem] items-center gap-2 px-4 sm:gap-3 sm:px-6">
+        <div className="relative flex h-[56px] w-full items-center gap-2 px-4 sm:gap-3 sm:px-6 lg:px-8">
           <div className="flex min-w-0 shrink-0 items-center gap-3">
             <div className="grid h-8 w-8 shrink-0 place-items-center rounded-full bg-[#0098b0] text-white shadow-sm shadow-cyan-900/10 ring-1 ring-cyan-700/10">
               <Waves className="h-5 w-5" aria-hidden="true" />

@@ -135,6 +135,7 @@ const advancedFilterTitleLabels: Record<LanguageCode, Partial<Record<FilterKey, 
     deepWaters: 'deep water',
     shallowWaters: 'shallow water',
     easyAccess: 'easy access',
+    adventure: 'adventure beaches',
   },
   gr: {
     organized: 'οργάνωση',
@@ -151,6 +152,7 @@ const advancedFilterTitleLabels: Record<LanguageCode, Partial<Record<FilterKey, 
     deepWaters: 'βαθιά νερά',
     shallowWaters: 'ρηχά νερά',
     easyAccess: 'εύκολη πρόσβαση',
+    adventure: 'περιπέτεια',
   },
   fr: {
     organized: 'plages organisées',
@@ -167,6 +169,7 @@ const advancedFilterTitleLabels: Record<LanguageCode, Partial<Record<FilterKey, 
     deepWaters: 'eau profonde',
     shallowWaters: 'eau peu profonde',
     easyAccess: 'accès facile',
+    adventure: 'plages aventure',
   },
   de: {
     organized: 'organisierten Stränden',
@@ -183,6 +186,7 @@ const advancedFilterTitleLabels: Record<LanguageCode, Partial<Record<FilterKey, 
     deepWaters: 'tiefem Wasser',
     shallowWaters: 'flachem Wasser',
     easyAccess: 'einfachem Zugang',
+    adventure: 'Abenteuerstränden',
   },
   it: {
     organized: 'spiagge organizzate',
@@ -199,6 +203,7 @@ const advancedFilterTitleLabels: Record<LanguageCode, Partial<Record<FilterKey, 
     deepWaters: 'acqua profonda',
     shallowWaters: 'acqua bassa',
     easyAccess: 'accesso facile',
+    adventure: 'spiagge avventura',
   },
 };
 
@@ -232,6 +237,7 @@ const greekAdvancedFilterTitleTokens: Partial<Record<FilterKey, GreekFilterTitle
   deepWaters: { kind: 'with', label: 'βαθιά νερά' },
   shallowWaters: { kind: 'with', label: 'ρηχά νερά' },
   easyAccess: { kind: 'adjective', label: 'Εύκολα προσβάσιμες' },
+  adventure: { kind: 'purpose', label: 'περιπέτεια' },
 };
 
 const formatFilterList = (labels: string[], language: LanguageCode): string => {

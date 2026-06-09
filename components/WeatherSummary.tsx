@@ -9,6 +9,12 @@ interface WeatherSummaryProps {
   t: Translation;
   islandName?: string;
   variant?: 'default' | 'heroCompact' | 'header' | 'summaryStrip';
+  defaultHourlyExpanded?: boolean;
+  useWeekdayLabels?: boolean;
+  hideHourlyToggle?: boolean;
+  hideForecastHeader?: boolean;
+  stackedPills?: boolean;
+  fillHeight?: boolean;
 }
 
 export const WeatherSummary: React.FC<WeatherSummaryProps> = ({
@@ -18,6 +24,12 @@ export const WeatherSummary: React.FC<WeatherSummaryProps> = ({
   t,
   islandName,
   variant = 'default',
+  defaultHourlyExpanded = false,
+  useWeekdayLabels = false,
+  hideHourlyToggle = false,
+  hideForecastHeader = false,
+  stackedPills = false,
+  fillHeight = false,
 }) => {
   if (!forecast || forecast.length === 0 || !forecast[selectedDayIndex]) return null;
 
@@ -29,6 +41,12 @@ export const WeatherSummary: React.FC<WeatherSummaryProps> = ({
       t={t} 
       islandName={islandName}
       variant={variant}
+      defaultHourlyExpanded={defaultHourlyExpanded}
+      useWeekdayLabels={useWeekdayLabels}
+      hideHourlyToggle={hideHourlyToggle}
+      hideForecastHeader={hideForecastHeader}
+      stackedPills={stackedPills}
+      fillHeight={fillHeight}
     />
   );
 };

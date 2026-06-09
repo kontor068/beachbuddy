@@ -1,0 +1,1619 @@
+{
+  "schemaVersion": 1,
+  "generatedAt": "2026-06-08T13:54:18.197Z",
+  "regionId": "south-aegean-sifnos",
+  "policy": {
+    "sameSegment": "Beaches in the same curated shoreline segment should render the same visible exposure level unless a verified local morphology or wind-sport exception locks a stricter level.",
+    "confidence": "Segment propagation may support map-color consistency and medium review, but it never creates high confidence by itself."
+  },
+  "summary": {
+    "scenarioCount": 5,
+    "segmentCount": 6,
+    "allowedExceptions": 0,
+    "unresolvedContradictions": 0
+  },
+  "allowedExceptions": [],
+  "unresolved": [],
+  "results": [
+    {
+      "scenarioId": "Naxos_N_3BFT",
+      "windDirectionDeg": 0,
+      "segments": [
+        {
+          "segmentId": "sifnos-faros-apokofto-fasolou-front",
+          "reason": "same_village_bay",
+          "rawLevels": [
+            "protected"
+          ],
+          "consistentLevels": [
+            "protected"
+          ],
+          "rows": [
+            {
+              "beachId": 2095,
+              "name": "Αποκοφτό",
+              "level": "protected",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 2099,
+              "name": "Βλυχό",
+              "level": "protected",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 2106,
+              "name": "Σάουρες",
+              "level": "protected",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 2112,
+              "name": "Φάρος",
+              "level": "protected",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 2113,
+              "name": "Φασολού",
+              "level": "protected",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            }
+          ],
+          "rawRows": [
+            {
+              "beachId": 2095,
+              "name": "Αποκοφτό",
+              "level": "protected",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 2099,
+              "name": "Βλυχό",
+              "level": "protected",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 2106,
+              "name": "Σάουρες",
+              "level": "protected",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 2112,
+              "name": "Φάρος",
+              "level": "protected",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 2113,
+              "name": "Φασολού",
+              "level": "protected",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            }
+          ],
+          "notes": "Apokofto, Vlycho, Saoures, Faros, and Fasolou are neighboring southeast-facing Faros/Chrysopigi records; village services and access remain separately scored."
+        },
+        {
+          "segmentId": "sifnos-platys-gialos-lazarou-front",
+          "reason": "same_continuous_beachfront",
+          "rawLevels": [
+            "protected"
+          ],
+          "consistentLevels": [
+            "protected"
+          ],
+          "rows": [
+            {
+              "beachId": 2102,
+              "name": "Λαζάρου",
+              "level": "protected",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 2104,
+              "name": "Πλατύς Γιαλός",
+              "level": "protected",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            }
+          ],
+          "rawRows": [
+            {
+              "beachId": 2102,
+              "name": "Λαζάρου",
+              "level": "protected",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 2104,
+              "name": "Πλατύς Γιαλός",
+              "level": "protected",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            }
+          ],
+          "notes": "Lazarou and Platys Gialos are adjacent southeast-facing south Sifnos records; organized-service differences remain separate."
+        },
+        {
+          "segmentId": "sifnos-vathi-tsopou-front",
+          "reason": "same_village_bay",
+          "rawLevels": [
+            "protected"
+          ],
+          "consistentLevels": [
+            "protected"
+          ],
+          "rows": [
+            {
+              "beachId": 2097,
+              "name": "Βαθή",
+              "level": "protected",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 2110,
+              "name": "Τσόπου",
+              "level": "protected",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            }
+          ],
+          "rawRows": [
+            {
+              "beachId": 2097,
+              "name": "Βαθή",
+              "level": "protected",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 2110,
+              "name": "Τσόπου",
+              "level": "protected",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            }
+          ],
+          "notes": "Vathi and Tsopou are neighboring southwest-facing Vathi bay records; access and amenities remain separately scored."
+        },
+        {
+          "segmentId": "sifnos-kamares-spilia-front",
+          "reason": "same_village_bay",
+          "rawLevels": [
+            "partial"
+          ],
+          "consistentLevels": [
+            "partial"
+          ],
+          "rows": [
+            {
+              "beachId": 2101,
+              "name": "Καμάρες",
+              "level": "partial",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 2108,
+              "name": "Σπηλιά",
+              "level": "partial",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            }
+          ],
+          "rawRows": [
+            {
+              "beachId": 2101,
+              "name": "Καμάρες",
+              "level": "partial",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 2108,
+              "name": "Σπηλιά",
+              "level": "partial",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            }
+          ],
+          "notes": "Kamares and Spilia are adjacent west-facing port-bay records and should not diverge without a specific harbor morphology reason."
+        },
+        {
+          "segmentId": "sifnos-artimoni-vroulidia-cherronisos-front",
+          "reason": "same_continuous_beachfront",
+          "rawLevels": [
+            "protected"
+          ],
+          "consistentLevels": [
+            "protected"
+          ],
+          "rows": [
+            {
+              "beachId": 2096,
+              "name": "Αρτιμόνι",
+              "level": "protected",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 2100,
+              "name": "Βρουλίδια",
+              "level": "protected",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 2114,
+              "name": "Χερρόνησος",
+              "level": "protected",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            }
+          ],
+          "rawRows": [
+            {
+              "beachId": 2096,
+              "name": "Αρτιμόνι",
+              "level": "protected",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 2100,
+              "name": "Βρουλίδια",
+              "level": "protected",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 2114,
+              "name": "Χερρόνησος",
+              "level": "protected",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            }
+          ],
+          "notes": "Artimoni, Vroulidia, and Cherronisos are nearby north-Sifnos southwest-facing records; road access and organization remain separate."
+        },
+        {
+          "segmentId": "sifnos-toso-nero-tsocha-front",
+          "reason": "same_continuous_beachfront",
+          "rawLevels": [
+            "protected"
+          ],
+          "consistentLevels": [
+            "protected"
+          ],
+          "rows": [
+            {
+              "beachId": 2109,
+              "name": "Τόσο Νερό",
+              "level": "protected",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 2111,
+              "name": "Τσόχα",
+              "level": "protected",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            }
+          ],
+          "rawRows": [
+            {
+              "beachId": 2109,
+              "name": "Τόσο Νερό",
+              "level": "protected",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 2111,
+              "name": "Τσόχα",
+              "level": "protected",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            }
+          ],
+          "notes": "Toso Nero and Tsocha are nearby west-facing records; boat-only access remains a top-pick blocker where relevant."
+        }
+      ]
+    },
+    {
+      "scenarioId": "Naxos_N_5BFT",
+      "windDirectionDeg": 0,
+      "segments": [
+        {
+          "segmentId": "sifnos-faros-apokofto-fasolou-front",
+          "reason": "same_village_bay",
+          "rawLevels": [
+            "protected"
+          ],
+          "consistentLevels": [
+            "protected"
+          ],
+          "rows": [
+            {
+              "beachId": 2095,
+              "name": "Αποκοφτό",
+              "level": "protected",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 2099,
+              "name": "Βλυχό",
+              "level": "protected",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 2106,
+              "name": "Σάουρες",
+              "level": "protected",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 2112,
+              "name": "Φάρος",
+              "level": "protected",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 2113,
+              "name": "Φασολού",
+              "level": "protected",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            }
+          ],
+          "rawRows": [
+            {
+              "beachId": 2095,
+              "name": "Αποκοφτό",
+              "level": "protected",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 2099,
+              "name": "Βλυχό",
+              "level": "protected",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 2106,
+              "name": "Σάουρες",
+              "level": "protected",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 2112,
+              "name": "Φάρος",
+              "level": "protected",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 2113,
+              "name": "Φασολού",
+              "level": "protected",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            }
+          ],
+          "notes": "Apokofto, Vlycho, Saoures, Faros, and Fasolou are neighboring southeast-facing Faros/Chrysopigi records; village services and access remain separately scored."
+        },
+        {
+          "segmentId": "sifnos-platys-gialos-lazarou-front",
+          "reason": "same_continuous_beachfront",
+          "rawLevels": [
+            "protected"
+          ],
+          "consistentLevels": [
+            "protected"
+          ],
+          "rows": [
+            {
+              "beachId": 2102,
+              "name": "Λαζάρου",
+              "level": "protected",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 2104,
+              "name": "Πλατύς Γιαλός",
+              "level": "protected",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            }
+          ],
+          "rawRows": [
+            {
+              "beachId": 2102,
+              "name": "Λαζάρου",
+              "level": "protected",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 2104,
+              "name": "Πλατύς Γιαλός",
+              "level": "protected",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            }
+          ],
+          "notes": "Lazarou and Platys Gialos are adjacent southeast-facing south Sifnos records; organized-service differences remain separate."
+        },
+        {
+          "segmentId": "sifnos-vathi-tsopou-front",
+          "reason": "same_village_bay",
+          "rawLevels": [
+            "protected"
+          ],
+          "consistentLevels": [
+            "protected"
+          ],
+          "rows": [
+            {
+              "beachId": 2097,
+              "name": "Βαθή",
+              "level": "protected",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 2110,
+              "name": "Τσόπου",
+              "level": "protected",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            }
+          ],
+          "rawRows": [
+            {
+              "beachId": 2097,
+              "name": "Βαθή",
+              "level": "protected",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 2110,
+              "name": "Τσόπου",
+              "level": "protected",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            }
+          ],
+          "notes": "Vathi and Tsopou are neighboring southwest-facing Vathi bay records; access and amenities remain separately scored."
+        },
+        {
+          "segmentId": "sifnos-kamares-spilia-front",
+          "reason": "same_village_bay",
+          "rawLevels": [
+            "partial"
+          ],
+          "consistentLevels": [
+            "partial"
+          ],
+          "rows": [
+            {
+              "beachId": 2101,
+              "name": "Καμάρες",
+              "level": "partial",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 2108,
+              "name": "Σπηλιά",
+              "level": "partial",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            }
+          ],
+          "rawRows": [
+            {
+              "beachId": 2101,
+              "name": "Καμάρες",
+              "level": "partial",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 2108,
+              "name": "Σπηλιά",
+              "level": "partial",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            }
+          ],
+          "notes": "Kamares and Spilia are adjacent west-facing port-bay records and should not diverge without a specific harbor morphology reason."
+        },
+        {
+          "segmentId": "sifnos-artimoni-vroulidia-cherronisos-front",
+          "reason": "same_continuous_beachfront",
+          "rawLevels": [
+            "protected"
+          ],
+          "consistentLevels": [
+            "protected"
+          ],
+          "rows": [
+            {
+              "beachId": 2096,
+              "name": "Αρτιμόνι",
+              "level": "protected",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 2100,
+              "name": "Βρουλίδια",
+              "level": "protected",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 2114,
+              "name": "Χερρόνησος",
+              "level": "protected",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            }
+          ],
+          "rawRows": [
+            {
+              "beachId": 2096,
+              "name": "Αρτιμόνι",
+              "level": "protected",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 2100,
+              "name": "Βρουλίδια",
+              "level": "protected",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 2114,
+              "name": "Χερρόνησος",
+              "level": "protected",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            }
+          ],
+          "notes": "Artimoni, Vroulidia, and Cherronisos are nearby north-Sifnos southwest-facing records; road access and organization remain separate."
+        },
+        {
+          "segmentId": "sifnos-toso-nero-tsocha-front",
+          "reason": "same_continuous_beachfront",
+          "rawLevels": [
+            "protected"
+          ],
+          "consistentLevels": [
+            "protected"
+          ],
+          "rows": [
+            {
+              "beachId": 2109,
+              "name": "Τόσο Νερό",
+              "level": "protected",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 2111,
+              "name": "Τσόχα",
+              "level": "protected",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            }
+          ],
+          "rawRows": [
+            {
+              "beachId": 2109,
+              "name": "Τόσο Νερό",
+              "level": "protected",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 2111,
+              "name": "Τσόχα",
+              "level": "protected",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            }
+          ],
+          "notes": "Toso Nero and Tsocha are nearby west-facing records; boat-only access remains a top-pick blocker where relevant."
+        }
+      ]
+    },
+    {
+      "scenarioId": "Naxos_W_4BFT",
+      "windDirectionDeg": 270,
+      "segments": [
+        {
+          "segmentId": "sifnos-faros-apokofto-fasolou-front",
+          "reason": "same_village_bay",
+          "rawLevels": [
+            "protected"
+          ],
+          "consistentLevels": [
+            "protected"
+          ],
+          "rows": [
+            {
+              "beachId": 2095,
+              "name": "Αποκοφτό",
+              "level": "protected",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 2099,
+              "name": "Βλυχό",
+              "level": "protected",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 2106,
+              "name": "Σάουρες",
+              "level": "protected",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 2112,
+              "name": "Φάρος",
+              "level": "protected",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 2113,
+              "name": "Φασολού",
+              "level": "protected",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            }
+          ],
+          "rawRows": [
+            {
+              "beachId": 2095,
+              "name": "Αποκοφτό",
+              "level": "protected",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 2099,
+              "name": "Βλυχό",
+              "level": "protected",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 2106,
+              "name": "Σάουρες",
+              "level": "protected",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 2112,
+              "name": "Φάρος",
+              "level": "protected",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 2113,
+              "name": "Φασολού",
+              "level": "protected",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            }
+          ],
+          "notes": "Apokofto, Vlycho, Saoures, Faros, and Fasolou are neighboring southeast-facing Faros/Chrysopigi records; village services and access remain separately scored."
+        },
+        {
+          "segmentId": "sifnos-platys-gialos-lazarou-front",
+          "reason": "same_continuous_beachfront",
+          "rawLevels": [
+            "protected"
+          ],
+          "consistentLevels": [
+            "protected"
+          ],
+          "rows": [
+            {
+              "beachId": 2102,
+              "name": "Λαζάρου",
+              "level": "protected",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 2104,
+              "name": "Πλατύς Γιαλός",
+              "level": "protected",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            }
+          ],
+          "rawRows": [
+            {
+              "beachId": 2102,
+              "name": "Λαζάρου",
+              "level": "protected",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 2104,
+              "name": "Πλατύς Γιαλός",
+              "level": "protected",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            }
+          ],
+          "notes": "Lazarou and Platys Gialos are adjacent southeast-facing south Sifnos records; organized-service differences remain separate."
+        },
+        {
+          "segmentId": "sifnos-vathi-tsopou-front",
+          "reason": "same_village_bay",
+          "rawLevels": [
+            "exposed"
+          ],
+          "consistentLevels": [
+            "exposed"
+          ],
+          "rows": [
+            {
+              "beachId": 2097,
+              "name": "Βαθή",
+              "level": "exposed",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 2110,
+              "name": "Τσόπου",
+              "level": "exposed",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            }
+          ],
+          "rawRows": [
+            {
+              "beachId": 2097,
+              "name": "Βαθή",
+              "level": "exposed",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 2110,
+              "name": "Τσόπου",
+              "level": "exposed",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            }
+          ],
+          "notes": "Vathi and Tsopou are neighboring southwest-facing Vathi bay records; access and amenities remain separately scored."
+        },
+        {
+          "segmentId": "sifnos-kamares-spilia-front",
+          "reason": "same_village_bay",
+          "rawLevels": [
+            "exposed"
+          ],
+          "consistentLevels": [
+            "exposed"
+          ],
+          "rows": [
+            {
+              "beachId": 2101,
+              "name": "Καμάρες",
+              "level": "exposed",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 2108,
+              "name": "Σπηλιά",
+              "level": "exposed",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            }
+          ],
+          "rawRows": [
+            {
+              "beachId": 2101,
+              "name": "Καμάρες",
+              "level": "exposed",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 2108,
+              "name": "Σπηλιά",
+              "level": "exposed",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            }
+          ],
+          "notes": "Kamares and Spilia are adjacent west-facing port-bay records and should not diverge without a specific harbor morphology reason."
+        },
+        {
+          "segmentId": "sifnos-artimoni-vroulidia-cherronisos-front",
+          "reason": "same_continuous_beachfront",
+          "rawLevels": [
+            "exposed"
+          ],
+          "consistentLevels": [
+            "exposed"
+          ],
+          "rows": [
+            {
+              "beachId": 2096,
+              "name": "Αρτιμόνι",
+              "level": "exposed",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 2100,
+              "name": "Βρουλίδια",
+              "level": "exposed",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 2114,
+              "name": "Χερρόνησος",
+              "level": "exposed",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            }
+          ],
+          "rawRows": [
+            {
+              "beachId": 2096,
+              "name": "Αρτιμόνι",
+              "level": "exposed",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 2100,
+              "name": "Βρουλίδια",
+              "level": "exposed",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 2114,
+              "name": "Χερρόνησος",
+              "level": "exposed",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            }
+          ],
+          "notes": "Artimoni, Vroulidia, and Cherronisos are nearby north-Sifnos southwest-facing records; road access and organization remain separate."
+        },
+        {
+          "segmentId": "sifnos-toso-nero-tsocha-front",
+          "reason": "same_continuous_beachfront",
+          "rawLevels": [
+            "exposed"
+          ],
+          "consistentLevels": [
+            "exposed"
+          ],
+          "rows": [
+            {
+              "beachId": 2109,
+              "name": "Τόσο Νερό",
+              "level": "exposed",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 2111,
+              "name": "Τσόχα",
+              "level": "exposed",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            }
+          ],
+          "rawRows": [
+            {
+              "beachId": 2109,
+              "name": "Τόσο Νερό",
+              "level": "exposed",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 2111,
+              "name": "Τσόχα",
+              "level": "exposed",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            }
+          ],
+          "notes": "Toso Nero and Tsocha are nearby west-facing records; boat-only access remains a top-pick blocker where relevant."
+        }
+      ]
+    },
+    {
+      "scenarioId": "Naxos_S_4BFT",
+      "windDirectionDeg": 180,
+      "segments": [
+        {
+          "segmentId": "sifnos-faros-apokofto-fasolou-front",
+          "reason": "same_village_bay",
+          "rawLevels": [
+            "exposed"
+          ],
+          "consistentLevels": [
+            "exposed"
+          ],
+          "rows": [
+            {
+              "beachId": 2095,
+              "name": "Αποκοφτό",
+              "level": "exposed",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 2099,
+              "name": "Βλυχό",
+              "level": "exposed",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 2106,
+              "name": "Σάουρες",
+              "level": "exposed",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 2112,
+              "name": "Φάρος",
+              "level": "exposed",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 2113,
+              "name": "Φασολού",
+              "level": "exposed",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            }
+          ],
+          "rawRows": [
+            {
+              "beachId": 2095,
+              "name": "Αποκοφτό",
+              "level": "exposed",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 2099,
+              "name": "Βλυχό",
+              "level": "exposed",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 2106,
+              "name": "Σάουρες",
+              "level": "exposed",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 2112,
+              "name": "Φάρος",
+              "level": "exposed",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 2113,
+              "name": "Φασολού",
+              "level": "exposed",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            }
+          ],
+          "notes": "Apokofto, Vlycho, Saoures, Faros, and Fasolou are neighboring southeast-facing Faros/Chrysopigi records; village services and access remain separately scored."
+        },
+        {
+          "segmentId": "sifnos-platys-gialos-lazarou-front",
+          "reason": "same_continuous_beachfront",
+          "rawLevels": [
+            "exposed"
+          ],
+          "consistentLevels": [
+            "exposed"
+          ],
+          "rows": [
+            {
+              "beachId": 2102,
+              "name": "Λαζάρου",
+              "level": "exposed",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 2104,
+              "name": "Πλατύς Γιαλός",
+              "level": "exposed",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            }
+          ],
+          "rawRows": [
+            {
+              "beachId": 2102,
+              "name": "Λαζάρου",
+              "level": "exposed",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 2104,
+              "name": "Πλατύς Γιαλός",
+              "level": "exposed",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            }
+          ],
+          "notes": "Lazarou and Platys Gialos are adjacent southeast-facing south Sifnos records; organized-service differences remain separate."
+        },
+        {
+          "segmentId": "sifnos-vathi-tsopou-front",
+          "reason": "same_village_bay",
+          "rawLevels": [
+            "exposed"
+          ],
+          "consistentLevels": [
+            "exposed"
+          ],
+          "rows": [
+            {
+              "beachId": 2097,
+              "name": "Βαθή",
+              "level": "exposed",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 2110,
+              "name": "Τσόπου",
+              "level": "exposed",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            }
+          ],
+          "rawRows": [
+            {
+              "beachId": 2097,
+              "name": "Βαθή",
+              "level": "exposed",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 2110,
+              "name": "Τσόπου",
+              "level": "exposed",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            }
+          ],
+          "notes": "Vathi and Tsopou are neighboring southwest-facing Vathi bay records; access and amenities remain separately scored."
+        },
+        {
+          "segmentId": "sifnos-kamares-spilia-front",
+          "reason": "same_village_bay",
+          "rawLevels": [
+            "protected"
+          ],
+          "consistentLevels": [
+            "protected"
+          ],
+          "rows": [
+            {
+              "beachId": 2101,
+              "name": "Καμάρες",
+              "level": "protected",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 2108,
+              "name": "Σπηλιά",
+              "level": "protected",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            }
+          ],
+          "rawRows": [
+            {
+              "beachId": 2101,
+              "name": "Καμάρες",
+              "level": "protected",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 2108,
+              "name": "Σπηλιά",
+              "level": "protected",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            }
+          ],
+          "notes": "Kamares and Spilia are adjacent west-facing port-bay records and should not diverge without a specific harbor morphology reason."
+        },
+        {
+          "segmentId": "sifnos-artimoni-vroulidia-cherronisos-front",
+          "reason": "same_continuous_beachfront",
+          "rawLevels": [
+            "exposed"
+          ],
+          "consistentLevels": [
+            "exposed"
+          ],
+          "rows": [
+            {
+              "beachId": 2096,
+              "name": "Αρτιμόνι",
+              "level": "exposed",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 2100,
+              "name": "Βρουλίδια",
+              "level": "exposed",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 2114,
+              "name": "Χερρόνησος",
+              "level": "exposed",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            }
+          ],
+          "rawRows": [
+            {
+              "beachId": 2096,
+              "name": "Αρτιμόνι",
+              "level": "exposed",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 2100,
+              "name": "Βρουλίδια",
+              "level": "exposed",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 2114,
+              "name": "Χερρόνησος",
+              "level": "exposed",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            }
+          ],
+          "notes": "Artimoni, Vroulidia, and Cherronisos are nearby north-Sifnos southwest-facing records; road access and organization remain separate."
+        },
+        {
+          "segmentId": "sifnos-toso-nero-tsocha-front",
+          "reason": "same_continuous_beachfront",
+          "rawLevels": [
+            "partial"
+          ],
+          "consistentLevels": [
+            "partial"
+          ],
+          "rows": [
+            {
+              "beachId": 2109,
+              "name": "Τόσο Νερό",
+              "level": "partial",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 2111,
+              "name": "Τσόχα",
+              "level": "partial",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            }
+          ],
+          "rawRows": [
+            {
+              "beachId": 2109,
+              "name": "Τόσο Νερό",
+              "level": "partial",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 2111,
+              "name": "Τσόχα",
+              "level": "partial",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            }
+          ],
+          "notes": "Toso Nero and Tsocha are nearby west-facing records; boat-only access remains a top-pick blocker where relevant."
+        }
+      ]
+    },
+    {
+      "scenarioId": "Naxos_E_4BFT",
+      "windDirectionDeg": 90,
+      "segments": [
+        {
+          "segmentId": "sifnos-faros-apokofto-fasolou-front",
+          "reason": "same_village_bay",
+          "rawLevels": [
+            "exposed"
+          ],
+          "consistentLevels": [
+            "exposed"
+          ],
+          "rows": [
+            {
+              "beachId": 2095,
+              "name": "Αποκοφτό",
+              "level": "exposed",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 2099,
+              "name": "Βλυχό",
+              "level": "exposed",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 2106,
+              "name": "Σάουρες",
+              "level": "exposed",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 2112,
+              "name": "Φάρος",
+              "level": "exposed",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 2113,
+              "name": "Φασολού",
+              "level": "exposed",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            }
+          ],
+          "rawRows": [
+            {
+              "beachId": 2095,
+              "name": "Αποκοφτό",
+              "level": "exposed",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 2099,
+              "name": "Βλυχό",
+              "level": "exposed",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 2106,
+              "name": "Σάουρες",
+              "level": "exposed",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 2112,
+              "name": "Φάρος",
+              "level": "exposed",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 2113,
+              "name": "Φασολού",
+              "level": "exposed",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            }
+          ],
+          "notes": "Apokofto, Vlycho, Saoures, Faros, and Fasolou are neighboring southeast-facing Faros/Chrysopigi records; village services and access remain separately scored."
+        },
+        {
+          "segmentId": "sifnos-platys-gialos-lazarou-front",
+          "reason": "same_continuous_beachfront",
+          "rawLevels": [
+            "exposed"
+          ],
+          "consistentLevels": [
+            "exposed"
+          ],
+          "rows": [
+            {
+              "beachId": 2102,
+              "name": "Λαζάρου",
+              "level": "exposed",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 2104,
+              "name": "Πλατύς Γιαλός",
+              "level": "exposed",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            }
+          ],
+          "rawRows": [
+            {
+              "beachId": 2102,
+              "name": "Λαζάρου",
+              "level": "exposed",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 2104,
+              "name": "Πλατύς Γιαλός",
+              "level": "exposed",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            }
+          ],
+          "notes": "Lazarou and Platys Gialos are adjacent southeast-facing south Sifnos records; organized-service differences remain separate."
+        },
+        {
+          "segmentId": "sifnos-vathi-tsopou-front",
+          "reason": "same_village_bay",
+          "rawLevels": [
+            "protected"
+          ],
+          "consistentLevels": [
+            "protected"
+          ],
+          "rows": [
+            {
+              "beachId": 2097,
+              "name": "Βαθή",
+              "level": "protected",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 2110,
+              "name": "Τσόπου",
+              "level": "protected",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            }
+          ],
+          "rawRows": [
+            {
+              "beachId": 2097,
+              "name": "Βαθή",
+              "level": "protected",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 2110,
+              "name": "Τσόπου",
+              "level": "protected",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            }
+          ],
+          "notes": "Vathi and Tsopou are neighboring southwest-facing Vathi bay records; access and amenities remain separately scored."
+        },
+        {
+          "segmentId": "sifnos-kamares-spilia-front",
+          "reason": "same_village_bay",
+          "rawLevels": [
+            "protected"
+          ],
+          "consistentLevels": [
+            "protected"
+          ],
+          "rows": [
+            {
+              "beachId": 2101,
+              "name": "Καμάρες",
+              "level": "protected",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 2108,
+              "name": "Σπηλιά",
+              "level": "protected",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            }
+          ],
+          "rawRows": [
+            {
+              "beachId": 2101,
+              "name": "Καμάρες",
+              "level": "protected",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 2108,
+              "name": "Σπηλιά",
+              "level": "protected",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            }
+          ],
+          "notes": "Kamares and Spilia are adjacent west-facing port-bay records and should not diverge without a specific harbor morphology reason."
+        },
+        {
+          "segmentId": "sifnos-artimoni-vroulidia-cherronisos-front",
+          "reason": "same_continuous_beachfront",
+          "rawLevels": [
+            "protected"
+          ],
+          "consistentLevels": [
+            "protected"
+          ],
+          "rows": [
+            {
+              "beachId": 2096,
+              "name": "Αρτιμόνι",
+              "level": "protected",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 2100,
+              "name": "Βρουλίδια",
+              "level": "protected",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 2114,
+              "name": "Χερρόνησος",
+              "level": "protected",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            }
+          ],
+          "rawRows": [
+            {
+              "beachId": 2096,
+              "name": "Αρτιμόνι",
+              "level": "protected",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 2100,
+              "name": "Βρουλίδια",
+              "level": "protected",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 2114,
+              "name": "Χερρόνησος",
+              "level": "protected",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            }
+          ],
+          "notes": "Artimoni, Vroulidia, and Cherronisos are nearby north-Sifnos southwest-facing records; road access and organization remain separate."
+        },
+        {
+          "segmentId": "sifnos-toso-nero-tsocha-front",
+          "reason": "same_continuous_beachfront",
+          "rawLevels": [
+            "protected"
+          ],
+          "consistentLevels": [
+            "protected"
+          ],
+          "rows": [
+            {
+              "beachId": 2109,
+              "name": "Τόσο Νερό",
+              "level": "protected",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 2111,
+              "name": "Τσόχα",
+              "level": "protected",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            }
+          ],
+          "rawRows": [
+            {
+              "beachId": 2109,
+              "name": "Τόσο Νερό",
+              "level": "protected",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 2111,
+              "name": "Τσόχα",
+              "level": "protected",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            }
+          ],
+          "notes": "Toso Nero and Tsocha are nearby west-facing records; boat-only access remains a top-pick blocker where relevant."
+        }
+      ]
+    }
+  ]
+}

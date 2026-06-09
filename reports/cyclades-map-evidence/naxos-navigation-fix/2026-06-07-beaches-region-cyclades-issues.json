@@ -1,0 +1,403 @@
+{
+  "generatedAt": "2026-06-07T16:54:47.339Z",
+  "mode": "fast",
+  "scope": {
+    "label": "region-cyclades",
+    "region": "cyclades",
+    "island": null
+  },
+  "outputDir": "C:\\Users\\Miltos\\Desktop\\beach\\reports\\cyclades-map-evidence\\naxos-navigation-fix",
+  "dataset": {
+    "indexPath": "public/data/beaches/index.json",
+    "source": "/greek_beaches.json",
+    "appSchemaVersion": 1,
+    "totalBeachCountFromIndex": 2715
+  },
+  "summary": {
+    "indexRegions": 110,
+    "regionsChecked": 24,
+    "beachesChecked": 546,
+    "totalIssues": 1,
+    "issueCountsBySeverity": {
+      "BLOCKER": 0,
+      "HIGH": 0,
+      "MEDIUM": 0,
+      "LOW": 1
+    },
+    "acceptedSharedNamePairs": 0
+  },
+  "reviewSummary": {
+    "mustFixNow": 0,
+    "humanReview": 0,
+    "informational": 1,
+    "canUseAsGate": true,
+    "nextAction": "No blocking or review-level issues found.",
+    "issueCountsByType": [
+      {
+        "issueType": "metadata_amenities_free_text_schema",
+        "count": 1
+      }
+    ],
+    "externalReviewBuckets": [],
+    "regionsWithMostIssues": []
+  },
+  "coverage": {
+    "beachesWithMetadata": 546,
+    "beachesWithOrientation": 3,
+    "beachesWithWindProfile": 0,
+    "externalCoverageSource": null,
+    "externalCoverageCandidates": 0,
+    "confidenceValues": {
+      "high": 495,
+      "medium": 35,
+      "low": 16
+    },
+    "topMetadataAmenityValues": [
+      {
+        "value": "parking κοντά",
+        "count": 210
+      },
+      {
+        "value": "ξαπλώστρες εποχικά",
+        "count": 112
+      },
+      {
+        "value": "ομπρέλες εποχικά",
+        "count": 111
+      },
+      {
+        "value": "καφέ κοντά",
+        "count": 82
+      },
+      {
+        "value": "ταβέρνες κοντά",
+        "count": 81
+      },
+      {
+        "value": "WC εποχικά",
+        "count": 52
+      },
+      {
+        "value": "ντους εποχικά",
+        "count": 51
+      },
+      {
+        "value": "beach bar",
+        "count": 46
+      },
+      {
+        "value": "καφέ",
+        "count": 39
+      },
+      {
+        "value": "beach bar εποχικά",
+        "count": 28
+      },
+      {
+        "value": "ταβέρνα κοντά",
+        "count": 23
+      },
+      {
+        "value": "restaurant κοντά",
+        "count": 20
+      },
+      {
+        "value": "φυσική σκιά",
+        "count": 16
+      },
+      {
+        "value": "πρόσβαση με ιδιωτικό ή εκδρομικό σκάφος",
+        "count": 13
+      },
+      {
+        "value": "καμία οργανωμένη παροχή",
+        "count": 11
+      },
+      {
+        "value": "watersports",
+        "count": 11
+      },
+      {
+        "value": "εστιατόρια",
+        "count": 9
+      },
+      {
+        "value": "χωρίς σταθερές παροχές",
+        "count": 9
+      },
+      {
+        "value": "ντους",
+        "count": 8
+      },
+      {
+        "value": "beach bars εποχικά",
+        "count": 8
+      },
+      {
+        "value": "εστιατόριο κοντά",
+        "count": 7
+      },
+      {
+        "value": "καντίνα εποχικά",
+        "count": 7
+      },
+      {
+        "value": "αποδυτήρια",
+        "count": 7
+      },
+      {
+        "value": "εστιατόρια κοντά",
+        "count": 6
+      },
+      {
+        "value": "ταβέρνες",
+        "count": 4
+      },
+      {
+        "value": "καφέ εποχικά",
+        "count": 4
+      },
+      {
+        "value": "τουαλέτα",
+        "count": 4
+      },
+      {
+        "value": "πρόσβαση με σκάφος ή πεζοπορικό μονοπάτι",
+        "count": 4
+      },
+      {
+        "value": "απαιτείται περπάτημα",
+        "count": 4
+      },
+      {
+        "value": "beach bar κοντά",
+        "count": 3
+      },
+      {
+        "value": "πρόσβαση και με σκάφος",
+        "count": 3
+      },
+      {
+        "value": "ταβέρνα εποχικά",
+        "count": 3
+      },
+      {
+        "value": "μπαρ κοντά",
+        "count": 3
+      },
+      {
+        "value": "parking πριν το μονοπάτι",
+        "count": 3
+      },
+      {
+        "value": "λιμάνι κοντά",
+        "count": 3
+      },
+      {
+        "value": "beach clubs",
+        "count": 3
+      },
+      {
+        "value": "ξαπλώστρες",
+        "count": 3
+      },
+      {
+        "value": "parking στον δρόμο",
+        "count": 3
+      },
+      {
+        "value": "καταλύματα κοντά",
+        "count": 3
+      },
+      {
+        "value": "watersports εποχικά",
+        "count": 3
+      },
+      {
+        "value": "περιορισμένη στάθμευση κοντά",
+        "count": 3
+      },
+      {
+        "value": "καντίνα εποχικά κοντά",
+        "count": 2
+      },
+      {
+        "value": "parking πάνω από την παραλία",
+        "count": 2
+      },
+      {
+        "value": "δωμάτια κοντά",
+        "count": 2
+      },
+      {
+        "value": "χωρίς επιβεβαιωμένες παροχές",
+        "count": 2
+      },
+      {
+        "value": "χωρίς οργανωμένες παροχές",
+        "count": 2
+      },
+      {
+        "value": "snack bar εποχικά",
+        "count": 2
+      },
+      {
+        "value": "καμία οργανωμένη παροχή στην παραλία",
+        "count": 2
+      },
+      {
+        "value": "εστιατόριο",
+        "count": 2
+      },
+      {
+        "value": "καφέ κοντά εποχικά",
+        "count": 2
+      }
+    ]
+  },
+  "acceptedSharedNamePairs": [],
+  "issues": [
+    {
+      "beach_id": null,
+      "beach_name": null,
+      "region": null,
+      "issue_type": "metadata_amenities_free_text_schema",
+      "severity": "LOW",
+      "review_category": "informational",
+      "human_summary": "metadata.amenities currently contains free-text labels. This is acceptable for source notes but risky as a feature schema.",
+      "file": null,
+      "current_value": [
+        {
+          "value": "parking κοντά",
+          "count": 210
+        },
+        {
+          "value": "ξαπλώστρες εποχικά",
+          "count": 112
+        },
+        {
+          "value": "ομπρέλες εποχικά",
+          "count": 111
+        },
+        {
+          "value": "καφέ κοντά",
+          "count": 82
+        },
+        {
+          "value": "ταβέρνες κοντά",
+          "count": 81
+        },
+        {
+          "value": "WC εποχικά",
+          "count": 52
+        },
+        {
+          "value": "ντους εποχικά",
+          "count": 51
+        },
+        {
+          "value": "beach bar",
+          "count": 46
+        },
+        {
+          "value": "καφέ",
+          "count": 39
+        },
+        {
+          "value": "beach bar εποχικά",
+          "count": 28
+        },
+        {
+          "value": "ταβέρνα κοντά",
+          "count": 23
+        },
+        {
+          "value": "restaurant κοντά",
+          "count": 20
+        },
+        {
+          "value": "φυσική σκιά",
+          "count": 16
+        },
+        {
+          "value": "πρόσβαση με ιδιωτικό ή εκδρομικό σκάφος",
+          "count": 13
+        },
+        {
+          "value": "καμία οργανωμένη παροχή",
+          "count": 11
+        },
+        {
+          "value": "watersports",
+          "count": 11
+        },
+        {
+          "value": "εστιατόρια",
+          "count": 9
+        },
+        {
+          "value": "χωρίς σταθερές παροχές",
+          "count": 9
+        },
+        {
+          "value": "ντους",
+          "count": 8
+        },
+        {
+          "value": "beach bars εποχικά",
+          "count": 8
+        },
+        {
+          "value": "εστιατόριο κοντά",
+          "count": 7
+        },
+        {
+          "value": "καντίνα εποχικά",
+          "count": 7
+        },
+        {
+          "value": "αποδυτήρια",
+          "count": 7
+        },
+        {
+          "value": "εστιατόρια κοντά",
+          "count": 6
+        },
+        {
+          "value": "ταβέρνες",
+          "count": 4
+        },
+        {
+          "value": "καφέ εποχικά",
+          "count": 4
+        },
+        {
+          "value": "τουαλέτα",
+          "count": 4
+        },
+        {
+          "value": "πρόσβαση με σκάφος ή πεζοπορικό μονοπάτι",
+          "count": 4
+        },
+        {
+          "value": "απαιτείται περπάτημα",
+          "count": 4
+        },
+        {
+          "value": "beach bar κοντά",
+          "count": 3
+        }
+      ],
+      "suggested_value": "Move metadata.amenities toward controlled values while preserving source notes separately.",
+      "confidence": 0.9,
+      "evidence": [
+        {
+          "source_name": "local deterministic audit",
+          "source_url": null,
+          "quote_or_note": "metadata.amenities currently contains free-text labels. This is acceptable for source notes but risky as a feature schema."
+        }
+      ],
+      "recommended_action": "needs_human_review"
+    }
+  ]
+}

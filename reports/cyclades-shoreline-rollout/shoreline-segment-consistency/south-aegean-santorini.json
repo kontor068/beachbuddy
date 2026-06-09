@@ -1,0 +1,764 @@
+{
+  "schemaVersion": 1,
+  "generatedAt": "2026-06-08T13:53:36.939Z",
+  "regionId": "south-aegean-santorini",
+  "policy": {
+    "sameSegment": "Beaches in the same curated shoreline segment should render the same visible exposure level unless a verified local morphology or wind-sport exception locks a stricter level.",
+    "confidence": "Segment propagation may support map-color consistency and medium review, but it never creates high confidence by itself."
+  },
+  "summary": {
+    "scenarioCount": 5,
+    "segmentCount": 3,
+    "allowedExceptions": 0,
+    "unresolvedContradictions": 0
+  },
+  "allowedExceptions": [],
+  "unresolved": [],
+  "results": [
+    {
+      "scenarioId": "Naxos_N_3BFT",
+      "windDirectionDeg": 0,
+      "segments": [
+        {
+          "segmentId": "santorini-perissa-perivolos-agios-georgios-front",
+          "reason": "same_continuous_beachfront",
+          "rawLevels": [
+            "protected"
+          ],
+          "consistentLevels": [
+            "protected"
+          ],
+          "rows": [
+            {
+              "beachId": 2068,
+              "name": "Περίσσα",
+              "level": "protected",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 2067,
+              "name": "Περίβολος",
+              "level": "protected",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 2057,
+              "name": "Άγιος Γεώργιος",
+              "level": "protected",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            }
+          ],
+          "rawRows": [
+            {
+              "beachId": 2068,
+              "name": "Περίσσα",
+              "level": "protected",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 2067,
+              "name": "Περίβολος",
+              "level": "protected",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 2057,
+              "name": "Άγιος Γεώργιος",
+              "level": "protected",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            }
+          ],
+          "notes": "Perissa, Perivolos, and Agios Georgios form the main southeast Santorini beach-front; resort amenities and access remain separately scored."
+        },
+        {
+          "segmentId": "santorini-vlychada-front",
+          "reason": "same_continuous_beachfront",
+          "rawLevels": [
+            "protected"
+          ],
+          "consistentLevels": [
+            "protected"
+          ],
+          "rows": [
+            {
+              "beachId": 2058,
+              "name": "Βλυχάδα",
+              "level": "protected",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 2060,
+              "name": "Γυμνιστική παραλία Βλυχάδα",
+              "level": "protected",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            }
+          ],
+          "rawRows": [
+            {
+              "beachId": 2058,
+              "name": "Βλυχάδα",
+              "level": "protected",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 2060,
+              "name": "Γυμνιστική παραλία Βλυχάδα",
+              "level": "protected",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            }
+          ],
+          "notes": "Vlychada and Gymnistiki Paralia Vlychada are adjacent south-facing records; hiking/naturist context remains separate from exposure consistency."
+        },
+        {
+          "segmentId": "santorini-red-white-south-front",
+          "reason": "same_continuous_beachfront",
+          "rawLevels": [
+            "protected"
+          ],
+          "consistentLevels": [
+            "protected"
+          ],
+          "rows": [
+            {
+              "beachId": 2062,
+              "name": "Κόκκινη Παραλία",
+              "level": "protected",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 2063,
+              "name": "Λευκή Παραλία",
+              "level": "protected",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            }
+          ],
+          "rawRows": [
+            {
+              "beachId": 2062,
+              "name": "Κόκκινη Παραλία",
+              "level": "protected",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 2063,
+              "name": "Λευκή Παραλία",
+              "level": "protected",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            }
+          ],
+          "notes": "Kokkini Paralia and Levki Paralia are neighboring south-facing caldera-side records; difficult/boat-only access must still block top-pick promotion."
+        }
+      ]
+    },
+    {
+      "scenarioId": "Naxos_N_5BFT",
+      "windDirectionDeg": 0,
+      "segments": [
+        {
+          "segmentId": "santorini-perissa-perivolos-agios-georgios-front",
+          "reason": "same_continuous_beachfront",
+          "rawLevels": [
+            "protected"
+          ],
+          "consistentLevels": [
+            "protected"
+          ],
+          "rows": [
+            {
+              "beachId": 2068,
+              "name": "Περίσσα",
+              "level": "protected",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 2067,
+              "name": "Περίβολος",
+              "level": "protected",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 2057,
+              "name": "Άγιος Γεώργιος",
+              "level": "protected",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            }
+          ],
+          "rawRows": [
+            {
+              "beachId": 2068,
+              "name": "Περίσσα",
+              "level": "protected",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 2067,
+              "name": "Περίβολος",
+              "level": "protected",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 2057,
+              "name": "Άγιος Γεώργιος",
+              "level": "protected",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            }
+          ],
+          "notes": "Perissa, Perivolos, and Agios Georgios form the main southeast Santorini beach-front; resort amenities and access remain separately scored."
+        },
+        {
+          "segmentId": "santorini-vlychada-front",
+          "reason": "same_continuous_beachfront",
+          "rawLevels": [
+            "protected"
+          ],
+          "consistentLevels": [
+            "protected"
+          ],
+          "rows": [
+            {
+              "beachId": 2058,
+              "name": "Βλυχάδα",
+              "level": "protected",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 2060,
+              "name": "Γυμνιστική παραλία Βλυχάδα",
+              "level": "protected",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            }
+          ],
+          "rawRows": [
+            {
+              "beachId": 2058,
+              "name": "Βλυχάδα",
+              "level": "protected",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 2060,
+              "name": "Γυμνιστική παραλία Βλυχάδα",
+              "level": "protected",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            }
+          ],
+          "notes": "Vlychada and Gymnistiki Paralia Vlychada are adjacent south-facing records; hiking/naturist context remains separate from exposure consistency."
+        },
+        {
+          "segmentId": "santorini-red-white-south-front",
+          "reason": "same_continuous_beachfront",
+          "rawLevels": [
+            "protected"
+          ],
+          "consistentLevels": [
+            "protected"
+          ],
+          "rows": [
+            {
+              "beachId": 2062,
+              "name": "Κόκκινη Παραλία",
+              "level": "protected",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 2063,
+              "name": "Λευκή Παραλία",
+              "level": "protected",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            }
+          ],
+          "rawRows": [
+            {
+              "beachId": 2062,
+              "name": "Κόκκινη Παραλία",
+              "level": "protected",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 2063,
+              "name": "Λευκή Παραλία",
+              "level": "protected",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            }
+          ],
+          "notes": "Kokkini Paralia and Levki Paralia are neighboring south-facing caldera-side records; difficult/boat-only access must still block top-pick promotion."
+        }
+      ]
+    },
+    {
+      "scenarioId": "Naxos_W_4BFT",
+      "windDirectionDeg": 270,
+      "segments": [
+        {
+          "segmentId": "santorini-perissa-perivolos-agios-georgios-front",
+          "reason": "same_continuous_beachfront",
+          "rawLevels": [
+            "protected"
+          ],
+          "consistentLevels": [
+            "protected"
+          ],
+          "rows": [
+            {
+              "beachId": 2068,
+              "name": "Περίσσα",
+              "level": "protected",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 2067,
+              "name": "Περίβολος",
+              "level": "protected",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 2057,
+              "name": "Άγιος Γεώργιος",
+              "level": "protected",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            }
+          ],
+          "rawRows": [
+            {
+              "beachId": 2068,
+              "name": "Περίσσα",
+              "level": "protected",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 2067,
+              "name": "Περίβολος",
+              "level": "protected",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 2057,
+              "name": "Άγιος Γεώργιος",
+              "level": "protected",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            }
+          ],
+          "notes": "Perissa, Perivolos, and Agios Georgios form the main southeast Santorini beach-front; resort amenities and access remain separately scored."
+        },
+        {
+          "segmentId": "santorini-vlychada-front",
+          "reason": "same_continuous_beachfront",
+          "rawLevels": [
+            "partial"
+          ],
+          "consistentLevels": [
+            "partial"
+          ],
+          "rows": [
+            {
+              "beachId": 2058,
+              "name": "Βλυχάδα",
+              "level": "partial",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 2060,
+              "name": "Γυμνιστική παραλία Βλυχάδα",
+              "level": "partial",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            }
+          ],
+          "rawRows": [
+            {
+              "beachId": 2058,
+              "name": "Βλυχάδα",
+              "level": "partial",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 2060,
+              "name": "Γυμνιστική παραλία Βλυχάδα",
+              "level": "partial",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            }
+          ],
+          "notes": "Vlychada and Gymnistiki Paralia Vlychada are adjacent south-facing records; hiking/naturist context remains separate from exposure consistency."
+        },
+        {
+          "segmentId": "santorini-red-white-south-front",
+          "reason": "same_continuous_beachfront",
+          "rawLevels": [
+            "partial"
+          ],
+          "consistentLevels": [
+            "partial"
+          ],
+          "rows": [
+            {
+              "beachId": 2062,
+              "name": "Κόκκινη Παραλία",
+              "level": "partial",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 2063,
+              "name": "Λευκή Παραλία",
+              "level": "partial",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            }
+          ],
+          "rawRows": [
+            {
+              "beachId": 2062,
+              "name": "Κόκκινη Παραλία",
+              "level": "partial",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 2063,
+              "name": "Λευκή Παραλία",
+              "level": "partial",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            }
+          ],
+          "notes": "Kokkini Paralia and Levki Paralia are neighboring south-facing caldera-side records; difficult/boat-only access must still block top-pick promotion."
+        }
+      ]
+    },
+    {
+      "scenarioId": "Naxos_S_4BFT",
+      "windDirectionDeg": 180,
+      "segments": [
+        {
+          "segmentId": "santorini-perissa-perivolos-agios-georgios-front",
+          "reason": "same_continuous_beachfront",
+          "rawLevels": [
+            "exposed"
+          ],
+          "consistentLevels": [
+            "exposed"
+          ],
+          "rows": [
+            {
+              "beachId": 2068,
+              "name": "Περίσσα",
+              "level": "exposed",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 2067,
+              "name": "Περίβολος",
+              "level": "exposed",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 2057,
+              "name": "Άγιος Γεώργιος",
+              "level": "exposed",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            }
+          ],
+          "rawRows": [
+            {
+              "beachId": 2068,
+              "name": "Περίσσα",
+              "level": "exposed",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 2067,
+              "name": "Περίβολος",
+              "level": "exposed",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 2057,
+              "name": "Άγιος Γεώργιος",
+              "level": "exposed",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            }
+          ],
+          "notes": "Perissa, Perivolos, and Agios Georgios form the main southeast Santorini beach-front; resort amenities and access remain separately scored."
+        },
+        {
+          "segmentId": "santorini-vlychada-front",
+          "reason": "same_continuous_beachfront",
+          "rawLevels": [
+            "exposed"
+          ],
+          "consistentLevels": [
+            "exposed"
+          ],
+          "rows": [
+            {
+              "beachId": 2058,
+              "name": "Βλυχάδα",
+              "level": "exposed",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 2060,
+              "name": "Γυμνιστική παραλία Βλυχάδα",
+              "level": "exposed",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            }
+          ],
+          "rawRows": [
+            {
+              "beachId": 2058,
+              "name": "Βλυχάδα",
+              "level": "exposed",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 2060,
+              "name": "Γυμνιστική παραλία Βλυχάδα",
+              "level": "exposed",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            }
+          ],
+          "notes": "Vlychada and Gymnistiki Paralia Vlychada are adjacent south-facing records; hiking/naturist context remains separate from exposure consistency."
+        },
+        {
+          "segmentId": "santorini-red-white-south-front",
+          "reason": "same_continuous_beachfront",
+          "rawLevels": [
+            "exposed"
+          ],
+          "consistentLevels": [
+            "exposed"
+          ],
+          "rows": [
+            {
+              "beachId": 2062,
+              "name": "Κόκκινη Παραλία",
+              "level": "exposed",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 2063,
+              "name": "Λευκή Παραλία",
+              "level": "exposed",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            }
+          ],
+          "rawRows": [
+            {
+              "beachId": 2062,
+              "name": "Κόκκινη Παραλία",
+              "level": "exposed",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 2063,
+              "name": "Λευκή Παραλία",
+              "level": "exposed",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            }
+          ],
+          "notes": "Kokkini Paralia and Levki Paralia are neighboring south-facing caldera-side records; difficult/boat-only access must still block top-pick promotion."
+        }
+      ]
+    },
+    {
+      "scenarioId": "Naxos_E_4BFT",
+      "windDirectionDeg": 90,
+      "segments": [
+        {
+          "segmentId": "santorini-perissa-perivolos-agios-georgios-front",
+          "reason": "same_continuous_beachfront",
+          "rawLevels": [
+            "exposed"
+          ],
+          "consistentLevels": [
+            "exposed"
+          ],
+          "rows": [
+            {
+              "beachId": 2068,
+              "name": "Περίσσα",
+              "level": "exposed",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 2067,
+              "name": "Περίβολος",
+              "level": "exposed",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 2057,
+              "name": "Άγιος Γεώργιος",
+              "level": "exposed",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            }
+          ],
+          "rawRows": [
+            {
+              "beachId": 2068,
+              "name": "Περίσσα",
+              "level": "exposed",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 2067,
+              "name": "Περίβολος",
+              "level": "exposed",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 2057,
+              "name": "Άγιος Γεώργιος",
+              "level": "exposed",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            }
+          ],
+          "notes": "Perissa, Perivolos, and Agios Georgios form the main southeast Santorini beach-front; resort amenities and access remain separately scored."
+        },
+        {
+          "segmentId": "santorini-vlychada-front",
+          "reason": "same_continuous_beachfront",
+          "rawLevels": [
+            "partial"
+          ],
+          "consistentLevels": [
+            "partial"
+          ],
+          "rows": [
+            {
+              "beachId": 2058,
+              "name": "Βλυχάδα",
+              "level": "partial",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 2060,
+              "name": "Γυμνιστική παραλία Βλυχάδα",
+              "level": "partial",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            }
+          ],
+          "rawRows": [
+            {
+              "beachId": 2058,
+              "name": "Βλυχάδα",
+              "level": "partial",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 2060,
+              "name": "Γυμνιστική παραλία Βλυχάδα",
+              "level": "partial",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            }
+          ],
+          "notes": "Vlychada and Gymnistiki Paralia Vlychada are adjacent south-facing records; hiking/naturist context remains separate from exposure consistency."
+        },
+        {
+          "segmentId": "santorini-red-white-south-front",
+          "reason": "same_continuous_beachfront",
+          "rawLevels": [
+            "protected"
+          ],
+          "consistentLevels": [
+            "protected"
+          ],
+          "rows": [
+            {
+              "beachId": 2062,
+              "name": "Κόκκινη Παραλία",
+              "level": "protected",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 2063,
+              "name": "Λευκή Παραλία",
+              "level": "protected",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            }
+          ],
+          "rawRows": [
+            {
+              "beachId": 2062,
+              "name": "Κόκκινη Παραλία",
+              "level": "protected",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 2063,
+              "name": "Λευκή Παραλία",
+              "level": "protected",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            }
+          ],
+          "notes": "Kokkini Paralia and Levki Paralia are neighboring south-facing caldera-side records; difficult/boat-only access must still block top-pick promotion."
+        }
+      ]
+    }
+  ]
+}

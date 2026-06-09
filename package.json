@@ -7,11 +7,15 @@
     "dev": "vite",
     "build:beach-data": "node scripts/buildBeachRegionData.mjs",
     "audit:beaches": "node scripts/auditBeachDataset.mjs",
+    "audit:cyclades-map-evidence": "node scripts/auditCycladesMapEvidence.mjs",
+    "audit:cyclades-google-places": "node scripts/auditCycladesGooglePlaces.mjs",
+    "audit:wind-profile-evidence": "node scripts/auditWindProfileEvidence.mjs",
     "quality:explain": "node scripts/runCriticalQualityChecks.mjs --explain",
     "quality:beach-data": "node scripts/validateCriticalBeachData.mjs",
     "quality:critical": "node scripts/runCriticalQualityChecks.mjs",
     "quality:auto": "node scripts/runCriticalQualityChecks.mjs --auto --max-attempts=3",
     "content:audit": "node scripts/auditStaticBeachContent.mjs",
+    "visual:qa": "node scripts/visualQa.mjs",
     "photos:milos": "node scripts/findMilosBeachImages.mjs",
     "photos:destinations:cards": "node scripts/optimizeDestinationCardImages.mjs",
     "images:backgrounds": "node scripts/optimizeBackgroundImages.mjs",
@@ -38,6 +42,7 @@
     "tailwindcss": "^4.2.1"
   },
   "devDependencies": {
+    "@playwright/test": "^1.60.0",
     "@types/node": "^22.14.0",
     "@types/react-virtualized-auto-sizer": "^1.0.4",
     "@types/react-window": "^1.8.8",

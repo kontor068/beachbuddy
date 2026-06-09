@@ -1,6 +1,14 @@
 import { existsSync, mkdirSync, readdirSync, readFileSync, writeFileSync } from 'node:fs';
 import path from 'node:path';
-import { assessGeospatialWindExposure, resolveNearshoreWaterOrigin, type GeoPoint, type LandMask } from '../utils/geospatialExposureModel';
+import {
+  assessGeospatialWindExposure,
+  computeDirectionalExposure,
+  computeShorelineOrientation,
+  onshoreComponent,
+  resolveNearshoreWaterOrigin,
+  type GeoPoint,
+  type LandMask,
+} from '../utils/geospatialExposureModel';
 
 type Coordinates = { lat: number; lon: number };
 
@@ -59,6 +67,8 @@ type SectorExposure = {
   level: 'protected' | 'partial' | 'exposed';
   fetchKm: number;
   blockedRayRatio: number;
+  onshore?: number;
+  intensity?: number;
 };
 
 type BeachExposureProfile = {
@@ -68,6 +78,7 @@ type BeachExposureProfile = {
     gr: string;
   };
   coordinates: Coordinates;
+  facingDeg: number | null;
   sectors: Record<Sector, SectorExposure>;
   confidence: 'low' | 'medium' | 'high';
 };
@@ -96,11 +107,17 @@ const sectors: Array<{ key: Sector; degrees: number }> = [
 ];
 
 const maxFetchKm = 25;
-const stepKm = 1;
-const nearshoreLandGraceKm = 1;
+const stepKm = 0.5;
+const nearshoreLandGraceKm = 0.3;
 const nearshoreWaterSearchKm = 12;
 const nearshoreWaterSearchStepKm = 0.5;
 const fanAnglesDeg = [-30, -15, 0, 15, 30];
+
+// When a higher-resolution coastline is supplied via --land-geojson the fetch
+// rays can be sampled finer and trust nearby land, because the geometry no
+// longer suffers from the ~hundreds-of-metres generalisation of Natural Earth.
+const highResStepKm = 0.2;
+const highResNearshoreLandGraceKm = 0.1;
 
 const parseArgValue = (name: string): string | undefined => {
   const index = process.argv.indexOf(name);
@@ -109,8 +126,19 @@ const parseArgValue = (name: string): string | undefined => {
 };
 
 const shouldDownload = !process.argv.includes('--no-download');
-const landGeoJsonPath = path.resolve(parseArgValue('--land-geojson') || defaultLandGeoJsonPath);
+const customLandGeoJson = parseArgValue('--land-geojson');
+const landGeoJsonPath = path.resolve(customLandGeoJson || defaultLandGeoJsonPath);
 const outputDirectory = path.resolve(parseArgValue('--output-dir') || defaultOutputDirectory);
+// A custom --land-geojson is treated as the high-resolution coastline upgrade
+// (OSM land polygons / GSHHG full, clipped to Greece). Without it we fall back
+// to the bundled Natural Earth baseline so automated runs never break.
+const isHighResMask = Boolean(customLandGeoJson);
+// Optional region filter for pilot runs, e.g. --region cyclades or
+// --region south-aegean,central-greece (matched against the region id).
+const regionFilter = (parseArgValue('--region') || '')
+  .split(',')
+  .map(value => value.trim().toLowerCase())
+  .filter(Boolean);
 
 const ensureParentDirectory = (filePath: string) => {
   mkdirSync(path.dirname(filePath), { recursive: true });
@@ -208,9 +236,13 @@ const pointInRing = (point: GeoPoint, ring: Ring): boolean => {
   return inside;
 };
 
-const createLandMask = (polygons: IndexedPolygon[]): LandMask => ({
-  source: 'Natural Earth 1:10m land polygons',
-  confidence: 'low',
+const createLandMask = (
+  polygons: IndexedPolygon[],
+  source: string,
+  confidence: 'low' | 'medium' | 'high'
+): LandMask => ({
+  source,
+  confidence,
   isLand: point => polygons.some(polygon => {
     if (
       point.lat < polygon.bbox.minLat ||
@@ -247,7 +279,9 @@ const readdirJson = (directory: string): string[] => {
 
 const createBeachProfile = (
   beach: BeachRecord,
-  landMask: LandMask
+  landMask: LandMask,
+  rayStepKm: number,
+  landGraceKm: number
 ): BeachExposureProfile | undefined => {
   if (!beach.coordinates) return undefined;
 
@@ -258,14 +292,16 @@ const createBeachProfile = (
     nearshoreWaterSearchStepKm
   );
 
+  const facingDeg = computeShorelineOrientation(sampleOrigin.point, landMask);
+
   const sectorProfiles = sectors.reduce((accumulator, sector) => {
     const result = assessGeospatialWindExposure({
       beach: beach.coordinates as Coordinates,
       windDirectionDeg: sector.degrees,
       landMask,
       maxFetchKm,
-      stepKm,
-      nearshoreLandGraceKm,
+      stepKm: rayStepKm,
+      nearshoreLandGraceKm: landGraceKm,
       nearshoreWaterSearchKm,
       nearshoreWaterSearchStepKm,
       sampleOrigin: sampleOrigin.point,
@@ -273,11 +309,29 @@ const createBeachProfile = (
       fanAnglesDeg,
     });
 
-    accumulator[sector.key] = {
-      level: result.exposureLevel,
-      fetchKm: result.openWaterFetchKm,
-      blockedRayRatio: result.blockedRayRatio,
-    };
+    // With a known shoreline normal the onshore/offshore component gates the
+    // exposure; without it we fall back to the raw fetch-based classification.
+    if (facingDeg !== null) {
+      const onshore = onshoreComponent(sector.degrees, facingDeg);
+      const directional = computeDirectionalExposure({
+        fetchKm: result.openWaterFetchKm,
+        blockedRayRatio: result.blockedRayRatio,
+        onshore,
+      });
+      accumulator[sector.key] = {
+        level: directional.level,
+        fetchKm: result.openWaterFetchKm,
+        blockedRayRatio: result.blockedRayRatio,
+        onshore: Number(onshore.toFixed(3)),
+        intensity: directional.intensity,
+      };
+    } else {
+      accumulator[sector.key] = {
+        level: result.exposureLevel,
+        fetchKm: result.openWaterFetchKm,
+        blockedRayRatio: result.blockedRayRatio,
+      };
+    }
 
     return accumulator;
   }, {} as Record<Sector, SectorExposure>);
@@ -289,6 +343,7 @@ const createBeachProfile = (
       gr: beach.name?.gr || beach.name?.en || String(beach.id),
     },
     coordinates: beach.coordinates,
+    facingDeg,
     sectors: sectorProfiles,
     confidence: landMask.confidence,
   };
@@ -322,8 +377,23 @@ const main = async () => {
     throw new Error('No Greece-area land polygons were indexed from the land mask.');
   }
 
-  const landMask = createLandMask(polygons);
-  const regions = loadAppRegions();
+  const maskSource = isHighResMask
+    ? `High-resolution coastline (${path.basename(landGeoJsonPath)})`
+    : 'Natural Earth 1:10m land polygons';
+  // The geometry-derived shoreline normal + onshore/offshore reasoning make the
+  // baseline far more reliable than raw fetch buckets, so Natural Earth is now
+  // 'medium' rather than 'low'; a supplied high-res coastline earns 'high'.
+  const maskConfidence: 'low' | 'medium' | 'high' = isHighResMask ? 'high' : 'medium';
+  const rayStepKm = isHighResMask ? highResStepKm : stepKm;
+  const landGraceKm = isHighResMask ? highResNearshoreLandGraceKm : nearshoreLandGraceKm;
+
+  const landMask = createLandMask(polygons, maskSource, maskConfidence);
+  const regions = loadAppRegions().filter(region => (
+    regionFilter.length === 0 || regionFilter.some(filter => region.regionId.toLowerCase().includes(filter))
+  ));
+  if (regions.length === 0) {
+    throw new Error(`No app regions matched the --region filter: ${regionFilter.join(', ')}`);
+  }
   const summaryByRegion: Record<string, {
     regionName: string;
     beachCount: number;
@@ -340,7 +410,7 @@ const main = async () => {
     totalBeachCount += region.beaches.length;
 
     region.beaches.forEach(beach => {
-      const profile = createBeachProfile(beach, landMask);
+      const profile = createBeachProfile(beach, landMask, rayStepKm, landGraceKm);
       if (!profile) {
         totalMissingCoordinates += 1;
         return;
@@ -361,12 +431,14 @@ const main = async () => {
       },
       settings: {
         maxFetchKm,
-        stepKm,
-        nearshoreLandGraceKm,
+        stepKm: rayStepKm,
+        nearshoreLandGraceKm: landGraceKm,
         nearshoreWaterSearchKm,
         nearshoreWaterSearchStepKm,
         fanAnglesDeg,
         sectors: sectors.map(sector => sector.key),
+        maskSource,
+        maskConfidence,
       },
       summary: {
         beachCount: region.beaches.length,
@@ -400,22 +472,26 @@ const main = async () => {
     purpose: 'Offline directional geospatial exposure baseline for CalmBeach. Not user-facing proof of calm/protected conditions.',
     source: {
       landMask: {
-        name: 'Natural Earth 1:10m land polygons',
-        url: naturalEarthLandUrl,
-        license: 'Public domain',
-        confidence: 'low',
-        notes: 'Baseline all-Greece land mask. Use OSM/coastline upgrades for high-detail island/cove decisions.',
+        name: maskSource,
+        url: isHighResMask ? landGeoJsonPath : naturalEarthLandUrl,
+        license: 'Public domain / open data',
+        confidence: maskConfidence,
+        notes: isHighResMask
+          ? 'High-resolution coastline upgrade supplied via --land-geojson. Resolves headlands, islets and coves at beach scale.'
+          : 'Baseline all-Greece land mask, refined by geometry-derived shoreline orientation and onshore/offshore reasoning. Supply --land-geojson for high-detail island/cove decisions.',
       },
       appBeachData: '/public/data/beaches/app/*.json',
     },
     settings: {
       maxFetchKm,
-      stepKm,
-      nearshoreLandGraceKm,
+      stepKm: rayStepKm,
+      nearshoreLandGraceKm: landGraceKm,
       nearshoreWaterSearchKm,
       nearshoreWaterSearchStepKm,
       fanAnglesDeg,
       sectors: sectors.map(sector => sector.key),
+      maskSource,
+      maskConfidence,
     },
     summary: {
       regionCount: regions.length,

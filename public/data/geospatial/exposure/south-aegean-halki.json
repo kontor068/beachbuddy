@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "generatedAt": "2026-06-02T21:59:13.422Z",
+  "generatedAt": "2026-06-06T10:33:30.617Z",
   "region": {
     "id": "south-aegean-halki",
     "name": "Halki"
@@ -10,8 +10,8 @@
   },
   "settings": {
     "maxFetchKm": 25,
-    "stepKm": 1,
-    "nearshoreLandGraceKm": 1,
+    "stepKm": 0.5,
+    "nearshoreLandGraceKm": 0.3,
     "nearshoreWaterSearchKm": 12,
     "nearshoreWaterSearchStepKm": 0.5,
     "fanAnglesDeg": [
@@ -30,7 +30,9 @@
       "SW",
       "W",
       "NW"
-    ]
+    ],
+    "maskSource": "Natural Earth 1:10m land polygons",
+    "maskConfidence": "medium"
   },
   "summary": {
     "beachCount": 2,
@@ -38,14 +40,14 @@
     "missingCoordinates": 0,
     "sectors": {
       "N": {
-        "protected": 0,
-        "partial": 1,
+        "protected": 1,
+        "partial": 0,
         "exposed": 1
       },
       "NE": {
         "protected": 0,
-        "partial": 2,
-        "exposed": 0
+        "partial": 1,
+        "exposed": 1
       },
       "E": {
         "protected": 0,
@@ -54,27 +56,27 @@
       },
       "SE": {
         "protected": 0,
-        "partial": 2,
-        "exposed": 0
-      },
-      "S": {
-        "protected": 0,
         "partial": 1,
         "exposed": 1
       },
-      "SW": {
+      "S": {
         "protected": 1,
         "partial": 0,
         "exposed": 1
       },
+      "SW": {
+        "protected": 1,
+        "partial": 1,
+        "exposed": 0
+      },
       "W": {
-        "protected": 0,
-        "partial": 2,
+        "protected": 2,
+        "partial": 0,
         "exposed": 0
       },
       "NW": {
-        "protected": 1,
-        "partial": 1,
+        "protected": 2,
+        "partial": 0,
         "exposed": 0
       }
     }
@@ -90,49 +92,66 @@
         "lat": 36.21678,
         "lon": 27.61606
       },
+      "facingDeg": 138.1,
       "sectors": {
         "N": {
-          "level": "partial",
-          "fetchKm": 10.6,
-          "blockedRayRatio": 0.6
+          "level": "protected",
+          "fetchKm": 10.1,
+          "blockedRayRatio": 0.6,
+          "onshore": -0.744,
+          "intensity": 9.4
         },
         "NE": {
           "level": "partial",
-          "fetchKm": 16.6,
-          "blockedRayRatio": 0.6
+          "fetchKm": 16.8,
+          "blockedRayRatio": 0.6,
+          "onshore": -0.054,
+          "intensity": 35.9
         },
         "E": {
           "level": "partial",
-          "fetchKm": 12,
-          "blockedRayRatio": 1
+          "fetchKm": 12.2,
+          "blockedRayRatio": 1,
+          "onshore": 0.668,
+          "intensity": 50
         },
         "SE": {
-          "level": "partial",
+          "level": "exposed",
           "fetchKm": 16,
-          "blockedRayRatio": 0.8
+          "blockedRayRatio": 0.8,
+          "onshore": 0.999,
+          "intensity": 68
         },
         "S": {
           "level": "exposed",
           "fetchKm": 24.8,
-          "blockedRayRatio": 0.2
+          "blockedRayRatio": 0.2,
+          "onshore": 0.744,
+          "intensity": 80.2
         },
         "SW": {
-          "level": "exposed",
+          "level": "partial",
           "fetchKm": 25,
-          "blockedRayRatio": 0
+          "blockedRayRatio": 0,
+          "onshore": 0.054,
+          "intensity": 52.7
         },
         "W": {
-          "level": "partial",
-          "fetchKm": 10.6,
-          "blockedRayRatio": 0.6
+          "level": "protected",
+          "fetchKm": 10,
+          "blockedRayRatio": 0.6,
+          "onshore": -0.668,
+          "intensity": 12.2
         },
         "NW": {
           "level": "protected",
-          "fetchKm": 1,
-          "blockedRayRatio": 1
+          "fetchKm": 0,
+          "blockedRayRatio": 1,
+          "onshore": -0.999,
+          "intensity": 0
         }
       },
-      "confidence": "low"
+      "confidence": "medium"
     },
     "2251": {
       "beachId": 2251,
@@ -144,49 +163,66 @@
         "lat": 36.23423,
         "lon": 27.6186
       },
+      "facingDeg": 65,
       "sectors": {
         "N": {
           "level": "exposed",
-          "fetchKm": 25,
-          "blockedRayRatio": 0
+          "fetchKm": 20,
+          "blockedRayRatio": 0.2,
+          "onshore": 0.423,
+          "intensity": 65.4
         },
         "NE": {
-          "level": "partial",
+          "level": "exposed",
           "fetchKm": 17.8,
-          "blockedRayRatio": 0.4
+          "blockedRayRatio": 0.4,
+          "onshore": 0.94,
+          "intensity": 81.5
         },
         "E": {
           "level": "partial",
-          "fetchKm": 10.6,
-          "blockedRayRatio": 1
+          "fetchKm": 10.8,
+          "blockedRayRatio": 1,
+          "onshore": 0.906,
+          "intensity": 57.2
         },
         "SE": {
           "level": "partial",
-          "fetchKm": 17,
-          "blockedRayRatio": 0.8
+          "fetchKm": 17.2,
+          "blockedRayRatio": 0.8,
+          "onshore": 0.342,
+          "intensity": 45.6
         },
         "S": {
-          "level": "partial",
-          "fetchKm": 15.2,
-          "blockedRayRatio": 0.6
+          "level": "protected",
+          "fetchKm": 9.9,
+          "blockedRayRatio": 0.8,
+          "onshore": -0.423,
+          "intensity": 19.2
         },
         "SW": {
           "level": "protected",
-          "fetchKm": 1,
-          "blockedRayRatio": 1
+          "fetchKm": 0,
+          "blockedRayRatio": 1,
+          "onshore": -0.94,
+          "intensity": 1.8
         },
         "W": {
-          "level": "partial",
-          "fetchKm": 5.8,
-          "blockedRayRatio": 0.8
+          "level": "protected",
+          "fetchKm": 0,
+          "blockedRayRatio": 1,
+          "onshore": -0.906,
+          "intensity": 2.8
         },
         "NW": {
-          "level": "partial",
-          "fetchKm": 19.8,
-          "blockedRayRatio": 0.4
+          "level": "protected",
+          "fetchKm": 5,
+          "blockedRayRatio": 0.8,
+          "onshore": -0.342,
+          "intensity": 20.8
         }
       },
-      "confidence": "low"
+      "confidence": "medium"
     }
   }
 }

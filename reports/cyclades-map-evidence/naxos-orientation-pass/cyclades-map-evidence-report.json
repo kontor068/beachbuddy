@@ -1,0 +1,895 @@
+{
+  "generatedAt": "2026-06-08T09:51:46.442Z",
+  "scope": "cyclades:naxos",
+  "nominatimEnabled": true,
+  "summary": {
+    "total": 39,
+    "needs_review_nominatim": 10,
+    "no_map_evidence": 18,
+    "verified_osm_source": 7,
+    "verified_nominatim_nearby": 4
+  },
+  "policy": {
+    "verified_osm_source": "stored coordinate is within 150m of a cited OSM object geometry node/center",
+    "near_osm_source": "stored coordinate is within 350m of cited OSM geometry and should be reviewed for long beaches",
+    "verified_nominatim_nearby": "Nominatim candidate has close distance, strong name match, and island/nearby signal",
+    "no_map_evidence": "no direct OSM source and no accepted Nominatim candidate"
+  },
+  "rows": [
+    {
+      "regionId": "south-aegean-naxos",
+      "island": "Naxos",
+      "beachId": 1981,
+      "beachName": "Αγία Άννα",
+      "lat": 37.0689603,
+      "lon": 25.3544164,
+      "status": "needs_review_nominatim",
+      "osmChecks": [],
+      "nominatim": {
+        "status": "needs_review_nominatim",
+        "candidates": [
+          {
+            "osmType": "way",
+            "osmId": 237830217,
+            "displayName": "Παραλία Αγίας Άννας, Μάραγκας, Αγία Αννα, Δήμος Νάξου και Μικρών Κυκλάδων, Περιφερειακή Ενότητα Νάξου, Περιφέρεια Νοτίου Αιγαίου, Αποκεντρωμένη Διοίκηση Αιγαίου, 843 00, Ελλάς",
+            "lat": 37.069125,
+            "lon": 25.3548272,
+            "type": "beach",
+            "distanceMeters": 41,
+            "nameScore": 9,
+            "islandSignal": false,
+            "typeSignal": true,
+            "score": 62,
+            "flags": [
+              "weak_name_match"
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "regionId": "south-aegean-naxos",
+      "island": "Naxos",
+      "beachId": 1982,
+      "beachName": "Αγιασσός",
+      "lat": 36.96577,
+      "lon": 25.42525,
+      "status": "no_map_evidence",
+      "osmChecks": [],
+      "nominatim": {
+        "status": "no_map_evidence",
+        "candidates": []
+      }
+    },
+    {
+      "regionId": "south-aegean-naxos",
+      "island": "Naxos",
+      "beachId": 1983,
+      "beachName": "Άγιοι Θεόδωροι",
+      "lat": 37.18601,
+      "lon": 25.49312,
+      "status": "no_map_evidence",
+      "osmChecks": [],
+      "nominatim": {
+        "status": "no_map_evidence",
+        "candidates": []
+      }
+    },
+    {
+      "regionId": "south-aegean-naxos",
+      "island": "Naxos",
+      "beachId": 1984,
+      "beachName": "Άγιος Γεώργιος",
+      "lat": 37.0970546,
+      "lon": 25.374024,
+      "status": "no_map_evidence",
+      "osmChecks": [],
+      "nominatim": {
+        "status": "no_map_evidence",
+        "candidates": []
+      }
+    },
+    {
+      "regionId": "south-aegean-naxos",
+      "island": "Naxos",
+      "beachId": 1985,
+      "beachName": "Άγιος Προκόπιος",
+      "lat": 37.0751814,
+      "lon": 25.3469334,
+      "status": "needs_review_nominatim",
+      "osmChecks": [],
+      "nominatim": {
+        "status": "needs_review_nominatim",
+        "candidates": [
+          {
+            "osmType": "relation",
+            "osmId": 453120,
+            "displayName": "Παραλία Αγίου Προκοπίου, Στελίδα, Άγιος Προκόπιος, Δήμος Νάξου και Μικρών Κυκλάδων, Περιφερειακή Ενότητα Νάξου, Περιφέρεια Νοτίου Αιγαίου, Αποκεντρωμένη Διοίκηση Αιγαίου, 843 00, Ελλάς",
+            "lat": 37.0752286,
+            "lon": 25.3490148,
+            "type": "beach",
+            "distanceMeters": 185,
+            "nameScore": 9,
+            "islandSignal": false,
+            "typeSignal": true,
+            "score": 45,
+            "flags": [
+              "weak_name_match",
+              "missing_island_signal"
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "regionId": "south-aegean-naxos",
+      "island": "Naxos",
+      "beachId": 1986,
+      "beachName": "Αζαλάς",
+      "lat": 37.08723,
+      "lon": 25.59207,
+      "status": "no_map_evidence",
+      "osmChecks": [],
+      "nominatim": {
+        "status": "no_map_evidence",
+        "candidates": []
+      }
+    },
+    {
+      "regionId": "south-aegean-naxos",
+      "island": "Naxos",
+      "beachId": 1987,
+      "beachName": "Αλυκό",
+      "lat": 36.978496,
+      "lon": 25.3901518,
+      "status": "needs_review_nominatim",
+      "osmChecks": [],
+      "nominatim": {
+        "status": "needs_review_nominatim",
+        "candidates": [
+          {
+            "osmType": "way",
+            "osmId": 521229662,
+            "displayName": "Paralia Alyko, Δήμος Νάξου και Μικρών Κυκλάδων, Περιφερειακή Ενότητα Νάξου, Περιφέρεια Νοτίου Αιγαίου, Αποκεντρωμένη Διοίκηση Αιγαίου, Ελλάς",
+            "lat": 36.9767775,
+            "lon": 25.3863761,
+            "type": "beach",
+            "distanceMeters": 386,
+            "nameScore": 0,
+            "islandSignal": false,
+            "typeSignal": true,
+            "score": 26,
+            "flags": [
+              "weak_name_match",
+              "missing_island_signal"
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "regionId": "south-aegean-naxos",
+      "island": "Naxos",
+      "beachId": 1988,
+      "beachName": "Αμμίτης",
+      "lat": 37.1363228,
+      "lon": 25.4360475,
+      "status": "no_map_evidence",
+      "osmChecks": [],
+      "nominatim": {
+        "status": "no_map_evidence",
+        "candidates": []
+      }
+    },
+    {
+      "regionId": "south-aegean-naxos",
+      "island": "Naxos",
+      "beachId": 1989,
+      "beachName": "Άμπραμ",
+      "lat": 37.1734014,
+      "lon": 25.4799167,
+      "status": "needs_review_nominatim",
+      "osmChecks": [],
+      "nominatim": {
+        "status": "needs_review_nominatim",
+        "candidates": [
+          {
+            "osmType": "way",
+            "osmId": 499712060,
+            "displayName": "Παραλία Αμπραμ, Ταξιάρχης, Δήμος Νάξου και Μικρών Κυκλάδων, Περιφερειακή Ενότητα Νάξου, Περιφέρεια Νοτίου Αιγαίου, Αποκεντρωμένη Διοίκηση Αιγαίου, 843 01, Ελλάς",
+            "lat": 37.1734103,
+            "lon": 25.4805087,
+            "type": "beach",
+            "distanceMeters": 52,
+            "nameScore": 50,
+            "islandSignal": false,
+            "typeSignal": true,
+            "score": 77,
+            "flags": []
+          }
+        ]
+      }
+    },
+    {
+      "regionId": "south-aegean-naxos",
+      "island": "Naxos",
+      "beachId": 1990,
+      "beachName": "Απόλλωνας",
+      "lat": 37.18008,
+      "lon": 25.55343,
+      "status": "no_map_evidence",
+      "osmChecks": [],
+      "nominatim": {
+        "status": "no_map_evidence",
+        "candidates": []
+      }
+    },
+    {
+      "regionId": "south-aegean-naxos",
+      "island": "Naxos",
+      "beachId": 1991,
+      "beachName": "Βίντζι",
+      "lat": 37.1080152,
+      "lon": 25.3741037,
+      "status": "verified_osm_source",
+      "osmChecks": [
+        {
+          "sourceUrl": "https://www.openstreetmap.org/way/1204646781",
+          "osmType": "way",
+          "osmId": "1204646781",
+          "status": "verified_osm_source",
+          "centerDistanceMeters": 5,
+          "nearestDistanceMeters": 16,
+          "nameScore": 0,
+          "matchedName": "",
+          "candidateName": "Βίντσι beach",
+          "flags": [
+            "weak_osm_name_match"
+          ]
+        }
+      ],
+      "nominatim": {
+        "status": "not_checked_nominatim",
+        "candidates": []
+      }
+    },
+    {
+      "regionId": "south-aegean-naxos",
+      "island": "Naxos",
+      "beachId": 1992,
+      "beachName": "Γλατζά",
+      "lat": 37.1373729,
+      "lon": 25.4395072,
+      "status": "verified_osm_source",
+      "osmChecks": [
+        {
+          "sourceUrl": "https://www.openstreetmap.org/way/500669911",
+          "osmType": "way",
+          "osmId": "500669911",
+          "status": "verified_osm_source",
+          "centerDistanceMeters": 19,
+          "nearestDistanceMeters": 14,
+          "nameScore": 50,
+          "matchedName": "Γλατζά",
+          "candidateName": "Παραλία Γλατζά beach",
+          "flags": []
+        }
+      ],
+      "nominatim": {
+        "status": "not_checked_nominatim",
+        "candidates": []
+      }
+    },
+    {
+      "regionId": "south-aegean-naxos",
+      "island": "Naxos",
+      "beachId": 1993,
+      "beachName": "Γλυφάδα",
+      "lat": 36.9925912,
+      "lon": 25.3906469,
+      "status": "needs_review_nominatim",
+      "osmChecks": [],
+      "nominatim": {
+        "status": "needs_review_nominatim",
+        "candidates": [
+          {
+            "osmType": "way",
+            "osmId": 363516715,
+            "displayName": "Glyfada Beach, Καστράκι, Δήμος Νάξου και Μικρών Κυκλάδων, Περιφερειακή Ενότητα Νάξου, Περιφέρεια Νοτίου Αιγαίου, Αποκεντρωμένη Διοίκηση Αιγαίου, 843 02, Ελλάς",
+            "lat": 36.9927259,
+            "lon": 25.3919319,
+            "type": "beach",
+            "distanceMeters": 115,
+            "nameScore": 33,
+            "islandSignal": false,
+            "typeSignal": true,
+            "score": 71,
+            "flags": [
+              "weak_name_match"
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "regionId": "south-aegean-naxos",
+      "island": "Naxos",
+      "beachId": 1994,
+      "beachName": "Γρόττα",
+      "lat": 37.1079,
+      "lon": 25.377,
+      "status": "no_map_evidence",
+      "osmChecks": [],
+      "nominatim": {
+        "status": "no_map_evidence",
+        "candidates": []
+      }
+    },
+    {
+      "regionId": "south-aegean-naxos",
+      "island": "Naxos",
+      "beachId": 1995,
+      "beachName": "Παραλία Καλαντός",
+      "lat": 36.93636,
+      "lon": 25.47184,
+      "status": "needs_review_nominatim",
+      "osmChecks": [],
+      "nominatim": {
+        "status": "needs_review_nominatim",
+        "candidates": [
+          {
+            "osmType": "way",
+            "osmId": 52968044,
+            "displayName": "Παραλία Καλαντός, Καλαντός, Δήμος Νάξου και Μικρών Κυκλάδων, Περιφερειακή Ενότητα Νάξου, Περιφέρεια Νοτίου Αιγαίου, Αποκεντρωμένη Διοίκηση Αιγαίου, 843 02, Ελλάς",
+            "lat": 36.9363031,
+            "lon": 25.4737261,
+            "type": "beach",
+            "distanceMeters": 168,
+            "nameScore": 67,
+            "islandSignal": false,
+            "typeSignal": true,
+            "score": 65,
+            "flags": [
+              "missing_island_signal"
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "regionId": "south-aegean-naxos",
+      "island": "Naxos",
+      "beachId": 1996,
+      "beachName": "Κάμπος",
+      "lat": 37.1645444,
+      "lon": 25.4770917,
+      "status": "no_map_evidence",
+      "osmChecks": [],
+      "nominatim": {
+        "status": "no_map_evidence",
+        "candidates": []
+      }
+    },
+    {
+      "regionId": "south-aegean-naxos",
+      "island": "Naxos",
+      "beachId": 1997,
+      "beachName": "Καστράκι",
+      "lat": 37.0010969,
+      "lon": 25.3878136,
+      "status": "needs_review_nominatim",
+      "osmChecks": [],
+      "nominatim": {
+        "status": "needs_review_nominatim",
+        "candidates": [
+          {
+            "osmType": "way",
+            "osmId": 521234172,
+            "displayName": "Παραλία Καστράκι, Καστράκι, Δήμος Νάξου και Μικρών Κυκλάδων, Περιφερειακή Ενότητα Νάξου, Περιφέρεια Νοτίου Αιγαίου, Αποκεντρωμένη Διοίκηση Αιγαίου, 843 02, Ελλάς",
+            "lat": 37.0011411,
+            "lon": 25.3877878,
+            "type": "beach",
+            "distanceMeters": 5,
+            "nameScore": 33,
+            "islandSignal": false,
+            "typeSignal": true,
+            "score": 71,
+            "flags": [
+              "weak_name_match"
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "regionId": "south-aegean-naxos",
+      "island": "Naxos",
+      "beachId": 1998,
+      "beachName": "Κέδρος",
+      "lat": 36.983778,
+      "lon": 25.3858679,
+      "status": "needs_review_nominatim",
+      "osmChecks": [],
+      "nominatim": {
+        "status": "needs_review_nominatim",
+        "candidates": [
+          {
+            "osmType": "way",
+            "osmId": 1199277981,
+            "displayName": "Kedros Beach, Δήμος Νάξου και Μικρών Κυκλάδων, Περιφερειακή Ενότητα Νάξου, Περιφέρεια Νοτίου Αιγαίου, Αποκεντρωμένη Διοίκηση Αιγαίου, Ελλάς",
+            "lat": 36.9838858,
+            "lon": 25.3863097,
+            "type": "beach",
+            "distanceMeters": 41,
+            "nameScore": 33,
+            "islandSignal": false,
+            "typeSignal": true,
+            "score": 71,
+            "flags": [
+              "weak_name_match"
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "regionId": "south-aegean-naxos",
+      "island": "Naxos",
+      "beachId": 1999,
+      "beachName": "Κλειδός",
+      "lat": 36.9900595,
+      "lon": 25.5596689,
+      "status": "verified_osm_source",
+      "osmChecks": [
+        {
+          "sourceUrl": "https://www.openstreetmap.org/way/404481267",
+          "osmType": "way",
+          "osmId": "404481267",
+          "status": "verified_osm_source",
+          "centerDistanceMeters": 20,
+          "nearestDistanceMeters": 10,
+          "nameScore": 0,
+          "matchedName": "",
+          "candidateName": "Klidos Beach beach",
+          "flags": [
+            "weak_osm_name_match"
+          ]
+        }
+      ],
+      "nominatim": {
+        "status": "not_checked_nominatim",
+        "candidates": []
+      }
+    },
+    {
+      "regionId": "south-aegean-naxos",
+      "island": "Naxos",
+      "beachId": 2000,
+      "beachName": "Παραλία Κλειδώ",
+      "lat": 36.9870224,
+      "lon": 25.559867,
+      "status": "verified_osm_source",
+      "osmChecks": [
+        {
+          "sourceUrl": "https://www.openstreetmap.org/way/1157948744",
+          "osmType": "way",
+          "osmId": "1157948744",
+          "status": "verified_osm_source",
+          "centerDistanceMeters": 10,
+          "nearestDistanceMeters": 21,
+          "nameScore": 100,
+          "matchedName": "Παραλία Κλειδώ",
+          "candidateName": "Παραλία Κλειδώ beach",
+          "flags": []
+        }
+      ],
+      "nominatim": {
+        "status": "not_checked_nominatim",
+        "candidates": []
+      }
+    },
+    {
+      "regionId": "south-aegean-naxos",
+      "island": "Naxos",
+      "beachId": 2001,
+      "beachName": "Λιγαρίδια",
+      "lat": 37.07514,
+      "lon": 25.58479,
+      "status": "no_map_evidence",
+      "osmChecks": [],
+      "nominatim": {
+        "status": "no_map_evidence",
+        "candidates": []
+      }
+    },
+    {
+      "regionId": "south-aegean-naxos",
+      "island": "Naxos",
+      "beachId": 2002,
+      "beachName": "Παραλία Λιμνάρι",
+      "lat": 37.12539,
+      "lon": 25.5913,
+      "status": "verified_nominatim_nearby",
+      "osmChecks": [],
+      "nominatim": {
+        "status": "verified_nominatim_nearby",
+        "candidates": [
+          {
+            "osmType": "way",
+            "osmId": 1203421310,
+            "displayName": "Παραλία Λιμνάρι, Λιώνας, Δήμος Νάξου και Μικρών Κυκλάδων, Περιφερειακή Ενότητα Νάξου, Περιφέρεια Νοτίου Αιγαίου, Αποκεντρωμένη Διοίκηση Αιγαίου, 843 01, Ελλάς",
+            "lat": 37.1253668,
+            "lon": 25.5912969,
+            "type": "beach",
+            "distanceMeters": 3,
+            "nameScore": 100,
+            "islandSignal": false,
+            "typeSignal": true,
+            "score": 94,
+            "flags": []
+          }
+        ]
+      }
+    },
+    {
+      "regionId": "south-aegean-naxos",
+      "island": "Naxos",
+      "beachId": 2003,
+      "beachName": "Λίωνας",
+      "lat": 37.13763,
+      "lon": 25.58656,
+      "status": "needs_review_nominatim",
+      "osmChecks": [],
+      "nominatim": {
+        "status": "needs_review_nominatim",
+        "candidates": [
+          {
+            "osmType": "way",
+            "osmId": 1203421310,
+            "displayName": "Παραλία Λιμνάρι, Λιώνας, Δήμος Νάξου και Μικρών Κυκλάδων, Περιφερειακή Ενότητα Νάξου, Περιφέρεια Νοτίου Αιγαίου, Αποκεντρωμένη Διοίκηση Αιγαίου, 843 01, Ελλάς",
+            "lat": 37.1253668,
+            "lon": 25.5912969,
+            "type": "beach",
+            "distanceMeters": 1427,
+            "nameScore": 6,
+            "islandSignal": false,
+            "typeSignal": true,
+            "score": 10,
+            "flags": [
+              "far_from_existing_coordinate",
+              "weak_name_match",
+              "missing_island_signal"
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "regionId": "south-aegean-naxos",
+      "island": "Naxos",
+      "beachId": 2004,
+      "beachName": "Μελινό",
+      "lat": 37.19107,
+      "lon": 25.50454,
+      "status": "verified_osm_source",
+      "osmChecks": [
+        {
+          "sourceUrl": "https://www.openstreetmap.org/way/209107838",
+          "osmType": "way",
+          "osmId": "209107838",
+          "status": "verified_osm_source",
+          "centerDistanceMeters": 11,
+          "nearestDistanceMeters": 9,
+          "nameScore": 100,
+          "matchedName": "Μελινό",
+          "candidateName": "Μελινό beach",
+          "flags": []
+        }
+      ],
+      "nominatim": {
+        "status": "not_checked_nominatim",
+        "candidates": []
+      }
+    },
+    {
+      "regionId": "south-aegean-naxos",
+      "island": "Naxos",
+      "beachId": 2005,
+      "beachName": "Μικρά",
+      "lat": 37.16004,
+      "lon": 25.47072,
+      "status": "no_map_evidence",
+      "osmChecks": [],
+      "nominatim": {
+        "status": "no_map_evidence",
+        "candidates": []
+      }
+    },
+    {
+      "regionId": "south-aegean-naxos",
+      "island": "Naxos",
+      "beachId": 2006,
+      "beachName": "Μικρή Βίγλα",
+      "lat": 37.0281944,
+      "lon": 25.370271,
+      "status": "no_map_evidence",
+      "osmChecks": [],
+      "nominatim": {
+        "status": "no_map_evidence",
+        "candidates": []
+      }
+    },
+    {
+      "regionId": "south-aegean-naxos",
+      "island": "Naxos",
+      "beachId": 2007,
+      "beachName": "Μικρή Βίγλα - Νότια πλευρά",
+      "lat": 37.0157838,
+      "lon": 25.3769012,
+      "status": "verified_osm_source",
+      "osmChecks": [
+        {
+          "sourceUrl": "https://www.openstreetmap.org/way/363516878",
+          "osmType": "way",
+          "osmId": "363516878",
+          "status": "verified_osm_source",
+          "centerDistanceMeters": 261,
+          "nearestDistanceMeters": 53,
+          "nameScore": 57,
+          "matchedName": "Μικρή Βίγλα - Νότια πλευρά",
+          "candidateName": "Μικρή Βίγλα (Νότια πλευρά) Μικρή Βίγλα (Νότια πλευρά) Mikri Vigla Beach (South) beach",
+          "flags": []
+        }
+      ],
+      "nominatim": {
+        "status": "not_checked_nominatim",
+        "candidates": []
+      }
+    },
+    {
+      "regionId": "south-aegean-naxos",
+      "island": "Naxos",
+      "beachId": 2008,
+      "beachName": "Μικρό Αλυκό",
+      "lat": 36.9767717,
+      "lon": 25.3865821,
+      "status": "no_map_evidence",
+      "osmChecks": [],
+      "nominatim": {
+        "status": "no_map_evidence",
+        "candidates": []
+      }
+    },
+    {
+      "regionId": "south-aegean-naxos",
+      "island": "Naxos",
+      "beachId": 2009,
+      "beachName": "Μουτσούνα",
+      "lat": 37.0779637,
+      "lon": 25.5869804,
+      "status": "no_map_evidence",
+      "osmChecks": [],
+      "nominatim": {
+        "status": "no_map_evidence",
+        "candidates": []
+      }
+    },
+    {
+      "regionId": "south-aegean-naxos",
+      "island": "Naxos",
+      "beachId": 2010,
+      "beachName": "Όρκος",
+      "lat": 37.0325297,
+      "lon": 25.3731885,
+      "status": "no_map_evidence",
+      "osmChecks": [],
+      "nominatim": {
+        "status": "no_map_evidence",
+        "candidates": []
+      }
+    },
+    {
+      "regionId": "south-aegean-naxos",
+      "island": "Naxos",
+      "beachId": 2011,
+      "beachName": "Πάνορμος",
+      "lat": 36.95854,
+      "lon": 25.53871,
+      "status": "no_map_evidence",
+      "osmChecks": [],
+      "nominatim": {
+        "status": "no_map_evidence",
+        "candidates": []
+      }
+    },
+    {
+      "regionId": "south-aegean-naxos",
+      "island": "Naxos",
+      "beachId": 2012,
+      "beachName": "Πλάκα",
+      "lat": 37.050381,
+      "lon": 25.3660008,
+      "status": "no_map_evidence",
+      "osmChecks": [],
+      "nominatim": {
+        "status": "no_map_evidence",
+        "candidates": []
+      }
+    },
+    {
+      "regionId": "south-aegean-naxos",
+      "island": "Naxos",
+      "beachId": 2013,
+      "beachName": "Πυργάκι",
+      "lat": 36.97623,
+      "lon": 25.40015,
+      "status": "no_map_evidence",
+      "osmChecks": [],
+      "nominatim": {
+        "status": "no_map_evidence",
+        "candidates": []
+      }
+    },
+    {
+      "regionId": "south-aegean-naxos",
+      "island": "Naxos",
+      "beachId": 2014,
+      "beachName": "Ρίνα",
+      "lat": 36.94751,
+      "lon": 25.49,
+      "status": "no_map_evidence",
+      "osmChecks": [],
+      "nominatim": {
+        "status": "no_map_evidence",
+        "candidates": []
+      }
+    },
+    {
+      "regionId": "south-aegean-naxos",
+      "island": "Naxos",
+      "beachId": 2015,
+      "beachName": "Παραλία Σπεδό",
+      "lat": 36.95472,
+      "lon": 25.50782,
+      "status": "verified_nominatim_nearby",
+      "osmChecks": [],
+      "nominatim": {
+        "status": "verified_nominatim_nearby",
+        "candidates": [
+          {
+            "osmType": "way",
+            "osmId": 499732681,
+            "displayName": "Παραλία Σπεδό, Δήμος Νάξου και Μικρών Κυκλάδων, Περιφερειακή Ενότητα Νάξου, Περιφέρεια Νοτίου Αιγαίου, Αποκεντρωμένη Διοίκηση Αιγαίου, Ελλάς",
+            "lat": 36.9546922,
+            "lon": 25.5076538,
+            "type": "beach",
+            "distanceMeters": 15,
+            "nameScore": 100,
+            "islandSignal": false,
+            "typeSignal": true,
+            "score": 94,
+            "flags": []
+          }
+        ]
+      }
+    },
+    {
+      "regionId": "south-aegean-naxos",
+      "island": "Naxos",
+      "beachId": 2016,
+      "beachName": "Χίλια Βρύση",
+      "lat": 37.1567643,
+      "lon": 25.4694392,
+      "status": "verified_osm_source",
+      "osmChecks": [
+        {
+          "sourceUrl": "https://www.openstreetmap.org/way/1336837770",
+          "osmType": "way",
+          "osmId": "1336837770",
+          "status": "verified_osm_source",
+          "centerDistanceMeters": 2,
+          "nearestDistanceMeters": 5,
+          "nameScore": 0,
+          "matchedName": "",
+          "candidateName": "Hilia Beach beach",
+          "flags": [
+            "weak_osm_name_match"
+          ]
+        }
+      ],
+      "nominatim": {
+        "status": "not_checked_nominatim",
+        "candidates": []
+      }
+    },
+    {
+      "regionId": "south-aegean-naxos",
+      "island": "Naxos",
+      "beachId": 2017,
+      "beachName": "Παραλία Ψιλή Άμμος",
+      "lat": 37.01422,
+      "lon": 25.56847,
+      "status": "verified_nominatim_nearby",
+      "osmChecks": [],
+      "nominatim": {
+        "status": "verified_nominatim_nearby",
+        "candidates": [
+          {
+            "osmType": "way",
+            "osmId": 404481302,
+            "displayName": "Παραλία Ψιλή Άμμος, Κανάκι, Δήμος Νάξου και Μικρών Κυκλάδων, Περιφερειακή Ενότητα Νάξου, Περιφέρεια Νοτίου Αιγαίου, Αποκεντρωμένη Διοίκηση Αιγαίου, Ελλάς",
+            "lat": 37.0142985,
+            "lon": 25.5684291,
+            "type": "beach",
+            "distanceMeters": 9,
+            "nameScore": 60,
+            "islandSignal": false,
+            "typeSignal": true,
+            "score": 80,
+            "flags": []
+          }
+        ]
+      }
+    },
+    {
+      "regionId": "south-aegean-naxos",
+      "island": "Naxos",
+      "beachId": 2018,
+      "beachName": "Παραλία Ψωφαγριλιά",
+      "lat": 37.10381,
+      "lon": 25.59389,
+      "status": "verified_nominatim_nearby",
+      "osmChecks": [],
+      "nominatim": {
+        "status": "verified_nominatim_nearby",
+        "candidates": [
+          {
+            "osmType": "way",
+            "osmId": 1194224878,
+            "displayName": "Παραλία Ψωφαγριλιά, Δήμος Νάξου και Μικρών Κυκλάδων, Περιφερειακή Ενότητα Νάξου, Περιφέρεια Νοτίου Αιγαίου, Αποκεντρωμένη Διοίκηση Αιγαίου, Ελλάς",
+            "lat": 37.1038216,
+            "lon": 25.5938869,
+            "type": "beach",
+            "distanceMeters": 1,
+            "nameScore": 100,
+            "islandSignal": false,
+            "typeSignal": true,
+            "score": 94,
+            "flags": []
+          }
+        ]
+      }
+    },
+    {
+      "regionId": "south-aegean-naxos",
+      "island": "Naxos",
+      "beachId": 2019,
+      "beachName": "Hawaii",
+      "lat": 36.9805992,
+      "lon": 25.3863595,
+      "status": "needs_review_nominatim",
+      "osmChecks": [],
+      "nominatim": {
+        "status": "needs_review_nominatim",
+        "candidates": [
+          {
+            "osmType": "way",
+            "osmId": 972954399,
+            "displayName": "Hawaii Beach, Δήμος Νάξου και Μικρών Κυκλάδων, Περιφερειακή Ενότητα Νάξου, Περιφέρεια Νοτίου Αιγαίου, Αποκεντρωμένη Διοίκηση Αιγαίου, Ελλάς",
+            "lat": 36.9806139,
+            "lon": 25.3868057,
+            "type": "beach",
+            "distanceMeters": 40,
+            "nameScore": 33,
+            "islandSignal": false,
+            "typeSignal": true,
+            "score": 71,
+            "flags": [
+              "weak_name_match"
+            ]
+          }
+        ]
+      }
+    }
+  ]
+}

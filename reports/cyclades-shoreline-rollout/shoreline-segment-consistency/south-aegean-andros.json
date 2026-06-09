@@ -1,0 +1,1694 @@
+{
+  "schemaVersion": 1,
+  "generatedAt": "2026-06-08T13:52:22.330Z",
+  "regionId": "south-aegean-andros",
+  "policy": {
+    "sameSegment": "Beaches in the same curated shoreline segment should render the same visible exposure level unless a verified local morphology or wind-sport exception locks a stricter level.",
+    "confidence": "Segment propagation may support map-color consistency and medium review, but it never creates high confidence by itself."
+  },
+  "summary": {
+    "scenarioCount": 5,
+    "segmentCount": 7,
+    "allowedExceptions": 0,
+    "unresolvedContradictions": 0
+  },
+  "allowedExceptions": [],
+  "unresolved": [],
+  "results": [
+    {
+      "scenarioId": "Naxos_N_3BFT",
+      "windDirectionDeg": 0,
+      "segments": [
+        {
+          "segmentId": "andros-gavrio-batsi-golden-front",
+          "reason": "same_continuous_beachfront",
+          "rawLevels": [
+            "protected"
+          ],
+          "consistentLevels": [
+            "protected"
+          ],
+          "rows": [
+            {
+              "beachId": 1688,
+              "name": "Αγιος Πέτρος",
+              "level": "protected",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 1726,
+              "name": "Χρυσή Αμμος",
+              "level": "protected",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 1705,
+              "name": "Κυπρί",
+              "level": "protected",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 1686,
+              "name": "Αγ.Κυπριανός",
+              "level": "protected",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            }
+          ],
+          "rawRows": [
+            {
+              "beachId": 1688,
+              "name": "Αγιος Πέτρος",
+              "level": "protected",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 1726,
+              "name": "Χρυσή Αμμος",
+              "level": "protected",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 1705,
+              "name": "Κυπρί",
+              "level": "protected",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 1686,
+              "name": "Αγ.Κυπριανός",
+              "level": "protected",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            }
+          ],
+          "notes": "Agios Petros, Chrysi Ammos, Kypri, and Agios Kyprianos sit on the same practical west/southwest Gavrio-Batsi beach-front."
+        },
+        {
+          "segmentId": "andros-batsi-kolona-front",
+          "reason": "same_village_bay",
+          "rawLevels": [
+            "protected"
+          ],
+          "consistentLevels": [
+            "protected"
+          ],
+          "rows": [
+            {
+              "beachId": 1713,
+              "name": "Μπατσί",
+              "level": "protected",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 1702,
+              "name": "Κολώνα",
+              "level": "protected",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            }
+          ],
+          "rawRows": [
+            {
+              "beachId": 1713,
+              "name": "Μπατσί",
+              "level": "protected",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 1702,
+              "name": "Κολώνα",
+              "level": "protected",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            }
+          ],
+          "notes": "Batsi and Kolona are adjacent Batsi-bay records with similar southwest-facing behavior; popularity and amenities remain separate."
+        },
+        {
+          "segmentId": "andros-vitali-gides-front",
+          "reason": "same_continuous_beachfront",
+          "rawLevels": [
+            "exposed"
+          ],
+          "consistentLevels": [
+            "exposed"
+          ],
+          "rows": [
+            {
+              "beachId": 1693,
+              "name": "Βιτάλι",
+              "level": "exposed",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 1697,
+              "name": "Γίδες",
+              "level": "exposed",
+              "windProfileConfidence": "low",
+              "knownWindSportSpot": false
+            }
+          ],
+          "rawRows": [
+            {
+              "beachId": 1693,
+              "name": "Βιτάλι",
+              "level": "exposed",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 1697,
+              "name": "Γίδες",
+              "level": "exposed",
+              "windProfileConfidence": "low",
+              "knownWindSportSpot": false
+            }
+          ],
+          "notes": "Vitali and Gides are very close north/east Andros records with near-identical east-facing shoreline behavior."
+        },
+        {
+          "segmentId": "andros-kalamitsi-kaminaki-front",
+          "reason": "same_continuous_beachfront",
+          "rawLevels": [
+            "exposed"
+          ],
+          "consistentLevels": [
+            "exposed"
+          ],
+          "rows": [
+            {
+              "beachId": 1700,
+              "name": "Καλαμίτσι",
+              "level": "exposed",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 1701,
+              "name": "Καμινάκι",
+              "level": "exposed",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            }
+          ],
+          "rawRows": [
+            {
+              "beachId": 1700,
+              "name": "Καλαμίτσι",
+              "level": "exposed",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 1701,
+              "name": "Καμινάκι",
+              "level": "exposed",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            }
+          ],
+          "notes": "Kalamitsi and Kaminaki are adjacent northwest Andros records with similar northwest-facing exposure."
+        },
+        {
+          "segmentId": "andros-megala-mikra-peza-front",
+          "reason": "same_continuous_beachfront",
+          "rawLevels": [
+            "exposed"
+          ],
+          "consistentLevels": [
+            "exposed"
+          ],
+          "rows": [
+            {
+              "beachId": 1710,
+              "name": "Μεγάλα Πέζα",
+              "level": "exposed",
+              "windProfileConfidence": "low",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 1711,
+              "name": "Μικρά Πέζα",
+              "level": "exposed",
+              "windProfileConfidence": "low",
+              "knownWindSportSpot": false
+            }
+          ],
+          "rawRows": [
+            {
+              "beachId": 1710,
+              "name": "Μεγάλα Πέζα",
+              "level": "exposed",
+              "windProfileConfidence": "low",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 1711,
+              "name": "Μικρά Πέζα",
+              "level": "exposed",
+              "windProfileConfidence": "low",
+              "knownWindSportSpot": false
+            }
+          ],
+          "notes": "Megala Peza and Mikra Peza are adjacent northern-western records with matching northwest-facing shoreline behavior."
+        },
+        {
+          "segmentId": "andros-platanistos-rozos-front",
+          "reason": "same_cove_or_micro_bay",
+          "rawLevels": [
+            "exposed"
+          ],
+          "consistentLevels": [
+            "exposed"
+          ],
+          "rows": [
+            {
+              "beachId": 1720,
+              "name": "Πλατανιστός",
+              "level": "exposed",
+              "windProfileConfidence": "low",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 1722,
+              "name": "Ρόζος",
+              "level": "exposed",
+              "windProfileConfidence": "low",
+              "knownWindSportSpot": false
+            }
+          ],
+          "rawRows": [
+            {
+              "beachId": 1720,
+              "name": "Πλατανιστός",
+              "level": "exposed",
+              "windProfileConfidence": "low",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 1722,
+              "name": "Ρόζος",
+              "level": "exposed",
+              "windProfileConfidence": "low",
+              "knownWindSportSpot": false
+            }
+          ],
+          "notes": "Platanistos and Rozos are neighboring north-coast records; access remains separate and boat-only records must not become top picks."
+        },
+        {
+          "segmentId": "andros-kourtali-felos-front",
+          "reason": "same_continuous_beachfront",
+          "rawLevels": [
+            "exposed"
+          ],
+          "consistentLevels": [
+            "exposed"
+          ],
+          "rows": [
+            {
+              "beachId": 1704,
+              "name": "Κουρταλή",
+              "level": "exposed",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 1716,
+              "name": "Παραλία Φελού",
+              "level": "exposed",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            }
+          ],
+          "rawRows": [
+            {
+              "beachId": 1704,
+              "name": "Κουρταλή",
+              "level": "exposed",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 1716,
+              "name": "Παραλία Φελού",
+              "level": "exposed",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            }
+          ],
+          "notes": "Kourtali and Felos are close west-coast records with similar west-facing exposure behavior."
+        }
+      ]
+    },
+    {
+      "scenarioId": "Naxos_N_5BFT",
+      "windDirectionDeg": 0,
+      "segments": [
+        {
+          "segmentId": "andros-gavrio-batsi-golden-front",
+          "reason": "same_continuous_beachfront",
+          "rawLevels": [
+            "protected"
+          ],
+          "consistentLevels": [
+            "protected"
+          ],
+          "rows": [
+            {
+              "beachId": 1688,
+              "name": "Αγιος Πέτρος",
+              "level": "protected",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 1726,
+              "name": "Χρυσή Αμμος",
+              "level": "protected",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 1705,
+              "name": "Κυπρί",
+              "level": "protected",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 1686,
+              "name": "Αγ.Κυπριανός",
+              "level": "protected",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            }
+          ],
+          "rawRows": [
+            {
+              "beachId": 1688,
+              "name": "Αγιος Πέτρος",
+              "level": "protected",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 1726,
+              "name": "Χρυσή Αμμος",
+              "level": "protected",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 1705,
+              "name": "Κυπρί",
+              "level": "protected",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 1686,
+              "name": "Αγ.Κυπριανός",
+              "level": "protected",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            }
+          ],
+          "notes": "Agios Petros, Chrysi Ammos, Kypri, and Agios Kyprianos sit on the same practical west/southwest Gavrio-Batsi beach-front."
+        },
+        {
+          "segmentId": "andros-batsi-kolona-front",
+          "reason": "same_village_bay",
+          "rawLevels": [
+            "protected"
+          ],
+          "consistentLevels": [
+            "protected"
+          ],
+          "rows": [
+            {
+              "beachId": 1713,
+              "name": "Μπατσί",
+              "level": "protected",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 1702,
+              "name": "Κολώνα",
+              "level": "protected",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            }
+          ],
+          "rawRows": [
+            {
+              "beachId": 1713,
+              "name": "Μπατσί",
+              "level": "protected",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 1702,
+              "name": "Κολώνα",
+              "level": "protected",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            }
+          ],
+          "notes": "Batsi and Kolona are adjacent Batsi-bay records with similar southwest-facing behavior; popularity and amenities remain separate."
+        },
+        {
+          "segmentId": "andros-vitali-gides-front",
+          "reason": "same_continuous_beachfront",
+          "rawLevels": [
+            "exposed"
+          ],
+          "consistentLevels": [
+            "exposed"
+          ],
+          "rows": [
+            {
+              "beachId": 1693,
+              "name": "Βιτάλι",
+              "level": "exposed",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 1697,
+              "name": "Γίδες",
+              "level": "exposed",
+              "windProfileConfidence": "low",
+              "knownWindSportSpot": false
+            }
+          ],
+          "rawRows": [
+            {
+              "beachId": 1693,
+              "name": "Βιτάλι",
+              "level": "exposed",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 1697,
+              "name": "Γίδες",
+              "level": "exposed",
+              "windProfileConfidence": "low",
+              "knownWindSportSpot": false
+            }
+          ],
+          "notes": "Vitali and Gides are very close north/east Andros records with near-identical east-facing shoreline behavior."
+        },
+        {
+          "segmentId": "andros-kalamitsi-kaminaki-front",
+          "reason": "same_continuous_beachfront",
+          "rawLevels": [
+            "exposed"
+          ],
+          "consistentLevels": [
+            "exposed"
+          ],
+          "rows": [
+            {
+              "beachId": 1700,
+              "name": "Καλαμίτσι",
+              "level": "exposed",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 1701,
+              "name": "Καμινάκι",
+              "level": "exposed",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            }
+          ],
+          "rawRows": [
+            {
+              "beachId": 1700,
+              "name": "Καλαμίτσι",
+              "level": "exposed",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 1701,
+              "name": "Καμινάκι",
+              "level": "exposed",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            }
+          ],
+          "notes": "Kalamitsi and Kaminaki are adjacent northwest Andros records with similar northwest-facing exposure."
+        },
+        {
+          "segmentId": "andros-megala-mikra-peza-front",
+          "reason": "same_continuous_beachfront",
+          "rawLevels": [
+            "exposed"
+          ],
+          "consistentLevels": [
+            "exposed"
+          ],
+          "rows": [
+            {
+              "beachId": 1710,
+              "name": "Μεγάλα Πέζα",
+              "level": "exposed",
+              "windProfileConfidence": "low",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 1711,
+              "name": "Μικρά Πέζα",
+              "level": "exposed",
+              "windProfileConfidence": "low",
+              "knownWindSportSpot": false
+            }
+          ],
+          "rawRows": [
+            {
+              "beachId": 1710,
+              "name": "Μεγάλα Πέζα",
+              "level": "exposed",
+              "windProfileConfidence": "low",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 1711,
+              "name": "Μικρά Πέζα",
+              "level": "exposed",
+              "windProfileConfidence": "low",
+              "knownWindSportSpot": false
+            }
+          ],
+          "notes": "Megala Peza and Mikra Peza are adjacent northern-western records with matching northwest-facing shoreline behavior."
+        },
+        {
+          "segmentId": "andros-platanistos-rozos-front",
+          "reason": "same_cove_or_micro_bay",
+          "rawLevels": [
+            "exposed"
+          ],
+          "consistentLevels": [
+            "exposed"
+          ],
+          "rows": [
+            {
+              "beachId": 1720,
+              "name": "Πλατανιστός",
+              "level": "exposed",
+              "windProfileConfidence": "low",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 1722,
+              "name": "Ρόζος",
+              "level": "exposed",
+              "windProfileConfidence": "low",
+              "knownWindSportSpot": false
+            }
+          ],
+          "rawRows": [
+            {
+              "beachId": 1720,
+              "name": "Πλατανιστός",
+              "level": "exposed",
+              "windProfileConfidence": "low",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 1722,
+              "name": "Ρόζος",
+              "level": "exposed",
+              "windProfileConfidence": "low",
+              "knownWindSportSpot": false
+            }
+          ],
+          "notes": "Platanistos and Rozos are neighboring north-coast records; access remains separate and boat-only records must not become top picks."
+        },
+        {
+          "segmentId": "andros-kourtali-felos-front",
+          "reason": "same_continuous_beachfront",
+          "rawLevels": [
+            "exposed"
+          ],
+          "consistentLevels": [
+            "exposed"
+          ],
+          "rows": [
+            {
+              "beachId": 1704,
+              "name": "Κουρταλή",
+              "level": "exposed",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 1716,
+              "name": "Παραλία Φελού",
+              "level": "exposed",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            }
+          ],
+          "rawRows": [
+            {
+              "beachId": 1704,
+              "name": "Κουρταλή",
+              "level": "exposed",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 1716,
+              "name": "Παραλία Φελού",
+              "level": "exposed",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            }
+          ],
+          "notes": "Kourtali and Felos are close west-coast records with similar west-facing exposure behavior."
+        }
+      ]
+    },
+    {
+      "scenarioId": "Naxos_W_4BFT",
+      "windDirectionDeg": 270,
+      "segments": [
+        {
+          "segmentId": "andros-gavrio-batsi-golden-front",
+          "reason": "same_continuous_beachfront",
+          "rawLevels": [
+            "exposed"
+          ],
+          "consistentLevels": [
+            "exposed"
+          ],
+          "rows": [
+            {
+              "beachId": 1688,
+              "name": "Αγιος Πέτρος",
+              "level": "exposed",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 1726,
+              "name": "Χρυσή Αμμος",
+              "level": "exposed",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 1705,
+              "name": "Κυπρί",
+              "level": "exposed",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 1686,
+              "name": "Αγ.Κυπριανός",
+              "level": "exposed",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            }
+          ],
+          "rawRows": [
+            {
+              "beachId": 1688,
+              "name": "Αγιος Πέτρος",
+              "level": "exposed",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 1726,
+              "name": "Χρυσή Αμμος",
+              "level": "exposed",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 1705,
+              "name": "Κυπρί",
+              "level": "exposed",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 1686,
+              "name": "Αγ.Κυπριανός",
+              "level": "exposed",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            }
+          ],
+          "notes": "Agios Petros, Chrysi Ammos, Kypri, and Agios Kyprianos sit on the same practical west/southwest Gavrio-Batsi beach-front."
+        },
+        {
+          "segmentId": "andros-batsi-kolona-front",
+          "reason": "same_village_bay",
+          "rawLevels": [
+            "exposed"
+          ],
+          "consistentLevels": [
+            "exposed"
+          ],
+          "rows": [
+            {
+              "beachId": 1713,
+              "name": "Μπατσί",
+              "level": "exposed",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 1702,
+              "name": "Κολώνα",
+              "level": "exposed",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            }
+          ],
+          "rawRows": [
+            {
+              "beachId": 1713,
+              "name": "Μπατσί",
+              "level": "exposed",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 1702,
+              "name": "Κολώνα",
+              "level": "exposed",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            }
+          ],
+          "notes": "Batsi and Kolona are adjacent Batsi-bay records with similar southwest-facing behavior; popularity and amenities remain separate."
+        },
+        {
+          "segmentId": "andros-vitali-gides-front",
+          "reason": "same_continuous_beachfront",
+          "rawLevels": [
+            "protected"
+          ],
+          "consistentLevels": [
+            "protected"
+          ],
+          "rows": [
+            {
+              "beachId": 1693,
+              "name": "Βιτάλι",
+              "level": "protected",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 1697,
+              "name": "Γίδες",
+              "level": "protected",
+              "windProfileConfidence": "low",
+              "knownWindSportSpot": false
+            }
+          ],
+          "rawRows": [
+            {
+              "beachId": 1693,
+              "name": "Βιτάλι",
+              "level": "protected",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 1697,
+              "name": "Γίδες",
+              "level": "protected",
+              "windProfileConfidence": "low",
+              "knownWindSportSpot": false
+            }
+          ],
+          "notes": "Vitali and Gides are very close north/east Andros records with near-identical east-facing shoreline behavior."
+        },
+        {
+          "segmentId": "andros-kalamitsi-kaminaki-front",
+          "reason": "same_continuous_beachfront",
+          "rawLevels": [
+            "exposed"
+          ],
+          "consistentLevels": [
+            "exposed"
+          ],
+          "rows": [
+            {
+              "beachId": 1700,
+              "name": "Καλαμίτσι",
+              "level": "exposed",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 1701,
+              "name": "Καμινάκι",
+              "level": "exposed",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            }
+          ],
+          "rawRows": [
+            {
+              "beachId": 1700,
+              "name": "Καλαμίτσι",
+              "level": "exposed",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 1701,
+              "name": "Καμινάκι",
+              "level": "exposed",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            }
+          ],
+          "notes": "Kalamitsi and Kaminaki are adjacent northwest Andros records with similar northwest-facing exposure."
+        },
+        {
+          "segmentId": "andros-megala-mikra-peza-front",
+          "reason": "same_continuous_beachfront",
+          "rawLevels": [
+            "partial"
+          ],
+          "consistentLevels": [
+            "partial"
+          ],
+          "rows": [
+            {
+              "beachId": 1710,
+              "name": "Μεγάλα Πέζα",
+              "level": "partial",
+              "windProfileConfidence": "low",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 1711,
+              "name": "Μικρά Πέζα",
+              "level": "partial",
+              "windProfileConfidence": "low",
+              "knownWindSportSpot": false
+            }
+          ],
+          "rawRows": [
+            {
+              "beachId": 1710,
+              "name": "Μεγάλα Πέζα",
+              "level": "partial",
+              "windProfileConfidence": "low",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 1711,
+              "name": "Μικρά Πέζα",
+              "level": "partial",
+              "windProfileConfidence": "low",
+              "knownWindSportSpot": false
+            }
+          ],
+          "notes": "Megala Peza and Mikra Peza are adjacent northern-western records with matching northwest-facing shoreline behavior."
+        },
+        {
+          "segmentId": "andros-platanistos-rozos-front",
+          "reason": "same_cove_or_micro_bay",
+          "rawLevels": [
+            "protected"
+          ],
+          "consistentLevels": [
+            "protected"
+          ],
+          "rows": [
+            {
+              "beachId": 1720,
+              "name": "Πλατανιστός",
+              "level": "protected",
+              "windProfileConfidence": "low",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 1722,
+              "name": "Ρόζος",
+              "level": "protected",
+              "windProfileConfidence": "low",
+              "knownWindSportSpot": false
+            }
+          ],
+          "rawRows": [
+            {
+              "beachId": 1720,
+              "name": "Πλατανιστός",
+              "level": "protected",
+              "windProfileConfidence": "low",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 1722,
+              "name": "Ρόζος",
+              "level": "protected",
+              "windProfileConfidence": "low",
+              "knownWindSportSpot": false
+            }
+          ],
+          "notes": "Platanistos and Rozos are neighboring north-coast records; access remains separate and boat-only records must not become top picks."
+        },
+        {
+          "segmentId": "andros-kourtali-felos-front",
+          "reason": "same_continuous_beachfront",
+          "rawLevels": [
+            "exposed"
+          ],
+          "consistentLevels": [
+            "exposed"
+          ],
+          "rows": [
+            {
+              "beachId": 1704,
+              "name": "Κουρταλή",
+              "level": "exposed",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 1716,
+              "name": "Παραλία Φελού",
+              "level": "exposed",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            }
+          ],
+          "rawRows": [
+            {
+              "beachId": 1704,
+              "name": "Κουρταλή",
+              "level": "exposed",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 1716,
+              "name": "Παραλία Φελού",
+              "level": "exposed",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            }
+          ],
+          "notes": "Kourtali and Felos are close west-coast records with similar west-facing exposure behavior."
+        }
+      ]
+    },
+    {
+      "scenarioId": "Naxos_S_4BFT",
+      "windDirectionDeg": 180,
+      "segments": [
+        {
+          "segmentId": "andros-gavrio-batsi-golden-front",
+          "reason": "same_continuous_beachfront",
+          "rawLevels": [
+            "exposed"
+          ],
+          "consistentLevels": [
+            "exposed"
+          ],
+          "rows": [
+            {
+              "beachId": 1688,
+              "name": "Αγιος Πέτρος",
+              "level": "exposed",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 1726,
+              "name": "Χρυσή Αμμος",
+              "level": "exposed",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 1705,
+              "name": "Κυπρί",
+              "level": "exposed",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 1686,
+              "name": "Αγ.Κυπριανός",
+              "level": "exposed",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            }
+          ],
+          "rawRows": [
+            {
+              "beachId": 1688,
+              "name": "Αγιος Πέτρος",
+              "level": "exposed",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 1726,
+              "name": "Χρυσή Αμμος",
+              "level": "exposed",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 1705,
+              "name": "Κυπρί",
+              "level": "exposed",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 1686,
+              "name": "Αγ.Κυπριανός",
+              "level": "exposed",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            }
+          ],
+          "notes": "Agios Petros, Chrysi Ammos, Kypri, and Agios Kyprianos sit on the same practical west/southwest Gavrio-Batsi beach-front."
+        },
+        {
+          "segmentId": "andros-batsi-kolona-front",
+          "reason": "same_village_bay",
+          "rawLevels": [
+            "exposed"
+          ],
+          "consistentLevels": [
+            "exposed"
+          ],
+          "rows": [
+            {
+              "beachId": 1713,
+              "name": "Μπατσί",
+              "level": "exposed",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 1702,
+              "name": "Κολώνα",
+              "level": "exposed",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            }
+          ],
+          "rawRows": [
+            {
+              "beachId": 1713,
+              "name": "Μπατσί",
+              "level": "exposed",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 1702,
+              "name": "Κολώνα",
+              "level": "exposed",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            }
+          ],
+          "notes": "Batsi and Kolona are adjacent Batsi-bay records with similar southwest-facing behavior; popularity and amenities remain separate."
+        },
+        {
+          "segmentId": "andros-vitali-gides-front",
+          "reason": "same_continuous_beachfront",
+          "rawLevels": [
+            "protected"
+          ],
+          "consistentLevels": [
+            "protected"
+          ],
+          "rows": [
+            {
+              "beachId": 1693,
+              "name": "Βιτάλι",
+              "level": "protected",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 1697,
+              "name": "Γίδες",
+              "level": "protected",
+              "windProfileConfidence": "low",
+              "knownWindSportSpot": false
+            }
+          ],
+          "rawRows": [
+            {
+              "beachId": 1693,
+              "name": "Βιτάλι",
+              "level": "protected",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 1697,
+              "name": "Γίδες",
+              "level": "protected",
+              "windProfileConfidence": "low",
+              "knownWindSportSpot": false
+            }
+          ],
+          "notes": "Vitali and Gides are very close north/east Andros records with near-identical east-facing shoreline behavior."
+        },
+        {
+          "segmentId": "andros-kalamitsi-kaminaki-front",
+          "reason": "same_continuous_beachfront",
+          "rawLevels": [
+            "protected"
+          ],
+          "consistentLevels": [
+            "protected"
+          ],
+          "rows": [
+            {
+              "beachId": 1700,
+              "name": "Καλαμίτσι",
+              "level": "protected",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 1701,
+              "name": "Καμινάκι",
+              "level": "protected",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            }
+          ],
+          "rawRows": [
+            {
+              "beachId": 1700,
+              "name": "Καλαμίτσι",
+              "level": "protected",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 1701,
+              "name": "Καμινάκι",
+              "level": "protected",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            }
+          ],
+          "notes": "Kalamitsi and Kaminaki are adjacent northwest Andros records with similar northwest-facing exposure."
+        },
+        {
+          "segmentId": "andros-megala-mikra-peza-front",
+          "reason": "same_continuous_beachfront",
+          "rawLevels": [
+            "protected"
+          ],
+          "consistentLevels": [
+            "protected"
+          ],
+          "rows": [
+            {
+              "beachId": 1710,
+              "name": "Μεγάλα Πέζα",
+              "level": "protected",
+              "windProfileConfidence": "low",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 1711,
+              "name": "Μικρά Πέζα",
+              "level": "protected",
+              "windProfileConfidence": "low",
+              "knownWindSportSpot": false
+            }
+          ],
+          "rawRows": [
+            {
+              "beachId": 1710,
+              "name": "Μεγάλα Πέζα",
+              "level": "protected",
+              "windProfileConfidence": "low",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 1711,
+              "name": "Μικρά Πέζα",
+              "level": "protected",
+              "windProfileConfidence": "low",
+              "knownWindSportSpot": false
+            }
+          ],
+          "notes": "Megala Peza and Mikra Peza are adjacent northern-western records with matching northwest-facing shoreline behavior."
+        },
+        {
+          "segmentId": "andros-platanistos-rozos-front",
+          "reason": "same_cove_or_micro_bay",
+          "rawLevels": [
+            "protected"
+          ],
+          "consistentLevels": [
+            "protected"
+          ],
+          "rows": [
+            {
+              "beachId": 1720,
+              "name": "Πλατανιστός",
+              "level": "protected",
+              "windProfileConfidence": "low",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 1722,
+              "name": "Ρόζος",
+              "level": "protected",
+              "windProfileConfidence": "low",
+              "knownWindSportSpot": false
+            }
+          ],
+          "rawRows": [
+            {
+              "beachId": 1720,
+              "name": "Πλατανιστός",
+              "level": "protected",
+              "windProfileConfidence": "low",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 1722,
+              "name": "Ρόζος",
+              "level": "protected",
+              "windProfileConfidence": "low",
+              "knownWindSportSpot": false
+            }
+          ],
+          "notes": "Platanistos and Rozos are neighboring north-coast records; access remains separate and boat-only records must not become top picks."
+        },
+        {
+          "segmentId": "andros-kourtali-felos-front",
+          "reason": "same_continuous_beachfront",
+          "rawLevels": [
+            "partial"
+          ],
+          "consistentLevels": [
+            "partial"
+          ],
+          "rows": [
+            {
+              "beachId": 1704,
+              "name": "Κουρταλή",
+              "level": "partial",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 1716,
+              "name": "Παραλία Φελού",
+              "level": "partial",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            }
+          ],
+          "rawRows": [
+            {
+              "beachId": 1704,
+              "name": "Κουρταλή",
+              "level": "partial",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 1716,
+              "name": "Παραλία Φελού",
+              "level": "partial",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            }
+          ],
+          "notes": "Kourtali and Felos are close west-coast records with similar west-facing exposure behavior."
+        }
+      ]
+    },
+    {
+      "scenarioId": "Naxos_E_4BFT",
+      "windDirectionDeg": 90,
+      "segments": [
+        {
+          "segmentId": "andros-gavrio-batsi-golden-front",
+          "reason": "same_continuous_beachfront",
+          "rawLevels": [
+            "protected"
+          ],
+          "consistentLevels": [
+            "protected"
+          ],
+          "rows": [
+            {
+              "beachId": 1688,
+              "name": "Αγιος Πέτρος",
+              "level": "protected",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 1726,
+              "name": "Χρυσή Αμμος",
+              "level": "protected",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 1705,
+              "name": "Κυπρί",
+              "level": "protected",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 1686,
+              "name": "Αγ.Κυπριανός",
+              "level": "protected",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            }
+          ],
+          "rawRows": [
+            {
+              "beachId": 1688,
+              "name": "Αγιος Πέτρος",
+              "level": "protected",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 1726,
+              "name": "Χρυσή Αμμος",
+              "level": "protected",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 1705,
+              "name": "Κυπρί",
+              "level": "protected",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 1686,
+              "name": "Αγ.Κυπριανός",
+              "level": "protected",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            }
+          ],
+          "notes": "Agios Petros, Chrysi Ammos, Kypri, and Agios Kyprianos sit on the same practical west/southwest Gavrio-Batsi beach-front."
+        },
+        {
+          "segmentId": "andros-batsi-kolona-front",
+          "reason": "same_village_bay",
+          "rawLevels": [
+            "protected"
+          ],
+          "consistentLevels": [
+            "protected"
+          ],
+          "rows": [
+            {
+              "beachId": 1713,
+              "name": "Μπατσί",
+              "level": "protected",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 1702,
+              "name": "Κολώνα",
+              "level": "protected",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            }
+          ],
+          "rawRows": [
+            {
+              "beachId": 1713,
+              "name": "Μπατσί",
+              "level": "protected",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 1702,
+              "name": "Κολώνα",
+              "level": "protected",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            }
+          ],
+          "notes": "Batsi and Kolona are adjacent Batsi-bay records with similar southwest-facing behavior; popularity and amenities remain separate."
+        },
+        {
+          "segmentId": "andros-vitali-gides-front",
+          "reason": "same_continuous_beachfront",
+          "rawLevels": [
+            "exposed"
+          ],
+          "consistentLevels": [
+            "exposed"
+          ],
+          "rows": [
+            {
+              "beachId": 1693,
+              "name": "Βιτάλι",
+              "level": "exposed",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 1697,
+              "name": "Γίδες",
+              "level": "exposed",
+              "windProfileConfidence": "low",
+              "knownWindSportSpot": false
+            }
+          ],
+          "rawRows": [
+            {
+              "beachId": 1693,
+              "name": "Βιτάλι",
+              "level": "exposed",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 1697,
+              "name": "Γίδες",
+              "level": "exposed",
+              "windProfileConfidence": "low",
+              "knownWindSportSpot": false
+            }
+          ],
+          "notes": "Vitali and Gides are very close north/east Andros records with near-identical east-facing shoreline behavior."
+        },
+        {
+          "segmentId": "andros-kalamitsi-kaminaki-front",
+          "reason": "same_continuous_beachfront",
+          "rawLevels": [
+            "protected"
+          ],
+          "consistentLevels": [
+            "protected"
+          ],
+          "rows": [
+            {
+              "beachId": 1700,
+              "name": "Καλαμίτσι",
+              "level": "protected",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 1701,
+              "name": "Καμινάκι",
+              "level": "protected",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            }
+          ],
+          "rawRows": [
+            {
+              "beachId": 1700,
+              "name": "Καλαμίτσι",
+              "level": "protected",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 1701,
+              "name": "Καμινάκι",
+              "level": "protected",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            }
+          ],
+          "notes": "Kalamitsi and Kaminaki are adjacent northwest Andros records with similar northwest-facing exposure."
+        },
+        {
+          "segmentId": "andros-megala-mikra-peza-front",
+          "reason": "same_continuous_beachfront",
+          "rawLevels": [
+            "protected"
+          ],
+          "consistentLevels": [
+            "protected"
+          ],
+          "rows": [
+            {
+              "beachId": 1710,
+              "name": "Μεγάλα Πέζα",
+              "level": "protected",
+              "windProfileConfidence": "low",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 1711,
+              "name": "Μικρά Πέζα",
+              "level": "protected",
+              "windProfileConfidence": "low",
+              "knownWindSportSpot": false
+            }
+          ],
+          "rawRows": [
+            {
+              "beachId": 1710,
+              "name": "Μεγάλα Πέζα",
+              "level": "protected",
+              "windProfileConfidence": "low",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 1711,
+              "name": "Μικρά Πέζα",
+              "level": "protected",
+              "windProfileConfidence": "low",
+              "knownWindSportSpot": false
+            }
+          ],
+          "notes": "Megala Peza and Mikra Peza are adjacent northern-western records with matching northwest-facing shoreline behavior."
+        },
+        {
+          "segmentId": "andros-platanistos-rozos-front",
+          "reason": "same_cove_or_micro_bay",
+          "rawLevels": [
+            "partial"
+          ],
+          "consistentLevels": [
+            "partial"
+          ],
+          "rows": [
+            {
+              "beachId": 1720,
+              "name": "Πλατανιστός",
+              "level": "partial",
+              "windProfileConfidence": "low",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 1722,
+              "name": "Ρόζος",
+              "level": "partial",
+              "windProfileConfidence": "low",
+              "knownWindSportSpot": false
+            }
+          ],
+          "rawRows": [
+            {
+              "beachId": 1720,
+              "name": "Πλατανιστός",
+              "level": "partial",
+              "windProfileConfidence": "low",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 1722,
+              "name": "Ρόζος",
+              "level": "partial",
+              "windProfileConfidence": "low",
+              "knownWindSportSpot": false
+            }
+          ],
+          "notes": "Platanistos and Rozos are neighboring north-coast records; access remains separate and boat-only records must not become top picks."
+        },
+        {
+          "segmentId": "andros-kourtali-felos-front",
+          "reason": "same_continuous_beachfront",
+          "rawLevels": [
+            "protected"
+          ],
+          "consistentLevels": [
+            "protected"
+          ],
+          "rows": [
+            {
+              "beachId": 1704,
+              "name": "Κουρταλή",
+              "level": "protected",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 1716,
+              "name": "Παραλία Φελού",
+              "level": "protected",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            }
+          ],
+          "rawRows": [
+            {
+              "beachId": 1704,
+              "name": "Κουρταλή",
+              "level": "protected",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 1716,
+              "name": "Παραλία Φελού",
+              "level": "protected",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            }
+          ],
+          "notes": "Kourtali and Felos are close west-coast records with similar west-facing exposure behavior."
+        }
+      ]
+    }
+  ]
+}

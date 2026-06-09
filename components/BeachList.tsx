@@ -1,6 +1,6 @@
 import React from 'react';
 import { AlertTriangle } from 'lucide-react';
-import { Beach, LanguageCode, RecommendationConfidence, SortOption, SwimmingComfort, Translation, WarningFlag, WindDirection } from '../types';
+import { Beach, LanguageCode, RecommendationConfidence, SimpleWindSuitability, SortOption, SwimmingComfort, Translation, WarningFlag, WindDirection } from '../types';
 import { BeachCard } from './BeachCard';
 import { getSelectedDayPrefix } from '../utils/dateLabels';
 import { ExposureLevel } from '../utils/windExposure';
@@ -14,6 +14,8 @@ type BeachListBeach = Beach & {
   confidence?: RecommendationConfidence;
   swimmingComfort?: SwimmingComfort;
   lessExposedToday?: boolean;
+  windExposureReason?: string;
+  simpleWindSuitability?: SimpleWindSuitability;
 };
 
 interface BeachListProps {
@@ -246,6 +248,8 @@ export const BeachList: React.FC<BeachListProps> = ({
               seaCalmClaimAllowed={b.seaCalmClaimAllowed}
               strongWindContext={strongWindContext}
               lessExposedToday={b.lessExposedToday}
+              windSuitabilityText={b.windExposureReason}
+              windSuitabilityColor={b.simpleWindSuitability?.suitabilityColor}
             />
           </div>
         );

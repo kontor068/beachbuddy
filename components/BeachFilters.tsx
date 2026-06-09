@@ -45,8 +45,8 @@ export const BeachFilters: React.FC<BeachFiltersProps> = ({
   const searchListId = React.useId();
   const sortMenuRef = React.useRef<HTMLDivElement>(null);
   const searchCopy = t.beachSearchFilters ?? {
-    searchLabel: language === 'gr' ? 'Αναζήτηση παραλιών' : 'Search beaches',
-    searchPlaceholder: language === 'gr' ? 'Αναζήτηση παραλιών...' : 'Search beaches...',
+    searchLabel: language === 'gr' ? 'Αναζήτηση με όνομα παραλίας' : 'Search by beach name',
+    searchPlaceholder: language === 'gr' ? 'Όνομα παραλίας...' : 'Beach name...',
     clearSearch: language === 'gr' ? 'Καθαρισμός αναζήτησης' : 'Clear search',
     removeFilter: (label: string) => language === 'gr' ? `Αφαίρεση φίλτρου ${label}` : `Remove ${label} filter`,
     clearAll: language === 'gr' ? 'Καθαρισμός όλων' : 'Clear all',

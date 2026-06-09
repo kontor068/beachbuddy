@@ -3,7 +3,7 @@ import path from 'node:path';
 import { Accessibility, Beach, BeachType, GeospatialExposureProfile, WaterDepth, WindDirection, WindProfile, WindSector } from '../types';
 import { generateBeachCopy } from '../utils/beachCopy';
 import { assessGeospatialWindExposure, type LandMask } from '../utils/geospatialExposureModel';
-import { getVisibleMapExposureLevel } from '../utils/mapExposure';
+import { getConsistentVisibleMapExposureLevels, getVisibleMapExposureLevel, shouldShowWindExposureColors } from '../utils/mapExposure';
 import type { ExposureLevel } from '../utils/windExposure';
 import { assessBeachWindExposure } from '../utils/windExposureEngine';
 
@@ -107,6 +107,14 @@ const northThreeBeaufort = {
   waveHeightMeters: 0.3,
 };
 
+const northFourBeaufort = {
+  windDirectionDeg: 0,
+  windDirection: WindDirection.N,
+  windSpeedKmh: 25,
+  beaufort: 4,
+  waveHeightMeters: 0.5,
+};
+
 const northThreeBeaufortParosChoppy = {
   windDirectionDeg: 0,
   windDirection: WindDirection.N,
@@ -129,6 +137,14 @@ const milosNorthFiveBeaufort = {
   windSpeedKmh: 35.3,
   beaufort: 5,
   waveHeightMeters: 1.5,
+};
+
+const milosNorthSixBeaufort = {
+  windDirectionDeg: 0,
+  windDirection: WindDirection.N,
+  windSpeedKmh: 44,
+  beaufort: 6,
+  waveHeightMeters: 1.8,
 };
 
 const milosNorthThreeBeaufort = {
@@ -366,30 +382,30 @@ const androsPhase21Ids = [
 ];
 const milosP0Names = [
   'Agios Ioannis', 'Agios Sostis', 'Agia Kyriaki', 'Ammoudaraki', 'Achivadolimni',
-  'Gerontas', 'Gerania', 'Theiafes', 'Kapros', 'Katergo', 'Kipoi', 'Lagkada',
-  'Navtikos Omilos Milou', 'Nerodafni', 'Palaiochori', 'Papafragkas', 'Papikinoy',
+  'Gerontas', 'Gerania', 'Thiafes', 'Kapros', 'Katergo', 'Kipi', 'Lagkada',
+  'Navtikos Omilos Milou', 'Nerodafni', 'Palaiochori', 'Papafragkas', 'Papikinou',
   'Plathiena', 'Provatas', 'Rivari', 'Sarakiniko', 'Tourkothalassa', 'Triades',
-  'Tsigkrado', 'Fatoyrena', 'Fyriplaka', 'Fyropotamos', 'Psathi', 'Psarovolada',
+  'Tsigkrado', 'Fatourena', 'Fyriplaka', 'Fyropotamos', 'Psathi', 'Psarovolada',
 ];
 const milosPhase3CoverageNames = [
-  'Agios Dimitrios', 'Kalamos', 'Kampanes', 'Paralia Aggathia', 'Fyrlingkos',
-  'Pollonia', 'Agkali', 'Voydia', 'Kastanas', 'Kolympisionas', 'Rema', 'Tria Pigadia',
+  'Agios Dimitrios', 'Kalamos', 'Kampanes', 'Paralia Angathia', 'Fyrlingkos',
+  'Pollonia', 'Agkali', 'Voudia', 'Kastanas', 'Kolympisionas', 'Rema', 'Tria Pigadia',
 ];
 const naxosPhase1CoverageNames = [
-  'Agia Anna', 'Agiassos', 'Agioi Theodoroi', 'Agios Georgios', 'Agios Prokopios',
+  'Agia Anna', 'Agiassos', 'Agii Theodori', 'Agios Georgios', 'Agios Prokopios',
   'Azalas', 'Alyko', 'Ammitis', 'Ampram', 'Apollonas', 'Vintzi', 'Glatza',
   'Glyfada', 'Grotta', 'Paralia Kalantos', 'Kampos', 'Kastraki', 'Kedros',
-  'Kleidos', 'Paralia Kleido', 'Ligaridia', 'Paralia Limnari', 'Lionas', 'Melino',
-  'Mikra', 'Mikri Vigla', 'Mikri Vigla - Notia plevra', 'Mikro Alyko', 'Moutsoyna',
+  'Klidos', 'Paralia Klido', 'Ligaridia', 'Paralia Limnari', 'Lionas', 'Melino',
+  'Mikra', 'Mikri Vigla', 'Mikri Vigla - Notia plevra', 'Mikro Alyko', 'Moutsouna',
   'Orkos', 'Panormos', 'Plaka', 'Pyrgaki', 'Rina', 'Paralia Spedo', 'Chilia Vrysi',
   'Paralia Psili Ammos', 'Paralia Psofagrilia', 'Hawaii',
 ];
 const milosNorthExposedNames = ['Papafragkas', 'Plathiena', 'Sarakiniko', 'Tourkothalassa', 'Fyropotamos'];
 const milosNorthSensitiveLowConfidenceNames = ['Gerania', 'Kapros', 'Nerodafni'];
-const milosSouthFacingNames = ['Agios Sostis', 'Agia Kyriaki', 'Kipoi', 'Palaiochori', 'Provatas', 'Tsigkrado', 'Fyriplaka', 'Psarovolada'];
-const milosBayCandidateNames = ['Lagkada', 'Navtikos Omilos Milou', 'Papikinoy', 'Rivari', 'Fatoyrena'];
+const milosSouthFacingNames = ['Agios Sostis', 'Agia Kyriaki', 'Kipi', 'Palaiochori', 'Provatas', 'Tsigkrado', 'Fyriplaka', 'Psarovolada'];
+const milosBayCandidateNames = ['Lagkada', 'Navtikos Omilos Milou', 'Papikinou', 'Rivari', 'Fatourena'];
 const naxosNorthExposedNames = [
-  'Agioi Theodoroi', 'Ammitis', 'Ampram', 'Glatza', 'Kampos', 'Melino', 'Mikra',
+  'Agii Theodori', 'Ammitis', 'Ampram', 'Glatza', 'Kampos', 'Melino', 'Mikra',
   'Chilia Vrysi',
 ];
 const naxosEastExposedNames = [
@@ -401,6 +417,8 @@ const androsBeaches = loadAppRegionBeaches('south-aegean-andros');
 const milosBeaches = loadAppRegionBeaches('south-aegean-milos');
 const milosGeospatialProfiles = loadGeneratedGeospatialProfiles('south-aegean-milos');
 const naxosBeaches = loadAppRegionBeaches('south-aegean-naxos');
+const kythnosBeaches = loadAppRegionBeaches('south-aegean-kythnos');
+const kythnosGeospatialProfiles = loadGeneratedGeospatialProfiles('south-aegean-kythnos');
 
 const byId = (beaches: Beach[], id: number): Beach => {
   const beach = beaches.find(item => item.id === id);
@@ -425,13 +443,18 @@ const milosNorthSensitiveLowConfidenceIds = idsByEnglishName(milosBeaches, milos
 const milosSouthFacingIds = idsByEnglishName(milosBeaches, milosSouthFacingNames);
 const milosBayCandidateIds = idsByEnglishName(milosBeaches, milosBayCandidateNames);
 const naxosPhase1CoverageIds = idsByEnglishName(naxosBeaches, naxosPhase1CoverageNames);
+const naxosMediumEvidenceGateIds = [
+  1991, 1992, 1999, 2000, 2002, 2004, 2015, 2016, 2017,
+];
+const naxosLowEvidenceGateIds = naxosPhase1CoverageIds
+  .filter(id => !naxosMediumEvidenceGateIds.includes(id));
 const naxosNorthExposedIds = idsByEnglishName(naxosBeaches, naxosNorthExposedNames);
 const naxosEastExposedIds = idsByEnglishName(naxosBeaches, naxosEastExposedNames);
 const mikriVigla = byEnglishName(naxosBeaches, 'Mikri Vigla');
 const mikriViglaSouth = byEnglishName(naxosBeaches, 'Mikri Vigla - Notia plevra');
 const plaka = byEnglishName(naxosBeaches, 'Plaka');
 const achivadolimni = byEnglishName(milosBeaches, 'Achivadolimni');
-const papikinou = byEnglishName(milosBeaches, 'Papikinoy');
+const papikinou = byEnglishName(milosBeaches, 'Papikinou');
 const sarakiniko = byEnglishName(milosBeaches, 'Sarakiniko');
 const papafragas = byEnglishName(milosBeaches, 'Papafragkas');
 const fyropotamos = byEnglishName(milosBeaches, 'Fyropotamos');
@@ -460,6 +483,25 @@ const coverageReport = (beaches: Beach[], p0Ids: number[], phase21Ids: number[])
   };
 };
 
+const highConfidenceIdsFor = (beaches: Beach[]): number[] => beaches
+  .map(beach => ({
+    beach,
+    assessment: assessBeachWindExposure({ beach, ...northFiveBeaufort }),
+  }))
+  .filter(({ assessment }) => assessment.windProfile.confidence === 'high')
+  .map(({ beach }) => beach.id)
+  .sort((a, b) => a - b);
+
+const assertExactIds = (actual: number[], expected: number[], message: string) => {
+  const sortedActual = [...actual].sort((a, b) => a - b);
+  const sortedExpected = [...expected].sort((a, b) => a - b);
+  assert(
+    sortedActual.length === sortedExpected.length &&
+      sortedActual.every((id, index) => id === sortedExpected[index]),
+    `${message}. Expected ${sortedExpected.join(',')}; got ${sortedActual.join(',')}.`
+  );
+};
+
 const chrysiAssessment = assessBeachWindExposure({ beach: chrysiAkti, ...northFiveBeaufort });
 const parosTop3 = [chrysiAkti, ...parosShelteredAlternatives]
   .sort((a, b) => scenarioScore(b) - scenarioScore(a))
@@ -470,6 +512,8 @@ const parosCoverage = coverageReport(parosBeaches, parosP0Ids, parosPhase21Ids);
 const androsCoverage = coverageReport(androsBeaches, androsP0Ids, androsPhase21Ids);
 const milosCoverage = coverageReport(milosBeaches, milosP0Ids, milosPhase3CoverageIds);
 const naxosCoverage = coverageReport(naxosBeaches, [], naxosPhase1CoverageIds);
+const parosHighConfidenceIds = highConfidenceIdsFor(parosBeaches);
+const milosHighConfidenceIds = highConfidenceIdsFor(milosBeaches);
 const parosRealTop3 = [...parosBeaches]
   .sort((a, b) => scenarioScore(b) - scenarioScore(a))
   .slice(0, 3)
@@ -484,8 +528,59 @@ const milosSouthFiveTop3 = [...milosBeaches]
   .map(beach => beach.id);
 const milosSouthwestFourMapLevels = new Map(milosBeaches.map(beach => {
   const assessment = assessBeachWindExposure({ beach, ...milosSouthwestFourBeaufort });
-  return [beach.id, visibleMapExposureDecision(beach, assessment, milosSouthwestFourBeaufort)];
+  return [
+    beach.id,
+    visibleMapExposureDecision(beach, assessment, milosSouthwestFourBeaufort, milosGeospatialProfiles[beach.id]),
+  ];
 }));
+const milosNorthFourItems = milosBeaches.map(beach => {
+  const geospatialExposure = milosGeospatialProfiles[beach.id];
+  const assessment = assessBeachWindExposure({
+    beach,
+    geospatialProfile: geospatialExposure,
+    ...northFourBeaufort,
+  });
+
+  return {
+    beach,
+    exposureLevel: assessment.exposureLevel,
+    orientation: assessment.facingDeg,
+    windProfile: assessment.windProfile,
+    windProfileSource: assessment.source,
+    windSector: assessment.windSector,
+    warnings: assessment.warnings,
+    geospatialExposure,
+  };
+});
+const milosNorthFourMapLevels = getConsistentVisibleMapExposureLevels(
+  milosNorthFourItems,
+  northFourBeaufort.beaufort,
+  northFourBeaufort.windDirectionDeg
+);
+const kythnosNorthFourItems = kythnosBeaches.map(beach => {
+  const geospatialExposure = kythnosGeospatialProfiles[beach.id];
+  const assessment = assessBeachWindExposure({
+    beach,
+    geospatialProfile: geospatialExposure,
+    ...northFourBeaufort,
+  });
+
+  return {
+    beach,
+    exposureLevel: assessment.exposureLevel,
+    orientation: assessment.facingDeg,
+    windProfile: assessment.windProfile,
+    windProfileSource: assessment.source,
+    windSector: assessment.windSector,
+    warnings: assessment.warnings,
+    geospatialExposure,
+  };
+});
+const kythnosNorthFourMapLevels = getConsistentVisibleMapExposureLevels(
+  kythnosNorthFourItems,
+  northFourBeaufort.beaufort,
+  northFourBeaufort.windDirectionDeg
+);
 const p0WindProfilesCovered = parosCoverage.p0Profiles + androsCoverage.p0Profiles;
 const phase21WindProfilesAdded = parosCoverage.phase21Profiles + androsCoverage.phase21Profiles;
 const allProfilesCovered = parosCoverage.overrideProfiles + androsCoverage.overrideProfiles;
@@ -501,7 +596,7 @@ assert(milosCoverage.p0Profiles === milosP0Ids.length, 'Coverage: all Milos P0 b
 assert(parosCoverage.phase21Profiles === parosPhase21Ids.length, 'Coverage: all Paros Phase 2.1 beaches must have windProfile overrides.');
 assert(androsCoverage.phase21Profiles === androsPhase21Ids.length, 'Coverage: all Andros Phase 2.1 beaches must have windProfile overrides.');
 assert(milosCoverage.phase21Profiles === milosPhase3CoverageIds.length, 'Coverage: all Milos Phase 3 coverage beaches must have low-confidence windProfile overrides.');
-assert(naxosCoverage.phase21Profiles === naxosPhase1CoverageIds.length, 'Coverage: all Naxos Phase 1 beaches must have low-confidence windProfile overrides.');
+assert(naxosCoverage.phase21Profiles === naxosPhase1CoverageIds.length, 'Coverage: all Naxos Phase 1 beaches must have audited windProfile overrides.');
 assert(p0WindProfilesCovered === 29, 'Coverage: Phase 2 P0 should still cover 29 high-impact profiles.');
 assert(phase21WindProfilesAdded === 49, 'Coverage: Phase 2.1 should add 49 remaining profiles.');
 assert(parosCoverage.overrideProfiles === parosCoverage.total, 'Coverage: Paros must reach 37/37 windProfile coverage.');
@@ -511,14 +606,81 @@ assert(parosCoverage.unknownSourceProfiles === 0, 'Coverage: Paros should have n
 assert(androsCoverage.unknownSourceProfiles === 0, 'Coverage: Andros should have no source-missing windProfiles after Phase 2.1.');
 assert(milosCoverage.overrideProfiles === milosCoverage.total, 'Coverage: Milos should reach 41/41 windProfile override coverage.');
 assert(milosCoverage.unknownSourceProfiles === 0, 'Coverage: Milos should have no source-missing windProfiles after Phase 3 coverage.');
-assert(milosCoverage.highConfidence === 0, 'Coverage: Milos P0 must not add high-confidence profiles yet.');
+assertExactIds(milosHighConfidenceIds, [achivadolimni.id], 'Coverage: Milos high-confidence profiles must stay limited to evidence-approved wind-sport spots');
 assert(milosCoverage.lowConfidence >= 12, 'Coverage: Milos P0 should remain conservative with many low-confidence profiles.');
+assertExactIds(
+  parosHighConfidenceIds,
+  [
+    byEnglishName(parosBeaches, 'Kolympithres').id,
+    byEnglishName(parosBeaches, 'Monastiri').id,
+    byEnglishName(parosBeaches, 'Paralia Alyki').id,
+    byEnglishName(parosBeaches, 'Chrysi Akti').id,
+    byEnglishName(parosBeaches, 'Tserdakia (Nea Chrysi Akti)').id,
+    byEnglishName(parosBeaches, 'Tsoukalia').id,
+    byEnglishName(parosBeaches, 'Farangas').id,
+  ],
+  'Coverage: Paros high-confidence profiles must stay limited to evidence-approved wind-sport or sheltered-bay spots'
+);
+[
+  'Kolympithres',
+  'Monastiri',
+  'Paralia Alyki',
+  'Farangas',
+].forEach(name => {
+  const assessment = assessBeachWindExposure({ beach: byEnglishName(parosBeaches, name), ...northFiveBeaufort });
+  assert(assessment.windProfile.confidence === 'high', `Paros 5 Bft N: ${name} must remain high-confidence after sheltered-bay evidence review.`);
+  assert(assessment.canClaimProtected, `Paros 5 Bft N: ${name} may claim protected only because beach-specific sheltered-bay evidence exists.`);
+});
 assert(naxosCoverage.overrideProfiles === naxosCoverage.total, 'Coverage: Naxos should reach 39/39 windProfile override coverage.');
 assert(naxosWindProfilesCovered === 39, 'Coverage: Naxos Phase 1 should cover 39/39 windProfiles.');
 assert(naxosCoverage.unknownSourceProfiles === 0, 'Coverage: Naxos should have no source-missing windProfiles after Phase 1 coverage.');
-assert(naxosCoverage.highConfidence === 0 && naxosCoverage.mediumConfidence === 0, 'Coverage: Naxos Phase 1 must stay low-confidence until locally verified.');
-assert(naxosCoverage.lowConfidence === naxosCoverage.total, 'Coverage: all Naxos Phase 1 profiles should be low-confidence.');
+assert(naxosCoverage.highConfidence === 0, 'Coverage: Naxos Phase 1 must not create high-confidence profiles from map/geospatial evidence alone.');
+assert(naxosCoverage.mediumConfidence === naxosMediumEvidenceGateIds.length, 'Coverage: Naxos medium-confidence upgrades must match the wind-profile evidence gate.');
+assert(naxosCoverage.lowConfidence === naxosLowEvidenceGateIds.length, 'Coverage: Naxos low-confidence profiles must remain low until the evidence gate passes.');
 assert(naxosCoverage.northProtectionClaims === 0, 'Coverage: Naxos Phase 1 must not create north-wind protection claims.');
+assert(kythnosNorthFourMapLevels.get(1875) === 'protected', 'Kythnos N 4BFT: Kaki Maria bay should remain protected/blue.');
+assert(kythnosNorthFourMapLevels.get(1876) === 'protected', 'Kythnos N 4BFT: Kalo Livadi bay should remain protected/blue.');
+assert(kythnosNorthFourMapLevels.get(1881) === 'protected', 'Kythnos N 4BFT: Levkes bay should remain protected/blue.');
+assert(kythnosNorthFourMapLevels.get(1863) === 'partial', 'Kythnos N 4BFT: Agia Irini must stay partial/yellow, not inherit protected/blue.');
+assert(kythnosNorthFourMapLevels.get(1884) === 'partial', 'Kythnos N 4BFT: Maroula must stay partial/yellow, not inherit protected/blue.');
+assert(kythnosNorthFourMapLevels.get(1882) === 'exposed', 'Kythnos N 4BFT: Livadaki should remain exposed/yellow.');
+assert(kythnosNorthFourMapLevels.get(1886) === 'exposed', 'Kythnos N 4BFT: Mikro Livadaki should remain exposed/yellow.');
+[
+  1932, // Pollonia
+  1916, // Papafragkas
+  1908, // Kapros
+].forEach(id => {
+  assert(milosNorthFourMapLevels.get(id) === 'exposed', `Milos N 4BFT: ${id} must stay exposed/yellow on the north/east-facing coast.`);
+  const uiItemWithoutProfileSource = milosNorthFourItems.find(item => item.beach.id === id);
+  assert(Boolean(uiItemWithoutProfileSource), `Milos N 4BFT: ${id} test item must exist.`);
+  assert(
+    getVisibleMapExposureLevel(
+      { ...uiItemWithoutProfileSource, windProfileSource: undefined },
+      northFourBeaufort.beaufort,
+      northFourBeaufort.windDirectionDeg
+    ) === 'exposed',
+    `Milos N 4BFT: ${id} must stay exposed/yellow even if a UI path omits windProfileSource.`
+  );
+});
+[
+  1936, // Kolympisionas
+  1933, // Agkali
+  1937, // Rema
+  1906, // Thiafes
+].forEach(id => {
+  assert(milosNorthFourMapLevels.get(id) === 'partial', `Milos N 4BFT: ${id} must stay partial/yellow when geospatial exposure is partial.`);
+});
+[
+  1934, // Voudia
+  1935, // Kastanas
+  1938, // Tria Pigadia
+  1928, // Fyrlingkos
+  1915, // Palaiochori
+  1931, // Psarovolada
+  1901, // Agia Kyriaki
+].forEach(id => {
+  assert(milosNorthFourMapLevels.get(id) === 'protected', `Milos N 4BFT: ${id} should show protected/blue when geospatial north exposure is protected.`);
+});
 
 assert(!parosTop3.includes(chrysiAkti.id), 'Paros 5 Bft N: Χρυσή Ακτή must not be Top 3.');
 assert(!chrysiAssessment.canClaimProtected, 'Paros 5 Bft N: Χρυσή Ακτή must not be described as protected.');
@@ -644,13 +806,23 @@ const milosNorthSensitiveLowConfidenceAssessments = milosNorthSensitiveLowConfid
   beach: byId(milosBeaches, id),
   ...milosNorthFiveBeaufort,
 }));
+const milosNorthFivePartialKnownAssessments = milosSouthFacingIds.map(id => assessBeachWindExposure({
+  beach: byId(milosBeaches, id),
+  ...milosNorthFiveBeaufort,
+}));
+const milosNorthSixPartialKnownAssessments = milosSouthFacingIds.map(id => assessBeachWindExposure({
+  beach: byId(milosBeaches, id),
+  ...milosNorthSixBeaufort,
+}));
 const milosSouthFacingSouthAssessments = milosSouthFacingIds.map(id => assessBeachWindExposure({
   beach: byId(milosBeaches, id),
   ...milosSouthFiveBeaufort,
 }));
-const milosLowConfidenceAssessments = milosP0Ids
-  .map(id => assessBeachWindExposure({ beach: byId(milosBeaches, id), ...milosNorthFiveBeaufort, waveHeightMeters: 0.3 }))
-  .filter(assessment => assessment.windProfile.confidence === 'low');
+const milosLowConfidenceBeachIds = milosP0Ids.filter(id => (
+  assessBeachWindExposure({ beach: byId(milosBeaches, id), ...milosNorthFiveBeaufort, waveHeightMeters: 0.3 }).windProfile.confidence === 'low'
+));
+const milosLowConfidenceAssessments = milosLowConfidenceBeachIds
+  .map(id => assessBeachWindExposure({ beach: byId(milosBeaches, id), ...milosNorthFiveBeaufort, waveHeightMeters: 0.3 }));
 const milosPhase3CoverageAssessments = milosPhase3CoverageIds.map(id => assessBeachWindExposure({
   beach: byId(milosBeaches, id),
   ...milosNorthFiveBeaufort,
@@ -659,6 +831,10 @@ const milosPhase3CoverageAssessments = milosPhase3CoverageIds.map(id => assessBe
 const achivadolimniNorthFiveAssessment = assessBeachWindExposure({
   beach: achivadolimni,
   ...milosNorthFiveBeaufort,
+});
+const achivadolimniNorthSixAssessment = assessBeachWindExposure({
+  beach: achivadolimni,
+  ...milosNorthSixBeaufort,
 });
 const achivadolimniNorthThreeAssessment = assessBeachWindExposure({
   beach: achivadolimni,
@@ -767,9 +943,31 @@ milosNorthSensitiveLowConfidenceAssessments.forEach(assessment => {
   const labels = visibleLabelDecision(assessment);
   assert(!assessment.canClaimProtected && !labels.protectedLabel && !labels.calmLabel, 'Milos 5 Bft N: low-confidence north-sensitive beaches must not claim protected/calm status.');
 });
+milosNorthFivePartialKnownAssessments.forEach((assessment, index) => {
+  const beachId = milosSouthFacingIds[index];
+  assert(assessment.exposureLevel === 'partial', 'Milos 5 Bft N: south-facing alternatives should remain partial, not falsely protected.');
+  assert(scenarioScore(byId(milosBeaches, beachId), milosNorthFiveBeaufort) < 82, 'Milos 5 Bft N: partial beaches must not keep excellent-style 82 scores.');
+});
+milosNorthSixPartialKnownAssessments.forEach((assessment, index) => {
+  const beachId = milosSouthFacingIds[index];
+  assert(assessment.exposureLevel === 'partial', 'Milos 6 Bft N: south-facing alternatives should remain partial, not falsely protected.');
+  assert(
+    scenarioScore(byId(milosBeaches, beachId), milosNorthSixBeaufort) < scenarioScore(byId(milosBeaches, beachId), milosNorthFiveBeaufort),
+    'Milos 6 Bft N: partial beaches must score worse than the same beach in 5 Bft.'
+  );
+});
+milosLowConfidenceAssessments.forEach((assessment, index) => {
+  const beachId = milosLowConfidenceBeachIds[index];
+  assert(assessment.finalScoreCap !== undefined && assessment.finalScoreCap <= 65, 'Milos 5 Bft N: low-confidence profiles should receive a strong-wind score cap.');
+  assert(scenarioScore(byId(milosBeaches, beachId), milosNorthFiveBeaufort) <= 65, 'Milos 5 Bft N: low-confidence profiles should not rank as strongly as known medium-confidence partial candidates.');
+});
 assert(achivadolimniNorthFiveAssessment.isKnownWindSportRisk, 'Milos 5 Bft N: Achivadolimni must be treated as a wind/watersports caution.');
 assert(achivadolimniNorthFiveAssessment.warnings.some(warning => warning.type === 'wind_sport_spot'), 'Milos 5 Bft N: Achivadolimni must show wind/watersports warning.');
 assert(!visibleLabelDecision(achivadolimniNorthFiveAssessment).protectedLabel, 'Milos 5 Bft N: Achivadolimni must not show protected label.');
+assert(achivadolimniNorthFiveAssessment.simpleWindSuitability.suitabilityColor === 'red', 'Milos 5 Bft N: Achivadolimni simple suitability should remain red.');
+assert(achivadolimniNorthFiveAssessment.simpleWindSuitability.exposureStatus === 'exposed', 'Milos 5 Bft N: Achivadolimni simple suitability should remain exposed.');
+assert(achivadolimniNorthSixAssessment.simpleWindSuitability.suitabilityColor === 'red', 'Milos 6 Bft N: Achivadolimni simple suitability should remain red.');
+assert(achivadolimniNorthSixAssessment.simpleWindSuitability.exposureStatus === 'exposed', 'Milos 6 Bft N: Achivadolimni simple suitability should remain exposed.');
 assert(!papikinouNorthFiveAssessment.canClaimProtected, 'Milos 5 Bft N: Papikinou must not make guaranteed protected claims.');
 assert(!visibleLabelDecision(papikinouNorthFiveAssessment).protectedLabel, 'Milos 5 Bft N: Papikinou must not show protected label.');
 assertNoProtectedCalmClaims(
@@ -819,8 +1017,8 @@ milosPhase3CoverageAssessments.forEach(assessment => {
 });
 milosNorthExposedIds.forEach(id => {
   assert(
-    milosSouthwestFourMapLevels.get(id) === 'protected',
-    'Milos SW 4 Bft map: known north/northwest P0 beaches should show as less exposed than south-facing beaches.'
+    milosSouthwestFourMapLevels.get(id) !== 'exposed',
+    'Milos SW 4 Bft map: known north/northwest P0 beaches should not show as exposed like south-facing beaches.'
   );
 });
 milosSouthFacingIds.forEach(id => {
@@ -847,11 +1045,30 @@ naxosPhase1CoverageAssessments.forEach(assessment => {
   const labels = visibleLabelDecision(assessment);
   assert(
     assessment.source === 'override' &&
-    assessment.windProfile.confidence === 'low' &&
     !assessment.canClaimProtected &&
     !labels.protectedLabel &&
     !labels.calmLabel,
-    'Naxos trust: Phase 1 low-confidence profiles must avoid protected/calm labels.'
+    'Naxos trust: audited Phase 1 profiles must avoid protected/calm labels unless shelter is locally verified.'
+  );
+});
+naxosMediumEvidenceGateIds.forEach(id => {
+  const assessment = assessBeachWindExposure({
+    beach: byId(naxosBeaches, id),
+    ...northFiveBeaufort,
+  });
+  assert(
+    assessment.windProfile.confidence === 'medium',
+    `Naxos trust: beach ${id} must be medium only because it passed the evidence gate.`
+  );
+});
+naxosLowEvidenceGateIds.forEach(id => {
+  const assessment = assessBeachWindExposure({
+    beach: byId(naxosBeaches, id),
+    ...northFiveBeaufort,
+  });
+  assert(
+    assessment.windProfile.confidence === 'low',
+    `Naxos trust: beach ${id} must stay low until OSM/geospatial/conflict evidence passes.`
   );
 });
 assert(mikriViglaNorthFiveAssessment.isKnownWindSportRisk, 'Naxos 5 Bft N: Mikri Vigla must be treated as a wind/watersports caution.');
@@ -879,6 +1096,10 @@ const unknownAssessment = assessBeachWindExposure({ beach: genericUnknown, ...no
 const unknownThreeAssessment = assessBeachWindExposure({ beach: genericUnknown, ...northThreeBeaufort });
 const legacyNorthProtectedNorthAssessment = assessBeachWindExposure({ beach: genericLegacyNorthProtected, ...northFiveBeaufort });
 const legacyNorthProtectedSouthAssessment = assessBeachWindExposure({ beach: genericLegacyNorthProtected, ...milosSouthFiveBeaufort });
+const shelteredNorthThreeAssessment = assessBeachWindExposure({ beach: genericSheltered, ...northThreeBeaufort });
+const shelteredNorthFiveAssessment = assessBeachWindExposure({ beach: genericSheltered, ...northFiveBeaufort });
+const openNorthThreeAssessment = assessBeachWindExposure({ beach: genericOpen, ...northThreeBeaufort });
+const openNorthFiveAssessment = assessBeachWindExposure({ beach: genericOpen, ...northFiveBeaufort });
 const legacyNorthProtectedNorthMapLevel = visibleMapExposureDecision(
   genericLegacyNorthProtected,
   legacyNorthProtectedNorthAssessment,
@@ -965,6 +1186,17 @@ const unknownFieldProfileIds = allProfileBeaches
 
 assert(openScore < 60, 'Generic 5 Bft: open + high fetch should score low.');
 assert(shelteredScore > openScore, 'Generic 5 Bft: sheltered + low fetch should score higher.');
+assert(shelteredNorthThreeAssessment.simpleWindSuitability.suitabilityColor === 'green', 'Simple wind layer: protected 3 Bft should be green.');
+assert(shelteredNorthThreeAssessment.simpleWindSuitability.explanationKey === 'protected_from_wind', 'Simple wind layer: protected 3 Bft should explain wind protection.');
+assert(shelteredNorthFiveAssessment.simpleWindSuitability.suitabilityColor === 'yellow', 'Simple wind layer: protected 5 Bft should be yellow, not perfect.');
+assert(openNorthThreeAssessment.simpleWindSuitability.suitabilityColor === 'yellow', 'Simple wind layer: open/exposed 3 Bft should be yellow.');
+assert(openNorthFiveAssessment.simpleWindSuitability.suitabilityColor === 'red', 'Simple wind layer: open/exposed 5 Bft should be red.');
+assert(legacyNorthProtectedNorthAssessment.simpleWindSuitability.exposureStatus === 'partial', 'Simple wind layer: legacy protectedFrom fallback should classify offshore north wind as partial, not verified protected.');
+assert(legacyNorthProtectedNorthAssessment.simpleWindSuitability.confidence === 'medium', 'Simple wind layer: legacy protectedFrom fallback should be medium confidence, not verified high.');
+assert(legacyNorthProtectedNorthAssessment.simpleWindSuitability.suitabilityColor === 'orange', 'Simple wind layer: legacy protectedFrom fallback at 5 Bft should be orange because it is only partial.');
+assert(legacyNorthProtectedSouthAssessment.simpleWindSuitability.exposureStatus === 'exposed', 'Simple wind layer: legacy protectedFrom fallback should classify opposite south wind as exposed.');
+assert(legacyNorthProtectedSouthAssessment.simpleWindSuitability.suitabilityColor === 'red', 'Simple wind layer: exposed south 5 Bft should be red.');
+assert(unknownThreeAssessment.simpleWindSuitability.suitabilityColor === 'yellow', 'Simple wind layer: unknown orientation with 3 Bft should stay manageable/yellow.');
 assert(!unknownAssessment.canClaimProtected, 'Generic 5 Bft: unknown windProfile must not invent protection.');
 assert(unknownAssessment.confidenceReasons.includes('local wind exposure profile missing'), 'Generic 5 Bft: unknown windProfile must reduce confidence.');
 assert(!unknownThreeAssessment.canClaimProtected, 'Generic 3 Bft: unknown windProfile must not invent protection.');
@@ -975,13 +1207,13 @@ assert(legacyNorthProtectedNorthMapLevel === 'protected', 'Map fallback: legacy 
 assert(legacyNorthProtectedSouthMapLevel === 'exposed', 'Map fallback: legacy north-protected beach should show exposed in south/onshore wind.');
 assert(!legacyNorthProtectedNorthAssessment.canClaimProtected, 'Map fallback: legacy protectedFrom must not create verified wind protection claims.');
 assert(!legacyNorthProtectedLabels.protectedLabel && !legacyNorthProtectedLabels.calmLabel, 'Map fallback: legacy protectedFrom must not create protected/calm labels.');
-assert(geospatialProtectedMapLevel === 'protected', 'Map geospatial fallback: low-confidence profile may provide less-exposed map color only.');
+assert(geospatialProtectedMapLevel === 'protected', 'Map geospatial fallback: low-confidence profile may show protected/blue when geometry is protected.');
 assert(geospatialExposedMapLevel === 'exposed', 'Map geospatial fallback: open upwind fetch should remain exposed.');
 assert(geospatialOpenFetchOverridesLowConfidenceShelterMapLevel === 'exposed', 'Map geospatial fallback: open fetch should prevent low-confidence shelter from showing less exposed.');
-assert(geospatialPartialAllowsDirectionalProtectedMapLevel === 'protected', 'Map directional fallback: partial geospatial must not hide clear offshore/protected geometry.');
-assert(geospatialPartialAllowsDirectionalExposedMapLevel === 'exposed', 'Map directional fallback: partial geospatial must not hide clear onshore/exposed geometry.');
+assert(geospatialPartialAllowsDirectionalProtectedMapLevel === 'partial', 'Map directional fallback: partial geospatial must block legacy protected fallback from becoming unsupported blue.');
+assert(geospatialPartialAllowsDirectionalExposedMapLevel === 'partial', 'Map directional fallback: partial geospatial should remain partial when only legacy direction fallback disagrees.');
 assert(sarakinikoGeneratedGeospatialNorthMapLevel === 'exposed', 'Milos generated geospatial: Sarakiniko should remain exposed in north wind on the map.');
-assert(papikinouGeneratedGeospatialNorthMapLevel === 'protected', 'Milos generated geospatial: Papikinoy should show less exposed in north wind on the map.');
+assert(papikinouGeneratedGeospatialNorthMapLevel === 'protected', 'Milos generated geospatial: Papikinou may show protected/blue in north wind from geospatial bay geometry.');
 assertNoProtectedCalmClaims(
   generatedCopyText(genericUnknown, unknownLowWaveAssessment, { ...northFiveBeaufort, waveHeightMeters: 0.3 }),
   'Generic unknown 5 Bft low-wave generated copy'
@@ -1095,6 +1327,8 @@ console.log(JSON.stringify({
     milosP0Ids,
     milosPhase3CoverageIds,
     naxosPhase1CoverageIds,
+    naxosMediumEvidenceGateIds,
+    naxosLowEvidenceGateIds,
   },
   paros: {
     chrysiAktiScore: scenarioScore(chrysiAkti),
@@ -1272,7 +1506,7 @@ console.log(JSON.stringify({
       partialAllowsDirectionalProtectedMapLevel: geospatialPartialAllowsDirectionalProtectedMapLevel,
       partialAllowsDirectionalExposedMapLevel: geospatialPartialAllowsDirectionalExposedMapLevel,
       milosSarakinikoNorthMapLevel: sarakinikoGeneratedGeospatialNorthMapLevel,
-      milosPapikinoyNorthMapLevel: papikinouGeneratedGeospatialNorthMapLevel,
+      milosPapikinouNorthMapLevel: papikinouGeneratedGeospatialNorthMapLevel,
     },
     protected: {
       exposureLevel: geospatialNorthProtected.exposureLevel,

@@ -347,33 +347,41 @@ const getStaticDetails = (beach: Beach, language: LanguageCode, windInfo: string
                 ? (language === 'gr' ? 'με άμμο και βότσαλο' : 'sand & pebbles')
                 : beach.beachType === 'rocky'
                     ? (language === 'gr' ? 'βραχώδη' : 'rocky')
-                    : (language === 'gr' ? 'με βότσαλο' : 'pebbles');
+                    : beach.beachType === 'unknown'
+                        ? ''
+                        : (language === 'gr' ? 'με βότσαλο' : 'pebbles');
     const water =
         beach.waterDepth === 'shallow'
             ? (language === 'gr' ? 'ρηχά νερά' : 'shallow waters')
             : beach.waterDepth === 'medium'
-                ? (language === 'gr' ? 'μεσαίο βάθος' : 'moderate depth')
-                : (language === 'gr' ? 'βαθιά νερά' : 'deep waters');
+            ? (language === 'gr' ? 'μεσαίο βάθος' : 'moderate depth')
+            : (language === 'gr' ? 'βαθιά νερά' : 'deep waters');
+    const surfaceWithTrailingSpace = surface ? `${surface} ` : '';
+    const hasSurface = surface.trim().length > 0;
     
     if (language === 'gr') {
         if (!beach.amenities.organized && beach.amenities.naturalShade) {
             tip = `Είναι φυσική παραλία χωρίς οργανωμένες παροχές, αλλά έχει δέντρα. Πήγαινε λίγο νωρίτερα για να βρεις φυσική σκιά.`;
         } else if (!beach.amenities.organized) {
-            tip = `Είναι ${surface} φυσική παραλία χωρίς οργανωμένες παροχές. Πάρε μαζί σου ομπρέλα και αρκετό νερό.`;
+            tip = `Είναι ${surfaceWithTrailingSpace}φυσική παραλία χωρίς οργανωμένες παροχές. Πάρε μαζί σου ομπρέλα και αρκετό νερό.`;
         } else if (beach.amenities.taverna) {
             tip = `Μετά το μπάνιο στα ${water}, η ταβέρνα της περιοχής είναι ιδανική για φαγητό.`;
         } else {
-            tip = `Μια κλασική ${surface} παραλία. Ιδανική ώρα επίσκεψης είναι νωρίς το πρωί ή αργά το απόγευμα.`;
+            tip = `Μια κλασική ${surfaceWithTrailingSpace}παραλία. Ιδανική ώρα επίσκεψης είναι νωρίς το πρωί ή αργά το απόγευμα.`;
         }
     } else {
         if (!beach.amenities.organized && beach.amenities.naturalShade) {
             tip = `This is a natural beach with no beach facilities, but there are trees. Arrive a little earlier to find natural shade.`;
         } else if (!beach.amenities.organized) {
-            tip = `It's a natural ${surface} beach with no beach facilities. Bring an umbrella and plenty of water.`;
+            tip = hasSurface
+                ? `It's a natural ${surface} beach with no beach facilities. Bring an umbrella and plenty of water.`
+                : `It's a natural beach with no beach facilities. Bring an umbrella and plenty of water.`;
         } else if (beach.amenities.taverna) {
             tip = `After swimming in the ${water}, the local tavern is perfect for a meal.`;
         } else {
-            tip = `A classic ${surface} beach. Best time to visit is early morning or late afternoon.`;
+            tip = hasSurface
+                ? `A classic ${surface} beach. Best time to visit is early morning or late afternoon.`
+                : `A classic beach. Best time to visit is early morning or late afternoon.`;
         }
     }
 
@@ -398,7 +406,7 @@ const getStaticDetails = (beach: Beach, language: LanguageCode, windInfo: string
     };
 };
 
-import { openNavigation } from '../utils/navigation';
+import { canOpenNavigation, openNavigation } from '../utils/navigation';
 
 export const BeachDetailModal: React.FC<BeachDetailModalProps> = ({ beach, isOpen, onClose, language, t, windInfo, hourlyForecast }) => {
   const details = useMemo(() => {
@@ -434,6 +442,8 @@ export const BeachDetailModal: React.FC<BeachDetailModalProps> = ({ beach, isOpe
   if (!isOpen || !beach || !details) return null;
 
   const beachDisplayName = displayBeachName(beach.name, language);
+  const canNavigate = canOpenNavigation(beach);
+  const canShare = typeof navigator !== 'undefined' && Boolean(navigator.share);
 
   const handleShare = async () => {
     const shareUrl = window.location.origin + window.location.pathname;
@@ -550,8 +560,9 @@ export const BeachDetailModal: React.FC<BeachDetailModalProps> = ({ beach, isOpe
                 </div>
             </div>
         </div>
+        {(canShare || canNavigate) && (
         <footer className="p-4 border-t border-slate-200 bg-slate-50 flex-shrink-0 flex items-center justify-end gap-2 flex-wrap">
-            {navigator.share && (
+            {canShare && (
                 <button
                     onClick={handleShare}
                     aria-label={t.sharing.buttonLabel}
@@ -563,6 +574,7 @@ export const BeachDetailModal: React.FC<BeachDetailModalProps> = ({ beach, isOpe
                     {t.sharing.buttonLabel}
                 </button>
             )}
+            {canNavigate && (
             <button
                 onClick={() => openNavigation(beach)}
                 aria-label={t.navigateToLabel(beachDisplayName)}
@@ -573,7 +585,9 @@ export const BeachDetailModal: React.FC<BeachDetailModalProps> = ({ beach, isOpe
                 </svg>
                 {t.navigate}
             </button>
+            )}
         </footer>
+        )}
       </div>
     </div>
   );

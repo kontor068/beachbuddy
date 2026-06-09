@@ -1,0 +1,1481 @@
+{
+  "schemaVersion": 1,
+  "generatedAt": "2026-06-08T10:47:47.277Z",
+  "regionId": "south-aegean-syros",
+  "policy": {
+    "sameSegment": "Beaches in the same curated shoreline segment should render the same visible exposure level unless a verified local morphology or wind-sport exception locks a stricter level.",
+    "confidence": "Segment propagation may support map-color consistency and medium review, but it never creates high confidence by itself."
+  },
+  "summary": {
+    "scenarioCount": 5,
+    "segmentCount": 6,
+    "allowedExceptions": 0,
+    "unresolvedContradictions": 0
+  },
+  "allowedExceptions": [],
+  "unresolved": [],
+  "results": [
+    {
+      "scenarioId": "Naxos_N_3BFT",
+      "windDirectionDeg": 0,
+      "segments": [
+        {
+          "segmentId": "syros-megas-gialos-ampela-lagkonaki-front",
+          "reason": "same_continuous_beachfront",
+          "rawLevels": [
+            "protected"
+          ],
+          "consistentLevels": [
+            "protected"
+          ],
+          "rows": [
+            {
+              "beachId": 2140,
+              "name": "Μέγας Γιαλός",
+              "level": "protected",
+              "windProfileConfidence": "low",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 2129,
+              "name": "Αμπέλα",
+              "level": "protected",
+              "windProfileConfidence": "low",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 2137,
+              "name": "Λαγκονάκι",
+              "level": "protected",
+              "windProfileConfidence": "low",
+              "knownWindSportSpot": false
+            }
+          ],
+          "rawRows": [
+            {
+              "beachId": 2140,
+              "name": "Μέγας Γιαλός",
+              "level": "protected",
+              "windProfileConfidence": "low",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 2129,
+              "name": "Αμπέλα",
+              "level": "protected",
+              "windProfileConfidence": "low",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 2137,
+              "name": "Λαγκονάκι",
+              "level": "protected",
+              "windProfileConfidence": "low",
+              "knownWindSportSpot": false
+            }
+          ],
+          "notes": "Megas Gialos, Ampela, and Lagkonaki are neighboring southeast south-coast Syros records with near-matching shoreline facing; amenities/access remain separate."
+        },
+        {
+          "segmentId": "syros-achladi-vari-front",
+          "reason": "same_village_bay",
+          "rawLevels": [
+            "protected"
+          ],
+          "consistentLevels": [
+            "protected"
+          ],
+          "rows": [
+            {
+              "beachId": 2131,
+              "name": "Αχλάδι",
+              "level": "protected",
+              "windProfileConfidence": "low",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 2143,
+              "name": "Παραλία Βάρη",
+              "level": "protected",
+              "windProfileConfidence": "low",
+              "knownWindSportSpot": false
+            }
+          ],
+          "rawRows": [
+            {
+              "beachId": 2131,
+              "name": "Αχλάδι",
+              "level": "protected",
+              "windProfileConfidence": "low",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 2143,
+              "name": "Παραλία Βάρη",
+              "level": "protected",
+              "windProfileConfidence": "low",
+              "knownWindSportSpot": false
+            }
+          ],
+          "notes": "Achladi and Vari are adjacent southeast-facing Vari bay records and should not diverge without a specific local morphology reason."
+        },
+        {
+          "segmentId": "syros-kini-loto-front",
+          "reason": "same_village_bay",
+          "rawLevels": [
+            "exposed",
+            "partial"
+          ],
+          "consistentLevels": [
+            "exposed"
+          ],
+          "rows": [
+            {
+              "beachId": 2136,
+              "name": "Κίνι",
+              "level": "exposed",
+              "windProfileConfidence": "low",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 2146,
+              "name": "Παραλία Λωτό",
+              "level": "exposed",
+              "windProfileConfidence": "low",
+              "knownWindSportSpot": false
+            }
+          ],
+          "rawRows": [
+            {
+              "beachId": 2136,
+              "name": "Κίνι",
+              "level": "exposed",
+              "windProfileConfidence": "low",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 2146,
+              "name": "Παραλία Λωτό",
+              "level": "partial",
+              "windProfileConfidence": "low",
+              "knownWindSportSpot": false
+            }
+          ],
+          "notes": "Kini and Loto are neighboring northwest-facing Kini bay records; popularity and amenities remain separate from exposure consistency."
+        },
+        {
+          "segmentId": "syros-delfini-varvarousa-front",
+          "reason": "same_continuous_beachfront",
+          "rawLevels": [
+            "partial"
+          ],
+          "consistentLevels": [
+            "partial"
+          ],
+          "rows": [
+            {
+              "beachId": 2135,
+              "name": "Δελφίνι",
+              "level": "partial",
+              "windProfileConfidence": "low",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 2133,
+              "name": "Βαρβαρούσα",
+              "level": "partial",
+              "windProfileConfidence": "low",
+              "knownWindSportSpot": false
+            }
+          ],
+          "rawRows": [
+            {
+              "beachId": 2135,
+              "name": "Δελφίνι",
+              "level": "partial",
+              "windProfileConfidence": "low",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 2133,
+              "name": "Βαρβαρούσα",
+              "level": "partial",
+              "windProfileConfidence": "low",
+              "knownWindSportSpot": false
+            }
+          ],
+          "notes": "Delfini and Varvarousa are close west/northwest coast records with similar open-sector behavior; difficult-access handling remains separate."
+        },
+        {
+          "segmentId": "syros-lia-marmari-megas-lakos-front",
+          "reason": "same_continuous_beachfront",
+          "rawLevels": [
+            "protected"
+          ],
+          "consistentLevels": [
+            "partial"
+          ],
+          "rows": [
+            {
+              "beachId": 2138,
+              "name": "Λεία",
+              "level": "partial",
+              "windProfileConfidence": "low",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 2139,
+              "name": "Μαρμάρι",
+              "level": "partial",
+              "windProfileConfidence": "low",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 2141,
+              "name": "Μέγας Λάκος",
+              "level": "partial",
+              "windProfileConfidence": "low",
+              "knownWindSportSpot": false
+            }
+          ],
+          "rawRows": [
+            {
+              "beachId": 2138,
+              "name": "Λεία",
+              "level": "protected",
+              "windProfileConfidence": "low",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 2139,
+              "name": "Μαρμάρι",
+              "level": "protected",
+              "windProfileConfidence": "low",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 2141,
+              "name": "Μέγας Λάκος",
+              "level": "protected",
+              "windProfileConfidence": "low",
+              "knownWindSportSpot": false
+            }
+          ],
+          "notes": "Lia, Marmari, and Megas Lakos are close northwest Syros west-facing records with near-matching shoreline facing; confidence is map-consistency support only."
+        },
+        {
+          "segmentId": "syros-grammata-amerikanou-front",
+          "reason": "same_cove_or_micro_bay",
+          "rawLevels": [
+            "partial"
+          ],
+          "consistentLevels": [
+            "partial"
+          ],
+          "rows": [
+            {
+              "beachId": 2134,
+              "name": "Γράμματα",
+              "level": "partial",
+              "windProfileConfidence": "low",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 2128,
+              "name": "Αμερικάνου",
+              "level": "partial",
+              "windProfileConfidence": "low",
+              "knownWindSportSpot": false
+            }
+          ],
+          "rawRows": [
+            {
+              "beachId": 2134,
+              "name": "Γράμματα",
+              "level": "partial",
+              "windProfileConfidence": "low",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 2128,
+              "name": "Αμερικάνου",
+              "level": "partial",
+              "windProfileConfidence": "low",
+              "knownWindSportSpot": false
+            }
+          ],
+          "notes": "Grammata and Amerikanou are neighboring far-northwest west-facing records; boat/difficult access must still block top-pick promotion."
+        }
+      ]
+    },
+    {
+      "scenarioId": "Naxos_N_5BFT",
+      "windDirectionDeg": 0,
+      "segments": [
+        {
+          "segmentId": "syros-megas-gialos-ampela-lagkonaki-front",
+          "reason": "same_continuous_beachfront",
+          "rawLevels": [
+            "protected"
+          ],
+          "consistentLevels": [
+            "protected"
+          ],
+          "rows": [
+            {
+              "beachId": 2140,
+              "name": "Μέγας Γιαλός",
+              "level": "protected",
+              "windProfileConfidence": "low",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 2129,
+              "name": "Αμπέλα",
+              "level": "protected",
+              "windProfileConfidence": "low",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 2137,
+              "name": "Λαγκονάκι",
+              "level": "protected",
+              "windProfileConfidence": "low",
+              "knownWindSportSpot": false
+            }
+          ],
+          "rawRows": [
+            {
+              "beachId": 2140,
+              "name": "Μέγας Γιαλός",
+              "level": "protected",
+              "windProfileConfidence": "low",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 2129,
+              "name": "Αμπέλα",
+              "level": "protected",
+              "windProfileConfidence": "low",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 2137,
+              "name": "Λαγκονάκι",
+              "level": "protected",
+              "windProfileConfidence": "low",
+              "knownWindSportSpot": false
+            }
+          ],
+          "notes": "Megas Gialos, Ampela, and Lagkonaki are neighboring southeast south-coast Syros records with near-matching shoreline facing; amenities/access remain separate."
+        },
+        {
+          "segmentId": "syros-achladi-vari-front",
+          "reason": "same_village_bay",
+          "rawLevels": [
+            "protected"
+          ],
+          "consistentLevels": [
+            "protected"
+          ],
+          "rows": [
+            {
+              "beachId": 2131,
+              "name": "Αχλάδι",
+              "level": "protected",
+              "windProfileConfidence": "low",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 2143,
+              "name": "Παραλία Βάρη",
+              "level": "protected",
+              "windProfileConfidence": "low",
+              "knownWindSportSpot": false
+            }
+          ],
+          "rawRows": [
+            {
+              "beachId": 2131,
+              "name": "Αχλάδι",
+              "level": "protected",
+              "windProfileConfidence": "low",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 2143,
+              "name": "Παραλία Βάρη",
+              "level": "protected",
+              "windProfileConfidence": "low",
+              "knownWindSportSpot": false
+            }
+          ],
+          "notes": "Achladi and Vari are adjacent southeast-facing Vari bay records and should not diverge without a specific local morphology reason."
+        },
+        {
+          "segmentId": "syros-kini-loto-front",
+          "reason": "same_village_bay",
+          "rawLevels": [
+            "exposed",
+            "partial"
+          ],
+          "consistentLevels": [
+            "exposed"
+          ],
+          "rows": [
+            {
+              "beachId": 2136,
+              "name": "Κίνι",
+              "level": "exposed",
+              "windProfileConfidence": "low",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 2146,
+              "name": "Παραλία Λωτό",
+              "level": "exposed",
+              "windProfileConfidence": "low",
+              "knownWindSportSpot": false
+            }
+          ],
+          "rawRows": [
+            {
+              "beachId": 2136,
+              "name": "Κίνι",
+              "level": "exposed",
+              "windProfileConfidence": "low",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 2146,
+              "name": "Παραλία Λωτό",
+              "level": "partial",
+              "windProfileConfidence": "low",
+              "knownWindSportSpot": false
+            }
+          ],
+          "notes": "Kini and Loto are neighboring northwest-facing Kini bay records; popularity and amenities remain separate from exposure consistency."
+        },
+        {
+          "segmentId": "syros-delfini-varvarousa-front",
+          "reason": "same_continuous_beachfront",
+          "rawLevels": [
+            "partial"
+          ],
+          "consistentLevels": [
+            "partial"
+          ],
+          "rows": [
+            {
+              "beachId": 2135,
+              "name": "Δελφίνι",
+              "level": "partial",
+              "windProfileConfidence": "low",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 2133,
+              "name": "Βαρβαρούσα",
+              "level": "partial",
+              "windProfileConfidence": "low",
+              "knownWindSportSpot": false
+            }
+          ],
+          "rawRows": [
+            {
+              "beachId": 2135,
+              "name": "Δελφίνι",
+              "level": "partial",
+              "windProfileConfidence": "low",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 2133,
+              "name": "Βαρβαρούσα",
+              "level": "partial",
+              "windProfileConfidence": "low",
+              "knownWindSportSpot": false
+            }
+          ],
+          "notes": "Delfini and Varvarousa are close west/northwest coast records with similar open-sector behavior; difficult-access handling remains separate."
+        },
+        {
+          "segmentId": "syros-lia-marmari-megas-lakos-front",
+          "reason": "same_continuous_beachfront",
+          "rawLevels": [
+            "protected"
+          ],
+          "consistentLevels": [
+            "partial"
+          ],
+          "rows": [
+            {
+              "beachId": 2138,
+              "name": "Λεία",
+              "level": "partial",
+              "windProfileConfidence": "low",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 2139,
+              "name": "Μαρμάρι",
+              "level": "partial",
+              "windProfileConfidence": "low",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 2141,
+              "name": "Μέγας Λάκος",
+              "level": "partial",
+              "windProfileConfidence": "low",
+              "knownWindSportSpot": false
+            }
+          ],
+          "rawRows": [
+            {
+              "beachId": 2138,
+              "name": "Λεία",
+              "level": "protected",
+              "windProfileConfidence": "low",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 2139,
+              "name": "Μαρμάρι",
+              "level": "protected",
+              "windProfileConfidence": "low",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 2141,
+              "name": "Μέγας Λάκος",
+              "level": "protected",
+              "windProfileConfidence": "low",
+              "knownWindSportSpot": false
+            }
+          ],
+          "notes": "Lia, Marmari, and Megas Lakos are close northwest Syros west-facing records with near-matching shoreline facing; confidence is map-consistency support only."
+        },
+        {
+          "segmentId": "syros-grammata-amerikanou-front",
+          "reason": "same_cove_or_micro_bay",
+          "rawLevels": [
+            "partial"
+          ],
+          "consistentLevels": [
+            "partial"
+          ],
+          "rows": [
+            {
+              "beachId": 2134,
+              "name": "Γράμματα",
+              "level": "partial",
+              "windProfileConfidence": "low",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 2128,
+              "name": "Αμερικάνου",
+              "level": "partial",
+              "windProfileConfidence": "low",
+              "knownWindSportSpot": false
+            }
+          ],
+          "rawRows": [
+            {
+              "beachId": 2134,
+              "name": "Γράμματα",
+              "level": "partial",
+              "windProfileConfidence": "low",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 2128,
+              "name": "Αμερικάνου",
+              "level": "partial",
+              "windProfileConfidence": "low",
+              "knownWindSportSpot": false
+            }
+          ],
+          "notes": "Grammata and Amerikanou are neighboring far-northwest west-facing records; boat/difficult access must still block top-pick promotion."
+        }
+      ]
+    },
+    {
+      "scenarioId": "Naxos_W_4BFT",
+      "windDirectionDeg": 270,
+      "segments": [
+        {
+          "segmentId": "syros-megas-gialos-ampela-lagkonaki-front",
+          "reason": "same_continuous_beachfront",
+          "rawLevels": [
+            "protected"
+          ],
+          "consistentLevels": [
+            "protected"
+          ],
+          "rows": [
+            {
+              "beachId": 2140,
+              "name": "Μέγας Γιαλός",
+              "level": "protected",
+              "windProfileConfidence": "low",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 2129,
+              "name": "Αμπέλα",
+              "level": "protected",
+              "windProfileConfidence": "low",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 2137,
+              "name": "Λαγκονάκι",
+              "level": "protected",
+              "windProfileConfidence": "low",
+              "knownWindSportSpot": false
+            }
+          ],
+          "rawRows": [
+            {
+              "beachId": 2140,
+              "name": "Μέγας Γιαλός",
+              "level": "protected",
+              "windProfileConfidence": "low",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 2129,
+              "name": "Αμπέλα",
+              "level": "protected",
+              "windProfileConfidence": "low",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 2137,
+              "name": "Λαγκονάκι",
+              "level": "protected",
+              "windProfileConfidence": "low",
+              "knownWindSportSpot": false
+            }
+          ],
+          "notes": "Megas Gialos, Ampela, and Lagkonaki are neighboring southeast south-coast Syros records with near-matching shoreline facing; amenities/access remain separate."
+        },
+        {
+          "segmentId": "syros-achladi-vari-front",
+          "reason": "same_village_bay",
+          "rawLevels": [
+            "protected"
+          ],
+          "consistentLevels": [
+            "protected"
+          ],
+          "rows": [
+            {
+              "beachId": 2131,
+              "name": "Αχλάδι",
+              "level": "protected",
+              "windProfileConfidence": "low",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 2143,
+              "name": "Παραλία Βάρη",
+              "level": "protected",
+              "windProfileConfidence": "low",
+              "knownWindSportSpot": false
+            }
+          ],
+          "rawRows": [
+            {
+              "beachId": 2131,
+              "name": "Αχλάδι",
+              "level": "protected",
+              "windProfileConfidence": "low",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 2143,
+              "name": "Παραλία Βάρη",
+              "level": "protected",
+              "windProfileConfidence": "low",
+              "knownWindSportSpot": false
+            }
+          ],
+          "notes": "Achladi and Vari are adjacent southeast-facing Vari bay records and should not diverge without a specific local morphology reason."
+        },
+        {
+          "segmentId": "syros-kini-loto-front",
+          "reason": "same_village_bay",
+          "rawLevels": [
+            "exposed"
+          ],
+          "consistentLevels": [
+            "exposed"
+          ],
+          "rows": [
+            {
+              "beachId": 2136,
+              "name": "Κίνι",
+              "level": "exposed",
+              "windProfileConfidence": "low",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 2146,
+              "name": "Παραλία Λωτό",
+              "level": "exposed",
+              "windProfileConfidence": "low",
+              "knownWindSportSpot": false
+            }
+          ],
+          "rawRows": [
+            {
+              "beachId": 2136,
+              "name": "Κίνι",
+              "level": "exposed",
+              "windProfileConfidence": "low",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 2146,
+              "name": "Παραλία Λωτό",
+              "level": "exposed",
+              "windProfileConfidence": "low",
+              "knownWindSportSpot": false
+            }
+          ],
+          "notes": "Kini and Loto are neighboring northwest-facing Kini bay records; popularity and amenities remain separate from exposure consistency."
+        },
+        {
+          "segmentId": "syros-delfini-varvarousa-front",
+          "reason": "same_continuous_beachfront",
+          "rawLevels": [
+            "exposed"
+          ],
+          "consistentLevels": [
+            "exposed"
+          ],
+          "rows": [
+            {
+              "beachId": 2135,
+              "name": "Δελφίνι",
+              "level": "exposed",
+              "windProfileConfidence": "low",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 2133,
+              "name": "Βαρβαρούσα",
+              "level": "exposed",
+              "windProfileConfidence": "low",
+              "knownWindSportSpot": false
+            }
+          ],
+          "rawRows": [
+            {
+              "beachId": 2135,
+              "name": "Δελφίνι",
+              "level": "exposed",
+              "windProfileConfidence": "low",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 2133,
+              "name": "Βαρβαρούσα",
+              "level": "exposed",
+              "windProfileConfidence": "low",
+              "knownWindSportSpot": false
+            }
+          ],
+          "notes": "Delfini and Varvarousa are close west/northwest coast records with similar open-sector behavior; difficult-access handling remains separate."
+        },
+        {
+          "segmentId": "syros-lia-marmari-megas-lakos-front",
+          "reason": "same_continuous_beachfront",
+          "rawLevels": [
+            "exposed"
+          ],
+          "consistentLevels": [
+            "exposed"
+          ],
+          "rows": [
+            {
+              "beachId": 2138,
+              "name": "Λεία",
+              "level": "exposed",
+              "windProfileConfidence": "low",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 2139,
+              "name": "Μαρμάρι",
+              "level": "exposed",
+              "windProfileConfidence": "low",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 2141,
+              "name": "Μέγας Λάκος",
+              "level": "exposed",
+              "windProfileConfidence": "low",
+              "knownWindSportSpot": false
+            }
+          ],
+          "rawRows": [
+            {
+              "beachId": 2138,
+              "name": "Λεία",
+              "level": "exposed",
+              "windProfileConfidence": "low",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 2139,
+              "name": "Μαρμάρι",
+              "level": "exposed",
+              "windProfileConfidence": "low",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 2141,
+              "name": "Μέγας Λάκος",
+              "level": "exposed",
+              "windProfileConfidence": "low",
+              "knownWindSportSpot": false
+            }
+          ],
+          "notes": "Lia, Marmari, and Megas Lakos are close northwest Syros west-facing records with near-matching shoreline facing; confidence is map-consistency support only."
+        },
+        {
+          "segmentId": "syros-grammata-amerikanou-front",
+          "reason": "same_cove_or_micro_bay",
+          "rawLevels": [
+            "exposed"
+          ],
+          "consistentLevels": [
+            "exposed"
+          ],
+          "rows": [
+            {
+              "beachId": 2134,
+              "name": "Γράμματα",
+              "level": "exposed",
+              "windProfileConfidence": "low",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 2128,
+              "name": "Αμερικάνου",
+              "level": "exposed",
+              "windProfileConfidence": "low",
+              "knownWindSportSpot": false
+            }
+          ],
+          "rawRows": [
+            {
+              "beachId": 2134,
+              "name": "Γράμματα",
+              "level": "exposed",
+              "windProfileConfidence": "low",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 2128,
+              "name": "Αμερικάνου",
+              "level": "exposed",
+              "windProfileConfidence": "low",
+              "knownWindSportSpot": false
+            }
+          ],
+          "notes": "Grammata and Amerikanou are neighboring far-northwest west-facing records; boat/difficult access must still block top-pick promotion."
+        }
+      ]
+    },
+    {
+      "scenarioId": "Naxos_S_4BFT",
+      "windDirectionDeg": 180,
+      "segments": [
+        {
+          "segmentId": "syros-megas-gialos-ampela-lagkonaki-front",
+          "reason": "same_continuous_beachfront",
+          "rawLevels": [
+            "exposed"
+          ],
+          "consistentLevels": [
+            "exposed"
+          ],
+          "rows": [
+            {
+              "beachId": 2140,
+              "name": "Μέγας Γιαλός",
+              "level": "exposed",
+              "windProfileConfidence": "low",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 2129,
+              "name": "Αμπέλα",
+              "level": "exposed",
+              "windProfileConfidence": "low",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 2137,
+              "name": "Λαγκονάκι",
+              "level": "exposed",
+              "windProfileConfidence": "low",
+              "knownWindSportSpot": false
+            }
+          ],
+          "rawRows": [
+            {
+              "beachId": 2140,
+              "name": "Μέγας Γιαλός",
+              "level": "exposed",
+              "windProfileConfidence": "low",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 2129,
+              "name": "Αμπέλα",
+              "level": "exposed",
+              "windProfileConfidence": "low",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 2137,
+              "name": "Λαγκονάκι",
+              "level": "exposed",
+              "windProfileConfidence": "low",
+              "knownWindSportSpot": false
+            }
+          ],
+          "notes": "Megas Gialos, Ampela, and Lagkonaki are neighboring southeast south-coast Syros records with near-matching shoreline facing; amenities/access remain separate."
+        },
+        {
+          "segmentId": "syros-achladi-vari-front",
+          "reason": "same_village_bay",
+          "rawLevels": [
+            "exposed"
+          ],
+          "consistentLevels": [
+            "exposed"
+          ],
+          "rows": [
+            {
+              "beachId": 2131,
+              "name": "Αχλάδι",
+              "level": "exposed",
+              "windProfileConfidence": "low",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 2143,
+              "name": "Παραλία Βάρη",
+              "level": "exposed",
+              "windProfileConfidence": "low",
+              "knownWindSportSpot": false
+            }
+          ],
+          "rawRows": [
+            {
+              "beachId": 2131,
+              "name": "Αχλάδι",
+              "level": "exposed",
+              "windProfileConfidence": "low",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 2143,
+              "name": "Παραλία Βάρη",
+              "level": "exposed",
+              "windProfileConfidence": "low",
+              "knownWindSportSpot": false
+            }
+          ],
+          "notes": "Achladi and Vari are adjacent southeast-facing Vari bay records and should not diverge without a specific local morphology reason."
+        },
+        {
+          "segmentId": "syros-kini-loto-front",
+          "reason": "same_village_bay",
+          "rawLevels": [
+            "protected"
+          ],
+          "consistentLevels": [
+            "protected"
+          ],
+          "rows": [
+            {
+              "beachId": 2136,
+              "name": "Κίνι",
+              "level": "protected",
+              "windProfileConfidence": "low",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 2146,
+              "name": "Παραλία Λωτό",
+              "level": "protected",
+              "windProfileConfidence": "low",
+              "knownWindSportSpot": false
+            }
+          ],
+          "rawRows": [
+            {
+              "beachId": 2136,
+              "name": "Κίνι",
+              "level": "protected",
+              "windProfileConfidence": "low",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 2146,
+              "name": "Παραλία Λωτό",
+              "level": "protected",
+              "windProfileConfidence": "low",
+              "knownWindSportSpot": false
+            }
+          ],
+          "notes": "Kini and Loto are neighboring northwest-facing Kini bay records; popularity and amenities remain separate from exposure consistency."
+        },
+        {
+          "segmentId": "syros-delfini-varvarousa-front",
+          "reason": "same_continuous_beachfront",
+          "rawLevels": [
+            "protected"
+          ],
+          "consistentLevels": [
+            "protected"
+          ],
+          "rows": [
+            {
+              "beachId": 2135,
+              "name": "Δελφίνι",
+              "level": "protected",
+              "windProfileConfidence": "low",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 2133,
+              "name": "Βαρβαρούσα",
+              "level": "protected",
+              "windProfileConfidence": "low",
+              "knownWindSportSpot": false
+            }
+          ],
+          "rawRows": [
+            {
+              "beachId": 2135,
+              "name": "Δελφίνι",
+              "level": "protected",
+              "windProfileConfidence": "low",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 2133,
+              "name": "Βαρβαρούσα",
+              "level": "protected",
+              "windProfileConfidence": "low",
+              "knownWindSportSpot": false
+            }
+          ],
+          "notes": "Delfini and Varvarousa are close west/northwest coast records with similar open-sector behavior; difficult-access handling remains separate."
+        },
+        {
+          "segmentId": "syros-lia-marmari-megas-lakos-front",
+          "reason": "same_continuous_beachfront",
+          "rawLevels": [
+            "partial"
+          ],
+          "consistentLevels": [
+            "partial"
+          ],
+          "rows": [
+            {
+              "beachId": 2138,
+              "name": "Λεία",
+              "level": "partial",
+              "windProfileConfidence": "low",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 2139,
+              "name": "Μαρμάρι",
+              "level": "partial",
+              "windProfileConfidence": "low",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 2141,
+              "name": "Μέγας Λάκος",
+              "level": "partial",
+              "windProfileConfidence": "low",
+              "knownWindSportSpot": false
+            }
+          ],
+          "rawRows": [
+            {
+              "beachId": 2138,
+              "name": "Λεία",
+              "level": "partial",
+              "windProfileConfidence": "low",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 2139,
+              "name": "Μαρμάρι",
+              "level": "partial",
+              "windProfileConfidence": "low",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 2141,
+              "name": "Μέγας Λάκος",
+              "level": "partial",
+              "windProfileConfidence": "low",
+              "knownWindSportSpot": false
+            }
+          ],
+          "notes": "Lia, Marmari, and Megas Lakos are close northwest Syros west-facing records with near-matching shoreline facing; confidence is map-consistency support only."
+        },
+        {
+          "segmentId": "syros-grammata-amerikanou-front",
+          "reason": "same_cove_or_micro_bay",
+          "rawLevels": [
+            "partial"
+          ],
+          "consistentLevels": [
+            "partial"
+          ],
+          "rows": [
+            {
+              "beachId": 2134,
+              "name": "Γράμματα",
+              "level": "partial",
+              "windProfileConfidence": "low",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 2128,
+              "name": "Αμερικάνου",
+              "level": "partial",
+              "windProfileConfidence": "low",
+              "knownWindSportSpot": false
+            }
+          ],
+          "rawRows": [
+            {
+              "beachId": 2134,
+              "name": "Γράμματα",
+              "level": "partial",
+              "windProfileConfidence": "low",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 2128,
+              "name": "Αμερικάνου",
+              "level": "partial",
+              "windProfileConfidence": "low",
+              "knownWindSportSpot": false
+            }
+          ],
+          "notes": "Grammata and Amerikanou are neighboring far-northwest west-facing records; boat/difficult access must still block top-pick promotion."
+        }
+      ]
+    },
+    {
+      "scenarioId": "Naxos_E_4BFT",
+      "windDirectionDeg": 90,
+      "segments": [
+        {
+          "segmentId": "syros-megas-gialos-ampela-lagkonaki-front",
+          "reason": "same_continuous_beachfront",
+          "rawLevels": [
+            "exposed"
+          ],
+          "consistentLevels": [
+            "exposed"
+          ],
+          "rows": [
+            {
+              "beachId": 2140,
+              "name": "Μέγας Γιαλός",
+              "level": "exposed",
+              "windProfileConfidence": "low",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 2129,
+              "name": "Αμπέλα",
+              "level": "exposed",
+              "windProfileConfidence": "low",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 2137,
+              "name": "Λαγκονάκι",
+              "level": "exposed",
+              "windProfileConfidence": "low",
+              "knownWindSportSpot": false
+            }
+          ],
+          "rawRows": [
+            {
+              "beachId": 2140,
+              "name": "Μέγας Γιαλός",
+              "level": "exposed",
+              "windProfileConfidence": "low",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 2129,
+              "name": "Αμπέλα",
+              "level": "exposed",
+              "windProfileConfidence": "low",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 2137,
+              "name": "Λαγκονάκι",
+              "level": "exposed",
+              "windProfileConfidence": "low",
+              "knownWindSportSpot": false
+            }
+          ],
+          "notes": "Megas Gialos, Ampela, and Lagkonaki are neighboring southeast south-coast Syros records with near-matching shoreline facing; amenities/access remain separate."
+        },
+        {
+          "segmentId": "syros-achladi-vari-front",
+          "reason": "same_village_bay",
+          "rawLevels": [
+            "exposed"
+          ],
+          "consistentLevels": [
+            "exposed"
+          ],
+          "rows": [
+            {
+              "beachId": 2131,
+              "name": "Αχλάδι",
+              "level": "exposed",
+              "windProfileConfidence": "low",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 2143,
+              "name": "Παραλία Βάρη",
+              "level": "exposed",
+              "windProfileConfidence": "low",
+              "knownWindSportSpot": false
+            }
+          ],
+          "rawRows": [
+            {
+              "beachId": 2131,
+              "name": "Αχλάδι",
+              "level": "exposed",
+              "windProfileConfidence": "low",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 2143,
+              "name": "Παραλία Βάρη",
+              "level": "exposed",
+              "windProfileConfidence": "low",
+              "knownWindSportSpot": false
+            }
+          ],
+          "notes": "Achladi and Vari are adjacent southeast-facing Vari bay records and should not diverge without a specific local morphology reason."
+        },
+        {
+          "segmentId": "syros-kini-loto-front",
+          "reason": "same_village_bay",
+          "rawLevels": [
+            "protected"
+          ],
+          "consistentLevels": [
+            "protected"
+          ],
+          "rows": [
+            {
+              "beachId": 2136,
+              "name": "Κίνι",
+              "level": "protected",
+              "windProfileConfidence": "low",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 2146,
+              "name": "Παραλία Λωτό",
+              "level": "protected",
+              "windProfileConfidence": "low",
+              "knownWindSportSpot": false
+            }
+          ],
+          "rawRows": [
+            {
+              "beachId": 2136,
+              "name": "Κίνι",
+              "level": "protected",
+              "windProfileConfidence": "low",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 2146,
+              "name": "Παραλία Λωτό",
+              "level": "protected",
+              "windProfileConfidence": "low",
+              "knownWindSportSpot": false
+            }
+          ],
+          "notes": "Kini and Loto are neighboring northwest-facing Kini bay records; popularity and amenities remain separate from exposure consistency."
+        },
+        {
+          "segmentId": "syros-delfini-varvarousa-front",
+          "reason": "same_continuous_beachfront",
+          "rawLevels": [
+            "protected"
+          ],
+          "consistentLevels": [
+            "protected"
+          ],
+          "rows": [
+            {
+              "beachId": 2135,
+              "name": "Δελφίνι",
+              "level": "protected",
+              "windProfileConfidence": "low",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 2133,
+              "name": "Βαρβαρούσα",
+              "level": "protected",
+              "windProfileConfidence": "low",
+              "knownWindSportSpot": false
+            }
+          ],
+          "rawRows": [
+            {
+              "beachId": 2135,
+              "name": "Δελφίνι",
+              "level": "protected",
+              "windProfileConfidence": "low",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 2133,
+              "name": "Βαρβαρούσα",
+              "level": "protected",
+              "windProfileConfidence": "low",
+              "knownWindSportSpot": false
+            }
+          ],
+          "notes": "Delfini and Varvarousa are close west/northwest coast records with similar open-sector behavior; difficult-access handling remains separate."
+        },
+        {
+          "segmentId": "syros-lia-marmari-megas-lakos-front",
+          "reason": "same_continuous_beachfront",
+          "rawLevels": [
+            "protected"
+          ],
+          "consistentLevels": [
+            "protected"
+          ],
+          "rows": [
+            {
+              "beachId": 2138,
+              "name": "Λεία",
+              "level": "protected",
+              "windProfileConfidence": "low",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 2139,
+              "name": "Μαρμάρι",
+              "level": "protected",
+              "windProfileConfidence": "low",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 2141,
+              "name": "Μέγας Λάκος",
+              "level": "protected",
+              "windProfileConfidence": "low",
+              "knownWindSportSpot": false
+            }
+          ],
+          "rawRows": [
+            {
+              "beachId": 2138,
+              "name": "Λεία",
+              "level": "protected",
+              "windProfileConfidence": "low",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 2139,
+              "name": "Μαρμάρι",
+              "level": "protected",
+              "windProfileConfidence": "low",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 2141,
+              "name": "Μέγας Λάκος",
+              "level": "protected",
+              "windProfileConfidence": "low",
+              "knownWindSportSpot": false
+            }
+          ],
+          "notes": "Lia, Marmari, and Megas Lakos are close northwest Syros west-facing records with near-matching shoreline facing; confidence is map-consistency support only."
+        },
+        {
+          "segmentId": "syros-grammata-amerikanou-front",
+          "reason": "same_cove_or_micro_bay",
+          "rawLevels": [
+            "protected"
+          ],
+          "consistentLevels": [
+            "protected"
+          ],
+          "rows": [
+            {
+              "beachId": 2134,
+              "name": "Γράμματα",
+              "level": "protected",
+              "windProfileConfidence": "low",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 2128,
+              "name": "Αμερικάνου",
+              "level": "protected",
+              "windProfileConfidence": "low",
+              "knownWindSportSpot": false
+            }
+          ],
+          "rawRows": [
+            {
+              "beachId": 2134,
+              "name": "Γράμματα",
+              "level": "protected",
+              "windProfileConfidence": "low",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 2128,
+              "name": "Αμερικάνου",
+              "level": "protected",
+              "windProfileConfidence": "low",
+              "knownWindSportSpot": false
+            }
+          ],
+          "notes": "Grammata and Amerikanou are neighboring far-northwest west-facing records; boat/difficult access must still block top-pick promotion."
+        }
+      ]
+    }
+  ]
+}

@@ -29,6 +29,8 @@ export const isSupportedLanguage = (value: unknown): value is SupportedLanguage 
 export const getInitialLanguage = (): SupportedLanguage => {
   if (typeof window === 'undefined') return 'en';
 
+  if (/^\/el(?=\/|$)/.test(window.location.pathname)) return 'gr';
+
   const stored = window.localStorage.getItem(LANGUAGE_STORAGE_KEY);
   if (isSupportedLanguage(stored)) return stored;
 

@@ -1,0 +1,689 @@
+{
+  "schemaVersion": 1,
+  "generatedAt": "2026-06-08T16:16:12.748Z",
+  "group": "argosaronic",
+  "policy": {
+    "lowToMedium": "Allowed only for beaches with medium geospatial exposure, valid facingDeg, all eight sector decisions, and no stronger authored profile.",
+    "high": "Never granted by this backfill. High still requires trusted local/nautical/watersports or repeated observed evidence.",
+    "protectedClaims": "Geospatial backfill is conservative and does not grant guaranteed calm/protected claims by itself."
+  },
+  "summary": {
+    "total": 60,
+    "high": 0,
+    "medium": 53,
+    "low": 7,
+    "unknown": 7,
+    "override": 0,
+    "beach": 0,
+    "metadata": 0,
+    "geospatial": 53
+  },
+  "regions": [
+    {
+      "regionId": "attica-aegina",
+      "name": "Aegina",
+      "summary": {
+        "total": 15,
+        "high": 0,
+        "medium": 15,
+        "low": 0,
+        "unknown": 0,
+        "override": 0,
+        "beach": 0,
+        "metadata": 0,
+        "geospatial": 15
+      },
+      "records": [
+        {
+          "beachId": 80,
+          "name": "Paralia Vagias",
+          "windProfileSource": "geospatial",
+          "windProfileConfidence": "medium",
+          "hasOrientation": true,
+          "hasGeospatialFacing": true,
+          "eligibleBackfill": true
+        },
+        {
+          "beachId": 81,
+          "name": "Agia Marina",
+          "windProfileSource": "geospatial",
+          "windProfileConfidence": "medium",
+          "hasOrientation": true,
+          "hasGeospatialFacing": true,
+          "eligibleBackfill": true
+        },
+        {
+          "beachId": 82,
+          "name": "Aiginitissa",
+          "windProfileSource": "geospatial",
+          "windProfileConfidence": "medium",
+          "hasOrientation": true,
+          "hasGeospatialFacing": true,
+          "eligibleBackfill": true
+        },
+        {
+          "beachId": 83,
+          "name": "Avra",
+          "windProfileSource": "geospatial",
+          "windProfileConfidence": "medium",
+          "hasOrientation": true,
+          "hasGeospatialFacing": true,
+          "eligibleBackfill": true
+        },
+        {
+          "beachId": 84,
+          "name": "Votsaloti Paralia",
+          "windProfileSource": "geospatial",
+          "windProfileConfidence": "medium",
+          "hasOrientation": true,
+          "hasGeospatialFacing": true,
+          "eligibleBackfill": true
+        },
+        {
+          "beachId": 85,
+          "name": "Klidi",
+          "windProfileSource": "geospatial",
+          "windProfileConfidence": "medium",
+          "hasOrientation": true,
+          "hasGeospatialFacing": true,
+          "eligibleBackfill": true
+        },
+        {
+          "beachId": 86,
+          "name": "Loutra",
+          "windProfileSource": "geospatial",
+          "windProfileConfidence": "medium",
+          "hasOrientation": true,
+          "hasGeospatialFacing": true,
+          "eligibleBackfill": true
+        },
+        {
+          "beachId": 87,
+          "name": "Paralia Zinovi",
+          "windProfileSource": "geospatial",
+          "windProfileConfidence": "medium",
+          "hasOrientation": true,
+          "hasGeospatialFacing": true,
+          "eligibleBackfill": true
+        },
+        {
+          "beachId": 88,
+          "name": "Paralia Kamares",
+          "windProfileSource": "geospatial",
+          "windProfileConfidence": "medium",
+          "hasOrientation": true,
+          "hasGeospatialFacing": true,
+          "eligibleBackfill": true
+        },
+        {
+          "beachId": 89,
+          "name": "Paralia Kolona",
+          "windProfileSource": "geospatial",
+          "windProfileConfidence": "medium",
+          "hasOrientation": true,
+          "hasGeospatialFacing": true,
+          "eligibleBackfill": true
+        },
+        {
+          "beachId": 90,
+          "name": "Paralia Marathona A",
+          "windProfileSource": "geospatial",
+          "windProfileConfidence": "medium",
+          "hasOrientation": true,
+          "hasGeospatialFacing": true,
+          "eligibleBackfill": true
+        },
+        {
+          "beachId": 91,
+          "name": "Paralia Marathona V",
+          "windProfileSource": "geospatial",
+          "windProfileConfidence": "medium",
+          "hasOrientation": true,
+          "hasGeospatialFacing": true,
+          "eligibleBackfill": true
+        },
+        {
+          "beachId": 92,
+          "name": "Paralia Sarpa",
+          "windProfileSource": "geospatial",
+          "windProfileConfidence": "medium",
+          "hasOrientation": true,
+          "hasGeospatialFacing": true,
+          "eligibleBackfill": true
+        },
+        {
+          "beachId": 93,
+          "name": "Tourlos",
+          "windProfileSource": "geospatial",
+          "windProfileConfidence": "medium",
+          "hasOrientation": true,
+          "hasGeospatialFacing": true,
+          "eligibleBackfill": true
+        },
+        {
+          "beachId": 94,
+          "name": "Souvala",
+          "windProfileSource": "geospatial",
+          "windProfileConfidence": "medium",
+          "hasOrientation": true,
+          "hasGeospatialFacing": true,
+          "eligibleBackfill": true
+        }
+      ]
+    },
+    {
+      "regionId": "attica-agistri",
+      "name": "Agistri",
+      "summary": {
+        "total": 6,
+        "high": 0,
+        "medium": 0,
+        "low": 6,
+        "unknown": 6,
+        "override": 0,
+        "beach": 0,
+        "metadata": 0,
+        "geospatial": 0
+      },
+      "records": [
+        {
+          "beachId": 95,
+          "name": "Aponisos",
+          "windProfileSource": "unknown",
+          "windProfileConfidence": "low",
+          "hasOrientation": false,
+          "hasGeospatialFacing": false,
+          "eligibleBackfill": false,
+          "keptLowReason": "No authored profile and no eligible geospatial facing direction; keep conservative unknown/low until geometry or local evidence is reviewed."
+        },
+        {
+          "beachId": 96,
+          "name": "Dragonera",
+          "windProfileSource": "unknown",
+          "windProfileConfidence": "low",
+          "hasOrientation": false,
+          "hasGeospatialFacing": false,
+          "eligibleBackfill": false,
+          "keptLowReason": "No authored profile and no eligible geospatial facing direction; keep conservative unknown/low until geometry or local evidence is reviewed."
+        },
+        {
+          "beachId": 97,
+          "name": "Xekofti",
+          "windProfileSource": "unknown",
+          "windProfileConfidence": "low",
+          "hasOrientation": false,
+          "hasGeospatialFacing": false,
+          "eligibleBackfill": false,
+          "keptLowReason": "No authored profile and no eligible geospatial facing direction; keep conservative unknown/low until geometry or local evidence is reviewed."
+        },
+        {
+          "beachId": 98,
+          "name": "Paralia Megalochoriou",
+          "windProfileSource": "unknown",
+          "windProfileConfidence": "low",
+          "hasOrientation": false,
+          "hasGeospatialFacing": false,
+          "eligibleBackfill": false,
+          "keptLowReason": "No authored profile and no eligible geospatial facing direction; keep conservative unknown/low until geometry or local evidence is reviewed."
+        },
+        {
+          "beachId": 99,
+          "name": "Skliri",
+          "windProfileSource": "unknown",
+          "windProfileConfidence": "low",
+          "hasOrientation": false,
+          "hasGeospatialFacing": false,
+          "eligibleBackfill": false,
+          "keptLowReason": "No authored profile and no eligible geospatial facing direction; keep conservative unknown/low until geometry or local evidence is reviewed."
+        },
+        {
+          "beachId": 100,
+          "name": "Chalikiada",
+          "windProfileSource": "unknown",
+          "windProfileConfidence": "low",
+          "hasOrientation": false,
+          "hasGeospatialFacing": false,
+          "eligibleBackfill": false,
+          "keptLowReason": "No authored profile and no eligible geospatial facing direction; keep conservative unknown/low until geometry or local evidence is reviewed."
+        }
+      ]
+    },
+    {
+      "regionId": "attica-hydra",
+      "name": "Hydra",
+      "summary": {
+        "total": 9,
+        "high": 0,
+        "medium": 9,
+        "low": 0,
+        "unknown": 0,
+        "override": 0,
+        "beach": 0,
+        "metadata": 0,
+        "geospatial": 9
+      },
+      "records": [
+        {
+          "beachId": 101,
+          "name": "Agios Nikolaos",
+          "windProfileSource": "geospatial",
+          "windProfileConfidence": "medium",
+          "hasOrientation": true,
+          "hasGeospatialFacing": true,
+          "eligibleBackfill": true
+        },
+        {
+          "beachId": 102,
+          "name": "Avlaki",
+          "windProfileSource": "geospatial",
+          "windProfileConfidence": "medium",
+          "hasOrientation": true,
+          "hasGeospatialFacing": true,
+          "eligibleBackfill": true
+        },
+        {
+          "beachId": 103,
+          "name": "Kaminia",
+          "windProfileSource": "geospatial",
+          "windProfileConfidence": "medium",
+          "hasOrientation": true,
+          "hasGeospatialFacing": true,
+          "eligibleBackfill": true
+        },
+        {
+          "beachId": 104,
+          "name": "Kaoumithi",
+          "windProfileSource": "geospatial",
+          "windProfileConfidence": "medium",
+          "hasOrientation": true,
+          "hasGeospatialFacing": true,
+          "eligibleBackfill": true
+        },
+        {
+          "beachId": 105,
+          "name": "Mandraki",
+          "windProfileSource": "geospatial",
+          "windProfileConfidence": "medium",
+          "hasOrientation": true,
+          "hasGeospatialFacing": true,
+          "eligibleBackfill": true
+        },
+        {
+          "beachId": 106,
+          "name": "Bisti",
+          "windProfileSource": "geospatial",
+          "windProfileConfidence": "medium",
+          "hasOrientation": true,
+          "hasGeospatialFacing": true,
+          "eligibleBackfill": true
+        },
+        {
+          "beachId": 107,
+          "name": "Paralia Bisti",
+          "windProfileSource": "geospatial",
+          "windProfileConfidence": "medium",
+          "hasOrientation": true,
+          "hasGeospatialFacing": true,
+          "eligibleBackfill": true
+        },
+        {
+          "beachId": 108,
+          "name": "Plakes",
+          "windProfileSource": "geospatial",
+          "windProfileConfidence": "medium",
+          "hasOrientation": true,
+          "hasGeospatialFacing": true,
+          "eligibleBackfill": true
+        },
+        {
+          "beachId": 109,
+          "name": "Spilia",
+          "windProfileSource": "geospatial",
+          "windProfileConfidence": "medium",
+          "hasOrientation": true,
+          "hasGeospatialFacing": true,
+          "eligibleBackfill": true
+        }
+      ]
+    },
+    {
+      "regionId": "attica-poros",
+      "name": "Poros",
+      "summary": {
+        "total": 11,
+        "high": 0,
+        "medium": 10,
+        "low": 1,
+        "unknown": 1,
+        "override": 0,
+        "beach": 0,
+        "metadata": 0,
+        "geospatial": 10
+      },
+      "records": [
+        {
+          "beachId": 152,
+          "name": "Limanaki tis Agapis",
+          "windProfileSource": "geospatial",
+          "windProfileConfidence": "medium",
+          "hasOrientation": true,
+          "hasGeospatialFacing": true,
+          "eligibleBackfill": true
+        },
+        {
+          "beachId": 153,
+          "name": "Agios Stefanos",
+          "windProfileSource": "geospatial",
+          "windProfileConfidence": "medium",
+          "hasOrientation": true,
+          "hasGeospatialFacing": true,
+          "eligibleBackfill": true
+        },
+        {
+          "beachId": 154,
+          "name": "Alyki",
+          "windProfileSource": "geospatial",
+          "windProfileConfidence": "medium",
+          "hasOrientation": true,
+          "hasGeospatialFacing": true,
+          "eligibleBackfill": true
+        },
+        {
+          "beachId": 155,
+          "name": "Askeli",
+          "windProfileSource": "geospatial",
+          "windProfileConfidence": "medium",
+          "hasOrientation": true,
+          "hasGeospatialFacing": true,
+          "eligibleBackfill": true
+        },
+        {
+          "beachId": 156,
+          "name": "Vagionia",
+          "windProfileSource": "geospatial",
+          "windProfileConfidence": "medium",
+          "hasOrientation": true,
+          "hasGeospatialFacing": true,
+          "eligibleBackfill": true
+        },
+        {
+          "beachId": 157,
+          "name": "Kanali",
+          "windProfileSource": "geospatial",
+          "windProfileConfidence": "medium",
+          "hasOrientation": true,
+          "hasGeospatialFacing": true,
+          "eligibleBackfill": true
+        },
+        {
+          "beachId": 158,
+          "name": "Megalo Neorio",
+          "windProfileSource": "geospatial",
+          "windProfileConfidence": "medium",
+          "hasOrientation": true,
+          "hasGeospatialFacing": true,
+          "eligibleBackfill": true
+        },
+        {
+          "beachId": 159,
+          "name": "Mikro Neorio",
+          "windProfileSource": "unknown",
+          "windProfileConfidence": "low",
+          "hasOrientation": false,
+          "hasGeospatialFacing": false,
+          "eligibleBackfill": false,
+          "keptLowReason": "No authored profile and no eligible geospatial facing direction; keep conservative unknown/low until geometry or local evidence is reviewed."
+        },
+        {
+          "beachId": 160,
+          "name": "Monastiri",
+          "windProfileSource": "geospatial",
+          "windProfileConfidence": "medium",
+          "hasOrientation": true,
+          "hasGeospatialFacing": true,
+          "eligibleBackfill": true
+        },
+        {
+          "beachId": 161,
+          "name": "Paralia Rosikos Navstathmos",
+          "windProfileSource": "geospatial",
+          "windProfileConfidence": "medium",
+          "hasOrientation": true,
+          "hasGeospatialFacing": true,
+          "eligibleBackfill": true
+        },
+        {
+          "beachId": 162,
+          "name": "Plaka",
+          "windProfileSource": "geospatial",
+          "windProfileConfidence": "medium",
+          "hasOrientation": true,
+          "hasGeospatialFacing": true,
+          "eligibleBackfill": true
+        }
+      ]
+    },
+    {
+      "regionId": "attica-salamina",
+      "name": "Salamina",
+      "summary": {
+        "total": 3,
+        "high": 0,
+        "medium": 3,
+        "low": 0,
+        "unknown": 0,
+        "override": 0,
+        "beach": 0,
+        "metadata": 0,
+        "geospatial": 3
+      },
+      "records": [
+        {
+          "beachId": 163,
+          "name": "Mikro Lamprano",
+          "windProfileSource": "geospatial",
+          "windProfileConfidence": "medium",
+          "hasOrientation": true,
+          "hasGeospatialFacing": true,
+          "eligibleBackfill": true
+        },
+        {
+          "beachId": 164,
+          "name": "Paralia Agiou Nikolaou",
+          "windProfileSource": "geospatial",
+          "windProfileConfidence": "medium",
+          "hasOrientation": true,
+          "hasGeospatialFacing": true,
+          "eligibleBackfill": true
+        },
+        {
+          "beachId": 165,
+          "name": "Paralia Kanakia",
+          "windProfileSource": "geospatial",
+          "windProfileConfidence": "medium",
+          "hasOrientation": true,
+          "hasGeospatialFacing": true,
+          "eligibleBackfill": true
+        }
+      ]
+    },
+    {
+      "regionId": "attica-spetses",
+      "name": "Spetses",
+      "summary": {
+        "total": 12,
+        "high": 0,
+        "medium": 12,
+        "low": 0,
+        "unknown": 0,
+        "override": 0,
+        "beach": 0,
+        "metadata": 0,
+        "geospatial": 12
+      },
+      "records": [
+        {
+          "beachId": 166,
+          "name": "Agia Marina",
+          "windProfileSource": "geospatial",
+          "windProfileConfidence": "medium",
+          "hasOrientation": true,
+          "hasGeospatialFacing": true,
+          "eligibleBackfill": true
+        },
+        {
+          "beachId": 167,
+          "name": "Agia Paraskevi",
+          "windProfileSource": "geospatial",
+          "windProfileConfidence": "medium",
+          "hasOrientation": true,
+          "hasGeospatialFacing": true,
+          "eligibleBackfill": true
+        },
+        {
+          "beachId": 168,
+          "name": "Agii Anargyri",
+          "windProfileSource": "geospatial",
+          "windProfileConfidence": "medium",
+          "hasOrientation": true,
+          "hasGeospatialFacing": true,
+          "eligibleBackfill": true
+        },
+        {
+          "beachId": 169,
+          "name": "Agios Mamas",
+          "windProfileSource": "geospatial",
+          "windProfileConfidence": "medium",
+          "hasOrientation": true,
+          "hasGeospatialFacing": true,
+          "eligibleBackfill": true
+        },
+        {
+          "beachId": 170,
+          "name": "Vrellos",
+          "windProfileSource": "geospatial",
+          "windProfileConfidence": "medium",
+          "hasOrientation": true,
+          "hasGeospatialFacing": true,
+          "eligibleBackfill": true
+        },
+        {
+          "beachId": 171,
+          "name": "Kaiki",
+          "windProfileSource": "geospatial",
+          "windProfileConfidence": "medium",
+          "hasOrientation": true,
+          "hasGeospatialFacing": true,
+          "eligibleBackfill": true
+        },
+        {
+          "beachId": 172,
+          "name": "Kamares",
+          "windProfileSource": "geospatial",
+          "windProfileConfidence": "medium",
+          "hasOrientation": true,
+          "hasGeospatialFacing": true,
+          "eligibleBackfill": true
+        },
+        {
+          "beachId": 173,
+          "name": "Kouzounos",
+          "windProfileSource": "geospatial",
+          "windProfileConfidence": "medium",
+          "hasOrientation": true,
+          "hasGeospatialFacing": true,
+          "eligibleBackfill": true
+        },
+        {
+          "beachId": 174,
+          "name": "Ligoneri",
+          "windProfileSource": "geospatial",
+          "windProfileConfidence": "medium",
+          "hasOrientation": true,
+          "hasGeospatialFacing": true,
+          "eligibleBackfill": true
+        },
+        {
+          "beachId": 175,
+          "name": "Megali Zogeria",
+          "windProfileSource": "geospatial",
+          "windProfileConfidence": "medium",
+          "hasOrientation": true,
+          "hasGeospatialFacing": true,
+          "eligibleBackfill": true
+        },
+        {
+          "beachId": 176,
+          "name": "Mikri Zogeria",
+          "windProfileSource": "geospatial",
+          "windProfileConfidence": "medium",
+          "hasOrientation": true,
+          "hasGeospatialFacing": true,
+          "eligibleBackfill": true
+        },
+        {
+          "beachId": 177,
+          "name": "Xylokeriza",
+          "windProfileSource": "geospatial",
+          "windProfileConfidence": "medium",
+          "hasOrientation": true,
+          "hasGeospatialFacing": true,
+          "eligibleBackfill": true
+        }
+      ]
+    },
+    {
+      "regionId": "attica-methana",
+      "name": "Methana",
+      "summary": {
+        "total": 4,
+        "high": 0,
+        "medium": 4,
+        "low": 0,
+        "unknown": 0,
+        "override": 0,
+        "beach": 0,
+        "metadata": 0,
+        "geospatial": 4
+      },
+      "records": [
+        {
+          "beachId": 178,
+          "name": "Akti Agapis",
+          "windProfileSource": "geospatial",
+          "windProfileConfidence": "medium",
+          "hasOrientation": true,
+          "hasGeospatialFacing": true,
+          "eligibleBackfill": true
+        },
+        {
+          "beachId": 179,
+          "name": "Paralia Nisaki",
+          "windProfileSource": "geospatial",
+          "windProfileConfidence": "medium",
+          "hasOrientation": true,
+          "hasGeospatialFacing": true,
+          "eligibleBackfill": true
+        },
+        {
+          "beachId": 180,
+          "name": "Votsalakia",
+          "windProfileSource": "geospatial",
+          "windProfileConfidence": "medium",
+          "hasOrientation": true,
+          "hasGeospatialFacing": true,
+          "eligibleBackfill": true
+        },
+        {
+          "beachId": 181,
+          "name": "Nisiza",
+          "windProfileSource": "geospatial",
+          "windProfileConfidence": "medium",
+          "hasOrientation": true,
+          "hasGeospatialFacing": true,
+          "eligibleBackfill": true
+        }
+      ]
+    }
+  ]
+}

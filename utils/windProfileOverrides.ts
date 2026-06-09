@@ -89,8 +89,8 @@ export const windProfileOverridesByBeachId: Record<number, WindProfile> = {
     protectedFromWindDirections: [],
     knownWindSportSpot: true,
     localWindAmplification: 'high',
-    confidence: 'medium',
-    notes: 'Achivadolimni is a known wind/kite area that can receive meltemi directly. Treat as a wind/watersports caution, not as a calm-swimming recommendation in 4-5 Bft north wind.',
+    confidence: 'high',
+    notes: 'High-confidence wind-sport exposure evidence 2026-06-08: Let’s Kite identifies Milos/Axivadolimni at 36.69, 24.45 for kitesurf/wingfoil/windsurf, facing north with direct onshore Meltemi and summer 15-22 kt conditions. Treat as a wind/watersports caution, not as a calm-swimming recommendation in 4-5 Bft north wind.',
   },
   1732: unverifiedWindProfile(
     'Remote southwest Milos cove. Cliff shelter may exist, but access and local sea-state behavior need verification before any wind-protection claim.'
@@ -346,8 +346,8 @@ export const windProfileOverridesByBeachId: Record<number, WindProfile> = {
     protectedFromWindDirections: ['N', 'NW', 'W'],
     knownWindSportSpot: false,
     localWindAmplification: 'low',
-    confidence: 'medium',
-    notes: 'Small coves inside the Naousa bay area; relatively sheltered from north/northwest wind but not guaranteed flat in all sectors.',
+    confidence: 'high',
+    notes: 'High-confidence sheltered-bay evidence 2026-06-08: Paros municipal tourism identifies Kolympithres inside Naoussa bay as a windless/calm bay with calm, warm, shallow water. Keep NE/E as local caution sectors; do not generalize to all wind directions.',
   },
   1833: {
     beachFacingDirection: 180,
@@ -379,8 +379,8 @@ export const windProfileOverridesByBeachId: Record<number, WindProfile> = {
     protectedFromWindDirections: ['N', 'NW', 'W'],
     knownWindSportSpot: false,
     localWindAmplification: 'low',
-    confidence: 'medium',
-    notes: 'Cove near the north Paros park area. More sheltered than open north/east beaches in N/NW wind, but NE wind still needs caution.',
+    confidence: 'high',
+    notes: 'High-confidence sheltered-cove evidence 2026-06-08: Paros guide describes Monastiri in the Ai-Giannis Detis/Paros Park cove as shallow, calm, and protected even from strong winds by surrounding hills. Keep NE/E as local caution sectors.',
   },
   1837: {
     beachFacingDirection: 75,
@@ -412,8 +412,8 @@ export const windProfileOverridesByBeachId: Record<number, WindProfile> = {
     protectedFromWindDirections: ['N', 'NE', 'NW'],
     knownWindSportSpot: false,
     localWindAmplification: 'low',
-    confidence: 'medium',
-    notes: 'Southwest Paros village bay. Usually a better north-wind option, while south/southwest wind remains the local exposure risk.',
+    confidence: 'high',
+    notes: 'High-confidence sheltered-village-bay evidence 2026-06-08: Paros municipal tourism describes Aliki as a fishing village that developed because of natural shelter from winds, with nearby calm south-coast bays. Keep S/SW as local exposure caution.',
   },
   1842: {
     beachFacingDirection: 180,
@@ -445,8 +445,8 @@ export const windProfileOverridesByBeachId: Record<number, WindProfile> = {
     protectedFromWindDirections: [],
     knownWindSportSpot: true,
     localWindAmplification: 'high',
-    confidence: 'medium',
-    notes: 'Nea Chrysi Akti/Tserdakia is part of the Golden Beach wind/watersports cluster. Do not treat as calm/protected in 4-5 Bft.',
+    confidence: 'high',
+    notes: 'High-confidence wind-sport exposure evidence 2026-06-08: Paros Windsurf Center is located at New Golden Beach/Tserdakia and describes it as a reliable Meltemi windsurf/wingfoil spot facing the summer northerly wind. Do not treat as calm/protected in 4-5 Bft.',
   },
   1851: {
     beachFacingDirection: 60,
@@ -456,8 +456,8 @@ export const windProfileOverridesByBeachId: Record<number, WindProfile> = {
     protectedFromWindDirections: [],
     knownWindSportSpot: true,
     localWindAmplification: 'high',
-    confidence: 'medium',
-    notes: 'Northeast Paros open-fetch wind/watersports area. North-sector wind can become choppy; avoid calm-family claims in meltemi.',
+    confidence: 'high',
+    notes: 'High-confidence wind-sport exposure evidence 2026-06-08: Let’s Kite identifies Tsoukalia/Paros at 37.08, 25.26 for kitesurf/wingfoil/windsurf, with N/NNE Meltemi onshore to side-onshore, reliable summer wind, and moderate chop. Avoid calm-family claims in meltemi.',
   },
   1852: {
     beachFacingDirection: 195,
@@ -467,8 +467,8 @@ export const windProfileOverridesByBeachId: Record<number, WindProfile> = {
     protectedFromWindDirections: ['N', 'NE', 'NW'],
     knownWindSportSpot: false,
     localWindAmplification: 'low',
-    confidence: 'medium',
-    notes: 'South Paros cove. Strong candidate for north-wind shelter, but south/southwest wind can still affect sea comfort.',
+    confidence: 'high',
+    notes: 'High-confidence sheltered-cove evidence 2026-06-08: Paros guide says Farangas is in a small southern bay, protected from wind and not affected by northern winds; Paros municipal tourism also describes the Faragas coves as sheltered by cliffs with calm clear water. Keep S/SW as local exposure caution.',
   },
   1853: {
     beachFacingDirection: 100,
@@ -1120,16 +1120,16 @@ const legacyMilosOverrideEntries: OverrideEntry[] = [
   { islandTokens: ['milos'], nameTokens: ['Achivadolimni'], profile: windProfileOverridesByBeachId[1731] },
   { islandTokens: ['milos'], nameTokens: ['Gerontas'], profile: windProfileOverridesByBeachId[1732] },
   { islandTokens: ['milos'], nameTokens: ['Gerania'], profile: windProfileOverridesByBeachId[1733] },
-  { islandTokens: ['milos'], nameTokens: ['Theiafes'], profile: windProfileOverridesByBeachId[1734] },
+  { islandTokens: ['milos'], nameTokens: ['Theiafes', 'Thiafes'], profile: windProfileOverridesByBeachId[1734] },
   { islandTokens: ['milos'], nameTokens: ['Kapros'], profile: windProfileOverridesByBeachId[1736] },
   { islandTokens: ['milos'], nameTokens: ['Katergo'], profile: windProfileOverridesByBeachId[1737] },
-  { islandTokens: ['milos'], nameTokens: ['Kipoi'], profile: windProfileOverridesByBeachId[1738] },
+  { islandTokens: ['milos'], nameTokens: ['Kipoi', 'Kipi'], profile: windProfileOverridesByBeachId[1738] },
   { islandTokens: ['milos'], nameTokens: ['Lagkada'], profile: windProfileOverridesByBeachId[1740] },
   { islandTokens: ['milos'], nameTokens: ['Navtikos Omilos Milou'], profile: windProfileOverridesByBeachId[1741] },
   { islandTokens: ['milos'], nameTokens: ['Nerodafni'], profile: windProfileOverridesByBeachId[1742] },
   { islandTokens: ['milos'], nameTokens: ['Palaiochori'], profile: windProfileOverridesByBeachId[1743] },
   { islandTokens: ['milos'], nameTokens: ['Papafragkas'], profile: windProfileOverridesByBeachId[1744] },
-  { islandTokens: ['milos'], nameTokens: ['Papikinoy'], profile: windProfileOverridesByBeachId[1745] },
+  { islandTokens: ['milos'], nameTokens: ['Papikinoy', 'Papikinou'], profile: windProfileOverridesByBeachId[1745] },
   { islandTokens: ['milos'], nameTokens: ['Plathiena'], profile: windProfileOverridesByBeachId[1747] },
   { islandTokens: ['milos'], nameTokens: ['Provatas'], profile: windProfileOverridesByBeachId[1748] },
   { islandTokens: ['milos'], nameTokens: ['Rivari'], profile: windProfileOverridesByBeachId[1749] },
@@ -1137,7 +1137,7 @@ const legacyMilosOverrideEntries: OverrideEntry[] = [
   { islandTokens: ['milos'], nameTokens: ['Tourkothalassa'], profile: windProfileOverridesByBeachId[1751] },
   { islandTokens: ['milos'], nameTokens: ['Triades'], profile: windProfileOverridesByBeachId[1752] },
   { islandTokens: ['milos'], nameTokens: ['Tsigkrado'], profile: windProfileOverridesByBeachId[1753] },
-  { islandTokens: ['milos'], nameTokens: ['Fatoyrena'], profile: windProfileOverridesByBeachId[1754] },
+  { islandTokens: ['milos'], nameTokens: ['Fatoyrena', 'Fatourena'], profile: windProfileOverridesByBeachId[1754] },
   { islandTokens: ['milos'], nameTokens: ['Fyriplaka'], profile: windProfileOverridesByBeachId[1755] },
   { islandTokens: ['milos'], nameTokens: ['Fyropotamos'], profile: windProfileOverridesByBeachId[1757] },
   { islandTokens: ['milos'], nameTokens: ['Psathi'], profile: windProfileOverridesByBeachId[1758] },
@@ -1182,7 +1182,7 @@ const milosPhase3CoverageOverrideEntries: OverrideEntry[] = [
   },
   {
     islandTokens: ['milos'],
-    nameTokens: ['Paralia Aggathia'],
+    nameTokens: ['Paralia Aggathia', 'Paralia Angathia'],
     profile: lowConfidenceMilosProfile({
       beachFacingDirection: 285,
       shelterLevel: 'open',
@@ -1228,7 +1228,7 @@ const milosPhase3CoverageOverrideEntries: OverrideEntry[] = [
   },
   {
     islandTokens: ['milos'],
-    nameTokens: ['Voydia'],
+    nameTokens: ['Voydia', 'Voudia'],
     profile: lowConfidenceMilosProfile({
       beachFacingDirection: 70,
       shelterLevel: 'open',
@@ -1288,6 +1288,13 @@ const milosPhase3CoverageOverrideEntries: OverrideEntry[] = [
 ];
 
 const lowConfidenceNaxosProfile = lowConfidenceDirectionalProfile;
+const mediumConfidenceNaxosProfile = (
+  input: Parameters<typeof lowConfidenceDirectionalProfile>[0]
+): WindProfile => ({
+  ...lowConfidenceDirectionalProfile(input),
+  confidence: 'medium',
+  notes: `${input.notes} Naxos wind-profile evidence gate 2026-06-08: verified OSM or verified nearby Nominatim identity, medium geospatial exposure, and no authored/geospatial sector conflict support medium confidence. This does not create a verified calm/protected claim.`,
+});
 
 const naxosPhase1CoverageOverrideEntries: OverrideEntry[] = [
   {
@@ -1314,7 +1321,7 @@ const naxosPhase1CoverageOverrideEntries: OverrideEntry[] = [
   },
   {
     islandTokens: ['naxos'],
-    nameTokens: ['Agioi Theodoroi'],
+    nameTokens: ['Agioi Theodoroi', 'Agii Theodori'],
     profile: lowConfidenceNaxosProfile({
       beachFacingDirection: 20,
       shelterLevel: 'open',
@@ -1408,7 +1415,7 @@ const naxosPhase1CoverageOverrideEntries: OverrideEntry[] = [
   {
     islandTokens: ['naxos'],
     nameTokens: ['Vintzi'],
-    profile: lowConfidenceNaxosProfile({
+    profile: mediumConfidenceNaxosProfile({
       beachFacingDirection: 290,
       shelterLevel: 'semi_sheltered',
       fetchExposure: 'medium',
@@ -1419,7 +1426,7 @@ const naxosPhase1CoverageOverrideEntries: OverrideEntry[] = [
   {
     islandTokens: ['naxos'],
     nameTokens: ['Glatza'],
-    profile: lowConfidenceNaxosProfile({
+    profile: mediumConfidenceNaxosProfile({
       beachFacingDirection: 330,
       shelterLevel: 'open',
       fetchExposure: 'high',
@@ -1498,8 +1505,8 @@ const naxosPhase1CoverageOverrideEntries: OverrideEntry[] = [
   },
   {
     islandTokens: ['naxos'],
-    nameTokens: ['Kleidos'],
-    profile: lowConfidenceNaxosProfile({
+    nameTokens: ['Kleidos', 'Klidos'],
+    profile: mediumConfidenceNaxosProfile({
       beachFacingDirection: 120,
       shelterLevel: 'open',
       fetchExposure: 'high',
@@ -1510,8 +1517,8 @@ const naxosPhase1CoverageOverrideEntries: OverrideEntry[] = [
   },
   {
     islandTokens: ['naxos'],
-    nameTokens: ['Paralia Kleido'],
-    profile: lowConfidenceNaxosProfile({
+    nameTokens: ['Paralia Kleido', 'Paralia Klido'],
+    profile: mediumConfidenceNaxosProfile({
       beachFacingDirection: 120,
       shelterLevel: 'open',
       fetchExposure: 'high',
@@ -1535,7 +1542,7 @@ const naxosPhase1CoverageOverrideEntries: OverrideEntry[] = [
   {
     islandTokens: ['naxos'],
     nameTokens: ['Paralia Limnari'],
-    profile: lowConfidenceNaxosProfile({
+    profile: mediumConfidenceNaxosProfile({
       beachFacingDirection: 80,
       shelterLevel: 'open',
       fetchExposure: 'high',
@@ -1559,7 +1566,7 @@ const naxosPhase1CoverageOverrideEntries: OverrideEntry[] = [
   {
     islandTokens: ['naxos'],
     nameTokens: ['Melino'],
-    profile: lowConfidenceNaxosProfile({
+    profile: mediumConfidenceNaxosProfile({
       beachFacingDirection: 15,
       shelterLevel: 'open',
       fetchExposure: 'high',
@@ -1617,7 +1624,7 @@ const naxosPhase1CoverageOverrideEntries: OverrideEntry[] = [
   },
   {
     islandTokens: ['naxos'],
-    nameTokens: ['Moutsoyna'],
+    nameTokens: ['Moutsoyna', 'Moutsouna'],
     profile: lowConfidenceNaxosProfile({
       beachFacingDirection: 90,
       shelterLevel: 'semi_sheltered',
@@ -1686,7 +1693,7 @@ const naxosPhase1CoverageOverrideEntries: OverrideEntry[] = [
   {
     islandTokens: ['naxos'],
     nameTokens: ['Paralia Spedo'],
-    profile: lowConfidenceNaxosProfile({
+    profile: mediumConfidenceNaxosProfile({
       beachFacingDirection: 145,
       shelterLevel: 'semi_sheltered',
       fetchExposure: 'medium',
@@ -1697,7 +1704,7 @@ const naxosPhase1CoverageOverrideEntries: OverrideEntry[] = [
   {
     islandTokens: ['naxos'],
     nameTokens: ['Chilia Vrysi'],
-    profile: lowConfidenceNaxosProfile({
+    profile: mediumConfidenceNaxosProfile({
       beachFacingDirection: 350,
       shelterLevel: 'open',
       fetchExposure: 'high',
@@ -1709,7 +1716,7 @@ const naxosPhase1CoverageOverrideEntries: OverrideEntry[] = [
   {
     islandTokens: ['naxos'],
     nameTokens: ['Paralia Psili Ammos'],
-    profile: lowConfidenceNaxosProfile({
+    profile: mediumConfidenceNaxosProfile({
       beachFacingDirection: 110,
       shelterLevel: 'semi_sheltered',
       fetchExposure: 'medium',
@@ -1745,31 +1752,31 @@ const naxosPhase1CoverageOverrideEntries: OverrideEntry[] = [
 const legacyOverrideEntriesFromOrder = (
   islandTokens: string[],
   firstLegacyId: number,
-  names: string[]
+  names: Array<string | string[]>
 ): OverrideEntry[] => names
-  .map((name, index) => {
+  .map((nameTokens, index) => {
     const profile = (windProfileOverridesByBeachId as Partial<Record<number, WindProfile>>)[firstLegacyId + index];
-    return profile ? { islandTokens, nameTokens: [name], profile } : undefined;
+    return profile ? { islandTokens, nameTokens: Array.isArray(nameTokens) ? nameTokens : [nameTokens], profile } : undefined;
   })
   .filter((entry): entry is OverrideEntry => Boolean(entry));
 
 const legacyParosOverrideEntries = legacyOverrideEntriesFromOrder(['paros'], 1817, [
-  'Agia Eirini', 'Agios Dimitrios', 'Agios Stefanos', 'Ampelas', 'Aspros Gkremos',
+  ['Agia Eirini', 'Agia Irini'], 'Agios Dimitrios', 'Agios Stefanos', 'Ampelas', ['Aspros Gkremos', 'Aspros Gremos'],
   'Voutakos', 'Glyfades', 'Delfini', 'Dryos', 'Kalogeros', 'Kolympithres', 'Krios',
-  'Laggeri', 'Livadia', 'Limnes', 'Logaras', 'Lolantonis', 'Martselo',
+  ['Laggeri', 'Langeri'], 'Livadia', 'Limnes', 'Logaras', 'Lolantonis', 'Martselo',
   'Mikri Santa Maria', 'Monastiri', 'Molos', 'Navtikos omilos Parou', 'Xyfara',
   'Paralia Agkali Chrysis Aktis', 'Paralia Alyki', 'Paralia Glyfa',
-  'Paralia Paroikias', 'Parasporos', 'Piperi', 'Poynta', 'Pyrgaki',
-  'Santa Maria', 'Toyrkou Ammos', 'Tserdakia (Nea Chrysi Akti)', 'Tsoukalia',
-  'Faraggas', 'Chrysi Akti',
+  ['Paralia Paroikias', 'Paralia Parikias'], 'Parasporos', 'Piperi', ['Poynta', 'Pounta'], 'Pyrgaki',
+  'Santa Maria', ['Toyrkou Ammos', 'Tourkou Ammos'], 'Tserdakia (Nea Chrysi Akti)', 'Tsoukalia',
+  ['Faraggas', 'Farangas'], 'Chrysi Akti',
 ]);
 
 const legacyAndrosOverrideEntries = legacyOverrideEntriesFromOrder(['andros'], 1503, [
   'Ag.Kyprianos', 'Agios Ioannis', 'Agios Petros', 'Apothikes', 'Artemidi',
   'Ateni', 'Achla', 'Vitali', 'Vlychada', 'Vori', 'Vintzi', 'Gides', 'Gyalia',
-  'Zorkos', 'Kalamitsi', 'Kaminaki', 'Kolona', 'Neimporio', 'Kourtali',
-  'Kypri', 'Leyka', 'Lefkivari', 'Limanaki', 'Lydi', 'Megala Peza', 'Mikra Peza',
-  'Mikrogiali', 'Mpatsi', 'Mpouros', 'Palaiopoli', 'Paralia Feloy',
+  'Zorkos', 'Kalamitsi', 'Kaminaki', 'Kolona', ['Neimporio', 'Nimporio'], 'Kourtali',
+  'Kypri', ['Leyka', 'Levka'], 'Lefkivari', 'Limanaki', 'Lydi', 'Megala Peza', 'Mikra Peza',
+  'Mikrogiali', ['Mpatsi', 'Batsi'], ['Mpouros', 'Bouros'], 'Palaiopoli', ['Paralia Feloy', 'Paralia Felou'],
   'Paraporti', 'Piso Gyalia', 'Piso Limnionas', 'Platanistos', 'Pyrgos',
   'Rozos', 'Steno (Stavros)', 'Syneti', 'Tis grias to pidima', 'Chrysi Ammos',
 ]);
@@ -1813,14 +1820,24 @@ const beachIslandTokens = (beach: Pick<Beach, 'location'>): string[] => [
   normalizeToken(beach.location?.region),
 ].filter(Boolean);
 
+const legacyOverrideOwnerById = (beachId: number): string | undefined => {
+  if (beachId >= 1503 && beachId <= 1543) return 'andros';
+  if (beachId >= 1727 && beachId <= 1759) return 'milos';
+  if (beachId >= 1817 && beachId <= 1853) return 'paros';
+  return undefined;
+};
+
 export const getWindProfileOverride = (
   beach: Pick<Beach, 'id' | 'name' | 'aliases' | 'location'>
 ): WindProfile | undefined => {
+  const islands = beachIslandTokens(beach);
   const byId = windProfileOverridesByBeachId[beach.id];
-  if (byId) return byId;
+  if (byId) {
+    const legacyOwner = legacyOverrideOwnerById(beach.id);
+    if (!legacyOwner || islands.includes(legacyOwner)) return byId;
+  }
 
   const names = beachNameTokens(beach);
-  const islands = beachIslandTokens(beach);
 
   return overrideEntries.find(entry => (
     entry.nameTokens.some(token => names.includes(normalizeToken(token))) &&

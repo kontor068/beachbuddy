@@ -1071,6 +1071,67 @@ Recommended next order:
 - This island pass reconciled static metadata where direct source coverage was stronger than older OSM-only records: Achilli now keeps small-bay/Aspous-area context, road access, sandy terrain, no sunbeds/umbrellas and nearby tavernas; its water depth was changed to medium because the reviewed sources do not support a shallow-water claim. Petritsa now keeps pebble terrain, very easy access, non-organized/no-shade status, listed basic facilities and no taverns/cafes on the beach. Fokiotrypa, Basales and Markesi were intentionally left low because current evidence is still identity-only, pollution-risk, or name/coordinate ambiguous. Source scenic/calm/clear/protected wording was not imported into scoring, windProfile, photos, water-quality, or live condition claims.
 - Across all public beach data after this pass: 2306 high, 130 medium, 304 low. Total non-high remaining: 434 of 2740 (15.8%).
 
+## Medium-confidence cleanup DJ - 2026-06-05
+
+- Tilos / Paralia Loumboudi kept at medium confidence, but unsupported asphalt-road, nearby-service, shade, and shallow-water claims were neutralized after reviewing the existing source context.
+- The current evidence supports only Lethra/Loumboudi path/unequipped context, not enough to certify Loumboudi as a separate high-confidence road-access beach. Coordinates, windProfile, scoring, photos, and live calm/protected/safe claims were not changed.
+- Across current regional beach bundles after this pass: 2304 high, 122 medium, 292 low. Total non-high remaining: 414 of 2718.
+
+## Medium-confidence cleanup DK - 2026-06-05
+
+- Erikoussa / Bragini and Othonoi / Agia Triada kept at medium confidence, but unsupported asphalt-road, cafe/taverna, parking, and shallow-water claims were neutralized after reviewing the existing source context.
+- Bragini now keeps only conservative GTP identity/location context plus unverified access and neutral depth because the direct Brakini/Prangini evidence is not enough for exact access/service/depth claims at the stored coordinates. Agia Triada now uses large white-stone terrain from the existing Sandee page but keeps access, amenities, and depth conservative because broader nearby-service copy is weak. Coordinates, windProfile, scoring, photos, and live calm/protected/safe claims were not changed.
+- Across current regional beach bundles after this pass: 2304 high, 122 medium, 292 low. Total non-high remaining: 414 of 2718.
+
+## Medium-confidence cleanup DL - 2026-06-05
+
+- Methana / Paralia Nisaki kept at medium confidence, but unsupported asphalt-road, parking, shade, sandy-terrain, and deep-water claims were neutralized after reviewing the existing source context.
+- BeachNearby explicitly has low data coverage and unknown sandy/access/amenity fields for Nisaki, while Mapcarta/OSM supports identity/location only. Terrain is now marked unverified and depth is neutral. Coordinates, windProfile, scoring, photos, and live calm/protected/safe claims were not changed.
+- Across current regional beach bundles after this pass: 2304 high, 122 medium, 292 low. Total non-high remaining: 414 of 2718.
+
+## Medium-confidence cleanup DM - 2026-06-05
+
+- Chania / Argilos kept at medium confidence, but unsupported asphalt-road, sandy-terrain, and shallow-water claims were neutralized after reviewing the existing source context.
+- Mapcarta/OSM supports the exact Argilos Beach identity/location near Frangokastello and the natural=beach feature, but not access, terrain, amenities, or depth. The exact Chania Argilos record exists in the regional bundle and public aggregate; `src/data/greek_beaches.json` currently has a different Argilos record for Xerokambos/Lasithi, so that Lasithi record was not touched. Coordinates, windProfile, scoring, photos, and live calm/protected/safe claims were not changed.
+- Across current regional beach bundles after this pass: 2304 high, 122 medium, 292 low. Total non-high remaining: 414 of 2718.
+
+## Medium-confidence cleanup DN - 2026-06-05
+
+- Kefalonia / Agia Sotira kept at medium confidence, but unsupported asphalt-road, parking, shade, terrain, and deep-water claims were neutralized after reviewing the existing source context.
+- World Beach Guide and Mapcarta/OSM support Saint/Agia Sotira beach identity/location on Kefalonia, but not access, terrain, amenities, or depth. Terrain is now marked unverified and depth is neutral. Coordinates, windProfile, scoring, photos, and live calm/protected/safe claims were not changed.
+- Across current regional beach bundles after this pass: 2304 high, 122 medium, 292 low. Total non-high remaining: 414 of 2718.
+
+## Medium-confidence cleanup DO - 2026-06-05
+
+- Paros / Pyrgaki kept at medium confidence, but unsupported asphalt-road, nearby-taverna, parking, sandy-terrain, and shallow-water claims were neutralized after reviewing the existing source context.
+- Greece.com supports Pyrgaki as a Paros settlement that is also a beach/small port, and OSM supports location, but current evidence is not enough for exact beach access, terrain, amenities, or depth. Terrain is now marked unverified and depth is neutral. Coordinates, windProfile, scoring, photos, and live calm/protected/safe claims were not changed.
+- Across current regional beach bundles after this pass: 2304 high, 122 medium, 292 low. Total non-high remaining: 414 of 2718.
+
+## Medium-confidence cleanup DP - 2026-06-05
+
+- Zakynthos / Kamaroti kept at medium confidence, but unsupported road-access, rock-terrain, shade, organized-service, and deep-water claims were neutralized after reviewing the existing source context.
+- OSM way 1419238906 supports Kamaroti identity/location and `surface=pebblestone`; Pawtale and Mapcarta support only the name/location context near Laganas/Zakynthos. The record now keeps pebble terrain only, unknown access, no amenities claim, no shade claim, and neutral depth. Coordinates, windProfile, scoring, photos, and live calm/protected/safe claims were not changed.
+- Across current regional beach bundles after this pass: 2304 high, 122 medium, 292 low. Total non-high remaining: 414 of 2718.
+
+## Medium-confidence cleanup DQ - 2026-06-05
+
+- Paxos / Arkoudaki kept at medium confidence, but unsupported easy-path, shade, and unverified-amenities claims were neutralized after reviewing direct beach and route source context.
+- GTP supports Arkoudaki identity/location north of Lakka, Paxos; Paxosinfo lists Arkoudaki in the north/east Paxos beach set; AllOverGreece describes a small isolated rocky beach with boat/path access, no organization and no shade; Orkos Vista route notes describe the Lakka hike via Orkos/Arkoudaki as hard, with paths up/down and clambering over rocks. The record now keeps boat-or-difficult-path access, rocky/large-stone terrain, no amenities claim, no shade claim, and neutral depth. Coordinates, windProfile, scoring, photos, and live calm/protected/safe claims were not changed.
+- Across current regional beach bundles after this pass: 2304 high, 122 medium, 292 low. Total non-high remaining: 414 of 2718.
+
+## Medium-confidence cleanup DR - 2026-06-05
+
+- Paxos / Aftia Gaidarou kept at medium confidence, but unsupported easy-path, shade, and stronger depth claims were neutralized after reviewing direct local/travel source context.
+- Paxos / Defteri Spiantza kept at low confidence, but unsupported asphalt-road, parking, shade, terrain, and deep-water claims were neutralized because current evidence supports identity/location only.
+- FlipFlopsIncluded directly describes Aftia Gaidarou south of Gaios with a rocky path from a small road-barrier gap, no facilities, and very little shade; Paxos Local Guide supports limited parking/walking recommendation; the Ionian hazards beach table supports the Aftia tou Gaidarou shoreline listing. BUK supports Defteri Spiantza coordinates/identity, while OSM remains identity/location support only. Coordinates, windProfile, scoring, photos, water-quality, and live calm/protected/safe claims were not changed.
+- Across current regional beach bundles after this pass: 2304 high, 122 medium, 292 low. Total non-high remaining: 414 of 2718. Island-only non-high remaining: 235 of 2043.
+
+## Medium-confidence cleanup DS - 2026-06-05
+
+- Antipaxos / Fyki, Kalamitsa, Skidi, and Agrapidia kept at medium confidence, but unsupported shade, exact pebble/rock terrain, no-service amenity, and deep-water certainty were neutralized.
+- General Visit Paxi / Visit Paxos / GTP / Visit-Paxos context supports Antipaxos small-cove or harbour context plus boat/speedboat access; Paxos Boat Hire directly names Skidi among east-side Antipaxos coves and Agrapidia cove context; GrecoSailor supports Ormos Kalamitsa as an Antipaxos bay/anchorage. Current evidence is still not beach-specific enough for high confidence or for exact terrain, shade, amenities, or swimmer-depth claims. Coordinates, windProfile, scoring, photos, water-quality, and live calm/protected/safe claims were not changed.
+- Across current regional beach bundles after this pass: 2304 high, 122 medium, 292 low. Total non-high remaining: 414 of 2718. Island-only non-high remaining: 235 of 2043.
+
 ## Durable data rules
 
 - Do not show "4x4 only" as user-facing copy unless it is strictly verified and unavoidable. Prefer `Δύσβατος δρόμος`.

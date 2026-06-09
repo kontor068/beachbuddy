@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "generatedAt": "2026-06-02T21:58:28.317Z",
+  "generatedAt": "2026-06-06T10:31:09.558Z",
   "region": {
     "id": "ionian-islands-mathraki",
     "name": "Mathraki"
@@ -10,8 +10,8 @@
   },
   "settings": {
     "maxFetchKm": 25,
-    "stepKm": 1,
-    "nearshoreLandGraceKm": 1,
+    "stepKm": 0.5,
+    "nearshoreLandGraceKm": 0.3,
     "nearshoreWaterSearchKm": 12,
     "nearshoreWaterSearchStepKm": 0.5,
     "fanAnglesDeg": [
@@ -30,7 +30,9 @@
       "SW",
       "W",
       "NW"
-    ]
+    ],
+    "maskSource": "Natural Earth 1:10m land polygons",
+    "maskConfidence": "medium"
   },
   "summary": {
     "beachCount": 1,
@@ -49,8 +51,8 @@
       },
       "E": {
         "protected": 0,
-        "partial": 1,
-        "exposed": 0
+        "partial": 0,
+        "exposed": 1
       },
       "SE": {
         "protected": 0,
@@ -58,24 +60,24 @@
         "exposed": 0
       },
       "S": {
-        "protected": 0,
-        "partial": 1,
+        "protected": 1,
+        "partial": 0,
         "exposed": 0
       },
       "SW": {
-        "protected": 0,
+        "protected": 1,
         "partial": 0,
-        "exposed": 1
+        "exposed": 0
       },
       "W": {
-        "protected": 0,
+        "protected": 1,
         "partial": 0,
-        "exposed": 1
+        "exposed": 0
       },
       "NW": {
         "protected": 0,
-        "partial": 0,
-        "exposed": 1
+        "partial": 1,
+        "exposed": 0
       }
     }
   },
@@ -90,49 +92,66 @@
         "lat": 39.77496,
         "lon": 19.52361
       },
+      "facingDeg": 45.5,
       "sectors": {
         "N": {
           "level": "exposed",
           "fetchKm": 25,
-          "blockedRayRatio": 0
+          "blockedRayRatio": 0,
+          "onshore": 0.701,
+          "intensity": 85
         },
         "NE": {
           "level": "exposed",
           "fetchKm": 25,
-          "blockedRayRatio": 0
+          "blockedRayRatio": 0,
+          "onshore": 1,
+          "intensity": 100
         },
         "E": {
-          "level": "partial",
-          "fetchKm": 16.4,
-          "blockedRayRatio": 0.6
+          "level": "exposed",
+          "fetchKm": 16.6,
+          "blockedRayRatio": 0.6,
+          "onshore": 0.713,
+          "intensity": 65.1
         },
         "SE": {
           "level": "partial",
-          "fetchKm": 9.6,
-          "blockedRayRatio": 0.8
+          "fetchKm": 9.7,
+          "blockedRayRatio": 0.8,
+          "onshore": 0.009,
+          "intensity": 33.5
         },
         "S": {
-          "level": "partial",
-          "fetchKm": 10.6,
-          "blockedRayRatio": 0.6
+          "level": "protected",
+          "fetchKm": 0.3,
+          "blockedRayRatio": 1,
+          "onshore": -0.701,
+          "intensity": 9
         },
         "SW": {
-          "level": "exposed",
-          "fetchKm": 25,
-          "blockedRayRatio": 0
+          "level": "protected",
+          "fetchKm": 0,
+          "blockedRayRatio": 1,
+          "onshore": -1,
+          "intensity": 0
         },
         "W": {
-          "level": "exposed",
-          "fetchKm": 25,
-          "blockedRayRatio": 0
+          "level": "protected",
+          "fetchKm": 5.1,
+          "blockedRayRatio": 0.8,
+          "onshore": -0.713,
+          "intensity": 9.1
         },
         "NW": {
-          "level": "exposed",
-          "fetchKm": 22.4,
-          "blockedRayRatio": 0.2
+          "level": "partial",
+          "fetchKm": 17.5,
+          "blockedRayRatio": 0.4,
+          "onshore": -0.009,
+          "intensity": 41.6
         }
       },
-      "confidence": "low"
+      "confidence": "medium"
     }
   }
 }

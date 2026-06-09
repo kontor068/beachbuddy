@@ -23,7 +23,7 @@ export enum Accessibility {
 export type LanguageCode = 'en' | 'gr' | 'fr' | 'de' | 'it';
 export type WindUnit = 'beaufort' | 'mph';
 export type WaveCondition = 'calm' | 'moderate' | 'rough';
-export type BeachType = 'sandy' | 'pebbles' | 'sandy-pebbles' | 'rocky';
+export type BeachType = 'sandy' | 'pebbles' | 'sandy-pebbles' | 'rocky' | 'unknown';
 export type WaterDepth = 'shallow' | 'medium' | 'deep';
 export type BeachAccessType = 'asphalt_road' | 'passable_dirt_road' | 'difficult_dirt_road' | '4x4_only' | 'hiking_path_easy' | 'hiking_path_difficult' | 'boat_only' | 'unknown';
 export type BeachTerrainType = 'fine_sand' | 'coarse_sand' | 'pebbles' | 'large_stones' | 'rocks';
@@ -35,6 +35,7 @@ export type FilterKey =
   | keyof Beach['activities']
   | keyof Beach['environment']
   | 'easyAccess'
+  | 'adventure'
   | BeachType
   | 'showAll';
 export type Theme = 'light' | 'dark' | 'system';
@@ -49,6 +50,22 @@ export type SeabedSlope = 'shallow_gradual' | 'moderate' | 'steep' | 'unknown';
 export type WaterEntry = 'easy' | 'moderate' | 'difficult' | 'rocks_only' | 'unknown';
 export type WaterQualityRiskAfterRain = 'low' | 'medium' | 'high';
 export type SwimmingComfort = 'excellent' | 'good' | 'caution' | 'avoid_swimming';
+export type WindSuitabilityColor = 'green' | 'yellow' | 'orange' | 'red';
+export type WindSuitabilityExplanationKey =
+  | 'generally_calm'
+  | 'protected_from_wind'
+  | 'partly_exposed'
+  | 'exposed_to_wind'
+  | 'avoid_today';
+
+export interface SimpleWindSuitability {
+  suitabilityColor: WindSuitabilityColor;
+  exposureStatus: 'protected' | 'partial' | 'exposed';
+  confidence: DataConfidence;
+  explanationKey: WindSuitabilityExplanationKey;
+  explanationText: string;
+  windSector?: WindSector;
+}
 
 export interface BeachMapCoordinates {
   lat: number;
@@ -88,7 +105,7 @@ export interface WindProfile {
   notes: string;
 }
 
-export type WindProfileSource = 'override' | 'beach' | 'metadata' | 'unknown';
+export type WindProfileSource = 'override' | 'beach' | 'metadata' | 'geospatial' | 'unknown';
 
 export interface WeatherConditions {
   timestamp: string;
@@ -253,6 +270,7 @@ export interface Beach {
   staticLabels?: {
     beachType?: string;
     accessType?: string;
+    accessLabel?: string;
     terrain?: string;
     waterDepth?: string;
   };
@@ -288,6 +306,12 @@ export interface BeachMetadata {
   organized: boolean;
   shade: boolean;
   amenities: string[];
+  environment?: {
+    quiet?: boolean;
+    remote?: boolean;
+    familyFriendly?: boolean;
+    notes?: string;
+  };
   blueFlag2026?: {
     awarded: true;
     year: 2026;
@@ -311,6 +335,13 @@ export interface BeachMetadata {
   };
   sourceUrls?: string[];
   sourceNotes?: string | string[];
+  googleMapsNavigation?: {
+    status: 'verified' | 'unresolved';
+    checkedAt?: string;
+    query?: string;
+    placeId?: string;
+    reason?: string;
+  };
   mapCoordinates?: BeachMapCoordinates;
   orientation?: Partial<BeachOrientation>;
   windProfile?: WindProfile;
@@ -325,13 +356,37 @@ export interface GeospatialExposureSector {
   level: ExposureLevel;
   fetchKm: number;
   blockedRayRatio: number;
+  /** Onshore wind component for this sector, -1 (offshore) .. 1 (onshore). */
+  onshore?: number;
+  /** Continuous exposure intensity 0-100 (0 = calm, 100 = fully exposed). */
+  intensity?: number;
 }
+
+export type GeospatialExposureSource = 'natural-earth-baseline' | 'high-res-coastline';
 
 export interface GeospatialExposureProfile {
   beachId: number;
+  /** Direction the beach faces (seaward shoreline normal), 0-360, or null. */
+  facingDeg?: number | null;
   sectors: Record<WindSector, GeospatialExposureSector>;
   confidence: DataConfidence;
-  source: 'natural-earth-baseline';
+  source: GeospatialExposureSource;
+}
+
+/**
+ * Unified, always-definite wind-exposure outcome for one beach under one live
+ * wind. The resolver guarantees a concrete `level` and `reason`; `confidence`
+ * is internal (sorting/tiebreaks) and is never surfaced to the user as doubt.
+ */
+export interface WindExposureResult {
+  level: ExposureLevel;
+  intensity: number;
+  facingDeg: number | null;
+  effectiveFetchKm: number;
+  onshore: number;
+  modeledWaveHeightM: number;
+  reason: string;
+  confidence: DataConfidence;
 }
 
 export interface SuitableBeach {
@@ -368,7 +423,12 @@ export interface SuitableBeach {
   windSector?: WindSector;
   canClaimWindProtection?: boolean;
   seaCalmClaimAllowed?: boolean;
+  simpleWindSuitability?: SimpleWindSuitability;
   geospatialExposure?: GeospatialExposureProfile;
+  /** How this beach behaves in a typical Meltemi (N/NE summer wind). */
+  meltemiExposure?: ExposureLevel;
+  /** Localised, directional one-line explanation of today's wind exposure. */
+  windExposureReason?: string;
 }
 
 export interface BeachForecastContext {
@@ -584,9 +644,11 @@ export type Translation = {
     pebbles: string;
     quiet: string;
     snorkeling: string;
+    adventure: string;
     familyFriendly: string;
     'sandy-pebbles': string;
     rocky: string;
+    unknown: string;
     deepWaters: string;
     shallowWaters: string;
     easyAccess: string;

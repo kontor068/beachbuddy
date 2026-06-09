@@ -136,6 +136,7 @@ export const useWeather = (selectedIsland: Island | undefined, language: Languag
   const [weather, setWeather] = useState<WeatherData | null>(null);
   const [forecast, setForecast] = useState<DailyForecast[] | null>(null);
   const [beachForecasts, setBeachForecasts] = useState<Record<number, BeachForecastContext>>({});
+  const [beachForecastsLoading, setBeachForecastsLoading] = useState(false);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [selectedDayIndex, setSelectedDayIndex] = useState(0);
@@ -158,6 +159,7 @@ export const useWeather = (selectedIsland: Island | undefined, language: Languag
     setLoading(true);
     setError(null);
     setBeachForecasts({});
+    setBeachForecastsLoading(false);
 
     const fixture = getLocalWeatherFixture(selectedIsland);
     if (fixture) {
@@ -167,6 +169,7 @@ export const useWeather = (selectedIsland: Island | undefined, language: Languag
       setLastUpdated(new Date());
       activeIslandIdRef.current = selectedIsland.id;
       setLoading(false);
+      setBeachForecastsLoading(false);
       console.info('[weather] Local fixture active', {
         islandId: selectedIsland.id,
         scenarioId: fixture.scenario.id,
@@ -215,6 +218,7 @@ export const useWeather = (selectedIsland: Island | undefined, language: Languag
     setLoading(false);
 
     if (failures.length > 0) {
+      setBeachForecastsLoading(false);
       console.warn('[weather] Selected area weather loaded with fallback UI', {
         islandId: selectedIsland.id,
         islandName: selectedIsland.name.en,
@@ -229,15 +233,18 @@ export const useWeather = (selectedIsland: Island | undefined, language: Languag
     setError(null);
 
     const islandForBackgroundForecasts = selectedIsland;
+    setBeachForecastsLoading(true);
     scheduleBackgroundTask(() => {
       fetchBeachForecastContexts(islandForBackgroundForecasts)
         .then(localBeachForecasts => {
           if (requestIdRef.current !== requestId) return;
           setBeachForecasts(localBeachForecasts);
+          setBeachForecastsLoading(false);
         })
         .catch(error => {
           if (requestIdRef.current !== requestId) return;
           console.warn('Beach-area forecasts unavailable; falling back to island forecast.', error);
+          setBeachForecastsLoading(false);
         });
     });
   }, [selectedIsland, language]);
@@ -251,6 +258,7 @@ export const useWeather = (selectedIsland: Island | undefined, language: Languag
       setWeather(null);
       setForecast(null);
       setBeachForecasts({});
+      setBeachForecastsLoading(false);
       setLoading(false);
     }
   }, [selectedIsland, loadWeatherData]);
@@ -278,6 +286,7 @@ export const useWeather = (selectedIsland: Island | undefined, language: Languag
     weather,
     forecast,
     beachForecasts,
+    beachForecastsLoading,
     loading,
     error,
     selectedDayIndex,

@@ -1,6 +1,6 @@
-﻿import React, { useState, useEffect, useMemo, useRef, Suspense } from 'react';
+import React, { useState, useEffect, useMemo, useRef, Suspense } from 'react';
 import { Accessibility, Beach, DailyForecast, ForecastItem, Island, LanguageCode, FilterKey, SortOption, UserPreferences, SuitableBeach, WindDirection } from './types';
-import { beachMatchesUserPreferences, calculateBeachScore, getSuitableBeaches, filterBeachesByUserPreferences, hasHourlyRainRisk, type BeachWeatherById, type BestBeachTime } from './services/recommendationService';
+import { beachMatchesUserPreferences, calculateBeachScore, calculateBestBeachTime, getSuitableBeaches, filterBeachesByUserPreferences, getTopRecommendationDisplayLimit, hasHourlyRainRisk, isTrustedTopRecommendationCandidate, type BeachWeatherById, type BestBeachTime } from './services/recommendationService';
 import { motion, AnimatePresence } from 'motion/react';
 import type { Chat } from '@google/genai';
 import { AlertTriangle, CheckCircle2, Clock3, Navigation, RefreshCw, Waves, Wind } from 'lucide-react';
@@ -15,7 +15,7 @@ import { WeatherSummary } from './components/WeatherSummary';
 import { RecommendationSection } from './components/RecommendationSection';
 import { BeachCard } from './components/BeachCard';
 import ErrorDisplay from './components/ErrorDisplay';
-import { MobileBottomNav } from './components/MobileBottomNav';
+import { MobileBottomNav, type MobileTab } from './components/MobileBottomNav';
 import { PrivacyConsentBanner } from './components/PrivacyConsentBanner';
 import { MapLoadBoundary } from './components/MapLoadBoundary';
 import { LegalFooter } from './components/LegalFooter';
@@ -37,10 +37,11 @@ import { getInitialLanguage, getLocalizedCopy, languageToLocale, saveLanguagePre
 import { lazyWithChunkRecovery } from './utils/chunkLoadRecovery';
 import { buildBetaFeedbackUrl } from './utils/betaFeedback';
 import { QUICK_PREFERENCE_FILTERS } from './utils/preferenceFilterLabels';
-import { openNavigation } from './utils/navigation';
+import { canOpenNavigation, openNavigation } from './utils/navigation';
 import { displayBeachName } from './utils/localization';
-import { hasDifficultTopPickAccess, hasPracticalTopPickAccess } from './utils/access';
+import { hasDifficultTopPickAccess, hasMainstreamTopPickAccess, isAdventureBeach } from './utils/access';
 import { buildBeachDetailPath, buildBeachRegionPath, parseBeachDetailPath, parseBeachRegionPath, regionMatchesRouteParam } from './utils/beachUrls';
+import { describeSimpleWindSuitability } from './utils/windExposureCopy';
 import {
   getSelectedDayPrefix,
   getSelectedDaySentencePrefix,
@@ -52,6 +53,7 @@ import { getBeachTouristRecognitionScore } from './utils/touristPriority';
 import { getConsistentVisibleMapExposureLevels } from './utils/mapExposure';
 import { loadGeospatialExposureProfiles, type GeospatialExposureProfileLookup } from './services/geospatialExposureService';
 import { assessBeachWindExposure } from './utils/windExposureEngine';
+import { fuzzySearchScore, getSearchVariants } from './utils/searchNormalize';
 
 // Keep map code out of the first-load path; it renders only near the map section.
 const BeachMap = lazyWithChunkRecovery(() => import('./components/BeachMap'), 'BeachMap');
@@ -205,8 +207,8 @@ const compactWeatherLabels: Record<LanguageCode, Record<string, string>> = {
 
 const seoCopy: Record<SupportedLanguage, { title: string; description: string; locale: string }> = {
   en: {
-    title: 'Calm Beach Greece',
-    description: 'Calm Beach Greece - Find the best beach to visit today based on wind, waves and weather.',
+    title: 'CalmBeach Greece - Best Beach Today by Wind & Waves',
+    description: 'Find the best Greek beach to visit today. CalmBeach checks wind, waves, weather and beach exposure for smarter beach recommendations.',
     locale: 'en_US',
   },
   gr: {
@@ -231,12 +233,6 @@ const seoCopy: Record<SupportedLanguage, { title: string; description: string; l
   },
 };
 
-const hasMainstreamAccess = (beach: Beach): boolean => (
-  beach.accessibility === Accessibility.EASY ||
-  beach.metadata?.access?.type === 'asphalt_road' ||
-  beach.metadata?.access?.type === 'passable_dirt_road'
-);
-
 const hasMainstreamFacilities = (beach: Beach): boolean => Boolean(
   beach.metadata?.organized ??
   (beach.amenities?.organized || beach.amenities?.beachBar || beach.amenities?.sunbeds || beach.amenities?.taverna || beach.amenities?.restaurant || beach.amenities?.parking)
@@ -257,7 +253,7 @@ const hasTopPickVisitorServices = (beach: Beach): boolean => {
 };
 
 const hasTouristReadyTopPickProfile = (beach: Beach): boolean => {
-  if (!hasPracticalTopPickAccess(beach) || beach.environment?.remote) return false;
+  if (!hasMainstreamTopPickAccess(beach)) return false;
 
   return Boolean(
     hasTopPickVisitorServices(beach) ||
@@ -272,8 +268,9 @@ const isWindProtectedRecommendation = (item: Pick<SuitableBeach, 'isExposed' | '
   return item.exposureLevel === 'protected' && item.canClaimWindProtection === true;
 };
 
-const MEANINGFUL_WIND_TOP_PICK_BEAUFORT = 4;
+const MEANINGFUL_WIND_TOP_PICK_BEAUFORT = 3;
 const PROTECTED_FIRST_BEAUFORT = 5;
+const MAX_TOP_RECOMMENDATION_BEAUFORT = 6;
 const MIN_TOP_PICK_SEA_CONDITION_SCORE = 7;
 const MIN_STRONG_SUITABLE_SEA_CONDITION_SCORE = 5;
 const BEACH_DAY_START_MINUTES = 10 * 60;
@@ -296,11 +293,14 @@ const topPickPopularityScore = (beach: Beach): number => {
 };
 
 const topPickAccessPriority = (beach: Beach): number => {
+  const accessType = beach.metadata?.access?.type;
   if (hasDifficultTopPickAccess(beach)) return 5;
-  if (beach.metadata?.access?.type === 'asphalt_road' || beach.accessibility === Accessibility.EASY) return 0;
-  if (beach.metadata?.access?.type === 'passable_dirt_road' || beach.accessibility === Accessibility.MODERATE) return 1;
-  if (beach.metadata?.access?.type === 'hiking_path_easy') return 2;
-  if (hasMainstreamAccess(beach)) return 3;
+  if (accessType === 'asphalt_road') return 0;
+  if (accessType === 'passable_dirt_road') return 1;
+  if (accessType === 'hiking_path_easy') return 2;
+  if (!accessType && beach.accessibility === Accessibility.EASY) return 0;
+  if (!accessType && beach.accessibility === Accessibility.MODERATE) return 1;
+  if (hasMainstreamTopPickAccess(beach)) return 3;
   return 4;
 };
 
@@ -339,10 +339,7 @@ const compareTouristTopPickPriority = (a: SuitableBeach, b: SuitableBeach): numb
 };
 
 const hasHardTopPickAccessBlocker = (beach: Beach): boolean => (
-  beach.accessibility === Accessibility.BOAT_ONLY ||
-  beach.metadata?.access?.type === 'boat_only' ||
-  beach.metadata?.access?.type === '4x4_only' ||
-  beach.metadata?.access?.type === 'difficult_dirt_road'
+  !hasMainstreamTopPickAccess(beach)
 );
 
 const isLessExposedTopPickCandidate = (item: SuitableBeach): boolean => {
@@ -398,20 +395,29 @@ type TimeAwareSuitableBeach = SuitableBeach & {
   dynamicTopPickWindowScore?: number;
 };
 
-interface RemainingTopPickEntry {
-  startMinutes: number;
-  endMinutes: number;
+type GlobalBeachSearchEntry = {
+  island: Island;
+  beach: Beach;
+  searchValues: string[];
+  regionValues: string[];
+};
+
+type GlobalBeachSearchMatch = {
+  island: Island;
+  beach: Beach;
   score: number;
-}
+};
+
+type DirectorySearchSuggestion = {
+  id: string;
+  type: 'region' | 'beach';
+  label: string;
+  subtitle: string;
+  island: Island;
+  beach?: Beach;
+};
 
 const clampTopPickScore = (score: number): number => Math.max(0, Math.min(100, Math.round(score)));
-
-const formatTopPickMinutes = (minutes: number): string => {
-  const normalized = Math.max(0, Math.min(23 * 60 + 59, Math.round(minutes)));
-  const hours = Math.floor(normalized / 60);
-  const mins = normalized % 60;
-  return `${hours.toString().padStart(2, '0')}:${mins.toString().padStart(2, '0')}`;
-};
 
 const getForecastMinutes = (item: ForecastItem): number => {
   const date = new Date(item.dt * 1000);
@@ -516,68 +522,27 @@ const getRemainingTopPickWindow = (
     }));
   if (entries.length === 0) return undefined;
 
-  const closeWindow = (
-    windows: RemainingTopPickEntry[],
-    currentEntries: RemainingTopPickEntry[]
-  ): RemainingTopPickEntry[] => {
-    if (currentEntries.length === 0) return windows;
-    const score = currentEntries.reduce((sum, entry) => sum + entry.score, 0) / currentEntries.length;
-    return [
-      ...windows,
-      {
-        startMinutes: currentEntries[0].startMinutes,
-        endMinutes: currentEntries[currentEntries.length - 1].endMinutes,
-        score,
-      },
-    ];
-  };
+  const bestBeachTime = calculateBestBeachTime(entries.map(entry => entry.item), item.beach);
+  if (!bestBeachTime) return undefined;
 
-  let windows: RemainingTopPickEntry[] = [];
-  let currentEntries: RemainingTopPickEntry[] = [];
-  entries.forEach(entry => {
-    if (entry.score >= MIN_REMAINING_TOP_PICK_SCORE) {
-      currentEntries.push(entry);
-      return;
-    }
+  const timing = getTopPickTiming(bestBeachTime, selectedDate, now);
+  if (timing.state === 'unknown' || timing.state === 'expired') return undefined;
 
-    windows = closeWindow(windows, currentEntries);
-    currentEntries = [];
-  });
-  windows = closeWindow(windows, currentEntries);
-
-  const candidates = windows.length > 0
-    ? windows
-    : entries.map(entry => ({
-      startMinutes: entry.startMinutes,
-      endMinutes: entry.endMinutes,
-      score: entry.score,
-    }));
-  const referenceMinutes = getReferenceMinutes(now);
-  const best = candidates.sort((a, b) => {
-    const aActive = a.startMinutes <= referenceMinutes && a.endMinutes >= referenceMinutes;
-    const bActive = b.startMinutes <= referenceMinutes && b.endMinutes >= referenceMinutes;
-    if (aActive !== bActive) return aActive ? -1 : 1;
-
-    const scoreDiff = b.score - a.score;
-    if (Math.abs(scoreDiff) >= 4) return scoreDiff;
-
-    return a.startMinutes - b.startMinutes;
-  })[0];
-  if (!best) return undefined;
-
-  const bestStart = formatTopPickMinutes(best.startMinutes);
-  const bestEnd = formatTopPickMinutes(Math.max(best.endMinutes, best.startMinutes + 60));
-  const reason = 'Best remaining hourly window from the current forecast.';
+  const windowScores = entries
+    .filter(entry => (
+      timing.startMinutes !== undefined &&
+      timing.endMinutes !== undefined &&
+      entry.startMinutes >= timing.startMinutes &&
+      entry.startMinutes < timing.endMinutes
+    ))
+    .map(entry => entry.score);
+  const score = windowScores.length > 0
+    ? windowScores.reduce((sum, value) => sum + value, 0) / windowScores.length
+    : MIN_REMAINING_TOP_PICK_SCORE;
 
   return {
-    score: best.score,
-    bestBeachTime: {
-      bestStart,
-      bestEnd,
-      reason,
-      bestTimeWindow: `${bestStart}-${bestEnd}`,
-      timeReason: reason,
-    },
+    score,
+    bestBeachTime,
   };
 };
 
@@ -705,6 +670,9 @@ const beachMatchesMobileFilter = (
   if (filter === 'snorkeling') {
     return beachMatchesUserPreferences(beach, { ...defaultPreferences, snorkeling: true });
   }
+  if (filter === 'adventure') {
+    return isAdventureBeach(beach);
+  }
   if (filter === 'familyFriendly') {
     return beachMatchesUserPreferences(beach, { ...defaultPreferences, familyFriendly: true });
   }
@@ -799,22 +767,22 @@ const getFavoredCoastPhrase = (windDirection: WindDirection, language: LanguageC
     fr: {
       [WindDirection.N]: 'les plages au sud et sud-est',
       [WindDirection.NE]: 'les plages au sud et à l’ouest',
-      [WindDirection.E]: 'les plages orientées ouest',
+      [WindDirection.E]: 'les plages orientees ouest',
       [WindDirection.SE]: 'les plages au nord et à l’ouest',
-      [WindDirection.S]: 'les plages orientées nord',
+      [WindDirection.S]: 'les plages orientees nord',
       [WindDirection.SW]: 'les plages au nord et à l’est',
-      [WindDirection.W]: 'les plages orientées est',
+      [WindDirection.W]: 'les plages orientees est',
       [WindDirection.NW]: 'les plages au sud et à l’est',
     },
     de: {
-      [WindDirection.N]: 'südliche und südöstliche Strände',
-      [WindDirection.NE]: 'südliche und westliche Strände',
-      [WindDirection.E]: 'westlich ausgerichtete Strände',
-      [WindDirection.SE]: 'nördliche und westliche Strände',
-      [WindDirection.S]: 'nördlich ausgerichtete Strände',
-      [WindDirection.SW]: 'nördliche und östliche Strände',
-      [WindDirection.W]: 'östlich ausgerichtete Strände',
-      [WindDirection.NW]: 'südliche und östliche Strände',
+      [WindDirection.N]: 'sudliche und sudostliche Strande',
+      [WindDirection.NE]: 'sudliche und westliche Strande',
+      [WindDirection.E]: 'westlich ausgerichtete Strande',
+      [WindDirection.SE]: 'nordliche und westliche Strande',
+      [WindDirection.S]: 'nordlich ausgerichtete Strande',
+      [WindDirection.SW]: 'nordliche und ostliche Strande',
+      [WindDirection.W]: 'ostlich ausgerichtete Strande',
+      [WindDirection.NW]: 'sudliche und ostliche Strande',
     },
     it: {
       [WindDirection.N]: 'le spiagge a sud e sud-est',
@@ -857,31 +825,31 @@ const getGeneralConditionsHelper = (
     },
     gr: {
       mild: () => `${sentenceDay} έχει ${beaufort} μποφόρ με ${windLabel} άνεμο. Οι περισσότερες παραλίες φαίνονται κατάλληλες για μπάνιο.`,
-      caution: () => `${sentenceDay} έχει ${beaufort} μποφόρ με ${windLabel} άνεμο. Ο άνεμος αρχίζει να παίζει ρόλο, οπότε ευνοούνται περισσότερο ${favoredCoasts}.`,
+      caution: () => `${sentenceDay} έχει ${beaufort} μποφόρ με ${windLabel} άνεμο. Ο άνεμος αρχίζει να παίζει ρόλο, οπότε γενικά προτιμώνται ${favoredCoasts}.`,
       noIdeal: () => {
-        if (beaufort <= 3) return `${sentenceDay} έχει ${beaufort} μποφόρ με ${windLabel} άνεμο. Οι περισσότερες παραλίες φαίνονται κατάλληλες για μπάνιο.`;
+        return `${sentenceDay} έχει ${beaufort} μποφόρ με ${windLabel} άνεμο. Οι περισσότερες παραλίες φαίνονται κατάλληλες για μπάνιο.`;
         return beaufort <= 5
-          ? `${sentenceDay} έχει ${beaufort} μποφόρ με ${windLabel} άνεμο. Ο άνεμος επηρεάζει την επιλογή, οπότε ευνοούνται περισσότερο ${favoredCoasts}.`
-          : `${sentenceDay} έχει ${beaufort} μποφόρ με ${windLabel} άνεμο. Δεν φαίνεται καθαρή επιλογή για ήρεμο μπάνιο. Αν πας, ευνοούνται περισσότερο ${favoredCoasts}.`;
+        ? `${sentenceDay} έχει ${beaufort} μποφόρ με ${windLabel} άνεμο. Ο άνεμος επηρεάζει την επιλογή, οπότε γενικά προτιμώνται ${favoredCoasts}.`
+        : `${sentenceDay} έχει ${beaufort} μποφόρ με ${windLabel} άνεμο. Δεν υπάρχει καθαρή επιλογή για ήρεμο μπάνιο. Αν πας, γενικά προτιμώνται ${favoredCoasts}.`;
       },
-      default: () => `${sentenceDay} έχει ${beaufort} μποφόρ με ${windLabel} άνεμο. Σε αυτές τις συνθήκες ευνοούνται περισσότερο ${favoredCoasts}.`,
+      default: () => `${sentenceDay} έχει ${beaufort} μποφόρ με ${windLabel} άνεμο. Σε αυτές τις συνθήκες γενικά προτιμώνται ${favoredCoasts}.`,
     },
     fr: {
-      mild: () => `${sentenceDay} : ${beaufort} Beaufort avec vent ${wind}. La plupart des plages semblent adaptées à la baignade.`,
-      caution: () => `${sentenceDay} : ${beaufort} Beaufort avec vent ${wind}. Le vent compte davantage, donc ${favoredCoasts} sont favorisées.`,
+      mild: () => `${sentenceDay} : ${beaufort} Beaufort avec vent ${wind}. La plupart des plages semblent adaptees a la baignade.`,
+      caution: () => `${sentenceDay} : ${beaufort} Beaufort avec vent ${wind}. Le vent compte davantage, donc ${favoredCoasts} sont favorisees.`,
       noIdeal: () => {
-        if (beaufort <= 3) return `${sentenceDay} : ${beaufort} Beaufort avec vent ${wind}. La plupart des plages semblent adaptées à la baignade.`;
+        if (beaufort <= 3) return `${sentenceDay} : ${beaufort} Beaufort avec vent ${wind}. La plupart des plages semblent adaptees a la baignade.`;
         return beaufort <= 5
-          ? `${sentenceDay} : ${beaufort} Beaufort avec vent ${wind}. Le vent influence le choix, donc ${favoredCoasts} sont favorisées.`
-          : `${sentenceDay} : ${beaufort} Beaufort avec vent ${wind}. Aucun choix clairement calme. Si vous y allez, privilégiez ${favoredCoasts}.`;
+          ? `${sentenceDay} : ${beaufort} Beaufort avec vent ${wind}. Le vent influence le choix, donc ${favoredCoasts} sont favorisees.`
+          : `${sentenceDay} : ${beaufort} Beaufort avec vent ${wind}. Aucun choix clairement calme. Si vous y allez, privilegiez ${favoredCoasts}.`;
       },
-      default: () => `${sentenceDay} : ${beaufort} Beaufort avec vent ${wind}. Dans ces conditions, ${favoredCoasts} sont favorisées.`,
+      default: () => `${sentenceDay} : ${beaufort} Beaufort avec vent ${wind}. Dans ces conditions, ${favoredCoasts} sont favorisees.`,
     },
     de: {
-      mild: () => `${sentenceDay}: ${beaufort} Bft mit ${wind} Wind. Die meisten Strände wirken zum Schwimmen geeignet.`,
-      caution: () => `${sentenceDay}: ${beaufort} Bft mit ${wind} Wind. Wind spielt stärker mit, daher sind ${favoredCoasts} meist besser.`,
+      mild: () => `${sentenceDay}: ${beaufort} Bft mit ${wind} Wind. Die meisten Strande wirken zum Schwimmen geeignet.`,
+      caution: () => `${sentenceDay}: ${beaufort} Bft mit ${wind} Wind. Wind spielt starker mit, daher sind ${favoredCoasts} meist besser.`,
       noIdeal: () => {
-        if (beaufort <= 3) return `${sentenceDay}: ${beaufort} Bft mit ${wind} Wind. Die meisten Strände wirken zum Schwimmen geeignet.`;
+        if (beaufort <= 3) return `${sentenceDay}: ${beaufort} Bft mit ${wind} Wind. Die meisten Strande wirken zum Schwimmen geeignet.`;
         return beaufort <= 5
           ? `${sentenceDay}: ${beaufort} Bft mit ${wind} Wind. Der Wind beeinflusst die Wahl, daher sind ${favoredCoasts} meist besser.`
           : `${sentenceDay}: ${beaufort} Bft mit ${wind} Wind. Es gibt keine klar ruhige Badeoption. Wenn du gehst, sind ${favoredCoasts} meist besser.`;
@@ -890,12 +858,12 @@ const getGeneralConditionsHelper = (
     },
     it: {
       mild: () => `${sentenceDay}: ${beaufort} Beaufort con vento ${wind}. La maggior parte delle spiagge sembra adatta al bagno.`,
-      caution: () => `${sentenceDay}: ${beaufort} Beaufort con vento ${wind}. Il vento conta di più, quindi ${favoredCoasts} sono favorite.`,
+      caution: () => `${sentenceDay}: ${beaufort} Beaufort con vento ${wind}. Il vento conta di piu, quindi ${favoredCoasts} sono favorite.`,
       noIdeal: () => {
         if (beaufort <= 3) return `${sentenceDay}: ${beaufort} Beaufort con vento ${wind}. La maggior parte delle spiagge sembra adatta al bagno.`;
         return beaufort <= 5
           ? `${sentenceDay}: ${beaufort} Beaufort con vento ${wind}. Il vento influenza la scelta, quindi ${favoredCoasts} sono favorite.`
-          : `${sentenceDay}: ${beaufort} Beaufort con vento ${wind}. Non c'è una scelta chiaramente calma. Se vai, preferisci ${favoredCoasts}.`;
+          : `${sentenceDay}: ${beaufort} Beaufort con vento ${wind}. Non c'e una scelta chiaramente calma. Se vai, preferisci ${favoredCoasts}.`;
       },
       default: () => `${sentenceDay}: ${beaufort} Beaufort con vento ${wind}. In queste condizioni, ${favoredCoasts} sono favorite.`,
     },
@@ -1004,25 +972,25 @@ const getRainRiskCopy = (
       genericBody: 'Πρόσεξε όμως ότι υπάρχει ένδειξη βροχής στην πρόγνωση. Οι παραλίες μπορεί να είναι οκ από άνεμο/κύμα, αλλά η σύσταση ισχύει μόνο για στεγνά διαστήματα.',
     },
     fr: {
-      allTitle: 'Baignade non recommandée aux heures principales à cause de la pluie',
+      allTitle: 'Baignade non recommandee aux heures principales a cause de la pluie',
       rainTitle: () => `La pluie peut affecter le plan plage ${day}`,
       allBody: 'La prévision indique de la pluie aux heures principales de plage, donc aucune plage n’est affichée comme adaptée à la baignade sur ce créneau.',
-      timedBody: () => `La prévision indique une pluie possible vers ${summary.label}. Ne considérez pas la plage comme adaptée à ces heures.`,
-      genericBody: 'La journée présente un risque de pluie. Les plages peuvent être correctes côté vent et vagues, mais la recommandation vaut seulement sur les créneaux plus secs.',
+      timedBody: () => `La prevision indique une pluie possible vers ${summary.label}. Ne considerez pas la plage comme adaptee a ces heures.`,
+      genericBody: 'La journee presente un risque de pluie. Les plages peuvent etre correctes cote vent et vagues, mais la recommandation vaut seulement sur les creneaux plus secs.',
     },
     de: {
       allTitle: 'Schwimmen ist zu den Haupt-Strandzeiten wegen Regen nicht empfohlen',
       rainTitle: () => `Regen kann den Strandplan ${day} beeinflussen`,
-      allBody: 'Die Vorhersage zeigt Regen zu den Haupt-Strandzeiten, daher werden Strände in diesem Fenster nicht als geeignet angezeigt.',
-      timedBody: () => `Die Vorhersage zeigt möglichen Regen um ${summary.label}. Behandle den Strand zu diesen Zeiten nicht als geeignet.`,
-      genericBody: 'Die Vorhersage zeigt ein Regensignal. Für Wind und Wellen kann es passen, aber die Empfehlung gilt nur für trockenere Zeitfenster.',
+      allBody: 'Die Vorhersage zeigt Regen zu den Haupt-Strandzeiten, daher werden Strande in diesem Fenster nicht als geeignet angezeigt.',
+      timedBody: () => `Die Vorhersage zeigt moglichen Regen um ${summary.label}. Behandle den Strand zu diesen Zeiten nicht als geeignet.`,
+      genericBody: 'Die Vorhersage zeigt ein Regensignal. Fur Wind und Wellen kann es passen, aber die Empfehlung gilt nur fur trockenere Zeitfenster.',
     },
     it: {
       allTitle: 'Bagno non consigliato nelle ore principali per pioggia',
-      rainTitle: () => `La pioggia può influire sul piano spiaggia ${day}`,
+      rainTitle: () => `La pioggia puo influire sul piano spiaggia ${day}`,
       allBody: 'Le previsioni indicano pioggia nelle ore principali da spiaggia, quindi le spiagge non vengono mostrate come adatte al bagno in quella fascia.',
       timedBody: () => `Le previsioni indicano possibile pioggia verso ${summary.label}. Non considerare la spiaggia adatta in quelle ore.`,
-      genericBody: 'La giornata ha un segnale di pioggia. Le spiagge possono andare bene per vento e onde, ma il consiglio vale solo nelle fasce più asciutte.',
+      genericBody: 'La giornata ha un segnale di pioggia. Le spiagge possono andare bene per vento e onde, ma il consiglio vale solo nelle fasce piu asciutte.',
     },
   });
 
@@ -1056,21 +1024,21 @@ export const App: React.FC = () => {
       mild: {
         title: {
           en: 'Most beaches look suitable',
-          gr: 'Οι περισσότερες παραλίες φαίνονται κατάλληλες',
+      gr: 'Οι περισσότερες παραλίες φαίνονται κατάλληλες',
           de: 'Gute Startpunkte fuer heute',
           it: 'Buone opzioni da cui iniziare',
           fr: 'Bonnes options pour commencer',
         },
         helper: {
           en: 'Today the weather is mild, so most beaches look suitable for swimming.',
-          gr: 'Σήμερα ο καιρός είναι ήπιος, οπότε οι περισσότερες παραλίες φαίνονται κατάλληλες για μπάνιο.',
+      gr: 'Σήμερα ο καιρός είναι ήπιος, οπότε οι περισσότερες παραλίες φαίνονται κατάλληλες για μπάνιο.',
           de: 'Heute ist das Wetter mild, daher passen die meisten Strande. Diese fallen eher durch Zugang, Strandtyp, Ausstattung und deine Vorlieben auf.',
           it: 'Oggi il meteo e mite, quindi la maggior parte delle spiagge va bene. Queste spiccano di piu per accesso, tipo di spiaggia, servizi e preferenze.',
           fr: 'La meteo est douce aujourd hui, donc la plupart des plages conviennent. Celles-ci ressortent surtout pour l acces, le type de plage, les services et tes preferences.',
         },
         cardLabel: {
           en: 'Suggested',
-          gr: 'Πρόταση',
+      gr: 'Πρόταση',
           de: 'Vorschlag',
           it: 'Suggerita',
           fr: 'Suggestion',
@@ -1079,21 +1047,21 @@ export const App: React.FC = () => {
       caution: {
         title: {
           en: 'More comfortable options today',
-          gr: 'Ιδανικότερες παραλίες σήμερα',
+      gr: 'Ιδανικότερες παραλίες σήμερα',
           de: 'Angenehmere Optionen heute',
           it: 'Opzioni piu comode oggi',
           fr: 'Options plus confortables aujourd hui',
         },
         helper: {
           en: 'Wind starts to matter today, so these options look more comfortable than exposed beaches.',
-          gr: 'Σήμερα ο άνεμος αρχίζει να παίζει ρόλο, οπότε αυτές φαίνονται πιο άνετες από πιο εκτεθειμένες παραλίες.',
+      gr: 'Σήμερα ο άνεμος αρχίζει να παίζει ρόλο, οπότε αυτές φαίνονται πιο άνετες από πιο εκτεθειμένες παραλίες.',
           de: 'Heute spielt der Wind eine groessere Rolle, daher wirken diese Optionen angenehmer als offenere Straende.',
           it: 'Oggi il vento inizia a contare, quindi queste opzioni sembrano piu comode delle spiagge esposte.',
           fr: 'Le vent commence a compter aujourd hui, donc ces options semblent plus confortables que les plages exposees.',
         },
         cardLabel: {
           en: 'More comfortable',
-          gr: 'Πιο άνετη',
+      gr: 'Πιο άνετη',
           de: 'Angenehmer',
           it: 'Piu comoda',
           fr: 'Plus confortable',
@@ -1102,14 +1070,14 @@ export const App: React.FC = () => {
       strong: {
         title: {
           en: 'Most suitable options today',
-          gr: 'Καταλληλότερες επιλογές σήμερα',
+      gr: 'Καταλληλότερες επιλογές σήμερα',
           de: 'Am besten handhabbare Optionen heute',
           it: 'Opzioni piu gestibili oggi',
           fr: 'Options les plus gerables aujourd hui',
         },
         helper: {
           en: 'Today the wind affects the beach choice. These look more suitable than more exposed beaches. This does not mean conditions are ideal.',
-          gr: 'Σήμερα ο άνεμος επηρεάζει αρκετά τις επιλογές. Αυτές φαίνονται πιο κατάλληλες σε σχέση με πιο εκτεθειμένες παραλίες. Δεν σημαίνει ότι οι συνθήκες είναι ιδανικές.',
+      gr: 'Σήμερα ο άνεμος επηρεάζει αρκετά τις επιλογές. Αυτές φαίνονται πιο κατάλληλες σε σχέση με πιο εκτεθειμένες παραλίες. Δεν σημαίνει ότι οι συνθήκες είναι ιδανικές.',
           de: 'Heute ist kein idealer Tag fuer ruhiges Schwimmen. Diese wirken besser handhabbar als exponierte Straende.',
           it: 'Oggi non e una giornata ideale per nuotare con mare calmo. Queste sembrano piu gestibili delle spiagge esposte.',
           fr: 'Ce n est pas une journee ideale pour une baignade calme. Ces options semblent plus gerables que les plages exposees.',
@@ -1118,14 +1086,14 @@ export const App: React.FC = () => {
       no_ideal_swimming: {
         title: {
           en: 'No clear calm-swimming option today',
-          gr: 'Δεν υπάρχει καθαρή επιλογή για ήρεμο μπάνιο',
+      gr: 'Δεν υπάρχει καθαρή επιλογή για ήρεμο μπάνιο',
           de: 'Heute keine klare Option fuer ruhiges Schwimmen',
           it: 'Oggi nessuna opzione chiaramente tranquilla',
           fr: 'Aucune option clairement calme aujourd hui',
         },
         helper: {
           en: 'Wind and sea conditions make calm swimming unlikely today. These are only less exposed options if you still decide to go.',
-          gr: 'Ο άνεμος και η θάλασσα κάνουν δύσκολο το ήρεμο μπάνιο σήμερα. Αυτές είναι μόνο λιγότερο εκτεθειμένες επιλογές αν αποφασίσεις να πας.',
+      gr: 'Ο άνεμος και η θάλασσα κάνουν δύσκολο το ήρεμο μπάνιο σήμερα. Αυτές είναι μόνο λιγότερο εκτεθειμένες επιλογές αν αποφασίσεις να πας.',
           de: 'Wind und Meer machen ruhiges Schwimmen heute unwahrscheinlich. Das sind nur weniger exponierte Optionen, falls du trotzdem gehst.',
           it: 'Vento e mare rendono improbabile un bagno tranquillo oggi. Queste sono solo opzioni meno esposte se decidi comunque di andare.',
           fr: 'Le vent et la mer rendent une baignade calme peu probable aujourd hui. Ce sont seulement des options moins exposees si tu decides quand meme d y aller.',
@@ -1146,9 +1114,9 @@ export const App: React.FC = () => {
       it: 'Piu adatte',
       fr: 'Les plus adaptees',
     },
-    beaches: { en: 'beaches', gr: 'παραλίες', de: 'Strande', it: 'spiagge', fr: 'plages' },
-    wind: { en: 'wind', gr: 'άνεμος', de: 'Wind', it: 'vento', fr: 'vent' },
-    selectLocation: { en: 'Select location', gr: 'Επίλεξε τοποθεσία', de: 'Ort auswahlen', it: 'Scegli localita', fr: 'Choisir la destination' },
+    beaches: { en: 'beaches', gr: 'παραλίες', fr: 'plages', de: 'Strände', it: 'spiagge' },
+    wind: { en: 'wind', gr: 'άνεμος', fr: 'vent', de: 'Wind', it: 'vento' },
+    selectLocation: { en: 'Select location', gr: 'Επίλεξε τοποθεσία', fr: 'Choisir une destination', de: 'Ort auswählen', it: 'Scegli località' },
     calmAllAroundTitle: {
       en: 'All beaches are suitable',
       gr: 'Όλες οι παραλίες είναι κατάλληλες',
@@ -1205,40 +1173,40 @@ export const App: React.FC = () => {
       it: (count: number, total: number) => `${count}/${total} spiagge comode`,
       fr: (count: number, total: number) => `${count}/${total} plages confortables`,
     },
-    viewOnMap: { en: 'View on map', gr: 'Δες στον χάρτη', de: 'Auf Karte anzeigen', it: 'Vedi sulla mappa', fr: 'Voir sur la carte' },
-    mapTitle: { en: 'Interactive Map', gr: 'Διαδραστικός Χάρτης', de: 'Interaktive Karte', it: 'Mappa interattiva', fr: 'Carte interactive' },
-    mapSubtitle: { en: 'Explore beaches on the map', gr: 'Εξερεύνησε τις παραλίες στον χάρτη', de: 'Strande auf der Karte entdecken', it: 'Esplora le spiagge sulla mappa', fr: 'Explorer les plages sur la carte' },
-    allBeaches: { en: 'All beaches', gr: 'Όλες οι παραλίες', de: 'Alle Straende', it: 'Tutte le spiagge', fr: 'Toutes les plages' },
-    exploreTools: { en: 'Explore all suitable beaches', gr: 'Όλες οι κατάλληλες παραλίες', de: 'Alle passenden Straende ansehen', it: 'Esplora tutte le spiagge adatte', fr: 'Explorer toutes les plages adaptees' },
-    moreSuitableOptions: { en: 'More suitable options', gr: 'Περισσότερες κατάλληλες επιλογές', de: 'Weitere passende Optionen', it: 'Altre opzioni adatte', fr: 'Plus d options adaptees' },
-    lessExposedOptions: { en: 'Less exposed options', gr: 'Λιγότερο εκτεθειμένες επιλογές', de: 'Weniger exponierte Optionen', it: 'Opzioni meno esposte', fr: 'Options moins exposees' },
-    mapLoadPrompt: { en: 'Load map', gr: 'Φόρτωση χάρτη', de: 'Karte laden', it: 'Carica mappa', fr: 'Charger la carte' },
-    mapError: { en: 'The map could not load right now. The beach list is still available.', gr: 'Ο χάρτης δεν φορτώθηκε τώρα. Η λίστα παραλιών παραμένει διαθέσιμη.', de: 'Die Karte konnte gerade nicht geladen werden.', it: 'La mappa non si e caricata.', fr: 'La carte n a pas pu se charger.' },
-    weatherRetry: { en: 'Retry', gr: 'Ανανέωση', de: 'Erneut versuchen', it: 'Riprova', fr: 'Réessayer' },
-    betaFeedbackTitle: { en: 'Send feedback', gr: 'Πες μας τη γνώμη σου', de: 'Feedback senden', it: 'Invia feedback', fr: 'Envoyer un avis' },
-    betaFeedbackBody: { en: 'Help us improve the recommendations.', gr: 'Βοήθησέ μας να βελτιώσουμε τις προτάσεις.', de: 'Hilf uns, die Empfehlungen zu verbessern.', it: 'Aiutaci a migliorare i consigli.', fr: 'Aidez-nous a ameliorer les recommandations.' },
-    betaFeedbackCta: { en: 'Open feedback form', gr: 'Άνοιγμα φόρμας', de: 'Formular offnen', it: 'Apri modulo', fr: 'Ouvrir le formulaire' },
-    tripPlanner: { en: 'Trip planner', gr: 'Σχεδιασμός ταξιδιού', de: 'Reiseplaner', it: 'Pianificatore viaggio', fr: 'Planificateur de voyage' },
-    aiAssistant: { en: 'AI Assistant', gr: 'AI Βοηθός', de: 'KI-Assistent', it: 'Assistente AI', fr: 'Assistant IA' },
+    viewOnMap: { en: 'View on map', gr: 'Δες στον χάρτη', fr: 'Voir sur la carte', de: 'Auf Karte ansehen', it: 'Vedi sulla mappa' },
+    mapTitle: { en: 'Interactive Map', gr: 'Διαδραστικός Χάρτης', fr: 'Carte interactive', de: 'Interaktive Karte', it: 'Mappa interattiva' },
+    mapSubtitle: { en: 'Explore beaches on the map', gr: 'Εξερεύνησε τις παραλίες στον χάρτη', fr: 'Explore les plages sur la carte', de: 'Strände auf der Karte erkunden', it: 'Esplora le spiagge sulla mappa' },
+    allBeaches: { en: 'All beaches', gr: 'Όλες οι παραλίες', fr: 'Toutes les plages', de: 'Alle Strände', it: 'Tutte le spiagge' },
+    exploreTools: { en: 'All suitable beaches', gr: 'Όλες οι κατάλληλες παραλίες', fr: 'Toutes les plages adaptées', de: 'Alle geeigneten Strände', it: 'Tutte le spiagge adatte' },
+    moreSuitableOptions: { en: 'More suitable options', gr: 'Περισσότερες κατάλληλες επιλογές', fr: 'Plus d’options adaptées', de: 'Weitere passende Optionen', it: 'Altre opzioni adatte' },
+    lessExposedOptions: { en: 'Less exposed options', gr: 'Λιγότερο εκτεθειμένες επιλογές', fr: 'Options moins exposées', de: 'Weniger exponierte Optionen', it: 'Opzioni meno esposte' },
+    mapLoadPrompt: { en: 'Loading map', gr: 'Φόρτωση χάρτη', fr: 'Chargement de la carte', de: 'Karte wird geladen', it: 'Caricamento mappa' },
+    mapError: { en: 'The map did not load right now. The beach list is still available.', gr: 'Ο χάρτης δεν φορτώθηκε τώρα. Η λίστα παραλιών παραμένει διαθέσιμη.', fr: 'La carte ne s’est pas chargée pour le moment. La liste des plages reste disponible.', de: 'Die Karte wurde gerade nicht geladen. Die Strandliste bleibt verfügbar.', it: 'La mappa non si è caricata ora. La lista delle spiagge resta disponibile.' },
+    weatherRetry: { en: 'Refresh', gr: 'Ανανέωση', fr: 'Actualiser', de: 'Aktualisieren', it: 'Aggiorna' },
+    betaFeedbackTitle: { en: 'Tell us what you think', gr: 'Πες μας τη γνώμη σου', fr: 'Dis-nous ce que tu en penses', de: 'Sag uns deine Meinung', it: 'Dicci cosa ne pensi' },
+    betaFeedbackBody: { en: 'Help us improve the recommendations.', gr: 'Βοήθησέ μας να βελτιώσουμε τις προτάσεις.', fr: 'Aide-nous à améliorer les recommandations.', de: 'Hilf uns, die Empfehlungen zu verbessern.', it: 'Aiutaci a migliorare i consigli.' },
+    betaFeedbackCta: { en: 'Open form', gr: 'Άνοιγμα φόρμας', fr: 'Ouvrir le formulaire', de: 'Formular öffnen', it: 'Apri modulo' },
+    tripPlanner: { en: 'Trip Planner', gr: 'Σχεδιασμός ταξιδιού', fr: 'Planificateur', de: 'Reiseplaner', it: 'Pianificatore' },
+    aiAssistant: { en: 'AI Assistant', gr: 'AI Βοηθός', fr: 'Assistant IA', de: 'KI-Assistent', it: 'Assistente AI' },
   };
   const plannerProCopy = {
     title: {
       en: 'Holiday Planner is a Pro feature',
-      gr: 'Το Planner είναι λειτουργία Pro',
+      title: { en: 'Planner is a Pro feature', gr: 'Το Planner είναι λειτουργία Pro', fr: 'Le Planner est une fonction Pro', de: 'Der Planner ist eine Pro-Funktion', it: 'Il Planner è una funzione Pro' },
       de: 'Der Urlaubsplaner ist eine Pro-Funktion',
       it: 'Il Planner vacanze e una funzione Pro',
       fr: 'Le planificateur de vacances est une fonction Pro',
     },
     description: {
       en: 'Pro creates a weather-aware holiday plan for each destination, matching beach days, calmer hours and backup ideas to the forecast.',
-      gr: 'Στο Pro θα φτιάχνει πρόγραμμα διακοπών για κάθε μέρος, με βάση τον καιρό, τη θάλασσα, τις καλύτερες ώρες για παραλία και εναλλακτικές επιλογές.',
+      description: { en: 'With Pro, it will build a holiday plan for each place, based on weather, sea, best beach hours, and backup options.', gr: 'Στο Pro θα φτιάχνει πρόγραμμα διακοπών για κάθε μέρος, με βάση τον καιρό, τη θάλασσα, τις καλύτερες ώρες για παραλία και εναλλακτικές επιλογές.', fr: 'Avec Pro, il construira un programme de vacances pour chaque lieu, selon la météo, la mer, les meilleures heures de plage et les options de secours.', de: 'Mit Pro erstellt es für jeden Ort einen Urlaubsplan, basierend auf Wetter, Meer, besten Strandzeiten und Ausweichoptionen.', it: 'Con Pro creerà un programma vacanze per ogni luogo, in base a meteo, mare, orari migliori per la spiaggia e alternative.' },
       de: 'Pro erstellt einen wetterbasierten Urlaubsplan je Reiseziel, mit Strandtagen, ruhigen Zeitfenstern und Alternativen passend zur Vorhersage.',
       it: 'Pro crea un programma vacanze per ogni destinazione in base a meteo, mare, orari migliori per la spiaggia e alternative.',
       fr: 'Pro cree un programme de vacances par destination selon la meteo, la mer, les meilleurs moments de plage et des alternatives.',
     },
     cta: {
       en: 'Available on Pro',
-      gr: 'Διαθέσιμο στο Pro',
+      cta: { en: 'Available in Pro', gr: 'Διαθέσιμο στο Pro', fr: 'Disponible en Pro', de: 'In Pro verfügbar', it: 'Disponibile in Pro' },
       de: 'In Pro verfugbar',
       it: 'Disponibile in Pro',
       fr: 'Disponible avec Pro',
@@ -1246,9 +1214,9 @@ export const App: React.FC = () => {
   };
 
   // --- Beach & Weather Data (Custom Hooks) ---
-  const { allIslands, loading: beachesLoading, error: beachesError, getFilteredBeaches, ensureIslandBeachesLoaded } = useBeaches(language);
+  const { allIslands, loading: beachesLoading, error: beachesError, getFilteredBeaches, ensureIslandBeachesLoaded, cacheLoadedIsland } = useBeaches(language);
   const { selectedIsland, selectIsland } = useLocation(allIslands);
-  const { weather, forecast, beachForecasts, loading: weatherLoading, error: weatherError, selectedDayIndex, setSelectedDayIndex, loadWeatherData, lastUpdated } = useWeather(selectedIsland, language);
+  const { weather, forecast, beachForecasts, beachForecastsLoading, loading: weatherLoading, error: weatherError, selectedDayIndex, setSelectedDayIndex, loadWeatherData, lastUpdated } = useWeather(selectedIsland, language);
   const handleRegionSelected = (island: Island, source: 'selector' | 'nearest_location' = 'selector') => {
     trackEvent('region_changed', undefined, {
       locale: languageToLocale(language),
@@ -1264,7 +1232,7 @@ export const App: React.FC = () => {
     selectIsland(island);
 
     if (typeof window !== 'undefined') {
-      const nextPath = buildBeachRegionPath(island);
+      const nextPath = buildBeachRegionPath(island, language);
       const nextUrl = `${nextPath}${window.location.search}${window.location.hash}`;
       const currentUrl = `${window.location.pathname}${window.location.search}${window.location.hash}`;
       if (nextUrl !== currentUrl) {
@@ -1280,12 +1248,22 @@ export const App: React.FC = () => {
   const hasUserSelectedSortRef = useRef(false);
   const [topPickClock, setTopPickClock] = useState(() => Date.now());
   const [beachSearchQuery, setBeachSearchQuery] = useState('');
+  const deferredBeachSearchQuery = React.useDeferredValue(beachSearchQuery);
+  const [directorySearchSuggestions, setDirectorySearchSuggestions] = useState<DirectorySearchSuggestion[]>([]);
+  const [isDirectorySearchSuggesting, setIsDirectorySearchSuggesting] = useState(false);
+  const [regionBeachCounts, setRegionBeachCounts] = useState<Record<string, number>>({});
   const [detailBeach, setDetailBeach] = useState<Beach | null>(null);
   const [detailDataStatus, setDetailDataStatus] = useState<DetailDataStatus>('idle');
   const [view, setView] = useState<'home' | 'detail'>('home');
-  const [mobileTab, setMobileTab] = useState<'home' | 'map' | 'favorites' | 'chat' | 'planner'>('home');
+  const [mobileTab, setMobileTab] = useState<MobileTab>('home');
+  const [isMobileAllBeachesPanelOpen, setIsMobileAllBeachesPanelOpen] = useState(false);
+  const [isMobileWeatherPanelOpen, setIsMobileWeatherPanelOpen] = useState(false);
+  const [highlightedMapBeachId, setHighlightedMapBeachId] = useState<number | undefined>(undefined);
+  const [isDirectoryMapFollowPaused, setIsDirectoryMapFollowPaused] = useState(false);
   const [shouldLoadMap, setShouldLoadMap] = useState(false);
   const [geospatialExposureProfiles, setGeospatialExposureProfiles] = useState<GeospatialExposureProfileLookup | undefined>(undefined);
+  const [geospatialExposureRegionId, setGeospatialExposureRegionId] = useState<string | undefined>(undefined);
+  const [isGeospatialExposureLoading, setIsGeospatialExposureLoading] = useState(false);
   const [isDesktopViewport, setIsDesktopViewport] = useState(() => (
     typeof window !== 'undefined' ? window.matchMedia('(min-width: 640px)').matches : false
   ));
@@ -1299,6 +1277,23 @@ export const App: React.FC = () => {
   const [isIslandSelectorOpen, setIsIslandSelectorOpen] = useState(false);
   const [isPlannerOpen, setIsPlannerOpen] = useState(false);
 
+  useEffect(() => {
+    let cancelled = false;
+
+    void loadBeachRegionIndex()
+      .then(entries => {
+        if (cancelled) return;
+        setRegionBeachCounts(Object.fromEntries(entries.map(entry => [entry.id, entry.beachCount])));
+      })
+      .catch(error => {
+        if (!cancelled) console.warn('Beach region counts unavailable for search suggestions.', error);
+      });
+
+    return () => {
+      cancelled = true;
+    };
+  }, []);
+
   // --- Chat & AI State ---
   const [chatMessages, setChatMessages] = useState<any[]>([]);
   const chatSessionRef = useRef<Chat | null>(null);
@@ -1307,6 +1302,9 @@ export const App: React.FC = () => {
   const insightsSectionRef = useRef<HTMLDivElement | null>(null);
   const trackedRecommendationsRef = useRef<string | null>(null);
   const trackedSearchRef = useRef<string | null>(null);
+  const preserveSearchQueryOnRegionChangeRef = useRef(false);
+  const globalBeachSearchIndexRef = useRef<Promise<GlobalBeachSearchEntry[]> | null>(null);
+  const pendingDirectorySearchHighlightRef = useRef<number | undefined>(undefined);
   const trackedAppLoadedRef = useRef(false);
   const trackedPageViewRef = useRef<string | null>(null);
   const trackedWeatherFallbackRef = useRef<string | null>(null);
@@ -1345,6 +1343,7 @@ export const App: React.FC = () => {
   const [favorites, setFavorites] = useState<number[]>(() => readJsonArrayFromStorage<number>('favorites'));
 
   const [userLocation, setUserLocation] = useState<{ lat: number; lon: number } | undefined>(undefined);
+  const [userLocationAccuracy, setUserLocationAccuracy] = useState<number | undefined>(undefined);
 
   useEffect(() => {
     const intervalId = window.setInterval(() => setTopPickClock(Date.now()), 5 * 60 * 1000);
@@ -1434,15 +1433,10 @@ export const App: React.FC = () => {
     setIsFindingNearest(true);
     setFindNearestError(null);
     try {
-      const position = await new Promise<GeolocationPosition>((resolve, reject) => {
-        navigator.geolocation.getCurrentPosition(resolve, reject, {
-          enableHighAccuracy: true,
-          timeout: 10000,
-          maximumAge: 300000,
-        });
-      });
+      const position = await getAccuratePosition();
       const userLoc = { lat: position.coords.latitude, lon: position.coords.longitude };
       setUserLocation(userLoc);
+      setUserLocationAccuracy(position.coords.accuracy);
       const nearest = await findNearestIsland(userLoc, allIslands);
       if (nearest) {
         handleRegionSelected(nearest, 'nearest_location');
@@ -1450,12 +1444,83 @@ export const App: React.FC = () => {
       } else {
         setFindNearestError(getLocalizedCopy(language, {
           en: 'No nearby island found.',
-          gr: 'Δεν βρέθηκε κοντινό νησί.',
-          fr: 'Aucune île proche trouvée.',
+    gr: 'Δεν βρέθηκε κοντινό νησί.',
+          fr: 'Aucune ile proche trouvee.',
           de: 'Keine nahe Insel gefunden.',
           it: 'Nessuna isola vicina trovata.',
         }));
       }
+    } catch (err) {
+      const geoErr = err as GeolocationPositionError;
+      if (geoErr.code === 1) {
+        setFindNearestError(t.locationErrorPermission);
+      } else if (geoErr.code === 2) {
+        setFindNearestError(t.locationErrorUnavailable);
+      } else {
+        setFindNearestError(t.locationErrorTimeout);
+      }
+    } finally {
+      setIsFindingNearest(false);
+    }
+  };
+
+  // Resolves with the most accurate fix the device can give. Browsers often return
+  // a stale, low-accuracy cached position from getCurrentPosition, so we force a
+  // fresh high-accuracy read and keep refining via watchPosition until the reported
+  // accuracy is tight enough (or a short window elapses).
+  const getAccuratePosition = (): Promise<GeolocationPosition> =>
+    new Promise((resolve, reject) => {
+      if (typeof navigator === 'undefined' || !navigator.geolocation) {
+        reject({ code: 2 } as GeolocationPositionError);
+        return;
+      }
+
+      let best: GeolocationPosition | null = null;
+      let settled = false;
+
+      const finish = () => {
+        if (settled) return;
+        settled = true;
+        navigator.geolocation.clearWatch(watchId);
+        window.clearTimeout(timeoutId);
+        if (best) resolve(best);
+        else reject({ code: 3 } as GeolocationPositionError);
+      };
+
+      const watchId = navigator.geolocation.watchPosition(
+        position => {
+          if (!best || position.coords.accuracy < best.coords.accuracy) {
+            best = position;
+          }
+          // A fix within ~30m is plenty precise — stop early to save battery.
+          if (position.coords.accuracy <= 30) finish();
+        },
+        error => {
+          if (best) return; // keep the good fix we already have
+          settled = true;
+          window.clearTimeout(timeoutId);
+          navigator.geolocation.clearWatch(watchId);
+          reject(error);
+        },
+        { enableHighAccuracy: true, timeout: 12000, maximumAge: 0 }
+      );
+
+      const timeoutId = window.setTimeout(finish, 9000);
+    });
+
+  // Fetches the user's position to power the "sort by distance" view without
+  // navigating away from the region they are currently browsing.
+  const handleRequestUserLocation = async () => {
+    if (typeof navigator === 'undefined' || !navigator.geolocation) {
+      setFindNearestError(t.locationErrorUnavailable);
+      return;
+    }
+    setIsFindingNearest(true);
+    setFindNearestError(null);
+    try {
+      const position = await getAccuratePosition();
+      setUserLocation({ lat: position.coords.latitude, lon: position.coords.longitude });
+      setUserLocationAccuracy(position.coords.accuracy);
     } catch (err) {
       const geoErr = err as GeolocationPositionError;
       if (geoErr.code === 1) {
@@ -1483,27 +1548,34 @@ export const App: React.FC = () => {
     const selectedIslandName = selectedIsland?.name[language] || selectedIsland?.name.en;
     const regionDescription = selectedIslandName
       ? getLocalizedCopy(language, {
-        en: `${selectedIslandName} beaches in Greece. Check today's wind, waves and weather before choosing where to swim.`,
-        gr: `Παραλίες σε ${selectedIslandName}. Δες τον σημερινό άνεμο, το κύμα και τον καιρό πριν διαλέξεις πού θα κολυμπήσεις.`,
+        en: `${selectedIslandName} beaches in Greece. Compare today's wind, waves, weather and beach exposure before choosing where to swim.`,
+    gr: `Παραλίες σε ${selectedIslandName}. Δες τον σημερινό άνεμο, το κύμα και τον καιρό πριν αποφασίσεις πού να κολυμπήσεις.`,
         fr: `Plages de ${selectedIslandName} en Grece. Verifiez le vent, les vagues et la meteo du jour avant de choisir ou nager.`,
         de: `Strande in ${selectedIslandName}, Griechenland. Pruefe Wind, Wellen und Wetter, bevor du den Strand waehlst.`,
         it: `Spiagge a ${selectedIslandName}, Grecia. Controlla vento, onde e meteo di oggi prima di scegliere dove nuotare.`,
       })
       : meta.description;
     const detailTitle = view === 'detail' && detailBeach
-      ? `${displayBeachName(detailBeach.name, language)} Beach in ${selectedIslandName || 'Greece'} | Calm Beach Greece`
+      ? `${displayBeachName(detailBeach.name, language)} Beach in ${selectedIslandName || 'Greece'} | CalmBeach Greece`
       : selectedIslandName
-        ? `${selectedIslandName} Beaches | Calm Beach Greece`
+        ? `${selectedIslandName} Beaches Today | CalmBeach Greece`
         : meta.title;
     const detailDescription = view === 'detail' && detailBeach
       ? detailBeach.description?.[language] || detailBeach.description?.en || meta.description
       : regionDescription;
+    const canonicalUrl = typeof window !== 'undefined'
+      ? `${window.location.origin}${window.location.pathname}`
+      : 'https://calmbeach.gr/';
 
     document.title = detailTitle;
     document.querySelector('meta[name="description"]')?.setAttribute('content', detailDescription);
     document.querySelector('meta[property="og:title"]')?.setAttribute('content', detailTitle);
     document.querySelector('meta[property="og:description"]')?.setAttribute('content', detailDescription);
     document.querySelector('meta[property="og:locale"]')?.setAttribute('content', meta.locale);
+    document.querySelector('meta[property="og:url"]')?.setAttribute('content', canonicalUrl);
+    document.querySelector('meta[name="twitter:title"]')?.setAttribute('content', detailTitle);
+    document.querySelector('meta[name="twitter:description"]')?.setAttribute('content', detailDescription);
+    document.querySelector('link[rel="canonical"]')?.setAttribute('href', canonicalUrl);
   }, [detailBeach, language, selectedIsland?.name, view]);
 
   useEffect(() => {
@@ -1511,14 +1583,24 @@ export const App: React.FC = () => {
     let cancelled = false;
 
     setGeospatialExposureProfiles(undefined);
+    setGeospatialExposureRegionId(undefined);
 
     if (!regionId) {
+      setIsGeospatialExposureLoading(false);
       return () => { cancelled = true; };
     }
 
+    setIsGeospatialExposureLoading(true);
     loadGeospatialExposureProfiles(regionId).then(profiles => {
       if (!cancelled) {
         setGeospatialExposureProfiles(profiles);
+        setGeospatialExposureRegionId(regionId);
+        setIsGeospatialExposureLoading(false);
+      }
+    }).catch(() => {
+      if (!cancelled) {
+        setGeospatialExposureRegionId(regionId);
+        setIsGeospatialExposureLoading(false);
       }
     });
 
@@ -1544,7 +1626,11 @@ export const App: React.FC = () => {
     setShouldLoadMap(false);
     setDesktopMapVisibleBeachIds(null);
     setShouldLoadInsights(false);
-    setBeachSearchQuery('');
+    if (preserveSearchQueryOnRegionChangeRef.current) {
+      preserveSearchQueryOnRegionChangeRef.current = false;
+    } else {
+      setBeachSearchQuery('');
+    }
     setSelectedFilters([]);
   }, [selectedIsland?.id]);
 
@@ -1613,6 +1699,25 @@ export const App: React.FC = () => {
       locale: languageToLocale(nextLanguage),
     });
     setLanguage(nextLanguage);
+
+    if (typeof window !== 'undefined' && selectedIsland) {
+      const nextPath = view === 'detail' && detailBeach
+        ? buildBeachDetailPath(selectedIsland, detailBeach, nextLanguage)
+        : buildBeachRegionPath(selectedIsland, nextLanguage);
+      const nextUrl = `${nextPath}${window.location.search}${window.location.hash}`;
+      const currentUrl = `${window.location.pathname}${window.location.search}${window.location.hash}`;
+      if (nextUrl !== currentUrl) {
+        window.history.replaceState(
+          {
+            view,
+            regionId: selectedIsland.id,
+            beachId: view === 'detail' ? detailBeach?.id : undefined,
+          },
+          '',
+          nextUrl
+        );
+      }
+    }
   };
 
   const handleTogglePreference = (key: keyof UserPreferences) => {
@@ -1745,7 +1850,7 @@ export const App: React.FC = () => {
 
     const regionId = selectedIsland?.id;
     if (options.updateUrl !== false && regionId && typeof window !== 'undefined') {
-      const nextPath = buildBeachDetailPath(selectedIsland, beach);
+      const nextPath = buildBeachDetailPath(selectedIsland, beach, language);
       const nextUrl = `${nextPath}${window.location.search}${window.location.hash}`;
       const currentUrl = `${window.location.pathname}${window.location.search}${window.location.hash}`;
       if (nextUrl !== currentUrl) {
@@ -1789,7 +1894,7 @@ export const App: React.FC = () => {
     setDetailBeach(null);
 
     if (options.updateUrl !== false && typeof window !== 'undefined' && parseBeachDetailPath(window.location.pathname)) {
-      const regionPath = selectedIsland ? buildBeachRegionPath(selectedIsland) : '/';
+      const regionPath = selectedIsland ? buildBeachRegionPath(selectedIsland, language) : '/';
       window.history.replaceState(
         { view: 'home', regionId: selectedIsland?.id },
         '',
@@ -1802,6 +1907,10 @@ export const App: React.FC = () => {
     const handlePopState = () => {
       const detailRoute = parseBeachDetailPath();
       const regionRoute = detailRoute || parseBeachRegionPath();
+      const routeLanguage = detailRoute?.language ?? regionRoute?.language;
+      if (routeLanguage && routeLanguage !== language) {
+        setLanguage(routeLanguage);
+      }
       if (regionRoute) {
         const routeIsland = allIslands.find(island => regionMatchesRouteParam(island, regionRoute.regionId));
         if (routeIsland) {
@@ -1817,13 +1926,17 @@ export const App: React.FC = () => {
 
     window.addEventListener('popstate', handlePopState);
     return () => window.removeEventListener('popstate', handlePopState);
-  }, [allIslands, selectIsland]);
+  }, [allIslands, language, selectIsland]);
 
   useEffect(() => {
     if (parseBeachDetailPath() || beachesLoading) return;
 
     const route = parseBeachRegionPath();
     if (!route) return;
+
+    if (route.language && route.language !== language) {
+      setLanguage(route.language);
+    }
 
     const routeIsland = allIslands.find(island => regionMatchesRouteParam(island, route.regionId));
     if (!routeIsland) {
@@ -1844,11 +1957,15 @@ export const App: React.FC = () => {
     if (view === 'detail') {
       closeBeachDetails({ updateUrl: false });
     }
-  }, [allIslands, beachesLoading, ensureIslandBeachesLoaded, selectedIsland, selectIsland, view]);
+  }, [allIslands, beachesLoading, ensureIslandBeachesLoaded, language, selectedIsland, selectIsland, view]);
 
   useEffect(() => {
     const route = parseBeachDetailPath();
     if (!route || beachesLoading) return;
+
+    if (route.language && route.language !== language) {
+      setLanguage(route.language);
+    }
 
     const routeIsland = allIslands.find(island => regionMatchesRouteParam(island, route.regionId));
     if (!routeIsland) {
@@ -1876,7 +1993,7 @@ export const App: React.FC = () => {
     if (view === 'detail' && detailBeach?.id === route.beachId) return;
 
     openBeachDetails(routeBeach, 'url_deep_link', { updateUrl: false });
-  }, [allIslands, beachesLoading, detailBeach?.id, ensureIslandBeachesLoaded, selectedIsland, view]);
+  }, [allIslands, beachesLoading, detailBeach?.id, ensureIslandBeachesLoaded, language, selectedIsland, view]);
 
   const handleWeatherRetry = () => {
     trackEvent('weather_retry_clicked', undefined, analyticsBaseParams);
@@ -1905,14 +2022,76 @@ export const App: React.FC = () => {
     });
   };
 
-  const handleMobileTab = (tab: 'home' | 'map' | 'favorites' | 'chat' | 'planner') => {
+  const scrollToMapSection = () => {
+    requestAnimationFrame(() => {
+      requestAnimationFrame(() => {
+        const target = document.getElementById(isDesktopViewport ? 'map-section-desktop' : 'map-section');
+        scrollElementIntoView(target ?? null);
+      });
+    });
+  };
+
+  const closeMobileBottomPanels = () => {
+    setIsMobileAllBeachesPanelOpen(false);
+    setIsMobileWeatherPanelOpen(false);
+  };
+
+  useEffect(() => {
+    setHighlightedMapBeachId(undefined);
+  }, [beachSearchQuery, preferences, selectedFilters, selectedDayIndex, sortBy]);
+
+  useEffect(() => {
+    setHighlightedMapBeachId(undefined);
+    setIsDirectoryMapFollowPaused(true);
+  }, [selectedIsland?.id]);
+
+  useEffect(() => {
+    const pendingBeachId = pendingDirectorySearchHighlightRef.current;
+    if (!pendingBeachId || !selectedIsland?.beaches.some(beach => beach.id === pendingBeachId)) return;
+
+    pendingDirectorySearchHighlightRef.current = undefined;
+    setHighlightedMapBeachId(pendingBeachId);
+    setIsDirectoryMapFollowPaused(false);
+    scrollToBeachResultsSection();
+  }, [beachSearchQuery, selectedIsland]);
+
+  const handleDirectoryMapUserInteraction = React.useCallback(() => {
+    setIsDirectoryMapFollowPaused(true);
+  }, []);
+
+  const handleActiveDirectoryBeachChange = React.useCallback((beachId: number | undefined, options?: { resumeFollow?: boolean }) => {
+    setHighlightedMapBeachId(beachId);
+    if (options?.resumeFollow !== false) {
+      setIsDirectoryMapFollowPaused(false);
+    }
+  }, []);
+
+  const handleAllBeachesPanelOpenChange = (open: boolean) => {
+    setIsMobileAllBeachesPanelOpen(false);
+    setMobileTab('home');
+    if (open) {
+      scrollToBeachResultsSection();
+    }
+  };
+
+  const handleWeatherPanelOpenChange = (open: boolean) => {
+    setIsMobileWeatherPanelOpen(open);
+    if (open) {
+      setMobileTab('weather');
+    } else {
+      setMobileTab(current => current === 'weather' ? 'home' : current);
+    }
+  };
+
+  const handleMobileTab = (tab: MobileTab) => {
     if (tab === 'chat' && !ENABLE_BEACH_BUDDY_CHAT) return;
     if (tab === 'planner' && !ENABLE_PLANNER_PRO) return;
 
     setMobileTab(tab);
-    if (tab === 'chat') { setIsChatOpen(true); return; }
-    if (tab === 'planner') { setIsPlannerOpen(true); return; }
+    if (tab === 'chat') { closeMobileBottomPanels(); setIsChatOpen(true); return; }
+    if (tab === 'planner') { closeMobileBottomPanels(); setIsPlannerOpen(true); return; }
     if (tab === 'home') {
+      closeMobileBottomPanels();
       setIsChatOpen(false);
       setIsPlannerOpen(false);
       setIsFilterModalOpen(false);
@@ -1923,19 +2102,18 @@ export const App: React.FC = () => {
       });
       return;
     }
-    // Map and favorites tabs scroll to their relevant sections.
-    if (tab === 'map') {
-      setShouldLoadMap(true);
-      trackEvent('map_viewed', undefined, {
-        ...analyticsBaseParams,
-        source: 'bottom_nav',
-      });
+    if (tab === 'weather') {
+      if (!selectedIsland || !selectedForecast) {
+        setMobileTab('home');
+        return;
+      }
       if (view === 'detail') closeBeachDetails();
-      requestAnimationFrame(() => {
-        scrollElementIntoView(document.getElementById('map-section'));
-      });
+      setIsMobileAllBeachesPanelOpen(false);
+      setIsMobileWeatherPanelOpen(true);
+      return;
     }
     if (tab === 'favorites') {
+      closeMobileBottomPanels();
       if (view === 'detail') closeBeachDetails();
       scrollToBeachResultsSection();
     }
@@ -1959,7 +2137,7 @@ export const App: React.FC = () => {
 
       setChatMessages(prev => prev.map(m => m.id === loadingId ? { ...m, text: aiResponse } : m));
     } catch (e) {
-      setChatMessages(prev => prev.map(m => m.id === loadingId ? { ...m, text: 'Παρουσιάστηκε σφάλμα στη σύνδεση.' } : m));
+    return 'Παρουσιάστηκε σφάλμα στην απάντηση.';
     }
   };
 
@@ -1976,6 +2154,10 @@ export const App: React.FC = () => {
   }, [beachForecasts, forecast, selectedDayIndex]);
 
   const selectedForecast = forecast?.[selectedDayIndex];
+  const isMapExposureLoading = Boolean(
+    selectedIsland &&
+    (isGeospatialExposureLoading || geospatialExposureRegionId !== selectedIsland.id || beachForecastsLoading)
+  );
   const topPickNow = useMemo(() => new Date(topPickClock), [topPickClock]);
   const defaultBeachListSort = useMemo(() => (
     getDefaultBeachListSort()
@@ -1999,10 +2181,15 @@ export const App: React.FC = () => {
     if (!hasBeachSearchQuery && selectedForecast && effectiveSortBy === 'recommended') {
       const waveHeightM = selectedForecast.marine?.waveHeightM;
       const weatherSuitableBeaches = beaches.filter(beach => {
-        const beachForecast = selectedBeachForecasts[beach.id] || selectedForecast;
+        const beachSpecificForecast = selectedBeachForecasts[beach.id];
+        const beachForecast = beachSpecificForecast || selectedForecast;
         const beachWindSpeedKmph = beachForecast.wind.speed * 3.6;
         const beachWaveHeightM = beachForecast.marine?.waveHeightM ?? waveHeightM;
-        const scoreResult = calculateBeachScore(beach, beachForecast, userLocation, preferences);
+        const scoreResult = calculateBeachScore(beach, beachForecast, userLocation, preferences, {
+          weatherSource: beachSpecificForecast ? 'beach-cluster' : 'island-fallback',
+          hourlyForecast: beachForecast.hourly || selectedForecast.hourly,
+          geospatialProfile: geospatialExposureProfiles?.[beach.id],
+        });
         const isExposed = scoreResult.exposureLevel ? scoreResult.exposureLevel !== 'protected' : true;
         return !hasPoorSeaConditions(isExposed, beachWindSpeedKmph, scoreResult.exposureLevel, beachWaveHeightM);
       });
@@ -2012,7 +2199,7 @@ export const App: React.FC = () => {
       const result = getFilteredBeaches(beaches, filters, beachSearchQuery, effectiveSortBy, windDirection, selectedForecast, userLocation, preferences);
     return result;
     }
-  ), [beachSearchQuery, getFilteredBeaches, preferences, selectedBeachForecasts, selectedForecast, selectedIsland, userLocation]);
+  ), [beachSearchQuery, geospatialExposureProfiles, getFilteredBeaches, preferences, selectedBeachForecasts, selectedForecast, selectedIsland, userLocation]);
 
   const filteredBeaches = useMemo(() => (
     getFilteredBeachResults(selectedFilters, sortBy)
@@ -2025,8 +2212,8 @@ export const App: React.FC = () => {
 
   const suitableBeaches = useMemo(() => {
     if (!selectedIsland || !forecast || !forecast[selectedDayIndex]) return [];
-    return getSuitableBeaches(selectedIsland.beaches, forecast[selectedDayIndex], language, userLocation, forecast[selectedDayIndex].hourly, preferences, selectedBeachForecasts);
-  }, [selectedIsland, forecast, selectedDayIndex, language, userLocation, preferences, selectedBeachForecasts]);
+    return getSuitableBeaches(selectedIsland.beaches, forecast[selectedDayIndex], language, userLocation, forecast[selectedDayIndex].hourly, preferences, selectedBeachForecasts, geospatialExposureProfiles);
+  }, [selectedIsland, forecast, selectedDayIndex, language, userLocation, preferences, selectedBeachForecasts, geospatialExposureProfiles]);
 
   const mapSuitableBeaches = useMemo<SuitableBeach[]>(() => {
     if (!selectedIsland) return [];
@@ -2048,8 +2235,13 @@ export const App: React.FC = () => {
         };
       }
 
-      const beachForecast = selectedBeachForecasts[beach.id] || selectedForecast;
-      const scoreResult = calculateBeachScore(beach, beachForecast, userLocation, preferences);
+      const beachSpecificForecast = selectedBeachForecasts[beach.id];
+      const beachForecast = beachSpecificForecast || selectedForecast;
+      const scoreResult = calculateBeachScore(beach, beachForecast, userLocation, preferences, {
+        weatherSource: beachSpecificForecast ? 'beach-cluster' : 'island-fallback',
+        hourlyForecast: beachForecast.hourly || selectedForecast.hourly,
+        geospatialProfile: geospatialExposure,
+      });
 
       return {
         beachId: beach.id,
@@ -2069,6 +2261,8 @@ export const App: React.FC = () => {
         swimmingComfort: scoreResult.swimmingComfort,
         canClaimWindProtection: scoreResult.canClaimWindProtection,
         seaCalmClaimAllowed: scoreResult.seaCalmClaimAllowed,
+        simpleWindSuitability: scoreResult.simpleWindSuitability,
+        windExposureReason: describeSimpleWindSuitability(scoreResult.simpleWindSuitability, language),
         geospatialExposure,
       };
     });
@@ -2076,8 +2270,8 @@ export const App: React.FC = () => {
 
   const dailySuitableBeaches = useMemo(() => {
     if (!selectedIsland || !forecast || !forecast[selectedDayIndex]) return [];
-    return getSuitableBeaches(selectedIsland.beaches, forecast[selectedDayIndex], language, undefined, forecast[selectedDayIndex].hourly, undefined, selectedBeachForecasts);
-  }, [selectedIsland, forecast, selectedDayIndex, language, selectedBeachForecasts]);
+    return getSuitableBeaches(selectedIsland.beaches, forecast[selectedDayIndex], language, undefined, forecast[selectedDayIndex].hourly, undefined, selectedBeachForecasts, geospatialExposureProfiles);
+  }, [selectedIsland, forecast, selectedDayIndex, language, selectedBeachForecasts, geospatialExposureProfiles]);
 
   const hasActivePreferenceFilters = useMemo(() => {
     return Object.values(preferences).some(Boolean);
@@ -2111,6 +2305,8 @@ export const App: React.FC = () => {
     const beaufort = getBeaufortLevel(windSpeedKmph);
     const waveHeightM = forecast[selectedDayIndex].marine?.waveHeightM;
     const candidates = recommendationSource.filter(item => {
+      if (!isTrustedTopRecommendationCandidate(item, undefined, beaufort)) return false;
+
       const itemWaveHeightM = item.waveHeightM ?? waveHeightM;
       const seaScore = calculateSeaConditionScore(item.isExposed, windSpeedKmph, item.exposureLevel, itemWaveHeightM);
       const hasGoodHourlySea = typeof item.hourlySeaScore !== 'number' || item.hourlySeaScore >= MIN_TOP_PICK_SEA_CONDITION_SCORE;
@@ -2128,7 +2324,11 @@ export const App: React.FC = () => {
     const protectedPriority = prioritizeProtectedRecommendations(topPickPool, beaufort);
     return prioritizeDynamicTopPickWindows(protectedPriority, forecast[selectedDayIndex].date, topPickNow);
   }, [forecast, selectedDayIndex, dailySuitableBeaches, hasActivePreferenceFilters, selectedBeachForecasts, suitableBeaches, topPickNow]);
+  const topRecommendedSuitableBeaches = useMemo(() => (
+    recommendedSuitableBeaches.slice(0, getTopRecommendationDisplayLimit(recommendedSuitableBeaches.length))
+  ), [recommendedSuitableBeaches]);
   const currentBeaufort = forecast?.[selectedDayIndex] ? getBeaufortLevel(forecast[selectedDayIndex].wind.speed * 3.6) : 0;
+  const isSevereWindNoTopRecommendationDay = currentBeaufort > MAX_TOP_RECOMMENDATION_BEAUFORT;
   const desktopMapVisibleBeachIdSet = useMemo(() => (
     desktopMapVisibleBeachIds ? new Set(desktopMapVisibleBeachIds) : null
   ), [desktopMapVisibleBeachIds]);
@@ -2175,6 +2375,7 @@ export const App: React.FC = () => {
       'parking',
       'sandy-pebbles',
       'rocky',
+      'adventure',
     ];
     const windDirection = selectedForecast ? degToCompass(selectedForecast.wind.deg) : WindDirection.N;
     const selectedBeaufort = selectedForecast ? getBeaufortLevel(selectedForecast.wind.speed * 3.6) : 0;
@@ -2201,7 +2402,7 @@ export const App: React.FC = () => {
   }, [beachSearchQuery, getFilteredBeaches, mapViewportBeaches, preferences, selectedFilters, selectedForecast, selectedIsland, sortBy, userLocation]);
   const mobileFilterKeys = useMemo(() => (
     Object.keys(t.filterOptions)
-      .filter(key => key !== 'showAll' && key !== 'restaurant') as FilterKey[]
+      .filter(key => key !== 'showAll' && key !== 'restaurant' && key !== 'unknown') as FilterKey[]
   ), [t.filterOptions]);
   const availableMobileFilterKeys = useMemo(() => {
     if (!selectedIsland || selectedIsland.beaches.length === 0) {
@@ -2233,7 +2434,6 @@ export const App: React.FC = () => {
     regionName: selectedIsland?.name.en,
   }), [language, selectedIsland?.id, selectedIsland?.name.en]);
   const isUnsafeWinter = isWinter && currentBeaufort > 4;
-  const isLightWindDay = Boolean(forecast?.[selectedDayIndex] && currentBeaufort < 4);
   const isWaitingForForecast = Boolean(selectedIsland && !selectedForecast && !weatherError && !isUnsafeWinter);
 
   useEffect(() => {
@@ -2247,8 +2447,8 @@ export const App: React.FC = () => {
     const pagePath = typeof window !== 'undefined'
       ? window.location.pathname
       : view === 'detail' && detailBeach
-        ? buildBeachDetailPath(selectedIsland, detailBeach)
-        : buildBeachRegionPath(selectedIsland);
+        ? buildBeachDetailPath(selectedIsland, detailBeach, language)
+        : buildBeachRegionPath(selectedIsland, language);
     const trackingKey = `${pagePath}:${selectedIsland.id}:${detailBeach?.id || 'home'}`;
     if (trackedPageViewRef.current === trackingKey) return;
 
@@ -2281,7 +2481,7 @@ export const App: React.FC = () => {
     const waveHeightM = selectedForecast.marine?.waveHeightM;
     const hasCalmSea = waveHeightM === undefined || waveHeightM <= 0.4;
     const warmEnoughForSwimming = selectedForecast.temp_max >= 20;
-    if (currentBeaufort >= 4 || hasSevereBlockingWeather) return null;
+    if (currentBeaufort >= MEANINGFUL_WIND_TOP_PICK_BEAUFORT || hasSevereBlockingWeather) return null;
 
     const windSpeedKmph = selectedForecast.wind.speed * 3.6;
     const comfortableBeaches = dailySuitableBeaches.filter(item => {
@@ -2306,9 +2506,9 @@ export const App: React.FC = () => {
       totalBeachCount,
       suitableBeachCount,
       comfortableBeachCount: currentBeaufort <= 2 ? totalBeachCount : comfortableBeaches.length,
-      isEveryBeachSuitable: hasBroadlySuitableLightWindDay || (hasGreatSwimmingWeather && suitableRatio >= 0.95),
+      isEveryBeachSuitable: hasBroadlySuitableLightWindDay,
       isMostBeachesSuitable: hasGreatSwimmingWeather && suitableRatio >= 0.65,
-      isEveryBeachComfortable: currentBeaufort <= 2 || (hasGreatSwimmingWeather && comfortableRatio >= 0.95),
+      isEveryBeachComfortable: currentBeaufort <= 2,
       isMostBeachesComfortable: hasGreatSwimmingWeather && comfortableRatio >= 0.8,
       hasGreatSwimmingWeather,
       hasNormalLightWindBeachDay: hasBroadlySuitableLightWindDay,
@@ -2349,7 +2549,11 @@ export const App: React.FC = () => {
 
     return swimmableBeaches.length === 0;
   }, [currentBeaufort, dailySuitableBeaches, isRainBlockedBeachWindow, isUnsafeWinter, selectedForecast, selectedIsland]);
-  const showDecisionRecommendations = Boolean(forecast?.[selectedDayIndex] && !isLightWindDay && !calmAllAroundSummary);
+  const showDecisionRecommendations = Boolean(
+    forecast?.[selectedDayIndex] &&
+    !isSevereWindNoTopRecommendationDay &&
+    !isRainBlockedBeachWindow
+  );
 
   useEffect(() => {
     const selectedForecast = forecast?.[selectedDayIndex];
@@ -2359,9 +2563,9 @@ export const App: React.FC = () => {
 
   useEffect(() => {
     const selectedForecast = forecast?.[selectedDayIndex];
-    if (!selectedIsland || !selectedForecast || isUnsafeWinter || !showDecisionRecommendations || recommendedSuitableBeaches.length === 0) return;
+    if (!selectedIsland || !selectedForecast || isUnsafeWinter || !showDecisionRecommendations || topRecommendedSuitableBeaches.length === 0) return;
 
-    const topBeachIds = recommendedSuitableBeaches.slice(0, 3).map(item => item.beach.id).join(',');
+    const topBeachIds = topRecommendedSuitableBeaches.map(item => item.beach.id).join(',');
     const trackingKey = `${selectedIsland.id}:${selectedForecast.date}:${topBeachIds}`;
     if (trackedRecommendationsRef.current === trackingKey) return;
 
@@ -2369,10 +2573,10 @@ export const App: React.FC = () => {
     trackEvent('recommendations_viewed', undefined, {
       ...analyticsBaseParams,
       day_index: selectedDayIndex,
-      recommendation_count: recommendedSuitableBeaches.length,
-      top_beach_id: String(recommendedSuitableBeaches[0].beach.id),
+      recommendation_count: topRecommendedSuitableBeaches.length,
+      top_beach_id: String(topRecommendedSuitableBeaches[0].beach.id),
     });
-  }, [analyticsBaseParams, forecast, isUnsafeWinter, recommendedSuitableBeaches, selectedDayIndex, selectedIsland, showDecisionRecommendations]);
+  }, [analyticsBaseParams, forecast, isUnsafeWinter, selectedDayIndex, selectedIsland, showDecisionRecommendations, topRecommendedSuitableBeaches]);
 
   useEffect(() => {
     const query = beachSearchQuery.trim();
@@ -2430,7 +2634,7 @@ export const App: React.FC = () => {
     }
   }, [defaultBeachListSort, sortBy]);
 
-  const hasShownAlternativeRecommendations = Boolean(forecast?.[selectedDayIndex] && !isUnsafeWinter && showDecisionRecommendations && recommendedSuitableBeaches.length > 1);
+  const hasShownAlternativeRecommendations = Boolean(forecast?.[selectedDayIndex] && !isUnsafeWinter && showDecisionRecommendations && topRecommendedSuitableBeaches.length > 1);
   const listRecommendationDisplayMode = getRecommendationDisplayMode(
     currentBeaufort,
     recommendedSuitableBeaches[0]?.waveHeightM ?? selectedForecast?.marine?.waveHeightM,
@@ -2457,6 +2661,7 @@ export const App: React.FC = () => {
     const waveHeightM = selectedForecast.marine?.waveHeightM;
 
     [...recommendedSuitableBeaches, ...rankedFallback].forEach(item => {
+      if (!isTrustedTopRecommendationCandidate(item, undefined, currentBeaufort)) return;
       if (!rankedById.has(item.beach.id) && isStrongWindSuitableCandidate(item, windSpeedKmph, waveHeightM)) {
         rankedById.set(item.beach.id, item);
       }
@@ -2478,7 +2683,10 @@ export const App: React.FC = () => {
     const windSpeedKmph = selectedForecast.wind.speed * 3.6;
     const waveHeightM = selectedForecast.marine?.waveHeightM;
     const rankedFallback = [...mapSuitableBeaches]
-      .filter(item => isNoIdealFallbackCandidate(item, windSpeedKmph, waveHeightM))
+      .filter(item => (
+        isTrustedTopRecommendationCandidate(item, undefined, currentBeaufort) &&
+        isNoIdealFallbackCandidate(item, windSpeedKmph, waveHeightM)
+      ))
       .sort((a, b) => {
         const exposureDiff = exposurePriority(a) - exposurePriority(b);
         return exposureDiff || b.score - a.score;
@@ -2505,6 +2713,7 @@ export const App: React.FC = () => {
     const rankedById = new Map<number, SuitableBeach>();
 
     fallbackSource.forEach(item => {
+      if (!isTrustedTopRecommendationCandidate(item, undefined, currentBeaufort)) return;
       if (!rankedById.has(item.beach.id)) {
         rankedById.set(item.beach.id, item);
       }
@@ -2521,10 +2730,10 @@ export const App: React.FC = () => {
     return prioritizeDynamicTopPickWindows(protectedPriority, selectedForecast.date, topPickNow);
   }, [currentBeaufort, dailySuitableBeaches, isStrongRecommendationMode, mapSuitableBeaches, recommendedSuitableBeaches, selectedBeachForecasts, selectedForecast, strongSuitableCandidates, topPickNow]);
   const strongManageableBeaches = useMemo(() => (
-    windPreviewCandidates.slice(0, 3)
+    windPreviewCandidates.slice(0, getTopRecommendationDisplayLimit(windPreviewCandidates.length))
   ), [windPreviewCandidates]);
   const noIdealFallbackBeaches = useMemo(() => (
-    noIdealFallbackCandidates.slice(0, 3)
+    noIdealFallbackCandidates.slice(0, getTopRecommendationDisplayLimit(noIdealFallbackCandidates.length))
   ), [noIdealFallbackCandidates]);
   const showStrongManageableSection = Boolean(
     showDecisionRecommendations &&
@@ -2544,9 +2753,9 @@ export const App: React.FC = () => {
   ), [strongSuitableCandidates, windPreviewCandidates]);
   const highlightedRecommendationIds = useMemo(() => {
     if (!forecast?.[selectedDayIndex] || isUnsafeWinter || !showDecisionRecommendations) return new Set<number>();
-    const highlightedLimit = showStrongManageableSection ? 0 : 4;
-    return new Set(recommendedSuitableBeaches.slice(0, highlightedLimit).map(item => item.beach.id));
-  }, [forecast, selectedDayIndex, isUnsafeWinter, recommendedSuitableBeaches, showDecisionRecommendations, showStrongManageableSection]);
+    const highlightedSource = showStrongManageableSection ? [] : topRecommendedSuitableBeaches;
+    return new Set(highlightedSource.map(item => item.beach.id));
+  }, [forecast, selectedDayIndex, isUnsafeWinter, showDecisionRecommendations, showStrongManageableSection, topRecommendedSuitableBeaches]);
   const filteredBeachesWithoutHighlights = useMemo(() => {
     if (hasActiveSearchOrFilters) return filteredBeaches;
     if (highlightedRecommendationIds.size === 0) return filteredBeaches;
@@ -2646,6 +2855,7 @@ export const App: React.FC = () => {
   }, [isNoIdealFallbackSortOnly, noIdealFallbackCandidates]);
   const shouldShowNoSwimmingMessage = !hasActiveSearchOrFilters && (
     isRainBlockedBeachWindow ||
+    isSevereWindNoTopRecommendationDay ||
     (hasNoSwimmableBeachesToday && noIdealFallbackBeaches.length === 0)
   );
   const beachListBaseBeaches = shouldShowNoSwimmingMessage
@@ -2810,27 +3020,29 @@ export const App: React.FC = () => {
       conditions,
     ].join(' · ');
   }, [selectedIsland, forecast, selectedDayIndex, homeCopy.beaches, language, t]);
-  const mapAlignedProtectedDirectorySource = useMemo(() => {
-    if (!selectedForecast) return [];
-    const lessExposedById = new Map<number, SuitableBeach>();
+  const mapAlignedVisibleProtectedDirectorySource = useMemo(() => {
+    if (!selectedForecast || currentBeaufort < MEANINGFUL_WIND_TOP_PICK_BEAUFORT) return [];
     const visibleExposureLevels = getConsistentVisibleMapExposureLevels(
       filteredMapSuitableBeaches,
       currentBeaufort,
       selectedForecast.wind.deg
     );
 
-    filteredMapSuitableBeaches.forEach(item => {
-      if (visibleExposureLevels.get(item.beach.id) === 'protected') {
-        lessExposedById.set(item.beach.id, item);
-      }
-    });
-
-    if (lessExposedById.size < 3) return [];
-
-    return Array.from(lessExposedById.values()).sort((a, b) => (
-      compareTouristTopPickPriority(a, b) || b.score - a.score
-    ));
+    return filteredMapSuitableBeaches
+      .filter(item => visibleExposureLevels.get(item.beach.id) === 'protected')
+      .sort((a, b) => (
+        compareTouristTopPickPriority(a, b) || b.score - a.score
+      ));
   }, [currentBeaufort, filteredMapSuitableBeaches, selectedForecast]);
+  const mapAlignedProtectedDirectorySource = useMemo(() => {
+    const trustedCandidates = mapAlignedVisibleProtectedDirectorySource.filter(item => (
+      isTrustedTopRecommendationCandidate(item, undefined, currentBeaufort)
+    ));
+
+    if (trustedCandidates.length === 0) return [];
+
+    return trustedCandidates;
+  }, [currentBeaufort, mapAlignedVisibleProtectedDirectorySource]);
   const mapAlignedLessExposedDirectorySource = useMemo(() => {
     if (!selectedForecast || !isStrongRecommendationMode) return [];
 
@@ -2867,11 +3079,65 @@ export const App: React.FC = () => {
     windPreviewCandidates,
   ]);
 
+  useEffect(() => {
+    if (beachesLoading || beachesError || view === 'detail') {
+      return undefined;
+    }
+
+    const trimmedQuery = deferredBeachSearchQuery.trim();
+    let cancelled = false;
+
+    if (trimmedQuery.length < 2) {
+      setDirectorySearchSuggestions([]);
+      setIsDirectorySearchSuggesting(false);
+      return undefined;
+    }
+
+    const regionSuggestions = getRegionSearchSuggestions(trimmedQuery);
+    const currentRegionBeachSuggestions = selectedIsland
+      ? getBeachSearchSuggestionsFromEntries(trimmedQuery, selectedIsland.beaches.map(beach => ({
+          island: selectedIsland,
+          beach,
+          regionValues: getIslandSearchValues(selectedIsland),
+          searchValues: getBeachSearchValues(beach, selectedIsland),
+        })), 5)
+      : [];
+
+    setDirectorySearchSuggestions(mergeDirectorySearchSuggestions(regionSuggestions, currentRegionBeachSuggestions));
+
+    if (trimmedQuery.length < 3) {
+      setIsDirectorySearchSuggesting(false);
+      return undefined;
+    }
+
+    setIsDirectorySearchSuggesting(true);
+    const timeout = window.setTimeout(() => {
+      void getGlobalBeachSearchIndex()
+        .then(searchIndex => {
+          if (cancelled) return;
+          const globalBeachSuggestions = getBeachSearchSuggestionsFromEntries(trimmedQuery, searchIndex, 6);
+          setDirectorySearchSuggestions(mergeDirectorySearchSuggestions(regionSuggestions, globalBeachSuggestions));
+        })
+        .catch(error => {
+          if (!cancelled) console.warn('Global beach search suggestions failed.', error);
+        })
+        .finally(() => {
+          if (!cancelled) setIsDirectorySearchSuggesting(false);
+        });
+    }, 120);
+
+    return () => {
+      cancelled = true;
+      window.clearTimeout(timeout);
+    };
+  }, [beachesError, beachesLoading, deferredBeachSearchQuery, allIslands, selectedIsland, language, regionBeachCounts, view]);
+
   if (beachesLoading) return <SkeletonLoader t={t} />;
   if (beachesError) return <ErrorDisplay message={beachesError} onRetry={() => window.location.reload()} t={t} />;
 
   if (view === 'detail' && detailBeach && forecast?.[selectedDayIndex]) {
-    const detailForecast = selectedBeachForecasts[detailBeach.id] || forecast[selectedDayIndex];
+    const detailBeachForecast = selectedBeachForecasts[detailBeach.id];
+    const detailForecast = detailBeachForecast || forecast[selectedDayIndex];
 
     return (
       <Suspense fallback={<SkeletonLoader t={t} />}>
@@ -2883,6 +3149,9 @@ export const App: React.FC = () => {
           preferences={preferences}
           islandName={selectedIsland?.name[language]}
           detailDataStatus={detailDataStatus}
+          beachWeatherById={selectedBeachForecasts}
+          geospatialExposureProfiles={geospatialExposureProfiles}
+          weatherSource={detailBeachForecast ? 'beach-cluster' : 'island-fallback'}
         />
       </Suspense>
     );
@@ -2892,8 +3161,16 @@ export const App: React.FC = () => {
   const islandBackground = ISLAND_BACKGROUND_IMAGES[selectedIslandKey];
   const islandBackgroundCss = getBackgroundImageCss(islandBackground);
   const showHeaderForecast = Boolean(forecast?.[selectedDayIndex] && !isUnsafeWinter);
-  const headerTopCandidate = !hasActiveSearchOrFilters && showDecisionRecommendations && recommendedSuitableBeaches.length > 0
-    ? recommendedSuitableBeaches[0]
+  const shouldRenderUsageInsights = ENABLE_USAGE_INSIGHTS && shouldLoadInsights;
+  const shouldRenderMainShell = !showHeaderForecast
+    || isDesktopViewport
+    || isWaitingForForecast
+    || Boolean(weatherError)
+    || isUnsafeWinter
+    || Boolean(betaFeedbackUrl)
+    || shouldRenderUsageInsights;
+  const headerTopCandidate = !hasActiveSearchOrFilters && showDecisionRecommendations && topRecommendedSuitableBeaches.length > 0
+    ? topRecommendedSuitableBeaches[0]
     : null;
   const recommendationDisplayMode = listRecommendationDisplayMode;
   const recommendationModeCopy = homeCopy.recommendationMode[recommendationDisplayMode];
@@ -2910,16 +3187,16 @@ export const App: React.FC = () => {
         body: `Με τα διαθέσιμα δεδομένα δεν υπάρχει καθαρή επιλογή για ήρεμο μπάνιο ${protectedSortDay}. Δοκίμασε άλλη ταξινόμηση για να δεις όλες τις παραλίες με τις προειδοποιήσεις τους.`,
       },
       fr: {
-        title: 'Aucune option adaptée trouvée.',
-        body: `Avec les données disponibles, il n’y a pas de choix clairement calme ${protectedSortDay}. Essayez un autre tri pour voir les plages avec leurs avertissements.`,
+        title: 'Aucune option adaptee trouvee.',
+        body: `Avec les données disponibles, il n’y a pas d’option clairement adaptée à une baignade calme ${protectedSortDay}. Essaie un autre tri pour voir toutes les plages avec leurs avertissements.`,
       },
       de: {
         title: 'Keine geeigneten Optionen gefunden.',
-        body: `Mit den verfügbaren Daten gibt es keine klar ruhige Badeoption ${protectedSortDay}. Nutze eine andere Sortierung, um alle Strände mit Warnhinweisen zu sehen.`,
+        body: `Mit den verfugbaren Daten gibt es keine klar ruhige Badeoption ${protectedSortDay}. Nutze eine andere Sortierung, um alle Strande mit Warnhinweisen zu sehen.`,
       },
       it: {
         title: 'Nessuna opzione adatta trovata.',
-        body: `Con i dati disponibili non c’è una scelta chiaramente calma ${protectedSortDay}. Prova un altro ordinamento per vedere le spiagge con gli avvisi.`,
+        body: `Con i dati disponibili, non c’è una scelta chiaramente adatta a un bagno tranquillo ${protectedSortDay}. Prova un altro ordinamento per vedere tutte le spiagge con i relativi avvisi.`,
       },
     })
     : undefined;
@@ -2937,7 +3214,9 @@ export const App: React.FC = () => {
     ? noIdealFallbackBeaches
     : showStrongManageableSection
     ? strongManageableBeaches
-    : recommendedSuitableBeaches.slice(1, 4);
+    : headerTopCandidate
+    ? topRecommendedSuitableBeaches.slice(1)
+    : topRecommendedSuitableBeaches;
   const exploreSectionLabel = isStrongSuitableSortOnly
     ? homeCopy.moreSuitableOptions[language]
     : isNoIdealFallbackSortOnly
@@ -2949,6 +3228,7 @@ export const App: React.FC = () => {
   const headerTopBeachName = headerTopBeach
     ? displayBeachName(headerTopBeach.beach.name, language)
     : '';
+  const headerTopCanNavigate = headerTopBeach ? canOpenNavigation(headerTopBeach.beach) : false;
   const headerTopWaveHeightM = headerTopBeach?.waveHeightM ?? selectedForecast?.marine?.waveHeightM;
   const recommendationWindDirection = selectedForecast ? degToCompass(selectedForecast.wind.deg) : WindDirection.N;
   const recommendationWindLabel = t.windDirectionsAccusative?.[recommendationWindDirection]
@@ -2976,27 +3256,27 @@ export const App: React.FC = () => {
         noIdeal: `No clear calm-swimming option ${day}`,
       },
       gr: {
-        caution: `Ιδανικότερες παραλίες ${day}`,
-        strong: `Καταλληλότερες επιλογές ${day}`,
-        sheltered: `Πιο υπήνεμες επιλογές ${day}`,
-        noIdeal: `Δεν υπάρχει καθαρή επιλογή για ήρεμο μπάνιο ${day}`,
+      caution: `Ιδανικότερες παραλίες ${day}`,
+      strong: `Καταλληλότερες επιλογές ${day}`,
+      sheltered: `Πιο υπήνεμες επιλογές ${day}`,
+      noIdeal: `Δεν υπάρχει καθαρή επιλογή για ήρεμο μπάνιο ${day}`,
       },
       fr: {
         caution: `Options plus confortables ${day}`,
-        strong: `Options les plus adaptées ${day}`,
-        sheltered: `Options plus abritées ${day}`,
+        strong: `Options les plus adaptees ${day}`,
+        sheltered: `Options plus abritees ${day}`,
         noIdeal: `Aucun choix clairement calme ${day}`,
       },
       de: {
         caution: `Komfortablere Optionen ${day}`,
         strong: `Am besten geeignete Optionen ${day}`,
-        sheltered: `Windgeschütztere Optionen ${day}`,
+        sheltered: `Windgeschutztere Optionen ${day}`,
         noIdeal: `Keine klar ruhige Badeoption ${day}`,
       },
       it: {
-        caution: `Opzioni più comode ${day}`,
-        strong: `Opzioni più adatte ${day}`,
-        sheltered: `Opzioni più riparate ${day}`,
+        caution: `Opzioni piu comode ${day}`,
+        strong: `Opzioni piu adatte ${day}`,
+        sheltered: `Opzioni piu riparate ${day}`,
         noIdeal: `Nessuna scelta chiaramente calma ${day}`,
       },
     });
@@ -3020,26 +3300,26 @@ export const App: React.FC = () => {
     ? getLocalizedCopy(language, {
       en: `Later the wind rises to ${hourlyWindIncreaseSummary.maxBeaufort} Beaufort around ${hourlyWindIncreaseSummary.label}, so some beaches will feel more comfortable than others.`,
       gr: `Αργότερα ο άνεμος ανεβαίνει έως ${hourlyWindIncreaseSummary.maxBeaufort} μποφόρ γύρω στις ${hourlyWindIncreaseSummary.label}, οπότε κάποιες παραλίες θα είναι πιο άνετες από άλλες.`,
-      fr: `Plus tard, le vent monte jusqu’à ${hourlyWindIncreaseSummary.maxBeaufort} Beaufort vers ${hourlyWindIncreaseSummary.label}, donc certaines plages seront plus confortables que d’autres.`,
-      de: `Später steigt der Wind gegen ${hourlyWindIncreaseSummary.label} auf ${hourlyWindIncreaseSummary.maxBeaufort} Bft, daher fühlen sich manche Strände komfortabler an als andere.`,
-      it: `Più tardi il vento sale fino a ${hourlyWindIncreaseSummary.maxBeaufort} Beaufort verso ${hourlyWindIncreaseSummary.label}, quindi alcune spiagge saranno più comode di altre.`,
+      fr: `Plus tard, le vent monte jusqu’à ${hourlyWindIncreaseSummary.maxBeaufort} Bft vers ${hourlyWindIncreaseSummary.label}, donc certaines plages seront plus confortables que d’autres.`,
+      de: `Spater steigt der Wind gegen ${hourlyWindIncreaseSummary.label} auf ${hourlyWindIncreaseSummary.maxBeaufort} Bft, daher fuhlen sich manche Strande komfortabler an als andere.`,
+      it: `Piu tardi il vento sale fino a ${hourlyWindIncreaseSummary.maxBeaufort} Beaufort verso ${hourlyWindIncreaseSummary.label}, quindi alcune spiagge saranno piu comode di altre.`,
     })
     : '';
   const calmSummaryBaseDescription = calmAllAroundSummary
     ? calmAllAroundSummary.hasNormalLightWindBeachDay
       ? getLocalizedCopy(language, {
         en: `${calmAllAroundSummary.beaufort} Beaufort ${selectedDayPrefix}. All beaches are suitable for swimming.`,
-        gr: `${calmAllAroundSummary.beaufort} μποφόρ ${selectedDayPrefix}. Όλες οι παραλίες είναι κατάλληλες για μπάνιο.`,
-        fr: `${calmAllAroundSummary.beaufort} Beaufort ${selectedDayPrefix}. Toutes les plages sont adaptées à la baignade.`,
-        de: `${calmAllAroundSummary.beaufort} Bft ${selectedDayPrefix}. Alle Strände sind zum Schwimmen geeignet.`,
+      gr: `${calmAllAroundSummary.beaufort} μποφόρ ${selectedDayPrefix}. Όλες οι παραλίες είναι κατάλληλες για μπάνιο.`,
+        fr: `${calmAllAroundSummary.beaufort} Beaufort ${selectedDayPrefix}. Toutes les plages sont adaptees a la baignade.`,
+        de: `${calmAllAroundSummary.beaufort} Bft ${selectedDayPrefix}. Alle Strande sind zum Schwimmen geeignet.`,
         it: `${calmAllAroundSummary.beaufort} Beaufort ${selectedDayPrefix}. Tutte le spiagge sono adatte al bagno.`,
       })
       : getLocalizedCopy(language, {
         en: `${selectedDaySentencePrefix} the weather is mild, so ${calmAllAroundSummary.isEveryBeachSuitable ? 'all beaches' : 'most beaches'} look suitable for swimming.`,
-        gr: `${selectedDaySentencePrefix} ο καιρός είναι ήπιος, οπότε ${calmAllAroundSummary.isEveryBeachSuitable ? 'όλες οι παραλίες' : 'οι περισσότερες παραλίες'} φαίνονται κατάλληλες για μπάνιο.`,
-        fr: `${selectedDaySentencePrefix}, la météo est douce, donc ${calmAllAroundSummary.isEveryBeachSuitable ? 'toutes les plages' : 'la plupart des plages'} semblent adaptées à la baignade.`,
-        de: `${selectedDaySentencePrefix} ist das Wetter mild, daher wirken ${calmAllAroundSummary.isEveryBeachSuitable ? 'alle Strände' : 'die meisten Strände'} zum Schwimmen geeignet.`,
-        it: `${selectedDaySentencePrefix} il meteo è mite, quindi ${calmAllAroundSummary.isEveryBeachSuitable ? 'tutte le spiagge' : 'la maggior parte delle spiagge'} sembra adatta al bagno.`,
+      gr: `${selectedDaySentencePrefix} ο καιρός είναι ήπιος, οπότε ${calmAllAroundSummary.isEveryBeachSuitable ? 'όλες οι παραλίες' : 'οι περισσότερες παραλίες'} φαίνονται κατάλληλες για μπάνιο.`,
+        fr: `${selectedDaySentencePrefix}, la meteo est douce, donc ${calmAllAroundSummary.isEveryBeachSuitable ? 'toutes les plages' : 'la plupart des plages'} semblent adaptees a la baignade.`,
+        de: `${selectedDaySentencePrefix} ist das Wetter mild, daher wirken ${calmAllAroundSummary.isEveryBeachSuitable ? 'alle Strande' : 'die meisten Strande'} zum Schwimmen geeignet.`,
+        it: `${selectedDaySentencePrefix} il meteo e mite, quindi ${calmAllAroundSummary.isEveryBeachSuitable ? 'tutte le spiagge' : 'la maggior parte delle spiagge'} sembra adatta al bagno.`,
       })
     : '';
   const calmSummaryDescription = calmAllAroundSummary
@@ -3067,36 +3347,36 @@ export const App: React.FC = () => {
         mild: `${selectedDaySentencePrefix} the weather is mild, so most beaches look suitable for swimming.`,
       },
       gr: {
-        avoid: `Δεν υπάρχει ιδανική επιλογή για ήρεμο μπάνιο ${selectedDayPrefix}. Η παραλία ${headerTopBeachName} είναι καλύτερη μόνο ως επιλογή επίσκεψης, αν οι συνθήκες φαίνονται αποδεκτές όταν φτάσεις.`,
-        strongFive: `Η παραλία ${headerTopBeachName} είναι καλύτερη επιλογή για τον άνεμο ${selectedDayPrefix}.`,
-        strongCaution: `Η παραλία ${headerTopBeachName} είναι η καλύτερη διαθέσιμη επιλογή ${selectedDayPrefix}, αλλά οι συνθήκες θέλουν προσοχή.`,
-        caution: `Η παραλία ${headerTopBeachName} είναι η καλύτερη πρόταση για ${selectedDayPrefix}, γιατί ο άνεμος μπορεί να είναι λιγότερο ενοχλητικός εκεί.`,
-        timed: `Με βάση την ωριαία πρόγνωση, η παραλία ${headerTopBeachName} είναι η κορυφαία επιλογή για αυτό το χρονικό παράθυρο.`,
-        mild: `${selectedDaySentencePrefix} ο καιρός είναι ήπιος, οπότε οι περισσότερες παραλίες φαίνονται κατάλληλες για μπάνιο.`,
+      avoid: `Δεν υπάρχει ιδανική επιλογή για ήρεμο μπάνιο ${selectedDayPrefix}. Η παραλία ${headerTopBeachName} είναι καλύτερη μόνο ως επιλογή επίσκεψης, αν οι συνθήκες φαίνονται αποδεκτές όταν φτάσεις.`,
+      strongFive: `Η παραλία ${headerTopBeachName} είναι καλύτερη επιλογή για τον άνεμο ${selectedDayPrefix}.`,
+      strongCaution: `Η παραλία ${headerTopBeachName} είναι η καλύτερη διαθέσιμη επιλογή ${selectedDayPrefix}, αλλά οι συνθήκες θέλουν προσοχή.`,
+      caution: `Η παραλία ${headerTopBeachName} είναι η καλύτερη πρόταση για ${selectedDayPrefix}, γιατί ο άνεμος μπορεί να είναι λιγότερο ενοχλητικός εκεί.`,
+      timed: `Με βάση την ωριαία πρόγνωση, η παραλία ${headerTopBeachName} είναι η κορυφαία επιλογή για αυτό το χρονικό παράθυρο.`,
+      mild: `${selectedDaySentencePrefix} ο καιρός είναι ήπιος, οπότε οι περισσότερες παραλίες φαίνονται κατάλληλες για μπάνιο.`,
       },
       fr: {
-        avoid: `Aucune plage ne semble idéale pour une baignade calme ${selectedDayPrefix}. ${headerTopBeachName} est plutôt une option de visite si les conditions semblent acceptables sur place.`,
+        avoid: `Aucune plage ne semble ideale pour une baignade calme ${selectedDayPrefix}. ${headerTopBeachName} est plutot une option de visite si les conditions semblent acceptables sur place.`,
         strongFive: `${headerTopBeachName} est une meilleure option face au vent ${selectedDayPrefix}.`,
         strongCaution: `${headerTopBeachName} est la meilleure option disponible ${selectedDayPrefix}, mais la baignade demande encore de la prudence.`,
-        caution: `${headerTopBeachName} est le meilleur choix ${selectedDayPrefix}, car le vent semble plus facile à gérer là-bas.`,
-        timed: `D’après la prévision horaire, ${headerTopBeachName} est le meilleur choix pour ce créneau.`,
-        mild: `${selectedDaySentencePrefix}, la météo est douce, donc la plupart des plages semblent adaptées à la baignade.`,
+        caution: `${headerTopBeachName} est le meilleur choix ${selectedDayPrefix}, car le vent semble plus facile a gerer la-bas.`,
+      timed: `D’après la prévision horaire, ${headerTopBeachName} est le meilleur choix pour ce créneau.`,
+        mild: `${selectedDaySentencePrefix}, la meteo est douce, donc la plupart des plages semblent adaptees a la baignade.`,
       },
       de: {
-        avoid: `Kein Strand wirkt ${selectedDayPrefix} ideal für ruhiges Schwimmen. ${headerTopBeachName} ist eher eine Besuchsoption, wenn die Bedingungen vor Ort akzeptabel wirken.`,
+        avoid: `Kein Strand wirkt ${selectedDayPrefix} ideal fur ruhiges Schwimmen. ${headerTopBeachName} ist eher eine Besuchsoption, wenn die Bedingungen vor Ort akzeptabel wirken.`,
         strongFive: `${headerTopBeachName} ist ${selectedDayPrefix} eine bessere Windoption.`,
-        strongCaution: `${headerTopBeachName} ist ${selectedDayPrefix} die beste verfügbare Option, aber Schwimmen bleibt vorsichtig zu bewerten.`,
+        strongCaution: `${headerTopBeachName} ist ${selectedDayPrefix} die beste verfugbare Option, aber Schwimmen bleibt vorsichtig zu bewerten.`,
         caution: `${headerTopBeachName} ist ${selectedDayPrefix} die beste Wahl, weil der Wind dort besser handhabbar wirkt.`,
-        timed: `Laut stündlicher Vorhersage ist ${headerTopBeachName} die Top-Wahl für dieses Zeitfenster.`,
-        mild: `${selectedDaySentencePrefix} ist das Wetter mild, daher wirken die meisten Strände zum Schwimmen geeignet.`,
+        timed: `Laut stundlicher Vorhersage ist ${headerTopBeachName} die Top-Wahl fur dieses Zeitfenster.`,
+        mild: `${selectedDaySentencePrefix} ist das Wetter mild, daher wirken die meisten Strande zum Schwimmen geeignet.`,
       },
       it: {
-        avoid: `Nessuna spiaggia sembra ideale per un bagno calmo ${selectedDayPrefix}. ${headerTopBeachName} è più una visita, se le condizioni sul posto sembrano accettabili.`,
-        strongFive: `${headerTopBeachName} è una scelta migliore per il vento ${selectedDayPrefix}.`,
-        strongCaution: `${headerTopBeachName} è la migliore opzione disponibile ${selectedDayPrefix}, ma per il bagno serve ancora prudenza.`,
-        caution: `${headerTopBeachName} è la scelta migliore ${selectedDayPrefix}, perché lì il vento sembra più gestibile.`,
-        timed: `In base alle previsioni orarie, ${headerTopBeachName} è la scelta migliore per questa fascia.`,
-        mild: `${selectedDaySentencePrefix} il meteo è mite, quindi la maggior parte delle spiagge sembra adatta al bagno.`,
+        avoid: `Nessuna spiaggia sembra ideale per un bagno calmo ${selectedDayPrefix}. ${headerTopBeachName} e piu una visita, se le condizioni sul posto sembrano accettabili.`,
+        strongFive: `${headerTopBeachName} e una scelta migliore per il vento ${selectedDayPrefix}.`,
+        strongCaution: `${headerTopBeachName} e la migliore opzione disponibile ${selectedDayPrefix}, ma per il bagno serve ancora prudenza.`,
+        caution: `${headerTopBeachName} e la scelta migliore ${selectedDayPrefix}, perche li il vento sembra piu gestibile.`,
+        timed: `In base alle previsioni orarie, ${headerTopBeachName} e la scelta migliore per questa fascia.`,
+        mild: `${selectedDaySentencePrefix} il meteo e mite, quindi la maggior parte delle spiagge sembra adatta al bagno.`,
       },
     });
 
@@ -3111,7 +3391,7 @@ export const App: React.FC = () => {
   const headerTopDescription = withRainRiskContext(headerTopDescriptionBase, rainRiskSummary, rainRiskCopy);
   const visitTimeLabel = getLocalizedCopy(language, {
     en: 'Best time',
-    gr: 'Ώρα επίσκεψης',
+      gr: 'Καλύτερη ώρα',
     fr: 'Meilleur moment',
     de: 'Beste Zeit',
     it: 'Ora migliore',
@@ -3129,10 +3409,18 @@ export const App: React.FC = () => {
   const directoryFallbackSource = mapAlignedProtectedDirectorySource.length > 0
     ? mapAlignedProtectedDirectorySource
     : prioritizeProtectedRecommendations(
-    getWindPriorityTopPickPool([...mapSuitableBeaches], currentBeaufort),
+    getWindPriorityTopPickPool(
+      mapSuitableBeaches.filter(item => isTrustedTopRecommendationCandidate(item, undefined, currentBeaufort)),
+      currentBeaufort
+    ),
     currentBeaufort
   );
-  const directoryTopBeach = sortBy === 'distance'
+  const shouldSuppressDirectoryTopBeachFallback = Boolean(
+    currentBeaufort >= MEANINGFUL_WIND_TOP_PICK_BEAUFORT &&
+    mapAlignedVisibleProtectedDirectorySource.length > 0 &&
+    mapAlignedProtectedDirectorySource.length === 0
+  );
+  const directoryTopBeach = sortBy === 'distance' || shouldSuppressDirectoryTopBeachFallback
     ? null
     : mapAlignedProtectedDirectorySource[0]
     || windPriorityDirectorySource[0]
@@ -3140,28 +3428,111 @@ export const App: React.FC = () => {
     || directoryRecommendationSource[0]
     || directoryFallbackSource[0]
     || null;
-  const directorySuitableBeachCards = (() => {
+  const shouldDisplayDirectoryTopPick = Boolean(
+    showDecisionRecommendations &&
+    !hasActiveSearchOrFilters
+  );
+  const displayedDirectoryTopBeach = shouldDisplayDirectoryTopPick ? directoryTopBeach : null;
+  const directoryBaseBeachCardSource = (() => {
     if (sortBy === 'distance') {
-      return distanceSortedDirectoryBeachCards.slice(0, 16);
+      return distanceSortedDirectoryBeachCards;
     }
 
-    const source = directoryRecommendationSource.length > 0
+    return directoryRecommendationSource.length > 0
       ? directoryRecommendationSource
       : directoryFallbackSource;
-    const topBeachId = directoryTopBeach?.beach.id;
-    const cards = topBeachId === undefined
-      ? source
-      : source.filter(item => item.beach.id !== topBeachId);
-    return cards.slice(0, 16);
   })();
-  const directorySuitableBeachTotalCount = (
-    sortBy === 'distance'
-      ? distanceSortedDirectoryBeachCards
-      :
-    directoryRecommendationSource.length > 0
-      ? directoryRecommendationSource
-      : directoryFallbackSource
-  ).length;
+  const directoryVisibleBeachCardSource = (() => {
+    if (mapAlignedVisibleProtectedDirectorySource.length === 0) {
+      return directoryBaseBeachCardSource;
+    }
+
+    if (sortBy !== 'distance') {
+      return mapAlignedVisibleProtectedDirectorySource;
+    }
+
+    return [...mapAlignedVisibleProtectedDirectorySource].sort((a, b) => (
+      compareOptionalDistance(a, b) || compareTouristTopPickPriority(a, b) || b.score - a.score
+    ));
+  })();
+  const isDirectoryTopRecommendationCandidate = (item: SuitableBeach): boolean => {
+    if (!isTrustedTopRecommendationCandidate(item, undefined, currentBeaufort)) return false;
+    if (item.swimmingComfort === 'avoid_swimming') return false;
+    if (item.warnings?.some(warning => warning.type === 'official_warning' && warning.severity === 'critical')) return false;
+    if (typeof item.swimmingScore === 'number' && item.swimmingScore < 50) return false;
+
+    const windSpeedKmph = selectedForecast ? selectedForecast.wind.speed * 3.6 : 0;
+    const itemWaveHeightM = item.waveHeightM ?? selectedForecast?.marine?.waveHeightM;
+    const seaScore = calculateSeaConditionScore(item.isExposed, windSpeedKmph, item.exposureLevel, itemWaveHeightM);
+    const hasGoodHourlySea = typeof item.hourlySeaScore !== 'number' || item.hourlySeaScore >= MIN_TOP_PICK_SEA_CONDITION_SCORE;
+
+    return seaScore >= MIN_TOP_PICK_SEA_CONDITION_SCORE &&
+      hasGoodHourlySea &&
+      !hasPoorSeaConditions(item.isExposed, windSpeedKmph, item.exposureLevel, itemWaveHeightM);
+  };
+  const directoryTopRecommendationCandidatePool = [
+    ...recommendedSuitableBeaches,
+    ...directoryFallbackSource,
+    ...directoryVisibleBeachCardSource,
+  ].filter(isDirectoryTopRecommendationCandidate);
+  const directoryTopRecommendationCandidateCount = showNoIdealFallbackSection
+    ? noIdealFallbackCandidates.length
+    : showStrongManageableSection
+    ? windPreviewCandidates.length
+    : directoryTopRecommendationCandidatePool.length;
+  const directoryTopRecommendationLimit = getTopRecommendationDisplayLimit(directoryTopRecommendationCandidateCount);
+  const shouldShowDirectoryTopRecommendations = Boolean(
+    showDecisionRecommendations &&
+    !hasActiveSearchOrFilters &&
+    directoryTopRecommendationLimit > 0
+  );
+  const directoryTopRecommendationCards = (() => {
+    if (!shouldShowDirectoryTopRecommendations) return [];
+
+    const seenIds = new Set<number>();
+    const cards: SuitableBeach[] = [];
+    const addSource = (source: SuitableBeach[]) => {
+      source.forEach(item => {
+        if (cards.length >= directoryTopRecommendationLimit || seenIds.has(item.beach.id)) return;
+        if (!isDirectoryTopRecommendationCandidate(item)) return;
+        seenIds.add(item.beach.id);
+        cards.push(item);
+      });
+    };
+
+    if (showNoIdealFallbackSection) {
+      addSource(noIdealFallbackBeaches);
+    }
+    if (showStrongManageableSection) {
+      addSource(strongManageableBeaches);
+    }
+
+    addSource(recommendedSuitableBeaches);
+    addSource(directoryFallbackSource);
+    addSource(directoryVisibleBeachCardSource);
+
+    return cards;
+  })();
+  const directoryTopRecommendationIds = new Set(directoryTopRecommendationCards.map(item => item.beach.id));
+  const shouldShowAllBeachesBelowTopRecommendations = Boolean(
+    shouldShowDirectoryTopRecommendations &&
+    currentBeaufort <= 2
+  );
+  const directorySuitableBeachCards = (() => {
+    if (!shouldShowDirectoryTopRecommendations || shouldShowAllBeachesBelowTopRecommendations) {
+      return directoryVisibleBeachCardSource;
+    }
+
+    return directoryVisibleBeachCardSource.filter(item => !directoryTopRecommendationIds.has(item.beach.id));
+  })();
+  const directoryHomeSuitableBeachCards = directorySuitableBeachCards;
+  const directorySuitableBeachTotalCount = directoryHomeSuitableBeachCards.length;
+  const shouldShowDirectorySuitableSection = shouldShowDirectoryTopRecommendations
+    ? !shouldShowAllBeachesBelowTopRecommendations && directoryHomeSuitableBeachCards.length > 0
+    : !(calmAllAroundSummary?.isEveryBeachSuitable ?? false);
+  const highlightedDirectoryTopBeachId = shouldDisplayDirectoryTopPick && selectedDayIndex === 0
+    ? directoryTopRecommendationCards[0]?.beach.id ?? displayedDirectoryTopBeach?.beach.id
+    : undefined;
   const getMobileFilterModalResultCount = (filters: FilterKey[], nextSortBy: SortOption): number => {
     const normalizedFilters = filters.filter(filter => filter !== 'restaurant');
 
@@ -3187,7 +3558,7 @@ export const App: React.FC = () => {
     const protectedCandidates = matchingSuitableBeaches.filter(item => (
       visibleExposureLevels.get(item.beach.id) === 'protected'
     ));
-    const source = protectedCandidates.length >= 3
+    const source = protectedCandidates.length > 0
       ? protectedCandidates
       : matchingSuitableBeaches;
     const sorted = [...source].sort((a, b) => (
@@ -3216,17 +3587,17 @@ export const App: React.FC = () => {
       : directoryTopUsesWindPriority
       ? getLocalizedCopy(language, {
         en: `${directoryTopBeachName} is the best pick ${selectedDayPrefix} because the wind may be less annoying there, with practical access.`,
-        gr: `Η παραλία ${directoryTopBeachName} είναι η καλύτερη πρόταση για ${selectedDayPrefix}, γιατί ο άνεμος μπορεί να είναι λιγότερο ενοχλητικός εκεί και η πρόσβαση είναι πρακτική.`,
-        fr: `${directoryTopBeachName} est le meilleur choix ${selectedDayPrefix}, car le vent peut y être moins gênant, avec un accès pratique.`,
-        de: `${directoryTopBeachName} ist ${selectedDayPrefix} die beste Wahl, weil der Wind dort weniger störend sein kann und der Zugang praktisch ist.`,
-        it: `${directoryTopBeachName} è la scelta migliore ${selectedDayPrefix}, perché lì il vento può essere meno fastidioso e l'accesso è pratico.`,
+      gr: `Η παραλία ${directoryTopBeachName} είναι η καλύτερη πρόταση για ${selectedDayPrefix}, γιατί ο άνεμος μπορεί να είναι λιγότερο ενοχλητικός εκεί και η πρόσβαση είναι πρακτική.`,
+        fr: `${directoryTopBeachName} est le meilleur choix ${selectedDayPrefix}, car le vent peut y etre moins genant, avec un acces pratique.`,
+        de: `${directoryTopBeachName} ist ${selectedDayPrefix} die beste Wahl, weil der Wind dort weniger storend sein kann und der Zugang praktisch ist.`,
+        it: `${directoryTopBeachName} e la scelta migliore ${selectedDayPrefix}, perche li il vento puo essere meno fastidioso e l'accesso e pratico.`,
       })
       : getLocalizedCopy(language, {
         en: `${directoryTopBeachName} is the best pick ${selectedDayPrefix} because it fits the conditions well and combines comfortable sea with practical access.`,
-        gr: `Η παραλία ${directoryTopBeachName} είναι η καλύτερη πρόταση για ${selectedDayPrefix}, γιατί ταιριάζει καλά στις συνθήκες και συνδυάζει άνετη θάλασσα με πρακτική πρόσβαση.`,
-        fr: `${directoryTopBeachName} est le meilleur choix ${selectedDayPrefix}, car elle correspond bien aux conditions et combine mer agréable et accès pratique.`,
+      gr: `Η παραλία ${directoryTopBeachName} είναι η καλύτερη πρόταση για ${selectedDayPrefix}, γιατί ταιριάζει καλά στις συνθήκες και συνδυάζει άνετη θάλασσα με πρακτική πρόσβαση.`,
+        fr: `${directoryTopBeachName} est le meilleur choix ${selectedDayPrefix}, car elle correspond bien aux conditions et combine mer agreable et acces pratique.`,
         de: `${directoryTopBeachName} ist ${selectedDayPrefix} die beste Wahl, weil sie gut zu den Bedingungen passt und angenehmes Meer mit praktischem Zugang verbindet.`,
-        it: `${directoryTopBeachName} è la scelta migliore ${selectedDayPrefix}, perché si adatta bene alle condizioni e combina mare piacevole con accesso pratico.`,
+        it: `${directoryTopBeachName} e la scelta migliore ${selectedDayPrefix}, perche si adatta bene alle condizioni e combina mare piacevole con accesso pratico.`,
       })
     : '';
   const getExactBeachPhoto = (item: SuitableBeach | null) => {
@@ -3265,14 +3636,336 @@ export const App: React.FC = () => {
     : [];
   const directoryActiveCategory: DirectoryCategory = QUICK_PREFERENCE_FILTERS.find(key => preferences[key]) || 'all';
 
-  const handleDirectorySearchSubmit = () => {
+  const findSearchRegionMatch = (query: string): Island | null => {
+    const trimmedQuery = query.trim();
+    if (trimmedQuery.length < 3) return null;
+
+    const queryVariants = getSearchVariants(trimmedQuery);
+    const rankedMatches = allIslands
+      .map(island => {
+        const values = [
+          island.name[language],
+          island.name.en,
+          island.name.gr,
+          island.id.replace(/-/g, ' '),
+        ].filter(Boolean);
+
+        const score = values.reduce((bestScore, value) => {
+          const valueVariants = getSearchVariants(value);
+          const directScore = Math.max(
+            0,
+            ...queryVariants.flatMap(queryVariant => (
+              valueVariants.map(valueVariant => {
+                if (!queryVariant || !valueVariant) return 0;
+                if (queryVariant === valueVariant) return 100;
+                if (queryVariant.includes(valueVariant) && valueVariant.length >= 3) return 96;
+                if (valueVariant.includes(queryVariant) && queryVariant.length >= 3) return 92;
+                return 0;
+              })
+            ))
+          );
+
+          return Math.max(bestScore, directScore, fuzzySearchScore(trimmedQuery, value));
+        }, 0);
+
+        return { island, score };
+      })
+      .filter(item => item.score >= 90)
+      .sort((a, b) => b.score - a.score || a.island.name[language].localeCompare(b.island.name[language]));
+
+    return rankedMatches[0]?.island || null;
+  };
+
+  const getIslandSearchValues = (island: Island): string[] => ([
+    island.name[language],
+    island.name.en,
+    island.name.gr,
+    island.name.fr,
+    island.name.de,
+    island.name.it,
+    island.id.replace(/-/g, ' '),
+  ].filter((value): value is string => Boolean(value)));
+
+  const scoreSearchValues = (query: string, values: string[]): number => {
+    const queryVariants = getSearchVariants(query);
+
+    return values.reduce((bestScore, value) => {
+      const valueVariants = getSearchVariants(value);
+      const directScore = Math.max(
+        0,
+        ...queryVariants.flatMap(queryVariant => (
+          valueVariants.map(valueVariant => {
+            if (!queryVariant || !valueVariant) return 0;
+            if (queryVariant === valueVariant) return 100;
+            if (queryVariant.includes(valueVariant) && valueVariant.length >= 4) return 96;
+            if (valueVariant.includes(queryVariant) && queryVariant.length >= 3) return 92;
+            if (valueVariant.split(' ').some(word => word.startsWith(queryVariant))) return 84;
+            return 0;
+          })
+        ))
+      );
+
+      return Math.max(bestScore, directScore, fuzzySearchScore(query, value));
+    }, 0);
+  };
+
+  const getIslandBeachCount = (island: Island): number => (
+    island.beaches.length > 0 ? island.beaches.length : regionBeachCounts[island.id] ?? 0
+  );
+
+  const getBeachSearchValues = (beach: Beach, island: Island): string[] => {
+    const regionValues = [
+      ...getIslandSearchValues(island),
+      beach.location?.island,
+      beach.location?.region,
+    ].filter((value): value is string => Boolean(value));
+      const genericAliasValues = ['paralia', 'παραλία', 'beach', 'plage', 'strand', 'spiaggia', ...regionValues];
+    const genericAliasVariants = new Set(genericAliasValues.flatMap(getSearchVariants));
+    const isGenericAlias = (value: string): boolean => {
+      const variants = getSearchVariants(value);
+      return variants.length > 0 && variants.every(variant => genericAliasVariants.has(variant));
+    };
+    const legacySlugs = (beach as Beach & { legacySlugs?: string[] }).legacySlugs || [];
+    const values = [
+      beach.name[language],
+      beach.name.en,
+      beach.name.gr,
+      beach.name.fr,
+      beach.name.de,
+      beach.name.it,
+      displayBeachName(beach.name, language),
+      displayBeachName(beach.name, 'gr'),
+      ...(beach.aliases || []).filter(alias => !isGenericAlias(alias)),
+      ...legacySlugs,
+    ];
+
+    return Array.from(new Set(values.filter((value): value is string => Boolean(value && value.trim()))));
+  };
+
+  const getGlobalBeachSearchIndex = async (): Promise<GlobalBeachSearchEntry[]> => {
+    if (!globalBeachSearchIndexRef.current) {
+      globalBeachSearchIndexRef.current = (async () => {
+        const regionIndex = await loadBeachRegionIndex();
+        const loadedIslands = await Promise.all(regionIndex.map(async entry => {
+          try {
+            return await loadAppReadyRegion(entry.id, {
+              summaryDataPath: entry.summaryDataPath,
+              appDataPath: entry.appDataPath,
+            });
+          } catch (error) {
+            console.warn('Global beach search skipped region.', {
+              regionId: entry.id,
+              error,
+            });
+            return null;
+          }
+        }));
+        const loadedRegionIds = new Set(loadedIslands.filter(Boolean).map(island => island!.id));
+        const inMemoryIslands = allIslands.filter(island => (
+          island.beaches.length > 0 && !loadedRegionIds.has(island.id)
+        ));
+
+        return [...loadedIslands.filter((island): island is Island => Boolean(island)), ...inMemoryIslands]
+          .flatMap(island => {
+            const regionValues = getIslandSearchValues(island);
+            return island.beaches.map(beach => ({
+              island,
+              beach,
+              regionValues,
+              searchValues: getBeachSearchValues(beach, island),
+            }));
+          });
+      })();
+    }
+
+    try {
+      return await globalBeachSearchIndexRef.current;
+    } catch (error) {
+      globalBeachSearchIndexRef.current = null;
+      throw error;
+    }
+  };
+
+  const findGlobalBeachMatch = async (query: string): Promise<GlobalBeachSearchMatch | null> => {
+    const trimmedQuery = query.trim();
+    if (trimmedQuery.length < 3) return null;
+
+    const searchIndex = await getGlobalBeachSearchIndex();
+    const rankedMatches = searchIndex
+      .map(entry => {
+        const beachScore = scoreSearchValues(trimmedQuery, entry.searchValues);
+        const regionScore = scoreSearchValues(trimmedQuery, entry.regionValues);
+        const currentRegionBonus = entry.island.id === selectedIsland?.id ? 2 : 0;
+        const score = beachScore + (regionScore >= 90 ? 5 : 0) + currentRegionBonus;
+        return { ...entry, beachScore, score };
+      })
+      .filter(entry => entry.beachScore >= 82)
+      .sort((a, b) => {
+        if (b.score !== a.score) return b.score - a.score;
+        if (b.beach.rating !== a.beach.rating) return b.beach.rating - a.beach.rating;
+        return displayBeachName(a.beach.name, language).localeCompare(displayBeachName(b.beach.name, language));
+      });
+
+    const match = rankedMatches[0];
+    return match ? { island: match.island, beach: match.beach, score: match.score } : null;
+  };
+
+  const getRegionSearchSuggestions = (query: string): DirectorySearchSuggestion[] => (
+    allIslands
+      .map(island => ({
+        island,
+        score: scoreSearchValues(query, getIslandSearchValues(island)),
+      }))
+      .filter(item => item.score >= 80)
+      .sort((a, b) => {
+        if (b.score !== a.score) return b.score - a.score;
+        return a.island.name[language].localeCompare(b.island.name[language]);
+      })
+      .slice(0, 3)
+      .map(({ island }) => ({
+        id: `region-${island.id}`,
+        type: 'region' as const,
+        label: island.name[language] || island.name.en,
+        subtitle: homeCopy.beaches[language] ? `${getIslandBeachCount(island)} ${homeCopy.beaches[language]}` : island.name.en,
+        island,
+      }))
+  );
+
+  const getBeachSearchSuggestionsFromEntries = (
+    query: string,
+    entries: GlobalBeachSearchEntry[],
+    limit = 5
+  ): DirectorySearchSuggestion[] => (
+    entries
+      .map(entry => {
+        const beachScore = scoreSearchValues(query, entry.searchValues);
+        const regionScore = scoreSearchValues(query, entry.regionValues);
+        const currentRegionBonus = entry.island.id === selectedIsland?.id ? 3 : 0;
+        return {
+          ...entry,
+          beachScore,
+          score: beachScore + (regionScore >= 90 ? 4 : 0) + currentRegionBonus,
+        };
+      })
+      .filter(entry => entry.beachScore >= 76)
+      .sort((a, b) => {
+        if (b.score !== a.score) return b.score - a.score;
+        if (b.beach.rating !== a.beach.rating) return b.beach.rating - a.beach.rating;
+        return displayBeachName(a.beach.name, language).localeCompare(displayBeachName(b.beach.name, language));
+      })
+      .slice(0, limit)
+      .map(entry => ({
+        id: `beach-${entry.island.id}-${entry.beach.id}`,
+        type: 'beach' as const,
+        label: displayBeachName(entry.beach.name, language),
+        subtitle: entry.island.name[language] || entry.island.name.en,
+        island: entry.island,
+        beach: entry.beach,
+      }))
+  );
+
+  const mergeDirectorySearchSuggestions = (
+    regionSuggestions: DirectorySearchSuggestion[],
+    beachSuggestions: DirectorySearchSuggestion[]
+  ): DirectorySearchSuggestion[] => {
+    const seen = new Set<string>();
+    const merged: DirectorySearchSuggestion[] = [];
+
+    for (const suggestion of [...regionSuggestions, ...beachSuggestions]) {
+      if (seen.has(suggestion.id)) continue;
+      seen.add(suggestion.id);
+      merged.push(suggestion);
+      if (merged.length >= 8) break;
+    }
+
+    return merged;
+  };
+
+  const handleDirectorySearchSubmit = async () => {
+    const trimmedQuery = beachSearchQuery.trim();
+    const regionMatch = findSearchRegionMatch(beachSearchQuery);
+    let globalBeachMatch: GlobalBeachSearchMatch | null = null;
+
+    if (!regionMatch && trimmedQuery.length >= 3) {
+      try {
+        globalBeachMatch = await findGlobalBeachMatch(trimmedQuery);
+      } catch (error) {
+        console.warn('Global beach search failed.', error);
+      }
+    }
+
     trackEvent('search_used', undefined, {
       ...analyticsBaseParams,
       source: 'directory_home',
-      search_length: beachSearchQuery.trim().length,
+      search_length: trimmedQuery.length,
+      matched_region_id: regionMatch?.id,
+      matched_beach_id: globalBeachMatch?.beach.id,
+      matched_beach_region_id: globalBeachMatch?.island.id,
     });
+    if (regionMatch && regionMatch.id !== selectedIsland?.id) {
+      preserveSearchQueryOnRegionChangeRef.current = true;
+      handleRegionSelected(regionMatch, 'selector');
+      closeMobileBottomPanels();
+      scrollToMapSection();
+      return;
+    }
+    if (globalBeachMatch) {
+      setIsDirectoryMapFollowPaused(false);
+      setHighlightedMapBeachId(globalBeachMatch.beach.id);
+      handleAllBeachesPanelOpenChange(true);
+      if (globalBeachMatch.island.id !== selectedIsland?.id) {
+        cacheLoadedIsland(globalBeachMatch.island);
+        preserveSearchQueryOnRegionChangeRef.current = true;
+        handleRegionSelected(globalBeachMatch.island, 'selector');
+        return;
+      }
+      scrollToBeachResultsSection();
+      return;
+    }
     scrollToBeachResultsSection();
   };
+
+  const handleDirectorySearchSuggestionSelect = (suggestion: DirectorySearchSuggestion) => {
+    setDirectorySearchSuggestions([]);
+    setIsDirectorySearchSuggesting(false);
+    setBeachSearchQuery(suggestion.label);
+
+    trackEvent('search_used', undefined, {
+      ...analyticsBaseParams,
+      source: 'directory_search_suggestion',
+      suggestion_type: suggestion.type,
+      region_id: suggestion.island.id,
+      beach_id: suggestion.beach?.id,
+      search_length: beachSearchQuery.trim().length,
+    });
+
+    if (suggestion.type === 'region') {
+      preserveSearchQueryOnRegionChangeRef.current = true;
+      closeMobileBottomPanels();
+      if (suggestion.island.id !== selectedIsland?.id) {
+        handleRegionSelected(suggestion.island, 'selector');
+      }
+      scrollToMapSection();
+      return;
+    }
+
+    if (!suggestion.beach) return;
+
+    pendingDirectorySearchHighlightRef.current = suggestion.beach.id;
+    setIsDirectoryMapFollowPaused(false);
+
+    if (suggestion.island.id !== selectedIsland?.id) {
+      cacheLoadedIsland(suggestion.island);
+      preserveSearchQueryOnRegionChangeRef.current = true;
+      handleRegionSelected(suggestion.island, 'selector');
+      return;
+    }
+
+    setHighlightedMapBeachId(suggestion.beach.id);
+    handleAllBeachesPanelOpenChange(true);
+    scrollToBeachResultsSection();
+  };
+  const stretchMobileDirectoryMap = !isDesktopViewport && Boolean(calmAllAroundSummary?.isEveryBeachSuitable);
 
   const directoryMapPreview = selectedIsland && !isUnsafeWinter ? (
     <MapLoadBoundary
@@ -3289,6 +3982,7 @@ export const App: React.FC = () => {
           zoom={11}
           beaches={filteredMapSuitableBeaches}
           userLocation={userLocation}
+          userLocationAccuracy={userLocationAccuracy}
           onBeachClick={(b) => openBeachDetails(b, 'directory_home_map')}
           onVisibleBeachIdsChange={handleDesktopMapVisibleBeachIdsChange}
           windSpeed={forecast?.[selectedDayIndex]?.wind.speed}
@@ -3296,7 +3990,16 @@ export const App: React.FC = () => {
           windDirectionDeg={forecast?.[selectedDayIndex]?.wind.deg}
           language={language}
           selectedDate={selectedDayDate}
-          topBeachId={directoryTopBeach?.beach.id}
+          topBeachId={highlightedDirectoryTopBeachId}
+          highlightedBeachId={highlightedMapBeachId}
+          followHighlightedBeach={!isDirectoryMapFollowPaused}
+          fitBoundsToBeaches
+          fitBoundsBeaches={mapSuitableBeaches}
+          fitBoundsKey={selectedIsland.id}
+          onUserInteraction={handleDirectoryMapUserInteraction}
+          compactPreviewHeightClassName={stretchMobileDirectoryMap ? 'h-[calc(100dvh-24rem)] min-h-[24rem] max-h-[32rem]' : undefined}
+          enableScrollWheelZoom={isDesktopViewport}
+          isExposureLoading={isMapExposureLoading}
           compact
           preview
         />
@@ -3305,7 +4008,7 @@ export const App: React.FC = () => {
   ) : null;
 
   return (
-    <div className={`min-h-screen pb-28 md:pb-24 relative overflow-x-hidden transition-colors duration-500`}>
+    <div className="relative min-h-screen overflow-x-hidden transition-colors duration-500 md:pb-24">
       <div
         className={`atmosphere ${islandBackgroundCss ? 'cyclades-atmosphere' : ''}`}
         style={islandBackgroundCss ? ({ '--cyclades-bg': islandBackgroundCss } as React.CSSProperties) : undefined}
@@ -3334,6 +4037,10 @@ export const App: React.FC = () => {
               activeCategory={directoryActiveCategory}
               sortBy={sortBy}
               isMobileViewport={!isDesktopViewport}
+              isAllBeachesPanelOpen={isMobileAllBeachesPanelOpen}
+              onAllBeachesPanelOpenChange={handleAllBeachesPanelOpenChange}
+              isWeatherPanelOpen={isMobileWeatherPanelOpen}
+              onWeatherPanelOpenChange={handleWeatherPanelOpenChange}
               suitableDistanceSortActive={!isDesktopViewport && sortBy === 'protected' && mobileSuitableDistanceSort}
               preferences={preferences}
               activeFilters={selectedFilters}
@@ -3341,18 +4048,21 @@ export const App: React.FC = () => {
               advancedFilterResultCounts={desktopAdvancedFilterResultCounts}
               sortResultCounts={sortResultCounts}
               filteredResultCount={filteredBeaches.length}
+              searchSuggestions={directorySearchSuggestions}
+              isSearchSuggesting={isDirectorySearchSuggesting}
               protectedSortLabel={protectedSortLabel}
               islandBackground={islandBackground}
               mapPreview={directoryMapPreview}
-              suitableBeachCards={directorySuitableBeachCards}
+              topRecommendationCards={directoryTopRecommendationCards}
+              suitableBeachCards={directoryHomeSuitableBeachCards}
               suitableBeachTotalCount={directorySuitableBeachTotalCount}
-              showSuitableBeachSection={!(calmAllAroundSummary?.isEveryBeachSuitable ?? false)}
+              onActiveSuitableBeachChange={handleActiveDirectoryBeachChange}
+              showSuitableBeachSection={shouldShowDirectorySuitableSection}
               allBeachCards={directoryAllSourceBeaches}
               beachWeatherContexts={mapSuitableBeaches}
-              topBeachToday={directoryTopBeach}
-              topBeachDescription={directoryTopDescription}
-              topBeachTimingLabel={directoryTopTimingLabel}
-              conditionSummaryText={recommendationGeneralHelper}
+              topBeachToday={directoryTopRecommendationCards.length > 0 ? null : displayedDirectoryTopBeach}
+              topBeachDescription={directoryTopRecommendationCards.length > 0 || !displayedDirectoryTopBeach ? '' : directoryTopDescription}
+              topBeachTimingLabel={directoryTopRecommendationCards.length > 0 ? undefined : directoryTopTimingLabel}
               forecastDays={forecast || undefined}
               selectedDayIndex={selectedDayIndex}
               selectedForecast={selectedForecast}
@@ -3363,8 +4073,19 @@ export const App: React.FC = () => {
               onToggleFavorite={handleToggleFavorite}
               onSearchChange={setBeachSearchQuery}
               onSearchSubmit={handleDirectorySearchSubmit}
+              onSearchSuggestionSelect={handleDirectorySearchSuggestionSelect}
               onOpenFilters={() => setIsFilterModalOpen(true)}
               onOpenIslandSelector={() => setIsIslandSelectorOpen(true)}
+              onUseCurrentLocation={() => {
+                setBeachSearchQuery('');
+                void handleSelectNearest();
+              }}
+              onRequestUserLocation={() => {
+                void handleRequestUserLocation();
+              }}
+              hasUserLocation={Boolean(userLocation)}
+              isFindingCurrentLocation={isFindingNearest}
+              currentLocationError={findNearestError}
               onCategorySelect={handleDirectoryCategorySelect}
               onSortChange={handleSortChange}
               onAdvancedFilterToggle={handleToggleAdvancedFilter}
@@ -3445,31 +4166,33 @@ export const App: React.FC = () => {
                         decoding="async"
                         className="h-40 w-full object-cover sm:h-52 lg:h-60"
                       />
-                      <button
-                        type="button"
-                        onClick={(event) => {
-                          event.stopPropagation();
-                          trackEvent('navigation_clicked', headerTopBeach.beach.id, {
-                            ...analyticsBaseParams,
-                            beach_name: headerTopBeach.beach.name.en,
-                            source: 'top_recommendation_panel',
-                          });
-                          openNavigation(headerTopBeach.beach);
-                        }}
-                        className="absolute right-3 top-3 inline-flex min-h-11 min-w-11 items-center justify-center rounded-2xl bg-white/90 text-cyan-700 shadow-md shadow-sky-900/12 ring-1 ring-white/70 backdrop-blur-xl transition hover:bg-white hover:text-cyan-800 focus:outline-none focus-visible:ring-2 focus-visible:ring-cyan-500"
-                        aria-label={getLocalizedCopy(language, {
-                          en: `Navigate to ${headerTopBeachName}`,
-                          gr: `Πλοήγηση προς ${headerTopBeachName}`,
-                          fr: `Naviguer vers ${headerTopBeachName}`,
-                          de: `Zu ${headerTopBeachName} navigieren`,
-                          it: `Naviga verso ${headerTopBeachName}`,
-                        })}
-                        title={t.navigate}
-                      >
-                        <Navigation className="h-5 w-5" aria-hidden="true" />
-                      </button>
+                      {headerTopCanNavigate && (
+                        <button
+                          type="button"
+                          onClick={(event) => {
+                            event.stopPropagation();
+                            trackEvent('navigation_clicked', headerTopBeach.beach.id, {
+                              ...analyticsBaseParams,
+                              beach_name: headerTopBeach.beach.name.en,
+                              source: 'top_recommendation_panel',
+                            });
+                            openNavigation(headerTopBeach.beach);
+                          }}
+                          className="absolute right-3 top-3 inline-flex min-h-11 min-w-11 items-center justify-center rounded-2xl bg-white/90 text-cyan-700 shadow-md shadow-sky-900/12 ring-1 ring-white/70 backdrop-blur-xl transition hover:bg-white hover:text-cyan-800 focus:outline-none focus-visible:ring-2 focus-visible:ring-cyan-500"
+                          aria-label={getLocalizedCopy(language, {
+                            en: `Navigate to ${headerTopBeachName}`,
+      gr: `Πλοήγηση προς ${headerTopBeachName}`,
+                            fr: `Naviguer vers ${headerTopBeachName}`,
+                            de: `Zu ${headerTopBeachName} navigieren`,
+                            it: `Naviga verso ${headerTopBeachName}`,
+                          })}
+                          title={t.navigate}
+                        >
+                          <Navigation className="h-5 w-5" aria-hidden="true" />
+                        </button>
+                      )}
                     </div>
-                  ) : (
+                  ) : headerTopCanNavigate ? (
                     <div className="relative mx-auto flex h-11 w-24 items-center justify-center gap-2 rounded-xl bg-white/72 text-emerald-600 shadow-sm ring-1 ring-emerald-100/80">
                       <CheckCircle2 className="h-4 w-4 shrink-0" />
                       <button
@@ -3486,7 +4209,7 @@ export const App: React.FC = () => {
                         className="inline-flex h-9 w-9 items-center justify-center rounded-xl bg-cyan-600 text-white shadow-sm transition hover:bg-cyan-700 focus:outline-none focus-visible:ring-2 focus-visible:ring-cyan-500"
                         aria-label={getLocalizedCopy(language, {
                           en: `Navigate to ${headerTopBeachName}`,
-                          gr: `Πλοήγηση προς ${headerTopBeachName}`,
+      gr: `Πλοήγηση προς ${headerTopBeachName}`,
                           fr: `Naviguer vers ${headerTopBeachName}`,
                           de: `Zu ${headerTopBeachName} navigieren`,
                           it: `Naviga verso ${headerTopBeachName}`,
@@ -3496,7 +4219,7 @@ export const App: React.FC = () => {
                         <Navigation className="h-4 w-4" aria-hidden="true" />
                       </button>
                     </div>
-                  )}
+                  ) : null}
                   <div className="space-y-1.5">
                     <h2 className="mx-auto max-w-3xl truncate font-heading text-[1.55rem] font-extrabold leading-[1.16] text-slate-950 sm:text-[1.75rem]">
                       {headerTopBeachName}
@@ -3578,6 +4301,8 @@ export const App: React.FC = () => {
                       swimmingComfort={r.swimmingComfort}
                       canClaimWindProtection={r.canClaimWindProtection}
                       seaCalmClaimAllowed={r.seaCalmClaimAllowed}
+                      windSuitabilityText={describeSimpleWindSuitability(r.simpleWindSuitability, language)}
+                      windSuitabilityColor={r.simpleWindSuitability?.suitabilityColor}
                     />
                   </motion.div>
                 ))}
@@ -3587,7 +4312,7 @@ export const App: React.FC = () => {
         </section>
       )}
 
-      {showWindContextSummaryPanel && (
+      {isDesktopViewport && showWindContextSummaryPanel && (
         <section className="relative z-20 px-3 pb-3 pt-1 sm:px-4 sm:pb-5 sm:pt-0" aria-label={recommendationModeTitle}>
           <div className="mx-auto max-w-3xl rounded-[1.35rem] border border-white/70 bg-white/72 px-4 py-4 text-center shadow-sm shadow-sky-900/5 ring-1 ring-white/45 backdrop-blur-xl sm:px-5 sm:py-5">
             <h2 className="font-heading text-lg font-extrabold leading-tight text-slate-950 sm:text-2xl">
@@ -3625,7 +4350,12 @@ export const App: React.FC = () => {
                     windDirectionDeg={forecast?.[selectedDayIndex]?.wind.deg}
                     language={language}
                     selectedDate={selectedDayDate}
-                    topBeachId={directoryTopBeach?.beach.id}
+                    topBeachId={highlightedDirectoryTopBeachId}
+                    fitBoundsToBeaches
+                    fitBoundsBeaches={mapSuitableBeaches}
+                    fitBoundsKey={selectedIsland.id}
+                    enableScrollWheelZoom={isDesktopViewport}
+                    isExposureLoading={isMapExposureLoading}
                     preview
                   />
                 </Suspense>
@@ -3701,6 +4431,7 @@ export const App: React.FC = () => {
       )}
 
       {/* ===== MAIN CONTENT ===== */}
+      {shouldRenderMainShell && (
       <main className="max-w-7xl mx-auto px-3 sm:px-4 space-y-8 pb-[calc(6.5rem+env(safe-area-inset-bottom))] sm:space-y-16 md:pb-8 lg:space-y-8 relative z-10">
         <AnimatePresence initial={false} mode="sync">
             <motion.div
@@ -3767,7 +4498,7 @@ export const App: React.FC = () => {
                           onClick={() => openBeachDetails(r.beach, 'recommendation_card')}
                           todayScore={r.score}
                       variant="decision"
-                      recommendationRank={showStrongManageableSection ? i + 1 : i + 2}
+                      recommendationRank={showStrongManageableSection || !headerTopCandidate ? i + 1 : i + 2}
                       recommendationLabel={
                         recommendationDisplayMode === 'mild'
                           ? homeCopy.recommendationMode.mild.cardLabel[language]
@@ -3786,10 +4517,15 @@ export const App: React.FC = () => {
                           canClaimWindProtection={r.canClaimWindProtection}
                           seaCalmClaimAllowed={r.seaCalmClaimAllowed}
                           strongWindContext={isStrongRecommendationMode}
+                          windSuitabilityText={describeSimpleWindSuitability(r.simpleWindSuitability, language)}
+                          windSuitabilityColor={r.simpleWindSuitability?.suitabilityColor}
                         />
                       </motion.div>
                     ))}
                     </div>
+                    <p className="mx-auto mt-3 max-w-2xl px-1 text-center text-[11px] font-semibold leading-relaxed text-slate-500 sm:mt-4 sm:text-xs">
+                      Recommendations are indicative and based on available weather and beach data. Conditions may vary locally. Always follow local warnings and use personal judgment.
+                    </p>
                   </div>
                 </section>
               )}
@@ -3907,7 +4643,12 @@ export const App: React.FC = () => {
                             windDirectionDeg={forecast?.[selectedDayIndex]?.wind.deg}
                             language={language}
                             selectedDate={selectedDayDate}
-                            topBeachId={directoryTopBeach?.beach.id}
+                            topBeachId={highlightedDirectoryTopBeachId}
+                            fitBoundsToBeaches
+                            fitBoundsBeaches={mapSuitableBeaches}
+                            fitBoundsKey={selectedIsland.id}
+                            enableScrollWheelZoom={isDesktopViewport}
+                            isExposureLoading={isMapExposureLoading}
                             preview
                           />
                         </Suspense>
@@ -3933,13 +4674,11 @@ export const App: React.FC = () => {
                 </section>
               )}
 
-              {ENABLE_USAGE_INSIGHTS && (
+              {shouldRenderUsageInsights && (
                 <div ref={insightsSectionRef} className="min-h-1">
-                  {shouldLoadInsights && (
-                    <Suspense fallback={null}>
-                      <UsageInsights allBeaches={selectedIsland?.beaches || []} language={language} t={t} />
-                    </Suspense>
-                  )}
+                  <Suspense fallback={null}>
+                    <UsageInsights allBeaches={selectedIsland?.beaches || []} language={language} t={t} />
+                  </Suspense>
                 </div>
               )}
             </motion.div>
@@ -3947,6 +4686,7 @@ export const App: React.FC = () => {
 
         <LegalFooter language={language} />
       </main>
+      )}
 
       {/* ===== MOBILE BOTTOM NAVIGATION ===== */}
       <MobileBottomNav
@@ -4003,7 +4743,7 @@ export const App: React.FC = () => {
           <ChatbotModal
             isOpen={isChatOpen} onClose={() => setIsChatOpen(false)} messages={chatMessages}
             onSend={handleChatSend} t={t} isLoading={chatMessages.some(m => m.id.startsWith('bot-loading'))}
-            onNewChat={() => setChatMessages([])} suggestions={['Ποιες παραλίες είναι απάνεμες σήμερα;', 'Πού να πάω για snorkeling;']}
+            onNewChat={() => setChatMessages([])} suggestions={['Ποια παραλία είναι καλύτερη σήμερα;', 'Πού να πάω για snorkeling;']}
           />
         </Suspense>
       )}
@@ -4090,14 +4830,25 @@ export const App: React.FC = () => {
                 setMobileSuitableDistanceSort(s === 'protected' && Boolean(options?.distanceWithinSuitable));
                 handleSortChange(s);
                 setIsFilterModalOpen(false);
-                scrollToBeachResultsSection(s === 'protected' ? 'suitable' : 'all');
+                if (!isDesktopViewport) {
+                  handleAllBeachesPanelOpenChange(true);
+                } else {
+                  scrollToBeachResultsSection(s === 'protected' ? 'suitable' : 'all');
+                }
               }}
               onClose={() => setIsFilterModalOpen(false)}
               t={t}
-              isGettingLocation={false}
-              locationError={null}
+              language={language}
+              isGettingLocation={isFindingNearest}
+              locationError={findNearestError}
+              hasUserLocation={Boolean(userLocation)}
+              onRequestLocation={() => {
+                setBeachSearchQuery('');
+                void handleSelectNearest();
+              }}
               availableFilters={availableMobileFilterKeys}
               protectedSortLabel={protectedSortLabel}
+              showProtectedSort={!(calmAllAroundSummary?.isEveryBeachSuitable ?? false)}
               getResultCount={getMobileFilterModalResultCount}
               onResultCountChange={setFilterModalResultCount}
             />

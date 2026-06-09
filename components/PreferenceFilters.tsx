@@ -4,6 +4,7 @@ import { motion } from 'motion/react';
 import { VolumeX, BadgeCheck, Search, Waves, Droplets, Mountain, SlidersHorizontal, Users, MapPin, Flag } from 'lucide-react';
 import { UserPreferences } from '../types';
 import { getPreferenceFilterLabel, QUICK_PREFERENCE_FILTERS } from '../utils/preferenceFilterLabels';
+import { SandDotsIcon } from './BeachFeatureIcons';
 
 interface PreferenceFiltersProps {
   preferences: UserPreferences;
@@ -13,33 +14,13 @@ interface PreferenceFiltersProps {
   variant?: 'default' | 'panel';
 }
 
-const SandIcon: React.FC<{ size?: number }> = ({ size = 16 }) => (
-  <svg
-    width={size}
-    height={size}
-    viewBox="0 0 24 24"
-    fill="none"
-    stroke="currentColor"
-    strokeWidth="2"
-    strokeLinecap="round"
-    strokeLinejoin="round"
-    aria-hidden="true"
-  >
-    <path d="M3 16c3-3 6-3 9 0s6 3 9 0" />
-    <path d="M5 20c2-1.5 4-1.5 6 0s4 1.5 6 0" />
-    <path d="M7 11h.01" />
-    <path d="M12 8h.01" />
-    <path d="M17 11h.01" />
-  </svg>
-);
-
 export const PreferenceFilters: React.FC<PreferenceFiltersProps> = ({ preferences, onToggle, filterResultCounts, t, variant = 'default' }) => {
   const [showMoreFilters, setShowMoreFilters] = useState(false);
   const isPanel = variant === 'panel';
   const language = t.locale === 'el-GR' ? 'gr' : 'en';
   const icons: Partial<Record<keyof UserPreferences, React.ReactNode>> = {
     blueFlag2026: <Flag size={16} />,
-    sandy: <SandIcon size={16} />,
+    sandy: <SandDotsIcon size={16} />,
     pebbles: <Mountain size={16} />,
     quiet: <VolumeX size={16} />,
     beachBar: <BadgeCheck size={16} />,

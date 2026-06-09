@@ -1,21 +1,21 @@
 {
   "schemaVersion": 1,
-  "generatedAt": "2026-06-02T22:00:26.604Z",
+  "generatedAt": "2026-06-06T10:37:17.352Z",
   "purpose": "Offline directional geospatial exposure baseline for CalmBeach. Not user-facing proof of calm/protected conditions.",
   "source": {
     "landMask": {
       "name": "Natural Earth 1:10m land polygons",
       "url": "https://raw.githubusercontent.com/nvkelso/natural-earth-vector/master/geojson/ne_10m_land.geojson",
-      "license": "Public domain",
-      "confidence": "low",
-      "notes": "Baseline all-Greece land mask. Use OSM/coastline upgrades for high-detail island/cove decisions."
+      "license": "Public domain / open data",
+      "confidence": "medium",
+      "notes": "Baseline all-Greece land mask, refined by geometry-derived shoreline orientation and onshore/offshore reasoning. Supply --land-geojson for high-detail island/cove decisions."
     },
     "appBeachData": "/public/data/beaches/app/*.json"
   },
   "settings": {
     "maxFetchKm": 25,
-    "stepKm": 1,
-    "nearshoreLandGraceKm": 1,
+    "stepKm": 0.5,
+    "nearshoreLandGraceKm": 0.3,
     "nearshoreWaterSearchKm": 12,
     "nearshoreWaterSearchStepKm": 0.5,
     "fanAnglesDeg": [
@@ -34,12 +34,14 @@
       "SW",
       "W",
       "NW"
-    ]
+    ],
+    "maskSource": "Natural Earth 1:10m land polygons",
+    "maskConfidence": "medium"
   },
   "summary": {
     "regionCount": 110,
-    "beachCount": 2719,
-    "generatedProfiles": 2719,
+    "beachCount": 2715,
+    "generatedProfiles": 2715,
     "missingCoordinates": 0,
     "indexedLandPolygons": 125,
     "regions": {
@@ -50,44 +52,44 @@
         "missingCoordinates": 0,
         "sectors": {
           "N": {
-            "protected": 5,
-            "partial": 10,
-            "exposed": 0
+            "protected": 9,
+            "partial": 1,
+            "exposed": 5
           },
           "NE": {
-            "protected": 5,
-            "partial": 8,
-            "exposed": 2
-          },
-          "E": {
-            "protected": 5,
-            "partial": 7,
-            "exposed": 3
-          },
-          "SE": {
             "protected": 7,
             "partial": 4,
             "exposed": 4
           },
+          "E": {
+            "protected": 10,
+            "partial": 2,
+            "exposed": 3
+          },
+          "SE": {
+            "protected": 10,
+            "partial": 1,
+            "exposed": 4
+          },
           "S": {
-            "protected": 4,
-            "partial": 11,
-            "exposed": 0
+            "protected": 6,
+            "partial": 6,
+            "exposed": 3
           },
           "SW": {
-            "protected": 3,
-            "partial": 12,
-            "exposed": 0
+            "protected": 8,
+            "partial": 1,
+            "exposed": 6
           },
           "W": {
             "protected": 3,
-            "partial": 7,
-            "exposed": 5
+            "partial": 5,
+            "exposed": 7
           },
           "NW": {
-            "protected": 2,
-            "partial": 6,
-            "exposed": 7
+            "protected": 5,
+            "partial": 2,
+            "exposed": 8
           }
         }
       },
@@ -146,92 +148,92 @@
         "missingCoordinates": 0,
         "sectors": {
           "N": {
-            "protected": 13,
-            "partial": 12,
-            "exposed": 0
-          },
-          "NE": {
             "protected": 22,
             "partial": 3,
             "exposed": 0
           },
+          "NE": {
+            "protected": 24,
+            "partial": 1,
+            "exposed": 0
+          },
           "E": {
-            "protected": 18,
-            "partial": 7,
+            "protected": 19,
+            "partial": 6,
             "exposed": 0
           },
           "SE": {
-            "protected": 0,
-            "partial": 25,
-            "exposed": 0
+            "protected": 18,
+            "partial": 2,
+            "exposed": 5
           },
           "S": {
-            "protected": 0,
-            "partial": 4,
-            "exposed": 21
+            "protected": 3,
+            "partial": 2,
+            "exposed": 20
           },
           "SW": {
-            "protected": 0,
-            "partial": 10,
-            "exposed": 15
+            "protected": 1,
+            "partial": 3,
+            "exposed": 21
           },
           "W": {
-            "protected": 1,
-            "partial": 20,
-            "exposed": 4
+            "protected": 3,
+            "partial": 3,
+            "exposed": 19
           },
           "NW": {
-            "protected": 1,
-            "partial": 24,
-            "exposed": 0
+            "protected": 8,
+            "partial": 15,
+            "exposed": 2
           }
         }
       },
       "attica-east-attica-mainland": {
         "regionName": "East Attica",
-        "beachCount": 55,
-        "generatedProfiles": 55,
+        "beachCount": 54,
+        "generatedProfiles": 54,
         "missingCoordinates": 0,
         "sectors": {
           "N": {
-            "protected": 20,
-            "partial": 35,
-            "exposed": 0
+            "protected": 35,
+            "partial": 16,
+            "exposed": 3
           },
           "NE": {
-            "protected": 22,
-            "partial": 23,
-            "exposed": 10
-          },
-          "E": {
-            "protected": 16,
-            "partial": 25,
+            "protected": 24,
+            "partial": 16,
             "exposed": 14
           },
+          "E": {
+            "protected": 24,
+            "partial": 9,
+            "exposed": 21
+          },
           "SE": {
-            "protected": 7,
-            "partial": 39,
-            "exposed": 9
+            "protected": 18,
+            "partial": 16,
+            "exposed": 20
           },
           "S": {
-            "protected": 15,
-            "partial": 23,
-            "exposed": 17
+            "protected": 18,
+            "partial": 12,
+            "exposed": 24
           },
           "SW": {
-            "protected": 28,
-            "partial": 8,
-            "exposed": 19
+            "protected": 30,
+            "partial": 3,
+            "exposed": 21
           },
           "W": {
-            "protected": 29,
-            "partial": 16,
-            "exposed": 10
+            "protected": 32,
+            "partial": 10,
+            "exposed": 12
           },
           "NW": {
-            "protected": 23,
-            "partial": 32,
-            "exposed": 0
+            "protected": 39,
+            "partial": 14,
+            "exposed": 1
           }
         }
       },
@@ -242,18 +244,18 @@
         "missingCoordinates": 0,
         "sectors": {
           "N": {
-            "protected": 0,
-            "partial": 9,
-            "exposed": 0
+            "protected": 3,
+            "partial": 5,
+            "exposed": 1
           },
           "NE": {
-            "protected": 0,
-            "partial": 8,
+            "protected": 3,
+            "partial": 5,
             "exposed": 1
           },
           "E": {
-            "protected": 1,
-            "partial": 8,
+            "protected": 7,
+            "partial": 2,
             "exposed": 0
           },
           "SE": {
@@ -267,18 +269,18 @@
             "exposed": 3
           },
           "SW": {
-            "protected": 0,
-            "partial": 6,
+            "protected": 6,
+            "partial": 0,
             "exposed": 3
           },
           "W": {
-            "protected": 0,
-            "partial": 9,
+            "protected": 1,
+            "partial": 8,
             "exposed": 0
           },
           "NW": {
-            "protected": 0,
-            "partial": 9,
+            "protected": 3,
+            "partial": 6,
             "exposed": 0
           }
         }
@@ -290,44 +292,44 @@
         "missingCoordinates": 0,
         "sectors": {
           "N": {
-            "protected": 11,
-            "partial": 30,
-            "exposed": 1
+            "protected": 21,
+            "partial": 14,
+            "exposed": 7
           },
           "NE": {
-            "protected": 13,
-            "partial": 24,
-            "exposed": 5
+            "protected": 21,
+            "partial": 5,
+            "exposed": 16
           },
           "E": {
-            "protected": 10,
-            "partial": 9,
+            "protected": 13,
+            "partial": 6,
             "exposed": 23
           },
           "SE": {
-            "protected": 10,
-            "partial": 16,
-            "exposed": 16
+            "protected": 14,
+            "partial": 13,
+            "exposed": 15
           },
           "S": {
-            "protected": 12,
-            "partial": 20,
-            "exposed": 10
+            "protected": 19,
+            "partial": 12,
+            "exposed": 11
           },
           "SW": {
-            "protected": 18,
-            "partial": 3,
-            "exposed": 21
+            "protected": 22,
+            "partial": 6,
+            "exposed": 14
           },
           "W": {
-            "protected": 17,
-            "partial": 6,
-            "exposed": 19
+            "protected": 27,
+            "partial": 2,
+            "exposed": 13
           },
           "NW": {
-            "protected": 12,
-            "partial": 15,
-            "exposed": 15
+            "protected": 26,
+            "partial": 4,
+            "exposed": 12
           }
         }
       },
@@ -338,24 +340,24 @@
         "missingCoordinates": 0,
         "sectors": {
           "N": {
-            "protected": 0,
-            "partial": 4,
-            "exposed": 0
+            "protected": 1,
+            "partial": 1,
+            "exposed": 2
           },
           "NE": {
             "protected": 0,
-            "partial": 4,
-            "exposed": 0
+            "partial": 1,
+            "exposed": 3
           },
           "E": {
             "protected": 0,
-            "partial": 3,
-            "exposed": 1
+            "partial": 2,
+            "exposed": 2
           },
           "SE": {
-            "protected": 0,
-            "partial": 4,
-            "exposed": 0
+            "protected": 2,
+            "partial": 1,
+            "exposed": 1
           },
           "S": {
             "protected": 3,
@@ -368,8 +370,8 @@
             "exposed": 0
           },
           "W": {
-            "protected": 3,
-            "partial": 1,
+            "protected": 4,
+            "partial": 0,
             "exposed": 0
           },
           "NW": {
@@ -386,43 +388,43 @@
         "missingCoordinates": 0,
         "sectors": {
           "N": {
-            "protected": 3,
-            "partial": 2,
-            "exposed": 0
-          },
-          "NE": {
             "protected": 4,
             "partial": 1,
             "exposed": 0
           },
+          "NE": {
+            "protected": 5,
+            "partial": 0,
+            "exposed": 0
+          },
           "E": {
-            "protected": 0,
-            "partial": 5,
+            "protected": 2,
+            "partial": 3,
             "exposed": 0
           },
           "SE": {
-            "protected": 0,
-            "partial": 5,
-            "exposed": 0
+            "protected": 1,
+            "partial": 2,
+            "exposed": 2
           },
           "S": {
             "protected": 0,
-            "partial": 3,
-            "exposed": 2
+            "partial": 2,
+            "exposed": 3
           },
           "SW": {
             "protected": 1,
-            "partial": 4,
-            "exposed": 0
+            "partial": 0,
+            "exposed": 4
           },
           "W": {
-            "protected": 1,
-            "partial": 4,
-            "exposed": 0
+            "protected": 3,
+            "partial": 1,
+            "exposed": 1
           },
           "NW": {
-            "protected": 1,
-            "partial": 4,
+            "protected": 3,
+            "partial": 2,
             "exposed": 0
           }
         }
@@ -439,38 +441,38 @@
             "exposed": 1
           },
           "NE": {
+            "protected": 7,
+            "partial": 1,
+            "exposed": 3
+          },
+          "E": {
+            "protected": 3,
+            "partial": 2,
+            "exposed": 6
+          },
+          "SE": {
+            "protected": 4,
+            "partial": 4,
+            "exposed": 3
+          },
+          "S": {
             "protected": 5,
             "partial": 5,
             "exposed": 1
           },
-          "E": {
-            "protected": 0,
-            "partial": 7,
-            "exposed": 4
-          },
-          "SE": {
-            "protected": 0,
-            "partial": 11,
-            "exposed": 0
-          },
-          "S": {
-            "protected": 11,
-            "partial": 0,
-            "exposed": 0
-          },
           "SW": {
-            "protected": 11,
-            "partial": 0,
-            "exposed": 0
+            "protected": 5,
+            "partial": 5,
+            "exposed": 1
           },
           "W": {
-            "protected": 5,
-            "partial": 6,
+            "protected": 8,
+            "partial": 3,
             "exposed": 0
           },
           "NW": {
-            "protected": 1,
-            "partial": 10,
+            "protected": 6,
+            "partial": 5,
             "exposed": 0
           }
         }
@@ -482,29 +484,29 @@
         "missingCoordinates": 0,
         "sectors": {
           "N": {
-            "protected": 2,
-            "partial": 1,
+            "protected": 3,
+            "partial": 0,
             "exposed": 0
           },
           "NE": {
-            "protected": 2,
-            "partial": 1,
+            "protected": 3,
+            "partial": 0,
             "exposed": 0
           },
           "E": {
-            "protected": 0,
-            "partial": 3,
+            "protected": 2,
+            "partial": 1,
             "exposed": 0
           },
           "SE": {
             "protected": 0,
-            "partial": 3,
-            "exposed": 0
+            "partial": 2,
+            "exposed": 1
           },
           "S": {
             "protected": 0,
-            "partial": 3,
-            "exposed": 0
+            "partial": 0,
+            "exposed": 3
           },
           "SW": {
             "protected": 0,
@@ -513,12 +515,12 @@
           },
           "W": {
             "protected": 0,
-            "partial": 2,
-            "exposed": 1
+            "partial": 3,
+            "exposed": 0
           },
           "NW": {
-            "protected": 0,
-            "partial": 3,
+            "protected": 3,
+            "partial": 0,
             "exposed": 0
           }
         }
@@ -530,44 +532,44 @@
         "missingCoordinates": 0,
         "sectors": {
           "N": {
-            "protected": 3,
-            "partial": 9,
+            "protected": 6,
+            "partial": 6,
             "exposed": 0
           },
           "NE": {
-            "protected": 4,
-            "partial": 8,
-            "exposed": 0
+            "protected": 6,
+            "partial": 3,
+            "exposed": 3
           },
           "E": {
+            "protected": 7,
+            "partial": 0,
+            "exposed": 5
+          },
+          "SE": {
+            "protected": 4,
+            "partial": 5,
+            "exposed": 3
+          },
+          "S": {
+            "protected": 6,
+            "partial": 1,
+            "exposed": 5
+          },
+          "SW": {
+            "protected": 7,
+            "partial": 1,
+            "exposed": 4
+          },
+          "W": {
             "protected": 5,
             "partial": 2,
             "exposed": 5
           },
-          "SE": {
-            "protected": 0,
-            "partial": 8,
-            "exposed": 4
-          },
-          "S": {
-            "protected": 3,
-            "partial": 3,
-            "exposed": 6
-          },
-          "SW": {
-            "protected": 3,
-            "partial": 9,
-            "exposed": 0
-          },
-          "W": {
-            "protected": 2,
-            "partial": 10,
-            "exposed": 0
-          },
           "NW": {
-            "protected": 2,
-            "partial": 6,
-            "exposed": 4
+            "protected": 4,
+            "partial": 5,
+            "exposed": 3
           }
         }
       },
@@ -578,13 +580,13 @@
         "missingCoordinates": 0,
         "sectors": {
           "N": {
-            "protected": 6,
-            "partial": 0,
+            "protected": 3,
+            "partial": 3,
             "exposed": 0
           },
           "NE": {
-            "protected": 5,
-            "partial": 1,
+            "protected": 6,
+            "partial": 0,
             "exposed": 0
           },
           "E": {
@@ -593,29 +595,29 @@
             "exposed": 0
           },
           "SE": {
-            "protected": 4,
+            "protected": 3,
             "partial": 1,
-            "exposed": 1
+            "exposed": 2
           },
           "S": {
-            "protected": 4,
+            "protected": 3,
             "partial": 2,
-            "exposed": 0
+            "exposed": 1
           },
           "SW": {
             "protected": 1,
-            "partial": 5,
-            "exposed": 0
+            "partial": 4,
+            "exposed": 1
           },
           "W": {
-            "protected": 1,
-            "partial": 5,
-            "exposed": 0
+            "protected": 2,
+            "partial": 3,
+            "exposed": 1
           },
           "NW": {
             "protected": 3,
-            "partial": 3,
-            "exposed": 0
+            "partial": 2,
+            "exposed": 1
           }
         }
       },
@@ -626,44 +628,44 @@
         "missingCoordinates": 0,
         "sectors": {
           "N": {
-            "protected": 38,
-            "partial": 52,
-            "exposed": 32
+            "protected": 59,
+            "partial": 27,
+            "exposed": 36
           },
           "NE": {
-            "protected": 31,
-            "partial": 38,
-            "exposed": 53
+            "protected": 44,
+            "partial": 22,
+            "exposed": 56
           },
           "E": {
-            "protected": 33,
-            "partial": 57,
-            "exposed": 32
+            "protected": 41,
+            "partial": 36,
+            "exposed": 45
           },
           "SE": {
-            "protected": 24,
-            "partial": 81,
-            "exposed": 17
+            "protected": 56,
+            "partial": 33,
+            "exposed": 33
           },
           "S": {
-            "protected": 52,
-            "partial": 46,
-            "exposed": 24
+            "protected": 71,
+            "partial": 24,
+            "exposed": 27
           },
           "SW": {
-            "protected": 75,
-            "partial": 35,
-            "exposed": 12
+            "protected": 81,
+            "partial": 17,
+            "exposed": 24
           },
           "W": {
-            "protected": 62,
-            "partial": 57,
-            "exposed": 3
+            "protected": 80,
+            "partial": 26,
+            "exposed": 16
           },
           "NW": {
-            "protected": 44,
-            "partial": 71,
-            "exposed": 7
+            "protected": 66,
+            "partial": 32,
+            "exposed": 24
           }
         }
       },
@@ -679,34 +681,34 @@
             "exposed": 0
           },
           "NE": {
-            "protected": 7,
-            "partial": 12,
+            "protected": 9,
+            "partial": 10,
             "exposed": 0
           },
           "E": {
-            "protected": 2,
-            "partial": 17,
-            "exposed": 0
+            "protected": 7,
+            "partial": 11,
+            "exposed": 1
           },
           "SE": {
-            "protected": 0,
-            "partial": 18,
-            "exposed": 1
+            "protected": 3,
+            "partial": 10,
+            "exposed": 6
           },
           "S": {
-            "protected": 1,
-            "partial": 16,
-            "exposed": 2
+            "protected": 5,
+            "partial": 8,
+            "exposed": 6
           },
           "SW": {
-            "protected": 4,
-            "partial": 14,
-            "exposed": 1
+            "protected": 7,
+            "partial": 8,
+            "exposed": 4
           },
           "W": {
-            "protected": 8,
-            "partial": 11,
-            "exposed": 0
+            "protected": 9,
+            "partial": 9,
+            "exposed": 1
           },
           "NW": {
             "protected": 12,
@@ -723,8 +725,8 @@
         "sectors": {
           "N": {
             "protected": 2,
-            "partial": 14,
-            "exposed": 0
+            "partial": 9,
+            "exposed": 5
           },
           "NE": {
             "protected": 3,
@@ -732,19 +734,19 @@
             "exposed": 0
           },
           "E": {
-            "protected": 5,
-            "partial": 11,
-            "exposed": 0
+            "protected": 6,
+            "partial": 7,
+            "exposed": 3
           },
           "SE": {
-            "protected": 8,
-            "partial": 8,
+            "protected": 11,
+            "partial": 5,
             "exposed": 0
           },
           "S": {
-            "protected": 12,
-            "partial": 4,
-            "exposed": 0
+            "protected": 14,
+            "partial": 1,
+            "exposed": 1
           },
           "SW": {
             "protected": 13,
@@ -752,14 +754,14 @@
             "exposed": 0
           },
           "W": {
-            "protected": 4,
-            "partial": 12,
+            "protected": 11,
+            "partial": 5,
             "exposed": 0
           },
           "NW": {
-            "protected": 2,
-            "partial": 14,
-            "exposed": 0
+            "protected": 5,
+            "partial": 7,
+            "exposed": 4
           }
         }
       },
@@ -770,43 +772,43 @@
         "missingCoordinates": 0,
         "sectors": {
           "N": {
-            "protected": 6,
-            "partial": 6,
-            "exposed": 9
+            "protected": 7,
+            "partial": 7,
+            "exposed": 7
           },
           "NE": {
+            "protected": 10,
+            "partial": 3,
+            "exposed": 8
+          },
+          "E": {
+            "protected": 12,
+            "partial": 0,
+            "exposed": 9
+          },
+          "SE": {
+            "protected": 11,
+            "partial": 5,
+            "exposed": 5
+          },
+          "S": {
+            "protected": 13,
+            "partial": 3,
+            "exposed": 5
+          },
+          "SW": {
             "protected": 8,
             "partial": 3,
             "exposed": 10
           },
-          "E": {
-            "protected": 8,
-            "partial": 4,
-            "exposed": 9
-          },
-          "SE": {
-            "protected": 7,
-            "partial": 12,
-            "exposed": 2
-          },
-          "S": {
-            "protected": 5,
-            "partial": 12,
-            "exposed": 4
-          },
-          "SW": {
-            "protected": 8,
-            "partial": 4,
-            "exposed": 9
-          },
           "W": {
             "protected": 8,
-            "partial": 5,
-            "exposed": 8
+            "partial": 3,
+            "exposed": 10
           },
           "NW": {
-            "protected": 6,
-            "partial": 9,
+            "protected": 9,
+            "partial": 6,
             "exposed": 6
           }
         }
@@ -818,13 +820,13 @@
         "missingCoordinates": 0,
         "sectors": {
           "N": {
-            "protected": 7,
-            "partial": 0,
+            "protected": 6,
+            "partial": 1,
             "exposed": 0
           },
           "NE": {
-            "protected": 5,
-            "partial": 2,
+            "protected": 7,
+            "partial": 0,
             "exposed": 0
           },
           "E": {
@@ -834,27 +836,27 @@
           },
           "SE": {
             "protected": 1,
-            "partial": 6,
-            "exposed": 0
+            "partial": 4,
+            "exposed": 2
           },
           "S": {
             "protected": 1,
-            "partial": 6,
-            "exposed": 0
+            "partial": 4,
+            "exposed": 2
           },
           "SW": {
-            "protected": 0,
-            "partial": 6,
-            "exposed": 1
+            "protected": 1,
+            "partial": 3,
+            "exposed": 3
           },
           "W": {
-            "protected": 1,
-            "partial": 6,
-            "exposed": 0
+            "protected": 3,
+            "partial": 3,
+            "exposed": 1
           },
           "NW": {
-            "protected": 3,
-            "partial": 4,
+            "protected": 6,
+            "partial": 1,
             "exposed": 0
           }
         }
@@ -866,44 +868,44 @@
         "missingCoordinates": 0,
         "sectors": {
           "N": {
-            "protected": 44,
-            "partial": 80,
-            "exposed": 1
+            "protected": 55,
+            "partial": 57,
+            "exposed": 13
           },
           "NE": {
-            "protected": 43,
-            "partial": 72,
-            "exposed": 10
+            "protected": 49,
+            "partial": 23,
+            "exposed": 53
           },
           "E": {
-            "protected": 29,
-            "partial": 61,
-            "exposed": 35
+            "protected": 44,
+            "partial": 28,
+            "exposed": 53
           },
           "SE": {
-            "protected": 12,
-            "partial": 92,
-            "exposed": 21
+            "protected": 56,
+            "partial": 43,
+            "exposed": 26
           },
           "S": {
-            "protected": 56,
-            "partial": 47,
-            "exposed": 22
+            "protected": 67,
+            "partial": 24,
+            "exposed": 34
           },
           "SW": {
-            "protected": 66,
-            "partial": 38,
-            "exposed": 21
+            "protected": 75,
+            "partial": 18,
+            "exposed": 32
           },
           "W": {
-            "protected": 59,
-            "partial": 46,
-            "exposed": 20
+            "protected": 77,
+            "partial": 19,
+            "exposed": 29
           },
           "NW": {
-            "protected": 26,
-            "partial": 96,
-            "exposed": 3
+            "protected": 67,
+            "partial": 49,
+            "exposed": 9
           }
         }
       },
@@ -914,33 +916,33 @@
         "missingCoordinates": 0,
         "sectors": {
           "N": {
-            "protected": 0,
-            "partial": 8,
+            "protected": 2,
+            "partial": 6,
             "exposed": 0
           },
           "NE": {
             "protected": 0,
-            "partial": 3,
-            "exposed": 5
+            "partial": 0,
+            "exposed": 8
           },
           "E": {
             "protected": 0,
-            "partial": 3,
-            "exposed": 5
+            "partial": 0,
+            "exposed": 8
           },
           "SE": {
             "protected": 0,
-            "partial": 6,
-            "exposed": 2
+            "partial": 5,
+            "exposed": 3
           },
           "S": {
-            "protected": 5,
-            "partial": 3,
+            "protected": 6,
+            "partial": 2,
             "exposed": 0
           },
           "SW": {
-            "protected": 7,
-            "partial": 1,
+            "protected": 8,
+            "partial": 0,
             "exposed": 0
           },
           "W": {
@@ -949,8 +951,8 @@
             "exposed": 0
           },
           "NW": {
-            "protected": 3,
-            "partial": 5,
+            "protected": 8,
+            "partial": 0,
             "exposed": 0
           }
         }
@@ -962,43 +964,43 @@
         "missingCoordinates": 0,
         "sectors": {
           "N": {
-            "protected": 7,
-            "partial": 9,
+            "protected": 9,
+            "partial": 7,
             "exposed": 0
           },
           "NE": {
-            "protected": 5,
-            "partial": 11,
-            "exposed": 0
+            "protected": 7,
+            "partial": 4,
+            "exposed": 5
           },
           "E": {
-            "protected": 4,
-            "partial": 8,
-            "exposed": 4
+            "protected": 6,
+            "partial": 1,
+            "exposed": 9
           },
           "SE": {
-            "protected": 1,
-            "partial": 14,
-            "exposed": 1
+            "protected": 6,
+            "partial": 4,
+            "exposed": 6
           },
           "S": {
             "protected": 7,
-            "partial": 5,
-            "exposed": 4
+            "partial": 4,
+            "exposed": 5
           },
           "SW": {
-            "protected": 8,
-            "partial": 5,
-            "exposed": 3
+            "protected": 10,
+            "partial": 1,
+            "exposed": 5
           },
           "W": {
-            "protected": 9,
-            "partial": 6,
+            "protected": 10,
+            "partial": 5,
             "exposed": 1
           },
           "NW": {
-            "protected": 6,
-            "partial": 10,
+            "protected": 10,
+            "partial": 6,
             "exposed": 0
           }
         }
@@ -1010,44 +1012,44 @@
         "missingCoordinates": 0,
         "sectors": {
           "N": {
-            "protected": 41,
-            "partial": 23,
-            "exposed": 20
+            "protected": 44,
+            "partial": 9,
+            "exposed": 31
           },
           "NE": {
-            "protected": 48,
-            "partial": 19,
-            "exposed": 17
+            "protected": 49,
+            "partial": 10,
+            "exposed": 25
           },
           "E": {
-            "protected": 19,
-            "partial": 60,
-            "exposed": 5
+            "protected": 40,
+            "partial": 35,
+            "exposed": 9
           },
           "SE": {
-            "protected": 34,
-            "partial": 15,
-            "exposed": 35
+            "protected": 36,
+            "partial": 10,
+            "exposed": 38
           },
           "S": {
-            "protected": 33,
-            "partial": 13,
+            "protected": 39,
+            "partial": 7,
             "exposed": 38
           },
           "SW": {
-            "protected": 31,
-            "partial": 10,
-            "exposed": 43
+            "protected": 36,
+            "partial": 11,
+            "exposed": 37
           },
           "W": {
-            "protected": 13,
-            "partial": 61,
-            "exposed": 10
+            "protected": 34,
+            "partial": 36,
+            "exposed": 14
           },
           "NW": {
-            "protected": 40,
-            "partial": 25,
-            "exposed": 19
+            "protected": 47,
+            "partial": 13,
+            "exposed": 24
           }
         }
       },
@@ -1058,28 +1060,28 @@
         "missingCoordinates": 0,
         "sectors": {
           "N": {
-            "protected": 26,
-            "partial": 9,
-            "exposed": 17
+            "protected": 30,
+            "partial": 4,
+            "exposed": 18
           },
           "NE": {
-            "protected": 30,
-            "partial": 3,
+            "protected": 32,
+            "partial": 1,
             "exposed": 19
           },
           "E": {
-            "protected": 7,
-            "partial": 45,
-            "exposed": 0
+            "protected": 12,
+            "partial": 31,
+            "exposed": 9
           },
           "SE": {
-            "protected": 16,
-            "partial": 10,
+            "protected": 23,
+            "partial": 3,
             "exposed": 26
           },
           "S": {
-            "protected": 21,
-            "partial": 5,
+            "protected": 22,
+            "partial": 4,
             "exposed": 26
           },
           "SW": {
@@ -1088,14 +1090,14 @@
             "exposed": 29
           },
           "W": {
-            "protected": 9,
-            "partial": 37,
+            "protected": 26,
+            "partial": 20,
             "exposed": 6
           },
           "NW": {
-            "protected": 27,
-            "partial": 15,
-            "exposed": 10
+            "protected": 29,
+            "partial": 9,
+            "exposed": 14
           }
         }
       },
@@ -1106,44 +1108,44 @@
         "missingCoordinates": 0,
         "sectors": {
           "N": {
-            "protected": 24,
-            "partial": 24,
-            "exposed": 11
+            "protected": 33,
+            "partial": 11,
+            "exposed": 15
           },
           "NE": {
-            "protected": 10,
-            "partial": 20,
-            "exposed": 29
+            "protected": 17,
+            "partial": 6,
+            "exposed": 36
           },
           "E": {
-            "protected": 6,
-            "partial": 29,
-            "exposed": 24
+            "protected": 15,
+            "partial": 15,
+            "exposed": 29
           },
           "SE": {
-            "protected": 13,
-            "partial": 21,
-            "exposed": 25
+            "protected": 16,
+            "partial": 17,
+            "exposed": 26
           },
           "S": {
-            "protected": 20,
-            "partial": 14,
-            "exposed": 25
+            "protected": 29,
+            "partial": 7,
+            "exposed": 23
           },
           "SW": {
-            "protected": 23,
-            "partial": 25,
-            "exposed": 11
+            "protected": 42,
+            "partial": 4,
+            "exposed": 13
           },
           "W": {
-            "protected": 28,
-            "partial": 30,
+            "protected": 40,
+            "partial": 18,
             "exposed": 1
           },
           "NW": {
-            "protected": 43,
-            "partial": 7,
-            "exposed": 9
+            "protected": 44,
+            "partial": 3,
+            "exposed": 12
           }
         }
       },
@@ -1164,14 +1166,14 @@
             "exposed": 11
           },
           "E": {
-            "protected": 13,
-            "partial": 31,
+            "protected": 26,
+            "partial": 18,
             "exposed": 0
           },
           "SE": {
-            "protected": 11,
-            "partial": 20,
-            "exposed": 13
+            "protected": 12,
+            "partial": 16,
+            "exposed": 16
           },
           "S": {
             "protected": 11,
@@ -1179,18 +1181,18 @@
             "exposed": 33
           },
           "SW": {
-            "protected": 8,
-            "partial": 3,
+            "protected": 11,
+            "partial": 0,
             "exposed": 33
           },
           "W": {
-            "protected": 0,
-            "partial": 38,
-            "exposed": 6
+            "protected": 8,
+            "partial": 22,
+            "exposed": 14
           },
           "NW": {
-            "protected": 22,
-            "partial": 12,
+            "protected": 30,
+            "partial": 4,
             "exposed": 10
           }
         }
@@ -1202,43 +1204,43 @@
         "missingCoordinates": 0,
         "sectors": {
           "N": {
-            "protected": 1,
-            "partial": 2,
+            "protected": 2,
+            "partial": 1,
             "exposed": 6
           },
           "NE": {
-            "protected": 0,
-            "partial": 2,
-            "exposed": 7
+            "protected": 2,
+            "partial": 1,
+            "exposed": 6
           },
           "E": {
-            "protected": 1,
-            "partial": 3,
-            "exposed": 5
+            "protected": 4,
+            "partial": 4,
+            "exposed": 1
           },
           "SE": {
-            "protected": 4,
-            "partial": 2,
+            "protected": 6,
+            "partial": 0,
             "exposed": 3
           },
           "S": {
-            "protected": 5,
-            "partial": 2,
+            "protected": 7,
+            "partial": 0,
             "exposed": 2
           },
           "SW": {
+            "protected": 7,
+            "partial": 0,
+            "exposed": 2
+          },
+          "W": {
             "protected": 2,
             "partial": 4,
             "exposed": 3
           },
-          "W": {
-            "protected": 1,
-            "partial": 2,
-            "exposed": 6
-          },
           "NW": {
-            "protected": 2,
-            "partial": 1,
+            "protected": 3,
+            "partial": 0,
             "exposed": 6
           }
         }
@@ -1260,14 +1262,14 @@
             "exposed": 0
           },
           "E": {
-            "protected": 0,
-            "partial": 4,
+            "protected": 3,
+            "partial": 1,
             "exposed": 0
           },
           "SE": {
             "protected": 0,
-            "partial": 2,
-            "exposed": 2
+            "partial": 0,
+            "exposed": 4
           },
           "S": {
             "protected": 0,
@@ -1285,8 +1287,8 @@
             "exposed": 0
           },
           "NW": {
-            "protected": 3,
-            "partial": 1,
+            "protected": 4,
+            "partial": 0,
             "exposed": 0
           }
         }
@@ -1298,43 +1300,43 @@
         "missingCoordinates": 0,
         "sectors": {
           "N": {
-            "protected": 14,
-            "partial": 1,
+            "protected": 13,
+            "partial": 2,
             "exposed": 0
           },
           "NE": {
-            "protected": 6,
-            "partial": 9,
+            "protected": 11,
+            "partial": 4,
             "exposed": 0
           },
           "E": {
-            "protected": 0,
-            "partial": 14,
-            "exposed": 1
+            "protected": 4,
+            "partial": 4,
+            "exposed": 7
           },
           "SE": {
             "protected": 0,
-            "partial": 10,
-            "exposed": 5
+            "partial": 5,
+            "exposed": 10
           },
           "S": {
-            "protected": 1,
-            "partial": 6,
-            "exposed": 8
+            "protected": 2,
+            "partial": 1,
+            "exposed": 12
           },
           "SW": {
-            "protected": 3,
-            "partial": 11,
-            "exposed": 1
+            "protected": 5,
+            "partial": 7,
+            "exposed": 3
           },
           "W": {
-            "protected": 8,
-            "partial": 7,
+            "protected": 11,
+            "partial": 4,
             "exposed": 0
           },
           "NW": {
-            "protected": 12,
-            "partial": 3,
+            "protected": 15,
+            "partial": 0,
             "exposed": 0
           }
         }
@@ -1356,14 +1358,14 @@
             "exposed": 0
           },
           "E": {
-            "protected": 1,
-            "partial": 3,
+            "protected": 4,
+            "partial": 0,
             "exposed": 0
           },
           "SE": {
             "protected": 0,
-            "partial": 1,
-            "exposed": 3
+            "partial": 2,
+            "exposed": 2
           },
           "S": {
             "protected": 0,
@@ -1381,8 +1383,8 @@
             "exposed": 2
           },
           "NW": {
-            "protected": 1,
-            "partial": 3,
+            "protected": 4,
+            "partial": 0,
             "exposed": 0
           }
         }
@@ -1399,14 +1401,14 @@
             "exposed": 0
           },
           "NE": {
-            "protected": 1,
-            "partial": 2,
+            "protected": 3,
+            "partial": 0,
             "exposed": 0
           },
           "E": {
             "protected": 1,
-            "partial": 0,
-            "exposed": 2
+            "partial": 2,
+            "exposed": 0
           },
           "SE": {
             "protected": 0,
@@ -1424,13 +1426,13 @@
             "exposed": 3
           },
           "W": {
-            "protected": 0,
+            "protected": 1,
             "partial": 1,
-            "exposed": 2
+            "exposed": 1
           },
           "NW": {
-            "protected": 1,
-            "partial": 2,
+            "protected": 2,
+            "partial": 1,
             "exposed": 0
           }
         }
@@ -1442,44 +1444,44 @@
         "missingCoordinates": 0,
         "sectors": {
           "N": {
-            "protected": 26,
-            "partial": 31,
+            "protected": 32,
+            "partial": 25,
             "exposed": 0
           },
           "NE": {
-            "protected": 24,
-            "partial": 31,
-            "exposed": 2
+            "protected": 41,
+            "partial": 1,
+            "exposed": 15
           },
           "E": {
-            "protected": 22,
-            "partial": 18,
-            "exposed": 17
+            "protected": 31,
+            "partial": 14,
+            "exposed": 12
           },
           "SE": {
-            "protected": 17,
-            "partial": 25,
+            "protected": 33,
+            "partial": 9,
             "exposed": 15
           },
           "S": {
-            "protected": 20,
-            "partial": 9,
-            "exposed": 28
+            "protected": 25,
+            "partial": 7,
+            "exposed": 25
           },
           "SW": {
-            "protected": 18,
-            "partial": 9,
-            "exposed": 30
+            "protected": 17,
+            "partial": 13,
+            "exposed": 27
           },
           "W": {
-            "protected": 12,
-            "partial": 19,
-            "exposed": 26
+            "protected": 26,
+            "partial": 3,
+            "exposed": 28
           },
           "NW": {
-            "protected": 15,
-            "partial": 37,
-            "exposed": 5
+            "protected": 22,
+            "partial": 19,
+            "exposed": 16
           }
         }
       },
@@ -1495,8 +1497,8 @@
             "exposed": 0
           },
           "NE": {
-            "protected": 1,
-            "partial": 1,
+            "protected": 2,
+            "partial": 0,
             "exposed": 0
           },
           "E": {
@@ -1520,8 +1522,8 @@
             "exposed": 0
           },
           "W": {
-            "protected": 1,
-            "partial": 1,
+            "protected": 2,
+            "partial": 0,
             "exposed": 0
           },
           "NW": {
@@ -1538,13 +1540,13 @@
         "missingCoordinates": 0,
         "sectors": {
           "N": {
-            "protected": 0,
-            "partial": 2,
+            "protected": 1,
+            "partial": 1,
             "exposed": 0
           },
           "NE": {
-            "protected": 0,
-            "partial": 2,
+            "protected": 1,
+            "partial": 1,
             "exposed": 0
           },
           "E": {
@@ -1554,8 +1556,8 @@
           },
           "SE": {
             "protected": 0,
-            "partial": 2,
-            "exposed": 0
+            "partial": 1,
+            "exposed": 1
           },
           "S": {
             "protected": 0,
@@ -1568,13 +1570,13 @@
             "exposed": 0
           },
           "W": {
-            "protected": 0,
-            "partial": 2,
+            "protected": 1,
+            "partial": 1,
             "exposed": 0
           },
           "NW": {
-            "protected": 0,
-            "partial": 2,
+            "protected": 1,
+            "partial": 1,
             "exposed": 0
           }
         }
@@ -1586,44 +1588,44 @@
         "missingCoordinates": 0,
         "sectors": {
           "N": {
-            "protected": 15,
-            "partial": 11,
+            "protected": 24,
+            "partial": 2,
             "exposed": 0
           },
           "NE": {
-            "protected": 23,
-            "partial": 3,
+            "protected": 25,
+            "partial": 1,
             "exposed": 0
           },
           "E": {
-            "protected": 16,
-            "partial": 10,
+            "protected": 24,
+            "partial": 2,
             "exposed": 0
           },
           "SE": {
-            "protected": 3,
-            "partial": 23,
-            "exposed": 0
+            "protected": 8,
+            "partial": 15,
+            "exposed": 3
           },
           "S": {
             "protected": 0,
-            "partial": 9,
-            "exposed": 17
+            "partial": 7,
+            "exposed": 19
           },
           "SW": {
             "protected": 0,
-            "partial": 10,
-            "exposed": 16
+            "partial": 0,
+            "exposed": 26
           },
           "W": {
             "protected": 0,
-            "partial": 9,
-            "exposed": 17
+            "partial": 7,
+            "exposed": 19
           },
           "NW": {
-            "protected": 5,
-            "partial": 21,
-            "exposed": 0
+            "protected": 10,
+            "partial": 15,
+            "exposed": 1
           }
         }
       },
@@ -1634,44 +1636,44 @@
         "missingCoordinates": 0,
         "sectors": {
           "N": {
-            "protected": 23,
-            "partial": 16,
+            "protected": 36,
+            "partial": 3,
             "exposed": 0
           },
           "NE": {
-            "protected": 38,
-            "partial": 1,
+            "protected": 37,
+            "partial": 2,
             "exposed": 0
           },
           "E": {
-            "protected": 35,
-            "partial": 4,
+            "protected": 39,
+            "partial": 0,
             "exposed": 0
           },
           "SE": {
-            "protected": 10,
-            "partial": 29,
+            "protected": 27,
+            "partial": 12,
             "exposed": 0
           },
           "S": {
-            "protected": 6,
-            "partial": 26,
-            "exposed": 7
+            "protected": 3,
+            "partial": 19,
+            "exposed": 17
           },
           "SW": {
             "protected": 2,
-            "partial": 31,
-            "exposed": 6
+            "partial": 5,
+            "exposed": 32
           },
           "W": {
-            "protected": 0,
-            "partial": 37,
-            "exposed": 2
+            "protected": 1,
+            "partial": 7,
+            "exposed": 31
           },
           "NW": {
-            "protected": 1,
-            "partial": 38,
-            "exposed": 0
+            "protected": 11,
+            "partial": 22,
+            "exposed": 6
           }
         }
       },
@@ -1683,38 +1685,38 @@
         "sectors": {
           "N": {
             "protected": 0,
-            "partial": 13,
-            "exposed": 0
-          },
-          "NE": {
-            "protected": 0,
-            "partial": 13,
-            "exposed": 0
-          },
-          "E": {
-            "protected": 0,
-            "partial": 10,
-            "exposed": 3
-          },
-          "SE": {
-            "protected": 0,
-            "partial": 10,
-            "exposed": 3
-          },
-          "S": {
-            "protected": 0,
-            "partial": 8,
-            "exposed": 5
-          },
-          "SW": {
-            "protected": 0,
             "partial": 0,
             "exposed": 13
           },
-          "W": {
+          "NE": {
             "protected": 0,
+            "partial": 6,
+            "exposed": 7
+          },
+          "E": {
+            "protected": 2,
             "partial": 3,
-            "exposed": 10
+            "exposed": 8
+          },
+          "SE": {
+            "protected": 5,
+            "partial": 8,
+            "exposed": 0
+          },
+          "S": {
+            "protected": 13,
+            "partial": 0,
+            "exposed": 0
+          },
+          "SW": {
+            "protected": 11,
+            "partial": 2,
+            "exposed": 0
+          },
+          "W": {
+            "protected": 8,
+            "partial": 3,
+            "exposed": 2
           },
           "NW": {
             "protected": 0,
@@ -1730,44 +1732,44 @@
         "missingCoordinates": 0,
         "sectors": {
           "N": {
-            "protected": 38,
-            "partial": 44,
-            "exposed": 9
+            "protected": 49,
+            "partial": 16,
+            "exposed": 26
           },
           "NE": {
-            "protected": 39,
-            "partial": 48,
-            "exposed": 4
+            "protected": 49,
+            "partial": 31,
+            "exposed": 11
           },
           "E": {
-            "protected": 33,
-            "partial": 58,
-            "exposed": 0
+            "protected": 53,
+            "partial": 26,
+            "exposed": 12
           },
           "SE": {
-            "protected": 19,
-            "partial": 66,
-            "exposed": 6
+            "protected": 48,
+            "partial": 28,
+            "exposed": 15
           },
           "S": {
-            "protected": 30,
-            "partial": 25,
-            "exposed": 36
+            "protected": 41,
+            "partial": 7,
+            "exposed": 43
           },
           "SW": {
-            "protected": 38,
-            "partial": 12,
-            "exposed": 41
+            "protected": 42,
+            "partial": 9,
+            "exposed": 40
           },
           "W": {
-            "protected": 24,
-            "partial": 31,
-            "exposed": 36
+            "protected": 38,
+            "partial": 16,
+            "exposed": 37
           },
           "NW": {
-            "protected": 20,
-            "partial": 58,
-            "exposed": 13
+            "protected": 44,
+            "partial": 29,
+            "exposed": 18
           }
         }
       },
@@ -1778,29 +1780,29 @@
         "missingCoordinates": 0,
         "sectors": {
           "N": {
-            "protected": 1,
-            "partial": 1,
+            "protected": 2,
+            "partial": 0,
             "exposed": 0
           },
           "NE": {
-            "protected": 0,
-            "partial": 1,
-            "exposed": 1
+            "protected": 2,
+            "partial": 0,
+            "exposed": 0
           },
           "E": {
-            "protected": 0,
-            "partial": 1,
-            "exposed": 1
-          },
-          "SE": {
             "protected": 0,
             "partial": 2,
             "exposed": 0
           },
-          "S": {
+          "SE": {
             "protected": 0,
             "partial": 1,
             "exposed": 1
+          },
+          "S": {
+            "protected": 0,
+            "partial": 0,
+            "exposed": 2
           },
           "SW": {
             "protected": 0,
@@ -1808,13 +1810,13 @@
             "exposed": 2
           },
           "W": {
-            "protected": 0,
+            "protected": 2,
             "partial": 0,
-            "exposed": 2
+            "exposed": 0
           },
           "NW": {
-            "protected": 0,
-            "partial": 2,
+            "protected": 2,
+            "partial": 0,
             "exposed": 0
           }
         }
@@ -1826,29 +1828,29 @@
         "missingCoordinates": 0,
         "sectors": {
           "N": {
-            "protected": 2,
-            "partial": 20,
+            "protected": 12,
+            "partial": 10,
             "exposed": 2
           },
           "NE": {
-            "protected": 5,
-            "partial": 8,
+            "protected": 10,
+            "partial": 3,
             "exposed": 11
           },
           "E": {
-            "protected": 8,
-            "partial": 5,
-            "exposed": 11
+            "protected": 10,
+            "partial": 2,
+            "exposed": 12
           },
           "SE": {
-            "protected": 6,
-            "partial": 14,
-            "exposed": 4
+            "protected": 14,
+            "partial": 4,
+            "exposed": 6
           },
           "S": {
             "protected": 13,
-            "partial": 11,
-            "exposed": 0
+            "partial": 9,
+            "exposed": 2
           },
           "SW": {
             "protected": 15,
@@ -1857,13 +1859,13 @@
           },
           "W": {
             "protected": 14,
-            "partial": 10,
-            "exposed": 0
+            "partial": 9,
+            "exposed": 1
           },
           "NW": {
-            "protected": 8,
-            "partial": 16,
-            "exposed": 0
+            "protected": 11,
+            "partial": 11,
+            "exposed": 2
           }
         }
       },
@@ -1874,44 +1876,44 @@
         "missingCoordinates": 0,
         "sectors": {
           "N": {
-            "protected": 32,
-            "partial": 40,
-            "exposed": 4
+            "protected": 47,
+            "partial": 15,
+            "exposed": 14
           },
           "NE": {
-            "protected": 37,
-            "partial": 32,
-            "exposed": 7
+            "protected": 48,
+            "partial": 14,
+            "exposed": 14
           },
           "E": {
-            "protected": 25,
-            "partial": 41,
-            "exposed": 10
+            "protected": 40,
+            "partial": 20,
+            "exposed": 16
           },
           "SE": {
-            "protected": 15,
-            "partial": 46,
-            "exposed": 15
+            "protected": 27,
+            "partial": 31,
+            "exposed": 18
           },
           "S": {
-            "protected": 17,
-            "partial": 30,
-            "exposed": 29
+            "protected": 29,
+            "partial": 12,
+            "exposed": 35
           },
           "SW": {
-            "protected": 24,
-            "partial": 20,
-            "exposed": 32
+            "protected": 28,
+            "partial": 11,
+            "exposed": 37
           },
           "W": {
-            "protected": 28,
-            "partial": 28,
-            "exposed": 20
+            "protected": 36,
+            "partial": 13,
+            "exposed": 27
           },
           "NW": {
-            "protected": 24,
-            "partial": 40,
-            "exposed": 12
+            "protected": 48,
+            "partial": 18,
+            "exposed": 10
           }
         }
       },
@@ -1922,44 +1924,44 @@
         "missingCoordinates": 0,
         "sectors": {
           "N": {
-            "protected": 7,
-            "partial": 21,
-            "exposed": 7
+            "protected": 13,
+            "partial": 10,
+            "exposed": 12
           },
           "NE": {
-            "protected": 12,
-            "partial": 23,
+            "protected": 21,
+            "partial": 14,
             "exposed": 0
           },
           "E": {
-            "protected": 16,
-            "partial": 19,
-            "exposed": 0
+            "protected": 22,
+            "partial": 7,
+            "exposed": 6
           },
           "SE": {
-            "protected": 15,
-            "partial": 18,
+            "protected": 18,
+            "partial": 15,
             "exposed": 2
           },
           "S": {
-            "protected": 6,
-            "partial": 29,
-            "exposed": 0
+            "protected": 21,
+            "partial": 9,
+            "exposed": 5
           },
           "SW": {
-            "protected": 10,
-            "partial": 16,
-            "exposed": 9
+            "protected": 13,
+            "partial": 10,
+            "exposed": 12
           },
           "W": {
             "protected": 12,
-            "partial": 9,
-            "exposed": 14
+            "partial": 8,
+            "exposed": 15
           },
           "NW": {
-            "protected": 13,
-            "partial": 4,
-            "exposed": 18
+            "protected": 16,
+            "partial": 2,
+            "exposed": 17
           }
         }
       },
@@ -1981,8 +1983,8 @@
           },
           "E": {
             "protected": 0,
-            "partial": 1,
-            "exposed": 0
+            "partial": 0,
+            "exposed": 1
           },
           "SE": {
             "protected": 0,
@@ -1990,24 +1992,24 @@
             "exposed": 0
           },
           "S": {
-            "protected": 0,
-            "partial": 1,
+            "protected": 1,
+            "partial": 0,
             "exposed": 0
           },
           "SW": {
-            "protected": 0,
+            "protected": 1,
             "partial": 0,
-            "exposed": 1
+            "exposed": 0
           },
           "W": {
-            "protected": 0,
+            "protected": 1,
             "partial": 0,
-            "exposed": 1
+            "exposed": 0
           },
           "NW": {
             "protected": 0,
-            "partial": 0,
-            "exposed": 1
+            "partial": 1,
+            "exposed": 0
           }
         }
       },
@@ -2018,43 +2020,43 @@
         "missingCoordinates": 0,
         "sectors": {
           "N": {
-            "protected": 0,
-            "partial": 8,
-            "exposed": 0
-          },
-          "NE": {
-            "protected": 0,
-            "partial": 8,
-            "exposed": 0
-          },
-          "E": {
-            "protected": 1,
-            "partial": 7,
-            "exposed": 0
-          },
-          "SE": {
-            "protected": 1,
-            "partial": 7,
-            "exposed": 0
-          },
-          "S": {
-            "protected": 2,
-            "partial": 4,
-            "exposed": 2
-          },
-          "SW": {
-            "protected": 5,
-            "partial": 3,
-            "exposed": 0
-          },
-          "W": {
             "protected": 3,
             "partial": 5,
             "exposed": 0
           },
-          "NW": {
+          "NE": {
             "protected": 2,
             "partial": 6,
+            "exposed": 0
+          },
+          "E": {
+            "protected": 3,
+            "partial": 5,
+            "exposed": 0
+          },
+          "SE": {
+            "protected": 3,
+            "partial": 3,
+            "exposed": 2
+          },
+          "S": {
+            "protected": 5,
+            "partial": 0,
+            "exposed": 3
+          },
+          "SW": {
+            "protected": 7,
+            "partial": 0,
+            "exposed": 1
+          },
+          "W": {
+            "protected": 6,
+            "partial": 2,
+            "exposed": 0
+          },
+          "NW": {
+            "protected": 5,
+            "partial": 3,
             "exposed": 0
           }
         }
@@ -2066,24 +2068,24 @@
         "missingCoordinates": 0,
         "sectors": {
           "N": {
+            "protected": 3,
+            "partial": 0,
+            "exposed": 0
+          },
+          "NE": {
             "protected": 2,
             "partial": 1,
             "exposed": 0
           },
-          "NE": {
-            "protected": 1,
-            "partial": 2,
-            "exposed": 0
-          },
           "E": {
-            "protected": 0,
-            "partial": 3,
-            "exposed": 0
+            "protected": 1,
+            "partial": 0,
+            "exposed": 2
           },
           "SE": {
             "protected": 0,
-            "partial": 2,
-            "exposed": 1
+            "partial": 1,
+            "exposed": 2
           },
           "S": {
             "protected": 0,
@@ -2096,14 +2098,14 @@
             "exposed": 3
           },
           "W": {
-            "protected": 0,
-            "partial": 2,
+            "protected": 2,
+            "partial": 0,
             "exposed": 1
           },
           "NW": {
             "protected": 2,
-            "partial": 0,
-            "exposed": 1
+            "partial": 1,
+            "exposed": 0
           }
         }
       },
@@ -2115,43 +2117,43 @@
         "sectors": {
           "N": {
             "protected": 3,
-            "partial": 22,
-            "exposed": 0
+            "partial": 13,
+            "exposed": 9
           },
           "NE": {
             "protected": 3,
-            "partial": 22,
-            "exposed": 0
+            "partial": 8,
+            "exposed": 14
           },
           "E": {
-            "protected": 1,
-            "partial": 15,
-            "exposed": 9
+            "protected": 6,
+            "partial": 1,
+            "exposed": 18
           },
           "SE": {
-            "protected": 0,
-            "partial": 20,
-            "exposed": 5
+            "protected": 6,
+            "partial": 15,
+            "exposed": 4
           },
           "S": {
-            "protected": 13,
-            "partial": 5,
-            "exposed": 7
+            "protected": 20,
+            "partial": 2,
+            "exposed": 3
           },
           "SW": {
-            "protected": 11,
-            "partial": 5,
-            "exposed": 9
+            "protected": 21,
+            "partial": 1,
+            "exposed": 3
           },
           "W": {
-            "protected": 12,
-            "partial": 4,
-            "exposed": 9
+            "protected": 18,
+            "partial": 1,
+            "exposed": 6
           },
           "NW": {
-            "protected": 0,
-            "partial": 25,
-            "exposed": 0
+            "protected": 10,
+            "partial": 11,
+            "exposed": 4
           }
         }
       },
@@ -2162,44 +2164,44 @@
         "missingCoordinates": 0,
         "sectors": {
           "N": {
-            "protected": 12,
-            "partial": 14,
-            "exposed": 13
+            "protected": 15,
+            "partial": 13,
+            "exposed": 11
           },
           "NE": {
-            "protected": 12,
-            "partial": 15,
-            "exposed": 12
+            "protected": 15,
+            "partial": 3,
+            "exposed": 21
           },
           "E": {
-            "protected": 10,
-            "partial": 10,
-            "exposed": 19
+            "protected": 14,
+            "partial": 4,
+            "exposed": 21
           },
           "SE": {
-            "protected": 6,
-            "partial": 20,
-            "exposed": 13
+            "protected": 13,
+            "partial": 15,
+            "exposed": 11
           },
           "S": {
-            "protected": 16,
-            "partial": 7,
-            "exposed": 16
+            "protected": 25,
+            "partial": 3,
+            "exposed": 11
           },
           "SW": {
-            "protected": 19,
-            "partial": 11,
-            "exposed": 9
+            "protected": 24,
+            "partial": 3,
+            "exposed": 12
           },
           "W": {
-            "protected": 21,
-            "partial": 8,
+            "protected": 25,
+            "partial": 4,
             "exposed": 10
           },
           "NW": {
-            "protected": 8,
-            "partial": 27,
-            "exposed": 4
+            "protected": 22,
+            "partial": 11,
+            "exposed": 6
           }
         }
       },
@@ -2210,33 +2212,33 @@
         "missingCoordinates": 0,
         "sectors": {
           "N": {
-            "protected": 0,
-            "partial": 9,
-            "exposed": 3
+            "protected": 4,
+            "partial": 7,
+            "exposed": 1
           },
           "NE": {
-            "protected": 7,
-            "partial": 4,
+            "protected": 11,
+            "partial": 0,
             "exposed": 1
           },
           "E": {
-            "protected": 9,
+            "protected": 11,
             "partial": 0,
-            "exposed": 3
+            "exposed": 1
           },
           "SE": {
-            "protected": 6,
-            "partial": 3,
-            "exposed": 3
+            "protected": 11,
+            "partial": 0,
+            "exposed": 1
           },
           "S": {
             "protected": 1,
-            "partial": 5,
-            "exposed": 6
+            "partial": 10,
+            "exposed": 1
           },
           "SW": {
-            "protected": 0,
-            "partial": 2,
+            "protected": 1,
+            "partial": 1,
             "exposed": 10
           },
           "W": {
@@ -2245,8 +2247,8 @@
             "exposed": 11
           },
           "NW": {
-            "protected": 0,
-            "partial": 1,
+            "protected": 1,
+            "partial": 0,
             "exposed": 11
           }
         }
@@ -2258,44 +2260,44 @@
         "missingCoordinates": 0,
         "sectors": {
           "N": {
-            "protected": 19,
-            "partial": 12,
-            "exposed": 3
+            "protected": 25,
+            "partial": 5,
+            "exposed": 4
           },
           "NE": {
-            "protected": 16,
-            "partial": 15,
-            "exposed": 3
+            "protected": 22,
+            "partial": 5,
+            "exposed": 7
           },
           "E": {
-            "protected": 16,
-            "partial": 15,
-            "exposed": 3
-          },
-          "SE": {
-            "protected": 9,
-            "partial": 17,
+            "protected": 18,
+            "partial": 8,
             "exposed": 8
           },
+          "SE": {
+            "protected": 10,
+            "partial": 9,
+            "exposed": 15
+          },
           "S": {
-            "protected": 6,
-            "partial": 17,
-            "exposed": 11
+            "protected": 11,
+            "partial": 9,
+            "exposed": 14
           },
           "SW": {
-            "protected": 13,
-            "partial": 10,
-            "exposed": 11
-          },
-          "W": {
             "protected": 14,
             "partial": 5,
             "exposed": 15
           },
+          "W": {
+            "protected": 15,
+            "partial": 6,
+            "exposed": 13
+          },
           "NW": {
-            "protected": 14,
-            "partial": 16,
-            "exposed": 4
+            "protected": 23,
+            "partial": 4,
+            "exposed": 7
           }
         }
       },
@@ -2306,43 +2308,43 @@
         "missingCoordinates": 0,
         "sectors": {
           "N": {
-            "protected": 0,
-            "partial": 7,
-            "exposed": 0
+            "protected": 6,
+            "partial": 0,
+            "exposed": 1
           },
           "NE": {
-            "protected": 1,
-            "partial": 6,
-            "exposed": 0
+            "protected": 3,
+            "partial": 1,
+            "exposed": 3
           },
           "E": {
-            "protected": 2,
-            "partial": 2,
+            "protected": 3,
+            "partial": 1,
             "exposed": 3
           },
           "SE": {
-            "protected": 0,
-            "partial": 4,
+            "protected": 4,
+            "partial": 0,
             "exposed": 3
           },
           "S": {
-            "protected": 0,
-            "partial": 5,
-            "exposed": 2
+            "protected": 1,
+            "partial": 3,
+            "exposed": 3
           },
           "SW": {
-            "protected": 1,
-            "partial": 1,
-            "exposed": 5
+            "protected": 4,
+            "partial": 0,
+            "exposed": 3
           },
           "W": {
-            "protected": 0,
-            "partial": 7,
-            "exposed": 0
+            "protected": 4,
+            "partial": 0,
+            "exposed": 3
           },
           "NW": {
-            "protected": 2,
-            "partial": 5,
+            "protected": 4,
+            "partial": 3,
             "exposed": 0
           }
         }
@@ -2354,44 +2356,44 @@
         "missingCoordinates": 0,
         "sectors": {
           "N": {
-            "protected": 6,
-            "partial": 1,
-            "exposed": 12
+            "protected": 8,
+            "partial": 0,
+            "exposed": 11
           },
           "NE": {
-            "protected": 2,
-            "partial": 8,
+            "protected": 4,
+            "partial": 6,
             "exposed": 9
           },
           "E": {
-            "protected": 2,
-            "partial": 17,
-            "exposed": 0
+            "protected": 7,
+            "partial": 7,
+            "exposed": 5
           },
           "SE": {
-            "protected": 10,
-            "partial": 5,
-            "exposed": 4
+            "protected": 11,
+            "partial": 0,
+            "exposed": 8
           },
           "S": {
-            "protected": 10,
-            "partial": 1,
+            "protected": 11,
+            "partial": 0,
             "exposed": 8
           },
           "SW": {
-            "protected": 9,
-            "partial": 9,
-            "exposed": 1
+            "protected": 12,
+            "partial": 5,
+            "exposed": 2
           },
           "W": {
-            "protected": 6,
-            "partial": 11,
+            "protected": 8,
+            "partial": 9,
             "exposed": 2
           },
           "NW": {
-            "protected": 7,
+            "protected": 8,
             "partial": 0,
-            "exposed": 12
+            "exposed": 11
           }
         }
       },
@@ -2402,44 +2404,44 @@
         "missingCoordinates": 0,
         "sectors": {
           "N": {
-            "protected": 13,
-            "partial": 15,
+            "protected": 19,
+            "partial": 9,
             "exposed": 12
           },
           "NE": {
-            "protected": 16,
-            "partial": 13,
-            "exposed": 11
+            "protected": 24,
+            "partial": 2,
+            "exposed": 14
           },
           "E": {
-            "protected": 20,
-            "partial": 13,
-            "exposed": 7
+            "protected": 25,
+            "partial": 7,
+            "exposed": 8
           },
           "SE": {
-            "protected": 17,
-            "partial": 14,
-            "exposed": 9
+            "protected": 23,
+            "partial": 10,
+            "exposed": 7
           },
           "S": {
-            "protected": 14,
-            "partial": 13,
-            "exposed": 13
-          },
-          "SW": {
-            "protected": 14,
-            "partial": 11,
-            "exposed": 15
-          },
-          "W": {
-            "protected": 7,
-            "partial": 23,
+            "protected": 22,
+            "partial": 8,
             "exposed": 10
           },
-          "NW": {
-            "protected": 12,
-            "partial": 12,
+          "SW": {
+            "protected": 16,
+            "partial": 5,
+            "exposed": 19
+          },
+          "W": {
+            "protected": 14,
+            "partial": 10,
             "exposed": 16
+          },
+          "NW": {
+            "protected": 19,
+            "partial": 9,
+            "exposed": 12
           }
         }
       },
@@ -2450,44 +2452,44 @@
         "missingCoordinates": 0,
         "sectors": {
           "N": {
-            "protected": 29,
-            "partial": 26,
-            "exposed": 5
+            "protected": 35,
+            "partial": 8,
+            "exposed": 17
           },
           "NE": {
-            "protected": 28,
-            "partial": 30,
-            "exposed": 2
+            "protected": 35,
+            "partial": 13,
+            "exposed": 12
           },
           "E": {
-            "protected": 13,
-            "partial": 43,
-            "exposed": 4
+            "protected": 30,
+            "partial": 21,
+            "exposed": 9
           },
           "SE": {
-            "protected": 21,
-            "partial": 18,
-            "exposed": 21
-          },
-          "S": {
-            "protected": 22,
-            "partial": 12,
+            "protected": 23,
+            "partial": 11,
             "exposed": 26
           },
+          "S": {
+            "protected": 26,
+            "partial": 6,
+            "exposed": 28
+          },
           "SW": {
-            "protected": 23,
-            "partial": 8,
-            "exposed": 29
+            "protected": 24,
+            "partial": 9,
+            "exposed": 27
           },
           "W": {
-            "protected": 16,
-            "partial": 26,
-            "exposed": 18
+            "protected": 26,
+            "partial": 18,
+            "exposed": 16
           },
           "NW": {
-            "protected": 18,
-            "partial": 30,
-            "exposed": 12
+            "protected": 35,
+            "partial": 10,
+            "exposed": 15
           }
         }
       },
@@ -2498,44 +2500,44 @@
         "missingCoordinates": 0,
         "sectors": {
           "N": {
-            "protected": 3,
-            "partial": 2,
-            "exposed": 3
+            "protected": 6,
+            "partial": 0,
+            "exposed": 2
           },
           "NE": {
-            "protected": 4,
-            "partial": 4,
-            "exposed": 0
+            "protected": 6,
+            "partial": 0,
+            "exposed": 2
           },
           "E": {
-            "protected": 1,
-            "partial": 7,
+            "protected": 6,
+            "partial": 2,
             "exposed": 0
           },
           "SE": {
-            "protected": 1,
-            "partial": 7,
+            "protected": 5,
+            "partial": 3,
             "exposed": 0
           },
           "S": {
             "protected": 2,
-            "partial": 6,
-            "exposed": 0
+            "partial": 3,
+            "exposed": 3
           },
           "SW": {
-            "protected": 0,
-            "partial": 8,
+            "protected": 2,
+            "partial": 6,
             "exposed": 0
           },
           "W": {
-            "protected": 0,
-            "partial": 8,
+            "protected": 2,
+            "partial": 6,
             "exposed": 0
           },
           "NW": {
-            "protected": 0,
-            "partial": 6,
-            "exposed": 2
+            "protected": 3,
+            "partial": 4,
+            "exposed": 1
           }
         }
       },
@@ -2546,8 +2548,8 @@
         "missingCoordinates": 0,
         "sectors": {
           "N": {
-            "protected": 5,
-            "partial": 1,
+            "protected": 4,
+            "partial": 2,
             "exposed": 0
           },
           "NE": {
@@ -2557,33 +2559,33 @@
           },
           "E": {
             "protected": 2,
-            "partial": 4,
-            "exposed": 0
+            "partial": 3,
+            "exposed": 1
           },
           "SE": {
-            "protected": 1,
-            "partial": 1,
+            "protected": 2,
+            "partial": 0,
             "exposed": 4
           },
           "S": {
-            "protected": 0,
-            "partial": 1,
-            "exposed": 5
-          },
-          "SW": {
-            "protected": 0,
+            "protected": 1,
             "partial": 2,
-            "exposed": 4
-          },
-          "W": {
-            "protected": 0,
-            "partial": 3,
             "exposed": 3
           },
+          "SW": {
+            "protected": 1,
+            "partial": 0,
+            "exposed": 5
+          },
+          "W": {
+            "protected": 3,
+            "partial": 1,
+            "exposed": 2
+          },
           "NW": {
-            "protected": 0,
-            "partial": 6,
-            "exposed": 0
+            "protected": 4,
+            "partial": 0,
+            "exposed": 2
           }
         }
       },
@@ -2594,44 +2596,44 @@
         "missingCoordinates": 0,
         "sectors": {
           "N": {
-            "protected": 22,
-            "partial": 4,
-            "exposed": 14
+            "protected": 27,
+            "partial": 2,
+            "exposed": 11
           },
           "NE": {
-            "protected": 18,
-            "partial": 13,
+            "protected": 24,
+            "partial": 7,
             "exposed": 9
           },
           "E": {
-            "protected": 10,
-            "partial": 30,
-            "exposed": 0
+            "protected": 15,
+            "partial": 21,
+            "exposed": 4
           },
           "SE": {
-            "protected": 8,
-            "partial": 22,
-            "exposed": 10
+            "protected": 18,
+            "partial": 7,
+            "exposed": 15
           },
           "S": {
-            "protected": 16,
-            "partial": 5,
-            "exposed": 19
+            "protected": 13,
+            "partial": 7,
+            "exposed": 20
           },
           "SW": {
-            "protected": 13,
-            "partial": 21,
-            "exposed": 6
+            "protected": 16,
+            "partial": 11,
+            "exposed": 13
           },
           "W": {
-            "protected": 15,
-            "partial": 20,
-            "exposed": 5
+            "protected": 22,
+            "partial": 8,
+            "exposed": 10
           },
           "NW": {
-            "protected": 18,
-            "partial": 10,
-            "exposed": 12
+            "protected": 21,
+            "partial": 6,
+            "exposed": 13
           }
         }
       },
@@ -2642,44 +2644,44 @@
         "missingCoordinates": 0,
         "sectors": {
           "N": {
-            "protected": 23,
-            "partial": 11,
+            "protected": 25,
+            "partial": 9,
             "exposed": 0
           },
           "NE": {
-            "protected": 23,
-            "partial": 5,
+            "protected": 22,
+            "partial": 6,
             "exposed": 6
           },
           "E": {
-            "protected": 14,
-            "partial": 20,
-            "exposed": 0
+            "protected": 16,
+            "partial": 8,
+            "exposed": 10
           },
           "SE": {
-            "protected": 3,
-            "partial": 27,
-            "exposed": 4
+            "protected": 7,
+            "partial": 14,
+            "exposed": 13
           },
           "S": {
-            "protected": 6,
-            "partial": 22,
-            "exposed": 6
+            "protected": 12,
+            "partial": 8,
+            "exposed": 14
           },
           "SW": {
-            "protected": 12,
-            "partial": 22,
-            "exposed": 0
+            "protected": 14,
+            "partial": 11,
+            "exposed": 9
           },
           "W": {
-            "protected": 18,
-            "partial": 13,
-            "exposed": 3
+            "protected": 19,
+            "partial": 9,
+            "exposed": 6
           },
           "NW": {
-            "protected": 23,
-            "partial": 11,
-            "exposed": 0
+            "protected": 27,
+            "partial": 5,
+            "exposed": 2
           }
         }
       },
@@ -2690,28 +2692,28 @@
         "missingCoordinates": 0,
         "sectors": {
           "N": {
-            "protected": 0,
-            "partial": 11,
-            "exposed": 5
+            "protected": 5,
+            "partial": 5,
+            "exposed": 6
           },
           "NE": {
             "protected": 0,
-            "partial": 9,
-            "exposed": 7
+            "partial": 8,
+            "exposed": 8
           },
           "E": {
             "protected": 0,
-            "partial": 12,
-            "exposed": 4
+            "partial": 0,
+            "exposed": 16
           },
           "SE": {
-            "protected": 1,
-            "partial": 5,
+            "protected": 0,
+            "partial": 6,
             "exposed": 10
           },
           "S": {
-            "protected": 6,
-            "partial": 10,
+            "protected": 13,
+            "partial": 3,
             "exposed": 0
           },
           "SW": {
@@ -2725,8 +2727,8 @@
             "exposed": 0
           },
           "NW": {
-            "protected": 9,
-            "partial": 7,
+            "protected": 16,
+            "partial": 0,
             "exposed": 0
           }
         }
@@ -2739,43 +2741,43 @@
         "sectors": {
           "N": {
             "protected": 4,
-            "partial": 16,
-            "exposed": 1
+            "partial": 12,
+            "exposed": 5
           },
           "NE": {
-            "protected": 4,
-            "partial": 15,
-            "exposed": 2
+            "protected": 5,
+            "partial": 8,
+            "exposed": 8
           },
           "E": {
-            "protected": 4,
-            "partial": 13,
-            "exposed": 4
+            "protected": 9,
+            "partial": 6,
+            "exposed": 6
           },
           "SE": {
-            "protected": 12,
-            "partial": 8,
-            "exposed": 1
+            "protected": 14,
+            "partial": 4,
+            "exposed": 3
           },
           "S": {
             "protected": 17,
-            "partial": 4,
-            "exposed": 0
+            "partial": 3,
+            "exposed": 1
           },
           "SW": {
-            "protected": 15,
-            "partial": 6,
+            "protected": 18,
+            "partial": 3,
             "exposed": 0
           },
           "W": {
-            "protected": 7,
-            "partial": 14,
-            "exposed": 0
+            "protected": 12,
+            "partial": 7,
+            "exposed": 2
           },
           "NW": {
-            "protected": 3,
-            "partial": 16,
-            "exposed": 2
+            "protected": 7,
+            "partial": 5,
+            "exposed": 9
           }
         }
       },
@@ -2786,44 +2788,44 @@
         "missingCoordinates": 0,
         "sectors": {
           "N": {
-            "protected": 29,
-            "partial": 31,
-            "exposed": 1
+            "protected": 44,
+            "partial": 13,
+            "exposed": 4
           },
           "NE": {
-            "protected": 26,
-            "partial": 19,
-            "exposed": 16
+            "protected": 34,
+            "partial": 10,
+            "exposed": 17
           },
           "E": {
-            "protected": 19,
-            "partial": 18,
-            "exposed": 24
+            "protected": 24,
+            "partial": 12,
+            "exposed": 25
           },
           "SE": {
-            "protected": 13,
-            "partial": 32,
-            "exposed": 16
+            "protected": 15,
+            "partial": 15,
+            "exposed": 31
           },
           "S": {
-            "protected": 14,
-            "partial": 42,
-            "exposed": 5
+            "protected": 19,
+            "partial": 24,
+            "exposed": 18
           },
           "SW": {
             "protected": 32,
-            "partial": 13,
-            "exposed": 16
+            "partial": 9,
+            "exposed": 20
           },
           "W": {
-            "protected": 35,
-            "partial": 16,
-            "exposed": 10
+            "protected": 40,
+            "partial": 4,
+            "exposed": 17
           },
           "NW": {
-            "protected": 38,
-            "partial": 20,
-            "exposed": 3
+            "protected": 45,
+            "partial": 12,
+            "exposed": 4
           }
         }
       },
@@ -2834,44 +2836,44 @@
         "missingCoordinates": 0,
         "sectors": {
           "N": {
-            "protected": 28,
-            "partial": 25,
-            "exposed": 1
+            "protected": 44,
+            "partial": 8,
+            "exposed": 2
           },
           "NE": {
-            "protected": 34,
-            "partial": 20,
-            "exposed": 0
+            "protected": 39,
+            "partial": 8,
+            "exposed": 7
           },
           "E": {
-            "protected": 31,
-            "partial": 11,
-            "exposed": 12
+            "protected": 33,
+            "partial": 6,
+            "exposed": 15
           },
           "SE": {
-            "protected": 7,
-            "partial": 38,
-            "exposed": 9
+            "protected": 28,
+            "partial": 10,
+            "exposed": 16
           },
           "S": {
-            "protected": 6,
-            "partial": 21,
-            "exposed": 27
+            "protected": 10,
+            "partial": 11,
+            "exposed": 33
           },
           "SW": {
-            "protected": 7,
-            "partial": 24,
-            "exposed": 23
+            "protected": 12,
+            "partial": 10,
+            "exposed": 32
           },
           "W": {
-            "protected": 15,
-            "partial": 16,
-            "exposed": 23
+            "protected": 20,
+            "partial": 12,
+            "exposed": 22
           },
           "NW": {
-            "protected": 18,
-            "partial": 31,
-            "exposed": 5
+            "protected": 26,
+            "partial": 22,
+            "exposed": 6
           }
         }
       },
@@ -2882,24 +2884,24 @@
         "missingCoordinates": 0,
         "sectors": {
           "N": {
-            "protected": 3,
-            "partial": 2,
+            "protected": 5,
+            "partial": 0,
             "exposed": 0
           },
           "NE": {
-            "protected": 3,
-            "partial": 2,
+            "protected": 5,
+            "partial": 0,
             "exposed": 0
           },
           "E": {
-            "protected": 0,
-            "partial": 5,
+            "protected": 5,
+            "partial": 0,
             "exposed": 0
           },
           "SE": {
             "protected": 0,
-            "partial": 5,
-            "exposed": 0
+            "partial": 2,
+            "exposed": 3
           },
           "S": {
             "protected": 0,
@@ -2908,17 +2910,17 @@
           },
           "SW": {
             "protected": 0,
-            "partial": 4,
-            "exposed": 1
+            "partial": 1,
+            "exposed": 4
           },
           "W": {
-            "protected": 0,
-            "partial": 5,
+            "protected": 2,
+            "partial": 3,
             "exposed": 0
           },
           "NW": {
-            "protected": 3,
-            "partial": 2,
+            "protected": 5,
+            "partial": 0,
             "exposed": 0
           }
         }
@@ -2930,18 +2932,18 @@
         "missingCoordinates": 0,
         "sectors": {
           "N": {
-            "protected": 4,
-            "partial": 4,
+            "protected": 7,
+            "partial": 1,
             "exposed": 6
           },
           "NE": {
-            "protected": 5,
-            "partial": 8,
-            "exposed": 1
+            "protected": 6,
+            "partial": 6,
+            "exposed": 2
           },
           "E": {
-            "protected": 7,
-            "partial": 4,
+            "protected": 10,
+            "partial": 1,
             "exposed": 3
           },
           "SE": {
@@ -2950,24 +2952,24 @@
             "exposed": 3
           },
           "S": {
-            "protected": 10,
-            "partial": 0,
-            "exposed": 4
+            "protected": 7,
+            "partial": 4,
+            "exposed": 3
           },
           "SW": {
-            "protected": 1,
-            "partial": 11,
-            "exposed": 2
+            "protected": 8,
+            "partial": 2,
+            "exposed": 4
           },
           "W": {
-            "protected": 2,
-            "partial": 6,
-            "exposed": 6
+            "protected": 3,
+            "partial": 3,
+            "exposed": 8
           },
           "NW": {
-            "protected": 3,
-            "partial": 6,
-            "exposed": 5
+            "protected": 4,
+            "partial": 4,
+            "exposed": 6
           }
         }
       },
@@ -2978,44 +2980,44 @@
         "missingCoordinates": 0,
         "sectors": {
           "N": {
-            "protected": 10,
-            "partial": 2,
+            "protected": 12,
+            "partial": 0,
             "exposed": 3
           },
           "NE": {
+            "protected": 12,
+            "partial": 2,
+            "exposed": 1
+          },
+          "E": {
             "protected": 5,
             "partial": 9,
             "exposed": 1
           },
-          "E": {
-            "protected": 3,
-            "partial": 11,
-            "exposed": 1
-          },
           "SE": {
-            "protected": 2,
-            "partial": 2,
+            "protected": 4,
+            "partial": 0,
             "exposed": 11
           },
           "S": {
-            "protected": 2,
-            "partial": 1,
+            "protected": 3,
+            "partial": 0,
             "exposed": 12
           },
           "SW": {
-            "protected": 0,
-            "partial": 2,
-            "exposed": 13
+            "protected": 3,
+            "partial": 0,
+            "exposed": 12
           },
           "W": {
-            "protected": 0,
-            "partial": 5,
-            "exposed": 10
+            "protected": 2,
+            "partial": 10,
+            "exposed": 3
           },
           "NW": {
-            "protected": 4,
-            "partial": 7,
-            "exposed": 4
+            "protected": 11,
+            "partial": 1,
+            "exposed": 3
           }
         }
       },
@@ -3026,44 +3028,44 @@
         "missingCoordinates": 0,
         "sectors": {
           "N": {
-            "protected": 10,
-            "partial": 21,
-            "exposed": 10
+            "protected": 19,
+            "partial": 11,
+            "exposed": 11
           },
           "NE": {
             "protected": 16,
-            "partial": 2,
-            "exposed": 23
+            "partial": 4,
+            "exposed": 21
           },
           "E": {
-            "protected": 15,
-            "partial": 9,
-            "exposed": 17
+            "protected": 19,
+            "partial": 3,
+            "exposed": 19
           },
           "SE": {
-            "protected": 12,
-            "partial": 28,
-            "exposed": 1
+            "protected": 21,
+            "partial": 14,
+            "exposed": 6
           },
           "S": {
-            "protected": 21,
-            "partial": 8,
-            "exposed": 12
-          },
-          "SW": {
-            "protected": 20,
-            "partial": 5,
-            "exposed": 16
-          },
-          "W": {
-            "protected": 18,
-            "partial": 13,
+            "protected": 22,
+            "partial": 9,
             "exposed": 10
           },
+          "SW": {
+            "protected": 25,
+            "partial": 2,
+            "exposed": 14
+          },
+          "W": {
+            "protected": 22,
+            "partial": 3,
+            "exposed": 16
+          },
           "NW": {
-            "protected": 15,
-            "partial": 26,
-            "exposed": 0
+            "protected": 21,
+            "partial": 10,
+            "exposed": 10
           }
         }
       },
@@ -3074,44 +3076,44 @@
         "missingCoordinates": 0,
         "sectors": {
           "N": {
-            "protected": 0,
-            "partial": 5,
-            "exposed": 7
+            "protected": 6,
+            "partial": 1,
+            "exposed": 5
           },
           "NE": {
-            "protected": 1,
-            "partial": 11,
-            "exposed": 0
+            "protected": 4,
+            "partial": 5,
+            "exposed": 3
           },
           "E": {
             "protected": 5,
-            "partial": 4,
-            "exposed": 3
+            "partial": 6,
+            "exposed": 1
           },
           "SE": {
-            "protected": 1,
-            "partial": 6,
-            "exposed": 5
+            "protected": 4,
+            "partial": 1,
+            "exposed": 7
           },
           "S": {
-            "protected": 1,
-            "partial": 6,
+            "protected": 5,
+            "partial": 2,
             "exposed": 5
           },
           "SW": {
-            "protected": 0,
-            "partial": 6,
-            "exposed": 6
+            "protected": 6,
+            "partial": 1,
+            "exposed": 5
           },
           "W": {
-            "protected": 0,
-            "partial": 3,
-            "exposed": 9
+            "protected": 3,
+            "partial": 5,
+            "exposed": 4
           },
           "NW": {
-            "protected": 1,
-            "partial": 3,
-            "exposed": 8
+            "protected": 6,
+            "partial": 1,
+            "exposed": 5
           }
         }
       },
@@ -3122,43 +3124,43 @@
         "missingCoordinates": 0,
         "sectors": {
           "N": {
-            "protected": 0,
-            "partial": 1,
+            "protected": 1,
+            "partial": 0,
             "exposed": 1
           },
           "NE": {
-            "protected": 0,
-            "partial": 1,
+            "protected": 1,
+            "partial": 0,
             "exposed": 1
           },
           "E": {
-            "protected": 0,
-            "partial": 1,
+            "protected": 1,
+            "partial": 0,
             "exposed": 1
           },
           "SE": {
-            "protected": 0,
-            "partial": 2,
+            "protected": 1,
+            "partial": 1,
             "exposed": 0
           },
           "S": {
-            "protected": 0,
-            "partial": 2,
+            "protected": 1,
+            "partial": 1,
             "exposed": 0
           },
           "SW": {
-            "protected": 0,
-            "partial": 2,
-            "exposed": 0
+            "protected": 1,
+            "partial": 0,
+            "exposed": 1
           },
           "W": {
-            "protected": 0,
-            "partial": 2,
-            "exposed": 0
+            "protected": 1,
+            "partial": 0,
+            "exposed": 1
           },
           "NW": {
-            "protected": 0,
-            "partial": 2,
+            "protected": 1,
+            "partial": 1,
             "exposed": 0
           }
         }
@@ -3170,44 +3172,44 @@
         "missingCoordinates": 0,
         "sectors": {
           "N": {
-            "protected": 9,
-            "partial": 8,
+            "protected": 15,
+            "partial": 2,
             "exposed": 3
           },
           "NE": {
             "protected": 9,
-            "partial": 10,
-            "exposed": 1
+            "partial": 6,
+            "exposed": 5
           },
           "E": {
-            "protected": 2,
-            "partial": 10,
-            "exposed": 8
+            "protected": 5,
+            "partial": 6,
+            "exposed": 9
           },
           "SE": {
-            "protected": 3,
-            "partial": 2,
+            "protected": 4,
+            "partial": 1,
             "exposed": 15
           },
           "S": {
-            "protected": 3,
-            "partial": 4,
-            "exposed": 13
+            "protected": 4,
+            "partial": 5,
+            "exposed": 11
           },
           "SW": {
-            "protected": 5,
-            "partial": 9,
+            "protected": 10,
+            "partial": 4,
             "exposed": 6
           },
           "W": {
-            "protected": 7,
-            "partial": 7,
-            "exposed": 6
+            "protected": 13,
+            "partial": 5,
+            "exposed": 2
           },
           "NW": {
-            "protected": 7,
-            "partial": 8,
-            "exposed": 5
+            "protected": 14,
+            "partial": 2,
+            "exposed": 4
           }
         }
       },
@@ -3218,24 +3220,24 @@
         "missingCoordinates": 0,
         "sectors": {
           "N": {
-            "protected": 3,
-            "partial": 1,
+            "protected": 4,
+            "partial": 0,
             "exposed": 0
           },
           "NE": {
-            "protected": 2,
-            "partial": 2,
+            "protected": 4,
+            "partial": 0,
             "exposed": 0
           },
           "E": {
-            "protected": 0,
-            "partial": 2,
-            "exposed": 2
+            "protected": 1,
+            "partial": 3,
+            "exposed": 0
           },
           "SE": {
-            "protected": 0,
+            "protected": 1,
             "partial": 0,
-            "exposed": 4
+            "exposed": 3
           },
           "S": {
             "protected": 0,
@@ -3244,17 +3246,17 @@
           },
           "SW": {
             "protected": 0,
-            "partial": 3,
-            "exposed": 1
+            "partial": 1,
+            "exposed": 3
           },
           "W": {
-            "protected": 0,
-            "partial": 4,
-            "exposed": 0
+            "protected": 2,
+            "partial": 1,
+            "exposed": 1
           },
           "NW": {
-            "protected": 1,
-            "partial": 3,
+            "protected": 3,
+            "partial": 1,
             "exposed": 0
           }
         }
@@ -3266,43 +3268,43 @@
         "missingCoordinates": 0,
         "sectors": {
           "N": {
-            "protected": 5,
-            "partial": 1,
-            "exposed": 10
-          },
-          "NE": {
-            "protected": 5,
-            "partial": 8,
-            "exposed": 3
-          },
-          "E": {
-            "protected": 6,
-            "partial": 8,
-            "exposed": 2
-          },
-          "SE": {
-            "protected": 0,
-            "partial": 9,
-            "exposed": 7
-          },
-          "S": {
-            "protected": 2,
-            "partial": 7,
-            "exposed": 7
-          },
-          "SW": {
-            "protected": 7,
-            "partial": 1,
-            "exposed": 8
-          },
-          "W": {
             "protected": 7,
             "partial": 0,
             "exposed": 9
           },
+          "NE": {
+            "protected": 7,
+            "partial": 0,
+            "exposed": 9
+          },
+          "E": {
+            "protected": 6,
+            "partial": 3,
+            "exposed": 7
+          },
+          "SE": {
+            "protected": 4,
+            "partial": 11,
+            "exposed": 1
+          },
+          "S": {
+            "protected": 9,
+            "partial": 0,
+            "exposed": 7
+          },
+          "SW": {
+            "protected": 9,
+            "partial": 0,
+            "exposed": 7
+          },
+          "W": {
+            "protected": 7,
+            "partial": 3,
+            "exposed": 6
+          },
           "NW": {
-            "protected": 0,
-            "partial": 13,
+            "protected": 8,
+            "partial": 5,
             "exposed": 3
           }
         }
@@ -3314,14 +3316,14 @@
         "missingCoordinates": 0,
         "sectors": {
           "N": {
-            "protected": 0,
-            "partial": 1,
+            "protected": 1,
+            "partial": 0,
             "exposed": 1
           },
           "NE": {
             "protected": 0,
-            "partial": 2,
-            "exposed": 0
+            "partial": 1,
+            "exposed": 1
           },
           "E": {
             "protected": 0,
@@ -3330,27 +3332,27 @@
           },
           "SE": {
             "protected": 0,
-            "partial": 2,
-            "exposed": 0
-          },
-          "S": {
-            "protected": 0,
             "partial": 1,
             "exposed": 1
           },
-          "SW": {
+          "S": {
             "protected": 1,
             "partial": 0,
             "exposed": 1
           },
+          "SW": {
+            "protected": 1,
+            "partial": 1,
+            "exposed": 0
+          },
           "W": {
-            "protected": 0,
-            "partial": 2,
+            "protected": 2,
+            "partial": 0,
             "exposed": 0
           },
           "NW": {
-            "protected": 1,
-            "partial": 1,
+            "protected": 2,
+            "partial": 0,
             "exposed": 0
           }
         }
@@ -3362,44 +3364,44 @@
         "missingCoordinates": 0,
         "sectors": {
           "N": {
-            "protected": 15,
-            "partial": 21,
-            "exposed": 4
+            "protected": 23,
+            "partial": 3,
+            "exposed": 14
           },
           "NE": {
-            "protected": 14,
-            "partial": 19,
-            "exposed": 7
+            "protected": 17,
+            "partial": 11,
+            "exposed": 12
           },
           "E": {
-            "protected": 12,
-            "partial": 6,
-            "exposed": 22
+            "protected": 20,
+            "partial": 1,
+            "exposed": 19
           },
           "SE": {
-            "protected": 6,
-            "partial": 21,
-            "exposed": 13
+            "protected": 12,
+            "partial": 17,
+            "exposed": 11
           },
           "S": {
-            "protected": 11,
-            "partial": 12,
-            "exposed": 17
+            "protected": 17,
+            "partial": 3,
+            "exposed": 20
           },
           "SW": {
-            "protected": 12,
-            "partial": 12,
+            "protected": 19,
+            "partial": 5,
             "exposed": 16
           },
           "W": {
-            "protected": 14,
-            "partial": 18,
-            "exposed": 8
+            "protected": 19,
+            "partial": 4,
+            "exposed": 17
           },
           "NW": {
-            "protected": 8,
-            "partial": 23,
-            "exposed": 9
+            "protected": 20,
+            "partial": 13,
+            "exposed": 7
           }
         }
       },
@@ -3410,18 +3412,18 @@
         "missingCoordinates": 0,
         "sectors": {
           "N": {
-            "protected": 0,
-            "partial": 2,
-            "exposed": 0
+            "protected": 1,
+            "partial": 0,
+            "exposed": 1
           },
           "NE": {
             "protected": 0,
-            "partial": 2,
-            "exposed": 0
+            "partial": 1,
+            "exposed": 1
           },
           "E": {
-            "protected": 0,
-            "partial": 1,
+            "protected": 1,
+            "partial": 0,
             "exposed": 1
           },
           "SE": {
@@ -3435,8 +3437,8 @@
             "exposed": 0
           },
           "SW": {
-            "protected": 1,
-            "partial": 1,
+            "protected": 2,
+            "partial": 0,
             "exposed": 0
           },
           "W": {
@@ -3445,8 +3447,8 @@
             "exposed": 1
           },
           "NW": {
-            "protected": 0,
-            "partial": 1,
+            "protected": 1,
+            "partial": 0,
             "exposed": 1
           }
         }
@@ -3458,44 +3460,44 @@
         "missingCoordinates": 0,
         "sectors": {
           "N": {
+            "protected": 10,
+            "partial": 7,
+            "exposed": 3
+          },
+          "NE": {
+            "protected": 8,
+            "partial": 4,
+            "exposed": 8
+          },
+          "E": {
             "protected": 7,
             "partial": 7,
             "exposed": 6
           },
-          "NE": {
-            "protected": 10,
-            "partial": 5,
-            "exposed": 5
-          },
-          "E": {
+          "SE": {
             "protected": 8,
             "partial": 11,
             "exposed": 1
           },
-          "SE": {
-            "protected": 7,
-            "partial": 13,
-            "exposed": 0
-          },
           "S": {
-            "protected": 9,
-            "partial": 11,
-            "exposed": 0
+            "protected": 12,
+            "partial": 6,
+            "exposed": 2
           },
           "SW": {
-            "protected": 9,
-            "partial": 7,
-            "exposed": 4
+            "protected": 13,
+            "partial": 1,
+            "exposed": 6
           },
           "W": {
-            "protected": 12,
-            "partial": 3,
+            "protected": 13,
+            "partial": 2,
             "exposed": 5
           },
           "NW": {
-            "protected": 7,
-            "partial": 13,
-            "exposed": 0
+            "protected": 12,
+            "partial": 4,
+            "exposed": 4
           }
         }
       },
@@ -3506,44 +3508,44 @@
         "missingCoordinates": 0,
         "sectors": {
           "N": {
-            "protected": 19,
-            "partial": 22,
-            "exposed": 4
+            "protected": 26,
+            "partial": 16,
+            "exposed": 3
           },
           "NE": {
-            "protected": 18,
-            "partial": 13,
+            "protected": 21,
+            "partial": 10,
             "exposed": 14
           },
           "E": {
             "protected": 15,
-            "partial": 6,
-            "exposed": 24
+            "partial": 5,
+            "exposed": 25
           },
           "SE": {
-            "protected": 8,
-            "partial": 10,
-            "exposed": 27
+            "protected": 11,
+            "partial": 9,
+            "exposed": 25
           },
           "S": {
-            "protected": 8,
-            "partial": 27,
-            "exposed": 10
+            "protected": 14,
+            "partial": 15,
+            "exposed": 16
           },
           "SW": {
-            "protected": 11,
-            "partial": 26,
-            "exposed": 8
+            "protected": 21,
+            "partial": 14,
+            "exposed": 10
           },
           "W": {
-            "protected": 27,
-            "partial": 4,
-            "exposed": 14
+            "protected": 28,
+            "partial": 2,
+            "exposed": 15
           },
           "NW": {
-            "protected": 24,
-            "partial": 7,
-            "exposed": 14
+            "protected": 31,
+            "partial": 3,
+            "exposed": 11
           }
         }
       },
@@ -3554,24 +3556,24 @@
         "missingCoordinates": 0,
         "sectors": {
           "N": {
-            "protected": 1,
-            "partial": 2,
+            "protected": 3,
+            "partial": 0,
             "exposed": 2
           },
           "NE": {
-            "protected": 2,
-            "partial": 3,
+            "protected": 4,
+            "partial": 1,
             "exposed": 0
           },
           "E": {
-            "protected": 2,
-            "partial": 3,
+            "protected": 4,
+            "partial": 1,
             "exposed": 0
           },
           "SE": {
             "protected": 2,
-            "partial": 0,
-            "exposed": 3
+            "partial": 1,
+            "exposed": 2
           },
           "S": {
             "protected": 2,
@@ -3585,13 +3587,13 @@
           },
           "W": {
             "protected": 0,
-            "partial": 0,
-            "exposed": 5
-          },
-          "NW": {
-            "protected": 0,
             "partial": 1,
             "exposed": 4
+          },
+          "NW": {
+            "protected": 1,
+            "partial": 2,
+            "exposed": 2
           }
         }
       },
@@ -3613,32 +3615,32 @@
           },
           "E": {
             "protected": 0,
-            "partial": 3,
-            "exposed": 0
-          },
-          "SE": {
-            "protected": 0,
             "partial": 0,
             "exposed": 3
           },
-          "S": {
+          "SE": {
             "protected": 0,
             "partial": 1,
             "exposed": 2
           },
+          "S": {
+            "protected": 3,
+            "partial": 0,
+            "exposed": 0
+          },
           "SW": {
-            "protected": 1,
-            "partial": 2,
+            "protected": 3,
+            "partial": 0,
             "exposed": 0
           },
           "W": {
-            "protected": 2,
-            "partial": 1,
+            "protected": 3,
+            "partial": 0,
             "exposed": 0
           },
           "NW": {
-            "protected": 1,
-            "partial": 2,
+            "protected": 3,
+            "partial": 0,
             "exposed": 0
           }
         }
@@ -3650,92 +3652,92 @@
         "missingCoordinates": 0,
         "sectors": {
           "N": {
-            "protected": 9,
-            "partial": 15,
-            "exposed": 10
+            "protected": 15,
+            "partial": 13,
+            "exposed": 6
           },
           "NE": {
-            "protected": 10,
-            "partial": 14,
-            "exposed": 10
+            "protected": 15,
+            "partial": 11,
+            "exposed": 8
           },
           "E": {
-            "protected": 15,
-            "partial": 2,
+            "protected": 16,
+            "partial": 1,
             "exposed": 17
           },
           "SE": {
-            "protected": 16,
-            "partial": 9,
-            "exposed": 9
+            "protected": 17,
+            "partial": 1,
+            "exposed": 16
           },
           "S": {
-            "protected": 3,
-            "partial": 30,
-            "exposed": 1
+            "protected": 6,
+            "partial": 17,
+            "exposed": 11
           },
           "SW": {
-            "protected": 4,
-            "partial": 15,
-            "exposed": 15
+            "protected": 17,
+            "partial": 3,
+            "exposed": 14
           },
           "W": {
-            "protected": 16,
-            "partial": 9,
-            "exposed": 9
+            "protected": 18,
+            "partial": 2,
+            "exposed": 14
           },
           "NW": {
-            "protected": 14,
-            "partial": 18,
-            "exposed": 2
+            "protected": 17,
+            "partial": 0,
+            "exposed": 17
           }
         }
       },
       "south-aegean-kimolos": {
         "regionName": "Kimolos",
-        "beachCount": 20,
-        "generatedProfiles": 20,
+        "beachCount": 17,
+        "generatedProfiles": 17,
         "missingCoordinates": 0,
         "sectors": {
           "N": {
-            "protected": 3,
-            "partial": 10,
-            "exposed": 7
+            "protected": 11,
+            "partial": 1,
+            "exposed": 5
           },
           "NE": {
-            "protected": 6,
-            "partial": 14,
-            "exposed": 0
+            "protected": 7,
+            "partial": 7,
+            "exposed": 3
           },
           "E": {
-            "protected": 7,
-            "partial": 8,
+            "protected": 9,
+            "partial": 3,
             "exposed": 5
           },
           "SE": {
-            "protected": 5,
-            "partial": 13,
-            "exposed": 2
-          },
-          "S": {
-            "protected": 5,
-            "partial": 12,
-            "exposed": 3
-          },
-          "SW": {
-            "protected": 4,
-            "partial": 16,
-            "exposed": 0
-          },
-          "W": {
-            "protected": 5,
-            "partial": 8,
+            "protected": 9,
+            "partial": 1,
             "exposed": 7
           },
+          "S": {
+            "protected": 6,
+            "partial": 5,
+            "exposed": 6
+          },
+          "SW": {
+            "protected": 10,
+            "partial": 5,
+            "exposed": 2
+          },
+          "W": {
+            "protected": 7,
+            "partial": 4,
+            "exposed": 6
+          },
           "NW": {
-            "protected": 4,
-            "partial": 3,
-            "exposed": 13
+            "protected": 7,
+            "partial": 1,
+            "exposed": 9
           }
         }
       },
@@ -3746,44 +3748,44 @@
         "missingCoordinates": 0,
         "sectors": {
           "N": {
-            "protected": 15,
-            "partial": 23,
-            "exposed": 0
+            "protected": 19,
+            "partial": 6,
+            "exposed": 13
           },
           "NE": {
-            "protected": 11,
-            "partial": 27,
-            "exposed": 0
-          },
-          "E": {
-            "protected": 11,
-            "partial": 23,
-            "exposed": 4
-          },
-          "SE": {
-            "protected": 14,
-            "partial": 17,
+            "protected": 18,
+            "partial": 13,
             "exposed": 7
           },
-          "S": {
-            "protected": 16,
+          "E": {
+            "protected": 17,
             "partial": 11,
-            "exposed": 11
+            "exposed": 10
+          },
+          "SE": {
+            "protected": 19,
+            "partial": 4,
+            "exposed": 15
+          },
+          "S": {
+            "protected": 18,
+            "partial": 1,
+            "exposed": 19
           },
           "SW": {
-            "protected": 9,
-            "partial": 23,
-            "exposed": 6
+            "protected": 16,
+            "partial": 12,
+            "exposed": 10
           },
           "W": {
-            "protected": 10,
-            "partial": 16,
-            "exposed": 12
+            "protected": 21,
+            "partial": 4,
+            "exposed": 13
           },
           "NW": {
-            "protected": 13,
-            "partial": 20,
-            "exposed": 5
+            "protected": 18,
+            "partial": 7,
+            "exposed": 13
           }
         }
       },
@@ -3815,8 +3817,8 @@
           },
           "S": {
             "protected": 0,
-            "partial": 7,
-            "exposed": 10
+            "partial": 8,
+            "exposed": 9
           },
           "SW": {
             "protected": 0,
@@ -3842,44 +3844,44 @@
         "missingCoordinates": 0,
         "sectors": {
           "N": {
-            "protected": 18,
-            "partial": 22,
-            "exposed": 0
+            "protected": 28,
+            "partial": 9,
+            "exposed": 3
           },
           "NE": {
-            "protected": 10,
-            "partial": 20,
-            "exposed": 10
+            "protected": 21,
+            "partial": 8,
+            "exposed": 11
           },
           "E": {
-            "protected": 10,
-            "partial": 1,
-            "exposed": 29
+            "protected": 11,
+            "partial": 6,
+            "exposed": 23
           },
           "SE": {
-            "protected": 9,
-            "partial": 17,
-            "exposed": 14
+            "protected": 11,
+            "partial": 4,
+            "exposed": 25
           },
           "S": {
-            "protected": 10,
-            "partial": 28,
-            "exposed": 2
+            "protected": 13,
+            "partial": 10,
+            "exposed": 17
           },
           "SW": {
-            "protected": 8,
-            "partial": 19,
+            "protected": 13,
+            "partial": 14,
             "exposed": 13
           },
           "W": {
-            "protected": 24,
+            "protected": 27,
             "partial": 3,
-            "exposed": 13
+            "exposed": 10
           },
           "NW": {
-            "protected": 27,
-            "partial": 7,
-            "exposed": 6
+            "protected": 29,
+            "partial": 2,
+            "exposed": 9
           }
         }
       },
@@ -3890,9 +3892,9 @@
         "missingCoordinates": 0,
         "sectors": {
           "N": {
-            "protected": 3,
-            "partial": 5,
-            "exposed": 3
+            "protected": 4,
+            "partial": 1,
+            "exposed": 6
           },
           "NE": {
             "protected": 3,
@@ -3901,33 +3903,33 @@
           },
           "E": {
             "protected": 3,
-            "partial": 1,
-            "exposed": 7
+            "partial": 2,
+            "exposed": 6
           },
           "SE": {
-            "protected": 2,
-            "partial": 9,
-            "exposed": 0
+            "protected": 5,
+            "partial": 4,
+            "exposed": 2
           },
           "S": {
-            "protected": 5,
-            "partial": 5,
-            "exposed": 1
+            "protected": 7,
+            "partial": 2,
+            "exposed": 2
           },
           "SW": {
-            "protected": 6,
-            "partial": 2,
+            "protected": 8,
+            "partial": 0,
             "exposed": 3
           },
           "W": {
-            "protected": 4,
-            "partial": 3,
-            "exposed": 4
+            "protected": 6,
+            "partial": 4,
+            "exposed": 1
           },
           "NW": {
-            "protected": 2,
-            "partial": 9,
-            "exposed": 0
+            "protected": 6,
+            "partial": 3,
+            "exposed": 2
           }
         }
       },
@@ -3938,44 +3940,44 @@
         "missingCoordinates": 0,
         "sectors": {
           "N": {
+            "protected": 9,
+            "partial": 4,
+            "exposed": 5
+          },
+          "NE": {
+            "protected": 8,
+            "partial": 2,
+            "exposed": 8
+          },
+          "E": {
+            "protected": 7,
+            "partial": 3,
+            "exposed": 8
+          },
+          "SE": {
             "protected": 5,
             "partial": 6,
             "exposed": 7
           },
-          "NE": {
-            "protected": 0,
-            "partial": 10,
+          "S": {
+            "protected": 7,
+            "partial": 3,
             "exposed": 8
           },
-          "E": {
-            "protected": 3,
+          "SW": {
+            "protected": 10,
             "partial": 1,
-            "exposed": 14
-          },
-          "SE": {
-            "protected": 1,
-            "partial": 10,
             "exposed": 7
           },
-          "S": {
-            "protected": 2,
-            "partial": 16,
-            "exposed": 0
-          },
-          "SW": {
-            "protected": 2,
-            "partial": 6,
-            "exposed": 10
-          },
           "W": {
-            "protected": 4,
-            "partial": 14,
-            "exposed": 0
+            "protected": 11,
+            "partial": 3,
+            "exposed": 4
           },
           "NW": {
-            "protected": 3,
-            "partial": 15,
-            "exposed": 0
+            "protected": 12,
+            "partial": 4,
+            "exposed": 2
           }
         }
       },
@@ -3986,18 +3988,18 @@
         "missingCoordinates": 0,
         "sectors": {
           "N": {
-            "protected": 0,
-            "partial": 1,
-            "exposed": 1
+            "protected": 2,
+            "partial": 0,
+            "exposed": 0
           },
           "NE": {
             "protected": 1,
-            "partial": 0,
-            "exposed": 1
+            "partial": 1,
+            "exposed": 0
           },
           "E": {
-            "protected": 0,
-            "partial": 1,
+            "protected": 1,
+            "partial": 0,
             "exposed": 1
           },
           "SE": {
@@ -4007,23 +4009,23 @@
           },
           "S": {
             "protected": 0,
-            "partial": 2,
-            "exposed": 0
-          },
-          "SW": {
-            "protected": 0,
-            "partial": 2,
-            "exposed": 0
-          },
-          "W": {
-            "protected": 0,
-            "partial": 2,
-            "exposed": 0
-          },
-          "NW": {
-            "protected": 0,
             "partial": 1,
             "exposed": 1
+          },
+          "SW": {
+            "protected": 1,
+            "partial": 0,
+            "exposed": 1
+          },
+          "W": {
+            "protected": 1,
+            "partial": 0,
+            "exposed": 1
+          },
+          "NW": {
+            "protected": 1,
+            "partial": 1,
+            "exposed": 0
           }
         }
       },
@@ -4034,44 +4036,44 @@
         "missingCoordinates": 0,
         "sectors": {
           "N": {
-            "protected": 15,
-            "partial": 16,
-            "exposed": 10
+            "protected": 21,
+            "partial": 9,
+            "exposed": 11
           },
           "NE": {
-            "protected": 15,
-            "partial": 26,
-            "exposed": 0
+            "protected": 20,
+            "partial": 11,
+            "exposed": 10
           },
           "E": {
-            "protected": 9,
-            "partial": 23,
-            "exposed": 9
+            "protected": 14,
+            "partial": 17,
+            "exposed": 10
           },
           "SE": {
-            "protected": 16,
-            "partial": 5,
+            "protected": 18,
+            "partial": 3,
             "exposed": 20
           },
           "S": {
-            "protected": 13,
-            "partial": 14,
-            "exposed": 14
+            "protected": 17,
+            "partial": 11,
+            "exposed": 13
           },
           "SW": {
-            "protected": 17,
+            "protected": 19,
             "partial": 7,
-            "exposed": 17
+            "exposed": 15
           },
           "W": {
-            "protected": 12,
-            "partial": 23,
-            "exposed": 6
+            "protected": 19,
+            "partial": 15,
+            "exposed": 7
           },
           "NW": {
-            "protected": 21,
-            "partial": 8,
-            "exposed": 12
+            "protected": 25,
+            "partial": 6,
+            "exposed": 10
           }
         }
       },
@@ -4082,44 +4084,44 @@
         "missingCoordinates": 0,
         "sectors": {
           "N": {
-            "protected": 19,
-            "partial": 10,
-            "exposed": 10
+            "protected": 25,
+            "partial": 5,
+            "exposed": 9
           },
           "NE": {
-            "protected": 18,
-            "partial": 11,
-            "exposed": 10
+            "protected": 25,
+            "partial": 5,
+            "exposed": 9
           },
           "E": {
             "protected": 9,
-            "partial": 13,
-            "exposed": 17
+            "partial": 17,
+            "exposed": 13
           },
           "SE": {
-            "protected": 10,
-            "partial": 5,
-            "exposed": 24
+            "protected": 14,
+            "partial": 3,
+            "exposed": 22
           },
           "S": {
-            "protected": 11,
-            "partial": 4,
-            "exposed": 24
+            "protected": 12,
+            "partial": 6,
+            "exposed": 21
           },
           "SW": {
-            "protected": 9,
-            "partial": 12,
+            "protected": 12,
+            "partial": 9,
             "exposed": 18
           },
           "W": {
-            "protected": 13,
-            "partial": 15,
-            "exposed": 11
+            "protected": 20,
+            "partial": 11,
+            "exposed": 8
           },
           "NW": {
-            "protected": 17,
-            "partial": 22,
-            "exposed": 0
+            "protected": 25,
+            "partial": 6,
+            "exposed": 8
           }
         }
       },
@@ -4130,44 +4132,44 @@
         "missingCoordinates": 0,
         "sectors": {
           "N": {
-            "protected": 6,
-            "partial": 19,
-            "exposed": 14
-          },
-          "NE": {
-            "protected": 12,
-            "partial": 16,
-            "exposed": 11
-          },
-          "E": {
             "protected": 22,
             "partial": 5,
             "exposed": 12
           },
+          "NE": {
+            "protected": 18,
+            "partial": 12,
+            "exposed": 9
+          },
+          "E": {
+            "protected": 25,
+            "partial": 0,
+            "exposed": 14
+          },
           "SE": {
-            "protected": 12,
-            "partial": 17,
-            "exposed": 10
+            "protected": 23,
+            "partial": 3,
+            "exposed": 13
           },
           "S": {
-            "protected": 12,
-            "partial": 23,
-            "exposed": 4
+            "protected": 14,
+            "partial": 15,
+            "exposed": 10
           },
           "SW": {
-            "protected": 7,
-            "partial": 21,
-            "exposed": 11
+            "protected": 21,
+            "partial": 4,
+            "exposed": 14
           },
           "W": {
-            "protected": 12,
-            "partial": 27,
-            "exposed": 0
+            "protected": 14,
+            "partial": 6,
+            "exposed": 19
           },
           "NW": {
-            "protected": 12,
-            "partial": 18,
-            "exposed": 9
+            "protected": 17,
+            "partial": 11,
+            "exposed": 11
           }
         }
       },
@@ -4188,24 +4190,24 @@
             "exposed": 1
           },
           "E": {
-            "protected": 0,
-            "partial": 1,
+            "protected": 1,
+            "partial": 0,
             "exposed": 1
           },
           "SE": {
             "protected": 1,
-            "partial": 1,
-            "exposed": 0
+            "partial": 0,
+            "exposed": 1
           },
           "S": {
-            "protected": 0,
-            "partial": 2,
+            "protected": 1,
+            "partial": 1,
             "exposed": 0
           },
           "SW": {
-            "protected": 0,
+            "protected": 1,
             "partial": 1,
-            "exposed": 1
+            "exposed": 0
           },
           "W": {
             "protected": 1,
@@ -4213,9 +4215,9 @@
             "exposed": 1
           },
           "NW": {
-            "protected": 0,
-            "partial": 2,
-            "exposed": 0
+            "protected": 1,
+            "partial": 0,
+            "exposed": 1
           }
         }
       },
@@ -4226,44 +4228,44 @@
         "missingCoordinates": 0,
         "sectors": {
           "N": {
-            "protected": 11,
-            "partial": 15,
-            "exposed": 11
+            "protected": 21,
+            "partial": 7,
+            "exposed": 9
           },
           "NE": {
-            "protected": 8,
-            "partial": 24,
-            "exposed": 5
+            "protected": 18,
+            "partial": 9,
+            "exposed": 10
           },
           "E": {
-            "protected": 11,
-            "partial": 26,
-            "exposed": 0
+            "protected": 14,
+            "partial": 16,
+            "exposed": 7
           },
           "SE": {
-            "protected": 13,
-            "partial": 18,
-            "exposed": 6
+            "protected": 14,
+            "partial": 8,
+            "exposed": 15
           },
           "S": {
-            "protected": 15,
-            "partial": 9,
+            "protected": 19,
+            "partial": 5,
             "exposed": 13
           },
           "SW": {
-            "protected": 13,
-            "partial": 20,
-            "exposed": 4
+            "protected": 17,
+            "partial": 14,
+            "exposed": 6
           },
           "W": {
-            "protected": 16,
-            "partial": 12,
-            "exposed": 9
+            "protected": 23,
+            "partial": 4,
+            "exposed": 10
           },
           "NW": {
-            "protected": 16,
-            "partial": 8,
-            "exposed": 13
+            "protected": 23,
+            "partial": 5,
+            "exposed": 9
           }
         }
       },
@@ -4274,44 +4276,44 @@
         "missingCoordinates": 0,
         "sectors": {
           "N": {
-            "protected": 7,
-            "partial": 6,
+            "protected": 9,
+            "partial": 4,
             "exposed": 2
           },
           "NE": {
-            "protected": 4,
-            "partial": 9,
-            "exposed": 2
+            "protected": 8,
+            "partial": 2,
+            "exposed": 5
           },
           "E": {
-            "protected": 1,
-            "partial": 14,
-            "exposed": 0
+            "protected": 6,
+            "partial": 4,
+            "exposed": 5
           },
           "SE": {
-            "protected": 2,
-            "partial": 6,
-            "exposed": 7
+            "protected": 5,
+            "partial": 2,
+            "exposed": 8
           },
           "S": {
-            "protected": 2,
-            "partial": 11,
-            "exposed": 2
+            "protected": 4,
+            "partial": 5,
+            "exposed": 6
           },
           "SW": {
             "protected": 7,
-            "partial": 5,
-            "exposed": 3
+            "partial": 4,
+            "exposed": 4
           },
           "W": {
-            "protected": 8,
+            "protected": 9,
             "partial": 3,
-            "exposed": 4
+            "exposed": 3
           },
           "NW": {
-            "protected": 8,
-            "partial": 3,
-            "exposed": 4
+            "protected": 10,
+            "partial": 2,
+            "exposed": 3
           }
         }
       },
@@ -4322,13 +4324,13 @@
         "missingCoordinates": 0,
         "sectors": {
           "N": {
-            "protected": 1,
-            "partial": 2,
+            "protected": 2,
+            "partial": 1,
             "exposed": 1
           },
           "NE": {
-            "protected": 2,
-            "partial": 1,
+            "protected": 3,
+            "partial": 0,
             "exposed": 1
           },
           "E": {
@@ -4337,24 +4339,24 @@
             "exposed": 1
           },
           "SE": {
-            "protected": 0,
+            "protected": 1,
             "partial": 3,
-            "exposed": 1
+            "exposed": 0
           },
           "S": {
-            "protected": 0,
-            "partial": 2,
+            "protected": 2,
+            "partial": 0,
             "exposed": 2
           },
           "SW": {
             "protected": 1,
-            "partial": 3,
-            "exposed": 0
+            "partial": 1,
+            "exposed": 2
           },
           "W": {
             "protected": 1,
-            "partial": 3,
-            "exposed": 0
+            "partial": 2,
+            "exposed": 1
           },
           "NW": {
             "protected": 0,
@@ -4370,8 +4372,8 @@
         "missingCoordinates": 0,
         "sectors": {
           "N": {
-            "protected": 1,
-            "partial": 1,
+            "protected": 2,
+            "partial": 0,
             "exposed": 1
           },
           "NE": {
@@ -4380,13 +4382,13 @@
             "exposed": 0
           },
           "E": {
-            "protected": 0,
-            "partial": 3,
-            "exposed": 0
+            "protected": 2,
+            "partial": 0,
+            "exposed": 1
           },
           "SE": {
-            "protected": 1,
-            "partial": 2,
+            "protected": 2,
+            "partial": 1,
             "exposed": 0
           },
           "S": {
@@ -4395,19 +4397,19 @@
             "exposed": 0
           },
           "SW": {
-            "protected": 1,
-            "partial": 2,
-            "exposed": 0
+            "protected": 2,
+            "partial": 0,
+            "exposed": 1
           },
           "W": {
-            "protected": 1,
-            "partial": 2,
-            "exposed": 0
+            "protected": 2,
+            "partial": 0,
+            "exposed": 1
           },
           "NW": {
-            "protected": 0,
-            "partial": 3,
-            "exposed": 0
+            "protected": 1,
+            "partial": 1,
+            "exposed": 1
           }
         }
       },
@@ -4418,44 +4420,44 @@
         "missingCoordinates": 0,
         "sectors": {
           "N": {
-            "protected": 29,
-            "partial": 29,
-            "exposed": 3
+            "protected": 45,
+            "partial": 10,
+            "exposed": 6
           },
           "NE": {
-            "protected": 15,
-            "partial": 23,
-            "exposed": 23
+            "protected": 21,
+            "partial": 15,
+            "exposed": 25
           },
           "E": {
-            "protected": 8,
-            "partial": 14,
-            "exposed": 39
+            "protected": 16,
+            "partial": 7,
+            "exposed": 38
           },
           "SE": {
-            "protected": 9,
-            "partial": 5,
+            "protected": 14,
+            "partial": 0,
             "exposed": 47
           },
           "S": {
-            "protected": 8,
-            "partial": 19,
-            "exposed": 34
+            "protected": 13,
+            "partial": 17,
+            "exposed": 31
           },
           "SW": {
-            "protected": 11,
-            "partial": 42,
-            "exposed": 8
+            "protected": 36,
+            "partial": 13,
+            "exposed": 12
           },
           "W": {
-            "protected": 41,
-            "partial": 10,
+            "protected": 44,
+            "partial": 7,
             "exposed": 10
           },
           "NW": {
-            "protected": 44,
-            "partial": 13,
-            "exposed": 4
+            "protected": 48,
+            "partial": 4,
+            "exposed": 9
           }
         }
       },
@@ -4466,43 +4468,43 @@
         "missingCoordinates": 0,
         "sectors": {
           "N": {
-            "protected": 4,
-            "partial": 5,
+            "protected": 8,
+            "partial": 1,
             "exposed": 4
           },
           "NE": {
-            "protected": 2,
-            "partial": 6,
-            "exposed": 5
+            "protected": 6,
+            "partial": 3,
+            "exposed": 4
           },
           "E": {
-            "protected": 1,
-            "partial": 5,
-            "exposed": 7
+            "protected": 4,
+            "partial": 3,
+            "exposed": 6
           },
           "SE": {
-            "protected": 0,
-            "partial": 5,
+            "protected": 3,
+            "partial": 2,
             "exposed": 8
           },
           "S": {
-            "protected": 2,
+            "protected": 4,
             "partial": 2,
-            "exposed": 9
+            "exposed": 7
           },
           "SW": {
-            "protected": 2,
-            "partial": 3,
-            "exposed": 8
+            "protected": 6,
+            "partial": 1,
+            "exposed": 6
           },
           "W": {
-            "protected": 3,
-            "partial": 5,
-            "exposed": 5
+            "protected": 7,
+            "partial": 4,
+            "exposed": 2
           },
           "NW": {
-            "protected": 5,
-            "partial": 5,
+            "protected": 9,
+            "partial": 1,
             "exposed": 3
           }
         }
@@ -4562,44 +4564,44 @@
         "missingCoordinates": 0,
         "sectors": {
           "N": {
-            "protected": 8,
-            "partial": 16,
-            "exposed": 1
+            "protected": 10,
+            "partial": 8,
+            "exposed": 7
           },
           "NE": {
-            "protected": 8,
-            "partial": 4,
-            "exposed": 13
+            "protected": 11,
+            "partial": 3,
+            "exposed": 11
           },
           "E": {
-            "protected": 3,
-            "partial": 10,
-            "exposed": 12
+            "protected": 11,
+            "partial": 7,
+            "exposed": 7
           },
           "SE": {
-            "protected": 5,
-            "partial": 12,
-            "exposed": 8
+            "protected": 11,
+            "partial": 3,
+            "exposed": 11
           },
           "S": {
-            "protected": 7,
-            "partial": 6,
-            "exposed": 12
-          },
-          "SW": {
-            "protected": 8,
-            "partial": 7,
+            "protected": 11,
+            "partial": 4,
             "exposed": 10
           },
+          "SW": {
+            "protected": 14,
+            "partial": 5,
+            "exposed": 6
+          },
           "W": {
-            "protected": 8,
-            "partial": 9,
+            "protected": 11,
+            "partial": 6,
             "exposed": 8
           },
           "NW": {
-            "protected": 11,
-            "partial": 10,
-            "exposed": 4
+            "protected": 14,
+            "partial": 2,
+            "exposed": 9
           }
         }
       },
@@ -4610,34 +4612,34 @@
         "missingCoordinates": 0,
         "sectors": {
           "N": {
-            "protected": 9,
-            "partial": 9,
+            "protected": 16,
+            "partial": 2,
             "exposed": 2
           },
           "NE": {
-            "protected": 10,
-            "partial": 7,
-            "exposed": 3
+            "protected": 15,
+            "partial": 3,
+            "exposed": 2
           },
           "E": {
-            "protected": 10,
+            "protected": 11,
             "partial": 0,
-            "exposed": 10
-          },
-          "SE": {
-            "protected": 3,
-            "partial": 7,
-            "exposed": 10
-          },
-          "S": {
-            "protected": 0,
-            "partial": 11,
             "exposed": 9
           },
+          "SE": {
+            "protected": 9,
+            "partial": 3,
+            "exposed": 8
+          },
+          "S": {
+            "protected": 4,
+            "partial": 3,
+            "exposed": 13
+          },
           "SW": {
-            "protected": 2,
-            "partial": 12,
-            "exposed": 6
+            "protected": 4,
+            "partial": 5,
+            "exposed": 11
           },
           "W": {
             "protected": 9,
@@ -4645,8 +4647,8 @@
             "exposed": 11
           },
           "NW": {
-            "protected": 7,
-            "partial": 8,
+            "protected": 9,
+            "partial": 6,
             "exposed": 5
           }
         }
@@ -4658,19 +4660,19 @@
         "missingCoordinates": 0,
         "sectors": {
           "N": {
+            "protected": 4,
+            "partial": 1,
+            "exposed": 0
+          },
+          "NE": {
             "protected": 3,
             "partial": 1,
             "exposed": 1
           },
-          "NE": {
-            "protected": 0,
-            "partial": 5,
-            "exposed": 0
-          },
           "E": {
             "protected": 0,
-            "partial": 5,
-            "exposed": 0
+            "partial": 0,
+            "exposed": 5
           },
           "SE": {
             "protected": 0,
@@ -4679,23 +4681,23 @@
           },
           "S": {
             "protected": 0,
-            "partial": 0,
-            "exposed": 5
+            "partial": 1,
+            "exposed": 4
           },
           "SW": {
-            "protected": 0,
-            "partial": 5,
+            "protected": 1,
+            "partial": 4,
             "exposed": 0
           },
           "W": {
-            "protected": 4,
-            "partial": 1,
+            "protected": 5,
+            "partial": 0,
             "exposed": 0
           },
           "NW": {
-            "protected": 4,
+            "protected": 5,
             "partial": 0,
-            "exposed": 1
+            "exposed": 0
           }
         }
       },
@@ -4706,29 +4708,29 @@
         "missingCoordinates": 0,
         "sectors": {
           "N": {
+            "protected": 7,
+            "partial": 1,
+            "exposed": 0
+          },
+          "NE": {
             "protected": 2,
             "partial": 6,
             "exposed": 0
           },
-          "NE": {
-            "protected": 1,
-            "partial": 7,
-            "exposed": 0
-          },
           "E": {
-            "protected": 1,
-            "partial": 7,
-            "exposed": 0
-          },
-          "SE": {
-            "protected": 3,
-            "partial": 3,
+            "protected": 2,
+            "partial": 4,
             "exposed": 2
           },
-          "S": {
-            "protected": 4,
+          "SE": {
+            "protected": 2,
             "partial": 3,
-            "exposed": 1
+            "exposed": 3
+          },
+          "S": {
+            "protected": 2,
+            "partial": 6,
+            "exposed": 0
           },
           "SW": {
             "protected": 7,
@@ -4736,13 +4738,13 @@
             "exposed": 1
           },
           "W": {
-            "protected": 5,
-            "partial": 3,
-            "exposed": 0
+            "protected": 6,
+            "partial": 1,
+            "exposed": 1
           },
           "NW": {
-            "protected": 5,
-            "partial": 3,
+            "protected": 6,
+            "partial": 2,
             "exposed": 0
           }
         }
@@ -4754,43 +4756,43 @@
         "missingCoordinates": 0,
         "sectors": {
           "N": {
-            "protected": 7,
-            "partial": 16,
-            "exposed": 0
+            "protected": 13,
+            "partial": 9,
+            "exposed": 1
           },
           "NE": {
-            "protected": 11,
-            "partial": 12,
-            "exposed": 0
+            "protected": 20,
+            "partial": 1,
+            "exposed": 2
           },
           "E": {
-            "protected": 14,
-            "partial": 1,
+            "protected": 15,
+            "partial": 0,
             "exposed": 8
           },
           "SE": {
             "protected": 14,
-            "partial": 1,
-            "exposed": 8
+            "partial": 2,
+            "exposed": 7
           },
           "S": {
-            "protected": 5,
-            "partial": 11,
+            "protected": 7,
+            "partial": 9,
             "exposed": 7
           },
           "SW": {
             "protected": 2,
-            "partial": 5,
-            "exposed": 16
+            "partial": 8,
+            "exposed": 13
           },
           "W": {
-            "protected": 3,
-            "partial": 5,
+            "protected": 8,
+            "partial": 0,
             "exposed": 15
           },
           "NW": {
-            "protected": 8,
-            "partial": 3,
+            "protected": 9,
+            "partial": 2,
             "exposed": 12
           }
         }
@@ -4807,8 +4809,8 @@
             "exposed": 0
           },
           "NE": {
-            "protected": 0,
-            "partial": 5,
+            "protected": 5,
+            "partial": 0,
             "exposed": 0
           },
           "E": {
@@ -4822,8 +4824,8 @@
             "exposed": 0
           },
           "S": {
-            "protected": 0,
-            "partial": 5,
+            "protected": 5,
+            "partial": 0,
             "exposed": 0
           },
           "SW": {
@@ -4838,8 +4840,8 @@
           },
           "NW": {
             "protected": 0,
-            "partial": 5,
-            "exposed": 0
+            "partial": 0,
+            "exposed": 5
           }
         }
       },
@@ -4851,42 +4853,42 @@
         "sectors": {
           "N": {
             "protected": 6,
-            "partial": 4,
-            "exposed": 2
-          },
-          "NE": {
-            "protected": 5,
-            "partial": 3,
+            "partial": 2,
             "exposed": 4
           },
+          "NE": {
+            "protected": 6,
+            "partial": 0,
+            "exposed": 6
+          },
           "E": {
-            "protected": 3,
-            "partial": 4,
+            "protected": 4,
+            "partial": 3,
             "exposed": 5
           },
           "SE": {
-            "protected": 3,
-            "partial": 8,
-            "exposed": 1
-          },
-          "S": {
-            "protected": 3,
-            "partial": 4,
-            "exposed": 5
-          },
-          "SW": {
-            "protected": 3,
-            "partial": 4,
-            "exposed": 5
-          },
-          "W": {
             "protected": 5,
             "partial": 3,
             "exposed": 4
           },
+          "S": {
+            "protected": 5,
+            "partial": 1,
+            "exposed": 6
+          },
+          "SW": {
+            "protected": 6,
+            "partial": 1,
+            "exposed": 5
+          },
+          "W": {
+            "protected": 6,
+            "partial": 4,
+            "exposed": 2
+          },
           "NW": {
-            "protected": 4,
-            "partial": 6,
+            "protected": 6,
+            "partial": 4,
             "exposed": 2
           }
         }
@@ -4898,44 +4900,44 @@
         "missingCoordinates": 0,
         "sectors": {
           "N": {
-            "protected": 23,
-            "partial": 6,
-            "exposed": 11
+            "protected": 28,
+            "partial": 3,
+            "exposed": 9
           },
           "NE": {
-            "protected": 19,
+            "protected": 21,
             "partial": 6,
-            "exposed": 15
+            "exposed": 13
           },
           "E": {
+            "protected": 20,
+            "partial": 9,
+            "exposed": 11
+          },
+          "SE": {
             "protected": 12,
             "partial": 20,
             "exposed": 8
           },
-          "SE": {
-            "protected": 12,
-            "partial": 28,
-            "exposed": 0
-          },
           "S": {
-            "protected": 14,
-            "partial": 5,
-            "exposed": 21
+            "protected": 12,
+            "partial": 4,
+            "exposed": 24
           },
           "SW": {
-            "protected": 13,
-            "partial": 23,
-            "exposed": 4
+            "protected": 18,
+            "partial": 1,
+            "exposed": 21
           },
           "W": {
-            "protected": 12,
-            "partial": 17,
-            "exposed": 11
+            "protected": 17,
+            "partial": 10,
+            "exposed": 13
           },
           "NW": {
-            "protected": 8,
-            "partial": 32,
-            "exposed": 0
+            "protected": 25,
+            "partial": 13,
+            "exposed": 2
           }
         }
       },
@@ -4946,19 +4948,19 @@
         "missingCoordinates": 0,
         "sectors": {
           "N": {
-            "protected": 26,
-            "partial": 5,
+            "protected": 28,
+            "partial": 3,
             "exposed": 4
           },
           "NE": {
-            "protected": 0,
-            "partial": 34,
-            "exposed": 1
+            "protected": 27,
+            "partial": 8,
+            "exposed": 0
           },
           "E": {
             "protected": 4,
-            "partial": 0,
-            "exposed": 31
+            "partial": 8,
+            "exposed": 23
           },
           "SE": {
             "protected": 4,
@@ -4971,18 +4973,18 @@
             "exposed": 31
           },
           "SW": {
-            "protected": 0,
-            "partial": 29,
-            "exposed": 6
+            "protected": 2,
+            "partial": 20,
+            "exposed": 13
           },
           "W": {
-            "protected": 5,
-            "partial": 30,
-            "exposed": 0
+            "protected": 22,
+            "partial": 9,
+            "exposed": 4
           },
           "NW": {
-            "protected": 19,
-            "partial": 12,
+            "protected": 26,
+            "partial": 5,
             "exposed": 4
           }
         }
@@ -4995,8 +4997,8 @@
         "sectors": {
           "N": {
             "protected": 0,
-            "partial": 7,
-            "exposed": 7
+            "partial": 11,
+            "exposed": 3
           },
           "NE": {
             "protected": 0,
@@ -5010,12 +5012,12 @@
           },
           "SE": {
             "protected": 0,
-            "partial": 8,
-            "exposed": 6
+            "partial": 3,
+            "exposed": 11
           },
           "S": {
-            "protected": 3,
-            "partial": 11,
+            "protected": 14,
+            "partial": 0,
             "exposed": 0
           },
           "SW": {
@@ -5029,8 +5031,8 @@
             "exposed": 0
           },
           "NW": {
-            "protected": 7,
-            "partial": 7,
+            "protected": 14,
+            "partial": 0,
             "exposed": 0
           }
         }
@@ -5042,43 +5044,43 @@
         "missingCoordinates": 0,
         "sectors": {
           "N": {
-            "protected": 24,
-            "partial": 6,
+            "protected": 27,
+            "partial": 3,
             "exposed": 30
           },
           "NE": {
-            "protected": 7,
-            "partial": 23,
-            "exposed": 30
+            "protected": 21,
+            "partial": 8,
+            "exposed": 31
           },
           "E": {
-            "protected": 3,
-            "partial": 41,
-            "exposed": 16
+            "protected": 5,
+            "partial": 6,
+            "exposed": 49
           },
           "SE": {
             "protected": 0,
-            "partial": 52,
-            "exposed": 8
+            "partial": 37,
+            "exposed": 23
           },
           "S": {
-            "protected": 15,
-            "partial": 45,
-            "exposed": 0
+            "protected": 31,
+            "partial": 19,
+            "exposed": 10
           },
           "SW": {
-            "protected": 34,
-            "partial": 26,
+            "protected": 33,
+            "partial": 27,
             "exposed": 0
           },
           "W": {
-            "protected": 45,
-            "partial": 15,
+            "protected": 54,
+            "partial": 6,
             "exposed": 0
           },
           "NW": {
-            "protected": 25,
-            "partial": 35,
+            "protected": 50,
+            "partial": 10,
             "exposed": 0
           }
         }
@@ -5090,44 +5092,44 @@
         "missingCoordinates": 0,
         "sectors": {
           "N": {
-            "protected": 10,
-            "partial": 6,
-            "exposed": 16
+            "protected": 15,
+            "partial": 4,
+            "exposed": 13
           },
           "NE": {
-            "protected": 8,
-            "partial": 17,
+            "protected": 17,
+            "partial": 8,
             "exposed": 7
           },
           "E": {
-            "protected": 9,
-            "partial": 23,
-            "exposed": 0
+            "protected": 19,
+            "partial": 5,
+            "exposed": 8
           },
           "SE": {
-            "protected": 6,
-            "partial": 10,
-            "exposed": 16
+            "protected": 14,
+            "partial": 6,
+            "exposed": 12
           },
           "S": {
-            "protected": 8,
-            "partial": 23,
-            "exposed": 1
+            "protected": 15,
+            "partial": 5,
+            "exposed": 12
           },
           "SW": {
-            "protected": 5,
-            "partial": 27,
-            "exposed": 0
+            "protected": 14,
+            "partial": 8,
+            "exposed": 10
           },
           "W": {
-            "protected": 7,
-            "partial": 25,
-            "exposed": 0
+            "protected": 11,
+            "partial": 12,
+            "exposed": 9
           },
           "NW": {
-            "protected": 5,
-            "partial": 27,
-            "exposed": 0
+            "protected": 16,
+            "partial": 6,
+            "exposed": 10
           }
         }
       },
@@ -5138,24 +5140,24 @@
         "missingCoordinates": 0,
         "sectors": {
           "N": {
-            "protected": 9,
-            "partial": 4,
+            "protected": 12,
+            "partial": 1,
             "exposed": 6
           },
           "NE": {
-            "protected": 8,
-            "partial": 10,
-            "exposed": 1
+            "protected": 11,
+            "partial": 2,
+            "exposed": 6
           },
           "E": {
-            "protected": 4,
-            "partial": 11,
+            "protected": 8,
+            "partial": 7,
             "exposed": 4
           },
           "SE": {
-            "protected": 5,
-            "partial": 5,
-            "exposed": 9
+            "protected": 10,
+            "partial": 1,
+            "exposed": 8
           },
           "S": {
             "protected": 6,
@@ -5164,17 +5166,17 @@
           },
           "SW": {
             "protected": 6,
-            "partial": 0,
-            "exposed": 13
+            "partial": 3,
+            "exposed": 10
           },
           "W": {
-            "protected": 6,
-            "partial": 10,
-            "exposed": 3
+            "protected": 9,
+            "partial": 2,
+            "exposed": 8
           },
           "NW": {
-            "protected": 4,
-            "partial": 15,
+            "protected": 11,
+            "partial": 8,
             "exposed": 0
           }
         }
@@ -5187,43 +5189,43 @@
         "sectors": {
           "N": {
             "protected": 1,
-            "partial": 14,
-            "exposed": 0
+            "partial": 11,
+            "exposed": 3
           },
           "NE": {
-            "protected": 4,
-            "partial": 10,
-            "exposed": 1
+            "protected": 5,
+            "partial": 2,
+            "exposed": 8
           },
           "E": {
-            "protected": 5,
-            "partial": 8,
-            "exposed": 2
+            "protected": 6,
+            "partial": 3,
+            "exposed": 6
           },
           "SE": {
-            "protected": 8,
-            "partial": 7,
-            "exposed": 0
+            "protected": 12,
+            "partial": 2,
+            "exposed": 1
           },
           "S": {
-            "protected": 9,
-            "partial": 6,
+            "protected": 14,
+            "partial": 1,
             "exposed": 0
           },
           "SW": {
-            "protected": 9,
-            "partial": 3,
-            "exposed": 3
-          },
-          "W": {
-            "protected": 5,
-            "partial": 6,
+            "protected": 10,
+            "partial": 1,
             "exposed": 4
           },
+          "W": {
+            "protected": 9,
+            "partial": 1,
+            "exposed": 5
+          },
           "NW": {
-            "protected": 0,
-            "partial": 14,
-            "exposed": 1
+            "protected": 4,
+            "partial": 6,
+            "exposed": 5
           }
         }
       },
@@ -5234,44 +5236,44 @@
         "missingCoordinates": 0,
         "sectors": {
           "N": {
-            "protected": 17,
-            "partial": 30,
+            "protected": 28,
+            "partial": 19,
             "exposed": 0
           },
           "NE": {
-            "protected": 24,
-            "partial": 23,
+            "protected": 28,
+            "partial": 19,
             "exposed": 0
           },
           "E": {
-            "protected": 21,
+            "protected": 20,
             "partial": 26,
-            "exposed": 0
+            "exposed": 1
           },
           "SE": {
-            "protected": 10,
-            "partial": 36,
-            "exposed": 1
+            "protected": 21,
+            "partial": 15,
+            "exposed": 11
           },
           "S": {
-            "protected": 13,
-            "partial": 25,
-            "exposed": 9
+            "protected": 17,
+            "partial": 18,
+            "exposed": 12
           },
           "SW": {
-            "protected": 13,
-            "partial": 25,
-            "exposed": 9
+            "protected": 22,
+            "partial": 12,
+            "exposed": 13
           },
           "W": {
-            "protected": 18,
-            "partial": 26,
-            "exposed": 3
+            "protected": 26,
+            "partial": 13,
+            "exposed": 8
           },
           "NW": {
-            "protected": 16,
-            "partial": 30,
-            "exposed": 1
+            "protected": 24,
+            "partial": 19,
+            "exposed": 4
           }
         }
       },
@@ -5282,44 +5284,44 @@
         "missingCoordinates": 0,
         "sectors": {
           "N": {
-            "protected": 2,
-            "partial": 10,
-            "exposed": 3
+            "protected": 7,
+            "partial": 3,
+            "exposed": 5
           },
           "NE": {
-            "protected": 9,
-            "partial": 6,
-            "exposed": 0
+            "protected": 14,
+            "partial": 0,
+            "exposed": 1
           },
           "E": {
-            "protected": 12,
-            "partial": 3,
+            "protected": 14,
+            "partial": 1,
             "exposed": 0
           },
           "SE": {
-            "protected": 11,
-            "partial": 4,
+            "protected": 15,
+            "partial": 0,
             "exposed": 0
           },
           "S": {
-            "protected": 3,
-            "partial": 10,
-            "exposed": 2
+            "protected": 9,
+            "partial": 3,
+            "exposed": 3
           },
           "SW": {
-            "protected": 0,
-            "partial": 7,
-            "exposed": 8
+            "protected": 1,
+            "partial": 5,
+            "exposed": 9
           },
           "W": {
-            "protected": 0,
-            "partial": 2,
-            "exposed": 13
+            "protected": 1,
+            "partial": 0,
+            "exposed": 14
           },
           "NW": {
             "protected": 0,
-            "partial": 8,
-            "exposed": 7
+            "partial": 5,
+            "exposed": 10
           }
         }
       }

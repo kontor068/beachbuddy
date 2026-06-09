@@ -1,0 +1,2901 @@
+{
+  "schemaVersion": 1,
+  "generatedAt": "2026-06-08T13:54:58.306Z",
+  "regionId": "south-aegean-kythnos",
+  "policy": {
+    "sameSegment": "Beaches in the same curated shoreline segment should render the same visible exposure level unless a verified local morphology or wind-sport exception locks a stricter level.",
+    "confidence": "Segment propagation may support map-color consistency and medium review, but it never creates high confidence by itself."
+  },
+  "summary": {
+    "scenarioCount": 5,
+    "segmentCount": 10,
+    "allowedExceptions": 0,
+    "unresolvedContradictions": 0
+  },
+  "allowedExceptions": [],
+  "unresolved": [],
+  "results": [
+    {
+      "scenarioId": "Naxos_N_3BFT",
+      "windDirectionDeg": 0,
+      "segments": [
+        {
+          "segmentId": "kythnos-koloveloni-petrousa-front",
+          "reason": "same_continuous_beachfront",
+          "rawLevels": [
+            "protected"
+          ],
+          "consistentLevels": [
+            "protected"
+          ],
+          "rows": [
+            {
+              "beachId": 1878,
+              "name": "Κολοβελόνη",
+              "level": "protected",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 1889,
+              "name": "Πετρούσα",
+              "level": "protected",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            }
+          ],
+          "rawRows": [
+            {
+              "beachId": 1878,
+              "name": "Κολοβελόνη",
+              "level": "protected",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 1889,
+              "name": "Πετρούσα",
+              "level": "protected",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            }
+          ],
+          "notes": "Koloveloni and Petrousa are neighboring south-facing south Kythnos records; Agios Dimitrios is kept separate because west-wind map exposure differs."
+        },
+        {
+          "segmentId": "kythnos-agios-nikolaos-nika-skylou-front",
+          "reason": "same_continuous_beachfront",
+          "rawLevels": [
+            "protected"
+          ],
+          "consistentLevels": [
+            "protected"
+          ],
+          "rows": [
+            {
+              "beachId": 1860,
+              "name": "Άγιος Νικόλαος",
+              "level": "protected",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 1866,
+              "name": "Αντώνηδες",
+              "level": "protected",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 1887,
+              "name": "Νίκα",
+              "level": "protected",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 1895,
+              "name": "Σκύλου",
+              "level": "protected",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            }
+          ],
+          "rawRows": [
+            {
+              "beachId": 1860,
+              "name": "Άγιος Νικόλαος",
+              "level": "protected",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 1866,
+              "name": "Αντώνηδες",
+              "level": "protected",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 1887,
+              "name": "Νίκα",
+              "level": "protected",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 1895,
+              "name": "Σκύλου",
+              "level": "protected",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            }
+          ],
+          "notes": "Agios Nikolaos, Antonides, Nika, and Skylou are close southeast-facing southeast Kythnos records; dirt-road difficulty remains separately scored."
+        },
+        {
+          "segmentId": "kythnos-agios-stefanos-lagkousi-front",
+          "reason": "same_village_bay",
+          "rawLevels": [
+            "protected"
+          ],
+          "consistentLevels": [
+            "protected"
+          ],
+          "rows": [
+            {
+              "beachId": 1861,
+              "name": "Άγιος Στέφανος",
+              "level": "protected",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 1864,
+              "name": "Αγκορίτσα",
+              "level": "protected",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 1869,
+              "name": "Βασιλικό",
+              "level": "protected",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 1880,
+              "name": "Λαγκούση",
+              "level": "protected",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            }
+          ],
+          "rawRows": [
+            {
+              "beachId": 1861,
+              "name": "Άγιος Στέφανος",
+              "level": "protected",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 1864,
+              "name": "Αγκορίτσα",
+              "level": "protected",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 1869,
+              "name": "Βασιλικό",
+              "level": "protected",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 1880,
+              "name": "Λαγκούση",
+              "level": "protected",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            }
+          ],
+          "notes": "Agios Stefanos, Agkoritsa, Vasiliko, and Lagkousi are neighboring south-facing east-coast bay records; boat-only access remains a top-pick blocker where relevant."
+        },
+        {
+          "segmentId": "kythnos-aosa-kouri-zogkaki-front",
+          "reason": "same_continuous_beachfront",
+          "rawLevels": [
+            "protected"
+          ],
+          "consistentLevels": [
+            "protected"
+          ],
+          "rows": [
+            {
+              "beachId": 1868,
+              "name": "Αόσα",
+              "level": "protected",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 1873,
+              "name": "Ζογκάκι",
+              "level": "protected",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 1879,
+              "name": "Κουρή",
+              "level": "protected",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            }
+          ],
+          "rawRows": [
+            {
+              "beachId": 1868,
+              "name": "Αόσα",
+              "level": "protected",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 1873,
+              "name": "Ζογκάκι",
+              "level": "protected",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 1879,
+              "name": "Κουρή",
+              "level": "protected",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            }
+          ],
+          "notes": "Aosa, Zogkaki, and Kouri are close southeast-facing east Kythnos records with similar practical exposure behavior."
+        },
+        {
+          "segmentId": "kythnos-agios-sostis-potamia-front",
+          "reason": "same_continuous_beachfront",
+          "rawLevels": [
+            "protected"
+          ],
+          "consistentLevels": [
+            "protected"
+          ],
+          "rows": [
+            {
+              "beachId": 1862,
+              "name": "Άγιος Σώστης",
+              "level": "protected",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 1874,
+              "name": "Καβουροχέρι",
+              "level": "protected",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 1891,
+              "name": "Ποταμιά",
+              "level": "protected",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            }
+          ],
+          "rawRows": [
+            {
+              "beachId": 1862,
+              "name": "Άγιος Σώστης",
+              "level": "protected",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 1874,
+              "name": "Καβουροχέρι",
+              "level": "protected",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 1891,
+              "name": "Ποταμιά",
+              "level": "protected",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            }
+          ],
+          "notes": "Agios Sostis, Kavourocheri, and Potamia are neighboring east-facing northeast Kythnos records; access remains separate."
+        },
+        {
+          "segmentId": "kythnos-agia-irini-maroula-skinari-front",
+          "reason": "same_continuous_beachfront",
+          "rawLevels": [
+            "partial"
+          ],
+          "consistentLevels": [
+            "partial"
+          ],
+          "rows": [
+            {
+              "beachId": 1863,
+              "name": "Αγία Ειρήνη",
+              "level": "partial",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 1884,
+              "name": "Μαρούλα",
+              "level": "partial",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            }
+          ],
+          "rawRows": [
+            {
+              "beachId": 1863,
+              "name": "Αγία Ειρήνη",
+              "level": "partial",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 1884,
+              "name": "Μαρούλα",
+              "level": "partial",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            }
+          ],
+          "notes": "Agia Irini and Maroula are nearby east-facing northeast Kythnos records; Skinari is kept outside because map-exposure validation shows a stricter local behavior."
+        },
+        {
+          "segmentId": "kythnos-kaki-maria-kalo-livadi-levkes-front",
+          "reason": "same_continuous_beachfront",
+          "rawLevels": [
+            "protected"
+          ],
+          "consistentLevels": [
+            "protected"
+          ],
+          "rows": [
+            {
+              "beachId": 1875,
+              "name": "Κακή Μαρία",
+              "level": "protected",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 1876,
+              "name": "Καλό Λιβάδι",
+              "level": "protected",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 1881,
+              "name": "Λεύκες",
+              "level": "protected",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            }
+          ],
+          "rawRows": [
+            {
+              "beachId": 1875,
+              "name": "Κακή Μαρία",
+              "level": "protected",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 1876,
+              "name": "Καλό Λιβάδι",
+              "level": "protected",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 1881,
+              "name": "Λεύκες",
+              "level": "protected",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            }
+          ],
+          "notes": "Kaki Maria, Kalo Livadi, and Levkes are neighboring east-facing east Kythnos records with similar shoreline behavior."
+        },
+        {
+          "segmentId": "kythnos-gaidouromantra-markouli-si-mou-si-front",
+          "reason": "same_continuous_beachfront",
+          "rawLevels": [
+            "protected"
+          ],
+          "consistentLevels": [
+            "protected"
+          ],
+          "rows": [
+            {
+              "beachId": 1871,
+              "name": "Γαϊδουρόμαντρα",
+              "level": "protected",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 1883,
+              "name": "Μαρκουλη",
+              "level": "protected",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 1892,
+              "name": "Σι Μου Σι",
+              "level": "protected",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            }
+          ],
+          "rawRows": [
+            {
+              "beachId": 1871,
+              "name": "Γαϊδουρόμαντρα",
+              "level": "protected",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 1883,
+              "name": "Μαρκουλη",
+              "level": "protected",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 1892,
+              "name": "Σι Μου Σι",
+              "level": "protected",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            }
+          ],
+          "notes": "Gaidouromantra, Markouli, and Si Mou Si are neighboring southeast-facing south/east Kythnos records; access difficulty remains separate."
+        },
+        {
+          "segmentId": "kythnos-galazia-kastella-flampouria-pontikia-front",
+          "reason": "same_continuous_beachfront",
+          "rawLevels": [
+            "partial"
+          ],
+          "consistentLevels": [
+            "partial"
+          ],
+          "rows": [
+            {
+              "beachId": 1870,
+              "name": "Γαλάζια Ακτή",
+              "level": "partial",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 1877,
+              "name": "Καστέλλα",
+              "level": "partial",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 1890,
+              "name": "Ποντίκια",
+              "level": "partial",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 1897,
+              "name": "Φλαμπούρια",
+              "level": "partial",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            }
+          ],
+          "rawRows": [
+            {
+              "beachId": 1870,
+              "name": "Γαλάζια Ακτή",
+              "level": "partial",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 1877,
+              "name": "Καστέλλα",
+              "level": "partial",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 1890,
+              "name": "Ποντίκια",
+              "level": "partial",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 1897,
+              "name": "Φλαμπούρια",
+              "level": "partial",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            }
+          ],
+          "notes": "Galazia Akti, Kastella, Pontikia, and Flampouria are west/northwest-facing west Kythnos records; individual access confidence remains separate."
+        },
+        {
+          "segmentId": "kythnos-livadaki-mikro-livadaki-front",
+          "reason": "same_cove_or_micro_bay",
+          "rawLevels": [
+            "exposed"
+          ],
+          "consistentLevels": [
+            "exposed"
+          ],
+          "rows": [
+            {
+              "beachId": 1882,
+              "name": "Λιβαδάκι",
+              "level": "exposed",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 1886,
+              "name": "Μικρό Λιβαδάκι",
+              "level": "exposed",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            }
+          ],
+          "rawRows": [
+            {
+              "beachId": 1882,
+              "name": "Λιβαδάκι",
+              "level": "exposed",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 1886,
+              "name": "Μικρό Λιβαδάκι",
+              "level": "exposed",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            }
+          ],
+          "notes": "Livadaki and Mikro Livadaki are adjacent northeast-facing records; difficult hiking access remains a top-pick blocker."
+        }
+      ]
+    },
+    {
+      "scenarioId": "Naxos_N_5BFT",
+      "windDirectionDeg": 0,
+      "segments": [
+        {
+          "segmentId": "kythnos-koloveloni-petrousa-front",
+          "reason": "same_continuous_beachfront",
+          "rawLevels": [
+            "protected"
+          ],
+          "consistentLevels": [
+            "protected"
+          ],
+          "rows": [
+            {
+              "beachId": 1878,
+              "name": "Κολοβελόνη",
+              "level": "protected",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 1889,
+              "name": "Πετρούσα",
+              "level": "protected",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            }
+          ],
+          "rawRows": [
+            {
+              "beachId": 1878,
+              "name": "Κολοβελόνη",
+              "level": "protected",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 1889,
+              "name": "Πετρούσα",
+              "level": "protected",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            }
+          ],
+          "notes": "Koloveloni and Petrousa are neighboring south-facing south Kythnos records; Agios Dimitrios is kept separate because west-wind map exposure differs."
+        },
+        {
+          "segmentId": "kythnos-agios-nikolaos-nika-skylou-front",
+          "reason": "same_continuous_beachfront",
+          "rawLevels": [
+            "protected"
+          ],
+          "consistentLevels": [
+            "protected"
+          ],
+          "rows": [
+            {
+              "beachId": 1860,
+              "name": "Άγιος Νικόλαος",
+              "level": "protected",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 1866,
+              "name": "Αντώνηδες",
+              "level": "protected",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 1887,
+              "name": "Νίκα",
+              "level": "protected",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 1895,
+              "name": "Σκύλου",
+              "level": "protected",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            }
+          ],
+          "rawRows": [
+            {
+              "beachId": 1860,
+              "name": "Άγιος Νικόλαος",
+              "level": "protected",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 1866,
+              "name": "Αντώνηδες",
+              "level": "protected",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 1887,
+              "name": "Νίκα",
+              "level": "protected",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 1895,
+              "name": "Σκύλου",
+              "level": "protected",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            }
+          ],
+          "notes": "Agios Nikolaos, Antonides, Nika, and Skylou are close southeast-facing southeast Kythnos records; dirt-road difficulty remains separately scored."
+        },
+        {
+          "segmentId": "kythnos-agios-stefanos-lagkousi-front",
+          "reason": "same_village_bay",
+          "rawLevels": [
+            "protected"
+          ],
+          "consistentLevels": [
+            "protected"
+          ],
+          "rows": [
+            {
+              "beachId": 1861,
+              "name": "Άγιος Στέφανος",
+              "level": "protected",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 1864,
+              "name": "Αγκορίτσα",
+              "level": "protected",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 1869,
+              "name": "Βασιλικό",
+              "level": "protected",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 1880,
+              "name": "Λαγκούση",
+              "level": "protected",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            }
+          ],
+          "rawRows": [
+            {
+              "beachId": 1861,
+              "name": "Άγιος Στέφανος",
+              "level": "protected",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 1864,
+              "name": "Αγκορίτσα",
+              "level": "protected",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 1869,
+              "name": "Βασιλικό",
+              "level": "protected",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 1880,
+              "name": "Λαγκούση",
+              "level": "protected",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            }
+          ],
+          "notes": "Agios Stefanos, Agkoritsa, Vasiliko, and Lagkousi are neighboring south-facing east-coast bay records; boat-only access remains a top-pick blocker where relevant."
+        },
+        {
+          "segmentId": "kythnos-aosa-kouri-zogkaki-front",
+          "reason": "same_continuous_beachfront",
+          "rawLevels": [
+            "protected"
+          ],
+          "consistentLevels": [
+            "protected"
+          ],
+          "rows": [
+            {
+              "beachId": 1868,
+              "name": "Αόσα",
+              "level": "protected",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 1873,
+              "name": "Ζογκάκι",
+              "level": "protected",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 1879,
+              "name": "Κουρή",
+              "level": "protected",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            }
+          ],
+          "rawRows": [
+            {
+              "beachId": 1868,
+              "name": "Αόσα",
+              "level": "protected",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 1873,
+              "name": "Ζογκάκι",
+              "level": "protected",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 1879,
+              "name": "Κουρή",
+              "level": "protected",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            }
+          ],
+          "notes": "Aosa, Zogkaki, and Kouri are close southeast-facing east Kythnos records with similar practical exposure behavior."
+        },
+        {
+          "segmentId": "kythnos-agios-sostis-potamia-front",
+          "reason": "same_continuous_beachfront",
+          "rawLevels": [
+            "protected"
+          ],
+          "consistentLevels": [
+            "protected"
+          ],
+          "rows": [
+            {
+              "beachId": 1862,
+              "name": "Άγιος Σώστης",
+              "level": "protected",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 1874,
+              "name": "Καβουροχέρι",
+              "level": "protected",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 1891,
+              "name": "Ποταμιά",
+              "level": "protected",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            }
+          ],
+          "rawRows": [
+            {
+              "beachId": 1862,
+              "name": "Άγιος Σώστης",
+              "level": "protected",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 1874,
+              "name": "Καβουροχέρι",
+              "level": "protected",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 1891,
+              "name": "Ποταμιά",
+              "level": "protected",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            }
+          ],
+          "notes": "Agios Sostis, Kavourocheri, and Potamia are neighboring east-facing northeast Kythnos records; access remains separate."
+        },
+        {
+          "segmentId": "kythnos-agia-irini-maroula-skinari-front",
+          "reason": "same_continuous_beachfront",
+          "rawLevels": [
+            "partial"
+          ],
+          "consistentLevels": [
+            "partial"
+          ],
+          "rows": [
+            {
+              "beachId": 1863,
+              "name": "Αγία Ειρήνη",
+              "level": "partial",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 1884,
+              "name": "Μαρούλα",
+              "level": "partial",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            }
+          ],
+          "rawRows": [
+            {
+              "beachId": 1863,
+              "name": "Αγία Ειρήνη",
+              "level": "partial",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 1884,
+              "name": "Μαρούλα",
+              "level": "partial",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            }
+          ],
+          "notes": "Agia Irini and Maroula are nearby east-facing northeast Kythnos records; Skinari is kept outside because map-exposure validation shows a stricter local behavior."
+        },
+        {
+          "segmentId": "kythnos-kaki-maria-kalo-livadi-levkes-front",
+          "reason": "same_continuous_beachfront",
+          "rawLevels": [
+            "protected"
+          ],
+          "consistentLevels": [
+            "protected"
+          ],
+          "rows": [
+            {
+              "beachId": 1875,
+              "name": "Κακή Μαρία",
+              "level": "protected",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 1876,
+              "name": "Καλό Λιβάδι",
+              "level": "protected",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 1881,
+              "name": "Λεύκες",
+              "level": "protected",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            }
+          ],
+          "rawRows": [
+            {
+              "beachId": 1875,
+              "name": "Κακή Μαρία",
+              "level": "protected",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 1876,
+              "name": "Καλό Λιβάδι",
+              "level": "protected",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 1881,
+              "name": "Λεύκες",
+              "level": "protected",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            }
+          ],
+          "notes": "Kaki Maria, Kalo Livadi, and Levkes are neighboring east-facing east Kythnos records with similar shoreline behavior."
+        },
+        {
+          "segmentId": "kythnos-gaidouromantra-markouli-si-mou-si-front",
+          "reason": "same_continuous_beachfront",
+          "rawLevels": [
+            "protected"
+          ],
+          "consistentLevels": [
+            "protected"
+          ],
+          "rows": [
+            {
+              "beachId": 1871,
+              "name": "Γαϊδουρόμαντρα",
+              "level": "protected",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 1883,
+              "name": "Μαρκουλη",
+              "level": "protected",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 1892,
+              "name": "Σι Μου Σι",
+              "level": "protected",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            }
+          ],
+          "rawRows": [
+            {
+              "beachId": 1871,
+              "name": "Γαϊδουρόμαντρα",
+              "level": "protected",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 1883,
+              "name": "Μαρκουλη",
+              "level": "protected",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 1892,
+              "name": "Σι Μου Σι",
+              "level": "protected",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            }
+          ],
+          "notes": "Gaidouromantra, Markouli, and Si Mou Si are neighboring southeast-facing south/east Kythnos records; access difficulty remains separate."
+        },
+        {
+          "segmentId": "kythnos-galazia-kastella-flampouria-pontikia-front",
+          "reason": "same_continuous_beachfront",
+          "rawLevels": [
+            "partial"
+          ],
+          "consistentLevels": [
+            "partial"
+          ],
+          "rows": [
+            {
+              "beachId": 1870,
+              "name": "Γαλάζια Ακτή",
+              "level": "partial",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 1877,
+              "name": "Καστέλλα",
+              "level": "partial",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 1890,
+              "name": "Ποντίκια",
+              "level": "partial",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 1897,
+              "name": "Φλαμπούρια",
+              "level": "partial",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            }
+          ],
+          "rawRows": [
+            {
+              "beachId": 1870,
+              "name": "Γαλάζια Ακτή",
+              "level": "partial",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 1877,
+              "name": "Καστέλλα",
+              "level": "partial",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 1890,
+              "name": "Ποντίκια",
+              "level": "partial",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 1897,
+              "name": "Φλαμπούρια",
+              "level": "partial",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            }
+          ],
+          "notes": "Galazia Akti, Kastella, Pontikia, and Flampouria are west/northwest-facing west Kythnos records; individual access confidence remains separate."
+        },
+        {
+          "segmentId": "kythnos-livadaki-mikro-livadaki-front",
+          "reason": "same_cove_or_micro_bay",
+          "rawLevels": [
+            "exposed"
+          ],
+          "consistentLevels": [
+            "exposed"
+          ],
+          "rows": [
+            {
+              "beachId": 1882,
+              "name": "Λιβαδάκι",
+              "level": "exposed",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 1886,
+              "name": "Μικρό Λιβαδάκι",
+              "level": "exposed",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            }
+          ],
+          "rawRows": [
+            {
+              "beachId": 1882,
+              "name": "Λιβαδάκι",
+              "level": "exposed",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 1886,
+              "name": "Μικρό Λιβαδάκι",
+              "level": "exposed",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            }
+          ],
+          "notes": "Livadaki and Mikro Livadaki are adjacent northeast-facing records; difficult hiking access remains a top-pick blocker."
+        }
+      ]
+    },
+    {
+      "scenarioId": "Naxos_W_4BFT",
+      "windDirectionDeg": 270,
+      "segments": [
+        {
+          "segmentId": "kythnos-koloveloni-petrousa-front",
+          "reason": "same_continuous_beachfront",
+          "rawLevels": [
+            "partial"
+          ],
+          "consistentLevels": [
+            "partial"
+          ],
+          "rows": [
+            {
+              "beachId": 1878,
+              "name": "Κολοβελόνη",
+              "level": "partial",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 1889,
+              "name": "Πετρούσα",
+              "level": "partial",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            }
+          ],
+          "rawRows": [
+            {
+              "beachId": 1878,
+              "name": "Κολοβελόνη",
+              "level": "partial",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 1889,
+              "name": "Πετρούσα",
+              "level": "partial",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            }
+          ],
+          "notes": "Koloveloni and Petrousa are neighboring south-facing south Kythnos records; Agios Dimitrios is kept separate because west-wind map exposure differs."
+        },
+        {
+          "segmentId": "kythnos-agios-nikolaos-nika-skylou-front",
+          "reason": "same_continuous_beachfront",
+          "rawLevels": [
+            "protected"
+          ],
+          "consistentLevels": [
+            "protected"
+          ],
+          "rows": [
+            {
+              "beachId": 1860,
+              "name": "Άγιος Νικόλαος",
+              "level": "protected",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 1866,
+              "name": "Αντώνηδες",
+              "level": "protected",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 1887,
+              "name": "Νίκα",
+              "level": "protected",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 1895,
+              "name": "Σκύλου",
+              "level": "protected",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            }
+          ],
+          "rawRows": [
+            {
+              "beachId": 1860,
+              "name": "Άγιος Νικόλαος",
+              "level": "protected",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 1866,
+              "name": "Αντώνηδες",
+              "level": "protected",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 1887,
+              "name": "Νίκα",
+              "level": "protected",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 1895,
+              "name": "Σκύλου",
+              "level": "protected",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            }
+          ],
+          "notes": "Agios Nikolaos, Antonides, Nika, and Skylou are close southeast-facing southeast Kythnos records; dirt-road difficulty remains separately scored."
+        },
+        {
+          "segmentId": "kythnos-agios-stefanos-lagkousi-front",
+          "reason": "same_village_bay",
+          "rawLevels": [
+            "protected"
+          ],
+          "consistentLevels": [
+            "protected"
+          ],
+          "rows": [
+            {
+              "beachId": 1861,
+              "name": "Άγιος Στέφανος",
+              "level": "protected",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 1864,
+              "name": "Αγκορίτσα",
+              "level": "protected",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 1869,
+              "name": "Βασιλικό",
+              "level": "protected",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 1880,
+              "name": "Λαγκούση",
+              "level": "protected",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            }
+          ],
+          "rawRows": [
+            {
+              "beachId": 1861,
+              "name": "Άγιος Στέφανος",
+              "level": "protected",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 1864,
+              "name": "Αγκορίτσα",
+              "level": "protected",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 1869,
+              "name": "Βασιλικό",
+              "level": "protected",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 1880,
+              "name": "Λαγκούση",
+              "level": "protected",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            }
+          ],
+          "notes": "Agios Stefanos, Agkoritsa, Vasiliko, and Lagkousi are neighboring south-facing east-coast bay records; boat-only access remains a top-pick blocker where relevant."
+        },
+        {
+          "segmentId": "kythnos-aosa-kouri-zogkaki-front",
+          "reason": "same_continuous_beachfront",
+          "rawLevels": [
+            "protected"
+          ],
+          "consistentLevels": [
+            "protected"
+          ],
+          "rows": [
+            {
+              "beachId": 1868,
+              "name": "Αόσα",
+              "level": "protected",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 1873,
+              "name": "Ζογκάκι",
+              "level": "protected",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 1879,
+              "name": "Κουρή",
+              "level": "protected",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            }
+          ],
+          "rawRows": [
+            {
+              "beachId": 1868,
+              "name": "Αόσα",
+              "level": "protected",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 1873,
+              "name": "Ζογκάκι",
+              "level": "protected",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 1879,
+              "name": "Κουρή",
+              "level": "protected",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            }
+          ],
+          "notes": "Aosa, Zogkaki, and Kouri are close southeast-facing east Kythnos records with similar practical exposure behavior."
+        },
+        {
+          "segmentId": "kythnos-agios-sostis-potamia-front",
+          "reason": "same_continuous_beachfront",
+          "rawLevels": [
+            "protected"
+          ],
+          "consistentLevels": [
+            "protected"
+          ],
+          "rows": [
+            {
+              "beachId": 1862,
+              "name": "Άγιος Σώστης",
+              "level": "protected",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 1874,
+              "name": "Καβουροχέρι",
+              "level": "protected",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 1891,
+              "name": "Ποταμιά",
+              "level": "protected",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            }
+          ],
+          "rawRows": [
+            {
+              "beachId": 1862,
+              "name": "Άγιος Σώστης",
+              "level": "protected",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 1874,
+              "name": "Καβουροχέρι",
+              "level": "protected",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 1891,
+              "name": "Ποταμιά",
+              "level": "protected",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            }
+          ],
+          "notes": "Agios Sostis, Kavourocheri, and Potamia are neighboring east-facing northeast Kythnos records; access remains separate."
+        },
+        {
+          "segmentId": "kythnos-agia-irini-maroula-skinari-front",
+          "reason": "same_continuous_beachfront",
+          "rawLevels": [
+            "protected"
+          ],
+          "consistentLevels": [
+            "protected"
+          ],
+          "rows": [
+            {
+              "beachId": 1863,
+              "name": "Αγία Ειρήνη",
+              "level": "protected",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 1884,
+              "name": "Μαρούλα",
+              "level": "protected",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            }
+          ],
+          "rawRows": [
+            {
+              "beachId": 1863,
+              "name": "Αγία Ειρήνη",
+              "level": "protected",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 1884,
+              "name": "Μαρούλα",
+              "level": "protected",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            }
+          ],
+          "notes": "Agia Irini and Maroula are nearby east-facing northeast Kythnos records; Skinari is kept outside because map-exposure validation shows a stricter local behavior."
+        },
+        {
+          "segmentId": "kythnos-kaki-maria-kalo-livadi-levkes-front",
+          "reason": "same_continuous_beachfront",
+          "rawLevels": [
+            "protected"
+          ],
+          "consistentLevels": [
+            "protected"
+          ],
+          "rows": [
+            {
+              "beachId": 1875,
+              "name": "Κακή Μαρία",
+              "level": "protected",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 1876,
+              "name": "Καλό Λιβάδι",
+              "level": "protected",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 1881,
+              "name": "Λεύκες",
+              "level": "protected",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            }
+          ],
+          "rawRows": [
+            {
+              "beachId": 1875,
+              "name": "Κακή Μαρία",
+              "level": "protected",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 1876,
+              "name": "Καλό Λιβάδι",
+              "level": "protected",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 1881,
+              "name": "Λεύκες",
+              "level": "protected",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            }
+          ],
+          "notes": "Kaki Maria, Kalo Livadi, and Levkes are neighboring east-facing east Kythnos records with similar shoreline behavior."
+        },
+        {
+          "segmentId": "kythnos-gaidouromantra-markouli-si-mou-si-front",
+          "reason": "same_continuous_beachfront",
+          "rawLevels": [
+            "protected"
+          ],
+          "consistentLevels": [
+            "protected"
+          ],
+          "rows": [
+            {
+              "beachId": 1871,
+              "name": "Γαϊδουρόμαντρα",
+              "level": "protected",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 1883,
+              "name": "Μαρκουλη",
+              "level": "protected",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 1892,
+              "name": "Σι Μου Σι",
+              "level": "protected",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            }
+          ],
+          "rawRows": [
+            {
+              "beachId": 1871,
+              "name": "Γαϊδουρόμαντρα",
+              "level": "protected",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 1883,
+              "name": "Μαρκουλη",
+              "level": "protected",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 1892,
+              "name": "Σι Μου Σι",
+              "level": "protected",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            }
+          ],
+          "notes": "Gaidouromantra, Markouli, and Si Mou Si are neighboring southeast-facing south/east Kythnos records; access difficulty remains separate."
+        },
+        {
+          "segmentId": "kythnos-galazia-kastella-flampouria-pontikia-front",
+          "reason": "same_continuous_beachfront",
+          "rawLevels": [
+            "exposed"
+          ],
+          "consistentLevels": [
+            "exposed"
+          ],
+          "rows": [
+            {
+              "beachId": 1870,
+              "name": "Γαλάζια Ακτή",
+              "level": "exposed",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 1877,
+              "name": "Καστέλλα",
+              "level": "exposed",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 1890,
+              "name": "Ποντίκια",
+              "level": "exposed",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 1897,
+              "name": "Φλαμπούρια",
+              "level": "exposed",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            }
+          ],
+          "rawRows": [
+            {
+              "beachId": 1870,
+              "name": "Γαλάζια Ακτή",
+              "level": "exposed",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 1877,
+              "name": "Καστέλλα",
+              "level": "exposed",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 1890,
+              "name": "Ποντίκια",
+              "level": "exposed",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 1897,
+              "name": "Φλαμπούρια",
+              "level": "exposed",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            }
+          ],
+          "notes": "Galazia Akti, Kastella, Pontikia, and Flampouria are west/northwest-facing west Kythnos records; individual access confidence remains separate."
+        },
+        {
+          "segmentId": "kythnos-livadaki-mikro-livadaki-front",
+          "reason": "same_cove_or_micro_bay",
+          "rawLevels": [
+            "protected"
+          ],
+          "consistentLevels": [
+            "protected"
+          ],
+          "rows": [
+            {
+              "beachId": 1882,
+              "name": "Λιβαδάκι",
+              "level": "protected",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 1886,
+              "name": "Μικρό Λιβαδάκι",
+              "level": "protected",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            }
+          ],
+          "rawRows": [
+            {
+              "beachId": 1882,
+              "name": "Λιβαδάκι",
+              "level": "protected",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 1886,
+              "name": "Μικρό Λιβαδάκι",
+              "level": "protected",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            }
+          ],
+          "notes": "Livadaki and Mikro Livadaki are adjacent northeast-facing records; difficult hiking access remains a top-pick blocker."
+        }
+      ]
+    },
+    {
+      "scenarioId": "Naxos_S_4BFT",
+      "windDirectionDeg": 180,
+      "segments": [
+        {
+          "segmentId": "kythnos-koloveloni-petrousa-front",
+          "reason": "same_continuous_beachfront",
+          "rawLevels": [
+            "exposed"
+          ],
+          "consistentLevels": [
+            "exposed"
+          ],
+          "rows": [
+            {
+              "beachId": 1878,
+              "name": "Κολοβελόνη",
+              "level": "exposed",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 1889,
+              "name": "Πετρούσα",
+              "level": "exposed",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            }
+          ],
+          "rawRows": [
+            {
+              "beachId": 1878,
+              "name": "Κολοβελόνη",
+              "level": "exposed",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 1889,
+              "name": "Πετρούσα",
+              "level": "exposed",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            }
+          ],
+          "notes": "Koloveloni and Petrousa are neighboring south-facing south Kythnos records; Agios Dimitrios is kept separate because west-wind map exposure differs."
+        },
+        {
+          "segmentId": "kythnos-agios-nikolaos-nika-skylou-front",
+          "reason": "same_continuous_beachfront",
+          "rawLevels": [
+            "exposed"
+          ],
+          "consistentLevels": [
+            "exposed"
+          ],
+          "rows": [
+            {
+              "beachId": 1860,
+              "name": "Άγιος Νικόλαος",
+              "level": "exposed",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 1866,
+              "name": "Αντώνηδες",
+              "level": "exposed",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 1887,
+              "name": "Νίκα",
+              "level": "exposed",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 1895,
+              "name": "Σκύλου",
+              "level": "exposed",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            }
+          ],
+          "rawRows": [
+            {
+              "beachId": 1860,
+              "name": "Άγιος Νικόλαος",
+              "level": "exposed",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 1866,
+              "name": "Αντώνηδες",
+              "level": "exposed",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 1887,
+              "name": "Νίκα",
+              "level": "exposed",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 1895,
+              "name": "Σκύλου",
+              "level": "exposed",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            }
+          ],
+          "notes": "Agios Nikolaos, Antonides, Nika, and Skylou are close southeast-facing southeast Kythnos records; dirt-road difficulty remains separately scored."
+        },
+        {
+          "segmentId": "kythnos-agios-stefanos-lagkousi-front",
+          "reason": "same_village_bay",
+          "rawLevels": [
+            "exposed"
+          ],
+          "consistentLevels": [
+            "exposed"
+          ],
+          "rows": [
+            {
+              "beachId": 1861,
+              "name": "Άγιος Στέφανος",
+              "level": "exposed",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 1864,
+              "name": "Αγκορίτσα",
+              "level": "exposed",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 1869,
+              "name": "Βασιλικό",
+              "level": "exposed",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 1880,
+              "name": "Λαγκούση",
+              "level": "exposed",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            }
+          ],
+          "rawRows": [
+            {
+              "beachId": 1861,
+              "name": "Άγιος Στέφανος",
+              "level": "exposed",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 1864,
+              "name": "Αγκορίτσα",
+              "level": "exposed",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 1869,
+              "name": "Βασιλικό",
+              "level": "exposed",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 1880,
+              "name": "Λαγκούση",
+              "level": "exposed",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            }
+          ],
+          "notes": "Agios Stefanos, Agkoritsa, Vasiliko, and Lagkousi are neighboring south-facing east-coast bay records; boat-only access remains a top-pick blocker where relevant."
+        },
+        {
+          "segmentId": "kythnos-aosa-kouri-zogkaki-front",
+          "reason": "same_continuous_beachfront",
+          "rawLevels": [
+            "exposed",
+            "partial"
+          ],
+          "consistentLevels": [
+            "exposed"
+          ],
+          "rows": [
+            {
+              "beachId": 1868,
+              "name": "Αόσα",
+              "level": "exposed",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 1873,
+              "name": "Ζογκάκι",
+              "level": "exposed",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 1879,
+              "name": "Κουρή",
+              "level": "exposed",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            }
+          ],
+          "rawRows": [
+            {
+              "beachId": 1868,
+              "name": "Αόσα",
+              "level": "exposed",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 1873,
+              "name": "Ζογκάκι",
+              "level": "partial",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 1879,
+              "name": "Κουρή",
+              "level": "exposed",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            }
+          ],
+          "notes": "Aosa, Zogkaki, and Kouri are close southeast-facing east Kythnos records with similar practical exposure behavior."
+        },
+        {
+          "segmentId": "kythnos-agios-sostis-potamia-front",
+          "reason": "same_continuous_beachfront",
+          "rawLevels": [
+            "partial"
+          ],
+          "consistentLevels": [
+            "partial"
+          ],
+          "rows": [
+            {
+              "beachId": 1862,
+              "name": "Άγιος Σώστης",
+              "level": "partial",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 1874,
+              "name": "Καβουροχέρι",
+              "level": "partial",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 1891,
+              "name": "Ποταμιά",
+              "level": "partial",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            }
+          ],
+          "rawRows": [
+            {
+              "beachId": 1862,
+              "name": "Άγιος Σώστης",
+              "level": "partial",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 1874,
+              "name": "Καβουροχέρι",
+              "level": "partial",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 1891,
+              "name": "Ποταμιά",
+              "level": "partial",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            }
+          ],
+          "notes": "Agios Sostis, Kavourocheri, and Potamia are neighboring east-facing northeast Kythnos records; access remains separate."
+        },
+        {
+          "segmentId": "kythnos-agia-irini-maroula-skinari-front",
+          "reason": "same_continuous_beachfront",
+          "rawLevels": [
+            "protected"
+          ],
+          "consistentLevels": [
+            "protected"
+          ],
+          "rows": [
+            {
+              "beachId": 1863,
+              "name": "Αγία Ειρήνη",
+              "level": "protected",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 1884,
+              "name": "Μαρούλα",
+              "level": "protected",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            }
+          ],
+          "rawRows": [
+            {
+              "beachId": 1863,
+              "name": "Αγία Ειρήνη",
+              "level": "protected",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 1884,
+              "name": "Μαρούλα",
+              "level": "protected",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            }
+          ],
+          "notes": "Agia Irini and Maroula are nearby east-facing northeast Kythnos records; Skinari is kept outside because map-exposure validation shows a stricter local behavior."
+        },
+        {
+          "segmentId": "kythnos-kaki-maria-kalo-livadi-levkes-front",
+          "reason": "same_continuous_beachfront",
+          "rawLevels": [
+            "partial"
+          ],
+          "consistentLevels": [
+            "partial"
+          ],
+          "rows": [
+            {
+              "beachId": 1875,
+              "name": "Κακή Μαρία",
+              "level": "partial",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 1876,
+              "name": "Καλό Λιβάδι",
+              "level": "partial",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 1881,
+              "name": "Λεύκες",
+              "level": "partial",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            }
+          ],
+          "rawRows": [
+            {
+              "beachId": 1875,
+              "name": "Κακή Μαρία",
+              "level": "partial",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 1876,
+              "name": "Καλό Λιβάδι",
+              "level": "partial",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 1881,
+              "name": "Λεύκες",
+              "level": "partial",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            }
+          ],
+          "notes": "Kaki Maria, Kalo Livadi, and Levkes are neighboring east-facing east Kythnos records with similar shoreline behavior."
+        },
+        {
+          "segmentId": "kythnos-gaidouromantra-markouli-si-mou-si-front",
+          "reason": "same_continuous_beachfront",
+          "rawLevels": [
+            "exposed"
+          ],
+          "consistentLevels": [
+            "exposed"
+          ],
+          "rows": [
+            {
+              "beachId": 1871,
+              "name": "Γαϊδουρόμαντρα",
+              "level": "exposed",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 1883,
+              "name": "Μαρκουλη",
+              "level": "exposed",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 1892,
+              "name": "Σι Μου Σι",
+              "level": "exposed",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            }
+          ],
+          "rawRows": [
+            {
+              "beachId": 1871,
+              "name": "Γαϊδουρόμαντρα",
+              "level": "exposed",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 1883,
+              "name": "Μαρκουλη",
+              "level": "exposed",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 1892,
+              "name": "Σι Μου Σι",
+              "level": "exposed",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            }
+          ],
+          "notes": "Gaidouromantra, Markouli, and Si Mou Si are neighboring southeast-facing south/east Kythnos records; access difficulty remains separate."
+        },
+        {
+          "segmentId": "kythnos-galazia-kastella-flampouria-pontikia-front",
+          "reason": "same_continuous_beachfront",
+          "rawLevels": [
+            "protected"
+          ],
+          "consistentLevels": [
+            "protected"
+          ],
+          "rows": [
+            {
+              "beachId": 1870,
+              "name": "Γαλάζια Ακτή",
+              "level": "protected",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 1877,
+              "name": "Καστέλλα",
+              "level": "protected",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 1890,
+              "name": "Ποντίκια",
+              "level": "protected",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 1897,
+              "name": "Φλαμπούρια",
+              "level": "protected",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            }
+          ],
+          "rawRows": [
+            {
+              "beachId": 1870,
+              "name": "Γαλάζια Ακτή",
+              "level": "protected",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 1877,
+              "name": "Καστέλλα",
+              "level": "protected",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 1890,
+              "name": "Ποντίκια",
+              "level": "protected",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 1897,
+              "name": "Φλαμπούρια",
+              "level": "protected",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            }
+          ],
+          "notes": "Galazia Akti, Kastella, Pontikia, and Flampouria are west/northwest-facing west Kythnos records; individual access confidence remains separate."
+        },
+        {
+          "segmentId": "kythnos-livadaki-mikro-livadaki-front",
+          "reason": "same_cove_or_micro_bay",
+          "rawLevels": [
+            "protected"
+          ],
+          "consistentLevels": [
+            "protected"
+          ],
+          "rows": [
+            {
+              "beachId": 1882,
+              "name": "Λιβαδάκι",
+              "level": "protected",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 1886,
+              "name": "Μικρό Λιβαδάκι",
+              "level": "protected",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            }
+          ],
+          "rawRows": [
+            {
+              "beachId": 1882,
+              "name": "Λιβαδάκι",
+              "level": "protected",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 1886,
+              "name": "Μικρό Λιβαδάκι",
+              "level": "protected",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            }
+          ],
+          "notes": "Livadaki and Mikro Livadaki are adjacent northeast-facing records; difficult hiking access remains a top-pick blocker."
+        }
+      ]
+    },
+    {
+      "scenarioId": "Naxos_E_4BFT",
+      "windDirectionDeg": 90,
+      "segments": [
+        {
+          "segmentId": "kythnos-koloveloni-petrousa-front",
+          "reason": "same_continuous_beachfront",
+          "rawLevels": [
+            "exposed",
+            "partial"
+          ],
+          "consistentLevels": [
+            "exposed"
+          ],
+          "rows": [
+            {
+              "beachId": 1878,
+              "name": "Κολοβελόνη",
+              "level": "exposed",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 1889,
+              "name": "Πετρούσα",
+              "level": "exposed",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            }
+          ],
+          "rawRows": [
+            {
+              "beachId": 1878,
+              "name": "Κολοβελόνη",
+              "level": "exposed",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 1889,
+              "name": "Πετρούσα",
+              "level": "partial",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            }
+          ],
+          "notes": "Koloveloni and Petrousa are neighboring south-facing south Kythnos records; Agios Dimitrios is kept separate because west-wind map exposure differs."
+        },
+        {
+          "segmentId": "kythnos-agios-nikolaos-nika-skylou-front",
+          "reason": "same_continuous_beachfront",
+          "rawLevels": [
+            "exposed"
+          ],
+          "consistentLevels": [
+            "exposed"
+          ],
+          "rows": [
+            {
+              "beachId": 1860,
+              "name": "Άγιος Νικόλαος",
+              "level": "exposed",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 1866,
+              "name": "Αντώνηδες",
+              "level": "exposed",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 1887,
+              "name": "Νίκα",
+              "level": "exposed",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 1895,
+              "name": "Σκύλου",
+              "level": "exposed",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            }
+          ],
+          "rawRows": [
+            {
+              "beachId": 1860,
+              "name": "Άγιος Νικόλαος",
+              "level": "exposed",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 1866,
+              "name": "Αντώνηδες",
+              "level": "exposed",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 1887,
+              "name": "Νίκα",
+              "level": "exposed",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 1895,
+              "name": "Σκύλου",
+              "level": "exposed",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            }
+          ],
+          "notes": "Agios Nikolaos, Antonides, Nika, and Skylou are close southeast-facing southeast Kythnos records; dirt-road difficulty remains separately scored."
+        },
+        {
+          "segmentId": "kythnos-agios-stefanos-lagkousi-front",
+          "reason": "same_village_bay",
+          "rawLevels": [
+            "partial"
+          ],
+          "consistentLevels": [
+            "partial"
+          ],
+          "rows": [
+            {
+              "beachId": 1861,
+              "name": "Άγιος Στέφανος",
+              "level": "partial",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 1864,
+              "name": "Αγκορίτσα",
+              "level": "partial",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 1869,
+              "name": "Βασιλικό",
+              "level": "partial",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 1880,
+              "name": "Λαγκούση",
+              "level": "partial",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            }
+          ],
+          "rawRows": [
+            {
+              "beachId": 1861,
+              "name": "Άγιος Στέφανος",
+              "level": "partial",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 1864,
+              "name": "Αγκορίτσα",
+              "level": "partial",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 1869,
+              "name": "Βασιλικό",
+              "level": "partial",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 1880,
+              "name": "Λαγκούση",
+              "level": "partial",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            }
+          ],
+          "notes": "Agios Stefanos, Agkoritsa, Vasiliko, and Lagkousi are neighboring south-facing east-coast bay records; boat-only access remains a top-pick blocker where relevant."
+        },
+        {
+          "segmentId": "kythnos-aosa-kouri-zogkaki-front",
+          "reason": "same_continuous_beachfront",
+          "rawLevels": [
+            "exposed"
+          ],
+          "consistentLevels": [
+            "exposed"
+          ],
+          "rows": [
+            {
+              "beachId": 1868,
+              "name": "Αόσα",
+              "level": "exposed",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 1873,
+              "name": "Ζογκάκι",
+              "level": "exposed",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 1879,
+              "name": "Κουρή",
+              "level": "exposed",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            }
+          ],
+          "rawRows": [
+            {
+              "beachId": 1868,
+              "name": "Αόσα",
+              "level": "exposed",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 1873,
+              "name": "Ζογκάκι",
+              "level": "exposed",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 1879,
+              "name": "Κουρή",
+              "level": "exposed",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            }
+          ],
+          "notes": "Aosa, Zogkaki, and Kouri are close southeast-facing east Kythnos records with similar practical exposure behavior."
+        },
+        {
+          "segmentId": "kythnos-agios-sostis-potamia-front",
+          "reason": "same_continuous_beachfront",
+          "rawLevels": [
+            "exposed"
+          ],
+          "consistentLevels": [
+            "exposed"
+          ],
+          "rows": [
+            {
+              "beachId": 1862,
+              "name": "Άγιος Σώστης",
+              "level": "exposed",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 1874,
+              "name": "Καβουροχέρι",
+              "level": "exposed",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 1891,
+              "name": "Ποταμιά",
+              "level": "exposed",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            }
+          ],
+          "rawRows": [
+            {
+              "beachId": 1862,
+              "name": "Άγιος Σώστης",
+              "level": "exposed",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 1874,
+              "name": "Καβουροχέρι",
+              "level": "exposed",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 1891,
+              "name": "Ποταμιά",
+              "level": "exposed",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            }
+          ],
+          "notes": "Agios Sostis, Kavourocheri, and Potamia are neighboring east-facing northeast Kythnos records; access remains separate."
+        },
+        {
+          "segmentId": "kythnos-agia-irini-maroula-skinari-front",
+          "reason": "same_continuous_beachfront",
+          "rawLevels": [
+            "exposed"
+          ],
+          "consistentLevels": [
+            "exposed"
+          ],
+          "rows": [
+            {
+              "beachId": 1863,
+              "name": "Αγία Ειρήνη",
+              "level": "exposed",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 1884,
+              "name": "Μαρούλα",
+              "level": "exposed",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            }
+          ],
+          "rawRows": [
+            {
+              "beachId": 1863,
+              "name": "Αγία Ειρήνη",
+              "level": "exposed",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 1884,
+              "name": "Μαρούλα",
+              "level": "exposed",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            }
+          ],
+          "notes": "Agia Irini and Maroula are nearby east-facing northeast Kythnos records; Skinari is kept outside because map-exposure validation shows a stricter local behavior."
+        },
+        {
+          "segmentId": "kythnos-kaki-maria-kalo-livadi-levkes-front",
+          "reason": "same_continuous_beachfront",
+          "rawLevels": [
+            "exposed"
+          ],
+          "consistentLevels": [
+            "exposed"
+          ],
+          "rows": [
+            {
+              "beachId": 1875,
+              "name": "Κακή Μαρία",
+              "level": "exposed",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 1876,
+              "name": "Καλό Λιβάδι",
+              "level": "exposed",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 1881,
+              "name": "Λεύκες",
+              "level": "exposed",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            }
+          ],
+          "rawRows": [
+            {
+              "beachId": 1875,
+              "name": "Κακή Μαρία",
+              "level": "exposed",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 1876,
+              "name": "Καλό Λιβάδι",
+              "level": "exposed",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 1881,
+              "name": "Λεύκες",
+              "level": "exposed",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            }
+          ],
+          "notes": "Kaki Maria, Kalo Livadi, and Levkes are neighboring east-facing east Kythnos records with similar shoreline behavior."
+        },
+        {
+          "segmentId": "kythnos-gaidouromantra-markouli-si-mou-si-front",
+          "reason": "same_continuous_beachfront",
+          "rawLevels": [
+            "exposed"
+          ],
+          "consistentLevels": [
+            "exposed"
+          ],
+          "rows": [
+            {
+              "beachId": 1871,
+              "name": "Γαϊδουρόμαντρα",
+              "level": "exposed",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 1883,
+              "name": "Μαρκουλη",
+              "level": "exposed",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 1892,
+              "name": "Σι Μου Σι",
+              "level": "exposed",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            }
+          ],
+          "rawRows": [
+            {
+              "beachId": 1871,
+              "name": "Γαϊδουρόμαντρα",
+              "level": "exposed",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 1883,
+              "name": "Μαρκουλη",
+              "level": "exposed",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 1892,
+              "name": "Σι Μου Σι",
+              "level": "exposed",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            }
+          ],
+          "notes": "Gaidouromantra, Markouli, and Si Mou Si are neighboring southeast-facing south/east Kythnos records; access difficulty remains separate."
+        },
+        {
+          "segmentId": "kythnos-galazia-kastella-flampouria-pontikia-front",
+          "reason": "same_continuous_beachfront",
+          "rawLevels": [
+            "protected"
+          ],
+          "consistentLevels": [
+            "protected"
+          ],
+          "rows": [
+            {
+              "beachId": 1870,
+              "name": "Γαλάζια Ακτή",
+              "level": "protected",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 1877,
+              "name": "Καστέλλα",
+              "level": "protected",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 1890,
+              "name": "Ποντίκια",
+              "level": "protected",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 1897,
+              "name": "Φλαμπούρια",
+              "level": "protected",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            }
+          ],
+          "rawRows": [
+            {
+              "beachId": 1870,
+              "name": "Γαλάζια Ακτή",
+              "level": "protected",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 1877,
+              "name": "Καστέλλα",
+              "level": "protected",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 1890,
+              "name": "Ποντίκια",
+              "level": "protected",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 1897,
+              "name": "Φλαμπούρια",
+              "level": "protected",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            }
+          ],
+          "notes": "Galazia Akti, Kastella, Pontikia, and Flampouria are west/northwest-facing west Kythnos records; individual access confidence remains separate."
+        },
+        {
+          "segmentId": "kythnos-livadaki-mikro-livadaki-front",
+          "reason": "same_cove_or_micro_bay",
+          "rawLevels": [
+            "exposed"
+          ],
+          "consistentLevels": [
+            "exposed"
+          ],
+          "rows": [
+            {
+              "beachId": 1882,
+              "name": "Λιβαδάκι",
+              "level": "exposed",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 1886,
+              "name": "Μικρό Λιβαδάκι",
+              "level": "exposed",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            }
+          ],
+          "rawRows": [
+            {
+              "beachId": 1882,
+              "name": "Λιβαδάκι",
+              "level": "exposed",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 1886,
+              "name": "Μικρό Λιβαδάκι",
+              "level": "exposed",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            }
+          ],
+          "notes": "Livadaki and Mikro Livadaki are adjacent northeast-facing records; difficult hiking access remains a top-pick blocker."
+        }
+      ]
+    }
+  ]
+}

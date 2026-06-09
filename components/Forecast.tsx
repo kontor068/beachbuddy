@@ -19,6 +19,15 @@ interface ForecastProps {
   t: any;
   islandName?: string;
   variant?: 'default' | 'heroCompact' | 'header' | 'summaryStrip';
+  defaultHourlyExpanded?: boolean;
+  useWeekdayLabels?: boolean;
+  hideHourlyToggle?: boolean;
+  hideForecastHeader?: boolean;
+  /** Force the day pills to stack (icon/label/temp) instead of going row at sm+. */
+  stackedPills?: boolean;
+  /** Constrain the forecast to its container height (lg+), keeping the day
+   *  selector and the "hourly" header fixed while only the hours list scrolls. */
+  fillHeight?: boolean;
 }
 
 const EVENING_TODAY_CUTOFF_HOUR = 20;
@@ -48,6 +57,23 @@ const getRelativeForecastLabel = (date: Date, now: Date, t: any): string | undef
   }
 
   return undefined;
+};
+
+const getForecastDayLabel = (
+  date: Date,
+  now: Date,
+  t: any,
+  useWeekdayLabels = false,
+): string => {
+  const weekdayFormatter = new Intl.DateTimeFormat(t.locale, {
+    weekday: useWeekdayLabels ? 'long' : 'short',
+  });
+
+  if (useWeekdayLabels) {
+    return weekdayFormatter.format(date);
+  }
+
+  return getRelativeForecastLabel(date, now, t) || weekdayFormatter.format(date);
 };
 
 const isTodayDisabledAfterEvening = (index: number, now: Date = new Date()): boolean =>
@@ -130,11 +156,12 @@ const ForecastCard: React.FC<{
   currentTime: Date;
   variant?: 'stacked' | 'pill' | 'mini';
   disabled?: boolean;
-}> = ({ forecast, isSelected, onClick, isToday, t, index, currentTime, variant = 'stacked', disabled = false }) => {
+  useWeekdayLabels?: boolean;
+  stackedPills?: boolean;
+}> = ({ forecast, isSelected, onClick, isToday, t, index, currentTime, variant = 'stacked', disabled = false, useWeekdayLabels = false, stackedPills = false }) => {
   const iconUrl = `https://openweathermap.org/img/wn/${forecast.weather.icon}@2x.png`;
-  const dayFormatter = new Intl.DateTimeFormat(t.locale, { weekday: 'short' });
   const dateFormatter = new Intl.DateTimeFormat(t.locale, { month: 'short', day: 'numeric' });
-  const dayLabel = getRelativeForecastLabel(forecast.date, currentTime, t) || dayFormatter.format(forecast.date);
+  const dayLabel = getForecastDayLabel(forecast.date, currentTime, t, useWeekdayLabels);
   
   const windDirection = degToCompass(forecast.wind.deg);
   const windSpeedKmph = forecast.wind.speed * 3.6;
@@ -187,6 +214,11 @@ const ForecastCard: React.FC<{
   }
 
   if (variant === 'pill') {
+    // In a narrow column (mobile, or the desktop weather sidebar) the row layout
+    // collides, so stacked pills keep the icon/day/temp in a tidy column.
+    const pillLayout = stackedPills
+      ? 'min-h-[64px] flex-col gap-0.5 px-1 py-1.5'
+      : 'min-h-[58px] flex-col gap-0.5 px-1 py-1 sm:h-[50px] sm:flex-row sm:gap-2 sm:px-2 sm:py-0 lg:px-3';
     return (
       <motion.button
         type="button"
@@ -198,7 +230,7 @@ const ForecastCard: React.FC<{
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: index * 0.035 }}
         whileTap={disabled ? undefined : { scale: 0.98 }}
-        className={`flex min-h-[58px] w-full min-w-0 flex-col items-center justify-center gap-0.5 rounded-2xl border px-1 py-1 transition focus:outline-none focus-visible:ring-2 focus-visible:ring-cyan-500 sm:h-[50px] sm:flex-row sm:gap-2 sm:px-2 sm:py-0 lg:px-3 ${
+        className={`flex w-full min-w-0 items-center justify-center rounded-2xl border transition focus:outline-none focus-visible:ring-2 focus-visible:ring-cyan-500 ${pillLayout} ${
           disabled
             ? 'cursor-not-allowed border-slate-200/45 bg-white/42 text-slate-400 opacity-45 shadow-none grayscale'
             : isSelected
@@ -212,13 +244,13 @@ const ForecastCard: React.FC<{
           width={28}
           height={28}
           loading={index === 0 ? 'eager' : 'lazy'}
-          className="h-5 w-5 shrink-0 drop-shadow-sm sm:h-7 sm:w-7"
+          className={`shrink-0 drop-shadow-sm ${stackedPills ? 'h-6 w-6' : 'h-5 w-5 sm:h-7 sm:w-7'}`}
         />
-        <span className="flex min-w-0 max-w-full flex-col items-center leading-none sm:items-start">
-          <span className={`max-w-full truncate text-[10px] font-extrabold sm:max-w-[3.8rem] sm:text-[11px] ${isSelected ? 'text-sky-700' : 'text-slate-700'}`}>
+        <span className={`flex min-w-0 max-w-full flex-col items-center leading-none ${stackedPills ? '' : 'sm:items-start'}`}>
+          <span className={`max-w-full truncate text-[10px] font-extrabold ${stackedPills ? '' : 'sm:max-w-[3.8rem] sm:text-[11px]'} ${isSelected ? 'text-sky-700' : 'text-slate-700'}`}>
             {dayLabel}
           </span>
-          <span className="mt-0.5 text-[10px] font-black text-slate-700 sm:mt-1">
+          <span className={`text-[10px] font-black text-slate-700 ${stackedPills ? 'mt-0.5' : 'mt-0.5 sm:mt-1'}`}>
             {Math.round(forecast.temp_max)}°C
           </span>
         </span>
@@ -248,7 +280,7 @@ const ForecastCard: React.FC<{
             : 'border-white/30 bg-white/18 opacity-82 backdrop-blur-sm hover:border-sky-200 hover:bg-white/38 dark:border-slate-800/40 dark:bg-slate-900/28 dark:hover:border-sky-700'
         }`}
     >
-        {isToday && (
+        {isToday && !useWeekdayLabels && (
           <div className="absolute left-1/2 max-w-[calc(100%-0.5rem)] -translate-x-1/2 rounded-md bg-primary px-1.5 py-0.5 text-[8px] font-bold leading-none text-white shadow-md sm:text-[9px]">
             {t.today}
           </div>
@@ -295,8 +327,21 @@ const ForecastCard: React.FC<{
   );
 };
 
-const Forecast: React.FC<ForecastProps> = ({ displayForecasts, selectedDayIndex, onDaySelect, t, islandName, variant = 'default' }) => {
-  const [isHourlyExpanded, setIsHourlyExpanded] = useState(false);
+const Forecast: React.FC<ForecastProps> = ({
+  displayForecasts,
+  selectedDayIndex,
+  onDaySelect,
+  t,
+  islandName,
+  variant = 'default',
+  defaultHourlyExpanded = false,
+  useWeekdayLabels = false,
+  hideHourlyToggle = false,
+  hideForecastHeader = false,
+  stackedPills = false,
+  fillHeight = false,
+}) => {
+  const [isHourlyExpanded, setIsHourlyExpanded] = useState(defaultHourlyExpanded);
   const hourlyDetailsId = useId();
   const isHeroCompact = variant === 'heroCompact';
   const isHeader = variant === 'header';
@@ -312,15 +357,15 @@ const Forecast: React.FC<ForecastProps> = ({ displayForecasts, selectedDayIndex,
   }, [currentTime]);
 
   useEffect(() => {
-    setIsHourlyExpanded(false);
-  }, [selectedDayIndex]);
+    setIsHourlyExpanded(defaultHourlyExpanded);
+  }, [defaultHourlyExpanded, selectedDayIndex]);
 
   if (!displayForecasts || displayForecasts.length === 0) return null;
 
   const selectedForecast = displayForecasts[selectedDayIndex];
   const hasHourlyData = selectedForecast?.hourly?.length > 0;
   const selectedForecastDateFormatter = new Intl.DateTimeFormat(t.locale, { weekday: 'long', month: 'long', day: 'numeric' });
-  const selectedForecastRelativeLabel = selectedForecast
+  const selectedForecastRelativeLabel = selectedForecast && !useWeekdayLabels
     ? getRelativeForecastLabel(selectedForecast.date, currentTime, t)
     : undefined;
   const selectedForecastDateLabel = selectedForecast
@@ -358,6 +403,7 @@ const Forecast: React.FC<ForecastProps> = ({ displayForecasts, selectedDayIndex,
             currentTime={currentTime}
             variant="mini"
             disabled={isTodayDisabledAfterEvening(index, currentTime)}
+            useWeekdayLabels={useWeekdayLabels}
           />
         ))}
       </div>
@@ -365,7 +411,6 @@ const Forecast: React.FC<ForecastProps> = ({ displayForecasts, selectedDayIndex,
   }
 
   if (isHeroCompact) {
-    const dayFormatter = new Intl.DateTimeFormat(t.locale, { weekday: 'short' });
     const dateFormatter = new Intl.DateTimeFormat(t.locale, { month: 'short', day: 'numeric' });
 
     return (
@@ -380,7 +425,7 @@ const Forecast: React.FC<ForecastProps> = ({ displayForecasts, selectedDayIndex,
             const isSelected = selectedDayIndex === index;
             const isDisabled = isTodayDisabledAfterEvening(index, currentTime);
             const iconUrl = `https://openweathermap.org/img/wn/${forecast.weather.icon}@2x.png`;
-            const dayLabel = getRelativeForecastLabel(forecast.date, currentTime, t) || dayFormatter.format(forecast.date);
+            const dayLabel = getForecastDayLabel(forecast.date, currentTime, t, useWeekdayLabels);
             const buttonLabel = `${t.forecastFor} ${dayLabel}, ${dateFormatter.format(forecast.date)}: ${Math.round(forecast.temp_max)}°C, ${beaufortLevel} ${t.units.beaufort}`;
 
             return (
@@ -399,7 +444,7 @@ const Forecast: React.FC<ForecastProps> = ({ displayForecasts, selectedDayIndex,
                     : 'border-white/35 bg-white/22 hover:border-sky-200 hover:bg-white/45'
                 }`}
               >
-                {index === 0 && (
+                {index === 0 && !useWeekdayLabels && (
                   <span className="absolute -top-1 left-1/2 -translate-x-1/2 rounded-md bg-primary px-1 py-0.5 text-[7px] font-bold leading-none text-white sm:px-1.5 sm:text-[8px]">
                     {t.today}
                   </span>
@@ -488,11 +533,12 @@ const Forecast: React.FC<ForecastProps> = ({ displayForecasts, selectedDayIndex,
                 currentTime={currentTime}
                 variant="mini"
                 disabled={isTodayDisabledAfterEvening(index, currentTime)}
+                useWeekdayLabels={useWeekdayLabels}
               />
             ))}
           </div>
 
-          {hasHourlyData && (
+          {hasHourlyData && !hideHourlyToggle && (
             <button
               type="button"
               aria-expanded={isHourlyExpanded}
@@ -506,7 +552,7 @@ const Forecast: React.FC<ForecastProps> = ({ displayForecasts, selectedDayIndex,
             </button>
           )}
 
-          {hasHourlyData && (
+          {hasHourlyData && !hideHourlyToggle && (
             <button
               type="button"
               aria-expanded={isHourlyExpanded}
@@ -554,20 +600,26 @@ const Forecast: React.FC<ForecastProps> = ({ displayForecasts, selectedDayIndex,
   }
 
   return (
-    <div className="space-y-3">
-      <div className="rounded-[1.7rem] border border-white/70 bg-white/88 p-2 shadow-md shadow-sky-900/6 ring-1 ring-white/60 backdrop-blur-xl">
-        <div className="space-y-2 px-1 py-1 sm:grid sm:min-h-[64px] sm:grid-cols-[minmax(12rem,14rem)_minmax(0,1fr)_auto] sm:items-center sm:gap-3 sm:space-y-0">
-          <div className="flex min-w-0 items-center gap-3 px-2">
-            <div className="grid h-11 w-11 shrink-0 place-items-center rounded-2xl bg-sky-50 text-sky-500 shadow-inner shadow-white/70">
-              <CloudSun className="h-7 w-7" aria-hidden="true" />
+    <div className={`space-y-3 ${fillHeight ? 'lg:flex lg:min-h-0 lg:flex-1 lg:flex-col' : ''}`}>
+      <div className={`rounded-[1.7rem] border border-white/70 bg-white/88 p-2 shadow-md shadow-sky-900/6 ring-1 ring-white/60 backdrop-blur-xl ${fillHeight ? 'lg:shrink-0' : ''}`}>
+        <div className={`space-y-2 px-1 py-1 sm:grid sm:min-h-[64px] sm:items-center sm:gap-3 sm:space-y-0 ${
+          hideForecastHeader
+            ? 'sm:grid-cols-[minmax(0,1fr)_auto]'
+            : 'sm:grid-cols-[minmax(12rem,14rem)_minmax(0,1fr)_auto]'
+        }`}>
+          {!hideForecastHeader && (
+            <div className="flex min-w-0 items-center gap-3 px-2">
+              <div className="grid h-11 w-11 shrink-0 place-items-center rounded-2xl bg-sky-50 text-sky-500 shadow-inner shadow-white/70">
+                <CloudSun className="h-7 w-7" aria-hidden="true" />
+              </div>
+              <div className="min-w-0">
+                <h2 className="truncate font-heading text-sm font-extrabold leading-tight text-slate-600">
+                  {t.locale === 'el-GR' ? 'Πρόγνωση' : 'Forecast'}
+                  {islandName ? ` · ${islandName}` : ''}
+                </h2>
+              </div>
             </div>
-            <div className="min-w-0">
-              <h2 className="truncate font-heading text-sm font-extrabold leading-tight text-slate-600">
-                {t.locale === 'el-GR' ? 'Πρόγνωση' : 'Forecast'}
-                {islandName ? ` · ${islandName}` : ''}
-              </h2>
-            </div>
-          </div>
+          )}
 
           <div className="grid min-w-0 grid-cols-5 gap-1 sm:gap-2">
             {displayForecasts.slice(0, 5).map((forecast, index) => (
@@ -582,11 +634,13 @@ const Forecast: React.FC<ForecastProps> = ({ displayForecasts, selectedDayIndex,
                 currentTime={currentTime}
                 variant="pill"
                 disabled={isTodayDisabledAfterEvening(index, currentTime)}
+                useWeekdayLabels={useWeekdayLabels}
+                stackedPills={stackedPills}
               />
             ))}
           </div>
 
-          {hasHourlyData && (
+          {hasHourlyData && !hideHourlyToggle && (
             <button
               type="button"
               aria-expanded={isHourlyExpanded}
@@ -602,17 +656,11 @@ const Forecast: React.FC<ForecastProps> = ({ displayForecasts, selectedDayIndex,
         </div>
       </div>
 
-      <AnimatePresence initial={false}>
-        {hasHourlyData && isHourlyExpanded && (
-          <motion.div
-            id={hourlyDetailsId}
-            initial={{ opacity: 0, y: -6, height: 0 }}
-            animate={{ opacity: 1, y: 0, height: 'auto' }}
-            exit={{ opacity: 0, y: -6, height: 0 }}
-            className="overflow-hidden"
-          >
-            <div className="rounded-2xl border border-white/60 bg-white/76 p-3 shadow-sm shadow-sky-900/5 ring-1 ring-white/40 backdrop-blur-xl">
-              <div className="mb-2 flex min-w-0 items-center gap-2">
+      {fillHeight ? (
+        hasHourlyData && isHourlyExpanded && (
+          <div id={hourlyDetailsId} className="overflow-hidden lg:flex lg:min-h-0 lg:flex-1 lg:flex-col">
+            <div className="rounded-2xl border border-white/60 bg-white/76 p-3 shadow-sm shadow-sky-900/5 ring-1 ring-white/40 backdrop-blur-xl lg:flex lg:min-h-0 lg:flex-1 lg:flex-col">
+              <div className="mb-2 flex min-w-0 items-center gap-2 lg:shrink-0">
                 <div className="rounded-lg bg-sky-50/80 p-1.5 text-sky-500">
                   <Clock className="h-3.5 w-3.5" aria-hidden="true" />
                 </div>
@@ -623,11 +671,40 @@ const Forecast: React.FC<ForecastProps> = ({ displayForecasts, selectedDayIndex,
                   {selectedForecastDateLabel}
                 </span>
               </div>
-              <HourlyForecastDetail hourlyData={selectedForecast.hourly} t={t} />
+              <div className="lg:min-h-0 lg:flex-1 lg:overflow-y-auto lg:[scrollbar-width:thin]">
+                <HourlyForecastDetail hourlyData={selectedForecast.hourly} t={t} />
+              </div>
             </div>
-          </motion.div>
-        )}
-      </AnimatePresence>
+          </div>
+        )
+      ) : (
+        <AnimatePresence initial={false}>
+          {hasHourlyData && isHourlyExpanded && (
+            <motion.div
+              id={hourlyDetailsId}
+              initial={{ opacity: 0, y: -6, height: 0 }}
+              animate={{ opacity: 1, y: 0, height: 'auto' }}
+              exit={{ opacity: 0, y: -6, height: 0 }}
+              className="overflow-hidden"
+            >
+              <div className="rounded-2xl border border-white/60 bg-white/76 p-3 shadow-sm shadow-sky-900/5 ring-1 ring-white/40 backdrop-blur-xl">
+                <div className="mb-2 flex min-w-0 items-center gap-2">
+                  <div className="rounded-lg bg-sky-50/80 p-1.5 text-sky-500">
+                    <Clock className="h-3.5 w-3.5" aria-hidden="true" />
+                  </div>
+                  <h3 className="min-w-0 truncate font-heading text-sm font-semibold text-slate-600">
+                    {hourlyTitle}
+                  </h3>
+                  <span className="ml-auto hidden truncate text-xs font-semibold text-slate-500 sm:block">
+                    {selectedForecastDateLabel}
+                  </span>
+                </div>
+                <HourlyForecastDetail hourlyData={selectedForecast.hourly} t={t} />
+              </div>
+            </motion.div>
+          )}
+        </AnimatePresence>
+      )}
     </div>
   );
 };

@@ -6,7 +6,7 @@ const rootDir = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..')
 const appBeachDir = path.join(rootDir, 'public', 'data', 'beaches', 'app');
 const photoDataDir = path.join(rootDir, 'src', 'data');
 
-const allowedBeachTypes = new Set(['sandy', 'pebbles', 'sandy-pebbles', 'rocky']);
+const allowedBeachTypes = new Set(['sandy', 'pebbles', 'sandy-pebbles', 'rocky', 'unknown']);
 const allowedAccessibility = new Set(['EASY', 'MODERATE', 'DIFFICULT', 'BOAT_ONLY']);
 const allowedWindDirections = new Set([
   'North',

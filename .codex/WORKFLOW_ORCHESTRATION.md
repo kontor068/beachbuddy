@@ -64,7 +64,7 @@ After a correction:
 
 Current durable lessons:
 - Do not describe difficult beach access as "4x4 only" in user-facing copy. Prefer "Difficult road" / "Dusvatos dromos" style wording unless verified as strictly impossible for normal vehicles.
-- Avoid repeating the same beach cards in multiple home-screen sections. The user should not scroll past duplicate recommendations.
+- Avoid repeating the same beach cards in multiple recommendation-only sections. The "All beaches" directory is an exception: it must stay complete for the selected region/search/filter, even if a beach already appears as a top/suitable card.
 - Warning chips must not contradict the main condition summary. Only show wave warnings when the beach has real wave risk after protection/exposure is considered, and use specific wording such as "Some waves" or "High waves" instead of vague "Wave today" copy.
 - When sea condition scores depend on exposure/protection as well as wave height, compact cards must show that context so equal wave heights do not look inconsistent across beaches.
 - Top recommendations must prioritize wind-protected beaches. Do not rank partially protected or exposed beaches above protected options when protected options exist in the selected area.
@@ -82,19 +82,28 @@ Current durable lessons:
 - Beach cards should prefer one verified photo per beach. Island-level fallback photos are only temporary coverage and should not be treated as each beach's own photo.
 - Greek generated beach copy must use inflected area/island phrases, not raw nominative labels. Prefer explicit forms like "της Μήλου", "στη Μήλο", "των Χανίων", "στο Ρέθυμνο" in label metadata.
 
-- Map wind-exposure colors should follow the explicit Beaufort legend: 0-2 Bft all blue; 3-4 Bft protected blue and exposed/partial yellow; 5-6 Bft protected yellow and exposed/partial orange; 7-10 Bft all red. Keep the legend visible and do not imply that blue means guaranteed safety.
-- Map color explanations should only describe colors visible for the current forecast. Do not show red/orange legend rows on a 3-4 Bft map where users only see blue/yellow markers.
+- Map wind-exposure colors should follow the explicit Beaufort legend: 0-2 Bft all blue because this is light-wind beach mode; 3 Bft protected/less-exposed blue and exposed/partial yellow; 4 Bft protected/less-exposed blue and exposed/partial yellow; 5-6 Bft protected/less-exposed yellow and exposed/partial orange; 7-10 Bft all red. Keep the legend visible and do not imply that blue means guaranteed safety.
+- Map color explanations should only describe colors visible for the current forecast. Do not show red/orange legend rows on a 4 Bft map where users only see blue/yellow markers.
 - Map color explanations should show the marker colors as colored dots next to meaning labels such as protected/exposed. Avoid writing visible color words like blue/yellow/orange/red in the compact legend.
 - Map color explanations should be shown directly without a heading such as "Color guide" / "Επεξήγηση Χρωμάτων" when displayed below the map.
 - Map markers should respect active search, filters, and filter-like sort modes. When users filter the beach list, hide non-matching markers instead of leaving irrelevant colored points on the map.
-- At 0-3 Bft, never force a single "top beach today" recommendation. Show a light-wind/calm-all-around message and let users choose by preference, access, and vibe. From 4 Bft upward, wind can drive top recommendations.
-- Calm/light-wind messages should be short and direct. At 0-2 Bft, treat the day as broadly suitable and keep the title/count aligned, e.g. "2 μποφόρ σήμερα. Όλες οι παραλίες είναι κατάλληλες!" with an all-beaches count.
+- Always show daily top recommendations from 0-6 Bft when forecast data is available and there is no blocking rain/winter/unsafe condition, capped at 3 and proportional to qualified suitable beaches. At 0-2 Bft, these should be tourist-ready picks based on sea comfort, access, confidence, popularity, amenities, and preferences rather than wind protection alone.
+- At 7+ Bft, do not show daily top recommendations or suitable-swimming recommendations for casual tourist swimming. Use the no-swimming/no-ideal state instead.
+- Calm/light-wind messages should be short and direct. At 0-2 Bft, treat the day as broadly suitable and keep the title/count aligned, e.g. "2 μποφόρ σήμερα. Όλες οι παραλίες είναι κατάλληλες!", while still surfacing proportional practical picks of the day.
 - Detail-page planner warnings must not contradict the home summary. At 0-2 Bft with normal swimming temperatures, do not show "conditions are not ideal" unless there is a real critical warning such as storm, rain, winter unsafe conditions, or missing forecast data.
 - Home top picks and detail pages must use the same forecast source. If a top pick is selected with beach-specific forecast data, pass that same beach-specific day/hourly forecast into the detail page and planner so the app never recommends a beach while the detail page says conditions are not ideal.
 - Detail-page crowd labels must not look like weather-condition labels. Use explicit wording such as "Μέτρια κίνηση" and avoid amber warning styling for normal medium crowd levels.
 - Do not defer the core beach list or the map behind artificial loading gates. Lightweight optimizations are fine, but the first beach-decision UI should appear as soon as beach data is available, even while weather details continue loading.
+- Mobile home should stay a decision screen, not a full directory. Keep top pick, suitable beaches, compact weather, and compact map access in the main flow; put the full "All beaches" directory behind a clear mobile panel/CTA.
 - Do not label a beach as "quiet" when it has a beach bar. In filters and generated copy, beach bar overrides quiet-style wording because the combination feels contradictory to users.
 - Do not show difficult-access beaches as ideal/top recommendations when any practical-access beach is recommendable. Hard access is only a fallback when no practical option passes the wind/sea checks.
+- Google Maps navigation should prefer a beach/place-name query over raw coordinates when a reliable display name exists. If Google matches a beach to the wrong island/place or only shows raw coordinates, hide/disable navigation for that beach until a Google Place ID is stored; do not send users to wrong POIs or coordinate-only results.
+- Low-confidence beach records should not expose Google Maps navigation unless a verified Google navigation identity is stored. A correct-looking OSM/map coordinate is not enough to prove that Google Maps will resolve the beach name correctly.
+- Top beach / best-today recommendations must come only from records with high-confidence static metadata, known practical access, known terrain/beach type, and non-low recommendation/wind-profile confidence. Medium/low or Google-ambiguous records can stay in audit/source data, but must not be promoted as top picks.
+- Map top-pick pulse/highlight should only appear when the same current-day top pick is visibly presented as a top-pick card/panel. Do not pulse the first directory/fallback beach, future-day recommendations, or 7+ Bft no-swimming days. `BeachMap` must not default a missing `topBeachId` to the first marker.
+- At 4+ Bft, "best/suitable beaches" sections must prefer map-visible protected candidates even if there are fewer than three. Do not fill the section with exposed beaches just to reach a card quota when any protected option exists.
+- Recommendation card exposure badges must align with the same visible map exposure source for the selected forecast. Do not show a beach as exposed in a "best/suitable" card if the map-visible protected filter selected it as protected.
+- For protected/map-aligned suitable cards, the primary condition chip must say the protection state (e.g. "Προστατευμένη"), not a sea-state label such as wave/chop. Do not cap the suitable carousel so low that map-visible protected options disappear.
 
 ## 4. Verification Before Done
 

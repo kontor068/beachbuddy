@@ -1,0 +1,209 @@
+{
+  "schemaVersion": 1,
+  "generatedAt": "2026-06-08T16:23:16.501Z",
+  "group": "standalone_islands",
+  "policy": {
+    "windBeaufort": 4,
+    "checkedSectors": [
+      "N",
+      "NE",
+      "E",
+      "SE",
+      "S",
+      "SW",
+      "W",
+      "NW"
+    ],
+    "rule": "A visible protected/blue map marker must be supported by that beach own protected geospatial sector, by a trusted authored non-low wind profile, or by stable protected evidence from the same curated shoreline segment. Random distance-only adjacency may not create unsupported blue markers."
+  },
+  "summary": {
+    "regions": 2,
+    "scenarios": 16,
+    "beachesPerScenario": 1432,
+    "blue": 725,
+    "yellow": 707,
+    "rawGeoBlue": 725,
+    "trustedAuthoredBlue": 0,
+    "segmentSupportedBlue": 0,
+    "unsupportedBlue": 0
+  },
+  "rows": [
+    {
+      "regionId": "central-greece-evia",
+      "slug": "evia",
+      "sector": "N",
+      "total": 122,
+      "blue": 59,
+      "yellow": 63,
+      "rawGeoBlue": 59,
+      "trustedAuthoredBlue": 0,
+      "segmentSupportedBlue": 0
+    },
+    {
+      "regionId": "central-greece-evia",
+      "slug": "evia",
+      "sector": "NE",
+      "total": 122,
+      "blue": 44,
+      "yellow": 78,
+      "rawGeoBlue": 44,
+      "trustedAuthoredBlue": 0,
+      "segmentSupportedBlue": 0
+    },
+    {
+      "regionId": "central-greece-evia",
+      "slug": "evia",
+      "sector": "E",
+      "total": 122,
+      "blue": 41,
+      "yellow": 81,
+      "rawGeoBlue": 41,
+      "trustedAuthoredBlue": 0,
+      "segmentSupportedBlue": 0
+    },
+    {
+      "regionId": "central-greece-evia",
+      "slug": "evia",
+      "sector": "SE",
+      "total": 122,
+      "blue": 56,
+      "yellow": 66,
+      "rawGeoBlue": 56,
+      "trustedAuthoredBlue": 0,
+      "segmentSupportedBlue": 0
+    },
+    {
+      "regionId": "central-greece-evia",
+      "slug": "evia",
+      "sector": "S",
+      "total": 122,
+      "blue": 71,
+      "yellow": 51,
+      "rawGeoBlue": 71,
+      "trustedAuthoredBlue": 0,
+      "segmentSupportedBlue": 0
+    },
+    {
+      "regionId": "central-greece-evia",
+      "slug": "evia",
+      "sector": "SW",
+      "total": 122,
+      "blue": 81,
+      "yellow": 41,
+      "rawGeoBlue": 81,
+      "trustedAuthoredBlue": 0,
+      "segmentSupportedBlue": 0
+    },
+    {
+      "regionId": "central-greece-evia",
+      "slug": "evia",
+      "sector": "W",
+      "total": 122,
+      "blue": 80,
+      "yellow": 42,
+      "rawGeoBlue": 80,
+      "trustedAuthoredBlue": 0,
+      "segmentSupportedBlue": 0
+    },
+    {
+      "regionId": "central-greece-evia",
+      "slug": "evia",
+      "sector": "NW",
+      "total": 122,
+      "blue": 66,
+      "yellow": 56,
+      "rawGeoBlue": 66,
+      "trustedAuthoredBlue": 0,
+      "segmentSupportedBlue": 0
+    },
+    {
+      "regionId": "east-macedonia-and-thrace-thasos",
+      "slug": "thasos",
+      "sector": "N",
+      "total": 57,
+      "blue": 32,
+      "yellow": 25,
+      "rawGeoBlue": 32,
+      "trustedAuthoredBlue": 0,
+      "segmentSupportedBlue": 0
+    },
+    {
+      "regionId": "east-macedonia-and-thrace-thasos",
+      "slug": "thasos",
+      "sector": "NE",
+      "total": 57,
+      "blue": 41,
+      "yellow": 16,
+      "rawGeoBlue": 41,
+      "trustedAuthoredBlue": 0,
+      "segmentSupportedBlue": 0
+    },
+    {
+      "regionId": "east-macedonia-and-thrace-thasos",
+      "slug": "thasos",
+      "sector": "E",
+      "total": 57,
+      "blue": 31,
+      "yellow": 26,
+      "rawGeoBlue": 31,
+      "trustedAuthoredBlue": 0,
+      "segmentSupportedBlue": 0
+    },
+    {
+      "regionId": "east-macedonia-and-thrace-thasos",
+      "slug": "thasos",
+      "sector": "SE",
+      "total": 57,
+      "blue": 33,
+      "yellow": 24,
+      "rawGeoBlue": 33,
+      "trustedAuthoredBlue": 0,
+      "segmentSupportedBlue": 0
+    },
+    {
+      "regionId": "east-macedonia-and-thrace-thasos",
+      "slug": "thasos",
+      "sector": "S",
+      "total": 57,
+      "blue": 25,
+      "yellow": 32,
+      "rawGeoBlue": 25,
+      "trustedAuthoredBlue": 0,
+      "segmentSupportedBlue": 0
+    },
+    {
+      "regionId": "east-macedonia-and-thrace-thasos",
+      "slug": "thasos",
+      "sector": "SW",
+      "total": 57,
+      "blue": 17,
+      "yellow": 40,
+      "rawGeoBlue": 17,
+      "trustedAuthoredBlue": 0,
+      "segmentSupportedBlue": 0
+    },
+    {
+      "regionId": "east-macedonia-and-thrace-thasos",
+      "slug": "thasos",
+      "sector": "W",
+      "total": 57,
+      "blue": 26,
+      "yellow": 31,
+      "rawGeoBlue": 26,
+      "trustedAuthoredBlue": 0,
+      "segmentSupportedBlue": 0
+    },
+    {
+      "regionId": "east-macedonia-and-thrace-thasos",
+      "slug": "thasos",
+      "sector": "NW",
+      "total": 57,
+      "blue": 22,
+      "yellow": 35,
+      "rawGeoBlue": 22,
+      "trustedAuthoredBlue": 0,
+      "segmentSupportedBlue": 0
+    }
+  ],
+  "unsupportedBlue": []
+}

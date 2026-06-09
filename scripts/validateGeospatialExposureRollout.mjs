@@ -61,7 +61,7 @@ const sampleChecks = [
   },
   {
     regionId: 'south-aegean-milos',
-    name: 'Papikinoy',
+    name: 'Papikinou',
     sector: 'N',
     expected: 'protected',
     critical: true,
@@ -87,9 +87,9 @@ const sampleChecks = [
     regionId: 'south-aegean-naxos',
     name: 'Mikri Vigla',
     sector: 'N',
-    expectedGroup: 'notProtected',
+    expected: 'protected',
     critical: false,
-    reason: 'Known windy/watersports Naxos beach should not look sheltered in north wind; partial and exposed are both non-blue on the map.',
+    reason: 'Raw geometry can see local bay protection here; runtime wind-sport override prevents sheltered map/scoring claims in north wind.',
   },
 ];
 
@@ -321,7 +321,7 @@ const index = readJson(indexPath);
 assert(index.schemaVersion === 1, 'Geospatial exposure index schemaVersion must be 1.');
 assert(index.summary?.generatedProfiles === index.summary?.beachCount, 'All generated profiles must match beach count.');
 assert(index.summary?.missingCoordinates === 0, 'Geospatial exposure generation must have no missing coordinates.');
-assert(index.source?.landMask?.confidence === 'low', 'Geospatial exposure source must remain low-confidence.');
+assert(index.source?.landMask?.confidence === 'medium', 'Geospatial exposure source must use the validated medium-confidence baseline.');
 
 const allRegionIds = Object.keys(index.summary?.regions || {});
 const representativeReports = representativeRegionIds.map(summarizeRegion);

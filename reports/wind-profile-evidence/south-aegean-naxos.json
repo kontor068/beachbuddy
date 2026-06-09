@@ -1,0 +1,942 @@
+{
+  "schemaVersion": 1,
+  "generatedAt": "2026-06-08T09:53:32.201Z",
+  "regionId": "south-aegean-naxos",
+  "policy": {
+    "lowToMedium": [
+      "OSM same-beach identity evidence exists",
+      "generated geospatial profile is usable and medium confidence",
+      "Google Maps navigation is not explicitly unresolved",
+      "static beach metadata is not low confidence",
+      "authored exposed-sector notes do not contradict protected geospatial sectors"
+    ],
+    "mediumToHigh": [
+      "not granted by this audit",
+      "requires high-resolution shoreline geometry plus trusted local/nautical/watersports or repeated observed behavior"
+    ]
+  },
+  "summary": {
+    "total": 39,
+    "high": 0,
+    "medium": 9,
+    "low": 30,
+    "blocked": 30
+  },
+  "records": [
+    {
+      "beachId": 1981,
+      "name": "Agia Anna",
+      "recommendedWindProfileConfidence": "low",
+      "currentEvidence": {
+        "coordinateIdentity": "not-osm-backed",
+        "staticEvidence": "official-or-blue-flag",
+        "geospatial": {
+          "confidence": "medium",
+          "facingDeg": 221.9,
+          "source": "natural-earth-baseline"
+        },
+        "googleMapsNavigation": "not-checked",
+        "accessAmenitiesConfidence": "high"
+      },
+      "blockers": [
+        "missing OSM same-beach identity evidence",
+        "authored exposed sectors conflict with geospatial protected sectors"
+      ],
+      "sourceUrls": [
+        "https://www.naxos.gr/agia-anna-beach/?lang=en",
+        "https://www.blueflag.gr/el/awards/2026",
+        "https://naxos.gr/en/naxos/beaches/agia-anna/"
+      ]
+    },
+    {
+      "beachId": 1982,
+      "name": "Agiassos",
+      "recommendedWindProfileConfidence": "low",
+      "currentEvidence": {
+        "coordinateIdentity": "not-osm-backed",
+        "staticEvidence": "official-or-blue-flag",
+        "geospatial": {
+          "confidence": "medium",
+          "facingDeg": 246.7,
+          "source": "natural-earth-baseline"
+        },
+        "googleMapsNavigation": "not-checked",
+        "accessAmenitiesConfidence": "high"
+      },
+      "blockers": [
+        "missing OSM same-beach identity evidence"
+      ],
+      "sourceUrls": [
+        "https://www.naxos.gr/agiassos-beach/?lang=en",
+        "https://naxos.gr/en/naxos/beaches/agiassos/"
+      ]
+    },
+    {
+      "beachId": 1983,
+      "name": "Agii Theodori",
+      "recommendedWindProfileConfidence": "low",
+      "currentEvidence": {
+        "coordinateIdentity": "not-osm-backed",
+        "staticEvidence": "official-or-blue-flag",
+        "geospatial": {
+          "confidence": "medium",
+          "facingDeg": 322.1,
+          "source": "natural-earth-baseline"
+        },
+        "googleMapsNavigation": "not-checked",
+        "accessAmenitiesConfidence": "high"
+      },
+      "blockers": [
+        "missing OSM same-beach identity evidence"
+      ],
+      "sourceUrls": [
+        "https://www.naxos.gr/agii-theodori-beach/?lang=en",
+        "https://www.allovergreece.com/Beaches/Descr/16/68/en",
+        "https://www.allovergreece.com/Beaches/Descr/16/68/en",
+        "https://www.naxos.gr/agii-theodori-beach/?lang=en"
+      ]
+    },
+    {
+      "beachId": 1984,
+      "name": "Agios Georgios",
+      "recommendedWindProfileConfidence": "low",
+      "currentEvidence": {
+        "coordinateIdentity": "not-osm-backed",
+        "staticEvidence": "official-or-blue-flag",
+        "geospatial": {
+          "confidence": "medium",
+          "facingDeg": 320.1,
+          "source": "natural-earth-baseline"
+        },
+        "googleMapsNavigation": "not-checked",
+        "accessAmenitiesConfidence": "high"
+      },
+      "blockers": [
+        "missing OSM same-beach identity evidence",
+        "authored exposed sectors conflict with geospatial protected sectors"
+      ],
+      "sourceUrls": [
+        "https://www.naxos.gr/agios-georgios-beach/?lang=en",
+        "https://www.blueflag.gr/el/awards/2026",
+        "https://naxos.gr/en/naxos/beaches/agios-georgios/"
+      ]
+    },
+    {
+      "beachId": 1985,
+      "name": "Agios Prokopios",
+      "recommendedWindProfileConfidence": "low",
+      "currentEvidence": {
+        "coordinateIdentity": "not-osm-backed",
+        "staticEvidence": "official-or-blue-flag",
+        "geospatial": {
+          "confidence": "medium",
+          "facingDeg": 217,
+          "source": "natural-earth-baseline"
+        },
+        "googleMapsNavigation": "not-checked",
+        "accessAmenitiesConfidence": "high"
+      },
+      "blockers": [
+        "missing OSM same-beach identity evidence",
+        "authored exposed sectors conflict with geospatial protected sectors"
+      ],
+      "sourceUrls": [
+        "https://www.naxos.gr/agios-prokopios-beach/?lang=en",
+        "https://www.blueflag.gr/el/awards/2026",
+        "https://naxos.gr/en/naxos/beaches/agios-prokopios/"
+      ]
+    },
+    {
+      "beachId": 1986,
+      "name": "Azalas",
+      "recommendedWindProfileConfidence": "low",
+      "currentEvidence": {
+        "coordinateIdentity": "not-osm-backed",
+        "staticEvidence": "official-or-blue-flag",
+        "geospatial": {
+          "confidence": "medium",
+          "facingDeg": 95.5,
+          "source": "natural-earth-baseline"
+        },
+        "googleMapsNavigation": "not-checked",
+        "accessAmenitiesConfidence": "high"
+      },
+      "blockers": [
+        "missing OSM same-beach identity evidence"
+      ],
+      "sourceUrls": [
+        "https://www.naxos.gr/azalas-beach/?lang=en",
+        "https://naxos.gr/en/naxos/beaches/azalas/"
+      ]
+    },
+    {
+      "beachId": 1987,
+      "name": "Alyko",
+      "recommendedWindProfileConfidence": "low",
+      "currentEvidence": {
+        "coordinateIdentity": "not-osm-backed",
+        "staticEvidence": "official-or-blue-flag",
+        "geospatial": {
+          "confidence": "medium",
+          "facingDeg": 226.3,
+          "source": "natural-earth-baseline"
+        },
+        "googleMapsNavigation": "not-checked",
+        "accessAmenitiesConfidence": "high"
+      },
+      "blockers": [
+        "missing OSM same-beach identity evidence",
+        "authored exposed sectors conflict with geospatial protected sectors"
+      ],
+      "sourceUrls": [
+        "https://www.naxos.gr/alyko-small-alyko-kedros-hawaii-beaches/?lang=en",
+        "https://naxos.gr/en/naxos/beaches/alyko/"
+      ]
+    },
+    {
+      "beachId": 1988,
+      "name": "Ammitis",
+      "recommendedWindProfileConfidence": "low",
+      "currentEvidence": {
+        "coordinateIdentity": "not-osm-backed",
+        "staticEvidence": "official-or-blue-flag",
+        "geospatial": {
+          "confidence": "medium",
+          "facingDeg": 323.4,
+          "source": "natural-earth-baseline"
+        },
+        "googleMapsNavigation": "not-checked",
+        "accessAmenitiesConfidence": "high"
+      },
+      "blockers": [
+        "missing OSM same-beach identity evidence"
+      ],
+      "sourceUrls": [
+        "https://www.naxos.gr/ammitis-beach/?lang=en",
+        "https://naxos.gr/en/naxos/beaches/ammitis/"
+      ]
+    },
+    {
+      "beachId": 1989,
+      "name": "Ampram",
+      "recommendedWindProfileConfidence": "low",
+      "currentEvidence": {
+        "coordinateIdentity": "not-osm-backed",
+        "staticEvidence": "official-or-blue-flag",
+        "geospatial": {
+          "confidence": "medium",
+          "facingDeg": 303.1,
+          "source": "natural-earth-baseline"
+        },
+        "googleMapsNavigation": "not-checked",
+        "accessAmenitiesConfidence": "high"
+      },
+      "blockers": [
+        "missing OSM same-beach identity evidence",
+        "authored exposed sectors conflict with geospatial protected sectors"
+      ],
+      "sourceUrls": [
+        "https://www.naxos.gr/abram-beach/?lang=en",
+        "https://naxos.gr/en/naxos/beaches/abram/"
+      ]
+    },
+    {
+      "beachId": 1990,
+      "name": "Apollonas",
+      "recommendedWindProfileConfidence": "low",
+      "currentEvidence": {
+        "coordinateIdentity": "not-osm-backed",
+        "staticEvidence": "official-or-blue-flag",
+        "geospatial": {
+          "confidence": "medium",
+          "facingDeg": 35.2,
+          "source": "natural-earth-baseline"
+        },
+        "googleMapsNavigation": "not-checked",
+        "accessAmenitiesConfidence": "high"
+      },
+      "blockers": [
+        "missing OSM same-beach identity evidence"
+      ],
+      "sourceUrls": [
+        "https://www.naxos.gr/apollonas-beach/?lang=en",
+        "https://naxos.gr/en/naxos/beaches/apollonas/"
+      ]
+    },
+    {
+      "beachId": 1991,
+      "name": "Vintzi",
+      "recommendedWindProfileConfidence": "medium",
+      "currentEvidence": {
+        "coordinateIdentity": "osm-same-beach",
+        "staticEvidence": "official-or-blue-flag",
+        "geospatial": {
+          "confidence": "medium",
+          "facingDeg": 313.4,
+          "source": "natural-earth-baseline"
+        },
+        "googleMapsNavigation": "not-checked",
+        "accessAmenitiesConfidence": "high"
+      },
+      "blockers": [],
+      "sourceUrls": [
+        "https://www.naxos.gr/vintzi-beach/?lang=en",
+        "https://www.openstreetmap.org/way/1204646781",
+        "https://www.openstreetmap.org/way/1204646781",
+        "https://www.naxos.gr/vintzi-beach/?lang=en"
+      ]
+    },
+    {
+      "beachId": 1992,
+      "name": "Glatza",
+      "recommendedWindProfileConfidence": "medium",
+      "currentEvidence": {
+        "coordinateIdentity": "osm-same-beach",
+        "staticEvidence": "non-official-or-missing",
+        "geospatial": {
+          "confidence": "medium",
+          "facingDeg": 324.7,
+          "source": "natural-earth-baseline"
+        },
+        "googleMapsNavigation": "not-checked",
+        "accessAmenitiesConfidence": "high"
+      },
+      "blockers": [],
+      "sourceUrls": [
+        "https://www.allovergreece.com/Beaches/Descr/16/72/el",
+        "https://www.openstreetmap.org/way/500669911",
+        "https://www.openstreetmap.org/way/500669911"
+      ]
+    },
+    {
+      "beachId": 1993,
+      "name": "Glyfada",
+      "recommendedWindProfileConfidence": "low",
+      "currentEvidence": {
+        "coordinateIdentity": "not-osm-backed",
+        "staticEvidence": "official-or-blue-flag",
+        "geospatial": {
+          "confidence": "medium",
+          "facingDeg": 276.9,
+          "source": "natural-earth-baseline"
+        },
+        "googleMapsNavigation": "not-checked",
+        "accessAmenitiesConfidence": "high"
+      },
+      "blockers": [
+        "missing OSM same-beach identity evidence"
+      ],
+      "sourceUrls": [
+        "https://www.naxos.gr/glyfada-beach/?lang=en",
+        "https://naxos.gr/en/naxos/beaches/glyfada/"
+      ]
+    },
+    {
+      "beachId": 1994,
+      "name": "Grotta",
+      "recommendedWindProfileConfidence": "low",
+      "currentEvidence": {
+        "coordinateIdentity": "not-osm-backed",
+        "staticEvidence": "official-or-blue-flag",
+        "geospatial": {
+          "confidence": "medium",
+          "facingDeg": 312.6,
+          "source": "natural-earth-baseline"
+        },
+        "googleMapsNavigation": "not-checked",
+        "accessAmenitiesConfidence": "high"
+      },
+      "blockers": [
+        "missing OSM same-beach identity evidence"
+      ],
+      "sourceUrls": [
+        "https://www.naxos.gr/grotta-beach/?lang=en",
+        "https://topostext.org/place/371254XGro",
+        "https://topostext.org/place/371254XGro",
+        "https://www.naxos.gr/grotta-beach/?lang=en"
+      ]
+    },
+    {
+      "beachId": 1995,
+      "name": "Paralia Kalantos",
+      "recommendedWindProfileConfidence": "low",
+      "currentEvidence": {
+        "coordinateIdentity": "not-osm-backed",
+        "staticEvidence": "official-or-blue-flag",
+        "geospatial": {
+          "confidence": "medium",
+          "facingDeg": 155.4,
+          "source": "natural-earth-baseline"
+        },
+        "googleMapsNavigation": "not-checked",
+        "accessAmenitiesConfidence": "high"
+      },
+      "blockers": [
+        "missing OSM same-beach identity evidence"
+      ],
+      "sourceUrls": [
+        "https://www.naxos.gr/kalantos-beach/?lang=en",
+        "https://naxos.gr/en/naxos/beaches/kalandos/"
+      ]
+    },
+    {
+      "beachId": 1996,
+      "name": "Kampos",
+      "recommendedWindProfileConfidence": "low",
+      "currentEvidence": {
+        "coordinateIdentity": "not-osm-backed",
+        "staticEvidence": "official-or-blue-flag",
+        "geospatial": {
+          "confidence": "medium",
+          "facingDeg": 311.5,
+          "source": "natural-earth-baseline"
+        },
+        "googleMapsNavigation": "not-checked",
+        "accessAmenitiesConfidence": "high"
+      },
+      "blockers": [
+        "missing OSM same-beach identity evidence"
+      ],
+      "sourceUrls": [
+        "https://www.naxos.gr/%CF%80%CE%B1%CF%81%CE%B1%CE%BB%CE%AF%CE%B1-%CE%BA%CE%AC%CE%BC%CF%80%CE%BF%CF%82-%CE%BD%CE%AC%CE%BE%CE%BF%CF%82/",
+        "https://www.allovergreece.com/Beaches/Descr/16/71/en",
+        "https://www.gtp.gr/LocPage.asp?id=63231&lng=2",
+        "https://www.naxos.gr/wp-content/uploads/2018/04/Naxos-Guide-EN.pdf"
+      ]
+    },
+    {
+      "beachId": 1997,
+      "name": "Kastraki",
+      "recommendedWindProfileConfidence": "low",
+      "currentEvidence": {
+        "coordinateIdentity": "not-osm-backed",
+        "staticEvidence": "official-or-blue-flag",
+        "geospatial": {
+          "confidence": "medium",
+          "facingDeg": 256.9,
+          "source": "natural-earth-baseline"
+        },
+        "googleMapsNavigation": "not-checked",
+        "accessAmenitiesConfidence": "high"
+      },
+      "blockers": [
+        "missing OSM same-beach identity evidence"
+      ],
+      "sourceUrls": [
+        "https://www.naxos.gr/kastraki-beach/?lang=en",
+        "https://naxos.gr/en/naxos/beaches/kastraki/"
+      ]
+    },
+    {
+      "beachId": 1998,
+      "name": "Kedros",
+      "recommendedWindProfileConfidence": "low",
+      "currentEvidence": {
+        "coordinateIdentity": "not-osm-backed",
+        "staticEvidence": "official-or-blue-flag",
+        "geospatial": {
+          "confidence": "medium",
+          "facingDeg": 242.7,
+          "source": "natural-earth-baseline"
+        },
+        "googleMapsNavigation": "not-checked",
+        "accessAmenitiesConfidence": "high"
+      },
+      "blockers": [
+        "missing OSM same-beach identity evidence"
+      ],
+      "sourceUrls": [
+        "https://www.naxos.gr/alyko-small-alyko-kedros-hawaii-beaches/?lang=en",
+        "https://www.naxos.net/beaches/alyko/",
+        "https://www.naxos.gr/alyko-small-alyko-kedros-hawaii-beaches/?lang=en"
+      ]
+    },
+    {
+      "beachId": 1999,
+      "name": "Klidos",
+      "recommendedWindProfileConfidence": "medium",
+      "currentEvidence": {
+        "coordinateIdentity": "osm-same-beach",
+        "staticEvidence": "official-or-blue-flag",
+        "geospatial": {
+          "confidence": "medium",
+          "facingDeg": 114.8,
+          "source": "natural-earth-baseline"
+        },
+        "googleMapsNavigation": "not-checked",
+        "accessAmenitiesConfidence": "high"
+      },
+      "blockers": [],
+      "sourceUrls": [
+        "https://www.naxos.net/beaches/kleidos/",
+        "https://www.openstreetmap.org/way/404481267",
+        "https://www.naxos.gr/wp-content/uploads/2018/04/Naxos-Guide-EN.pdf",
+        "https://www.openstreetmap.org/way/404481267",
+        "https://www.naxos.net/beaches/kleidos/"
+      ]
+    },
+    {
+      "beachId": 2000,
+      "name": "Paralia Klido",
+      "recommendedWindProfileConfidence": "medium",
+      "currentEvidence": {
+        "coordinateIdentity": "osm-same-beach",
+        "staticEvidence": "official-or-blue-flag",
+        "geospatial": {
+          "confidence": "medium",
+          "facingDeg": 115,
+          "source": "natural-earth-baseline"
+        },
+        "googleMapsNavigation": "not-checked",
+        "accessAmenitiesConfidence": "high"
+      },
+      "blockers": [],
+      "sourceUrls": [
+        "https://www.naxos.net/beaches/kleidos/",
+        "https://www.openstreetmap.org/way/1157948744",
+        "https://www.naxos.gr/wp-content/uploads/2018/04/Naxos-Guide-EN.pdf",
+        "https://www.openstreetmap.org/way/1157948744",
+        "https://www.naxos.net/beaches/kleidos/"
+      ]
+    },
+    {
+      "beachId": 2001,
+      "name": "Ligaridia",
+      "recommendedWindProfileConfidence": "low",
+      "currentEvidence": {
+        "coordinateIdentity": "not-osm-backed",
+        "staticEvidence": "official-or-blue-flag",
+        "geospatial": {
+          "confidence": "medium",
+          "facingDeg": 98.8,
+          "source": "natural-earth-baseline"
+        },
+        "googleMapsNavigation": "not-checked",
+        "accessAmenitiesConfidence": "high"
+      },
+      "blockers": [
+        "missing OSM same-beach identity evidence",
+        "authored exposed sectors conflict with geospatial protected sectors"
+      ],
+      "sourceUrls": [
+        "https://www.naxos.gr/ligaridia-beach/?lang=en",
+        "https://naxos.gr/en/naxos/beaches/ligaridia/"
+      ]
+    },
+    {
+      "beachId": 2002,
+      "name": "Paralia Limnari",
+      "recommendedWindProfileConfidence": "medium",
+      "currentEvidence": {
+        "coordinateIdentity": "osm-same-beach",
+        "staticEvidence": "non-official-or-missing",
+        "geospatial": {
+          "confidence": "medium",
+          "facingDeg": 86.7,
+          "source": "natural-earth-baseline"
+        },
+        "googleMapsNavigation": "not-checked",
+        "accessAmenitiesConfidence": "medium"
+      },
+      "blockers": [],
+      "sourceUrls": [
+        "https://beaches-searcher.com/en/beach/300224610/limnari-bay",
+        "https://wanderlog.com/place/details/4711702/limnari-bay-naxos-island"
+      ]
+    },
+    {
+      "beachId": 2003,
+      "name": "Lionas",
+      "recommendedWindProfileConfidence": "low",
+      "currentEvidence": {
+        "coordinateIdentity": "not-osm-backed",
+        "staticEvidence": "official-or-blue-flag",
+        "geospatial": {
+          "confidence": "medium",
+          "facingDeg": 78.9,
+          "source": "natural-earth-baseline"
+        },
+        "googleMapsNavigation": "not-checked",
+        "accessAmenitiesConfidence": "high"
+      },
+      "blockers": [
+        "missing OSM same-beach identity evidence"
+      ],
+      "sourceUrls": [
+        "https://www.naxos.gr/lionas-beach/?lang=en",
+        "https://naxos.gr/en/naxos/beaches/lionas/"
+      ]
+    },
+    {
+      "beachId": 2004,
+      "name": "Melino",
+      "recommendedWindProfileConfidence": "medium",
+      "currentEvidence": {
+        "coordinateIdentity": "osm-same-beach",
+        "staticEvidence": "non-official-or-missing",
+        "geospatial": {
+          "confidence": "medium",
+          "facingDeg": 339,
+          "source": "natural-earth-baseline"
+        },
+        "googleMapsNavigation": "not-checked",
+        "accessAmenitiesConfidence": "high"
+      },
+      "blockers": [],
+      "sourceUrls": [
+        "https://mapcarta.com/W209107838",
+        "https://www.openstreetmap.org/way/209107838",
+        "https://www.allovergreece.com/Beaches/Descr/16/82/en"
+      ]
+    },
+    {
+      "beachId": 2005,
+      "name": "Mikra",
+      "recommendedWindProfileConfidence": "low",
+      "currentEvidence": {
+        "coordinateIdentity": "not-osm-backed",
+        "staticEvidence": "official-or-blue-flag",
+        "geospatial": {
+          "confidence": "medium",
+          "facingDeg": 318.3,
+          "source": "natural-earth-baseline"
+        },
+        "googleMapsNavigation": "not-checked",
+        "accessAmenitiesConfidence": "high"
+      },
+      "blockers": [
+        "missing OSM same-beach identity evidence"
+      ],
+      "sourceUrls": [
+        "https://www.allovergreece.com/Beaches/Descr/16/70/en",
+        "https://www.naxos.gr/mikra-beach/?lang=en",
+        "https://www.allovergreece.com/Beaches/Descr/16/70/en"
+      ]
+    },
+    {
+      "beachId": 2006,
+      "name": "Mikri Vigla",
+      "recommendedWindProfileConfidence": "low",
+      "currentEvidence": {
+        "coordinateIdentity": "not-osm-backed",
+        "staticEvidence": "official-or-blue-flag",
+        "geospatial": {
+          "confidence": "medium",
+          "facingDeg": 260,
+          "source": "natural-earth-baseline"
+        },
+        "googleMapsNavigation": "not-checked",
+        "accessAmenitiesConfidence": "high"
+      },
+      "blockers": [
+        "missing OSM same-beach identity evidence",
+        "authored exposed sectors conflict with geospatial protected sectors"
+      ],
+      "sourceUrls": [
+        "https://www.naxos.gr/mikri-vigla-parthena-limanaki/?lang=en",
+        "https://www.naxos.net/beaches/mikri-vigla/",
+        "https://naxos.gr/en/naxos/beaches/mikri-vigla/"
+      ]
+    },
+    {
+      "beachId": 2007,
+      "name": "Mikri Vigla - Notia plevra",
+      "recommendedWindProfileConfidence": "low",
+      "currentEvidence": {
+        "coordinateIdentity": "osm-same-beach",
+        "staticEvidence": "official-or-blue-flag",
+        "geospatial": {
+          "confidence": "medium",
+          "facingDeg": 253.8,
+          "source": "natural-earth-baseline"
+        },
+        "googleMapsNavigation": "not-checked",
+        "accessAmenitiesConfidence": "high"
+      },
+      "blockers": [
+        "Mikri Vigla south-side separation from the north/wind-sport side needs local verification before confidence upgrade."
+      ],
+      "sourceUrls": [
+        "https://www.naxos.net/island-tours/mikri-vigla.php",
+        "https://www.openstreetmap.org/way/363516878",
+        "https://www.naxos.gr/mikri-vigla-parthena-limanaki/?lang=en",
+        "https://www.openstreetmap.org/way/363516878"
+      ]
+    },
+    {
+      "beachId": 2008,
+      "name": "Mikro Alyko",
+      "recommendedWindProfileConfidence": "low",
+      "currentEvidence": {
+        "coordinateIdentity": "not-osm-backed",
+        "staticEvidence": "official-or-blue-flag",
+        "geospatial": {
+          "confidence": "medium",
+          "facingDeg": 231.6,
+          "source": "natural-earth-baseline"
+        },
+        "googleMapsNavigation": "not-checked",
+        "accessAmenitiesConfidence": "high"
+      },
+      "blockers": [
+        "missing OSM same-beach identity evidence"
+      ],
+      "sourceUrls": [
+        "https://www.naxos.gr/alyko-small-alyko-kedros-hawaii-beaches/?lang=en",
+        "https://www.naxos.net/beaches/alyko/",
+        "https://www.naxos.gr/alyko-small-alyko-kedros-hawaii-beaches/?lang=en"
+      ]
+    },
+    {
+      "beachId": 2009,
+      "name": "Moutsouna",
+      "recommendedWindProfileConfidence": "low",
+      "currentEvidence": {
+        "coordinateIdentity": "not-osm-backed",
+        "staticEvidence": "official-or-blue-flag",
+        "geospatial": {
+          "confidence": "medium",
+          "facingDeg": 100,
+          "source": "natural-earth-baseline"
+        },
+        "googleMapsNavigation": "not-checked",
+        "accessAmenitiesConfidence": "high"
+      },
+      "blockers": [
+        "missing OSM same-beach identity evidence"
+      ],
+      "sourceUrls": [
+        "https://www.naxos.gr/moutsouna-beach/?lang=en",
+        "https://naxos.gr/en/naxos/beaches/moutsouna/"
+      ]
+    },
+    {
+      "beachId": 2010,
+      "name": "Orkos",
+      "recommendedWindProfileConfidence": "low",
+      "currentEvidence": {
+        "coordinateIdentity": "not-osm-backed",
+        "staticEvidence": "official-or-blue-flag",
+        "geospatial": {
+          "confidence": "medium",
+          "facingDeg": 259.4,
+          "source": "natural-earth-baseline"
+        },
+        "googleMapsNavigation": "not-checked",
+        "accessAmenitiesConfidence": "high"
+      },
+      "blockers": [
+        "missing OSM same-beach identity evidence",
+        "authored exposed sectors conflict with geospatial protected sectors"
+      ],
+      "sourceUrls": [
+        "https://www.naxos.gr/orkos-beach/?lang=en",
+        "https://naxos.gr/en/naxos/beaches/orkos/"
+      ]
+    },
+    {
+      "beachId": 2011,
+      "name": "Panormos",
+      "recommendedWindProfileConfidence": "low",
+      "currentEvidence": {
+        "coordinateIdentity": "not-osm-backed",
+        "staticEvidence": "official-or-blue-flag",
+        "geospatial": {
+          "confidence": "medium",
+          "facingDeg": 150.8,
+          "source": "natural-earth-baseline"
+        },
+        "googleMapsNavigation": "not-checked",
+        "accessAmenitiesConfidence": "high"
+      },
+      "blockers": [
+        "missing OSM same-beach identity evidence"
+      ],
+      "sourceUrls": [
+        "https://www.naxos.net/beaches/panormos/",
+        "https://www.naxos.gr/panermos-beach/?lang=en",
+        "https://www.naxos.net/beaches/panormos/"
+      ]
+    },
+    {
+      "beachId": 2012,
+      "name": "Plaka",
+      "recommendedWindProfileConfidence": "low",
+      "currentEvidence": {
+        "coordinateIdentity": "not-osm-backed",
+        "staticEvidence": "official-or-blue-flag",
+        "geospatial": {
+          "confidence": "medium",
+          "facingDeg": 242.1,
+          "source": "natural-earth-baseline"
+        },
+        "googleMapsNavigation": "not-checked",
+        "accessAmenitiesConfidence": "high"
+      },
+      "blockers": [
+        "missing OSM same-beach identity evidence"
+      ],
+      "sourceUrls": [
+        "https://www.naxos.gr/plaka-beach/?lang=en",
+        "https://naxos.gr/en/naxos/beaches/plaka/"
+      ]
+    },
+    {
+      "beachId": 2013,
+      "name": "Pyrgaki",
+      "recommendedWindProfileConfidence": "low",
+      "currentEvidence": {
+        "coordinateIdentity": "not-osm-backed",
+        "staticEvidence": "official-or-blue-flag",
+        "geospatial": {
+          "confidence": "medium",
+          "facingDeg": 217.7,
+          "source": "natural-earth-baseline"
+        },
+        "googleMapsNavigation": "not-checked",
+        "accessAmenitiesConfidence": "high"
+      },
+      "blockers": [
+        "missing OSM same-beach identity evidence"
+      ],
+      "sourceUrls": [
+        "https://www.naxos.gr/pyrgaki-beach/?lang=en",
+        "https://naxos.gr/en/naxos/beaches/pyrgaki/"
+      ]
+    },
+    {
+      "beachId": 2014,
+      "name": "Rina",
+      "recommendedWindProfileConfidence": "low",
+      "currentEvidence": {
+        "coordinateIdentity": "not-osm-backed",
+        "staticEvidence": "official-or-blue-flag",
+        "geospatial": {
+          "confidence": "medium",
+          "facingDeg": 137.8,
+          "source": "natural-earth-baseline"
+        },
+        "googleMapsNavigation": "not-checked",
+        "accessAmenitiesConfidence": "high"
+      },
+      "blockers": [
+        "missing OSM same-beach identity evidence"
+      ],
+      "sourceUrls": [
+        "https://www.naxos.gr/rina-cave/?lang=en"
+      ]
+    },
+    {
+      "beachId": 2015,
+      "name": "Paralia Spedo",
+      "recommendedWindProfileConfidence": "medium",
+      "currentEvidence": {
+        "coordinateIdentity": "osm-same-beach",
+        "staticEvidence": "official-or-blue-flag",
+        "geospatial": {
+          "confidence": "medium",
+          "facingDeg": 138.3,
+          "source": "natural-earth-baseline"
+        },
+        "googleMapsNavigation": "not-checked",
+        "accessAmenitiesConfidence": "high"
+      },
+      "blockers": [],
+      "sourceUrls": [
+        "https://www.naxos.gr/spedo-beach/?lang=en",
+        "https://www.allovergreece.com/Beaches/Descr/16/83/en"
+      ]
+    },
+    {
+      "beachId": 2016,
+      "name": "Chilia Vrysi",
+      "recommendedWindProfileConfidence": "medium",
+      "currentEvidence": {
+        "coordinateIdentity": "osm-same-beach",
+        "staticEvidence": "official-or-blue-flag",
+        "geospatial": {
+          "confidence": "medium",
+          "facingDeg": 316.2,
+          "source": "natural-earth-baseline"
+        },
+        "googleMapsNavigation": "not-checked",
+        "accessAmenitiesConfidence": "high"
+      },
+      "blockers": [],
+      "sourceUrls": [
+        "https://www.naxos.gr/chilia-vryssi-beach/?lang=en",
+        "https://www.openstreetmap.org/way/1336837770",
+        "https://www.openstreetmap.org/way/1336837770",
+        "https://www.naxos.gr/chilia-vryssi-beach/?lang=en"
+      ]
+    },
+    {
+      "beachId": 2017,
+      "name": "Paralia Psili Ammos",
+      "recommendedWindProfileConfidence": "medium",
+      "currentEvidence": {
+        "coordinateIdentity": "osm-same-beach",
+        "staticEvidence": "official-or-blue-flag",
+        "geospatial": {
+          "confidence": "medium",
+          "facingDeg": 111.1,
+          "source": "natural-earth-baseline"
+        },
+        "googleMapsNavigation": "not-checked",
+        "accessAmenitiesConfidence": "high"
+      },
+      "blockers": [],
+      "sourceUrls": [
+        "https://www.naxos.gr/psili-ammos-beach/?lang=en",
+        "https://www.naxos.gr/moutsouna-village/?lang=en",
+        "https://naxos.gr/en/naxos/beaches/psili-ammos/"
+      ]
+    },
+    {
+      "beachId": 2018,
+      "name": "Paralia Psofagrilia",
+      "recommendedWindProfileConfidence": "low",
+      "currentEvidence": {
+        "coordinateIdentity": "osm-same-beach",
+        "staticEvidence": "non-official-or-missing",
+        "geospatial": {
+          "confidence": "medium",
+          "facingDeg": 89.5,
+          "source": "natural-earth-baseline"
+        },
+        "googleMapsNavigation": "not-checked",
+        "accessAmenitiesConfidence": "low"
+      },
+      "blockers": [
+        "static beach metadata is low confidence"
+      ],
+      "sourceUrls": [
+        "https://beachnearby.com/beach/%CF%80%CE%B1%CF%81%CE%B1%CE%BB%CE%AF%CE%B1-%CF%88%CF%89%CF%86%CE%B1%CE%B3%CF%81%CE%B9%CE%BB%CE%B9%CE%AC-municipality-of-naxos-and-the-lesser-cyclades-aegean"
+      ]
+    },
+    {
+      "beachId": 2019,
+      "name": "Hawaii",
+      "recommendedWindProfileConfidence": "low",
+      "currentEvidence": {
+        "coordinateIdentity": "not-osm-backed",
+        "staticEvidence": "official-or-blue-flag",
+        "geospatial": {
+          "confidence": "medium",
+          "facingDeg": 235,
+          "source": "natural-earth-baseline"
+        },
+        "googleMapsNavigation": "not-checked",
+        "accessAmenitiesConfidence": "high"
+      },
+      "blockers": [
+        "missing OSM same-beach identity evidence"
+      ],
+      "sourceUrls": [
+        "https://www.naxos.gr/alyko-small-alyko-kedros-hawaii-beaches/?lang=en",
+        "https://www.getgreece.com/beaches/aliko-hawaii-beach-naxos",
+        "https://www.naxos.gr/alyko-small-alyko-kedros-hawaii-beaches/?lang=en"
+      ]
+    }
+  ]
+}

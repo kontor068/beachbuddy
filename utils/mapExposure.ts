@@ -1,5 +1,6 @@
 import type { Beach, SuitableBeach, WindProfile, WindProfileSource, WindSector } from '../types';
 import { WindDirection } from '../types';
+import { areInSameShorelineSegment } from './shorelineSegments';
 import { calculateDistance } from './weatherUtils';
 import { calculateWindExposure, estimateBeachOrientation, type ExposureLevel } from './windExposure';
 
@@ -25,6 +26,10 @@ const getWindSectorFromDegrees = (degrees?: number): WindSector | undefined => {
   return windSectors[Math.round(normalizeDegrees(degrees) / 45) % windSectors.length];
 };
 
+// Wind-exposure colours are always available; the map tone is decided by the
+// current Beaufort band in BeachMap. Kept as a function for call-site compatibility.
+export const shouldShowWindExposureColors = (_windBeaufort?: number): boolean => true;
+
 type MapExposureItem = Pick<
   SuitableBeach,
   'exposureLevel' | 'geospatialExposure' | 'orientation' | 'windProfile' | 'windProfileSource' | 'windSector' | 'warnings'
@@ -33,7 +38,21 @@ type MapExposureItem = Pick<
 };
 
 const hasAuthoritativeWindProfileSource = (source?: WindProfileSource): boolean => (
-  source === 'override' || source === 'beach' || source === 'metadata'
+  source === 'override' || source === 'beach' || source === 'metadata' || source === 'geospatial'
+);
+
+const canUseMapWindProfile = (
+  profile?: WindProfile,
+  source?: WindProfileSource
+): profile is WindProfile => (
+  hasUsableWindProfile(profile) &&
+  (
+    hasAuthoritativeWindProfileSource(source) ||
+    // Some UI paths pass already-scored beach items where the resolved profile is
+    // present but the source field is omitted. Still use the profile so explicit
+    // wind-sport/open-exposure warnings are not lost in the map path.
+    source === undefined
+  )
 );
 
 const hasUsableWindProfile = (profile?: WindProfile): profile is WindProfile => Boolean(
@@ -48,6 +67,17 @@ const hasUsableWindProfile = (profile?: WindProfile): profile is WindProfile => 
   )
 );
 
+const canWindProfileClaimProtected = (
+  profile: WindProfile,
+  sector?: WindSector
+): boolean => Boolean(
+  sector &&
+  profile.confidence !== 'low' &&
+  !profile.knownWindSportSpot &&
+  (profile.shelterLevel === 'sheltered' || profile.shelterLevel === 'very_sheltered') &&
+  profile.protectedFromWindDirections.includes(sector)
+);
+
 const exposureFromWindProfile = (
   profile: WindProfile,
   sector?: WindSector,
@@ -56,7 +86,7 @@ const exposureFromWindProfile = (
 ): ExposureLevel | undefined => {
   if (profile.knownWindSportSpot && windBeaufort >= 4) return 'exposed';
   if (sector && profile.exposedToWindDirections.includes(sector)) return 'exposed';
-  if (sector && profile.protectedFromWindDirections.includes(sector)) return 'protected';
+  if (canWindProfileClaimProtected(profile, sector)) return 'protected';
 
   if (
     typeof profile.beachFacingDirection === 'number' &&
@@ -64,12 +94,15 @@ const exposureFromWindProfile = (
     typeof windDirectionDeg === 'number' &&
     Number.isFinite(windDirectionDeg)
   ) {
-    return calculateWindExposure(profile.beachFacingDirection, windDirectionDeg).exposureLevel;
+    const angularExposure = calculateWindExposure(profile.beachFacingDirection, windDirectionDeg).exposureLevel;
+    return angularExposure === 'protected' && !canWindProfileClaimProtected(profile, sector)
+      ? 'partial'
+      : angularExposure;
   }
 
   if (profile.shelterLevel === 'open') return 'exposed';
   if (profile.shelterLevel === 'semi_sheltered') return 'partial';
-  if (profile.shelterLevel === 'sheltered' || profile.shelterLevel === 'very_sheltered') return 'protected';
+  if (profile.shelterLevel === 'sheltered' || profile.shelterLevel === 'very_sheltered') return 'partial';
   if (profile.fetchExposure === 'high') return 'exposed';
   if (profile.fetchExposure === 'medium' || profile.fetchExposure === 'low') return 'partial';
 
@@ -134,19 +167,47 @@ const hasReliableExplicitMorphology = (
   windBeaufort = 0
 ): boolean => {
   const profile = item.windProfile;
-  if (!hasAuthoritativeWindProfileSource(item.windProfileSource)) return false;
-  if (!profile || profile.confidence === 'low') return false;
+  if (!canUseMapWindProfile(profile, item.windProfileSource)) return false;
+  if (profile.confidence === 'low') return false;
 
   if (profile.knownWindSportSpot && windBeaufort >= 4) return true;
   if (sector && profile.exposedToWindDirections.includes(sector)) return true;
   if (sector && profile.protectedFromWindDirections.includes(sector)) return true;
-  if (profile.shelterLevel === 'sheltered' || profile.shelterLevel === 'very_sheltered') return true;
   if (profile.shelterLevel === 'open' && profile.fetchExposure === 'high') return true;
 
   return false;
 };
 
+const hasStableGeospatialProtection = (
+  item: MapExposureItem,
+  sector?: WindSector
+): boolean => {
+  if (!sector) return false;
+  const sectorExposure = item.geospatialExposure?.sectors?.[sector];
+  const confidence = item.geospatialExposure?.confidence;
+  if (!sectorExposure || sectorExposure.level !== 'protected') return false;
+  if (confidence !== 'high' && confidence !== 'medium') return false;
+
+  const isFullyLandBlocked = sectorExposure.blockedRayRatio >= 0.95;
+  const isBelowProtectedThreshold = typeof sectorExposure.intensity === 'number'
+    ? sectorExposure.intensity < 33
+    : true;
+
+  return isFullyLandBlocked && isBelowProtectedThreshold;
+};
+
+const hasCuratedSegmentProtectionSupport = (
+  item: MapExposureItem,
+  group: MapExposureItem[],
+  sector?: WindSector
+): boolean => group.some(candidate => (
+  candidate.beach.id !== item.beach.id &&
+  areInSameShorelineSegment(candidate.beach.id, item.beach.id) &&
+  hasStableGeospatialProtection(candidate, sector)
+));
+
 const areLikelySameBeachFront = (a: MapExposureItem, b: MapExposureItem): boolean => {
+  const sameCuratedSegment = areInSameShorelineSegment(a.beach.id, b.beach.id);
   const distanceKm = calculateDistance(
     a.beach.coordinates.lat,
     a.beach.coordinates.lon,
@@ -154,14 +215,18 @@ const areLikelySameBeachFront = (a: MapExposureItem, b: MapExposureItem): boolea
     b.beach.coordinates.lon
   );
 
-  if (distanceKm > ADJACENT_BEACH_MAX_DISTANCE_KM) return false;
+  if (!sameCuratedSegment && distanceKm > ADJACENT_BEACH_MAX_DISTANCE_KM) return false;
 
   const aOrientation = getMapOrientation(a);
   const bOrientation = getMapOrientation(b);
 
   if (typeof aOrientation === 'number' && typeof bOrientation === 'number') {
-    return angularDistanceDegrees(aOrientation, bOrientation) <= SIMILAR_BEACH_FRONT_MAX_DEGREES;
+    return angularDistanceDegrees(aOrientation, bOrientation) <= (
+      sameCuratedSegment ? 65 : SIMILAR_BEACH_FRONT_MAX_DEGREES
+    );
   }
+
+  if (sameCuratedSegment) return true;
 
   const aSignature = protectedFromSignature(a);
   return aSignature.length > 0 && aSignature === protectedFromSignature(b);
@@ -183,26 +248,71 @@ export const getVisibleMapExposureLevel = (
   item: Pick<SuitableBeach, 'exposureLevel' | 'geospatialExposure' | 'orientation' | 'windProfile' | 'windProfileSource' | 'windSector' | 'warnings'> & { beach: Pick<Beach, 'protectedFrom'> },
   windBeaufort?: number,
   windDirectionDeg?: number
-) => {
+): ExposureLevel => {
   const sector = item.windSector ?? getWindSectorFromDegrees(windDirectionDeg);
-  const canUseWindProfile = hasAuthoritativeWindProfileSource(item.windProfileSource) && hasUsableWindProfile(item.windProfile);
-  const highPriorityProfileExposure = canUseWindProfile
-    ? exposureFromHighPriorityWindProfile(item.windProfile, sector, windBeaufort ?? 0, windDirectionDeg)
-    : undefined;
-  if (highPriorityProfileExposure) return highPriorityProfileExposure;
-
-  const fallbackProfileExposure = canUseWindProfile
-    ? exposureFromWindProfile(item.windProfile, sector, windBeaufort ?? 0, windDirectionDeg)
-    : undefined;
-  const explicitOrientationExposure = exposureFromExplicitOrientation(item.orientation, windDirectionDeg);
-  const legacyExposure = exposureFromLegacyProtectedFrom(item.beach.protectedFrom, windDirectionDeg);
-  const directionalFallbackExposure = fallbackProfileExposure || explicitOrientationExposure || legacyExposure;
-
+  const canUseWindProfile = canUseMapWindProfile(item.windProfile, item.windProfileSource);
   const geospatialExposure = sector
     ? item.geospatialExposure?.sectors?.[sector]?.level
     : undefined;
 
+  // Low confidence means the authored profile cannot create user-facing
+  // protected/calm claims. It does not invalidate a direct geospatial protected
+  // result from bay/headland geometry, which is what the map colour represents.
+  if (
+    geospatialExposure === 'protected' &&
+    item.windProfile?.confidence === 'low' &&
+    !(item.windProfile.knownWindSportSpot && (windBeaufort ?? 0) >= 4)
+  ) {
+    return 'protected';
+  }
+
+  // Curated authored profiles (incl. their known-wind-sport safety flag, handled
+  // first inside exposureFromHighPriorityWindProfile) take priority over the raw
+  // geometry, preserving the conservative shelter policy.
+  const highPriorityProfileExposure = canUseWindProfile
+    ? exposureFromHighPriorityWindProfile(item.windProfile, sector, windBeaufort ?? 0, windDirectionDeg)
+    : undefined;
+  if (highPriorityProfileExposure === 'protected' || highPriorityProfileExposure === 'exposed') {
+    return highPriorityProfileExposure;
+  }
+
+  const fallbackProfileExposure = canUseWindProfile
+    ? exposureFromWindProfile(item.windProfile, sector, windBeaufort ?? 0, windDirectionDeg)
+    : undefined;
+
+  // Authored profiles still protect clear wind-sport/open-exposure cases. For
+  // low-confidence profiles, direct geospatial protected geometry has already
+  // been allowed above; low confidence limits text claims, not map geometry.
+  if (fallbackProfileExposure === 'protected' || fallbackProfileExposure === 'exposed') {
+    if (
+      fallbackProfileExposure === 'protected' &&
+      item.windProfile?.confidence === 'low' &&
+      geospatialExposure &&
+      geospatialExposure !== 'protected'
+    ) {
+      return geospatialExposure;
+    }
+
+    if (
+      item.windProfile?.confidence === 'low' &&
+      geospatialExposure === 'exposed' &&
+      fallbackProfileExposure !== 'exposed'
+    ) {
+      return 'exposed';
+    }
+
+    return fallbackProfileExposure;
+  }
+
+  const explicitOrientationExposure = exposureFromExplicitOrientation(item.orientation, windDirectionDeg);
+  const legacyExposure = exposureFromLegacyProtectedFrom(item.beach.protectedFrom, windDirectionDeg);
+  const directionalFallbackExposure = explicitOrientationExposure || legacyExposure;
+
+  // Geometry signal: the regenerated geospatial profile now carries the improved
+  // onshore/offshore-aware sector levels, so reading them here is enough.
   if (geospatialExposure === 'exposed' || geospatialExposure === 'protected') return geospatialExposure;
+  if (geospatialExposure === 'partial') return fallbackProfileExposure || 'partial';
+  if (fallbackProfileExposure) return fallbackProfileExposure;
   if (directionalFallbackExposure === 'exposed' || directionalFallbackExposure === 'protected') {
     return directionalFallbackExposure;
   }
@@ -285,12 +395,40 @@ export const getConsistentVisibleMapExposureLevels = (
       .filter((level): level is ExposureLevel => Boolean(level));
     const uniqueLockedLevels = new Set(lockedLevels);
 
-    const targetLevel = uniqueLockedLevels.size === 1
+    const hasProtectedSegmentSupport = group.some(item => (
+      levels.get(item.beach.id) === 'protected' &&
+      hasStableGeospatialProtection(item, sector)
+    ));
+    const hasLockedNonProtectedLevel = group.some(item => (
+      hasReliableExplicitMorphology(item, sector, beaufort) &&
+      levels.get(item.beach.id) !== 'protected'
+    ));
+
+    const targetLevel = hasProtectedSegmentSupport && !hasLockedNonProtectedLevel
+      ? 'protected'
+      : uniqueLockedLevels.size === 1
       ? lockedLevels[0]
       : getMoreConservativeExposure(currentLevels);
 
     group.forEach(item => {
       if (uniqueLockedLevels.size > 1 && hasReliableExplicitMorphology(item, sector, beaufort)) return;
+      if (
+        targetLevel === 'protected' &&
+        levels.get(item.beach.id) !== 'protected' &&
+        (
+          hasReliableExplicitMorphology(item, sector, beaufort) ||
+          (
+            !hasStableGeospatialProtection(item, sector) &&
+            !hasCuratedSegmentProtectionSupport(item, group, sector)
+          )
+        )
+      ) {
+        return;
+      }
+      if (
+        targetLevel !== 'protected' &&
+        hasStableGeospatialProtection(item, sector)
+      ) return;
       levels.set(item.beach.id, targetLevel);
     });
   });

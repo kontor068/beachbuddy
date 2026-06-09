@@ -1,0 +1,83 @@
+{
+  "schemaVersion": 1,
+  "generatedAt": "2026-06-08T14:35:00.000Z",
+  "scope": "Validated Cyclades medium-to-high windProfile evidence batch 2.",
+  "policy": {
+    "highMeaning": "High confidence means the wind exposure/protection behavior is supported by beach-specific evidence. It is not a universal calm-water guarantee.",
+    "upgradeRule": "Medium profiles are upgraded only when official or trusted local evidence matches the exact beach/cove identity and does not contradict app orientation/geospatial sectors.",
+    "nonUpgradeRule": "Nearby or generic island-level advice is not enough for high confidence."
+  },
+  "upgrades": [
+    {
+      "regionId": "south-aegean-paros",
+      "beachId": 2030,
+      "name": "Kolympithres",
+      "profileKind": "sheltered-bay",
+      "evidenceSummary": "Paros municipal tourism identifies Kolympithres inside Naoussa bay and describes the bay/water as windless, calm, warm and shallow. This matches the sheltered Naoussa-bay profile while keeping NE/E as caution sectors.",
+      "evidenceUrls": [
+        "https://imagine.paros.gr/en/what-to-do/shmeia-endiaferontos/paralies/783-kolympithres.html"
+      ],
+      "confidence": "high"
+    },
+    {
+      "regionId": "south-aegean-paros",
+      "beachId": 2039,
+      "name": "Monastiri",
+      "profileKind": "sheltered-cove",
+      "evidenceSummary": "Paros guide places Monastiri at the Ai-Giannis Detis / Paros Park cove and describes shallow calm water protected even from strong winds by surrounding hills. This supports high-confidence sheltered behavior for north/northwest sectors, with NE/E still treated cautiously.",
+      "evidenceUrls": [
+        "https://guide.paros.gr/index.php?Itemid=26&id=31&lang=en&option=com_content&view=article"
+      ],
+      "confidence": "high"
+    },
+    {
+      "regionId": "south-aegean-paros",
+      "beachId": 2044,
+      "name": "Paralia Alyki",
+      "profileKind": "sheltered-village-bay",
+      "evidenceSummary": "Paros municipal tourism describes Aliki as a fishing village that developed because of natural shelter from winds and references nearby calm Faragas coves. This supports high-confidence north-wind shelter while keeping south/southwest as exposure cautions.",
+      "evidenceUrls": [
+        "https://imagine.paros.gr/en/what-to-do/shmeia-endiaferontos/villages/491-alyki.html"
+      ],
+      "confidence": "high"
+    },
+    {
+      "regionId": "south-aegean-paros",
+      "beachId": 2055,
+      "name": "Farangas",
+      "profileKind": "sheltered-cove",
+      "evidenceSummary": "Paros guide says Farangas is in a small southern bay, protected from wind and not affected by northern winds. Paros municipal tourism also describes the Faragas coves as sheltered by cliffs with calm clear water. This supports high-confidence north-wind protection while keeping south/southwest as exposure cautions.",
+      "evidenceUrls": [
+        "https://guide.paros.gr/index.php?Itemid=18&id=39&lang=en&option=com_content&view=article",
+        "https://imagine.paros.gr/en/what-to-do/shmeia-endiaferontos/paralies/781-in-the-south%2C-near-the-airport.html"
+      ],
+      "confidence": "high"
+    }
+  ],
+  "reviewedButNotUpgraded": [
+    {
+      "regionId": "south-aegean-paros",
+      "beachId": 2020,
+      "name": "Agia Irini",
+      "reason": "External local evidence exists, but the strongest exact wind-protection source found in this batch was not official/nautical enough for this stricter pass."
+    },
+    {
+      "regionId": "south-aegean-paros",
+      "beachId": 2036,
+      "name": "Lolantonis",
+      "reason": "Local guide evidence exists for north-meltemi shelter, but this batch kept upgrades to official/municipal or stronger exact sources."
+    },
+    {
+      "regionId": "south-aegean-paros",
+      "beachId": 2043,
+      "name": "Paralia Agkali Chrysis Aktis",
+      "reason": "Still not upgraded because the evidence overlaps the wider Golden Beach wind-sport cluster but is not exact enough for this app beach identity."
+    },
+    {
+      "regionId": "south-aegean-paros",
+      "beachId": 2049,
+      "name": "Pounta",
+      "reason": "Still blocked by Pounta/Punda identity ambiguity between east/southeast Punda Coast and west Pounda channel kite references."
+    }
+  ]
+}

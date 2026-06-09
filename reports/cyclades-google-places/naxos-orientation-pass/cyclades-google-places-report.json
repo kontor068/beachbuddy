@@ -1,0 +1,686 @@
+{
+  "generatedAt": "2026-06-08T09:50:58.195Z",
+  "scope": "cyclades:naxos",
+  "apiKeyPresent": false,
+  "dryRun": true,
+  "matchingPolicy": {
+    "verified": "score >= 78, distance <= 350m, name score >= 24, island signal present, no other Cyclades island signal",
+    "needsReview": "candidate exists but does not meet verified policy",
+    "rejected": "wrong island signal or very distant weak-name candidate",
+    "noResult": "Google returned no candidates for the generated queries"
+  },
+  "summary": {
+    "total": 39,
+    "verified": 0,
+    "needs_review": 0,
+    "rejected": 0,
+    "no_result": 0,
+    "api_error": 0,
+    "dry_run": 39
+  },
+  "rows": [
+    {
+      "beachId": 1981,
+      "beachName": "Αγία Άννα",
+      "island": "Naxos",
+      "regionId": "south-aegean-naxos",
+      "coordinate": {
+        "lat": 37.0689603,
+        "lon": 25.3544164
+      },
+      "status": "dry_run",
+      "queries": [
+        "Paralia Αγία Άννα, Naxos, Cyclades, Greece",
+        "Αγία Άννα beach, Naxos, Greece"
+      ],
+      "candidates": [],
+      "bestCandidate": null
+    },
+    {
+      "beachId": 1982,
+      "beachName": "Αγιασσός",
+      "island": "Naxos",
+      "regionId": "south-aegean-naxos",
+      "coordinate": {
+        "lat": 36.96577,
+        "lon": 25.42525
+      },
+      "status": "dry_run",
+      "queries": [
+        "Paralia Αγιασσός, Naxos, Cyclades, Greece",
+        "Αγιασσός beach, Naxos, Greece"
+      ],
+      "candidates": [],
+      "bestCandidate": null
+    },
+    {
+      "beachId": 1983,
+      "beachName": "Άγιοι Θεόδωροι",
+      "island": "Naxos",
+      "regionId": "south-aegean-naxos",
+      "coordinate": {
+        "lat": 37.18601,
+        "lon": 25.49312
+      },
+      "status": "dry_run",
+      "queries": [
+        "Paralia Άγιοι Θεόδωροι, Naxos, Cyclades, Greece",
+        "Άγιοι Θεόδωροι beach, Naxos, Greece"
+      ],
+      "candidates": [],
+      "bestCandidate": null
+    },
+    {
+      "beachId": 1984,
+      "beachName": "Άγιος Γεώργιος",
+      "island": "Naxos",
+      "regionId": "south-aegean-naxos",
+      "coordinate": {
+        "lat": 37.0970546,
+        "lon": 25.374024
+      },
+      "status": "dry_run",
+      "queries": [
+        "Paralia Άγιος Γεώργιος, Naxos, Cyclades, Greece",
+        "Άγιος Γεώργιος beach, Naxos, Greece"
+      ],
+      "candidates": [],
+      "bestCandidate": null
+    },
+    {
+      "beachId": 1985,
+      "beachName": "Άγιος Προκόπιος",
+      "island": "Naxos",
+      "regionId": "south-aegean-naxos",
+      "coordinate": {
+        "lat": 37.0751814,
+        "lon": 25.3469334
+      },
+      "status": "dry_run",
+      "queries": [
+        "Paralia Άγιος Προκόπιος, Naxos, Cyclades, Greece",
+        "Άγιος Προκόπιος beach, Naxos, Greece"
+      ],
+      "candidates": [],
+      "bestCandidate": null
+    },
+    {
+      "beachId": 1986,
+      "beachName": "Αζαλάς",
+      "island": "Naxos",
+      "regionId": "south-aegean-naxos",
+      "coordinate": {
+        "lat": 37.08723,
+        "lon": 25.59207
+      },
+      "status": "dry_run",
+      "queries": [
+        "Paralia Αζαλάς, Naxos, Cyclades, Greece",
+        "Αζαλάς beach, Naxos, Greece"
+      ],
+      "candidates": [],
+      "bestCandidate": null
+    },
+    {
+      "beachId": 1987,
+      "beachName": "Αλυκό",
+      "island": "Naxos",
+      "regionId": "south-aegean-naxos",
+      "coordinate": {
+        "lat": 36.978496,
+        "lon": 25.3901518
+      },
+      "status": "dry_run",
+      "queries": [
+        "Paralia Αλυκό, Naxos, Cyclades, Greece",
+        "Αλυκό beach, Naxos, Greece"
+      ],
+      "candidates": [],
+      "bestCandidate": null
+    },
+    {
+      "beachId": 1988,
+      "beachName": "Αμμίτης",
+      "island": "Naxos",
+      "regionId": "south-aegean-naxos",
+      "coordinate": {
+        "lat": 37.1363228,
+        "lon": 25.4360475
+      },
+      "status": "dry_run",
+      "queries": [
+        "Paralia Αμμίτης, Naxos, Cyclades, Greece",
+        "Αμμίτης beach, Naxos, Greece"
+      ],
+      "candidates": [],
+      "bestCandidate": null
+    },
+    {
+      "beachId": 1989,
+      "beachName": "Άμπραμ",
+      "island": "Naxos",
+      "regionId": "south-aegean-naxos",
+      "coordinate": {
+        "lat": 37.1734014,
+        "lon": 25.4799167
+      },
+      "status": "dry_run",
+      "queries": [
+        "Paralia Άμπραμ, Naxos, Cyclades, Greece",
+        "Άμπραμ beach, Naxos, Greece"
+      ],
+      "candidates": [],
+      "bestCandidate": null
+    },
+    {
+      "beachId": 1990,
+      "beachName": "Απόλλωνας",
+      "island": "Naxos",
+      "regionId": "south-aegean-naxos",
+      "coordinate": {
+        "lat": 37.18008,
+        "lon": 25.55343
+      },
+      "status": "dry_run",
+      "queries": [
+        "Paralia Απόλλωνας, Naxos, Cyclades, Greece",
+        "Απόλλωνας beach, Naxos, Greece"
+      ],
+      "candidates": [],
+      "bestCandidate": null
+    },
+    {
+      "beachId": 1991,
+      "beachName": "Βίντζι",
+      "island": "Naxos",
+      "regionId": "south-aegean-naxos",
+      "coordinate": {
+        "lat": 37.1080152,
+        "lon": 25.3741037
+      },
+      "status": "dry_run",
+      "queries": [
+        "Paralia Βίντζι, Naxos, Cyclades, Greece",
+        "Βίντζι beach, Naxos, Greece"
+      ],
+      "candidates": [],
+      "bestCandidate": null
+    },
+    {
+      "beachId": 1992,
+      "beachName": "Γλατζά",
+      "island": "Naxos",
+      "regionId": "south-aegean-naxos",
+      "coordinate": {
+        "lat": 37.1373729,
+        "lon": 25.4395072
+      },
+      "status": "dry_run",
+      "queries": [
+        "Paralia Γλατζά, Naxos, Cyclades, Greece",
+        "Γλατζά beach, Naxos, Greece"
+      ],
+      "candidates": [],
+      "bestCandidate": null
+    },
+    {
+      "beachId": 1993,
+      "beachName": "Γλυφάδα",
+      "island": "Naxos",
+      "regionId": "south-aegean-naxos",
+      "coordinate": {
+        "lat": 36.9925912,
+        "lon": 25.3906469
+      },
+      "status": "dry_run",
+      "queries": [
+        "Paralia Γλυφάδα, Naxos, Cyclades, Greece",
+        "Γλυφάδα beach, Naxos, Greece"
+      ],
+      "candidates": [],
+      "bestCandidate": null
+    },
+    {
+      "beachId": 1994,
+      "beachName": "Γρόττα",
+      "island": "Naxos",
+      "regionId": "south-aegean-naxos",
+      "coordinate": {
+        "lat": 37.1079,
+        "lon": 25.377
+      },
+      "status": "dry_run",
+      "queries": [
+        "Paralia Γρόττα, Naxos, Cyclades, Greece",
+        "Γρόττα beach, Naxos, Greece"
+      ],
+      "candidates": [],
+      "bestCandidate": null
+    },
+    {
+      "beachId": 1995,
+      "beachName": "Παραλία Καλαντός",
+      "island": "Naxos",
+      "regionId": "south-aegean-naxos",
+      "coordinate": {
+        "lat": 36.93636,
+        "lon": 25.47184
+      },
+      "status": "dry_run",
+      "queries": [
+        "Paralia Παραλία Καλαντός, Naxos, Cyclades, Greece",
+        "Παραλία Καλαντός beach, Naxos, Greece"
+      ],
+      "candidates": [],
+      "bestCandidate": null
+    },
+    {
+      "beachId": 1996,
+      "beachName": "Κάμπος",
+      "island": "Naxos",
+      "regionId": "south-aegean-naxos",
+      "coordinate": {
+        "lat": 37.1645444,
+        "lon": 25.4770917
+      },
+      "status": "dry_run",
+      "queries": [
+        "Paralia Κάμπος, Naxos, Cyclades, Greece",
+        "Κάμπος beach, Naxos, Greece"
+      ],
+      "candidates": [],
+      "bestCandidate": null
+    },
+    {
+      "beachId": 1997,
+      "beachName": "Καστράκι",
+      "island": "Naxos",
+      "regionId": "south-aegean-naxos",
+      "coordinate": {
+        "lat": 37.0010969,
+        "lon": 25.3878136
+      },
+      "status": "dry_run",
+      "queries": [
+        "Paralia Καστράκι, Naxos, Cyclades, Greece",
+        "Καστράκι beach, Naxos, Greece"
+      ],
+      "candidates": [],
+      "bestCandidate": null
+    },
+    {
+      "beachId": 1998,
+      "beachName": "Κέδρος",
+      "island": "Naxos",
+      "regionId": "south-aegean-naxos",
+      "coordinate": {
+        "lat": 36.983778,
+        "lon": 25.3858679
+      },
+      "status": "dry_run",
+      "queries": [
+        "Paralia Κέδρος, Naxos, Cyclades, Greece",
+        "Κέδρος beach, Naxos, Greece"
+      ],
+      "candidates": [],
+      "bestCandidate": null
+    },
+    {
+      "beachId": 1999,
+      "beachName": "Κλειδός",
+      "island": "Naxos",
+      "regionId": "south-aegean-naxos",
+      "coordinate": {
+        "lat": 36.9900595,
+        "lon": 25.5596689
+      },
+      "status": "dry_run",
+      "queries": [
+        "Paralia Κλειδός, Naxos, Cyclades, Greece",
+        "Κλειδός beach, Naxos, Greece"
+      ],
+      "candidates": [],
+      "bestCandidate": null
+    },
+    {
+      "beachId": 2000,
+      "beachName": "Παραλία Κλειδώ",
+      "island": "Naxos",
+      "regionId": "south-aegean-naxos",
+      "coordinate": {
+        "lat": 36.9870224,
+        "lon": 25.559867
+      },
+      "status": "dry_run",
+      "queries": [
+        "Paralia Παραλία Κλειδώ, Naxos, Cyclades, Greece",
+        "Παραλία Κλειδώ beach, Naxos, Greece"
+      ],
+      "candidates": [],
+      "bestCandidate": null
+    },
+    {
+      "beachId": 2001,
+      "beachName": "Λιγαρίδια",
+      "island": "Naxos",
+      "regionId": "south-aegean-naxos",
+      "coordinate": {
+        "lat": 37.07514,
+        "lon": 25.58479
+      },
+      "status": "dry_run",
+      "queries": [
+        "Paralia Λιγαρίδια, Naxos, Cyclades, Greece",
+        "Λιγαρίδια beach, Naxos, Greece"
+      ],
+      "candidates": [],
+      "bestCandidate": null
+    },
+    {
+      "beachId": 2002,
+      "beachName": "Παραλία Λιμνάρι",
+      "island": "Naxos",
+      "regionId": "south-aegean-naxos",
+      "coordinate": {
+        "lat": 37.12539,
+        "lon": 25.5913
+      },
+      "status": "dry_run",
+      "queries": [
+        "Paralia Παραλία Λιμνάρι, Naxos, Cyclades, Greece",
+        "Παραλία Λιμνάρι beach, Naxos, Greece"
+      ],
+      "candidates": [],
+      "bestCandidate": null
+    },
+    {
+      "beachId": 2003,
+      "beachName": "Λίωνας",
+      "island": "Naxos",
+      "regionId": "south-aegean-naxos",
+      "coordinate": {
+        "lat": 37.13763,
+        "lon": 25.58656
+      },
+      "status": "dry_run",
+      "queries": [
+        "Paralia Λίωνας, Naxos, Cyclades, Greece",
+        "Λίωνας beach, Naxos, Greece"
+      ],
+      "candidates": [],
+      "bestCandidate": null
+    },
+    {
+      "beachId": 2004,
+      "beachName": "Μελινό",
+      "island": "Naxos",
+      "regionId": "south-aegean-naxos",
+      "coordinate": {
+        "lat": 37.19107,
+        "lon": 25.50454
+      },
+      "status": "dry_run",
+      "queries": [
+        "Paralia Μελινό, Naxos, Cyclades, Greece",
+        "Μελινό beach, Naxos, Greece"
+      ],
+      "candidates": [],
+      "bestCandidate": null
+    },
+    {
+      "beachId": 2005,
+      "beachName": "Μικρά",
+      "island": "Naxos",
+      "regionId": "south-aegean-naxos",
+      "coordinate": {
+        "lat": 37.16004,
+        "lon": 25.47072
+      },
+      "status": "dry_run",
+      "queries": [
+        "Paralia Μικρά, Naxos, Cyclades, Greece",
+        "Μικρά beach, Naxos, Greece"
+      ],
+      "candidates": [],
+      "bestCandidate": null
+    },
+    {
+      "beachId": 2006,
+      "beachName": "Μικρή Βίγλα",
+      "island": "Naxos",
+      "regionId": "south-aegean-naxos",
+      "coordinate": {
+        "lat": 37.0281944,
+        "lon": 25.370271
+      },
+      "status": "dry_run",
+      "queries": [
+        "Paralia Μικρή Βίγλα, Naxos, Cyclades, Greece",
+        "Μικρή Βίγλα beach, Naxos, Greece"
+      ],
+      "candidates": [],
+      "bestCandidate": null
+    },
+    {
+      "beachId": 2007,
+      "beachName": "Μικρή Βίγλα - Νότια πλευρά",
+      "island": "Naxos",
+      "regionId": "south-aegean-naxos",
+      "coordinate": {
+        "lat": 37.0157838,
+        "lon": 25.3769012
+      },
+      "status": "dry_run",
+      "queries": [
+        "Paralia Μικρή Βίγλα - Νότια πλευρά, Naxos, Cyclades, Greece",
+        "Μικρή Βίγλα - Νότια πλευρά beach, Naxos, Greece"
+      ],
+      "candidates": [],
+      "bestCandidate": null
+    },
+    {
+      "beachId": 2008,
+      "beachName": "Μικρό Αλυκό",
+      "island": "Naxos",
+      "regionId": "south-aegean-naxos",
+      "coordinate": {
+        "lat": 36.9767717,
+        "lon": 25.3865821
+      },
+      "status": "dry_run",
+      "queries": [
+        "Paralia Μικρό Αλυκό, Naxos, Cyclades, Greece",
+        "Μικρό Αλυκό beach, Naxos, Greece"
+      ],
+      "candidates": [],
+      "bestCandidate": null
+    },
+    {
+      "beachId": 2009,
+      "beachName": "Μουτσούνα",
+      "island": "Naxos",
+      "regionId": "south-aegean-naxos",
+      "coordinate": {
+        "lat": 37.0779637,
+        "lon": 25.5869804
+      },
+      "status": "dry_run",
+      "queries": [
+        "Paralia Μουτσούνα, Naxos, Cyclades, Greece",
+        "Μουτσούνα beach, Naxos, Greece"
+      ],
+      "candidates": [],
+      "bestCandidate": null
+    },
+    {
+      "beachId": 2010,
+      "beachName": "Όρκος",
+      "island": "Naxos",
+      "regionId": "south-aegean-naxos",
+      "coordinate": {
+        "lat": 37.0325297,
+        "lon": 25.3731885
+      },
+      "status": "dry_run",
+      "queries": [
+        "Paralia Όρκος, Naxos, Cyclades, Greece",
+        "Όρκος beach, Naxos, Greece"
+      ],
+      "candidates": [],
+      "bestCandidate": null
+    },
+    {
+      "beachId": 2011,
+      "beachName": "Πάνορμος",
+      "island": "Naxos",
+      "regionId": "south-aegean-naxos",
+      "coordinate": {
+        "lat": 36.95854,
+        "lon": 25.53871
+      },
+      "status": "dry_run",
+      "queries": [
+        "Paralia Πάνορμος, Naxos, Cyclades, Greece",
+        "Πάνορμος beach, Naxos, Greece"
+      ],
+      "candidates": [],
+      "bestCandidate": null
+    },
+    {
+      "beachId": 2012,
+      "beachName": "Πλάκα",
+      "island": "Naxos",
+      "regionId": "south-aegean-naxos",
+      "coordinate": {
+        "lat": 37.050381,
+        "lon": 25.3660008
+      },
+      "status": "dry_run",
+      "queries": [
+        "Paralia Πλάκα, Naxos, Cyclades, Greece",
+        "Πλάκα beach, Naxos, Greece"
+      ],
+      "candidates": [],
+      "bestCandidate": null
+    },
+    {
+      "beachId": 2013,
+      "beachName": "Πυργάκι",
+      "island": "Naxos",
+      "regionId": "south-aegean-naxos",
+      "coordinate": {
+        "lat": 36.97623,
+        "lon": 25.40015
+      },
+      "status": "dry_run",
+      "queries": [
+        "Paralia Πυργάκι, Naxos, Cyclades, Greece",
+        "Πυργάκι beach, Naxos, Greece"
+      ],
+      "candidates": [],
+      "bestCandidate": null
+    },
+    {
+      "beachId": 2014,
+      "beachName": "Ρίνα",
+      "island": "Naxos",
+      "regionId": "south-aegean-naxos",
+      "coordinate": {
+        "lat": 36.94751,
+        "lon": 25.49
+      },
+      "status": "dry_run",
+      "queries": [
+        "Paralia Ρίνα, Naxos, Cyclades, Greece",
+        "Ρίνα beach, Naxos, Greece"
+      ],
+      "candidates": [],
+      "bestCandidate": null
+    },
+    {
+      "beachId": 2015,
+      "beachName": "Παραλία Σπεδό",
+      "island": "Naxos",
+      "regionId": "south-aegean-naxos",
+      "coordinate": {
+        "lat": 36.95472,
+        "lon": 25.50782
+      },
+      "status": "dry_run",
+      "queries": [
+        "Paralia Παραλία Σπεδό, Naxos, Cyclades, Greece",
+        "Παραλία Σπεδό beach, Naxos, Greece"
+      ],
+      "candidates": [],
+      "bestCandidate": null
+    },
+    {
+      "beachId": 2016,
+      "beachName": "Χίλια Βρύση",
+      "island": "Naxos",
+      "regionId": "south-aegean-naxos",
+      "coordinate": {
+        "lat": 37.1567643,
+        "lon": 25.4694392
+      },
+      "status": "dry_run",
+      "queries": [
+        "Paralia Χίλια Βρύση, Naxos, Cyclades, Greece",
+        "Χίλια Βρύση beach, Naxos, Greece"
+      ],
+      "candidates": [],
+      "bestCandidate": null
+    },
+    {
+      "beachId": 2017,
+      "beachName": "Παραλία Ψιλή Άμμος",
+      "island": "Naxos",
+      "regionId": "south-aegean-naxos",
+      "coordinate": {
+        "lat": 37.01422,
+        "lon": 25.56847
+      },
+      "status": "dry_run",
+      "queries": [
+        "Paralia Παραλία Ψιλή Άμμος, Naxos, Cyclades, Greece",
+        "Παραλία Ψιλή Άμμος beach, Naxos, Greece"
+      ],
+      "candidates": [],
+      "bestCandidate": null
+    },
+    {
+      "beachId": 2018,
+      "beachName": "Παραλία Ψωφαγριλιά",
+      "island": "Naxos",
+      "regionId": "south-aegean-naxos",
+      "coordinate": {
+        "lat": 37.10381,
+        "lon": 25.59389
+      },
+      "status": "dry_run",
+      "queries": [
+        "Paralia Παραλία Ψωφαγριλιά, Naxos, Cyclades, Greece",
+        "Παραλία Ψωφαγριλιά beach, Naxos, Greece"
+      ],
+      "candidates": [],
+      "bestCandidate": null
+    },
+    {
+      "beachId": 2019,
+      "beachName": "Hawaii",
+      "island": "Naxos",
+      "regionId": "south-aegean-naxos",
+      "coordinate": {
+        "lat": 36.9805992,
+        "lon": 25.3863595
+      },
+      "status": "dry_run",
+      "queries": [
+        "Paralia Hawaii, Naxos, Cyclades, Greece",
+        "Hawaii beach, Naxos, Greece"
+      ],
+      "candidates": [],
+      "bestCandidate": null
+    }
+  ]
+}

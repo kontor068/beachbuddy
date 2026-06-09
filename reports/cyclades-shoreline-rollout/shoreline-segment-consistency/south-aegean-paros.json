@@ -1,0 +1,1051 @@
+{
+  "schemaVersion": 1,
+  "generatedAt": "2026-06-08T13:51:42.829Z",
+  "regionId": "south-aegean-paros",
+  "policy": {
+    "sameSegment": "Beaches in the same curated shoreline segment should render the same visible exposure level unless a verified local morphology or wind-sport exception locks a stricter level.",
+    "confidence": "Segment propagation may support map-color consistency and medium review, but it never creates high confidence by itself."
+  },
+  "summary": {
+    "scenarioCount": 5,
+    "segmentCount": 4,
+    "allowedExceptions": 0,
+    "unresolvedContradictions": 0
+  },
+  "allowedExceptions": [],
+  "unresolved": [],
+  "results": [
+    {
+      "scenarioId": "Naxos_N_3BFT",
+      "windDirectionDeg": 0,
+      "segments": [
+        {
+          "segmentId": "paros-golden-beach-wind-front",
+          "reason": "same_continuous_beachfront",
+          "rawLevels": [
+            "exposed"
+          ],
+          "consistentLevels": [
+            "exposed"
+          ],
+          "rows": [
+            {
+              "beachId": 2056,
+              "name": "Χρυσή Ακτή",
+              "level": "exposed",
+              "windProfileConfidence": "high",
+              "knownWindSportSpot": true
+            },
+            {
+              "beachId": 2043,
+              "name": "Παραλία Αγκάλη Χρυσής Ακτής",
+              "level": "exposed",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": true
+            },
+            {
+              "beachId": 2053,
+              "name": "Τσερδάκια (Νέα Χρυσή Ακτή)",
+              "level": "exposed",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": true
+            }
+          ],
+          "rawRows": [
+            {
+              "beachId": 2056,
+              "name": "Χρυσή Ακτή",
+              "level": "exposed",
+              "windProfileConfidence": "high",
+              "knownWindSportSpot": true
+            },
+            {
+              "beachId": 2043,
+              "name": "Παραλία Αγκάλη Χρυσής Ακτής",
+              "level": "exposed",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": true
+            },
+            {
+              "beachId": 2053,
+              "name": "Τσερδάκια (Νέα Χρυσή Ακτή)",
+              "level": "exposed",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": true
+            }
+          ],
+          "notes": "Chrysi Akti, Agkali Chrysis Aktis, and Tserdakia/Nea Chrysi Akti are the same southeast Golden Beach wind-front; wind-sport behavior can still lock stricter exposure."
+        },
+        {
+          "segmentId": "paros-parikia-town-front",
+          "reason": "same_village_bay",
+          "rawLevels": [
+            "protected",
+            "partial"
+          ],
+          "consistentLevels": [
+            "protected"
+          ],
+          "rows": [
+            {
+              "beachId": 2033,
+              "name": "Λιβάδια",
+              "level": "protected",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 2041,
+              "name": "Ναυτικός όμιλος Πάρου",
+              "level": "protected",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 2046,
+              "name": "Παραλία Παροικιάς",
+              "level": "protected",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            }
+          ],
+          "rawRows": [
+            {
+              "beachId": 2033,
+              "name": "Λιβάδια",
+              "level": "protected",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 2041,
+              "name": "Ναυτικός όμιλος Πάρου",
+              "level": "protected",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 2046,
+              "name": "Παραλία Παροικιάς",
+              "level": "partial",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            }
+          ],
+          "notes": "Livadia, Navtikos Omilos Parou, and Paralia Parikias are adjacent Parikia town-front records and should stay consistent unless exact harbor morphology says otherwise."
+        },
+        {
+          "segmentId": "paros-krios-martselo-front",
+          "reason": "same_continuous_beachfront",
+          "rawLevels": [
+            "exposed"
+          ],
+          "consistentLevels": [
+            "exposed"
+          ],
+          "rows": [
+            {
+              "beachId": 2031,
+              "name": "Κριός",
+              "level": "exposed",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 2037,
+              "name": "Μαρτσέλο",
+              "level": "exposed",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            }
+          ],
+          "rawRows": [
+            {
+              "beachId": 2031,
+              "name": "Κριός",
+              "level": "exposed",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 2037,
+              "name": "Μαρτσέλο",
+              "level": "exposed",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            }
+          ],
+          "notes": "Krios and Martselo sit on the same west/northwest Parikia bay shore and should not diverge without a specific local morphology reason."
+        },
+        {
+          "segmentId": "paros-santa-maria-east-front",
+          "reason": "same_continuous_beachfront",
+          "rawLevels": [
+            "exposed"
+          ],
+          "consistentLevels": [
+            "exposed"
+          ],
+          "rows": [
+            {
+              "beachId": 2038,
+              "name": "Μικρή Σάντα Μαρία",
+              "level": "exposed",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 2051,
+              "name": "Σάντα Μαρία",
+              "level": "exposed",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            }
+          ],
+          "rawRows": [
+            {
+              "beachId": 2038,
+              "name": "Μικρή Σάντα Μαρία",
+              "level": "exposed",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 2051,
+              "name": "Σάντα Μαρία",
+              "level": "exposed",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            }
+          ],
+          "notes": "Mikri Santa Maria and Santa Maria are adjacent east/southeast Santa Maria coast records with similar shoreline exposure behavior."
+        }
+      ]
+    },
+    {
+      "scenarioId": "Naxos_N_5BFT",
+      "windDirectionDeg": 0,
+      "segments": [
+        {
+          "segmentId": "paros-golden-beach-wind-front",
+          "reason": "same_continuous_beachfront",
+          "rawLevels": [
+            "exposed"
+          ],
+          "consistentLevels": [
+            "exposed"
+          ],
+          "rows": [
+            {
+              "beachId": 2056,
+              "name": "Χρυσή Ακτή",
+              "level": "exposed",
+              "windProfileConfidence": "high",
+              "knownWindSportSpot": true
+            },
+            {
+              "beachId": 2043,
+              "name": "Παραλία Αγκάλη Χρυσής Ακτής",
+              "level": "exposed",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": true
+            },
+            {
+              "beachId": 2053,
+              "name": "Τσερδάκια (Νέα Χρυσή Ακτή)",
+              "level": "exposed",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": true
+            }
+          ],
+          "rawRows": [
+            {
+              "beachId": 2056,
+              "name": "Χρυσή Ακτή",
+              "level": "exposed",
+              "windProfileConfidence": "high",
+              "knownWindSportSpot": true
+            },
+            {
+              "beachId": 2043,
+              "name": "Παραλία Αγκάλη Χρυσής Ακτής",
+              "level": "exposed",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": true
+            },
+            {
+              "beachId": 2053,
+              "name": "Τσερδάκια (Νέα Χρυσή Ακτή)",
+              "level": "exposed",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": true
+            }
+          ],
+          "notes": "Chrysi Akti, Agkali Chrysis Aktis, and Tserdakia/Nea Chrysi Akti are the same southeast Golden Beach wind-front; wind-sport behavior can still lock stricter exposure."
+        },
+        {
+          "segmentId": "paros-parikia-town-front",
+          "reason": "same_village_bay",
+          "rawLevels": [
+            "protected",
+            "partial"
+          ],
+          "consistentLevels": [
+            "protected"
+          ],
+          "rows": [
+            {
+              "beachId": 2033,
+              "name": "Λιβάδια",
+              "level": "protected",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 2041,
+              "name": "Ναυτικός όμιλος Πάρου",
+              "level": "protected",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 2046,
+              "name": "Παραλία Παροικιάς",
+              "level": "protected",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            }
+          ],
+          "rawRows": [
+            {
+              "beachId": 2033,
+              "name": "Λιβάδια",
+              "level": "protected",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 2041,
+              "name": "Ναυτικός όμιλος Πάρου",
+              "level": "protected",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 2046,
+              "name": "Παραλία Παροικιάς",
+              "level": "partial",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            }
+          ],
+          "notes": "Livadia, Navtikos Omilos Parou, and Paralia Parikias are adjacent Parikia town-front records and should stay consistent unless exact harbor morphology says otherwise."
+        },
+        {
+          "segmentId": "paros-krios-martselo-front",
+          "reason": "same_continuous_beachfront",
+          "rawLevels": [
+            "exposed"
+          ],
+          "consistentLevels": [
+            "exposed"
+          ],
+          "rows": [
+            {
+              "beachId": 2031,
+              "name": "Κριός",
+              "level": "exposed",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 2037,
+              "name": "Μαρτσέλο",
+              "level": "exposed",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            }
+          ],
+          "rawRows": [
+            {
+              "beachId": 2031,
+              "name": "Κριός",
+              "level": "exposed",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 2037,
+              "name": "Μαρτσέλο",
+              "level": "exposed",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            }
+          ],
+          "notes": "Krios and Martselo sit on the same west/northwest Parikia bay shore and should not diverge without a specific local morphology reason."
+        },
+        {
+          "segmentId": "paros-santa-maria-east-front",
+          "reason": "same_continuous_beachfront",
+          "rawLevels": [
+            "exposed"
+          ],
+          "consistentLevels": [
+            "exposed"
+          ],
+          "rows": [
+            {
+              "beachId": 2038,
+              "name": "Μικρή Σάντα Μαρία",
+              "level": "exposed",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 2051,
+              "name": "Σάντα Μαρία",
+              "level": "exposed",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            }
+          ],
+          "rawRows": [
+            {
+              "beachId": 2038,
+              "name": "Μικρή Σάντα Μαρία",
+              "level": "exposed",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 2051,
+              "name": "Σάντα Μαρία",
+              "level": "exposed",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            }
+          ],
+          "notes": "Mikri Santa Maria and Santa Maria are adjacent east/southeast Santa Maria coast records with similar shoreline exposure behavior."
+        }
+      ]
+    },
+    {
+      "scenarioId": "Naxos_W_4BFT",
+      "windDirectionDeg": 270,
+      "segments": [
+        {
+          "segmentId": "paros-golden-beach-wind-front",
+          "reason": "same_continuous_beachfront",
+          "rawLevels": [
+            "protected"
+          ],
+          "consistentLevels": [
+            "exposed"
+          ],
+          "rows": [
+            {
+              "beachId": 2056,
+              "name": "Χρυσή Ακτή",
+              "level": "exposed",
+              "windProfileConfidence": "high",
+              "knownWindSportSpot": true
+            },
+            {
+              "beachId": 2043,
+              "name": "Παραλία Αγκάλη Χρυσής Ακτής",
+              "level": "exposed",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": true
+            },
+            {
+              "beachId": 2053,
+              "name": "Τσερδάκια (Νέα Χρυσή Ακτή)",
+              "level": "exposed",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": true
+            }
+          ],
+          "rawRows": [
+            {
+              "beachId": 2056,
+              "name": "Χρυσή Ακτή",
+              "level": "protected",
+              "windProfileConfidence": "high",
+              "knownWindSportSpot": true
+            },
+            {
+              "beachId": 2043,
+              "name": "Παραλία Αγκάλη Χρυσής Ακτής",
+              "level": "protected",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": true
+            },
+            {
+              "beachId": 2053,
+              "name": "Τσερδάκια (Νέα Χρυσή Ακτή)",
+              "level": "protected",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": true
+            }
+          ],
+          "notes": "Chrysi Akti, Agkali Chrysis Aktis, and Tserdakia/Nea Chrysi Akti are the same southeast Golden Beach wind-front; wind-sport behavior can still lock stricter exposure."
+        },
+        {
+          "segmentId": "paros-parikia-town-front",
+          "reason": "same_village_bay",
+          "rawLevels": [
+            "exposed"
+          ],
+          "consistentLevels": [
+            "exposed"
+          ],
+          "rows": [
+            {
+              "beachId": 2033,
+              "name": "Λιβάδια",
+              "level": "exposed",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 2041,
+              "name": "Ναυτικός όμιλος Πάρου",
+              "level": "exposed",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 2046,
+              "name": "Παραλία Παροικιάς",
+              "level": "exposed",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            }
+          ],
+          "rawRows": [
+            {
+              "beachId": 2033,
+              "name": "Λιβάδια",
+              "level": "exposed",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 2041,
+              "name": "Ναυτικός όμιλος Πάρου",
+              "level": "exposed",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 2046,
+              "name": "Παραλία Παροικιάς",
+              "level": "exposed",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            }
+          ],
+          "notes": "Livadia, Navtikos Omilos Parou, and Paralia Parikias are adjacent Parikia town-front records and should stay consistent unless exact harbor morphology says otherwise."
+        },
+        {
+          "segmentId": "paros-krios-martselo-front",
+          "reason": "same_continuous_beachfront",
+          "rawLevels": [
+            "exposed"
+          ],
+          "consistentLevels": [
+            "exposed"
+          ],
+          "rows": [
+            {
+              "beachId": 2031,
+              "name": "Κριός",
+              "level": "exposed",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 2037,
+              "name": "Μαρτσέλο",
+              "level": "exposed",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            }
+          ],
+          "rawRows": [
+            {
+              "beachId": 2031,
+              "name": "Κριός",
+              "level": "exposed",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 2037,
+              "name": "Μαρτσέλο",
+              "level": "exposed",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            }
+          ],
+          "notes": "Krios and Martselo sit on the same west/northwest Parikia bay shore and should not diverge without a specific local morphology reason."
+        },
+        {
+          "segmentId": "paros-santa-maria-east-front",
+          "reason": "same_continuous_beachfront",
+          "rawLevels": [
+            "protected"
+          ],
+          "consistentLevels": [
+            "protected"
+          ],
+          "rows": [
+            {
+              "beachId": 2038,
+              "name": "Μικρή Σάντα Μαρία",
+              "level": "protected",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 2051,
+              "name": "Σάντα Μαρία",
+              "level": "protected",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            }
+          ],
+          "rawRows": [
+            {
+              "beachId": 2038,
+              "name": "Μικρή Σάντα Μαρία",
+              "level": "protected",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 2051,
+              "name": "Σάντα Μαρία",
+              "level": "protected",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            }
+          ],
+          "notes": "Mikri Santa Maria and Santa Maria are adjacent east/southeast Santa Maria coast records with similar shoreline exposure behavior."
+        }
+      ]
+    },
+    {
+      "scenarioId": "Naxos_S_4BFT",
+      "windDirectionDeg": 180,
+      "segments": [
+        {
+          "segmentId": "paros-golden-beach-wind-front",
+          "reason": "same_continuous_beachfront",
+          "rawLevels": [
+            "exposed"
+          ],
+          "consistentLevels": [
+            "exposed"
+          ],
+          "rows": [
+            {
+              "beachId": 2056,
+              "name": "Χρυσή Ακτή",
+              "level": "exposed",
+              "windProfileConfidence": "high",
+              "knownWindSportSpot": true
+            },
+            {
+              "beachId": 2043,
+              "name": "Παραλία Αγκάλη Χρυσής Ακτής",
+              "level": "exposed",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": true
+            },
+            {
+              "beachId": 2053,
+              "name": "Τσερδάκια (Νέα Χρυσή Ακτή)",
+              "level": "exposed",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": true
+            }
+          ],
+          "rawRows": [
+            {
+              "beachId": 2056,
+              "name": "Χρυσή Ακτή",
+              "level": "exposed",
+              "windProfileConfidence": "high",
+              "knownWindSportSpot": true
+            },
+            {
+              "beachId": 2043,
+              "name": "Παραλία Αγκάλη Χρυσής Ακτής",
+              "level": "exposed",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": true
+            },
+            {
+              "beachId": 2053,
+              "name": "Τσερδάκια (Νέα Χρυσή Ακτή)",
+              "level": "exposed",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": true
+            }
+          ],
+          "notes": "Chrysi Akti, Agkali Chrysis Aktis, and Tserdakia/Nea Chrysi Akti are the same southeast Golden Beach wind-front; wind-sport behavior can still lock stricter exposure."
+        },
+        {
+          "segmentId": "paros-parikia-town-front",
+          "reason": "same_village_bay",
+          "rawLevels": [
+            "protected"
+          ],
+          "consistentLevels": [
+            "protected"
+          ],
+          "rows": [
+            {
+              "beachId": 2033,
+              "name": "Λιβάδια",
+              "level": "protected",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 2041,
+              "name": "Ναυτικός όμιλος Πάρου",
+              "level": "protected",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 2046,
+              "name": "Παραλία Παροικιάς",
+              "level": "protected",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            }
+          ],
+          "rawRows": [
+            {
+              "beachId": 2033,
+              "name": "Λιβάδια",
+              "level": "protected",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 2041,
+              "name": "Ναυτικός όμιλος Πάρου",
+              "level": "protected",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 2046,
+              "name": "Παραλία Παροικιάς",
+              "level": "protected",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            }
+          ],
+          "notes": "Livadia, Navtikos Omilos Parou, and Paralia Parikias are adjacent Parikia town-front records and should stay consistent unless exact harbor morphology says otherwise."
+        },
+        {
+          "segmentId": "paros-krios-martselo-front",
+          "reason": "same_continuous_beachfront",
+          "rawLevels": [
+            "protected"
+          ],
+          "consistentLevels": [
+            "protected"
+          ],
+          "rows": [
+            {
+              "beachId": 2031,
+              "name": "Κριός",
+              "level": "protected",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 2037,
+              "name": "Μαρτσέλο",
+              "level": "protected",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            }
+          ],
+          "rawRows": [
+            {
+              "beachId": 2031,
+              "name": "Κριός",
+              "level": "protected",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 2037,
+              "name": "Μαρτσέλο",
+              "level": "protected",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            }
+          ],
+          "notes": "Krios and Martselo sit on the same west/northwest Parikia bay shore and should not diverge without a specific local morphology reason."
+        },
+        {
+          "segmentId": "paros-santa-maria-east-front",
+          "reason": "same_continuous_beachfront",
+          "rawLevels": [
+            "partial"
+          ],
+          "consistentLevels": [
+            "partial"
+          ],
+          "rows": [
+            {
+              "beachId": 2038,
+              "name": "Μικρή Σάντα Μαρία",
+              "level": "partial",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 2051,
+              "name": "Σάντα Μαρία",
+              "level": "partial",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            }
+          ],
+          "rawRows": [
+            {
+              "beachId": 2038,
+              "name": "Μικρή Σάντα Μαρία",
+              "level": "partial",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 2051,
+              "name": "Σάντα Μαρία",
+              "level": "partial",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            }
+          ],
+          "notes": "Mikri Santa Maria and Santa Maria are adjacent east/southeast Santa Maria coast records with similar shoreline exposure behavior."
+        }
+      ]
+    },
+    {
+      "scenarioId": "Naxos_E_4BFT",
+      "windDirectionDeg": 90,
+      "segments": [
+        {
+          "segmentId": "paros-golden-beach-wind-front",
+          "reason": "same_continuous_beachfront",
+          "rawLevels": [
+            "exposed"
+          ],
+          "consistentLevels": [
+            "exposed"
+          ],
+          "rows": [
+            {
+              "beachId": 2056,
+              "name": "Χρυσή Ακτή",
+              "level": "exposed",
+              "windProfileConfidence": "high",
+              "knownWindSportSpot": true
+            },
+            {
+              "beachId": 2043,
+              "name": "Παραλία Αγκάλη Χρυσής Ακτής",
+              "level": "exposed",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": true
+            },
+            {
+              "beachId": 2053,
+              "name": "Τσερδάκια (Νέα Χρυσή Ακτή)",
+              "level": "exposed",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": true
+            }
+          ],
+          "rawRows": [
+            {
+              "beachId": 2056,
+              "name": "Χρυσή Ακτή",
+              "level": "exposed",
+              "windProfileConfidence": "high",
+              "knownWindSportSpot": true
+            },
+            {
+              "beachId": 2043,
+              "name": "Παραλία Αγκάλη Χρυσής Ακτής",
+              "level": "exposed",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": true
+            },
+            {
+              "beachId": 2053,
+              "name": "Τσερδάκια (Νέα Χρυσή Ακτή)",
+              "level": "exposed",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": true
+            }
+          ],
+          "notes": "Chrysi Akti, Agkali Chrysis Aktis, and Tserdakia/Nea Chrysi Akti are the same southeast Golden Beach wind-front; wind-sport behavior can still lock stricter exposure."
+        },
+        {
+          "segmentId": "paros-parikia-town-front",
+          "reason": "same_village_bay",
+          "rawLevels": [
+            "protected"
+          ],
+          "consistentLevels": [
+            "protected"
+          ],
+          "rows": [
+            {
+              "beachId": 2033,
+              "name": "Λιβάδια",
+              "level": "protected",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 2041,
+              "name": "Ναυτικός όμιλος Πάρου",
+              "level": "protected",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 2046,
+              "name": "Παραλία Παροικιάς",
+              "level": "protected",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            }
+          ],
+          "rawRows": [
+            {
+              "beachId": 2033,
+              "name": "Λιβάδια",
+              "level": "protected",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 2041,
+              "name": "Ναυτικός όμιλος Πάρου",
+              "level": "protected",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 2046,
+              "name": "Παραλία Παροικιάς",
+              "level": "protected",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            }
+          ],
+          "notes": "Livadia, Navtikos Omilos Parou, and Paralia Parikias are adjacent Parikia town-front records and should stay consistent unless exact harbor morphology says otherwise."
+        },
+        {
+          "segmentId": "paros-krios-martselo-front",
+          "reason": "same_continuous_beachfront",
+          "rawLevels": [
+            "protected"
+          ],
+          "consistentLevels": [
+            "protected"
+          ],
+          "rows": [
+            {
+              "beachId": 2031,
+              "name": "Κριός",
+              "level": "protected",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 2037,
+              "name": "Μαρτσέλο",
+              "level": "protected",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            }
+          ],
+          "rawRows": [
+            {
+              "beachId": 2031,
+              "name": "Κριός",
+              "level": "protected",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 2037,
+              "name": "Μαρτσέλο",
+              "level": "protected",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            }
+          ],
+          "notes": "Krios and Martselo sit on the same west/northwest Parikia bay shore and should not diverge without a specific local morphology reason."
+        },
+        {
+          "segmentId": "paros-santa-maria-east-front",
+          "reason": "same_continuous_beachfront",
+          "rawLevels": [
+            "exposed"
+          ],
+          "consistentLevels": [
+            "exposed"
+          ],
+          "rows": [
+            {
+              "beachId": 2038,
+              "name": "Μικρή Σάντα Μαρία",
+              "level": "exposed",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 2051,
+              "name": "Σάντα Μαρία",
+              "level": "exposed",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            }
+          ],
+          "rawRows": [
+            {
+              "beachId": 2038,
+              "name": "Μικρή Σάντα Μαρία",
+              "level": "exposed",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 2051,
+              "name": "Σάντα Μαρία",
+              "level": "exposed",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            }
+          ],
+          "notes": "Mikri Santa Maria and Santa Maria are adjacent east/southeast Santa Maria coast records with similar shoreline exposure behavior."
+        }
+      ]
+    }
+  ]
+}

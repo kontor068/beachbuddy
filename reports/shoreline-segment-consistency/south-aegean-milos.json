@@ -1,0 +1,1556 @@
+{
+  "schemaVersion": 1,
+  "generatedAt": "2026-06-08T10:26:57.399Z",
+  "regionId": "south-aegean-milos",
+  "policy": {
+    "sameSegment": "Beaches in the same curated shoreline segment should render the same visible exposure level unless a verified local morphology or wind-sport exception locks a stricter level.",
+    "confidence": "Segment propagation may support map-color consistency and medium review, but it never creates high confidence by itself."
+  },
+  "summary": {
+    "scenarioCount": 5,
+    "segmentCount": 7,
+    "allowedExceptions": 0,
+    "unresolvedContradictions": 0
+  },
+  "allowedExceptions": [],
+  "unresolved": [],
+  "results": [
+    {
+      "scenarioId": "Naxos_N_3BFT",
+      "windDirectionDeg": 0,
+      "segments": [
+        {
+          "segmentId": "milos-provatas-agios-sostis-front",
+          "reason": "same_continuous_beachfront",
+          "rawLevels": [
+            "protected"
+          ],
+          "consistentLevels": [
+            "protected"
+          ],
+          "rows": [
+            {
+              "beachId": 1920,
+              "name": "Προβατάς",
+              "level": "protected",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 1900,
+              "name": "Άγιος Σώστης",
+              "level": "protected",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            }
+          ],
+          "rawRows": [
+            {
+              "beachId": 1920,
+              "name": "Προβατάς",
+              "level": "protected",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 1900,
+              "name": "Άγιος Σώστης",
+              "level": "protected",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            }
+          ],
+          "notes": "Provatas and Agios Sostis are adjacent south-coast records with near-identical south-facing shoreline behavior."
+        },
+        {
+          "segmentId": "milos-fyriplaka-tsigrado-front",
+          "reason": "same_continuous_beachfront",
+          "rawLevels": [
+            "protected"
+          ],
+          "consistentLevels": [
+            "protected"
+          ],
+          "rows": [
+            {
+              "beachId": 1927,
+              "name": "Φυριπλάκα",
+              "level": "protected",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 1925,
+              "name": "Τσιγκράδο",
+              "level": "protected",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            }
+          ],
+          "rawRows": [
+            {
+              "beachId": 1927,
+              "name": "Φυριπλάκα",
+              "level": "protected",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 1925,
+              "name": "Τσιγκράδο",
+              "level": "protected",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            }
+          ],
+          "notes": "Fyriplaka and Tsigrado sit on the same south-facing cliff/beach-front; access remains separate and Tsigrado must not be promoted as mainstream."
+        },
+        {
+          "segmentId": "milos-agia-kyriaki-psarovolada-front",
+          "reason": "same_continuous_beachfront",
+          "rawLevels": [
+            "protected"
+          ],
+          "consistentLevels": [
+            "protected"
+          ],
+          "rows": [
+            {
+              "beachId": 1901,
+              "name": "Αγία Κυριακή",
+              "level": "protected",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 1931,
+              "name": "Ψαροβολάδα",
+              "level": "protected",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            }
+          ],
+          "rawRows": [
+            {
+              "beachId": 1901,
+              "name": "Αγία Κυριακή",
+              "level": "protected",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 1931,
+              "name": "Ψαροβολάδα",
+              "level": "protected",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            }
+          ],
+          "notes": "Agia Kyriaki and Psarovolada are adjacent south/southeast coast records with similar exposure behavior."
+        },
+        {
+          "segmentId": "milos-papafragas-kapros-front",
+          "reason": "same_cove_or_micro_bay",
+          "rawLevels": [
+            "exposed"
+          ],
+          "consistentLevels": [
+            "exposed"
+          ],
+          "rows": [
+            {
+              "beachId": 1916,
+              "name": "Παπάφραγκας",
+              "level": "exposed",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 1908,
+              "name": "Κάπρος",
+              "level": "exposed",
+              "windProfileConfidence": "low",
+              "knownWindSportSpot": false
+            }
+          ],
+          "rawRows": [
+            {
+              "beachId": 1916,
+              "name": "Παπάφραγκας",
+              "level": "exposed",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 1908,
+              "name": "Κάπρος",
+              "level": "exposed",
+              "windProfileConfidence": "low",
+              "knownWindSportSpot": false
+            }
+          ],
+          "notes": "Papafragas and Kapros are neighboring north-coast pocket records; keep access and danger/cove context separate from exposure consistency."
+        },
+        {
+          "segmentId": "milos-kampanes-nerodafni-front",
+          "reason": "same_continuous_beachfront",
+          "rawLevels": [
+            "exposed"
+          ],
+          "consistentLevels": [
+            "exposed"
+          ],
+          "rows": [
+            {
+              "beachId": 1911,
+              "name": "Καμπάνες",
+              "level": "exposed",
+              "windProfileConfidence": "low",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 1914,
+              "name": "Νεροδάφνη",
+              "level": "exposed",
+              "windProfileConfidence": "low",
+              "knownWindSportSpot": false
+            }
+          ],
+          "rawRows": [
+            {
+              "beachId": 1911,
+              "name": "Καμπάνες",
+              "level": "exposed",
+              "windProfileConfidence": "low",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 1914,
+              "name": "Νεροδάφνη",
+              "level": "exposed",
+              "windProfileConfidence": "low",
+              "knownWindSportSpot": false
+            }
+          ],
+          "notes": "Kampanes and Nerodafni are adjacent northwest-coast records with similar shoreline facing."
+        },
+        {
+          "segmentId": "milos-rivari-fatourena-front",
+          "reason": "same_continuous_beachfront",
+          "rawLevels": [
+            "partial",
+            "exposed"
+          ],
+          "consistentLevels": [
+            "exposed"
+          ],
+          "rows": [
+            {
+              "beachId": 1921,
+              "name": "Ριβάρι",
+              "level": "exposed",
+              "windProfileConfidence": "low",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 1926,
+              "name": "Φατούρενα",
+              "level": "exposed",
+              "windProfileConfidence": "low",
+              "knownWindSportSpot": false
+            }
+          ],
+          "rawRows": [
+            {
+              "beachId": 1921,
+              "name": "Ριβάρι",
+              "level": "partial",
+              "windProfileConfidence": "low",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 1926,
+              "name": "Φατούρενα",
+              "level": "exposed",
+              "windProfileConfidence": "low",
+              "knownWindSportSpot": false
+            }
+          ],
+          "notes": "Rivari and Fatourena are close west-bay/northeast-facing records; segment consistency is map-color support only, not high wind confidence."
+        },
+        {
+          "segmentId": "milos-triades-ammoudaraki-front",
+          "reason": "same_continuous_beachfront",
+          "rawLevels": [
+            "partial"
+          ],
+          "consistentLevels": [
+            "partial"
+          ],
+          "rows": [
+            {
+              "beachId": 1924,
+              "name": "Τριάδες",
+              "level": "partial",
+              "windProfileConfidence": "low",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 1902,
+              "name": "Αμμουδαράκι",
+              "level": "partial",
+              "windProfileConfidence": "low",
+              "knownWindSportSpot": false
+            }
+          ],
+          "rawRows": [
+            {
+              "beachId": 1924,
+              "name": "Τριάδες",
+              "level": "partial",
+              "windProfileConfidence": "low",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 1902,
+              "name": "Αμμουδαράκι",
+              "level": "partial",
+              "windProfileConfidence": "low",
+              "knownWindSportSpot": false
+            }
+          ],
+          "notes": "Triades and Ammoudaraki are neighboring difficult-access west-coast records; access difficulty remains a separate top-pick blocker."
+        }
+      ]
+    },
+    {
+      "scenarioId": "Naxos_N_5BFT",
+      "windDirectionDeg": 0,
+      "segments": [
+        {
+          "segmentId": "milos-provatas-agios-sostis-front",
+          "reason": "same_continuous_beachfront",
+          "rawLevels": [
+            "protected"
+          ],
+          "consistentLevels": [
+            "protected"
+          ],
+          "rows": [
+            {
+              "beachId": 1920,
+              "name": "Προβατάς",
+              "level": "protected",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 1900,
+              "name": "Άγιος Σώστης",
+              "level": "protected",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            }
+          ],
+          "rawRows": [
+            {
+              "beachId": 1920,
+              "name": "Προβατάς",
+              "level": "protected",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 1900,
+              "name": "Άγιος Σώστης",
+              "level": "protected",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            }
+          ],
+          "notes": "Provatas and Agios Sostis are adjacent south-coast records with near-identical south-facing shoreline behavior."
+        },
+        {
+          "segmentId": "milos-fyriplaka-tsigrado-front",
+          "reason": "same_continuous_beachfront",
+          "rawLevels": [
+            "protected"
+          ],
+          "consistentLevels": [
+            "protected"
+          ],
+          "rows": [
+            {
+              "beachId": 1927,
+              "name": "Φυριπλάκα",
+              "level": "protected",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 1925,
+              "name": "Τσιγκράδο",
+              "level": "protected",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            }
+          ],
+          "rawRows": [
+            {
+              "beachId": 1927,
+              "name": "Φυριπλάκα",
+              "level": "protected",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 1925,
+              "name": "Τσιγκράδο",
+              "level": "protected",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            }
+          ],
+          "notes": "Fyriplaka and Tsigrado sit on the same south-facing cliff/beach-front; access remains separate and Tsigrado must not be promoted as mainstream."
+        },
+        {
+          "segmentId": "milos-agia-kyriaki-psarovolada-front",
+          "reason": "same_continuous_beachfront",
+          "rawLevels": [
+            "protected"
+          ],
+          "consistentLevels": [
+            "protected"
+          ],
+          "rows": [
+            {
+              "beachId": 1901,
+              "name": "Αγία Κυριακή",
+              "level": "protected",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 1931,
+              "name": "Ψαροβολάδα",
+              "level": "protected",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            }
+          ],
+          "rawRows": [
+            {
+              "beachId": 1901,
+              "name": "Αγία Κυριακή",
+              "level": "protected",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 1931,
+              "name": "Ψαροβολάδα",
+              "level": "protected",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            }
+          ],
+          "notes": "Agia Kyriaki and Psarovolada are adjacent south/southeast coast records with similar exposure behavior."
+        },
+        {
+          "segmentId": "milos-papafragas-kapros-front",
+          "reason": "same_cove_or_micro_bay",
+          "rawLevels": [
+            "exposed"
+          ],
+          "consistentLevels": [
+            "exposed"
+          ],
+          "rows": [
+            {
+              "beachId": 1916,
+              "name": "Παπάφραγκας",
+              "level": "exposed",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 1908,
+              "name": "Κάπρος",
+              "level": "exposed",
+              "windProfileConfidence": "low",
+              "knownWindSportSpot": false
+            }
+          ],
+          "rawRows": [
+            {
+              "beachId": 1916,
+              "name": "Παπάφραγκας",
+              "level": "exposed",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 1908,
+              "name": "Κάπρος",
+              "level": "exposed",
+              "windProfileConfidence": "low",
+              "knownWindSportSpot": false
+            }
+          ],
+          "notes": "Papafragas and Kapros are neighboring north-coast pocket records; keep access and danger/cove context separate from exposure consistency."
+        },
+        {
+          "segmentId": "milos-kampanes-nerodafni-front",
+          "reason": "same_continuous_beachfront",
+          "rawLevels": [
+            "exposed"
+          ],
+          "consistentLevels": [
+            "exposed"
+          ],
+          "rows": [
+            {
+              "beachId": 1911,
+              "name": "Καμπάνες",
+              "level": "exposed",
+              "windProfileConfidence": "low",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 1914,
+              "name": "Νεροδάφνη",
+              "level": "exposed",
+              "windProfileConfidence": "low",
+              "knownWindSportSpot": false
+            }
+          ],
+          "rawRows": [
+            {
+              "beachId": 1911,
+              "name": "Καμπάνες",
+              "level": "exposed",
+              "windProfileConfidence": "low",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 1914,
+              "name": "Νεροδάφνη",
+              "level": "exposed",
+              "windProfileConfidence": "low",
+              "knownWindSportSpot": false
+            }
+          ],
+          "notes": "Kampanes and Nerodafni are adjacent northwest-coast records with similar shoreline facing."
+        },
+        {
+          "segmentId": "milos-rivari-fatourena-front",
+          "reason": "same_continuous_beachfront",
+          "rawLevels": [
+            "partial",
+            "exposed"
+          ],
+          "consistentLevels": [
+            "exposed"
+          ],
+          "rows": [
+            {
+              "beachId": 1921,
+              "name": "Ριβάρι",
+              "level": "exposed",
+              "windProfileConfidence": "low",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 1926,
+              "name": "Φατούρενα",
+              "level": "exposed",
+              "windProfileConfidence": "low",
+              "knownWindSportSpot": false
+            }
+          ],
+          "rawRows": [
+            {
+              "beachId": 1921,
+              "name": "Ριβάρι",
+              "level": "partial",
+              "windProfileConfidence": "low",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 1926,
+              "name": "Φατούρενα",
+              "level": "exposed",
+              "windProfileConfidence": "low",
+              "knownWindSportSpot": false
+            }
+          ],
+          "notes": "Rivari and Fatourena are close west-bay/northeast-facing records; segment consistency is map-color support only, not high wind confidence."
+        },
+        {
+          "segmentId": "milos-triades-ammoudaraki-front",
+          "reason": "same_continuous_beachfront",
+          "rawLevels": [
+            "partial"
+          ],
+          "consistentLevels": [
+            "partial"
+          ],
+          "rows": [
+            {
+              "beachId": 1924,
+              "name": "Τριάδες",
+              "level": "partial",
+              "windProfileConfidence": "low",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 1902,
+              "name": "Αμμουδαράκι",
+              "level": "partial",
+              "windProfileConfidence": "low",
+              "knownWindSportSpot": false
+            }
+          ],
+          "rawRows": [
+            {
+              "beachId": 1924,
+              "name": "Τριάδες",
+              "level": "partial",
+              "windProfileConfidence": "low",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 1902,
+              "name": "Αμμουδαράκι",
+              "level": "partial",
+              "windProfileConfidence": "low",
+              "knownWindSportSpot": false
+            }
+          ],
+          "notes": "Triades and Ammoudaraki are neighboring difficult-access west-coast records; access difficulty remains a separate top-pick blocker."
+        }
+      ]
+    },
+    {
+      "scenarioId": "Naxos_W_4BFT",
+      "windDirectionDeg": 270,
+      "segments": [
+        {
+          "segmentId": "milos-provatas-agios-sostis-front",
+          "reason": "same_continuous_beachfront",
+          "rawLevels": [
+            "partial"
+          ],
+          "consistentLevels": [
+            "partial"
+          ],
+          "rows": [
+            {
+              "beachId": 1920,
+              "name": "Προβατάς",
+              "level": "partial",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 1900,
+              "name": "Άγιος Σώστης",
+              "level": "partial",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            }
+          ],
+          "rawRows": [
+            {
+              "beachId": 1920,
+              "name": "Προβατάς",
+              "level": "partial",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 1900,
+              "name": "Άγιος Σώστης",
+              "level": "partial",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            }
+          ],
+          "notes": "Provatas and Agios Sostis are adjacent south-coast records with near-identical south-facing shoreline behavior."
+        },
+        {
+          "segmentId": "milos-fyriplaka-tsigrado-front",
+          "reason": "same_continuous_beachfront",
+          "rawLevels": [
+            "partial"
+          ],
+          "consistentLevels": [
+            "partial"
+          ],
+          "rows": [
+            {
+              "beachId": 1927,
+              "name": "Φυριπλάκα",
+              "level": "partial",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 1925,
+              "name": "Τσιγκράδο",
+              "level": "partial",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            }
+          ],
+          "rawRows": [
+            {
+              "beachId": 1927,
+              "name": "Φυριπλάκα",
+              "level": "partial",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 1925,
+              "name": "Τσιγκράδο",
+              "level": "partial",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            }
+          ],
+          "notes": "Fyriplaka and Tsigrado sit on the same south-facing cliff/beach-front; access remains separate and Tsigrado must not be promoted as mainstream."
+        },
+        {
+          "segmentId": "milos-agia-kyriaki-psarovolada-front",
+          "reason": "same_continuous_beachfront",
+          "rawLevels": [
+            "partial"
+          ],
+          "consistentLevels": [
+            "partial"
+          ],
+          "rows": [
+            {
+              "beachId": 1901,
+              "name": "Αγία Κυριακή",
+              "level": "partial",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 1931,
+              "name": "Ψαροβολάδα",
+              "level": "partial",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            }
+          ],
+          "rawRows": [
+            {
+              "beachId": 1901,
+              "name": "Αγία Κυριακή",
+              "level": "partial",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 1931,
+              "name": "Ψαροβολάδα",
+              "level": "partial",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            }
+          ],
+          "notes": "Agia Kyriaki and Psarovolada are adjacent south/southeast coast records with similar exposure behavior."
+        },
+        {
+          "segmentId": "milos-papafragas-kapros-front",
+          "reason": "same_cove_or_micro_bay",
+          "rawLevels": [
+            "partial"
+          ],
+          "consistentLevels": [
+            "partial"
+          ],
+          "rows": [
+            {
+              "beachId": 1916,
+              "name": "Παπάφραγκας",
+              "level": "partial",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 1908,
+              "name": "Κάπρος",
+              "level": "partial",
+              "windProfileConfidence": "low",
+              "knownWindSportSpot": false
+            }
+          ],
+          "rawRows": [
+            {
+              "beachId": 1916,
+              "name": "Παπάφραγκας",
+              "level": "partial",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 1908,
+              "name": "Κάπρος",
+              "level": "partial",
+              "windProfileConfidence": "low",
+              "knownWindSportSpot": false
+            }
+          ],
+          "notes": "Papafragas and Kapros are neighboring north-coast pocket records; keep access and danger/cove context separate from exposure consistency."
+        },
+        {
+          "segmentId": "milos-kampanes-nerodafni-front",
+          "reason": "same_continuous_beachfront",
+          "rawLevels": [
+            "exposed"
+          ],
+          "consistentLevels": [
+            "exposed"
+          ],
+          "rows": [
+            {
+              "beachId": 1911,
+              "name": "Καμπάνες",
+              "level": "exposed",
+              "windProfileConfidence": "low",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 1914,
+              "name": "Νεροδάφνη",
+              "level": "exposed",
+              "windProfileConfidence": "low",
+              "knownWindSportSpot": false
+            }
+          ],
+          "rawRows": [
+            {
+              "beachId": 1911,
+              "name": "Καμπάνες",
+              "level": "exposed",
+              "windProfileConfidence": "low",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 1914,
+              "name": "Νεροδάφνη",
+              "level": "exposed",
+              "windProfileConfidence": "low",
+              "knownWindSportSpot": false
+            }
+          ],
+          "notes": "Kampanes and Nerodafni are adjacent northwest-coast records with similar shoreline facing."
+        },
+        {
+          "segmentId": "milos-rivari-fatourena-front",
+          "reason": "same_continuous_beachfront",
+          "rawLevels": [
+            "exposed"
+          ],
+          "consistentLevels": [
+            "exposed"
+          ],
+          "rows": [
+            {
+              "beachId": 1921,
+              "name": "Ριβάρι",
+              "level": "exposed",
+              "windProfileConfidence": "low",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 1926,
+              "name": "Φατούρενα",
+              "level": "exposed",
+              "windProfileConfidence": "low",
+              "knownWindSportSpot": false
+            }
+          ],
+          "rawRows": [
+            {
+              "beachId": 1921,
+              "name": "Ριβάρι",
+              "level": "exposed",
+              "windProfileConfidence": "low",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 1926,
+              "name": "Φατούρενα",
+              "level": "exposed",
+              "windProfileConfidence": "low",
+              "knownWindSportSpot": false
+            }
+          ],
+          "notes": "Rivari and Fatourena are close west-bay/northeast-facing records; segment consistency is map-color support only, not high wind confidence."
+        },
+        {
+          "segmentId": "milos-triades-ammoudaraki-front",
+          "reason": "same_continuous_beachfront",
+          "rawLevels": [
+            "exposed"
+          ],
+          "consistentLevels": [
+            "exposed"
+          ],
+          "rows": [
+            {
+              "beachId": 1924,
+              "name": "Τριάδες",
+              "level": "exposed",
+              "windProfileConfidence": "low",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 1902,
+              "name": "Αμμουδαράκι",
+              "level": "exposed",
+              "windProfileConfidence": "low",
+              "knownWindSportSpot": false
+            }
+          ],
+          "rawRows": [
+            {
+              "beachId": 1924,
+              "name": "Τριάδες",
+              "level": "exposed",
+              "windProfileConfidence": "low",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 1902,
+              "name": "Αμμουδαράκι",
+              "level": "exposed",
+              "windProfileConfidence": "low",
+              "knownWindSportSpot": false
+            }
+          ],
+          "notes": "Triades and Ammoudaraki are neighboring difficult-access west-coast records; access difficulty remains a separate top-pick blocker."
+        }
+      ]
+    },
+    {
+      "scenarioId": "Naxos_S_4BFT",
+      "windDirectionDeg": 180,
+      "segments": [
+        {
+          "segmentId": "milos-provatas-agios-sostis-front",
+          "reason": "same_continuous_beachfront",
+          "rawLevels": [
+            "exposed"
+          ],
+          "consistentLevels": [
+            "exposed"
+          ],
+          "rows": [
+            {
+              "beachId": 1920,
+              "name": "Προβατάς",
+              "level": "exposed",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 1900,
+              "name": "Άγιος Σώστης",
+              "level": "exposed",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            }
+          ],
+          "rawRows": [
+            {
+              "beachId": 1920,
+              "name": "Προβατάς",
+              "level": "exposed",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 1900,
+              "name": "Άγιος Σώστης",
+              "level": "exposed",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            }
+          ],
+          "notes": "Provatas and Agios Sostis are adjacent south-coast records with near-identical south-facing shoreline behavior."
+        },
+        {
+          "segmentId": "milos-fyriplaka-tsigrado-front",
+          "reason": "same_continuous_beachfront",
+          "rawLevels": [
+            "exposed"
+          ],
+          "consistentLevels": [
+            "exposed"
+          ],
+          "rows": [
+            {
+              "beachId": 1927,
+              "name": "Φυριπλάκα",
+              "level": "exposed",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 1925,
+              "name": "Τσιγκράδο",
+              "level": "exposed",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            }
+          ],
+          "rawRows": [
+            {
+              "beachId": 1927,
+              "name": "Φυριπλάκα",
+              "level": "exposed",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 1925,
+              "name": "Τσιγκράδο",
+              "level": "exposed",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            }
+          ],
+          "notes": "Fyriplaka and Tsigrado sit on the same south-facing cliff/beach-front; access remains separate and Tsigrado must not be promoted as mainstream."
+        },
+        {
+          "segmentId": "milos-agia-kyriaki-psarovolada-front",
+          "reason": "same_continuous_beachfront",
+          "rawLevels": [
+            "exposed"
+          ],
+          "consistentLevels": [
+            "exposed"
+          ],
+          "rows": [
+            {
+              "beachId": 1901,
+              "name": "Αγία Κυριακή",
+              "level": "exposed",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 1931,
+              "name": "Ψαροβολάδα",
+              "level": "exposed",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            }
+          ],
+          "rawRows": [
+            {
+              "beachId": 1901,
+              "name": "Αγία Κυριακή",
+              "level": "exposed",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 1931,
+              "name": "Ψαροβολάδα",
+              "level": "exposed",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            }
+          ],
+          "notes": "Agia Kyriaki and Psarovolada are adjacent south/southeast coast records with similar exposure behavior."
+        },
+        {
+          "segmentId": "milos-papafragas-kapros-front",
+          "reason": "same_cove_or_micro_bay",
+          "rawLevels": [
+            "protected"
+          ],
+          "consistentLevels": [
+            "protected"
+          ],
+          "rows": [
+            {
+              "beachId": 1916,
+              "name": "Παπάφραγκας",
+              "level": "protected",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 1908,
+              "name": "Κάπρος",
+              "level": "protected",
+              "windProfileConfidence": "low",
+              "knownWindSportSpot": false
+            }
+          ],
+          "rawRows": [
+            {
+              "beachId": 1916,
+              "name": "Παπάφραγκας",
+              "level": "protected",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 1908,
+              "name": "Κάπρος",
+              "level": "protected",
+              "windProfileConfidence": "low",
+              "knownWindSportSpot": false
+            }
+          ],
+          "notes": "Papafragas and Kapros are neighboring north-coast pocket records; keep access and danger/cove context separate from exposure consistency."
+        },
+        {
+          "segmentId": "milos-kampanes-nerodafni-front",
+          "reason": "same_continuous_beachfront",
+          "rawLevels": [
+            "protected"
+          ],
+          "consistentLevels": [
+            "protected"
+          ],
+          "rows": [
+            {
+              "beachId": 1911,
+              "name": "Καμπάνες",
+              "level": "protected",
+              "windProfileConfidence": "low",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 1914,
+              "name": "Νεροδάφνη",
+              "level": "protected",
+              "windProfileConfidence": "low",
+              "knownWindSportSpot": false
+            }
+          ],
+          "rawRows": [
+            {
+              "beachId": 1911,
+              "name": "Καμπάνες",
+              "level": "protected",
+              "windProfileConfidence": "low",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 1914,
+              "name": "Νεροδάφνη",
+              "level": "protected",
+              "windProfileConfidence": "low",
+              "knownWindSportSpot": false
+            }
+          ],
+          "notes": "Kampanes and Nerodafni are adjacent northwest-coast records with similar shoreline facing."
+        },
+        {
+          "segmentId": "milos-rivari-fatourena-front",
+          "reason": "same_continuous_beachfront",
+          "rawLevels": [
+            "partial"
+          ],
+          "consistentLevels": [
+            "partial"
+          ],
+          "rows": [
+            {
+              "beachId": 1921,
+              "name": "Ριβάρι",
+              "level": "partial",
+              "windProfileConfidence": "low",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 1926,
+              "name": "Φατούρενα",
+              "level": "partial",
+              "windProfileConfidence": "low",
+              "knownWindSportSpot": false
+            }
+          ],
+          "rawRows": [
+            {
+              "beachId": 1921,
+              "name": "Ριβάρι",
+              "level": "partial",
+              "windProfileConfidence": "low",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 1926,
+              "name": "Φατούρενα",
+              "level": "partial",
+              "windProfileConfidence": "low",
+              "knownWindSportSpot": false
+            }
+          ],
+          "notes": "Rivari and Fatourena are close west-bay/northeast-facing records; segment consistency is map-color support only, not high wind confidence."
+        },
+        {
+          "segmentId": "milos-triades-ammoudaraki-front",
+          "reason": "same_continuous_beachfront",
+          "rawLevels": [
+            "partial"
+          ],
+          "consistentLevels": [
+            "partial"
+          ],
+          "rows": [
+            {
+              "beachId": 1924,
+              "name": "Τριάδες",
+              "level": "partial",
+              "windProfileConfidence": "low",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 1902,
+              "name": "Αμμουδαράκι",
+              "level": "partial",
+              "windProfileConfidence": "low",
+              "knownWindSportSpot": false
+            }
+          ],
+          "rawRows": [
+            {
+              "beachId": 1924,
+              "name": "Τριάδες",
+              "level": "partial",
+              "windProfileConfidence": "low",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 1902,
+              "name": "Αμμουδαράκι",
+              "level": "partial",
+              "windProfileConfidence": "low",
+              "knownWindSportSpot": false
+            }
+          ],
+          "notes": "Triades and Ammoudaraki are neighboring difficult-access west-coast records; access difficulty remains a separate top-pick blocker."
+        }
+      ]
+    },
+    {
+      "scenarioId": "Naxos_E_4BFT",
+      "windDirectionDeg": 90,
+      "segments": [
+        {
+          "segmentId": "milos-provatas-agios-sostis-front",
+          "reason": "same_continuous_beachfront",
+          "rawLevels": [
+            "partial"
+          ],
+          "consistentLevels": [
+            "partial"
+          ],
+          "rows": [
+            {
+              "beachId": 1920,
+              "name": "Προβατάς",
+              "level": "partial",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 1900,
+              "name": "Άγιος Σώστης",
+              "level": "partial",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            }
+          ],
+          "rawRows": [
+            {
+              "beachId": 1920,
+              "name": "Προβατάς",
+              "level": "partial",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 1900,
+              "name": "Άγιος Σώστης",
+              "level": "partial",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            }
+          ],
+          "notes": "Provatas and Agios Sostis are adjacent south-coast records with near-identical south-facing shoreline behavior."
+        },
+        {
+          "segmentId": "milos-fyriplaka-tsigrado-front",
+          "reason": "same_continuous_beachfront",
+          "rawLevels": [
+            "partial"
+          ],
+          "consistentLevels": [
+            "partial"
+          ],
+          "rows": [
+            {
+              "beachId": 1927,
+              "name": "Φυριπλάκα",
+              "level": "partial",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 1925,
+              "name": "Τσιγκράδο",
+              "level": "partial",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            }
+          ],
+          "rawRows": [
+            {
+              "beachId": 1927,
+              "name": "Φυριπλάκα",
+              "level": "partial",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 1925,
+              "name": "Τσιγκράδο",
+              "level": "partial",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            }
+          ],
+          "notes": "Fyriplaka and Tsigrado sit on the same south-facing cliff/beach-front; access remains separate and Tsigrado must not be promoted as mainstream."
+        },
+        {
+          "segmentId": "milos-agia-kyriaki-psarovolada-front",
+          "reason": "same_continuous_beachfront",
+          "rawLevels": [
+            "exposed"
+          ],
+          "consistentLevels": [
+            "exposed"
+          ],
+          "rows": [
+            {
+              "beachId": 1901,
+              "name": "Αγία Κυριακή",
+              "level": "exposed",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 1931,
+              "name": "Ψαροβολάδα",
+              "level": "exposed",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            }
+          ],
+          "rawRows": [
+            {
+              "beachId": 1901,
+              "name": "Αγία Κυριακή",
+              "level": "exposed",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 1931,
+              "name": "Ψαροβολάδα",
+              "level": "exposed",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            }
+          ],
+          "notes": "Agia Kyriaki and Psarovolada are adjacent south/southeast coast records with similar exposure behavior."
+        },
+        {
+          "segmentId": "milos-papafragas-kapros-front",
+          "reason": "same_cove_or_micro_bay",
+          "rawLevels": [
+            "partial"
+          ],
+          "consistentLevels": [
+            "partial"
+          ],
+          "rows": [
+            {
+              "beachId": 1916,
+              "name": "Παπάφραγκας",
+              "level": "partial",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 1908,
+              "name": "Κάπρος",
+              "level": "partial",
+              "windProfileConfidence": "low",
+              "knownWindSportSpot": false
+            }
+          ],
+          "rawRows": [
+            {
+              "beachId": 1916,
+              "name": "Παπάφραγκας",
+              "level": "partial",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 1908,
+              "name": "Κάπρος",
+              "level": "partial",
+              "windProfileConfidence": "low",
+              "knownWindSportSpot": false
+            }
+          ],
+          "notes": "Papafragas and Kapros are neighboring north-coast pocket records; keep access and danger/cove context separate from exposure consistency."
+        },
+        {
+          "segmentId": "milos-kampanes-nerodafni-front",
+          "reason": "same_continuous_beachfront",
+          "rawLevels": [
+            "partial"
+          ],
+          "consistentLevels": [
+            "partial"
+          ],
+          "rows": [
+            {
+              "beachId": 1911,
+              "name": "Καμπάνες",
+              "level": "partial",
+              "windProfileConfidence": "low",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 1914,
+              "name": "Νεροδάφνη",
+              "level": "partial",
+              "windProfileConfidence": "low",
+              "knownWindSportSpot": false
+            }
+          ],
+          "rawRows": [
+            {
+              "beachId": 1911,
+              "name": "Καμπάνες",
+              "level": "partial",
+              "windProfileConfidence": "low",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 1914,
+              "name": "Νεροδάφνη",
+              "level": "partial",
+              "windProfileConfidence": "low",
+              "knownWindSportSpot": false
+            }
+          ],
+          "notes": "Kampanes and Nerodafni are adjacent northwest-coast records with similar shoreline facing."
+        },
+        {
+          "segmentId": "milos-rivari-fatourena-front",
+          "reason": "same_continuous_beachfront",
+          "rawLevels": [
+            "protected"
+          ],
+          "consistentLevels": [
+            "protected"
+          ],
+          "rows": [
+            {
+              "beachId": 1921,
+              "name": "Ριβάρι",
+              "level": "protected",
+              "windProfileConfidence": "low",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 1926,
+              "name": "Φατούρενα",
+              "level": "protected",
+              "windProfileConfidence": "low",
+              "knownWindSportSpot": false
+            }
+          ],
+          "rawRows": [
+            {
+              "beachId": 1921,
+              "name": "Ριβάρι",
+              "level": "protected",
+              "windProfileConfidence": "low",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 1926,
+              "name": "Φατούρενα",
+              "level": "protected",
+              "windProfileConfidence": "low",
+              "knownWindSportSpot": false
+            }
+          ],
+          "notes": "Rivari and Fatourena are close west-bay/northeast-facing records; segment consistency is map-color support only, not high wind confidence."
+        },
+        {
+          "segmentId": "milos-triades-ammoudaraki-front",
+          "reason": "same_continuous_beachfront",
+          "rawLevels": [
+            "protected"
+          ],
+          "consistentLevels": [
+            "protected"
+          ],
+          "rows": [
+            {
+              "beachId": 1924,
+              "name": "Τριάδες",
+              "level": "protected",
+              "windProfileConfidence": "low",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 1902,
+              "name": "Αμμουδαράκι",
+              "level": "protected",
+              "windProfileConfidence": "low",
+              "knownWindSportSpot": false
+            }
+          ],
+          "rawRows": [
+            {
+              "beachId": 1924,
+              "name": "Τριάδες",
+              "level": "protected",
+              "windProfileConfidence": "low",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 1902,
+              "name": "Αμμουδαράκι",
+              "level": "protected",
+              "windProfileConfidence": "low",
+              "knownWindSportSpot": false
+            }
+          ],
+          "notes": "Triades and Ammoudaraki are neighboring difficult-access west-coast records; access difficulty remains a separate top-pick blocker."
+        }
+      ]
+    }
+  ]
+}

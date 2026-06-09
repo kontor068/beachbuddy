@@ -6,10 +6,12 @@ import {
   FilterKey,
   ForecastConfidence,
   ForecastItem,
+  GeospatialExposureProfile,
   LanguageCode,
   MarineForecast,
   RecommendationConfidence,
   SeabedSlope,
+  SimpleWindSuitability,
   SortOption,
   SuitableBeach,
   SwimmingComfort,
@@ -34,7 +36,9 @@ import { isSearchMatch } from '../utils/searchNormalize';
 import { calculateSeaConditionScore } from '../utils/seaConditions';
 import { getSelectedDayPrefix } from '../utils/dateLabels';
 import { assessBeachWindExposure } from '../utils/windExposureEngine';
-import { hasDifficultTopPickAccess, hasTrulyEasyAccess } from '../utils/access';
+import { summarizeMeltemiBehavior } from '../utils/windClimatology';
+import { describeSimpleWindSuitability, describeWindExposure } from '../utils/windExposureCopy';
+import { hasDifficultTopPickAccess, hasMainstreamTopPickAccess, hasTrulyEasyAccess, isAdventureBeach } from '../utils/access';
 import { getBeachTouristRecognitionScore } from '../utils/touristPriority';
 
 export interface BeachScore {
@@ -66,6 +70,8 @@ export interface BeachScore {
   windSector?: WindSector;
   canClaimWindProtection?: boolean;
   seaCalmClaimAllowed?: boolean;
+  facingDeg?: number | null;
+  simpleWindSuitability?: SimpleWindSuitability;
 }
 
 export interface BestBeachTime {
@@ -107,6 +113,7 @@ export interface BeachRecommendation {
   windSector?: WindSector;
   canClaimWindProtection?: boolean;
   seaCalmClaimAllowed?: boolean;
+  simpleWindSuitability?: SimpleWindSuitability;
 }
 
 export type BeachWeatherById = Record<number, DailyForecast | undefined>;
@@ -115,7 +122,21 @@ interface ScoreOptions {
   weatherSource?: WeatherSource;
   hourlyForecast?: ForecastItem[];
   recentRainMm?: number;
+  geospatialProfile?: GeospatialExposureProfile;
 }
+
+export type GeospatialExposureLookup = Record<number, GeospatialExposureProfile>;
+
+export const MAX_TOP_RECOMMENDATION_DISPLAY_LIMIT = 3;
+
+export const getTopRecommendationDisplayLimit = (qualifiedSuitableCount: number): number => {
+  if (!Number.isFinite(qualifiedSuitableCount) || qualifiedSuitableCount <= 0) return 0;
+
+  return Math.min(
+    MAX_TOP_RECOMMENDATION_DISPLAY_LIMIT,
+    Math.max(1, Math.floor(qualifiedSuitableCount / 3))
+  );
+};
 
 const clampScore = (score: number): number => Math.max(0, Math.min(100, Math.round(score)));
 
@@ -128,6 +149,27 @@ const formatTime = (item: ForecastItem): string => {
 const formatTimeWindow = (start?: string, end?: string): string | undefined => {
   if (!start) return undefined;
   return end && end !== start ? `${start}-${end}` : start;
+};
+
+const BEACH_VISIT_START_MINUTES = 10 * 60;
+const BEACH_VISIT_END_MINUTES = 18 * 60;
+const WIND_RISE_BEAUFORT_THRESHOLD = 4;
+const MIN_WIND_RISE_WINDOW_MINUTES = 120;
+const DEFAULT_FORECAST_SLOT_MINUTES = 60;
+const MAX_FORECAST_SLOT_MINUTES = 240;
+const MIN_VISIT_TEMP_C = 20;
+const MAX_VISIT_TEMP_C = 35;
+
+const getForecastMinutesOfDay = (item: ForecastItem): number => {
+  const date = new Date(item.dt * 1000);
+  return date.getHours() * 60 + date.getMinutes();
+};
+
+const formatMinutesAsClock = (minutes: number): string => {
+  const normalized = Math.max(0, Math.min(23 * 60 + 59, Math.round(minutes)));
+  const hours = Math.floor(normalized / 60);
+  const mins = normalized % 60;
+  return `${hours.toString().padStart(2, '0')}:${mins.toString().padStart(2, '0')}`;
 };
 
 const getWeatherTemp = (weather: WeatherData | DailyForecast): number => {
@@ -272,6 +314,7 @@ const hasServiceAmenities = (beach: Beach): boolean => Boolean(
 );
 
 const isQuietBeach = (beach: Beach): boolean => {
+  if (beach.metadata?.environment?.quiet === false) return false;
   if (beach.amenities?.beachBar) return false;
   return Boolean(
     beach.environment?.quiet ||
@@ -534,13 +577,9 @@ const exposurePriority = (exposureLevel?: ExposureLevel): number => {
   return 2;
 };
 
-const MEANINGFUL_WIND_TOP_PICK_BEAUFORT = 4;
+const MEANINGFUL_WIND_TOP_PICK_BEAUFORT = 3;
 const PROTECTED_FIRST_BEAUFORT = 5;
 const MIN_TOP_PICK_SEA_CONDITION_SCORE = 7;
-
-const isEasyMainstreamAccess = (beach: Beach): boolean => (
-  beach.accessibility === Accessibility.EASY || beach.metadata?.access?.type === 'asphalt_road'
-);
 
 const hasMainstreamFacilities = (beach: Beach): boolean => Boolean(
   beach.metadata?.organized ??
@@ -552,11 +591,14 @@ const topPickPopularityScore = (beach: Beach): number => {
 };
 
 const topPickAccessPriority = (beach: Beach): number => {
+  const accessType = beach.metadata?.access?.type;
   if (hasDifficultTopPickAccess(beach)) return 5;
-  if (beach.metadata?.access?.type === 'asphalt_road' || beach.accessibility === Accessibility.EASY) return 0;
-  if (beach.metadata?.access?.type === 'passable_dirt_road' || beach.accessibility === Accessibility.MODERATE) return 1;
-  if (beach.metadata?.access?.type === 'hiking_path_easy') return 2;
-  if (isEasyMainstreamAccess(beach)) return 3;
+  if (accessType === 'asphalt_road') return 0;
+  if (accessType === 'passable_dirt_road') return 1;
+  if (accessType === 'hiking_path_easy') return 2;
+  if (!accessType && beach.accessibility === Accessibility.EASY) return 0;
+  if (!accessType && beach.accessibility === Accessibility.MODERATE) return 1;
+  if (hasMainstreamTopPickAccess(beach)) return 3;
   return 4;
 };
 
@@ -584,12 +626,60 @@ const hasTopPickVisitorServices = (beach: Beach): boolean => {
   );
 };
 
+const hasMainstreamTopPickProfile = (beach: Beach): boolean => Boolean(
+  hasTopPickVisitorServices(beach) ||
+  beach.amenities?.parking ||
+  beach.environment?.familyFriendly ||
+  (typeof beach.popularityScore === 'number' && beach.popularityScore >= 55) ||
+  beach.rating >= 4.5
+);
+
 const getPriorityBeach = <T extends { beachId?: number; beach?: Beach }>(
   item: T,
   beachById?: Map<number, Beach>
 ): Beach | undefined => (
   item.beach ?? (item.beachId !== undefined ? beachById?.get(Number(item.beachId)) : undefined)
 );
+
+const hasTrustedTopPickStaticData = (beach: Beach): boolean => {
+  const metadata = beach.metadata;
+  const metadataWithAppVisibility = metadata as (Beach['metadata'] & { excludeFromApp?: boolean }) | undefined;
+
+  if (metadataWithAppVisibility?.excludeFromApp) return false;
+  if (getMetadataConfidence(beach) !== 'high') return false;
+  if (!hasMainstreamTopPickAccess(beach)) return false;
+  if (!hasMainstreamTopPickProfile(beach)) return false;
+  if (!metadata?.access?.type || metadata.access.type === 'unknown') return false;
+  if (!metadata?.terrain?.types?.length || beach.beachType === 'unknown') return false;
+  if (!metadata?.waterDepth?.type && !beach.waterDepth) return false;
+  if (beach.orientation?.confidence === 'low') return false;
+
+  return true;
+};
+
+export const isTrustedTopRecommendationCandidate = <T extends {
+  beachId?: number;
+  beach?: Beach;
+  confidence?: RecommendationConfidence;
+  windProfile?: WindProfile;
+  windProfileSource?: WindProfileSource;
+}>(
+  item: T,
+  beachById?: Map<number, Beach>,
+  windBeaufort: number = MEANINGFUL_WIND_TOP_PICK_BEAUFORT
+): boolean => {
+  const beach = getPriorityBeach(item, beachById);
+  if (!beach || !hasTrustedTopPickStaticData(beach)) return false;
+  if (item.confidence?.level === 'low') return false;
+  if (item.windProfile?.confidence === 'low') return false;
+
+  // From meaningful wind upward, do not make a top recommendation from legacy/unknown wind exposure.
+  if (windBeaufort >= MEANINGFUL_WIND_TOP_PICK_BEAUFORT && item.windProfileSource === 'unknown') {
+    return false;
+  }
+
+  return true;
+};
 
 const visibleExposurePriority = (item: { exposureLevel?: ExposureLevel; canClaimWindProtection?: boolean }): number => {
   if (item.exposureLevel === 'protected' && item.canClaimWindProtection === false) return 1;
@@ -692,122 +782,75 @@ const greekWindDirectionsAccusative: Record<WindDirection, string> = {
 };
 
 /**
- * Calculates the best time of day to visit the beach based on hourly forecast.
+ * Returns a visit window only when wind rises to 4+ Bft later in the beach day.
+ * If there is no clear 2h+ window before that rise, no time recommendation is shown.
  */
 export const calculateBestBeachTime = (hourlyForecast: ForecastItem[], beach?: Beach): BestBeachTime | undefined => {
   if (!hourlyForecast || hourlyForecast.length === 0) return undefined;
 
-  const relevantForecast = getKeyBeachHours(hourlyForecast);
-  if (relevantForecast.length === 0) return undefined;
-  if (relevantForecast.every(hasHourlyRainRisk)) return undefined;
+  const dayEntries = hourlyForecast
+    .map(item => {
+      const startMinutes = getForecastMinutesOfDay(item);
+      const windSpeedKmph = item.wind.speed * 3.6;
+      const temp = item.main.temp;
+      return {
+        item,
+        startMinutes,
+        windSpeedKmph,
+        temp,
+        beaufort: getBeaufortLevel(windSpeedKmph),
+      };
+    })
+    .filter(entry => (
+      entry.startMinutes >= BEACH_VISIT_START_MINUTES &&
+      entry.startMinutes <= BEACH_VISIT_END_MINUTES
+    ))
+    .sort((a, b) => a.startMinutes - b.startMinutes)
+    .map((entry, index, entries) => {
+      const nextStart = entries[index + 1]?.startMinutes;
+      const endMinutes = nextStart !== undefined &&
+        nextStart > entry.startMinutes &&
+        nextStart - entry.startMinutes <= MAX_FORECAST_SLOT_MINUTES
+          ? Math.min(BEACH_VISIT_END_MINUTES, nextStart)
+          : Math.min(BEACH_VISIT_END_MINUTES, entry.startMinutes + DEFAULT_FORECAST_SLOT_MINUTES);
 
-  const scored = relevantForecast.map(item => {
-    const hasRainRisk = hasHourlyRainRisk(item);
-    const windSpeedKmph = item.wind.speed * 3.6;
-    const gustKmph = typeof item.wind.gustKnots === 'number'
-      ? item.wind.gustKnots * 1.852
-      : typeof item.wind.gust === 'number'
-        ? item.wind.gust * 3.6
-        : undefined;
-    const temp = item.main.temp;
-    const waveHeightM = item.marine?.waveHeightM;
-    const windDirection = degToCompass(item.wind.deg);
-    const exposureLevel = beach ? getHourlyExposureLevel(beach, item.wind.deg, windDirection, windSpeedKmph, waveHeightM) : 'partial';
-    const isExposed = exposureLevel !== 'protected';
-    const seaScore = beach
-      ? calculateSeaConditionScore(isExposed, windSpeedKmph, exposureLevel, waveHeightM)
-      : (windSpeedKmph < 18 && (waveHeightM === undefined || waveHeightM < 0.8) ? 8 : 5);
-    const gustSpread = typeof gustKmph === 'number' ? Math.max(0, gustKmph - windSpeedKmph) : 0;
-    const hour = new Date(item.dt * 1000).getHours();
+      return {
+        ...entry,
+        endMinutes,
+        suitableBeforeWindRise: (
+          entry.beaufort < WIND_RISE_BEAUFORT_THRESHOLD &&
+          !hasHourlyRainRisk(entry.item) &&
+          entry.temp >= MIN_VISIT_TEMP_C &&
+          entry.temp <= MAX_VISIT_TEMP_C
+        ),
+      };
+    });
 
-    let comfort = seaScore * 10;
-    if (temp < 20) comfort -= (20 - temp) * 3;
-    if (temp > 32) comfort -= (temp - 32) * 4;
-    if (hour >= 12 && hour <= 16 && temp >= 32) comfort -= 10;
-    if (gustSpread >= 15) comfort -= 10;
-    if (gustSpread >= 25) comfort -= 10;
-    if (beach && beach.popularityScore >= 75 && hour >= 13 && hour <= 17) comfort -= 6;
-    if (hasRainRisk) comfort = 0;
+  if (dayEntries.length < 2) return undefined;
 
-    return {
-      item,
-      time: formatTime(item),
-      hour,
-      windSpeedKmph,
-      gustKmph,
-      temp,
-      comfort: clampScore(comfort),
-      good: !hasRainRisk && comfort >= 65,
-    };
-  });
+  const windRiseIndex = dayEntries.findIndex(entry => entry.beaufort >= WIND_RISE_BEAUFORT_THRESHOLD);
+  if (windRiseIndex <= 0) return undefined;
 
-  let bestStart: string | null = null;
-  let bestEnd: string | null = null;
-  let bestAverage = -1;
-  let currentStartIndex = -1;
-  let currentScores: number[] = [];
-
-  const closeWindow = (endIndex: number) => {
-    if (currentStartIndex < 0 || currentScores.length === 0) return;
-    const average = currentScores.reduce((sum, value) => sum + value, 0) / currentScores.length;
-    if (average > bestAverage || (average === bestAverage && currentScores.length > 1)) {
-      bestAverage = average;
-      bestStart = scored[currentStartIndex].time;
-      bestEnd = scored[Math.max(currentStartIndex, endIndex)].time;
-    }
-  };
-
-  scored.forEach((entry, index) => {
-    if (entry.good) {
-      if (currentStartIndex < 0) currentStartIndex = index;
-      currentScores.push(entry.comfort);
-      return;
-    }
-
-    closeWindow(index);
-    currentStartIndex = -1;
-    currentScores = [];
-  });
-  closeWindow(scored.length - 1);
-
-  if (!bestStart || !bestEnd) {
-    const best = scored.reduce((current, candidate) => candidate.comfort > current.comfort ? candidate : current, scored[0]);
-    bestStart = best.time;
-    bestEnd = best.time;
-    bestAverage = best.comfort;
+  let windowStartIndex = windRiseIndex - 1;
+  while (windowStartIndex >= 0 && dayEntries[windowStartIndex].suitableBeforeWindRise) {
+    windowStartIndex -= 1;
   }
+  windowStartIndex += 1;
 
-  const first = scored[0];
-  const last = scored[scored.length - 1];
-  const windIncrease = last.windSpeedKmph - first.windSpeedKmph;
-  const maxTemp = Math.max(...scored.map(entry => entry.temp));
-  const gustIncrease = (last.gustKmph || 0) - (first.gustKmph || 0);
-  const crowdedLater = Boolean(beach && beach.popularityScore >= 75);
-  const avoidMidday = maxTemp >= 33 || crowdedLater;
+  if (windowStartIndex >= windRiseIndex) return undefined;
 
-  let avoidTimeWindow: string | undefined;
-  if (avoidMidday) {
-    avoidTimeWindow = '12:00-16:00';
-  } else if (windIncrease >= 8 || gustIncrease >= 10) {
-    avoidTimeWindow = '14:00-18:00';
-  }
+  const windowStartMinutes = dayEntries[windowStartIndex].startMinutes;
+  const windRiseMinutes = dayEntries[windRiseIndex].startMinutes;
+  if (windRiseMinutes - windowStartMinutes < MIN_WIND_RISE_WINDOW_MINUTES) return undefined;
 
-  const reasonParts: string[] = [];
-  if (windIncrease >= 8 || gustIncrease >= 10) {
-    reasonParts.push('Wind or gusts increase later, so the earlier window is safer.');
-  }
-  if (maxTemp >= 33) {
-    reasonParts.push('Midday heat is less comfortable, especially for families.');
-  }
-  if (crowdedLater) {
-    reasonParts.push('This beach can get busier after lunch.');
-  }
-  if (reasonParts.length === 0) {
-    reasonParts.push(bestAverage >= 75 ? 'Best balance of wind, sea, and temperature.' : 'Most usable window from the available hourly forecast.');
-  }
-
+  const bestStart = formatMinutesAsClock(windowStartMinutes);
+  const bestEnd = formatMinutesAsClock(windRiseMinutes);
+  const avoidEnd = formatMinutesAsClock(BEACH_VISIT_END_MINUTES);
+  const avoidTimeWindow = windRiseMinutes < BEACH_VISIT_END_MINUTES
+    ? formatTimeWindow(bestEnd, avoidEnd)
+    : undefined;
+  const timeReason = `Wind reaches ${dayEntries[windRiseIndex].beaufort} Beaufort around ${bestEnd}, so this is the useful window before it picks up.`;
   const bestTimeWindow = formatTimeWindow(bestStart, bestEnd);
-  const timeReason = reasonParts.join(' ');
 
   return {
     bestStart,
@@ -844,15 +887,21 @@ export const filterBeaches = (
 
   // 2. Filters
   if (filters.length > 0 && !filters.includes('showAll')) {
+    const surfaceFilters = filters.filter(isSurfaceFilter);
+    const nonSurfaceFilters = filters.filter(f => !isSurfaceFilter(f));
+
     result = result.filter(b => {
-      return filters.every(f => {
+      const matchesSelectedSurface = surfaceFilters.length === 0 || surfaceFilters.some(f => matchesSurfaceFilter(b, f));
+      if (!matchesSelectedSurface) return false;
+
+      return nonSurfaceFilters.every(f => {
         const filterName = f as string;
         if (f === 'easyAccess') return hasTrulyEasyAccess(b);
         if (filterName === 'quiet') return isQuietBeach(b);
         if (filterName === 'familyFriendly') return isFamilyFriendlyBeach(b);
         if (filterName === 'snorkeling') return isSnorkelingBeach(b);
+        if (filterName === 'adventure') return isAdventureBeach(b);
         if (filterName === 'beachBar') return hasBeachBarAmenity(b);
-        if (isSurfaceFilter(f)) return matchesSurfaceFilter(b, f);
         // Check amenities
         if (b.amenities && f in b.amenities) return b.amenities[f as keyof typeof b.amenities];
         // Check characteristics
@@ -981,6 +1030,7 @@ export const calculateBeachScore = (
   const recentRainMm = getRecentRainMm(hourlyForecast, options?.recentRainMm);
   const windAssessment = assessBeachWindExposure({
     beach,
+    geospatialProfile: options?.geospatialProfile,
     windDirectionDeg: weather.wind.deg,
     windDirection: windDir,
     windSpeedKmh: windSpeedKmph,
@@ -1069,6 +1119,18 @@ export const calculateBeachScore = (
   let finalExposureLevel: ExposureLevel = windAssessment.exposureLevel;
   windAssessment.warnings.forEach(addWarning);
   windAssessment.reasons.forEach(reason => reasons.push(reason));
+  reasons.push(windAssessment.simpleWindSuitability.explanationText);
+
+  // Fetch-limited modeled wave fills the gap when live marine data is missing,
+  // so a beach that is exposed in strong wind cannot float on a high score just
+  // because no buoy reported. SMB gives open-water Hs, so we damp it toward the
+  // shore by exposure (sheltered/cross-shore beaches see far less of it).
+  const modeledWaveDamping = finalExposureLevel === 'protected' ? 0.5 : finalExposureLevel === 'partial' ? 0.75 : 1;
+  const modeledWaveHeightM = Number((windAssessment.modeledWaveHeightM * modeledWaveDamping).toFixed(2));
+  const usingModeledWave = !(typeof waveHeightM === 'number' && Number.isFinite(waveHeightM));
+  // Numeric scoring uses this; user-facing "measured" copy still uses waveHeightM
+  // only, so we never present an estimate as if it were a real measurement.
+  const effectiveWaveHeightM = usingModeledWave ? modeledWaveHeightM : (waveHeightM as number);
 
   if (windSpeedKmph >= 30) {
     warnings.push({
@@ -1119,7 +1181,7 @@ export const calculateBeachScore = (
     windSpeedKmph,
     gustKmph,
     finalExposureLevel,
-    waveHeightM
+    effectiveWaveHeightM
   );
   const highFetchOnshore = fetchExposure === 'high' && finalExposureLevel === 'exposed';
   const mediumFetchOnshore = fetchExposure === 'medium' && finalExposureLevel === 'exposed';
@@ -1151,8 +1213,16 @@ export const calculateBeachScore = (
       reasons.push("Calmer marine forecast");
     }
   } else {
-    // Fallback when marine data is unavailable: infer waves from wind and exposure.
-    if (windAssessment.canClaimProtected) {
+    // Fallback when marine data is unavailable: use the modeled wave (clearly an
+    // estimate, never presented as a measurement) plus wind/exposure context.
+    if (modeledWaveHeightM >= 0.6) {
+      warnings.push({
+        type: 'rough_sea',
+        severity: modeledWaveHeightM >= 1.0 ? 'warning' : 'info',
+        message: `Estimated waves around ${modeledWaveHeightM.toFixed(1)} m from today's wind and fetch.`
+      });
+      reasons.push(`Wind and fetch suggest ~${modeledWaveHeightM.toFixed(1)} m waves`);
+    } else if (windAssessment.canClaimProtected) {
       reasons.push('Wind-sheltered, but wave data is not verified');
     } else if (windSpeedKmph > 20) {
       reasons.push("Likely choppy waters");
@@ -1294,11 +1364,11 @@ export const calculateBeachScore = (
     finalExposureLevel !== 'protected',
     windSpeedKmph,
     finalExposureLevel,
-    waveHeightM
+    effectiveWaveHeightM
   );
   if (
     baseBeaufort <= 3 &&
-    (waveHeightM === undefined || waveHeightM <= 0.5)
+    effectiveWaveHeightM <= 0.5
   ) {
     const lightWindFloor = finalExposureLevel === 'protected' ? 9 : finalExposureLevel === 'partial' ? 8 : 7;
     seaScore = Math.max(seaScore, lightWindFloor);
@@ -1315,10 +1385,16 @@ export const calculateBeachScore = (
   if (highFetchOnshore && effectiveBeaufort >= 4) swimmingScore -= 25;
   else if (mediumFetchOnshore && effectiveBeaufort >= 4) swimmingScore -= 10;
   if (directSwell) swimmingScore -= 12;
+  // Wave penalty applies to the measured wave, or to the (damped) modeled wave
+  // when none was reported — gentler for the estimate to avoid over-penalising.
   if (typeof waveHeightM === 'number') {
     if (waveHeightM > 1.2) swimmingScore -= 25;
     else if (waveHeightM >= 0.9) swimmingScore -= 16;
     else if (waveHeightM >= 0.6) swimmingScore -= 8;
+  } else {
+    if (modeledWaveHeightM > 1.2) swimmingScore -= 18;
+    else if (modeledWaveHeightM >= 0.9) swimmingScore -= 12;
+    else if (modeledWaveHeightM >= 0.6) swimmingScore -= 6;
   }
   swimmingScore += windAssessment.swimmingScoreModifier;
   if (heavyRecentRain && hasRunoffRisk) {
@@ -1327,7 +1403,7 @@ export const calculateBeachScore = (
   if (temp < 18) swimmingScore -= 15;
   else if (temp < 22) swimmingScore -= (22 - temp) * 2;
 
-  if (isFamilyMode && (waveHeightM === undefined || waveHeightM > 0.5 || effectiveBeaufort >= 4)) {
+  if (isFamilyMode && (effectiveWaveHeightM > 0.5 || effectiveBeaufort >= 4)) {
     if (seabedSlope === 'shallow_gradual') swimmingScore += 6;
     if (waterEntry === 'easy') swimmingScore += 5;
     if (seabedSlope === 'steep') {
@@ -1448,7 +1524,7 @@ export const calculateBeachScore = (
     finalScore = Math.min(finalScore, windAssessment.finalScoreCap);
   }
 
-  let swimmingComfort = swimmingComfortFromScore(swimmingScore, effectiveBeaufort, waveHeightM, officialWarningOverride);
+  let swimmingComfort = swimmingComfortFromScore(swimmingScore, effectiveBeaufort, effectiveWaveHeightM, officialWarningOverride);
   if (confidence.level === 'low' && swimmingComfort === 'excellent') {
     swimmingComfort = 'good';
   }
@@ -1494,6 +1570,8 @@ export const calculateBeachScore = (
     windSector: windAssessment.windSector,
     canClaimWindProtection: windAssessment.canClaimProtected,
     seaCalmClaimAllowed: windAssessment.seaCalmClaimAllowed,
+    facingDeg: windAssessment.facingDeg,
+    simpleWindSuitability: windAssessment.simpleWindSuitability,
   };
 };
 
@@ -1785,7 +1863,8 @@ export const getTopRecommendedBeaches = (
   hourlyForecast?: ForecastItem[],
   preferences?: UserPreferences,
   language: LanguageCode = 'en',
-  beachWeatherById?: BeachWeatherById
+  beachWeatherById?: BeachWeatherById,
+  geospatialProfiles?: GeospatialExposureLookup
 ): BeachRecommendation[] => {
   const beachById = new Map(beaches.map(beach => [beach.id, beach]));
   const recommendations = beaches.map(beach => {
@@ -1800,6 +1879,7 @@ export const getTopRecommendedBeaches = (
       {
         weatherSource: beachWeather ? 'beach-cluster' : 'island-fallback',
         hourlyForecast: hourlyForBeach,
+        geospatialProfile: geospatialProfiles?.[beach.id],
       }
     );
     const bestBeachTime = hourlyForBeach ? calculateBestBeachTime(hourlyForBeach, beach) : undefined;
@@ -1837,13 +1917,15 @@ export const getTopRecommendedBeaches = (
       windProfileSource: scoreResult.windProfileSource,
       windSector: scoreResult.windSector,
       canClaimWindProtection: scoreResult.canClaimWindProtection,
-      seaCalmClaimAllowed: scoreResult.seaCalmClaimAllowed
+      seaCalmClaimAllowed: scoreResult.seaCalmClaimAllowed,
+      simpleWindSuitability: scoreResult.simpleWindSuitability
     };
   });
 
   const windSpeedKmh = weather.wind.speed * 3.6;
   const windBeaufort = getBeaufortLevel(windSpeedKmh);
   const topPickCandidates = recommendations.filter(item => {
+    if (!isTrustedTopRecommendationCandidate(item, beachById, windBeaufort)) return false;
     if (item.swimmingComfort === 'avoid_swimming') return false;
     if (item.warnings?.some(warning => warning.type === 'official_warning' && warning.severity === 'critical')) return false;
     if (typeof item.swimmingScore === 'number' && item.swimmingScore < 50) return false;
@@ -1858,8 +1940,7 @@ export const getTopRecommendedBeaches = (
   });
   const prioritizedRecommendations = prioritizeProtectedBeachRecommendations(topPickCandidates, beachById, windBeaufort);
 
-  // Return top 3
-  return prioritizedRecommendations.slice(0, 3);
+  return prioritizedRecommendations.slice(0, getTopRecommendationDisplayLimit(prioritizedRecommendations.length));
 };
 
 /**
@@ -1893,7 +1974,8 @@ export const getSuitableBeaches = (
   userLocation?: { lat: number; lon: number },
   hourlyForecast?: ForecastItem[],
   preferences?: UserPreferences,
-  beachWeatherById?: BeachWeatherById
+  beachWeatherById?: BeachWeatherById,
+  geospatialProfiles?: GeospatialExposureLookup
 ): SuitableBeach[] => {
   const suitableBeaches: SuitableBeach[] = [];
 
@@ -1904,6 +1986,7 @@ export const getSuitableBeaches = (
     const beachWeather = beachWeatherById?.[beach.id];
     const weatherForBeach = beachWeather || weather;
     const hourlyForBeach = beachWeather?.hourly || hourlyForecast || ('hourly' in weatherForBeach ? weatherForBeach.hourly : undefined);
+    const geospatialProfile = geospatialProfiles?.[beach.id];
     const scoreResult = calculateBeachScore(
       beach,
       weatherForBeach,
@@ -1912,6 +1995,7 @@ export const getSuitableBeaches = (
       {
         weatherSource: beachWeather ? 'beach-cluster' : 'island-fallback',
         hourlyForecast: hourlyForBeach,
+        geospatialProfile,
       }
     );
 
@@ -1933,6 +2017,15 @@ export const getSuitableBeaches = (
       }
 
       const isExposed = scoreResult.exposureLevel ? scoreResult.exposureLevel !== 'protected' : true;
+      const windExposureReason = describeWindExposure({
+        exposureLevel: scoreResult.exposureLevel,
+        windDirectionDeg: weatherForBeach.wind.deg,
+        windBeaufort: getBeaufortLevel(weatherForBeach.wind.speed * 3.6),
+        facingDeg: scoreResult.facingDeg,
+        knownWindSportSpot: scoreResult.windProfile?.knownWindSportSpot,
+        language,
+      });
+      const simpleWindReason = describeSimpleWindSuitability(scoreResult.simpleWindSuitability, language);
 
       suitableBeaches.push({
         beachId: beach.id,
@@ -1967,13 +2060,17 @@ export const getSuitableBeaches = (
         windProfileSource: scoreResult.windProfileSource,
         windSector: scoreResult.windSector,
         canClaimWindProtection: scoreResult.canClaimWindProtection,
-        seaCalmClaimAllowed: scoreResult.seaCalmClaimAllowed
+        seaCalmClaimAllowed: scoreResult.seaCalmClaimAllowed,
+        simpleWindSuitability: scoreResult.simpleWindSuitability,
+        geospatialExposure: geospatialProfile,
+        meltemiExposure: summarizeMeltemiBehavior(geospatialProfile),
+        windExposureReason: simpleWindReason || windExposureReason
       });
     }
   });
 
-  // Default sort follows wind bands: normal beach quality at 0-3 Bft,
-  // shelter as a caution signal at 4 Bft, protected-first from 5+ Bft.
+  // Default sort follows wind bands: normal beach quality at 0-2 Bft,
+  // shelter starts guiding top picks at 3-4 Bft, protected-first from 5+ Bft.
   const windBeaufort = getBeaufortLevel(weather.wind.speed * 3.6);
   suitableBeaches.sort((a, b) => compareRecommendationPriority(a, b, undefined, windBeaufort));
 

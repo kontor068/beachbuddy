@@ -1,19 +1,22 @@
-import React, { useEffect, useMemo, useState } from 'react';
-import { MapContainer, TileLayer, Marker, Popup, Tooltip, ZoomControl, useMap } from 'react-leaflet';
+import React, { useEffect, useMemo, useRef, useState } from 'react';
+import { Circle, MapContainer, TileLayer, Marker, Popup, Tooltip, ZoomControl, useMap } from 'react-leaflet';
 import L from 'leaflet';
 import 'leaflet/dist/leaflet.css';
-import { Navigation, MapPin, Clock, Wind, X } from 'lucide-react';
+import { Navigation, MapPin, Clock, Wind, X, Info } from 'lucide-react';
 import { SuitableBeach, Beach, LanguageCode } from '../types';
 import { trackEvent } from '../services/analyticsService';
 import { degToCompass, getBeaufortLevel } from '../utils/weatherUtils';
 import { getSelectedDayPrefix } from '../utils/dateLabels';
 import { getLocalizedCopy, languageToLocale } from '../utils/i18n';
 import { getBeachMapCoordinates } from '../utils/mapCoordinates';
-import { getConsistentVisibleMapExposureLevels, getVisibleMapExposureLevel } from '../utils/mapExposure';
+import { getConsistentVisibleMapExposureLevels, getVisibleMapExposureLevel, shouldShowWindExposureColors } from '../utils/mapExposure';
+import { canOpenNavigation, openNavigation } from '../utils/navigation';
 
 interface BeachMapProps {
   beaches: SuitableBeach[];
   userLocation?: { lat: number; lon: number };
+  /** Reported accuracy of the user's location, in metres, for the precision halo. */
+  userLocationAccuracy?: number;
   onBeachClick?: (beach: Beach) => void;
   onVisibleBeachIdsChange?: (beachIds: number[]) => void;
   center?: [number, number];
@@ -25,7 +28,16 @@ interface BeachMapProps {
   selectedDate?: Date;
   compact?: boolean;
   preview?: boolean;
+  enableScrollWheelZoom?: boolean;
+  isExposureLoading?: boolean;
   topBeachId?: number;
+  highlightedBeachId?: number;
+  followHighlightedBeach?: boolean;
+  fitBoundsToBeaches?: boolean;
+  fitBoundsBeaches?: SuitableBeach[];
+  fitBoundsKey?: string;
+  onUserInteraction?: () => void;
+  compactPreviewHeightClassName?: string;
 }
 
 const visibleExposureLevel = (
@@ -42,6 +54,53 @@ const RecenterMap = ({ center, zoom }: { center: [number, number]; zoom: number 
   useEffect(() => {
     map.setView(center, zoom);
   }, [lat, lon, zoom, map]);
+
+  return null;
+};
+
+const FitBeachBounds = ({
+  beaches,
+  center,
+  enabled,
+  fitKey,
+}: {
+  beaches: SuitableBeach[];
+  center: [number, number];
+  enabled?: boolean;
+  fitKey?: string;
+}) => {
+  const map = useMap();
+  const lastFitKeyRef = useRef<string | undefined>(undefined);
+
+  useEffect(() => {
+    if (!enabled || beaches.length === 0) return;
+    if (fitKey && lastFitKeyRef.current === fitKey) return;
+
+    const fallbackCenter = { lat: center[0], lon: center[1] };
+    const points = beaches
+      .map(item => getBeachMapCoordinates(item.beach, fallbackCenter))
+      .filter(coordinate => (
+        Number.isFinite(coordinate.lat) &&
+        Number.isFinite(coordinate.lon)
+      ));
+
+    if (points.length === 0) return;
+    lastFitKeyRef.current = fitKey;
+
+    if (points.length === 1) {
+      map.setView([points[0].lat, points[0].lon], Math.max(map.getZoom(), 12), {
+        animate: false,
+      });
+      return;
+    }
+
+    const bounds = L.latLngBounds(points.map(point => [point.lat, point.lon] as [number, number]));
+    map.fitBounds(bounds, {
+      animate: false,
+      padding: [28, 28],
+      maxZoom: 12,
+    });
+  }, [beaches, center, enabled, fitKey, map]);
 
   return null;
 };
@@ -85,6 +144,69 @@ const VisibleBeachTracker = ({
   return null;
 };
 
+const MapUserInteractionTracker = ({
+  onUserInteraction,
+}: {
+  onUserInteraction?: () => void;
+}) => {
+  const map = useMap();
+
+  useEffect(() => {
+    if (!onUserInteraction) return;
+
+    const notifyUserInteraction = () => {
+      onUserInteraction();
+    };
+    const container = map.getContainer();
+
+    container.addEventListener('pointerdown', notifyUserInteraction, { passive: true });
+    container.addEventListener('touchstart', notifyUserInteraction, { passive: true });
+    map.on('dragstart zoomstart boxzoomstart', notifyUserInteraction);
+
+    return () => {
+      container.removeEventListener('pointerdown', notifyUserInteraction);
+      container.removeEventListener('touchstart', notifyUserInteraction);
+      map.off('dragstart zoomstart boxzoomstart', notifyUserInteraction);
+    };
+  }, [map, onUserInteraction]);
+
+  return null;
+};
+
+const HighlightedBeachFollower = ({
+  beaches,
+  center,
+  highlightedBeachId,
+  enabled,
+}: {
+  beaches: SuitableBeach[];
+  center: [number, number];
+  highlightedBeachId?: number;
+  enabled?: boolean;
+}) => {
+  const map = useMap();
+
+  useEffect(() => {
+    if (!enabled || typeof highlightedBeachId !== 'number') return;
+
+    const highlightedBeach = beaches.find(item => item.beachId === highlightedBeachId);
+    if (!highlightedBeach) return;
+
+    const markerCoordinate = getBeachMapCoordinates(highlightedBeach.beach, {
+      lat: center[0],
+      lon: center[1],
+    });
+
+    map.panTo([markerCoordinate.lat, markerCoordinate.lon], {
+      animate: true,
+      duration: 0.35,
+      easeLinearity: 0.25,
+    });
+  }, [beaches, center, enabled, highlightedBeachId, map]);
+
+  return null;
+};
+
 const ZoomLabelController = ({
   threshold = 13,
   onLabelOpacityChange,
@@ -115,10 +237,42 @@ const ZoomLabelController = ({
 };
 
 const getRecommendationTone = (
-  item: Pick<SuitableBeach, 'score' | 'exposureLevel' | 'canClaimWindProtection'>,
+  item: Pick<SuitableBeach, 'score' | 'exposureLevel' | 'canClaimWindProtection' | 'simpleWindSuitability'>,
   showWindExposureColors = true
 ) => {
   const exposureLevel = visibleExposureLevel(item);
+
+  if (showWindExposureColors && item.simpleWindSuitability) {
+    if (item.simpleWindSuitability.suitabilityColor === 'green') {
+      return {
+        colorClass: 'bg-emerald-500',
+        ringClass: 'ring-emerald-200',
+        badgeClass: 'bg-emerald-100 text-emerald-700',
+      };
+    }
+
+    if (item.simpleWindSuitability.suitabilityColor === 'yellow') {
+      return {
+        colorClass: 'bg-yellow-400',
+        ringClass: 'ring-yellow-200',
+        badgeClass: 'bg-yellow-100 text-yellow-700',
+      };
+    }
+
+    if (item.simpleWindSuitability.suitabilityColor === 'orange') {
+      return {
+        colorClass: 'bg-orange-500',
+        ringClass: 'ring-orange-200',
+        badgeClass: 'bg-orange-100 text-orange-700',
+      };
+    }
+
+    return {
+      colorClass: 'bg-rose-600',
+      ringClass: 'ring-rose-300',
+      badgeClass: 'bg-rose-100 text-rose-700',
+    };
+  }
 
   if (!showWindExposureColors) {
     if (item.score >= 80) {
@@ -169,16 +323,18 @@ const getRecommendationTone = (
 
 // Custom marker icons for recommendation mode. Green requires wind protection too.
 const createBeachIcon = (
-  item: Pick<SuitableBeach, 'score' | 'exposureLevel' | 'canClaimWindProtection'>,
+  item: Pick<SuitableBeach, 'score' | 'exposureLevel' | 'canClaimWindProtection' | 'simpleWindSuitability'>,
   showWindExposureColors = true,
-  isTopPick = false
+  isTopPick = false,
+  isHighlighted = false
 ) => {
   const { colorClass, ringClass } = getRecommendationTone(item, showWindExposureColors);
   const topPickClass = isTopPick ? 'beach-map-top-pick-marker-dot' : '';
+  const highlightedClass = isHighlighted ? 'beach-map-active-scroll-marker-dot' : '';
 
   return L.divIcon({
     className: 'custom-div-icon',
-    html: `<div class="beach-map-marker-dot ${topPickClass} ${colorClass} w-4 h-4 rounded-full border-2 border-white shadow-lg ring-4 ${ringClass}"></div>`,
+    html: `<div class="beach-map-marker-dot ${topPickClass} ${highlightedClass} ${colorClass} w-4 h-4 rounded-full border-2 border-white shadow-lg ring-4 ${ringClass}"></div>`,
     iconSize: [16, 16],
     iconAnchor: [8, 8],
     popupAnchor: [0, -10]
@@ -225,7 +381,6 @@ const getExposureMarkerTone = (
   if (beaufort >= 7) return tones.red;
   if (beaufort >= 5) return isProtected ? tones.yellow : tones.orange;
   if (beaufort >= 3) return isProtected ? tones.blue : tones.yellow;
-
   return tones.blue;
 };
 
@@ -237,15 +392,27 @@ const windLegendDotClasses = {
 } as const;
 
 type WindLegendDot = keyof typeof windLegendDotClasses;
+type MapExposureEvidence = 'supported' | 'estimated';
 
 // Custom marker icons based on exposure
-const createExposureIcon = (exposureLevel?: string, showWindExposureColors = true, windBeaufort?: number, isTopPick = false) => {
+const createExposureIcon = (
+  exposureLevel?: string,
+  showWindExposureColors = true,
+  windBeaufort?: number,
+  isTopPick = false,
+  evidence: MapExposureEvidence = 'estimated',
+  isHighlighted = false
+) => {
   const topPickClass = isTopPick ? 'beach-map-top-pick-marker-dot' : '';
+  const highlightedClass = isHighlighted ? 'beach-map-active-scroll-marker-dot' : '';
+  const evidenceClass = evidence === 'supported'
+    ? 'beach-map-marker-evidence-supported'
+    : 'beach-map-marker-evidence-estimated';
 
   if (!showWindExposureColors) {
     return L.divIcon({
       className: 'custom-div-icon',
-      html: `<div class="beach-map-marker-dot ${topPickClass} bg-sky-500 w-4 h-4 rounded-full border-2 border-white shadow-lg ring-4 ring-sky-200"></div>`,
+      html: `<div class="beach-map-marker-dot ${topPickClass} ${highlightedClass} ${evidenceClass} bg-sky-500 w-4 h-4 rounded-full border-2 border-white shadow-lg ring-4 ring-sky-200"></div>`,
       iconSize: [16, 16],
       iconAnchor: [8, 8],
       popupAnchor: [0, -10]
@@ -256,7 +423,7 @@ const createExposureIcon = (exposureLevel?: string, showWindExposureColors = tru
 
   return L.divIcon({
     className: 'custom-div-icon',
-    html: `<div class="beach-map-marker-dot ${topPickClass} ${colorClass} w-4 h-4 rounded-full border-2 border-white shadow-lg ring-4 ${ringClass}"></div>`,
+    html: `<div class="beach-map-marker-dot ${topPickClass} ${highlightedClass} ${evidenceClass} ${colorClass} w-4 h-4 rounded-full border-2 border-white shadow-lg ring-4 ${ringClass}"></div>`,
     iconSize: [16, 16],
     iconAnchor: [8, 8],
     popupAnchor: [0, -10]
@@ -265,10 +432,12 @@ const createExposureIcon = (exposureLevel?: string, showWindExposureColors = tru
 
 const UserLocationIcon = L.divIcon({
   className: 'user-location-icon',
-  html: `<div class="beach-map-marker-dot beach-map-user-marker-dot bg-blue-500 w-5 h-5 rounded-full border-2 border-white shadow-xl ring-4 ring-blue-200 animate-pulse"></div>`,
-  iconSize: [20, 20],
-  iconAnchor: [10, 10],
-  popupAnchor: [0, -10]
+  html: `<div class="beach-map-user-marker-dot grid h-7 w-7 place-items-center rounded-full border-2 border-white bg-blue-600 text-white shadow-xl ring-4 ring-blue-200">
+    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+  </div>`,
+  iconSize: [28, 28],
+  iconAnchor: [14, 14],
+  popupAnchor: [0, -14]
 });
 
 const directionDegrees: Record<string, number> = {
@@ -680,9 +849,10 @@ const WindDirectionGraphic: React.FC<WindDirectionGraphicProps> = ({
   );
 };
 
-const BeachMap: React.FC<BeachMapProps> = ({ 
-  beaches, 
-  userLocation, 
+const BeachMap: React.FC<BeachMapProps> = ({
+  beaches,
+  userLocation,
+  userLocationAccuracy,
   onBeachClick,
   onVisibleBeachIdsChange,
   center: propCenter,
@@ -694,7 +864,16 @@ const BeachMap: React.FC<BeachMapProps> = ({
   selectedDate,
   compact = false,
   preview = false,
-  topBeachId
+  enableScrollWheelZoom = false,
+  isExposureLoading = false,
+  topBeachId,
+  highlightedBeachId,
+  followHighlightedBeach = false,
+  fitBoundsToBeaches = false,
+  fitBoundsBeaches,
+  fitBoundsKey,
+  onUserInteraction,
+  compactPreviewHeightClassName
 }) => {
   const [mapMode, setMapMode] = useState<'recommendation' | 'wind'>('wind');
   const [selectedBeachId, setSelectedBeachId] = useState<number | null>(null);
@@ -761,14 +940,43 @@ const BeachMap: React.FC<BeachMapProps> = ({
       : undefined;
   const windSpeedKmh = typeof windSpeed === 'number' ? windSpeed * 3.6 : undefined;
   const windBeaufort = windSpeedKmh !== undefined ? getBeaufortLevel(windSpeedKmh) : undefined;
-  const showWindExposureColors = windBeaufort !== undefined && windBeaufort >= 3;
+  const showWindExposureColors = shouldShowWindExposureColors(windBeaufort);
+  const showWindExposureStatusLabels = typeof windBeaufort === 'number' && windBeaufort >= 3;
   const showRecommendationWindColors = windBeaufort === undefined || windBeaufort >= 4;
+  const shouldRenderBeachMarkers = !isExposureLoading;
   const visibleMapExposureLevels = useMemo(
     () => getConsistentVisibleMapExposureLevels(beaches, windBeaufort, mapWindDirectionDeg),
     [beaches, mapWindDirectionDeg, windBeaufort]
   );
-  const getMapExposureLevel = (item: SuitableBeach) => (
-    visibleMapExposureLevels.get(item.beach.id) || getVisibleMapExposureLevel(item, windBeaufort, mapWindDirectionDeg)
+  const hasSupportedMapEvidence = (item: SuitableBeach): boolean => {
+    const hasSupportedWindProfile = (
+      (item.windProfileSource === 'override' || item.windProfileSource === 'beach' || item.windProfileSource === 'metadata' || item.windProfileSource === 'geospatial') &&
+      item.windProfile !== undefined &&
+      item.windProfile.confidence !== 'low' &&
+      (
+        item.windProfile.exposedToWindDirections.length > 0 ||
+        item.windProfile.protectedFromWindDirections.length > 0 ||
+        item.windProfile.shelterLevel !== 'unknown' ||
+        item.windProfile.fetchExposure !== 'unknown' ||
+        typeof item.windProfile.beachFacingDirection === 'number'
+      )
+    );
+    const hasSupportedGeospatial = (
+      item.geospatialExposure?.confidence === 'high' ||
+      item.geospatialExposure?.confidence === 'medium'
+    );
+
+    return hasSupportedWindProfile || hasSupportedGeospatial;
+  };
+  const getMapExposureLevel = (item: SuitableBeach) => {
+    if (isExposureLoading && !hasSupportedMapEvidence(item)) {
+      return 'partial';
+    }
+
+    return visibleMapExposureLevels.get(item.beach.id) || getVisibleMapExposureLevel(item, windBeaufort, mapWindDirectionDeg);
+  };
+  const getMapExposureEvidence = (item: SuitableBeach): MapExposureEvidence => (
+    hasSupportedMapEvidence(item) ? 'supported' : 'estimated'
   );
   const selectedDayPrefix = getSelectedDayPrefix(selectedDate, new Date(), language);
   const exposureLabel = (exposureLevel?: string) => {
@@ -829,6 +1037,7 @@ const BeachMap: React.FC<BeachMapProps> = ({
     youAreHere: { en: 'You are here', gr: 'Είστε εδώ', de: 'Sie sind hier', it: 'Sei qui', fr: 'Vous etes ici' },
     bestTime: { en: 'Best Time', gr: 'Καλύτερη ώρα', de: 'Beste Zeit', it: 'Ora migliore', fr: 'Meilleur moment' },
     view: { en: 'View', gr: 'Προβολή', de: 'Ansehen', it: 'Vedi', fr: 'Voir' },
+    navigate: { en: 'Navigate', gr: 'Πλοήγηση', de: 'Route', it: 'Naviga', fr: 'Itineraire' },
     closeDetails: { en: 'Close beach details', gr: 'Κλείσιμο λεπτομερειών παραλίας', de: 'Stranddetails schliessen', it: 'Chiudi dettagli spiaggia', fr: 'Fermer les details de la plage' },
     suitability: {
       en: `Recommendation ${selectedDayPrefix}`,
@@ -840,7 +1049,7 @@ const BeachMap: React.FC<BeachMapProps> = ({
     excellent: { en: 'Less exposed + high score', gr: 'Λιγότερη έκθεση + υψηλό σκορ', de: 'Besserer Schutz + hoher Wert', it: 'Piu riparata + punteggio alto', fr: 'Mieux abritee + score eleve' },
     good: { en: 'Partial or good fallback', gr: 'Μερική ή εναλλακτική επιλογή', de: 'Teilweise oder Alternative', it: 'Parziale o alternativa', fr: 'Partielle ou alternative' },
     notRecommended: { en: 'Open to wind or low score', gr: 'Ανοιχτή στον άνεμο ή χαμηλό σκορ', de: 'Windoffen oder niedriger Wert', it: 'Esposta o punteggio basso', fr: 'Exposée ou score bas' },
-    exposure: { en: 'Wind Exposure', gr: 'Έκθεση στον άνεμο', de: 'Windexposition', it: 'Esposizione al vento', fr: 'Exposition au vent' },
+    exposure: { en: 'Beach wind exposure', gr: 'Έκθεση ανά παραλία', de: 'Windexposition je Strand', it: 'Esposizione per spiaggia', fr: 'Exposition par plage' },
     excellentCalm: {
       en: `High score ${selectedDayPrefix}`,
       gr: `Υψηλό σκορ ${selectedDayPrefix}`,
@@ -860,7 +1069,78 @@ const BeachMap: React.FC<BeachMapProps> = ({
     at: { en: 'at', gr: 'στα', de: 'bei', it: 'a', fr: 'a' },
     beaufort: { en: 'Bft', gr: 'μποφόρ', de: 'Bft', it: 'Bft', fr: 'Bft' },
   };
+  const exposureInsightCopy = getLocalizedCopy<{
+    fallbackWind: string;
+    calm: string;
+    severe: string;
+    protected: (wind: string) => string;
+    partial: (wind: string) => string;
+    exposed: (wind: string) => string;
+    localShapeNote: string;
+    evidence: Record<MapExposureEvidence, string>;
+  }>(language, {
+    en: {
+      fallbackWind: "Today's wind",
+      calm: 'Light wind today; exposure is not a major factor.',
+      severe: 'Strong wind affects every beach today; use the colours as caution, not a safety guarantee.',
+      protected: (wind) => `${wind} is less direct here because of the shore angle or nearby land, so this beach should feel more manageable.`,
+      partial: (wind) => `${wind} reaches this beach from the side or with limited open water, so expect some wind or chop.`,
+      exposed: (wind) => `${wind} lines up more directly with this shore or has more open water to build chop.`,
+      localShapeNote: 'Nearby beaches can differ because each cove, headland and shore angle catches the same wind differently.',
+      evidence: { supported: 'Stronger evidence', estimated: 'Map estimate' },
+    },
+    gr: {
+      fallbackWind: 'Ο σημερινός άνεμος',
+      calm: 'Ήπιος άνεμος σήμερα· η έκθεση δεν είναι βασικός παράγοντας.',
+      severe: 'Δυνατός άνεμος επηρεάζει όλες τις παραλίες σήμερα· τα χρώματα είναι ένδειξη προσοχής, όχι εγγύηση ασφάλειας.',
+      protected: (wind) => `${wind} άνεμος δεν μπαίνει τόσο άμεσα εδώ λόγω γωνίας ακτής ή κοντινής στεριάς, άρα δείχνει πιο διαχειρίσιμη.`,
+      partial: (wind) => `${wind} άνεμος πιάνει πιο πλάγια ή με περιορισμένο ανοιχτό νερό, άρα μπορεί να έχει λίγο αέρα ή κυματάκι.`,
+      exposed: (wind) => `${wind} άνεμος ταιριάζει πιο άμεσα με αυτή την ακτή ή έχει περισσότερο ανοιχτό νερό μπροστά, άρα περίμενε περισσότερο αέρα ή κυματάκι.`,
+      localShapeNote: 'Κοντινές παραλίες μπορεί να διαφέρουν, γιατί κάθε κόλπος, κάβος και γωνία ακτής πιάνει αλλιώς τον ίδιο άνεμο.',
+      evidence: { supported: 'Ισχυρότερη ένδειξη', estimated: 'Εκτίμηση χάρτη' },
+    },
+    fr: {
+      fallbackWind: "Vent d'aujourd'hui",
+      calm: "Vent faible aujourd'hui; l'exposition compte peu.",
+      severe: "Vent fort sur toutes les plages aujourd'hui; les couleurs indiquent la prudence, pas une garantie.",
+      protected: (wind) => `${wind} arrive moins directement ici grace a l'angle de cote ou la terre proche; cette plage devrait etre plus gerable.`,
+      partial: (wind) => `${wind} peut arriver de cote ou avec peu d'eau ouverte; attendez un peu de vent ou de clapot.`,
+      exposed: (wind) => `${wind} arrive plus directement sur cette cote ou avec plus d'eau ouverte pour former du clapot.`,
+      localShapeNote: "Deux plages proches peuvent differer: chaque crique, cap et angle de cote prend le meme vent autrement.",
+      evidence: { supported: 'Indice plus fort', estimated: 'Estimation carte' },
+    },
+    de: {
+      fallbackWind: 'Heutiger Wind',
+      calm: 'Heute leichter Wind; Exposition ist kein Hauptfaktor.',
+      severe: 'Starker Wind betrifft heute alle Straende; Farben bedeuten Vorsicht, keine Garantie.',
+      protected: (wind) => `${wind} trifft hier wegen Kuestenwinkel oder naher Landmasse weniger direkt; dieser Strand wirkt besser handhabbar.`,
+      partial: (wind) => `${wind} kann seitlich oder mit begrenztem offenem Wasser ankommen; etwas Wind oder Kabbelwasser moeglich.`,
+      exposed: (wind) => `${wind} passt direkter zu dieser Kueste oder hat mehr offenes Wasser, um Kabbelwasser aufzubauen.`,
+      localShapeNote: 'Nahe Straende koennen sich unterscheiden, weil Bucht, Kap und Kuestenwinkel denselben Wind anders aufnehmen.',
+      evidence: { supported: 'Staerkerer Hinweis', estimated: 'Kartenschaetzung' },
+    },
+    it: {
+      fallbackWind: 'Vento di oggi',
+      calm: "Vento debole oggi; l'esposizione conta poco.",
+      severe: 'Vento forte su tutte le spiagge oggi; i colori indicano prudenza, non una garanzia.',
+      protected: (wind) => `${wind} arriva meno diretto qui grazie all'angolo della costa o alla terra vicina; questa spiaggia dovrebbe essere piu gestibile.`,
+      partial: (wind) => `${wind} puo arrivare di lato o con poca acqua aperta; aspettati un po' di vento o chop.`,
+      exposed: (wind) => `${wind} arriva piu diretto su questa costa o ha piu acqua aperta per creare chop.`,
+      localShapeNote: 'Spiagge vicine possono differire: ogni baia, capo e angolo di costa prende lo stesso vento in modo diverso.',
+      evidence: { supported: 'Indicazione piu forte', estimated: 'Stima mappa' },
+    },
+  });
+  const getMapExposureReason = (exposureLevel?: string): string => {
+    if (!showWindExposureStatusLabels) return exposureInsightCopy.calm;
+    if (typeof windBeaufort === 'number' && windBeaufort >= 7) return exposureInsightCopy.severe;
+
+    const wind = localizedWindDirection || exposureInsightCopy.fallbackWind;
+    if (exposureLevel === 'protected') return exposureInsightCopy.protected(wind);
+    if (exposureLevel === 'exposed') return exposureInsightCopy.exposed(wind);
+    return exposureInsightCopy.partial(wind);
+  };
   const windColorGuideCopy = getLocalizedCopy<{
+    note: string;
     rows: Array<{
       id: string;
       range: string;
@@ -872,42 +1152,52 @@ const BeachMap: React.FC<BeachMapProps> = ({
     }>;
   }>(language, {
     en: {
+      note: 'Same wind, different shore shape: use the marker colour per beach, not per whole coastline.',
       rows: [
         { id: '0-2', range: '0-2 Bft', segments: [{ label: 'All beaches', dot: 'blue', colorLabel: 'blue' }] },
-        { id: '3-4', range: '3-4 Bft', segments: [{ label: 'Protected', dot: 'blue', colorLabel: 'blue' }, { label: 'Exposed', dot: 'yellow', colorLabel: 'yellow' }] },
-        { id: '5-6', range: '5-6 Bft', segments: [{ label: 'Protected', dot: 'yellow', colorLabel: 'yellow' }, { label: 'Exposed', dot: 'orange', colorLabel: 'orange' }] },
+        { id: '3', range: '3 Bft', segments: [{ label: 'Less exposed', dot: 'blue', colorLabel: 'blue' }, { label: 'More exposed', dot: 'yellow', colorLabel: 'yellow' }] },
+        { id: '4', range: '4 Bft', segments: [{ label: 'Less exposed', dot: 'blue', colorLabel: 'blue' }, { label: 'More exposed', dot: 'yellow', colorLabel: 'yellow' }] },
+        { id: '5-6', range: '5-6 Bft', segments: [{ label: 'Less exposed', dot: 'yellow', colorLabel: 'yellow' }, { label: 'More exposed', dot: 'orange', colorLabel: 'orange' }] },
         { id: '7-10', range: '7-10 Bft', segments: [{ label: 'All beaches', dot: 'red', colorLabel: 'red' }] },
       ],
     },
     gr: {
+      note: '',
       rows: [
         { id: '0-2', range: '0-2 Μποφόρ', segments: [{ label: 'Όλες', dot: 'blue', colorLabel: 'μπλε' }] },
-        { id: '3-4', range: '3-4 Μποφόρ', segments: [{ label: 'Προστατευμένη', dot: 'blue', colorLabel: 'μπλε' }, { label: 'Εκτεθειμένη', dot: 'yellow', colorLabel: 'κίτρινο' }] },
-        { id: '5-6', range: '5-6 Μποφόρ', segments: [{ label: 'Προστατευμένη', dot: 'yellow', colorLabel: 'κίτρινο' }, { label: 'Εκτεθειμένη', dot: 'orange', colorLabel: 'πορτοκαλί' }] },
+        { id: '3', range: '3 Μποφόρ', segments: [{ label: 'Λιγότερη έκθεση', dot: 'blue', colorLabel: 'μπλε' }, { label: 'Πιο εκτεθειμένες', dot: 'yellow', colorLabel: 'κίτρινο' }] },
+        { id: '4', range: '4 Μποφόρ', segments: [{ label: 'Λιγότερη έκθεση', dot: 'blue', colorLabel: 'μπλε' }, { label: 'Πιο εκτεθειμένες', dot: 'yellow', colorLabel: 'κίτρινο' }] },
+        { id: '5-6', range: '5-6 Μποφόρ', segments: [{ label: 'Λιγότερη έκθεση', dot: 'yellow', colorLabel: 'κίτρινο' }, { label: 'Πιο εκτεθειμένες', dot: 'orange', colorLabel: 'πορτοκαλί' }] },
         { id: '7-10', range: '7-10 Μποφόρ', segments: [{ label: 'Όλες', dot: 'red', colorLabel: 'κόκκινο' }] },
       ],
     },
     fr: {
+      note: 'Meme vent, cote differente: lisez la couleur par plage, pas pour toute la cote.',
       rows: [
         { id: '0-2', range: '0-2 Bft', segments: [{ label: 'Toutes', dot: 'blue', colorLabel: 'bleu' }] },
-        { id: '3-4', range: '3-4 Bft', segments: [{ label: 'Protégée', dot: 'blue', colorLabel: 'bleu' }, { label: 'Exposée', dot: 'yellow', colorLabel: 'jaune' }] },
-        { id: '5-6', range: '5-6 Bft', segments: [{ label: 'Protégée', dot: 'yellow', colorLabel: 'jaune' }, { label: 'Exposée', dot: 'orange', colorLabel: 'orange' }] },
+        { id: '3', range: '3 Bft', segments: [{ label: 'Moins exposees', dot: 'blue', colorLabel: 'bleu' }, { label: 'Plus exposees', dot: 'yellow', colorLabel: 'jaune' }] },
+        { id: '4', range: '4 Bft', segments: [{ label: 'Moins exposees', dot: 'blue', colorLabel: 'bleu' }, { label: 'Plus exposees', dot: 'yellow', colorLabel: 'jaune' }] },
+        { id: '5-6', range: '5-6 Bft', segments: [{ label: 'Moins exposees', dot: 'yellow', colorLabel: 'jaune' }, { label: 'Plus exposees', dot: 'orange', colorLabel: 'orange' }] },
         { id: '7-10', range: '7-10 Bft', segments: [{ label: 'Toutes', dot: 'red', colorLabel: 'rouge' }] },
       ],
     },
     de: {
+      note: 'Gleicher Wind, andere Kuestenform: die Farbe gilt pro Strand, nicht fuer die ganze Kueste.',
       rows: [
         { id: '0-2', range: '0-2 Bft', segments: [{ label: 'Alle', dot: 'blue', colorLabel: 'blau' }] },
-        { id: '3-4', range: '3-4 Bft', segments: [{ label: 'Geschützt', dot: 'blue', colorLabel: 'blau' }, { label: 'Exponiert', dot: 'yellow', colorLabel: 'gelb' }] },
-        { id: '5-6', range: '5-6 Bft', segments: [{ label: 'Geschützt', dot: 'yellow', colorLabel: 'gelb' }, { label: 'Exponiert', dot: 'orange', colorLabel: 'orange' }] },
+        { id: '3', range: '3 Bft', segments: [{ label: 'Weniger exponiert', dot: 'blue', colorLabel: 'blau' }, { label: 'Mehr exponiert', dot: 'yellow', colorLabel: 'gelb' }] },
+        { id: '4', range: '4 Bft', segments: [{ label: 'Weniger exponiert', dot: 'blue', colorLabel: 'blau' }, { label: 'Mehr exponiert', dot: 'yellow', colorLabel: 'gelb' }] },
+        { id: '5-6', range: '5-6 Bft', segments: [{ label: 'Weniger exponiert', dot: 'yellow', colorLabel: 'gelb' }, { label: 'Mehr exponiert', dot: 'orange', colorLabel: 'orange' }] },
         { id: '7-10', range: '7-10 Bft', segments: [{ label: 'Alle', dot: 'red', colorLabel: 'rot' }] },
       ],
     },
     it: {
+      note: 'Stesso vento, costa diversa: leggi il colore per spiaggia, non per tutta la costa.',
       rows: [
         { id: '0-2', range: '0-2 Bft', segments: [{ label: 'Tutte', dot: 'blue', colorLabel: 'blu' }] },
-        { id: '3-4', range: '3-4 Bft', segments: [{ label: 'Protetta', dot: 'blue', colorLabel: 'blu' }, { label: 'Esposta', dot: 'yellow', colorLabel: 'giallo' }] },
-        { id: '5-6', range: '5-6 Bft', segments: [{ label: 'Protetta', dot: 'yellow', colorLabel: 'giallo' }, { label: 'Esposta', dot: 'orange', colorLabel: 'arancione' }] },
+        { id: '3', range: '3 Bft', segments: [{ label: 'Meno esposte', dot: 'blue', colorLabel: 'blu' }, { label: 'Piu esposte', dot: 'yellow', colorLabel: 'giallo' }] },
+        { id: '4', range: '4 Bft', segments: [{ label: 'Meno esposte', dot: 'blue', colorLabel: 'blu' }, { label: 'Piu esposte', dot: 'yellow', colorLabel: 'giallo' }] },
+        { id: '5-6', range: '5-6 Bft', segments: [{ label: 'Meno esposte', dot: 'yellow', colorLabel: 'giallo' }, { label: 'Piu esposte', dot: 'orange', colorLabel: 'arancione' }] },
         { id: '7-10', range: '7-10 Bft', segments: [{ label: 'Tutte', dot: 'red', colorLabel: 'rosso' }] },
       ],
     },
@@ -955,10 +1245,8 @@ const BeachMap: React.FC<BeachMapProps> = ({
     const exposureLevel = mapMode === 'wind'
       ? getMapExposureLevel(item)
       : visibleExposureLevel(item);
-    const displayExposureLevel = mapMode === 'wind' && exposureLevel !== 'protected'
-      ? 'exposed'
-      : exposureLevel;
-    const exposureTone = getExposureMarkerTone(displayExposureLevel, showWindExposureColors, windBeaufort);
+    const exposureTone = getExposureMarkerTone(exposureLevel, showWindExposureColors, windBeaufort);
+    const exposureReason = getMapExposureReason(exposureLevel);
     const badge = mapMode === 'recommendation' ? (
       <span className={`shrink-0 rounded-full px-2 py-1 text-[11px] font-black ${getRecommendationTone(item, showRecommendationWindColors).badgeClass}`}>
         {item.score}%
@@ -967,10 +1255,24 @@ const BeachMap: React.FC<BeachMapProps> = ({
         <span className={`inline-flex min-w-0 shrink items-center gap-1 rounded-full px-2 py-1 text-[11px] font-black ${exposureTone.bgClass} ${exposureTone.textClass}`}>
         <Wind className="h-3 w-3 shrink-0" />
         <span className="truncate">
-          {showWindExposureColors ? exposureLabel(displayExposureLevel) : mapCopy.calmWind[language]}
+          {showWindExposureColors && showWindExposureStatusLabels ? exposureLabel(exposureLevel) : mapCopy.calmWind[language]}
         </span>
       </span>
     );
+    const handleNavigationClick = () => {
+      if (!canOpenNavigation(item.beach)) {
+        return;
+      }
+
+      trackEvent('navigation_clicked', item.beach.id, {
+        locale: languageToLocale(language),
+        source: compact ? 'detail_map' : preview ? 'home_map_preview' : 'full_map',
+        map_mode: mapMode,
+        beach_name: item.beach.name.en,
+      });
+      openNavigation(item.beach);
+    };
+    const canNavigate = canOpenNavigation(item.beach);
 
     return (
       <div className={isPanel ? 'space-y-2.5' : 'min-w-[200px] p-1'}>
@@ -984,6 +1286,20 @@ const BeachMap: React.FC<BeachMapProps> = ({
         <p className={`${isPanel ? 'max-h-24 overflow-y-auto pr-1 text-[13px]' : 'line-clamp-3 text-xs'} leading-snug text-slate-600`}>
           {item.explanation}
         </p>
+
+        {mapMode === 'wind' && (
+          <div className="rounded-xl border border-slate-100 bg-slate-50 px-2.5 py-2 text-[11px] leading-snug text-slate-600">
+            <div className="flex items-start gap-1.5">
+              <Wind className="mt-0.5 h-3.5 w-3.5 shrink-0 text-slate-500" />
+              <span>{exposureReason}</span>
+            </div>
+            {showWindExposureColors && showWindExposureStatusLabels && (
+              <p className="mt-1.5 border-t border-slate-200/80 pt-1.5 text-[10px] font-semibold leading-snug text-slate-500">
+                {exposureInsightCopy.localShapeNote}
+              </p>
+            )}
+          </div>
+        )}
 
         {item.bestBeachTime && (
           <div className="rounded-xl border border-cyan-100 bg-cyan-50 px-2.5 py-2">
@@ -1006,21 +1322,36 @@ const BeachMap: React.FC<BeachMapProps> = ({
             <span />
           )}
 
-          {onBeachClick && (
-            <button
-              type="button"
-              onClick={() => onBeachClick(item.beach)}
-              className={`${isPanel ? 'min-h-10 px-3' : 'px-2 py-1'} inline-flex items-center justify-center gap-1 rounded-xl bg-cyan-600 text-xs font-black text-white transition-colors hover:bg-cyan-700 cursor-pointer`}
-            >
-              {mapCopy.view[language]}
-              <Navigation className="h-3.5 w-3.5" />
-            </button>
-          )}
+          <div className="flex shrink-0 items-center gap-1.5">
+            {canNavigate && (
+              <button
+                type="button"
+                onClick={handleNavigationClick}
+                aria-label={mapCopy.navigate[language]}
+                className={`${isPanel ? 'min-h-10 px-3' : 'h-8 w-8 px-0'} inline-flex items-center justify-center gap-1 rounded-xl border border-cyan-100 bg-cyan-50 text-xs font-black text-cyan-700 transition-colors hover:border-cyan-200 hover:bg-cyan-100 cursor-pointer`}
+              >
+                <Navigation className="h-3.5 w-3.5" />
+                <span className={isPanel ? '' : 'sr-only'}>{mapCopy.navigate[language]}</span>
+              </button>
+            )}
+
+            {onBeachClick && (
+              <button
+                type="button"
+                onClick={() => onBeachClick(item.beach)}
+                className={`${isPanel ? 'min-h-10 px-3' : 'px-2 py-1'} inline-flex items-center justify-center gap-1 rounded-xl bg-cyan-600 text-xs font-black text-white transition-colors hover:bg-cyan-700 cursor-pointer`}
+              >
+                <Info className="h-3.5 w-3.5" />
+                {mapCopy.view[language]}
+              </button>
+            )}
+          </div>
         </div>
       </div>
     );
   };
 
+  // Legend key swatches follow the same Beaufort bands as the markers.
   const protectedTone = getExposureMarkerTone('protected', showWindExposureColors, windBeaufort);
   const exposedTone = getExposureMarkerTone('exposed', showWindExposureColors, windBeaufort);
   const currentWindColorGuideId = typeof windBeaufort === 'number'
@@ -1028,14 +1359,17 @@ const BeachMap: React.FC<BeachMapProps> = ({
       ? '7-10'
       : windBeaufort >= 5
         ? '5-6'
-        : windBeaufort >= 3
-          ? '3-4'
-          : '0-2'
+        : windBeaufort >= 4
+          ? '4'
+          : windBeaufort >= 3
+            ? '3'
+            : '0-2'
     : '0-2';
   const currentWindColorGuideRows = windColorGuideCopy.rows.filter(row => row.id === currentWindColorGuideId);
   const visibleWindColorGuideRows = currentWindColorGuideRows.length > 0
     ? currentWindColorGuideRows
     : windColorGuideCopy.rows.slice(0, 1);
+  const showGroupedExposureLegend = showWindExposureStatusLabels && currentWindColorGuideId !== '7-10';
 
   const renderWindColorGuideRows = (variant: 'full' | 'preview') => {
     const isPreview = variant === 'preview';
@@ -1077,8 +1411,13 @@ const BeachMap: React.FC<BeachMapProps> = ({
     const isPreview = variant === 'preview';
 
     return (
-      <div className={`${isPreview ? 'max-w-full' : 'border-t border-slate-200 pt-2 dark:border-slate-700'}`}>
+      <div className={`${isPreview ? 'max-w-full space-y-1.5' : 'space-y-2 border-t border-slate-200 pt-2 dark:border-slate-700'}`}>
         {renderWindColorGuideRows(variant)}
+        {showWindExposureColors && showWindExposureStatusLabels && windColorGuideCopy.note && (
+          <p className={`${isPreview ? 'text-[9px]' : 'text-[10px]'} leading-snug text-slate-500 dark:text-slate-400`}>
+            {windColorGuideCopy.note}
+          </p>
+        )}
       </div>
     );
   };
@@ -1109,7 +1448,7 @@ const BeachMap: React.FC<BeachMapProps> = ({
         <>
           <h4 className="mb-1.5 flex items-center gap-1 font-bold text-slate-900 sm:mb-2 dark:text-white">
             <Wind className="h-3 w-3" />
-            {showWindExposureColors ? mapCopy.exposure[language] : mapCopy.calmWind[language]}
+            {showWindExposureColors && showWindExposureStatusLabels ? mapCopy.exposure[language] : mapCopy.calmWind[language]}
           </h4>
           {windSpeedKmh !== undefined && windDirection && (
             <div className="mb-1.5 border-b border-slate-200 pb-1.5 text-slate-500 sm:mb-2 sm:pb-2 dark:border-slate-700 dark:text-slate-400">
@@ -1119,16 +1458,18 @@ const BeachMap: React.FC<BeachMapProps> = ({
           )}
           {showWindExposureColors ? (
             <div className="space-y-2">
-              <div className="grid gap-1 sm:flex sm:flex-col sm:gap-1.5">
-                <div className="flex items-center gap-2">
-                  <div className={`h-3 w-3 rounded-full ring-2 ${protectedTone.colorClass} ${protectedTone.ringClass}`}></div>
-                  <span className="text-slate-600 dark:text-slate-300">{groupedExposureLabel('protected')}</span>
+              {showGroupedExposureLegend && (
+                <div className="grid gap-1 sm:flex sm:flex-col sm:gap-1.5">
+                  <div className="flex items-center gap-2">
+                    <div className={`h-3 w-3 rounded-full ring-2 ${protectedTone.colorClass} ${protectedTone.ringClass}`}></div>
+                    <span className="text-slate-600 dark:text-slate-300">{groupedExposureLabel('protected')}</span>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <div className={`h-3 w-3 rounded-full ring-2 ${exposedTone.colorClass} ${exposedTone.ringClass}`}></div>
+                    <span className="text-slate-600 dark:text-slate-300">{groupedExposureLabel('exposed')}</span>
+                  </div>
                 </div>
-                <div className="flex items-center gap-2">
-                  <div className={`h-3 w-3 rounded-full ring-2 ${exposedTone.colorClass} ${exposedTone.ringClass}`}></div>
-                  <span className="text-slate-600 dark:text-slate-300">{groupedExposureLabel('exposed')}</span>
-                </div>
-              </div>
+              )}
               {renderWindColorGuidePanel('full')}
             </div>
           ) : (
@@ -1150,7 +1491,7 @@ const BeachMap: React.FC<BeachMapProps> = ({
       <div className="flex min-w-0 items-center justify-between gap-2">
         <h4 className="flex min-w-0 items-center gap-1 text-[11px] font-black leading-tight text-slate-800 dark:text-white">
           <Wind className="h-3 w-3 shrink-0" />
-          <span className="truncate">{showWindExposureColors ? mapCopy.exposure[language] : mapCopy.calmWind[language]}</span>
+          <span className="truncate">{showWindExposureColors && showWindExposureStatusLabels ? mapCopy.exposure[language] : mapCopy.calmWind[language]}</span>
         </h4>
         {windSpeedKmh !== undefined && windDirection && (
           <span className="shrink-0 text-[10px] font-semibold leading-tight text-slate-500 dark:text-slate-400">
@@ -1161,16 +1502,18 @@ const BeachMap: React.FC<BeachMapProps> = ({
       </div>
       {showWindExposureColors ? (
         <div className="space-y-2">
-          <div className="grid grid-cols-2 gap-1.5">
-            <div className={`flex min-w-0 items-center justify-center gap-1 rounded-full px-1.5 py-1 text-[9px] font-bold leading-none ${protectedTone.bgClass} ${protectedTone.textClass}`}>
-              <span className={`h-2.5 w-2.5 shrink-0 rounded-full ring-1 ${protectedTone.colorClass} ${protectedTone.ringClass}`} />
-              <span className="whitespace-nowrap">{groupedExposureLabel('protected')}</span>
+          {showGroupedExposureLegend && (
+            <div className="grid grid-cols-2 gap-1.5">
+              <div className={`flex min-w-0 items-center justify-center gap-1 rounded-full px-1.5 py-1 text-[9px] font-bold leading-none ${protectedTone.bgClass} ${protectedTone.textClass}`}>
+                <span className={`h-2.5 w-2.5 shrink-0 rounded-full ring-1 ${protectedTone.colorClass} ${protectedTone.ringClass}`} />
+                <span className="whitespace-nowrap">{groupedExposureLabel('protected')}</span>
+              </div>
+              <div className={`flex min-w-0 items-center justify-center gap-1 rounded-full px-1.5 py-1 text-[9px] font-bold leading-none ${exposedTone.bgClass} ${exposedTone.textClass}`}>
+                <span className={`h-2.5 w-2.5 shrink-0 rounded-full ring-1 ${exposedTone.colorClass} ${exposedTone.ringClass}`} />
+                <span className="whitespace-nowrap">{groupedExposureLabel('exposed')}</span>
+              </div>
             </div>
-            <div className={`flex min-w-0 items-center justify-center gap-1 rounded-full px-1.5 py-1 text-[9px] font-bold leading-none ${exposedTone.bgClass} ${exposedTone.textClass}`}>
-              <span className={`h-2.5 w-2.5 shrink-0 rounded-full ring-1 ${exposedTone.colorClass} ${exposedTone.ringClass}`} />
-              <span className="whitespace-nowrap">{groupedExposureLabel('exposed')}</span>
-            </div>
-          </div>
+          )}
           {renderWindColorGuidePanel('preview')}
         </div>
       ) : (
@@ -1195,7 +1538,7 @@ const BeachMap: React.FC<BeachMapProps> = ({
     }`}>
       <div className={`relative ${
         isCompactPreview
-          ? 'h-[19rem] overflow-hidden rounded-[1.1rem] border border-sky-100 sm:h-[26rem] lg:h-[32rem]'
+          ? `${compactPreviewHeightClassName || 'h-[19rem] sm:h-[26rem] lg:h-[32rem]'} overflow-hidden rounded-[1.1rem] border border-sky-100`
           : compact
             ? 'h-full'
             : preview
@@ -1233,23 +1576,43 @@ const BeachMap: React.FC<BeachMapProps> = ({
           doubleClickZoom
           dragging
           keyboard
-          scrollWheelZoom={false}
+          scrollWheelZoom={enableScrollWheelZoom}
           touchZoom
           zoomControl={false}
+          attributionControl={false}
           className="w-full h-full z-0"
           style={{ height: '100%', width: '100%' }}
         >
           <ZoomControl position={preview || compact ? 'topright' : 'bottomright'} />
           <TileLayer
-            attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
             url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
           />
 
           <RecenterMap center={center} zoom={zoom} />
+          <FitBeachBounds
+            beaches={fitBoundsBeaches || beaches}
+            center={center}
+            enabled={fitBoundsToBeaches}
+            fitKey={fitBoundsKey}
+          />
+          <HighlightedBeachFollower
+            beaches={beaches}
+            center={center}
+            highlightedBeachId={highlightedBeachId}
+            enabled={followHighlightedBeach}
+          />
           <VisibleBeachTracker beaches={beaches} center={center} onVisibleBeachIdsChange={onVisibleBeachIdsChange} />
+          <MapUserInteractionTracker onUserInteraction={onUserInteraction} />
           <ZoomLabelController threshold={labelZoomThreshold} onLabelOpacityChange={setBeachLabelOpacity} />
 
           {/* User Location Marker */}
+          {userLocation && typeof userLocationAccuracy === 'number' && Number.isFinite(userLocationAccuracy) && userLocationAccuracy > 0 && (
+            <Circle
+              center={[userLocation.lat, userLocation.lon]}
+              radius={userLocationAccuracy}
+              pathOptions={{ color: '#2563eb', weight: 1, fillColor: '#3b82f6', fillOpacity: 0.12 }}
+            />
+          )}
           {userLocation && (
             <Marker position={[userLocation.lat, userLocation.lon]} icon={UserLocationIcon}>
               <Popup autoPan={false}>
@@ -1261,19 +1624,21 @@ const BeachMap: React.FC<BeachMapProps> = ({
           )}
 
           {/* Beach Markers */}
-          {beaches.map((item, index) => {
-            const isTopPickMarker = topBeachId !== undefined
-              ? item.beachId === topBeachId
-              : index === 0;
+          {shouldRenderBeachMarkers && beaches.map((item) => {
+            const isTopPickMarker = typeof topBeachId === 'number' && item.beachId === topBeachId;
+            const isHighlightedMarker = typeof highlightedBeachId === 'number' && item.beachId === highlightedBeachId;
             const markerCoordinate = getBeachMapCoordinates(item.beach, { lat: center[0], lon: center[1] });
+            const mapExposureLevel = getMapExposureLevel(item);
+            const mapExposureEvidence = getMapExposureEvidence(item);
 
             return (
             <Marker
-              key={item.beachId}
+              key={`${item.beachId}-${mapMode}-${mapExposureLevel}-${isTopPickMarker ? 'top' : 'base'}-${isHighlightedMarker ? 'active' : 'idle'}`}
               position={[markerCoordinate.lat, markerCoordinate.lon]}
+              zIndexOffset={isHighlightedMarker ? 1000 : isTopPickMarker ? 700 : 0}
               icon={mapMode === 'recommendation'
-                ? createBeachIcon(item, showRecommendationWindColors, isTopPickMarker)
-                : createExposureIcon(getMapExposureLevel(item), showWindExposureColors, windBeaufort, isTopPickMarker)}
+                ? createBeachIcon(item, showRecommendationWindColors, isTopPickMarker, isHighlightedMarker)
+                : createExposureIcon(mapExposureLevel, showWindExposureColors, windBeaufort, isTopPickMarker, mapExposureEvidence, isHighlightedMarker)}
               eventHandlers={{
                 click: () => {
                   trackEvent('map_marker_clicked', item.beachId, {
@@ -1353,6 +1718,10 @@ const BeachMap: React.FC<BeachMapProps> = ({
           {renderLegend()}
         </div>
         )}
+      </div>
+
+      <div className="bg-white/92 px-2 py-1 text-right text-[9px] font-semibold leading-none text-slate-500 shadow-inner shadow-sky-900/5 dark:bg-slate-900/90 dark:text-slate-400">
+        Leaflet | © OpenStreetMap contributors
       </div>
 
       {isCompactPreview && mapMode === 'wind' && (

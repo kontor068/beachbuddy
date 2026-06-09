@@ -8,20 +8,22 @@ import {
 } from 'lucide-react';
 import {
   Beach, LanguageCode, Translation, WindDirection,
-  ForecastItem, WeatherData, DailyForecast, UserPreferences, SwimmingComfort
+  ForecastItem, WeatherData, DailyForecast, UserPreferences, SwimmingComfort,
+  GeospatialExposureProfile, WeatherSource
 } from '../types';
 import {
   calculateBestBeachTime,
   getTopRecommendedBeaches,
   generateBeachExplanation as generateServiceBeachExplanation,
-  calculateBeachScore
+  calculateBeachScore,
+  type BeachWeatherById
 } from '../services/recommendationService';
 import { degToCompass, calculateDistance, getBeaufortLevel, getWaveCondition } from '../utils/weatherUtils';
 import { trackEvent, storeFeedback } from '../services/analyticsService';
 import { calculateSeaConditionScore } from '../utils/seaConditions';
 import { TodayScoreBadge } from '../components/TodayScoreBadge';
 import { generateBeachExplanation as generateUiBeachExplanation } from '../utils/beachExplanation';
-import { generateBestTimeReason } from '../utils/beachCopy';
+import { describeSimpleWindSuitability, describeWindExposure } from '../utils/windExposureCopy';
 import {
   AmenityStatus,
   getAmenityChips,
@@ -394,7 +396,7 @@ const hasUsefulTimeWindow = (start?: string, end?: string): boolean => {
   return durationMinutes !== null && durationMinutes > 0;
 };
 
-import { openNavigation } from '../utils/navigation';
+import { canOpenNavigation, openNavigation } from '../utils/navigation';
 import { displayBeachName } from '../utils/localization';
 
 interface BeachDetailPageProps {
@@ -412,6 +414,9 @@ interface BeachDetailPageProps {
   preferences?: UserPreferences;
   islandName?: string;
   detailDataStatus?: 'idle' | 'loading' | 'ready' | 'partial';
+  beachWeatherById?: BeachWeatherById;
+  geospatialExposureProfiles?: Record<number, GeospatialExposureProfile>;
+  weatherSource?: WeatherSource;
 }
 
 export const BeachDetailPage: React.FC<BeachDetailPageProps> = ({
@@ -428,7 +433,10 @@ export const BeachDetailPage: React.FC<BeachDetailPageProps> = ({
   onToggleFavorite,
   preferences,
   islandName,
-  detailDataStatus = 'idle'
+  detailDataStatus = 'idle',
+  beachWeatherById,
+  geospatialExposureProfiles,
+  weatherSource = 'island-fallback'
 }) => {
   const isFavorite = favorites.includes(beach.id);
   const [feedbackSubmitted, setFeedbackSubmitted] = useState(false);
@@ -507,6 +515,10 @@ export const BeachDetailPage: React.FC<BeachDetailPageProps> = ({
   };
 
   const handleNavigation = () => {
+    if (!canOpenNavigation(beach)) {
+      return;
+    }
+
     trackEvent('navigation_clicked', beach.id, {
       locale: language === 'gr' ? 'el' : 'en',
       region: islandDisplayName,
@@ -515,6 +527,7 @@ export const BeachDetailPage: React.FC<BeachDetailPageProps> = ({
     });
     openNavigation(beach);
   };
+  const canNavigate = canOpenNavigation(beach);
 
   // 1. Calculate Conditions & Scores
   const currentWeather = hourlyForecast[0];
@@ -523,7 +536,12 @@ export const BeachDetailPage: React.FC<BeachDetailPageProps> = ({
   const windSpeedKmh = weatherData.wind.speed * 3.6;
   const windDir = degToCompass(weatherData.wind.deg);
   const windDirectionLabel = t.windDirectionsAccusative?.[windDir as WindDirection] || t.windDirections[windDir as WindDirection] || windDir;
-  const scoreResult = calculateBeachScore(beach, weatherData, userLocation, preferences);
+  const geospatialExposure = geospatialExposureProfiles?.[beach.id];
+  const scoreResult = calculateBeachScore(beach, weatherData, userLocation, preferences, {
+    weatherSource,
+    hourlyForecast,
+    geospatialProfile: geospatialExposure,
+  });
   const { score, exposureLevel, swimmingComfort, canClaimWindProtection = false, seaCalmClaimAllowed = false } = scoreResult;
   const isExposed = exposureLevel ? exposureLevel !== 'protected' : true;
   const isExposedToTodayWind = exposureLevel ? exposureLevel === 'exposed' : isExposed;
@@ -531,6 +549,17 @@ export const BeachDetailPage: React.FC<BeachDetailPageProps> = ({
   const seaConditionScore = calculateSeaConditionScore(isExposed, windSpeedKmh, exposureLevel, waveHeightM);
   const detailBadgeScore = getDetailBadgeScore(score, seaConditionScore, isExposed);
   const beaufortLevel = getBeaufortLevel(windSpeedKmh);
+  const detailedWindExposureReason = describeWindExposure({
+    exposureLevel,
+    windDirectionDeg: weatherData.wind.deg,
+    windBeaufort: beaufortLevel,
+    facingDeg: scoreResult.facingDeg,
+    knownWindSportSpot: scoreResult.windProfile?.knownWindSportSpot,
+    language,
+  });
+  const windExposureReason =
+    describeSimpleWindSuitability(scoreResult.simpleWindSuitability, language) ||
+    detailedWindExposureReason;
   const seaConditionDisplay = getSeaConditionDisplay(seaConditionScore, isExposedToTodayWind, language, selectedDate, canClaimWindProtection, seaCalmClaimAllowed, beaufortLevel, waveHeightM);
   const cautionWaterConditions = beaufortLevel >= 5 || (typeof waveHeightM === 'number' && waveHeightM >= 0.8);
   const aiExplanation = generateServiceBeachExplanation(beach, weatherData, score, userLocation, language);
@@ -559,17 +588,14 @@ export const BeachDetailPage: React.FC<BeachDetailPageProps> = ({
   // 2. Best Time & Planner
   const bestTime = useMemo(() => calculateBestBeachTime(hourlyForecast, beach), [beach, hourlyForecast]);
   const usefulBestTimeWindow = Boolean(bestTime && hasUsefulTimeWindow(bestTime.bestStart, bestTime.bestEnd));
-  const bestTimeRange = usefulBestTimeWindow && bestTime ? `${bestTime.bestStart} - ${bestTime.bestEnd}` : null;
-  const bestTimeLabel = bestTimeRange || { en: 'Morning', gr: 'Πρωί', de: 'Morgen', it: 'Mattina', fr: 'Matin' }[language];
   const bestTimeReason = bestTime
-    ? generateBestTimeReason({
-      language,
-      windBeaufort: beaufortLevel,
-      waveHeightM,
-      isExposed,
-      exposureLevel,
-      selectedDate,
-    })
+    ? {
+      en: 'Use this window before the wind reaches 4 Beaufort or more later.',
+      gr: 'Προτίμησε αυτό το διάστημα πριν ο άνεμος ανέβει σε 4 μποφόρ ή παραπάνω.',
+      de: 'Nutze dieses Zeitfenster, bevor der Wind später 4 Bft oder mehr erreicht.',
+      it: 'Preferisci questa fascia prima che il vento salga a 4 Beaufort o oltre.',
+      fr: 'Privilégie ce créneau avant que le vent monte à 4 Beaufort ou plus.',
+    }[language]
     : '';
   const swimWindowDisplay = getSwimmingWindowDisplay(swimmingComfort, beaufortLevel, waveHeightM, language, selectedDayPrefix);
   const swimWindowToneClasses = getSwimmingWindowToneClasses(swimWindowDisplay.tone);
@@ -586,7 +612,7 @@ export const BeachDetailPage: React.FC<BeachDetailPageProps> = ({
         ? ''
         : `${language === 'gr' ? 'Προτίμησε την καταλληλότερη ώρα' : 'Prefer the most suitable time'}: ${bestTime.bestStart} - ${bestTime.bestEnd}`
       : `${bestTime.bestStart} - ${bestTime.bestEnd}`
-    : bestTimeLabel;
+    : '';
   const displayedBestTimeLabel = usefulBestTimeWindow ? canonicalBestTimeLabel : '';
   const swimmingWindowHelper = swimWindowDisplay.helper || bestTimeReason;
   const isCautionFramingDay = swimWindowDisplay.tone !== 'good' || cautionWaterConditions;
@@ -671,15 +697,24 @@ export const BeachDetailPage: React.FC<BeachDetailPageProps> = ({
       return dist <= 20; // 20km radius
     });
 
-    // Get top 3 from these nearby beaches
-    const recommendations = getTopRecommendedBeaches(nearby, weatherData, userLocation, hourlyForecast, preferences);
-    return recommendations.slice(0, 3).map(rec => {
+    // Get proportional nearby recommendations from these beaches.
+    const recommendations = getTopRecommendedBeaches(
+      nearby,
+      weatherData,
+      userLocation,
+      hourlyForecast,
+      preferences,
+      language,
+      beachWeatherById,
+      geospatialExposureProfiles
+    );
+    return recommendations.map(rec => {
       const b = nearby.find(nb => nb.id === rec.beachId);
       if (!b) return null;
       const dist = calculateDistance(beach.coordinates.lat, beach.coordinates.lon, b.coordinates.lat, b.coordinates.lon);
-      return { ...rec, beach: b, distance: dist };
+      return { ...rec, beach: b, distance: dist, geospatialExposure: geospatialExposureProfiles?.[b.id] };
     }).filter((item): item is NonNullable<typeof item> => item !== null);
-  }, [allBeaches, beach, weatherData, userLocation, hourlyForecast, preferences]);
+  }, [allBeaches, beach, weatherData, userLocation, hourlyForecast, preferences, language, beachWeatherById, geospatialExposureProfiles]);
 
   const handleShare = async () => {
     if (navigator.share) {
@@ -778,6 +813,12 @@ export const BeachDetailPage: React.FC<BeachDetailPageProps> = ({
 
           <div className="space-y-2 rounded-3xl border border-cyan-100/70 bg-cyan-50/45 p-3">
             <h3 className="text-sm font-bold text-slate-900">{displayWhyTodayHeading}</h3>
+            {windExposureReason && (
+              <div className="flex items-start gap-2 rounded-2xl bg-white/70 px-3 py-2 text-sm font-semibold leading-relaxed text-slate-700">
+                <Wind className="mt-0.5 h-4 w-4 flex-shrink-0 text-cyan-600" />
+                <span>{windExposureReason}</span>
+              </div>
+            )}
             <div className="grid gap-2 sm:grid-cols-3">
               {decisionBullets.map((bullet, index) => (
                 <div key={index} className="flex items-start gap-2 text-sm font-medium leading-relaxed text-slate-600">
@@ -789,14 +830,16 @@ export const BeachDetailPage: React.FC<BeachDetailPageProps> = ({
           </div>
 
           <div className="hidden md:flex items-center gap-3 pt-1">
-            <button
-              type="button"
-              onClick={handleNavigation}
-              className="flex min-h-[48px] flex-1 items-center justify-center gap-2 rounded-2xl bg-cyan-600 px-4 font-bold text-white shadow-lg shadow-cyan-200 transition-colors hover:bg-cyan-700"
-            >
-              <Navigation className="w-5 h-5" />
-              {copy.navigation[language]}
-            </button>
+            {canNavigate && (
+              <button
+                type="button"
+                onClick={handleNavigation}
+                className="flex min-h-[48px] flex-1 items-center justify-center gap-2 rounded-2xl bg-cyan-600 px-4 font-bold text-white shadow-lg shadow-cyan-200 transition-colors hover:bg-cyan-700"
+              >
+                <Navigation className="w-5 h-5" />
+                {copy.navigation[language]}
+              </button>
+            )}
             <button
               type="button"
               onClick={() => onToggleFavorite(beach.id)}
@@ -984,6 +1027,19 @@ export const BeachDetailPage: React.FC<BeachDetailPageProps> = ({
                     score,
                     explanation: aiExplanation,
                     isExposed,
+                    exposureLevel,
+                    orientation: scoreResult.orientation,
+                    marine: scoreResult.marine,
+                    waveHeightM: scoreResult.waveHeightM,
+                    warnings: scoreResult.warnings,
+                    confidence: scoreResult.confidence,
+                    swimmingComfort,
+                    windProfile: scoreResult.windProfile,
+                    windProfileSource: scoreResult.windProfileSource,
+                    windSector: scoreResult.windSector,
+                    canClaimWindProtection,
+                    seaCalmClaimAllowed,
+                    geospatialExposure,
                     beach,
                     bestBeachTime: bestTime
                   }]}
@@ -1000,14 +1056,16 @@ export const BeachDetailPage: React.FC<BeachDetailPageProps> = ({
               </React.Suspense>
             </MapLoadBoundary>
           </div>
-          <button 
-            type="button"
-            onClick={handleNavigation}
-            className="flex min-h-[48px] w-full items-center justify-center gap-2 rounded-2xl bg-slate-900 px-4 font-bold text-white shadow-md transition-colors hover:bg-cyan-700"
-          >
-            <Navigation className="w-5 h-5" />
-            {copy.openNavigation[language]}
-          </button>
+          {canNavigate && (
+            <button
+              type="button"
+              onClick={handleNavigation}
+              className="flex min-h-[48px] w-full items-center justify-center gap-2 rounded-2xl bg-slate-900 px-4 font-bold text-white shadow-md transition-colors hover:bg-cyan-700"
+            >
+              <Navigation className="w-5 h-5" />
+              {copy.openNavigation[language]}
+            </button>
+          )}
         </section>
 
         {/* Feedback System */}
@@ -1060,18 +1118,24 @@ export const BeachDetailPage: React.FC<BeachDetailPageProps> = ({
                 <div className="flex flex-col gap-3">
                   {nearbyBeaches.map((item) => {
                     const itemIsExposed = item.exposureLevel ? item.exposureLevel !== 'protected' : true;
-                    const itemSeaScore = calculateSeaConditionScore(itemIsExposed, windSpeedKmh, item.exposureLevel, item.waveHeightM ?? waveHeightM);
+                    const itemWeatherData = beachWeatherById?.[item.beachId] || weatherData;
+                    const itemWindSpeedKmh = itemWeatherData.wind.speed * 3.6;
+                    const itemBeaufortLevel = getBeaufortLevel(itemWindSpeedKmh);
+                    const itemWindDir = degToCompass(itemWeatherData.wind.deg);
+                    const itemWindDirectionLabel = t.windDirectionsAccusative?.[itemWindDir as WindDirection] || t.windDirections[itemWindDir as WindDirection] || itemWindDir;
+                    const itemWaveHeightM = item.waveHeightM ?? itemWeatherData.marine?.waveHeightM ?? waveHeightM;
+                    const itemSeaScore = calculateSeaConditionScore(itemIsExposed, itemWindSpeedKmh, item.exposureLevel, itemWaveHeightM);
                     const itemTone = getRecommendationTone(item.score, itemSeaScore, itemIsExposed);
                     const itemExplanation = generateUiBeachExplanation({
                       beach: item.beach,
                       language,
                       isExposed: itemIsExposed,
                       exposureLevel: item.exposureLevel,
-                      waveCondition: getWaveCondition(itemIsExposed, windSpeedKmh),
-                      waveHeightM: item.waveHeightM ?? waveHeightM,
+                      waveCondition: getWaveCondition(itemIsExposed, itemWindSpeedKmh),
+                      waveHeightM: itemWaveHeightM,
                       bestBeachTime: bestTime || undefined,
-                      windDirectionLabel,
-                      windBeaufort: beaufortLevel,
+                      windDirectionLabel: itemWindDirectionLabel,
+                      windBeaufort: itemBeaufortLevel,
                       selectedDate,
                       canClaimWindProtection: item.canClaimWindProtection,
                       seaCalmClaimAllowed: item.seaCalmClaimAllowed,
@@ -1104,7 +1168,7 @@ export const BeachDetailPage: React.FC<BeachDetailPageProps> = ({
                               {typeof item.distance === 'number' ? `${item.distance.toFixed(1)} km ${copy.away[language]}` : copy.nearby[language]}
                             </p>
                             <p className="text-xs font-semibold text-slate-600 line-clamp-2">
-                              {itemExplanation.cardSummary || getRecommendationLabel(itemTone, language, selectedDate, beaufortLevel)}
+                              {itemExplanation.cardSummary || getRecommendationLabel(itemTone, language, selectedDate, itemBeaufortLevel)}
                             </p>
                           </div>
                         </div>
@@ -1124,14 +1188,16 @@ export const BeachDetailPage: React.FC<BeachDetailPageProps> = ({
 
       <div className="fixed inset-x-0 bottom-0 z-50 border-t border-slate-100 bg-white/95 px-3 py-3 pb-[calc(0.75rem+env(safe-area-inset-bottom))] shadow-[0_-8px_24px_rgba(15,23,42,0.08)] backdrop-blur md:hidden">
         <div className="mx-auto flex max-w-4xl items-center gap-2">
-          <button
-            type="button"
-            onClick={handleNavigation}
-            className="flex min-h-[52px] flex-1 items-center justify-center gap-2 rounded-2xl bg-cyan-600 px-4 font-bold text-white shadow-lg shadow-cyan-200 active:scale-[0.99]"
-          >
-            <Navigation className="h-5 w-5" />
-            {copy.navigation[language]}
-          </button>
+          {canNavigate && (
+            <button
+              type="button"
+              onClick={handleNavigation}
+              className="flex min-h-[52px] flex-1 items-center justify-center gap-2 rounded-2xl bg-cyan-600 px-4 font-bold text-white shadow-lg shadow-cyan-200 active:scale-[0.99]"
+            >
+              <Navigation className="h-5 w-5" />
+              {copy.navigation[language]}
+            </button>
+          )}
           <button
             type="button"
             onClick={() => onToggleFavorite(beach.id)}

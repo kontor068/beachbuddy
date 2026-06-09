@@ -33,7 +33,7 @@ const metadataAccessToAccessibility = (type?: BeachAccessType): Accessibility =>
 };
 
 const metadataTerrainToBeachType = (types?: BeachTerrainType[]): BeachType => {
-  if (!types || types.length === 0) return 'sandy';
+  if (!types || types.length === 0) return 'unknown';
   const hasFineSand = types.includes('fine_sand');
   const hasCoarseSand = types.includes('coarse_sand');
   const hasPebbles = types.includes('pebbles');
@@ -47,7 +47,7 @@ const metadataTerrainToBeachType = (types?: BeachTerrainType[]): BeachType => {
 };
 
 const metadataTerrainToDepth = (types?: BeachTerrainType[]) => {
-  if (!types || types.length === 0) return { deepWaters: false, shallowWaters: true, waterDepth: 'shallow' as const };
+  if (!types || types.length === 0) return { deepWaters: false, shallowWaters: false, waterDepth: 'medium' as const };
   if (types.includes('large_stones') || types.includes('rocks')) {
     return { deepWaters: true, shallowWaters: false, waterDepth: 'deep' as const };
   }
@@ -179,6 +179,7 @@ const buildIslandsFromRawBeaches = (rawBeaches: RawBeach[]): Island[] => {
     const quiet = metadata
       ? inferQuietFromMetadata({ metadata, accessType: metadata.access.type, hasBar, organized, hasSunbeds, hasTaverna, hasRestaurant })
       : !hasBar && beachService.getDeterministicValue(rb.id, 'quiet') > 0.6;
+    const remote = access === Accessibility.DIFFICULT || access === Accessibility.BOAT_ONLY;
 
     const typeVal = beachService.getDeterministicValue(rb.id, 'type');
     const beachType: BeachType = metadata ? metadataTerrainToBeachType(metadata.terrain.types) : (typeVal > 0.85 ? 'rocky' : (typeVal > 0.65 ? 'pebbles' : (typeVal > 0.45 ? 'sandy-pebbles' : 'sandy')));
@@ -189,6 +190,7 @@ const buildIslandsFromRawBeaches = (rawBeaches: RawBeach[]): Island[] => {
         shallowWaters: !isDeepWater,
         waterDepth: isDeepWater ? 'deep' as const : (beachService.getDeterministicValue(rb.id, 'depth2') > 0.5 ? 'medium' as const : 'shallow' as const),
       };
+    const familyFriendly = depth.shallowWaters && organized && !hardQuietAccessTypes.has(metadata?.access?.type);
 
     const beach: Beach = {
       id: rb.id,
@@ -217,9 +219,9 @@ const buildIslandsFromRawBeaches = (rawBeaches: RawBeach[]): Island[] => {
         surfing: beachService.getDeterministicValue(rb.id, 'surfing') > 0.8,
       },
       environment: {
-        quiet,
-        remote: access === Accessibility.DIFFICULT || access === Accessibility.BOAT_ONLY,
-        familyFriendly: depth.shallowWaters && organized && !hardQuietAccessTypes.has(metadata?.access?.type),
+        quiet: metadata?.environment?.quiet ?? quiet,
+        remote: metadata?.environment?.remote ?? remote,
+        familyFriendly: metadata?.environment?.familyFriendly ?? familyFriendly,
       },
       popularityScore: Math.floor(beachService.getDeterministicValue(rb.id, 'pop') * 100),
       coordinates: { lat: rb.lat, lon: rb.lon },

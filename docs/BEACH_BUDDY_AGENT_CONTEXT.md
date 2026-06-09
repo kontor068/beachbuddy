@@ -86,8 +86,11 @@ weather + beach exposure + local behavior + confidence = recommendation
 
 Use this as the simple operating model:
 
-- 0-3 Bft = normal beach mode
+- 0-2 Bft = relaxed beach mode
   Most beaches can be usable, unless waves/local exposure say otherwise.
+
+- 3 Bft = normal beach mode with a useful top pick
+  Most beaches can still be usable, but beach exposure starts to matter enough to recommend the better option.
 
 - 4 Bft = caution mode
   Open/high-fetch beaches start getting meaningful penalties.

@@ -7,7 +7,7 @@ const publicDir = path.join(rootDir, 'public');
 const indexPath = path.join(publicDir, 'data', 'beaches', 'index.json');
 const defaultOutputDir = path.join(rootDir, '.tmp', 'beach-audits');
 
-const allowedBeachTypes = new Set(['sandy', 'pebbles', 'sandy-pebbles', 'rocky']);
+const allowedBeachTypes = new Set(['sandy', 'pebbles', 'sandy-pebbles', 'rocky', 'unknown']);
 const allowedAccessibility = new Set(['EASY', 'MODERATE', 'DIFFICULT', 'BOAT_ONLY']);
 const allowedWaterDepth = new Set(['shallow', 'medium', 'deep']);
 const allowedWindDirections = new Set([
@@ -23,6 +23,7 @@ const allowedWindDirections = new Set([
 const allowedAccessTypes = new Set([
   'asphalt_road',
   'passable_dirt_road',
+  'difficult_dirt_road',
   '4x4_only',
   'hiking_path_easy',
   'hiking_path_difficult',
@@ -1185,6 +1186,27 @@ const validateMetadata = (audit, { file, beach, region }) => {
     });
   }
 
+  if (confidence === 'high' && metadata.access?.type === 'unknown') {
+    audit.addIssue({
+      severity: 'LOW',
+      issueType: 'high_confidence_with_unknown_access',
+      file,
+      beach,
+      region,
+      currentValue: {
+        confidence,
+        accessType: metadata.access.type,
+        sourceUrls: Array.isArray(metadata.sourceUrls) ? metadata.sourceUrls : [],
+      },
+      suggestedValue: 'verify access from a direct source or downgrade metadata confidence until access is known',
+      confidence: 0.9,
+      evidenceNote: 'Top recommendations require known practical access; high metadata confidence with unknown access should stay visible as data-quality debt.',
+      recommendedAction: 'needs_source_review',
+      reviewCategory: 'informational',
+      humanSummary: `${beachLabel(beach)} has high metadata confidence but unknown access.`,
+    });
+  }
+
   const terrainTypes = metadata.terrain?.types;
   if (Array.isArray(terrainTypes)) {
     const invalidTerrainTypes = terrainTypes.filter(type => !allowedTerrainTypes.has(type));
@@ -1562,6 +1584,10 @@ const validateRegionPayload = async (audit, entry, seenBeachIds, allBeaches) => 
 
   const detailBeaches = Array.isArray(detailPayload?.beaches) ? detailPayload.beaches : [];
   const detailIds = new Set(detailBeaches.map(beach => beach?.id).filter(Number.isInteger));
+
+  for (const detailBeach of detailBeaches) {
+    validateMetadata(audit, { file: detailPath, beach: detailBeach, region: entry });
+  }
 
   for (const beach of beaches) {
     if (Number.isInteger(beach?.id) && !detailIds.has(beach.id)) {

@@ -173,7 +173,7 @@ const metadataAccessToAccessibility = type => {
 };
 
 const metadataTerrainToBeachType = types => {
-  if (!types || types.length === 0) return 'sandy';
+  if (!types || types.length === 0) return 'unknown';
   const hasFineSand = types.includes('fine_sand');
   const hasCoarseSand = types.includes('coarse_sand');
   const hasPebbles = types.includes('pebbles');
@@ -187,7 +187,7 @@ const metadataTerrainToBeachType = types => {
 };
 
 const metadataTerrainToDepth = types => {
-  if (!types || types.length === 0) return { deepWaters: false, shallowWaters: true, waterDepth: 'shallow' };
+  if (!types || types.length === 0) return { deepWaters: false, shallowWaters: false, waterDepth: 'medium' };
   if (types.includes('large_stones') || types.includes('rocks')) {
     return { deepWaters: true, shallowWaters: false, waterDepth: 'deep' };
   }
@@ -253,19 +253,146 @@ const greeklishPairs = [
   ['φ', 'f'], ['χ', 'ch'], ['ψ', 'ps'], ['ω', 'o'],
 ];
 
-const toGreeklish = value => {
+const toLegacyGreeklish = value => {
   if (!value) return '';
   return greeklishPairs.reduce((text, [from, to]) => text.split(from).join(to), value)
     .replace(/\s+/g, ' ')
     .trim();
 };
 
+const GREEK_LETTER_RE = /[\u0370-\u03ff]/;
+const GREEK_COMBINING_MARKS_RE = /[\u0300-\u036f]/g;
+const GREEK_LOWER_LETTER_RE = /[\u03b1-\u03c9]/;
+
+const SIMPLE_GREEK_DIGRAPHS = new Map([
+  ['\u03bf\u03c5', 'ou'],
+  ['\u03b1\u03b9', 'ai'],
+  ['\u03b5\u03b9', 'i'],
+  ['\u03bf\u03b9', 'i'],
+  ['\u03b1\u03c5', 'av'],
+  ['\u03b5\u03c5', 'ev'],
+  ['\u03c4\u03c3', 'ts'],
+  ['\u03c4\u03b6', 'tz'],
+  ['\u03b3\u03b3', 'ng'],
+]);
+
+const PROSE_GREEK_DIGRAPHS = new Map([
+  ...SIMPLE_GREEK_DIGRAPHS,
+  ['\u03b5\u03b9', 'ei'],
+  ['\u03bf\u03b9', 'oi'],
+]);
+
+const WORD_START_GREEK_DIGRAPHS = new Map([
+  ['\u03bc\u03c0', ['b', 'mp']],
+  ['\u03bd\u03c4', ['d', 'nt']],
+  ['\u03b3\u03ba', ['g', 'gk']],
+]);
+
+const SIMPLE_GREEK_CHARS = new Map([
+  ['\u03b1', 'a'], ['\u03b2', 'v'], ['\u03b3', 'g'], ['\u03b4', 'd'], ['\u03b5', 'e'],
+  ['\u03b6', 'z'], ['\u03b7', 'i'], ['\u03b8', 'th'], ['\u03b9', 'i'], ['\u03ba', 'k'],
+  ['\u03bb', 'l'], ['\u03bc', 'm'], ['\u03bd', 'n'], ['\u03be', 'x'], ['\u03bf', 'o'],
+  ['\u03c0', 'p'], ['\u03c1', 'r'], ['\u03c3', 's'], ['\u03c2', 's'], ['\u03c4', 't'],
+  ['\u03c5', 'y'], ['\u03c6', 'f'], ['\u03c7', 'ch'], ['\u03c8', 'ps'], ['\u03c9', 'o'],
+]);
+
+const stripGreekAccents = value => String(value || '')
+  .normalize('NFD')
+  .replace(GREEK_COMBINING_MARKS_RE, '')
+  .replace(/\u03c2/g, '\u03c3');
+
+const isGreekWordStart = (text, index) => {
+  for (let i = index - 1; i >= 0; i -= 1) {
+    const lower = text[i].toLowerCase();
+    if (GREEK_LOWER_LETTER_RE.test(lower)) return false;
+    if (/[a-z0-9]/i.test(text[i])) return false;
+    if (/\s|[([{'"-]/.test(text[i])) return true;
+  }
+  return true;
+};
+
+const applyGreekSourceCase = (latin, source) => (
+  source && source[0] === source[0].toUpperCase() && source[0] !== source[0].toLowerCase()
+    ? latin.charAt(0).toUpperCase() + latin.slice(1)
+    : latin
+);
+
+const transliterateGreek = (value, digraphs = SIMPLE_GREEK_DIGRAPHS) => {
+  const text = stripGreekAccents(value);
+  if (!GREEK_LETTER_RE.test(text)) return String(value || '').trim();
+
+  let output = '';
+  for (let index = 0; index < text.length; index += 1) {
+    const current = text[index];
+    const pair = text.slice(index, index + 2);
+    const lowerPair = pair.toLowerCase();
+
+    const wordStartDigraph = WORD_START_GREEK_DIGRAPHS.get(lowerPair);
+    if (wordStartDigraph) {
+      output += applyGreekSourceCase(wordStartDigraph[isGreekWordStart(text, index) ? 0 : 1], pair);
+      index += 1;
+      continue;
+    }
+
+    const simpleDigraph = digraphs.get(lowerPair);
+    if (simpleDigraph) {
+      output += applyGreekSourceCase(simpleDigraph, pair);
+      index += 1;
+      continue;
+    }
+
+    const lowerChar = current.toLowerCase();
+    const latinChar = SIMPLE_GREEK_CHARS.get(lowerChar);
+    output += latinChar ? applyGreekSourceCase(latinChar, current) : current;
+  }
+
+  return output.replace(/\s+/g, ' ').trim();
+};
+
+const toGreeklish = value => transliterateGreek(value, SIMPLE_GREEK_DIGRAPHS);
+const toGreeklishProse = value => transliterateGreek(value, PROSE_GREEK_DIGRAPHS);
+
+const normalizeBeachNameKey = value => stripGreekAccents(value)
+  .toLowerCase()
+  .replace(/[^\u0370-\u03ffa-z0-9]+/g, ' ')
+  .replace(/\s+/g, ' ')
+  .trim();
+
+const normalizeSlug = value => {
+  const slug = String(value || '')
+    .normalize('NFD')
+    .replace(GREEK_COMBINING_MARKS_RE, '')
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, '-')
+    .replace(/^-+|-+$/g, '');
+
+  return slug || 'beach';
+};
+
+const ENGLISH_BEACH_NAME_OVERRIDES = new Map([
+  ['\u03c0\u03c1\u03b1\u03c3\u03b1', 'Prassa'],
+  ['\u03c0\u03c1\u03b1\u03c3\u03b1 \u03b1\u03b3\u03b9\u03bf\u03c3 \u03b3\u03b5\u03c9\u03c1\u03b3\u03b9\u03bf\u03c3', 'Prassa (Agios Georgios)'],
+]);
+
+const getEnglishBeachName = value => (
+  ENGLISH_BEACH_NAME_OVERRIDES.get(normalizeBeachNameKey(value)) ||
+  toGreeklish(value) ||
+  value
+);
+
+const getLegacyBeachSlugs = (rawName, englishName) => {
+  const currentSlug = normalizeSlug(englishName);
+  const legacySlug = normalizeSlug(toLegacyGreeklish(rawName));
+
+  return Array.from(new Set([legacySlug].filter(slug => slug && slug !== currentSlug)));
+};
+
 const hasGreekText = value => /[\u0370-\u03ff]/.test(value || '');
 const normalizeGreekFinalSigma = value => value.replace(/σ\b/g, 'ς');
 const getGreekDisplayBeachName = value => hasGreekText(value) ? normalizeGreekFinalSigma(value.trim()) : value.trim();
 
-const makeBeachNarrative = (name, areaName, accessNotes, regionId) => {
-  const latinName = toGreeklish(name) || name;
+const makeBeachNarrative = (name, areaName, accessNotes, regionId, englishName = getEnglishBeachName(name)) => {
+  const latinName = englishName || name;
   const greekName = getGreekDisplayBeachName(name);
   const area = makeLocalizedName(areaName, regionId);
   const greekArea = area.gr || areaName || 'Ελλάδα';
@@ -286,21 +413,21 @@ const makeBeachNarrative = (name, areaName, accessNotes, regionId) => {
       it: `${latinName} is a beach in ${area.en}. Check access, shade, and today's sea conditions before you go.`,
     },
     accessNotes: accessNotes ? {
-      en: toGreeklish(accessNotes) || accessNotes,
+      en: toGreeklishProse(accessNotes) || accessNotes,
       gr: accessNotes,
-      fr: toGreeklish(accessNotes) || accessNotes,
-      de: toGreeklish(accessNotes) || accessNotes,
-      it: toGreeklish(accessNotes) || accessNotes,
+      fr: toGreeklishProse(accessNotes) || accessNotes,
+      de: toGreeklishProse(accessNotes) || accessNotes,
+      it: toGreeklishProse(accessNotes) || accessNotes,
     } : undefined,
   };
 };
 
 const makeSearchAliases = (name, areaName, extraAliases = []) => Array.from(new Set([
   name,
-  toGreeklish(name),
+  getEnglishBeachName(name),
   getGreekDisplayBeachName(name),
   ...extraAliases,
-  ...extraAliases.map(alias => toGreeklish(alias)),
+  ...extraAliases.map(alias => getEnglishBeachName(alias)),
   areaName,
   toGreeklish(areaName),
   'Paralia',
@@ -333,7 +460,9 @@ const buildBeach = (rawBeach, island) => {
   const autoProtection = getAutoProt(rawBeach.lat, rawBeach.lon, island.coordinates.lat, island.coordinates.lon);
   const protection = verifiedOrientation?.protectedFrom.length ? verifiedOrientation.protectedFrom : autoProtection;
   const access = metadata ? metadataAccessToAccessibility(metadata.access.type) : 'EASY';
-  const narrative = makeBeachNarrative(rawBeach.name, rawBeach.prefecture, metadata?.access?.notes, island.id);
+  const englishName = getEnglishBeachName(rawBeach.name);
+  const legacySlugs = getLegacyBeachSlugs(rawBeach.name, englishName);
+  const narrative = makeBeachNarrative(rawBeach.name, rawBeach.prefecture, metadata?.access?.notes, island.id, englishName);
   const hasBar = metadata
     ? hasExplicitBeachBarAmenityInList(metadata.amenities)
     : /beach\s*bar|beachbar|beach club|bar|resort/i.test(rawBeach.name);
@@ -346,6 +475,7 @@ const buildBeach = (rawBeach, island) => {
   const quiet = metadata
     ? inferQuietFromMetadata({ metadata, accessType: metadata.access.type, hasBar, organized, hasSunbeds, hasTaverna, hasRestaurant })
     : !hasBar && getDeterministicValue(rawBeach.id, 'quiet') > 0.6;
+  const remote = access === 'DIFFICULT' || access === 'BOAT_ONLY';
   const typeVal = getDeterministicValue(rawBeach.id, 'type');
   const isDeepWater = getDeterministicValue(rawBeach.id, 'depth') > 0.5;
   const beachType = metadata ? metadataTerrainToBeachType(metadata.terrain.types) : (typeVal > 0.85 ? 'rocky' : (typeVal > 0.65 ? 'pebbles' : (typeVal > 0.45 ? 'sandy-pebbles' : 'sandy')));
@@ -358,17 +488,19 @@ const buildBeach = (rawBeach, island) => {
       shallowWaters: !isDeepWater,
       waterDepth: isDeepWater ? 'deep' : (getDeterministicValue(rawBeach.id, 'depth2') > 0.5 ? 'medium' : 'shallow'),
     };
+  const familyFriendly = depth.shallowWaters && organized && !hardQuietAccessTypes.has(metadata?.access?.type);
 
   return {
     id: rawBeach.id,
     rating: 4.0 + (getDeterministicValue(rawBeach.id, 'rating') * 1.0),
     name: {
-      en: toGreeklish(rawBeach.name) || rawBeach.name,
+      en: englishName,
       gr: getGreekDisplayBeachName(rawBeach.name),
       fr: rawBeach.name,
       de: rawBeach.name,
       it: rawBeach.name,
     },
+    ...(legacySlugs.length > 0 ? { legacySlugs } : {}),
     description: narrative.description,
     detailedDescription: narrative.detailedDescription,
     accessNotes: narrative.accessNotes,
@@ -395,9 +527,9 @@ const buildBeach = (rawBeach, island) => {
       surfing: surfingOverride ?? (getDeterministicValue(rawBeach.id, 'surfing') > 0.8),
     },
     environment: {
-      quiet,
-      remote: access === 'DIFFICULT' || access === 'BOAT_ONLY',
-      familyFriendly: depth.shallowWaters && organized && !hardQuietAccessTypes.has(metadata?.access?.type),
+      quiet: metadata?.environment?.quiet ?? quiet,
+      remote: metadata?.environment?.remote ?? remote,
+      familyFriendly: metadata?.environment?.familyFriendly ?? familyFriendly,
     },
     popularityScore: Math.floor(getDeterministicValue(rawBeach.id, 'pop') * 100),
     coordinates: { lat: rawBeach.lat, lon: rawBeach.lon },
@@ -419,10 +551,14 @@ const buildBeach = (rawBeach, island) => {
 
 const buildSummaryBeach = beach => {
   const accessType = beach.metadata?.access?.type || beach.staticLabels?.accessType || 'unknown';
+  const accessLabel = beach.metadata?.environment
+    ? beach.metadata?.access?.label || beach.staticLabels?.accessLabel
+    : undefined;
   return {
     id: beach.id,
     rating: beach.rating,
     name: beach.name,
+    ...(beach.legacySlugs ? { legacySlugs: beach.legacySlugs } : {}),
     description: beach.description,
     protectedFrom: beach.protectedFrom,
     orientation: beach.orientation,
@@ -442,12 +578,14 @@ const buildSummaryBeach = beach => {
     staticLabels: {
       beachType: beach.staticLabels?.beachType || beach.beachType,
       accessType,
+      ...(accessLabel ? { accessLabel } : {}),
     },
   };
 };
 
 const buildDetailBeach = beach => ({
   id: beach.id,
+  ...(beach.legacySlugs ? { legacySlugs: beach.legacySlugs } : {}),
   description: beach.description,
   detailedDescription: beach.detailedDescription,
   accessNotes: beach.accessNotes,
@@ -557,6 +695,60 @@ for (const beach of beaches) {
   regions.get(id).beaches.push(beach);
 }
 
+const collectExistingGeneratedJson = async (dir, baseDir = dir, files = new Map()) => {
+  let entries;
+  try {
+    entries = await fs.readdir(dir, { withFileTypes: true });
+  } catch {
+    return files;
+  }
+
+  for (const entry of entries) {
+    const fullPath = path.join(dir, entry.name);
+    if (entry.isDirectory()) {
+      await collectExistingGeneratedJson(fullPath, baseDir, files);
+      continue;
+    }
+
+    if (!entry.name.endsWith('.json')) continue;
+
+    try {
+      const relativePath = path.relative(baseDir, fullPath).replace(/\\/g, '/');
+      const parsed = JSON.parse(await fs.readFile(fullPath, 'utf8'));
+      if (parsed && typeof parsed === 'object' && typeof parsed.generatedAt === 'string') {
+        files.set(relativePath, parsed);
+      }
+    } catch {
+      // Ignore invalid or partially written generated files; the next write will replace them.
+    }
+  }
+
+  return files;
+};
+
+const previousGeneratedJson = await collectExistingGeneratedJson(outputDir);
+
+const withStableGeneratedAt = (relativePath, payload) => {
+  const previous = previousGeneratedJson.get(relativePath);
+  if (!previous?.generatedAt || !payload?.generatedAt) return payload;
+
+  const normalizedPrevious = { ...previous, generatedAt: payload.generatedAt };
+  if (JSON.stringify(normalizedPrevious) === JSON.stringify(payload)) {
+    return { ...payload, generatedAt: previous.generatedAt };
+  }
+
+  return payload;
+};
+
+const writeGeneratedJson = async (relativePath, payload, space) => {
+  const stablePayload = withStableGeneratedAt(relativePath, payload);
+  const serialized = space === undefined
+    ? JSON.stringify(stablePayload)
+    : JSON.stringify(stablePayload, null, space);
+
+  await fs.writeFile(path.join(outputDir, relativePath), `${serialized}\n`, 'utf8');
+};
+
 await fs.rm(outputDir, { recursive: true, force: true });
 await fs.mkdir(outputDir, { recursive: true });
 await fs.mkdir(appOutputDir, { recursive: true });
@@ -625,50 +817,43 @@ for (const region of regions.values()) {
     'utf8'
   );
 
-  await fs.writeFile(
-    path.join(appOutputDir, `${region.id}.json`),
-    `${JSON.stringify({
+  await writeGeneratedJson(
+    `app/${region.id}.json`,
+    {
       schemaVersion: APP_DATA_SCHEMA_VERSION,
       generatedAt,
       source: dataPath,
       region: indexEntry,
       island,
-    })}\n`,
-    'utf8'
+    }
   );
 
-  await fs.writeFile(
-    path.join(appSummaryOutputDir, `${region.id}.json`),
-    `${JSON.stringify({
+  await writeGeneratedJson(
+    `app/summary/${region.id}.json`,
+    {
       schemaVersion: APP_DATA_SCHEMA_VERSION,
       generatedAt,
       source: dataPath,
       detailDataPath,
       region: indexEntry,
       island: summaryIsland,
-    })}\n`,
-    'utf8'
+    }
   );
 
-  await fs.writeFile(
-    path.join(appDetailOutputDir, `${region.id}.json`),
-    `${JSON.stringify({
+  await writeGeneratedJson(
+    `app/detail/${region.id}.json`,
+    {
       schemaVersion: APP_DATA_SCHEMA_VERSION,
       generatedAt,
       source: dataPath,
       summaryDataPath,
       region: indexEntry,
       beaches: detailBeaches,
-    })}\n`,
-    'utf8'
+    }
   );
 }
 
-await fs.writeFile(
-  path.join(outputDir, 'index.json'),
-  `${JSON.stringify(index, null, 2)}\n`,
-  'utf8'
-);
+await writeGeneratedJson('index.json', index, 2);
 
 console.log(`Split ${beaches.length} beaches into ${regions.size} region files.`);
 console.log(`Wrote raw files to ${path.relative(rootDir, outputDir)}`);

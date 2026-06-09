@@ -1,0 +1,1982 @@
+{
+  "schemaVersion": 1,
+  "generatedAt": "2026-06-08T13:53:18.955Z",
+  "regionId": "south-aegean-mykonos",
+  "policy": {
+    "sameSegment": "Beaches in the same curated shoreline segment should render the same visible exposure level unless a verified local morphology or wind-sport exception locks a stricter level.",
+    "confidence": "Segment propagation may support map-color consistency and medium review, but it never creates high confidence by itself."
+  },
+  "summary": {
+    "scenarioCount": 5,
+    "segmentCount": 8,
+    "allowedExceptions": 0,
+    "unresolvedContradictions": 0
+  },
+  "allowedExceptions": [],
+  "unresolved": [],
+  "results": [
+    {
+      "scenarioId": "Naxos_N_3BFT",
+      "windDirectionDeg": 0,
+      "segments": [
+        {
+          "segmentId": "mykonos-town-megali-ammos-agia-anna-front",
+          "reason": "same_continuous_beachfront",
+          "rawLevels": [
+            "partial"
+          ],
+          "consistentLevels": [
+            "partial"
+          ],
+          "rows": [
+            {
+              "beachId": 1961,
+              "name": "Μεγάλη Άμμος",
+              "level": "partial",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 1946,
+              "name": "Άγιος Χαράλαμπος",
+              "level": "partial",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 1939,
+              "name": "Αγία Άννα",
+              "level": "partial",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            }
+          ],
+          "rawRows": [
+            {
+              "beachId": 1961,
+              "name": "Μεγάλη Άμμος",
+              "level": "partial",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 1946,
+              "name": "Άγιος Χαράλαμπος",
+              "level": "partial",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 1939,
+              "name": "Αγία Άννα",
+              "level": "partial",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            }
+          ],
+          "notes": "Megali Ammos, Agios Charalampos, and Agia Anna are neighboring northwest-facing Chora-side records; dirt-road/access handling remains separate."
+        },
+        {
+          "segmentId": "mykonos-paragka-kalamopodi-front",
+          "reason": "same_continuous_beachfront",
+          "rawLevels": [
+            "protected"
+          ],
+          "consistentLevels": [
+            "protected"
+          ],
+          "rows": [
+            {
+              "beachId": 1941,
+              "name": "Αγία Άννα Παράγκας",
+              "level": "protected",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 1966,
+              "name": "Παράγκα",
+              "level": "protected",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 1951,
+              "name": "Καλαμοπόδι",
+              "level": "protected",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            }
+          ],
+          "rawRows": [
+            {
+              "beachId": 1941,
+              "name": "Αγία Άννα Παράγκας",
+              "level": "protected",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 1966,
+              "name": "Παράγκα",
+              "level": "protected",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 1951,
+              "name": "Καλαμοπόδι",
+              "level": "protected",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            }
+          ],
+          "notes": "Agia Anna Paragkas, Paragka, and Kalamopodi form a close south-facing resort-front; Platys Gialos and Psarrou are kept separate because west-wind exposure differs."
+        },
+        {
+          "segmentId": "mykonos-elia-agrari-front",
+          "reason": "same_continuous_beachfront",
+          "rawLevels": [
+            "protected"
+          ],
+          "consistentLevels": [
+            "protected"
+          ],
+          "rows": [
+            {
+              "beachId": 1950,
+              "name": "Ελιά",
+              "level": "protected",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 1949,
+              "name": "Γυμνιστική Παραλία Ελιάς",
+              "level": "protected",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 1947,
+              "name": "Αγράρι",
+              "level": "protected",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            }
+          ],
+          "rawRows": [
+            {
+              "beachId": 1950,
+              "name": "Ελιά",
+              "level": "protected",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 1949,
+              "name": "Γυμνιστική Παραλία Ελιάς",
+              "level": "protected",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 1947,
+              "name": "Αγράρι",
+              "level": "protected",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            }
+          ],
+          "notes": "Elia, Gymnistiki Paralia Elias, and Agrari are adjacent south-facing records with near-identical orientation."
+        },
+        {
+          "segmentId": "mykonos-kalafati-agia-anna-front",
+          "reason": "same_village_bay",
+          "rawLevels": [
+            "protected"
+          ],
+          "consistentLevels": [
+            "protected"
+          ],
+          "rows": [
+            {
+              "beachId": 1952,
+              "name": "Καλαφάτη",
+              "level": "protected",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 1940,
+              "name": "Αγία Άννα Καλαφάτης",
+              "level": "protected",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            }
+          ],
+          "rawRows": [
+            {
+              "beachId": 1952,
+              "name": "Καλαφάτη",
+              "level": "protected",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 1940,
+              "name": "Αγία Άννα Καλαφάτης",
+              "level": "protected",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            }
+          ],
+          "notes": "Kalafati and Agia Anna Kalafatis are neighboring southeast/south-facing Kalafatis bay records with similar exposure behavior."
+        },
+        {
+          "segmentId": "mykonos-agios-stefanos-choulakia-front",
+          "reason": "same_continuous_beachfront",
+          "rawLevels": [
+            "protected"
+          ],
+          "consistentLevels": [
+            "protected"
+          ],
+          "rows": [
+            {
+              "beachId": 1944,
+              "name": "Άγιος Στέφανος",
+              "level": "protected",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 1978,
+              "name": "Χουλάκια",
+              "level": "protected",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            }
+          ],
+          "rawRows": [
+            {
+              "beachId": 1944,
+              "name": "Άγιος Στέφανος",
+              "level": "protected",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 1978,
+              "name": "Χουλάκια",
+              "level": "protected",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            }
+          ],
+          "notes": "Agios Stefanos and Choulakia are nearby southwest-facing northwest-coast records with similar practical exposure behavior."
+        },
+        {
+          "segmentId": "mykonos-panormos-agios-sostis-front",
+          "reason": "same_village_bay",
+          "rawLevels": [
+            "exposed"
+          ],
+          "consistentLevels": [
+            "exposed"
+          ],
+          "rows": [
+            {
+              "beachId": 1965,
+              "name": "Πάνορμος",
+              "level": "exposed",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 1945,
+              "name": "Άγιος Σώστης",
+              "level": "exposed",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            }
+          ],
+          "rawRows": [
+            {
+              "beachId": 1965,
+              "name": "Πάνορμος",
+              "level": "exposed",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 1945,
+              "name": "Άγιος Σώστης",
+              "level": "exposed",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            }
+          ],
+          "notes": "Panormos and Agios Sostis are north/northeast-facing Panormos-bay records; amenities and popularity remain separate."
+        },
+        {
+          "segmentId": "mykonos-fokos-mersini-front",
+          "reason": "same_cove_or_micro_bay",
+          "rawLevels": [
+            "exposed"
+          ],
+          "consistentLevels": [
+            "exposed"
+          ],
+          "rows": [
+            {
+              "beachId": 1977,
+              "name": "Φωκός",
+              "level": "exposed",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 1962,
+              "name": "Μερσίνη",
+              "level": "exposed",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            }
+          ],
+          "rawRows": [
+            {
+              "beachId": 1977,
+              "name": "Φωκός",
+              "level": "exposed",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 1962,
+              "name": "Μερσίνη",
+              "level": "exposed",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            }
+          ],
+          "notes": "Fokos and Mersini are neighboring north-facing remote records; difficult/passable road access must not become a top-pick shortcut."
+        },
+        {
+          "segmentId": "mykonos-merchia-sokratis-front",
+          "reason": "same_continuous_beachfront",
+          "rawLevels": [
+            "exposed"
+          ],
+          "consistentLevels": [
+            "exposed"
+          ],
+          "rows": [
+            {
+              "beachId": 1963,
+              "name": "Μερχιά",
+              "level": "exposed",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 1967,
+              "name": "παραλία Σωκράτης",
+              "level": "exposed",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            }
+          ],
+          "rawRows": [
+            {
+              "beachId": 1963,
+              "name": "Μερχιά",
+              "level": "exposed",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 1967,
+              "name": "παραλία Σωκράτης",
+              "level": "exposed",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            }
+          ],
+          "notes": "Merchia and Sokratis are nearby northeast-facing records with matching shoreline behavior; access confidence remains separate."
+        }
+      ]
+    },
+    {
+      "scenarioId": "Naxos_N_5BFT",
+      "windDirectionDeg": 0,
+      "segments": [
+        {
+          "segmentId": "mykonos-town-megali-ammos-agia-anna-front",
+          "reason": "same_continuous_beachfront",
+          "rawLevels": [
+            "partial"
+          ],
+          "consistentLevels": [
+            "partial"
+          ],
+          "rows": [
+            {
+              "beachId": 1961,
+              "name": "Μεγάλη Άμμος",
+              "level": "partial",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 1946,
+              "name": "Άγιος Χαράλαμπος",
+              "level": "partial",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 1939,
+              "name": "Αγία Άννα",
+              "level": "partial",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            }
+          ],
+          "rawRows": [
+            {
+              "beachId": 1961,
+              "name": "Μεγάλη Άμμος",
+              "level": "partial",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 1946,
+              "name": "Άγιος Χαράλαμπος",
+              "level": "partial",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 1939,
+              "name": "Αγία Άννα",
+              "level": "partial",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            }
+          ],
+          "notes": "Megali Ammos, Agios Charalampos, and Agia Anna are neighboring northwest-facing Chora-side records; dirt-road/access handling remains separate."
+        },
+        {
+          "segmentId": "mykonos-paragka-kalamopodi-front",
+          "reason": "same_continuous_beachfront",
+          "rawLevels": [
+            "protected"
+          ],
+          "consistentLevels": [
+            "protected"
+          ],
+          "rows": [
+            {
+              "beachId": 1941,
+              "name": "Αγία Άννα Παράγκας",
+              "level": "protected",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 1966,
+              "name": "Παράγκα",
+              "level": "protected",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 1951,
+              "name": "Καλαμοπόδι",
+              "level": "protected",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            }
+          ],
+          "rawRows": [
+            {
+              "beachId": 1941,
+              "name": "Αγία Άννα Παράγκας",
+              "level": "protected",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 1966,
+              "name": "Παράγκα",
+              "level": "protected",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 1951,
+              "name": "Καλαμοπόδι",
+              "level": "protected",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            }
+          ],
+          "notes": "Agia Anna Paragkas, Paragka, and Kalamopodi form a close south-facing resort-front; Platys Gialos and Psarrou are kept separate because west-wind exposure differs."
+        },
+        {
+          "segmentId": "mykonos-elia-agrari-front",
+          "reason": "same_continuous_beachfront",
+          "rawLevels": [
+            "protected"
+          ],
+          "consistentLevels": [
+            "protected"
+          ],
+          "rows": [
+            {
+              "beachId": 1950,
+              "name": "Ελιά",
+              "level": "protected",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 1949,
+              "name": "Γυμνιστική Παραλία Ελιάς",
+              "level": "protected",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 1947,
+              "name": "Αγράρι",
+              "level": "protected",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            }
+          ],
+          "rawRows": [
+            {
+              "beachId": 1950,
+              "name": "Ελιά",
+              "level": "protected",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 1949,
+              "name": "Γυμνιστική Παραλία Ελιάς",
+              "level": "protected",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 1947,
+              "name": "Αγράρι",
+              "level": "protected",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            }
+          ],
+          "notes": "Elia, Gymnistiki Paralia Elias, and Agrari are adjacent south-facing records with near-identical orientation."
+        },
+        {
+          "segmentId": "mykonos-kalafati-agia-anna-front",
+          "reason": "same_village_bay",
+          "rawLevels": [
+            "protected"
+          ],
+          "consistentLevels": [
+            "protected"
+          ],
+          "rows": [
+            {
+              "beachId": 1952,
+              "name": "Καλαφάτη",
+              "level": "protected",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 1940,
+              "name": "Αγία Άννα Καλαφάτης",
+              "level": "protected",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            }
+          ],
+          "rawRows": [
+            {
+              "beachId": 1952,
+              "name": "Καλαφάτη",
+              "level": "protected",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 1940,
+              "name": "Αγία Άννα Καλαφάτης",
+              "level": "protected",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            }
+          ],
+          "notes": "Kalafati and Agia Anna Kalafatis are neighboring southeast/south-facing Kalafatis bay records with similar exposure behavior."
+        },
+        {
+          "segmentId": "mykonos-agios-stefanos-choulakia-front",
+          "reason": "same_continuous_beachfront",
+          "rawLevels": [
+            "protected"
+          ],
+          "consistentLevels": [
+            "protected"
+          ],
+          "rows": [
+            {
+              "beachId": 1944,
+              "name": "Άγιος Στέφανος",
+              "level": "protected",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 1978,
+              "name": "Χουλάκια",
+              "level": "protected",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            }
+          ],
+          "rawRows": [
+            {
+              "beachId": 1944,
+              "name": "Άγιος Στέφανος",
+              "level": "protected",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 1978,
+              "name": "Χουλάκια",
+              "level": "protected",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            }
+          ],
+          "notes": "Agios Stefanos and Choulakia are nearby southwest-facing northwest-coast records with similar practical exposure behavior."
+        },
+        {
+          "segmentId": "mykonos-panormos-agios-sostis-front",
+          "reason": "same_village_bay",
+          "rawLevels": [
+            "exposed"
+          ],
+          "consistentLevels": [
+            "exposed"
+          ],
+          "rows": [
+            {
+              "beachId": 1965,
+              "name": "Πάνορμος",
+              "level": "exposed",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 1945,
+              "name": "Άγιος Σώστης",
+              "level": "exposed",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            }
+          ],
+          "rawRows": [
+            {
+              "beachId": 1965,
+              "name": "Πάνορμος",
+              "level": "exposed",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 1945,
+              "name": "Άγιος Σώστης",
+              "level": "exposed",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            }
+          ],
+          "notes": "Panormos and Agios Sostis are north/northeast-facing Panormos-bay records; amenities and popularity remain separate."
+        },
+        {
+          "segmentId": "mykonos-fokos-mersini-front",
+          "reason": "same_cove_or_micro_bay",
+          "rawLevels": [
+            "exposed"
+          ],
+          "consistentLevels": [
+            "exposed"
+          ],
+          "rows": [
+            {
+              "beachId": 1977,
+              "name": "Φωκός",
+              "level": "exposed",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 1962,
+              "name": "Μερσίνη",
+              "level": "exposed",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            }
+          ],
+          "rawRows": [
+            {
+              "beachId": 1977,
+              "name": "Φωκός",
+              "level": "exposed",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 1962,
+              "name": "Μερσίνη",
+              "level": "exposed",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            }
+          ],
+          "notes": "Fokos and Mersini are neighboring north-facing remote records; difficult/passable road access must not become a top-pick shortcut."
+        },
+        {
+          "segmentId": "mykonos-merchia-sokratis-front",
+          "reason": "same_continuous_beachfront",
+          "rawLevels": [
+            "exposed"
+          ],
+          "consistentLevels": [
+            "exposed"
+          ],
+          "rows": [
+            {
+              "beachId": 1963,
+              "name": "Μερχιά",
+              "level": "exposed",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 1967,
+              "name": "παραλία Σωκράτης",
+              "level": "exposed",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            }
+          ],
+          "rawRows": [
+            {
+              "beachId": 1963,
+              "name": "Μερχιά",
+              "level": "exposed",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 1967,
+              "name": "παραλία Σωκράτης",
+              "level": "exposed",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            }
+          ],
+          "notes": "Merchia and Sokratis are nearby northeast-facing records with matching shoreline behavior; access confidence remains separate."
+        }
+      ]
+    },
+    {
+      "scenarioId": "Naxos_W_4BFT",
+      "windDirectionDeg": 270,
+      "segments": [
+        {
+          "segmentId": "mykonos-town-megali-ammos-agia-anna-front",
+          "reason": "same_continuous_beachfront",
+          "rawLevels": [
+            "exposed"
+          ],
+          "consistentLevels": [
+            "exposed"
+          ],
+          "rows": [
+            {
+              "beachId": 1961,
+              "name": "Μεγάλη Άμμος",
+              "level": "exposed",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 1946,
+              "name": "Άγιος Χαράλαμπος",
+              "level": "exposed",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 1939,
+              "name": "Αγία Άννα",
+              "level": "exposed",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            }
+          ],
+          "rawRows": [
+            {
+              "beachId": 1961,
+              "name": "Μεγάλη Άμμος",
+              "level": "exposed",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 1946,
+              "name": "Άγιος Χαράλαμπος",
+              "level": "exposed",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 1939,
+              "name": "Αγία Άννα",
+              "level": "exposed",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            }
+          ],
+          "notes": "Megali Ammos, Agios Charalampos, and Agia Anna are neighboring northwest-facing Chora-side records; dirt-road/access handling remains separate."
+        },
+        {
+          "segmentId": "mykonos-paragka-kalamopodi-front",
+          "reason": "same_continuous_beachfront",
+          "rawLevels": [
+            "partial"
+          ],
+          "consistentLevels": [
+            "partial"
+          ],
+          "rows": [
+            {
+              "beachId": 1941,
+              "name": "Αγία Άννα Παράγκας",
+              "level": "partial",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 1966,
+              "name": "Παράγκα",
+              "level": "partial",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 1951,
+              "name": "Καλαμοπόδι",
+              "level": "partial",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            }
+          ],
+          "rawRows": [
+            {
+              "beachId": 1941,
+              "name": "Αγία Άννα Παράγκας",
+              "level": "partial",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 1966,
+              "name": "Παράγκα",
+              "level": "partial",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 1951,
+              "name": "Καλαμοπόδι",
+              "level": "partial",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            }
+          ],
+          "notes": "Agia Anna Paragkas, Paragka, and Kalamopodi form a close south-facing resort-front; Platys Gialos and Psarrou are kept separate because west-wind exposure differs."
+        },
+        {
+          "segmentId": "mykonos-elia-agrari-front",
+          "reason": "same_continuous_beachfront",
+          "rawLevels": [
+            "partial"
+          ],
+          "consistentLevels": [
+            "partial"
+          ],
+          "rows": [
+            {
+              "beachId": 1950,
+              "name": "Ελιά",
+              "level": "partial",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 1949,
+              "name": "Γυμνιστική Παραλία Ελιάς",
+              "level": "partial",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 1947,
+              "name": "Αγράρι",
+              "level": "partial",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            }
+          ],
+          "rawRows": [
+            {
+              "beachId": 1950,
+              "name": "Ελιά",
+              "level": "partial",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 1949,
+              "name": "Γυμνιστική Παραλία Ελιάς",
+              "level": "partial",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 1947,
+              "name": "Αγράρι",
+              "level": "partial",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            }
+          ],
+          "notes": "Elia, Gymnistiki Paralia Elias, and Agrari are adjacent south-facing records with near-identical orientation."
+        },
+        {
+          "segmentId": "mykonos-kalafati-agia-anna-front",
+          "reason": "same_village_bay",
+          "rawLevels": [
+            "protected"
+          ],
+          "consistentLevels": [
+            "protected"
+          ],
+          "rows": [
+            {
+              "beachId": 1952,
+              "name": "Καλαφάτη",
+              "level": "protected",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 1940,
+              "name": "Αγία Άννα Καλαφάτης",
+              "level": "protected",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            }
+          ],
+          "rawRows": [
+            {
+              "beachId": 1952,
+              "name": "Καλαφάτη",
+              "level": "protected",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 1940,
+              "name": "Αγία Άννα Καλαφάτης",
+              "level": "protected",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            }
+          ],
+          "notes": "Kalafati and Agia Anna Kalafatis are neighboring southeast/south-facing Kalafatis bay records with similar exposure behavior."
+        },
+        {
+          "segmentId": "mykonos-agios-stefanos-choulakia-front",
+          "reason": "same_continuous_beachfront",
+          "rawLevels": [
+            "exposed"
+          ],
+          "consistentLevels": [
+            "exposed"
+          ],
+          "rows": [
+            {
+              "beachId": 1944,
+              "name": "Άγιος Στέφανος",
+              "level": "exposed",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 1978,
+              "name": "Χουλάκια",
+              "level": "exposed",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            }
+          ],
+          "rawRows": [
+            {
+              "beachId": 1944,
+              "name": "Άγιος Στέφανος",
+              "level": "exposed",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 1978,
+              "name": "Χουλάκια",
+              "level": "exposed",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            }
+          ],
+          "notes": "Agios Stefanos and Choulakia are nearby southwest-facing northwest-coast records with similar practical exposure behavior."
+        },
+        {
+          "segmentId": "mykonos-panormos-agios-sostis-front",
+          "reason": "same_village_bay",
+          "rawLevels": [
+            "protected"
+          ],
+          "consistentLevels": [
+            "protected"
+          ],
+          "rows": [
+            {
+              "beachId": 1965,
+              "name": "Πάνορμος",
+              "level": "protected",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 1945,
+              "name": "Άγιος Σώστης",
+              "level": "protected",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            }
+          ],
+          "rawRows": [
+            {
+              "beachId": 1965,
+              "name": "Πάνορμος",
+              "level": "protected",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 1945,
+              "name": "Άγιος Σώστης",
+              "level": "protected",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            }
+          ],
+          "notes": "Panormos and Agios Sostis are north/northeast-facing Panormos-bay records; amenities and popularity remain separate."
+        },
+        {
+          "segmentId": "mykonos-fokos-mersini-front",
+          "reason": "same_cove_or_micro_bay",
+          "rawLevels": [
+            "protected"
+          ],
+          "consistentLevels": [
+            "protected"
+          ],
+          "rows": [
+            {
+              "beachId": 1977,
+              "name": "Φωκός",
+              "level": "protected",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 1962,
+              "name": "Μερσίνη",
+              "level": "protected",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            }
+          ],
+          "rawRows": [
+            {
+              "beachId": 1977,
+              "name": "Φωκός",
+              "level": "protected",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 1962,
+              "name": "Μερσίνη",
+              "level": "protected",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            }
+          ],
+          "notes": "Fokos and Mersini are neighboring north-facing remote records; difficult/passable road access must not become a top-pick shortcut."
+        },
+        {
+          "segmentId": "mykonos-merchia-sokratis-front",
+          "reason": "same_continuous_beachfront",
+          "rawLevels": [
+            "protected"
+          ],
+          "consistentLevels": [
+            "protected"
+          ],
+          "rows": [
+            {
+              "beachId": 1963,
+              "name": "Μερχιά",
+              "level": "protected",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 1967,
+              "name": "παραλία Σωκράτης",
+              "level": "protected",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            }
+          ],
+          "rawRows": [
+            {
+              "beachId": 1963,
+              "name": "Μερχιά",
+              "level": "protected",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 1967,
+              "name": "παραλία Σωκράτης",
+              "level": "protected",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            }
+          ],
+          "notes": "Merchia and Sokratis are nearby northeast-facing records with matching shoreline behavior; access confidence remains separate."
+        }
+      ]
+    },
+    {
+      "scenarioId": "Naxos_S_4BFT",
+      "windDirectionDeg": 180,
+      "segments": [
+        {
+          "segmentId": "mykonos-town-megali-ammos-agia-anna-front",
+          "reason": "same_continuous_beachfront",
+          "rawLevels": [
+            "protected"
+          ],
+          "consistentLevels": [
+            "protected"
+          ],
+          "rows": [
+            {
+              "beachId": 1961,
+              "name": "Μεγάλη Άμμος",
+              "level": "protected",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 1946,
+              "name": "Άγιος Χαράλαμπος",
+              "level": "protected",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 1939,
+              "name": "Αγία Άννα",
+              "level": "protected",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            }
+          ],
+          "rawRows": [
+            {
+              "beachId": 1961,
+              "name": "Μεγάλη Άμμος",
+              "level": "protected",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 1946,
+              "name": "Άγιος Χαράλαμπος",
+              "level": "protected",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 1939,
+              "name": "Αγία Άννα",
+              "level": "protected",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            }
+          ],
+          "notes": "Megali Ammos, Agios Charalampos, and Agia Anna are neighboring northwest-facing Chora-side records; dirt-road/access handling remains separate."
+        },
+        {
+          "segmentId": "mykonos-paragka-kalamopodi-front",
+          "reason": "same_continuous_beachfront",
+          "rawLevels": [
+            "exposed"
+          ],
+          "consistentLevels": [
+            "exposed"
+          ],
+          "rows": [
+            {
+              "beachId": 1941,
+              "name": "Αγία Άννα Παράγκας",
+              "level": "exposed",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 1966,
+              "name": "Παράγκα",
+              "level": "exposed",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 1951,
+              "name": "Καλαμοπόδι",
+              "level": "exposed",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            }
+          ],
+          "rawRows": [
+            {
+              "beachId": 1941,
+              "name": "Αγία Άννα Παράγκας",
+              "level": "exposed",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 1966,
+              "name": "Παράγκα",
+              "level": "exposed",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 1951,
+              "name": "Καλαμοπόδι",
+              "level": "exposed",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            }
+          ],
+          "notes": "Agia Anna Paragkas, Paragka, and Kalamopodi form a close south-facing resort-front; Platys Gialos and Psarrou are kept separate because west-wind exposure differs."
+        },
+        {
+          "segmentId": "mykonos-elia-agrari-front",
+          "reason": "same_continuous_beachfront",
+          "rawLevels": [
+            "exposed"
+          ],
+          "consistentLevels": [
+            "exposed"
+          ],
+          "rows": [
+            {
+              "beachId": 1950,
+              "name": "Ελιά",
+              "level": "exposed",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 1949,
+              "name": "Γυμνιστική Παραλία Ελιάς",
+              "level": "exposed",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 1947,
+              "name": "Αγράρι",
+              "level": "exposed",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            }
+          ],
+          "rawRows": [
+            {
+              "beachId": 1950,
+              "name": "Ελιά",
+              "level": "exposed",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 1949,
+              "name": "Γυμνιστική Παραλία Ελιάς",
+              "level": "exposed",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 1947,
+              "name": "Αγράρι",
+              "level": "exposed",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            }
+          ],
+          "notes": "Elia, Gymnistiki Paralia Elias, and Agrari are adjacent south-facing records with near-identical orientation."
+        },
+        {
+          "segmentId": "mykonos-kalafati-agia-anna-front",
+          "reason": "same_village_bay",
+          "rawLevels": [
+            "exposed"
+          ],
+          "consistentLevels": [
+            "exposed"
+          ],
+          "rows": [
+            {
+              "beachId": 1952,
+              "name": "Καλαφάτη",
+              "level": "exposed",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 1940,
+              "name": "Αγία Άννα Καλαφάτης",
+              "level": "exposed",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            }
+          ],
+          "rawRows": [
+            {
+              "beachId": 1952,
+              "name": "Καλαφάτη",
+              "level": "exposed",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 1940,
+              "name": "Αγία Άννα Καλαφάτης",
+              "level": "exposed",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            }
+          ],
+          "notes": "Kalafati and Agia Anna Kalafatis are neighboring southeast/south-facing Kalafatis bay records with similar exposure behavior."
+        },
+        {
+          "segmentId": "mykonos-agios-stefanos-choulakia-front",
+          "reason": "same_continuous_beachfront",
+          "rawLevels": [
+            "exposed"
+          ],
+          "consistentLevels": [
+            "exposed"
+          ],
+          "rows": [
+            {
+              "beachId": 1944,
+              "name": "Άγιος Στέφανος",
+              "level": "exposed",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 1978,
+              "name": "Χουλάκια",
+              "level": "exposed",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            }
+          ],
+          "rawRows": [
+            {
+              "beachId": 1944,
+              "name": "Άγιος Στέφανος",
+              "level": "exposed",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 1978,
+              "name": "Χουλάκια",
+              "level": "exposed",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            }
+          ],
+          "notes": "Agios Stefanos and Choulakia are nearby southwest-facing northwest-coast records with similar practical exposure behavior."
+        },
+        {
+          "segmentId": "mykonos-panormos-agios-sostis-front",
+          "reason": "same_village_bay",
+          "rawLevels": [
+            "protected"
+          ],
+          "consistentLevels": [
+            "protected"
+          ],
+          "rows": [
+            {
+              "beachId": 1965,
+              "name": "Πάνορμος",
+              "level": "protected",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 1945,
+              "name": "Άγιος Σώστης",
+              "level": "protected",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            }
+          ],
+          "rawRows": [
+            {
+              "beachId": 1965,
+              "name": "Πάνορμος",
+              "level": "protected",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 1945,
+              "name": "Άγιος Σώστης",
+              "level": "protected",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            }
+          ],
+          "notes": "Panormos and Agios Sostis are north/northeast-facing Panormos-bay records; amenities and popularity remain separate."
+        },
+        {
+          "segmentId": "mykonos-fokos-mersini-front",
+          "reason": "same_cove_or_micro_bay",
+          "rawLevels": [
+            "protected"
+          ],
+          "consistentLevels": [
+            "protected"
+          ],
+          "rows": [
+            {
+              "beachId": 1977,
+              "name": "Φωκός",
+              "level": "protected",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 1962,
+              "name": "Μερσίνη",
+              "level": "protected",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            }
+          ],
+          "rawRows": [
+            {
+              "beachId": 1977,
+              "name": "Φωκός",
+              "level": "protected",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 1962,
+              "name": "Μερσίνη",
+              "level": "protected",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            }
+          ],
+          "notes": "Fokos and Mersini are neighboring north-facing remote records; difficult/passable road access must not become a top-pick shortcut."
+        },
+        {
+          "segmentId": "mykonos-merchia-sokratis-front",
+          "reason": "same_continuous_beachfront",
+          "rawLevels": [
+            "protected"
+          ],
+          "consistentLevels": [
+            "protected"
+          ],
+          "rows": [
+            {
+              "beachId": 1963,
+              "name": "Μερχιά",
+              "level": "protected",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 1967,
+              "name": "παραλία Σωκράτης",
+              "level": "protected",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            }
+          ],
+          "rawRows": [
+            {
+              "beachId": 1963,
+              "name": "Μερχιά",
+              "level": "protected",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 1967,
+              "name": "παραλία Σωκράτης",
+              "level": "protected",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            }
+          ],
+          "notes": "Merchia and Sokratis are nearby northeast-facing records with matching shoreline behavior; access confidence remains separate."
+        }
+      ]
+    },
+    {
+      "scenarioId": "Naxos_E_4BFT",
+      "windDirectionDeg": 90,
+      "segments": [
+        {
+          "segmentId": "mykonos-town-megali-ammos-agia-anna-front",
+          "reason": "same_continuous_beachfront",
+          "rawLevels": [
+            "protected"
+          ],
+          "consistentLevels": [
+            "protected"
+          ],
+          "rows": [
+            {
+              "beachId": 1961,
+              "name": "Μεγάλη Άμμος",
+              "level": "protected",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 1946,
+              "name": "Άγιος Χαράλαμπος",
+              "level": "protected",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 1939,
+              "name": "Αγία Άννα",
+              "level": "protected",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            }
+          ],
+          "rawRows": [
+            {
+              "beachId": 1961,
+              "name": "Μεγάλη Άμμος",
+              "level": "protected",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 1946,
+              "name": "Άγιος Χαράλαμπος",
+              "level": "protected",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 1939,
+              "name": "Αγία Άννα",
+              "level": "protected",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            }
+          ],
+          "notes": "Megali Ammos, Agios Charalampos, and Agia Anna are neighboring northwest-facing Chora-side records; dirt-road/access handling remains separate."
+        },
+        {
+          "segmentId": "mykonos-paragka-kalamopodi-front",
+          "reason": "same_continuous_beachfront",
+          "rawLevels": [
+            "partial"
+          ],
+          "consistentLevels": [
+            "partial"
+          ],
+          "rows": [
+            {
+              "beachId": 1941,
+              "name": "Αγία Άννα Παράγκας",
+              "level": "partial",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 1966,
+              "name": "Παράγκα",
+              "level": "partial",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 1951,
+              "name": "Καλαμοπόδι",
+              "level": "partial",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            }
+          ],
+          "rawRows": [
+            {
+              "beachId": 1941,
+              "name": "Αγία Άννα Παράγκας",
+              "level": "partial",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 1966,
+              "name": "Παράγκα",
+              "level": "partial",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 1951,
+              "name": "Καλαμοπόδι",
+              "level": "partial",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            }
+          ],
+          "notes": "Agia Anna Paragkas, Paragka, and Kalamopodi form a close south-facing resort-front; Platys Gialos and Psarrou are kept separate because west-wind exposure differs."
+        },
+        {
+          "segmentId": "mykonos-elia-agrari-front",
+          "reason": "same_continuous_beachfront",
+          "rawLevels": [
+            "partial"
+          ],
+          "consistentLevels": [
+            "partial"
+          ],
+          "rows": [
+            {
+              "beachId": 1950,
+              "name": "Ελιά",
+              "level": "partial",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 1949,
+              "name": "Γυμνιστική Παραλία Ελιάς",
+              "level": "partial",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 1947,
+              "name": "Αγράρι",
+              "level": "partial",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            }
+          ],
+          "rawRows": [
+            {
+              "beachId": 1950,
+              "name": "Ελιά",
+              "level": "partial",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 1949,
+              "name": "Γυμνιστική Παραλία Ελιάς",
+              "level": "partial",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 1947,
+              "name": "Αγράρι",
+              "level": "partial",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            }
+          ],
+          "notes": "Elia, Gymnistiki Paralia Elias, and Agrari are adjacent south-facing records with near-identical orientation."
+        },
+        {
+          "segmentId": "mykonos-kalafati-agia-anna-front",
+          "reason": "same_village_bay",
+          "rawLevels": [
+            "partial",
+            "exposed"
+          ],
+          "consistentLevels": [
+            "exposed"
+          ],
+          "rows": [
+            {
+              "beachId": 1952,
+              "name": "Καλαφάτη",
+              "level": "exposed",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 1940,
+              "name": "Αγία Άννα Καλαφάτης",
+              "level": "exposed",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            }
+          ],
+          "rawRows": [
+            {
+              "beachId": 1952,
+              "name": "Καλαφάτη",
+              "level": "partial",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 1940,
+              "name": "Αγία Άννα Καλαφάτης",
+              "level": "exposed",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            }
+          ],
+          "notes": "Kalafati and Agia Anna Kalafatis are neighboring southeast/south-facing Kalafatis bay records with similar exposure behavior."
+        },
+        {
+          "segmentId": "mykonos-agios-stefanos-choulakia-front",
+          "reason": "same_continuous_beachfront",
+          "rawLevels": [
+            "protected"
+          ],
+          "consistentLevels": [
+            "protected"
+          ],
+          "rows": [
+            {
+              "beachId": 1944,
+              "name": "Άγιος Στέφανος",
+              "level": "protected",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 1978,
+              "name": "Χουλάκια",
+              "level": "protected",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            }
+          ],
+          "rawRows": [
+            {
+              "beachId": 1944,
+              "name": "Άγιος Στέφανος",
+              "level": "protected",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 1978,
+              "name": "Χουλάκια",
+              "level": "protected",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            }
+          ],
+          "notes": "Agios Stefanos and Choulakia are nearby southwest-facing northwest-coast records with similar practical exposure behavior."
+        },
+        {
+          "segmentId": "mykonos-panormos-agios-sostis-front",
+          "reason": "same_village_bay",
+          "rawLevels": [
+            "partial",
+            "exposed"
+          ],
+          "consistentLevels": [
+            "exposed"
+          ],
+          "rows": [
+            {
+              "beachId": 1965,
+              "name": "Πάνορμος",
+              "level": "exposed",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 1945,
+              "name": "Άγιος Σώστης",
+              "level": "exposed",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            }
+          ],
+          "rawRows": [
+            {
+              "beachId": 1965,
+              "name": "Πάνορμος",
+              "level": "partial",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 1945,
+              "name": "Άγιος Σώστης",
+              "level": "exposed",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            }
+          ],
+          "notes": "Panormos and Agios Sostis are north/northeast-facing Panormos-bay records; amenities and popularity remain separate."
+        },
+        {
+          "segmentId": "mykonos-fokos-mersini-front",
+          "reason": "same_cove_or_micro_bay",
+          "rawLevels": [
+            "exposed",
+            "partial"
+          ],
+          "consistentLevels": [
+            "exposed"
+          ],
+          "rows": [
+            {
+              "beachId": 1977,
+              "name": "Φωκός",
+              "level": "exposed",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 1962,
+              "name": "Μερσίνη",
+              "level": "exposed",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            }
+          ],
+          "rawRows": [
+            {
+              "beachId": 1977,
+              "name": "Φωκός",
+              "level": "exposed",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 1962,
+              "name": "Μερσίνη",
+              "level": "partial",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            }
+          ],
+          "notes": "Fokos and Mersini are neighboring north-facing remote records; difficult/passable road access must not become a top-pick shortcut."
+        },
+        {
+          "segmentId": "mykonos-merchia-sokratis-front",
+          "reason": "same_continuous_beachfront",
+          "rawLevels": [
+            "exposed"
+          ],
+          "consistentLevels": [
+            "exposed"
+          ],
+          "rows": [
+            {
+              "beachId": 1963,
+              "name": "Μερχιά",
+              "level": "exposed",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 1967,
+              "name": "παραλία Σωκράτης",
+              "level": "exposed",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            }
+          ],
+          "rawRows": [
+            {
+              "beachId": 1963,
+              "name": "Μερχιά",
+              "level": "exposed",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 1967,
+              "name": "παραλία Σωκράτης",
+              "level": "exposed",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            }
+          ],
+          "notes": "Merchia and Sokratis are nearby northeast-facing records with matching shoreline behavior; access confidence remains separate."
+        }
+      ]
+    }
+  ]
+}

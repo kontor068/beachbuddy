@@ -509,46 +509,87 @@ export const getGreekDisplayBeachName = (rawName: string): string => {
  * Converts Greek text to readable Greeklish for display (e.g. "Παραλία Σαρακίνικο" → "Paralia Sarakiniko")
  * If the text is already Latin, returns it as-is.
  */
-const GREEKLISH_DIGRAPHS: [string, string][] = [
-    ['μπ', 'b'], ['ντ', 'nt'], ['γκ', 'gk'], ['γγ', 'ng'],
-    ['τσ', 'ts'], ['τζ', 'tz'],
-    ['ου', 'ou'], ['αι', 'ai'], ['ει', 'ei'], ['οι', 'oi'],
-    ['αυ', 'av'], ['ευ', 'ev'],
-];
-const GREEKLISH_SINGLE: Record<string, string> = {
-    'α': 'a', 'ά': 'a', 'β': 'v', 'γ': 'g', 'δ': 'd', 'ε': 'e', 'έ': 'e',
-    'ζ': 'z', 'η': 'i', 'ή': 'i', 'θ': 'th', 'ι': 'i', 'ί': 'i', 'ϊ': 'i', 'ΐ': 'i',
-    'κ': 'k', 'λ': 'l', 'μ': 'm', 'ν': 'n', 'ξ': 'x', 'ο': 'o', 'ό': 'o',
-    'π': 'p', 'ρ': 'r', 'σ': 's', 'ς': 's', 'τ': 't',
-    'υ': 'y', 'ύ': 'y', 'ϋ': 'y', 'ΰ': 'y',
-    'φ': 'f', 'χ': 'ch', 'ψ': 'ps', 'ω': 'o', 'ώ': 'o',
+const GREEK_LETTER_RE = /[\u0370-\u03ff]/;
+const GREEK_COMBINING_MARKS_RE = /[\u0300-\u036f]/g;
+const GREEK_LOWER_LETTER_RE = /[\u03b1-\u03c9]/;
+
+const SIMPLE_GREEK_DIGRAPHS = new Map<string, string>([
+    ['\u03bf\u03c5', 'ou'],
+    ['\u03b1\u03b9', 'ai'],
+    ['\u03b5\u03b9', 'i'],
+    ['\u03bf\u03b9', 'i'],
+    ['\u03b1\u03c5', 'av'],
+    ['\u03b5\u03c5', 'ev'],
+    ['\u03c4\u03c3', 'ts'],
+    ['\u03c4\u03b6', 'tz'],
+    ['\u03b3\u03b3', 'ng'],
+]);
+
+const WORD_START_GREEK_DIGRAPHS = new Map<string, readonly [string, string]>([
+    ['\u03bc\u03c0', ['b', 'mp']],
+    ['\u03bd\u03c4', ['d', 'nt']],
+    ['\u03b3\u03ba', ['g', 'gk']],
+]);
+
+const SIMPLE_GREEK_CHARS = new Map<string, string>([
+    ['\u03b1', 'a'], ['\u03b2', 'v'], ['\u03b3', 'g'], ['\u03b4', 'd'], ['\u03b5', 'e'],
+    ['\u03b6', 'z'], ['\u03b7', 'i'], ['\u03b8', 'th'], ['\u03b9', 'i'], ['\u03ba', 'k'],
+    ['\u03bb', 'l'], ['\u03bc', 'm'], ['\u03bd', 'n'], ['\u03be', 'x'], ['\u03bf', 'o'],
+    ['\u03c0', 'p'], ['\u03c1', 'r'], ['\u03c3', 's'], ['\u03c2', 's'], ['\u03c4', 't'],
+    ['\u03c5', 'y'], ['\u03c6', 'f'], ['\u03c7', 'ch'], ['\u03c8', 'ps'], ['\u03c9', 'o'],
+]);
+
+const stripGreekAccents = (value: string): string => String(value || '')
+    .normalize('NFD')
+    .replace(GREEK_COMBINING_MARKS_RE, '')
+    .replace(/\u03c2/g, '\u03c3');
+
+const isGreekWordStart = (text: string, index: number): boolean => {
+    for (let i = index - 1; i >= 0; i -= 1) {
+        const lower = text[i].toLowerCase();
+        if (GREEK_LOWER_LETTER_RE.test(lower)) return false;
+        if (/[a-z0-9]/i.test(text[i])) return false;
+        if (/\s|[([{'"-]/.test(text[i])) return true;
+    }
+    return true;
 };
 
-const greeklishWord = (word: string): string => {
-    // If no Greek characters, return as-is
-    if (!/[α-ωΑ-Ωά-ώ]/.test(word)) return word;
-
-    let result = word.toLowerCase();
-
-    // Apply digraphs first (longer sequences)
-    for (const [gr, lat] of GREEKLISH_DIGRAPHS) {
-        result = result.split(gr).join(lat);
-    }
-    // Apply single characters
-    let out = '';
-    for (const ch of result) {
-        out += GREEKLISH_SINGLE[ch] ?? ch;
-    }
-
-    // Capitalize first letter
-    return out.charAt(0).toUpperCase() + out.slice(1);
-};
+const applyGreekSourceCase = (latin: string, source: string): string => (
+    source && source[0] === source[0].toUpperCase() && source[0] !== source[0].toLowerCase()
+        ? latin.charAt(0).toUpperCase() + latin.slice(1)
+        : latin
+);
 
 export const toGreeklish = (text: string): string => {
-    // If text has no Greek characters at all, return as-is
-    if (!/[α-ωΑ-Ωά-ώ]/.test(text)) return text;
+    const normalized = stripGreekAccents(text);
+    if (!GREEK_LETTER_RE.test(normalized)) return text;
 
-    return text.split(/\s+/).map(greeklishWord).join(' ');
+    let output = '';
+    for (let index = 0; index < normalized.length; index += 1) {
+        const current = normalized[index];
+        const pair = normalized.slice(index, index + 2);
+        const lowerPair = pair.toLowerCase();
+
+        const wordStartDigraph = WORD_START_GREEK_DIGRAPHS.get(lowerPair);
+        if (wordStartDigraph) {
+            output += applyGreekSourceCase(wordStartDigraph[isGreekWordStart(normalized, index) ? 0 : 1], pair);
+            index += 1;
+            continue;
+        }
+
+        const simpleDigraph = SIMPLE_GREEK_DIGRAPHS.get(lowerPair);
+        if (simpleDigraph) {
+            output += applyGreekSourceCase(simpleDigraph, pair);
+            index += 1;
+            continue;
+        }
+
+        const lowerChar = current.toLowerCase();
+        const latinChar = SIMPLE_GREEK_CHARS.get(lowerChar);
+        output += latinChar ? applyGreekSourceCase(latinChar, current) : current;
+    }
+
+    return output.replace(/\s+/g, ' ').trim();
 };
 
 const ACCESSIBILITY_OVERRIDES: Record<string, Accessibility> = {

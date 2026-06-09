@@ -1,0 +1,87 @@
+{
+  "schemaVersion": 1,
+  "generatedAt": "2026-06-08",
+  "scope": "Validated Cyclades medium-to-high wind-profile evidence batch 1",
+  "policy": {
+    "meaningOfHigh": "High confidence here proves wind-exposure / wind-sport behavior, not calm or protected swimming.",
+    "excluded": [
+      {
+        "beachId": 2049,
+        "name": "Pounta",
+        "reason": "Name/identity ambiguity: app coordinates match the east/southeast Punda Coast beach, while many kite references describe the west Pounda channel opposite Antiparos."
+      },
+      {
+        "beachId": 2043,
+        "name": "Paralia Agkali Chrysis Aktis",
+        "reason": "Close to Golden Beach cluster, but the evidence is less exact than Tserdakia/Golden Beach itself."
+      }
+    ]
+  },
+  "upgrades": [
+    {
+      "beachId": 1903,
+      "regionId": "south-aegean-milos",
+      "name": "Achivadolimni",
+      "upgrade": "medium-to-high",
+      "confidenceMeaning": "known wind/kite exposure risk",
+      "evidence": [
+        {
+          "source": "Let's Kite spot guide",
+          "url": "https://letskite.be/en/spots/4169/kitesurf/milos-axivadolimni",
+          "supports": [
+            "same beach coordinates around 36.69, 24.45",
+            "kitesurf / wingfoil / windsurf spot",
+            "north-facing beach receiving direct onshore Meltemi",
+            "summer 15-22 kt Meltemi and chop/waves in Meltemi"
+          ]
+        }
+      ]
+    },
+    {
+      "beachId": 2053,
+      "regionId": "south-aegean-paros",
+      "name": "Tserdakia (Nea Chrysi Akti)",
+      "upgrade": "medium-to-high",
+      "confidenceMeaning": "known windsurf/wingfoil exposure risk",
+      "evidence": [
+        {
+          "source": "Paros Windsurf Center",
+          "url": "https://paroswindsurfcenter.com/",
+          "supports": [
+            "center located at New Golden Beach / Tserdakia",
+            "windsurf and wingfoil spot",
+            "consistent Meltemi wind / PWA World Cup spot context"
+          ]
+        },
+        {
+          "source": "Paros Windsurf Center wingfoil guide",
+          "url": "https://paroswindsurfcenter.com/blog/wingfoil-paros",
+          "supports": [
+            "New Golden Beach / Tserdakia faces directly into the Meltemi",
+            "reliable side-shore Meltemi wind",
+            "spot-specific wind behavior"
+          ]
+        }
+      ]
+    },
+    {
+      "beachId": 2054,
+      "regionId": "south-aegean-paros",
+      "name": "Tsoukalia",
+      "upgrade": "medium-to-high",
+      "confidenceMeaning": "known wind/kite exposure risk",
+      "evidence": [
+        {
+          "source": "Let's Kite spot guide",
+          "url": "https://letskite.ch/en/spots/11718/tsoukalia-paros",
+          "supports": [
+            "same Tsoukalia / Paros spot coordinates around 37.08, 25.26",
+            "kitesurf / wingfoil / windsurf spot",
+            "N/NNE Meltemi onshore to side-onshore",
+            "15-25 kt summer wind and moderate chop"
+          ]
+        }
+      ]
+    }
+  ]
+}

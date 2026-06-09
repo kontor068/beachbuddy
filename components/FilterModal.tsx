@@ -34,17 +34,17 @@ const FilterModal: React.FC<FilterModalProps> = ({ isOpen, onClose, t, children,
 
   return (
     <div
-      className="fixed inset-0 bg-black/60 flex items-end sm:items-center justify-center z-[90] animate-fade-in"
+      className="fixed inset-0 z-[90] flex items-end justify-center bg-slate-950/48 animate-fade-in sm:items-center"
       onClick={onClose}
       role="dialog"
       aria-modal="true"
       aria-labelledby="filter-modal-title"
     >
       <div
-        className="bg-slate-50 rounded-t-2xl sm:rounded-2xl shadow-2xl w-full max-w-2xl max-h-[85vh] flex flex-col transform transition-transform duration-300 animate-slide-up"
+        className="flex max-h-[95dvh] w-full max-w-2xl transform flex-col overflow-hidden rounded-t-[1.4rem] bg-slate-50 shadow-2xl transition-transform duration-300 animate-slide-up sm:max-h-[85vh] sm:rounded-2xl"
         onClick={(e) => e.stopPropagation()}
       >
-        <header className="flex items-center justify-between gap-3 p-4 border-b border-slate-200 flex-shrink-0">
+        <header className="flex flex-shrink-0 items-center justify-between gap-3 border-b border-slate-200 bg-slate-50/96 px-4 py-3.5 backdrop-blur sm:px-5">
           <h2 id="filter-modal-title" className="flex min-w-0 items-center gap-2 text-xl font-bold text-slate-800">
             <span className="min-w-0 truncate">{t.filterTitle}</span>
             {typeof resultCount === 'number' && (
@@ -63,7 +63,7 @@ const FilterModal: React.FC<FilterModalProps> = ({ isOpen, onClose, t, children,
             </svg>
           </button>
         </header>
-        <div className="overflow-y-auto p-6">
+        <div className="min-h-0 overflow-y-auto px-4 pb-0 pt-4 sm:px-6 sm:pt-5">
           {children}
         </div>
       </div>

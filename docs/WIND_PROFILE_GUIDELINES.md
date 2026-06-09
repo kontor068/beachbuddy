@@ -212,17 +212,20 @@ Fetch is directional. A beach can have low fetch for one wind direction and high
 
 ## 6. Beaufort interaction
 
-- 0-3 Bft = normal mode
+- 0-2 Bft = relaxed mode
+- 3 Bft = normal mode with top-pick guidance
 - 4 Bft = caution mode
 - 5+ Bft = protected-first / best available option mode
 - 6+ Bft = avoid open beaches for casual/family swimming
 
 Rules:
 
-- At 0-3 Bft, avoid over-penalizing exposed beaches.
+- At 0-2 Bft, still show daily top recommendations when forecast data is available, capped at 3 and proportional to qualified suitable beaches, but do not make them wind-led. Rank by sea comfort, practical access, confidence, tourist usefulness, amenities, and preferences; keep wording relaxed.
+- At 3 Bft, a top pick is useful, but avoid harsh warnings or over-penalizing exposed beaches.
 - At 4 Bft, start meaningful penalties for open/high-fetch beaches.
 - At 5+ Bft, open/high-fetch beaches should drop strongly.
 - At 5+ Bft, more sheltered beaches may become "best available", not necessarily "excellent".
+- At 7+ Bft, do not present top recommendations or suitable-swimming recommendations for casual tourist swimming.
 
 ## 7. Confidence rules
 

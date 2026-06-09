@@ -43,6 +43,19 @@ export const hasDifficultTopPickAccess = (beach: Pick<Beach, 'accessibility' | '
   hasBoatOnlyAccess(beach) || hasChallengingAccess(beach)
 );
 
+export const isAdventureBeach = (
+  beach: Pick<Beach, 'accessibility' | 'metadata' | 'accessNotes' | 'environment'>
+): boolean => {
+  const isRemote = Boolean(beach.environment?.remote || beach.metadata?.environment?.remote);
+
+  return Boolean(
+    isRemote ||
+    hasBoatOnlyAccess(beach) ||
+    hasChallengingAccess(beach) ||
+    (hasDirtRoadAccess(beach) && isRemote)
+  );
+};
+
 export const hasPracticalTopPickAccess = (beach: Pick<Beach, 'accessibility' | 'metadata'>): boolean => {
   if (hasDifficultTopPickAccess(beach)) return false;
 
@@ -54,6 +67,13 @@ export const hasPracticalTopPickAccess = (beach: Pick<Beach, 'accessibility' | '
     (!accessType && (beach.accessibility === Accessibility.EASY || beach.accessibility === Accessibility.MODERATE))
   );
 };
+
+export const hasMainstreamTopPickAccess = (
+  beach: Pick<Beach, 'accessibility' | 'metadata' | 'accessNotes' | 'environment'>
+): boolean => (
+  !Boolean(beach.environment?.remote || beach.metadata?.environment?.remote) &&
+  hasTrulyEasyAccess(beach)
+);
 
 export const hasTrulyEasyAccess = (beach: Pick<Beach, 'accessibility' | 'metadata' | 'accessNotes'>): boolean => {
   if (hasDirtRoadAccess(beach)) return false;

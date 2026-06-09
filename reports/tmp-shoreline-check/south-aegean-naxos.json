@@ -1,0 +1,2119 @@
+{
+  "schemaVersion": 1,
+  "generatedAt": "2026-06-08T13:41:40.860Z",
+  "regionId": "south-aegean-naxos",
+  "policy": {
+    "sameSegment": "Beaches in the same curated shoreline segment should render the same visible exposure level unless a verified local morphology or wind-sport exception locks a stricter level.",
+    "confidence": "Segment propagation may support map-color consistency and medium review, but it never creates high confidence by itself."
+  },
+  "summary": {
+    "scenarioCount": 5,
+    "segmentCount": 7,
+    "allowedExceptions": 0,
+    "unresolvedContradictions": 0
+  },
+  "allowedExceptions": [],
+  "unresolved": [],
+  "results": [
+    {
+      "scenarioId": "Naxos_N_3BFT",
+      "windDirectionDeg": 0,
+      "segments": [
+        {
+          "segmentId": "naxos-agia-anna-prokopios-plaka-front",
+          "reason": "same_continuous_beachfront",
+          "rawLevels": [
+            "protected"
+          ],
+          "consistentLevels": [
+            "protected"
+          ],
+          "rows": [
+            {
+              "beachId": 1981,
+              "name": "Αγία Άννα",
+              "level": "protected",
+              "windProfileConfidence": "low",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 1985,
+              "name": "Άγιος Προκόπιος",
+              "level": "protected",
+              "windProfileConfidence": "low",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 2012,
+              "name": "Πλάκα",
+              "level": "protected",
+              "windProfileConfidence": "low",
+              "knownWindSportSpot": false
+            }
+          ],
+          "rawRows": [
+            {
+              "beachId": 1981,
+              "name": "Αγία Άννα",
+              "level": "protected",
+              "windProfileConfidence": "low",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 1985,
+              "name": "Άγιος Προκόπιος",
+              "level": "protected",
+              "windProfileConfidence": "low",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 2012,
+              "name": "Πλάκα",
+              "level": "protected",
+              "windProfileConfidence": "low",
+              "knownWindSportSpot": false
+            }
+          ],
+          "notes": "Agia Anna, Agios Prokopios, and Plaka sit on the same west resort beach-front and should not diverge without a specific geometry reason."
+        },
+        {
+          "segmentId": "naxos-orkos-mikri-vigla-wind-front",
+          "reason": "same_continuous_beachfront",
+          "rawLevels": [
+            "exposed"
+          ],
+          "consistentLevels": [
+            "exposed"
+          ],
+          "rows": [
+            {
+              "beachId": 2010,
+              "name": "Όρκος",
+              "level": "exposed",
+              "windProfileConfidence": "low",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 2006,
+              "name": "Μικρή Βίγλα",
+              "level": "exposed",
+              "windProfileConfidence": "low",
+              "knownWindSportSpot": true
+            }
+          ],
+          "rawRows": [
+            {
+              "beachId": 2010,
+              "name": "Όρκος",
+              "level": "exposed",
+              "windProfileConfidence": "low",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 2006,
+              "name": "Μικρή Βίγλα",
+              "level": "exposed",
+              "windProfileConfidence": "low",
+              "knownWindSportSpot": true
+            }
+          ],
+          "notes": "Orkos and Mikri Vigla share the exposed west wind-front. Mikri Vigla wind-sport behavior can lock a stricter exposure, while the separate south side remains outside this segment."
+        },
+        {
+          "segmentId": "naxos-alyko-kastraki-front",
+          "reason": "same_continuous_beachfront",
+          "rawLevels": [
+            "protected",
+            "partial"
+          ],
+          "consistentLevels": [
+            "protected"
+          ],
+          "rows": [
+            {
+              "beachId": 1997,
+              "name": "Καστράκι",
+              "level": "protected",
+              "windProfileConfidence": "low",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 1993,
+              "name": "Γλυφάδα",
+              "level": "protected",
+              "windProfileConfidence": "low",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 1987,
+              "name": "Αλυκό",
+              "level": "protected",
+              "windProfileConfidence": "low",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 1998,
+              "name": "Κέδρος",
+              "level": "protected",
+              "windProfileConfidence": "low",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 2008,
+              "name": "Μικρό Αλυκό",
+              "level": "protected",
+              "windProfileConfidence": "low",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 2019,
+              "name": "Hawaii",
+              "level": "protected",
+              "windProfileConfidence": "low",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 2013,
+              "name": "Πυργάκι",
+              "level": "protected",
+              "windProfileConfidence": "low",
+              "knownWindSportSpot": false
+            }
+          ],
+          "rawRows": [
+            {
+              "beachId": 1997,
+              "name": "Καστράκι",
+              "level": "protected",
+              "windProfileConfidence": "low",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 1993,
+              "name": "Γλυφάδα",
+              "level": "partial",
+              "windProfileConfidence": "low",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 1987,
+              "name": "Αλυκό",
+              "level": "protected",
+              "windProfileConfidence": "low",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 1998,
+              "name": "Κέδρος",
+              "level": "protected",
+              "windProfileConfidence": "low",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 2008,
+              "name": "Μικρό Αλυκό",
+              "level": "protected",
+              "windProfileConfidence": "low",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 2019,
+              "name": "Hawaii",
+              "level": "protected",
+              "windProfileConfidence": "low",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 2013,
+              "name": "Πυργάκι",
+              "level": "protected",
+              "windProfileConfidence": "low",
+              "knownWindSportSpot": false
+            }
+          ],
+          "notes": "Kastraki, Glyfada, Alyko, Kedros, Mikro Alyko, Hawaii, and Pyrgaki are adjacent southwest coast pockets with similar shoreline facing; small coves remain lower confidence until separately verified."
+        },
+        {
+          "segmentId": "naxos-klido-cove",
+          "reason": "same_cove_or_micro_bay",
+          "rawLevels": [
+            "protected"
+          ],
+          "consistentLevels": [
+            "protected"
+          ],
+          "rows": [
+            {
+              "beachId": 1999,
+              "name": "Κλειδός",
+              "level": "protected",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 2000,
+              "name": "Παραλία Κλειδώ",
+              "level": "protected",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            }
+          ],
+          "rawRows": [
+            {
+              "beachId": 1999,
+              "name": "Κλειδός",
+              "level": "protected",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 2000,
+              "name": "Παραλία Κλειδώ",
+              "level": "protected",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            }
+          ],
+          "notes": "Klidos and Paralia Klido are adjacent southeast/east cove records and should not diverge without a specific geometry reason."
+        },
+        {
+          "segmentId": "naxos-lionas-east-bay",
+          "reason": "same_village_bay",
+          "rawLevels": [
+            "exposed"
+          ],
+          "consistentLevels": [
+            "exposed"
+          ],
+          "rows": [
+            {
+              "beachId": 2002,
+              "name": "Παραλία Λιμνάρι",
+              "level": "exposed",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 2003,
+              "name": "Λίωνας",
+              "level": "exposed",
+              "windProfileConfidence": "low",
+              "knownWindSportSpot": false
+            }
+          ],
+          "rawRows": [
+            {
+              "beachId": 2002,
+              "name": "Παραλία Λιμνάρι",
+              "level": "exposed",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 2003,
+              "name": "Λίωνας",
+              "level": "exposed",
+              "windProfileConfidence": "low",
+              "knownWindSportSpot": false
+            }
+          ],
+          "notes": "Limnari and Lionas sit on the same east/northeast bay system; nearby verified map evidence can support medium consistency, not high confidence."
+        },
+        {
+          "segmentId": "naxos-southeast-coves",
+          "reason": "same_cove_or_micro_bay",
+          "rawLevels": [
+            "protected"
+          ],
+          "consistentLevels": [
+            "protected"
+          ],
+          "rows": [
+            {
+              "beachId": 2014,
+              "name": "Ρίνα",
+              "level": "protected",
+              "windProfileConfidence": "low",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 2015,
+              "name": "Παραλία Σπεδό",
+              "level": "protected",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            }
+          ],
+          "rawRows": [
+            {
+              "beachId": 2014,
+              "name": "Ρίνα",
+              "level": "protected",
+              "windProfileConfidence": "low",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 2015,
+              "name": "Παραλία Σπεδό",
+              "level": "protected",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            }
+          ],
+          "notes": "Rina and Spedo are neighboring southeast/south cove records with similar facing; access and exact shelter remain separately audited."
+        },
+        {
+          "segmentId": "naxos-northwest-rocky-front",
+          "reason": "same_continuous_beachfront",
+          "rawLevels": [
+            "exposed"
+          ],
+          "consistentLevels": [
+            "exposed"
+          ],
+          "rows": [
+            {
+              "beachId": 1988,
+              "name": "Αμμίτης",
+              "level": "exposed",
+              "windProfileConfidence": "low",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 1992,
+              "name": "Γλατζά",
+              "level": "exposed",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 2005,
+              "name": "Μικρά",
+              "level": "exposed",
+              "windProfileConfidence": "low",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 2016,
+              "name": "Χίλια Βρύση",
+              "level": "exposed",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            }
+          ],
+          "rawRows": [
+            {
+              "beachId": 1988,
+              "name": "Αμμίτης",
+              "level": "exposed",
+              "windProfileConfidence": "low",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 1992,
+              "name": "Γλατζά",
+              "level": "exposed",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 2005,
+              "name": "Μικρά",
+              "level": "exposed",
+              "windProfileConfidence": "low",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 2016,
+              "name": "Χίλια Βρύση",
+              "level": "exposed",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            }
+          ],
+          "notes": "Ammitis, Glatza, Mikra, and Chilia Vrysi are north/northwest rocky-front records with similar exposure behavior."
+        }
+      ]
+    },
+    {
+      "scenarioId": "Naxos_N_5BFT",
+      "windDirectionDeg": 0,
+      "segments": [
+        {
+          "segmentId": "naxos-agia-anna-prokopios-plaka-front",
+          "reason": "same_continuous_beachfront",
+          "rawLevels": [
+            "protected"
+          ],
+          "consistentLevels": [
+            "protected"
+          ],
+          "rows": [
+            {
+              "beachId": 1981,
+              "name": "Αγία Άννα",
+              "level": "protected",
+              "windProfileConfidence": "low",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 1985,
+              "name": "Άγιος Προκόπιος",
+              "level": "protected",
+              "windProfileConfidence": "low",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 2012,
+              "name": "Πλάκα",
+              "level": "protected",
+              "windProfileConfidence": "low",
+              "knownWindSportSpot": false
+            }
+          ],
+          "rawRows": [
+            {
+              "beachId": 1981,
+              "name": "Αγία Άννα",
+              "level": "protected",
+              "windProfileConfidence": "low",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 1985,
+              "name": "Άγιος Προκόπιος",
+              "level": "protected",
+              "windProfileConfidence": "low",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 2012,
+              "name": "Πλάκα",
+              "level": "protected",
+              "windProfileConfidence": "low",
+              "knownWindSportSpot": false
+            }
+          ],
+          "notes": "Agia Anna, Agios Prokopios, and Plaka sit on the same west resort beach-front and should not diverge without a specific geometry reason."
+        },
+        {
+          "segmentId": "naxos-orkos-mikri-vigla-wind-front",
+          "reason": "same_continuous_beachfront",
+          "rawLevels": [
+            "exposed"
+          ],
+          "consistentLevels": [
+            "exposed"
+          ],
+          "rows": [
+            {
+              "beachId": 2010,
+              "name": "Όρκος",
+              "level": "exposed",
+              "windProfileConfidence": "low",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 2006,
+              "name": "Μικρή Βίγλα",
+              "level": "exposed",
+              "windProfileConfidence": "low",
+              "knownWindSportSpot": true
+            }
+          ],
+          "rawRows": [
+            {
+              "beachId": 2010,
+              "name": "Όρκος",
+              "level": "exposed",
+              "windProfileConfidence": "low",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 2006,
+              "name": "Μικρή Βίγλα",
+              "level": "exposed",
+              "windProfileConfidence": "low",
+              "knownWindSportSpot": true
+            }
+          ],
+          "notes": "Orkos and Mikri Vigla share the exposed west wind-front. Mikri Vigla wind-sport behavior can lock a stricter exposure, while the separate south side remains outside this segment."
+        },
+        {
+          "segmentId": "naxos-alyko-kastraki-front",
+          "reason": "same_continuous_beachfront",
+          "rawLevels": [
+            "protected",
+            "partial"
+          ],
+          "consistentLevels": [
+            "protected"
+          ],
+          "rows": [
+            {
+              "beachId": 1997,
+              "name": "Καστράκι",
+              "level": "protected",
+              "windProfileConfidence": "low",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 1993,
+              "name": "Γλυφάδα",
+              "level": "protected",
+              "windProfileConfidence": "low",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 1987,
+              "name": "Αλυκό",
+              "level": "protected",
+              "windProfileConfidence": "low",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 1998,
+              "name": "Κέδρος",
+              "level": "protected",
+              "windProfileConfidence": "low",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 2008,
+              "name": "Μικρό Αλυκό",
+              "level": "protected",
+              "windProfileConfidence": "low",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 2019,
+              "name": "Hawaii",
+              "level": "protected",
+              "windProfileConfidence": "low",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 2013,
+              "name": "Πυργάκι",
+              "level": "protected",
+              "windProfileConfidence": "low",
+              "knownWindSportSpot": false
+            }
+          ],
+          "rawRows": [
+            {
+              "beachId": 1997,
+              "name": "Καστράκι",
+              "level": "protected",
+              "windProfileConfidence": "low",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 1993,
+              "name": "Γλυφάδα",
+              "level": "partial",
+              "windProfileConfidence": "low",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 1987,
+              "name": "Αλυκό",
+              "level": "protected",
+              "windProfileConfidence": "low",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 1998,
+              "name": "Κέδρος",
+              "level": "protected",
+              "windProfileConfidence": "low",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 2008,
+              "name": "Μικρό Αλυκό",
+              "level": "protected",
+              "windProfileConfidence": "low",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 2019,
+              "name": "Hawaii",
+              "level": "protected",
+              "windProfileConfidence": "low",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 2013,
+              "name": "Πυργάκι",
+              "level": "protected",
+              "windProfileConfidence": "low",
+              "knownWindSportSpot": false
+            }
+          ],
+          "notes": "Kastraki, Glyfada, Alyko, Kedros, Mikro Alyko, Hawaii, and Pyrgaki are adjacent southwest coast pockets with similar shoreline facing; small coves remain lower confidence until separately verified."
+        },
+        {
+          "segmentId": "naxos-klido-cove",
+          "reason": "same_cove_or_micro_bay",
+          "rawLevels": [
+            "protected"
+          ],
+          "consistentLevels": [
+            "protected"
+          ],
+          "rows": [
+            {
+              "beachId": 1999,
+              "name": "Κλειδός",
+              "level": "protected",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 2000,
+              "name": "Παραλία Κλειδώ",
+              "level": "protected",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            }
+          ],
+          "rawRows": [
+            {
+              "beachId": 1999,
+              "name": "Κλειδός",
+              "level": "protected",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 2000,
+              "name": "Παραλία Κλειδώ",
+              "level": "protected",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            }
+          ],
+          "notes": "Klidos and Paralia Klido are adjacent southeast/east cove records and should not diverge without a specific geometry reason."
+        },
+        {
+          "segmentId": "naxos-lionas-east-bay",
+          "reason": "same_village_bay",
+          "rawLevels": [
+            "exposed"
+          ],
+          "consistentLevels": [
+            "exposed"
+          ],
+          "rows": [
+            {
+              "beachId": 2002,
+              "name": "Παραλία Λιμνάρι",
+              "level": "exposed",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 2003,
+              "name": "Λίωνας",
+              "level": "exposed",
+              "windProfileConfidence": "low",
+              "knownWindSportSpot": false
+            }
+          ],
+          "rawRows": [
+            {
+              "beachId": 2002,
+              "name": "Παραλία Λιμνάρι",
+              "level": "exposed",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 2003,
+              "name": "Λίωνας",
+              "level": "exposed",
+              "windProfileConfidence": "low",
+              "knownWindSportSpot": false
+            }
+          ],
+          "notes": "Limnari and Lionas sit on the same east/northeast bay system; nearby verified map evidence can support medium consistency, not high confidence."
+        },
+        {
+          "segmentId": "naxos-southeast-coves",
+          "reason": "same_cove_or_micro_bay",
+          "rawLevels": [
+            "protected"
+          ],
+          "consistentLevels": [
+            "protected"
+          ],
+          "rows": [
+            {
+              "beachId": 2014,
+              "name": "Ρίνα",
+              "level": "protected",
+              "windProfileConfidence": "low",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 2015,
+              "name": "Παραλία Σπεδό",
+              "level": "protected",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            }
+          ],
+          "rawRows": [
+            {
+              "beachId": 2014,
+              "name": "Ρίνα",
+              "level": "protected",
+              "windProfileConfidence": "low",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 2015,
+              "name": "Παραλία Σπεδό",
+              "level": "protected",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            }
+          ],
+          "notes": "Rina and Spedo are neighboring southeast/south cove records with similar facing; access and exact shelter remain separately audited."
+        },
+        {
+          "segmentId": "naxos-northwest-rocky-front",
+          "reason": "same_continuous_beachfront",
+          "rawLevels": [
+            "exposed"
+          ],
+          "consistentLevels": [
+            "exposed"
+          ],
+          "rows": [
+            {
+              "beachId": 1988,
+              "name": "Αμμίτης",
+              "level": "exposed",
+              "windProfileConfidence": "low",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 1992,
+              "name": "Γλατζά",
+              "level": "exposed",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 2005,
+              "name": "Μικρά",
+              "level": "exposed",
+              "windProfileConfidence": "low",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 2016,
+              "name": "Χίλια Βρύση",
+              "level": "exposed",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            }
+          ],
+          "rawRows": [
+            {
+              "beachId": 1988,
+              "name": "Αμμίτης",
+              "level": "exposed",
+              "windProfileConfidence": "low",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 1992,
+              "name": "Γλατζά",
+              "level": "exposed",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 2005,
+              "name": "Μικρά",
+              "level": "exposed",
+              "windProfileConfidence": "low",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 2016,
+              "name": "Χίλια Βρύση",
+              "level": "exposed",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            }
+          ],
+          "notes": "Ammitis, Glatza, Mikra, and Chilia Vrysi are north/northwest rocky-front records with similar exposure behavior."
+        }
+      ]
+    },
+    {
+      "scenarioId": "Naxos_W_4BFT",
+      "windDirectionDeg": 270,
+      "segments": [
+        {
+          "segmentId": "naxos-agia-anna-prokopios-plaka-front",
+          "reason": "same_continuous_beachfront",
+          "rawLevels": [
+            "exposed"
+          ],
+          "consistentLevels": [
+            "exposed"
+          ],
+          "rows": [
+            {
+              "beachId": 1981,
+              "name": "Αγία Άννα",
+              "level": "exposed",
+              "windProfileConfidence": "low",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 1985,
+              "name": "Άγιος Προκόπιος",
+              "level": "exposed",
+              "windProfileConfidence": "low",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 2012,
+              "name": "Πλάκα",
+              "level": "exposed",
+              "windProfileConfidence": "low",
+              "knownWindSportSpot": false
+            }
+          ],
+          "rawRows": [
+            {
+              "beachId": 1981,
+              "name": "Αγία Άννα",
+              "level": "exposed",
+              "windProfileConfidence": "low",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 1985,
+              "name": "Άγιος Προκόπιος",
+              "level": "exposed",
+              "windProfileConfidence": "low",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 2012,
+              "name": "Πλάκα",
+              "level": "exposed",
+              "windProfileConfidence": "low",
+              "knownWindSportSpot": false
+            }
+          ],
+          "notes": "Agia Anna, Agios Prokopios, and Plaka sit on the same west resort beach-front and should not diverge without a specific geometry reason."
+        },
+        {
+          "segmentId": "naxos-orkos-mikri-vigla-wind-front",
+          "reason": "same_continuous_beachfront",
+          "rawLevels": [
+            "exposed"
+          ],
+          "consistentLevels": [
+            "exposed"
+          ],
+          "rows": [
+            {
+              "beachId": 2010,
+              "name": "Όρκος",
+              "level": "exposed",
+              "windProfileConfidence": "low",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 2006,
+              "name": "Μικρή Βίγλα",
+              "level": "exposed",
+              "windProfileConfidence": "low",
+              "knownWindSportSpot": true
+            }
+          ],
+          "rawRows": [
+            {
+              "beachId": 2010,
+              "name": "Όρκος",
+              "level": "exposed",
+              "windProfileConfidence": "low",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 2006,
+              "name": "Μικρή Βίγλα",
+              "level": "exposed",
+              "windProfileConfidence": "low",
+              "knownWindSportSpot": true
+            }
+          ],
+          "notes": "Orkos and Mikri Vigla share the exposed west wind-front. Mikri Vigla wind-sport behavior can lock a stricter exposure, while the separate south side remains outside this segment."
+        },
+        {
+          "segmentId": "naxos-alyko-kastraki-front",
+          "reason": "same_continuous_beachfront",
+          "rawLevels": [
+            "exposed"
+          ],
+          "consistentLevels": [
+            "exposed"
+          ],
+          "rows": [
+            {
+              "beachId": 1997,
+              "name": "Καστράκι",
+              "level": "exposed",
+              "windProfileConfidence": "low",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 1993,
+              "name": "Γλυφάδα",
+              "level": "exposed",
+              "windProfileConfidence": "low",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 1987,
+              "name": "Αλυκό",
+              "level": "exposed",
+              "windProfileConfidence": "low",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 1998,
+              "name": "Κέδρος",
+              "level": "exposed",
+              "windProfileConfidence": "low",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 2008,
+              "name": "Μικρό Αλυκό",
+              "level": "exposed",
+              "windProfileConfidence": "low",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 2019,
+              "name": "Hawaii",
+              "level": "exposed",
+              "windProfileConfidence": "low",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 2013,
+              "name": "Πυργάκι",
+              "level": "exposed",
+              "windProfileConfidence": "low",
+              "knownWindSportSpot": false
+            }
+          ],
+          "rawRows": [
+            {
+              "beachId": 1997,
+              "name": "Καστράκι",
+              "level": "exposed",
+              "windProfileConfidence": "low",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 1993,
+              "name": "Γλυφάδα",
+              "level": "exposed",
+              "windProfileConfidence": "low",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 1987,
+              "name": "Αλυκό",
+              "level": "exposed",
+              "windProfileConfidence": "low",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 1998,
+              "name": "Κέδρος",
+              "level": "exposed",
+              "windProfileConfidence": "low",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 2008,
+              "name": "Μικρό Αλυκό",
+              "level": "exposed",
+              "windProfileConfidence": "low",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 2019,
+              "name": "Hawaii",
+              "level": "exposed",
+              "windProfileConfidence": "low",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 2013,
+              "name": "Πυργάκι",
+              "level": "exposed",
+              "windProfileConfidence": "low",
+              "knownWindSportSpot": false
+            }
+          ],
+          "notes": "Kastraki, Glyfada, Alyko, Kedros, Mikro Alyko, Hawaii, and Pyrgaki are adjacent southwest coast pockets with similar shoreline facing; small coves remain lower confidence until separately verified."
+        },
+        {
+          "segmentId": "naxos-klido-cove",
+          "reason": "same_cove_or_micro_bay",
+          "rawLevels": [
+            "protected"
+          ],
+          "consistentLevels": [
+            "protected"
+          ],
+          "rows": [
+            {
+              "beachId": 1999,
+              "name": "Κλειδός",
+              "level": "protected",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 2000,
+              "name": "Παραλία Κλειδώ",
+              "level": "protected",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            }
+          ],
+          "rawRows": [
+            {
+              "beachId": 1999,
+              "name": "Κλειδός",
+              "level": "protected",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 2000,
+              "name": "Παραλία Κλειδώ",
+              "level": "protected",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            }
+          ],
+          "notes": "Klidos and Paralia Klido are adjacent southeast/east cove records and should not diverge without a specific geometry reason."
+        },
+        {
+          "segmentId": "naxos-lionas-east-bay",
+          "reason": "same_village_bay",
+          "rawLevels": [
+            "protected"
+          ],
+          "consistentLevels": [
+            "protected"
+          ],
+          "rows": [
+            {
+              "beachId": 2002,
+              "name": "Παραλία Λιμνάρι",
+              "level": "protected",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 2003,
+              "name": "Λίωνας",
+              "level": "protected",
+              "windProfileConfidence": "low",
+              "knownWindSportSpot": false
+            }
+          ],
+          "rawRows": [
+            {
+              "beachId": 2002,
+              "name": "Παραλία Λιμνάρι",
+              "level": "protected",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 2003,
+              "name": "Λίωνας",
+              "level": "protected",
+              "windProfileConfidence": "low",
+              "knownWindSportSpot": false
+            }
+          ],
+          "notes": "Limnari and Lionas sit on the same east/northeast bay system; nearby verified map evidence can support medium consistency, not high confidence."
+        },
+        {
+          "segmentId": "naxos-southeast-coves",
+          "reason": "same_cove_or_micro_bay",
+          "rawLevels": [
+            "protected"
+          ],
+          "consistentLevels": [
+            "protected"
+          ],
+          "rows": [
+            {
+              "beachId": 2014,
+              "name": "Ρίνα",
+              "level": "protected",
+              "windProfileConfidence": "low",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 2015,
+              "name": "Παραλία Σπεδό",
+              "level": "protected",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            }
+          ],
+          "rawRows": [
+            {
+              "beachId": 2014,
+              "name": "Ρίνα",
+              "level": "protected",
+              "windProfileConfidence": "low",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 2015,
+              "name": "Παραλία Σπεδό",
+              "level": "protected",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            }
+          ],
+          "notes": "Rina and Spedo are neighboring southeast/south cove records with similar facing; access and exact shelter remain separately audited."
+        },
+        {
+          "segmentId": "naxos-northwest-rocky-front",
+          "reason": "same_continuous_beachfront",
+          "rawLevels": [
+            "exposed"
+          ],
+          "consistentLevels": [
+            "exposed"
+          ],
+          "rows": [
+            {
+              "beachId": 1988,
+              "name": "Αμμίτης",
+              "level": "exposed",
+              "windProfileConfidence": "low",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 1992,
+              "name": "Γλατζά",
+              "level": "exposed",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 2005,
+              "name": "Μικρά",
+              "level": "exposed",
+              "windProfileConfidence": "low",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 2016,
+              "name": "Χίλια Βρύση",
+              "level": "exposed",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            }
+          ],
+          "rawRows": [
+            {
+              "beachId": 1988,
+              "name": "Αμμίτης",
+              "level": "exposed",
+              "windProfileConfidence": "low",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 1992,
+              "name": "Γλατζά",
+              "level": "exposed",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 2005,
+              "name": "Μικρά",
+              "level": "exposed",
+              "windProfileConfidence": "low",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 2016,
+              "name": "Χίλια Βρύση",
+              "level": "exposed",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            }
+          ],
+          "notes": "Ammitis, Glatza, Mikra, and Chilia Vrysi are north/northwest rocky-front records with similar exposure behavior."
+        }
+      ]
+    },
+    {
+      "scenarioId": "Naxos_S_4BFT",
+      "windDirectionDeg": 180,
+      "segments": [
+        {
+          "segmentId": "naxos-agia-anna-prokopios-plaka-front",
+          "reason": "same_continuous_beachfront",
+          "rawLevels": [
+            "exposed"
+          ],
+          "consistentLevels": [
+            "exposed"
+          ],
+          "rows": [
+            {
+              "beachId": 1981,
+              "name": "Αγία Άννα",
+              "level": "exposed",
+              "windProfileConfidence": "low",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 1985,
+              "name": "Άγιος Προκόπιος",
+              "level": "exposed",
+              "windProfileConfidence": "low",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 2012,
+              "name": "Πλάκα",
+              "level": "exposed",
+              "windProfileConfidence": "low",
+              "knownWindSportSpot": false
+            }
+          ],
+          "rawRows": [
+            {
+              "beachId": 1981,
+              "name": "Αγία Άννα",
+              "level": "exposed",
+              "windProfileConfidence": "low",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 1985,
+              "name": "Άγιος Προκόπιος",
+              "level": "exposed",
+              "windProfileConfidence": "low",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 2012,
+              "name": "Πλάκα",
+              "level": "exposed",
+              "windProfileConfidence": "low",
+              "knownWindSportSpot": false
+            }
+          ],
+          "notes": "Agia Anna, Agios Prokopios, and Plaka sit on the same west resort beach-front and should not diverge without a specific geometry reason."
+        },
+        {
+          "segmentId": "naxos-orkos-mikri-vigla-wind-front",
+          "reason": "same_continuous_beachfront",
+          "rawLevels": [
+            "partial"
+          ],
+          "consistentLevels": [
+            "exposed"
+          ],
+          "rows": [
+            {
+              "beachId": 2010,
+              "name": "Όρκος",
+              "level": "exposed",
+              "windProfileConfidence": "low",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 2006,
+              "name": "Μικρή Βίγλα",
+              "level": "exposed",
+              "windProfileConfidence": "low",
+              "knownWindSportSpot": true
+            }
+          ],
+          "rawRows": [
+            {
+              "beachId": 2010,
+              "name": "Όρκος",
+              "level": "partial",
+              "windProfileConfidence": "low",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 2006,
+              "name": "Μικρή Βίγλα",
+              "level": "partial",
+              "windProfileConfidence": "low",
+              "knownWindSportSpot": true
+            }
+          ],
+          "notes": "Orkos and Mikri Vigla share the exposed west wind-front. Mikri Vigla wind-sport behavior can lock a stricter exposure, while the separate south side remains outside this segment."
+        },
+        {
+          "segmentId": "naxos-alyko-kastraki-front",
+          "reason": "same_continuous_beachfront",
+          "rawLevels": [
+            "partial",
+            "protected",
+            "exposed"
+          ],
+          "consistentLevels": [
+            "exposed"
+          ],
+          "rows": [
+            {
+              "beachId": 1997,
+              "name": "Καστράκι",
+              "level": "exposed",
+              "windProfileConfidence": "low",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 1993,
+              "name": "Γλυφάδα",
+              "level": "exposed",
+              "windProfileConfidence": "low",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 1987,
+              "name": "Αλυκό",
+              "level": "exposed",
+              "windProfileConfidence": "low",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 1998,
+              "name": "Κέδρος",
+              "level": "exposed",
+              "windProfileConfidence": "low",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 2008,
+              "name": "Μικρό Αλυκό",
+              "level": "exposed",
+              "windProfileConfidence": "low",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 2019,
+              "name": "Hawaii",
+              "level": "exposed",
+              "windProfileConfidence": "low",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 2013,
+              "name": "Πυργάκι",
+              "level": "exposed",
+              "windProfileConfidence": "low",
+              "knownWindSportSpot": false
+            }
+          ],
+          "rawRows": [
+            {
+              "beachId": 1997,
+              "name": "Καστράκι",
+              "level": "partial",
+              "windProfileConfidence": "low",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 1993,
+              "name": "Γλυφάδα",
+              "level": "protected",
+              "windProfileConfidence": "low",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 1987,
+              "name": "Αλυκό",
+              "level": "exposed",
+              "windProfileConfidence": "low",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 1998,
+              "name": "Κέδρος",
+              "level": "partial",
+              "windProfileConfidence": "low",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 2008,
+              "name": "Μικρό Αλυκό",
+              "level": "exposed",
+              "windProfileConfidence": "low",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 2019,
+              "name": "Hawaii",
+              "level": "partial",
+              "windProfileConfidence": "low",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 2013,
+              "name": "Πυργάκι",
+              "level": "exposed",
+              "windProfileConfidence": "low",
+              "knownWindSportSpot": false
+            }
+          ],
+          "notes": "Kastraki, Glyfada, Alyko, Kedros, Mikro Alyko, Hawaii, and Pyrgaki are adjacent southwest coast pockets with similar shoreline facing; small coves remain lower confidence until separately verified."
+        },
+        {
+          "segmentId": "naxos-klido-cove",
+          "reason": "same_cove_or_micro_bay",
+          "rawLevels": [
+            "exposed"
+          ],
+          "consistentLevels": [
+            "exposed"
+          ],
+          "rows": [
+            {
+              "beachId": 1999,
+              "name": "Κλειδός",
+              "level": "exposed",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 2000,
+              "name": "Παραλία Κλειδώ",
+              "level": "exposed",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            }
+          ],
+          "rawRows": [
+            {
+              "beachId": 1999,
+              "name": "Κλειδός",
+              "level": "exposed",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 2000,
+              "name": "Παραλία Κλειδώ",
+              "level": "exposed",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            }
+          ],
+          "notes": "Klidos and Paralia Klido are adjacent southeast/east cove records and should not diverge without a specific geometry reason."
+        },
+        {
+          "segmentId": "naxos-lionas-east-bay",
+          "reason": "same_village_bay",
+          "rawLevels": [
+            "partial",
+            "protected"
+          ],
+          "consistentLevels": [
+            "partial"
+          ],
+          "rows": [
+            {
+              "beachId": 2002,
+              "name": "Παραλία Λιμνάρι",
+              "level": "partial",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 2003,
+              "name": "Λίωνας",
+              "level": "partial",
+              "windProfileConfidence": "low",
+              "knownWindSportSpot": false
+            }
+          ],
+          "rawRows": [
+            {
+              "beachId": 2002,
+              "name": "Παραλία Λιμνάρι",
+              "level": "partial",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 2003,
+              "name": "Λίωνας",
+              "level": "protected",
+              "windProfileConfidence": "low",
+              "knownWindSportSpot": false
+            }
+          ],
+          "notes": "Limnari and Lionas sit on the same east/northeast bay system; nearby verified map evidence can support medium consistency, not high confidence."
+        },
+        {
+          "segmentId": "naxos-southeast-coves",
+          "reason": "same_cove_or_micro_bay",
+          "rawLevels": [
+            "exposed"
+          ],
+          "consistentLevels": [
+            "exposed"
+          ],
+          "rows": [
+            {
+              "beachId": 2014,
+              "name": "Ρίνα",
+              "level": "exposed",
+              "windProfileConfidence": "low",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 2015,
+              "name": "Παραλία Σπεδό",
+              "level": "exposed",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            }
+          ],
+          "rawRows": [
+            {
+              "beachId": 2014,
+              "name": "Ρίνα",
+              "level": "exposed",
+              "windProfileConfidence": "low",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 2015,
+              "name": "Παραλία Σπεδό",
+              "level": "exposed",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            }
+          ],
+          "notes": "Rina and Spedo are neighboring southeast/south cove records with similar facing; access and exact shelter remain separately audited."
+        },
+        {
+          "segmentId": "naxos-northwest-rocky-front",
+          "reason": "same_continuous_beachfront",
+          "rawLevels": [
+            "protected"
+          ],
+          "consistentLevels": [
+            "protected"
+          ],
+          "rows": [
+            {
+              "beachId": 1988,
+              "name": "Αμμίτης",
+              "level": "protected",
+              "windProfileConfidence": "low",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 1992,
+              "name": "Γλατζά",
+              "level": "protected",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 2005,
+              "name": "Μικρά",
+              "level": "protected",
+              "windProfileConfidence": "low",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 2016,
+              "name": "Χίλια Βρύση",
+              "level": "protected",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            }
+          ],
+          "rawRows": [
+            {
+              "beachId": 1988,
+              "name": "Αμμίτης",
+              "level": "protected",
+              "windProfileConfidence": "low",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 1992,
+              "name": "Γλατζά",
+              "level": "protected",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 2005,
+              "name": "Μικρά",
+              "level": "protected",
+              "windProfileConfidence": "low",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 2016,
+              "name": "Χίλια Βρύση",
+              "level": "protected",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            }
+          ],
+          "notes": "Ammitis, Glatza, Mikra, and Chilia Vrysi are north/northwest rocky-front records with similar exposure behavior."
+        }
+      ]
+    },
+    {
+      "scenarioId": "Naxos_E_4BFT",
+      "windDirectionDeg": 90,
+      "segments": [
+        {
+          "segmentId": "naxos-agia-anna-prokopios-plaka-front",
+          "reason": "same_continuous_beachfront",
+          "rawLevels": [
+            "protected"
+          ],
+          "consistentLevels": [
+            "protected"
+          ],
+          "rows": [
+            {
+              "beachId": 1981,
+              "name": "Αγία Άννα",
+              "level": "protected",
+              "windProfileConfidence": "low",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 1985,
+              "name": "Άγιος Προκόπιος",
+              "level": "protected",
+              "windProfileConfidence": "low",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 2012,
+              "name": "Πλάκα",
+              "level": "protected",
+              "windProfileConfidence": "low",
+              "knownWindSportSpot": false
+            }
+          ],
+          "rawRows": [
+            {
+              "beachId": 1981,
+              "name": "Αγία Άννα",
+              "level": "protected",
+              "windProfileConfidence": "low",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 1985,
+              "name": "Άγιος Προκόπιος",
+              "level": "protected",
+              "windProfileConfidence": "low",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 2012,
+              "name": "Πλάκα",
+              "level": "protected",
+              "windProfileConfidence": "low",
+              "knownWindSportSpot": false
+            }
+          ],
+          "notes": "Agia Anna, Agios Prokopios, and Plaka sit on the same west resort beach-front and should not diverge without a specific geometry reason."
+        },
+        {
+          "segmentId": "naxos-orkos-mikri-vigla-wind-front",
+          "reason": "same_continuous_beachfront",
+          "rawLevels": [
+            "protected"
+          ],
+          "consistentLevels": [
+            "protected"
+          ],
+          "rows": [
+            {
+              "beachId": 2010,
+              "name": "Όρκος",
+              "level": "protected",
+              "windProfileConfidence": "low",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 2006,
+              "name": "Μικρή Βίγλα",
+              "level": "protected",
+              "windProfileConfidence": "low",
+              "knownWindSportSpot": true
+            }
+          ],
+          "rawRows": [
+            {
+              "beachId": 2010,
+              "name": "Όρκος",
+              "level": "protected",
+              "windProfileConfidence": "low",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 2006,
+              "name": "Μικρή Βίγλα",
+              "level": "protected",
+              "windProfileConfidence": "low",
+              "knownWindSportSpot": true
+            }
+          ],
+          "notes": "Orkos and Mikri Vigla share the exposed west wind-front. Mikri Vigla wind-sport behavior can lock a stricter exposure, while the separate south side remains outside this segment."
+        },
+        {
+          "segmentId": "naxos-alyko-kastraki-front",
+          "reason": "same_continuous_beachfront",
+          "rawLevels": [
+            "protected"
+          ],
+          "consistentLevels": [
+            "protected"
+          ],
+          "rows": [
+            {
+              "beachId": 1997,
+              "name": "Καστράκι",
+              "level": "protected",
+              "windProfileConfidence": "low",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 1993,
+              "name": "Γλυφάδα",
+              "level": "protected",
+              "windProfileConfidence": "low",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 1987,
+              "name": "Αλυκό",
+              "level": "protected",
+              "windProfileConfidence": "low",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 1998,
+              "name": "Κέδρος",
+              "level": "protected",
+              "windProfileConfidence": "low",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 2008,
+              "name": "Μικρό Αλυκό",
+              "level": "protected",
+              "windProfileConfidence": "low",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 2019,
+              "name": "Hawaii",
+              "level": "protected",
+              "windProfileConfidence": "low",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 2013,
+              "name": "Πυργάκι",
+              "level": "protected",
+              "windProfileConfidence": "low",
+              "knownWindSportSpot": false
+            }
+          ],
+          "rawRows": [
+            {
+              "beachId": 1997,
+              "name": "Καστράκι",
+              "level": "protected",
+              "windProfileConfidence": "low",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 1993,
+              "name": "Γλυφάδα",
+              "level": "protected",
+              "windProfileConfidence": "low",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 1987,
+              "name": "Αλυκό",
+              "level": "protected",
+              "windProfileConfidence": "low",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 1998,
+              "name": "Κέδρος",
+              "level": "protected",
+              "windProfileConfidence": "low",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 2008,
+              "name": "Μικρό Αλυκό",
+              "level": "protected",
+              "windProfileConfidence": "low",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 2019,
+              "name": "Hawaii",
+              "level": "protected",
+              "windProfileConfidence": "low",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 2013,
+              "name": "Πυργάκι",
+              "level": "protected",
+              "windProfileConfidence": "low",
+              "knownWindSportSpot": false
+            }
+          ],
+          "notes": "Kastraki, Glyfada, Alyko, Kedros, Mikro Alyko, Hawaii, and Pyrgaki are adjacent southwest coast pockets with similar shoreline facing; small coves remain lower confidence until separately verified."
+        },
+        {
+          "segmentId": "naxos-klido-cove",
+          "reason": "same_cove_or_micro_bay",
+          "rawLevels": [
+            "exposed"
+          ],
+          "consistentLevels": [
+            "exposed"
+          ],
+          "rows": [
+            {
+              "beachId": 1999,
+              "name": "Κλειδός",
+              "level": "exposed",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 2000,
+              "name": "Παραλία Κλειδώ",
+              "level": "exposed",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            }
+          ],
+          "rawRows": [
+            {
+              "beachId": 1999,
+              "name": "Κλειδός",
+              "level": "exposed",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 2000,
+              "name": "Παραλία Κλειδώ",
+              "level": "exposed",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            }
+          ],
+          "notes": "Klidos and Paralia Klido are adjacent southeast/east cove records and should not diverge without a specific geometry reason."
+        },
+        {
+          "segmentId": "naxos-lionas-east-bay",
+          "reason": "same_village_bay",
+          "rawLevels": [
+            "exposed"
+          ],
+          "consistentLevels": [
+            "exposed"
+          ],
+          "rows": [
+            {
+              "beachId": 2002,
+              "name": "Παραλία Λιμνάρι",
+              "level": "exposed",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 2003,
+              "name": "Λίωνας",
+              "level": "exposed",
+              "windProfileConfidence": "low",
+              "knownWindSportSpot": false
+            }
+          ],
+          "rawRows": [
+            {
+              "beachId": 2002,
+              "name": "Παραλία Λιμνάρι",
+              "level": "exposed",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 2003,
+              "name": "Λίωνας",
+              "level": "exposed",
+              "windProfileConfidence": "low",
+              "knownWindSportSpot": false
+            }
+          ],
+          "notes": "Limnari and Lionas sit on the same east/northeast bay system; nearby verified map evidence can support medium consistency, not high confidence."
+        },
+        {
+          "segmentId": "naxos-southeast-coves",
+          "reason": "same_cove_or_micro_bay",
+          "rawLevels": [
+            "exposed"
+          ],
+          "consistentLevels": [
+            "exposed"
+          ],
+          "rows": [
+            {
+              "beachId": 2014,
+              "name": "Ρίνα",
+              "level": "exposed",
+              "windProfileConfidence": "low",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 2015,
+              "name": "Παραλία Σπεδό",
+              "level": "exposed",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            }
+          ],
+          "rawRows": [
+            {
+              "beachId": 2014,
+              "name": "Ρίνα",
+              "level": "exposed",
+              "windProfileConfidence": "low",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 2015,
+              "name": "Παραλία Σπεδό",
+              "level": "exposed",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            }
+          ],
+          "notes": "Rina and Spedo are neighboring southeast/south cove records with similar facing; access and exact shelter remain separately audited."
+        },
+        {
+          "segmentId": "naxos-northwest-rocky-front",
+          "reason": "same_continuous_beachfront",
+          "rawLevels": [
+            "protected"
+          ],
+          "consistentLevels": [
+            "protected"
+          ],
+          "rows": [
+            {
+              "beachId": 1988,
+              "name": "Αμμίτης",
+              "level": "protected",
+              "windProfileConfidence": "low",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 1992,
+              "name": "Γλατζά",
+              "level": "protected",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 2005,
+              "name": "Μικρά",
+              "level": "protected",
+              "windProfileConfidence": "low",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 2016,
+              "name": "Χίλια Βρύση",
+              "level": "protected",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            }
+          ],
+          "rawRows": [
+            {
+              "beachId": 1988,
+              "name": "Αμμίτης",
+              "level": "protected",
+              "windProfileConfidence": "low",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 1992,
+              "name": "Γλατζά",
+              "level": "protected",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 2005,
+              "name": "Μικρά",
+              "level": "protected",
+              "windProfileConfidence": "low",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 2016,
+              "name": "Χίλια Βρύση",
+              "level": "protected",
+              "windProfileConfidence": "medium",
+              "knownWindSportSpot": false
+            }
+          ],
+          "notes": "Ammitis, Glatza, Mikra, and Chilia Vrysi are north/northwest rocky-front records with similar exposure behavior."
+        }
+      ]
+    }
+  ]
+}

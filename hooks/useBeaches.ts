@@ -95,6 +95,15 @@ export const useBeaches = (language: LanguageCode) => {
     }
   }, [staticIslands, language]);
 
+  const cacheLoadedIsland = useCallback((loadedIsland: Island) => {
+    setStaticIslands(prev => {
+      const existingIndex = prev.findIndex(island => island.id === loadedIsland.id);
+      if (existingIndex === -1) return [...prev, loadedIsland];
+
+      return prev.map(island => island.id === loadedIsland.id ? loadedIsland : island);
+    });
+  }, []);
+
   useEffect(() => {
     let cancelled = false;
 
@@ -235,5 +244,6 @@ export const useBeaches = (language: LanguageCode) => {
     error,
     getFilteredBeaches,
     ensureIslandBeachesLoaded,
+    cacheLoadedIsland,
   };
 };

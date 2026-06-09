@@ -2,7 +2,7 @@ import React, { useEffect, useMemo, useState } from 'react';
 import { motion } from 'motion/react';
 import { Beach, LanguageCode, SuitableBeach } from '../types';
 import { Translation } from '../types';
-import { openNavigation } from '../utils/navigation';
+import { canOpenNavigation, openNavigation } from '../utils/navigation';
 import { Share2, Clock, MapPin, Info, Navigation, CheckCircle2 } from 'lucide-react';
 import { displayBeachName } from '../utils/localization';
 import { TodayScoreBadge } from './TodayScoreBadge';
@@ -41,46 +41,31 @@ const parseTimeToMinutes = (value?: string): number | undefined => {
 const getBestTimeDisplay = (
   bestBeachTime: SuitableBeach['bestBeachTime'],
   language: LanguageCode
-): string => {
+): string | undefined => {
   const copy = {
     en: {
       exactLabel: 'Best time',
       around: (time: string) => `Good time to visit: around ${time}`,
-      fallback: 'Good time to visit: morning',
-      longMorning: 'Good choice until the afternoon',
-      longGeneral: 'Calmer in the morning and early afternoon',
     },
     gr: {
       exactLabel: 'Καλύτερη ώρα',
       around: (time: string) => `Καλή ώρα για επίσκεψη: γύρω στις ${time}`,
-      fallback: 'Καλή ώρα για επίσκεψη: πρωί',
-      longMorning: 'Καλή επιλογή μέχρι το απόγευμα',
-      longGeneral: 'Πιο ήρεμα το πρωί και νωρίς το απόγευμα',
     },
     de: {
       exactLabel: 'Beste Zeit',
       around: (time: string) => `Gute Besuchszeit: gegen ${time}`,
-      fallback: 'Gute Besuchszeit: morgens',
-      longMorning: 'Gute Wahl bis zum Nachmittag',
-      longGeneral: 'Ruhiger morgens und am frühen Nachmittag',
     },
     it: {
       exactLabel: 'Ora migliore',
       around: (time: string) => `Buon orario: verso le ${time}`,
-      fallback: 'Buon orario per la visita: mattina',
-      longMorning: 'Buona scelta fino al pomeriggio',
-      longGeneral: 'Piu tranquilla al mattino e nel primo pomeriggio',
     },
     fr: {
       exactLabel: 'Meilleur moment',
       around: (time: string) => `Bon moment pour venir : vers ${time}`,
-      fallback: 'Bon moment pour venir : matin',
-      longMorning: 'Bon choix jusqu a l apres-midi',
-      longGeneral: 'Plus calme le matin et en debut d apres-midi',
     },
   }[language];
 
-  if (!bestBeachTime?.bestStart) return copy.fallback;
+  if (!bestBeachTime?.bestStart) return undefined;
   if (!bestBeachTime.bestEnd || bestBeachTime.bestStart === bestBeachTime.bestEnd) {
     return copy.around(bestBeachTime.bestStart);
   }
@@ -91,17 +76,7 @@ const getBestTimeDisplay = (
     return `${copy.exactLabel}: ${bestBeachTime.bestStart} - ${bestBeachTime.bestEnd}`;
   }
 
-  const durationMinutes = endMinutes >= startMinutes
-    ? endMinutes - startMinutes
-    : endMinutes + 24 * 60 - startMinutes;
-
-  if (durationMinutes <= 3 * 60) {
-    return `${copy.exactLabel}: ${bestBeachTime.bestStart} - ${bestBeachTime.bestEnd}`;
-  }
-
-  return startMinutes <= 12 * 60 && endMinutes >= 16 * 60
-    ? copy.longMorning
-    : copy.longGeneral;
+  return `${copy.exactLabel}: ${bestBeachTime.bestStart} - ${bestBeachTime.bestEnd}`;
 };
 
 const BeachOfTheDay: React.FC<BeachOfTheDayProps> = ({ topBeach, language, t, onShowDetails, islandName, windSpeed, windDirectionLabel, windBeaufort, selectedDate }) => {
@@ -139,6 +114,7 @@ const BeachOfTheDay: React.FC<BeachOfTheDayProps> = ({ topBeach, language, t, on
   const infoLabel = { en: 'Info', gr: 'Πληροφορίες', de: 'Info', it: 'Info', fr: 'Info' }[language];
   const shareLabel = { en: 'Share', gr: 'Κοινοποίηση', de: 'Teilen', it: 'Condividi', fr: 'Partager' }[language];
   const bestTimeDisplay = getBestTimeDisplay(bestBeachTime, language);
+  const canNavigate = canOpenNavigation(beach);
   const noIdealSwimmingWindow = swimmingComfort === 'avoid_swimming' || Boolean(
     warnings?.some(warning => warning.type === 'rough_sea' && warning.severity === 'critical') ||
     (typeof waveHeightM === 'number' && Number.isFinite(waveHeightM) && waveHeightM >= 1.2)
@@ -235,14 +211,16 @@ const BeachOfTheDay: React.FC<BeachOfTheDayProps> = ({ topBeach, language, t, on
           </div>
 
           <div className="grid gap-2 sm:grid-cols-[1fr_auto] sm:items-center">
-            <button
-              onClick={() => openNavigation(beach)}
-              className="inline-flex min-h-12 w-full items-center justify-center gap-2 rounded-2xl bg-cyan-600 px-5 py-3 text-base font-bold text-white shadow-lg shadow-cyan-600/25 transition-colors hover:bg-cyan-700 active:scale-[0.99] focus:outline-none focus-visible:ring-2 focus-visible:ring-cyan-500 focus-visible:ring-offset-2 dark:focus-visible:ring-offset-slate-950"
-              aria-label={navigateLabel}
-            >
-              <Navigation className="h-5 w-5" />
-              {navigateLabel}
-            </button>
+            {canNavigate && (
+              <button
+                onClick={() => openNavigation(beach)}
+                className="inline-flex min-h-12 w-full items-center justify-center gap-2 rounded-2xl bg-cyan-600 px-5 py-3 text-base font-bold text-white shadow-lg shadow-cyan-600/25 transition-colors hover:bg-cyan-700 active:scale-[0.99] focus:outline-none focus-visible:ring-2 focus-visible:ring-cyan-500 focus-visible:ring-offset-2 dark:focus-visible:ring-offset-slate-950"
+                aria-label={navigateLabel}
+              >
+                <Navigation className="h-5 w-5" />
+                {navigateLabel}
+              </button>
+            )}
 
             <div className="grid grid-cols-2 gap-2 sm:flex sm:items-center">
               <button

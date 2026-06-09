@@ -1,12 +1,12 @@
 
 import React, { useEffect, useState } from 'react';
 import { motion } from 'motion/react';
-import { AlertTriangle, MapPin, Star, Share2, Heart, Navigation, Info, Waves, Utensils, Trees, Umbrella, CircleDot, CircleDotDashed, Layers, Mountain, Droplets, ArrowDown, Sparkles, BadgeCheck, Leaf, Shield, Users, Clock3, Flag, Footprints, Wind } from 'lucide-react';
-import { Beach, Accessibility, LanguageCode, BeachType, CrowdLevel, WarningFlag, RecommendationConfidence, SwimmingComfort } from '../types';
+import { AlertTriangle, MapPin, Star, Share2, Heart, Navigation, Info, Waves, Utensils, Trees, CircleDot, CircleDotDashed, Mountain, Droplets, ArrowDown, BadgeCheck, Leaf, Shield, Users, Clock3, Flag, Footprints, Wind } from 'lucide-react';
+import { Beach, Accessibility, LanguageCode, BeachType, CrowdLevel, WarningFlag, RecommendationConfidence, SwimmingComfort, WindSuitabilityColor } from '../types';
 import { getBeaufortLevel } from '../utils/weatherUtils';
 import { Translation } from '../types';
 
-import { openNavigation } from '../utils/navigation';
+import { canOpenNavigation, openNavigation } from '../utils/navigation';
 import { BeachConditionScore } from './BeachConditionScore';
 import { TodayScoreBadge } from './TodayScoreBadge';
 import { getBeachPhotoLookup } from '../services/beachPhotos';
@@ -26,6 +26,7 @@ import {
   localizedWaterDepthLabel,
 } from '../utils/localization';
 import { AmenityChip, getAmenityChips } from '../utils/amenities';
+import { SandDotsIcon, SandPebblesIcon, SunbedIcon } from './BeachFeatureIcons';
 
 interface BeachCardProps {
   beach: Beach & { distance?: number };
@@ -60,6 +61,15 @@ interface BeachCardProps {
   seaCalmClaimAllowed?: boolean;
   strongWindContext?: boolean;
   lessExposedToday?: boolean;
+  windSuitabilityText?: string;
+  windSuitabilityColor?: WindSuitabilityColor;
+  /**
+   * Controls the wind-exposure chip on the card:
+   * - 'none': never show it (e.g. "best beaches" — no explanation needed)
+   * - 'simple': only show it when a beach is clearly more protected or more exposed
+   * - undefined: legacy behaviour
+   */
+  windExposureMode?: 'none' | 'simple';
   showTodayScoreBadge?: boolean;
 }
 
@@ -190,8 +200,8 @@ const cardCopy: Record<LanguageCode, CardCopy> = {
     },
   },
   gr: {
-    shelteredChip: () => 'Υπήνεμη',
-    shelteredChipA11y: (sentenceDay) => `${sentenceDay}: πιο υπήνεμη επιλογή`,
+    shelteredChip: () => 'Προστατευμένη',
+    shelteredChipA11y: (sentenceDay) => `${sentenceDay}: προστατευμένη επιλογή`,
     blueFlag: 'Γαλάζια Σημαία',
     dirtRoad: 'Χωματόδρομος',
     localExposureCheck: 'Έλεγχος τοπικής έκθεσης',
@@ -217,7 +227,7 @@ const cardCopy: Record<LanguageCode, CardCopy> = {
     compact: {
       calmWaters: 'Χαμηλό κύμα',
       goodSea: 'Καλή θάλασσα',
-      protected: () => 'Υπήνεμη',
+      protected: () => 'Προστατευμένη',
       lightWind: 'Ήπιος άνεμος',
       mildlyBreezy: 'Μπορεί να έχει αέρα',
       windyExposed: 'Εκτεθειμένη στον άνεμο',
@@ -226,7 +236,7 @@ const cardCopy: Record<LanguageCode, CardCopy> = {
       familyFriendly: 'Για παιδιά',
       shallowWaters: 'Ρηχά νερά',
       shallowWatersCaution: 'Ρηχά νερά',
-      easyAccess: 'Εύκολα',
+      easyAccess: 'Εύκολη πρόσβαση',
       facilities: 'Παροχές',
       noFacilities: 'Χωρίς παροχές',
       naturalShade: 'Φυσική σκιά',
@@ -235,14 +245,14 @@ const cardCopy: Record<LanguageCode, CardCopy> = {
       visitorRating: 'Βαθμολογία επισκεπτών',
     },
     access: {
-      asphaltRoad: 'Εύκολα',
+      asphaltRoad: 'Εύκολη πρόσβαση',
       dirtRoad: 'Χωματόδρομος',
       difficultDirtRoad: 'Κακός χωματόδρομος',
-      difficultRoad: 'Δύσκολα',
+      difficultRoad: 'Δύσκολη πρόσβαση',
       pathAccess: 'Μονοπάτι',
       hardPath: 'Δύσκολο μονοπάτι',
       boatOnly: 'Με σκάφος',
-      moderateAccess: 'Μέτρια',
+      moderateAccess: 'Μέτρια πρόσβαση',
     },
     amenities: {
       beachBar: 'Beach bar',
@@ -621,7 +631,7 @@ const BeachLocationPlaceholder: React.FC<{
 const amenityChipIcon = (chip: Pick<AmenityChip, 'key'>): React.ReactNode => {
   switch (chip.key) {
     case 'sunbeds':
-      return <Umbrella className="w-3.5 h-3.5" />;
+      return <SunbedIcon className="h-3.5 w-3.5" />;
     case 'foodNearby':
     case 'cafeNearby':
       return <Utensils className="w-3.5 h-3.5" />;
@@ -684,11 +694,14 @@ const BlueFlagBadge: React.FC<{ language: LanguageCode; compact?: boolean }> = (
 };
 
 const BeachTypeTag: React.FC<{ beachType: BeachType; t: Translation }> = ({ beachType, t }) => {
+  if (beachType === 'unknown') return null;
+
   const icons: Record<BeachType, React.ReactNode> = {
-    sandy: <Sparkles className="w-3.5 h-3.5" />,
+    sandy: <SandDotsIcon className="h-3.5 w-3.5" />,
     pebbles: <CircleDot className="w-3.5 h-3.5" />,
-    'sandy-pebbles': <Layers className="w-3.5 h-3.5" />,
+    'sandy-pebbles': <SandPebblesIcon className="h-3.5 w-3.5" />,
     rocky: <Mountain className="w-3.5 h-3.5" />,
+    unknown: <Info className="w-3.5 h-3.5" />,
   };
   
   return (
@@ -726,7 +739,7 @@ const metadataAccessTone: Record<string, { className: string; iconClassName: str
 };
 
 const terrainIcons: Record<string, React.ReactNode> = {
-  fine_sand: <Sparkles className="w-3.5 h-3.5" />,
+  fine_sand: <SandDotsIcon className="h-3.5 w-3.5" />,
   coarse_sand: <CircleDotDashed className="w-3.5 h-3.5" />,
   pebbles: <CircleDot className="w-3.5 h-3.5" />,
   large_stones: <Mountain className="w-3.5 h-3.5" />,
@@ -912,6 +925,12 @@ const compactAmenityLabel = (chip: AmenityChip, language: LanguageCode): string 
   return labels[chip.key] || chip.label;
 };
 
+type CompactFeatureChip = {
+  key: string;
+  label: string;
+  icon: React.ReactNode;
+};
+
 export const BeachCard: React.FC<BeachCardProps> = ({
   beach,
   isExposed = false,
@@ -942,6 +961,9 @@ export const BeachCard: React.FC<BeachCardProps> = ({
   seaCalmClaimAllowed = false,
   strongWindContext = false,
   lessExposedToday,
+  windSuitabilityText,
+  windSuitabilityColor,
+  windExposureMode,
   showTodayScoreBadge = true,
 }) => {
   const [photoIndex, setPhotoIndex] = useState(0);
@@ -1007,6 +1029,10 @@ export const BeachCard: React.FC<BeachCardProps> = ({
 
   const handleNavigationClick = (e: React.MouseEvent) => {
     e.stopPropagation();
+    if (!canOpenNavigation(beach)) {
+      return;
+    }
+
     trackEvent('navigation_clicked', beach.id, {
       locale: languageToLocale(language),
       region: islandName,
@@ -1015,6 +1041,7 @@ export const BeachCard: React.FC<BeachCardProps> = ({
     });
     openNavigation(beach);
   };
+  const canNavigate = canOpenNavigation(beach);
 
   const rawAccessLabel = metadata?.access
     ? localizedAccessLabel(metadata.access.type, metadata.access.label, language)
@@ -1023,7 +1050,6 @@ export const BeachCard: React.FC<BeachCardProps> = ({
   const roughSeaWarning = warnings.find(warning => warning.type === 'rough_sea');
   const isProtectedToday = exposureLevel === 'protected' && canClaimWindProtection;
   const cautionWaterConditions = windBeaufort >= 5 || (typeof waveHeightM === 'number' && Number.isFinite(waveHeightM) && waveHeightM >= 0.8);
-  const seaLabel = roughSeaWarning ? waveWarningLabel(roughSeaWarning, waveHeightM, language, selectedDate) : (seaCalmClaimAllowed ? labels.calmWaters : labels.goodSea);
   const isFiveBeaufort = windBeaufort === 5;
   const isLessExposedToday = lessExposedToday ?? (isProtectedToday || isPartlyShelteredToday);
   const strongOpenBeachLabel = localizedCardCopy.exposedToWind;
@@ -1031,7 +1057,7 @@ export const BeachCard: React.FC<BeachCardProps> = ({
   const displayOpenBeachLabel = windBeaufort >= 4 || cautionWaterConditions
     ? displayStrongOpenBeachLabel
     : localizedCardCopy.moreOpenToWind;
-  const protectionLabel = isProtectedToday
+  const baseProtectionLabel = isProtectedToday
     ? labels.protected
     : strongWindContext && isLessExposedToday && isPartlyShelteredToday
       ? labels.partlyShelteredToday
@@ -1044,50 +1070,94 @@ export const BeachCard: React.FC<BeachCardProps> = ({
           ? labels.partlyShelteredToday
           : labels.windyExposed
         : labels.mildlyBreezy;
+  const protectionLabel = windSuitabilityText || baseProtectionLabel;
   const isLightWindConditionChip = windBeaufort < 4 && protectionLabel === labels.lightWind;
   const isExposedConditionChip = !isLightWindConditionChip && !isProtectedToday && (
     exposureLevel === 'exposed' ||
     protectionLabel === displayOpenBeachLabel ||
     protectionLabel === labels.windyExposed
   );
+  const forceHideWindChip = windExposureMode === 'none';
+  const simpleWindChipOnly = windExposureMode === 'simple';
+  // For the simplified chip we only surface clearly protected or clearly exposed beaches.
+  const windChipIsMeaningful = isProtectedToday || isExposedConditionChip;
   const hideDuplicateShelterChip = isFiveBeaufort && isLessExposedToday && isPartlyShelteredToday && todayScore !== undefined;
-  const hideMildWindChip = todayScore !== undefined && !strongWindContext && !isProtectedToday && !roughSeaWarning && windBeaufort < 4;
-  const hideConditionChip = hideDuplicateShelterChip || hideMildWindChip;
-  const protectionChipTone = isLightWindConditionChip
-    ? 'border-cyan-200/80 bg-cyan-50/70 text-cyan-700 dark:border-cyan-900/50 dark:bg-cyan-950/30 dark:text-cyan-300'
-    : isExposedConditionChip
-    ? 'border-rose-200/90 bg-rose-50/78 text-rose-700 dark:border-rose-900/50 dark:bg-rose-950/30 dark:text-rose-300'
-    : isProtectedToday || (strongWindContext && isLessExposedToday)
-      ? 'border-emerald-200/80 bg-emerald-50/72 text-emerald-700 dark:border-emerald-900/50 dark:bg-emerald-950/30 dark:text-emerald-300'
-      : roughSeaWarning
-      ? warningToneClass(roughSeaWarning)
-      : 'border-cyan-200/80 bg-cyan-50/70 text-cyan-700 dark:border-cyan-900/50 dark:bg-cyan-950/30 dark:text-cyan-300';
-  const hasNaturalShade = Boolean(metadata?.shade ?? amenities.naturalShade);
+  const hideMildWindChip = !windSuitabilityText && todayScore !== undefined && !strongWindContext && !isProtectedToday && !roughSeaWarning && windBeaufort < 4;
+  const hideLightWindProtectedChip = !windSuitabilityText && todayScore !== undefined && isProtectedToday && !strongWindContext && windBeaufort < 4;
+  const hideConditionChip = forceHideWindChip
+    || (simpleWindChipOnly && !windChipIsMeaningful)
+    || hideDuplicateShelterChip || hideMildWindChip || hideLightWindProtectedChip;
+  const showHeaderProtectedMarker = isProtectedToday && hideConditionChip && !hideLightWindProtectedChip;
+  const windSuitabilityChipTone: Record<WindSuitabilityColor, string> = {
+    green: 'border-emerald-200/80 bg-emerald-50/72 text-emerald-700 dark:border-emerald-900/50 dark:bg-emerald-950/30 dark:text-emerald-300',
+    yellow: 'border-yellow-200/90 bg-yellow-50/78 text-yellow-800 dark:border-yellow-900/50 dark:bg-yellow-950/30 dark:text-yellow-300',
+    orange: 'border-orange-200/90 bg-orange-50/78 text-orange-800 dark:border-orange-900/50 dark:bg-orange-950/30 dark:text-orange-300',
+    red: 'border-rose-200/90 bg-rose-50/78 text-rose-700 dark:border-rose-900/50 dark:bg-rose-950/30 dark:text-rose-300',
+  };
+  const windSuitabilityIcon = windSuitabilityColor === 'orange' || windSuitabilityColor === 'red'
+    ? 'caution'
+    : windSuitabilityColor === 'green'
+      ? 'shield'
+      : 'wind';
+  const protectionChipTone = windSuitabilityColor
+    ? windSuitabilityChipTone[windSuitabilityColor]
+    : isLightWindConditionChip
+      ? 'border-cyan-200/80 bg-cyan-50/70 text-cyan-700 dark:border-cyan-900/50 dark:bg-cyan-950/30 dark:text-cyan-300'
+      : isExposedConditionChip
+      ? 'border-rose-200/90 bg-rose-50/78 text-rose-700 dark:border-rose-900/50 dark:bg-rose-950/30 dark:text-rose-300'
+      : isProtectedToday || (strongWindContext && isLessExposedToday)
+        ? 'border-emerald-200/80 bg-emerald-50/72 text-emerald-700 dark:border-emerald-900/50 dark:bg-emerald-950/30 dark:text-emerald-300'
+        : roughSeaWarning
+        ? warningToneClass(roughSeaWarning)
+        : 'border-cyan-200/80 bg-cyan-50/70 text-cyan-700 dark:border-cyan-900/50 dark:bg-cyan-950/30 dark:text-cyan-300';
   const hasShallowWater = Boolean(metadata?.waterDepth?.type === 'shallow' || characteristics.shallowWaters);
   const beachTypeFeatureIcons: Record<BeachType, React.ReactNode> = {
-    sandy: <Sparkles className="h-3.5 w-3.5 shrink-0" />,
+    sandy: <SandDotsIcon className="h-3.5 w-3.5 shrink-0" />,
     pebbles: <CircleDot className="h-3.5 w-3.5 shrink-0" />,
-    'sandy-pebbles': <Layers className="h-3.5 w-3.5 shrink-0" />,
+    'sandy-pebbles': <SandPebblesIcon className="h-3.5 w-3.5 shrink-0" />,
     rocky: <Mountain className="h-3.5 w-3.5 shrink-0" />,
+    unknown: <Info className="h-3.5 w-3.5 shrink-0" />,
   };
-  const amenityFeatureChips = getAmenityChips(beach, language)
+  const amenityChipLookup = new Map(
+    getAmenityChips(beach, language)
     .filter(chip => chip.key !== 'unknownFacilities')
-    .slice(0, 3)
-    .map(chip => ({
-    key: `amenity-${chip.key}`,
-    label: compactAmenityLabel(chip, language),
-    icon: amenityChipIcon(chip),
-  }));
-  const featureChips = [
-    { key: 'surface', label: t.filterOptions[beachType], icon: beachTypeFeatureIcons[beachType] },
+      .map(chip => [chip.key, chip] as const)
+  );
+  const amenityFeatureChip = (key: AmenityChip['key']): CompactFeatureChip | null => {
+    const chip = amenityChipLookup.get(key);
+    if (!chip) return null;
+
+    return {
+      key: `amenity-${chip.key}`,
+      label: compactAmenityLabel(chip, language),
+      icon: amenityChipIcon(chip),
+    };
+  };
+  const stableFeatureSlots: Array<CompactFeatureChip | null> = [
+    beachType !== 'unknown' ? { key: 'surface', label: t.filterOptions[beachType], icon: beachTypeFeatureIcons[beachType] } : null,
     hasShallowWater ? { key: 'shallow', label: cautionWaterConditions ? labels.shallowWatersCaution : labels.shallowWaters, icon: <Droplets className="h-3.5 w-3.5 shrink-0" /> } : null,
-    ...amenityFeatureChips,
-    beach.environment?.familyFriendly ? { key: 'family', label: labels.familyFriendly, icon: <Users className="h-3.5 w-3.5 shrink-0" /> } : null,
-    hasNaturalShade ? { key: 'shade', label: labels.naturalShade, icon: <Trees className="h-3.5 w-3.5 shrink-0" /> } : null,
-  ].filter(Boolean).slice(0, 4) as Array<{ key: string; label: string; icon: React.ReactNode }>;
+    amenityFeatureChip('sunbeds'),
+    amenityFeatureChip('foodNearby') ?? amenityFeatureChip('cafeNearby'),
+    amenityFeatureChip('parking'),
+    amenityFeatureChip('beachBar'),
+  ];
+  const featureChips = stableFeatureSlots.filter(Boolean) as CompactFeatureChip[];
   const compactChipBase = `inline-flex ${isCompact ? 'min-h-8 lg:min-h-7' : 'min-h-8'} w-full min-w-0 items-center justify-center gap-1.5 overflow-hidden rounded-full border px-2 py-1 text-xs font-semibold leading-tight`;
   const featureChipBase = `inline-flex ${isCompact ? 'min-h-8 lg:min-h-7' : 'min-h-8'} w-full min-w-0 items-center justify-center gap-1.5 overflow-hidden rounded-full border border-sky-100/70 bg-white/68 px-2 py-1 text-xs font-semibold leading-tight text-slate-600 dark:border-slate-800 dark:bg-slate-900 dark:text-slate-300`;
-
+  const mobilePrimaryTrait = featureChips[0];
+  const showMobileProtectionChip = forceHideWindChip
+    ? false
+    : simpleWindChipOnly
+      ? windChipIsMeaningful
+      : Boolean(windSuitabilityText) || !isProtectedToday;
+  const hasMobileDecisionBody = Boolean(topPickTimeLabel);
+  const mobileWindLabel = `${windBeaufort} Bft`;
+  const mobileWaveLabel = typeof waveHeightM === 'number' && Number.isFinite(waveHeightM)
+    ? `${waveHeightM.toFixed(1)} m`
+    : undefined;
+  const mobileTemperatureLabel = typeof temperature === 'number' && Number.isFinite(temperature)
+    ? `${Math.round(temperature)}°`
+    : undefined;
   if (variant === 'decision' || variant === 'default') {
     return (
       <motion.div
@@ -1096,7 +1166,92 @@ export const BeachCard: React.FC<BeachCardProps> = ({
         transition={{ duration: 0.25 }}
         className="group relative beach-card flex h-full cursor-pointer flex-col overflow-hidden active:scale-[0.995]"
       >
-        <div className={`relative aspect-[16/9] ${isCompact ? 'min-h-36 max-h-44 lg:min-h-28 lg:max-h-32' : 'min-h-36 max-h-44'} overflow-hidden bg-sky-50`}>
+        <div className="border-b border-sky-100/70 bg-white/90 px-3.5 py-3 sm:hidden dark:border-slate-800 dark:bg-slate-900/90">
+          <div className="flex min-w-0 items-start gap-2.5">
+            {recommendationRank !== undefined && (
+              <span className="grid h-8 min-w-8 place-items-center rounded-full bg-sky-50 text-xs font-extrabold text-cyan-800 ring-1 ring-sky-100">
+                {recommendationLabel ?? recommendationRank}
+              </span>
+            )}
+
+            <div className="min-w-0 flex-1">
+              <h3 className="line-clamp-2 font-heading text-lg font-extrabold leading-[1.08] text-slate-950 dark:text-white">
+                {beachDisplayName}
+              </h3>
+              {(showIslandName || distance !== undefined || showHeaderProtectedMarker) && (
+                <div className="flex min-w-0 flex-wrap items-center gap-x-1.5 gap-y-0.5 text-xs font-semibold text-slate-500 dark:text-slate-400">
+                  {(showIslandName || distance !== undefined) && <MapPin className="h-3.5 w-3.5 shrink-0" />}
+                  {showIslandName && <span className="min-w-0 flex-1 truncate">{islandName}</span>}
+                  {distance !== undefined && <span className="shrink-0 text-primary">{distance.toFixed(1)} km</span>}
+                  {showHeaderProtectedMarker && <ProtectedBeachMarker language={language} selectedDate={selectedDate} />}
+                </div>
+              )}
+              {hasBlueFlag2026 && (
+                <div className="mt-1 flex min-w-0 items-center gap-1.5 text-[11px] font-bold leading-tight text-cyan-800/90">
+                  <Flag className="h-3.5 w-3.5 shrink-0" />
+                  <span className="min-w-0 truncate">
+                    {localizedCardCopy.blueFlag}
+                  </span>
+                </div>
+              )}
+            </div>
+
+            <button
+              onClick={handleFavoriteClick}
+              className="grid h-11 w-11 shrink-0 place-items-center rounded-xl bg-white text-slate-500 shadow-sm ring-1 ring-slate-200/80 transition-colors hover:bg-white/92 hover:text-rose-500 cursor-pointer dark:bg-slate-800 dark:ring-slate-700"
+              aria-label={isFavorite ? unfavoriteLabel : favoriteLabel}
+            >
+              <Heart className={`h-4 w-4 transition-colors ${isFavorite ? 'fill-red-500 text-red-500' : ''}`} />
+            </button>
+          </div>
+
+          <div className="mt-2.5 space-y-1.5">
+            {showMobileProtectionChip ? (
+              <span className={`inline-flex min-h-9 w-full min-w-0 items-center justify-start gap-1.5 overflow-hidden rounded-xl border px-2.5 py-1.5 text-xs font-semibold leading-tight ${protectionChipTone}`}>
+                {windSuitabilityIcon === 'wind' || (!windSuitabilityColor && isLightWindConditionChip) ? (
+                  <Wind className="h-3.5 w-3.5 shrink-0" />
+                ) : windSuitabilityIcon === 'caution' || (!windSuitabilityColor && isExposedConditionChip) ? (
+                  <AlertTriangle className="h-3.5 w-3.5 shrink-0" />
+                ) : (
+                  <Shield className="h-3.5 w-3.5 shrink-0" />
+                )}
+                <span className="min-w-0 line-clamp-2 leading-tight">{protectionLabel}</span>
+              </span>
+            ) : mobilePrimaryTrait ? (
+              <span className="inline-flex min-h-9 w-full min-w-0 items-center justify-start gap-1.5 overflow-hidden rounded-xl border border-cyan-100 bg-cyan-50/70 px-2.5 py-1.5 text-xs font-semibold leading-tight text-cyan-800">
+                {mobilePrimaryTrait.icon}
+                <span className="min-w-0 line-clamp-2 leading-tight">{mobilePrimaryTrait.label}</span>
+              </span>
+            ) : (
+              <span className="inline-flex min-h-9 w-full min-w-0 items-center justify-start gap-1.5 overflow-hidden rounded-xl border border-slate-200/70 bg-slate-50/70 px-2.5 py-1.5 text-xs font-semibold leading-tight text-slate-600">
+                <Info className="h-3.5 w-3.5 shrink-0" />
+                <span className="min-w-0 line-clamp-2 leading-tight">{localizedCardCopy.localExposureCheck}</span>
+              </span>
+            )}
+
+            <div className="flex min-w-0 items-center gap-1.5 overflow-hidden rounded-xl border border-slate-100 bg-slate-50/60 px-2.5 py-1.5 text-[11px] font-bold leading-none text-slate-500 dark:border-slate-800 dark:bg-slate-900 dark:text-slate-300">
+              <span className="inline-flex min-w-0 shrink-0 items-center gap-1">
+                <Wind className="h-3.5 w-3.5 shrink-0" aria-hidden="true" />
+                <span>{mobileWindLabel}</span>
+              </span>
+              {mobileWaveLabel && (
+                <span className="inline-flex min-w-0 shrink-0 items-center gap-1">
+                  <Waves className="h-3.5 w-3.5 shrink-0" aria-hidden="true" />
+                  <span>{mobileWaveLabel}</span>
+                </span>
+              )}
+              {mobileTemperatureLabel && (
+                <span className="inline-flex min-w-0 shrink-0 items-center gap-1">
+                  <Droplets className="h-3.5 w-3.5 shrink-0" aria-hidden="true" />
+                  <span>{mobileTemperatureLabel}</span>
+                </span>
+              )}
+              <span className="min-w-0 truncate text-right font-semibold text-slate-400">{accessLabel}</span>
+            </div>
+          </div>
+        </div>
+
+        <div className={`relative aspect-[16/9] ${cardPhoto ? 'min-h-32 max-h-40 sm:min-h-36 sm:max-h-44' : 'min-h-28 max-h-32 sm:min-h-36 sm:max-h-44'} ${isCompact ? 'lg:min-h-28 lg:max-h-32' : ''} overflow-hidden bg-sky-50`}>
           {cardPhoto ? (
             <img
               src={cardPhoto}
@@ -1115,7 +1270,7 @@ export const BeachCard: React.FC<BeachCardProps> = ({
           )}
           {cardPhoto && <div className="absolute inset-0 bg-gradient-to-t from-slate-950/24 via-transparent to-white/0" />}
 
-          <div className="absolute left-3 top-3 z-20 flex max-w-[calc(100%-4.75rem)] flex-wrap items-center gap-2">
+          <div className="absolute left-3 top-3 z-20 hidden max-w-[calc(100%-4.75rem)] flex-wrap items-center gap-2 sm:flex">
             {recommendationRank !== undefined && (
               <span className="inline-flex min-h-8 items-center rounded-full bg-white/82 px-2.5 py-1 text-xs font-bold text-slate-700 shadow-sm ring-1 ring-black/5 backdrop-blur-md">
                 {recommendationLabel ?? recommendationRank}
@@ -1126,24 +1281,24 @@ export const BeachCard: React.FC<BeachCardProps> = ({
 
           <button
             onClick={handleFavoriteClick}
-            className="absolute right-3 top-3 grid h-11 w-11 place-items-center rounded-xl bg-white/78 text-slate-500 shadow-sm backdrop-blur-md transition-colors hover:bg-white/92 hover:text-rose-500 cursor-pointer"
+            className="absolute right-3 top-3 hidden h-11 w-11 place-items-center rounded-xl bg-white/78 text-slate-500 shadow-sm backdrop-blur-md transition-colors hover:bg-white/92 hover:text-rose-500 cursor-pointer sm:grid"
             aria-label={isFavorite ? unfavoriteLabel : favoriteLabel}
           >
             <Heart className={`h-4 w-4 transition-colors ${isFavorite ? 'fill-red-500 text-red-500' : ''}`} />
           </button>
         </div>
 
-        <div className={`flex flex-1 flex-col ${isCompact ? 'gap-3 p-4 sm:p-[1.05rem] lg:gap-2 lg:p-3' : 'gap-3 p-4 sm:p-[1.05rem]'}`}>
-          <div className={isCompact ? 'space-y-1 lg:space-y-0.5' : 'space-y-1'}>
+        <div className={`${hasMobileDecisionBody ? 'flex' : 'hidden sm:flex'} flex-1 flex-col ${isCompact ? 'gap-3 p-3 sm:p-[1.05rem] lg:gap-2 lg:p-3' : 'gap-3 p-3 sm:p-[1.05rem]'}`}>
+          <div className={`${isCompact ? 'space-y-1 lg:space-y-0.5' : 'space-y-1'} hidden sm:block`}>
             <h3 className="line-clamp-1 font-heading text-lg font-extrabold leading-[1.12] text-slate-950 transition-colors group-hover:text-primary dark:text-white">
               {beachDisplayName}
             </h3>
-            {(showIslandName || distance !== undefined || isProtectedToday) && (
+            {(showIslandName || distance !== undefined || showHeaderProtectedMarker) && (
               <div className="flex min-w-0 flex-wrap items-center gap-x-1.5 gap-y-0.5 text-xs font-semibold text-slate-500 dark:text-slate-400">
                 {(showIslandName || distance !== undefined) && <MapPin className="h-3.5 w-3.5 shrink-0" />}
                 {showIslandName && <span className="min-w-0 flex-1 truncate">{islandName}</span>}
                 {distance !== undefined && <span className="shrink-0 text-primary">{distance.toFixed(1)} km</span>}
-                {isProtectedToday && <ProtectedBeachMarker language={language} selectedDate={selectedDate} />}
+                {showHeaderProtectedMarker && <ProtectedBeachMarker language={language} selectedDate={selectedDate} />}
               </div>
             )}
           </div>
@@ -1189,34 +1344,31 @@ export const BeachCard: React.FC<BeachCardProps> = ({
             </div>
           )}
 
-          <div className="grid grid-cols-2 gap-1.5">
+          <div className="hidden grid-cols-2 gap-1.5 sm:grid">
             <span className={`${compactChipBase} ${hideConditionChip ? 'col-span-2' : ''} border-slate-200/70 bg-white/58 text-slate-600 dark:border-slate-800 dark:bg-slate-900 dark:text-slate-200`}>
               <Footprints className="h-3.5 w-3.5 shrink-0" />
               <span className="truncate whitespace-nowrap">{accessLabel}</span>
             </span>
             {!hideConditionChip && (
               <span className={`${compactChipBase} ${protectionChipTone}`}>
-                {isProtectedToday ? (
-                  <Waves className="h-3.5 w-3.5 shrink-0" />
-                ) : isLightWindConditionChip ? (
+                {windSuitabilityIcon === 'shield' || (!windSuitabilityColor && isProtectedToday) ? (
+                  <Shield className="h-3.5 w-3.5 shrink-0" />
+                ) : windSuitabilityIcon === 'wind' || (!windSuitabilityColor && isLightWindConditionChip) ? (
                   <Wind className="h-3.5 w-3.5 shrink-0" />
-                ) : isExposedConditionChip ? (
+                ) : windSuitabilityIcon === 'caution' || (!windSuitabilityColor && isExposedConditionChip) ? (
                   <AlertTriangle className="h-3.5 w-3.5 shrink-0" />
                 ) : (
                   <Shield className="h-3.5 w-3.5 shrink-0" />
                 )}
-                <span className="truncate whitespace-nowrap">{isProtectedToday ? seaLabel : protectionLabel}</span>
+                <span className="min-w-0 break-normal text-center leading-tight">{protectionLabel}</span>
               </span>
             )}
           </div>
 
           {featureChips.length > 0 && (
-            <div className={`grid ${isCompact ? 'min-h-[4.375rem] lg:min-h-[3.75rem]' : 'min-h-[4.375rem]'} grid-cols-2 content-start gap-1.5`}>
+            <div className={`hidden ${isCompact ? 'min-h-[4.375rem] lg:min-h-[3.75rem]' : 'min-h-[4.375rem]'} grid-cols-2 content-start gap-1.5 sm:grid`}>
               {featureChips.map(chip => (
-                <span
-                  key={chip.key}
-                  className={`${featureChipBase} ${featureChips.length % 2 === 1 && chip.key === featureChips[featureChips.length - 1].key ? 'col-span-2' : ''}`}
-                >
+                <span key={chip.key} className={featureChipBase}>
                   {chip.icon}
                   <span className="min-w-0 text-center leading-tight">{chip.label}</span>
                 </span>
@@ -1226,7 +1378,7 @@ export const BeachCard: React.FC<BeachCardProps> = ({
 
         </div>
 
-        <div className={`mt-auto flex items-center gap-2 ${isCompact ? 'px-4 pb-4 lg:px-3 lg:pb-3' : 'px-4 pb-4'}`}>
+        <div className={`mt-auto flex items-center gap-2 border-t border-sky-50 bg-white/74 pt-3 ${isCompact ? 'px-3.5 pb-3.5 lg:px-3 lg:pb-3' : 'px-3.5 pb-3.5 sm:px-4 sm:pb-4'} dark:border-slate-800 dark:bg-slate-900/60`}>
           <button
             onClick={(e) => { e.stopPropagation(); onClick?.(); }}
             className={`inline-flex ${isCompact ? 'min-h-11 lg:min-h-10' : 'min-h-11'} flex-1 items-center justify-center gap-2 rounded-xl bg-cyan-600 px-4 py-2 text-sm font-heading font-bold text-white shadow-sm shadow-cyan-600/20 transition-colors hover:bg-cyan-700 focus:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 cursor-pointer`}
@@ -1234,14 +1386,16 @@ export const BeachCard: React.FC<BeachCardProps> = ({
             <Info className="h-4 w-4" />
             <span>{t.learnMore}</span>
           </button>
-          <button
-            onClick={handleNavigationClick}
-            className={`grid ${isCompact ? 'h-11 w-11 lg:h-10 lg:w-10' : 'h-11 w-11'} place-items-center rounded-xl bg-sky-50 text-primary transition-colors hover:bg-sky-100 focus:outline-none focus-visible:ring-2 focus-visible:ring-primary dark:bg-sky-900/20 dark:hover:bg-sky-900/40 cursor-pointer`}
-            title={t.navigate}
-            aria-label={t.navigateToLabel(beachDisplayName)}
-          >
-            <Navigation className="h-4 w-4" />
-          </button>
+          {canNavigate && (
+            <button
+              onClick={handleNavigationClick}
+              className={`grid ${isCompact ? 'h-11 w-11 lg:h-10 lg:w-10' : 'h-11 w-11'} place-items-center rounded-xl bg-sky-50 text-primary transition-colors hover:bg-sky-100 focus:outline-none focus-visible:ring-2 focus-visible:ring-primary dark:bg-sky-900/20 dark:hover:bg-sky-900/40 cursor-pointer`}
+              title={t.navigate}
+              aria-label={t.navigateToLabel(beachDisplayName)}
+            >
+              <Navigation className="h-4 w-4" />
+            </button>
+          )}
           {navigator.share && (
             <button
               onClick={handleShare}
@@ -1442,14 +1596,16 @@ export const BeachCard: React.FC<BeachCardProps> = ({
           <span className="text-xs">{t.learnMore}</span>
         </button>
 
-        <button
-          onClick={handleNavigationClick}
-          className="p-3 rounded-xl bg-sky-50 dark:bg-sky-900/20 text-primary hover:bg-sky-100 dark:hover:bg-sky-900/40 transition-colors cursor-pointer"
-          title={t.navigate}
-          aria-label={t.navigateToLabel(beachDisplayName)}
-        >
-          <Navigation className="w-4 h-4" />
-        </button>
+        {canNavigate && (
+          <button
+            onClick={handleNavigationClick}
+            className="p-3 rounded-xl bg-sky-50 dark:bg-sky-900/20 text-primary hover:bg-sky-100 dark:hover:bg-sky-900/40 transition-colors cursor-pointer"
+            title={t.navigate}
+            aria-label={t.navigateToLabel(beachDisplayName)}
+          >
+            <Navigation className="w-4 h-4" />
+          </button>
+        )}
 
         {navigator.share && (
           <button

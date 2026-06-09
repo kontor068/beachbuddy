@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "generatedAt": "2026-06-02T21:59:17.043Z",
+  "generatedAt": "2026-06-06T10:33:41.700Z",
   "region": {
     "id": "south-aegean-iraklia",
     "name": "Iraklia"
@@ -10,8 +10,8 @@
   },
   "settings": {
     "maxFetchKm": 25,
-    "stepKm": 1,
-    "nearshoreLandGraceKm": 1,
+    "stepKm": 0.5,
+    "nearshoreLandGraceKm": 0.3,
     "nearshoreWaterSearchKm": 12,
     "nearshoreWaterSearchStepKm": 0.5,
     "fanAnglesDeg": [
@@ -30,7 +30,9 @@
       "SW",
       "W",
       "NW"
-    ]
+    ],
+    "maskSource": "Natural Earth 1:10m land polygons",
+    "maskConfidence": "medium"
   },
   "summary": {
     "beachCount": 2,
@@ -38,18 +40,18 @@
     "missingCoordinates": 0,
     "sectors": {
       "N": {
-        "protected": 0,
-        "partial": 2,
-        "exposed": 0
+        "protected": 1,
+        "partial": 0,
+        "exposed": 1
       },
       "NE": {
         "protected": 0,
-        "partial": 2,
-        "exposed": 0
+        "partial": 1,
+        "exposed": 1
       },
       "E": {
-        "protected": 0,
-        "partial": 1,
+        "protected": 1,
+        "partial": 0,
         "exposed": 1
       },
       "SE": {
@@ -63,8 +65,8 @@
         "exposed": 0
       },
       "SW": {
-        "protected": 1,
-        "partial": 1,
+        "protected": 2,
+        "partial": 0,
         "exposed": 0
       },
       "W": {
@@ -73,8 +75,8 @@
         "exposed": 1
       },
       "NW": {
-        "protected": 0,
-        "partial": 1,
+        "protected": 1,
+        "partial": 0,
         "exposed": 1
       }
     }
@@ -83,56 +85,73 @@
     "2219": {
       "beachId": 2219,
       "name": {
-        "en": "Voreini Spilia",
+        "en": "Vorini Spilia",
         "gr": "Βορεινή Σπηλιά"
       },
       "coordinates": {
         "lat": 36.85334,
         "lon": 25.45197
       },
+      "facingDeg": 324.8,
       "sectors": {
         "N": {
-          "level": "partial",
-          "fetchKm": 12.2,
-          "blockedRayRatio": 0.8
+          "level": "exposed",
+          "fetchKm": 12.4,
+          "blockedRayRatio": 0.8,
+          "onshore": 0.817,
+          "intensity": 61.8
         },
         "NE": {
           "level": "partial",
           "fetchKm": 13.8,
-          "blockedRayRatio": 0.6
+          "blockedRayRatio": 0.6,
+          "onshore": 0.17,
+          "intensity": 44.5
         },
         "E": {
-          "level": "partial",
-          "fetchKm": 5.8,
-          "blockedRayRatio": 0.8
+          "level": "protected",
+          "fetchKm": 5.1,
+          "blockedRayRatio": 0.8,
+          "onshore": -0.576,
+          "intensity": 13.4
         },
         "SE": {
           "level": "protected",
-          "fetchKm": 1,
-          "blockedRayRatio": 1
+          "fetchKm": 0,
+          "blockedRayRatio": 1,
+          "onshore": -0.985,
+          "intensity": 0.4
         },
         "S": {
           "level": "protected",
-          "fetchKm": 1,
-          "blockedRayRatio": 1
+          "fetchKm": 0,
+          "blockedRayRatio": 1,
+          "onshore": -0.817,
+          "intensity": 5.5
         },
         "SW": {
-          "level": "partial",
-          "fetchKm": 13.4,
-          "blockedRayRatio": 0.6
+          "level": "protected",
+          "fetchKm": 13,
+          "blockedRayRatio": 0.6,
+          "onshore": -0.17,
+          "intensity": 31.5
         },
         "W": {
           "level": "exposed",
           "fetchKm": 25,
-          "blockedRayRatio": 0
+          "blockedRayRatio": 0,
+          "onshore": 0.576,
+          "intensity": 78.8
         },
         "NW": {
           "level": "exposed",
-          "fetchKm": 22.4,
-          "blockedRayRatio": 0.2
+          "fetchKm": 22.5,
+          "blockedRayRatio": 0.2,
+          "onshore": 0.985,
+          "intensity": 91.3
         }
       },
-      "confidence": "low"
+      "confidence": "medium"
     },
     "2220": {
       "beachId": 2220,
@@ -144,49 +163,66 @@
         "lat": 36.85142,
         "lon": 25.47357
       },
+      "facingDeg": 94.5,
       "sectors": {
         "N": {
-          "level": "partial",
-          "fetchKm": 15,
-          "blockedRayRatio": 0.6
+          "level": "protected",
+          "fetchKm": 7.1,
+          "blockedRayRatio": 0.8,
+          "onshore": -0.078,
+          "intensity": 29.8
         },
         "NE": {
-          "level": "partial",
-          "fetchKm": 19.4,
-          "blockedRayRatio": 0.4
+          "level": "exposed",
+          "fetchKm": 19.6,
+          "blockedRayRatio": 0.4,
+          "onshore": 0.649,
+          "intensity": 69.3
         },
         "E": {
           "level": "exposed",
-          "fetchKm": 22.4,
-          "blockedRayRatio": 0.2
+          "fetchKm": 22.5,
+          "blockedRayRatio": 0.2,
+          "onshore": 0.997,
+          "intensity": 91.9
         },
         "SE": {
           "level": "exposed",
           "fetchKm": 25,
-          "blockedRayRatio": 0
+          "blockedRayRatio": 0,
+          "onshore": 0.76,
+          "intensity": 88
         },
         "S": {
           "level": "partial",
-          "fetchKm": 15.4,
-          "blockedRayRatio": 0.4
+          "fetchKm": 15,
+          "blockedRayRatio": 0.4,
+          "onshore": 0.078,
+          "intensity": 45.3
         },
         "SW": {
           "level": "protected",
-          "fetchKm": 1,
-          "blockedRayRatio": 1
+          "fetchKm": 0,
+          "blockedRayRatio": 1,
+          "onshore": -0.649,
+          "intensity": 10.5
         },
         "W": {
           "level": "protected",
-          "fetchKm": 1,
-          "blockedRayRatio": 1
+          "fetchKm": 0,
+          "blockedRayRatio": 1,
+          "onshore": -0.997,
+          "intensity": 0.1
         },
         "NW": {
-          "level": "partial",
-          "fetchKm": 11.8,
-          "blockedRayRatio": 0.6
+          "level": "protected",
+          "fetchKm": 0,
+          "blockedRayRatio": 1,
+          "onshore": -0.76,
+          "intensity": 7.2
         }
       },
-      "confidence": "low"
+      "confidence": "medium"
     }
   }
 }

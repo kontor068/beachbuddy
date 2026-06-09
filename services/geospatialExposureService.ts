@@ -7,10 +7,13 @@ type RawGeospatialSectorExposure = {
   level: ExposureLevel;
   fetchKm: number;
   blockedRayRatio: number;
+  onshore?: number;
+  intensity?: number;
 };
 
 type RawGeospatialExposureProfile = {
   beachId: number;
+  facingDeg?: number | null;
   sectors: Record<WindSector, RawGeospatialSectorExposure>;
   confidence: DataConfidence;
 };
@@ -28,7 +31,13 @@ const isUsableGeneratedProfile = (profile: RawGeospatialExposureProfile): boolea
   const levels = windSectors.map(sector => profile.sectors?.[sector]?.level);
   if (levels.some(level => !level)) return false;
 
-  return !levels.every(level => level === 'protected');
+  // All-protected used to signal a degenerate (land-locked) sample. With the
+  // geometry model an enclosed bay is legitimately protected from every sector,
+  // so only reject all-protected when we also failed to find a facing direction.
+  const allProtected = levels.every(level => level === 'protected');
+  if (allProtected && (profile.facingDeg === null || profile.facingDeg === undefined)) return false;
+
+  return true;
 };
 
 const normalizeProfiles = (
@@ -42,9 +51,10 @@ const normalizeProfiles = (
 
     currentLookup[profile.beachId] = {
       beachId: profile.beachId,
+      facingDeg: profile.facingDeg ?? null,
       sectors: profile.sectors,
       confidence: profile.confidence,
-      source: 'natural-earth-baseline',
+      source: profile.confidence === 'high' ? 'high-res-coastline' : 'natural-earth-baseline',
     };
     return currentLookup;
   }, {});
