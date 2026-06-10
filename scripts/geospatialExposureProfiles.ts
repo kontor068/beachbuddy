@@ -48,11 +48,14 @@ type GeoJsonFeatureCollection = {
   features: GeoJsonFeature[];
 };
 
-type Ring = GeoPoint[];
+// Rings are stored as packed [lon0, lat0, lon1, lat1, ...] arrays: ~10x less
+// memory than per-vertex objects and cache-friendly for point-in-polygon, which
+// is what makes a multi-million-vertex OSM coastline mask tractable.
+type FlatRing = Float64Array;
 
 type IndexedPolygon = {
-  outer: Ring;
-  holes: Ring[];
+  outer: FlatRing;
+  holes: FlatRing[];
   bbox: {
     minLat: number;
     maxLat: number;
@@ -116,8 +119,16 @@ const fanAnglesDeg = [-30, -15, 0, 15, 30];
 // When a higher-resolution coastline is supplied via --land-geojson the fetch
 // rays can be sampled finer and trust nearby land, because the geometry no
 // longer suffers from the ~hundreds-of-metres generalisation of Natural Earth.
+// The water-origin search must also tighten: with a precise mask most beach
+// pins fall on the sand (land), and a 0.5 km first jump can cross to the wrong
+// side of a headland and flip the derived facing direction.
 const highResStepKm = 0.2;
 const highResNearshoreLandGraceKm = 0.1;
+const highResNearshoreWaterSearchStepKm = 0.1;
+// Candidate origins must connect to real open water; enclosed inland water
+// (lagoons behind a beach, carved as holes in high-res land polygons) would
+// otherwise capture the origin and report a fully-blocked profile.
+const nearshoreMinOpenWaterKm = 0.5;
 
 const parseArgValue = (name: string): string | undefined => {
   const index = process.argv.indexOf(name);
@@ -167,19 +178,32 @@ const intersectsGreeceBounds = (bbox: IndexedPolygon['bbox']): boolean => (
   bbox.minLon <= greeceBounds.maxLon
 );
 
-const ringFromGeoJson = (ring: GeoJsonRing): Ring => ring.map(([lon, lat]) => ({ lat, lon }));
+const ringFromGeoJson = (ring: GeoJsonRing): FlatRing => {
+  const flat = new Float64Array(ring.length * 2);
+  for (let i = 0; i < ring.length; i += 1) {
+    flat[i * 2] = ring[i][0];
+    flat[i * 2 + 1] = ring[i][1];
+  }
+  return flat;
+};
 
-const getRingBbox = (ring: Ring): IndexedPolygon['bbox'] => ring.reduce((bbox, point) => ({
-  minLat: Math.min(bbox.minLat, point.lat),
-  maxLat: Math.max(bbox.maxLat, point.lat),
-  minLon: Math.min(bbox.minLon, point.lon),
-  maxLon: Math.max(bbox.maxLon, point.lon),
-}), {
-  minLat: Number.POSITIVE_INFINITY,
-  maxLat: Number.NEGATIVE_INFINITY,
-  minLon: Number.POSITIVE_INFINITY,
-  maxLon: Number.NEGATIVE_INFINITY,
-});
+const getRingBbox = (ring: FlatRing): IndexedPolygon['bbox'] => {
+  const bbox = {
+    minLat: Number.POSITIVE_INFINITY,
+    maxLat: Number.NEGATIVE_INFINITY,
+    minLon: Number.POSITIVE_INFINITY,
+    maxLon: Number.NEGATIVE_INFINITY,
+  };
+  for (let i = 0; i < ring.length; i += 2) {
+    const lon = ring[i];
+    const lat = ring[i + 1];
+    if (lat < bbox.minLat) bbox.minLat = lat;
+    if (lat > bbox.maxLat) bbox.maxLat = lat;
+    if (lon < bbox.minLon) bbox.minLon = lon;
+    if (lon > bbox.maxLon) bbox.maxLon = lon;
+  }
+  return bbox;
+};
 
 const indexPolygon = (polygon: GeoJsonPolygon): IndexedPolygon | undefined => {
   const [outerRing, ...holeRings] = polygon;
@@ -217,16 +241,17 @@ const loadLandPolygons = (geoJsonPath: string): IndexedPolygon[] => {
   return polygons;
 };
 
-const pointInRing = (point: GeoPoint, ring: Ring): boolean => {
+const pointInRing = (point: GeoPoint, ring: FlatRing): boolean => {
   let inside = false;
   const x = point.lon;
   const y = point.lat;
+  const vertexCount = ring.length / 2;
 
-  for (let i = 0, j = ring.length - 1; i < ring.length; j = i++) {
-    const xi = ring[i].lon;
-    const yi = ring[i].lat;
-    const xj = ring[j].lon;
-    const yj = ring[j].lat;
+  for (let i = 0, j = vertexCount - 1; i < vertexCount; j = i++) {
+    const xi = ring[i * 2];
+    const yi = ring[i * 2 + 1];
+    const xj = ring[j * 2];
+    const yj = ring[j * 2 + 1];
     const intersects = ((yi > y) !== (yj > y)) &&
       (x < ((xj - xi) * (y - yi)) / ((yj - yi) || Number.EPSILON) + xi);
 
@@ -236,27 +261,85 @@ const pointInRing = (point: GeoPoint, ring: Ring): boolean => {
   return inside;
 };
 
+const pointInPolygon = (point: GeoPoint, polygon: IndexedPolygon): boolean => {
+  if (
+    point.lat < polygon.bbox.minLat ||
+    point.lat > polygon.bbox.maxLat ||
+    point.lon < polygon.bbox.minLon ||
+    point.lon > polygon.bbox.maxLon
+  ) {
+    return false;
+  }
+
+  if (!pointInRing(point, polygon.outer)) return false;
+  return !polygon.holes.some(hole => pointInRing(point, hole));
+};
+
+// Sparse grid over the Greece bounds mapping cell -> polygons whose bbox
+// touches it, so each isLand call tests a handful of candidate polygons
+// instead of scanning the whole mask. With a split OSM coastline (thousands
+// of small polygons) this is the difference between minutes and hours.
+const GRID_CELL_DEG = 0.05;
+
+type PolygonGridIndex = {
+  cols: number;
+  rows: number;
+  cells: Map<number, number[]>;
+};
+
+const gridCol = (lon: number): number => Math.floor((lon - greeceBounds.minLon) / GRID_CELL_DEG);
+const gridRow = (lat: number): number => Math.floor((lat - greeceBounds.minLat) / GRID_CELL_DEG);
+
+const buildPolygonGridIndex = (polygons: IndexedPolygon[]): PolygonGridIndex => {
+  const cols = Math.ceil((greeceBounds.maxLon - greeceBounds.minLon) / GRID_CELL_DEG);
+  const rows = Math.ceil((greeceBounds.maxLat - greeceBounds.minLat) / GRID_CELL_DEG);
+  const cells = new Map<number, number[]>();
+
+  polygons.forEach((polygon, polygonIndex) => {
+    const minCol = Math.max(0, gridCol(polygon.bbox.minLon));
+    const maxCol = Math.min(cols - 1, gridCol(polygon.bbox.maxLon));
+    const minRow = Math.max(0, gridRow(polygon.bbox.minLat));
+    const maxRow = Math.min(rows - 1, gridRow(polygon.bbox.maxLat));
+
+    for (let row = minRow; row <= maxRow; row += 1) {
+      for (let col = minCol; col <= maxCol; col += 1) {
+        const key = row * cols + col;
+        const bucket = cells.get(key);
+        if (bucket) bucket.push(polygonIndex);
+        else cells.set(key, [polygonIndex]);
+      }
+    }
+  });
+
+  return { cols, rows, cells };
+};
+
 const createLandMask = (
   polygons: IndexedPolygon[],
   source: string,
   confidence: 'low' | 'medium' | 'high'
-): LandMask => ({
-  source,
-  confidence,
-  isLand: point => polygons.some(polygon => {
-    if (
-      point.lat < polygon.bbox.minLat ||
-      point.lat > polygon.bbox.maxLat ||
-      point.lon < polygon.bbox.minLon ||
-      point.lon > polygon.bbox.maxLon
-    ) {
-      return false;
-    }
+): LandMask => {
+  const grid = buildPolygonGridIndex(polygons);
 
-    if (!pointInRing(point, polygon.outer)) return false;
-    return !polygon.holes.some(hole => pointInRing(point, hole));
-  }),
-});
+  return {
+    source,
+    confidence,
+    isLand: point => {
+      const col = gridCol(point.lon);
+      const row = gridRow(point.lat);
+
+      // Sample points outside the indexed Greece bounds keep the exact legacy
+      // behaviour (full scan). In practice every ray stays well inside.
+      if (col < 0 || col >= grid.cols || row < 0 || row >= grid.rows) {
+        return polygons.some(polygon => pointInPolygon(point, polygon));
+      }
+
+      const candidates = grid.cells.get(row * grid.cols + col);
+      if (!candidates) return false;
+      return candidates.some(index => pointInPolygon(point, polygons[index]));
+    },
+  };
+};
 
 const loadAppRegions = (): Array<{ regionId: string; regionName: string; beaches: BeachRecord[] }> => {
   const appDataDirectory = path.join(root, 'public', 'data', 'beaches', 'app');
@@ -281,7 +364,8 @@ const createBeachProfile = (
   beach: BeachRecord,
   landMask: LandMask,
   rayStepKm: number,
-  landGraceKm: number
+  landGraceKm: number,
+  waterSearchStepKm: number
 ): BeachExposureProfile | undefined => {
   if (!beach.coordinates) return undefined;
 
@@ -289,7 +373,8 @@ const createBeachProfile = (
     beach.coordinates,
     landMask,
     nearshoreWaterSearchKm,
-    nearshoreWaterSearchStepKm
+    waterSearchStepKm,
+    nearshoreMinOpenWaterKm
   );
 
   const facingDeg = computeShorelineOrientation(sampleOrigin.point, landMask);
@@ -386,6 +471,7 @@ const main = async () => {
   const maskConfidence: 'low' | 'medium' | 'high' = isHighResMask ? 'high' : 'medium';
   const rayStepKm = isHighResMask ? highResStepKm : stepKm;
   const landGraceKm = isHighResMask ? highResNearshoreLandGraceKm : nearshoreLandGraceKm;
+  const waterSearchStepKm = isHighResMask ? highResNearshoreWaterSearchStepKm : nearshoreWaterSearchStepKm;
 
   const landMask = createLandMask(polygons, maskSource, maskConfidence);
   const regions = loadAppRegions().filter(region => (
@@ -410,7 +496,7 @@ const main = async () => {
     totalBeachCount += region.beaches.length;
 
     region.beaches.forEach(beach => {
-      const profile = createBeachProfile(beach, landMask, rayStepKm, landGraceKm);
+      const profile = createBeachProfile(beach, landMask, rayStepKm, landGraceKm, waterSearchStepKm);
       if (!profile) {
         totalMissingCoordinates += 1;
         return;
@@ -434,7 +520,8 @@ const main = async () => {
         stepKm: rayStepKm,
         nearshoreLandGraceKm: landGraceKm,
         nearshoreWaterSearchKm,
-        nearshoreWaterSearchStepKm,
+        nearshoreWaterSearchStepKm: waterSearchStepKm,
+        nearshoreMinOpenWaterKm,
         fanAnglesDeg,
         sectors: sectors.map(sector => sector.key),
         maskSource,
@@ -487,7 +574,8 @@ const main = async () => {
       stepKm: rayStepKm,
       nearshoreLandGraceKm: landGraceKm,
       nearshoreWaterSearchKm,
-      nearshoreWaterSearchStepKm,
+      nearshoreWaterSearchStepKm: waterSearchStepKm,
+      nearshoreMinOpenWaterKm,
       fanAnglesDeg,
       sectors: sectors.map(sector => sector.key),
       maskSource,

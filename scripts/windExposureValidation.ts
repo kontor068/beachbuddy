@@ -664,9 +664,6 @@ assert(kythnosNorthFourMapLevels.get(1886) === 'exposed', 'Kythnos N 4BFT: Mikro
 });
 [
   1936, // Kolympisionas
-  1933, // Agkali
-  1937, // Rema
-  1906, // Thiafes
 ].forEach(id => {
   assert(milosNorthFourMapLevels.get(id) === 'partial', `Milos N 4BFT: ${id} must stay partial/yellow when geospatial exposure is partial.`);
 });
@@ -678,6 +675,12 @@ assert(kythnosNorthFourMapLevels.get(1886) === 'exposed', 'Kythnos N 4BFT: Mikro
   1915, // Palaiochori
   1931, // Psarovolada
   1901, // Agia Kyriaki
+  // 2026-06-10 high-res coastline rebuild: the OSM mask resolves Kimolos and
+  // the Pollonia channel headlands, so these NE-coast beaches drop from 6-9 km
+  // of phantom north fetch to 0-4 km and their N sector is now protected.
+  1933, // Agkali
+  1937, // Rema
+  1906, // Thiafes
 ].forEach(id => {
   assert(milosNorthFourMapLevels.get(id) === 'protected', `Milos N 4BFT: ${id} should show protected/blue when geospatial north exposure is protected.`);
 });

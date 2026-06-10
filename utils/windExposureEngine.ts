@@ -200,7 +200,9 @@ const canUseGeospatialWindProfileBackfill = (
 ): profile is GeospatialExposureProfile => (
   Boolean(
     profile &&
-    profile.confidence === 'medium' &&
+    // 'medium' is the Natural Earth baseline; 'high' is the high-res coastline
+    // build — better geometry must not silently turn the backfill off.
+    (profile.confidence === 'medium' || profile.confidence === 'high') &&
     typeof profile.facingDeg === 'number' &&
     Number.isFinite(profile.facingDeg) &&
     GEOSPATIAL_WIND_PROFILE_BACKFILL_ISLANDS.has(normalizeIslandToken(beach.location?.island)) &&

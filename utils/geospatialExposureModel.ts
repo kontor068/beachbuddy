@@ -119,20 +119,49 @@ const classifyFetchExposure = (
   return 'partial';
 };
 
+/**
+ * True when a water point has at least `minOpenWaterKm` of continuous open
+ * water along some bearing. Used to reject enclosed inland water (lagoons,
+ * river mouths carved as holes in high-res land masks) as a sampling origin —
+ * those would otherwise read as "all sectors blocked" and ruin the profile.
+ */
+const hasOpenWaterPassage = (
+  point: GeoPoint,
+  landMask: LandMask,
+  minOpenWaterKm: number
+): boolean => {
+  const stepKm = Math.min(0.1, minOpenWaterKm / 2);
+  for (let bearingDeg = 0; bearingDeg < 360; bearingDeg += 30) {
+    let openKm = 0;
+    for (let distanceKm = stepKm; distanceKm <= minOpenWaterKm; distanceKm += stepKm) {
+      if (landMask.isLand(destinationPoint(point, bearingDeg, distanceKm))) break;
+      openKm = distanceKm;
+    }
+    if (openKm >= minOpenWaterKm - stepKm / 2) return true;
+  }
+  return false;
+};
+
 export const resolveNearshoreWaterOrigin = (
   beach: GeoPoint,
   landMask: LandMask,
   maxSearchKm: number,
-  searchStepKm: number
+  searchStepKm: number,
+  minOpenWaterKm = 0
 ): { point: GeoPoint; adjustedKm: number } => {
-  if (!landMask.isLand(beach)) {
+  const qualifies = (point: GeoPoint): boolean => (
+    !landMask.isLand(point) &&
+    (minOpenWaterKm <= 0 || hasOpenWaterPassage(point, landMask, minOpenWaterKm))
+  );
+
+  if (qualifies(beach)) {
     return { point: beach, adjustedKm: 0 };
   }
 
   for (let distanceKm = searchStepKm; distanceKm <= maxSearchKm; distanceKm += searchStepKm) {
     for (let bearingDeg = 0; bearingDeg < 360; bearingDeg += NEARSHORE_SEARCH_BEARING_STEP_DEG) {
       const candidate = destinationPoint(beach, bearingDeg, distanceKm);
-      if (!landMask.isLand(candidate)) {
+      if (qualifies(candidate)) {
         return {
           point: candidate,
           adjustedKm: Number(distanceKm.toFixed(2)),
