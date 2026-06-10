@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "generatedAt": "2026-06-06T10:29:36.213Z",
+  "generatedAt": "2026-06-10T15:04:40.410Z",
   "region": {
     "id": "crete-crete-rethymno",
     "name": "Rethymno"
@@ -10,10 +10,11 @@
   },
   "settings": {
     "maxFetchKm": 25,
-    "stepKm": 0.5,
-    "nearshoreLandGraceKm": 0.3,
+    "stepKm": 0.2,
+    "nearshoreLandGraceKm": 0.1,
     "nearshoreWaterSearchKm": 12,
-    "nearshoreWaterSearchStepKm": 0.5,
+    "nearshoreWaterSearchStepKm": 0.1,
+    "nearshoreMinOpenWaterKm": 0.5,
     "fanAnglesDeg": [
       -30,
       -15,
@@ -31,8 +32,8 @@
       "W",
       "NW"
     ],
-    "maskSource": "Natural Earth 1:10m land polygons",
-    "maskConfidence": "medium"
+    "maskSource": "High-resolution coastline (greece-land-osm-split.geojson)",
+    "maskConfidence": "high"
   },
   "summary": {
     "beachCount": 44,
@@ -40,44 +41,44 @@
     "missingCoordinates": 0,
     "sectors": {
       "N": {
-        "protected": 33,
-        "partial": 0,
-        "exposed": 11
+        "protected": 32,
+        "partial": 2,
+        "exposed": 10
       },
       "NE": {
         "protected": 33,
-        "partial": 0,
-        "exposed": 11
+        "partial": 2,
+        "exposed": 9
       },
       "E": {
-        "protected": 26,
-        "partial": 18,
-        "exposed": 0
+        "protected": 27,
+        "partial": 13,
+        "exposed": 4
       },
       "SE": {
-        "protected": 12,
-        "partial": 16,
-        "exposed": 16
+        "protected": 16,
+        "partial": 15,
+        "exposed": 13
       },
       "S": {
-        "protected": 11,
-        "partial": 0,
-        "exposed": 33
+        "protected": 12,
+        "partial": 3,
+        "exposed": 29
       },
       "SW": {
         "protected": 11,
-        "partial": 0,
-        "exposed": 33
+        "partial": 9,
+        "exposed": 24
       },
       "W": {
-        "protected": 8,
-        "partial": 22,
-        "exposed": 14
+        "protected": 19,
+        "partial": 12,
+        "exposed": 13
       },
       "NW": {
-        "protected": 30,
-        "partial": 4,
-        "exposed": 10
+        "protected": 29,
+        "partial": 9,
+        "exposed": 6
       }
     }
   },
@@ -92,66 +93,66 @@
         "lat": 35.1794754,
         "lon": 24.2915482
       },
-      "facingDeg": 181.4,
+      "facingDeg": 139.7,
       "sectors": {
         "N": {
           "level": "protected",
           "fetchKm": 0,
           "blockedRayRatio": 1,
-          "onshore": -1,
-          "intensity": 0
+          "onshore": -0.763,
+          "intensity": 7.1
         },
         "NE": {
           "level": "protected",
-          "fetchKm": 0.4,
+          "fetchKm": 0.68,
           "blockedRayRatio": 1,
-          "onshore": -0.724,
-          "intensity": 8.3
+          "onshore": -0.082,
+          "intensity": 27.5
         },
         "E": {
           "level": "partial",
-          "fetchKm": 12.1,
+          "fetchKm": 12.28,
           "blockedRayRatio": 0.8,
-          "onshore": -0.024,
-          "intensity": 33.2
+          "onshore": 0.647,
+          "intensity": 56
         },
         "SE": {
           "level": "exposed",
-          "fetchKm": 24.7,
+          "fetchKm": 24.72,
           "blockedRayRatio": 0.2,
-          "onshore": 0.69,
-          "intensity": 77.7
+          "onshore": 0.997,
+          "intensity": 91.8
         },
         "S": {
           "level": "exposed",
-          "fetchKm": 25,
-          "blockedRayRatio": 0,
-          "onshore": 1,
-          "intensity": 100
+          "fetchKm": 20.04,
+          "blockedRayRatio": 0.2,
+          "onshore": 0.763,
+          "intensity": 81.1
         },
         "SW": {
-          "level": "exposed",
-          "fetchKm": 25,
-          "blockedRayRatio": 0,
-          "onshore": 0.724,
-          "intensity": 86.2
+          "level": "partial",
+          "fetchKm": 5.04,
+          "blockedRayRatio": 0.8,
+          "onshore": 0.082,
+          "intensity": 34.3
         },
         "W": {
-          "level": "partial",
-          "fetchKm": 15.6,
-          "blockedRayRatio": 0.4,
-          "onshore": 0.024,
-          "intensity": 43
+          "level": "protected",
+          "fetchKm": 0,
+          "blockedRayRatio": 1,
+          "onshore": -0.647,
+          "intensity": 10.6
         },
         "NW": {
           "level": "protected",
-          "fetchKm": 0.7,
+          "fetchKm": 0,
           "blockedRayRatio": 1,
-          "onshore": -0.69,
-          "intensity": 9.3
+          "onshore": -0.997,
+          "intensity": 0.1
         }
       },
-      "confidence": "medium"
+      "confidence": "high"
     },
     "673": {
       "beachId": 673,
@@ -163,66 +164,66 @@
         "lat": 35.09684,
         "lon": 24.65665
       },
-      "facingDeg": 184.8,
+      "facingDeg": 206.9,
       "sectors": {
         "N": {
           "level": "protected",
           "fetchKm": 0,
           "blockedRayRatio": 1,
-          "onshore": -0.996,
-          "intensity": 0.1
+          "onshore": -0.892,
+          "intensity": 3.2
         },
         "NE": {
           "level": "protected",
           "fetchKm": 0,
           "blockedRayRatio": 1,
-          "onshore": -0.764,
-          "intensity": 7.1
+          "onshore": -0.951,
+          "intensity": 1.5
         },
         "E": {
           "level": "protected",
-          "fetchKm": 3.5,
+          "fetchKm": 0,
           "blockedRayRatio": 1,
-          "onshore": -0.084,
-          "intensity": 27.5
+          "onshore": -0.452,
+          "intensity": 16.4
         },
         "SE": {
           "level": "partial",
-          "fetchKm": 14.5,
+          "fetchKm": 10.96,
           "blockedRayRatio": 0.8,
-          "onshore": 0.645,
-          "intensity": 55.9
+          "onshore": 0.311,
+          "intensity": 44.1
         },
         "S": {
           "level": "exposed",
-          "fetchKm": 23.5,
-          "blockedRayRatio": 0.2,
-          "onshore": 0.996,
-          "intensity": 91.8
+          "fetchKm": 20.6,
+          "blockedRayRatio": 0.4,
+          "onshore": 0.892,
+          "intensity": 79.5
         },
         "SW": {
           "level": "exposed",
-          "fetchKm": 25,
-          "blockedRayRatio": 0,
-          "onshore": 0.764,
-          "intensity": 88.2
+          "fetchKm": 22.28,
+          "blockedRayRatio": 0.2,
+          "onshore": 0.951,
+          "intensity": 89.7
         },
         "W": {
           "level": "partial",
-          "fetchKm": 15,
-          "blockedRayRatio": 0.4,
-          "onshore": 0.084,
-          "intensity": 45.5
+          "fetchKm": 10.16,
+          "blockedRayRatio": 0.6,
+          "onshore": 0.452,
+          "intensity": 53.4
         },
         "NW": {
           "level": "protected",
           "fetchKm": 0,
           "blockedRayRatio": 1,
-          "onshore": -0.645,
-          "intensity": 10.6
+          "onshore": -0.311,
+          "intensity": 20.7
         }
       },
-      "confidence": "medium"
+      "confidence": "high"
     },
     "674": {
       "beachId": 674,
@@ -234,66 +235,66 @@
         "lat": 35.1048572,
         "lon": 24.5595119
       },
-      "facingDeg": 206.1,
+      "facingDeg": 258.1,
       "sectors": {
         "N": {
           "level": "protected",
-          "fetchKm": 0.5,
+          "fetchKm": 0.32,
           "blockedRayRatio": 1,
-          "onshore": -0.898,
-          "intensity": 3.1
+          "onshore": -0.206,
+          "intensity": 23.8
         },
         "NE": {
           "level": "protected",
-          "fetchKm": 0.3,
+          "fetchKm": 0,
           "blockedRayRatio": 1,
-          "onshore": -0.946,
-          "intensity": 1.6
+          "onshore": -0.838,
+          "intensity": 4.9
         },
         "E": {
           "level": "protected",
-          "fetchKm": 8.5,
+          "fetchKm": 0,
           "blockedRayRatio": 1,
-          "onshore": -0.44,
-          "intensity": 16.8
+          "onshore": -0.979,
+          "intensity": 0.6
         },
         "SE": {
-          "level": "partial",
-          "fetchKm": 22.6,
-          "blockedRayRatio": 0.6,
-          "onshore": 0.324,
-          "intensity": 50.3
+          "level": "protected",
+          "fetchKm": 0.04,
+          "blockedRayRatio": 1,
+          "onshore": -0.546,
+          "intensity": 13.6
         },
         "S": {
-          "level": "exposed",
-          "fetchKm": 25,
-          "blockedRayRatio": 0,
-          "onshore": 0.898,
-          "intensity": 94.9
+          "level": "partial",
+          "fetchKm": 5.12,
+          "blockedRayRatio": 0.8,
+          "onshore": 0.206,
+          "intensity": 38.2
         },
         "SW": {
           "level": "exposed",
-          "fetchKm": 25,
-          "blockedRayRatio": 0,
-          "onshore": 0.946,
-          "intensity": 97.3
+          "fetchKm": 20.04,
+          "blockedRayRatio": 0.2,
+          "onshore": 0.838,
+          "intensity": 84.5
         },
         "W": {
           "level": "exposed",
-          "fetchKm": 22.1,
+          "fetchKm": 21.92,
           "blockedRayRatio": 0.2,
-          "onshore": 0.44,
-          "intensity": 66.2
+          "onshore": 0.979,
+          "intensity": 91
         },
         "NW": {
-          "level": "protected",
-          "fetchKm": 8.9,
+          "level": "partial",
+          "fetchKm": 8.48,
           "blockedRayRatio": 0.8,
-          "onshore": -0.324,
-          "intensity": 22.3
+          "onshore": 0.546,
+          "intensity": 50.8
         }
       },
-      "confidence": "medium"
+      "confidence": "high"
     },
     "675": {
       "beachId": 675,
@@ -305,66 +306,66 @@
         "lat": 35.41058,
         "lon": 24.78279
       },
-      "facingDeg": 10,
+      "facingDeg": 63.5,
       "sectors": {
         "N": {
-          "level": "exposed",
-          "fetchKm": 25,
-          "blockedRayRatio": 0,
-          "onshore": 0.985,
-          "intensity": 99.2
+          "level": "partial",
+          "fetchKm": 0,
+          "blockedRayRatio": 1,
+          "onshore": 0.446,
+          "intensity": 43.4
         },
         "NE": {
           "level": "exposed",
-          "fetchKm": 25,
-          "blockedRayRatio": 0,
-          "onshore": 0.819,
-          "intensity": 91
+          "fetchKm": 15,
+          "blockedRayRatio": 0.4,
+          "onshore": 0.948,
+          "intensity": 81.8
         },
         "E": {
-          "level": "partial",
-          "fetchKm": 11.9,
+          "level": "exposed",
+          "fetchKm": 10.44,
           "blockedRayRatio": 0.6,
-          "onshore": 0.174,
-          "intensity": 44.5
+          "onshore": 0.895,
+          "intensity": 70
         },
         "SE": {
-          "level": "protected",
-          "fetchKm": 0.2,
+          "level": "partial",
+          "fetchKm": 0.44,
           "blockedRayRatio": 1,
-          "onshore": -0.574,
-          "intensity": 12.8
+          "onshore": 0.317,
+          "intensity": 39.5
         },
         "S": {
           "level": "protected",
-          "fetchKm": 0,
+          "fetchKm": 0.04,
           "blockedRayRatio": 1,
-          "onshore": -0.985,
-          "intensity": 0.5
+          "onshore": -0.446,
+          "intensity": 16.6
         },
         "SW": {
           "level": "protected",
           "fetchKm": 0,
           "blockedRayRatio": 1,
-          "onshore": -0.819,
-          "intensity": 5.4
+          "onshore": -0.948,
+          "intensity": 1.6
         },
         "W": {
           "level": "protected",
-          "fetchKm": 10.1,
-          "blockedRayRatio": 0.6,
-          "onshore": -0.174,
-          "intensity": 30.4
+          "fetchKm": 0,
+          "blockedRayRatio": 1,
+          "onshore": -0.895,
+          "intensity": 3.2
         },
         "NW": {
-          "level": "exposed",
-          "fetchKm": 25,
-          "blockedRayRatio": 0,
-          "onshore": 0.574,
-          "intensity": 78.7
+          "level": "protected",
+          "fetchKm": 0,
+          "blockedRayRatio": 1,
+          "onshore": -0.317,
+          "intensity": 20.5
         }
       },
-      "confidence": "medium"
+      "confidence": "high"
     },
     "676": {
       "beachId": 676,
@@ -376,66 +377,66 @@
         "lat": 35.40621,
         "lon": 24.78733
       },
-      "facingDeg": 10,
+      "facingDeg": 15.9,
       "sectors": {
         "N": {
           "level": "exposed",
-          "fetchKm": 25,
-          "blockedRayRatio": 0,
-          "onshore": 0.985,
-          "intensity": 99.2
+          "fetchKm": 15.28,
+          "blockedRayRatio": 0.4,
+          "onshore": 0.962,
+          "intensity": 82.4
         },
         "NE": {
           "level": "exposed",
-          "fetchKm": 25,
-          "blockedRayRatio": 0,
-          "onshore": 0.819,
-          "intensity": 91
+          "fetchKm": 10.2,
+          "blockedRayRatio": 0.6,
+          "onshore": 0.874,
+          "intensity": 69
         },
         "E": {
           "level": "partial",
-          "fetchKm": 12.1,
-          "blockedRayRatio": 0.6,
-          "onshore": 0.174,
-          "intensity": 44.6
+          "fetchKm": 0.08,
+          "blockedRayRatio": 1,
+          "onshore": 0.274,
+          "intensity": 38.2
         },
         "SE": {
           "level": "protected",
-          "fetchKm": 0.5,
+          "fetchKm": 0,
           "blockedRayRatio": 1,
-          "onshore": -0.574,
-          "intensity": 12.8
+          "onshore": -0.486,
+          "intensity": 15.4
         },
         "S": {
           "level": "protected",
           "fetchKm": 0,
           "blockedRayRatio": 1,
-          "onshore": -0.985,
-          "intensity": 0.5
+          "onshore": -0.962,
+          "intensity": 1.1
         },
         "SW": {
           "level": "protected",
-          "fetchKm": 0.1,
+          "fetchKm": 0,
           "blockedRayRatio": 1,
-          "onshore": -0.819,
-          "intensity": 5.4
+          "onshore": -0.874,
+          "intensity": 3.8
         },
         "W": {
           "level": "protected",
-          "fetchKm": 10.3,
-          "blockedRayRatio": 0.6,
-          "onshore": -0.174,
-          "intensity": 30.5
+          "fetchKm": 0,
+          "blockedRayRatio": 1,
+          "onshore": -0.274,
+          "intensity": 21.8
         },
         "NW": {
-          "level": "exposed",
-          "fetchKm": 25,
-          "blockedRayRatio": 0,
-          "onshore": 0.574,
-          "intensity": 78.7
+          "level": "partial",
+          "fetchKm": 0.36,
+          "blockedRayRatio": 1,
+          "onshore": 0.486,
+          "intensity": 44.6
         }
       },
-      "confidence": "medium"
+      "confidence": "high"
     },
     "677": {
       "beachId": 677,
@@ -447,66 +448,66 @@
         "lat": 35.41382,
         "lon": 24.6453
       },
-      "facingDeg": 333.2,
+      "facingDeg": 308.4,
       "sectors": {
         "N": {
           "level": "exposed",
-          "fetchKm": 25,
-          "blockedRayRatio": 0,
-          "onshore": 0.893,
-          "intensity": 94.6
-        },
-        "NE": {
-          "level": "exposed",
           "fetchKm": 20,
           "blockedRayRatio": 0.2,
-          "onshore": 0.312,
-          "intensity": 60.4
+          "onshore": 0.621,
+          "intensity": 74.6
         },
-        "E": {
+        "NE": {
           "level": "protected",
           "fetchKm": 5,
           "blockedRayRatio": 0.8,
-          "onshore": -0.451,
-          "intensity": 17.4
+          "onshore": -0.115,
+          "intensity": 28
+        },
+        "E": {
+          "level": "protected",
+          "fetchKm": 0,
+          "blockedRayRatio": 1,
+          "onshore": -0.784,
+          "intensity": 6.5
         },
         "SE": {
           "level": "protected",
           "fetchKm": 0,
           "blockedRayRatio": 1,
-          "onshore": -0.95,
-          "intensity": 1.5
+          "onshore": -0.993,
+          "intensity": 0.2
         },
         "S": {
           "level": "protected",
           "fetchKm": 0,
           "blockedRayRatio": 1,
-          "onshore": -0.893,
-          "intensity": 3.2
+          "onshore": -0.621,
+          "intensity": 11.4
         },
         "SW": {
-          "level": "protected",
-          "fetchKm": 4.2,
+          "level": "partial",
+          "fetchKm": 5.4,
           "blockedRayRatio": 1,
-          "onshore": -0.312,
-          "intensity": 20.6
+          "onshore": 0.115,
+          "intensity": 33.4
         },
         "W": {
           "level": "exposed",
-          "fetchKm": 19.2,
+          "fetchKm": 20.36,
           "blockedRayRatio": 0.4,
-          "onshore": 0.451,
-          "intensity": 60.9
+          "onshore": 0.784,
+          "intensity": 74.9
         },
         "NW": {
           "level": "exposed",
           "fetchKm": 25,
           "blockedRayRatio": 0,
-          "onshore": 0.95,
-          "intensity": 97.5
+          "onshore": 0.993,
+          "intensity": 99.7
         }
       },
-      "confidence": "medium"
+      "confidence": "high"
     },
     "678": {
       "beachId": 678,
@@ -518,66 +519,66 @@
         "lat": 35.17414,
         "lon": 24.41507
       },
-      "facingDeg": 205,
+      "facingDeg": 193.7,
       "sectors": {
         "N": {
           "level": "protected",
           "fetchKm": 0,
           "blockedRayRatio": 1,
-          "onshore": -0.906,
-          "intensity": 2.8
+          "onshore": -0.972,
+          "intensity": 0.9
         },
         "NE": {
           "level": "protected",
           "fetchKm": 0,
           "blockedRayRatio": 1,
-          "onshore": -0.94,
-          "intensity": 1.8
+          "onshore": -0.854,
+          "intensity": 4.4
         },
         "E": {
           "level": "protected",
-          "fetchKm": 5,
-          "blockedRayRatio": 0.8,
-          "onshore": -0.423,
-          "intensity": 18.3
+          "fetchKm": 0.08,
+          "blockedRayRatio": 1,
+          "onshore": -0.237,
+          "intensity": 22.9
         },
         "SE": {
-          "level": "exposed",
-          "fetchKm": 20,
-          "blockedRayRatio": 0.2,
-          "onshore": 0.342,
-          "intensity": 61.7
+          "level": "partial",
+          "fetchKm": 5.32,
+          "blockedRayRatio": 0.8,
+          "onshore": 0.52,
+          "intensity": 48.3
         },
         "S": {
           "level": "exposed",
-          "fetchKm": 25,
-          "blockedRayRatio": 0,
-          "onshore": 0.906,
-          "intensity": 95.3
+          "fetchKm": 20.12,
+          "blockedRayRatio": 0.2,
+          "onshore": 0.972,
+          "intensity": 90.7
         },
         "SW": {
           "level": "exposed",
-          "fetchKm": 25,
-          "blockedRayRatio": 0,
-          "onshore": 0.94,
-          "intensity": 97
+          "fetchKm": 15.12,
+          "blockedRayRatio": 0.4,
+          "onshore": 0.854,
+          "intensity": 77.9
         },
         "W": {
           "level": "partial",
-          "fetchKm": 16.4,
-          "blockedRayRatio": 0.4,
-          "onshore": 0.423,
-          "intensity": 59.7
+          "fetchKm": 0.16,
+          "blockedRayRatio": 1,
+          "onshore": 0.237,
+          "intensity": 37.1
         },
         "NW": {
           "level": "protected",
-          "fetchKm": 1.4,
+          "fetchKm": 0,
           "blockedRayRatio": 1,
-          "onshore": -0.342,
-          "intensity": 19.7
+          "onshore": -0.52,
+          "intensity": 14.4
         }
       },
-      "confidence": "medium"
+      "confidence": "high"
     },
     "679": {
       "beachId": 679,
@@ -589,66 +590,66 @@
         "lat": 35.17237,
         "lon": 24.40001
       },
-      "facingDeg": 223.2,
+      "facingDeg": 195,
       "sectors": {
         "N": {
           "level": "protected",
-          "fetchKm": 1.4,
+          "fetchKm": 0,
           "blockedRayRatio": 1,
-          "onshore": -0.729,
-          "intensity": 8.1
+          "onshore": -0.966,
+          "intensity": 1
         },
         "NE": {
           "level": "protected",
-          "fetchKm": 0.4,
+          "fetchKm": 0,
           "blockedRayRatio": 1,
-          "onshore": -1,
-          "intensity": 0
+          "onshore": -0.866,
+          "intensity": 4
         },
         "E": {
           "level": "protected",
-          "fetchKm": 5.7,
+          "fetchKm": 5,
           "blockedRayRatio": 0.8,
-          "onshore": -0.685,
-          "intensity": 10.1
+          "onshore": -0.259,
+          "intensity": 23.5
         },
         "SE": {
-          "level": "partial",
-          "fetchKm": 20.4,
+          "level": "exposed",
+          "fetchKm": 20,
           "blockedRayRatio": 0.2,
-          "onshore": 0.031,
-          "intensity": 47.4
+          "onshore": 0.5,
+          "intensity": 69
         },
         "S": {
           "level": "exposed",
           "fetchKm": 25,
           "blockedRayRatio": 0,
-          "onshore": 0.729,
-          "intensity": 86.4
+          "onshore": 0.966,
+          "intensity": 98.3
         },
         "SW": {
           "level": "exposed",
           "fetchKm": 25,
           "blockedRayRatio": 0,
-          "onshore": 1,
-          "intensity": 100
+          "onshore": 0.866,
+          "intensity": 93.3
         },
         "W": {
-          "level": "exposed",
-          "fetchKm": 16.8,
+          "level": "partial",
+          "fetchKm": 15,
           "blockedRayRatio": 0.4,
-          "onshore": 0.685,
-          "intensity": 70.8
+          "onshore": 0.259,
+          "intensity": 52.9
         },
         "NW": {
           "level": "protected",
-          "fetchKm": 3.1,
+          "fetchKm": 0,
           "blockedRayRatio": 1,
-          "onshore": -0.031,
-          "intensity": 29.1
+          "onshore": -0.5,
+          "intensity": 15
         }
       },
-      "confidence": "medium"
+      "confidence": "high"
     },
     "680": {
       "beachId": 680,
@@ -660,66 +661,66 @@
         "lat": 35.41704,
         "lon": 24.78526
       },
-      "facingDeg": 10,
+      "facingDeg": 35.4,
       "sectors": {
         "N": {
           "level": "exposed",
           "fetchKm": 25,
           "blockedRayRatio": 0,
-          "onshore": 0.985,
-          "intensity": 99.2
+          "onshore": 0.815,
+          "intensity": 90.8
         },
         "NE": {
           "level": "exposed",
           "fetchKm": 25,
           "blockedRayRatio": 0,
-          "onshore": 0.819,
-          "intensity": 91
+          "onshore": 0.986,
+          "intensity": 99.3
         },
         "E": {
-          "level": "partial",
-          "fetchKm": 13.1,
+          "level": "exposed",
+          "fetchKm": 12.68,
           "blockedRayRatio": 0.6,
-          "onshore": 0.174,
-          "intensity": 44.6
+          "onshore": 0.579,
+          "intensity": 60
         },
         "SE": {
           "level": "protected",
-          "fetchKm": 1.5,
+          "fetchKm": 1.76,
           "blockedRayRatio": 1,
-          "onshore": -0.574,
-          "intensity": 12.8
+          "onshore": -0.167,
+          "intensity": 25
         },
         "S": {
           "level": "protected",
-          "fetchKm": 0.1,
+          "fetchKm": 0.72,
           "blockedRayRatio": 1,
-          "onshore": -0.985,
-          "intensity": 0.5
+          "onshore": -0.815,
+          "intensity": 5.5
         },
         "SW": {
           "level": "protected",
-          "fetchKm": 0.2,
+          "fetchKm": 0.04,
           "blockedRayRatio": 1,
-          "onshore": -0.819,
-          "intensity": 5.4
+          "onshore": -0.986,
+          "intensity": 0.4
         },
         "W": {
           "level": "protected",
-          "fetchKm": 10.6,
-          "blockedRayRatio": 0.6,
-          "onshore": -0.174,
-          "intensity": 30.6
+          "fetchKm": 0,
+          "blockedRayRatio": 1,
+          "onshore": -0.579,
+          "intensity": 12.6
         },
         "NW": {
-          "level": "exposed",
-          "fetchKm": 25,
-          "blockedRayRatio": 0,
-          "onshore": 0.574,
-          "intensity": 78.7
+          "level": "partial",
+          "fetchKm": 10,
+          "blockedRayRatio": 0.6,
+          "onshore": 0.167,
+          "intensity": 42.8
         }
       },
-      "confidence": "medium"
+      "confidence": "high"
     },
     "681": {
       "beachId": 681,
@@ -731,66 +732,66 @@
         "lat": 35.1885764,
         "lon": 24.3201411
       },
-      "facingDeg": 175,
+      "facingDeg": 156.7,
       "sectors": {
         "N": {
           "level": "protected",
           "fetchKm": 0,
           "blockedRayRatio": 1,
-          "onshore": -0.996,
-          "intensity": 0.1
+          "onshore": -0.918,
+          "intensity": 2.4
         },
         "NE": {
           "level": "protected",
-          "fetchKm": 0,
+          "fetchKm": 0.04,
           "blockedRayRatio": 1,
-          "onshore": -0.643,
-          "intensity": 10.7
+          "onshore": -0.37,
+          "intensity": 18.9
         },
         "E": {
           "level": "partial",
-          "fetchKm": 8.7,
+          "fetchKm": 5.6,
           "blockedRayRatio": 0.8,
-          "onshore": 0.087,
-          "intensity": 35.8
+          "onshore": 0.396,
+          "intensity": 44.5
         },
         "SE": {
           "level": "exposed",
-          "fetchKm": 22.3,
+          "fetchKm": 20.44,
           "blockedRayRatio": 0.2,
-          "onshore": 0.766,
-          "intensity": 81.2
+          "onshore": 0.929,
+          "intensity": 88.7
         },
         "S": {
           "level": "exposed",
           "fetchKm": 25,
           "blockedRayRatio": 0,
-          "onshore": 0.996,
-          "intensity": 99.8
+          "onshore": 0.918,
+          "intensity": 95.9
         },
         "SW": {
-          "level": "exposed",
-          "fetchKm": 25,
-          "blockedRayRatio": 0,
-          "onshore": 0.643,
-          "intensity": 82.1
+          "level": "partial",
+          "fetchKm": 15,
+          "blockedRayRatio": 0.4,
+          "onshore": 0.37,
+          "intensity": 57.5
         },
         "W": {
-          "level": "partial",
-          "fetchKm": 10,
-          "blockedRayRatio": 0.6,
-          "onshore": -0.087,
-          "intensity": 33.5
+          "level": "protected",
+          "fetchKm": 0,
+          "blockedRayRatio": 1,
+          "onshore": -0.396,
+          "intensity": 18.1
         },
         "NW": {
           "level": "protected",
           "fetchKm": 0,
           "blockedRayRatio": 1,
-          "onshore": -0.766,
-          "intensity": 7
+          "onshore": -0.929,
+          "intensity": 2.1
         }
       },
-      "confidence": "medium"
+      "confidence": "high"
     },
     "682": {
       "beachId": 682,
@@ -802,66 +803,66 @@
         "lat": 35.1429602,
         "lon": 24.5208538
       },
-      "facingDeg": 215.2,
+      "facingDeg": 209,
       "sectors": {
         "N": {
           "level": "protected",
           "fetchKm": 0,
           "blockedRayRatio": 1,
-          "onshore": -0.817,
-          "intensity": 5.5
+          "onshore": -0.875,
+          "intensity": 3.8
         },
         "NE": {
           "level": "protected",
           "fetchKm": 0,
           "blockedRayRatio": 1,
-          "onshore": -0.985,
-          "intensity": 0.4
+          "onshore": -0.961,
+          "intensity": 1.2
         },
         "E": {
           "level": "protected",
           "fetchKm": 0,
           "blockedRayRatio": 1,
-          "onshore": -0.576,
-          "intensity": 12.7
+          "onshore": -0.485,
+          "intensity": 15.5
         },
         "SE": {
           "level": "partial",
-          "fetchKm": 10.6,
+          "fetchKm": 10.08,
           "blockedRayRatio": 0.6,
-          "onshore": 0.17,
-          "intensity": 43.4
+          "onshore": 0.276,
+          "intensity": 46.8
         },
         "S": {
           "level": "exposed",
           "fetchKm": 25,
           "blockedRayRatio": 0,
-          "onshore": 0.817,
-          "intensity": 90.9
+          "onshore": 0.875,
+          "intensity": 93.7
         },
         "SW": {
           "level": "exposed",
           "fetchKm": 25,
           "blockedRayRatio": 0,
-          "onshore": 0.985,
-          "intensity": 99.3
+          "onshore": 0.961,
+          "intensity": 98.1
         },
         "W": {
           "level": "exposed",
-          "fetchKm": 16.1,
+          "fetchKm": 15.12,
           "blockedRayRatio": 0.4,
-          "onshore": 0.576,
-          "intensity": 66.2
+          "onshore": 0.485,
+          "intensity": 62.4
         },
         "NW": {
           "level": "protected",
-          "fetchKm": 1.1,
+          "fetchKm": 0.12,
           "blockedRayRatio": 1,
-          "onshore": -0.17,
-          "intensity": 24.9
+          "onshore": -0.276,
+          "intensity": 21.7
         }
       },
-      "confidence": "medium"
+      "confidence": "high"
     },
     "683": {
       "beachId": 683,
@@ -873,66 +874,66 @@
         "lat": 35.1877872,
         "lon": 24.3582977
       },
-      "facingDeg": 174.8,
+      "facingDeg": 158.9,
       "sectors": {
         "N": {
           "level": "protected",
           "fetchKm": 0,
           "blockedRayRatio": 1,
-          "onshore": -0.996,
-          "intensity": 0.1
+          "onshore": -0.933,
+          "intensity": 2
         },
         "NE": {
           "level": "protected",
           "fetchKm": 0,
           "blockedRayRatio": 1,
-          "onshore": -0.64,
-          "intensity": 10.8
+          "onshore": -0.405,
+          "intensity": 17.8
         },
         "E": {
           "level": "partial",
-          "fetchKm": 6.3,
+          "fetchKm": 5.72,
           "blockedRayRatio": 0.8,
-          "onshore": 0.091,
-          "intensity": 35
+          "onshore": 0.36,
+          "intensity": 43.4
         },
         "SE": {
           "level": "exposed",
-          "fetchKm": 20.7,
+          "fetchKm": 20.72,
           "blockedRayRatio": 0.2,
-          "onshore": 0.768,
-          "intensity": 81.3
+          "onshore": 0.914,
+          "intensity": 88.1
         },
         "S": {
           "level": "exposed",
-          "fetchKm": 25,
-          "blockedRayRatio": 0,
-          "onshore": 0.996,
-          "intensity": 99.8
+          "fetchKm": 20.08,
+          "blockedRayRatio": 0.2,
+          "onshore": 0.933,
+          "intensity": 88.9
         },
         "SW": {
-          "level": "exposed",
-          "fetchKm": 25,
-          "blockedRayRatio": 0,
-          "onshore": 0.64,
-          "intensity": 82
+          "level": "partial",
+          "fetchKm": 5.2,
+          "blockedRayRatio": 0.8,
+          "onshore": 0.405,
+          "intensity": 44.6
         },
         "W": {
-          "level": "partial",
-          "fetchKm": 10,
-          "blockedRayRatio": 0.6,
-          "onshore": -0.091,
-          "intensity": 33.3
+          "level": "protected",
+          "fetchKm": 0.04,
+          "blockedRayRatio": 1,
+          "onshore": -0.36,
+          "intensity": 19.2
         },
         "NW": {
           "level": "protected",
           "fetchKm": 0,
           "blockedRayRatio": 1,
-          "onshore": -0.768,
-          "intensity": 7
+          "onshore": -0.914,
+          "intensity": 2.6
         }
       },
-      "confidence": "medium"
+      "confidence": "high"
     },
     "684": {
       "beachId": 684,
@@ -944,66 +945,66 @@
         "lat": 35.1872025,
         "lon": 24.3151783
       },
-      "facingDeg": 174.7,
+      "facingDeg": 176.9,
       "sectors": {
         "N": {
           "level": "protected",
           "fetchKm": 0,
           "blockedRayRatio": 1,
-          "onshore": -0.996,
-          "intensity": 0.1
+          "onshore": -0.999,
+          "intensity": 0
         },
         "NE": {
           "level": "protected",
-          "fetchKm": 0,
+          "fetchKm": 0.16,
           "blockedRayRatio": 1,
-          "onshore": -0.639,
-          "intensity": 10.8
+          "onshore": -0.668,
+          "intensity": 10
         },
         "E": {
           "level": "partial",
-          "fetchKm": 9,
+          "fetchKm": 7.12,
           "blockedRayRatio": 0.8,
-          "onshore": 0.092,
-          "intensity": 36
+          "onshore": 0.054,
+          "intensity": 34.1
         },
         "SE": {
           "level": "exposed",
-          "fetchKm": 22.5,
+          "fetchKm": 21.96,
           "blockedRayRatio": 0.2,
-          "onshore": 0.769,
-          "intensity": 81.4
+          "onshore": 0.744,
+          "intensity": 80.2
         },
         "S": {
           "level": "exposed",
           "fetchKm": 25,
           "blockedRayRatio": 0,
-          "onshore": 0.996,
-          "intensity": 99.8
+          "onshore": 0.999,
+          "intensity": 99.9
         },
         "SW": {
           "level": "exposed",
-          "fetchKm": 25,
-          "blockedRayRatio": 0,
-          "onshore": 0.639,
-          "intensity": 81.9
+          "fetchKm": 20.2,
+          "blockedRayRatio": 0.2,
+          "onshore": 0.668,
+          "intensity": 76.7
         },
         "W": {
-          "level": "partial",
-          "fetchKm": 10,
-          "blockedRayRatio": 0.6,
-          "onshore": -0.092,
-          "intensity": 33.3
+          "level": "protected",
+          "fetchKm": 5.2,
+          "blockedRayRatio": 0.8,
+          "onshore": -0.054,
+          "intensity": 30
         },
         "NW": {
           "level": "protected",
           "fetchKm": 0,
           "blockedRayRatio": 1,
-          "onshore": -0.769,
-          "intensity": 6.9
+          "onshore": -0.744,
+          "intensity": 7.7
         }
       },
-      "confidence": "medium"
+      "confidence": "high"
     },
     "685": {
       "beachId": 685,
@@ -1015,66 +1016,66 @@
         "lat": 35.13328,
         "lon": 24.53242
       },
-      "facingDeg": 225.1,
+      "facingDeg": 235.4,
       "sectors": {
         "N": {
           "level": "protected",
-          "fetchKm": 0.1,
+          "fetchKm": 0.12,
           "blockedRayRatio": 1,
-          "onshore": -0.706,
-          "intensity": 8.8
+          "onshore": -0.568,
+          "intensity": 13
         },
         "NE": {
           "level": "protected",
           "fetchKm": 0,
           "blockedRayRatio": 1,
-          "onshore": -1,
-          "intensity": 0
+          "onshore": -0.984,
+          "intensity": 0.5
         },
         "E": {
           "level": "protected",
-          "fetchKm": 0.1,
+          "fetchKm": 0,
           "blockedRayRatio": 1,
-          "onshore": -0.708,
-          "intensity": 8.7
+          "onshore": -0.823,
+          "intensity": 5.3
         },
         "SE": {
-          "level": "partial",
-          "fetchKm": 10.4,
-          "blockedRayRatio": 0.6,
-          "onshore": -0.002,
-          "intensity": 36.9
+          "level": "protected",
+          "fetchKm": 2.96,
+          "blockedRayRatio": 1,
+          "onshore": -0.181,
+          "intensity": 24.6
         },
         "S": {
           "level": "exposed",
-          "fetchKm": 25,
-          "blockedRayRatio": 0,
-          "onshore": 0.706,
-          "intensity": 85.3
+          "fetchKm": 17.96,
+          "blockedRayRatio": 0.4,
+          "onshore": 0.568,
+          "intensity": 65.8
         },
         "SW": {
           "level": "exposed",
           "fetchKm": 25,
           "blockedRayRatio": 0,
-          "onshore": 1,
-          "intensity": 100
+          "onshore": 0.984,
+          "intensity": 99.2
         },
         "W": {
           "level": "exposed",
-          "fetchKm": 20.2,
+          "fetchKm": 16.96,
           "blockedRayRatio": 0.4,
-          "onshore": 0.708,
-          "intensity": 71.8
+          "onshore": 0.823,
+          "intensity": 76.6
         },
         "NW": {
-          "level": "protected",
-          "fetchKm": 5.6,
+          "level": "partial",
+          "fetchKm": 2.4,
           "blockedRayRatio": 1,
-          "onshore": 0.002,
-          "intensity": 30.1
+          "onshore": 0.181,
+          "intensity": 35.4
         }
       },
-      "confidence": "medium"
+      "confidence": "high"
     },
     "686": {
       "beachId": 686,
@@ -1086,66 +1087,66 @@
         "lat": 35.41859,
         "lon": 24.68852
       },
-      "facingDeg": 349.8,
+      "facingDeg": 7.8,
       "sectors": {
         "N": {
           "level": "exposed",
           "fetchKm": 25,
           "blockedRayRatio": 0,
-          "onshore": 0.984,
-          "intensity": 99.2
+          "onshore": 0.991,
+          "intensity": 99.5
         },
         "NE": {
           "level": "exposed",
-          "fetchKm": 25,
-          "blockedRayRatio": 0,
-          "onshore": 0.571,
-          "intensity": 78.5
+          "fetchKm": 15.12,
+          "blockedRayRatio": 0.4,
+          "onshore": 0.797,
+          "intensity": 75.5
         },
         "E": {
           "level": "partial",
-          "fetchKm": 15.1,
-          "blockedRayRatio": 0.4,
-          "onshore": -0.177,
-          "intensity": 34.6
+          "fetchKm": 0.12,
+          "blockedRayRatio": 1,
+          "onshore": 0.136,
+          "intensity": 34.1
         },
         "SE": {
           "level": "protected",
-          "fetchKm": 0.1,
+          "fetchKm": 0,
           "blockedRayRatio": 1,
-          "onshore": -0.821,
-          "intensity": 5.4
+          "onshore": -0.605,
+          "intensity": 11.9
         },
         "S": {
           "level": "protected",
           "fetchKm": 0,
           "blockedRayRatio": 1,
-          "onshore": -0.984,
-          "intensity": 0.5
+          "onshore": -0.991,
+          "intensity": 0.3
         },
         "SW": {
           "level": "protected",
-          "fetchKm": 5.1,
-          "blockedRayRatio": 0.8,
-          "onshore": -0.571,
-          "intensity": 13.6
+          "fetchKm": 0,
+          "blockedRayRatio": 1,
+          "onshore": -0.797,
+          "intensity": 6.1
         },
         "W": {
-          "level": "partial",
-          "fetchKm": 20.1,
-          "blockedRayRatio": 0.2,
-          "onshore": 0.177,
-          "intensity": 54.1
+          "level": "protected",
+          "fetchKm": 0,
+          "blockedRayRatio": 1,
+          "onshore": -0.136,
+          "intensity": 25.9
         },
         "NW": {
           "level": "exposed",
-          "fetchKm": 25,
-          "blockedRayRatio": 0,
-          "onshore": 0.821,
-          "intensity": 91.1
+          "fetchKm": 15,
+          "blockedRayRatio": 0.4,
+          "onshore": 0.605,
+          "intensity": 67.4
         }
       },
-      "confidence": "medium"
+      "confidence": "high"
     },
     "687": {
       "beachId": 687,
@@ -1157,66 +1158,66 @@
         "lat": 35.1140551,
         "lon": 24.5535025
       },
-      "facingDeg": 228.7,
+      "facingDeg": 229.9,
       "sectors": {
         "N": {
           "level": "protected",
-          "fetchKm": 0,
+          "fetchKm": 0.08,
           "blockedRayRatio": 1,
-          "onshore": -0.66,
-          "intensity": 10.2
+          "onshore": -0.644,
+          "intensity": 10.7
         },
         "NE": {
           "level": "protected",
           "fetchKm": 0,
           "blockedRayRatio": 1,
-          "onshore": -0.998,
+          "onshore": -0.996,
           "intensity": 0.1
         },
         "E": {
           "level": "protected",
           "fetchKm": 0,
           "blockedRayRatio": 1,
-          "onshore": -0.751,
-          "intensity": 7.5
+          "onshore": -0.765,
+          "intensity": 7.1
         },
         "SE": {
-          "level": "partial",
-          "fetchKm": 15,
-          "blockedRayRatio": 0.4,
-          "onshore": -0.065,
-          "intensity": 39.3
+          "level": "protected",
+          "fetchKm": 2.44,
+          "blockedRayRatio": 1,
+          "onshore": -0.085,
+          "intensity": 27.4
         },
         "S": {
           "level": "exposed",
-          "fetchKm": 25,
-          "blockedRayRatio": 0,
-          "onshore": 0.66,
-          "intensity": 83
+          "fetchKm": 17.44,
+          "blockedRayRatio": 0.4,
+          "onshore": 0.644,
+          "intensity": 69.1
         },
         "SW": {
           "level": "exposed",
           "fetchKm": 25,
           "blockedRayRatio": 0,
-          "onshore": 0.998,
-          "intensity": 99.9
+          "onshore": 0.996,
+          "intensity": 99.8
         },
         "W": {
           "level": "exposed",
-          "fetchKm": 21.7,
+          "fetchKm": 20.08,
           "blockedRayRatio": 0.2,
-          "onshore": 0.751,
-          "intensity": 80.6
+          "onshore": 0.765,
+          "intensity": 81.2
         },
         "NW": {
           "level": "partial",
-          "fetchKm": 7.7,
+          "fetchKm": 5.24,
           "blockedRayRatio": 0.8,
-          "onshore": 0.065,
-          "intensity": 34.7
+          "onshore": 0.085,
+          "intensity": 34.5
         }
       },
-      "confidence": "medium"
+      "confidence": "high"
     },
     "688": {
       "beachId": 688,
@@ -1228,66 +1229,66 @@
         "lat": 35.1725,
         "lon": 24.41875
       },
-      "facingDeg": 205.2,
+      "facingDeg": 230.2,
       "sectors": {
         "N": {
           "level": "protected",
           "fetchKm": 0,
           "blockedRayRatio": 1,
-          "onshore": -0.905,
-          "intensity": 2.9
+          "onshore": -0.64,
+          "intensity": 10.8
         },
         "NE": {
           "level": "protected",
           "fetchKm": 0,
           "blockedRayRatio": 1,
-          "onshore": -0.941,
-          "intensity": 1.8
+          "onshore": -0.996,
+          "intensity": 0.1
         },
         "E": {
           "level": "protected",
-          "fetchKm": 5,
-          "blockedRayRatio": 0.8,
-          "onshore": -0.426,
-          "intensity": 18.2
+          "fetchKm": 0,
+          "blockedRayRatio": 1,
+          "onshore": -0.768,
+          "intensity": 7
         },
         "SE": {
-          "level": "exposed",
-          "fetchKm": 20,
-          "blockedRayRatio": 0.2,
-          "onshore": 0.339,
-          "intensity": 61.6
+          "level": "protected",
+          "fetchKm": 0.04,
+          "blockedRayRatio": 1,
+          "onshore": -0.091,
+          "intensity": 27.3
         },
         "S": {
           "level": "exposed",
-          "fetchKm": 25,
-          "blockedRayRatio": 0,
-          "onshore": 0.905,
-          "intensity": 95.2
+          "fetchKm": 10.08,
+          "blockedRayRatio": 0.6,
+          "onshore": 0.64,
+          "intensity": 60.2
         },
         "SW": {
           "level": "exposed",
           "fetchKm": 25,
           "blockedRayRatio": 0,
-          "onshore": 0.941,
-          "intensity": 97
+          "onshore": 0.996,
+          "intensity": 99.8
         },
         "W": {
-          "level": "partial",
-          "fetchKm": 16.5,
-          "blockedRayRatio": 0.4,
-          "onshore": 0.426,
-          "intensity": 59.9
+          "level": "exposed",
+          "fetchKm": 10.36,
+          "blockedRayRatio": 0.6,
+          "onshore": 0.768,
+          "intensity": 65.3
         },
         "NW": {
           "level": "protected",
-          "fetchKm": 1.5,
+          "fetchKm": 0.2,
           "blockedRayRatio": 1,
-          "onshore": -0.339,
-          "intensity": 19.8
+          "onshore": 0.091,
+          "intensity": 32.7
         }
       },
-      "confidence": "medium"
+      "confidence": "high"
     },
     "689": {
       "beachId": 689,
@@ -1299,66 +1300,66 @@
         "lat": 35.18078,
         "lon": 24.4004
       },
-      "facingDeg": 238.4,
+      "facingDeg": 287.3,
       "sectors": {
         "N": {
-          "level": "protected",
-          "fetchKm": 0.7,
+          "level": "partial",
+          "fetchKm": 0.4,
           "blockedRayRatio": 1,
-          "onshore": -0.524,
-          "intensity": 14.3
+          "onshore": 0.297,
+          "intensity": 38.9
         },
         "NE": {
           "level": "protected",
-          "fetchKm": 0.1,
+          "fetchKm": 0,
           "blockedRayRatio": 1,
-          "onshore": -0.973,
-          "intensity": 0.8
+          "onshore": -0.465,
+          "intensity": 16.1
         },
         "E": {
           "level": "protected",
           "fetchKm": 0,
           "blockedRayRatio": 1,
-          "onshore": -0.852,
-          "intensity": 4.4
+          "onshore": -0.955,
+          "intensity": 1.4
         },
         "SE": {
           "level": "protected",
-          "fetchKm": 10,
-          "blockedRayRatio": 0.6,
-          "onshore": -0.232,
-          "intensity": 28.2
+          "fetchKm": 0,
+          "blockedRayRatio": 1,
+          "onshore": -0.885,
+          "intensity": 3.4
         },
         "S": {
-          "level": "exposed",
-          "fetchKm": 25,
-          "blockedRayRatio": 0,
-          "onshore": 0.524,
-          "intensity": 76.2
+          "level": "protected",
+          "fetchKm": 0,
+          "blockedRayRatio": 1,
+          "onshore": -0.297,
+          "intensity": 21.1
         },
         "SW": {
-          "level": "exposed",
-          "fetchKm": 25,
-          "blockedRayRatio": 0,
-          "onshore": 0.973,
-          "intensity": 98.6
+          "level": "partial",
+          "fetchKm": 5.04,
+          "blockedRayRatio": 0.8,
+          "onshore": 0.465,
+          "intensity": 46.4
         },
         "W": {
           "level": "exposed",
-          "fetchKm": 15.9,
-          "blockedRayRatio": 0.4,
-          "onshore": 0.852,
-          "intensity": 77.8
+          "fetchKm": 8.12,
+          "blockedRayRatio": 0.8,
+          "onshore": 0.955,
+          "intensity": 63.9
         },
         "NW": {
           "level": "partial",
-          "fetchKm": 1.5,
+          "fetchKm": 1.92,
           "blockedRayRatio": 1,
-          "onshore": 0.232,
-          "intensity": 37
+          "onshore": 0.885,
+          "intensity": 56.6
         }
       },
-      "confidence": "medium"
+      "confidence": "high"
     },
     "690": {
       "beachId": 690,
@@ -1370,66 +1371,66 @@
         "lat": 35.1486963,
         "lon": 24.500088
       },
-      "facingDeg": 199.1,
+      "facingDeg": 190.2,
       "sectors": {
         "N": {
           "level": "protected",
-          "fetchKm": 0.1,
+          "fetchKm": 0,
           "blockedRayRatio": 1,
-          "onshore": -0.945,
-          "intensity": 1.7
+          "onshore": -0.984,
+          "intensity": 0.5
         },
         "NE": {
           "level": "protected",
-          "fetchKm": 0.1,
+          "fetchKm": 0,
           "blockedRayRatio": 1,
-          "onshore": -0.9,
-          "intensity": 3
+          "onshore": -0.821,
+          "intensity": 5.4
         },
         "E": {
           "level": "protected",
-          "fetchKm": 1.2,
+          "fetchKm": 0.68,
           "blockedRayRatio": 1,
-          "onshore": -0.327,
-          "intensity": 20.2
+          "onshore": -0.177,
+          "intensity": 24.7
         },
         "SE": {
-          "level": "exposed",
-          "fetchKm": 16,
-          "blockedRayRatio": 0.4,
-          "onshore": 0.437,
-          "intensity": 60.3
+          "level": "partial",
+          "fetchKm": 14.24,
+          "blockedRayRatio": 0.6,
+          "onshore": 0.571,
+          "intensity": 59.7
         },
         "S": {
           "level": "exposed",
-          "fetchKm": 25,
-          "blockedRayRatio": 0,
-          "onshore": 0.945,
-          "intensity": 97.2
+          "fetchKm": 23.56,
+          "blockedRayRatio": 0.2,
+          "onshore": 0.984,
+          "intensity": 91.3
         },
         "SW": {
           "level": "exposed",
           "fetchKm": 25,
           "blockedRayRatio": 0,
-          "onshore": 0.9,
-          "intensity": 95
+          "onshore": 0.821,
+          "intensity": 91.1
         },
         "W": {
           "level": "partial",
-          "fetchKm": 15.6,
-          "blockedRayRatio": 0.4,
-          "onshore": 0.327,
-          "intensity": 55.7
+          "fetchKm": 10,
+          "blockedRayRatio": 0.6,
+          "onshore": 0.177,
+          "intensity": 43.2
         },
         "NW": {
           "level": "protected",
-          "fetchKm": 0.8,
+          "fetchKm": 0,
           "blockedRayRatio": 1,
-          "onshore": -0.437,
-          "intensity": 16.9
+          "onshore": -0.571,
+          "intensity": 12.9
         }
       },
-      "confidence": "medium"
+      "confidence": "high"
     },
     "691": {
       "beachId": 691,
@@ -1441,66 +1442,66 @@
         "lat": 35.1464389,
         "lon": 24.5056107
       },
-      "facingDeg": 204.2,
+      "facingDeg": 207.2,
       "sectors": {
         "N": {
           "level": "protected",
-          "fetchKm": 0.2,
+          "fetchKm": 0,
           "blockedRayRatio": 1,
-          "onshore": -0.912,
-          "intensity": 2.6
+          "onshore": -0.889,
+          "intensity": 3.3
         },
         "NE": {
           "level": "protected",
-          "fetchKm": 0.1,
+          "fetchKm": 0,
           "blockedRayRatio": 1,
-          "onshore": -0.935,
-          "intensity": 2
+          "onshore": -0.952,
+          "intensity": 1.4
         },
         "E": {
           "level": "protected",
-          "fetchKm": 1.1,
+          "fetchKm": 0.52,
           "blockedRayRatio": 1,
-          "onshore": -0.41,
-          "intensity": 17.7
+          "onshore": -0.457,
+          "intensity": 16.3
         },
         "SE": {
           "level": "partial",
-          "fetchKm": 15.9,
-          "blockedRayRatio": 0.4,
-          "onshore": 0.355,
-          "intensity": 56.9
+          "fetchKm": 10.28,
+          "blockedRayRatio": 0.8,
+          "onshore": 0.306,
+          "intensity": 43.6
         },
         "S": {
           "level": "exposed",
-          "fetchKm": 25,
-          "blockedRayRatio": 0,
-          "onshore": 0.912,
-          "intensity": 95.6
+          "fetchKm": 23.4,
+          "blockedRayRatio": 0.2,
+          "onshore": 0.889,
+          "intensity": 86.9
         },
         "SW": {
           "level": "exposed",
           "fetchKm": 25,
           "blockedRayRatio": 0,
-          "onshore": 0.935,
-          "intensity": 96.7
+          "onshore": 0.952,
+          "intensity": 97.6
         },
         "W": {
-          "level": "partial",
-          "fetchKm": 15.8,
+          "level": "exposed",
+          "fetchKm": 15.6,
           "blockedRayRatio": 0.4,
-          "onshore": 0.41,
-          "intensity": 59.2
+          "onshore": 0.457,
+          "intensity": 61.2
         },
         "NW": {
           "level": "protected",
-          "fetchKm": 1.2,
+          "fetchKm": 0.6,
           "blockedRayRatio": 1,
-          "onshore": -0.355,
-          "intensity": 19.3
+          "onshore": -0.306,
+          "intensity": 20.8
         }
       },
-      "confidence": "medium"
+      "confidence": "high"
     },
     "692": {
       "beachId": 692,
@@ -1512,66 +1513,66 @@
         "lat": 35.1527284,
         "lon": 24.4804011
       },
-      "facingDeg": 173.9,
+      "facingDeg": 182.4,
       "sectors": {
         "N": {
           "level": "protected",
           "fetchKm": 0,
           "blockedRayRatio": 1,
-          "onshore": -0.994,
-          "intensity": 0.2
+          "onshore": -0.999,
+          "intensity": 0
         },
         "NE": {
           "level": "protected",
-          "fetchKm": 0.2,
+          "fetchKm": 0,
           "blockedRayRatio": 1,
-          "onshore": -0.628,
-          "intensity": 11.2
+          "onshore": -0.736,
+          "intensity": 7.9
         },
         "E": {
-          "level": "partial",
-          "fetchKm": 2.5,
+          "level": "protected",
+          "fetchKm": 1.4,
           "blockedRayRatio": 1,
-          "onshore": 0.106,
-          "intensity": 33.2
+          "onshore": -0.042,
+          "intensity": 28.7
         },
         "SE": {
           "level": "exposed",
-          "fetchKm": 17,
-          "blockedRayRatio": 0.4,
-          "onshore": 0.778,
-          "intensity": 74.7
+          "fetchKm": 15.12,
+          "blockedRayRatio": 0.6,
+          "onshore": 0.677,
+          "intensity": 63.7
         },
         "S": {
           "level": "exposed",
-          "fetchKm": 25,
-          "blockedRayRatio": 0,
-          "onshore": 0.994,
-          "intensity": 99.7
+          "fetchKm": 23.72,
+          "blockedRayRatio": 0.2,
+          "onshore": 0.999,
+          "intensity": 92
         },
         "SW": {
           "level": "exposed",
-          "fetchKm": 25,
-          "blockedRayRatio": 0,
-          "onshore": 0.628,
-          "intensity": 81.4
+          "fetchKm": 20.24,
+          "blockedRayRatio": 0.2,
+          "onshore": 0.736,
+          "intensity": 79.9
         },
         "W": {
-          "level": "protected",
-          "fetchKm": 10.1,
-          "blockedRayRatio": 0.6,
-          "onshore": -0.106,
-          "intensity": 32.8
+          "level": "partial",
+          "fetchKm": 5.24,
+          "blockedRayRatio": 0.8,
+          "onshore": 0.042,
+          "intensity": 33.1
         },
         "NW": {
           "level": "protected",
           "fetchKm": 0,
           "blockedRayRatio": 1,
-          "onshore": -0.778,
-          "intensity": 6.7
+          "onshore": -0.677,
+          "intensity": 9.7
         }
       },
-      "confidence": "medium"
+      "confidence": "high"
     },
     "693": {
       "beachId": 693,
@@ -1583,35 +1584,35 @@
         "lat": 35.3512772,
         "lon": 24.3412219
       },
-      "facingDeg": 0.2,
+      "facingDeg": 359.8,
       "sectors": {
         "N": {
           "level": "exposed",
-          "fetchKm": 23.1,
-          "blockedRayRatio": 0.2,
+          "fetchKm": 25,
+          "blockedRayRatio": 0,
           "onshore": 1,
-          "intensity": 92
+          "intensity": 100
         },
         "NE": {
           "level": "exposed",
-          "fetchKm": 25,
-          "blockedRayRatio": 0,
-          "onshore": 0.71,
-          "intensity": 85.5
+          "fetchKm": 20.48,
+          "blockedRayRatio": 0.2,
+          "onshore": 0.705,
+          "intensity": 78.4
         },
         "E": {
-          "level": "partial",
-          "fetchKm": 10.2,
-          "blockedRayRatio": 0.6,
-          "onshore": 0.003,
-          "intensity": 36.9
+          "level": "protected",
+          "fetchKm": 5.92,
+          "blockedRayRatio": 0.8,
+          "onshore": -0.003,
+          "intensity": 31.9
         },
         "SE": {
           "level": "protected",
-          "fetchKm": 0.1,
+          "fetchKm": 0.12,
           "blockedRayRatio": 1,
-          "onshore": -0.705,
-          "intensity": 8.9
+          "onshore": -0.71,
+          "intensity": 8.7
         },
         "S": {
           "level": "protected",
@@ -1622,27 +1623,27 @@
         },
         "SW": {
           "level": "protected",
-          "fetchKm": 0.1,
+          "fetchKm": 0.04,
           "blockedRayRatio": 1,
-          "onshore": -0.71,
-          "intensity": 8.7
+          "onshore": -0.705,
+          "intensity": 8.9
         },
         "W": {
           "level": "protected",
-          "fetchKm": 2.6,
+          "fetchKm": 3.44,
           "blockedRayRatio": 1,
-          "onshore": -0.003,
-          "intensity": 29.9
+          "onshore": 0.003,
+          "intensity": 30.1
         },
         "NW": {
-          "level": "partial",
-          "fetchKm": 12.3,
-          "blockedRayRatio": 0.8,
-          "onshore": 0.705,
-          "intensity": 58
+          "level": "exposed",
+          "fetchKm": 15.12,
+          "blockedRayRatio": 0.6,
+          "onshore": 0.71,
+          "intensity": 65
         }
       },
-      "confidence": "medium"
+      "confidence": "high"
     },
     "694": {
       "beachId": 694,
@@ -1654,66 +1655,66 @@
         "lat": 35.4102492,
         "lon": 24.8278864
       },
-      "facingDeg": 20.7,
+      "facingDeg": 58.4,
       "sectors": {
         "N": {
           "level": "exposed",
-          "fetchKm": 25,
-          "blockedRayRatio": 0,
-          "onshore": 0.935,
-          "intensity": 96.8
+          "fetchKm": 15,
+          "blockedRayRatio": 0.4,
+          "onshore": 0.524,
+          "intensity": 64
         },
         "NE": {
           "level": "exposed",
           "fetchKm": 25,
           "blockedRayRatio": 0,
-          "onshore": 0.911,
-          "intensity": 95.6
+          "onshore": 0.973,
+          "intensity": 98.6
         },
         "E": {
-          "level": "partial",
-          "fetchKm": 10.9,
+          "level": "exposed",
+          "fetchKm": 11.12,
           "blockedRayRatio": 0.6,
-          "onshore": 0.353,
-          "intensity": 50.4
+          "onshore": 0.852,
+          "intensity": 69.3
         },
         "SE": {
-          "level": "protected",
-          "fetchKm": 0.5,
+          "level": "partial",
+          "fetchKm": 0.44,
           "blockedRayRatio": 1,
-          "onshore": -0.412,
-          "intensity": 17.7
+          "onshore": 0.232,
+          "intensity": 37
         },
         "S": {
           "level": "protected",
           "fetchKm": 0,
           "blockedRayRatio": 1,
-          "onshore": -0.935,
-          "intensity": 1.9
+          "onshore": -0.524,
+          "intensity": 14.3
         },
         "SW": {
           "level": "protected",
           "fetchKm": 0,
           "blockedRayRatio": 1,
-          "onshore": -0.911,
-          "intensity": 2.7
+          "onshore": -0.973,
+          "intensity": 0.8
         },
         "W": {
           "level": "protected",
-          "fetchKm": 5,
-          "blockedRayRatio": 0.8,
-          "onshore": -0.353,
-          "intensity": 20.5
+          "fetchKm": 0,
+          "blockedRayRatio": 1,
+          "onshore": -0.852,
+          "intensity": 4.4
         },
         "NW": {
-          "level": "exposed",
-          "fetchKm": 20,
-          "blockedRayRatio": 0.2,
-          "onshore": 0.412,
-          "intensity": 64.9
+          "level": "protected",
+          "fetchKm": 0,
+          "blockedRayRatio": 1,
+          "onshore": -0.232,
+          "intensity": 23
         }
       },
-      "confidence": "medium"
+      "confidence": "high"
     },
     "695": {
       "beachId": 695,
@@ -1725,66 +1726,66 @@
         "lat": 35.1393441,
         "lon": 24.5254491
       },
-      "facingDeg": 218.3,
+      "facingDeg": 221,
       "sectors": {
         "N": {
           "level": "protected",
-          "fetchKm": 0,
+          "fetchKm": 0.04,
           "blockedRayRatio": 1,
-          "onshore": -0.785,
-          "intensity": 6.5
+          "onshore": -0.755,
+          "intensity": 7.4
         },
         "NE": {
           "level": "protected",
           "fetchKm": 0,
           "blockedRayRatio": 1,
-          "onshore": -0.993,
-          "intensity": 0.2
+          "onshore": -0.998,
+          "intensity": 0.1
         },
         "E": {
           "level": "protected",
-          "fetchKm": 0.1,
+          "fetchKm": 0.12,
           "blockedRayRatio": 1,
-          "onshore": -0.62,
-          "intensity": 11.4
+          "onshore": -0.656,
+          "intensity": 10.3
         },
         "SE": {
           "level": "partial",
-          "fetchKm": 10.5,
+          "fetchKm": 10.32,
           "blockedRayRatio": 0.6,
-          "onshore": 0.117,
-          "intensity": 41.3
+          "onshore": 0.07,
+          "intensity": 39.5
         },
         "S": {
           "level": "exposed",
           "fetchKm": 25,
           "blockedRayRatio": 0,
-          "onshore": 0.785,
-          "intensity": 89.2
+          "onshore": 0.755,
+          "intensity": 87.7
         },
         "SW": {
           "level": "exposed",
           "fetchKm": 25,
           "blockedRayRatio": 0,
-          "onshore": 0.993,
-          "intensity": 99.7
+          "onshore": 0.998,
+          "intensity": 99.9
         },
         "W": {
           "level": "exposed",
-          "fetchKm": 16.6,
+          "fetchKm": 16.24,
           "blockedRayRatio": 0.4,
-          "onshore": 0.62,
-          "intensity": 68
+          "onshore": 0.656,
+          "intensity": 69.6
         },
         "NW": {
           "level": "protected",
-          "fetchKm": 1.7,
+          "fetchKm": 1.44,
           "blockedRayRatio": 1,
-          "onshore": -0.117,
-          "intensity": 26.5
+          "onshore": -0.07,
+          "intensity": 27.9
         }
       },
-      "confidence": "medium"
+      "confidence": "high"
     },
     "696": {
       "beachId": 696,
@@ -1796,66 +1797,66 @@
         "lat": 35.1502194,
         "lon": 24.4910212
       },
-      "facingDeg": 190,
+      "facingDeg": 191.2,
       "sectors": {
         "N": {
           "level": "protected",
-          "fetchKm": 0.1,
+          "fetchKm": 0,
           "blockedRayRatio": 1,
-          "onshore": -0.985,
-          "intensity": 0.5
+          "onshore": -0.981,
+          "intensity": 0.6
         },
         "NE": {
           "level": "protected",
-          "fetchKm": 0.3,
+          "fetchKm": 0,
           "blockedRayRatio": 1,
-          "onshore": -0.819,
-          "intensity": 5.4
+          "onshore": -0.831,
+          "intensity": 5.1
         },
         "E": {
           "level": "protected",
-          "fetchKm": 1.9,
+          "fetchKm": 0.88,
           "blockedRayRatio": 1,
-          "onshore": -0.174,
-          "intensity": 24.8
+          "onshore": -0.194,
+          "intensity": 24.2
         },
         "SE": {
-          "level": "exposed",
-          "fetchKm": 16.5,
-          "blockedRayRatio": 0.4,
-          "onshore": 0.574,
-          "intensity": 66.1
+          "level": "partial",
+          "fetchKm": 14.48,
+          "blockedRayRatio": 0.6,
+          "onshore": 0.556,
+          "intensity": 59.1
         },
         "S": {
           "level": "exposed",
-          "fetchKm": 25,
-          "blockedRayRatio": 0,
-          "onshore": 0.985,
-          "intensity": 99.2
+          "fetchKm": 23.6,
+          "blockedRayRatio": 0.2,
+          "onshore": 0.981,
+          "intensity": 91.1
         },
         "SW": {
           "level": "exposed",
           "fetchKm": 25,
           "blockedRayRatio": 0,
-          "onshore": 0.819,
-          "intensity": 91
+          "onshore": 0.831,
+          "intensity": 91.5
         },
         "W": {
           "level": "partial",
-          "fetchKm": 15.5,
-          "blockedRayRatio": 0.4,
-          "onshore": 0.174,
-          "intensity": 49.3
+          "fetchKm": 10.68,
+          "blockedRayRatio": 0.6,
+          "onshore": 0.194,
+          "intensity": 44.3
         },
         "NW": {
           "level": "protected",
-          "fetchKm": 0.7,
+          "fetchKm": 0.28,
           "blockedRayRatio": 1,
-          "onshore": -0.574,
-          "intensity": 12.8
+          "onshore": -0.556,
+          "intensity": 13.3
         }
       },
-      "confidence": "medium"
+      "confidence": "high"
     },
     "697": {
       "beachId": 697,
@@ -1867,66 +1868,66 @@
         "lat": 35.3689513,
         "lon": 24.503394
       },
-      "facingDeg": 347.7,
+      "facingDeg": 355.7,
       "sectors": {
         "N": {
           "level": "exposed",
           "fetchKm": 25,
           "blockedRayRatio": 0,
-          "onshore": 0.977,
-          "intensity": 98.9
+          "onshore": 0.997,
+          "intensity": 99.9
         },
         "NE": {
           "level": "exposed",
-          "fetchKm": 22.2,
+          "fetchKm": 22.04,
           "blockedRayRatio": 0.2,
-          "onshore": 0.54,
-          "intensity": 70.9
+          "onshore": 0.652,
+          "intensity": 76
         },
         "E": {
           "level": "protected",
-          "fetchKm": 7.7,
+          "fetchKm": 7.08,
           "blockedRayRatio": 0.8,
-          "onshore": -0.213,
-          "intensity": 25.6
+          "onshore": -0.075,
+          "intensity": 29.9
         },
         "SE": {
           "level": "protected",
-          "fetchKm": 0.2,
+          "fetchKm": 0,
           "blockedRayRatio": 1,
-          "onshore": -0.842,
-          "intensity": 4.8
+          "onshore": -0.758,
+          "intensity": 7.3
         },
         "S": {
           "level": "protected",
           "fetchKm": 0,
           "blockedRayRatio": 1,
-          "onshore": -0.977,
-          "intensity": 0.7
+          "onshore": -0.997,
+          "intensity": 0.1
         },
         "SW": {
           "level": "protected",
-          "fetchKm": 1.3,
+          "fetchKm": 0.08,
           "blockedRayRatio": 1,
-          "onshore": -0.54,
-          "intensity": 13.8
+          "onshore": -0.652,
+          "intensity": 10.4
         },
         "W": {
           "level": "partial",
-          "fetchKm": 14.9,
+          "fetchKm": 10.04,
           "blockedRayRatio": 0.8,
-          "onshore": 0.213,
-          "intensity": 41.2
+          "onshore": 0.075,
+          "intensity": 35.8
         },
         "NW": {
           "level": "exposed",
-          "fetchKm": 24.4,
+          "fetchKm": 24.52,
           "blockedRayRatio": 0.2,
-          "onshore": 0.842,
-          "intensity": 84.7
+          "onshore": 0.758,
+          "intensity": 80.9
         }
       },
-      "confidence": "medium"
+      "confidence": "high"
     },
     "698": {
       "beachId": 698,
@@ -1938,14 +1939,156 @@
         "lat": 35.1417421,
         "lon": 24.5228743
       },
-      "facingDeg": 216.7,
+      "facingDeg": 216.4,
       "sectors": {
         "N": {
           "level": "protected",
           "fetchKm": 0,
           "blockedRayRatio": 1,
-          "onshore": -0.802,
+          "onshore": -0.805,
           "intensity": 5.9
+        },
+        "NE": {
+          "level": "protected",
+          "fetchKm": 0,
+          "blockedRayRatio": 1,
+          "onshore": -0.989,
+          "intensity": 0.3
+        },
+        "E": {
+          "level": "protected",
+          "fetchKm": 0,
+          "blockedRayRatio": 1,
+          "onshore": -0.593,
+          "intensity": 12.2
+        },
+        "SE": {
+          "level": "partial",
+          "fetchKm": 10.04,
+          "blockedRayRatio": 0.6,
+          "onshore": 0.15,
+          "intensity": 42.2
+        },
+        "S": {
+          "level": "exposed",
+          "fetchKm": 25,
+          "blockedRayRatio": 0,
+          "onshore": 0.805,
+          "intensity": 90.2
+        },
+        "SW": {
+          "level": "exposed",
+          "fetchKm": 25,
+          "blockedRayRatio": 0,
+          "onshore": 0.989,
+          "intensity": 99.4
+        },
+        "W": {
+          "level": "exposed",
+          "fetchKm": 16.08,
+          "blockedRayRatio": 0.4,
+          "onshore": 0.593,
+          "intensity": 66.9
+        },
+        "NW": {
+          "level": "protected",
+          "fetchKm": 1.12,
+          "blockedRayRatio": 1,
+          "onshore": -0.15,
+          "intensity": 25.5
+        }
+      },
+      "confidence": "high"
+    },
+    "699": {
+      "beachId": 699,
+      "name": {
+        "en": "Peristeres",
+        "gr": "Περιστερές"
+      },
+      "coordinates": {
+        "lat": 35.182431,
+        "lon": 24.2992633
+      },
+      "facingDeg": 162.9,
+      "sectors": {
+        "N": {
+          "level": "protected",
+          "fetchKm": 0,
+          "blockedRayRatio": 1,
+          "onshore": -0.956,
+          "intensity": 1.3
+        },
+        "NE": {
+          "level": "protected",
+          "fetchKm": 0,
+          "blockedRayRatio": 1,
+          "onshore": -0.468,
+          "intensity": 16
+        },
+        "E": {
+          "level": "partial",
+          "fetchKm": 11.2,
+          "blockedRayRatio": 0.8,
+          "onshore": 0.294,
+          "intensity": 43.7
+        },
+        "SE": {
+          "level": "exposed",
+          "fetchKm": 24.4,
+          "blockedRayRatio": 0.2,
+          "onshore": 0.884,
+          "intensity": 86.7
+        },
+        "S": {
+          "level": "exposed",
+          "fetchKm": 25,
+          "blockedRayRatio": 0,
+          "onshore": 0.956,
+          "intensity": 97.8
+        },
+        "SW": {
+          "level": "exposed",
+          "fetchKm": 15.24,
+          "blockedRayRatio": 0.4,
+          "onshore": 0.468,
+          "intensity": 61.7
+        },
+        "W": {
+          "level": "protected",
+          "fetchKm": 0.24,
+          "blockedRayRatio": 1,
+          "onshore": -0.294,
+          "intensity": 21.2
+        },
+        "NW": {
+          "level": "protected",
+          "fetchKm": 0,
+          "blockedRayRatio": 1,
+          "onshore": -0.884,
+          "intensity": 3.5
+        }
+      },
+      "confidence": "high"
+    },
+    "700": {
+      "beachId": 700,
+      "name": {
+        "en": "Plakias",
+        "gr": "Πλακιάς"
+      },
+      "coordinates": {
+        "lat": 35.19043,
+        "lon": 24.39385
+      },
+      "facingDeg": 216.8,
+      "sectors": {
+        "N": {
+          "level": "protected",
+          "fetchKm": 0,
+          "blockedRayRatio": 1,
+          "onshore": -0.801,
+          "intensity": 6
         },
         "NE": {
           "level": "protected",
@@ -1958,22 +2101,22 @@
           "level": "protected",
           "fetchKm": 0,
           "blockedRayRatio": 1,
-          "onshore": -0.598,
-          "intensity": 12.1
+          "onshore": -0.599,
+          "intensity": 12
         },
         "SE": {
           "level": "partial",
-          "fetchKm": 10.5,
-          "blockedRayRatio": 0.6,
-          "onshore": 0.144,
-          "intensity": 42.3
+          "fetchKm": 0.48,
+          "blockedRayRatio": 1,
+          "onshore": 0.143,
+          "intensity": 34.3
         },
         "S": {
           "level": "exposed",
-          "fetchKm": 25,
-          "blockedRayRatio": 0,
-          "onshore": 0.802,
-          "intensity": 90.1
+          "fetchKm": 10.68,
+          "blockedRayRatio": 0.6,
+          "onshore": 0.801,
+          "intensity": 66.8
         },
         "SW": {
           "level": "exposed",
@@ -1983,163 +2126,21 @@
           "intensity": 99.5
         },
         "W": {
-          "level": "exposed",
-          "fetchKm": 16.3,
-          "blockedRayRatio": 0.4,
-          "onshore": 0.598,
-          "intensity": 67.1
+          "level": "partial",
+          "fetchKm": 10,
+          "blockedRayRatio": 0.6,
+          "onshore": 0.599,
+          "intensity": 58.6
         },
         "NW": {
           "level": "protected",
-          "fetchKm": 1.3,
+          "fetchKm": 0,
           "blockedRayRatio": 1,
-          "onshore": -0.144,
+          "onshore": -0.143,
           "intensity": 25.7
         }
       },
-      "confidence": "medium"
-    },
-    "699": {
-      "beachId": 699,
-      "name": {
-        "en": "Peristeres",
-        "gr": "Περιστερές"
-      },
-      "coordinates": {
-        "lat": 35.182431,
-        "lon": 24.2992633
-      },
-      "facingDeg": 174.8,
-      "sectors": {
-        "N": {
-          "level": "protected",
-          "fetchKm": 0,
-          "blockedRayRatio": 1,
-          "onshore": -0.996,
-          "intensity": 0.1
-        },
-        "NE": {
-          "level": "protected",
-          "fetchKm": 0,
-          "blockedRayRatio": 1,
-          "onshore": -0.64,
-          "intensity": 10.8
-        },
-        "E": {
-          "level": "partial",
-          "fetchKm": 11.3,
-          "blockedRayRatio": 0.8,
-          "onshore": 0.091,
-          "intensity": 36.8
-        },
-        "SE": {
-          "level": "exposed",
-          "fetchKm": 24.5,
-          "blockedRayRatio": 0.2,
-          "onshore": 0.768,
-          "intensity": 81.3
-        },
-        "S": {
-          "level": "exposed",
-          "fetchKm": 25,
-          "blockedRayRatio": 0,
-          "onshore": 0.996,
-          "intensity": 99.8
-        },
-        "SW": {
-          "level": "exposed",
-          "fetchKm": 25,
-          "blockedRayRatio": 0,
-          "onshore": 0.64,
-          "intensity": 82
-        },
-        "W": {
-          "level": "partial",
-          "fetchKm": 10,
-          "blockedRayRatio": 0.6,
-          "onshore": -0.091,
-          "intensity": 33.3
-        },
-        "NW": {
-          "level": "protected",
-          "fetchKm": 0,
-          "blockedRayRatio": 1,
-          "onshore": -0.768,
-          "intensity": 7
-        }
-      },
-      "confidence": "medium"
-    },
-    "700": {
-      "beachId": 700,
-      "name": {
-        "en": "Plakias",
-        "gr": "Πλακιάς"
-      },
-      "coordinates": {
-        "lat": 35.19043,
-        "lon": 24.39385
-      },
-      "facingDeg": 197.8,
-      "sectors": {
-        "N": {
-          "level": "protected",
-          "fetchKm": 0,
-          "blockedRayRatio": 1,
-          "onshore": -0.952,
-          "intensity": 1.4
-        },
-        "NE": {
-          "level": "protected",
-          "fetchKm": 0,
-          "blockedRayRatio": 1,
-          "onshore": -0.889,
-          "intensity": 3.3
-        },
-        "E": {
-          "level": "protected",
-          "fetchKm": 0.3,
-          "blockedRayRatio": 1,
-          "onshore": -0.306,
-          "intensity": 20.8
-        },
-        "SE": {
-          "level": "partial",
-          "fetchKm": 5.7,
-          "blockedRayRatio": 0.8,
-          "onshore": 0.457,
-          "intensity": 46.5
-        },
-        "S": {
-          "level": "exposed",
-          "fetchKm": 20.3,
-          "blockedRayRatio": 0.2,
-          "onshore": 0.952,
-          "intensity": 89.8
-        },
-        "SW": {
-          "level": "exposed",
-          "fetchKm": 25,
-          "blockedRayRatio": 0,
-          "onshore": 0.889,
-          "intensity": 94.5
-        },
-        "W": {
-          "level": "partial",
-          "fetchKm": 10,
-          "blockedRayRatio": 0.6,
-          "onshore": 0.306,
-          "intensity": 47.9
-        },
-        "NW": {
-          "level": "protected",
-          "fetchKm": 0,
-          "blockedRayRatio": 1,
-          "onshore": -0.457,
-          "intensity": 16.3
-        }
-      },
-      "confidence": "medium"
+      "confidence": "high"
     },
     "701": {
       "beachId": 701,
@@ -2151,66 +2152,66 @@
         "lat": 35.1442948,
         "lon": 24.5177404
       },
-      "facingDeg": 213,
+      "facingDeg": 203.6,
       "sectors": {
         "N": {
           "level": "protected",
           "fetchKm": 0,
           "blockedRayRatio": 1,
-          "onshore": -0.839,
-          "intensity": 4.8
+          "onshore": -0.916,
+          "intensity": 2.5
         },
         "NE": {
           "level": "protected",
           "fetchKm": 0,
           "blockedRayRatio": 1,
-          "onshore": -0.978,
-          "intensity": 0.7
+          "onshore": -0.931,
+          "intensity": 2.1
         },
         "E": {
           "level": "protected",
-          "fetchKm": 0.1,
+          "fetchKm": 0.08,
           "blockedRayRatio": 1,
-          "onshore": -0.545,
-          "intensity": 13.7
+          "onshore": -0.4,
+          "intensity": 18
         },
         "SE": {
           "level": "partial",
-          "fetchKm": 10.9,
+          "fetchKm": 10.48,
           "blockedRayRatio": 0.6,
-          "onshore": 0.208,
-          "intensity": 45
+          "onshore": 0.365,
+          "intensity": 50.5
         },
         "S": {
           "level": "exposed",
           "fetchKm": 25,
           "blockedRayRatio": 0,
-          "onshore": 0.839,
-          "intensity": 91.9
+          "onshore": 0.916,
+          "intensity": 95.8
         },
         "SW": {
           "level": "exposed",
           "fetchKm": 25,
           "blockedRayRatio": 0,
-          "onshore": 0.978,
-          "intensity": 98.9
+          "onshore": 0.931,
+          "intensity": 96.6
         },
         "W": {
-          "level": "exposed",
-          "fetchKm": 16.1,
+          "level": "partial",
+          "fetchKm": 15.04,
           "blockedRayRatio": 0.4,
-          "onshore": 0.545,
-          "intensity": 64.9
+          "onshore": 0.4,
+          "intensity": 58.8
         },
         "NW": {
           "level": "protected",
-          "fetchKm": 1.1,
+          "fetchKm": 0.04,
           "blockedRayRatio": 1,
-          "onshore": -0.208,
-          "intensity": 23.8
+          "onshore": -0.365,
+          "intensity": 19.1
         }
       },
-      "confidence": "medium"
+      "confidence": "high"
     },
     "702": {
       "beachId": 702,
@@ -2222,66 +2223,66 @@
         "lat": 35.1856174,
         "lon": 24.3053279
       },
-      "facingDeg": 174.8,
+      "facingDeg": 149.9,
       "sectors": {
         "N": {
           "level": "protected",
           "fetchKm": 0,
           "blockedRayRatio": 1,
-          "onshore": -0.996,
-          "intensity": 0.1
+          "onshore": -0.865,
+          "intensity": 4
         },
         "NE": {
           "level": "protected",
-          "fetchKm": 0,
+          "fetchKm": 0.08,
           "blockedRayRatio": 1,
-          "onshore": -0.64,
-          "intensity": 10.8
+          "onshore": -0.257,
+          "intensity": 22.3
         },
         "E": {
           "level": "partial",
-          "fetchKm": 10.8,
+          "fetchKm": 8.28,
           "blockedRayRatio": 0.8,
-          "onshore": 0.091,
-          "intensity": 36.6
+          "onshore": 0.502,
+          "intensity": 49.2
         },
         "SE": {
           "level": "exposed",
-          "fetchKm": 24.2,
+          "fetchKm": 22.56,
           "blockedRayRatio": 0.2,
-          "onshore": 0.768,
-          "intensity": 81.3
+          "onshore": 0.966,
+          "intensity": 90.5
         },
         "S": {
           "level": "exposed",
           "fetchKm": 25,
           "blockedRayRatio": 0,
-          "onshore": 0.996,
-          "intensity": 99.8
+          "onshore": 0.865,
+          "intensity": 93.3
         },
         "SW": {
-          "level": "exposed",
-          "fetchKm": 25,
-          "blockedRayRatio": 0,
-          "onshore": 0.64,
-          "intensity": 82
+          "level": "partial",
+          "fetchKm": 10.04,
+          "blockedRayRatio": 0.6,
+          "onshore": 0.257,
+          "intensity": 46.1
         },
         "W": {
-          "level": "partial",
-          "fetchKm": 10,
-          "blockedRayRatio": 0.6,
-          "onshore": -0.091,
-          "intensity": 33.3
+          "level": "protected",
+          "fetchKm": 0,
+          "blockedRayRatio": 1,
+          "onshore": -0.502,
+          "intensity": 15
         },
         "NW": {
           "level": "protected",
           "fetchKm": 0,
           "blockedRayRatio": 1,
-          "onshore": -0.768,
-          "intensity": 7
+          "onshore": -0.966,
+          "intensity": 1
         }
       },
-      "confidence": "medium"
+      "confidence": "high"
     },
     "703": {
       "beachId": 703,
@@ -2293,66 +2294,66 @@
         "lat": 35.0988972,
         "lon": 24.5957597
       },
-      "facingDeg": 197.8,
+      "facingDeg": 163.8,
       "sectors": {
         "N": {
           "level": "protected",
           "fetchKm": 0,
           "blockedRayRatio": 1,
-          "onshore": -0.952,
-          "intensity": 1.4
+          "onshore": -0.96,
+          "intensity": 1.2
         },
         "NE": {
           "level": "protected",
-          "fetchKm": 0.1,
+          "fetchKm": 0,
           "blockedRayRatio": 1,
-          "onshore": -0.889,
-          "intensity": 3.3
+          "onshore": -0.482,
+          "intensity": 15.5
         },
         "E": {
-          "level": "protected",
-          "fetchKm": 6.6,
+          "level": "partial",
+          "fetchKm": 6.48,
           "blockedRayRatio": 1,
-          "onshore": -0.306,
-          "intensity": 20.8
+          "onshore": 0.279,
+          "intensity": 38.4
         },
         "SE": {
-          "level": "partial",
-          "fetchKm": 20.3,
+          "level": "exposed",
+          "fetchKm": 20.16,
           "blockedRayRatio": 0.6,
-          "onshore": 0.457,
-          "intensity": 55.4
+          "onshore": 0.876,
+          "intensity": 71.3
         },
         "S": {
           "level": "exposed",
           "fetchKm": 25,
           "blockedRayRatio": 0,
-          "onshore": 0.952,
-          "intensity": 97.6
+          "onshore": 0.96,
+          "intensity": 98
         },
         "SW": {
           "level": "exposed",
-          "fetchKm": 25,
-          "blockedRayRatio": 0,
-          "onshore": 0.889,
-          "intensity": 94.5
+          "fetchKm": 20.08,
+          "blockedRayRatio": 0.2,
+          "onshore": 0.482,
+          "intensity": 68.2
         },
         "W": {
-          "level": "exposed",
-          "fetchKm": 20.4,
-          "blockedRayRatio": 0.2,
-          "onshore": 0.306,
-          "intensity": 60.1
+          "level": "protected",
+          "fetchKm": 5.08,
+          "blockedRayRatio": 0.8,
+          "onshore": -0.279,
+          "intensity": 22.9
         },
         "NW": {
           "level": "protected",
-          "fetchKm": 5.5,
-          "blockedRayRatio": 0.8,
-          "onshore": -0.457,
-          "intensity": 17.3
+          "fetchKm": 0,
+          "blockedRayRatio": 1,
+          "onshore": -0.876,
+          "intensity": 3.7
         }
       },
-      "confidence": "medium"
+      "confidence": "high"
     },
     "704": {
       "beachId": 704,
@@ -2364,66 +2365,66 @@
         "lat": 35.15248,
         "lon": 24.47386
       },
-      "facingDeg": 166.7,
+      "facingDeg": 156.4,
       "sectors": {
         "N": {
           "level": "protected",
           "fetchKm": 0,
           "blockedRayRatio": 1,
-          "onshore": -0.973,
-          "intensity": 0.8
+          "onshore": -0.916,
+          "intensity": 2.5
         },
         "NE": {
           "level": "protected",
-          "fetchKm": 0.3,
+          "fetchKm": 0,
           "blockedRayRatio": 1,
-          "onshore": -0.525,
-          "intensity": 14.2
+          "onshore": -0.365,
+          "intensity": 19.1
         },
         "E": {
           "level": "partial",
-          "fetchKm": 3.2,
+          "fetchKm": 2.28,
           "blockedRayRatio": 1,
-          "onshore": 0.23,
-          "intensity": 36.9
+          "onshore": 0.4,
+          "intensity": 42
         },
         "SE": {
           "level": "exposed",
-          "fetchKm": 17.5,
-          "blockedRayRatio": 0.4,
-          "onshore": 0.851,
-          "intensity": 77.7
+          "fetchKm": 15.92,
+          "blockedRayRatio": 0.6,
+          "onshore": 0.931,
+          "intensity": 73.4
         },
         "S": {
           "level": "exposed",
-          "fetchKm": 25,
-          "blockedRayRatio": 0,
-          "onshore": 0.973,
-          "intensity": 98.7
+          "fetchKm": 23.76,
+          "blockedRayRatio": 0.2,
+          "onshore": 0.916,
+          "intensity": 88.2
         },
         "SW": {
-          "level": "exposed",
-          "fetchKm": 25,
-          "blockedRayRatio": 0,
-          "onshore": 0.525,
-          "intensity": 76.3
+          "level": "partial",
+          "fetchKm": 10,
+          "blockedRayRatio": 0.6,
+          "onshore": 0.365,
+          "intensity": 50
         },
         "W": {
           "level": "protected",
-          "fetchKm": 10,
-          "blockedRayRatio": 0.6,
-          "onshore": -0.23,
-          "intensity": 28.2
+          "fetchKm": 0,
+          "blockedRayRatio": 1,
+          "onshore": -0.4,
+          "intensity": 18
         },
         "NW": {
           "level": "protected",
           "fetchKm": 0,
           "blockedRayRatio": 1,
-          "onshore": -0.851,
-          "intensity": 4.5
+          "onshore": -0.931,
+          "intensity": 2.1
         }
       },
-      "confidence": "medium"
+      "confidence": "high"
     },
     "705": {
       "beachId": 705,
@@ -2435,66 +2436,66 @@
         "lat": 35.1920804,
         "lon": 24.3897337
       },
-      "facingDeg": 198.9,
+      "facingDeg": 214,
       "sectors": {
         "N": {
           "level": "protected",
           "fetchKm": 0,
           "blockedRayRatio": 1,
-          "onshore": -0.946,
-          "intensity": 1.6
+          "onshore": -0.829,
+          "intensity": 5.1
         },
         "NE": {
           "level": "protected",
           "fetchKm": 0,
           "blockedRayRatio": 1,
-          "onshore": -0.898,
-          "intensity": 3.1
+          "onshore": -0.982,
+          "intensity": 0.6
         },
         "E": {
           "level": "protected",
-          "fetchKm": 0.3,
+          "fetchKm": 0,
           "blockedRayRatio": 1,
-          "onshore": -0.324,
-          "intensity": 20.3
+          "onshore": -0.559,
+          "intensity": 13.2
         },
         "SE": {
           "level": "partial",
-          "fetchKm": 10.4,
-          "blockedRayRatio": 0.6,
-          "onshore": 0.44,
-          "intensity": 53.2
+          "fetchKm": 0.8,
+          "blockedRayRatio": 1,
+          "onshore": 0.191,
+          "intensity": 35.7
         },
         "S": {
           "level": "exposed",
-          "fetchKm": 25,
-          "blockedRayRatio": 0,
-          "onshore": 0.946,
-          "intensity": 97.3
+          "fetchKm": 15.56,
+          "blockedRayRatio": 0.4,
+          "onshore": 0.829,
+          "intensity": 76.8
         },
         "SW": {
           "level": "exposed",
-          "fetchKm": 25,
-          "blockedRayRatio": 0,
-          "onshore": 0.898,
-          "intensity": 94.9
+          "fetchKm": 20.64,
+          "blockedRayRatio": 0.2,
+          "onshore": 0.982,
+          "intensity": 91.2
         },
         "W": {
           "level": "partial",
-          "fetchKm": 10.1,
-          "blockedRayRatio": 0.6,
-          "onshore": 0.324,
-          "intensity": 48.6
+          "fetchKm": 6.04,
+          "blockedRayRatio": 0.8,
+          "onshore": 0.559,
+          "intensity": 49.9
         },
         "NW": {
           "level": "protected",
-          "fetchKm": 0,
+          "fetchKm": 0.2,
           "blockedRayRatio": 1,
-          "onshore": -0.44,
-          "intensity": 16.8
+          "onshore": -0.191,
+          "intensity": 24.3
         }
       },
-      "confidence": "medium"
+      "confidence": "high"
     },
     "706": {
       "beachId": 706,
@@ -2506,66 +2507,66 @@
         "lat": 35.1918818,
         "lon": 24.3657739
       },
-      "facingDeg": 174.8,
+      "facingDeg": 165.2,
       "sectors": {
         "N": {
           "level": "protected",
           "fetchKm": 0,
           "blockedRayRatio": 1,
-          "onshore": -0.996,
-          "intensity": 0.1
+          "onshore": -0.967,
+          "intensity": 1
         },
         "NE": {
           "level": "protected",
           "fetchKm": 0,
           "blockedRayRatio": 1,
-          "onshore": -0.64,
-          "intensity": 10.8
+          "onshore": -0.503,
+          "intensity": 14.9
         },
         "E": {
           "level": "partial",
-          "fetchKm": 6.2,
-          "blockedRayRatio": 0.8,
-          "onshore": 0.091,
-          "intensity": 35
+          "fetchKm": 0.64,
+          "blockedRayRatio": 1,
+          "onshore": 0.255,
+          "intensity": 37.7
         },
         "SE": {
           "level": "exposed",
-          "fetchKm": 20.6,
-          "blockedRayRatio": 0.2,
-          "onshore": 0.768,
-          "intensity": 81.3
+          "fetchKm": 15.6,
+          "blockedRayRatio": 0.4,
+          "onshore": 0.864,
+          "intensity": 78.3
         },
         "S": {
           "level": "exposed",
           "fetchKm": 25,
           "blockedRayRatio": 0,
-          "onshore": 0.996,
-          "intensity": 99.8
+          "onshore": 0.967,
+          "intensity": 98.3
         },
         "SW": {
-          "level": "exposed",
-          "fetchKm": 25,
-          "blockedRayRatio": 0,
-          "onshore": 0.64,
-          "intensity": 82
+          "level": "partial",
+          "fetchKm": 10.08,
+          "blockedRayRatio": 0.6,
+          "onshore": 0.503,
+          "intensity": 55.2
         },
         "W": {
-          "level": "partial",
-          "fetchKm": 10,
-          "blockedRayRatio": 0.6,
-          "onshore": -0.091,
-          "intensity": 33.3
+          "level": "protected",
+          "fetchKm": 0.04,
+          "blockedRayRatio": 1,
+          "onshore": -0.255,
+          "intensity": 22.3
         },
         "NW": {
           "level": "protected",
           "fetchKm": 0,
           "blockedRayRatio": 1,
-          "onshore": -0.768,
-          "intensity": 7
+          "onshore": -0.864,
+          "intensity": 4.1
         }
       },
-      "confidence": "medium"
+      "confidence": "high"
     },
     "707": {
       "beachId": 707,
@@ -2577,66 +2578,66 @@
         "lat": 35.41032,
         "lon": 24.63827
       },
-      "facingDeg": 334.7,
+      "facingDeg": 321.2,
       "sectors": {
         "N": {
           "level": "exposed",
           "fetchKm": 25,
           "blockedRayRatio": 0,
-          "onshore": 0.904,
-          "intensity": 95.2
+          "onshore": 0.779,
+          "intensity": 89
         },
         "NE": {
-          "level": "exposed",
-          "fetchKm": 20,
-          "blockedRayRatio": 0.2,
-          "onshore": 0.337,
-          "intensity": 61.5
+          "level": "partial",
+          "fetchKm": 15,
+          "blockedRayRatio": 0.4,
+          "onshore": 0.108,
+          "intensity": 46.5
         },
         "E": {
           "level": "protected",
-          "fetchKm": 5,
-          "blockedRayRatio": 0.8,
-          "onshore": -0.427,
-          "intensity": 18.1
+          "fetchKm": 0,
+          "blockedRayRatio": 1,
+          "onshore": -0.627,
+          "intensity": 11.2
         },
         "SE": {
           "level": "protected",
           "fetchKm": 0,
           "blockedRayRatio": 1,
-          "onshore": -0.941,
-          "intensity": 1.8
+          "onshore": -0.994,
+          "intensity": 0.2
         },
         "S": {
           "level": "protected",
           "fetchKm": 0,
           "blockedRayRatio": 1,
-          "onshore": -0.904,
-          "intensity": 2.9
+          "onshore": -0.779,
+          "intensity": 6.6
         },
         "SW": {
           "level": "protected",
-          "fetchKm": 3.7,
+          "fetchKm": 4.92,
           "blockedRayRatio": 1,
-          "onshore": -0.337,
-          "intensity": 19.9
+          "onshore": -0.108,
+          "intensity": 26.8
         },
         "W": {
-          "level": "partial",
-          "fetchKm": 18.7,
+          "level": "exposed",
+          "fetchKm": 19.88,
           "blockedRayRatio": 0.4,
-          "onshore": 0.427,
-          "intensity": 59.9
+          "onshore": 0.627,
+          "intensity": 68.3
         },
         "NW": {
           "level": "exposed",
           "fetchKm": 25,
           "blockedRayRatio": 0,
-          "onshore": 0.941,
-          "intensity": 97.1
+          "onshore": 0.994,
+          "intensity": 99.7
         }
       },
-      "confidence": "medium"
+      "confidence": "high"
     },
     "708": {
       "beachId": 708,
@@ -2648,66 +2649,66 @@
         "lat": 35.1842944,
         "lon": 24.354092
       },
-      "facingDeg": 174.6,
+      "facingDeg": 114.6,
       "sectors": {
         "N": {
           "level": "protected",
           "fetchKm": 0,
           "blockedRayRatio": 1,
-          "onshore": -0.996,
-          "intensity": 0.1
+          "onshore": -0.416,
+          "intensity": 17.5
         },
         "NE": {
-          "level": "protected",
-          "fetchKm": 0.5,
+          "level": "partial",
+          "fetchKm": 0.8,
           "blockedRayRatio": 1,
-          "onshore": -0.637,
-          "intensity": 10.9
+          "onshore": 0.349,
+          "intensity": 40.5
         },
         "E": {
-          "level": "partial",
-          "fetchKm": 7.2,
+          "level": "exposed",
+          "fetchKm": 7.24,
           "blockedRayRatio": 0.8,
-          "onshore": 0.094,
-          "intensity": 35.4
+          "onshore": 0.909,
+          "intensity": 61.9
         },
         "SE": {
           "level": "exposed",
-          "fetchKm": 21,
+          "fetchKm": 20.72,
           "blockedRayRatio": 0.2,
-          "onshore": 0.771,
-          "intensity": 81.4
+          "onshore": 0.937,
+          "intensity": 89.1
         },
         "S": {
-          "level": "exposed",
-          "fetchKm": 25,
-          "blockedRayRatio": 0,
-          "onshore": 0.996,
-          "intensity": 99.8
+          "level": "partial",
+          "fetchKm": 10,
+          "blockedRayRatio": 0.6,
+          "onshore": 0.416,
+          "intensity": 51.9
         },
         "SW": {
-          "level": "exposed",
-          "fetchKm": 25,
-          "blockedRayRatio": 0,
-          "onshore": 0.637,
-          "intensity": 81.9
+          "level": "protected",
+          "fetchKm": 0,
+          "blockedRayRatio": 1,
+          "onshore": -0.349,
+          "intensity": 19.5
         },
         "W": {
-          "level": "partial",
-          "fetchKm": 10.8,
-          "blockedRayRatio": 0.6,
-          "onshore": -0.094,
-          "intensity": 33.7
+          "level": "protected",
+          "fetchKm": 0,
+          "blockedRayRatio": 1,
+          "onshore": -0.909,
+          "intensity": 2.7
         },
         "NW": {
           "level": "protected",
-          "fetchKm": 0.2,
+          "fetchKm": 0,
           "blockedRayRatio": 1,
-          "onshore": -0.771,
-          "intensity": 6.9
+          "onshore": -0.937,
+          "intensity": 1.9
         }
       },
-      "confidence": "medium"
+      "confidence": "high"
     },
     "709": {
       "beachId": 709,
@@ -2719,66 +2720,66 @@
         "lat": 35.16616,
         "lon": 24.42182
       },
-      "facingDeg": 208.6,
+      "facingDeg": 263.6,
       "sectors": {
         "N": {
           "level": "protected",
           "fetchKm": 0,
           "blockedRayRatio": 1,
-          "onshore": -0.878,
-          "intensity": 3.7
+          "onshore": -0.111,
+          "intensity": 26.7
         },
         "NE": {
           "level": "protected",
           "fetchKm": 0,
           "blockedRayRatio": 1,
-          "onshore": -0.959,
-          "intensity": 1.2
+          "onshore": -0.782,
+          "intensity": 6.6
         },
         "E": {
           "level": "protected",
-          "fetchKm": 5.1,
-          "blockedRayRatio": 0.8,
-          "onshore": -0.479,
-          "intensity": 16.5
+          "fetchKm": 0,
+          "blockedRayRatio": 1,
+          "onshore": -0.994,
+          "intensity": 0.2
         },
         "SE": {
-          "level": "partial",
-          "fetchKm": 20.1,
-          "blockedRayRatio": 0.2,
-          "onshore": 0.282,
-          "intensity": 59
+          "level": "protected",
+          "fetchKm": 5,
+          "blockedRayRatio": 0.8,
+          "onshore": -0.624,
+          "intensity": 11.9
         },
         "S": {
-          "level": "exposed",
-          "fetchKm": 25,
-          "blockedRayRatio": 0,
-          "onshore": 0.878,
-          "intensity": 93.9
+          "level": "partial",
+          "fetchKm": 20,
+          "blockedRayRatio": 0.2,
+          "onshore": 0.111,
+          "intensity": 51.1
         },
         "SW": {
           "level": "exposed",
           "fetchKm": 25,
           "blockedRayRatio": 0,
-          "onshore": 0.959,
-          "intensity": 98
+          "onshore": 0.782,
+          "intensity": 89.1
         },
         "W": {
           "level": "exposed",
-          "fetchKm": 17.6,
+          "fetchKm": 17.16,
           "blockedRayRatio": 0.4,
-          "onshore": 0.479,
-          "intensity": 62.1
+          "onshore": 0.994,
+          "intensity": 83.7
         },
         "NW": {
-          "level": "protected",
-          "fetchKm": 2.6,
+          "level": "partial",
+          "fetchKm": 2.16,
           "blockedRayRatio": 1,
-          "onshore": -0.282,
-          "intensity": 21.5
+          "onshore": 0.624,
+          "intensity": 48.7
         }
       },
-      "confidence": "medium"
+      "confidence": "high"
     },
     "710": {
       "beachId": 710,
@@ -2790,66 +2791,66 @@
         "lat": 35.12102,
         "lon": 24.54396
       },
-      "facingDeg": 231.2,
+      "facingDeg": 233.8,
       "sectors": {
         "N": {
           "level": "protected",
-          "fetchKm": 0.4,
+          "fetchKm": 0.16,
           "blockedRayRatio": 1,
-          "onshore": -0.627,
-          "intensity": 11.2
+          "onshore": -0.591,
+          "intensity": 12.3
         },
         "NE": {
           "level": "protected",
           "fetchKm": 0,
           "blockedRayRatio": 1,
-          "onshore": -0.994,
-          "intensity": 0.2
+          "onshore": -0.988,
+          "intensity": 0.4
         },
         "E": {
           "level": "protected",
-          "fetchKm": 0.1,
+          "fetchKm": 0,
           "blockedRayRatio": 1,
-          "onshore": -0.779,
-          "intensity": 6.6
+          "onshore": -0.807,
+          "intensity": 5.8
         },
         "SE": {
-          "level": "partial",
-          "fetchKm": 15.1,
-          "blockedRayRatio": 0.4,
-          "onshore": -0.108,
-          "intensity": 37.5
+          "level": "protected",
+          "fetchKm": 3.12,
+          "blockedRayRatio": 1,
+          "onshore": -0.153,
+          "intensity": 25.4
         },
         "S": {
           "level": "exposed",
-          "fetchKm": 25,
-          "blockedRayRatio": 0,
-          "onshore": 0.627,
-          "intensity": 81.3
+          "fetchKm": 18.12,
+          "blockedRayRatio": 0.4,
+          "onshore": 0.591,
+          "intensity": 66.8
         },
         "SW": {
           "level": "exposed",
           "fetchKm": 25,
           "blockedRayRatio": 0,
-          "onshore": 0.994,
-          "intensity": 99.7
+          "onshore": 0.988,
+          "intensity": 99.4
         },
         "W": {
           "level": "exposed",
-          "fetchKm": 21.4,
-          "blockedRayRatio": 0.2,
-          "onshore": 0.779,
-          "intensity": 81.8
+          "fetchKm": 21.16,
+          "blockedRayRatio": 0.4,
+          "onshore": 0.807,
+          "intensity": 75.9
         },
         "NW": {
           "level": "partial",
-          "fetchKm": 7.6,
-          "blockedRayRatio": 0.8,
-          "onshore": 0.108,
-          "intensity": 36
+          "fetchKm": 7.04,
+          "blockedRayRatio": 1,
+          "onshore": 0.153,
+          "intensity": 34.6
         }
       },
-      "confidence": "medium"
+      "confidence": "high"
     },
     "711": {
       "beachId": 711,
@@ -2861,66 +2862,66 @@
         "lat": 35.1027145,
         "lon": 24.5639585
       },
-      "facingDeg": 199.7,
+      "facingDeg": 170.4,
       "sectors": {
         "N": {
           "level": "protected",
-          "fetchKm": 0.4,
+          "fetchKm": 0,
           "blockedRayRatio": 1,
-          "onshore": -0.941,
-          "intensity": 1.8
+          "onshore": -0.986,
+          "intensity": 0.4
         },
         "NE": {
           "level": "protected",
-          "fetchKm": 0.7,
+          "fetchKm": 0,
           "blockedRayRatio": 1,
-          "onshore": -0.904,
-          "intensity": 2.9
+          "onshore": -0.579,
+          "intensity": 12.6
         },
         "E": {
-          "level": "protected",
-          "fetchKm": 8.5,
+          "level": "partial",
+          "fetchKm": 0,
           "blockedRayRatio": 1,
-          "onshore": -0.337,
-          "intensity": 19.9
+          "onshore": 0.167,
+          "intensity": 35
         },
         "SE": {
           "level": "partial",
-          "fetchKm": 22.3,
-          "blockedRayRatio": 0.6,
-          "onshore": 0.427,
-          "intensity": 54.2
+          "fetchKm": 7.16,
+          "blockedRayRatio": 0.8,
+          "onshore": 0.815,
+          "intensity": 58.8
         },
         "S": {
           "level": "exposed",
-          "fetchKm": 25,
-          "blockedRayRatio": 0,
-          "onshore": 0.941,
-          "intensity": 97.1
+          "fetchKm": 17.16,
+          "blockedRayRatio": 0.4,
+          "onshore": 0.986,
+          "intensity": 83.4
         },
         "SW": {
-          "level": "exposed",
-          "fetchKm": 25,
-          "blockedRayRatio": 0,
-          "onshore": 0.904,
-          "intensity": 95.2
+          "level": "partial",
+          "fetchKm": 5,
+          "blockedRayRatio": 0.8,
+          "onshore": 0.579,
+          "intensity": 50
         },
         "W": {
-          "level": "exposed",
-          "fetchKm": 22.2,
-          "blockedRayRatio": 0.2,
-          "onshore": 0.337,
-          "intensity": 61.5
+          "level": "protected",
+          "fetchKm": 0,
+          "blockedRayRatio": 1,
+          "onshore": -0.167,
+          "intensity": 25
         },
         "NW": {
           "level": "protected",
-          "fetchKm": 8.9,
-          "blockedRayRatio": 0.8,
-          "onshore": -0.427,
-          "intensity": 18.9
+          "fetchKm": 0,
+          "blockedRayRatio": 1,
+          "onshore": -0.815,
+          "intensity": 5.5
         }
       },
-      "confidence": "medium"
+      "confidence": "high"
     },
     "712": {
       "beachId": 712,
@@ -2932,66 +2933,66 @@
         "lat": 35.1921741,
         "lon": 24.3727709
       },
-      "facingDeg": 178.4,
+      "facingDeg": 177.5,
       "sectors": {
         "N": {
           "level": "protected",
           "fetchKm": 0,
           "blockedRayRatio": 1,
-          "onshore": -1,
+          "onshore": -0.999,
           "intensity": 0
         },
         "NE": {
           "level": "protected",
           "fetchKm": 0,
           "blockedRayRatio": 1,
-          "onshore": -0.687,
-          "intensity": 9.4
+          "onshore": -0.676,
+          "intensity": 9.7
         },
         "E": {
           "level": "protected",
-          "fetchKm": 1.3,
+          "fetchKm": 0.52,
           "blockedRayRatio": 1,
-          "onshore": 0.028,
-          "intensity": 30.8
+          "onshore": 0.044,
+          "intensity": 31.3
         },
         "SE": {
           "level": "exposed",
-          "fetchKm": 15.9,
-          "blockedRayRatio": 0.4,
-          "onshore": 0.727,
-          "intensity": 72.5
+          "fetchKm": 11,
+          "blockedRayRatio": 0.6,
+          "onshore": 0.737,
+          "intensity": 64.9
         },
         "S": {
           "level": "exposed",
           "fetchKm": 25,
           "blockedRayRatio": 0,
-          "onshore": 1,
+          "onshore": 0.999,
           "intensity": 100
         },
         "SW": {
           "level": "exposed",
-          "fetchKm": 25,
-          "blockedRayRatio": 0,
-          "onshore": 0.687,
-          "intensity": 84.4
+          "fetchKm": 15,
+          "blockedRayRatio": 0.4,
+          "onshore": 0.676,
+          "intensity": 70.4
         },
         "W": {
-          "level": "partial",
-          "fetchKm": 10,
-          "blockedRayRatio": 0.6,
-          "onshore": -0.028,
-          "intensity": 35.6
+          "level": "protected",
+          "fetchKm": 0,
+          "blockedRayRatio": 1,
+          "onshore": -0.044,
+          "intensity": 28.7
         },
         "NW": {
           "level": "protected",
           "fetchKm": 0,
           "blockedRayRatio": 1,
-          "onshore": -0.727,
-          "intensity": 8.2
+          "onshore": -0.737,
+          "intensity": 7.9
         }
       },
-      "confidence": "medium"
+      "confidence": "high"
     },
     "713": {
       "beachId": 713,
@@ -3003,66 +3004,66 @@
         "lat": 35.1891641,
         "lon": 24.3265467
       },
-      "facingDeg": 174.8,
+      "facingDeg": 201.6,
       "sectors": {
         "N": {
           "level": "protected",
           "fetchKm": 0,
           "blockedRayRatio": 1,
-          "onshore": -0.996,
-          "intensity": 0.1
+          "onshore": -0.93,
+          "intensity": 2.1
         },
         "NE": {
           "level": "protected",
           "fetchKm": 0,
           "blockedRayRatio": 1,
-          "onshore": -0.64,
-          "intensity": 10.8
+          "onshore": -0.918,
+          "intensity": 2.5
         },
         "E": {
-          "level": "partial",
-          "fetchKm": 8.3,
-          "blockedRayRatio": 0.8,
-          "onshore": 0.091,
-          "intensity": 35.7
+          "level": "protected",
+          "fetchKm": 0,
+          "blockedRayRatio": 1,
+          "onshore": -0.368,
+          "intensity": 19
         },
         "SE": {
-          "level": "exposed",
-          "fetchKm": 22,
-          "blockedRayRatio": 0.2,
-          "onshore": 0.768,
-          "intensity": 81.3
+          "level": "partial",
+          "fetchKm": 10,
+          "blockedRayRatio": 0.6,
+          "onshore": 0.397,
+          "intensity": 51.2
         },
         "S": {
           "level": "exposed",
           "fetchKm": 25,
           "blockedRayRatio": 0,
-          "onshore": 0.996,
-          "intensity": 99.8
+          "onshore": 0.93,
+          "intensity": 96.5
         },
         "SW": {
           "level": "exposed",
-          "fetchKm": 25,
-          "blockedRayRatio": 0,
-          "onshore": 0.64,
-          "intensity": 82
+          "fetchKm": 20.12,
+          "blockedRayRatio": 0.2,
+          "onshore": 0.918,
+          "intensity": 88.2
         },
         "W": {
           "level": "partial",
-          "fetchKm": 10,
-          "blockedRayRatio": 0.6,
-          "onshore": -0.091,
-          "intensity": 33.3
+          "fetchKm": 5.16,
+          "blockedRayRatio": 0.8,
+          "onshore": 0.368,
+          "intensity": 43.4
         },
         "NW": {
           "level": "protected",
           "fetchKm": 0,
           "blockedRayRatio": 1,
-          "onshore": -0.768,
-          "intensity": 7
+          "onshore": -0.397,
+          "intensity": 18.1
         }
       },
-      "confidence": "medium"
+      "confidence": "high"
     },
     "714": {
       "beachId": 714,
@@ -3074,66 +3075,66 @@
         "lat": 35.4075635,
         "lon": 24.7850994
       },
-      "facingDeg": 10,
+      "facingDeg": 33.2,
       "sectors": {
         "N": {
           "level": "exposed",
-          "fetchKm": 25,
-          "blockedRayRatio": 0,
-          "onshore": 0.985,
-          "intensity": 99.2
+          "fetchKm": 10.32,
+          "blockedRayRatio": 0.6,
+          "onshore": 0.837,
+          "intensity": 67.7
         },
         "NE": {
           "level": "exposed",
-          "fetchKm": 25,
-          "blockedRayRatio": 0,
-          "onshore": 0.819,
+          "fetchKm": 20.12,
+          "blockedRayRatio": 0.2,
+          "onshore": 0.979,
           "intensity": 91
         },
         "E": {
           "level": "partial",
-          "fetchKm": 12.9,
-          "blockedRayRatio": 0.6,
-          "onshore": 0.174,
-          "intensity": 44.6
+          "fetchKm": 5.28,
+          "blockedRayRatio": 0.8,
+          "onshore": 0.548,
+          "intensity": 49.2
         },
         "SE": {
           "level": "protected",
-          "fetchKm": 1.3,
+          "fetchKm": 0.08,
           "blockedRayRatio": 1,
-          "onshore": -0.574,
-          "intensity": 12.8
+          "onshore": -0.204,
+          "intensity": 23.9
         },
         "S": {
           "level": "protected",
           "fetchKm": 0,
           "blockedRayRatio": 1,
-          "onshore": -0.985,
-          "intensity": 0.5
+          "onshore": -0.837,
+          "intensity": 4.9
         },
         "SW": {
           "level": "protected",
-          "fetchKm": 0.2,
+          "fetchKm": 0,
           "blockedRayRatio": 1,
-          "onshore": -0.819,
-          "intensity": 5.4
+          "onshore": -0.979,
+          "intensity": 0.6
         },
         "W": {
           "level": "protected",
-          "fetchKm": 10.5,
-          "blockedRayRatio": 0.6,
-          "onshore": -0.174,
-          "intensity": 30.6
+          "fetchKm": 0,
+          "blockedRayRatio": 1,
+          "onshore": -0.548,
+          "intensity": 13.6
         },
         "NW": {
-          "level": "exposed",
-          "fetchKm": 25,
-          "blockedRayRatio": 0,
-          "onshore": 0.574,
-          "intensity": 78.7
+          "level": "partial",
+          "fetchKm": 0.2,
+          "blockedRayRatio": 1,
+          "onshore": 0.204,
+          "intensity": 36.1
         }
       },
-      "confidence": "medium"
+      "confidence": "high"
     },
     "715": {
       "beachId": 715,
@@ -3145,66 +3146,66 @@
         "lat": 35.3792849,
         "lon": 24.5650447
       },
-      "facingDeg": 345.8,
+      "facingDeg": 342.4,
       "sectors": {
         "N": {
           "level": "exposed",
           "fetchKm": 25,
           "blockedRayRatio": 0,
-          "onshore": 0.969,
-          "intensity": 98.5
+          "onshore": 0.953,
+          "intensity": 97.7
         },
         "NE": {
           "level": "exposed",
-          "fetchKm": 20.8,
+          "fetchKm": 20.48,
           "blockedRayRatio": 0.2,
-          "onshore": 0.512,
-          "intensity": 69.6
+          "onshore": 0.46,
+          "intensity": 67.2
         },
         "E": {
           "level": "protected",
-          "fetchKm": 6.3,
+          "fetchKm": 5.52,
           "blockedRayRatio": 0.8,
-          "onshore": -0.245,
-          "intensity": 24.2
+          "onshore": -0.302,
+          "intensity": 22.2
         },
         "SE": {
           "level": "protected",
-          "fetchKm": 0.3,
+          "fetchKm": 0,
           "blockedRayRatio": 1,
-          "onshore": -0.859,
-          "intensity": 4.2
+          "onshore": -0.888,
+          "intensity": 3.4
         },
         "S": {
           "level": "protected",
-          "fetchKm": 0.2,
+          "fetchKm": 0,
           "blockedRayRatio": 1,
-          "onshore": -0.969,
-          "intensity": 0.9
+          "onshore": -0.953,
+          "intensity": 1.4
         },
         "SW": {
           "level": "protected",
-          "fetchKm": 1.6,
+          "fetchKm": 0.84,
           "blockedRayRatio": 1,
-          "onshore": -0.512,
-          "intensity": 14.6
+          "onshore": -0.46,
+          "intensity": 16.2
         },
         "W": {
           "level": "partial",
-          "fetchKm": 16.3,
+          "fetchKm": 15.8,
           "blockedRayRatio": 0.4,
-          "onshore": 0.245,
-          "intensity": 52.3
+          "onshore": 0.302,
+          "intensity": 54.7
         },
         "NW": {
           "level": "exposed",
           "fetchKm": 25,
           "blockedRayRatio": 0,
-          "onshore": 0.859,
-          "intensity": 92.9
+          "onshore": 0.888,
+          "intensity": 94.4
         }
       },
-      "confidence": "medium"
+      "confidence": "high"
     }
   }
 }
