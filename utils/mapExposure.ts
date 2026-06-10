@@ -258,10 +258,16 @@ export const getVisibleMapExposureLevel = (
   // Low confidence means the authored profile cannot create user-facing
   // protected/calm claims. It does not invalidate a direct geospatial protected
   // result from bay/headland geometry, which is what the map colour represents.
+  // EXCEPT when the curated profile explicitly lists this sector as exposed:
+  // explicit exposure claims are trusted at any confidence everywhere else in
+  // the engine, and a wrong "protected" is the dangerous direction, so the map
+  // must not contradict an explicit curated warning (e.g. the Milos-Kimolos
+  // channel beaches, where straight-ray fetch cannot see wind funneling).
   if (
     geospatialExposure === 'protected' &&
     item.windProfile?.confidence === 'low' &&
-    !(item.windProfile.knownWindSportSpot && (windBeaufort ?? 0) >= 4)
+    !(item.windProfile.knownWindSportSpot && (windBeaufort ?? 0) >= 4) &&
+    !(sector && item.windProfile.exposedToWindDirections.includes(sector))
   ) {
     return 'protected';
   }

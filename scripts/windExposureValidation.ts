@@ -668,9 +668,6 @@ assert(kythnosNorthFourMapLevels.get(1886) === 'exposed', 'Kythnos N 4BFT: Mikro
   assert(milosNorthFourMapLevels.get(id) === 'partial', `Milos N 4BFT: ${id} must stay partial/yellow when geospatial exposure is partial.`);
 });
 [
-  1934, // Voudia
-  1935, // Kastanas
-  1938, // Tria Pigadia
   1928, // Fyrlingkos
   1915, // Palaiochori
   1931, // Psarovolada
@@ -683,6 +680,19 @@ assert(kythnosNorthFourMapLevels.get(1886) === 'exposed', 'Kythnos N 4BFT: Mikro
   1906, // Thiafes
 ].forEach(id => {
   assert(milosNorthFourMapLevels.get(id) === 'protected', `Milos N 4BFT: ${id} should show protected/blue when geospatial north exposure is protected.`);
+});
+// 2026-06-10 evidence pass: Voudia/Kastanas/Tria Pigadia keep their explicit
+// curated N exposure (channel whitecaps near Pollonia, guide warnings of strong
+// sea currents off Voudia, adjacent Mytakas "very windy in north wind") even
+// though Kimolos shades their straight-ray N fetch — wind funneling in the
+// Milos-Kimolos channel is not visible to the fetch model. The map must agree
+// with scoring here: an explicit curated exposed sector beats geometry shelter.
+[
+  1934, // Voudia
+  1935, // Kastanas
+  1938, // Tria Pigadia
+].forEach(id => {
+  assert(milosNorthFourMapLevels.get(id) === 'exposed', `Milos N 4BFT: ${id} must stay exposed on the map — explicit curated N exposure beats geometry shelter (channel funneling).`);
 });
 
 assert(!parosTop3.includes(chrysiAkti.id), 'Paros 5 Bft N: Χρυσή Ακτή must not be Top 3.');

@@ -106,9 +106,13 @@ export const windProfileOverridesByBeachId: Record<number, WindProfile> = {
     confidence: 'low',
     notes: 'North-side Milos exposure inferred from coordinates. Treat as meltemi-sensitive and avoid calm/protected wording until verified locally.',
   },
-  1734: unverifiedWindProfile(
-    'Eastern Milos beach near the old sulfur mine area. Exact exposure and local access/sea-state risks need verification.'
-  ),
+  1734: lowConfidenceMilosProfile({
+    beachFacingDirection: 90,
+    shelterLevel: 'semi_sheltered',
+    fetchExposure: 'high',
+    exposedToWindDirections: ['SE'],
+    notes: 'Eastern Milos beach near the old sulfur mine area. 2026-06-10 golden-island pass: high-res OSM geometry shows ~25 km of open SE fetch toward the Milos-Kimolos-Polyaigos gap, so SE wind is treated as exposed; other sectors and access/sea-state risks still need verification.',
+  }),
   1736: {
     beachFacingDirection: 15,
     shelterLevel: 'open',
@@ -160,12 +164,12 @@ export const windProfileOverridesByBeachId: Record<number, WindProfile> = {
     beachFacingDirection: 0,
     shelterLevel: 'open',
     fetchExposure: 'high',
-    exposedToWindDirections: ['N', 'NE', 'NW'],
+    exposedToWindDirections: ['N', 'NE', 'NW', 'W'],
     protectedFromWindDirections: [],
     knownWindSportSpot: false,
     localWindAmplification: 'medium',
     confidence: 'low',
-    notes: 'Northern Milos exposure inferred from coordinates. Keep low confidence and avoid any calm/protected label.',
+    notes: 'Northern Milos exposure inferred from coordinates. 2026-06-10 golden-island pass: high-res OSM geometry at the pin shows a west-opening shoreline with ~19 km west fetch (sunset-spot guide references agree), while this legacy profile is north-facing; the coastal corner here (Kampanes 200 m NE) makes the true facing ambiguous. Conservative union of both exposures kept; facing needs field verification.',
   },
   1743: {
     beachFacingDirection: 155,
@@ -223,15 +227,15 @@ export const windProfileOverridesByBeachId: Record<number, WindProfile> = {
     notes: 'Main south-coast Milos option. Often more practical in north wind than exposed northern beaches, but south-sector wind can reverse the recommendation.',
   },
   1749: {
-    beachFacingDirection: 270,
+    beachFacingDirection: 30,
     shelterLevel: 'semi_sheltered',
     fetchExposure: 'low',
-    exposedToWindDirections: ['W', 'SW'],
-    protectedFromWindDirections: ['E', 'NE'],
+    exposedToWindDirections: ['N', 'NE'],
+    protectedFromWindDirections: [],
     knownWindSportSpot: false,
     localWindAmplification: 'low',
-    confidence: 'low',
-    notes: 'Rivari lagoon/bay-side behavior may reduce open-sea fetch, but exact wind protection needs local verification.',
+    confidence: 'medium',
+    notes: 'Milos golden-island evidence pass 2026-06-10: Rivari sits on the west shore of the Milos gulf by the Rivari lagoon, between Emporios and Fatourena (Greeka + feelgreece location evidence; high-res OSM geometry faces ~30deg into the gulf). The old west-facing/W-SW-exposed profile described the open outer coast, not this gulf-side beach. Cross-gulf N/NE chop is the remaining caution; no calm/protected claim.',
   },
   1750: {
     beachFacingDirection: 0,
@@ -270,15 +274,15 @@ export const windProfileOverridesByBeachId: Record<number, WindProfile> = {
     notes: 'South-coast cove that may be better in north wind. Access is difficult and wind shelter must not be interpreted as safe swimming in poor sea conditions.',
   },
   1754: {
-    beachFacingDirection: 245,
+    beachFacingDirection: 5,
     shelterLevel: 'semi_sheltered',
-    fetchExposure: 'low',
-    exposedToWindDirections: ['SW', 'W'],
-    protectedFromWindDirections: ['N', 'NE'],
+    fetchExposure: 'medium',
+    exposedToWindDirections: ['N', 'NW'],
+    protectedFromWindDirections: [],
     knownWindSportSpot: false,
     localWindAmplification: 'low',
-    confidence: 'low',
-    notes: 'Inner west/southwest Milos bay candidate. Possible partial shelter, but keep low confidence until local behavior is verified.',
+    confidence: 'medium',
+    notes: 'Milos golden-island evidence pass 2026-06-10: Fatourena is on the south shore of the Milos gulf next to the Rivari lagoon and Emporios (named as the nearby swimming beach by embourios.com; high-res OSM geometry faces ~5deg into the gulf with up to ~8 km cross-gulf fetch). North-sector wind builds real chop here, so N/NW stay exposed; the old SW/W-exposed outer-coast profile was a location error.',
   },
   1755: {
     beachFacingDirection: 180,
@@ -295,7 +299,10 @@ export const windProfileOverridesByBeachId: Record<number, WindProfile> = {
     beachFacingDirection: 340,
     shelterLevel: 'semi_sheltered',
     fetchExposure: 'medium',
-    exposedToWindDirections: ['N', 'NW'],
+    // 2026-06-10 golden-island pass: high-res geometry shows ~12 km of open
+    // fetch through the inlet mouth toward the NE (Milos-Kimolos strait), so
+    // NE joins the exposed sectors.
+    exposedToWindDirections: ['N', 'NW', 'NE'],
     protectedFromWindDirections: ['S', 'SE', 'SW'],
     knownWindSportSpot: false,
     localWindAmplification: 'medium',
@@ -1154,7 +1161,7 @@ const milosPhase3CoverageOverrideEntries: OverrideEntry[] = [
       fetchExposure: 'high',
       exposedToWindDirections: ['N', 'NW', 'W'],
       localWindAmplification: 'medium',
-      notes: 'Northwest/west Milos beach inferred from current coordinates and legacy orientation fallback. Treat as meltemi/west-sector sensitive until local behavior is verified; no protected/calm claims.',
+      notes: 'Northwest/west Milos beach inferred from current coordinates and legacy orientation fallback. Treat as meltemi/west-sector sensitive until local behavior is verified; no protected/calm claims. 2026-06-10 golden-island pass: the app pin sits INSIDE the Milos gulf while curated data + guides (boat-only cove on the west edge, Greeka/feelgreece/MarinaTips) describe the real beach elsewhere — geometry from the current pin is not trusted; pin location needs field verification.',
     }),
   },
   {
@@ -1164,8 +1171,8 @@ const milosPhase3CoverageOverrideEntries: OverrideEntry[] = [
       beachFacingDirection: 175,
       shelterLevel: 'semi_sheltered',
       fetchExposure: 'medium',
-      exposedToWindDirections: ['S', 'SE', 'SW'],
-      notes: 'South-coast Milos beach. It may differ from north-exposed beaches in meltemi, but exact local shelter and sea-state behavior need verification.',
+      exposedToWindDirections: ['S', 'SE', 'SW', 'E'],
+      notes: 'South-coast Milos beach. 2026-06-10 golden-island pass: high-res OSM geometry adds ~15 km of open east fetch toward the Milos-Kimolos-Polyaigos gap, so E joins the exposed sectors; exact local shelter still needs verification.',
     }),
   },
   {
@@ -1175,9 +1182,9 @@ const milosPhase3CoverageOverrideEntries: OverrideEntry[] = [
       beachFacingDirection: 330,
       shelterLevel: 'open',
       fetchExposure: 'high',
-      exposedToWindDirections: ['N', 'NW', 'W'],
+      exposedToWindDirections: ['N', 'NW', 'W', 'NE'],
       localWindAmplification: 'medium',
-      notes: 'Northern Milos location inferred from current coordinates. Treat as north/west-sector exposed and avoid calm/protected wording until reviewed locally.',
+      notes: 'Northern Milos location inferred from current coordinates. 2026-06-10 golden-island pass: high-res OSM geometry adds ~17 km of open NE fetch toward the strait mouth; coastal-corner ambiguity with adjacent Nerodafni (200 m SW) — conservative union of exposures kept, facing needs field verification.',
     }),
   },
   {
@@ -1235,7 +1242,7 @@ const milosPhase3CoverageOverrideEntries: OverrideEntry[] = [
       fetchExposure: 'high',
       exposedToWindDirections: ['N', 'NE', 'E'],
       localWindAmplification: 'medium',
-      notes: 'Northeast/east Milos rocky-pebble beach inferred from coordinates and terrain. Treat as exposed in north/east-sector wind until locally verified.',
+      notes: 'Northeast/east Milos rocky-pebble beach inferred from coordinates and terrain. Treat as exposed in north/east-sector wind until locally verified. 2026-06-10 evidence pass: guides (Greeka, meraviglioseisolegreche) warn of strong sea currents off Voudia, and high-res geometry shows Kimolos shading the due-north fetch — kept the conservative explicit N exposure pending field verification of channel funneling.',
     }),
   },
   {

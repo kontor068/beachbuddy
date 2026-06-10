@@ -64,8 +64,10 @@ export const localizedTerrainLabel = (type: string, language: LanguageCode) =>
 export const localizedWaterDepthLabel = (type: string, fallback: string | undefined, language: LanguageCode) =>
   waterDepthLabels[type]?.[language] || (language === 'gr' ? fallback || type : toGreeklish(fallback) || type);
 
+// Never surface a raw access enum: unmapped types without an authored label
+// render as nothing rather than leaking internal identifiers to the cards.
 export const localizedAccessLabel = (type: string, fallback: string | undefined, language: LanguageCode) =>
-  accessLabels[type]?.[language] || (language === 'gr' ? fallback || type : toGreeklish(fallback) || type);
+  accessLabels[type]?.[language] || (language === 'gr' ? fallback : toGreeklish(fallback)) || '';
 
 export const localizedAccessPrefix = (language: LanguageCode) => ({
   en: 'Access',

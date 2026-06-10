@@ -48,6 +48,12 @@ const cases = [
   { regionId: 'ionian-islands-lefkada', name: 'Egkremni', sector: 'W', expected: 'rough' },
   // Rhodes Prasonisi, the southern kite cape, open to the south.
   { regionId: 'south-aegean-rhodes', name: 'Prasonisi', sector: 'S', expected: 'rough' },
+  // Milos golden-island pass (2026-06-10): gulf-side shelter vs the open
+  // SE gap toward Kimolos/Polyaigos. Rivari sits on the west shore of the
+  // Milos gulf (land to its west); Kalamos and Voudia face the open gap.
+  { regionId: 'south-aegean-milos', name: 'Rivari', sector: 'W', expected: 'calm' },
+  { regionId: 'south-aegean-milos', name: 'Kalamos', sector: 'E', expected: 'rough' },
+  { regionId: 'south-aegean-milos', name: 'Voudia', sector: 'SE', expected: 'rough' },
 ];
 
 const norm = (value) => (value || '')
