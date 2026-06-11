@@ -133,6 +133,24 @@ const cases = [
   { regionId: 'epirus-thesprotia-mainland', name: 'Mega Drafi', sector: 'SW', expected: 'rough' }, // f=23.72 i=82.7 facing=239.4
   { regionId: 'ionian-islands-antipaxos', name: 'Rodovanopoulo', sector: 'SW', expected: 'rough' }, // f=25 i=96 facing=248.2
   { regionId: 'ionian-islands-erikoussa', name: 'Bragkini', sector: 'S', expected: 'rough' }, // f=19.84 i=83.9 facing=175.4
+  // National anchor batch 3 (2026-06-11): one auto-proposed
+  // open-sea rough anchor per remaining region (fetch >= 15 km, intensity
+  // >= 70, named beach, valid facing - regression guards for the geometry).
+  { regionId: 'ionian-islands-ithaca', name: 'Kritami', sector: 'E', expected: 'rough' }, // f=21.96 i=88.8 facing=111.4
+  { regionId: 'ionian-islands-kefalonia', name: 'Sissia', sector: 'SW', expected: 'rough' }, // f=25 i=100 facing=224.8
+  { regionId: 'ionian-islands-mathraki', name: 'Portelo', sector: 'NE', expected: 'rough' }, // f=25 i=98.6 facing=58.6
+  { regionId: 'ionian-islands-othonoi', name: 'Agia Triada', sector: 'S', expected: 'rough' }, // f=25 i=98.2 facing=195.3
+  { regionId: 'ionian-islands-paxos', name: 'Planos', sector: 'W', expected: 'rough' }, // f=25 i=98.9 facing=258.2
+  { regionId: 'north-aegean-agios-efstratios', name: 'Agios Dimitrios', sector: 'NW', expected: 'rough' }, // f=25 i=100 facing=316
+  { regionId: 'north-aegean-chios', name: 'Paralia Kampia', sector: 'N', expected: 'rough' }, // f=25 i=99.5 facing=351.7
+  { regionId: 'north-aegean-fournoi', name: 'Vitsila', sector: 'E', expected: 'rough' }, // f=15.16 i=83.8 facing=84.8
+  { regionId: 'north-aegean-ikaria', name: 'Kyparissi', sector: 'N', expected: 'rough' }, // f=25 i=99.9 facing=356.2
+  { regionId: 'north-aegean-lemnos', name: 'Skandali', sector: 'E', expected: 'rough' }, // f=25 i=100 facing=87.9
+  { regionId: 'north-aegean-lesvos', name: 'Patos', sector: 'S', expected: 'rough' }, // f=25 i=100 facing=180
+  { regionId: 'north-aegean-oinousses', name: 'Katsika', sector: 'NE', expected: 'rough' }, // f=19.52 i=76 facing=42.2
+  { regionId: 'north-aegean-psara', name: 'Lazareta', sector: 'S', expected: 'rough' }, // f=20.12 i=91.1 facing=168.8
+  { regionId: 'north-aegean-samos', name: 'Trypiti', sector: 'S', expected: 'rough' }, // f=25 i=100 facing=180
+  { regionId: 'peloponnese-argolida-mainland', name: 'Nea Epidavros - Aliotou', sector: 'NE', expected: 'rough' }, // f=20.68 i=73.4 facing=66.4
 ];
 
 const norm = (value) => (value || '')
