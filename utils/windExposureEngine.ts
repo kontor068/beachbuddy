@@ -76,17 +76,16 @@ const WIND_DIRECTION_TO_SECTOR: Record<WindDirection, WindSector> = {
 };
 
 const SECTORS: WindSector[] = ['N', 'NE', 'E', 'SE', 'S', 'SW', 'W', 'NW'];
-// 2026-06-11 TEMPORARY removals pending the Thessaly re-geocoding: the
-// national pin audit found systematic village/POI coordinates instead of
-// beach locations (Alonissos 6 + Skopelos 7 + Aetolia-Acarnania 8 CRITICAL
-// pins), so their generated geometry must not be served as medium-confidence
-// backfill. Removed: 'alonissos', 'skopelos', 'aetolia-acarnania (mainland)'.
-// Re-add each region only after auditNationalPins re-audit comes back clean.
 const GEOSPATIAL_WIND_PROFILE_BACKFILL_ISLANDS = new Set([
   'aegina',
   'agistri',
   'agathonisi',
   'agios efstratios',
+  // alonissos/skopelos/aetolia-acarnania were temporarily removed on
+  // 2026-06-11 (garbage pins) and restored the same day after the
+  // re-geocoding + clean auditNationalPins re-audit.
+  'aetolia-acarnania (mainland)',
+  'alonissos',
   'andros',
   'arki',
   'astypalaia',
@@ -149,6 +148,7 @@ const GEOSPATIAL_WIND_PROFILE_BACKFILL_ISLANDS = new Set([
   'serifos',
   'sifnos',
   'skiathos',
+  'skopelos',
   'skyros',
   'spetses',
   'symi',
