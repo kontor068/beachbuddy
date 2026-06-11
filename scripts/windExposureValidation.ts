@@ -695,6 +695,47 @@ assert(kythnosNorthFourMapLevels.get(1886) === 'exposed', 'Kythnos N 4BFT: Mikro
   assert(milosNorthFourMapLevels.get(id) === 'exposed', `Milos N 4BFT: ${id} must stay exposed on the map — explicit curated N exposure beats geometry shelter (channel funneling).`);
 });
 
+// Solution B threshold checks (2026-06-11): an authored "partial" scoring
+// level escalates to "exposed" only when high-confidence geometry shows
+// >= 8 km of open onshore fetch. Real-data pins for both sides of the
+// threshold: Zorkos (Andros) faces the windy Andros-Tinos strait with ~10 km
+// of east fetch and must escalate; Paros Kolympithres SE has only ~1.2 km of
+// geometry-exposed water inside the Naoussa bay mouth and must NOT escalate.
+const parosGeospatialProfiles = loadGeneratedGeospatialProfiles('south-aegean-paros');
+const androsGeospatialProfiles = loadGeneratedGeospatialProfiles('south-aegean-andros');
+const eastFiveBeaufort = {
+  windDirectionDeg: 90,
+  windDirection: WindDirection.E,
+  windSpeedKmh: 33,
+  beaufort: 5,
+};
+const southeastFiveBeaufort = {
+  windDirectionDeg: 135,
+  windDirection: WindDirection.SE,
+  windSpeedKmh: 33,
+  beaufort: 5,
+};
+const zorkosBeach = byEnglishName(androsBeaches, 'Zorkos');
+const zorkosEastAssessment = assessBeachWindExposure({
+  beach: zorkosBeach,
+  geospatialProfile: androsGeospatialProfiles[zorkosBeach.id],
+  ...eastFiveBeaufort,
+});
+assert(
+  zorkosEastAssessment.exposureLevel === 'exposed',
+  'Solution B: Zorkos E 5BFT must escalate authored partial to exposed (~10 km Andros-Tinos strait fetch).'
+);
+const kolympithresBeach = byEnglishName(parosBeaches, 'Kolympithres');
+const kolympithresSoutheastAssessment = assessBeachWindExposure({
+  beach: kolympithresBeach,
+  geospatialProfile: parosGeospatialProfiles[kolympithresBeach.id],
+  ...southeastFiveBeaufort,
+});
+assert(
+  kolympithresSoutheastAssessment.exposureLevel === 'partial',
+  'Solution B threshold: Kolympithres SE 5BFT must NOT escalate (1.2 km geometry fetch is below the 8 km threshold).'
+);
+
 assert(!parosTop3.includes(chrysiAkti.id), 'Paros 5 Bft N: Χρυσή Ακτή must not be Top 3.');
 assert(!chrysiAssessment.canClaimProtected, 'Paros 5 Bft N: Χρυσή Ακτή must not be described as protected.');
 assert(chrysiAssessment.warnings.some(warning => warning.type === 'wind_sport_spot'), 'Paros 5 Bft N: Χρυσή Ακτή must show wind/watersports warning.');

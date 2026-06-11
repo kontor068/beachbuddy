@@ -412,6 +412,28 @@ export const resolveBeachWindProfile = (beach: Beach): { profile: WindProfile; s
   return { profile: normalizeWindProfile(beach, undefined, 'unknown'), source: 'unknown' };
 };
 
+/**
+ * Solution B (2026-06-11): minimum open-water fetch for the geometry to
+ * escalate an authored "partial" scoring level to "exposed". 8 km naturally
+ * spares enclosed waters (the Milos gulf maxes out at ~8 km internal fetch)
+ * while catching genuine open-sea and strait exposures the legacy profiles
+ * hedged on. Exposure claims are the safe direction, so no confidence gate
+ * beyond the high-confidence land mask is required.
+ */
+const GEOMETRY_EXPOSURE_ESCALATION_FETCH_KM = 8;
+
+const geometryEscalatesToExposed = (
+  profile: GeospatialExposureProfile | undefined,
+  windSector: WindSector
+): boolean => {
+  const sector = profile?.sectors?.[windSector];
+  return Boolean(
+    profile?.confidence === 'high' &&
+    sector?.level === 'exposed' &&
+    (sector.fetchKm ?? 0) >= GEOMETRY_EXPOSURE_ESCALATION_FETCH_KM
+  );
+};
+
 export const canClaimProtectedFromWind = (
   profile: WindProfile,
   windSector: WindSector
@@ -502,7 +524,7 @@ export const assessBeachWindExposure = (input: BeachWindExposureInput): WindExpo
   // conservative shelter policy (e.g. semi_sheltered stays 'partial'), so they
   // win. Only where there is no authored profile do we let the geometry resolver
   // (geospatial fetch + onshore/offshore) decide the level.
-  const exposureLevel: ExposureLevel = source === 'unknown' && input.geospatialProfile
+  let exposureLevel: ExposureLevel = source === 'unknown' && input.geospatialProfile
     ? unified.level
     : exposureFromProfile(
       profile,
@@ -514,6 +536,18 @@ export const assessBeachWindExposure = (input: BeachWindExposureInput): WindExpo
       canClaimProtected,
       isKnownWindSportRisk
     );
+  // Solution B: an authored "partial" cannot stand against >=8 km of open
+  // onshore fetch in a high-confidence mask — the map already shows these as
+  // exposed (geometry wins there), so this aligns scoring with the map in the
+  // conservative direction. Authored explicit claims and protected levels are
+  // untouched.
+  if (
+    exposureLevel === 'partial' &&
+    source !== 'unknown' &&
+    geometryEscalatesToExposed(input.geospatialProfile, windSector)
+  ) {
+    exposureLevel = 'exposed';
+  }
   // Only a real geospatial profile counts as reliable geometry that can relax
   // the "missing profile" caps for uncurated beaches. An authored low-confidence
   // profile's facing must NOT relax its deliberately conservative caps.

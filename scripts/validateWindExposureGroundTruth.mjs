@@ -54,6 +54,11 @@ const cases = [
   { regionId: 'south-aegean-milos', name: 'Rivari', sector: 'W', expected: 'calm' },
   { regionId: 'south-aegean-milos', name: 'Kalamos', sector: 'E', expected: 'rough' },
   { regionId: 'south-aegean-milos', name: 'Voudia', sector: 'SE', expected: 'rough' },
+  // Fatourena sits on the south shore of the Milos gulf: ~7.9 km of cross-gulf
+  // north fetch builds real chop (raw geometry says exposed) while staying just
+  // under the 8 km solution-B escalation threshold — the curated explicit N
+  // exposure is what protects scoring here, not the geometry escalation.
+  { regionId: 'south-aegean-milos', name: 'Fatourena', sector: 'N', expected: 'rough' },
 ];
 
 const norm = (value) => (value || '')
