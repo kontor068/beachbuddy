@@ -115,6 +115,24 @@ const cases = [
   { regionId: 'central-greece-evia', name: 'Vathychantako', sector: 'N', expected: 'rough' }, // f=25 i=100 facing=1.9
   { regionId: 'central-greece-fokida-mainland', name: 'Paralia Agiou Mina', sector: 'SW', expected: 'rough' }, // f=22.12 i=89.7 facing=243
   { regionId: 'central-greece-fthiotida-mainland', name: 'Mikri Souvala', sector: 'E', expected: 'rough' }, // f=21.72 i=71.8 facing=62.7
+  // National anchor batch 2 (2026-06-11): one auto-proposed
+  // open-sea rough anchor per remaining region (fetch >= 15 km, intensity
+  // >= 70, named beach, valid facing - regression guards for the geometry).
+  { regionId: 'central-greece-skyros', name: 'Gyrismata', sector: 'NE', expected: 'rough' }, // f=25 i=99.9 facing=42.2
+  { regionId: 'central-greece-viotia-mainland', name: 'Gyalini Ammos', sector: 'SE', expected: 'rough' }, // f=18.36 i=83.5 facing=126.2
+  { regionId: 'central-macedonia-pieria-mainland', name: 'Paralia Leptokaryas', sector: 'E', expected: 'rough' }, // f=25 i=99.8 facing=85
+  { regionId: 'central-macedonia-thessaloniki-area', name: 'Paralia Angelochoriou', sector: 'S', expected: 'rough' }, // f=25 i=100 facing=179.6
+  { regionId: 'crete-gavdos', name: 'Agios Ioannis', sector: 'N', expected: 'rough' }, // f=25 i=99.9 facing=4.4
+  { regionId: 'east-macedonia-and-thrace-evros-mainland', name: 'Paralia Alexandroupolis', sector: 'S', expected: 'rough' }, // f=25 i=100 facing=180.7
+  { regionId: 'east-macedonia-and-thrace-kavala-mainland', name: 'Paralia Gymniston', sector: 'SE', expected: 'rough' }, // f=25 i=97.2 facing=154.2
+  { regionId: 'east-macedonia-and-thrace-rodopi-mainland', name: 'Synaxi', sector: 'S', expected: 'rough' }, // f=25 i=99.1 facing=190.6
+  { regionId: 'east-macedonia-and-thrace-samothraki', name: 'Vatos', sector: 'SE', expected: 'rough' }, // f=25 i=99 facing=146.3
+  { regionId: 'east-macedonia-and-thrace-thasos', name: 'Kekes', sector: 'S', expected: 'rough' }, // f=25 i=100 facing=180
+  { regionId: 'east-macedonia-and-thrace-xanthi-mainland', name: 'Paralia Myrodatou', sector: 'S', expected: 'rough' }, // f=25 i=99 facing=168.3
+  { regionId: 'epirus-preveza-mainland', name: 'Paralia Rizon', sector: 'SW', expected: 'rough' }, // f=25 i=100 facing=227.4
+  { regionId: 'epirus-thesprotia-mainland', name: 'Mega Drafi', sector: 'SW', expected: 'rough' }, // f=23.72 i=82.7 facing=239.4
+  { regionId: 'ionian-islands-antipaxos', name: 'Rodovanopoulo', sector: 'SW', expected: 'rough' }, // f=25 i=96 facing=248.2
+  { regionId: 'ionian-islands-erikoussa', name: 'Bragkini', sector: 'S', expected: 'rough' }, // f=19.84 i=83.9 facing=175.4
 ];
 
 const norm = (value) => (value || '')
