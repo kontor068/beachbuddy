@@ -28,6 +28,23 @@ const SCENARIOS = [
   { key: 'calm_2', deg: 0, kmh: 8 },
 ];
 
+// Representative summer scenarios per wind regime (reporting only — all four
+// scenarios still run): the Aegean summer is meltemi-driven, the Ionian runs
+// on the afternoon NW maistros with sirocco S as the secondary pattern, and
+// Crete sits between regimes (meltemi-exposed north coast, notias/Livas
+// events on the south coast).
+const SCENARIO_GROUPS: Record<string, { label: string; primary: string; secondary?: string }> = {
+  ionian: { label: 'Ionian (maistros regime)', primary: 'nw_5', secondary: 'notias_S6' },
+  crete: { label: 'Crete (meltemi north / notias-Livas south)', primary: 'meltemi_N7', secondary: 'notias_S6' },
+  aegean: { label: 'Aegean (meltemi regime)', primary: 'meltemi_N7' },
+};
+
+const scenarioGroupForRegion = (id: string): { label: string; primary: string; secondary?: string } => {
+  if (id.startsWith('ionian-islands-')) return SCENARIO_GROUPS.ionian;
+  if (id.startsWith('crete-')) return SCENARIO_GROUPS.crete;
+  return SCENARIO_GROUPS.aegean;
+};
+
 const parseArgValue = (name: string): string | undefined => {
   const index = process.argv.indexOf(name);
   return index === -1 ? undefined : process.argv[index + 1];
@@ -106,6 +123,9 @@ const results = beaches.map(beach => {
 
 if (jsonOutPath) writeFileSync(jsonOutPath, JSON.stringify(results, null, 1), 'utf8');
 
+const group = scenarioGroupForRegion(regionId);
+console.log(`Wind regime: ${group.label} — representative scenario: ${group.primary}${group.secondary ? ` (secondary: ${group.secondary})` : ''}\n`);
+
 let agree = 0;
 let total = 0;
 for (const r of results) {
@@ -119,6 +139,6 @@ for (const r of results) {
   console.log(`#${r.id} ${r.name} [${r.source}/${r.confidence}] authFacing=${r.authoredFacing} geoFacing=${r.geoFacing} dFacing=${facingDelta}`);
   if (diffs.length > 0) console.log(`  curated-vs-geo: ${diffs.map(s => `${s.sector}:${s.curated}|geo=${s.geoLevel}(i${s.geoIntensity},f${s.geoFetchKm})`).join(' ')}`);
   if (mapVsCurated.length > 0) console.log(`  map-vs-scoring: ${mapVsCurated.join(' ')}`);
-  console.log(`  scenarios: ${r.scenarios.map(s => `${s.scenario}=${s.level}/${s.color}${s.canClaimProtected ? '/SHELTER' : ''}`).join(' ')}`);
+  console.log(`  scenarios: ${r.scenarios.map(s => `${s.scenario === group.primary ? '*' : ''}${s.scenario}=${s.level}/${s.color}${s.canClaimProtected ? '/SHELTER' : ''}`).join(' ')}`);
 }
 console.log(`\nSector agreement curated-vs-geometry: ${agree}/${total} (${(100 * agree / total).toFixed(0)}%)`);
