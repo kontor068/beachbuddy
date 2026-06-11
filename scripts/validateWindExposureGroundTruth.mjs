@@ -151,6 +151,24 @@ const cases = [
   { regionId: 'north-aegean-psara', name: 'Lazareta', sector: 'S', expected: 'rough' }, // f=20.12 i=91.1 facing=168.8
   { regionId: 'north-aegean-samos', name: 'Trypiti', sector: 'S', expected: 'rough' }, // f=25 i=100 facing=180
   { regionId: 'peloponnese-argolida-mainland', name: 'Nea Epidavros - Aliotou', sector: 'NE', expected: 'rough' }, // f=20.68 i=73.4 facing=66.4
+  // National anchor batch 4 (2026-06-11): one auto-proposed
+  // open-sea rough anchor per remaining region (fetch >= 15 km, intensity
+  // >= 70, named beach, valid facing - regression guards for the geometry).
+  { regionId: 'peloponnese-arkadia-mainland', name: 'Poulithra', sector: 'NE', expected: 'rough' }, // f=24.88 i=90.7 facing=58.8
+  { regionId: 'peloponnese-korinthia-mainland', name: 'Sykia', sector: 'NE', expected: 'rough' }, // f=24.24 i=90.4 facing=60.3
+  { regionId: 'peloponnese-lakonia-mainland', name: 'Agios Kyprianos', sector: 'E', expected: 'rough' }, // f=25 i=100 facing=90.2
+  { regionId: 'peloponnese-messinia-mainland', name: 'Lagkouvardos', sector: 'W', expected: 'rough' }, // f=25 i=100 facing=271.1
+  { regionId: 'south-aegean-agathonisi', name: 'Vathy Pigadi', sector: 'SW', expected: 'rough' }, // f=15.24 i=77.3 facing=257.7
+  { regionId: 'south-aegean-amorgos', name: 'Mouros', sector: 'S', expected: 'rough' }, // f=25 i=99.2 facing=169.9
+  { regionId: 'south-aegean-anafi', name: 'Prassa', sector: 'NW', expected: 'rough' }, // f=25 i=99.9 facing=319
+  { regionId: 'south-aegean-andros', name: 'Gyalia', sector: 'E', expected: 'rough' }, // f=25 i=100 facing=90.6
+  { regionId: 'south-aegean-antiparos', name: 'Akti Panagias Faneromenis', sector: 'SW', expected: 'rough' }, // f=25 i=98.9 facing=212.9
+  { regionId: 'south-aegean-arki', name: 'Limnari', sector: 'NE', expected: 'rough' }, // f=25 i=89.5 facing=82.9
+  { regionId: 'south-aegean-astypalaia', name: 'Agios Ioannis', sector: 'SW', expected: 'rough' }, // f=25 i=99.9 facing=221.1
+  { regionId: 'south-aegean-donousa', name: 'Limenari', sector: 'S', expected: 'rough' }, // f=24.92 i=91.9 facing=177.2
+  { regionId: 'south-aegean-folegandros', name: 'Agkali', sector: 'SW', expected: 'rough' }, // f=25 i=99.9 facing=229.2
+  { regionId: 'south-aegean-ios', name: 'Manousou', sector: 'SW', expected: 'rough' }, // f=25 i=99.8 facing=229.8
+  { regionId: 'south-aegean-kalymnos', name: 'Platys Gialos', sector: 'W', expected: 'rough' }, // f=25 i=98.1 facing=254
 ];
 
 const norm = (value) => (value || '')
