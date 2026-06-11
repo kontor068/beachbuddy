@@ -169,6 +169,24 @@ const cases = [
   { regionId: 'south-aegean-folegandros', name: 'Agkali', sector: 'SW', expected: 'rough' }, // f=25 i=99.9 facing=229.2
   { regionId: 'south-aegean-ios', name: 'Manousou', sector: 'SW', expected: 'rough' }, // f=25 i=99.8 facing=229.8
   { regionId: 'south-aegean-kalymnos', name: 'Platys Gialos', sector: 'W', expected: 'rough' }, // f=25 i=98.1 facing=254
+  // National anchor batch 5 (2026-06-11): one auto-proposed
+  // open-sea rough anchor per remaining region (fetch >= 15 km, intensity
+  // >= 70, named beach, valid facing - regression guards for the geometry).
+  { regionId: 'south-aegean-karpathos', name: 'Evgonymos', sector: 'NW', expected: 'rough' }, // f=25 i=100 facing=315.7
+  { regionId: 'south-aegean-kasos', name: 'Ammoua', sector: 'W', expected: 'rough' }, // f=25 i=90.6 facing=305.8
+  { regionId: 'south-aegean-kea', name: 'Freas', sector: 'SW', expected: 'rough' }, // f=25 i=99.9 facing=227.8
+  { regionId: 'south-aegean-kimolos', name: 'Paralia Pigados', sector: 'E', expected: 'rough' }, // f=25 i=97 facing=110
+  { regionId: 'south-aegean-kos', name: 'Cavo Paradiso', sector: 'SW', expected: 'rough' }, // f=25 i=100 facing=222.8
+  { regionId: 'south-aegean-koufonisia', name: 'Paralia Leonida', sector: 'S', expected: 'rough' }, // f=20.88 i=91.7 facing=186.1
+  { regionId: 'south-aegean-kythnos', name: 'Alyki', sector: 'W', expected: 'rough' }, // f=25 i=99.9 facing=272.6
+  { regionId: 'south-aegean-leros', name: 'Vromolithos', sector: 'E', expected: 'rough' }, // f=20.4 i=90.8 facing=76.7
+  { regionId: 'south-aegean-lipsi', name: 'Agios Nikolaos', sector: 'E', expected: 'rough' }, // f=25 i=99.8 facing=94.9
+  { regionId: 'south-aegean-marathi', name: 'Tiganakia', sector: 'E', expected: 'rough' }, // f=15.64 i=82.3 facing=106.3
+  { regionId: 'south-aegean-nisyros', name: 'Pachia Ammos', sector: 'NE', expected: 'rough' }, // f=23.96 i=91.2 facing=55.5
+  { regionId: 'south-aegean-patmos', name: 'Paralia Lampi', sector: 'NE', expected: 'rough' }, // f=22.56 i=91.8 facing=50.7
+  { regionId: 'south-aegean-polyaigos', name: 'Amoura', sector: 'E', expected: 'rough' }, // f=25 i=99.1 facing=101
+  { regionId: 'south-aegean-serifos', name: 'Achladi', sector: 'S', expected: 'rough' }, // f=25 i=99.1 facing=190.6
+  { regionId: 'south-aegean-sikinos', name: 'Agios Panteleimonas', sector: 'S', expected: 'rough' }, // f=25 i=99.5 facing=171.7
 ];
 
 const norm = (value) => (value || '')
