@@ -103,6 +103,13 @@ export interface WindProfile {
   localWindAmplification: LocalWindAmplification;
   confidence: DataConfidence;
   notes: string;
+  /**
+   * The beach pin is known/suspected to sit at the wrong spot (wrong cove,
+   * name collision, harbour pocket — needs-field-verification list), so
+   * geometry derived from it must not override authored knowledge (e.g. the
+   * geometry-facing preference rule).
+   */
+  suspectPin?: boolean;
 }
 
 export type WindProfileSource = 'override' | 'beach' | 'metadata' | 'geospatial' | 'unknown';

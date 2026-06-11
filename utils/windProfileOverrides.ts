@@ -34,10 +34,12 @@ const lowConfidenceDirectionalProfile = ({
   exposedToWindDirections,
   knownWindSportSpot = false,
   localWindAmplification = 'low',
+  suspectPin = false,
   notes,
 }: Pick<WindProfile, 'beachFacingDirection' | 'shelterLevel' | 'fetchExposure' | 'exposedToWindDirections' | 'notes'> & {
   knownWindSportSpot?: WindProfile['knownWindSportSpot'];
   localWindAmplification?: WindProfile['localWindAmplification'];
+  suspectPin?: WindProfile['suspectPin'];
 }): WindProfile => ({
   beachFacingDirection,
   shelterLevel,
@@ -47,6 +49,7 @@ const lowConfidenceDirectionalProfile = ({
   knownWindSportSpot,
   localWindAmplification,
   confidence: 'low',
+  suspectPin,
   notes,
 });
 
@@ -169,6 +172,7 @@ export const windProfileOverridesByBeachId: Record<number, WindProfile> = {
     knownWindSportSpot: false,
     localWindAmplification: 'medium',
     confidence: 'low',
+    suspectPin: true,
     notes: 'Northern Milos exposure inferred from coordinates. 2026-06-10 golden-island pass: high-res OSM geometry at the pin shows a west-opening shoreline with ~19 km west fetch (sunset-spot guide references agree), while this legacy profile is north-facing; the coastal corner here (Kampanes 200 m NE) makes the true facing ambiguous. Conservative union of both exposures kept; facing needs field verification.',
   },
   1743: {
@@ -698,7 +702,8 @@ export const windProfileOverridesByBeachId: Record<number, WindProfile> = {
     knownWindSportSpot: true,
     localWindAmplification: 'high',
     confidence: 'medium',
-    notes: 'Known windy/kite area; should not be promoted as calm with 4-5 Beaufort.',
+    suspectPin: true,
+    notes: 'Known windy/kite area; should not be promoted as calm with 4-5 Beaufort. 2026-06-11 name-collision flag: this profile describes the WEST-coast kite Pounta (Antiparos strait), but the app pin (37.028, 25.252) sits at the EAST-coast Punda beach-club area next to Tserdakia. Correct fix is either moving the pin to the west-coast Pounta or a separate record for Punda Beach Club - pending Miltos decision; until then geometry from this pin must not override the authored facing.',
   },
   1847: {
     beachFacingDirection: 190,
@@ -841,7 +846,8 @@ export const windProfileOverridesByBeachId: Record<number, WindProfile> = {
     knownWindSportSpot: false,
     localWindAmplification: 'low',
     confidence: 'medium',
-    notes: 'Small Batsi-area beach. Practical leeward alternative in some east/northeast winds, but not confirmed protected from due north.',
+    suspectPin: true,
+    notes: 'Small Batsi-area beach. Practical leeward alternative in some east/northeast winds, but not confirmed protected from due north. 2026-06-10 flag: the app pin sits in a 60 m water pocket east of the beach ridge while the Batsi coast opens SW - geometry from this pin is not trusted.',
   },
   1522: {
     beachFacingDirection: 270,
@@ -1161,6 +1167,7 @@ const milosPhase3CoverageOverrideEntries: OverrideEntry[] = [
       fetchExposure: 'high',
       exposedToWindDirections: ['N', 'NW', 'W'],
       localWindAmplification: 'medium',
+      suspectPin: true,
       notes: 'Northwest/west Milos beach inferred from current coordinates and legacy orientation fallback. Treat as meltemi/west-sector sensitive until local behavior is verified; no protected/calm claims. 2026-06-10 golden-island pass: the app pin sits INSIDE the Milos gulf while curated data + guides (boat-only cove on the west edge, Greeka/feelgreece/MarinaTips) describe the real beach elsewhere — geometry from the current pin is not trusted; pin location needs field verification.',
     }),
   },
@@ -1184,6 +1191,7 @@ const milosPhase3CoverageOverrideEntries: OverrideEntry[] = [
       fetchExposure: 'high',
       exposedToWindDirections: ['N', 'NW', 'W', 'NE'],
       localWindAmplification: 'medium',
+      suspectPin: true,
       notes: 'Northern Milos location inferred from current coordinates. 2026-06-10 golden-island pass: high-res OSM geometry adds ~17 km of open NE fetch toward the strait mouth; coastal-corner ambiguity with adjacent Nerodafni (200 m SW) — conservative union of exposures kept, facing needs field verification.',
     }),
   },
@@ -1661,7 +1669,8 @@ const naxosPhase1CoverageOverrideEntries: OverrideEntry[] = [
       shelterLevel: 'semi_sheltered',
       fetchExposure: 'medium',
       exposedToWindDirections: ['E', 'SE', 'S'],
-      notes: 'Southeast/south Naxos beach inferred from coordinates. South/east-sector wind remains a caution; local bay shelter needs verification.',
+      suspectPin: true,
+      notes: 'Southeast/south Naxos beach inferred from coordinates. South/east-sector wind remains a caution; local bay shelter needs verification. 2026-06-10 flag: the app pin sits in a SW-opening notch/harbour pocket in the high-res mask while the real bay opens SE - geometry from this pin is not trusted.',
     }),
   },
   {

@@ -391,6 +391,7 @@ const normalizeWindProfile = (
     localWindAmplification: profile?.localWindAmplification || 'unknown',
     confidence: profile?.confidence || (source === 'unknown' ? 'low' : 'medium'),
     notes: profile?.notes || 'Local wind exposure profile is not verified yet.',
+    suspectPin: profile?.suspectPin || false,
   };
 };
 
@@ -488,6 +489,7 @@ export const assessBeachWindExposure = (input: BeachWindExposureInput): WindExpo
   const unified = resolveWindExposure({
     geospatialProfile: input.geospatialProfile,
     authoredFacingDeg,
+    suspectPin: profile.suspectPin,
     orientationDeg: input.beach.orientation?.degrees ?? null,
     protectedFrom: input.beach.protectedFrom,
     windDirectionDeg: input.windDirectionDeg,

@@ -53,6 +53,8 @@ export interface ResolveWindExposureInput {
   geospatialProfile?: GeospatialExposureProfile;
   /** Authored beach-facing direction (windProfile), highest-trust geometry. */
   authoredFacingDeg?: number | null;
+  /** Pin location is suspect — never let geometry beat the authored facing. */
+  suspectPin?: boolean;
   /** Verified orientation degrees from beach metadata. */
   orientationDeg?: number | null;
   /** Legacy protected-from directions, last-resort orientation source. */
@@ -97,12 +99,39 @@ const interpolateSector = (
   };
 };
 
+const angularDeltaDegrees = (a: number, b: number): number => {
+  const diff = Math.abs(normalizeDegrees(a) - normalizeDegrees(b));
+  return diff > 180 ? 360 - diff : diff;
+};
+
+/** Gross authored-vs-geometry disagreement that marks a legacy facing error. */
+const FACING_DISAGREEMENT_DEG = 60;
+
 const resolveFacingDeg = (input: ResolveWindExposureInput): number | null => {
-  if (typeof input.authoredFacingDeg === 'number' && Number.isFinite(input.authoredFacingDeg)) {
-    return input.authoredFacingDeg;
+  const authored = typeof input.authoredFacingDeg === 'number' && Number.isFinite(input.authoredFacingDeg)
+    ? input.authoredFacingDeg
+    : null;
+  const geo = typeof input.geospatialProfile?.facingDeg === 'number' && Number.isFinite(input.geospatialProfile.facingDeg)
+    ? input.geospatialProfile.facingDeg
+    : null;
+
+  // Legacy authored facings predate the geometry model and several are
+  // demonstrably wrong (Paros Krios/Langeri/Tourkou Ammos point at the wrong
+  // sea). When the high-res coastline disagrees grossly, trust the shoreline
+  // normal for the FACING (exposure levels keep following curated policy) —
+  // unless the pin itself is suspect, where geometry samples the wrong spot.
+  if (
+    authored !== null &&
+    geo !== null &&
+    input.geospatialProfile?.confidence === 'high' &&
+    !input.suspectPin &&
+    angularDeltaDegrees(authored, geo) > FACING_DISAGREEMENT_DEG
+  ) {
+    return geo;
   }
-  const geo = input.geospatialProfile?.facingDeg;
-  if (typeof geo === 'number' && Number.isFinite(geo)) return geo;
+
+  if (authored !== null) return authored;
+  if (geo !== null) return geo;
   if (typeof input.orientationDeg === 'number' && Number.isFinite(input.orientationDeg)) {
     return input.orientationDeg;
   }
