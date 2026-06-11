@@ -65,6 +65,11 @@ const cases = [
   // opens due south to 14+ km of open sea.
   { regionId: 'south-aegean-naxos', name: 'Lionas', sector: 'NE', expected: 'rough' },
   { regionId: 'south-aegean-naxos', name: 'Paralia Kalantos', sector: 'S', expected: 'rough' },
+  // Mykonos pass (2026-06-11): Korfos was a flagship correction of the
+  // high-res rebuild (the kite bay opens N toward the town gap, not S as the
+  // old mask said); Ornos opens due south — the classic meltemi refuge.
+  { regionId: 'south-aegean-mykonos', name: 'Korfos', sector: 'N', expected: 'rough' },
+  { regionId: 'south-aegean-mykonos', name: 'Ornos', sector: 'S', expected: 'rough' },
 ];
 
 const norm = (value) => (value || '')

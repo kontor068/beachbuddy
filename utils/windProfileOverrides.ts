@@ -1803,6 +1803,37 @@ const overrideEntries: OverrideEntry[] = [
   ...legacyMilosOverrideEntries,
   ...milosPhase3CoverageOverrideEntries,
   ...naxosPhase1CoverageOverrideEntries,
+  // 2026-06-11 Mykonos pass: the island runs entirely on geospatial backfill,
+  // which cannot carry the known-wind-sport policy. Ftelia and Korfos are THE
+  // two Mykonos kite/windsurf bays (verified: kitesurfy.com, bestkitespots.com,
+  // letskite.ch) — conservative name overrides so the >=4 Bft wind-sport
+  // warning and caps fire; facings match the high-res geometry.
+  {
+    islandTokens: ['mykonos', 'μυκονος', 'μυκονου'],
+    nameTokens: ['Ftelia'],
+    profile: lowConfidenceDirectionalProfile({
+      beachFacingDirection: 2,
+      shelterLevel: 'open',
+      fetchExposure: 'high',
+      exposedToWindDirections: ['N', 'NE', 'NW'],
+      knownWindSportSpot: true,
+      localWindAmplification: 'high',
+      notes: 'Ftelia bay is the historic Mykonos windsurf/kite spot: the N/NNE meltemi blows fully onshore with open Aegean fetch (kitesurfy.com, surf-magazin.de). Facing matches the high-res geometry (2 deg).',
+    }),
+  },
+  {
+    islandTokens: ['mykonos', 'μυκονος', 'μυκονου'],
+    nameTokens: ['Korfos'],
+    profile: lowConfidenceDirectionalProfile({
+      beachFacingDirection: 350,
+      shelterLevel: 'open',
+      fetchExposure: 'high',
+      exposedToWindDirections: ['N', 'NW', 'NE'],
+      knownWindSportSpot: true,
+      localWindAmplification: 'high',
+      notes: 'Korfos bay is the second Mykonos kite spot (beginner-friendly flat water in meltemi; kitesurfy.com, bestkitespots.com, letskite.ch). North-opening bay between the town and the airport; facing matches the high-res geometry (350 deg).',
+    }),
+  },
   {
     islandTokens: ['paros', 'παρος', 'παρου'],
     nameTokens: ['χρυση ακτη', 'golden beach'],
