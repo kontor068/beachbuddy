@@ -97,6 +97,24 @@ const cases = [
   { regionId: 'crete-crete-heraklion', name: 'Matala', sector: 'W', expected: 'rough' },
   { regionId: 'crete-crete-lasithi', name: 'Vai', sector: 'E', expected: 'rough' },
   { regionId: 'central-macedonia-halkidiki-mainland', name: 'Sarti', sector: 'E', expected: 'rough' },
+  // National anchor batch 1 (2026-06-11): one auto-proposed
+  // open-sea rough anchor per remaining region (fetch >= 15 km, intensity
+  // >= 70, named beach, valid facing - regression guards for the geometry).
+  { regionId: 'attica-aegina', name: 'Tourlos', sector: 'SE', expected: 'rough' }, // f=25 i=99.5 facing=127.1
+  { regionId: 'attica-agistri', name: 'Paralia Megalochoriou', sector: 'N', expected: 'rough' }, // f=23.64 i=82.2 facing=17
+  { regionId: 'attica-athens-area-mainland', name: 'Palmyra', sector: 'SW', expected: 'rough' }, // f=24.64 i=91.9 facing=227.8
+  { regionId: 'attica-east-attica-mainland', name: 'Galazia Akti', sector: 'SW', expected: 'rough' }, // f=25 i=99.9 facing=221.7
+  { regionId: 'attica-hydra', name: 'Agios Nikolaos', sector: 'S', expected: 'rough' }, // f=15.48 i=81.4 facing=200.2
+  { regionId: 'attica-kythira', name: 'Paralia Lykodimou', sector: 'W', expected: 'rough' }, // f=25 i=100 facing=269.3
+  { regionId: 'attica-methana', name: 'Akti Agapis', sector: 'NE', expected: 'rough' }, // f=19.24 i=82 facing=62.9
+  { regionId: 'attica-piraeus-area', name: 'Votsalakia', sector: 'S', expected: 'rough' }, // f=24.2 i=89.5 facing=160.9
+  { regionId: 'attica-poros', name: 'Plaka', sector: 'E', expected: 'rough' }, // f=15.08 i=72.1 facing=45.7
+  { regionId: 'attica-salamina', name: 'Paralia Agiou Nikolaou', sector: 'SE', expected: 'rough' }, // f=20.16 i=83.9 facing=138.2
+  { regionId: 'attica-spetses', name: 'Xylokeriza', sector: 'S', expected: 'rough' }, // f=24.96 i=89.1 facing=200.3
+  { regionId: 'attica-west-attica-mainland', name: 'Paralia Kinetas', sector: 'SE', expected: 'rough' }, // f=22.28 i=79.3 facing=162.4
+  { regionId: 'central-greece-evia', name: 'Vathychantako', sector: 'N', expected: 'rough' }, // f=25 i=100 facing=1.9
+  { regionId: 'central-greece-fokida-mainland', name: 'Paralia Agiou Mina', sector: 'SW', expected: 'rough' }, // f=22.12 i=89.7 facing=243
+  { regionId: 'central-greece-fthiotida-mainland', name: 'Mikri Souvala', sector: 'E', expected: 'rough' }, // f=21.72 i=71.8 facing=62.7
 ];
 
 const norm = (value) => (value || '')
