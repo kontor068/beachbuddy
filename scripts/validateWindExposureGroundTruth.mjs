@@ -91,6 +91,12 @@ const cases = [
   // bay behind the Vasilikos peninsula.
   { regionId: 'ionian-islands-zakynthos', name: 'Navagio', sector: 'W', expected: 'rough' },
   { regionId: 'ionian-islands-zakynthos', name: 'Gerakas', sector: 'N', expected: 'calm' },
+  // Crete x4 + Halkidiki pass (2026-06-11): one anchor per region.
+  { regionId: 'crete-crete-chania', name: 'Balos', sector: 'N', expected: 'calm' },
+  { regionId: 'crete-crete-rethymno', name: 'Preveli', sector: 'S', expected: 'rough' },
+  { regionId: 'crete-crete-heraklion', name: 'Matala', sector: 'W', expected: 'rough' },
+  { regionId: 'crete-crete-lasithi', name: 'Vai', sector: 'E', expected: 'rough' },
+  { regionId: 'central-macedonia-halkidiki-mainland', name: 'Sarti', sector: 'E', expected: 'rough' },
 ];
 
 const norm = (value) => (value || '')

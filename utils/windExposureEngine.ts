@@ -108,6 +108,10 @@ const GEOSPATIAL_WIND_PROFILE_BACKFILL_ISLANDS = new Set([
   'fokida (mainland)',
   'fthiotida (mainland)',
   'gavdos',
+  // Added 2026-06-11 after the Halkidiki playbook pass came back clean
+  // (125 pins audited, zero conflicts, tombolo handling verified at the
+  // Vourvourou archipelago).
+  'halkidiki (mainland)',
   'ithaca',
   'kalymnos',
   'karpathos',
