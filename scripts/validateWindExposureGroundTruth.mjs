@@ -74,6 +74,10 @@ const cases = [
   // cliffs in meltemi; Vlychada opens due south to open sea.
   { regionId: 'south-aegean-santorini', name: 'Kokkini', sector: 'N', expected: 'calm' },
   { regionId: 'south-aegean-santorini', name: 'Vlychada', sector: 'S', expected: 'rough' },
+  // Sifnos pass (2026-06-11): Vathi is the textbook enclosed SW bay (calm in
+  // meltemi); Kamares opens due west with 10+ km of fetch toward Kimolos.
+  { regionId: 'south-aegean-sifnos', name: 'Vathi', sector: 'N', expected: 'calm' },
+  { regionId: 'south-aegean-sifnos', name: 'Kamares', sector: 'W', expected: 'rough' },
 ];
 
 const norm = (value) => (value || '')
