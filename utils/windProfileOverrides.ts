@@ -880,7 +880,8 @@ export const windProfileOverridesByBeachId: Record<number, WindProfile> = {
     knownWindSportSpot: false,
     localWindAmplification: 'medium',
     confidence: 'medium',
-    notes: 'Popular west-coast Andros beach. Better than east open bays in NE wind, but still not a verified sheltered cove for due north wind.',
+    suspectPin: true,
+    notes: 'Popular west-coast Andros beach. Better than east open bays in NE wind, but still not a verified sheltered cove for due north wind. 2026-06-11 HIGH-pin triage: the pin sits in an 80 m water pocket with geometry facing 155 (SE) that contradicts both this profile and the curated Gavrio-Batsi west/southwest segment note - likely a back-lagoon pocket; geometry from this pin is not trusted, needs field verification.',
   },
   1504: {
     beachFacingDirection: 155,
@@ -1010,7 +1011,8 @@ export const windProfileOverridesByBeachId: Record<number, WindProfile> = {
     knownWindSportSpot: false,
     localWindAmplification: 'low',
     confidence: 'medium',
-    notes: 'Southeast/east Andros beach. May differ from north-exposed beaches, but exact shelter is not verified enough for protected claims.',
+    suspectPin: true,
+    notes: 'Southeast/east Andros beach. May differ from north-exposed beaches, but exact shelter is not verified enough for protected claims. 2026-06-11 HIGH-pin triage: 40 m water pocket with geometry facing 48.6 (NE) against the authored 145 (SE) and no independent evidence either way - conservative authored facing kept, needs field verification.',
   },
   1527: {
     beachFacingDirection: 15,
