@@ -25,6 +25,21 @@ type RawGeospatialExposurePayload = {
 const windSectors: WindSector[] = ['N', 'NE', 'E', 'SE', 'S', 'SW', 'W', 'NW'];
 const profileCache = new Map<string, Promise<GeospatialExposureProfileLookup | undefined>>();
 
+// 2026-06-11 TEMPORARY block pending the Thessaly re-geocoding: the national
+// pin audit (scripts/auditNationalPins.mjs) found systematic village/POI
+// coordinates instead of beach locations in these regions (76 CRITICAL pins —
+// Pelion 49, Larissa coast 14, Skopelos 7, Alonissos 6 — plus 8 in
+// Aetolia-Acarnania), so their generated geometry is garbage sampled from the
+// wrong spots and must not reach scoring or the map at all. Unblock each
+// region only after re-geocoding + rebuild + a clean re-audit.
+const BLOCKED_REGION_IDS = new Set([
+  'thessaly-magnesia-mainland---pelion',
+  'thessaly-larissa-coast-agia---kissavos',
+  'thessaly-alonissos',
+  'thessaly-skopelos',
+  'west-greece-aetolia-acarnania-mainland',
+]);
+
 const buildProfileUrl = (regionId: string) => `/data/geospatial/exposure/${regionId}.json`;
 
 const isUsableGeneratedProfile = (profile: RawGeospatialExposureProfile): boolean => {
@@ -65,6 +80,7 @@ const normalizeProfiles = (
 export const loadGeospatialExposureProfiles = async (
   regionId: string
 ): Promise<GeospatialExposureProfileLookup | undefined> => {
+  if (BLOCKED_REGION_IDS.has(regionId)) return undefined;
   if (typeof fetch !== 'function') return undefined;
 
   const cached = profileCache.get(regionId);
