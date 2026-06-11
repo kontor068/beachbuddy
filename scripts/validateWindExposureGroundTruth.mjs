@@ -78,6 +78,10 @@ const cases = [
   // meltemi); Kamares opens due west with 10+ km of fetch toward Kimolos.
   { regionId: 'south-aegean-sifnos', name: 'Vathi', sector: 'N', expected: 'calm' },
   { regionId: 'south-aegean-sifnos', name: 'Kamares', sector: 'W', expected: 'rough' },
+  // Rhodes pass (2026-06-11): Stegna on the east coast opens due east to 20 km
+  // of open sea; St Paul's bay at Lindos is the famous near-enclosed cove.
+  { regionId: 'south-aegean-rhodes', name: 'Stegna', sector: 'E', expected: 'rough' },
+  { regionId: 'south-aegean-rhodes', name: 'Agiou Pavlou', sector: 'N', expected: 'calm' },
 ];
 
 const norm = (value) => (value || '')
