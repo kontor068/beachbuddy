@@ -86,6 +86,11 @@ const cases = [
   // (the kite zone); Agni is the classic sheltered NE-coast taverna cove.
   { regionId: 'ionian-islands-corfu', name: 'Chalikouna', sector: 'SW', expected: 'rough' },
   { regionId: 'ionian-islands-corfu', name: 'Agni', sector: 'W', expected: 'calm' },
+  // Zakynthos pass (2026-06-11): Navagio faces the open west Ionian (boat
+  // access only when the maistros is down); Gerakas is the sheltered turtle
+  // bay behind the Vasilikos peninsula.
+  { regionId: 'ionian-islands-zakynthos', name: 'Navagio', sector: 'W', expected: 'rough' },
+  { regionId: 'ionian-islands-zakynthos', name: 'Gerakas', sector: 'N', expected: 'calm' },
 ];
 
 const norm = (value) => (value || '')
