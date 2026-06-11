@@ -59,6 +59,12 @@ const cases = [
   // under the 8 km solution-B escalation threshold — the curated explicit N
   // exposure is what protects scoring here, not the geometry escalation.
   { regionId: 'south-aegean-milos', name: 'Fatourena', sector: 'N', expected: 'rough' },
+  // Naxos island pass (2026-06-11): Lionas is the narrow NE-opening fjord cove
+  // on the east coast — the meltemi funnels straight into its mouth (geometry:
+  // facing 37.9, 20 km NE fetch, intensity 92). Kalantos bay on the south coast
+  // opens due south to 14+ km of open sea.
+  { regionId: 'south-aegean-naxos', name: 'Lionas', sector: 'NE', expected: 'rough' },
+  { regionId: 'south-aegean-naxos', name: 'Paralia Kalantos', sector: 'S', expected: 'rough' },
 ];
 
 const norm = (value) => (value || '')
