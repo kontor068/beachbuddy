@@ -1958,6 +1958,33 @@ const overrideEntries: OverrideEntry[] = [
       notes: 'Kouremenos bay at Palekastro is the east-Crete windsurf spot (Freak windsurf center — sportif.travel Crete Windsurf Centre): venturi-accelerated meltemi all season.',
     }),
   },
+  // 2026-06-11 Corfu pass: the Korission dune front is the island wind zone.
+  {
+    islandTokens: ['corfu', 'kerkyra', 'κερκυρα', 'κερκυρας'],
+    nameTokens: ['Chalikouna', 'Halikounas', 'Chalikounas'],
+    profile: lowConfidenceDirectionalProfile({
+      beachFacingDirection: 209,
+      shelterLevel: 'open',
+      fetchExposure: 'high',
+      exposedToWindDirections: ['S', 'SW', 'W'],
+      knownWindSportSpot: true,
+      localWindAmplification: 'medium',
+      notes: 'Chalikounas by the Korission lagoon is the most popular Corfu kite spot with an on-site hire centre (kite-and-windsurfing-guide.com dedicated page, dassiaskiclub.com). Open SW Ionian fetch; afternoon NW-W maistros thermals.',
+    }),
+  },
+  {
+    islandTokens: ['corfu', 'kerkyra', 'κερκυρα', 'κερκυρας'],
+    nameTokens: ['Issos'],
+    profile: lowConfidenceDirectionalProfile({
+      beachFacingDirection: 188,
+      shelterLevel: 'open',
+      fetchExposure: 'high',
+      exposedToWindDirections: ['SE', 'S', 'SW'],
+      knownWindSportSpot: true,
+      localWindAmplification: 'medium',
+      notes: 'Issos hosts the local windsurf school on the Korission dunes (kiteforum.com and kite-and-windsurfing-guide.com spot pages): noon NW thermals 12-15 knots, open south Ionian fetch.',
+    }),
+  },
   {
     islandTokens: ['tinos', 'τηνος', 'τηνου'],
     nameTokens: ['Kolympithra', 'Kolymbithra'],

@@ -82,6 +82,10 @@ const cases = [
   // of open sea; St Paul's bay at Lindos is the famous near-enclosed cove.
   { regionId: 'south-aegean-rhodes', name: 'Stegna', sector: 'E', expected: 'rough' },
   { regionId: 'south-aegean-rhodes', name: 'Agiou Pavlou', sector: 'N', expected: 'calm' },
+  // Corfu pass (2026-06-11): Chalikounas opens to 20+ km of SW Ionian sea
+  // (the kite zone); Agni is the classic sheltered NE-coast taverna cove.
+  { regionId: 'ionian-islands-corfu', name: 'Chalikouna', sector: 'SW', expected: 'rough' },
+  { regionId: 'ionian-islands-corfu', name: 'Agni', sector: 'W', expected: 'calm' },
 ];
 
 const norm = (value) => (value || '')
