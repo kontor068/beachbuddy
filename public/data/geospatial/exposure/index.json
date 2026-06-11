@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "generatedAt": "2026-06-10T15:05:08.580Z",
+  "generatedAt": "2026-06-11T09:51:46.174Z",
   "purpose": "Offline directional geospatial exposure baseline for CalmBeach. Not user-facing proof of calm/protected conditions.",
   "source": {
     "landMask": {
@@ -41,8 +41,8 @@
   },
   "summary": {
     "regionCount": 110,
-    "beachCount": 2715,
-    "generatedProfiles": 2715,
+    "beachCount": 2692,
+    "generatedProfiles": 2692,
     "missingCoordinates": 0,
     "indexedLandPolygons": 15946,
     "regions": {
@@ -4944,145 +4944,145 @@
       },
       "thessaly-alonissos": {
         "regionName": "Alonissos",
-        "beachCount": 35,
-        "generatedProfiles": 35,
+        "beachCount": 34,
+        "generatedProfiles": 34,
         "missingCoordinates": 0,
         "sectors": {
           "N": {
-            "protected": 31,
-            "partial": 2,
-            "exposed": 2
+            "protected": 27,
+            "partial": 4,
+            "exposed": 3
           },
           "NE": {
-            "protected": 26,
-            "partial": 9,
+            "protected": 22,
+            "partial": 12,
             "exposed": 0
           },
           "E": {
             "protected": 9,
-            "partial": 14,
-            "exposed": 12
+            "partial": 18,
+            "exposed": 7
           },
           "SE": {
-            "protected": 7,
-            "partial": 2,
-            "exposed": 26
+            "protected": 8,
+            "partial": 7,
+            "exposed": 19
           },
           "S": {
-            "protected": 4,
-            "partial": 7,
-            "exposed": 24
+            "protected": 7,
+            "partial": 10,
+            "exposed": 17
           },
           "SW": {
-            "protected": 12,
-            "partial": 14,
+            "protected": 16,
+            "partial": 9,
             "exposed": 9
           },
           "W": {
-            "protected": 25,
-            "partial": 7,
+            "protected": 23,
+            "partial": 8,
             "exposed": 3
           },
           "NW": {
-            "protected": 27,
-            "partial": 4,
-            "exposed": 4
+            "protected": 26,
+            "partial": 2,
+            "exposed": 6
           }
         }
       },
       "thessaly-larissa-coast-agia---kissavos": {
         "regionName": "Larissa Coast (Agia - Kissavos)",
-        "beachCount": 14,
-        "generatedProfiles": 14,
+        "beachCount": 8,
+        "generatedProfiles": 8,
         "missingCoordinates": 0,
         "sectors": {
           "N": {
             "protected": 0,
-            "partial": 11,
-            "exposed": 3
+            "partial": 2,
+            "exposed": 6
           },
           "NE": {
             "protected": 0,
             "partial": 0,
-            "exposed": 14
+            "exposed": 8
           },
           "E": {
             "protected": 0,
-            "partial": 2,
-            "exposed": 12
+            "partial": 0,
+            "exposed": 8
           },
           "SE": {
-            "protected": 2,
-            "partial": 1,
-            "exposed": 11
+            "protected": 3,
+            "partial": 4,
+            "exposed": 1
           },
           "S": {
-            "protected": 14,
+            "protected": 8,
             "partial": 0,
             "exposed": 0
           },
           "SW": {
-            "protected": 14,
+            "protected": 8,
             "partial": 0,
             "exposed": 0
           },
           "W": {
-            "protected": 14,
+            "protected": 8,
             "partial": 0,
             "exposed": 0
           },
           "NW": {
-            "protected": 12,
-            "partial": 2,
+            "protected": 5,
+            "partial": 3,
             "exposed": 0
           }
         }
       },
       "thessaly-magnesia-mainland---pelion": {
         "regionName": "Magnesia (Pelion)",
-        "beachCount": 60,
-        "generatedProfiles": 60,
+        "beachCount": 52,
+        "generatedProfiles": 52,
         "missingCoordinates": 0,
         "sectors": {
           "N": {
-            "protected": 23,
-            "partial": 21,
-            "exposed": 16
+            "protected": 22,
+            "partial": 10,
+            "exposed": 20
           },
           "NE": {
-            "protected": 15,
-            "partial": 12,
-            "exposed": 33
+            "protected": 18,
+            "partial": 10,
+            "exposed": 24
           },
           "E": {
-            "protected": 5,
-            "partial": 14,
-            "exposed": 41
+            "protected": 15,
+            "partial": 8,
+            "exposed": 29
           },
           "SE": {
-            "protected": 2,
-            "partial": 42,
-            "exposed": 16
+            "protected": 13,
+            "partial": 29,
+            "exposed": 10
           },
           "S": {
-            "protected": 38,
+            "protected": 29,
             "partial": 15,
-            "exposed": 7
+            "exposed": 8
           },
           "SW": {
-            "protected": 45,
-            "partial": 15,
-            "exposed": 0
+            "protected": 32,
+            "partial": 12,
+            "exposed": 8
           },
           "W": {
-            "protected": 53,
-            "partial": 7,
-            "exposed": 0
+            "protected": 36,
+            "partial": 8,
+            "exposed": 8
           },
           "NW": {
-            "protected": 52,
-            "partial": 8,
-            "exposed": 0
+            "protected": 38,
+            "partial": 13,
+            "exposed": 1
           }
         }
       },
@@ -5141,44 +5141,44 @@
         "missingCoordinates": 0,
         "sectors": {
           "N": {
-            "protected": 13,
+            "protected": 16,
             "partial": 2,
-            "exposed": 4
+            "exposed": 1
           },
           "NE": {
-            "protected": 14,
-            "partial": 1,
-            "exposed": 4
+            "protected": 15,
+            "partial": 3,
+            "exposed": 1
           },
           "E": {
-            "protected": 10,
-            "partial": 9,
-            "exposed": 0
+            "protected": 15,
+            "partial": 1,
+            "exposed": 3
           },
           "SE": {
             "protected": 9,
-            "partial": 2,
-            "exposed": 8
+            "partial": 5,
+            "exposed": 5
           },
           "S": {
-            "protected": 6,
-            "partial": 2,
-            "exposed": 11
+            "protected": 4,
+            "partial": 6,
+            "exposed": 9
           },
           "SW": {
-            "protected": 6,
-            "partial": 6,
-            "exposed": 7
+            "protected": 4,
+            "partial": 3,
+            "exposed": 12
           },
           "W": {
-            "protected": 9,
+            "protected": 5,
             "partial": 6,
-            "exposed": 4
+            "exposed": 8
           },
           "NW": {
-            "protected": 12,
-            "partial": 6,
-            "exposed": 1
+            "protected": 10,
+            "partial": 9,
+            "exposed": 0
           }
         }
       },
@@ -5232,47 +5232,47 @@
       },
       "west-greece-aetolia-acarnania-mainland": {
         "regionName": "Aetolia-Acarnania",
-        "beachCount": 47,
-        "generatedProfiles": 47,
+        "beachCount": 39,
+        "generatedProfiles": 39,
         "missingCoordinates": 0,
         "sectors": {
           "N": {
-            "protected": 33,
+            "protected": 25,
             "partial": 13,
             "exposed": 1
           },
           "NE": {
-            "protected": 36,
+            "protected": 28,
             "partial": 11,
             "exposed": 0
           },
           "E": {
-            "protected": 25,
-            "partial": 22,
+            "protected": 19,
+            "partial": 20,
             "exposed": 0
           },
           "SE": {
-            "protected": 22,
-            "partial": 9,
-            "exposed": 16
-          },
-          "S": {
-            "protected": 20,
-            "partial": 13,
+            "protected": 17,
+            "partial": 8,
             "exposed": 14
           },
-          "SW": {
-            "protected": 21,
+          "S": {
+            "protected": 15,
             "partial": 13,
-            "exposed": 13
+            "exposed": 11
+          },
+          "SW": {
+            "protected": 16,
+            "partial": 13,
+            "exposed": 10
           },
           "W": {
-            "protected": 29,
-            "partial": 16,
+            "protected": 22,
+            "partial": 15,
             "exposed": 2
           },
           "NW": {
-            "protected": 32,
+            "protected": 24,
             "partial": 12,
             "exposed": 3
           }
