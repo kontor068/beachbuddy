@@ -187,6 +187,21 @@ const cases = [
   { regionId: 'south-aegean-polyaigos', name: 'Amoura', sector: 'E', expected: 'rough' }, // f=25 i=99.1 facing=101
   { regionId: 'south-aegean-serifos', name: 'Achladi', sector: 'S', expected: 'rough' }, // f=25 i=99.1 facing=190.6
   { regionId: 'south-aegean-sikinos', name: 'Agios Panteleimonas', sector: 'S', expected: 'rough' }, // f=25 i=99.5 facing=171.7
+  // National anchor batch 6 (2026-06-11): one auto-proposed
+  // open-sea rough anchor per remaining region (fetch >= 15 km, intensity
+  // >= 70, named beach, valid facing - regression guards for the geometry).
+  { regionId: 'south-aegean-syros', name: 'Santorinii', sector: 'S', expected: 'rough' }, // f=25 i=98.7 facing=193.3
+  { regionId: 'south-aegean-telendos', name: 'Paralia Papa', sector: 'W', expected: 'rough' }, // f=25 i=100 facing=271.6
+  { regionId: 'south-aegean-tilos', name: 'Limenari', sector: 'SW', expected: 'rough' }, // f=25 i=99.9 facing=222.3
+  { regionId: 'south-aegean-tinos', name: 'Kousinia', sector: 'W', expected: 'rough' }, // f=25 i=94.2 facing=242.2
+  { regionId: 'thessaly-alonissos', name: 'Lena', sector: 'S', expected: 'rough' }, // f=25 i=100 facing=180.4
+  { regionId: 'thessaly-larissa-coast-agia---kissavos', name: 'Platia Ammos', sector: 'NE', expected: 'rough' }, // f=25 i=100 facing=44.8
+  { regionId: 'thessaly-magnesia-mainland---pelion', name: 'Theotokos', sector: 'NE', expected: 'rough' }, // f=25 i=100 facing=43.7
+  { regionId: 'thessaly-skiathos', name: 'Megas Gialos', sector: 'N', expected: 'rough' }, // f=25 i=99.7 facing=6.3
+  { regionId: 'thessaly-skopelos', name: 'Vathias', sector: 'S', expected: 'rough' }, // f=25 i=100 facing=181.4
+  { regionId: 'west-greece-achaia-mainland', name: 'Paralia Kalogrias', sector: 'W', expected: 'rough' }, // f=25 i=99.9 facing=273.9
+  { regionId: 'west-greece-aetolia-acarnania-mainland', name: 'Louros', sector: 'S', expected: 'rough' }, // f=25 i=99.3 facing=189.7
+  { regionId: 'west-greece-ileia-mainland', name: 'Paralia Marathias', sector: 'SW', expected: 'rough' }, // f=25 i=100 facing=224.5
 ];
 
 const norm = (value) => (value || '')
