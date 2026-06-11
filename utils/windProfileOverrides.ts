@@ -1834,6 +1834,22 @@ const overrideEntries: OverrideEntry[] = [
       notes: 'Korfos bay is the second Mykonos kite spot (beginner-friendly flat water in meltemi; kitesurfy.com, bestkitespots.com, letskite.ch). North-opening bay between the town and the airport; facing matches the high-res geometry (350 deg).',
     }),
   },
+  // 2026-06-11 Santorini pass: same backfill gap as Mykonos — Monolithos is
+  // the island's windsurf/kite school spot (NE meltemi 15-20+ knots; verified:
+  // kiteforum.com, spots4kite.com, greeka.com/santorini/sports/kitesurfing).
+  {
+    islandTokens: ['santorini', 'σαντορινη', 'σαντορινης', 'thira'],
+    nameTokens: ['Monolithos'],
+    profile: lowConfidenceDirectionalProfile({
+      beachFacingDirection: 53,
+      shelterLevel: 'open',
+      fetchExposure: 'high',
+      exposedToWindDirections: ['N', 'NE', 'E'],
+      knownWindSportSpot: true,
+      localWindAmplification: 'high',
+      notes: 'Monolithos hosts the Santorini windsurf/kite school: NE meltemi 15-20+ knots, wavy above 18 (kiteforum.com, spots4kite.com, greeka.com). East-coast beach by the airport; facing matches the high-res geometry (53 deg).',
+    }),
+  },
   {
     islandTokens: ['paros', 'παρος', 'παρου'],
     nameTokens: ['χρυση ακτη', 'golden beach'],

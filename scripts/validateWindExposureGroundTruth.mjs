@@ -70,6 +70,10 @@ const cases = [
   // old mask said); Ornos opens due south — the classic meltemi refuge.
   { regionId: 'south-aegean-mykonos', name: 'Korfos', sector: 'N', expected: 'rough' },
   { regionId: 'south-aegean-mykonos', name: 'Ornos', sector: 'S', expected: 'rough' },
+  // Santorini pass (2026-06-11): Kokkini (Red Beach) hides behind the Akrotiri
+  // cliffs in meltemi; Vlychada opens due south to open sea.
+  { regionId: 'south-aegean-santorini', name: 'Kokkini', sector: 'N', expected: 'calm' },
+  { regionId: 'south-aegean-santorini', name: 'Vlychada', sector: 'S', expected: 'rough' },
 ];
 
 const norm = (value) => (value || '')
