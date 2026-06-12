@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "generatedAt": "2026-06-12T05:06:54.355Z",
+  "generatedAt": "2026-06-12T05:13:13.341Z",
   "region": {
     "id": "south-aegean-naxos",
     "name": "Naxos"
@@ -42,8 +42,8 @@
     "sectors": {
       "N": {
         "protected": 22,
-        "partial": 8,
-        "exposed": 9
+        "partial": 9,
+        "exposed": 8
       },
       "NE": {
         "protected": 25,
@@ -52,18 +52,18 @@
       },
       "E": {
         "protected": 26,
-        "partial": 5,
-        "exposed": 8
+        "partial": 4,
+        "exposed": 9
       },
       "SE": {
-        "protected": 25,
-        "partial": 7,
+        "protected": 24,
+        "partial": 8,
         "exposed": 7
       },
       "S": {
         "protected": 19,
-        "partial": 14,
-        "exposed": 6
+        "partial": 13,
+        "exposed": 7
       },
       "SW": {
         "protected": 17,
@@ -76,8 +76,8 @@
         "exposed": 13
       },
       "NW": {
-        "protected": 16,
-        "partial": 11,
+        "protected": 17,
+        "partial": 10,
         "exposed": 12
       }
     }
@@ -729,66 +729,66 @@
         "gr": "Απόλλωνας"
       },
       "coordinates": {
-        "lat": 37.180032,
-        "lon": 25.55254
+        "lat": 37.17976,
+        "lon": 25.552063
       },
-      "facingDeg": 38.6,
+      "facingDeg": 55.7,
       "sectors": {
         "N": {
-          "level": "exposed",
-          "fetchKm": 20,
-          "blockedRayRatio": 0.2,
-          "onshore": 0.782,
-          "intensity": 81.9
+          "level": "partial",
+          "fetchKm": 10,
+          "blockedRayRatio": 0.6,
+          "onshore": 0.564,
+          "intensity": 57.3
         },
         "NE": {
           "level": "exposed",
-          "fetchKm": 20.08,
-          "blockedRayRatio": 0.2,
-          "onshore": 0.994,
-          "intensity": 91.7
+          "fetchKm": 25,
+          "blockedRayRatio": 0,
+          "onshore": 0.983,
+          "intensity": 99.1
         },
         "E": {
-          "level": "partial",
-          "fetchKm": 5.24,
-          "blockedRayRatio": 0.8,
-          "onshore": 0.624,
-          "intensity": 51.6
+          "level": "exposed",
+          "fetchKm": 10.24,
+          "blockedRayRatio": 0.6,
+          "onshore": 0.826,
+          "intensity": 67.2
         },
         "SE": {
-          "level": "protected",
-          "fetchKm": 0.12,
+          "level": "partial",
+          "fetchKm": 0.24,
           "blockedRayRatio": 1,
-          "onshore": -0.111,
-          "intensity": 26.7
+          "onshore": 0.186,
+          "intensity": 35.6
         },
         "S": {
           "level": "protected",
-          "fetchKm": 0,
+          "fetchKm": 0.04,
           "blockedRayRatio": 1,
-          "onshore": -0.782,
-          "intensity": 6.6
+          "onshore": -0.564,
+          "intensity": 13.1
         },
         "SW": {
           "level": "protected",
           "fetchKm": 0,
           "blockedRayRatio": 1,
-          "onshore": -0.994,
-          "intensity": 0.2
+          "onshore": -0.983,
+          "intensity": 0.5
         },
         "W": {
           "level": "protected",
           "fetchKm": 0,
           "blockedRayRatio": 1,
-          "onshore": -0.624,
-          "intensity": 11.3
+          "onshore": -0.826,
+          "intensity": 5.2
         },
         "NW": {
-          "level": "partial",
-          "fetchKm": 5,
-          "blockedRayRatio": 0.8,
-          "onshore": 0.111,
-          "intensity": 35.2
+          "level": "protected",
+          "fetchKm": 0,
+          "blockedRayRatio": 1,
+          "onshore": -0.186,
+          "intensity": 24.4
         }
       },
       "confidence": "high"
@@ -2291,66 +2291,66 @@
         "gr": "Πλάκα"
       },
       "coordinates": {
-        "lat": 37.049996,
-        "lon": 25.368401
+        "lat": 37.050743,
+        "lon": 25.369322
       },
-      "facingDeg": 234.6,
+      "facingDeg": 231.1,
       "sectors": {
         "N": {
           "level": "protected",
-          "fetchKm": 0.08,
+          "fetchKm": 0,
           "blockedRayRatio": 1,
-          "onshore": -0.579,
-          "intensity": 12.6
+          "onshore": -0.628,
+          "intensity": 11.2
         },
         "NE": {
           "level": "protected",
           "fetchKm": 0,
           "blockedRayRatio": 1,
-          "onshore": -0.986,
-          "intensity": 0.4
+          "onshore": -0.994,
+          "intensity": 0.2
         },
         "E": {
           "level": "protected",
-          "fetchKm": 0.08,
+          "fetchKm": 0,
           "blockedRayRatio": 1,
-          "onshore": -0.815,
-          "intensity": 5.5
+          "onshore": -0.778,
+          "intensity": 6.7
         },
         "SE": {
           "level": "protected",
-          "fetchKm": 0.88,
+          "fetchKm": 0.72,
           "blockedRayRatio": 1,
-          "onshore": -0.167,
-          "intensity": 25
+          "onshore": -0.106,
+          "intensity": 26.8
         },
         "S": {
-          "level": "partial",
+          "level": "exposed",
           "fetchKm": 11.2,
           "blockedRayRatio": 0.6,
-          "onshore": 0.579,
-          "intensity": 59.2
+          "onshore": 0.628,
+          "intensity": 61
         },
         "SW": {
           "level": "exposed",
-          "fetchKm": 19.64,
+          "fetchKm": 19.72,
           "blockedRayRatio": 0.4,
-          "onshore": 0.986,
-          "intensity": 83.4
+          "onshore": 0.994,
+          "intensity": 83.8
         },
         "W": {
           "level": "partial",
-          "fetchKm": 10.36,
+          "fetchKm": 10.48,
           "blockedRayRatio": 1,
-          "onshore": 0.815,
-          "intensity": 54.5
+          "onshore": 0.778,
+          "intensity": 53.3
         },
         "NW": {
           "level": "partial",
-          "fetchKm": 5,
+          "fetchKm": 4.12,
           "blockedRayRatio": 1,
-          "onshore": 0.167,
-          "intensity": 35
+          "onshore": 0.106,
+          "intensity": 33.2
         }
       },
       "confidence": "high"

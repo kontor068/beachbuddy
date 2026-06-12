@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "generatedAt": "2026-06-12T05:06:51.935Z",
+  "generatedAt": "2026-06-12T05:13:10.944Z",
   "region": {
     "id": "south-aegean-koufonisia",
     "name": "Koufonisia"
@@ -942,66 +942,66 @@
         "gr": "Πόρι"
       },
       "coordinates": {
-        "lat": 36.945492,
-        "lon": 25.621356
+        "lat": 36.945674,
+        "lon": 25.620799
       },
-      "facingDeg": 120.5,
+      "facingDeg": 116.4,
       "sectors": {
         "N": {
           "level": "protected",
-          "fetchKm": 4.36,
+          "fetchKm": 2.6,
           "blockedRayRatio": 1,
-          "onshore": -0.508,
-          "intensity": 14.8
+          "onshore": -0.445,
+          "intensity": 16.7
         },
         "NE": {
           "level": "partial",
           "fetchKm": 0.08,
           "blockedRayRatio": 1,
-          "onshore": 0.25,
-          "intensity": 37.5
+          "onshore": 0.319,
+          "intensity": 39.6
         },
         "E": {
           "level": "partial",
           "fetchKm": 9.48,
           "blockedRayRatio": 1,
-          "onshore": 0.862,
-          "intensity": 55.8
+          "onshore": 0.896,
+          "intensity": 56.9
         },
         "SE": {
           "level": "partial",
-          "fetchKm": 13.52,
+          "fetchKm": 13.56,
           "blockedRayRatio": 1,
-          "onshore": 0.968,
-          "intensity": 59
+          "onshore": 0.948,
+          "intensity": 58.4
         },
         "S": {
           "level": "partial",
-          "fetchKm": 0.16,
+          "fetchKm": 0.12,
           "blockedRayRatio": 1,
-          "onshore": 0.508,
-          "intensity": 45.2
+          "onshore": 0.445,
+          "intensity": 43.3
         },
         "SW": {
           "level": "protected",
-          "fetchKm": 0.04,
+          "fetchKm": 0,
           "blockedRayRatio": 1,
-          "onshore": -0.25,
-          "intensity": 22.5
+          "onshore": -0.319,
+          "intensity": 20.4
         },
         "W": {
           "level": "protected",
           "fetchKm": 0,
           "blockedRayRatio": 1,
-          "onshore": -0.862,
-          "intensity": 4.2
+          "onshore": -0.896,
+          "intensity": 3.1
         },
         "NW": {
           "level": "protected",
-          "fetchKm": 4.36,
+          "fetchKm": 2.64,
           "blockedRayRatio": 1,
-          "onshore": -0.968,
-          "intensity": 1
+          "onshore": -0.948,
+          "intensity": 1.6
         }
       },
       "confidence": "high"
