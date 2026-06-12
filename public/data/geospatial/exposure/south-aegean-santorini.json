@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "generatedAt": "2026-06-10T15:05:02.773Z",
+  "generatedAt": "2026-06-12T05:06:55.121Z",
   "region": {
     "id": "south-aegean-santorini",
     "name": "Santorini"
@@ -303,66 +303,66 @@
         "gr": "Γυμνιστική παραλία Βλυχάδα"
       },
       "coordinates": {
-        "lat": 36.3424,
-        "lon": 25.42833
+        "lat": 36.339042,
+        "lon": 25.431794
       },
-      "facingDeg": 220.2,
+      "facingDeg": 228,
       "sectors": {
         "N": {
           "level": "protected",
-          "fetchKm": 0,
+          "fetchKm": 0.04,
           "blockedRayRatio": 1,
-          "onshore": -0.764,
-          "intensity": 7.1
+          "onshore": -0.669,
+          "intensity": 9.9
         },
         "NE": {
           "level": "protected",
           "fetchKm": 0,
           "blockedRayRatio": 1,
-          "onshore": -0.996,
-          "intensity": 0.1
+          "onshore": -0.999,
+          "intensity": 0
         },
         "E": {
           "level": "protected",
-          "fetchKm": 0,
+          "fetchKm": 0.12,
           "blockedRayRatio": 1,
-          "onshore": -0.645,
-          "intensity": 10.6
+          "onshore": -0.743,
+          "intensity": 7.7
         },
         "SE": {
           "level": "partial",
-          "fetchKm": 10.04,
-          "blockedRayRatio": 0.6,
-          "onshore": 0.084,
+          "fetchKm": 15.12,
+          "blockedRayRatio": 0.4,
+          "onshore": -0.052,
           "intensity": 39.8
         },
         "S": {
           "level": "exposed",
           "fetchKm": 25,
           "blockedRayRatio": 0,
-          "onshore": 0.764,
-          "intensity": 88.2
+          "onshore": 0.669,
+          "intensity": 83.5
         },
         "SW": {
           "level": "exposed",
-          "fetchKm": 25,
-          "blockedRayRatio": 0,
-          "onshore": 0.996,
-          "intensity": 99.8
+          "fetchKm": 24.48,
+          "blockedRayRatio": 0.2,
+          "onshore": 0.999,
+          "intensity": 91.9
         },
         "W": {
           "level": "exposed",
-          "fetchKm": 15.72,
-          "blockedRayRatio": 0.4,
-          "onshore": 0.645,
-          "intensity": 69.1
+          "fetchKm": 15.76,
+          "blockedRayRatio": 0.6,
+          "onshore": 0.743,
+          "intensity": 66.2
         },
         "NW": {
           "level": "protected",
-          "fetchKm": 0.76,
+          "fetchKm": 1.52,
           "blockedRayRatio": 1,
-          "onshore": -0.084,
-          "intensity": 27.5
+          "onshore": 0.052,
+          "intensity": 31.6
         }
       },
       "confidence": "high"

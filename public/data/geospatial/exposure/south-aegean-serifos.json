@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "generatedAt": "2026-06-10T15:05:02.850Z",
+  "generatedAt": "2026-06-12T05:06:55.199Z",
   "region": {
     "id": "south-aegean-serifos",
     "name": "Serifos"
@@ -374,66 +374,66 @@
         "gr": "Αυλόμωνας"
       },
       "coordinates": {
-        "lat": 37.14578,
-        "lon": 24.51871
+        "lat": 37.146338,
+        "lon": 24.518842
       },
-      "facingDeg": 166.9,
+      "facingDeg": 169.8,
       "sectors": {
         "N": {
           "level": "protected",
           "fetchKm": 0,
           "blockedRayRatio": 1,
-          "onshore": -0.974,
-          "intensity": 0.8
+          "onshore": -0.984,
+          "intensity": 0.5
         },
         "NE": {
           "level": "protected",
-          "fetchKm": 0.12,
+          "fetchKm": 0.04,
           "blockedRayRatio": 1,
-          "onshore": -0.528,
-          "intensity": 14.1
+          "onshore": -0.571,
+          "intensity": 12.9
         },
         "E": {
           "level": "partial",
-          "fetchKm": 0.24,
+          "fetchKm": 0.16,
           "blockedRayRatio": 1,
-          "onshore": 0.227,
-          "intensity": 36.8
+          "onshore": 0.177,
+          "intensity": 35.3
         },
         "SE": {
           "level": "partial",
-          "fetchKm": 5.52,
+          "fetchKm": 5.48,
           "blockedRayRatio": 0.8,
-          "onshore": 0.849,
-          "intensity": 58.9
+          "onshore": 0.821,
+          "intensity": 58
         },
         "S": {
           "level": "exposed",
           "fetchKm": 10.4,
           "blockedRayRatio": 0.6,
-          "onshore": 0.974,
-          "intensity": 72.9
+          "onshore": 0.984,
+          "intensity": 73.3
         },
         "SW": {
           "level": "partial",
           "fetchKm": 0.36,
           "blockedRayRatio": 1,
-          "onshore": 0.528,
-          "intensity": 45.9
+          "onshore": 0.571,
+          "intensity": 47.1
         },
         "W": {
           "level": "protected",
-          "fetchKm": 0.16,
+          "fetchKm": 0.12,
           "blockedRayRatio": 1,
-          "onshore": -0.227,
-          "intensity": 23.2
+          "onshore": -0.177,
+          "intensity": 24.7
         },
         "NW": {
           "level": "protected",
           "fetchKm": 0,
           "blockedRayRatio": 1,
-          "onshore": -0.849,
-          "intensity": 4.5
+          "onshore": -0.821,
+          "intensity": 5.4
         }
       },
       "confidence": "high"

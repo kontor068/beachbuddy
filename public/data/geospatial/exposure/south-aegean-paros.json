@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "generatedAt": "2026-06-10T15:05:02.229Z",
+  "generatedAt": "2026-06-12T05:06:54.549Z",
   "region": {
     "id": "south-aegean-paros",
     "name": "Paros"
@@ -51,8 +51,8 @@
         "exposed": 4
       },
       "E": {
-        "protected": 18,
-        "partial": 16,
+        "protected": 19,
+        "partial": 15,
         "exposed": 3
       },
       "SE": {
@@ -71,8 +71,8 @@
         "exposed": 7
       },
       "W": {
-        "protected": 23,
-        "partial": 12,
+        "protected": 22,
+        "partial": 13,
         "exposed": 2
       },
       "NW": {
@@ -2646,66 +2646,66 @@
         "gr": "Χρυσή Ακτή"
       },
       "coordinates": {
-        "lat": 37.00994,
-        "lon": 25.2394
+        "lat": 37.010658,
+        "lon": 25.240516
       },
-      "facingDeg": 168.6,
+      "facingDeg": 186.2,
       "sectors": {
         "N": {
           "level": "protected",
           "fetchKm": 0,
           "blockedRayRatio": 1,
-          "onshore": -0.98,
-          "intensity": 0.6
+          "onshore": -0.994,
+          "intensity": 0.2
         },
         "NE": {
           "level": "protected",
-          "fetchKm": 0.04,
+          "fetchKm": 0,
           "blockedRayRatio": 1,
-          "onshore": -0.553,
-          "intensity": 13.4
+          "onshore": -0.779,
+          "intensity": 6.6
         },
         "E": {
-          "level": "partial",
-          "fetchKm": 7.76,
-          "blockedRayRatio": 0.8,
-          "onshore": 0.198,
-          "intensity": 39
+          "level": "protected",
+          "fetchKm": 0.04,
+          "blockedRayRatio": 1,
+          "onshore": -0.108,
+          "intensity": 26.8
         },
         "SE": {
           "level": "exposed",
-          "fetchKm": 22.64,
+          "fetchKm": 15.04,
           "blockedRayRatio": 0.4,
-          "onshore": 0.833,
-          "intensity": 77
+          "onshore": 0.627,
+          "intensity": 68.3
         },
         "S": {
           "level": "exposed",
           "fetchKm": 20.32,
           "blockedRayRatio": 0.2,
-          "onshore": 0.98,
-          "intensity": 91.1
+          "onshore": 0.994,
+          "intensity": 91.7
         },
         "SW": {
           "level": "exposed",
-          "fetchKm": 15.12,
+          "fetchKm": 15.28,
           "blockedRayRatio": 0.4,
-          "onshore": 0.553,
-          "intensity": 65.2
+          "onshore": 0.779,
+          "intensity": 74.7
         },
         "W": {
-          "level": "protected",
-          "fetchKm": 0.12,
+          "level": "partial",
+          "fetchKm": 0.28,
           "blockedRayRatio": 1,
-          "onshore": -0.198,
-          "intensity": 24.1
+          "onshore": 0.108,
+          "intensity": 33.2
         },
         "NW": {
           "level": "protected",
           "fetchKm": 0,
           "blockedRayRatio": 1,
-          "onshore": -0.833,
-          "intensity": 5
+          "onshore": -0.627,
+          "intensity": 11.2
         }
       },
       "confidence": "high"
