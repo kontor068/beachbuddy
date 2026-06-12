@@ -36,8 +36,7 @@ const overrides = overridesPath ? JSON.parse(readFileSync(overridesPath, 'utf8')
 const sourcePath = 'public/greek_beaches.json';
 const source = JSON.parse(readFileSync(sourcePath, 'utf8'));
 
-// Same traversal as scripts/buildBeachRegionData.mjs parseBeachPayload, so ids map 1:1.
-let idCounter = 0;
+// Ids are frozen as explicit `id` fields in the source (scripts/freezeBeachIds.mjs).
 const byId = new Map();
 const walk = (node) => {
   if (Array.isArray(node)) {
@@ -45,7 +44,8 @@ const walk = (node) => {
       const lat = typeof item?.lat === 'number' ? item.lat : Number(item?.lat);
       const lon = typeof item?.lon === 'number' ? item.lon : Number(item?.lon);
       if (!Number.isFinite(lat) || !Number.isFinite(lon)) continue;
-      byId.set(idCounter++, item);
+      if (!Number.isInteger(item.id)) throw new Error(`source entry "${item.name}" has no frozen id - run scripts/freezeBeachIds.mjs first`);
+      byId.set(item.id, item);
     }
     return;
   }
@@ -53,7 +53,7 @@ const walk = (node) => {
   for (const value of Object.values(node)) walk(value);
 };
 for (const value of Object.values(source)) walk(value);
-console.log(`source ids: ${idCounter}`);
+console.log(`source ids: ${byId.size}`);
 
 // The builder requires access/terrain/organized/shade/amenities for metadata to ship.
 const hasValidMetadata = (m) => Boolean(

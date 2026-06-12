@@ -619,9 +619,17 @@ const isBeachMetadata = value => {
   );
 };
 
+// Beach ids are FROZEN in the source (scripts/freezeBeachIds.mjs, 2026-06-12): every entry
+// declares an explicit integer `id`. Ids are embedded in indexed beach-page URLs, exposure
+// profiles, curated overrides and ground-truth cases, so they must never shift. Legacy
+// entries occupy 0-2739; new beaches must use ids >= 3000 (2740-2999 is a reserved gap so
+// accidental positional ids stand out). Missing/duplicate/gap ids fail the build.
+const FROZEN_LEGACY_MAX_ID = 2739;
+const NEW_BEACH_MIN_ID = 3000;
+
 const parseBeachPayload = beachData => {
   const allBeaches = [];
-  let idCounter = 0;
+  const seenIds = new Set();
 
   const walk = (node, region, pathParts) => {
     if (Array.isArray(node)) {
@@ -632,8 +640,20 @@ const parseBeachPayload = beachData => {
 
         if (!Number.isFinite(lat) || !Number.isFinite(lon)) continue;
 
+        const id = item?.id;
+        if (!Number.isInteger(id) || id < 0) {
+          throw new Error(`Beach entry "${name}" (${lat},${lon}) has no valid integer id. Ids are frozen in the source; new beaches must declare id >= ${NEW_BEACH_MIN_ID}.`);
+        }
+        if (id > FROZEN_LEGACY_MAX_ID && id < NEW_BEACH_MIN_ID) {
+          throw new Error(`Beach "${name}" uses id ${id} inside the reserved gap ${FROZEN_LEGACY_MAX_ID + 1}-${NEW_BEACH_MIN_ID - 1}. New beaches start at ${NEW_BEACH_MIN_ID}.`);
+        }
+        if (seenIds.has(id)) {
+          throw new Error(`Duplicate beach id ${id} ("${name}").`);
+        }
+        seenIds.add(id);
+
         allBeaches.push({
-          id: idCounter++,
+          id,
           region,
           prefecture: pathParts[pathParts.length - 1] || pathParts[0] || 'Unknown',
           name,

@@ -138,7 +138,7 @@ const addMissing = (reason, beach) => {
 const walk = (node, region, pathParts) => {
   if (Array.isArray(node)) {
     for (const item of node) {
-      const currentId = idCounter;
+      const currentId = Number.isInteger(item?.id) ? item.id : idCounter; // frozen ids (freezeBeachIds.mjs) take precedence
       if (hasCoordinates(item)) {
         const prefecture = pathParts[pathParts.length - 1] || pathParts[0] || 'Unknown';
         const regionId = regionIdFor(region, prefecture, currentId);
