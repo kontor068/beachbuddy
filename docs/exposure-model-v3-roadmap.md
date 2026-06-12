@@ -1,5 +1,36 @@
 # Exposure Model v3 — Audit & Roadmap (Φάσεις 2+3 του exposure σχεδίου)
 
+> ## ΚΑΤΑΣΤΑΣΗ ΥΛΟΠΟΙΗΣΗΣ (2026-06-12)
+> - **R1 (swell-geometric + hourly-path fix): SHIPPED** — commits f8846ad/3e1c2a5, runtime-only,
+>   gates green, swell validation incl. Mod-2 closed-bay controls. Το #1-ranked όφελος.
+> - **R2 (effective fetch) + R3 (enclosure/diffraction): ABORTED μετά από 3 full-rebuild
+>   προσπάθειες** (pre-committed exit στο εθνικό asymmetry gate <75%). Ο κώδικας R2/R3
+>   αφαιρέθηκε από το working tree· το «τι μάθαμε» τεκμηριώνεται κάτω (R5 future project).
+> - **R4 (DEM/duration/shallow): deferred** όπως αρχικά.
+>
+> ### Γιατί απέτυχε το R2 (effective fetch) — τρεις προσπάθειες, μία ρίζα
+> Ο guard (enclosed-basin cap) ΔΟΥΛΕΨΕ (6/6 controls, καθαρός διαχωρισμός). Το πρόβλημα ήταν
+> το **effective fetch ⊥ intensity calibration**:
+> 1. **±42° fan (15 ακτίνες)**: η φαρδιά βεντάλια έβαζε ακραίες ακτίνες σε στεριά → blockedRayRatio↑
+>    → intensity↓ → 211 γνήσια εκτεθειμένες (eff 10-23 km) έπεσαν σε partial. Asymmetry 65.3%.
+> 2. **±30°/6° fan (11 ακτίνες)**: ίδιο span με legacy αλλά **πυκνότερο** → ακόμα περισσότερες
+>    ακτίνες χτυπούν στεριά → blockedRayRatio↑ ΑΝΕΞΑΡΤΗΤΩΣ span (sample-count-sensitive).
+>    Asymmetry 54.7% (χειρότερα). ΡΙΖΑ: ο blockedRayRatio εξαρτάται από το ΠΛΗΘΟΣ ακτίνων.
+> 3. **Decoupled blocked (blocked από σταθερές 5 legacy ακτίνες, eff fetch από 11)**: διόρθωσε
+>    τα ακραία (Loutra blk=0.80, exposed ✓) και μείωσε τα toward-protected 300→154, ΑΛΛΑ το
+>    asymmetry έμεινε **54.2%** — γιατί το **effective-fetch ΝΟΥΜΕΡΟ από μόνο του** διαφέρει
+>    αρκετά από το legacy mean ώστε να flip-άρει δεκάδες sectors κοντά στα κατώφλια classify
+>    (8/2 km) και intensity (60/33), χωρίς συνολικά συντηρητική φορά.
+>
+> **ΣΥΜΠΕΡΑΣΜΑ (R5 future project)**: το effective fetch είναι σωστή ιδέα ΑΛΛΑ είναι ασύμβατο
+> με την υπάρχουσα βαθμονόμηση intensity (60/33) και classify (8/2) — απαιτεί **πλήρη
+> re-βαθμονόμηση όλων των κατωφλιών μαζί** πάνω στη νέα μετρική, ξαναπερνώντας τα 128 GT cases.
+> Αυτό είναι ξεχωριστό μεγάλο project, ΟΧΙ incremental αλλαγή. Το A1 aliasing (στενά κανάλια
+> τύπου Μήλος-Κίμωλος) παραμένει καλυμμένο από curated overrides στα ελεγμένα νησιά· η
+> cross-sector περίπτωση (κανάλι ανοίγει ΒΑ/Ε όχι Β) είναι deferred-R4 (directional/overlapping
+> sectors). Ο enclosed-basin guard και ο diffraction floor μπορούν να ξαναχρησιμοποιηθούν αυτούσιοι
+> όταν γίνει το R5 (ο σχεδιασμός τους είναι ορθός — βλ. 2β + ΕΠΙΛΟΓΗ 1 παρακάτω).
+
 Συντάχθηκε 2026-06-12 πάνω στη βάση: OSM high-res mask (15.946 polygons), 2.696 profiles,
 128 GT cases (127 passing), Λύσεις Α (geometry facing preference) + Β (fetch escalation ≥8 km)
 στον engine. **Παραδοτέο σχεδιασμού — καμία αλλαγή κώδικα σε αυτό το session.**
@@ -114,8 +145,18 @@ Ground rule (δόγμα): κάθε βελτίωση σέβεται τη **συν
 
 ### 2α. Effective fetch (SPM/Saville) στην υπάρχουσα pipeline
 
-Νέο ray layout ανά τομέα: **15 ακτίνες ανά 6° στο ±42°** (SPM-συμβατό· σήμερα 5 ανά 15° στο
-±30°). Κόστος build ×3 σε λούκ-απς (σημερινό full run ~3′ → ~9′, αποδεκτό precompute).
+Νέο ray layout ανά τομέα: **11 ακτίνες ανά 6° στο ±30°** (σήμερα 5 ανά 15° στο ±30°· ΑΝΑΘ.
+2026-06-12 από αρχικό ±42° — βλ. «ΑΠΟΤΥΧΙΕΣ» κάτω). Κόστος build ~2× σε λούκ-απς, αποδεκτό.
+
+**DECOUPLED BLOCKED (κρίσιμο, 2026-06-12)**: ο `blockedRayRatio` και το legacy mean μετρώνται
+από **σταθερό σετ 5 legacy ακτίνων [−30,−15,0,+15,+30]** (`blockedFanAnglesDeg`, default), ΟΧΙ
+από τις 11. Λόγος: ο blockedRayRatio είναι ευαίσθητος στο ΠΛΗΘΟΣ ακτίνων (περισσότερες ακτίνες
+= περισσότερες ευκαιρίες να χτυπήσει στεριά = υψηλότερο blocked, ανεξαρτήτως span), και το
+intensity formula έχει τον όρο `openness=(1−blocked)` βαθμονομημένο για 5 ακτίνες. Αν το blocked
+ερχόταν από 11 ακτίνες, γνήσια εκτεθειμένες παραλίες (eff fetch 10-23 km) θα έπεφταν σε partial
+(intensity κάτω από 60) — μαζικό false-protected. **Σημασιολογία**: blocked = «κεντρική απόφραξη»
+στο legacy δείγμα (βαθμονομημένο)· effectiveFetch + maxOpenRunDeg = anti-aliased πυκνό δείγμα 11
+ακτίνων (λύνει το A1 χωρίς να αγγίζει τη βαθμονόμηση intensity).
 
 Ανά τομέα αποθηκεύονται (schema v2): `effectiveFetchKm` (νέο), `meanFetchKm` (το σημερινό
 `fetchKm`, για συμβατότητα/σύγκριση), `blockedRayRatio` (15 ακτίνες πλέον),
