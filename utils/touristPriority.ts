@@ -29,20 +29,20 @@ const normalizeTouristName = (value?: string): string => (
     .trim()
 );
 
+// popularityScore and rating are synthetic (deterministic hashes of the beach id, see
+// buildBeachRegionData.mjs) and must not influence ranking; recognition comes only from
+// the curated list above.
 export const getBeachTouristRecognitionScore = (
-  beach: Pick<Beach, 'name' | 'aliases' | 'popularityScore' | 'rating'>
+  beach: Pick<Beach, 'name' | 'aliases'>
 ): number => {
-  const declaredPopularity = typeof beach.popularityScore === 'number' ? beach.popularityScore : 0;
-  const ratingSignal = Math.max(0, Math.min(10, ((beach.rating || 0) - 4) * 10));
   const names = [
     beach.name?.en,
     beach.name?.gr,
     ...(beach.aliases || []),
   ];
-  const curatedRecognition = Math.max(
+
+  return Math.max(
     0,
     ...names.map(name => ICONIC_BEACH_RECOGNITION[normalizeTouristName(name)] || 0)
   );
-
-  return Math.max(declaredPopularity, curatedRecognition) + ratingSignal;
 };

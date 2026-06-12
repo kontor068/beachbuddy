@@ -629,9 +629,7 @@ const hasTopPickVisitorServices = (beach: Beach): boolean => {
 const hasMainstreamTopPickProfile = (beach: Beach): boolean => Boolean(
   hasTopPickVisitorServices(beach) ||
   beach.amenities?.parking ||
-  beach.environment?.familyFriendly ||
-  (typeof beach.popularityScore === 'number' && beach.popularityScore >= 55) ||
-  beach.rating >= 4.5
+  beach.environment?.familyFriendly
 );
 
 const getPriorityBeach = <T extends { beachId?: number; beach?: Beach }>(

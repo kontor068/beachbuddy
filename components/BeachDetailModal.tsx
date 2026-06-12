@@ -2,7 +2,6 @@
 import React, { useMemo, useEffect } from 'react';
 import { Beach, LanguageCode, ForecastItem } from '../types';
 import { Translation } from '../types';
-import { StarRating } from './BeachCard';
 import { generateBeachDayPlan } from '../services/beachPlannerService';
 import { BeachDayPlanner } from './BeachDayPlanner';
 import { displayBeachName } from '../utils/localization';
@@ -491,20 +490,12 @@ export const BeachDetailModal: React.FC<BeachDetailModalProps> = ({ beach, isOpe
               </button>
               <div className="absolute bottom-4 left-6 right-6">
                   <h2 id="beach-detail-title" className="text-2xl sm:text-3xl font-extrabold text-white shadow-sm mb-1">{beachDisplayName}</h2>
-                  <div className="flex items-center gap-2 text-white/90 text-sm">
-                      <StarRating rating={beach.rating} colorClassName="text-yellow-400" />
-                      <span className="font-bold">{beach.rating.toFixed(1)}</span>
-                  </div>
               </div>
           </div>
         ) : (
           <div className="flex flex-shrink-0 items-start justify-between gap-4 border-b border-slate-200 bg-white px-6 py-5">
               <div className="min-w-0">
                   <h2 id="beach-detail-title" className="text-2xl font-extrabold text-slate-950">{beachDisplayName}</h2>
-                  <div className="mt-1 flex items-center gap-2 text-sm text-slate-600">
-                      <StarRating rating={beach.rating} />
-                      <span className="font-bold">{beach.rating.toFixed(1)}</span>
-                  </div>
               </div>
               <button
                   onClick={onClose}

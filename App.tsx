@@ -258,9 +258,7 @@ const hasTouristReadyTopPickProfile = (beach: Beach): boolean => {
   return Boolean(
     hasTopPickVisitorServices(beach) ||
     beach.amenities?.parking ||
-    beach.environment?.familyFriendly ||
-    (typeof beach.popularityScore === 'number' && beach.popularityScore >= 55) ||
-    beach.rating >= 4.5
+    beach.environment?.familyFriendly
   );
 };
 
@@ -504,7 +502,6 @@ const scoreRemainingTopPickHour = (beach: Beach, item: ForecastItem): number => 
   if (hour >= 12 && hour <= 16 && temp >= 32) score -= 8;
   if (gustSpread >= 25) score -= 12;
   else if (gustSpread >= 15) score -= 8;
-  if (beach.popularityScore >= 75 && hour >= 13 && hour <= 17) score -= 4;
 
   return clampTopPickScore(score);
 };

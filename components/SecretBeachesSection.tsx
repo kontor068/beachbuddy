@@ -1,6 +1,6 @@
 import React from 'react';
 import { motion } from 'motion/react';
-import { Star, Navigation, Compass } from 'lucide-react';
+import { Navigation, Compass } from 'lucide-react';
 import { SecretBeach, LanguageCode, Translation } from '../types';
 
 interface SecretBeachesSectionProps {
@@ -66,10 +66,6 @@ export const SecretBeachesSection: React.FC<SecretBeachesSectionProps> = ({
                     <span>{item.distance.toFixed(1)} km</span>
                   </div>
                 )}
-                <div className="flex items-center gap-1.5">
-                  <Star size={14} className="text-amber-400 fill-amber-400" />
-                  <span>{item.beach.rating.toFixed(1)}</span>
-                </div>
               </div>
             </div>
 

@@ -172,9 +172,6 @@ export const TouristSearchBar: React.FC<TouristSearchBarProps> = ({
                       )}
                     </p>
                   </div>
-                  <span className="text-xs text-slate-300 dark:text-slate-600 flex-shrink-0">
-                    ★ {result.beach.rating.toFixed(1)}
-                  </span>
                 </button>
               );
             })}

@@ -1605,15 +1605,18 @@ export const BeachSearcherHome: React.FC<BeachSearcherHomeProps> = ({
 
   const popularBeachCards = useMemo(() => {
     if (!selectedIsland) return [];
+    // popularityScore/rating are synthetic (deterministic hash of the beach id) and must not
+    // drive this ordering — rank by real signals: photo coverage, amenity richness, then name.
+    const amenityRichness = (beach: Beach) => Object.values(beach.amenities || {}).filter(value => value === true).length;
     return [...selectedIsland.beaches]
       .sort((a, b) => {
         const aPhoto = getBeachPhotoLookup(a.name.gr, a.name.en, a.id, 1, selectedIsland.name[language]).source === 'exact';
         const bPhoto = getBeachPhotoLookup(b.name.gr, b.name.en, b.id, 1, selectedIsland.name[language]).source === 'exact';
         if (aPhoto !== bPhoto) return bPhoto ? 1 : -1;
 
-        const left = (b.popularityScore || 0) + (b.rating || 0) * 12;
-        const right = (a.popularityScore || 0) + (a.rating || 0) * 12;
-        return left - right;
+        const byAmenities = amenityRichness(b) - amenityRichness(a);
+        if (byAmenities !== 0) return byAmenities;
+        return (a.name.en || '').localeCompare(b.name.en || '');
       })
       .slice(0, 8);
   }, [language, selectedIsland]);

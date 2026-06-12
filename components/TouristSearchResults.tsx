@@ -1,6 +1,6 @@
 import React from 'react';
 import { motion } from 'motion/react';
-import { Star, ChevronRight } from 'lucide-react';
+import { ChevronRight } from 'lucide-react';
 import { Beach } from '../types';
 import { displayBeachName } from '../utils/localization';
 
@@ -38,10 +38,6 @@ export const TouristSearchResults: React.FC<TouristSearchResultsProps> = ({ resu
                 <h4 className="font-heading font-bold text-slate-900 dark:text-white group-hover:text-primary transition-colors">
                   {displayBeachName(item.beach.name, 'gr')}
                 </h4>
-                <div className="flex items-center gap-2 mt-0.5">
-                  <Star className="w-3 h-3 fill-amber-400 text-amber-400" />
-                  <span className="text-xs text-slate-500">{item.beach.rating.toFixed(1)}</span>
-                </div>
               </div>
             </div>
             <ChevronRight className="w-4 h-4 text-slate-300 group-hover:text-primary transition-colors" />
