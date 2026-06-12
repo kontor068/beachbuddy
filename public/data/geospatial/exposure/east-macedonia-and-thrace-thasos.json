@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "generatedAt": "2026-06-12T05:12:52.974Z",
+  "generatedAt": "2026-06-12T06:14:45.844Z",
   "region": {
     "id": "east-macedonia-and-thrace-thasos",
     "name": "Thasos"
@@ -36,47 +36,47 @@
     "maskConfidence": "high"
   },
   "summary": {
-    "beachCount": 57,
-    "generatedProfiles": 57,
+    "beachCount": 58,
+    "generatedProfiles": 58,
     "missingCoordinates": 0,
     "sectors": {
       "N": {
-        "protected": 27,
+        "protected": 28,
         "partial": 28,
         "exposed": 2
       },
       "NE": {
-        "protected": 38,
+        "protected": 39,
         "partial": 7,
         "exposed": 12
       },
       "E": {
         "protected": 38,
         "partial": 11,
-        "exposed": 8
+        "exposed": 9
       },
       "SE": {
         "protected": 33,
         "partial": 16,
-        "exposed": 8
+        "exposed": 9
       },
       "S": {
         "protected": 31,
         "partial": 5,
-        "exposed": 21
+        "exposed": 22
       },
       "SW": {
         "protected": 21,
-        "partial": 13,
+        "partial": 14,
         "exposed": 23
       },
       "W": {
-        "protected": 20,
+        "protected": 21,
         "partial": 17,
         "exposed": 20
       },
       "NW": {
-        "protected": 29,
+        "protected": 30,
         "partial": 12,
         "exposed": 16
       }
@@ -4125,6 +4125,77 @@
           "fetchKm": 0,
           "blockedRayRatio": 1,
           "onshore": -0.996,
+          "intensity": 0.1
+        }
+      },
+      "confidence": "high"
+    },
+    "3004": {
+      "beachId": 3004,
+      "name": {
+        "en": "Giola",
+        "gr": "Γκιόλα"
+      },
+      "coordinates": {
+        "lat": 40.58634,
+        "lon": 24.67861
+      },
+      "facingDeg": 139.1,
+      "sectors": {
+        "N": {
+          "level": "protected",
+          "fetchKm": 0,
+          "blockedRayRatio": 1,
+          "onshore": -0.756,
+          "intensity": 7.3
+        },
+        "NE": {
+          "level": "protected",
+          "fetchKm": 5,
+          "blockedRayRatio": 0.8,
+          "onshore": -0.071,
+          "intensity": 29.4
+        },
+        "E": {
+          "level": "exposed",
+          "fetchKm": 20,
+          "blockedRayRatio": 0.2,
+          "onshore": 0.655,
+          "intensity": 76.1
+        },
+        "SE": {
+          "level": "exposed",
+          "fetchKm": 25,
+          "blockedRayRatio": 0,
+          "onshore": 0.997,
+          "intensity": 99.9
+        },
+        "S": {
+          "level": "exposed",
+          "fetchKm": 25,
+          "blockedRayRatio": 0,
+          "onshore": 0.756,
+          "intensity": 87.8
+        },
+        "SW": {
+          "level": "partial",
+          "fetchKm": 10,
+          "blockedRayRatio": 0.6,
+          "onshore": 0.071,
+          "intensity": 39.3
+        },
+        "W": {
+          "level": "protected",
+          "fetchKm": 0,
+          "blockedRayRatio": 1,
+          "onshore": -0.655,
+          "intensity": 10.4
+        },
+        "NW": {
+          "level": "protected",
+          "fetchKm": 0,
+          "blockedRayRatio": 1,
+          "onshore": -0.997,
           "intensity": 0.1
         }
       },

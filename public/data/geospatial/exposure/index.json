@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "generatedAt": "2026-06-12T05:13:18.174Z",
+  "generatedAt": "2026-06-12T06:15:11.169Z",
   "purpose": "Offline directional geospatial exposure baseline for CalmBeach. Not user-facing proof of calm/protected conditions.",
   "source": {
     "landMask": {
@@ -41,8 +41,8 @@
   },
   "summary": {
     "regionCount": 110,
-    "beachCount": 2692,
-    "generatedProfiles": 2692,
+    "beachCount": 2696,
+    "generatedProfiles": 2696,
     "missingCoordinates": 0,
     "indexedLandPolygons": 15946,
     "regions": {
@@ -1440,47 +1440,47 @@
       },
       "east-macedonia-and-thrace-thasos": {
         "regionName": "Thasos",
-        "beachCount": 57,
-        "generatedProfiles": 57,
+        "beachCount": 58,
+        "generatedProfiles": 58,
         "missingCoordinates": 0,
         "sectors": {
           "N": {
-            "protected": 27,
+            "protected": 28,
             "partial": 28,
             "exposed": 2
           },
           "NE": {
-            "protected": 38,
+            "protected": 39,
             "partial": 7,
             "exposed": 12
           },
           "E": {
             "protected": 38,
             "partial": 11,
-            "exposed": 8
+            "exposed": 9
           },
           "SE": {
             "protected": 33,
             "partial": 16,
-            "exposed": 8
+            "exposed": 9
           },
           "S": {
             "protected": 31,
             "partial": 5,
-            "exposed": 21
+            "exposed": 22
           },
           "SW": {
             "protected": 21,
-            "partial": 13,
+            "partial": 14,
             "exposed": 23
           },
           "W": {
-            "protected": 20,
+            "protected": 21,
             "partial": 17,
             "exposed": 20
           },
           "NW": {
-            "protected": 29,
+            "protected": 30,
             "partial": 12,
             "exposed": 16
           }
@@ -3792,47 +3792,47 @@
       },
       "south-aegean-koufonisia": {
         "regionName": "Koufonisia",
-        "beachCount": 17,
-        "generatedProfiles": 17,
+        "beachCount": 19,
+        "generatedProfiles": 19,
         "missingCoordinates": 0,
         "sectors": {
           "N": {
             "protected": 14,
-            "partial": 3,
-            "exposed": 0
+            "partial": 4,
+            "exposed": 1
           },
           "NE": {
             "protected": 13,
             "partial": 4,
-            "exposed": 0
+            "exposed": 2
           },
           "E": {
             "protected": 8,
             "partial": 5,
-            "exposed": 4
+            "exposed": 6
           },
           "SE": {
             "protected": 3,
-            "partial": 5,
+            "partial": 7,
             "exposed": 9
           },
           "S": {
-            "protected": 3,
+            "protected": 5,
             "partial": 6,
             "exposed": 8
           },
           "SW": {
-            "protected": 5,
+            "protected": 7,
             "partial": 11,
             "exposed": 1
           },
           "W": {
-            "protected": 11,
+            "protected": 13,
             "partial": 6,
             "exposed": 0
           },
           "NW": {
-            "protected": 14,
+            "protected": 16,
             "partial": 3,
             "exposed": 0
           }
@@ -4032,47 +4032,47 @@
       },
       "south-aegean-milos": {
         "regionName": "Milos",
-        "beachCount": 41,
-        "generatedProfiles": 41,
+        "beachCount": 42,
+        "generatedProfiles": 42,
         "missingCoordinates": 0,
         "sectors": {
           "N": {
-            "protected": 25,
+            "protected": 26,
             "partial": 8,
             "exposed": 8
           },
           "NE": {
-            "protected": 22,
+            "protected": 23,
             "partial": 14,
             "exposed": 5
           },
           "E": {
             "protected": 23,
-            "partial": 8,
+            "partial": 9,
             "exposed": 10
           },
           "SE": {
             "protected": 18,
             "partial": 7,
-            "exposed": 16
+            "exposed": 17
           },
           "S": {
             "protected": 18,
             "partial": 10,
-            "exposed": 13
+            "exposed": 14
           },
           "SW": {
             "protected": 19,
-            "partial": 11,
+            "partial": 12,
             "exposed": 11
           },
           "W": {
-            "protected": 25,
+            "protected": 26,
             "partial": 10,
             "exposed": 6
           },
           "NW": {
-            "protected": 25,
+            "protected": 26,
             "partial": 10,
             "exposed": 6
           }
