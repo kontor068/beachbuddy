@@ -105,11 +105,14 @@ interface BeachSearcherHomeProps {
   searchSuggestions?: DirectorySearchSuggestion[];
   isSearchSuggesting?: boolean;
   protectedSortLabel?: string;
+  currentBeaufort?: number;
   islandBackground?: string;
   mapPreview?: React.ReactNode;
   topRecommendationCards?: SuitableBeach[];
   suitableBeachCards?: SuitableBeach[];
   suitableBeachTotalCount?: number;
+  /** Localized time-window prefix from the map slider (e.g. "στις 15:00–18:00") used in the suitable/best-beaches headers. */
+  suitableTimePrefix?: string;
   onActiveSuitableBeachChange?: (beachId: number | undefined, options?: { resumeFollow?: boolean }) => void;
   showSuitableBeachSection?: boolean;
   allBeachCards?: BeachCardContext[];
@@ -231,12 +234,10 @@ const installMouseDragScroll = (element: HTMLElement): (() => void) => {
     scrollVelocity = 0;
     hasDragged = false;
     element.dataset.dragging = 'true';
-
-    try {
-      element.setPointerCapture(event.pointerId);
-    } catch {
-      // Pointer capture is best-effort; normal pointer events still work.
-    }
+    // NOTE: pointer capture is intentionally NOT taken here. Capturing on
+    // pointerdown retargets the pointerup/click to the carousel, which swallows
+    // clicks on card buttons (Details/Navigate). We only capture once an actual
+    // drag begins (see handlePointerMove).
   };
 
   const handlePointerMove = (event: PointerEvent) => {
@@ -245,6 +246,14 @@ const installMouseDragScroll = (element: HTMLElement): (() => void) => {
     const deltaX = event.clientX - startX;
     if (!hasDragged && Math.abs(deltaX) < DRAG_SCROLL_THRESHOLD_PX) return;
 
+    if (!hasDragged) {
+      // A real drag started — now it's safe to capture the pointer for smooth scrolling.
+      try {
+        element.setPointerCapture(event.pointerId);
+      } catch {
+        // Pointer capture is best-effort; normal pointer events still work.
+      }
+    }
     hasDragged = true;
     suppressNextClick = true;
     const now = performance.now();
@@ -1155,8 +1164,8 @@ const getTopChoiceLabel = (
   });
 };
 
-const getBestBeachesLabel = (language: LanguageCode, selectedDate?: Date): string => {
-  const day = getSelectedDayPrefix(selectedDate, new Date(), language);
+const getBestBeachesLabel = (language: LanguageCode, selectedDate?: Date, timePrefix?: string): string => {
+  const day = timePrefix ?? getSelectedDayPrefix(selectedDate, new Date(), language);
 
   return getLocalizedCopy(language, {
     en: `Best beaches ${day}`,
@@ -1167,9 +1176,19 @@ const getBestBeachesLabel = (language: LanguageCode, selectedDate?: Date): strin
   });
 };
 
-const getTopRecommendationsLabel = (language: LanguageCode, selectedDate: Date | undefined, count: number): string => {
-  const day = getSelectedDayPrefix(selectedDate, new Date(), language);
+const getTopRecommendationsLabel = (language: LanguageCode, selectedDate: Date | undefined, count: number, timePrefix?: string, beaufort?: number): string => {
+  const day = timePrefix ?? getSelectedDayPrefix(selectedDate, new Date(), language);
   const displayCount = Math.max(1, Math.min(3, count));
+
+  if (typeof beaufort === 'number' && beaufort > 4) {
+    return getLocalizedCopy(language, {
+      en: `Less exposed ${day}`,
+      gr: `Λιγότερο εκτεθειμένες ${day}`,
+      fr: `Moins exposées ${day}`,
+      de: `Weniger exponiert ${day}`,
+      it: `Meno esposte ${day}`,
+    });
+  }
 
   if (displayCount === 1) {
     return getLocalizedCopy(language, {
@@ -1190,8 +1209,8 @@ const getTopRecommendationsLabel = (language: LanguageCode, selectedDate: Date |
   });
 };
 
-const getRemainingSuitableLabel = (language: LanguageCode, selectedDate?: Date): string => {
-  const day = getSelectedDayPrefix(selectedDate, new Date(), language);
+const getRemainingSuitableLabel = (language: LanguageCode, selectedDate?: Date, timePrefix?: string): string => {
+  const day = timePrefix ?? getSelectedDayPrefix(selectedDate, new Date(), language);
 
   return getLocalizedCopy(language, {
     en: `Other suitable beaches ${day}`,
@@ -1339,11 +1358,13 @@ export const BeachSearcherHome: React.FC<BeachSearcherHomeProps> = ({
   searchSuggestions = [],
   isSearchSuggesting = false,
   protectedSortLabel,
+  currentBeaufort,
   islandBackground,
   mapPreview,
   topRecommendationCards,
   suitableBeachCards,
   suitableBeachTotalCount,
+  suitableTimePrefix,
   onActiveSuitableBeachChange,
   showSuitableBeachSection = true,
   allBeachCards,
@@ -1377,7 +1398,7 @@ export const BeachSearcherHome: React.FC<BeachSearcherHomeProps> = ({
 }) => {
   const copy = getLocalizedCopy(language, homeCopy);
   const topChoiceCopy = getTopChoiceLabel(language, selectedDate);
-  const bestBeachesLabel = getBestBeachesLabel(language, selectedDate);
+  const bestBeachesLabel = getBestBeachesLabel(language, selectedDate, suitableTimePrefix);
   const [isDirectorySortOpen, setIsDirectorySortOpen] = useState(false);
   const [directoryViewCriteria, setDirectoryViewCriteria] = useState({
     suitable: true,
@@ -1692,9 +1713,9 @@ export const BeachSearcherHome: React.FC<BeachSearcherHomeProps> = ({
     }))
   ), [topRecommendationCards]);
   const hasTopRecommendationView = selectedIsland !== null && topRecommendationBeachCards.length > 0;
-  const topRecommendationsLabel = getTopRecommendationsLabel(language, selectedDate, topRecommendationBeachCards.length);
+  const topRecommendationsLabel = getTopRecommendationsLabel(language, selectedDate, topRecommendationBeachCards.length, suitableTimePrefix, currentBeaufort);
   const suitableSectionLabel = hasTopRecommendationView
-    ? getRemainingSuitableLabel(language, selectedDate)
+    ? getRemainingSuitableLabel(language, selectedDate, suitableTimePrefix)
     : bestBeachesLabel;
   const weatherBeachCardRankStart = topBeachToday ? 2 : 1;
   const suitableBeachDisplayCount = typeof suitableBeachTotalCount === 'number'
@@ -1864,7 +1885,10 @@ export const BeachSearcherHome: React.FC<BeachSearcherHomeProps> = ({
       ? directorySuitableOnlyBeachCards
       : directoryAllBeachCards;
 
-    if (!directoryViewCriteria.distance) {
+    // Distance-first can be driven either by the dropdown option (desktop) or by
+    // the dedicated "Κοντά μου" button (mobile, via suitableDistanceSortActive).
+    const distanceSortActive = directoryViewCriteria.distance || suitableDistanceSortActive;
+    if (!distanceSortActive) {
       return sourceBeachCards;
     }
 
@@ -1879,19 +1903,16 @@ export const BeachSearcherHome: React.FC<BeachSearcherHomeProps> = ({
     };
 
     return [...sourceBeachCards].sort((a, b) => {
-      if (directoryViewCriteria.distance) {
-        const aDistance = getDistance(a);
-        const bDistance = getDistance(b);
-        if (aDistance !== undefined && bDistance !== undefined && aDistance !== bDistance) {
-          return aDistance - bDistance;
-        }
-        if (aDistance !== undefined) return -1;
-        if (bDistance !== undefined) return 1;
+      const aDistance = getDistance(a);
+      const bDistance = getDistance(b);
+      if (aDistance !== undefined && bDistance !== undefined && aDistance !== bDistance) {
+        return aDistance - bDistance;
       }
-
+      if (aDistance !== undefined) return -1;
+      if (bDistance !== undefined) return 1;
       return 0;
     });
-  }, [directoryAllBeachCards, directorySuitableOnlyBeachCards, directoryViewCriteria.distance, isDirectorySuitableView, weatherContextByBeachId]);
+  }, [directoryAllBeachCards, directorySuitableOnlyBeachCards, directoryViewCriteria.distance, isDirectorySuitableView, suitableDistanceSortActive, weatherContextByBeachId]);
   const shouldTrackDirectoryCarouselOnMap = Boolean(
     isMobileViewport &&
     directoryDisplayBeachCards.length > 0 &&
@@ -2225,8 +2246,10 @@ export const BeachSearcherHome: React.FC<BeachSearcherHomeProps> = ({
       isActive: directoryViewCriteria.suitable,
       onSelect: () => setDirectoryViewCriteria(current => ({ ...current, suitable: true })),
     }] : []),
-    {
-      key: 'distance',
+    // On mobile the "near me" action has its own dedicated button outside the
+    // dropdown, so we drop the redundant distance option here to avoid duplication.
+    ...(isMobileViewport ? [] : [{
+      key: 'distance' as const,
       label: isFindingCurrentLocation && !hasUserLocation ? copy.findingLocation : t.sortByDistance,
       isActive: directoryViewCriteria.distance,
       onSelect: () => {
@@ -2240,7 +2263,7 @@ export const BeachSearcherHome: React.FC<BeachSearcherHomeProps> = ({
         setDirectoryViewCriteria(current => ({ ...current, distance: !current.distance }));
       },
       isDisabled: isFindingCurrentLocation && !hasUserLocation,
-    },
+    }]),
   ];
   const activeDirectorySortOptions = directorySortOptions.filter(option => option.isActive);
   const activeDirectorySortLabel = activeDirectorySortOptions.length === 0
@@ -2386,6 +2409,7 @@ export const BeachSearcherHome: React.FC<BeachSearcherHomeProps> = ({
         windSuitabilityText={options.windExposureMode ? undefined : windSuitabilityText}
         windSuitabilityColor={simpleWindSuitability?.suitabilityColor}
         windExposureMode={options.windExposureMode}
+        hideExposureBadge={options.recommendationRank !== undefined}
         showTodayScoreBadge={options.showTodayScoreBadge}
       />
     );
@@ -2515,7 +2539,7 @@ export const BeachSearcherHome: React.FC<BeachSearcherHomeProps> = ({
   return (
     <section className="relative isolate overflow-hidden bg-sky-50 text-slate-950" aria-label={copy.beachSearchAria}>
       <div
-        className="fixed inset-0 -z-10 bg-sky-100 bg-cover bg-center"
+        className="pointer-events-none fixed inset-0 -z-10 bg-sky-100 bg-cover bg-center"
         style={heroBackground ? { backgroundImage: heroBackground } : undefined}
         aria-hidden="true"
       >

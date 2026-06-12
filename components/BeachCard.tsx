@@ -63,6 +63,7 @@ interface BeachCardProps {
   lessExposedToday?: boolean;
   windSuitabilityText?: string;
   windSuitabilityColor?: WindSuitabilityColor;
+  hideExposureBadge?: boolean;
   /**
    * Controls the wind-exposure chip on the card:
    * - 'none': never show it (e.g. "best beaches" — no explanation needed)
@@ -963,6 +964,7 @@ export const BeachCard: React.FC<BeachCardProps> = ({
   lessExposedToday,
   windSuitabilityText,
   windSuitabilityColor,
+  hideExposureBadge = false,
   windExposureMode,
   showTodayScoreBadge = true,
 }) => {
@@ -1455,14 +1457,16 @@ export const BeachCard: React.FC<BeachCardProps> = ({
 
         {/* Top badges overlay */}
         <div className="absolute top-3 left-3 flex max-w-[calc(100%-4.25rem)] flex-wrap gap-1.5">
-          <div className={`px-3 py-1 rounded-lg text-[10px] font-bold backdrop-blur-sm ${
-            isProtectedToday ? 'bg-emerald-500/90 text-white' :
-            isExposed ? 'bg-amber-500/90 text-white' : 'bg-sky-500/90 text-white'
-          }`}>
-            {isProtectedToday
-              ? t.shelteredTooltip
-              : (isExposed ? t.exposedTooltip : localizedCardCopy.localExposureCheck)}
-          </div>
+          {!hideExposureBadge && (
+            <div className={`px-3 py-1 rounded-lg text-[10px] font-bold backdrop-blur-sm ${
+              isProtectedToday ? 'bg-emerald-500/90 text-white' :
+              isExposed ? 'bg-amber-500/90 text-white' : 'bg-sky-500/90 text-white'
+            }`}>
+              {isProtectedToday
+                ? t.shelteredTooltip
+                : (isExposed ? t.exposedTooltip : localizedCardCopy.localExposureCheck)}
+            </div>
+          )}
           {hasBlueFlag2026 && <BlueFlagBadge language={language} compact />}
         </div>
 

@@ -11,7 +11,10 @@ import { getLocalWeatherFixture } from '../utils/weatherFixtures';
 
 const BEACH_FORECAST_CLUSTER_STEPS = [0.05, 0.08, 0.12];
 const MAX_BEACH_FORECAST_CLUSTERS = 6;
-const BEACH_FORECAST_BACKGROUND_DELAY_MS = 6000;
+// Per-beach cluster forecasts only refine scores; the map/list already render
+// immediately from the island forecast. Keep a short delay so we don't compete
+// with first paint, but land the refinement quickly instead of seconds later.
+const BEACH_FORECAST_BACKGROUND_DELAY_MS = 1500;
 const EVENING_TODAY_CUTOFF_HOUR = 21;
 
 interface BeachForecastCluster {

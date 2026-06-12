@@ -40,6 +40,8 @@ interface CombinedFilterProps {
   availableFilters?: FilterKey[];
   protectedSortLabel?: string;
   showProtectedSort?: boolean;
+  /** Hide the "near me" (distance) sort option — on mobile it lives in the dedicated front button instead. */
+  hideDistanceSort?: boolean;
   getResultCount?: (filters: FilterKey[], sortBy: SortOption) => number;
   onResultCountChange?: (count: number) => void;
   language: LanguageCode;
@@ -157,6 +159,7 @@ export const CombinedFilter: React.FC<CombinedFilterProps> = ({
     availableFilters,
     protectedSortLabel,
     showProtectedSort = true,
+    hideDistanceSort = false,
     getResultCount,
     onResultCountChange,
     language,
@@ -297,7 +300,7 @@ export const CombinedFilter: React.FC<CombinedFilterProps> = ({
             id: 'distance',
             label: isGettingLocation ? t.gettingLocation : sheetCopy.nearMe,
             icon: <MapPin className="h-4 w-4" />,
-            isVisible: true,
+            isVisible: !hideDistanceSort,
             isActive: tempSortBy === 'distance' || (tempSortBy === 'protected' && tempDistanceWithinSuitable),
             onClick: handleDistanceSortClick,
             isDisabled: isGettingLocation,

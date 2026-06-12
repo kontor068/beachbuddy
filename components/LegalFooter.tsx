@@ -1,8 +1,14 @@
-import React, { useState } from 'react';
-import { Database, FileText, ShieldCheck, X } from 'lucide-react';
+import React, { useEffect, useState } from 'react';
+import { Accessibility, Cookie, Database, FileText, Settings2, ShieldCheck, X } from 'lucide-react';
+import { AnalyticsConsent, getAnalyticsConsent, setAnalyticsConsent } from '../services/analyticsService';
 import { LanguageCode } from '../types';
 
-type LegalModal = 'terms' | 'privacy' | 'sources';
+export type LegalModal = 'terms' | 'privacy' | 'cookies' | 'accessibility' | 'sources';
+
+export const openLegalModal = (modal: LegalModal) => {
+  if (typeof document === 'undefined') return;
+  document.dispatchEvent(new CustomEvent<LegalModal>('calmbeach:openLegalModal', { detail: modal }));
+};
 
 interface LegalFooterProps {
   language: LanguageCode;
@@ -15,11 +21,20 @@ const copy = {
     weatherData: 'Weather/marine data',
     terms: 'Terms of Use',
     privacy: 'Privacy & Cookies',
+    cookies: 'Cookies',
+    cookieSettings: 'Cookie settings',
+    accessibility: 'Accessibility',
     sources: 'Data sources',
     close: 'Close',
     lastUpdated: `Last updated: ${LAST_UPDATED}`,
     footerNote: 'Calm Beach is an informational beach guide. Always check local conditions, warning flags, lifeguards, and official advice before swimming.',
     ownerTodo: 'TODO before public launch: add the legal operator name, registered address, support email, and governing law/jurisdiction.',
+    consentTitle: 'Analytics cookie choice',
+    consentAllowed: 'Analytics allowed',
+    consentDeclined: 'Analytics declined',
+    consentUnset: 'No analytics choice yet',
+    essentialOnly: 'Use essential only',
+    allowAnalytics: 'Allow analytics',
     termsSections: [
       {
         title: '1. Service scope',
@@ -57,19 +72,59 @@ const copy = {
     privacySections: [
       {
         title: 'What data is used',
-        body: 'The app may store selected region, favorites, preferences, forecast snapshots, and analytics consent in this browser. If you allow browser location, it is used to estimate distance and nearby options. Precise location is not sent to analytics.',
+        body: 'The app may store selected region, favorites, preferences, language, forecast snapshots, and analytics consent in this browser. If you allow browser location, it is used in the current session to estimate distance and nearby options. Precise location is not sent to analytics.',
       },
       {
-        title: 'Analytics and cookies',
-        body: 'Google Analytics is optional and loads only after consent. If analytics are rejected, Google Analytics is disabled and locally stored analytics events are removed. Advertising storage, ad user data, and ad personalization are denied by default.',
+        title: 'Controller and contact details',
+        body: 'Before public launch, this notice must name the legal operator/controller, contact email, registered address if applicable, and any data protection contact. Do not launch publicly with placeholder operator details.',
       },
       {
-        title: 'Local storage',
-        body: 'Favorites, preferences, selected region, consent choice, and some app state may be kept in localStorage on your device so the app feels faster and remembers your choices.',
+        title: 'Purposes and legal basis',
+        body: 'Essential local storage is used to provide the app, remember choices, and keep the service fast. Browser location is requested only when the user asks for nearby beaches or distance sorting. Optional analytics are based on consent and help understand aggregate product usage.',
+      },
+      {
+        title: 'Sharing and processors',
+        body: 'Weather/marine data providers, map providers, hosting/CDN services, Google Analytics if accepted, and other technical providers may process limited technical data under their own terms or processor arrangements. The app should not sell personal data or send precise location to analytics.',
+      },
+      {
+        title: 'Retention',
+        body: 'Local browser preferences stay on the user device until cleared by the user or browser. Analytics consent is stored until changed. Optional analytics retention must match the configured Google Analytics property retention before launch.',
       },
       {
         title: 'Your rights',
-        body: 'Before launch, the operator must publish real contact details so users can request access, correction, deletion, restriction, objection, portability, and withdrawal of consent where applicable under data protection law.',
+        body: 'Users may request access, correction, deletion, restriction, objection, portability, and withdrawal of consent where applicable. Users also have the right to lodge a complaint with their local data protection authority. Real contact details must be published before launch.',
+      },
+    ],
+    cookieSections: [
+      {
+        title: 'Essential storage',
+        body: 'Used for necessary app behavior such as selected language, selected region, favorites, preferences, theme, consent choice, forecast cache, and service stability. These are first-party browser storage items and are needed for a fast app experience.',
+      },
+      {
+        title: 'Analytics cookies',
+        body: 'Google Analytics is optional. It loads only after the user allows analytics. If analytics are rejected, analytics storage remains denied, advertising storage remains denied, and local analytics events are removed.',
+      },
+      {
+        title: 'Third-party services',
+        body: 'External services such as maps, weather providers, navigation links, and embedded provider pages may have their own terms and privacy/cookie policies when opened or used.',
+      },
+      {
+        title: 'Changing your choice',
+        body: 'You can change the analytics choice here at any time. Rejecting analytics does not affect the core beach recommendation experience.',
+      },
+    ],
+    accessibilitySections: [
+      {
+        title: 'Accessibility commitment',
+        body: 'Calm Beach aims to be usable on mobile, keyboard-accessible, readable, and clear for tourists making quick beach decisions. Interactive controls should have visible focus states and understandable labels.',
+      },
+      {
+        title: 'Current status',
+        body: 'Before public launch, run a focused accessibility pass for contrast, keyboard navigation, focus order, screen-reader labels, modal behavior, and mobile text fitting.',
+      },
+      {
+        title: 'Feedback',
+        body: 'A real support email or contact route must be added before public launch so users can report accessibility or privacy issues.',
       },
     ],
     sourcesSections: [
@@ -91,11 +146,20 @@ const copy = {
     weatherData: 'Καιρός/θάλασσα',
     terms: 'Όροι Χρήσης',
     privacy: 'Απόρρητο & Cookies',
+    cookies: 'Cookies',
+    cookieSettings: 'Ρυθμίσεις cookies',
+    accessibility: 'Προσβασιμότητα',
     sources: 'Πηγές δεδομένων',
     close: 'Κλείσιμο',
     lastUpdated: 'Τελευταία ενημέρωση: 23 Μαΐου 2026',
     footerNote: 'Το Calm Beach είναι οδηγός πληροφόρησης. Πριν κολυμπήσεις, έλεγχε πάντα τις τοπικές συνθήκες, σημαίες, ναυαγοσώστες και επίσημες οδηγίες.',
     ownerTodo: 'TODO πριν το public launch: συμπλήρωση νομικής επωνυμίας/υπεύθυνου, έδρας, email υποστήριξης και εφαρμοστέου δικαίου/δικαιοδοσίας.',
+    consentTitle: 'Επιλογή analytics cookies',
+    consentAllowed: 'Τα analytics επιτρέπονται',
+    consentDeclined: 'Τα analytics έχουν απορριφθεί',
+    consentUnset: 'Δεν υπάρχει ακόμα επιλογή analytics',
+    essentialOnly: 'Μόνο απαραίτητα',
+    allowAnalytics: 'Ναι στα analytics',
     termsSections: [
       {
         title: '1. Πεδίο υπηρεσίας',
@@ -133,19 +197,59 @@ const copy = {
     privacySections: [
       {
         title: 'Ποια δεδομένα χρησιμοποιούνται',
-        body: 'Η εφαρμογή μπορεί να αποθηκεύει επιλεγμένη περιοχή, αγαπημένα, προτιμήσεις, στιγμιότυπα πρόγνωσης και επιλογή analytics σε αυτόν τον browser. Αν επιτρέψεις τοποθεσία από τον browser, χρησιμοποιείται για εκτίμηση απόστασης και κοντινών επιλογών. Η ακριβής τοποθεσία δεν αποστέλλεται στα analytics.',
+        body: 'Η εφαρμογή μπορεί να αποθηκεύει επιλεγμένη περιοχή, αγαπημένα, προτιμήσεις, γλώσσα, στιγμιότυπα πρόγνωσης και επιλογή analytics σε αυτόν τον browser. Αν επιτρέψεις τοποθεσία από τον browser, χρησιμοποιείται στην τρέχουσα συνεδρία για εκτίμηση απόστασης και κοντινών επιλογών. Η ακριβής τοποθεσία δεν αποστέλλεται στα analytics.',
       },
       {
-        title: 'Analytics και cookies',
-        body: 'Το Google Analytics είναι προαιρετικό και φορτώνει μόνο μετά από συγκατάθεση. Αν απορρίψεις τα analytics, το Google Analytics απενεργοποιείται και τα τοπικά analytics events αφαιρούνται. Advertising storage, ad user data και ad personalization είναι denied από προεπιλογή.',
+        title: 'Υπεύθυνος επεξεργασίας και επικοινωνία',
+        body: 'Πριν το public launch, η πολιτική πρέπει να αναφέρει τον πραγματικό νόμιμο διαχειριστή/υπεύθυνο επεξεργασίας, email επικοινωνίας, έδρα όπου εφαρμόζεται και στοιχεία υπεύθυνου προστασίας δεδομένων όπου απαιτείται. Μην βγει δημόσια με placeholder στοιχεία.',
       },
       {
-        title: 'Τοπική αποθήκευση',
-        body: 'Αγαπημένα, προτιμήσεις, επιλεγμένη περιοχή, επιλογή συγκατάθεσης και μέρος του app state μπορεί να μένουν στο localStorage της συσκευής σου για να είναι η εφαρμογή πιο γρήγορη και να θυμάται τις επιλογές σου.',
+        title: 'Σκοποί και νομική βάση',
+        body: 'Η απαραίτητη τοπική αποθήκευση χρησιμοποιείται για τη λειτουργία της εφαρμογής, τη μνήμη επιλογών και την ταχύτητα. Η τοποθεσία ζητείται μόνο όταν ο χρήστης ζητήσει κοντινές παραλίες ή ταξινόμηση απόστασης. Τα προαιρετικά analytics βασίζονται σε συγκατάθεση.',
+      },
+      {
+        title: 'Κοινοποίηση και πάροχοι',
+        body: 'Πάροχοι καιρού/θαλάσσης, χάρτες, hosting/CDN, Google Analytics αν γίνει αποδοχή, και άλλες τεχνικές υπηρεσίες μπορεί να επεξεργάζονται περιορισμένα τεχνικά δεδομένα με τους δικούς τους όρους ή συμφωνίες επεξεργασίας. Η εφαρμογή δεν πρέπει να πουλά προσωπικά δεδομένα ή να στέλνει ακριβή τοποθεσία στα analytics.',
+      },
+      {
+        title: 'Διατήρηση',
+        body: 'Οι τοπικές προτιμήσεις μένουν στη συσκευή μέχρι να καθαριστούν από τον χρήστη ή τον browser. Η επιλογή analytics αποθηκεύεται μέχρι να αλλάξει. Η διάρκεια διατήρησης στο Google Analytics πρέπει να επιβεβαιωθεί από τη ρύθμιση του property πριν το launch.',
       },
       {
         title: 'Δικαιώματα χρήστη',
-        body: 'Πριν από το launch πρέπει να δημοσιευτούν πραγματικά στοιχεία επικοινωνίας υπεύθυνου, ώστε οι χρήστες να μπορούν να ζητήσουν πρόσβαση, διόρθωση, διαγραφή, περιορισμό, αντίρρηση, φορητότητα και ανάκληση συγκατάθεσης όπου εφαρμόζεται η νομοθεσία προστασίας δεδομένων.',
+        body: 'Οι χρήστες μπορούν να ζητήσουν πρόσβαση, διόρθωση, διαγραφή, περιορισμό, αντίρρηση, φορητότητα και ανάκληση συγκατάθεσης όπου εφαρμόζεται. Έχουν επίσης δικαίωμα καταγγελίας στην αρμόδια αρχή προστασίας δεδομένων. Πραγματικά στοιχεία επικοινωνίας πρέπει να μπουν πριν το launch.',
+      },
+    ],
+    cookieSections: [
+      {
+        title: 'Απαραίτητη αποθήκευση',
+        body: 'Χρησιμοποιείται για βασική λειτουργία όπως γλώσσα, επιλεγμένη περιοχή, αγαπημένα, προτιμήσεις, theme, επιλογή συγκατάθεσης, cache πρόγνωσης και σταθερότητα υπηρεσίας. Είναι first-party browser storage και βοηθά την εφαρμογή να παραμένει γρήγορη.',
+      },
+      {
+        title: 'Analytics cookies',
+        body: 'Το Google Analytics είναι προαιρετικό. Φορτώνει μόνο αφού ο χρήστης επιτρέψει analytics. Αν γίνει απόρριψη, το analytics storage μένει denied, το advertising storage μένει denied και τα τοπικά analytics events αφαιρούνται.',
+      },
+      {
+        title: 'Υπηρεσίες τρίτων',
+        body: 'Εξωτερικές υπηρεσίες όπως χάρτες, πάροχοι καιρού, σύνδεσμοι πλοήγησης και σελίδες τρίτων μπορεί να έχουν δικούς τους όρους και πολιτικές privacy/cookies όταν ανοίγονται ή χρησιμοποιούνται.',
+      },
+      {
+        title: 'Αλλαγή επιλογής',
+        body: 'Μπορείς να αλλάξεις την επιλογή analytics εδώ οποιαδήποτε στιγμή. Η απόρριψη analytics δεν επηρεάζει τη βασική εμπειρία σύστασης παραλιών.',
+      },
+    ],
+    accessibilitySections: [
+      {
+        title: 'Δέσμευση προσβασιμότητας',
+        body: 'Το Calm Beach στοχεύει να είναι εύχρηστο σε κινητό, προσβάσιμο με πληκτρολόγιο, ευανάγνωστο και καθαρό για τουρίστες που θέλουν γρήγορη απόφαση. Τα διαδραστικά στοιχεία πρέπει να έχουν ορατά focus states και σαφείς ετικέτες.',
+      },
+      {
+        title: 'Τρέχουσα κατάσταση',
+        body: 'Πριν το public launch χρειάζεται στοχευμένος έλεγχος για contrast, keyboard navigation, focus order, screen-reader labels, modal behavior και εφαρμογή κειμένων σε κινητό.',
+      },
+      {
+        title: 'Feedback',
+        body: 'Πριν το public launch πρέπει να προστεθεί πραγματικό email ή τρόπος επικοινωνίας ώστε οι χρήστες να αναφέρουν θέματα προσβασιμότητας ή απορρήτου.',
       },
     ],
     sourcesSections: [
@@ -170,42 +274,87 @@ const getCopy = (language: LanguageCode) => (language === 'gr' ? copy.gr : copy.
 const modalMeta = {
   terms: { icon: FileText, titleKey: 'terms' },
   privacy: { icon: ShieldCheck, titleKey: 'privacy' },
+  cookies: { icon: Cookie, titleKey: 'cookies' },
+  accessibility: { icon: Accessibility, titleKey: 'accessibility' },
   sources: { icon: Database, titleKey: 'sources' },
 } as const;
 
 export const LegalFooter: React.FC<LegalFooterProps> = ({ language }) => {
   const [activeModal, setActiveModal] = useState<LegalModal | null>(null);
+  const [analyticsConsent, setLocalAnalyticsConsent] = useState<AnalyticsConsent | null>(() => getAnalyticsConsent());
   const c = getCopy(language);
   const modal = activeModal ? modalMeta[activeModal] : null;
   const sections = activeModal === 'terms'
     ? c.termsSections
     : activeModal === 'privacy'
       ? c.privacySections
-      : activeModal === 'sources'
-        ? c.sourcesSections
-        : [];
+      : activeModal === 'cookies'
+        ? c.cookieSections
+        : activeModal === 'accessibility'
+          ? c.accessibilitySections
+          : activeModal === 'sources'
+            ? c.sourcesSections
+            : [];
   const ModalIcon = modal?.icon;
+  const consentStatus = analyticsConsent === 'accepted'
+    ? c.consentAllowed
+    : analyticsConsent === 'declined'
+      ? c.consentDeclined
+      : c.consentUnset;
+
+  const updateAnalyticsConsent = (choice: AnalyticsConsent) => {
+    setAnalyticsConsent(choice);
+    setLocalAnalyticsConsent(choice);
+  };
+
+  useEffect(() => {
+    if (activeModal === 'privacy' || activeModal === 'cookies') {
+      setLocalAnalyticsConsent(getAnalyticsConsent());
+    }
+  }, [activeModal]);
+
+  useEffect(() => {
+    const handleOpenLegalModal = (event: Event) => {
+      const modalName = (event as CustomEvent<LegalModal>).detail;
+      if (modalName && modalName in modalMeta) {
+        setActiveModal(modalName);
+      }
+    };
+
+    document.addEventListener('calmbeach:openLegalModal', handleOpenLegalModal);
+    return () => document.removeEventListener('calmbeach:openLegalModal', handleOpenLegalModal);
+  }, []);
 
   return (
     <>
-      <footer className="mx-auto max-w-4xl px-4 pb-3 pt-2 text-center text-[11px] font-medium leading-relaxed text-slate-400">
-        <p className="mx-auto max-w-2xl text-slate-500">{c.footerNote}</p>
-        <div className="mt-2 flex flex-wrap items-center justify-center gap-x-3 gap-y-1">
-          <button type="button" onClick={() => setActiveModal('terms')} className="underline-offset-4 hover:text-slate-600 hover:underline">
+      <footer className="mx-auto w-[calc(100%-1rem)] max-w-4xl rounded-2xl border border-white/80 bg-white/94 px-4 py-4 text-center text-[11px] font-semibold leading-relaxed text-slate-600 shadow-xl shadow-sky-950/10 ring-1 ring-sky-100/70 backdrop-blur-xl sm:w-[calc(100%-2rem)]">
+        <p className="mx-auto max-w-2xl text-slate-700">{c.footerNote}</p>
+        <div className="mt-3 flex flex-wrap items-center justify-center gap-2">
+          <button type="button" onClick={() => setActiveModal('terms')} className="min-h-9 rounded-full border border-slate-200 bg-white/80 px-3 text-xs font-extrabold text-slate-700 shadow-sm shadow-sky-900/5 transition hover:border-sky-200 hover:bg-sky-50 hover:text-[#007a83] focus:outline-none focus-visible:ring-2 focus-visible:ring-sky-500">
             {c.terms}
           </button>
-          <button type="button" onClick={() => setActiveModal('privacy')} className="underline-offset-4 hover:text-slate-600 hover:underline">
+          <button type="button" onClick={() => setActiveModal('privacy')} className="min-h-9 rounded-full border border-slate-200 bg-white/60 px-3 text-xs font-bold text-slate-600 transition hover:border-sky-200 hover:bg-sky-50 hover:text-[#007a83] focus:outline-none focus-visible:ring-2 focus-visible:ring-sky-500">
             {c.privacy}
           </button>
-          <button type="button" onClick={() => setActiveModal('sources')} className="underline-offset-4 hover:text-slate-600 hover:underline">
+          <button type="button" onClick={() => setActiveModal('cookies')} className="min-h-9 rounded-full border border-slate-200 bg-white/60 px-3 text-xs font-bold text-slate-600 transition hover:border-sky-200 hover:bg-sky-50 hover:text-[#007a83] focus:outline-none focus-visible:ring-2 focus-visible:ring-sky-500">
+            {c.cookies}
+          </button>
+          <button type="button" onClick={() => setActiveModal('cookies')} className="inline-flex min-h-9 items-center gap-1 rounded-full border border-slate-200 bg-white/60 px-3 text-xs font-bold text-slate-600 transition hover:border-sky-200 hover:bg-sky-50 hover:text-[#007a83] focus:outline-none focus-visible:ring-2 focus-visible:ring-sky-500">
+            <Settings2 className="h-3 w-3" aria-hidden="true" />
+            {c.cookieSettings}
+          </button>
+          <button type="button" onClick={() => setActiveModal('accessibility')} className="min-h-9 rounded-full border border-slate-200 bg-white/60 px-3 text-xs font-bold text-slate-600 transition hover:border-sky-200 hover:bg-sky-50 hover:text-[#007a83] focus:outline-none focus-visible:ring-2 focus-visible:ring-sky-500">
+            {c.accessibility}
+          </button>
+          <button type="button" onClick={() => setActiveModal('sources')} className="min-h-9 rounded-full border border-slate-200 bg-white/60 px-3 text-xs font-bold text-slate-600 transition hover:border-sky-200 hover:bg-sky-50 hover:text-[#007a83] focus:outline-none focus-visible:ring-2 focus-visible:ring-sky-500">
             {c.sources}
           </button>
-          <span>{c.weatherData}: </span>
-          <a href="https://open-meteo.com/en/terms" target="_blank" rel="noreferrer" className="underline-offset-4 hover:text-slate-600 hover:underline">
+          <span className="px-1 text-slate-500">{c.weatherData}: </span>
+          <a href="https://open-meteo.com/en/terms" target="_blank" rel="noreferrer" className="font-bold text-sky-700 underline-offset-4 hover:text-sky-800 hover:underline">
             Open-Meteo
           </a>
-          <span>/</span>
-          <a href="https://www.dwd.de/EN/ourservices/opendata/opendata.html" target="_blank" rel="noreferrer" className="underline-offset-4 hover:text-slate-600 hover:underline">
+          <span className="text-slate-400">/</span>
+          <a href="https://www.dwd.de/EN/ourservices/opendata/opendata.html" target="_blank" rel="noreferrer" className="font-bold text-sky-700 underline-offset-4 hover:text-sky-800 hover:underline">
             DWD
           </a>
         </div>
@@ -247,12 +396,43 @@ export const LegalFooter: React.FC<LegalFooterProps> = ({ language }) => {
                 </section>
               ))}
 
-              {activeModal === 'privacy' && (
+              {(activeModal === 'privacy' || activeModal === 'cookies') && (
+                <section className="space-y-3 rounded-xl border border-sky-100 bg-sky-50/70 px-3 py-3">
+                  <div className="space-y-1">
+                    <h3 className="text-sm font-extrabold text-slate-900">{c.consentTitle}</h3>
+                    <p className="text-sm font-semibold text-slate-600">{consentStatus}</p>
+                  </div>
+                  <div className="grid grid-cols-2 gap-2 sm:flex">
+                    <button
+                      type="button"
+                      onClick={() => updateAnalyticsConsent('declined')}
+                      className="min-h-11 rounded-xl border border-slate-200 bg-white px-3 text-xs font-bold text-slate-700 transition hover:bg-slate-50 focus:outline-none focus-visible:ring-2 focus-visible:ring-sky-500 sm:px-4 sm:text-sm"
+                    >
+                      {c.essentialOnly}
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => updateAnalyticsConsent('accepted')}
+                      className="min-h-11 rounded-xl bg-sky-600 px-3 text-xs font-bold text-white transition hover:bg-sky-700 focus:outline-none focus-visible:ring-2 focus-visible:ring-sky-500 sm:px-4 sm:text-sm"
+                    >
+                      {c.allowAnalytics}
+                    </button>
+                  </div>
+                </section>
+              )}
+
+              {(activeModal === 'privacy' || activeModal === 'cookies') && (
                 <section className="space-y-1">
                   <h3 className="text-sm font-extrabold text-slate-900">{language === 'gr' ? 'Χρήσιμοι σύνδεσμοι' : 'Useful links'}</h3>
                   <div className="flex flex-wrap gap-x-3 gap-y-1 text-sm font-semibold text-sky-700">
                     <a href="https://support.google.com/analytics/answer/7318509" target="_blank" rel="noreferrer" className="underline-offset-4 hover:underline">
                       Google Analytics privacy disclosures
+                    </a>
+                    <a href="https://commission.europa.eu/cookies-policy_en" target="_blank" rel="noreferrer" className="underline-offset-4 hover:underline">
+                      EU cookie policy example
+                    </a>
+                    <a href="https://www.edpb.europa.eu/sites/default/files/files/file1/edpb_guidelines_202005_consent_en.pdf" target="_blank" rel="noreferrer" className="underline-offset-4 hover:underline">
+                      EDPB consent guidelines
                     </a>
                     <a href="https://commission.europa.eu/law/law-topic/data-protection/what-are-my-rights_en" target="_blank" rel="noreferrer" className="underline-offset-4 hover:underline">
                       GDPR rights

@@ -261,6 +261,78 @@ body {
   filter: saturate(1.08) contrast(1.04);
 }
 
+/* Smooth hour slider docked under the map. The filled track is a sibling
+   div that transitions its width; here we just draw a polished, glide-y thumb. */
+.beach-map-hour-slider {
+  -webkit-appearance: none;
+  appearance: none;
+  background: transparent;
+  touch-action: pan-y;
+  user-select: none;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.beach-map-hour-slider::-webkit-slider-runnable-track {
+  height: 16px;
+  background: transparent;
+}
+
+.beach-map-hour-slider::-moz-range-track {
+  height: 16px;
+  background: transparent;
+}
+
+.beach-map-hour-slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  height: 16px;
+  width: 16px;
+  border-radius: 999px;
+  background: #007a83;
+  border: 2px solid #ffffff;
+  box-shadow: 0 1px 4px rgba(2, 132, 153, 0.35);
+  cursor: pointer;
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+
+.beach-map-hour-slider::-moz-range-thumb {
+  height: 16px;
+  width: 16px;
+  border-radius: 999px;
+  background: #007a83;
+  border: 2px solid #ffffff;
+  box-shadow: 0 1px 4px rgba(2, 132, 153, 0.35);
+  cursor: pointer;
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+
+.beach-map-hour-slider:active::-webkit-slider-thumb {
+  transform: scale(1.18);
+  box-shadow: 0 2px 8px rgba(2, 132, 153, 0.45);
+}
+
+.beach-map-hour-slider:active::-moz-range-thumb {
+  transform: scale(1.18);
+  box-shadow: 0 2px 8px rgba(2, 132, 153, 0.45);
+}
+
+.beach-map-hour-slider:focus-visible::-webkit-slider-thumb {
+  outline: 2px solid #06b6d4;
+  outline-offset: 2px;
+}
+
+.beach-map-hour-slider:focus-visible::-moz-range-thumb {
+  outline: 2px solid #06b6d4;
+  outline-offset: 2px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .beach-map-hour-slider::-webkit-slider-thumb,
+  .beach-map-hour-slider::-moz-range-thumb {
+    transition: none;
+  }
+}
+
 .beach-map-marker-dot {
   --beach-map-marker-scale: 1;
   transform-origin: center;

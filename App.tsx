@@ -18,7 +18,7 @@ import ErrorDisplay from './components/ErrorDisplay';
 import { MobileBottomNav, type MobileTab } from './components/MobileBottomNav';
 import { PrivacyConsentBanner } from './components/PrivacyConsentBanner';
 import { MapLoadBoundary } from './components/MapLoadBoundary';
-import { LegalFooter } from './components/LegalFooter';
+import { LegalFooter, openLegalModal } from './components/LegalFooter';
 import { BeachSearcherHome, type DirectoryCategory } from './components/BeachSearcherHome';
 
 // Hooks & Utils
@@ -416,6 +416,63 @@ type DirectorySearchSuggestion = {
 };
 
 const clampTopPickScore = (score: number): number => Math.max(0, Math.min(100, Math.round(score)));
+
+const isSameCalendarDay = (a: Date, b: Date): boolean => (
+  a.getFullYear() === b.getFullYear() &&
+  a.getMonth() === b.getMonth() &&
+  a.getDate() === b.getDate()
+);
+
+const lerpValue = (a: number, b: number, t: number): number => a + (b - a) * t;
+// Shortest-path interpolation between two compass bearings (handles the 360→0 wrap).
+const lerpAngleDeg = (a: number, b: number, t: number): number => {
+  const diff = ((b - a + 540) % 360) - 180;
+  return ((a + diff * t) % 360 + 360) % 360;
+};
+
+// The weather API is 3-hourly, which makes the hour slider jump in big, abrupt
+// steps. We linearly interpolate to 1-hour slots so the slider glides smoothly
+// and the wind/colours transition between the real forecast anchors.
+const interpolateHourlyForecast = (items: ForecastItem[], stepHours = 1): ForecastItem[] => {
+  const sorted = [...items].sort((a, b) => a.dt - b.dt);
+  if (sorted.length < 2) return sorted;
+
+  const stepSec = stepHours * 3600;
+  const result: ForecastItem[] = [];
+  const lastDt = sorted[sorted.length - 1].dt;
+
+  for (let dt = sorted[0].dt; dt <= lastDt; dt += stepSec) {
+    const hiIndex = sorted.findIndex(item => item.dt >= dt);
+    if (hiIndex === -1) break;
+    const hi = sorted[hiIndex];
+    if (hi.dt === dt || hiIndex === 0) {
+      result.push({ ...hi, dt });
+      continue;
+    }
+    const lo = sorted[hiIndex - 1];
+    const t = (dt - lo.dt) / (hi.dt - lo.dt);
+    result.push({
+      ...lo,
+      dt,
+      main: { ...lo.main, temp: lerpValue(lo.main.temp, hi.main.temp, t) },
+      wind: {
+        ...lo.wind,
+        speed: lerpValue(lo.wind.speed, hi.wind.speed, t),
+        deg: lerpAngleDeg(lo.wind.deg, hi.wind.deg, t),
+      },
+      marine: lo.marine || hi.marine
+        ? {
+            ...(lo.marine ?? {}),
+            ...(typeof lo.marine?.waveHeightM === 'number' && typeof hi.marine?.waveHeightM === 'number'
+              ? { waveHeightM: lerpValue(lo.marine.waveHeightM, hi.marine.waveHeightM, t) }
+              : {}),
+          }
+        : lo.marine,
+    });
+  }
+
+  return result;
+};
 
 const getForecastMinutes = (item: ForecastItem): number => {
   const date = new Date(item.dt * 1000);
@@ -1213,7 +1270,7 @@ export const App: React.FC = () => {
   // --- Beach & Weather Data (Custom Hooks) ---
   const { allIslands, loading: beachesLoading, error: beachesError, getFilteredBeaches, ensureIslandBeachesLoaded, cacheLoadedIsland } = useBeaches(language);
   const { selectedIsland, selectIsland } = useLocation(allIslands);
-  const { weather, forecast, beachForecasts, beachForecastsLoading, loading: weatherLoading, error: weatherError, selectedDayIndex, setSelectedDayIndex, loadWeatherData, lastUpdated } = useWeather(selectedIsland, language);
+  const { weather, forecast, beachForecasts, loading: weatherLoading, error: weatherError, selectedDayIndex, setSelectedDayIndex, loadWeatherData, lastUpdated } = useWeather(selectedIsland, language);
   const handleRegionSelected = (island: Island, source: 'selector' | 'nearest_location' = 'selector') => {
     trackEvent('region_changed', undefined, {
       locale: languageToLocale(language),
@@ -1242,6 +1299,9 @@ export const App: React.FC = () => {
   const [selectedFilters, setSelectedFilters] = useState<FilterKey[]>([]);
   const [sortBy, setSortBy] = useState<SortOption>('protected');
   const [mobileSuitableDistanceSort, setMobileSuitableDistanceSort] = useState(false);
+  // The hour chosen on the map slider; drives both the map colours and the
+  // suitable-beach recommendations so they all reflect the same moment.
+  const [selectedHourDt, setSelectedHourDt] = useState<number | null>(null);
   const hasUserSelectedSortRef = useRef(false);
   const [topPickClock, setTopPickClock] = useState(() => Date.now());
   const [beachSearchQuery, setBeachSearchQuery] = useState('');
@@ -1539,7 +1599,6 @@ export const App: React.FC = () => {
   }, []);
 
   useEffect(() => {
-    saveLanguagePreference(language);
     document.documentElement.lang = languageToLocale(language);
     const meta = seoCopy[language];
     const selectedIslandName = selectedIsland?.name[language] || selectedIsland?.name.en;
@@ -1696,6 +1755,7 @@ export const App: React.FC = () => {
       locale: languageToLocale(nextLanguage),
     });
     setLanguage(nextLanguage);
+    saveLanguagePreference(nextLanguage);
 
     if (typeof window !== 'undefined' && selectedIsland) {
       const nextPath = view === 'detail' && detailBeach
@@ -2150,10 +2210,99 @@ export const App: React.FC = () => {
     return forecastsByBeach;
   }, [beachForecasts, forecast, selectedDayIndex]);
 
-  const selectedForecast = forecast?.[selectedDayIndex];
+  // --- Hour selection (map slider) ---
+  const baseDailyForecast = forecast?.[selectedDayIndex];
+  // Daytime hours available on the slider. For "today" we only expose the
+  // current hour onward — you can't scrub back to the morning once it has passed.
+  const mapHourSlots = useMemo(() => {
+    const hourly = baseDailyForecast?.hourly;
+    if (!hourly || hourly.length === 0) return [];
+    const now = new Date();
+    const day = baseDailyForecast?.date;
+    const isToday = day ? isSameCalendarDay(day, now) : false;
+    const daytime = hourly
+      .filter(item => {
+        const hour = new Date(item.dt * 1000).getHours();
+        return hour >= 6 && hour <= 21;
+      })
+      .sort((a, b) => a.dt - b.dt);
+    // Interpolate the 3-hourly forecast to 1-hour slots so the slider moves
+    // smoothly instead of in big, abrupt jumps.
+    let slots = interpolateHourlyForecast(daytime, 1);
+    if (isToday) {
+      const nowMs = now.getTime();
+      const firstFutureIndex = slots.findIndex(slot => slot.dt * 1000 > nowMs);
+      // Keep the slot that currently covers "now" (the last one at/just before now) and later.
+      const currentIndex = firstFutureIndex === -1 ? slots.length - 1 : Math.max(0, firstFutureIndex - 1);
+      slots = slots.slice(currentIndex);
+    }
+    return slots;
+  }, [baseDailyForecast]);
+  // Default: the current hour for today, otherwise the slot nearest midday.
+  const defaultHourDt = useMemo(() => {
+    if (mapHourSlots.length === 0) return null;
+    const day = baseDailyForecast?.date;
+    const isToday = day ? isSameCalendarDay(day, new Date()) : false;
+    if (isToday) return mapHourSlots[0].dt;
+    return mapHourSlots.reduce((prev, curr) => (
+      Math.abs(new Date(curr.dt * 1000).getHours() - 13) < Math.abs(new Date(prev.dt * 1000).getHours() - 13)
+        ? curr
+        : prev
+    )).dt;
+  }, [mapHourSlots, baseDailyForecast]);
+  useEffect(() => {
+    setSelectedHourDt(defaultHourDt);
+  }, [defaultHourDt]);
+  // The forecast for the moment the user is looking at: the selected day, with
+  // wind/marine/weather swapped to the chosen hour. Recommendations and the map
+  // both derive from this, so they stay in sync as the slider moves.
+  const selectedForecast = useMemo(() => {
+    if (!baseDailyForecast) return undefined;
+    if (selectedHourDt == null) return baseDailyForecast;
+    // Prefer the interpolated slider slot (1-hour granularity); fall back to a
+    // raw 3-hourly entry if needed.
+    const hourItem = mapHourSlots.find(item => item.dt === selectedHourDt)
+      ?? baseDailyForecast.hourly?.find(item => item.dt === selectedHourDt);
+    if (!hourItem) return baseDailyForecast;
+    return {
+      ...baseDailyForecast,
+      wind: hourItem.wind,
+      marine: hourItem.marine ?? baseDailyForecast.marine,
+      weather: hourItem.weather?.[0] ?? baseDailyForecast.weather,
+    };
+  }, [baseDailyForecast, mapHourSlots, selectedHourDt]);
+  // Localized "time window" label for the selected slider hour (e.g. "στις 15:00–18:00"),
+  // shown in the suitable-beach header so it reflects the moment, not just "today".
+  const selectedHourPrefix = useMemo(() => {
+    if (mapHourSlots.length === 0 || selectedHourDt == null) return undefined;
+    const index = mapHourSlots.findIndex(slot => slot.dt === selectedHourDt);
+    if (index === -1) return undefined;
+    const locale = language === 'gr' ? 'el-GR' : languageToLocale(language);
+    const formatHour = (dt: number) => new Date(dt * 1000).toLocaleTimeString(locale, {
+      hour: '2-digit',
+      minute: '2-digit',
+      hour12: false,
+    });
+    const nextSlot = mapHourSlots[index + 1];
+    const windowLabel = nextSlot
+      ? `${formatHour(mapHourSlots[index].dt)}–${formatHour(nextSlot.dt)}`
+      : formatHour(mapHourSlots[index].dt);
+    return getLocalizedCopy(language, {
+      en: `at ${windowLabel}`,
+      gr: `στις ${windowLabel}`,
+      fr: `à ${windowLabel}`,
+      de: `um ${windowLabel}`,
+      it: `alle ${windowLabel}`,
+    });
+  }, [mapHourSlots, selectedHourDt, language]);
+  // Marker colours come from island-level wind + per-beach geometry (geospatial
+  // profile), both available immediately. They do NOT need the per-beach cluster
+  // forecasts (those only refine scores in the background), so we gate map
+  // rendering only on the geometry load — otherwise markers stay blank for the
+  // ~6s the background forecast task takes.
   const isMapExposureLoading = Boolean(
     selectedIsland &&
-    (isGeospatialExposureLoading || geospatialExposureRegionId !== selectedIsland.id || beachForecastsLoading)
+    (isGeospatialExposureLoading || geospatialExposureRegionId !== selectedIsland.id)
   );
   const topPickNow = useMemo(() => new Date(topPickClock), [topPickClock]);
   const defaultBeachListSort = useMemo(() => (
@@ -2208,15 +2357,20 @@ export const App: React.FC = () => {
   }, [getFilteredBeachResults, isFilterModalOpen, selectedFilters, sortBy]);
 
   const suitableBeaches = useMemo(() => {
-    if (!selectedIsland || !forecast || !forecast[selectedDayIndex]) return [];
-    return getSuitableBeaches(selectedIsland.beaches, forecast[selectedDayIndex], language, userLocation, forecast[selectedDayIndex].hourly, preferences, selectedBeachForecasts, geospatialExposureProfiles);
-  }, [selectedIsland, forecast, selectedDayIndex, language, userLocation, preferences, selectedBeachForecasts, geospatialExposureProfiles]);
+    if (!selectedIsland || !selectedForecast) return [];
+    return getSuitableBeaches(selectedIsland.beaches, selectedForecast, language, userLocation, selectedForecast.hourly, preferences, selectedBeachForecasts, geospatialExposureProfiles);
+  }, [selectedIsland, selectedForecast, language, userLocation, preferences, selectedBeachForecasts, geospatialExposureProfiles]);
 
   const mapSuitableBeaches = useMemo<SuitableBeach[]>(() => {
     if (!selectedIsland) return [];
 
     return selectedIsland.beaches.map(beach => {
       const geospatialExposure = geospatialExposureProfiles?.[beach.id];
+      // Attach the straight-line distance from the user so the directory can
+      // sort beaches nearest-first when "Κοντά μου" is active.
+      const distance = userLocation
+        ? calculateDistance(userLocation.lat, userLocation.lon, beach.coordinates.lat, beach.coordinates.lon)
+        : undefined;
 
       if (!selectedForecast) {
         return {
@@ -2228,6 +2382,7 @@ export const App: React.FC = () => {
           isExposed: true,
           canClaimWindProtection: false,
           seaCalmClaimAllowed: false,
+          distance,
           geospatialExposure,
         };
       }
@@ -2260,15 +2415,16 @@ export const App: React.FC = () => {
         seaCalmClaimAllowed: scoreResult.seaCalmClaimAllowed,
         simpleWindSuitability: scoreResult.simpleWindSuitability,
         windExposureReason: describeSimpleWindSuitability(scoreResult.simpleWindSuitability, language),
+        distance,
         geospatialExposure,
       };
     });
   }, [geospatialExposureProfiles, language, preferences, selectedBeachForecasts, selectedForecast, selectedIsland, userLocation]);
 
   const dailySuitableBeaches = useMemo(() => {
-    if (!selectedIsland || !forecast || !forecast[selectedDayIndex]) return [];
-    return getSuitableBeaches(selectedIsland.beaches, forecast[selectedDayIndex], language, undefined, forecast[selectedDayIndex].hourly, undefined, selectedBeachForecasts, geospatialExposureProfiles);
-  }, [selectedIsland, forecast, selectedDayIndex, language, selectedBeachForecasts, geospatialExposureProfiles]);
+    if (!selectedIsland || !selectedForecast) return [];
+    return getSuitableBeaches(selectedIsland.beaches, selectedForecast, language, undefined, selectedForecast.hourly, undefined, selectedBeachForecasts, geospatialExposureProfiles);
+  }, [selectedIsland, selectedForecast, language, selectedBeachForecasts, geospatialExposureProfiles]);
 
   const hasActivePreferenceFilters = useMemo(() => {
     return Object.values(preferences).some(Boolean);
@@ -2296,11 +2452,11 @@ export const App: React.FC = () => {
   }, [beachSearchQuery, hasActivePreferenceFilters, selectedFilters, sortBy]);
 
   const recommendedSuitableBeaches = useMemo(() => {
-    if (!forecast || !forecast[selectedDayIndex]) return [];
+    if (!selectedForecast) return [];
     const recommendationSource = hasActivePreferenceFilters ? suitableBeaches : dailySuitableBeaches;
-    const windSpeedKmph = forecast[selectedDayIndex].wind.speed * 3.6;
+    const windSpeedKmph = selectedForecast.wind.speed * 3.6;
     const beaufort = getBeaufortLevel(windSpeedKmph);
-    const waveHeightM = forecast[selectedDayIndex].marine?.waveHeightM;
+    const waveHeightM = selectedForecast.marine?.waveHeightM;
     const candidates = recommendationSource.filter(item => {
       if (!isTrustedTopRecommendationCandidate(item, undefined, beaufort)) return false;
 
@@ -2313,18 +2469,18 @@ export const App: React.FC = () => {
         !hasPoorSeaConditions(item.isExposed, windSpeedKmph, item.exposureLevel, itemWaveHeightM);
     }).map(item => applyRemainingTopPickWindow(
       item,
-      forecast[selectedDayIndex].date,
+      selectedForecast.date,
       topPickNow,
-      selectedBeachForecasts[item.beach.id]?.hourly || forecast[selectedDayIndex].hourly
+      selectedBeachForecasts[item.beach.id]?.hourly || selectedForecast.hourly
     ));
     const topPickPool = getWindPriorityTopPickPool(candidates, beaufort);
     const protectedPriority = prioritizeProtectedRecommendations(topPickPool, beaufort);
-    return prioritizeDynamicTopPickWindows(protectedPriority, forecast[selectedDayIndex].date, topPickNow);
-  }, [forecast, selectedDayIndex, dailySuitableBeaches, hasActivePreferenceFilters, selectedBeachForecasts, suitableBeaches, topPickNow]);
+    return prioritizeDynamicTopPickWindows(protectedPriority, selectedForecast.date, topPickNow);
+  }, [selectedForecast, dailySuitableBeaches, hasActivePreferenceFilters, selectedBeachForecasts, suitableBeaches, topPickNow]);
   const topRecommendedSuitableBeaches = useMemo(() => (
     recommendedSuitableBeaches.slice(0, getTopRecommendationDisplayLimit(recommendedSuitableBeaches.length))
   ), [recommendedSuitableBeaches]);
-  const currentBeaufort = forecast?.[selectedDayIndex] ? getBeaufortLevel(forecast[selectedDayIndex].wind.speed * 3.6) : 0;
+  const currentBeaufort = selectedForecast ? getBeaufortLevel(selectedForecast.wind.speed * 3.6) : 0;
   const isSevereWindNoTopRecommendationDay = currentBeaufort > MAX_TOP_RECOMMENDATION_BEAUFORT;
   const desktopMapVisibleBeachIdSet = useMemo(() => (
     desktopMapVisibleBeachIds ? new Set(desktopMapVisibleBeachIds) : null
@@ -3425,14 +3581,25 @@ export const App: React.FC = () => {
     || directoryRecommendationSource[0]
     || directoryFallbackSource[0]
     || null;
+  // At ≤2 Bft (calm day or scrubbed calm hour) the wind doesn't separate
+  // beaches, so every beach is a suitable pick. We drop the curated "top picks"
+  // highlight and present them all as suitable instead of a misleading few.
+  const isCalmAllSuitable = calmAllAroundSummary?.isEveryBeachSuitable ?? false;
   const shouldDisplayDirectoryTopPick = Boolean(
     showDecisionRecommendations &&
-    !hasActiveSearchOrFilters
+    !hasActiveSearchOrFilters &&
+    !isCalmAllSuitable
   );
   const displayedDirectoryTopBeach = shouldDisplayDirectoryTopPick ? directoryTopBeach : null;
   const directoryBaseBeachCardSource = (() => {
     if (sortBy === 'distance') {
       return distanceSortedDirectoryBeachCards;
+    }
+
+    if (isCalmAllSuitable) {
+      return [...filteredMapSuitableBeaches].sort((a, b) => (
+        compareTouristTopPickPriority(a, b) || b.score - a.score
+      ));
     }
 
     return directoryRecommendationSource.length > 0
@@ -3481,6 +3648,7 @@ export const App: React.FC = () => {
   const shouldShowDirectoryTopRecommendations = Boolean(
     showDecisionRecommendations &&
     !hasActiveSearchOrFilters &&
+    !isCalmAllSuitable &&
     directoryTopRecommendationLimit > 0
   );
   const directoryTopRecommendationCards = (() => {
@@ -3522,7 +3690,19 @@ export const App: React.FC = () => {
 
     return directoryVisibleBeachCardSource.filter(item => !directoryTopRecommendationIds.has(item.beach.id));
   })();
-  const directoryHomeSuitableBeachCards = directorySuitableBeachCards;
+  // Guarantee a distance on every suitable card when the user's location is
+  // known (some source pipelines, e.g. calm-wind days, don't carry it), so the
+  // "Κοντά μου" distance sort always has a value to order by.
+  const directoryHomeSuitableBeachCards = userLocation
+    ? directorySuitableBeachCards.map(item => (
+        typeof item.distance === 'number' && Number.isFinite(item.distance)
+          ? item
+          : {
+              ...item,
+              distance: calculateDistance(userLocation.lat, userLocation.lon, item.beach.coordinates.lat, item.beach.coordinates.lon),
+            }
+      ))
+    : directorySuitableBeachCards;
   const directorySuitableBeachTotalCount = directoryHomeSuitableBeachCards.length;
   const shouldShowDirectorySuitableSection = shouldShowDirectoryTopRecommendations
     ? !shouldShowAllBeachesBelowTopRecommendations && directoryHomeSuitableBeachCards.length > 0
@@ -3982,9 +4162,13 @@ export const App: React.FC = () => {
           userLocationAccuracy={userLocationAccuracy}
           onBeachClick={(b) => openBeachDetails(b, 'directory_home_map')}
           onVisibleBeachIdsChange={handleDesktopMapVisibleBeachIdsChange}
-          windSpeed={forecast?.[selectedDayIndex]?.wind.speed}
-          windDirection={forecast?.[selectedDayIndex] ? degToCompass(forecast[selectedDayIndex].wind.deg) : undefined}
-          windDirectionDeg={forecast?.[selectedDayIndex]?.wind.deg}
+          windSpeed={selectedForecast?.wind.speed}
+          windDirection={selectedForecast ? degToCompass(selectedForecast.wind.deg) : undefined}
+          windDirectionDeg={selectedForecast?.wind.deg}
+          hourSlots={mapHourSlots}
+          selectedHourDt={selectedHourDt}
+          onHourChange={setSelectedHourDt}
+          enableHourSlider
           language={language}
           selectedDate={selectedDayDate}
           topBeachId={highlightedDirectoryTopBeachId}
@@ -4048,11 +4232,13 @@ export const App: React.FC = () => {
               searchSuggestions={directorySearchSuggestions}
               isSearchSuggesting={isDirectorySearchSuggesting}
               protectedSortLabel={protectedSortLabel}
+              currentBeaufort={currentBeaufort}
               islandBackground={islandBackground}
               mapPreview={directoryMapPreview}
               topRecommendationCards={directoryTopRecommendationCards}
               suitableBeachCards={directoryHomeSuitableBeachCards}
               suitableBeachTotalCount={directorySuitableBeachTotalCount}
+              suitableTimePrefix={selectedHourPrefix}
               onActiveSuitableBeachChange={handleActiveDirectoryBeachChange}
               showSuitableBeachSection={shouldShowDirectorySuitableSection}
               allBeachCards={directoryAllSourceBeaches}
@@ -4075,6 +4261,10 @@ export const App: React.FC = () => {
               onOpenIslandSelector={() => setIsIslandSelectorOpen(true)}
               onUseCurrentLocation={() => {
                 setBeachSearchQuery('');
+                // "Κοντά μου" should surface the beaches closest to the user first.
+                hasUserSelectedSortRef.current = true;
+                setSortBy('protected');
+                setMobileSuitableDistanceSort(true);
                 void handleSelectNearest();
               }}
               onRequestUserLocation={() => {
@@ -4342,9 +4532,13 @@ export const App: React.FC = () => {
                     userLocation={userLocation}
                     onBeachClick={(b) => openBeachDetails(b, 'map')}
                     onVisibleBeachIdsChange={handleDesktopMapVisibleBeachIdsChange}
-                    windSpeed={forecast?.[selectedDayIndex]?.wind.speed}
-                    windDirection={forecast?.[selectedDayIndex] ? degToCompass(forecast[selectedDayIndex].wind.deg) : undefined}
-                    windDirectionDeg={forecast?.[selectedDayIndex]?.wind.deg}
+                    windSpeed={selectedForecast?.wind.speed}
+                    windDirection={selectedForecast ? degToCompass(selectedForecast.wind.deg) : undefined}
+                    windDirectionDeg={selectedForecast?.wind.deg}
+                    hourSlots={mapHourSlots}
+                    selectedHourDt={selectedHourDt}
+                    onHourChange={setSelectedHourDt}
+                    enableHourSlider
                     language={language}
                     selectedDate={selectedDayDate}
                     topBeachId={highlightedDirectoryTopBeachId}
@@ -4635,9 +4829,13 @@ export const App: React.FC = () => {
                             beaches={filteredMapSuitableBeaches}
                             userLocation={userLocation}
                             onBeachClick={(b) => openBeachDetails(b, 'map')}
-                            windSpeed={forecast?.[selectedDayIndex]?.wind.speed}
-                            windDirection={forecast?.[selectedDayIndex] ? degToCompass(forecast[selectedDayIndex].wind.deg) : undefined}
-                            windDirectionDeg={forecast?.[selectedDayIndex]?.wind.deg}
+                            windSpeed={selectedForecast?.wind.speed}
+                            windDirection={selectedForecast ? degToCompass(selectedForecast.wind.deg) : undefined}
+                            windDirectionDeg={selectedForecast?.wind.deg}
+                            hourSlots={mapHourSlots}
+                            selectedHourDt={selectedHourDt}
+                            onHourChange={setSelectedHourDt}
+                            enableHourSlider
                             language={language}
                             selectedDate={selectedDayDate}
                             topBeachId={highlightedDirectoryTopBeachId}
@@ -4681,8 +4879,60 @@ export const App: React.FC = () => {
             </motion.div>
           </AnimatePresence>
 
-        <LegalFooter language={language} />
       </main>
+      )}
+
+      <div className={`${isDesktopViewport ? 'relative z-10 pb-8' : 'pb-[calc(5rem+env(safe-area-inset-bottom))]'}`}>
+        <LegalFooter language={language} />
+      </div>
+
+      {!isDesktopViewport && (
+        <nav
+          className="fixed inset-x-3 bottom-[calc(4.25rem+env(safe-area-inset-bottom))] z-[45] rounded-full border border-white/80 bg-white/95 px-2 py-1.5 text-center shadow-lg shadow-sky-950/12 ring-1 ring-sky-100/70 backdrop-blur-xl md:hidden"
+          aria-label={getLocalizedCopy(language, {
+            en: 'Legal links',
+            gr: 'Νομικοί σύνδεσμοι',
+            fr: 'Liens légaux',
+            de: 'Rechtliche Links',
+            it: 'Link legali',
+          })}
+        >
+          <div className="grid grid-cols-3 gap-1">
+            <button
+              type="button"
+              onClick={() => openLegalModal('terms')}
+              className="min-h-9 rounded-full px-2 text-[11px] font-black text-slate-800 transition hover:bg-sky-50 hover:text-[#007a83] focus:outline-none focus-visible:ring-2 focus-visible:ring-sky-500"
+            >
+              {getLocalizedCopy(language, {
+                en: 'Terms',
+                gr: 'Όροι',
+                fr: 'Terms',
+                de: 'Terms',
+                it: 'Terms',
+              })}
+            </button>
+            <button
+              type="button"
+              onClick={() => openLegalModal('privacy')}
+              className="min-h-9 rounded-full px-2 text-[11px] font-black text-slate-700 transition hover:bg-sky-50 hover:text-[#007a83] focus:outline-none focus-visible:ring-2 focus-visible:ring-sky-500"
+            >
+              {getLocalizedCopy(language, {
+                en: 'Privacy',
+                gr: 'Απόρρητο',
+                fr: 'Privacy',
+                de: 'Privacy',
+                it: 'Privacy',
+              })}
+            </button>
+            <button
+              type="button"
+              onClick={() => openLegalModal('cookies')}
+              className="min-h-9 rounded-full px-2 text-[11px] font-black text-slate-700 transition hover:bg-sky-50 hover:text-[#007a83] focus:outline-none focus-visible:ring-2 focus-visible:ring-sky-500"
+            >
+              Cookies
+            </button>
+          </div>
+        </nav>
       )}
 
       {/* ===== MOBILE BOTTOM NAVIGATION ===== */}
@@ -4846,6 +5096,7 @@ export const App: React.FC = () => {
               availableFilters={availableMobileFilterKeys}
               protectedSortLabel={protectedSortLabel}
               showProtectedSort={!(calmAllAroundSummary?.isEveryBeachSuitable ?? false)}
+              hideDistanceSort={!isDesktopViewport}
               getResultCount={getMobileFilterModalResultCount}
               onResultCountChange={setFilterModalResultCount}
             />

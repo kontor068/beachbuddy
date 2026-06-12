@@ -1,6 +1,7 @@
 import { LanguageCode } from '../types';
 
 export const LANGUAGE_STORAGE_KEY = 'calmBeachLanguage';
+export const LANGUAGE_PREFERENCE_SET_KEY = 'calmBeachLanguagePreferenceSet';
 export const SUPPORTED_LANGUAGES = ['en', 'gr', 'fr', 'de', 'it'] as const satisfies readonly LanguageCode[];
 
 export type SupportedLanguage = (typeof SUPPORTED_LANGUAGES)[number];
@@ -31,8 +32,9 @@ export const getInitialLanguage = (): SupportedLanguage => {
 
   if (/^\/el(?=\/|$)/.test(window.location.pathname)) return 'gr';
 
+  const hasExplicitPreference = window.localStorage.getItem(LANGUAGE_PREFERENCE_SET_KEY) === 'true';
   const stored = window.localStorage.getItem(LANGUAGE_STORAGE_KEY);
-  if (isSupportedLanguage(stored)) return stored;
+  if (hasExplicitPreference && isSupportedLanguage(stored)) return stored;
 
   return 'en';
 };
@@ -40,6 +42,7 @@ export const getInitialLanguage = (): SupportedLanguage => {
 export const saveLanguagePreference = (language: SupportedLanguage) => {
   if (typeof window === 'undefined') return;
   window.localStorage.setItem(LANGUAGE_STORAGE_KEY, language);
+  window.localStorage.setItem(LANGUAGE_PREFERENCE_SET_KEY, 'true');
 };
 
 export const formatMessage = (

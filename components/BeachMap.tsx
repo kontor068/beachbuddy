@@ -25,6 +25,14 @@ interface BeachMapProps {
   windSpeed?: number;
   windDirection?: string;
   windDirectionDeg?: number;
+  /** Daytime hour slots for the slider (already filtered to "now onward" for today). */
+  hourSlots?: ForecastItem[];
+  /** The dt (seconds) of the hour currently selected on the slider. Controlled by the parent. */
+  selectedHourDt?: number | null;
+  /** Called when the user scrubs the slider to a different hour. */
+  onHourChange?: (dt: number) => void;
+  /** Whether to render the docked hour slider under the map. */
+  enableHourSlider?: boolean;
   language?: LanguageCode;
   selectedDate?: Date;
   compact?: boolean;
@@ -861,6 +869,10 @@ const BeachMap: React.FC<BeachMapProps> = ({
   windSpeed,
   windDirection,
   windDirectionDeg,
+  hourSlots,
+  selectedHourDt = null,
+  onHourChange,
+  enableHourSlider = false,
   language = 'en',
   selectedDate,
   compact = false,
@@ -878,7 +890,54 @@ const BeachMap: React.FC<BeachMapProps> = ({
 }) => {
   const [mapMode, setMapMode] = useState<'recommendation' | 'wind'>('wind');
   const [selectedBeachId, setSelectedBeachId] = useState<number | null>(null);
+  const [hoveredBeachId, setHoveredBeachId] = useState<number | null>(null);
   const [beachLabelOpacity, setBeachLabelOpacity] = useState(0);
+
+  // --- Hour slider (controlled by the parent) ---
+  // The parent feeds already-filtered hour slots, the selected hour, and an
+  // hour-adjusted wind via the wind props — so the map and the recommendations
+  // stay in sync. The slider here is just the control surface.
+  const sliderHours = hourSlots ?? [];
+  const activeHourItem = useMemo(
+    () => sliderHours.find(item => item.dt === selectedHourDt) ?? sliderHours[0] ?? null,
+    [selectedHourDt, sliderHours]
+  );
+  const sliderActiveIndex = Math.max(0, sliderHours.findIndex(item => item.dt === activeHourItem?.dt));
+  const [smoothSliderIndex, setSmoothSliderIndex] = useState(sliderActiveIndex);
+  const [isScrubbingHour, setIsScrubbingHour] = useState(false);
+  useEffect(() => {
+    if (isScrubbingHour) return;
+    setSmoothSliderIndex(sliderActiveIndex);
+  }, [isScrubbingHour, sliderActiveIndex, sliderHours.length]);
+  const sliderMaxIndex = Math.max(0, sliderHours.length - 1);
+  const sliderDisplayIndex = Math.min(sliderMaxIndex, Math.max(0, smoothSliderIndex));
+  const sliderFillPct = sliderHours.length > 1 ? (sliderDisplayIndex / sliderMaxIndex) * 100 : 0;
+  const commitSliderIndex = (index: number) => {
+    const clampedIndex = Math.min(sliderMaxIndex, Math.max(0, index));
+    setSmoothSliderIndex(clampedIndex);
+    const slot = sliderHours[Math.round(clampedIndex)];
+    if (slot && slot.dt !== activeHourItem?.dt) onHourChange?.(slot.dt);
+  };
+  const hourSliderCopy: Record<LanguageCode, string> = {
+    en: 'Wind by hour',
+    gr: 'Άνεμος ανά ώρα',
+    de: 'Wind je Stunde',
+    it: 'Vento per ora',
+    fr: 'Vent par heure',
+  };
+  const hourSliderLabel = hourSliderCopy[language];
+  const hourSliderHelper: Record<LanguageCode, string> = {
+    en: 'Drag the hours to update the map and beach recommendations.',
+    gr: 'Σύρε τις ώρες για να αλλάξουν ο χάρτης και οι προτεινόμενες παραλίες.',
+    de: 'Ziehe die Stunden, um Karte und Strandempfehlungen zu aktualisieren.',
+    it: 'Scorri le ore per aggiornare mappa e spiagge consigliate.',
+    fr: 'Faites glisser les heures pour mettre à jour la carte et les plages recommandées.',
+  };
+  const beaufortUnitLabel = language === 'gr' ? 'μποφ.' : 'Bft';
+  const formatSliderHour = (dt: number) => new Date(dt * 1000).toLocaleTimeString(
+    language === 'gr' ? 'el-GR' : undefined,
+    { hour: '2-digit', minute: '2-digit', hour12: false }
+  );
   const directionLabels: Record<LanguageCode, Record<string, string>> = {
     en: {
       North: 'North',
@@ -944,7 +1003,18 @@ const BeachMap: React.FC<BeachMapProps> = ({
   const showWindExposureColors = shouldShowWindExposureColors(windBeaufort);
   const showWindExposureStatusLabels = typeof windBeaufort === 'number' && windBeaufort >= 3;
   const showRecommendationWindColors = windBeaufort === undefined || windBeaufort >= 4;
-  const shouldRenderBeachMarkers = !isExposureLoading;
+  // The basemap tiles are network images that stream in after the map mounts,
+  // while markers are instant DOM overlays — so without coordination the pins
+  // pop onto a blank map before the island appears. Hold the pins until the
+  // first tile batch has loaded, with a safety timeout so they always show even
+  // if the tile server is slow or the load event never fires.
+  const [tilesReady, setTilesReady] = useState(false);
+  useEffect(() => {
+    if (tilesReady) return;
+    const fallback = window.setTimeout(() => setTilesReady(true), 2500);
+    return () => window.clearTimeout(fallback);
+  }, [tilesReady]);
+  const shouldRenderBeachMarkers = !isExposureLoading && tilesReady;
   const visibleMapExposureLevels = useMemo(
     () => getConsistentVisibleMapExposureLevels(beaches, windBeaufort, mapWindDirectionDeg),
     [beaches, mapWindDirectionDeg, windBeaufort]
@@ -1596,6 +1666,7 @@ const BeachMap: React.FC<BeachMapProps> = ({
           <ZoomControl position={preview || compact ? 'topright' : 'bottomright'} />
           <TileLayer
             url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+            eventHandlers={{ load: () => setTilesReady(true) }}
           />
 
           <RecenterMap center={center} zoom={zoom} />
@@ -1640,6 +1711,10 @@ const BeachMap: React.FC<BeachMapProps> = ({
             const markerCoordinate = getBeachMapCoordinates(item.beach, { lat: center[0], lon: center[1] });
             const mapExposureLevel = getMapExposureLevel(item);
             const mapExposureEvidence = getMapExposureEvidence(item);
+            // Hovering a marker reveals its name even when the zoom-based labels
+            // are faded out, so the user can identify beaches at a glance.
+            const isLabelHovered = hoveredBeachId === item.beachId;
+            const labelOpacity = isLabelHovered ? 1 : beachLabelOpacity;
 
             return (
             <Marker
@@ -1657,8 +1732,16 @@ const BeachMap: React.FC<BeachMapProps> = ({
                     map_mode: mapMode,
                     beach_name: item.beach.name.en,
                   });
-                  setSelectedBeachId(item.beachId);
+                  // Clicking a marker goes straight to the beach card. Maps that
+                  // don't wire a handler fall back to the in-map info panel.
+                  if (onBeachClick) {
+                    onBeachClick(item.beach);
+                  } else {
+                    setSelectedBeachId(item.beachId);
+                  }
                 },
+                mouseover: () => setHoveredBeachId(item.beachId),
+                mouseout: () => setHoveredBeachId(current => (current === item.beachId ? null : current)),
               }}
             >
               <Tooltip
@@ -1675,10 +1758,10 @@ const BeachMap: React.FC<BeachMapProps> = ({
                 <span
                   className="beach-map-label__inner"
                   style={{
-                    opacity: beachLabelOpacity,
-                    transform: `translateY(${7 - beachLabelOpacity * 7}px) scale(${0.9 + beachLabelOpacity * 0.1})`,
-                    filter: `blur(${(1 - beachLabelOpacity) * 0.8}px)`,
-                    visibility: beachLabelOpacity > 0.02 ? 'visible' : 'hidden',
+                    opacity: labelOpacity,
+                    transform: `translateY(${7 - labelOpacity * 7}px) scale(${0.9 + labelOpacity * 0.1})`,
+                    filter: `blur(${(1 - labelOpacity) * 0.8}px)`,
+                    visibility: labelOpacity > 0.02 ? 'visible' : 'hidden',
                   }}
                 >
                   {item.name}
@@ -1692,7 +1775,7 @@ const BeachMap: React.FC<BeachMapProps> = ({
         {mapMode === 'wind' && (
           <WindFlowOverlay
             windDirection={windDirection}
-            windDirectionDeg={windDirectionDeg}
+            windDirectionDeg={mapWindDirectionDeg}
             windBeaufort={windBeaufort}
             preview={preview}
           />
@@ -1700,7 +1783,7 @@ const BeachMap: React.FC<BeachMapProps> = ({
 
         <WindDirectionGraphic
           windDirection={windDirection}
-          windDirectionDeg={windDirectionDeg}
+          windDirectionDeg={mapWindDirectionDeg}
           windSpeedKmh={windSpeedKmh}
           windBeaufort={windBeaufort}
           language={language}
@@ -1728,7 +1811,65 @@ const BeachMap: React.FC<BeachMapProps> = ({
           {renderLegend()}
         </div>
         )}
+
       </div>
+
+      {/* Hour slider docked under the map: colours and recommendations follow the selected hour */}
+      {enableHourSlider && sliderHours.length >= 2 && activeHourItem && (
+        <div
+          className="flex flex-wrap items-center gap-x-3 gap-y-2 border-t border-slate-200/80 bg-white/92 px-3 py-2 dark:border-slate-700 dark:bg-slate-900/90 sm:px-4 sm:py-3"
+          onPointerDown={() => onUserInteraction?.()}
+        >
+          <span className="shrink-0 text-[11px] font-extrabold text-slate-600 dark:text-slate-300">{hourSliderLabel}</span>
+          <div className="relative flex min-w-0 flex-1 items-center">
+            <div className="pointer-events-none absolute inset-x-0 top-1/2 h-1.5 -translate-y-1/2 rounded-full bg-slate-200 dark:bg-slate-700" />
+            <div
+              className="pointer-events-none absolute left-0 top-1/2 h-1.5 -translate-y-1/2 rounded-full bg-[#007a83] transition-[width] duration-300 ease-out motion-reduce:transition-none"
+              style={{ width: `${sliderFillPct}%` }}
+            />
+            <input
+              type="range"
+              min={0}
+              max={sliderMaxIndex}
+              step={0.01}
+              value={sliderDisplayIndex}
+              onPointerDown={() => setIsScrubbingHour(true)}
+              onTouchStart={() => setIsScrubbingHour(true)}
+              onChange={event => {
+                commitSliderIndex(Number(event.target.value));
+              }}
+              onKeyDown={event => {
+                if (!['ArrowLeft', 'ArrowRight', 'ArrowDown', 'ArrowUp'].includes(event.key)) return;
+                event.preventDefault();
+                const direction = event.key === 'ArrowRight' || event.key === 'ArrowUp' ? 1 : -1;
+                commitSliderIndex(sliderActiveIndex + direction);
+              }}
+              onPointerUp={() => {
+                commitSliderIndex(Math.round(sliderDisplayIndex));
+                setIsScrubbingHour(false);
+              }}
+              onPointerCancel={() => setIsScrubbingHour(false)}
+              onTouchEnd={() => {
+                commitSliderIndex(Math.round(sliderDisplayIndex));
+                setIsScrubbingHour(false);
+              }}
+              onTouchCancel={() => setIsScrubbingHour(false)}
+              onBlur={() => {
+                commitSliderIndex(Math.round(sliderDisplayIndex));
+                setIsScrubbingHour(false);
+              }}
+              aria-label={hourSliderLabel}
+              className="beach-map-hour-slider relative z-10 h-4 min-w-0 flex-1 cursor-pointer appearance-none bg-transparent"
+            />
+          </div>
+          <span className="shrink-0 text-[11px] font-extrabold tabular-nums text-[#007a83]">
+            {formatSliderHour(activeHourItem.dt)} · {getBeaufortLevel(activeHourItem.wind.speed * 3.6)} {beaufortUnitLabel}
+          </span>
+          <p className="hidden basis-full text-[11px] font-bold leading-snug text-slate-500 sm:block dark:text-slate-400">
+            {hourSliderHelper[language]}
+          </p>
+        </div>
+      )}
 
       <div className="bg-white/92 px-2 py-1 text-right text-[9px] font-semibold leading-none text-slate-500 shadow-inner shadow-sky-900/5 dark:bg-slate-900/90 dark:text-slate-400">
         Leaflet | © OpenStreetMap contributors
