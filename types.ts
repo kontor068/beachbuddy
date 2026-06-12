@@ -343,8 +343,12 @@ export interface BeachMetadata {
   sourceUrls?: string[];
   sourceNotes?: string | string[];
   googleMapsNavigation?: {
-    status: 'verified' | 'unresolved';
+    status: 'verified' | 'unresolved' | 'needs-review' | 'blocked';
+    /** Preferred navigation destination: name search vs raw coordinates (set when a cross-island name collision makes place search risky). */
+    mode?: 'place' | 'coordinates';
     checkedAt?: string;
+    /** Audit pipeline that produced the status, e.g. 'osm-nav-audit-v1'. */
+    method?: string;
     query?: string;
     placeId?: string;
     reason?: string;
