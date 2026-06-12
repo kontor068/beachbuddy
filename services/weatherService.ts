@@ -284,6 +284,7 @@ export const fetchMarineForecastData = async (lat: number, lon: number): Promise
     'wave_period',
     'swell_wave_height',
     'swell_wave_direction',
+    'swell_wave_period',
     'sea_surface_temperature',
   ].join(',');
   const API_URL = `https://marine-api.open-meteo.com/v1/marine?latitude=${lat}&longitude=${lon}&hourly=${hourly}&timezone=auto&forecast_days=6&cell_selection=sea`;
@@ -305,6 +306,7 @@ export const fetchMarineForecastData = async (lat: number, lon: number): Promise
           wavePeriodS: optionalNumber(marineHourly.wave_period?.[index]),
           swellWaveHeightM: optionalNumber(marineHourly.swell_wave_height?.[index]),
           swellWaveDirectionDeg: optionalNumber(marineHourly.swell_wave_direction?.[index]),
+          swellWavePeriodS: optionalNumber(marineHourly.swell_wave_period?.[index]),
           seaSurfaceTemperatureC: optionalNumber(marineHourly.sea_surface_temperature?.[index]),
           source: 'open-meteo-marine',
         },

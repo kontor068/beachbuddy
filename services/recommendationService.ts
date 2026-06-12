@@ -424,7 +424,11 @@ const getHourlyExposureLevel = (
   windDirectionDeg: number,
   windDirection: WindDirection,
   windSpeedKmh: number,
-  waveHeightM?: number
+  waveHeightM?: number,
+  // R1 (v3 roadmap 2c/hourly-path fix): pass the geospatial profile so the hourly exposure
+  // uses the same geometry as the headline assessment (previously it fell back to authored/
+  // legacy buckets, making the key-hour sea score inconsistent with the daily one).
+  geospatialProfile?: GeospatialExposureProfile
 ): ExposureLevel => {
   return assessBeachWindExposure({
     beach,
@@ -433,12 +437,14 @@ const getHourlyExposureLevel = (
     windSpeedKmh,
     beaufort: getBeaufortLevel(windSpeedKmh),
     waveHeightMeters: waveHeightM,
+    geospatialProfile,
   }).exposureLevel;
 };
 
 const calculateHourlySeaScore = (
   beach: Beach,
-  hourlyForecast?: ForecastItem[]
+  hourlyForecast?: ForecastItem[],
+  geospatialProfile?: GeospatialExposureProfile
 ): { score?: number; poorHours: number; checkedHours: number } => {
   const keyHours = getKeyBeachHours(hourlyForecast);
   if (keyHours.length === 0) return { poorHours: 0, checkedHours: 0 };
@@ -446,7 +452,7 @@ const calculateHourlySeaScore = (
   const scores = keyHours.map(item => {
     const windDirection = degToCompass(item.wind.deg);
     const windSpeedKmh = item.wind.speed * 3.6;
-    const exposureLevel = getHourlyExposureLevel(beach, item.wind.deg, windDirection, windSpeedKmh, item.marine?.waveHeightM);
+    const exposureLevel = getHourlyExposureLevel(beach, item.wind.deg, windDirection, windSpeedKmh, item.marine?.waveHeightM, geospatialProfile);
     const isExposed = exposureLevel !== 'protected';
     return calculateSeaConditionScore(
       isExposed,
@@ -1244,23 +1250,43 @@ export const calculateBeachScore = (
     });
   }
 
-  const directSwell = Boolean(
-    beachOrientation !== null &&
+  // Direct-swell exposure: background swell that arrives independently of the local wind.
+  // R1 (v3 roadmap 2c.1): when a geospatial profile with a facing direction exists, decide
+  // geometrically — the swell hits the beach only if it comes onshore (cos(swellDir-facing) > 0.3)
+  // AND the sector facing the swell is open (blockedRayRatio < 0.6). A closed bay whose mouth
+  // points away from the swell is NOT charged (removes a false-exposed). Falls back to the legacy
+  // orientation-bucket rule when no profile/facing is available (unchanged behavior there).
+  const swellGeoProfile = options?.geospatialProfile;
+  const swellFacingDeg = typeof swellGeoProfile?.facingDeg === 'number' ? swellGeoProfile.facingDeg : null;
+  const hasSwellInput = (
     typeof marine?.swellWaveDirectionDeg === 'number' &&
     typeof marine?.swellWaveHeightM === 'number' &&
-    marine.swellWaveHeightM >= 0.5 &&
-    calculateWindExposure(beachOrientation, marine.swellWaveDirectionDeg).exposureLevel === 'exposed'
+    marine.swellWaveHeightM >= 0.5
   );
+  let directSwell = false;
+  if (hasSwellInput) {
+    if (swellFacingDeg !== null && swellGeoProfile) {
+      const swellDir = marine!.swellWaveDirectionDeg!;
+      const swellOnshore = Math.cos((swellDir - swellFacingDeg) * Math.PI / 180);
+      const sectorOrder: WindSector[] = ['N', 'NE', 'E', 'SE', 'S', 'SW', 'W', 'NW'];
+      const nearestSector = sectorOrder[((Math.round(swellDir / 45) % 8) + 8) % 8];
+      const sectorOpen = (swellGeoProfile.sectors?.[nearestSector]?.blockedRayRatio ?? 1) < 0.6;
+      directSwell = swellOnshore > 0.3 && sectorOpen;
+    } else if (beachOrientation !== null) {
+      directSwell = calculateWindExposure(beachOrientation, marine!.swellWaveDirectionDeg!).exposureLevel === 'exposed';
+    }
+  }
   if (directSwell) {
+    const swellHeightM = marine?.swellWaveHeightM ?? 0;
     warnings.push({
       type: 'direct_swell',
-      severity: marine?.swellWaveHeightM && marine.swellWaveHeightM >= 0.9 ? 'warning' : 'info',
-      message: 'Swell direction may send waves into this beach.'
+      severity: swellHeightM >= 0.9 ? 'warning' : 'info',
+      message: `Swell direction may send waves into this beach${swellHeightM >= 0.5 ? ` (~${swellHeightM.toFixed(1)} m swell)` : ''}.`
     });
     reasons.push('Direct swell exposure');
   }
 
-  const hourlySea = calculateHourlySeaScore(beach, hourlyForecast);
+  const hourlySea = calculateHourlySeaScore(beach, hourlyForecast, options?.geospatialProfile);
   if (typeof hourlySea.score === 'number' && hourlySea.checkedHours >= 3) {
     if (hourlySea.score >= 8) {
       reasons.push('Good key-hour conditions');
@@ -1362,7 +1388,8 @@ export const calculateBeachScore = (
     finalExposureLevel !== 'protected',
     windSpeedKmph,
     finalExposureLevel,
-    effectiveWaveHeightM
+    effectiveWaveHeightM,
+    directSwell
   );
   if (
     baseBeaufort <= 3 &&
@@ -1382,7 +1409,8 @@ export const calculateBeachScore = (
   }
   if (highFetchOnshore && effectiveBeaufort >= 4) swimmingScore -= 25;
   else if (mediumFetchOnshore && effectiveBeaufort >= 4) swimmingScore -= 10;
-  if (directSwell) swimmingScore -= 12;
+  // R1 (v3 roadmap 2c.3): scale the direct-swell penalty with the swell height.
+  if (directSwell) swimmingScore -= (marine?.swellWaveHeightM ?? 0) >= 0.9 ? 20 : 12;
   // Wave penalty applies to the measured wave, or to the (damped) modeled wave
   // when none was reported — gentler for the estimate to avoid over-penalising.
   if (typeof waveHeightM === 'number') {

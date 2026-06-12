@@ -15,7 +15,11 @@ export const calculateSeaConditionScore = (
   isExposed: boolean,
   windSpeedKmph: number,
   exposureLevel?: ExposureLevel,
-  waveHeightM?: number
+  waveHeightM?: number,
+  // R1 (v3 roadmap 2c.2): when a geometric direct swell is detected, the protected/partial
+  // measured-wave floors are dropped — those floors exist so an offshore grid cell does not
+  // bury a sheltered cove, NOT to hide a real frontal swell breaking on a west-facing beach.
+  directSwell: boolean = false
 ): number => {
   const seaExposureLevel = getSeaExposureLevel(isExposed, exposureLevel);
   const beaufort = getBeaufortLevel(windSpeedKmph);
@@ -77,9 +81,9 @@ export const calculateSeaConditionScore = (
     // Marine grids are offshore/area-level. Use them strongly for exposed beaches,
     // but keep sheltered coves from being over-penalized by a nearby open-sea cell.
     if (seaExposureLevel === 'protected') {
-      waveScore = Math.min(waveScore, Math.max(measuredWaveScore, 6));
+      waveScore = Math.min(waveScore, directSwell ? measuredWaveScore : Math.max(measuredWaveScore, 6));
     } else if (seaExposureLevel === 'partial') {
-      waveScore = Math.min(waveScore, Math.max(measuredWaveScore, 4));
+      waveScore = Math.min(waveScore, directSwell ? measuredWaveScore : Math.max(measuredWaveScore, 4));
     } else {
       waveScore = Math.min(waveScore, measuredWaveScore);
     }

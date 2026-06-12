@@ -141,6 +141,7 @@ export interface MarineForecast {
   wavePeriodS?: number;
   swellWaveHeightM?: number;
   swellWaveDirectionDeg?: number;
+  swellWavePeriodS?: number;
   seaSurfaceTemperatureC?: number;
   source?: 'open-meteo-marine';
 }
