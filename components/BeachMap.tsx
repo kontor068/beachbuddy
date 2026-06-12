@@ -2,15 +2,17 @@ import React, { useEffect, useMemo, useRef, useState } from 'react';
 import { Circle, MapContainer, TileLayer, Marker, Popup, Tooltip, ZoomControl, useMap } from 'react-leaflet';
 import L from 'leaflet';
 import 'leaflet/dist/leaflet.css';
-import { Navigation, MapPin, Clock, Wind, X, Info } from 'lucide-react';
+import { BadgeCheck, Footprints, Navigation, MapPin, Clock, Wind, X, Info, Utensils, Waves } from 'lucide-react';
 import { SuitableBeach, Beach, LanguageCode, ForecastItem } from '../types';
 import { trackEvent } from '../services/analyticsService';
+import { getBeachPhotoLookup } from '../services/beachPhotos';
 import { degToCompass, getBeaufortLevel } from '../utils/weatherUtils';
 import { getSelectedDayPrefix } from '../utils/dateLabels';
 import { getLocalizedCopy, languageToLocale } from '../utils/i18n';
 import { getBeachMapCoordinates } from '../utils/mapCoordinates';
 import { getConsistentVisibleMapExposureLevels, getVisibleMapExposureLevel, shouldShowWindExposureColors } from '../utils/mapExposure';
 import { canOpenNavigation, getNavigationBadge, openNavigation } from '../utils/navigation';
+import { AmenityChip, getAmenityChips } from '../utils/amenities';
 import { translations } from '../translations';
 
 interface BeachMapProps {
@@ -47,6 +49,7 @@ interface BeachMapProps {
   fitBoundsKey?: string;
   onUserInteraction?: () => void;
   compactPreviewHeightClassName?: string;
+  islandName?: string;
 }
 
 const visibleExposureLevel = (
@@ -54,6 +57,281 @@ const visibleExposureLevel = (
 ) => item.exposureLevel === 'protected' && item.canClaimWindProtection !== true
   ? 'partial'
   : item.exposureLevel;
+
+type HoverPreviewPosition = {
+  x: number;
+  y: number;
+};
+
+type HoverPreviewFeatureChip = {
+  key: string;
+  label: string;
+  icon: React.ReactNode;
+};
+
+const HOVER_PREVIEW_WIDTH = 292;
+const HOVER_PREVIEW_HEIGHT = 216;
+
+const hoverPreviewAmenityIcon = (chip: Pick<AmenityChip, 'key'>): React.ReactNode => {
+  switch (chip.key) {
+    case 'foodNearby':
+    case 'cafeNearby':
+      return <Utensils className="h-3 w-3 shrink-0" aria-hidden="true" />;
+    case 'parking':
+      return <MapPin className="h-3 w-3 shrink-0" aria-hidden="true" />;
+    case 'sunbeds':
+      return <BadgeCheck className="h-3 w-3 shrink-0" aria-hidden="true" />;
+    default:
+      return <Info className="h-3 w-3 shrink-0" aria-hidden="true" />;
+  }
+};
+
+const getHoverPreviewAccessLabel = (
+  beach: Beach,
+  language: LanguageCode,
+  fallback: string | undefined
+): string | undefined => {
+  const labels = getLocalizedCopy(language, {
+    en: {
+      EASY: 'Easy access',
+      MODERATE: 'Moderate access',
+      DIFFICULT: 'Difficult road',
+      BOAT_ONLY: 'Boat only',
+    },
+    gr: {
+      EASY: 'Easy access',
+      MODERATE: 'Moderate access',
+      DIFFICULT: 'Difficult road',
+      BOAT_ONLY: 'Boat only',
+    },
+    de: {
+      EASY: 'Easy access',
+      MODERATE: 'Moderate access',
+      DIFFICULT: 'Difficult road',
+      BOAT_ONLY: 'Boat only',
+    },
+    it: {
+      EASY: 'Easy access',
+      MODERATE: 'Moderate access',
+      DIFFICULT: 'Difficult road',
+      BOAT_ONLY: 'Boat only',
+    },
+    fr: {
+      EASY: 'Easy access',
+      MODERATE: 'Moderate access',
+      DIFFICULT: 'Difficult road',
+      BOAT_ONLY: 'Boat only',
+    },
+  });
+  const metadataLabels: Record<string, string> = {
+    asphalt_road: labels.EASY,
+    passable_dirt_road: 'Dirt road',
+    difficult_dirt_road: 'Rough dirt road',
+    '4x4_only': labels.DIFFICULT,
+    hiking_path_easy: 'Path access',
+    hiking_path_difficult: 'Hard path',
+    boat_only: labels.BOAT_ONLY,
+  };
+  const accessType = beach.metadata?.access?.type;
+
+  return (accessType && metadataLabels[accessType]) || labels[beach.accessibility] || fallback;
+};
+
+const getHoverPreviewAmenityLabel = (chip: AmenityChip, language: LanguageCode): string => {
+  const labels: Record<string, string> = getLocalizedCopy(language, {
+    en: {
+      beachBar: 'Beach bar',
+      sunbeds: 'Sunbeds',
+      foodNearby: 'Taverna',
+      cafeNearby: 'Cafe',
+      parking: 'Parking',
+      organizedFacilities: 'Facilities',
+      seasonalFacilities: 'Seasonal',
+      noFacilities: 'No facilities',
+      unknownFacilities: 'Unknown',
+    },
+    gr: {
+      beachBar: 'Beach bar',
+      sunbeds: 'Sunbeds',
+      foodNearby: 'Taverna',
+      cafeNearby: 'Cafe',
+      parking: 'Parking',
+      organizedFacilities: 'Facilities',
+      seasonalFacilities: 'Seasonal',
+      noFacilities: 'No facilities',
+      unknownFacilities: 'Unknown',
+    },
+    de: {
+      beachBar: 'Beach bar',
+      sunbeds: 'Sunbeds',
+      foodNearby: 'Taverna',
+      cafeNearby: 'Cafe',
+      parking: 'Parking',
+      organizedFacilities: 'Facilities',
+      seasonalFacilities: 'Seasonal',
+      noFacilities: 'No facilities',
+      unknownFacilities: 'Unknown',
+    },
+    it: {
+      beachBar: 'Beach bar',
+      sunbeds: 'Sunbeds',
+      foodNearby: 'Taverna',
+      cafeNearby: 'Cafe',
+      parking: 'Parking',
+      organizedFacilities: 'Facilities',
+      seasonalFacilities: 'Seasonal',
+      noFacilities: 'No facilities',
+      unknownFacilities: 'Unknown',
+    },
+    fr: {
+      beachBar: 'Beach bar',
+      sunbeds: 'Sunbeds',
+      foodNearby: 'Taverna',
+      cafeNearby: 'Cafe',
+      parking: 'Parking',
+      organizedFacilities: 'Facilities',
+      seasonalFacilities: 'Seasonal',
+      noFacilities: 'No facilities',
+      unknownFacilities: 'Unknown',
+    },
+  });
+
+  return labels[chip.key] || chip.label;
+};
+
+const buildHoverPreviewFeatureChips = (beach: Beach, language: LanguageCode): HoverPreviewFeatureChip[] => {
+  const t = translations[language] || translations.en;
+  const chips: HoverPreviewFeatureChip[] = [];
+
+  const addChip = (key: string, label: string | undefined, icon: React.ReactNode) => {
+    if (!label || chips.some(chip => chip.key === key)) return;
+    chips.push({ key, label, icon });
+  };
+
+  if (beach.beachType !== 'unknown') {
+    addChip(
+      'surface',
+      t.filterOptions[beach.beachType],
+      <Waves className="h-3 w-3 shrink-0" aria-hidden="true" />
+    );
+  }
+
+  addChip(
+    'access',
+    getHoverPreviewAccessLabel(beach, language, t.accessibility[beach.accessibility]),
+    <Footprints className="h-3 w-3 shrink-0" aria-hidden="true" />
+  );
+
+  if (beach.characteristics.shallowWaters) {
+    addChip(
+      'shallow',
+      t.filterOptions.shallowWaters,
+      <Waves className="h-3 w-3 shrink-0" aria-hidden="true" />
+    );
+  } else if (beach.characteristics.deepWaters) {
+    addChip(
+      'deep',
+      t.filterOptions.deepWaters,
+      <Waves className="h-3 w-3 shrink-0" aria-hidden="true" />
+    );
+  }
+
+  if (beach.environment.familyFriendly) {
+    addChip(
+      'family',
+      t.filterOptions.familyFriendly,
+      <BadgeCheck className="h-3 w-3 shrink-0" aria-hidden="true" />
+    );
+  }
+
+  if (beach.environment.quiet) {
+    addChip(
+      'quiet',
+      t.filterOptions.quiet,
+      <BadgeCheck className="h-3 w-3 shrink-0" aria-hidden="true" />
+    );
+  }
+
+  for (const chip of getAmenityChips(beach, language)) {
+    if (chips.length >= 4) break;
+    if (chip.key === 'unknownFacilities' || chip.status === 'unknown' || chip.status === 'no') continue;
+    addChip(`amenity-${chip.key}`, getHoverPreviewAmenityLabel(chip, language), hoverPreviewAmenityIcon(chip));
+  }
+
+  return chips.slice(0, 4);
+};
+
+const BeachHoverPreviewCard: React.FC<{
+  item: SuitableBeach;
+  position: HoverPreviewPosition;
+  mapViewportRef: React.RefObject<HTMLDivElement>;
+  language: LanguageCode;
+  photoUrl: string | null;
+  photosSoonLabel: string;
+  featureChips: HoverPreviewFeatureChip[];
+}> = ({ item, position, mapViewportRef, language, photoUrl, photosSoonLabel, featureChips }) => {
+  const viewportWidth = mapViewportRef.current?.clientWidth || HOVER_PREVIEW_WIDTH + 32;
+  const viewportHeight = mapViewportRef.current?.clientHeight || HOVER_PREVIEW_HEIGHT + 32;
+  const preferLeft = position.x + HOVER_PREVIEW_WIDTH + 18 > viewportWidth;
+  const candidateLeft = preferLeft
+    ? position.x - HOVER_PREVIEW_WIDTH - 18
+    : position.x + 18;
+  const maxLeft = Math.max(12, viewportWidth - HOVER_PREVIEW_WIDTH - 12);
+  const maxTop = Math.max(12, viewportHeight - HOVER_PREVIEW_HEIGHT - 12);
+  const left = Math.min(Math.max(candidateLeft, 12), maxLeft);
+  const top = Math.min(Math.max(position.y - HOVER_PREVIEW_HEIGHT / 2, 12), maxTop);
+  const beachName = item.name || item.beach.name[language] || item.beach.name.en;
+
+  return (
+    <div
+      aria-hidden="true"
+      data-testid="map-hover-preview-card"
+      className="pointer-events-none absolute z-[1150] hidden md:block"
+      style={{ left, top, width: HOVER_PREVIEW_WIDTH }}
+    >
+      <div className="overflow-hidden rounded-2xl border border-white/85 bg-white/94 shadow-2xl shadow-slate-950/20 ring-1 ring-sky-100/80 backdrop-blur-xl">
+        <div className="relative h-20 overflow-hidden bg-gradient-to-br from-cyan-50 via-sky-50 to-teal-50">
+          {photoUrl ? (
+            <img
+              src={photoUrl}
+              alt=""
+              className="h-full w-full object-cover"
+              loading="lazy"
+              decoding="async"
+              referrerPolicy="no-referrer"
+            />
+          ) : (
+            <div className="flex h-full w-full items-center justify-center gap-2 text-cyan-700">
+              <Waves className="h-5 w-5" aria-hidden="true" />
+              <span className="text-[11px] font-black">{photosSoonLabel}</span>
+            </div>
+          )}
+          <div className="absolute inset-0 bg-gradient-to-t from-slate-950/18 via-transparent to-white/8" aria-hidden="true" />
+        </div>
+
+        <div className="p-2.5">
+          <h3 className="text-sm font-black leading-snug text-slate-950">
+            {beachName}
+          </h3>
+
+          {featureChips.length > 0 && (
+            <div className="mt-2 grid grid-cols-2 gap-1.5">
+              {featureChips.map(chip => (
+                <span
+                  key={chip.key}
+                  className="flex min-h-8 w-full min-w-0 items-center gap-1.5 rounded-full border border-sky-100 bg-sky-50/85 px-2 py-1 text-[10px] font-extrabold leading-tight text-slate-700 shadow-sm shadow-sky-900/5"
+                >
+                  <span className="text-cyan-700">{chip.icon}</span>
+                  <span className="min-w-0 whitespace-normal break-normal">{chip.label}</span>
+                </span>
+              ))}
+            </div>
+          )}
+        </div>
+      </div>
+    </div>
+  );
+};
 
 // Component to update map center when user location changes
 const RecenterMap = ({ center, zoom }: { center: [number, number]; zoom: number }) => {
@@ -110,6 +388,33 @@ const FitBeachBounds = ({
       maxZoom: 12,
     });
   }, [beaches, center, enabled, fitKey, map]);
+
+  return null;
+};
+
+const MapViewportGuardrails = ({
+  minZoom,
+  maxBounds,
+}: {
+  minZoom: number;
+  maxBounds?: L.LatLngBounds;
+}) => {
+  const map = useMap();
+  const boundsKey = maxBounds?.toBBoxString();
+
+  useEffect(() => {
+    map.setMinZoom(minZoom);
+
+    if (map.getZoom() < minZoom) {
+      map.setZoom(minZoom, { animate: false });
+    }
+
+    map.setMaxBounds(maxBounds);
+
+    if (maxBounds && !maxBounds.contains(map.getCenter())) {
+      map.panInsideBounds(maxBounds, { animate: false });
+    }
+  }, [boundsKey, map, maxBounds, minZoom]);
 
   return null;
 };
@@ -886,11 +1191,14 @@ const BeachMap: React.FC<BeachMapProps> = ({
   fitBoundsBeaches,
   fitBoundsKey,
   onUserInteraction,
-  compactPreviewHeightClassName
+  compactPreviewHeightClassName,
+  islandName
 }) => {
+  const mapViewportRef = useRef<HTMLDivElement>(null);
   const [mapMode, setMapMode] = useState<'recommendation' | 'wind'>('wind');
   const [selectedBeachId, setSelectedBeachId] = useState<number | null>(null);
   const [hoveredBeachId, setHoveredBeachId] = useState<number | null>(null);
+  const [hoverPreviewPosition, setHoverPreviewPosition] = useState<HoverPreviewPosition | null>(null);
   const [beachLabelOpacity, setBeachLabelOpacity] = useState(0);
 
   // --- Hour slider (controlled by the parent) ---
@@ -1211,7 +1519,6 @@ const BeachMap: React.FC<BeachMapProps> = ({
     return exposureInsightCopy.partial(wind);
   };
   const windColorGuideCopy = getLocalizedCopy<{
-    note: string;
     rows: Array<{
       id: string;
       range: string;
@@ -1223,7 +1530,6 @@ const BeachMap: React.FC<BeachMapProps> = ({
     }>;
   }>(language, {
     en: {
-      note: 'Same wind, different shore shape: use the marker colour per beach, not per whole coastline.',
       rows: [
         { id: '0-2', range: '0-2 Bft', segments: [{ label: 'All beaches', dot: 'blue', colorLabel: 'blue' }] },
         { id: '3', range: '3 Bft', segments: [{ label: 'Less exposed', dot: 'blue', colorLabel: 'blue' }, { label: 'More exposed', dot: 'yellow', colorLabel: 'yellow' }] },
@@ -1233,7 +1539,6 @@ const BeachMap: React.FC<BeachMapProps> = ({
       ],
     },
     gr: {
-      note: '',
       rows: [
         { id: '0-2', range: '0-2 Μποφόρ', segments: [{ label: 'Όλες', dot: 'blue', colorLabel: 'μπλε' }] },
         { id: '3', range: '3 Μποφόρ', segments: [{ label: 'Λιγότερη έκθεση', dot: 'blue', colorLabel: 'μπλε' }, { label: 'Πιο εκτεθειμένες', dot: 'yellow', colorLabel: 'κίτρινο' }] },
@@ -1243,7 +1548,6 @@ const BeachMap: React.FC<BeachMapProps> = ({
       ],
     },
     fr: {
-      note: 'Meme vent, cote differente: lisez la couleur par plage, pas pour toute la cote.',
       rows: [
         { id: '0-2', range: '0-2 Bft', segments: [{ label: 'Toutes', dot: 'blue', colorLabel: 'bleu' }] },
         { id: '3', range: '3 Bft', segments: [{ label: 'Moins exposees', dot: 'blue', colorLabel: 'bleu' }, { label: 'Plus exposees', dot: 'yellow', colorLabel: 'jaune' }] },
@@ -1253,7 +1557,6 @@ const BeachMap: React.FC<BeachMapProps> = ({
       ],
     },
     de: {
-      note: 'Gleicher Wind, andere Kuestenform: die Farbe gilt pro Strand, nicht fuer die ganze Kueste.',
       rows: [
         { id: '0-2', range: '0-2 Bft', segments: [{ label: 'Alle', dot: 'blue', colorLabel: 'blau' }] },
         { id: '3', range: '3 Bft', segments: [{ label: 'Weniger exponiert', dot: 'blue', colorLabel: 'blau' }, { label: 'Mehr exponiert', dot: 'yellow', colorLabel: 'gelb' }] },
@@ -1263,7 +1566,6 @@ const BeachMap: React.FC<BeachMapProps> = ({
       ],
     },
     it: {
-      note: 'Stesso vento, costa diversa: leggi il colore per spiaggia, non per tutta la costa.',
       rows: [
         { id: '0-2', range: '0-2 Bft', segments: [{ label: 'Tutte', dot: 'blue', colorLabel: 'blu' }] },
         { id: '3', range: '3 Bft', segments: [{ label: 'Meno esposte', dot: 'blue', colorLabel: 'blu' }, { label: 'Piu esposte', dot: 'yellow', colorLabel: 'giallo' }] },
@@ -1290,10 +1592,83 @@ const BeachMap: React.FC<BeachMapProps> = ({
     : defaultCenter));
   
   const zoom = propZoom || (avgCenter ? 10 : (userLocation ? 10 : 6));
+  const viewportGuardrails = useMemo(() => {
+    const fallbackCenter = { lat: center[0], lon: center[1] };
+    const points = beaches
+      .map(item => getBeachMapCoordinates(item.beach, fallbackCenter))
+      .filter(coordinate => (
+        Number.isFinite(coordinate.lat) &&
+        Number.isFinite(coordinate.lon)
+      ));
+
+    if (points.length === 0) {
+      return {
+        minZoom: userLocation ? 6 : 5,
+        maxBounds: undefined as L.LatLngBounds | undefined,
+      };
+    }
+
+    const lats = points.map(point => point.lat);
+    const lons = points.map(point => point.lon);
+    const minLat = Math.min(...lats);
+    const maxLat = Math.max(...lats);
+    const minLon = Math.min(...lons);
+    const maxLon = Math.max(...lons);
+    const latSpan = Math.max(maxLat - minLat, 0.02);
+    const lonSpan = Math.max(maxLon - minLon, 0.02);
+    const maxSpan = Math.max(latSpan, lonSpan);
+
+    const minZoom = maxSpan <= 0.35
+      ? 10
+      : maxSpan <= 0.9
+        ? 9
+        : maxSpan <= 1.8
+          ? 8
+          : maxSpan <= 3.5
+            ? 7
+            : 6;
+
+    const latPadding = Math.min(Math.max(latSpan * 0.8, 0.12), 1.25);
+    const lonPadding = Math.min(Math.max(lonSpan * 0.8, 0.12), 1.25);
+
+    return {
+      minZoom,
+      maxBounds: L.latLngBounds(
+        [minLat - latPadding, minLon - lonPadding],
+        [maxLat + latPadding, maxLon + lonPadding],
+      ),
+    };
+  }, [beaches, center, userLocation]);
   const labelZoomThreshold = compact ? 13 : 12;
   const selectedBeach = selectedBeachId !== null
     ? beaches.find(item => item.beachId === selectedBeachId)
     : null;
+  const hoveredBeach = hoveredBeachId !== null
+    ? beaches.find(item => item.beachId === hoveredBeachId)
+    : null;
+  const hoverPreviewCopy = getLocalizedCopy(language, {
+    en: { photosSoon: 'Photos soon' },
+    gr: { photosSoon: 'Photos soon' },
+    de: { photosSoon: 'Photos soon' },
+    it: { photosSoon: 'Photos soon' },
+    fr: { photosSoon: 'Photos soon' },
+  });
+  const hoverPreviewPhotoUrl = useMemo(() => {
+    if (!hoveredBeach) return null;
+    const lookupIslandName = islandName || hoveredBeach.beach.location?.island || hoveredBeach.beach.location?.region;
+    const lookup = getBeachPhotoLookup(
+      hoveredBeach.beach.name.gr,
+      hoveredBeach.beach.name.en,
+      hoveredBeach.beach.id,
+      1,
+      lookupIslandName
+    );
+    return lookup.source === 'exact' ? lookup.photos[0] ?? null : null;
+  }, [hoveredBeach, islandName]);
+  const hoverPreviewFeatureChips = useMemo(
+    () => hoveredBeach ? buildHoverPreviewFeatureChips(hoveredBeach.beach, language) : [],
+    [hoveredBeach, language]
+  );
   const isCompactPreview = compact && preview;
   const beachLabelOpacityLevel = Math.max(0, Math.min(10, Math.round(beachLabelOpacity * 10)));
 
@@ -1310,6 +1685,34 @@ const BeachMap: React.FC<BeachMapProps> = ({
       setSelectedBeachId(null);
     }
   }, [beaches, selectedBeachId]);
+
+  useEffect(() => {
+    if (hoveredBeachId !== null && !beaches.some(item => item.beachId === hoveredBeachId)) {
+      setHoveredBeachId(null);
+      setHoverPreviewPosition(null);
+    }
+  }, [beaches, hoveredBeachId]);
+
+  const handleMarkerHover = (event: L.LeafletMouseEvent, beachId: number) => {
+    const nextPosition = {
+      x: event.containerPoint.x,
+      y: event.containerPoint.y,
+    };
+
+    setHoveredBeachId(beachId);
+    setHoverPreviewPosition(current => (
+      current &&
+      Math.abs(current.x - nextPosition.x) < 1 &&
+      Math.abs(current.y - nextPosition.y) < 1
+        ? current
+        : nextPosition
+    ));
+  };
+
+  const handleMarkerHoverEnd = (beachId: number) => {
+    setHoveredBeachId(current => (current === beachId ? null : current));
+    setHoverPreviewPosition(null);
+  };
 
   const renderBeachInfo = (item: SuitableBeach, variant: 'popup' | 'panel') => {
     const isPanel = variant === 'panel';
@@ -1493,11 +1896,6 @@ const BeachMap: React.FC<BeachMapProps> = ({
     return (
       <div className={`${isPreview ? 'max-w-full space-y-1.5' : 'space-y-2 border-t border-slate-200 pt-2 dark:border-slate-700'}`}>
         {renderWindColorGuideRows(variant)}
-        {showWindExposureColors && showWindExposureStatusLabels && windColorGuideCopy.note && (
-          <p className={`${isPreview ? 'text-[9px]' : 'text-[10px]'} leading-snug text-slate-500 dark:text-slate-400`}>
-            {windColorGuideCopy.note}
-          </p>
-        )}
       </div>
     );
   };
@@ -1616,7 +2014,7 @@ const BeachMap: React.FC<BeachMapProps> = ({
           ? 'h-full overflow-hidden rounded-3xl border border-slate-200 shadow-none dark:border-slate-800'
           : 'overflow-hidden rounded-2xl border border-slate-200 shadow-lg dark:border-slate-800'
     }`}>
-      <div className={`relative ${
+      <div ref={mapViewportRef} className={`relative ${
         isCompactPreview
           ? `${compactPreviewHeightClassName || 'h-[19rem] sm:h-[26rem] lg:h-[32rem]'} overflow-hidden rounded-[1.1rem] border border-sky-100`
           : compact
@@ -1652,6 +2050,9 @@ const BeachMap: React.FC<BeachMapProps> = ({
         <MapContainer
           center={center}
           zoom={zoom}
+          minZoom={viewportGuardrails.minZoom}
+          maxBounds={viewportGuardrails.maxBounds}
+          maxBoundsViscosity={0.85}
           boxZoom
           doubleClickZoom
           dragging
@@ -1670,6 +2071,10 @@ const BeachMap: React.FC<BeachMapProps> = ({
           />
 
           <RecenterMap center={center} zoom={zoom} />
+          <MapViewportGuardrails
+            minZoom={viewportGuardrails.minZoom}
+            maxBounds={viewportGuardrails.maxBounds}
+          />
           <FitBeachBounds
             beaches={fitBoundsBeaches || beaches}
             center={center}
@@ -1740,8 +2145,9 @@ const BeachMap: React.FC<BeachMapProps> = ({
                     setSelectedBeachId(item.beachId);
                   }
                 },
-                mouseover: () => setHoveredBeachId(item.beachId),
-                mouseout: () => setHoveredBeachId(current => (current === item.beachId ? null : current)),
+                mouseover: event => handleMarkerHover(event, item.beachId),
+                mousemove: event => handleMarkerHover(event, item.beachId),
+                mouseout: () => handleMarkerHoverEnd(item.beachId),
               }}
             >
               <Tooltip
@@ -1771,6 +2177,18 @@ const BeachMap: React.FC<BeachMapProps> = ({
             );
           })}
         </MapContainer>
+
+        {hoveredBeach && hoverPreviewPosition && (
+          <BeachHoverPreviewCard
+            item={hoveredBeach}
+            position={hoverPreviewPosition}
+            mapViewportRef={mapViewportRef}
+            language={language}
+            photoUrl={hoverPreviewPhotoUrl}
+            photosSoonLabel={hoverPreviewCopy.photosSoon}
+            featureChips={hoverPreviewFeatureChips}
+          />
+        )}
 
         {mapMode === 'wind' && (
           <WindFlowOverlay

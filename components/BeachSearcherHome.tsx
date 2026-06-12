@@ -106,6 +106,7 @@ interface BeachSearcherHomeProps {
   isSearchSuggesting?: boolean;
   protectedSortLabel?: string;
   currentBeaufort?: number;
+  mapForecastTimeLabel?: string;
   islandBackground?: string;
   mapPreview?: React.ReactNode;
   topRecommendationCards?: SuitableBeach[];
@@ -1359,6 +1360,7 @@ export const BeachSearcherHome: React.FC<BeachSearcherHomeProps> = ({
   isSearchSuggesting = false,
   protectedSortLabel,
   currentBeaufort,
+  mapForecastTimeLabel,
   islandBackground,
   mapPreview,
   topRecommendationCards,
@@ -2547,8 +2549,8 @@ export const BeachSearcherHome: React.FC<BeachSearcherHomeProps> = ({
         <div className="absolute inset-0 bg-gradient-to-r from-white/24 via-transparent to-white/12" />
       </div>
 
-      <div className="relative mx-auto max-w-[110rem] px-4 pb-4 pt-6 sm:px-5 lg:px-6">
-        <section className="mx-auto w-full max-w-[110rem] overflow-visible rounded-[1.5rem] border border-white/60 bg-white/76 p-3 shadow-xl shadow-slate-950/14 ring-1 ring-white/35 backdrop-blur-xl sm:p-4">
+      <div className="relative mx-auto max-w-[110rem] px-4 pb-1 pt-6 sm:px-5 sm:pb-2 lg:px-6">
+        <section className="mx-auto w-full max-w-[110rem] overflow-visible rounded-[1.5rem] border border-white/60 bg-white/76 p-3 pb-1 shadow-xl shadow-slate-950/14 ring-1 ring-white/35 backdrop-blur-xl sm:p-4 sm:pb-2">
         <form
           className="flex flex-col gap-3"
           onSubmit={(event) => {
@@ -2908,10 +2910,17 @@ export const BeachSearcherHome: React.FC<BeachSearcherHomeProps> = ({
         {selectedIsland && mapPreview && isMobileViewport && (
           <section
             id="map-section"
-            className="mt-4 border-t border-slate-200/80 pt-4"
+            className="mt-2"
             aria-label={copy.beachMapAria}
           >
             <div className="overflow-hidden rounded-[1.35rem] border border-sky-100 bg-white/68 p-2 text-left shadow-sm shadow-sky-900/8 ring-1 ring-white/45 backdrop-blur-md">
+              {mapForecastTimeLabel && (
+                <div className="mb-2 flex justify-center">
+                  <div className="inline-flex max-w-[min(78vw,16rem)] items-center justify-center rounded-full border border-sky-100 bg-white/78 px-3.5 py-1.5 text-center text-[11px] font-black leading-none tabular-nums text-[#007a83] shadow-sm shadow-sky-900/5 ring-1 ring-white/50 backdrop-blur-md">
+                    <span className="min-w-0 truncate">{mapForecastTimeLabel}</span>
+                  </div>
+                </div>
+              )}
               {mapPreview}
             </div>
           </section>
@@ -2921,7 +2930,7 @@ export const BeachSearcherHome: React.FC<BeachSearcherHomeProps> = ({
 
       {hasBelowHeroContent && (
       <div className="relative">
-        <div className="mx-auto max-w-[110rem] px-4 pb-[calc(5rem+env(safe-area-inset-bottom))] pt-5 sm:px-5 sm:pb-5 lg:px-6">
+        <div className="mx-auto max-w-[110rem] px-4 pb-[calc(5rem+env(safe-area-inset-bottom))] pt-1 sm:px-5 sm:pb-5 sm:pt-2 lg:px-6">
           {selectedIsland && hasTopRecommendationView && (
             <section id="top-recommendations-section" className="mb-5">
               <div className="mb-3 flex items-center gap-3 px-1 lg:px-5">
@@ -2936,10 +2945,10 @@ export const BeachSearcherHome: React.FC<BeachSearcherHomeProps> = ({
 
               <div
                 ref={topRecommendationsCarouselRef}
-                className="beach-card-carousel no-scrollbar flex cursor-grab snap-x snap-mandatory gap-6 overflow-x-auto overscroll-x-contain pb-5 select-none active:cursor-grabbing data-[dragging=true]:cursor-grabbing data-[dragging=true]:snap-none lg:snap-none lg:px-5"
+                className="beach-card-carousel no-scrollbar flex cursor-grab snap-x snap-mandatory items-stretch gap-6 overflow-x-auto overscroll-x-contain pb-5 select-none active:cursor-grabbing data-[dragging=true]:cursor-grabbing data-[dragging=true]:snap-none lg:snap-none lg:px-5"
               >
                 {topRecommendationBeachCards.map(({ beach, score, context }, index) => (
-                  <div key={beach.id} data-suitable-beach-id={beach.id} {...beachCardHoverProps(beach.id)} className="w-[19rem] shrink-0 snap-start sm:w-[20rem]">
+                  <div key={beach.id} data-suitable-beach-id={beach.id} {...beachCardHoverProps(beach.id)} className="flex h-[29.125rem] w-[19rem] shrink-0 snap-start sm:h-[27rem] sm:w-[20rem]">
                     {renderBeachDecisionCard(beach as BeachCardContext, {
                       score,
                       context,
@@ -2968,11 +2977,11 @@ export const BeachSearcherHome: React.FC<BeachSearcherHomeProps> = ({
 
           <div
             ref={suitableCarouselRef}
-            className="beach-card-carousel no-scrollbar flex cursor-grab snap-x snap-mandatory gap-6 overflow-x-auto overscroll-x-contain pb-5 select-none active:cursor-grabbing data-[dragging=true]:cursor-grabbing data-[dragging=true]:snap-none lg:snap-none lg:px-5"
+            className="beach-card-carousel no-scrollbar flex cursor-grab snap-x snap-mandatory items-stretch gap-6 overflow-x-auto overscroll-x-contain pb-5 select-none active:cursor-grabbing data-[dragging=true]:cursor-grabbing data-[dragging=true]:snap-none lg:snap-none lg:px-5"
           >
             {selectedIsland ? (
               weatherBeachCards.map(({ beach, score, context }, index) => (
-                <div key={beach.id} data-suitable-beach-id={beach.id} {...beachCardHoverProps(beach.id)} className="w-[19rem] shrink-0 snap-start sm:w-[20rem]">
+                <div key={beach.id} data-suitable-beach-id={beach.id} {...beachCardHoverProps(beach.id)} className="flex h-[29.125rem] w-[19rem] shrink-0 snap-start sm:h-[27rem] sm:w-[20rem]">
                   {renderBeachDecisionCard(beach as BeachCardContext, {
                     score,
                     context,
@@ -3083,7 +3092,7 @@ export const BeachSearcherHome: React.FC<BeachSearcherHomeProps> = ({
 
               <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
                 {directoryDisplayBeachCards.map(beach => (
-                  <div key={beach.id} {...beachCardHoverProps(beach.id)}>
+                  <div key={beach.id} {...beachCardHoverProps(beach.id)} className="h-full">
                     {renderBeachDecisionCard(beach, { alignExposureToMap: !isDirectorySuitableView, windExposureMode: 'simple' })}
                   </div>
                 ))}
@@ -3105,10 +3114,10 @@ export const BeachSearcherHome: React.FC<BeachSearcherHomeProps> = ({
 
               <div
                 ref={directoryCarouselRef}
-                className="beach-card-carousel no-scrollbar flex cursor-grab snap-x snap-mandatory gap-6 overflow-x-auto overscroll-x-contain pb-5 select-none active:cursor-grabbing data-[dragging=true]:cursor-grabbing data-[dragging=true]:snap-none lg:snap-none"
+                className="beach-card-carousel no-scrollbar flex cursor-grab snap-x snap-mandatory items-stretch gap-6 overflow-x-auto overscroll-x-contain pb-5 select-none active:cursor-grabbing data-[dragging=true]:cursor-grabbing data-[dragging=true]:snap-none lg:snap-none"
               >
                 {directoryDisplayBeachCards.map(beach => (
-                  <div key={beach.id} data-directory-beach-id={beach.id} {...beachCardHoverProps(beach.id)} className="w-[19rem] shrink-0 snap-start">
+                  <div key={beach.id} data-directory-beach-id={beach.id} {...beachCardHoverProps(beach.id)} className="flex h-[29.125rem] w-[19rem] shrink-0 snap-start">
                     {renderBeachDecisionCard(beach, { alignExposureToMap: true, windExposureMode: 'simple' })}
                   </div>
                 ))}
@@ -3211,10 +3220,10 @@ export const BeachSearcherHome: React.FC<BeachSearcherHomeProps> = ({
                 {directoryDisplayBeachCards.length > 0 ? (
                   <div
                     ref={directoryCarouselRef}
-                    className="beach-card-carousel no-scrollbar flex cursor-grab snap-x snap-mandatory gap-6 overflow-x-auto overscroll-x-contain pb-5 select-none active:cursor-grabbing data-[dragging=true]:cursor-grabbing data-[dragging=true]:snap-none lg:snap-none"
+                    className="beach-card-carousel no-scrollbar flex cursor-grab snap-x snap-mandatory items-stretch gap-6 overflow-x-auto overscroll-x-contain pb-5 select-none active:cursor-grabbing data-[dragging=true]:cursor-grabbing data-[dragging=true]:snap-none lg:snap-none"
                   >
                     {directoryDisplayBeachCards.map(beach => (
-                      <div key={beach.id} data-directory-beach-id={beach.id} {...beachCardHoverProps(beach.id)} className="w-[19rem] shrink-0 snap-start">
+                      <div key={beach.id} data-directory-beach-id={beach.id} {...beachCardHoverProps(beach.id)} className="flex h-[29.125rem] w-[19rem] shrink-0 snap-start">
                         {renderBeachDecisionCard(beach, { alignExposureToMap: !isDirectorySuitableView, windExposureMode: 'simple' })}
                       </div>
                     ))}

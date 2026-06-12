@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Accessibility, Cookie, Database, FileText, Settings2, ShieldCheck, X } from 'lucide-react';
+import { Accessibility, Cookie, Database, FileText, ShieldCheck, X } from 'lucide-react';
 import { AnalyticsConsent, getAnalyticsConsent, setAnalyticsConsent } from '../services/analyticsService';
 import { LanguageCode } from '../types';
 
@@ -301,7 +301,6 @@ export const LegalFooter: React.FC<LegalFooterProps> = ({ language }) => {
     : analyticsConsent === 'declined'
       ? c.consentDeclined
       : c.consentUnset;
-
   const updateAnalyticsConsent = (choice: AnalyticsConsent) => {
     setAnalyticsConsent(choice);
     setLocalAnalyticsConsent(choice);
@@ -327,36 +326,24 @@ export const LegalFooter: React.FC<LegalFooterProps> = ({ language }) => {
 
   return (
     <>
-      <footer className="mx-auto w-[calc(100%-1rem)] max-w-4xl rounded-2xl border border-white/80 bg-white/94 px-4 py-4 text-center text-[11px] font-semibold leading-relaxed text-slate-600 shadow-xl shadow-sky-950/10 ring-1 ring-sky-100/70 backdrop-blur-xl sm:w-[calc(100%-2rem)]">
-        <p className="mx-auto max-w-2xl text-slate-700">{c.footerNote}</p>
-        <div className="mt-3 flex flex-wrap items-center justify-center gap-2">
-          <button type="button" onClick={() => setActiveModal('terms')} className="min-h-9 rounded-full border border-slate-200 bg-white/80 px-3 text-xs font-extrabold text-slate-700 shadow-sm shadow-sky-900/5 transition hover:border-sky-200 hover:bg-sky-50 hover:text-[#007a83] focus:outline-none focus-visible:ring-2 focus-visible:ring-sky-500">
-            {c.terms}
-          </button>
-          <button type="button" onClick={() => setActiveModal('privacy')} className="min-h-9 rounded-full border border-slate-200 bg-white/60 px-3 text-xs font-bold text-slate-600 transition hover:border-sky-200 hover:bg-sky-50 hover:text-[#007a83] focus:outline-none focus-visible:ring-2 focus-visible:ring-sky-500">
-            {c.privacy}
-          </button>
-          <button type="button" onClick={() => setActiveModal('cookies')} className="min-h-9 rounded-full border border-slate-200 bg-white/60 px-3 text-xs font-bold text-slate-600 transition hover:border-sky-200 hover:bg-sky-50 hover:text-[#007a83] focus:outline-none focus-visible:ring-2 focus-visible:ring-sky-500">
-            {c.cookies}
-          </button>
-          <button type="button" onClick={() => setActiveModal('cookies')} className="inline-flex min-h-9 items-center gap-1 rounded-full border border-slate-200 bg-white/60 px-3 text-xs font-bold text-slate-600 transition hover:border-sky-200 hover:bg-sky-50 hover:text-[#007a83] focus:outline-none focus-visible:ring-2 focus-visible:ring-sky-500">
-            <Settings2 className="h-3 w-3" aria-hidden="true" />
-            {c.cookieSettings}
-          </button>
-          <button type="button" onClick={() => setActiveModal('accessibility')} className="min-h-9 rounded-full border border-slate-200 bg-white/60 px-3 text-xs font-bold text-slate-600 transition hover:border-sky-200 hover:bg-sky-50 hover:text-[#007a83] focus:outline-none focus-visible:ring-2 focus-visible:ring-sky-500">
-            {c.accessibility}
-          </button>
-          <button type="button" onClick={() => setActiveModal('sources')} className="min-h-9 rounded-full border border-slate-200 bg-white/60 px-3 text-xs font-bold text-slate-600 transition hover:border-sky-200 hover:bg-sky-50 hover:text-[#007a83] focus:outline-none focus-visible:ring-2 focus-visible:ring-sky-500">
-            {c.sources}
-          </button>
-          <span className="px-1 text-slate-500">{c.weatherData}: </span>
-          <a href="https://open-meteo.com/en/terms" target="_blank" rel="noreferrer" className="font-bold text-sky-700 underline-offset-4 hover:text-sky-800 hover:underline">
-            Open-Meteo
-          </a>
-          <span className="text-slate-400">/</span>
-          <a href="https://www.dwd.de/EN/ourservices/opendata/opendata.html" target="_blank" rel="noreferrer" className="font-bold text-sky-700 underline-offset-4 hover:text-sky-800 hover:underline">
-            DWD
-          </a>
+      <footer className="w-full border-t border-sky-100/40 bg-sky-50/60 px-4 py-7 text-center text-slate-600 shadow-[0_-1px_0_rgba(14,165,233,0.04)] backdrop-blur-sm">
+        <div className="mx-auto max-w-5xl">
+          <p className="text-sm font-medium text-slate-600">
+            © 2026 Calm Beach Greece. Discover the best beach for today.
+          </p>
+          <p className="mx-auto mt-1 max-w-2xl text-xs font-medium leading-relaxed text-slate-500">
+            {c.footerNote}
+          </p>
+          <p className="mt-2 text-xs font-medium text-slate-500">
+            <span>{c.weatherData}: </span>
+            <a href="https://open-meteo.com/en/terms" target="_blank" rel="noreferrer" className="font-semibold text-sky-700 underline-offset-4 hover:text-sky-800 hover:underline">
+              Open-Meteo
+            </a>
+            <span className="px-1 text-slate-400">/</span>
+            <a href="https://www.dwd.de/EN/ourservices/opendata/opendata.html" target="_blank" rel="noreferrer" className="font-semibold text-sky-700 underline-offset-4 hover:text-sky-800 hover:underline">
+              DWD
+            </a>
+          </p>
         </div>
       </footer>
 

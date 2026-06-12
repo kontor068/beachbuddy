@@ -43,7 +43,7 @@ const prerenderLocales = [
     ogLocale: 'en_US',
     pathPrefix: '',
     homeTitle: 'CalmBeach Greece - Best Beach Today by Wind & Waves',
-    homeDescription: 'Find the best Greek beach to visit today. CalmBeach checks wind, waves, weather and beach exposure for smarter beach recommendations.',
+    homeDescription: 'Find a calmer beach in Greece today. CalmBeach compares live wind, waves, weather and beach exposure so you know where to swim with confidence.',
     homeImageAlt: 'CalmBeach Greece beach recommendations by wind and waves',
   },
   {
@@ -558,7 +558,7 @@ const buildRegionPage = (baseHtml, island, region, imageUrl, locale = prerenderL
   const beaches = Array.isArray(island.beaches) ? island.beaches : [];
   const description = language === 'gr'
     ? `${islandName}: σύγκρινε ${beaches.length} παραλίες και δες σημερινό άνεμο, κύμα, καιρό και προτάσεις για μπάνιο.`
-    : `${islandName} beaches in Greece. Compare ${beaches.length} beaches and open CalmBeach for today's wind, waves, weather and beach recommendations.`;
+    : `${islandName} beaches in Greece. Compare ${beaches.length} beaches by live wind, waves, weather and exposure to find calmer swimming spots today.`;
   const title = language === 'gr'
     ? `Παραλίες: ${islandName} | Calm Beach Greece`
     : `${islandName} Beaches Today | CalmBeach Greece`;

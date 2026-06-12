@@ -69,7 +69,10 @@ export const SecretBeachesSection: React.FC<SecretBeachesSectionProps> = ({
               </div>
             </div>
 
-            <p className="text-sm text-slate-600 dark:text-slate-400 line-clamp-3 leading-relaxed">
+            <p
+              className="text-sm text-slate-600 dark:text-slate-400 line-clamp-3 leading-relaxed"
+              data-nosnippet="true"
+            >
               {item.explanation}
             </p>
 
@@ -103,7 +106,10 @@ export const SecretBeachesSection: React.FC<SecretBeachesSectionProps> = ({
                   </div>
                 )}
               </div>
-              <button className="text-xs font-bold text-emerald-600 dark:text-emerald-400 group-hover:translate-x-1 transition-transform">
+              <button
+                className="text-xs font-bold text-emerald-600 dark:text-emerald-400 group-hover:translate-x-1 transition-transform"
+                data-nosnippet="true"
+              >
                 {language === 'gr' ? 'Λεπτομέρειες →' : 'View details →'}
               </button>
             </div>

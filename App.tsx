@@ -208,7 +208,7 @@ const compactWeatherLabels: Record<LanguageCode, Record<string, string>> = {
 const seoCopy: Record<SupportedLanguage, { title: string; description: string; locale: string }> = {
   en: {
     title: 'CalmBeach Greece - Best Beach Today by Wind & Waves',
-    description: 'Find the best Greek beach to visit today. CalmBeach checks wind, waves, weather and beach exposure for smarter beach recommendations.',
+    description: 'Find a calmer beach in Greece today. CalmBeach compares live wind, waves, weather and beach exposure so you know where to swim with confidence.',
     locale: 'en_US',
   },
   gr: {
@@ -1604,7 +1604,7 @@ export const App: React.FC = () => {
     const selectedIslandName = selectedIsland?.name[language] || selectedIsland?.name.en;
     const regionDescription = selectedIslandName
       ? getLocalizedCopy(language, {
-        en: `${selectedIslandName} beaches in Greece. Compare today's wind, waves, weather and beach exposure before choosing where to swim.`,
+        en: `${selectedIslandName} beaches in Greece. Compare live wind, waves, weather and beach exposure to find calmer swimming spots today.`,
     gr: `Παραλίες σε ${selectedIslandName}. Δες τον σημερινό άνεμο, το κύμα και τον καιρό πριν αποφασίσεις πού να κολυμπήσεις.`,
         fr: `Plages de ${selectedIslandName} en Grece. Verifiez le vent, les vagues et la meteo du jour avant de choisir ou nager.`,
         de: `Strande in ${selectedIslandName}, Griechenland. Pruefe Wind, Wellen und Wetter, bevor du den Strand waehlst.`,
@@ -2294,6 +2294,24 @@ export const App: React.FC = () => {
       de: `um ${windowLabel}`,
       it: `alle ${windowLabel}`,
     });
+  }, [mapHourSlots, selectedHourDt, language]);
+  const mapForecastTimeLabel = useMemo(() => {
+    if (mapHourSlots.length === 0 || selectedHourDt == null) return undefined;
+    const index = mapHourSlots.findIndex(slot => slot.dt === selectedHourDt);
+    if (index === -1) return undefined;
+    const locale = language === 'gr' ? 'el-GR' : languageToLocale(language);
+    const formatHour = (dt: number) => new Date(dt * 1000).toLocaleTimeString(locale, {
+      hour: '2-digit',
+      minute: '2-digit',
+      hour12: false,
+    });
+    const currentSlot = mapHourSlots[index];
+    const nextSlot = mapHourSlots[index + 1];
+    const dayLabel = getSelectedDaySentencePrefix(new Date(currentSlot.dt * 1000), new Date(), language);
+    const windowLabel = nextSlot
+      ? `${formatHour(currentSlot.dt)}–${formatHour(nextSlot.dt)}`
+      : formatHour(currentSlot.dt);
+    return `${dayLabel} ${windowLabel}`;
   }, [mapHourSlots, selectedHourDt, language]);
   // Marker colours come from island-level wind + per-beach geometry (geospatial
   // profile), both available immediately. They do NOT need the per-beach cluster
@@ -4170,6 +4188,7 @@ export const App: React.FC = () => {
           onHourChange={setSelectedHourDt}
           enableHourSlider
           language={language}
+          islandName={selectedIsland.name[language]}
           selectedDate={selectedDayDate}
           topBeachId={highlightedDirectoryTopBeachId}
           highlightedBeachId={highlightedMapBeachId}
@@ -4189,7 +4208,7 @@ export const App: React.FC = () => {
   ) : null;
 
   return (
-    <div className="relative min-h-screen overflow-x-hidden transition-colors duration-500 md:pb-24">
+    <div className="relative min-h-screen overflow-x-hidden transition-colors duration-500">
       <div
         className={`atmosphere ${islandBackgroundCss ? 'cyclades-atmosphere' : ''}`}
         style={islandBackgroundCss ? ({ '--cyclades-bg': islandBackgroundCss } as React.CSSProperties) : undefined}
@@ -4233,6 +4252,7 @@ export const App: React.FC = () => {
               isSearchSuggesting={isDirectorySearchSuggesting}
               protectedSortLabel={protectedSortLabel}
               currentBeaufort={currentBeaufort}
+              mapForecastTimeLabel={mapForecastTimeLabel}
               islandBackground={islandBackground}
               mapPreview={directoryMapPreview}
               topRecommendationCards={directoryTopRecommendationCards}
@@ -4540,6 +4560,7 @@ export const App: React.FC = () => {
                     onHourChange={setSelectedHourDt}
                     enableHourSlider
                     language={language}
+                    islandName={selectedIsland.name[language]}
                     selectedDate={selectedDayDate}
                     topBeachId={highlightedDirectoryTopBeachId}
                     fitBoundsToBeaches
@@ -4837,6 +4858,7 @@ export const App: React.FC = () => {
                             onHourChange={setSelectedHourDt}
                             enableHourSlider
                             language={language}
+                            islandName={selectedIsland.name[language]}
                             selectedDate={selectedDayDate}
                             topBeachId={highlightedDirectoryTopBeachId}
                             fitBoundsToBeaches
@@ -4882,13 +4904,13 @@ export const App: React.FC = () => {
       </main>
       )}
 
-      <div className={`${isDesktopViewport ? 'relative z-10 pb-8' : 'pb-[calc(5rem+env(safe-area-inset-bottom))]'}`}>
+      <div className={`${isDesktopViewport ? 'relative z-[70] bg-transparent' : 'relative z-10 bg-transparent pb-[calc(5rem+env(safe-area-inset-bottom))]'}`}>
         <LegalFooter language={language} />
       </div>
 
       {!isDesktopViewport && (
         <nav
-          className="fixed inset-x-3 bottom-[calc(4.25rem+env(safe-area-inset-bottom))] z-[45] rounded-full border border-white/80 bg-white/95 px-2 py-1.5 text-center shadow-lg shadow-sky-950/12 ring-1 ring-sky-100/70 backdrop-blur-xl md:hidden"
+          className="hidden"
           aria-label={getLocalizedCopy(language, {
             en: 'Legal links',
             gr: 'Νομικοί σύνδεσμοι',

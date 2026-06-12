@@ -36,6 +36,14 @@ const headerCopy: Record<SupportedLanguage, { changeLanguage: string }> = {
   it: { changeLanguage: 'Cambia lingua' },
 };
 
+const headerTaglineCopy: Record<SupportedLanguage, string> = {
+  en: 'Find a calmer beach today',
+  gr: 'Βρες πιο ήρεμη παραλία σήμερα',
+  fr: 'Trouvez une plage plus calme',
+  de: 'Finde heute einen ruhigeren Strand',
+  it: 'Trova oggi una spiaggia piu calma',
+};
+
 const getNextLocalMidnightDelay = (date: Date = new Date()): number => {
   const nextMidnight = new Date(date);
   nextMidnight.setDate(nextMidnight.getDate() + 1);
@@ -56,6 +64,7 @@ const Header: React.FC<HeaderProps> = ({
   const languageMenuRef = useRef<HTMLDivElement>(null);
   const languageLabel = languageLabels[language].label;
   const switchLanguageLabel = getLocalizedCopy(language, headerCopy).changeLanguage;
+  const tagline = headerTaglineCopy[language] || headerTaglineCopy.en;
   const headerDateLabel = useMemo(() => {
     return new Intl.DateTimeFormat(languageToDateLocale(language), {
       weekday: 'long',
@@ -108,14 +117,25 @@ const Header: React.FC<HeaderProps> = ({
   return (
     <header className="relative z-50">
       <div className="sticky top-0 z-50 border-b border-white/70 bg-white/82 text-slate-800 shadow-sm shadow-sky-900/5 backdrop-blur-xl">
-        <div className="relative flex h-[56px] w-full items-center gap-2 px-4 sm:gap-3 sm:px-6 lg:px-8">
+        <div className="relative flex h-[60px] w-full items-center gap-2 px-4 sm:gap-3 sm:px-6 lg:h-[58px] lg:px-8">
           <div className="flex min-w-0 shrink-0 items-center gap-3">
             <div className="grid h-8 w-8 shrink-0 place-items-center rounded-full bg-[#0098b0] text-white shadow-sm shadow-cyan-900/10 ring-1 ring-cyan-700/10">
               <Waves className="h-5 w-5" aria-hidden="true" />
             </div>
-            <span className="truncate text-lg font-extrabold tracking-normal text-[#007a83] sm:text-xl">
-              Calm Beach Greece
-            </span>
+            <div className="min-w-0">
+              <span className="block truncate text-base font-extrabold leading-tight tracking-normal text-[#007a83] sm:text-xl">
+                Calm Beach Greece
+              </span>
+              <span
+                className="ml-1.5 mt-0.5 block truncate text-[11px] font-semibold italic leading-[1.05] text-[#00879a]/78 sm:ml-2 sm:text-[12px]"
+                style={{
+                  fontFamily: '"Segoe Print", "Bradley Hand ITC", "Comic Sans MS", cursive',
+                  letterSpacing: 0,
+                }}
+              >
+                {tagline}
+              </span>
+            </div>
           </div>
 
           <div className="pointer-events-none absolute left-1/2 top-1/2 hidden min-w-0 -translate-x-1/2 -translate-y-1/2 justify-center lg:flex">

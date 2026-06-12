@@ -20,7 +20,7 @@ const copy: Record<LanguageCode, {
 }> = {
   en: {
     title: 'Privacy choices',
-    body: 'Analytics are optional and can be changed later from Cookie settings in the footer. If you reject them, Google Analytics is not loaded. We do not send precise location to analytics or create personal profiles.',
+    body: 'Analytics are optional. If you reject them, Google Analytics is not loaded. We do not send precise location to analytics or create personal profiles.',
     terms: 'Terms of Use',
     privacy: 'Privacy',
     cookies: 'Cookies',

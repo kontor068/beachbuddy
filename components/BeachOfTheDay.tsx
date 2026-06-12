@@ -246,7 +246,10 @@ const BeachOfTheDay: React.FC<BeachOfTheDayProps> = ({ topBeach, language, t, on
             </div>
           </div>
 
-          <div className="rounded-2xl border border-white/60 bg-white/62 p-3 shadow-sm shadow-sky-900/5 backdrop-blur-md dark:border-slate-800 dark:bg-slate-900/55">
+          <div
+            className="rounded-2xl border border-white/60 bg-white/62 p-3 shadow-sm shadow-sky-900/5 backdrop-blur-md dark:border-slate-800 dark:bg-slate-900/55"
+            data-nosnippet="true"
+          >
               <h3 className="mb-2 text-xs font-bold text-slate-700 dark:text-slate-200">
               {beachExplanation.heroTitle}
             </h3>

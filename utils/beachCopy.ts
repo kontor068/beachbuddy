@@ -338,7 +338,7 @@ const generateCalmCardSummary = (input: BeachCopyInput, facts: BeachFeatureFacts
     return localize(
       language,
       `${sentenceDay} ταιριάζει περισσότερο αν ψάχνεις ${greekReasons}. ${sentenceCase(wave)}.`,
-      `${lead}, it stands out for ${reasonsText}. ${sentenceCase(wave)}.`
+      `${lead}, this is a practical beach pick for ${reasonsText}. ${sentenceCase(wave)}.`
     );
   }
 
@@ -346,7 +346,7 @@ const generateCalmCardSummary = (input: BeachCopyInput, facts: BeachFeatureFacts
     return localize(
       language,
       `${sentenceDay} ταιριάζει περισσότερο αν ψάχνεις ${greekReasons}.`,
-      `${lead}, it stands out mostly for ${reasonsText}.`
+      `${lead}, this is a practical beach pick for ${reasonsText}, with live wind and sea checks kept simple.`
     );
   }
 

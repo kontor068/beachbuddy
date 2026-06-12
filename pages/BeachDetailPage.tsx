@@ -1051,6 +1051,7 @@ export const BeachDetailPage: React.FC<BeachDetailPageProps> = ({
                   windDirection={windDir}
                   windDirectionDeg={weatherData.wind.deg}
                   language={language}
+                  islandName={islandName}
                   selectedDate={selectedDate}
                   compact
                 />
@@ -1169,7 +1170,10 @@ export const BeachDetailPage: React.FC<BeachDetailPageProps> = ({
                             <p className="text-xs font-bold text-slate-500">
                               {typeof item.distance === 'number' ? `${item.distance.toFixed(1)} km ${copy.away[language]}` : copy.nearby[language]}
                             </p>
-                            <p className="text-xs font-semibold text-slate-600 line-clamp-2">
+                            <p
+                              className="text-xs font-semibold text-slate-600 line-clamp-2"
+                              data-nosnippet="true"
+                            >
                               {itemExplanation.cardSummary || getRecommendationLabel(itemTone, language, selectedDate, itemBeaufortLevel)}
                             </p>
                           </div>
