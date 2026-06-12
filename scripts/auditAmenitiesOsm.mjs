@@ -93,20 +93,29 @@ for (const d of regions) {
     const claimsParking = amenityTextIncludesAny(amen, PARKING_AMENITY_TERMS);
     const organized = b.metadata?.organized === true;
     const hasOfficialSource = (b.metadata?.verification_sources?.length || b.metadata?.sourceUrls?.length || 0) > 0;
+    // Already passed a manual evidence/source audit: OSM POI absence is then just rural mapping
+    // sparsity (village tavernas/rural canteens are not in OSM), NOT a contradiction. Re-flagging
+    // groomed data wastes review time (proven by the Euboea batch, where every "ταβέρνες κοντά"
+    // claim matched its source verbatim). Detect the evidence-pass sourceNotes signature.
+    const sn = b.metadata?.sourceNotes;
+    const notes = Array.isArray(sn) ? sn : (typeof sn === 'string' && sn ? [sn] : []);
+    const hasEvidencePassNote = notes.some(n => /evidence pass|source check|source-backed|tourist-priority|amenities audit|confidence (pass|continuation)/i.test(n));
 
     const flags = [];
     // Contradiction A: claims food/taverna/bar but no food POI anywhere in radius.
-    if (claimsFood && nearestFood === null) flags.push('food-claim-no-osm');
+    // Suppressed when the beach is already evidence-audited (the claim was verified at source).
+    if (claimsFood && nearestFood === null && !hasEvidencePassNote) flags.push('food-claim-no-osm');
     // Contradiction B: organized (or sunbed claim) but no beach_resort AND no food POI AND no official source.
-    if ((organized || claimsSunbeds) && nearestResort === null && nearestFood === null && !hasOfficialSource) flags.push('organized-no-osm-no-source');
+    if ((organized || claimsSunbeds) && nearestResort === null && nearestFood === null && !hasOfficialSource && !hasEvidencePassNote) flags.push('organized-no-osm-no-source');
     // Opportunity C: a beach_resort sits right on the pin but we list no food/organized claim.
+    // This is an ADDITION opportunity, not a groomed-data false positive — keep it regardless of audit status.
     if (nearestResort !== null && nearestResort <= 100 && !organized && !claimsFood) flags.push('osm-resort-not-claimed');
-    // Sanity D: claims parking but neither a parking POI nor any POI at all (weak signal).
-    if (claimsParking && !pois.some(p => p.kind === 'parking') && pois.length === 0) flags.push('parking-claim-no-osm-poi');
+    // Sanity D: claims parking but neither a parking POI nor any POI at all (weak signal — OSM sparsity).
+    if (claimsParking && !pois.some(p => p.kind === 'parking') && pois.length === 0 && !hasEvidencePassNote) flags.push('parking-claim-no-osm-poi');
 
     rows.push({
       region: d.region.id, group: d.region.group, id: b.id, name: b.name?.en,
-      organized, claimsFood, claimsSunbeds, hasOfficialSource,
+      organized, claimsFood, claimsSunbeds, hasOfficialSource, audited: hasEvidencePassNote,
       nearestFoodM: nearestFood, nearestResortM: nearestResort, poiCount: pois.length,
       flags: flags.join('|'),
     });
@@ -115,7 +124,7 @@ for (const d of regions) {
 
 // Outputs
 const csvEscape = (v) => { const s = String(v ?? ''); return /[",\n]/.test(s) ? '"' + s.replace(/"/g, '""') + '"' : s; };
-const headers = ['region', 'group', 'id', 'name', 'organized', 'claimsFood', 'claimsSunbeds', 'hasOfficialSource', 'nearestFoodM', 'nearestResortM', 'poiCount', 'flags'];
+const headers = ['region', 'group', 'id', 'name', 'organized', 'claimsFood', 'claimsSunbeds', 'hasOfficialSource', 'audited', 'nearestFoodM', 'nearestResortM', 'poiCount', 'flags'];
 const csv = [headers.join(','), ...rows.map(r => headers.map(h => csvEscape(r[h])).join(','))].join('\n');
 writeFileSync(outBase + '.csv', csv, 'utf8');
 writeFileSync(outBase + '.json', JSON.stringify(rows, null, 1), 'utf8');
