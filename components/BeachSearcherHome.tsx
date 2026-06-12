@@ -33,6 +33,7 @@ import { getLocalizedCopy, languageToDateLocale, languageToLocale, type Supporte
 import { displayBeachName, localizedAccessLabel } from '../utils/localization';
 import { getAmenityChips, type AmenityChip } from '../utils/amenities';
 import { getBeachPhotoLookup } from '../services/beachPhotos';
+import { getBeachTouristRecognitionScore } from '../utils/touristPriority';
 import { trackEvent } from '../services/analyticsService';
 import { degToCompass, getBeaufortLevel } from '../utils/weatherUtils';
 import {
@@ -1614,6 +1615,8 @@ export const BeachSearcherHome: React.FC<BeachSearcherHomeProps> = ({
         const bPhoto = getBeachPhotoLookup(b.name.gr, b.name.en, b.id, 1, selectedIsland.name[language]).source === 'exact';
         if (aPhoto !== bPhoto) return bPhoto ? 1 : -1;
 
+        const byRecognition = getBeachTouristRecognitionScore(b) - getBeachTouristRecognitionScore(a);
+        if (byRecognition !== 0) return byRecognition;
         const byAmenities = amenityRichness(b) - amenityRichness(a);
         if (byAmenities !== 0) return byAmenities;
         return (a.name.en || '').localeCompare(b.name.en || '');
