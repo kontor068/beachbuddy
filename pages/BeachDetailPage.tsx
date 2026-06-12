@@ -397,6 +397,7 @@ const hasUsefulTimeWindow = (start?: string, end?: string): boolean => {
 };
 
 import { canOpenNavigation, openNavigation } from '../utils/navigation';
+import { NavigationBadge } from '../components/NavigationBadge';
 import { displayBeachName } from '../utils/localization';
 
 interface BeachDetailPageProps {
@@ -1066,6 +1067,7 @@ export const BeachDetailPage: React.FC<BeachDetailPageProps> = ({
               {copy.openNavigation[language]}
             </button>
           )}
+          {canNavigate && <NavigationBadge beach={beach} language={language} className="mt-2" />}
         </section>
 
         {/* Feedback System */}

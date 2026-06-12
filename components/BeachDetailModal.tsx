@@ -406,6 +406,7 @@ const getStaticDetails = (beach: Beach, language: LanguageCode, windInfo: string
 };
 
 import { canOpenNavigation, openNavigation } from '../utils/navigation';
+import { NavigationBadge } from './NavigationBadge';
 
 export const BeachDetailModal: React.FC<BeachDetailModalProps> = ({ beach, isOpen, onClose, language, t, windInfo, hourlyForecast }) => {
   const details = useMemo(() => {
@@ -577,6 +578,7 @@ export const BeachDetailModal: React.FC<BeachDetailModalProps> = ({ beach, isOpe
                 {t.navigate}
             </button>
             )}
+            {canNavigate && <NavigationBadge beach={beach} language={language} />}
         </footer>
         )}
       </div>

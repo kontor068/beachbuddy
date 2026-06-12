@@ -3,6 +3,7 @@ import { motion } from 'motion/react';
 import { Beach, LanguageCode, SuitableBeach } from '../types';
 import { Translation } from '../types';
 import { canOpenNavigation, openNavigation } from '../utils/navigation';
+import { NavigationBadge } from './NavigationBadge';
 import { Share2, Clock, MapPin, Info, Navigation, CheckCircle2 } from 'lucide-react';
 import { displayBeachName } from '../utils/localization';
 import { TodayScoreBadge } from './TodayScoreBadge';
@@ -221,6 +222,7 @@ const BeachOfTheDay: React.FC<BeachOfTheDayProps> = ({ topBeach, language, t, on
                 {navigateLabel}
               </button>
             )}
+            {canNavigate && <NavigationBadge beach={beach} language={language} className="justify-self-start" />}
 
             <div className="grid grid-cols-2 gap-2 sm:flex sm:items-center">
               <button

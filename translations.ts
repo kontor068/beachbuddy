@@ -158,6 +158,11 @@ const enTranslation: Translation = {
       'scattered clouds': 'Scattered Clouds'
     },
     navigateToLabel: (beachName: string) => `Navigate to ${beachName}`,
+    navigationBadge: {
+      boatAccess: 'Boat access only',
+      unavailable: 'Navigation unavailable',
+      unverified: 'Location unverified',
+    },
     windUnitSelectionLabel: 'Wind speed unit',
     units: {
       beaufort: 'Bft',
@@ -545,6 +550,11 @@ const deTranslation: Translation = {
       'scattered clouds': 'Vereinzelte Wolken'
     },
     navigateToLabel: (beachName: string) => `Zu ${beachName} navigieren`,
+    navigationBadge: {
+      boatAccess: 'Nur per Boot erreichbar',
+      unavailable: 'Navigation nicht verfugbar',
+      unverified: 'Standort nicht bestatigt',
+    },
     windUnitSelectionLabel: "Einheit für Windgeschwindigkeit",
     units: {
       beaufort: "Bft",
@@ -932,6 +942,11 @@ const itTranslation: Translation = {
       'scattered clouds': 'Nubi sparse'
     },
     navigateToLabel: (beachName: string) => `Naviga verso ${beachName}`,
+    navigationBadge: {
+      boatAccess: 'Accesso solo via mare',
+      unavailable: 'Navigazione non disponibile',
+      unverified: 'Posizione non verificata',
+    },
     windUnitSelectionLabel: "Unità velocità vento",
     units: {
       beaufort: "Bft",
@@ -1325,6 +1340,11 @@ export const translations: Record<LanguageCode, Translation> = {
       'scattered clouds': 'Αραιές Νεφώσεις'
     },
     navigateToLabel: (beachName: string) => `Πλοήγηση στην παραλία ${beachName}`,
+    navigationBadge: {
+      boatAccess: 'Πρόσβαση μόνο με σκάφος',
+      unavailable: 'Η πλοήγηση δεν είναι διαθέσιμη',
+      unverified: 'Μη επιβεβαιωμένη θέση',
+    },
     windUnitSelectionLabel: 'Μονάδα ταχύτητας ανέμου',
     units: {
       beaufort: 'Μπφ',
@@ -1697,6 +1717,11 @@ export const translations: Record<LanguageCode, Translation> = {
       daysAgo: (days: number) => `il y a ${days} jours`,
     },
     navigateToLabel: (beachName: string) => `Naviguer vers ${beachName}`,
+    navigationBadge: {
+      boatAccess: 'Acces uniquement par bateau',
+      unavailable: 'Navigation indisponible',
+      unverified: 'Emplacement non verifie',
+    },
     windUnitSelectionLabel: 'Unité de vitesse du vent',
     units: {
       beaufort: 'Bft',

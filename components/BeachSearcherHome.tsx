@@ -42,7 +42,7 @@ import {
   type QuickPreferenceFilter,
 } from '../utils/preferenceFilterLabels';
 import { getBeachFilterDirectoryTitle } from '../utils/filterSummary';
-import { canOpenNavigation, openNavigation } from '../utils/navigation';
+import { canOpenNavigation, getNavigationBadge, openNavigation } from '../utils/navigation';
 import { getSelectedDayOffset, getSelectedDayPrefix, getSelectedDaySentencePrefix } from '../utils/dateLabels';
 import { getConsistentVisibleMapExposureLevels } from '../utils/mapExposure';
 import { isAdventureBeach } from '../utils/access';
@@ -2033,6 +2033,11 @@ export const BeachSearcherHome: React.FC<BeachSearcherHomeProps> = ({
     ? getBeachPhotoLookup(topBeachToday.beach.name.gr, topBeachToday.beach.name.en, topBeachToday.beach.id, 1, selectedIsland?.name[language]).photos[0]
     : undefined;
   const topBeachCanNavigate = topBeachToday ? canOpenNavigation(topBeachToday.beach) : false;
+  const topBeachNavBadge = topBeachToday ? getNavigationBadge(topBeachToday.beach) : undefined;
+  const topBeachNavBadgeLabel = topBeachNavBadge
+    ? t.navigationBadge[topBeachNavBadge === 'boat-access' ? 'boatAccess' : topBeachNavBadge === 'nav-unavailable' ? 'unavailable' : 'unverified']
+    : undefined;
+  const topBeachNavTitle = topBeachNavBadgeLabel ? `${t.navigate} — ${topBeachNavBadgeLabel}` : t.navigate;
   const handleTopBeachNavigation = () => {
     if (!topBeachToday || !topBeachCanNavigate) return;
 
@@ -2818,8 +2823,8 @@ export const BeachSearcherHome: React.FC<BeachSearcherHomeProps> = ({
                     type="button"
                     onClick={handleTopBeachNavigation}
                     className="grid h-11 w-11 place-items-center rounded-xl bg-sky-50 text-[#007a83] shadow-sm transition hover:bg-sky-100 focus:outline-none focus-visible:ring-2 focus-visible:ring-cyan-700/30"
-                    title={t.navigate}
-                    aria-label={t.navigateToLabel(topBeachName)}
+                    title={topBeachNavTitle}
+                    aria-label={topBeachNavBadgeLabel ? `${t.navigateToLabel(topBeachName)} — ${topBeachNavBadgeLabel}` : t.navigateToLabel(topBeachName)}
                   >
                     <Navigation className="h-4 w-4" aria-hidden="true" />
                   </button>

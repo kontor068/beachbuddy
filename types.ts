@@ -633,6 +633,11 @@ export type Translation = {
   conditionLabel: string;
   weatherConditions: Record<string, string>;
   navigateToLabel: (beachName: string) => string;
+  navigationBadge: {
+    boatAccess: string;
+    unavailable: string;
+    unverified: string;
+  };
   windUnitSelectionLabel: string;
   units: {
     beaufort: string;

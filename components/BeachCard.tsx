@@ -6,7 +6,7 @@ import { Beach, Accessibility, LanguageCode, BeachType, CrowdLevel, WarningFlag,
 import { getBeaufortLevel } from '../utils/weatherUtils';
 import { Translation } from '../types';
 
-import { canOpenNavigation, openNavigation } from '../utils/navigation';
+import { canOpenNavigation, getNavigationBadge, openNavigation } from '../utils/navigation';
 import { BeachConditionScore } from './BeachConditionScore';
 import { TodayScoreBadge } from './TodayScoreBadge';
 import { getBeachPhotoLookup } from '../services/beachPhotos';
@@ -1042,6 +1042,14 @@ export const BeachCard: React.FC<BeachCardProps> = ({
     openNavigation(beach);
   };
   const canNavigate = canOpenNavigation(beach);
+  // Icon-only card buttons have no room for a visible pill; surface the badge reason via the
+  // title/aria-label so the boat-only/unverified context still reaches the user (and screen
+  // readers) without breaking the tight action grid on mobile.
+  const navBadge = getNavigationBadge(beach);
+  const navBadgeLabel = navBadge
+    ? t.navigationBadge[navBadge === 'boat-access' ? 'boatAccess' : navBadge === 'nav-unavailable' ? 'unavailable' : 'unverified']
+    : undefined;
+  const navButtonTitle = navBadgeLabel ? `${t.navigate} — ${navBadgeLabel}` : t.navigate;
 
   const rawAccessLabel = metadata?.access
     ? localizedAccessLabel(metadata.access.type, metadata.access.label, language)
@@ -1390,7 +1398,7 @@ export const BeachCard: React.FC<BeachCardProps> = ({
             <button
               onClick={handleNavigationClick}
               className={`grid ${isCompact ? 'h-11 w-11 lg:h-10 lg:w-10' : 'h-11 w-11'} place-items-center rounded-xl bg-sky-50 text-primary transition-colors hover:bg-sky-100 focus:outline-none focus-visible:ring-2 focus-visible:ring-primary dark:bg-sky-900/20 dark:hover:bg-sky-900/40 cursor-pointer`}
-              title={t.navigate}
+              title={navButtonTitle}
               aria-label={t.navigateToLabel(beachDisplayName)}
             >
               <Navigation className="h-4 w-4" />
@@ -1600,7 +1608,7 @@ export const BeachCard: React.FC<BeachCardProps> = ({
           <button
             onClick={handleNavigationClick}
             className="p-3 rounded-xl bg-sky-50 dark:bg-sky-900/20 text-primary hover:bg-sky-100 dark:hover:bg-sky-900/40 transition-colors cursor-pointer"
-            title={t.navigate}
+            title={navButtonTitle}
             aria-label={t.navigateToLabel(beachDisplayName)}
           >
             <Navigation className="w-4 h-4" />

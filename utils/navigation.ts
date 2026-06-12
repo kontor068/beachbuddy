@@ -257,6 +257,15 @@ export const canOpenNavigation = (beach: NavigationBeach) => (
   getNavigationAction(beach).kind !== 'none'
 );
 
+/**
+ * Presentation helper: the badge for a beach's navigation action, or undefined when there is
+ * nothing to flag (full directions or no action). Reads the SAME getNavigationAction — never
+ * recomputes the decision. The UI maps the badge key to a localized label.
+ */
+export const getNavigationBadge = (beach: NavigationBeach): NavigationBadge | undefined => (
+  getNavigationAction(beach).badge
+);
+
 const isMobileDevice = () => (
   typeof navigator !== 'undefined' &&
   /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)

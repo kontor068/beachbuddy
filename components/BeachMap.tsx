@@ -3,14 +3,15 @@ import { Circle, MapContainer, TileLayer, Marker, Popup, Tooltip, ZoomControl, u
 import L from 'leaflet';
 import 'leaflet/dist/leaflet.css';
 import { Navigation, MapPin, Clock, Wind, X, Info } from 'lucide-react';
-import { SuitableBeach, Beach, LanguageCode } from '../types';
+import { SuitableBeach, Beach, LanguageCode, ForecastItem } from '../types';
 import { trackEvent } from '../services/analyticsService';
 import { degToCompass, getBeaufortLevel } from '../utils/weatherUtils';
 import { getSelectedDayPrefix } from '../utils/dateLabels';
 import { getLocalizedCopy, languageToLocale } from '../utils/i18n';
 import { getBeachMapCoordinates } from '../utils/mapCoordinates';
 import { getConsistentVisibleMapExposureLevels, getVisibleMapExposureLevel, shouldShowWindExposureColors } from '../utils/mapExposure';
-import { canOpenNavigation, openNavigation } from '../utils/navigation';
+import { canOpenNavigation, getNavigationBadge, openNavigation } from '../utils/navigation';
+import { translations } from '../translations';
 
 interface BeachMapProps {
   beaches: SuitableBeach[];
@@ -1273,6 +1274,14 @@ const BeachMap: React.FC<BeachMapProps> = ({
       openNavigation(item.beach);
     };
     const canNavigate = canOpenNavigation(item.beach);
+    // Map popup/pin buttons are tiny; surface the badge reason via the button title rather than a
+    // visible pill that would overflow the marker callout.
+    const navBadge = getNavigationBadge(item.beach);
+    const navBadgeLabel = navBadge
+      ? (translations[language ?? 'en'] ?? translations.en).navigationBadge[
+          navBadge === 'boat-access' ? 'boatAccess' : navBadge === 'nav-unavailable' ? 'unavailable' : 'unverified'
+        ]
+      : undefined;
 
     return (
       <div className={isPanel ? 'space-y-2.5' : 'min-w-[200px] p-1'}>
@@ -1327,7 +1336,8 @@ const BeachMap: React.FC<BeachMapProps> = ({
               <button
                 type="button"
                 onClick={handleNavigationClick}
-                aria-label={mapCopy.navigate[language]}
+                aria-label={navBadgeLabel ? `${mapCopy.navigate[language]} — ${navBadgeLabel}` : mapCopy.navigate[language]}
+                title={navBadgeLabel ? `${mapCopy.navigate[language]} — ${navBadgeLabel}` : mapCopy.navigate[language]}
                 className={`${isPanel ? 'min-h-10 px-3' : 'h-8 w-8 px-0'} inline-flex items-center justify-center gap-1 rounded-xl border border-cyan-100 bg-cyan-50 text-xs font-black text-cyan-700 transition-colors hover:border-cyan-200 hover:bg-cyan-100 cursor-pointer`}
               >
                 <Navigation className="h-3.5 w-3.5" />
