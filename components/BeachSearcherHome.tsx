@@ -96,6 +96,7 @@ interface BeachSearcherHomeProps {
   isWeatherPanelOpen?: boolean;
   onWeatherPanelOpenChange?: (open: boolean) => void;
   suitableDistanceSortActive?: boolean;
+  locationSortResetKey?: number;
   preferences: UserPreferences;
   activeFilters?: FilterKey[];
   filterResultCounts?: Partial<Record<keyof UserPreferences, number>>;
@@ -137,6 +138,7 @@ interface BeachSearcherHomeProps {
   onUseCurrentLocation?: () => void;
   /** Fetches the user's location for distance sorting without changing region. */
   onRequestUserLocation?: () => void;
+  onDistanceSortActiveChange?: (active: boolean) => void;
   hasUserLocation?: boolean;
   isFindingCurrentLocation?: boolean;
   currentLocationError?: string | null;
@@ -1351,6 +1353,7 @@ export const BeachSearcherHome: React.FC<BeachSearcherHomeProps> = ({
   isWeatherPanelOpen: controlledWeatherPanelOpen,
   onWeatherPanelOpenChange,
   suitableDistanceSortActive = false,
+  locationSortResetKey,
   preferences,
   activeFilters = [],
   filterResultCounts,
@@ -1388,6 +1391,7 @@ export const BeachSearcherHome: React.FC<BeachSearcherHomeProps> = ({
   onOpenIslandSelector,
   onUseCurrentLocation,
   onRequestUserLocation,
+  onDistanceSortActiveChange,
   hasUserLocation = false,
   isFindingCurrentLocation = false,
   currentLocationError,
@@ -1406,6 +1410,7 @@ export const BeachSearcherHome: React.FC<BeachSearcherHomeProps> = ({
     suitable: true,
     distance: false,
   });
+  const isDistanceSortActive = directoryViewCriteria.distance || suitableDistanceSortActive;
   const [localAllBeachesPanelOpen, setLocalAllBeachesPanelOpen] = useState(false);
   const [localWeatherPanelOpen, setLocalWeatherPanelOpen] = useState(false);
   const isAllBeachesPanelOpen = controlledAllBeachesPanelOpen ?? localAllBeachesPanelOpen;
@@ -1675,7 +1680,7 @@ export const BeachSearcherHome: React.FC<BeachSearcherHomeProps> = ({
       );
       const filteredCards = suitableBeachCards.filter(item => matchesCurrentFilters(item.beach));
       const sortedCards = [...filteredCards].sort((a, b) => {
-        if (directoryViewCriteria.distance || suitableDistanceSortActive) {
+        if (isDistanceSortActive) {
           const aDistance = getDistance(a);
           const bDistance = getDistance(b);
           if (aDistance !== undefined && bDistance !== undefined && aDistance !== bDistance) {
@@ -1698,13 +1703,12 @@ export const BeachSearcherHome: React.FC<BeachSearcherHomeProps> = ({
     return popularBeachCards.map(beach => ({ beach, score: undefined, context: undefined }));
   }, [
     activeFilters,
-    directoryViewCriteria.distance,
+    isDistanceSortActive,
     language,
     popularBeachCards,
     preferences,
     searchQuery,
     selectedIsland,
-    suitableDistanceSortActive,
     suitableBeachCards,
   ]);
   const topRecommendationBeachCards = useMemo(() => (
@@ -1889,8 +1893,7 @@ export const BeachSearcherHome: React.FC<BeachSearcherHomeProps> = ({
 
     // Distance-first can be driven either by the dropdown option (desktop) or by
     // the dedicated "Κοντά μου" button (mobile, via suitableDistanceSortActive).
-    const distanceSortActive = directoryViewCriteria.distance || suitableDistanceSortActive;
-    if (!distanceSortActive) {
+    if (!isDistanceSortActive) {
       return sourceBeachCards;
     }
 
@@ -1914,7 +1917,49 @@ export const BeachSearcherHome: React.FC<BeachSearcherHomeProps> = ({
       if (bDistance !== undefined) return 1;
       return 0;
     });
-  }, [directoryAllBeachCards, directorySuitableOnlyBeachCards, directoryViewCriteria.distance, isDirectorySuitableView, suitableDistanceSortActive, weatherContextByBeachId]);
+  }, [directoryAllBeachCards, directorySuitableOnlyBeachCards, isDirectorySuitableView, isDistanceSortActive, weatherContextByBeachId]);
+  const firstWeatherBeachId = weatherBeachCards[0]?.beach.id;
+  const firstDirectoryBeachId = directoryDisplayBeachCards[0]?.id;
+
+  useEffect(() => {
+    if (!isDistanceSortActive) return undefined;
+
+    const firstBeachId = isDirectorySuitableView ? firstWeatherBeachId : firstDirectoryBeachId;
+    let firstFrame = 0;
+    let secondFrame = 0;
+
+    firstFrame = window.requestAnimationFrame(() => {
+      secondFrame = window.requestAnimationFrame(() => {
+        [
+          topRecommendationsCarouselRef.current,
+          suitableCarouselRef.current,
+          directoryCarouselRef.current,
+        ].forEach(carousel => {
+          if (!carousel) return;
+          carousel.scrollLeft = 0;
+        });
+
+        isCarouselScrollingRef.current = false;
+        if (firstBeachId && onActiveSuitableBeachChange) {
+          activeSuitableBeachIdRef.current = firstBeachId;
+          onActiveSuitableBeachChange(firstBeachId, { resumeFollow: false });
+        }
+      });
+    });
+
+    return () => {
+      window.cancelAnimationFrame(firstFrame);
+      window.cancelAnimationFrame(secondFrame);
+    };
+  }, [
+    firstDirectoryBeachId,
+    firstWeatherBeachId,
+    isDirectorySuitableView,
+    isDistanceSortActive,
+    locationSortResetKey,
+    onActiveSuitableBeachChange,
+    selectedIsland?.id,
+  ]);
   const shouldTrackDirectoryCarouselOnMap = Boolean(
     isMobileViewport &&
     directoryDisplayBeachCards.length > 0 &&
@@ -2253,16 +2298,17 @@ export const BeachSearcherHome: React.FC<BeachSearcherHomeProps> = ({
     ...(isMobileViewport ? [] : [{
       key: 'distance' as const,
       label: isFindingCurrentLocation && !hasUserLocation ? copy.findingLocation : t.sortByDistance,
-      isActive: directoryViewCriteria.distance,
+      isActive: isDistanceSortActive,
       onSelect: () => {
-        const shouldEnableDistance = !directoryViewCriteria.distance;
+        const shouldEnableDistance = !isDistanceSortActive;
         if (shouldEnableDistance) {
           // Always grab a fresh, high-accuracy fix here so a stale location from a
           // previous "near me" action doesn't keep showing the wrong spot.
-          const requestLocation = onRequestUserLocation ?? onUseCurrentLocation;
+          const requestLocation = onUseCurrentLocation ?? onRequestUserLocation;
           requestLocation?.();
         }
-        setDirectoryViewCriteria(current => ({ ...current, distance: !current.distance }));
+        onDistanceSortActiveChange?.(shouldEnableDistance);
+        setDirectoryViewCriteria(current => ({ ...current, distance: shouldEnableDistance }));
       },
       isDisabled: isFindingCurrentLocation && !hasUserLocation,
     }]),
