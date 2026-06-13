@@ -30,6 +30,9 @@ interface BeachMapProps {
   /** Max spread (deg) among per-beach local wind directions; drives the
    *  "uniform vs locally variable" wind banner state. Presentation only. */
   windDirectionSpreadDeg?: number;
+  /** Per-beach local wind (direction deg + speed km/h) keyed by beach id, for the
+   *  hover card so a differently-coloured beach is self-explanatory. Optional. */
+  beachLocalWinds?: Record<number, { deg: number; speedKmh: number }>;
   /** Daytime hour slots for the slider (already filtered to "now onward" for today). */
   hourSlots?: ForecastItem[];
   /** The dt (seconds) of the hour currently selected on the slider. Controlled by the parent. */
@@ -272,7 +275,9 @@ const BeachHoverPreviewCard: React.FC<{
   photoUrl: string | null;
   photosSoonLabel: string;
   featureChips: HoverPreviewFeatureChip[];
-}> = ({ item, position, mapViewportRef, language, photoUrl, photosSoonLabel, featureChips }) => {
+  localWind?: { deg: number; speedKmh: number };
+  windLabel?: string;
+}> = ({ item, position, mapViewportRef, language, photoUrl, photosSoonLabel, featureChips, localWind, windLabel }) => {
   const viewportWidth = mapViewportRef.current?.clientWidth || HOVER_PREVIEW_WIDTH + 32;
   const viewportHeight = mapViewportRef.current?.clientHeight || HOVER_PREVIEW_HEIGHT + 32;
   const preferLeft = position.x + HOVER_PREVIEW_WIDTH + 18 > viewportWidth;
@@ -316,6 +321,13 @@ const BeachHoverPreviewCard: React.FC<{
           <h3 className="text-sm font-black leading-snug text-slate-950">
             {beachName}
           </h3>
+
+          {localWind && windLabel && (
+            <p className="mt-1 flex items-center gap-1 text-[10px] font-bold leading-tight text-slate-500">
+              <Wind className="h-3 w-3 shrink-0 text-sky-600" aria-hidden="true" />
+              <span>{windLabel} · {Math.round(localWind.speedKmh)} km/h</span>
+            </p>
+          )}
 
           {featureChips.length > 0 && (
             <div className="mt-2 grid grid-cols-2 gap-1.5">
@@ -1252,6 +1264,7 @@ const BeachMap: React.FC<BeachMapProps> = ({
   windDirection,
   windDirectionDeg,
   windDirectionSpreadDeg,
+  beachLocalWinds,
   hourSlots,
   selectedHourDt = null,
   onHourChange,
@@ -1747,6 +1760,20 @@ const BeachMap: React.FC<BeachMapProps> = ({
     () => hoveredBeach ? buildHoverPreviewFeatureChips(hoveredBeach.beach, language) : [],
     [hoveredBeach, language]
   );
+  // Local wind for the hovered beach: its own cluster forecast if available, else
+  // the island wind — so the hover explains a beach coloured against the headline.
+  const hoverLocalWind = useMemo(() => {
+    if (!hoveredBeach) return undefined;
+    const perBeach = beachLocalWinds?.[hoveredBeach.beach.id];
+    if (perBeach) return perBeach;
+    if (typeof mapWindDirectionDeg === 'number' && typeof windSpeedKmh === 'number') {
+      return { deg: mapWindDirectionDeg, speedKmh: windSpeedKmh };
+    }
+    return undefined;
+  }, [hoveredBeach, beachLocalWinds, mapWindDirectionDeg, windSpeedKmh]);
+  const hoverLocalWindLabel = hoverLocalWind
+    ? (directionShortLabels[language]?.[degToCompass(hoverLocalWind.deg)] || degToCompass(hoverLocalWind.deg))
+    : undefined;
   const isCompactPreview = compact && preview;
   const beachLabelOpacityLevel = Math.max(0, Math.min(10, Math.round(beachLabelOpacity * 10)));
 
@@ -2265,6 +2292,8 @@ const BeachMap: React.FC<BeachMapProps> = ({
             photoUrl={hoverPreviewPhotoUrl}
             photosSoonLabel={hoverPreviewCopy.photosSoon}
             featureChips={hoverPreviewFeatureChips}
+            localWind={hoverLocalWind}
+            windLabel={hoverLocalWindLabel}
           />
         )}
 

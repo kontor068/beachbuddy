@@ -860,7 +860,12 @@ const getGeneralConditionsHelper = (
   favoredCoasts: string,
   language: LanguageCode,
   waveHeightM?: number,
-  selectedDate?: Date
+  selectedDate?: Date,
+  // When per-beach local winds diverge too much (large/mountainous island, weak
+  // wind) the single "favored coast" hint would contradict the map, so the
+  // summary drops the leeward claim and points to per-beach colours instead —
+  // staying consistent with the map's "locally variable wind" banner.
+  isVariableWind = false
 ): string => {
   const sentenceDay = getSelectedDaySentencePrefix(selectedDate, new Date(), language);
   void waveHeightM;
@@ -876,6 +881,7 @@ const getGeneralConditionsHelper = (
           : `${sentenceDay} has ${beaufort} Beaufort ${wind} wind. There is no clearly calm swimming pick. If you go, ${favoredCoasts} are generally favored.`;
       },
       default: () => `${sentenceDay} has ${beaufort} Beaufort ${wind} wind. In these conditions, ${favoredCoasts} are generally favored.`,
+      variableWind: () => `${sentenceDay} has ${beaufort} Beaufort wind that varies around the island. Check each beach's colour — sheltered spots differ by coast.`,
     },
     gr: {
       mild: () => `${sentenceDay} έχει ${beaufort} μποφόρ με ${windLabel} άνεμο. Οι περισσότερες παραλίες φαίνονται κατάλληλες για μπάνιο.`,
@@ -887,6 +893,7 @@ const getGeneralConditionsHelper = (
         : `${sentenceDay} έχει ${beaufort} μποφόρ με ${windLabel} άνεμο. Δεν υπάρχει καθαρή επιλογή για ήρεμο μπάνιο. Αν πας, γενικά προτιμώνται ${favoredCoasts}.`;
       },
       default: () => `${sentenceDay} έχει ${beaufort} μποφόρ με ${windLabel} άνεμο. Σε αυτές τις συνθήκες γενικά προτιμώνται ${favoredCoasts}.`,
+      variableWind: () => `${sentenceDay} έχει ${beaufort} μποφόρ άνεμο που αλλάζει ανά περιοχή του νησιού. Δες το χρώμα κάθε παραλίας — τα απάγκια διαφέρουν ανά ακτή.`,
     },
     fr: {
       mild: () => `${sentenceDay} : ${beaufort} Beaufort avec vent ${wind}. La plupart des plages semblent adaptees a la baignade.`,
@@ -898,6 +905,7 @@ const getGeneralConditionsHelper = (
           : `${sentenceDay} : ${beaufort} Beaufort avec vent ${wind}. Aucun choix clairement calme. Si vous y allez, privilegiez ${favoredCoasts}.`;
       },
       default: () => `${sentenceDay} : ${beaufort} Beaufort avec vent ${wind}. Dans ces conditions, ${favoredCoasts} sont favorisees.`,
+      variableWind: () => `${sentenceDay} : vent de ${beaufort} Beaufort variable autour de l'ile. Regardez la couleur de chaque plage — les abris varient selon la cote.`,
     },
     de: {
       mild: () => `${sentenceDay}: ${beaufort} Bft mit ${wind} Wind. Die meisten Strande wirken zum Schwimmen geeignet.`,
@@ -909,6 +917,7 @@ const getGeneralConditionsHelper = (
           : `${sentenceDay}: ${beaufort} Bft mit ${wind} Wind. Es gibt keine klar ruhige Badeoption. Wenn du gehst, sind ${favoredCoasts} meist besser.`;
       },
       default: () => `${sentenceDay}: ${beaufort} Bft mit ${wind} Wind. Unter diesen Bedingungen sind ${favoredCoasts} meist besser.`,
+      variableWind: () => `${sentenceDay}: ${beaufort} Bft Wind, der rund um die Insel wechselt. Achte auf die Farbe jedes Strands — geschützte Stellen variieren je nach Küste.`,
     },
     it: {
       mild: () => `${sentenceDay}: ${beaufort} Beaufort con vento ${wind}. La maggior parte delle spiagge sembra adatta al bagno.`,
@@ -920,9 +929,13 @@ const getGeneralConditionsHelper = (
           : `${sentenceDay}: ${beaufort} Beaufort con vento ${wind}. Non c'e una scelta chiaramente calma. Se vai, preferisci ${favoredCoasts}.`;
       },
       default: () => `${sentenceDay}: ${beaufort} Beaufort con vento ${wind}. In queste condizioni, ${favoredCoasts} sono favorite.`,
+      variableWind: () => `${sentenceDay}: vento di ${beaufort} Beaufort variabile intorno all'isola. Guarda il colore di ogni spiaggia — i ripari cambiano a seconda della costa.`,
     },
   });
 
+  // A variable wind only matters once the wind itself matters (>=3 Bft); below
+  // that everything is calm and the "mild" copy already makes no coast claim.
+  if (isVariableWind && beaufort >= 3 && mode !== 'mild') return copy.variableWind();
   if (mode === 'mild') return copy.mild();
   if (mode === 'caution') return copy.caution();
   if (mode === 'no_ideal_swimming') return copy.noIdeal();
@@ -2224,6 +2237,21 @@ export const App: React.FC = () => {
     return maxWindDirectionSpread(degs);
   }, [selectedBeachForecasts]);
 
+  // Per-beach local wind (direction + speed) for the map hover card, so a beach
+  // coloured differently from the island headline is self-explanatory ("here it
+  // blows N 7 km/h"). Falls back to the island wind when no cluster forecast.
+  const mapBeachLocalWinds = useMemo<Record<number, { deg: number; speedKmh: number }>>(() => {
+    const lookup: Record<number, { deg: number; speedKmh: number }> = {};
+    Object.entries(selectedBeachForecasts).forEach(([beachId, forecast]) => {
+      const deg = forecast?.wind?.deg;
+      const speed = forecast?.wind?.speed;
+      if (typeof deg === 'number' && Number.isFinite(deg) && typeof speed === 'number') {
+        lookup[Number(beachId)] = { deg, speedKmh: speed * 3.6 };
+      }
+    });
+    return lookup;
+  }, [selectedBeachForecasts]);
+
   // --- Hour selection (map slider) ---
   const baseDailyForecast = forecast?.[selectedDayIndex];
   // Daytime hours available on the slider. For "today" we only expose the
@@ -3427,7 +3455,10 @@ export const App: React.FC = () => {
       getFavoredCoastPhrase(recommendationWindDirection, language),
       language,
       selectedForecast.marine?.waveHeightM,
-      selectedForecast.date
+      selectedForecast.date,
+      // Keep the summary consistent with the map's "locally variable wind" banner
+      // (same 45° spread threshold) so it never claims a favored coast the map denies.
+      mapWindDirectionSpreadDeg > 45
     )
     : recommendationModeCopy.helper[language];
   const selectedDayDate = selectedForecast?.date;
@@ -4198,6 +4229,7 @@ export const App: React.FC = () => {
           windDirection={selectedForecast ? degToCompass(selectedForecast.wind.deg) : undefined}
           windDirectionDeg={selectedForecast?.wind.deg}
           windDirectionSpreadDeg={mapWindDirectionSpreadDeg}
+          beachLocalWinds={mapBeachLocalWinds}
           hourSlots={mapHourSlots}
           selectedHourDt={selectedHourDt}
           onHourChange={setSelectedHourDt}
@@ -4571,6 +4603,7 @@ export const App: React.FC = () => {
                     windDirection={selectedForecast ? degToCompass(selectedForecast.wind.deg) : undefined}
                     windDirectionDeg={selectedForecast?.wind.deg}
                     windDirectionSpreadDeg={mapWindDirectionSpreadDeg}
+                    beachLocalWinds={mapBeachLocalWinds}
                     hourSlots={mapHourSlots}
                     selectedHourDt={selectedHourDt}
                     onHourChange={setSelectedHourDt}
@@ -4870,6 +4903,7 @@ export const App: React.FC = () => {
                             windDirection={selectedForecast ? degToCompass(selectedForecast.wind.deg) : undefined}
                             windDirectionDeg={selectedForecast?.wind.deg}
                             windDirectionSpreadDeg={mapWindDirectionSpreadDeg}
+                            beachLocalWinds={mapBeachLocalWinds}
                             hourSlots={mapHourSlots}
                             selectedHourDt={selectedHourDt}
                             onHourChange={setSelectedHourDt}
