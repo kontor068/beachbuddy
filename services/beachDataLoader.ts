@@ -3,7 +3,7 @@ import type { RawBeach } from './beachService';
 import regionDisplayNames from '../utils/regionDisplayNames.json';
 import { getGreekBeachNameDisplay } from '../utils/greekBeachNames';
 import { getActiveWeatherFixtureTargetRegionId } from '../utils/weatherFixtures';
-import { parseBeachDetailPath } from '../utils/beachUrls';
+import { parseBeachDetailPath, parseBeachRegionPath, regionMatchesRouteParam } from '../utils/beachUrls';
 
 export interface BeachRegionIndexEntry {
   id: string;
@@ -35,6 +35,7 @@ interface AppBeachDetailPayload {
 }
 
 const BEACH_REGION_INDEX_PATH = '/data/beaches/index.json';
+let beachRegionIndexPromise: Promise<BeachRegionIndexEntry[]> | null = null;
 
 type RegionDisplayName = Partial<Island['name']> & { en?: string; gr?: string };
 
@@ -150,9 +151,10 @@ export const buildIslandShellFromIndexEntry = (entry: BeachRegionIndexEntry): Is
 });
 
 export const getPreferredInitialRegionId = (islands: Island[]): string | undefined => {
-  const route = parseBeachDetailPath();
-  if (route && islands.some(island => island.id === route.regionId)) {
-    return route.regionId;
+  const route = parseBeachDetailPath() || parseBeachRegionPath();
+  if (route) {
+    const routeIsland = islands.find(island => regionMatchesRouteParam(island, route.regionId));
+    if (routeIsland) return routeIsland.id;
   }
 
   const fixtureRegionId = getActiveWeatherFixtureTargetRegionId();
@@ -169,18 +171,27 @@ export const getPreferredInitialRegionId = (islands: Island[]): string | undefin
     || islands[0]?.id;
 };
 
-export const loadBeachRegionIndex = async (): Promise<BeachRegionIndexEntry[]> => {
-  const response = await fetch(BEACH_REGION_INDEX_PATH);
-  if (!response.ok) {
-    throw new Error(`Failed to fetch ${BEACH_REGION_INDEX_PATH}: ${response.status}`);
+export const loadBeachRegionIndex = (): Promise<BeachRegionIndexEntry[]> => {
+  if (!beachRegionIndexPromise) {
+    beachRegionIndexPromise = (async () => {
+      const response = await fetch(BEACH_REGION_INDEX_PATH);
+      if (!response.ok) {
+        throw new Error(`Failed to fetch ${BEACH_REGION_INDEX_PATH}: ${response.status}`);
+      }
+
+      const payload = await response.json() as BeachRegionIndexPayload;
+      if (!Array.isArray(payload.regions)) {
+        throw new Error(`${BEACH_REGION_INDEX_PATH} is missing regions[]`);
+      }
+
+      return payload.regions.filter(isValidIndexEntry);
+    })().catch(error => {
+      beachRegionIndexPromise = null;
+      throw error;
+    });
   }
 
-  const payload = await response.json() as BeachRegionIndexPayload;
-  if (!Array.isArray(payload.regions)) {
-    throw new Error(`${BEACH_REGION_INDEX_PATH} is missing regions[]`);
-  }
-
-  return payload.regions.filter(isValidIndexEntry);
+  return beachRegionIndexPromise;
 };
 
 const fetchAppReadyRegion = async (dataPath: string, regionId: string): Promise<Island> => {

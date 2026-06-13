@@ -6,6 +6,12 @@ import './index.css';
 import { initializeAnalytics } from './services/analyticsService';
 import { isChunkLoadError, recoverFromChunkLoadError, registerChunkLoadErrorHandler } from './utils/chunkLoadRecovery';
 
+declare global {
+  interface Window {
+    __calmBeachFallbackTimer?: number;
+  }
+}
+
 type RootErrorBoundaryProps = {
   children: React.ReactNode;
 };
@@ -77,6 +83,12 @@ const rootElement = document.getElementById('root');
 if (!rootElement) {
   throw new Error("Could not find root element to mount to");
 }
+
+if (window.__calmBeachFallbackTimer) {
+  window.clearTimeout(window.__calmBeachFallbackTimer);
+  window.__calmBeachFallbackTimer = undefined;
+}
+document.documentElement.classList.add('app-mounted');
 
 const root = ReactDOM.createRoot(rootElement);
 root.render(

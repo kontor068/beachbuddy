@@ -7,6 +7,17 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="color-scheme" content="light">
     <meta name="google-site-verification" content="2Bx8OQ9da4F9LX7ofT8UnybJk9PcrKY3GcYjTns5EpM" />
+    <script>
+      document.documentElement.classList.add('js');
+      window.__calmBeachFallbackTimer = window.setTimeout(function () {
+        document.documentElement.classList.add('show-static-fallback');
+      }, 5000);
+    </script>
+    <style>
+      html.js:not(.show-static-fallback) [data-static-fallback] {
+        display: none !important;
+      }
+    </style>
     <title>CalmBeach Greece - Best Beach Today by Wind & Waves</title>
     <meta name="description" content="Find a calmer beach in Greece today. CalmBeach compares live wind, waves, weather and beach exposure so you know where to swim with confidence." />
     <link rel="canonical" href="https://calmbeach.gr/" />
