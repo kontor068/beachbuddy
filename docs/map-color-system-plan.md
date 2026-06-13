@@ -1,9 +1,34 @@
 # Σχέδιο: Σύστημα χρωμάτων χάρτη (Exposure Φάση 4)
 
-**Κατάσταση:** Σχέδιο προς έγκριση — ΚΑΜΙΑ υλοποίηση ακόμα.
+**Κατάσταση:** ΜΕΡΟΣ 4α (μελτέμι fix) ΥΛΟΠΟΙΗΘΗΚΕ. Το πλήρες πλέγμα (παρακάτω) έμεινε σχέδιο — ο χρήστης επέλεξε σκόπιμα τη minimal αλλαγή.
 **Πεδίο:** Καθαρά presentation (mapping επιπέδων → χρώμα). ΚΑΜΙΑ αλλαγή σε engine, scoring, levels, thresholds, harmonisation, δεδομένα.
 **Αφορμή:** Πραγματικό screenshot Νάξου σε 3 Bft ΝΔ — το νησί κυρίως κίτρινο, μηδενικό dynamic range, alarm fatigue.
-**Εργαλείο τεκμηρίωσης/πύλη:** `node scripts/colorDistributionAudit.mjs` — τρέχει το ΠΡΑΓΜΑΤΙΚΟ pipeline του χάρτη (assessBeachWindExposure → getConsistentVisibleMapExposureLevels) σε 4 νησιά × 4 σενάρια και αξιολογεί τα προ-δεσμευμένα κριτήρια C1–C8 ως hard PASS/FAIL (exit 1 σε αποτυχία).
+**Εργαλείο τεκμηρίωσης/πύλη:** `node scripts/colorDistributionAudit.mjs` — τρέχει το ΠΡΑΓΜΑΤΙΚΟ pipeline του χάρτη (assessBeachWindExposure → getConsistentVisibleMapExposureLevels) σε 4 νησιά × 4 σενάρια και αξιολογεί τα προ-δεσμευμένα κριτήρια ως hard PASS/FAIL (exit 1 σε αποτυχία).
+
+---
+
+## ΥΛΟΠΟΙΗΘΗΚΕ (Φάση 4α — μελτέμι fix, 2026-06-13)
+
+Από το πλήρες σχέδιο υλοποιήθηκε **μόνο** η μία αλλαγή που λύνει το πραγματικό πρόβλημα: **στα 5-6 Bft, οι `protected` παραλίες βάφονται teal (πράσινο-κυανό `bg-teal-600`) αντί για κίτρινο.** Πριν, στο μελτέμι σενάριο (5-6 Bft Β), ΚΑΜΙΑ παραλία δεν είχε ήρεμο χρώμα — οι curated protected βγαίνανε προειδοποιητικό κίτρινο, άρα ο χάρτης δεν έδειχνε ποτέ «πού να πας» τη στιγμή που αυτό ήταν το ζητούμενο. Τώρα κάθε νησί δείχνει teal καταφύγια (Νάξος/Μήλος/Ρόδος/Λευκάδα: 40-64%), ενώ οι εκτεθειμένες μένουν πορτοκαλί (36-60%).
+
+- **Αρχείο:** `components/BeachMap.tsx` — `getExposureMarkerTone` (+ `teal` tone, `windLegendDotClasses.teal`, legend `5-6` rows ×5 γλώσσες «Προστατευμένες ● πράσινο / Πιο εκτεθειμένες ● πορτοκαλί»). Καμία άλλη αλλαγή.
+- **Όλες οι άλλες ζώνες (0-2 / 3 / 4 / 7) αμετάβλητες** — byte-identical (κατοχυρώνεται από το C3 του audit).
+- **Πύλη:** `scripts/colorDistributionAudit.mjs` κριτήρια C1 (κάθε νησί >0% teal στο μελτέμι, ήταν 0%), C2 (πορτοκαλί+κόκκινο ≥30% — δεν whitewash), C3 (non-regression 2/3/7 Bft).
+
+### ⚠️ ΕΚΚΡΕΜΕΣ ENGINE TASK: false partial→protected harmonisation (όχι presentation)
+
+Το μελτέμι fix αποκάλυψε προϋπάρχον bug στο **map exposure layer** (όχι στο engine, όχι στο χρωματικό): η `getConsistentVisibleMapExposureLevels` (`utils/mapExposure.ts`) εναρμονίζει μια `partial` παραλία **προς το `protected`** ενός γείτονα του ίδιου **curated shoreline segment** (`areInSameShorelineSegment`), **ακόμα κι όταν τα δύο μέτωπα κοιτάζουν αρκετά διαφορετικά** ώστε να έχουν διαφορετική έκθεση στον ίδιο άνεμο.
+
+**Reference cases (εθνικό audit 2026-06-13, σενάριο 5 Bft Β):**
+| Παραλία (engine=partial) | Τραβιέται από (protected) | facing diff | Αποτέλεσμα |
+|---|---|---|---|
+| #1902 Αμμουδαράκι Μήλος (300°) | #1924 Τριάδες (268°) | 32° | partial→protected→teal |
+| #1812 Καλόγηρος Κέα (304°) | #1807 Βρόσκοπος (260°) | 44° | partial→protected→teal |
+| #1965 Πάνορμος Μυκόνου (70°) | #1945 Άγ. Σώστης (102°) | 32° | partial→protected→teal |
+
+Συνέπεια: σε **ακριβές** βόρειο (0°) δείχνουν teal «ιδανικό καταφύγιο» ενώ το engine λέει partial· σε ΒΔ (τυπικός μελτέμι) γίνονται σωστά exposed→πορτοκαλί. **Δεν είναι safety-critical** (καμία δεν γίνεται κόκκινη σε κανένα μελτέμι heading· το χειρότερο είναι πορτοκαλί στις ΒΔ κατευθύνσεις, που το fix δεν αγγίζει· το teal εμφανίζεται μόνο όπου είναι partial, όχι exposed) — γι' αυτό το χρωματικό fix προχώρησε. Αλλά είναι λάθος ένδειξη που αξίζει διόρθωση.
+
+**Υποψία-λύση (spec, ΟΧΙ υλοποίηση):** στη `getConsistentVisibleMapExposureLevels`, μην εναρμονίζεις `partial→protected` μέσω curated segment όταν το facing-diff των δύο segment-γειτόνων **>~30°** (τα 3 cases είναι 32-44°· οι σωστές εναρμονίσεις του ίδιου μετώπου είναι τυπικά <20°). Πριν την υλοποίηση χρειάζεται: (α) `validateWindExposureGroundTruth` + `validateWindExposureEngine` πράσινα, (β) **εθνική μέτρηση** πόσες teal παραλίες χάνουν το teal τους με το gate (αν >~20-30, το κατώφλι ή ο μηχανισμός θέλει αναθεώρηση — μπορεί να σπάσει σωστές εναρμονίσεις), (γ) **bidirectional asymmetry audit** (μια false-protected→partial διόρθωση είναι φθηνή· μια false-partial→exposed είναι ακριβή). Είναι το ίδιο οικογενειακό πρόβλημα με τη γωνιακή ασυνέχεια των sectors (R5): κβαντισμός γεωμετρίας σε διακριτές κατηγορίες κοντά σε κατώφλια. Σκόπιμα ΔΕΝ σχεδιάζεται εδώ — όταν αναληφθεί, ξεκινά από αυτό το spec.
 
 ---
 

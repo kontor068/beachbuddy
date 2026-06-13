@@ -667,6 +667,12 @@ const getExposureMarkerTone = (
       bgClass: 'bg-sky-50',
       textClass: 'text-sky-700',
     },
+    teal: {
+      colorClass: 'bg-teal-600',
+      ringClass: 'ring-teal-200',
+      bgClass: 'bg-teal-50',
+      textClass: 'text-teal-700',
+    },
     yellow: {
       colorClass: 'bg-yellow-400',
       ringClass: 'ring-yellow-200',
@@ -693,13 +699,18 @@ const getExposureMarkerTone = (
   const isProtected = exposureLevel === 'protected';
 
   if (beaufort >= 7) return tones.red;
-  if (beaufort >= 5) return isProtected ? tones.yellow : tones.orange;
+  // At 5-6 Bft the protected (sheltered) beaches are the whole point of the
+  // app — the meltemi "where can I still swim?" case. Paint them calm/teal so
+  // the map actually surfaces a refuge, instead of a warning yellow that reads
+  // the same as the exposed-but-orange beaches around it.
+  if (beaufort >= 5) return isProtected ? tones.teal : tones.orange;
   if (beaufort >= 3) return isProtected ? tones.blue : tones.yellow;
   return tones.blue;
 };
 
 const windLegendDotClasses = {
   blue: 'bg-sky-500 ring-sky-200',
+  teal: 'bg-teal-600 ring-teal-200',
   yellow: 'bg-yellow-400 ring-yellow-200',
   orange: 'bg-orange-500 ring-orange-200',
   red: 'bg-rose-600 ring-rose-300',
@@ -1534,7 +1545,7 @@ const BeachMap: React.FC<BeachMapProps> = ({
         { id: '0-2', range: '0-2 Bft', segments: [{ label: 'All beaches', dot: 'blue', colorLabel: 'blue' }] },
         { id: '3', range: '3 Bft', segments: [{ label: 'Less exposed', dot: 'blue', colorLabel: 'blue' }, { label: 'More exposed', dot: 'yellow', colorLabel: 'yellow' }] },
         { id: '4', range: '4 Bft', segments: [{ label: 'Less exposed', dot: 'blue', colorLabel: 'blue' }, { label: 'More exposed', dot: 'yellow', colorLabel: 'yellow' }] },
-        { id: '5-6', range: '5-6 Bft', segments: [{ label: 'Less exposed', dot: 'yellow', colorLabel: 'yellow' }, { label: 'More exposed', dot: 'orange', colorLabel: 'orange' }] },
+        { id: '5-6', range: '5-6 Bft', segments: [{ label: 'Sheltered', dot: 'teal', colorLabel: 'teal' }, { label: 'More exposed', dot: 'orange', colorLabel: 'orange' }] },
         { id: '7-10', range: '7-10 Bft', segments: [{ label: 'All beaches', dot: 'red', colorLabel: 'red' }] },
       ],
     },
@@ -1543,7 +1554,7 @@ const BeachMap: React.FC<BeachMapProps> = ({
         { id: '0-2', range: '0-2 Μποφόρ', segments: [{ label: 'Όλες', dot: 'blue', colorLabel: 'μπλε' }] },
         { id: '3', range: '3 Μποφόρ', segments: [{ label: 'Λιγότερη έκθεση', dot: 'blue', colorLabel: 'μπλε' }, { label: 'Πιο εκτεθειμένες', dot: 'yellow', colorLabel: 'κίτρινο' }] },
         { id: '4', range: '4 Μποφόρ', segments: [{ label: 'Λιγότερη έκθεση', dot: 'blue', colorLabel: 'μπλε' }, { label: 'Πιο εκτεθειμένες', dot: 'yellow', colorLabel: 'κίτρινο' }] },
-        { id: '5-6', range: '5-6 Μποφόρ', segments: [{ label: 'Λιγότερη έκθεση', dot: 'yellow', colorLabel: 'κίτρινο' }, { label: 'Πιο εκτεθειμένες', dot: 'orange', colorLabel: 'πορτοκαλί' }] },
+        { id: '5-6', range: '5-6 Μποφόρ', segments: [{ label: 'Προστατευμένες', dot: 'teal', colorLabel: 'πράσινο' }, { label: 'Πιο εκτεθειμένες', dot: 'orange', colorLabel: 'πορτοκαλί' }] },
         { id: '7-10', range: '7-10 Μποφόρ', segments: [{ label: 'Όλες', dot: 'red', colorLabel: 'κόκκινο' }] },
       ],
     },
@@ -1552,7 +1563,7 @@ const BeachMap: React.FC<BeachMapProps> = ({
         { id: '0-2', range: '0-2 Bft', segments: [{ label: 'Toutes', dot: 'blue', colorLabel: 'bleu' }] },
         { id: '3', range: '3 Bft', segments: [{ label: 'Moins exposees', dot: 'blue', colorLabel: 'bleu' }, { label: 'Plus exposees', dot: 'yellow', colorLabel: 'jaune' }] },
         { id: '4', range: '4 Bft', segments: [{ label: 'Moins exposees', dot: 'blue', colorLabel: 'bleu' }, { label: 'Plus exposees', dot: 'yellow', colorLabel: 'jaune' }] },
-        { id: '5-6', range: '5-6 Bft', segments: [{ label: 'Moins exposees', dot: 'yellow', colorLabel: 'jaune' }, { label: 'Plus exposees', dot: 'orange', colorLabel: 'orange' }] },
+        { id: '5-6', range: '5-6 Bft', segments: [{ label: 'Abritees', dot: 'teal', colorLabel: 'vert' }, { label: 'Plus exposees', dot: 'orange', colorLabel: 'orange' }] },
         { id: '7-10', range: '7-10 Bft', segments: [{ label: 'Toutes', dot: 'red', colorLabel: 'rouge' }] },
       ],
     },
@@ -1561,7 +1572,7 @@ const BeachMap: React.FC<BeachMapProps> = ({
         { id: '0-2', range: '0-2 Bft', segments: [{ label: 'Alle', dot: 'blue', colorLabel: 'blau' }] },
         { id: '3', range: '3 Bft', segments: [{ label: 'Weniger exponiert', dot: 'blue', colorLabel: 'blau' }, { label: 'Mehr exponiert', dot: 'yellow', colorLabel: 'gelb' }] },
         { id: '4', range: '4 Bft', segments: [{ label: 'Weniger exponiert', dot: 'blue', colorLabel: 'blau' }, { label: 'Mehr exponiert', dot: 'yellow', colorLabel: 'gelb' }] },
-        { id: '5-6', range: '5-6 Bft', segments: [{ label: 'Weniger exponiert', dot: 'yellow', colorLabel: 'gelb' }, { label: 'Mehr exponiert', dot: 'orange', colorLabel: 'orange' }] },
+        { id: '5-6', range: '5-6 Bft', segments: [{ label: 'Geschuetzt', dot: 'teal', colorLabel: 'gruen' }, { label: 'Mehr exponiert', dot: 'orange', colorLabel: 'orange' }] },
         { id: '7-10', range: '7-10 Bft', segments: [{ label: 'Alle', dot: 'red', colorLabel: 'rot' }] },
       ],
     },
@@ -1570,7 +1581,7 @@ const BeachMap: React.FC<BeachMapProps> = ({
         { id: '0-2', range: '0-2 Bft', segments: [{ label: 'Tutte', dot: 'blue', colorLabel: 'blu' }] },
         { id: '3', range: '3 Bft', segments: [{ label: 'Meno esposte', dot: 'blue', colorLabel: 'blu' }, { label: 'Piu esposte', dot: 'yellow', colorLabel: 'giallo' }] },
         { id: '4', range: '4 Bft', segments: [{ label: 'Meno esposte', dot: 'blue', colorLabel: 'blu' }, { label: 'Piu esposte', dot: 'yellow', colorLabel: 'giallo' }] },
-        { id: '5-6', range: '5-6 Bft', segments: [{ label: 'Meno esposte', dot: 'yellow', colorLabel: 'giallo' }, { label: 'Piu esposte', dot: 'orange', colorLabel: 'arancione' }] },
+        { id: '5-6', range: '5-6 Bft', segments: [{ label: 'Riparate', dot: 'teal', colorLabel: 'verde' }, { label: 'Piu esposte', dot: 'orange', colorLabel: 'arancione' }] },
         { id: '7-10', range: '7-10 Bft', segments: [{ label: 'Tutte', dot: 'red', colorLabel: 'rosso' }] },
       ],
     },
