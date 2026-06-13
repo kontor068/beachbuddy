@@ -1215,6 +1215,8 @@ const BeachMap: React.FC<BeachMapProps> = ({
   const [hoveredBeachId, setHoveredBeachId] = useState<number | null>(null);
   const [hoverPreviewPosition, setHoverPreviewPosition] = useState<HoverPreviewPosition | null>(null);
   const [beachLabelOpacity, setBeachLabelOpacity] = useState(0);
+  const hoveredMarkerElementRef = useRef<HTMLElement | null>(null);
+  const markerLeaveHandlerRef = useRef<((event: MouseEvent | PointerEvent) => void) | null>(null);
 
   // --- Hour slider (controlled by the parent) ---
   // The parent feeds already-filtered hour slots, the selected hour, and an
@@ -1722,11 +1724,40 @@ const BeachMap: React.FC<BeachMapProps> = ({
     }
   }, [beaches, hoveredBeachId]);
 
+  const detachMarkerLeaveHandler = () => {
+    if (hoveredMarkerElementRef.current && markerLeaveHandlerRef.current) {
+      hoveredMarkerElementRef.current.removeEventListener('pointerleave', markerLeaveHandlerRef.current);
+      hoveredMarkerElementRef.current.removeEventListener('mouseleave', markerLeaveHandlerRef.current);
+    }
+    hoveredMarkerElementRef.current = null;
+    markerLeaveHandlerRef.current = null;
+  };
+
+  useEffect(() => detachMarkerLeaveHandler, []);
+
+  const clearMarkerHover = (beachId?: number) => {
+    detachMarkerLeaveHandler();
+    setHoveredBeachId(current => (
+      typeof beachId === 'number' && current !== beachId ? current : null
+    ));
+    setHoverPreviewPosition(null);
+  };
+
   const handleMarkerHover = (event: L.LeafletMouseEvent, beachId: number) => {
     const nextPosition = {
       x: event.containerPoint.x,
       y: event.containerPoint.y,
     };
+    const markerElement = (event.target as L.Marker | undefined)?.getElement?.();
+
+    if (markerElement && hoveredMarkerElementRef.current !== markerElement) {
+      detachMarkerLeaveHandler();
+      const handleNativeMarkerLeave = () => clearMarkerHover(beachId);
+      markerElement.addEventListener('pointerleave', handleNativeMarkerLeave);
+      markerElement.addEventListener('mouseleave', handleNativeMarkerLeave);
+      hoveredMarkerElementRef.current = markerElement;
+      markerLeaveHandlerRef.current = handleNativeMarkerLeave;
+    }
 
     setHoveredBeachId(beachId);
     setHoverPreviewPosition(current => (
@@ -1739,8 +1770,7 @@ const BeachMap: React.FC<BeachMapProps> = ({
   };
 
   const handleMarkerHoverEnd = (beachId: number) => {
-    setHoveredBeachId(current => (current === beachId ? null : current));
-    setHoverPreviewPosition(null);
+    clearMarkerHover(beachId);
   };
 
   const renderBeachInfo = (item: SuitableBeach, variant: 'popup' | 'panel') => {
