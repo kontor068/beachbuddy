@@ -26,7 +26,7 @@ import { useBeaches } from './hooks/useBeaches';
 import { useWeather } from './hooks/useWeather';
 import { useLocation } from './hooks/useLocation';
 import { translations } from './translations';
-import { degToCompass, getBeaufortLevel, isWinterSeason } from './utils/weatherUtils';
+import { degToCompass, getBeaufortLevel, isWinterSeason, maxWindDirectionSpread } from './utils/weatherUtils';
 import { trackEvent, trackPageView } from './services/analyticsService';
 import { loadAppReadyRegion, loadBeachDetailData, loadBeachRegionIndex, mergeBeachDetailData } from './services/beachDataLoader';
 import { calculateSeaConditionScore, hasPoorSeaConditions } from './utils/seaConditions';
@@ -2210,6 +2210,20 @@ export const App: React.FC = () => {
     return forecastsByBeach;
   }, [beachForecasts, forecast, selectedDayIndex]);
 
+  // Per-beach cluster forecasts can disagree on wind direction across a large or
+  // mountainous island (sea breezes, terrain channelling). When they spread
+  // beyond a threshold, a single island-level compass arrow misrepresents the
+  // map, so the wind banner switches to a "locally variable" state instead of
+  // claiming one direction. Presentation only — the spread feeds the banner copy,
+  // never the colours or scores. Measured per the selected hour's local winds.
+  const mapWindDirectionSpreadDeg = useMemo(() => {
+    const degs = Object.values(selectedBeachForecasts)
+      .map(f => f?.wind?.deg)
+      .filter((d): d is number => typeof d === 'number' && Number.isFinite(d));
+    if (degs.length < 2) return 0;
+    return maxWindDirectionSpread(degs);
+  }, [selectedBeachForecasts]);
+
   // --- Hour selection (map slider) ---
   const baseDailyForecast = forecast?.[selectedDayIndex];
   // Daytime hours available on the slider. For "today" we only expose the
@@ -4183,6 +4197,7 @@ export const App: React.FC = () => {
           windSpeed={selectedForecast?.wind.speed}
           windDirection={selectedForecast ? degToCompass(selectedForecast.wind.deg) : undefined}
           windDirectionDeg={selectedForecast?.wind.deg}
+          windDirectionSpreadDeg={mapWindDirectionSpreadDeg}
           hourSlots={mapHourSlots}
           selectedHourDt={selectedHourDt}
           onHourChange={setSelectedHourDt}
@@ -4555,6 +4570,7 @@ export const App: React.FC = () => {
                     windSpeed={selectedForecast?.wind.speed}
                     windDirection={selectedForecast ? degToCompass(selectedForecast.wind.deg) : undefined}
                     windDirectionDeg={selectedForecast?.wind.deg}
+                    windDirectionSpreadDeg={mapWindDirectionSpreadDeg}
                     hourSlots={mapHourSlots}
                     selectedHourDt={selectedHourDt}
                     onHourChange={setSelectedHourDt}
@@ -4853,6 +4869,7 @@ export const App: React.FC = () => {
                             windSpeed={selectedForecast?.wind.speed}
                             windDirection={selectedForecast ? degToCompass(selectedForecast.wind.deg) : undefined}
                             windDirectionDeg={selectedForecast?.wind.deg}
+                            windDirectionSpreadDeg={mapWindDirectionSpreadDeg}
                             hourSlots={mapHourSlots}
                             selectedHourDt={selectedHourDt}
                             onHourChange={setSelectedHourDt}

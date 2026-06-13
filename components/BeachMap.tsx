@@ -27,6 +27,9 @@ interface BeachMapProps {
   windSpeed?: number;
   windDirection?: string;
   windDirectionDeg?: number;
+  /** Max spread (deg) among per-beach local wind directions; drives the
+   *  "uniform vs locally variable" wind banner state. Presentation only. */
+  windDirectionSpreadDeg?: number;
   /** Daytime hour slots for the slider (already filtered to "now onward" for today). */
   hourSlots?: ForecastItem[];
   /** The dt (seconds) of the hour currently selected on the slider. Controlled by the parent. */
@@ -897,10 +900,30 @@ interface WindDirectionGraphicProps {
   windDirectionDeg?: number;
   windSpeedKmh?: number;
   windBeaufort?: number;
+  /** Max spread (deg) among per-beach local winds. Above the threshold the banner
+   *  shows a "locally variable wind" state instead of one island-level arrow. */
+  windDirectionSpreadDeg?: number;
   language: LanguageCode;
   compact?: boolean;
   preview?: boolean;
 }
+
+// Above this spread the per-beach winds disagree enough that one island arrow
+// would misrepresent the map; hysteresis is applied by the caller's data, this
+// is the display threshold. Chosen at 45° from the national measurement (see
+// docs/wind-variability-banner-plan.md): the spread distribution breaks here and
+// 5-6 Bft meltemi (the case that matters) stays well below it (~18°).
+const WIND_VARIABLE_SPREAD_DEG = 45;
+
+// Maps the wind FLOW direction (where it blows TO) to the sheltered coast label.
+// flow→S means the south/leeward coast is calmest. Computed, never static.
+const leewardCoastLabels: Record<LanguageCode, Record<string, string>> = {
+  en: { North: 'northern', Northeast: 'NE', East: 'eastern', Southeast: 'SE', South: 'southern', Southwest: 'SW', West: 'western', Northwest: 'NW' },
+  gr: { North: 'βόρειες', Northeast: 'ΒΑ', East: 'ανατολικές', Southeast: 'ΝΑ', South: 'νότιες', Southwest: 'ΝΔ', West: 'δυτικές', Northwest: 'ΒΔ' },
+  de: { North: 'nördlichen', Northeast: 'NO', East: 'östlichen', Southeast: 'SO', South: 'südlichen', Southwest: 'SW', West: 'westlichen', Northwest: 'NW' },
+  it: { North: 'settentrionali', Northeast: 'NE', East: 'orientali', Southeast: 'SE', South: 'meridionali', Southwest: 'SO', West: 'occidentali', Northwest: 'NO' },
+  fr: { North: 'nord', Northeast: 'NE', East: 'est', Southeast: 'SE', South: 'sud', Southwest: 'SO', West: 'ouest', Northwest: 'NO' },
+};
 
 const WindFlowOverlay: React.FC<{
   windDirection?: string;
@@ -1082,6 +1105,7 @@ const WindDirectionGraphic: React.FC<WindDirectionGraphicProps> = ({
   windDirectionDeg,
   windSpeedKmh,
   windBeaufort,
+  windDirectionSpreadDeg,
   language,
   compact = false,
   preview = false,
@@ -1099,8 +1123,16 @@ const WindDirectionGraphic: React.FC<WindDirectionGraphicProps> = ({
   const toDirection = degToCompass(flowDegrees);
   const fromLabel = directionShortLabels[language]?.[fromDirection] || fromDirection;
   const toLabel = directionShortLabels[language]?.[toDirection] || toDirection;
+  // Sheltered coast = the one the wind blows toward (leeward). Computed from the
+  // live flow direction so it always agrees with where the calm markers fall.
+  const leewardLabel = leewardCoastLabels[language]?.[toDirection] || toLabel;
   const compass = compassLetters[language] || compassLetters.en;
   const tone = getWindTone(windBeaufort);
+  // Only meaningful wind diverges enough to matter; below ~2 Bft everything is calm
+  // anyway, so we don't flip to "variable" on a dead-calm day.
+  const isVariable = typeof windDirectionSpreadDeg === 'number'
+    && windDirectionSpreadDeg > WIND_VARIABLE_SPREAD_DEG
+    && (windBeaufort ?? 0) >= 3;
   const positionClass = compact || preview
     ? 'left-3 top-3'
     : 'left-3 top-[3.75rem] sm:left-4 sm:top-4';
@@ -1109,35 +1141,49 @@ const WindDirectionGraphic: React.FC<WindDirectionGraphicProps> = ({
       title: 'Wind flow',
       fromTo: `${fromLabel} to ${toLabel}`,
       from: `From ${fromLabel}`,
+      leeward: `${leewardLabel} shores calmer`,
+      variableTitle: 'Variable wind',
+      variableText: 'Local winds differ — check each beach',
       beaufortUnit: 'Bft',
     },
     gr: {
       title: 'Φορά ανέμου',
       fromTo: `Από ${fromLabel} προς ${toLabel}`,
       from: `Από ${fromLabel}`,
+      leeward: `Πιο ήρεμες οι ${leewardLabel} ακτές`,
+      variableTitle: 'Μεταβλητός άνεμος',
+      variableText: 'Διαφέρει τοπικά — δες κάθε παραλία',
       beaufortUnit: 'μποφ.',
     },
     fr: {
       title: 'Flux du vent',
       fromTo: `${fromLabel} vers ${toLabel}`,
       from: `Depuis ${fromLabel}`,
+      leeward: `Côtes ${leewardLabel} plus abritées`,
+      variableTitle: 'Vent variable',
+      variableText: 'Vents locaux différents — voir chaque plage',
       beaufortUnit: 'Bft',
     },
     de: {
       title: 'Windverlauf',
       fromTo: `${fromLabel} nach ${toLabel}`,
       from: `Von ${fromLabel}`,
+      leeward: `${leewardLabel} Küsten ruhiger`,
+      variableTitle: 'Wechselnder Wind',
+      variableText: 'Lokal unterschiedlich — Strände einzeln prüfen',
       beaufortUnit: 'Bft',
     },
     it: {
       title: 'Flusso del vento',
       fromTo: `Da ${fromLabel} verso ${toLabel}`,
       from: `Da ${fromLabel}`,
+      leeward: `Coste ${leewardLabel} più riparate`,
+      variableTitle: 'Vento variabile',
+      variableText: 'Venti locali diversi — controlla ogni spiaggia',
       beaufortUnit: 'Bft',
     },
   });
-  const title = copy.title;
-  const fromTo = copy.fromTo;
+  const title = isVariable ? copy.variableTitle : copy.title;
   const speed = windSpeedKmh !== undefined
     ? `${windBeaufort ?? '-'} ${copy.beaufortUnit} · ${Math.round(windSpeedKmh)} km/h`
     : copy.from;
@@ -1150,21 +1196,41 @@ const WindDirectionGraphic: React.FC<WindDirectionGraphicProps> = ({
           <span className="absolute right-0.5 top-1/2 -translate-y-1/2 text-[7px] font-black leading-none text-slate-400 sm:right-1 sm:text-[9px]">{compass.e}</span>
           <span className="absolute bottom-0.5 left-1/2 -translate-x-1/2 text-[7px] font-black leading-none text-slate-400 sm:bottom-1 sm:text-[9px]">{compass.s}</span>
           <span className="absolute left-0.5 top-1/2 -translate-y-1/2 text-[7px] font-black leading-none text-slate-400 sm:left-1 sm:text-[9px]">{compass.w}</span>
-          <svg
-            viewBox="0 0 64 64"
-            className="absolute inset-0"
-            style={{ transform: `rotate(${flowDegrees}deg)` }}
-            aria-hidden="true"
-          >
-            <line x1="32" y1="47" x2="32" y2="17" stroke={tone.arrow} strokeWidth="4.5" strokeLinecap="round" />
-            <path d="M32 10 L43 24 H21 Z" fill={tone.arrow} />
-          </svg>
+          {isVariable ? (
+            // No single arrow when the wind is locally variable — show a neutral
+            // "variable" glyph (circular arrows) so we don't claim one direction.
+            <svg viewBox="0 0 64 64" className="absolute inset-0" aria-hidden="true">
+              <path d="M20 32a12 12 0 0 1 20-9" fill="none" stroke={tone.arrow} strokeWidth="4" strokeLinecap="round" />
+              <path d="M44 32a12 12 0 0 1-20 9" fill="none" stroke={tone.arrow} strokeWidth="4" strokeLinecap="round" />
+              <path d="M40 16 L41 25 L32 23 Z" fill={tone.arrow} />
+              <path d="M24 48 L23 39 L32 41 Z" fill={tone.arrow} />
+            </svg>
+          ) : (
+            <svg
+              viewBox="0 0 64 64"
+              className="absolute inset-0"
+              style={{ transform: `rotate(${flowDegrees}deg)` }}
+              aria-hidden="true"
+            >
+              <line x1="32" y1="47" x2="32" y2="17" stroke={tone.arrow} strokeWidth="4.5" strokeLinecap="round" />
+              <path d="M32 10 L43 24 H21 Z" fill={tone.arrow} />
+            </svg>
+          )}
           <span className={`absolute left-1/2 top-1/2 h-2.5 w-2.5 -translate-x-1/2 -translate-y-1/2 rounded-full border-2 border-white ${tone.dot}`} />
         </div>
 
         <div className={`${compact || preview ? 'hidden sm:block' : 'block'} min-w-0 pr-0.5`}>
           <p className={`whitespace-nowrap text-[11px] font-black leading-tight ${tone.text}`}>{title}</p>
-          <p className="mt-0.5 whitespace-nowrap text-[11px] font-bold leading-tight text-slate-700">{fromTo}</p>
+          {isVariable ? (
+            <p className="mt-0.5 max-w-[9.5rem] text-[10px] font-bold leading-tight text-slate-600 whitespace-normal">{copy.variableText}</p>
+          ) : (
+            <>
+              <p className="mt-0.5 whitespace-nowrap text-[11px] font-bold leading-tight text-slate-700">{copy.fromTo}</p>
+              {(windBeaufort ?? 0) >= 3 && (
+                <p className="mt-0.5 whitespace-nowrap text-[9px] font-semibold leading-tight text-teal-700">{copy.leeward}</p>
+              )}
+            </>
+          )}
           <p className={`mt-1 inline-flex rounded-full border px-2 py-0.5 text-[10px] font-black leading-none ${tone.chip}`}>
             {speed}
           </p>
@@ -1185,6 +1251,7 @@ const BeachMap: React.FC<BeachMapProps> = ({
   windSpeed,
   windDirection,
   windDirectionDeg,
+  windDirectionSpreadDeg,
   hourSlots,
   selectedHourDt = null,
   onHourChange,
@@ -2215,6 +2282,7 @@ const BeachMap: React.FC<BeachMapProps> = ({
           windDirectionDeg={mapWindDirectionDeg}
           windSpeedKmh={windSpeedKmh}
           windBeaufort={windBeaufort}
+          windDirectionSpreadDeg={windDirectionSpreadDeg}
           language={language}
           compact={compact}
           preview={preview}

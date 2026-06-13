@@ -69,6 +69,24 @@ export const degToCompass = (deg: number): WindDirection => {
   return arr[(val % 8)];
 };
 
+/**
+ * Maximum pairwise angular distance (deg, 0..180) among a set of wind bearings.
+ * Used to detect when per-beach local winds diverge enough that a single
+ * island-level compass arrow would misrepresent the map (presentation only).
+ */
+export const maxWindDirectionSpread = (degrees: number[]): number => {
+  const valid = degrees.filter(d => typeof d === 'number' && Number.isFinite(d));
+  let max = 0;
+  for (let i = 0; i < valid.length; i += 1) {
+    for (let j = i + 1; j < valid.length; j += 1) {
+      let d = Math.abs(valid[i] - valid[j]) % 360;
+      if (d > 180) d = 360 - d;
+      if (d > max) max = d;
+    }
+  }
+  return max;
+};
+
 export const getBeaufortLevel = (speedKmph: number): number => {
     if (speedKmph < 1) return 0;
     if (speedKmph <= 5) return 1;
