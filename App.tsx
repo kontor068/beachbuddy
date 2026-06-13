@@ -26,7 +26,7 @@ import { useBeaches } from './hooks/useBeaches';
 import { useWeather } from './hooks/useWeather';
 import { useLocation } from './hooks/useLocation';
 import { translations } from './translations';
-import { degToCompass, getBeaufortLevel, isWinterSeason, maxWindDirectionSpread } from './utils/weatherUtils';
+import { degToCompass, getBeaufortLevel, isWinterSeason } from './utils/weatherUtils';
 import { trackEvent, trackPageView } from './services/analyticsService';
 import { loadAppReadyRegion, loadBeachDetailData, loadBeachRegionIndex, mergeBeachDetailData } from './services/beachDataLoader';
 import { calculateSeaConditionScore, hasPoorSeaConditions } from './utils/seaConditions';
@@ -275,6 +275,107 @@ const BEACH_DAY_START_MINUTES = 10 * 60;
 const BEACH_DAY_END_MINUTES = 18 * 60;
 const MIN_REMAINING_TOP_PICK_SCORE = 62;
 const DEFAULT_FORECAST_SLOT_MINUTES = 120;
+const INITIAL_BEACH_DATA_LOADER_DELAY_MS = 300;
+
+const isGenericAppEntryPath = (pathname?: string): boolean => {
+  const currentPathname = pathname ?? (typeof window !== 'undefined' ? window.location.pathname : '/');
+  return currentPathname === '/' || currentPathname === '/el' || currentPathname === '/el/';
+};
+
+const startupLocationPromptCopy = {
+  en: {
+    title: 'Show beaches near you?',
+    body: 'CalmBeach can use your current location once to open the closest Greek beach area.',
+    privacy: 'We do not store your exact GPS location. You can choose a region manually instead.',
+    useLocation: 'Use my location',
+    finding: 'Finding nearby beaches...',
+    chooseManually: 'Choose region',
+  },
+  gr: {
+    title: 'Να δείξουμε παραλίες κοντά σου;',
+    body: 'Το CalmBeach μπορεί να χρησιμοποιήσει μία φορά την τρέχουσα τοποθεσία σου για να ανοίξει την κοντινότερη περιοχή παραλιών.',
+    privacy: 'Δεν αποθηκεύουμε την ακριβή GPS τοποθεσία σου. Μπορείς να επιλέξεις περιοχή χειροκίνητα.',
+    useLocation: 'Χρήση τοποθεσίας',
+    finding: 'Βρίσκουμε κοντινές παραλίες...',
+    chooseManually: 'Επιλογή περιοχής',
+  },
+  fr: {
+    title: 'Afficher les plages pres de toi ?',
+    body: 'CalmBeach peut utiliser ta position actuelle une fois pour ouvrir la zone de plage grecque la plus proche.',
+    privacy: 'Nous ne stockons pas ta position GPS exacte. Tu peux choisir une region manuellement.',
+    useLocation: 'Utiliser ma position',
+    finding: 'Recherche des plages proches...',
+    chooseManually: 'Choisir une region',
+  },
+  de: {
+    title: 'Straende in deiner Naehe zeigen?',
+    body: 'CalmBeach kann deinen aktuellen Standort einmal nutzen, um die naechste griechische Strandregion zu oeffnen.',
+    privacy: 'Wir speichern deinen genauen GPS-Standort nicht. Du kannst stattdessen eine Region manuell waehlen.',
+    useLocation: 'Standort nutzen',
+    finding: 'Suche Straende in der Naehe...',
+    chooseManually: 'Region waehlen',
+  },
+  it: {
+    title: 'Mostrare le spiagge vicino a te?',
+    body: 'CalmBeach puo usare una volta la tua posizione attuale per aprire la zona spiagge greca piu vicina.',
+    privacy: 'Non salviamo la tua posizione GPS esatta. Puoi scegliere una zona manualmente.',
+    useLocation: 'Usa la mia posizione',
+    finding: 'Cerco spiagge vicine...',
+    chooseManually: 'Scegli zona',
+  },
+};
+
+const StartupLocationPrompt: React.FC<{
+  language: SupportedLanguage;
+  isFindingLocation: boolean;
+  onUseLocation: () => void;
+  onChooseManually: () => void;
+}> = ({ language, isFindingLocation, onUseLocation, onChooseManually }) => {
+  const copy = getLocalizedCopy(language, startupLocationPromptCopy);
+
+  return (
+    <main className="min-h-dvh bg-sky-50 px-4 py-6 text-slate-950 sm:px-6">
+      <section className="mx-auto flex min-h-[calc(100dvh-3rem)] w-full max-w-md flex-col justify-center">
+        <div className="rounded-[1.5rem] border border-white/70 bg-white/90 p-5 shadow-xl shadow-sky-900/12 ring-1 ring-sky-100/80 backdrop-blur-xl sm:p-6">
+          <div className="mb-4 flex h-12 w-12 items-center justify-center rounded-2xl bg-cyan-50 text-cyan-700 ring-1 ring-cyan-100">
+            <Navigation className="h-5 w-5" aria-hidden="true" />
+          </div>
+
+          <h1 className="text-2xl font-black leading-tight text-slate-950">
+            {copy.title}
+          </h1>
+          <p className="mt-3 text-sm font-semibold leading-6 text-slate-600">
+            {copy.body}
+          </p>
+          <p className="mt-3 rounded-2xl border border-sky-100 bg-sky-50/80 px-3 py-2 text-xs font-bold leading-5 text-slate-600">
+            {copy.privacy}
+          </p>
+
+          <div className="mt-5 grid gap-2">
+            <button
+              type="button"
+              onClick={onUseLocation}
+              disabled={isFindingLocation}
+              className="inline-flex min-h-12 w-full cursor-pointer items-center justify-center gap-2 rounded-2xl bg-cyan-700 px-4 text-sm font-black text-white shadow-sm shadow-cyan-900/20 transition hover:bg-cyan-800 focus:outline-none focus-visible:ring-2 focus-visible:ring-cyan-500 focus-visible:ring-offset-2 disabled:cursor-wait disabled:opacity-70"
+            >
+              <Navigation className="h-4 w-4" aria-hidden="true" />
+              <span>{isFindingLocation ? copy.finding : copy.useLocation}</span>
+            </button>
+
+            <button
+              type="button"
+              onClick={onChooseManually}
+              disabled={isFindingLocation}
+              className="inline-flex min-h-12 w-full cursor-pointer items-center justify-center rounded-2xl border border-slate-200 bg-white px-4 text-sm font-black text-slate-700 transition hover:bg-slate-50 focus:outline-none focus-visible:ring-2 focus-visible:ring-cyan-500 focus-visible:ring-offset-2 disabled:cursor-wait disabled:opacity-70"
+            >
+              {copy.chooseManually}
+            </button>
+          </div>
+        </div>
+      </section>
+    </main>
+  );
+};
 
 const exposurePriority = (item: Pick<SuitableBeach, 'isExposed' | 'exposureLevel'>): number => {
   if (isWindProtectedRecommendation(item)) return 0;
@@ -860,12 +961,7 @@ const getGeneralConditionsHelper = (
   favoredCoasts: string,
   language: LanguageCode,
   waveHeightM?: number,
-  selectedDate?: Date,
-  // When per-beach local winds diverge too much (large/mountainous island, weak
-  // wind) the single "favored coast" hint would contradict the map, so the
-  // summary drops the leeward claim and points to per-beach colours instead —
-  // staying consistent with the map's "locally variable wind" banner.
-  isVariableWind = false
+  selectedDate?: Date
 ): string => {
   const sentenceDay = getSelectedDaySentencePrefix(selectedDate, new Date(), language);
   void waveHeightM;
@@ -881,7 +977,6 @@ const getGeneralConditionsHelper = (
           : `${sentenceDay} has ${beaufort} Beaufort ${wind} wind. There is no clearly calm swimming pick. If you go, ${favoredCoasts} are generally favored.`;
       },
       default: () => `${sentenceDay} has ${beaufort} Beaufort ${wind} wind. In these conditions, ${favoredCoasts} are generally favored.`,
-      variableWind: () => `${sentenceDay} has ${beaufort} Beaufort wind that varies around the island. Check each beach's colour — sheltered spots differ by coast.`,
     },
     gr: {
       mild: () => `${sentenceDay} έχει ${beaufort} μποφόρ με ${windLabel} άνεμο. Οι περισσότερες παραλίες φαίνονται κατάλληλες για μπάνιο.`,
@@ -893,7 +988,6 @@ const getGeneralConditionsHelper = (
         : `${sentenceDay} έχει ${beaufort} μποφόρ με ${windLabel} άνεμο. Δεν υπάρχει καθαρή επιλογή για ήρεμο μπάνιο. Αν πας, γενικά προτιμώνται ${favoredCoasts}.`;
       },
       default: () => `${sentenceDay} έχει ${beaufort} μποφόρ με ${windLabel} άνεμο. Σε αυτές τις συνθήκες γενικά προτιμώνται ${favoredCoasts}.`,
-      variableWind: () => `${sentenceDay} έχει ${beaufort} μποφόρ άνεμο που αλλάζει ανά περιοχή του νησιού. Δες το χρώμα κάθε παραλίας — τα απάγκια διαφέρουν ανά ακτή.`,
     },
     fr: {
       mild: () => `${sentenceDay} : ${beaufort} Beaufort avec vent ${wind}. La plupart des plages semblent adaptees a la baignade.`,
@@ -905,7 +999,6 @@ const getGeneralConditionsHelper = (
           : `${sentenceDay} : ${beaufort} Beaufort avec vent ${wind}. Aucun choix clairement calme. Si vous y allez, privilegiez ${favoredCoasts}.`;
       },
       default: () => `${sentenceDay} : ${beaufort} Beaufort avec vent ${wind}. Dans ces conditions, ${favoredCoasts} sont favorisees.`,
-      variableWind: () => `${sentenceDay} : vent de ${beaufort} Beaufort variable autour de l'ile. Regardez la couleur de chaque plage — les abris varient selon la cote.`,
     },
     de: {
       mild: () => `${sentenceDay}: ${beaufort} Bft mit ${wind} Wind. Die meisten Strande wirken zum Schwimmen geeignet.`,
@@ -917,7 +1010,6 @@ const getGeneralConditionsHelper = (
           : `${sentenceDay}: ${beaufort} Bft mit ${wind} Wind. Es gibt keine klar ruhige Badeoption. Wenn du gehst, sind ${favoredCoasts} meist besser.`;
       },
       default: () => `${sentenceDay}: ${beaufort} Bft mit ${wind} Wind. Unter diesen Bedingungen sind ${favoredCoasts} meist besser.`,
-      variableWind: () => `${sentenceDay}: ${beaufort} Bft Wind, der rund um die Insel wechselt. Achte auf die Farbe jedes Strands — geschützte Stellen variieren je nach Küste.`,
     },
     it: {
       mild: () => `${sentenceDay}: ${beaufort} Beaufort con vento ${wind}. La maggior parte delle spiagge sembra adatta al bagno.`,
@@ -929,13 +1021,9 @@ const getGeneralConditionsHelper = (
           : `${sentenceDay}: ${beaufort} Beaufort con vento ${wind}. Non c'e una scelta chiaramente calma. Se vai, preferisci ${favoredCoasts}.`;
       },
       default: () => `${sentenceDay}: ${beaufort} Beaufort con vento ${wind}. In queste condizioni, ${favoredCoasts} sono favorite.`,
-      variableWind: () => `${sentenceDay}: vento di ${beaufort} Beaufort variabile intorno all'isola. Guarda il colore di ogni spiaggia — i ripari cambiano a seconda della costa.`,
     },
   });
 
-  // A variable wind only matters once the wind itself matters (>=3 Bft); below
-  // that everything is calm and the "mild" copy already makes no coast claim.
-  if (isVariableWind && beaufort >= 3 && mode !== 'mild') return copy.variableWind();
   if (mode === 'mild') return copy.mild();
   if (mode === 'caution') return copy.caution();
   if (mode === 'no_ideal_swimming') return copy.noIdeal();
@@ -1086,6 +1174,15 @@ export const App: React.FC = () => {
   const t = translations[language];
   const isWinter = useMemo(() => isWinterSeason(), []);
   const activeWeatherFixtureScenario = useMemo(() => getActiveWeatherFixtureScenario(), []);
+  const shouldPromptStartupLocationRef = useRef(
+    typeof window !== 'undefined' &&
+    isGenericAppEntryPath(window.location.pathname) &&
+    !activeWeatherFixtureScenario
+  );
+  const [isStartupLocationPromptOpen, setIsStartupLocationPromptOpen] = useState(
+    () => shouldPromptStartupLocationRef.current
+  );
+  const [isSelectingStartupRegion, setIsSelectingStartupRegion] = useState(false);
   const homeCopy = {
     recommendationMode: {
       mild: {
@@ -1312,6 +1409,7 @@ export const App: React.FC = () => {
   const [selectedFilters, setSelectedFilters] = useState<FilterKey[]>([]);
   const [sortBy, setSortBy] = useState<SortOption>('protected');
   const [mobileSuitableDistanceSort, setMobileSuitableDistanceSort] = useState(false);
+  const [locationSortResetKey, setLocationSortResetKey] = useState(0);
   // The hour chosen on the map slider; drives both the map colours and the
   // suitable-beach recommendations so they all reflect the same moment.
   const [selectedHourDt, setSelectedHourDt] = useState<number | null>(null);
@@ -1339,6 +1437,7 @@ export const App: React.FC = () => {
   ));
   const [desktopMapVisibleBeachIds, setDesktopMapVisibleBeachIds] = useState<number[] | null>(null);
   const [shouldLoadInsights, setShouldLoadInsights] = useState(false);
+  const [showInitialBeachLoader, setShowInitialBeachLoader] = useState(false);
 
   // --- Modals State ---
   const [isFilterModalOpen, setIsFilterModalOpen] = useState(false);
@@ -1346,6 +1445,19 @@ export const App: React.FC = () => {
   const [isChatOpen, setIsChatOpen] = useState(false);
   const [isIslandSelectorOpen, setIsIslandSelectorOpen] = useState(false);
   const [isPlannerOpen, setIsPlannerOpen] = useState(false);
+
+  useEffect(() => {
+    if (!beachesLoading) {
+      setShowInitialBeachLoader(false);
+      return undefined;
+    }
+
+    const timer = window.setTimeout(() => {
+      setShowInitialBeachLoader(true);
+    }, INITIAL_BEACH_DATA_LOADER_DELAY_MS);
+
+    return () => window.clearTimeout(timer);
+  }, [beachesLoading]);
 
   useEffect(() => {
     let cancelled = false;
@@ -1602,6 +1714,72 @@ export const App: React.FC = () => {
       }
     } finally {
       setIsFindingNearest(false);
+    }
+  };
+
+  const handleChooseStartupRegionManually = () => {
+    setIsStartupLocationPromptOpen(false);
+    setIsSelectingStartupRegion(false);
+    setIsIslandSelectorOpen(true);
+  };
+
+  const handleUseStartupLocation = async () => {
+    if (isSelectingStartupRegion) return;
+
+    if (
+      !shouldPromptStartupLocationRef.current ||
+      !isGenericAppEntryPath() ||
+      parseBeachDetailPath() ||
+      parseBeachRegionPath()
+    ) {
+      setIsStartupLocationPromptOpen(false);
+      return;
+    }
+
+    if (typeof navigator === 'undefined' || !navigator.geolocation) {
+      setFindNearestError(t.locationErrorUnavailable);
+      handleChooseStartupRegionManually();
+      return;
+    }
+
+    setIsSelectingStartupRegion(true);
+    setIsFindingNearest(true);
+    setFindNearestError(null);
+
+    try {
+      const position = await getAccuratePosition();
+      const userLoc = { lat: position.coords.latitude, lon: position.coords.longitude };
+      setUserLocation(userLoc);
+      setUserLocationAccuracy(position.coords.accuracy);
+
+      const nearest = await findNearestIsland(userLoc, allIslands);
+      if (nearest) {
+        handleRegionSelected(nearest, 'nearest_location');
+        setIsStartupLocationPromptOpen(false);
+        setIsIslandSelectorOpen(false);
+      } else {
+        setFindNearestError(getLocalizedCopy(language, {
+          en: 'No nearby island found.',
+          gr: 'Δεν βρέθηκε κοντινή περιοχή.',
+          fr: 'Aucune region proche trouvee.',
+          de: 'Keine nahe Region gefunden.',
+          it: 'Nessuna zona vicina trovata.',
+        }));
+        handleChooseStartupRegionManually();
+      }
+    } catch (err) {
+      const geoErr = err as GeolocationPositionError;
+      if (geoErr.code === 1) {
+        setFindNearestError(t.locationErrorPermission);
+      } else if (geoErr.code === 2) {
+        setFindNearestError(t.locationErrorUnavailable);
+      } else {
+        setFindNearestError(t.locationErrorTimeout);
+      }
+      handleChooseStartupRegionManually();
+    } finally {
+      setIsFindingNearest(false);
+      setIsSelectingStartupRegion(false);
     }
   };
 
@@ -2223,20 +2401,6 @@ export const App: React.FC = () => {
     return forecastsByBeach;
   }, [beachForecasts, forecast, selectedDayIndex]);
 
-  // Per-beach cluster forecasts can disagree on wind direction across a large or
-  // mountainous island (sea breezes, terrain channelling). When they spread
-  // beyond a threshold, a single island-level compass arrow misrepresents the
-  // map, so the wind banner switches to a "locally variable" state instead of
-  // claiming one direction. Presentation only — the spread feeds the banner copy,
-  // never the colours or scores. Measured per the selected hour's local winds.
-  const mapWindDirectionSpreadDeg = useMemo(() => {
-    const degs = Object.values(selectedBeachForecasts)
-      .map(f => f?.wind?.deg)
-      .filter((d): d is number => typeof d === 'number' && Number.isFinite(d));
-    if (degs.length < 2) return 0;
-    return maxWindDirectionSpread(degs);
-  }, [selectedBeachForecasts]);
-
   // Per-beach local wind (direction + speed) for the map hover card, so a beach
   // coloured differently from the island headline is self-explanatory ("here it
   // blows N 7 km/h"). Falls back to the island wind when no cluster forecast.
@@ -2455,18 +2619,36 @@ export const App: React.FC = () => {
         geospatialProfile: geospatialExposure,
       });
 
+      // Map MARKER COLOUR uses the single island-level wind (the one the compass
+      // shows), not the per-beach cluster wind — so on a "SW" day every beach is
+      // coloured for that SW wind and the map agrees with the arrow, instead of
+      // each coast using its own slightly different local wind direction.
+      const islandWindAssessment = assessBeachWindExposure({
+        beach,
+        geospatialProfile: geospatialExposure,
+        windDirectionDeg: selectedForecast.wind.deg,
+        windDirection: degToCompass(selectedForecast.wind.deg),
+        windSpeedKmh: selectedForecast.wind.speed * 3.6,
+        beaufort: getBeaufortLevel(selectedForecast.wind.speed * 3.6),
+        waveHeightMeters: selectedForecast.marine?.waveHeightM,
+      });
+      const mapExposureLevel = islandWindAssessment.exposureLevel;
+
       return {
         beachId: beach.id,
         name: displayBeachName(beach.name, language),
         score: scoreResult.score,
         explanation: '',
         beach,
-        isExposed: scoreResult.exposureLevel ? scoreResult.exposureLevel !== 'protected' : true,
-        exposureLevel: scoreResult.exposureLevel,
-        orientation: scoreResult.orientation,
-        windProfile: scoreResult.windProfile,
-        windProfileSource: scoreResult.windProfileSource,
-        windSector: scoreResult.windSector,
+        isExposed: mapExposureLevel ? mapExposureLevel !== 'protected' : true,
+        exposureLevel: mapExposureLevel,
+        // Marker-colour inputs all come from the island-level assessment so the
+        // map re-derivation (getVisibleMapExposureLevel reads windSector) also
+        // uses the single island wind, not the per-beach cluster sector.
+        orientation: islandWindAssessment.windProfile.beachFacingDirection ?? null,
+        windProfile: islandWindAssessment.windProfile,
+        windProfileSource: islandWindAssessment.source,
+        windSector: islandWindAssessment.windSector,
         waveHeightM: scoreResult.waveHeightM,
         warnings: scoreResult.warnings,
         confidence: scoreResult.confidence,
@@ -3345,8 +3527,18 @@ export const App: React.FC = () => {
     };
   }, [beachesError, beachesLoading, deferredBeachSearchQuery, allIslands, selectedIsland, language, regionBeachCounts, view]);
 
-  if (beachesLoading) return <SkeletonLoader t={t} />;
+  if (beachesLoading) return showInitialBeachLoader ? <SkeletonLoader t={t} /> : null;
   if (beachesError) return <ErrorDisplay message={beachesError} onRetry={() => window.location.reload()} t={t} />;
+  if (isStartupLocationPromptOpen) {
+    return (
+      <StartupLocationPrompt
+        language={language}
+        isFindingLocation={isSelectingStartupRegion}
+        onUseLocation={handleUseStartupLocation}
+        onChooseManually={handleChooseStartupRegionManually}
+      />
+    );
+  }
 
   if (view === 'detail' && detailBeach && forecast?.[selectedDayIndex]) {
     const detailBeachForecast = selectedBeachForecasts[detailBeach.id];
@@ -3455,10 +3647,7 @@ export const App: React.FC = () => {
       getFavoredCoastPhrase(recommendationWindDirection, language),
       language,
       selectedForecast.marine?.waveHeightM,
-      selectedForecast.date,
-      // Keep the summary consistent with the map's "locally variable wind" banner
-      // (same 45° spread threshold) so it never claims a favored coast the map denies.
-      mapWindDirectionSpreadDeg > 45
+      selectedForecast.date
     )
     : recommendationModeCopy.helper[language];
   const selectedDayDate = selectedForecast?.date;
@@ -4228,7 +4417,6 @@ export const App: React.FC = () => {
           windSpeed={selectedForecast?.wind.speed}
           windDirection={selectedForecast ? degToCompass(selectedForecast.wind.deg) : undefined}
           windDirectionDeg={selectedForecast?.wind.deg}
-          windDirectionSpreadDeg={mapWindDirectionSpreadDeg}
           beachLocalWinds={mapBeachLocalWinds}
           hourSlots={mapHourSlots}
           selectedHourDt={selectedHourDt}
@@ -4288,7 +4476,8 @@ export const App: React.FC = () => {
               onAllBeachesPanelOpenChange={handleAllBeachesPanelOpenChange}
               isWeatherPanelOpen={isMobileWeatherPanelOpen}
               onWeatherPanelOpenChange={handleWeatherPanelOpenChange}
-              suitableDistanceSortActive={!isDesktopViewport && sortBy === 'protected' && mobileSuitableDistanceSort}
+              suitableDistanceSortActive={sortBy === 'protected' && mobileSuitableDistanceSort}
+              locationSortResetKey={locationSortResetKey}
               preferences={preferences}
               activeFilters={selectedFilters}
               filterResultCounts={preferenceFilterResultCounts}
@@ -4332,11 +4521,13 @@ export const App: React.FC = () => {
                 hasUserSelectedSortRef.current = true;
                 setSortBy('protected');
                 setMobileSuitableDistanceSort(true);
+                setLocationSortResetKey(key => key + 1);
                 void handleSelectNearest();
               }}
               onRequestUserLocation={() => {
                 void handleRequestUserLocation();
               }}
+              onDistanceSortActiveChange={setMobileSuitableDistanceSort}
               hasUserLocation={Boolean(userLocation)}
               isFindingCurrentLocation={isFindingNearest}
               currentLocationError={findNearestError}
@@ -4602,8 +4793,7 @@ export const App: React.FC = () => {
                     windSpeed={selectedForecast?.wind.speed}
                     windDirection={selectedForecast ? degToCompass(selectedForecast.wind.deg) : undefined}
                     windDirectionDeg={selectedForecast?.wind.deg}
-                    windDirectionSpreadDeg={mapWindDirectionSpreadDeg}
-                    beachLocalWinds={mapBeachLocalWinds}
+                              beachLocalWinds={mapBeachLocalWinds}
                     hourSlots={mapHourSlots}
                     selectedHourDt={selectedHourDt}
                     onHourChange={setSelectedHourDt}
@@ -4902,8 +5092,7 @@ export const App: React.FC = () => {
                             windSpeed={selectedForecast?.wind.speed}
                             windDirection={selectedForecast ? degToCompass(selectedForecast.wind.deg) : undefined}
                             windDirectionDeg={selectedForecast?.wind.deg}
-                            windDirectionSpreadDeg={mapWindDirectionSpreadDeg}
-                            beachLocalWinds={mapBeachLocalWinds}
+                                              beachLocalWinds={mapBeachLocalWinds}
                             hourSlots={mapHourSlots}
                             selectedHourDt={selectedHourDt}
                             onHourChange={setSelectedHourDt}
