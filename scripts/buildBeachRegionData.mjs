@@ -575,6 +575,7 @@ const buildSummaryBeach = beach => {
     location: beach.location,
     aliases: beach.aliases,
     ...(beach.metadata?.blueFlag2026 ? { blueFlag2026: beach.metadata.blueFlag2026 } : {}),
+    ...(beach.metadata?.seatrac ? { seatrac: beach.metadata.seatrac } : {}),
     staticLabels: {
       beachType: beach.staticLabels?.beachType || beach.beachType,
       accessType,

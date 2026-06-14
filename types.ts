@@ -210,6 +210,7 @@ export interface BeachScore {
 
 export interface UserPreferences {
   blueFlag2026: boolean;
+  disabledAccess: boolean;
   sandy: boolean;
   pebbles: boolean;
   quiet: boolean;
@@ -274,6 +275,7 @@ export interface Beach {
   officialWarningReason?: string;
   windProfile?: WindProfile;
   blueFlag2026?: BeachMetadata['blueFlag2026'];
+  seatrac?: BeachMetadata['seatrac'];
   aliases?: string[];
   staticLabels?: {
     beachType?: string;
@@ -286,6 +288,53 @@ export interface Beach {
 }
 
 export type BeachAmenities = Beach['amenities'];
+
+/**
+ * Disability / wheelchair sea-access (Seatrac and supporting amenities).
+ * Distinct from `Accessibility` (which is terrain difficulty to *reach* the beach).
+ *
+ * SAFETY NOTE: this data can physically strand a wheelchair user if wrong. Equipment is
+ * seasonal and leased annually; "listed" never implies "operational". seatrac.gr is the
+ * authoritative live source — every bulk-imported record carries `needsVerification: true`.
+ */
+export type SeatracStatus = 'online' | 'uninstalled' | 'listed-unverified';
+/** Tri-state on purpose: 'no' = confirmed absent, 'unknown' = not stated (never imply absence). */
+export type AccessFeatureStatus = 'yes' | 'seasonal' | 'no' | 'unknown';
+
+export interface BeachSeatracAccess {
+  /** A Seatrac (or equivalent autonomous sea-access ramp) is associated with this beach. */
+  hasSeatrac: boolean;
+  /** Operational reality, NOT mere listing. Safe default when unconfirmed: 'listed-unverified'. */
+  status: SeatracStatus;
+  /** Equipment is seasonal (installed ~June, removed Sept/Oct). Default true. */
+  seasonal: boolean;
+  /** Supporting amenities for a full accessible set — each tri-state, never a bare boolean. */
+  amenities: {
+    disabledParking: AccessFeatureStatus;
+    /** Boardwalk / accessible track to the waterline (διάδρομος). */
+    boardwalkToWater: AccessFeatureStatus;
+    accessibleWc: AccessFeatureStatus;
+    changingRoom: AccessFeatureStatus;
+    shower: AccessFeatureStatus;
+    shade: AccessFeatureStatus;
+  };
+  /** True only when all six amenities are 'yes'/'seasonal' (the ~11% fully-accessible case). Derived. */
+  fullSet: boolean;
+  source: string;
+  /** Include https://seatrac.gr/... when known (the authoritative live source). */
+  sourceUrls: string[];
+  /** ISO date this accessibility record was last confirmed. */
+  verifiedAt: string;
+  /** Confidence in the accessibility claim specifically (independent of beach-level confidence). */
+  confidence: DataConfidence;
+  /** SAFETY GATE: when true, UI shows "verify before visiting". Default true for bulk imports. */
+  needsVerification: boolean;
+  /** Region/list the source placed it under, for audit traceability. */
+  region?: string;
+  notes?: string;
+  /** Provenance of the name→record match, mirroring blueFlag2026.officialEntries. */
+  match?: { officialNameGr?: string; officialNameEn?: string; matchMethod: string; matchScore: number };
+}
 
 export interface BeachMetadata {
   access: {
@@ -341,6 +390,7 @@ export interface BeachMetadata {
       matchDistanceKm?: number;
     }>;
   };
+  seatrac?: BeachSeatracAccess;
   sourceUrls?: string[];
   sourceNotes?: string | string[];
   googleMapsNavigation?: {
@@ -812,6 +862,7 @@ export type Translation = {
     title: string;
     subtitle: string;
     blueFlag2026?: string;
+    disabledAccess?: string;
     sandy: string;
     pebbles: string;
     quiet: string;

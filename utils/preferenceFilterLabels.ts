@@ -2,6 +2,7 @@ import { LanguageCode, Translation, UserPreferences } from '../types';
 
 export const QUICK_PREFERENCE_FILTERS = [
   'blueFlag2026',
+  'disabledAccess',
   'sandy',
   'pebbles',
   'quiet',
@@ -18,6 +19,7 @@ export type QuickPreferenceFilter = (typeof QUICK_PREFERENCE_FILTERS)[number];
 const compactPreferenceLabels: Record<LanguageCode, Partial<Record<keyof UserPreferences, string>>> = {
   gr: {
     blueFlag2026: 'Γαλάζια Σημαία',
+    disabledAccess: 'Προσβάσιμη ΑμεΑ',
     sandy: 'Άμμος',
     pebbles: 'Βότσαλο',
     quiet: 'Ήσυχη',
@@ -30,6 +32,7 @@ const compactPreferenceLabels: Record<LanguageCode, Partial<Record<keyof UserPre
   },
   en: {
     blueFlag2026: 'Blue Flag',
+    disabledAccess: 'Accessible',
     sandy: 'Sandy',
     pebbles: 'Pebbles',
     quiet: 'Quiet',
@@ -42,6 +45,7 @@ const compactPreferenceLabels: Record<LanguageCode, Partial<Record<keyof UserPre
   },
   fr: {
     blueFlag2026: 'Pavillon Bleu',
+    disabledAccess: 'Accessible PMR',
     sandy: 'Sable',
     pebbles: 'Galets',
     quiet: 'Calme',
@@ -54,6 +58,7 @@ const compactPreferenceLabels: Record<LanguageCode, Partial<Record<keyof UserPre
   },
   de: {
     blueFlag2026: 'Blaue Flagge',
+    disabledAccess: 'Barrierefrei',
     sandy: 'Sand',
     pebbles: 'Kiesel',
     quiet: 'Ruhig',
@@ -66,6 +71,7 @@ const compactPreferenceLabels: Record<LanguageCode, Partial<Record<keyof UserPre
   },
   it: {
     blueFlag2026: 'Bandiera Blu',
+    disabledAccess: 'Accessibile',
     sandy: 'Sabbia',
     pebbles: 'Ciottoli',
     quiet: 'Tranquilla',

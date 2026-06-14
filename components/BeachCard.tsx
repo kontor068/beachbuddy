@@ -1,7 +1,7 @@
 
 import React, { useEffect, useState } from 'react';
 import { motion } from 'motion/react';
-import { AlertTriangle, MapPin, Star, Share2, Heart, Navigation, Info, Waves, Utensils, Trees, CircleDot, CircleDotDashed, Mountain, Droplets, ArrowDown, BadgeCheck, Leaf, Shield, Users, Clock3, Flag, Footprints, Wind } from 'lucide-react';
+import { AlertTriangle, MapPin, Star, Share2, Heart, Navigation, Info, Waves, Utensils, Trees, CircleDot, CircleDotDashed, Mountain, Droplets, ArrowDown, BadgeCheck, Leaf, Shield, Users, Clock3, Flag, Footprints, Wind, Accessibility as AccessibilityIcon } from 'lucide-react';
 import { Beach, Accessibility, LanguageCode, BeachType, CrowdLevel, WarningFlag, RecommendationConfidence, SwimmingComfort, WindSuitabilityColor } from '../types';
 import { getBeaufortLevel } from '../utils/weatherUtils';
 import { Translation } from '../types';
@@ -78,6 +78,7 @@ type CardCopy = {
   shelteredChip: (sentenceDay: string) => string;
   shelteredChipA11y: (sentenceDay: string) => string;
   blueFlag: string;
+  accessible: string;
   dirtRoad: string;
   localExposureCheck: string;
   moreOpenToWind: string;
@@ -137,6 +138,7 @@ const cardCopy: Record<LanguageCode, CardCopy> = {
     shelteredChip: (sentenceDay) => `${sentenceDay}: better sheltered`,
     shelteredChipA11y: (sentenceDay) => `${sentenceDay}: better sheltered option`,
     blueFlag: 'Blue Flag',
+    accessible: 'Accessible',
     dirtRoad: 'Dirt road',
     localExposureCheck: 'Check local exposure',
     moreOpenToWind: 'More open to wind',
@@ -204,6 +206,7 @@ const cardCopy: Record<LanguageCode, CardCopy> = {
     shelteredChip: () => 'Προστατευμένη',
     shelteredChipA11y: (sentenceDay) => `${sentenceDay}: προστατευμένη επιλογή`,
     blueFlag: 'Γαλάζια Σημαία',
+    accessible: 'Προσβάσιμη ΑμεΑ',
     dirtRoad: 'Χωματόδρομος',
     localExposureCheck: 'Έλεγχος τοπικής έκθεσης',
     moreOpenToWind: 'Πιο ανοιχτή στον άνεμο',
@@ -271,6 +274,7 @@ const cardCopy: Record<LanguageCode, CardCopy> = {
     shelteredChip: (sentenceDay) => `${sentenceDay}: plus abritée`,
     shelteredChipA11y: (sentenceDay) => `${sentenceDay}: option plus abritée`,
     blueFlag: 'Pavillon Bleu',
+    accessible: 'Accessible PMR',
     dirtRoad: 'Piste',
     localExposureCheck: "Exposition locale à vérifier",
     moreOpenToWind: 'Plus ouverte au vent',
@@ -338,6 +342,7 @@ const cardCopy: Record<LanguageCode, CardCopy> = {
     shelteredChip: (sentenceDay) => `${sentenceDay}: geschützter`,
     shelteredChipA11y: (sentenceDay) => `${sentenceDay}: windgeschütztere Option`,
     blueFlag: 'Blaue Flagge',
+    accessible: 'Barrierefrei',
     dirtRoad: 'Schotterweg',
     localExposureCheck: 'Lokale Exposition prüfen',
     moreOpenToWind: 'Offener zum Wind',
@@ -405,6 +410,7 @@ const cardCopy: Record<LanguageCode, CardCopy> = {
     shelteredChip: (sentenceDay) => `${sentenceDay}: più riparata`,
     shelteredChipA11y: (sentenceDay) => `${sentenceDay}: opzione più riparata`,
     blueFlag: 'Bandiera Blu',
+    accessible: 'Accessibile',
     dirtRoad: 'Strada sterrata',
     localExposureCheck: 'Verifica esposizione locale',
     moreOpenToWind: 'Più aperta al vento',
@@ -694,6 +700,21 @@ const BlueFlagBadge: React.FC<{ language: LanguageCode; compact?: boolean }> = (
   );
 };
 
+const AccessibilityBadge: React.FC<{ language: LanguageCode; compact?: boolean }> = ({ language, compact = false }) => {
+  const label = getLocalizedCopy(language, cardCopy).accessible;
+
+  return (
+    <span
+      title={label}
+      aria-label={label}
+      className={`inline-flex shrink-0 items-center gap-1 rounded-full border border-sky-100 bg-white/88 font-bold leading-none text-sky-700 shadow-sm ring-1 ring-black/5 backdrop-blur-md ${compact ? 'min-h-7 px-2 py-1 text-[10px]' : 'min-h-8 px-2.5 py-1 text-xs'}`}
+    >
+      <AccessibilityIcon className="h-3.5 w-3.5 shrink-0 text-sky-600" aria-hidden="true" />
+      <span className="whitespace-nowrap">{label}</span>
+    </span>
+  );
+};
+
 const BeachTypeTag: React.FC<{ beachType: BeachType; t: Translation }> = ({ beachType, t }) => {
   if (beachType === 'unknown') return null;
 
@@ -973,6 +994,9 @@ export const BeachCard: React.FC<BeachCardProps> = ({
   const { name, rating, amenities, accessibility, distance, beachType, characteristics, metadata } = beach;
   const beachDisplayName = displayBeachName(name, language);
   const hasBlueFlag2026 = beach.blueFlag2026?.awarded === true || metadata?.blueFlag2026?.awarded === true;
+  // Badge only for currently-active ramps (same safe rule as the accessibility filter).
+  const seatracAccess = beach.seatrac ?? metadata?.seatrac;
+  const hasAccessibleRamp = seatracAccess?.hasSeatrac === true && seatracAccess.status === 'online';
   const isPartlyShelteredToday = exposureLevel === 'partial';
   const windBeaufort = getBeaufortLevel(windSpeed * 3.6);
   const isFavorite = favorites.includes(beach.id);
@@ -1282,7 +1306,7 @@ export const BeachCard: React.FC<BeachCardProps> = ({
               onError={() => setPhotoIndex((current) => current + 1)}
             />
           ) : (
-            <BeachLocationPlaceholder language={language} avoidTopLeft={recommendationRank !== undefined || hasBlueFlag2026} />
+            <BeachLocationPlaceholder language={language} avoidTopLeft={recommendationRank !== undefined || hasBlueFlag2026 || hasAccessibleRamp} />
           )}
           {cardPhoto && <div className="absolute inset-0 bg-gradient-to-t from-slate-950/24 via-transparent to-white/0" />}
 
@@ -1293,6 +1317,7 @@ export const BeachCard: React.FC<BeachCardProps> = ({
               </span>
             )}
             {hasBlueFlag2026 && <BlueFlagBadge language={language} />}
+            {hasAccessibleRamp && <AccessibilityBadge language={language} />}
           </div>
 
           <button
@@ -1428,7 +1453,7 @@ export const BeachCard: React.FC<BeachCardProps> = ({
             onError={() => setPhotoIndex((current) => current + 1)}
           />
         ) : (
-          <BeachLocationPlaceholder language={language} avoidTopLeft={recommendationRank !== undefined || hasBlueFlag2026} />
+          <BeachLocationPlaceholder language={language} avoidTopLeft={recommendationRank !== undefined || hasBlueFlag2026 || hasAccessibleRamp} />
         )}
         {/* Dark overlay for readability when photo is present */}
         {cardPhoto && <div className="absolute inset-0 bg-gradient-to-t from-slate-950/24 via-transparent to-white/0" />}
@@ -1454,6 +1479,7 @@ export const BeachCard: React.FC<BeachCardProps> = ({
             </div>
           )}
           {hasBlueFlag2026 && <BlueFlagBadge language={language} compact />}
+          {hasAccessibleRamp && <AccessibilityBadge language={language} compact />}
         </div>
 
         {/* Favorite button overlay */}

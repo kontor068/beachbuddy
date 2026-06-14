@@ -343,6 +343,12 @@ const hasBlueFlag2026Award = (beach: Beach): boolean => (
   beach.blueFlag2026?.awarded === true ||
   beach.metadata?.blueFlag2026?.awarded === true
 );
+// Safety-first: the "accessible" filter surfaces ONLY currently-active sea-access ramps.
+// Uninstalled / unverified Seatrac beaches must not pass (wrong info can strand a wheelchair user).
+const hasDisabledAccess = (beach: Beach): boolean => {
+  const seatrac = beach.seatrac ?? beach.metadata?.seatrac;
+  return Boolean(seatrac && seatrac.hasSeatrac && seatrac.status === 'online');
+};
 
 export const beachMatchesUserPreferences = (beach: Beach, preferences?: UserPreferences): boolean => {
   if (!hasActivePreferences(preferences) || !preferences) return true;
@@ -355,6 +361,7 @@ export const beachMatchesUserPreferences = (beach: Beach, preferences?: UserPref
   }
 
   if (preferences.blueFlag2026 && !hasBlueFlag2026Award(beach)) return false;
+  if (preferences.disabledAccess && !hasDisabledAccess(beach)) return false;
   if (preferences.quiet && !isQuietBeach(beach)) return false;
   if (preferences.beachBar && !hasBeachBarAmenity(beach)) return false;
   if (preferences.familyFriendly && !isFamilyFriendlyBeach(beach)) return false;
@@ -2001,7 +2008,13 @@ export const getSuitableBeaches = (
   hourlyForecast?: ForecastItem[],
   preferences?: UserPreferences,
   beachWeatherById?: BeachWeatherById,
-  geospatialProfiles?: GeospatialExposureLookup
+  geospatialProfiles?: GeospatialExposureLookup,
+  // Optional per-beach scores already computed by the caller with the SAME
+  // inputs this function would use (weatherForBeach, userLocation, preferences,
+  // hourlyForBeach, geospatialProfile). When supplied we reuse them instead of
+  // re-running calculateBeachScore, so the slider/map don't pay for the same
+  // heavy scoring pass multiple times per change.
+  precomputedScores?: Map<number, BeachScore>
 ): SuitableBeach[] => {
   const suitableBeaches: SuitableBeach[] = [];
 
@@ -2013,7 +2026,7 @@ export const getSuitableBeaches = (
     const weatherForBeach = beachWeather || weather;
     const hourlyForBeach = beachWeather?.hourly || hourlyForecast || ('hourly' in weatherForBeach ? weatherForBeach.hourly : undefined);
     const geospatialProfile = geospatialProfiles?.[beach.id];
-    const scoreResult = calculateBeachScore(
+    const scoreResult = precomputedScores?.get(beach.id) ?? calculateBeachScore(
       beach,
       weatherForBeach,
       userLocation,

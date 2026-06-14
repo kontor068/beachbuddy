@@ -49,6 +49,7 @@ const filterTitleCopy: Record<LanguageCode, FilterTitleCopy> = {
 const preferenceTitleLabels: Record<LanguageCode, Partial<Record<keyof UserPreferences, string>>> = {
   en: {
     blueFlag2026: 'Blue Flag',
+    disabledAccess: 'accessible sea-access',
     sandy: 'sand',
     pebbles: 'pebbles',
     quiet: 'quiet spots',
@@ -63,6 +64,7 @@ const preferenceTitleLabels: Record<LanguageCode, Partial<Record<keyof UserPrefe
   },
   gr: {
     blueFlag2026: 'Γαλάζια Σημαία',
+    disabledAccess: 'πρόσβαση ΑμεΑ',
     sandy: 'άμμο',
     pebbles: 'βότσαλο',
     quiet: 'ήσυχες',
@@ -77,6 +79,7 @@ const preferenceTitleLabels: Record<LanguageCode, Partial<Record<keyof UserPrefe
   },
   fr: {
     blueFlag2026: 'Pavillon Bleu',
+    disabledAccess: 'accès PMR à la mer',
     sandy: 'du sable',
     pebbles: 'des galets',
     quiet: 'des coins calmes',
@@ -91,6 +94,7 @@ const preferenceTitleLabels: Record<LanguageCode, Partial<Record<keyof UserPrefe
   },
   de: {
     blueFlag2026: 'Blauer Flagge',
+    disabledAccess: 'barrierefreiem Meerzugang',
     sandy: 'Sand',
     pebbles: 'Kiesel',
     quiet: 'ruhigen Orten',
@@ -105,6 +109,7 @@ const preferenceTitleLabels: Record<LanguageCode, Partial<Record<keyof UserPrefe
   },
   it: {
     blueFlag2026: 'Bandiera Blu',
+    disabledAccess: 'accesso al mare accessibile',
     sandy: 'sabbia',
     pebbles: 'ciottoli',
     quiet: 'zone tranquille',
@@ -209,6 +214,7 @@ const advancedFilterTitleLabels: Record<LanguageCode, Partial<Record<FilterKey, 
 
 const greekPreferenceTitleTokens: Partial<Record<keyof UserPreferences, GreekFilterTitleToken>> = {
   blueFlag2026: { kind: 'with', label: 'Γαλάζια Σημαία' },
+  disabledAccess: { kind: 'adjective', label: 'Προσβάσιμες ΑμεΑ' },
   sandy: { kind: 'adjective', label: 'Αμμώδεις' },
   pebbles: { kind: 'with', label: 'βότσαλο' },
   quiet: { kind: 'adjective', label: 'Ήσυχες' },

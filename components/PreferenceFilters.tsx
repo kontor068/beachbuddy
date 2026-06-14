@@ -1,7 +1,7 @@
 
 import React, { useState } from 'react';
 import { motion } from 'motion/react';
-import { VolumeX, BadgeCheck, Search, Waves, Droplets, Mountain, SlidersHorizontal, Users, MapPin, Flag } from 'lucide-react';
+import { VolumeX, BadgeCheck, Search, Waves, Droplets, Mountain, SlidersHorizontal, Users, MapPin, Flag, Accessibility } from 'lucide-react';
 import { UserPreferences } from '../types';
 import { getPreferenceFilterLabel, QUICK_PREFERENCE_FILTERS } from '../utils/preferenceFilterLabels';
 import { SandDotsIcon } from './BeachFeatureIcons';
@@ -20,6 +20,7 @@ export const PreferenceFilters: React.FC<PreferenceFiltersProps> = ({ preference
   const language = t.locale === 'el-GR' ? 'gr' : 'en';
   const icons: Partial<Record<keyof UserPreferences, React.ReactNode>> = {
     blueFlag2026: <Flag size={16} />,
+    disabledAccess: <Accessibility size={16} />,
     sandy: <SandDotsIcon size={16} />,
     pebbles: <Mountain size={16} />,
     quiet: <VolumeX size={16} />,

@@ -4,7 +4,7 @@ import {
   ArrowLeft, MapPin, Wind, Waves, Thermometer,
   Clock, Trees, Utensils, Users,
   Navigation, Share2, Heart, ChevronRight, ThumbsUp, ThumbsDown, CheckCircle2, Sparkles,
-  Camera, ExternalLink
+  Camera, ExternalLink, Accessibility, AlertTriangle
 } from 'lucide-react';
 import {
   Beach, LanguageCode, Translation, WindDirection,
@@ -31,6 +31,16 @@ import {
   getAmenityStatusRows,
   shouldShowAmenityDisclaimer,
 } from '../utils/amenities';
+import {
+  getSeatracAccess,
+  hasSeatracInfo,
+  getAccessibilityStatusRows,
+  getAccessibilityHeadline,
+  getAccessibilitySeasonalNote,
+  getAccessibilityVerifyNote,
+  getAccessibilitySectionTitle,
+  getAccessibilityCheckedLabel,
+} from '../utils/accessibility';
 import { MapLoadBoundary } from '../components/MapLoadBoundary';
 import { scrollToPageTop } from '../utils/scroll';
 import { buildPhotoSuggestionUrl } from '../utils/photoContribution';
@@ -647,6 +657,10 @@ export const BeachDetailPage: React.FC<BeachDetailPageProps> = ({
   const amenityChips = getAmenityChips(beach, language);
   const amenityRows = getAmenityStatusRows(beach, language);
   const showAmenityDisclaimer = shouldShowAmenityDisclaimer(beach);
+
+  const seatracAccess = getSeatracAccess(beach);
+  const showAccessibilitySection = hasSeatracInfo(beach);
+  const accessibilityRows = showAccessibilitySection ? getAccessibilityStatusRows(beach, language) : [];
   const topFeatureItems = [
     {
       key: 'sandy',
@@ -1007,6 +1021,61 @@ export const BeachDetailPage: React.FC<BeachDetailPageProps> = ({
             </p>
           )}
         </section>
+
+        {/* 7b. Accessibility (disabled / wheelchair sea-access) */}
+        {showAccessibilitySection && seatracAccess && (
+          <section className="space-y-3">
+            <h3 className="flex items-center gap-2 px-1 font-heading text-lg font-bold text-slate-950">
+              <Accessibility className="h-5 w-5 text-sky-700" aria-hidden />
+              {getAccessibilitySectionTitle(language)}
+            </h3>
+            <p className="px-1 text-sm font-bold text-slate-700">{getAccessibilityHeadline(beach, language)}</p>
+
+            {seatracAccess.status === 'uninstalled' && (
+              <div role="alert" className="flex items-start gap-2 rounded-2xl border border-orange-200 bg-orange-50 px-3 py-2 text-xs font-bold leading-snug text-orange-800">
+                <AlertTriangle className="mt-0.5 h-4 w-4 shrink-0" aria-hidden />
+                <span>{getAccessibilityHeadline(beach, language)}</span>
+              </div>
+            )}
+
+            <div className="grid gap-2 sm:grid-cols-2">
+              {accessibilityRows.map((row) => (
+                <div key={row.key} className="flex min-h-12 items-center justify-between gap-3 rounded-2xl border border-white/80 bg-white/88 px-3 py-2 shadow-sm shadow-sky-900/5">
+                  <span className="min-w-0 text-sm font-bold text-slate-700">{row.label}</span>
+                  <span className={`shrink-0 rounded-full px-2.5 py-1 text-[11px] font-bold ${amenityStatusClass(row.status)}`}>
+                    {row.value}
+                  </span>
+                </div>
+              ))}
+            </div>
+
+            <div className="space-y-1.5 rounded-2xl border border-sky-100 bg-sky-50/70 px-3 py-2.5">
+              {seatracAccess.seasonal && (
+                <p className="text-xs font-semibold leading-snug text-slate-600">{getAccessibilitySeasonalNote(language)}</p>
+              )}
+              {seatracAccess.needsVerification && (
+                <p className="text-xs font-semibold leading-snug text-slate-600">{getAccessibilityVerifyNote(language)}</p>
+              )}
+              {(seatracAccess.verifiedAt || seatracAccess.sourceUrls?.length) && (
+                <p className="flex flex-wrap items-center gap-1 pt-0.5 text-[11px] font-bold text-slate-500">
+                  {seatracAccess.verifiedAt && (
+                    <span>{getAccessibilityCheckedLabel(language)}: {seatracAccess.verifiedAt}</span>
+                  )}
+                  {seatracAccess.sourceUrls?.[0] && (
+                    <a
+                      href={seatracAccess.sourceUrls[0]}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="inline-flex items-center gap-1 text-sky-700 underline decoration-sky-300 underline-offset-2"
+                    >
+                      seatrac.gr <ExternalLink className="h-3 w-3" aria-hidden />
+                    </a>
+                  )}
+                </p>
+              )}
+            </div>
+          </section>
+        )}
 
         {/* 8. Map Location */}
         <section className="space-y-3">

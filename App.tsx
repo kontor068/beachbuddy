@@ -1496,6 +1496,7 @@ export const App: React.FC = () => {
   const defaultPreferences: UserPreferences = useMemo(
     () => ({
       blueFlag2026: false,
+      disabledAccess: false,
       sandy: false,
       pebbles: false,
       quiet: false,

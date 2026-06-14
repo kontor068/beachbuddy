@@ -1,5 +1,6 @@
 import React, { useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react';
 import {
+  Accessibility,
   BadgeCheck,
   CalendarDays,
   Check,
@@ -298,6 +299,7 @@ const installMouseDragScroll = (element: HTMLElement): (() => void) => {
 
 const filterIcons: Partial<Record<QuickPreferenceFilter, React.ReactNode>> = {
   blueFlag2026: <Flag className="h-5 w-5" />,
+  disabledAccess: <Accessibility className="h-5 w-5" />,
   sandy: <SandDotsIcon className="h-5 w-5" />,
   pebbles: <Mountain className="h-5 w-5" />,
   quiet: <VolumeX className="h-5 w-5" />,
@@ -352,6 +354,7 @@ type DesktopFilterItem =
 
 const defaultFilterAvailabilityPreferences: UserPreferences = {
   blueFlag2026: false,
+  disabledAccess: false,
   sandy: false,
   pebbles: false,
   quiet: false,
