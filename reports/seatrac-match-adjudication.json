@@ -1,10 +1,10 @@
 {
   "_meta": {
-    "generatedAt": "2026-06-14T19:31:58.309Z",
+    "generatedAt": "2026-06-14T19:59:52.258Z",
     "seedCount": 174,
-    "confident": 53,
+    "confident": 57,
     "ambiguous": 33,
-    "noMatch": 88,
+    "noMatch": 84,
     "instructions": "Review each entry. For 'confident': verify chosenId or set to null to skip. For ambiguous (PICK_ONE): set chosenId to the correct candidate id, or null to skip. 'no-match': leave for Phase D2. Then run: node scripts/importSeatracAccessibility.mjs apply",
     "thresholds": {
       "CONFIDENT": 88,
@@ -188,6 +188,54 @@
           "sub": "Halkidiki",
           "subSub": "Halkidiki (mainland)",
           "score": 27
+        }
+      ]
+    },
+    {
+      "seed": {
+        "nameGr": "Νέα Φλόγητα",
+        "nameEn": "Nea Flogita",
+        "region": "Central Macedonia",
+        "municipality": "Nea Propontida",
+        "status": "online",
+        "accessibleWc": "yes",
+        "boardwalkToWater": "yes",
+        "notes": "Seatrac + track + accessible WC + transfer wheelchair; first Halkidiki Seatrac at Flogita."
+      },
+      "decision": "accept",
+      "chosenId": 3018,
+      "candidates": [
+        {
+          "id": 3018,
+          "name": "Νέα Φλόγητα",
+          "region": "Central Macedonia",
+          "sub": "Halkidiki",
+          "subSub": "Halkidiki (mainland)",
+          "score": 100
+        },
+        {
+          "id": 435,
+          "name": "Plagia Flogita",
+          "region": "Central Macedonia",
+          "sub": "Halkidiki",
+          "subSub": "Halkidiki (mainland)",
+          "score": 67
+        },
+        {
+          "id": 3009,
+          "name": "Νέα Ρόδα",
+          "region": "Central Macedonia",
+          "sub": "Halkidiki",
+          "subSub": "Halkidiki (mainland)",
+          "score": 27
+        },
+        {
+          "id": 383,
+          "name": "Akti Kalogrias",
+          "region": "Central Macedonia",
+          "sub": "Halkidiki",
+          "subSub": "Halkidiki (mainland)",
+          "score": 24
         }
       ]
     },
@@ -928,6 +976,53 @@
           "sub": "Rethymno",
           "subSub": "Crete (Rethymno)",
           "score": 43
+        }
+      ]
+    },
+    {
+      "seed": {
+        "nameGr": "Αγία Γαλήνη",
+        "nameEn": "Agia Galini",
+        "region": "Crete",
+        "municipality": "Agios Vasileios",
+        "status": "online",
+        "full": true,
+        "notes": "Full supplementary amenities (parking, track, WC, changing room, shade, shower)."
+      },
+      "decision": "accept",
+      "chosenId": 3019,
+      "candidates": [
+        {
+          "id": 3019,
+          "name": "Αγία Γαλήνη",
+          "region": "Crete",
+          "sub": "Rethymno",
+          "subSub": "Crete (Rethymno)",
+          "score": 100
+        },
+        {
+          "id": 655,
+          "name": "Πέρα Γαλήνοι",
+          "region": "Crete",
+          "sub": "Heraklion",
+          "subSub": "Crete (Heraklion)",
+          "score": 67
+        },
+        {
+          "id": 546,
+          "name": "Παραλία Αγία Μαρίνα",
+          "region": "Crete",
+          "sub": "Chania",
+          "subSub": "Crete (Chania)",
+          "score": 48
+        },
+        {
+          "id": 635,
+          "name": "Αγία Πελαγία",
+          "region": "Crete",
+          "sub": "Heraklion",
+          "subSub": "Crete (Heraklion)",
+          "score": 46
         }
       ]
     },
@@ -2070,6 +2165,98 @@
           "sub": "Lakonia",
           "subSub": "Lakonia (mainland)",
           "score": 40
+        }
+      ]
+    },
+    {
+      "seed": {
+        "nameGr": "Πεταλίδι",
+        "nameEn": "Petalidi",
+        "region": "Peloponnese",
+        "municipality": "Messini",
+        "status": "online",
+        "full": true
+      },
+      "decision": "accept",
+      "chosenId": 3021,
+      "candidates": [
+        {
+          "id": 3021,
+          "name": "Πεταλίδι",
+          "region": "Peloponnese",
+          "sub": "Messinia",
+          "subSub": "Messinia (mainland)",
+          "score": 100
+        },
+        {
+          "id": 1640,
+          "name": "Παραλία Σάλιο",
+          "region": "Peloponnese",
+          "sub": "Messinia",
+          "subSub": "Messinia (mainland)",
+          "score": 36
+        },
+        {
+          "id": 1504,
+          "name": "Κόστα",
+          "region": "Peloponnese",
+          "sub": "Argolida",
+          "subSub": "Argolida (mainland)",
+          "score": 33
+        },
+        {
+          "id": 1601,
+          "name": "Χαλικιά Βάτα",
+          "region": "Peloponnese",
+          "sub": "Lakonia",
+          "subSub": "Lakonia (mainland)",
+          "score": 33
+        }
+      ]
+    },
+    {
+      "seed": {
+        "nameGr": "Άγιος Ανδρέας",
+        "nameEn": "Agios Andreas",
+        "region": "Peloponnese",
+        "municipality": "Messini",
+        "status": "online",
+        "full": true
+      },
+      "decision": "accept",
+      "chosenId": 3020,
+      "candidates": [
+        {
+          "id": 3020,
+          "name": "Άγιος Ανδρέας",
+          "region": "Peloponnese",
+          "sub": "Messinia",
+          "subSub": "Messinia (mainland)",
+          "score": 100
+        },
+        {
+          "id": 1544,
+          "name": "Άγιος Κυπριανός",
+          "region": "Peloponnese",
+          "sub": "Lakonia",
+          "subSub": "Lakonia (mainland)",
+          "score": 42
+        },
+        {
+          "id": 1548,
+          "name": "Ανδρόγυαλος",
+          "region": "Peloponnese",
+          "sub": "Lakonia",
+          "subSub": "Lakonia (mainland)",
+          "score": 38
+        },
+        {
+          "id": 1604,
+          "name": "Άγιος Νικόλαος",
+          "region": "Peloponnese",
+          "sub": "Messinia",
+          "subSub": "Messinia (mainland)",
+          "score": 35
         }
       ]
     },
@@ -4770,53 +4957,6 @@
     },
     {
       "seed": {
-        "nameGr": "Νέα Φλόγητα",
-        "nameEn": "Nea Flogita",
-        "region": "Central Macedonia",
-        "municipality": "Nea Propontida",
-        "status": "online",
-        "accessibleWc": "yes",
-        "boardwalkToWater": "yes",
-        "notes": "Seatrac + track + accessible WC + transfer wheelchair; first Halkidiki Seatrac at Flogita."
-      },
-      "decision": "no-match (Phase D2 candidate)",
-      "candidates": [
-        {
-          "id": 435,
-          "name": "Plagia Flogita",
-          "region": "Central Macedonia",
-          "sub": "Halkidiki",
-          "subSub": "Halkidiki (mainland)",
-          "score": 67
-        },
-        {
-          "id": 3009,
-          "name": "Νέα Ρόδα",
-          "region": "Central Macedonia",
-          "sub": "Halkidiki",
-          "subSub": "Halkidiki (mainland)",
-          "score": 27
-        },
-        {
-          "id": 383,
-          "name": "Akti Kalogrias",
-          "region": "Central Macedonia",
-          "sub": "Halkidiki",
-          "subSub": "Halkidiki (mainland)",
-          "score": 24
-        },
-        {
-          "id": 405,
-          "name": "Kallithea",
-          "region": "Central Macedonia",
-          "sub": "Halkidiki",
-          "subSub": "Halkidiki (mainland)",
-          "score": 24
-        }
-      ]
-    },
-    {
-      "seed": {
         "nameGr": "Διονυσίου",
         "nameEn": "Dionysiou",
         "region": "Central Macedonia",
@@ -4898,12 +5038,12 @@
           "score": 38
         },
         {
-          "id": 458,
-          "name": "Παραλία Νέας Ηράκλειας - Sahara",
+          "id": 3018,
+          "name": "Νέα Φλόγητα",
           "region": "Central Macedonia",
           "sub": "Halkidiki",
           "subSub": "Halkidiki (mainland)",
-          "score": 33
+          "score": 35
         }
       ]
     },
@@ -5168,52 +5308,6 @@
           "sub": "Kavala",
           "subSub": "Kavala (mainland)",
           "score": 31
-        }
-      ]
-    },
-    {
-      "seed": {
-        "nameGr": "Αγία Γαλήνη",
-        "nameEn": "Agia Galini",
-        "region": "Crete",
-        "municipality": "Agios Vasileios",
-        "status": "online",
-        "full": true,
-        "notes": "Full supplementary amenities (parking, track, WC, changing room, shade, shower)."
-      },
-      "decision": "no-match (Phase D2 candidate)",
-      "candidates": [
-        {
-          "id": 655,
-          "name": "Πέρα Γαλήνοι",
-          "region": "Crete",
-          "sub": "Heraklion",
-          "subSub": "Crete (Heraklion)",
-          "score": 67
-        },
-        {
-          "id": 546,
-          "name": "Παραλία Αγία Μαρίνα",
-          "region": "Crete",
-          "sub": "Chania",
-          "subSub": "Crete (Chania)",
-          "score": 48
-        },
-        {
-          "id": 635,
-          "name": "Αγία Πελαγία",
-          "region": "Crete",
-          "sub": "Heraklion",
-          "subSub": "Crete (Heraklion)",
-          "score": 46
-        },
-        {
-          "id": 646,
-          "name": "Μάλια",
-          "region": "Crete",
-          "sub": "Heraklion",
-          "subSub": "Crete (Heraklion)",
-          "score": 46
         }
       ]
     },
@@ -5884,96 +5978,6 @@
           "sub": "Messinia",
           "subSub": "Messinia (mainland)",
           "score": 36
-        }
-      ]
-    },
-    {
-      "seed": {
-        "nameGr": "Πεταλίδι",
-        "nameEn": "Petalidi",
-        "region": "Peloponnese",
-        "municipality": "Messini",
-        "status": "online",
-        "full": true
-      },
-      "decision": "no-match (Phase D2 candidate)",
-      "candidates": [
-        {
-          "id": 1640,
-          "name": "Παραλία Σάλιο",
-          "region": "Peloponnese",
-          "sub": "Messinia",
-          "subSub": "Messinia (mainland)",
-          "score": 36
-        },
-        {
-          "id": 1504,
-          "name": "Κόστα",
-          "region": "Peloponnese",
-          "sub": "Argolida",
-          "subSub": "Argolida (mainland)",
-          "score": 33
-        },
-        {
-          "id": 1601,
-          "name": "Χαλικιά Βάτα",
-          "region": "Peloponnese",
-          "sub": "Lakonia",
-          "subSub": "Lakonia (mainland)",
-          "score": 33
-        },
-        {
-          "id": 1493,
-          "name": "Πετροθάλασσα",
-          "region": "Peloponnese",
-          "sub": "Argolida",
-          "subSub": "Argolida (mainland)",
-          "score": 32
-        }
-      ]
-    },
-    {
-      "seed": {
-        "nameGr": "Άγιος Ανδρέας",
-        "nameEn": "Agios Andreas",
-        "region": "Peloponnese",
-        "municipality": "Messini",
-        "status": "online",
-        "full": true
-      },
-      "decision": "no-match (Phase D2 candidate)",
-      "candidates": [
-        {
-          "id": 1544,
-          "name": "Άγιος Κυπριανός",
-          "region": "Peloponnese",
-          "sub": "Lakonia",
-          "subSub": "Lakonia (mainland)",
-          "score": 42
-        },
-        {
-          "id": 1548,
-          "name": "Ανδρόγυαλος",
-          "region": "Peloponnese",
-          "sub": "Lakonia",
-          "subSub": "Lakonia (mainland)",
-          "score": 38
-        },
-        {
-          "id": 1604,
-          "name": "Άγιος Νικόλαος",
-          "region": "Peloponnese",
-          "sub": "Messinia",
-          "subSub": "Messinia (mainland)",
-          "score": 35
-        },
-        {
-          "id": 1486,
-          "name": "Παραλία Βαγιωνία",
-          "region": "Peloponnese",
-          "sub": "Argolida",
-          "subSub": "Argolida (mainland)",
-          "score": 33
         }
       ]
     },
