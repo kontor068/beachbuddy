@@ -1192,6 +1192,7 @@ export const BeachCard: React.FC<BeachCardProps> = ({
     return (
       <motion.div
         onClick={onClick}
+        data-nosnippet="true"
         whileHover={{ y: -3 }}
         transition={{ duration: 0.25 }}
         className="group relative beach-card flex h-full w-full cursor-pointer flex-col overflow-hidden active:scale-[0.995]"
@@ -1200,7 +1201,9 @@ export const BeachCard: React.FC<BeachCardProps> = ({
           <div className="grid min-w-0 grid-cols-[2.75rem_minmax(0,1fr)_2.75rem] items-start gap-2.5">
             <div className="flex h-11 w-11 items-start justify-start" aria-hidden={recommendationRank === undefined}>
               {recommendationRank !== undefined && (
-                <span className="grid h-8 min-w-8 place-items-center rounded-full bg-sky-50 text-xs font-extrabold text-cyan-800 ring-1 ring-sky-100">
+                <span className={recommendationRank === 1
+                  ? 'grid h-8 min-w-8 place-items-center rounded-full bg-[#007a83] text-xs font-extrabold text-white ring-1 ring-[#007a83]/30'
+                  : 'grid h-8 min-w-8 place-items-center rounded-full bg-sky-50 text-xs font-extrabold text-cyan-800 ring-1 ring-sky-100'}>
                   {recommendationLabel ?? recommendationRank}
                 </span>
               )}
@@ -1312,7 +1315,9 @@ export const BeachCard: React.FC<BeachCardProps> = ({
 
           <div className="absolute left-3 top-3 z-20 hidden max-w-[calc(100%-4.75rem)] flex-wrap items-center gap-2 sm:flex">
             {recommendationRank !== undefined && (
-              <span className="inline-flex min-h-8 items-center rounded-full bg-white/82 px-2.5 py-1 text-xs font-bold text-slate-700 shadow-sm ring-1 ring-black/5 backdrop-blur-md">
+              <span className={recommendationRank === 1
+                ? 'inline-flex min-h-8 items-center rounded-full bg-[#007a83] px-2.5 py-1 text-xs font-extrabold text-white shadow-sm ring-1 ring-white/30 backdrop-blur-md'
+                : 'inline-flex min-h-8 items-center rounded-full bg-white/82 px-2.5 py-1 text-xs font-bold text-slate-700 shadow-sm ring-1 ring-black/5 backdrop-blur-md'}>
                 {recommendationLabel ?? recommendationRank}
               </span>
             )}
@@ -1434,6 +1439,7 @@ export const BeachCard: React.FC<BeachCardProps> = ({
   return (
     <motion.div
       onClick={onClick}
+      data-nosnippet="true"
       whileHover={{ y: -4 }}
       transition={{ duration: 0.3 }}
       className="group relative beach-card flex h-fit w-full cursor-pointer flex-col overflow-hidden"

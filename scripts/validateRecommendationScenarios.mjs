@@ -117,6 +117,17 @@ const scenarios = {
     waveHeightM: 0.5,
     waveDirectionDeg: 270,
   },
+  // Genuine meltemi at 4 Bft north: the false-protected trap. At this strength the
+  // only surviving Naxos pick (Ψιλή Άμμος, ESE quartering) degrades to caution while
+  // still being surfaced as #1. Pre-registered for the best-available-shelter gate.
+  Naxos_N_4BFT: {
+    targetRegionId: 'south-aegean-naxos',
+    windDirectionDeg: 0,
+    windSpeedMs: 5.8,
+    windGustMs: 8.0,
+    waveHeightM: 0.4,
+    waveDirectionDeg: 0,
+  },
   Naxos_S_4BFT: {
     targetRegionId: 'south-aegean-naxos',
     windDirectionDeg: 180,
@@ -208,14 +219,15 @@ const assert = (condition, message) => {
   if (!condition) throw new Error(message);
 };
 
+// min(3, qualified): show up to 3, capped only by how many cleared the Tier 0 gate.
 [
   [0, 0],
   [1, 1],
-  [2, 1],
-  [3, 1],
-  [5, 1],
-  [6, 2],
-  [8, 2],
+  [2, 2],
+  [3, 3],
+  [5, 3],
+  [6, 3],
+  [8, 3],
   [9, 3],
   [20, 3],
 ].forEach(([input, expected]) => {
@@ -748,6 +760,128 @@ const androsSyneti = findByName(results.Andros_N_5BFT.allScored, /syneti|συν�
 assert(androsPisoGyalia, 'Andros_N_5BFT should include Piso Gyalia in scored beaches.');
 assert(androsSyneti, 'Andros_N_5BFT should include Syneti in scored beaches.');
 assert(androsPisoGyalia.score > androsSyneti.score, 'Andros_N_5BFT should rate Piso Gyalia above Syneti in north wind.');
+
+// ── Pre-registered meltemi invariant (declared 2026-06-14, BEFORE the tiered
+// ranking redesign runs). The top-1 on a meltemi (north-wind) day must ALWAYS be
+// the best-available leeward refuge, NEVER a windward/exposed beach.
+//
+// Why it is checked at 4 Bft (not 5): the harness applies ONE uniform wave height
+// to every beach, so at 5 Bft even genuine south-coast refuges hit avoid_swimming
+// and the honest output is 0 picks (already enforced by assertNoIdealScenario).
+// The "is the top pick a refuge?" ordering is therefore only executable at 4 Bft,
+// where leeward beaches stay swimmable. See [[top3-ranking-redesign]].
+// Smallest angle (0–180°) between two compass headings.
+const angularDistance = (a, b) => Math.abs(((a - b + 540) % 360) - 180);
+
+// A genuine leeward refuge faces broadly the same way the wind blows TOWARD (away from
+// the wind's source) — within ±60° of windToward, i.e. the SE–SW arc for a north wind.
+// 60° (not 90°) is deliberate: a 90° window would admit due-east/due-west cross-shore
+// beaches as "lee", which is exactly the false-protected trap. E.g. for a north wind
+// (windToward 180°): Palaiochori 180° → 0° (perfect lee, OK); Fyriplaka 205° → 25° (OK);
+// Ψιλή Άμμος 119° (ESE quartering) → 61° → NOT leeward. Unknown facing is skipped.
+const LEEWARD_ARC_DEG = 60;
+const facesAwayFromWind = (facingDeg, windOriginDeg) => {
+  if (typeof facingDeg !== 'number' || !Number.isFinite(facingDeg)) return true;
+  const windTowardDeg = (windOriginDeg + 180) % 360;
+  return angularDistance(facingDeg, windTowardDeg) <= LEEWARD_ARC_DEG;
+};
+
+const topPickFacingDeg = item => {
+  const fromProfile = item.geospatialExposure?.facingDeg;
+  if (typeof fromProfile === 'number') return fromProfile;
+  const fromWindProfile = item.windProfile?.facingDeg ?? item.windProfile?.beachFacingDirection;
+  return typeof fromWindProfile === 'number' ? fromWindProfile : undefined;
+};
+
+// A meltemi top pick is "false-protected" when it is shown as a confident swim pick
+// while it neither genuinely claims wind protection NOR faces leeward — i.e. a
+// quartering/cross-shore beach (canClaim=false) carried only by a caution-grade score.
+// This is the exact failure the best-available-shelter gate must remove.
+const isFalseProtectedMeltemiPick = (item, windOriginDeg) => (
+  item.canClaimWindProtection === false &&
+  item.swimmingComfort === 'caution' &&
+  !facesAwayFromWind(topPickFacingDeg(item), windOriginDeg)
+);
+
+const assertMeltemiTopPickIsRefuge = (id, windOriginDeg) => {
+  const result = results[id];
+  if (result.topRecommendations.length === 0) return;
+
+  // (1) Best-available-shelter: the #1 pick — and every pick — is never exposed.
+  assert(
+    result.topRecommendations[0].exposureLevel !== 'exposed',
+    `${id} (meltemi) top-1 must never be exposed.`
+  );
+  assert(
+    !result.topRecommendations.some(item => item.exposureLevel === 'exposed'),
+    `${id} (meltemi) top picks must not include any exposed beach.`
+  );
+
+  // (2) False-protected doctrine: no pick may be a cross-shore caution beach dressed
+  // up as a confident choice. Where geometry is known, picks must face leeward.
+  result.topRecommendations.forEach(item => {
+    assert(
+      !isFalseProtectedMeltemiPick(item, windOriginDeg),
+      `${id} (meltemi) top pick "${beachName(item.beach)}" is false-protected: canClaim=false, caution, facing ${topPickFacingDeg(item)}° into the ${windOriginDeg}° wind.`
+    );
+  });
+};
+
+// Regression guard (must stay green): Milos already behaves correctly today — its
+// 4 Bft north picks are true south-coast refuges (Fyriplaka 205°, Palaiochori 180°).
+// The redesign must not break this.
+assertMeltemiTopPickIsRefuge('Milos_N_4BFT', 0);
+
+// Sanity guard: a genuinely mild 3 Bft north day on Naxos is allowed to surface a
+// partial/good pick (Ψιλή Άμμος) — that is NOT the defect, so it must keep passing.
+assertMeltemiTopPickIsRefuge('Naxos_N_3BFT', 0);
+
+// CLOSED DEFECT (was pre-registered 2026-06-14, now enforced by the Tier 0
+// best-available-shelter gate): at a true 4 Bft north meltemi, Naxos used to surface
+// "Ψιλή Άμμος" (facing 119° ESE, partial, canClaim=false, comfort=caution) as the #1
+// pick — a quartering cross-shore beach carried by a caution-grade score, i.e. the
+// false-protected trap. The gate now drops it. This is a hard assert: if it regresses,
+// the gate has been weakened.
+assertMeltemiTopPickIsRefuge('Naxos_N_4BFT', 0);
+
+// Honest no-fake-greens invariant at full meltemi strength (uniform-wave harness).
+['Naxos_N_5BFT', 'Milos_N_5BFT', 'Paros_N_5BFT', 'Andros_N_5BFT'].forEach(id => {
+  assert(results[id].topRecommendations.length === 0, `${id} (full meltemi) must show no fake top picks.`);
+});
+
+// ── Tier 1 variety de-dup: when more than one top pick is shown, no two may share a
+// coastal sector (same island + same 45° facing bucket) — three beaches of one bay
+// must not fill the top-3. Mirrors coastalSectorKey in recommendationService.ts.
+const COASTAL_SECTOR_BUCKET_DEG = 45;
+const coastalSectorKey = beach => {
+  if (!beach) return 'unknown';
+  const island = beach.location?.island || beach.location?.region || 'unknown';
+  const facing = beach.orientation?.degrees;
+  if (typeof facing !== 'number' || !Number.isFinite(facing)) return `${island}#beach-${beach.id}`;
+  const bucket = Math.floor((((facing % 360) + 360) % 360) / COASTAL_SECTOR_BUCKET_DEG);
+  return `${island}#sector-${bucket}`;
+};
+// Variety is "distinct sectors first": a repeated sector may appear only after every
+// distinct sector already shown has been used — i.e. repeats are the relaxed-variety
+// fallback when distinct sectors run out, never a same-sector pick jumping ahead of an
+// unshown distinct one. So the de-duped prefix (picks before the first repeat) must all
+// be distinct, which is what dedupeByCoastalSector guarantees for the `kept` head.
+Object.entries(results).forEach(([id, result]) => {
+  const sectors = result.topRecommendations.map(item => coastalSectorKey(item.beach));
+  const seen = new Set();
+  let inDistinctPrefix = true;
+  sectors.forEach(sector => {
+    if (seen.has(sector)) {
+      inDistinctPrefix = false; // relaxed-variety tail begins here
+    } else {
+      assert(
+        inDistinctPrefix,
+        `${id} top picks surface a new distinct sector (${sector}) AFTER a same-sector repeat — variety de-dup must show all distinct sectors first: ${sectors.join(', ')}.`
+      );
+      seen.add(sector);
+    }
+  });
+});
 
 console.log('App Recommendation Scenario Validation');
 Object.entries(results).forEach(([id, result]) => {

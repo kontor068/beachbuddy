@@ -129,13 +129,14 @@ export type GeospatialExposureLookup = Record<number, GeospatialExposureProfile>
 
 export const MAX_TOP_RECOMMENDATION_DISPLAY_LIMIT = 3;
 
+// Show up to 3 picks, capped only by how many actually cleared the Tier 0 safety gate
+// (min(3, qualified)). The old floor(qualified/3) needed a 9-deep pool for 3 cards and
+// hid good options on small islands; the stricter gate now does the quality filtering,
+// so a clean pool of 2–3 can surface 2–3 cards. Pool depth no longer gates the count.
 export const getTopRecommendationDisplayLimit = (qualifiedSuitableCount: number): number => {
   if (!Number.isFinite(qualifiedSuitableCount) || qualifiedSuitableCount <= 0) return 0;
 
-  return Math.min(
-    MAX_TOP_RECOMMENDATION_DISPLAY_LIMIT,
-    Math.max(1, Math.floor(qualifiedSuitableCount / 3))
-  );
+  return Math.min(MAX_TOP_RECOMMENDATION_DISPLAY_LIMIT, Math.floor(qualifiedSuitableCount));
 };
 
 const clampScore = (score: number): number => Math.max(0, Math.min(100, Math.round(score)));
@@ -594,6 +595,37 @@ const MEANINGFUL_WIND_TOP_PICK_BEAUFORT = 3;
 const PROTECTED_FIRST_BEAUFORT = 5;
 const MIN_TOP_PICK_SEA_CONDITION_SCORE = 7;
 
+// Tier 0 false-protected gate (best-available-shelter doctrine). A genuine refuge
+// faces broadly the way the wind blows TOWARD — within ±60° of windToward (the SE–SW
+// arc for a north wind). 60° (not 90°) is deliberate: a 90° window would admit
+// due-east/due-west cross-shore beaches as "lee", which is exactly the trap.
+const LEEWARD_ARC_DEG = 60;
+const angularDistanceDeg = (a: number, b: number): number => Math.abs(((a - b + 540) % 360) - 180);
+
+const facesAwayFromWind = (facingDeg: number | null | undefined, windDirectionDeg: number): boolean => {
+  if (typeof facingDeg !== 'number' || !Number.isFinite(facingDeg)) return true;
+  const windTowardDeg = (windDirectionDeg + 180) % 360;
+  return angularDistanceDeg(facingDeg, windTowardDeg) <= LEEWARD_ARC_DEG;
+};
+
+// A meltemi/strong-wind top pick is "false-protected" when it is surfaced as a
+// confident swim pick while it neither genuinely claims wind protection NOR faces
+// leeward — i.e. a quartering/cross-shore beach (canClaim=false) carried only by a
+// caution-grade score. Mirrors validateRecommendationScenarios.mjs. Only binds from
+// meaningful wind upward; light-wind days choose on other merits.
+const isFalseProtectedTopPick = <T extends {
+  canClaimWindProtection?: boolean;
+  swimmingComfort?: SwimmingComfort;
+  windProfile?: WindProfile;
+}>(item: T, windDirectionDeg: number, windBeaufort: number): boolean => {
+  if (windBeaufort < MEANINGFUL_WIND_TOP_PICK_BEAUFORT) return false;
+  return (
+    item.canClaimWindProtection === false &&
+    item.swimmingComfort === 'caution' &&
+    !facesAwayFromWind(item.windProfile?.beachFacingDirection, windDirectionDeg)
+  );
+};
+
 const hasMainstreamFacilities = (beach: Beach): boolean => Boolean(
   beach.metadata?.organized ??
   (beach.amenities?.organized || beach.amenities?.beachBar || beach.amenities?.sunbeds || beach.amenities?.taverna || beach.amenities?.restaurant)
@@ -713,6 +745,24 @@ const compareOptionalDistance = <T extends { distance?: number }>(a: T, b: T): n
   return aDistance - bDistance;
 };
 
+// Tier 2 proximity uses discrete zones, not raw distance, so that only a CATEGORICAL
+// difference (e.g. very close vs short drive) precedes recognition — a 6 km vs 8 km
+// gap stays within one zone and does not reorder above iconic recognition. Returns 0
+// when distance is unknown (e.g. no user location), so the tier is simply skipped.
+const proximityZone = (distanceKm: number): number => {
+  if (distanceKm < 5) return 0;
+  if (distanceKm < 15) return 1;
+  if (distanceKm < 50) return 2;
+  return 3;
+};
+
+const compareProximityZone = <T extends { distance?: number }>(a: T, b: T): number => {
+  const aDistance = typeof a.distance === 'number' && Number.isFinite(a.distance) ? a.distance : undefined;
+  const bDistance = typeof b.distance === 'number' && Number.isFinite(b.distance) ? b.distance : undefined;
+  if (aDistance === undefined || bDistance === undefined) return 0;
+  return proximityZone(aDistance) - proximityZone(bDistance);
+};
+
 const compareRecommendationPriority = <T extends { score: number; exposureLevel?: ExposureLevel; canClaimWindProtection?: boolean; beach?: Beach; distance?: number }>(
   a: T,
   b: T,
@@ -727,8 +777,19 @@ const compareRecommendationPriority = <T extends { score: number; exposureLevel?
 
   const compareTouristPriority = (): number => {
     if (!beachA || !beachB) return 0;
+
+    // Tier 2 lexicographic order: proximity zone (if location known) → recognition →
+    // verified trust (seatrac online) → access → distance → amenities → id.
+    const proximityDiff = compareProximityZone(a, b);
+    if (proximityDiff !== 0) return proximityDiff;
+
     const popularityDiff = topPickPopularityScore(beachB) - topPickPopularityScore(beachA);
     if (Math.abs(popularityDiff) >= 1) return popularityDiff;
+
+    // Recognition above access (decision 2026-06-14): a verified-accessible beach is a
+    // stronger trust signal than a marginally better road on an unknown beach.
+    const verifiedTrustDiff = (hasDisabledAccess(beachB) ? 1 : 0) - (hasDisabledAccess(beachA) ? 1 : 0);
+    if (verifiedTrustDiff !== 0) return verifiedTrustDiff;
 
     const accessPriorityDiff = topPickAccessPriority(beachA) - topPickAccessPriority(beachB);
     if (accessPriorityDiff !== 0) return accessPriorityDiff;
@@ -772,13 +833,55 @@ const bestShelteredRecommendationGroup = <T extends { score: number; exposureLev
   return items.filter(item => topPickProfilePriority(item, beachById) === bestPriority);
 };
 
+// Tier 1 variety de-dup. A "coastal sector" is (island + facing bucket): beaches on
+// the same island whose shoreline faces a similar way sit in the same sector, so three
+// adjacent leeward beaches of one bay collapse to one pick. Geographically distinct
+// beaches (different island or different facing) stay separate. Beaches with unknown
+// facing get their own per-id sector so they are never wrongly merged.
+const COASTAL_SECTOR_BUCKET_DEG = 45;
+
+const coastalSectorKey = (beach: Beach | undefined): string => {
+  if (!beach) return 'unknown';
+  const island = beach.location?.island || beach.location?.region || 'unknown';
+  const facing = beach.orientation?.degrees;
+  if (typeof facing !== 'number' || !Number.isFinite(facing)) return `${island}#beach-${beach.id}`;
+  const bucket = Math.floor((((facing % 360) + 360) % 360) / COASTAL_SECTOR_BUCKET_DEG);
+  return `${island}#sector-${bucket}`;
+};
+
+// Splits an already best-first-sorted list into one representative per coastal sector
+// (kept, order preserved) and the rest (waitlist, order preserved). The caller fills
+// from the waitlist only if it still needs picks — relaxing variety, never the gate.
+const dedupeByCoastalSector = <T extends { beachId?: number; beach?: Beach }>(
+  sortedItems: T[],
+  beachById?: Map<number, Beach>
+): { kept: T[]; waitlist: T[] } => {
+  const seen = new Set<string>();
+  const kept: T[] = [];
+  const waitlist: T[] = [];
+  sortedItems.forEach(item => {
+    const key = coastalSectorKey(getPriorityBeach(item, beachById));
+    if (seen.has(key)) {
+      waitlist.push(item);
+    } else {
+      seen.add(key);
+      kept.push(item);
+    }
+  });
+  return { kept, waitlist };
+};
+
 const prioritizeProtectedBeachRecommendations = <T extends { score: number; exposureLevel?: ExposureLevel; canClaimWindProtection?: boolean; beachId?: number; beach?: Beach }>(
   items: T[],
   beachById?: Map<number, Beach>,
   windBeaufort: number = 0
 ): T[] => {
   const candidates = bestShelteredRecommendationGroup(items, windBeaufort, beachById);
-  return [...candidates].sort((a, b) => compareRecommendationPriority(a, b, beachById, windBeaufort));
+  const sorted = [...candidates].sort((a, b) => compareRecommendationPriority(a, b, beachById, windBeaufort));
+  // Tier 1: one pick per coastal sector first; remaining picks (same-sector) go last
+  // so they only appear when the display limit cannot be filled by distinct sectors.
+  const { kept, waitlist } = dedupeByCoastalSector(sorted, beachById);
+  return [...kept, ...waitlist];
 };
 
 const greekWindDirectionsAccusative: Record<WindDirection, string> = {
@@ -1957,11 +2060,14 @@ export const getTopRecommendedBeaches = (
 
   const windSpeedKmh = weather.wind.speed * 3.6;
   const windBeaufort = getBeaufortLevel(windSpeedKmh);
+  const windDirectionDeg = weather.wind.deg;
   const topPickCandidates = recommendations.filter(item => {
     if (!isTrustedTopRecommendationCandidate(item, beachById, windBeaufort)) return false;
     if (item.swimmingComfort === 'avoid_swimming') return false;
     if (item.warnings?.some(warning => warning.type === 'official_warning' && warning.severity === 'critical')) return false;
     if (typeof item.swimmingScore === 'number' && item.swimmingScore < 50) return false;
+    // Tier 0: drop false-protected cross-shore caution picks from meaningful wind upward.
+    if (isFalseProtectedTopPick(item, windDirectionDeg, windBeaufort)) return false;
     const isExposed = item.exposureLevel ? item.exposureLevel !== 'protected' : true;
     let seaScore = calculateSeaConditionScore(isExposed, windSpeedKmh, item.exposureLevel, item.waveHeightM);
     if (windBeaufort <= 3 && (item.waveHeightM === undefined || item.waveHeightM <= 0.5)) {
