@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useMemo, useRef, Suspense } from 'react';
 import { Accessibility, Beach, DailyForecast, ForecastItem, Island, LanguageCode, FilterKey, SortOption, UserPreferences, SuitableBeach, WindDirection } from './types';
-import { beachMatchesUserPreferences, calculateBeachScore, calculateBestBeachTime, getSuitableBeaches, filterBeachesByUserPreferences, getTopRecommendationDisplayLimit, hasHourlyRainRisk, isTrustedTopRecommendationCandidate, type BeachWeatherById, type BestBeachTime } from './services/recommendationService';
+import { beachMatchesUserPreferences, calculateBeachScore, calculateBestBeachTime, getSuitableBeaches, filterBeachesByUserPreferences, getTopRecommendationDisplayLimit, hasHourlyRainRisk, isTrustedTopRecommendationCandidate, type BeachScore, type BeachWeatherById, type BestBeachTime } from './services/recommendationService';
 import { motion, AnimatePresence } from 'motion/react';
 import type { Chat } from '@google/genai';
 import { AlertTriangle, CheckCircle2, Clock3, Navigation, RefreshCw, Waves, Wind } from 'lucide-react';
@@ -1413,6 +1413,12 @@ export const App: React.FC = () => {
   // The hour chosen on the map slider; drives both the map colours and the
   // suitable-beach recommendations so they all reflect the same moment.
   const [selectedHourDt, setSelectedHourDt] = useState<number | null>(null);
+  // A deferred copy of the slider hour. The map colours / compass / hour label
+  // read the urgent `selectedHourDt` so they track the thumb in real time, but
+  // the heavy per-beach scoring + the recommendation list read this deferred
+  // value. That keeps the slider drag smooth on mobile: React can interrupt the
+  // expensive beach re-render instead of blocking each frame of the scrub.
+  const deferredSelectedHourDt = React.useDeferredValue(selectedHourDt);
   const hasUserSelectedSortRef = useRef(false);
   const [topPickClock, setTopPickClock] = useState(() => Date.now());
   const [beachSearchQuery, setBeachSearchQuery] = useState('');
@@ -2402,12 +2408,49 @@ export const App: React.FC = () => {
     return forecastsByBeach;
   }, [beachForecasts, forecast, selectedDayIndex]);
 
+  // Per-beach cluster forecasts, swapped to the slider hour the same way the
+  // island-level selectedForecast is. Without this the recommendations freeze
+  // once the background cluster forecasts load: scoring would read each beach's
+  // day-level wind/marine instead of the hour the slider points at, so "best
+  // beaches at HH:MM" stopped changing as you scrubbed. We keep each beach's
+  // `hourly` array untouched so the day-wide hourly scores (sea/gust/rain) are
+  // unaffected — only the headline wind/marine/weather follow the slider.
+  const hourAdjustedBeachForecasts = useMemo<BeachWeatherById>(() => {
+    if (deferredSelectedHourDt == null) return selectedBeachForecasts;
+    const adjusted: BeachWeatherById = {};
+    Object.entries(selectedBeachForecasts).forEach(([beachId, beachForecast]) => {
+      if (!beachForecast) return;
+      const hourly = beachForecast.hourly;
+      if (!hourly || hourly.length === 0) {
+        adjusted[Number(beachId)] = beachForecast;
+        return;
+      }
+      // Match the island swap: prefer the exact slider slot, otherwise the
+      // raw hourly entry nearest the selected time.
+      const exact = hourly.find(item => item.dt === deferredSelectedHourDt);
+      const hourItem = exact ?? hourly.reduce((prev, curr) => (
+        Math.abs(curr.dt - deferredSelectedHourDt) < Math.abs(prev.dt - deferredSelectedHourDt) ? curr : prev
+      ));
+      if (!hourItem) {
+        adjusted[Number(beachId)] = beachForecast;
+        return;
+      }
+      adjusted[Number(beachId)] = {
+        ...beachForecast,
+        wind: hourItem.wind,
+        marine: hourItem.marine ?? beachForecast.marine,
+        weather: hourItem.weather?.[0] ?? beachForecast.weather,
+      };
+    });
+    return adjusted;
+  }, [selectedBeachForecasts, deferredSelectedHourDt]);
+
   // Per-beach local wind (direction + speed) for the map hover card, so a beach
   // coloured differently from the island headline is self-explanatory ("here it
   // blows N 7 km/h"). Falls back to the island wind when no cluster forecast.
   const mapBeachLocalWinds = useMemo<Record<number, { deg: number; speedKmh: number }>>(() => {
     const lookup: Record<number, { deg: number; speedKmh: number }> = {};
-    Object.entries(selectedBeachForecasts).forEach(([beachId, forecast]) => {
+    Object.entries(hourAdjustedBeachForecasts).forEach(([beachId, forecast]) => {
       const deg = forecast?.wind?.deg;
       const speed = forecast?.wind?.speed;
       if (typeof deg === 'number' && Number.isFinite(deg) && typeof speed === 'number') {
@@ -2478,6 +2521,31 @@ export const App: React.FC = () => {
       weather: hourItem.weather?.[0] ?? baseDailyForecast.weather,
     };
   }, [baseDailyForecast, mapHourSlots, selectedHourDt]);
+  // Deferred twin of selectedForecast for the heavy list/scoring path. The map
+  // and label use the urgent selectedForecast; the beach ranking uses this so a
+  // fast scrub doesn't block on re-scoring every beach each frame.
+  const deferredSelectedForecast = React.useDeferredValue(selectedForecast);
+  // Score every beach ONCE per render with the location-aware inputs, then share
+  // the result. Previously getFilteredBeachResults, suitableBeaches and
+  // mapSuitableBeaches each re-ran calculateBeachScore (the ~500-line hot path)
+  // over the same beaches with the same inputs, so a single slider tick paid for
+  // ~3 full scoring passes. This collapses them to one. The inputs mirror exactly
+  // what getSuitableBeaches computes internally (weatherForBeach, userLocation,
+  // preferences, hourlyForBeach, geospatialProfile) so reuse is behaviour-neutral.
+  const beachScoreById = useMemo<Map<number, BeachScore>>(() => {
+    const scores = new Map<number, BeachScore>();
+    if (!selectedIsland || !deferredSelectedForecast) return scores;
+    selectedIsland.beaches.forEach(beach => {
+      const beachSpecificForecast = hourAdjustedBeachForecasts[beach.id];
+      const beachForecast = beachSpecificForecast || deferredSelectedForecast;
+      scores.set(beach.id, calculateBeachScore(beach, beachForecast, userLocation, preferences, {
+        weatherSource: beachSpecificForecast ? 'beach-cluster' : 'island-fallback',
+        hourlyForecast: beachForecast.hourly || deferredSelectedForecast.hourly,
+        geospatialProfile: geospatialExposureProfiles?.[beach.id],
+      }));
+    });
+    return scores;
+  }, [selectedIsland, deferredSelectedForecast, hourAdjustedBeachForecasts, userLocation, preferences, geospatialExposureProfiles]);
   // Localized "time window" label for the selected slider hour (e.g. "στις 15:00–18:00"),
   // shown in the suitable-beach header so it reflects the moment, not just "today".
   const selectedHourPrefix = useMemo(() => {
@@ -2543,7 +2611,7 @@ export const App: React.FC = () => {
     (filters: FilterKey[], nextSortBy: SortOption): Beach[] => {
     if (!selectedIsland) return [];
 
-    const hasBeachSearchQuery = beachSearchQuery.trim().length > 0;
+    const hasBeachSearchQuery = deferredBeachSearchQuery.trim().length > 0;
     let beaches = filterBeachesByUserPreferences(selectedIsland.beaches, preferences);
     const windDirection = selectedForecast ? degToCompass(selectedForecast.wind.deg) : WindDirection.N;
     const selectedBeaufort = selectedForecast ? getBeaufortLevel(selectedForecast.wind.speed * 3.6) : 0;
@@ -2552,11 +2620,11 @@ export const App: React.FC = () => {
     if (!hasBeachSearchQuery && selectedForecast && effectiveSortBy === 'recommended') {
       const waveHeightM = selectedForecast.marine?.waveHeightM;
       const weatherSuitableBeaches = beaches.filter(beach => {
-        const beachSpecificForecast = selectedBeachForecasts[beach.id];
+        const beachSpecificForecast = hourAdjustedBeachForecasts[beach.id];
         const beachForecast = beachSpecificForecast || selectedForecast;
         const beachWindSpeedKmph = beachForecast.wind.speed * 3.6;
         const beachWaveHeightM = beachForecast.marine?.waveHeightM ?? waveHeightM;
-        const scoreResult = calculateBeachScore(beach, beachForecast, userLocation, preferences, {
+        const scoreResult = beachScoreById.get(beach.id) ?? calculateBeachScore(beach, beachForecast, userLocation, preferences, {
           weatherSource: beachSpecificForecast ? 'beach-cluster' : 'island-fallback',
           hourlyForecast: beachForecast.hourly || selectedForecast.hourly,
           geospatialProfile: geospatialExposureProfiles?.[beach.id],
@@ -2567,10 +2635,10 @@ export const App: React.FC = () => {
       beaches = weatherSuitableBeaches.length > 0 ? weatherSuitableBeaches : beaches;
     }
 
-      const result = getFilteredBeaches(beaches, filters, beachSearchQuery, effectiveSortBy, windDirection, selectedForecast, userLocation, preferences);
+      const result = getFilteredBeaches(beaches, filters, deferredBeachSearchQuery, effectiveSortBy, windDirection, selectedForecast, userLocation, preferences);
     return result;
     }
-  ), [beachSearchQuery, geospatialExposureProfiles, getFilteredBeaches, preferences, selectedBeachForecasts, selectedForecast, selectedIsland, userLocation]);
+  ), [beachScoreById, deferredBeachSearchQuery, geospatialExposureProfiles, getFilteredBeaches, preferences, hourAdjustedBeachForecasts, selectedForecast, selectedIsland, userLocation]);
 
   const filteredBeaches = useMemo(() => (
     getFilteredBeachResults(selectedFilters, sortBy)
@@ -2582,9 +2650,9 @@ export const App: React.FC = () => {
   }, [getFilteredBeachResults, isFilterModalOpen, selectedFilters, sortBy]);
 
   const suitableBeaches = useMemo(() => {
-    if (!selectedIsland || !selectedForecast) return [];
-    return getSuitableBeaches(selectedIsland.beaches, selectedForecast, language, userLocation, selectedForecast.hourly, preferences, selectedBeachForecasts, geospatialExposureProfiles);
-  }, [selectedIsland, selectedForecast, language, userLocation, preferences, selectedBeachForecasts, geospatialExposureProfiles]);
+    if (!selectedIsland || !deferredSelectedForecast) return [];
+    return getSuitableBeaches(selectedIsland.beaches, deferredSelectedForecast, language, userLocation, deferredSelectedForecast.hourly, preferences, hourAdjustedBeachForecasts, geospatialExposureProfiles, beachScoreById);
+  }, [selectedIsland, deferredSelectedForecast, language, userLocation, preferences, hourAdjustedBeachForecasts, geospatialExposureProfiles, beachScoreById]);
 
   const mapSuitableBeaches = useMemo<SuitableBeach[]>(() => {
     if (!selectedIsland) return [];
@@ -2612,9 +2680,9 @@ export const App: React.FC = () => {
         };
       }
 
-      const beachSpecificForecast = selectedBeachForecasts[beach.id];
+      const beachSpecificForecast = hourAdjustedBeachForecasts[beach.id];
       const beachForecast = beachSpecificForecast || selectedForecast;
-      const scoreResult = calculateBeachScore(beach, beachForecast, userLocation, preferences, {
+      const scoreResult = beachScoreById.get(beach.id) ?? calculateBeachScore(beach, beachForecast, userLocation, preferences, {
         weatherSource: beachSpecificForecast ? 'beach-cluster' : 'island-fallback',
         hourlyForecast: beachForecast.hourly || selectedForecast.hourly,
         geospatialProfile: geospatialExposure,
@@ -2662,12 +2730,12 @@ export const App: React.FC = () => {
         geospatialExposure,
       };
     });
-  }, [geospatialExposureProfiles, language, preferences, selectedBeachForecasts, selectedForecast, selectedIsland, userLocation]);
+  }, [beachScoreById, geospatialExposureProfiles, language, preferences, hourAdjustedBeachForecasts, selectedForecast, selectedIsland, userLocation]);
 
   const dailySuitableBeaches = useMemo(() => {
-    if (!selectedIsland || !selectedForecast) return [];
-    return getSuitableBeaches(selectedIsland.beaches, selectedForecast, language, undefined, selectedForecast.hourly, undefined, selectedBeachForecasts, geospatialExposureProfiles);
-  }, [selectedIsland, selectedForecast, language, selectedBeachForecasts, geospatialExposureProfiles]);
+    if (!selectedIsland || !deferredSelectedForecast) return [];
+    return getSuitableBeaches(selectedIsland.beaches, deferredSelectedForecast, language, undefined, deferredSelectedForecast.hourly, undefined, hourAdjustedBeachForecasts, geospatialExposureProfiles);
+  }, [selectedIsland, deferredSelectedForecast, language, hourAdjustedBeachForecasts, geospatialExposureProfiles]);
 
   const hasActivePreferenceFilters = useMemo(() => {
     return Object.values(preferences).some(Boolean);
@@ -2749,16 +2817,19 @@ export const App: React.FC = () => {
     return QUICK_PREFERENCE_FILTERS.reduce((counts, key) => {
       const nextPreferences = { ...preferences, [key]: true };
       const matchingPreferenceBeaches = filterBeachesByUserPreferences(mapViewportBeaches, nextPreferences);
+      // Counts only need how many beaches pass the filters/search, which is
+      // weather-independent (scoring changes order/fields, never the count). We
+      // already omit `weather` here so getFilteredBeaches skips the heavy scoring.
       counts[key] = getFilteredBeaches(
         matchingPreferenceBeaches,
         selectedFilters,
-        beachSearchQuery,
+        deferredBeachSearchQuery,
         effectiveSortBy,
         windDirection
       ).length;
       return counts;
     }, {} as Partial<Record<keyof UserPreferences, number>>);
-  }, [beachSearchQuery, getFilteredBeaches, mapViewportBeaches, preferences, selectedFilters, selectedForecast, selectedIsland, sortBy]);
+  }, [deferredBeachSearchQuery, getFilteredBeaches, mapViewportBeaches, preferences, selectedFilters, selectedForecast, selectedIsland, sortBy]);
   const desktopAdvancedFilterResultCounts = useMemo(() => {
     if (!selectedIsland || selectedIsland.beaches.length === 0) {
       return {} as Partial<Record<FilterKey, number>>;
@@ -2783,19 +2854,20 @@ export const App: React.FC = () => {
         ? selectedFilters
         : [...selectedFilters.filter(filter => filter !== 'showAll'), key];
 
+      // Count only: omit weather so getFilteredBeaches skips per-beach scoring.
+      // The number of beaches passing the filters/search is weather-independent,
+      // so the displayed count is identical but ~7× cheaper per keystroke (this
+      // memo runs getFilteredBeaches once per advanced-filter key).
       counts[key] = getFilteredBeaches(
         baseBeaches,
         nextFilters,
-        beachSearchQuery,
+        deferredBeachSearchQuery,
         effectiveSortBy,
-        windDirection,
-        selectedForecast,
-        userLocation,
-        preferences
+        windDirection
       ).length;
       return counts;
     }, {} as Partial<Record<FilterKey, number>>);
-  }, [beachSearchQuery, getFilteredBeaches, mapViewportBeaches, preferences, selectedFilters, selectedForecast, selectedIsland, sortBy, userLocation]);
+  }, [deferredBeachSearchQuery, getFilteredBeaches, mapViewportBeaches, preferences, selectedFilters, selectedForecast, selectedIsland, sortBy]);
   const mobileFilterKeys = useMemo(() => (
     Object.keys(t.filterOptions)
       .filter(key => key !== 'showAll' && key !== 'restaurant' && key !== 'unknown') as FilterKey[]
@@ -3323,18 +3395,18 @@ export const App: React.FC = () => {
 
     const windDirection = degToCompass(selectedForecast.wind.deg);
     const baseBeaches = filterBeachesByUserPreferences(mapViewportBeaches, preferences);
+    // Count only — omit weather so getFilteredBeaches skips per-beach scoring.
+    // How many beaches pass the filters/search is weather-independent (scoring
+    // only reorders/annotates), so these counts are identical but far cheaper.
     const allCount = getFilteredBeaches(
       baseBeaches,
       selectedFilters,
-      beachSearchQuery,
+      deferredBeachSearchQuery,
       'all',
-      windDirection,
-      selectedForecast,
-      userLocation,
-      preferences
+      windDirection
     ).length;
     const hasOnlySortControls =
-      beachSearchQuery.trim().length === 0 &&
+      deferredBeachSearchQuery.trim().length === 0 &&
       selectedFilters.every(filter => filter === 'showAll') &&
       !hasActivePreferenceFilters;
     const viewportContainsCandidate = (item: SuitableBeach) => (
@@ -3357,17 +3429,14 @@ export const App: React.FC = () => {
       : getFilteredBeaches(
         baseBeaches,
         selectedFilters,
-        beachSearchQuery,
+        deferredBeachSearchQuery,
         'protected',
-        windDirection,
-        selectedForecast,
-        userLocation,
-        preferences
+        windDirection
       ).length;
 
     return { all: allCount, protected: protectedCount } as Partial<Record<SortOption, number>>;
   }, [
-    beachSearchQuery,
+    deferredBeachSearchQuery,
     desktopMapVisibleBeachIdSet,
     getFilteredBeaches,
     hasActivePreferenceFilters,
@@ -3388,7 +3457,6 @@ export const App: React.FC = () => {
     strongSuitableCandidates,
     windPreviewCandidates.length,
     windPreviewCandidates,
-    userLocation,
   ]);
   const protectedSortNoResults = (isStrongSuitableSortOnly && strongSuitableFilterBeaches.length === 0) ||
     (isNoIdealFallbackSortOnly && noIdealFallbackFilterBeaches.length === 0);
@@ -4395,7 +4463,11 @@ export const App: React.FC = () => {
     handleAllBeachesPanelOpenChange(true);
     scrollToBeachResultsSection();
   };
-  const stretchMobileDirectoryMap = !isDesktopViewport && Boolean(calmAllAroundSummary?.isEveryBeachSuitable);
+  // The mobile directory map keeps a single fixed height at every Beaufort
+  // (BeachMap's default h-[19rem]). It used to stretch taller on calm (0-2 Bft)
+  // "all beaches suitable" days, which made the map visibly grow/shrink as the
+  // hour slider crossed the calm⇄breezy boundary — jarring. A constant height
+  // is calmer and keeps the beach list below from jumping.
 
   const directoryMapPreview = selectedIsland && !isUnsafeWinter ? (
     <MapLoadBoundary
@@ -4433,7 +4505,6 @@ export const App: React.FC = () => {
           fitBoundsBeaches={mapSuitableBeaches}
           fitBoundsKey={selectedIsland.id}
           onUserInteraction={handleDirectoryMapUserInteraction}
-          compactPreviewHeightClassName={stretchMobileDirectoryMap ? 'h-[calc(100dvh-24rem)] min-h-[24rem] max-h-[32rem]' : undefined}
           enableScrollWheelZoom={isDesktopViewport}
           isExposureLoading={isMapExposureLoading}
           compact

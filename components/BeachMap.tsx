@@ -705,18 +705,19 @@ const getExposureMarkerTone = (
   const isProtected = exposureLevel === 'protected';
 
   // Each exposure column climbs cleanly through the four tones as wind builds, so
-  // the same colour never repeats down a column (protected: blue→blue→yellow→
-  // orange→red). Blue means genuinely calm (0-2 Bft, or a truly sheltered bay at
-  // 3 Bft) — from there up even protected shores get visible chop.
+  // the same colour never repeats down a column. Blue means genuinely calm
+  // (0-2 Bft, plus protected/partial shores at 3 Bft where only open coasts feel
+  // it) — from 4 Bft up even sheltered shores get visible chop.
   const isExposed = exposureLevel === 'exposed';
   if (beaufort >= 7) return tones.red;
   if (beaufort >= 5) return isExposed ? tones.red : tones.orange;
   // At 4 Bft only genuinely exposed shores escalate to orange; protected and the
   // uncertain "partial" middle get a yellow "mild chop" heads-up.
   if (beaufort >= 4) return isExposed ? tones.orange : tones.yellow;
-  // At 3 Bft only genuinely protected (truly sheltered) bays stay calm enough to
-  // read as blue; partial and exposed shores get a yellow "mild chop" heads-up.
-  if (beaufort >= 3) return isProtected ? tones.blue : tones.yellow;
+  // At 3 Bft only genuinely exposed coasts feel a real chop (yellow); protected
+  // and the uncertain "partial" middle stay calm enough to read as blue — this
+  // keeps the "uncertain partial" from looking worse than a sheltered neighbour.
+  if (beaufort >= 3) return isExposed ? tones.yellow : tones.blue;
   return tones.blue;
 };
 

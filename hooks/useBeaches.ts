@@ -158,7 +158,21 @@ export const useBeaches = (language: LanguageCode) => {
     userLocation?: { lat: number; lon: number },
     preferences?: UserPreferences
   ) => {
-    const beachesWithCrowd = weather ? beaches.map(beach => {
+    // Filter FIRST (cheap text/attribute matching), then score only the
+    // survivors. Scoring is the heavy per-beach work; running it before the
+    // search query meant every keystroke scored ~all beaches just to keep the
+    // handful that match. filterBeaches reads only intrinsic beach fields, never
+    // the scored ones, so the order swap is safe.
+    const preScored = userLocation && !weather
+      ? beaches.map(beach => ({
+        ...beach,
+        distance: calculateDistance(userLocation.lat, userLocation.lon, beach.coordinates.lat, beach.coordinates.lon),
+      }))
+      : beaches;
+
+    const matched = filterBeaches(preScored, filters, searchQuery, language);
+
+    const beachesWithCrowd = weather ? matched.map(beach => {
       const scoreResult = calculateBeachScore(beach, weather, userLocation, preferences);
       const distance = userLocation
         ? calculateDistance(userLocation.lat, userLocation.lon, beach.coordinates.lat, beach.coordinates.lon)
@@ -179,14 +193,9 @@ export const useBeaches = (language: LanguageCode) => {
         canClaimWindProtection: scoreResult.canClaimWindProtection,
         seaCalmClaimAllowed: scoreResult.seaCalmClaimAllowed,
       };
-    }) : userLocation
-      ? beaches.map(beach => ({
-        ...beach,
-        distance: calculateDistance(userLocation.lat, userLocation.lon, beach.coordinates.lat, beach.coordinates.lon),
-      }))
-      : beaches;
+    }) : matched;
 
-    const filtered = filterBeaches(beachesWithCrowd, filters, searchQuery, language) as Array<Beach & {
+    const filtered = beachesWithCrowd as Array<Beach & {
       exposureLevel?: string;
       canClaimWindProtection?: boolean;
       todayScore?: number;
