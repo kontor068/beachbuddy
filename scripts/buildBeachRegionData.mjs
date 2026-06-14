@@ -784,6 +784,12 @@ const index = {
   totalBeachCount: beaches.length,
   regions: [],
 };
+const searchIndex = {
+  schemaVersion: APP_DATA_SCHEMA_VERSION,
+  generatedAt,
+  source: '/greek_beaches.json',
+  beaches: [],
+};
 
 for (const region of regions.values()) {
   const center = region.beaches.reduce(
@@ -831,6 +837,13 @@ for (const region of regions.values()) {
   };
 
   index.regions.push(indexEntry);
+  searchIndex.beaches.push(...summaryIsland.beaches.map(beach => ({
+    regionId: region.id,
+    beachId: beach.id,
+    rating: beach.rating,
+    name: beach.name,
+    ...(beach.legacySlugs ? { legacySlugs: beach.legacySlugs } : {}),
+  })));
 
   await fs.writeFile(
     path.join(outputDir, `${region.id}.json`),
@@ -875,9 +888,11 @@ for (const region of regions.values()) {
 }
 
 await writeGeneratedJson('index.json', index, 2);
+await writeGeneratedJson('search-index.json', searchIndex);
 
 console.log(`Split ${beaches.length} beaches into ${regions.size} region files.`);
 console.log(`Wrote raw files to ${path.relative(rootDir, outputDir)}`);
 console.log(`Wrote app-ready files to ${path.relative(rootDir, appOutputDir)}`);
 console.log(`Wrote summary files to ${path.relative(rootDir, appSummaryOutputDir)}`);
 console.log(`Wrote detail files to ${path.relative(rootDir, appDetailOutputDir)}`);
+console.log(`Wrote search index to ${path.relative(rootDir, path.join(outputDir, 'search-index.json'))}`);

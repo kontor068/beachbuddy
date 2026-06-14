@@ -35,7 +35,22 @@ interface AppBeachDetailPayload {
 }
 
 const BEACH_REGION_INDEX_PATH = '/data/beaches/index.json';
+const BEACH_SEARCH_INDEX_PATH = '/data/beaches/search-index.json';
 let beachRegionIndexPromise: Promise<BeachRegionIndexEntry[]> | null = null;
+let beachSearchIndexPromise: Promise<BeachSearchIndexBeachEntry[]> | null = null;
+
+export interface BeachSearchIndexBeachEntry {
+  regionId: string;
+  beachId: number;
+  rating?: number;
+  name: Beach['name'];
+  aliases?: string[];
+  legacySlugs?: string[];
+}
+
+interface BeachSearchIndexPayload {
+  beaches?: BeachSearchIndexBeachEntry[];
+}
 
 type RegionDisplayName = Partial<Island['name']> & { en?: string; gr?: string };
 
@@ -192,6 +207,37 @@ export const loadBeachRegionIndex = (): Promise<BeachRegionIndexEntry[]> => {
   }
 
   return beachRegionIndexPromise;
+};
+
+const isUsableBeachSearchIndexEntry = (entry: BeachSearchIndexBeachEntry): boolean => Boolean(
+  entry &&
+  typeof entry.regionId === 'string' &&
+  typeof entry.beachId === 'number' &&
+  entry.name &&
+  typeof entry.name.en === 'string'
+);
+
+export const loadBeachSearchIndex = (): Promise<BeachSearchIndexBeachEntry[]> => {
+  if (!beachSearchIndexPromise) {
+    beachSearchIndexPromise = (async () => {
+      const response = await fetch(BEACH_SEARCH_INDEX_PATH);
+      if (!response.ok) {
+        throw new Error(`Failed to fetch ${BEACH_SEARCH_INDEX_PATH}: ${response.status}`);
+      }
+
+      const payload = await response.json() as BeachSearchIndexPayload;
+      if (!Array.isArray(payload.beaches)) {
+        throw new Error(`${BEACH_SEARCH_INDEX_PATH} is missing beaches[]`);
+      }
+
+      return payload.beaches.filter(isUsableBeachSearchIndexEntry);
+    })().catch(error => {
+      beachSearchIndexPromise = null;
+      throw error;
+    });
+  }
+
+  return beachSearchIndexPromise;
 };
 
 const fetchAppReadyRegion = async (dataPath: string, regionId: string): Promise<Island> => {

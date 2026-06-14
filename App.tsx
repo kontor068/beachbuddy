@@ -28,7 +28,7 @@ import { useLocation } from './hooks/useLocation';
 import { translations } from './translations';
 import { degToCompass, getBeaufortLevel, isWinterSeason } from './utils/weatherUtils';
 import { trackEvent, trackPageView } from './services/analyticsService';
-import { loadAppReadyRegion, loadBeachDetailData, loadBeachRegionIndex, mergeBeachDetailData } from './services/beachDataLoader';
+import { loadAppReadyRegion, loadBeachDetailData, loadBeachRegionIndex, loadBeachSearchIndex, mergeBeachDetailData } from './services/beachDataLoader';
 import { calculateSeaConditionScore, hasPoorSeaConditions } from './utils/seaConditions';
 import { recordForecastSnapshots } from './services/forecastVerificationService';
 import { getBeachPhotoLookup } from './services/beachPhotos';
@@ -273,6 +273,8 @@ const MIN_TOP_PICK_SEA_CONDITION_SCORE = 7;
 const MIN_STRONG_SUITABLE_SEA_CONDITION_SCORE = 5;
 const BEACH_DAY_START_MINUTES = 10 * 60;
 const BEACH_DAY_END_MINUTES = 18 * 60;
+const MAP_HOUR_SLIDER_START_HOUR = 8;
+const MAP_HOUR_SLIDER_END_HOUR = 21;
 const MIN_REMAINING_TOP_PICK_SCORE = 62;
 const DEFAULT_FORECAST_SLOT_MINUTES = 120;
 const INITIAL_BEACH_DATA_LOADER_DELAY_MS = 300;
@@ -334,46 +336,47 @@ const StartupLocationPrompt: React.FC<{
   const copy = getLocalizedCopy(language, startupLocationPromptCopy);
 
   return (
-    <main className="min-h-dvh bg-sky-50 px-4 py-6 text-slate-950 sm:px-6">
-      <section className="mx-auto flex min-h-[calc(100dvh-3rem)] w-full max-w-md flex-col justify-center">
-        <div className="rounded-[1.5rem] border border-white/70 bg-white/90 p-5 shadow-xl shadow-sky-900/12 ring-1 ring-sky-100/80 backdrop-blur-xl sm:p-6">
-          <div className="mb-4 flex h-12 w-12 items-center justify-center rounded-2xl bg-cyan-50 text-cyan-700 ring-1 ring-cyan-100">
+    <section className="relative z-30 bg-sky-50 px-4 pt-3 text-slate-950 sm:px-5" aria-label={copy.title} data-nosnippet="true">
+      <div className="mx-auto flex max-w-[110rem] flex-col gap-3 rounded-2xl border border-sky-100 bg-white/90 p-3 shadow-sm shadow-sky-900/8 ring-1 ring-white/60 backdrop-blur-xl sm:flex-row sm:items-center sm:justify-between sm:p-4">
+        <div className="flex min-w-0 gap-3">
+          <span className="grid h-10 w-10 shrink-0 place-items-center rounded-xl bg-cyan-50 text-cyan-700 ring-1 ring-cyan-100">
             <Navigation className="h-5 w-5" aria-hidden="true" />
-          </div>
-
-          <h1 className="text-2xl font-black leading-tight text-slate-950">
-            {copy.title}
-          </h1>
-          <p className="mt-3 text-sm font-semibold leading-6 text-slate-600">
-            {copy.body}
-          </p>
-          <p className="mt-3 rounded-2xl border border-sky-100 bg-sky-50/80 px-3 py-2 text-xs font-bold leading-5 text-slate-600">
-            {copy.privacy}
-          </p>
-
-          <div className="mt-5 grid gap-2">
-            <button
-              type="button"
-              onClick={onUseLocation}
-              disabled={isFindingLocation}
-              className="inline-flex min-h-12 w-full cursor-pointer items-center justify-center gap-2 rounded-2xl bg-cyan-700 px-4 text-sm font-black text-white shadow-sm shadow-cyan-900/20 transition hover:bg-cyan-800 focus:outline-none focus-visible:ring-2 focus-visible:ring-cyan-500 focus-visible:ring-offset-2 disabled:cursor-wait disabled:opacity-70"
-            >
-              <Navigation className="h-4 w-4" aria-hidden="true" />
-              <span>{isFindingLocation ? copy.finding : copy.useLocation}</span>
-            </button>
-
-            <button
-              type="button"
-              onClick={onChooseManually}
-              disabled={isFindingLocation}
-              className="inline-flex min-h-12 w-full cursor-pointer items-center justify-center rounded-2xl border border-slate-200 bg-white px-4 text-sm font-black text-slate-700 transition hover:bg-slate-50 focus:outline-none focus-visible:ring-2 focus-visible:ring-cyan-500 focus-visible:ring-offset-2 disabled:cursor-wait disabled:opacity-70"
-            >
-              {copy.chooseManually}
-            </button>
+          </span>
+          <div className="min-w-0">
+            <h1 className="text-sm font-black leading-tight text-slate-950 sm:text-base">
+              {copy.title}
+            </h1>
+            <p className="mt-1 line-clamp-2 text-xs font-semibold leading-5 text-slate-600 sm:text-sm">
+              {copy.body}
+            </p>
+            <p className="mt-1 text-[11px] font-bold leading-4 text-slate-500 sm:text-xs">
+              {copy.privacy}
+            </p>
           </div>
         </div>
-      </section>
-    </main>
+
+        <div className="grid shrink-0 grid-cols-2 gap-2 sm:flex sm:items-center">
+          <button
+            type="button"
+            onClick={onUseLocation}
+            disabled={isFindingLocation}
+            className="inline-flex min-h-10 cursor-pointer items-center justify-center gap-2 rounded-xl bg-cyan-700 px-3 text-xs font-black text-white shadow-sm shadow-cyan-900/20 transition hover:bg-cyan-800 focus:outline-none focus-visible:ring-2 focus-visible:ring-cyan-500 focus-visible:ring-offset-2 disabled:cursor-wait disabled:opacity-70 sm:min-w-36 sm:text-sm"
+          >
+            <Navigation className="h-4 w-4" aria-hidden="true" />
+            <span>{isFindingLocation ? copy.finding : copy.useLocation}</span>
+          </button>
+
+          <button
+            type="button"
+            onClick={onChooseManually}
+            disabled={isFindingLocation}
+            className="inline-flex min-h-10 cursor-pointer items-center justify-center rounded-xl border border-slate-200 bg-white px-3 text-xs font-black text-slate-700 transition hover:bg-slate-50 focus:outline-none focus-visible:ring-2 focus-visible:ring-cyan-500 focus-visible:ring-offset-2 disabled:cursor-wait disabled:opacity-70 sm:min-w-32 sm:text-sm"
+          >
+            {copy.chooseManually}
+          </button>
+        </div>
+      </div>
+    </section>
   );
 };
 
@@ -496,14 +499,19 @@ type TimeAwareSuitableBeach = SuitableBeach & {
 
 type GlobalBeachSearchEntry = {
   island: Island;
-  beach: Beach;
+  beachId: number;
+  beachName: Beach['name'];
+  beachRating: number;
+  aliases?: string[];
+  legacySlugs?: string[];
   searchValues: string[];
   regionValues: string[];
 };
 
 type GlobalBeachSearchMatch = {
   island: Island;
-  beach: Beach;
+  beachId: number;
+  beach?: Beach;
   score: number;
 };
 
@@ -513,6 +521,7 @@ type DirectorySearchSuggestion = {
   label: string;
   subtitle: string;
   island: Island;
+  beachId?: number;
   beach?: Beach;
 };
 
@@ -1498,6 +1507,10 @@ export const App: React.FC = () => {
   const trackedWeatherFallbackRef = useRef<string | null>(null);
   const trackedEmptyResultsRef = useRef<string | null>(null);
 
+  useEffect(() => {
+    globalBeachSearchIndexRef.current = null;
+  }, [allIslands, language]);
+
   // --- User Preferences & Favorites ---
   const defaultPreferences: UserPreferences = useMemo(
     () => ({
@@ -2473,7 +2486,7 @@ export const App: React.FC = () => {
     const daytime = hourly
       .filter(item => {
         const hour = new Date(item.dt * 1000).getHours();
-        return hour >= 6 && hour <= 21;
+        return hour >= MAP_HOUR_SLIDER_START_HOUR && hour <= MAP_HOUR_SLIDER_END_HOUR;
       })
       .sort((a, b) => a.dt - b.dt);
     // Interpolate the 3-hourly forecast to 1-hour slots so the slider moves
@@ -2488,17 +2501,13 @@ export const App: React.FC = () => {
     }
     return slots;
   }, [baseDailyForecast]);
-  // Default: the current hour for today, otherwise the slot nearest midday.
+  // Default: the current hour for today, otherwise the first beach-hour slot.
   const defaultHourDt = useMemo(() => {
     if (mapHourSlots.length === 0) return null;
     const day = baseDailyForecast?.date;
     const isToday = day ? isSameCalendarDay(day, new Date()) : false;
     if (isToday) return mapHourSlots[0].dt;
-    return mapHourSlots.reduce((prev, curr) => (
-      Math.abs(new Date(curr.dt * 1000).getHours() - 13) < Math.abs(new Date(prev.dt * 1000).getHours() - 13)
-        ? curr
-        : prev
-    )).dt;
+    return mapHourSlots[0].dt;
   }, [mapHourSlots, baseDailyForecast]);
   useEffect(() => {
     setSelectedHourDt(defaultHourDt);
@@ -3561,7 +3570,11 @@ export const App: React.FC = () => {
     const currentRegionBeachSuggestions = selectedIsland
       ? getBeachSearchSuggestionsFromEntries(trimmedQuery, selectedIsland.beaches.map(beach => ({
           island: selectedIsland,
-          beach,
+          beachId: beach.id,
+          beachName: beach.name,
+          beachRating: beach.rating,
+          aliases: beach.aliases,
+          legacySlugs: (beach as Beach & { legacySlugs?: string[] }).legacySlugs,
           regionValues: getIslandSearchValues(selectedIsland),
           searchValues: getBeachSearchValues(beach, selectedIsland),
         })), 5)
@@ -3598,16 +3611,6 @@ export const App: React.FC = () => {
 
   if (beachesLoading) return showInitialBeachLoader ? <SkeletonLoader t={t} /> : null;
   if (beachesError) return <ErrorDisplay message={beachesError} onRetry={() => window.location.reload()} t={t} />;
-  if (isStartupLocationPromptOpen) {
-    return (
-      <StartupLocationPrompt
-        language={language}
-        isFindingLocation={isSelectingStartupRegion}
-        onUseLocation={handleUseStartupLocation}
-        onChooseManually={handleChooseStartupRegionManually}
-      />
-    );
-  }
 
   if (view === 'detail' && detailBeach && forecast?.[selectedDayIndex]) {
     const detailBeachForecast = selectedBeachForecasts[detailBeach.id];
@@ -4211,11 +4214,16 @@ export const App: React.FC = () => {
     island.beaches.length > 0 ? island.beaches.length : regionBeachCounts[island.id] ?? 0
   );
 
-  const getBeachSearchValues = (beach: Beach, island: Island): string[] => {
+  const getBeachSearchValuesFromParts = (
+    name: Beach['name'],
+    aliases: string[] | undefined,
+    legacySlugs: string[] | undefined,
+    island: Island,
+    extraRegionValues: Array<string | undefined> = []
+  ): string[] => {
     const regionValues = [
       ...getIslandSearchValues(island),
-      beach.location?.island,
-      beach.location?.region,
+      ...extraRegionValues,
     ].filter((value): value is string => Boolean(value));
       const genericAliasValues = ['paralia', 'παραλία', 'beach', 'plage', 'strand', 'spiaggia', ...regionValues];
     const genericAliasVariants = new Set(genericAliasValues.flatMap(getSearchVariants));
@@ -4223,56 +4231,61 @@ export const App: React.FC = () => {
       const variants = getSearchVariants(value);
       return variants.length > 0 && variants.every(variant => genericAliasVariants.has(variant));
     };
-    const legacySlugs = (beach as Beach & { legacySlugs?: string[] }).legacySlugs || [];
     const values = [
-      beach.name[language],
-      beach.name.en,
-      beach.name.gr,
-      beach.name.fr,
-      beach.name.de,
-      beach.name.it,
-      displayBeachName(beach.name, language),
-      displayBeachName(beach.name, 'gr'),
-      ...(beach.aliases || []).filter(alias => !isGenericAlias(alias)),
-      ...legacySlugs,
+      name[language],
+      name.en,
+      name.gr,
+      name.fr,
+      name.de,
+      name.it,
+      displayBeachName(name, language),
+      displayBeachName(name, 'gr'),
+      ...(aliases || []).filter(alias => !isGenericAlias(alias)),
+      ...(legacySlugs || []),
     ];
 
     return Array.from(new Set(values.filter((value): value is string => Boolean(value && value.trim()))));
   };
 
+  const getBeachSearchValues = (beach: Beach, island: Island): string[] => (
+    getBeachSearchValuesFromParts(
+      beach.name,
+      beach.aliases,
+      (beach as Beach & { legacySlugs?: string[] }).legacySlugs,
+      island,
+      [beach.location?.island, beach.location?.region]
+    )
+  );
+
   const getGlobalBeachSearchIndex = async (): Promise<GlobalBeachSearchEntry[]> => {
     if (!globalBeachSearchIndexRef.current) {
       globalBeachSearchIndexRef.current = (async () => {
-        const regionIndex = await loadBeachRegionIndex();
-        const loadedIslands = await Promise.all(regionIndex.map(async entry => {
-          try {
-            return await loadAppReadyRegion(entry.id, {
-              summaryDataPath: entry.summaryDataPath,
-              appDataPath: entry.appDataPath,
-            });
-          } catch (error) {
-            console.warn('Global beach search skipped region.', {
-              regionId: entry.id,
-              error,
-            });
-            return null;
-          }
-        }));
-        const loadedRegionIds = new Set(loadedIslands.filter(Boolean).map(island => island!.id));
-        const inMemoryIslands = allIslands.filter(island => (
-          island.beaches.length > 0 && !loadedRegionIds.has(island.id)
-        ));
+        const searchIndex = await loadBeachSearchIndex();
+        const islandById = new Map(allIslands.map(island => [island.id, island] as const));
 
-        return [...loadedIslands.filter((island): island is Island => Boolean(island)), ...inMemoryIslands]
-          .flatMap(island => {
+        return searchIndex
+          .map((entry): GlobalBeachSearchEntry | null => {
+            const island = islandById.get(entry.regionId);
+            if (!island) return null;
             const regionValues = getIslandSearchValues(island);
-            return island.beaches.map(beach => ({
+
+            return {
               island,
-              beach,
+              beachId: entry.beachId,
+              beachName: entry.name,
+              beachRating: entry.rating || 0,
+              aliases: entry.aliases,
+              legacySlugs: entry.legacySlugs,
               regionValues,
-              searchValues: getBeachSearchValues(beach, island),
-            }));
-          });
+              searchValues: getBeachSearchValuesFromParts(
+                entry.name,
+                entry.aliases,
+                entry.legacySlugs,
+                island
+              ),
+            };
+          })
+          .filter((entry): entry is GlobalBeachSearchEntry => Boolean(entry));
       })();
     }
 
@@ -4282,6 +4295,11 @@ export const App: React.FC = () => {
       globalBeachSearchIndexRef.current = null;
       throw error;
     }
+  };
+
+  const findLoadedBeachForSearchEntry = (entry: Pick<GlobalBeachSearchEntry, 'island' | 'beachId'>): Beach | undefined => {
+    const sourceIsland = selectedIsland?.id === entry.island.id ? selectedIsland : entry.island;
+    return sourceIsland.beaches.find(beach => beach.id === entry.beachId);
   };
 
   const findGlobalBeachMatch = async (query: string): Promise<GlobalBeachSearchMatch | null> => {
@@ -4300,12 +4318,17 @@ export const App: React.FC = () => {
       .filter(entry => entry.beachScore >= 82)
       .sort((a, b) => {
         if (b.score !== a.score) return b.score - a.score;
-        if (b.beach.rating !== a.beach.rating) return b.beach.rating - a.beach.rating;
-        return displayBeachName(a.beach.name, language).localeCompare(displayBeachName(b.beach.name, language));
+        if (b.beachRating !== a.beachRating) return b.beachRating - a.beachRating;
+        return displayBeachName(a.beachName, language).localeCompare(displayBeachName(b.beachName, language));
       });
 
     const match = rankedMatches[0];
-    return match ? { island: match.island, beach: match.beach, score: match.score } : null;
+    return match ? {
+      island: match.island,
+      beachId: match.beachId,
+      beach: findLoadedBeachForSearchEntry(match),
+      score: match.score,
+    } : null;
   };
 
   const getRegionSearchSuggestions = (query: string): DirectorySearchSuggestion[] => (
@@ -4348,18 +4371,22 @@ export const App: React.FC = () => {
       .filter(entry => entry.beachScore >= 76)
       .sort((a, b) => {
         if (b.score !== a.score) return b.score - a.score;
-        if (b.beach.rating !== a.beach.rating) return b.beach.rating - a.beach.rating;
-        return displayBeachName(a.beach.name, language).localeCompare(displayBeachName(b.beach.name, language));
+        if (b.beachRating !== a.beachRating) return b.beachRating - a.beachRating;
+        return displayBeachName(a.beachName, language).localeCompare(displayBeachName(b.beachName, language));
       })
       .slice(0, limit)
-      .map(entry => ({
-        id: `beach-${entry.island.id}-${entry.beach.id}`,
-        type: 'beach' as const,
-        label: displayBeachName(entry.beach.name, language),
-        subtitle: entry.island.name[language] || entry.island.name.en,
-        island: entry.island,
-        beach: entry.beach,
-      }))
+      .map(entry => {
+        const loadedBeach = findLoadedBeachForSearchEntry(entry);
+        return {
+          id: `beach-${entry.island.id}-${entry.beachId}`,
+          type: 'beach' as const,
+          label: displayBeachName(loadedBeach?.name || entry.beachName, language),
+          subtitle: entry.island.name[language] || entry.island.name.en,
+          island: entry.island,
+          beachId: entry.beachId,
+          beach: loadedBeach,
+        };
+      })
   );
 
   const mergeDirectorySearchSuggestions = (
@@ -4377,6 +4404,13 @@ export const App: React.FC = () => {
     }
 
     return merged;
+  };
+
+  const loadIslandForSearchTarget = async (island: Island): Promise<Island> => {
+    if (selectedIsland?.id === island.id && selectedIsland.beaches.length > 0) return selectedIsland;
+    if (island.beaches.length > 0) return island;
+
+    return loadAppReadyRegion(island.id);
   };
 
   const handleDirectorySearchSubmit = async () => {
@@ -4397,7 +4431,7 @@ export const App: React.FC = () => {
       source: 'directory_home',
       search_length: trimmedQuery.length,
       matched_region_id: regionMatch?.id,
-      matched_beach_id: globalBeachMatch?.beach.id,
+      matched_beach_id: globalBeachMatch?.beachId,
       matched_beach_region_id: globalBeachMatch?.island.id,
     });
     if (regionMatch && regionMatch.id !== selectedIsland?.id) {
@@ -4408,22 +4442,43 @@ export const App: React.FC = () => {
       return;
     }
     if (globalBeachMatch) {
-      setIsDirectoryMapFollowPaused(false);
-      setHighlightedMapBeachId(globalBeachMatch.beach.id);
-      handleAllBeachesPanelOpenChange(true);
-      if (globalBeachMatch.island.id !== selectedIsland?.id) {
-        cacheLoadedIsland(globalBeachMatch.island);
-        preserveSearchQueryOnRegionChangeRef.current = true;
-        handleRegionSelected(globalBeachMatch.island, 'selector');
+      let targetIsland = globalBeachMatch.island;
+      try {
+        targetIsland = await loadIslandForSearchTarget(globalBeachMatch.island);
+      } catch (error) {
+        console.warn('Global beach search target region failed to load.', {
+          regionId: globalBeachMatch.island.id,
+          beachId: globalBeachMatch.beachId,
+          error,
+        });
+      }
+      const targetBeach = globalBeachMatch.beach || targetIsland.beaches.find(beach => beach.id === globalBeachMatch.beachId);
+      if (!targetBeach) {
+        if (targetIsland.id !== selectedIsland?.id) {
+          cacheLoadedIsland(targetIsland);
+          preserveSearchQueryOnRegionChangeRef.current = true;
+          handleRegionSelected(targetIsland, 'selector');
+        }
         return;
       }
+
+      setIsDirectoryMapFollowPaused(false);
+      pendingDirectorySearchHighlightRef.current = targetBeach.id;
+      handleAllBeachesPanelOpenChange(true);
+      if (targetIsland.id !== selectedIsland?.id) {
+        cacheLoadedIsland(targetIsland);
+        preserveSearchQueryOnRegionChangeRef.current = true;
+        handleRegionSelected(targetIsland, 'selector');
+        return;
+      }
+      setHighlightedMapBeachId(targetBeach.id);
       scrollToBeachResultsSection();
       return;
     }
     scrollToBeachResultsSection();
   };
 
-  const handleDirectorySearchSuggestionSelect = (suggestion: DirectorySearchSuggestion) => {
+  const handleDirectorySearchSuggestionSelect = async (suggestion: DirectorySearchSuggestion) => {
     setDirectorySearchSuggestions([]);
     setIsDirectorySearchSuggesting(false);
     setBeachSearchQuery(suggestion.label);
@@ -4433,7 +4488,7 @@ export const App: React.FC = () => {
       source: 'directory_search_suggestion',
       suggestion_type: suggestion.type,
       region_id: suggestion.island.id,
-      beach_id: suggestion.beach?.id,
+      beach_id: suggestion.beachId ?? suggestion.beach?.id,
       search_length: beachSearchQuery.trim().length,
     });
 
@@ -4447,19 +4502,33 @@ export const App: React.FC = () => {
       return;
     }
 
-    if (!suggestion.beach) return;
+    const suggestionBeachId = suggestion.beachId ?? suggestion.beach?.id;
+    if (!suggestionBeachId) return;
 
-    pendingDirectorySearchHighlightRef.current = suggestion.beach.id;
+    let targetIsland = suggestion.island;
+    try {
+      targetIsland = await loadIslandForSearchTarget(suggestion.island);
+    } catch (error) {
+      console.warn('Search suggestion region failed to load.', {
+        regionId: suggestion.island.id,
+        beachId: suggestionBeachId,
+        error,
+      });
+    }
+    const targetBeach = suggestion.beach || targetIsland.beaches.find(beach => beach.id === suggestionBeachId);
+    if (!targetBeach) return;
+
+    pendingDirectorySearchHighlightRef.current = targetBeach.id;
     setIsDirectoryMapFollowPaused(false);
 
-    if (suggestion.island.id !== selectedIsland?.id) {
-      cacheLoadedIsland(suggestion.island);
+    if (targetIsland.id !== selectedIsland?.id) {
+      cacheLoadedIsland(targetIsland);
       preserveSearchQueryOnRegionChangeRef.current = true;
-      handleRegionSelected(suggestion.island, 'selector');
+      handleRegionSelected(targetIsland, 'selector');
       return;
     }
 
-    setHighlightedMapBeachId(suggestion.beach.id);
+    setHighlightedMapBeachId(targetBeach.id);
     handleAllBeachesPanelOpenChange(true);
     scrollToBeachResultsSection();
   };
@@ -4536,6 +4605,14 @@ export const App: React.FC = () => {
         onOpenFavorites={() => handleMobileTab('favorites')}
         forecastSlot={showHeaderForecast ? (
           <>
+            {isStartupLocationPromptOpen && (
+              <StartupLocationPrompt
+                language={language}
+                isFindingLocation={isSelectingStartupRegion}
+                onUseLocation={handleUseStartupLocation}
+                onChooseManually={handleChooseStartupRegionManually}
+              />
+            )}
             <BeachSearcherHome
               language={language}
               selectedIsland={selectedIsland}

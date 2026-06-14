@@ -63,6 +63,7 @@ export type DirectorySearchSuggestion = {
   label: string;
   subtitle: string;
   island: Island;
+  beachId?: number;
   beach?: Beach;
 };
 
@@ -2271,6 +2272,7 @@ export const BeachSearcherHome: React.FC<BeachSearcherHomeProps> = ({
   const hasBelowHeroContent = (
     !selectedIsland ||
     hasTopRecommendationView ||
+    (isMobileViewport && selectedIsland && Boolean(mapPreview)) ||
     showSuitableBeachSection ||
     (selectedIsland && isDirectorySuitableView && weatherBeachCards.length > 0) ||
     (!isMobileViewport && Boolean(conditionsOverviewContent)) ||
@@ -2588,7 +2590,7 @@ export const BeachSearcherHome: React.FC<BeachSearcherHomeProps> = ({
   );
 
   return (
-    <section className="relative isolate overflow-hidden bg-sky-50 text-slate-950" aria-label={copy.beachSearchAria}>
+    <section className="relative isolate overflow-hidden bg-sky-50 text-slate-950" aria-label={copy.beachSearchAria} data-nosnippet="true">
       <div
         className="pointer-events-none fixed inset-0 -z-10 bg-sky-100 bg-cover bg-center"
         style={heroBackground ? { backgroundImage: heroBackground } : undefined}
@@ -2974,6 +2976,7 @@ export const BeachSearcherHome: React.FC<BeachSearcherHomeProps> = ({
             </div>
           </section>
         )}
+
         </section>
       </div>
 

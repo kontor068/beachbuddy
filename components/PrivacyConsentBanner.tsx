@@ -84,19 +84,20 @@ export const PrivacyConsentBanner: React.FC<PrivacyConsentBannerProps> = ({ lang
 
   return (
     <div
-      className="fixed inset-x-2 bottom-[calc(4.5rem+env(safe-area-inset-bottom))] z-[80] mx-auto max-w-lg rounded-xl border border-slate-200/70 bg-white/95 p-3 shadow-xl shadow-slate-900/15 backdrop-blur-xl md:bottom-5 md:p-4"
+      className="fixed inset-x-2 bottom-[calc(4.25rem+env(safe-area-inset-bottom))] z-[80] mx-auto max-w-lg rounded-xl border border-slate-200/70 bg-white/95 p-2 shadow-xl shadow-slate-900/15 backdrop-blur-xl md:bottom-5 md:p-4"
+      data-nosnippet="true"
       role="dialog"
       aria-labelledby="privacy-consent-title"
       aria-describedby="privacy-consent-description"
     >
-      <div className="flex gap-2.5 md:gap-3">
-        <div className="mt-0.5 hidden h-9 w-9 shrink-0 place-items-center rounded-xl bg-sky-50 text-sky-600 min-[380px]:grid">
+      <div className="flex gap-2 md:gap-3">
+        <div className="mt-0.5 hidden h-9 w-9 shrink-0 place-items-center rounded-xl bg-sky-50 text-sky-600 sm:grid">
           <ShieldCheck className="h-5 w-5" aria-hidden="true" />
         </div>
         <div className="min-w-0 flex-1">
-          <h2 id="privacy-consent-title" className="text-sm font-bold text-slate-900">{c.title}</h2>
-          <p id="privacy-consent-description" className="mt-1 line-clamp-2 text-[11px] leading-snug text-slate-600 md:text-xs md:leading-relaxed">{c.body}</p>
-          <div className="mt-2 flex flex-wrap items-center gap-x-3 gap-y-1 text-[11px] font-extrabold text-sky-700">
+          <h2 id="privacy-consent-title" className="text-xs font-bold text-slate-900 md:text-sm">{c.title}</h2>
+          <p id="privacy-consent-description" className="mt-0.5 hidden text-[11px] leading-snug text-slate-600 sm:line-clamp-2 md:text-xs md:leading-relaxed">{c.body}</p>
+          <div className="mt-1 hidden flex-wrap items-center gap-x-3 gap-y-1 text-[11px] font-extrabold text-sky-700 sm:flex md:mt-2">
             <button type="button" onClick={() => openLegalModal('terms')} className="underline-offset-4 hover:underline focus:outline-none focus-visible:ring-2 focus-visible:ring-sky-500">
               {c.terms}
             </button>
@@ -107,18 +108,18 @@ export const PrivacyConsentBanner: React.FC<PrivacyConsentBannerProps> = ({ lang
               {c.cookies}
             </button>
           </div>
-          <div className="mt-2 grid grid-cols-2 gap-2 sm:flex sm:justify-end">
+          <div className="mt-1 grid grid-cols-2 gap-2 sm:mt-2 sm:flex sm:justify-end">
             <button
               type="button"
               onClick={() => handleChoice('declined')}
-              className="min-h-11 rounded-xl border border-slate-200 px-3 text-xs font-bold text-slate-700 transition hover:bg-slate-50 sm:px-4 sm:text-sm"
+              className="min-h-9 rounded-xl border border-slate-200 px-3 text-xs font-bold text-slate-700 transition hover:bg-slate-50 sm:min-h-11 sm:px-4 sm:text-sm"
             >
               {c.essential}
             </button>
             <button
               type="button"
               onClick={() => handleChoice('accepted')}
-              className="min-h-11 rounded-xl bg-sky-600 px-3 text-xs font-bold text-white transition hover:bg-sky-700 sm:px-4 sm:text-sm"
+              className="min-h-9 rounded-xl bg-sky-600 px-3 text-xs font-bold text-white transition hover:bg-sky-700 sm:min-h-11 sm:px-4 sm:text-sm"
             >
               {c.allow}
             </button>
