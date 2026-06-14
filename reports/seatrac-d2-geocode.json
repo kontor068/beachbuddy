@@ -1,0 +1,4800 @@
+{
+  "_meta": {
+    "generatedAt": "2026-06-14T19:29:42.706Z",
+    "seedCount": 101,
+    "tiers": {
+      "HIGH": 0,
+      "MEDIUM": 16,
+      "LOW": 27,
+      "NONE": 58
+    },
+    "thresholds": {
+      "HIGH": "total>=70 & name>=22 & type>=18 & region>0 & overpass>=10 & slot-in-region & not-generic",
+      "MEDIUM": 50,
+      "LOW": 30
+    },
+    "instructions": "Review MEDIUM/LOW: set decision:'accept' to insert or 'skip'. HIGH auto-inserts. Then: node scripts/geocodeSeatracNoMatch.mjs apply",
+    "nominatimPolicy": "1 req/s, countrycodes=gr, identifiable UA"
+  },
+  "results": [
+    {
+      "seed": {
+        "nameGr": "Άλιμος Καλαμάκι",
+        "nameEn": "Alimos Kalamaki",
+        "region": "Attica",
+        "status": "listed-unverified"
+      },
+      "tier": "NONE",
+      "decision": "skip",
+      "queriesTried": [
+        "Άλιμος Καλαμάκι, Attica, Greece"
+      ],
+      "best": {
+        "osmId": "nom-node-5841224200",
+        "name": "Julius-K9® Greece",
+        "address": "Julius-K9® Greece, 7, Επονιτών, Καλαμάκι, Άλιμος, Δήμος Αλίμου, Περιφερειακή Ενότητα Νοτίου Τομέα Αθηνών, Περιφέρεια Αττικής, Αποκεντρωμένη Διοίκηση Αττικής, 174 55, Ελλάς",
+        "lat": 37.913016,
+        "lon": 23.7130712,
+        "score": {
+          "total": 15,
+          "nameScore": 5,
+          "typeScore": 0,
+          "regionScore": 0,
+          "overpassScore": 10,
+          "overpassM": 437
+        },
+        "overpassCorroborationM": 437,
+        "wrongRegion": false
+      },
+      "alternates": [
+        {
+          "osmId": "nom-node-7315687311",
+          "name": "Εθνική Τράπεζα",
+          "address": "Εθνική Τράπεζα, Θουκυδίδου, Καλαμάκι, Άλιμος, Δήμος Αλίμου, Περιφερειακή Ενότητα Νοτίου Τομέα Αθηνών, Περιφέρεια Αττικής, Αποκεντρωμένη Διοίκηση Αττικής, 174 55, Ελλάς",
+          "total": 14
+        },
+        {
+          "osmId": "nom-node-7319100088",
+          "name": "Εθνική Τράπεζα",
+          "address": "Εθνική Τράπεζα, Καλαμακίου, Καλαμάκι, Άλιμος, Δήμος Αλίμου, Περιφερειακή Ενότητα Νοτίου Τομέα Αθηνών, Περιφέρεια Αττικής, Αποκεντρωμένη Διοίκηση Αττικής, 174 55, Ελλάς",
+          "total": 4
+        },
+        {
+          "osmId": "nom-node-6910530594",
+          "name": "Εθνική Τράπεζα",
+          "address": "Εθνική Τράπεζα, Θεομήτορος, Άνω Καλαμάκι, Άλιμος, Δήμος Αλίμου, Περιφερειακή Ενότητα Νοτίου Τομέα Αθηνών, Περιφέρεια Αττικής, Αποκεντρωμένη Διοίκηση Αττικής, 174 56, Ελλάς",
+          "total": 4
+        }
+      ],
+      "slot": {
+        "region": "Attica",
+        "sub": "Central Athens",
+        "subSub": "Athens area (mainland)",
+        "neighborId": 4,
+        "neighborName": "Α' Πλαζ Αλίμου «Στολίδι»",
+        "neighborDistanceM": 437,
+        "farNeighbor": false,
+        "slotConflict": false,
+        "neighborRegion": "Attica"
+      },
+      "flags": [
+        "weak_name_match",
+        "locality_not_beach"
+      ]
+    },
+    {
+      "seed": {
+        "nameGr": "Άλιμος Λουτρά",
+        "nameEn": "Alimos Loutra",
+        "region": "Attica",
+        "status": "listed-unverified"
+      },
+      "tier": "NONE",
+      "decision": "skip",
+      "queriesTried": [
+        "Άλιμος Λουτρά, Attica, Greece",
+        "Alimos Loutra, Attica, Greece"
+      ],
+      "best": null,
+      "alternates": [],
+      "slot": null,
+      "flags": [
+        "no_result"
+      ]
+    },
+    {
+      "seed": {
+        "nameGr": "Παλαιό Φάληρο Έδεμ",
+        "nameEn": "Palaio Faliro Edem",
+        "region": "Attica",
+        "status": "listed-unverified"
+      },
+      "tier": "NONE",
+      "decision": "skip",
+      "queriesTried": [
+        "Παλαιό Φάληρο Έδεμ, Attica, Greece",
+        "Φάληρο Έδεμ, Attica, Greece"
+      ],
+      "best": null,
+      "alternates": [],
+      "slot": null,
+      "flags": [
+        "no_result"
+      ]
+    },
+    {
+      "seed": {
+        "nameGr": "Φρεαττίδα Πειραιά",
+        "nameEn": "Piraeus Freattida",
+        "region": "Attica",
+        "status": "listed-unverified"
+      },
+      "tier": "NONE",
+      "decision": "skip",
+      "queriesTried": [
+        "Φρεαττίδα Πειραιά, Attica, Greece",
+        "Piraeus Freattida, Attica, Greece"
+      ],
+      "best": null,
+      "alternates": [],
+      "slot": null,
+      "flags": [
+        "no_result"
+      ]
+    },
+    {
+      "seed": {
+        "nameGr": "ΚΑΑΥ Άγιος Ανδρέας",
+        "nameEn": "KAAY Agios Andreas",
+        "region": "Attica",
+        "status": "listed-unverified"
+      },
+      "tier": "LOW",
+      "decision": "REVIEW",
+      "queriesTried": [
+        "ΚΑΑΥ Άγιος Ανδρέας, Attica, Greece",
+        "Άγιος Ανδρέας, Attica, Greece"
+      ],
+      "best": {
+        "osmId": "nom-node-4411670542",
+        "name": "ΚΑΑΥ Αγίου Ανδρέα",
+        "address": "ΚΑΑΥ Αγίου Ανδρέα, Κοινότητα Νέας Μάκρης, Δημοτική Ενότητα Νέας Μάκρης, Δήμος Μαραθώνος, Περιφερειακή Ενότητα Ανατολικής Αττικής, Περιφέρεια Αττικής, Αποκεντρωμένη Διοίκηση Αττικής, 190 11, Ελλάς",
+        "lat": 38.0554852,
+        "lon": 23.9978241,
+        "score": {
+          "total": 30,
+          "nameScore": 2,
+          "typeScore": 8,
+          "regionScore": 0,
+          "overpassScore": 20,
+          "overpassM": 290
+        },
+        "overpassCorroborationM": 290,
+        "wrongRegion": false
+      },
+      "alternates": [
+        {
+          "osmId": "nom-way-82123929",
+          "name": "Άγιος Ανδρέας",
+          "address": "Άγιος Ανδρέας, Τρώων, Άνω Πετράλωνα, Συνοικία Άνω Πετραλώνων, Πετράλωνα, 3η Κοινότητα Αθηνών, Αθήνα, Δήμος Αθηναίων, Περιφερειακή Ενότητα Κεντρικού Τομέα Αθηνών, Περιφέρεια Αττικής, Αποκεντρωμένη Διοίκηση Αττικής, 118 52, Ελλάς",
+          "total": 27
+        },
+        {
+          "osmId": "nom-way-208348268",
+          "name": "Άγιος Ανδρέας",
+          "address": "Άγιος Ανδρέας, Καστρισιανάκη, Γηροκομείο, Αμπελόκηποι, 7η Κοινότητα Αθηνών, Αθήνα, Δήμος Αθηναίων, Περιφερειακή Ενότητα Κεντρικού Τομέα Αθηνών, Περιφέρεια Αττικής, Αποκεντρωμένη Διοίκηση Αττικής, 115 25, Ελλάς",
+          "total": 27
+        },
+        {
+          "osmId": "nom-way-207623437",
+          "name": "Άγιος Ανδρέας",
+          "address": "Άγιος Ανδρέας, 56, Ωρωπού, Λαμπρινή, Συνοικία Ριζουπόλεως, Γαλάτσι, 5η Κοινότητα Αθηνών, Δήμος Αθηναίων, Περιφερειακή Ενότητα Κεντρικού Τομέα Αθηνών, Περιφέρεια Αττικής, Αποκεντρωμένη Διοίκηση Αττικής, 111 42, Ελλάς",
+          "total": 12
+        }
+      ],
+      "slot": {
+        "region": "Attica",
+        "sub": "East Attica",
+        "subSub": "East Attica (mainland)",
+        "neighborId": 34,
+        "neighborName": "Παραλία Ζούμπερι",
+        "neighborDistanceM": 1743,
+        "farNeighbor": false,
+        "slotConflict": false,
+        "neighborRegion": "Attica"
+      },
+      "flags": [
+        "weak_name_match",
+        "locality_not_beach"
+      ]
+    },
+    {
+      "seed": {
+        "nameGr": "Πλαζ Αυλάκι ΕΔΕΜ",
+        "nameEn": "Plaz Avlaki EDEM",
+        "region": "Attica",
+        "status": "listed-unverified"
+      },
+      "tier": "NONE",
+      "decision": "skip",
+      "queriesTried": [
+        "Πλαζ Αυλάκι ΕΔΕΜ, Attica, Greece",
+        "Plaz Avlaki EDEM, Attica, Greece",
+        "Αυλάκι ΕΔΕΜ, Attica, Greece"
+      ],
+      "best": null,
+      "alternates": [],
+      "slot": null,
+      "flags": [
+        "no_result"
+      ]
+    },
+    {
+      "seed": {
+        "nameGr": "Νέα Μάκρη Παραλία",
+        "nameEn": "Nea Makri Paralia",
+        "region": "Attica",
+        "status": "listed-unverified"
+      },
+      "tier": "NONE",
+      "decision": "skip",
+      "queriesTried": [
+        "Νέα Μάκρη Παραλία, Attica, Greece",
+        "Μάκρη Παραλία, Attica, Greece"
+      ],
+      "best": null,
+      "alternates": [],
+      "slot": null,
+      "flags": [
+        "no_result"
+      ]
+    },
+    {
+      "seed": {
+        "nameGr": "Μαραθώνας Παιδικές Κατασκηνώσεις",
+        "nameEn": "Marathonas Paidikes Kataskinoseis",
+        "region": "Attica",
+        "status": "listed-unverified"
+      },
+      "tier": "NONE",
+      "decision": "skip",
+      "queriesTried": [
+        "Μαραθώνας Παιδικές Κατασκηνώσεις, Attica, Greece",
+        "Παιδικές Κατασκηνώσεις, Attica, Greece"
+      ],
+      "best": {
+        "osmId": "nom-node-4411750573",
+        "name": "Παιδικές κατασκηνώσεις Υπουργείου Γεωργίας",
+        "address": "Παιδικές κατασκηνώσεις Υπουργείου Γεωργίας, Κάτω Ποσειδωνία (Λιμάνι Πασά), Δημοτική Ενότητα Λαυρεωτικής, Δήμος Λαυρεωτικής, Περιφερειακή Ενότητα Ανατολικής Αττικής, Περιφέρεια Αττικής, Αποκεντρωμένη Διοίκηση Αττικής, 195 00, Ελλάς",
+        "lat": 37.6776431,
+        "lon": 24.0446252,
+        "score": {
+          "total": 4,
+          "nameScore": 4,
+          "typeScore": 0,
+          "regionScore": 0,
+          "overpassScore": 0,
+          "overpassM": null
+        },
+        "overpassCorroborationM": null,
+        "wrongRegion": false
+      },
+      "alternates": [
+        {
+          "osmId": "nom-way-276245563",
+          "name": "Παιδικές Κατασκηνώσεις Τράπεζας της Ελλάδος",
+          "address": "Παιδικές Κατασκηνώσεις Τράπεζας της Ελλάδος, Φιλίας των λαών, Κοινότητα Αχαρνών, Δημοτική Ενότητα Αχαρνών, Δήμος Αχαρνών, Περιφερειακή Ενότητα Ανατολικής Αττικής, Περιφέρεια Αττικής, Αποκεντρωμένη Διοίκηση Αττικής, 136 76, Ελλάς",
+          "total": 4
+        }
+      ],
+      "slot": {
+        "region": "Attica",
+        "sub": "East Attica",
+        "subSub": "East Attica (mainland)",
+        "neighborId": 74,
+        "neighborName": "Ασημάκη",
+        "neighborDistanceM": 629,
+        "farNeighbor": false,
+        "slotConflict": false,
+        "neighborRegion": "Attica"
+      },
+      "flags": [
+        "weak_name_match",
+        "locality_not_beach",
+        "no_overpass_corroboration"
+      ]
+    },
+    {
+      "seed": {
+        "nameGr": "Σαρωνικός Ανάβυσσος",
+        "nameEn": "Saronikos Anavissos",
+        "region": "Attica",
+        "status": "listed-unverified"
+      },
+      "tier": "NONE",
+      "decision": "skip",
+      "queriesTried": [
+        "Σαρωνικός Ανάβυσσος, Attica, Greece",
+        "Saronikos Anavissos, Attica, Greece"
+      ],
+      "best": null,
+      "alternates": [],
+      "slot": null,
+      "flags": [
+        "no_result"
+      ]
+    },
+    {
+      "seed": {
+        "nameGr": "Σπάτα Αρτέμιδα (Hippocampus)",
+        "nameEn": "Spata Artemida Hippocampus",
+        "region": "Attica",
+        "status": "listed-unverified"
+      },
+      "tier": "NONE",
+      "decision": "skip",
+      "queriesTried": [
+        "Σπάτα Αρτέμιδα (Hippocampus), Attica, Greece",
+        "Αρτέμιδα (Hippocampus), Attica, Greece"
+      ],
+      "best": null,
+      "alternates": [],
+      "slot": null,
+      "flags": [
+        "no_result"
+      ]
+    },
+    {
+      "seed": {
+        "nameGr": "Ωρωπός Άγιοι Απόστολοι Καλαμού",
+        "nameEn": "Oropos Agioi Apostoloi Kalamou",
+        "region": "Attica",
+        "status": "listed-unverified"
+      },
+      "tier": "NONE",
+      "decision": "skip",
+      "queriesTried": [
+        "Ωρωπός Άγιοι Απόστολοι Καλαμού, Attica, Greece",
+        "Oropos Agioi Apostoloi Kalamou, Attica, Greece",
+        "Άγιοι Απόστολοι Καλαμού, Attica, Greece"
+      ],
+      "best": {
+        "osmId": "nom-way-265626719",
+        "name": "Άγιοι Απόστολοι",
+        "address": "Άγιοι Απόστολοι, Καλάμου - Αγίων Αποστόλων, Άγιοι Απόστολοι, Δήμος Ωρωπού, Περιφερειακή Ενότητα Ανατολικής Αττικής, Περιφέρεια Αττικής, Αποκεντρωμένη Διοίκηση Αττικής, 190 17, Ελλάς",
+        "lat": 38.2933319,
+        "lon": 23.9000492,
+        "score": {
+          "total": 16,
+          "nameScore": 8,
+          "typeScore": 8,
+          "regionScore": 0,
+          "overpassScore": 0,
+          "overpassM": null
+        },
+        "overpassCorroborationM": null,
+        "wrongRegion": false
+      },
+      "alternates": [],
+      "slot": {
+        "region": "Attica",
+        "sub": "East Attica",
+        "subSub": "East Attica (mainland)",
+        "neighborId": 29,
+        "neighborName": "Παραλία Αγκώνα",
+        "neighborDistanceM": 2270,
+        "farNeighbor": false,
+        "slotConflict": false,
+        "neighborRegion": "Attica"
+      },
+      "flags": [
+        "weak_name_match",
+        "locality_not_beach",
+        "no_overpass_corroboration"
+      ]
+    },
+    {
+      "seed": {
+        "nameGr": "Ωρωπός Σκάλα Ωρωπού",
+        "nameEn": "Oropos Skala Oropou",
+        "region": "Attica",
+        "status": "online",
+        "notes": "seatrac.gr Top-5 beach."
+      },
+      "tier": "LOW",
+      "decision": "REVIEW",
+      "queriesTried": [
+        "Ωρωπός Σκάλα Ωρωπού, Attica, Greece",
+        "Oropos Skala Oropou, Attica, Greece",
+        "Σκάλα Ωρωπού, Attica, Greece"
+      ],
+      "best": {
+        "osmId": "nom-node-13235988287",
+        "name": "nrg - Market In Ωρωπός",
+        "address": "nrg - Market In Ωρωπός, Ωρωπός, Σκάλα Ωρωπού, Δήμος Ωρωπού, Περιφερειακή Ενότητα Ανατολικής Αττικής, Περιφέρεια Αττικής, Αποκεντρωμένη Διοίκηση Αττικής, 190 15, Ελλάς",
+        "lat": 38.3212156,
+        "lon": 23.8008741,
+        "score": {
+          "total": 30,
+          "nameScore": 30,
+          "typeScore": 0,
+          "regionScore": 0,
+          "overpassScore": 0,
+          "overpassM": null
+        },
+        "overpassCorroborationM": null,
+        "wrongRegion": false
+      },
+      "alternates": [
+        {
+          "osmId": "nom-node-1856711754",
+          "name": "Σκάλα Ωρωπού",
+          "address": "Σκάλα Ωρωπού, Δήμος Ωρωπού, Περιφερειακή Ενότητα Ανατολικής Αττικής, Περιφέρεια Αττικής, Αποκεντρωμένη Διοίκηση Αττικής, 190 15, Ελλάς",
+          "total": 15
+        },
+        {
+          "osmId": "nom-node-656177397",
+          "name": "Ωρωπός",
+          "address": "Ωρωπός, Κυανής Ακτής, Σκάλα Ωρωπού, Δήμος Ωρωπού, Περιφερειακή Ενότητα Ανατολικής Αττικής, Περιφέρεια Αττικής, Αποκεντρωμένη Διοίκηση Αττικής, 190 15, Ελλάς",
+          "total": 8
+        },
+        {
+          "osmId": "nom-node-656177397",
+          "name": "Ωρωπός",
+          "address": "Ωρωπός, Κυανής Ακτής, Σκάλα Ωρωπού, Δήμος Ωρωπού, Περιφερειακή Ενότητα Ανατολικής Αττικής, Περιφέρεια Αττικής, Αποκεντρωμένη Διοίκηση Αττικής, 190 15, Ελλάς",
+          "total": 8
+        }
+      ],
+      "slot": {
+        "region": "Attica",
+        "sub": "East Attica",
+        "subSub": "East Attica (mainland)",
+        "neighborId": 28,
+        "neighborName": "Παραλία Αγίου Κωνσταντίνου",
+        "neighborDistanceM": 2326,
+        "farNeighbor": false,
+        "slotConflict": false,
+        "neighborRegion": "Attica"
+      },
+      "flags": [
+        "locality_not_beach",
+        "no_overpass_corroboration"
+      ]
+    },
+    {
+      "seed": {
+        "nameGr": "Ωρωπός Χαλκούτσι",
+        "nameEn": "Oropos Chalkoutsi",
+        "region": "Attica",
+        "status": "listed-unverified"
+      },
+      "tier": "NONE",
+      "decision": "skip",
+      "queriesTried": [
+        "Ωρωπός Χαλκούτσι, Attica, Greece",
+        "Oropos Chalkoutsi, Attica, Greece"
+      ],
+      "best": {
+        "osmId": "nom-way-271472003",
+        "name": "Oropos Marine",
+        "address": "Oropos Marine, Αρίας, Βαρικό, Νέα Παλάτια, Δήμος Ωρωπού, Περιφερειακή Ενότητα Ανατολικής Αττικής, Περιφέρεια Αττικής, Αποκεντρωμένη Διοίκηση Αττικής, 190 15, Ελλάς",
+        "lat": 38.337054,
+        "lon": 23.7640831,
+        "score": {
+          "total": 22,
+          "nameScore": 2,
+          "typeScore": 0,
+          "regionScore": 0,
+          "overpassScore": 20,
+          "overpassM": 147
+        },
+        "overpassCorroborationM": 147,
+        "wrongRegion": false
+      },
+      "alternates": [
+        {
+          "osmId": "nom-way-271472003",
+          "name": "Oropos Marine",
+          "address": "Oropos Marine, Αρίας, Βαρικό, Νέα Παλάτια, Δήμος Ωρωπού, Περιφερειακή Ενότητα Ανατολικής Αττικής, Περιφέρεια Αττικής, Αποκεντρωμένη Διοίκηση Αττικής, 190 15, Ελλάς",
+          "total": 2
+        }
+      ],
+      "slot": {
+        "region": "Attica",
+        "sub": "East Attica",
+        "subSub": "East Attica (mainland)",
+        "neighborId": 26,
+        "neighborName": "Παραλία Ακρωτηρίου",
+        "neighborDistanceM": 1,
+        "farNeighbor": false,
+        "slotConflict": false,
+        "neighborRegion": "Attica"
+      },
+      "flags": [
+        "weak_name_match",
+        "locality_not_beach"
+      ]
+    },
+    {
+      "seed": {
+        "nameGr": "Πόρτο Ράφτη Άγιος Σπυρίδωνας",
+        "nameEn": "Porto Rafti Agios Spiridonas",
+        "region": "Attica",
+        "status": "listed-unverified"
+      },
+      "tier": "NONE",
+      "decision": "skip",
+      "queriesTried": [
+        "Πόρτο Ράφτη Άγιος Σπυρίδωνας, Attica, Greece",
+        "Porto Rafti Agios Spiridonas, Attica, Greece",
+        "Ράφτη Άγιος Σπυρίδωνας, Attica, Greece"
+      ],
+      "best": {
+        "osmId": "nom-node-8782801660",
+        "name": "Παλαιοχριστιανική Βασιλική Πόρτο Ράφτη",
+        "address": "Παλαιοχριστιανική Βασιλική Πόρτο Ράφτη, Πλαταιών, Άγιος Σπυρίδωνας, Δήμος Μαρκόπουλου Μεσογαίας, Περιφερειακή Ενότητα Ανατολικής Αττικής, Περιφέρεια Αττικής, Αποκεντρωμένη Διοίκηση Αττικής, 190 23, Ελλάς",
+        "lat": 37.8933053,
+        "lon": 24.0164899,
+        "score": {
+          "total": 28,
+          "nameScore": 8,
+          "typeScore": 0,
+          "regionScore": 0,
+          "overpassScore": 20,
+          "overpassM": 255
+        },
+        "overpassCorroborationM": 255,
+        "wrongRegion": false
+      },
+      "alternates": [
+        {
+          "osmId": "nom-way-1017810509",
+          "name": "3ο Δημοτικό Σχολείο Πόρτο Ράφτη",
+          "address": "3ο Δημοτικό Σχολείο Πόρτο Ράφτη, Αρτέμιδος, Αγία Τριάδα, Λιμένας Μαρκόπουλου, Δήμος Μαρκόπουλου Μεσογαίας, Περιφερειακή Ενότητα Ανατολικής Αττικής, Περιφέρεια Αττικής, Αποκεντρωμένη Διοίκηση Αττικής, 190 23, Ελλάς",
+          "total": 14
+        },
+        {
+          "osmId": "nom-node-8284831632",
+          "name": "Υστερομυκηναϊκό Νεκροταφείο Περατής Πόρτο Ράφτη",
+          "address": "Υστερομυκηναϊκό Νεκροταφείο Περατής Πόρτο Ράφτη, Αθηνάς, Άγιος Σπυρίδωνας, Δήμος Μαρκόπουλου Μεσογαίας, Περιφερειακή Ενότητα Ανατολικής Αττικής, Περιφέρεια Αττικής, Αποκεντρωμένη Διοίκηση Αττικής, 190 00, Ελλάς",
+          "total": 8
+        },
+        {
+          "osmId": "nom-way-256066701",
+          "name": "Πόρτο Ράφτη",
+          "address": "Πόρτο Ράφτη, Αγία Τριάδα, Λιμένας Μαρκόπουλου, Δήμος Μαρκόπουλου Μεσογαίας, Περιφερειακή Ενότητα Ανατολικής Αττικής, Περιφέρεια Αττικής, Αποκεντρωμένη Διοίκηση Αττικής, 190 23, Ελλάς",
+          "total": 5
+        }
+      ],
+      "slot": {
+        "region": "Attica",
+        "sub": "East Attica",
+        "subSub": "East Attica (mainland)",
+        "neighborId": 44,
+        "neighborName": "Παραλία Αγίου Σπυρίδωνα",
+        "neighborDistanceM": 754,
+        "farNeighbor": false,
+        "slotConflict": false,
+        "neighborRegion": "Attica"
+      },
+      "flags": [
+        "weak_name_match",
+        "locality_not_beach"
+      ]
+    },
+    {
+      "seed": {
+        "nameGr": "Πόρτο Ράφτη Αυλάκι",
+        "nameEn": "Porto Rafti Avlaki",
+        "region": "Attica",
+        "status": "listed-unverified"
+      },
+      "tier": "MEDIUM",
+      "decision": "accept",
+      "queriesTried": [
+        "Πόρτο Ράφτη Αυλάκι, Attica, Greece",
+        "Porto Rafti Avlaki, Attica, Greece",
+        "Ράφτη Αυλάκι, Attica, Greece"
+      ],
+      "best": {
+        "osmId": "nom-node-6177494345",
+        "name": "Πόρτο Ράφτη Παραλία Αυλάκι",
+        "address": "Πόρτο Ράφτη Παραλία Αυλάκι, Αγίας Μαρίνας, Λιμένας Μαρκόπουλου, Δήμος Μαρκόπουλου Μεσογαίας, Περιφερειακή Ενότητα Ανατολικής Αττικής, Περιφέρεια Αττικής, Αποκεντρωμένη Διοίκηση Αττικής, 190 23, Ελλάς",
+        "lat": 37.872037,
+        "lon": 24.0222308,
+        "score": {
+          "total": 50,
+          "nameScore": 30,
+          "typeScore": 0,
+          "regionScore": 0,
+          "overpassScore": 20,
+          "overpassM": 153
+        },
+        "overpassCorroborationM": 153,
+        "wrongRegion": false
+      },
+      "alternates": [
+        {
+          "osmId": "nom-node-6177494345",
+          "name": "Πόρτο Ράφτη Παραλία Αυλάκι",
+          "address": "Πόρτο Ράφτη Παραλία Αυλάκι, Αγίας Μαρίνας, Λιμένας Μαρκόπουλου, Δήμος Μαρκόπουλου Μεσογαίας, Περιφερειακή Ενότητα Ανατολικής Αττικής, Περιφέρεια Αττικής, Αποκεντρωμένη Διοίκηση Αττικής, 190 23, Ελλάς",
+          "total": 50
+        }
+      ],
+      "slot": {
+        "region": "Attica",
+        "sub": "East Attica",
+        "subSub": "East Attica (mainland)",
+        "neighborId": 45,
+        "neighborName": "Νησίδα Κεκροπούλα",
+        "neighborDistanceM": 1071,
+        "farNeighbor": false,
+        "slotConflict": false,
+        "neighborRegion": "Attica"
+      },
+      "flags": [
+        "locality_not_beach"
+      ]
+    },
+    {
+      "seed": {
+        "nameGr": "Μάνδρα Ψάθα",
+        "nameEn": "Mandra Psatha",
+        "region": "Attica",
+        "status": "listed-unverified"
+      },
+      "tier": "NONE",
+      "decision": "skip",
+      "queriesTried": [
+        "Μάνδρα Ψάθα, Attica, Greece"
+      ],
+      "best": null,
+      "alternates": [],
+      "slot": null,
+      "flags": [
+        "no_result"
+      ]
+    },
+    {
+      "seed": {
+        "nameGr": "Αίγινα Μαραθώνας",
+        "nameEn": "Aigina Marathonas",
+        "region": "Attica",
+        "municipality": "Aigina",
+        "status": "listed-unverified"
+      },
+      "tier": "NONE",
+      "decision": "skip",
+      "queriesTried": [
+        "Αίγινα Μαραθώνας, Aigina, Attica, Greece",
+        "Αίγινα Μαραθώνας, Attica, Greece",
+        "Aigina Marathonas, Aigina, Greece"
+      ],
+      "best": null,
+      "alternates": [],
+      "slot": null,
+      "flags": [
+        "no_result"
+      ]
+    },
+    {
+      "seed": {
+        "nameGr": "Αίγινα Βάγια",
+        "nameEn": "Aigina Vagia",
+        "region": "Attica",
+        "municipality": "Aigina",
+        "status": "listed-unverified"
+      },
+      "tier": "NONE",
+      "decision": "skip",
+      "queriesTried": [
+        "Αίγινα Βάγια, Aigina, Attica, Greece",
+        "Αίγινα Βάγια, Attica, Greece",
+        "Aigina Vagia, Aigina, Greece"
+      ],
+      "best": {
+        "osmId": "nom-relation-543490",
+        "name": "Αίγινα",
+        "address": "Αίγινα, Αγία Μαρίνα, Δήμος Αίγινας, Περιφερειακή Ενότητα Νήσων, Περιφέρεια Αττικής, Αποκεντρωμένη Διοίκηση Αττικής, 180 10, Ελλάς",
+        "lat": 37.7243694,
+        "lon": 23.4938109,
+        "score": {
+          "total": 18,
+          "nameScore": 3,
+          "typeScore": 0,
+          "regionScore": 15,
+          "overpassScore": 0,
+          "overpassM": null
+        },
+        "overpassCorroborationM": null,
+        "wrongRegion": false
+      },
+      "alternates": [
+        {
+          "osmId": "nom-relation-543490",
+          "name": "Αίγινα",
+          "address": "Αίγινα, Αγία Μαρίνα, Δήμος Αίγινας, Περιφερειακή Ενότητα Νήσων, Περιφέρεια Αττικής, Αποκεντρωμένη Διοίκηση Αττικής, 180 10, Ελλάς",
+          "total": 18
+        }
+      ],
+      "slot": {
+        "region": "Attica",
+        "sub": "Islands (Saronic & Kythira)",
+        "subSub": "Aegina",
+        "neighborId": 91,
+        "neighborName": "Παραλία Μαραθώνα Β",
+        "neighborDistanceM": 2929,
+        "farNeighbor": false,
+        "slotConflict": false,
+        "neighborRegion": "Attica"
+      },
+      "flags": [
+        "weak_name_match",
+        "locality_not_beach",
+        "no_overpass_corroboration"
+      ]
+    },
+    {
+      "seed": {
+        "nameGr": "Κύθηρα Καψάλι",
+        "nameEn": "Kythira Kapsali",
+        "region": "Attica",
+        "municipality": "Kythira",
+        "status": "listed-unverified",
+        "notes": "Seatrac near Agia Pelagia, Diakofti, Paleopoli, Kapsali; installed late spring, withdrawn October."
+      },
+      "tier": "MEDIUM",
+      "decision": "accept",
+      "queriesTried": [
+        "Κύθηρα Καψάλι, Kythira, Attica, Greece",
+        "Κύθηρα Καψάλι, Attica, Greece",
+        "Kythira Kapsali, Kythira, Greece"
+      ],
+      "best": {
+        "osmId": "nom-way-165374749",
+        "name": "Κύθηρα - Καψάλι",
+        "address": "Κύθηρα - Καψάλι, Κοινότητα Κυθήρων, Δημοτική Ενότητα Κυθήρων, Δήμος Κυθήρων, Περιφερειακή Ενότητα Νήσων, Περιφέρεια Αττικής, Αποκεντρωμένη Διοίκηση Αττικής, 801 00, Ελλάς",
+        "lat": 36.1467416,
+        "lon": 22.9943886,
+        "score": {
+          "total": 55,
+          "nameScore": 30,
+          "typeScore": 0,
+          "regionScore": 15,
+          "overpassScore": 10,
+          "overpassM": 315
+        },
+        "overpassCorroborationM": 315,
+        "wrongRegion": false
+      },
+      "alternates": [
+        {
+          "osmId": "nom-way-165374749",
+          "name": "Κύθηρα - Καψάλι",
+          "address": "Κύθηρα - Καψάλι, Κοινότητα Κυθήρων, Δημοτική Ενότητα Κυθήρων, Δήμος Κυθήρων, Περιφερειακή Ενότητα Νήσων, Περιφέρεια Αττικής, Αποκεντρωμένη Διοίκηση Αττικής, 801 00, Ελλάς",
+          "total": 55
+        },
+        {
+          "osmId": "nom-way-165374749",
+          "name": "Κύθηρα - Καψάλι",
+          "address": "Κύθηρα - Καψάλι, Κοινότητα Κυθήρων, Δημοτική Ενότητα Κυθήρων, Δήμος Κυθήρων, Περιφερειακή Ενότητα Νήσων, Περιφέρεια Αττικής, Αποκεντρωμένη Διοίκηση Αττικής, 801 00, Ελλάς",
+          "total": 55
+        },
+        {
+          "osmId": "nom-way-754121494",
+          "name": "Κυθήρων - Καψαλίου",
+          "address": "Κυθήρων - Καψαλίου, Κοινότητα Κυθήρων, Δημοτική Ενότητα Κυθήρων, Δήμος Κυθήρων, Περιφερειακή Ενότητα Νήσων, Περιφέρεια Αττικής, Αποκεντρωμένη Διοίκηση Αττικής, 801 00, Ελλάς",
+          "total": 0
+        }
+      ],
+      "slot": {
+        "region": "Attica",
+        "sub": "Islands (Saronic & Kythira)",
+        "subSub": "Kythira",
+        "neighborId": 145,
+        "neighborName": "Παραλία Σπαραγγάριο",
+        "neighborDistanceM": 315,
+        "farNeighbor": false,
+        "slotConflict": false,
+        "neighborRegion": "Attica"
+      },
+      "flags": [
+        "locality_not_beach"
+      ]
+    },
+    {
+      "seed": {
+        "nameGr": "Βόλβη Σταύρος",
+        "nameEn": "Volvi Stavros",
+        "region": "Central Macedonia",
+        "municipality": "Volvi",
+        "status": "listed-unverified"
+      },
+      "tier": "NONE",
+      "decision": "skip",
+      "queriesTried": [
+        "Βόλβη Σταύρος, Volvi, Central Macedonia, Greece",
+        "Βόλβη Σταύρος, Central Macedonia, Greece",
+        "Volvi Stavros, Volvi, Greece",
+        "Volvi Stavros, Central Macedonia, Greece"
+      ],
+      "best": {
+        "osmId": "nom-node-3698608825",
+        "name": "Volvi Tourist Information",
+        "address": "Volvi Tourist Information, Σταυρού - Ιερισσού, Σταυρός, Δήμος Βόλβης, Μητροπολιτική Ενότητα Θεσσαλονίκης, Περιφέρεια Κεντρικής Μακεδονίας, Αποκεντρωμένη Διοίκηση Μακεδονίας - Θράκης, 570 14, Ελλάς",
+        "lat": 40.665255,
+        "lon": 23.698764,
+        "score": {
+          "total": 29,
+          "nameScore": 4,
+          "typeScore": 0,
+          "regionScore": 15,
+          "overpassScore": 10,
+          "overpassM": 414
+        },
+        "overpassCorroborationM": 414,
+        "wrongRegion": false
+      },
+      "alternates": [
+        {
+          "osmId": "nom-node-3698608825",
+          "name": "Volvi Tourist Information",
+          "address": "Volvi Tourist Information, Σταυρού - Ιερισσού, Σταυρός, Δήμος Βόλβης, Μητροπολιτική Ενότητα Θεσσαλονίκης, Περιφέρεια Κεντρικής Μακεδονίας, Αποκεντρωμένη Διοίκηση Μακεδονίας - Θράκης, 570 14, Ελλάς",
+          "total": 19
+        }
+      ],
+      "slot": {
+        "region": "Central Macedonia",
+        "sub": "Thessaloniki",
+        "subSub": "Thessaloniki area",
+        "neighborId": 515,
+        "neighborName": "Παραλία Σταυρού",
+        "neighborDistanceM": 355,
+        "farNeighbor": false,
+        "slotConflict": false,
+        "neighborRegion": "Central Macedonia"
+      },
+      "flags": [
+        "weak_name_match",
+        "locality_not_beach"
+      ]
+    },
+    {
+      "seed": {
+        "nameGr": "Νέα Επιβάτες",
+        "nameEn": "Nea Epivates",
+        "region": "Central Macedonia",
+        "municipality": "Thermaikos",
+        "status": "online",
+        "notes": "Logged 3,000+ uses in one summer."
+      },
+      "tier": "NONE",
+      "decision": "skip",
+      "queriesTried": [
+        "Νέα Επιβάτες, Thermaikos, Central Macedonia, Greece",
+        "Νέα Επιβάτες, Central Macedonia, Greece",
+        "Nea Epivates, Thermaikos, Greece"
+      ],
+      "best": null,
+      "alternates": [],
+      "slot": null,
+      "flags": [
+        "no_result"
+      ]
+    },
+    {
+      "seed": {
+        "nameGr": "Νέα Φλόγητα",
+        "nameEn": "Nea Flogita",
+        "region": "Central Macedonia",
+        "municipality": "Nea Propontida",
+        "status": "online",
+        "accessibleWc": "yes",
+        "boardwalkToWater": "yes",
+        "notes": "Seatrac + track + accessible WC + transfer wheelchair; first Halkidiki Seatrac at Flogita."
+      },
+      "tier": "LOW",
+      "decision": "REVIEW",
+      "queriesTried": [
+        "Νέα Φλόγητα, Nea Propontida, Central Macedonia, Greece",
+        "Νέα Φλόγητα, Central Macedonia, Greece",
+        "Nea Flogita, Nea Propontida, Greece"
+      ],
+      "best": {
+        "osmId": "nom-node-146262610",
+        "name": "Νέα Φλογητά",
+        "address": "Νέα Φλογητά, Δήμος Νέας Προποντίδας, Περιφερειακή Ενότητα Χαλκιδικής, Περιφέρεια Κεντρικής Μακεδονίας, Αποκεντρωμένη Διοίκηση Μακεδονίας - Θράκης, 632 00, Ελλάς",
+        "lat": 40.2599201,
+        "lon": 23.2214367,
+        "score": {
+          "total": 38,
+          "nameScore": 30,
+          "typeScore": 8,
+          "regionScore": 0,
+          "overpassScore": 0,
+          "overpassM": 880
+        },
+        "overpassCorroborationM": 880,
+        "wrongRegion": false
+      },
+      "alternates": [
+        {
+          "osmId": "nom-node-146262610",
+          "name": "Νέα Φλογητά",
+          "address": "Νέα Φλογητά, Δήμος Νέας Προποντίδας, Περιφερειακή Ενότητα Χαλκιδικής, Περιφέρεια Κεντρικής Μακεδονίας, Αποκεντρωμένη Διοίκηση Μακεδονίας - Θράκης, 632 00, Ελλάς",
+          "total": 38
+        },
+        {
+          "osmId": "nom-node-146262610",
+          "name": "Νέα Φλογητά",
+          "address": "Νέα Φλογητά, Δήμος Νέας Προποντίδας, Περιφερειακή Ενότητα Χαλκιδικής, Περιφέρεια Κεντρικής Μακεδονίας, Αποκεντρωμένη Διοίκηση Μακεδονίας - Θράκης, 632 00, Ελλάς",
+          "total": 38
+        }
+      ],
+      "slot": {
+        "region": "Central Macedonia",
+        "sub": "Halkidiki",
+        "subSub": "Halkidiki (mainland)",
+        "neighborId": 435,
+        "neighborName": "Plagia Flogita",
+        "neighborDistanceM": 860,
+        "farNeighbor": false,
+        "slotConflict": false,
+        "neighborRegion": "Central Macedonia"
+      },
+      "flags": [
+        "locality_not_beach",
+        "no_overpass_corroboration"
+      ]
+    },
+    {
+      "seed": {
+        "nameGr": "Γεωπονικά",
+        "nameEn": "Geoponika",
+        "region": "Central Macedonia",
+        "municipality": "Nea Propontida",
+        "status": "online",
+        "accessibleWc": "yes",
+        "boardwalkToWater": "yes"
+      },
+      "tier": "LOW",
+      "decision": "accept",
+      "queriesTried": [
+        "Γεωπονικά, Nea Propontida, Central Macedonia, Greece",
+        "Γεωπονικά, Central Macedonia, Greece",
+        "Geoponika, Nea Propontida, Greece"
+      ],
+      "best": {
+        "osmId": "nom-node-2330593211",
+        "name": "Γεωπονικά",
+        "address": "Γεωπονικά, Δήμος Νέας Προποντίδας, Περιφερειακή Ενότητα Χαλκιδικής, Περιφέρεια Κεντρικής Μακεδονίας, Αποκεντρωμένη Διοίκηση Μακεδονίας - Θράκης, 630 80, Ελλάς",
+        "lat": 40.3041431,
+        "lon": 23.1000758,
+        "score": {
+          "total": 48,
+          "nameScore": 30,
+          "typeScore": 8,
+          "regionScore": 0,
+          "overpassScore": 10,
+          "overpassM": 598
+        },
+        "overpassCorroborationM": 598,
+        "wrongRegion": false
+      },
+      "alternates": [
+        {
+          "osmId": "nom-node-2330593211",
+          "name": "Γεωπονικά",
+          "address": "Γεωπονικά, Δήμος Νέας Προποντίδας, Περιφερειακή Ενότητα Χαλκιδικής, Περιφέρεια Κεντρικής Μακεδονίας, Αποκεντρωμένη Διοίκηση Μακεδονίας - Θράκης, 630 80, Ελλάς",
+          "total": 48
+        },
+        {
+          "osmId": "nom-node-2330593211",
+          "name": "Γεωπονικά",
+          "address": "Γεωπονικά, Δήμος Νέας Προποντίδας, Περιφερειακή Ενότητα Χαλκιδικής, Περιφέρεια Κεντρικής Μακεδονίας, Αποκεντρωμένη Διοίκηση Μακεδονίας - Θράκης, 630 80, Ελλάς",
+          "total": 48
+        },
+        {
+          "osmId": "nom-way-654781437",
+          "name": "Ι.Ν. Αγ. Μαρίνας",
+          "address": "Ι.Ν. Αγ. Μαρίνας, Αλεξάνδρου Λέτσα, Μυκονιάτικα, Γαλήνη, Γεωπονικά, Δήμος Νέας Προποντίδας, Περιφερειακή Ενότητα Χαλκιδικής, Περιφέρεια Κεντρικής Μακεδονίας, Αποκεντρωμένη Διοίκηση Μακεδονίας - Θράκης, 630 80, Ελλάς",
+          "total": 38
+        }
+      ],
+      "slot": {
+        "region": "Central Macedonia",
+        "sub": "Halkidiki",
+        "subSub": "Halkidiki (mainland)",
+        "neighborId": 478,
+        "neighborName": "Παραλία Ανθούπολης",
+        "neighborDistanceM": 598,
+        "farNeighbor": false,
+        "slotConflict": false,
+        "neighborRegion": "Central Macedonia"
+      },
+      "flags": [
+        "locality_not_beach"
+      ]
+    },
+    {
+      "seed": {
+        "nameGr": "Διονυσίου",
+        "nameEn": "Dionysiou",
+        "region": "Central Macedonia",
+        "municipality": "Nea Propontida",
+        "status": "online",
+        "accessibleWc": "yes",
+        "boardwalkToWater": "yes"
+      },
+      "tier": "LOW",
+      "decision": "REVIEW",
+      "queriesTried": [
+        "Διονυσίου, Nea Propontida, Central Macedonia, Greece",
+        "Διονυσίου, Central Macedonia, Greece",
+        "Dionysiou, Nea Propontida, Greece",
+        "Dionysiou, Central Macedonia, Greece"
+      ],
+      "best": {
+        "osmId": "nom-way-173547724",
+        "name": "Διονυσίου",
+        "address": "Διονυσίου, Κιλκίς, Δήμος Κιλκίς, Περιφερειακή Ενότητα Κιλκίς, Περιφέρεια Κεντρικής Μακεδονίας, Αποκεντρωμένη Διοίκηση Μακεδονίας - Θράκης, 611 00, Ελλάς",
+        "lat": 40.9993993,
+        "lon": 22.8807706,
+        "score": {
+          "total": 45,
+          "nameScore": 30,
+          "typeScore": 0,
+          "regionScore": 15,
+          "overpassScore": 0,
+          "overpassM": null
+        },
+        "overpassCorroborationM": null,
+        "wrongRegion": false
+      },
+      "alternates": [
+        {
+          "osmId": "nom-way-1029856155",
+          "name": "Διονυσίου",
+          "address": "Διονυσίου, Πάλιουρα, Νέα Μηχανιώνα, Δήμος Θερμαϊκού, Μητροπολιτική Ενότητα Θεσσαλονίκης, Περιφέρεια Κεντρικής Μακεδονίας, Αποκεντρωμένη Διοίκηση Μακεδονίας - Θράκης, 570 04, Ελλάς",
+          "total": 40
+        },
+        {
+          "osmId": "nom-node-1765776154",
+          "name": "Διονυσίου",
+          "address": "Διονυσίου, Δήμος Νέας Προποντίδας, Περιφερειακή Ενότητα Χαλκιδικής, Περιφέρεια Κεντρικής Μακεδονίας, Αποκεντρωμένη Διοίκηση Μακεδονίας - Θράκης, 632 00, Ελλάς",
+          "total": 38
+        },
+        {
+          "osmId": "nom-node-1765776154",
+          "name": "Διονυσίου",
+          "address": "Διονυσίου, Δήμος Νέας Προποντίδας, Περιφερειακή Ενότητα Χαλκιδικής, Περιφέρεια Κεντρικής Μακεδονίας, Αποκεντρωμένη Διοίκηση Μακεδονίας - Θράκης, 632 00, Ελλάς",
+          "total": 38
+        }
+      ],
+      "slot": {
+        "region": "Central Macedonia",
+        "sub": "Thessaloniki",
+        "subSub": "Thessaloniki area",
+        "neighborId": 511,
+        "neighborName": "Πλαζ Αρετσούς",
+        "neighborDistanceM": 47311,
+        "farNeighbor": true,
+        "slotConflict": false,
+        "neighborRegion": "Central Macedonia"
+      },
+      "flags": [
+        "locality_not_beach",
+        "no_overpass_corroboration",
+        "far_neighbor"
+      ]
+    },
+    {
+      "seed": {
+        "nameGr": "Νέα Πλάγια",
+        "nameEn": "Nea Plagia",
+        "region": "Central Macedonia",
+        "municipality": "Nea Propontida",
+        "status": "online",
+        "accessibleWc": "yes",
+        "boardwalkToWater": "yes"
+      },
+      "tier": "LOW",
+      "decision": "REVIEW",
+      "queriesTried": [
+        "Νέα Πλάγια, Nea Propontida, Central Macedonia, Greece",
+        "Νέα Πλάγια, Central Macedonia, Greece",
+        "Nea Plagia, Nea Propontida, Greece"
+      ],
+      "best": {
+        "osmId": "nom-node-1068897184",
+        "name": "Νέα Πλάγια",
+        "address": "Νέα Πλάγια, Θεσσαλονίκη - Νέα Μουδανιά, Νέα Φλογητά, Δήμος Νέας Προποντίδας, Περιφερειακή Ενότητα Χαλκιδικής, Περιφέρεια Κεντρικής Μακεδονίας, Αποκεντρωμένη Διοίκηση Μακεδονίας - Θράκης, 630 79, Ελλάς",
+        "lat": 40.2751181,
+        "lon": 23.2094024,
+        "score": {
+          "total": 45,
+          "nameScore": 30,
+          "typeScore": 0,
+          "regionScore": 15,
+          "overpassScore": 0,
+          "overpassM": null
+        },
+        "overpassCorroborationM": null,
+        "wrongRegion": false
+      },
+      "alternates": [
+        {
+          "osmId": "nom-node-1068897184",
+          "name": "Νέα Πλάγια",
+          "address": "Νέα Πλάγια, Θεσσαλονίκη - Νέα Μουδανιά, Νέα Φλογητά, Δήμος Νέας Προποντίδας, Περιφερειακή Ενότητα Χαλκιδικής, Περιφέρεια Κεντρικής Μακεδονίας, Αποκεντρωμένη Διοίκηση Μακεδονίας - Θράκης, 630 79, Ελλάς",
+          "total": 45
+        },
+        {
+          "osmId": "nom-node-1068897184",
+          "name": "Νέα Πλάγια",
+          "address": "Νέα Πλάγια, Θεσσαλονίκη - Νέα Μουδανιά, Νέα Φλογητά, Δήμος Νέας Προποντίδας, Περιφερειακή Ενότητα Χαλκιδικής, Περιφέρεια Κεντρικής Μακεδονίας, Αποκεντρωμένη Διοίκηση Μακεδονίας - Θράκης, 630 79, Ελλάς",
+          "total": 45
+        },
+        {
+          "osmId": "nom-node-146262067",
+          "name": "Νέα Πλάγια",
+          "address": "Νέα Πλάγια, Δήμος Νέας Προποντίδας, Περιφερειακή Ενότητα Χαλκιδικής, Περιφέρεια Κεντρικής Μακεδονίας, Αποκεντρωμένη Διοίκηση Μακεδονίας - Θράκης, 632 00, Ελλάς",
+          "total": 38
+        }
+      ],
+      "slot": {
+        "region": "Central Macedonia",
+        "sub": "Halkidiki",
+        "subSub": "Halkidiki (mainland)",
+        "neighborId": 435,
+        "neighborName": "Plagia Flogita",
+        "neighborDistanceM": 2275,
+        "farNeighbor": false,
+        "slotConflict": false,
+        "neighborRegion": "Central Macedonia"
+      },
+      "flags": [
+        "locality_not_beach",
+        "no_overpass_corroboration"
+      ]
+    },
+    {
+      "seed": {
+        "nameGr": "Νέα Ρόδα",
+        "nameEn": "Nea Roda",
+        "region": "Central Macedonia",
+        "municipality": "Aristotelis",
+        "status": "online",
+        "boardwalkToWater": "yes",
+        "accessibleWc": "yes",
+        "changingRoom": "yes"
+      },
+      "tier": "LOW",
+      "decision": "accept",
+      "queriesTried": [
+        "Νέα Ρόδα, Aristotelis, Central Macedonia, Greece",
+        "Νέα Ρόδα, Central Macedonia, Greece",
+        "Nea Roda, Aristotelis, Greece"
+      ],
+      "best": {
+        "osmId": "nom-node-296245466",
+        "name": "Νέα Ρόδα",
+        "address": "Νέα Ρόδα, Δήμος Αριστοτέλη, Περιφερειακή Ενότητα Χαλκιδικής, Περιφέρεια Κεντρικής Μακεδονίας, Αποκεντρωμένη Διοίκηση Μακεδονίας - Θράκης, 630 75, Ελλάς",
+        "lat": 40.3815557,
+        "lon": 23.9234575,
+        "score": {
+          "total": 48,
+          "nameScore": 30,
+          "typeScore": 8,
+          "regionScore": 0,
+          "overpassScore": 10,
+          "overpassM": 443
+        },
+        "overpassCorroborationM": 443,
+        "wrongRegion": false
+      },
+      "alternates": [
+        {
+          "osmId": "nom-node-296245466",
+          "name": "Νέα Ρόδα",
+          "address": "Νέα Ρόδα, Δήμος Αριστοτέλη, Περιφερειακή Ενότητα Χαλκιδικής, Περιφέρεια Κεντρικής Μακεδονίας, Αποκεντρωμένη Διοίκηση Μακεδονίας - Θράκης, 630 75, Ελλάς",
+          "total": 48
+        },
+        {
+          "osmId": "nom-node-296245466",
+          "name": "Νέα Ρόδα",
+          "address": "Νέα Ρόδα, Δήμος Αριστοτέλη, Περιφερειακή Ενότητα Χαλκιδικής, Περιφέρεια Κεντρικής Μακεδονίας, Αποκεντρωμένη Διοίκηση Μακεδονίας - Θράκης, 630 75, Ελλάς",
+          "total": 38
+        }
+      ],
+      "slot": {
+        "region": "Central Macedonia",
+        "sub": "Halkidiki",
+        "subSub": "Halkidiki (mainland)",
+        "neighborId": 454,
+        "neighborName": "Voulitsa",
+        "neighborDistanceM": 1437,
+        "farNeighbor": false,
+        "slotConflict": false,
+        "neighborRegion": "Central Macedonia"
+      },
+      "flags": [
+        "locality_not_beach"
+      ]
+    },
+    {
+      "seed": {
+        "nameGr": "Αμμουλιανή",
+        "nameEn": "Ammouliani",
+        "region": "Central Macedonia",
+        "municipality": "Aristotelis",
+        "status": "listed-unverified",
+        "notes": "Blind-guidance systems; accessible WC/changing at Alykes-Ammouliani."
+      },
+      "tier": "MEDIUM",
+      "decision": "accept",
+      "queriesTried": [
+        "Αμμουλιανή, Aristotelis, Central Macedonia, Greece",
+        "Αμμουλιανή, Central Macedonia, Greece",
+        "Ammouliani, Aristotelis, Greece",
+        "Ammouliani, Central Macedonia, Greece"
+      ],
+      "best": {
+        "osmId": "nom-node-280887835",
+        "name": "Αμμουλιανή",
+        "address": "Αμμουλιανή, Δήμος Αριστοτέλη, Περιφερειακή Ενότητα Χαλκιδικής, Περιφέρεια Κεντρικής Μακεδονίας, Αποκεντρωμένη Διοίκηση Μακεδονίας - Θράκης, 630 75, Ελλάς",
+        "lat": 40.3340593,
+        "lon": 23.9201432,
+        "score": {
+          "total": 58,
+          "nameScore": 30,
+          "typeScore": 8,
+          "regionScore": 0,
+          "overpassScore": 20,
+          "overpassM": 200
+        },
+        "overpassCorroborationM": 200,
+        "wrongRegion": false
+      },
+      "alternates": [
+        {
+          "osmId": "nom-relation-1726960",
+          "name": "Αμμουλιανή",
+          "address": "Αμμουλιανή, Δήμος Αριστοτέλη, Περιφερειακή Ενότητα Χαλκιδικής, Περιφέρεια Κεντρικής Μακεδονίας, Αποκεντρωμένη Διοίκηση Μακεδονίας - Θράκης, 630 75, Ελλάς",
+          "total": 40
+        },
+        {
+          "osmId": "nom-relation-1726960",
+          "name": "Αμμουλιανή",
+          "address": "Αμμουλιανή, Δήμος Αριστοτέλη, Περιφερειακή Ενότητα Χαλκιδικής, Περιφέρεια Κεντρικής Μακεδονίας, Αποκεντρωμένη Διοίκηση Μακεδονίας - Θράκης, 630 75, Ελλάς",
+          "total": 40
+        },
+        {
+          "osmId": "nom-relation-1726960",
+          "name": "Αμμουλιανή",
+          "address": "Αμμουλιανή, Δήμος Αριστοτέλη, Περιφερειακή Ενότητα Χαλκιδικής, Περιφέρεια Κεντρικής Μακεδονίας, Αποκεντρωμένη Διοίκηση Μακεδονίας - Θράκης, 630 75, Ελλάς",
+          "total": 40
+        }
+      ],
+      "slot": {
+        "region": "Central Macedonia",
+        "sub": "Halkidiki",
+        "subSub": "Halkidiki (mainland)",
+        "neighborId": 419,
+        "neighborName": "Limanaki",
+        "neighborDistanceM": 592,
+        "farNeighbor": false,
+        "slotConflict": false,
+        "neighborRegion": "Central Macedonia"
+      },
+      "flags": [
+        "locality_not_beach"
+      ]
+    },
+    {
+      "seed": {
+        "nameGr": "Κορινός",
+        "nameEn": "Korinos",
+        "region": "Central Macedonia",
+        "municipality": "Katerini",
+        "status": "online"
+      },
+      "tier": "LOW",
+      "decision": "REVIEW",
+      "queriesTried": [
+        "Κορινός, Katerini, Central Macedonia, Greece",
+        "Κορινός, Central Macedonia, Greece",
+        "Korinos, Katerini, Greece"
+      ],
+      "best": {
+        "osmId": "nom-node-139717663",
+        "name": "Κορινός",
+        "address": "Κορινός, Δήμος Κατερίνης, Περιφερειακή Ενότητα Πιερίας, Περιφέρεια Κεντρικής Μακεδονίας, Αποκεντρωμένη Διοίκηση Μακεδονίας - Θράκης, 600 62, Ελλάς",
+        "lat": 40.315468,
+        "lon": 22.5880359,
+        "score": {
+          "total": 38,
+          "nameScore": 30,
+          "typeScore": 8,
+          "regionScore": 0,
+          "overpassScore": 0,
+          "overpassM": null
+        },
+        "overpassCorroborationM": null,
+        "wrongRegion": false
+      },
+      "alternates": [
+        {
+          "osmId": "nom-node-139717663",
+          "name": "Κορινός",
+          "address": "Κορινός, Δήμος Κατερίνης, Περιφερειακή Ενότητα Πιερίας, Περιφέρεια Κεντρικής Μακεδονίας, Αποκεντρωμένη Διοίκηση Μακεδονίας - Θράκης, 600 62, Ελλάς",
+          "total": 38
+        },
+        {
+          "osmId": "nom-node-139717663",
+          "name": "Κορινός",
+          "address": "Κορινός, Δήμος Κατερίνης, Περιφερειακή Ενότητα Πιερίας, Περιφέρεια Κεντρικής Μακεδονίας, Αποκεντρωμένη Διοίκηση Μακεδονίας - Θράκης, 600 62, Ελλάς",
+          "total": 38
+        },
+        {
+          "osmId": "nom-node-3525547123",
+          "name": "Κορινός",
+          "address": "Κορινός, Μεγάλου Αλεξάνδρου, Κορινός, Δήμος Κατερίνης, Περιφερειακή Ενότητα Πιερίας, Περιφέρεια Κεντρικής Μακεδονίας, Αποκεντρωμένη Διοίκηση Μακεδονίας - Θράκης, 600 62, Ελλάς",
+          "total": 30
+        }
+      ],
+      "slot": {
+        "region": "Central Macedonia",
+        "sub": "Pieria",
+        "subSub": "Pieria (mainland)",
+        "neighborId": 508,
+        "neighborName": "Παραλία Κατερίνης",
+        "neighborDistanceM": 4638,
+        "farNeighbor": false,
+        "slotConflict": false,
+        "neighborRegion": "Central Macedonia"
+      },
+      "flags": [
+        "locality_not_beach",
+        "no_overpass_corroboration"
+      ]
+    },
+    {
+      "seed": {
+        "nameGr": "Περιγιάλι",
+        "nameEn": "Perigiali",
+        "region": "East Macedonia and Thrace",
+        "municipality": "Kavala",
+        "status": "online"
+      },
+      "tier": "MEDIUM",
+      "decision": "accept",
+      "queriesTried": [
+        "Περιγιάλι, Kavala, East Macedonia and Thrace, Greece",
+        "Περιγιάλι, East Macedonia and Thrace, Greece",
+        "Perigiali, Kavala, Greece"
+      ],
+      "best": {
+        "osmId": "nom-node-3304601904",
+        "name": "Περιγιάλι",
+        "address": "Περιγιάλι, Καβάλα, Δήμος Καβάλας, Περιφερειακή Ενότητα Καβάλας, Περιφέρεια Ανατολικής Μακεδονίας και Θράκης, Αποκεντρωμένη Διοίκηση Μακεδονίας - Θράκης, 652 01, Ελλάς",
+        "lat": 40.9482064,
+        "lon": 24.4300973,
+        "score": {
+          "total": 55,
+          "nameScore": 30,
+          "typeScore": 0,
+          "regionScore": 15,
+          "overpassScore": 10,
+          "overpassM": 672
+        },
+        "overpassCorroborationM": 672,
+        "wrongRegion": false
+      },
+      "alternates": [],
+      "slot": {
+        "region": "East Macedonia and Thrace",
+        "sub": "Kavala",
+        "subSub": "Kavala (mainland)",
+        "neighborId": 784,
+        "neighborName": "Παραλία Νέας Ηρακλείτσας",
+        "neighborDistanceM": 1176,
+        "farNeighbor": false,
+        "slotConflict": false,
+        "neighborRegion": "East Macedonia and Thrace"
+      },
+      "flags": [
+        "locality_not_beach"
+      ]
+    },
+    {
+      "seed": {
+        "nameGr": "Κεραμωτή",
+        "nameEn": "Keramoti",
+        "region": "East Macedonia and Thrace",
+        "municipality": "Nestos",
+        "status": "online"
+      },
+      "tier": "LOW",
+      "decision": "REVIEW",
+      "queriesTried": [
+        "Κεραμωτή, Nestos, East Macedonia and Thrace, Greece",
+        "Κεραμωτή, East Macedonia and Thrace, Greece",
+        "Keramoti, Nestos, Greece"
+      ],
+      "best": {
+        "osmId": "nom-node-280963331",
+        "name": "Κεραμωτή",
+        "address": "Κεραμωτή, Δήμος Νέστου, Περιφερειακή Ενότητα Καβάλας, Περιφέρεια Ανατολικής Μακεδονίας και Θράκης, Αποκεντρωμένη Διοίκηση Μακεδονίας - Θράκης, 640 11, Ελλάς",
+        "lat": 40.8590549,
+        "lon": 24.7037857,
+        "score": {
+          "total": 38,
+          "nameScore": 30,
+          "typeScore": 8,
+          "regionScore": 0,
+          "overpassScore": 0,
+          "overpassM": null
+        },
+        "overpassCorroborationM": null,
+        "wrongRegion": false
+      },
+      "alternates": [],
+      "slot": {
+        "region": "East Macedonia and Thrace",
+        "sub": "Kavala",
+        "subSub": "Kavala (mainland)",
+        "neighborId": 783,
+        "neighborName": "Monastiraki Beach",
+        "neighborDistanceM": 3861,
+        "farNeighbor": false,
+        "slotConflict": false,
+        "neighborRegion": "East Macedonia and Thrace"
+      },
+      "flags": [
+        "locality_not_beach",
+        "no_overpass_corroboration"
+      ]
+    },
+    {
+      "seed": {
+        "nameGr": "Λεύκιππος Αβδήρων",
+        "nameEn": "Lefkippos Avdera",
+        "region": "East Macedonia and Thrace",
+        "municipality": "Avdera",
+        "status": "listed-unverified"
+      },
+      "tier": "NONE",
+      "decision": "skip",
+      "queriesTried": [
+        "Λεύκιππος Αβδήρων, Avdera, East Macedonia and Thrace, Greece",
+        "Λεύκιππος Αβδήρων, East Macedonia and Thrace, Greece",
+        "Lefkippos Avdera, Avdera, Greece",
+        "Lefkippos Avdera, East Macedonia and Thrace, Greece"
+      ],
+      "best": null,
+      "alternates": [],
+      "slot": null,
+      "flags": [
+        "no_result"
+      ]
+    },
+    {
+      "seed": {
+        "nameGr": "Κομοτηνή Φανάρι",
+        "nameEn": "Komotini Fanari",
+        "region": "East Macedonia and Thrace",
+        "municipality": "Komotini",
+        "status": "listed-unverified"
+      },
+      "tier": "NONE",
+      "decision": "skip",
+      "queriesTried": [
+        "Κομοτηνή Φανάρι, Komotini, East Macedonia and Thrace, Greece",
+        "Κομοτηνή Φανάρι, East Macedonia and Thrace, Greece",
+        "Komotini Fanari, Komotini, Greece"
+      ],
+      "best": null,
+      "alternates": [],
+      "slot": null,
+      "flags": [
+        "no_result"
+      ]
+    },
+    {
+      "seed": {
+        "nameGr": "Κομοτηνή Μαρώνεια",
+        "nameEn": "Komotini Maroneia",
+        "region": "East Macedonia and Thrace",
+        "municipality": "Komotini",
+        "status": "listed-unverified"
+      },
+      "tier": "NONE",
+      "decision": "skip",
+      "queriesTried": [
+        "Κομοτηνή Μαρώνεια, Komotini, East Macedonia and Thrace, Greece",
+        "Κομοτηνή Μαρώνεια, East Macedonia and Thrace, Greece",
+        "Komotini Maroneia, Komotini, Greece"
+      ],
+      "best": null,
+      "alternates": [],
+      "slot": null,
+      "flags": [
+        "no_result"
+      ]
+    },
+    {
+      "seed": {
+        "nameGr": "Αλεξανδρούπολη Θέα Θάλασσα",
+        "nameEn": "Alexandroupoli Thea Thalassa",
+        "region": "East Macedonia and Thrace",
+        "municipality": "Alexandroupoli",
+        "status": "online"
+      },
+      "tier": "NONE",
+      "decision": "skip",
+      "queriesTried": [
+        "Αλεξανδρούπολη Θέα Θάλασσα, Alexandroupoli, East Macedonia and Thrace, Greece",
+        "Αλεξανδρούπολη Θέα Θάλασσα, East Macedonia and Thrace, Greece",
+        "Alexandroupoli Thea Thalassa, Alexandroupoli, Greece",
+        "Alexandroupoli Thea Thalassa, East Macedonia and Thrace, Greece"
+      ],
+      "best": null,
+      "alternates": [],
+      "slot": null,
+      "flags": [
+        "no_result"
+      ]
+    },
+    {
+      "seed": {
+        "nameGr": "Αγία Γαλήνη",
+        "nameEn": "Agia Galini",
+        "region": "Crete",
+        "municipality": "Agios Vasileios",
+        "status": "online",
+        "full": true,
+        "notes": "Full supplementary amenities (parking, track, WC, changing room, shade, shower)."
+      },
+      "tier": "LOW",
+      "decision": "REVIEW",
+      "queriesTried": [
+        "Αγία Γαλήνη, Agios Vasileios, Crete, Greece",
+        "Αγία Γαλήνη, Crete, Greece",
+        "Agia Galini, Agios Vasileios, Greece"
+      ],
+      "best": {
+        "osmId": "nom-node-29459170",
+        "name": "Αγία Γαλήνη",
+        "address": "Αγία Γαλήνη, Δήμος Αγίου Βασιλείου, Περιφερειακή Ενότητα Ρεθύμνης, Περιφέρεια Κρήτης, Αποκεντρωμένη Διοίκηση Κρήτης, 740 56, Ελλάς",
+        "lat": 35.0971451,
+        "lon": 24.6884851,
+        "score": {
+          "total": 48,
+          "nameScore": 30,
+          "typeScore": 8,
+          "regionScore": 0,
+          "overpassScore": 10,
+          "overpassM": 377
+        },
+        "overpassCorroborationM": 377,
+        "wrongRegion": false
+      },
+      "alternates": [
+        {
+          "osmId": "nom-node-29459170",
+          "name": "Αγία Γαλήνη",
+          "address": "Αγία Γαλήνη, Δήμος Αγίου Βασιλείου, Περιφερειακή Ενότητα Ρεθύμνης, Περιφέρεια Κρήτης, Αποκεντρωμένη Διοίκηση Κρήτης, 740 56, Ελλάς",
+          "total": 48
+        },
+        {
+          "osmId": "nom-node-29459170",
+          "name": "Αγία Γαλήνη",
+          "address": "Αγία Γαλήνη, Δήμος Αγίου Βασιλείου, Περιφερειακή Ενότητα Ρεθύμνης, Περιφέρεια Κρήτης, Αποκεντρωμένη Διοίκηση Κρήτης, 740 56, Ελλάς",
+          "total": 48
+        }
+      ],
+      "slot": {
+        "region": "Crete",
+        "sub": "Rethymno",
+        "subSub": "Crete (Rethymno)",
+        "neighborId": 673,
+        "neighborName": "Άγιος Γεώργιος",
+        "neighborDistanceM": 2896,
+        "farNeighbor": false,
+        "slotConflict": false,
+        "neighborRegion": "Crete"
+      },
+      "flags": [
+        "locality_not_beach"
+      ]
+    },
+    {
+      "seed": {
+        "nameGr": "Σούδα Πλακιά",
+        "nameEn": "Souda Plakia",
+        "region": "Crete",
+        "municipality": "Agios Vasileios",
+        "status": "listed-unverified",
+        "notes": "Additional investment 'Ολοκληρωμένη Παρέμβαση για ΑμεΑ' approved April 2025."
+      },
+      "tier": "NONE",
+      "decision": "skip",
+      "queriesTried": [
+        "Σούδα Πλακιά, Agios Vasileios, Crete, Greece",
+        "Σούδα Πλακιά, Crete, Greece",
+        "Souda Plakia, Agios Vasileios, Greece",
+        "Souda Plakia, Crete, Greece"
+      ],
+      "best": null,
+      "alternates": [],
+      "slot": null,
+      "flags": [
+        "no_result"
+      ]
+    },
+    {
+      "seed": {
+        "nameGr": "Ροδάκινο",
+        "nameEn": "Rodakino",
+        "region": "Crete",
+        "municipality": "Agios Vasileios",
+        "status": "listed-unverified",
+        "notes": "Part of April 2025 approved accessibility investment."
+      },
+      "tier": "MEDIUM",
+      "decision": "accept",
+      "queriesTried": [
+        "Ροδάκινο, Agios Vasileios, Crete, Greece",
+        "Ροδάκινο, Crete, Greece",
+        "Rodakino, Agios Vasileios, Greece"
+      ],
+      "best": {
+        "osmId": "nom-way-240800941",
+        "name": "Rodakino Βay",
+        "address": "Rodakino Βay, ΕΠ4, Kάτω Ρoδάκινo, Δήμος Αγίου Βασιλείου, Περιφερειακή Ενότητα Ρεθύμνης, Περιφέρεια Κρήτης, Αποκεντρωμένη Διοίκηση Κρήτης, Ελλάς",
+        "lat": 35.1872025,
+        "lon": 24.3151783,
+        "score": {
+          "total": 50,
+          "nameScore": 30,
+          "typeScore": 0,
+          "regionScore": 0,
+          "overpassScore": 20,
+          "overpassM": 272
+        },
+        "overpassCorroborationM": 272,
+        "wrongRegion": false
+      },
+      "alternates": [
+        {
+          "osmId": "nom-node-277223704",
+          "name": "Kάτω Ρoδάκινo",
+          "address": "Kάτω Ρoδάκινo, Δήμος Αγίου Βασιλείου, Περιφερειακή Ενότητα Ρεθύμνης, Περιφέρεια Κρήτης, Αποκεντρωμένη Διοίκηση Κρήτης, Ελλάς",
+          "total": 38
+        },
+        {
+          "osmId": "nom-node-277225082",
+          "name": "Aνω Ρoδάκινo",
+          "address": "Aνω Ρoδάκινo, Δήμος Αγίου Βασιλείου, Περιφερειακή Ενότητα Ρεθύμνης, Περιφέρεια Κρήτης, Αποκεντρωμένη Διοίκηση Κρήτης, Ελλάς",
+          "total": 38
+        },
+        {
+          "osmId": "nom-node-277225082",
+          "name": "Aνω Ρoδάκινo",
+          "address": "Aνω Ρoδάκινo, Δήμος Αγίου Βασιλείου, Περιφερειακή Ενότητα Ρεθύμνης, Περιφέρεια Κρήτης, Αποκεντρωμένη Διοίκηση Κρήτης, Ελλάς",
+          "total": 38
+        }
+      ],
+      "slot": {
+        "region": "Crete",
+        "sub": "Rethymno",
+        "subSub": "Crete (Rethymno)",
+        "neighborId": 684,
+        "neighborName": "Κόρακας",
+        "neighborDistanceM": 0,
+        "farNeighbor": false,
+        "slotConflict": false,
+        "neighborRegion": "Crete"
+      },
+      "flags": [
+        "locality_not_beach"
+      ]
+    },
+    {
+      "seed": {
+        "nameGr": "Βαθιανός Κάμπος",
+        "nameEn": "Vathianos Kampos",
+        "region": "Crete",
+        "municipality": "Chersonisos",
+        "status": "online",
+        "notes": "Bella Maris Agkisaras."
+      },
+      "tier": "NONE",
+      "decision": "skip",
+      "queriesTried": [
+        "Βαθιανός Κάμπος, Chersonisos, Crete, Greece",
+        "Βαθιανός Κάμπος, Crete, Greece",
+        "Vathianos Kampos, Chersonisos, Greece"
+      ],
+      "best": null,
+      "alternates": [],
+      "slot": null,
+      "flags": [
+        "no_result"
+      ]
+    },
+    {
+      "seed": {
+        "nameGr": "Ελούντα",
+        "nameEn": "Elounda",
+        "region": "Crete",
+        "municipality": "Agios Nikolaos",
+        "status": "online",
+        "notes": "Elounda central beach."
+      },
+      "tier": "MEDIUM",
+      "decision": "accept",
+      "queriesTried": [
+        "Ελούντα, Agios Nikolaos, Crete, Greece",
+        "Ελούντα, Crete, Greece",
+        "Elounda, Agios Nikolaos, Greece",
+        "Elounda, Crete, Greece"
+      ],
+      "best": {
+        "osmId": "nom-way-903356951",
+        "name": "Αγίου Νικολάου - Ελούντας",
+        "address": "Αγίου Νικολάου - Ελούντας, Χαβάνια, Κατσίκια, Άγιος Νικόλαος, Δημοτική Ενότητα Αγίου Νικολάου, Δήμος Αγίου Νικολάου, Περιφερειακή Ενότητα Λασιθίου, Περιφέρεια Κρήτης, Αποκεντρωμένη Διοίκηση Κρήτης, 721 00, Ελλάς",
+        "lat": 35.2189667,
+        "lon": 25.7096531,
+        "score": {
+          "total": 55,
+          "nameScore": 30,
+          "typeScore": 0,
+          "regionScore": 15,
+          "overpassScore": 10,
+          "overpassM": 385
+        },
+        "overpassCorroborationM": 385,
+        "wrongRegion": false
+      },
+      "alternates": [
+        {
+          "osmId": "nom-way-517284420",
+          "name": "Αγίου Νικολάου - Ελούντας",
+          "address": "Αγίου Νικολάου - Ελούντας, Ξηρόκαμπος, Άγιος Νικόλαος, Δημοτική Ενότητα Αγίου Νικολάου, Δήμος Αγίου Νικολάου, Περιφερειακή Ενότητα Λασιθίου, Περιφέρεια Κρήτης, Αποκεντρωμένη Διοίκηση Κρήτης, 721 00, Ελλάς",
+          "total": 55
+        },
+        {
+          "osmId": "nom-node-13823094466",
+          "name": "nrg - INNSiDE Crete Elounda",
+          "address": "nrg - INNSiDE Crete Elounda, Σχίσμα Ελούντας, Δημοτική Ενότητα Αγίου Νικολάου, Δήμος Αγίου Νικολάου, Περιφερειακή Ενότητα Λασιθίου, Περιφέρεια Κρήτης, Αποκεντρωμένη Διοίκηση Κρήτης, 720 53, Ελλάς",
+          "total": 55
+        },
+        {
+          "osmId": "nom-node-5066703016",
+          "name": "Elounda",
+          "address": "Elounda, Δημοκρατίας, Μαυρικιανό, Κοινότητα Ελούντας, Δημοτική Ενότητα Αγίου Νικολάου, Δήμος Αγίου Νικολάου, Περιφερειακή Ενότητα Λασιθίου, Περιφέρεια Κρήτης, Αποκεντρωμένη Διοίκηση Κρήτης, 721 00, Ελλάς",
+          "total": 50
+        }
+      ],
+      "slot": {
+        "region": "Crete",
+        "sub": "Lasithi",
+        "subSub": "Crete (Lasithi)",
+        "neighborId": 768,
+        "neighborName": "Χαβάνια",
+        "neighborDistanceM": 662,
+        "farNeighbor": false,
+        "slotConflict": false,
+        "neighborRegion": "Crete"
+      },
+      "flags": [
+        "locality_not_beach"
+      ]
+    },
+    {
+      "seed": {
+        "nameGr": "Γοργόνα",
+        "nameEn": "Gorgona",
+        "region": "Crete",
+        "municipality": "Ierapetra",
+        "status": "listed-unverified"
+      },
+      "tier": "MEDIUM",
+      "decision": "skip",
+      "queriesTried": [
+        "Γοργόνα, Ierapetra, Crete, Greece",
+        "Γοργόνα, Crete, Greece",
+        "Gorgona, Ierapetra, Greece"
+      ],
+      "best": {
+        "osmId": "nom-node-993838442",
+        "name": "Tavern Gorgona",
+        "address": "Tavern Gorgona, Στρατηγοῦ Σαμουήλ, Κοινότητα Ιεράπετρας, Δημοτική Ενότητα Ιεράπετρας, Δήμος Ιεράπετρας, Περιφερειακή Ενότητα Λασιθίου, Περιφέρεια Κρήτης, Αποκεντρωμένη Διοίκηση Κρήτης, 722 00, Ελλάς",
+        "lat": 35.0057373,
+        "lon": 25.7387546,
+        "score": {
+          "total": 50,
+          "nameScore": 30,
+          "typeScore": 0,
+          "regionScore": 0,
+          "overpassScore": 20,
+          "overpassM": 71
+        },
+        "overpassCorroborationM": 71,
+        "wrongRegion": false
+      },
+      "alternates": [
+        {
+          "osmId": "nom-node-2980000745",
+          "name": "Γοργονα",
+          "address": "Γοργονα, Μακεδονομάχων Στυλιανού Κελαϊδή και Χρήστου Μακρή, Πλακιάς, Δήμος Αγίου Βασιλείου, Περιφερειακή Ενότητα Ρεθύμνης, Περιφέρεια Κρήτης, Αποκεντρωμένη Διοίκηση Κρήτης, 740 60, Ελλάς",
+          "total": 50
+        },
+        {
+          "osmId": "nom-node-993838442",
+          "name": "Tavern Gorgona",
+          "address": "Tavern Gorgona, Στρατηγοῦ Σαμουήλ, Κοινότητα Ιεράπετρας, Δημοτική Ενότητα Ιεράπετρας, Δήμος Ιεράπετρας, Περιφερειακή Ενότητα Λασιθίου, Περιφέρεια Κρήτης, Αποκεντρωμένη Διοίκηση Κρήτης, 722 00, Ελλάς",
+          "total": 50
+        },
+        {
+          "osmId": "nom-node-993838442",
+          "name": "Tavern Gorgona",
+          "address": "Tavern Gorgona, Στρατηγοῦ Σαμουήλ, Κοινότητα Ιεράπετρας, Δημοτική Ενότητα Ιεράπετρας, Δήμος Ιεράπετρας, Περιφερειακή Ενότητα Λασιθίου, Περιφέρεια Κρήτης, Αποκεντρωμένη Διοίκηση Κρήτης, 722 00, Ελλάς",
+          "total": 50
+        }
+      ],
+      "slot": {
+        "region": "Crete",
+        "sub": "Lasithi",
+        "subSub": "Crete (Lasithi)",
+        "neighborId": 741,
+        "neighborName": "Κάκκος",
+        "neighborDistanceM": 9238,
+        "farNeighbor": false,
+        "slotConflict": false,
+        "neighborRegion": "Crete"
+      },
+      "flags": [
+        "locality_not_beach"
+      ]
+    },
+    {
+      "seed": {
+        "nameGr": "Βούλγαρη",
+        "nameEn": "Voulgari",
+        "region": "South Aegean",
+        "municipality": "Syros",
+        "status": "listed-unverified"
+      },
+      "tier": "MEDIUM",
+      "decision": "accept",
+      "queriesTried": [
+        "Βούλγαρη, Syros, South Aegean, Greece",
+        "Βούλγαρη, South Aegean, Greece",
+        "Voulgari, Syros, Greece",
+        "Voulgari, South Aegean, Greece"
+      ],
+      "best": {
+        "osmId": "nom-node-3441463795",
+        "name": "Βούλγαρη",
+        "address": "Βούλγαρη, Ποσειδωνία, Δήμος Σύρου-Ερμούπολης, Περιφερειακή Ενότητα Σύρου, Περιφέρεια Νοτίου Αιγαίου, Αποκεντρωμένη Διοίκηση Αιγαίου, 841 00, Ελλάς",
+        "lat": 37.3927812,
+        "lon": 24.8843281,
+        "score": {
+          "total": 58,
+          "nameScore": 30,
+          "typeScore": 8,
+          "regionScore": 0,
+          "overpassScore": 20,
+          "overpassM": 46
+        },
+        "overpassCorroborationM": 46,
+        "wrongRegion": false
+      },
+      "alternates": [
+        {
+          "osmId": "nom-node-3441463795",
+          "name": "Βούλγαρη",
+          "address": "Βούλγαρη, Ποσειδωνία, Δήμος Σύρου-Ερμούπολης, Περιφερειακή Ενότητα Σύρου, Περιφέρεια Νοτίου Αιγαίου, Αποκεντρωμένη Διοίκηση Αιγαίου, 841 00, Ελλάς",
+          "total": 58
+        },
+        {
+          "osmId": "nom-way-411003588",
+          "name": "Βούλγαρη Ευγένιου",
+          "address": "Βούλγαρη Ευγένιου, Ρόδος, Δημοτική Ενότητα Ρόδου, Δήμος Ρόδου, Περιφερειακή Ενότητα Ρόδου, Περιφέρεια Νοτίου Αιγαίου, Αποκεντρωμένη Διοίκηση Αιγαίου, 851 00, Ελλάς",
+          "total": 45
+        }
+      ],
+      "slot": {
+        "region": "South Aegean",
+        "sub": "Cyclades",
+        "subSub": "Syros",
+        "neighborId": 2125,
+        "neighborName": "Αγκαθωπές",
+        "neighborDistanceM": 860,
+        "farNeighbor": false,
+        "slotConflict": false,
+        "neighborRegion": "South Aegean"
+      },
+      "flags": [
+        "locality_not_beach"
+      ]
+    },
+    {
+      "seed": {
+        "nameGr": "Αμοργός Αιγιάλη",
+        "nameEn": "Amorgos Aigiali",
+        "region": "South Aegean",
+        "municipality": "Amorgos",
+        "status": "listed-unverified"
+      },
+      "tier": "LOW",
+      "decision": "REVIEW",
+      "queriesTried": [
+        "Αμοργός Αιγιάλη, Amorgos, South Aegean, Greece",
+        "Αμοργός Αιγιάλη, South Aegean, Greece",
+        "Amorgos Aigiali, Amorgos, Greece"
+      ],
+      "best": {
+        "osmId": "nom-way-82306643",
+        "name": "Αμοργός (Αιγιάλη) - Δονούσα",
+        "address": "Αμοργός (Αιγιάλη) - Δονούσα, Όρμος Αιγιάλης, Περιφερειακή Ενότητα Νάξου, Περιφέρεια Νοτίου Αιγαίου, Αποκεντρωμένη Διοίκηση Αιγαίου, 840 08, Ελλάς",
+        "lat": 36.9912738,
+        "lon": 25.8762941,
+        "score": {
+          "total": 45,
+          "nameScore": 30,
+          "typeScore": 0,
+          "regionScore": 15,
+          "overpassScore": 0,
+          "overpassM": null
+        },
+        "overpassCorroborationM": null,
+        "wrongRegion": false
+      },
+      "alternates": [],
+      "slot": {
+        "region": "South Aegean",
+        "sub": "Cyclades",
+        "subSub": "Amorgos",
+        "neighborId": 1670,
+        "neighborName": "Μικρή Βλυχάδα",
+        "neighborDistanceM": 11678,
+        "farNeighbor": false,
+        "slotConflict": false,
+        "neighborRegion": "South Aegean"
+      },
+      "flags": [
+        "locality_not_beach",
+        "no_overpass_corroboration"
+      ]
+    },
+    {
+      "seed": {
+        "nameGr": "Σέριφος Λιβάδι Αυλόμωνας",
+        "nameEn": "Serifos Livadi Avlomonas",
+        "region": "South Aegean",
+        "municipality": "Serifos",
+        "status": "listed-unverified"
+      },
+      "tier": "NONE",
+      "decision": "skip",
+      "queriesTried": [
+        "Σέριφος Λιβάδι Αυλόμωνας, Serifos, South Aegean, Greece",
+        "Σέριφος Λιβάδι Αυλόμωνας, South Aegean, Greece",
+        "Serifos Livadi Avlomonas, Serifos, Greece",
+        "Serifos Livadi Avlomonas, South Aegean, Greece"
+      ],
+      "best": null,
+      "alternates": [],
+      "slot": null,
+      "flags": [
+        "no_result"
+      ]
+    },
+    {
+      "seed": {
+        "nameGr": "Λέρος Άλιντα",
+        "nameEn": "Leros Alinda",
+        "region": "South Aegean",
+        "municipality": "Leros",
+        "status": "uninstalled",
+        "notes": "Shows 'Uninstalled'."
+      },
+      "tier": "NONE",
+      "decision": "skip",
+      "queriesTried": [
+        "Λέρος Άλιντα, Leros, South Aegean, Greece",
+        "Λέρος Άλιντα, South Aegean, Greece",
+        "Leros Alinda, Leros, Greece",
+        "Leros Alinda, South Aegean, Greece"
+      ],
+      "best": {
+        "osmId": "nom-relation-531360",
+        "name": "Λέρος",
+        "address": "Λέρος, Δρυμώνας, Δήμος Λέρου, Περιφερειακή Ενότητα Καλύμνου, Περιφέρεια Νοτίου Αιγαίου, Αποκεντρωμένη Διοίκηση Αιγαίου, 854 00, Ελλάς",
+        "lat": 37.1493635,
+        "lon": 26.8463817,
+        "score": {
+          "total": 18,
+          "nameScore": 3,
+          "typeScore": 0,
+          "regionScore": 15,
+          "overpassScore": 0,
+          "overpassM": null
+        },
+        "overpassCorroborationM": null,
+        "wrongRegion": false
+      },
+      "alternates": [
+        {
+          "osmId": "nom-relation-531360",
+          "name": "Λέρος",
+          "address": "Λέρος, Τεμένια, Δήμος Λέρου, Περιφερειακή Ενότητα Καλύμνου, Περιφέρεια Νοτίου Αιγαίου, Αποκεντρωμένη Διοίκηση Αιγαίου, 854 00, Ελλάς",
+          "total": 18
+        }
+      ],
+      "slot": {
+        "region": "South Aegean",
+        "sub": "Dodecanese",
+        "subSub": "Leros",
+        "neighborId": 2365,
+        "neighborName": "Παραλία Βρωμόλιθος",
+        "neighborDistanceM": 1287,
+        "farNeighbor": false,
+        "slotConflict": false,
+        "neighborRegion": "South Aegean"
+      },
+      "flags": [
+        "weak_name_match",
+        "locality_not_beach",
+        "no_overpass_corroboration"
+      ]
+    },
+    {
+      "seed": {
+        "nameGr": "Πάτμος Κάμπος",
+        "nameEn": "Patmos Kampos",
+        "region": "South Aegean",
+        "municipality": "Patmos",
+        "status": "listed-unverified"
+      },
+      "tier": "MEDIUM",
+      "decision": "accept",
+      "queriesTried": [
+        "Πάτμος Κάμπος, Patmos, South Aegean, Greece",
+        "Πάτμος Κάμπος, South Aegean, Greece",
+        "Patmos Kampos, Patmos, Greece"
+      ],
+      "best": {
+        "osmId": "nom-relation-533714",
+        "name": "Πάτμος",
+        "address": "Πάτμος, Κάμπος, Δήμος Πάτμου, Περιφερειακή Ενότητα Καλύμνου, Περιφέρεια Νοτίου Αιγαίου, Αποκεντρωμένη Διοίκηση Αιγαίου, 855 00, Ελλάς",
+        "lat": 37.3247471,
+        "lon": 26.5381556,
+        "score": {
+          "total": 55,
+          "nameScore": 30,
+          "typeScore": 0,
+          "regionScore": 15,
+          "overpassScore": 10,
+          "overpassM": 452
+        },
+        "overpassCorroborationM": 452,
+        "wrongRegion": false
+      },
+      "alternates": [
+        {
+          "osmId": "nom-relation-533714",
+          "name": "Πάτμος",
+          "address": "Πάτμος, Κάμπος, Δήμος Πάτμου, Περιφερειακή Ενότητα Καλύμνου, Περιφέρεια Νοτίου Αιγαίου, Αποκεντρωμένη Διοίκηση Αιγαίου, 855 00, Ελλάς",
+          "total": 55
+        },
+        {
+          "osmId": "nom-relation-533714",
+          "name": "Πάτμος",
+          "address": "Πάτμος, Δήμος Πάτμου, Περιφερειακή Ενότητα Καλύμνου, Περιφέρεια Νοτίου Αιγαίου, Αποκεντρωμένη Διοίκηση Αιγαίου, 855 00, Ελλάς",
+          "total": 18
+        }
+      ],
+      "slot": {
+        "region": "South Aegean",
+        "sub": "Dodecanese",
+        "subSub": "Patmos",
+        "neighborId": 2391,
+        "neighborName": "Χοχλακάς",
+        "neighborDistanceM": 452,
+        "farNeighbor": false,
+        "slotConflict": false,
+        "neighborRegion": "South Aegean"
+      },
+      "flags": [
+        "locality_not_beach"
+      ]
+    },
+    {
+      "seed": {
+        "nameGr": "Τήλος Λιβάδια",
+        "nameEn": "Tilos Livadia",
+        "region": "South Aegean",
+        "municipality": "Tilos",
+        "status": "listed-unverified"
+      },
+      "tier": "NONE",
+      "decision": "skip",
+      "queriesTried": [
+        "Τήλος Λιβάδια, Tilos, South Aegean, Greece",
+        "Τήλος Λιβάδια, South Aegean, Greece",
+        "Tilos Livadia, Tilos, Greece"
+      ],
+      "best": {
+        "osmId": "nom-way-709633027",
+        "name": "Stefanakis Villas Tilos",
+        "address": "Stefanakis Villas Tilos, Elefant cave Road, Λιβάδια, Δήμος Τήλου, Περιφερειακή Ενότητα Ρόδου, Περιφέρεια Νοτίου Αιγαίου, Αποκεντρωμένη Διοίκηση Αιγαίου, 850 02, Ελλάς",
+        "lat": 36.4148972,
+        "lon": 27.4047338,
+        "score": {
+          "total": 19,
+          "nameScore": 4,
+          "typeScore": 0,
+          "regionScore": 15,
+          "overpassScore": 0,
+          "overpassM": null
+        },
+        "overpassCorroborationM": null,
+        "wrongRegion": false
+      },
+      "alternates": [
+        {
+          "osmId": "nom-way-808821255",
+          "name": "Tilos Mare",
+          "address": "Tilos Mare, Elefant cave Road, Λιβάδια, Δήμος Τήλου, Περιφερειακή Ενότητα Ρόδου, Περιφέρεια Νοτίου Αιγαίου, Αποκεντρωμένη Διοίκηση Αιγαίου, 850 02, Ελλάς",
+          "total": 19
+        }
+      ],
+      "slot": {
+        "region": "South Aegean",
+        "sub": "Dodecanese",
+        "subSub": "Tilos",
+        "neighborId": 2478,
+        "neighborName": "Λιβάδια",
+        "neighborDistanceM": 1104,
+        "farNeighbor": false,
+        "slotConflict": false,
+        "neighborRegion": "South Aegean"
+      },
+      "flags": [
+        "weak_name_match",
+        "locality_not_beach",
+        "no_overpass_corroboration"
+      ]
+    },
+    {
+      "seed": {
+        "nameGr": "Λειψοί Λιεντού",
+        "nameEn": "Leipsoi Liendou",
+        "region": "South Aegean",
+        "municipality": "Leipsoi",
+        "status": "uninstalled",
+        "notes": "Shows 'Uninstalled'."
+      },
+      "tier": "NONE",
+      "decision": "skip",
+      "queriesTried": [
+        "Λειψοί Λιεντού, Leipsoi, South Aegean, Greece",
+        "Λειψοί Λιεντού, South Aegean, Greece",
+        "Leipsoi Liendou, Leipsoi, Greece",
+        "Leipsoi Liendou, South Aegean, Greece"
+      ],
+      "best": null,
+      "alternates": [],
+      "slot": null,
+      "flags": [
+        "no_result"
+      ]
+    },
+    {
+      "seed": {
+        "nameGr": "Γουβιά",
+        "nameEn": "Gouvia",
+        "region": "Ionian Islands",
+        "municipality": "Corfu",
+        "status": "online",
+        "notes": "Blind-guidance audio system installed at Gouvia."
+      },
+      "tier": "MEDIUM",
+      "decision": "accept",
+      "queriesTried": [
+        "Γουβιά, Corfu, Ionian Islands, Greece",
+        "Γουβιά, Ionian Islands, Greece",
+        "Gouvia, Corfu, Greece",
+        "Gouvia, Ionian Islands, Greece"
+      ],
+      "best": {
+        "osmId": "nom-node-336375934",
+        "name": "Γουβιά",
+        "address": "Γουβιά, Δήμος Κεντρικής Κέρκυρας και Διαποντίων Νήσων, Περιφερειακή Ενότητα Κέρκυρας, Περιφέρεια Ιονίων Νήσων, Αποκεντρωμένη Διοίκηση Πελοποννήσου, Δυτικής Ελλάδας και Ιονίου, 491 00, Ελλάς",
+        "lat": 39.6537085,
+        "lon": 19.8454166,
+        "score": {
+          "total": 58,
+          "nameScore": 30,
+          "typeScore": 8,
+          "regionScore": 0,
+          "overpassScore": 20,
+          "overpassM": 239
+        },
+        "overpassCorroborationM": 239,
+        "wrongRegion": false
+      },
+      "alternates": [
+        {
+          "osmId": "nom-node-336375934",
+          "name": "Γουβιά",
+          "address": "Γουβιά, Δήμος Κεντρικής Κέρκυρας και Διαποντίων Νήσων, Περιφερειακή Ενότητα Κέρκυρας, Περιφέρεια Ιονίων Νήσων, Αποκεντρωμένη Διοίκηση Πελοποννήσου, Δυτικής Ελλάδας και Ιονίου, 491 00, Ελλάς",
+          "total": 58
+        },
+        {
+          "osmId": "nom-node-336375934",
+          "name": "Γουβιά",
+          "address": "Γουβιά, Δήμος Κεντρικής Κέρκυρας και Διαποντίων Νήσων, Περιφερειακή Ενότητα Κέρκυρας, Περιφέρεια Ιονίων Νήσων, Αποκεντρωμένη Διοίκηση Πελοποννήσου, Δυτικής Ελλάδας και Ιονίου, 491 00, Ελλάς",
+          "total": 58
+        },
+        {
+          "osmId": "nom-node-11283984144",
+          "name": "EKO Charge&Go - BP Γουβιά",
+          "address": "EKO Charge&Go - BP Γουβιά, Κέρκυρα, Γουβιά, Δήμος Κεντρικής Κέρκυρας και Διαποντίων Νήσων, Περιφερειακή Ενότητα Κέρκυρας, Περιφέρεια Ιονίων Νήσων, Αποκεντρωμένη Διοίκηση Πελοποννήσου, Δυτικής Ελλάδας και Ιονίου, 491 00, Ελλάς",
+          "total": 55
+        }
+      ],
+      "slot": {
+        "region": "Ionian Islands",
+        "sub": "Corfu",
+        "subSub": "Corfu",
+        "neighborId": 992,
+        "neighborName": "Παραλία Κοντοκαλίου",
+        "neighborDistanceM": 1372,
+        "farNeighbor": false,
+        "slotConflict": false,
+        "neighborRegion": "Ionian Islands"
+      },
+      "flags": [
+        "locality_not_beach"
+      ]
+    },
+    {
+      "seed": {
+        "nameGr": "Παλαιοκαστρίτσα",
+        "nameEn": "Palaiokastritsa",
+        "region": "Ionian Islands",
+        "municipality": "Corfu",
+        "status": "online"
+      },
+      "tier": "LOW",
+      "decision": "accept",
+      "queriesTried": [
+        "Παλαιοκαστρίτσα, Corfu, Ionian Islands, Greece",
+        "Παλαιοκαστρίτσα, Ionian Islands, Greece",
+        "Palaiokastritsa, Corfu, Greece"
+      ],
+      "best": {
+        "osmId": "nom-node-921416883",
+        "name": "Παλαιοκαστρίτσα",
+        "address": "Παλαιοκαστρίτσα, Δήμος Κεντρικής Κέρκυρας και Διαποντίων Νήσων, Περιφερειακή Ενότητα Κέρκυρας, Περιφέρεια Ιονίων Νήσων, Αποκεντρωμένη Διοίκηση Πελοποννήσου, Δυτικής Ελλάδας και Ιονίου, 490 83, Ελλάς",
+        "lat": 39.6757716,
+        "lon": 19.7119035,
+        "score": {
+          "total": 48,
+          "nameScore": 30,
+          "typeScore": 8,
+          "regionScore": 0,
+          "overpassScore": 10,
+          "overpassM": 380
+        },
+        "overpassCorroborationM": 380,
+        "wrongRegion": false
+      },
+      "alternates": [
+        {
+          "osmId": "nom-node-921416883",
+          "name": "Παλαιοκαστρίτσα",
+          "address": "Παλαιοκαστρίτσα, Δήμος Κεντρικής Κέρκυρας και Διαποντίων Νήσων, Περιφερειακή Ενότητα Κέρκυρας, Περιφέρεια Ιονίων Νήσων, Αποκεντρωμένη Διοίκηση Πελοποννήσου, Δυτικής Ελλάδας και Ιονίου, 490 83, Ελλάς",
+          "total": 48
+        },
+        {
+          "osmId": "nom-node-921416883",
+          "name": "Παλαιοκαστρίτσα",
+          "address": "Παλαιοκαστρίτσα, Δήμος Κεντρικής Κέρκυρας και Διαποντίων Νήσων, Περιφερειακή Ενότητα Κέρκυρας, Περιφέρεια Ιονίων Νήσων, Αποκεντρωμένη Διοίκηση Πελοποννήσου, Δυτικής Ελλάδας και Ιονίου, 490 83, Ελλάς",
+          "total": 48
+        }
+      ],
+      "slot": {
+        "region": "Ionian Islands",
+        "sub": "Corfu",
+        "subSub": "Corfu",
+        "neighborId": 928,
+        "neighborName": "Agias Triades Beach",
+        "neighborDistanceM": 380,
+        "farNeighbor": false,
+        "slotConflict": false,
+        "neighborRegion": "Ionian Islands"
+      },
+      "flags": [
+        "locality_not_beach"
+      ]
+    },
+    {
+      "seed": {
+        "nameGr": "Φανάρι Μεγανήσι",
+        "nameEn": "Fanari Meganisi",
+        "region": "Ionian Islands",
+        "municipality": "Lefkada",
+        "status": "online",
+        "notes": "June 2026, first Seatrac on Lefkada."
+      },
+      "tier": "NONE",
+      "decision": "skip",
+      "queriesTried": [
+        "Φανάρι Μεγανήσι, Lefkada, Ionian Islands, Greece",
+        "Φανάρι Μεγανήσι, Ionian Islands, Greece",
+        "Fanari Meganisi, Lefkada, Greece"
+      ],
+      "best": {
+        "osmId": "nom-way-317392676",
+        "name": "Fanari beach",
+        "address": "Fanari beach, Κατωμέρι - Βαθύ, Κοινότητα Κατωμερίου, Κατωμέρι, Δήμος Μεγανησίου, Περιφερειακή Ενότητα Λευκάδας, Περιφέρεια Ιονίων Νήσων, Αποκεντρωμένη Διοίκηση Πελοποννήσου, Δυτικής Ελλάδας και Ιονίου, 310 83, Ελλάς",
+        "lat": 38.6668053,
+        "lon": 20.8077205,
+        "score": {
+          "total": 22,
+          "nameScore": 2,
+          "typeScore": 0,
+          "regionScore": 0,
+          "overpassScore": 20,
+          "overpassM": 111
+        },
+        "overpassCorroborationM": 111,
+        "wrongRegion": false
+      },
+      "alternates": [],
+      "slot": {
+        "region": "Ionian Islands",
+        "sub": "Lefkada",
+        "subSub": "Meganisi",
+        "neighborId": 1181,
+        "neighborName": "Φανάρι",
+        "neighborDistanceM": 113,
+        "farNeighbor": false,
+        "slotConflict": false,
+        "neighborRegion": "Ionian Islands"
+      },
+      "flags": [
+        "weak_name_match",
+        "locality_not_beach"
+      ]
+    },
+    {
+      "seed": {
+        "nameGr": "Λιμνη Λυγιά",
+        "nameEn": "Limni Lygia",
+        "region": "Ionian Islands",
+        "municipality": "Lefkada",
+        "status": "online",
+        "notes": "Lygia; a unit at Gyra beach to follow. Lefkada Ligia on seatrac.gr."
+      },
+      "tier": "LOW",
+      "decision": "REVIEW",
+      "queriesTried": [
+        "Λιμνη Λυγιά, Lefkada, Ionian Islands, Greece",
+        "Λιμνη Λυγιά, Ionian Islands, Greece",
+        "Limni Lygia, Lefkada, Greece"
+      ],
+      "best": {
+        "osmId": "nom-way-369335698",
+        "name": "Limni / Strofi",
+        "address": "Limni / Strofi, Κ. Κατούνης, Δημοτική Ενότητα Λευκάδος, Δήμος Λευκάδας, Περιφερειακή Ενότητα Λευκάδας, Περιφέρεια Ιονίων Νήσων, Αποκεντρωμένη Διοίκηση Πελοποννήσου, Δυτικής Ελλάδας και Ιονίου, Ελλάς",
+        "lat": 38.7856608,
+        "lon": 20.72171,
+        "score": {
+          "total": 37,
+          "nameScore": 2,
+          "typeScore": 25,
+          "regionScore": 0,
+          "overpassScore": 10,
+          "overpassM": null
+        },
+        "overpassCorroborationM": null,
+        "wrongRegion": false
+      },
+      "alternates": [],
+      "slot": {
+        "region": "Ionian Islands",
+        "sub": "Lefkada",
+        "subSub": "Lefkada",
+        "neighborId": 1145,
+        "neighborName": "Λίμνη / Στροφή",
+        "neighborDistanceM": 19,
+        "farNeighbor": false,
+        "slotConflict": false,
+        "neighborRegion": "Ionian Islands"
+      },
+      "flags": [
+        "weak_name_match"
+      ]
+    },
+    {
+      "seed": {
+        "nameGr": "Λιξούρι Λέπεδα",
+        "nameEn": "Lixouri Lepeda",
+        "region": "Ionian Islands",
+        "municipality": "Kefalonia",
+        "status": "listed-unverified"
+      },
+      "tier": "NONE",
+      "decision": "skip",
+      "queriesTried": [
+        "Λιξούρι Λέπεδα, Kefalonia, Ionian Islands, Greece",
+        "Λιξούρι Λέπεδα, Ionian Islands, Greece",
+        "Lixouri Lepeda, Kefalonia, Greece",
+        "Lixouri Lepeda, Ionian Islands, Greece"
+      ],
+      "best": null,
+      "alternates": [],
+      "slot": null,
+      "flags": [
+        "no_result"
+      ]
+    },
+    {
+      "seed": {
+        "nameGr": "Αναστάση",
+        "nameEn": "Anastasi",
+        "region": "Peloponnese",
+        "municipality": "Kalamata",
+        "status": "online",
+        "notes": "2025, 4 beaches; 3,206 Seatrac uses in 2025. Anatoliki Kalamata-Anastasi church."
+      },
+      "tier": "LOW",
+      "decision": "REVIEW",
+      "queriesTried": [
+        "Αναστάση, Kalamata, Peloponnese, Greece",
+        "Αναστάση, Peloponnese, Greece",
+        "Anastasi, Kalamata, Greece"
+      ],
+      "best": {
+        "osmId": "nom-node-2737689081",
+        "name": "Ανάσταση",
+        "address": "Ανάσταση, Ελευθερίας, Ειρήνη, Κοινότητα Λουτρακίου - Περαχώρας, Δημοτική Ενότητα Λουτρακίου - Περαχώρας, Δήμος Λουτρακίου - Περαχώρας - Αγίων Θεοδώρων, Περιφερειακή Ενότητα Κορινθίας, Περιφέρεια Πελοποννήσου, Αποκεντρωμένη Διοίκηση Πελοποννήσου, Δυτικής Ελλάδας και Ιονίου, 200 10, Ελλάς",
+        "lat": 37.9627965,
+        "lon": 23.043518,
+        "score": {
+          "total": 38,
+          "nameScore": 30,
+          "typeScore": 8,
+          "regionScore": 0,
+          "overpassScore": 0,
+          "overpassM": null
+        },
+        "overpassCorroborationM": null,
+        "wrongRegion": false
+      },
+      "alternates": [
+        {
+          "osmId": "nom-node-1754197146",
+          "name": "Ανάσταση",
+          "address": "Ανάσταση, Δημοτική Ενότητα Αροανίας, Δήμος Καλαβρύτων, Περιφερειακή Ενότητα Αχαΐας, Περιφέρεια Δυτικής Ελλάδας, Αποκεντρωμένη Διοίκηση Πελοποννήσου, Δυτικής Ελλάδας και Ιονίου, 250 16, Ελλάς",
+          "total": 38
+        }
+      ],
+      "slot": {
+        "region": "Peloponnese",
+        "sub": "Korinthia",
+        "subSub": "Korinthia (mainland)",
+        "neighborId": 1521,
+        "neighborName": "Καλαμάκι",
+        "neighborDistanceM": 5587,
+        "farNeighbor": false,
+        "slotConflict": false,
+        "neighborRegion": "Peloponnese"
+      },
+      "flags": [
+        "locality_not_beach",
+        "no_overpass_corroboration"
+      ]
+    },
+    {
+      "seed": {
+        "nameGr": "Κορδιά",
+        "nameEn": "Kordia",
+        "region": "Peloponnese",
+        "municipality": "Kalamata",
+        "status": "online",
+        "notes": "Kept active into early October."
+      },
+      "tier": "NONE",
+      "decision": "skip",
+      "queriesTried": [
+        "Κορδιά, Kalamata, Peloponnese, Greece",
+        "Κορδιά, Peloponnese, Greece",
+        "Kordia, Kalamata, Greece"
+      ],
+      "best": null,
+      "alternates": [],
+      "slot": null,
+      "flags": [
+        "no_result"
+      ]
+    },
+    {
+      "seed": {
+        "nameGr": "Μικρή Μαντίνεια",
+        "nameEn": "Mikri Mantineia",
+        "region": "Peloponnese",
+        "municipality": "Kalamata",
+        "status": "online",
+        "notes": "Kept active into early October."
+      },
+      "tier": "LOW",
+      "decision": "REVIEW",
+      "queriesTried": [
+        "Μικρή Μαντίνεια, Kalamata, Peloponnese, Greece",
+        "Μικρή Μαντίνεια, Peloponnese, Greece",
+        "Mikri Mantineia, Kalamata, Greece"
+      ],
+      "best": {
+        "osmId": "nom-node-1736373163",
+        "name": "Μικρή Μαντίνεια",
+        "address": "Μικρή Μαντίνεια, Κοινότητα Μικράς Μαντινείας, Δήμος Καλαμάτας, Περιφερειακή Ενότητα Μεσσηνίας, Περιφέρεια Πελοποννήσου, Αποκεντρωμένη Διοίκηση Πελοποννήσου, Δυτικής Ελλάδας και Ιονίου, 241 00, Ελλάς",
+        "lat": 36.9705631,
+        "lon": 22.1627777,
+        "score": {
+          "total": 38,
+          "nameScore": 30,
+          "typeScore": 8,
+          "regionScore": 0,
+          "overpassScore": 0,
+          "overpassM": null
+        },
+        "overpassCorroborationM": null,
+        "wrongRegion": false
+      },
+      "alternates": [
+        {
+          "osmId": "nom-node-1736373163",
+          "name": "Μικρή Μαντίνεια",
+          "address": "Μικρή Μαντίνεια, Κοινότητα Μικράς Μαντινείας, Δήμος Καλαμάτας, Περιφερειακή Ενότητα Μεσσηνίας, Περιφέρεια Πελοποννήσου, Αποκεντρωμένη Διοίκηση Πελοποννήσου, Δυτικής Ελλάδας και Ιονίου, 241 00, Ελλάς",
+          "total": 38
+        }
+      ],
+      "slot": {
+        "region": "Peloponnese",
+        "sub": "Messinia",
+        "subSub": "Messinia (mainland)",
+        "neighborId": 1641,
+        "neighborName": "Παραλία Σάντοβας",
+        "neighborDistanceM": 2907,
+        "farNeighbor": false,
+        "slotConflict": false,
+        "neighborRegion": "Peloponnese"
+      },
+      "flags": [
+        "locality_not_beach",
+        "no_overpass_corroboration"
+      ]
+    },
+    {
+      "seed": {
+        "nameGr": "Ανάληψη",
+        "nameEn": "Analipsi",
+        "region": "Peloponnese",
+        "municipality": "Messini",
+        "status": "online",
+        "full": true
+      },
+      "tier": "LOW",
+      "decision": "REVIEW",
+      "queriesTried": [
+        "Ανάληψη, Messini, Peloponnese, Greece",
+        "Ανάληψη, Peloponnese, Greece",
+        "Analipsi, Messini, Greece"
+      ],
+      "best": {
+        "osmId": "nom-node-1374250635",
+        "name": "Ανάληψη",
+        "address": "Ανάληψη, Δήμος Μεσσήνης, Περιφερειακή Ενότητα Μεσσηνίας, Περιφέρεια Πελοποννήσου, Αποκεντρωμένη Διοίκηση Πελοποννήσου, Δυτικής Ελλάδας και Ιονίου, 242 00, Ελλάς",
+        "lat": 37.0200132,
+        "lon": 21.9688137,
+        "score": {
+          "total": 38,
+          "nameScore": 30,
+          "typeScore": 8,
+          "regionScore": 0,
+          "overpassScore": 0,
+          "overpassM": null
+        },
+        "overpassCorroborationM": null,
+        "wrongRegion": false
+      },
+      "alternates": [
+        {
+          "osmId": "nom-node-1374250635",
+          "name": "Ανάληψη",
+          "address": "Ανάληψη, Δήμος Μεσσήνης, Περιφερειακή Ενότητα Μεσσηνίας, Περιφέρεια Πελοποννήσου, Αποκεντρωμένη Διοίκηση Πελοποννήσου, Δυτικής Ελλάδας και Ιονίου, 242 00, Ελλάς",
+          "total": 38
+        },
+        {
+          "osmId": "nom-node-5030421259",
+          "name": "Ανάληψη",
+          "address": "Ανάληψη, Ηραίον - Όασις Περαχώρας, Ηραίον, Κοινότητα Λουτρακίου - Περαχώρας, Δημοτική Ενότητα Λουτρακίου - Περαχώρας, Δήμος Λουτρακίου - Περαχώρας - Αγίων Θεοδώρων, Περιφερειακή Ενότητα Κορινθίας, Περιφέρεια Πελοποννήσου, Αποκεντρωμένη Διοίκηση Πελοποννήσου, Δυτικής Ελλάδας και Ιονίου, Ελλάς",
+          "total": 38
+        },
+        {
+          "osmId": "nom-way-998664448",
+          "name": "Ανάληψη",
+          "address": "Ανάληψη, Μονοπάτι προς Κάθισμα Κολοκοτρώνη, Κοινότητα Τριπόλεως, Δημοτική Ενότητα Τρίπολης, Δήμος Τρίπολης, Περιφερειακή Ενότητα Αρκαδίας, Περιφέρεια Πελοποννήσου, Αποκεντρωμένη Διοίκηση Πελοποννήσου, Δυτικής Ελλάδας και Ιονίου, 221 31, Ελλάς",
+          "total": 38
+        }
+      ],
+      "slot": {
+        "region": "Peloponnese",
+        "sub": "Messinia",
+        "subSub": "Messinia (mainland)",
+        "neighborId": 1655,
+        "neighborName": "Oasi",
+        "neighborDistanceM": 1818,
+        "farNeighbor": false,
+        "slotConflict": false,
+        "neighborRegion": "Peloponnese"
+      },
+      "flags": [
+        "locality_not_beach",
+        "no_overpass_corroboration"
+      ]
+    },
+    {
+      "seed": {
+        "nameGr": "Πεταλίδι",
+        "nameEn": "Petalidi",
+        "region": "Peloponnese",
+        "municipality": "Messini",
+        "status": "online",
+        "full": true
+      },
+      "tier": "MEDIUM",
+      "decision": "REVIEW",
+      "queriesTried": [
+        "Πεταλίδι, Messini, Peloponnese, Greece",
+        "Πεταλίδι, Peloponnese, Greece",
+        "Petalidi, Messini, Greece"
+      ],
+      "best": {
+        "osmId": "nom-node-890279970",
+        "name": "Πεταλίδι",
+        "address": "Πεταλίδι, Δήμος Μεσσήνης, Περιφερειακή Ενότητα Μεσσηνίας, Περιφέρεια Πελοποννήσου, Αποκεντρωμένη Διοίκηση Πελοποννήσου, Δυτικής Ελλάδας και Ιονίου, 240 05, Ελλάς",
+        "lat": 36.9601469,
+        "lon": 21.9278191,
+        "score": {
+          "total": 58,
+          "nameScore": 30,
+          "typeScore": 8,
+          "regionScore": 0,
+          "overpassScore": 20,
+          "overpassM": 184
+        },
+        "overpassCorroborationM": 184,
+        "wrongRegion": false
+      },
+      "alternates": [
+        {
+          "osmId": "nom-node-890279970",
+          "name": "Πεταλίδι",
+          "address": "Πεταλίδι, Δήμος Μεσσήνης, Περιφερειακή Ενότητα Μεσσηνίας, Περιφέρεια Πελοποννήσου, Αποκεντρωμένη Διοίκηση Πελοποννήσου, Δυτικής Ελλάδας και Ιονίου, 240 05, Ελλάς",
+          "total": 58
+        },
+        {
+          "osmId": "nom-node-890279970",
+          "name": "Πεταλίδι",
+          "address": "Πεταλίδι, Δήμος Μεσσήνης, Περιφερειακή Ενότητα Μεσσηνίας, Περιφέρεια Πελοποννήσου, Αποκεντρωμένη Διοίκηση Πελοποννήσου, Δυτικής Ελλάδας και Ιονίου, 240 05, Ελλάς",
+          "total": 38
+        }
+      ],
+      "slot": {
+        "region": "Peloponnese",
+        "sub": "Messinia",
+        "subSub": "Messinia (mainland)",
+        "neighborId": 1653,
+        "neighborName": "Χελωναριά",
+        "neighborDistanceM": 4554,
+        "farNeighbor": false,
+        "slotConflict": false,
+        "neighborRegion": "Peloponnese"
+      },
+      "flags": [
+        "locality_not_beach"
+      ]
+    },
+    {
+      "seed": {
+        "nameGr": "Άγιος Ανδρέας",
+        "nameEn": "Agios Andreas",
+        "region": "Peloponnese",
+        "municipality": "Messini",
+        "status": "online",
+        "full": true
+      },
+      "tier": "MEDIUM",
+      "decision": "REVIEW",
+      "queriesTried": [
+        "Άγιος Ανδρέας, Messini, Peloponnese, Greece",
+        "Άγιος Ανδρέας, Peloponnese, Greece",
+        "Agios Andreas, Messini, Greece"
+      ],
+      "best": {
+        "osmId": "nom-node-295054429",
+        "name": "Άγιος Ανδρέας",
+        "address": "Άγιος Ανδρέας, Νέα Κορώνη, Δήμος Μεσσήνης, Περιφερειακή Ενότητα Μεσσηνίας, Περιφέρεια Πελοποννήσου, Αποκεντρωμένη Διοίκηση Πελοποννήσου, Δυτικής Ελλάδας και Ιονίου, 240 04, Ελλάς",
+        "lat": 36.8614169,
+        "lon": 21.9229561,
+        "score": {
+          "total": 58,
+          "nameScore": 30,
+          "typeScore": 8,
+          "regionScore": 0,
+          "overpassScore": 20,
+          "overpassM": 284
+        },
+        "overpassCorroborationM": 284,
+        "wrongRegion": false
+      },
+      "alternates": [
+        {
+          "osmId": "nom-node-295054429",
+          "name": "Άγιος Ανδρέας",
+          "address": "Άγιος Ανδρέας, Νέα Κορώνη, Δήμος Μεσσήνης, Περιφερειακή Ενότητα Μεσσηνίας, Περιφέρεια Πελοποννήσου, Αποκεντρωμένη Διοίκηση Πελοποννήσου, Δυτικής Ελλάδας και Ιονίου, 240 04, Ελλάς",
+          "total": 58
+        },
+        {
+          "osmId": "nom-node-295054429",
+          "name": "Άγιος Ανδρέας",
+          "address": "Άγιος Ανδρέας, Νέα Κορώνη, Δήμος Μεσσήνης, Περιφερειακή Ενότητα Μεσσηνίας, Περιφέρεια Πελοποννήσου, Αποκεντρωμένη Διοίκηση Πελοποννήσου, Δυτικής Ελλάδας και Ιονίου, 240 04, Ελλάς",
+          "total": 58
+        },
+        {
+          "osmId": "nom-way-612996228",
+          "name": "Άγιος Ανδρέας",
+          "address": "Άγιος Ανδρέας, Καλλιθέα - Άγιος Ανδρέας, Άγιος Ανδρέας, Λογγά, Δήμος Μεσσήνης, Περιφερειακή Ενότητα Μεσσηνίας, Περιφέρεια Πελοποννήσου, Αποκεντρωμένη Διοίκηση Πελοποννήσου, Δυτικής Ελλάδας και Ιονίου, 240 04, Ελλάς",
+          "total": 48
+        }
+      ],
+      "slot": {
+        "region": "Peloponnese",
+        "sub": "Messinia",
+        "subSub": "Messinia (mainland)",
+        "neighborId": 1636,
+        "neighborName": "Παραλία Κολονίδες",
+        "neighborDistanceM": 2957,
+        "farNeighbor": false,
+        "slotConflict": false,
+        "neighborRegion": "Peloponnese"
+      },
+      "flags": [
+        "locality_not_beach"
+      ]
+    },
+    {
+      "seed": {
+        "nameGr": "Ακρογιάλι",
+        "nameEn": "Akrogiali",
+        "region": "Peloponnese",
+        "municipality": "Dytiki Mani",
+        "status": "online",
+        "notes": "West Mani, 4 beaches; install was delayed mid-summer one year, stranding a tourist."
+      },
+      "tier": "MEDIUM",
+      "decision": "skip",
+      "queriesTried": [
+        "Ακρογιάλι, Dytiki Mani, Peloponnese, Greece",
+        "Ακρογιάλι, Peloponnese, Greece",
+        "Akrogiali, Dytiki Mani, Greece"
+      ],
+      "best": {
+        "osmId": "nom-node-1707634513",
+        "name": "Ακρογιάλι",
+        "address": "Ακρογιάλι, Αεροδρομίου, Κόστα, Κοινότητα Πορτοχελίου, Δημοτική Ενότητα Κρανιδίου, Δήμος Ερμιονίδας, Περιφερειακή Ενότητα Αργολίδος, Περιφέρεια Πελοποννήσου, Αποκεντρωμένη Διοίκηση Πελοποννήσου, Δυτικής Ελλάδας και Ιονίου, 213 00, Ελλάς",
+        "lat": 37.2957195,
+        "lon": 23.163545,
+        "score": {
+          "total": 50,
+          "nameScore": 30,
+          "typeScore": 0,
+          "regionScore": 0,
+          "overpassScore": 20,
+          "overpassM": 33
+        },
+        "overpassCorroborationM": 33,
+        "wrongRegion": false
+      },
+      "alternates": [
+        {
+          "osmId": "nom-node-1736373119",
+          "name": "Ακρογιάλι",
+          "address": "Ακρογιάλι, Δημοτική Ενότητα Αβίας, Δήμος Δυτικής Μάνης, Περιφερειακή Ενότητα Μεσσηνίας, Περιφέρεια Πελοποννήσου, Αποκεντρωμένη Διοίκηση Πελοποννήσου, Δυτικής Ελλάδας και Ιονίου, 241 00, Ελλάς",
+          "total": 48
+        },
+        {
+          "osmId": "nom-node-11876831769",
+          "name": "Ακρογιάλι",
+          "address": "Ακρογιάλι, Πλατεία Καλού Νερού, Καλό Νερό, Δήμος Τριφυλίας, Περιφερειακή Ενότητα Μεσσηνίας, Περιφέρεια Πελοποννήσου, Αποκεντρωμένη Διοίκηση Πελοποννήσου, Δυτικής Ελλάδας και Ιονίου, 245 00, Ελλάς",
+          "total": 40
+        },
+        {
+          "osmId": "nom-node-9282711488",
+          "name": "Ακρογιάλι",
+          "address": "Ακρογιάλι, Ταγματάρχου Δ.Αλευρά, κ. Τυρού, Δημοτική Ενότητα Τυρού, Δήμος Νότιας Κυνουρίας, Περιφερειακή Ενότητα Αρκαδίας, Περιφέρεια Πελοποννήσου, Αποκεντρωμένη Διοίκηση Πελοποννήσου, Δυτικής Ελλάδας και Ιονίου, 220 29, Ελλάς",
+          "total": 40
+        }
+      ],
+      "slot": {
+        "region": "Peloponnese",
+        "sub": "Argolida",
+        "subSub": "Argolida (mainland)",
+        "neighborId": 1504,
+        "neighborName": "Κόστα",
+        "neighborDistanceM": 660,
+        "farNeighbor": false,
+        "slotConflict": false,
+        "neighborRegion": "Peloponnese"
+      },
+      "flags": [
+        "locality_not_beach"
+      ]
+    },
+    {
+      "seed": {
+        "nameGr": "Καρδαμύλη Ρίτσα",
+        "nameEn": "Kardamili Ritsa",
+        "region": "Peloponnese",
+        "municipality": "Dytiki Mani",
+        "status": "online"
+      },
+      "tier": "NONE",
+      "decision": "skip",
+      "queriesTried": [
+        "Καρδαμύλη Ρίτσα, Dytiki Mani, Peloponnese, Greece",
+        "Καρδαμύλη Ρίτσα, Peloponnese, Greece",
+        "Kardamili Ritsa, Dytiki Mani, Greece",
+        "Kardamili Ritsa, Peloponnese, Greece"
+      ],
+      "best": null,
+      "alternates": [],
+      "slot": null,
+      "flags": [
+        "no_result"
+      ]
+    },
+    {
+      "seed": {
+        "nameGr": "Πλάκα Λεωνιδίου",
+        "nameEn": "Plaka Leonidio",
+        "region": "Peloponnese",
+        "municipality": "Notia Kynouria",
+        "status": "online",
+        "notes": "2026, leased for season; special wooden platform, remotes, telemetry."
+      },
+      "tier": "LOW",
+      "decision": "REVIEW",
+      "queriesTried": [
+        "Πλάκα Λεωνιδίου, Notia Kynouria, Peloponnese, Greece",
+        "Πλάκα Λεωνιδίου, Peloponnese, Greece",
+        "Plaka Leonidio, Notia Kynouria, Greece",
+        "Plaka Leonidio, Peloponnese, Greece"
+      ],
+      "best": {
+        "osmId": "nom-node-352770584",
+        "name": "Πλάκα",
+        "address": "Πλάκα, κ. Λεωνιδίου, Δημοτική Ενότητα Λεωνιδίου, Δήμος Νότιας Κυνουρίας, Περιφερειακή Ενότητα Αρκαδίας, Περιφέρεια Πελοποννήσου, Αποκεντρωμένη Διοίκηση Πελοποννήσου, Δυτικής Ελλάδας και Ιονίου, 223 00, Ελλάς",
+        "lat": 37.1502269,
+        "lon": 22.8949452,
+        "score": {
+          "total": 32,
+          "nameScore": 4,
+          "typeScore": 8,
+          "regionScore": 0,
+          "overpassScore": 20,
+          "overpassM": 294
+        },
+        "overpassCorroborationM": 294,
+        "wrongRegion": false
+      },
+      "alternates": [
+        {
+          "osmId": "nom-node-352770584",
+          "name": "Πλάκα",
+          "address": "Πλάκα, κ. Λεωνιδίου, Δημοτική Ενότητα Λεωνιδίου, Δήμος Νότιας Κυνουρίας, Περιφερειακή Ενότητα Αρκαδίας, Περιφέρεια Πελοποννήσου, Αποκεντρωμένη Διοίκηση Πελοποννήσου, Δυτικής Ελλάδας και Ιονίου, 223 00, Ελλάς",
+          "total": 32
+        }
+      ],
+      "slot": {
+        "region": "Peloponnese",
+        "sub": "Arkadia",
+        "subSub": "Arkadia (mainland)",
+        "neighborId": 1519,
+        "neighborName": "Πούλιθρα",
+        "neighborDistanceM": 3239,
+        "farNeighbor": false,
+        "slotConflict": false,
+        "neighborRegion": "Peloponnese"
+      },
+      "flags": [
+        "weak_name_match",
+        "locality_not_beach"
+      ]
+    },
+    {
+      "seed": {
+        "nameGr": "Τυρός",
+        "nameEn": "Tyros",
+        "region": "Peloponnese",
+        "municipality": "Notia Kynouria",
+        "status": "online"
+      },
+      "tier": "LOW",
+      "decision": "REVIEW",
+      "queriesTried": [
+        "Τυρός, Notia Kynouria, Peloponnese, Greece",
+        "Τυρός, Peloponnese, Greece",
+        "Tyros, Notia Kynouria, Greece"
+      ],
+      "best": {
+        "osmId": "nom-node-352897025",
+        "name": "Τυρός",
+        "address": "Τυρός, Δημοτική Ενότητα Τυρού, Δήμος Νότιας Κυνουρίας, Περιφερειακή Ενότητα Αρκαδίας, Περιφέρεια Πελοποννήσου, Αποκεντρωμένη Διοίκηση Πελοποννήσου, Δυτικής Ελλάδας και Ιονίου, 220 29, Ελλάς",
+        "lat": 37.2400496,
+        "lon": 22.8421074,
+        "score": {
+          "total": 38,
+          "nameScore": 30,
+          "typeScore": 8,
+          "regionScore": 0,
+          "overpassScore": 0,
+          "overpassM": null
+        },
+        "overpassCorroborationM": null,
+        "wrongRegion": false
+      },
+      "alternates": [],
+      "slot": {
+        "region": "Peloponnese",
+        "sub": "Arkadia",
+        "subSub": "Arkadia (mainland)",
+        "neighborId": 1520,
+        "neighborName": "Τηγάνι (Φουρνάκα)",
+        "neighborDistanceM": 2016,
+        "farNeighbor": false,
+        "slotConflict": false,
+        "neighborRegion": "Peloponnese"
+      },
+      "flags": [
+        "locality_not_beach",
+        "no_overpass_corroboration",
+        "generic_name"
+      ]
+    },
+    {
+      "seed": {
+        "nameGr": "Πάτρα",
+        "nameEn": "Patra",
+        "region": "West Greece",
+        "municipality": "Achaia",
+        "status": "listed-unverified"
+      },
+      "tier": "LOW",
+      "decision": "REVIEW",
+      "queriesTried": [
+        "Πάτρα, Achaia, West Greece, Greece",
+        "Πάτρα, West Greece, Greece",
+        "Patra, Achaia, Greece"
+      ],
+      "best": {
+        "osmId": "nom-node-62221032",
+        "name": "Πάτρα",
+        "address": "Πάτρα, Δημοτική Ενότητα Πατρέων, Δήμος Πατρέων, Περιφερειακή Ενότητα Αχαΐας, Περιφέρεια Δυτικής Ελλάδας, Αποκεντρωμένη Διοίκηση Πελοποννήσου, Δυτικής Ελλάδας και Ιονίου, 262 21, Ελλάς",
+        "lat": 38.246242,
+        "lon": 21.7350847,
+        "score": {
+          "total": 45,
+          "nameScore": 30,
+          "typeScore": 0,
+          "regionScore": 15,
+          "overpassScore": 0,
+          "overpassM": null
+        },
+        "overpassCorroborationM": null,
+        "wrongRegion": false
+      },
+      "alternates": [
+        {
+          "osmId": "nom-node-62221032",
+          "name": "Πάτρα",
+          "address": "Πάτρα, Δημοτική Ενότητα Πατρέων, Δήμος Πατρέων, Περιφερειακή Ενότητα Αχαΐας, Περιφέρεια Δυτικής Ελλάδας, Αποκεντρωμένη Διοίκηση Πελοποννήσου, Δυτικής Ελλάδας και Ιονίου, 262 21, Ελλάς",
+          "total": 45
+        },
+        {
+          "osmId": "nom-node-62221032",
+          "name": "Πάτρα",
+          "address": "Πάτρα, Δημοτική Ενότητα Πατρέων, Δήμος Πατρέων, Περιφερειακή Ενότητα Αχαΐας, Περιφέρεια Δυτικής Ελλάδας, Αποκεντρωμένη Διοίκηση Πελοποννήσου, Δυτικής Ελλάδας και Ιονίου, 262 21, Ελλάς",
+          "total": 45
+        }
+      ],
+      "slot": {
+        "region": "West Greece",
+        "sub": "Achaia",
+        "subSub": "Achaia (mainland)",
+        "neighborId": 2514,
+        "neighborName": "Πλαζ Πατρών",
+        "neighborDistanceM": 4160,
+        "farNeighbor": false,
+        "slotConflict": false,
+        "neighborRegion": "West Greece"
+      },
+      "flags": [
+        "locality_not_beach",
+        "no_overpass_corroboration",
+        "generic_name"
+      ]
+    },
+    {
+      "seed": {
+        "nameGr": "Πάτρα Άγιος Βασίλειος",
+        "nameEn": "Patra Agios Vasileios",
+        "region": "West Greece",
+        "municipality": "Achaia",
+        "status": "online",
+        "notes": "seatrac.gr Top-5 beach."
+      },
+      "tier": "LOW",
+      "decision": "REVIEW",
+      "queriesTried": [
+        "Πάτρα Άγιος Βασίλειος, Achaia, West Greece, Greece",
+        "Πάτρα Άγιος Βασίλειος, West Greece, Greece",
+        "Patra Agios Vasileios, Achaia, Greece",
+        "Άγιος Βασίλειος, Achaia, Greece"
+      ],
+      "best": {
+        "osmId": "nom-way-569425767",
+        "name": "Αθήνα - Πάτρα",
+        "address": "Αθήνα - Πάτρα, Άγιος Βασίλειος, κ. Αγίου Βασιλείου, Πλατάνι, Δημοτική Ενότητα Ρίου, Δήμος Πατρέων, Περιφερειακή Ενότητα Αχαΐας, Περιφέρεια Δυτικής Ελλάδας, Αποκεντρωμένη Διοίκηση Πελοποννήσου, Δυτικής Ελλάδας και Ιονίου, 265 04, Ελλάς",
+        "lat": 38.310975,
+        "lon": 21.8180359,
+        "score": {
+          "total": 45,
+          "nameScore": 30,
+          "typeScore": 0,
+          "regionScore": 15,
+          "overpassScore": 0,
+          "overpassM": 872
+        },
+        "overpassCorroborationM": 872,
+        "wrongRegion": false
+      },
+      "alternates": [
+        {
+          "osmId": "nom-way-569425767",
+          "name": "Αθήνα - Πάτρα",
+          "address": "Αθήνα - Πάτρα, Άγιος Βασίλειος, κ. Αγίου Βασιλείου, Πλατάνι, Δημοτική Ενότητα Ρίου, Δήμος Πατρέων, Περιφερειακή Ενότητα Αχαΐας, Περιφέρεια Δυτικής Ελλάδας, Αποκεντρωμένη Διοίκηση Πελοποννήσου, Δυτικής Ελλάδας και Ιονίου, 265 04, Ελλάς",
+          "total": 45
+        },
+        {
+          "osmId": "nom-node-1644608686",
+          "name": "Άγιος Βασίλειος",
+          "address": "Άγιος Βασίλειος, κ. Αγίου Βασιλείου, Πλατάνι, Δημοτική Ενότητα Ρίου, Δήμος Πατρέων, Περιφερειακή Ενότητα Αχαΐας, Περιφέρεια Δυτικής Ελλάδας, Αποκεντρωμένη Διοίκηση Πελοποννήσου, Δυτικής Ελλάδας και Ιονίου, 265 04, Ελλάς",
+          "total": 22
+        },
+        {
+          "osmId": "nom-way-519669542",
+          "name": "Αθήνα - Πάτρα",
+          "address": "Αθήνα - Πάτρα, Πάνορμος, Άγιος Βασίλειος, κ. Αγίου Βασιλείου, Δρέπανο, Δημοτική Ενότητα Ρίου, Δήμος Πατρέων, Περιφερειακή Ενότητα Αχαΐας, Περιφέρεια Δυτικής Ελλάδας, Αποκεντρωμένη Διοίκηση Πελοποννήσου, Δυτικής Ελλάδας και Ιονίου, 265 04, Ελλάς",
+          "total": 20
+        }
+      ],
+      "slot": {
+        "region": "West Greece",
+        "sub": "Aetolia-Acarnania",
+        "subSub": "Aetolia-Acarnania (mainland)",
+        "neighborId": 2521,
+        "neighborName": "Drepano Kite Surfer's Paradise Beach",
+        "neighborDistanceM": 4184,
+        "farNeighbor": false,
+        "slotConflict": false,
+        "neighborRegion": "West Greece"
+      },
+      "flags": [
+        "locality_not_beach",
+        "no_overpass_corroboration"
+      ]
+    },
+    {
+      "seed": {
+        "nameGr": "Βραχναίικα",
+        "nameEn": "Vrachneika",
+        "region": "West Greece",
+        "municipality": "Achaia",
+        "status": "listed-unverified"
+      },
+      "tier": "LOW",
+      "decision": "REVIEW",
+      "queriesTried": [
+        "Βραχναίικα, Achaia, West Greece, Greece",
+        "Βραχναίικα, West Greece, Greece",
+        "Vrachneika, Achaia, Greece",
+        "Vrachneika, West Greece, Greece"
+      ],
+      "best": {
+        "osmId": "nom-node-1666711935",
+        "name": "Βραχναίικα",
+        "address": "Βραχναίικα, κ. Βραχναιίκων, Δημοτική Ενότητα Βραχναιίκων, Δήμος Πατρέων, Περιφερειακή Ενότητα Αχαΐας, Περιφέρεια Δυτικής Ελλάδας, Αποκεντρωμένη Διοίκηση Πελοποννήσου, Δυτικής Ελλάδας και Ιονίου, 250 02, Ελλάς",
+        "lat": 38.1618964,
+        "lon": 21.6693024,
+        "score": {
+          "total": 38,
+          "nameScore": 30,
+          "typeScore": 8,
+          "regionScore": 0,
+          "overpassScore": 0,
+          "overpassM": null
+        },
+        "overpassCorroborationM": null,
+        "wrongRegion": false
+      },
+      "alternates": [
+        {
+          "osmId": "nom-node-1752789337",
+          "name": "Βραχναίικα",
+          "address": "Βραχναίικα, Κ. Σαγαιίκων, Δημοτική Ενότητα Μόβρης, Δήμος Δυτικής Αχαΐας, Περιφερειακή Ενότητα Αχαΐας, Περιφέρεια Δυτικής Ελλάδας, Αποκεντρωμένη Διοίκηση Πελοποννήσου, Δυτικής Ελλάδας και Ιονίου, 250 05, Ελλάς",
+          "total": 38
+        },
+        {
+          "osmId": "nom-node-1666711935",
+          "name": "Βραχναίικα",
+          "address": "Βραχναίικα, κ. Βραχναιίκων, Δημοτική Ενότητα Βραχναιίκων, Δήμος Πατρέων, Περιφερειακή Ενότητα Αχαΐας, Περιφέρεια Δυτικής Ελλάδας, Αποκεντρωμένη Διοίκηση Πελοποννήσου, Δυτικής Ελλάδας και Ιονίου, 250 02, Ελλάς",
+          "total": 38
+        },
+        {
+          "osmId": "nom-node-1752789337",
+          "name": "Βραχναίικα",
+          "address": "Βραχναίικα, Κ. Σαγαιίκων, Δημοτική Ενότητα Μόβρης, Δήμος Δυτικής Αχαΐας, Περιφερειακή Ενότητα Αχαΐας, Περιφέρεια Δυτικής Ελλάδας, Αποκεντρωμένη Διοίκηση Πελοποννήσου, Δυτικής Ελλάδας και Ιονίου, 250 05, Ελλάς",
+          "total": 38
+        }
+      ],
+      "slot": {
+        "region": "West Greece",
+        "sub": "Achaia",
+        "subSub": "Achaia (mainland)",
+        "neighborId": 2514,
+        "neighborName": "Πλαζ Πατρών",
+        "neighborDistanceM": 15084,
+        "farNeighbor": false,
+        "slotConflict": false,
+        "neighborRegion": "West Greece"
+      },
+      "flags": [
+        "locality_not_beach",
+        "no_overpass_corroboration"
+      ]
+    },
+    {
+      "seed": {
+        "nameGr": "Λακκόπετρα",
+        "nameEn": "Lakkopetra",
+        "region": "West Greece",
+        "municipality": "Achaia",
+        "status": "listed-unverified"
+      },
+      "tier": "LOW",
+      "decision": "REVIEW",
+      "queriesTried": [
+        "Λακκόπετρα, Achaia, West Greece, Greece",
+        "Λακκόπετρα, West Greece, Greece",
+        "Lakkopetra, Achaia, Greece"
+      ],
+      "best": {
+        "osmId": "nom-node-1752789365",
+        "name": "Λακκόπετρα",
+        "address": "Λακκόπετρα, Δημοτική Ενότητα Λαρισσού, Δήμος Δυτικής Αχαΐας, Περιφερειακή Ενότητα Αχαΐας, Περιφέρεια Δυτικής Ελλάδας, Αποκεντρωμένη Διοίκηση Πελοποννήσου, Δυτικής Ελλάδας και Ιονίου, 252 00, Ελλάς",
+        "lat": 38.1717051,
+        "lon": 21.4559497,
+        "score": {
+          "total": 38,
+          "nameScore": 30,
+          "typeScore": 8,
+          "regionScore": 0,
+          "overpassScore": 0,
+          "overpassM": null
+        },
+        "overpassCorroborationM": null,
+        "wrongRegion": false
+      },
+      "alternates": [
+        {
+          "osmId": "nom-node-1752789365",
+          "name": "Λακκόπετρα",
+          "address": "Λακκόπετρα, Δημοτική Ενότητα Λαρισσού, Δήμος Δυτικής Αχαΐας, Περιφερειακή Ενότητα Αχαΐας, Περιφέρεια Δυτικής Ελλάδας, Αποκεντρωμένη Διοίκηση Πελοποννήσου, Δυτικής Ελλάδας και Ιονίου, 252 00, Ελλάς",
+          "total": 38
+        },
+        {
+          "osmId": "nom-node-1752789365",
+          "name": "Λακκόπετρα",
+          "address": "Λακκόπετρα, Δημοτική Ενότητα Λαρισσού, Δήμος Δυτικής Αχαΐας, Περιφερειακή Ενότητα Αχαΐας, Περιφέρεια Δυτικής Ελλάδας, Αποκεντρωμένη Διοίκηση Πελοποννήσου, Δυτικής Ελλάδας και Ιονίου, 252 00, Ελλάς",
+          "total": 38
+        }
+      ],
+      "slot": {
+        "region": "West Greece",
+        "sub": "Achaia",
+        "subSub": "Achaia (mainland)",
+        "neighborId": 2510,
+        "neighborName": "Παραλία Γιανισκάρη",
+        "neighborDistanceM": 7809,
+        "farNeighbor": false,
+        "slotConflict": false,
+        "neighborRegion": "West Greece"
+      },
+      "flags": [
+        "locality_not_beach",
+        "no_overpass_corroboration"
+      ]
+    },
+    {
+      "seed": {
+        "nameGr": "Ηλιδα Αγία Μαρίνα",
+        "nameEn": "Ilida Agia Marina",
+        "region": "West Greece",
+        "municipality": "Ileia",
+        "status": "listed-unverified"
+      },
+      "tier": "NONE",
+      "decision": "skip",
+      "queriesTried": [
+        "Ηλιδα Αγία Μαρίνα, Ileia, West Greece, Greece",
+        "Ηλιδα Αγία Μαρίνα, West Greece, Greece",
+        "Ilida Agia Marina, Ileia, Greece",
+        "Αγία Μαρίνα, Ileia, Greece"
+      ],
+      "best": {
+        "osmId": "nom-way-434114730",
+        "name": "Εθνική Τράπεζα",
+        "address": "Εθνική Τράπεζα, 28ης Οκτωβρίου, βόρειοανατολικό κομμάτι πύργου, Αγία Μαρίνα, Λαμπετι, Πύργος, Περιφερειακή Ενότητα Ηλείας, Περιφέρεια Δυτικής Ελλάδας, Αποκεντρωμένη Διοίκηση Πελοποννήσου, Δυτικής Ελλάδας και Ιονίου, 271 31, Ελλάς",
+        "lat": 37.6725256,
+        "lon": 21.4381957,
+        "score": {
+          "total": 3,
+          "nameScore": 3,
+          "typeScore": 0,
+          "regionScore": 0,
+          "overpassScore": 0,
+          "overpassM": null
+        },
+        "overpassCorroborationM": null,
+        "wrongRegion": false
+      },
+      "alternates": [
+        {
+          "osmId": "nom-node-4324223952",
+          "name": "Εθνική Τράπεζα",
+          "address": "Εθνική Τράπεζα, 28ης Οκτωβρίου, βόρειοανατολικό κομμάτι πύργου, Αγία Μαρίνα, Λαμπετι, Πύργος, Περιφερειακή Ενότητα Ηλείας, Περιφέρεια Δυτικής Ελλάδας, Αποκεντρωμένη Διοίκηση Πελοποννήσου, Δυτικής Ελλάδας και Ιονίου, 271 31, Ελλάς",
+          "total": 3
+        }
+      ],
+      "slot": {
+        "region": "West Greece",
+        "sub": "Ileia",
+        "subSub": "Ileia (mainland)",
+        "neighborId": 2576,
+        "neighborName": "Παραλία Λεβεντοχωρίου",
+        "neighborDistanceM": 10910,
+        "farNeighbor": false,
+        "slotConflict": false,
+        "neighborRegion": "West Greece"
+      },
+      "flags": [
+        "weak_name_match",
+        "locality_not_beach",
+        "no_overpass_corroboration"
+      ]
+    },
+    {
+      "seed": {
+        "nameGr": "Μυρσίνη",
+        "nameEn": "Myrsini",
+        "region": "West Greece",
+        "municipality": "Andravida-Kyllini",
+        "status": "listed-unverified",
+        "boardwalkToWater": "yes",
+        "changingRoom": "yes"
+      },
+      "tier": "LOW",
+      "decision": "REVIEW",
+      "queriesTried": [
+        "Μυρσίνη, Andravida-Kyllini, West Greece, Greece",
+        "Μυρσίνη, West Greece, Greece",
+        "Myrsini, Andravida-Kyllini, Greece"
+      ],
+      "best": {
+        "osmId": "nom-node-1744618389",
+        "name": "Μυρσίνη",
+        "address": "Μυρσίνη, Δήμος Ανδραβίδας - Κυλλήνης, Περιφερειακή Ενότητα Ηλείας, Περιφέρεια Δυτικής Ελλάδας, Αποκεντρωμένη Διοίκηση Πελοποννήσου, Δυτικής Ελλάδας και Ιονίου, 270 53, Ελλάς",
+        "lat": 37.9215113,
+        "lon": 21.2376352,
+        "score": {
+          "total": 38,
+          "nameScore": 30,
+          "typeScore": 8,
+          "regionScore": 0,
+          "overpassScore": 0,
+          "overpassM": null
+        },
+        "overpassCorroborationM": null,
+        "wrongRegion": false
+      },
+      "alternates": [
+        {
+          "osmId": "nom-node-10701347168",
+          "name": "Μυρσίνη",
+          "address": "Μυρσίνη, Δημοτική Ενότητα Γυθείου, Δήμος Ανατολικής Μάνης, Περιφερειακή Ενότητα Λακωνίας, Περιφέρεια Πελοποννήσου, Αποκεντρωμένη Διοίκηση Πελοποννήσου, Δυτικής Ελλάδας και Ιονίου, 232 00, Ελλάς",
+          "total": 38
+        },
+        {
+          "osmId": "nom-way-408910049",
+          "name": "Μυρσίνη - Ανδραβίδα",
+          "address": "Μυρσίνη - Ανδραβίδα, Ανδραβίδα, Δήμος Ανδραβίδας - Κυλλήνης, Περιφερειακή Ενότητα Ηλείας, Περιφέρεια Δυτικής Ελλάδας, Αποκεντρωμένη Διοίκηση Πελοποννήσου, Δυτικής Ελλάδας και Ιονίου, 270 51, Ελλάς",
+          "total": 30
+        },
+        {
+          "osmId": "nom-way-408910049",
+          "name": "Μυρσίνη - Ανδραβίδα",
+          "address": "Μυρσίνη - Ανδραβίδα, Ανδραβίδα, Δήμος Ανδραβίδας - Κυλλήνης, Περιφερειακή Ενότητα Ηλείας, Περιφέρεια Δυτικής Ελλάδας, Αποκεντρωμένη Διοίκηση Πελοποννήσου, Δυτικής Ελλάδας και Ιονίου, 270 51, Ελλάς",
+          "total": 30
+        }
+      ],
+      "slot": {
+        "region": "West Greece",
+        "sub": "Ileia",
+        "subSub": "Ileia (mainland)",
+        "neighborId": 2575,
+        "neighborName": "Παραλία Κυλλήνης",
+        "neighborDistanceM": 8344,
+        "farNeighbor": false,
+        "slotConflict": false,
+        "neighborRegion": "West Greece"
+      },
+      "flags": [
+        "locality_not_beach",
+        "no_overpass_corroboration"
+      ]
+    },
+    {
+      "seed": {
+        "nameGr": "Καλαμιά",
+        "nameEn": "Kalamia",
+        "region": "West Greece",
+        "municipality": "Andravida-Kyllini",
+        "status": "listed-unverified",
+        "boardwalkToWater": "yes",
+        "changingRoom": "yes"
+      },
+      "tier": "MEDIUM",
+      "decision": "skip",
+      "queriesTried": [
+        "Καλαμιά, Andravida-Kyllini, West Greece, Greece",
+        "Καλαμιά, West Greece, Greece",
+        "Kalamia, Andravida-Kyllini, Greece"
+      ],
+      "best": {
+        "osmId": "nom-way-500943713",
+        "name": "Καλάμια",
+        "address": "Καλάμια, Αργοστόλι, Δήμος Αργοστολίου, Περιφερειακή Ενότητα Κεφαλληνίας, Περιφέρεια Ιονίων Νήσων, Αποκεντρωμένη Διοίκηση Πελοποννήσου, Δυτικής Ελλάδας και Ιονίου, 281 00, Ελλάς",
+        "lat": 38.1712136,
+        "lon": 20.4811009,
+        "score": {
+          "total": 75,
+          "nameScore": 30,
+          "typeScore": 25,
+          "regionScore": 0,
+          "overpassScore": 20,
+          "overpassM": 24
+        },
+        "overpassCorroborationM": 24,
+        "wrongRegion": false
+      },
+      "alternates": [
+        {
+          "osmId": "nom-way-290400904",
+          "name": "Καλάμια",
+          "address": "Καλάμια, Κοινότητα Κορίνθου, Δημοτική Ενότητα Κορινθίων, Δήμος Κορινθίων, Περιφερειακή Ενότητα Κορινθίας, Περιφέρεια Πελοποννήσου, Αποκεντρωμένη Διοίκηση Πελοποννήσου, Δυτικής Ελλάδας και Ιονίου, Ελλάς",
+          "total": 65
+        },
+        {
+          "osmId": "nom-node-1745829899",
+          "name": "Καλαμιά",
+          "address": "Καλαμιά, Δημοτική Ενότητα Κάστρου - Κυλλήνης, Δήμος Ανδραβίδας - Κυλλήνης, Περιφερειακή Ενότητα Ηλείας, Περιφέρεια Δυτικής Ελλάδας, Αποκεντρωμένη Διοίκηση Πελοποννήσου, Δυτικής Ελλάδας και Ιονίου, 270 50, Ελλάς",
+          "total": 38
+        },
+        {
+          "osmId": "nom-node-1745829899",
+          "name": "Καλαμιά",
+          "address": "Καλαμιά, Δημοτική Ενότητα Κάστρου - Κυλλήνης, Δήμος Ανδραβίδας - Κυλλήνης, Περιφερειακή Ενότητα Ηλείας, Περιφέρεια Δυτικής Ελλάδας, Αποκεντρωμένη Διοίκηση Πελοποννήσου, Δυτικής Ελλάδας και Ιονίου, 270 50, Ελλάς",
+          "total": 38
+        }
+      ],
+      "slot": {
+        "region": "West Greece",
+        "sub": "Aetolia-Acarnania",
+        "subSub": "Aetolia-Acarnania (mainland)",
+        "neighborId": 2529,
+        "neighborName": "Βαθιά Βάλη",
+        "neighborDistanceM": 56215,
+        "farNeighbor": true,
+        "slotConflict": true,
+        "neighborRegion": "Ionian Islands"
+      },
+      "flags": [
+        "slot_conflict",
+        "far_neighbor"
+      ]
+    },
+    {
+      "seed": {
+        "nameGr": "Λουτράκι Νεράιδα",
+        "nameEn": "Loutraki Neraida",
+        "region": "Peloponnese",
+        "municipality": "Korinthia",
+        "status": "listed-unverified"
+      },
+      "tier": "NONE",
+      "decision": "skip",
+      "queriesTried": [
+        "Λουτράκι Νεράιδα, Korinthia, Peloponnese, Greece",
+        "Λουτράκι Νεράιδα, Peloponnese, Greece",
+        "Loutraki Neraida, Korinthia, Greece",
+        "Loutraki Neraida, Peloponnese, Greece"
+      ],
+      "best": null,
+      "alternates": [],
+      "slot": null,
+      "flags": [
+        "no_result"
+      ]
+    },
+    {
+      "seed": {
+        "nameGr": "Ξυλόκαστρο Σύκια",
+        "nameEn": "Xylokastro Sykia",
+        "region": "Peloponnese",
+        "municipality": "Korinthia",
+        "status": "listed-unverified"
+      },
+      "tier": "NONE",
+      "decision": "skip",
+      "queriesTried": [
+        "Ξυλόκαστρο Σύκια, Korinthia, Peloponnese, Greece",
+        "Ξυλόκαστρο Σύκια, Peloponnese, Greece",
+        "Xylokastro Sykia, Korinthia, Greece"
+      ],
+      "best": {
+        "osmId": "nom-relation-10596377",
+        "name": "Κέντρο Υγείας Ξυλοκάστρου",
+        "address": "Κέντρο Υγείας Ξυλοκάστρου, Ιωάννου, Κοινότητα Συκέας, Δημοτική Ενότητα Ξυλοκάστρου, Δήμος Ξυλοκάστρου - Ευρωστίνης, Περιφερειακή Ενότητα Κορινθίας, Περιφέρεια Πελοποννήσου, Αποκεντρωμένη Διοίκηση Πελοποννήσου, Δυτικής Ελλάδας και Ιονίου, Ελλάς",
+        "lat": 38.0708902,
+        "lon": 22.6529133,
+        "score": {
+          "total": 20,
+          "nameScore": 0,
+          "typeScore": 0,
+          "regionScore": 0,
+          "overpassScore": 20,
+          "overpassM": 240
+        },
+        "overpassCorroborationM": 240,
+        "wrongRegion": false
+      },
+      "alternates": [
+        {
+          "osmId": "nom-relation-10596377",
+          "name": "Κέντρο Υγείας Ξυλοκάστρου",
+          "address": "Κέντρο Υγείας Ξυλοκάστρου, Ιωάννου, Κοινότητα Συκέας, Δημοτική Ενότητα Ξυλοκάστρου, Δήμος Ξυλοκάστρου - Ευρωστίνης, Περιφερειακή Ενότητα Κορινθίας, Περιφέρεια Πελοποννήσου, Αποκεντρωμένη Διοίκηση Πελοποννήσου, Δυτικής Ελλάδας και Ιονίου, Ελλάς",
+          "total": 20
+        },
+        {
+          "osmId": "nom-relation-10596377",
+          "name": "Κέντρο Υγείας Ξυλοκάστρου",
+          "address": "Κέντρο Υγείας Ξυλοκάστρου, Ιωάννου, Κοινότητα Συκέας, Δημοτική Ενότητα Ξυλοκάστρου, Δήμος Ξυλοκάστρου - Ευρωστίνης, Περιφερειακή Ενότητα Κορινθίας, Περιφέρεια Πελοποννήσου, Αποκεντρωμένη Διοίκηση Πελοποννήσου, Δυτικής Ελλάδας και Ιονίου, Ελλάς",
+          "total": 20
+        }
+      ],
+      "slot": {
+        "region": "Peloponnese",
+        "sub": "Korinthia",
+        "subSub": "Korinthia (mainland)",
+        "neighborId": 1541,
+        "neighborName": "Συκιά",
+        "neighborDistanceM": 596,
+        "farNeighbor": false,
+        "slotConflict": false,
+        "neighborRegion": "Peloponnese"
+      },
+      "flags": [
+        "weak_name_match",
+        "locality_not_beach"
+      ]
+    },
+    {
+      "seed": {
+        "nameGr": "Σικυώνα Κιάτο",
+        "nameEn": "Sikiona Kiato",
+        "region": "Peloponnese",
+        "municipality": "Korinthia",
+        "status": "listed-unverified"
+      },
+      "tier": "NONE",
+      "decision": "skip",
+      "queriesTried": [
+        "Σικυώνα Κιάτο, Korinthia, Peloponnese, Greece",
+        "Σικυώνα Κιάτο, Peloponnese, Greece",
+        "Sikiona Kiato, Korinthia, Greece",
+        "Sikiona Kiato, Peloponnese, Greece"
+      ],
+      "best": {
+        "osmId": "nom-way-965613960",
+        "name": "ΣΙΚΥΩΝΑ",
+        "address": "ΣΙΚΥΩΝΑ, Δημοκρατίας, Κοινότητα Σικυώνος - Κιάτου, Δημοτική Ενότητα Σικυωνίων, Δήμος Σικυωνίων, Περιφερειακή Ενότητα Κορινθίας, Περιφέρεια Πελοποννήσου, Αποκεντρωμένη Διοίκηση Πελοποννήσου, Δυτικής Ελλάδας και Ιονίου, 202 00, Ελλάς",
+        "lat": 38.0078288,
+        "lon": 22.748734,
+        "score": {
+          "total": 12,
+          "nameScore": 2,
+          "typeScore": 0,
+          "regionScore": 0,
+          "overpassScore": 10,
+          "overpassM": 563
+        },
+        "overpassCorroborationM": 563,
+        "wrongRegion": false
+      },
+      "alternates": [
+        {
+          "osmId": "nom-way-965613960",
+          "name": "ΣΙΚΥΩΝΑ",
+          "address": "ΣΙΚΥΩΝΑ, Δημοκρατίας, Κοινότητα Σικυώνος - Κιάτου, Δημοτική Ενότητα Σικυωνίων, Δήμος Σικυωνίων, Περιφερειακή Ενότητα Κορινθίας, Περιφέρεια Πελοποννήσου, Αποκεντρωμένη Διοίκηση Πελοποννήσου, Δυτικής Ελλάδας και Ιονίου, 202 00, Ελλάς",
+          "total": 2
+        },
+        {
+          "osmId": "nom-relation-2199458",
+          "name": "Κοινότητα Σικυώνος - Κιάτου",
+          "address": "Κοινότητα Σικυώνος - Κιάτου, Δημοτική Ενότητα Σικυωνίων, Δήμος Σικυωνίων, Περιφερειακή Ενότητα Κορινθίας, Περιφέρεια Πελοποννήσου, Αποκεντρωμένη Διοίκηση Πελοποννήσου, Δυτικής Ελλάδας και Ιονίου, Ελλάς",
+          "total": 0
+        },
+        {
+          "osmId": "nom-relation-2199458",
+          "name": "Κοινότητα Σικυώνος - Κιάτου",
+          "address": "Κοινότητα Σικυώνος - Κιάτου, Δημοτική Ενότητα Σικυωνίων, Δήμος Σικυωνίων, Περιφερειακή Ενότητα Κορινθίας, Περιφέρεια Πελοποννήσου, Αποκεντρωμένη Διοίκηση Πελοποννήσου, Δυτικής Ελλάδας και Ιονίου, Ελλάς",
+          "total": 0
+        }
+      ],
+      "slot": {
+        "region": "Peloponnese",
+        "sub": "Korinthia",
+        "subSub": "Korinthia (mainland)",
+        "neighborId": 1541,
+        "neighborName": "Συκιά",
+        "neighborDistanceM": 10349,
+        "farNeighbor": false,
+        "slotConflict": false,
+        "neighborRegion": "Peloponnese"
+      },
+      "flags": [
+        "weak_name_match",
+        "locality_not_beach"
+      ]
+    },
+    {
+      "seed": {
+        "nameGr": "Σικυώνα Κάτω Διμηνιό",
+        "nameEn": "Sikiona Kato Diminio",
+        "region": "Peloponnese",
+        "municipality": "Korinthia",
+        "status": "listed-unverified"
+      },
+      "tier": "NONE",
+      "decision": "skip",
+      "queriesTried": [
+        "Σικυώνα Κάτω Διμηνιό, Korinthia, Peloponnese, Greece",
+        "Σικυώνα Κάτω Διμηνιό, Peloponnese, Greece",
+        "Sikiona Kato Diminio, Korinthia, Greece",
+        "Sikiona Kato Diminio, Peloponnese, Greece"
+      ],
+      "best": null,
+      "alternates": [],
+      "slot": null,
+      "flags": [
+        "no_result"
+      ]
+    },
+    {
+      "seed": {
+        "nameGr": "Νεάπολη Παλιός Λιμένας",
+        "nameEn": "Neapoli Palios Limenas",
+        "region": "Peloponnese",
+        "municipality": "Lakonia",
+        "status": "listed-unverified"
+      },
+      "tier": "NONE",
+      "decision": "skip",
+      "queriesTried": [
+        "Νεάπολη Παλιός Λιμένας, Lakonia, Peloponnese, Greece",
+        "Νεάπολη Παλιός Λιμένας, Peloponnese, Greece",
+        "Neapoli Palios Limenas, Lakonia, Greece",
+        "Παλιός Λιμένας, Lakonia, Greece"
+      ],
+      "best": null,
+      "alternates": [],
+      "slot": null,
+      "flags": [
+        "no_result"
+      ]
+    },
+    {
+      "seed": {
+        "nameGr": "Παραλία Αλμυρού",
+        "nameEn": "Paralia Almirou",
+        "region": "Thessaly",
+        "municipality": "Almyros",
+        "status": "listed-unverified",
+        "notes": "Pelion beaches need verification."
+      },
+      "tier": "LOW",
+      "decision": "REVIEW",
+      "queriesTried": [
+        "Παραλία Αλμυρού, Almyros, Thessaly, Greece",
+        "Παραλία Αλμυρού, Thessaly, Greece",
+        "Paralia Almirou, Almyros, Greece",
+        "Paralia Almirou, Thessaly, Greece"
+      ],
+      "best": {
+        "osmId": "nom-node-1793356186",
+        "name": "Παραλία Αλμυρού",
+        "address": "Παραλία Αλμυρού, Δημοτική Ενότητα Αλμυρού, Δήμος Αλμυρού, Περιφερειακή Ενότητα Μαγνησίας, Περιφέρεια Θεσσαλίας, Αποκεντρωμένη Διοίκηση Θεσσαλίας - Στερεάς Ελλάδος, 371 00, Ελλάς",
+        "lat": 39.2080894,
+        "lon": 22.8211247,
+        "score": {
+          "total": 38,
+          "nameScore": 30,
+          "typeScore": 8,
+          "regionScore": 0,
+          "overpassScore": 0,
+          "overpassM": null
+        },
+        "overpassCorroborationM": null,
+        "wrongRegion": false
+      },
+      "alternates": [
+        {
+          "osmId": "nom-node-1793356186",
+          "name": "Παραλία Αλμυρού",
+          "address": "Παραλία Αλμυρού, Δημοτική Ενότητα Αλμυρού, Δήμος Αλμυρού, Περιφερειακή Ενότητα Μαγνησίας, Περιφέρεια Θεσσαλίας, Αποκεντρωμένη Διοίκηση Θεσσαλίας - Στερεάς Ελλάδος, 371 00, Ελλάς",
+          "total": 38
+        },
+        {
+          "osmId": "nom-node-1793356186",
+          "name": "Παραλία Αλμυρού",
+          "address": "Παραλία Αλμυρού, Δημοτική Ενότητα Αλμυρού, Δήμος Αλμυρού, Περιφερειακή Ενότητα Μαγνησίας, Περιφέρεια Θεσσαλίας, Αποκεντρωμένη Διοίκηση Θεσσαλίας - Στερεάς Ελλάδος, 371 00, Ελλάς",
+          "total": 38
+        },
+        {
+          "osmId": "nom-node-1793356186",
+          "name": "Παραλία Αλμυρού",
+          "address": "Παραλία Αλμυρού, Δημοτική Ενότητα Αλμυρού, Δήμος Αλμυρού, Περιφερειακή Ενότητα Μαγνησίας, Περιφέρεια Θεσσαλίας, Αποκεντρωμένη Διοίκηση Θεσσαλίας - Στερεάς Ελλάδος, 371 00, Ελλάς",
+          "total": 38
+        }
+      ],
+      "slot": {
+        "region": "Thessaly",
+        "sub": "Magnesia",
+        "subSub": "Magnesia (mainland - Pelion)",
+        "neighborId": 2701,
+        "neighborName": "Νέα Αγχίαλος",
+        "neighborDistanceM": 7223,
+        "farNeighbor": false,
+        "slotConflict": false,
+        "neighborRegion": "Thessaly"
+      },
+      "flags": [
+        "locality_not_beach",
+        "no_overpass_corroboration"
+      ]
+    },
+    {
+      "seed": {
+        "nameGr": "Ρήγα Φεραίου Καμάρι Κεραμιδίου",
+        "nameEn": "Riga Feraiou Kamari Keramidiou",
+        "region": "Thessaly",
+        "municipality": "Pelion",
+        "status": "listed-unverified"
+      },
+      "tier": "NONE",
+      "decision": "skip",
+      "queriesTried": [
+        "Ρήγα Φεραίου Καμάρι Κεραμιδίου, Pelion, Thessaly, Greece",
+        "Ρήγα Φεραίου Καμάρι Κεραμιδίου, Thessaly, Greece",
+        "Riga Feraiou Kamari Keramidiou, Pelion, Greece",
+        "Riga Feraiou Kamari Keramidiou, Thessaly, Greece"
+      ],
+      "best": null,
+      "alternates": [],
+      "slot": null,
+      "flags": [
+        "no_result"
+      ]
+    },
+    {
+      "seed": {
+        "nameGr": "Δίστομο Άντικυρα Άσπρα Σπίτια",
+        "nameEn": "Distomo Antikyra Aspra Spitia",
+        "region": "Central Greece",
+        "municipality": "Boeotia",
+        "status": "listed-unverified"
+      },
+      "tier": "NONE",
+      "decision": "skip",
+      "queriesTried": [
+        "Δίστομο Άντικυρα Άσπρα Σπίτια, Boeotia, Central Greece, Greece",
+        "Δίστομο Άντικυρα Άσπρα Σπίτια, Central Greece, Greece",
+        "Distomo Antikyra Aspra Spitia, Boeotia, Greece",
+        "Άντικυρα Άσπρα Σπίτια, Boeotia, Greece"
+      ],
+      "best": {
+        "osmId": "nom-way-1044274113",
+        "name": "Εθνική Τράπεζα",
+        "address": "Εθνική Τράπεζα, Αθηνάς, Κοινότητα Διστόμου, Δημοτική Ενότητα Διστόμου, Δήμος Διστόμου-Αράχοβας-Αντίκυρας, Περιφερειακή Ενότητα Βοιωτίας, Περιφέρεια Στερεάς Ελλάδας, Αποκεντρωμένη Διοίκηση Θεσσαλίας - Στερεάς Ελλάδος, 320 03, Ελλάς",
+        "lat": 38.3890201,
+        "lon": 22.6523538,
+        "score": {
+          "total": 10,
+          "nameScore": 0,
+          "typeScore": 0,
+          "regionScore": 0,
+          "overpassScore": 10,
+          "overpassM": 396
+        },
+        "overpassCorroborationM": 396,
+        "wrongRegion": false
+      },
+      "alternates": [
+        {
+          "osmId": "nom-way-1044274113",
+          "name": "Εθνική Τράπεζα",
+          "address": "Εθνική Τράπεζα, Αθηνάς, Κοινότητα Διστόμου, Δημοτική Ενότητα Διστόμου, Δήμος Διστόμου-Αράχοβας-Αντίκυρας, Περιφερειακή Ενότητα Βοιωτίας, Περιφέρεια Στερεάς Ελλάδας, Αποκεντρωμένη Διοίκηση Θεσσαλίας - Στερεάς Ελλάδος, 320 03, Ελλάς",
+          "total": 10
+        },
+        {
+          "osmId": "nom-way-1044274113",
+          "name": "Εθνική Τράπεζα",
+          "address": "Εθνική Τράπεζα, Αθηνάς, Κοινότητα Διστόμου, Δημοτική Ενότητα Διστόμου, Δήμος Διστόμου-Αράχοβας-Αντίκυρας, Περιφερειακή Ενότητα Βοιωτίας, Περιφέρεια Στερεάς Ελλάδας, Αποκεντρωμένη Διοίκηση Θεσσαλίας - Στερεάς Ελλάδος, 320 03, Ελλάς",
+          "total": 10
+        },
+        {
+          "osmId": "nom-way-855737774",
+          "name": "Δίστομο - Αντίκυρα",
+          "address": "Δίστομο - Αντίκυρα, Κοινότητα Αντικύρας, Δημοτική Ενότητα Αντίκυρας, Δήμος Διστόμου-Αράχοβας-Αντίκυρας, Περιφερειακή Ενότητα Βοιωτίας, Περιφέρεια Στερεάς Ελλάδας, Αποκεντρωμένη Διοίκηση Θεσσαλίας - Στερεάς Ελλάδος, 320 12, Ελλάς",
+          "total": 4
+        }
+      ],
+      "slot": {
+        "region": "Central Greece",
+        "sub": "Fokida",
+        "subSub": "Fokida (mainland)",
+        "neighborId": 337,
+        "neighborName": "Άγιος Ισίδωρος",
+        "neighborDistanceM": 4509,
+        "farNeighbor": false,
+        "slotConflict": false,
+        "neighborRegion": "Central Greece"
+      },
+      "flags": [
+        "weak_name_match",
+        "locality_not_beach"
+      ]
+    },
+    {
+      "seed": {
+        "nameGr": "Τανάγρα Δήλεσι",
+        "nameEn": "Tanagra Dilesi",
+        "region": "Central Greece",
+        "municipality": "Boeotia",
+        "status": "listed-unverified"
+      },
+      "tier": "NONE",
+      "decision": "skip",
+      "queriesTried": [
+        "Τανάγρα Δήλεσι, Boeotia, Central Greece, Greece",
+        "Τανάγρα Δήλεσι, Central Greece, Greece",
+        "Tanagra Dilesi, Boeotia, Greece"
+      ],
+      "best": null,
+      "alternates": [],
+      "slot": null,
+      "flags": [
+        "no_result"
+      ]
+    },
+    {
+      "seed": {
+        "nameGr": "Δωρίδα Ερατεινή",
+        "nameEn": "Dorida Erateini",
+        "region": "Central Greece",
+        "municipality": "Fokida",
+        "status": "listed-unverified"
+      },
+      "tier": "NONE",
+      "decision": "skip",
+      "queriesTried": [
+        "Δωρίδα Ερατεινή, Fokida, Central Greece, Greece",
+        "Δωρίδα Ερατεινή, Central Greece, Greece",
+        "Dorida Erateini, Fokida, Greece"
+      ],
+      "best": null,
+      "alternates": [],
+      "slot": null,
+      "flags": [
+        "no_result"
+      ]
+    },
+    {
+      "seed": {
+        "nameGr": "Σεργούλα Δωρίδος",
+        "nameEn": "Sergoula Doridos",
+        "region": "Central Greece",
+        "municipality": "Fokida",
+        "status": "listed-unverified"
+      },
+      "tier": "LOW",
+      "decision": "REVIEW",
+      "queriesTried": [
+        "Σεργούλα Δωρίδος, Fokida, Central Greece, Greece",
+        "Σεργούλα Δωρίδος, Central Greece, Greece",
+        "Sergoula Doridos, Fokida, Greece",
+        "Sergoula Doridos, Central Greece, Greece"
+      ],
+      "best": {
+        "osmId": "nom-way-1192569047",
+        "name": "Παραλία Σεργούλας",
+        "address": "Παραλία Σεργούλας, Κοινότητα Σεργούλας, Δημοτική Ενότητα Ευπαλίου, Δήμος Δωρίδος, Περιφερειακή Ενότητα Φωκίδας, Περιφέρεια Στερεάς Ελλάδας, Αποκεντρωμένη Διοίκηση Θεσσαλίας - Στερεάς Ελλάδος, 330 56, Ελλάς",
+        "lat": 38.3869197,
+        "lon": 22.0638164,
+        "score": {
+          "total": 47,
+          "nameScore": 2,
+          "typeScore": 25,
+          "regionScore": 0,
+          "overpassScore": 20,
+          "overpassM": 36
+        },
+        "overpassCorroborationM": 36,
+        "wrongRegion": false
+      },
+      "alternates": [
+        {
+          "osmId": "nom-way-1192569047",
+          "name": "Παραλία Σεργούλας",
+          "address": "Παραλία Σεργούλας, Κοινότητα Σεργούλας, Δημοτική Ενότητα Ευπαλίου, Δήμος Δωρίδος, Περιφερειακή Ενότητα Φωκίδας, Περιφέρεια Στερεάς Ελλάδας, Αποκεντρωμένη Διοίκηση Θεσσαλίας - Στερεάς Ελλάδος, 330 56, Ελλάς",
+          "total": 47
+        },
+        {
+          "osmId": "nom-way-1388462277",
+          "name": "Sergoula-Trikorfa",
+          "address": "Sergoula-Trikorfa, Παλαιοχώρι, Κοινότητα Σεργούλας, Δημοτική Ενότητα Ευπαλίου, Δήμος Δωρίδος, Περιφερειακή Ενότητα Φωκίδας, Περιφέρεια Στερεάς Ελλάδας, Αποκεντρωμένη Διοίκηση Θεσσαλίας - Στερεάς Ελλάδος, 330 56, Ελλάς",
+          "total": 4
+        },
+        {
+          "osmId": "nom-way-1388462278",
+          "name": "Sergoula-Trikorfa",
+          "address": "Sergoula-Trikorfa, Κοινότητα Σεργούλας, Δημοτική Ενότητα Ευπαλίου, Δήμος Δωρίδος, Περιφερειακή Ενότητα Φωκίδας, Περιφέρεια Στερεάς Ελλάδας, Αποκεντρωμένη Διοίκηση Θεσσαλίας - Στερεάς Ελλάδος, 330 60, Ελλάς",
+          "total": 4
+        }
+      ],
+      "slot": {
+        "region": "Central Greece",
+        "sub": "Fokida",
+        "subSub": "Fokida (mainland)",
+        "neighborId": 352,
+        "neighborName": "Παραλία Σεργούλας",
+        "neighborDistanceM": 0,
+        "farNeighbor": false,
+        "slotConflict": false,
+        "neighborRegion": "Central Greece"
+      },
+      "flags": [
+        "weak_name_match"
+      ]
+    },
+    {
+      "seed": {
+        "nameGr": "Χαλκίδα Κουρέντι",
+        "nameEn": "Chalkida Kourenti",
+        "region": "Central Greece",
+        "municipality": "Evia",
+        "status": "listed-unverified"
+      },
+      "tier": "NONE",
+      "decision": "skip",
+      "queriesTried": [
+        "Χαλκίδα Κουρέντι, Evia, Central Greece, Greece",
+        "Χαλκίδα Κουρέντι, Central Greece, Greece",
+        "Chalkida Kourenti, Evia, Greece",
+        "Chalkida Kourenti, Central Greece, Greece"
+      ],
+      "best": {
+        "osmId": "nom-node-7359611013",
+        "name": "I Love Greece",
+        "address": "I Love Greece, Δρακοπούλου, Κουρέντι, Ξηρόβρυση, Χαλκίδα, Δήμος Χαλκιδέων, Περιφερειακή Ενότητα Ευβοίας, Περιφέρεια Στερεάς Ελλάδας, Αποκεντρωμένη Διοίκηση Θεσσαλίας - Στερεάς Ελλάδος, 341 32, Ελλάς",
+        "lat": 38.4706059,
+        "lon": 23.5985829,
+        "score": {
+          "total": 24,
+          "nameScore": 4,
+          "typeScore": 0,
+          "regionScore": 0,
+          "overpassScore": 20,
+          "overpassM": 99
+        },
+        "overpassCorroborationM": 99,
+        "wrongRegion": false
+      },
+      "alternates": [
+        {
+          "osmId": "nom-node-7359611013",
+          "name": "I Love Greece",
+          "address": "I Love Greece, Δρακοπούλου, Κουρέντι, Ξηρόβρυση, Χαλκίδα, Δήμος Χαλκιδέων, Περιφερειακή Ενότητα Ευβοίας, Περιφέρεια Στερεάς Ελλάδας, Αποκεντρωμένη Διοίκηση Θεσσαλίας - Στερεάς Ελλάδος, 341 32, Ελλάς",
+          "total": 24
+        }
+      ],
+      "slot": {
+        "region": "Central Greece",
+        "sub": "Evia",
+        "subSub": "Evia",
+        "neighborId": 230,
+        "neighborName": "Καναπίτσα",
+        "neighborDistanceM": 1,
+        "farNeighbor": false,
+        "slotConflict": false,
+        "neighborRegion": "Central Greece"
+      },
+      "flags": [
+        "weak_name_match",
+        "locality_not_beach"
+      ]
+    },
+    {
+      "seed": {
+        "nameGr": "Ερέτρια Άγιος Ανδρέας",
+        "nameEn": "Eretria Agios Andreas",
+        "region": "Central Greece",
+        "municipality": "Evia",
+        "status": "listed-unverified"
+      },
+      "tier": "NONE",
+      "decision": "skip",
+      "queriesTried": [
+        "Ερέτρια Άγιος Ανδρέας, Evia, Central Greece, Greece",
+        "Ερέτρια Άγιος Ανδρέας, Central Greece, Greece",
+        "Eretria Agios Andreas, Evia, Greece",
+        "Άγιος Ανδρέας, Evia, Greece"
+      ],
+      "best": null,
+      "alternates": [],
+      "slot": null,
+      "flags": [
+        "no_result"
+      ]
+    },
+    {
+      "seed": {
+        "nameGr": "Κύμη Αλιβέρι",
+        "nameEn": "Kymi Aliveri",
+        "region": "Central Greece",
+        "municipality": "Evia",
+        "status": "listed-unverified"
+      },
+      "tier": "NONE",
+      "decision": "skip",
+      "queriesTried": [
+        "Κύμη Αλιβέρι, Evia, Central Greece, Greece",
+        "Κύμη Αλιβέρι, Central Greece, Greece",
+        "Kymi Aliveri, Evia, Greece"
+      ],
+      "best": null,
+      "alternates": [],
+      "slot": null,
+      "flags": [
+        "no_result"
+      ]
+    },
+    {
+      "seed": {
+        "nameGr": "Μαντούδι Ροβιές",
+        "nameEn": "Mantoudi Rovies",
+        "region": "Central Greece",
+        "municipality": "Evia",
+        "status": "listed-unverified"
+      },
+      "tier": "NONE",
+      "decision": "skip",
+      "queriesTried": [
+        "Μαντούδι Ροβιές, Evia, Central Greece, Greece",
+        "Μαντούδι Ροβιές, Central Greece, Greece",
+        "Mantoudi Rovies, Evia, Greece",
+        "Mantoudi Rovies, Central Greece, Greece"
+      ],
+      "best": null,
+      "alternates": [],
+      "slot": null,
+      "flags": [
+        "no_result"
+      ]
+    },
+    {
+      "seed": {
+        "nameGr": "Σκιάθος Αγία Ελένη",
+        "nameEn": "Skiathos Agia Eleni",
+        "region": "Thessaly",
+        "municipality": "Skiathos",
+        "status": "listed-unverified",
+        "notes": "4 beaches, 2nd consecutive year as of report."
+      },
+      "tier": "MEDIUM",
+      "decision": "skip",
+      "queriesTried": [
+        "Σκιάθος Αγία Ελένη, Skiathos, Thessaly, Greece",
+        "Σκιάθος Αγία Ελένη, Thessaly, Greece",
+        "Skiathos Agia Eleni, Skiathos, Greece",
+        "Αγία Ελένη, Skiathos, Greece"
+      ],
+      "best": {
+        "osmId": "nom-way-167043662",
+        "name": "Αγία Ελένη",
+        "address": "Αγία Ελένη, Δήμος Σκιάθου, Περιφερειακή Ενότητα Σποράδων, Περιφέρεια Θεσσαλίας, Αποκεντρωμένη Διοίκηση Θεσσαλίας - Στερεάς Ελλάδος, Ελλάς",
+        "lat": 39.1533747,
+        "lon": 23.3905462,
+        "score": {
+          "total": 51,
+          "nameScore": 6,
+          "typeScore": 25,
+          "regionScore": 0,
+          "overpassScore": 20,
+          "overpassM": 103
+        },
+        "overpassCorroborationM": 103,
+        "wrongRegion": false
+      },
+      "alternates": [],
+      "slot": {
+        "region": "Thessaly",
+        "sub": "Magnesia (Sporades)",
+        "subSub": "Skiathos",
+        "neighborId": 2622,
+        "neighborName": "Αγία Ελένη",
+        "neighborDistanceM": 0,
+        "farNeighbor": false,
+        "slotConflict": false,
+        "neighborRegion": "Thessaly"
+      },
+      "flags": [
+        "weak_name_match"
+      ]
+    },
+    {
+      "seed": {
+        "nameGr": "Σκιάθος Βρωμόλιμνος",
+        "nameEn": "Skiathos Vromolimnos",
+        "region": "Thessaly",
+        "municipality": "Skiathos",
+        "status": "listed-unverified"
+      },
+      "tier": "NONE",
+      "decision": "skip",
+      "queriesTried": [
+        "Σκιάθος Βρωμόλιμνος, Skiathos, Thessaly, Greece",
+        "Σκιάθος Βρωμόλιμνος, Thessaly, Greece",
+        "Skiathos Vromolimnos, Skiathos, Greece"
+      ],
+      "best": null,
+      "alternates": [],
+      "slot": null,
+      "flags": [
+        "no_result"
+      ]
+    },
+    {
+      "seed": {
+        "nameGr": "Αλόννησος Γλύφα",
+        "nameEn": "Alonissos Glyfa",
+        "region": "Thessaly",
+        "municipality": "Alonissos",
+        "status": "listed-unverified"
+      },
+      "tier": "NONE",
+      "decision": "skip",
+      "queriesTried": [
+        "Αλόννησος Γλύφα, Alonissos, Thessaly, Greece",
+        "Αλόννησος Γλύφα, Thessaly, Greece",
+        "Alonissos Glyfa, Alonissos, Greece",
+        "Alonissos Glyfa, Thessaly, Greece"
+      ],
+      "best": null,
+      "alternates": [],
+      "slot": null,
+      "flags": [
+        "no_result"
+      ]
+    },
+    {
+      "seed": {
+        "nameGr": "Αλόννησος Μηλιά",
+        "nameEn": "Alonissos Milia",
+        "region": "Thessaly",
+        "municipality": "Alonissos",
+        "status": "listed-unverified"
+      },
+      "tier": "NONE",
+      "decision": "skip",
+      "queriesTried": [
+        "Αλόννησος Μηλιά, Alonissos, Thessaly, Greece",
+        "Αλόννησος Μηλιά, Thessaly, Greece",
+        "Alonissos Milia, Alonissos, Greece",
+        "Alonissos Milia, Thessaly, Greece"
+      ],
+      "best": null,
+      "alternates": [],
+      "slot": null,
+      "flags": [
+        "no_result"
+      ]
+    },
+    {
+      "seed": {
+        "nameGr": "Άκτιο Βόνιτσα",
+        "nameEn": "Aktio Vonitsa",
+        "region": "West Greece",
+        "municipality": "Aktio-Vonitsa",
+        "status": "listed-unverified",
+        "notes": "Ag. Dimitrios."
+      },
+      "tier": "NONE",
+      "decision": "skip",
+      "queriesTried": [
+        "Άκτιο Βόνιτσα, Aktio-Vonitsa, West Greece, Greece",
+        "Άκτιο Βόνιτσα, West Greece, Greece",
+        "Aktio Vonitsa, Aktio-Vonitsa, Greece"
+      ],
+      "best": {
+        "osmId": "nom-way-191034285",
+        "name": "Αμβρακία Οδός",
+        "address": "Αμβρακία Οδός, Κοινότητα Βόνιτσας, Δημοτική Ενότητα Ανακτορίου, Δήμος Ακτίου - Βόνιτσας, Περιφερειακή Ενότητα Αιτωλοακαρνανίας, Περιφέρεια Δυτικής Ελλάδας, Αποκεντρωμένη Διοίκηση Πελοποννήσου, Δυτικής Ελλάδας και Ιονίου, 300 02, Ελλάς",
+        "lat": 38.9023374,
+        "lon": 20.8897174,
+        "score": {
+          "total": 0,
+          "nameScore": 0,
+          "typeScore": 0,
+          "regionScore": 0,
+          "overpassScore": 0,
+          "overpassM": null
+        },
+        "overpassCorroborationM": null,
+        "wrongRegion": false
+      },
+      "alternates": [
+        {
+          "osmId": "nom-way-191034285",
+          "name": "Αμβρακία Οδός",
+          "address": "Αμβρακία Οδός, Κοινότητα Βόνιτσας, Δημοτική Ενότητα Ανακτορίου, Δήμος Ακτίου - Βόνιτσας, Περιφερειακή Ενότητα Αιτωλοακαρνανίας, Περιφέρεια Δυτικής Ελλάδας, Αποκεντρωμένη Διοίκηση Πελοποννήσου, Δυτικής Ελλάδας και Ιονίου, 300 02, Ελλάς",
+          "total": 0
+        },
+        {
+          "osmId": "nom-way-696036384",
+          "name": "Αμβρακία Οδός",
+          "address": "Αμβρακία Οδός, Κοινότητα Βόνιτσας, Δημοτική Ενότητα Ανακτορίου, Δήμος Ακτίου - Βόνιτσας, Περιφερειακή Ενότητα Αιτωλοακαρνανίας, Περιφέρεια Δυτικής Ελλάδας, Αποκεντρωμένη Διοίκηση Πελοποννήσου, Δυτικής Ελλάδας και Ιονίου, 300 02, Ελλάς",
+          "total": 0
+        }
+      ],
+      "slot": {
+        "region": "West Greece",
+        "sub": "Aetolia-Acarnania",
+        "subSub": "Aetolia-Acarnania (mainland)",
+        "neighborId": 2536,
+        "neighborName": "Μυρτάρι",
+        "neighborDistanceM": 4638,
+        "farNeighbor": false,
+        "slotConflict": false,
+        "neighborRegion": "West Greece"
+      },
+      "flags": [
+        "weak_name_match",
+        "locality_not_beach",
+        "no_overpass_corroboration"
+      ]
+    },
+    {
+      "seed": {
+        "nameGr": "Μεσολόγγι Τουρλίδα",
+        "nameEn": "Mesolongi Tourlida",
+        "region": "West Greece",
+        "municipality": "Mesolongi",
+        "status": "listed-unverified"
+      },
+      "tier": "MEDIUM",
+      "decision": "accept",
+      "queriesTried": [
+        "Μεσολόγγι Τουρλίδα, Mesolongi, West Greece, Greece",
+        "Μεσολόγγι Τουρλίδα, West Greece, Greece",
+        "Mesolongi Tourlida, Mesolongi, Greece",
+        "Mesolongi Tourlida, West Greece, Greece"
+      ],
+      "best": {
+        "osmId": "nom-way-958950607",
+        "name": "Μεσολόγγι - Τουρλίδα",
+        "address": "Μεσολόγγι - Τουρλίδα, Τουρλίδα, Κοινότητα Μεσολογγίου, Δημοτική Ενότητα Ιεράς Πόλεως Μεσολογγίου, Δήμος Ιεράς Πόλεως Μεσολογγίου, Περιφερειακή Ενότητα Αιτωλοακαρνανίας, Περιφέρεια Δυτικής Ελλάδας, Αποκεντρωμένη Διοίκηση Πελοποννήσου, Δυτικής Ελλάδας και Ιονίου, 302 00, Ελλάς",
+        "lat": 38.3253662,
+        "lon": 21.4194283,
+        "score": {
+          "total": 50,
+          "nameScore": 30,
+          "typeScore": 0,
+          "regionScore": 0,
+          "overpassScore": 20,
+          "overpassM": 180
+        },
+        "overpassCorroborationM": 180,
+        "wrongRegion": false
+      },
+      "alternates": [
+        {
+          "osmId": "nom-way-958950607",
+          "name": "Μεσολόγγι - Τουρλίδα",
+          "address": "Μεσολόγγι - Τουρλίδα, Τουρλίδα, Κοινότητα Μεσολογγίου, Δημοτική Ενότητα Ιεράς Πόλεως Μεσολογγίου, Δήμος Ιεράς Πόλεως Μεσολογγίου, Περιφερειακή Ενότητα Αιτωλοακαρνανίας, Περιφέρεια Δυτικής Ελλάδας, Αποκεντρωμένη Διοίκηση Πελοποννήσου, Δυτικής Ελλάδας και Ιονίου, 302 00, Ελλάς",
+          "total": 50
+        },
+        {
+          "osmId": "nom-way-958950607",
+          "name": "Μεσολόγγι - Τουρλίδα",
+          "address": "Μεσολόγγι - Τουρλίδα, Τουρλίδα, Κοινότητα Μεσολογγίου, Δημοτική Ενότητα Ιεράς Πόλεως Μεσολογγίου, Δήμος Ιεράς Πόλεως Μεσολογγίου, Περιφερειακή Ενότητα Αιτωλοακαρνανίας, Περιφέρεια Δυτικής Ελλάδας, Αποκεντρωμένη Διοίκηση Πελοποννήσου, Δυτικής Ελλάδας και Ιονίου, 302 00, Ελλάς",
+          "total": 50
+        },
+        {
+          "osmId": "nom-way-958950607",
+          "name": "Μεσολόγγι - Τουρλίδα",
+          "address": "Μεσολόγγι - Τουρλίδα, Τουρλίδα, Κοινότητα Μεσολογγίου, Δημοτική Ενότητα Ιεράς Πόλεως Μεσολογγίου, Δήμος Ιεράς Πόλεως Μεσολογγίου, Περιφερειακή Ενότητα Αιτωλοακαρνανίας, Περιφέρεια Δυτικής Ελλάδας, Αποκεντρωμένη Διοίκηση Πελοποννήσου, Δυτικής Ελλάδας και Ιονίου, 302 00, Ελλάς",
+          "total": 50
+        }
+      ],
+      "slot": {
+        "region": "West Greece",
+        "sub": "Aetolia-Acarnania",
+        "subSub": "Aetolia-Acarnania (mainland)",
+        "neighborId": 2559,
+        "neighborName": "Παραλία Τουρλίδας",
+        "neighborDistanceM": 0,
+        "farNeighbor": false,
+        "slotConflict": false,
+        "neighborRegion": "West Greece"
+      },
+      "flags": [
+        "locality_not_beach"
+      ]
+    },
+    {
+      "seed": {
+        "nameGr": "Χίος Δασκαλόπετρα",
+        "nameEn": "Chios Daskalopetra",
+        "region": "North Aegean",
+        "municipality": "Chios",
+        "status": "listed-unverified",
+        "notes": "~5 beaches; a unit moved to NOX beach from Agia Paraskevi Kastelou."
+      },
+      "tier": "NONE",
+      "decision": "skip",
+      "queriesTried": [
+        "Χίος Δασκαλόπετρα, Chios, North Aegean, Greece",
+        "Χίος Δασκαλόπετρα, North Aegean, Greece",
+        "Chios Daskalopetra, Chios, Greece"
+      ],
+      "best": null,
+      "alternates": [],
+      "slot": null,
+      "flags": [
+        "no_result"
+      ]
+    },
+    {
+      "seed": {
+        "nameGr": "Χίος Κώμη",
+        "nameEn": "Chios Komi",
+        "region": "North Aegean",
+        "municipality": "Chios",
+        "status": "listed-unverified"
+      },
+      "tier": "NONE",
+      "decision": "skip",
+      "queriesTried": [
+        "Χίος Κώμη, Chios, North Aegean, Greece",
+        "Χίος Κώμη, North Aegean, Greece",
+        "Chios Komi, Chios, Greece"
+      ],
+      "best": null,
+      "alternates": [],
+      "slot": null,
+      "flags": [
+        "no_result"
+      ]
+    },
+    {
+      "seed": {
+        "nameGr": "Χίος Αγία Φωτιά",
+        "nameEn": "Chios Agia Fotia",
+        "region": "North Aegean",
+        "municipality": "Chios",
+        "status": "listed-unverified"
+      },
+      "tier": "LOW",
+      "decision": "REVIEW",
+      "queriesTried": [
+        "Χίος Αγία Φωτιά, Chios, North Aegean, Greece",
+        "Χίος Αγία Φωτιά, North Aegean, Greece",
+        "Chios Agia Fotia, Chios, Greece",
+        "Αγία Φωτιά, Chios, Greece"
+      ],
+      "best": {
+        "osmId": "nom-way-436655828",
+        "name": "Αγία Φωτεινή",
+        "address": "Αγία Φωτεινή, Παραλία Αγίας Φωτεινής, Καλλιμασιά, Δήμος Χίου, Περιφερειακή Ενότητα Χίου, Περιφέρεια Βόρειου Αιγαίου, Αποκεντρωμένη Διοίκηση Αιγαίου, 821 00, Ελλάς",
+        "lat": 38.2853455,
+        "lon": 26.1209403,
+        "score": {
+          "total": 48,
+          "nameScore": 3,
+          "typeScore": 25,
+          "regionScore": 0,
+          "overpassScore": 20,
+          "overpassM": 86
+        },
+        "overpassCorroborationM": 86,
+        "wrongRegion": false
+      },
+      "alternates": [],
+      "slot": {
+        "region": "North Aegean",
+        "sub": "Chios",
+        "subSub": "Chios",
+        "neighborId": 1256,
+        "neighborName": "Αγία Φωτεινή",
+        "neighborDistanceM": 1,
+        "farNeighbor": false,
+        "slotConflict": false,
+        "neighborRegion": "North Aegean"
+      },
+      "flags": [
+        "weak_name_match"
+      ]
+    },
+    {
+      "seed": {
+        "nameGr": "Χίος Λιμνος Βολισσού",
+        "nameEn": "Chios Limnos Volissou",
+        "region": "North Aegean",
+        "municipality": "Chios",
+        "status": "listed-unverified"
+      },
+      "tier": "NONE",
+      "decision": "skip",
+      "queriesTried": [
+        "Χίος Λιμνος Βολισσού, Chios, North Aegean, Greece",
+        "Χίος Λιμνος Βολισσού, North Aegean, Greece",
+        "Chios Limnos Volissou, Chios, Greece",
+        "Chios Limnos Volissou, North Aegean, Greece"
+      ],
+      "best": null,
+      "alternates": [],
+      "slot": null,
+      "flags": [
+        "no_result"
+      ]
+    },
+    {
+      "seed": {
+        "nameGr": "Σάμος Βαθύ",
+        "nameEn": "Samos Vathi",
+        "region": "North Aegean",
+        "municipality": "Samos",
+        "status": "listed-unverified",
+        "notes": "Maounes."
+      },
+      "tier": "NONE",
+      "decision": "skip",
+      "queriesTried": [
+        "Σάμος Βαθύ, Samos, North Aegean, Greece",
+        "Σάμος Βαθύ, North Aegean, Greece",
+        "Samos Vathi, Samos, Greece",
+        "Samos Vathi, North Aegean, Greece"
+      ],
+      "best": {
+        "osmId": "nom-way-575099876",
+        "name": "Σάμος - Χώρα",
+        "address": "Σάμος - Χώρα, Κουμαριώνας, Βαθύ, Δημοτική Ενότητα Βαθέος, Δήμος Ανατολικής Σάμου, Περιφερειακή Ενότητα Σάμου, Περιφέρεια Βόρειου Αιγαίου, Αποκεντρωμένη Διοίκηση Αιγαίου, 831 00, Ελλάς",
+        "lat": 37.7495352,
+        "lon": 26.9745823,
+        "score": {
+          "total": 19,
+          "nameScore": 4,
+          "typeScore": 0,
+          "regionScore": 15,
+          "overpassScore": 0,
+          "overpassM": null
+        },
+        "overpassCorroborationM": null,
+        "wrongRegion": false
+      },
+      "alternates": [
+        {
+          "osmId": "nom-way-347341327",
+          "name": "Σάμος - Πυθαγόρειο",
+          "address": "Σάμος - Πυθαγόρειο, Κουμαριώνας, Βαθύ, Δημοτική Ενότητα Βαθέος, Δήμος Ανατολικής Σάμου, Περιφερειακή Ενότητα Σάμου, Περιφέρεια Βόρειου Αιγαίου, Αποκεντρωμένη Διοίκηση Αιγαίου, 831 00, Ελλάς",
+          "total": 19
+        },
+        {
+          "osmId": "nom-way-347341386",
+          "name": "Σάμος - Χώρα",
+          "address": "Σάμος - Χώρα, Κουμαριώνας, Βαθύ, Δημοτική Ενότητα Βαθέος, Δήμος Ανατολικής Σάμου, Περιφερειακή Ενότητα Σάμου, Περιφέρεια Βόρειου Αιγαίου, Αποκεντρωμένη Διοίκηση Αιγαίου, 831 00, Ελλάς",
+          "total": 19
+        },
+        {
+          "osmId": "nom-way-347341346",
+          "name": "Σάμος - Χώρα",
+          "address": "Σάμος - Χώρα, Ζερβού, Βαθύ, Δημοτική Ενότητα Βαθέος, Δήμος Ανατολικής Σάμου, Περιφερειακή Ενότητα Σάμου, Περιφέρεια Βόρειου Αιγαίου, Αποκεντρωμένη Διοίκηση Αιγαίου, 831 00, Ελλάς",
+          "total": 19
+        }
+      ],
+      "slot": {
+        "region": "North Aegean",
+        "sub": "Samos",
+        "subSub": "Samos",
+        "neighborId": 1414,
+        "neighborName": "Ροδίτσες",
+        "neighborDistanceM": 1568,
+        "farNeighbor": false,
+        "slotConflict": false,
+        "neighborRegion": "North Aegean"
+      },
+      "flags": [
+        "weak_name_match",
+        "locality_not_beach",
+        "no_overpass_corroboration"
+      ]
+    },
+    {
+      "seed": {
+        "nameGr": "Σάμος Καρλόβασι",
+        "nameEn": "Samos Karlovasi",
+        "region": "North Aegean",
+        "municipality": "Samos",
+        "status": "listed-unverified"
+      },
+      "tier": "NONE",
+      "decision": "skip",
+      "queriesTried": [
+        "Σάμος Καρλόβασι, Samos, North Aegean, Greece",
+        "Σάμος Καρλόβασι, North Aegean, Greece",
+        "Samos Karlovasi, Samos, Greece"
+      ],
+      "best": {
+        "osmId": "nom-node-1305104867",
+        "name": "Εθνική Τράπεζα",
+        "address": "Εθνική Τράπεζα, Γοργύρας, Νέο Καρλόβασι, Δημοτική Ενότητα Καρλοβασίων, Δήμος Δυτικής Σάμου, Περιφερειακή Ενότητα Σάμου, Περιφέρεια Βόρειου Αιγαίου, Αποκεντρωμένη Διοίκηση Αιγαίου, 832 00, Ελλάς",
+        "lat": 37.7934949,
+        "lon": 26.7050193,
+        "score": {
+          "total": 2,
+          "nameScore": 2,
+          "typeScore": 0,
+          "regionScore": 0,
+          "overpassScore": 0,
+          "overpassM": null
+        },
+        "overpassCorroborationM": null,
+        "wrongRegion": false
+      },
+      "alternates": [
+        {
+          "osmId": "nom-node-1305104867",
+          "name": "Εθνική Τράπεζα",
+          "address": "Εθνική Τράπεζα, Γοργύρας, Νέο Καρλόβασι, Δημοτική Ενότητα Καρλοβασίων, Δήμος Δυτικής Σάμου, Περιφερειακή Ενότητα Σάμου, Περιφέρεια Βόρειου Αιγαίου, Αποκεντρωμένη Διοίκηση Αιγαίου, 832 00, Ελλάς",
+          "total": 2
+        },
+        {
+          "osmId": "nom-node-1305104867",
+          "name": "Εθνική Τράπεζα",
+          "address": "Εθνική Τράπεζα, Γοργύρας, Νέο Καρλόβασι, Δημοτική Ενότητα Καρλοβασίων, Δήμος Δυτικής Σάμου, Περιφερειακή Ενότητα Σάμου, Περιφέρεια Βόρειου Αιγαίου, Αποκεντρωμένη Διοίκηση Αιγαίου, 832 00, Ελλάς",
+          "total": 2
+        }
+      ],
+      "slot": {
+        "region": "North Aegean",
+        "sub": "Samos",
+        "subSub": "Samos",
+        "neighborId": 1413,
+        "neighborName": "Ποτάμι",
+        "neighborDistanceM": 3656,
+        "farNeighbor": false,
+        "slotConflict": false,
+        "neighborRegion": "North Aegean"
+      },
+      "flags": [
+        "weak_name_match",
+        "locality_not_beach",
+        "no_overpass_corroboration"
+      ]
+    },
+    {
+      "seed": {
+        "nameGr": "Σάμος Κοκκάρι",
+        "nameEn": "Samos Kokkari",
+        "region": "North Aegean",
+        "municipality": "Samos",
+        "status": "listed-unverified"
+      },
+      "tier": "LOW",
+      "decision": "REVIEW",
+      "queriesTried": [
+        "Σάμος Κοκκάρι, Samos, North Aegean, Greece",
+        "Σάμος Κοκκάρι, North Aegean, Greece",
+        "Samos Kokkari, Samos, Greece"
+      ],
+      "best": {
+        "osmId": "nom-node-4587834608",
+        "name": "Samos Sub Diving Center",
+        "address": "Samos Sub Diving Center, Σάμος - Νέο Καρλόβασι, Κοκκάρι, Δημοτική Ενότητα Βαθέος, Δήμος Ανατολικής Σάμου, Περιφερειακή Ενότητα Σάμου, Περιφέρεια Βόρειου Αιγαίου, Αποκεντρωμένη Διοίκηση Αιγαίου, 831 00, Ελλάς",
+        "lat": 37.779262,
+        "lon": 26.8874664,
+        "score": {
+          "total": 39,
+          "nameScore": 4,
+          "typeScore": 0,
+          "regionScore": 15,
+          "overpassScore": 20,
+          "overpassM": 76
+        },
+        "overpassCorroborationM": 76,
+        "wrongRegion": false
+      },
+      "alternates": [
+        {
+          "osmId": "nom-node-2367553867",
+          "name": "Samos memory rentals",
+          "address": "Samos memory rentals, seatrac, Κοκκάρι, Δημοτική Ενότητα Βαθέος, Δήμος Ανατολικής Σάμου, Περιφερειακή Ενότητα Σάμου, Περιφέρεια Βόρειου Αιγαίου, Αποκεντρωμένη Διοίκηση Αιγαίου, 831 00, Ελλάς",
+          "total": 39
+        },
+        {
+          "osmId": "nom-node-4587834608",
+          "name": "Samos Sub Diving Center",
+          "address": "Samos Sub Diving Center, Σάμος - Νέο Καρλόβασι, Κοκκάρι, Δημοτική Ενότητα Βαθέος, Δήμος Ανατολικής Σάμου, Περιφερειακή Ενότητα Σάμου, Περιφέρεια Βόρειου Αιγαίου, Αποκεντρωμένη Διοίκηση Αιγαίου, 831 00, Ελλάς",
+          "total": 39
+        },
+        {
+          "osmId": "nom-node-2367553867",
+          "name": "Samos memory rentals",
+          "address": "Samos memory rentals, seatrac, Κοκκάρι, Δημοτική Ενότητα Βαθέος, Δήμος Ανατολικής Σάμου, Περιφερειακή Ενότητα Σάμου, Περιφέρεια Βόρειου Αιγαίου, Αποκεντρωμένη Διοίκηση Αιγαίου, 831 00, Ελλάς",
+          "total": 39
+        }
+      ],
+      "slot": {
+        "region": "North Aegean",
+        "sub": "Samos",
+        "subSub": "Samos",
+        "neighborId": 1385,
+        "neighborName": "Κοκκάρι",
+        "neighborDistanceM": 0,
+        "farNeighbor": false,
+        "slotConflict": false,
+        "neighborRegion": "North Aegean"
+      },
+      "flags": [
+        "weak_name_match",
+        "locality_not_beach"
+      ]
+    },
+    {
+      "seed": {
+        "nameGr": "Σάμος Ποτοκάκι",
+        "nameEn": "Samos Potokaki",
+        "region": "North Aegean",
+        "municipality": "Samos",
+        "status": "listed-unverified"
+      },
+      "tier": "NONE",
+      "decision": "skip",
+      "queriesTried": [
+        "Σάμος Ποτοκάκι, Samos, North Aegean, Greece",
+        "Σάμος Ποτοκάκι, North Aegean, Greece",
+        "Samos Potokaki, Samos, Greece"
+      ],
+      "best": {
+        "osmId": "nom-node-601589468",
+        "name": "Dinos Rentals Samos",
+        "address": "Dinos Rentals Samos, Πυθαγόρειο - Ηραίο, Ποτοκάκι, Νέα Πόλη, Δημοτική Ενότητα Πυθαγορείου, Δήμος Ανατολικής Σάμου, Περιφερειακή Ενότητα Σάμου, Περιφέρεια Βόρειου Αιγαίου, Αποκεντρωμένη Διοίκηση Αιγαίου, 831 03, Ελλάς",
+        "lat": 37.6938487,
+        "lon": 26.9212618,
+        "score": {
+          "total": 19,
+          "nameScore": 4,
+          "typeScore": 0,
+          "regionScore": 15,
+          "overpassScore": 0,
+          "overpassM": 952
+        },
+        "overpassCorroborationM": 952,
+        "wrongRegion": false
+      },
+      "alternates": [
+        {
+          "osmId": "nom-node-2941868201",
+          "name": "samos sun Hotel",
+          "address": "samos sun Hotel, Πυθαγόρειο - Χώρα, Ποτοκάκι, Νέα Πόλη, Δημοτική Ενότητα Πυθαγορείου, Δήμος Ανατολικής Σάμου, Περιφερειακή Ενότητα Σάμου, Περιφέρεια Βόρειου Αιγαίου, Αποκεντρωμένη Διοίκηση Αιγαίου, 831 03, Ελλάς",
+          "total": 19
+        },
+        {
+          "osmId": "nom-way-645542475",
+          "name": "Cat rescue Samos",
+          "address": "Cat rescue Samos, Πυθαγόρειο - Ηραίο, Ποτοκάκι, Νέα Πόλη, Δημοτική Ενότητα Πυθαγορείου, Δήμος Ανατολικής Σάμου, Περιφερειακή Ενότητα Σάμου, Περιφέρεια Βόρειου Αιγαίου, Αποκεντρωμένη Διοίκηση Αιγαίου, 831 03, Ελλάς",
+          "total": 19
+        },
+        {
+          "osmId": "nom-node-601589468",
+          "name": "Dinos Rentals Samos",
+          "address": "Dinos Rentals Samos, Πυθαγόρειο - Ηραίο, Ποτοκάκι, Νέα Πόλη, Δημοτική Ενότητα Πυθαγορείου, Δήμος Ανατολικής Σάμου, Περιφερειακή Ενότητα Σάμου, Περιφέρεια Βόρειου Αιγαίου, Αποκεντρωμένη Διοίκηση Αιγαίου, 831 03, Ελλάς",
+          "total": 19
+        }
+      ],
+      "slot": {
+        "region": "North Aegean",
+        "sub": "Samos",
+        "subSub": "Samos",
+        "neighborId": 1390,
+        "neighborName": "Πυθαγόρειο",
+        "neighborDistanceM": 952,
+        "farNeighbor": false,
+        "slotConflict": false,
+        "neighborRegion": "North Aegean"
+      },
+      "flags": [
+        "weak_name_match",
+        "locality_not_beach",
+        "no_overpass_corroboration"
+      ]
+    },
+    {
+      "seed": {
+        "nameGr": "Λέσβος Τσαμάκια",
+        "nameEn": "Lesvos Tsamakia",
+        "region": "North Aegean",
+        "municipality": "Mytilene",
+        "status": "listed-unverified",
+        "notes": "Accessible-beach mapping module launched June 2025."
+      },
+      "tier": "NONE",
+      "decision": "skip",
+      "queriesTried": [
+        "Λέσβος Τσαμάκια, Mytilene, North Aegean, Greece",
+        "Λέσβος Τσαμάκια, North Aegean, Greece",
+        "Lesvos Tsamakia, Mytilene, Greece"
+      ],
+      "best": null,
+      "alternates": [],
+      "slot": null,
+      "flags": [
+        "no_result"
+      ]
+    },
+    {
+      "seed": {
+        "nameGr": "Λήμνος Εβγάτης",
+        "nameEn": "Lemnos Evgatis",
+        "region": "North Aegean",
+        "municipality": "Lemnos",
+        "status": "listed-unverified"
+      },
+      "tier": "NONE",
+      "decision": "skip",
+      "queriesTried": [
+        "Λήμνος Εβγάτης, Lemnos, North Aegean, Greece",
+        "Λήμνος Εβγάτης, North Aegean, Greece",
+        "Lemnos Evgatis, Lemnos, Greece",
+        "Lemnos Evgatis, North Aegean, Greece"
+      ],
+      "best": null,
+      "alternates": [],
+      "slot": null,
+      "flags": [
+        "no_result"
+      ]
+    },
+    {
+      "seed": {
+        "nameGr": "Λήμνος Μύρινα",
+        "nameEn": "Lemnos Myrina",
+        "region": "North Aegean",
+        "municipality": "Lemnos",
+        "status": "listed-unverified"
+      },
+      "tier": "NONE",
+      "decision": "skip",
+      "queriesTried": [
+        "Λήμνος Μύρινα, Lemnos, North Aegean, Greece",
+        "Λήμνος Μύρινα, North Aegean, Greece",
+        "Lemnos Myrina, Lemnos, Greece",
+        "Lemnos Myrina, North Aegean, Greece"
+      ],
+      "best": {
+        "osmId": "nom-node-2791554946",
+        "name": "Εθνική Τράπεζα",
+        "address": "Εθνική Τράπεζα, Παπουτσίδη, Mirina, Μύρινα, Δήμος Λήμνου, Περιφερειακή Ενότητα Λήμνου, Περιφέρεια Βόρειου Αιγαίου, Αποκεντρωμένη Διοίκηση Αιγαίου, 814 00, Ελλάς",
+        "lat": 39.8768439,
+        "lon": 25.0599863,
+        "score": {
+          "total": 13,
+          "nameScore": 3,
+          "typeScore": 0,
+          "regionScore": 0,
+          "overpassScore": 10,
+          "overpassM": 357
+        },
+        "overpassCorroborationM": 357,
+        "wrongRegion": false
+      },
+      "alternates": [
+        {
+          "osmId": "nom-node-2791554946",
+          "name": "Εθνική Τράπεζα",
+          "address": "Εθνική Τράπεζα, Πλατεία Υψιπύλης, Mirina, Μύρινα, Δήμος Λήμνου, Περιφερειακή Ενότητα Λήμνου, Περιφέρεια Βόρειου Αιγαίου, Αποκεντρωμένη Διοίκηση Αιγαίου, 814 00, Ελλάς",
+          "total": 12
+        },
+        {
+          "osmId": "nom-node-2791554946",
+          "name": "Εθνική Τράπεζα",
+          "address": "Εθνική Τράπεζα, Πλατεία Υψιπύλης, Mirina, Μύρινα, Δήμος Λήμνου, Περιφερειακή Ενότητα Λήμνου, Περιφέρεια Βόρειου Αιγαίου, Αποκεντρωμένη Διοίκηση Αιγαίου, 814 00, Ελλάς",
+          "total": 12
+        },
+        {
+          "osmId": "nom-node-2791554946",
+          "name": "Εθνική Τράπεζα",
+          "address": "Εθνική Τράπεζα, Πλατεία Υψιπύλης, Mirina, Μύρινα, Δήμος Λήμνου, Περιφερειακή Ενότητα Λήμνου, Περιφέρεια Βόρειου Αιγαίου, Αποκεντρωμένη Διοίκηση Αιγαίου, 814 00, Ελλάς",
+          "total": 2
+        }
+      ],
+      "slot": {
+        "region": "North Aegean",
+        "sub": "Lemnos",
+        "subSub": "Lemnos",
+        "neighborId": 1465,
+        "neighborName": "Ρωμαίικος Γυαλός",
+        "neighborDistanceM": 357,
+        "farNeighbor": false,
+        "slotConflict": false,
+        "neighborRegion": "North Aegean"
+      },
+      "flags": [
+        "weak_name_match",
+        "locality_not_beach"
+      ]
+    }
+  ]
+}

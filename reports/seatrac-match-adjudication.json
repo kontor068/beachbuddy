@@ -1,10 +1,10 @@
 {
   "_meta": {
-    "generatedAt": "2026-06-14T17:44:12.915Z",
+    "generatedAt": "2026-06-14T19:31:58.309Z",
     "seedCount": 174,
-    "confident": 40,
+    "confident": 53,
     "ambiguous": 33,
-    "noMatch": 101,
+    "noMatch": 88,
     "instructions": "Review each entry. For 'confident': verify chosenId or set to null to skip. For ambiguous (PICK_ONE): set chosenId to the correct candidate id, or null to skip. 'no-match': leave for Phase D2. Then run: node scripts/importSeatracAccessibility.mjs apply",
     "thresholds": {
       "CONFIDENT": 88,
@@ -53,6 +53,96 @@
           "sub": "East Attica",
           "subSub": "East Attica (mainland)",
           "score": 31
+        }
+      ]
+    },
+    {
+      "seed": {
+        "nameGr": "Πόρτο Ράφτη Αυλάκι",
+        "nameEn": "Porto Rafti Avlaki",
+        "region": "Attica",
+        "status": "listed-unverified"
+      },
+      "decision": "accept",
+      "chosenId": 3006,
+      "candidates": [
+        {
+          "id": 3006,
+          "name": "Πόρτο Ράφτη Αυλάκι",
+          "region": "Attica",
+          "sub": "East Attica",
+          "subSub": "East Attica (mainland)",
+          "score": 100
+        },
+        {
+          "id": 46,
+          "name": "Αυλάκι",
+          "region": "Attica",
+          "sub": "East Attica",
+          "subSub": "East Attica (mainland)",
+          "score": 50
+        },
+        {
+          "id": 102,
+          "name": "Αυλάκι",
+          "region": "Attica",
+          "sub": "Islands (Saronic & Kythira)",
+          "subSub": "Hydra",
+          "score": 50
+        },
+        {
+          "id": 148,
+          "name": "Στενό Αυλάκι",
+          "region": "Attica",
+          "sub": "Islands (Saronic & Kythira)",
+          "subSub": "Kythira",
+          "score": 40
+        }
+      ]
+    },
+    {
+      "seed": {
+        "nameGr": "Κύθηρα Καψάλι",
+        "nameEn": "Kythira Kapsali",
+        "region": "Attica",
+        "municipality": "Kythira",
+        "status": "listed-unverified",
+        "notes": "Seatrac near Agia Pelagia, Diakofti, Paleopoli, Kapsali; installed late spring, withdrawn October."
+      },
+      "decision": "accept",
+      "chosenId": 3005,
+      "candidates": [
+        {
+          "id": 3005,
+          "name": "Κύθηρα Καψάλι",
+          "region": "Attica",
+          "sub": "Islands (Saronic & Kythira)",
+          "subSub": "Kythira",
+          "score": 100
+        },
+        {
+          "id": 144,
+          "name": "Καψάλι",
+          "region": "Attica",
+          "sub": "Islands (Saronic & Kythira)",
+          "subSub": "Kythira",
+          "score": 63
+        },
+        {
+          "id": 137,
+          "name": "Βλυχάδα Ανατολική",
+          "region": "Attica",
+          "sub": "Islands (Saronic & Kythira)",
+          "subSub": "Kythira",
+          "score": 53
+        },
+        {
+          "id": 77,
+          "name": "Παραλία ΚΑΠΕ",
+          "region": "Attica",
+          "sub": "East Attica",
+          "subSub": "East Attica (mainland)",
+          "score": 52
         }
       ]
     },
@@ -197,6 +287,53 @@
     },
     {
       "seed": {
+        "nameGr": "Γεωπονικά",
+        "nameEn": "Geoponika",
+        "region": "Central Macedonia",
+        "municipality": "Nea Propontida",
+        "status": "online",
+        "accessibleWc": "yes",
+        "boardwalkToWater": "yes"
+      },
+      "decision": "accept",
+      "chosenId": 3008,
+      "candidates": [
+        {
+          "id": 3008,
+          "name": "Γεωπονικά",
+          "region": "Central Macedonia",
+          "sub": "Halkidiki",
+          "subSub": "Halkidiki (mainland)",
+          "score": 100
+        },
+        {
+          "id": 468,
+          "name": "Παραλία Τριστινίκα",
+          "region": "Central Macedonia",
+          "sub": "Halkidiki",
+          "subSub": "Halkidiki (mainland)",
+          "score": 38
+        },
+        {
+          "id": 465,
+          "name": "Παραλία Σαλονικιού",
+          "region": "Central Macedonia",
+          "sub": "Halkidiki",
+          "subSub": "Halkidiki (mainland)",
+          "score": 35
+        },
+        {
+          "id": 460,
+          "name": "Παραλία Νικήτης",
+          "region": "Central Macedonia",
+          "sub": "Halkidiki",
+          "subSub": "Halkidiki (mainland)",
+          "score": 31
+        }
+      ]
+    },
+    {
+      "seed": {
         "nameGr": "Βέργια",
         "nameEn": "Veria",
         "region": "Central Macedonia",
@@ -239,6 +376,100 @@
           "sub": "Halkidiki",
           "subSub": "Halkidiki (mainland)",
           "score": 40
+        }
+      ]
+    },
+    {
+      "seed": {
+        "nameGr": "Νέα Ρόδα",
+        "nameEn": "Nea Roda",
+        "region": "Central Macedonia",
+        "municipality": "Aristotelis",
+        "status": "online",
+        "boardwalkToWater": "yes",
+        "accessibleWc": "yes",
+        "changingRoom": "yes"
+      },
+      "decision": "accept",
+      "chosenId": 3009,
+      "candidates": [
+        {
+          "id": 3009,
+          "name": "Νέα Ρόδα",
+          "region": "Central Macedonia",
+          "sub": "Halkidiki",
+          "subSub": "Halkidiki (mainland)",
+          "score": 100
+        },
+        {
+          "id": 430,
+          "name": "Oneiro",
+          "region": "Central Macedonia",
+          "sub": "Halkidiki",
+          "subSub": "Halkidiki (mainland)",
+          "score": 36
+        },
+        {
+          "id": 402,
+          "name": "Παραλία Νέας Ποτίδαιας",
+          "region": "Central Macedonia",
+          "sub": "Halkidiki",
+          "subSub": "Halkidiki (mainland)",
+          "score": 33
+        },
+        {
+          "id": 487,
+          "name": "Παραλία Μπάρα",
+          "region": "Central Macedonia",
+          "sub": "Halkidiki",
+          "subSub": "Halkidiki (mainland)",
+          "score": 29
+        }
+      ]
+    },
+    {
+      "seed": {
+        "nameGr": "Αμμουλιανή",
+        "nameEn": "Ammouliani",
+        "region": "Central Macedonia",
+        "municipality": "Aristotelis",
+        "status": "listed-unverified",
+        "notes": "Blind-guidance systems; accessible WC/changing at Alykes-Ammouliani."
+      },
+      "decision": "accept",
+      "chosenId": 3007,
+      "candidates": [
+        {
+          "id": 3007,
+          "name": "Αμμουλιανή",
+          "region": "Central Macedonia",
+          "sub": "Halkidiki",
+          "subSub": "Halkidiki (mainland)",
+          "score": 100
+        },
+        {
+          "id": 449,
+          "name": "Trani Ammouda",
+          "region": "Central Macedonia",
+          "sub": "Halkidiki",
+          "subSub": "Halkidiki (mainland)",
+          "score": 70
+        },
+        {
+          "id": 425,
+          "name": "Megali Ammos",
+          "region": "Central Macedonia",
+          "sub": "Halkidiki",
+          "subSub": "Halkidiki (mainland)",
+          "score": 53
+        },
+        {
+          "id": 389,
+          "name": "Chrysi Ammoudia",
+          "region": "Central Macedonia",
+          "sub": "Halkidiki",
+          "subSub": "Halkidiki (mainland)",
+          "score": 45
         }
       ]
     },
@@ -477,6 +708,51 @@
     },
     {
       "seed": {
+        "nameGr": "Περιγιάλι",
+        "nameEn": "Perigiali",
+        "region": "East Macedonia and Thrace",
+        "municipality": "Kavala",
+        "status": "online"
+      },
+      "decision": "accept",
+      "chosenId": 3012,
+      "candidates": [
+        {
+          "id": 3012,
+          "name": "Περιγιάλι",
+          "region": "East Macedonia and Thrace",
+          "sub": "Kavala",
+          "subSub": "Kavala (mainland)",
+          "score": 100
+        },
+        {
+          "id": 850,
+          "name": "Σαλιάρα",
+          "region": "East Macedonia and Thrace",
+          "sub": "Thasos",
+          "subSub": "Thasos",
+          "score": 43
+        },
+        {
+          "id": 816,
+          "name": "Μικρή παραλία",
+          "region": "East Macedonia and Thrace",
+          "sub": "Thasos",
+          "subSub": "Thasos",
+          "score": 42
+        },
+        {
+          "id": 798,
+          "name": "Παραλία Ίμερου",
+          "region": "East Macedonia and Thrace",
+          "sub": "Rodopi",
+          "subSub": "Rodopi (mainland)",
+          "score": 40
+        }
+      ]
+    },
+    {
+      "seed": {
         "nameGr": "Σκάλα Πρίνου",
         "nameEn": "Skala Prinos",
         "region": "East Macedonia and Thrace",
@@ -704,6 +980,52 @@
     },
     {
       "seed": {
+        "nameGr": "Ροδάκινο",
+        "nameEn": "Rodakino",
+        "region": "Crete",
+        "municipality": "Agios Vasileios",
+        "status": "listed-unverified",
+        "notes": "Part of April 2025 approved accessibility investment."
+      },
+      "decision": "accept",
+      "chosenId": 3011,
+      "candidates": [
+        {
+          "id": 3011,
+          "name": "Ροδάκινο",
+          "region": "Crete",
+          "sub": "Rethymno",
+          "subSub": "Crete (Rethymno)",
+          "score": 100
+        },
+        {
+          "id": 705,
+          "name": "Σκίνος",
+          "region": "Crete",
+          "sub": "Rethymno",
+          "subSub": "Crete (Rethymno)",
+          "score": 50
+        },
+        {
+          "id": 663,
+          "name": "Μαριδάκι",
+          "region": "Crete",
+          "sub": "Heraklion",
+          "subSub": "Crete (Heraklion)",
+          "score": 43
+        },
+        {
+          "id": 749,
+          "name": "Κρινάκια",
+          "region": "Crete",
+          "sub": "Lasithi",
+          "subSub": "Crete (Lasithi)",
+          "score": 43
+        }
+      ]
+    },
+    {
+      "seed": {
         "nameGr": "Καρτερός",
         "nameEn": "Karteros",
         "region": "Crete",
@@ -840,6 +1162,52 @@
     },
     {
       "seed": {
+        "nameGr": "Ελούντα",
+        "nameEn": "Elounda",
+        "region": "Crete",
+        "municipality": "Agios Nikolaos",
+        "status": "online",
+        "notes": "Elounda central beach."
+      },
+      "decision": "accept",
+      "chosenId": 3010,
+      "candidates": [
+        {
+          "id": 3010,
+          "name": "Ελούντα",
+          "region": "Crete",
+          "sub": "Lasithi",
+          "subSub": "Crete (Lasithi)",
+          "score": 100
+        },
+        {
+          "id": 764,
+          "name": "Πλάκα Ελούντας",
+          "region": "Crete",
+          "sub": "Lasithi",
+          "subSub": "Crete (Lasithi)",
+          "score": 67
+        },
+        {
+          "id": 755,
+          "name": "Μπάλος Ελούντας",
+          "region": "Crete",
+          "sub": "Lasithi",
+          "subSub": "Crete (Lasithi)",
+          "score": 63
+        },
+        {
+          "id": 556,
+          "name": "Παραλία Κούτελος",
+          "region": "Crete",
+          "sub": "Chania",
+          "subSub": "Crete (Chania)",
+          "score": 46
+        }
+      ]
+    },
+    {
+      "seed": {
         "nameGr": "Κιτροπλατεία",
         "nameEn": "Kitroplateia",
         "region": "Crete",
@@ -926,6 +1294,51 @@
           "sub": "Cyclades",
           "subSub": "Folegandros",
           "score": 50
+        }
+      ]
+    },
+    {
+      "seed": {
+        "nameGr": "Βούλγαρη",
+        "nameEn": "Voulgari",
+        "region": "South Aegean",
+        "municipality": "Syros",
+        "status": "listed-unverified"
+      },
+      "decision": "accept",
+      "chosenId": 3016,
+      "candidates": [
+        {
+          "id": 3016,
+          "name": "Βούλγαρη",
+          "region": "South Aegean",
+          "sub": "Cyclades",
+          "subSub": "Syros",
+          "score": 100
+        },
+        {
+          "id": 1751,
+          "name": "Λυγαριά",
+          "region": "South Aegean",
+          "sub": "Cyclades",
+          "subSub": "Folegandros",
+          "score": 46
+        },
+        {
+          "id": 1884,
+          "name": "Μαρούλα",
+          "region": "South Aegean",
+          "sub": "Cyclades",
+          "subSub": "Kythnos",
+          "score": 46
+        },
+        {
+          "id": 1883,
+          "name": "Μαρκουλη",
+          "region": "South Aegean",
+          "sub": "Cyclades",
+          "subSub": "Kythnos",
+          "score": 43
         }
       ]
     },
@@ -1252,6 +1665,51 @@
     },
     {
       "seed": {
+        "nameGr": "Πάτμος Κάμπος",
+        "nameEn": "Patmos Kampos",
+        "region": "South Aegean",
+        "municipality": "Patmos",
+        "status": "listed-unverified"
+      },
+      "decision": "accept",
+      "chosenId": 3015,
+      "candidates": [
+        {
+          "id": 3015,
+          "name": "Πάτμος Κάμπος",
+          "region": "South Aegean",
+          "sub": "Dodecanese",
+          "subSub": "Patmos",
+          "score": 100
+        },
+        {
+          "id": 1996,
+          "name": "Κάμπος",
+          "region": "South Aegean",
+          "sub": "Cyclades",
+          "subSub": "Naxos",
+          "score": 63
+        },
+        {
+          "id": 2371,
+          "name": "Κάμπος",
+          "region": "South Aegean",
+          "sub": "Dodecanese",
+          "subSub": "Lipsi",
+          "score": 63
+        },
+        {
+          "id": 1661,
+          "name": "Κάτω Κάμπος",
+          "region": "South Aegean",
+          "sub": "Cyclades",
+          "subSub": "Amorgos",
+          "score": 60
+        }
+      ]
+    },
+    {
+      "seed": {
         "nameGr": "Δασιά",
         "nameEn": "Dasia",
         "region": "Ionian Islands",
@@ -1292,6 +1750,97 @@
           "sub": "Corfu",
           "subSub": "Corfu",
           "score": 50
+        }
+      ]
+    },
+    {
+      "seed": {
+        "nameGr": "Γουβιά",
+        "nameEn": "Gouvia",
+        "region": "Ionian Islands",
+        "municipality": "Corfu",
+        "status": "online",
+        "notes": "Blind-guidance audio system installed at Gouvia."
+      },
+      "decision": "accept",
+      "chosenId": 3013,
+      "candidates": [
+        {
+          "id": 3013,
+          "name": "Γουβιά",
+          "region": "Ionian Islands",
+          "sub": "Corfu",
+          "subSub": "Corfu",
+          "score": 100
+        },
+        {
+          "id": 1014,
+          "name": "Ροβινιά",
+          "region": "Ionian Islands",
+          "sub": "Corfu",
+          "subSub": "Corfu",
+          "score": 36
+        },
+        {
+          "id": 1101,
+          "name": "Κουμαριά",
+          "region": "Ionian Islands",
+          "sub": "Kefalonia",
+          "subSub": "Kefalonia",
+          "score": 33
+        },
+        {
+          "id": 1169,
+          "name": "Πευκούλια",
+          "region": "Ionian Islands",
+          "sub": "Lefkada",
+          "subSub": "Lefkada",
+          "score": 31
+        }
+      ]
+    },
+    {
+      "seed": {
+        "nameGr": "Παλαιοκαστρίτσα",
+        "nameEn": "Palaiokastritsa",
+        "region": "Ionian Islands",
+        "municipality": "Corfu",
+        "status": "online"
+      },
+      "decision": "accept",
+      "chosenId": 3014,
+      "candidates": [
+        {
+          "id": 3014,
+          "name": "Παλαιοκαστρίτσα",
+          "region": "Ionian Islands",
+          "sub": "Corfu",
+          "subSub": "Corfu",
+          "score": 100
+        },
+        {
+          "id": 1045,
+          "name": "Καλαμίτσα",
+          "region": "Ionian Islands",
+          "sub": "Corfu",
+          "subSub": "Antipaxos",
+          "score": 55
+        },
+        {
+          "id": 1003,
+          "name": "Παραλία Στέλάρι",
+          "region": "Ionian Islands",
+          "sub": "Corfu",
+          "subSub": "Corfu",
+          "score": 44
+        },
+        {
+          "id": 941,
+          "name": "Kalamionas Beach",
+          "region": "Ionian Islands",
+          "sub": "Corfu",
+          "subSub": "Corfu",
+          "score": 43
         }
       ]
     },
@@ -1847,6 +2396,51 @@
           "score": 27
         }
       ]
+    },
+    {
+      "seed": {
+        "nameGr": "Μεσολόγγι Τουρλίδα",
+        "nameEn": "Mesolongi Tourlida",
+        "region": "West Greece",
+        "municipality": "Mesolongi",
+        "status": "listed-unverified"
+      },
+      "decision": "accept",
+      "chosenId": 3017,
+      "candidates": [
+        {
+          "id": 3017,
+          "name": "Μεσολόγγι Τουρλίδα",
+          "region": "West Greece",
+          "sub": "Aetolia-Acarnania",
+          "subSub": "Aetolia-Acarnania (mainland)",
+          "score": 100
+        },
+        {
+          "id": 2559,
+          "name": "Παραλία Τουρλίδας",
+          "region": "West Greece",
+          "sub": "Aetolia-Acarnania",
+          "subSub": "Aetolia-Acarnania (mainland)",
+          "score": 58
+        },
+        {
+          "id": 2533,
+          "name": "Λούρος",
+          "region": "West Greece",
+          "sub": "Aetolia-Acarnania",
+          "subSub": "Aetolia-Acarnania (mainland)",
+          "score": 29
+        },
+        {
+          "id": 2552,
+          "name": "Παραλία Κουλούρι",
+          "region": "West Greece",
+          "sub": "Aetolia-Acarnania",
+          "subSub": "Aetolia-Acarnania (mainland)",
+          "score": 27
+        }
+      ]
     }
   ],
   "ambiguous": [
@@ -2234,6 +2828,14 @@
           "score": 76
         },
         {
+          "id": 3007,
+          "name": "Αμμουλιανή",
+          "region": "Central Macedonia",
+          "sub": "Halkidiki",
+          "subSub": "Halkidiki (mainland)",
+          "score": 63
+        },
+        {
           "id": 521,
           "name": "Παραλία Νέας Μηχανιώνας",
           "region": "Central Macedonia",
@@ -2248,14 +2850,6 @@
           "sub": "Halkidiki",
           "subSub": "Halkidiki (mainland)",
           "score": 43
-        },
-        {
-          "id": 446,
-          "name": "Tigania",
-          "region": "Central Macedonia",
-          "sub": "Halkidiki",
-          "subSub": "Halkidiki (mainland)",
-          "score": 38
         }
       ]
     },
@@ -3929,6 +4523,14 @@
           "score": 59
         },
         {
+          "id": 3006,
+          "name": "Πόρτο Ράφτη Αυλάκι",
+          "region": "Attica",
+          "sub": "East Attica",
+          "subSub": "East Attica (mainland)",
+          "score": 51
+        },
+        {
           "id": 160,
           "name": "Μοναστήρι",
           "region": "Attica",
@@ -3943,57 +4545,6 @@
           "sub": "West Attica",
           "subSub": "West Attica (mainland)",
           "score": 35
-        },
-        {
-          "id": 145,
-          "name": "Παραλία Σπαραγγάριο",
-          "region": "Attica",
-          "sub": "Islands (Saronic & Kythira)",
-          "subSub": "Kythira",
-          "score": 34
-        }
-      ]
-    },
-    {
-      "seed": {
-        "nameGr": "Πόρτο Ράφτη Αυλάκι",
-        "nameEn": "Porto Rafti Avlaki",
-        "region": "Attica",
-        "status": "listed-unverified"
-      },
-      "decision": "no-match (Phase D2 candidate)",
-      "candidates": [
-        {
-          "id": 46,
-          "name": "Αυλάκι",
-          "region": "Attica",
-          "sub": "East Attica",
-          "subSub": "East Attica (mainland)",
-          "score": 50
-        },
-        {
-          "id": 102,
-          "name": "Αυλάκι",
-          "region": "Attica",
-          "sub": "Islands (Saronic & Kythira)",
-          "subSub": "Hydra",
-          "score": 50
-        },
-        {
-          "id": 148,
-          "name": "Στενό Αυλάκι",
-          "region": "Attica",
-          "sub": "Islands (Saronic & Kythira)",
-          "subSub": "Kythira",
-          "score": 40
-        },
-        {
-          "id": 131,
-          "name": "Διακόφτι",
-          "region": "Attica",
-          "sub": "Islands (Saronic & Kythira)",
-          "subSub": "Kythira",
-          "score": 36
         }
       ]
     },
@@ -4031,12 +4582,12 @@
           "score": 42
         },
         {
-          "id": 90,
-          "name": "Παραλία Μαραθώνα Α",
+          "id": 3005,
+          "name": "Κύθηρα Καψάλι",
           "region": "Attica",
           "sub": "Islands (Saronic & Kythira)",
-          "subSub": "Aegina",
-          "score": 40
+          "subSub": "Kythira",
+          "score": 42
         }
       ]
     },
@@ -4125,51 +4676,6 @@
           "sub": "Islands (Saronic & Kythira)",
           "subSub": "Poros",
           "score": 47
-        }
-      ]
-    },
-    {
-      "seed": {
-        "nameGr": "Κύθηρα Καψάλι",
-        "nameEn": "Kythira Kapsali",
-        "region": "Attica",
-        "municipality": "Kythira",
-        "status": "listed-unverified",
-        "notes": "Seatrac near Agia Pelagia, Diakofti, Paleopoli, Kapsali; installed late spring, withdrawn October."
-      },
-      "decision": "no-match (Phase D2 candidate)",
-      "candidates": [
-        {
-          "id": 144,
-          "name": "Καψάλι",
-          "region": "Attica",
-          "sub": "Islands (Saronic & Kythira)",
-          "subSub": "Kythira",
-          "score": 63
-        },
-        {
-          "id": 137,
-          "name": "Βλυχάδα Ανατολική",
-          "region": "Attica",
-          "sub": "Islands (Saronic & Kythira)",
-          "subSub": "Kythira",
-          "score": 53
-        },
-        {
-          "id": 77,
-          "name": "Παραλία ΚΑΠΕ",
-          "region": "Attica",
-          "sub": "East Attica",
-          "subSub": "East Attica (mainland)",
-          "score": 52
-        },
-        {
-          "id": 114,
-          "name": "Παραλία Καρπάθι",
-          "region": "Attica",
-          "sub": "Islands (Saronic & Kythira)",
-          "subSub": "Kythira",
-          "score": 52
         }
       ]
     },
@@ -4284,6 +4790,14 @@
           "score": 67
         },
         {
+          "id": 3009,
+          "name": "Νέα Ρόδα",
+          "region": "Central Macedonia",
+          "sub": "Halkidiki",
+          "subSub": "Halkidiki (mainland)",
+          "score": 27
+        },
+        {
           "id": 383,
           "name": "Akti Kalogrias",
           "region": "Central Macedonia",
@@ -4298,60 +4812,6 @@
           "sub": "Halkidiki",
           "subSub": "Halkidiki (mainland)",
           "score": 24
-        },
-        {
-          "id": 522,
-          "name": "Παραλία Νέων Βρασνών",
-          "region": "Central Macedonia",
-          "sub": "Thessaloniki",
-          "subSub": "Thessaloniki area",
-          "score": 24
-        }
-      ]
-    },
-    {
-      "seed": {
-        "nameGr": "Γεωπονικά",
-        "nameEn": "Geoponika",
-        "region": "Central Macedonia",
-        "municipality": "Nea Propontida",
-        "status": "online",
-        "accessibleWc": "yes",
-        "boardwalkToWater": "yes"
-      },
-      "decision": "no-match (Phase D2 candidate)",
-      "candidates": [
-        {
-          "id": 468,
-          "name": "Παραλία Τριστινίκα",
-          "region": "Central Macedonia",
-          "sub": "Halkidiki",
-          "subSub": "Halkidiki (mainland)",
-          "score": 38
-        },
-        {
-          "id": 465,
-          "name": "Παραλία Σαλονικιού",
-          "region": "Central Macedonia",
-          "sub": "Halkidiki",
-          "subSub": "Halkidiki (mainland)",
-          "score": 35
-        },
-        {
-          "id": 460,
-          "name": "Παραλία Νικήτης",
-          "region": "Central Macedonia",
-          "sub": "Halkidiki",
-          "subSub": "Halkidiki (mainland)",
-          "score": 31
-        },
-        {
-          "id": 467,
-          "name": "Παραλία Τορώνης",
-          "region": "Central Macedonia",
-          "sub": "Halkidiki",
-          "subSub": "Halkidiki (mainland)",
-          "score": 31
         }
       ]
     },
@@ -4449,98 +4909,6 @@
     },
     {
       "seed": {
-        "nameGr": "Νέα Ρόδα",
-        "nameEn": "Nea Roda",
-        "region": "Central Macedonia",
-        "municipality": "Aristotelis",
-        "status": "online",
-        "boardwalkToWater": "yes",
-        "accessibleWc": "yes",
-        "changingRoom": "yes"
-      },
-      "decision": "no-match (Phase D2 candidate)",
-      "candidates": [
-        {
-          "id": 430,
-          "name": "Oneiro",
-          "region": "Central Macedonia",
-          "sub": "Halkidiki",
-          "subSub": "Halkidiki (mainland)",
-          "score": 36
-        },
-        {
-          "id": 402,
-          "name": "Παραλία Νέας Ποτίδαιας",
-          "region": "Central Macedonia",
-          "sub": "Halkidiki",
-          "subSub": "Halkidiki (mainland)",
-          "score": 33
-        },
-        {
-          "id": 487,
-          "name": "Παραλία Μπάρα",
-          "region": "Central Macedonia",
-          "sub": "Halkidiki",
-          "subSub": "Halkidiki (mainland)",
-          "score": 29
-        },
-        {
-          "id": 522,
-          "name": "Παραλία Νέων Βρασνών",
-          "region": "Central Macedonia",
-          "sub": "Thessaloniki",
-          "subSub": "Thessaloniki area",
-          "score": 29
-        }
-      ]
-    },
-    {
-      "seed": {
-        "nameGr": "Αμμουλιανή",
-        "nameEn": "Ammouliani",
-        "region": "Central Macedonia",
-        "municipality": "Aristotelis",
-        "status": "listed-unverified",
-        "notes": "Blind-guidance systems; accessible WC/changing at Alykes-Ammouliani."
-      },
-      "decision": "no-match (Phase D2 candidate)",
-      "candidates": [
-        {
-          "id": 449,
-          "name": "Trani Ammouda",
-          "region": "Central Macedonia",
-          "sub": "Halkidiki",
-          "subSub": "Halkidiki (mainland)",
-          "score": 70
-        },
-        {
-          "id": 425,
-          "name": "Megali Ammos",
-          "region": "Central Macedonia",
-          "sub": "Halkidiki",
-          "subSub": "Halkidiki (mainland)",
-          "score": 53
-        },
-        {
-          "id": 389,
-          "name": "Chrysi Ammoudia",
-          "region": "Central Macedonia",
-          "sub": "Halkidiki",
-          "subSub": "Halkidiki (mainland)",
-          "score": 45
-        },
-        {
-          "id": 420,
-          "name": "Limani",
-          "region": "Central Macedonia",
-          "sub": "Halkidiki",
-          "subSub": "Halkidiki (mainland)",
-          "score": 43
-        }
-      ]
-    },
-    {
-      "seed": {
         "nameGr": "Κορινός",
         "nameEn": "Korinos",
         "region": "Central Macedonia",
@@ -4580,50 +4948,6 @@
           "sub": "Halkidiki",
           "subSub": "Halkidiki (mainland)",
           "score": 31
-        }
-      ]
-    },
-    {
-      "seed": {
-        "nameGr": "Περιγιάλι",
-        "nameEn": "Perigiali",
-        "region": "East Macedonia and Thrace",
-        "municipality": "Kavala",
-        "status": "online"
-      },
-      "decision": "no-match (Phase D2 candidate)",
-      "candidates": [
-        {
-          "id": 850,
-          "name": "Σαλιάρα",
-          "region": "East Macedonia and Thrace",
-          "sub": "Thasos",
-          "subSub": "Thasos",
-          "score": 43
-        },
-        {
-          "id": 816,
-          "name": "Μικρή παραλία",
-          "region": "East Macedonia and Thrace",
-          "sub": "Thasos",
-          "subSub": "Thasos",
-          "score": 42
-        },
-        {
-          "id": 798,
-          "name": "Παραλία Ίμερου",
-          "region": "East Macedonia and Thrace",
-          "sub": "Rodopi",
-          "subSub": "Rodopi (mainland)",
-          "score": 40
-        },
-        {
-          "id": 814,
-          "name": "Λιμενάρια",
-          "region": "East Macedonia and Thrace",
-          "sub": "Thasos",
-          "subSub": "Thasos",
-          "score": 38
         }
       ]
     },
@@ -4940,51 +5264,6 @@
     },
     {
       "seed": {
-        "nameGr": "Ροδάκινο",
-        "nameEn": "Rodakino",
-        "region": "Crete",
-        "municipality": "Agios Vasileios",
-        "status": "listed-unverified",
-        "notes": "Part of April 2025 approved accessibility investment."
-      },
-      "decision": "no-match (Phase D2 candidate)",
-      "candidates": [
-        {
-          "id": 705,
-          "name": "Σκίνος",
-          "region": "Crete",
-          "sub": "Rethymno",
-          "subSub": "Crete (Rethymno)",
-          "score": 50
-        },
-        {
-          "id": 663,
-          "name": "Μαριδάκι",
-          "region": "Crete",
-          "sub": "Heraklion",
-          "subSub": "Crete (Heraklion)",
-          "score": 43
-        },
-        {
-          "id": 749,
-          "name": "Κρινάκια",
-          "region": "Crete",
-          "sub": "Lasithi",
-          "subSub": "Crete (Lasithi)",
-          "score": 43
-        },
-        {
-          "id": 683,
-          "name": "Κόκκινος Βόλακας",
-          "region": "Crete",
-          "sub": "Rethymno",
-          "subSub": "Crete (Rethymno)",
-          "score": 40
-        }
-      ]
-    },
-    {
-      "seed": {
         "nameGr": "Βαθιανός Κάμπος",
         "nameEn": "Vathianos Kampos",
         "region": "Crete",
@@ -5030,51 +5309,6 @@
     },
     {
       "seed": {
-        "nameGr": "Ελούντα",
-        "nameEn": "Elounda",
-        "region": "Crete",
-        "municipality": "Agios Nikolaos",
-        "status": "online",
-        "notes": "Elounda central beach."
-      },
-      "decision": "no-match (Phase D2 candidate)",
-      "candidates": [
-        {
-          "id": 764,
-          "name": "Πλάκα Ελούντας",
-          "region": "Crete",
-          "sub": "Lasithi",
-          "subSub": "Crete (Lasithi)",
-          "score": 67
-        },
-        {
-          "id": 755,
-          "name": "Μπάλος Ελούντας",
-          "region": "Crete",
-          "sub": "Lasithi",
-          "subSub": "Crete (Lasithi)",
-          "score": 63
-        },
-        {
-          "id": 556,
-          "name": "Παραλία Κούτελος",
-          "region": "Crete",
-          "sub": "Chania",
-          "subSub": "Crete (Chania)",
-          "score": 46
-        },
-        {
-          "id": 724,
-          "name": "Ανασκελού",
-          "region": "Crete",
-          "sub": "Lasithi",
-          "subSub": "Crete (Lasithi)",
-          "score": 43
-        }
-      ]
-    },
-    {
-      "seed": {
         "nameGr": "Γοργόνα",
         "nameEn": "Gorgona",
         "region": "Crete",
@@ -5114,50 +5348,6 @@
           "sub": "Heraklion",
           "subSub": "Crete (Heraklion)",
           "score": 27
-        }
-      ]
-    },
-    {
-      "seed": {
-        "nameGr": "Βούλγαρη",
-        "nameEn": "Voulgari",
-        "region": "South Aegean",
-        "municipality": "Syros",
-        "status": "listed-unverified"
-      },
-      "decision": "no-match (Phase D2 candidate)",
-      "candidates": [
-        {
-          "id": 1751,
-          "name": "Λυγαριά",
-          "region": "South Aegean",
-          "sub": "Cyclades",
-          "subSub": "Folegandros",
-          "score": 46
-        },
-        {
-          "id": 1884,
-          "name": "Μαρούλα",
-          "region": "South Aegean",
-          "sub": "Cyclades",
-          "subSub": "Kythnos",
-          "score": 46
-        },
-        {
-          "id": 1883,
-          "name": "Μαρκουλη",
-          "region": "South Aegean",
-          "sub": "Cyclades",
-          "subSub": "Kythnos",
-          "score": 43
-        },
-        {
-          "id": 1695,
-          "name": "Βόρη",
-          "region": "South Aegean",
-          "sub": "Cyclades",
-          "subSub": "Andros",
-          "score": 40
         }
       ]
     },
@@ -5296,50 +5486,6 @@
     },
     {
       "seed": {
-        "nameGr": "Πάτμος Κάμπος",
-        "nameEn": "Patmos Kampos",
-        "region": "South Aegean",
-        "municipality": "Patmos",
-        "status": "listed-unverified"
-      },
-      "decision": "no-match (Phase D2 candidate)",
-      "candidates": [
-        {
-          "id": 1996,
-          "name": "Κάμπος",
-          "region": "South Aegean",
-          "sub": "Cyclades",
-          "subSub": "Naxos",
-          "score": 63
-        },
-        {
-          "id": 2371,
-          "name": "Κάμπος",
-          "region": "South Aegean",
-          "sub": "Dodecanese",
-          "subSub": "Lipsi",
-          "score": 63
-        },
-        {
-          "id": 1661,
-          "name": "Κάτω Κάμπος",
-          "region": "South Aegean",
-          "sub": "Cyclades",
-          "subSub": "Amorgos",
-          "score": 60
-        },
-        {
-          "id": 2380,
-          "name": "Ξηρόκαμπος",
-          "region": "South Aegean",
-          "sub": "Dodecanese",
-          "subSub": "Lipsi",
-          "score": 50
-        }
-      ]
-    },
-    {
-      "seed": {
         "nameGr": "Τήλος Λιβάδια",
         "nameEn": "Tilos Livadia",
         "region": "South Aegean",
@@ -5424,95 +5570,6 @@
           "sub": "Dodecanese",
           "subSub": "Rhodes",
           "score": 33
-        }
-      ]
-    },
-    {
-      "seed": {
-        "nameGr": "Γουβιά",
-        "nameEn": "Gouvia",
-        "region": "Ionian Islands",
-        "municipality": "Corfu",
-        "status": "online",
-        "notes": "Blind-guidance audio system installed at Gouvia."
-      },
-      "decision": "no-match (Phase D2 candidate)",
-      "candidates": [
-        {
-          "id": 1014,
-          "name": "Ροβινιά",
-          "region": "Ionian Islands",
-          "sub": "Corfu",
-          "subSub": "Corfu",
-          "score": 36
-        },
-        {
-          "id": 1101,
-          "name": "Κουμαριά",
-          "region": "Ionian Islands",
-          "sub": "Kefalonia",
-          "subSub": "Kefalonia",
-          "score": 33
-        },
-        {
-          "id": 1169,
-          "name": "Πευκούλια",
-          "region": "Ionian Islands",
-          "sub": "Lefkada",
-          "subSub": "Lefkada",
-          "score": 31
-        },
-        {
-          "id": 963,
-          "name": "Καλυβιώτης",
-          "region": "Ionian Islands",
-          "sub": "Corfu",
-          "subSub": "Corfu",
-          "score": 29
-        }
-      ]
-    },
-    {
-      "seed": {
-        "nameGr": "Παλαιοκαστρίτσα",
-        "nameEn": "Palaiokastritsa",
-        "region": "Ionian Islands",
-        "municipality": "Corfu",
-        "status": "online"
-      },
-      "decision": "no-match (Phase D2 candidate)",
-      "candidates": [
-        {
-          "id": 1045,
-          "name": "Καλαμίτσα",
-          "region": "Ionian Islands",
-          "sub": "Corfu",
-          "subSub": "Antipaxos",
-          "score": 55
-        },
-        {
-          "id": 1003,
-          "name": "Παραλία Στέλάρι",
-          "region": "Ionian Islands",
-          "sub": "Corfu",
-          "subSub": "Corfu",
-          "score": 44
-        },
-        {
-          "id": 941,
-          "name": "Kalamionas Beach",
-          "region": "Ionian Islands",
-          "sub": "Corfu",
-          "subSub": "Corfu",
-          "score": 43
-        },
-        {
-          "id": 1071,
-          "name": "Παραλία Σκάλας",
-          "region": "Ionian Islands",
-          "sub": "Kefalonia",
-          "subSub": "Kefalonia",
-          "score": 42
         }
       ]
     },
@@ -7291,50 +7348,6 @@
           "sub": "Aetolia-Acarnania",
           "subSub": "Aetolia-Acarnania (mainland)",
           "score": 38
-        }
-      ]
-    },
-    {
-      "seed": {
-        "nameGr": "Μεσολόγγι Τουρλίδα",
-        "nameEn": "Mesolongi Tourlida",
-        "region": "West Greece",
-        "municipality": "Mesolongi",
-        "status": "listed-unverified"
-      },
-      "decision": "no-match (Phase D2 candidate)",
-      "candidates": [
-        {
-          "id": 2559,
-          "name": "Παραλία Τουρλίδας",
-          "region": "West Greece",
-          "sub": "Aetolia-Acarnania",
-          "subSub": "Aetolia-Acarnania (mainland)",
-          "score": 58
-        },
-        {
-          "id": 2533,
-          "name": "Λούρος",
-          "region": "West Greece",
-          "sub": "Aetolia-Acarnania",
-          "subSub": "Aetolia-Acarnania (mainland)",
-          "score": 29
-        },
-        {
-          "id": 2552,
-          "name": "Παραλία Κουλούρι",
-          "region": "West Greece",
-          "sub": "Aetolia-Acarnania",
-          "subSub": "Aetolia-Acarnania (mainland)",
-          "score": 27
-        },
-        {
-          "id": 2573,
-          "name": "Παραλία Αγίου Ηλία",
-          "region": "West Greece",
-          "sub": "Ileia",
-          "subSub": "Ileia (mainland)",
-          "score": 25
         }
       ]
     },
