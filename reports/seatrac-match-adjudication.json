@@ -1,10 +1,10 @@
 {
   "_meta": {
-    "generatedAt": "2026-06-14T19:59:52.258Z",
+    "generatedAt": "2026-06-14T20:44:37.362Z",
     "seedCount": 174,
-    "confident": 57,
+    "confident": 64,
     "ambiguous": 33,
-    "noMatch": 84,
+    "noMatch": 77,
     "instructions": "Review each entry. For 'confident': verify chosenId or set to null to skip. For ambiguous (PICK_ONE): set chosenId to the correct candidate id, or null to skip. 'no-match': leave for Phase D2. Then run: node scripts/importSeatracAccessibility.mjs apply",
     "thresholds": {
       "CONFIDENT": 88,
@@ -97,6 +97,51 @@
           "sub": "Islands (Saronic & Kythira)",
           "subSub": "Kythira",
           "score": 40
+        }
+      ]
+    },
+    {
+      "seed": {
+        "nameGr": "Αίγινα Μαραθώνας",
+        "nameEn": "Aigina Marathonas",
+        "region": "Attica",
+        "municipality": "Aigina",
+        "status": "listed-unverified"
+      },
+      "decision": "accept",
+      "chosenId": 3022,
+      "candidates": [
+        {
+          "id": 3022,
+          "name": "Αίγινα Μαραθώνας",
+          "region": "Attica",
+          "sub": "Islands (Saronic & Kythira)",
+          "subSub": "Aegina",
+          "score": 100
+        },
+        {
+          "id": 33,
+          "name": "Παραλία Μαραθώνα",
+          "region": "Attica",
+          "sub": "East Attica",
+          "subSub": "East Attica (mainland)",
+          "score": 70
+        },
+        {
+          "id": 90,
+          "name": "Παραλία Μαραθώνα Α",
+          "region": "Attica",
+          "sub": "Islands (Saronic & Kythira)",
+          "subSub": "Aegina",
+          "score": 67
+        },
+        {
+          "id": 91,
+          "name": "Παραλία Μαραθώνα Β",
+          "region": "Attica",
+          "sub": "Islands (Saronic & Kythira)",
+          "subSub": "Aegina",
+          "score": 67
         }
       ]
     },
@@ -1760,6 +1805,51 @@
     },
     {
       "seed": {
+        "nameGr": "Σέριφος Λιβάδι Αυλόμωνας",
+        "nameEn": "Serifos Livadi Avlomonas",
+        "region": "South Aegean",
+        "municipality": "Serifos",
+        "status": "listed-unverified"
+      },
+      "decision": "accept",
+      "chosenId": 2074,
+      "candidates": [
+        {
+          "id": 2074,
+          "name": "Αυλόμωνας",
+          "region": "South Aegean",
+          "sub": "Cyclades",
+          "subSub": "Serifos",
+          "score": 100
+        },
+        {
+          "id": 1733,
+          "name": "Λιβάδια",
+          "region": "South Aegean",
+          "sub": "Cyclades",
+          "subSub": "Antiparos",
+          "score": 44
+        },
+        {
+          "id": 2033,
+          "name": "Λιβάδια",
+          "region": "South Aegean",
+          "sub": "Cyclades",
+          "subSub": "Paros",
+          "score": 44
+        },
+        {
+          "id": 2478,
+          "name": "Λιβάδια",
+          "region": "South Aegean",
+          "sub": "Dodecanese",
+          "subSub": "Tilos",
+          "score": 44
+        }
+      ]
+    },
+    {
+      "seed": {
         "nameGr": "Πάτμος Κάμπος",
         "nameEn": "Patmos Kampos",
         "region": "South Aegean",
@@ -2262,6 +2352,51 @@
     },
     {
       "seed": {
+        "nameGr": "Καρδαμύλη Ρίτσα",
+        "nameEn": "Kardamili Ritsa",
+        "region": "Peloponnese",
+        "municipality": "Dytiki Mani",
+        "status": "online"
+      },
+      "decision": "accept",
+      "chosenId": 1639,
+      "candidates": [
+        {
+          "id": 1639,
+          "name": "Παραλία Ριτσά",
+          "region": "Peloponnese",
+          "sub": "Messinia",
+          "subSub": "Messinia (mainland)",
+          "score": 100
+        },
+        {
+          "id": 1635,
+          "name": "Παραλία Καλαμίτσι",
+          "region": "Peloponnese",
+          "sub": "Messinia",
+          "subSub": "Messinia (mainland)",
+          "score": 50
+        },
+        {
+          "id": 1489,
+          "name": "Παραλία Μύλων",
+          "region": "Peloponnese",
+          "sub": "Argolida",
+          "subSub": "Argolida (mainland)",
+          "score": 42
+        },
+        {
+          "id": 1509,
+          "name": "Ζαρίτσι",
+          "region": "Peloponnese",
+          "sub": "Arkadia",
+          "subSub": "Arkadia (mainland)",
+          "score": 42
+        }
+      ]
+    },
+    {
+      "seed": {
         "nameGr": "Πάντατζι",
         "nameEn": "Pantazi",
         "region": "Peloponnese",
@@ -2586,6 +2721,186 @@
     },
     {
       "seed": {
+        "nameGr": "Ξυλόκαστρο Σύκια",
+        "nameEn": "Xylokastro Sykia",
+        "region": "Peloponnese",
+        "municipality": "Korinthia",
+        "status": "listed-unverified"
+      },
+      "decision": "accept",
+      "chosenId": 1541,
+      "candidates": [
+        {
+          "id": 1541,
+          "name": "Συκιά",
+          "region": "Peloponnese",
+          "sub": "Korinthia",
+          "subSub": "Korinthia (mainland)",
+          "score": 100
+        },
+        {
+          "id": 1477,
+          "name": "Καστράκι",
+          "region": "Peloponnese",
+          "sub": "Argolida",
+          "subSub": "Argolida (mainland)",
+          "score": 48
+        },
+        {
+          "id": 1560,
+          "name": "Καραβοστάσι Οιτύλου",
+          "region": "Peloponnese",
+          "sub": "Lakonia",
+          "subSub": "Lakonia (mainland)",
+          "score": 39
+        },
+        {
+          "id": 1518,
+          "name": "Πλαζ Παράλιου Άστρους",
+          "region": "Peloponnese",
+          "sub": "Arkadia",
+          "subSub": "Arkadia (mainland)",
+          "score": 38
+        }
+      ]
+    },
+    {
+      "seed": {
+        "nameGr": "Σκιάθος Βρωμόλιμνος",
+        "nameEn": "Skiathos Vromolimnos",
+        "region": "Thessaly",
+        "municipality": "Skiathos",
+        "status": "listed-unverified"
+      },
+      "decision": "accept",
+      "chosenId": 2625,
+      "candidates": [
+        {
+          "id": 2625,
+          "name": "Βρωμόλιμνος",
+          "region": "Thessaly",
+          "sub": "Magnesia (Sporades)",
+          "subSub": "Skiathos",
+          "score": 100
+        },
+        {
+          "id": 2690,
+          "name": "Λίθος",
+          "region": "Thessaly",
+          "sub": "Magnesia",
+          "subSub": "Magnesia (mainland - Pelion)",
+          "score": 35
+        },
+        {
+          "id": 2633,
+          "name": "Μικρός Ασέληνος",
+          "region": "Thessaly",
+          "sub": "Magnesia (Sporades)",
+          "subSub": "Skiathos",
+          "score": 32
+        },
+        {
+          "id": 2648,
+          "name": "Λιμνονάρι",
+          "region": "Thessaly",
+          "sub": "Magnesia (Sporades)",
+          "subSub": "Skopelos",
+          "score": 31
+        }
+      ]
+    },
+    {
+      "seed": {
+        "nameGr": "Αλόννησος Γλύφα",
+        "nameEn": "Alonissos Glyfa",
+        "region": "Thessaly",
+        "municipality": "Alonissos",
+        "status": "listed-unverified"
+      },
+      "decision": "accept",
+      "chosenId": 2588,
+      "candidates": [
+        {
+          "id": 2588,
+          "name": "Γλυφά",
+          "region": "Thessaly",
+          "sub": "Magnesia (Sporades)",
+          "subSub": "Alonissos",
+          "score": 100
+        },
+        {
+          "id": 3023,
+          "name": "Αλόννησος Μηλιά",
+          "region": "Thessaly",
+          "sub": "Magnesia (Sporades)",
+          "subSub": "Alonissos",
+          "score": 62
+        },
+        {
+          "id": 2688,
+          "name": "Κλωσσού",
+          "region": "Thessaly",
+          "sub": "Magnesia",
+          "subSub": "Magnesia (mainland - Pelion)",
+          "score": 42
+        },
+        {
+          "id": 2654,
+          "name": "Γλυφονέρι",
+          "region": "Thessaly",
+          "sub": "Magnesia (Sporades)",
+          "subSub": "Skopelos",
+          "score": 38
+        }
+      ]
+    },
+    {
+      "seed": {
+        "nameGr": "Αλόννησος Μηλιά",
+        "nameEn": "Alonissos Milia",
+        "region": "Thessaly",
+        "municipality": "Alonissos",
+        "status": "listed-unverified"
+      },
+      "decision": "accept",
+      "chosenId": 3023,
+      "candidates": [
+        {
+          "id": 3023,
+          "name": "Αλόννησος Μηλιά",
+          "region": "Thessaly",
+          "sub": "Magnesia (Sporades)",
+          "subSub": "Alonissos",
+          "score": 100
+        },
+        {
+          "id": 2588,
+          "name": "Γλυφά",
+          "region": "Thessaly",
+          "sub": "Magnesia (Sporades)",
+          "subSub": "Alonissos",
+          "score": 62
+        },
+        {
+          "id": 2598,
+          "name": "Μηλιά",
+          "region": "Thessaly",
+          "sub": "Magnesia (Sporades)",
+          "subSub": "Alonissos",
+          "score": 47
+        },
+        {
+          "id": 2657,
+          "name": "Μηλιά",
+          "region": "Thessaly",
+          "sub": "Magnesia (Sporades)",
+          "subSub": "Skopelos",
+          "score": 47
+        }
+      ]
+    },
+    {
+      "seed": {
         "nameGr": "Μεσολόγγι Τουρλίδα",
         "nameEn": "Mesolongi Tourlida",
         "region": "West Greece",
@@ -2796,20 +3111,20 @@
           "score": 100
         },
         {
+          "id": 3022,
+          "name": "Αίγινα Μαραθώνας",
+          "region": "Attica",
+          "sub": "Islands (Saronic & Kythira)",
+          "subSub": "Aegina",
+          "score": 50
+        },
+        {
           "id": 168,
           "name": "Άγιοι Ανάργυροι",
           "region": "Attica",
           "sub": "Islands (Saronic & Kythira)",
           "subSub": "Spetses",
           "score": 45
-        },
-        {
-          "id": 169,
-          "name": "Άγιος Μάμας",
-          "region": "Attica",
-          "sub": "Islands (Saronic & Kythira)",
-          "subSub": "Spetses",
-          "score": 44
         }
       ]
     },
@@ -2841,20 +3156,20 @@
           "score": 75
         },
         {
+          "id": 3022,
+          "name": "Αίγινα Μαραθώνας",
+          "region": "Attica",
+          "sub": "Islands (Saronic & Kythira)",
+          "subSub": "Aegina",
+          "score": 60
+        },
+        {
           "id": 44,
           "name": "Παραλία Αγίου Σπυρίδωνα",
           "region": "Attica",
           "sub": "East Attica",
           "subSub": "East Attica (mainland)",
           "score": 40
-        },
-        {
-          "id": 90,
-          "name": "Παραλία Μαραθώνα Α",
-          "region": "Attica",
-          "sub": "Islands (Saronic & Kythira)",
-          "subSub": "Aegina",
-          "score": 39
         }
       ]
     },
@@ -3970,6 +4285,14 @@
           "score": 73
         },
         {
+          "id": 2625,
+          "name": "Βρωμόλιμνος",
+          "region": "Thessaly",
+          "sub": "Magnesia (Sporades)",
+          "subSub": "Skiathos",
+          "score": 38
+        },
+        {
           "id": 2615,
           "name": "Καθαρίνα",
           "region": "Thessaly",
@@ -3984,14 +4307,6 @@
           "sub": "Magnesia (Sporades)",
           "subSub": "Alonissos",
           "score": 33
-        },
-        {
-          "id": 2640,
-          "name": "Παραλία Λιγαριές",
-          "region": "Thessaly",
-          "sub": "Magnesia (Sporades)",
-          "subSub": "Skiathos",
-          "score": 31
         }
       ]
     },
@@ -4443,6 +4758,14 @@
       "decision": "no-match (Phase D2 candidate)",
       "candidates": [
         {
+          "id": 3022,
+          "name": "Αίγινα Μαραθώνας",
+          "region": "Attica",
+          "sub": "Islands (Saronic & Kythira)",
+          "subSub": "Aegina",
+          "score": 49
+        },
+        {
           "id": 33,
           "name": "Παραλία Μαραθώνα",
           "region": "Attica",
@@ -4461,14 +4784,6 @@
         {
           "id": 90,
           "name": "Παραλία Μαραθώνα Α",
-          "region": "Attica",
-          "sub": "Islands (Saronic & Kythira)",
-          "subSub": "Aegina",
-          "score": 41
-        },
-        {
-          "id": 91,
-          "name": "Παραλία Μαραθώνα Β",
           "region": "Attica",
           "sub": "Islands (Saronic & Kythira)",
           "subSub": "Aegina",
@@ -4775,50 +5090,6 @@
           "sub": "Islands (Saronic & Kythira)",
           "subSub": "Kythira",
           "score": 42
-        }
-      ]
-    },
-    {
-      "seed": {
-        "nameGr": "Αίγινα Μαραθώνας",
-        "nameEn": "Aigina Marathonas",
-        "region": "Attica",
-        "municipality": "Aigina",
-        "status": "listed-unverified"
-      },
-      "decision": "no-match (Phase D2 candidate)",
-      "candidates": [
-        {
-          "id": 33,
-          "name": "Παραλία Μαραθώνα",
-          "region": "Attica",
-          "sub": "East Attica",
-          "subSub": "East Attica (mainland)",
-          "score": 70
-        },
-        {
-          "id": 90,
-          "name": "Παραλία Μαραθώνα Α",
-          "region": "Attica",
-          "sub": "Islands (Saronic & Kythira)",
-          "subSub": "Aegina",
-          "score": 67
-        },
-        {
-          "id": 91,
-          "name": "Παραλία Μαραθώνα Β",
-          "region": "Attica",
-          "sub": "Islands (Saronic & Kythira)",
-          "subSub": "Aegina",
-          "score": 67
-        },
-        {
-          "id": 81,
-          "name": "Αγία Μαρίνα",
-          "region": "Attica",
-          "sub": "Islands (Saronic & Kythira)",
-          "subSub": "Aegina",
-          "score": 50
         }
       ]
     },
@@ -5491,50 +5762,6 @@
     },
     {
       "seed": {
-        "nameGr": "Σέριφος Λιβάδι Αυλόμωνας",
-        "nameEn": "Serifos Livadi Avlomonas",
-        "region": "South Aegean",
-        "municipality": "Serifos",
-        "status": "listed-unverified"
-      },
-      "decision": "no-match (Phase D2 candidate)",
-      "candidates": [
-        {
-          "id": 2074,
-          "name": "Αυλόμωνας",
-          "region": "South Aegean",
-          "sub": "Cyclades",
-          "subSub": "Serifos",
-          "score": 55
-        },
-        {
-          "id": 1733,
-          "name": "Λιβάδια",
-          "region": "South Aegean",
-          "sub": "Cyclades",
-          "subSub": "Antiparos",
-          "score": 44
-        },
-        {
-          "id": 2033,
-          "name": "Λιβάδια",
-          "region": "South Aegean",
-          "sub": "Cyclades",
-          "subSub": "Paros",
-          "score": 44
-        },
-        {
-          "id": 2478,
-          "name": "Λιβάδια",
-          "region": "South Aegean",
-          "sub": "Dodecanese",
-          "subSub": "Tilos",
-          "score": 44
-        }
-      ]
-    },
-    {
-      "seed": {
         "nameGr": "Λέρος Άλιντα",
         "nameEn": "Leros Alinda",
         "region": "South Aegean",
@@ -6028,50 +6255,6 @@
     },
     {
       "seed": {
-        "nameGr": "Καρδαμύλη Ρίτσα",
-        "nameEn": "Kardamili Ritsa",
-        "region": "Peloponnese",
-        "municipality": "Dytiki Mani",
-        "status": "online"
-      },
-      "decision": "no-match (Phase D2 candidate)",
-      "candidates": [
-        {
-          "id": 1635,
-          "name": "Παραλία Καλαμίτσι",
-          "region": "Peloponnese",
-          "sub": "Messinia",
-          "subSub": "Messinia (mainland)",
-          "score": 50
-        },
-        {
-          "id": 1639,
-          "name": "Παραλία Ριτσά",
-          "region": "Peloponnese",
-          "sub": "Messinia",
-          "subSub": "Messinia (mainland)",
-          "score": 50
-        },
-        {
-          "id": 1489,
-          "name": "Παραλία Μύλων",
-          "region": "Peloponnese",
-          "sub": "Argolida",
-          "subSub": "Argolida (mainland)",
-          "score": 42
-        },
-        {
-          "id": 1509,
-          "name": "Ζαρίτσι",
-          "region": "Peloponnese",
-          "sub": "Arkadia",
-          "subSub": "Arkadia (mainland)",
-          "score": 42
-        }
-      ]
-    },
-    {
-      "seed": {
         "nameGr": "Πλάκα Λεωνιδίου",
         "nameEn": "Plaka Leonidio",
         "region": "Peloponnese",
@@ -6512,50 +6695,6 @@
           "region": "Peloponnese",
           "sub": "Argolida",
           "subSub": "Argolida (mainland)",
-          "score": 38
-        }
-      ]
-    },
-    {
-      "seed": {
-        "nameGr": "Ξυλόκαστρο Σύκια",
-        "nameEn": "Xylokastro Sykia",
-        "region": "Peloponnese",
-        "municipality": "Korinthia",
-        "status": "listed-unverified"
-      },
-      "decision": "no-match (Phase D2 candidate)",
-      "candidates": [
-        {
-          "id": 1477,
-          "name": "Καστράκι",
-          "region": "Peloponnese",
-          "sub": "Argolida",
-          "subSub": "Argolida (mainland)",
-          "score": 48
-        },
-        {
-          "id": 1541,
-          "name": "Συκιά",
-          "region": "Peloponnese",
-          "sub": "Korinthia",
-          "subSub": "Korinthia (mainland)",
-          "score": 44
-        },
-        {
-          "id": 1560,
-          "name": "Καραβοστάσι Οιτύλου",
-          "region": "Peloponnese",
-          "sub": "Lakonia",
-          "subSub": "Lakonia (mainland)",
-          "score": 39
-        },
-        {
-          "id": 1518,
-          "name": "Πλαζ Παράλιου Άστρους",
-          "region": "Peloponnese",
-          "sub": "Arkadia",
-          "subSub": "Arkadia (mainland)",
           "score": 38
         }
       ]
@@ -7169,144 +7308,12 @@
           "score": 41
         },
         {
-          "id": 2596,
-          "name": "Λεφτό Γιαλός",
-          "region": "Thessaly",
-          "sub": "Magnesia (Sporades)",
-          "subSub": "Alonissos",
-          "score": 31
-        }
-      ]
-    },
-    {
-      "seed": {
-        "nameGr": "Σκιάθος Βρωμόλιμνος",
-        "nameEn": "Skiathos Vromolimnos",
-        "region": "Thessaly",
-        "municipality": "Skiathos",
-        "status": "listed-unverified"
-      },
-      "decision": "no-match (Phase D2 candidate)",
-      "candidates": [
-        {
           "id": 2625,
           "name": "Βρωμόλιμνος",
           "region": "Thessaly",
           "sub": "Magnesia (Sporades)",
           "subSub": "Skiathos",
-          "score": 71
-        },
-        {
-          "id": 2690,
-          "name": "Λίθος",
-          "region": "Thessaly",
-          "sub": "Magnesia",
-          "subSub": "Magnesia (mainland - Pelion)",
-          "score": 35
-        },
-        {
-          "id": 2633,
-          "name": "Μικρός Ασέληνος",
-          "region": "Thessaly",
-          "sub": "Magnesia (Sporades)",
-          "subSub": "Skiathos",
-          "score": 32
-        },
-        {
-          "id": 2648,
-          "name": "Λιμνονάρι",
-          "region": "Thessaly",
-          "sub": "Magnesia (Sporades)",
-          "subSub": "Skopelos",
-          "score": 31
-        }
-      ]
-    },
-    {
-      "seed": {
-        "nameGr": "Αλόννησος Γλύφα",
-        "nameEn": "Alonissos Glyfa",
-        "region": "Thessaly",
-        "municipality": "Alonissos",
-        "status": "listed-unverified"
-      },
-      "decision": "no-match (Phase D2 candidate)",
-      "candidates": [
-        {
-          "id": 2588,
-          "name": "Γλυφά",
-          "region": "Thessaly",
-          "sub": "Magnesia (Sporades)",
-          "subSub": "Alonissos",
-          "score": 47
-        },
-        {
-          "id": 2688,
-          "name": "Κλωσσού",
-          "region": "Thessaly",
-          "sub": "Magnesia",
-          "subSub": "Magnesia (mainland - Pelion)",
-          "score": 42
-        },
-        {
-          "id": 2654,
-          "name": "Γλυφονέρι",
-          "region": "Thessaly",
-          "sub": "Magnesia (Sporades)",
-          "subSub": "Skopelos",
-          "score": 38
-        },
-        {
-          "id": 2619,
-          "name": "Μέγας Γιαλός",
-          "region": "Thessaly",
-          "sub": "Magnesia (Sporades)",
-          "subSub": "Skiathos",
-          "score": 35
-        }
-      ]
-    },
-    {
-      "seed": {
-        "nameGr": "Αλόννησος Μηλιά",
-        "nameEn": "Alonissos Milia",
-        "region": "Thessaly",
-        "municipality": "Alonissos",
-        "status": "listed-unverified"
-      },
-      "decision": "no-match (Phase D2 candidate)",
-      "candidates": [
-        {
-          "id": 2598,
-          "name": "Μηλιά",
-          "region": "Thessaly",
-          "sub": "Magnesia (Sporades)",
-          "subSub": "Alonissos",
-          "score": 47
-        },
-        {
-          "id": 2657,
-          "name": "Μηλιά",
-          "region": "Thessaly",
-          "sub": "Magnesia (Sporades)",
-          "subSub": "Skopelos",
-          "score": 47
-        },
-        {
-          "id": 2688,
-          "name": "Κλωσσού",
-          "region": "Thessaly",
-          "sub": "Magnesia",
-          "subSub": "Magnesia (mainland - Pelion)",
-          "score": 42
-        },
-        {
-          "id": 2607,
-          "name": "Ρουσούμ Γιαλός",
-          "region": "Thessaly",
-          "sub": "Magnesia (Sporades)",
-          "subSub": "Alonissos",
-          "score": 40
+          "score": 41
         }
       ]
     },

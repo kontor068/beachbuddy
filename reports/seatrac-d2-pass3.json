@@ -1,0 +1,3729 @@
+{
+  "_meta": {
+    "generatedAt": "2026-06-14T20:42:50.687Z",
+    "pendingCount": 84,
+    "tiers": {
+      "HIGH": 7,
+      "MEDIUM": 0,
+      "LOW": 48,
+      "NONE": 29
+    },
+    "strategy": "locality-centroid -> Overpass natural=beach -> best OSM-name match",
+    "instructions": "HIGH auto-inserts. Promote good MEDIUM/LOW via decision:'accept', skip with 'skip'. Then: node scripts/geocodeSeatracPass3.mjs apply"
+  },
+  "results": [
+    {
+      "seed": {
+        "nameGr": "Άλιμος Καλαμάκι",
+        "nameEn": "Alimos Kalamaki",
+        "region": "Attica",
+        "status": "listed-unverified"
+      },
+      "tier": "LOW",
+      "decision": "REVIEW",
+      "queriesTried": [
+        "Άλιμος, Attica, Greece"
+      ],
+      "localityCenter": {
+        "lat": 37.9110466,
+        "lon": 23.7214792
+      },
+      "best": {
+        "name": "Ακτή του Ήλιου",
+        "lat": 37.9068714,
+        "lon": 23.7149096,
+        "nameScore": 0,
+        "distFromLocalityM": 740
+      },
+      "alternates": [
+        {
+          "name": "Α’ Πλαζ Αλίμου «Στολίδι»",
+          "nameScore": 0,
+          "lat": 37.9091196,
+          "lon": 23.712393
+        },
+        {
+          "name": "",
+          "nameScore": 0,
+          "lat": 37.9032909,
+          "lon": 23.718277
+        },
+        {
+          "name": "",
+          "nameScore": 0,
+          "lat": 37.8962844,
+          "lon": 23.7174173
+        }
+      ],
+      "slot": {
+        "region": "Attica",
+        "sub": "Central Athens",
+        "subSub": "Athens area (mainland)",
+        "neighborId": 5,
+        "neighborName": "Ακτή του Ήλιου",
+        "neighborDistanceM": 0,
+        "farNeighbor": false,
+        "slotConflict": false,
+        "neighborRegion": "Attica"
+      },
+      "flags": [
+        "weak_name_match"
+      ]
+    },
+    {
+      "seed": {
+        "nameGr": "Άλιμος Λουτρά",
+        "nameEn": "Alimos Loutra",
+        "region": "Attica",
+        "status": "listed-unverified"
+      },
+      "tier": "LOW",
+      "decision": "REVIEW",
+      "queriesTried": [
+        "Άλιμος, Attica, Greece"
+      ],
+      "localityCenter": {
+        "lat": 37.9110466,
+        "lon": 23.7214792
+      },
+      "best": {
+        "name": "Ακτή του Ήλιου",
+        "lat": 37.9068714,
+        "lon": 23.7149096,
+        "nameScore": 0,
+        "distFromLocalityM": 740
+      },
+      "alternates": [
+        {
+          "name": "Α’ Πλαζ Αλίμου «Στολίδι»",
+          "nameScore": 0,
+          "lat": 37.9091196,
+          "lon": 23.712393
+        },
+        {
+          "name": "",
+          "nameScore": 0,
+          "lat": 37.9032909,
+          "lon": 23.718277
+        },
+        {
+          "name": "",
+          "nameScore": 0,
+          "lat": 37.8962844,
+          "lon": 23.7174173
+        }
+      ],
+      "slot": {
+        "region": "Attica",
+        "sub": "Central Athens",
+        "subSub": "Athens area (mainland)",
+        "neighborId": 5,
+        "neighborName": "Ακτή του Ήλιου",
+        "neighborDistanceM": 0,
+        "farNeighbor": false,
+        "slotConflict": false,
+        "neighborRegion": "Attica"
+      },
+      "flags": [
+        "weak_name_match"
+      ]
+    },
+    {
+      "seed": {
+        "nameGr": "Παλαιό Φάληρο Έδεμ",
+        "nameEn": "Palaio Faliro Edem",
+        "region": "Attica",
+        "status": "listed-unverified"
+      },
+      "tier": "NONE",
+      "decision": "skip",
+      "queriesTried": [
+        "Παλαιό Φάληρο, Attica, Greece",
+        "Παλαιό Φάληρο Έδεμ, Attica, Greece"
+      ],
+      "localityCenter": {
+        "lat": 37.9282756,
+        "lon": 23.6951675
+      },
+      "flags": [
+        "no_beach_near_locality"
+      ]
+    },
+    {
+      "seed": {
+        "nameGr": "Φρεαττίδα Πειραιά",
+        "nameEn": "Piraeus Freattida",
+        "region": "Attica",
+        "status": "listed-unverified"
+      },
+      "tier": "NONE",
+      "decision": "skip",
+      "queriesTried": [
+        "Φρεαττίδα, Attica, Greece",
+        "Φρεαττίδα Πειραιά, Attica, Greece"
+      ],
+      "flags": [
+        "locality_not_found"
+      ]
+    },
+    {
+      "seed": {
+        "nameGr": "ΚΑΑΥ Άγιος Ανδρέας",
+        "nameEn": "KAAY Agios Andreas",
+        "region": "Attica",
+        "status": "listed-unverified"
+      },
+      "tier": "LOW",
+      "decision": "REVIEW",
+      "queriesTried": [
+        "ΚΑΑΥ Άγιος, Attica, Greece"
+      ],
+      "localityCenter": {
+        "lat": 38.058059,
+        "lon": 23.998345
+      },
+      "best": {
+        "name": "",
+        "lat": 38.0554852,
+        "lon": 23.9978241,
+        "nameScore": 0,
+        "distFromLocalityM": 290
+      },
+      "alternates": [
+        {
+          "name": "",
+          "nameScore": 0,
+          "lat": 38.0653613,
+          "lon": 23.9989047
+        },
+        {
+          "name": "",
+          "nameScore": 0,
+          "lat": 38.0505749,
+          "lon": 23.9970043
+        },
+        {
+          "name": "DIVERS BEACH",
+          "nameScore": 0,
+          "lat": 38.0693997,
+          "lon": 23.9975394
+        }
+      ],
+      "slot": {
+        "region": "Attica",
+        "sub": "East Attica",
+        "subSub": "East Attica (mainland)",
+        "neighborId": 34,
+        "neighborName": "Παραλία Ζούμπερι",
+        "neighborDistanceM": 1743,
+        "farNeighbor": false,
+        "slotConflict": false,
+        "neighborRegion": "Attica"
+      },
+      "flags": [
+        "weak_name_match",
+        "unnamed_beach"
+      ]
+    },
+    {
+      "seed": {
+        "nameGr": "Πλαζ Αυλάκι ΕΔΕΜ",
+        "nameEn": "Plaz Avlaki EDEM",
+        "region": "Attica",
+        "status": "listed-unverified"
+      },
+      "tier": "NONE",
+      "decision": "skip",
+      "queriesTried": [
+        "Πλαζ Αυλάκι, Attica, Greece",
+        "Πλαζ Αυλάκι ΕΔΕΜ, Attica, Greece"
+      ],
+      "flags": [
+        "locality_not_found"
+      ]
+    },
+    {
+      "seed": {
+        "nameGr": "Νέα Μάκρη Παραλία",
+        "nameEn": "Nea Makri Paralia",
+        "region": "Attica",
+        "status": "listed-unverified"
+      },
+      "tier": "LOW",
+      "decision": "REVIEW",
+      "queriesTried": [
+        "Νέα Μάκρη, Attica, Greece"
+      ],
+      "localityCenter": {
+        "lat": 38.083049,
+        "lon": 23.97907
+      },
+      "best": {
+        "name": "",
+        "lat": 38.087636,
+        "lon": 23.9841189,
+        "nameScore": 0,
+        "distFromLocalityM": 675
+      },
+      "alternates": [
+        {
+          "name": "",
+          "nameScore": 0,
+          "lat": 38.0910905,
+          "lon": 23.9824567
+        },
+        {
+          "name": "",
+          "nameScore": 0,
+          "lat": 38.0927413,
+          "lon": 23.9817806
+        },
+        {
+          "name": "",
+          "nameScore": 0,
+          "lat": 38.0948135,
+          "lon": 23.9813313
+        }
+      ],
+      "slot": {
+        "region": "Attica",
+        "sub": "East Attica",
+        "subSub": "East Attica (mainland)",
+        "neighborId": 34,
+        "neighborName": "Παραλία Ζούμπερι",
+        "neighborDistanceM": 2130,
+        "farNeighbor": false,
+        "slotConflict": false,
+        "neighborRegion": "Attica"
+      },
+      "flags": [
+        "weak_name_match",
+        "unnamed_beach"
+      ]
+    },
+    {
+      "seed": {
+        "nameGr": "Μαραθώνας Παιδικές Κατασκηνώσεις",
+        "nameEn": "Marathonas Paidikes Kataskinoseis",
+        "region": "Attica",
+        "status": "listed-unverified"
+      },
+      "tier": "NONE",
+      "decision": "skip",
+      "queriesTried": [
+        "Μαραθώνας Παιδικές, Attica, Greece",
+        "Μαραθώνας Παιδικές Κατασκηνώσεις, Attica, Greece"
+      ],
+      "flags": [
+        "locality_not_found"
+      ]
+    },
+    {
+      "seed": {
+        "nameGr": "Σαρωνικός Ανάβυσσος",
+        "nameEn": "Saronikos Anavissos",
+        "region": "Attica",
+        "status": "listed-unverified"
+      },
+      "tier": "NONE",
+      "decision": "skip",
+      "queriesTried": [
+        "Σαρωνικός, Attica, Greece",
+        "Σαρωνικός Ανάβυσσος, Attica, Greece"
+      ],
+      "localityCenter": {
+        "lat": 37.7669562,
+        "lon": 23.9333952
+      },
+      "flags": [
+        "no_beach_near_locality"
+      ]
+    },
+    {
+      "seed": {
+        "nameGr": "Σπάτα Αρτέμιδα (Hippocampus)",
+        "nameEn": "Spata Artemida Hippocampus",
+        "region": "Attica",
+        "status": "listed-unverified"
+      },
+      "tier": "LOW",
+      "decision": "REVIEW",
+      "queriesTried": [
+        "Σπάτα Αρτέμιδα, Attica, Greece"
+      ],
+      "localityCenter": {
+        "lat": 37.9684646,
+        "lon": 23.9452767
+      },
+      "best": {
+        "name": "",
+        "lat": 37.9647164,
+        "lon": 24.0067797,
+        "nameScore": 0,
+        "distFromLocalityM": 5408
+      },
+      "alternates": [
+        {
+          "name": "",
+          "nameScore": 0,
+          "lat": 37.9681628,
+          "lon": 24.0075604
+        },
+        {
+          "name": "",
+          "nameScore": 0,
+          "lat": 37.9715048,
+          "lon": 24.0090451
+        },
+        {
+          "name": "",
+          "nameScore": 0,
+          "lat": 37.9546784,
+          "lon": 24.0110698
+        }
+      ],
+      "slot": {
+        "region": "Attica",
+        "sub": "East Attica",
+        "subSub": "East Attica (mainland)",
+        "neighborId": 37,
+        "neighborName": "Παραλία Αρτέμιδας",
+        "neighborDistanceM": 1902,
+        "farNeighbor": false,
+        "slotConflict": false,
+        "neighborRegion": "Attica"
+      },
+      "flags": [
+        "weak_name_match",
+        "unnamed_beach"
+      ]
+    },
+    {
+      "seed": {
+        "nameGr": "Ωρωπός Άγιοι Απόστολοι Καλαμού",
+        "nameEn": "Oropos Agioi Apostoloi Kalamou",
+        "region": "Attica",
+        "status": "listed-unverified"
+      },
+      "tier": "NONE",
+      "decision": "skip",
+      "queriesTried": [
+        "Ωρωπός Άγιοι Απόστολοι, Attica, Greece",
+        "Ωρωπός Άγιοι Απόστολοι Καλαμού, Attica, Greece"
+      ],
+      "flags": [
+        "locality_not_found"
+      ]
+    },
+    {
+      "seed": {
+        "nameGr": "Ωρωπός Σκάλα Ωρωπού",
+        "nameEn": "Oropos Skala Oropou",
+        "region": "Attica",
+        "status": "online",
+        "notes": "seatrac.gr Top-5 beach."
+      },
+      "tier": "LOW",
+      "decision": "REVIEW",
+      "queriesTried": [
+        "Ωρωπός Σκάλα, Attica, Greece"
+      ],
+      "localityCenter": {
+        "lat": 38.3215542,
+        "lon": 23.7909467
+      },
+      "best": {
+        "name": "",
+        "lat": 38.3250819,
+        "lon": 23.8043024,
+        "nameScore": 0,
+        "distFromLocalityM": 1229
+      },
+      "alternates": [
+        {
+          "name": "Παραλία Αγίου Κωνσταντίνου",
+          "nameScore": 0,
+          "lat": 38.3318893,
+          "lon": 23.7779421
+        },
+        {
+          "name": "Παραλία Ακρωτηρίου",
+          "nameScore": 0,
+          "lat": 38.337054,
+          "lon": 23.7640831
+        },
+        {
+          "name": "Παραλία Αγίας Παρασκευής",
+          "nameScore": 0,
+          "lat": 38.3360613,
+          "lon": 23.7523344
+        }
+      ],
+      "slot": {
+        "region": "Attica",
+        "sub": "East Attica",
+        "subSub": "East Attica (mainland)",
+        "neighborId": 28,
+        "neighborName": "Παραλία Αγίου Κωνσταντίνου",
+        "neighborDistanceM": 2421,
+        "farNeighbor": false,
+        "slotConflict": false,
+        "neighborRegion": "Attica"
+      },
+      "flags": [
+        "weak_name_match",
+        "unnamed_beach"
+      ]
+    },
+    {
+      "seed": {
+        "nameGr": "Ωρωπός Χαλκούτσι",
+        "nameEn": "Oropos Chalkoutsi",
+        "region": "Attica",
+        "status": "listed-unverified"
+      },
+      "tier": "NONE",
+      "decision": "skip",
+      "queriesTried": [
+        "Ωρωπός, Attica, Greece",
+        "Ωρωπός Χαλκούτσι, Attica, Greece"
+      ],
+      "localityCenter": {
+        "lat": 38.304395,
+        "lon": 23.7533067
+      },
+      "flags": [
+        "no_beach_near_locality"
+      ]
+    },
+    {
+      "seed": {
+        "nameGr": "Πόρτο Ράφτη Άγιος Σπυρίδωνας",
+        "nameEn": "Porto Rafti Agios Spiridonas",
+        "region": "Attica",
+        "status": "listed-unverified"
+      },
+      "tier": "LOW",
+      "decision": "REVIEW",
+      "queriesTried": [
+        "Πόρτο Ράφτη Άγιος, Attica, Greece",
+        "Πόρτο Ράφτη Άγιος Σπυρίδωνας, Attica, Greece"
+      ],
+      "localityCenter": {
+        "lat": 37.8916048,
+        "lon": 23.9942311
+      },
+      "best": {
+        "name": "",
+        "lat": 37.8886978,
+        "lon": 24.0086801,
+        "nameScore": 0,
+        "distFromLocalityM": 1309
+      },
+      "alternates": [
+        {
+          "name": "",
+          "nameScore": 0,
+          "lat": 37.8933053,
+          "lon": 24.0164899
+        },
+        {
+          "name": "",
+          "nameScore": 0,
+          "lat": 37.8830099,
+          "lon": 24.0147325
+        },
+        {
+          "name": "",
+          "nameScore": 0,
+          "lat": 37.893075,
+          "lon": 24.0177939
+        }
+      ],
+      "slot": {
+        "region": "Attica",
+        "sub": "East Attica",
+        "subSub": "East Attica (mainland)",
+        "neighborId": 44,
+        "neighborName": "Παραλία Αγίου Σπυρίδωνα",
+        "neighborDistanceM": 1443,
+        "farNeighbor": false,
+        "slotConflict": false,
+        "neighborRegion": "Attica"
+      },
+      "flags": [
+        "weak_name_match",
+        "unnamed_beach"
+      ]
+    },
+    {
+      "seed": {
+        "nameGr": "Μάνδρα Ψάθα",
+        "nameEn": "Mandra Psatha",
+        "region": "Attica",
+        "status": "listed-unverified"
+      },
+      "tier": "NONE",
+      "decision": "skip",
+      "queriesTried": [
+        "Μάνδρα, Attica, Greece",
+        "Μάνδρα Ψάθα, Attica, Greece"
+      ],
+      "localityCenter": {
+        "lat": 38.0747896,
+        "lon": 23.4969518
+      },
+      "flags": [
+        "no_beach_near_locality"
+      ]
+    },
+    {
+      "seed": {
+        "nameGr": "Αίγινα Μαραθώνας",
+        "nameEn": "Aigina Marathonas",
+        "region": "Attica",
+        "municipality": "Aigina",
+        "status": "listed-unverified"
+      },
+      "tier": "HIGH",
+      "decision": "auto-accept",
+      "queriesTried": [
+        "Aigina, Attica, Greece"
+      ],
+      "localityCenter": {
+        "lat": 37.7209452,
+        "lon": 23.4023083
+      },
+      "best": {
+        "name": "Παραλία Μαραθώνα",
+        "lat": 37.7184855,
+        "lon": 23.4594492,
+        "nameScore": 80,
+        "distFromLocalityM": 5033
+      },
+      "alternates": [
+        {
+          "name": "Skliri Beach",
+          "nameScore": 0,
+          "lat": 37.7036133,
+          "lon": 23.3717709
+        },
+        {
+          "name": "",
+          "nameScore": 0,
+          "lat": 37.7071672,
+          "lon": 23.3680207
+        },
+        {
+          "name": "Χαλικιάδα",
+          "nameScore": 0,
+          "lat": 37.7009712,
+          "lon": 23.3729613
+        }
+      ],
+      "slot": {
+        "region": "Attica",
+        "sub": "Islands (Saronic & Kythira)",
+        "subSub": "Aegina",
+        "neighborId": 90,
+        "neighborName": "Παραλία Μαραθώνα Α",
+        "neighborDistanceM": 157,
+        "farNeighbor": false,
+        "slotConflict": false,
+        "neighborRegion": "Attica"
+      },
+      "flags": []
+    },
+    {
+      "seed": {
+        "nameGr": "Αίγινα Βάγια",
+        "nameEn": "Aigina Vagia",
+        "region": "Attica",
+        "municipality": "Aigina",
+        "status": "listed-unverified"
+      },
+      "tier": "LOW",
+      "decision": "REVIEW",
+      "queriesTried": [
+        "Aigina, Attica, Greece"
+      ],
+      "localityCenter": {
+        "lat": 37.7209452,
+        "lon": 23.4023083
+      },
+      "best": {
+        "name": "Skliri Beach",
+        "lat": 37.7036133,
+        "lon": 23.3717709,
+        "nameScore": 0,
+        "distFromLocalityM": 3306
+      },
+      "alternates": [
+        {
+          "name": "",
+          "nameScore": 0,
+          "lat": 37.7071672,
+          "lon": 23.3680207
+        },
+        {
+          "name": "Χαλικιάδα",
+          "nameScore": 0,
+          "lat": 37.7009712,
+          "lon": 23.3729613
+        },
+        {
+          "name": "",
+          "nameScore": 0,
+          "lat": 37.7424891,
+          "lon": 23.4303899
+        }
+      ],
+      "slot": {
+        "region": "Attica",
+        "sub": "Islands (Saronic & Kythira)",
+        "subSub": "Agistri",
+        "neighborId": 99,
+        "neighborName": "Σκληρή",
+        "neighborDistanceM": 0,
+        "farNeighbor": false,
+        "slotConflict": false,
+        "neighborRegion": "Attica"
+      },
+      "flags": [
+        "weak_name_match"
+      ]
+    },
+    {
+      "seed": {
+        "nameGr": "Βόλβη Σταύρος",
+        "nameEn": "Volvi Stavros",
+        "region": "Central Macedonia",
+        "municipality": "Volvi",
+        "status": "listed-unverified"
+      },
+      "tier": "NONE",
+      "decision": "skip",
+      "queriesTried": [
+        "Volvi, Central Macedonia, Greece",
+        "Βόλβη Σταύρος, Central Macedonia, Greece"
+      ],
+      "localityCenter": {
+        "lat": 40.7054189,
+        "lon": 23.5518649
+      },
+      "flags": [
+        "no_beach_near_locality"
+      ]
+    },
+    {
+      "seed": {
+        "nameGr": "Νέα Επιβάτες",
+        "nameEn": "Nea Epivates",
+        "region": "Central Macedonia",
+        "municipality": "Thermaikos",
+        "status": "online",
+        "notes": "Logged 3,000+ uses in one summer."
+      },
+      "tier": "LOW",
+      "decision": "REVIEW",
+      "queriesTried": [
+        "Thermaikos, Central Macedonia, Greece"
+      ],
+      "localityCenter": {
+        "lat": 40.509911,
+        "lon": 22.9280694
+      },
+      "best": {
+        "name": "Παραλία Περαίας",
+        "lat": 40.5115003,
+        "lon": 22.9312444,
+        "nameScore": 0,
+        "distFromLocalityM": 321
+      },
+      "alternates": [
+        {
+          "name": "",
+          "nameScore": 0,
+          "lat": 40.5053618,
+          "lon": 22.9067068
+        },
+        {
+          "name": "",
+          "nameScore": 0,
+          "lat": 40.5010372,
+          "lon": 22.87632
+        }
+      ],
+      "slot": {
+        "region": "Central Macedonia",
+        "sub": "Thessaloniki",
+        "subSub": "Thessaloniki area",
+        "neighborId": 524,
+        "neighborName": "Παραλία Περαίας",
+        "neighborDistanceM": 0,
+        "farNeighbor": false,
+        "slotConflict": false,
+        "neighborRegion": "Central Macedonia"
+      },
+      "flags": [
+        "weak_name_match"
+      ]
+    },
+    {
+      "seed": {
+        "nameGr": "Διονυσίου",
+        "nameEn": "Dionysiou",
+        "region": "Central Macedonia",
+        "municipality": "Nea Propontida",
+        "status": "online",
+        "accessibleWc": "yes",
+        "boardwalkToWater": "yes"
+      },
+      "tier": "NONE",
+      "decision": "skip",
+      "queriesTried": [
+        "Nea Propontida, Central Macedonia, Greece",
+        "Διονυσίου, Central Macedonia, Greece"
+      ],
+      "localityCenter": {
+        "lat": 40.9993993,
+        "lon": 22.8807706
+      },
+      "flags": [
+        "no_beach_near_locality"
+      ]
+    },
+    {
+      "seed": {
+        "nameGr": "Νέα Πλάγια",
+        "nameEn": "Nea Plagia",
+        "region": "Central Macedonia",
+        "municipality": "Nea Propontida",
+        "status": "online",
+        "accessibleWc": "yes",
+        "boardwalkToWater": "yes"
+      },
+      "tier": "LOW",
+      "decision": "REVIEW",
+      "queriesTried": [
+        "Nea Propontida, Central Macedonia, Greece"
+      ],
+      "localityCenter": {
+        "lat": 40.3140765,
+        "lon": 23.1804783
+      },
+      "best": {
+        "name": "",
+        "lat": 40.2716735,
+        "lon": 23.1704006,
+        "nameScore": 0,
+        "distFromLocalityM": 4792
+      },
+      "alternates": [
+        {
+          "name": "",
+          "nameScore": 0,
+          "lat": 40.2726018,
+          "lon": 23.1628044
+        },
+        {
+          "name": "",
+          "nameScore": 0,
+          "lat": 40.2734158,
+          "lon": 23.151331
+        },
+        {
+          "name": "Παραλία Βεργιάς",
+          "nameScore": 0,
+          "lat": 40.2906038,
+          "lon": 23.1231232
+        }
+      ],
+      "slot": {
+        "region": "Central Macedonia",
+        "sub": "Halkidiki",
+        "subSub": "Halkidiki (mainland)",
+        "neighborId": 427,
+        "neighborName": "Mileniko",
+        "neighborDistanceM": 1380,
+        "farNeighbor": false,
+        "slotConflict": false,
+        "neighborRegion": "Central Macedonia"
+      },
+      "flags": [
+        "weak_name_match",
+        "unnamed_beach"
+      ]
+    },
+    {
+      "seed": {
+        "nameGr": "Κορινός",
+        "nameEn": "Korinos",
+        "region": "Central Macedonia",
+        "municipality": "Katerini",
+        "status": "online"
+      },
+      "tier": "NONE",
+      "decision": "skip",
+      "queriesTried": [
+        "Katerini, Central Macedonia, Greece",
+        "Κορινός, Central Macedonia, Greece"
+      ],
+      "localityCenter": {
+        "lat": 40.3166522,
+        "lon": 22.5780758
+      },
+      "flags": [
+        "no_beach_near_locality"
+      ]
+    },
+    {
+      "seed": {
+        "nameGr": "Κεραμωτή",
+        "nameEn": "Keramoti",
+        "region": "East Macedonia and Thrace",
+        "municipality": "Nestos",
+        "status": "online"
+      },
+      "tier": "NONE",
+      "decision": "skip",
+      "queriesTried": [
+        "Nestos, East Macedonia and Thrace, Greece",
+        "Κεραμωτή, East Macedonia and Thrace, Greece"
+      ],
+      "flags": [
+        "locality_not_found"
+      ]
+    },
+    {
+      "seed": {
+        "nameGr": "Λεύκιππος Αβδήρων",
+        "nameEn": "Lefkippos Avdera",
+        "region": "East Macedonia and Thrace",
+        "municipality": "Avdera",
+        "status": "listed-unverified"
+      },
+      "tier": "NONE",
+      "decision": "skip",
+      "queriesTried": [
+        "Avdera, East Macedonia and Thrace, Greece",
+        "Λεύκιππος, East Macedonia and Thrace, Greece",
+        "Λεύκιππος Αβδήρων, East Macedonia and Thrace, Greece"
+      ],
+      "flags": [
+        "locality_not_found"
+      ]
+    },
+    {
+      "seed": {
+        "nameGr": "Κομοτηνή Φανάρι",
+        "nameEn": "Komotini Fanari",
+        "region": "East Macedonia and Thrace",
+        "municipality": "Komotini",
+        "status": "listed-unverified"
+      },
+      "tier": "NONE",
+      "decision": "skip",
+      "queriesTried": [
+        "Komotini, East Macedonia and Thrace, Greece",
+        "Κομοτηνή Φανάρι, East Macedonia and Thrace, Greece"
+      ],
+      "flags": [
+        "locality_not_found"
+      ]
+    },
+    {
+      "seed": {
+        "nameGr": "Κομοτηνή Μαρώνεια",
+        "nameEn": "Komotini Maroneia",
+        "region": "East Macedonia and Thrace",
+        "municipality": "Komotini",
+        "status": "listed-unverified"
+      },
+      "tier": "NONE",
+      "decision": "skip",
+      "queriesTried": [
+        "Komotini, East Macedonia and Thrace, Greece",
+        "Κομοτηνή Μαρώνεια, East Macedonia and Thrace, Greece"
+      ],
+      "flags": [
+        "locality_not_found"
+      ]
+    },
+    {
+      "seed": {
+        "nameGr": "Αλεξανδρούπολη Θέα Θάλασσα",
+        "nameEn": "Alexandroupoli Thea Thalassa",
+        "region": "East Macedonia and Thrace",
+        "municipality": "Alexandroupoli",
+        "status": "online"
+      },
+      "tier": "NONE",
+      "decision": "skip",
+      "queriesTried": [
+        "Alexandroupoli, East Macedonia and Thrace, Greece",
+        "Αλεξανδρούπολη Θέα, East Macedonia and Thrace, Greece",
+        "Αλεξανδρούπολη Θέα Θάλασσα, East Macedonia and Thrace, Greece"
+      ],
+      "flags": [
+        "locality_not_found"
+      ]
+    },
+    {
+      "seed": {
+        "nameGr": "Σούδα Πλακιά",
+        "nameEn": "Souda Plakia",
+        "region": "Crete",
+        "municipality": "Agios Vasileios",
+        "status": "listed-unverified",
+        "notes": "Additional investment 'Ολοκληρωμένη Παρέμβαση για ΑμεΑ' approved April 2025."
+      },
+      "tier": "LOW",
+      "decision": "REVIEW",
+      "queriesTried": [
+        "Agios Vasileios, Crete, Greece"
+      ],
+      "localityCenter": {
+        "lat": 35.1869078,
+        "lon": 24.5032083
+      },
+      "best": {
+        "name": "Παραλία Κεφάλα",
+        "lat": 35.1502194,
+        "lon": 24.4910212,
+        "nameScore": 0,
+        "distFromLocalityM": 4227
+      },
+      "alternates": [
+        {
+          "name": "Παραλία Ανατολικά",
+          "nameScore": 0,
+          "lat": 35.1486963,
+          "lon": 24.500088
+        },
+        {
+          "name": "Παραλία Δυνόνησος",
+          "nameScore": 0,
+          "lat": 35.1527284,
+          "lon": 24.4804011
+        },
+        {
+          "name": "Παραλία Γιαλοπόταμα",
+          "nameScore": 0,
+          "lat": 35.1464389,
+          "lon": 24.5056107
+        }
+      ],
+      "slot": {
+        "region": "Crete",
+        "sub": "Rethymno",
+        "subSub": "Crete (Rethymno)",
+        "neighborId": 696,
+        "neighborName": "Παραλία Κεφάλα",
+        "neighborDistanceM": 0,
+        "farNeighbor": false,
+        "slotConflict": false,
+        "neighborRegion": "Crete"
+      },
+      "flags": [
+        "weak_name_match"
+      ]
+    },
+    {
+      "seed": {
+        "nameGr": "Βαθιανός Κάμπος",
+        "nameEn": "Vathianos Kampos",
+        "region": "Crete",
+        "municipality": "Chersonisos",
+        "status": "online",
+        "notes": "Bella Maris Agkisaras."
+      },
+      "tier": "LOW",
+      "decision": "REVIEW",
+      "queriesTried": [
+        "Chersonisos, Crete, Greece"
+      ],
+      "localityCenter": {
+        "lat": 35.302932,
+        "lon": 25.4196154
+      },
+      "best": {
+        "name": "",
+        "lat": 35.3055922,
+        "lon": 25.4205379,
+        "nameScore": 0,
+        "distFromLocalityM": 307
+      },
+      "alternates": [
+        {
+          "name": "",
+          "nameScore": 0,
+          "lat": 35.3068849,
+          "lon": 25.4095715
+        },
+        {
+          "name": "",
+          "nameScore": 0,
+          "lat": 35.3073064,
+          "lon": 25.4077883
+        },
+        {
+          "name": "",
+          "nameScore": 0,
+          "lat": 35.307812,
+          "lon": 25.4064007
+        }
+      ],
+      "slot": {
+        "region": "Crete",
+        "sub": "Heraklion",
+        "subSub": "Crete (Heraklion)",
+        "neighborId": 654,
+        "neighborName": "Star Beach",
+        "neighborDistanceM": 1465,
+        "farNeighbor": false,
+        "slotConflict": false,
+        "neighborRegion": "Crete"
+      },
+      "flags": [
+        "weak_name_match",
+        "unnamed_beach"
+      ]
+    },
+    {
+      "seed": {
+        "nameGr": "Γοργόνα",
+        "nameEn": "Gorgona",
+        "region": "Crete",
+        "municipality": "Ierapetra",
+        "status": "listed-unverified"
+      },
+      "tier": "LOW",
+      "decision": "REVIEW",
+      "queriesTried": [
+        "Ierapetra, Crete, Greece",
+        "Γοργόνα, Crete, Greece"
+      ],
+      "localityCenter": {
+        "lat": 35.2982001,
+        "lon": 25.7281226
+      },
+      "best": {
+        "name": "Plaka",
+        "lat": 35.3019059,
+        "lon": 25.726911,
+        "nameScore": 0,
+        "distFromLocalityM": 426
+      },
+      "alternates": [
+        {
+          "name": "Πελεκητή",
+          "nameScore": 0,
+          "lat": 35.2925177,
+          "lon": 25.7473654
+        },
+        {
+          "name": "",
+          "nameScore": 0,
+          "lat": 35.2817978,
+          "lon": 25.7241637
+        },
+        {
+          "name": "Σχίσμα",
+          "nameScore": 0,
+          "lat": 35.2642876,
+          "lon": 25.7224721
+        }
+      ],
+      "slot": {
+        "region": "Crete",
+        "sub": "Lasithi",
+        "subSub": "Crete (Lasithi)",
+        "neighborId": 764,
+        "neighborName": "Πλάκα Ελούντας",
+        "neighborDistanceM": 0,
+        "farNeighbor": false,
+        "slotConflict": false,
+        "neighborRegion": "Crete"
+      },
+      "flags": [
+        "weak_name_match"
+      ]
+    },
+    {
+      "seed": {
+        "nameGr": "Αμοργός Αιγιάλη",
+        "nameEn": "Amorgos Aigiali",
+        "region": "South Aegean",
+        "municipality": "Amorgos",
+        "status": "listed-unverified"
+      },
+      "tier": "LOW",
+      "decision": "REVIEW",
+      "queriesTried": [
+        "Amorgos, South Aegean, Greece"
+      ],
+      "localityCenter": {
+        "lat": 36.8525242,
+        "lon": 25.898487
+      },
+      "best": {
+        "name": "",
+        "lat": 36.8340628,
+        "lon": 25.9126924,
+        "nameScore": 0,
+        "distFromLocalityM": 2411
+      },
+      "alternates": [
+        {
+          "name": "",
+          "nameScore": 0,
+          "lat": 36.834496,
+          "lon": 25.9150093
+        },
+        {
+          "name": "",
+          "nameScore": 0,
+          "lat": 36.8259275,
+          "lon": 25.9059368
+        },
+        {
+          "name": "Agia Anna Beach",
+          "nameScore": 0,
+          "lat": 36.8259002,
+          "lon": 25.9059481
+        }
+      ],
+      "slot": {
+        "region": "South Aegean",
+        "sub": "Cyclades",
+        "subSub": "Amorgos",
+        "neighborId": 1657,
+        "neighborName": "Αγία Άννα",
+        "neighborDistanceM": 1264,
+        "farNeighbor": false,
+        "slotConflict": false,
+        "neighborRegion": "South Aegean"
+      },
+      "flags": [
+        "weak_name_match",
+        "unnamed_beach"
+      ]
+    },
+    {
+      "seed": {
+        "nameGr": "Σέριφος Λιβάδι Αυλόμωνας",
+        "nameEn": "Serifos Livadi Avlomonas",
+        "region": "South Aegean",
+        "municipality": "Serifos",
+        "status": "listed-unverified"
+      },
+      "tier": "HIGH",
+      "decision": "auto-accept",
+      "queriesTried": [
+        "Serifos, South Aegean, Greece",
+        "Σέριφος Λιβάδι, South Aegean, Greece"
+      ],
+      "localityCenter": {
+        "lat": 37.159401,
+        "lon": 24.4735202
+      },
+      "best": {
+        "name": "Αυλόμωνας",
+        "lat": 37.1457755,
+        "lon": 24.5187111,
+        "nameScore": 80,
+        "distFromLocalityM": 4282
+      },
+      "alternates": [
+        {
+          "name": "Μέγα Λιβάδι",
+          "nameScore": 33,
+          "lat": 37.1405151,
+          "lon": 24.4314253
+        },
+        {
+          "name": "Γάνεμα",
+          "nameScore": 0,
+          "lat": 37.1367024,
+          "lon": 24.4626766
+        },
+        {
+          "name": "Κουτάλας",
+          "nameScore": 0,
+          "lat": 37.1370768,
+          "lon": 24.4547117
+        }
+      ],
+      "slot": {
+        "region": "South Aegean",
+        "sub": "Cyclades",
+        "subSub": "Serifos",
+        "neighborId": 2074,
+        "neighborName": "Αυλόμωνας",
+        "neighborDistanceM": 120,
+        "farNeighbor": false,
+        "slotConflict": false,
+        "neighborRegion": "South Aegean"
+      },
+      "flags": []
+    },
+    {
+      "seed": {
+        "nameGr": "Λέρος Άλιντα",
+        "nameEn": "Leros Alinda",
+        "region": "South Aegean",
+        "municipality": "Leros",
+        "status": "uninstalled",
+        "notes": "Shows 'Uninstalled'."
+      },
+      "tier": "LOW",
+      "decision": "REVIEW",
+      "queriesTried": [
+        "Leros, South Aegean, Greece"
+      ],
+      "localityCenter": {
+        "lat": 37.1493635,
+        "lon": 26.8463817
+      },
+      "best": {
+        "name": "",
+        "lat": 37.1567221,
+        "lon": 26.842461,
+        "nameScore": 0,
+        "distFromLocalityM": 889
+      },
+      "alternates": [
+        {
+          "name": "",
+          "nameScore": 0,
+          "lat": 37.1571428,
+          "lon": 26.8489675
+        },
+        {
+          "name": "Vromolithos Beach",
+          "nameScore": 0,
+          "lat": 37.1457024,
+          "lon": 26.8601605
+        },
+        {
+          "name": "Βρομόλιθος",
+          "nameScore": 0,
+          "lat": 37.1440586,
+          "lon": 26.8598566
+        }
+      ],
+      "slot": {
+        "region": "South Aegean",
+        "sub": "Dodecanese",
+        "subSub": "Leros",
+        "neighborId": 2359,
+        "neighborName": "Γούρνα",
+        "neighborDistanceM": 1306,
+        "farNeighbor": false,
+        "slotConflict": false,
+        "neighborRegion": "South Aegean"
+      },
+      "flags": [
+        "weak_name_match",
+        "unnamed_beach"
+      ]
+    },
+    {
+      "seed": {
+        "nameGr": "Τήλος Λιβάδια",
+        "nameEn": "Tilos Livadia",
+        "region": "South Aegean",
+        "municipality": "Tilos",
+        "status": "listed-unverified"
+      },
+      "tier": "NONE",
+      "decision": "skip",
+      "queriesTried": [
+        "Tilos, South Aegean, Greece",
+        "Τήλος Λιβάδια, South Aegean, Greece"
+      ],
+      "localityCenter": {
+        "lat": 36.4293005,
+        "lon": 27.3163394
+      },
+      "flags": [
+        "no_beach_near_locality"
+      ]
+    },
+    {
+      "seed": {
+        "nameGr": "Λειψοί Λιεντού",
+        "nameEn": "Leipsoi Liendou",
+        "region": "South Aegean",
+        "municipality": "Leipsoi",
+        "status": "uninstalled",
+        "notes": "Shows 'Uninstalled'."
+      },
+      "tier": "NONE",
+      "decision": "skip",
+      "queriesTried": [
+        "Leipsoi, South Aegean, Greece",
+        "Λειψοί Λιεντού, South Aegean, Greece"
+      ],
+      "localityCenter": {
+        "lat": 37.2955537,
+        "lon": 26.7687298
+      },
+      "flags": [
+        "no_beach_near_locality"
+      ]
+    },
+    {
+      "seed": {
+        "nameGr": "Φανάρι Μεγανήσι",
+        "nameEn": "Fanari Meganisi",
+        "region": "Ionian Islands",
+        "municipality": "Lefkada",
+        "status": "online",
+        "notes": "June 2026, first Seatrac on Lefkada."
+      },
+      "tier": "LOW",
+      "decision": "REVIEW",
+      "queriesTried": [
+        "Lefkada, Ionian Islands, Greece"
+      ],
+      "localityCenter": {
+        "lat": 38.7065734,
+        "lon": 20.6416779
+      },
+      "best": {
+        "name": "",
+        "lat": 38.7284689,
+        "lon": 20.5813207,
+        "nameScore": 0,
+        "distFromLocalityM": 5775
+      },
+      "alternates": [
+        {
+          "name": "Ανώνυμη Παραλία (Κομηλιό)",
+          "nameScore": 0,
+          "lat": 38.7151516,
+          "lon": 20.5759964
+        },
+        {
+          "name": "",
+          "nameScore": 0,
+          "lat": 38.7038274,
+          "lon": 20.7088799
+        }
+      ],
+      "slot": {
+        "region": "Ionian Islands",
+        "sub": "Lefkada",
+        "subSub": "Lefkada",
+        "neighborId": 1152,
+        "neighborName": "Ανώνυμη Παραλία Κομηλιό",
+        "neighborDistanceM": 1551,
+        "farNeighbor": false,
+        "slotConflict": false,
+        "neighborRegion": "Ionian Islands"
+      },
+      "flags": [
+        "weak_name_match",
+        "unnamed_beach"
+      ]
+    },
+    {
+      "seed": {
+        "nameGr": "Λιμνη Λυγιά",
+        "nameEn": "Limni Lygia",
+        "region": "Ionian Islands",
+        "municipality": "Lefkada",
+        "status": "online",
+        "notes": "Lygia; a unit at Gyra beach to follow. Lefkada Ligia on seatrac.gr."
+      },
+      "tier": "LOW",
+      "decision": "REVIEW",
+      "queriesTried": [
+        "Lefkada, Ionian Islands, Greece"
+      ],
+      "localityCenter": {
+        "lat": 38.7065734,
+        "lon": 20.6416779
+      },
+      "best": {
+        "name": "",
+        "lat": 38.7284689,
+        "lon": 20.5813207,
+        "nameScore": 0,
+        "distFromLocalityM": 5775
+      },
+      "alternates": [
+        {
+          "name": "Ανώνυμη Παραλία (Κομηλιό)",
+          "nameScore": 0,
+          "lat": 38.7151516,
+          "lon": 20.5759964
+        },
+        {
+          "name": "",
+          "nameScore": 0,
+          "lat": 38.7038274,
+          "lon": 20.7088799
+        }
+      ],
+      "slot": {
+        "region": "Ionian Islands",
+        "sub": "Lefkada",
+        "subSub": "Lefkada",
+        "neighborId": 1152,
+        "neighborName": "Ανώνυμη Παραλία Κομηλιό",
+        "neighborDistanceM": 1551,
+        "farNeighbor": false,
+        "slotConflict": false,
+        "neighborRegion": "Ionian Islands"
+      },
+      "flags": [
+        "weak_name_match",
+        "unnamed_beach"
+      ]
+    },
+    {
+      "seed": {
+        "nameGr": "Λιξούρι Λέπεδα",
+        "nameEn": "Lixouri Lepeda",
+        "region": "Ionian Islands",
+        "municipality": "Kefalonia",
+        "status": "listed-unverified"
+      },
+      "tier": "LOW",
+      "decision": "REVIEW",
+      "queriesTried": [
+        "Kefalonia, Ionian Islands, Greece",
+        "Λιξούρι, Ionian Islands, Greece"
+      ],
+      "localityCenter": {
+        "lat": 38.2531425,
+        "lon": 20.393164
+      },
+      "best": {
+        "name": "Πετανι",
+        "lat": 38.2609789,
+        "lon": 20.3760876,
+        "nameScore": 0,
+        "distFromLocalityM": 1727
+      },
+      "alternates": [
+        {
+          "name": "",
+          "nameScore": 0,
+          "lat": 38.2639531,
+          "lon": 20.3782714
+        },
+        {
+          "name": "",
+          "nameScore": 0,
+          "lat": 38.2721164,
+          "lon": 20.3855574
+        },
+        {
+          "name": "",
+          "nameScore": 0,
+          "lat": 38.2601442,
+          "lon": 20.3682436
+        }
+      ],
+      "slot": {
+        "region": "Ionian Islands",
+        "sub": "Kefalonia",
+        "subSub": "Kefalonia",
+        "neighborId": 1124,
+        "neighborName": "Πετανι",
+        "neighborDistanceM": 0,
+        "farNeighbor": false,
+        "slotConflict": false,
+        "neighborRegion": "Ionian Islands"
+      },
+      "flags": [
+        "weak_name_match"
+      ]
+    },
+    {
+      "seed": {
+        "nameGr": "Αναστάση",
+        "nameEn": "Anastasi",
+        "region": "Peloponnese",
+        "municipality": "Kalamata",
+        "status": "online",
+        "notes": "2025, 4 beaches; 3,206 Seatrac uses in 2025. Anatoliki Kalamata-Anastasi church."
+      },
+      "tier": "LOW",
+      "decision": "REVIEW",
+      "queriesTried": [
+        "Kalamata, Peloponnese, Greece"
+      ],
+      "localityCenter": {
+        "lat": 37.0372714,
+        "lon": 22.110707
+      },
+      "best": {
+        "name": "",
+        "lat": 37.023562,
+        "lon": 22.1162074,
+        "nameScore": 0,
+        "distFromLocalityM": 1601
+      },
+      "alternates": [
+        {
+          "name": "",
+          "nameScore": 0,
+          "lat": 37.023746,
+          "lon": 22.116932
+        },
+        {
+          "name": "Kalamata Beach",
+          "nameScore": 0,
+          "lat": 37.0241455,
+          "lon": 22.1195346
+        },
+        {
+          "name": "Kalamata Beach",
+          "nameScore": 0,
+          "lat": 37.0242723,
+          "lon": 22.1237327
+        }
+      ],
+      "slot": {
+        "region": "Peloponnese",
+        "sub": "Messinia",
+        "subSub": "Messinia (mainland)",
+        "neighborId": 1634,
+        "neighborName": "Παραλία Καλαμάτας",
+        "neighborDistanceM": 672,
+        "farNeighbor": false,
+        "slotConflict": false,
+        "neighborRegion": "Peloponnese"
+      },
+      "flags": [
+        "weak_name_match",
+        "unnamed_beach"
+      ]
+    },
+    {
+      "seed": {
+        "nameGr": "Κορδιά",
+        "nameEn": "Kordia",
+        "region": "Peloponnese",
+        "municipality": "Kalamata",
+        "status": "online",
+        "notes": "Kept active into early October."
+      },
+      "tier": "NONE",
+      "decision": "skip",
+      "queriesTried": [
+        "Kalamata, Peloponnese, Greece",
+        "Κορδιά, Peloponnese, Greece"
+      ],
+      "localityCenter": {
+        "lat": 37.0372714,
+        "lon": 22.110707
+      },
+      "flags": [
+        "no_beach_near_locality"
+      ]
+    },
+    {
+      "seed": {
+        "nameGr": "Μικρή Μαντίνεια",
+        "nameEn": "Mikri Mantineia",
+        "region": "Peloponnese",
+        "municipality": "Kalamata",
+        "status": "online",
+        "notes": "Kept active into early October."
+      },
+      "tier": "LOW",
+      "decision": "REVIEW",
+      "queriesTried": [
+        "Kalamata, Peloponnese, Greece"
+      ],
+      "localityCenter": {
+        "lat": 37.0372714,
+        "lon": 22.110707
+      },
+      "best": {
+        "name": "",
+        "lat": 37.023562,
+        "lon": 22.1162074,
+        "nameScore": 0,
+        "distFromLocalityM": 1601
+      },
+      "alternates": [
+        {
+          "name": "",
+          "nameScore": 0,
+          "lat": 37.023746,
+          "lon": 22.116932
+        },
+        {
+          "name": "Kalamata Beach",
+          "nameScore": 0,
+          "lat": 37.0241455,
+          "lon": 22.1195346
+        },
+        {
+          "name": "Kalamata Beach",
+          "nameScore": 0,
+          "lat": 37.0242723,
+          "lon": 22.1237327
+        }
+      ],
+      "slot": {
+        "region": "Peloponnese",
+        "sub": "Messinia",
+        "subSub": "Messinia (mainland)",
+        "neighborId": 1634,
+        "neighborName": "Παραλία Καλαμάτας",
+        "neighborDistanceM": 672,
+        "farNeighbor": false,
+        "slotConflict": false,
+        "neighborRegion": "Peloponnese"
+      },
+      "flags": [
+        "weak_name_match",
+        "unnamed_beach"
+      ]
+    },
+    {
+      "seed": {
+        "nameGr": "Ανάληψη",
+        "nameEn": "Analipsi",
+        "region": "Peloponnese",
+        "municipality": "Messini",
+        "status": "online",
+        "full": true
+      },
+      "tier": "LOW",
+      "decision": "REVIEW",
+      "queriesTried": [
+        "Messini, Peloponnese, Greece"
+      ],
+      "localityCenter": {
+        "lat": 37.0309471,
+        "lon": 21.9259569
+      },
+      "best": {
+        "name": "",
+        "lat": 36.9952085,
+        "lon": 21.9511631,
+        "nameScore": 0,
+        "distFromLocalityM": 4561
+      },
+      "alternates": [
+        {
+          "name": "",
+          "nameScore": 0,
+          "lat": 37.0000983,
+          "lon": 21.9615173
+        },
+        {
+          "name": "",
+          "nameScore": 0,
+          "lat": 36.9909195,
+          "lon": 21.9420294
+        },
+        {
+          "name": "",
+          "nameScore": 0,
+          "lat": 36.9844222,
+          "lon": 21.9331374
+        }
+      ],
+      "slot": {
+        "region": "Peloponnese",
+        "sub": "Messinia",
+        "subSub": "Messinia (mainland)",
+        "neighborId": 1655,
+        "neighborName": "Oasi",
+        "neighborDistanceM": 3250,
+        "farNeighbor": false,
+        "slotConflict": false,
+        "neighborRegion": "Peloponnese"
+      },
+      "flags": [
+        "weak_name_match",
+        "unnamed_beach"
+      ]
+    },
+    {
+      "seed": {
+        "nameGr": "Ακρογιάλι",
+        "nameEn": "Akrogiali",
+        "region": "Peloponnese",
+        "municipality": "Dytiki Mani",
+        "status": "online",
+        "notes": "West Mani, 4 beaches; install was delayed mid-summer one year, stranding a tourist."
+      },
+      "tier": "LOW",
+      "decision": "REVIEW",
+      "queriesTried": [
+        "Dytiki Mani, Peloponnese, Greece",
+        "Ακρογιάλι, Peloponnese, Greece"
+      ],
+      "localityCenter": {
+        "lat": 36.4755581,
+        "lon": 22.4915444
+      },
+      "best": {
+        "name": "",
+        "lat": 36.4841091,
+        "lon": 22.5017846,
+        "nameScore": 0,
+        "distFromLocalityM": 1320
+      },
+      "alternates": [
+        {
+          "name": "Ανδρόγυαλος",
+          "nameScore": 0,
+          "lat": 36.4604392,
+          "lon": 22.4942867
+        },
+        {
+          "name": "Άμπελο",
+          "nameScore": 0,
+          "lat": 36.4969194,
+          "lon": 22.49432
+        },
+        {
+          "name": "Άγιος Κυπριανός",
+          "nameScore": 0,
+          "lat": 36.504195,
+          "lon": 22.4873958
+        }
+      ],
+      "slot": {
+        "region": "Peloponnese",
+        "sub": "Lakonia",
+        "subSub": "Lakonia (mainland)",
+        "neighborId": 1547,
+        "neighborName": "Άμπελο",
+        "neighborDistanceM": 1573,
+        "farNeighbor": false,
+        "slotConflict": false,
+        "neighborRegion": "Peloponnese"
+      },
+      "flags": [
+        "weak_name_match",
+        "unnamed_beach"
+      ]
+    },
+    {
+      "seed": {
+        "nameGr": "Καρδαμύλη Ρίτσα",
+        "nameEn": "Kardamili Ritsa",
+        "region": "Peloponnese",
+        "municipality": "Dytiki Mani",
+        "status": "online"
+      },
+      "tier": "HIGH",
+      "decision": "auto-accept",
+      "queriesTried": [
+        "Dytiki Mani, Peloponnese, Greece",
+        "Καρδαμύλη, Peloponnese, Greece"
+      ],
+      "localityCenter": {
+        "lat": 36.888381,
+        "lon": 22.2323753
+      },
+      "best": {
+        "name": "Παραλία Ριτσά",
+        "lat": 36.8943061,
+        "lon": 22.2246609,
+        "nameScore": 80,
+        "distFromLocalityM": 951
+      },
+      "alternates": [
+        {
+          "name": "Παραλία Ριτσά 3η",
+          "nameScore": 50,
+          "lat": 36.8906565,
+          "lon": 22.2291561
+        },
+        {
+          "name": "Παραλία Ριτσά 2η",
+          "nameScore": 50,
+          "lat": 36.8926513,
+          "lon": 22.2271705
+        },
+        {
+          "name": "Παραλία Σάλιο",
+          "nameScore": 0,
+          "lat": 36.8881276,
+          "lon": 22.2308837
+        }
+      ],
+      "slot": {
+        "region": "Peloponnese",
+        "sub": "Messinia",
+        "subSub": "Messinia (mainland)",
+        "neighborId": 1639,
+        "neighborName": "Παραλία Ριτσά",
+        "neighborDistanceM": 0,
+        "farNeighbor": false,
+        "slotConflict": false,
+        "neighborRegion": "Peloponnese"
+      },
+      "flags": []
+    },
+    {
+      "seed": {
+        "nameGr": "Πλάκα Λεωνιδίου",
+        "nameEn": "Plaka Leonidio",
+        "region": "Peloponnese",
+        "municipality": "Notia Kynouria",
+        "status": "online",
+        "notes": "2026, leased for season; special wooden platform, remotes, telemetry."
+      },
+      "tier": "LOW",
+      "decision": "REVIEW",
+      "queriesTried": [
+        "Notia Kynouria, Peloponnese, Greece",
+        "Πλάκα, Peloponnese, Greece",
+        "Πλάκα Λεωνιδίου, Peloponnese, Greece"
+      ],
+      "localityCenter": {
+        "lat": 37.1479408,
+        "lon": 22.8932723
+      },
+      "best": {
+        "name": "",
+        "lat": 37.1502269,
+        "lon": 22.8949452,
+        "nameScore": 0,
+        "distFromLocalityM": 294
+      },
+      "alternates": [
+        {
+          "name": "",
+          "nameScore": 0,
+          "lat": 37.1450427,
+          "lon": 22.8920228
+        },
+        {
+          "name": "",
+          "nameScore": 0,
+          "lat": 37.1644581,
+          "lon": 22.898029
+        },
+        {
+          "name": "",
+          "nameScore": 0,
+          "lat": 37.125868,
+          "lon": 22.8940843
+        }
+      ],
+      "slot": {
+        "region": "Peloponnese",
+        "sub": "Arkadia",
+        "subSub": "Arkadia (mainland)",
+        "neighborId": 1519,
+        "neighborName": "Πούλιθρα",
+        "neighborDistanceM": 3239,
+        "farNeighbor": false,
+        "slotConflict": false,
+        "neighborRegion": "Peloponnese"
+      },
+      "flags": [
+        "weak_name_match",
+        "unnamed_beach"
+      ]
+    },
+    {
+      "seed": {
+        "nameGr": "Τυρός",
+        "nameEn": "Tyros",
+        "region": "Peloponnese",
+        "municipality": "Notia Kynouria",
+        "status": "online"
+      },
+      "tier": "LOW",
+      "decision": "REVIEW",
+      "queriesTried": [
+        "Notia Kynouria, Peloponnese, Greece",
+        "Τυρός, Peloponnese, Greece"
+      ],
+      "localityCenter": {
+        "lat": 37.2400496,
+        "lon": 22.8421074
+      },
+      "best": {
+        "name": "Τηγάνι",
+        "lat": 37.2551141,
+        "lon": 22.8547787,
+        "nameScore": 0,
+        "distFromLocalityM": 2016
+      },
+      "alternates": [
+        {
+          "name": "",
+          "nameScore": 0,
+          "lat": 37.2449598,
+          "lon": 22.86613
+        },
+        {
+          "name": "",
+          "nameScore": 0,
+          "lat": 37.2446351,
+          "lon": 22.8671296
+        },
+        {
+          "name": "",
+          "nameScore": 0,
+          "lat": 37.2444219,
+          "lon": 22.8681095
+        }
+      ],
+      "slot": {
+        "region": "Peloponnese",
+        "sub": "Arkadia",
+        "subSub": "Arkadia (mainland)",
+        "neighborId": 1520,
+        "neighborName": "Τηγάνι (Φουρνάκα)",
+        "neighborDistanceM": 0,
+        "farNeighbor": false,
+        "slotConflict": false,
+        "neighborRegion": "Peloponnese"
+      },
+      "flags": [
+        "weak_name_match"
+      ]
+    },
+    {
+      "seed": {
+        "nameGr": "Πάτρα",
+        "nameEn": "Patra",
+        "region": "West Greece",
+        "municipality": "Achaia",
+        "status": "listed-unverified"
+      },
+      "tier": "LOW",
+      "decision": "REVIEW",
+      "queriesTried": [
+        "Achaia, West Greece, Greece"
+      ],
+      "localityCenter": {
+        "lat": 38.1445824,
+        "lon": 21.5569637
+      },
+      "best": {
+        "name": "",
+        "lat": 38.155223,
+        "lon": 21.5570671,
+        "nameScore": 0,
+        "distFromLocalityM": 1183
+      },
+      "alternates": [],
+      "slot": {
+        "region": "West Greece",
+        "sub": "Achaia",
+        "subSub": "Achaia (mainland)",
+        "neighborId": 2503,
+        "neighborName": "Αμμόλοφος",
+        "neighborDistanceM": 16685,
+        "farNeighbor": false,
+        "slotConflict": false,
+        "neighborRegion": "West Greece"
+      },
+      "flags": [
+        "weak_name_match",
+        "unnamed_beach"
+      ]
+    },
+    {
+      "seed": {
+        "nameGr": "Πάτρα Άγιος Βασίλειος",
+        "nameEn": "Patra Agios Vasileios",
+        "region": "West Greece",
+        "municipality": "Achaia",
+        "status": "online",
+        "notes": "seatrac.gr Top-5 beach."
+      },
+      "tier": "LOW",
+      "decision": "REVIEW",
+      "queriesTried": [
+        "Achaia, West Greece, Greece"
+      ],
+      "localityCenter": {
+        "lat": 38.1445824,
+        "lon": 21.5569637
+      },
+      "best": {
+        "name": "",
+        "lat": 38.155223,
+        "lon": 21.5570671,
+        "nameScore": 0,
+        "distFromLocalityM": 1183
+      },
+      "alternates": [],
+      "slot": {
+        "region": "West Greece",
+        "sub": "Achaia",
+        "subSub": "Achaia (mainland)",
+        "neighborId": 2503,
+        "neighborName": "Αμμόλοφος",
+        "neighborDistanceM": 16685,
+        "farNeighbor": false,
+        "slotConflict": false,
+        "neighborRegion": "West Greece"
+      },
+      "flags": [
+        "weak_name_match",
+        "unnamed_beach"
+      ]
+    },
+    {
+      "seed": {
+        "nameGr": "Βραχναίικα",
+        "nameEn": "Vrachneika",
+        "region": "West Greece",
+        "municipality": "Achaia",
+        "status": "listed-unverified"
+      },
+      "tier": "LOW",
+      "decision": "REVIEW",
+      "queriesTried": [
+        "Achaia, West Greece, Greece"
+      ],
+      "localityCenter": {
+        "lat": 38.1445824,
+        "lon": 21.5569637
+      },
+      "best": {
+        "name": "",
+        "lat": 38.155223,
+        "lon": 21.5570671,
+        "nameScore": 0,
+        "distFromLocalityM": 1183
+      },
+      "alternates": [],
+      "slot": {
+        "region": "West Greece",
+        "sub": "Achaia",
+        "subSub": "Achaia (mainland)",
+        "neighborId": 2503,
+        "neighborName": "Αμμόλοφος",
+        "neighborDistanceM": 16685,
+        "farNeighbor": false,
+        "slotConflict": false,
+        "neighborRegion": "West Greece"
+      },
+      "flags": [
+        "weak_name_match",
+        "unnamed_beach"
+      ]
+    },
+    {
+      "seed": {
+        "nameGr": "Λακκόπετρα",
+        "nameEn": "Lakkopetra",
+        "region": "West Greece",
+        "municipality": "Achaia",
+        "status": "listed-unverified"
+      },
+      "tier": "LOW",
+      "decision": "REVIEW",
+      "queriesTried": [
+        "Achaia, West Greece, Greece"
+      ],
+      "localityCenter": {
+        "lat": 38.1445824,
+        "lon": 21.5569637
+      },
+      "best": {
+        "name": "",
+        "lat": 38.155223,
+        "lon": 21.5570671,
+        "nameScore": 0,
+        "distFromLocalityM": 1183
+      },
+      "alternates": [],
+      "slot": {
+        "region": "West Greece",
+        "sub": "Achaia",
+        "subSub": "Achaia (mainland)",
+        "neighborId": 2503,
+        "neighborName": "Αμμόλοφος",
+        "neighborDistanceM": 16685,
+        "farNeighbor": false,
+        "slotConflict": false,
+        "neighborRegion": "West Greece"
+      },
+      "flags": [
+        "weak_name_match",
+        "unnamed_beach"
+      ]
+    },
+    {
+      "seed": {
+        "nameGr": "Ηλιδα Αγία Μαρίνα",
+        "nameEn": "Ilida Agia Marina",
+        "region": "West Greece",
+        "municipality": "Ileia",
+        "status": "listed-unverified"
+      },
+      "tier": "LOW",
+      "decision": "REVIEW",
+      "queriesTried": [
+        "Ileia, West Greece, Greece",
+        "Ηλιδα Αγία, West Greece, Greece"
+      ],
+      "localityCenter": {
+        "lat": 37.6725256,
+        "lon": 21.4381957
+      },
+      "best": {
+        "name": "Spiaggia",
+        "lat": 37.6380334,
+        "lon": 21.4168399,
+        "nameScore": 0,
+        "distFromLocalityM": 4271
+      },
+      "alternates": [
+        {
+          "name": "",
+          "nameScore": 0,
+          "lat": 37.6309453,
+          "lon": 21.4271831
+        },
+        {
+          "name": "",
+          "nameScore": 0,
+          "lat": 37.6466005,
+          "lon": 21.3941131
+        }
+      ],
+      "slot": {
+        "region": "West Greece",
+        "sub": "Ileia",
+        "subSub": "Ileia (mainland)",
+        "neighborId": 2565,
+        "neighborName": "Άγιος Ανδρέας",
+        "neighborDistanceM": 9906,
+        "farNeighbor": false,
+        "slotConflict": false,
+        "neighborRegion": "West Greece"
+      },
+      "flags": [
+        "weak_name_match"
+      ]
+    },
+    {
+      "seed": {
+        "nameGr": "Μυρσίνη",
+        "nameEn": "Myrsini",
+        "region": "West Greece",
+        "municipality": "Andravida-Kyllini",
+        "status": "listed-unverified",
+        "boardwalkToWater": "yes",
+        "changingRoom": "yes"
+      },
+      "tier": "LOW",
+      "decision": "REVIEW",
+      "queriesTried": [
+        "Andravida-Kyllini, West Greece, Greece"
+      ],
+      "localityCenter": {
+        "lat": 37.9367494,
+        "lon": 21.2629223
+      },
+      "best": {
+        "name": "",
+        "lat": 37.9763607,
+        "lon": 21.2579006,
+        "nameScore": 0,
+        "distFromLocalityM": 4427
+      },
+      "alternates": [],
+      "slot": {
+        "region": "West Greece",
+        "sub": "Ileia",
+        "subSub": "Ileia (mainland)",
+        "neighborId": 2571,
+        "neighborName": "Μπρινιά",
+        "neighborDistanceM": 10442,
+        "farNeighbor": false,
+        "slotConflict": false,
+        "neighborRegion": "West Greece"
+      },
+      "flags": [
+        "weak_name_match",
+        "unnamed_beach"
+      ]
+    },
+    {
+      "seed": {
+        "nameGr": "Καλαμιά",
+        "nameEn": "Kalamia",
+        "region": "West Greece",
+        "municipality": "Andravida-Kyllini",
+        "status": "listed-unverified",
+        "boardwalkToWater": "yes",
+        "changingRoom": "yes"
+      },
+      "tier": "LOW",
+      "decision": "REVIEW",
+      "queriesTried": [
+        "Andravida-Kyllini, West Greece, Greece"
+      ],
+      "localityCenter": {
+        "lat": 37.9367494,
+        "lon": 21.2629223
+      },
+      "best": {
+        "name": "",
+        "lat": 37.9763607,
+        "lon": 21.2579006,
+        "nameScore": 0,
+        "distFromLocalityM": 4427
+      },
+      "alternates": [],
+      "slot": {
+        "region": "West Greece",
+        "sub": "Ileia",
+        "subSub": "Ileia (mainland)",
+        "neighborId": 2571,
+        "neighborName": "Μπρινιά",
+        "neighborDistanceM": 10442,
+        "farNeighbor": false,
+        "slotConflict": false,
+        "neighborRegion": "West Greece"
+      },
+      "flags": [
+        "weak_name_match",
+        "unnamed_beach"
+      ]
+    },
+    {
+      "seed": {
+        "nameGr": "Λουτράκι Νεράιδα",
+        "nameEn": "Loutraki Neraida",
+        "region": "Peloponnese",
+        "municipality": "Korinthia",
+        "status": "listed-unverified"
+      },
+      "tier": "LOW",
+      "decision": "REVIEW",
+      "queriesTried": [
+        "Korinthia, Peloponnese, Greece"
+      ],
+      "localityCenter": {
+        "lat": 37.9629909,
+        "lon": 22.7333424
+      },
+      "best": {
+        "name": "",
+        "lat": 38.0122698,
+        "lon": 22.7518121,
+        "nameScore": 0,
+        "distFromLocalityM": 5714
+      },
+      "alternates": [
+        {
+          "name": "",
+          "nameScore": 0,
+          "lat": 38.013636,
+          "lon": 22.7506751
+        },
+        {
+          "name": "",
+          "nameScore": 0,
+          "lat": 38.0146041,
+          "lon": 22.7497101
+        },
+        {
+          "name": "",
+          "nameScore": 0,
+          "lat": 37.9651756,
+          "lon": 22.8023083
+        }
+      ],
+      "slot": {
+        "region": "Peloponnese",
+        "sub": "Korinthia",
+        "subSub": "Korinthia (mainland)",
+        "neighborId": 1541,
+        "neighborName": "Συκιά",
+        "neighborDistanceM": 10260,
+        "farNeighbor": false,
+        "slotConflict": false,
+        "neighborRegion": "Peloponnese"
+      },
+      "flags": [
+        "weak_name_match",
+        "unnamed_beach"
+      ]
+    },
+    {
+      "seed": {
+        "nameGr": "Ξυλόκαστρο Σύκια",
+        "nameEn": "Xylokastro Sykia",
+        "region": "Peloponnese",
+        "municipality": "Korinthia",
+        "status": "listed-unverified"
+      },
+      "tier": "HIGH",
+      "decision": "auto-accept",
+      "queriesTried": [
+        "Korinthia, Peloponnese, Greece",
+        "Ξυλόκαστρο, Peloponnese, Greece"
+      ],
+      "localityCenter": {
+        "lat": 38.078321,
+        "lon": 22.6330434
+      },
+      "best": {
+        "name": "Συκιά",
+        "lat": 38.0668044,
+        "lon": 22.6573121,
+        "nameScore": 80,
+        "distFromLocalityM": 2481
+      },
+      "alternates": [
+        {
+          "name": "",
+          "nameScore": 0,
+          "lat": 38.0792743,
+          "lon": 22.6309862
+        },
+        {
+          "name": "",
+          "nameScore": 0,
+          "lat": 38.0791237,
+          "lon": 22.6304503
+        },
+        {
+          "name": "",
+          "nameScore": 0,
+          "lat": 38.0790183,
+          "lon": 22.6299488
+        }
+      ],
+      "slot": {
+        "region": "Peloponnese",
+        "sub": "Korinthia",
+        "subSub": "Korinthia (mainland)",
+        "neighborId": 1541,
+        "neighborName": "Συκιά",
+        "neighborDistanceM": 1,
+        "farNeighbor": false,
+        "slotConflict": false,
+        "neighborRegion": "Peloponnese"
+      },
+      "flags": []
+    },
+    {
+      "seed": {
+        "nameGr": "Σικυώνα Κιάτο",
+        "nameEn": "Sikiona Kiato",
+        "region": "Peloponnese",
+        "municipality": "Korinthia",
+        "status": "listed-unverified"
+      },
+      "tier": "LOW",
+      "decision": "REVIEW",
+      "queriesTried": [
+        "Korinthia, Peloponnese, Greece",
+        "Σικυώνα, Peloponnese, Greece"
+      ],
+      "localityCenter": {
+        "lat": 37.9831767,
+        "lon": 22.7139496
+      },
+      "best": {
+        "name": "",
+        "lat": 38.0122698,
+        "lon": 22.7518121,
+        "nameScore": 0,
+        "distFromLocalityM": 4634
+      },
+      "alternates": [
+        {
+          "name": "",
+          "nameScore": 0,
+          "lat": 38.013636,
+          "lon": 22.7506751
+        },
+        {
+          "name": "",
+          "nameScore": 0,
+          "lat": 38.0146041,
+          "lon": 22.7497101
+        },
+        {
+          "name": "",
+          "nameScore": 0,
+          "lat": 38.0204659,
+          "lon": 22.7402924
+        }
+      ],
+      "slot": {
+        "region": "Peloponnese",
+        "sub": "Korinthia",
+        "subSub": "Korinthia (mainland)",
+        "neighborId": 1541,
+        "neighborName": "Συκιά",
+        "neighborDistanceM": 10260,
+        "farNeighbor": false,
+        "slotConflict": false,
+        "neighborRegion": "Peloponnese"
+      },
+      "flags": [
+        "weak_name_match",
+        "unnamed_beach"
+      ]
+    },
+    {
+      "seed": {
+        "nameGr": "Σικυώνα Κάτω Διμηνιό",
+        "nameEn": "Sikiona Kato Diminio",
+        "region": "Peloponnese",
+        "municipality": "Korinthia",
+        "status": "listed-unverified"
+      },
+      "tier": "LOW",
+      "decision": "REVIEW",
+      "queriesTried": [
+        "Korinthia, Peloponnese, Greece"
+      ],
+      "localityCenter": {
+        "lat": 37.9629909,
+        "lon": 22.7333424
+      },
+      "best": {
+        "name": "",
+        "lat": 38.0122698,
+        "lon": 22.7518121,
+        "nameScore": 0,
+        "distFromLocalityM": 5714
+      },
+      "alternates": [
+        {
+          "name": "",
+          "nameScore": 0,
+          "lat": 38.013636,
+          "lon": 22.7506751
+        },
+        {
+          "name": "",
+          "nameScore": 0,
+          "lat": 38.0146041,
+          "lon": 22.7497101
+        },
+        {
+          "name": "",
+          "nameScore": 0,
+          "lat": 37.9651756,
+          "lon": 22.8023083
+        }
+      ],
+      "slot": {
+        "region": "Peloponnese",
+        "sub": "Korinthia",
+        "subSub": "Korinthia (mainland)",
+        "neighborId": 1541,
+        "neighborName": "Συκιά",
+        "neighborDistanceM": 10260,
+        "farNeighbor": false,
+        "slotConflict": false,
+        "neighborRegion": "Peloponnese"
+      },
+      "flags": [
+        "weak_name_match",
+        "unnamed_beach"
+      ]
+    },
+    {
+      "seed": {
+        "nameGr": "Νεάπολη Παλιός Λιμένας",
+        "nameEn": "Neapoli Palios Limenas",
+        "region": "Peloponnese",
+        "municipality": "Lakonia",
+        "status": "listed-unverified"
+      },
+      "tier": "NONE",
+      "decision": "skip",
+      "queriesTried": [
+        "Lakonia, Peloponnese, Greece",
+        "Νεάπολη Παλιός, Peloponnese, Greece",
+        "Νεάπολη Παλιός Λιμένας, Peloponnese, Greece"
+      ],
+      "localityCenter": {
+        "lat": 36.7602795,
+        "lon": 22.7904643
+      },
+      "flags": [
+        "no_beach_near_locality"
+      ]
+    },
+    {
+      "seed": {
+        "nameGr": "Παραλία Αλμυρού",
+        "nameEn": "Paralia Almirou",
+        "region": "Thessaly",
+        "municipality": "Almyros",
+        "status": "listed-unverified",
+        "notes": "Pelion beaches need verification."
+      },
+      "tier": "LOW",
+      "decision": "REVIEW",
+      "queriesTried": [
+        "Almyros, Thessaly, Greece",
+        "Παραλία, Thessaly, Greece"
+      ],
+      "localityCenter": {
+        "lat": 39.1621319,
+        "lon": 23.4896472
+      },
+      "best": {
+        "name": "",
+        "lat": 39.1594256,
+        "lon": 23.4876693,
+        "nameScore": 0,
+        "distFromLocalityM": 346
+      },
+      "alternates": [
+        {
+          "name": "",
+          "nameScore": 0,
+          "lat": 39.1590303,
+          "lon": 23.5008606
+        },
+        {
+          "name": "Megali Ammos",
+          "nameScore": 0,
+          "lat": 39.1603851,
+          "lon": 23.4771302
+        },
+        {
+          "name": "",
+          "nameScore": 0,
+          "lat": 39.151141,
+          "lon": 23.4985743
+        }
+      ],
+      "slot": {
+        "region": "Thessaly",
+        "sub": "Magnesia (Sporades)",
+        "subSub": "Skiathos",
+        "neighborId": 2618,
+        "neighborName": "Μεγάλη Άμμος",
+        "neighborDistanceM": 915,
+        "farNeighbor": false,
+        "slotConflict": false,
+        "neighborRegion": "Thessaly"
+      },
+      "flags": [
+        "weak_name_match",
+        "unnamed_beach"
+      ]
+    },
+    {
+      "seed": {
+        "nameGr": "Ρήγα Φεραίου Καμάρι Κεραμιδίου",
+        "nameEn": "Riga Feraiou Kamari Keramidiou",
+        "region": "Thessaly",
+        "municipality": "Pelion",
+        "status": "listed-unverified"
+      },
+      "tier": "NONE",
+      "decision": "skip",
+      "queriesTried": [
+        "Pelion, Thessaly, Greece",
+        "Ρήγα Φεραίου Καμάρι, Thessaly, Greece",
+        "Ρήγα Φεραίου Καμάρι Κεραμιδίου, Thessaly, Greece"
+      ],
+      "localityCenter": {
+        "lat": 39.3913485,
+        "lon": 23.0029061
+      },
+      "flags": [
+        "no_beach_near_locality"
+      ]
+    },
+    {
+      "seed": {
+        "nameGr": "Δίστομο Άντικυρα Άσπρα Σπίτια",
+        "nameEn": "Distomo Antikyra Aspra Spitia",
+        "region": "Central Greece",
+        "municipality": "Boeotia",
+        "status": "listed-unverified"
+      },
+      "tier": "LOW",
+      "decision": "REVIEW",
+      "queriesTried": [
+        "Boeotia, Central Greece, Greece",
+        "Δίστομο Άντικυρα Άσπρα, Central Greece, Greece",
+        "Δίστομο Άντικυρα Άσπρα Σπίτια, Central Greece, Greece"
+      ],
+      "localityCenter": {
+        "lat": 38.3890201,
+        "lon": 22.6523538
+      },
+      "best": {
+        "name": "",
+        "lat": 38.385486,
+        "lon": 22.6517633,
+        "nameScore": 0,
+        "distFromLocalityM": 396
+      },
+      "alternates": [
+        {
+          "name": "",
+          "nameScore": 0,
+          "lat": 38.3632266,
+          "lon": 22.6204425
+        },
+        {
+          "name": "Άγιος Ισήδωρος",
+          "nameScore": 0,
+          "lat": 38.360824,
+          "lon": 22.61518
+        },
+        {
+          "name": "",
+          "nameScore": 0,
+          "lat": 38.3503573,
+          "lon": 22.6306316
+        }
+      ],
+      "slot": {
+        "region": "Central Greece",
+        "sub": "Fokida",
+        "subSub": "Fokida (mainland)",
+        "neighborId": 337,
+        "neighborName": "Άγιος Ισίδωρος",
+        "neighborDistanceM": 4206,
+        "farNeighbor": false,
+        "slotConflict": false,
+        "neighborRegion": "Central Greece"
+      },
+      "flags": [
+        "weak_name_match",
+        "unnamed_beach"
+      ]
+    },
+    {
+      "seed": {
+        "nameGr": "Τανάγρα Δήλεσι",
+        "nameEn": "Tanagra Dilesi",
+        "region": "Central Greece",
+        "municipality": "Boeotia",
+        "status": "listed-unverified"
+      },
+      "tier": "NONE",
+      "decision": "skip",
+      "queriesTried": [
+        "Boeotia, Central Greece, Greece",
+        "Τανάγρα, Central Greece, Greece",
+        "Τανάγρα Δήλεσι, Central Greece, Greece"
+      ],
+      "localityCenter": {
+        "lat": 38.3354894,
+        "lon": 23.5676272
+      },
+      "flags": [
+        "no_beach_near_locality"
+      ]
+    },
+    {
+      "seed": {
+        "nameGr": "Δωρίδα Ερατεινή",
+        "nameEn": "Dorida Erateini",
+        "region": "Central Greece",
+        "municipality": "Fokida",
+        "status": "listed-unverified"
+      },
+      "tier": "NONE",
+      "decision": "skip",
+      "queriesTried": [
+        "Fokida, Central Greece, Greece",
+        "Δωρίδα, Central Greece, Greece",
+        "Δωρίδα Ερατεινή, Central Greece, Greece"
+      ],
+      "localityCenter": {
+        "lat": 38.5450713,
+        "lon": 22.1500191
+      },
+      "flags": [
+        "no_beach_near_locality"
+      ]
+    },
+    {
+      "seed": {
+        "nameGr": "Σεργούλα Δωρίδος",
+        "nameEn": "Sergoula Doridos",
+        "region": "Central Greece",
+        "municipality": "Fokida",
+        "status": "listed-unverified"
+      },
+      "tier": "LOW",
+      "decision": "REVIEW",
+      "queriesTried": [
+        "Fokida, Central Greece, Greece",
+        "Σεργούλα, Central Greece, Greece"
+      ],
+      "localityCenter": {
+        "lat": 38.4151777,
+        "lon": 22.0569929
+      },
+      "best": {
+        "name": "",
+        "lat": 38.3942916,
+        "lon": 22.052054,
+        "nameScore": 0,
+        "distFromLocalityM": 2362
+      },
+      "alternates": [
+        {
+          "name": "Παραλία Σεργούλας",
+          "nameScore": 0,
+          "lat": 38.3869197,
+          "lon": 22.0638164
+        },
+        {
+          "name": "Μαραθιάς",
+          "nameScore": 0,
+          "lat": 38.3923568,
+          "lon": 22.0157958
+        },
+        {
+          "name": "Μονόλιθος",
+          "nameScore": 0,
+          "lat": 38.3725095,
+          "lon": 22.061488
+        }
+      ],
+      "slot": {
+        "region": "Central Greece",
+        "sub": "Fokida",
+        "subSub": "Fokida (mainland)",
+        "neighborId": 352,
+        "neighborName": "Παραλία Σεργούλας",
+        "neighborDistanceM": 1313,
+        "farNeighbor": false,
+        "slotConflict": false,
+        "neighborRegion": "Central Greece"
+      },
+      "flags": [
+        "weak_name_match",
+        "unnamed_beach"
+      ]
+    },
+    {
+      "seed": {
+        "nameGr": "Χαλκίδα Κουρέντι",
+        "nameEn": "Chalkida Kourenti",
+        "region": "Central Greece",
+        "municipality": "Evia",
+        "status": "listed-unverified"
+      },
+      "tier": "LOW",
+      "decision": "REVIEW",
+      "queriesTried": [
+        "Evia, Central Greece, Greece"
+      ],
+      "localityCenter": {
+        "lat": 38.5767431,
+        "lon": 23.6439752
+      },
+      "best": {
+        "name": "",
+        "lat": 38.5289329,
+        "lon": 23.6297382,
+        "nameScore": 0,
+        "distFromLocalityM": 5459
+      },
+      "alternates": [
+        {
+          "name": "Ζέφυρος",
+          "nameScore": 0,
+          "lat": 38.52885,
+          "lon": 23.6296324
+        }
+      ],
+      "slot": {
+        "region": "Central Greece",
+        "sub": "Evia",
+        "subSub": "Evia",
+        "neighborId": 222,
+        "neighborName": "Ζέφυρος",
+        "neighborDistanceM": 13,
+        "farNeighbor": false,
+        "slotConflict": false,
+        "neighborRegion": "Central Greece"
+      },
+      "flags": [
+        "weak_name_match",
+        "unnamed_beach"
+      ]
+    },
+    {
+      "seed": {
+        "nameGr": "Ερέτρια Άγιος Ανδρέας",
+        "nameEn": "Eretria Agios Andreas",
+        "region": "Central Greece",
+        "municipality": "Evia",
+        "status": "listed-unverified"
+      },
+      "tier": "NONE",
+      "decision": "skip",
+      "queriesTried": [
+        "Evia, Central Greece, Greece",
+        "Ερέτρια Άγιος, Central Greece, Greece",
+        "Ερέτρια Άγιος Ανδρέας, Central Greece, Greece"
+      ],
+      "localityCenter": {
+        "lat": 39.2904458,
+        "lon": 22.6078904
+      },
+      "flags": [
+        "no_beach_near_locality"
+      ]
+    },
+    {
+      "seed": {
+        "nameGr": "Κύμη Αλιβέρι",
+        "nameEn": "Kymi Aliveri",
+        "region": "Central Greece",
+        "municipality": "Evia",
+        "status": "listed-unverified"
+      },
+      "tier": "LOW",
+      "decision": "REVIEW",
+      "queriesTried": [
+        "Evia, Central Greece, Greece"
+      ],
+      "localityCenter": {
+        "lat": 38.5767431,
+        "lon": 23.6439752
+      },
+      "best": {
+        "name": "",
+        "lat": 38.5289329,
+        "lon": 23.6297382,
+        "nameScore": 0,
+        "distFromLocalityM": 5459
+      },
+      "alternates": [
+        {
+          "name": "Ζέφυρος",
+          "nameScore": 0,
+          "lat": 38.52885,
+          "lon": 23.6296324
+        }
+      ],
+      "slot": {
+        "region": "Central Greece",
+        "sub": "Evia",
+        "subSub": "Evia",
+        "neighborId": 222,
+        "neighborName": "Ζέφυρος",
+        "neighborDistanceM": 13,
+        "farNeighbor": false,
+        "slotConflict": false,
+        "neighborRegion": "Central Greece"
+      },
+      "flags": [
+        "weak_name_match",
+        "unnamed_beach"
+      ]
+    },
+    {
+      "seed": {
+        "nameGr": "Μαντούδι Ροβιές",
+        "nameEn": "Mantoudi Rovies",
+        "region": "Central Greece",
+        "municipality": "Evia",
+        "status": "listed-unverified"
+      },
+      "tier": "LOW",
+      "decision": "REVIEW",
+      "queriesTried": [
+        "Evia, Central Greece, Greece",
+        "Μαντούδι, Central Greece, Greece"
+      ],
+      "localityCenter": {
+        "lat": 38.7986603,
+        "lon": 23.478772
+      },
+      "best": {
+        "name": "",
+        "lat": 38.8120237,
+        "lon": 23.5159775,
+        "nameScore": 0,
+        "distFromLocalityM": 3550
+      },
+      "alternates": [
+        {
+          "name": "",
+          "nameScore": 0,
+          "lat": 38.8096328,
+          "lon": 23.5185576
+        },
+        {
+          "name": "Δαφνοπόταμος",
+          "nameScore": 0,
+          "lat": 38.8026077,
+          "lon": 23.5303903
+        },
+        {
+          "name": "",
+          "nameScore": 0,
+          "lat": 38.838383,
+          "lon": 23.4675812
+        }
+      ],
+      "slot": {
+        "region": "Central Greece",
+        "sub": "Evia",
+        "subSub": "Evia",
+        "neighborId": 219,
+        "neighborName": "Δαφνοπόταμος",
+        "neighborDistanceM": 1630,
+        "farNeighbor": false,
+        "slotConflict": false,
+        "neighborRegion": "Central Greece"
+      },
+      "flags": [
+        "weak_name_match",
+        "unnamed_beach"
+      ]
+    },
+    {
+      "seed": {
+        "nameGr": "Σκιάθος Αγία Ελένη",
+        "nameEn": "Skiathos Agia Eleni",
+        "region": "Thessaly",
+        "municipality": "Skiathos",
+        "status": "listed-unverified",
+        "notes": "4 beaches, 2nd consecutive year as of report."
+      },
+      "tier": "NONE",
+      "decision": "skip",
+      "queriesTried": [
+        "Skiathos, Thessaly, Greece",
+        "Σκιάθος Αγία, Thessaly, Greece",
+        "Σκιάθος Αγία Ελένη, Thessaly, Greece"
+      ],
+      "localityCenter": {
+        "lat": 39.1692985,
+        "lon": 23.4552513
+      },
+      "flags": [
+        "no_beach_near_locality"
+      ]
+    },
+    {
+      "seed": {
+        "nameGr": "Σκιάθος Βρωμόλιμνος",
+        "nameEn": "Skiathos Vromolimnos",
+        "region": "Thessaly",
+        "municipality": "Skiathos",
+        "status": "listed-unverified"
+      },
+      "tier": "HIGH",
+      "decision": "auto-accept",
+      "queriesTried": [
+        "Skiathos, Thessaly, Greece"
+      ],
+      "localityCenter": {
+        "lat": 39.1692985,
+        "lon": 23.4552513
+      },
+      "best": {
+        "name": "Βρωμόλιμνος",
+        "lat": 39.1365286,
+        "lon": 23.445979,
+        "nameScore": 80,
+        "distFromLocalityM": 3731
+      },
+      "alternates": [
+        {
+          "name": "Παραλία Λιγαριές",
+          "nameScore": 0,
+          "lat": 39.1811202,
+          "lon": 23.4428425
+        },
+        {
+          "name": "Μικρός Ασέληνος",
+          "nameScore": 0,
+          "lat": 39.1761016,
+          "lon": 23.4325171
+        },
+        {
+          "name": "Αχλαδιές",
+          "nameScore": 0,
+          "lat": 39.1467819,
+          "lon": 23.4645993
+        }
+      ],
+      "slot": {
+        "region": "Thessaly",
+        "sub": "Magnesia (Sporades)",
+        "subSub": "Skiathos",
+        "neighborId": 2625,
+        "neighborName": "Βρωμόλιμνος",
+        "neighborDistanceM": 0,
+        "farNeighbor": false,
+        "slotConflict": false,
+        "neighborRegion": "Thessaly"
+      },
+      "flags": []
+    },
+    {
+      "seed": {
+        "nameGr": "Αλόννησος Γλύφα",
+        "nameEn": "Alonissos Glyfa",
+        "region": "Thessaly",
+        "municipality": "Alonissos",
+        "status": "listed-unverified"
+      },
+      "tier": "HIGH",
+      "decision": "auto-accept",
+      "queriesTried": [
+        "Alonissos, Thessaly, Greece",
+        "Αλόννησος, Thessaly, Greece"
+      ],
+      "localityCenter": {
+        "lat": 39.2123073,
+        "lon": 23.9093931
+      },
+      "best": {
+        "name": "Γλυφά",
+        "lat": 39.1948746,
+        "lon": 23.9265745,
+        "nameScore": 80,
+        "distFromLocalityM": 2439
+      },
+      "alternates": [
+        {
+          "name": "Καλύβια Αλεξίου",
+          "nameScore": 0,
+          "lat": 39.2056333,
+          "lon": 23.9310659
+        },
+        {
+          "name": "Βασίλη Μπαμπακιές",
+          "nameScore": 0,
+          "lat": 39.206609,
+          "lon": 23.9316662
+        },
+        {
+          "name": "Βαμβακιές",
+          "nameScore": 0,
+          "lat": 39.210513,
+          "lon": 23.9360368
+        }
+      ],
+      "slot": {
+        "region": "Thessaly",
+        "sub": "Magnesia (Sporades)",
+        "subSub": "Alonissos",
+        "neighborId": 2588,
+        "neighborName": "Γλυφά",
+        "neighborDistanceM": 0,
+        "farNeighbor": false,
+        "slotConflict": false,
+        "neighborRegion": "Thessaly"
+      },
+      "flags": []
+    },
+    {
+      "seed": {
+        "nameGr": "Αλόννησος Μηλιά",
+        "nameEn": "Alonissos Milia",
+        "region": "Thessaly",
+        "municipality": "Alonissos",
+        "status": "listed-unverified"
+      },
+      "tier": "HIGH",
+      "decision": "auto-accept",
+      "queriesTried": [
+        "Alonissos, Thessaly, Greece"
+      ],
+      "localityCenter": {
+        "lat": 39.2123073,
+        "lon": 23.9093931
+      },
+      "best": {
+        "name": "Μηλιά",
+        "lat": 39.161664,
+        "lon": 23.8852263,
+        "nameScore": 80,
+        "distFromLocalityM": 6004
+      },
+      "alternates": [
+        {
+          "name": "Χρυσή Μηλιά",
+          "nameScore": 50,
+          "lat": 39.1624101,
+          "lon": 23.8951668
+        },
+        {
+          "name": "Καλύβια Αλεξίου",
+          "nameScore": 0,
+          "lat": 39.2056333,
+          "lon": 23.9310659
+        },
+        {
+          "name": "Βασίλη Μπαμπακιές",
+          "nameScore": 0,
+          "lat": 39.206609,
+          "lon": 23.9316662
+        }
+      ],
+      "slot": {
+        "region": "Thessaly",
+        "sub": "Magnesia (Sporades)",
+        "subSub": "Alonissos",
+        "neighborId": 2594,
+        "neighborName": "Κοκκινόκαστρο",
+        "neighborDistanceM": 1076,
+        "farNeighbor": false,
+        "slotConflict": false,
+        "neighborRegion": "Thessaly"
+      },
+      "flags": []
+    },
+    {
+      "seed": {
+        "nameGr": "Άκτιο Βόνιτσα",
+        "nameEn": "Aktio Vonitsa",
+        "region": "West Greece",
+        "municipality": "Aktio-Vonitsa",
+        "status": "listed-unverified",
+        "notes": "Ag. Dimitrios."
+      },
+      "tier": "LOW",
+      "decision": "REVIEW",
+      "queriesTried": [
+        "Aktio-Vonitsa, West Greece, Greece",
+        "Άκτιο, West Greece, Greece"
+      ],
+      "localityCenter": {
+        "lat": 38.9156957,
+        "lon": 20.7938246
+      },
+      "best": {
+        "name": "",
+        "lat": 38.8744457,
+        "lon": 20.7835245,
+        "nameScore": 0,
+        "distFromLocalityM": 4673
+      },
+      "alternates": [
+        {
+          "name": "Μυρτάρι",
+          "nameScore": 0,
+          "lat": 38.9291451,
+          "lon": 20.8486454
+        },
+        {
+          "name": "",
+          "nameScore": 0,
+          "lat": 38.9473883,
+          "lon": 20.7509819
+        }
+      ],
+      "slot": {
+        "region": "West Greece",
+        "sub": "Aetolia-Acarnania",
+        "subSub": "Aetolia-Acarnania (mainland)",
+        "neighborId": 2536,
+        "neighborName": "Μυρτάρι",
+        "neighborDistanceM": 8292,
+        "farNeighbor": false,
+        "slotConflict": true,
+        "neighborRegion": "Ionian Islands"
+      },
+      "flags": [
+        "weak_name_match",
+        "unnamed_beach",
+        "slot_conflict"
+      ]
+    },
+    {
+      "seed": {
+        "nameGr": "Χίος Δασκαλόπετρα",
+        "nameEn": "Chios Daskalopetra",
+        "region": "North Aegean",
+        "municipality": "Chios",
+        "status": "listed-unverified",
+        "notes": "~5 beaches; a unit moved to NOX beach from Agia Paraskevi Kastelou."
+      },
+      "tier": "NONE",
+      "decision": "skip",
+      "queriesTried": [
+        "Chios, North Aegean, Greece",
+        "Χίος Δασκαλόπετρα, North Aegean, Greece"
+      ],
+      "localityCenter": {
+        "lat": 38.3758132,
+        "lon": 26.0646552
+      },
+      "flags": [
+        "no_beach_near_locality"
+      ]
+    },
+    {
+      "seed": {
+        "nameGr": "Χίος Κώμη",
+        "nameEn": "Chios Komi",
+        "region": "North Aegean",
+        "municipality": "Chios",
+        "status": "listed-unverified"
+      },
+      "tier": "NONE",
+      "decision": "skip",
+      "queriesTried": [
+        "Chios, North Aegean, Greece",
+        "Χίος Κώμη, North Aegean, Greece"
+      ],
+      "localityCenter": {
+        "lat": 38.3758132,
+        "lon": 26.0646552
+      },
+      "flags": [
+        "no_beach_near_locality"
+      ]
+    },
+    {
+      "seed": {
+        "nameGr": "Χίος Αγία Φωτιά",
+        "nameEn": "Chios Agia Fotia",
+        "region": "North Aegean",
+        "municipality": "Chios",
+        "status": "listed-unverified"
+      },
+      "tier": "LOW",
+      "decision": "REVIEW",
+      "queriesTried": [
+        "Chios, North Aegean, Greece",
+        "Χίος Αγία, North Aegean, Greece"
+      ],
+      "localityCenter": {
+        "lat": 38.3708276,
+        "lon": 26.1333572
+      },
+      "best": {
+        "name": "Bella Vista",
+        "lat": 38.3628977,
+        "lon": 26.1436684,
+        "nameScore": 0,
+        "distFromLocalityM": 1259
+      },
+      "alternates": [
+        {
+          "name": "Αγ.Ελένη",
+          "nameScore": 0,
+          "lat": 38.3283679,
+          "lon": 26.1601236
+        },
+        {
+          "name": "",
+          "nameScore": 0,
+          "lat": 38.3282539,
+          "lon": 26.1601352
+        },
+        {
+          "name": "Καρφάς",
+          "nameScore": 0,
+          "lat": 38.3208517,
+          "lon": 26.1543579
+        }
+      ],
+      "slot": {
+        "region": "North Aegean",
+        "sub": "Chios",
+        "subSub": "Chios",
+        "neighborId": 1248,
+        "neighborName": "Bella Vista",
+        "neighborDistanceM": 0,
+        "farNeighbor": false,
+        "slotConflict": false,
+        "neighborRegion": "North Aegean"
+      },
+      "flags": [
+        "weak_name_match"
+      ]
+    },
+    {
+      "seed": {
+        "nameGr": "Χίος Λιμνος Βολισσού",
+        "nameEn": "Chios Limnos Volissou",
+        "region": "North Aegean",
+        "municipality": "Chios",
+        "status": "listed-unverified"
+      },
+      "tier": "NONE",
+      "decision": "skip",
+      "queriesTried": [
+        "Chios, North Aegean, Greece",
+        "Χίος Λιμνος, North Aegean, Greece",
+        "Χίος Λιμνος Βολισσού, North Aegean, Greece"
+      ],
+      "localityCenter": {
+        "lat": 38.3758132,
+        "lon": 26.0646552
+      },
+      "flags": [
+        "no_beach_near_locality"
+      ]
+    },
+    {
+      "seed": {
+        "nameGr": "Σάμος Βαθύ",
+        "nameEn": "Samos Vathi",
+        "region": "North Aegean",
+        "municipality": "Samos",
+        "status": "listed-unverified",
+        "notes": "Maounes."
+      },
+      "tier": "LOW",
+      "decision": "REVIEW",
+      "queriesTried": [
+        "Samos, North Aegean, Greece",
+        "Σάμος Βαθύ, North Aegean, Greece"
+      ],
+      "localityCenter": {
+        "lat": 37.7521509,
+        "lon": 26.9766795
+      },
+      "best": {
+        "name": "",
+        "lat": 37.7577864,
+        "lon": 26.9706362,
+        "nameScore": 0,
+        "distFromLocalityM": 822
+      },
+      "alternates": [
+        {
+          "name": "",
+          "nameScore": 0,
+          "lat": 37.7585127,
+          "lon": 26.9703928
+        },
+        {
+          "name": "",
+          "nameScore": 0,
+          "lat": 37.7612035,
+          "lon": 26.9685355
+        },
+        {
+          "name": "Ροδίτσες",
+          "nameScore": 0,
+          "lat": 37.7625827,
+          "lon": 26.9678154
+        }
+      ],
+      "slot": {
+        "region": "North Aegean",
+        "sub": "Samos",
+        "subSub": "Samos",
+        "neighborId": 1414,
+        "neighborName": "Ροδίτσες",
+        "neighborDistanceM": 588,
+        "farNeighbor": false,
+        "slotConflict": false,
+        "neighborRegion": "North Aegean"
+      },
+      "flags": [
+        "weak_name_match",
+        "unnamed_beach"
+      ]
+    },
+    {
+      "seed": {
+        "nameGr": "Σάμος Καρλόβασι",
+        "nameEn": "Samos Karlovasi",
+        "region": "North Aegean",
+        "municipality": "Samos",
+        "status": "listed-unverified"
+      },
+      "tier": "LOW",
+      "decision": "REVIEW",
+      "queriesTried": [
+        "Samos, North Aegean, Greece",
+        "Σάμος Καρλόβασι, North Aegean, Greece"
+      ],
+      "localityCenter": {
+        "lat": 37.7934949,
+        "lon": 26.7050193
+      },
+      "best": {
+        "name": "",
+        "lat": 37.7954878,
+        "lon": 26.6885488,
+        "nameScore": 0,
+        "distFromLocalityM": 1464
+      },
+      "alternates": [
+        {
+          "name": "",
+          "nameScore": 0,
+          "lat": 37.8114668,
+          "lon": 26.7474968
+        }
+      ],
+      "slot": {
+        "region": "North Aegean",
+        "sub": "Samos",
+        "subSub": "Samos",
+        "neighborId": 1413,
+        "neighborName": "Ποτάμι",
+        "neighborDistanceM": 2264,
+        "farNeighbor": false,
+        "slotConflict": false,
+        "neighborRegion": "North Aegean"
+      },
+      "flags": [
+        "weak_name_match",
+        "unnamed_beach"
+      ]
+    },
+    {
+      "seed": {
+        "nameGr": "Σάμος Κοκκάρι",
+        "nameEn": "Samos Kokkari",
+        "region": "North Aegean",
+        "municipality": "Samos",
+        "status": "listed-unverified"
+      },
+      "tier": "NONE",
+      "decision": "skip",
+      "queriesTried": [
+        "Samos, North Aegean, Greece",
+        "Σάμος Κοκκάρι, North Aegean, Greece"
+      ],
+      "localityCenter": {
+        "lat": 37.7696097,
+        "lon": 26.9209064
+      },
+      "flags": [
+        "no_beach_near_locality"
+      ]
+    },
+    {
+      "seed": {
+        "nameGr": "Σάμος Ποτοκάκι",
+        "nameEn": "Samos Potokaki",
+        "region": "North Aegean",
+        "municipality": "Samos",
+        "status": "listed-unverified"
+      },
+      "tier": "LOW",
+      "decision": "REVIEW",
+      "queriesTried": [
+        "Samos, North Aegean, Greece",
+        "Σάμος Ποτοκάκι, North Aegean, Greece"
+      ],
+      "localityCenter": {
+        "lat": 37.6938487,
+        "lon": 26.9212618
+      },
+      "best": {
+        "name": "Pythagorio beach",
+        "lat": 37.6889897,
+        "lon": 26.9301697,
+        "nameScore": 0,
+        "distFromLocalityM": 952
+      },
+      "alternates": [
+        {
+          "name": "",
+          "nameScore": 0,
+          "lat": 37.6899802,
+          "lon": 26.9362323
+        },
+        {
+          "name": "",
+          "nameScore": 0,
+          "lat": 37.6879605,
+          "lon": 26.9426979
+        },
+        {
+          "name": "",
+          "nameScore": 0,
+          "lat": 37.6910324,
+          "lon": 26.9472595
+        }
+      ],
+      "slot": {
+        "region": "North Aegean",
+        "sub": "Samos",
+        "subSub": "Samos",
+        "neighborId": 1390,
+        "neighborName": "Πυθαγόρειο",
+        "neighborDistanceM": 0,
+        "farNeighbor": false,
+        "slotConflict": false,
+        "neighborRegion": "North Aegean"
+      },
+      "flags": [
+        "weak_name_match"
+      ]
+    },
+    {
+      "seed": {
+        "nameGr": "Λέσβος Τσαμάκια",
+        "nameEn": "Lesvos Tsamakia",
+        "region": "North Aegean",
+        "municipality": "Mytilene",
+        "status": "listed-unverified",
+        "notes": "Accessible-beach mapping module launched June 2025."
+      },
+      "tier": "LOW",
+      "decision": "REVIEW",
+      "queriesTried": [
+        "Mytilene, North Aegean, Greece",
+        "Λέσβος, North Aegean, Greece"
+      ],
+      "localityCenter": {
+        "lat": 39.1604547,
+        "lon": 26.18952
+      },
+      "best": {
+        "name": "",
+        "lat": 39.1843804,
+        "lon": 26.1574307,
+        "nameScore": 0,
+        "distFromLocalityM": 3838
+      },
+      "alternates": [
+        {
+          "name": "",
+          "nameScore": 0,
+          "lat": 39.1944932,
+          "lon": 26.1658648
+        }
+      ],
+      "slot": {
+        "region": "North Aegean",
+        "sub": "Lesvos",
+        "subSub": "Lesvos",
+        "neighborId": 1358,
+        "neighborName": "Παραλία Νυφίδας",
+        "neighborDistanceM": 10773,
+        "farNeighbor": false,
+        "slotConflict": false,
+        "neighborRegion": "North Aegean"
+      },
+      "flags": [
+        "weak_name_match",
+        "unnamed_beach"
+      ]
+    },
+    {
+      "seed": {
+        "nameGr": "Λήμνος Εβγάτης",
+        "nameEn": "Lemnos Evgatis",
+        "region": "North Aegean",
+        "municipality": "Lemnos",
+        "status": "listed-unverified"
+      },
+      "tier": "LOW",
+      "decision": "REVIEW",
+      "queriesTried": [
+        "Lemnos, North Aegean, Greece",
+        "Λήμνος, North Aegean, Greece"
+      ],
+      "localityCenter": {
+        "lat": 39.9088688,
+        "lon": 25.1499608
+      },
+      "best": {
+        "name": "Καλλιθέα",
+        "lat": 39.8962102,
+        "lon": 25.2153834,
+        "nameScore": 0,
+        "distFromLocalityM": 5755
+      },
+      "alternates": [
+        {
+          "name": "",
+          "nameScore": 0,
+          "lat": 39.8696458,
+          "lon": 25.1973838
+        },
+        {
+          "name": "",
+          "nameScore": 0,
+          "lat": 39.8797704,
+          "lon": 25.2124852
+        }
+      ],
+      "slot": {
+        "region": "North Aegean",
+        "sub": "Lemnos",
+        "subSub": "Lemnos",
+        "neighborId": 1450,
+        "neighborName": "Καλλιθέα",
+        "neighborDistanceM": 0,
+        "farNeighbor": false,
+        "slotConflict": false,
+        "neighborRegion": "North Aegean"
+      },
+      "flags": [
+        "weak_name_match"
+      ]
+    },
+    {
+      "seed": {
+        "nameGr": "Λήμνος Μύρινα",
+        "nameEn": "Lemnos Myrina",
+        "region": "North Aegean",
+        "municipality": "Lemnos",
+        "status": "listed-unverified"
+      },
+      "tier": "LOW",
+      "decision": "REVIEW",
+      "queriesTried": [
+        "Lemnos, North Aegean, Greece"
+      ],
+      "localityCenter": {
+        "lat": 39.9088688,
+        "lon": 25.1499608
+      },
+      "best": {
+        "name": "Καλλιθέα",
+        "lat": 39.8962102,
+        "lon": 25.2153834,
+        "nameScore": 0,
+        "distFromLocalityM": 5755
+      },
+      "alternates": [
+        {
+          "name": "",
+          "nameScore": 0,
+          "lat": 39.8696458,
+          "lon": 25.1973838
+        },
+        {
+          "name": "",
+          "nameScore": 0,
+          "lat": 39.8797704,
+          "lon": 25.2124852
+        }
+      ],
+      "slot": {
+        "region": "North Aegean",
+        "sub": "Lemnos",
+        "subSub": "Lemnos",
+        "neighborId": 1450,
+        "neighborName": "Καλλιθέα",
+        "neighborDistanceM": 0,
+        "farNeighbor": false,
+        "slotConflict": false,
+        "neighborRegion": "North Aegean"
+      },
+      "flags": [
+        "weak_name_match"
+      ]
+    }
+  ]
+}
