@@ -13,7 +13,12 @@
 import { readFileSync, writeFileSync, mkdirSync } from 'node:fs';
 import { dirname } from 'node:path';
 
-const SEED = new URL('./data/seatrac-seed.json', import.meta.url);
+// SEED is overridable via --seed=<path-relative-to-repo-root> so the v2 directory seed
+// (scripts/data/seatrac-seed-v2.json) can flow through the same match/apply pipeline.
+const seedArg = process.argv.find((a) => a.startsWith('--seed='));
+const SEED = seedArg
+  ? new URL('../' + seedArg.slice('--seed='.length).replace(/^\.?\//, ''), import.meta.url)
+  : new URL('./data/seatrac-seed.json', import.meta.url);
 const REPORT = new URL('../reports/seatrac-match-adjudication.json', import.meta.url);
 const DATA = new URL('../public/greek_beaches.json', import.meta.url);
 

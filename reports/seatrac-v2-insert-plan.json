@@ -1,0 +1,377 @@
+{
+  "_meta": {
+    "generatedAt": "2026-06-15T05:47:54.383Z",
+    "aliases": 22,
+    "inserts": 30,
+    "skips": 0
+  },
+  "aliases": [
+    {
+      "seedName": "Αίγινα Βάγια",
+      "targetId": 80,
+      "targetName": "Παραλία Βαγίας",
+      "distanceM": 39,
+      "alreadySeatrac": false
+    },
+    {
+      "seedName": "Άλιμος Καλαμάκι",
+      "targetId": 4,
+      "targetName": "Α' Πλαζ Αλίμου «Στολίδι»",
+      "distanceM": 49,
+      "alreadySeatrac": false
+    },
+    {
+      "seedName": "Γλυφάδα Ακτή Β ΝΕΟ",
+      "targetId": 9,
+      "targetName": "Παραλία Γλυφάδας Ακτή Β",
+      "distanceM": 60,
+      "alreadySeatrac": true
+    },
+    {
+      "seedName": "Παλαιό Φάληρο Έδεμ",
+      "targetId": 3,
+      "targetName": "Παραλία Έδεμ",
+      "distanceM": 214,
+      "alreadySeatrac": false
+    },
+    {
+      "seedName": "Παλαιό Φάληρο Μπάτης",
+      "targetId": 2,
+      "targetName": "Παραλία Μπάτη",
+      "distanceM": 232,
+      "alreadySeatrac": false
+    },
+    {
+      "seedName": "Πόρτο Ράφτη Άγιος Σπυρίδωνας",
+      "targetId": 44,
+      "targetName": "Παραλία Αγίου Σπυρίδωνα",
+      "distanceM": 39,
+      "alreadySeatrac": false
+    },
+    {
+      "seedName": "Ραφήνα Παραλία Ραφήνας",
+      "targetId": 36,
+      "targetName": "Πλαζ Ραφήνας",
+      "distanceM": 105,
+      "alreadySeatrac": true
+    },
+    {
+      "seedName": "Σαρωνικός Ανάβυσσος",
+      "targetId": 66,
+      "targetName": "Παραλία Αναβύσσου",
+      "distanceM": 257,
+      "alreadySeatrac": false
+    },
+    {
+      "seedName": "Ωρωπός Αγκώνας",
+      "targetId": 29,
+      "targetName": "Παραλία Αγκώνα",
+      "distanceM": 458,
+      "alreadySeatrac": false
+    },
+    {
+      "seedName": "Σύμη Πέδι",
+      "targetId": 2467,
+      "targetName": "Πέδι",
+      "distanceM": 114,
+      "alreadySeatrac": false
+    },
+    {
+      "seedName": "Θάσος Λιμανάκι Λιμένα",
+      "targetId": 844,
+      "targetName": "Λιμανάκι",
+      "distanceM": 72,
+      "alreadySeatrac": true
+    },
+    {
+      "seedName": "Λουτράκι Ίσθμια",
+      "targetId": 1526,
+      "targetName": "Κρυφή",
+      "distanceM": 34,
+      "alreadySeatrac": false
+    },
+    {
+      "seedName": "Χερσόνησος Ποταμός",
+      "targetId": 647,
+      "targetName": "Ποταμός Μαλίας",
+      "distanceM": 33,
+      "alreadySeatrac": true
+    },
+    {
+      "seedName": "Σύρος Γαλησσάς",
+      "targetId": 2144,
+      "targetName": "Παραλία Γαλησσά",
+      "distanceM": 67,
+      "alreadySeatrac": true
+    },
+    {
+      "seedName": "Λευκάδα Λυγιά",
+      "targetId": 1145,
+      "targetName": "Λίμνη / Στροφή",
+      "distanceM": 22,
+      "alreadySeatrac": false
+    },
+    {
+      "seedName": "Λευκάδα Μεγανήσι",
+      "targetId": 1181,
+      "targetName": "Φανάρι",
+      "distanceM": 44,
+      "alreadySeatrac": false
+    },
+    {
+      "seedName": "Άγιος Βασίλειος Αγία Γαλήνη",
+      "targetId": 3019,
+      "targetName": "Αγία Γαλήνη",
+      "distanceM": 392,
+      "alreadySeatrac": true
+    },
+    {
+      "seedName": "Σκιάθος Αγία Ελένη",
+      "targetId": 2622,
+      "targetName": "Αγία Ελένη",
+      "distanceM": 97,
+      "alreadySeatrac": false
+    },
+    {
+      "seedName": "Δωρίδα Παραθάλασσο",
+      "targetId": 2540,
+      "targetName": "Παραθάλασσο",
+      "distanceM": 194,
+      "alreadySeatrac": false
+    },
+    {
+      "seedName": "Αποκορώνου Καλύβες",
+      "targetId": 603,
+      "targetName": "Kalyves",
+      "distanceM": 251,
+      "alreadySeatrac": false
+    },
+    {
+      "seedName": "Χανιά Άγιοι Απόστολοι 2ο",
+      "targetId": 548,
+      "targetName": "Παραλία Αγίων Αποστόλων",
+      "distanceM": 54,
+      "alreadySeatrac": true
+    },
+    {
+      "seedName": "Χανιά Μαράθι",
+      "targetId": 539,
+      "targetName": "Μαράθι",
+      "distanceM": 81,
+      "alreadySeatrac": false
+    }
+  ],
+  "inserts": [
+    {
+      "name": "Άκτιο Βόνιτσας Αγ. Δημήτριος",
+      "region": "West Greece",
+      "lat": 38.921,
+      "lon": 20.893583,
+      "neighbor": "#2536 Μυρτάρι (3991m)"
+    },
+    {
+      "name": "Άκτιο Βόνιτσας Πάλαιρος",
+      "region": "West Greece",
+      "lat": 38.780444,
+      "lon": 20.878417,
+      "neighbor": "#2544 Παραλία Αγίου Ιωάννη (4781m)"
+    },
+    {
+      "name": "Αίγινα Αγ. Βασίλειος",
+      "region": "Attica",
+      "lat": 37.726389,
+      "lon": 23.440861,
+      "neighbor": "#90 Παραλία Μαραθώνα Α (1727m)"
+    },
+    {
+      "name": "Άλιμος Λουτρά",
+      "region": "Attica",
+      "lat": 37.90349,
+      "lon": 23.71903,
+      "neighbor": "#5 Ακτή του Ήλιου (521m)"
+    },
+    {
+      "name": "ΚΑΑΥ Άγιος Ανδρέας",
+      "region": "Attica",
+      "lat": 38.05555,
+      "lon": 23.99785,
+      "neighbor": "#34 Παραλία Ζούμπερι (1736m)"
+    },
+    {
+      "name": "Ωρωπός Άγιοι Απόστολοι Καλάμου",
+      "region": "Attica",
+      "lat": 38.297459,
+      "lon": 23.901642,
+      "neighbor": "#29 Παραλία Αγκώνα (2209m)"
+    },
+    {
+      "name": "Ωρωπός Σκάλα Ωρωπού",
+      "region": "Attica",
+      "lat": 38.3255,
+      "lon": 23.80419,
+      "neighbor": "#28 Παραλία Αγίου Κωνσταντίνου (2397m)"
+    },
+    {
+      "name": "Ωρωπός Χαλκούτσι",
+      "region": "Attica",
+      "lat": 38.337419,
+      "lon": 23.721078,
+      "neighbor": "#27 Παραλία Αγίας Παρασκευής (2730m)"
+    },
+    {
+      "name": "ΠΔΕ Αραχωβίτικα",
+      "region": "West Greece",
+      "lat": 38.331073,
+      "lon": 21.842379,
+      "neighbor": "#2521 Drepano Kite Surfer's Paradise Beach (1128m)"
+    },
+    {
+      "name": "ΠΔΕ Καστελόκαμπος",
+      "region": "West Greece",
+      "lat": 38.292927,
+      "lon": 21.76727,
+      "neighbor": "#2514 Πλαζ Πατρών (1937m)"
+    },
+    {
+      "name": "ΠΔΕ Κάτω Αχαΐας",
+      "region": "West Greece",
+      "lat": 38.15515,
+      "lon": 21.55377,
+      "neighbor": "#2503 Αμμόλοφος (16398m)"
+    },
+    {
+      "name": "ΠΔΕ Λακκόπετρα",
+      "region": "West Greece",
+      "lat": 38.18845,
+      "lon": 21.46945,
+      "neighbor": "#2506 Μικρό Γιανισκάρι (8957m)"
+    },
+    {
+      "name": "ΠΔΕ Μακύνεια",
+      "region": "West Greece",
+      "lat": 38.346195,
+      "lon": 21.716688,
+      "neighbor": "#2556 Παραλία Ρίζας (1167m)"
+    },
+    {
+      "name": "ΠΔΕ Πάτρα Αγ.Βασίλειος",
+      "region": "West Greece",
+      "lat": 38.31823,
+      "lon": 21.81686,
+      "neighbor": "#2521 Drepano Kite Surfer's Paradise Beach (3676m)"
+    },
+    {
+      "name": "ΠΔΕ Πούντα Αιγιαλείας",
+      "region": "West Greece",
+      "lat": 38.178498,
+      "lon": 22.232391,
+      "neighbor": "#2513 Παραλία Πούντα (198m)"
+    },
+    {
+      "name": "Τανάγρα Δήλεσι",
+      "region": "Central Greece",
+      "lat": 38.346828,
+      "lon": 23.669065,
+      "neighbor": "#270 Παραλία Εύα (8459m)"
+    },
+    {
+      "name": "Χίος Δασκαλόπετρα",
+      "region": "North Aegean",
+      "lat": 38.41729,
+      "lon": 26.13354,
+      "neighbor": "#1273 Παραλία Μυρσινίδι (1997m)"
+    },
+    {
+      "name": "Σύμη Γυάλα",
+      "region": "South Aegean",
+      "lat": 36.621352,
+      "lon": 27.820906,
+      "neighbor": "#2472 Παραλία της Σάρα (1385m)"
+    },
+    {
+      "name": "Πηνειός Γλύφα",
+      "region": "West Greece",
+      "lat": 37.8313,
+      "lon": 21.15015,
+      "neighbor": "#2566 Αρκούδι (4137m)"
+    },
+    {
+      "name": "Λουτράκι Αγ. Θεόδωροι",
+      "region": "Peloponnese",
+      "lat": 37.922432,
+      "lon": 23.139724,
+      "neighbor": "#1532 Παραλία Αγίων Θεωδώρων (1605m)"
+    },
+    {
+      "name": "Λουτράκι Λίμνη Βουλιαγμένης Ηραίου",
+      "region": "Peloponnese",
+      "lat": 38.032406,
+      "lon": 22.89356,
+      "neighbor": "#1538 Πλαζ Λίμνης Ηραίου (2065m)"
+    },
+    {
+      "name": "Λουτράκι Νεράιδα",
+      "region": "Peloponnese",
+      "lat": 37.984993,
+      "lon": 22.960852,
+      "neighbor": "#1533 Παραλία Λουτρακίου (1768m)"
+    },
+    {
+      "name": "Λουτράκι Σχίνος",
+      "region": "Peloponnese",
+      "lat": 38.054486,
+      "lon": 23.044999,
+      "neighbor": "#1531 Παραλία Αγία Σωτήρα (1639m)"
+    },
+    {
+      "name": "Χερσόνησος Αγκισαράς",
+      "region": "Crete",
+      "lat": 35.336862,
+      "lon": 25.354281,
+      "neighbor": "#643 Ανάληψη (758m)"
+    },
+    {
+      "name": "Λεύκιππος Άβδηρα",
+      "region": "East Macedonia and Thrace",
+      "lat": 40.93965,
+      "lon": 24.99099,
+      "neighbor": "#858 Παραλία Μυρωδάτου (3877m)"
+    },
+    {
+      "name": "Κομοτηνή Παραλία Κρυονερίου Μαρώνεια",
+      "region": "East Macedonia and Thrace",
+      "lat": 40.90341,
+      "lon": 25.424681,
+      "neighbor": "#799 Παχυνάμμος (5718m)"
+    },
+    {
+      "name": "Κομοτηνή Φανάρι Αρωγή",
+      "region": "East Macedonia and Thrace",
+      "lat": 40.94915,
+      "lon": 25.165847,
+      "neighbor": "#798 Παραλία Ίμερου (15665m)"
+    },
+    {
+      "name": "Σάμος Βαθύ Μαούνες",
+      "region": "North Aegean",
+      "lat": 37.755386,
+      "lon": 26.957824,
+      "neighbor": "#1414 Ροδίτσες (1188m)"
+    },
+    {
+      "name": "Δωρίδα Ερατεινή",
+      "region": "Central Greece",
+      "lat": 38.35891,
+      "lon": 22.227883,
+      "neighbor": "#336 Άγιος Βασίλειος (11475m)"
+    },
+    {
+      "name": "Αποκορώνου Αλμυρίδα",
+      "region": "Crete",
+      "lat": 35.449916,
+      "lon": 24.198811,
+      "neighbor": "#605 Kera (1082m)"
+    }
+  ],
+  "skips": []
+}

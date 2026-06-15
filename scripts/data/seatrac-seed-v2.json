@@ -1,0 +1,1307 @@
+{
+  "_meta": {
+    "source": "seatrac.gr official directory (Umbraco GetAllRegions endpoint)",
+    "compiledDate": "2026-06-15",
+    "authoritativeLiveSource": "https://seatrac.gr/",
+    "notes": "SAFETY: needsVerification:true on import. status taken verbatim from the live site. amenities: Facilities.X===true => 'yes', otherwise 'unknown' (never 'no'). Active-only: 'Απεγκατεστημένο' (uninstalled) beaches dropped. Foreign installs dropped (Greece bbox). Coordinates carried so no-match rows insert without geocoding.",
+    "amenityKeys": [
+      "disabledParking",
+      "boardwalkToWater",
+      "accessibleWc",
+      "changingRoom",
+      "shower",
+      "shade"
+    ],
+    "statusValues": [
+      "online",
+      "uninstalled",
+      "listed-unverified"
+    ],
+    "counts": {
+      "rawTotal": 267,
+      "foreignDropped": 27,
+      "outOfBboxDropped": 0,
+      "uninstalledDropped": 173,
+      "kept": 67
+    }
+  },
+  "beaches": [
+    {
+      "nameGr": "Άκτιο Βόνιτσας Αγ. Δημήτριος",
+      "nameEn": "aktio vonitsas ag. dimitrios",
+      "region": "West Greece",
+      "municipality": "Αιτωλοακαρνανία",
+      "status": "online",
+      "disabledParking": "yes",
+      "boardwalkToWater": "yes",
+      "accessibleWc": "yes",
+      "changingRoom": "yes",
+      "shower": "yes",
+      "shade": "yes",
+      "sourceUrls": [
+        "https://seatrac.gr/el/paralies/aktio-vonitsa-agios-dimitrios/"
+      ],
+      "lat": 38.921,
+      "lon": 20.893583,
+      "seatracId": 7522
+    },
+    {
+      "nameGr": "Άκτιο Βόνιτσας Πάλαιρος",
+      "nameEn": "aktio vonitsas palairos",
+      "region": "West Greece",
+      "municipality": "Αιτωλοακαρνανία",
+      "status": "online",
+      "disabledParking": "yes",
+      "boardwalkToWater": "yes",
+      "accessibleWc": "yes",
+      "changingRoom": "yes",
+      "shower": "yes",
+      "shade": "yes",
+      "sourceUrls": [
+        "https://seatrac.gr/el/paralies/aktio-vonitsa-palairos/"
+      ],
+      "lat": 38.780444,
+      "lon": 20.878417,
+      "seatracId": 7541
+    },
+    {
+      "nameGr": "Αίγινα Αγ. Βασίλειος",
+      "nameEn": "aigina ag. vasileios",
+      "region": "Attica",
+      "municipality": "Αττική",
+      "status": "online",
+      "disabledParking": "yes",
+      "boardwalkToWater": "yes",
+      "accessibleWc": "yes",
+      "changingRoom": "yes",
+      "shower": "yes",
+      "shade": "yes",
+      "sourceUrls": [
+        "https://seatrac.gr/el/paralies/aigina-agvasileios/"
+      ],
+      "lat": 37.726389,
+      "lon": 23.440861,
+      "seatracId": 74096
+    },
+    {
+      "nameGr": "Αίγινα Βάγια",
+      "nameEn": "aigina vagia",
+      "region": "Attica",
+      "municipality": "Αττική",
+      "status": "online",
+      "disabledParking": "yes",
+      "boardwalkToWater": "yes",
+      "accessibleWc": "yes",
+      "changingRoom": "yes",
+      "shower": "yes",
+      "shade": "yes",
+      "sourceUrls": [
+        "https://seatrac.gr/el/paralies/aigina-vagia/"
+      ],
+      "lat": 37.771056,
+      "lon": 23.536056,
+      "seatracId": 76020
+    },
+    {
+      "nameGr": "Άλιμος Καλαμάκι",
+      "nameEn": "alimos kalamaki",
+      "region": "Attica",
+      "municipality": "Αττική",
+      "status": "online",
+      "disabledParking": "yes",
+      "boardwalkToWater": "yes",
+      "accessibleWc": "unknown",
+      "changingRoom": "yes",
+      "shower": "yes",
+      "shade": "yes",
+      "sourceUrls": [
+        "https://seatrac.gr/el/paralies/alimos-kalamaki/"
+      ],
+      "lat": 37.90922,
+      "lon": 23.71293,
+      "seatracId": 4874
+    },
+    {
+      "nameGr": "Άλιμος Λουτρά",
+      "nameEn": "alimos loytra",
+      "region": "Attica",
+      "municipality": "Αττική",
+      "status": "online",
+      "disabledParking": "yes",
+      "boardwalkToWater": "yes",
+      "accessibleWc": "unknown",
+      "changingRoom": "yes",
+      "shower": "yes",
+      "shade": "yes",
+      "sourceUrls": [
+        "https://seatrac.gr/el/paralies/alimos-loutra/"
+      ],
+      "lat": 37.90349,
+      "lon": 23.71903,
+      "seatracId": 4806
+    },
+    {
+      "nameGr": "ΒΒΒ Βούλα",
+      "nameEn": "vvv voyla",
+      "region": "Attica",
+      "municipality": "Αττική",
+      "status": "online",
+      "disabledParking": "yes",
+      "boardwalkToWater": "yes",
+      "accessibleWc": "unknown",
+      "changingRoom": "unknown",
+      "shower": "unknown",
+      "shade": "unknown",
+      "sourceUrls": [
+        "https://seatrac.gr/el/paralies/varivoulavouliagmeni-voula/"
+      ],
+      "lat": 37.83642,
+      "lon": 23.76594,
+      "seatracId": 4883
+    },
+    {
+      "nameGr": "Γλυφάδα Ακτή Β",
+      "nameEn": "glyfada akti v",
+      "region": "Attica",
+      "municipality": "Αττική",
+      "status": "online",
+      "disabledParking": "yes",
+      "boardwalkToWater": "yes",
+      "accessibleWc": "yes",
+      "changingRoom": "yes",
+      "shower": "yes",
+      "shade": "yes",
+      "sourceUrls": [
+        "https://seatrac.gr/el/paralies/glyfada-akti-b/"
+      ],
+      "lat": 37.86808,
+      "lon": 23.73665,
+      "seatracId": 5970,
+      "notes": "Flagship model beach, two Seatrac units, support staff; #1 in seatrac.gr Top 5. Reopened 24 May 2025."
+    },
+    {
+      "nameGr": "Γλυφάδα Ακτή Β ΝΕΟ",
+      "nameEn": "glyfada akti v neo",
+      "region": "Attica",
+      "municipality": "Αττική",
+      "status": "online",
+      "disabledParking": "yes",
+      "boardwalkToWater": "yes",
+      "accessibleWc": "yes",
+      "changingRoom": "yes",
+      "shower": "yes",
+      "shade": "yes",
+      "sourceUrls": [
+        "https://seatrac.gr/el/paralies/glyfada-new/"
+      ],
+      "lat": 37.86843,
+      "lon": 23.73665,
+      "seatracId": 3902
+    },
+    {
+      "nameGr": "ΚΑΑΥ Άγιος Ανδρέας",
+      "nameEn": "kaay agios andreas",
+      "region": "Attica",
+      "municipality": "Αττική",
+      "status": "online",
+      "disabledParking": "yes",
+      "boardwalkToWater": "yes",
+      "accessibleWc": "unknown",
+      "changingRoom": "unknown",
+      "shower": "unknown",
+      "shade": "unknown",
+      "sourceUrls": [
+        "https://seatrac.gr/el/paralies/kaay-agios-andreas/"
+      ],
+      "lat": 38.05555,
+      "lon": 23.99785,
+      "seatracId": 4916
+    },
+    {
+      "nameGr": "Παλαιό Φάληρο Έδεμ",
+      "nameEn": "palaio faliro edem",
+      "region": "Attica",
+      "municipality": "Αττική",
+      "status": "online",
+      "disabledParking": "yes",
+      "boardwalkToWater": "yes",
+      "accessibleWc": "unknown",
+      "changingRoom": "yes",
+      "shower": "unknown",
+      "shade": "unknown",
+      "sourceUrls": [
+        "https://seatrac.gr/el/paralies/palaio-faliro-edem/"
+      ],
+      "lat": 37.918306,
+      "lon": 23.700306,
+      "seatracId": 7096
+    },
+    {
+      "nameGr": "Παλαιό Φάληρο Μπάτης",
+      "nameEn": "palaio faliro mpatis",
+      "region": "Attica",
+      "municipality": "Αττική",
+      "status": "listed-unverified",
+      "disabledParking": "unknown",
+      "boardwalkToWater": "yes",
+      "accessibleWc": "unknown",
+      "changingRoom": "unknown",
+      "shower": "yes",
+      "shade": "unknown",
+      "sourceUrls": [
+        "https://seatrac.gr/el/paralies/palaio-faliro-mpatis/"
+      ],
+      "lat": 37.920833,
+      "lon": 23.696167,
+      "seatracId": 103369
+    },
+    {
+      "nameGr": "ΠΙΚΠΑ Βούλας",
+      "nameEn": "pikpa voylas",
+      "region": "Attica",
+      "municipality": "Αττική",
+      "status": "online",
+      "disabledParking": "yes",
+      "boardwalkToWater": "yes",
+      "accessibleWc": "unknown",
+      "changingRoom": "unknown",
+      "shower": "yes",
+      "shade": "yes",
+      "sourceUrls": [
+        "https://seatrac.gr/el/paralies/pikpa-voulas/"
+      ],
+      "lat": 37.850586,
+      "lon": 23.747792,
+      "seatracId": 45630
+    },
+    {
+      "nameGr": "Πόρος Άγιος Στέφανος",
+      "nameEn": "poros agios stefanos",
+      "region": "Attica",
+      "municipality": "Αττική",
+      "status": "online",
+      "disabledParking": "yes",
+      "boardwalkToWater": "yes",
+      "accessibleWc": "yes",
+      "changingRoom": "yes",
+      "shower": "yes",
+      "shade": "yes",
+      "sourceUrls": [
+        "https://seatrac.gr/el/paralies/poros-agios-stefanos/"
+      ],
+      "lat": 37.50368,
+      "lon": 23.45891,
+      "seatracId": 4951
+    },
+    {
+      "nameGr": "Πόρος Ρώσικος Ναύσταθμος",
+      "nameEn": "poros rosikos naystathmos",
+      "region": "Attica",
+      "municipality": "Αττική",
+      "status": "online",
+      "disabledParking": "yes",
+      "boardwalkToWater": "yes",
+      "accessibleWc": "yes",
+      "changingRoom": "yes",
+      "shower": "yes",
+      "shade": "yes",
+      "sourceUrls": [
+        "https://seatrac.gr/el/paralies/poros-rossikos-nafstathmos/"
+      ],
+      "lat": 37.5184,
+      "lon": 23.43598,
+      "seatracId": 4934
+    },
+    {
+      "nameGr": "Πόρτο Ράφτη Άγιος Σπυρίδωνας",
+      "nameEn": "porto rafti agios spyridonas",
+      "region": "Attica",
+      "municipality": "Αττική",
+      "status": "online",
+      "disabledParking": "yes",
+      "boardwalkToWater": "yes",
+      "accessibleWc": "yes",
+      "changingRoom": "yes",
+      "shower": "unknown",
+      "shade": "unknown",
+      "sourceUrls": [
+        "https://seatrac.gr/el/paralies/porto-rafti-agios-spiridonas/"
+      ],
+      "lat": 37.89169,
+      "lon": 24.02506,
+      "seatracId": 4954
+    },
+    {
+      "nameGr": "Πόρτο Ράφτη Αυλάκι",
+      "nameEn": "porto rafti aylaki",
+      "region": "Attica",
+      "municipality": "Αττική",
+      "status": "online",
+      "disabledParking": "yes",
+      "boardwalkToWater": "yes",
+      "accessibleWc": "unknown",
+      "changingRoom": "unknown",
+      "shower": "unknown",
+      "shade": "unknown",
+      "sourceUrls": [
+        "https://seatrac.gr/el/paralies/off-porto-rafti_2-avlaki/"
+      ],
+      "lat": 37.87087,
+      "lon": 24.02327,
+      "seatracId": 4956
+    },
+    {
+      "nameGr": "Ραφήνα Παραλία Ραφήνας",
+      "nameEn": "rafina paralia rafinas",
+      "region": "Attica",
+      "municipality": "Αττική",
+      "status": "online",
+      "disabledParking": "yes",
+      "boardwalkToWater": "yes",
+      "accessibleWc": "unknown",
+      "changingRoom": "unknown",
+      "shower": "yes",
+      "shade": "unknown",
+      "sourceUrls": [
+        "https://seatrac.gr/el/paralies/rafina-rafina-beach/"
+      ],
+      "lat": 38.01994,
+      "lon": 24.01092,
+      "seatracId": 4935
+    },
+    {
+      "nameGr": "Σαρωνικός Ανάβυσσος",
+      "nameEn": "saronikos anavyssos",
+      "region": "Attica",
+      "municipality": "Αττική",
+      "status": "online",
+      "disabledParking": "yes",
+      "boardwalkToWater": "yes",
+      "accessibleWc": "unknown",
+      "changingRoom": "unknown",
+      "shower": "unknown",
+      "shade": "unknown",
+      "sourceUrls": [
+        "https://seatrac.gr/el/paralies/saronikos-anavyssos/"
+      ],
+      "lat": 37.725018,
+      "lon": 23.940217,
+      "seatracId": 3942
+    },
+    {
+      "nameGr": "Ωρωπός Άγιοι Απόστολοι Καλάμου",
+      "nameEn": "oropos agioi apostoloi kalamoy",
+      "region": "Attica",
+      "municipality": "Αττική",
+      "status": "online",
+      "disabledParking": "unknown",
+      "boardwalkToWater": "yes",
+      "accessibleWc": "unknown",
+      "changingRoom": "unknown",
+      "shower": "yes",
+      "shade": "yes",
+      "sourceUrls": [
+        "https://seatrac.gr/el/paralies/oropos-agioi-apostoloi/"
+      ],
+      "lat": 38.297459,
+      "lon": 23.901642,
+      "seatracId": 50059
+    },
+    {
+      "nameGr": "Ωρωπός Αγκώνας",
+      "nameEn": "oropos agkonas",
+      "region": "Attica",
+      "municipality": "Αττική",
+      "status": "online",
+      "disabledParking": "yes",
+      "boardwalkToWater": "yes",
+      "accessibleWc": "yes",
+      "changingRoom": "unknown",
+      "shower": "yes",
+      "shade": "yes",
+      "sourceUrls": [
+        "https://seatrac.gr/el/paralies/oropos-agkonas/"
+      ],
+      "lat": 38.289444,
+      "lon": 23.930028,
+      "seatracId": 105918
+    },
+    {
+      "nameGr": "Ωρωπός Σκάλα Ωρωπού",
+      "nameEn": "oropos skala oropoy",
+      "region": "Attica",
+      "municipality": "Αττική",
+      "status": "online",
+      "disabledParking": "yes",
+      "boardwalkToWater": "yes",
+      "accessibleWc": "yes",
+      "changingRoom": "unknown",
+      "shower": "yes",
+      "shade": "yes",
+      "sourceUrls": [
+        "https://seatrac.gr/el/paralies/oropos-skala-oropou/"
+      ],
+      "lat": 38.3255,
+      "lon": 23.80419,
+      "seatracId": 4875,
+      "notes": "seatrac.gr Top-5 beach."
+    },
+    {
+      "nameGr": "Ωρωπός Χαλκούτσι",
+      "nameEn": "oropos chalkoytsi",
+      "region": "Attica",
+      "municipality": "Αττική",
+      "status": "listed-unverified",
+      "disabledParking": "yes",
+      "boardwalkToWater": "yes",
+      "accessibleWc": "yes",
+      "changingRoom": "unknown",
+      "shower": "yes",
+      "shade": "yes",
+      "sourceUrls": [
+        "https://seatrac.gr/el/paralies/oropos-chalkoutsi/"
+      ],
+      "lat": 38.337419,
+      "lon": 23.721078,
+      "seatracId": 50061
+    },
+    {
+      "nameGr": "ΠΔΕ Αραχωβίτικα",
+      "nameEn": "pde arachovitika",
+      "region": "West Greece",
+      "municipality": "Αχαΐα",
+      "status": "online",
+      "disabledParking": "yes",
+      "boardwalkToWater": "yes",
+      "accessibleWc": "unknown",
+      "changingRoom": "unknown",
+      "shower": "unknown",
+      "shade": "unknown",
+      "sourceUrls": [
+        "https://seatrac.gr/el/paralies/pde-arachovitika/"
+      ],
+      "lat": 38.331073,
+      "lon": 21.842379,
+      "seatracId": 144642
+    },
+    {
+      "nameGr": "ΠΔΕ Καστελόκαμπος",
+      "nameEn": "pde kastelokampos",
+      "region": "West Greece",
+      "municipality": "Αχαΐα",
+      "status": "online",
+      "disabledParking": "unknown",
+      "boardwalkToWater": "yes",
+      "accessibleWc": "unknown",
+      "changingRoom": "yes",
+      "shower": "yes",
+      "shade": "yes",
+      "sourceUrls": [
+        "https://seatrac.gr/el/paralies/kastelokampos/"
+      ],
+      "lat": 38.292927,
+      "lon": 21.76727,
+      "seatracId": 136592
+    },
+    {
+      "nameGr": "ΠΔΕ Κάτω Αχαΐας",
+      "nameEn": "pde kato achaias",
+      "region": "West Greece",
+      "municipality": "Αχαΐα",
+      "status": "online",
+      "disabledParking": "unknown",
+      "boardwalkToWater": "yes",
+      "accessibleWc": "unknown",
+      "changingRoom": "unknown",
+      "shower": "unknown",
+      "shade": "unknown",
+      "sourceUrls": [
+        "https://seatrac.gr/el/paralies/pde-kato-achaia/"
+      ],
+      "lat": 38.15515,
+      "lon": 21.55377,
+      "seatracId": 144981
+    },
+    {
+      "nameGr": "ΠΔΕ Λακκόπετρα",
+      "nameEn": "pde lakkopetra",
+      "region": "West Greece",
+      "municipality": "Αχαΐα",
+      "status": "online",
+      "disabledParking": "yes",
+      "boardwalkToWater": "yes",
+      "accessibleWc": "unknown",
+      "changingRoom": "unknown",
+      "shower": "unknown",
+      "shade": "unknown",
+      "sourceUrls": [
+        "https://seatrac.gr/el/paralies/vrachnaiika-lakkopetra/"
+      ],
+      "lat": 38.18845,
+      "lon": 21.46945,
+      "seatracId": 4857
+    },
+    {
+      "nameGr": "ΠΔΕ Μακύνεια",
+      "nameEn": "pde makyneia",
+      "region": "West Greece",
+      "municipality": "Αχαΐα",
+      "status": "online",
+      "disabledParking": "unknown",
+      "boardwalkToWater": "unknown",
+      "accessibleWc": "unknown",
+      "changingRoom": "unknown",
+      "shower": "unknown",
+      "shade": "unknown",
+      "sourceUrls": [
+        "https://seatrac.gr/el/paralies/pde-makyneia/"
+      ],
+      "lat": 38.346195,
+      "lon": 21.716688,
+      "seatracId": 145350
+    },
+    {
+      "nameGr": "ΠΔΕ Πάτρα Αγ.Βασίλειος",
+      "nameEn": "pde patra ag.vasileios",
+      "region": "West Greece",
+      "municipality": "Αχαΐα",
+      "status": "online",
+      "disabledParking": "yes",
+      "boardwalkToWater": "yes",
+      "accessibleWc": "unknown",
+      "changingRoom": "unknown",
+      "shower": "yes",
+      "shade": "yes",
+      "sourceUrls": [
+        "https://seatrac.gr/el/paralies/patra-agios-vasileios/"
+      ],
+      "lat": 38.31823,
+      "lon": 21.81686,
+      "seatracId": 4958
+    },
+    {
+      "nameGr": "ΠΔΕ Πούντα Αιγιαλείας",
+      "nameEn": "pde poynta aigialeias",
+      "region": "West Greece",
+      "municipality": "Αχαΐα",
+      "status": "online",
+      "disabledParking": "yes",
+      "boardwalkToWater": "yes",
+      "accessibleWc": "unknown",
+      "changingRoom": "unknown",
+      "shower": "yes",
+      "shade": "unknown",
+      "sourceUrls": [
+        "https://seatrac.gr/el/paralies/pde-pounta-aigialeias/"
+      ],
+      "lat": 38.178498,
+      "lon": 22.232391,
+      "seatracId": 144550
+    },
+    {
+      "nameGr": "Τανάγρα Δήλεσι",
+      "nameEn": "tanagra dilesi",
+      "region": "Central Greece",
+      "municipality": "Βοιωτία",
+      "status": "online",
+      "disabledParking": "yes",
+      "boardwalkToWater": "yes",
+      "accessibleWc": "unknown",
+      "changingRoom": "unknown",
+      "shower": "yes",
+      "shade": "unknown",
+      "sourceUrls": [
+        "https://seatrac.gr/el/paralies/viotia-dilesi/"
+      ],
+      "lat": 38.346828,
+      "lon": 23.669065,
+      "seatracId": 4899
+    },
+    {
+      "nameGr": "Χίος Δασκαλόπετρα",
+      "nameEn": "chios daskalopetra",
+      "region": "North Aegean",
+      "municipality": "Βόρειο Αιγαίο",
+      "status": "online",
+      "disabledParking": "unknown",
+      "boardwalkToWater": "yes",
+      "accessibleWc": "unknown",
+      "changingRoom": "unknown",
+      "shower": "unknown",
+      "shade": "unknown",
+      "sourceUrls": [
+        "https://seatrac.gr/el/paralies/chios-daskalopetra/"
+      ],
+      "lat": 38.41729,
+      "lon": 26.13354,
+      "seatracId": 4770,
+      "notes": "~5 beaches; a unit moved to NOX beach from Agia Paraskevi Kastelou."
+    },
+    {
+      "nameGr": "Σύμη Γυάλα",
+      "nameEn": "symi gyala",
+      "region": "South Aegean",
+      "municipality": "Δωδεκάνησα",
+      "status": "online",
+      "disabledParking": "yes",
+      "boardwalkToWater": "yes",
+      "accessibleWc": "yes",
+      "changingRoom": "yes",
+      "shower": "yes",
+      "shade": "yes",
+      "sourceUrls": [
+        "https://seatrac.gr/el/paralies/symi-gyala/"
+      ],
+      "lat": 36.621352,
+      "lon": 27.820906,
+      "seatracId": 145742
+    },
+    {
+      "nameGr": "Σύμη Πέδι",
+      "nameEn": "symi pedi",
+      "region": "South Aegean",
+      "municipality": "Δωδεκάνησα",
+      "status": "online",
+      "disabledParking": "yes",
+      "boardwalkToWater": "yes",
+      "accessibleWc": "yes",
+      "changingRoom": "yes",
+      "shower": "yes",
+      "shade": "yes",
+      "sourceUrls": [
+        "https://seatrac.gr/el/paralies/symi-pedi/"
+      ],
+      "lat": 36.612433,
+      "lon": 27.857522,
+      "seatracId": 145743
+    },
+    {
+      "nameGr": "Αλεξανδρούπολη Κάμπινγκ",
+      "nameEn": "alexandroypoli kampingk",
+      "region": "East Macedonia and Thrace",
+      "municipality": "Έβρος",
+      "status": "online",
+      "disabledParking": "yes",
+      "boardwalkToWater": "yes",
+      "accessibleWc": "unknown",
+      "changingRoom": "unknown",
+      "shower": "unknown",
+      "shade": "unknown",
+      "sourceUrls": [
+        "https://seatrac.gr/el/paralies/alexandroupoli-camping/"
+      ],
+      "lat": 40.84573,
+      "lon": 25.85452,
+      "seatracId": 4896
+    },
+    {
+      "nameGr": "Πηνειός Γλύφα",
+      "nameEn": "pineios glyfa",
+      "region": "West Greece",
+      "municipality": "Ηλεία",
+      "status": "online",
+      "disabledParking": "yes",
+      "boardwalkToWater": "yes",
+      "accessibleWc": "unknown",
+      "changingRoom": "yes",
+      "shower": "yes",
+      "shade": "unknown",
+      "sourceUrls": [
+        "https://seatrac.gr/el/paralies/pineios-glyfa/"
+      ],
+      "lat": 37.8313,
+      "lon": 21.15015,
+      "seatracId": 4902
+    },
+    {
+      "nameGr": "Θάσος Λιμανάκι Λιμένα",
+      "nameEn": "thasos limanaki limena",
+      "region": "East Macedonia and Thrace",
+      "municipality": "Καβάλα",
+      "status": "online",
+      "disabledParking": "yes",
+      "boardwalkToWater": "yes",
+      "accessibleWc": "yes",
+      "changingRoom": "yes",
+      "shower": "yes",
+      "shade": "yes",
+      "sourceUrls": [
+        "https://seatrac.gr/el/paralies/thassos-limanaki-limena/"
+      ],
+      "lat": 40.782389,
+      "lon": 24.713861,
+      "seatracId": 80256
+    },
+    {
+      "nameGr": "Λουτράκι Αγ. Θεόδωροι",
+      "nameEn": "loytraki ag. theodoroi",
+      "region": "Peloponnese",
+      "municipality": "Κορινθία",
+      "status": "online",
+      "disabledParking": "yes",
+      "boardwalkToWater": "yes",
+      "accessibleWc": "yes",
+      "changingRoom": "yes",
+      "shower": "unknown",
+      "shade": "unknown",
+      "sourceUrls": [
+        "https://seatrac.gr/el/paralies/loutraki-ag-theodoroi/"
+      ],
+      "lat": 37.922432,
+      "lon": 23.139724,
+      "seatracId": 144857
+    },
+    {
+      "nameGr": "Λουτράκι Ίσθμια",
+      "nameEn": "loytraki isthmia",
+      "region": "Peloponnese",
+      "municipality": "Κορινθία",
+      "status": "online",
+      "disabledParking": "yes",
+      "boardwalkToWater": "yes",
+      "accessibleWc": "yes",
+      "changingRoom": "yes",
+      "shower": "yes",
+      "shade": "unknown",
+      "sourceUrls": [
+        "https://seatrac.gr/el/paralies/loutraki-isthmia/"
+      ],
+      "lat": 37.914199,
+      "lon": 23.008459,
+      "seatracId": 145701
+    },
+    {
+      "nameGr": "Λουτράκι Λίμνη Βουλιαγμένης Ηραίου",
+      "nameEn": "loytraki limni voyliagmenis iraioy",
+      "region": "Peloponnese",
+      "municipality": "Κορινθία",
+      "status": "online",
+      "disabledParking": "unknown",
+      "boardwalkToWater": "yes",
+      "accessibleWc": "unknown",
+      "changingRoom": "yes",
+      "shower": "unknown",
+      "shade": "unknown",
+      "sourceUrls": [
+        "https://seatrac.gr/el/paralies/loutraki-limni-iraiou/"
+      ],
+      "lat": 38.032406,
+      "lon": 22.89356,
+      "seatracId": 144651
+    },
+    {
+      "nameGr": "Λουτράκι Νεράιδα",
+      "nameEn": "loytraki neraida",
+      "region": "Peloponnese",
+      "municipality": "Κορινθία",
+      "status": "online",
+      "disabledParking": "yes",
+      "boardwalkToWater": "yes",
+      "accessibleWc": "yes",
+      "changingRoom": "yes",
+      "shower": "yes",
+      "shade": "unknown",
+      "sourceUrls": [
+        "https://seatrac.gr/el/paralies/loutraki-neraida/"
+      ],
+      "lat": 37.984993,
+      "lon": 22.960852,
+      "seatracId": 4823
+    },
+    {
+      "nameGr": "Λουτράκι Σχίνος",
+      "nameEn": "loytraki schinos",
+      "region": "Peloponnese",
+      "municipality": "Κορινθία",
+      "status": "online",
+      "disabledParking": "unknown",
+      "boardwalkToWater": "unknown",
+      "accessibleWc": "unknown",
+      "changingRoom": "unknown",
+      "shower": "unknown",
+      "shade": "unknown",
+      "sourceUrls": [
+        "https://seatrac.gr/el/paralies/loutraki-shinos/"
+      ],
+      "lat": 38.054486,
+      "lon": 23.044999,
+      "seatracId": 144659
+    },
+    {
+      "nameGr": "Χερσόνησος Αγκισαράς",
+      "nameEn": "chersonisos agkisaras",
+      "region": "Crete",
+      "municipality": "Κρητη",
+      "status": "online",
+      "disabledParking": "yes",
+      "boardwalkToWater": "yes",
+      "accessibleWc": "yes",
+      "changingRoom": "yes",
+      "shower": "unknown",
+      "shade": "yes",
+      "sourceUrls": [
+        "https://seatrac.gr/el/paralies/hersonissos-agkisaras/"
+      ],
+      "lat": 35.336862,
+      "lon": 25.354281,
+      "seatracId": 145831
+    },
+    {
+      "nameGr": "Χερσόνησος Αρίνα",
+      "nameEn": "chersonisos arina",
+      "region": "Crete",
+      "municipality": "Κρητη",
+      "status": "online",
+      "disabledParking": "yes",
+      "boardwalkToWater": "yes",
+      "accessibleWc": "yes",
+      "changingRoom": "yes",
+      "shower": "unknown",
+      "shade": "yes",
+      "sourceUrls": [
+        "https://seatrac.gr/el/paralies/hersonissos-arina/"
+      ],
+      "lat": 35.33059,
+      "lon": 25.23797,
+      "seatracId": 145803
+    },
+    {
+      "nameGr": "Χερσόνησος Ποταμός",
+      "nameEn": "chersonisos potamos",
+      "region": "Crete",
+      "municipality": "Κρητη",
+      "status": "online",
+      "disabledParking": "yes",
+      "boardwalkToWater": "yes",
+      "accessibleWc": "yes",
+      "changingRoom": "yes",
+      "shower": "unknown",
+      "shade": "yes",
+      "sourceUrls": [
+        "https://seatrac.gr/el/paralies/hersonissos-potamos/"
+      ],
+      "lat": 35.296412,
+      "lon": 25.486107,
+      "seatracId": 145774
+    },
+    {
+      "nameGr": "Σύρος Γαλησσάς",
+      "nameEn": "syros galissas",
+      "region": "South Aegean",
+      "municipality": "Κυκλάδες",
+      "status": "online",
+      "disabledParking": "yes",
+      "boardwalkToWater": "yes",
+      "accessibleWc": "yes",
+      "changingRoom": "yes",
+      "shower": "yes",
+      "shade": "yes",
+      "sourceUrls": [
+        "https://seatrac.gr/el/paralies/syros-galissas/"
+      ],
+      "lat": 37.4213,
+      "lon": 24.87778,
+      "seatracId": 5759
+    },
+    {
+      "nameGr": "Τήνος Άγιος Ρωμανός",
+      "nameEn": "tinos agios romanos",
+      "region": "South Aegean",
+      "municipality": "Κυκλάδες",
+      "status": "online",
+      "disabledParking": "yes",
+      "boardwalkToWater": "yes",
+      "accessibleWc": "unknown",
+      "changingRoom": "unknown",
+      "shower": "unknown",
+      "shade": "unknown",
+      "sourceUrls": [
+        "https://seatrac.gr/el/paralies/tinos-agios-romanos/"
+      ],
+      "lat": 37.572392,
+      "lon": 25.109926,
+      "seatracId": 107442
+    },
+    {
+      "nameGr": "Λευκάδα Λυγιά",
+      "nameEn": "leykada lygia",
+      "region": "Ionian Islands",
+      "municipality": "Λευκάδα",
+      "status": "online",
+      "disabledParking": "yes",
+      "boardwalkToWater": "yes",
+      "accessibleWc": "unknown",
+      "changingRoom": "unknown",
+      "shower": "yes",
+      "shade": "unknown",
+      "sourceUrls": [
+        "https://seatrac.gr/el/paralies/lefkada-ligia/"
+      ],
+      "lat": 38.785624,
+      "lon": 20.721702,
+      "seatracId": 4826
+    },
+    {
+      "nameGr": "Λευκάδα Μεγανήσι",
+      "nameEn": "leykada meganisi",
+      "region": "Ionian Islands",
+      "municipality": "Λευκάδα",
+      "status": "online",
+      "disabledParking": "unknown",
+      "boardwalkToWater": "yes",
+      "accessibleWc": "unknown",
+      "changingRoom": "unknown",
+      "shower": "unknown",
+      "shade": "unknown",
+      "sourceUrls": [
+        "https://seatrac.gr/el/paralies/lefkada-meganisi/"
+      ],
+      "lat": 38.666436,
+      "lon": 20.806061,
+      "seatracId": 136221
+    },
+    {
+      "nameGr": "Λευκάδα Μικρός Γιαλός",
+      "nameEn": "leykada mikros gialos",
+      "region": "Ionian Islands",
+      "municipality": "Λευκάδα",
+      "status": "online",
+      "disabledParking": "yes",
+      "boardwalkToWater": "yes",
+      "accessibleWc": "unknown",
+      "changingRoom": "unknown",
+      "shower": "unknown",
+      "shade": "unknown",
+      "sourceUrls": [
+        "https://seatrac.gr/el/paralies/lefkada-mikros-gialos/"
+      ],
+      "lat": 38.639361,
+      "lon": 20.694972,
+      "seatracId": 103813
+    },
+    {
+      "nameGr": "Λεύκιππος Άβδηρα",
+      "nameEn": "leykippos avdira",
+      "region": "East Macedonia and Thrace",
+      "municipality": "Ξάνθη",
+      "status": "online",
+      "disabledParking": "unknown",
+      "boardwalkToWater": "yes",
+      "accessibleWc": "unknown",
+      "changingRoom": "unknown",
+      "shower": "yes",
+      "shade": "unknown",
+      "sourceUrls": [
+        "https://seatrac.gr/el/paralies/avdera-lefkippos/"
+      ],
+      "lat": 40.93965,
+      "lon": 24.99099,
+      "seatracId": 4918
+    },
+    {
+      "nameGr": "Άγιος Βασίλειος Αγία Γαλήνη",
+      "nameEn": "agios vasileios agia galini",
+      "region": "Crete",
+      "municipality": "Ρέθυμνο",
+      "status": "online",
+      "disabledParking": "yes",
+      "boardwalkToWater": "yes",
+      "accessibleWc": "yes",
+      "changingRoom": "yes",
+      "shower": "yes",
+      "shade": "yes",
+      "sourceUrls": [
+        "https://seatrac.gr/el/paralies/agios-vasileios-agia-galini/"
+      ],
+      "lat": 35.09804,
+      "lon": 24.69265,
+      "seatracId": 4917
+    },
+    {
+      "nameGr": "Κομοτηνή Παραλία Κρυονερίου Μαρώνεια",
+      "nameEn": "komotini paralia kryonerioy maroneia",
+      "region": "East Macedonia and Thrace",
+      "municipality": "Ροδόπη",
+      "status": "online",
+      "disabledParking": "unknown",
+      "boardwalkToWater": "yes",
+      "accessibleWc": "unknown",
+      "changingRoom": "unknown",
+      "shower": "yes",
+      "shade": "unknown",
+      "sourceUrls": [
+        "https://seatrac.gr/el/paralies/komotini-maroneia/"
+      ],
+      "lat": 40.90341,
+      "lon": 25.424681,
+      "seatracId": 72246
+    },
+    {
+      "nameGr": "Κομοτηνή Φανάρι Αρωγή",
+      "nameEn": "komotini fanari arogi",
+      "region": "East Macedonia and Thrace",
+      "municipality": "Ροδόπη",
+      "status": "online",
+      "disabledParking": "yes",
+      "boardwalkToWater": "yes",
+      "accessibleWc": "yes",
+      "changingRoom": "unknown",
+      "shower": "unknown",
+      "shade": "yes",
+      "sourceUrls": [
+        "https://seatrac.gr/el/paralies/komotini-fanari-arogi/"
+      ],
+      "lat": 40.94915,
+      "lon": 25.165847,
+      "seatracId": 103393
+    },
+    {
+      "nameGr": "Σάμος Βαθύ Μαούνες",
+      "nameEn": "samos vathy maoynes",
+      "region": "North Aegean",
+      "municipality": "Σάμος",
+      "status": "online",
+      "disabledParking": "yes",
+      "boardwalkToWater": "yes",
+      "accessibleWc": "unknown",
+      "changingRoom": "yes",
+      "shower": "yes",
+      "shade": "yes",
+      "sourceUrls": [
+        "https://seatrac.gr/el/paralies/samos-vatheos-maounes/"
+      ],
+      "lat": 37.755386,
+      "lon": 26.957824,
+      "seatracId": 8647
+    },
+    {
+      "nameGr": "Σκιάθος Αγία Ελένη",
+      "nameEn": "skiathos agia eleni",
+      "region": "Thessaly",
+      "municipality": "Σποράδες",
+      "status": "online",
+      "disabledParking": "unknown",
+      "boardwalkToWater": "yes",
+      "accessibleWc": "unknown",
+      "changingRoom": "unknown",
+      "shower": "yes",
+      "shade": "unknown",
+      "sourceUrls": [
+        "https://seatrac.gr/el/paralies/skiathos-agia-eleni/"
+      ],
+      "lat": 39.153722,
+      "lon": 23.391583,
+      "seatracId": 51138,
+      "notes": "4 beaches, 2nd consecutive year as of report."
+    },
+    {
+      "nameGr": "Σκιάθος Αγία Παρασκευή",
+      "nameEn": "skiathos agia paraskeyi",
+      "region": "Thessaly",
+      "municipality": "Σποράδες",
+      "status": "online",
+      "disabledParking": "unknown",
+      "boardwalkToWater": "yes",
+      "accessibleWc": "unknown",
+      "changingRoom": "unknown",
+      "shower": "yes",
+      "shade": "unknown",
+      "sourceUrls": [
+        "https://seatrac.gr/el/paralies/skiathos-agia-paraskevi/"
+      ],
+      "lat": 39.142194,
+      "lon": 23.438028,
+      "seatracId": 50977
+    },
+    {
+      "nameGr": "Σκιάθος Βρωμόλιμνος",
+      "nameEn": "skiathos vromolimnos",
+      "region": "Thessaly",
+      "municipality": "Σποράδες",
+      "status": "online",
+      "disabledParking": "unknown",
+      "boardwalkToWater": "yes",
+      "accessibleWc": "unknown",
+      "changingRoom": "unknown",
+      "shower": "yes",
+      "shade": "unknown",
+      "sourceUrls": [
+        "https://seatrac.gr/el/paralies/skiathos-vromolimnos/"
+      ],
+      "lat": 39.136955,
+      "lon": 23.445726,
+      "seatracId": 51182
+    },
+    {
+      "nameGr": "Σκιάθος Κουκουναριές",
+      "nameEn": "skiathos koykoynaries",
+      "region": "Thessaly",
+      "municipality": "Σποράδες",
+      "status": "online",
+      "disabledParking": "yes",
+      "boardwalkToWater": "yes",
+      "accessibleWc": "unknown",
+      "changingRoom": "unknown",
+      "shower": "unknown",
+      "shade": "unknown",
+      "sourceUrls": [
+        "https://seatrac.gr/el/paralies/skiathos-koukounaries/"
+      ],
+      "lat": 39.147933,
+      "lon": 23.400172,
+      "seatracId": 10081
+    },
+    {
+      "nameGr": "Δωρίδα Ερατεινή",
+      "nameEn": "dorida erateini",
+      "region": "Central Greece",
+      "municipality": "Φωκίδα",
+      "status": "online",
+      "disabledParking": "yes",
+      "boardwalkToWater": "yes",
+      "accessibleWc": "unknown",
+      "changingRoom": "unknown",
+      "shower": "unknown",
+      "shade": "yes",
+      "sourceUrls": [
+        "https://seatrac.gr/el/paralies/dorida-erateini/"
+      ],
+      "lat": 38.35891,
+      "lon": 22.227883,
+      "seatracId": 7829
+    },
+    {
+      "nameGr": "Δωρίδα Παραθάλασσο",
+      "nameEn": "dorida parathalasso",
+      "region": "Central Greece",
+      "municipality": "Φωκίδα",
+      "status": "online",
+      "disabledParking": "yes",
+      "boardwalkToWater": "yes",
+      "accessibleWc": "unknown",
+      "changingRoom": "unknown",
+      "shower": "yes",
+      "shade": "unknown",
+      "sourceUrls": [
+        "https://seatrac.gr/el/paralies/dorida-parathalasso/"
+      ],
+      "lat": 38.406621,
+      "lon": 21.934101,
+      "seatracId": 106964
+    },
+    {
+      "nameGr": "Δωρίδα Σεργούλα",
+      "nameEn": "dorida sergoyla",
+      "region": "Central Greece",
+      "municipality": "Φωκίδα",
+      "status": "online",
+      "disabledParking": "yes",
+      "boardwalkToWater": "yes",
+      "accessibleWc": "unknown",
+      "changingRoom": "unknown",
+      "shower": "unknown",
+      "shade": "unknown",
+      "sourceUrls": [
+        "https://seatrac.gr/el/paralies/sergoula-doridos/"
+      ],
+      "lat": 38.388278,
+      "lon": 22.063528,
+      "seatracId": 52464
+    },
+    {
+      "nameGr": "Δωρίδα Χιλιαδού",
+      "nameEn": "dorida chiliadoy",
+      "region": "Central Greece",
+      "municipality": "Φωκίδα",
+      "status": "online",
+      "disabledParking": "unknown",
+      "boardwalkToWater": "yes",
+      "accessibleWc": "unknown",
+      "changingRoom": "unknown",
+      "shower": "yes",
+      "shade": "unknown",
+      "sourceUrls": [
+        "https://seatrac.gr/el/paralies/dorida-hiliadou/"
+      ],
+      "lat": 38.391942,
+      "lon": 21.919471,
+      "seatracId": 138570
+    },
+    {
+      "nameGr": "Αποκορώνου Αλμυρίδα",
+      "nameEn": "apokoronoy almyrida",
+      "region": "Crete",
+      "municipality": "Χανιά",
+      "status": "online",
+      "disabledParking": "yes",
+      "boardwalkToWater": "yes",
+      "accessibleWc": "unknown",
+      "changingRoom": "yes",
+      "shower": "yes",
+      "shade": "unknown",
+      "sourceUrls": [
+        "https://seatrac.gr/el/paralies/apokoronou-almyrida/"
+      ],
+      "lat": 35.449916,
+      "lon": 24.198811,
+      "seatracId": 145772
+    },
+    {
+      "nameGr": "Αποκορώνου Καλύβες",
+      "nameEn": "apokoronoy kalyves",
+      "region": "Crete",
+      "municipality": "Χανιά",
+      "status": "online",
+      "disabledParking": "yes",
+      "boardwalkToWater": "yes",
+      "accessibleWc": "unknown",
+      "changingRoom": "yes",
+      "shower": "yes",
+      "shade": "unknown",
+      "sourceUrls": [
+        "https://seatrac.gr/el/paralies/apokoronou-kalyves/"
+      ],
+      "lat": 35.452076,
+      "lon": 24.178609,
+      "seatracId": 145773
+    },
+    {
+      "nameGr": "Χανιά Άγιοι Απόστολοι 2ο",
+      "nameEn": "chania agioi apostoloi 2o",
+      "region": "Crete",
+      "municipality": "Χανιά",
+      "status": "online",
+      "disabledParking": "yes",
+      "boardwalkToWater": "yes",
+      "accessibleWc": "unknown",
+      "changingRoom": "yes",
+      "shower": "yes",
+      "shade": "yes",
+      "sourceUrls": [
+        "https://seatrac.gr/el/paralies/chania-agioi-apostoloi-2/"
+      ],
+      "lat": 35.51419,
+      "lon": 23.983794,
+      "seatracId": 104807
+    },
+    {
+      "nameGr": "Χανιά Μαράθι",
+      "nameEn": "chania marathi",
+      "region": "Crete",
+      "municipality": "Χανιά",
+      "status": "online",
+      "disabledParking": "yes",
+      "boardwalkToWater": "yes",
+      "accessibleWc": "unknown",
+      "changingRoom": "unknown",
+      "shower": "yes",
+      "shade": "unknown",
+      "sourceUrls": [
+        "https://seatrac.gr/el/paralies/chania-marathi/"
+      ],
+      "lat": 35.504439,
+      "lon": 24.17382,
+      "seatracId": 104022
+    }
+  ]
+}
