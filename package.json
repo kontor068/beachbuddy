@@ -15,6 +15,7 @@
     "quality:critical": "node scripts/runCriticalQualityChecks.mjs",
     "quality:auto": "node scripts/runCriticalQualityChecks.mjs --auto --max-attempts=3",
     "content:audit": "node scripts/auditStaticBeachContent.mjs",
+    "seo:audit": "node scripts/auditSeoPrerender.mjs",
     "visual:qa": "node scripts/visualQa.mjs",
     "photos:milos": "node scripts/findMilosBeachImages.mjs",
     "photos:destinations:cards": "node scripts/optimizeDestinationCardImages.mjs",

@@ -796,7 +796,7 @@ export const BeachDetailPage: React.FC<BeachDetailPageProps> = ({
         )}
         
         {/* 1. Decision summary */}
-        <section className="space-y-4 rounded-[2rem] border border-white/75 bg-white/88 p-4 shadow-sm shadow-sky-900/5 ring-1 ring-white/45 backdrop-blur-sm sm:p-5">
+        <section className="space-y-4 rounded-[2rem] border border-white/75 bg-white/88 p-4 shadow-sm shadow-sky-900/5 ring-1 ring-white/45 backdrop-blur-sm sm:p-5" data-nosnippet="true">
           <div className="space-y-2">
             <p className="text-[11px] font-bold text-cyan-700 tracking-normal">
               {copy.decisionSummary[language]}
@@ -936,7 +936,7 @@ export const BeachDetailPage: React.FC<BeachDetailPageProps> = ({
         </section>
 
         {/* 4. Today's Conditions */}
-        <section className="space-y-3">
+        <section className="space-y-3" data-nosnippet="true">
           <h3 className="px-1 font-heading text-lg font-bold text-slate-950">{copy.conditions[language]}</h3>
           <div className="grid grid-cols-2 md:grid-cols-3 gap-2.5">
             <ConditionCard
@@ -962,7 +962,7 @@ export const BeachDetailPage: React.FC<BeachDetailPageProps> = ({
 
         {/* 5. Best Time Today */}
         {bestTime && usefulBestTimeWindow && (
-          <section className={`flex items-start gap-3 rounded-[1.75rem] border p-4 shadow-sm ${swimWindowToneClasses.section}`}>
+          <section className={`flex items-start gap-3 rounded-[1.75rem] border p-4 shadow-sm ${swimWindowToneClasses.section}`} data-nosnippet="true">
             <div className={`rounded-2xl p-2.5 text-white shadow-sm ${swimWindowToneClasses.icon}`}>
               <Clock className="w-5 h-5" />
             </div>
@@ -1078,7 +1078,7 @@ export const BeachDetailPage: React.FC<BeachDetailPageProps> = ({
         )}
 
         {/* 8. Map Location */}
-        <section className="space-y-3">
+        <section className="space-y-3" data-nosnippet="true">
           <h3 className="px-1 font-heading text-lg font-bold text-slate-950">{copy.locationTitle[language]}</h3>
           <div className="h-56 w-full overflow-hidden rounded-[2rem] border border-white/75 bg-slate-100 shadow-sm shadow-sky-900/5 sm:h-64">
             <MapLoadBoundary
@@ -1141,7 +1141,7 @@ export const BeachDetailPage: React.FC<BeachDetailPageProps> = ({
         </section>
 
         {/* Feedback System */}
-        <section className="bg-white p-4 rounded-[1.75rem] border border-slate-100 shadow-sm space-y-4">
+        <section className="bg-white p-4 rounded-[1.75rem] border border-slate-100 shadow-sm space-y-4" data-nosnippet="true">
           <div className="space-y-1">
             <h3 className="text-base font-heading font-bold text-slate-900">{copy.feedbackTitle[language]}</h3>
             <p className="text-slate-500 text-sm leading-snug">{copy.feedbackText[language]}</p>
@@ -1179,7 +1179,7 @@ export const BeachDetailPage: React.FC<BeachDetailPageProps> = ({
         </section>
 
         {/* 8. Nearby Beaches */}
-        <section className="space-y-4">
+        <section className="space-y-4" data-nosnippet="true">
           <h3 className="px-1 font-heading text-lg font-bold text-slate-950">{copy.nearby[language]}</h3>
           <div className="space-y-3">
             {nearbyBeaches.length > 0 ? (

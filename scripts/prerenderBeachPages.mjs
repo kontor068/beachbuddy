@@ -10,6 +10,8 @@ const indexHtmlPath = path.join(distDir, 'index.html');
 const beachIndexPath = path.join(publicDir, 'data', 'beaches', 'index.json');
 const siteUrl = (process.env.SITE_URL || process.env.VITE_SITE_URL || 'https://calmbeach.gr').replace(/\/+$/, '');
 const defaultOgImagePath = '/milos-sarakiniko-bg.jpg';
+const homeOgImagePath = '/og-image.png';
+const defaultRobotsContent = 'index, follow, max-image-preview:large';
 
 const regionOgImageOverrides = new Map([
   ['attica-athens-area-mainland', '/attica-athens-coast-bg.jpg'],
@@ -53,7 +55,7 @@ const prerenderLocales = [
     hreflang: 'el',
     ogLocale: 'el_GR',
     pathPrefix: '/el',
-    homeTitle: 'Calm Beach Greece',
+    homeTitle: 'Calm Beach Greece - Καλύτερη Παραλία Σήμερα',
     homeDescription: 'Calm Beach Greece - Βρες την καλύτερη παραλία για σήμερα με βάση άνεμο, κύμα και καιρό.',
     homeImageAlt: 'Calm Beach Greece προτάσεις παραλιών',
   },
@@ -84,6 +86,16 @@ const normalizeSlug = value => {
 };
 
 const toAbsolutePublicUrl = publicPath => `${siteUrl}${publicPath.startsWith('/') ? publicPath : `/${publicPath}`}`;
+
+const toSitemapImageUrl = (imageUrl, publicAssets) => {
+  const url = new URL(imageUrl);
+  const publicPath = url.pathname;
+  const webpPath = publicPath.replace(/\.(jpe?g)$/i, '.webp');
+
+  return webpPath !== publicPath && publicAssets.has(webpPath)
+    ? toAbsolutePublicUrl(webpPath)
+    : imageUrl;
+};
 
 const imageTypeFromPath = publicPath => (
   publicPath.endsWith('.webp')
@@ -154,6 +166,97 @@ const alternateUrlsFor = pathName => [
   {
     hreflang: 'x-default',
     href: canonicalUrlFor(pathName, prerenderLocales[0]),
+  },
+];
+
+const seoLandingPages = [
+  {
+    pathName: '/best-beaches-greece-today/',
+    title: 'Best Beaches in Greece Today | CalmBeach',
+    description: 'Compare Greek beaches by today\'s wind, waves, weather, exposure, access and beach type before choosing where to swim.',
+    h1: 'Best beaches in Greece today',
+    intro: 'CalmBeach helps you compare beach options across Greece using the conditions that matter for a swim today: wind, waves, weather, exposure, access and beach type.',
+    sections: [
+      {
+        heading: 'How CalmBeach compares beaches',
+        body: 'The app combines forecast conditions with static beach information so you can quickly see which beaches may be more suitable for the day. It avoids treating a famous beach as the best choice when wind or waves make another option more practical.',
+      },
+      {
+        heading: 'What to check before you go',
+        body: 'Look at the current wind direction, wind strength, wave height, beach exposure, access and amenities. Conditions can vary locally, so CalmBeach keeps recommendations cautious instead of promising perfect conditions.',
+      },
+    ],
+    links: [
+      { href: '/', label: 'Open today\'s beach recommendations' },
+      { href: '/where-to-swim-greece-today/', label: 'Where to swim in Greece today' },
+      { href: '/best-beaches-milos-today/', label: 'Best beaches in Milos today' },
+    ],
+  },
+  {
+    pathName: '/where-to-swim-greece-today/',
+    title: 'Where to Swim in Greece Today | CalmBeach',
+    description: 'Find practical beach options in Greece today with wind, waves, weather, map and beach detail checks from CalmBeach.',
+    h1: 'Where to swim in Greece today',
+    intro: 'Use CalmBeach when you want a quick beach decision instead of reading raw weather data. The app translates wind, waves and exposure into simple beach guidance.',
+    sections: [
+      {
+        heading: 'A fast beach decision screen',
+        body: 'CalmBeach focuses on the top recommendation, suitable alternatives and a map view so tourists can make a choice quickly on mobile.',
+      },
+      {
+        heading: 'Why conditions matter',
+        body: 'A beach can be excellent on one day and uncomfortable on another. Wind direction, wave height, beach orientation and local exposure can change the right choice.',
+      },
+    ],
+    links: [
+      { href: '/', label: 'Open CalmBeach Greece' },
+      { href: '/calm-beaches-greece-windy-day/', label: 'Find options on a windy day' },
+      { href: '/beaches/milos/', label: 'Explore Milos beaches' },
+    ],
+  },
+  {
+    pathName: '/calm-beaches-greece-windy-day/',
+    title: 'Calm Beaches in Greece on a Windy Day | CalmBeach',
+    description: 'Use CalmBeach to look for more sheltered Greek beach options when wind and waves make exposed beaches less comfortable.',
+    h1: 'Calm beaches in Greece on a windy day',
+    intro: 'On windy days, the best beach choice is often about finding a more sheltered or less exposed option, not simply choosing the most famous beach.',
+    sections: [
+      {
+        heading: 'Shelter is directional',
+        body: 'A beach may be better protected from one wind direction and exposed to another. CalmBeach checks beach exposure together with today\'s forecast before ranking options.',
+      },
+      {
+        heading: 'No false guarantees',
+        body: 'The app does not claim that a beach is safe, calm or protected unless the available data supports a cautious recommendation. Always follow local warnings and judge conditions in person.',
+      },
+    ],
+    links: [
+      { href: '/', label: 'Check today\'s recommendations' },
+      { href: '/best-beaches-greece-today/', label: 'Best beaches in Greece today' },
+      { href: '/where-to-swim-greece-today/', label: 'Where to swim today' },
+    ],
+  },
+  {
+    pathName: '/best-beaches-milos-today/',
+    title: 'Best Beaches in Milos Today | Wind & Waves | CalmBeach',
+    description: 'Compare Milos beaches by today\'s wind, waves, weather, exposure, access and beach type before choosing where to swim.',
+    h1: 'Best beaches in Milos today',
+    intro: 'Milos has very different beach exposures, so wind direction and waves can change the best choice for the day. CalmBeach compares Milos beaches with today\'s conditions.',
+    sections: [
+      {
+        heading: 'Milos beach conditions change by side of the island',
+        body: 'North, south and bay-facing beaches can behave differently in the same forecast. CalmBeach looks at beach exposure and practical access instead of only listing popular beaches.',
+      },
+      {
+        heading: 'Use the Milos beach page for live guidance',
+        body: 'The Milos page includes current recommendations, beach cards, map context and detail pages for individual beaches.',
+      },
+    ],
+    links: [
+      { href: '/beaches/milos/', label: 'Open Milos beaches' },
+      { href: '/', label: 'Open CalmBeach Greece' },
+      { href: '/calm-beaches-greece-windy-day/', label: 'Windy day beach guidance' },
+    ],
   },
 ];
 
@@ -263,6 +366,11 @@ const injectBeachHead = (html, meta) => {
     nextHtml,
     /<meta name="description" content="[^"]*"\s*\/?>/i,
     `<meta name="description" content="${escapeHtml(meta.description)}" />`
+  );
+  nextHtml = setOrAppendHeadTag(
+    nextHtml,
+    /<meta name="robots" content="[^"]*"\s*\/?>/i,
+    `<meta name="robots" content="${escapeHtml(meta.robots || defaultRobotsContent)}" />`
   );
   nextHtml = setOrAppendHeadTag(
     nextHtml,
@@ -382,7 +490,7 @@ const staticFallbackCopy = {
     viewBeach: 'View this beach in CalmBeach Greece',
     viewRegion: islandName => `View ${islandName} in CalmBeach Greece`,
     regionHeading: islandName => `${islandName} beaches`,
-    regionDescription: (islandName, count) => `Explore ${count} beaches in ${islandName}, Greece. Open CalmBeach for today's wind, waves, exposure and best swimming time.`,
+    regionDescription: (islandName, count) => `Compare ${count} beaches in ${islandName}, Greece by today's wind, waves, weather, beach exposure, access and beach type before you choose where to swim.`,
   },
   gr: {
     brand: 'Calm Beach Greece',
@@ -403,7 +511,7 @@ const staticFallbackCopy = {
     viewBeach: 'Δες την παραλία στο Calm Beach Greece',
     viewRegion: islandName => `Δες τις παραλίες για ${islandName} στο Calm Beach Greece`,
     regionHeading: islandName => `Παραλίες: ${islandName}`,
-    regionDescription: (islandName, count) => `Σύγκρινε ${count} παραλίες σε ${islandName}. Άνοιξε την εφαρμογή για σημερινό σκορ, άνεμο, κύμα και καλύτερη ώρα για μπάνιο.`,
+    regionDescription: (islandName, count) => `Σύγκρινε ${count} παραλίες σε ${islandName} με βάση σημερινό άνεμο, κύμα, καιρό, έκθεση, πρόσβαση και τύπο παραλίας πριν διαλέξεις πού να κολυμπήσεις.`,
   },
 };
 
@@ -424,6 +532,10 @@ const staticHomeFallback = (canonicalUrl, locale = prerenderLocales[0]) => {
       'Search by Greek island or region',
       'Map and beach detail pages',
     ];
+  const guideLinks = isGreek ? [] : seoLandingPages.map(landing => ({
+    href: landing.pathName,
+    label: landing.h1,
+  }));
 
   return `
     <div id="root">
@@ -434,10 +546,18 @@ const staticHomeFallback = (canonicalUrl, locale = prerenderLocales[0]) => {
         <ul style="display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:10px;margin:0 0 24px;padding:0;list-style:none;">
           ${features.map(feature => `<li style="border:1px solid #bae6fd;border-radius:12px;padding:12px 14px;background:white;color:#075985;font-weight:700;">${escapeHtml(feature)}</li>`).join('')}
         </ul>
-        <p style="margin:0;color:#475569;">${escapeHtml(isGreek
+        ${guideLinks.length > 0 ? `
+        <nav aria-label="Popular CalmBeach guides" style="margin:0 0 24px;">
+          <h2 style="margin:0 0 10px;font-size:18px;color:#075985;">Popular beach guides</h2>
+          <ul style="display:flex;flex-wrap:wrap;gap:8px;margin:0;padding:0;list-style:none;">
+            ${guideLinks.map(link => `<li><a href="${escapeHtml(link.href)}" style="display:inline-flex;border:1px solid #bae6fd;border-radius:999px;padding:8px 11px;background:white;color:#0e7490;text-decoration:none;font-weight:800;font-size:13px;">${escapeHtml(link.label)}</a></li>`).join('')}
+          </ul>
+        </nav>
+        ` : ''}
+        <p data-nosnippet="true" style="margin:0;color:#475569;">${escapeHtml(isGreek
           ? 'Άνοιξε την εφαρμογή για live προτάσεις με βάση τις σημερινές συνθήκες.'
           : "Open the app for live recommendations based on today's conditions.")}</p>
-        <p style="margin:16px 0 0;"><a href="${escapeHtml(canonicalUrl)}" style="color:#0e7490;font-weight:800;">${escapeHtml(isGreek ? 'Άνοιγμα Calm Beach Greece' : 'Open Calm Beach Greece')}</a></p>
+        <p data-nosnippet="true" style="margin:16px 0 0;"><a href="${escapeHtml(canonicalUrl)}" style="color:#0e7490;font-weight:800;">${escapeHtml(isGreek ? 'Άνοιγμα Calm Beach Greece' : 'Open Calm Beach Greece')}</a></p>
       </main>
     </div>
   `;
@@ -479,8 +599,8 @@ const staticBeachFallback = (beach, island, canonicalUrl, locale = prerenderLoca
           <dt style="font-weight:700;">${escapeHtml(copy.coordinates)}</dt><dd style="margin:0;">${escapeHtml(beach.coordinates?.lat)}, ${escapeHtml(beach.coordinates?.lon)}</dd>
         </dl>
         ${amenityLabels.length > 0 ? `<ul style="display:flex;flex-wrap:wrap;gap:8px;margin:0 0 20px;padding:0;list-style:none;">${amenityLabels.map(label => `<li style="border:1px solid #bae6fd;border-radius:999px;padding:6px 10px;background:white;color:#075985;font-weight:700;font-size:13px;">${escapeHtml(label)}</li>`).join('')}</ul>` : ''}
-        <p style="margin:0;color:#475569;">${escapeHtml(copy.openAppBeach)}</p>
-        <p style="margin:16px 0 0;"><a href="${escapeHtml(canonicalUrl)}" style="color:#0e7490;font-weight:700;">${escapeHtml(copy.viewBeach)}</a></p>
+        <p data-nosnippet="true" style="margin:0;color:#475569;">${escapeHtml(copy.openAppBeach)}</p>
+        <p data-nosnippet="true" style="margin:16px 0 0;"><a href="${escapeHtml(canonicalUrl)}" style="color:#0e7490;font-weight:700;">${escapeHtml(copy.viewBeach)}</a></p>
       </main>
     </div>
   `;
@@ -513,11 +633,86 @@ const staticRegionFallback = (island, region, canonicalUrl, locale = prerenderLo
         <h1 style="margin:0 0 12px;font-size:32px;line-height:1.1;">${escapeHtml(copy.regionHeading(islandName))}</h1>
         <p style="margin:0 0 20px;font-size:17px;line-height:1.55;color:#334155;">${escapeHtml(copy.regionDescription(islandName, beaches.length))}</p>
         ${beachItems ? `<ul style="display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:10px;margin:0 0 20px;padding:0;list-style:none;">${beachItems}</ul>` : ''}
-        <p style="margin:0;color:#475569;">${escapeHtml(copy.openAppRegion)}</p>
-        <p style="margin:16px 0 0;"><a href="${escapeHtml(canonicalUrl)}" style="color:#0e7490;font-weight:700;">${escapeHtml(copy.viewRegion(islandName))}</a></p>
+        <p data-nosnippet="true" style="margin:0;color:#475569;">${escapeHtml(copy.openAppRegion)}</p>
+        <p data-nosnippet="true" style="margin:16px 0 0;"><a href="${escapeHtml(canonicalUrl)}" style="color:#0e7490;font-weight:700;">${escapeHtml(copy.viewRegion(islandName))}</a></p>
       </main>
     </div>
   `;
+};
+
+const stripClientScripts = html => html
+  .replace(/\s*<link rel="modulepreload"[^>]*>\s*/gi, '')
+  .replace(/\s*<script\b(?=[^>]*\btype="module"|\btype='module')[^>]*>[\s\S]*?<\/script>\s*/gi, '');
+
+const staticSeoLandingPage = landing => `
+    <div id="root">
+      <main style="max-width:880px;margin:0 auto;padding:40px 20px 56px;font-family:system-ui,-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;color:#0f172a;background:#f8fafc;">
+        <p style="margin:0 0 8px;color:#0e7490;font-weight:800;">CalmBeach Greece</p>
+        <h1 style="margin:0 0 14px;font-size:38px;line-height:1.08;">${escapeHtml(landing.h1)}</h1>
+        <p style="margin:0 0 26px;font-size:18px;line-height:1.6;color:#334155;">${escapeHtml(landing.intro)}</p>
+        <div style="display:grid;gap:16px;margin:0 0 28px;">
+          ${landing.sections.map(section => `
+            <section style="border-top:1px solid #bae6fd;padding-top:16px;">
+              <h2 style="margin:0 0 8px;font-size:20px;line-height:1.2;color:#075985;">${escapeHtml(section.heading)}</h2>
+              <p style="margin:0;font-size:16px;line-height:1.58;color:#334155;">${escapeHtml(section.body)}</p>
+            </section>
+          `).join('')}
+        </div>
+        <nav aria-label="Related CalmBeach pages">
+          <ul style="display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:10px;margin:0;padding:0;list-style:none;">
+            ${landing.links.map(link => `
+              <li style="margin:0;">
+                <a href="${escapeHtml(link.href)}" style="display:block;border:1px solid #bae6fd;border-radius:12px;padding:12px 14px;background:white;color:#0e7490;text-decoration:none;font-weight:800;">${escapeHtml(link.label)}</a>
+              </li>
+            `).join('')}
+          </ul>
+        </nav>
+        <p data-nosnippet="true" style="margin:24px 0 0;color:#64748b;font-size:13px;line-height:1.5;">Recommendations are indicative and depend on available weather and beach data. Conditions may vary locally.</p>
+      </main>
+    </div>
+  `;
+
+const buildSeoLandingPage = (baseHtml, landing, imageUrl) => {
+  const locale = prerenderLocales[0];
+  const canonicalUrl = canonicalUrlFor(landing.pathName, locale);
+  const jsonLd = [
+    {
+      '@context': 'https://schema.org',
+      '@type': 'WebPage',
+      name: landing.title,
+      description: landing.description,
+      url: canonicalUrl,
+      image: imageUrl,
+      inLanguage: locale.htmlLang,
+      isPartOf: {
+        '@type': 'WebSite',
+        name: 'CalmBeach Greece',
+        url: canonicalUrlFor('/', locale),
+      },
+    },
+    breadcrumbJsonLd([
+      { name: 'CalmBeach Greece', url: canonicalUrlFor('/', locale) },
+      { name: landing.h1, url: canonicalUrl },
+    ]),
+  ];
+
+  const htmlWithHead = injectBeachHead(baseHtml, {
+    title: landing.title,
+    description: landing.description,
+    canonicalUrl,
+    imageUrl,
+    imageAlt: `${landing.h1} on CalmBeach Greece`,
+    htmlLang: locale.htmlLang,
+    ogLocale: locale.ogLocale,
+    alternateUrls: [
+      { hreflang: locale.hreflang, href: canonicalUrl },
+      { hreflang: 'x-default', href: canonicalUrl },
+    ],
+    ogType: 'website',
+    jsonLd,
+  });
+
+  return stripClientScripts(htmlWithHead).replace(/<div id="root">\s*<\/div>/i, staticSeoLandingPage(landing));
 };
 
 const buildHomePage = (baseHtml, locale, imageUrl) => {
@@ -667,6 +862,16 @@ const buildBeachPage = (baseHtml, island, beach, region, imageUrl, locale = prer
   return htmlWithHead.replace(/<div id="root">\s*<\/div>/i, staticBeachFallback(beach, island, canonicalUrl, locale));
 };
 
+const sitemapEntry = (url, imageUrl) => ({ url, imageUrl });
+
+const renderSitemapEntry = (entry, lastmod) => {
+  const imageTag = entry.imageUrl
+    ? `<image:image><image:loc>${escapeXml(entry.imageUrl)}</image:loc></image:image>`
+    : '';
+
+  return `  <url><loc>${escapeXml(entry.url)}</loc><lastmod>${lastmod}</lastmod>${imageTag}</url>`;
+};
+
 const main = async () => {
   const [baseHtml, beachIndex, publicAssets] = await Promise.all([
     readFile(indexHtmlPath, 'utf8'),
@@ -674,18 +879,28 @@ const main = async () => {
     listRootPublicAssets(),
   ]);
 
-  const homeOgImageUrl = toAbsolutePublicUrl(defaultOgImagePath);
-  const sitemapUrls = [];
+  const homeOgImageUrl = toAbsolutePublicUrl(publicAssets.has(homeOgImagePath) ? homeOgImagePath : defaultOgImagePath);
+  const homeSitemapImageUrl = toSitemapImageUrl(homeOgImageUrl, publicAssets);
+  const sitemapEntries = [];
   const redirects = [];
   let pageCount = 0;
   let regionPageCount = 0;
+  let landingPageCount = 0;
 
   for (const locale of prerenderLocales) {
     const homeRoutePath = localizedPath('/', locale);
     const homeOutputDir = outputDirForRoute(homeRoutePath);
     await mkdir(homeOutputDir, { recursive: true });
     await writeFile(path.join(homeOutputDir, 'index.html'), buildHomePage(baseHtml, locale, homeOgImageUrl), 'utf8');
-    sitemapUrls.push(canonicalUrlFor('/', locale));
+    sitemapEntries.push(sitemapEntry(canonicalUrlFor('/', locale), homeSitemapImageUrl));
+  }
+
+  for (const landing of seoLandingPages) {
+    const landingOutputDir = outputDirForRoute(landing.pathName);
+    await mkdir(landingOutputDir, { recursive: true });
+    await writeFile(path.join(landingOutputDir, 'index.html'), buildSeoLandingPage(baseHtml, landing, homeOgImageUrl), 'utf8');
+    sitemapEntries.push(sitemapEntry(canonicalUrlFor(landing.pathName, prerenderLocales[0]), homeSitemapImageUrl));
+    landingPageCount += 1;
   }
 
   for (const region of beachIndex.regions || []) {
@@ -702,6 +917,7 @@ const main = async () => {
     if (!island?.id || !Array.isArray(island.beaches)) continue;
 
     const regionOgImageUrl = toAbsolutePublicUrl(resolveRegionOgImagePath(region, island, publicAssets));
+    const regionSitemapImageUrl = toSitemapImageUrl(regionOgImageUrl, publicAssets);
     const currentRegionPath = regionPath(region, island);
     const currentLegacyRegionPath = legacyRegionPath(region.id);
     if (currentLegacyRegionPath !== currentRegionPath) {
@@ -715,7 +931,7 @@ const main = async () => {
       const regionOutputDir = outputDirForRoute(localizedRegionPath);
       await mkdir(regionOutputDir, { recursive: true });
       await writeFile(path.join(regionOutputDir, 'index.html'), buildRegionPage(baseHtml, island, region, regionOgImageUrl, locale), 'utf8');
-      sitemapUrls.push(canonicalUrlFor(currentRegionPath, locale));
+      sitemapEntries.push(sitemapEntry(canonicalUrlFor(currentRegionPath, locale), regionSitemapImageUrl));
       regionPageCount += 1;
     }
 
@@ -733,7 +949,7 @@ const main = async () => {
         const outputDir = outputDirForRoute(localizedRoutePath);
         await mkdir(outputDir, { recursive: true });
         await writeFile(path.join(outputDir, 'index.html'), buildBeachPage(baseHtml, island, beach, region, regionOgImageUrl, locale), 'utf8');
-        sitemapUrls.push(canonicalUrlFor(routePath, locale));
+        sitemapEntries.push(sitemapEntry(canonicalUrlFor(routePath, locale), regionSitemapImageUrl));
         pageCount += 1;
       }
     }
@@ -742,8 +958,8 @@ const main = async () => {
   const lastmod = new Date().toISOString().slice(0, 10);
   const sitemap = [
     '<?xml version="1.0" encoding="UTF-8"?>',
-    '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">',
-    ...sitemapUrls.map(url => `  <url><loc>${escapeXml(url)}</loc><lastmod>${lastmod}</lastmod></url>`),
+    '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">',
+    ...sitemapEntries.map(entry => renderSitemapEntry(entry, lastmod)),
     '</urlset>',
     '',
   ].join('\n');
@@ -752,7 +968,7 @@ const main = async () => {
   if (redirects.length > 0) {
     await writeFile(path.join(distDir, '_redirects'), `${redirects.join('\n')}\n`, 'utf8');
   }
-  console.log(`Prerendered ${prerenderLocales.length} home pages, ${regionPageCount} region pages, ${pageCount} beach pages, ${redirects.length} redirects and sitemap.xml`);
+  console.log(`Prerendered ${prerenderLocales.length} home pages, ${landingPageCount} SEO landing pages, ${regionPageCount} region pages, ${pageCount} beach pages, ${redirects.length} redirects and sitemap.xml`);
 };
 
 main().catch(error => {

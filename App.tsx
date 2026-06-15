@@ -212,7 +212,7 @@ const seoCopy: Record<SupportedLanguage, { title: string; description: string; l
     locale: 'en_US',
   },
   gr: {
-    title: 'Calm Beach Greece',
+    title: 'Calm Beach Greece - Καλύτερη Παραλία Σήμερα',
     description: 'Calm Beach Greece - Βρες την καλύτερη παραλία για σήμερα με βάση άνεμο, κύμα και καιρό.',
     locale: 'el_GR',
   },
@@ -1812,22 +1812,57 @@ export const App: React.FC = () => {
   useEffect(() => {
     document.documentElement.lang = languageToLocale(language);
     const meta = seoCopy[language];
-    const selectedIslandName = selectedIsland?.name[language] || selectedIsland?.name.en;
+    const currentPathname = typeof window !== 'undefined' ? window.location.pathname : '/';
+    const detailRoute = parseBeachDetailPath(currentPathname);
+    const regionRoute = parseBeachRegionPath(currentPathname);
+    const beachRoute = detailRoute || regionRoute;
+    const routeMatchesSelectedIsland = Boolean(
+      beachRoute &&
+      selectedIsland &&
+      regionMatchesRouteParam(selectedIsland, beachRoute.regionId)
+    );
+    const selectedIslandName = routeMatchesSelectedIsland
+      ? selectedIsland?.name[language] || selectedIsland?.name.en
+      : undefined;
+    const selectedIslandBeachCount = routeMatchesSelectedIsland
+      ? selectedIsland?.beaches.length
+      : undefined;
+    const beachCountText = typeof selectedIslandBeachCount === 'number'
+      ? `${selectedIslandBeachCount} `
+      : '';
     const regionDescription = selectedIslandName
       ? getLocalizedCopy(language, {
-        en: `${selectedIslandName} beaches in Greece. Compare live wind, waves, weather and beach exposure to find calmer swimming spots today.`,
-    gr: `Παραλίες σε ${selectedIslandName}. Δες τον σημερινό άνεμο, το κύμα και τον καιρό πριν αποφασίσεις πού να κολυμπήσεις.`,
+        en: `${selectedIslandName} beaches in Greece. Compare ${beachCountText}beaches by live wind, waves, weather and exposure to find calmer swimming spots today.`,
+        gr: `${selectedIslandName}: σύγκρινε ${beachCountText}παραλίες και δες σημερινό άνεμο, κύμα, καιρό και προτάσεις για μπάνιο.`,
         fr: `Plages de ${selectedIslandName} en Grece. Verifiez le vent, les vagues et la meteo du jour avant de choisir ou nager.`,
         de: `Strande in ${selectedIslandName}, Griechenland. Pruefe Wind, Wellen und Wetter, bevor du den Strand waehlst.`,
         it: `Spiagge a ${selectedIslandName}, Grecia. Controlla vento, onde e meteo di oggi prima di scegliere dove nuotare.`,
       })
       : meta.description;
-    const detailTitle = view === 'detail' && detailBeach
-      ? `${displayBeachName(detailBeach.name, language)} Beach in ${selectedIslandName || 'Greece'} | CalmBeach Greece`
+    const canUseDetailSeo = Boolean(
+      detailRoute &&
+      detailBeach &&
+      detailBeach.id === detailRoute.beachId &&
+      selectedIslandName
+    );
+    const detailTitle = canUseDetailSeo && detailBeach
+      ? getLocalizedCopy(language, {
+        en: `${displayBeachName(detailBeach.name, language)} Beach, ${selectedIslandName} | Wind & Waves Today`,
+        gr: `Παραλία ${displayBeachName(detailBeach.name, language)}, ${selectedIslandName} | Calm Beach Greece`,
+        fr: `${displayBeachName(detailBeach.name, language)}, ${selectedIslandName} | Calm Beach Greece`,
+        de: `${displayBeachName(detailBeach.name, language)}, ${selectedIslandName} | Calm Beach Greece`,
+        it: `${displayBeachName(detailBeach.name, language)}, ${selectedIslandName} | Calm Beach Greece`,
+      })
       : selectedIslandName
-        ? `${selectedIslandName} Beaches Today | CalmBeach Greece`
+        ? getLocalizedCopy(language, {
+          en: `${selectedIslandName} Beaches Today | CalmBeach Greece`,
+          gr: `Παραλίες: ${selectedIslandName} | Calm Beach Greece`,
+          fr: `Plages de ${selectedIslandName} | Calm Beach Greece`,
+          de: `Strande in ${selectedIslandName} | Calm Beach Greece`,
+          it: `Spiagge a ${selectedIslandName} | Calm Beach Greece`,
+        })
         : meta.title;
-    const detailDescription = view === 'detail' && detailBeach
+    const detailDescription = canUseDetailSeo && detailBeach
       ? detailBeach.description?.[language] || detailBeach.description?.en || meta.description
       : regionDescription;
     const canonicalUrl = typeof window !== 'undefined'
@@ -1843,7 +1878,7 @@ export const App: React.FC = () => {
     document.querySelector('meta[name="twitter:title"]')?.setAttribute('content', detailTitle);
     document.querySelector('meta[name="twitter:description"]')?.setAttribute('content', detailDescription);
     document.querySelector('link[rel="canonical"]')?.setAttribute('href', canonicalUrl);
-  }, [detailBeach, language, selectedIsland?.name, view]);
+  }, [detailBeach, language, selectedIsland?.id, selectedIsland?.name, view]);
 
   useEffect(() => {
     const regionId = selectedIsland?.id;
@@ -3617,20 +3652,22 @@ export const App: React.FC = () => {
     const detailForecast = detailBeachForecast || forecast[selectedDayIndex];
 
     return (
-      <Suspense fallback={<SkeletonLoader t={t} />}>
-        <BeachDetailPage
-          beach={detailBeach} allBeaches={selectedIsland?.beaches || []}
-          dayForecast={detailForecast} hourlyForecast={detailForecast.hourly} language={language} t={t}
-          onBack={closeBeachDetails} onBeachClick={(b) => openBeachDetails(b, 'nearby_detail')}
-          userLocation={userLocation} favorites={favorites} onToggleFavorite={handleToggleFavorite}
-          preferences={preferences}
-          islandName={selectedIsland?.name[language]}
-          detailDataStatus={detailDataStatus}
-          beachWeatherById={selectedBeachForecasts}
-          geospatialExposureProfiles={geospatialExposureProfiles}
-          weatherSource={detailBeachForecast ? 'beach-cluster' : 'island-fallback'}
-        />
-      </Suspense>
+      <div>
+        <Suspense fallback={<SkeletonLoader t={t} />}>
+          <BeachDetailPage
+            beach={detailBeach} allBeaches={selectedIsland?.beaches || []}
+            dayForecast={detailForecast} hourlyForecast={detailForecast.hourly} language={language} t={t}
+            onBack={closeBeachDetails} onBeachClick={(b) => openBeachDetails(b, 'nearby_detail')}
+            userLocation={userLocation} favorites={favorites} onToggleFavorite={handleToggleFavorite}
+            preferences={preferences}
+            islandName={selectedIsland?.name[language]}
+            detailDataStatus={detailDataStatus}
+            beachWeatherById={selectedBeachForecasts}
+            geospatialExposureProfiles={geospatialExposureProfiles}
+            weatherSource={detailBeachForecast ? 'beach-cluster' : 'island-fallback'}
+          />
+        </Suspense>
+      </div>
     );
   }
 
@@ -5056,6 +5093,7 @@ export const App: React.FC = () => {
               {weatherError && (
                 <section
                   role="status"
+                  data-nosnippet="true"
                   className="mx-auto flex max-w-3xl items-start gap-3 rounded-2xl border border-amber-200 bg-amber-50/92 p-3 text-amber-900 shadow-sm shadow-amber-900/5 sm:items-center sm:p-4"
                 >
                   <AlertTriangle className="mt-0.5 h-5 w-5 shrink-0 text-amber-600 sm:mt-0" />
@@ -5077,7 +5115,7 @@ export const App: React.FC = () => {
 
               {/* Top Recommendations */}
               {forecast?.[selectedDayIndex] && !isUnsafeWinter && !showHeaderForecast && !showRecommendationPreviewSection && !hasActiveSearchOrFilters && showDecisionRecommendations && recommendationSectionBeaches.length > 0 && (
-                <section className="!mt-0 sm:!mt-5">
+                <section className="!mt-0 sm:!mt-5" data-nosnippet="true">
                   <div className="relative -mx-3 rounded-[1.35rem] border border-white/70 bg-white/72 px-3 pb-4 pt-4 shadow-sm shadow-sky-900/5 ring-1 ring-white/45 backdrop-blur-xl sm:mx-0 sm:px-5 sm:pb-5 sm:pt-5">
                     <div className="mb-3 space-y-1 px-1 text-center sm:mb-4">
                       <h2 className="font-heading text-lg font-extrabold leading-tight text-slate-950 sm:text-2xl">
@@ -5147,39 +5185,41 @@ export const App: React.FC = () => {
               {isUnsafeWinter && <UnsafeConditionsMessage t={t} />}
 
               {!showHeaderForecast && (
-              <RecommendationSection
-                beaches={beachListBeaches} language={language} t={t}
-                windSpeed={forecast?.[selectedDayIndex]?.wind.speed || 0}
-                windDirection={degToCompass(forecast?.[selectedDayIndex]?.wind.deg || 0)}
-                waveHeightM={forecast?.[selectedDayIndex]?.marine?.waveHeightM}
-                selectedDate={selectedDayDate}
-                islandName={selectedIsland?.name[language] || ''}
-                regionId={selectedIsland?.id}
-                onBeachClick={(b) => openBeachDetails(b, 'beach_list')}
-                searchQuery={beachSearchQuery} onSearchChange={setBeachSearchQuery}
-                sortBy={sortBy} onSortChange={handleSortChange}
-                activeFilters={selectedFilters}
-                onFilterChange={handleClearAdvancedFilter}
-                preferences={preferences}
-                onPreferenceFilterClear={handleTogglePreference}
-                onClearSearchAndFilters={handleClearSearchAndFilters}
-                hasActiveSearchOrFilters={hasActiveSearchOrFilters}
-                severeWeatherNoSwimming={shouldShowNoSwimmingMessage}
-                noSwimmingReason={isRainBlockedBeachWindow ? 'rain' : 'conditions'}
-                favorites={favorites} onToggleFavorite={handleToggleFavorite}
-                protectedSortLabel={protectedSortLabel}
-                sortResultCounts={sortResultCounts}
-                protectedSortEmptyCopy={protectedSortEmptyCopy}
-                hasShownAlternativeRecommendations={hasShownAlternativeRecommendations}
-                showControls={!showHeaderForecast}
-                searchSuggestions={beachSearchSuggestions}
-                protectedSortNoResults={protectedSortNoResults}
-                strongWindContext={isStrongRecommendationMode}
-              />
+              <div data-nosnippet="true">
+                <RecommendationSection
+                  beaches={beachListBeaches} language={language} t={t}
+                  windSpeed={forecast?.[selectedDayIndex]?.wind.speed || 0}
+                  windDirection={degToCompass(forecast?.[selectedDayIndex]?.wind.deg || 0)}
+                  waveHeightM={forecast?.[selectedDayIndex]?.marine?.waveHeightM}
+                  selectedDate={selectedDayDate}
+                  islandName={selectedIsland?.name[language] || ''}
+                  regionId={selectedIsland?.id}
+                  onBeachClick={(b) => openBeachDetails(b, 'beach_list')}
+                  searchQuery={beachSearchQuery} onSearchChange={setBeachSearchQuery}
+                  sortBy={sortBy} onSortChange={handleSortChange}
+                  activeFilters={selectedFilters}
+                  onFilterChange={handleClearAdvancedFilter}
+                  preferences={preferences}
+                  onPreferenceFilterClear={handleTogglePreference}
+                  onClearSearchAndFilters={handleClearSearchAndFilters}
+                  hasActiveSearchOrFilters={hasActiveSearchOrFilters}
+                  severeWeatherNoSwimming={shouldShowNoSwimmingMessage}
+                  noSwimmingReason={isRainBlockedBeachWindow ? 'rain' : 'conditions'}
+                  favorites={favorites} onToggleFavorite={handleToggleFavorite}
+                  protectedSortLabel={protectedSortLabel}
+                  sortResultCounts={sortResultCounts}
+                  protectedSortEmptyCopy={protectedSortEmptyCopy}
+                  hasShownAlternativeRecommendations={hasShownAlternativeRecommendations}
+                  showControls={!showHeaderForecast}
+                  searchSuggestions={beachSearchSuggestions}
+                  protectedSortNoResults={protectedSortNoResults}
+                  strongWindContext={isStrongRecommendationMode}
+                />
+              </div>
               )}
 
               {betaFeedbackUrl && (
-                <section className="mx-auto max-w-3xl rounded-[1.5rem] border border-white/60 bg-white/62 p-4 shadow-sm shadow-sky-900/5 ring-1 ring-white/35 backdrop-blur-xl">
+                <section className="mx-auto max-w-3xl rounded-[1.5rem] border border-white/60 bg-white/62 p-4 shadow-sm shadow-sky-900/5 ring-1 ring-white/35 backdrop-blur-xl" data-nosnippet="true">
                   <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
                     <div className="space-y-1">
                       <h2 className="font-heading text-base font-bold text-slate-900">
@@ -5203,7 +5243,7 @@ export const App: React.FC = () => {
               )}
 
               {selectedIsland && !isUnsafeWinter && !isDesktopViewport && !showHeaderForecast && (
-                <section id="map-section" ref={mapSectionRef} className="!mt-4 space-y-2 sm:hidden sm:space-y-5">
+                <section id="map-section" ref={mapSectionRef} className="!mt-4 space-y-2 sm:hidden sm:space-y-5" data-nosnippet="true">
                   <div className="space-y-1 sm:space-y-2">
                     <div className="flex min-h-10 w-full items-center justify-center rounded-full border border-white/50 bg-white/42 px-5 py-2 shadow-sm shadow-sky-900/5 ring-1 ring-white/30 backdrop-blur-xl sm:px-6">
                         <h2 className="w-full text-center font-heading text-sm font-semibold leading-tight text-slate-600 sm:text-base">
