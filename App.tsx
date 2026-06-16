@@ -5403,7 +5403,7 @@ export const App: React.FC = () => {
       </main>
       )}
 
-      <div className={`${isDesktopViewport ? 'relative z-[70] bg-transparent' : 'relative z-10 bg-transparent pb-[calc(5rem+env(safe-area-inset-bottom))]'}`}>
+      <div className={`${isDesktopViewport ? 'relative z-[70] bg-transparent' : 'relative z-50 bg-transparent pb-[calc(5rem+env(safe-area-inset-bottom))]'}`}>
         <LegalFooter language={language} />
       </div>
 

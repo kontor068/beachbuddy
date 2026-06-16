@@ -657,6 +657,22 @@ const topPickAmenitiesScore = (beach: Beach): number => {
   return score;
 };
 
+// Hard access partition (Miltos 2026-06-16): hard-to-reach / adventurous beaches
+// (boat-only, difficult footpath, 4x4, remote) ALWAYS rank after every reasonably
+// accessible beach in a ranked list, regardless of fame or score. The top of the list
+// is "good access + plenty of comforts"; adventure beaches sit at the end for the
+// visitor who scrolls looking for them. Uses the same predicate as the "adventure" filter.
+const adventureAccessRank = (beach: Beach): number => (isAdventureBeach(beach) ? 1 : 0);
+
+// Amenities bucketed (well-equipped / some / none) so that only a CATEGORICAL comfort
+// gap precedes recognition — not a single +2 shade point. Mirrors the proximity-zone
+// rationale: promote "plenty of amenities" without letting trivial diffs reorder icons.
+const amenitiesTier = (beach: Beach): number => {
+  if (hasTopPickVisitorServices(beach) || hasMainstreamFacilities(beach)) return 2;
+  if (beach.amenities?.parking || beach.amenities?.naturalShade || beach.environment?.familyFriendly) return 1;
+  return 0;
+};
+
 const hasTopPickVisitorServices = (beach: Beach): boolean => {
   const metadataAmenities = beach.metadata?.amenities?.join(' ').toLowerCase() || '';
 
@@ -775,24 +791,40 @@ const compareRecommendationPriority = <T extends { score: number; exposureLevel?
   const beachA = getPriorityBeach(a, beachById);
   const beachB = getPriorityBeach(b, beachById);
 
+  // Hard access partition (Miltos 2026-06-16): adventurous / hard-to-reach beaches always
+  // sort after EVERY reasonably accessible beach — ahead of exposure, recognition and score —
+  // so a ranked list leads with "good access + plenty of comforts" and the hard-to-reach /
+  // adventurous ones sit at the end for whoever scrolls for them. The top-3 picks already
+  // exclude these via the mainstream-access gate, so this only reshapes the broader
+  // suitable/explore list; each card still carries its own exposure and safety labels.
+  const adventureRankDiff = beachA && beachB
+    ? adventureAccessRank(beachA) - adventureAccessRank(beachB)
+    : 0;
+  if (adventureRankDiff !== 0) return adventureRankDiff;
+
   const compareTouristPriority = (): number => {
     if (!beachA || !beachB) return 0;
 
-    // Tier 2 lexicographic order: proximity zone (if location known) → recognition →
-    // verified trust (seatrac online) → access → distance → amenities → id.
+    // Tier 2 lexicographic order among comparably accessible beaches: proximity zone
+    // (if location known) → easiest access → most amenities → recognition → verified
+    // trust (seatrac online) → distance → fine amenities → id. Access + amenities lead
+    // (Miltos 2026-06-16): the front of the list is "easy to reach, plenty of comforts"
+    // before fame; recognition still breaks ties below them (refines the 2026-06-14
+    // recognition-above-access call, which was about MEDIOCRE access, not hard access).
     const proximityDiff = compareProximityZone(a, b);
     if (proximityDiff !== 0) return proximityDiff;
+
+    const accessPriorityDiff = topPickAccessPriority(beachA) - topPickAccessPriority(beachB);
+    if (accessPriorityDiff !== 0) return accessPriorityDiff;
+
+    const amenitiesTierDiff = amenitiesTier(beachB) - amenitiesTier(beachA);
+    if (amenitiesTierDiff !== 0) return amenitiesTierDiff;
 
     const popularityDiff = topPickPopularityScore(beachB) - topPickPopularityScore(beachA);
     if (Math.abs(popularityDiff) >= 1) return popularityDiff;
 
-    // Recognition above access (decision 2026-06-14): a verified-accessible beach is a
-    // stronger trust signal than a marginally better road on an unknown beach.
     const verifiedTrustDiff = (hasDisabledAccess(beachB) ? 1 : 0) - (hasDisabledAccess(beachA) ? 1 : 0);
     if (verifiedTrustDiff !== 0) return verifiedTrustDiff;
-
-    const accessPriorityDiff = topPickAccessPriority(beachA) - topPickAccessPriority(beachB);
-    if (accessPriorityDiff !== 0) return accessPriorityDiff;
 
     const distanceDiff = compareOptionalDistance(a, b);
     if (distanceDiff !== 0) return distanceDiff;

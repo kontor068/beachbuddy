@@ -70,6 +70,11 @@ export const getIslandDestinationPhoto = (
 export const getIslandStripPhoto = (
   islandId: string,
 ): CuratedPhoto | undefined => {
+  // Hand-sourced photos win: they cover regions with no curated photo AND override any
+  // destination/background image that crops poorly in the wide strip band (e.g. a landmark
+  // whose subject is lost — Naxos' Portara).
+  if (sourcedStripById[islandId]) return sourcedStripById[islandId];
+
   const source = getIslandDestinationPhoto(islandId, 'hero') ?? getIslandDestinationPhoto(islandId, 'card');
   if (source) {
     const destinationId = islandIdToDestinationPhotoId[islandId];
@@ -81,7 +86,6 @@ export const getIslandStripPhoto = (
       : source;
   }
 
-  // Fallback: regions with a licensed background image (cropped to a strip), then a
-  // representative image sourced from Wikimedia Commons for regions with no local photo.
-  return regionStripById[islandId] ?? sourcedStripById[islandId];
+  // Fallback: regions with a licensed background image cropped to a strip.
+  return regionStripById[islandId];
 };
