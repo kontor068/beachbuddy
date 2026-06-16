@@ -457,13 +457,13 @@ export const BeachDetailPage: React.FC<BeachDetailPageProps> = ({
   const selectedDayPrefix = getSelectedDayPrefix(selectedDate, new Date(), language);
   const selectedDayIsToday = selectedDayPrefix === (language === 'gr' ? 'σήμερα' : 'today');
   const copy = {
-    whyToday: { en: `Why it's recommended ${selectedDayPrefix}`, gr: `Γιατί προτείνεται ${selectedDayPrefix};`, de: 'Warum dieser Strand?', it: 'Perche questa spiaggia?', fr: 'Pourquoi cette plage ?' },
+    whyToday: { en: `What to expect ${selectedDayPrefix}`, gr: `Τι να περιμένεις ${selectedDayPrefix}`, de: 'Was dich erwartet', it: 'Cosa aspettarsi', fr: `À quoi s'attendre` },
     sea: { en: 'Sea', gr: 'Θάλασσα', de: 'Meer', it: 'Mare', fr: 'Mer' },
     airTemp: { en: 'Air temperature', gr: 'Θερμοκρασία αέρα', de: 'Lufttemperatur', it: 'Temperatura aria', fr: 'Temperature de l air' },
     bestTime: { en: 'Best Time', gr: 'Ώρα', de: 'Beste Zeit', it: 'Ora migliore', fr: 'Meilleur moment' },
     toVisit: { en: 'To visit', gr: 'Για επίσκεψη', de: 'Zum Besuch', it: 'Per visitare', fr: 'Pour visiter' },
     bestSwim: { en: `Best swimming time ${selectedDayPrefix}`, gr: `Καλύτερη ώρα για μπάνιο ${selectedDayPrefix}`, de: 'Beste Badezeit', it: 'Ora migliore per nuotare', fr: 'Meilleur moment pour se baigner' },
-    feedbackTitle: { en: `How were the conditions ${selectedDayPrefix}?`, gr: `Πώς ήταν οι συνθήκες ${selectedDayPrefix};`, de: 'Wie waren die Bedingungen?', it: 'Com erano le condizioni?', fr: 'Comment etaient les conditions ?' },
+    feedbackTitle: { en: 'How accurate was our forecast?', gr: 'Πόσο σωστή ήταν η πρόβλεψή μας;', de: 'Wie genau war unsere Vorhersage?', it: 'Quanto era accurata la previsione?', fr: 'À quel point notre prévision était-elle juste ?' },
     feedbackText: { en: 'Your feedback helps us improve our recommendations for everyone.', gr: 'Η γνώμη σου μας βοηθά να βελτιώνουμε τις προτάσεις για όλους.', de: 'Dein Feedback hilft uns, die Empfehlungen fur alle zu verbessern.', it: 'Il tuo feedback ci aiuta a migliorare i consigli per tutti.', fr: 'Votre avis nous aide a ameliorer les recommandations pour tous.' },
     nearby: { en: 'Nearby Recommendations', gr: 'Κοντινές προτάσεις', de: 'Empfehlungen in der Nahe', it: 'Consigli nelle vicinanze', fr: 'Recommandations proches' },
     decisionSummary: { en: selectedDayIsToday ? 'Today summary' : `Summary ${selectedDayPrefix}`, gr: `Σύνοψη για ${selectedDayPrefix}`, de: 'Kurzfassung', it: 'Riepilogo', fr: 'Resume' },
@@ -626,19 +626,7 @@ export const BeachDetailPage: React.FC<BeachDetailPageProps> = ({
     : '';
   const displayedBestTimeLabel = usefulBestTimeWindow ? canonicalBestTimeLabel : '';
   const swimmingWindowHelper = swimWindowDisplay.helper || bestTimeReason;
-  const isCautionFramingDay = swimWindowDisplay.tone !== 'good' || cautionWaterConditions;
-  const whyTodayHeading = isCautionFramingDay
-    ? {
-      en: `Why it's one of the more suitable options ${selectedDayPrefix}`,
-      gr: `Γιατί είναι πιο διαχειρίσιμη επιλογή ${selectedDayPrefix}`,
-      de: 'Warum sie heute die bessere verfuegbare Option ist',
-      it: 'Perche oggi e l opzione piu gestibile',
-      fr: 'Pourquoi c est l option la plus gerable aujourd hui',
-    }[language]
-    : copy.whyToday[language];
-  const displayWhyTodayHeading = isCautionFramingDay && language === 'gr'
-    ? `Γιατί είναι από τις πιο κατάλληλες επιλογές ${selectedDayPrefix}`
-    : whyTodayHeading;
+  const displayWhyTodayHeading = copy.whyToday[language];
   const detailExplanation = generateUiBeachExplanation({
     beach,
     language,

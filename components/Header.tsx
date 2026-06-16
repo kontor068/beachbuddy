@@ -1,5 +1,5 @@
 import React, { useEffect, useMemo, useRef, useState } from 'react';
-import { CalendarDays, Check, ChevronDown, CloudSun, Languages, Waves } from 'lucide-react';
+import { CalendarDays, Check, ChevronDown, CloudSun, Languages } from 'lucide-react';
 import { getLocalizedCopy, languageToDateLocale, SUPPORTED_LANGUAGES, type SupportedLanguage } from '../utils/i18n';
 import { getSelectedDayOffset, getSelectedDaySentencePrefix } from '../utils/dateLabels';
 
@@ -119,9 +119,13 @@ const Header: React.FC<HeaderProps> = ({
       <div className="sticky top-0 z-50 border-b border-white/70 bg-white/82 text-slate-800 shadow-sm shadow-sky-900/5 backdrop-blur-xl">
         <div className="relative flex h-[60px] w-full items-center gap-2 px-4 sm:gap-3 sm:px-6 lg:h-[58px] lg:px-8">
           <div className="flex min-w-0 shrink-0 items-center gap-3">
-            <div className="grid h-8 w-8 shrink-0 place-items-center rounded-full bg-[#0098b0] text-white shadow-sm shadow-cyan-900/10 ring-1 ring-cyan-700/10">
-              <Waves className="h-5 w-5" aria-hidden="true" />
-            </div>
+            <img
+              src="/calmbeach-mark.svg"
+              alt="Calm Beach Greece"
+              className="h-9 w-9 shrink-0"
+              width={36}
+              height={36}
+            />
             <div className="min-w-0">
               <span className="block truncate text-base font-extrabold leading-tight tracking-normal text-[#007a83] sm:text-xl">
                 Calm Beach Greece

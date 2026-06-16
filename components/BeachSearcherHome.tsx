@@ -1204,6 +1204,22 @@ const getBestBeachesLabel = (language: LanguageCode, selectedDate?: Date, timePr
   });
 };
 
+// Neutral heading for calm days (≤2 Bft): the wind doesn't separate beaches, so
+// every beach is suitable and there is nothing to rank — calling them the
+// "best/most suitable" implies a curated subset that doesn't exist. The
+// "καταλληλότερες/best" framing is reserved for the windy regime (≥3 Bft).
+const getAllBeachesLabel = (language: LanguageCode, selectedDate?: Date, timePrefix?: string): string => {
+  const day = timePrefix ?? getSelectedDayPrefix(selectedDate, new Date(), language);
+
+  return getLocalizedCopy(language, {
+    en: `All beaches ${day}`,
+    gr: `Όλες οι παραλίες ${day}`,
+    fr: `Toutes les plages ${day}`,
+    de: `Alle Strände ${day}`,
+    it: `Tutte le spiagge ${day}`,
+  });
+};
+
 const getTopRecommendationsLabel = (language: LanguageCode, selectedDate: Date | undefined, count: number, timePrefix?: string, beaufort?: number): string => {
   const day = timePrefix ?? getSelectedDayPrefix(selectedDate, new Date(), language);
   const displayCount = Math.max(1, Math.min(3, count));
@@ -1431,6 +1447,7 @@ export const BeachSearcherHome: React.FC<BeachSearcherHomeProps> = ({
   const copy = getLocalizedCopy(language, homeCopy);
   const topChoiceCopy = getTopChoiceLabel(language, selectedDate);
   const bestBeachesLabel = getBestBeachesLabel(language, selectedDate, suitableTimePrefix);
+  const allBeachesLabel = getAllBeachesLabel(language, selectedDate, suitableTimePrefix);
   const [isDirectorySortOpen, setIsDirectorySortOpen] = useState(false);
   const [directoryViewCriteria, setDirectoryViewCriteria] = useState({
     suitable: true,
@@ -1747,9 +1764,12 @@ export const BeachSearcherHome: React.FC<BeachSearcherHomeProps> = ({
   ), [topRecommendationCards]);
   const hasTopRecommendationView = selectedIsland !== null && topRecommendationBeachCards.length > 0;
   const topRecommendationsLabel = getTopRecommendationsLabel(language, selectedDate, topRecommendationBeachCards.length, suitableTimePrefix, currentBeaufort);
+  const isCalmAllSuitableDay = typeof currentBeaufort === 'number' && currentBeaufort <= 2;
   const suitableSectionLabel = hasTopRecommendationView
     ? getRemainingSuitableLabel(language, selectedDate, suitableTimePrefix)
-    : bestBeachesLabel;
+    : isCalmAllSuitableDay
+      ? allBeachesLabel
+      : bestBeachesLabel;
   const weatherBeachCardRankStart = topBeachToday ? 2 : 1;
   const suitableBeachDisplayCount = typeof suitableBeachTotalCount === 'number'
     ? suitableBeachTotalCount

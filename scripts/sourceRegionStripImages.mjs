@@ -17,12 +17,13 @@ const BAND_ASPECT = 3.6, MAX_WIDTH = 1600, WEBP_QUALITY = 74;
 // Each region: specific beach searches (best first), Wikipedia title (lead fallback), gr label.
 const TARGETS = [
   { id: 'south-aegean-naxos', wiki: 'Naxos', label: 'Νάξος', terms: ['Plaka beach Naxos', 'Agios Prokopios beach Naxos', 'Agia Anna beach Naxos'] },
+  { id: 'crete-gavdos', wiki: 'Gavdos', label: 'Γαύδος', terms: ['Agios Ioannis beach Gavdos', 'Sarakiniko Gavdos', 'Korfos Gavdos', 'Lavrakas Gavdos'] },
+  { id: 'thessaly-magnesia-mainland---pelion', wiki: 'Pelion', label: 'Πήλιο', terms: ['Mylopotamos beach Pelion', 'Damouchari Pelion', 'Fakistra beach Pelion', 'Papa Nero beach Pelion'] },
   { id: 'north-aegean-ikaria', wiki: 'Icaria', label: 'Ικαρία', terms: ['Seychelles beach Ikaria', 'Nas Ikaria beach', 'Mesakti beach Ikaria'] },
   { id: 'attica-athens-area-mainland', wiki: 'Athens Riviera', label: 'Αθηναϊκή Ριβιέρα', terms: ['Vouliagmeni beach', 'Astir beach Vouliagmeni', 'Kavouri beach'] },
   { id: 'attica-piraeus-area', wiki: 'Piraeus', label: 'Πειραιάς', terms: ['Mikrolimano Piraeus', 'Kastella Piraeus', 'Peiraiki coast'] },
   { id: 'central-greece-fokida-mainland', wiki: 'Galaxidi', label: 'Φωκίδα', terms: ['Galaxidi waterfront', 'Galaxidi harbour', 'Trizonia island'] },
   { id: 'central-greece-fthiotida-mainland', wiki: 'Phthiotis', label: 'Φθιώτιδα', terms: ['Kamena Vourla beach', 'Agios Serafeim beach Fthiotida', 'Glyfa beach Fthiotida'] },
-  { id: 'central-greece-viotia-mainland', wiki: 'Antikyra', label: 'Βοιωτία', terms: ['Antikyra Boeotia', 'Agios Isidoros Boeotia', 'Paralia Distomo'] },
   { id: 'central-macedonia-pieria-mainland', wiki: 'Pieria (regional unit)', label: 'Πιερία', terms: ['Paralia Katerini beach', 'Olympic Beach Pieria', 'Platamonas beach'] },
   { id: 'east-macedonia-and-thrace-evros-mainland', wiki: 'Evros (regional unit)', label: 'Έβρος', terms: ['Makri beach Alexandroupoli', 'Alexandroupoli beach', 'Dikella beach Evros'] },
   { id: 'east-macedonia-and-thrace-rodopi-mainland', wiki: 'Rhodope (regional unit)', label: 'Ροδόπη', terms: ['Fanari Rodopi beach', 'Arogi beach', 'Maroneia beach'] },
