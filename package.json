@@ -9,6 +9,7 @@
     "audit:beaches": "node scripts/auditBeachDataset.mjs",
     "audit:cyclades-map-evidence": "node scripts/auditCycladesMapEvidence.mjs",
     "audit:cyclades-google-places": "node scripts/auditCycladesGooglePlaces.mjs",
+    "audit:place-resolution": "node scripts/auditPlaceResolution.mjs",
     "audit:wind-profile-evidence": "node scripts/auditWindProfileEvidence.mjs",
     "quality:explain": "node scripts/runCriticalQualityChecks.mjs --explain",
     "quality:beach-data": "node scripts/validateCriticalBeachData.mjs",
@@ -20,6 +21,9 @@
     "photos:milos": "node scripts/findMilosBeachImages.mjs",
     "photos:destinations:cards": "node scripts/optimizeDestinationCardImages.mjs",
     "images:backgrounds": "node scripts/optimizeBackgroundImages.mjs",
+    "images:strips": "node scripts/optimizeStripImages.mjs",
+    "images:region-strips": "node scripts/buildRegionStripPhotos.mjs",
+    "images:source-region-strips": "node scripts/sourceRegionStripImages.mjs",
     "build": "vite build && node scripts/prerenderBeachPages.mjs",
     "lint": "tsc --noEmit",
     "preview": "vite preview"

@@ -36,6 +36,7 @@ import { scrollElementIntoView, scrollToPageTop } from './utils/scroll';
 import { getInitialLanguage, getLocalizedCopy, languageToLocale, saveLanguagePreference, type SupportedLanguage } from './utils/i18n';
 import { lazyWithChunkRecovery } from './utils/chunkLoadRecovery';
 import { buildBetaFeedbackUrl } from './utils/betaFeedback';
+import { islandHasContextStrip } from './utils/islandContextStrip';
 import { QUICK_PREFERENCE_FILTERS } from './utils/preferenceFilterLabels';
 import { canOpenNavigation, openNavigation } from './utils/navigation';
 import { displayBeachName } from './utils/localization';
@@ -278,6 +279,16 @@ const MAP_HOUR_SLIDER_END_HOUR = 21;
 const MIN_REMAINING_TOP_PICK_SCORE = 62;
 const DEFAULT_FORECAST_SLOT_MINUTES = 120;
 const INITIAL_BEACH_DATA_LOADER_DELAY_MS = 300;
+const DISTANCE_SORT_LOCATION_OPTIONS: PositionOptions = {
+  enableHighAccuracy: false,
+  timeout: 4500,
+  maximumAge: 10 * 60 * 1000,
+};
+const DISTANCE_SORT_REFINEMENT_OPTIONS: PositionOptions = {
+  enableHighAccuracy: true,
+  timeout: 7000,
+  maximumAge: 0,
+};
 
 const isGenericAppEntryPath = (pathname?: string): boolean => {
   const currentPathname = pathname ?? (typeof window !== 'undefined' ? window.location.pathname : '/');
@@ -1419,6 +1430,7 @@ export const App: React.FC = () => {
   const [sortBy, setSortBy] = useState<SortOption>('protected');
   const [mobileSuitableDistanceSort, setMobileSuitableDistanceSort] = useState(false);
   const [locationSortResetKey, setLocationSortResetKey] = useState(0);
+  const [mobileResultListResetKey, setMobileResultListResetKey] = useState(0);
   // The hour chosen on the map slider; drives both the map colours and the
   // suitable-beach recommendations so they all reflect the same moment.
   const [selectedHourDt, setSelectedHourDt] = useState<number | null>(null);
@@ -1546,6 +1558,7 @@ export const App: React.FC = () => {
 
   const [userLocation, setUserLocation] = useState<{ lat: number; lon: number } | undefined>(undefined);
   const [userLocationAccuracy, setUserLocationAccuracy] = useState<number | undefined>(undefined);
+  const locationRefinementRequestRef = useRef(0);
 
   useEffect(() => {
     const intervalId = window.setInterval(() => setTopPickClock(Date.now()), 5 * 60 * 1000);
@@ -1627,6 +1640,47 @@ export const App: React.FC = () => {
     return scoredCandidates[0]?.island || centroidRanked[0].island;
   };
 
+  const getPositionOnce = (options: PositionOptions): Promise<GeolocationPosition> =>
+    new Promise((resolve, reject) => {
+      if (typeof navigator === 'undefined' || !navigator.geolocation) {
+        reject({ code: 2, message: 'Geolocation unavailable' } as GeolocationPositionError);
+        return;
+      }
+
+      navigator.geolocation.getCurrentPosition(resolve, reject, options);
+    });
+
+  const applyUserPosition = (position: GeolocationPosition) => {
+    const userLoc = { lat: position.coords.latitude, lon: position.coords.longitude };
+    setUserLocation(userLoc);
+    setUserLocationAccuracy(Number.isFinite(position.coords.accuracy) ? position.coords.accuracy : undefined);
+    return userLoc;
+  };
+
+  const refineUserLocationInBackground = (currentAccuracy?: number) => {
+    if (typeof navigator === 'undefined' || !navigator.geolocation) return;
+
+    const requestId = locationRefinementRequestRef.current + 1;
+    locationRefinementRequestRef.current = requestId;
+
+    void getPositionOnce(DISTANCE_SORT_REFINEMENT_OPTIONS)
+      .then(position => {
+        if (locationRefinementRequestRef.current !== requestId) return;
+
+        const nextAccuracy = Number.isFinite(position.coords.accuracy) ? position.coords.accuracy : undefined;
+        if (
+          typeof currentAccuracy === 'number' &&
+          typeof nextAccuracy === 'number' &&
+          nextAccuracy > currentAccuracy
+        ) {
+          return;
+        }
+
+        applyUserPosition(position);
+      })
+      .catch(() => undefined);
+  };
+
   // --- Nearest Island Handler ---
   const [isFindingNearest, setIsFindingNearest] = useState(false);
   const [findNearestError, setFindNearestError] = useState<string | null>(null);
@@ -1636,9 +1690,7 @@ export const App: React.FC = () => {
     setFindNearestError(null);
     try {
       const position = await getAccuratePosition();
-      const userLoc = { lat: position.coords.latitude, lon: position.coords.longitude };
-      setUserLocation(userLoc);
-      setUserLocationAccuracy(position.coords.accuracy);
+      const userLoc = applyUserPosition(position);
       const nearest = await findNearestIsland(userLoc, allIslands);
       if (nearest) {
         handleRegionSelected(nearest, 'nearest_location');
@@ -1711,18 +1763,27 @@ export const App: React.FC = () => {
     });
 
   // Fetches the user's position to power the "sort by distance" view without
-  // navigating away from the region they are currently browsing.
+  // navigating away from the region they are currently browsing. For this UI a
+  // fast coarse fix is better than blocking the result list on precise GPS.
   const handleRequestUserLocation = async () => {
     if (typeof navigator === 'undefined' || !navigator.geolocation) {
       setFindNearestError(t.locationErrorUnavailable);
       return;
     }
+
+    if (userLocation) {
+      setFindNearestError(null);
+      refineUserLocationInBackground(userLocationAccuracy);
+      return;
+    }
+
     setIsFindingNearest(true);
     setFindNearestError(null);
     try {
-      const position = await getAccuratePosition();
-      setUserLocation({ lat: position.coords.latitude, lon: position.coords.longitude });
-      setUserLocationAccuracy(position.coords.accuracy);
+      const position = await getPositionOnce(DISTANCE_SORT_LOCATION_OPTIONS);
+      const accuracy = Number.isFinite(position.coords.accuracy) ? position.coords.accuracy : undefined;
+      applyUserPosition(position);
+      refineUserLocationInBackground(accuracy);
     } catch (err) {
       const geoErr = err as GeolocationPositionError;
       if (geoErr.code === 1) {
@@ -2023,7 +2084,14 @@ export const App: React.FC = () => {
     }
   };
 
+  const resetMobileResultListPosition = () => {
+    if (!isDesktopViewport) {
+      setMobileResultListResetKey(key => key + 1);
+    }
+  };
+
   const handleTogglePreference = (key: keyof UserPreferences) => {
+    resetMobileResultListPosition();
     setPreferences(prev => {
       const isApplying = !prev[key];
       const updated = { ...prev, [key]: isApplying };
@@ -2040,6 +2108,7 @@ export const App: React.FC = () => {
   };
 
   const handleClearAdvancedFilter = (filter: FilterKey) => {
+    resetMobileResultListPosition();
     trackEvent('filters_cleared', undefined, {
       ...analyticsBaseParams,
       source: 'remove_filter',
@@ -2052,6 +2121,7 @@ export const App: React.FC = () => {
     hasUserSelectedSortRef.current = true;
     setSortBy(defaultBeachListSort);
     setMobileSuitableDistanceSort(false);
+    resetMobileResultListPosition();
 
     setSelectedFilters(prev => {
       const isActive = prev.includes(filter);
@@ -2083,6 +2153,7 @@ export const App: React.FC = () => {
     setMobileSuitableDistanceSort(false);
     setSelectedFilters([]);
     setPreferences(defaultPreferences);
+    resetMobileResultListPosition();
     localStorage.setItem('userPreferences', JSON.stringify(defaultPreferences));
   };
 
@@ -3672,7 +3743,11 @@ export const App: React.FC = () => {
   }
 
   const selectedIslandKey = selectedIsland?.name.en?.toLowerCase().replace(/[^a-z]/g, '') || '';
-  const islandBackground = ISLAND_BACKGROUND_IMAGES[selectedIslandKey];
+  // Islands that show the homepage context strip suppress the full-bleed island
+  // background so the same island photo is not rendered twice (strip + backdrop).
+  const islandBackground = islandHasContextStrip(selectedIsland?.id)
+    ? undefined
+    : ISLAND_BACKGROUND_IMAGES[selectedIslandKey];
   const islandBackgroundCss = getBackgroundImageCss(islandBackground);
   const showHeaderForecast = Boolean(forecast?.[selectedDayIndex] && !isUnsafeWinter);
   const shouldRenderUsageInsights = ENABLE_USAGE_INSIGHTS && shouldLoadInsights;
@@ -4068,9 +4143,6 @@ export const App: React.FC = () => {
   const shouldShowDirectorySuitableSection = shouldShowDirectoryTopRecommendations
     ? !shouldShowAllBeachesBelowTopRecommendations && directoryHomeSuitableBeachCards.length > 0
     : !(calmAllAroundSummary?.isEveryBeachSuitable ?? false);
-  const highlightedDirectoryTopBeachId = shouldDisplayDirectoryTopPick && selectedDayIndex === 0
-    ? directoryTopRecommendationCards[0]?.beach.id ?? displayedDirectoryTopBeach?.beach.id
-    : undefined;
   const getMobileFilterModalResultCount = (filters: FilterKey[], nextSortBy: SortOption): number => {
     const normalizedFilters = filters.filter(filter => filter !== 'restaurant');
 
@@ -4604,7 +4676,6 @@ export const App: React.FC = () => {
           language={language}
           islandName={selectedIsland.name[language]}
           selectedDate={selectedDayDate}
-          topBeachId={highlightedDirectoryTopBeachId}
           highlightedBeachId={highlightedMapBeachId}
           followHighlightedBeach={!isDirectoryMapFollowPaused}
           fitBoundsToBeaches
@@ -4664,6 +4735,7 @@ export const App: React.FC = () => {
               onWeatherPanelOpenChange={handleWeatherPanelOpenChange}
               suitableDistanceSortActive={sortBy === 'protected' && mobileSuitableDistanceSort}
               locationSortResetKey={locationSortResetKey}
+              resultListResetKey={mobileResultListResetKey}
               preferences={preferences}
               activeFilters={selectedFilters}
               filterResultCounts={preferenceFilterResultCounts}
@@ -4708,7 +4780,7 @@ export const App: React.FC = () => {
                 setSortBy('protected');
                 setMobileSuitableDistanceSort(true);
                 setLocationSortResetKey(key => key + 1);
-                void handleSelectNearest();
+                void handleRequestUserLocation();
               }}
               onRequestUserLocation={() => {
                 void handleRequestUserLocation();
@@ -4987,7 +5059,6 @@ export const App: React.FC = () => {
                     language={language}
                     islandName={selectedIsland.name[language]}
                     selectedDate={selectedDayDate}
-                    topBeachId={highlightedDirectoryTopBeachId}
                     fitBoundsToBeaches
                     fitBoundsBeaches={mapSuitableBeaches}
                     fitBoundsKey={selectedIsland.id}
@@ -5289,7 +5360,6 @@ export const App: React.FC = () => {
                             language={language}
                             islandName={selectedIsland.name[language]}
                             selectedDate={selectedDayDate}
-                            topBeachId={highlightedDirectoryTopBeachId}
                             fitBoundsToBeaches
                             fitBoundsBeaches={mapSuitableBeaches}
                             fitBoundsKey={selectedIsland.id}
@@ -5529,6 +5599,7 @@ export const App: React.FC = () => {
                 handleSortChange(s);
                 setIsFilterModalOpen(false);
                 if (!isDesktopViewport) {
+                  resetMobileResultListPosition();
                   handleAllBeachesPanelOpenChange(true);
                 } else {
                   scrollToBeachResultsSection(s === 'protected' ? 'suitable' : 'all');
@@ -5542,7 +5613,7 @@ export const App: React.FC = () => {
               hasUserLocation={Boolean(userLocation)}
               onRequestLocation={() => {
                 setBeachSearchQuery('');
-                void handleSelectNearest();
+                void handleRequestUserLocation();
               }}
               availableFilters={availableMobileFilterKeys}
               protectedSortLabel={protectedSortLabel}

@@ -58,6 +58,26 @@ const accessLabels: Record<string, Record<LanguageCode, string>> = {
   unknown: { en: 'Access not verified', gr: '\u039c\u03b7 \u03b5\u03c0\u03b9\u03b2\u03b5\u03b2\u03b1\u03b9\u03c9\u03bc\u03ad\u03bd\u03b7 \u03c0\u03c1\u03cc\u03c3\u03b2\u03b1\u03c3\u03b7', de: 'Zugang nicht verifiziert', it: 'Accesso non verificato', fr: 'Acces non verifie' },
 };
 
+const specificAccessLabels: Record<'ropeDescent' | 'footDescent', Record<LanguageCode, string>> = {
+  ropeDescent: { en: 'Rope descent', gr: 'Κατάβαση με σχοινί', de: 'Abstieg mit Seil', it: 'Discesa con corda', fr: 'Descente avec corde' },
+  footDescent: { en: 'Foot descent', gr: 'Κατάβαση με τα πόδια', de: 'Abstieg zu Fuss', it: 'Discesa a piedi', fr: 'Descente a pied' },
+};
+
+const normalizeAccessLabelText = (value?: string): string =>
+  (value || '')
+    .toLocaleLowerCase('el-GR')
+    .normalize('NFD')
+    .replace(/[\u0300-\u036f]/g, '');
+
+const getSpecificAccessLabelKey = (type: string, fallback?: string): keyof typeof specificAccessLabels | undefined => {
+  if (!type.startsWith('hiking_path') || !fallback) return undefined;
+
+  const normalized = normalizeAccessLabelText(fallback);
+  if (/σχοιν|schoin|rope/.test(normalized)) return 'ropeDescent';
+  if (/καταβαση|katavasi|καθοδο|kathod|σκαλ|skal|stairs|steps|foot/.test(normalized)) return 'footDescent';
+  return undefined;
+};
+
 export const localizedTerrainLabel = (type: string, language: LanguageCode) =>
   terrainLabels[type]?.[language] || type;
 
@@ -66,8 +86,11 @@ export const localizedWaterDepthLabel = (type: string, fallback: string | undefi
 
 // Never surface a raw access enum: unmapped types without an authored label
 // render as nothing rather than leaking internal identifiers to the cards.
-export const localizedAccessLabel = (type: string, fallback: string | undefined, language: LanguageCode) =>
-  accessLabels[type]?.[language] || (language === 'gr' ? fallback : toGreeklish(fallback)) || '';
+export const localizedAccessLabel = (type: string, fallback: string | undefined, language: LanguageCode) => {
+  const specificLabelKey = getSpecificAccessLabelKey(type, fallback);
+  if (specificLabelKey) return specificAccessLabels[specificLabelKey][language];
+  return accessLabels[type]?.[language] || (language === 'gr' ? fallback : toGreeklish(fallback)) || '';
+};
 
 export const localizedAccessPrefix = (language: LanguageCode) => ({
   en: 'Access',

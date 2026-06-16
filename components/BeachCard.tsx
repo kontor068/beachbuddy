@@ -920,6 +920,11 @@ const compactAccessLabel = (
   fallback: string
 ): string => {
   const copy = getLocalizedCopy(language, cardCopy).access;
+  const defaultLocalizedAccessLabel = accessType ? localizedAccessLabel(accessType, undefined, language) : '';
+  if (accessType?.startsWith('hiking_path') && fallback && fallback !== defaultLocalizedAccessLabel) {
+    return fallback;
+  }
+
   if (isDirtRoad) {
     return copy.dirtRoad;
   }
@@ -1077,10 +1082,12 @@ export const BeachCard: React.FC<BeachCardProps> = ({
     : undefined;
   const navButtonTitle = navBadgeLabel ? `${t.navigate} — ${navBadgeLabel}` : t.navigate;
 
-  const rawAccessLabel = metadata?.access
-    ? localizedAccessLabel(metadata.access.type, metadata.access.label, language)
+  const accessType = metadata?.access?.type ?? beach.staticLabels?.accessType;
+  const customAccessLabel = metadata?.access?.label ?? beach.staticLabels?.accessLabel;
+  const rawAccessLabel = accessType
+    ? localizedAccessLabel(accessType, customAccessLabel, language)
     : t.accessibility[accessibility];
-  const accessLabel = compactAccessLabel(language, accessibility, metadata?.access?.type, hasDirtRoadAccess(beach), rawAccessLabel);
+  const accessLabel = compactAccessLabel(language, accessibility, accessType, hasDirtRoadAccess(beach), rawAccessLabel);
   const roughSeaWarning = warnings.find(warning => warning.type === 'rough_sea');
   const isProtectedToday = exposureLevel === 'protected' && canClaimWindProtection;
   const cautionWaterConditions = windBeaufort >= 5 || (typeof waveHeightM === 'number' && Number.isFinite(waveHeightM) && waveHeightM >= 0.8);
@@ -1255,7 +1262,7 @@ export const BeachCard: React.FC<BeachCardProps> = ({
             ) : null}
 
             {featureChips.length > 0 ? (
-              <div className="grid h-[7.5rem] min-w-0 grid-cols-2 auto-rows-[2.25rem] content-start gap-1.5">
+              <div className="grid min-w-0 grid-cols-2 auto-rows-[2.25rem] content-start gap-1.5">
                 {featureChips.map(chip => (
                   <span
                     key={chip.key}
@@ -1294,7 +1301,7 @@ export const BeachCard: React.FC<BeachCardProps> = ({
           </div>
         </div>
 
-        <div className={`relative aspect-[16/9] ${cardPhoto ? 'min-h-32 max-h-40 sm:min-h-36 sm:max-h-44' : 'min-h-28 max-h-32 sm:min-h-36 sm:max-h-44'} ${isCompact ? 'lg:min-h-28 lg:max-h-32' : ''} overflow-hidden bg-sky-50`}>
+        <div className={`relative flex-1 ${cardPhoto ? 'min-h-32' : 'min-h-28'} sm:flex-none sm:aspect-[16/9] sm:min-h-36 sm:max-h-44 ${isCompact ? 'lg:min-h-28 lg:max-h-32' : ''} overflow-hidden bg-sky-50`}>
           {cardPhoto ? (
             <img
               src={cardPhoto}
@@ -1334,7 +1341,7 @@ export const BeachCard: React.FC<BeachCardProps> = ({
           </button>
         </div>
 
-        <div className={`${hasMobileDecisionBody ? 'flex' : 'hidden sm:flex'} flex-1 flex-col ${isCompact ? 'gap-3 p-3 sm:p-[1.05rem] lg:gap-2 lg:p-3' : 'gap-3 p-3 sm:p-[1.05rem]'}`}>
+        <div className={`${hasMobileDecisionBody ? 'flex' : 'hidden sm:flex'} flex-col sm:flex-1 ${isCompact ? 'gap-3 p-3 sm:p-[1.05rem] lg:gap-2 lg:p-3' : 'gap-3 p-3 sm:p-[1.05rem]'}`}>
           <div className={`${isCompact ? 'space-y-1 lg:space-y-0.5' : 'space-y-1'} hidden sm:block`}>
             <h3 className="line-clamp-1 font-heading text-lg font-extrabold leading-[1.12] text-slate-950 transition-colors group-hover:text-primary dark:text-white">
               {beachDisplayName}

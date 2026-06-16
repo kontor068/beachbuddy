@@ -542,6 +542,7 @@ const buildBeach = (rawBeach, island) => {
     staticLabels: {
       beachType,
       accessType: metadata?.access?.type || 'unknown',
+      ...(metadata?.access?.label ? { accessLabel: metadata.access.label } : {}),
       terrain: metadata?.terrain?.label,
       waterDepth: metadata?.waterDepth?.label,
     },
@@ -551,9 +552,7 @@ const buildBeach = (rawBeach, island) => {
 
 const buildSummaryBeach = beach => {
   const accessType = beach.metadata?.access?.type || beach.staticLabels?.accessType || 'unknown';
-  const accessLabel = beach.metadata?.environment
-    ? beach.metadata?.access?.label || beach.staticLabels?.accessLabel
-    : undefined;
+  const accessLabel = beach.metadata?.access?.label || beach.staticLabels?.accessLabel;
   return {
     id: beach.id,
     rating: beach.rating,

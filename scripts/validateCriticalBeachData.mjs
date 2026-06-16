@@ -1,10 +1,13 @@
 import { readdir, readFile } from 'node:fs/promises';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
+import { TOURISTIC_TIER } from './lib/touristicTier.mjs';
+import { usesPlaceQuery } from './lib/placeResolution.mjs';
 
 const rootDir = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const appBeachDir = path.join(rootDir, 'public', 'data', 'beaches', 'app');
 const photoDataDir = path.join(rootDir, 'src', 'data');
+const placeLedgerPath = path.join(rootDir, 'reports', 'place-resolution', 'verified-place-queries.json');
 
 const allowedBeachTypes = new Set(['sandy', 'pebbles', 'sandy-pebbles', 'rocky', 'unknown']);
 const allowedAccessibility = new Set(['EASY', 'MODERATE', 'DIFFICULT', 'BOAT_ONLY']);
@@ -447,6 +450,52 @@ const validatePhotoData = async () => {
   }
 };
 
+// Offline guard (no network): a touristic-tier beach that ships a NAME-routed nav
+// (googleMapsNavigation.status='verified', mode='place') must have been confirmed
+// resolvable by the place-resolution audit — i.e. its id is in the ledger's passIds.
+// If not, the app sends users to a place query nobody verified resolves (the Melino
+// class). Run `npm run audit:place-resolution` to refresh the ledger and route the
+// FAIL beaches by coordinate. The ledger only lists PASS ids; coordinate-routed and
+// needs-review beaches are not in scope (their nav doesn't depend on the name).
+const validatePlaceResolutionLedger = async () => {
+  let ledger;
+  try {
+    ledger = JSON.parse(await readFile(placeLedgerPath, 'utf8'));
+  } catch {
+    // No ledger yet (audit never run). Don't block the gate on its absence — surface a
+    // low note so it's visible without failing CI before the first audit.
+    addFinding('low', placeLedgerPath, 'Place-resolution ledger missing; run `npm run audit:place-resolution` to enable the place-query guard.');
+    return;
+  }
+  const passIds = new Set(Array.isArray(ledger.passIds) ? ledger.passIds : []);
+  const tier = new Set(TOURISTIC_TIER);
+
+  const regionFiles = await listTopLevelJsonFiles(appBeachDir);
+  for (const filePath of regionFiles) {
+    let data;
+    try { data = await readJson(filePath); } catch { continue; }
+    const regionId = data?.region?.id || data?.island?.id || path.basename(filePath, '.json');
+    if (!tier.has(regionId)) continue;
+    const beaches = data?.island?.beaches;
+    if (!Array.isArray(beaches)) continue;
+    for (const beach of beaches) {
+      // Use the SAME scope predicate as the audit (usesPlaceQuery): a beach is only at risk
+      // if its nav actually sends a built place query. This correctly excludes boat-only
+      // (locate-badge), low-confidence, explicit-query and coordinate-routed beaches — exactly
+      // the set the audit skips — so the guard never flags a beach the audit deliberately ignores.
+      if (!usesPlaceQuery(beach)) continue;
+      const nav = beach?.metadata?.googleMapsNavigation;
+      if (nav?.query) continue; // explicit query is verified-by-construction, out of scope
+      if (!Number.isInteger(beach.id)) continue;
+      if (!passIds.has(beach.id)) {
+        addFinding('high', filePath,
+          `Touristic-tier beach is name-routed (googleMapsNavigation place/verified) but its place query is NOT confirmed resolvable (not in place-resolution ledger). Route by coordinates or re-run audit:place-resolution.`,
+          beachLabel(beach));
+      }
+    }
+  }
+};
+
 const severityRank = { critical: 0, high: 1, medium: 2, low: 3 };
 
 const printReport = (regionFileCount, beachCount) => {
@@ -496,6 +545,7 @@ const main = async () => {
   }
 
   await validatePhotoData();
+  await validatePlaceResolutionLedger();
 
   printReport(regionFiles.length, seenBeachIds.size);
 

@@ -1,5 +1,5 @@
 // Bump this when changing cache behavior so stale hashed chunks are cleared.
-const CACHE_NAME = 'calm-beach-v2026-05-25-beach-data-refresh';
+const CACHE_NAME = 'calm-beach-v2026-06-15-branding-refresh';
 const WEATHER_API_HOSTS = new Set([
   'api.open-meteo.com',
   'marine-api.open-meteo.com',
@@ -8,7 +8,7 @@ const WEATHER_API_HOSTS = new Set([
 // do not leave clients running an app shell that imports removed chunks.
 const urlsToCache = [
   '/manifest.json',
-  '/beach-buddy-icon.svg'
+  '/calmbeach-mark.svg'
 ];
 
 // Install a service worker

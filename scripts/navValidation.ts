@@ -19,14 +19,14 @@ type Case = { id: number; label: string; expectKind: 'directions' | 'locate' | '
 const cases: Case[] = [
   { id: 2012, label: 'Plaka Naxos', expectKind: 'directions', expectUrlIncludes: '/dir/', note: 'verified/coordinates -> directions to coords (mobile dir)' },
   { id: 1922, label: 'Sarakiniko Milos', expectKind: 'directions', expectUrlIncludes: '/dir/', note: 'verified/coordinates (cross-island collision) -> directions to coords' },
-  { id: 1707, label: 'Lefkivari Andros', expectKind: 'directions', note: 'verified/place (ex-low-conf) -> directions place' },
+  { id: 1707, label: 'Lefkivari Andros', expectKind: 'directions', note: 'verified/place, no query -> directions to coordinate (nationwide coord-first fallback, 2026-06-15)' },
   { id: 1848, label: 'Lakos Kimolos', expectKind: 'directions', expectUrlIncludes: 'Lakos%20Beach', note: 'verified + nav.query -> directions to the explicit query' },
   { id: 2062, label: 'Red Beach Santorini', expectKind: 'locate', expectBadge: 'boat-access', note: 'verified BUT boat_only -> boat rule wins -> locate' },
   { id: 1159, label: 'Egkremni Lefkada', expectKind: 'locate', expectBadge: 'boat-access', note: 'ABSENT(?) boat_only -> locate' },
   { id: 2011, label: 'Panormos Naxos', expectKind: 'locate', expectBadge: 'nav-unavailable', note: 'blocked -> locate + nav-unavailable' },
   { id: 1688, label: 'Agios Petros Andros', expectKind: 'locate', expectBadge: 'nav-unverified', note: 'needs-review + mode=place -> RULE 3 locate branch' },
   { id: 1714, label: 'Bouros Andros', expectKind: 'directions', note: 'needs-review + mode=coordinates -> RULE 3 directions branch' },
-  { id: 1113, label: 'Myrtos Kefalonia', expectKind: 'directions', note: 'ABSENT normal access -> directions place (today, UNCHANGED)' },
+  { id: 1113, label: 'Myrtos Kefalonia', expectKind: 'directions', note: 'no explicit query -> directions to coordinate (collision-immune; coord-first fallback 2026-06-15)' },
   { id: 3000, label: 'Kleftiko Milos', expectKind: 'locate', expectBadge: 'boat-access', note: 'verified/coordinates + boat_only -> boat rule -> locate' },
 ];
 

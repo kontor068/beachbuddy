@@ -23,6 +23,12 @@ export interface CuratedPhoto {
   usageLabel: string;
   loading: 'eager' | 'lazy';
   fetchPriority?: 'high' | 'low' | 'auto';
+  /**
+   * CSS object-position for the homepage context strip, where the photo is cropped into a
+   * wide short band. Only set when the default center crop hides the subject (e.g. a tall
+   * monument). Ignored by other surfaces.
+   */
+  objectPosition?: string;
 }
 
 export interface DestinationPhotoSet {
@@ -233,6 +239,8 @@ export const destinationPhotoRegistry: Record<DestinationId, DestinationPhotoSet
       usageLabel: 'Νάξος',
       loading: 'lazy',
       fetchPriority: 'auto',
+      // Lift the crop so the Portara gate + sky show in the strip instead of the dark horizon.
+      objectPosition: 'center 32%',
     },
   },
   paros: {
@@ -267,6 +275,8 @@ export const destinationPhotoRegistry: Record<DestinationId, DestinationPhotoSet
       usageLabel: 'Μύκονος',
       loading: 'lazy',
       fetchPriority: 'auto',
+      // Center the windmills row (upper third) rather than the town below it.
+      objectPosition: 'center 30%',
     },
   },
   santorini: {
@@ -286,15 +296,145 @@ export const destinationPhotoRegistry: Record<DestinationId, DestinationPhotoSet
       fetchPriority: 'auto',
     },
   },
-  samos: {},
-  skiathos: {},
-  skopelos: {},
-  thasos: {},
-  chalkidiki: {},
+  samos: {
+    card: {
+      src: '/images/destinations/samos/samos-tsamadou-beach-card.webp',
+      alt: 'Tsamadou beach with turquoise water in Samos, Greece',
+      width: 800,
+      height: 600,
+      source: 'wikimedia',
+      author: 'Αναστασίου Νίκος (Nicosanastassiou)',
+      license: 'CC BY 3.0',
+      sourceUrl: 'https://commons.wikimedia.org/wiki/File:Tsamadou_542s.jpg',
+      attributionRequired: true,
+      verifiedLocation: true,
+      usageLabel: 'Σάμος',
+      loading: 'lazy',
+      fetchPriority: 'auto',
+    },
+  },
+  skiathos: {
+    card: {
+      src: '/images/destinations/skiathos/skiathos-koukounaries-beach-card.webp',
+      alt: 'Koukounaries beach and pine forest in Skiathos, Greece',
+      width: 800,
+      height: 600,
+      source: 'wikimedia',
+      author: 'Shi Annan',
+      license: 'CC BY-SA 4.0',
+      sourceUrl: 'https://commons.wikimedia.org/wiki/File:Koukounaries_Beach_from_west_2016.jpg',
+      attributionRequired: true,
+      verifiedLocation: true,
+      usageLabel: 'Σκιάθος',
+      loading: 'lazy',
+      fetchPriority: 'auto',
+    },
+  },
+  skopelos: {
+    card: {
+      src: '/images/destinations/skopelos/skopelos-milia-beach-card.webp',
+      alt: 'Aerial view of Milia beach in Skopelos, Greece',
+      width: 800,
+      height: 600,
+      source: 'wikimedia',
+      author: 'dronepicr',
+      license: 'CC BY 2.0',
+      sourceUrl: 'https://commons.wikimedia.org/wiki/File:Milia_Beach,_Skopelos,_Greece_(51696411084).jpg',
+      attributionRequired: true,
+      verifiedLocation: true,
+      usageLabel: 'Σκόπελος',
+      loading: 'lazy',
+      fetchPriority: 'auto',
+    },
+  },
+  thasos: {
+    card: {
+      src: '/images/destinations/thasos/thasos-golden-beach-card.webp',
+      alt: 'Golden Beach (Chrysi Ammoudia) in Thasos, Greece',
+      width: 800,
+      height: 600,
+      source: 'wikimedia',
+      author: 'Rosa-Maria Rinkl',
+      license: 'CC BY-SA 4.0',
+      sourceUrl: 'https://commons.wikimedia.org/wiki/File:Golden_Beach,_Thassos.JPG',
+      attributionRequired: true,
+      verifiedLocation: true,
+      usageLabel: 'Θάσος',
+      loading: 'lazy',
+      fetchPriority: 'auto',
+    },
+  },
+  chalkidiki: {
+    card: {
+      src: '/images/destinations/chalkidiki/chalkidiki-karidi-beach-card.webp',
+      alt: 'Karidi beach at Vourvourou, Sithonia, Halkidiki, Greece',
+      width: 800,
+      height: 600,
+      source: 'wikimedia',
+      author: 'Srđan Mijatov',
+      license: 'CC BY 3.0',
+      sourceUrl:
+        'https://commons.wikimedia.org/wiki/File:Karidi_Beach_-_Vourvourou,_Sithonia,_Greece_-_panoramio.jpg',
+      attributionRequired: true,
+      verifiedLocation: true,
+      usageLabel: 'Χαλκιδική',
+      loading: 'lazy',
+      fetchPriority: 'auto',
+    },
+  },
   attica: {},
-  peloponnese: {},
-  syros: {},
-  andros: {},
+  peloponnese: {
+    card: {
+      src: '/images/destinations/peloponnese/peloponnese-voidokilia-beach-card.webp',
+      alt: 'Voidokilia beach and lagoon in Messinia, Peloponnese, Greece',
+      width: 800,
+      height: 600,
+      source: 'wikimedia',
+      author: 'Grzontan',
+      license: 'CC BY-SA 3.0',
+      sourceUrl: 'https://commons.wikimedia.org/wiki/File:Voidokilia_beach3.jpg',
+      attributionRequired: true,
+      verifiedLocation: true,
+      usageLabel: 'Πελοπόννησος',
+      loading: 'lazy',
+      fetchPriority: 'auto',
+    },
+  },
+  syros: {
+    card: {
+      src: '/images/destinations/syros/syros-galissas-beach-card.webp',
+      alt: 'Galissas beach in Syros, Greece',
+      width: 800,
+      height: 600,
+      source: 'wikimedia',
+      author: 'Olavfin',
+      license: 'Public domain',
+      sourceUrl: 'https://commons.wikimedia.org/wiki/File:Gallissas_beach.jpg',
+      attributionRequired: false,
+      verifiedLocation: true,
+      usageLabel: 'Σύρος',
+      loading: 'lazy',
+      fetchPriority: 'auto',
+    },
+  },
+  andros: {
+    card: {
+      src: '/images/destinations/andros/andros-chora-beach-card.webp',
+      alt: 'Main beach at Chora of Andros, Cyclades, Greece',
+      width: 800,
+      height: 600,
+      source: 'wikimedia',
+      author: 'GKantaris',
+      license: 'CC BY-SA 4.0',
+      sourceUrl:
+        'https://commons.wikimedia.org/wiki/File:Main_beach_at_Chora_Andros,_Andros_Island,_Cyclades,_Greece.jpg',
+      attributionRequired: true,
+      verifiedLocation: true,
+      usageLabel: 'Άνδρος',
+      loading: 'lazy',
+      fetchPriority: 'auto',
+    },
+  },
 };
 
 export const fallbackPhotoRegistry: Partial<Record<FallbackPhotoId, CuratedPhoto>> = {};

@@ -50,7 +50,9 @@ import { isAdventureBeach } from '../utils/access';
 import { WeatherSummary } from './WeatherSummary';
 import { BeachCard } from './BeachCard';
 import { SandDotsIcon, SandPebblesIcon, SunbedIcon } from './BeachFeatureIcons';
-import { getIslandDestinationPhoto } from '../data/destinationPhotoAdapter';
+import { getIslandDestinationPhoto, getIslandStripPhoto } from '../data/destinationPhotoAdapter';
+import { getIslandGroupLabel } from '../utils/islandRegionLabels';
+import { buildIslandDaySummary } from '../utils/islandDaySummary';
 import { CuratedPhotoImage } from './photos';
 import { beachMatchesUserPreferences } from '../services/recommendationService';
 import { describeSimpleWindSuitability } from '../utils/windExposureCopy';
@@ -99,6 +101,7 @@ interface BeachSearcherHomeProps {
   onWeatherPanelOpenChange?: (open: boolean) => void;
   suitableDistanceSortActive?: boolean;
   locationSortResetKey?: number;
+  resultListResetKey?: number;
   preferences: UserPreferences;
   activeFilters?: FilterKey[];
   filterResultCounts?: Partial<Record<keyof UserPreferences, number>>;
@@ -410,6 +413,24 @@ const beachMatchesAdvancedFilter = (beach: Beach, filter: FilterKey): boolean =>
   }
 
   return false;
+};
+
+// When a region is picked from the search suggestions, App keeps the region label in the
+// search box (preserveSearchQueryOnRegionChange) so the user still sees e.g. "Μήλος". That
+// label must NOT be applied as a per-beach name filter — no beach is named after the island,
+// so it would hide every suitable card while the count (computed region-wide) stays. Treat a
+// query equal to the selected island's name as "no search filter".
+const normalizeBeachSearchQuery = (
+  rawQuery: string,
+  island: Island | null,
+  language: LanguageCode,
+): string => {
+  const locale = language === 'gr' ? 'el-GR' : undefined;
+  const normalized = rawQuery.trim().toLocaleLowerCase(locale);
+  if (!normalized || !island) return normalized;
+  const islandNames = [island.name.gr, island.name.en, island.name[language]]
+    .map(value => value.trim().toLocaleLowerCase(locale));
+  return islandNames.includes(normalized) ? '' : normalized;
 };
 
 type HomeCopy = {
@@ -1358,6 +1379,7 @@ export const BeachSearcherHome: React.FC<BeachSearcherHomeProps> = ({
   onWeatherPanelOpenChange,
   suitableDistanceSortActive = false,
   locationSortResetKey,
+  resultListResetKey,
   preferences,
   activeFilters = [],
   filterResultCounts,
@@ -1430,6 +1452,7 @@ export const BeachSearcherHome: React.FC<BeachSearcherHomeProps> = ({
   const topRecommendationsCarouselRef = useRef<HTMLDivElement>(null);
   const suitableCarouselRef = useRef<HTMLDivElement>(null);
   const directoryCarouselRef = useRef<HTMLDivElement>(null);
+  const allBeachesPanelScrollRef = useRef<HTMLDivElement>(null);
   const activeSuitableBeachIdRef = useRef<number | undefined>(undefined);
   const isCarouselScrollingRef = useRef(false);
   const searchBoxRef = useRef<HTMLDivElement>(null);
@@ -1659,7 +1682,7 @@ export const BeachSearcherHome: React.FC<BeachSearcherHomeProps> = ({
     if (!selectedIsland) return [];
     if (suitableBeachCards && suitableBeachCards.length > 0) {
       const locale = language === 'gr' ? 'el-GR' : undefined;
-      const normalizedSearchQuery = searchQuery.trim().toLocaleLowerCase(locale);
+      const normalizedSearchQuery = normalizeBeachSearchQuery(searchQuery, selectedIsland, language);
       const activeAdvancedFilters = activeFilters.filter(filter => filter !== 'showAll');
       const matchesCurrentFilters = (beach: Beach) => {
         const matchesSearch = normalizedSearchQuery.length === 0 || [
@@ -1801,8 +1824,6 @@ export const BeachSearcherHome: React.FC<BeachSearcherHomeProps> = ({
     };
     const handleResize = () => scheduleUpdate(false);
 
-    scheduleUpdate(false);
-    settleTimeoutId = window.setTimeout(() => scheduleUpdate(false), 160);
     carousel.addEventListener('scroll', handleCarouselScroll, { passive: true });
     window.addEventListener('resize', handleResize);
 
@@ -1868,7 +1889,7 @@ export const BeachSearcherHome: React.FC<BeachSearcherHomeProps> = ({
     }
 
     const locale = language === 'gr' ? 'el-GR' : undefined;
-    const normalizedSearchQuery = searchQuery.trim().toLocaleLowerCase(locale);
+    const normalizedSearchQuery = normalizeBeachSearchQuery(searchQuery, selectedIsland, language);
     const preferenceFilters = QUICK_PREFERENCE_FILTERS.filter(filter => (
       preferences[filter] || (item.kind === 'preference' && item.key === filter)
     ));
@@ -1964,6 +1985,45 @@ export const BeachSearcherHome: React.FC<BeachSearcherHomeProps> = ({
     onActiveSuitableBeachChange,
     selectedIsland?.id,
   ]);
+
+  useEffect(() => {
+    if (!isMobileViewport || !resultListResetKey) return undefined;
+
+    const firstBeachId = isDirectorySuitableView ? firstWeatherBeachId : firstDirectoryBeachId;
+    let firstFrame = 0;
+    let secondFrame = 0;
+
+    firstFrame = window.requestAnimationFrame(() => {
+      secondFrame = window.requestAnimationFrame(() => {
+        allBeachesPanelScrollRef.current?.scrollTo({ top: 0, behavior: 'auto' });
+        [
+          topRecommendationsCarouselRef.current,
+          suitableCarouselRef.current,
+          directoryCarouselRef.current,
+        ].forEach(carousel => {
+          carousel?.scrollTo({ left: 0, behavior: 'auto' });
+        });
+
+        isCarouselScrollingRef.current = false;
+        activeSuitableBeachIdRef.current = firstBeachId;
+        onActiveSuitableBeachChange?.(firstBeachId, {
+          resumeFollow: typeof firstBeachId === 'number',
+        });
+      });
+    });
+
+    return () => {
+      window.cancelAnimationFrame(firstFrame);
+      window.cancelAnimationFrame(secondFrame);
+    };
+  }, [
+    firstDirectoryBeachId,
+    firstWeatherBeachId,
+    isDirectorySuitableView,
+    isMobileViewport,
+    onActiveSuitableBeachChange,
+    resultListResetKey,
+  ]);
   const shouldTrackDirectoryCarouselOnMap = Boolean(
     isMobileViewport &&
     directoryDisplayBeachCards.length > 0 &&
@@ -2050,8 +2110,6 @@ export const BeachSearcherHome: React.FC<BeachSearcherHomeProps> = ({
     };
     const handleResize = () => scheduleUpdate(false);
 
-    scheduleUpdate(false);
-    settleTimeoutId = window.setTimeout(() => scheduleUpdate(false), 160);
     carousel.addEventListener('scroll', handleCarouselScroll, { passive: true });
     window.addEventListener('resize', handleResize);
 
@@ -2173,6 +2231,96 @@ export const BeachSearcherHome: React.FC<BeachSearcherHomeProps> = ({
   // permanently expanded (no toggle) and drop the redundant inner header, which
   // also fills the otherwise-empty space at the bottom of the card.
   const inlineForecastInSidebar = isWeatherPanelMode || !isMobileViewport;
+
+  // Pilot island "context strip": a slim hero band above the map that adds sense of
+  // place + a live data hook without stealing above-the-fold space from the map and
+  // results. Gated to CONTEXT_STRIP_PILOT_ISLAND_IDS and to islands that actually have
+  // a curated hero photo.
+  const islandStripPhoto = selectedIsland
+    ? getIslandStripPhoto(selectedIsland.id)
+    : undefined;
+  const showIslandContextStrip = Boolean(selectedIsland && islandStripPhoto);
+  // Follow the selected day (today/tomorrow/…) instead of hardcoding "today", since the
+  // beach count reflects the selected day's conditions, not necessarily today's.
+  const contextStripDayPrefix = getSelectedDayPrefix(selectedDate, new Date(), language);
+  const contextStripBeachesLabel = getLocalizedCopy(language, {
+    en: 'best beaches',
+    gr: 'καλύτερες παραλίες',
+    fr: 'meilleures plages',
+    de: 'beste Strände',
+    it: 'migliori spiagge',
+  });
+  // Breadcrumb-style eyebrow: region (e.g. "Κυκλάδες") is more useful than a generic
+  // country label; fall back to country when the group has no mapping.
+  const contextStripEyebrow = getIslandGroupLabel(selectedIsland?.group, language) ?? copy.greece;
+  // Plain-language "what's happening today" line: all beaches calm vs. which
+  // leeward shore the wind favours. Island-wide narrative, derived from the
+  // selected day's wind (see utils/islandDaySummary.ts).
+  const contextStripDaySummary = selectedIsland
+    ? buildIslandDaySummary({
+      language,
+      beaufort: windBeaufort,
+      windDirection,
+      suitableCount: suitableBeachDisplayCount,
+      totalCount: selectedIsland.beaches.length,
+    })
+    : null;
+  const islandContextStrip = showIslandContextStrip && islandStripPhoto && selectedIsland ? (
+    <div className="relative mb-4 overflow-hidden rounded-[1.35rem] border border-sky-100/80 shadow-sm shadow-sky-900/10 ring-1 ring-white/45">
+      <img
+        src={islandStripPhoto.src}
+        alt={islandStripPhoto.alt}
+        width={islandStripPhoto.width}
+        height={islandStripPhoto.height}
+        loading="eager"
+        decoding="async"
+        fetchPriority="high"
+        className="absolute inset-0 h-full w-full object-cover object-center"
+        style={islandStripPhoto.objectPosition ? { objectPosition: islandStripPhoto.objectPosition } : undefined}
+      />
+      <div
+        className="absolute inset-0 bg-gradient-to-r from-slate-950/75 via-slate-950/45 to-slate-900/10"
+        aria-hidden="true"
+      />
+      <div className="relative flex min-h-[5.75rem] flex-col justify-end px-4 py-3 sm:min-h-[6.5rem] sm:px-5 sm:py-4">
+        <div className="min-w-0">
+          <p className="flex items-center gap-1.5 text-[0.7rem] font-bold uppercase tracking-[0.12em] text-white/85">
+            <MapPin className="h-3.5 w-3.5" aria-hidden="true" />
+            {contextStripEyebrow}
+          </p>
+          <h2 className="mt-0.5 text-2xl font-extrabold leading-tight text-white drop-shadow-sm sm:text-[1.7rem]">
+            {selectedIsland.name[language]}
+          </h2>
+          {suitableBeachDisplayCount > 0 && !contextStripDaySummary?.allBeachesSuitable && (
+            <p className="mt-0.5 truncate text-sm font-semibold text-white/90">
+              {suitableBeachDisplayCount} {contextStripBeachesLabel} {contextStripDayPrefix}
+            </p>
+          )}
+          {contextStripDaySummary && (
+            <p className="mt-1 line-clamp-2 text-[0.8rem] font-medium leading-snug text-white/80">
+              {contextStripDaySummary.text}
+            </p>
+          )}
+        </div>
+      </div>
+      {islandStripPhoto.attributionRequired && (
+        <span className="absolute bottom-1.5 right-2.5 text-[0.6rem] font-medium leading-none text-white/70">
+          {islandStripPhoto.sourceUrl ? (
+            <a
+              href={islandStripPhoto.sourceUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="transition-colors hover:text-white"
+            >
+              {[islandStripPhoto.author, islandStripPhoto.license].filter(Boolean).join(' / ')}
+            </a>
+          ) : (
+            [islandStripPhoto.author, islandStripPhoto.license].filter(Boolean).join(' / ')
+          )}
+        </span>
+      )}
+    </div>
+  ) : null;
   const conditionsOverviewContent = selectedIsland ? (
     <section className="flex flex-col rounded-2xl border border-sky-200 bg-white p-3 shadow-sm shadow-sky-900/5 sm:p-4 lg:absolute lg:inset-0 lg:overflow-hidden" aria-label={copy.conditionsOverviewAria}>
       <div className="mb-3 flex flex-wrap items-start justify-between gap-2 lg:shrink-0">
@@ -2307,8 +2455,7 @@ export const BeachSearcherHome: React.FC<BeachSearcherHomeProps> = ({
       onSelect: () => {
         const shouldEnableDistance = !isDistanceSortActive;
         if (shouldEnableDistance) {
-          // Always grab a fresh, high-accuracy fix here so a stale location from a
-          // previous "near me" action doesn't keep showing the wrong spot.
+          // Refresh location for distance sorting without changing the current region.
           const requestLocation = onUseCurrentLocation ?? onRequestUserLocation;
           requestLocation?.();
         }
@@ -2822,6 +2969,7 @@ export const BeachSearcherHome: React.FC<BeachSearcherHomeProps> = ({
             className="mt-4 border-t border-slate-200/80 pt-4"
             aria-label={copy.beachMapAria}
           >
+            {islandContextStrip}
             <div className="lg:grid lg:grid-cols-3 lg:items-stretch lg:gap-4">
               <div
                 id="map-section-desktop"
@@ -2964,6 +3112,7 @@ export const BeachSearcherHome: React.FC<BeachSearcherHomeProps> = ({
             className="mt-2"
             aria-label={copy.beachMapAria}
           >
+            {islandContextStrip}
             <div className="overflow-hidden rounded-[1.35rem] border border-sky-100 bg-white/68 p-2 text-left shadow-sm shadow-sky-900/8 ring-1 ring-white/45 backdrop-blur-md">
               {mapForecastTimeLabel && (
                 <div className="mb-2 flex justify-center">
@@ -2982,7 +3131,7 @@ export const BeachSearcherHome: React.FC<BeachSearcherHomeProps> = ({
 
       {hasBelowHeroContent && (
       <div className="relative">
-        <div className="mx-auto max-w-[110rem] px-4 pb-[calc(5rem+env(safe-area-inset-bottom))] pt-1 sm:px-5 sm:pb-5 sm:pt-2 lg:px-6">
+        <div className="mx-auto max-w-[110rem] px-4 pb-4 pt-1 sm:px-5 sm:pb-5 sm:pt-2 lg:px-6">
           {selectedIsland && hasTopRecommendationView && (
             <section id="top-recommendations-section" className="mb-5">
               <div className="mb-3 flex items-center gap-3 px-1 lg:px-5">
@@ -3261,7 +3410,7 @@ export const BeachSearcherHome: React.FC<BeachSearcherHomeProps> = ({
                 {renderDirectorySortControl(directorySortRef, 'relative min-w-[9.75rem]')}
               </div>
             </header>
-            <div className="min-h-0 flex-1 overflow-y-auto px-4 pb-24 pt-4">
+            <div ref={allBeachesPanelScrollRef} className="min-h-0 flex-1 overflow-y-auto px-4 pb-24 pt-4">
               <div className="space-y-4">
                 {mapPreview && (
                   <div className="overflow-hidden rounded-[1.35rem] border border-sky-100 bg-white/68 p-2 text-left shadow-sm shadow-sky-900/8 ring-1 ring-white/45 backdrop-blur-md">

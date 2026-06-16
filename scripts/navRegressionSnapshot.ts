@@ -1,11 +1,13 @@
 /**
  * Hybrid-nav NON-BOAT ABSENT regression (hard gate). Runs getNavigationUrl over every beach for
- * mobile and desktop and diffs against a baseline. Contract (revised spec, batch-approved
- * 2026-06-12): every NON-BOAT ABSENT beach (no googleMapsNavigation status, not low-confidence,
- * and NOT boat-only access) MUST keep a byte-identical URL — the default place-first flow is
- * unchanged for them. Boat-only ABSENT beaches are EXCLUDED from the gate: the boat-safety rule
- * intentionally converts them place-dir -> coord-locate (a safety improvement, never a route to
- * "the sand"). Run via scripts/navRegressionSnapshot.mjs.
+ * mobile and desktop and diffs against a baseline. Contract: every NON-BOAT ABSENT beach (no
+ * googleMapsNavigation status, not low-confidence, and NOT boat-only access) MUST keep a
+ * byte-identical URL versus the saved baseline. NOTE (2026-06-15, nationwide nav fix): the default
+ * fallback for unaudited beaches changed from place-first (bare "<name>, <island>" query) to
+ * COORDINATE-first (collision-immune) — see utils/navigation.ts getDirectionsDestination. The
+ * baseline was re-saved at that point, so the gate now protects the new coordinate-first URLs.
+ * Boat-only ABSENT beaches are EXCLUDED: the boat-safety rule converts them to coord-locate. Run
+ * via scripts/navRegressionSnapshot.mjs.
  */
 import { readFileSync, writeFileSync, existsSync, readdirSync } from 'node:fs';
 import path from 'node:path';

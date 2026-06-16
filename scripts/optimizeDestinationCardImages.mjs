@@ -67,6 +67,46 @@ const candidates = [
     sourceUrl: 'https://commons.wikimedia.org/wiki/File:Oia_-_Santorini_-_Greece_-_16.jpg',
     outputPath: '/images/destinations/santorini/santorini-oia-caldera-card.webp',
   },
+  {
+    destinationId: 'chalkidiki',
+    sourceUrl: 'https://commons.wikimedia.org/wiki/File:Karidi_Beach_-_Vourvourou,_Sithonia,_Greece_-_panoramio.jpg',
+    outputPath: '/images/destinations/chalkidiki/chalkidiki-karidi-beach-card.webp',
+  },
+  {
+    destinationId: 'thasos',
+    sourceUrl: 'https://commons.wikimedia.org/wiki/File:Golden_Beach,_Thassos.JPG',
+    outputPath: '/images/destinations/thasos/thasos-golden-beach-card.webp',
+  },
+  {
+    destinationId: 'samos',
+    sourceUrl: 'https://commons.wikimedia.org/wiki/File:Tsamadou_542s.jpg',
+    outputPath: '/images/destinations/samos/samos-tsamadou-beach-card.webp',
+  },
+  {
+    destinationId: 'skiathos',
+    sourceUrl: 'https://commons.wikimedia.org/wiki/File:Koukounaries_Beach_from_west_2016.jpg',
+    outputPath: '/images/destinations/skiathos/skiathos-koukounaries-beach-card.webp',
+  },
+  {
+    destinationId: 'skopelos',
+    sourceUrl: 'https://commons.wikimedia.org/wiki/File:Milia_Beach,_Skopelos,_Greece_(51696411084).jpg',
+    outputPath: '/images/destinations/skopelos/skopelos-milia-beach-card.webp',
+  },
+  {
+    destinationId: 'syros',
+    sourceUrl: 'https://commons.wikimedia.org/wiki/File:Gallissas_beach.jpg',
+    outputPath: '/images/destinations/syros/syros-galissas-beach-card.webp',
+  },
+  {
+    destinationId: 'andros',
+    sourceUrl: 'https://commons.wikimedia.org/wiki/File:Main_beach_at_Chora_Andros,_Andros_Island,_Cyclades,_Greece.jpg',
+    outputPath: '/images/destinations/andros/andros-chora-beach-card.webp',
+  },
+  {
+    destinationId: 'peloponnese',
+    sourceUrl: 'https://commons.wikimedia.org/wiki/File:Voidokilia_beach3.jpg',
+    outputPath: '/images/destinations/peloponnese/peloponnese-voidokilia-beach-card.webp',
+  },
 ];
 
 const fetchJson = async url => {

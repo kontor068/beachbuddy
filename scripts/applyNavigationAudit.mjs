@@ -63,6 +63,11 @@ const hasValidMetadata = (m) => Boolean(
   typeof m.organized === 'boolean' && typeof m.shade === 'boolean' && Array.isArray(m.amenities)
 );
 
+const cleanQuery = (value) => {
+  const text = typeof value === 'string' ? value.trim() : '';
+  return text.length > 0 ? text : undefined;
+};
+
 // sourceNotes appears both as string and as array in the dataset — normalize.
 const appendNote = (metadata, note) => {
   const existing = metadata.sourceNotes;
@@ -127,12 +132,17 @@ if (applyStatus) {
     const status = o.status || r.status;
     const mode = o.mode || r.navMode;
     const reason = o.reason || (status !== 'verified' ? r.why : undefined);
+    // An explicit, hand-verified place query (e.g. "Λαγκάδα, Milos") is the only thing the
+    // nav layer trusts for place-routing under the coordinate-first policy; when a row carries
+    // one we ship it (and force place mode so getNavigationAction emits the place destination).
+    const query = cleanQuery(o.query ?? r.query);
     if (dryRun) { written += 1; continue; }
     entry.metadata.googleMapsNavigation = {
       status,
-      mode,
+      mode: query ? 'place' : mode,
       checkedAt,
       method: 'osm-nav-audit-v1',
+      ...(query ? { query } : {}),
       ...(reason ? { reason } : {}),
     };
     written += 1; changed = true;

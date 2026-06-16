@@ -109,23 +109,42 @@ const uniqueTextParts = (parts: Array<string | undefined>) => {
   });
 };
 
-const startsWithBeachWord = (value: string) => (
-  /^(παραλία|paralia|beach)(\s|,|$)/i.test(value.trim())
-);
-
 const getGoogleMapsBeachQueryName = (beach: NavigationBeach): string | undefined => {
   const primaryName = getPrimaryBeachName(beach);
   if (!primaryName) {
     return undefined;
   }
 
-  if (startsWithBeachWord(primaryName)) {
-    return primaryName;
-  }
+  // Send the bare name (qualified by island in getPlaceQuery). We do NOT prepend a
+  // "Παραλία "/"Paralia " word: a general geocoder (and Google Maps) reliably resolves
+  // "<name>, <island>" but often returns NOTHING for "Παραλία <name>, <island>" — even
+  // for well-known beaches (e.g. "Λαγκάδα, Milos" → the beach card, "Παραλία Λαγκάδα,
+  // Milos" → 0 hits). The prefix was the root cause of the place-routing mis-resolution
+  // the place-resolution audit flagged. Names that already start with the beach word are
+  // kept verbatim.
+  return primaryName;
+};
 
-  return hasGreekLetters(primaryName)
-    ? `Παραλία ${primaryName}`
-    : `Paralia ${primaryName}`;
+// The region/island token in the data carries dataset-internal qualifiers that a geocoder
+// (and Google Maps) cannot parse — notably "(mainland)", which makes the whole query return
+// NOTHING (e.g. "Achlada, Halkidiki (mainland), Greece" → 0 hits, "Achlada, Halkidiki, Greece"
+// → the beach). Normalize it:
+//   "Halkidiki (mainland)"            -> "Halkidiki"
+//   "Magnesia (mainland - Pelion)"    -> "Magnesia"
+//   "Crete (Chania)"                  -> "Chania, Crete"   (keep the useful prefecture)
+// Returns the parts to splice into the query in order (most specific first).
+const cleanRegionToken = (value: string | undefined): string[] => {
+  const text = (value || '').trim();
+  if (!text) return [];
+  const match = text.match(/^(.*?)\s*\(([^)]*)\)\s*$/);
+  if (!match) return [text];
+  const base = match[1].trim();
+  const inner = match[2].trim();
+  // A "(mainland...)" qualifier is dataset noise — drop it, keep the base only.
+  if (/^mainland\b/i.test(inner)) return base ? [base] : [];
+  // Otherwise the parenthesis names a real sub-area (prefecture/region) — keep it, more
+  // specific first, so "Crete (Chania)" routes as "Chania, Crete".
+  return [inner, base].filter(Boolean);
 };
 
 const getPlaceQuery = (beach: NavigationBeach): string | undefined => {
@@ -143,7 +162,7 @@ const getPlaceQuery = (beach: NavigationBeach): string | undefined => {
 
   const locationParts = uniqueTextParts([
     queryName,
-    beach.location?.island || beach.location?.region,
+    ...cleanRegionToken(beach.location?.island || beach.location?.region),
     'Greece',
   ]);
 
@@ -151,17 +170,25 @@ const getPlaceQuery = (beach: NavigationBeach): string | undefined => {
 };
 
 /**
- * Place-first destination for a beach that should get full directions: the explicit/built
- * place query when available, else the coordinate. Used for 'directions' actions whose mode
- * is not coordinate-pinned.
+ * Coordinate-first destination for a beach that should get full directions. Policy (2026-06-15,
+ * nationwide): a hand-verified explicit place query wins (richest + audited); otherwise route by
+ * the beach COORDINATE, which is collision-immune. A bare-name "<name>, <island>" query is only a
+ * last resort when there is no coordinate, because such queries mis-resolve on Google Maps for the
+ * many Greek beaches whose names repeat across islands (e.g. Κάτεργο -> Folegandros, Ψαθί ->
+ * Kimolos) or are too obscure to resolve at all (e.g. Φυρλίνγκος -> no result). This supersedes the
+ * prior place-first default for unaudited beaches.
  */
 const getDirectionsDestination = (beach: NavigationBeach): NavigationDestination | undefined => {
-  const placeQuery = getPlaceQuery(beach);
-  if (placeQuery) {
-    return { kind: 'place', value: placeQuery };
+  const explicitQuery = cleanTextPart(beach.metadata?.googleMapsNavigation?.query);
+  if (explicitQuery) {
+    return { kind: 'place', value: explicitQuery };
   }
   const coordinate = getBestCoordinate(beach);
-  return coordinate ? { kind: 'coordinate', value: formatCoordinate(coordinate) } : undefined;
+  if (coordinate) {
+    return { kind: 'coordinate', value: formatCoordinate(coordinate) };
+  }
+  const placeQuery = getPlaceQuery(beach);
+  return placeQuery ? { kind: 'place', value: placeQuery } : undefined;
 };
 
 const getCoordinateDestination = (beach: NavigationBeach): NavigationDestination | undefined => {
@@ -238,7 +265,8 @@ export const getNavigationAction = (beach: NavigationBeach): NavigationAction =>
 
     case 'default':
     default: {
-      // The ~1.9k beaches with no status keep today's place-first directions flow UNCHANGED.
+      // Unaudited beaches (no status) route by coordinate via getDirectionsDestination (collision-
+      // immune). Superseded the prior place-first default on 2026-06-15 (nationwide nav fix).
       const destination = getDirectionsDestination(beach);
       return destination ? { kind: 'directions', destination } : { kind: 'none' };
     }

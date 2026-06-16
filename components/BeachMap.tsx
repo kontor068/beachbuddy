@@ -2179,8 +2179,12 @@ const BeachMap: React.FC<BeachMapProps> = ({
 
           {/* Beach Markers */}
           {shouldRenderBeachMarkers && beaches.map((item) => {
-            const isTopPickMarker = typeof topBeachId === 'number' && item.beachId === topBeachId;
-            const isHighlightedMarker = typeof highlightedBeachId === 'number' && item.beachId === highlightedBeachId;
+            const activeHighlightBeachId = typeof highlightedBeachId === 'number'
+              ? highlightedBeachId
+              : hoveredBeachId ?? undefined;
+            const hasActiveHighlight = typeof activeHighlightBeachId === 'number';
+            const isHighlightedMarker = hasActiveHighlight && item.beachId === activeHighlightBeachId;
+            const isTopPickMarker = typeof topBeachId === 'number' && item.beachId === topBeachId && !hasActiveHighlight;
             const markerCoordinate = getBeachMapCoordinates(item.beach, { lat: center[0], lon: center[1] });
             const mapExposureLevel = getMapExposureLevel(item);
             const mapExposureEvidence = getMapExposureEvidence(item);
