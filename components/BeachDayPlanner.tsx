@@ -46,7 +46,7 @@ export const BeachDayPlanner: React.FC<BeachDayPlannerProps> = ({ plan, language
           </svg>
         </div>
         <div className="min-w-0">
-          <span className="text-xs font-black text-slate-500 block mb-1">
+          <span className="text-xs font-black text-slate-700 block mb-1">
             {language === 'gr' ? 'Πρόταση ημέρας' : 'Day plan'}
           </span>
           <p className="text-sm text-slate-600 mt-1 leading-snug">{plannerSummary}</p>

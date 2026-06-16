@@ -21,7 +21,7 @@ const compactPreferenceLabels: Record<LanguageCode, Partial<Record<keyof UserPre
     blueFlag2026: 'Γαλάζια Σημαία',
     disabledAccess: 'Προσβάσιμη ΑμεΑ',
     sandy: 'Άμμος',
-    pebbles: 'Βότσαλο',
+    pebbles: 'Βότσαλα',
     quiet: 'Ήσυχη',
     beachBar: 'Beach bar',
     easyAccess: 'Εύκολη πρόσβαση',

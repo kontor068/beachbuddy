@@ -12,7 +12,7 @@ interface TouristSearchResultsProps {
 export const TouristSearchResults: React.FC<TouristSearchResultsProps> = ({ results, onBeachClick }) => {
   if (!results || results.length === 0) {
     return (
-      <div className="text-center py-12 text-slate-400">
+      <div className="text-center py-12 text-slate-600">
         No beaches found matching your search.
       </div>
     );
@@ -43,7 +43,7 @@ export const TouristSearchResults: React.FC<TouristSearchResultsProps> = ({ resu
             <ChevronRight className="w-4 h-4 text-slate-300 group-hover:text-primary transition-colors" />
           </div>
           {item.explanation && (
-            <p className="mt-2 text-sm text-slate-500 dark:text-slate-400 line-clamp-2">
+            <p className="mt-2 text-sm text-slate-700 dark:text-slate-600 line-clamp-2">
               {item.explanation}
             </p>
           )}

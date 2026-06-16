@@ -17,7 +17,7 @@ export const ChatbotModal: React.FC<ChatbotModalProps> = ({ isOpen, onClose, t, 
                     <div>
                         <h2 className="font-bold dark:text-white">{t.chatTitle}</h2>
                     </div>
-                    <button onClick={onClose} className="text-slate-400">✕</button>
+                    <button onClick={onClose} className="text-slate-600">✕</button>
                 </header>
                 <div className="flex-1 overflow-y-auto p-4 space-y-4">
                     {messages.length === 0 && (
@@ -30,7 +30,7 @@ export const ChatbotModal: React.FC<ChatbotModalProps> = ({ isOpen, onClose, t, 
                             {m.text}
                         </div>
                     ))}
-                    {isLoading && <div className="text-slate-400 italic text-sm animate-pulse">Το Beach Buddy σκέφτεται...</div>}
+                    {isLoading && <div className="text-slate-600 italic text-sm animate-pulse">Το Beach Buddy σκέφτεται...</div>}
                 </div>
                 <form className="p-4 pb-[calc(1rem+env(safe-area-inset-bottom))] border-t dark:border-slate-800 flex gap-2" onSubmit={(e) => { e.preventDefault(); if(input.trim()) { onSend(input); setInput(''); } }}>
                     <input value={input} onChange={e => setInput(e.target.value)} className="flex-1 bg-slate-100 dark:bg-slate-800 dark:text-white rounded-full px-4 py-3 outline-none text-sm" placeholder={t.chatPlaceholder} />

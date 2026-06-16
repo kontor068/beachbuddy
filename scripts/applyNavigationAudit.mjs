@@ -130,19 +130,21 @@ if (applyStatus) {
     const o = overrides[String(r.id)] || {};
     if (overrides[String(r.id)]) overridden += 1;
     const status = o.status || r.status;
-    const mode = o.mode || r.navMode;
     const reason = o.reason || (status !== 'verified' ? r.why : undefined);
-    // An explicit, hand-verified place query (e.g. "Λαγκάδα, Milos") is the only thing the
-    // nav layer trusts for place-routing under the coordinate-first policy; when a row carries
-    // one we ship it (and force place mode so getNavigationAction emits the place destination).
+    // A verified Google PLACE ID is the only thing the nav layer trusts for place routing (it opens
+    // the exact card via query_place_id). When a row carries a placeId we ship it in place mode with
+    // the query as a human label. A row WITHOUT a placeId is coordinate-routed — even if it has a
+    // query string (bare name queries are no longer trusted; the Νεροδάφνη fix).
+    const placeId = cleanQuery(o.placeId ?? r.placeId);
     const query = cleanQuery(o.query ?? r.query);
+    const mode = placeId ? 'place' : (o.mode || r.navMode);
     if (dryRun) { written += 1; continue; }
     entry.metadata.googleMapsNavigation = {
       status,
-      mode: query ? 'place' : mode,
+      mode,
       checkedAt,
       method: 'osm-nav-audit-v1',
-      ...(query ? { query } : {}),
+      ...(placeId ? { placeId, ...(query ? { query } : {}) } : {}),
       ...(reason ? { reason } : {}),
     };
     written += 1; changed = true;

@@ -218,7 +218,7 @@ export const fetchForecastData = async (lat: number, lon: number): Promise<Forec
     return cachedData;
   }
 
-  const API_URL = `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&hourly=temperature_2m,weather_code,wind_speed_10m,wind_direction_10m,pressure_msl&wind_speed_unit=ms&timezone=auto`;
+  const API_URL = `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&hourly=temperature_2m,weather_code,wind_speed_10m,wind_direction_10m,pressure_msl,uv_index&wind_speed_unit=ms&timezone=auto`;
 
   try {
     const data = await fetchJson<any>(API_URL, 'hourly-forecast');
@@ -253,7 +253,8 @@ export const fetchForecastData = async (lat: number, lon: number): Promise<Forec
         },
         visibility: 10000,
         pop: 0,
-        sys: { pod: isDay ? 'd' : 'n' }
+        sys: { pod: isDay ? 'd' : 'n' },
+        uvIndex: optionalNumber(hourly.uv_index?.[index]),
       };
     });
 

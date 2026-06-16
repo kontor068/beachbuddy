@@ -185,7 +185,7 @@ export const BeachList: React.FC<BeachListProps> = ({
           <p className="font-heading text-lg font-black text-slate-800 dark:text-slate-100">
             {protectedSortNoResults ? sortMessage.title : t.beachSearchFilters.emptyTitle}
           </p>
-          <p className="mx-auto mt-2 max-w-md text-sm font-medium leading-relaxed text-slate-500 dark:text-slate-400">
+          <p className="mx-auto mt-2 max-w-md text-sm font-medium leading-relaxed text-slate-700 dark:text-slate-600">
             {protectedSortNoResults ? sortMessage.body : t.beachSearchFilters.emptyDescription}
           </p>
           {onClearSearchAndFilters && (
@@ -209,7 +209,7 @@ export const BeachList: React.FC<BeachListProps> = ({
 
     return (
       <div className="col-span-full text-center py-20 glass dark:glass-dark rounded-3xl">
-        <p className="text-slate-500 dark:text-slate-400 font-medium">{emptyMessage}</p>
+        <p className="text-slate-700 dark:text-slate-600 font-medium">{emptyMessage}</p>
       </div>
     );
   }

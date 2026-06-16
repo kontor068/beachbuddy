@@ -537,6 +537,7 @@ export interface ForecastItem {
   sys: { pod: 'd' | 'n'; };
   dt_txt: string;
   marine?: MarineForecast;
+  uvIndex?: number;
 }
 
 export interface DailyForecast {

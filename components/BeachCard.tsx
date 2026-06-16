@@ -727,7 +727,7 @@ const BeachTypeTag: React.FC<{ beachType: BeachType; t: Translation }> = ({ beac
   };
   
   return (
-    <div className="px-2 py-0.5 bg-slate-50 dark:bg-slate-800 rounded text-[10px] font-bold text-slate-500 dark:text-slate-400 tracking-wider flex items-center gap-1.5">
+    <div className="px-2 py-0.5 bg-slate-50 dark:bg-slate-800 rounded text-[10px] font-bold text-slate-700 dark:text-slate-600 tracking-wider flex items-center gap-1.5">
       {icons[beachType]}
       <span>{t.filterOptions[beachType]}</span>
     </div>
@@ -741,7 +741,7 @@ const CharacteristicTags: React.FC<{ characteristics: Beach['characteristics']; 
   return (
     <>
       {presentCharacteristics.map(char => (
-        <div key={char as string} className="px-2 py-0.5 bg-slate-50 dark:bg-slate-800 rounded text-[10px] font-bold text-slate-500 dark:text-slate-400 tracking-wider">
+        <div key={char as string} className="px-2 py-0.5 bg-slate-50 dark:bg-slate-800 rounded text-[10px] font-bold text-slate-700 dark:text-slate-600 tracking-wider">
           {t.filterOptions[char as keyof typeof t.filterOptions]}
         </div>
       ))}
@@ -810,7 +810,7 @@ const MetadataTags: React.FC<{ beach: Beach; language: LanguageCode }> = ({ beac
   return (
     <>
       {terrainTypes.map(type => (
-        <div key={type} className="px-2 py-0.5 bg-slate-50 dark:bg-slate-800 rounded text-[10px] font-bold text-slate-500 dark:text-slate-400 flex items-center gap-1.5">
+        <div key={type} className="px-2 py-0.5 bg-slate-50 dark:bg-slate-800 rounded text-[10px] font-bold text-slate-700 dark:text-slate-600 flex items-center gap-1.5">
           {terrainIcons[type] || <CircleDot className="w-3.5 h-3.5" />}
           <span>{localizedTerrainLabel(type, language)}</span>
         </div>
@@ -831,7 +831,7 @@ const MetadataTags: React.FC<{ beach: Beach; language: LanguageCode }> = ({ beac
         </div>
       )}
       {amenityChips.map(chip => (
-        <div key={chip.key} className="px-2 py-0.5 bg-slate-50 dark:bg-slate-800 rounded text-[10px] font-bold text-slate-500 dark:text-slate-400 flex items-center gap-1.5">
+        <div key={chip.key} className="px-2 py-0.5 bg-slate-50 dark:bg-slate-800 rounded text-[10px] font-bold text-slate-700 dark:text-slate-600 flex items-center gap-1.5">
           {amenityChipIcon(chip)}
           <span>{chip.label}</span>
         </div>
@@ -1221,7 +1221,7 @@ export const BeachCard: React.FC<BeachCardProps> = ({
                 {beachDisplayName}
               </h3>
               {(showIslandName || distance !== undefined || showHeaderProtectedMarker) && (
-                <div className="flex min-w-0 flex-wrap items-center justify-center gap-x-1.5 gap-y-0.5 text-xs font-semibold text-slate-500 dark:text-slate-400">
+                <div className="flex min-w-0 flex-wrap items-center justify-center gap-x-1.5 gap-y-0.5 text-xs font-semibold text-slate-700 dark:text-slate-600">
                   {(showIslandName || distance !== undefined) && <MapPin className="h-3.5 w-3.5 shrink-0" />}
                   {showIslandName && <span className="min-w-0 truncate">{islandName}</span>}
                   {distance !== undefined && <span className="shrink-0 text-primary">{distance.toFixed(1)} km</span>}
@@ -1240,7 +1240,7 @@ export const BeachCard: React.FC<BeachCardProps> = ({
 
             <button
               onClick={handleFavoriteClick}
-              className="grid h-11 w-11 shrink-0 place-items-center rounded-xl bg-white text-slate-500 shadow-sm ring-1 ring-slate-200/80 transition-colors hover:bg-white/92 hover:text-rose-500 cursor-pointer dark:bg-slate-800 dark:ring-slate-700"
+              className="grid h-11 w-11 shrink-0 place-items-center rounded-xl bg-white text-slate-700 shadow-sm ring-1 ring-slate-200/80 transition-colors hover:bg-white/92 hover:text-rose-500 cursor-pointer dark:bg-slate-800 dark:ring-slate-700"
               aria-label={isFavorite ? unfavoriteLabel : favoriteLabel}
             >
               <Heart className={`h-4 w-4 transition-colors ${isFavorite ? 'fill-red-500 text-red-500' : ''}`} />
@@ -1262,14 +1262,14 @@ export const BeachCard: React.FC<BeachCardProps> = ({
             ) : null}
 
             {featureChips.length > 0 ? (
-              <div className="grid min-w-0 grid-cols-2 auto-rows-[2.25rem] content-start gap-1.5">
+              <div className="flex min-w-0 flex-wrap gap-1.5">
                 {featureChips.map(chip => (
                   <span
                     key={chip.key}
-                    className="inline-flex h-9 w-full min-w-0 items-center justify-center gap-1.5 overflow-hidden rounded-xl border border-cyan-100 bg-cyan-50/70 px-2.5 py-1.5 text-xs font-semibold leading-tight text-cyan-800"
+                    className="inline-flex h-9 min-w-0 shrink-0 items-center gap-1.5 overflow-hidden rounded-xl border border-cyan-100 bg-cyan-50/70 px-2.5 py-1.5 text-xs font-semibold leading-tight text-cyan-800"
                   >
                     {chip.icon}
-                    <span className="min-w-0 line-clamp-2 text-center leading-tight">{chip.label}</span>
+                    <span className="min-w-0 truncate leading-tight">{chip.label}</span>
                   </span>
                 ))}
               </div>
@@ -1280,7 +1280,7 @@ export const BeachCard: React.FC<BeachCardProps> = ({
               </span>
             ) : null}
 
-            <div className="flex min-w-0 items-center gap-1.5 overflow-hidden rounded-xl border border-slate-100 bg-slate-50/60 px-2.5 py-1.5 text-[11px] font-bold leading-none text-slate-500 dark:border-slate-800 dark:bg-slate-900 dark:text-slate-300">
+            <div className="flex min-w-0 items-center gap-1.5 overflow-hidden rounded-xl border border-slate-100 bg-slate-50/60 px-2.5 py-1.5 text-[11px] font-bold leading-none text-slate-700 dark:border-slate-800 dark:bg-slate-900 dark:text-slate-300">
               <span className="inline-flex min-w-0 shrink-0 items-center gap-1">
                 <Wind className="h-3.5 w-3.5 shrink-0" aria-hidden="true" />
                 <span>{mobileWindLabel}</span>
@@ -1301,7 +1301,7 @@ export const BeachCard: React.FC<BeachCardProps> = ({
           </div>
         </div>
 
-        <div className={`relative flex-1 ${cardPhoto ? 'min-h-32' : 'min-h-28'} sm:flex-none sm:aspect-[16/9] sm:min-h-36 sm:max-h-44 ${isCompact ? 'lg:min-h-28 lg:max-h-32' : ''} overflow-hidden bg-sky-50`}>
+        <div className={`relative aspect-[16/9] max-h-44 sm:flex-none sm:aspect-[16/9] sm:min-h-36 sm:max-h-44 ${isCompact ? 'lg:min-h-28 lg:max-h-32' : ''} overflow-hidden bg-sky-50`}>
           {cardPhoto ? (
             <img
               src={cardPhoto}
@@ -1334,7 +1334,7 @@ export const BeachCard: React.FC<BeachCardProps> = ({
 
           <button
             onClick={handleFavoriteClick}
-            className="absolute right-3 top-3 hidden h-11 w-11 place-items-center rounded-xl bg-white/78 text-slate-500 shadow-sm backdrop-blur-md transition-colors hover:bg-white/92 hover:text-rose-500 cursor-pointer sm:grid"
+            className="absolute right-3 top-3 hidden h-11 w-11 place-items-center rounded-xl bg-white/78 text-slate-700 shadow-sm backdrop-blur-md transition-colors hover:bg-white/92 hover:text-rose-500 cursor-pointer sm:grid"
             aria-label={isFavorite ? unfavoriteLabel : favoriteLabel}
           >
             <Heart className={`h-4 w-4 transition-colors ${isFavorite ? 'fill-red-500 text-red-500' : ''}`} />
@@ -1347,7 +1347,7 @@ export const BeachCard: React.FC<BeachCardProps> = ({
               {beachDisplayName}
             </h3>
             {(showIslandName || distance !== undefined || showHeaderProtectedMarker) && (
-              <div className="flex min-w-0 flex-wrap items-center gap-x-1.5 gap-y-0.5 text-xs font-semibold text-slate-500 dark:text-slate-400">
+              <div className="flex min-w-0 flex-wrap items-center gap-x-1.5 gap-y-0.5 text-xs font-semibold text-slate-700 dark:text-slate-600">
                 {(showIslandName || distance !== undefined) && <MapPin className="h-3.5 w-3.5 shrink-0" />}
                 {showIslandName && <span className="min-w-0 flex-1 truncate">{islandName}</span>}
                 {distance !== undefined && <span className="shrink-0 text-primary">{distance.toFixed(1)} km</span>}
@@ -1432,7 +1432,7 @@ export const BeachCard: React.FC<BeachCardProps> = ({
           {navigator.share && (
             <button
               onClick={handleShare}
-              className={`grid ${isCompact ? 'h-11 w-11 lg:h-10 lg:w-10' : 'h-11 w-11'} place-items-center rounded-xl bg-slate-50 text-slate-400 transition-colors hover:text-primary focus:outline-none focus-visible:ring-2 focus-visible:ring-primary dark:bg-slate-800 cursor-pointer`}
+              className={`grid ${isCompact ? 'h-11 w-11 lg:h-10 lg:w-10' : 'h-11 w-11'} place-items-center rounded-xl bg-slate-50 text-slate-600 transition-colors hover:text-primary focus:outline-none focus-visible:ring-2 focus-visible:ring-primary dark:bg-slate-800 cursor-pointer`}
               aria-label={shareLabel}
             >
               <Share2 className="h-4 w-4" />
@@ -1502,7 +1502,7 @@ export const BeachCard: React.FC<BeachCardProps> = ({
           aria-label={isFavorite ? unfavoriteLabel : favoriteLabel}
         >
           <Heart
-            className={`w-4 h-4 transition-all duration-300 ${isFavorite ? 'fill-red-500 text-red-500' : 'text-slate-400 hover:text-red-400'}`}
+            className={`w-4 h-4 transition-all duration-300 ${isFavorite ? 'fill-red-500 text-red-500' : 'text-slate-600 hover:text-red-400'}`}
           />
         </button>
       </div>
@@ -1514,7 +1514,7 @@ export const BeachCard: React.FC<BeachCardProps> = ({
           <h3 className="text-xl font-heading font-bold text-slate-900 dark:text-white leading-tight group-hover:text-primary transition-colors duration-300">
             {beachDisplayName}
           </h3>
-          <div className="flex items-center gap-2 mt-1 text-slate-400">
+          <div className="flex items-center gap-2 mt-1 text-slate-600">
             <MapPin className="w-3 h-3" />
             <span className="text-xs">{islandName}</span>
             {distance !== undefined && (
@@ -1537,7 +1537,7 @@ export const BeachCard: React.FC<BeachCardProps> = ({
                 noIdealSwimmingWindow={noIdealSwimmingWindow}
                 exposureLevel={exposureLevel}
               />
-              <div className="flex items-center gap-1 text-[11px] font-bold text-slate-400 dark:text-slate-500" title="Visitor rating">
+              <div className="flex items-center gap-1 text-[11px] font-bold text-slate-600 dark:text-slate-700" title="Visitor rating">
                 <Star className="h-3 w-3 fill-amber-400 text-amber-400" />
                 <span>{rating.toFixed(1)}</span>
               </div>
@@ -1563,7 +1563,7 @@ export const BeachCard: React.FC<BeachCardProps> = ({
 
         {metadata?.access?.notes && (
           <div className="mb-3 rounded-xl bg-slate-50 dark:bg-slate-800/70 px-3 py-2">
-            <p className="text-[11px] leading-snug text-slate-500 dark:text-slate-400 line-clamp-2">
+            <p className="text-[11px] leading-snug text-slate-700 dark:text-slate-600 line-clamp-2">
               <span className="font-bold text-slate-600 dark:text-slate-300">{localizedAccessPrefix(language)}: </span>
               {language === 'gr' ? metadata.access.notes : localizedAccessLabel(metadata.access.type, metadata.access.label, language)}
             </p>
@@ -1600,7 +1600,7 @@ export const BeachCard: React.FC<BeachCardProps> = ({
 
         {/* Description */}
         <p
-          className="text-slate-500 dark:text-slate-400 text-sm leading-relaxed line-clamp-2 mb-4"
+          className="text-slate-700 dark:text-slate-600 text-sm leading-relaxed line-clamp-2 mb-4"
           data-nosnippet="true"
         >
           {localizedBeachDescription(beach, language)}
@@ -1651,7 +1651,7 @@ export const BeachCard: React.FC<BeachCardProps> = ({
         {navigator.share && (
           <button
             onClick={handleShare}
-            className="p-3 rounded-xl bg-slate-50 dark:bg-slate-800 text-slate-400 hover:text-primary transition-colors cursor-pointer"
+            className="p-3 rounded-xl bg-slate-50 dark:bg-slate-800 text-slate-600 hover:text-primary transition-colors cursor-pointer"
             aria-label={shareLabel}
           >
             <Share2 className="w-4 h-4" />

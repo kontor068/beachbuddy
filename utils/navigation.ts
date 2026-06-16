@@ -13,6 +13,10 @@ type NavigationBeach = Pick<Partial<Beach>, 'id' | 'name' | 'coordinates' | 'map
 type NavigationDestination = {
   kind: 'coordinate' | 'place';
   value: string;
+  // When present (place kind only), the Google Place ID is appended to the Maps URL as
+  // query_place_id / destination_place_id so the link opens the EXACT place card. A bare name
+  // query (no placeId) is unreliable in the Maps UI, so place destinations should carry one.
+  placeId?: string;
 };
 
 /**
@@ -170,18 +174,23 @@ const getPlaceQuery = (beach: NavigationBeach): string | undefined => {
 };
 
 /**
- * Coordinate-first destination for a beach that should get full directions. Policy (2026-06-15,
- * nationwide): a hand-verified explicit place query wins (richest + audited); otherwise route by
- * the beach COORDINATE, which is collision-immune. A bare-name "<name>, <island>" query is only a
- * last resort when there is no coordinate, because such queries mis-resolve on Google Maps for the
- * many Greek beaches whose names repeat across islands (e.g. Κάτεργο -> Folegandros, Ψαθί ->
- * Kimolos) or are too obscure to resolve at all (e.g. Φυρλίνγκος -> no result). This supersedes the
- * prior place-first default for unaudited beaches.
+ * Coordinate-first destination for a beach that should get full directions. Policy (2026-06-17,
+ * nationwide Place-ID pass):
+ *   1. A verified Google PLACE ID wins — the Maps link opens the EXACT place card via
+ *      query_place_id, the only reliable way to land on the right beach.
+ *   2. Otherwise route by the beach COORDINATE (collision-immune, always the exact pin).
+ *   3. A bare name query is NO LONGER trusted: the Maps UI fails on many of those strings even
+ *      when the Places API finds them (e.g. "Νεροδάφνη, Milos" -> "could not find"), and the
+ *      Places API itself is non-deterministic. A name with no Place ID falls through to coordinate.
+ *      (Last-resort name query only when there is no coordinate at all — defensive; ~0 beaches.)
  */
 const getDirectionsDestination = (beach: NavigationBeach): NavigationDestination | undefined => {
-  const explicitQuery = cleanTextPart(beach.metadata?.googleMapsNavigation?.query);
-  if (explicitQuery) {
-    return { kind: 'place', value: explicitQuery };
+  const nav = beach.metadata?.googleMapsNavigation;
+  const placeId = cleanTextPart(nav?.placeId);
+  const explicitQuery = cleanTextPart(nav?.query);
+  if (placeId) {
+    // Carry the human-readable query as the label, but the Place ID is what makes it land.
+    return { kind: 'place', value: explicitQuery || getPlaceQuery(beach) || placeId, placeId };
   }
   const coordinate = getBestCoordinate(beach);
   if (coordinate) {
@@ -248,9 +257,13 @@ export const getNavigationAction = (beach: NavigationBeach): NavigationAction =>
       return locate('nav-unverified');
 
     case 'verified': {
-      // Explicit query wins; coordinate-mode routes by pin (collision-immune); else place.
-      if (nav?.query) {
-        return { kind: 'directions', destination: { kind: 'place', value: nav.query } };
+      // Verified Place ID -> exact Google card; coordinate-mode -> pin; a bare query (no placeId)
+      // is no longer trusted and falls through getDirectionsDestination to the coordinate.
+      if (nav?.placeId) {
+        return {
+          kind: 'directions',
+          destination: { kind: 'place', value: cleanTextPart(nav.query) || String(nav.placeId), placeId: cleanTextPart(nav.placeId) },
+        };
       }
       if (nav?.mode === 'coordinates' && coordinateDestination) {
         return { kind: 'directions', destination: coordinateDestination };
@@ -306,15 +319,20 @@ export const getNavigationUrl = (beach: NavigationBeach, mobile = isMobileDevice
   }
 
   const encodedDestination = encodeURIComponent(action.destination.value);
+  // A verified Place ID makes Maps open the EXACT place card (query_place_id for search,
+  // destination_place_id for directions) — the reliable alternative to a fragile name string.
+  const placeId = action.destination.placeId;
+  const placeIdParam = placeId ? `&query_place_id=${encodeURIComponent(placeId)}` : '';
+  const dirPlaceIdParam = placeId ? `&destination_place_id=${encodeURIComponent(placeId)}` : '';
 
   // 'locate' is a position only — always the search API (even on mobile), no routing promise.
   if (action.kind === 'locate') {
-    return `https://www.google.com/maps/search/?api=1&query=${encodedDestination}`;
+    return `https://www.google.com/maps/search/?api=1&query=${encodedDestination}${placeIdParam}`;
   }
 
   return mobile
-    ? `https://www.google.com/maps/dir/?api=1&destination=${encodedDestination}`
-    : `https://www.google.com/maps/search/?api=1&query=${encodedDestination}`;
+    ? `https://www.google.com/maps/dir/?api=1&destination=${encodedDestination}${dirPlaceIdParam}`
+    : `https://www.google.com/maps/search/?api=1&query=${encodedDestination}${placeIdParam}`;
 };
 
 export const openNavigation = (beach: NavigationBeach) => {

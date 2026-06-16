@@ -26,6 +26,10 @@
 }
 
 @layer base {
+  html {
+    color-scheme: light;
+  }
+
   body {
     @apply font-sans antialiased text-slate-900;
     font-family: var(--font-sans);
@@ -87,7 +91,7 @@
   }
 
   .section-subtitle {
-    @apply text-lg text-slate-500 dark:text-slate-400 font-light max-w-2xl;
+    @apply text-lg text-slate-700 dark:text-slate-300 font-light max-w-2xl;
   }
 }
 

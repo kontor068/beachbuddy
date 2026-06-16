@@ -9,7 +9,7 @@ interface CuratedPhotoImageProps {
 }
 
 const defaultAttributionClassName =
-  'text-xs leading-tight text-slate-500';
+  'text-xs leading-tight text-slate-700';
 
 const getAttributionText = (photo: CuratedPhoto): string => {
   const details = [photo.author, photo.license].filter(Boolean).join(' / ');

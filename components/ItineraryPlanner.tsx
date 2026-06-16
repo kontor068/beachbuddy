@@ -140,7 +140,7 @@ const ItineraryPlanner: React.FC<ItineraryPlannerProps> = ({
             <button
               onClick={() => onSaveItinerary(itinerary)}
               disabled={isItinerarySaved}
-              className="inline-flex items-center justify-center px-5 py-2.5 bg-indigo-100 text-indigo-800 dark:bg-indigo-900/50 dark:text-indigo-200 font-bold rounded-lg hover:bg-indigo-200 dark:hover:bg-indigo-900 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 transition-all duration-200 disabled:bg-slate-100 disabled:text-slate-500 dark:disabled:bg-slate-800 dark:disabled:text-slate-400 disabled:cursor-not-allowed"
+              className="inline-flex items-center justify-center px-5 py-2.5 bg-indigo-100 text-indigo-800 dark:bg-indigo-900/50 dark:text-indigo-200 font-bold rounded-lg hover:bg-indigo-200 dark:hover:bg-indigo-900 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 transition-all duration-200 disabled:bg-slate-100 disabled:text-slate-700 dark:disabled:bg-slate-800 dark:disabled:text-slate-600 disabled:cursor-not-allowed"
             >
               <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 mr-2" viewBox="0 0 20 20" fill="currentColor">
                 <path d="M5 4a2 2 0 012-2h6a2 2 0 012 2v14l-5-2.5L5 18V4z" />

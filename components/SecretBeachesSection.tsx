@@ -19,7 +19,7 @@ export const SecretBeachesSection: React.FC<SecretBeachesSectionProps> = ({
   if (beaches.length === 0) {
     return (
       <div className="text-center py-12 bg-slate-50 dark:bg-slate-900/50 rounded-[2rem] border border-dashed border-slate-200 dark:border-slate-800">
-        <p className="text-slate-500 dark:text-slate-400">
+        <p className="text-slate-700 dark:text-slate-600">
           {language === 'gr' ? 'Δεν βρέθηκαν πιο ήσυχες επιλογές για τις τρέχουσες συνθήκες.' : 'No hidden gems found for the current conditions. Try Explore Mode!'}
         </p>
       </div>
@@ -48,7 +48,7 @@ export const SecretBeachesSection: React.FC<SecretBeachesSectionProps> = ({
           {/* Score Badge */}
           <div className="absolute top-4 right-4 z-10">
             <div className="bg-white/90 dark:bg-slate-900/90 backdrop-blur-md px-3 py-1.5 rounded-2xl shadow-lg border border-white/20 flex flex-col items-center">
-              <span className="text-[10px] font-bold text-slate-400 tracking-tighter">{language === 'gr' ? 'Σκορ ησυχίας' : 'Secret Score'}</span>
+              <span className="text-[10px] font-bold text-slate-600 tracking-tighter">{language === 'gr' ? 'Σκορ ησυχίας' : 'Secret Score'}</span>
               <span className="text-lg font-heading font-bold text-emerald-600 dark:text-emerald-400">{item.secretScore}%</span>
             </div>
           </div>
@@ -59,7 +59,7 @@ export const SecretBeachesSection: React.FC<SecretBeachesSectionProps> = ({
               <h3 className="text-2xl font-heading font-bold text-slate-900 dark:text-white group-hover:text-emerald-600 transition-colors">
                 {item.name}
               </h3>
-              <div className="flex items-center gap-4 text-sm text-slate-500">
+              <div className="flex items-center gap-4 text-sm text-slate-700">
                 {item.distance !== undefined && (
                   <div className="flex items-center gap-1.5">
                     <Navigation size={14} className="text-emerald-500" />
@@ -70,7 +70,7 @@ export const SecretBeachesSection: React.FC<SecretBeachesSectionProps> = ({
             </div>
 
             <p
-              className="text-sm text-slate-600 dark:text-slate-400 line-clamp-3 leading-relaxed"
+              className="text-sm text-slate-600 dark:text-slate-600 line-clamp-3 leading-relaxed"
               data-nosnippet="true"
             >
               {item.explanation}
@@ -90,7 +90,7 @@ export const SecretBeachesSection: React.FC<SecretBeachesSectionProps> = ({
                     return (
                       <>
                         <div className={`w-2 h-2 rounded-full ${canClaimWindProtection ? 'bg-emerald-500' : 'bg-amber-400'}`} />
-                        <span className="text-[10px] font-bold text-slate-400">
+                        <span className="text-[10px] font-bold text-slate-600">
                           {label}
                         </span>
                       </>
@@ -100,7 +100,7 @@ export const SecretBeachesSection: React.FC<SecretBeachesSectionProps> = ({
                 
                 {item.crowdLevel && (
                   <div className="flex items-center gap-2">
-                    <span className="text-[10px] font-bold text-slate-400">
+                    <span className="text-[10px] font-bold text-slate-600">
                       {t.crowdLevels[item.crowdLevel]}
                     </span>
                   </div>

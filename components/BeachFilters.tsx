@@ -97,7 +97,7 @@ export const BeachFilters: React.FC<BeachFiltersProps> = ({
           <label htmlFor="beach-search" className="sr-only">
             {searchCopy.searchLabel}
           </label>
-          <Search className="pointer-events-none absolute left-4 top-1/2 h-4 w-4 -translate-y-1/2 text-slate-400" aria-hidden="true" />
+          <Search className="pointer-events-none absolute left-4 top-1/2 h-4 w-4 -translate-y-1/2 text-slate-600" aria-hidden="true" />
           <input
             id="beach-search"
             type="search"
@@ -106,13 +106,13 @@ export const BeachFilters: React.FC<BeachFiltersProps> = ({
             value={searchQuery}
             onChange={(e) => onSearchChange(e.target.value)}
             placeholder={searchCopy.searchPlaceholder}
-            className={isPanel ? 'min-h-11 w-full rounded-full border border-white/65 bg-white/86 py-2.5 pl-11 pr-11 text-center text-sm font-semibold text-slate-700 shadow-sm outline-none ring-1 ring-white/35 backdrop-blur-xl placeholder:text-center placeholder:text-slate-400 focus:ring-2 focus:ring-cyan-400/70 md:text-left md:placeholder:text-left' : 'min-h-11 w-full rounded-full border border-white/65 bg-white/84 py-2.5 pl-11 pr-11 text-center text-sm font-semibold text-slate-700 shadow-sm outline-none ring-1 ring-white/35 backdrop-blur-xl placeholder:text-center placeholder:text-slate-400 focus:ring-2 focus:ring-cyan-400/70 md:min-h-10 md:py-2 md:text-left md:placeholder:text-left'}
+            className={isPanel ? 'min-h-11 w-full rounded-full border border-white/65 bg-white/86 py-2.5 pl-11 pr-11 text-center text-sm font-semibold text-slate-700 shadow-sm outline-none ring-1 ring-white/35 backdrop-blur-xl placeholder:text-center placeholder:text-slate-600 focus:ring-2 focus:ring-cyan-400/70 md:text-left md:placeholder:text-left' : 'min-h-11 w-full rounded-full border border-white/65 bg-white/84 py-2.5 pl-11 pr-11 text-center text-sm font-semibold text-slate-700 shadow-sm outline-none ring-1 ring-white/35 backdrop-blur-xl placeholder:text-center placeholder:text-slate-600 focus:ring-2 focus:ring-cyan-400/70 md:min-h-10 md:py-2 md:text-left md:placeholder:text-left'}
           />
           {searchQuery.trim().length > 0 && (
             <button
               type="button"
               onClick={() => onSearchChange('')}
-              className="absolute right-3 top-1/2 inline-flex h-8 w-8 -translate-y-1/2 items-center justify-center rounded-full text-slate-400 transition hover:bg-slate-100 hover:text-slate-600 focus:outline-none focus:ring-2 focus:ring-cyan-400/60"
+              className="absolute right-3 top-1/2 inline-flex h-8 w-8 -translate-y-1/2 items-center justify-center rounded-full text-slate-600 transition hover:bg-slate-100 hover:text-slate-600 focus:outline-none focus:ring-2 focus:ring-cyan-400/60"
               aria-label={searchCopy.clearSearch}
             >
               <X className="h-4 w-4" aria-hidden="true" />
@@ -149,7 +149,7 @@ export const BeachFilters: React.FC<BeachFiltersProps> = ({
               {selectedSortLabel}
             </span>
             <ChevronDown
-              className={`h-4 w-4 shrink-0 text-slate-500 transition-transform duration-200 ${isSortOpen ? 'rotate-180' : ''}`}
+              className={`h-4 w-4 shrink-0 text-slate-700 transition-transform duration-200 ${isSortOpen ? 'rotate-180' : ''}`}
               aria-hidden="true"
             />
           </button>
@@ -189,7 +189,7 @@ export const BeachFilters: React.FC<BeachFiltersProps> = ({
       </div>
 
       {hasActiveChips && (
-        <div className="mt-2 flex flex-wrap items-center gap-2 text-xs font-semibold text-slate-500 md:mt-2.5">
+        <div className="mt-2 flex flex-wrap items-center gap-2 text-xs font-semibold text-slate-700 md:mt-2.5">
           {activePreferenceFilters.map(filter => (
             <button
               key={filter.key}

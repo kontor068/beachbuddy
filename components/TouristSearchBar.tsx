@@ -98,7 +98,7 @@ export const TouristSearchBar: React.FC<TouristSearchBarProps> = ({
     <div className="w-full max-w-3xl mx-auto relative" ref={dropdownRef}>
       <form onSubmit={handleSubmit} className="relative group">
         <div className="absolute inset-y-0 left-0 pl-4 sm:pl-5 flex items-center pointer-events-none">
-          <Search className={`h-5 w-5 transition-colors duration-300 ${isFocused ? 'text-primary' : 'text-slate-400'}`} />
+          <Search className={`h-5 w-5 transition-colors duration-300 ${isFocused ? 'text-primary' : 'text-slate-600'}`} />
         </div>
         <input
           ref={inputRef}
@@ -122,7 +122,7 @@ export const TouristSearchBar: React.FC<TouristSearchBarProps> = ({
                 animate={{ opacity: 1, scale: 1 }}
                 exit={{ opacity: 0, scale: 0.8 }}
                 onClick={handleClear}
-                className="p-2 text-slate-400 hover:text-slate-600 dark:hover:text-slate-300 transition-colors cursor-pointer"
+                className="p-2 text-slate-600 hover:text-slate-600 dark:hover:text-slate-300 transition-colors cursor-pointer"
                 aria-label="Clear search"
               >
                 <X className="w-4 h-4" />
@@ -165,7 +165,7 @@ export const TouristSearchBar: React.FC<TouristSearchBarProps> = ({
                     <p className="text-sm font-semibold text-slate-900 dark:text-white truncate">
                       {displayName}
                     </p>
-                    <p className="text-xs text-slate-400 truncate">
+                    <p className="text-xs text-slate-600 truncate">
                       {islandName}
                       {result.matchScore >= 90 && (
                         <span className="ml-2 text-emerald-500">●</span>

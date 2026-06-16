@@ -175,13 +175,13 @@ export const WindInfo: React.FC<WindInfoProps> = ({ weather, windDirection, t, l
                 <div className="flex bg-sky-50/80 dark:bg-slate-700/60 rounded-lg p-0.5">
                   <button
                     onClick={() => onWindUnitChange('beaufort')}
-                    className={`px-2.5 py-1 text-[9px] font-bold tracking-normal rounded-md transition-all cursor-pointer ${windUnit === 'beaufort' ? 'bg-primary text-white shadow-sm' : 'text-slate-400 hover:text-slate-600'}`}
+                    className={`px-2.5 py-1 text-[9px] font-bold tracking-normal rounded-md transition-all cursor-pointer ${windUnit === 'beaufort' ? 'bg-primary text-white shadow-sm' : 'text-slate-600 hover:text-slate-600'}`}
                   >
                     Bft
                   </button>
                   <button
                     onClick={() => onWindUnitChange('mph')}
-                    className={`px-2.5 py-1 text-[9px] font-bold tracking-normal rounded-md transition-all cursor-pointer ${windUnit === 'mph' ? 'bg-primary text-white shadow-sm' : 'text-slate-400 hover:text-slate-600'}`}
+                    className={`px-2.5 py-1 text-[9px] font-bold tracking-normal rounded-md transition-all cursor-pointer ${windUnit === 'mph' ? 'bg-primary text-white shadow-sm' : 'text-slate-600 hover:text-slate-600'}`}
                   >
                     Mph
                   </button>

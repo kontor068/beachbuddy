@@ -184,11 +184,11 @@ const BeachOfTheDay: React.FC<BeachOfTheDayProps> = ({ topBeach, language, t, on
                 noIdealSwimmingWindow={noIdealSwimmingWindow}
                 exposureLevel={exposureLevel}
               />
-              <span className="hidden items-center gap-1 text-xs font-bold text-slate-500 sm:inline-flex dark:text-slate-400">
+              <span className="hidden items-center gap-1 text-xs font-bold text-slate-700 sm:inline-flex dark:text-slate-600">
                 <MapPin className="h-3.5 w-3.5" />
                 {islandName}
                 {distance !== undefined && (
-                  <span className="text-slate-400 dark:text-slate-500">
+                  <span className="text-slate-600 dark:text-slate-700">
                     · {distance < 1 ? `${Math.round(distance * 1000)}m` : `${distance.toFixed(1)}km`}
                   </span>
                 )}
@@ -261,7 +261,7 @@ const BeachOfTheDay: React.FC<BeachOfTheDayProps> = ({ topBeach, language, t, on
                 </li>
               ))}
             </ul>
-            <p className="mt-2 border-t border-slate-200/60 pt-2 text-[11px] font-semibold leading-snug text-slate-500 dark:border-slate-700 dark:text-slate-400">
+            <p className="mt-2 border-t border-slate-200/60 pt-2 text-[11px] font-semibold leading-snug text-slate-700 dark:border-slate-700 dark:text-slate-600">
               {decisionRule}
             </p>
           </div>

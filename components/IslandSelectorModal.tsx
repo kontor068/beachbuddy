@@ -239,7 +239,7 @@ export const IslandSelectorModal: React.FC<IslandSelectorModalProps> = ({
               type="button"
               onClick={onClose}
               aria-label={copy.close}
-              className="flex min-h-11 min-w-11 shrink-0 items-center justify-center rounded-full text-slate-500 transition hover:bg-white hover:text-slate-800 focus:outline-none focus-visible:ring-2 focus-visible:ring-cyan-500 dark:text-slate-300 dark:hover:bg-slate-800 dark:hover:text-white"
+              className="flex min-h-11 min-w-11 shrink-0 items-center justify-center rounded-full text-slate-700 transition hover:bg-white hover:text-slate-800 focus:outline-none focus-visible:ring-2 focus-visible:ring-cyan-500 dark:text-slate-300 dark:hover:bg-slate-800 dark:hover:text-white"
             >
               <X className="h-5 w-5" aria-hidden="true" />
             </button>
@@ -268,25 +268,25 @@ export const IslandSelectorModal: React.FC<IslandSelectorModalProps> = ({
 
           <div className="relative mt-3">
             <label htmlFor="island-selector-search" className="sr-only">{copy.search}</label>
-            <Search className="pointer-events-none absolute left-4 top-1/2 h-4 w-4 -translate-y-1/2 text-slate-400" aria-hidden="true" />
+            <Search className="pointer-events-none absolute left-4 top-1/2 h-4 w-4 -translate-y-1/2 text-slate-600" aria-hidden="true" />
             <input
               id="island-selector-search"
               value={searchTerm}
               onChange={event => setSearchTerm(event.target.value)}
               placeholder={t.islandSelector.searchPlaceholder}
               aria-label={copy.search}
-              className="min-h-11 w-full rounded-full border border-white/70 bg-white/90 py-2.5 pl-11 pr-4 text-sm font-semibold text-slate-800 shadow-sm outline-none ring-1 ring-white/45 transition placeholder:text-slate-400 focus:ring-2 focus:ring-cyan-400/75 dark:border-slate-700 dark:bg-slate-900 dark:text-white dark:ring-slate-800"
+              className="min-h-11 w-full rounded-full border border-white/70 bg-white/90 py-2.5 pl-11 pr-4 text-sm font-semibold text-slate-800 shadow-sm outline-none ring-1 ring-white/45 transition placeholder:text-slate-600 focus:ring-2 focus:ring-cyan-400/75 dark:border-slate-700 dark:bg-slate-900 dark:text-white dark:ring-slate-800"
             />
           </div>
         </div>
 
         <div className="min-h-0 flex-1 space-y-5 overflow-y-auto overscroll-contain px-4 pb-[calc(env(safe-area-inset-bottom)+1rem)] pt-4">
           {islandSections.length === 0 ? (
-            <p className="text-center text-slate-500 p-4" role="status">{copy.noResults}</p>
+            <p className="text-center text-slate-700 p-4" role="status">{copy.noResults}</p>
           ) : (
             islandSections.map(({ group, list }) => (
               <div key={group}>
-                <h3 className="mb-2 px-1 text-[11px] font-black uppercase tracking-[0.08em] text-slate-500 dark:text-slate-400">
+                <h3 className="mb-2 px-1 text-[11px] font-black uppercase tracking-[0.08em] text-slate-700 dark:text-slate-600">
                   {getGroupLabel(group, language, t)}
                 </h3>
                 <div className="grid grid-cols-1 gap-1.5">

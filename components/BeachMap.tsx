@@ -320,7 +320,7 @@ const BeachHoverPreviewCard: React.FC<{
           </h3>
 
           {localWind && windLabel && (
-            <p className="mt-1 flex items-center gap-1 text-[10px] font-bold leading-tight text-slate-500">
+            <p className="mt-1 flex items-center gap-1 text-[10px] font-bold leading-tight text-slate-700">
               <Wind className="h-3 w-3 shrink-0 text-sky-600" aria-hidden="true" />
               <span>{windLabel} · {Math.round(localWind.speedKmh)} km/h</span>
             </p>
@@ -867,7 +867,7 @@ const getWindTone = (beaufort?: number) => {
       arrow: '#0284c7',
       dot: 'bg-sky-500',
       text: 'text-sky-800',
-      subtext: 'text-slate-500',
+      subtext: 'text-slate-700',
       chip: 'bg-sky-50 text-sky-700 border-sky-100',
     };
   }
@@ -899,7 +899,7 @@ const getWindTone = (beaufort?: number) => {
     arrow: '#0891b2',
     dot: 'bg-cyan-500',
     text: 'text-cyan-800',
-    subtext: 'text-slate-500',
+    subtext: 'text-slate-700',
     chip: 'bg-cyan-50 text-cyan-700 border-cyan-100',
   };
 };
@@ -1158,10 +1158,10 @@ const WindDirectionGraphic: React.FC<WindDirectionGraphicProps> = ({
     <div className={`pointer-events-none absolute z-[1000] ${positionClass}`}>
       <div className={`flex items-center gap-1.5 rounded-xl border border-white/75 bg-white/88 p-1.5 shadow-lg shadow-sky-900/12 ring-1 ${tone.ring} backdrop-blur-xl sm:gap-2 sm:rounded-2xl sm:p-2`}>
         <div className="relative h-10 w-10 shrink-0 rounded-full border border-slate-200/80 bg-gradient-to-b from-white to-sky-50/80 shadow-inner sm:h-[3.65rem] sm:w-[3.65rem]">
-          <span className="absolute left-1/2 top-0.5 -translate-x-1/2 text-[7px] font-black leading-none text-slate-400 sm:top-1 sm:text-[9px]">{compass.n}</span>
-          <span className="absolute right-0.5 top-1/2 -translate-y-1/2 text-[7px] font-black leading-none text-slate-400 sm:right-1 sm:text-[9px]">{compass.e}</span>
-          <span className="absolute bottom-0.5 left-1/2 -translate-x-1/2 text-[7px] font-black leading-none text-slate-400 sm:bottom-1 sm:text-[9px]">{compass.s}</span>
-          <span className="absolute left-0.5 top-1/2 -translate-y-1/2 text-[7px] font-black leading-none text-slate-400 sm:left-1 sm:text-[9px]">{compass.w}</span>
+          <span className="absolute left-1/2 top-0.5 -translate-x-1/2 text-[7px] font-black leading-none text-slate-600 sm:top-1 sm:text-[9px]">{compass.n}</span>
+          <span className="absolute right-0.5 top-1/2 -translate-y-1/2 text-[7px] font-black leading-none text-slate-600 sm:right-1 sm:text-[9px]">{compass.e}</span>
+          <span className="absolute bottom-0.5 left-1/2 -translate-x-1/2 text-[7px] font-black leading-none text-slate-600 sm:bottom-1 sm:text-[9px]">{compass.s}</span>
+          <span className="absolute left-0.5 top-1/2 -translate-y-1/2 text-[7px] font-black leading-none text-slate-600 sm:left-1 sm:text-[9px]">{compass.w}</span>
           <svg
             viewBox="0 0 64 64"
             className="absolute inset-0"
@@ -1840,11 +1840,11 @@ const BeachMap: React.FC<BeachMapProps> = ({
         {mapMode === 'wind' && (
           <div className="rounded-xl border border-slate-100 bg-slate-50 px-2.5 py-2 text-[11px] leading-snug text-slate-600">
             <div className="flex items-start gap-1.5">
-              <Wind className="mt-0.5 h-3.5 w-3.5 shrink-0 text-slate-500" />
+              <Wind className="mt-0.5 h-3.5 w-3.5 shrink-0 text-slate-700" />
               <span>{exposureReason}</span>
             </div>
             {showWindExposureColors && showWindExposureStatusLabels && (
-              <p className="mt-1.5 border-t border-slate-200/80 pt-1.5 text-[10px] font-semibold leading-snug text-slate-500">
+              <p className="mt-1.5 border-t border-slate-200/80 pt-1.5 text-[10px] font-semibold leading-snug text-slate-700">
                 {exposureInsightCopy.localShapeNote}
               </p>
             )}
@@ -1864,7 +1864,7 @@ const BeachMap: React.FC<BeachMapProps> = ({
 
         <div className="flex items-center justify-between gap-2 border-t border-slate-100 pt-2">
           {item.distance !== undefined ? (
-            <span className="inline-flex min-w-0 items-center gap-1 text-xs font-semibold text-slate-500">
+            <span className="inline-flex min-w-0 items-center gap-1 text-xs font-semibold text-slate-700">
               <MapPin className="h-3.5 w-3.5 shrink-0" />
               <span>{item.distance.toFixed(1)} km</span>
             </span>
@@ -1935,11 +1935,11 @@ const BeachMap: React.FC<BeachMapProps> = ({
             className={`${isPreview ? 'text-[10px] sm:text-[11px]' : 'text-[11px]'} flex min-w-0 flex-wrap items-center gap-x-1.5 gap-y-1 font-semibold leading-snug text-slate-600 dark:text-slate-300`}
           >
             <span className="shrink-0 font-extrabold text-slate-700 dark:text-slate-200">{row.range}</span>
-            <span className="shrink-0 text-slate-400">-</span>
+            <span className="shrink-0 text-slate-600">-</span>
             <span className="inline-flex min-w-0 flex-wrap items-center gap-x-1.5 gap-y-1">
               {row.segments.map((segment, index) => (
                 <React.Fragment key={`${row.id}-${segment.label}-${segment.dot}`}>
-                  {index > 0 && <span className="shrink-0 text-slate-400">/</span>}
+                  {index > 0 && <span className="shrink-0 text-slate-600">/</span>}
                   <span className="inline-flex min-w-0 items-center gap-1">
                     <span className="min-w-0">{segment.label}</span>
                     <span
@@ -1997,7 +1997,7 @@ const BeachMap: React.FC<BeachMapProps> = ({
             {showWindExposureColors && showWindExposureStatusLabels ? mapCopy.exposure[language] : mapCopy.calmWind[language]}
           </h4>
           {windSpeedKmh !== undefined && windDirection && (
-            <div className="mb-1.5 border-b border-slate-200 pb-1.5 text-slate-500 sm:mb-2 sm:pb-2 dark:border-slate-700 dark:text-slate-400">
+            <div className="mb-1.5 border-b border-slate-200 pb-1.5 text-slate-700 sm:mb-2 sm:pb-2 dark:border-slate-700 dark:text-slate-600">
               {mapCopy.current[language]}: {localizedWindDirection} {mapCopy.at[language]} {Math.round(windSpeedKmh)} km/h
               {windBeaufort !== undefined ? ` (${windBeaufort} ${mapCopy.beaufort[language]})` : ''}
             </div>
@@ -2040,7 +2040,7 @@ const BeachMap: React.FC<BeachMapProps> = ({
           <span className="truncate">{showWindExposureColors && showWindExposureStatusLabels ? mapCopy.exposure[language] : mapCopy.calmWind[language]}</span>
         </h4>
         {windSpeedKmh !== undefined && windDirection && (
-          <span className="shrink-0 text-[10px] font-semibold leading-tight text-slate-500 dark:text-slate-400">
+          <span className="shrink-0 text-[10px] font-semibold leading-tight text-slate-700 dark:text-slate-600">
             {localizedWindDirection} {Math.round(windSpeedKmh)} km/h
             {windBeaufort !== undefined ? ` · ${windBeaufort} ${mapCopy.beaufort[language]}` : ''}
           </span>
@@ -2098,7 +2098,7 @@ const BeachMap: React.FC<BeachMapProps> = ({
             type="button"
             onClick={() => setMapMode('recommendation')}
             aria-label={mapCopy.recommendationMode[language]}
-            className={`flex-1 whitespace-nowrap rounded-full px-2.5 py-1.5 text-[10px] font-bold transition-colors sm:flex-none sm:rounded-none sm:px-3 sm:py-2 sm:text-xs ${mapMode === 'recommendation' ? 'bg-cyan-50 text-cyan-600 shadow-sm dark:bg-cyan-900/30 dark:text-cyan-400' : 'text-slate-600 hover:bg-white/60 sm:hover:bg-slate-50 dark:text-slate-400 dark:hover:bg-slate-800'}`}
+            className={`flex-1 whitespace-nowrap rounded-full px-2.5 py-1.5 text-[10px] font-bold transition-colors sm:flex-none sm:rounded-none sm:px-3 sm:py-2 sm:text-xs ${mapMode === 'recommendation' ? 'bg-cyan-50 text-cyan-600 shadow-sm dark:bg-cyan-900/30 dark:text-cyan-400' : 'text-slate-600 hover:bg-white/60 sm:hover:bg-slate-50 dark:text-slate-600 dark:hover:bg-slate-800'}`}
           >
             <span className="sm:hidden">{mapCopy.recommendationShort[language]}</span>
             <span className="hidden sm:inline">{mapCopy.recommendationMode[language]}</span>
@@ -2107,7 +2107,7 @@ const BeachMap: React.FC<BeachMapProps> = ({
             type="button"
             onClick={() => setMapMode('wind')}
             aria-label={mapCopy.windMode[language]}
-            className={`flex-1 whitespace-nowrap rounded-full px-2.5 py-1.5 text-[10px] font-bold transition-colors sm:flex-none sm:rounded-none sm:px-3 sm:py-2 sm:text-xs ${mapMode === 'wind' ? 'bg-cyan-50 text-cyan-600 shadow-sm dark:bg-cyan-900/30 dark:text-cyan-400' : 'text-slate-600 hover:bg-white/60 sm:hover:bg-slate-50 dark:text-slate-400 dark:hover:bg-slate-800'}`}
+            className={`flex-1 whitespace-nowrap rounded-full px-2.5 py-1.5 text-[10px] font-bold transition-colors sm:flex-none sm:rounded-none sm:px-3 sm:py-2 sm:text-xs ${mapMode === 'wind' ? 'bg-cyan-50 text-cyan-600 shadow-sm dark:bg-cyan-900/30 dark:text-cyan-400' : 'text-slate-600 hover:bg-white/60 sm:hover:bg-slate-50 dark:text-slate-600 dark:hover:bg-slate-800'}`}
           >
             <span className="sm:hidden">{mapCopy.windShort[language]}</span>
             <span className="hidden sm:inline">{mapCopy.windMode[language]}</span>
@@ -2288,7 +2288,7 @@ const BeachMap: React.FC<BeachMapProps> = ({
             <button
               type="button"
               onClick={() => setSelectedBeachId(null)}
-              className="absolute right-2 top-2 grid h-8 w-8 place-items-center rounded-full bg-slate-50 text-slate-500 transition-colors hover:bg-slate-100 hover:text-slate-700 cursor-pointer"
+              className="absolute right-2 top-2 grid h-8 w-8 place-items-center rounded-full bg-slate-50 text-slate-700 transition-colors hover:bg-slate-100 hover:text-slate-700 cursor-pointer"
               aria-label={mapCopy.closeDetails[language]}
             >
               <X className="h-4 w-4" />
@@ -2357,13 +2357,13 @@ const BeachMap: React.FC<BeachMapProps> = ({
           <span className="shrink-0 text-[11px] font-extrabold tabular-nums text-[#007a83]">
             {formatSliderHour(activeHourItem.dt)} · {getBeaufortLevel(activeHourItem.wind.speed * 3.6)} {beaufortUnitLabel}
           </span>
-          <p className="hidden basis-full text-[11px] font-bold leading-snug text-slate-500 sm:block dark:text-slate-400">
+          <p className="hidden basis-full text-[11px] font-bold leading-snug text-slate-700 sm:block dark:text-slate-600">
             {hourSliderHelper[language]}
           </p>
         </div>
       )}
 
-      <div className="bg-white/92 px-2 py-1 text-right text-[9px] font-semibold leading-none text-slate-500 shadow-inner shadow-sky-900/5 dark:bg-slate-900/90 dark:text-slate-400">
+      <div className="bg-white/92 px-2 py-1 text-right text-[9px] font-semibold leading-none text-slate-700 shadow-inner shadow-sky-900/5 dark:bg-slate-900/90 dark:text-slate-600">
         Leaflet | © OpenStreetMap contributors
       </div>
 

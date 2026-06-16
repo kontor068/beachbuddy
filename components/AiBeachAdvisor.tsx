@@ -106,7 +106,7 @@ export const AiBeachAdvisor: React.FC<AiBeachAdvisorProps> = ({
             value={question}
             onChange={(e) => setQuestion(e.target.value)}
             placeholder={placeholder}
-            className="w-full rounded-2xl border border-white/70 bg-white/70 py-3.5 pl-5 pr-14 text-sm shadow-inner shadow-sky-900/5 transition-all placeholder:text-slate-400 focus:border-transparent focus:outline-none focus:ring-2 focus:ring-cyan-500 dark:border-slate-700 dark:bg-slate-800 dark:text-white"
+            className="w-full rounded-2xl border border-white/70 bg-white/70 py-3.5 pl-5 pr-14 text-sm shadow-inner shadow-sky-900/5 transition-all placeholder:text-slate-600 focus:border-transparent focus:outline-none focus:ring-2 focus:ring-cyan-500 dark:border-slate-700 dark:bg-slate-800 dark:text-white"
           />
           <button
             type="submit"
@@ -146,7 +146,7 @@ export const AiBeachAdvisor: React.FC<AiBeachAdvisorProps> = ({
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
-              className="flex items-center justify-center py-8 text-slate-400"
+              className="flex items-center justify-center py-8 text-slate-600"
             >
               <div className="flex items-center gap-3">
                 <Sparkles className="w-5 h-5 animate-spin text-cyan-500" />
@@ -181,7 +181,7 @@ export const AiBeachAdvisor: React.FC<AiBeachAdvisorProps> = ({
                     </div>
                     <div>
                       <h4 className="font-bold text-slate-900 dark:text-white mb-1">{beach.name}</h4>
-                      <p className="text-sm text-slate-500 dark:text-slate-400 leading-relaxed">
+                      <p className="text-sm text-slate-700 dark:text-slate-600 leading-relaxed">
                         {beach.explanation}
                       </p>
                     </div>
@@ -189,7 +189,7 @@ export const AiBeachAdvisor: React.FC<AiBeachAdvisorProps> = ({
                 ))}
                 
                 {advice.beaches.length === 0 && (
-                  <div className="text-center py-6 text-slate-500 dark:text-slate-400 text-sm">
+                  <div className="text-center py-6 text-slate-700 dark:text-slate-600 text-sm">
                     {language === 'gr' ? 'Δεν βρέθηκαν παραλίες με τα συγκεκριμένα κριτήρια.' : 'No beaches matched your specific criteria.'}
                   </div>
                 )}

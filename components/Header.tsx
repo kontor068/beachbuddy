@@ -177,7 +177,7 @@ const Header: React.FC<HeaderProps> = ({
                 <Languages className="h-4 w-4 text-[#007a83]" aria-hidden="true" />
                 <span className="hidden sm:inline">{languageLabel}</span>
                 <span className="sm:hidden">{languageLabels[language].short}</span>
-                <ChevronDown className={`h-3.5 w-3.5 text-slate-500 transition-transform ${isLanguageMenuOpen ? 'rotate-180' : ''}`} aria-hidden="true" />
+                <ChevronDown className={`h-3.5 w-3.5 text-slate-700 transition-transform ${isLanguageMenuOpen ? 'rotate-180' : ''}`} aria-hidden="true" />
               </button>
 
               {isLanguageMenuOpen && (

@@ -61,7 +61,7 @@ export const PreferenceFilters: React.FC<PreferenceFiltersProps> = ({ preference
               isActive
                 ? 'bg-cyan-600 text-white border-cyan-600 shadow-cyan-200/70'
                 : wouldReturnNoResults
-                ? 'border-white/50 bg-white/48 text-slate-500 shadow-none hover:border-cyan-300 hover:bg-white/72 hover:text-cyan-600'
+                ? 'border-white/50 bg-white/48 text-slate-700 shadow-none hover:border-cyan-300 hover:bg-white/72 hover:text-cyan-600'
                 : 'bg-white/62 text-slate-600 border-white/65 hover:border-cyan-300 hover:bg-white/80 hover:text-cyan-600'
             }`}
           >

@@ -70,50 +70,102 @@ for (const a of process.argv.slice(2)) {
 
 const sleep = (ms) => new Promise(r => setTimeout(r, ms));
 const date = new Date().toISOString().slice(0, 10);
-const BEACHY = new Set(['beach', 'natural_feature']);
-// Google sometimes classifies a genuine beach as tourist_attraction/point_of_interest/locality.
-// Treat those as beach-like ONLY when the returned NAME says it's a beach ("Παραλία …"/"… Beach")
-// — that keeps real beaches (Κάπρος → "Παραλία Κάπρος" [tourist_attraction]) as PASS while still
-// catching a true wrong POI (a lodging/cafe/church named after the spot).
+// `beach` is the only Google type that means "this is a beach". `natural_feature` is NOT enough on
+// its own — lakes, capes, mountains, rivers all carry it (e.g. the lake "Αχιβαδόλιμνη" is
+// [lake, natural_feature]). So natural_feature only counts when the NAME also says beach.
+const BEACHY = new Set(['beach']);
+// Types Google sometimes uses for a genuine beach — accept ONLY when the name says "Παραλία/Beach"
+// (keeps "Παραλία Κάπρος" [tourist_attraction] as a beach, rejects a lake/landmark of the same name).
 const SOFT_BEACHY = new Set(['tourist_attraction', 'point_of_interest', 'locality', 'natural_feature', 'scenic_spot']);
+// Non-beach natural features that must never be accepted even if the name contains "beach".
+const NON_BEACH_FEATURE = new Set(['lake', 'river', 'mountain', 'mountain_peak', 'plateau', 'volcano', 'cape']);
 // Business / POI types that mean Google resolved to an ESTABLISHMENT, not the beach itself —
 // even if its name contains "Beach" (e.g. "Kamares Beach Bar", "Astir Beach [resort_hotel]").
 // Never accept these: routing there sends the user to a bar/hotel, not the sand. Stay coordinates.
 const BUSINESS_TYPES = new Set([
   'bar', 'restaurant', 'cafe', 'night_club', 'resort_hotel', 'hotel', 'lodging', 'food',
   'sports_club', 'sports_complex', 'sports_activity_location', 'service', 'store', 'spa', 'gym',
+  'banquet_hall', 'event_venue', 'bus_stop', 'transit_station', 'transportation_service',
+  'parking', 'travel_agency', 'real_estate_agency',
 ]);
 const nameSaysBeach = (name) => /(^|\s)(παραλία|παραλια|beach)(\s|$)|beach$/i.test(String(name || '').trim());
 const looksLikeBeach = (place) => {
   const types = new Set([place.primaryType, ...(place.types || [])].filter(Boolean));
-  if ([...types].some(t => BUSINESS_TYPES.has(t))) return false; // a business POI, not the beach
-  if ([...types].some(t => BEACHY.has(t))) return true;
+  if ([...types].some(t => BUSINESS_TYPES.has(t))) return false;      // a business POI, not the beach
+  if ([...types].some(t => NON_BEACH_FEATURE.has(t))) return false;   // a lake/cape/etc, not the beach
+  if (place.primaryType === 'beach' || types.has('beach')) return true;
   if (nameSaysBeach(place.displayName?.text) && [...types].some(t => SOFT_BEACHY.has(t))) return true;
   return false;
 };
 
-// Minimal field mask — only what the classifier needs (location/types tier the request, so we
-// avoid pulling anything extra). Cache the top result by query so re-runs/batches never re-bill.
-const googleSearch = async (query, key, cache) => {
-  const cacheKey = `gplace:${query}`;
-  if (cache) {
-    const hit = cache.get(cacheKey);
-    if (hit !== undefined) return hit; // cached top place (or null)
-  }
+// One raw Text Search call — returns ALL candidate places (not just the top). Field mask includes
+// places.id (the Place ID we ship for reliable query_place_id routing); location/types tier the
+// request at Pro, so id is free to add.
+const googleSearchOnce = async (query, key) => {
   const res = await fetch('https://places.googleapis.com/v1/places:searchText', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
       'X-Goog-Api-Key': key,
-      'X-Goog-FieldMask': 'places.displayName,places.location,places.primaryType,places.types',
+      'X-Goog-FieldMask': 'places.id,places.displayName,places.location,places.primaryType,places.types',
     },
     body: JSON.stringify({ textQuery: query, languageCode: 'el' }),
   });
   const json = await res.json().catch(() => ({}));
   if (json.error) throw new Error(`${json.error.status}: ${json.error.message || ''}`.slice(0, 120));
-  const top = (json.places || [])[0] || null;
-  if (cache) cache.set(cacheKey, top); // cache genuine results (incl. null); errors throw and aren't cached
-  return top;
+  return json.places || [];
+};
+
+// Pick the BEST candidate for a beach pin from a Google result list: the nearest actual beach
+// within `far` of the pin. This rescues ambiguous names where the top result is a different place
+// of the same name (e.g. "Αχιβαδολίμνη" → the lake is often #1, but "Παραλία Αχιβαδόλιμνη" [beach]
+// is also returned). Falls back to the nearest result of any type if no beach is in range.
+const pickBeachCandidate = (places, coord, far) => {
+  if (!places || !places.length) return null;
+  const withDist = places.map(p => ({
+    p,
+    distM: coord && p.location ? Math.round(distanceMeters(coord, { lat: p.location.latitude, lon: p.location.longitude })) : null,
+  }));
+  const beaches = withDist
+    .filter(x => looksLikeBeach(x.p) && Number.isFinite(x.distM) && x.distM <= far)
+    .sort((a, b) => a.distM - b.distM);
+  if (beaches.length) return beaches[0];
+  return withDist.slice().sort((a, b) => (a.distM ?? 9e9) - (b.distM ?? 9e9))[0] || null;
+};
+
+// STABILITY GATE: the Places API is non-deterministic / returns ambiguous lists, so we must not
+// ship an unstable result. We try a short ladder of query forms (the bare app query, then a
+// "Παραλία <name>" variant to surface a beach when the bare name resolves to a lake/landmark of the
+// same name, e.g. Αχιβαδόλιμνη). The FIRST form that yields a beach near the pin is then verified
+// TWICE — trustworthy only when both calls return the SAME beach Place ID. Returns
+// { place, distM, stable, query }. Cached (keyed gp4:) so re-runs are free.
+const callBilledRef = { n: 0 };
+const googleSearchStable = async (queries, key, cache, sleepMs, coord, far) => {
+  const cacheKey = `gp4:${queries.join('|')}`;
+  if (cache) {
+    const hit = cache.get(cacheKey);
+    if (hit !== undefined) return hit;
+  }
+  let result = { place: null, distM: null, stable: false, query: queries[0] };
+  for (const q of queries) {
+    const listA = await googleSearchOnce(q, key); callBilledRef.n += 1;
+    await sleep(Math.max(sleepMs, 250));
+    const a = pickBeachCandidate(listA, coord, far);
+    const aIsBeach = a && looksLikeBeach(a.p) && Number.isFinite(a.distM) && a.distM <= far;
+    if (!aIsBeach) {
+      // keep the nearest non-beach as a fallback record but try the next ladder form
+      if (!result.place) result = { place: a?.p || null, distM: a?.distM ?? null, stable: false, query: q };
+      continue;
+    }
+    const listB = await googleSearchOnce(q, key); callBilledRef.n += 1;
+    await sleep(Math.max(sleepMs, 250));
+    const b = pickBeachCandidate(listB, coord, far);
+    const stable = Boolean(a.p.id && b?.p?.id && a.p.id === b.p.id);
+    result = { place: a.p, distM: a.distM, stable, query: q };
+    if (stable) break; // good enough; don't burn more ladder forms
+  }
+  if (cache) cache.set(cacheKey, result);
+  return result;
 };
 
 // Is this beach currently a NAME/place-routed beach (the original audit scope: at risk of a wrong
@@ -160,8 +212,10 @@ const run = async () => {
       if (isBoatOnly(beach)) continue;
       const nav = beach?.metadata?.googleMapsNavigation;
       if (args.upgradeScan) {
-        // Candidates currently routed by coordinate that we might safely upgrade to a place card.
-        if (!isUpgradeCandidate(beach)) continue;
+        // Nationwide reliability pass: EVERY beach with a pin + a name is (re)checked — both the
+        // coordinate-routed candidates AND the ones already place-routed (whose name queries we no
+        // longer trust). They all get re-decided as Place-ID-or-coordinate.
+        if (!getCoordinate(beach)) continue;
         const query = buildPlaceQuery(beach, region);
         if (query) targets.push({ region, beach, query });
       } else {
@@ -171,35 +225,58 @@ const run = async () => {
     }
   }
   const scoped = Number.isInteger(args.limit) && args.limit > 0 ? targets.slice(0, args.limit) : targets;
-  console.log(`${args.upgradeScan ? 'Coordinate-routed upgrade candidates' : 'Place-routed beaches'} to check against Google: ${scoped.length}`);
+  console.log(`${args.upgradeScan ? 'Beaches to (re)check for Place-ID routing' : 'Place-routed beaches'} to check against Google: ${scoped.length}`);
 
   const cache = openPlaceCache(cachePath);
   if (cache.size() > 0) console.log(`Google cache: ${cache.size()} entries (reused, no re-bill).`);
 
+  // Query ladder: the bare app query, then a "Παραλία <name>" variant (and its mirror) that
+  // surfaces the BEACH when the bare name resolves to a same-named lake/landmark (Αχιβαδόλιμνη).
+  const buildQueryLadder = (beach, region) => {
+    const base = buildPlaceQuery(beach, region); // "<name>, <island>, Greece"
+    if (!base) return [];
+    const gr = (beach.name?.gr || '').trim();
+    const ladder = [base];
+    if (gr && !/^παραλ/i.test(gr)) {
+      // insert "Παραλία " in front of the name part of the base query
+      const idx = base.indexOf(',');
+      const withPrefix = idx > 0 ? `Παραλία ${base.slice(0, idx)}${base.slice(idx)}` : `Παραλία ${base}`;
+      ladder.push(withPrefix);
+    }
+    return [...new Set(ladder)];
+  };
+
   const rows = [];
-  let done = 0; let billed = 0;
-  for (const { region, beach, query } of scoped) {
+  let done = 0;
+  for (const { region, beach } of scoped) {
     const coord = getCoordinate(beach);
-    let status = 'NO_RESULT'; let top = null; let distM = null; let error = null;
-    if (query) {
-      const wasCached = cache.get(`gplace:${query}`) !== undefined;
+    const ladder = buildQueryLadder(beach, region);
+    let status = 'NO_RESULT'; let top = null; let distM = null; let error = null; let placeId = null; let stable = false; let query = ladder[0] || null;
+    if (ladder.length) {
+      const wasCached = cache.get(`gp4:${ladder.join('|')}`) !== undefined;
       try {
-        const p = await googleSearch(query, key, cache);
-        if (!wasCached) { billed += 1; await sleep(args.sleepMs); } // pace only real network calls
+        const before = callBilledRef.n;
+        const { place: p, distM: d, stable: isStable, query: usedQ } = await googleSearchStable(ladder, key, cache, args.sleepMs, coord, args.far);
+        query = usedQ;
+        if (!wasCached) await sleep(args.sleepMs);
+        void before;
+        stable = isStable;
         if (p) {
-          const loc = { lat: p.location.latitude, lon: p.location.longitude };
-          distM = coord ? Math.round(distanceMeters(coord, loc)) : null;
+          distM = d;
           const isBeachy = looksLikeBeach(p);
-          top = { name: p.displayName?.text, primaryType: p.primaryType, types: p.types, loc };
+          placeId = p.id || null;
+          top = { name: p.displayName?.text, primaryType: p.primaryType, types: p.types, loc: p.location ? { lat: p.location.latitude, lon: p.location.longitude } : null };
+          // PASS requires: a real beach, near the pin, a stable Place ID across both calls.
           if (!Number.isFinite(distM)) status = 'NO_RESULT';
-          else if (isBeachy && distM <= args.far) status = 'PASS';        // a beach at/near the pin
-          else if (!isBeachy && distM <= args.far) status = 'WRONG_TYPE'; // a non-beach POI nearby
-          else status = 'WRONG_PLACE';                                    // anything far away
+          else if (isBeachy && distM <= args.far && stable && placeId) status = 'PASS';
+          else if (isBeachy && distM <= args.far && !(stable && placeId)) status = 'UNSTABLE';
+          else if (!isBeachy && distM <= args.far) status = 'WRONG_TYPE';
+          else status = 'WRONG_PLACE';
         }
       } catch (e) { error = String(e.message || e); status = 'API_ERROR'; }
     }
-    rows.push({ id: beach.id, name: getBeachName(beach), regionId: region.id, island: region.prefecture, query, coordinate: coord, status, distM, top, error });
-    if (++done % 25 === 0) { cache.flush(); process.stderr.write(`...${done}/${scoped.length} (billed ~${billed})\n`); }
+    rows.push({ id: beach.id, name: getBeachName(beach), regionId: region.id, island: region.prefecture, query, coordinate: coord, status, distM, placeId, stable, top, error, currentlyPlaceRouted: isPlaceRouted(beach?.metadata?.googleMapsNavigation) });
+    if (++done % 25 === 0) { cache.flush(); process.stderr.write(`...${done}/${scoped.length} (Google calls ~${callBilledRef.n})\n`); }
   }
   cache.flush();
 
@@ -210,17 +287,33 @@ const run = async () => {
 
   let fixes;
   if (args.upgradeScan) {
-    // UPGRADE: only PASS rows get a place query (the Google beach card). Everything else stays
-    // coordinate-routed exactly as it is — no change, no risk.
-    fixes = rows.filter(r => r.status === 'PASS' && r.coordinate && r.query).map(r => ({
+    // Reliability pass — EVERY scanned beach gets an explicit, trustworthy decision so no bare
+    // name query survives:
+    //   PASS (stable beach Place ID near pin) -> place routing WITH placeId (exact Google card).
+    //   everything else                       -> coordinates (always the exact pin).
+    // Re-validate the stored top against the CURRENT looksLikeBeach (catches types newly added to
+    // the reject list — e.g. banquet_hall/bus_stop — without re-billing the cached scan).
+    const passFixes = rows.filter(r => r.status === 'PASS' && r.coordinate && r.placeId
+      && r.top && looksLikeBeach({ primaryType: r.top.primaryType, types: r.top.types, displayName: { text: r.top.name } })
+    ).map(r => ({
       id: r.id, name: r.name, lat: r.coordinate.lat, lon: r.coordinate.lon,
-      navMode: 'place', status: 'verified', query: r.query,
-      why: `Google ground-truth ${date}: query "${r.query}" resolves to this beach on Google Maps (${r.top?.name || ''}, ${r.distM} m from the pin) — upgrade to a place query for the Google beach card.`,
+      navMode: 'place', status: 'verified', query: r.query, placeId: r.placeId,
+      why: `Google ground-truth ${date}: stable Place ID ${r.placeId} (${r.top?.name || ''}, ${r.distM} m from the pin) — route to the exact Google card via query_place_id.`,
     }));
-    // Visibility: the non-PASS candidates that stay on coordinates and why.
+    // Demote any beach that is CURRENTLY place-routed but is NOT in the upgraded set — these are the
+    // unreliable name queries (the Νεροδάφνη class) or re-rejected types (banquet_hall/bus_stop).
+    // Force them to coordinates (exact pin) so no bare/wrong place query survives.
+    const upgradedIds = new Set(passFixes.map(f => f.id));
+    const demoteFixes = rows.filter(r => r.coordinate && r.currentlyPlaceRouted && !upgradedIds.has(r.id)).map(r => ({
+      id: r.id, name: r.name, lat: r.coordinate.lat, lon: r.coordinate.lon,
+      navMode: 'coordinates', status: 'verified',
+      why: `Google ground-truth ${date}: query "${r.query}" did not yield a stable beach Place ID on Google (${r.status}${r.top ? `, got ${r.top.name} [${r.top.primaryType}]` : ''}) — route by coordinate pin to avoid a wrong/failed Maps result.`,
+    }));
+    fixes = [...passFixes, ...demoteFixes];
+    // Visibility CSV of everything NOT upgraded.
     const skipped = rows.filter(r => r.status !== 'PASS');
-    const csv = ['id,name,island,status,distM,googleResult,googleType,query'];
-    for (const r of skipped) csv.push([r.id, r.name, r.island, r.status, r.distM ?? '', r.top?.name ?? '', r.top?.primaryType ?? '', r.query].map(v => { const s = v == null ? '' : String(v); return /[",\n]/.test(s) ? `"${s.replace(/"/g, '""')}"` : s; }).join(','));
+    const csv = ['id,name,island,status,distM,stable,googleResult,googleType,placeId,query'];
+    for (const r of skipped) csv.push([r.id, r.name, r.island, r.status, r.distM ?? '', r.stable, r.top?.name ?? '', r.top?.primaryType ?? '', r.placeId ?? '', r.query].map(v => { const s = v == null ? '' : String(v); return /[",\n]/.test(s) ? `"${s.replace(/"/g, '""')}"` : s; }).join(','));
     await writeFile(path.join(outDir, 'google-upgrade-skipped.csv'), csv.join('\n'), 'utf8');
   } else {
     // Original mode: demote anything that is NOT a clean PASS back to the pin.
@@ -234,8 +327,13 @@ const run = async () => {
 
   const byStatus = rows.reduce((a, r) => { a[r.status] = (a[r.status] || 0) + 1; return a; }, {});
   console.log('Status:', JSON.stringify(byStatus));
-  console.log(`Billed (new Google calls this run): ~${billed}`);
-  console.log(`${args.upgradeScan ? 'Upgrades -> place' : 'Fixes -> coordinates'}: ${fixes.length}`);
+  console.log(`Billed (new Google calls this run): ~${callBilledRef.n}`);
+  if (args.upgradeScan) {
+    const toPlace = fixes.filter(f => f.navMode === 'place').length;
+    console.log(`Fixes: ${toPlace} -> Place-ID place routing, ${fixes.length - toPlace} -> coordinates (demoted unreliable name queries)`);
+  } else {
+    console.log(`Fixes -> coordinates: ${fixes.length}`);
+  }
   console.log(`Wrote reports/place-resolution/${fullName} and ${fixName}${args.upgradeScan ? ' and google-upgrade-skipped.csv' : ''}`);
 };
 

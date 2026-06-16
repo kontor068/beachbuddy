@@ -57,7 +57,7 @@ const BeachListTabs: React.FC<BeachListTabsProps> = ({ activeTab, onTabChange, c
                     isActive={activeTab === 'favorites'}
                     onClick={() => onTabChange('favorites')}
                     activeClasses="border-purple-500 text-purple-700 dark:text-purple-400"
-                    inactiveClasses="border-transparent text-slate-500 dark:text-slate-400 hover:bg-slate-200/50 dark:hover:bg-slate-800/50 hover:border-slate-300 dark:hover:border-slate-600 focus-visible:ring-purple-500"
+                    inactiveClasses="border-transparent text-slate-700 dark:text-slate-600 hover:bg-slate-200/50 dark:hover:bg-slate-800/50 hover:border-slate-300 dark:hover:border-slate-600 focus-visible:ring-purple-500"
                 />
             )}
             <TabButton
@@ -66,7 +66,7 @@ const BeachListTabs: React.FC<BeachListTabsProps> = ({ activeTab, onTabChange, c
                 isActive={activeTab === 'sheltered'}
                 onClick={() => onTabChange('sheltered')}
                 activeClasses="border-cyan-500 text-cyan-700 dark:text-cyan-400"
-                inactiveClasses="border-transparent text-slate-500 dark:text-slate-400 hover:bg-slate-200/50 dark:hover:bg-slate-800/50 hover:border-slate-300 dark:hover:border-slate-600"
+                inactiveClasses="border-transparent text-slate-700 dark:text-slate-600 hover:bg-slate-200/50 dark:hover:bg-slate-800/50 hover:border-slate-300 dark:hover:border-slate-600"
             />
             <TabButton
                 label={t.exposedTitle}
@@ -74,7 +74,7 @@ const BeachListTabs: React.FC<BeachListTabsProps> = ({ activeTab, onTabChange, c
                 isActive={activeTab === 'exposed'}
                 onClick={() => onTabChange('exposed')}
                 activeClasses="border-amber-500 text-amber-700 dark:text-amber-400"
-                inactiveClasses="border-transparent text-slate-500 dark:text-slate-400 hover:bg-slate-200/50 dark:hover:bg-slate-800/50 hover:border-slate-300 dark:hover:border-slate-600 focus-visible:ring-amber-500"
+                inactiveClasses="border-transparent text-slate-700 dark:text-slate-600 hover:bg-slate-200/50 dark:hover:bg-slate-800/50 hover:border-slate-300 dark:hover:border-slate-600 focus-visible:ring-amber-500"
             />
         </div>
     </div>

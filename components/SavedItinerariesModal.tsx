@@ -96,9 +96,9 @@ const SavedItineraryItem: React.FC<{
         >
           <div className="flex-1 text-left">
             <p className="font-bold text-slate-800">{itinerary.name}</p>
-            <p className="text-xs text-slate-500">{t.savedItineraries.savedOn(dateFmt.format(new Date(itinerary.createdAt)))}</p>
+            <p className="text-xs text-slate-700">{t.savedItineraries.savedOn(dateFmt.format(new Date(itinerary.createdAt)))}</p>
           </div>
-          <svg xmlns="http://www.w3.org/2000/svg" className={`h-6 w-6 text-slate-500 transform transition-transform duration-300 ${isOpen ? 'rotate-180' : ''}`} viewBox="0 0 20 20" fill="currentColor">
+          <svg xmlns="http://www.w3.org/2000/svg" className={`h-6 w-6 text-slate-700 transform transition-transform duration-300 ${isOpen ? 'rotate-180' : ''}`} viewBox="0 0 20 20" fill="currentColor">
             <path fillRule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clipRule="evenodd" />
           </svg>
         </button>
@@ -246,7 +246,7 @@ const SavedItinerariesModal: React.FC<SavedItinerariesModalProps> = ({ isOpen, o
           <h2 id="saved-itineraries-title" className="text-xl font-bold text-slate-800">{t.savedItineraries.title}</h2>
           <button
             onClick={onClose}
-            className="p-2.5 text-slate-500 hover:bg-slate-200 rounded-full"
+            className="p-2.5 text-slate-700 hover:bg-slate-200 rounded-full"
             aria-label={t.closeModalLabel}
           >
             <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" /></svg>
@@ -267,11 +267,11 @@ const SavedItinerariesModal: React.FC<SavedItinerariesModalProps> = ({ isOpen, o
             </div>
           ) : (
             <div className="text-center py-12">
-               <svg xmlns="http://www.w3.org/2000/svg" className="mx-auto h-12 w-12 text-slate-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
+               <svg xmlns="http://www.w3.org/2000/svg" className="mx-auto h-12 w-12 text-slate-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
                  <path strokeLinecap="round" strokeLinejoin="round" d="M5 5a2 2 0 012-2h10a2 2 0 012 2v16l-7-3.5L5 21V5z" />
                </svg>
               <h3 className="mt-2 text-lg font-semibold text-slate-800">{t.savedItineraries.noSavedPlans}</h3>
-              <p className="mt-1 text-sm text-slate-500">{t.savedItineraries.noSavedPlansDesc}</p>
+              <p className="mt-1 text-sm text-slate-700">{t.savedItineraries.noSavedPlansDesc}</p>
             </div>
           )}
         </div>

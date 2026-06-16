@@ -127,7 +127,7 @@ const HourlyForecastDetail: React.FC<{ hourlyData: ForecastItem[]; t: any }> = (
 
             <div className="flex shrink-0 items-center gap-2">
               <div className="flex items-center gap-1.5">
-                <span className="text-xs font-semibold text-slate-500">{t.windDirectionsShort[windDir]}</span>
+                <span className="text-xs font-semibold text-slate-700">{t.windDirectionsShort[windDir]}</span>
                 <div
                   className="rounded-full bg-sky-50/80 p-1 text-sky-500 dark:bg-sky-900/20"
                   style={{ transform: `rotate(${item.wind.deg}deg)` }}
@@ -182,7 +182,7 @@ const ForecastCard: React.FC<{
         whileTap={disabled ? undefined : { scale: 0.98 }}
         className={`flex min-h-[54px] min-w-0 flex-col items-center justify-center gap-0.5 rounded-2xl border px-1.5 transition focus:outline-none focus-visible:ring-2 focus-visible:ring-cyan-500 sm:h-[50px] sm:min-w-[104px] sm:shrink-0 sm:flex-row sm:gap-2 sm:px-3 ${
           disabled
-            ? 'cursor-not-allowed border-slate-200/45 bg-white/42 text-slate-400 opacity-45 shadow-none grayscale'
+            ? 'cursor-not-allowed border-slate-200/45 bg-white/42 text-slate-600 opacity-45 shadow-none grayscale'
             : isSelected
             ? 'border-sky-100 bg-sky-100/78 text-sky-800 shadow-sm shadow-sky-900/8 ring-1 ring-white/70'
             : 'border-slate-200/75 bg-white/86 text-slate-700 shadow-sm shadow-slate-900/8 hover:border-sky-200 hover:bg-sky-50/70'
@@ -232,7 +232,7 @@ const ForecastCard: React.FC<{
         whileTap={disabled ? undefined : { scale: 0.98 }}
         className={`flex w-full min-w-0 items-center justify-center rounded-2xl border transition focus:outline-none focus-visible:ring-2 focus-visible:ring-cyan-500 ${pillLayout} ${
           disabled
-            ? 'cursor-not-allowed border-slate-200/45 bg-white/42 text-slate-400 opacity-45 shadow-none grayscale'
+            ? 'cursor-not-allowed border-slate-200/45 bg-white/42 text-slate-600 opacity-45 shadow-none grayscale'
             : isSelected
             ? 'border-sky-100 bg-sky-100/78 text-sky-800 shadow-sm shadow-sky-900/8 ring-1 ring-white/70'
             : 'border-slate-200/75 bg-white/86 text-slate-700 shadow-sm shadow-slate-900/8 hover:border-sky-200 hover:bg-sky-50/70'
@@ -289,7 +289,7 @@ const ForecastCard: React.FC<{
         <span className="mb-0.5 max-w-full truncate font-heading text-[10px] font-bold text-slate-900 min-[390px]:text-[11px] md:text-xs dark:text-white">
           {dayLabel}
         </span>
-        <span className="mb-0.5 max-w-full truncate text-[9px] font-semibold text-slate-500 min-[390px]:text-[10px] sm:mb-1 md:text-[11px] dark:text-white">
+        <span className="mb-0.5 max-w-full truncate text-[9px] font-semibold text-slate-700 min-[390px]:text-[10px] sm:mb-1 md:text-[11px] dark:text-white">
           {dateFormatter.format(forecast.date)}
         </span>
 
@@ -315,7 +315,7 @@ const ForecastCard: React.FC<{
             >
               <Wind className="h-2 w-2 sm:h-2.5 sm:w-2.5" />
             </div>
-            <span className="max-w-8 truncate text-[11px] font-bold text-slate-500 sm:inline sm:max-w-none sm:text-xs">
+            <span className="max-w-8 truncate text-[11px] font-bold text-slate-700 sm:inline sm:max-w-none sm:text-xs">
               {t.windDirectionsShort[windDirection]}
             </span>
           </div>
@@ -438,7 +438,7 @@ const Forecast: React.FC<ForecastProps> = ({
                 aria-label={buttonLabel}
                 className={`relative flex min-h-[56px] min-w-0 flex-col items-center justify-center rounded-xl border px-0.5 py-1 text-center transition focus:outline-none focus-visible:ring-2 focus-visible:ring-cyan-500 sm:min-h-[62px] sm:px-1 ${
                   isDisabled
-                    ? 'cursor-not-allowed border-white/20 bg-white/10 text-slate-400 opacity-40 grayscale'
+                    ? 'cursor-not-allowed border-white/20 bg-white/10 text-slate-600 opacity-40 grayscale'
                     : isSelected
                     ? 'border-sky-200 bg-white/78 shadow-sm ring-1 ring-sky-200/45'
                     : 'border-white/35 bg-white/22 hover:border-sky-200 hover:bg-white/45'
@@ -452,7 +452,7 @@ const Forecast: React.FC<ForecastProps> = ({
                 <span className="max-w-full truncate font-heading text-[8px] font-bold leading-tight text-slate-900 sm:text-[9px]">
                   {dayLabel}
                 </span>
-                <span className="max-w-full truncate text-[7px] font-semibold leading-tight text-slate-500 sm:text-[8px]">
+                <span className="max-w-full truncate text-[7px] font-semibold leading-tight text-slate-700 sm:text-[8px]">
                   {dateFormatter.format(forecast.date)}
                 </span>
                 <div className="mt-0.5 flex items-center justify-center gap-0.5">
@@ -461,7 +461,7 @@ const Forecast: React.FC<ForecastProps> = ({
                     {Math.round(forecast.temp_max)}°
                   </span>
                 </div>
-                <div className="mt-0.5 flex max-w-full items-center justify-center gap-0.5 truncate text-[7px] font-bold leading-none text-slate-500 sm:text-[8px]">
+                <div className="mt-0.5 flex max-w-full items-center justify-center gap-0.5 truncate text-[7px] font-bold leading-none text-slate-700 sm:text-[8px]">
                   <Wind className="h-2 w-2 shrink-0 text-sky-400" aria-hidden="true" style={{ transform: `rotate(${forecast.wind.deg}deg)` }} />
                   <span className="truncate">{t.windDirectionsShort[windDirection]}</span>
                   <span className="shrink-0">{beaufortLevel} {t.units.beaufort}</span>
@@ -585,7 +585,7 @@ const Forecast: React.FC<ForecastProps> = ({
                     <h3 className="min-w-0 truncate font-heading text-sm font-semibold text-slate-600">
                       {hourlyTitle}
                     </h3>
-                    <span className="ml-auto hidden truncate text-xs font-semibold text-slate-500 sm:block">
+                    <span className="ml-auto hidden truncate text-xs font-semibold text-slate-700 sm:block">
                       {selectedForecastDateLabel}
                     </span>
                   </div>
@@ -667,7 +667,7 @@ const Forecast: React.FC<ForecastProps> = ({
                 <h3 className="min-w-0 truncate font-heading text-sm font-semibold text-slate-600">
                   {hourlyTitle}
                 </h3>
-                <span className="ml-auto hidden truncate text-xs font-semibold text-slate-500 sm:block">
+                <span className="ml-auto hidden truncate text-xs font-semibold text-slate-700 sm:block">
                   {selectedForecastDateLabel}
                 </span>
               </div>
@@ -695,7 +695,7 @@ const Forecast: React.FC<ForecastProps> = ({
                   <h3 className="min-w-0 truncate font-heading text-sm font-semibold text-slate-600">
                     {hourlyTitle}
                   </h3>
-                  <span className="ml-auto hidden truncate text-xs font-semibold text-slate-500 sm:block">
+                  <span className="ml-auto hidden truncate text-xs font-semibold text-slate-700 sm:block">
                     {selectedForecastDateLabel}
                   </span>
                 </div>

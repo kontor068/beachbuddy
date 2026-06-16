@@ -337,7 +337,7 @@ export const BeachConditionScore: React.FC<BeachConditionScoreProps> = ({
     <div className="bg-white dark:bg-slate-800 rounded-xl p-4 shadow-sm border border-slate-100 dark:border-slate-700">
       <div className="flex items-center justify-between mb-4 pb-4 border-b border-slate-100 dark:border-slate-700">
         <div>
-          <h3 className="text-sm font-semibold text-slate-500 dark:text-slate-400 mb-1">
+          <h3 className="text-sm font-semibold text-slate-700 dark:text-slate-600 mb-1">
             {copy.seaConditionsTitle(getSelectedDayPrefix(selectedDate, new Date(), language))}
           </h3>
           <div className="flex items-baseline gap-2">

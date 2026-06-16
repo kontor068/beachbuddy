@@ -360,7 +360,7 @@ const StartupLocationPrompt: React.FC<{
             <p className="mt-1 line-clamp-2 text-xs font-semibold leading-5 text-slate-600 sm:text-sm">
               {copy.body}
             </p>
-            <p className="mt-1 text-[11px] font-bold leading-4 text-slate-500 sm:text-xs">
+            <p className="mt-1 text-[11px] font-bold leading-4 text-slate-700 sm:text-xs">
               {copy.privacy}
             </p>
           </div>
@@ -4790,6 +4790,7 @@ export const App: React.FC = () => {
               isFindingCurrentLocation={isFindingNearest}
               currentLocationError={findNearestError}
               onCategorySelect={handleDirectoryCategorySelect}
+              onClearAllFilters={handleClearSearchAndFilters}
               onSortChange={handleSortChange}
               onAdvancedFilterToggle={handleToggleAdvancedFilter}
               onForecastDaySelect={setSelectedDayIndex}
@@ -5232,7 +5233,7 @@ export const App: React.FC = () => {
                       </motion.div>
                     ))}
                     </div>
-                    <p className="mx-auto mt-3 max-w-2xl px-1 text-center text-[11px] font-semibold leading-relaxed text-slate-500 sm:mt-4 sm:text-xs">
+                    <p className="mx-auto mt-3 max-w-2xl px-1 text-center text-[11px] font-semibold leading-relaxed text-slate-700 sm:mt-4 sm:text-xs">
                       Recommendations are indicative and based on available weather and beach data. Conditions may vary locally. Always follow local warnings and use personal judgment.
                     </p>
                   </div>
@@ -5296,7 +5297,7 @@ export const App: React.FC = () => {
                       <h2 className="font-heading text-base font-bold text-slate-900">
                         {homeCopy.betaFeedbackTitle[language]}
                       </h2>
-                      <p className="text-sm font-medium leading-snug text-slate-500">
+                      <p className="text-sm font-medium leading-snug text-slate-700">
                         {homeCopy.betaFeedbackBody[language]}
                       </p>
                     </div>
@@ -5322,7 +5323,7 @@ export const App: React.FC = () => {
                         <span className="hidden sm:inline">{homeCopy.mapTitle[language]}</span>
                       </h2>
                     </div>
-                    <p className="hidden text-center text-xs font-semibold leading-snug text-slate-500/80 sm:block sm:text-sm">
+                    <p className="hidden text-center text-xs font-semibold leading-snug text-slate-700/80 sm:block sm:text-sm">
                       {homeCopy.mapSubtitle[language]}
                     </p>
                   </div>
@@ -5383,7 +5384,7 @@ export const App: React.FC = () => {
                         aria-label={homeCopy.mapLoadPrompt[language]}
                       >
                         <span>{homeCopy.mapLoadPrompt[language]}</span>
-                        <span className="text-xs font-semibold text-slate-400">{homeCopy.mapSubtitle[language]}</span>
+                        <span className="text-xs font-semibold text-slate-600">{homeCopy.mapSubtitle[language]}</span>
                       </button>
                     )}
                   </div>

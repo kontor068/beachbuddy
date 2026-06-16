@@ -55,7 +55,7 @@ const FilterModal: React.FC<FilterModalProps> = ({ isOpen, onClose, t, children,
           </h2>
           <button
             onClick={onClose}
-            className="p-2.5 text-slate-500 hover:bg-slate-200 rounded-full"
+            className="p-2.5 text-slate-700 hover:bg-slate-200 rounded-full"
             aria-label={t.closeModalLabel || 'Close'}
           >
             <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">

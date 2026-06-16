@@ -48,7 +48,7 @@ export const UsageInsights: React.FC<UsageInsightsProps> = ({ allBeaches, langua
       <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
         {/* Top Viewed Beaches */}
         <div className="space-y-4">
-          <h3 className="text-sm font-bold text-slate-500 dark:text-slate-400 flex items-center gap-2">
+          <h3 className="text-sm font-bold text-slate-700 dark:text-slate-600 flex items-center gap-2">
             <span className="text-lg">👁️</span> Most Viewed
           </h3>
           <div className="space-y-2">
@@ -73,7 +73,7 @@ export const UsageInsights: React.FC<UsageInsightsProps> = ({ allBeaches, langua
 
         {/* Top Searched Locations */}
         <div className="space-y-4">
-          <h3 className="text-sm font-bold text-slate-500 dark:text-slate-400 flex items-center gap-2">
+          <h3 className="text-sm font-bold text-slate-700 dark:text-slate-600 flex items-center gap-2">
             <span className="text-lg">🔍</span> Top Searches
           </h3>
           <div className="space-y-2">
@@ -98,7 +98,7 @@ export const UsageInsights: React.FC<UsageInsightsProps> = ({ allBeaches, langua
 
         {/* Top Favorited Beaches */}
         <div className="space-y-4">
-          <h3 className="text-sm font-bold text-slate-500 dark:text-slate-400 flex items-center gap-2">
+          <h3 className="text-sm font-bold text-slate-700 dark:text-slate-600 flex items-center gap-2">
             <span className="text-lg">❤️</span> Most Favorited
           </h3>
           <div className="space-y-2">

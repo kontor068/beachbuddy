@@ -331,15 +331,15 @@ export const LegalFooter: React.FC<LegalFooterProps> = ({ language }) => {
           <p className="text-sm font-medium text-slate-600">
             © 2026 Calm Beach Greece. Discover the best beach for today.
           </p>
-          <p className="mx-auto mt-1 max-w-2xl text-xs font-medium leading-relaxed text-slate-500">
+          <p className="mx-auto mt-1 max-w-2xl text-xs font-medium leading-relaxed text-slate-700">
             {c.footerNote}
           </p>
-          <p className="mt-2 text-xs font-medium text-slate-500">
+          <p className="mt-2 text-xs font-medium text-slate-700">
             <span>{c.weatherData}: </span>
             <a href="https://open-meteo.com/en/terms" target="_blank" rel="noreferrer" className="font-semibold text-sky-700 underline-offset-4 hover:text-sky-800 hover:underline">
               Open-Meteo
             </a>
-            <span className="px-1 text-slate-400">/</span>
+            <span className="px-1 text-slate-600">/</span>
             <a href="https://www.dwd.de/EN/ourservices/opendata/opendata.html" target="_blank" rel="noreferrer" className="font-semibold text-sky-700 underline-offset-4 hover:text-sky-800 hover:underline">
               DWD
             </a>
@@ -358,12 +358,12 @@ export const LegalFooter: React.FC<LegalFooterProps> = ({ language }) => {
                 <h2 id="legal-modal-title" className="font-heading text-lg font-extrabold leading-tight text-slate-950">
                   {c[modal.titleKey]}
                 </h2>
-                <p className="mt-1 text-xs font-semibold text-slate-500">{c.lastUpdated}</p>
+                <p className="mt-1 text-xs font-semibold text-slate-700">{c.lastUpdated}</p>
               </div>
               <button
                 type="button"
                 onClick={() => setActiveModal(null)}
-                className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl text-slate-500 transition hover:bg-slate-100 hover:text-slate-800 focus:outline-none focus-visible:ring-2 focus-visible:ring-sky-500"
+                className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl text-slate-700 transition hover:bg-slate-100 hover:text-slate-800 focus:outline-none focus-visible:ring-2 focus-visible:ring-sky-500"
                 aria-label={c.close}
                 title={c.close}
               >

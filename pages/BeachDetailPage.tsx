@@ -1,9 +1,9 @@
 import React, { useMemo, useEffect, useState, useRef } from 'react';
 import { motion } from 'motion/react';
 import {
-  ArrowLeft, MapPin, Wind, Waves, Thermometer,
-  Clock, Trees, Utensils, Users,
-  Navigation, Share2, Heart, ChevronRight, ThumbsUp, ThumbsDown, CheckCircle2, Sparkles,
+  ArrowLeft, MapPin, Wind, Waves, Thermometer, Droplets,
+  Clock, Sun, Backpack,
+  Navigation, Share2, Heart, ChevronRight, ThumbsUp, ThumbsDown, CheckCircle2,
   Camera, ExternalLink, Accessibility, AlertTriangle
 } from 'lucide-react';
 import {
@@ -43,6 +43,7 @@ import {
 } from '../utils/accessibility';
 import { MapLoadBoundary } from '../components/MapLoadBoundary';
 import { scrollToPageTop } from '../utils/scroll';
+import { getSunsetTime } from '../utils/sunTimes';
 import { buildPhotoSuggestionUrl } from '../utils/photoContribution';
 import { getSelectedDayPrefix } from '../utils/dateLabels';
 
@@ -459,6 +460,7 @@ export const BeachDetailPage: React.FC<BeachDetailPageProps> = ({
   const copy = {
     whyToday: { en: `What to expect ${selectedDayPrefix}`, gr: `Τι να περιμένεις ${selectedDayPrefix}`, de: 'Was dich erwartet', it: 'Cosa aspettarsi', fr: `À quoi s'attendre` },
     sea: { en: 'Sea', gr: 'Θάλασσα', de: 'Meer', it: 'Mare', fr: 'Mer' },
+    waterTemp: { en: 'Water', gr: 'Νερό', de: 'Wasser', it: 'Acqua', fr: 'Eau' },
     airTemp: { en: 'Air temperature', gr: 'Θερμοκρασία αέρα', de: 'Lufttemperatur', it: 'Temperatura aria', fr: 'Temperature de l air' },
     bestTime: { en: 'Best Time', gr: 'Ώρα', de: 'Beste Zeit', it: 'Ora migliore', fr: 'Meilleur moment' },
     toVisit: { en: 'To visit', gr: 'Για επίσκεψη', de: 'Zum Besuch', it: 'Per visitare', fr: 'Pour visiter' },
@@ -470,7 +472,6 @@ export const BeachDetailPage: React.FC<BeachDetailPageProps> = ({
     conditions: { en: `Conditions ${selectedDayPrefix}`, gr: `Συνθήκες ${selectedDayPrefix}`, de: 'Bedingungen', it: 'Condizioni', fr: 'Conditions' },
     windShort: { en: 'Wind', gr: 'Άνεμος', de: 'Wind', it: 'Vento', fr: 'Vent' },
     temperatureShort: { en: 'Temperature', gr: 'Θερμοκρασία', de: 'Temperatur', it: 'Temperatura', fr: 'Temperature' },
-    features: { en: 'Features', gr: 'Χαρακτηριστικά', de: 'Merkmale', it: 'Caratteristiche', fr: 'Caracteristiques' },
     locationTitle: { en: 'Location', gr: 'Πού βρίσκεται', de: 'Lage', it: 'Posizione', fr: 'Localisation' },
     openNavigation: { en: 'Open navigation', gr: 'Άνοιγμα πλοήγησης', de: 'Navigation offnen', it: 'Apri navigazione', fr: 'Ouvrir la navigation' },
     navigation: { en: 'Navigation', gr: 'Πλοήγηση', de: 'Navigation', it: 'Navigazione', fr: 'Navigation' },
@@ -478,7 +479,6 @@ export const BeachDetailPage: React.FC<BeachDetailPageProps> = ({
     visitWindow: { en: 'Good time to visit', gr: 'Καλή ώρα για επίσκεψη', de: 'Gute Besuchszeit', it: 'Buon momento per visitare', fr: 'Bon moment pour visiter' },
     away: { en: 'away', gr: 'μακριά', de: 'entfernt', it: 'di distanza', fr: 'de distance' },
     nearbyIntro: { en: 'If you do not go here, these are the best nearby fallbacks:', gr: 'Αν δεν πας εδώ, αυτές είναι οι καλύτερες κοντινές εναλλακτικές:', de: 'Falls du nicht hierhin gehst, sind das gute Alternativen in der Nahe:', it: 'Se non vai qui, queste sono buone alternative vicine:', fr: 'Si vous ne venez pas ici, voici les meilleures alternatives proches :' },
-    noNearby: { en: 'No other beaches nearby.', gr: 'Δεν βρέθηκαν άλλες κοντινές παραλίες.', de: 'Keine weiteren Strande in der Nahe.', it: 'Nessun altra spiaggia vicina.', fr: 'Aucune autre plage a proximite.' },
     share: { en: 'Share', gr: 'Κοινοποίηση', de: 'Teilen', it: 'Condividi', fr: 'Partager' },
     favorite: { en: 'Favorite', gr: 'Αγαπημένο', de: 'Favorit', it: 'Preferito', fr: 'Favori' },
     back: { en: 'Back to beaches', gr: 'Πίσω στις παραλίες', de: 'Zuruck zu den Stranden', it: 'Torna alle spiagge', fr: 'Retour aux plages' },
@@ -557,6 +557,16 @@ export const BeachDetailPage: React.FC<BeachDetailPageProps> = ({
   const isExposed = exposureLevel ? exposureLevel !== 'protected' : true;
   const isExposedToTodayWind = exposureLevel ? exposureLevel === 'exposed' : isExposed;
   const waveHeightM = weatherData.marine?.waveHeightM;
+  const seaTemperatureC = weatherData.marine?.seaSurfaceTemperatureC;
+  const waterTempDescriptor = typeof seaTemperatureC === 'number'
+    ? seaTemperatureC < 20
+      ? { en: 'cold', gr: 'κρύο', de: 'kalt', it: 'fredda', fr: 'froide' }[language]
+      : seaTemperatureC < 23
+        ? { en: 'cool', gr: 'δροσερό', de: 'kühl', it: 'fresca', fr: 'fraîche' }[language]
+        : seaTemperatureC <= 26
+          ? { en: 'pleasant', gr: 'ιδανικό', de: 'angenehm', it: 'piacevole', fr: 'agréable' }[language]
+          : { en: 'warm', gr: 'ζεστό', de: 'warm', it: 'calda', fr: 'chaude' }[language]
+    : undefined;
   const seaConditionScore = calculateSeaConditionScore(isExposed, windSpeedKmh, exposureLevel, waveHeightM);
   const detailBadgeScore = getDetailBadgeScore(score, seaConditionScore, isExposed);
   const beaufortLevel = getBeaufortLevel(windSpeedKmh);
@@ -572,7 +582,6 @@ export const BeachDetailPage: React.FC<BeachDetailPageProps> = ({
     describeSimpleWindSuitability(scoreResult.simpleWindSuitability, language) ||
     detailedWindExposureReason;
   const seaConditionDisplay = getSeaConditionDisplay(seaConditionScore, isExposedToTodayWind, language, selectedDate, canClaimWindProtection, seaCalmClaimAllowed, beaufortLevel, waveHeightM);
-  const cautionWaterConditions = beaufortLevel >= 5 || (typeof waveHeightM === 'number' && waveHeightM >= 0.8);
   const aiExplanation = generateServiceBeachExplanation(beach, weatherData, score, userLocation, language);
   const waveCondition = getWaveCondition(isExposed, windSpeedKmh);
 
@@ -596,6 +605,37 @@ export const BeachDetailPage: React.FC<BeachDetailPageProps> = ({
     });
   };
   
+  // Peak UV during core beach hours (10:00–17:00). Only surfaced when actionable (≥6).
+  const peakUvIndex = useMemo(() => {
+    const beachHourUv = hourlyForecast
+      .filter(item => {
+        const hour = new Date(item.dt * 1000).getHours();
+        return hour >= 10 && hour <= 17 && typeof item.uvIndex === 'number';
+      })
+      .map(item => item.uvIndex as number);
+    return beachHourUv.length > 0 ? Math.max(...beachHourUv) : undefined;
+  }, [hourlyForecast]);
+  const uvDescriptor = typeof peakUvIndex === 'number'
+    ? peakUvIndex >= 11
+      ? { en: 'extreme', gr: 'ακραίο', de: 'extrem', it: 'estremo', fr: 'extrême' }[language]
+      : peakUvIndex >= 8
+        ? { en: 'very high', gr: 'πολύ υψηλό', de: 'sehr hoch', it: 'molto alto', fr: 'très élevé' }[language]
+        : { en: 'high', gr: 'υψηλό', de: 'hoch', it: 'alto', fr: 'élevé' }[language]
+    : undefined;
+  const sunsetTime = useMemo(() => {
+    // All beaches are in Greece, so anchor sunset to Athens wall-clock (handles DST)
+    // rather than the viewer's timezone — a tourist abroad still sees Greek local time.
+    const athensOffsetMinutes = Math.round(
+      (new Date(selectedDate.toLocaleString('en-US', { timeZone: 'Europe/Athens' })).getTime()
+        - new Date(selectedDate.toLocaleString('en-US', { timeZone: 'UTC' })).getTime()) / 60000
+    );
+    const sunset = getSunsetTime(beach.coordinates.lat, beach.coordinates.lon, selectedDate, athensOffsetMinutes);
+    if (!sunset) return undefined;
+    const hh = String(sunset.getHours()).padStart(2, '0');
+    const mm = String(sunset.getMinutes()).padStart(2, '0');
+    return `${hh}:${mm}`;
+  }, [beach.coordinates.lat, beach.coordinates.lon, selectedDate]);
+
   // 2. Best Time & Planner
   const bestTime = useMemo(() => calculateBestBeachTime(hourlyForecast, beach), [beach, hourlyForecast]);
   const usefulBestTimeWindow = Boolean(bestTime && hasUsefulTimeWindow(bestTime.bestStart, bestTime.bestEnd));
@@ -626,6 +666,13 @@ export const BeachDetailPage: React.FC<BeachDetailPageProps> = ({
     : '';
   const displayedBestTimeLabel = usefulBestTimeWindow ? canonicalBestTimeLabel : '';
   const swimmingWindowHelper = swimWindowDisplay.helper || bestTimeReason;
+  // Calm day: no narrow "best window" exists because every hour is suitable. Instead of
+  // hiding the section entirely (a value gap), affirm that any time works.
+  const allDaySuitable = Boolean(bestTime) && !usefulBestTimeWindow && swimWindowDisplay.tone === 'good';
+  const allDaySwimCopy = {
+    title: { en: `Good to swim all day`, gr: `Κατάλληλη όλη μέρα`, de: 'Den ganzen Tag gut', it: 'Adatta tutto il giorno', fr: 'Bonne toute la journée' }[language],
+    helper: { en: 'Calm conditions with no strong wind today — any time works.', gr: 'Ήρεμες συνθήκες χωρίς δυνατό άνεμο σήμερα — οποιαδήποτε ώρα είναι καλή.', de: 'Ruhige Bedingungen ohne starken Wind heute.', it: 'Condizioni calme senza vento forte oggi.', fr: 'Conditions calmes sans vent fort aujourd hui.' }[language],
+  };
   const displayWhyTodayHeading = copy.whyToday[language];
   const detailExplanation = generateUiBeachExplanation({
     beach,
@@ -646,52 +693,24 @@ export const BeachDetailPage: React.FC<BeachDetailPageProps> = ({
   const amenityRows = getAmenityStatusRows(beach, language);
   const showAmenityDisclaimer = shouldShowAmenityDisclaimer(beach);
 
+  // "What to bring" — derived only from THIS beach's real gaps, never generic.
+  // Each item appears solely when the corresponding facility is confirmed absent.
+  const amenityAvailable = (key: 'beachBar' | 'sunbeds' | 'foodNearby' | 'cafeNearby') =>
+    amenityRows.some(row => row.key === key && (row.status === 'yes' || row.status === 'seasonal' || row.status === 'limited'));
+  const hasFoodOnSite = amenityAvailable('beachBar') || amenityAvailable('foodNearby') || amenityAvailable('cafeNearby');
+  const hasShade = beach.amenities.naturalShade === true || amenityAvailable('sunbeds');
+  const hasPebblesOrRocks = beach.beachType === 'pebbles' || beach.beachType === 'sandy-pebbles' || beach.beachType === 'rocky';
+  const whatToBringItems = [
+    !hasFoodOnSite && { en: 'Water & snacks', gr: 'Νερό & σνακ', de: 'Wasser & Snacks', it: 'Acqua e snack', fr: 'Eau et snacks' }[language],
+    !hasShade && { en: 'Umbrella or shade', gr: 'Ομπρέλα ή σκίαση', de: 'Sonnenschirm oder Schatten', it: 'Ombrellone o riparo', fr: 'Parasol ou ombre' }[language],
+    !hasShade && { en: 'Sunscreen', gr: 'Αντηλιακό', de: 'Sonnencreme', it: 'Crema solare', fr: 'Crème solaire' }[language],
+    hasPebblesOrRocks && { en: 'Water shoes', gr: 'Παπούτσια θαλάσσης', de: 'Badeschuhe', it: 'Scarpe da scoglio', fr: 'Chaussures d eau' }[language],
+  ].filter((item): item is string => Boolean(item));
+  const whatToBringTitle = { en: 'What to bring', gr: 'Τι να φέρεις', de: 'Was mitnehmen', it: 'Cosa portare', fr: 'Quoi apporter' }[language];
+
   const seatracAccess = getSeatracAccess(beach);
   const showAccessibilitySection = hasSeatracInfo(beach);
   const accessibilityRows = showAccessibilitySection ? getAccessibilityStatusRows(beach, language) : [];
-  const topFeatureItems = [
-    {
-      key: 'sandy',
-      icon: <Sparkles size={16} />,
-      label: t.filterOptions.sandy,
-      active: beach.beachType === 'sandy',
-    },
-    {
-      key: 'shade',
-      icon: <Trees size={16} />,
-      label: t.filterOptions.naturalShade,
-      active: beach.amenities.naturalShade,
-    },
-    {
-      key: 'family',
-      icon: <Users size={16} />,
-      label: cautionWaterConditions
-        ? (beaufortLevel === 5
-          ? t.userPreferences.familyFriendly
-          : (language === 'gr' ? `Οικογένεια, με προσοχή ${selectedDayPrefix}` : `Family, but caution ${selectedDayPrefix}`))
-        : t.userPreferences.familyFriendly,
-      active: beach.environment.familyFriendly,
-    },
-    {
-      key: 'facilities',
-      icon: <Utensils size={16} />,
-      label: amenityChips[0]?.label || { en: 'Facilities unknown', gr: 'Άγνωστες παροχές', de: 'Facilities unknown', it: 'Facilities unknown', fr: 'Facilities unknown' }[language],
-      active: amenityChips.length > 0 && amenityChips[0].key !== 'unknownFacilities',
-    },
-    {
-      key: 'protected',
-      icon: <Wind size={16} />,
-      label: language === 'gr' ? `${selectedDayPrefix}: πιο υπήνεμη` : `${selectedDayPrefix}: better sheltered`,
-      active: exposureLevel === 'protected' && canClaimWindProtection,
-    },
-    {
-      key: 'shallow',
-      icon: <Waves size={16} />,
-      label: language === 'gr' ? 'Ρηχά νερά' : 'Shallow water',
-      active: beach.characteristics.shallowWaters,
-    },
-  ].filter(item => item.active).slice(0, 6);
-
   // 3. Nearby Beaches
   const nearbyBeaches = useMemo(() => {
     const others = allBeaches.filter(b => b.id !== beach.id);
@@ -759,7 +778,7 @@ export const BeachDetailPage: React.FC<BeachDetailPageProps> = ({
             type="button"
             onClick={() => onToggleFavorite(beach.id)}
             aria-label={copy.favorite[language]}
-            className={`flex min-h-11 min-w-11 items-center justify-center rounded-full transition-colors ${isFavorite ? 'text-red-500 bg-red-50' : 'text-slate-400 hover:bg-slate-100'}`}
+            className={`flex min-h-11 min-w-11 items-center justify-center rounded-full transition-colors ${isFavorite ? 'text-red-500 bg-red-50' : 'text-slate-600 hover:bg-slate-100'}`}
           >
             <Heart className={`w-6 h-6 ${isFavorite ? 'fill-current' : ''}`} />
           </button>
@@ -767,7 +786,7 @@ export const BeachDetailPage: React.FC<BeachDetailPageProps> = ({
             type="button"
             onClick={handleShare}
             aria-label={copy.share[language]}
-            className="flex min-h-11 min-w-11 items-center justify-center rounded-full text-slate-400 transition-colors hover:bg-slate-100"
+            className="flex min-h-11 min-w-11 items-center justify-center rounded-full text-slate-600 transition-colors hover:bg-slate-100"
           >
             <Share2 className="w-6 h-6" />
           </button>
@@ -794,7 +813,7 @@ export const BeachDetailPage: React.FC<BeachDetailPageProps> = ({
                 <h2 className="font-heading text-3xl font-bold leading-[1.12] text-slate-950 sm:text-4xl">
                   {beachDisplayName}
                 </h2>
-                <p className="text-sm text-slate-500 font-semibold flex items-center gap-1.5">
+                <p className="text-sm text-slate-700 font-semibold flex items-center gap-1.5">
                   <MapPin className="w-4 h-4 flex-shrink-0" />
                   <span className="truncate">{islandDisplayName}</span>
                 </p>
@@ -832,22 +851,12 @@ export const BeachDetailPage: React.FC<BeachDetailPageProps> = ({
             </div>
           </div>
 
-          <div className="hidden md:flex items-center gap-3 pt-1">
-            {canNavigate && (
-              <button
-                type="button"
-                onClick={handleNavigation}
-                className="flex min-h-[48px] flex-1 items-center justify-center gap-2 rounded-2xl bg-cyan-600 px-4 font-bold text-white shadow-lg shadow-cyan-200 transition-colors hover:bg-cyan-700"
-              >
-                <Navigation className="w-5 h-5" />
-                {copy.navigation[language]}
-              </button>
-            )}
+          <div className="hidden md:flex items-center justify-end gap-3 pt-1">
             <button
               type="button"
               onClick={() => onToggleFavorite(beach.id)}
               aria-label={copy.favorite[language]}
-              className={`flex min-h-[48px] min-w-[48px] items-center justify-center rounded-2xl border transition-colors ${isFavorite ? 'border-red-100 bg-red-50 text-red-500' : 'border-slate-100 bg-slate-50 text-slate-500 hover:bg-slate-100'}`}
+              className={`flex min-h-[48px] min-w-[48px] items-center justify-center rounded-2xl border transition-colors ${isFavorite ? 'border-red-100 bg-red-50 text-red-500' : 'border-slate-100 bg-slate-50 text-slate-700 hover:bg-slate-100'}`}
             >
               <Heart className={`w-5 h-5 ${isFavorite ? 'fill-current' : ''}`} />
             </button>
@@ -855,7 +864,7 @@ export const BeachDetailPage: React.FC<BeachDetailPageProps> = ({
               type="button"
               onClick={handleShare}
               aria-label={copy.share[language]}
-              className="flex min-h-[48px] min-w-[48px] items-center justify-center rounded-2xl border border-slate-100 bg-slate-50 text-slate-500 transition-colors hover:bg-slate-100"
+              className="flex min-h-[48px] min-w-[48px] items-center justify-center rounded-2xl border border-slate-100 bg-slate-50 text-slate-700 transition-colors hover:bg-slate-100"
             >
               <Share2 className="w-5 h-5" />
             </button>
@@ -880,7 +889,7 @@ export const BeachDetailPage: React.FC<BeachDetailPageProps> = ({
                 />
               </div>
               {photoAttribution && (
-                <p className="px-1 text-[11px] font-medium leading-snug text-slate-500">
+                <p className="px-1 text-[11px] font-medium leading-snug text-slate-700">
                   <a
                     href={photoAttribution.sourcePageUrl || photoAttribution.licenseUrl}
                     target="_blank"
@@ -926,7 +935,7 @@ export const BeachDetailPage: React.FC<BeachDetailPageProps> = ({
         {/* 4. Today's Conditions */}
         <section className="space-y-3" data-nosnippet="true">
           <h3 className="px-1 font-heading text-lg font-bold text-slate-950">{copy.conditions[language]}</h3>
-          <div className="grid grid-cols-2 md:grid-cols-3 gap-2.5">
+          <div className={`grid grid-cols-2 gap-2.5 ${typeof seaTemperatureC === 'number' ? 'md:grid-cols-4' : 'md:grid-cols-3'}`}>
             <ConditionCard
               icon={<Wind className="w-5 h-5 text-blue-500" />}
               label={copy.windShort[language]}
@@ -939,6 +948,14 @@ export const BeachDetailPage: React.FC<BeachDetailPageProps> = ({
               value={seaConditionDisplay.value}
               subValue={seaConditionDisplay.subValue}
             />
+            {typeof seaTemperatureC === 'number' && (
+              <ConditionCard
+                icon={<Droplets className="w-5 h-5 text-sky-500" />}
+                label={copy.waterTemp[language]}
+                value={`${seaTemperatureC.toFixed(0)}°C`}
+                subValue={waterTempDescriptor}
+              />
+            )}
             <ConditionCard
               icon={<Thermometer className="w-5 h-5 text-orange-500" />}
               label={copy.temperatureShort[language]}
@@ -948,34 +965,45 @@ export const BeachDetailPage: React.FC<BeachDetailPageProps> = ({
           </div>
         </section>
 
+        {/* 4b. Sun & light — sunset always, peak UV only when actionable (≥6) */}
+        {(sunsetTime || (typeof peakUvIndex === 'number' && peakUvIndex >= 6)) && (
+          <section className="flex flex-wrap items-center gap-x-5 gap-y-2 rounded-2xl border border-amber-100/70 bg-amber-50/45 px-4 py-3" data-nosnippet="true">
+            {sunsetTime && (
+              <span className="inline-flex items-center gap-2 text-sm font-bold text-slate-800">
+                <Sun className="h-4 w-4 shrink-0 text-amber-500" aria-hidden="true" />
+                {{ en: 'Sunset', gr: 'Δύση', de: 'Sonnenuntergang', it: 'Tramonto', fr: 'Coucher' }[language]} {sunsetTime}
+              </span>
+            )}
+            {typeof peakUvIndex === 'number' && peakUvIndex >= 6 && (
+              <span className="inline-flex items-center gap-2 text-sm font-bold text-amber-900">
+                <span className="grid h-5 min-w-5 place-items-center rounded-full bg-amber-400 px-1.5 text-[11px] font-extrabold text-white tabular-nums">
+                  {peakUvIndex.toFixed(0)}
+                </span>
+                {{ en: 'UV', gr: 'UV', de: 'UV', it: 'UV', fr: 'UV' }[language]} {uvDescriptor}
+                {!hasShade && ` · ${{ en: 'no shade here', gr: 'καθόλου σκιά εδώ', de: 'kein Schatten hier', it: 'niente ombra qui', fr: 'pas d ombre ici' }[language]}`}
+              </span>
+            )}
+          </section>
+        )}
+
         {/* 5. Best Time Today */}
-        {bestTime && usefulBestTimeWindow && (
+        {bestTime && (usefulBestTimeWindow || allDaySuitable) && (
           <section className={`flex items-start gap-3 rounded-[1.75rem] border p-4 shadow-sm ${swimWindowToneClasses.section}`} data-nosnippet="true">
             <div className={`rounded-2xl p-2.5 text-white shadow-sm ${swimWindowToneClasses.icon}`}>
               <Clock className="w-5 h-5" />
             </div>
             <div className="min-w-0">
-              <h3 className={`font-bold ${swimWindowToneClasses.title}`}>{swimWindowDisplay.title}</h3>
-              {displayedBestTimeLabel && (
+              <h3 className={`font-bold ${swimWindowToneClasses.title}`}>
+                {allDaySuitable ? allDaySwimCopy.title : swimWindowDisplay.title}
+              </h3>
+              {!allDaySuitable && displayedBestTimeLabel && (
                 <p className={`text-lg font-bold ${swimWindowToneClasses.value}`}>
                   {displayedBestTimeLabel}
                 </p>
               )}
               <p className={`text-sm font-medium mt-1 leading-snug ${swimWindowToneClasses.helper}`}>
-                {swimmingWindowHelper}
+                {allDaySuitable ? allDaySwimCopy.helper : swimmingWindowHelper}
               </p>
-            </div>
-          </section>
-        )}
-
-        {/* 6. Beach Features */}
-        {topFeatureItems.length > 0 && (
-          <section className="space-y-3">
-          <h3 className="px-1 font-heading text-lg font-bold text-slate-950">{copy.features[language]}</h3>
-            <div className="flex flex-wrap gap-2">
-              {topFeatureItems.map((item) => (
-                <FeatureItem key={item.key} icon={item.icon} label={item.label} />
-              ))}
             </div>
           </section>
         )}
@@ -994,7 +1022,7 @@ export const BeachDetailPage: React.FC<BeachDetailPageProps> = ({
             ))}
           </div>
           <div className="grid gap-2 sm:grid-cols-2">
-            {amenityRows.map((row) => (
+            {amenityRows.filter((row) => row.status !== 'unknown').map((row) => (
               <div key={row.key} className="flex min-h-12 items-center justify-between gap-3 rounded-2xl border border-white/80 bg-white/88 px-3 py-2 shadow-sm shadow-sky-900/5">
                 <span className="min-w-0 text-sm font-bold text-slate-700">{row.label}</span>
                 <span className={`shrink-0 rounded-full px-2.5 py-1 text-[11px] font-bold ${amenityStatusClass(row.status)}`}>
@@ -1004,11 +1032,30 @@ export const BeachDetailPage: React.FC<BeachDetailPageProps> = ({
             ))}
           </div>
           {showAmenityDisclaimer && (
-            <p className="px-1 text-xs font-semibold leading-snug text-slate-500">
+            <p className="px-1 text-xs font-semibold leading-snug text-slate-700">
               {getAmenityDisclaimer(language)}
             </p>
           )}
         </section>
+
+        {/* 7a. What to bring — derived from amenity gaps */}
+        {whatToBringItems.length > 0 && (
+          <section className="flex items-start gap-3 rounded-[1.75rem] border border-amber-100/80 bg-amber-50/70 p-4 shadow-sm shadow-amber-900/5">
+            <div className="rounded-2xl bg-amber-400 p-2.5 text-white shadow-sm">
+              <Backpack className="h-5 w-5" />
+            </div>
+            <div className="min-w-0">
+              <h3 className="font-bold text-amber-950">{whatToBringTitle}</h3>
+              <div className="mt-2 flex flex-wrap gap-2">
+                {whatToBringItems.map((item) => (
+                  <span key={item} className="inline-flex min-h-8 items-center rounded-full border border-amber-200 bg-white/80 px-3 text-xs font-bold text-amber-900">
+                    {item}
+                  </span>
+                ))}
+              </div>
+            </div>
+          </section>
+        )}
 
         {/* 7b. Accessibility (disabled / wheelchair sea-access) */}
         {showAccessibilitySection && seatracAccess && (
@@ -1045,7 +1092,7 @@ export const BeachDetailPage: React.FC<BeachDetailPageProps> = ({
                 <p className="text-xs font-semibold leading-snug text-slate-600">{getAccessibilityVerifyNote(language)}</p>
               )}
               {(seatracAccess.verifiedAt || seatracAccess.sourceUrls?.length) && (
-                <p className="flex flex-wrap items-center gap-1 pt-0.5 text-[11px] font-bold text-slate-500">
+                <p className="flex flex-wrap items-center gap-1 pt-0.5 text-[11px] font-bold text-slate-700">
                   {seatracAccess.verifiedAt && (
                     <span>{getAccessibilityCheckedLabel(language)}: {seatracAccess.verifiedAt}</span>
                   )}
@@ -1132,7 +1179,7 @@ export const BeachDetailPage: React.FC<BeachDetailPageProps> = ({
         <section className="bg-white p-4 rounded-[1.75rem] border border-slate-100 shadow-sm space-y-4" data-nosnippet="true">
           <div className="space-y-1">
             <h3 className="text-base font-heading font-bold text-slate-900">{copy.feedbackTitle[language]}</h3>
-            <p className="text-slate-500 text-sm leading-snug">{copy.feedbackText[language]}</p>
+            <p className="text-slate-700 text-sm leading-snug">{copy.feedbackText[language]}</p>
           </div>
 
           {feedbackSubmitted ? (
@@ -1167,12 +1214,12 @@ export const BeachDetailPage: React.FC<BeachDetailPageProps> = ({
         </section>
 
         {/* 8. Nearby Beaches */}
+        {nearbyBeaches.length > 0 && (
         <section className="space-y-4" data-nosnippet="true">
           <h3 className="px-1 font-heading text-lg font-bold text-slate-950">{copy.nearby[language]}</h3>
           <div className="space-y-3">
-            {nearbyBeaches.length > 0 ? (
-              <>
-                <p className="text-slate-500 text-sm px-1 leading-snug">
+            <>
+                <p className="text-slate-700 text-sm px-1 leading-snug">
                   {copy.nearbyIntro[language]}
                 </p>
                 <div className="flex flex-col gap-3">
@@ -1224,7 +1271,7 @@ export const BeachDetailPage: React.FC<BeachDetailPageProps> = ({
                           )}
                           <div className="min-w-0 space-y-1">
                             <h4 className="truncate font-bold text-slate-950">{displayBeachName(item.beach.name, language)}</h4>
-                            <p className="text-xs font-bold text-slate-500">
+                            <p className="text-xs font-bold text-slate-700">
                               {typeof item.distance === 'number' ? `${item.distance.toFixed(1)} km ${copy.away[language]}` : copy.nearby[language]}
                             </p>
                             <p
@@ -1241,11 +1288,9 @@ export const BeachDetailPage: React.FC<BeachDetailPageProps> = ({
                   })}
                 </div>
               </>
-            ) : (
-              <p className="text-slate-500 text-sm px-1 italic">{copy.noNearby[language]}</p>
-            )}
           </div>
         </section>
+        )}
 
       </main>
 
@@ -1265,7 +1310,7 @@ export const BeachDetailPage: React.FC<BeachDetailPageProps> = ({
             type="button"
             onClick={() => onToggleFavorite(beach.id)}
             aria-label={copy.favorite[language]}
-            className={`flex min-h-[52px] min-w-[52px] items-center justify-center rounded-2xl border ${isFavorite ? 'border-red-100 bg-red-50 text-red-500' : 'border-slate-100 bg-slate-50 text-slate-500'}`}
+            className={`flex min-h-[52px] min-w-[52px] items-center justify-center rounded-2xl border ${isFavorite ? 'border-red-100 bg-red-50 text-red-500' : 'border-slate-100 bg-slate-50 text-slate-700'}`}
           >
             <Heart className={`h-5 w-5 ${isFavorite ? 'fill-current' : ''}`} />
           </button>
@@ -1273,7 +1318,7 @@ export const BeachDetailPage: React.FC<BeachDetailPageProps> = ({
             type="button"
             onClick={handleShare}
             aria-label={copy.share[language]}
-            className="flex min-h-[52px] min-w-[52px] items-center justify-center rounded-2xl border border-slate-100 bg-slate-50 text-slate-500"
+            className="flex min-h-[52px] min-w-[52px] items-center justify-center rounded-2xl border border-slate-100 bg-slate-50 text-slate-700"
           >
             <Share2 className="h-5 w-5" />
           </button>
@@ -1295,23 +1340,9 @@ const ConditionCard: React.FC<ConditionCardProps> = ({ icon, label, value, subVa
     <div className="p-2 bg-slate-50 rounded-xl">
       {icon}
     </div>
-    <span className="text-[10px] font-bold tracking-normal text-slate-400">{label}</span>
+    <span className="text-[10px] font-bold tracking-normal text-slate-600">{label}</span>
     <span className="text-sm font-bold leading-tight text-slate-900 break-words sm:text-base">{value}</span>
-    <span className="text-[11px] font-semibold text-slate-500 leading-tight line-clamp-2">{subValue}</span>
-  </div>
-);
-
-interface FeatureItemProps {
-  icon: React.ReactNode;
-  label: string;
-}
-
-const FeatureItem: React.FC<FeatureItemProps> = ({ icon, label }) => (
-  <div className="flex min-h-10 items-center gap-2 rounded-full border border-slate-100 bg-white px-3 text-slate-800 shadow-sm">
-    <div className="text-cyan-600">
-      {icon}
-    </div>
-    <span className="text-xs font-bold">{label}</span>
+    <span className="text-[11px] font-semibold text-slate-700 leading-tight line-clamp-2">{subValue}</span>
   </div>
 );
 
@@ -1324,9 +1355,9 @@ const amenityStatusClass = (status: AmenityStatus): string => {
     case 'limited':
       return 'bg-orange-50 text-orange-700';
     case 'no':
-      return 'bg-slate-100 text-slate-500';
+      return 'bg-slate-100 text-slate-700';
     case 'unknown':
     default:
-      return 'bg-slate-50 text-slate-400';
+      return 'bg-slate-50 text-slate-600';
   }
 };

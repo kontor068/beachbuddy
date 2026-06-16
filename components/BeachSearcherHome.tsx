@@ -1,6 +1,7 @@
 import React, { useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react';
 import {
   Accessibility,
+  ArrowDownUp,
   BadgeCheck,
   CalendarDays,
   Check,
@@ -148,6 +149,7 @@ interface BeachSearcherHomeProps {
   isFindingCurrentLocation?: boolean;
   currentLocationError?: string | null;
   onCategorySelect: (category: DirectoryCategory) => void;
+  onClearAllFilters?: () => void;
   onSortChange: (sort: SortOption) => void;
   onAdvancedFilterToggle?: (filter: FilterKey) => void;
   onForecastDaySelect?: (index: number) => void;
@@ -316,10 +318,10 @@ const filterIcons: Partial<Record<QuickPreferenceFilter, React.ReactNode>> = {
 };
 
 const desktopAdvancedFilters: Array<{ key: FilterKey; icon: React.ReactNode }> = [
+  { key: 'parking', icon: <ParkingCircle className="h-5 w-5" /> },
   { key: 'naturalShade', icon: <Trees className="h-5 w-5" /> },
   { key: 'taverna', icon: <Utensils className="h-5 w-5" /> },
   { key: 'sunbeds', icon: <SunbedIcon className="h-5 w-5" /> },
-  { key: 'parking', icon: <ParkingCircle className="h-5 w-5" /> },
   { key: 'sandy-pebbles', icon: <SandPebblesIcon className="h-5 w-5" /> },
   { key: 'rocky', icon: <Mountain className="h-5 w-5" /> },
   { key: 'adventure', icon: <MapPin className="h-5 w-5" /> },
@@ -329,12 +331,32 @@ const desktopPrimaryPreferenceFilters = [
   'pebbles',
   'quiet',
   'easyAccess',
-  'snorkeling',
   'familyFriendly',
-  'beachBar',
 ] as const satisfies readonly QuickPreferenceFilter[];
 const desktopPrimaryPreferenceFilterSet = new Set<QuickPreferenceFilter>(desktopPrimaryPreferenceFilters);
 const desktopSecondaryPreferenceFilters = QUICK_PREFERENCE_FILTERS.filter(filter => !desktopPrimaryPreferenceFilterSet.has(filter));
+
+type DesktopFilterCategory = 'water' | 'surface' | 'amenities' | 'experience';
+const desktopFilterCategoryMap: Record<string, DesktopFilterCategory> = {
+  shallowWater: 'water',
+  deepWater: 'water',
+  snorkeling: 'water',
+  sandy: 'surface',
+  pebbles: 'surface',
+  'sandy-pebbles': 'surface',
+  rocky: 'surface',
+  parking: 'amenities',
+  naturalShade: 'amenities',
+  taverna: 'amenities',
+  sunbeds: 'amenities',
+  beachBar: 'amenities',
+  quiet: 'experience',
+  familyFriendly: 'experience',
+  easyAccess: 'experience',
+  adventure: 'experience',
+  disabledAccess: 'experience',
+};
+const desktopFilterCategoryOrder: DesktopFilterCategory[] = ['water', 'surface', 'amenities', 'experience'];
 
 type DesktopFilterItem =
   | {
@@ -440,6 +462,7 @@ type HomeCopy = {
   findingLocation: string;
   fallbackFeatureCopy: string;
   more: string;
+  moreCountSuffix: string;
   changeIsland: string;
   search: string;
   searchRegionLabel: string;
@@ -514,6 +537,7 @@ const homeCopy: Record<LanguageCode, HomeCopy> = {
     findingLocation: 'Finding location',
     fallbackFeatureCopy: 'Beaches, map and quick filters',
     more: 'More',
+    moreCountSuffix: 'more',
     changeIsland: 'Change island or area',
     search: 'Search',
     searchRegionLabel: 'Area',
@@ -586,6 +610,7 @@ const homeCopy: Record<LanguageCode, HomeCopy> = {
     findingLocation: 'Εύρεση τοποθεσίας',
     fallbackFeatureCopy: 'Παραλίες, χάρτης και γρήγορα φίλτρα',
     more: 'Περισσότερα',
+    moreCountSuffix: 'ακόμη',
     changeIsland: 'Άλλο νησί ή περιοχή',
     search: 'Αναζήτηση',
     searchRegionLabel: 'Περιοχή',
@@ -658,6 +683,7 @@ const homeCopy: Record<LanguageCode, HomeCopy> = {
     findingLocation: 'Recherche de position',
     fallbackFeatureCopy: 'Plages, carte et filtres rapides',
     more: 'Plus',
+    moreCountSuffix: 'autres',
     changeIsland: "Changer d'île ou de région",
     search: 'Rechercher',
     searchRegionLabel: 'Région',
@@ -730,6 +756,7 @@ const homeCopy: Record<LanguageCode, HomeCopy> = {
     findingLocation: 'Standort wird gesucht',
     fallbackFeatureCopy: 'Strände, Karte und Schnellfilter',
     more: 'Mehr',
+    moreCountSuffix: 'weitere',
     changeIsland: 'Insel oder Region wechseln',
     search: 'Suchen',
     searchRegionLabel: 'Region',
@@ -802,6 +829,7 @@ const homeCopy: Record<LanguageCode, HomeCopy> = {
     findingLocation: 'Ricerca posizione',
     fallbackFeatureCopy: 'Spiagge, mappa e filtri rapidi',
     more: 'Altro',
+    moreCountSuffix: 'altri',
     changeIsland: 'Cambia isola o regione',
     search: 'Cerca',
     searchRegionLabel: 'Area',
@@ -1439,6 +1467,7 @@ export const BeachSearcherHome: React.FC<BeachSearcherHomeProps> = ({
   currentLocationError,
   onCategorySelect,
   onAdvancedFilterToggle,
+  onClearAllFilters,
   onForecastDaySelect,
   onBeachClick,
   onSelectIsland,
@@ -1479,29 +1508,29 @@ export const BeachSearcherHome: React.FC<BeachSearcherHomeProps> = ({
   const heroBackground = getImageSet(islandBackground);
   const regionBeaches = selectedIsland?.beaches || [];
   const hasRegionFilterAvailabilityData = regionBeaches.length > 0;
-  const visibleDesktopPreferenceFilters = [
-    ...desktopPrimaryPreferenceFilters,
-    ...desktopSecondaryPreferenceFilters,
-  ].filter(filter => (
+  const filterPreferenceForRegion = (filter: QuickPreferenceFilter) => (
     !hasRegionFilterAvailabilityData ||
     preferences[filter] ||
     regionBeaches.some(beach => beachMatchesPreferenceFilter(beach, filter))
-  ));
+  );
+  const visibleDesktopPrimaryPreferenceFilters = desktopPrimaryPreferenceFilters.filter(filterPreferenceForRegion);
+  const visibleDesktopSecondaryPreferenceFilters = desktopSecondaryPreferenceFilters.filter(filterPreferenceForRegion);
   const visibleDesktopAdvancedFilters = desktopAdvancedFilters.filter(filter => (
     !hasRegionFilterAvailabilityData ||
     activeFilters.includes(filter.key) ||
     regionBeaches.some(beach => beachMatchesAdvancedFilter(beach, filter.key))
   ));
+  const buildPreferenceItem = (filter: QuickPreferenceFilter) => ({
+    itemKey: `preference-${filter}`,
+    kind: 'preference' as const,
+    key: filter,
+    icon: filterIcons[filter],
+    label: getPreferenceFilterLabel(filter, language, t),
+    count: filterResultCounts?.[filter],
+    isActive: preferences[filter],
+  });
   const desktopFilterItems: DesktopFilterItem[] = [
-    ...visibleDesktopPreferenceFilters.map(filter => ({
-      itemKey: `preference-${filter}`,
-      kind: 'preference' as const,
-      key: filter,
-      icon: filterIcons[filter],
-      label: getPreferenceFilterLabel(filter, language, t),
-      count: filterResultCounts?.[filter],
-      isActive: preferences[filter],
-    })),
+    ...visibleDesktopPrimaryPreferenceFilters.map(buildPreferenceItem),
     ...visibleDesktopAdvancedFilters.map(filter => ({
       itemKey: `advanced-${filter.key}`,
       kind: 'advanced' as const,
@@ -1511,6 +1540,7 @@ export const BeachSearcherHome: React.FC<BeachSearcherHomeProps> = ({
       count: advancedFilterResultCounts?.[filter.key],
       isActive: activeFilters.includes(filter.key),
     })),
+    ...visibleDesktopSecondaryPreferenceFilters.map(buildPreferenceItem),
   ];
   const [desktopVisibleFilterCount, setDesktopVisibleFilterCount] = useState(desktopFilterItems.length);
   const desktopFilterMeasureKey = desktopFilterItems
@@ -2360,7 +2390,7 @@ export const BeachSearcherHome: React.FC<BeachSearcherHomeProps> = ({
               </h2>
             </div>
           )}
-          <div className={`${showConditionsOverviewTitle ? 'mt-1.5' : ''} flex flex-wrap items-center gap-x-3 gap-y-1 text-xs font-semibold text-slate-500`}>
+          <div className={`${showConditionsOverviewTitle ? 'mt-1.5' : ''} flex flex-wrap items-center gap-x-3 gap-y-1 text-xs font-semibold text-slate-700`}>
             {conditionsOverviewDate && (
               <span className="inline-flex items-center gap-1.5">
                 <CalendarDays className="h-3.5 w-3.5" />
@@ -2385,7 +2415,7 @@ export const BeachSearcherHome: React.FC<BeachSearcherHomeProps> = ({
                 {item.icon}
               </span>
               <div className="min-w-0 flex-1">
-                <p className="text-xs font-bold tracking-normal text-slate-500">{item.label}</p>
+                <p className="text-xs font-bold tracking-normal text-slate-700">{item.label}</p>
                 <p className={`${item.key === 'wind' ? 'whitespace-nowrap text-[0.82rem] min-[380px]:text-sm' : 'whitespace-normal break-words text-sm sm:text-base'} font-extrabold leading-tight text-slate-950`}>
                   {item.value}
                 </p>
@@ -2671,12 +2701,12 @@ export const BeachSearcherHome: React.FC<BeachSearcherHomeProps> = ({
         }`}
         aria-pressed={item.isActive}
       >
-        <span className={item.isActive ? 'text-[#007a83]' : 'text-slate-500'}>
+        <span className={item.isActive ? 'text-[#007a83]' : 'text-slate-700'}>
           {item.icon}
         </span>
         <span className="whitespace-nowrap">{item.label}</span>
         {typeof count === 'number' && count > 0 && (
-          <span className={`text-[11px] font-medium leading-none ${item.isActive ? 'text-[#007a83]' : 'text-slate-500'}`}>
+          <span className={`text-[11px] font-medium leading-none tabular-nums ${item.isActive ? 'text-[#007a83]' : 'text-slate-700'}`}>
             {count}
           </span>
         )}
@@ -2697,10 +2727,10 @@ export const BeachSearcherHome: React.FC<BeachSearcherHomeProps> = ({
           item.isActive ? 'bg-cyan-50 text-[#007a83]' : 'text-slate-600 hover:bg-cyan-50/70 hover:text-[#007a83]'
         }`}
       >
-        <span className={item.isActive ? 'text-[#007a83]' : 'text-slate-500'}>{item.icon}</span>
+        <span className={item.isActive ? 'text-[#007a83]' : 'text-slate-700'}>{item.icon}</span>
         <span className="min-w-0 flex-1 truncate">{item.label}</span>
         {typeof count === 'number' && count > 0 && (
-          <span className="shrink-0 text-xs font-extrabold text-slate-500">{count}</span>
+          <span className="shrink-0 text-xs font-extrabold tabular-nums text-slate-700">{count}</span>
         )}
       </button>
     );
@@ -2718,7 +2748,7 @@ export const BeachSearcherHome: React.FC<BeachSearcherHomeProps> = ({
         className="inline-flex min-h-10 w-full items-center gap-2.5 rounded-full border border-cyan-300 bg-gradient-to-r from-cyan-50 via-white to-cyan-50/80 px-3 text-sm font-extrabold text-cyan-900 shadow-sm shadow-cyan-900/10 ring-1 ring-white/70 transition hover:border-cyan-400 hover:from-cyan-100 hover:to-white focus:outline-none focus-visible:ring-2 focus-visible:ring-cyan-700/30"
       >
         <span className="grid h-7 w-7 shrink-0 place-items-center rounded-full bg-white text-[#007a83] shadow-sm ring-1 ring-cyan-100" aria-hidden="true">
-          <SlidersHorizontal className="h-4 w-4" />
+          <ArrowDownUp className="h-4 w-4" />
         </span>
         <span className="min-w-0 flex-1 truncate text-center">{activeDirectorySortLabel}</span>
         <ChevronDown className={`h-4 w-4 shrink-0 text-[#007a83] transition-transform ${isDirectorySortOpen ? 'rotate-180' : ''}`} aria-hidden="true" />
@@ -2729,6 +2759,9 @@ export const BeachSearcherHome: React.FC<BeachSearcherHomeProps> = ({
           role="menu"
           className="absolute right-0 top-full z-40 mt-2 w-full min-w-[14rem] overflow-hidden rounded-2xl border border-cyan-100 bg-white/96 p-1.5 shadow-xl shadow-sky-900/14 ring-1 ring-white/70 backdrop-blur-xl"
         >
+          <p className="px-3 pb-1 pt-1.5 text-[10px] font-bold uppercase tracking-wider text-slate-600">
+            {t.sortByTitle}
+          </p>
           {directorySortOptions.map(option => (
             <button
               key={option.key}
@@ -2790,6 +2823,22 @@ export const BeachSearcherHome: React.FC<BeachSearcherHomeProps> = ({
               <div className="no-scrollbar flex min-w-0 flex-1 flex-nowrap items-center gap-2 overflow-x-auto overscroll-x-contain pr-1">
                 {desktopVisibleFilterItems.map(renderDesktopInlineFilterButton)}
               </div>
+              {onClearAllFilters && desktopFilterItems.some(item => item.isActive) && (
+                <button
+                  type="button"
+                  onClick={onClearAllFilters}
+                  className="inline-flex shrink-0 items-center gap-1 px-2 py-1 text-xs font-bold text-slate-600 transition hover:text-slate-900 focus:outline-none focus-visible:ring-2 focus-visible:ring-cyan-700/30"
+                >
+                  <X className="h-3.5 w-3.5" aria-hidden="true" />
+                  {getLocalizedCopy(language, {
+                    en: 'Clear',
+                    gr: 'Καθαρισμός',
+                    de: 'Löschen',
+                    it: 'Cancella',
+                    fr: 'Effacer',
+                  })}
+                </button>
+              )}
               {hasVisibleDesktopMoreFilters && (
                 <div ref={desktopMoreFiltersRef} className="relative w-[13.5rem] max-w-[38%] shrink-0">
                   <button
@@ -2800,11 +2849,11 @@ export const BeachSearcherHome: React.FC<BeachSearcherHomeProps> = ({
                     className={`inline-flex min-h-9 w-full max-w-full items-center justify-center gap-2 overflow-hidden rounded-full border border-dashed px-3 py-1.5 text-sm font-bold transition focus:outline-none focus-visible:ring-2 focus-visible:ring-cyan-700/30 ${
                       desktopMoreActiveCount > 0
                         ? 'border-[#007a83] bg-cyan-50/80 text-[#007a83] shadow-sm shadow-cyan-900/5'
-                        : 'border-slate-300/80 bg-white/42 text-slate-500 hover:border-cyan-200 hover:bg-white/78 hover:text-slate-800'
+                        : 'border-slate-300/80 bg-white/42 text-slate-700 hover:border-cyan-200 hover:bg-white/78 hover:text-slate-800'
                     }`}
                   >
                     <MoreHorizontal className="h-4 w-4 shrink-0" />
-                    <span className="min-w-0 truncate">{copy.more}</span>
+                    <span className="min-w-0 truncate tabular-nums">+{desktopHiddenFilterItems.length} {copy.moreCountSuffix}</span>
                     {desktopMoreActiveCount > 0 && (
                       <span className="grid h-5 min-w-5 place-items-center rounded-full bg-[#007a83] px-1.5 text-[11px] font-extrabold text-white">
                         {desktopMoreActiveCount}
@@ -2816,11 +2865,30 @@ export const BeachSearcherHome: React.FC<BeachSearcherHomeProps> = ({
                   {isDesktopMoreFiltersOpen && (
                     <div
                       role="listbox"
-                      className="absolute right-0 top-full z-50 mt-2 w-[min(36rem,calc(100vw-4rem))] rounded-2xl border border-cyan-100 bg-white/96 p-2 shadow-xl shadow-sky-900/16 ring-1 ring-white/70 backdrop-blur-xl"
+                      className="absolute right-0 top-full z-50 mt-2 w-[min(36rem,calc(100vw-4rem))] rounded-2xl border border-slate-200 bg-white p-2 shadow-2xl shadow-slate-900/25 ring-1 ring-slate-200/60"
                     >
-                      <div className="grid gap-1.5 sm:grid-cols-2">
-                        {desktopHiddenFilterItems.map(renderDesktopMenuFilterButton)}
-                      </div>
+                      {desktopFilterCategoryOrder.map(category => {
+                        const itemsInCategory = desktopHiddenFilterItems
+                          .filter(item => desktopFilterCategoryMap[String(item.key)] === category)
+                          .sort((a, b) => (getDesktopFilterDisplayCount(b) ?? 0) - (getDesktopFilterDisplayCount(a) ?? 0));
+                        if (itemsInCategory.length === 0) return null;
+                        const categoryLabel = getLocalizedCopy(language, {
+                          water: { en: 'Water', gr: 'Νερό', de: 'Wasser', it: 'Acqua', fr: 'Eau' },
+                          surface: { en: 'Surface', gr: 'Έδαφος', de: 'Untergrund', it: 'Fondale', fr: 'Sol' },
+                          amenities: { en: 'Amenities', gr: 'Παροχές', de: 'Ausstattung', it: 'Servizi', fr: 'Services' },
+                          experience: { en: 'Experience', gr: 'Εμπειρία', de: 'Erlebnis', it: 'Esperienza', fr: 'Expérience' },
+                        }[category]);
+                        return (
+                          <div key={category} className="mb-1.5 last:mb-0">
+                            <p className="px-2 pt-1.5 pb-1 text-[10px] font-bold uppercase tracking-wider text-slate-600">
+                              {categoryLabel}
+                            </p>
+                            <div className="grid gap-1.5 sm:grid-cols-2">
+                              {itemsInCategory.map(renderDesktopMenuFilterButton)}
+                            </div>
+                          </div>
+                        );
+                      })}
                     </div>
                   )}
                 </div>
@@ -2855,7 +2923,7 @@ export const BeachSearcherHome: React.FC<BeachSearcherHomeProps> = ({
                 }}
                 onKeyDown={handleSearchKeyDown}
                 placeholder={searchPlaceholder}
-                className="min-h-11 w-full rounded-[1.2rem] border border-slate-300 bg-white/92 px-5 pr-24 text-base font-medium text-slate-800 outline-none transition placeholder:text-slate-500 focus:border-cyan-600 focus:ring-2 focus:ring-cyan-600/20 sm:rounded-full"
+                className="min-h-11 w-full rounded-[1.2rem] border border-slate-300 bg-white/92 px-5 pr-24 text-base font-medium text-slate-800 outline-none transition placeholder:text-slate-700 focus:border-cyan-600 focus:ring-2 focus:ring-cyan-600/20 sm:rounded-full"
               />
               {searchQuery.trim().length > 0 && (
                 <button
@@ -2865,7 +2933,7 @@ export const BeachSearcherHome: React.FC<BeachSearcherHomeProps> = ({
                     setIsSearchSuggestionsOpen(false);
                     setActiveSearchSuggestionIndex(-1);
                   }}
-                  className="absolute right-11 top-1/2 grid h-9 w-9 -translate-y-1/2 place-items-center rounded-full text-slate-400 transition hover:bg-slate-100 hover:text-slate-700 focus:outline-none focus-visible:ring-2 focus-visible:ring-cyan-700/30"
+                  className="absolute right-11 top-1/2 grid h-9 w-9 -translate-y-1/2 place-items-center rounded-full text-slate-600 transition hover:bg-slate-100 hover:text-slate-700 focus:outline-none focus-visible:ring-2 focus-visible:ring-cyan-700/30"
                   aria-label={language === 'gr' ? 'Καθαρισμός αναζήτησης' : 'Clear search'}
                 >
                   <X className="h-4 w-4" aria-hidden="true" />
@@ -2915,8 +2983,8 @@ export const BeachSearcherHome: React.FC<BeachSearcherHomeProps> = ({
                               <span className="block truncate text-sm font-extrabold leading-tight text-slate-950">
                                 {suggestion.label}
                               </span>
-                              <span className="mt-0.5 flex min-w-0 items-center gap-1.5 text-xs font-semibold leading-tight text-slate-500">
-                                <span className="shrink-0 rounded-full bg-slate-100 px-1.5 py-0.5 text-[10px] font-black uppercase tracking-normal text-slate-500">
+                              <span className="mt-0.5 flex min-w-0 items-center gap-1.5 text-xs font-semibold leading-tight text-slate-700">
+                                <span className="shrink-0 rounded-full bg-slate-100 px-1.5 py-0.5 text-[10px] font-black uppercase tracking-normal text-slate-700">
                                   {suggestionKindLabel}
                                 </span>
                                 <span className="min-w-0 truncate">{suggestion.subtitle}</span>
@@ -2927,7 +2995,7 @@ export const BeachSearcherHome: React.FC<BeachSearcherHomeProps> = ({
                       })}
                     </div>
                   ) : (
-                    <div className="px-4 py-3 text-sm font-semibold text-slate-500">
+                    <div className="px-4 py-3 text-sm font-semibold text-slate-700">
                       {isSearchSuggesting ? copy.searchLoading : copy.searchNoResults}
                     </div>
                   )}
@@ -3134,13 +3202,6 @@ export const BeachSearcherHome: React.FC<BeachSearcherHomeProps> = ({
           >
             {islandContextStrip}
             <div className="overflow-hidden rounded-[1.35rem] border border-sky-100 bg-white/68 p-2 text-left shadow-sm shadow-sky-900/8 ring-1 ring-white/45 backdrop-blur-md">
-              {mapForecastTimeLabel && (
-                <div className="mb-2 flex justify-center">
-                  <div className="inline-flex max-w-[min(78vw,16rem)] items-center justify-center rounded-full border border-sky-100 bg-white/78 px-3.5 py-1.5 text-center text-[11px] font-black leading-none tabular-nums text-[#007a83] shadow-sm shadow-sky-900/5 ring-1 ring-white/50 backdrop-blur-md">
-                    <span className="min-w-0 truncate">{mapForecastTimeLabel}</span>
-                  </div>
-                </div>
-              )}
               {mapPreview}
             </div>
           </section>
@@ -3169,7 +3230,7 @@ export const BeachSearcherHome: React.FC<BeachSearcherHomeProps> = ({
                 className="beach-card-carousel no-scrollbar flex cursor-grab snap-x snap-mandatory items-stretch gap-6 overflow-x-auto overscroll-x-contain pb-5 select-none active:cursor-grabbing data-[dragging=true]:cursor-grabbing data-[dragging=true]:snap-none lg:snap-none lg:px-5"
               >
                 {topRecommendationBeachCards.map(({ beach, score, context }, index) => (
-                  <div key={beach.id} data-suitable-beach-id={beach.id} {...beachCardHoverProps(beach.id)} className="flex h-[29.125rem] w-[19rem] shrink-0 snap-start sm:h-[27rem] sm:w-[20rem]">
+                  <div key={beach.id} data-suitable-beach-id={beach.id} {...beachCardHoverProps(beach.id)} className="flex h-[24rem] w-[17rem] shrink-0 snap-start sm:h-[27rem] sm:w-[20rem]">
                     {renderBeachDecisionCard(beach as BeachCardContext, {
                       score,
                       context,
@@ -3202,7 +3263,7 @@ export const BeachSearcherHome: React.FC<BeachSearcherHomeProps> = ({
           >
             {selectedIsland ? (
               weatherBeachCards.map(({ beach, score, context }, index) => (
-                <div key={beach.id} data-suitable-beach-id={beach.id} {...beachCardHoverProps(beach.id)} className="flex h-[29.125rem] w-[19rem] shrink-0 snap-start sm:h-[27rem] sm:w-[20rem]">
+                <div key={beach.id} data-suitable-beach-id={beach.id} {...beachCardHoverProps(beach.id)} className="flex h-[24rem] w-[17rem] shrink-0 snap-start sm:h-[27rem] sm:w-[20rem]">
                   {renderBeachDecisionCard(beach as BeachCardContext, {
                     score,
                     context,
@@ -3338,7 +3399,7 @@ export const BeachSearcherHome: React.FC<BeachSearcherHomeProps> = ({
                 className="beach-card-carousel no-scrollbar flex cursor-grab snap-x snap-mandatory items-stretch gap-6 overflow-x-auto overscroll-x-contain pb-5 select-none active:cursor-grabbing data-[dragging=true]:cursor-grabbing data-[dragging=true]:snap-none lg:snap-none"
               >
                 {directoryDisplayBeachCards.map(beach => (
-                  <div key={beach.id} data-directory-beach-id={beach.id} {...beachCardHoverProps(beach.id)} className="flex h-[29.125rem] w-[19rem] shrink-0 snap-start">
+                  <div key={beach.id} data-directory-beach-id={beach.id} {...beachCardHoverProps(beach.id)} className="flex h-[24rem] w-[17rem] shrink-0 snap-start sm:h-[27rem] sm:w-[20rem]">
                     {renderBeachDecisionCard(beach, { alignExposureToMap: true, windExposureMode: 'simple' })}
                   </div>
                 ))}
@@ -3444,7 +3505,7 @@ export const BeachSearcherHome: React.FC<BeachSearcherHomeProps> = ({
                     className="beach-card-carousel no-scrollbar flex cursor-grab snap-x snap-mandatory items-stretch gap-6 overflow-x-auto overscroll-x-contain pb-5 select-none active:cursor-grabbing data-[dragging=true]:cursor-grabbing data-[dragging=true]:snap-none lg:snap-none"
                   >
                     {directoryDisplayBeachCards.map(beach => (
-                      <div key={beach.id} data-directory-beach-id={beach.id} {...beachCardHoverProps(beach.id)} className="flex h-[29.125rem] w-[19rem] shrink-0 snap-start">
+                      <div key={beach.id} data-directory-beach-id={beach.id} {...beachCardHoverProps(beach.id)} className="flex h-[24rem] w-[17rem] shrink-0 snap-start sm:h-[27rem] sm:w-[20rem]">
                         {renderBeachDecisionCard(beach, { alignExposureToMap: !isDirectorySuitableView, windExposureMode: 'simple' })}
                       </div>
                     ))}
