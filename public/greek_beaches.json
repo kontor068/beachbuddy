@@ -110000,10 +110000,10 @@
             },
             "googleMapsNavigation": {
               "status": "verified",
-              "mode": "place",
-              "checkedAt": "2026-06-15",
+              "mode": "coordinates",
+              "checkedAt": "2026-06-16",
               "method": "osm-nav-audit-v1",
-              "query": "Γερανιά, Milos"
+              "reason": "Place query resolves to a nearby cafe on Google Maps despite OSM tagging the beach correctly (Nominatim != Google). Routing by coordinate pin to avoid the wrong POI."
             }
           }
         },
@@ -111891,10 +111891,14 @@
             "googleMapsNavigation": {
               "status": "verified",
               "mode": "place",
-              "checkedAt": "2026-06-15",
+              "checkedAt": "2026-06-16",
               "method": "osm-nav-audit-v1",
-              "query": "Κολυμπισιώνας, Milos"
-            }
+              "query": "Κολυμπιώνας, Milos",
+              "reason": "Google Maps lists this beach as \"Κολυμπιώνας\" (user-confirmed); stored name \"Κολυμπισιώνας\" did not resolve. Route by the corrected place name."
+            },
+            "aliases": [
+              "Κολυμπισιώνας"
+            ]
           },
           "staticLabels": {
             "accessType": "unknown"

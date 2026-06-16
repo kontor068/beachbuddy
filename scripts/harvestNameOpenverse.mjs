@@ -118,6 +118,12 @@ const main = async () => {
   const usedFiles = new Set(Object.values(result).flat().map(u => decodeURIComponent((u.match(/file\/([^&]+)/) || [])[1] || '')).filter(Boolean));
   const usedUrls = new Set(Object.values(result).flat());
 
+  const BLOCK = path.join(ROOT, 'data', 'beachPhotoBlocklist.json');
+  let blocklist = { files: [], ids: [] };
+  if (existsSync(BLOCK)) { try { blocklist = JSON.parse(await readFile(BLOCK, 'utf8')); } catch {} }
+  const blockedIds = new Set((blocklist.ids || []).map(String));
+  for (const f of (blocklist.files || [])) usedFiles.add(decodeURIComponent(f));
+
   let added = 0, scanned = 0, nameHits = 0, ovHits = 0;
   const regions = index.regions.filter(r => !regionSub || r.id.includes(regionSub));
   for (const region of regions) {
@@ -128,7 +134,7 @@ const main = async () => {
     const app = JSON.parse(await readFile(appPath, 'utf8'));
     const island = region.name.en, islandGr = region.name.gr || '';
     const islandToks = [...tokensOf(island, 4), ...tokensOf(islandGr, 4)];
-    let beaches = (app.island?.beaches || []).filter(b => missing.has(String(b.id)) && !result[b.id]);
+    let beaches = (app.island?.beaches || []).filter(b => missing.has(String(b.id)) && !result[b.id] && !blockedIds.has(String(b.id)));
     if (maxPerRegion) beaches = beaches.slice(0, maxPerRegion);
     let regionAdded = 0;
 

@@ -20,6 +20,14 @@ const OUT = path.join(ROOT, 'data', 'beachPhotosById.generated.json');
 
 const NEG = /church|chapel|chiesa|kirche|templom|μον[ήη]|μοναστ|monaster|εκκλησ|ναός|castle|κάστρο|fortress|φρούριο|tower|museum|μουσε[ίι]ο|archnmus|archmus|banner|aquarium|ενυδρε[ίι]ο|windmill|ανεμόμυλ|fingerpost|σήμα|πινακίδα|road sign|fresco|τοιχογ|\bISS\b|earth\.jpg|view of earth|butterfly|πεταλούδ|flower|λουλούδ|orchid|arbutus|κουμαρ|cemetery|νεκροταφ|\bruins\b|ερείπ|shipyard|ναυπηγ|excavation|ανασκαφ|\bmap\b|χάρτης|stamp|coin|νόμισμα|aerial view of earth|harbour|harbor|λιμάνι|αεροδρόμ|airport|plane|αεροπλάν|statue|άγαλμα|engraving|χαλκογρ|war|πόλεμ|1900|1910|1920|1930|1940|1950|1960|χιονισ|snow|skoda|škoda|\bcar\b|αυτοκίν|vehicle|spondylus|urchin|αχιν|εχίν|mount athos|άθως|αθως|scogliera|mollusc|mollusk|όστρακ|κοχύλ|nudibranch|species|insect|έντομο|\bbird\b|πουλί|jellyfish|μέδουσα|cave|σπήλαι|σπηλιά|fish\b|ψάρι|electricus|lizard|σαύρα|snake|φίδι|crab|καβούρ|plant|φυτό|herbarium|moth|σκαθάρ|beetle|mushroom|μανιτάρ|geological|γεωλογ|mineral|ορυκτ|rock formation|fossil|απολίθ/i;
 
+// iNaturalist species observations (Latin binomial + obs number) & museum artifacts
+const SPECIES_NUM = /\b\d{8,10}\.(jpe?g|png)$/i;
+const LATIN = /\b(Posidonia|Pinna|Pecten|Flexopecten|Bulla|Dasycladus|Sarpa|Salpa|Diplodus|Charonia|Hexaplex|Aplysia|Holothuria|Paracentrotus|Diadema|Arbacia|Actinia|Anemonia|Cerithium|Patella|Cymbula|Octopus|Sepia|Caretta|Larus|Tursiops|Felis|Spondylus|Lima|Limaria|Tethya|Agelas|Pterois|Cymodocea|Eryngium|Malcolmia|Mantis|Amegilla|Oxythyrea|Metaphalangium|Electrophorus|Curruca)\b/i;
+const ARCH = /\bmuseum\b|μουσε[ίι]ο|archnmus|archmus|\bAM \b|\bBC\b|π\.?Χ|funeral|burial|ταφικ|pyxis|amphora|αμφορ|\bvase\b|αγγείο|terracotta|sculpture|γλυπτ|figurine|ειδώλι|Minoan|μινωικ|Mycenaean|μυκηνα|pottery|κεραμικ|sarcophag|σαρκοφάγ|exhibit|\btomb\b|τάφος|τύμβ|mausoleum|temple|\bnaos\b|cathedral|καθεδρικ|acropol|ακρόπολ|amphithea|αμφιθέ|\bruins?\b|ερείπ|ανάκτορ|anaktor|\bstadium\b/i;
+// other non-beach subjects seen in wide-radius geosearch
+const EXTRA = /\bislet\b|νησίδ|Ammouliani Island|Aponissos|Atsitsa island|ferry|\bport\b|harbour|harbor|λιμάν|marina|μαρίν|breakwater|κυματοθρ|remparts|rampart|\bboat trip\b|memorial|μνημε[ίι]|cemeter|νεκροταφ|\btank\b|Κτήμα|estate|winery|οινοποι|unnamed road|\bvillage\b|χωριό|chora village/i;
+const bad = f => NEG.test(f) || SPECIES_NUM.test(f) || LATIN.test(f) || ARCH.test(f) || EXTRA.test(f);
+
 const sleep = ms => new Promise(r => setTimeout(r, ms));
 const getJson = async url => {
   for (let a = 0; a < 4; a++) {
@@ -73,6 +81,14 @@ const main = async () => {
   const result = existsSync(OUT) ? JSON.parse(await readFile(OUT, 'utf8')) : {};
   const usedFiles = new Set(Object.values(result).flat().map(u => decodeURIComponent((u.match(/file\/([^&]+)/) || [])[1] || '')));
 
+  // Durable blocklist of files (and beachIds) that failed QA — never re-add them.
+  const BLOCK = path.join(ROOT, 'data', 'beachPhotoBlocklist.json');
+  let blocklist = { files: [], ids: [] };
+  if (existsSync(BLOCK)) { try { blocklist = JSON.parse(await readFile(BLOCK, 'utf8')); } catch {} }
+  const blockedFiles = new Set((blocklist.files || []).map(f => decodeURIComponent(f)));
+  const blockedIds = new Set((blocklist.ids || []).map(String));
+  for (const f of blockedFiles) usedFiles.add(f); // treat as already-consumed
+
   let added = 0, scanned = 0;
   const regions = index.regions.filter(r => !regionSub || r.id.includes(regionSub));
   for (const region of regions) {
@@ -89,8 +105,9 @@ const main = async () => {
     for (const b of beaches) {
       const lat = b.coordinates?.lat, lon = b.coordinates?.lon;
       if (!Number.isFinite(lat) || !Number.isFinite(lon)) continue;
+      if (blockedIds.has(String(b.id))) continue; // QA'd: no acceptable nearby photo
       scanned++;
-      let cands = (await geo(lat, lon, MAXDIST)).filter(g => isImg(g.file) && !NEG.test(g.file));
+      let cands = (await geo(lat, lon, MAXDIST)).filter(g => isImg(g.file) && !bad(g.file));
       await sleep(120);
       perBeach.push({ id: b.id, cands });
       cands.forEach(g => allFiles.add(g.file));
