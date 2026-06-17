@@ -2,7 +2,8 @@ import React, { useEffect, useMemo, useRef, useState } from 'react';
 import { Circle, MapContainer, TileLayer, Marker, Popup, Tooltip, ZoomControl, useMap } from 'react-leaflet';
 import L from 'leaflet';
 import 'leaflet/dist/leaflet.css';
-import { BadgeCheck, Footprints, Navigation, MapPin, Clock, Wind, X, Info, Utensils, Waves } from 'lucide-react';
+import { BadgeCheck, Footprints, Navigation, MapPin, Clock, Wind, X, Info, Utensils, Waves, Users } from 'lucide-react';
+import { localizedPopularityLabel } from '../utils/localization';
 import { SuitableBeach, Beach, LanguageCode, ForecastItem } from '../types';
 import { trackEvent } from '../services/analyticsService';
 import { getBeachPhotoLookup } from '../services/beachPhotos';
@@ -247,11 +248,13 @@ const buildHoverPreviewFeatureChips = (beach: Beach, language: LanguageCode): Ho
     );
   }
 
-  if (beach.environment.quiet) {
+  // Single crowd indicator: the popularity tier (covers quiet as its low end) — no separate
+  // "quiet" chip so it never repeats the popularity badge.
+  if (beach.popularity?.tier) {
     addChip(
-      'quiet',
-      t.filterOptions.quiet,
-      <BadgeCheck className="h-3 w-3 shrink-0" aria-hidden="true" />
+      'popularity',
+      localizedPopularityLabel(beach.popularity.tier, language),
+      <Users className="h-3 w-3 shrink-0" aria-hidden="true" />
     );
   }
 

@@ -1128,13 +1128,8 @@ const getTopBeachFeatureChips = (
       icon: <Users className="h-5 w-5" />,
     });
   }
-  if (beach.environment?.quiet && !beach.amenities?.beachBar) {
-    addChip({
-      key: 'quiet',
-      label: copy.beachFeatures.quiet,
-      icon: <VolumeX className="h-5 w-5" />,
-    });
-  }
+  // (No separate "quiet" chip — the popularity badge above is the single crowd indicator, and a
+  // beach being quiet is exactly its low-popularity tier, so a quiet chip would just repeat it.)
   if (beach.activities?.snorkeling) {
     addChip({
       key: 'snorkeling',
