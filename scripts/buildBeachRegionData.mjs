@@ -19,6 +19,10 @@ const outputDir = path.join(rootDir, 'public', 'data', 'beaches');
 const appOutputDir = path.join(outputDir, 'app');
 const appSummaryOutputDir = path.join(appOutputDir, 'summary');
 const appDetailOutputDir = path.join(appOutputDir, 'detail');
+// A beach is "quiet" (low traffic) when it has fewer than this many Google reviews. 100 is the
+// natural break in the nationwide distribution (the bottom ~third by visitor volume): the
+// 'secluded' (<20) + 'quiet' (20-99) popularity tiers. Beaches with no Google data count as quiet.
+const QUIET_REVIEW_THRESHOLD = 100;
 const regionDisplayNamesPath = path.join(rootDir, 'utils', 'regionDisplayNames.json');
 
 const APP_DATA_SCHEMA_VERSION = 1;
@@ -472,9 +476,14 @@ const buildBeach = (rawBeach, island) => {
   const hasParking = metadata ? amenityTextIncludesAny(metadata.amenities, PARKING_AMENITY_TERMS) : getDeterministicValue(rawBeach.id, 'parking') > 0.4;
   const hasSunbeds = metadata ? metadata.organized && amenityTextIncludesAny(metadata.amenities, SUNBED_AMENITY_TERMS) : organized || getDeterministicValue(rawBeach.id, 'sunbeds') > 0.5;
   const hasRestaurant = metadata ? hasTaverna || amenityTextIncludesAny(metadata.amenities, RESTAURANT_AMENITY_TERMS) : hasTaverna || getDeterministicValue(rawBeach.id, 'restaurant') > 0.7;
-  const quiet = metadata
-    ? inferQuietFromMetadata({ metadata, accessType: metadata.access.type, hasBar, organized, hasSunbeds, hasTaverna, hasRestaurant })
-    : !hasBar && getDeterministicValue(rawBeach.id, 'quiet') > 0.6;
+  // 'quiet' = how few people visit, driven by Google review count (popularity). A beach is quiet
+  // when we HAVE Google data and it has fewer than QUIET_REVIEW_THRESHOLD reviews. Beaches with no
+  // popularity data are "unknown", not quiet (we don't claim it without evidence). Single meaning:
+  // confirmed low traffic.
+  // A beach bar means it's a developed/lively spot, so never "quiet" even with few reviews
+  // (also enforced as a data-quality invariant downstream).
+  const reviewCount = metadata?.popularity?.ratingCount;
+  const quiet = typeof reviewCount === 'number' && reviewCount < QUIET_REVIEW_THRESHOLD && !hasBar;
   const remote = access === 'DIFFICULT' || access === 'BOAT_ONLY';
   const typeVal = getDeterministicValue(rawBeach.id, 'type');
   const isDeepWater = getDeterministicValue(rawBeach.id, 'depth') > 0.5;
