@@ -92,8 +92,14 @@ const main = async () => {
     r => !filter || r.id.toLowerCase().includes(filter) || r.name.en.toLowerCase().includes(filter),
   );
 
+  // by-id set, to tag each displayed photo's source for the QA dump
+  const byIdPath = path.join(projectRoot, 'data', 'beachPhotosById.generated.json');
+  const byId = existsSync(byIdPath) ? await loadJson(byIdPath) : {};
+  const byIdSet = new Set(Object.keys(byId).map(String));
+
   const regionRows = [];
   const missingRows = [];
+  const displayedRows = []; // every beach that resolves to a photo (for visual QA)
   let nationalTotal = 0;
   let nationalWith = 0;
 
@@ -114,6 +120,15 @@ const main = async () => {
       const lookup = getBeachPhotoLookup(nameGr, nameEn, beach.id, 3, islandName);
       if (lookup.source === 'exact') {
         withPhoto += 1;
+        displayedRows.push({
+          beachId: beach.id,
+          nameGr,
+          nameEn,
+          isl: region.name.gr || region.name.en,
+          regionId: region.id,
+          url: (lookup.photos && lookup.photos[0]) || '',
+          src: byIdSet.has(String(beach.id)) ? 'by-id' : 'name-map',
+        });
       } else {
         missingRows.push({
           regionId: region.id,
@@ -178,6 +193,11 @@ const main = async () => {
     .map(m => [m.group, m.regionId, m.region, m.beachId, m.nameGr, m.nameEn].map(csvCell).join(','))
     .join('\n');
   await writeFile(path.join(reportDir, 'missing-beaches.csv'), `${missingHeader}\n${missingBody}\n`);
+
+  await writeFile(
+    path.join(reportDir, 'displayed-photos.json'),
+    `${JSON.stringify(displayedRows, null, 0)}\n`,
+  );
 
   await rm(outFile, { force: true });
 

@@ -32,7 +32,7 @@ import {
 } from 'lucide-react';
 import type { Beach, DailyForecast, FilterKey, Island, LanguageCode, SortOption, SuitableBeach, Translation, UserPreferences, WindDirection } from '../types';
 import { getLocalizedCopy, languageToDateLocale, languageToLocale, type SupportedLanguage } from '../utils/i18n';
-import { displayBeachName, localizedAccessLabel } from '../utils/localization';
+import { displayBeachName, localizedAccessLabel, localizedPopularityLabel } from '../utils/localization';
 import { getAmenityChips, type AmenityChip } from '../utils/amenities';
 import { getBeachPhotoLookup } from '../services/beachPhotos';
 import { getBeachTouristRecognitionScore } from '../utils/touristPriority';
@@ -1109,6 +1109,14 @@ const getTopBeachFeatureChips = (
       key: 'natural-shade',
       label: copy.beachFeatures.naturalShade,
       icon: <Trees className="h-5 w-5" />,
+    });
+  }
+  // Static popularity/crowd badge (from Google review count): how visited the beach is overall.
+  if (beach.metadata?.popularity?.tier) {
+    addChip({
+      key: 'popularity',
+      label: localizedPopularityLabel(beach.metadata.popularity.tier, language),
+      icon: <Users className="h-5 w-5" />,
     });
   }
   if (beach.environment?.familyFriendly) {
