@@ -1112,10 +1112,12 @@ const getTopBeachFeatureChips = (
     });
   }
   // Static popularity/crowd badge (from Google review count): how visited the beach is overall.
-  if (beach.metadata?.popularity?.tier) {
+  // Prefer the top-level field (present in summary data the home loads); fall back to metadata.
+  const popularityTier = beach.popularity?.tier ?? beach.metadata?.popularity?.tier;
+  if (popularityTier) {
     addChip({
       key: 'popularity',
-      label: localizedPopularityLabel(beach.metadata.popularity.tier, language),
+      label: localizedPopularityLabel(popularityTier, language),
       icon: <Users className="h-5 w-5" />,
     });
   }

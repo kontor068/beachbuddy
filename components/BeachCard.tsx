@@ -840,15 +840,18 @@ const MetadataTags: React.FC<{ beach: Beach; language: LanguageCode }> = ({ beac
           <span>{localizedShadeLabel(language)}</span>
         </div>
       )}
-      {metadata.popularity?.tier && (
-        <div
-          className={`px-2 py-0.5 rounded text-[10px] font-bold flex items-center gap-1.5 ${popularityStyles[metadata.popularity.tier] || popularityStyles.moderate}`}
-          title={metadata.popularity.ratingCount ? `${metadata.popularity.ratingCount} Google reviews` : undefined}
-        >
-          <Users className="w-3.5 h-3.5" />
-          <span>{localizedPopularityLabel(metadata.popularity.tier, language)}</span>
-        </div>
-      )}
+      {(beach.popularity ?? metadata.popularity)?.tier && (() => {
+        const pop = beach.popularity ?? metadata.popularity!;
+        return (
+          <div
+            className={`px-2 py-0.5 rounded text-[10px] font-bold flex items-center gap-1.5 ${popularityStyles[pop.tier] || popularityStyles.moderate}`}
+            title={pop.ratingCount ? `${pop.ratingCount} Google reviews` : undefined}
+          >
+            <Users className="w-3.5 h-3.5" />
+            <span>{localizedPopularityLabel(pop.tier, language)}</span>
+          </div>
+        );
+      })()}
       {amenityChips.map(chip => (
         <div key={chip.key} className="px-2 py-0.5 bg-slate-50 dark:bg-slate-800 rounded text-[10px] font-bold text-slate-700 dark:text-slate-600 flex items-center gap-1.5">
           {amenityChipIcon(chip)}

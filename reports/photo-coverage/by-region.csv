@@ -1,7 +1,7 @@
 group,region,regionGr,total,withPhoto,missing,pct
 cyclades,Milos,Μήλος,42,26,16,61.9
 cyclades,Andros,Άνδρος,41,20,21,48.8
-cyclades,Ios,Ίος,40,11,29,27.5
+cyclades,Ios,Ίος,40,9,31,22.5
 cyclades,Kythnos,Κύθνος,40,25,15,62.5
 cyclades,Tinos,Τήνος,40,23,17,57.5
 cyclades,Mykonos,Μύκονος,39,33,6,84.6
@@ -23,7 +23,7 @@ cyclades,Sikinos,Σίκινος,5,4,1,80
 cyclades,Donousa,Δονούσα,4,2,2,50
 cyclades,Polyaigos,Πολύαιγος,4,2,2,50
 cyclades,Iraklia,Ηρακλειά,2,2,0,100
-dodecanese,Rhodes,Ρόδος,61,51,10,83.6
+dodecanese,Rhodes,Ρόδος,61,50,11,82
 dodecanese,Karpathos,Κάρπαθος,45,18,27,40
 dodecanese,Kos,Κως,38,31,7,81.6
 dodecanese,Astypalaia,Αστυπάλαια,20,14,6,70
@@ -42,7 +42,7 @@ dodecanese,Arki,Αρκοί,2,1,1,50
 dodecanese,Halki,Χάλκη,2,1,1,50
 dodecanese,Marathi,Μαράθι,2,0,2,0
 dodecanese,Nisyros,Νίσυρος,2,2,0,100
-ionian,Corfu,Κέρκυρα,93,76,17,81.7
+ionian,Corfu,Κέρκυρα,93,75,18,80.6
 ionian,Kefalonia,Κεφαλονιά,76,50,26,65.8
 ionian,Kythira,Κύθηρα,43,27,16,62.8
 ionian,Zakynthos,Ζάκυνθος,39,38,1,97.4
@@ -56,15 +56,15 @@ ionian,Erikoussa,Ερείκουσα,2,0,2,0
 ionian,Mathraki,Μαθράκι,1,0,1,0
 crete,Chania,Χανιά,85,68,17,80
 crete,Lasithi,Λασίθι,60,50,10,83.3
-crete,Heraklion,Ηράκλειο,53,39,14,73.6
+crete,Heraklion,Ηράκλειο,53,38,15,71.7
 crete,Rethymno,Ρέθυμνο,46,37,9,80.4
 crete,Gavdos,Γαύδος,9,9,0,100
 sporades,Alonissos,Αλόννησος,35,22,13,62.9
 sporades,Skiathos,Σκιάθος,32,22,10,68.8
 sporades,Skyros,Σκύρος,21,10,11,47.6
 sporades,Skopelos,Σκόπελος,19,13,6,68.4
-north_aegean,Lesvos,Λέσβος,60,18,42,30
-north_aegean,Samos,Σάμος,41,30,11,73.2
+north_aegean,Lesvos,Λέσβος,60,17,43,28.3
+north_aegean,Samos,Σάμος,41,29,12,70.7
 north_aegean,Lemnos,Λήμνος,40,11,29,27.5
 north_aegean,Chios,Χίος,35,12,23,34.3
 north_aegean,Ikaria,Ικαρία,19,14,5,73.7
@@ -75,26 +75,26 @@ north_aegean,Psara,Ψαρά,6,2,4,33.3
 north_aegean,Samothraki,Σαμοθράκη,3,2,1,66.7
 argosaronic,Aegina,Αίγινα,17,9,8,52.9
 argosaronic,Spetses,Σπέτσες,12,10,2,83.3
-argosaronic,Poros,Πόρος,11,11,0,100
+argosaronic,Poros,Πόρος,11,10,1,90.9
 argosaronic,Hydra,Ύδρα,9,8,1,88.9
-argosaronic,Agistri,Αγκίστρι,6,4,2,66.7
+argosaronic,Agistri,Αγκίστρι,6,3,3,50
 argosaronic,Methana,Μέθανα,4,1,3,25
 argosaronic,Salamina,Σαλαμίνα,3,2,1,66.7
 euboea,Evia,Εύβοια,122,63,59,51.6
-attica,East Attica,Ανατολική Αττική,59,34,25,57.6
+attica,East Attica,Ανατολική Αττική,59,32,27,54.2
 attica,Athens area,Περιοχή Αθήνας,26,26,0,100
 attica,West Attica,Δυτική Αττική,6,4,2,66.7
 attica,Piraeus area,Περιοχή Πειραιά,5,5,0,100
-mainland_macedonia,Halkidiki,Χαλκιδική,129,86,43,66.7
-mainland_macedonia,Kavala,Καβάλα,16,12,4,75
-mainland_macedonia,Thessaloniki area,Περιοχή Θεσσαλονίκης,16,11,5,68.8
+mainland_macedonia,Halkidiki,Χαλκιδική,129,83,46,64.3
+mainland_macedonia,Kavala,Καβάλα,16,11,5,68.8
+mainland_macedonia,Thessaloniki area,Περιοχή Θεσσαλονίκης,16,10,6,62.5
 mainland_macedonia,Pieria,Πιερία,8,8,0,100
-mainland_thrace,Thasos,Θάσος,58,47,11,81
+mainland_thrace,Thasos,Θάσος,58,46,12,79.3
 mainland_thrace,Rodopi,Ροδόπη,6,2,4,33.3
 mainland_thrace,Evros,Έβρος,4,4,0,100
 mainland_thrace,Xanthi,Ξάνθη,3,2,1,66.7
-mainland_peloponnese,Lakonia,Λακωνία,61,39,22,63.9
-mainland_peloponnese,Messinia,Μεσσηνία,56,41,15,73.2
+mainland_peloponnese,Lakonia,Λακωνία,61,38,23,62.3
+mainland_peloponnese,Messinia,Μεσσηνία,56,38,18,67.9
 mainland_peloponnese,Argolida,Αργολίδα,34,20,14,58.8
 mainland_peloponnese,Korinthia,Κορινθία,25,13,12,52
 mainland_peloponnese,Achaia,Αχαΐα,19,13,6,68.4
@@ -105,7 +105,7 @@ mainland_central,Fthiotida,Φθιώτιδα,16,3,13,18.8
 mainland_central,Ileia,Ηλεία,16,8,8,50
 mainland_central,Viotia,Βοιωτία,8,2,6,25
 mainland_epirus,Thesprotia,Θεσπρωτία,39,22,17,56.4
-mainland_epirus,Preveza,Πρέβεζα,26,12,14,46.2
+mainland_epirus,Preveza,Πρέβεζα,26,11,15,42.3
 mainland_epirus,Arta,Άρτα,2,2,0,100
-mainland_thessaly,Magnesia (Pelion),Μαγνησία (Πήλιο),52,29,23,55.8
+mainland_thessaly,Magnesia (Pelion),Μαγνησία (Πήλιο),52,24,28,46.2
 mainland_thessaly,Larissa Coast (Agia - Kissavos),Παράλια Λάρισας (Αγιά - Κίσσαβος),8,5,3,62.5

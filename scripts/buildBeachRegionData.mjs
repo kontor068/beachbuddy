@@ -532,6 +532,7 @@ const buildBeach = (rawBeach, island) => {
       familyFriendly: metadata?.environment?.familyFriendly ?? familyFriendly,
     },
     popularityScore: Math.floor(getDeterministicValue(rawBeach.id, 'pop') * 100),
+    ...(metadata?.popularity ? { popularity: metadata.popularity } : {}),
     coordinates: { lat: rawBeach.lat, lon: rawBeach.lon },
     ...(mapCoordinates ? { mapCoordinates } : {}),
     location: {
@@ -575,6 +576,7 @@ const buildSummaryBeach = beach => {
     aliases: beach.aliases,
     ...(beach.metadata?.blueFlag2026 ? { blueFlag2026: beach.metadata.blueFlag2026 } : {}),
     ...(beach.metadata?.seatrac ? { seatrac: beach.metadata.seatrac } : {}),
+    ...(beach.metadata?.popularity ? { popularity: beach.metadata.popularity } : {}),
     staticLabels: {
       beachType: beach.staticLabels?.beachType || beach.beachType,
       accessType,
@@ -596,6 +598,7 @@ const buildDetailBeach = beach => ({
   environment: beach.environment,
   location: beach.location,
   ...(beach.mapCoordinates ? { mapCoordinates: beach.mapCoordinates } : {}),
+  ...(beach.metadata?.popularity ? { popularity: beach.metadata.popularity } : {}),
   aliases: beach.aliases,
   staticLabels: beach.staticLabels,
   metadata: beach.metadata,

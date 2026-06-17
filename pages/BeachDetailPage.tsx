@@ -694,16 +694,22 @@ export const BeachDetailPage: React.FC<BeachDetailPageProps> = ({
   const showAmenityDisclaimer = shouldShowAmenityDisclaimer(beach);
 
   // "What to bring" — derived only from THIS beach's real gaps, never generic.
-  // Each item appears solely when the corresponding facility is confirmed absent.
+  // Each item appears solely when the facility is CONFIRMED absent (status 'no'),
+  // never when it is merely unknown — we don't tell people to pack for ignorance.
   const amenityAvailable = (key: 'beachBar' | 'sunbeds' | 'foodNearby' | 'cafeNearby') =>
     amenityRows.some(row => row.key === key && (row.status === 'yes' || row.status === 'seasonal' || row.status === 'limited'));
+  const amenityConfirmedAbsent = (key: 'beachBar' | 'sunbeds' | 'foodNearby' | 'cafeNearby') =>
+    amenityRows.some(row => row.key === key && row.status === 'no');
   const hasFoodOnSite = amenityAvailable('beachBar') || amenityAvailable('foodNearby') || amenityAvailable('cafeNearby');
-  const hasShade = beach.amenities.naturalShade === true || amenityAvailable('sunbeds');
+  const foodConfirmedAbsent = !hasFoodOnSite
+    && (amenityConfirmedAbsent('beachBar') || amenityConfirmedAbsent('foodNearby') || amenityConfirmedAbsent('cafeNearby'));
+  // naturalShade is a definite boolean in the dataset, so `=== false` is confirmed.
+  const shadeConfirmedAbsent = beach.amenities.naturalShade === false && !amenityAvailable('sunbeds');
   const hasPebblesOrRocks = beach.beachType === 'pebbles' || beach.beachType === 'sandy-pebbles' || beach.beachType === 'rocky';
   const whatToBringItems = [
-    !hasFoodOnSite && { en: 'Water & snacks', gr: 'Νερό & σνακ', de: 'Wasser & Snacks', it: 'Acqua e snack', fr: 'Eau et snacks' }[language],
-    !hasShade && { en: 'Umbrella or shade', gr: 'Ομπρέλα ή σκίαση', de: 'Sonnenschirm oder Schatten', it: 'Ombrellone o riparo', fr: 'Parasol ou ombre' }[language],
-    !hasShade && { en: 'Sunscreen', gr: 'Αντηλιακό', de: 'Sonnencreme', it: 'Crema solare', fr: 'Crème solaire' }[language],
+    foodConfirmedAbsent && { en: 'Water & snacks', gr: 'Νερό & σνακ', de: 'Wasser & Snacks', it: 'Acqua e snack', fr: 'Eau et snacks' }[language],
+    shadeConfirmedAbsent && { en: 'Umbrella or shade', gr: 'Ομπρέλα ή σκίαση', de: 'Sonnenschirm oder Schatten', it: 'Ombrellone o riparo', fr: 'Parasol ou ombre' }[language],
+    shadeConfirmedAbsent && { en: 'Sunscreen', gr: 'Αντηλιακό', de: 'Sonnencreme', it: 'Crema solare', fr: 'Crème solaire' }[language],
     hasPebblesOrRocks && { en: 'Water shoes', gr: 'Παπούτσια θαλάσσης', de: 'Badeschuhe', it: 'Scarpe da scoglio', fr: 'Chaussures d eau' }[language],
   ].filter((item): item is string => Boolean(item));
   const whatToBringTitle = { en: 'What to bring', gr: 'Τι να φέρεις', de: 'Was mitnehmen', it: 'Cosa portare', fr: 'Quoi apporter' }[language];
@@ -980,7 +986,7 @@ export const BeachDetailPage: React.FC<BeachDetailPageProps> = ({
                   {peakUvIndex.toFixed(0)}
                 </span>
                 {{ en: 'UV', gr: 'UV', de: 'UV', it: 'UV', fr: 'UV' }[language]} {uvDescriptor}
-                {!hasShade && ` · ${{ en: 'no shade here', gr: 'καθόλου σκιά εδώ', de: 'kein Schatten hier', it: 'niente ombra qui', fr: 'pas d ombre ici' }[language]}`}
+                {shadeConfirmedAbsent && ` · ${{ en: 'no shade here', gr: 'καθόλου σκιά εδώ', de: 'kein Schatten hier', it: 'niente ombra qui', fr: 'pas d ombre ici' }[language]}`}
               </span>
             )}
           </section>

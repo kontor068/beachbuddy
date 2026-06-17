@@ -259,6 +259,14 @@ export interface Beach {
     familyFriendly: boolean;
   };
   popularityScore: number;
+  /** Static crowd/popularity badge (from Google review count); surfaced top-level for summary/detail data. */
+  popularity?: {
+    tier: 'secluded' | 'quiet' | 'moderate' | 'popular' | 'crowded';
+    rating?: number | null;
+    ratingCount?: number;
+    source?: string;
+    checkedAt?: string;
+  };
   coordinates: { lat: number; lon: number; };
   mapCoordinates?: BeachMapCoordinates;
   location?: Partial<BeachLocation>;
