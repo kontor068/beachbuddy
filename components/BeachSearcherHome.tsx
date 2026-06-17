@@ -1240,11 +1240,11 @@ const getAllBeachesLabel = (language: LanguageCode, selectedDate?: Date, timePre
   const day = timePrefix ?? getSelectedDayPrefix(selectedDate, new Date(), language);
 
   return getLocalizedCopy(language, {
-    en: `All beaches ${day}`,
-    gr: `Όλες οι παραλίες ${day}`,
-    fr: `Toutes les plages ${day}`,
-    de: `Alle Strände ${day}`,
-    it: `Tutte le spiagge ${day}`,
+    en: `All beaches suitable ${day}`,
+    gr: `Όλες οι παραλίες κατάλληλες ${day}`,
+    fr: `Toutes les plages adaptées ${day}`,
+    de: `Alle Strände geeignet ${day}`,
+    it: `Tutte le spiagge adatte ${day}`,
   });
 };
 

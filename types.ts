@@ -404,6 +404,14 @@ export interface BeachMetadata {
     placeId?: string;
     reason?: string;
   };
+  /** Crowd/popularity badge derived from Google review count (proxy for how visited a beach is). */
+  popularity?: {
+    tier: 'secluded' | 'quiet' | 'moderate' | 'popular' | 'crowded';
+    rating?: number | null;
+    ratingCount?: number;
+    source?: string;
+    checkedAt?: string;
+  };
   mapCoordinates?: BeachMapCoordinates;
   orientation?: Partial<BeachOrientation>;
   windProfile?: WindProfile;

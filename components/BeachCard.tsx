@@ -24,6 +24,7 @@ import {
   localizedShadeLabel,
   localizedTerrainLabel,
   localizedWaterDepthLabel,
+  localizedPopularityLabel,
 } from '../utils/localization';
 import { AmenityChip, getAmenityChips } from '../utils/amenities';
 import { SandDotsIcon, SandPebblesIcon, SunbedIcon } from './BeachFeatureIcons';
@@ -780,6 +781,15 @@ const waterDepthIcons: Record<string, React.ReactNode> = {
   deep: <ArrowDown className="w-3.5 h-3.5" />,
 };
 
+// Static popularity/crowd badge (from Google review count): secluded -> crowded.
+const popularityStyles: Record<string, string> = {
+  secluded: 'bg-slate-50 text-slate-600 dark:bg-slate-800 dark:text-slate-400',
+  quiet: 'bg-emerald-50 text-emerald-700 dark:bg-emerald-900/20 dark:text-emerald-300',
+  moderate: 'bg-amber-50 text-amber-700 dark:bg-amber-900/20 dark:text-amber-300',
+  popular: 'bg-orange-50 text-orange-700 dark:bg-orange-900/20 dark:text-orange-300',
+  crowded: 'bg-rose-50 text-rose-700 dark:bg-rose-900/20 dark:text-rose-300',
+};
+
 const MetadataAccessInfo: React.FC<{ metadata: NonNullable<Beach['metadata']>; language: LanguageCode }> = ({ metadata, language }) => {
   if (!metadata.access) return null;
 
@@ -828,6 +838,15 @@ const MetadataTags: React.FC<{ beach: Beach; language: LanguageCode }> = ({ beac
         <div className="px-2 py-0.5 bg-emerald-50 text-emerald-700 dark:bg-emerald-900/20 dark:text-emerald-300 rounded text-[10px] font-bold flex items-center gap-1.5">
           <Trees className="w-3.5 h-3.5" />
           <span>{localizedShadeLabel(language)}</span>
+        </div>
+      )}
+      {metadata.popularity?.tier && (
+        <div
+          className={`px-2 py-0.5 rounded text-[10px] font-bold flex items-center gap-1.5 ${popularityStyles[metadata.popularity.tier] || popularityStyles.moderate}`}
+          title={metadata.popularity.ratingCount ? `${metadata.popularity.ratingCount} Google reviews` : undefined}
+        >
+          <Users className="w-3.5 h-3.5" />
+          <span>{localizedPopularityLabel(metadata.popularity.tier, language)}</span>
         </div>
       )}
       {amenityChips.map(chip => (
@@ -1217,9 +1236,11 @@ export const BeachCard: React.FC<BeachCardProps> = ({
             </div>
 
             <div className="min-w-0 pt-0.5 text-center">
-              <h3 className="line-clamp-2 text-center font-heading text-lg font-extrabold leading-[1.08] text-slate-950 dark:text-white">
-                {beachDisplayName}
-              </h3>
+              <div className="flex min-h-[2.45rem] items-center justify-center">
+                <h3 className="line-clamp-2 text-center font-heading text-lg font-extrabold leading-[1.08] text-slate-950 dark:text-white">
+                  {beachDisplayName}
+                </h3>
+              </div>
               {(showIslandName || distance !== undefined || showHeaderProtectedMarker) && (
                 <div className="flex min-w-0 flex-wrap items-center justify-center gap-x-1.5 gap-y-0.5 text-xs font-semibold text-slate-700 dark:text-slate-600">
                   {(showIslandName || distance !== undefined) && <MapPin className="h-3.5 w-3.5 shrink-0" />}
@@ -1261,12 +1282,14 @@ export const BeachCard: React.FC<BeachCardProps> = ({
               </span>
             ) : null}
 
+            {/* Fixed 2-row slot so every card reserves the same height regardless of
+                how many feature chips a beach has — keeps the carousel cards uniform. */}
             {featureChips.length > 0 ? (
-              <div className="flex min-w-0 flex-wrap gap-1.5">
-                {featureChips.map(chip => (
+              <div className="grid h-[4.875rem] min-w-0 grid-cols-2 auto-rows-[2.25rem] content-start gap-1.5 overflow-hidden">
+                {featureChips.slice(0, 4).map(chip => (
                   <span
                     key={chip.key}
-                    className="inline-flex h-9 min-w-0 shrink-0 items-center gap-1.5 overflow-hidden rounded-xl border border-cyan-100 bg-cyan-50/70 px-2.5 py-1.5 text-xs font-semibold leading-tight text-cyan-800"
+                    className="inline-flex h-9 w-full min-w-0 items-center justify-center gap-1.5 overflow-hidden rounded-xl border border-cyan-100 bg-cyan-50/70 px-2.5 py-1.5 text-xs font-semibold leading-tight text-cyan-800"
                   >
                     {chip.icon}
                     <span className="min-w-0 truncate leading-tight">{chip.label}</span>
@@ -1274,10 +1297,12 @@ export const BeachCard: React.FC<BeachCardProps> = ({
                 ))}
               </div>
             ) : !showMobileProtectionChip ? (
-              <span className="inline-flex min-h-9 w-full min-w-0 items-center justify-start gap-1.5 overflow-hidden rounded-xl border border-slate-200/70 bg-slate-50/70 px-2.5 py-1.5 text-xs font-semibold leading-tight text-slate-600">
-                <Info className="h-3.5 w-3.5 shrink-0" />
-                <span className="min-w-0 line-clamp-2 leading-tight">{localizedCardCopy.localExposureCheck}</span>
-              </span>
+              <div className="grid h-[4.875rem] content-start overflow-hidden">
+                <span className="inline-flex min-h-9 w-full min-w-0 items-center justify-start gap-1.5 overflow-hidden rounded-xl border border-slate-200/70 bg-slate-50/70 px-2.5 py-1.5 text-xs font-semibold leading-tight text-slate-600">
+                  <Info className="h-3.5 w-3.5 shrink-0" />
+                  <span className="min-w-0 line-clamp-2 leading-tight">{localizedCardCopy.localExposureCheck}</span>
+                </span>
+              </div>
             ) : null}
 
             <div className="flex min-w-0 items-center gap-1.5 overflow-hidden rounded-xl border border-slate-100 bg-slate-50/60 px-2.5 py-1.5 text-[11px] font-bold leading-none text-slate-700 dark:border-slate-800 dark:bg-slate-900 dark:text-slate-300">

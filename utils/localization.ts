@@ -121,6 +121,18 @@ export const localizedShadeLabel = (language: LanguageCode) => ({
   fr: 'Ombre naturelle',
 }[language]);
 
+type PopularityTier = 'secluded' | 'quiet' | 'moderate' | 'popular' | 'crowded';
+// Static crowd/popularity badge derived from Google review count (how visited a beach is overall).
+const popularityLabels: Record<PopularityTier, Record<LanguageCode, string>> = {
+  secluded: { en: 'Secluded', gr: 'Απομονωμένη', de: 'Abgelegen', it: 'Appartata', fr: 'Isolée' },
+  quiet: { en: 'Quiet', gr: 'Ήσυχη', de: 'Ruhig', it: 'Tranquilla', fr: 'Calme' },
+  moderate: { en: 'Moderate', gr: 'Μέτρια κίνηση', de: 'Maßig besucht', it: 'Moderata', fr: 'Fréquentation moyenne' },
+  popular: { en: 'Popular', gr: 'Δημοφιλής', de: 'Beliebt', it: 'Popolare', fr: 'Populaire' },
+  crowded: { en: 'Crowded', gr: 'Πολυσύχναστη', de: 'Stark besucht', it: 'Affollata', fr: 'Très fréquentée' },
+};
+export const localizedPopularityLabel = (tier: PopularityTier, language: LanguageCode): string =>
+  popularityLabels[tier]?.[language] || popularityLabels[tier]?.en || '';
+
 export const localizedAmenityText = (value: string, language: LanguageCode): string => {
   const normalized = value.toLowerCase();
   if (language === 'gr') {
