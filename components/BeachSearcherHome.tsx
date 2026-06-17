@@ -336,27 +336,6 @@ const desktopPrimaryPreferenceFilters = [
 const desktopPrimaryPreferenceFilterSet = new Set<QuickPreferenceFilter>(desktopPrimaryPreferenceFilters);
 const desktopSecondaryPreferenceFilters = QUICK_PREFERENCE_FILTERS.filter(filter => !desktopPrimaryPreferenceFilterSet.has(filter));
 
-type DesktopFilterCategory = 'water' | 'surface' | 'amenities' | 'experience';
-const desktopFilterCategoryMap: Record<string, DesktopFilterCategory> = {
-  shallowWater: 'water',
-  deepWater: 'water',
-  snorkeling: 'water',
-  sandy: 'surface',
-  pebbles: 'surface',
-  'sandy-pebbles': 'surface',
-  rocky: 'surface',
-  parking: 'amenities',
-  naturalShade: 'amenities',
-  taverna: 'amenities',
-  sunbeds: 'amenities',
-  beachBar: 'amenities',
-  quiet: 'experience',
-  familyFriendly: 'experience',
-  easyAccess: 'experience',
-  adventure: 'experience',
-  disabledAccess: 'experience',
-};
-const desktopFilterCategoryOrder: DesktopFilterCategory[] = ['water', 'surface', 'amenities', 'experience'];
 
 type DesktopFilterItem =
   | {
@@ -1225,8 +1204,20 @@ const getTopChoiceLabel = (
   });
 };
 
-const getBestBeachesLabel = (language: LanguageCode, selectedDate?: Date, timePrefix?: string): string => {
+const getBestBeachesLabel = (language: LanguageCode, selectedDate?: Date, timePrefix?: string, beaufort?: number): string => {
   const day = timePrefix ?? getSelectedDayPrefix(selectedDate, new Date(), language);
+
+  // From 5 Bft up, the wind dominates the decision: we're no longer ranking the
+  // "best" beaches but pointing to the more sheltered ones, so the framing shifts.
+  if (typeof beaufort === 'number' && beaufort >= 5) {
+    return getLocalizedCopy(language, {
+      en: `More sheltered beaches ${day}`,
+      gr: `Πιο προστατευμένες παραλίες ${day}`,
+      fr: `Plages plus abritées ${day}`,
+      de: `Geschütztere Strände ${day}`,
+      it: `Spiagge più riparate ${day}`,
+    });
+  }
 
   return getLocalizedCopy(language, {
     en: `Best beaches ${day}`,
@@ -1480,7 +1471,7 @@ export const BeachSearcherHome: React.FC<BeachSearcherHomeProps> = ({
 }) => {
   const copy = getLocalizedCopy(language, homeCopy);
   const topChoiceCopy = getTopChoiceLabel(language, selectedDate);
-  const bestBeachesLabel = getBestBeachesLabel(language, selectedDate, suitableTimePrefix);
+  const bestBeachesLabel = getBestBeachesLabel(language, selectedDate, suitableTimePrefix, currentBeaufort);
   const allBeachesLabel = getAllBeachesLabel(language, selectedDate, suitableTimePrefix);
   const [isDirectorySortOpen, setIsDirectorySortOpen] = useState(false);
   const [directoryViewCriteria, setDirectoryViewCriteria] = useState({
@@ -2872,28 +2863,9 @@ export const BeachSearcherHome: React.FC<BeachSearcherHomeProps> = ({
                       role="listbox"
                       className="absolute right-0 top-full z-50 mt-2 w-[min(36rem,calc(100vw-4rem))] rounded-2xl border border-slate-200 bg-white p-2 shadow-2xl shadow-slate-900/25 ring-1 ring-slate-200/60"
                     >
-                      {desktopFilterCategoryOrder.map(category => {
-                        const itemsInCategory = desktopHiddenFilterItems
-                          .filter(item => desktopFilterCategoryMap[String(item.key)] === category)
-                          .sort((a, b) => (getDesktopFilterDisplayCount(b) ?? 0) - (getDesktopFilterDisplayCount(a) ?? 0));
-                        if (itemsInCategory.length === 0) return null;
-                        const categoryLabel = getLocalizedCopy(language, {
-                          water: { en: 'Water', gr: 'Νερό', de: 'Wasser', it: 'Acqua', fr: 'Eau' },
-                          surface: { en: 'Surface', gr: 'Έδαφος', de: 'Untergrund', it: 'Fondale', fr: 'Sol' },
-                          amenities: { en: 'Amenities', gr: 'Παροχές', de: 'Ausstattung', it: 'Servizi', fr: 'Services' },
-                          experience: { en: 'Experience', gr: 'Εμπειρία', de: 'Erlebnis', it: 'Esperienza', fr: 'Expérience' },
-                        }[category]);
-                        return (
-                          <div key={category} className="mb-1.5 last:mb-0">
-                            <p className="px-2 pt-1.5 pb-1 text-[10px] font-bold uppercase tracking-wider text-slate-600">
-                              {categoryLabel}
-                            </p>
-                            <div className="grid gap-1.5 sm:grid-cols-2">
-                              {itemsInCategory.map(renderDesktopMenuFilterButton)}
-                            </div>
-                          </div>
-                        );
-                      })}
+                      <div className="grid gap-1.5 sm:grid-cols-2">
+                        {desktopHiddenFilterItems.map(renderDesktopMenuFilterButton)}
+                      </div>
                     </div>
                   )}
                 </div>

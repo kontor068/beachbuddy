@@ -284,6 +284,7 @@ export interface Beach {
   windProfile?: WindProfile;
   blueFlag2026?: BeachMetadata['blueFlag2026'];
   seatrac?: BeachMetadata['seatrac'];
+  nearbyCamping?: NearbyCampsite[];
   aliases?: string[];
   staticLabels?: {
     beachType?: string;
@@ -344,6 +345,31 @@ export interface BeachSeatracAccess {
   match?: { officialNameGr?: string; officialNameEn?: string; matchMethod: string; matchScore: number };
 }
 
+/**
+ * An organized/licensed campsite near a beach (≤ 2.5 km), sourced from OpenStreetMap
+ * (`tourism=camp_site`). Wild camping is illegal in Greece, so this only ever lists real
+ * campgrounds. Source-derived and recomputed on each link run — never hand-edited.
+ */
+export interface NearbyCampsite {
+  /** Stable OSM key, e.g. "osm-node-123" / "osm-way-456". */
+  id: string;
+  /** Best display name (Greek preferred, then English, then raw OSM name). */
+  name: string;
+  nameEn?: string;
+  coordinates: { lat: number; lon: number };
+  /** Beach pin → campsite distance, rounded metres. */
+  distanceMeters: number;
+  website?: string;
+  phone?: string;
+  /** From OSM tags (caravans=yes / tents=yes) when stated. */
+  caravans?: boolean;
+  source: 'osm';
+  /** https://www.openstreetmap.org/<type>/<id> */
+  osmUrl: string;
+  /** ISO date this link was last computed. */
+  checkedAt: string;
+}
+
 export interface BeachMetadata {
   access: {
     type: BeachAccessType;
@@ -399,6 +425,8 @@ export interface BeachMetadata {
     }>;
   };
   seatrac?: BeachSeatracAccess;
+  /** Organized campsites within ~2.5 km (OpenStreetMap). Source of truth read by the build. */
+  nearbyCamping?: NearbyCampsite[];
   sourceUrls?: string[];
   sourceNotes?: string | string[];
   googleMapsNavigation?: {

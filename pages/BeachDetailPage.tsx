@@ -4,7 +4,7 @@ import {
   ArrowLeft, MapPin, Wind, Waves, Thermometer, Droplets,
   Clock, Sun, Backpack,
   Navigation, Share2, Heart, ChevronRight, ThumbsUp, ThumbsDown, CheckCircle2,
-  Camera, ExternalLink, Accessibility, AlertTriangle
+  Camera, ExternalLink, Accessibility, AlertTriangle, Tent
 } from 'lucide-react';
 import {
   Beach, LanguageCode, Translation, WindDirection,
@@ -483,7 +483,14 @@ export const BeachDetailPage: React.FC<BeachDetailPageProps> = ({
     favorite: { en: 'Favorite', gr: 'Αγαπημένο', de: 'Favorit', it: 'Preferito', fr: 'Favori' },
     back: { en: 'Back to beaches', gr: 'Πίσω στις παραλίες', de: 'Zuruck zu den Stranden', it: 'Torna alle spiagge', fr: 'Retour aux plages' },
     mapUnavailable: { en: 'The map could not load right now.', gr: 'Ο χάρτης δεν φορτώθηκε τώρα.', de: 'Die Karte konnte gerade nicht geladen werden.', it: 'La mappa non si e caricata.', fr: 'La carte n a pas pu se charger.' },
+    campingTitle: { en: 'Camping nearby', gr: 'Camping κοντά', de: 'Camping in der Nahe', it: 'Campeggi nelle vicinanze', fr: 'Camping a proximite' },
+    campingWebsite: { en: 'Website', gr: 'Ιστότοπος', de: 'Website', it: 'Sito web', fr: 'Site web' },
+    campingSource: { en: 'Campsite data from OpenStreetMap.', gr: 'Δεδομένα camping από το OpenStreetMap.', de: 'Campingplatz-Daten von OpenStreetMap.', it: 'Dati dei campeggi da OpenStreetMap.', fr: 'Donnees des campings via OpenStreetMap.' },
   };
+
+  // Organized campsites within ~2.5 km (OSM). Detail metadata carries the full list (≤3);
+  // the top-level field may be the summary-trimmed single — prefer whichever is richer.
+  const nearbyCampsites = (beach.metadata?.nearbyCamping?.length ? beach.metadata.nearbyCamping : beach.nearbyCamping) ?? [];
 
   // Scroll to top on mount and track view
   useEffect(() => {
@@ -690,6 +697,11 @@ export const BeachDetailPage: React.FC<BeachDetailPageProps> = ({
   });
   const decisionBullets = detailExplanation.heroBullets.slice(0, 3);
   const amenityChips = getAmenityChips(beach, language);
+  // Per-facility chips (parking/beachBar/…) always mirror a yes/no row below, so we
+  // keep only the summary chips that carry information the rows don't.
+  const summaryAmenityChips = amenityChips.filter(chip =>
+    chip.key === 'organizedFacilities' || chip.key === 'noFacilities'
+    || chip.key === 'seasonalFacilities' || chip.key === 'unknownFacilities');
   const amenityRows = getAmenityStatusRows(beach, language);
   const showAmenityDisclaimer = shouldShowAmenityDisclaimer(beach);
 
@@ -1017,16 +1029,20 @@ export const BeachDetailPage: React.FC<BeachDetailPageProps> = ({
         {/* 7. Amenities */}
         <section className="space-y-3">
           <h3 className="px-1 font-heading text-lg font-bold text-slate-950">{t.amenitiesTitle}</h3>
-          <div className="flex flex-wrap gap-2">
-            {amenityChips.map((chip) => (
-              <span
-                key={chip.key}
-                className="inline-flex min-h-9 items-center rounded-full border border-white/80 bg-white/88 px-3 text-xs font-semibold text-slate-700 shadow-sm shadow-sky-900/5"
-              >
-                {chip.label}
-              </span>
-            ))}
-          </div>
+          {/* Only summary chips (organized / none / seasonal / unknown) — per-facility
+              chips like "Parking nearby" would just duplicate the yes/no rows below. */}
+          {summaryAmenityChips.length > 0 && (
+            <div className="flex flex-wrap gap-2">
+              {summaryAmenityChips.map((chip) => (
+                <span
+                  key={chip.key}
+                  className="inline-flex min-h-9 items-center rounded-full border border-white/80 bg-white/88 px-3 text-xs font-semibold text-slate-700 shadow-sm shadow-sky-900/5"
+                >
+                  {chip.label}
+                </span>
+              ))}
+            </div>
+          )}
           <div className="grid gap-2 sm:grid-cols-2">
             {amenityRows.filter((row) => row.status !== 'unknown').map((row) => (
               <div key={row.key} className="flex min-h-12 items-center justify-between gap-3 rounded-2xl border border-white/80 bg-white/88 px-3 py-2 shadow-sm shadow-sky-900/5">
@@ -1060,6 +1076,57 @@ export const BeachDetailPage: React.FC<BeachDetailPageProps> = ({
                 ))}
               </div>
             </div>
+          </section>
+        )}
+
+        {/* 7a-2. Camping nearby (organized campsites within ~2.5 km, from OSM) */}
+        {nearbyCampsites.length > 0 && (
+          <section className="space-y-3">
+            <h3 className="flex items-center gap-2 px-1 font-heading text-lg font-bold text-slate-950">
+              <Tent className="h-5 w-5 text-emerald-700" aria-hidden />
+              {copy.campingTitle[language]}
+            </h3>
+            <div className="grid gap-2 sm:grid-cols-2">
+              {nearbyCampsites.map((camp) => {
+                const distanceLabel = camp.distanceMeters < 1000
+                  ? `${Math.round(camp.distanceMeters / 10) * 10} m`
+                  : `${(camp.distanceMeters / 1000).toFixed(1)} km`;
+                return (
+                  <div key={camp.id} className="flex min-h-12 items-center justify-between gap-3 rounded-2xl border border-white/80 bg-white/88 px-3 py-2 shadow-sm shadow-sky-900/5">
+                    <div className="min-w-0">
+                      <p className="truncate text-sm font-bold text-slate-800">{camp.name}</p>
+                      <p className="text-[11px] font-semibold text-slate-500">
+                        {distanceLabel} {copy.away[language]}
+                        {camp.website && (
+                          <>
+                            {' · '}
+                            <a
+                              href={camp.website}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              className="inline-flex items-center gap-0.5 text-sky-700 underline decoration-sky-300 underline-offset-2"
+                            >
+                              {copy.campingWebsite[language]}
+                              <ExternalLink className="h-3 w-3" aria-hidden />
+                            </a>
+                          </>
+                        )}
+                      </p>
+                    </div>
+                    <a
+                      href={`https://www.google.com/maps/dir/?api=1&destination=${camp.coordinates.lat},${camp.coordinates.lon}`}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      aria-label={`${copy.openNavigation[language]}: ${camp.name}`}
+                      className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-emerald-50 text-emerald-700 transition-colors hover:bg-emerald-100"
+                    >
+                      <Navigation className="h-4 w-4" aria-hidden />
+                    </a>
+                  </div>
+                );
+              })}
+            </div>
+            <p className="px-1 text-[11px] font-semibold leading-snug text-slate-500">{copy.campingSource[language]}</p>
           </section>
         )}
 
@@ -1155,6 +1222,7 @@ export const BeachDetailPage: React.FC<BeachDetailPageProps> = ({
                     bestBeachTime: bestTime
                   }]}
                   userLocation={userLocation}
+                  campsites={nearbyCampsites.map((c) => ({ id: c.id, name: c.name, lat: c.coordinates.lat, lon: c.coordinates.lon }))}
                   center={[beach.coordinates.lat, beach.coordinates.lon]}
                   zoom={14}
                   windSpeed={weatherData.wind.speed}

@@ -140,10 +140,7 @@ const BEACH_PHOTOS: Record<string, string[]> = {
   'Kamari': [wm('Boat at Kamari beach, Santorini, Greece.jpg')],
   'Κόκκινη Παραλία': [wm('Red Beach, Santorini.jpg'), wm('Red Beach in Santorini.jpg')],
   'Red Beach': [wm('Red Beach, Santorini.jpg'), wm('Red Beach, Santorini, 226476.jpg')],
-  'Βλυχάδα': [wm('Vlychada - Santorini 2019.jpg'), wm('SANTORINI VLYCHADA 7848.jpg')],
-  'Vlychada': [wm('Vlychada - Santorini 2019.jpg')],
   'Περίβολος': [wm('Perivolos (Santorini).jpg'), wm('Perivolos beach, Santorini (1335681187).jpg')],
-  'Μονόλιθος': [wm('Santorini Beach - panoramio.jpg')],
   'White Beach': [wm('AspriParalia.jpg')],
 
   // --- Mykonos ---
@@ -158,15 +155,12 @@ const BEACH_PHOTOS: Record<string, string[]> = {
   'Άγιος Στέφανος': [wm('Agios Stefanos beach Mykonos.jpg')],
   'Φτελιά': [wm('Ftelia Bay, Mykonos, 060363.jpg')],
   'Ψαρρού': [wm('Mykonos Beach Strand (24005199291).jpg')],
-  'Άγιος Ιωάννης': [wm('Agios Ioannis, Mykonos, Greece - 1997.jpg')],
   'Πάνορμος': [wm('Mykonos 3160.jpg')],
   'Παράγκα': [wm('III Mykonos, Greece (2).jpg')],
 
   // --- Paros ---
   'Κολυμπήθρες': [wm('Paros Kolymbithres1 tango7174.jpg')],
   'Kolymbithres': [wm('Paros Kolymbithres1 tango7174.jpg')],
-  'Χρυσή Ακτή': [wm('Golden Beach Paros.JPG'), wm('Gold sandy beach, Paros, Greece.jpg')],
-  'Golden Beach': [wm('Golden Beach Paros.JPG'), wm('Gold sandy beach, Paros, Greece.jpg')],
   'Πιπέρι': [wm('GR-paros-naoussa-piperi-strand.jpg')],
   'Φάραγγας': [wm('Cyclades Paros Faragas Beach - panoramio.jpg')],
   'Μώλος': [wm('Cyclades Paros Molos Beach Vue Naxos - panoramio.jpg')],
@@ -183,7 +177,6 @@ const BEACH_PHOTOS: Record<string, string[]> = {
   'Μικρή Βίγλα': [wm('Naxos Mikri Vigla 2025-06-25 1368 beach 01.jpg'), wm('Vigla Beach, Naxos isl.jpg')],
   'Mikri Vigla': [wm('Naxos Mikri Vigla 2025-06-25 1368 beach 01.jpg')],
   'Άγιος Γεώργιος': [wm('City beach Agios Georgios, Naxos, 11H2322.jpg')],
-  'Ψιλή Άμμος': [wm('Naxos Mikri Vigla 2025-06-25 1368 beach 06.jpg')],
 
   // --- Milos ---
   'Σαρακίνικο': [wm('Sarakiniko Beach on Milos Island, Greece with a view of the Aegean Sea.jpg'), wm('Aerial view of Sarakiniko Beach on Milos Island, Greece.jpg')],
@@ -195,8 +188,6 @@ const BEACH_PHOTOS: Record<string, string[]> = {
   'Papafragas': [wm('From the Hellenistic settlement Fylakopi to Papafragas beach, Milos, 152878.jpg')],
   'Τσιγκράδο': [wm('Moonscape surrounding Sarakiniko Beach on Milos Island, Greece.jpg')],
   'Tsigrado': [wm('Moonscape surrounding Sarakiniko Beach on Milos Island, Greece.jpg')],
-  'Agia Kyriaki': [wm('Milossouth.JPG')],
-  'Agia Kiriaki': [wm('Milossouth.JPG')],
 
   // --- Ios ---
   'Μυλοπότας': [wm('Ios Milopotas.JPG')],
@@ -293,8 +284,6 @@ const BEACH_PHOTOS: Record<string, string[]> = {
   'Agathi': [wm('Agathe Beach, Rhodos Mai 2016.JPG')],
   'Παραλία Αλυκή': [wm('Alykì beach.jpg')],
   'Κόλπος Αγίου Παύλου': [wm('Bay of St. Paul.jpg')],
-  'Παραλία Στεγνά': [wm('Greece stegna.JPG')],
-  'Παραλία Στεγνά (Grande Blue)': [wm('Greece stegna.JPG')],
   'Παραλία Χαράκι': [wm('Charaki Rhodes Greece M.jpg')],
   'Charaki': [wm('Charaki Rhodes Greece M.jpg')],
   'Παραλία Κολύμπια': [wm('Kolymbia Strand.jpg')],
@@ -342,7 +331,6 @@ const BEACH_PHOTOS: Record<string, string[]> = {
 
   // ==================== PELION (Magnesia) ====================
   'Πλάκα (Ζαγορά)': [wm('Plaka Beach - Pelion.jpg')],
-  'Συκίτσα (Σούρπη)': [wm('Unnamed Road, Almiros 370 08, Greece - panoramio.jpg')],
 
   // ==================== EVIA / LAKONIA / ASTYPALAIA (geo/title-verified) ====================
   'Παραλία Πευκί': [wm('Evia Pefki Banner.jpg')],
@@ -444,7 +432,6 @@ const ATTICA_BEACH_PHOTOS_BY_AREA: Record<string, Record<string, string[]>> = {
     'Παραλια Κακιά Λαγκάδα': [wm('Kakia Langada Kithira Greece.png')],
   },
   poros: {
-    'Βαγιονιά': [wm('View From The Bar - panoramio.jpg')],
     'Λιμανάκι της Αγάπης': [wm('Hidden paradise, Poros island, Greece - panoramio.jpg')],
   },
   salamina: {},
@@ -463,8 +450,6 @@ const CRETE_BEACH_PHOTOS_BY_AREA: Record<string, Record<string, string[]>> = {
     'Παραλία Μάρμαρα': [wm('Marmara Beach-01.jpg')],
     'Γιαλισκάρι': [wm('Gialiskari 2022.jpg'), wm('Gialiskari beach - Crete, Greece - panoramio.jpg')],
     Gialiskari: [wm('Gialiskari 2022.jpg')],
-    'Καλυβάκι': [wm('Kalivaki - panoramio (4).jpg'), wm('Georgioupoli - panoramio (100).jpg')],
-    Kalyvaki: [wm('Kalivaki - panoramio (4).jpg')],
     Balos: [wm('Balos Beach.jpg'), wm('Bay of Balos, Crete 001.jpg')],
     Μπάλος: [wm('Balos Beach.jpg'), wm('Bay of Balos, Crete 001.jpg')],
     Elafonisi: [wm('Elafonissi.jpg')],
@@ -603,8 +588,6 @@ const NORTH_AEGEAN_BEACH_PHOTOS_BY_AREA: Record<string, Record<string, string[]>
     'Megalo Seitani': [wm('Megalo Seitani panorama 2.jpg'), wm('Megalo Seitani 1.jpg')],
     '\u03a0\u03bf\u03c4\u03ac\u03bc\u03b9': [wm('Samos-Potami-Bucht.JPG'), wm('Potami beach NIC7848.jpg')],
     Potami: [wm('Samos-Potami-Bucht.JPG'), wm('Potami beach NIC7848.jpg')],
-    '\u0393\u03ac\u03b3\u03b3\u03bf\u03c5': [wm('Samos - panoramio.jpg')],
-    Gangou: [wm('Samos - panoramio.jpg')],
     '\u039b\u03b9\u03b2\u03b1\u03b4\u03ac\u03ba\u03b9': [wm('Nisi. - panoramio.jpg')],
     Livadaki: [wm('Nisi. - panoramio.jpg')],
     '\u03a0\u03ac\u03c0\u03c0\u03b1': [wm('PappaBeach.JPG')],

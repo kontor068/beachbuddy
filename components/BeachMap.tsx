@@ -2,7 +2,7 @@ import React, { useEffect, useMemo, useRef, useState } from 'react';
 import { Circle, MapContainer, TileLayer, Marker, Popup, Tooltip, ZoomControl, useMap } from 'react-leaflet';
 import L from 'leaflet';
 import 'leaflet/dist/leaflet.css';
-import { BadgeCheck, Footprints, Navigation, MapPin, Clock, Wind, X, Info, Utensils, Waves, Users } from 'lucide-react';
+import { BadgeCheck, Footprints, Navigation, MapPin, Clock, Wind, X, Info, Utensils, Waves, Users, Tent } from 'lucide-react';
 import { localizedPopularityLabel } from '../utils/localization';
 import { SuitableBeach, Beach, LanguageCode, ForecastItem } from '../types';
 import { trackEvent } from '../services/analyticsService';
@@ -54,6 +54,8 @@ interface BeachMapProps {
   onUserInteraction?: () => void;
   compactPreviewHeightClassName?: string;
   islandName?: string;
+  /** Organized campsites near the focused beach (detail map only); rendered as tent pins. */
+  campsites?: Array<{ id: string; name: string; lat: number; lon: number }>;
 }
 
 const visibleExposureLevel = (
@@ -410,18 +412,35 @@ const FitBeachBounds = ({
 const MapViewportGuardrails = ({
   minZoom,
   maxBounds,
+  islandBounds,
 }: {
   minZoom: number;
   maxBounds?: L.LatLngBounds;
+  islandBounds?: L.LatLngBounds;
 }) => {
   const map = useMap();
   const boundsKey = maxBounds?.toBBoxString();
+  const islandKey = islandBounds?.toBBoxString();
 
   useEffect(() => {
-    map.setMinZoom(minZoom);
+    // Cap how far the user can zoom out: never looser than the zoom at which the
+    // island fills the current viewport (with a small sea margin). getBoundsZoom is
+    // viewport-aware, so wide desktop frames get a tighter cap while narrow phones
+    // keep a lower minimum automatically. The formula minZoom stays as a floor.
+    let effectiveMinZoom = minZoom;
+    if (islandBounds) {
+      const fitZoom = map.getBoundsZoom(islandBounds, false, L.point(56, 56));
+      // Clamp to 12 (the fit-bounds ceiling) so tiny regions never force an
+      // over-zoomed minimum that would trap the user fully zoomed in.
+      if (Number.isFinite(fitZoom)) {
+        effectiveMinZoom = Math.min(Math.max(minZoom, fitZoom), 12);
+      }
+    }
 
-    if (map.getZoom() < minZoom) {
-      map.setZoom(minZoom, { animate: false });
+    map.setMinZoom(effectiveMinZoom);
+
+    if (map.getZoom() < effectiveMinZoom) {
+      map.setZoom(effectiveMinZoom, { animate: false });
     }
 
     map.setMaxBounds(maxBounds);
@@ -429,7 +448,7 @@ const MapViewportGuardrails = ({
     if (maxBounds && !maxBounds.contains(map.getCenter())) {
       map.panInsideBounds(maxBounds, { animate: false });
     }
-  }, [boundsKey, map, maxBounds, minZoom]);
+  }, [boundsKey, islandKey, map, maxBounds, minZoom, islandBounds]);
 
   return null;
 };
@@ -778,6 +797,18 @@ const UserLocationIcon = L.divIcon({
   iconSize: [28, 28],
   iconAnchor: [14, 14],
   popupAnchor: [0, -14]
+});
+
+// Tent pin for organized campsites near the focused beach (detail map). Emerald to read
+// as a distinct "amenity" marker against the sky/exposure-coloured beach dots.
+const CampsiteIcon = L.divIcon({
+  className: 'campsite-icon',
+  html: `<div class="grid h-6 w-6 place-items-center rounded-full border-2 border-white bg-emerald-600 text-white shadow-lg ring-2 ring-emerald-200">
+    <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3.5 21 14 3"/><path d="M20.5 21 10 3"/><path d="M15.5 21 12 15l-3.5 6"/><path d="M2 21h20"/></svg>
+  </div>`,
+  iconSize: [24, 24],
+  iconAnchor: [12, 12],
+  popupAnchor: [0, -12]
 });
 
 const directionDegrees: Record<string, number> = {
@@ -1219,10 +1250,14 @@ const BeachMap: React.FC<BeachMapProps> = ({
   fitBoundsKey,
   onUserInteraction,
   compactPreviewHeightClassName,
-  islandName
+  islandName,
+  campsites
 }) => {
   const mapViewportRef = useRef<HTMLDivElement>(null);
   const [mapMode, setMapMode] = useState<'recommendation' | 'wind'>('wind');
+  // Camping layer: ON by default (per-island counts are small, so it's discoverable, not
+  // cluttered); the bottom-left button hides the tent pins for a clean beach-finding map.
+  const [showCamping, setShowCamping] = useState(true);
   const [selectedBeachId, setSelectedBeachId] = useState<number | null>(null);
   const [hoveredBeachId, setHoveredBeachId] = useState<number | null>(null);
   const [hoverPreviewPosition, setHoverPreviewPosition] = useState<HoverPreviewPosition | null>(null);
@@ -1443,6 +1478,7 @@ const BeachMap: React.FC<BeachMapProps> = ({
     windMode: { en: 'Wind Protection Mode', gr: 'Προστασία από άνεμο', de: 'Windschutz', it: 'Protezione dal vento', fr: 'Protection du vent' },
     windShort: { en: 'Wind', gr: 'Άνεμος', de: 'Wind', it: 'Vento', fr: 'Vent' },
     youAreHere: { en: 'You are here', gr: 'Είστε εδώ', de: 'Sie sind hier', it: 'Sei qui', fr: 'Vous etes ici' },
+    campingToggle: { en: 'Camping', gr: 'Camping', de: 'Camping', it: 'Campeggi', fr: 'Camping' },
     bestTime: { en: 'Best Time', gr: 'Καλύτερη ώρα', de: 'Beste Zeit', it: 'Ora migliore', fr: 'Meilleur moment' },
     view: { en: 'View', gr: 'Προβολή', de: 'Ansehen', it: 'Vedi', fr: 'Voir' },
     navigate: { en: 'Navigate', gr: 'Πλοήγηση', de: 'Route', it: 'Naviga', fr: 'Itineraire' },
@@ -1605,6 +1641,24 @@ const BeachMap: React.FC<BeachMapProps> = ({
     },
   });
 
+  // Campsites near the beaches on this map, deduped by id. The detail map passes an
+  // explicit `campsites` list (always shown); the overview map derives them from the
+  // beaches' nearbyCamping and gates them behind the showCamping toggle.
+  const derivedCampsites = useMemo(() => {
+    const seen = new Map<string, { id: string; name: string; lat: number; lon: number }>();
+    for (const item of beaches) {
+      const list = item.beach?.nearbyCamping ?? item.beach?.metadata?.nearbyCamping ?? [];
+      for (const c of list) {
+        if (!seen.has(c.id)) seen.set(c.id, { id: c.id, name: c.name, lat: c.coordinates.lat, lon: c.coordinates.lon });
+      }
+    }
+    return [...seen.values()];
+  }, [beaches]);
+  // Show on the browse maps (incl. the compact island map), but never on previews or the
+  // detail map (which passes its own `campsites` and always shows them).
+  const hasCampingToggle = !preview && !campsites && derivedCampsites.length > 0;
+  const renderedCampsites = campsites ?? (showCamping ? derivedCampsites : []);
+
   // Calculate average center of all beaches if they exist
   let avgCenter: [number, number] | null = null;
   if (beaches.length > 0) {
@@ -1634,6 +1688,7 @@ const BeachMap: React.FC<BeachMapProps> = ({
       return {
         minZoom: userLocation ? 6 : 5,
         maxBounds: undefined as L.LatLngBounds | undefined,
+        islandBounds: undefined as L.LatLngBounds | undefined,
       };
     }
 
@@ -1665,6 +1720,14 @@ const BeachMap: React.FC<BeachMapProps> = ({
       maxBounds: L.latLngBounds(
         [minLat - latPadding, minLon - lonPadding],
         [maxLat + latPadding, maxLon + lonPadding],
+      ),
+      // Island extent (with the same small-span floor as above) used to cap
+      // zoom-out so the island fills the frame on wide desktop viewports instead
+      // of floating in empty sea. Centered + floored so a single-beach region
+      // doesn't collapse to a point and force an over-zoomed minimum.
+      islandBounds: L.latLngBounds(
+        [(minLat + maxLat) / 2 - latSpan / 2, (minLon + maxLon) / 2 - lonSpan / 2],
+        [(minLat + maxLat) / 2 + latSpan / 2, (minLon + maxLon) / 2 + lonSpan / 2],
       ),
     };
   }, [beaches, center, userLocation]);
@@ -2094,6 +2157,22 @@ const BeachMap: React.FC<BeachMapProps> = ({
               ? 'h-[195px] sm:h-[420px]'
               : 'h-[360px] sm:h-[500px]'
       }`}>
+        {/* Camping layer toggle (overview map only) — left side, below the mode toggle on mobile */}
+        {hasCampingToggle && (
+          <button
+            type="button"
+            onClick={() => setShowCamping((v) => !v)}
+            aria-label={`${mapCopy.campingToggle[language]}${showCamping ? ' ✓' : ''}`}
+            title={mapCopy.campingToggle[language]}
+            // Bottom-left: free on the browse map (wind legend is top-left, zoom top-right,
+            // the exposure legend is desktop-full-map only, and the hour slider docks below).
+            className={`absolute bottom-3 left-3 z-[1000] inline-flex items-center gap-1.5 rounded-full border px-3 py-1.5 text-[11px] font-bold shadow-lg backdrop-blur-xl transition-colors sm:bottom-4 sm:left-4 ${showCamping ? 'border-emerald-300 bg-emerald-600 text-white' : 'border-white/60 bg-white/85 text-slate-700 hover:bg-white dark:border-slate-700 dark:bg-slate-900/85 dark:text-slate-200'}`}
+          >
+            <Tent className="h-3.5 w-3.5 shrink-0" aria-hidden />
+            {mapCopy.campingToggle[language]}
+          </button>
+        )}
+
         {/* Map Mode Toggle */}
         {!compact && !preview && (
         <div className="absolute left-3 right-3 top-3 z-[1000] flex overflow-hidden rounded-full border border-white/60 bg-white/80 p-1 shadow-lg shadow-sky-900/10 backdrop-blur-xl sm:left-auto sm:right-4 sm:rounded-xl sm:border-slate-200 sm:p-0 dark:border-slate-700 dark:bg-slate-900/85">
@@ -2145,6 +2224,7 @@ const BeachMap: React.FC<BeachMapProps> = ({
           <MapViewportGuardrails
             minZoom={viewportGuardrails.minZoom}
             maxBounds={viewportGuardrails.maxBounds}
+            islandBounds={viewportGuardrails.islandBounds}
           />
           <FitBeachBounds
             beaches={fitBoundsBeaches || beaches}
@@ -2179,6 +2259,15 @@ const BeachMap: React.FC<BeachMapProps> = ({
               </Popup>
             </Marker>
           )}
+
+          {/* Nearby campsite pins — explicit list on the detail map, toggled layer on the overview map */}
+          {renderedCampsites.map((camp) => (
+            <Marker key={camp.id} position={[camp.lat, camp.lon]} icon={CampsiteIcon} zIndexOffset={200}>
+              <Tooltip direction="top" offset={[0, -10]} opacity={1}>
+                <span className="font-bold">⛺ {camp.name}</span>
+              </Tooltip>
+            </Marker>
+          ))}
 
           {/* Beach Markers */}
           {shouldRenderBeachMarkers && beaches.map((item) => {

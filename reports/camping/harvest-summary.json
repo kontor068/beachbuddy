@@ -1,0 +1,353 @@
+{
+  "generatedAt": "2026-06-17T08:15:22.579Z",
+  "query": "overpass tourism=camp_site|caravan_site, area=GR",
+  "rawElements": 571,
+  "kept": 253,
+  "droppedNoName": 143,
+  "droppedNoCoord": 0,
+  "dropReasons": {
+    "drop-unconfirmed": 96,
+    "drop-private": 8,
+    "drop-non-tourist": 30,
+    "drop-wild": 21,
+    "drop-accommodation": 6,
+    "drop-backcountry": 1,
+    "drop-group-only": 13
+  },
+  "withWebsite": 162,
+  "withPhone": 166,
+  "sampleKept": [
+    "Ακτή ονείρου Camping-Bungalows",
+    "Ακτή Ρετζίκα",
+    "Αλυκές",
+    "Άμμος",
+    "Αρμενιστής",
+    "Αστερίας",
+    "Αυτοδιαχειριζόμενο Κάμπινγκ Βούλας",
+    "Βαράδες",
+    "Δημοτικό Κάμπινγκ",
+    "Δημοτικό Κάμπινγκ Αμοργού",
+    "Δημοτικό Κάμπινγκ Καψαλίου",
+    "Καλαμίτσι",
+    "Καλαμίτσι",
+    "καλυβα του βουνου",
+    "Κάμπιγκ Ποσειδών",
+    "Κάμπινγκ Ασπροβάλτας",
+    "κάμπινγκ Αστυπάλαια",
+    "Κάμπινγκ Δαίδαλος",
+    "ΚΑΜΠΙΝΓΚ ΙΖΑ",
+    "Κάμπινγκ Μαρμαρά",
+    "Κάμπινγκ Μελίσση",
+    "Κάμπινγκ Μύτικας",
+    "Καμπινγκ ΟΤΕ",
+    "Κάμπινγκ ΠΙΤΣΩΝΗ",
+    "Κάμπινγκ Πλατιάς",
+    "Κάμπινγκ: Παραλία Σαγιάδας",
+    "Κάμπινγκ: Τριεθνες",
+    "Καστάνης",
+    "Κάτω Αλισσός",
+    "Κεραμωτής"
+  ],
+  "droppedSample": [
+    {
+      "name": "Assini Beach",
+      "reason": "drop-unconfirmed",
+      "osm": "node/26859929"
+    },
+    {
+      "name": "Blue Bay",
+      "reason": "drop-unconfirmed",
+      "osm": "node/26859936"
+    },
+    {
+      "name": "Camping Kalamitsi",
+      "reason": "drop-private",
+      "osm": "node/26859992"
+    },
+    {
+      "name": "Kalandra",
+      "reason": "drop-unconfirmed",
+      "osm": "node/26859995"
+    },
+    {
+      "name": "Nea Kifissia",
+      "reason": "drop-unconfirmed",
+      "osm": "node/26860053"
+    },
+    {
+      "name": "Pefki",
+      "reason": "drop-unconfirmed",
+      "osm": "node/26860074"
+    },
+    {
+      "name": "Plaka Olympus",
+      "reason": "drop-unconfirmed",
+      "osm": "node/26860078"
+    },
+    {
+      "name": "Venezuela",
+      "reason": "drop-unconfirmed",
+      "osm": "node/26860105"
+    },
+    {
+      "name": "Rafting",
+      "reason": "drop-unconfirmed",
+      "osm": "node/420564236"
+    },
+    {
+      "name": "Καρουσάδες",
+      "reason": "drop-unconfirmed",
+      "osm": "node/488267912"
+    },
+    {
+      "name": "Psarotaverna: O Panos",
+      "reason": "drop-unconfirmed",
+      "osm": "node/1406887051"
+    },
+    {
+      "name": "Christina Kriaritsi",
+      "reason": "drop-unconfirmed",
+      "osm": "node/1406954281"
+    },
+    {
+      "name": "Paradise",
+      "reason": "drop-unconfirmed",
+      "osm": "node/1450120806"
+    },
+    {
+      "name": "ΧΑΝΘ",
+      "reason": "drop-unconfirmed",
+      "osm": "node/1517329695"
+    },
+    {
+      "name": "the Cave",
+      "reason": "drop-unconfirmed",
+      "osm": "node/1772825035"
+    },
+    {
+      "name": "Παιδικές Κατασκηνώσεις",
+      "reason": "drop-non-tourist",
+      "osm": "node/1811423149"
+    },
+    {
+      "name": "Ipsos Beach",
+      "reason": "drop-unconfirmed",
+      "osm": "node/1983913578"
+    },
+    {
+      "name": "ΚΑΤΑΣΚΗΝΩΣΗ ΣΚΟΥΡΑΣ",
+      "reason": "drop-non-tourist",
+      "osm": "node/2268077065"
+    },
+    {
+      "name": "Άγρια κατασκήνωση",
+      "reason": "drop-wild",
+      "osm": "node/2397625626"
+    },
+    {
+      "name": "Κατασκήνωση Αναρριχητικού πεδίου",
+      "reason": "drop-non-tourist",
+      "osm": "node/2460422073"
+    },
+    {
+      "name": "Κατασκήνωση Αναρριχητικού πεδίου",
+      "reason": "drop-non-tourist",
+      "osm": "node/2460424577"
+    },
+    {
+      "name": "Κατασκηνώσεις Προφήτη Ηλία",
+      "reason": "drop-non-tourist",
+      "osm": "node/3422263128"
+    },
+    {
+      "name": "Άγιος Γεώργιος",
+      "reason": "drop-unconfirmed",
+      "osm": "node/3476851390"
+    },
+    {
+      "name": "Apollo village",
+      "reason": "drop-accommodation",
+      "osm": "node/3711095326"
+    },
+    {
+      "name": "Jovanka rooms",
+      "reason": "drop-accommodation",
+      "osm": "node/3712350592"
+    },
+    {
+      "name": "ΚΑΤΑΣΚΗΝΩΣΕΙΣ ΤΥΠΕΤ",
+      "reason": "drop-non-tourist",
+      "osm": "node/3765463739"
+    },
+    {
+      "name": "Free Camping",
+      "reason": "drop-wild",
+      "osm": "node/4216986689"
+    },
+    {
+      "name": "🐴 Claudia/WERNER",
+      "reason": "drop-unconfirmed",
+      "osm": "node/4294392289"
+    },
+    {
+      "name": "Springs of Acheros Free Camping",
+      "reason": "drop-wild",
+      "osm": "node/4320682139"
+    },
+    {
+      "name": "la scala beach",
+      "reason": "drop-unconfirmed",
+      "osm": "node/4396518502"
+    },
+    {
+      "name": "Προσκοπικό Εκπαιδευτικό Κέντρο \"Άγιος Ανδρέας\"",
+      "reason": "drop-private",
+      "osm": "node/4498209390"
+    },
+    {
+      "name": "Haliki camp",
+      "reason": "drop-backcountry",
+      "osm": "node/4553793648"
+    },
+    {
+      "name": "Night ride border crosiing camp",
+      "reason": "drop-wild",
+      "osm": "node/4553793649"
+    },
+    {
+      "name": "wild camp",
+      "reason": "drop-wild",
+      "osm": "node/4562985797"
+    },
+    {
+      "name": "wild camp",
+      "reason": "drop-wild",
+      "osm": "node/4563011185"
+    },
+    {
+      "name": "Vutsikaki wild camp",
+      "reason": "drop-wild",
+      "osm": "node/4563011186"
+    },
+    {
+      "name": "wild camp",
+      "reason": "drop-wild",
+      "osm": "node/4662558900"
+    },
+    {
+      "name": "wild camp",
+      "reason": "drop-wild",
+      "osm": "node/4662565058"
+    },
+    {
+      "name": "ΧΩΡΟΣ ΓΙΑ ΤΡΟΧΟΣΠΙΤΑ",
+      "reason": "drop-wild",
+      "osm": "node/4791674824"
+    },
+    {
+      "name": "Σκηνη",
+      "reason": "drop-unconfirmed",
+      "osm": "node/4809785124"
+    },
+    {
+      "name": "Σκηνή",
+      "reason": "drop-unconfirmed",
+      "osm": "node/4809785125"
+    },
+    {
+      "name": "Κατασκήνωση Κάλαμος",
+      "reason": "drop-private",
+      "osm": "node/4958441521"
+    },
+    {
+      "name": "Free Camping",
+      "reason": "drop-wild",
+      "osm": "node/5056224222"
+    },
+    {
+      "name": "Κατασκηνώση Ζωοδόχου Πηγης",
+      "reason": "drop-private",
+      "osm": "node/5230320124"
+    },
+    {
+      "name": "Κατασκήνωση \"Χαρούμενα Παιδιά\"",
+      "reason": "drop-non-tourist",
+      "osm": "node/5232689655"
+    },
+    {
+      "name": "Ζαρίτσι",
+      "reason": "drop-unconfirmed",
+      "osm": "node/5695478227"
+    },
+    {
+      "name": "Edgaria",
+      "reason": "drop-unconfirmed",
+      "osm": "node/5720087324"
+    },
+    {
+      "name": "Edgarios",
+      "reason": "drop-unconfirmed",
+      "osm": "node/5720192521"
+    },
+    {
+      "name": "Бухта осьминогов",
+      "reason": "drop-unconfirmed",
+      "osm": "node/5804449055"
+    },
+    {
+      "name": "Πλάκα Beach",
+      "reason": "drop-unconfirmed",
+      "osm": "node/5950106285"
+    },
+    {
+      "name": "Δημοτικές κατασκηνώσεις Παραμυθιάς",
+      "reason": "drop-non-tourist",
+      "osm": "node/6304386952"
+    },
+    {
+      "name": "Alexport",
+      "reason": "drop-unconfirmed",
+      "osm": "node/6784522885"
+    },
+    {
+      "name": "Night free spot camp",
+      "reason": "drop-wild",
+      "osm": "node/6822105186"
+    },
+    {
+      "name": "2 jour",
+      "reason": "drop-unconfirmed",
+      "osm": "node/7021856991"
+    },
+    {
+      "name": "Daluz",
+      "reason": "drop-unconfirmed",
+      "osm": "node/7856719397"
+    },
+    {
+      "name": "Closed",
+      "reason": "drop-private",
+      "osm": "node/8286245809"
+    },
+    {
+      "name": "...",
+      "reason": "drop-unconfirmed",
+      "osm": "node/8577194417"
+    },
+    {
+      "name": "Right cars",
+      "reason": "drop-unconfirmed",
+      "osm": "node/9012973417"
+    },
+    {
+      "name": "Κατασκηνώσεις Συλλόγου \"Ο Απόστολος Παύλος Θεσσαλονίκης\"",
+      "reason": "drop-non-tourist",
+      "osm": "node/9015332054"
+    },
+    {
+      "name": "Κατασκηνώσεις Χριστιανικής Αγωγής",
+      "reason": "drop-group-only",
+      "osm": "node/9603552788"
+    }
+  ]
+}

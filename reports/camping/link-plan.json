@@ -1,0 +1,6125 @@
+{
+  "generatedAt": "2026-06-17T08:15:33.720Z",
+  "radiusMeters": 2500,
+  "maxPerBeach": 3,
+  "totalBeaches": 2793,
+  "beachesWithCamping": 409,
+  "coveragePct": 14.6,
+  "totalLinks": 519,
+  "campsitesTotal": 253,
+  "campsitesUsed": 178,
+  "campsitesUnmatchedCount": 75,
+  "distanceHistogram": {
+    "0-500": 119,
+    "500-1000": 100,
+    "1000-1500": 95,
+    "1500-2000": 99,
+    "2000-2500": 106
+  },
+  "byRegion": {
+    "South Aegean": {
+      "beaches": 851,
+      "withCamping": 72
+    },
+    "Central Macedonia": {
+      "beaches": 153,
+      "withCamping": 62
+    },
+    "Peloponnese": {
+      "beaches": 192,
+      "withCamping": 54
+    },
+    "Ionian Islands": {
+      "beaches": 320,
+      "withCamping": 48
+    },
+    "Thessaly": {
+      "beaches": 161,
+      "withCamping": 35
+    },
+    "Crete": {
+      "beaches": 253,
+      "withCamping": 34
+    },
+    "East Macedonia and Thrace": {
+      "beaches": 90,
+      "withCamping": 29
+    },
+    "Epirus": {
+      "beaches": 67,
+      "withCamping": 28
+    },
+    "Attica": {
+      "beaches": 202,
+      "withCamping": 21
+    },
+    "West Greece": {
+      "beaches": 89,
+      "withCamping": 14
+    },
+    "North Aegean": {
+      "beaches": 228,
+      "withCamping": 7
+    },
+    "Central Greece": {
+      "beaches": 187,
+      "withCamping": 5
+    }
+  },
+  "unmatchedCampsites": [
+    "Βαράδες",
+    "καλυβα του βουνου",
+    "Κάμπινγκ Μύτικας",
+    "Καμπινγκ ΟΤΕ",
+    "Κάμπινγκ Πλατιάς",
+    "Κάμπινγκ: Τριεθνες",
+    "Κεραμωτής",
+    "Ο Λοφος",
+    "Συκιά",
+    "A few camping spots in the gorge",
+    "A&A Camper Parking",
+    "A&A Camper Parking Thessaloniki",
+    "Apollon",
+    "Camper-Stop Korinth",
+    "Camperstop Olivetree",
+    "Camping",
+    "Camping Αυτοκινητοδρομίου Σερρών",
+    "Camping Agia Roumeli",
+    "Camping Agiannis",
+    "Camping Alphios",
+    "Camping Athina",
+    "Camping Atreus",
+    "Camping Chrissa",
+    "Camping Diana",
+    "Camping Elizabeth",
+    "Camping Glaros",
+    "Camping Gold Beach",
+    "Camping Ionion",
+    "Camping Isthmia beach",
+    "Camping Leros",
+    "Camping Makedonia",
+    "Camping Mithimna",
+    "Camping Mycenae",
+    "Camping Nea Makri",
+    "Camping Nireas",
+    "Camping Nopigia",
+    "Camping Panorama",
+    "Camping Proti",
+    "Camping Rovies",
+    "Camping RV Parking",
+    "Camping Semeli",
+    "Camping Stolos",
+    "Camping Sylvia",
+    "Camping Tholo",
+    "Caravan Spyropoulos",
+    "Castle View",
+    "Delphi Camping",
+    "Dionissotis",
+    "Dragonera Cliffs",
+    "Golden Sunset",
+    "Hellas",
+    "Hydras Wave",
+    "Interstation",
+    "Kalamaki",
+    "Karpero Camping",
+    "Limnopoula",
+    "Limnopoula Camping",
+    "Meteora Garden",
+    "Milos",
+    "Natura",
+    "Nice camping spot. 2 tents. No water",
+    "Nicolas II",
+    "Nissos",
+    "Old camping - abandoned but freely usable",
+    "Paleologio Mystras",
+    "Santorini Camping",
+    "Self organized camping",
+    "Small camping spot, spiky plants",
+    "Stavros",
+    "Sunny Bay",
+    "Tsolis camp",
+    "Variko Beach",
+    "Via Natura",
+    "Vrachos",
+    "Your spot west Peloponese"
+  ],
+  "matches": [
+    {
+      "beachId": 13,
+      "beach": "Α' Πλαζ Βούλας",
+      "region": "Attica",
+      "campsites": [
+        {
+          "name": "Αυτοδιαχειριζόμενο Κάμπινγκ Βούλας",
+          "distanceMeters": 225,
+          "osmUrl": "https://www.openstreetmap.org/way/263956643",
+          "website": null
+        }
+      ]
+    },
+    {
+      "beachId": 74,
+      "beach": "Ασημάκη",
+      "region": "Attica",
+      "campsites": [
+        {
+          "name": "Camping Bacchus",
+          "distanceMeters": 273,
+          "osmUrl": "https://www.openstreetmap.org/way/180335952",
+          "website": "https://www.campingbacchus.gr/"
+        }
+      ]
+    },
+    {
+      "beachId": 144,
+      "beach": "Καψάλι",
+      "region": "Attica",
+      "campsites": [
+        {
+          "name": "Δημοτικό Κάμπινγκ Καψαλίου",
+          "distanceMeters": 241,
+          "osmUrl": "https://www.openstreetmap.org/way/1155573071",
+          "website": "https://www.kythira.info/en/camping/"
+        }
+      ]
+    },
+    {
+      "beachId": 146,
+      "beach": "Καψάλι Πίσω Γιαλός",
+      "region": "Attica",
+      "campsites": [
+        {
+          "name": "Δημοτικό Κάμπινγκ Καψαλίου",
+          "distanceMeters": 410,
+          "osmUrl": "https://www.openstreetmap.org/way/1155573071",
+          "website": "https://www.kythira.info/en/camping/"
+        }
+      ]
+    },
+    {
+      "beachId": 3005,
+      "beach": "Κύθηρα Καψάλι",
+      "region": "Attica",
+      "campsites": [
+        {
+          "name": "Δημοτικό Κάμπινγκ Καψαλίου",
+          "distanceMeters": 671,
+          "osmUrl": "https://www.openstreetmap.org/way/1155573071",
+          "website": "https://www.kythira.info/en/camping/"
+        }
+      ]
+    },
+    {
+      "beachId": 147,
+      "beach": "Κυριακουλου",
+      "region": "Attica",
+      "campsites": [
+        {
+          "name": "Δημοτικό Κάμπινγκ Καψαλίου",
+          "distanceMeters": 1559,
+          "osmUrl": "https://www.openstreetmap.org/way/1155573071",
+          "website": "https://www.kythira.info/en/camping/"
+        }
+      ]
+    },
+    {
+      "beachId": 22,
+      "beach": "Λιμανάκια Βουλιαγμένης",
+      "region": "Attica",
+      "campsites": [
+        {
+          "name": "Camping Βάρκιζας",
+          "distanceMeters": 841,
+          "osmUrl": "https://www.openstreetmap.org/way/505309286",
+          "website": null
+        }
+      ]
+    },
+    {
+      "beachId": 23,
+      "beach": "Λιμανάκια Βουλιαγμένης Γυμνιστών",
+      "region": "Attica",
+      "campsites": [
+        {
+          "name": "Camping Βάρκιζας",
+          "distanceMeters": 713,
+          "osmUrl": "https://www.openstreetmap.org/way/505309286",
+          "website": null
+        }
+      ]
+    },
+    {
+      "beachId": 20,
+      "beach": "Λίμνη Βουλιαγμένης",
+      "region": "Attica",
+      "campsites": [
+        {
+          "name": "Camping Βάρκιζας",
+          "distanceMeters": 1258,
+          "osmUrl": "https://www.openstreetmap.org/way/505309286",
+          "website": null
+        }
+      ]
+    },
+    {
+      "beachId": 21,
+      "beach": "Παναγίτσα η Δύτισσα",
+      "region": "Attica",
+      "campsites": [
+        {
+          "name": "Camping Βάρκιζας",
+          "distanceMeters": 1198,
+          "osmUrl": "https://www.openstreetmap.org/way/505309286",
+          "website": null
+        }
+      ]
+    },
+    {
+      "beachId": 12,
+      "beach": "Παραλία Αστέρα Γλυφάδας",
+      "region": "Attica",
+      "campsites": [
+        {
+          "name": "Αυτοδιαχειριζόμενο Κάμπινγκ Βούλας",
+          "distanceMeters": 652,
+          "osmUrl": "https://www.openstreetmap.org/way/263956643",
+          "website": null
+        }
+      ]
+    },
+    {
+      "beachId": 16,
+      "beach": "Παραλία Βάρκιζας",
+      "region": "Attica",
+      "campsites": [
+        {
+          "name": "Camping Βάρκιζας",
+          "distanceMeters": 1807,
+          "osmUrl": "https://www.openstreetmap.org/way/505309286",
+          "website": null
+        }
+      ]
+    },
+    {
+      "beachId": 9,
+      "beach": "Παραλία Γλυφάδας Ακτή Β",
+      "region": "Attica",
+      "campsites": [
+        {
+          "name": "Αυτοδιαχειριζόμενο Κάμπινγκ Βούλας",
+          "distanceMeters": 2231,
+          "osmUrl": "https://www.openstreetmap.org/way/263956643",
+          "website": null
+        }
+      ]
+    },
+    {
+      "beachId": 10,
+      "beach": "Παραλία Γλυφάδας Ακτή Γ",
+      "region": "Attica",
+      "campsites": [
+        {
+          "name": "Αυτοδιαχειριζόμενο Κάμπινγκ Βούλας",
+          "distanceMeters": 1669,
+          "osmUrl": "https://www.openstreetmap.org/way/263956643",
+          "website": null
+        }
+      ]
+    },
+    {
+      "beachId": 11,
+      "beach": "Παραλία Γλυφάδας Ακτή Δ",
+      "region": "Attica",
+      "campsites": [
+        {
+          "name": "Αυτοδιαχειριζόμενο Κάμπινγκ Βούλας",
+          "distanceMeters": 1026,
+          "osmUrl": "https://www.openstreetmap.org/way/263956643",
+          "website": null
+        }
+      ]
+    },
+    {
+      "beachId": 33,
+      "beach": "Παραλία Μαραθώνα",
+      "region": "Attica",
+      "campsites": [
+        {
+          "name": "Octopus",
+          "distanceMeters": 2022,
+          "osmUrl": "https://www.openstreetmap.org/node/26860088",
+          "website": "http://ramnous.gr/"
+        }
+      ]
+    },
+    {
+      "beachId": 145,
+      "beach": "Παραλία Σπαραγγάριο",
+      "region": "Attica",
+      "campsites": [
+        {
+          "name": "Δημοτικό Κάμπινγκ Καψαλίου",
+          "distanceMeters": 633,
+          "osmUrl": "https://www.openstreetmap.org/way/1155573071",
+          "website": "https://www.kythira.info/en/camping/"
+        }
+      ]
+    },
+    {
+      "beachId": 72,
+      "beach": "Πασά",
+      "region": "Attica",
+      "campsites": [
+        {
+          "name": "Camping Bacchus",
+          "distanceMeters": 517,
+          "osmUrl": "https://www.openstreetmap.org/way/180335952",
+          "website": "https://www.campingbacchus.gr/"
+        }
+      ]
+    },
+    {
+      "beachId": 71,
+      "beach": "Πούντα Ζέζα",
+      "region": "Attica",
+      "campsites": [
+        {
+          "name": "Camping Bacchus",
+          "distanceMeters": 1434,
+          "osmUrl": "https://www.openstreetmap.org/way/180335952",
+          "website": "https://www.campingbacchus.gr/"
+        }
+      ]
+    },
+    {
+      "beachId": 73,
+      "beach": "Τσίου",
+      "region": "Attica",
+      "campsites": [
+        {
+          "name": "Camping Bacchus",
+          "distanceMeters": 938,
+          "osmUrl": "https://www.openstreetmap.org/way/180335952",
+          "website": "https://www.campingbacchus.gr/"
+        }
+      ]
+    },
+    {
+      "beachId": 19,
+      "beach": "Astir Beach / Αστέρας Βουλιαγμένης",
+      "region": "Attica",
+      "campsites": [
+        {
+          "name": "Camping Βάρκιζας",
+          "distanceMeters": 2342,
+          "osmUrl": "https://www.openstreetmap.org/way/505309286",
+          "website": null
+        }
+      ]
+    },
+    {
+      "beachId": 202,
+      "beach": "Αγκάλη",
+      "region": "Central Greece",
+      "campsites": [
+        {
+          "name": "Club Resort Agia Anna",
+          "distanceMeters": 756,
+          "osmUrl": "https://www.openstreetmap.org/way/237256293",
+          "website": "https://www.clubagiaanna.gr/"
+        }
+      ]
+    },
+    {
+      "beachId": 338,
+      "beach": "Ακτή Βραχάκια",
+      "region": "Central Greece",
+      "campsites": [
+        {
+          "name": "Ayannis",
+          "distanceMeters": 326,
+          "osmUrl": "https://www.openstreetmap.org/way/180334849",
+          "website": null
+        }
+      ]
+    },
+    {
+      "beachId": 269,
+      "beach": "Παραλία Δάφνης",
+      "region": "Central Greece",
+      "campsites": [
+        {
+          "name": "Overland Greece Lodge",
+          "distanceMeters": 1132,
+          "osmUrl": "https://www.openstreetmap.org/node/6328427285",
+          "website": "http://OverlandGreece.com"
+        }
+      ]
+    },
+    {
+      "beachId": 297,
+      "beach": "Σαρακήνικο Αγίας Άννας",
+      "region": "Central Greece",
+      "campsites": [
+        {
+          "name": "Club Resort Agia Anna",
+          "distanceMeters": 2481,
+          "osmUrl": "https://www.openstreetmap.org/way/237256293",
+          "website": "https://www.clubagiaanna.gr/"
+        }
+      ]
+    },
+    {
+      "beachId": 309,
+      "beach": "Τσοκαΐτι",
+      "region": "Central Greece",
+      "campsites": [
+        {
+          "name": "Camping Lola",
+          "distanceMeters": 440,
+          "osmUrl": "https://www.openstreetmap.org/way/338309362",
+          "website": "http://www.campinglola.gr/"
+        }
+      ]
+    },
+    {
+      "beachId": 3007,
+      "beach": "Αμμουλιανή",
+      "region": "Central Macedonia",
+      "campsites": [
+        {
+          "name": "Αλυκές",
+          "distanceMeters": 1564,
+          "osmUrl": "https://www.openstreetmap.org/way/269677859",
+          "website": "https://alikescamping.com"
+        }
+      ]
+    },
+    {
+      "beachId": 516,
+      "beach": "ΚΑΑΥ Ασπροβάλτας",
+      "region": "Central Macedonia",
+      "campsites": [
+        {
+          "name": "Κάμπινγκ Ασπροβάλτας",
+          "distanceMeters": 613,
+          "osmUrl": "https://www.openstreetmap.org/way/235211298",
+          "website": null
+        }
+      ]
+    },
+    {
+      "beachId": 456,
+      "beach": "Λευκή Παραλία",
+      "region": "Central Macedonia",
+      "campsites": [
+        {
+          "name": "Camping Rea",
+          "distanceMeters": 2038,
+          "osmUrl": "https://www.openstreetmap.org/node/2144313445",
+          "website": null
+        },
+        {
+          "name": "Camping Rea",
+          "distanceMeters": 2049,
+          "osmUrl": "https://www.openstreetmap.org/way/484692839",
+          "website": null
+        }
+      ]
+    },
+    {
+      "beachId": 520,
+      "beach": "Ναυάγιο Επανομής",
+      "region": "Central Macedonia",
+      "campsites": [
+        {
+          "name": "Ακτή Ρετζίκα",
+          "distanceMeters": 368,
+          "osmUrl": "https://www.openstreetmap.org/way/513680068",
+          "website": "https://retzikas.gr"
+        }
+      ]
+    },
+    {
+      "beachId": 512,
+      "beach": "Παραλία Αγγελοχωρίου",
+      "region": "Central Macedonia",
+      "campsites": [
+        {
+          "name": "Ακτή Ρετζίκα",
+          "distanceMeters": 153,
+          "osmUrl": "https://www.openstreetmap.org/way/513680068",
+          "website": "https://retzikas.gr"
+        }
+      ]
+    },
+    {
+      "beachId": 491,
+      "beach": "Παραλία Αζάπικο",
+      "region": "Central Macedonia",
+      "campsites": [
+        {
+          "name": "ΚΑΜΠΙΝΓΚ ΙΖΑ",
+          "distanceMeters": 2199,
+          "osmUrl": "https://www.openstreetmap.org/way/302960620",
+          "website": "https://www.iza.gr"
+        }
+      ]
+    },
+    {
+      "beachId": 500,
+      "beach": "Παραλία Αλυκές",
+      "region": "Central Macedonia",
+      "campsites": [
+        {
+          "name": "Αλυκές",
+          "distanceMeters": 193,
+          "osmUrl": "https://www.openstreetmap.org/way/269677859",
+          "website": "https://alikescamping.com"
+        }
+      ]
+    },
+    {
+      "beachId": 501,
+      "beach": "Παραλία Αρετές",
+      "region": "Central Macedonia",
+      "campsites": [
+        {
+          "name": "ΚΑΜΠΙΝΓΚ ΙΖΑ",
+          "distanceMeters": 1256,
+          "osmUrl": "https://www.openstreetmap.org/way/302960620",
+          "website": "https://www.iza.gr"
+        },
+        {
+          "name": "Anamour",
+          "distanceMeters": 1791,
+          "osmUrl": "https://www.openstreetmap.org/way/302960459",
+          "website": null
+        }
+      ]
+    },
+    {
+      "beachId": 476,
+      "beach": "Παραλία Αρμενιστής",
+      "region": "Central Macedonia",
+      "campsites": [
+        {
+          "name": "Αρμενιστής",
+          "distanceMeters": 177,
+          "osmUrl": "https://www.openstreetmap.org/way/387316007",
+          "website": "https://www.armenistis.gr"
+        },
+        {
+          "name": "Ακτή ονείρου Camping-Bungalows",
+          "distanceMeters": 1867,
+          "osmUrl": "https://www.openstreetmap.org/node/5081651699",
+          "website": "https://www.aktioneirou.gr/"
+        }
+      ]
+    },
+    {
+      "beachId": 486,
+      "beach": "Παραλία Γαλήνη",
+      "region": "Central Macedonia",
+      "campsites": [
+        {
+          "name": "Camping Rea",
+          "distanceMeters": 2373,
+          "osmUrl": "https://www.openstreetmap.org/node/2144313445",
+          "website": null
+        },
+        {
+          "name": "Camping Rea",
+          "distanceMeters": 2441,
+          "osmUrl": "https://www.openstreetmap.org/way/484692839",
+          "website": null
+        }
+      ]
+    },
+    {
+      "beachId": 428,
+      "beach": "Παραλία Ιερισσού",
+      "region": "Central Macedonia",
+      "campsites": [
+        {
+          "name": "Camping Delphini",
+          "distanceMeters": 420,
+          "osmUrl": "https://www.openstreetmap.org/node/5840373534",
+          "website": null
+        },
+        {
+          "name": "Camping Ierissos",
+          "distanceMeters": 1887,
+          "osmUrl": "https://www.openstreetmap.org/node/1395879572",
+          "website": "https://www.axtada.gr/"
+        }
+      ]
+    },
+    {
+      "beachId": 464,
+      "beach": "Παραλία Λιβάρι",
+      "region": "Central Macedonia",
+      "campsites": [
+        {
+          "name": "Camping Rea",
+          "distanceMeters": 827,
+          "osmUrl": "https://www.openstreetmap.org/way/484692839",
+          "website": null
+        },
+        {
+          "name": "Camping Rea",
+          "distanceMeters": 887,
+          "osmUrl": "https://www.openstreetmap.org/node/2144313445",
+          "website": null
+        }
+      ]
+    },
+    {
+      "beachId": 494,
+      "beach": "Παραλία Μπανάνα",
+      "region": "Central Macedonia",
+      "campsites": [
+        {
+          "name": "Ακτή ονείρου Camping-Bungalows",
+          "distanceMeters": 1805,
+          "osmUrl": "https://www.openstreetmap.org/node/5081651699",
+          "website": "https://www.aktioneirou.gr/"
+        }
+      ]
+    },
+    {
+      "beachId": 458,
+      "beach": "Παραλία Νέας Ηράκλειας - Sahara",
+      "region": "Central Macedonia",
+      "campsites": [
+        {
+          "name": "Aigeas Camping",
+          "distanceMeters": 2206,
+          "osmUrl": "https://www.openstreetmap.org/way/163694772",
+          "website": null
+        }
+      ]
+    },
+    {
+      "beachId": 459,
+      "beach": "Παραλία Νέας Καλλικράτειας",
+      "region": "Central Macedonia",
+      "campsites": [
+        {
+          "name": "Aigeas Camping",
+          "distanceMeters": 1826,
+          "osmUrl": "https://www.openstreetmap.org/way/163694772",
+          "website": null
+        }
+      ]
+    },
+    {
+      "beachId": 402,
+      "beach": "Παραλία Νέας Ποτίδαιας",
+      "region": "Central Macedonia",
+      "campsites": [
+        {
+          "name": "Ouzouni",
+          "distanceMeters": 419,
+          "osmUrl": "https://www.openstreetmap.org/way/313817267",
+          "website": "https://www.ouzounibeach.gr/"
+        }
+      ]
+    },
+    {
+      "beachId": 381,
+      "beach": "Παραλία Πευκοχωρίου",
+      "region": "Central Macedonia",
+      "campsites": [
+        {
+          "name": "Kryopigi camping",
+          "distanceMeters": 1929,
+          "osmUrl": "https://www.openstreetmap.org/way/303497371",
+          "website": null
+        }
+      ]
+    },
+    {
+      "beachId": 477,
+      "beach": "Παραλία Ποσείδι",
+      "region": "Central Macedonia",
+      "campsites": [
+        {
+          "name": "Ο Καλός Ποιμήν",
+          "distanceMeters": 1043,
+          "osmUrl": "https://www.openstreetmap.org/way/362804635",
+          "website": "https://www.imnst.gr/"
+        }
+      ]
+    },
+    {
+      "beachId": 525,
+      "beach": "Παραλία Σερραϊκή Ακτή",
+      "region": "Central Macedonia",
+      "campsites": [
+        {
+          "name": "Κάμπινγκ Ασπροβάλτας",
+          "distanceMeters": 1492,
+          "osmUrl": "https://www.openstreetmap.org/way/235211298",
+          "website": null
+        }
+      ]
+    },
+    {
+      "beachId": 467,
+      "beach": "Παραλία Τορώνης",
+      "region": "Central Macedonia",
+      "campsites": [
+        {
+          "name": "Anamour",
+          "distanceMeters": 1693,
+          "osmUrl": "https://www.openstreetmap.org/way/302960459",
+          "website": null
+        },
+        {
+          "name": "ΚΑΜΠΙΝΓΚ ΙΖΑ",
+          "distanceMeters": 2132,
+          "osmUrl": "https://www.openstreetmap.org/way/302960620",
+          "website": "https://www.iza.gr"
+        }
+      ]
+    },
+    {
+      "beachId": 468,
+      "beach": "Παραλία Τριστινίκα",
+      "region": "Central Macedonia",
+      "campsites": [
+        {
+          "name": "Anamour",
+          "distanceMeters": 256,
+          "osmUrl": "https://www.openstreetmap.org/way/302960459",
+          "website": null
+        },
+        {
+          "name": "ΚΑΜΠΙΝΓΚ ΙΖΑ",
+          "distanceMeters": 809,
+          "osmUrl": "https://www.openstreetmap.org/way/302960620",
+          "website": "https://www.iza.gr"
+        }
+      ]
+    },
+    {
+      "beachId": 483,
+      "beach": "Παραλία Φτερωτή",
+      "region": "Central Macedonia",
+      "campsites": [
+        {
+          "name": "Camping Rea",
+          "distanceMeters": 188,
+          "osmUrl": "https://www.openstreetmap.org/way/484692839",
+          "website": null
+        },
+        {
+          "name": "Camping Rea",
+          "distanceMeters": 248,
+          "osmUrl": "https://www.openstreetmap.org/node/2144313445",
+          "website": null
+        }
+      ]
+    },
+    {
+      "beachId": 378,
+      "beach": "Achlada",
+      "region": "Central Macedonia",
+      "campsites": [
+        {
+          "name": "Πλατανίτσι",
+          "distanceMeters": 1851,
+          "osmUrl": "https://www.openstreetmap.org/way/1072699992",
+          "website": "https://platanitsi.gr/en/home/"
+        }
+      ]
+    },
+    {
+      "beachId": 379,
+      "beach": "Agios Georgios",
+      "region": "Central Macedonia",
+      "campsites": [
+        {
+          "name": "Αλυκές",
+          "distanceMeters": 2085,
+          "osmUrl": "https://www.openstreetmap.org/way/269677859",
+          "website": "https://alikescamping.com"
+        }
+      ]
+    },
+    {
+      "beachId": 382,
+      "beach": "Agridia",
+      "region": "Central Macedonia",
+      "campsites": [
+        {
+          "name": "Katerina",
+          "distanceMeters": 1438,
+          "osmUrl": "https://www.openstreetmap.org/node/1406912608",
+          "website": null
+        },
+        {
+          "name": "Κάμπινγκ ΠΙΤΣΩΝΗ",
+          "distanceMeters": 2143,
+          "osmUrl": "https://www.openstreetmap.org/way/1306169383",
+          "website": "https://www.camping-pitsoni.gr"
+        },
+        {
+          "name": "Κάμπινγκ Μελίσση",
+          "distanceMeters": 2244,
+          "osmUrl": "https://www.openstreetmap.org/way/788140270",
+          "website": "https://www.camping-melissi.gr"
+        }
+      ]
+    },
+    {
+      "beachId": 386,
+      "beach": "Blue Dream",
+      "region": "Central Macedonia",
+      "campsites": [
+        {
+          "name": "Blue Dream Camping (Sena)",
+          "distanceMeters": 256,
+          "osmUrl": "https://www.openstreetmap.org/node/431350326",
+          "website": null
+        }
+      ]
+    },
+    {
+      "beachId": 388,
+      "beach": "Castello",
+      "region": "Central Macedonia",
+      "campsites": [
+        {
+          "name": "Castello Camping",
+          "distanceMeters": 106,
+          "osmUrl": "https://www.openstreetmap.org/way/365348082",
+          "website": "https://camping-castello.gr/"
+        }
+      ]
+    },
+    {
+      "beachId": 390,
+      "beach": "Diaporti",
+      "region": "Central Macedonia",
+      "campsites": [
+        {
+          "name": "Areti",
+          "distanceMeters": 1089,
+          "osmUrl": "https://www.openstreetmap.org/way/521158262",
+          "website": "https://www.areti-campingandbungalows.gr"
+        }
+      ]
+    },
+    {
+      "beachId": 391,
+      "beach": "Dimotiki Plaz 1",
+      "region": "Central Macedonia",
+      "campsites": [
+        {
+          "name": "Camping Ierissos",
+          "distanceMeters": 279,
+          "osmUrl": "https://www.openstreetmap.org/node/1395879572",
+          "website": "https://www.axtada.gr/"
+        },
+        {
+          "name": "Camping Delphini",
+          "distanceMeters": 2425,
+          "osmUrl": "https://www.openstreetmap.org/node/5840373534",
+          "website": null
+        }
+      ]
+    },
+    {
+      "beachId": 392,
+      "beach": "Dimotiki Plaz 2",
+      "region": "Central Macedonia",
+      "campsites": [
+        {
+          "name": "Camping Ierissos",
+          "distanceMeters": 204,
+          "osmUrl": "https://www.openstreetmap.org/node/1395879572",
+          "website": "https://www.axtada.gr/"
+        },
+        {
+          "name": "Camping Delphini",
+          "distanceMeters": 1955,
+          "osmUrl": "https://www.openstreetmap.org/node/5840373534",
+          "website": null
+        }
+      ]
+    },
+    {
+      "beachId": 393,
+      "beach": "Dimotiki Plaz 3",
+      "region": "Central Macedonia",
+      "campsites": [
+        {
+          "name": "Camping Ierissos",
+          "distanceMeters": 650,
+          "osmUrl": "https://www.openstreetmap.org/node/1395879572",
+          "website": "https://www.axtada.gr/"
+        },
+        {
+          "name": "Camping Delphini",
+          "distanceMeters": 1507,
+          "osmUrl": "https://www.openstreetmap.org/node/5840373534",
+          "website": null
+        }
+      ]
+    },
+    {
+      "beachId": 396,
+      "beach": "Goa",
+      "region": "Central Macedonia",
+      "campsites": [
+        {
+          "name": "Katerina",
+          "distanceMeters": 2310,
+          "osmUrl": "https://www.openstreetmap.org/node/1406912608",
+          "website": null
+        }
+      ]
+    },
+    {
+      "beachId": 398,
+      "beach": "Griavas",
+      "region": "Central Macedonia",
+      "campsites": [
+        {
+          "name": "Katerina",
+          "distanceMeters": 87,
+          "osmUrl": "https://www.openstreetmap.org/node/1406912608",
+          "website": null
+        },
+        {
+          "name": "Κάμπινγκ ΠΙΤΣΩΝΗ",
+          "distanceMeters": 699,
+          "osmUrl": "https://www.openstreetmap.org/way/1306169383",
+          "website": "https://www.camping-pitsoni.gr"
+        },
+        {
+          "name": "Κάμπινγκ Μελίσση",
+          "distanceMeters": 797,
+          "osmUrl": "https://www.openstreetmap.org/way/788140270",
+          "website": "https://www.camping-melissi.gr"
+        }
+      ]
+    },
+    {
+      "beachId": 403,
+      "beach": "Kakoudia",
+      "region": "Central Macedonia",
+      "campsites": [
+        {
+          "name": "Camping Ierissos",
+          "distanceMeters": 1289,
+          "osmUrl": "https://www.openstreetmap.org/node/1395879572",
+          "website": "https://www.axtada.gr/"
+        }
+      ]
+    },
+    {
+      "beachId": 404,
+      "beach": "Kalamitsi",
+      "region": "Central Macedonia",
+      "campsites": [
+        {
+          "name": "Camping Porto",
+          "distanceMeters": 144,
+          "osmUrl": "https://www.openstreetmap.org/node/3082510772",
+          "website": null
+        },
+        {
+          "name": "Καλαμίτσι",
+          "distanceMeters": 271,
+          "osmUrl": "https://www.openstreetmap.org/node/3712616240",
+          "website": "https://www.tsitreli.gr"
+        },
+        {
+          "name": "Καλαμίτσι",
+          "distanceMeters": 525,
+          "osmUrl": "https://www.openstreetmap.org/node/26859989",
+          "website": "https://www.thalattacamp.gr/en"
+        }
+      ]
+    },
+    {
+      "beachId": 406,
+      "beach": "Kalopigado",
+      "region": "Central Macedonia",
+      "campsites": [
+        {
+          "name": "Αλυκές",
+          "distanceMeters": 457,
+          "osmUrl": "https://www.openstreetmap.org/way/269677859",
+          "website": "https://alikescamping.com"
+        }
+      ]
+    },
+    {
+      "beachId": 407,
+      "beach": "Karagatsia",
+      "region": "Central Macedonia",
+      "campsites": [
+        {
+          "name": "Αλυκές",
+          "distanceMeters": 1789,
+          "osmUrl": "https://www.openstreetmap.org/way/269677859",
+          "website": "https://alikescamping.com"
+        }
+      ]
+    },
+    {
+      "beachId": 409,
+      "beach": "Kavourotrypes",
+      "region": "Central Macedonia",
+      "campsites": [
+        {
+          "name": "Πλατανίτσι",
+          "distanceMeters": 1120,
+          "osmUrl": "https://www.openstreetmap.org/way/1072699992",
+          "website": "https://platanitsi.gr/en/home/"
+        }
+      ]
+    },
+    {
+      "beachId": 411,
+      "beach": "Klimataria",
+      "region": "Central Macedonia",
+      "campsites": [
+        {
+          "name": "Paradisos",
+          "distanceMeters": 1142,
+          "osmUrl": "https://www.openstreetmap.org/node/1406954284",
+          "website": null
+        },
+        {
+          "name": "Katerina",
+          "distanceMeters": 2468,
+          "osmUrl": "https://www.openstreetmap.org/node/1406912608",
+          "website": null
+        }
+      ]
+    },
+    {
+      "beachId": 412,
+      "beach": "Komitsa",
+      "region": "Central Macedonia",
+      "campsites": [
+        {
+          "name": "Κομίτσα",
+          "distanceMeters": 487,
+          "osmUrl": "https://www.openstreetmap.org/node/4766495204",
+          "website": "https://www.camping-comitsa.gr/"
+        }
+      ]
+    },
+    {
+      "beachId": 413,
+      "beach": "Kristina",
+      "region": "Central Macedonia",
+      "campsites": [
+        {
+          "name": "Paradisos",
+          "distanceMeters": 128,
+          "osmUrl": "https://www.openstreetmap.org/node/1406954284",
+          "website": null
+        }
+      ]
+    },
+    {
+      "beachId": 414,
+      "beach": "Kryfos Paradeisos",
+      "region": "Central Macedonia",
+      "campsites": [
+        {
+          "name": "ΚΑΜΠΙΝΓΚ ΙΖΑ",
+          "distanceMeters": 1071,
+          "osmUrl": "https://www.openstreetmap.org/way/302960620",
+          "website": "https://www.iza.gr"
+        },
+        {
+          "name": "Anamour",
+          "distanceMeters": 1648,
+          "osmUrl": "https://www.openstreetmap.org/way/302960459",
+          "website": null
+        }
+      ]
+    },
+    {
+      "beachId": 415,
+      "beach": "Lagomandra",
+      "region": "Central Macedonia",
+      "campsites": [
+        {
+          "name": "Castello Camping",
+          "distanceMeters": 1864,
+          "osmUrl": "https://www.openstreetmap.org/way/365348082",
+          "website": "https://camping-castello.gr/"
+        }
+      ]
+    },
+    {
+      "beachId": 416,
+      "beach": "Lagoon",
+      "region": "Central Macedonia",
+      "campsites": [
+        {
+          "name": "Ouzouni",
+          "distanceMeters": 1266,
+          "osmUrl": "https://www.openstreetmap.org/way/313817267",
+          "website": "https://www.ouzounibeach.gr/"
+        }
+      ]
+    },
+    {
+      "beachId": 418,
+      "beach": "Likithos",
+      "region": "Central Macedonia",
+      "campsites": [
+        {
+          "name": "Areti",
+          "distanceMeters": 1080,
+          "osmUrl": "https://www.openstreetmap.org/way/521158262",
+          "website": "https://www.areti-campingandbungalows.gr"
+        }
+      ]
+    },
+    {
+      "beachId": 419,
+      "beach": "Limanaki",
+      "region": "Central Macedonia",
+      "campsites": [
+        {
+          "name": "Αλυκές",
+          "distanceMeters": 1199,
+          "osmUrl": "https://www.openstreetmap.org/way/269677859",
+          "website": "https://alikescamping.com"
+        }
+      ]
+    },
+    {
+      "beachId": 420,
+      "beach": "Limani",
+      "region": "Central Macedonia",
+      "campsites": [
+        {
+          "name": "Αλυκές",
+          "distanceMeters": 766,
+          "osmUrl": "https://www.openstreetmap.org/way/269677859",
+          "website": "https://alikescamping.com"
+        }
+      ]
+    },
+    {
+      "beachId": 421,
+      "beach": "Linaraki",
+      "region": "Central Macedonia",
+      "campsites": [
+        {
+          "name": "Κάμπινγκ Μελίσση",
+          "distanceMeters": 1322,
+          "osmUrl": "https://www.openstreetmap.org/way/788140270",
+          "website": "https://www.camping-melissi.gr"
+        },
+        {
+          "name": "Κάμπινγκ ΠΙΤΣΩΝΗ",
+          "distanceMeters": 1427,
+          "osmUrl": "https://www.openstreetmap.org/way/1306169383",
+          "website": "https://www.camping-pitsoni.gr"
+        },
+        {
+          "name": "Katerina",
+          "distanceMeters": 1724,
+          "osmUrl": "https://www.openstreetmap.org/node/1406912608",
+          "website": null
+        }
+      ]
+    },
+    {
+      "beachId": 429,
+      "beach": "Myti",
+      "region": "Central Macedonia",
+      "campsites": [
+        {
+          "name": "Ο Καλός Ποιμήν",
+          "distanceMeters": 1002,
+          "osmUrl": "https://www.openstreetmap.org/way/362804635",
+          "website": "https://www.imnst.gr/"
+        }
+      ]
+    },
+    {
+      "beachId": 430,
+      "beach": "Oneiro",
+      "region": "Central Macedonia",
+      "campsites": [
+        {
+          "name": "Ακτή ονείρου Camping-Bungalows",
+          "distanceMeters": 91,
+          "osmUrl": "https://www.openstreetmap.org/node/5081651699",
+          "website": "https://www.aktioneirou.gr/"
+        },
+        {
+          "name": "Αρμενιστής",
+          "distanceMeters": 1813,
+          "osmUrl": "https://www.openstreetmap.org/way/387316007",
+          "website": "https://www.armenistis.gr"
+        }
+      ]
+    },
+    {
+      "beachId": 431,
+      "beach": "Ouranoupoli",
+      "region": "Central Macedonia",
+      "campsites": [
+        {
+          "name": "Ouranoupoli",
+          "distanceMeters": 797,
+          "osmUrl": "https://www.openstreetmap.org/node/26860062",
+          "website": "https://www.camping-ouranopoli.gr"
+        }
+      ]
+    },
+    {
+      "beachId": 507,
+      "beach": "Panteleimonas",
+      "region": "Central Macedonia",
+      "campsites": [
+        {
+          "name": "Heraklia Beach Camping & Apartments",
+          "distanceMeters": 252,
+          "osmUrl": "https://www.openstreetmap.org/node/7497278577",
+          "website": "https://www.heraklia.gr/"
+        },
+        {
+          "name": "Poseidon Beach",
+          "distanceMeters": 279,
+          "osmUrl": "https://www.openstreetmap.org/node/26860084",
+          "website": "http://www.poseidonbeach.net/"
+        },
+        {
+          "name": "Castle",
+          "distanceMeters": 397,
+          "osmUrl": "https://www.openstreetmap.org/node/26859940",
+          "website": "https://www.castlecamping.gr/"
+        }
+      ]
+    },
+    {
+      "beachId": 432,
+      "beach": "Paradisos",
+      "region": "Central Macedonia",
+      "campsites": [
+        {
+          "name": "Κάμπινγκ Μαρμαρά",
+          "distanceMeters": 569,
+          "osmUrl": "https://www.openstreetmap.org/way/528516166",
+          "website": "https://marmarascamping.gr"
+        }
+      ]
+    },
+    {
+      "beachId": 433,
+      "beach": "Paralia Valti",
+      "region": "Central Macedonia",
+      "campsites": [
+        {
+          "name": "Katerina",
+          "distanceMeters": 765,
+          "osmUrl": "https://www.openstreetmap.org/node/1406912608",
+          "website": null
+        },
+        {
+          "name": "Κάμπινγκ ΠΙΤΣΩΝΗ",
+          "distanceMeters": 1428,
+          "osmUrl": "https://www.openstreetmap.org/way/1306169383",
+          "website": "https://www.camping-pitsoni.gr"
+        },
+        {
+          "name": "Κάμπινγκ Μελίσση",
+          "distanceMeters": 1510,
+          "osmUrl": "https://www.openstreetmap.org/way/788140270",
+          "website": "https://www.camping-melissi.gr"
+        }
+      ]
+    },
+    {
+      "beachId": 437,
+      "beach": "Platanitsi",
+      "region": "Central Macedonia",
+      "campsites": [
+        {
+          "name": "Πλατανίτσι",
+          "distanceMeters": 367,
+          "osmUrl": "https://www.openstreetmap.org/way/1072699992",
+          "website": "https://platanitsi.gr/en/home/"
+        }
+      ]
+    },
+    {
+      "beachId": 442,
+      "beach": "Sani Hill",
+      "region": "Central Macedonia",
+      "campsites": [
+        {
+          "name": "Blue Dream Camping (Sena)",
+          "distanceMeters": 805,
+          "osmUrl": "https://www.openstreetmap.org/node/431350326",
+          "website": null
+        }
+      ]
+    },
+    {
+      "beachId": 510,
+      "beach": "Skotina",
+      "region": "Central Macedonia",
+      "campsites": [
+        {
+          "name": "Camping Orpheus",
+          "distanceMeters": 496,
+          "osmUrl": "https://www.openstreetmap.org/node/1829944457",
+          "website": null
+        },
+        {
+          "name": "Arion",
+          "distanceMeters": 962,
+          "osmUrl": "https://www.openstreetmap.org/node/26859928",
+          "website": "https://www.camping-arion.gr/"
+        },
+        {
+          "name": "Poseidon Beach",
+          "distanceMeters": 1210,
+          "osmUrl": "https://www.openstreetmap.org/node/26860084",
+          "website": "http://www.poseidonbeach.net/"
+        }
+      ]
+    },
+    {
+      "beachId": 445,
+      "beach": "Sykia",
+      "region": "Central Macedonia",
+      "campsites": [
+        {
+          "name": "Κάμπινγκ Μελίσση",
+          "distanceMeters": 535,
+          "osmUrl": "https://www.openstreetmap.org/way/788140270",
+          "website": "https://www.camping-melissi.gr"
+        },
+        {
+          "name": "Κάμπινγκ ΠΙΤΣΩΝΗ",
+          "distanceMeters": 636,
+          "osmUrl": "https://www.openstreetmap.org/way/1306169383",
+          "website": "https://www.camping-pitsoni.gr"
+        },
+        {
+          "name": "Katerina",
+          "distanceMeters": 1053,
+          "osmUrl": "https://www.openstreetmap.org/node/1406912608",
+          "website": null
+        }
+      ]
+    },
+    {
+      "beachId": 446,
+      "beach": "Tigania",
+      "region": "Central Macedonia",
+      "campsites": [
+        {
+          "name": "Paradisos",
+          "distanceMeters": 796,
+          "osmUrl": "https://www.openstreetmap.org/node/1406954284",
+          "website": null
+        }
+      ]
+    },
+    {
+      "beachId": 448,
+      "beach": "Tourkolimnionas",
+      "region": "Central Macedonia",
+      "campsites": [
+        {
+          "name": "Κάμπινγκ Μελίσση",
+          "distanceMeters": 1676,
+          "osmUrl": "https://www.openstreetmap.org/way/788140270",
+          "website": "https://www.camping-melissi.gr"
+        },
+        {
+          "name": "Κάμπινγκ ΠΙΤΣΩΝΗ",
+          "distanceMeters": 1739,
+          "osmUrl": "https://www.openstreetmap.org/way/1306169383",
+          "website": "https://www.camping-pitsoni.gr"
+        },
+        {
+          "name": "Katerina",
+          "distanceMeters": 1761,
+          "osmUrl": "https://www.openstreetmap.org/node/1406912608",
+          "website": null
+        }
+      ]
+    },
+    {
+      "beachId": 450,
+      "beach": "Tsaska",
+      "region": "Central Macedonia",
+      "campsites": [
+        {
+          "name": "Αλυκές",
+          "distanceMeters": 2022,
+          "osmUrl": "https://www.openstreetmap.org/way/269677859",
+          "website": "https://alikescamping.com"
+        }
+      ]
+    },
+    {
+      "beachId": 454,
+      "beach": "Voulitsa",
+      "region": "Central Macedonia",
+      "campsites": [
+        {
+          "name": "Κομίτσα",
+          "distanceMeters": 2146,
+          "osmUrl": "https://www.openstreetmap.org/node/4766495204",
+          "website": "https://www.camping-comitsa.gr/"
+        }
+      ]
+    },
+    {
+      "beachId": 3019,
+      "beach": "Αγία Γαλήνη",
+      "region": "Crete",
+      "campsites": [
+        {
+          "name": "Camping No Problem",
+          "distanceMeters": 636,
+          "osmUrl": "https://www.openstreetmap.org/way/239961728",
+          "website": null
+        }
+      ]
+    },
+    {
+      "beachId": 727,
+      "beach": "Αυλάκι",
+      "region": "Crete",
+      "campsites": [
+        {
+          "name": "Camping Sissi",
+          "distanceMeters": 1985,
+          "osmUrl": "https://www.openstreetmap.org/way/262899980",
+          "website": null
+        }
+      ]
+    },
+    {
+      "beachId": 530,
+      "beach": "Γιαλισκάρι",
+      "region": "Crete",
+      "campsites": [
+        {
+          "name": "Camping Paleochora",
+          "distanceMeters": 2449,
+          "osmUrl": "https://www.openstreetmap.org/way/348305673",
+          "website": "https://campingpaleochora.gr"
+        }
+      ]
+    },
+    {
+      "beachId": 642,
+      "beach": "Γούβες",
+      "region": "Crete",
+      "campsites": [
+        {
+          "name": "Creta Camping",
+          "distanceMeters": 1682,
+          "osmUrl": "https://www.openstreetmap.org/way/112746979",
+          "website": "https://www.cretacamping.com/"
+        }
+      ]
+    },
+    {
+      "beachId": 678,
+      "beach": "Δαμνόνι",
+      "region": "Crete",
+      "campsites": [
+        {
+          "name": "Camping Apollonia",
+          "distanceMeters": 2120,
+          "osmUrl": "https://www.openstreetmap.org/way/1258809860",
+          "website": null
+        }
+      ]
+    },
+    {
+      "beachId": 741,
+      "beach": "Κάκκος",
+      "region": "Crete",
+      "campsites": [
+        {
+          "name": "Camping Koutsou",
+          "distanceMeters": 1712,
+          "osmUrl": "https://www.openstreetmap.org/way/262899670",
+          "website": null
+        }
+      ]
+    },
+    {
+      "beachId": 531,
+      "beach": "Καλαμάκι",
+      "region": "Crete",
+      "campsites": [
+        {
+          "name": "Camping Hania",
+          "distanceMeters": 1447,
+          "osmUrl": "https://www.openstreetmap.org/node/772471148",
+          "website": null
+        }
+      ]
+    },
+    {
+      "beachId": 679,
+      "beach": "Καλυψώ",
+      "region": "Crete",
+      "campsites": [
+        {
+          "name": "Camping Apollonia",
+          "distanceMeters": 1816,
+          "osmUrl": "https://www.openstreetmap.org/way/1258809860",
+          "website": null
+        }
+      ]
+    },
+    {
+      "beachId": 624,
+      "beach": "Κόκκινη Άμμος",
+      "region": "Crete",
+      "campsites": [
+        {
+          "name": "Matala Camping",
+          "distanceMeters": 985,
+          "osmUrl": "https://www.openstreetmap.org/way/41340605",
+          "website": null
+        }
+      ]
+    },
+    {
+      "beachId": 625,
+      "beach": "Κομμός",
+      "region": "Crete",
+      "campsites": [
+        {
+          "name": "Matala Camping",
+          "distanceMeters": 2366,
+          "osmUrl": "https://www.openstreetmap.org/way/41340605",
+          "website": null
+        }
+      ]
+    },
+    {
+      "beachId": 626,
+      "beach": "Μάταλα",
+      "region": "Crete",
+      "campsites": [
+        {
+          "name": "Matala Camping",
+          "distanceMeters": 220,
+          "osmUrl": "https://www.openstreetmap.org/way/41340605",
+          "website": null
+        }
+      ]
+    },
+    {
+      "beachId": 542,
+      "beach": "Μέθεξις",
+      "region": "Crete",
+      "campsites": [
+        {
+          "name": "Camping Paleochora",
+          "distanceMeters": 1533,
+          "osmUrl": "https://www.openstreetmap.org/way/544282764",
+          "website": null
+        },
+        {
+          "name": "Camping Paleochora",
+          "distanceMeters": 1631,
+          "osmUrl": "https://www.openstreetmap.org/way/348305673",
+          "website": "https://campingpaleochora.gr"
+        }
+      ]
+    },
+    {
+      "beachId": 688,
+      "beach": "Μικρό Αμμούδι",
+      "region": "Crete",
+      "campsites": [
+        {
+          "name": "Camping Apollonia",
+          "distanceMeters": 2479,
+          "osmUrl": "https://www.openstreetmap.org/way/1258809860",
+          "website": null
+        }
+      ]
+    },
+    {
+      "beachId": 758,
+      "beach": "Μπούφος",
+      "region": "Crete",
+      "campsites": [
+        {
+          "name": "Camping Sissi",
+          "distanceMeters": 1815,
+          "osmUrl": "https://www.openstreetmap.org/way/262899980",
+          "website": null
+        }
+      ]
+    },
+    {
+      "beachId": 544,
+      "beach": "Νέα Χώρα",
+      "region": "Crete",
+      "campsites": [
+        {
+          "name": "Camping Hania",
+          "distanceMeters": 1914,
+          "osmUrl": "https://www.openstreetmap.org/node/772471148",
+          "website": null
+        }
+      ]
+    },
+    {
+      "beachId": 689,
+      "beach": "Παλίγκρεμνος",
+      "region": "Crete",
+      "campsites": [
+        {
+          "name": "Camping Apollonia",
+          "distanceMeters": 882,
+          "osmUrl": "https://www.openstreetmap.org/way/1258809860",
+          "website": null
+        }
+      ]
+    },
+    {
+      "beachId": 548,
+      "beach": "Παραλία Αγίων Αποστόλων",
+      "region": "Crete",
+      "campsites": [
+        {
+          "name": "Camping Hania",
+          "distanceMeters": 320,
+          "osmUrl": "https://www.openstreetmap.org/node/772471148",
+          "website": null
+        }
+      ]
+    },
+    {
+      "beachId": 561,
+      "beach": "Παραλία Πλακάκι",
+      "region": "Crete",
+      "campsites": [
+        {
+          "name": "Grammeno Camping",
+          "distanceMeters": 1045,
+          "osmUrl": "https://www.openstreetmap.org/way/709608231",
+          "website": "https://grammenocamping.gr"
+        }
+      ]
+    },
+    {
+      "beachId": 697,
+      "beach": "Παραλία Ρεθύμνου",
+      "region": "Crete",
+      "campsites": [
+        {
+          "name": "Camping Elizabeth",
+          "distanceMeters": 1087,
+          "osmUrl": "https://www.openstreetmap.org/way/239961453",
+          "website": "https://www.camping-elizabeth.net/home"
+        }
+      ]
+    },
+    {
+      "beachId": 566,
+      "beach": "Παραλία Τροχαλού",
+      "region": "Crete",
+      "campsites": [
+        {
+          "name": "Grammeno Camping",
+          "distanceMeters": 2042,
+          "osmUrl": "https://www.openstreetmap.org/way/709608231",
+          "website": "https://grammenocamping.gr"
+        }
+      ]
+    },
+    {
+      "beachId": 570,
+      "beach": "Παραλία Ψηλός Βόλακας",
+      "region": "Crete",
+      "campsites": [
+        {
+          "name": "Grammeno Camping",
+          "distanceMeters": 2319,
+          "osmUrl": "https://www.openstreetmap.org/way/709608231",
+          "website": "https://grammenocamping.gr"
+        }
+      ]
+    },
+    {
+      "beachId": 572,
+      "beach": "Παχιά Άμμος",
+      "region": "Crete",
+      "campsites": [
+        {
+          "name": "Camping Paleochora",
+          "distanceMeters": 1508,
+          "osmUrl": "https://www.openstreetmap.org/way/544282764",
+          "website": null
+        },
+        {
+          "name": "Camping Paleochora",
+          "distanceMeters": 1619,
+          "osmUrl": "https://www.openstreetmap.org/way/348305673",
+          "website": "https://campingpaleochora.gr"
+        }
+      ]
+    },
+    {
+      "beachId": 700,
+      "beach": "Πλακιάς",
+      "region": "Crete",
+      "campsites": [
+        {
+          "name": "Camping Apollonia",
+          "distanceMeters": 593,
+          "osmUrl": "https://www.openstreetmap.org/way/1258809860",
+          "website": null
+        }
+      ]
+    },
+    {
+      "beachId": 647,
+      "beach": "Ποταμός Μαλίας",
+      "region": "Crete",
+      "campsites": [
+        {
+          "name": "Camping Sissi",
+          "distanceMeters": 2166,
+          "osmUrl": "https://www.openstreetmap.org/way/262899980",
+          "website": null
+        }
+      ]
+    },
+    {
+      "beachId": 705,
+      "beach": "Σκίνος",
+      "region": "Crete",
+      "campsites": [
+        {
+          "name": "Camping Apollonia",
+          "distanceMeters": 1007,
+          "osmUrl": "https://www.openstreetmap.org/way/1258809860",
+          "website": null
+        }
+      ]
+    },
+    {
+      "beachId": 582,
+      "beach": "Τραχήλι",
+      "region": "Crete",
+      "campsites": [
+        {
+          "name": "Grammeno Camping",
+          "distanceMeters": 361,
+          "osmUrl": "https://www.openstreetmap.org/way/709608231",
+          "website": "https://grammenocamping.gr"
+        }
+      ]
+    },
+    {
+      "beachId": 584,
+      "beach": "Χαλίκια",
+      "region": "Crete",
+      "campsites": [
+        {
+          "name": "Camping Paleochora",
+          "distanceMeters": 626,
+          "osmUrl": "https://www.openstreetmap.org/way/544282764",
+          "website": null
+        },
+        {
+          "name": "Camping Paleochora",
+          "distanceMeters": 734,
+          "osmUrl": "https://www.openstreetmap.org/way/348305673",
+          "website": "https://campingpaleochora.gr"
+        }
+      ]
+    },
+    {
+      "beachId": 588,
+      "beach": "Alonaki",
+      "region": "Crete",
+      "campsites": [
+        {
+          "name": "Grammeno Camping",
+          "distanceMeters": 293,
+          "osmUrl": "https://www.openstreetmap.org/way/709608231",
+          "website": "https://grammenocamping.gr"
+        }
+      ]
+    },
+    {
+      "beachId": 589,
+      "beach": "Ammos",
+      "region": "Crete",
+      "campsites": [
+        {
+          "name": "Grammeno Camping",
+          "distanceMeters": 208,
+          "osmUrl": "https://www.openstreetmap.org/way/709608231",
+          "website": "https://grammenocamping.gr"
+        }
+      ]
+    },
+    {
+      "beachId": 590,
+      "beach": "Aptera",
+      "region": "Crete",
+      "campsites": [
+        {
+          "name": "Camping Hania",
+          "distanceMeters": 818,
+          "osmUrl": "https://www.openstreetmap.org/node/772471148",
+          "website": null
+        }
+      ]
+    },
+    {
+      "beachId": 594,
+      "beach": "Chrysi Akti",
+      "region": "Crete",
+      "campsites": [
+        {
+          "name": "Camping Hania",
+          "distanceMeters": 518,
+          "osmUrl": "https://www.openstreetmap.org/node/772471148",
+          "website": null
+        }
+      ]
+    },
+    {
+      "beachId": 599,
+      "beach": "Grammeno",
+      "region": "Crete",
+      "campsites": [
+        {
+          "name": "Grammeno Camping",
+          "distanceMeters": 180,
+          "osmUrl": "https://www.openstreetmap.org/way/709608231",
+          "website": "https://grammenocamping.gr"
+        }
+      ]
+    },
+    {
+      "beachId": 773,
+      "beach": "Palm Bay Beach",
+      "region": "Crete",
+      "campsites": [
+        {
+          "name": "Camping Sissi",
+          "distanceMeters": 1027,
+          "osmUrl": "https://www.openstreetmap.org/way/262899980",
+          "website": null
+        }
+      ]
+    },
+    {
+      "beachId": 607,
+      "beach": "Platanakia",
+      "region": "Crete",
+      "campsites": [
+        {
+          "name": "Sunset",
+          "distanceMeters": 526,
+          "osmUrl": "https://www.openstreetmap.org/node/302078689",
+          "website": null
+        }
+      ]
+    },
+    {
+      "beachId": 802,
+      "beach": "Άγιος Αντώνιος",
+      "region": "East Macedonia and Thrace",
+      "campsites": [
+        {
+          "name": "Camping Pefkari Beach",
+          "distanceMeters": 1508,
+          "osmUrl": "https://www.openstreetmap.org/way/294883140",
+          "website": "https://www.camping-pefkari.gr/"
+        }
+      ]
+    },
+    {
+      "beachId": 806,
+      "beach": "Αλεξάντρα",
+      "region": "East Macedonia and Thrace",
+      "campsites": [
+        {
+          "name": "Camping Pefkari Beach",
+          "distanceMeters": 116,
+          "osmUrl": "https://www.openstreetmap.org/way/294883140",
+          "website": "https://www.camping-pefkari.gr/"
+        }
+      ]
+    },
+    {
+      "beachId": 836,
+      "beach": "Βάθη",
+      "region": "East Macedonia and Thrace",
+      "campsites": [
+        {
+          "name": "Golden Beach Campsite",
+          "distanceMeters": 2234,
+          "osmUrl": "https://www.openstreetmap.org/way/131113880",
+          "website": "https://www.thassoscamping.gr/camping/xrisi-ammoudia/"
+        }
+      ]
+    },
+    {
+      "beachId": 840,
+      "beach": "Δασύλλιο",
+      "region": "East Macedonia and Thrace",
+      "campsites": [
+        {
+          "name": "camping prinos",
+          "distanceMeters": 361,
+          "osmUrl": "https://www.openstreetmap.org/node/4358646192",
+          "website": null
+        },
+        {
+          "name": "For Nature Lovers",
+          "distanceMeters": 2055,
+          "osmUrl": "https://www.openstreetmap.org/way/1441488384",
+          "website": "https://fornaturelovers.gr/"
+        }
+      ]
+    },
+    {
+      "beachId": 3034,
+      "beach": "Κομοτηνή Παραλία Κρυονερίου Μαρώνεια",
+      "region": "East Macedonia and Thrace",
+      "campsites": [
+        {
+          "name": "Крионери Къмпинг",
+          "distanceMeters": 944,
+          "osmUrl": "https://www.openstreetmap.org/way/590740432",
+          "website": null
+        }
+      ]
+    },
+    {
+      "beachId": 3035,
+      "beach": "Κομοτηνή Φανάρι Αρωγή",
+      "region": "East Macedonia and Thrace",
+      "campsites": [
+        {
+          "name": "Δημοτικό Κάμπινγκ",
+          "distanceMeters": 2325,
+          "osmUrl": "https://www.openstreetmap.org/way/165937118",
+          "website": null
+        }
+      ]
+    },
+    {
+      "beachId": 815,
+      "beach": "Μεταλλεία",
+      "region": "East Macedonia and Thrace",
+      "campsites": [
+        {
+          "name": "Camping Pefkari Beach",
+          "distanceMeters": 1775,
+          "osmUrl": "https://www.openstreetmap.org/way/294883140",
+          "website": "https://www.camping-pefkari.gr/"
+        }
+      ]
+    },
+    {
+      "beachId": 816,
+      "beach": "Μικρή παραλία",
+      "region": "East Macedonia and Thrace",
+      "campsites": [
+        {
+          "name": "Camping Pefkari Beach",
+          "distanceMeters": 955,
+          "osmUrl": "https://www.openstreetmap.org/way/294883140",
+          "website": "https://www.camping-pefkari.gr/"
+        }
+      ]
+    },
+    {
+      "beachId": 788,
+      "beach": "Μπάτης",
+      "region": "East Macedonia and Thrace",
+      "campsites": [
+        {
+          "name": "Batis",
+          "distanceMeters": 134,
+          "osmUrl": "https://www.openstreetmap.org/way/303943759",
+          "website": "https://www.batis-sa.gr/"
+        }
+      ]
+    },
+    {
+      "beachId": 789,
+      "beach": "Νέα Καρβάλη",
+      "region": "East Macedonia and Thrace",
+      "campsites": [
+        {
+          "name": "Camping Alexandros",
+          "distanceMeters": 378,
+          "osmUrl": "https://www.openstreetmap.org/way/788668278",
+          "website": "https://www.campingalexandros.com"
+        }
+      ]
+    },
+    {
+      "beachId": 835,
+      "beach": "Όρμος Αγίου Ιωάννου",
+      "region": "East Macedonia and Thrace",
+      "campsites": [
+        {
+          "name": "Golden Beach Campsite",
+          "distanceMeters": 1664,
+          "osmUrl": "https://www.openstreetmap.org/way/131113880",
+          "website": "https://www.thassoscamping.gr/camping/xrisi-ammoudia/"
+        }
+      ]
+    },
+    {
+      "beachId": 778,
+      "beach": "Παραλία Αλεξανδρούπολης",
+      "region": "East Macedonia and Thrace",
+      "campsites": [
+        {
+          "name": "Alexandroupoli Municipal Camping",
+          "distanceMeters": 1485,
+          "osmUrl": "https://www.openstreetmap.org/way/302589143",
+          "website": "https://www.tieda.gr/en/"
+        }
+      ]
+    },
+    {
+      "beachId": 785,
+      "beach": "Παραλία Καβάλας",
+      "region": "East Macedonia and Thrace",
+      "campsites": [
+        {
+          "name": "Paradiso",
+          "distanceMeters": 172,
+          "osmUrl": "https://www.openstreetmap.org/way/296573458",
+          "website": "https://www.paradisokavala.gr/"
+        }
+      ]
+    },
+    {
+      "beachId": 792,
+      "beach": "Παραλία Καλαμίτσας",
+      "region": "East Macedonia and Thrace",
+      "campsites": [
+        {
+          "name": "Batis",
+          "distanceMeters": 859,
+          "osmUrl": "https://www.openstreetmap.org/way/303943759",
+          "website": "https://www.batis-sa.gr/"
+        }
+      ]
+    },
+    {
+      "beachId": 793,
+      "beach": "Παραλία Οφρυνίου",
+      "region": "East Macedonia and Thrace",
+      "campsites": [
+        {
+          "name": "Communal Orfanou",
+          "distanceMeters": 1113,
+          "osmUrl": "https://www.openstreetmap.org/way/164987537",
+          "website": null
+        }
+      ]
+    },
+    {
+      "beachId": 819,
+      "beach": "Πευκάρι",
+      "region": "East Macedonia and Thrace",
+      "campsites": [
+        {
+          "name": "Camping Pefkari Beach",
+          "distanceMeters": 373,
+          "osmUrl": "https://www.openstreetmap.org/way/294883140",
+          "website": "https://www.camping-pefkari.gr/"
+        }
+      ]
+    },
+    {
+      "beachId": 849,
+      "beach": "Πόρτο Βαθύ",
+      "region": "East Macedonia and Thrace",
+      "campsites": [
+        {
+          "name": "Golden Beach Campsite",
+          "distanceMeters": 2417,
+          "osmUrl": "https://www.openstreetmap.org/way/131113880",
+          "website": "https://www.thassoscamping.gr/camping/xrisi-ammoudia/"
+        }
+      ]
+    },
+    {
+      "beachId": 821,
+      "beach": "Ποτός",
+      "region": "East Macedonia and Thrace",
+      "campsites": [
+        {
+          "name": "Camping Pefkari Beach",
+          "distanceMeters": 989,
+          "osmUrl": "https://www.openstreetmap.org/way/294883140",
+          "website": "https://www.camping-pefkari.gr/"
+        }
+      ]
+    },
+    {
+      "beachId": 794,
+      "beach": "Ρέμβη",
+      "region": "East Macedonia and Thrace",
+      "campsites": [
+        {
+          "name": "Paradiso",
+          "distanceMeters": 892,
+          "osmUrl": "https://www.openstreetmap.org/way/296573458",
+          "website": "https://www.paradisokavala.gr/"
+        }
+      ]
+    },
+    {
+      "beachId": 852,
+      "beach": "Σκάλα Πρίνου",
+      "region": "East Macedonia and Thrace",
+      "campsites": [
+        {
+          "name": "camping prinos",
+          "distanceMeters": 179,
+          "osmUrl": "https://www.openstreetmap.org/node/4358646192",
+          "website": null
+        }
+      ]
+    },
+    {
+      "beachId": 853,
+      "beach": "Σκάλα Ραχώνι",
+      "region": "East Macedonia and Thrace",
+      "campsites": [
+        {
+          "name": "For Nature Lovers",
+          "distanceMeters": 2164,
+          "osmUrl": "https://www.openstreetmap.org/way/1441488384",
+          "website": "https://fornaturelovers.gr/"
+        }
+      ]
+    },
+    {
+      "beachId": 854,
+      "beach": "Σκάλα Σωτήρος",
+      "region": "East Macedonia and Thrace",
+      "campsites": [
+        {
+          "name": "Κάμπινγκ Δαίδαλος",
+          "distanceMeters": 1193,
+          "osmUrl": "https://www.openstreetmap.org/way/1444034022",
+          "website": null
+        }
+      ]
+    },
+    {
+      "beachId": 782,
+      "beach": "Τόσκα",
+      "region": "East Macedonia and Thrace",
+      "campsites": [
+        {
+          "name": "Batis",
+          "distanceMeters": 1203,
+          "osmUrl": "https://www.openstreetmap.org/way/303943759",
+          "website": "https://www.batis-sa.gr/"
+        }
+      ]
+    },
+    {
+      "beachId": 856,
+      "beach": "Χρυσή Ακτή",
+      "region": "East Macedonia and Thrace",
+      "campsites": [
+        {
+          "name": "Golden Beach Campsite",
+          "distanceMeters": 666,
+          "osmUrl": "https://www.openstreetmap.org/way/131113880",
+          "website": "https://www.thassoscamping.gr/camping/xrisi-ammoudia/"
+        }
+      ]
+    },
+    {
+      "beachId": 857,
+      "beach": "Χρυσή Αμμουδιά",
+      "region": "East Macedonia and Thrace",
+      "campsites": [
+        {
+          "name": "Golden Beach Campsite",
+          "distanceMeters": 607,
+          "osmUrl": "https://www.openstreetmap.org/way/131113880",
+          "website": "https://www.thassoscamping.gr/camping/xrisi-ammoudia/"
+        }
+      ]
+    },
+    {
+      "beachId": 796,
+      "beach": "Ψάθα",
+      "region": "East Macedonia and Thrace",
+      "campsites": [
+        {
+          "name": "Paradiso",
+          "distanceMeters": 1348,
+          "osmUrl": "https://www.openstreetmap.org/way/296573458",
+          "website": "https://www.paradisokavala.gr/"
+        }
+      ]
+    },
+    {
+      "beachId": 830,
+      "beach": "Blue Lake",
+      "region": "East Macedonia and Thrace",
+      "campsites": [
+        {
+          "name": "For Nature Lovers",
+          "distanceMeters": 1536,
+          "osmUrl": "https://www.openstreetmap.org/way/1441488384",
+          "website": "https://fornaturelovers.gr/"
+        }
+      ]
+    },
+    {
+      "beachId": 831,
+      "beach": "Hara",
+      "region": "East Macedonia and Thrace",
+      "campsites": [
+        {
+          "name": "For Nature Lovers",
+          "distanceMeters": 333,
+          "osmUrl": "https://www.openstreetmap.org/way/1441488384",
+          "website": "https://fornaturelovers.gr/"
+        },
+        {
+          "name": "camping prinos",
+          "distanceMeters": 2464,
+          "osmUrl": "https://www.openstreetmap.org/node/4358646192",
+          "website": null
+        }
+      ]
+    },
+    {
+      "beachId": 832,
+      "beach": "Ilio Mare",
+      "region": "East Macedonia and Thrace",
+      "campsites": [
+        {
+          "name": "camping prinos",
+          "distanceMeters": 734,
+          "osmUrl": "https://www.openstreetmap.org/node/4358646192",
+          "website": null
+        },
+        {
+          "name": "Κάμπινγκ Δαίδαλος",
+          "distanceMeters": 2162,
+          "osmUrl": "https://www.openstreetmap.org/way/1444034022",
+          "website": null
+        }
+      ]
+    },
+    {
+      "beachId": 888,
+      "beach": "Αγία Παρασκευή",
+      "region": "Epirus",
+      "campsites": [
+        {
+          "name": "Camping Sofas",
+          "distanceMeters": 1199,
+          "osmUrl": "https://www.openstreetmap.org/way/1327618649",
+          "website": "https://www.campingsofas.gr/"
+        }
+      ]
+    },
+    {
+      "beachId": 889,
+      "beach": "Αγκάλη",
+      "region": "Epirus",
+      "campsites": [
+        {
+          "name": "Camping Sofas",
+          "distanceMeters": 809,
+          "osmUrl": "https://www.openstreetmap.org/way/1327618649",
+          "website": "https://www.campingsofas.gr/"
+        }
+      ]
+    },
+    {
+      "beachId": 898,
+      "beach": "Καμίνι",
+      "region": "Epirus",
+      "campsites": [
+        {
+          "name": "Camping Sofas",
+          "distanceMeters": 674,
+          "osmUrl": "https://www.openstreetmap.org/way/1327618649",
+          "website": "https://www.campingsofas.gr/"
+        }
+      ]
+    },
+    {
+      "beachId": 868,
+      "beach": "Κρυονέρι",
+      "region": "Epirus",
+      "campsites": [
+        {
+          "name": "Valtos Camping",
+          "distanceMeters": 1308,
+          "osmUrl": "https://www.openstreetmap.org/node/26860103",
+          "website": "https://valtoscamping.gr/"
+        }
+      ]
+    },
+    {
+      "beachId": 901,
+      "beach": "Μέγα Ντράφι",
+      "region": "Epirus",
+      "campsites": [
+        {
+          "name": "Camping Sofas",
+          "distanceMeters": 2067,
+          "osmUrl": "https://www.openstreetmap.org/way/1327618649",
+          "website": "https://www.campingsofas.gr/"
+        }
+      ]
+    },
+    {
+      "beachId": 903,
+      "beach": "Μικρό Ντράφι",
+      "region": "Epirus",
+      "campsites": [
+        {
+          "name": "Camping Sofas",
+          "distanceMeters": 1916,
+          "osmUrl": "https://www.openstreetmap.org/way/1327618649",
+          "website": "https://www.campingsofas.gr/"
+        }
+      ]
+    },
+    {
+      "beachId": 870,
+      "beach": "Μονολίθι",
+      "region": "Epirus",
+      "campsites": [
+        {
+          "name": "Camping Burano",
+          "distanceMeters": 1982,
+          "osmUrl": "https://www.openstreetmap.org/node/10026532559",
+          "website": null
+        },
+        {
+          "name": "Camping Monolithi",
+          "distanceMeters": 2245,
+          "osmUrl": "https://www.openstreetmap.org/way/278724236",
+          "website": "https://www.campingmonolithi.gr/"
+        }
+      ]
+    },
+    {
+      "beachId": 874,
+      "beach": "Παραλία Βάλτου",
+      "region": "Epirus",
+      "campsites": [
+        {
+          "name": "Valtos Camping",
+          "distanceMeters": 374,
+          "osmUrl": "https://www.openstreetmap.org/node/26860103",
+          "website": "https://valtoscamping.gr/"
+        }
+      ]
+    },
+    {
+      "beachId": 910,
+      "beach": "Παραλία Γαλάζιος Κόλπος",
+      "region": "Epirus",
+      "campsites": [
+        {
+          "name": "Ναυτίλος",
+          "distanceMeters": 578,
+          "osmUrl": "https://www.openstreetmap.org/node/26860049",
+          "website": "https://nautiloscamping.gr/"
+        },
+        {
+          "name": "Plataria",
+          "distanceMeters": 1829,
+          "osmUrl": "https://www.openstreetmap.org/node/9738963717",
+          "website": null
+        },
+        {
+          "name": "Elenas Beach",
+          "distanceMeters": 1963,
+          "osmUrl": "https://www.openstreetmap.org/node/26859951",
+          "website": "https://campingelena.gr"
+        }
+      ]
+    },
+    {
+      "beachId": 909,
+      "beach": "Παραλία Γάτα",
+      "region": "Epirus",
+      "campsites": [
+        {
+          "name": "Camping Kalami Beach",
+          "distanceMeters": 615,
+          "osmUrl": "https://www.openstreetmap.org/way/770901392",
+          "website": "https://www.campingkalamibeach.gr/"
+        }
+      ]
+    },
+    {
+      "beachId": 911,
+      "beach": "Παραλία Δρέπανο",
+      "region": "Epirus",
+      "campsites": [
+        {
+          "name": "Camping Drepanos",
+          "distanceMeters": 484,
+          "osmUrl": "https://www.openstreetmap.org/way/522843250",
+          "website": "https://www.drepano.gr/"
+        }
+      ]
+    },
+    {
+      "beachId": 908,
+      "beach": "Παραλία Έλενα",
+      "region": "Epirus",
+      "campsites": [
+        {
+          "name": "Elenas Beach",
+          "distanceMeters": 117,
+          "osmUrl": "https://www.openstreetmap.org/node/26859951",
+          "website": "https://campingelena.gr"
+        },
+        {
+          "name": "Ναυτίλος",
+          "distanceMeters": 1737,
+          "osmUrl": "https://www.openstreetmap.org/node/26860049",
+          "website": "https://nautiloscamping.gr/"
+        },
+        {
+          "name": "Camperstop Plataria Beach",
+          "distanceMeters": 1798,
+          "osmUrl": "https://www.openstreetmap.org/node/13798870971",
+          "website": null
+        }
+      ]
+    },
+    {
+      "beachId": 912,
+      "beach": "Παραλία Ελιά",
+      "region": "Epirus",
+      "campsites": [
+        {
+          "name": "Camping Kalami Beach",
+          "distanceMeters": 820,
+          "osmUrl": "https://www.openstreetmap.org/way/770901392",
+          "website": "https://www.campingkalamibeach.gr/"
+        },
+        {
+          "name": "Elenas Beach",
+          "distanceMeters": 1562,
+          "osmUrl": "https://www.openstreetmap.org/node/26859951",
+          "website": "https://campingelena.gr"
+        }
+      ]
+    },
+    {
+      "beachId": 913,
+      "beach": "Παραλία Καλάμι",
+      "region": "Epirus",
+      "campsites": [
+        {
+          "name": "Camping Kalami Beach",
+          "distanceMeters": 62,
+          "osmUrl": "https://www.openstreetmap.org/way/770901392",
+          "website": "https://www.campingkalamibeach.gr/"
+        },
+        {
+          "name": "Elenas Beach",
+          "distanceMeters": 2341,
+          "osmUrl": "https://www.openstreetmap.org/node/26859951",
+          "website": "https://campingelena.gr"
+        }
+      ]
+    },
+    {
+      "beachId": 863,
+      "beach": "Παραλία Καναλίου",
+      "region": "Epirus",
+      "campsites": [
+        {
+          "name": "Camping Burano",
+          "distanceMeters": 2396,
+          "osmUrl": "https://www.openstreetmap.org/node/10026532559",
+          "website": null
+        }
+      ]
+    },
+    {
+      "beachId": 882,
+      "beach": "Παραλία Καστροσυκιάς",
+      "region": "Epirus",
+      "campsites": [
+        {
+          "name": "Αστερίας",
+          "distanceMeters": 2440,
+          "osmUrl": "https://www.openstreetmap.org/way/664850809",
+          "website": "https://campingasterias.gr"
+        }
+      ]
+    },
+    {
+      "beachId": 914,
+      "beach": "Παραλία Κατσονήσι",
+      "region": "Epirus",
+      "campsites": [
+        {
+          "name": "Camping Sofas",
+          "distanceMeters": 780,
+          "osmUrl": "https://www.openstreetmap.org/way/1327618649",
+          "website": "https://www.campingsofas.gr/"
+        }
+      ]
+    },
+    {
+      "beachId": 915,
+      "beach": "Παραλία Κόκκινος Βράχος",
+      "region": "Epirus",
+      "campsites": [
+        {
+          "name": "Elenas Beach",
+          "distanceMeters": 947,
+          "osmUrl": "https://www.openstreetmap.org/node/26859951",
+          "website": "https://campingelena.gr"
+        },
+        {
+          "name": "Camping Kalami Beach",
+          "distanceMeters": 1458,
+          "osmUrl": "https://www.openstreetmap.org/way/770901392",
+          "website": "https://www.campingkalamibeach.gr/"
+        },
+        {
+          "name": "Ναυτίλος",
+          "distanceMeters": 2325,
+          "osmUrl": "https://www.openstreetmap.org/node/26860049",
+          "website": "https://nautiloscamping.gr/"
+        }
+      ]
+    },
+    {
+      "beachId": 875,
+      "beach": "Παραλία Λύχνος",
+      "region": "Epirus",
+      "campsites": [
+        {
+          "name": "Enjoy Lichnos",
+          "distanceMeters": 265,
+          "osmUrl": "https://www.openstreetmap.org/way/770731622",
+          "website": "https://www.enjoy-lichnos.net"
+        }
+      ]
+    },
+    {
+      "beachId": 918,
+      "beach": "Παραλία Ναυτίλος",
+      "region": "Epirus",
+      "campsites": [
+        {
+          "name": "Ναυτίλος",
+          "distanceMeters": 247,
+          "osmUrl": "https://www.openstreetmap.org/node/26860049",
+          "website": "https://nautiloscamping.gr/"
+        },
+        {
+          "name": "Plataria",
+          "distanceMeters": 1472,
+          "osmUrl": "https://www.openstreetmap.org/node/9738963717",
+          "website": null
+        },
+        {
+          "name": "Camperstop Plataria Beach",
+          "distanceMeters": 1630,
+          "osmUrl": "https://www.openstreetmap.org/node/13798870971",
+          "website": null
+        }
+      ]
+    },
+    {
+      "beachId": 919,
+      "beach": "Παραλία Πλαταριάς",
+      "region": "Epirus",
+      "campsites": [
+        {
+          "name": "Camperstop Plataria Beach",
+          "distanceMeters": 398,
+          "osmUrl": "https://www.openstreetmap.org/node/13798870971",
+          "website": null
+        },
+        {
+          "name": "Plataria",
+          "distanceMeters": 676,
+          "osmUrl": "https://www.openstreetmap.org/node/9738963717",
+          "website": null
+        },
+        {
+          "name": "Ναυτίλος",
+          "distanceMeters": 1645,
+          "osmUrl": "https://www.openstreetmap.org/node/26860049",
+          "website": "https://nautiloscamping.gr/"
+        }
+      ]
+    },
+    {
+      "beachId": 883,
+      "beach": "Παραλία Ριζών",
+      "region": "Epirus",
+      "campsites": [
+        {
+          "name": "Corali",
+          "distanceMeters": 292,
+          "osmUrl": "https://www.openstreetmap.org/way/1463071070",
+          "website": "https://www.camping-corali.eu"
+        },
+        {
+          "name": "Acrogiali",
+          "distanceMeters": 414,
+          "osmUrl": "https://www.openstreetmap.org/node/5038091940",
+          "website": "http://www.camping-acrogiali.com"
+        }
+      ]
+    },
+    {
+      "beachId": 925,
+      "beach": "Παραλία Σαγιάδας",
+      "region": "Epirus",
+      "campsites": [
+        {
+          "name": "Κάμπινγκ: Παραλία Σαγιάδας",
+          "distanceMeters": 78,
+          "osmUrl": "https://www.openstreetmap.org/node/12222195274",
+          "website": null
+        }
+      ]
+    },
+    {
+      "beachId": 907,
+      "beach": "Παραλία Plataria Beach Hotel",
+      "region": "Epirus",
+      "campsites": [
+        {
+          "name": "Elenas Beach",
+          "distanceMeters": 138,
+          "osmUrl": "https://www.openstreetmap.org/node/26859951",
+          "website": "https://campingelena.gr"
+        },
+        {
+          "name": "Ναυτίλος",
+          "distanceMeters": 1776,
+          "osmUrl": "https://www.openstreetmap.org/node/26860049",
+          "website": "https://nautiloscamping.gr/"
+        },
+        {
+          "name": "Camperstop Plataria Beach",
+          "distanceMeters": 1980,
+          "osmUrl": "https://www.openstreetmap.org/node/13798870971",
+          "website": null
+        }
+      ]
+    },
+    {
+      "beachId": 871,
+      "beach": "Πίσω Κρυονέρι",
+      "region": "Epirus",
+      "campsites": [
+        {
+          "name": "Valtos Camping",
+          "distanceMeters": 1570,
+          "osmUrl": "https://www.openstreetmap.org/node/26860103",
+          "website": "https://valtoscamping.gr/"
+        },
+        {
+          "name": "Enjoy Lichnos",
+          "distanceMeters": 2359,
+          "osmUrl": "https://www.openstreetmap.org/way/770731622",
+          "website": "https://www.enjoy-lichnos.net"
+        }
+      ]
+    },
+    {
+      "beachId": 922,
+      "beach": "Σοφάς",
+      "region": "Epirus",
+      "campsites": [
+        {
+          "name": "Camping Sofas",
+          "distanceMeters": 87,
+          "osmUrl": "https://www.openstreetmap.org/way/1327618649",
+          "website": "https://www.campingsofas.gr/"
+        }
+      ]
+    },
+    {
+      "beachId": 862,
+      "beach": "Artolithia Beach",
+      "region": "Epirus",
+      "campsites": [
+        {
+          "name": "Corali",
+          "distanceMeters": 2342,
+          "osmUrl": "https://www.openstreetmap.org/way/1463071070",
+          "website": "https://www.camping-corali.eu"
+        },
+        {
+          "name": "Acrogiali",
+          "distanceMeters": 2473,
+          "osmUrl": "https://www.openstreetmap.org/node/5038091940",
+          "website": "http://www.camping-acrogiali.com"
+        }
+      ]
+    },
+    {
+      "beachId": 926,
+      "beach": "Keramidi Beach",
+      "region": "Epirus",
+      "campsites": [
+        {
+          "name": "Κάμπινγκ: Παραλία Σαγιάδας",
+          "distanceMeters": 2318,
+          "osmUrl": "https://www.openstreetmap.org/node/12222195274",
+          "website": null
+        }
+      ]
+    },
+    {
+      "beachId": 1147,
+      "beach": "Αβάλι",
+      "region": "Ionian Islands",
+      "campsites": [
+        {
+          "name": "Kathisma",
+          "distanceMeters": 1916,
+          "osmUrl": "https://www.openstreetmap.org/node/1455930151",
+          "website": "https://www.camping-kathisma.gr/"
+        }
+      ]
+    },
+    {
+      "beachId": 1184,
+      "beach": "Αμπούλα",
+      "region": "Ionian Islands",
+      "campsites": [
+        {
+          "name": "Camping Zante",
+          "distanceMeters": 286,
+          "osmUrl": "https://www.openstreetmap.org/node/2301049950",
+          "website": null
+        }
+      ]
+    },
+    {
+      "beachId": 1022,
+      "beach": "Αυτιά Γαϊδάρου",
+      "region": "Ionian Islands",
+      "campsites": [
+        {
+          "name": "Camping Mongonisi",
+          "distanceMeters": 1129,
+          "osmUrl": "https://www.openstreetmap.org/way/119293352",
+          "website": null
+        }
+      ]
+    },
+    {
+      "beachId": 1155,
+      "beach": "Βασιλική",
+      "region": "Ionian Islands",
+      "campsites": [
+        {
+          "name": "Vasiliki Beach Camping",
+          "distanceMeters": 477,
+          "osmUrl": "https://www.openstreetmap.org/way/814646512",
+          "website": "https://campingvassilikibeach.com"
+        }
+      ]
+    },
+    {
+      "beachId": 1156,
+      "beach": "Γάϊδαρος",
+      "region": "Ionian Islands",
+      "campsites": [
+        {
+          "name": "Kathisma",
+          "distanceMeters": 1072,
+          "osmUrl": "https://www.openstreetmap.org/node/1455930151",
+          "website": "https://www.camping-kathisma.gr/"
+        }
+      ]
+    },
+    {
+      "beachId": 1024,
+      "beach": "Γιάννας",
+      "region": "Ionian Islands",
+      "campsites": [
+        {
+          "name": "Camping Mongonisi",
+          "distanceMeters": 2034,
+          "osmUrl": "https://www.openstreetmap.org/way/119293352",
+          "website": null
+        }
+      ]
+    },
+    {
+      "beachId": 3013,
+      "beach": "Γουβιά",
+      "region": "Ionian Islands",
+      "campsites": [
+        {
+          "name": "Dionysus Camping Village",
+          "distanceMeters": 1255,
+          "osmUrl": "https://www.openstreetmap.org/node/1770622357",
+          "website": "http://dionysuscamping.gr"
+        }
+      ]
+    },
+    {
+      "beachId": 1140,
+      "beach": "Δεσίμι",
+      "region": "Ionian Islands",
+      "campsites": [
+        {
+          "name": "Santa Mavra",
+          "distanceMeters": 190,
+          "osmUrl": "https://www.openstreetmap.org/node/470250354",
+          "website": "https://www.campingsantamavra.com"
+        },
+        {
+          "name": "Dessimi Beach",
+          "distanceMeters": 212,
+          "osmUrl": "https://www.openstreetmap.org/way/128678717",
+          "website": "http://www.campingdesimi.com"
+        }
+      ]
+    },
+    {
+      "beachId": 1026,
+      "beach": "Δεύτερη Σπιάντζα",
+      "region": "Ionian Islands",
+      "campsites": [
+        {
+          "name": "Camping Mongonisi",
+          "distanceMeters": 1725,
+          "osmUrl": "https://www.openstreetmap.org/way/119293352",
+          "website": null
+        }
+      ]
+    },
+    {
+      "beachId": 961,
+      "beach": "Ηλιόδωρος",
+      "region": "Ionian Islands",
+      "campsites": [
+        {
+          "name": "Camping Paleokastritsa",
+          "distanceMeters": 2323,
+          "osmUrl": "https://www.openstreetmap.org/node/26860067",
+          "website": "https://campingpaleokastritsa.com/"
+        }
+      ]
+    },
+    {
+      "beachId": 1160,
+      "beach": "Κάθισμα",
+      "region": "Ionian Islands",
+      "campsites": [
+        {
+          "name": "Kathisma",
+          "distanceMeters": 606,
+          "osmUrl": "https://www.openstreetmap.org/node/1455930151",
+          "website": "https://www.camping-kathisma.gr/"
+        }
+      ]
+    },
+    {
+      "beachId": 1095,
+      "beach": "Καλάμια",
+      "region": "Ionian Islands",
+      "campsites": [
+        {
+          "name": "Camping Argostoli",
+          "distanceMeters": 2234,
+          "osmUrl": "https://www.openstreetmap.org/way/628064311",
+          "website": "https://www.camping-argostoli.gr/"
+        }
+      ]
+    },
+    {
+      "beachId": 1141,
+      "beach": "Καμάρι",
+      "region": "Ionian Islands",
+      "campsites": [
+        {
+          "name": "Dessimi Beach",
+          "distanceMeters": 2042,
+          "osmUrl": "https://www.openstreetmap.org/way/128678717",
+          "website": "http://www.campingdesimi.com"
+        },
+        {
+          "name": "Santa Mavra",
+          "distanceMeters": 2178,
+          "osmUrl": "https://www.openstreetmap.org/node/470250354",
+          "website": "https://www.campingsantamavra.com"
+        }
+      ]
+    },
+    {
+      "beachId": 1203,
+      "beach": "Καμαρωτή",
+      "region": "Ionian Islands",
+      "campsites": [
+        {
+          "name": "Tartaruga Camping",
+          "distanceMeters": 330,
+          "osmUrl": "https://www.openstreetmap.org/way/94826851",
+          "website": "https://www.tartaruga-camping.com/"
+        }
+      ]
+    },
+    {
+      "beachId": 965,
+      "beach": "Κανάλι του Έρωτα",
+      "region": "Ionian Islands",
+      "campsites": [
+        {
+          "name": "Dolphin Camping",
+          "distanceMeters": 2415,
+          "osmUrl": "https://www.openstreetmap.org/node/11173777110",
+          "website": "http://www.dolphin-camping.gr/"
+        }
+      ]
+    },
+    {
+      "beachId": 1098,
+      "beach": "Καραβόμυλος",
+      "region": "Ionian Islands",
+      "campsites": [
+        {
+          "name": "Camping Karavomilos Beach",
+          "distanceMeters": 106,
+          "osmUrl": "https://www.openstreetmap.org/node/26860001",
+          "website": "https://www.camping-karavomilos.gr/"
+        }
+      ]
+    },
+    {
+      "beachId": 971,
+      "beach": "Κόλιας",
+      "region": "Ionian Islands",
+      "campsites": [
+        {
+          "name": "Camping Paleokastritsa",
+          "distanceMeters": 2110,
+          "osmUrl": "https://www.openstreetmap.org/node/26860067",
+          "website": "https://campingpaleokastritsa.com/"
+        }
+      ]
+    },
+    {
+      "beachId": 1145,
+      "beach": "Λίμνη / Στροφή",
+      "region": "Ionian Islands",
+      "campsites": [
+        {
+          "name": "Camping Village Episkopos",
+          "distanceMeters": 1802,
+          "osmUrl": "https://www.openstreetmap.org/node/9810600295",
+          "website": null
+        },
+        {
+          "name": "Camping Kariotes Beach",
+          "distanceMeters": 2181,
+          "osmUrl": "https://www.openstreetmap.org/node/4783181521",
+          "website": "https://www.campingkariotes.gr/"
+        }
+      ]
+    },
+    {
+      "beachId": 1166,
+      "beach": "Μικρός Γιαλός",
+      "region": "Ionian Islands",
+      "campsites": [
+        {
+          "name": "Poros Beach",
+          "distanceMeters": 168,
+          "osmUrl": "https://www.openstreetmap.org/way/369336497",
+          "website": "https://porosbeach.com.gr/room/camping/"
+        }
+      ]
+    },
+    {
+      "beachId": 1036,
+      "beach": "Μπάλος",
+      "region": "Ionian Islands",
+      "campsites": [
+        {
+          "name": "Camping Mongonisi",
+          "distanceMeters": 798,
+          "osmUrl": "https://www.openstreetmap.org/way/119293352",
+          "website": null
+        }
+      ]
+    },
+    {
+      "beachId": 1167,
+      "beach": "Μύλος",
+      "region": "Ionian Islands",
+      "campsites": [
+        {
+          "name": "Kathisma",
+          "distanceMeters": 1232,
+          "osmUrl": "https://www.openstreetmap.org/node/1455930151",
+          "website": "https://www.camping-kathisma.gr/"
+        }
+      ]
+    },
+    {
+      "beachId": 1143,
+      "beach": "Νότια Παραλία Νικιάνας",
+      "region": "Ionian Islands",
+      "campsites": [
+        {
+          "name": "Camping Village Episkopos",
+          "distanceMeters": 1287,
+          "osmUrl": "https://www.openstreetmap.org/node/9810600295",
+          "website": null
+        }
+      ]
+    },
+    {
+      "beachId": 1038,
+      "beach": "Οζιάς",
+      "region": "Ionian Islands",
+      "campsites": [
+        {
+          "name": "Camping Mongonisi",
+          "distanceMeters": 331,
+          "osmUrl": "https://www.openstreetmap.org/way/119293352",
+          "website": null
+        }
+      ]
+    },
+    {
+      "beachId": 3014,
+      "beach": "Παλαιοκαστρίτσα",
+      "region": "Ionian Islands",
+      "campsites": [
+        {
+          "name": "Camping Paleokastritsa",
+          "distanceMeters": 1151,
+          "osmUrl": "https://www.openstreetmap.org/node/26860067",
+          "website": "https://campingpaleokastritsa.com/"
+        }
+      ]
+    },
+    {
+      "beachId": 980,
+      "beach": "Παραλία Άγιος Νικόλαος",
+      "region": "Ionian Islands",
+      "campsites": [
+        {
+          "name": "Dionysus Camping Village",
+          "distanceMeters": 1043,
+          "osmUrl": "https://www.openstreetmap.org/node/1770622357",
+          "website": "http://dionysuscamping.gr"
+        },
+        {
+          "name": "Karda Beach",
+          "distanceMeters": 1463,
+          "osmUrl": "https://www.openstreetmap.org/node/26860005",
+          "website": null
+        }
+      ]
+    },
+    {
+      "beachId": 981,
+      "beach": "Παραλία Άγιος Σπυρίδωνας",
+      "region": "Ionian Islands",
+      "campsites": [
+        {
+          "name": "Camping Paleokastritsa",
+          "distanceMeters": 1968,
+          "osmUrl": "https://www.openstreetmap.org/node/26860067",
+          "website": "https://campingpaleokastritsa.com/"
+        }
+      ]
+    },
+    {
+      "beachId": 984,
+      "beach": "Παραλία Αμπελάκι",
+      "region": "Ionian Islands",
+      "campsites": [
+        {
+          "name": "Camping Paleokastritsa",
+          "distanceMeters": 2163,
+          "osmUrl": "https://www.openstreetmap.org/node/26860067",
+          "website": "https://campingpaleokastritsa.com/"
+        }
+      ]
+    },
+    {
+      "beachId": 986,
+      "beach": "Παραλία Αχαράβης",
+      "region": "Ionian Islands",
+      "campsites": [
+        {
+          "name": "Roda Beach",
+          "distanceMeters": 2448,
+          "osmUrl": "https://www.openstreetmap.org/node/26860090",
+          "website": null
+        }
+      ]
+    },
+    {
+      "beachId": 1210,
+      "beach": "Παραλία Κεριού",
+      "region": "Ionian Islands",
+      "campsites": [
+        {
+          "name": "Tartaruga Camping",
+          "distanceMeters": 1526,
+          "osmUrl": "https://www.openstreetmap.org/way/94826851",
+          "website": "https://www.tartaruga-camping.com/"
+        }
+      ]
+    },
+    {
+      "beachId": 991,
+      "beach": "Παραλία Κληματιά",
+      "region": "Ionian Islands",
+      "campsites": [
+        {
+          "name": "Camping Paleokastritsa",
+          "distanceMeters": 1177,
+          "osmUrl": "https://www.openstreetmap.org/node/26860067",
+          "website": "https://campingpaleokastritsa.com/"
+        }
+      ]
+    },
+    {
+      "beachId": 1121,
+      "beach": "Παραλία Κόλπος Κορμοράνων",
+      "region": "Ionian Islands",
+      "campsites": [
+        {
+          "name": "Camping Argostoli",
+          "distanceMeters": 230,
+          "osmUrl": "https://www.openstreetmap.org/way/628064311",
+          "website": "https://www.camping-argostoli.gr/"
+        }
+      ]
+    },
+    {
+      "beachId": 992,
+      "beach": "Παραλία Κοντοκαλίου",
+      "region": "Ionian Islands",
+      "campsites": [
+        {
+          "name": "Dionysus Camping Village",
+          "distanceMeters": 2128,
+          "osmUrl": "https://www.openstreetmap.org/node/1770622357",
+          "website": "http://dionysuscamping.gr"
+        }
+      ]
+    },
+    {
+      "beachId": 995,
+      "beach": "Παραλία Λιαπάδων",
+      "region": "Ionian Islands",
+      "campsites": [
+        {
+          "name": "Camping Paleokastritsa",
+          "distanceMeters": 505,
+          "osmUrl": "https://www.openstreetmap.org/node/26860067",
+          "website": "https://campingpaleokastritsa.com/"
+        }
+      ]
+    },
+    {
+      "beachId": 993,
+      "beach": "Παραλία Λίμνη",
+      "region": "Ionian Islands",
+      "campsites": [
+        {
+          "name": "Camping Paleokastritsa",
+          "distanceMeters": 1272,
+          "osmUrl": "https://www.openstreetmap.org/node/26860067",
+          "website": "https://campingpaleokastritsa.com/"
+        }
+      ]
+    },
+    {
+      "beachId": 1142,
+      "beach": "Παραλία Νικιάνας",
+      "region": "Ionian Islands",
+      "campsites": [
+        {
+          "name": "Camping Village Episkopos",
+          "distanceMeters": 1971,
+          "osmUrl": "https://www.openstreetmap.org/node/9810600295",
+          "website": null
+        }
+      ]
+    },
+    {
+      "beachId": 1001,
+      "beach": "Παραλία Ρόδας",
+      "region": "Ionian Islands",
+      "campsites": [
+        {
+          "name": "Roda Beach",
+          "distanceMeters": 850,
+          "osmUrl": "https://www.openstreetmap.org/node/26860090",
+          "website": null
+        }
+      ]
+    },
+    {
+      "beachId": 1009,
+      "beach": "Παραλία Σιδάρι",
+      "region": "Ionian Islands",
+      "campsites": [
+        {
+          "name": "Dolphin Camping",
+          "distanceMeters": 1686,
+          "osmUrl": "https://www.openstreetmap.org/node/11173777110",
+          "website": "http://www.dolphin-camping.gr/"
+        }
+      ]
+    },
+    {
+      "beachId": 1014,
+      "beach": "Ροβινιά",
+      "region": "Ionian Islands",
+      "campsites": [
+        {
+          "name": "Camping Paleokastritsa",
+          "distanceMeters": 735,
+          "osmUrl": "https://www.openstreetmap.org/node/26860067",
+          "website": "https://campingpaleokastritsa.com/"
+        }
+      ]
+    },
+    {
+      "beachId": 1041,
+      "beach": "Σουλάνενα",
+      "region": "Ionian Islands",
+      "campsites": [
+        {
+          "name": "Camping Mongonisi",
+          "distanceMeters": 1266,
+          "osmUrl": "https://www.openstreetmap.org/way/119293352",
+          "website": null
+        }
+      ]
+    },
+    {
+      "beachId": 1196,
+      "beach": "Τσιλιβί",
+      "region": "Ionian Islands",
+      "campsites": [
+        {
+          "name": "Camping Zante",
+          "distanceMeters": 2124,
+          "osmUrl": "https://www.openstreetmap.org/node/2301049950",
+          "website": null
+        }
+      ]
+    },
+    {
+      "beachId": 927,
+      "beach": "Acquasanta Beach",
+      "region": "Ionian Islands",
+      "campsites": [
+        {
+          "name": "Roda Beach",
+          "distanceMeters": 2451,
+          "osmUrl": "https://www.openstreetmap.org/node/26860090",
+          "website": null
+        }
+      ]
+    },
+    {
+      "beachId": 928,
+      "beach": "Agias Triades Beach",
+      "region": "Ionian Islands",
+      "campsites": [
+        {
+          "name": "Camping Paleokastritsa",
+          "distanceMeters": 965,
+          "osmUrl": "https://www.openstreetmap.org/node/26860067",
+          "website": "https://campingpaleokastritsa.com/"
+        }
+      ]
+    },
+    {
+      "beachId": 930,
+      "beach": "Alipa beach",
+      "region": "Ionian Islands",
+      "campsites": [
+        {
+          "name": "Camping Paleokastritsa",
+          "distanceMeters": 1627,
+          "osmUrl": "https://www.openstreetmap.org/node/26860067",
+          "website": "https://campingpaleokastritsa.com/"
+        }
+      ]
+    },
+    {
+      "beachId": 1139,
+      "beach": "Breath of Zorbas beach",
+      "region": "Ionian Islands",
+      "campsites": [
+        {
+          "name": "Camping Village Episkopos",
+          "distanceMeters": 1855,
+          "osmUrl": "https://www.openstreetmap.org/node/9810600295",
+          "website": null
+        }
+      ]
+    },
+    {
+      "beachId": 935,
+      "beach": "Dafnila Beach",
+      "region": "Ionian Islands",
+      "campsites": [
+        {
+          "name": "Dionysus Camping Village",
+          "distanceMeters": 806,
+          "osmUrl": "https://www.openstreetmap.org/node/1770622357",
+          "website": "http://dionysuscamping.gr"
+        },
+        {
+          "name": "Karda Beach",
+          "distanceMeters": 1868,
+          "osmUrl": "https://www.openstreetmap.org/node/26860005",
+          "website": null
+        }
+      ]
+    },
+    {
+      "beachId": 936,
+      "beach": "Dassia Beach",
+      "region": "Ionian Islands",
+      "campsites": [
+        {
+          "name": "Karda Beach",
+          "distanceMeters": 497,
+          "osmUrl": "https://www.openstreetmap.org/node/26860005",
+          "website": null
+        },
+        {
+          "name": "Dionysus Camping Village",
+          "distanceMeters": 1981,
+          "osmUrl": "https://www.openstreetmap.org/node/1770622357",
+          "website": "http://dionysuscamping.gr"
+        }
+      ]
+    },
+    {
+      "beachId": 1018,
+      "beach": "Mongonisi",
+      "region": "Ionian Islands",
+      "campsites": [
+        {
+          "name": "Camping Mongonisi",
+          "distanceMeters": 24,
+          "osmUrl": "https://www.openstreetmap.org/way/119293352",
+          "website": null
+        }
+      ]
+    },
+    {
+      "beachId": 951,
+      "beach": "Robolla Beach",
+      "region": "Ionian Islands",
+      "campsites": [
+        {
+          "name": "Roda Beach",
+          "distanceMeters": 1279,
+          "osmUrl": "https://www.openstreetmap.org/node/26860090",
+          "website": null
+        }
+      ]
+    },
+    {
+      "beachId": 1297,
+      "beach": "Κάμπος",
+      "region": "North Aegean",
+      "campsites": [
+        {
+          "name": "Ikaria Camping",
+          "distanceMeters": 1377,
+          "osmUrl": "https://www.openstreetmap.org/node/12030074099",
+          "website": "https://www.ikariacamping.gr/en/"
+        }
+      ]
+    },
+    {
+      "beachId": 1342,
+      "beach": "Λιμαντζίκι",
+      "region": "North Aegean",
+      "campsites": [
+        {
+          "name": "Molivos Camping (CLOSED)",
+          "distanceMeters": 1229,
+          "osmUrl": "https://www.openstreetmap.org/way/300421159",
+          "website": null
+        }
+      ]
+    },
+    {
+      "beachId": 1347,
+      "beach": "Μόλυβος",
+      "region": "North Aegean",
+      "campsites": [
+        {
+          "name": "Molivos Camping (CLOSED)",
+          "distanceMeters": 1702,
+          "osmUrl": "https://www.openstreetmap.org/way/300421159",
+          "website": null
+        }
+      ]
+    },
+    {
+      "beachId": 1320,
+      "beach": "Παραλία Γυμνιστών Μολύβου",
+      "region": "North Aegean",
+      "campsites": [
+        {
+          "name": "Molivos Camping (CLOSED)",
+          "distanceMeters": 2353,
+          "osmUrl": "https://www.openstreetmap.org/way/300421159",
+          "website": null
+        }
+      ]
+    },
+    {
+      "beachId": 1305,
+      "beach": "Παρθένι",
+      "region": "North Aegean",
+      "campsites": [
+        {
+          "name": "Ikaria Camping",
+          "distanceMeters": 1081,
+          "osmUrl": "https://www.openstreetmap.org/node/12030074099",
+          "website": "https://www.ikariacamping.gr/en/"
+        }
+      ]
+    },
+    {
+      "beachId": 1369,
+      "beach": "Τσιπούρια",
+      "region": "North Aegean",
+      "campsites": [
+        {
+          "name": "Molivos Camping (CLOSED)",
+          "distanceMeters": 742,
+          "osmUrl": "https://www.openstreetmap.org/way/300421159",
+          "website": null
+        }
+      ]
+    },
+    {
+      "beachId": 1311,
+      "beach": "Φύτεμα",
+      "region": "North Aegean",
+      "campsites": [
+        {
+          "name": "Ikaria Camping",
+          "distanceMeters": 2140,
+          "osmUrl": "https://www.openstreetmap.org/node/12030074099",
+          "website": "https://www.ikariacamping.gr/en/"
+        }
+      ]
+    },
+    {
+      "beachId": 1603,
+      "beach": "Αγία Τριάδα",
+      "region": "Peloponnese",
+      "campsites": [
+        {
+          "name": "Koroni Camping",
+          "distanceMeters": 1693,
+          "osmUrl": "https://www.openstreetmap.org/way/503038031",
+          "website": "https://www.koronicamping.com"
+        }
+      ]
+    },
+    {
+      "beachId": 1472,
+      "beach": "Ανεπίσημη Γυμνιστική Παραλία",
+      "region": "Peloponnese",
+      "campsites": [
+        {
+          "name": "Lefka Beach",
+          "distanceMeters": 1913,
+          "osmUrl": "https://www.openstreetmap.org/way/444627210",
+          "website": "https://camping-lefka.gr/"
+        }
+      ]
+    },
+    {
+      "beachId": 1549,
+      "beach": "Ανεπίσημη Γυμνιστική Παραλία",
+      "region": "Peloponnese",
+      "campsites": [
+        {
+          "name": "Camping Dias",
+          "distanceMeters": 412,
+          "osmUrl": "https://www.openstreetmap.org/way/788099456",
+          "website": "https://www.campingdias.gr/"
+        },
+        {
+          "name": "Camping Kronos",
+          "distanceMeters": 711,
+          "osmUrl": "https://www.openstreetmap.org/way/82719465",
+          "website": "https://www.facebook.com/pages/Kronos-Camping/243391402345372"
+        },
+        {
+          "name": "Mani beach",
+          "distanceMeters": 2018,
+          "osmUrl": "https://www.openstreetmap.org/way/516616953",
+          "website": "https://mani-beach.gr/"
+        }
+      ]
+    },
+    {
+      "beachId": 1607,
+      "beach": "Αρτακι",
+      "region": "Peloponnese",
+      "campsites": [
+        {
+          "name": "Koroni Camping",
+          "distanceMeters": 300,
+          "osmUrl": "https://www.openstreetmap.org/way/503038031",
+          "website": "https://www.koronicamping.com"
+        }
+      ]
+    },
+    {
+      "beachId": 1507,
+      "beach": "Ατσίγγανος",
+      "region": "Peloponnese",
+      "campsites": [
+        {
+          "name": "Camping Astros",
+          "distanceMeters": 1058,
+          "osmUrl": "https://www.openstreetmap.org/way/1062137400",
+          "website": "https://www.astroscamping.com/"
+        }
+      ]
+    },
+    {
+      "beachId": 1551,
+      "beach": "Βαθύ",
+      "region": "Peloponnese",
+      "campsites": [
+        {
+          "name": "Camping Kronos",
+          "distanceMeters": 451,
+          "osmUrl": "https://www.openstreetmap.org/way/82719465",
+          "website": "https://www.facebook.com/pages/Kronos-Camping/243391402345372"
+        },
+        {
+          "name": "Camping Dias",
+          "distanceMeters": 461,
+          "osmUrl": "https://www.openstreetmap.org/way/788099456",
+          "website": "https://www.campingdias.gr/"
+        }
+      ]
+    },
+    {
+      "beachId": 1496,
+      "beach": "Βιβάρι",
+      "region": "Peloponnese",
+      "campsites": [
+        {
+          "name": "Lefka Beach",
+          "distanceMeters": 1103,
+          "osmUrl": "https://www.openstreetmap.org/way/444627210",
+          "website": "https://camping-lefka.gr/"
+        },
+        {
+          "name": "Argolic Strand",
+          "distanceMeters": 2441,
+          "osmUrl": "https://www.openstreetmap.org/node/5950093004",
+          "website": "https://www.argolic-strand.gr/"
+        }
+      ]
+    },
+    {
+      "beachId": 1498,
+      "beach": "Γιαλάσι",
+      "region": "Peloponnese",
+      "campsites": [
+        {
+          "name": "Camping Verdelis",
+          "distanceMeters": 112,
+          "osmUrl": "https://www.openstreetmap.org/way/281904652",
+          "website": null
+        },
+        {
+          "name": "Verdelis",
+          "distanceMeters": 140,
+          "osmUrl": "https://www.openstreetmap.org/node/26860107",
+          "website": "http://www.campingverdelis.gr"
+        },
+        {
+          "name": "Bekas Beach",
+          "distanceMeters": 179,
+          "osmUrl": "https://www.openstreetmap.org/node/26859934",
+          "website": "https://bekas.gr"
+        }
+      ]
+    },
+    {
+      "beachId": 1474,
+      "beach": "Γκλιάτη",
+      "region": "Peloponnese",
+      "campsites": [
+        {
+          "name": "Νικόλας I",
+          "distanceMeters": 533,
+          "osmUrl": "https://www.openstreetmap.org/node/3818724732",
+          "website": "https://mouria.gr/en/nicolas-i/"
+        },
+        {
+          "name": "Camping Verdelis",
+          "distanceMeters": 681,
+          "osmUrl": "https://www.openstreetmap.org/way/281904652",
+          "website": null
+        },
+        {
+          "name": "Verdelis",
+          "distanceMeters": 709,
+          "osmUrl": "https://www.openstreetmap.org/node/26860107",
+          "website": "http://www.campingverdelis.gr"
+        }
+      ]
+    },
+    {
+      "beachId": 1612,
+      "beach": "Γλυφάδα",
+      "region": "Peloponnese",
+      "campsites": [
+        {
+          "name": "Camping Tsapi",
+          "distanceMeters": 1736,
+          "osmUrl": "https://www.openstreetmap.org/way/430447125",
+          "website": "https://www.campingtsapi.gr/"
+        }
+      ]
+    },
+    {
+      "beachId": 1614,
+      "beach": "Διβάρι",
+      "region": "Peloponnese",
+      "campsites": [
+        {
+          "name": "Camping Erodios",
+          "distanceMeters": 1532,
+          "osmUrl": "https://www.openstreetmap.org/way/75641140",
+          "website": "https://www.erodioss.gr/"
+        }
+      ]
+    },
+    {
+      "beachId": 1615,
+      "beach": "Ζάγκα",
+      "region": "Peloponnese",
+      "campsites": [
+        {
+          "name": "Koroni Camping",
+          "distanceMeters": 977,
+          "osmUrl": "https://www.openstreetmap.org/way/503038031",
+          "website": "https://www.koronicamping.com"
+        }
+      ]
+    },
+    {
+      "beachId": 1497,
+      "beach": "Ίρια",
+      "region": "Peloponnese",
+      "campsites": [
+        {
+          "name": "Κάμπιγκ Ποσειδών",
+          "distanceMeters": 102,
+          "osmUrl": "https://www.openstreetmap.org/way/366983280",
+          "website": "https://www.posidoncamping.gr"
+        },
+        {
+          "name": "Iria Beach Camping",
+          "distanceMeters": 890,
+          "osmUrl": "https://www.openstreetmap.org/way/129550462",
+          "website": "https://www.iriabeach.com/"
+        },
+        {
+          "name": "Camping Scala",
+          "distanceMeters": 1896,
+          "osmUrl": "https://www.openstreetmap.org/way/180336940",
+          "website": "http://www.scalacamping.gr"
+        }
+      ]
+    },
+    {
+      "beachId": 1475,
+      "beach": "Καλαμάκι",
+      "region": "Peloponnese",
+      "campsites": [
+        {
+          "name": "Νικόλας I",
+          "distanceMeters": 1366,
+          "osmUrl": "https://www.openstreetmap.org/node/3818724732",
+          "website": "https://mouria.gr/en/nicolas-i/"
+        }
+      ]
+    },
+    {
+      "beachId": 1617,
+      "beach": "Καλογριά",
+      "region": "Peloponnese",
+      "campsites": [
+        {
+          "name": "Camping Kalogria",
+          "distanceMeters": 175,
+          "osmUrl": "https://www.openstreetmap.org/way/180337493",
+          "website": "https://www.campingkalogria.gr"
+        }
+      ]
+    },
+    {
+      "beachId": 1559,
+      "beach": "Καμάρες",
+      "region": "Peloponnese",
+      "campsites": [
+        {
+          "name": "Camping Kronos",
+          "distanceMeters": 2294,
+          "osmUrl": "https://www.openstreetmap.org/way/82719465",
+          "website": "https://www.facebook.com/pages/Kronos-Camping/243391402345372"
+        }
+      ]
+    },
+    {
+      "beachId": 1618,
+      "beach": "Καντούνι",
+      "region": "Peloponnese",
+      "campsites": [
+        {
+          "name": "Loutsa camping",
+          "distanceMeters": 990,
+          "osmUrl": "https://www.openstreetmap.org/way/180337864",
+          "website": "https://www.loutsacamping.gr/"
+        },
+        {
+          "name": "Camping Anemomilos",
+          "distanceMeters": 2314,
+          "osmUrl": "https://www.openstreetmap.org/way/763962467",
+          "website": null
+        }
+      ]
+    },
+    {
+      "beachId": 1510,
+      "beach": "Καρακατσάνης",
+      "region": "Peloponnese",
+      "campsites": [
+        {
+          "name": "Camping Astros",
+          "distanceMeters": 2449,
+          "osmUrl": "https://www.openstreetmap.org/way/1062137400",
+          "website": "https://www.astroscamping.com/"
+        }
+      ]
+    },
+    {
+      "beachId": 1477,
+      "beach": "Καστράκι",
+      "region": "Peloponnese",
+      "campsites": [
+        {
+          "name": "Xeni",
+          "distanceMeters": 240,
+          "osmUrl": "https://www.openstreetmap.org/way/766743513",
+          "website": "https://www.xeni.gr/"
+        },
+        {
+          "name": "Kastraki",
+          "distanceMeters": 339,
+          "osmUrl": "https://www.openstreetmap.org/way/387525301",
+          "website": "https://kastrakicamping.gr"
+        },
+        {
+          "name": "Lido",
+          "distanceMeters": 540,
+          "osmUrl": "https://www.openstreetmap.org/node/898846842",
+          "website": "http://www.lido.gr"
+        }
+      ]
+    },
+    {
+      "beachId": 1619,
+      "beach": "Κουμπάρες",
+      "region": "Peloponnese",
+      "campsites": [
+        {
+          "name": "Φοίνικες",
+          "distanceMeters": 1272,
+          "osmUrl": "https://www.openstreetmap.org/way/763951316",
+          "website": "http://finikescamping.gr"
+        },
+        {
+          "name": "Άμμος",
+          "distanceMeters": 2225,
+          "osmUrl": "https://www.openstreetmap.org/node/3760411668",
+          "website": "https://www.facebook.com/pg/Camping-Ammos-Finikounda-Messinias-Greece-Fans-Page-355219768020123/about/"
+        }
+      ]
+    },
+    {
+      "beachId": 1511,
+      "beach": "Κρυονέρι",
+      "region": "Peloponnese",
+      "campsites": [
+        {
+          "name": "Camping Repontina",
+          "distanceMeters": 2238,
+          "osmUrl": "https://www.openstreetmap.org/way/522097001",
+          "website": null
+        }
+      ]
+    },
+    {
+      "beachId": 1623,
+      "beach": "Λαχανού",
+      "region": "Peloponnese",
+      "campsites": [
+        {
+          "name": "Koroni Camping",
+          "distanceMeters": 1186,
+          "osmUrl": "https://www.openstreetmap.org/way/503038031",
+          "website": "https://www.koronicamping.com"
+        }
+      ]
+    },
+    {
+      "beachId": 1624,
+      "beach": "Λιβάδια",
+      "region": "Peloponnese",
+      "campsites": [
+        {
+          "name": "Koroni Camping",
+          "distanceMeters": 1296,
+          "osmUrl": "https://www.openstreetmap.org/way/503038031",
+          "website": "https://www.koronicamping.com"
+        }
+      ]
+    },
+    {
+      "beachId": 3042,
+      "beach": "Λουτράκι Σχίνος",
+      "region": "Peloponnese",
+      "campsites": [
+        {
+          "name": "Camping Alkioni",
+          "distanceMeters": 2075,
+          "osmUrl": "https://www.openstreetmap.org/way/281906494",
+          "website": "https://www.campingalkioni.gr"
+        }
+      ]
+    },
+    {
+      "beachId": 1625,
+      "beach": "Λούτσα",
+      "region": "Peloponnese",
+      "campsites": [
+        {
+          "name": "Loutsa camping",
+          "distanceMeters": 133,
+          "osmUrl": "https://www.openstreetmap.org/way/180337864",
+          "website": "https://www.loutsacamping.gr/"
+        },
+        {
+          "name": "Camping Anemomilos",
+          "distanceMeters": 1774,
+          "osmUrl": "https://www.openstreetmap.org/way/763962467",
+          "website": null
+        },
+        {
+          "name": "Thines Camping",
+          "distanceMeters": 2304,
+          "osmUrl": "https://www.openstreetmap.org/way/363137932",
+          "website": "https://www.camping-peloponnese.com"
+        }
+      ]
+    },
+    {
+      "beachId": 1627,
+      "beach": "Μαυροβούνι",
+      "region": "Peloponnese",
+      "campsites": [
+        {
+          "name": "Άμμος",
+          "distanceMeters": 279,
+          "osmUrl": "https://www.openstreetmap.org/node/3760411668",
+          "website": "https://www.facebook.com/pg/Camping-Ammos-Finikounda-Messinias-Greece-Fans-Page-355219768020123/about/"
+        },
+        {
+          "name": "Thines Camping",
+          "distanceMeters": 429,
+          "osmUrl": "https://www.openstreetmap.org/way/363137932",
+          "website": "https://www.camping-peloponnese.com"
+        },
+        {
+          "name": "Φοίνικες",
+          "distanceMeters": 936,
+          "osmUrl": "https://www.openstreetmap.org/way/763951316",
+          "website": "http://finikescamping.gr"
+        }
+      ]
+    },
+    {
+      "beachId": 1628,
+      "beach": "Μεγάλο Μαράθι",
+      "region": "Peloponnese",
+      "campsites": [
+        {
+          "name": "Camping Tsapi",
+          "distanceMeters": 2086,
+          "osmUrl": "https://www.openstreetmap.org/way/430447125",
+          "website": "https://www.campingtsapi.gr/"
+        }
+      ]
+    },
+    {
+      "beachId": 1629,
+      "beach": "Μεμί",
+      "region": "Peloponnese",
+      "campsites": [
+        {
+          "name": "Koroni Camping",
+          "distanceMeters": 1695,
+          "osmUrl": "https://www.openstreetmap.org/way/503038031",
+          "website": "https://www.koronicamping.com"
+        }
+      ]
+    },
+    {
+      "beachId": 1630,
+      "beach": "Μικρό Μαράθι",
+      "region": "Peloponnese",
+      "campsites": [
+        {
+          "name": "Camping Tsapi",
+          "distanceMeters": 2423,
+          "osmUrl": "https://www.openstreetmap.org/way/430447125",
+          "website": "https://www.campingtsapi.gr/"
+        }
+      ]
+    },
+    {
+      "beachId": 1499,
+      "beach": "Νέα Επίδαυρος - Αλιότου",
+      "region": "Peloponnese",
+      "campsites": [
+        {
+          "name": "Camping Nea Epidavros",
+          "distanceMeters": 1722,
+          "osmUrl": "https://www.openstreetmap.org/way/511624790",
+          "website": null
+        }
+      ]
+    },
+    {
+      "beachId": 1514,
+      "beach": "Παλιόχανο",
+      "region": "Peloponnese",
+      "campsites": [
+        {
+          "name": "Camping Astros",
+          "distanceMeters": 1531,
+          "osmUrl": "https://www.openstreetmap.org/way/1062137400",
+          "website": "https://www.astroscamping.com/"
+        }
+      ]
+    },
+    {
+      "beachId": 1531,
+      "beach": "Παραλία Αγία Σωτήρα",
+      "region": "Peloponnese",
+      "campsites": [
+        {
+          "name": "Camping Alkioni",
+          "distanceMeters": 440,
+          "osmUrl": "https://www.openstreetmap.org/way/281906494",
+          "website": "https://www.campingalkioni.gr"
+        }
+      ]
+    },
+    {
+      "beachId": 1483,
+      "beach": "Παραλία Αγίου Νικολάου - Κονδύλι",
+      "region": "Peloponnese",
+      "campsites": [
+        {
+          "name": "Lefka Beach",
+          "distanceMeters": 464,
+          "osmUrl": "https://www.openstreetmap.org/way/444627210",
+          "website": "https://camping-lefka.gr/"
+        }
+      ]
+    },
+    {
+      "beachId": 1485,
+      "beach": "Παραλία Ασίνης",
+      "region": "Peloponnese",
+      "campsites": [
+        {
+          "name": "Kastraki",
+          "distanceMeters": 341,
+          "osmUrl": "https://www.openstreetmap.org/way/387525301",
+          "website": "https://kastrakicamping.gr"
+        },
+        {
+          "name": "Xeni",
+          "distanceMeters": 696,
+          "osmUrl": "https://www.openstreetmap.org/way/766743513",
+          "website": "https://www.xeni.gr/"
+        },
+        {
+          "name": "Triton II",
+          "distanceMeters": 1016,
+          "osmUrl": "https://www.openstreetmap.org/way/513900358",
+          "website": "https://www.tritonii.gr/"
+        }
+      ]
+    },
+    {
+      "beachId": 1486,
+      "beach": "Παραλία Βαγιωνία",
+      "region": "Peloponnese",
+      "campsites": [
+        {
+          "name": "Νικόλας I",
+          "distanceMeters": 1238,
+          "osmUrl": "https://www.openstreetmap.org/node/3818724732",
+          "website": "https://mouria.gr/en/nicolas-i/"
+        },
+        {
+          "name": "Camping Verdelis",
+          "distanceMeters": 2434,
+          "osmUrl": "https://www.openstreetmap.org/way/281904652",
+          "website": null
+        },
+        {
+          "name": "Verdelis",
+          "distanceMeters": 2464,
+          "osmUrl": "https://www.openstreetmap.org/node/26860107",
+          "website": "http://www.campingverdelis.gr"
+        }
+      ]
+    },
+    {
+      "beachId": 1515,
+      "beach": "Παραλία Βερβένων",
+      "region": "Peloponnese",
+      "campsites": [
+        {
+          "name": "Camping Astros",
+          "distanceMeters": 1108,
+          "osmUrl": "https://www.openstreetmap.org/way/1062137400",
+          "website": "https://www.astroscamping.com/"
+        }
+      ]
+    },
+    {
+      "beachId": 1632,
+      "beach": "Παραλία Γιάλοβα",
+      "region": "Peloponnese",
+      "campsites": [
+        {
+          "name": "Camping Navarino",
+          "distanceMeters": 163,
+          "osmUrl": "https://www.openstreetmap.org/way/763901881",
+          "website": "https://www.navarino-beach.gr/"
+        },
+        {
+          "name": "Camping Erodios",
+          "distanceMeters": 1015,
+          "osmUrl": "https://www.openstreetmap.org/way/75641140",
+          "website": "https://www.erodioss.gr/"
+        }
+      ]
+    },
+    {
+      "beachId": 1633,
+      "beach": "Παραλία Δελφίνια",
+      "region": "Peloponnese",
+      "campsites": [
+        {
+          "name": "Camping Kalogria",
+          "distanceMeters": 1695,
+          "osmUrl": "https://www.openstreetmap.org/way/180337493",
+          "website": "https://www.campingkalogria.gr"
+        }
+      ]
+    },
+    {
+      "beachId": 1634,
+      "beach": "Παραλία Καλαμάτας",
+      "region": "Peloponnese",
+      "campsites": [
+        {
+          "name": "Fare",
+          "distanceMeters": 1786,
+          "osmUrl": "https://www.openstreetmap.org/way/763488917",
+          "website": null
+        }
+      ]
+    },
+    {
+      "beachId": 1487,
+      "beach": "Παραλία Κάντιας",
+      "region": "Peloponnese",
+      "campsites": [
+        {
+          "name": "Camping Scala",
+          "distanceMeters": 752,
+          "osmUrl": "https://www.openstreetmap.org/way/180336940",
+          "website": "http://www.scalacamping.gr"
+        },
+        {
+          "name": "Κάμπιγκ Ποσειδών",
+          "distanceMeters": 2098,
+          "osmUrl": "https://www.openstreetmap.org/way/366983280",
+          "website": "https://www.posidoncamping.gr"
+        }
+      ]
+    },
+    {
+      "beachId": 1581,
+      "beach": "Παραλία Λεύκης",
+      "region": "Peloponnese",
+      "campsites": [
+        {
+          "name": "Simos Camping",
+          "distanceMeters": 590,
+          "osmUrl": "https://www.openstreetmap.org/way/282706873",
+          "website": "https://simoscamping.gr/"
+        }
+      ]
+    },
+    {
+      "beachId": 1582,
+      "beach": "Παραλία Μαυροβουνίου",
+      "region": "Peloponnese",
+      "campsites": [
+        {
+          "name": "Meltemi",
+          "distanceMeters": 464,
+          "osmUrl": "https://www.openstreetmap.org/way/27953920",
+          "website": "https://www.campingmeltemi.gr/"
+        },
+        {
+          "name": "Gythion Bay",
+          "distanceMeters": 674,
+          "osmUrl": "https://www.openstreetmap.org/way/30109133",
+          "website": "https://www.gythiocamping.gr"
+        },
+        {
+          "name": "Mani beach",
+          "distanceMeters": 924,
+          "osmUrl": "https://www.openstreetmap.org/way/516616953",
+          "website": "https://mani-beach.gr/"
+        }
+      ]
+    },
+    {
+      "beachId": 1637,
+      "beach": "Παραλία Μεθώνης",
+      "region": "Peloponnese",
+      "campsites": [
+        {
+          "name": "Methoni",
+          "distanceMeters": 726,
+          "osmUrl": "https://www.openstreetmap.org/way/295700348",
+          "website": "https://www.campingmethoni.gr"
+        }
+      ]
+    },
+    {
+      "beachId": 1584,
+      "beach": "Παραλία Σαρακίνικο",
+      "region": "Peloponnese",
+      "campsites": [
+        {
+          "name": "Simos Camping",
+          "distanceMeters": 607,
+          "osmUrl": "https://www.openstreetmap.org/way/282706873",
+          "website": "https://simoscamping.gr/"
+        }
+      ]
+    },
+    {
+      "beachId": 1586,
+      "beach": "Παραλία Σίμος",
+      "region": "Peloponnese",
+      "campsites": [
+        {
+          "name": "Simos Camping",
+          "distanceMeters": 1138,
+          "osmUrl": "https://www.openstreetmap.org/way/282706873",
+          "website": "https://simoscamping.gr/"
+        }
+      ]
+    },
+    {
+      "beachId": 1495,
+      "beach": "Παραλία Τολού - Ψιλή Άμμος",
+      "region": "Peloponnese",
+      "campsites": [
+        {
+          "name": "Lido",
+          "distanceMeters": 309,
+          "osmUrl": "https://www.openstreetmap.org/node/898846842",
+          "website": "http://www.lido.gr"
+        },
+        {
+          "name": "Sunset",
+          "distanceMeters": 477,
+          "osmUrl": "https://www.openstreetmap.org/node/2460299252",
+          "website": "https://www.camping-sunset.gr/"
+        },
+        {
+          "name": "Xeni",
+          "distanceMeters": 491,
+          "osmUrl": "https://www.openstreetmap.org/way/766743513",
+          "website": "https://www.xeni.gr/"
+        }
+      ]
+    },
+    {
+      "beachId": 1643,
+      "beach": "Παραλία Φιλοξενία",
+      "region": "Peloponnese",
+      "campsites": [
+        {
+          "name": "Fare",
+          "distanceMeters": 655,
+          "osmUrl": "https://www.openstreetmap.org/way/763488917",
+          "website": null
+        }
+      ]
+    },
+    {
+      "beachId": 1644,
+      "beach": "Παραλία Φονέας",
+      "region": "Peloponnese",
+      "campsites": [
+        {
+          "name": "Camping Kalogria",
+          "distanceMeters": 2266,
+          "osmUrl": "https://www.openstreetmap.org/way/180337493",
+          "website": "https://www.campingkalogria.gr"
+        }
+      ]
+    },
+    {
+      "beachId": 3021,
+      "beach": "Πεταλίδι",
+      "region": "Peloponnese",
+      "campsites": [
+        {
+          "name": "Petalidi Beach",
+          "distanceMeters": 2420,
+          "osmUrl": "https://www.openstreetmap.org/node/26860076",
+          "website": "http://www.campingpetalidi.gr/"
+        }
+      ]
+    },
+    {
+      "beachId": 1518,
+      "beach": "Πλαζ Παράλιου Άστρους",
+      "region": "Peloponnese",
+      "campsites": [
+        {
+          "name": "Thirea",
+          "distanceMeters": 608,
+          "osmUrl": "https://www.openstreetmap.org/way/766775385",
+          "website": "https://www.campingthirea.com/"
+        }
+      ]
+    },
+    {
+      "beachId": 1494,
+      "beach": "Πλάκα Δρεπάνου",
+      "region": "Peloponnese",
+      "campsites": [
+        {
+          "name": "Triton II",
+          "distanceMeters": 305,
+          "osmUrl": "https://www.openstreetmap.org/way/513900358",
+          "website": "https://www.tritonii.gr/"
+        },
+        {
+          "name": "New Triton",
+          "distanceMeters": 358,
+          "osmUrl": "https://www.openstreetmap.org/node/26860055",
+          "website": "https://www.newtriton.gr"
+        },
+        {
+          "name": "Argolic Strand",
+          "distanceMeters": 486,
+          "osmUrl": "https://www.openstreetmap.org/node/5950093004",
+          "website": "https://www.argolic-strand.gr/"
+        }
+      ]
+    },
+    {
+      "beachId": 1650,
+      "beach": "Στούπα",
+      "region": "Peloponnese",
+      "campsites": [
+        {
+          "name": "Camping Kalogria",
+          "distanceMeters": 406,
+          "osmUrl": "https://www.openstreetmap.org/way/180337493",
+          "website": "https://www.campingkalogria.gr"
+        }
+      ]
+    },
+    {
+      "beachId": 1651,
+      "beach": "Τσαπί",
+      "region": "Peloponnese",
+      "campsites": [
+        {
+          "name": "Camping Tsapi",
+          "distanceMeters": 149,
+          "osmUrl": "https://www.openstreetmap.org/way/430447125",
+          "website": "https://www.campingtsapi.gr/"
+        }
+      ]
+    },
+    {
+      "beachId": 1652,
+      "beach": "Χαλικούρα",
+      "region": "Peloponnese",
+      "campsites": [
+        {
+          "name": "Camping Kalogria",
+          "distanceMeters": 655,
+          "osmUrl": "https://www.openstreetmap.org/way/180337493",
+          "website": "https://www.campingkalogria.gr"
+        }
+      ]
+    },
+    {
+      "beachId": 1657,
+      "beach": "Αγία Άννα",
+      "region": "South Aegean",
+      "campsites": [
+        {
+          "name": "Καστάνης",
+          "distanceMeters": 2431,
+          "osmUrl": "https://www.openstreetmap.org/node/3677453542",
+          "website": null
+        }
+      ]
+    },
+    {
+      "beachId": 1981,
+      "beach": "Αγία Άννα",
+      "region": "South Aegean",
+      "campsites": [
+        {
+          "name": "Maragas Camping",
+          "distanceMeters": 954,
+          "osmUrl": "https://www.openstreetmap.org/node/1350115794",
+          "website": "https://www.maragascamping.gr"
+        },
+        {
+          "name": "Plaka Camping",
+          "distanceMeters": 2100,
+          "osmUrl": "https://www.openstreetmap.org/node/2609320025",
+          "website": "https://www.plakacamping.gr/"
+        },
+        {
+          "name": "Naxos Camping",
+          "distanceMeters": 2397,
+          "osmUrl": "https://www.openstreetmap.org/node/1350115785",
+          "website": null
+        }
+      ]
+    },
+    {
+      "beachId": 1941,
+      "beach": "Αγία Άννα Παράγκας",
+      "region": "South Aegean",
+      "campsites": [
+        {
+          "name": "Mykonos Camping",
+          "distanceMeters": 375,
+          "osmUrl": "https://www.openstreetmap.org/node/2310935431",
+          "website": "https://www.mycamp.gr/"
+        }
+      ]
+    },
+    {
+      "beachId": 1984,
+      "beach": "Άγιος Γεώργιος",
+      "region": "South Aegean",
+      "campsites": [
+        {
+          "name": "Naxos Camping",
+          "distanceMeters": 1292,
+          "osmUrl": "https://www.openstreetmap.org/node/1350115785",
+          "website": null
+        }
+      ]
+    },
+    {
+      "beachId": 2021,
+      "beach": "Άγιος Δημήτριος",
+      "region": "South Aegean",
+      "campsites": [
+        {
+          "name": "Blue Aura",
+          "distanceMeters": 2246,
+          "osmUrl": "https://www.openstreetmap.org/node/8865203374",
+          "website": "https://www.paroscamping.gr/"
+        }
+      ]
+    },
+    {
+      "beachId": 1688,
+      "beach": "Αγιος Πέτρος",
+      "region": "South Aegean",
+      "campsites": [
+        {
+          "name": "Camping Andros",
+          "distanceMeters": 1243,
+          "osmUrl": "https://www.openstreetmap.org/node/11960886265",
+          "website": "https://www.campingandros.gr/"
+        }
+      ]
+    },
+    {
+      "beachId": 1985,
+      "beach": "Άγιος Προκόπιος",
+      "region": "South Aegean",
+      "campsites": [
+        {
+          "name": "Maragas Camping",
+          "distanceMeters": 1856,
+          "osmUrl": "https://www.openstreetmap.org/node/1350115794",
+          "website": "https://www.maragascamping.gr"
+        },
+        {
+          "name": "Naxos Camping",
+          "distanceMeters": 2475,
+          "osmUrl": "https://www.openstreetmap.org/node/1350115785",
+          "website": null
+        }
+      ]
+    },
+    {
+      "beachId": 1900,
+      "beach": "Άγιος Σώστης",
+      "region": "South Aegean",
+      "campsites": [
+        {
+          "name": "Milos Achivadolimni",
+          "distanceMeters": 2079,
+          "osmUrl": "https://www.openstreetmap.org/way/173150121",
+          "website": "http://www.miloscamping.gr/"
+        }
+      ]
+    },
+    {
+      "beachId": 2073,
+      "beach": "Αλευράκια",
+      "region": "South Aegean",
+      "campsites": [
+        {
+          "name": "Coralli",
+          "distanceMeters": 1752,
+          "osmUrl": "https://www.openstreetmap.org/way/1301617406",
+          "website": "https://www.corallicamping.gr/el/"
+        }
+      ]
+    },
+    {
+      "beachId": 2024,
+      "beach": "Άσπρος Γκρεμός",
+      "region": "South Aegean",
+      "campsites": [
+        {
+          "name": "Camping Santa Maria",
+          "distanceMeters": 2493,
+          "osmUrl": "https://www.openstreetmap.org/node/1627507505",
+          "website": null
+        }
+      ]
+    },
+    {
+      "beachId": 2074,
+      "beach": "Αυλόμωνας",
+      "region": "South Aegean",
+      "campsites": [
+        {
+          "name": "Coralli",
+          "distanceMeters": 1150,
+          "osmUrl": "https://www.openstreetmap.org/way/1301617406",
+          "website": "https://www.corallicamping.gr/el/"
+        }
+      ]
+    },
+    {
+      "beachId": 1903,
+      "beach": "Αχιβαδολίμνη",
+      "region": "South Aegean",
+      "campsites": [
+        {
+          "name": "Milos Achivadolimni",
+          "distanceMeters": 359,
+          "osmUrl": "https://www.openstreetmap.org/way/173150121",
+          "website": "http://www.miloscamping.gr/"
+        }
+      ]
+    },
+    {
+      "beachId": 1743,
+      "beach": "Βάρδια",
+      "region": "South Aegean",
+      "campsites": [
+        {
+          "name": "Camping Λιβάδι",
+          "distanceMeters": 1176,
+          "osmUrl": "https://www.openstreetmap.org/way/335285731",
+          "website": "https://folegandros.org"
+        }
+      ]
+    },
+    {
+      "beachId": 1744,
+      "beach": "Βιτσέντζου",
+      "region": "South Aegean",
+      "campsites": [
+        {
+          "name": "Camping Λιβάδι",
+          "distanceMeters": 477,
+          "osmUrl": "https://www.openstreetmap.org/way/335285731",
+          "website": "https://folegandros.org"
+        }
+      ]
+    },
+    {
+      "beachId": 1807,
+      "beach": "Βρόσκοπος",
+      "region": "South Aegean",
+      "campsites": [
+        {
+          "name": "Camping Kea",
+          "distanceMeters": 1162,
+          "osmUrl": "https://www.openstreetmap.org/node/3034671339",
+          "website": null
+        }
+      ]
+    },
+    {
+      "beachId": 2027,
+      "beach": "Δελφίνι",
+      "region": "South Aegean",
+      "campsites": [
+        {
+          "name": "Krios beach camping",
+          "distanceMeters": 2451,
+          "osmUrl": "https://www.openstreetmap.org/node/5924099018",
+          "website": "https://www.krios-camping.gr/"
+        }
+      ]
+    },
+    {
+      "beachId": 1729,
+      "beach": "Δεύτερη Ψαραλυκή",
+      "region": "South Aegean",
+      "campsites": [
+        {
+          "name": "Camping Antiparos",
+          "distanceMeters": 1684,
+          "osmUrl": "https://www.openstreetmap.org/way/428916908",
+          "website": null
+        }
+      ]
+    },
+    {
+      "beachId": 1730,
+      "beach": "Θεολόγος",
+      "region": "South Aegean",
+      "campsites": [
+        {
+          "name": "Camping Antiparos",
+          "distanceMeters": 291,
+          "osmUrl": "https://www.openstreetmap.org/way/428916908",
+          "website": null
+        }
+      ]
+    },
+    {
+      "beachId": 1951,
+      "beach": "Καλαμοπόδι",
+      "region": "South Aegean",
+      "campsites": [
+        {
+          "name": "Mykonos Camping",
+          "distanceMeters": 505,
+          "osmUrl": "https://www.openstreetmap.org/node/2310935431",
+          "website": "https://www.mycamp.gr/"
+        }
+      ]
+    },
+    {
+      "beachId": 2080,
+      "beach": "Καλό Αμπέλι",
+      "region": "South Aegean",
+      "campsites": [
+        {
+          "name": "Coralli",
+          "distanceMeters": 2238,
+          "osmUrl": "https://www.openstreetmap.org/way/1301617406",
+          "website": "https://www.corallicamping.gr/el/"
+        }
+      ]
+    },
+    {
+      "beachId": 1812,
+      "beach": "Καλόγηρος",
+      "region": "South Aegean",
+      "campsites": [
+        {
+          "name": "Camping Kea",
+          "distanceMeters": 2111,
+          "osmUrl": "https://www.openstreetmap.org/node/3034671339",
+          "website": null
+        }
+      ]
+    },
+    {
+      "beachId": 1731,
+      "beach": "Καλούδια",
+      "region": "South Aegean",
+      "campsites": [
+        {
+          "name": "Camping Antiparos",
+          "distanceMeters": 633,
+          "osmUrl": "https://www.openstreetmap.org/way/428916908",
+          "website": null
+        }
+      ]
+    },
+    {
+      "beachId": 2101,
+      "beach": "Καμάρες",
+      "region": "South Aegean",
+      "campsites": [
+        {
+          "name": "Camping Makis",
+          "distanceMeters": 270,
+          "osmUrl": "https://www.openstreetmap.org/way/373271060",
+          "website": "http://www.makiscamping.gr"
+        }
+      ]
+    },
+    {
+      "beachId": 1660,
+      "beach": "Καμπί",
+      "region": "South Aegean",
+      "campsites": [
+        {
+          "name": "Καστάνης",
+          "distanceMeters": 2441,
+          "osmUrl": "https://www.openstreetmap.org/node/3677453542",
+          "website": null
+        }
+      ]
+    },
+    {
+      "beachId": 2083,
+      "beach": "Καράβι",
+      "region": "South Aegean",
+      "campsites": [
+        {
+          "name": "Coralli",
+          "distanceMeters": 449,
+          "osmUrl": "https://www.openstreetmap.org/way/1301617406",
+          "website": "https://www.corallicamping.gr/el/"
+        }
+      ]
+    },
+    {
+      "beachId": 1746,
+      "beach": "Κάτεργο",
+      "region": "South Aegean",
+      "campsites": [
+        {
+          "name": "Camping Λιβάδι",
+          "distanceMeters": 1238,
+          "osmUrl": "https://www.openstreetmap.org/way/335285731",
+          "website": "https://folegandros.org"
+        }
+      ]
+    },
+    {
+      "beachId": 2030,
+      "beach": "Κολυμπήθρες",
+      "region": "South Aegean",
+      "campsites": [
+        {
+          "name": "Blue Aura",
+          "distanceMeters": 930,
+          "osmUrl": "https://www.openstreetmap.org/node/8865203374",
+          "website": "https://www.paroscamping.gr/"
+        }
+      ]
+    },
+    {
+      "beachId": 1815,
+      "beach": "Κούνδουρος",
+      "region": "South Aegean",
+      "campsites": [
+        {
+          "name": "Camping Kea",
+          "distanceMeters": 2013,
+          "osmUrl": "https://www.openstreetmap.org/node/3034671339",
+          "website": null
+        }
+      ]
+    },
+    {
+      "beachId": 1747,
+      "beach": "Κοχλίδια",
+      "region": "South Aegean",
+      "campsites": [
+        {
+          "name": "Camping Λιβάδι",
+          "distanceMeters": 1059,
+          "osmUrl": "https://www.openstreetmap.org/way/335285731",
+          "website": "https://folegandros.org"
+        }
+      ]
+    },
+    {
+      "beachId": 2031,
+      "beach": "Κριός",
+      "region": "South Aegean",
+      "campsites": [
+        {
+          "name": "Krios beach camping",
+          "distanceMeters": 774,
+          "osmUrl": "https://www.openstreetmap.org/node/5924099018",
+          "website": "https://www.krios-camping.gr/"
+        },
+        {
+          "name": "KOULA CAMPING",
+          "distanceMeters": 1908,
+          "osmUrl": "https://www.openstreetmap.org/node/5924087328",
+          "website": "https://campingkoula.gr"
+        }
+      ]
+    },
+    {
+      "beachId": 1705,
+      "beach": "Κυπρί",
+      "region": "South Aegean",
+      "campsites": [
+        {
+          "name": "Camping Andros",
+          "distanceMeters": 2267,
+          "osmUrl": "https://www.openstreetmap.org/node/11960886265",
+          "website": "https://www.campingandros.gr/"
+        }
+      ]
+    },
+    {
+      "beachId": 2032,
+      "beach": "Λάγγερη",
+      "region": "South Aegean",
+      "campsites": [
+        {
+          "name": "Camping Santa Maria",
+          "distanceMeters": 820,
+          "osmUrl": "https://www.openstreetmap.org/node/1627507505",
+          "website": null
+        }
+      ]
+    },
+    {
+      "beachId": 1748,
+      "beach": "Λατινάκι",
+      "region": "South Aegean",
+      "campsites": [
+        {
+          "name": "Camping Λιβάδι",
+          "distanceMeters": 583,
+          "osmUrl": "https://www.openstreetmap.org/way/335285731",
+          "website": "https://folegandros.org"
+        }
+      ]
+    },
+    {
+      "beachId": 1662,
+      "beach": "Λεβρωσός",
+      "region": "South Aegean",
+      "campsites": [
+        {
+          "name": "Aegali camping",
+          "distanceMeters": 726,
+          "osmUrl": "https://www.openstreetmap.org/node/5659563918",
+          "website": "https://www.aegialicamping.gr/"
+        }
+      ]
+    },
+    {
+      "beachId": 2086,
+      "beach": "Λιά",
+      "region": "South Aegean",
+      "campsites": [
+        {
+          "name": "Coralli",
+          "distanceMeters": 2071,
+          "osmUrl": "https://www.openstreetmap.org/way/1301617406",
+          "website": "https://www.corallicamping.gr/el/"
+        }
+      ]
+    },
+    {
+      "beachId": 2087,
+      "beach": "Λιβαδάκια",
+      "region": "South Aegean",
+      "campsites": [
+        {
+          "name": "Coralli",
+          "distanceMeters": 146,
+          "osmUrl": "https://www.openstreetmap.org/way/1301617406",
+          "website": "https://www.corallicamping.gr/el/"
+        }
+      ]
+    },
+    {
+      "beachId": 1750,
+      "beach": "Λιβάδι",
+      "region": "South Aegean",
+      "campsites": [
+        {
+          "name": "Camping Λιβάδι",
+          "distanceMeters": 227,
+          "osmUrl": "https://www.openstreetmap.org/way/335285731",
+          "website": "https://folegandros.org"
+        }
+      ]
+    },
+    {
+      "beachId": 2239,
+      "beach": "Λιβάδι",
+      "region": "South Aegean",
+      "campsites": [
+        {
+          "name": "κάμπινγκ Αστυπάλαια",
+          "distanceMeters": 2219,
+          "osmUrl": "https://www.openstreetmap.org/way/770700919",
+          "website": "https://astypalaiacamping.gr"
+        }
+      ]
+    },
+    {
+      "beachId": 2033,
+      "beach": "Λιβάδια",
+      "region": "South Aegean",
+      "campsites": [
+        {
+          "name": "KOULA CAMPING",
+          "distanceMeters": 305,
+          "osmUrl": "https://www.openstreetmap.org/node/5924087328",
+          "website": "https://campingkoula.gr"
+        },
+        {
+          "name": "Krios beach camping",
+          "distanceMeters": 944,
+          "osmUrl": "https://www.openstreetmap.org/node/5924099018",
+          "website": "https://www.krios-camping.gr/"
+        }
+      ]
+    },
+    {
+      "beachId": 2034,
+      "beach": "Λίμνες",
+      "region": "South Aegean",
+      "campsites": [
+        {
+          "name": "Blue Aura",
+          "distanceMeters": 350,
+          "osmUrl": "https://www.openstreetmap.org/node/8865203374",
+          "website": "https://www.paroscamping.gr/"
+        }
+      ]
+    },
+    {
+      "beachId": 2240,
+      "beach": "Μαγαζάκι",
+      "region": "South Aegean",
+      "campsites": [
+        {
+          "name": "κάμπινγκ Αστυπάλαια",
+          "distanceMeters": 2019,
+          "osmUrl": "https://www.openstreetmap.org/way/770700919",
+          "website": "https://astypalaiacamping.gr"
+        }
+      ]
+    },
+    {
+      "beachId": 1663,
+      "beach": "Μαλτέζι",
+      "region": "South Aegean",
+      "campsites": [
+        {
+          "name": "Δημοτικό Κάμπινγκ Αμοργού",
+          "distanceMeters": 1564,
+          "osmUrl": "https://www.openstreetmap.org/way/305710693",
+          "website": null
+        },
+        {
+          "name": "Καστάνης",
+          "distanceMeters": 2466,
+          "osmUrl": "https://www.openstreetmap.org/node/3677453542",
+          "website": null
+        }
+      ]
+    },
+    {
+      "beachId": 2241,
+      "beach": "Μαμούνια",
+      "region": "South Aegean",
+      "campsites": [
+        {
+          "name": "κάμπινγκ Αστυπάλαια",
+          "distanceMeters": 760,
+          "osmUrl": "https://www.openstreetmap.org/way/770700919",
+          "website": "https://astypalaiacamping.gr"
+        }
+      ]
+    },
+    {
+      "beachId": 2037,
+      "beach": "Μαρτσέλο",
+      "region": "South Aegean",
+      "campsites": [
+        {
+          "name": "Krios beach camping",
+          "distanceMeters": 270,
+          "osmUrl": "https://www.openstreetmap.org/node/5924099018",
+          "website": "https://www.krios-camping.gr/"
+        },
+        {
+          "name": "KOULA CAMPING",
+          "distanceMeters": 1484,
+          "osmUrl": "https://www.openstreetmap.org/node/5924087328",
+          "website": "https://campingkoula.gr"
+        }
+      ]
+    },
+    {
+      "beachId": 1670,
+      "beach": "Μικρή Βλυχάδα",
+      "region": "South Aegean",
+      "campsites": [
+        {
+          "name": "Aegali camping",
+          "distanceMeters": 2006,
+          "osmUrl": "https://www.openstreetmap.org/node/5659563918",
+          "website": "https://www.aegialicamping.gr/"
+        }
+      ]
+    },
+    {
+      "beachId": 2038,
+      "beach": "Μικρή Σάντα Μαρία",
+      "region": "South Aegean",
+      "campsites": [
+        {
+          "name": "Camping Santa Maria",
+          "distanceMeters": 1297,
+          "osmUrl": "https://www.openstreetmap.org/node/1627507505",
+          "website": null
+        }
+      ]
+    },
+    {
+      "beachId": 2041,
+      "beach": "Ναυτικός όμιλος Πάρου",
+      "region": "South Aegean",
+      "campsites": [
+        {
+          "name": "KOULA CAMPING",
+          "distanceMeters": 308,
+          "osmUrl": "https://www.openstreetmap.org/node/5924087328",
+          "website": "https://campingkoula.gr"
+        },
+        {
+          "name": "Krios beach camping",
+          "distanceMeters": 981,
+          "osmUrl": "https://www.openstreetmap.org/node/5924099018",
+          "website": "https://www.krios-camping.gr/"
+        }
+      ]
+    },
+    {
+      "beachId": 2042,
+      "beach": "Ξυφάρα",
+      "region": "South Aegean",
+      "campsites": [
+        {
+          "name": "Camping Santa Maria",
+          "distanceMeters": 1302,
+          "osmUrl": "https://www.openstreetmap.org/node/1627507505",
+          "website": null
+        }
+      ]
+    },
+    {
+      "beachId": 2010,
+      "beach": "Όρκος",
+      "region": "South Aegean",
+      "campsites": [
+        {
+          "name": "Plaka Camping",
+          "distanceMeters": 2358,
+          "osmUrl": "https://www.openstreetmap.org/node/2609320025",
+          "website": "https://www.plakacamping.gr/"
+        }
+      ]
+    },
+    {
+      "beachId": 1966,
+      "beach": "Παράγκα",
+      "region": "South Aegean",
+      "campsites": [
+        {
+          "name": "Mykonos Camping",
+          "distanceMeters": 222,
+          "osmUrl": "https://www.openstreetmap.org/node/2310935431",
+          "website": "https://www.mycamp.gr/"
+        }
+      ]
+    },
+    {
+      "beachId": 2046,
+      "beach": "Παραλία Παροικιάς",
+      "region": "South Aegean",
+      "campsites": [
+        {
+          "name": "KOULA CAMPING",
+          "distanceMeters": 1480,
+          "osmUrl": "https://www.openstreetmap.org/node/5924087328",
+          "website": "https://campingkoula.gr"
+        },
+        {
+          "name": "Krios beach camping",
+          "distanceMeters": 1551,
+          "osmUrl": "https://www.openstreetmap.org/node/5924099018",
+          "website": "https://www.krios-camping.gr/"
+        }
+      ]
+    },
+    {
+      "beachId": 2048,
+      "beach": "Πιπέρι",
+      "region": "South Aegean",
+      "campsites": [
+        {
+          "name": "Blue Aura",
+          "distanceMeters": 1708,
+          "osmUrl": "https://www.openstreetmap.org/node/8865203374",
+          "website": "https://www.paroscamping.gr/"
+        }
+      ]
+    },
+    {
+      "beachId": 2012,
+      "beach": "Πλάκα",
+      "region": "South Aegean",
+      "campsites": [
+        {
+          "name": "Plaka Camping",
+          "distanceMeters": 320,
+          "osmUrl": "https://www.openstreetmap.org/node/2609320025",
+          "website": "https://www.plakacamping.gr/"
+        },
+        {
+          "name": "Maragas Camping",
+          "distanceMeters": 1535,
+          "osmUrl": "https://www.openstreetmap.org/node/1350115794",
+          "website": "https://www.maragascamping.gr"
+        }
+      ]
+    },
+    {
+      "beachId": 2247,
+      "beach": "Πλάκες",
+      "region": "South Aegean",
+      "campsites": [
+        {
+          "name": "κάμπινγκ Αστυπάλαια",
+          "distanceMeters": 2469,
+          "osmUrl": "https://www.openstreetmap.org/way/770700919",
+          "website": "https://astypalaiacamping.gr"
+        }
+      ]
+    },
+    {
+      "beachId": 1969,
+      "beach": "Πλατύς Γιαλός",
+      "region": "South Aegean",
+      "campsites": [
+        {
+          "name": "Mykonos Camping",
+          "distanceMeters": 944,
+          "osmUrl": "https://www.openstreetmap.org/node/2310935431",
+          "website": "https://www.mycamp.gr/"
+        }
+      ]
+    },
+    {
+      "beachId": 1827,
+      "beach": "Ποίσσες",
+      "region": "South Aegean",
+      "campsites": [
+        {
+          "name": "Camping Kea",
+          "distanceMeters": 196,
+          "osmUrl": "https://www.openstreetmap.org/node/3034671339",
+          "website": null
+        }
+      ]
+    },
+    {
+      "beachId": 1753,
+      "beach": "Πουντάκι",
+      "region": "South Aegean",
+      "campsites": [
+        {
+          "name": "Camping Λιβάδι",
+          "distanceMeters": 349,
+          "osmUrl": "https://www.openstreetmap.org/way/335285731",
+          "website": "https://folegandros.org"
+        }
+      ]
+    },
+    {
+      "beachId": 1920,
+      "beach": "Προβατάς",
+      "region": "South Aegean",
+      "campsites": [
+        {
+          "name": "Milos Achivadolimni",
+          "distanceMeters": 1995,
+          "osmUrl": "https://www.openstreetmap.org/way/173150121",
+          "website": "http://www.miloscamping.gr/"
+        }
+      ]
+    },
+    {
+      "beachId": 1735,
+      "beach": "Πρώτη Ψαραλυκή",
+      "region": "South Aegean",
+      "campsites": [
+        {
+          "name": "Camping Antiparos",
+          "distanceMeters": 1364,
+          "osmUrl": "https://www.openstreetmap.org/way/428916908",
+          "website": null
+        }
+      ]
+    },
+    {
+      "beachId": 2051,
+      "beach": "Σάντα Μαρία",
+      "region": "South Aegean",
+      "campsites": [
+        {
+          "name": "Camping Santa Maria",
+          "distanceMeters": 144,
+          "osmUrl": "https://www.openstreetmap.org/node/1627507505",
+          "website": null
+        }
+      ]
+    },
+    {
+      "beachId": 1736,
+      "beach": "Σιφνέικο",
+      "region": "South Aegean",
+      "campsites": [
+        {
+          "name": "Camping Antiparos",
+          "distanceMeters": 961,
+          "osmUrl": "https://www.openstreetmap.org/way/428916908",
+          "website": null
+        }
+      ]
+    },
+    {
+      "beachId": 2108,
+      "beach": "Σπηλιά",
+      "region": "South Aegean",
+      "campsites": [
+        {
+          "name": "Camping Makis",
+          "distanceMeters": 745,
+          "osmUrl": "https://www.openstreetmap.org/way/373271060",
+          "website": "http://www.makiscamping.gr"
+        }
+      ]
+    },
+    {
+      "beachId": 2248,
+      "beach": "Στενό",
+      "region": "South Aegean",
+      "campsites": [
+        {
+          "name": "κάμπινγκ Αστυπάλαια",
+          "distanceMeters": 2277,
+          "osmUrl": "https://www.openstreetmap.org/way/770700919",
+          "website": "https://astypalaiacamping.gr"
+        }
+      ]
+    },
+    {
+      "beachId": 2109,
+      "beach": "Τόσο Νερό",
+      "region": "South Aegean",
+      "campsites": [
+        {
+          "name": "Camping Makis",
+          "distanceMeters": 2272,
+          "osmUrl": "https://www.openstreetmap.org/way/373271060",
+          "website": "http://www.makiscamping.gr"
+        }
+      ]
+    },
+    {
+      "beachId": 1667,
+      "beach": "Φοινικιές",
+      "region": "South Aegean",
+      "campsites": [
+        {
+          "name": "Δημοτικό Κάμπινγκ Αμοργού",
+          "distanceMeters": 1922,
+          "osmUrl": "https://www.openstreetmap.org/way/305710693",
+          "website": null
+        }
+      ]
+    },
+    {
+      "beachId": 1834,
+      "beach": "Φρέας",
+      "region": "South Aegean",
+      "campsites": [
+        {
+          "name": "Camping Kea",
+          "distanceMeters": 2177,
+          "osmUrl": "https://www.openstreetmap.org/node/3034671339",
+          "website": null
+        }
+      ]
+    },
+    {
+      "beachId": 1668,
+      "beach": "Χόχλακας",
+      "region": "South Aegean",
+      "campsites": [
+        {
+          "name": "Aegali camping",
+          "distanceMeters": 1370,
+          "osmUrl": "https://www.openstreetmap.org/node/5659563918",
+          "website": "https://www.aegialicamping.gr/"
+        }
+      ]
+    },
+    {
+      "beachId": 1726,
+      "beach": "Χρυσή Αμμος",
+      "region": "South Aegean",
+      "campsites": [
+        {
+          "name": "Camping Andros",
+          "distanceMeters": 1779,
+          "osmUrl": "https://www.openstreetmap.org/node/11960886265",
+          "website": "https://www.campingandros.gr/"
+        }
+      ]
+    },
+    {
+      "beachId": 1835,
+      "beach": "Χυλιαμόδου",
+      "region": "South Aegean",
+      "campsites": [
+        {
+          "name": "Camping Kea",
+          "distanceMeters": 2413,
+          "osmUrl": "https://www.openstreetmap.org/node/3034671339",
+          "website": null
+        }
+      ]
+    },
+    {
+      "beachId": 1979,
+      "beach": "Ψαρρού",
+      "region": "South Aegean",
+      "campsites": [
+        {
+          "name": "Mykonos Camping",
+          "distanceMeters": 1507,
+          "osmUrl": "https://www.openstreetmap.org/node/2310935431",
+          "website": "https://www.mycamp.gr/"
+        }
+      ]
+    },
+    {
+      "beachId": 1669,
+      "beach": "Ψιλή Άμμος",
+      "region": "South Aegean",
+      "campsites": [
+        {
+          "name": "Aegali camping",
+          "distanceMeters": 1157,
+          "osmUrl": "https://www.openstreetmap.org/node/5659563918",
+          "website": "https://www.aegialicamping.gr/"
+        }
+      ]
+    },
+    {
+      "beachId": 1980,
+      "beach": "Super Paradise",
+      "region": "South Aegean",
+      "campsites": [
+        {
+          "name": "Mykonos Camping",
+          "distanceMeters": 1702,
+          "osmUrl": "https://www.openstreetmap.org/node/2310935431",
+          "website": "https://www.mycamp.gr/"
+        }
+      ]
+    },
+    {
+      "beachId": 2673,
+      "beach": "Άγιοι Σαράντα",
+      "region": "Thessaly",
+      "campsites": [
+        {
+          "name": "Chorefto Camping",
+          "distanceMeters": 933,
+          "osmUrl": "https://www.openstreetmap.org/node/5740833775",
+          "website": "https://www.choreftocamp.gr"
+        }
+      ]
+    },
+    {
+      "beachId": 2674,
+      "beach": "Άγιος Ιωάννης (Ζαγορά)",
+      "region": "Thessaly",
+      "campsites": [
+        {
+          "name": "Papa Nero",
+          "distanceMeters": 631,
+          "osmUrl": "https://www.openstreetmap.org/way/180330906",
+          "website": "http://www.campingpapanero.com"
+        }
+      ]
+    },
+    {
+      "beachId": 2584,
+      "beach": "Άγιος Πέτρος",
+      "region": "Thessaly",
+      "campsites": [
+        {
+          "name": "ROCKS",
+          "distanceMeters": 1132,
+          "osmUrl": "https://www.openstreetmap.org/way/698011899",
+          "website": "https://www.campingrocks.eu"
+        }
+      ]
+    },
+    {
+      "beachId": 2679,
+      "beach": "Βαθιά Σπηλιά",
+      "region": "Thessaly",
+      "campsites": [
+        {
+          "name": "Camping OLIZON",
+          "distanceMeters": 1824,
+          "osmUrl": "https://www.openstreetmap.org/node/1656129720",
+          "website": null
+        }
+      ]
+    },
+    {
+      "beachId": 2587,
+      "beach": "Βρυσίτσα",
+      "region": "Thessaly",
+      "campsites": [
+        {
+          "name": "ROCKS",
+          "distanceMeters": 1433,
+          "osmUrl": "https://www.openstreetmap.org/way/698011899",
+          "website": "https://www.campingrocks.eu"
+        }
+      ]
+    },
+    {
+      "beachId": 2581,
+      "beach": "Γέρακας",
+      "region": "Thessaly",
+      "campsites": [
+        {
+          "name": "ROCKS",
+          "distanceMeters": 2433,
+          "osmUrl": "https://www.openstreetmap.org/way/698011899",
+          "website": "https://www.campingrocks.eu"
+        }
+      ]
+    },
+    {
+      "beachId": 2589,
+      "beach": "Γυαλιά",
+      "region": "Thessaly",
+      "campsites": [
+        {
+          "name": "ROCKS",
+          "distanceMeters": 2185,
+          "osmUrl": "https://www.openstreetmap.org/way/698011899",
+          "website": "https://www.campingrocks.eu"
+        }
+      ]
+    },
+    {
+      "beachId": 2590,
+      "beach": "Καλύβια Αλεξίου",
+      "region": "Thessaly",
+      "campsites": [
+        {
+          "name": "ROCKS",
+          "distanceMeters": 1175,
+          "osmUrl": "https://www.openstreetmap.org/way/698011899",
+          "website": "https://www.campingrocks.eu"
+        }
+      ]
+    },
+    {
+      "beachId": 2687,
+      "beach": "Καστρί",
+      "region": "Thessaly",
+      "campsites": [
+        {
+          "name": "Kastri Beach",
+          "distanceMeters": 116,
+          "osmUrl": "https://www.openstreetmap.org/way/763385500",
+          "website": "https://www.campingkastribeach.com/"
+        }
+      ]
+    },
+    {
+      "beachId": 2592,
+      "beach": "Κατερίνας Βάλα",
+      "region": "Thessaly",
+      "campsites": [
+        {
+          "name": "ROCKS",
+          "distanceMeters": 811,
+          "osmUrl": "https://www.openstreetmap.org/way/698011899",
+          "website": "https://www.campingrocks.eu"
+        }
+      ]
+    },
+    {
+      "beachId": 2594,
+      "beach": "Κοκκινόκαστρο",
+      "region": "Thessaly",
+      "campsites": [
+        {
+          "name": "ROCKS",
+          "distanceMeters": 2274,
+          "osmUrl": "https://www.openstreetmap.org/way/698011899",
+          "website": "https://www.campingrocks.eu"
+        }
+      ]
+    },
+    {
+      "beachId": 2595,
+      "beach": "Λένα",
+      "region": "Thessaly",
+      "campsites": [
+        {
+          "name": "ROCKS",
+          "distanceMeters": 1850,
+          "osmUrl": "https://www.openstreetmap.org/way/698011899",
+          "website": "https://www.campingrocks.eu"
+        }
+      ]
+    },
+    {
+      "beachId": 2692,
+      "beach": "Λεπετούς",
+      "region": "Thessaly",
+      "campsites": [
+        {
+          "name": "Kastri Beach",
+          "distanceMeters": 706,
+          "osmUrl": "https://www.openstreetmap.org/way/763385500",
+          "website": "https://www.campingkastribeach.com/"
+        }
+      ]
+    },
+    {
+      "beachId": 2697,
+      "beach": "Μικρό",
+      "region": "Thessaly",
+      "campsites": [
+        {
+          "name": "Louisa",
+          "distanceMeters": 1358,
+          "osmUrl": "https://www.openstreetmap.org/node/2213703883",
+          "website": "https://camplouisa.gr"
+        }
+      ]
+    },
+    {
+      "beachId": 2599,
+      "beach": "Μουρτίτσα",
+      "region": "Thessaly",
+      "campsites": [
+        {
+          "name": "ROCKS",
+          "distanceMeters": 1370,
+          "osmUrl": "https://www.openstreetmap.org/way/698011899",
+          "website": "https://www.campingrocks.eu"
+        }
+      ]
+    },
+    {
+      "beachId": 2600,
+      "beach": "Νικόλα Βάλα",
+      "region": "Thessaly",
+      "campsites": [
+        {
+          "name": "ROCKS",
+          "distanceMeters": 606,
+          "osmUrl": "https://www.openstreetmap.org/way/698011899",
+          "website": "https://www.campingrocks.eu"
+        }
+      ]
+    },
+    {
+      "beachId": 2702,
+      "beach": "Νταμούχαρη",
+      "region": "Thessaly",
+      "campsites": [
+        {
+          "name": "Papa Nero",
+          "distanceMeters": 1688,
+          "osmUrl": "https://www.openstreetmap.org/way/180330906",
+          "website": "http://www.campingpapanero.com"
+        }
+      ]
+    },
+    {
+      "beachId": 2704,
+      "beach": "Παπά Νερό",
+      "region": "Thessaly",
+      "campsites": [
+        {
+          "name": "Papa Nero",
+          "distanceMeters": 401,
+          "osmUrl": "https://www.openstreetmap.org/way/180330906",
+          "website": "http://www.campingpapanero.com"
+        }
+      ]
+    },
+    {
+      "beachId": 2601,
+      "beach": "Παραλία Βότση",
+      "region": "Thessaly",
+      "campsites": [
+        {
+          "name": "ROCKS",
+          "distanceMeters": 1830,
+          "osmUrl": "https://www.openstreetmap.org/way/698011899",
+          "website": "https://www.campingrocks.eu"
+        }
+      ]
+    },
+    {
+      "beachId": 2602,
+      "beach": "Παραλία Βύθισμα",
+      "region": "Thessaly",
+      "campsites": [
+        {
+          "name": "ROCKS",
+          "distanceMeters": 1183,
+          "osmUrl": "https://www.openstreetmap.org/way/698011899",
+          "website": "https://www.campingrocks.eu"
+        }
+      ]
+    },
+    {
+      "beachId": 2603,
+      "beach": "Παραλία Μεγάλος Μουρτιάς",
+      "region": "Thessaly",
+      "campsites": [
+        {
+          "name": "ROCKS",
+          "distanceMeters": 1647,
+          "osmUrl": "https://www.openstreetmap.org/way/698011899",
+          "website": "https://www.campingrocks.eu"
+        }
+      ]
+    },
+    {
+      "beachId": 2604,
+      "beach": "Παραλία Μικρός Μουρτιάς",
+      "region": "Thessaly",
+      "campsites": [
+        {
+          "name": "ROCKS",
+          "distanceMeters": 1355,
+          "osmUrl": "https://www.openstreetmap.org/way/698011899",
+          "website": "https://www.campingrocks.eu"
+        }
+      ]
+    },
+    {
+      "beachId": 2712,
+      "beach": "Παραλία Μπάνικας",
+      "region": "Thessaly",
+      "campsites": [
+        {
+          "name": "Chorefto Camping",
+          "distanceMeters": 1770,
+          "osmUrl": "https://www.openstreetmap.org/node/5740833775",
+          "website": "https://www.choreftocamp.gr"
+        }
+      ]
+    },
+    {
+      "beachId": 2713,
+      "beach": "Παραλία Μπριάνου",
+      "region": "Thessaly",
+      "campsites": [
+        {
+          "name": "Chorefto Camping",
+          "distanceMeters": 1468,
+          "osmUrl": "https://www.openstreetmap.org/node/5740833775",
+          "website": "https://www.choreftocamp.gr"
+        }
+      ]
+    },
+    {
+      "beachId": 2582,
+      "beach": "Παραλία Πατητηρίου",
+      "region": "Thessaly",
+      "campsites": [
+        {
+          "name": "ROCKS",
+          "distanceMeters": 1101,
+          "osmUrl": "https://www.openstreetmap.org/way/698011899",
+          "website": "https://www.campingrocks.eu"
+        }
+      ]
+    },
+    {
+      "beachId": 2739,
+      "beach": "Παραλία Στομίου",
+      "region": "Thessaly",
+      "campsites": [
+        {
+          "name": "Camping Στομίου",
+          "distanceMeters": 324,
+          "osmUrl": "https://www.openstreetmap.org/way/220206801",
+          "website": null
+        }
+      ]
+    },
+    {
+      "beachId": 2705,
+      "beach": "Παρίσαινα",
+      "region": "Thessaly",
+      "campsites": [
+        {
+          "name": "Chorefto Camping",
+          "distanceMeters": 1890,
+          "osmUrl": "https://www.openstreetmap.org/node/5740833775",
+          "website": "https://www.choreftocamp.gr"
+        }
+      ]
+    },
+    {
+      "beachId": 2605,
+      "beach": "Πεσκανδρίτσα",
+      "region": "Thessaly",
+      "campsites": [
+        {
+          "name": "ROCKS",
+          "distanceMeters": 950,
+          "osmUrl": "https://www.openstreetmap.org/way/698011899",
+          "website": "https://www.campingrocks.eu"
+        }
+      ]
+    },
+    {
+      "beachId": 2716,
+      "beach": "Πλάκα (Ζαγορά)",
+      "region": "Thessaly",
+      "campsites": [
+        {
+          "name": "Papa Nero",
+          "distanceMeters": 1377,
+          "osmUrl": "https://www.openstreetmap.org/way/180330906",
+          "website": "http://www.campingpapanero.com"
+        }
+      ]
+    },
+    {
+      "beachId": 2606,
+      "beach": "Πλάκες",
+      "region": "Thessaly",
+      "campsites": [
+        {
+          "name": "ROCKS",
+          "distanceMeters": 1332,
+          "osmUrl": "https://www.openstreetmap.org/way/698011899",
+          "website": "https://www.campingrocks.eu"
+        }
+      ]
+    },
+    {
+      "beachId": 2607,
+      "beach": "Ρουσούμ Γιαλός",
+      "region": "Thessaly",
+      "campsites": [
+        {
+          "name": "ROCKS",
+          "distanceMeters": 1256,
+          "osmUrl": "https://www.openstreetmap.org/way/698011899",
+          "website": "https://www.campingrocks.eu"
+        }
+      ]
+    },
+    {
+      "beachId": 2608,
+      "beach": "Σπαρτίνες",
+      "region": "Thessaly",
+      "campsites": [
+        {
+          "name": "ROCKS",
+          "distanceMeters": 1355,
+          "osmUrl": "https://www.openstreetmap.org/way/698011899",
+          "website": "https://www.campingrocks.eu"
+        }
+      ]
+    },
+    {
+      "beachId": 2609,
+      "beach": "Σπλιθάρι",
+      "region": "Thessaly",
+      "campsites": [
+        {
+          "name": "ROCKS",
+          "distanceMeters": 1125,
+          "osmUrl": "https://www.openstreetmap.org/way/698011899",
+          "website": "https://www.campingrocks.eu"
+        }
+      ]
+    },
+    {
+      "beachId": 2723,
+      "beach": "Φτελιά",
+      "region": "Thessaly",
+      "campsites": [
+        {
+          "name": "Kastri Beach",
+          "distanceMeters": 1054,
+          "osmUrl": "https://www.openstreetmap.org/way/763385500",
+          "website": "https://www.campingkastribeach.com/"
+        },
+        {
+          "name": "Louisa",
+          "distanceMeters": 1557,
+          "osmUrl": "https://www.openstreetmap.org/node/2213703883",
+          "website": "https://camplouisa.gr"
+        }
+      ]
+    },
+    {
+      "beachId": 2725,
+      "beach": "Χορευτό",
+      "region": "Thessaly",
+      "campsites": [
+        {
+          "name": "Chorefto Camping",
+          "distanceMeters": 84,
+          "osmUrl": "https://www.openstreetmap.org/node/5740833775",
+          "website": "https://www.choreftocamp.gr"
+        }
+      ]
+    },
+    {
+      "beachId": 2526,
+      "beach": "Αγριλιά",
+      "region": "West Greece",
+      "campsites": [
+        {
+          "name": "Παραλία Αγριλιά",
+          "distanceMeters": 69,
+          "osmUrl": "https://www.openstreetmap.org/node/6734800485",
+          "website": null
+        }
+      ]
+    },
+    {
+      "beachId": 2503,
+      "beach": "Αμμόλοφος",
+      "region": "West Greece",
+      "campsites": [
+        {
+          "name": "Camping Kalogria",
+          "distanceMeters": 551,
+          "osmUrl": "https://www.openstreetmap.org/node/5058279621",
+          "website": null
+        }
+      ]
+    },
+    {
+      "beachId": 2566,
+      "beach": "Αρκούδι",
+      "region": "West Greece",
+      "campsites": [
+        {
+          "name": "Aginara Beach",
+          "distanceMeters": 2185,
+          "osmUrl": "https://www.openstreetmap.org/way/180338152",
+          "website": "https://www.camping-aginara.gr/"
+        }
+      ]
+    },
+    {
+      "beachId": 2505,
+      "beach": "Διγελιώτικα",
+      "region": "West Greece",
+      "campsites": [
+        {
+          "name": "Οπακε-Ομε ΟΤΕ",
+          "distanceMeters": 1401,
+          "osmUrl": "https://www.openstreetmap.org/relation/11165718",
+          "website": "https://opake-ote.gr/"
+        }
+      ]
+    },
+    {
+      "beachId": 2570,
+      "beach": "Μέλισσα",
+      "region": "West Greece",
+      "campsites": [
+        {
+          "name": "Camping Melissa",
+          "distanceMeters": 398,
+          "osmUrl": "https://www.openstreetmap.org/way/76587222",
+          "website": "https://www.campingmelissa.gr"
+        },
+        {
+          "name": "Fournia Beach",
+          "distanceMeters": 1944,
+          "osmUrl": "https://www.openstreetmap.org/node/26859958",
+          "website": "https://www.fourniabeach.gr"
+        }
+      ]
+    },
+    {
+      "beachId": 2572,
+      "beach": "Παραλία Αγίας Μαρίνας",
+      "region": "West Greece",
+      "campsites": [
+        {
+          "name": "Palouki",
+          "distanceMeters": 1082,
+          "osmUrl": "https://www.openstreetmap.org/way/764387087",
+          "website": "https://www.camping-palouki.gr/"
+        },
+        {
+          "name": "Paradise",
+          "distanceMeters": 1543,
+          "osmUrl": "https://www.openstreetmap.org/node/26860071",
+          "website": "https://www.camping-paradise.gr/"
+        },
+        {
+          "name": "Kourouta",
+          "distanceMeters": 2454,
+          "osmUrl": "https://www.openstreetmap.org/node/26860018",
+          "website": "https://www.harmonyresort.gr/camping/"
+        }
+      ]
+    },
+    {
+      "beachId": 2508,
+      "beach": "Παραλία Ακράτας",
+      "region": "West Greece",
+      "campsites": [
+        {
+          "name": "Akrata Beach",
+          "distanceMeters": 1392,
+          "osmUrl": "https://www.openstreetmap.org/way/1009095499",
+          "website": "https://www.akrata-beach-camping.gr"
+        }
+      ]
+    },
+    {
+      "beachId": 2510,
+      "beach": "Παραλία Γιανισκάρη",
+      "region": "West Greece",
+      "campsites": [
+        {
+          "name": "Camping Kalogria",
+          "distanceMeters": 1863,
+          "osmUrl": "https://www.openstreetmap.org/node/5058279621",
+          "website": null
+        }
+      ]
+    },
+    {
+      "beachId": 2574,
+      "beach": "Παραλία Κουρούτα",
+      "region": "West Greece",
+      "campsites": [
+        {
+          "name": "Kourouta",
+          "distanceMeters": 615,
+          "osmUrl": "https://www.openstreetmap.org/node/26860018",
+          "website": "https://www.harmonyresort.gr/camping/"
+        },
+        {
+          "name": "Paradise",
+          "distanceMeters": 1590,
+          "osmUrl": "https://www.openstreetmap.org/node/26860071",
+          "website": "https://www.camping-paradise.gr/"
+        },
+        {
+          "name": "Palouki",
+          "distanceMeters": 2018,
+          "osmUrl": "https://www.openstreetmap.org/way/764387087",
+          "website": "https://www.camping-palouki.gr/"
+        }
+      ]
+    },
+    {
+      "beachId": 2577,
+      "beach": "Παραλία Μαραθιάς",
+      "region": "West Greece",
+      "campsites": [
+        {
+          "name": "Kourouta",
+          "distanceMeters": 2302,
+          "osmUrl": "https://www.openstreetmap.org/node/26860018",
+          "website": "https://www.harmonyresort.gr/camping/"
+        }
+      ]
+    },
+    {
+      "beachId": 3048,
+      "beach": "ΠΔΕ Κάτω Αχαΐας",
+      "region": "West Greece",
+      "campsites": [
+        {
+          "name": "Κάτω Αλισσός",
+          "distanceMeters": 2145,
+          "osmUrl": "https://www.openstreetmap.org/node/26860012",
+          "website": "https://www.camping-kato-alissos.gr/"
+        }
+      ]
+    },
+    {
+      "beachId": 3053,
+      "beach": "Πηνειός Γλύφα",
+      "region": "West Greece",
+      "campsites": [
+        {
+          "name": "Ionion Beach",
+          "distanceMeters": 1550,
+          "osmUrl": "https://www.openstreetmap.org/way/444628321",
+          "website": "http://camping.ionion-beach.gr"
+        },
+        {
+          "name": "Aginara Beach",
+          "distanceMeters": 1972,
+          "osmUrl": "https://www.openstreetmap.org/way/180338152",
+          "website": "https://www.camping-aginara.gr/"
+        }
+      ]
+    },
+    {
+      "beachId": 2515,
+      "beach": "Τέμενη",
+      "region": "West Greece",
+      "campsites": [
+        {
+          "name": "Οπακε-Ομε ΟΤΕ",
+          "distanceMeters": 309,
+          "osmUrl": "https://www.openstreetmap.org/relation/11165718",
+          "website": "https://opake-ote.gr/"
+        }
+      ]
+    },
+    {
+      "beachId": 2563,
+      "beach": "Χιόνι",
+      "region": "West Greece",
+      "campsites": [
+        {
+          "name": "Παραλία Αγριλιά",
+          "distanceMeters": 865,
+          "osmUrl": "https://www.openstreetmap.org/node/6734800485",
+          "website": null
+        }
+      ]
+    }
+  ]
+}

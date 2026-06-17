@@ -50,8 +50,13 @@ const main = async () => {
     block.push(`File: ${f} | ${m.author} | ${m.license} | https://commons.wikimedia.org/wiki/File:${encodeURIComponent(f)}`);
   }
   if (rawUrls.length) {
-    block.push('', '-- Openverse / Flickr CC (direct CC-licensed image URLs; attribution at source) --');
-    for (const u of rawUrls.sort()) block.push(`URL: ${u}`);
+    let fcred = {};
+    try { fcred = JSON.parse(await readFile(path.join(ROOT, 'data/flickrCredits.json'), 'utf8')); } catch {}
+    block.push('', '-- Openverse / Flickr CC (direct CC-licensed image URLs) --');
+    for (const u of rawUrls.sort()) {
+      const c = fcred[u];
+      block.push(c ? `URL: ${u} | ${c.creator} | ${c.license} | ${c.page}` : `URL: ${u}`);
+    }
   }
   block.push(END);
 

@@ -542,6 +542,7 @@ const buildBeach = (rawBeach, island) => {
     },
     popularityScore: Math.floor(getDeterministicValue(rawBeach.id, 'pop') * 100),
     ...(metadata?.popularity ? { popularity: metadata.popularity } : {}),
+    ...(metadata?.nearbyCamping?.length ? { nearbyCamping: metadata.nearbyCamping } : {}),
     coordinates: { lat: rawBeach.lat, lon: rawBeach.lon },
     ...(mapCoordinates ? { mapCoordinates } : {}),
     location: {
@@ -586,6 +587,8 @@ const buildSummaryBeach = beach => {
     ...(beach.metadata?.blueFlag2026 ? { blueFlag2026: beach.metadata.blueFlag2026 } : {}),
     ...(beach.metadata?.seatrac ? { seatrac: beach.metadata.seatrac } : {}),
     ...(beach.metadata?.popularity ? { popularity: beach.metadata.popularity } : {}),
+    // Trimmed to the nearest one — enough for the card's ⛺ chip without loading detail.
+    ...(beach.metadata?.nearbyCamping?.length ? { nearbyCamping: beach.metadata.nearbyCamping.slice(0, 1) } : {}),
     staticLabels: {
       beachType: beach.staticLabels?.beachType || beach.beachType,
       accessType,
@@ -608,6 +611,8 @@ const buildDetailBeach = beach => ({
   location: beach.location,
   ...(beach.mapCoordinates ? { mapCoordinates: beach.mapCoordinates } : {}),
   ...(beach.metadata?.popularity ? { popularity: beach.metadata.popularity } : {}),
+  // Full list (≤3) for the detail-page "Camping nearby" section.
+  ...(beach.metadata?.nearbyCamping?.length ? { nearbyCamping: beach.metadata.nearbyCamping } : {}),
   aliases: beach.aliases,
   staticLabels: beach.staticLabels,
   metadata: beach.metadata,

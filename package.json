@@ -6,6 +6,9 @@
   "scripts": {
     "dev": "vite",
     "build:beach-data": "node scripts/buildBeachRegionData.mjs",
+    "camping:harvest": "node scripts/harvestCampsitesOsm.mjs",
+    "camping:link": "node scripts/linkCampsitesToBeaches.mjs match",
+    "camping:apply": "node scripts/linkCampsitesToBeaches.mjs apply",
     "audit:beaches": "node scripts/auditBeachDataset.mjs",
     "audit:cyclades-map-evidence": "node scripts/auditCycladesMapEvidence.mjs",
     "audit:cyclades-google-places": "node scripts/auditCycladesGooglePlaces.mjs",
