@@ -1,5 +1,5 @@
 // Bump this when changing cache behavior so stale hashed chunks are cleared.
-const CACHE_NAME = 'calm-beach-v2026-06-15-branding-refresh';
+const CACHE_NAME = 'calm-beach-v2026-06-19-sw-resilient';
 const WEATHER_API_HOSTS = new Set([
   'api.open-meteo.com',
   'marine-api.open-meteo.com',
@@ -24,6 +24,42 @@ self.addEventListener('install', event => {
   self.skipWaiting();
 });
 
+// --- Resilient response helpers -------------------------------------------
+// Every fetch-handler branch MUST resolve to a valid Response. Resolving to
+// `undefined` throws "Failed to convert value to 'Response'", and a bare
+// `caches.open().then(...)` rejects the whole respondWith when CacheStorage is
+// unavailable (private/guest browsing) — both of which break navigations and
+// silently drop requests such as the analytics beacon.
+const openCacheSafely = () => caches.open(CACHE_NAME).catch(() => null);
+
+const matchCache = request =>
+  openCacheSafely()
+    .then(cache => (cache ? cache.match(request) : undefined))
+    .catch(() => undefined);
+
+// Best-effort write; never let a cache failure affect the served response.
+const putInCache = (request, response) => {
+  if (!response || !response.ok) return;
+  const copy = response.clone();
+  openCacheSafely().then(cache => (cache ? cache.put(request, copy) : undefined)).catch(() => {});
+};
+
+// A redirected response cannot be returned for a navigation request (it throws),
+// and it must not be cached as the app shell. Our /beaches/* routes 301-redirect
+// to add a trailing slash, so navigations routinely produce redirected responses.
+// Rebuild them as a fresh, non-redirected Response with safe headers.
+const stripRedirect = response => {
+  if (!response.redirected) return response;
+  const headers = new Headers(response.headers);
+  headers.delete('content-length');
+  headers.delete('content-encoding');
+  return new Response(response.body, {
+    status: response.status,
+    statusText: response.statusText,
+    headers,
+  });
+};
+
 // Cache and return requests
 self.addEventListener('fetch', event => {
   if (event.request.method !== 'GET') return;
@@ -34,12 +70,13 @@ self.addEventListener('fetch', event => {
   // Always prefer the latest index.html so the app imports the current hashed chunks.
   if (event.request.mode === 'navigate' || event.request.destination === 'document') {
     event.respondWith(
-      caches.open(CACHE_NAME).then(cache => (
-        fetch(event.request, { cache: 'no-store' }).then(networkResponse => {
-          if (networkResponse.ok) cache.put('/index.html', networkResponse.clone());
-          return networkResponse;
-        }).catch(() => cache.match('/index.html').then(cachedResponse => cachedResponse || Response.error()))
-      ))
+      fetch(event.request, { cache: 'no-store' })
+        .then(networkResponse => {
+          const response = stripRedirect(networkResponse);
+          putInCache('/index.html', response);
+          return response;
+        })
+        .catch(() => matchCache('/index.html').then(cached => cached || Response.error()))
     );
     return;
   }
@@ -64,18 +101,12 @@ self.addEventListener('fetch', event => {
   // Beach counts and attributes must update immediately after data rebuilds.
   if (url.origin === self.location.origin && (url.pathname === '/greek_beaches.json' || url.pathname.startsWith('/data/beaches/'))) {
     event.respondWith(
-      caches.open(CACHE_NAME).then(cache => {
-        return fetch(event.request, { cache: 'no-store' }).then(networkResponse => {
-          if (networkResponse.ok) cache.put(event.request, networkResponse.clone());
+      fetch(event.request, { cache: 'no-store' })
+        .then(networkResponse => {
+          putInCache(event.request, networkResponse);
           return networkResponse;
-        }).catch(error => {
-          console.warn('[Service Worker] Beach dataset refresh failed', error);
-          return cache.match(event.request).then(cachedResponse => {
-            if (cachedResponse) return cachedResponse;
-            throw error;
-          });
-        });
-      })
+        })
+        .catch(() => matchCache(event.request).then(cached => cached || Response.error()))
     );
     return;
   }
@@ -84,12 +115,12 @@ self.addEventListener('fetch', event => {
   // If a deploy removed a chunk, cache-first can keep an old entry point alive.
   if (url.origin === self.location.origin && url.pathname.match(/\.(js|css)$/)) {
     event.respondWith(
-      caches.open(CACHE_NAME).then(cache => (
-        fetch(event.request).then(networkResponse => {
-          if (networkResponse.ok) cache.put(event.request, networkResponse.clone());
+      fetch(event.request)
+        .then(networkResponse => {
+          putInCache(event.request, networkResponse);
           return networkResponse;
-        }).catch(() => cache.match(event.request).then(cachedResponse => cachedResponse || Response.error()))
-      ))
+        })
+        .catch(() => matchCache(event.request).then(cached => cached || Response.error()))
     );
     return;
   }
@@ -98,21 +129,22 @@ self.addEventListener('fetch', event => {
   // Images and app icons can be cached aggressively.
   if (urlsToCache.includes(url.pathname) || url.pathname.match(/\.(png|jpg|jpeg|webp|svg|ico|woff2)$/)) {
     event.respondWith(
-      caches.match(event.request).then(response => {
-        return response || fetch(event.request).then(networkResponse => {
-          return caches.open(CACHE_NAME).then(cache => {
-            if (networkResponse.ok) cache.put(event.request, networkResponse.clone());
+      matchCache(event.request).then(cached => {
+        if (cached) return cached;
+        return fetch(event.request)
+          .then(networkResponse => {
+            putInCache(event.request, networkResponse);
             return networkResponse;
-          });
-        });
+          })
+          .catch(() => Response.error());
       })
     );
     return;
   }
 
-  // Default: Network First
+  // Default: Network First, falling back to cache, then a network error.
   event.respondWith(
-    fetch(event.request).catch(() => caches.match(event.request))
+    fetch(event.request).catch(() => matchCache(event.request).then(cached => cached || Response.error()))
   );
 });
 
