@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "generatedAt": "2026-06-12T06:14:40.824Z",
+  "generatedAt": "2026-06-18T20:17:17.864Z",
   "region": {
     "id": "crete-crete-chania",
     "name": "Chania"
@@ -36,48 +36,48 @@
     "maskConfidence": "high"
   },
   "summary": {
-    "beachCount": 84,
-    "generatedProfiles": 84,
+    "beachCount": 85,
+    "generatedProfiles": 85,
     "missingCoordinates": 0,
     "sectors": {
       "N": {
         "protected": 50,
         "partial": 10,
-        "exposed": 24
+        "exposed": 25
       },
       "NE": {
         "protected": 49,
-        "partial": 16,
+        "partial": 17,
         "exposed": 19
       },
       "E": {
-        "protected": 41,
+        "protected": 42,
         "partial": 35,
         "exposed": 8
       },
       "SE": {
-        "protected": 40,
+        "protected": 41,
         "partial": 12,
         "exposed": 32
       },
       "S": {
-        "protected": 37,
+        "protected": 38,
         "partial": 10,
         "exposed": 37
       },
       "SW": {
-        "protected": 38,
+        "protected": 39,
         "partial": 15,
         "exposed": 31
       },
       "W": {
         "protected": 45,
-        "partial": 26,
+        "partial": 27,
         "exposed": 13
       },
       "NW": {
         "protected": 47,
-        "partial": 21,
+        "partial": 22,
         "exposed": 16
       }
     }
@@ -6043,6 +6043,77 @@
           "blockedRayRatio": 1,
           "onshore": -0.707,
           "intensity": 8.8
+        }
+      },
+      "confidence": "high"
+    },
+    "3032": {
+      "beachId": 3032,
+      "name": {
+        "en": "Apokoronou Almyrida",
+        "gr": "Αποκορώνου Αλμυρίδα"
+      },
+      "coordinates": {
+        "lat": 35.449916,
+        "lon": 24.198811
+      },
+      "facingDeg": 349.8,
+      "sectors": {
+        "N": {
+          "level": "exposed",
+          "fetchKm": 14.16,
+          "blockedRayRatio": 0.6,
+          "onshore": 0.984,
+          "intensity": 75.4
+        },
+        "NE": {
+          "level": "partial",
+          "fetchKm": 10.4,
+          "blockedRayRatio": 0.6,
+          "onshore": 0.571,
+          "intensity": 58
+        },
+        "E": {
+          "level": "protected",
+          "fetchKm": 0.4,
+          "blockedRayRatio": 1,
+          "onshore": -0.177,
+          "intensity": 24.7
+        },
+        "SE": {
+          "level": "protected",
+          "fetchKm": 0.16,
+          "blockedRayRatio": 1,
+          "onshore": -0.821,
+          "intensity": 5.4
+        },
+        "S": {
+          "level": "protected",
+          "fetchKm": 0,
+          "blockedRayRatio": 1,
+          "onshore": -0.984,
+          "intensity": 0.5
+        },
+        "SW": {
+          "level": "protected",
+          "fetchKm": 0.04,
+          "blockedRayRatio": 1,
+          "onshore": -0.571,
+          "intensity": 12.9
+        },
+        "W": {
+          "level": "partial",
+          "fetchKm": 3.16,
+          "blockedRayRatio": 1,
+          "onshore": 0.177,
+          "intensity": 35.3
+        },
+        "NW": {
+          "level": "partial",
+          "fetchKm": 5.48,
+          "blockedRayRatio": 1,
+          "onshore": 0.821,
+          "intensity": 54.6
         }
       },
       "confidence": "high"

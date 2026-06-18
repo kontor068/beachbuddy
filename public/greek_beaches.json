@@ -488,6 +488,23 @@
               "ratingCount": 592,
               "source": "google-places",
               "checkedAt": "2026-06-17"
+            },
+            "paidEntry": {
+              "paid": true,
+              "kind": "entrance_fee",
+              "source": "OpenStreetMap (leisure=beach_resort / fee / access tags)",
+              "sourceUrls": [
+                "https://www.aktitouiliou.gr/"
+              ],
+              "osmUrl": "https://www.openstreetmap.org/way/399164539",
+              "verifiedAt": "2026-06-17",
+              "confidence": "low",
+              "needsVerification": true,
+              "match": {
+                "officialNameGr": "Ακτή του Ήλιου",
+                "matchMethod": "greeklish-dice+proximity",
+                "matchScore": 100
+              }
             }
           }
         },
@@ -1096,7 +1113,27 @@
                 "osmUrl": "https://www.openstreetmap.org/way/263956643",
                 "checkedAt": "2026-06-17"
               }
-            ]
+            ],
+            "paidEntry": {
+              "paid": true,
+              "kind": "private_club",
+              "priceText": "Είσοδος / ημερήσιο πάσο (beach club)",
+              "source": "CalmBeach paid-entry research compilation (June 2026)",
+              "sourceUrls": [
+                "https://asteriaglyfada.gr/beach/"
+              ],
+              "verifiedAt": "2026-06-17",
+              "confidence": "medium",
+              "needsVerification": true,
+              "notes": "Ιστορικό beach club της αθηναϊκής ριβιέρας· η πρόσβαση γίνεται με είσοδο/κράτηση.",
+              "region": "Αττική",
+              "match": {
+                "officialNameGr": "Παραλία Αστέρα Γλυφάδας",
+                "officialNameEn": "Asteria Glyfada Beach",
+                "matchMethod": "manual-pin",
+                "matchScore": 100
+              }
+            }
           }
         },
         {
@@ -1446,7 +1483,27 @@
                 "osmUrl": "https://www.openstreetmap.org/way/505309286",
                 "checkedAt": "2026-06-17"
               }
-            ]
+            ],
+            "paidEntry": {
+              "paid": true,
+              "kind": "entrance_fee",
+              "priceText": "Εισιτήριο εισόδου στο οργανωμένο τμήμα (Yabanaki) + ξαπλώστρες",
+              "source": "CalmBeach paid-entry research compilation (June 2026)",
+              "sourceUrls": [
+                "https://athensattica.com/el/highlight/yabanaki/"
+              ],
+              "verifiedAt": "2026-06-17",
+              "confidence": "medium",
+              "needsVerification": true,
+              "notes": "Το οργανωμένο τμήμα Yabanaki λειτουργεί με εισιτήριο εισόδου.",
+              "region": "Αττική",
+              "match": {
+                "officialNameGr": "Παραλία Βάρκιζας",
+                "officialNameEn": "Varkiza Beach (Yabanaki)",
+                "matchMethod": "manual-pin",
+                "matchScore": 100
+              }
+            }
           }
         },
         {
@@ -1678,7 +1735,27 @@
                 "osmUrl": "https://www.openstreetmap.org/way/505309286",
                 "checkedAt": "2026-06-17"
               }
-            ]
+            ],
+            "paidEntry": {
+              "paid": true,
+              "kind": "entrance_fee",
+              "priceText": "Εισιτήριο εισόδου ανά περίοδο (επιπλέον χρέωση για ξαπλώστρες)",
+              "source": "CalmBeach paid-entry research compilation (June 2026)",
+              "sourceUrls": [
+                "https://astir.gr/beach/"
+              ],
+              "verifiedAt": "2026-06-17",
+              "confidence": "medium",
+              "needsVerification": true,
+              "notes": "Οργανωμένη/ιδιωτική πλαζ με εισιτήριο ή κράτηση — η είσοδος δεν είναι δωρεάν.",
+              "region": "Αττική",
+              "match": {
+                "officialNameGr": "Astir Beach / Αστέρας Βουλιαγμένης",
+                "officialNameEn": "Astir Beach Vouliagmeni",
+                "matchMethod": "manual-pin",
+                "matchScore": 100
+              }
+            }
           }
         },
         {
@@ -1768,7 +1845,27 @@
                 "osmUrl": "https://www.openstreetmap.org/way/505309286",
                 "checkedAt": "2026-06-17"
               }
-            ]
+            ],
+            "paidEntry": {
+              "paid": true,
+              "kind": "entrance_fee",
+              "priceText": "Εισιτήριο εισόδου στον οργανωμένο χώρο της λίμνης",
+              "source": "CalmBeach paid-entry research compilation (June 2026)",
+              "sourceUrls": [
+                "https://limnivouliagmenis.gr/"
+              ],
+              "verifiedAt": "2026-06-17",
+              "confidence": "medium",
+              "needsVerification": true,
+              "notes": "Οργανωμένος χώρος κολύμβησης σε λίμνη με εισιτήριο εισόδου.",
+              "region": "Αττική",
+              "match": {
+                "officialNameGr": "Λίμνη Βουλιαγμένης",
+                "officialNameEn": "Lake Vouliagmeni",
+                "matchMethod": "manual-pin",
+                "matchScore": 100
+              }
+            }
           }
         },
         {
@@ -2546,6 +2643,20 @@
               "protectedFrom": [],
               "confidence": "medium",
               "notes": "Generated from Natural Earth geospatial exposure facingDeg. This records shoreline-facing direction only; it does not verify shelter, low-wave behavior, or live sea conditions."
+            },
+            "paidEntry": {
+              "paid": true,
+              "kind": "private_club",
+              "source": "OpenStreetMap (leisure=beach_resort / fee / access tags)",
+              "osmUrl": "https://www.openstreetmap.org/way/631715142",
+              "verifiedAt": "2026-06-17",
+              "confidence": "low",
+              "needsVerification": true,
+              "match": {
+                "officialNameGr": "Θέρετρο Αξιωματικών Ναυτικού",
+                "matchMethod": "greeklish-dice+proximity",
+                "matchScore": 100
+              }
             }
           }
         },
@@ -29626,6 +29737,20 @@
               "mode": "coordinates",
               "checkedAt": "2026-06-16",
               "method": "osm-nav-audit-v1"
+            },
+            "paidEntry": {
+              "paid": true,
+              "kind": "entrance_fee",
+              "source": "OpenStreetMap (leisure=beach_resort / fee / access tags)",
+              "osmUrl": "https://www.openstreetmap.org/way/1416418351",
+              "verifiedAt": "2026-06-17",
+              "confidence": "low",
+              "needsVerification": true,
+              "match": {
+                "officialNameGr": "Mileniko",
+                "matchMethod": "greeklish-dice+proximity",
+                "matchScore": 100
+              }
             }
           }
         },
@@ -83122,7 +83247,22 @@
             "sourceNotes": [
               "Phase 2 Batch 3B source check 2026-05-25: TravelDojo describes Skorpios as private, controlled access with no public ferry and private boat/charter approach only; keep boat-only and no public services.",
               "Lefkada strict evidence pass 2026-05-29: kept at medium. TravelDojo supports Skorpios as private/controlled island access by boat/charter context, but does not provide enough beach-specific evidence for this exact eastern beach card to be high."
-            ]
+            ],
+            "paidEntry": {
+              "paid": true,
+              "kind": "private_club",
+              "source": "OpenStreetMap (leisure=beach_resort / fee / access tags)",
+              "osmUrl": "https://www.openstreetmap.org/way/148241532",
+              "verifiedAt": "2026-06-17",
+              "confidence": "low",
+              "needsVerification": true,
+              "match": {
+                "officialNameGr": "Ανατολική παραλία Σκορπιού",
+                "officialNameEn": "Eastern beach of Skorpios",
+                "matchMethod": "greeklish-dice+proximity",
+                "matchScore": 100
+              }
+            }
           }
         },
         {
@@ -84314,6 +84454,21 @@
               "protectedFrom": [],
               "confidence": "medium",
               "notes": "Generated from Natural Earth geospatial exposure facingDeg. This records shoreline-facing direction only; it does not verify shelter, low-wave behavior, or live sea conditions."
+            },
+            "paidEntry": {
+              "paid": true,
+              "kind": "private_club",
+              "source": "OpenStreetMap (leisure=beach_resort / fee / access tags)",
+              "osmUrl": "https://www.openstreetmap.org/way/317374708",
+              "verifiedAt": "2026-06-17",
+              "confidence": "low",
+              "needsVerification": true,
+              "match": {
+                "officialNameGr": "Νότια Παραλία Σκορπιού (Ζακλίν Κέννεντυ)",
+                "officialNameEn": "Scorpio South Beach (Jacqueline Kennedy)",
+                "matchMethod": "greeklish-dice+proximity",
+                "matchScore": 100
+              }
             }
           }
         },
@@ -94572,6 +94727,21 @@
               "ratingCount": 885,
               "source": "google-places",
               "checkedAt": "2026-06-17"
+            },
+            "paidEntry": {
+              "paid": true,
+              "kind": "entrance_fee",
+              "source": "OpenStreetMap (leisure=beach_resort / fee / access tags)",
+              "osmUrl": "https://www.openstreetmap.org/way/251823840",
+              "verifiedAt": "2026-06-17",
+              "confidence": "low",
+              "needsVerification": true,
+              "match": {
+                "officialNameGr": "Ακτή Τσαμάκια",
+                "officialNameEn": "Tsamakia beach",
+                "matchMethod": "greeklish-dice+proximity",
+                "matchScore": 100
+              }
             }
           }
         },
@@ -142771,7 +142941,21 @@
                 "osmUrl": "https://www.openstreetmap.org/node/1627507505",
                 "checkedAt": "2026-06-17"
               }
-            ]
+            ],
+            "paidEntry": {
+              "paid": true,
+              "kind": "entrance_fee",
+              "source": "OpenStreetMap (leisure=beach_resort / fee / access tags)",
+              "osmUrl": "https://www.openstreetmap.org/way/271531535",
+              "verifiedAt": "2026-06-17",
+              "confidence": "low",
+              "needsVerification": true,
+              "match": {
+                "officialNameGr": "Μικρή Σάντα Μαρία",
+                "matchMethod": "greeklish-dice+proximity",
+                "matchScore": 100
+              }
+            }
           }
         },
         {

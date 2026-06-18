@@ -9,21 +9,38 @@ export const useLocation = (allIslands: Island[]) => {
     return route?.regionId || getActiveWeatherFixtureTargetRegionId() || localStorage.getItem('selectedIslandId') || undefined;
   });
 
+  // A synthetic, in-memory region that is NOT part of allIslands — currently used
+  // for the cross-region "Κοντά μου" view, whose beaches are merged from several
+  // real regions around the user. It takes priority while it is the active
+  // selection, and is dropped as soon as a real region is selected.
+  const [adHocIsland, setAdHocIsland] = useState<Island | undefined>(undefined);
+
   const selectedIsland = useMemo(() => {
+    if (adHocIsland && adHocIsland.id === selectedIslandId) return adHocIsland;
     if (allIslands.length === 0) return undefined;
     return allIslands.find(i => i.id === selectedIslandId || regionMatchesRouteParam(i, selectedIslandId))
       || allIslands.find(i => i.id === 'milos')
       || allIslands.find(i => i.id.endsWith('-milos') || i.name.en === 'Milos')
       || allIslands[0];
-  }, [allIslands, selectedIslandId]);
+  }, [adHocIsland, allIslands, selectedIslandId]);
 
   const selectIsland = useCallback((island: Island) => {
+    setAdHocIsland(undefined);
     setSelectedIslandId(island.id);
     localStorage.setItem('selectedIslandId', island.id);
   }, []);
 
+  // Selects a synthetic region held only in memory. Deliberately not persisted to
+  // localStorage: on reload there are no merged beaches to restore, so we fall
+  // back to a real region instead of a broken empty "Κοντά μου".
+  const selectAdHocRegion = useCallback((island: Island) => {
+    setAdHocIsland(island);
+    setSelectedIslandId(island.id);
+  }, []);
+
   return {
     selectedIsland,
-    selectIsland
+    selectIsland,
+    selectAdHocRegion
   };
 };

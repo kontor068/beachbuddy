@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "generatedAt": "2026-06-12T06:14:33.314Z",
+  "generatedAt": "2026-06-18T20:17:10.052Z",
   "region": {
     "id": "central-greece-fokida-mainland",
     "name": "Fokida"
@@ -36,47 +36,47 @@
     "maskConfidence": "high"
   },
   "summary": {
-    "beachCount": 19,
-    "generatedProfiles": 19,
+    "beachCount": 20,
+    "generatedProfiles": 20,
     "missingCoordinates": 0,
     "sectors": {
       "N": {
-        "protected": 14,
+        "protected": 15,
         "partial": 5,
         "exposed": 0
       },
       "NE": {
-        "protected": 13,
+        "protected": 14,
         "partial": 5,
         "exposed": 1
       },
       "E": {
         "protected": 12,
-        "partial": 6,
+        "partial": 7,
         "exposed": 1
       },
       "SE": {
         "protected": 9,
         "partial": 4,
-        "exposed": 6
+        "exposed": 7
       },
       "S": {
         "protected": 5,
         "partial": 10,
-        "exposed": 4
+        "exposed": 5
       },
       "SW": {
         "protected": 7,
-        "partial": 8,
+        "partial": 9,
         "exposed": 4
       },
       "W": {
-        "protected": 11,
+        "protected": 12,
         "partial": 5,
         "exposed": 3
       },
       "NW": {
-        "protected": 11,
+        "protected": 12,
         "partial": 8,
         "exposed": 0
       }
@@ -1428,6 +1428,77 @@
           "blockedRayRatio": 1,
           "onshore": 0.749,
           "intensity": 52.5
+        }
+      },
+      "confidence": "high"
+    },
+    "3030": {
+      "beachId": 3030,
+      "name": {
+        "en": "Dorida Eratini",
+        "gr": "Δωρίδα Ερατεινή"
+      },
+      "coordinates": {
+        "lat": 38.35891,
+        "lon": 22.227883
+      },
+      "facingDeg": 159.5,
+      "sectors": {
+        "N": {
+          "level": "protected",
+          "fetchKm": 0,
+          "blockedRayRatio": 1,
+          "onshore": -0.937,
+          "intensity": 1.9
+        },
+        "NE": {
+          "level": "protected",
+          "fetchKm": 0.04,
+          "blockedRayRatio": 1,
+          "onshore": -0.415,
+          "intensity": 17.6
+        },
+        "E": {
+          "level": "partial",
+          "fetchKm": 0.24,
+          "blockedRayRatio": 1,
+          "onshore": 0.35,
+          "intensity": 40.5
+        },
+        "SE": {
+          "level": "exposed",
+          "fetchKm": 14.4,
+          "blockedRayRatio": 0.6,
+          "onshore": 0.91,
+          "intensity": 72.6
+        },
+        "S": {
+          "level": "exposed",
+          "fetchKm": 16.92,
+          "blockedRayRatio": 0.8,
+          "onshore": 0.937,
+          "intensity": 65.8
+        },
+        "SW": {
+          "level": "partial",
+          "fetchKm": 3.72,
+          "blockedRayRatio": 1,
+          "onshore": 0.415,
+          "intensity": 42.4
+        },
+        "W": {
+          "level": "protected",
+          "fetchKm": 0,
+          "blockedRayRatio": 1,
+          "onshore": -0.35,
+          "intensity": 19.5
+        },
+        "NW": {
+          "level": "protected",
+          "fetchKm": 0,
+          "blockedRayRatio": 1,
+          "onshore": -0.91,
+          "intensity": 2.7
         }
       },
       "confidence": "high"

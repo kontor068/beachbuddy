@@ -394,6 +394,12 @@ const getKeyBeachHours = (hourlyForecast?: ForecastItem[]): ForecastItem[] => {
 };
 
 const RAIN_PROBABILITY_BLOCK_THRESHOLD = 0.35;
+// When Open-Meteo gives us an hourly precipitation probability and it is
+// confidently low, trust it over a borderline weather code (e.g. a "drizzle"
+// code at 10% chance). This only suppresses rain flags — it never adds them —
+// so detection can get quieter and more accurate but never noisier. Missing
+// probability data falls back to the original weather-code behaviour.
+const RAIN_PROBABILITY_SUPPRESS_BELOW = 0.3;
 
 const hasRainWeatherText = (item: ForecastItem): boolean => {
   const weatherText = (item.weather || [])
@@ -403,11 +409,20 @@ const hasRainWeatherText = (item: ForecastItem): boolean => {
   return /rain|storm|thunder|drizzle|shower/.test(weatherText);
 };
 
-export const hasHourlyRainRisk = (item: ForecastItem): boolean => (
-  hasRainWeatherText(item) ||
-  (typeof item.pop === 'number' && item.pop >= RAIN_PROBABILITY_BLOCK_THRESHOLD) ||
-  (typeof item.rain?.['3h'] === 'number' && item.rain['3h'] > 0)
-);
+export const hasHourlyRainRisk = (item: ForecastItem): boolean => {
+  if (
+    typeof item.precipitationProbability === 'number' &&
+    item.precipitationProbability < RAIN_PROBABILITY_SUPPRESS_BELOW
+  ) {
+    return false;
+  }
+
+  return (
+    hasRainWeatherText(item) ||
+    (typeof item.pop === 'number' && item.pop >= RAIN_PROBABILITY_BLOCK_THRESHOLD) ||
+    (typeof item.rain?.['3h'] === 'number' && item.rain['3h'] > 0)
+  );
+};
 
 const calculateHourlyRainRisk = (
   hourlyForecast?: ForecastItem[]

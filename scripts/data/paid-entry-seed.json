@@ -1,0 +1,57 @@
+{
+  "_meta": {
+    "purpose": "Hand-authored 'you pay to be here' beaches that OSM misses or under-tags. Consumed by scripts/importPaidEntry.mjs alongside the OSM candidate seed (scripts/data/paid-beaches-osm.json). Authored content — like scripts/data/seatrac-seed.json.",
+    "authoredAt": "2026-06-17",
+    "rule": "Only well-established, sourced cases. `expectId` pins the row to a known dataset beach id (skips fuzzy ambiguity); coordinates kept as a cross-check. Prices are indicative and seasonal -> needsVerification stays true."
+  },
+  "beaches": [
+    {
+      "nameGr": "Astir Beach / Αστέρας Βουλιαγμένης",
+      "nameEn": "Astir Beach Vouliagmeni",
+      "region": "Αττική",
+      "coordinates": { "lat": 37.80924, "lon": 23.77337 },
+      "expectId": 19,
+      "kind": "entrance_fee",
+      "priceText": "Εισιτήριο εισόδου ανά περίοδο (επιπλέον χρέωση για ξαπλώστρες)",
+      "sourceUrls": ["https://astir.gr/beach/"],
+      "notes": "Οργανωμένη/ιδιωτική πλαζ με εισιτήριο ή κράτηση — η είσοδος δεν είναι δωρεάν.",
+      "source": "manual"
+    },
+    {
+      "nameGr": "Παραλία Βάρκιζας",
+      "nameEn": "Varkiza Beach (Yabanaki)",
+      "region": "Αττική",
+      "coordinates": { "lat": 37.81992, "lon": 23.80962 },
+      "expectId": 16,
+      "kind": "entrance_fee",
+      "priceText": "Εισιτήριο εισόδου στο οργανωμένο τμήμα (Yabanaki) + ξαπλώστρες",
+      "sourceUrls": ["https://athensattica.com/el/highlight/yabanaki/"],
+      "notes": "Το οργανωμένο τμήμα Yabanaki λειτουργεί με εισιτήριο εισόδου.",
+      "source": "manual"
+    },
+    {
+      "nameGr": "Παραλία Αστέρα Γλυφάδας",
+      "nameEn": "Asteria Glyfada Beach",
+      "region": "Αττική",
+      "coordinates": { "lat": 37.85747, "lon": 23.74978 },
+      "expectId": 12,
+      "kind": "private_club",
+      "priceText": "Είσοδος / ημερήσιο πάσο (beach club)",
+      "sourceUrls": ["https://asteriaglyfada.gr/beach/"],
+      "notes": "Ιστορικό beach club της αθηναϊκής ριβιέρας· η πρόσβαση γίνεται με είσοδο/κράτηση.",
+      "source": "manual"
+    },
+    {
+      "nameGr": "Λίμνη Βουλιαγμένης",
+      "nameEn": "Lake Vouliagmeni",
+      "region": "Αττική",
+      "coordinates": { "lat": 37.80742, "lon": 23.78549 },
+      "expectId": 20,
+      "kind": "entrance_fee",
+      "priceText": "Εισιτήριο εισόδου στον οργανωμένο χώρο της λίμνης",
+      "sourceUrls": ["https://limnivouliagmenis.gr/"],
+      "notes": "Οργανωμένος χώρος κολύμβησης σε λίμνη με εισιτήριο εισόδου.",
+      "source": "manual"
+    }
+  ]
+}

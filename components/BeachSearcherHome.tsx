@@ -56,6 +56,7 @@ import { getIslandGroupLabel } from '../utils/islandRegionLabels';
 import { buildIslandDaySummary } from '../utils/islandDaySummary';
 import { CuratedPhotoImage } from './photos';
 import { beachMatchesUserPreferences } from '../services/recommendationService';
+import { assessBeachWindExposure } from '../utils/windExposureEngine';
 import { describeSimpleWindSuitability } from '../utils/windExposureCopy';
 
 export type DirectoryCategory = 'all' | QuickPreferenceFilter;
@@ -142,6 +143,8 @@ interface BeachSearcherHomeProps {
   onOpenFilters: () => void;
   onOpenIslandSelector: () => void;
   onUseCurrentLocation?: () => void;
+  /** Builds the cross-region "Κοντά μου" list from the user's real position (mobile button). */
+  onShowNearbyBeaches?: () => void;
   /** Fetches the user's location for distance sorting without changing region. */
   onRequestUserLocation?: () => void;
   onDistanceSortActiveChange?: (active: boolean) => void;
@@ -1244,6 +1247,63 @@ const getAllBeachesLabel = (language: LanguageCode, selectedDate?: Date, timePre
   });
 };
 
+// Per-beach intra-day exposure shift for the selected-beach strip line. Runs the
+// real wind-exposure engine hour by hour (using the beach's geospatial profile),
+// so it catches BOTH the wind strengthening and the wind veering to a direction
+// the beach is exposed to — not just an island-wide wind rise. Returns a localized
+// "calm until HH, then exposed" phrase, or undefined when the day stays steady.
+const buildBeachIntradayShift = (
+  beach: Beach,
+  geospatialProfile: SuitableBeach['geospatialExposure'],
+  hourly: DailyForecast['hourly'],
+  language: LanguageCode,
+): string | undefined => {
+  const states = hourly
+    .map(item => {
+      const hour = new Date(item.dt * 1000).getHours();
+      if (hour < 8 || hour > 20) return undefined;
+      const beaufort = getBeaufortLevel(item.wind.speed * 3.6);
+      if (beaufort <= 2) return { hour, exposed: false };
+      const assessment = assessBeachWindExposure({
+        beach,
+        geospatialProfile,
+        windDirectionDeg: item.wind.deg,
+        windDirection: degToCompass(item.wind.deg),
+        windSpeedKmh: item.wind.speed * 3.6,
+        beaufort,
+      });
+      return { hour, exposed: assessment.exposureLevel === 'exposed' };
+    })
+    .filter((state): state is { hour: number; exposed: boolean } => Boolean(state))
+    .sort((a, b) => a.hour - b.hour);
+  if (states.length < 3) return undefined;
+
+  const morningExposed = states[0].exposed;
+  for (let i = 1; i < states.length; i++) {
+    if (states[i].exposed === morningExposed) continue;
+    // Require the new state to hold for ≥2 of the next 3 hours (no single-hour blip).
+    const ahead = states.slice(i, i + 3);
+    if (ahead.filter(state => state.exposed === states[i].exposed).length < 2) continue;
+    const at = `${String(states[i].hour).padStart(2, '0')}:00`;
+    return !morningExposed && states[i].exposed
+      ? getLocalizedCopy(language, {
+        en: `calm until ${at}, then exposed to the wind`,
+        gr: `καλά ως τις ${at}, μετά εκτίθεται στον άνεμο`,
+        de: `ruhig bis ${at}, danach windexponiert`,
+        it: `tranquillo fino alle ${at}, poi esposto al vento`,
+        fr: `calme jusqu'à ${at}, puis exposé au vent`,
+      })
+      : getLocalizedCopy(language, {
+        en: `exposed until ${at}, then it settles`,
+        gr: `δύσκολα ως τις ${at}, μετά στρώνει`,
+        de: `schwierig bis ${at}, danach beruhigt es sich`,
+        it: `difficile fino alle ${at}, poi si calma`,
+        fr: `difficile jusqu'à ${at}, puis ça se calme`,
+      });
+  }
+  return undefined;
+};
+
 const getTopRecommendationsLabel = (language: LanguageCode, selectedDate: Date | undefined, count: number, timePrefix?: string, beaufort?: number): string => {
   const day = timePrefix ?? getSelectedDayPrefix(selectedDate, new Date(), language);
   const displayCount = Math.max(1, Math.min(3, count));
@@ -1456,6 +1516,7 @@ export const BeachSearcherHome: React.FC<BeachSearcherHomeProps> = ({
   onOpenFilters,
   onOpenIslandSelector,
   onUseCurrentLocation,
+  onShowNearbyBeaches,
   onRequestUserLocation,
   onDistanceSortActiveChange,
   hasUserLocation = false,
@@ -2289,16 +2350,32 @@ export const BeachSearcherHome: React.FC<BeachSearcherHomeProps> = ({
   // Follow the selected day (today/tomorrow/…) instead of hardcoding "today", since the
   // beach count reflects the selected day's conditions, not necessarily today's.
   const contextStripDayPrefix = getSelectedDayPrefix(selectedDate, new Date(), language);
-  const contextStripBeachesLabel = getLocalizedCopy(language, {
-    en: 'best beaches',
-    gr: 'καλύτερες παραλίες',
-    fr: 'meilleures plages',
-    de: 'beste Strände',
-    it: 'migliori spiagge',
-  });
+  // Natural "X of the Y beaches look good" framing instead of the stiff
+  // "N best beaches" count, which read like a ranking that doesn't exist.
+  const contextStripCountLine = selectedIsland
+    ? getLocalizedCopy(language, {
+      en: `${suitableBeachDisplayCount} of ${selectedIsland.beaches.length} beaches look good ${contextStripDayPrefix}`,
+      gr: `${suitableBeachDisplayCount} από ${selectedIsland.beaches.length} παραλίες φαίνονται καλές ${contextStripDayPrefix}`,
+      fr: `${suitableBeachDisplayCount} plages sur ${selectedIsland.beaches.length} semblent bonnes ${contextStripDayPrefix}`,
+      de: `${suitableBeachDisplayCount} von ${selectedIsland.beaches.length} Stränden sehen ${contextStripDayPrefix} gut aus`,
+      it: `${suitableBeachDisplayCount} spiagge su ${selectedIsland.beaches.length} sembrano buone ${contextStripDayPrefix}`,
+    })
+    : '';
   // Breadcrumb-style eyebrow: region (e.g. "Κυκλάδες") is more useful than a generic
   // country label; fall back to country when the group has no mapping.
   const contextStripEyebrow = getIslandGroupLabel(selectedIsland?.group, language) ?? copy.greece;
+  // Hour-by-hour wind for the selected day, so the summary can flag an intra-day
+  // shift (calm→windy or a veering wind that flips the sheltered coast) instead
+  // of freezing on one snapshot. getHours() returns the Greek wall-clock hour
+  // because Open-Meteo serves location-local naive timestamps.
+  const contextStripHourlyWind = useMemo(() => {
+    if (!selectedForecast?.hourly?.length) return undefined;
+    return selectedForecast.hourly.map(item => ({
+      hour: new Date(item.dt * 1000).getHours(),
+      beaufort: getBeaufortLevel(item.wind.speed * 3.6),
+      windDirection: degToCompass(item.wind.deg),
+    }));
+  }, [selectedForecast]);
   // Plain-language "what's happening today" line: all beaches calm vs. which
   // leeward shore the wind favours. Island-wide narrative, derived from the
   // selected day's wind (see utils/islandDaySummary.ts).
@@ -2309,8 +2386,45 @@ export const BeachSearcherHome: React.FC<BeachSearcherHomeProps> = ({
       windDirection,
       suitableCount: suitableBeachDisplayCount,
       totalCount: selectedIsland.beaches.length,
+      hourlyWind: contextStripHourlyWind,
     })
     : null;
+  // When a search/filter narrows the list to a single beach, the generic
+  // "N best beaches tomorrow" count line reads wrong ("1 καλύτερες παραλίες").
+  // Instead, name that beach and describe its own outlook for the selected day.
+  // Phrased around "conditions" (a noun) so the adjective agrees internally and
+  // we sidestep Greek beach-name gender ("η Βοϊδοκοιλιά" vs "το Σαρακήνικο").
+  const singleMatchedBeachCard = weatherBeachCards.length === 1 ? weatherBeachCards[0] : undefined;
+  const searchedBeachStripText = (() => {
+    if (!singleMatchedBeachCard) return undefined;
+    const name = displayBeachName(singleMatchedBeachCard.beach.name, language);
+    // Per-beach intra-day change, computed with the real exposure engine hour by
+    // hour (catches the wind strengthening AND veering onto the beach), so we can
+    // describe THIS beach instead of leaving the generic island line below.
+    const intradayShift = selectedForecast?.hourly?.length
+      ? buildBeachIntradayShift(singleMatchedBeachCard.beach, singleMatchedBeachCard.context?.geospatialExposure, selectedForecast.hourly, language)
+      : undefined;
+    if (intradayShift) {
+      return `${name} · ${intradayShift}`;
+    }
+    if (typeof singleMatchedBeachCard.score !== 'number') return undefined;
+    const s = singleMatchedBeachCard.score;
+    // The harsh "difficult conditions" wording is reserved for genuinely strong
+    // wind (≥5 Bft). A low score on a calm/moderate day (≤4 Bft) usually means
+    // light chop or side exposure, not a difficult day — calling that "δύσκολες"
+    // overstates it and leaves no stronger word for truly exposed, windy beaches.
+    const isGenuinelyRough = (windBeaufort ?? 0) >= 5;
+    const condition = s >= 85
+      ? { en: 'ideal conditions', gr: 'ιδανικές συνθήκες', de: 'ideale Bedingungen', it: 'condizioni ideali', fr: 'conditions idéales' }
+      : s >= 70
+        ? { en: 'good conditions', gr: 'καλές συνθήκες', de: 'gute Bedingungen', it: 'buone condizioni', fr: 'bonnes conditions' }
+        : s >= 50
+          ? { en: 'fair conditions', gr: 'μέτριες συνθήκες', de: 'mäßige Bedingungen', it: 'condizioni discrete', fr: 'conditions moyennes' }
+          : isGenuinelyRough
+            ? { en: 'tricky conditions', gr: 'δύσκολες συνθήκες', de: 'schwierige Bedingungen', it: 'condizioni difficili', fr: 'conditions difficiles' }
+            : { en: 'less-than-ideal conditions', gr: 'όχι ιδανικές συνθήκες', de: 'nicht ideale Bedingungen', it: 'condizioni non ideali', fr: 'conditions pas idéales' };
+    return `${name} · ${getLocalizedCopy(language, condition)} ${contextStripDayPrefix}`;
+  })();
   const islandContextStrip = showIslandContextStrip && islandStripPhoto && selectedIsland ? (
     <div className="relative mb-4 overflow-hidden rounded-[1.35rem] border border-sky-100/80 shadow-sm shadow-sky-900/10 ring-1 ring-white/45">
       <img
@@ -2337,15 +2451,31 @@ export const BeachSearcherHome: React.FC<BeachSearcherHomeProps> = ({
           <h2 className="mt-0.5 text-2xl font-extrabold leading-tight text-white drop-shadow-sm sm:text-[1.7rem]">
             {selectedIsland.name[language]}
           </h2>
-          {suitableBeachDisplayCount > 0 && !contextStripDaySummary?.allBeachesSuitable && (
+          {searchedBeachStripText && (
             <p className="mt-0.5 truncate text-sm font-semibold text-white/90">
-              {suitableBeachDisplayCount} {contextStripBeachesLabel} {contextStripDayPrefix}
+              {searchedBeachStripText}
             </p>
           )}
-          {contextStripDaySummary && (
-            <p className="mt-1 line-clamp-2 text-[0.8rem] font-medium leading-snug text-white/80">
-              {contextStripDaySummary.text}
+          {/* Mobile: a single condensed line (shore + time) — the full sentences
+              plus the count are too much text on a narrow strip. Desktop keeps both. */}
+          {!singleMatchedBeachCard && isMobileViewport && contextStripDaySummary && (
+            <p className="mt-0.5 truncate text-sm font-semibold text-white/90">
+              {contextStripDaySummary.short}
             </p>
+          )}
+          {!singleMatchedBeachCard && !isMobileViewport && (
+            <>
+              {suitableBeachDisplayCount > 0 && !contextStripDaySummary?.allBeachesSuitable && (
+                <p className="mt-0.5 truncate text-sm font-semibold text-white/90">
+                  {contextStripCountLine}
+                </p>
+              )}
+              {contextStripDaySummary && (
+                <p className="mt-1 line-clamp-2 text-[0.8rem] font-medium leading-snug text-white/80">
+                  {contextStripDaySummary.text}
+                </p>
+              )}
+            </>
           )}
         </div>
       </div>
@@ -2984,11 +3114,11 @@ export const BeachSearcherHome: React.FC<BeachSearcherHomeProps> = ({
                 </div>
               )}
             </div>
-            <div className={`grid gap-2 sm:flex sm:items-center lg:flex-nowrap lg:justify-end ${onUseCurrentLocation ? 'grid-cols-2' : 'grid-cols-1'}`}>
-              {onUseCurrentLocation && (
+            <div className={`grid gap-2 sm:flex sm:items-center lg:flex-nowrap lg:justify-end ${(onShowNearbyBeaches ?? onUseCurrentLocation) ? 'grid-cols-2' : 'grid-cols-1'}`}>
+              {(onShowNearbyBeaches ?? onUseCurrentLocation) && (
                 <button
                   type="button"
-                  onClick={onUseCurrentLocation}
+                  onClick={onShowNearbyBeaches ?? onUseCurrentLocation}
                   disabled={isFindingCurrentLocation}
                   className={`inline-flex min-h-11 w-full items-center justify-center gap-2 rounded-full border px-3 text-sm font-semibold transition focus:outline-none focus-visible:ring-2 focus-visible:ring-cyan-700 sm:px-4 lg:hidden ${
                     hasUserLocation

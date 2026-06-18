@@ -297,7 +297,11 @@ export const BeachConditionScore: React.FC<BeachConditionScoreProps> = ({
   const getScoreLabel = (score: number) => {
     const day = getSelectedDayPrefix(selectedDate, new Date(), language);
     if (seaStateLabel && (score < 8 || windBeaufort >= 5)) return seaStateLabel;
-    if (windBeaufort === 5 && seaExposureLevel !== 'exposed') return copy.betterWindOption;
+    // Reserve the clean "sheltered pick" headline for genuinely protected beaches.
+    // A partly-sheltered beach at 5 Bft still gets wind/chop, so calling it the
+    // "better wind option" misleads (and contradicts the difficult-day verdict);
+    // let it fall through to the honest sea state instead.
+    if (windBeaufort === 5 && seaExposureLevel === 'protected') return copy.betterWindOption;
     if (score >= 8) return compact ? copy.veryGood : copy.great(day);
     if (score >= 5) return windBeaufort < 4 ? copy.goodConditions : (windBeaufort === 5 ? copy.choppy : copy.useCaution);
     return copy.notIdeal(day);

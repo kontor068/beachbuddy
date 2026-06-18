@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "generatedAt": "2026-06-12T06:15:10.932Z",
+  "generatedAt": "2026-06-18T20:17:49.433Z",
   "region": {
     "id": "west-greece-aetolia-acarnania-mainland",
     "name": "Aetolia-Acarnania"
@@ -36,48 +36,48 @@
     "maskConfidence": "high"
   },
   "summary": {
-    "beachCount": 39,
-    "generatedProfiles": 39,
+    "beachCount": 45,
+    "generatedProfiles": 45,
     "missingCoordinates": 0,
     "sectors": {
       "N": {
-        "protected": 25,
-        "partial": 13,
+        "protected": 28,
+        "partial": 16,
         "exposed": 1
       },
       "NE": {
-        "protected": 28,
-        "partial": 11,
+        "protected": 32,
+        "partial": 13,
         "exposed": 0
       },
       "E": {
-        "protected": 19,
-        "partial": 20,
+        "protected": 24,
+        "partial": 21,
         "exposed": 0
       },
       "SE": {
-        "protected": 17,
-        "partial": 8,
-        "exposed": 14
+        "protected": 21,
+        "partial": 9,
+        "exposed": 15
       },
       "S": {
-        "protected": 15,
-        "partial": 13,
-        "exposed": 11
+        "protected": 18,
+        "partial": 15,
+        "exposed": 12
       },
       "SW": {
-        "protected": 16,
-        "partial": 13,
-        "exposed": 10
+        "protected": 18,
+        "partial": 14,
+        "exposed": 13
       },
       "W": {
-        "protected": 22,
-        "partial": 15,
-        "exposed": 2
+        "protected": 24,
+        "partial": 18,
+        "exposed": 3
       },
       "NW": {
-        "protected": 24,
-        "partial": 12,
+        "protected": 26,
+        "partial": 16,
         "exposed": 3
       }
     }
@@ -2848,6 +2848,432 @@
           "blockedRayRatio": 1,
           "onshore": -0.991,
           "intensity": 0.3
+        }
+      },
+      "confidence": "high"
+    },
+    "3017": {
+      "beachId": 3017,
+      "name": {
+        "en": "Mesolongi Tourlida",
+        "gr": "Μεσολόγγι Τουρλίδα"
+      },
+      "coordinates": {
+        "lat": 38.3253662,
+        "lon": 21.4194283
+      },
+      "facingDeg": 170.8,
+      "sectors": {
+        "N": {
+          "level": "protected",
+          "fetchKm": 0,
+          "blockedRayRatio": 1,
+          "onshore": -0.987,
+          "intensity": 0.4
+        },
+        "NE": {
+          "level": "protected",
+          "fetchKm": 0,
+          "blockedRayRatio": 1,
+          "onshore": -0.585,
+          "intensity": 12.5
+        },
+        "E": {
+          "level": "partial",
+          "fetchKm": 1.96,
+          "blockedRayRatio": 1,
+          "onshore": 0.16,
+          "intensity": 34.8
+        },
+        "SE": {
+          "level": "exposed",
+          "fetchKm": 14.24,
+          "blockedRayRatio": 0.8,
+          "onshore": 0.811,
+          "intensity": 61.6
+        },
+        "S": {
+          "level": "exposed",
+          "fetchKm": 17.8,
+          "blockedRayRatio": 0.8,
+          "onshore": 0.987,
+          "intensity": 67.6
+        },
+        "SW": {
+          "level": "exposed",
+          "fetchKm": 17.52,
+          "blockedRayRatio": 0.4,
+          "onshore": 0.585,
+          "intensity": 66.6
+        },
+        "W": {
+          "level": "protected",
+          "fetchKm": 5,
+          "blockedRayRatio": 0.8,
+          "onshore": -0.16,
+          "intensity": 26.6
+        },
+        "NW": {
+          "level": "protected",
+          "fetchKm": 0,
+          "blockedRayRatio": 1,
+          "onshore": -0.811,
+          "intensity": 5.7
+        }
+      },
+      "confidence": "high"
+    },
+    "3044": {
+      "beachId": 3044,
+      "name": {
+        "en": "Aktio Vonitsas Ag. Dimitrios",
+        "gr": "Άκτιο Βόνιτσας Αγ. Δημήτριος"
+      },
+      "coordinates": {
+        "lat": 38.921,
+        "lon": 20.893583
+      },
+      "facingDeg": 352.5,
+      "sectors": {
+        "N": {
+          "level": "partial",
+          "fetchKm": 12.56,
+          "blockedRayRatio": 1,
+          "onshore": 0.991,
+          "intensity": 59.7
+        },
+        "NE": {
+          "level": "partial",
+          "fetchKm": 4.72,
+          "blockedRayRatio": 1,
+          "onshore": 0.609,
+          "intensity": 48.3
+        },
+        "E": {
+          "level": "protected",
+          "fetchKm": 0.72,
+          "blockedRayRatio": 1,
+          "onshore": -0.131,
+          "intensity": 26.1
+        },
+        "SE": {
+          "level": "protected",
+          "fetchKm": 0.12,
+          "blockedRayRatio": 1,
+          "onshore": -0.793,
+          "intensity": 6.2
+        },
+        "S": {
+          "level": "protected",
+          "fetchKm": 0,
+          "blockedRayRatio": 1,
+          "onshore": -0.991,
+          "intensity": 0.3
+        },
+        "SW": {
+          "level": "protected",
+          "fetchKm": 0.12,
+          "blockedRayRatio": 1,
+          "onshore": -0.609,
+          "intensity": 11.7
+        },
+        "W": {
+          "level": "partial",
+          "fetchKm": 0.8,
+          "blockedRayRatio": 1,
+          "onshore": 0.131,
+          "intensity": 33.9
+        },
+        "NW": {
+          "level": "partial",
+          "fetchKm": 7.08,
+          "blockedRayRatio": 1,
+          "onshore": 0.793,
+          "intensity": 53.8
+        }
+      },
+      "confidence": "high"
+    },
+    "3045": {
+      "beachId": 3045,
+      "name": {
+        "en": "Aktio Vonitsas Palairos",
+        "gr": "Άκτιο Βόνιτσας Πάλαιρος"
+      },
+      "coordinates": {
+        "lat": 38.780444,
+        "lon": 20.878417
+      },
+      "facingDeg": 256.8,
+      "sectors": {
+        "N": {
+          "level": "protected",
+          "fetchKm": 0.72,
+          "blockedRayRatio": 1,
+          "onshore": -0.228,
+          "intensity": 23.1
+        },
+        "NE": {
+          "level": "protected",
+          "fetchKm": 0.04,
+          "blockedRayRatio": 1,
+          "onshore": -0.85,
+          "intensity": 4.5
+        },
+        "E": {
+          "level": "protected",
+          "fetchKm": 0,
+          "blockedRayRatio": 1,
+          "onshore": -0.974,
+          "intensity": 0.8
+        },
+        "SE": {
+          "level": "protected",
+          "fetchKm": 0.12,
+          "blockedRayRatio": 1,
+          "onshore": -0.527,
+          "intensity": 14.2
+        },
+        "S": {
+          "level": "partial",
+          "fetchKm": 11.64,
+          "blockedRayRatio": 0.8,
+          "onshore": 0.228,
+          "intensity": 41.6
+        },
+        "SW": {
+          "level": "exposed",
+          "fetchKm": 16.24,
+          "blockedRayRatio": 0.8,
+          "onshore": 0.85,
+          "intensity": 62.9
+        },
+        "W": {
+          "level": "partial",
+          "fetchKm": 6.64,
+          "blockedRayRatio": 1,
+          "onshore": 0.974,
+          "intensity": 59.2
+        },
+        "NW": {
+          "level": "partial",
+          "fetchKm": 2.36,
+          "blockedRayRatio": 1,
+          "onshore": 0.527,
+          "intensity": 45.8
+        }
+      },
+      "confidence": "high"
+    },
+    "3046": {
+      "beachId": 3046,
+      "name": {
+        "en": "PDE Arachovitika",
+        "gr": "ΠΔΕ Αραχωβίτικα"
+      },
+      "coordinates": {
+        "lat": 38.331073,
+        "lon": 21.842379
+      },
+      "facingDeg": 303.7,
+      "sectors": {
+        "N": {
+          "level": "partial",
+          "fetchKm": 4.68,
+          "blockedRayRatio": 1,
+          "onshore": 0.555,
+          "intensity": 46.6
+        },
+        "NE": {
+          "level": "protected",
+          "fetchKm": 1.04,
+          "blockedRayRatio": 1,
+          "onshore": -0.196,
+          "intensity": 24.1
+        },
+        "E": {
+          "level": "protected",
+          "fetchKm": 0,
+          "blockedRayRatio": 1,
+          "onshore": -0.832,
+          "intensity": 5
+        },
+        "SE": {
+          "level": "protected",
+          "fetchKm": 0,
+          "blockedRayRatio": 1,
+          "onshore": -0.981,
+          "intensity": 0.6
+        },
+        "S": {
+          "level": "protected",
+          "fetchKm": 0.04,
+          "blockedRayRatio": 1,
+          "onshore": -0.555,
+          "intensity": 13.4
+        },
+        "SW": {
+          "level": "partial",
+          "fetchKm": 6.36,
+          "blockedRayRatio": 0.8,
+          "onshore": 0.196,
+          "intensity": 38.4
+        },
+        "W": {
+          "level": "exposed",
+          "fetchKm": 9.6,
+          "blockedRayRatio": 0.8,
+          "onshore": 0.832,
+          "intensity": 60.8
+        },
+        "NW": {
+          "level": "partial",
+          "fetchKm": 6.28,
+          "blockedRayRatio": 1,
+          "onshore": 0.981,
+          "intensity": 59.4
+        }
+      },
+      "confidence": "high"
+    },
+    "3050": {
+      "beachId": 3050,
+      "name": {
+        "en": "PDE Makynia",
+        "gr": "ΠΔΕ Μακύνεια"
+      },
+      "coordinates": {
+        "lat": 38.346195,
+        "lon": 21.716688
+      },
+      "facingDeg": 210.2,
+      "sectors": {
+        "N": {
+          "level": "protected",
+          "fetchKm": 0,
+          "blockedRayRatio": 1,
+          "onshore": -0.864,
+          "intensity": 4.1
+        },
+        "NE": {
+          "level": "protected",
+          "fetchKm": 0,
+          "blockedRayRatio": 1,
+          "onshore": -0.967,
+          "intensity": 1
+        },
+        "E": {
+          "level": "protected",
+          "fetchKm": 0,
+          "blockedRayRatio": 1,
+          "onshore": -0.503,
+          "intensity": 14.9
+        },
+        "SE": {
+          "level": "partial",
+          "fetchKm": 4.48,
+          "blockedRayRatio": 1,
+          "onshore": 0.255,
+          "intensity": 37.7
+        },
+        "S": {
+          "level": "partial",
+          "fetchKm": 15.04,
+          "blockedRayRatio": 1,
+          "onshore": 0.864,
+          "intensity": 55.9
+        },
+        "SW": {
+          "level": "exposed",
+          "fetchKm": 22.72,
+          "blockedRayRatio": 0.6,
+          "onshore": 0.967,
+          "intensity": 74.7
+        },
+        "W": {
+          "level": "partial",
+          "fetchKm": 10.72,
+          "blockedRayRatio": 0.8,
+          "onshore": 0.503,
+          "intensity": 50.5
+        },
+        "NW": {
+          "level": "protected",
+          "fetchKm": 0.48,
+          "blockedRayRatio": 1,
+          "onshore": -0.255,
+          "intensity": 22.3
+        }
+      },
+      "confidence": "high"
+    },
+    "3051": {
+      "beachId": 3051,
+      "name": {
+        "en": "PDE Patra Ag.Vasilios",
+        "gr": "ΠΔΕ Πάτρα Αγ.Βασίλειος"
+      },
+      "coordinates": {
+        "lat": 38.31823,
+        "lon": 21.81686
+      },
+      "facingDeg": 4.5,
+      "sectors": {
+        "N": {
+          "level": "partial",
+          "fetchKm": 6.84,
+          "blockedRayRatio": 1,
+          "onshore": 0.997,
+          "intensity": 59.9
+        },
+        "NE": {
+          "level": "partial",
+          "fetchKm": 5.28,
+          "blockedRayRatio": 1,
+          "onshore": 0.76,
+          "intensity": 52.8
+        },
+        "E": {
+          "level": "protected",
+          "fetchKm": 1.16,
+          "blockedRayRatio": 1,
+          "onshore": 0.078,
+          "intensity": 32.4
+        },
+        "SE": {
+          "level": "protected",
+          "fetchKm": 0.28,
+          "blockedRayRatio": 1,
+          "onshore": -0.649,
+          "intensity": 10.5
+        },
+        "S": {
+          "level": "protected",
+          "fetchKm": 0,
+          "blockedRayRatio": 1,
+          "onshore": -0.997,
+          "intensity": 0.1
+        },
+        "SW": {
+          "level": "protected",
+          "fetchKm": 0,
+          "blockedRayRatio": 1,
+          "onshore": -0.76,
+          "intensity": 7.2
+        },
+        "W": {
+          "level": "protected",
+          "fetchKm": 1.8,
+          "blockedRayRatio": 1,
+          "onshore": -0.078,
+          "intensity": 27.6
+        },
+        "NW": {
+          "level": "partial",
+          "fetchKm": 5.32,
+          "blockedRayRatio": 1,
+          "onshore": 0.649,
+          "intensity": 49.5
         }
       },
       "confidence": "high"

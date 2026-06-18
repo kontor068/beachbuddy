@@ -55,7 +55,9 @@ const normalizeProfiles = (
   if (!payload.profiles) return undefined;
 
   const lookup = Object.values(payload.profiles).reduce<GeospatialExposureProfileLookup>((currentLookup, profile) => {
-    if (!profile.beachId || !profile.sectors) return currentLookup;
+    // beachId 0 is a real beach (ids are 0-indexed source order), so guard on
+    // null/undefined — a plain `!profile.beachId` would silently drop id 0.
+    if (profile.beachId == null || !profile.sectors) return currentLookup;
     if (!isUsableGeneratedProfile(profile)) return currentLookup;
 
     currentLookup[profile.beachId] = {

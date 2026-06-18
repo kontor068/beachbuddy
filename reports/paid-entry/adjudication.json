@@ -1,0 +1,1307 @@
+{
+  "_meta": {
+    "generatedAt": "2026-06-17T09:55:30.459Z",
+    "seedCount": 25,
+    "confident": 13,
+    "ambiguous": 9,
+    "noMatch": 3,
+    "instructions": "Review each entry. 'confident': verify chosenId or set null to skip. ambiguous (PICK_ONE): set chosenId to the correct candidate id, or null to skip. 'no-match': set chosenId if you know it, else leave. Then run: node scripts/importPaidEntry.mjs apply",
+    "thresholds": {
+      "CONFIDENT": 88,
+      "AMBIGUOUS": 72
+    }
+  },
+  "confident": [
+    {
+      "seed": {
+        "nameGr": "Astir Beach / Αστέρας Βουλιαγμένης",
+        "nameEn": "Astir Beach Vouliagmeni",
+        "region": "Αττική",
+        "coordinates": {
+          "lat": 37.80924,
+          "lon": 23.77337
+        },
+        "expectId": 19,
+        "kind": "entrance_fee",
+        "priceText": "Εισιτήριο εισόδου ανά περίοδο (επιπλέον χρέωση για ξαπλώστρες)",
+        "sourceUrls": [
+          "https://astir.gr/beach/"
+        ],
+        "notes": "Οργανωμένη/ιδιωτική πλαζ με εισιτήριο ή κράτηση — η είσοδος δεν είναι δωρεάν.",
+        "source": "manual"
+      },
+      "decision": "accept",
+      "chosenId": 19,
+      "method": "manual-pin",
+      "candidates": []
+    },
+    {
+      "seed": {
+        "nameGr": "Παραλία Βάρκιζας",
+        "nameEn": "Varkiza Beach (Yabanaki)",
+        "region": "Αττική",
+        "coordinates": {
+          "lat": 37.81992,
+          "lon": 23.80962
+        },
+        "expectId": 16,
+        "kind": "entrance_fee",
+        "priceText": "Εισιτήριο εισόδου στο οργανωμένο τμήμα (Yabanaki) + ξαπλώστρες",
+        "sourceUrls": [
+          "https://athensattica.com/el/highlight/yabanaki/"
+        ],
+        "notes": "Το οργανωμένο τμήμα Yabanaki λειτουργεί με εισιτήριο εισόδου.",
+        "source": "manual"
+      },
+      "decision": "accept",
+      "chosenId": 16,
+      "method": "manual-pin",
+      "candidates": []
+    },
+    {
+      "seed": {
+        "nameGr": "Παραλία Αστέρα Γλυφάδας",
+        "nameEn": "Asteria Glyfada Beach",
+        "region": "Αττική",
+        "coordinates": {
+          "lat": 37.85747,
+          "lon": 23.74978
+        },
+        "expectId": 12,
+        "kind": "private_club",
+        "priceText": "Είσοδος / ημερήσιο πάσο (beach club)",
+        "sourceUrls": [
+          "https://asteriaglyfada.gr/beach/"
+        ],
+        "notes": "Ιστορικό beach club της αθηναϊκής ριβιέρας· η πρόσβαση γίνεται με είσοδο/κράτηση.",
+        "source": "manual"
+      },
+      "decision": "accept",
+      "chosenId": 12,
+      "method": "manual-pin",
+      "candidates": []
+    },
+    {
+      "seed": {
+        "nameGr": "Λίμνη Βουλιαγμένης",
+        "nameEn": "Lake Vouliagmeni",
+        "region": "Αττική",
+        "coordinates": {
+          "lat": 37.80742,
+          "lon": 23.78549
+        },
+        "expectId": 20,
+        "kind": "entrance_fee",
+        "priceText": "Εισιτήριο εισόδου στον οργανωμένο χώρο της λίμνης",
+        "sourceUrls": [
+          "https://limnivouliagmenis.gr/"
+        ],
+        "notes": "Οργανωμένος χώρος κολύμβησης σε λίμνη με εισιτήριο εισόδου.",
+        "source": "manual"
+      },
+      "decision": "accept",
+      "chosenId": 20,
+      "method": "manual-pin",
+      "candidates": []
+    },
+    {
+      "seed": {
+        "nameGr": "Ακτή του Ήλιου",
+        "coordinates": {
+          "lat": 37.9068714,
+          "lon": 23.7149096
+        },
+        "kind": "entrance_fee",
+        "sourceUrls": [
+          "https://www.aktitouiliou.gr/"
+        ],
+        "osmUrl": "https://www.openstreetmap.org/way/399164539",
+        "source": "osm"
+      },
+      "decision": "accept",
+      "chosenId": 5,
+      "method": "greeklish-dice+proximity",
+      "candidates": [
+        {
+          "id": 5,
+          "name": "Ακτή του Ήλιου",
+          "region": "Attica",
+          "sub": "Central Athens",
+          "subSub": "Athens area (mainland)",
+          "score": 100,
+          "nameScore": 100,
+          "proxMeters": 0
+        },
+        {
+          "id": 4,
+          "name": "Α' Πλαζ Αλίμου «Στολίδι»",
+          "region": "Attica",
+          "sub": "Central Athens",
+          "subSub": "Athens area (mainland)",
+          "score": 92,
+          "nameScore": 30,
+          "proxMeters": 334
+        },
+        {
+          "id": 3025,
+          "name": "Άλιμος Λουτρά",
+          "region": "Attica",
+          "sub": "Central Athens",
+          "subSub": "Athens area (mainland)",
+          "score": 82,
+          "nameScore": 22,
+          "proxMeters": 522
+        },
+        {
+          "id": 2573,
+          "name": "Παραλία Αγίου Ηλία",
+          "region": "West Greece",
+          "sub": "Ileia",
+          "subSub": "Ileia (mainland)",
+          "score": 67,
+          "nameScore": 67,
+          "proxMeters": 211844
+        }
+      ]
+    },
+    {
+      "seed": {
+        "nameGr": "Ακτή Τσαμάκια",
+        "nameEn": "Tsamakia beach",
+        "coordinates": {
+          "lat": 39.107894,
+          "lon": 26.5645081
+        },
+        "kind": "entrance_fee",
+        "osmUrl": "https://www.openstreetmap.org/way/251823840",
+        "source": "osm"
+      },
+      "decision": "accept",
+      "chosenId": 1323,
+      "method": "greeklish-dice+proximity",
+      "candidates": [
+        {
+          "id": 1323,
+          "name": "Ακτή Τσαμάκια",
+          "region": "North Aegean",
+          "sub": "Lesvos",
+          "subSub": "Lesvos",
+          "score": 100,
+          "nameScore": 100,
+          "proxMeters": 0
+        },
+        {
+          "id": 1374,
+          "name": "Φυκιότρυπα",
+          "region": "North Aegean",
+          "sub": "Lesvos",
+          "subSub": "Lesvos",
+          "score": 82,
+          "nameScore": 13,
+          "proxMeters": 471
+        },
+        {
+          "id": 2459,
+          "name": "Παραλία Πλακιά",
+          "region": "South Aegean",
+          "sub": "Dodecanese",
+          "subSub": "Rhodes",
+          "score": 73,
+          "nameScore": 73,
+          "proxMeters": 361386
+        },
+        {
+          "id": 646,
+          "name": "Μάλια",
+          "region": "Crete",
+          "sub": "Heraklion",
+          "subSub": "Crete (Heraklion)",
+          "score": 67,
+          "nameScore": 67,
+          "proxMeters": 435189
+        }
+      ]
+    },
+    {
+      "seed": {
+        "nameGr": "Ανατολική παραλία Σκορπιού",
+        "nameEn": "Eastern beach of Skorpios",
+        "coordinates": {
+          "lat": 38.6891258,
+          "lon": 20.7460543
+        },
+        "kind": "private_club",
+        "osmUrl": "https://www.openstreetmap.org/way/148241532",
+        "source": "osm"
+      },
+      "decision": "accept",
+      "chosenId": 1151,
+      "method": "greeklish-dice+proximity",
+      "candidates": [
+        {
+          "id": 1151,
+          "name": "Ανατολική παραλία Σκορπιού",
+          "region": "Ionian Islands",
+          "sub": "Lefkada",
+          "subSub": "Lefkada",
+          "score": 100,
+          "nameScore": 100,
+          "proxMeters": 1
+        },
+        {
+          "id": 1168,
+          "name": "Νότια Παραλία Σκορπιού",
+          "region": "Ionian Islands",
+          "sub": "Lefkada",
+          "subSub": "Lefkada",
+          "score": 82,
+          "nameScore": 67,
+          "proxMeters": 410
+        },
+        {
+          "id": 690,
+          "name": "Παραλία Ανατολικά",
+          "region": "Crete",
+          "sub": "Rethymno",
+          "subSub": "Crete (Rethymno)",
+          "score": 68,
+          "nameScore": 68,
+          "proxMeters": 515992
+        },
+        {
+          "id": 279,
+          "name": "Παραλία Σκιάθου",
+          "region": "Central Greece",
+          "sub": "Evia",
+          "subSub": "Evia",
+          "score": 59,
+          "nameScore": 59,
+          "proxMeters": 244298
+        }
+      ]
+    },
+    {
+      "seed": {
+        "nameGr": "Θέρετρο Αξιωματικών Ναυτικού",
+        "coordinates": {
+          "lat": 38.1902301,
+          "lon": 24.0639327
+        },
+        "kind": "private_club",
+        "osmUrl": "https://www.openstreetmap.org/way/631715142",
+        "source": "osm"
+      },
+      "decision": "accept",
+      "chosenId": 31,
+      "method": "greeklish-dice+proximity",
+      "candidates": [
+        {
+          "id": 31,
+          "name": "Θέρετρο Αξιωματικών Ναυτικού",
+          "region": "Attica",
+          "sub": "East Attica",
+          "subSub": "East Attica (mainland)",
+          "score": 100,
+          "nameScore": 100,
+          "proxMeters": 0
+        },
+        {
+          "id": 2041,
+          "name": "Ναυτικός όμιλος Πάρου",
+          "region": "South Aegean",
+          "sub": "Cyclades",
+          "subSub": "Paros",
+          "score": 41,
+          "nameScore": 41,
+          "proxMeters": 155243
+        },
+        {
+          "id": 3034,
+          "name": "Κομοτηνή Παραλία Κρυονερίου Μαρώνεια",
+          "region": "East Macedonia and Thrace",
+          "sub": "Rodopi",
+          "subSub": "Rodopi (mainland)",
+          "score": 39,
+          "nameScore": 39,
+          "proxMeters": 323455
+        },
+        {
+          "id": 260,
+          "name": "Ναυτικό",
+          "region": "Central Greece",
+          "sub": "Evia",
+          "subSub": "Evia",
+          "score": 38,
+          "nameScore": 38,
+          "proxMeters": 54424
+        }
+      ]
+    },
+    {
+      "seed": {
+        "nameGr": "Μικρή Σάντα Μαρία",
+        "coordinates": {
+          "lat": 37.138211,
+          "lon": 25.2873388
+        },
+        "kind": "entrance_fee",
+        "osmUrl": "https://www.openstreetmap.org/way/271531535",
+        "source": "osm"
+      },
+      "decision": "accept",
+      "chosenId": 2038,
+      "method": "greeklish-dice+proximity",
+      "candidates": [
+        {
+          "id": 2038,
+          "name": "Μικρή Σάντα Μαρία",
+          "region": "South Aegean",
+          "sub": "Cyclades",
+          "subSub": "Paros",
+          "score": 100,
+          "nameScore": 100,
+          "proxMeters": 0
+        },
+        {
+          "id": 2051,
+          "name": "Σάντα Μαρία",
+          "region": "South Aegean",
+          "sub": "Cyclades",
+          "subSub": "Paros",
+          "score": 78,
+          "nameScore": 78,
+          "proxMeters": 1154
+        },
+        {
+          "id": 2184,
+          "name": "Σάντα Μαργαρίτα",
+          "region": "South Aegean",
+          "sub": "Cyclades",
+          "subSub": "Tinos",
+          "score": 59,
+          "nameScore": 59,
+          "proxMeters": 47551
+        },
+        {
+          "id": 2506,
+          "name": "Μικρό Γιανισκάρι",
+          "region": "West Greece",
+          "sub": "Achaia",
+          "subSub": "Achaia (mainland)",
+          "score": 57,
+          "nameScore": 57,
+          "proxMeters": 364069
+        }
+      ]
+    },
+    {
+      "seed": {
+        "nameGr": "Νότια Παραλία Σκορπιού (Ζακλίν Κέννεντυ)",
+        "nameEn": "Scorpio South Beach (Jacqueline Kennedy)",
+        "coordinates": {
+          "lat": 38.6879677,
+          "lon": 20.7415712
+        },
+        "kind": "private_club",
+        "osmUrl": "https://www.openstreetmap.org/way/317374708",
+        "source": "osm"
+      },
+      "decision": "accept",
+      "chosenId": 1168,
+      "method": "greeklish-dice+proximity",
+      "candidates": [
+        {
+          "id": 1168,
+          "name": "Νότια Παραλία Σκορπιού",
+          "region": "Ionian Islands",
+          "sub": "Lefkada",
+          "subSub": "Lefkada",
+          "score": 100,
+          "nameScore": 73,
+          "proxMeters": 0
+        },
+        {
+          "id": 1151,
+          "name": "Ανατολική παραλία Σκορπιού",
+          "region": "Ionian Islands",
+          "sub": "Lefkada",
+          "subSub": "Lefkada",
+          "score": 82,
+          "nameScore": 54,
+          "proxMeters": 410
+        },
+        {
+          "id": 2709,
+          "name": "Παραλία Κορνέλια",
+          "region": "Thessaly",
+          "sub": "Magnesia",
+          "subSub": "Magnesia (mainland - Pelion)",
+          "score": 51,
+          "nameScore": 51,
+          "proxMeters": 220470
+        },
+        {
+          "id": 1501,
+          "name": "Κουνουπί",
+          "region": "Peloponnese",
+          "sub": "Argolida",
+          "subSub": "Argolida (mainland)",
+          "score": 49,
+          "nameScore": 49,
+          "proxMeters": 264501
+        }
+      ]
+    },
+    {
+      "seed": {
+        "nameGr": "Παραλία Ουρανούπολης",
+        "nameEn": "Paralia Ouranoupoli",
+        "coordinates": {
+          "lat": 40.3292505,
+          "lon": 23.9780325
+        },
+        "kind": "private_club",
+        "osmUrl": "https://www.openstreetmap.org/way/159549779",
+        "source": "osm"
+      },
+      "decision": "skip (review: 2km offset, identity uncertain)",
+      "chosenId": null,
+      "method": "greeklish-dice+proximity",
+      "candidates": [
+        {
+          "id": 431,
+          "name": "Ouranoupoli",
+          "region": "Central Macedonia",
+          "sub": "Halkidiki",
+          "subSub": "Halkidiki (mainland)",
+          "score": 100,
+          "nameScore": 100,
+          "proxMeters": 2041
+        },
+        {
+          "id": 478,
+          "name": "Παραλία Ανθούπολης",
+          "region": "Central Macedonia",
+          "sub": "Halkidiki",
+          "subSub": "Halkidiki (mainland)",
+          "score": 74,
+          "nameScore": 74,
+          "proxMeters": 74682
+        },
+        {
+          "id": 2436,
+          "name": "Παραλία Τραουνού",
+          "region": "South Aegean",
+          "sub": "Dodecanese",
+          "subSub": "Rhodes",
+          "score": 69,
+          "nameScore": 69,
+          "proxMeters": 579094
+        },
+        {
+          "id": 778,
+          "name": "Παραλία Αλεξανδρούπολης",
+          "region": "East Macedonia and Thrace",
+          "sub": "Evros",
+          "subSub": "Evros (mainland)",
+          "score": 67,
+          "nameScore": 67,
+          "proxMeters": 167174
+        }
+      ]
+    },
+    {
+      "seed": {
+        "nameGr": "Balux - The house project",
+        "coordinates": {
+          "lat": 37.8574695,
+          "lon": 23.7497792
+        },
+        "kind": "private_club",
+        "osmUrl": "https://www.openstreetmap.org/way/178937290",
+        "source": "osm"
+      },
+      "decision": "accept",
+      "chosenId": 12,
+      "method": "greeklish-dice+proximity",
+      "candidates": [
+        {
+          "id": 12,
+          "name": "Παραλία Αστέρα Γλυφάδας",
+          "region": "Attica",
+          "sub": "Central Athens",
+          "subSub": "Athens area (mainland)",
+          "score": 100,
+          "nameScore": 5,
+          "proxMeters": 0
+        },
+        {
+          "id": 11,
+          "name": "Παραλία Γλυφάδας Ακτή Δ",
+          "region": "Attica",
+          "sub": "Central Athens",
+          "subSub": "Athens area (mainland)",
+          "score": 82,
+          "nameScore": 5,
+          "proxMeters": 408
+        },
+        {
+          "id": 10,
+          "name": "Παραλία Γλυφάδας Ακτή Γ",
+          "region": "Attica",
+          "sub": "Central Athens",
+          "subSub": "Athens area (mainland)",
+          "score": 60,
+          "nameScore": 5,
+          "proxMeters": 1167
+        },
+        {
+          "id": 13,
+          "name": "Α' Πλαζ Βούλας",
+          "region": "Attica",
+          "sub": "Central Athens",
+          "subSub": "Athens area (mainland)",
+          "score": 60,
+          "nameScore": 0,
+          "proxMeters": 864
+        }
+      ]
+    },
+    {
+      "seed": {
+        "nameGr": "Mileniko",
+        "coordinates": {
+          "lat": 40.2729019,
+          "lon": 23.1542179
+        },
+        "kind": "entrance_fee",
+        "osmUrl": "https://www.openstreetmap.org/way/1416418351",
+        "source": "osm"
+      },
+      "decision": "accept",
+      "chosenId": 427,
+      "method": "greeklish-dice+proximity",
+      "candidates": [
+        {
+          "id": 427,
+          "name": "Mileniko",
+          "region": "Central Macedonia",
+          "sub": "Halkidiki",
+          "subSub": "Halkidiki (mainland)",
+          "score": 100,
+          "nameScore": 100,
+          "proxMeters": 0
+        },
+        {
+          "id": 375,
+          "name": "Παραλία Κορομίλι",
+          "region": "Central Greece",
+          "sub": "Viotia",
+          "subSub": "Viotia (mainland)",
+          "score": 43,
+          "nameScore": 43,
+          "proxMeters": 231390
+        },
+        {
+          "id": 1535,
+          "name": "Παραλία Μυλοκοπή",
+          "region": "Peloponnese",
+          "sub": "Korinthia",
+          "subSub": "Korinthia (mainland)",
+          "score": 43,
+          "nameScore": 43,
+          "proxMeters": 247352
+        },
+        {
+          "id": 1665,
+          "name": "Νικουριά",
+          "region": "South Aegean",
+          "sub": "Cyclades",
+          "subSub": "Amorgos",
+          "score": 43,
+          "nameScore": 43,
+          "proxMeters": 446910
+        }
+      ]
+    }
+  ],
+  "ambiguous": [
+    {
+      "seed": {
+        "nameGr": "Καρνάγιο",
+        "coordinates": {
+          "lat": 40.7852947,
+          "lon": 24.7156147
+        },
+        "kind": "entrance_fee",
+        "osmUrl": "https://www.openstreetmap.org/node/13563811959",
+        "source": "osm"
+      },
+      "decision": "PICK_ONE",
+      "chosenId": null,
+      "candidates": [
+        {
+          "id": 841,
+          "name": "Καρνάγιο",
+          "region": "East Macedonia and Thrace",
+          "sub": "Thasos",
+          "subSub": "Thasos",
+          "score": 100,
+          "nameScore": 100,
+          "proxMeters": 10
+        },
+        {
+          "id": 2349,
+          "name": "Παραλία Καρνάγιο",
+          "region": "South Aegean",
+          "sub": "Dodecanese",
+          "subSub": "Kos",
+          "score": 100,
+          "nameScore": 100,
+          "proxMeters": 484068
+        },
+        {
+          "id": 844,
+          "name": "Λιμανάκι",
+          "region": "East Macedonia and Thrace",
+          "sub": "Thasos",
+          "subSub": "Thasos",
+          "score": 92,
+          "nameScore": 14,
+          "proxMeters": 284
+        },
+        {
+          "id": 2686,
+          "name": "Καρνάγιο (Αγριά)",
+          "region": "Thessaly",
+          "sub": "Magnesia",
+          "subSub": "Magnesia (mainland - Pelion)",
+          "score": 74,
+          "nameScore": 74,
+          "proxMeters": 217259
+        }
+      ]
+    },
+    {
+      "seed": {
+        "nameGr": "Πλαζ λίμνης",
+        "coordinates": {
+          "lat": 37.8074178,
+          "lon": 23.7854904
+        },
+        "kind": "entrance_fee",
+        "osmUrl": "https://www.openstreetmap.org/way/279476424",
+        "source": "osm"
+      },
+      "decision": "PICK_ONE",
+      "chosenId": null,
+      "candidates": [
+        {
+          "id": 20,
+          "name": "Λίμνη Βουλιαγμένης",
+          "region": "Attica",
+          "sub": "Central Athens",
+          "subSub": "Athens area (mainland)",
+          "score": 100,
+          "nameScore": 48,
+          "proxMeters": 0
+        },
+        {
+          "id": 686,
+          "name": "Λίμνη",
+          "region": "Crete",
+          "sub": "Rethymno",
+          "subSub": "Crete (Rethymno)",
+          "score": 89,
+          "nameScore": 89,
+          "proxMeters": 277580
+        },
+        {
+          "id": 993,
+          "name": "Παραλία Λίμνη",
+          "region": "Ionian Islands",
+          "sub": "Corfu",
+          "subSub": "Corfu",
+          "score": 89,
+          "nameScore": 89,
+          "proxMeters": 408340
+        },
+        {
+          "id": 2200,
+          "name": "Λίμνη",
+          "region": "South Aegean",
+          "sub": "Cyclades",
+          "subSub": "Koufonisia",
+          "score": 89,
+          "nameScore": 89,
+          "proxMeters": 188374
+        }
+      ]
+    },
+    {
+      "seed": {
+        "nameGr": "Agora Beach Bar & Restaurant",
+        "coordinates": {
+          "lat": 40.0502371,
+          "lon": 23.4717397
+        },
+        "kind": "entrance_fee",
+        "osmUrl": "https://www.openstreetmap.org/node/9237786835",
+        "source": "osm"
+      },
+      "decision": "PICK_ONE",
+      "chosenId": null,
+      "candidates": [
+        {
+          "id": 381,
+          "name": "Παραλία Πευκοχωρίου",
+          "region": "Central Macedonia",
+          "sub": "Halkidiki",
+          "subSub": "Halkidiki (mainland)",
+          "score": 100,
+          "nameScore": 20,
+          "proxMeters": 0
+        },
+        {
+          "id": 952,
+          "name": "Santa Barbara beach",
+          "region": "Ionian Islands",
+          "sub": "Corfu",
+          "subSub": "Corfu",
+          "score": 58,
+          "nameScore": 58,
+          "proxMeters": 306234
+        },
+        {
+          "id": 1524,
+          "name": "Κανταρέ",
+          "region": "Peloponnese",
+          "sub": "Korinthia",
+          "subSub": "Korinthia (mainland)",
+          "score": 55,
+          "nameScore": 55,
+          "proxMeters": 240591
+        },
+        {
+          "id": 487,
+          "name": "Παραλία Μπάρα",
+          "region": "Central Macedonia",
+          "sub": "Halkidiki",
+          "subSub": "Halkidiki (mainland)",
+          "score": 53,
+          "nameScore": 53,
+          "proxMeters": 33862
+        }
+      ]
+    },
+    {
+      "seed": {
+        "nameGr": "Gomati Umbrella Beach",
+        "coordinates": {
+          "lat": 39.996032,
+          "lon": 25.1494652
+        },
+        "kind": "entrance_fee",
+        "priceText": "10 EUR",
+        "osmUrl": "https://www.openstreetmap.org/way/1090194231",
+        "source": "osm"
+      },
+      "decision": "PICK_ONE",
+      "chosenId": null,
+      "candidates": [
+        {
+          "id": 1433,
+          "name": "Γομάτι",
+          "region": "North Aegean",
+          "sub": "Lemnos",
+          "subSub": "Lemnos",
+          "score": 100,
+          "nameScore": 56,
+          "proxMeters": 0
+        },
+        {
+          "id": 551,
+          "name": "Παραλία Δώματα",
+          "region": "Crete",
+          "sub": "Chania",
+          "subSub": "Crete (Chania)",
+          "score": 57,
+          "nameScore": 57,
+          "proxMeters": 541333
+        },
+        {
+          "id": 353,
+          "name": "Σκάλωμα",
+          "region": "Central Greece",
+          "sub": "Fokida",
+          "subSub": "Fokida (mainland)",
+          "score": 48,
+          "nameScore": 48,
+          "proxMeters": 324738
+        },
+        {
+          "id": 469,
+          "name": "Παραλία Λατούρα",
+          "region": "Central Macedonia",
+          "sub": "Halkidiki",
+          "subSub": "Halkidiki (mainland)",
+          "score": 48,
+          "nameScore": 48,
+          "proxMeters": 122816
+        }
+      ]
+    },
+    {
+      "seed": {
+        "nameGr": "Kampos Beach Bar Vitali",
+        "coordinates": {
+          "lat": 37.9386913,
+          "lon": 24.8258054
+        },
+        "kind": "entrance_fee",
+        "priceText": "12-16 EUR per sunbed",
+        "osmUrl": "https://www.openstreetmap.org/way/804607457",
+        "source": "osm"
+      },
+      "decision": "PICK_ONE",
+      "chosenId": null,
+      "candidates": [
+        {
+          "id": 1693,
+          "name": "Βιτάλι",
+          "region": "South Aegean",
+          "sub": "Cyclades",
+          "subSub": "Andros",
+          "score": 100,
+          "nameScore": 53,
+          "proxMeters": 0
+        },
+        {
+          "id": 1697,
+          "name": "Γίδες",
+          "region": "South Aegean",
+          "sub": "Cyclades",
+          "subSub": "Andros",
+          "score": 92,
+          "nameScore": 0,
+          "proxMeters": 296
+        },
+        {
+          "id": 647,
+          "name": "Ποταμός Μαλίας",
+          "region": "Crete",
+          "sub": "Heraklion",
+          "subSub": "Crete (Heraklion)",
+          "score": 63,
+          "nameScore": 63,
+          "proxMeters": 299685
+        },
+        {
+          "id": 1767,
+          "name": "Κάλαμος",
+          "region": "South Aegean",
+          "sub": "Cyclades",
+          "subSub": "Ios",
+          "score": 60,
+          "nameScore": 60,
+          "proxMeters": 146850
+        }
+      ]
+    },
+    {
+      "seed": {
+        "nameGr": "Livadi beach",
+        "coordinates": {
+          "lat": 35.4075635,
+          "lon": 24.7850994
+        },
+        "kind": "entrance_fee",
+        "osmUrl": "https://www.openstreetmap.org/way/177479927",
+        "source": "osm"
+      },
+      "decision": "PICK_ONE",
+      "chosenId": null,
+      "candidates": [
+        {
+          "id": 246,
+          "name": "Λιβάδι",
+          "region": "Central Greece",
+          "sub": "Evia",
+          "subSub": "Evia",
+          "score": 100,
+          "nameScore": 100,
+          "proxMeters": 287585
+        },
+        {
+          "id": 423,
+          "name": "Livadi",
+          "region": "Central Macedonia",
+          "sub": "Halkidiki",
+          "subSub": "Halkidiki (mainland)",
+          "score": 100,
+          "nameScore": 100,
+          "proxMeters": 573982
+        },
+        {
+          "id": 714,
+          "name": "Livadi beach",
+          "region": "Crete",
+          "sub": "Rethymno",
+          "subSub": "Crete (Rethymno)",
+          "score": 100,
+          "nameScore": 100,
+          "proxMeters": 0
+        },
+        {
+          "id": 813,
+          "name": "Λιβάδι",
+          "region": "East Macedonia and Thrace",
+          "sub": "Thasos",
+          "subSub": "Thasos",
+          "score": 100,
+          "nameScore": 100,
+          "proxMeters": 577194
+        }
+      ]
+    },
+    {
+      "seed": {
+        "nameGr": "Salt Sea Bar",
+        "coordinates": {
+          "lat": 40.4006776,
+          "lon": 23.8810314
+        },
+        "kind": "entrance_fee",
+        "osmUrl": "https://www.openstreetmap.org/way/849313782",
+        "source": "osm"
+      },
+      "decision": "PICK_ONE",
+      "chosenId": null,
+      "candidates": [
+        {
+          "id": 392,
+          "name": "Dimotiki Plaz 2",
+          "region": "Central Macedonia",
+          "sub": "Halkidiki",
+          "subSub": "Halkidiki (mainland)",
+          "score": 92,
+          "nameScore": 0,
+          "proxMeters": 292
+        },
+        {
+          "id": 393,
+          "name": "Dimotiki Plaz 3",
+          "region": "Central Macedonia",
+          "sub": "Halkidiki",
+          "subSub": "Halkidiki (mainland)",
+          "score": 92,
+          "nameScore": 0,
+          "proxMeters": 157
+        },
+        {
+          "id": 391,
+          "name": "Dimotiki Plaz 1",
+          "region": "Central Macedonia",
+          "sub": "Halkidiki",
+          "subSub": "Halkidiki (mainland)",
+          "score": 82,
+          "nameScore": 0,
+          "proxMeters": 762
+        },
+        {
+          "id": 428,
+          "name": "Παραλία Ιερισσού",
+          "region": "Central Macedonia",
+          "sub": "Halkidiki",
+          "subSub": "Halkidiki (mainland)",
+          "score": 60,
+          "nameScore": 17,
+          "proxMeters": 1394
+        }
+      ]
+    },
+    {
+      "seed": {
+        "nameGr": "Strand Hotel »Katerina«",
+        "coordinates": {
+          "lat": 39.0674267,
+          "lon": 20.6869678
+        },
+        "kind": "entrance_fee",
+        "osmUrl": "https://www.openstreetmap.org/way/550584208",
+        "source": "osm"
+      },
+      "decision": "PICK_ONE",
+      "chosenId": null,
+      "candidates": [
+        {
+          "id": 863,
+          "name": "Παραλία Καναλίου",
+          "region": "Epirus",
+          "sub": "Preveza",
+          "subSub": "Preveza (mainland)",
+          "score": 100,
+          "nameScore": 25,
+          "proxMeters": 0
+        },
+        {
+          "id": 483,
+          "name": "Παραλία Φτερωτή",
+          "region": "Central Macedonia",
+          "sub": "Halkidiki",
+          "subSub": "Halkidiki (mainland)",
+          "score": 53,
+          "nameScore": 53,
+          "proxMeters": 292262
+        },
+        {
+          "id": 470,
+          "name": "Παραλία Καστρί",
+          "region": "Central Macedonia",
+          "sub": "Halkidiki",
+          "subSub": "Halkidiki (mainland)",
+          "score": 48,
+          "nameScore": 48,
+          "proxMeters": 285713
+        },
+        {
+          "id": 480,
+          "name": "Παραλία Ελαιώνα",
+          "region": "Central Macedonia",
+          "sub": "Halkidiki",
+          "subSub": "Halkidiki (mainland)",
+          "score": 47,
+          "nameScore": 47,
+          "proxMeters": 290742
+        }
+      ]
+    },
+    {
+      "seed": {
+        "nameGr": "Yabanaki",
+        "coordinates": {
+          "lat": 37.8205698,
+          "lon": 23.8046064
+        },
+        "kind": "entrance_fee",
+        "osmUrl": "https://www.openstreetmap.org/node/6841328207",
+        "source": "osm"
+      },
+      "decision": "PICK_ONE",
+      "chosenId": null,
+      "candidates": [
+        {
+          "id": 16,
+          "name": "Παραλία Βάρκιζας",
+          "region": "Attica",
+          "sub": "Central Athens",
+          "subSub": "Athens area (mainland)",
+          "score": 82,
+          "nameScore": 14,
+          "proxMeters": 446
+        },
+        {
+          "id": 165,
+          "name": "Παραλία Κανάκια",
+          "region": "Attica",
+          "sub": "Islands (Saronic & Kythira)",
+          "subSub": "Salamina",
+          "score": 62,
+          "nameScore": 62,
+          "proxMeters": 35928
+        },
+        {
+          "id": 419,
+          "name": "Limanaki",
+          "region": "Central Macedonia",
+          "sub": "Halkidiki",
+          "subSub": "Halkidiki (mainland)",
+          "score": 57,
+          "nameScore": 57,
+          "proxMeters": 279157
+        },
+        {
+          "id": 844,
+          "name": "Λιμανάκι",
+          "region": "East Macedonia and Thrace",
+          "sub": "Thasos",
+          "subSub": "Thasos",
+          "score": 57,
+          "nameScore": 57,
+          "proxMeters": 338566
+        }
+      ]
+    }
+  ],
+  "noMatch": [
+    {
+      "seed": {
+        "nameGr": "Mango Beach Bar",
+        "coordinates": {
+          "lat": 39.0553074,
+          "lon": 20.6998602
+        },
+        "kind": "entrance_fee",
+        "priceText": "min. 30€ ausgeben",
+        "sourceUrls": [
+          "https://www.mangobeachbar.gr"
+        ],
+        "osmUrl": "https://www.openstreetmap.org/way/374569575",
+        "source": "osm"
+      },
+      "decision": "no-match",
+      "candidates": [
+        {
+          "id": 487,
+          "name": "Παραλία Μπάρα",
+          "region": "Central Macedonia",
+          "sub": "Halkidiki",
+          "subSub": "Halkidiki (mainland)",
+          "score": 60,
+          "nameScore": 60,
+          "proxMeters": 295979
+        },
+        {
+          "id": 2472,
+          "name": "Παραλία της Σάρα",
+          "region": "South Aegean",
+          "sub": "Dodecanese",
+          "subSub": "Symi",
+          "score": 57,
+          "nameScore": 57,
+          "proxMeters": 682311
+        },
+        {
+          "id": 494,
+          "name": "Παραλία Μπανάνα",
+          "region": "Central Macedonia",
+          "sub": "Halkidiki",
+          "subSub": "Halkidiki (mainland)",
+          "score": 55,
+          "nameScore": 55,
+          "proxMeters": 298934
+        },
+        {
+          "id": 850,
+          "name": "Σαλιάρα",
+          "region": "East Macedonia and Thrace",
+          "sub": "Thasos",
+          "subSub": "Thasos",
+          "score": 55,
+          "nameScore": 55,
+          "proxMeters": 393366
+        }
+      ]
+    },
+    {
+      "seed": {
+        "nameGr": "Rusty Cannon",
+        "coordinates": {
+          "lat": 38.1355604,
+          "lon": 24.0178418
+        },
+        "kind": "entrance_fee",
+        "osmUrl": "https://www.openstreetmap.org/way/659812025",
+        "source": "osm"
+      },
+      "decision": "no-match",
+      "candidates": [
+        {
+          "id": 943,
+          "name": "Kanoni Beach",
+          "region": "Ionian Islands",
+          "sub": "Corfu",
+          "subSub": "Corfu",
+          "score": 40,
+          "nameScore": 40,
+          "proxMeters": 399301
+        },
+        {
+          "id": 966,
+          "name": "Κανόνι",
+          "region": "Ionian Islands",
+          "sub": "Corfu",
+          "subSub": "Corfu",
+          "score": 40,
+          "nameScore": 40,
+          "proxMeters": 389962
+        },
+        {
+          "id": 1030,
+          "name": "Κανόνι",
+          "region": "Ionian Islands",
+          "sub": "Corfu",
+          "subSub": "Paxos",
+          "score": 40,
+          "nameScore": 40,
+          "proxMeters": 358889
+        },
+        {
+          "id": 1363,
+          "name": "Πλαζ Κανόνι",
+          "region": "North Aegean",
+          "sub": "Lesvos",
+          "subSub": "Lesvos",
+          "score": 40,
+          "nameScore": 40,
+          "proxMeters": 245127
+        }
+      ]
+    },
+    {
+      "seed": {
+        "nameGr": "Salty Wave beach",
+        "coordinates": {
+          "lat": 38.1341754,
+          "lon": 24.0150225
+        },
+        "kind": "entrance_fee",
+        "osmUrl": "https://www.openstreetmap.org/way/659812031",
+        "source": "osm"
+      },
+      "decision": "no-match",
+      "candidates": [
+        {
+          "id": 564,
+          "name": "Παραλία του Μάλεμε",
+          "region": "Crete",
+          "sub": "Chania",
+          "subSub": "Crete (Chania)",
+          "score": 52,
+          "nameScore": 52,
+          "proxMeters": 290437
+        },
+        {
+          "id": 946,
+          "name": "Maltas beach",
+          "region": "Ionian Islands",
+          "sub": "Corfu",
+          "subSub": "Corfu",
+          "score": 52,
+          "nameScore": 52,
+          "proxMeters": 376301
+        },
+        {
+          "id": 2070,
+          "name": "Αβεσσαλός",
+          "region": "South Aegean",
+          "sub": "Cyclades",
+          "subSub": "Serifos",
+          "score": 50,
+          "nameScore": 50,
+          "proxMeters": 114256
+        },
+        {
+          "id": 499,
+          "name": "Παραλία Φάβα",
+          "region": "Central Macedonia",
+          "sub": "Halkidiki",
+          "subSub": "Halkidiki (mainland)",
+          "score": 48,
+          "nameScore": 48,
+          "proxMeters": 228628
+        }
+      ]
+    }
+  ]
+}

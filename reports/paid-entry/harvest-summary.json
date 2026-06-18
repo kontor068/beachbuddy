@@ -1,0 +1,341 @@
+{
+  "generatedAt": "2026-06-17T09:55:30.072Z",
+  "query": "overpass leisure=beach_resort | natural=beach+(fee=yes|access=private/customers/permit), area=GR",
+  "rawElements": 1079,
+  "kept": 21,
+  "byKind": {
+    "entrance_fee": 16,
+    "private_club": 5
+  },
+  "droppedNoName": 947,
+  "droppedNoCoord": 0,
+  "dropReasons": {
+    "drop-resort-unconfirmed": 111
+  },
+  "withPrice": 3,
+  "sampleKept": [
+    "Ακτή του Ήλιου [entrance_fee]",
+    "Ακτή Τσαμάκια [entrance_fee]",
+    "Ανατολική παραλία Σκορπιού [private_club]",
+    "Θέρετρο Αξιωματικών Ναυτικού [private_club]",
+    "Καρνάγιο [entrance_fee]",
+    "Μικρή Σάντα Μαρία [entrance_fee]",
+    "Νότια Παραλία Σκορπιού (Ζακλίν Κέννεντυ) [private_club]",
+    "Παραλία Ουρανούπολης [private_club]",
+    "Πλαζ λίμνης [entrance_fee]",
+    "Agora Beach Bar & Restaurant [entrance_fee]",
+    "Balux - The house project [private_club]",
+    "Gomati Umbrella Beach [entrance_fee]",
+    "Kampos Beach Bar Vitali [entrance_fee]",
+    "Livadi beach [entrance_fee]",
+    "Mango Beach Bar [entrance_fee]",
+    "Mileniko [entrance_fee]",
+    "Rusty Cannon [entrance_fee]",
+    "Salt Sea Bar [entrance_fee]",
+    "Salty Wave beach [entrance_fee]",
+    "Strand Hotel »Katerina« [entrance_fee]",
+    "Yabanaki [entrance_fee]"
+  ],
+  "droppedSample": [
+    {
+      "name": "Vranas Resort Beach Bar",
+      "reason": "drop-resort-unconfirmed",
+      "osm": "node/457859507"
+    },
+    {
+      "name": "Blue Lake",
+      "reason": "drop-resort-unconfirmed",
+      "osm": "node/2405614207"
+    },
+    {
+      "name": "Nicopolis Club",
+      "reason": "drop-resort-unconfirmed",
+      "osm": "node/2558149372"
+    },
+    {
+      "name": "Amoudy Beach",
+      "reason": "drop-resort-unconfirmed",
+      "osm": "node/2907803942"
+    },
+    {
+      "name": "Favela",
+      "reason": "drop-resort-unconfirmed",
+      "osm": "node/4970207461"
+    },
+    {
+      "name": "Havana Beach Bar",
+      "reason": "drop-resort-unconfirmed",
+      "osm": "node/5001830301"
+    },
+    {
+      "name": "Tango Mar",
+      "reason": "drop-resort-unconfirmed",
+      "osm": "node/5072875724"
+    },
+    {
+      "name": "Ναυτικός όμιλος Πάρου",
+      "reason": "drop-resort-unconfirmed",
+      "osm": "node/5072875829"
+    },
+    {
+      "name": "Ikos Olivia",
+      "reason": "drop-resort-unconfirmed",
+      "osm": "node/5513834569"
+    },
+    {
+      "name": "Καραβόμυλος",
+      "reason": "drop-resort-unconfirmed",
+      "osm": "node/5648295893"
+    },
+    {
+      "name": "Valtos Beach",
+      "reason": "drop-resort-unconfirmed",
+      "osm": "node/5672178061"
+    },
+    {
+      "name": "Sani Hill",
+      "reason": "drop-resort-unconfirmed",
+      "osm": "node/5792708856"
+    },
+    {
+      "name": "Αγία Ειρήνη",
+      "reason": "drop-resort-unconfirmed",
+      "osm": "node/6698813509"
+    },
+    {
+      "name": "Κλήμα",
+      "reason": "drop-resort-unconfirmed",
+      "osm": "node/6727174899"
+    },
+    {
+      "name": "Άγιος Μηνάς",
+      "reason": "drop-resort-unconfirmed",
+      "osm": "node/6727174901"
+    },
+    {
+      "name": "Πλαζ Ναυπάκτου",
+      "reason": "drop-resort-unconfirmed",
+      "osm": "node/7590724887"
+    },
+    {
+      "name": "Τζαζ",
+      "reason": "drop-resort-unconfirmed",
+      "osm": "node/7685294188"
+    },
+    {
+      "name": "Kitesurf spot",
+      "reason": "drop-resort-unconfirmed",
+      "osm": "node/7834258527"
+    },
+    {
+      "name": "Ammos",
+      "reason": "drop-resort-unconfirmed",
+      "osm": "node/8996700867"
+    },
+    {
+      "name": "Naxaki Beach Lounge and Restaurant",
+      "reason": "drop-resort-unconfirmed",
+      "osm": "node/9803579181"
+    },
+    {
+      "name": "Μαγαζάκι",
+      "reason": "drop-resort-unconfirmed",
+      "osm": "node/9921010278"
+    },
+    {
+      "name": "Lagoon",
+      "reason": "drop-resort-unconfirmed",
+      "osm": "node/11097432377"
+    },
+    {
+      "name": "Galazio Beach",
+      "reason": "drop-resort-unconfirmed",
+      "osm": "node/12707716977"
+    },
+    {
+      "name": "Kyllini Beach",
+      "reason": "drop-resort-unconfirmed",
+      "osm": "node/12709886382"
+    },
+    {
+      "name": "Santa Rosa Hotel",
+      "reason": "drop-resort-unconfirmed",
+      "osm": "node/12831811584"
+    },
+    {
+      "name": "Άμμος",
+      "reason": "drop-resort-unconfirmed",
+      "osm": "node/13001098660"
+    },
+    {
+      "name": "Alas Resort & Spa",
+      "reason": "drop-resort-unconfirmed",
+      "osm": "node/13164732622"
+    },
+    {
+      "name": "Mount Athos Resort",
+      "reason": "drop-resort-unconfirmed",
+      "osm": "node/13167294444"
+    },
+    {
+      "name": "100 Rizes Seaside Resort",
+      "reason": "drop-resort-unconfirmed",
+      "osm": "node/13171763530"
+    },
+    {
+      "name": "Zoe Seaside Resort",
+      "reason": "drop-resort-unconfirmed",
+      "osm": "node/13174213446"
+    },
+    {
+      "name": "Coco Beach Bar",
+      "reason": "drop-resort-unconfirmed",
+      "osm": "node/13545678018"
+    },
+    {
+      "name": "Aqua Beach Bar",
+      "reason": "drop-resort-unconfirmed",
+      "osm": "node/13584896709"
+    },
+    {
+      "name": "AMMOS",
+      "reason": "drop-resort-unconfirmed",
+      "osm": "node/13584896710"
+    },
+    {
+      "name": "Φταπόδι",
+      "reason": "drop-resort-unconfirmed",
+      "osm": "node/13584896711"
+    },
+    {
+      "name": "Στράτος",
+      "reason": "drop-resort-unconfirmed",
+      "osm": "node/13584896758"
+    },
+    {
+      "name": "Sonido del mar",
+      "reason": "drop-resort-unconfirmed",
+      "osm": "node/13584896768"
+    },
+    {
+      "name": "Island Beach Bar",
+      "reason": "drop-resort-unconfirmed",
+      "osm": "node/13584896774"
+    },
+    {
+      "name": "Kourtaliotiko Gorge",
+      "reason": "drop-resort-unconfirmed",
+      "osm": "node/13909092544"
+    },
+    {
+      "name": "Αντίσαμος",
+      "reason": "drop-resort-unconfirmed",
+      "osm": "way/41427183"
+    },
+    {
+      "name": "ΚΑΑΥ Λεπτοκαρυάς",
+      "reason": "drop-resort-unconfirmed",
+      "osm": "way/69080969"
+    },
+    {
+      "name": "Varkotopos beach",
+      "reason": "drop-resort-unconfirmed",
+      "osm": "way/176856003"
+    },
+    {
+      "name": "Oasis Beach",
+      "reason": "drop-resort-unconfirmed",
+      "osm": "way/242768198"
+    },
+    {
+      "name": "Κόκκινα",
+      "reason": "drop-resort-unconfirmed",
+      "osm": "way/242768214"
+    },
+    {
+      "name": "Αύρα",
+      "reason": "drop-resort-unconfirmed",
+      "osm": "way/283012791"
+    },
+    {
+      "name": "Ftenegaia",
+      "reason": "drop-resort-unconfirmed",
+      "osm": "way/284079119"
+    },
+    {
+      "name": "ex-Azur Hotel beach resort",
+      "reason": "drop-resort-unconfirmed",
+      "osm": "way/303494069"
+    },
+    {
+      "name": "George Hotel beach resort",
+      "reason": "drop-resort-unconfirmed",
+      "osm": "way/303497364"
+    },
+    {
+      "name": "Καλυψώ",
+      "reason": "drop-resort-unconfirmed",
+      "osm": "way/358503666"
+    },
+    {
+      "name": "Vlihi Nero beach",
+      "reason": "drop-resort-unconfirmed",
+      "osm": "way/365521796"
+    },
+    {
+      "name": "Lagomandra",
+      "reason": "drop-resort-unconfirmed",
+      "osm": "way/372001019"
+    },
+    {
+      "name": "Ktima 48",
+      "reason": "drop-resort-unconfirmed",
+      "osm": "way/386258795"
+    },
+    {
+      "name": "Lagonissi Grand Resort",
+      "reason": "drop-resort-unconfirmed",
+      "osm": "way/405111020"
+    },
+    {
+      "name": "ILIOS Strandliegen",
+      "reason": "drop-resort-unconfirmed",
+      "osm": "way/428738944"
+    },
+    {
+      "name": "Σαχάρα",
+      "reason": "drop-resort-unconfirmed",
+      "osm": "way/435644813"
+    },
+    {
+      "name": "La Roca",
+      "reason": "drop-resort-unconfirmed",
+      "osm": "way/435644817"
+    },
+    {
+      "name": "Cavo Nissos",
+      "reason": "drop-resort-unconfirmed",
+      "osm": "way/435644819"
+    },
+    {
+      "name": "Beach Bar",
+      "reason": "drop-resort-unconfirmed",
+      "osm": "way/435644833"
+    },
+    {
+      "name": "Hotel beach resort",
+      "reason": "drop-resort-unconfirmed",
+      "osm": "way/450401014"
+    },
+    {
+      "name": "Hotel beach resort",
+      "reason": "drop-resort-unconfirmed",
+      "osm": "way/450401016"
+    },
+    {
+      "name": "Hotel beach resort",
+      "reason": "drop-resort-unconfirmed",
+      "osm": "way/450401017"
+    }
+  ]
+}

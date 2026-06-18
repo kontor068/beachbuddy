@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "generatedAt": "2026-06-12T06:15:11.167Z",
+  "generatedAt": "2026-06-18T20:17:49.714Z",
   "region": {
     "id": "west-greece-ileia-mainland",
     "name": "Ileia"
@@ -36,47 +36,47 @@
     "maskConfidence": "high"
   },
   "summary": {
-    "beachCount": 15,
-    "generatedProfiles": 15,
+    "beachCount": 16,
+    "generatedProfiles": 16,
     "missingCoordinates": 0,
     "sectors": {
       "N": {
-        "protected": 8,
+        "protected": 9,
         "partial": 6,
         "exposed": 1
       },
       "NE": {
-        "protected": 13,
+        "protected": 14,
         "partial": 1,
         "exposed": 1
       },
       "E": {
-        "protected": 13,
+        "protected": 14,
         "partial": 2,
         "exposed": 0
       },
       "SE": {
         "protected": 13,
         "partial": 2,
-        "exposed": 0
+        "exposed": 1
       },
       "S": {
         "protected": 7,
         "partial": 4,
-        "exposed": 4
+        "exposed": 5
       },
       "SW": {
         "protected": 2,
         "partial": 5,
-        "exposed": 8
+        "exposed": 9
       },
       "W": {
         "protected": 2,
-        "partial": 0,
+        "partial": 1,
         "exposed": 13
       },
       "NW": {
-        "protected": 3,
+        "protected": 4,
         "partial": 7,
         "exposed": 5
       }
@@ -1144,6 +1144,77 @@
           "blockedRayRatio": 0,
           "onshore": 0.93,
           "intensity": 96.5
+        }
+      },
+      "confidence": "high"
+    },
+    "3053": {
+      "beachId": 3053,
+      "name": {
+        "en": "Pinios Glyfa",
+        "gr": "Πηνειός Γλύφα"
+      },
+      "coordinates": {
+        "lat": 37.8313,
+        "lon": 21.15015
+      },
+      "facingDeg": 185.8,
+      "sectors": {
+        "N": {
+          "level": "protected",
+          "fetchKm": 0,
+          "blockedRayRatio": 1,
+          "onshore": -0.995,
+          "intensity": 0.2
+        },
+        "NE": {
+          "level": "protected",
+          "fetchKm": 0,
+          "blockedRayRatio": 1,
+          "onshore": -0.775,
+          "intensity": 6.8
+        },
+        "E": {
+          "level": "protected",
+          "fetchKm": 3.12,
+          "blockedRayRatio": 1,
+          "onshore": -0.101,
+          "intensity": 27
+        },
+        "SE": {
+          "level": "exposed",
+          "fetchKm": 17.24,
+          "blockedRayRatio": 0.6,
+          "onshore": 0.632,
+          "intensity": 62
+        },
+        "S": {
+          "level": "exposed",
+          "fetchKm": 25,
+          "blockedRayRatio": 0,
+          "onshore": 0.995,
+          "intensity": 99.7
+        },
+        "SW": {
+          "level": "exposed",
+          "fetchKm": 22.36,
+          "blockedRayRatio": 0.6,
+          "onshore": 0.775,
+          "intensity": 67.4
+        },
+        "W": {
+          "level": "partial",
+          "fetchKm": 8.52,
+          "blockedRayRatio": 1,
+          "onshore": 0.101,
+          "intensity": 33
+        },
+        "NW": {
+          "level": "protected",
+          "fetchKm": 0.04,
+          "blockedRayRatio": 1,
+          "onshore": -0.632,
+          "intensity": 11
         }
       },
       "confidence": "high"

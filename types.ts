@@ -285,6 +285,7 @@ export interface Beach {
   blueFlag2026?: BeachMetadata['blueFlag2026'];
   seatrac?: BeachMetadata['seatrac'];
   nearbyCamping?: NearbyCampsite[];
+  paidEntry?: BeachPaidEntry;
   aliases?: string[];
   staticLabels?: {
     beachType?: string;
@@ -294,6 +295,19 @@ export interface Beach {
     waterDepth?: string;
   };
   metadata?: BeachMetadata;
+  /**
+   * Id of the region this beach belongs to. Normally implicit (a beach is loaded
+   * as part of its region), but set explicitly when beaches from several regions
+   * are merged into one list — e.g. the cross-region "Κοντά μου" view — so detail
+   * data can still be loaded from the beach's real region.
+   */
+  regionId?: string;
+  /**
+   * The beach's original (region-scoped) id. Beach ids are only unique *within* a
+   * region, so when regions are merged for the "Κοντά μου" view we reassign `id`
+   * to a globally-unique value and keep the real id here for detail lookups.
+   */
+  sourceBeachId?: number;
 }
 
 export type BeachAmenities = Beach['amenities'];
@@ -370,6 +384,48 @@ export interface NearbyCampsite {
   checkedAt: string;
 }
 
+/**
+ * "You pay to be here." Greek foreshore is public/free by law, so this flags the
+ * exceptions where access effectively costs money. The `kind` drives a SEPARATE,
+ * honest explanation per case — never a vague "paid" label.
+ *
+ * SAFETY NOTE: we are publicly telling people "this beach charges". The risk is the
+ * false positive (calling a free beach paid). Every bulk/OSM-derived record carries
+ * `needsVerification: true`; the UI softens the wording until a human confirms it.
+ */
+export type PaidEntryKind =
+  /** εισιτήριο εισόδου: you pay an admission fee just to step onto the beach (e.g. Astir Beach). */
+  | 'entrance_fee'
+  /** ιδιωτική παραλία / beach club: private/customers-only; consumption or a booking is required. */
+  | 'private_club'
+  /** μόνο με ξαπλώστρα: effectively no free space — you need a paid sunbed set to stay. */
+  | 'sunbed_required';
+
+export interface BeachPaidEntry {
+  paid: true;
+  /** Which kind of payment applies — selects the label + the honest explanation. */
+  kind: PaidEntryKind;
+  /** Free-text indicative price/range, localized as authored, e.g. "€5 είσοδος" or "15–25€ σετ". */
+  priceText?: string;
+  /** Numeric hint when known (entrance fee or sunbed-set price). */
+  amount?: number;
+  currency?: string;
+  source: string;
+  sourceUrls?: string[];
+  /** https://www.openstreetmap.org/<type>/<id> when harvested from OSM. */
+  osmUrl?: string;
+  /** ISO date this claim was last confirmed. */
+  verifiedAt: string;
+  confidence: DataConfidence;
+  /** SAFETY GATE: true for OSM/bulk imports → UI softens to "φέρεται να χρεώνει / verify". */
+  needsVerification: boolean;
+  notes?: string;
+  /** Region the source placed it under, for audit traceability. */
+  region?: string;
+  /** Provenance of the name→record match, mirroring seatrac/blueFlag2026. */
+  match?: { officialNameGr?: string; officialNameEn?: string; matchMethod: string; matchScore: number };
+}
+
 export interface BeachMetadata {
   access: {
     type: BeachAccessType;
@@ -427,6 +483,8 @@ export interface BeachMetadata {
   seatrac?: BeachSeatracAccess;
   /** Organized campsites within ~2.5 km (OpenStreetMap). Source of truth read by the build. */
   nearbyCamping?: NearbyCampsite[];
+  /** "You pay to be here" flag (entrance fee / private club / sunbed-only). Source of truth read by the build. */
+  paidEntry?: BeachPaidEntry;
   sourceUrls?: string[];
   sourceNotes?: string | string[];
   googleMapsNavigation?: {
@@ -578,6 +636,8 @@ export interface ForecastItem {
   rain?: { '3h'?: number };
   visibility: number;
   pop: number;
+  /** Open-Meteo hourly precipitation probability as a 0–1 fraction, when available. */
+  precipitationProbability?: number;
   sys: { pod: 'd' | 'n'; };
   dt_txt: string;
   marine?: MarineForecast;

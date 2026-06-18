@@ -4,7 +4,7 @@ import {
   ArrowLeft, MapPin, Wind, Waves, Thermometer, Droplets,
   Clock, Sun, Backpack,
   Navigation, Share2, Heart, ChevronRight, ThumbsUp, ThumbsDown, CheckCircle2,
-  Camera, ExternalLink, Accessibility, AlertTriangle, Tent
+  Camera, ExternalLink, Accessibility, AlertTriangle, Tent, Ticket, Euro
 } from 'lucide-react';
 import {
   Beach, LanguageCode, Translation, WindDirection,
@@ -46,6 +46,7 @@ import { scrollToPageTop } from '../utils/scroll';
 import { getSunsetTime } from '../utils/sunTimes';
 import { buildPhotoSuggestionUrl } from '../utils/photoContribution';
 import { getSelectedDayPrefix } from '../utils/dateLabels';
+import { getRainSwimAdvisory } from '../utils/rainAdvisory';
 
 // Lazy load map to avoid blocking main thread
 const BeachMap = React.lazy(() => import('../components/BeachMap'));
@@ -409,7 +410,7 @@ const hasUsefulTimeWindow = (start?: string, end?: string): boolean => {
 
 import { canOpenNavigation, openNavigation } from '../utils/navigation';
 import { NavigationBadge } from '../components/NavigationBadge';
-import { displayBeachName } from '../utils/localization';
+import { displayBeachName, localizedPaidEntryLabel, localizedPaidEntryExplanation, localizedPaidEntryVerifyNote } from '../utils/localization';
 
 interface BeachDetailPageProps {
   beach: Beach;
@@ -486,11 +487,13 @@ export const BeachDetailPage: React.FC<BeachDetailPageProps> = ({
     campingTitle: { en: 'Camping nearby', gr: 'Camping κοντά', de: 'Camping in der Nahe', it: 'Campeggi nelle vicinanze', fr: 'Camping a proximite' },
     campingWebsite: { en: 'Website', gr: 'Ιστότοπος', de: 'Website', it: 'Sito web', fr: 'Site web' },
     campingSource: { en: 'Campsite data from OpenStreetMap.', gr: 'Δεδομένα camping από το OpenStreetMap.', de: 'Campingplatz-Daten von OpenStreetMap.', it: 'Dati dei campeggi da OpenStreetMap.', fr: 'Donnees des campings via OpenStreetMap.' },
+    paidEntrySource: { en: 'Source', gr: 'Πηγή', de: 'Quelle', it: 'Fonte', fr: 'Source' },
   };
 
   // Organized campsites within ~2.5 km (OSM). Detail metadata carries the full list (≤3);
   // the top-level field may be the summary-trimmed single — prefer whichever is richer.
   const nearbyCampsites = (beach.metadata?.nearbyCamping?.length ? beach.metadata.nearbyCamping : beach.nearbyCamping) ?? [];
+  const paidEntry = beach.paidEntry ?? beach.metadata?.paidEntry;
 
   // Scroll to top on mount and track view
   useEffect(() => {
@@ -642,6 +645,13 @@ export const BeachDetailPage: React.FC<BeachDetailPageProps> = ({
     const mm = String(sunset.getMinutes()).padStart(2, '0');
     return `${hh}:${mm}`;
   }, [beach.coordinates.lat, beach.coordinates.lon, selectedDate]);
+
+  // Rain warning: name the hours it is expected to rain and advise against
+  // staying in the sea then (lightning/storm safety).
+  const rainAdvisory = useMemo(
+    () => getRainSwimAdvisory(hourlyForecast, selectedDate, language),
+    [hourlyForecast, selectedDate, language],
+  );
 
   // 2. Best Time & Planner
   const bestTime = useMemo(() => calculateBestBeachTime(hourlyForecast, beach), [beach, hourlyForecast]);
@@ -1004,6 +1014,25 @@ export const BeachDetailPage: React.FC<BeachDetailPageProps> = ({
           </section>
         )}
 
+        {/* 4c. Rain warning — name the rainy hours and advise leaving the sea then */}
+        {rainAdvisory && (
+          <section
+            className="flex items-start gap-3 rounded-[1.75rem] border border-sky-200/80 bg-sky-50/70 p-4 shadow-sm shadow-sky-900/5"
+            role="alert"
+            data-nosnippet="true"
+          >
+            <div className="shrink-0 rounded-2xl bg-sky-500 p-2.5 text-white shadow-sm">
+              <Droplets className="h-5 w-5" />
+            </div>
+            <div className="min-w-0">
+              <h3 className="font-bold text-sky-900">{rainAdvisory.title}</h3>
+              <p className="mt-1 text-sm font-medium leading-snug text-sky-900/85">
+                {rainAdvisory.body}
+              </p>
+            </div>
+          </section>
+        )}
+
         {/* 5. Best Time Today */}
         {bestTime && (usefulBestTimeWindow || allDaySuitable) && (
           <section className={`flex items-start gap-3 rounded-[1.75rem] border p-4 shadow-sm ${swimWindowToneClasses.section}`} data-nosnippet="true">
@@ -1059,6 +1088,40 @@ export const BeachDetailPage: React.FC<BeachDetailPageProps> = ({
             </p>
           )}
         </section>
+
+        {/* 7a-0. Paid entry — "you pay to be here" (entrance fee / private club / sunbed-only).
+            Each kind gets its own honest explanation; never a vague "paid" tag. */}
+        {paidEntry && (
+          <section className="flex items-start gap-3 rounded-[1.75rem] border border-amber-200/80 bg-amber-50/70 p-4 shadow-sm shadow-amber-900/5">
+            <div className="shrink-0 rounded-2xl bg-amber-500 p-2.5 text-white shadow-sm">
+              {paidEntry.kind === 'entrance_fee'
+                ? <Ticket className="h-5 w-5" aria-hidden />
+                : <Euro className="h-5 w-5" aria-hidden />}
+            </div>
+            <div className="min-w-0 space-y-1.5">
+              <h3 className="font-bold text-amber-950">{localizedPaidEntryLabel(paidEntry.kind, language)}</h3>
+              <p className="text-sm font-semibold leading-snug text-amber-900">
+                {localizedPaidEntryExplanation(paidEntry.kind, language)}
+              </p>
+              {paidEntry.priceText && (
+                <p className="text-sm font-bold text-amber-950">{paidEntry.priceText}</p>
+              )}
+              <div className="flex flex-wrap items-center gap-x-3 gap-y-1 pt-0.5 text-xs font-semibold text-amber-800">
+                {paidEntry.needsVerification && <span>{localizedPaidEntryVerifyNote(language)}</span>}
+                {(paidEntry.sourceUrls?.[0] || paidEntry.osmUrl) && (
+                  <a
+                    href={paidEntry.sourceUrls?.[0] ?? paidEntry.osmUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center gap-1 underline decoration-amber-400 underline-offset-2 hover:text-amber-950"
+                  >
+                    {copy.paidEntrySource[language]} <ExternalLink className="h-3 w-3" aria-hidden />
+                  </a>
+                )}
+              </div>
+            </div>
+          </section>
+        )}
 
         {/* 7a. What to bring — derived from amenity gaps */}
         {whatToBringItems.length > 0 && (

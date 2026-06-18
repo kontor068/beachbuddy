@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "generatedAt": "2026-06-12T06:14:41.714Z",
+  "generatedAt": "2026-06-18T20:17:18.818Z",
   "region": {
     "id": "crete-crete-heraklion",
     "name": "Heraklion"
@@ -36,49 +36,49 @@
     "maskConfidence": "high"
   },
   "summary": {
-    "beachCount": 52,
-    "generatedProfiles": 52,
+    "beachCount": 53,
+    "generatedProfiles": 53,
     "missingCoordinates": 0,
     "sectors": {
       "N": {
         "protected": 32,
         "partial": 7,
-        "exposed": 13
+        "exposed": 14
       },
       "NE": {
         "protected": 29,
         "partial": 6,
-        "exposed": 17
+        "exposed": 18
       },
       "E": {
         "protected": 23,
-        "partial": 17,
+        "partial": 18,
         "exposed": 12
       },
       "SE": {
-        "protected": 19,
+        "protected": 20,
         "partial": 9,
         "exposed": 24
       },
       "S": {
-        "protected": 20,
+        "protected": 21,
         "partial": 7,
         "exposed": 25
       },
       "SW": {
-        "protected": 24,
+        "protected": 25,
         "partial": 6,
         "exposed": 22
       },
       "W": {
         "protected": 31,
-        "partial": 15,
+        "partial": 16,
         "exposed": 6
       },
       "NW": {
         "protected": 35,
         "partial": 7,
-        "exposed": 10
+        "exposed": 11
       }
     }
   },
@@ -3771,6 +3771,77 @@
           "blockedRayRatio": 1,
           "onshore": -0.923,
           "intensity": 2.3
+        }
+      },
+      "confidence": "high"
+    },
+    "3033": {
+      "beachId": 3033,
+      "name": {
+        "en": "Chersonisos Agkisaras",
+        "gr": "Χερσόνησος Αγκισαράς"
+      },
+      "coordinates": {
+        "lat": 35.336862,
+        "lon": 25.354281
+      },
+      "facingDeg": 355.3,
+      "sectors": {
+        "N": {
+          "level": "exposed",
+          "fetchKm": 25,
+          "blockedRayRatio": 0,
+          "onshore": 0.997,
+          "intensity": 99.8
+        },
+        "NE": {
+          "level": "exposed",
+          "fetchKm": 25,
+          "blockedRayRatio": 0,
+          "onshore": 0.647,
+          "intensity": 82.3
+        },
+        "E": {
+          "level": "partial",
+          "fetchKm": 10.08,
+          "blockedRayRatio": 0.6,
+          "onshore": -0.082,
+          "intensity": 33.7
+        },
+        "SE": {
+          "level": "protected",
+          "fetchKm": 0,
+          "blockedRayRatio": 1,
+          "onshore": -0.763,
+          "intensity": 7.1
+        },
+        "S": {
+          "level": "protected",
+          "fetchKm": 0,
+          "blockedRayRatio": 1,
+          "onshore": -0.997,
+          "intensity": 0.1
+        },
+        "SW": {
+          "level": "protected",
+          "fetchKm": 0.08,
+          "blockedRayRatio": 1,
+          "onshore": -0.647,
+          "intensity": 10.6
+        },
+        "W": {
+          "level": "partial",
+          "fetchKm": 13,
+          "blockedRayRatio": 0.6,
+          "onshore": 0.082,
+          "intensity": 41.1
+        },
+        "NW": {
+          "level": "exposed",
+          "fetchKm": 22.92,
+          "blockedRayRatio": 0.2,
+          "onshore": 0.763,
+          "intensity": 81.1
         }
       },
       "confidence": "high"

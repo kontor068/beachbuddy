@@ -138,6 +138,15 @@ const windyCopy = (
   }
 };
 
+/** A single hour's wind for the selected day (beach hours only). */
+export interface HourlyWindPoint {
+  /** Local (Greek) wall-clock hour, 0–23. */
+  hour: number;
+  beaufort: number;
+  /** Compass direction the wind blows FROM. */
+  windDirection: WindDirection;
+}
+
 export interface IslandDaySummaryInput {
   language: LanguageCode;
   /** Beaufort level for the selected forecast day; undefined when no forecast. */
@@ -148,10 +157,157 @@ export interface IslandDaySummaryInput {
   suitableCount: number;
   /** Total beaches on the island. */
   totalCount: number;
+  /**
+   * Hour-by-hour wind for the day. When present and the regime changes during
+   * the day (calm↔windy, or the sheltered coast flips), the summary becomes a
+   * two-part "until HH:00 … then …" sentence instead of a static one.
+   */
+  hourlyWind?: HourlyWindPoint[];
 }
+
+type DayRegime =
+  | { kind: 'calm' }
+  | { kind: 'windy'; favoured: WindDirection; beaufort: number };
+
+const regimeOf = (point: HourlyWindPoint): DayRegime =>
+  point.beaufort <= 2
+    ? { kind: 'calm' }
+    : { kind: 'windy', favoured: LEEWARD_DIRECTION[point.windDirection], beaufort: point.beaufort };
+
+const sameRegime = (a: DayRegime, b: DayRegime): boolean => {
+  if (a.kind === 'calm' && b.kind === 'calm') return true;
+  if (a.kind === 'windy' && b.kind === 'windy') return a.favoured === b.favoured;
+  return false;
+};
+
+/** First meaningful, persistent regime change during the beach hours, or null. */
+const detectTransition = (hourlyWind: HourlyWindPoint[]): { hour: number; morning: DayRegime; after: DayRegime } | null => {
+  const hours = hourlyWind
+    .filter(point => point.hour >= 8 && point.hour <= 20)
+    .sort((a, b) => a.hour - b.hour);
+  if (hours.length < 3) return null;
+
+  const morning = regimeOf(hours[0]);
+  for (let i = 1; i < hours.length; i++) {
+    const candidate = regimeOf(hours[i]);
+    if (sameRegime(candidate, morning)) continue;
+    // Require the new regime to hold for at least 2 of the next 3 hours so a
+    // single-hour blip doesn't trigger a "weather changes" headline.
+    const windowAhead = hours.slice(i, i + 3);
+    const persists = windowAhead.filter(point => sameRegime(regimeOf(point), candidate)).length >= 2;
+    if (persists) return { hour: hours[i].hour, morning, after: candidate };
+  }
+  return null;
+};
+
+const formatHour = (hour: number): string => `${String(hour).padStart(2, '0')}:00`;
+
+const regimeShortPhrase = (language: LanguageCode, regime: DayRegime): string => {
+  if (regime.kind === 'calm') {
+    return { en: 'calm almost everywhere', gr: 'ήρεμα σχεδόν παντού', fr: 'mer calme presque partout', de: 'fast überall ruhig', it: 'mare calmo quasi ovunque' }[language];
+  }
+  const favoured = FAVOURED_SHORE[language][regime.favoured];
+  switch (language) {
+    case 'gr': return `ευνοούνται οι ${favoured} παραλίες`;
+    case 'fr': return `les plages ${favoured} sont favorisées`;
+    case 'de': return `die ${favoured} Strände sind günstig`;
+    case 'it': return `sono favorite le spiagge ${favoured}`;
+    case 'en':
+    default: return `the ${favoured}-facing beaches are favoured`;
+  }
+};
+
+const transitionCopy = (language: LanguageCode, hour: number, morning: DayRegime, after: DayRegime): string => {
+  const at = formatHour(hour);
+  const morningPhrase = regimeShortPhrase(language, morning);
+  // The "after" clause leads with the trigger so the change reads as a forecast.
+  let afterPhrase: string;
+  if (after.kind === 'calm') {
+    afterPhrase = { en: 'it calms down everywhere', gr: 'ηρεμεί παντού', fr: 'le vent tombe partout', de: 'beruhigt es sich überall', it: 'il vento cala ovunque' }[language];
+  } else {
+    const favoured = FAVOURED_SHORE[language][after.favoured];
+    if (morning.kind === 'calm') {
+      // calm → windy: the wind builds. We don't name the wind direction here —
+      // the favoured coast already implies it, and it dodges per-language case
+      // agreement (Greek "βόρειος" vs accusative "βόρειο", etc.).
+      switch (language) {
+        case 'gr': afterPhrase = `δυναμώνει ο άνεμος και ευνοούνται οι ${favoured} παραλίες`; break;
+        case 'fr': afterPhrase = `le vent se lève et les plages ${favoured} sont favorisées`; break;
+        case 'de': afterPhrase = `der Wind frischt auf und die ${favoured} Strände sind günstig`; break;
+        case 'it': afterPhrase = `si alza il vento e sono favorite le spiagge ${favoured}`; break;
+        case 'en': default: afterPhrase = `the wind picks up and the ${favoured}-facing beaches are favoured`; break;
+      }
+    } else {
+      // windy → windy: the wind veers, flipping the sheltered coast.
+      switch (language) {
+        case 'gr': afterPhrase = `γυρίζει ο άνεμος και ευνοούνται οι ${favoured} παραλίες`; break;
+        case 'fr': afterPhrase = `le vent tourne et les plages ${favoured} sont favorisées`; break;
+        case 'de': afterPhrase = `dreht der Wind und die ${favoured} Strände sind günstig`; break;
+        case 'it': afterPhrase = `il vento gira e sono favorite le spiagge ${favoured}`; break;
+        case 'en': default: afterPhrase = `the wind veers and the ${favoured}-facing beaches are favoured`; break;
+      }
+    }
+  }
+  switch (language) {
+    case 'gr': return `Μέχρι τις ${at} ${morningPhrase}, μετά ${afterPhrase}.`;
+    case 'fr': return `Jusqu'à ${at} ${morningPhrase}, puis ${afterPhrase}.`;
+    case 'de': return `Bis ${at} ${morningPhrase}, danach ${afterPhrase}.`;
+    case 'it': return `Fino alle ${at} ${morningPhrase}, poi ${afterPhrase}.`;
+    case 'en':
+    default: return `Until ${at} ${morningPhrase}, then ${afterPhrase}.`;
+  }
+};
+
+// --- Condensed variants for mobile, where the full sentences are too much text.
+// Same information, stripped to "shore + time" so it fits one short line.
+const calmWordShort = (language: LanguageCode): string =>
+  ({ en: 'calm', gr: 'ήρεμα', fr: 'calme', de: 'ruhig', it: 'calmo' })[language];
+
+const regimeWordShort = (language: LanguageCode, regime: DayRegime): string =>
+  regime.kind === 'calm' ? calmWordShort(language) : FAVOURED_SHORE[language][regime.favoured];
+
+const capitalize = (value: string): string => value.charAt(0).toUpperCase() + value.slice(1);
+
+const calmShort = (language: LanguageCode, kind: CalmKind): string => {
+  const copy: Record<LanguageCode, Record<CalmKind, string>> = {
+    en: { all: 'All beaches good', most: 'Most beaches good' },
+    gr: { all: 'Όλες κατάλληλες', most: 'Σχεδόν όλες κατάλληλες' },
+    fr: { all: 'Toutes adaptées', most: 'Presque toutes adaptées' },
+    de: { all: 'Alle geeignet', most: 'Fast alle geeignet' },
+    it: { all: 'Tutte adatte', most: 'Quasi tutte adatte' },
+  };
+  return copy[language][kind];
+};
+
+const windyShort = (language: LanguageCode, favoured: string): string => {
+  switch (language) {
+    case 'gr': return `Ευνοούνται οι ${favoured}`;
+    case 'fr': return `Mieux ${favoured}`;
+    case 'de': return `Am besten ${favoured}`;
+    case 'it': return `Meglio ${favoured}`;
+    case 'en':
+    default: return `Best on the ${favoured} side`;
+  }
+};
+
+const transitionShort = (language: LanguageCode, hour: number, morning: DayRegime, after: DayRegime): string => {
+  const at = formatHour(hour);
+  const a = capitalize(regimeWordShort(language, morning));
+  const b = regimeWordShort(language, after);
+  switch (language) {
+    case 'gr': return `${a} ως τις ${at}, μετά ${b}`;
+    case 'fr': return `${a} jusqu'à ${at}, puis ${b}`;
+    case 'de': return `${a} bis ${at}, dann ${b}`;
+    case 'it': return `${a} fino alle ${at}, poi ${b}`;
+    case 'en':
+    default: return `${a} until ${at}, then ${b}`;
+  }
+};
 
 export interface IslandDaySummary {
   text: string;
+  /** Condensed one-liner for mobile (shore + time, no full sentence). */
+  short: string;
   /**
    * True only when the summary asserts that *every* beach is suitable. The
    * caller drops the redundant "N best beaches" count line in that case (no
@@ -161,23 +317,41 @@ export interface IslandDaySummary {
 }
 
 export const buildIslandDaySummary = (input: IslandDaySummaryInput): IslandDaySummary | null => {
-  const { language, beaufort, windDirection, suitableCount, totalCount } = input;
+  const { language, beaufort, windDirection, suitableCount, totalCount, hourlyWind } = input;
   if (typeof beaufort !== 'number' || Number.isNaN(beaufort)) return null;
+
+  // Intra-day change takes priority: if the regime shifts during the beach hours,
+  // say so with a time rather than freezing the whole day on one snapshot.
+  if (hourlyWind && hourlyWind.length > 0) {
+    const transition = detectTransition(hourlyWind);
+    if (transition) {
+      return {
+        text: transitionCopy(language, transition.hour, transition.morning, transition.after),
+        short: transitionShort(language, transition.hour, transition.morning, transition.after),
+        allBeachesSuitable: false,
+      };
+    }
+  }
 
   const bft = Math.round(beaufort);
 
   // Calm regime: wind doesn't separate the coasts, so it's an island-wide call.
   if (bft <= 2) {
     const allSuitable = totalCount > 0 && suitableCount >= totalCount;
-    return { text: calmCopy(language, allSuitable ? 'all' : 'most'), allBeachesSuitable: allSuitable };
+    const kind: CalmKind = allSuitable ? 'all' : 'most';
+    return { text: calmCopy(language, kind), short: calmShort(language, kind), allBeachesSuitable: allSuitable };
   }
 
   // Windy regime: name the sheltered (leeward) coast. Fall back to the calm-ish
   // "most" line if we somehow lack a wind direction.
   if (!windDirection) {
-    return { text: calmCopy(language, 'most'), allBeachesSuitable: false };
+    return { text: calmCopy(language, 'most'), short: calmShort(language, 'most'), allBeachesSuitable: false };
   }
   const favoured = FAVOURED_SHORE[language][LEEWARD_DIRECTION[windDirection]];
   const windName = WIND_NAME[language][windDirection];
-  return { text: windyCopy(language, windName, favoured, bft, bft >= 6), allBeachesSuitable: false };
+  return {
+    text: windyCopy(language, windName, favoured, bft, bft >= 6),
+    short: windyShort(language, favoured),
+    allBeachesSuitable: false,
+  };
 };

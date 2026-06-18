@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "generatedAt": "2026-06-12T06:14:45.138Z",
+  "generatedAt": "2026-06-18T20:17:22.645Z",
   "region": {
     "id": "east-macedonia-and-thrace-kavala-mainland",
     "name": "Kavala"
@@ -36,47 +36,47 @@
     "maskConfidence": "high"
   },
   "summary": {
-    "beachCount": 15,
-    "generatedProfiles": 15,
+    "beachCount": 16,
+    "generatedProfiles": 16,
     "missingCoordinates": 0,
     "sectors": {
       "N": {
-        "protected": 12,
+        "protected": 13,
         "partial": 3,
         "exposed": 0
       },
       "NE": {
-        "protected": 11,
+        "protected": 12,
         "partial": 4,
         "exposed": 0
       },
       "E": {
         "protected": 3,
-        "partial": 8,
+        "partial": 9,
         "exposed": 4
       },
       "SE": {
         "protected": 3,
         "partial": 4,
-        "exposed": 8
+        "exposed": 9
       },
       "S": {
         "protected": 4,
         "partial": 0,
-        "exposed": 11
+        "exposed": 12
       },
       "SW": {
         "protected": 7,
-        "partial": 6,
+        "partial": 7,
         "exposed": 2
       },
       "W": {
-        "protected": 12,
+        "protected": 13,
         "partial": 3,
         "exposed": 0
       },
       "NW": {
-        "protected": 13,
+        "protected": 14,
         "partial": 2,
         "exposed": 0
       }
@@ -1144,6 +1144,77 @@
           "blockedRayRatio": 1,
           "onshore": 0.087,
           "intensity": 32.6
+        }
+      },
+      "confidence": "high"
+    },
+    "3012": {
+      "beachId": 3012,
+      "name": {
+        "en": "Perigiali",
+        "gr": "Περιγιάλι"
+      },
+      "coordinates": {
+        "lat": 40.9482064,
+        "lon": 24.4300973
+      },
+      "facingDeg": 155.1,
+      "sectors": {
+        "N": {
+          "level": "protected",
+          "fetchKm": 0,
+          "blockedRayRatio": 1,
+          "onshore": -0.907,
+          "intensity": 2.8
+        },
+        "NE": {
+          "level": "protected",
+          "fetchKm": 0.04,
+          "blockedRayRatio": 1,
+          "onshore": -0.344,
+          "intensity": 19.7
+        },
+        "E": {
+          "level": "partial",
+          "fetchKm": 7.84,
+          "blockedRayRatio": 0.8,
+          "onshore": 0.421,
+          "intensity": 46.3
+        },
+        "SE": {
+          "level": "exposed",
+          "fetchKm": 22.04,
+          "blockedRayRatio": 0.6,
+          "onshore": 0.939,
+          "intensity": 73.7
+        },
+        "S": {
+          "level": "exposed",
+          "fetchKm": 24.76,
+          "blockedRayRatio": 0.2,
+          "onshore": 0.907,
+          "intensity": 87.7
+        },
+        "SW": {
+          "level": "partial",
+          "fetchKm": 10.28,
+          "blockedRayRatio": 0.6,
+          "onshore": 0.344,
+          "intensity": 49.5
+        },
+        "W": {
+          "level": "protected",
+          "fetchKm": 0.16,
+          "blockedRayRatio": 1,
+          "onshore": -0.421,
+          "intensity": 17.4
+        },
+        "NW": {
+          "level": "protected",
+          "fetchKm": 0,
+          "blockedRayRatio": 1,
+          "onshore": -0.939,
+          "intensity": 1.8
         }
       },
       "confidence": "high"

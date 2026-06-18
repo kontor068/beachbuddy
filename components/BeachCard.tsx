@@ -1,8 +1,8 @@
 
 import React, { useEffect, useState } from 'react';
 import { motion } from 'motion/react';
-import { AlertTriangle, MapPin, Star, Share2, Heart, Navigation, Info, Waves, Utensils, Trees, CircleDot, CircleDotDashed, Mountain, Droplets, ArrowDown, BadgeCheck, Leaf, Shield, Users, Clock3, Flag, Footprints, Wind, Tent, Accessibility as AccessibilityIcon } from 'lucide-react';
-import { Beach, Accessibility, LanguageCode, BeachType, CrowdLevel, WarningFlag, RecommendationConfidence, SwimmingComfort, WindSuitabilityColor } from '../types';
+import { AlertTriangle, MapPin, Star, Share2, Heart, Navigation, Info, Waves, Utensils, Trees, CircleDot, CircleDotDashed, Mountain, Droplets, ArrowDown, BadgeCheck, Leaf, Shield, Users, Clock3, Flag, Footprints, Wind, Tent, Ticket, Euro, Accessibility as AccessibilityIcon } from 'lucide-react';
+import { Beach, Accessibility, LanguageCode, BeachType, CrowdLevel, WarningFlag, RecommendationConfidence, SwimmingComfort, WindSuitabilityColor, PaidEntryKind } from '../types';
 import { getBeaufortLevel } from '../utils/weatherUtils';
 import { Translation } from '../types';
 
@@ -25,6 +25,8 @@ import {
   localizedTerrainLabel,
   localizedWaterDepthLabel,
   localizedPopularityLabel,
+  localizedPaidEntryLabel,
+  localizedPaidEntryExplanation,
 } from '../utils/localization';
 import { AmenityChip, getAmenityChips } from '../utils/amenities';
 import { SandDotsIcon, SandPebblesIcon, SunbedIcon } from './BeachFeatureIcons';
@@ -737,6 +739,25 @@ const CampingBadge: React.FC<{ language: LanguageCode; compact?: boolean }> = ({
   );
 };
 
+// "You pay to be here" — amber tone (heads-up that it costs money) so it reads apart from the
+// sky/emerald "good news" badges. The kind drives the label + the explanation tooltip.
+const PaidEntryBadge: React.FC<{ kind: PaidEntryKind; language: LanguageCode; compact?: boolean }> = ({ kind, language, compact = false }) => {
+  const label = localizedPaidEntryLabel(kind, language);
+  const explanation = localizedPaidEntryExplanation(kind, language);
+  const Icon = kind === 'entrance_fee' ? Ticket : Euro;
+
+  return (
+    <span
+      title={explanation}
+      aria-label={`${label} — ${explanation}`}
+      className={`inline-flex shrink-0 items-center gap-1 rounded-full border border-amber-200 bg-white/88 font-bold leading-none text-amber-700 shadow-sm ring-1 ring-black/5 backdrop-blur-md ${compact ? 'min-h-7 px-2 py-1 text-[10px]' : 'min-h-8 px-2.5 py-1 text-xs'}`}
+    >
+      <Icon className="h-3.5 w-3.5 shrink-0 text-amber-600" aria-hidden="true" />
+      <span className="whitespace-nowrap">{label}</span>
+    </span>
+  );
+};
+
 const BeachTypeTag: React.FC<{ beachType: BeachType; t: Translation }> = ({ beachType, t }) => {
   if (beachType === 'unknown') return null;
 
@@ -1046,6 +1067,7 @@ export const BeachCard: React.FC<BeachCardProps> = ({
   const seatracAccess = beach.seatrac ?? metadata?.seatrac;
   const hasAccessibleRamp = seatracAccess?.hasSeatrac === true && seatracAccess.status === 'online';
   const hasNearbyCamping = (beach.nearbyCamping?.length ?? metadata?.nearbyCamping?.length ?? 0) > 0;
+  const paidEntry = beach.paidEntry ?? metadata?.paidEntry;
   const isPartlyShelteredToday = exposureLevel === 'partial';
   const windBeaufort = getBeaufortLevel(windSpeed * 3.6);
   const isFavorite = favorites.includes(beach.id);
@@ -1081,8 +1103,13 @@ export const BeachCard: React.FC<BeachCardProps> = ({
 
   const handleShare = async (e: React.MouseEvent) => {
     e.stopPropagation();
-    const shareUrl = regionId
-      ? buildBeachShareUrl(window.location.origin, regionId, beach)
+    // In the cross-region "Κοντά μου" list a beach belongs to its own region and
+    // keeps its real id in sourceBeachId (the `id` shown here is synthetic), so
+    // share links must use those, not the synthetic region/id.
+    const shareRegionId = beach.regionId ?? regionId;
+    const shareBeach = typeof beach.sourceBeachId === 'number' ? { ...beach, id: beach.sourceBeachId } : beach;
+    const shareUrl = shareRegionId
+      ? buildBeachShareUrl(window.location.origin, shareRegionId, shareBeach)
       : window.location.origin + window.location.pathname;
     if (navigator.share) {
       try {
@@ -1381,6 +1408,7 @@ export const BeachCard: React.FC<BeachCardProps> = ({
             {hasBlueFlag2026 && <BlueFlagBadge language={language} />}
             {hasAccessibleRamp && <AccessibilityBadge language={language} />}
             {hasNearbyCamping && <CampingBadge language={language} />}
+            {paidEntry && <PaidEntryBadge kind={paidEntry.kind} language={language} />}
           </div>
 
           <button
@@ -1545,6 +1573,7 @@ export const BeachCard: React.FC<BeachCardProps> = ({
           {hasBlueFlag2026 && <BlueFlagBadge language={language} compact />}
           {hasAccessibleRamp && <AccessibilityBadge language={language} compact />}
           {hasNearbyCamping && <CampingBadge language={language} compact />}
+          {paidEntry && <PaidEntryBadge kind={paidEntry.kind} language={language} compact />}
         </div>
 
         {/* Favorite button overlay */}

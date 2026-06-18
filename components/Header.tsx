@@ -37,11 +37,11 @@ const headerCopy: Record<SupportedLanguage, { changeLanguage: string }> = {
 };
 
 const headerTaglineCopy: Record<SupportedLanguage, string> = {
-  en: 'Find a calmer beach today',
-  gr: 'Βρες πιο ήρεμη παραλία σήμερα',
-  fr: 'Trouvez une plage plus calme',
-  de: 'Finde heute einen ruhigeren Strand',
-  it: 'Trova oggi una spiaggia piu calma',
+  en: 'Find the most ideal beach today',
+  gr: 'Βρες την πιο ιδανική παραλία σήμερα',
+  fr: 'Trouvez la plage idéale aujourd’hui',
+  de: 'Finde heute den idealen Strand',
+  it: 'Trova oggi la spiaggia ideale',
 };
 
 const getNextLocalMidnightDelay = (date: Date = new Date()): number => {

@@ -2,8 +2,8 @@ import React, { useEffect, useMemo, useRef, useState } from 'react';
 import { Circle, MapContainer, TileLayer, Marker, Popup, Tooltip, ZoomControl, useMap } from 'react-leaflet';
 import L from 'leaflet';
 import 'leaflet/dist/leaflet.css';
-import { BadgeCheck, Footprints, Navigation, MapPin, Clock, Wind, X, Info, Utensils, Waves, Users, Tent } from 'lucide-react';
-import { localizedPopularityLabel } from '../utils/localization';
+import { BadgeCheck, Footprints, Navigation, MapPin, Clock, Wind, X, Info, Utensils, Waves, Users, Tent, Ticket, Euro } from 'lucide-react';
+import { localizedPopularityLabel, localizedPaidEntryLabel, localizedPaidEntryExplanation } from '../utils/localization';
 import { SuitableBeach, Beach, LanguageCode, ForecastItem } from '../types';
 import { trackEvent } from '../services/analyticsService';
 import { getBeachPhotoLookup } from '../services/beachPhotos';
@@ -1927,6 +1927,24 @@ const BeachMap: React.FC<BeachMapProps> = ({
             </div>
           </div>
         )}
+
+        {(() => {
+          const paidEntry = item.beach.paidEntry ?? item.beach.metadata?.paidEntry;
+          if (!paidEntry) return null;
+          const Icon = paidEntry.kind === 'entrance_fee' ? Ticket : Euro;
+          return (
+            <div className="rounded-xl border border-amber-200 bg-amber-50 px-2.5 py-2">
+              <div className="flex items-start gap-1.5 text-[11px] leading-snug text-amber-800">
+                <Icon className="mt-0.5 h-3.5 w-3.5 shrink-0 text-amber-600" />
+                <span>
+                  <span className="font-black">{localizedPaidEntryLabel(paidEntry.kind, language)}</span>
+                  {' — '}
+                  {localizedPaidEntryExplanation(paidEntry.kind, language)}
+                </span>
+              </div>
+            </div>
+          );
+        })()}
 
         <div className="flex items-center justify-between gap-2 border-t border-slate-100 pt-2">
           {item.distance !== undefined ? (

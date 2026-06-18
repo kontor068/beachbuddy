@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "generatedAt": "2026-06-12T06:14:56.398Z",
+  "generatedAt": "2026-06-18T20:17:34.225Z",
   "region": {
     "id": "north-aegean-samos",
     "name": "Samos"
@@ -36,47 +36,47 @@
     "maskConfidence": "high"
   },
   "summary": {
-    "beachCount": 40,
-    "generatedProfiles": 40,
+    "beachCount": 41,
+    "generatedProfiles": 41,
     "missingCoordinates": 0,
     "sectors": {
       "N": {
         "protected": 28,
-        "partial": 1,
+        "partial": 2,
         "exposed": 11
       },
       "NE": {
         "protected": 22,
-        "partial": 11,
+        "partial": 12,
         "exposed": 7
       },
       "E": {
         "protected": 18,
-        "partial": 16,
+        "partial": 17,
         "exposed": 6
       },
       "SE": {
         "protected": 17,
-        "partial": 9,
+        "partial": 10,
         "exposed": 14
       },
       "S": {
-        "protected": 15,
+        "protected": 16,
         "partial": 11,
         "exposed": 14
       },
       "SW": {
-        "protected": 17,
+        "protected": 18,
         "partial": 12,
         "exposed": 11
       },
       "W": {
-        "protected": 24,
+        "protected": 25,
         "partial": 8,
         "exposed": 8
       },
       "NW": {
-        "protected": 23,
+        "protected": 24,
         "partial": 6,
         "exposed": 11
       }
@@ -2919,6 +2919,77 @@
           "blockedRayRatio": 1,
           "onshore": -0.938,
           "intensity": 1.8
+        }
+      },
+      "confidence": "high"
+    },
+    "3037": {
+      "beachId": 3037,
+      "name": {
+        "en": "Samos Vathy Maounes",
+        "gr": "Σάμος Βαθύ Μαούνες"
+      },
+      "coordinates": {
+        "lat": 37.755386,
+        "lon": 26.957824
+      },
+      "facingDeg": 84,
+      "sectors": {
+        "N": {
+          "level": "partial",
+          "fetchKm": 0.6,
+          "blockedRayRatio": 1,
+          "onshore": 0.105,
+          "intensity": 33.1
+        },
+        "NE": {
+          "level": "partial",
+          "fetchKm": 1.2,
+          "blockedRayRatio": 1,
+          "onshore": 0.777,
+          "intensity": 53.3
+        },
+        "E": {
+          "level": "partial",
+          "fetchKm": 1.32,
+          "blockedRayRatio": 1,
+          "onshore": 0.995,
+          "intensity": 59.8
+        },
+        "SE": {
+          "level": "partial",
+          "fetchKm": 0.96,
+          "blockedRayRatio": 1,
+          "onshore": 0.629,
+          "intensity": 48.9
+        },
+        "S": {
+          "level": "protected",
+          "fetchKm": 0.12,
+          "blockedRayRatio": 1,
+          "onshore": -0.105,
+          "intensity": 26.9
+        },
+        "SW": {
+          "level": "protected",
+          "fetchKm": 0,
+          "blockedRayRatio": 1,
+          "onshore": -0.777,
+          "intensity": 6.7
+        },
+        "W": {
+          "level": "protected",
+          "fetchKm": 0,
+          "blockedRayRatio": 1,
+          "onshore": -0.995,
+          "intensity": 0.2
+        },
+        "NW": {
+          "level": "protected",
+          "fetchKm": 0,
+          "blockedRayRatio": 1,
+          "onshore": -0.629,
+          "intensity": 11.1
         }
       },
       "confidence": "high"

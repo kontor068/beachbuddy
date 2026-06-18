@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "generatedAt": "2026-06-12T06:14:44.827Z",
+  "generatedAt": "2026-06-18T20:17:22.299Z",
   "region": {
     "id": "crete-crete-rethymno",
     "name": "Rethymno"
@@ -36,47 +36,47 @@
     "maskConfidence": "high"
   },
   "summary": {
-    "beachCount": 44,
-    "generatedProfiles": 44,
+    "beachCount": 46,
+    "generatedProfiles": 46,
     "missingCoordinates": 0,
     "sectors": {
       "N": {
-        "protected": 32,
+        "protected": 34,
         "partial": 2,
         "exposed": 10
       },
       "NE": {
-        "protected": 33,
+        "protected": 35,
         "partial": 2,
         "exposed": 9
       },
       "E": {
         "protected": 27,
-        "partial": 13,
+        "partial": 15,
         "exposed": 4
       },
       "SE": {
         "protected": 16,
-        "partial": 15,
-        "exposed": 13
+        "partial": 16,
+        "exposed": 14
       },
       "S": {
         "protected": 12,
         "partial": 3,
-        "exposed": 29
+        "exposed": 31
       },
       "SW": {
         "protected": 11,
-        "partial": 9,
-        "exposed": 24
+        "partial": 10,
+        "exposed": 25
       },
       "W": {
-        "protected": 19,
+        "protected": 21,
         "partial": 12,
         "exposed": 13
       },
       "NW": {
-        "protected": 29,
+        "protected": 31,
         "partial": 9,
         "exposed": 6
       }
@@ -3203,6 +3203,148 @@
           "blockedRayRatio": 0,
           "onshore": 0.888,
           "intensity": 94.4
+        }
+      },
+      "confidence": "high"
+    },
+    "3011": {
+      "beachId": 3011,
+      "name": {
+        "en": "Rodakino",
+        "gr": "Ροδάκινο"
+      },
+      "coordinates": {
+        "lat": 35.1872025,
+        "lon": 24.3151783
+      },
+      "facingDeg": 176.9,
+      "sectors": {
+        "N": {
+          "level": "protected",
+          "fetchKm": 0,
+          "blockedRayRatio": 1,
+          "onshore": -0.999,
+          "intensity": 0
+        },
+        "NE": {
+          "level": "protected",
+          "fetchKm": 0.16,
+          "blockedRayRatio": 1,
+          "onshore": -0.668,
+          "intensity": 10
+        },
+        "E": {
+          "level": "partial",
+          "fetchKm": 7.12,
+          "blockedRayRatio": 0.8,
+          "onshore": 0.054,
+          "intensity": 34.1
+        },
+        "SE": {
+          "level": "exposed",
+          "fetchKm": 21.96,
+          "blockedRayRatio": 0.2,
+          "onshore": 0.744,
+          "intensity": 80.2
+        },
+        "S": {
+          "level": "exposed",
+          "fetchKm": 25,
+          "blockedRayRatio": 0,
+          "onshore": 0.999,
+          "intensity": 99.9
+        },
+        "SW": {
+          "level": "exposed",
+          "fetchKm": 20.2,
+          "blockedRayRatio": 0.2,
+          "onshore": 0.668,
+          "intensity": 76.7
+        },
+        "W": {
+          "level": "protected",
+          "fetchKm": 5.2,
+          "blockedRayRatio": 0.8,
+          "onshore": -0.054,
+          "intensity": 30
+        },
+        "NW": {
+          "level": "protected",
+          "fetchKm": 0,
+          "blockedRayRatio": 1,
+          "onshore": -0.744,
+          "intensity": 7.7
+        }
+      },
+      "confidence": "high"
+    },
+    "3019": {
+      "beachId": 3019,
+      "name": {
+        "en": "Agia Galini",
+        "gr": "Αγία Γαλήνη"
+      },
+      "coordinates": {
+        "lat": 35.0971451,
+        "lon": 24.6884851
+      },
+      "facingDeg": 142.7,
+      "sectors": {
+        "N": {
+          "level": "protected",
+          "fetchKm": 0,
+          "blockedRayRatio": 1,
+          "onshore": -0.795,
+          "intensity": 6.1
+        },
+        "NE": {
+          "level": "protected",
+          "fetchKm": 0.04,
+          "blockedRayRatio": 1,
+          "onshore": -0.134,
+          "intensity": 26
+        },
+        "E": {
+          "level": "partial",
+          "fetchKm": 1.56,
+          "blockedRayRatio": 1,
+          "onshore": 0.606,
+          "intensity": 48.2
+        },
+        "SE": {
+          "level": "partial",
+          "fetchKm": 9.12,
+          "blockedRayRatio": 1,
+          "onshore": 0.991,
+          "intensity": 59.7
+        },
+        "S": {
+          "level": "exposed",
+          "fetchKm": 21,
+          "blockedRayRatio": 0.4,
+          "onshore": 0.795,
+          "intensity": 75.4
+        },
+        "SW": {
+          "level": "partial",
+          "fetchKm": 12.84,
+          "blockedRayRatio": 0.6,
+          "onshore": 0.134,
+          "intensity": 43.1
+        },
+        "W": {
+          "level": "protected",
+          "fetchKm": 0,
+          "blockedRayRatio": 1,
+          "onshore": -0.606,
+          "intensity": 11.8
+        },
+        "NW": {
+          "level": "protected",
+          "fetchKm": 0,
+          "blockedRayRatio": 1,
+          "onshore": -0.991,
+          "intensity": 0.3
         }
       },
       "confidence": "high"

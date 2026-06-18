@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "generatedAt": "2026-06-12T06:15:10.307Z",
+  "generatedAt": "2026-06-18T20:17:48.617Z",
   "region": {
     "id": "west-greece-achaia-mainland",
     "name": "Achaia"
@@ -36,49 +36,49 @@
     "maskConfidence": "high"
   },
   "summary": {
-    "beachCount": 15,
-    "generatedProfiles": 15,
+    "beachCount": 19,
+    "generatedProfiles": 19,
     "missingCoordinates": 0,
     "sectors": {
       "N": {
         "protected": 4,
-        "partial": 10,
+        "partial": 14,
         "exposed": 1
       },
       "NE": {
-        "protected": 4,
+        "protected": 5,
         "partial": 5,
-        "exposed": 6
+        "exposed": 9
       },
       "E": {
-        "protected": 7,
-        "partial": 2,
+        "protected": 9,
+        "partial": 4,
         "exposed": 6
       },
       "SE": {
-        "protected": 11,
+        "protected": 15,
         "partial": 3,
         "exposed": 1
       },
       "S": {
-        "protected": 12,
+        "protected": 16,
         "partial": 3,
         "exposed": 0
       },
       "SW": {
-        "protected": 11,
-        "partial": 1,
+        "protected": 14,
+        "partial": 2,
         "exposed": 3
       },
       "W": {
-        "protected": 9,
-        "partial": 2,
-        "exposed": 4
+        "protected": 11,
+        "partial": 3,
+        "exposed": 5
       },
       "NW": {
-        "protected": 5,
-        "partial": 6,
-        "exposed": 4
+        "protected": 6,
+        "partial": 8,
+        "exposed": 5
       }
     }
   },
@@ -1144,6 +1144,290 @@
           "blockedRayRatio": 1,
           "onshore": 0.661,
           "intensity": 49.8
+        }
+      },
+      "confidence": "high"
+    },
+    "3047": {
+      "beachId": 3047,
+      "name": {
+        "en": "PDE Kastelokampos",
+        "gr": "ΠΔΕ Καστελόκαμπος"
+      },
+      "coordinates": {
+        "lat": 38.292927,
+        "lon": 21.76727
+      },
+      "facingDeg": 306.3,
+      "sectors": {
+        "N": {
+          "level": "partial",
+          "fetchKm": 4.52,
+          "blockedRayRatio": 1,
+          "onshore": 0.592,
+          "intensity": 47.8
+        },
+        "NE": {
+          "level": "protected",
+          "fetchKm": 1.88,
+          "blockedRayRatio": 1,
+          "onshore": -0.151,
+          "intensity": 25.5
+        },
+        "E": {
+          "level": "protected",
+          "fetchKm": 0,
+          "blockedRayRatio": 1,
+          "onshore": -0.806,
+          "intensity": 5.8
+        },
+        "SE": {
+          "level": "protected",
+          "fetchKm": 0,
+          "blockedRayRatio": 1,
+          "onshore": -0.988,
+          "intensity": 0.3
+        },
+        "S": {
+          "level": "protected",
+          "fetchKm": 0,
+          "blockedRayRatio": 1,
+          "onshore": -0.592,
+          "intensity": 12.2
+        },
+        "SW": {
+          "level": "partial",
+          "fetchKm": 10.36,
+          "blockedRayRatio": 0.6,
+          "onshore": 0.151,
+          "intensity": 42.5
+        },
+        "W": {
+          "level": "exposed",
+          "fetchKm": 20.72,
+          "blockedRayRatio": 0.6,
+          "onshore": 0.806,
+          "intensity": 68.6
+        },
+        "NW": {
+          "level": "partial",
+          "fetchKm": 9.64,
+          "blockedRayRatio": 1,
+          "onshore": 0.988,
+          "intensity": 59.7
+        }
+      },
+      "confidence": "high"
+    },
+    "3048": {
+      "beachId": 3048,
+      "name": {
+        "en": "PDE Kato Achaias",
+        "gr": "ΠΔΕ Κάτω Αχαΐας"
+      },
+      "coordinates": {
+        "lat": 38.15515,
+        "lon": 21.55377
+      },
+      "facingDeg": 21.6,
+      "sectors": {
+        "N": {
+          "level": "partial",
+          "fetchKm": 20.52,
+          "blockedRayRatio": 1,
+          "onshore": 0.93,
+          "intensity": 57.9
+        },
+        "NE": {
+          "level": "exposed",
+          "fetchKm": 19.8,
+          "blockedRayRatio": 0.8,
+          "onshore": 0.918,
+          "intensity": 65.2
+        },
+        "E": {
+          "level": "partial",
+          "fetchKm": 7.96,
+          "blockedRayRatio": 1,
+          "onshore": 0.368,
+          "intensity": 41
+        },
+        "SE": {
+          "level": "protected",
+          "fetchKm": 1.08,
+          "blockedRayRatio": 1,
+          "onshore": -0.397,
+          "intensity": 18.1
+        },
+        "S": {
+          "level": "protected",
+          "fetchKm": 0,
+          "blockedRayRatio": 1,
+          "onshore": -0.93,
+          "intensity": 2.1
+        },
+        "SW": {
+          "level": "protected",
+          "fetchKm": 0,
+          "blockedRayRatio": 1,
+          "onshore": -0.918,
+          "intensity": 2.5
+        },
+        "W": {
+          "level": "protected",
+          "fetchKm": 5.08,
+          "blockedRayRatio": 0.8,
+          "onshore": -0.368,
+          "intensity": 20
+        },
+        "NW": {
+          "level": "partial",
+          "fetchKm": 17.68,
+          "blockedRayRatio": 0.6,
+          "onshore": 0.397,
+          "intensity": 53.1
+        }
+      },
+      "confidence": "high"
+    },
+    "3049": {
+      "beachId": 3049,
+      "name": {
+        "en": "PDE Lakkopetra",
+        "gr": "ΠΔΕ Λακκόπετρα"
+      },
+      "coordinates": {
+        "lat": 38.18845,
+        "lon": 21.46945
+      },
+      "facingDeg": 42.8,
+      "sectors": {
+        "N": {
+          "level": "partial",
+          "fetchKm": 15.24,
+          "blockedRayRatio": 1,
+          "onshore": 0.734,
+          "intensity": 52
+        },
+        "NE": {
+          "level": "exposed",
+          "fetchKm": 20.64,
+          "blockedRayRatio": 0.8,
+          "onshore": 0.999,
+          "intensity": 68
+        },
+        "E": {
+          "level": "partial",
+          "fetchKm": 17.68,
+          "blockedRayRatio": 0.8,
+          "onshore": 0.679,
+          "intensity": 57.1
+        },
+        "SE": {
+          "level": "protected",
+          "fetchKm": 4.48,
+          "blockedRayRatio": 1,
+          "onshore": -0.038,
+          "intensity": 28.8
+        },
+        "S": {
+          "level": "protected",
+          "fetchKm": 0.04,
+          "blockedRayRatio": 1,
+          "onshore": -0.734,
+          "intensity": 8
+        },
+        "SW": {
+          "level": "protected",
+          "fetchKm": 0,
+          "blockedRayRatio": 1,
+          "onshore": -0.999,
+          "intensity": 0
+        },
+        "W": {
+          "level": "protected",
+          "fetchKm": 0,
+          "blockedRayRatio": 1,
+          "onshore": -0.679,
+          "intensity": 9.6
+        },
+        "NW": {
+          "level": "protected",
+          "fetchKm": 10.24,
+          "blockedRayRatio": 1,
+          "onshore": 0.038,
+          "intensity": 31.2
+        }
+      },
+      "confidence": "high"
+    },
+    "3052": {
+      "beachId": 3052,
+      "name": {
+        "en": "PDE Pounta Aigialias",
+        "gr": "ΠΔΕ Πούντα Αιγιαλείας"
+      },
+      "coordinates": {
+        "lat": 38.178498,
+        "lon": 22.232391
+      },
+      "facingDeg": 352.9,
+      "sectors": {
+        "N": {
+          "level": "partial",
+          "fetchKm": 19.8,
+          "blockedRayRatio": 1,
+          "onshore": 0.992,
+          "intensity": 59.8
+        },
+        "NE": {
+          "level": "exposed",
+          "fetchKm": 18,
+          "blockedRayRatio": 0.6,
+          "onshore": 0.614,
+          "intensity": 61.3
+        },
+        "E": {
+          "level": "protected",
+          "fetchKm": 5.04,
+          "blockedRayRatio": 0.8,
+          "onshore": -0.124,
+          "intensity": 27.8
+        },
+        "SE": {
+          "level": "protected",
+          "fetchKm": 0,
+          "blockedRayRatio": 1,
+          "onshore": -0.789,
+          "intensity": 6.3
+        },
+        "S": {
+          "level": "protected",
+          "fetchKm": 0,
+          "blockedRayRatio": 1,
+          "onshore": -0.992,
+          "intensity": 0.2
+        },
+        "SW": {
+          "level": "protected",
+          "fetchKm": 0.08,
+          "blockedRayRatio": 1,
+          "onshore": -0.614,
+          "intensity": 11.6
+        },
+        "W": {
+          "level": "partial",
+          "fetchKm": 1.08,
+          "blockedRayRatio": 1,
+          "onshore": 0.124,
+          "intensity": 33.7
+        },
+        "NW": {
+          "level": "exposed",
+          "fetchKm": 13.64,
+          "blockedRayRatio": 0.8,
+          "onshore": 0.789,
+          "intensity": 60.8
         }
       },
       "confidence": "high"

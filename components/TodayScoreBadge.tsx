@@ -167,7 +167,18 @@ const getCappedConditionLabel = (
 
   if (isFiveBeaufort) {
     if (isExposedAtFive) return copy.exposedToWind;
-    return variant === 'card' ? copy.shelteredCard : copy.shelteredHero;
+    // Only a genuinely protected beach earns the clean "sheltered pick" wording.
+    // A merely partly-sheltered beach (side exposure) on a 5 Bft day is still a
+    // tricky day, so it gets the "with caution" wording instead of an endorsement
+    // — otherwise the badge ("better wind option") contradicts the "difficult
+    // conditions" verdict shown for the very same beach.
+    if (exposureLevel === 'protected') {
+      return variant === 'card' ? copy.shelteredCard : copy.shelteredHero;
+    }
+    if (!highRelativeRank) return copy.caution(day);
+    return variant === 'hero'
+      ? copy.moreSuitableHero(day)
+      : copy.moreSuitableCard(day);
   }
 
   if (!highRelativeRank) return copy.caution(day);

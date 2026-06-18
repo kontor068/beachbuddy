@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "generatedAt": "2026-06-12T06:14:34.444Z",
+  "generatedAt": "2026-06-18T20:17:11.208Z",
   "region": {
     "id": "central-greece-viotia-mainland",
     "name": "Viotia"
@@ -36,47 +36,47 @@
     "maskConfidence": "high"
   },
   "summary": {
-    "beachCount": 7,
-    "generatedProfiles": 7,
+    "beachCount": 8,
+    "generatedProfiles": 8,
     "missingCoordinates": 0,
     "sectors": {
       "N": {
         "protected": 6,
-        "partial": 1,
+        "partial": 2,
         "exposed": 0
       },
       "NE": {
         "protected": 6,
         "partial": 1,
-        "exposed": 0
+        "exposed": 1
       },
       "E": {
         "protected": 4,
-        "partial": 3,
+        "partial": 4,
         "exposed": 0
       },
       "SE": {
-        "protected": 2,
+        "protected": 3,
         "partial": 4,
         "exposed": 1
       },
       "S": {
-        "protected": 1,
+        "protected": 2,
         "partial": 5,
         "exposed": 1
       },
       "SW": {
-        "protected": 2,
+        "protected": 3,
         "partial": 4,
         "exposed": 1
       },
       "W": {
-        "protected": 4,
+        "protected": 5,
         "partial": 2,
         "exposed": 1
       },
       "NW": {
-        "protected": 6,
+        "protected": 7,
         "partial": 1,
         "exposed": 0
       }
@@ -576,6 +576,77 @@
           "blockedRayRatio": 1,
           "onshore": -0.641,
           "intensity": 10.8
+        }
+      },
+      "confidence": "high"
+    },
+    "3031": {
+      "beachId": 3031,
+      "name": {
+        "en": "Tanagra Dilesi",
+        "gr": "Τανάγρα Δήλεσι"
+      },
+      "coordinates": {
+        "lat": 38.346828,
+        "lon": 23.669065
+      },
+      "facingDeg": 47.1,
+      "sectors": {
+        "N": {
+          "level": "partial",
+          "fetchKm": 6.92,
+          "blockedRayRatio": 1,
+          "onshore": 0.681,
+          "intensity": 50.4
+        },
+        "NE": {
+          "level": "exposed",
+          "fetchKm": 10.48,
+          "blockedRayRatio": 1,
+          "onshore": 0.999,
+          "intensity": 60
+        },
+        "E": {
+          "level": "partial",
+          "fetchKm": 11.96,
+          "blockedRayRatio": 0.8,
+          "onshore": 0.733,
+          "intensity": 58.9
+        },
+        "SE": {
+          "level": "protected",
+          "fetchKm": 1.44,
+          "blockedRayRatio": 1,
+          "onshore": 0.037,
+          "intensity": 31.1
+        },
+        "S": {
+          "level": "protected",
+          "fetchKm": 0,
+          "blockedRayRatio": 1,
+          "onshore": -0.681,
+          "intensity": 9.6
+        },
+        "SW": {
+          "level": "protected",
+          "fetchKm": 0,
+          "blockedRayRatio": 1,
+          "onshore": -0.999,
+          "intensity": 0
+        },
+        "W": {
+          "level": "protected",
+          "fetchKm": 0,
+          "blockedRayRatio": 1,
+          "onshore": -0.733,
+          "intensity": 8
+        },
+        "NW": {
+          "level": "protected",
+          "fetchKm": 2.6,
+          "blockedRayRatio": 1,
+          "onshore": -0.037,
+          "intensity": 28.9
         }
       },
       "confidence": "high"

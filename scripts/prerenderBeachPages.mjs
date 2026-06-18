@@ -644,13 +644,28 @@ const stripClientScripts = html => html
   .replace(/\s*<link rel="modulepreload"[^>]*>\s*/gi, '')
   .replace(/\s*<script\b(?=[^>]*\btype="module"|\btype='module')[^>]*>[\s\S]*?<\/script>\s*/gi, '');
 
-const staticSeoLandingPage = landing => `
+const staticSeoLandingPage = landing => {
+  // The first link is always the primary entry into the live app; promote it to
+  // a prominent CTA so this page reads as a real CalmBeach gateway, not a stray
+  // document. The rest stay as secondary related links.
+  const [primaryLink, ...secondaryLinks] = landing.links;
+
+  return `
     <div id="root">
-      <main style="max-width:880px;margin:0 auto;padding:40px 20px 56px;font-family:system-ui,-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;color:#0f172a;background:#f8fafc;">
-        <p style="margin:0 0 8px;color:#0e7490;font-weight:800;">CalmBeach Greece</p>
-        <h1 style="margin:0 0 14px;font-size:38px;line-height:1.08;">${escapeHtml(landing.h1)}</h1>
-        <p style="margin:0 0 26px;font-size:18px;line-height:1.6;color:#334155;">${escapeHtml(landing.intro)}</p>
-        <div style="display:grid;gap:16px;margin:0 0 28px;">
+      <main style="max-width:880px;margin:0 auto;padding:0 20px 56px;font-family:system-ui,-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;color:#0f172a;background:#f8fafc;">
+        <header style="display:flex;align-items:center;justify-content:space-between;gap:12px;padding:18px 0;">
+          <a href="/" style="display:inline-flex;align-items:center;gap:10px;text-decoration:none;color:#0e7490;font-weight:800;font-size:18px;">
+            <img src="/calmbeach-mark.svg" alt="" width="32" height="32" style="display:block;" />
+            CalmBeach Greece
+          </a>
+          <a href="/" style="display:inline-flex;align-items:center;border:1px solid #bae6fd;border-radius:999px;padding:8px 14px;background:white;color:#0e7490;text-decoration:none;font-weight:700;font-size:14px;">Open app</a>
+        </header>
+        <section style="padding:24px 0 8px;">
+          <h1 style="margin:0 0 14px;font-size:38px;line-height:1.08;">${escapeHtml(landing.h1)}</h1>
+          <p style="margin:0 0 24px;font-size:18px;line-height:1.6;color:#334155;">${escapeHtml(landing.intro)}</p>
+          ${primaryLink ? `<a href="${escapeHtml(primaryLink.href)}" style="display:inline-flex;align-items:center;justify-content:center;background:#0e7490;color:white;border-radius:12px;padding:14px 22px;text-decoration:none;font-weight:800;font-size:16px;box-shadow:0 10px 24px -12px rgba(14,116,144,.6);">${escapeHtml(primaryLink.label)} →</a>` : ''}
+        </section>
+        <div style="display:grid;gap:16px;margin:28px 0;">
           ${landing.sections.map(section => `
             <section style="border-top:1px solid #bae6fd;padding-top:16px;">
               <h2 style="margin:0 0 8px;font-size:20px;line-height:1.2;color:#075985;">${escapeHtml(section.heading)}</h2>
@@ -658,19 +673,22 @@ const staticSeoLandingPage = landing => `
             </section>
           `).join('')}
         </div>
+        ${secondaryLinks.length > 0 ? `
         <nav aria-label="Related CalmBeach pages">
           <ul style="display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:10px;margin:0;padding:0;list-style:none;">
-            ${landing.links.map(link => `
+            ${secondaryLinks.map(link => `
               <li style="margin:0;">
                 <a href="${escapeHtml(link.href)}" style="display:block;border:1px solid #bae6fd;border-radius:12px;padding:12px 14px;background:white;color:#0e7490;text-decoration:none;font-weight:800;">${escapeHtml(link.label)}</a>
               </li>
             `).join('')}
           </ul>
         </nav>
+        ` : ''}
         <p data-nosnippet="true" style="margin:24px 0 0;color:#64748b;font-size:13px;line-height:1.5;">Recommendations are indicative and depend on available weather and beach data. Conditions may vary locally.</p>
       </main>
     </div>
   `;
+};
 
 const buildSeoLandingPage = (baseHtml, landing, imageUrl) => {
   const locale = prerenderLocales[0];

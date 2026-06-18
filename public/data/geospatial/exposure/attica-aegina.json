@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "generatedAt": "2026-06-12T06:14:25.901Z",
+  "generatedAt": "2026-06-18T20:17:02.451Z",
   "region": {
     "id": "attica-aegina",
     "name": "Aegina"
@@ -36,48 +36,48 @@
     "maskConfidence": "high"
   },
   "summary": {
-    "beachCount": 15,
-    "generatedProfiles": 15,
+    "beachCount": 17,
+    "generatedProfiles": 17,
     "missingCoordinates": 0,
     "sectors": {
       "N": {
-        "protected": 9,
+        "protected": 11,
         "partial": 3,
         "exposed": 3
       },
       "NE": {
-        "protected": 8,
+        "protected": 10,
         "partial": 3,
         "exposed": 4
       },
       "E": {
-        "protected": 10,
+        "protected": 12,
         "partial": 3,
         "exposed": 2
       },
       "SE": {
-        "protected": 11,
-        "partial": 1,
+        "protected": 12,
+        "partial": 2,
         "exposed": 3
       },
       "S": {
         "protected": 7,
-        "partial": 6,
+        "partial": 8,
         "exposed": 2
       },
       "SW": {
         "protected": 7,
-        "partial": 5,
-        "exposed": 3
+        "partial": 6,
+        "exposed": 4
       },
       "W": {
         "protected": 6,
-        "partial": 4,
-        "exposed": 5
+        "partial": 5,
+        "exposed": 6
       },
       "NW": {
-        "protected": 5,
-        "partial": 7,
+        "protected": 6,
+        "partial": 8,
         "exposed": 3
       }
     }
@@ -1144,6 +1144,148 @@
           "blockedRayRatio": 1,
           "onshore": 0.174,
           "intensity": 35.2
+        }
+      },
+      "confidence": "high"
+    },
+    "3022": {
+      "beachId": 3022,
+      "name": {
+        "en": "Aigina Marathonas",
+        "gr": "Αίγινα Μαραθώνας"
+      },
+      "coordinates": {
+        "lat": 37.7184855,
+        "lon": 23.4594492
+      },
+      "facingDeg": 238.3,
+      "sectors": {
+        "N": {
+          "level": "protected",
+          "fetchKm": 0.04,
+          "blockedRayRatio": 1,
+          "onshore": -0.525,
+          "intensity": 14.2
+        },
+        "NE": {
+          "level": "protected",
+          "fetchKm": 0,
+          "blockedRayRatio": 1,
+          "onshore": -0.973,
+          "intensity": 0.8
+        },
+        "E": {
+          "level": "protected",
+          "fetchKm": 0,
+          "blockedRayRatio": 1,
+          "onshore": -0.851,
+          "intensity": 4.5
+        },
+        "SE": {
+          "level": "protected",
+          "fetchKm": 0.4,
+          "blockedRayRatio": 1,
+          "onshore": -0.23,
+          "intensity": 23.1
+        },
+        "S": {
+          "level": "partial",
+          "fetchKm": 1.96,
+          "blockedRayRatio": 1,
+          "onshore": 0.525,
+          "intensity": 45.8
+        },
+        "SW": {
+          "level": "exposed",
+          "fetchKm": 8.32,
+          "blockedRayRatio": 0.8,
+          "onshore": 0.973,
+          "intensity": 64.7
+        },
+        "W": {
+          "level": "exposed",
+          "fetchKm": 16.92,
+          "blockedRayRatio": 0.4,
+          "onshore": 0.851,
+          "intensity": 77.7
+        },
+        "NW": {
+          "level": "partial",
+          "fetchKm": 5.56,
+          "blockedRayRatio": 0.8,
+          "onshore": 0.23,
+          "intensity": 39.2
+        }
+      },
+      "confidence": "high"
+    },
+    "3024": {
+      "beachId": 3024,
+      "name": {
+        "en": "Aigina Ag. Vasilios",
+        "gr": "Αίγινα Αγ. Βασίλειος"
+      },
+      "coordinates": {
+        "lat": 37.726389,
+        "lon": 23.440861
+      },
+      "facingDeg": 202.9,
+      "sectors": {
+        "N": {
+          "level": "protected",
+          "fetchKm": 0,
+          "blockedRayRatio": 1,
+          "onshore": -0.921,
+          "intensity": 2.4
+        },
+        "NE": {
+          "level": "protected",
+          "fetchKm": 0,
+          "blockedRayRatio": 1,
+          "onshore": -0.927,
+          "intensity": 2.2
+        },
+        "E": {
+          "level": "protected",
+          "fetchKm": 0.36,
+          "blockedRayRatio": 1,
+          "onshore": -0.389,
+          "intensity": 18.3
+        },
+        "SE": {
+          "level": "partial",
+          "fetchKm": 2.44,
+          "blockedRayRatio": 1,
+          "onshore": 0.376,
+          "intensity": 41.3
+        },
+        "S": {
+          "level": "partial",
+          "fetchKm": 5.04,
+          "blockedRayRatio": 1,
+          "onshore": 0.921,
+          "intensity": 57.6
+        },
+        "SW": {
+          "level": "partial",
+          "fetchKm": 10.24,
+          "blockedRayRatio": 1,
+          "onshore": 0.927,
+          "intensity": 57.8
+        },
+        "W": {
+          "level": "partial",
+          "fetchKm": 8.44,
+          "blockedRayRatio": 1,
+          "onshore": 0.389,
+          "intensity": 41.7
+        },
+        "NW": {
+          "level": "protected",
+          "fetchKm": 4.76,
+          "blockedRayRatio": 1,
+          "onshore": -0.376,
+          "intensity": 18.7
         }
       },
       "confidence": "high"

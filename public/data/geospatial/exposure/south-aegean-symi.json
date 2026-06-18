@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "generatedAt": "2026-06-12T06:15:07.274Z",
+  "generatedAt": "2026-06-18T20:17:45.392Z",
   "region": {
     "id": "south-aegean-symi",
     "name": "Symi"
@@ -36,48 +36,48 @@
     "maskConfidence": "high"
   },
   "summary": {
-    "beachCount": 8,
-    "generatedProfiles": 8,
+    "beachCount": 9,
+    "generatedProfiles": 9,
     "missingCoordinates": 0,
     "sectors": {
       "N": {
         "protected": 3,
-        "partial": 5,
+        "partial": 6,
         "exposed": 0
       },
       "NE": {
         "protected": 1,
-        "partial": 7,
+        "partial": 8,
         "exposed": 0
       },
       "E": {
         "protected": 1,
-        "partial": 6,
+        "partial": 7,
         "exposed": 1
       },
       "SE": {
-        "protected": 5,
+        "protected": 6,
         "partial": 3,
         "exposed": 0
       },
       "S": {
-        "protected": 6,
+        "protected": 7,
         "partial": 2,
         "exposed": 0
       },
       "SW": {
-        "protected": 7,
+        "protected": 8,
         "partial": 0,
         "exposed": 1
       },
       "W": {
-        "protected": 7,
+        "protected": 8,
         "partial": 1,
         "exposed": 0
       },
       "NW": {
         "protected": 4,
-        "partial": 4,
+        "partial": 5,
         "exposed": 0
       }
     }
@@ -647,6 +647,77 @@
           "blockedRayRatio": 1,
           "onshore": 0.222,
           "intensity": 36.6
+        }
+      },
+      "confidence": "high"
+    },
+    "3043": {
+      "beachId": 3043,
+      "name": {
+        "en": "Symi Gyala",
+        "gr": "Σύμη Γυάλα"
+      },
+      "coordinates": {
+        "lat": 36.621352,
+        "lon": 27.820906
+      },
+      "facingDeg": 38.2,
+      "sectors": {
+        "N": {
+          "level": "partial",
+          "fetchKm": 0.92,
+          "blockedRayRatio": 1,
+          "onshore": 0.786,
+          "intensity": 53.6
+        },
+        "NE": {
+          "level": "partial",
+          "fetchKm": 9.24,
+          "blockedRayRatio": 1,
+          "onshore": 0.993,
+          "intensity": 59.8
+        },
+        "E": {
+          "level": "partial",
+          "fetchKm": 7.96,
+          "blockedRayRatio": 1,
+          "onshore": 0.618,
+          "intensity": 48.6
+        },
+        "SE": {
+          "level": "protected",
+          "fetchKm": 0.04,
+          "blockedRayRatio": 1,
+          "onshore": -0.118,
+          "intensity": 26.4
+        },
+        "S": {
+          "level": "protected",
+          "fetchKm": 0,
+          "blockedRayRatio": 1,
+          "onshore": -0.786,
+          "intensity": 6.4
+        },
+        "SW": {
+          "level": "protected",
+          "fetchKm": 0,
+          "blockedRayRatio": 1,
+          "onshore": -0.993,
+          "intensity": 0.2
+        },
+        "W": {
+          "level": "protected",
+          "fetchKm": 0.24,
+          "blockedRayRatio": 1,
+          "onshore": -0.618,
+          "intensity": 11.4
+        },
+        "NW": {
+          "level": "partial",
+          "fetchKm": 0.4,
+          "blockedRayRatio": 1,
+          "onshore": 0.118,
+          "intensity": 33.6
         }
       },
       "confidence": "high"

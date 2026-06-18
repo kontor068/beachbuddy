@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "generatedAt": "2026-06-12T06:14:26.914Z",
+  "generatedAt": "2026-06-18T20:17:03.491Z",
   "region": {
     "id": "attica-athens-area-mainland",
     "name": "Athens area"
@@ -36,48 +36,48 @@
     "maskConfidence": "high"
   },
   "summary": {
-    "beachCount": 25,
-    "generatedProfiles": 25,
+    "beachCount": 26,
+    "generatedProfiles": 26,
     "missingCoordinates": 0,
     "sectors": {
       "N": {
-        "protected": 23,
+        "protected": 24,
         "partial": 2,
         "exposed": 0
       },
       "NE": {
-        "protected": 24,
+        "protected": 25,
         "partial": 1,
         "exposed": 0
       },
       "E": {
-        "protected": 21,
+        "protected": 22,
         "partial": 4,
         "exposed": 0
       },
       "SE": {
-        "protected": 16,
+        "protected": 17,
         "partial": 5,
         "exposed": 4
       },
       "S": {
         "protected": 3,
-        "partial": 9,
+        "partial": 10,
         "exposed": 13
       },
       "SW": {
         "protected": 2,
         "partial": 6,
-        "exposed": 17
+        "exposed": 18
       },
       "W": {
         "protected": 4,
         "partial": 8,
-        "exposed": 13
+        "exposed": 14
       },
       "NW": {
         "protected": 14,
-        "partial": 10,
+        "partial": 11,
         "exposed": 1
       }
     }
@@ -1854,6 +1854,77 @@
           "blockedRayRatio": 1,
           "onshore": -0.966,
           "intensity": 1
+        }
+      },
+      "confidence": "high"
+    },
+    "3025": {
+      "beachId": 3025,
+      "name": {
+        "en": "Alimos Loutra",
+        "gr": "Άλιμος Λουτρά"
+      },
+      "coordinates": {
+        "lat": 37.90349,
+        "lon": 23.71903
+      },
+      "facingDeg": 260.6,
+      "sectors": {
+        "N": {
+          "level": "protected",
+          "fetchKm": 0.04,
+          "blockedRayRatio": 1,
+          "onshore": -0.163,
+          "intensity": 25.1
+        },
+        "NE": {
+          "level": "protected",
+          "fetchKm": 0,
+          "blockedRayRatio": 1,
+          "onshore": -0.813,
+          "intensity": 5.6
+        },
+        "E": {
+          "level": "protected",
+          "fetchKm": 0,
+          "blockedRayRatio": 1,
+          "onshore": -0.987,
+          "intensity": 0.4
+        },
+        "SE": {
+          "level": "protected",
+          "fetchKm": 0,
+          "blockedRayRatio": 1,
+          "onshore": -0.582,
+          "intensity": 12.5
+        },
+        "S": {
+          "level": "partial",
+          "fetchKm": 0,
+          "blockedRayRatio": 1,
+          "onshore": 0.163,
+          "intensity": 34.9
+        },
+        "SW": {
+          "level": "exposed",
+          "fetchKm": 14.12,
+          "blockedRayRatio": 0.6,
+          "onshore": 0.813,
+          "intensity": 68.9
+        },
+        "W": {
+          "level": "exposed",
+          "fetchKm": 16.84,
+          "blockedRayRatio": 0.6,
+          "onshore": 0.987,
+          "intensity": 75.5
+        },
+        "NW": {
+          "level": "partial",
+          "fetchKm": 3.52,
+          "blockedRayRatio": 1,
+          "onshore": 0.582,
+          "intensity": 47.5
         }
       },
       "confidence": "high"

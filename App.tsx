@@ -290,6 +290,21 @@ const DISTANCE_SORT_REFINEMENT_OPTIONS: PositionOptions = {
   maximumAge: 0,
 };
 
+// Synthetic region id for the cross-region "Κοντά μου" view. Its beaches are
+// merged from the real regions nearest to the user, so the result reflects the
+// user's actual location rather than whichever region happens to be on screen.
+const NEAR_ME_REGION_ID = 'near-me';
+// Consider regions whose centre lies within this radius of the user, capped to a
+// sensible number so we never load the whole country.
+const NEAR_ME_CANDIDATE_RADIUS_KM = 80;
+const NEAR_ME_MAX_CANDIDATE_REGIONS = 14;
+// From the merged beaches, keep those within this radius, then cap the list.
+const NEAR_ME_BEACH_RADIUS_KM = 60;
+const NEAR_ME_MAX_BEACHES = 60;
+// If almost nothing falls inside the radius (sparse coastline), still surface at
+// least this many nearest beaches so the view is never empty.
+const NEAR_ME_MIN_BEACHES = 15;
+
 const isGenericAppEntryPath = (pathname?: string): boolean => {
   const currentPathname = pathname ?? (typeof window !== 'undefined' ? window.location.pathname : '/');
   return currentPathname === '/' || currentPathname === '/el' || currentPathname === '/el/';
@@ -1135,36 +1150,36 @@ const getRainRiskCopy = (
     en: {
       allTitle: 'Swimming is not recommended during the main beach hours because of rain',
       rainTitle: () => `Rain may affect the beach plan ${day}`,
-      allBody: 'The forecast shows rain during the main beach hours, so beaches are not shown as suitable for swimming in that window.',
-      timedBody: () => `Note that the forecast shows possible rain around ${summary.label}. Do not treat the beach as suitable for swimming during those hours.`,
+      allBody: 'The forecast shows rain during the main beach hours, so it is best to avoid staying in the sea during that window.',
+      timedBody: () => `The forecast shows possible rain around ${summary.label}, so it is best to avoid staying in the sea during those hours.`,
       genericBody: 'Note that the day has a rain signal in the forecast. Beaches may be fine for wind and waves, but the recommendation only applies to drier windows.',
     },
     gr: {
       allTitle: 'Δεν προτείνεται μπάνιο στις βασικές ώρες λόγω βροχής',
       rainTitle: () => `Προσοχή στη βροχή ${day}`,
-      allBody: `Η πρόγνωση δείχνει βροχή στις βασικές ώρες παραλίας, οπότε ${lowerSentenceDay} δεν θα εμφανίζονται παραλίες ως κατάλληλες για μπάνιο σε αυτό το διάστημα.`,
-      timedBody: () => `Πρόσεξε όμως ότι η πρόγνωση δείχνει πιθανή βροχή γύρω στις ${summary.label}. Εκείνες τις ώρες καμία παραλία δεν είναι κατάλληλη.`,
+      allBody: `Η πρόγνωση δείχνει βροχή στις βασικές ώρες παραλίας, οπότε ${lowerSentenceDay} καλό είναι να αποφεύγεις την παραμονή στη θάλασσα σε αυτό το διάστημα.`,
+      timedBody: () => `Η πρόγνωση δείχνει πιθανή βροχή γύρω στις ${summary.label}, οπότε εκείνες τις ώρες καλό είναι να αποφεύγεις την παραμονή στη θάλασσα.`,
       genericBody: 'Πρόσεξε όμως ότι υπάρχει ένδειξη βροχής στην πρόγνωση. Οι παραλίες μπορεί να είναι οκ από άνεμο/κύμα, αλλά η σύσταση ισχύει μόνο για στεγνά διαστήματα.',
     },
     fr: {
       allTitle: 'Baignade non recommandee aux heures principales a cause de la pluie',
       rainTitle: () => `La pluie peut affecter le plan plage ${day}`,
-      allBody: 'La prévision indique de la pluie aux heures principales de plage, donc aucune plage n’est affichée comme adaptée à la baignade sur ce créneau.',
-      timedBody: () => `La prevision indique une pluie possible vers ${summary.label}. Ne considerez pas la plage comme adaptee a ces heures.`,
+      allBody: 'La prévision indique de la pluie aux heures principales de plage, il vaut donc mieux éviter de rester dans la mer sur ce créneau.',
+      timedBody: () => `La prévision indique une pluie possible vers ${summary.label}, il vaut donc mieux éviter de rester dans la mer à ces heures-là.`,
       genericBody: 'La journee presente un risque de pluie. Les plages peuvent etre correctes cote vent et vagues, mais la recommandation vaut seulement sur les creneaux plus secs.',
     },
     de: {
       allTitle: 'Schwimmen ist zu den Haupt-Strandzeiten wegen Regen nicht empfohlen',
       rainTitle: () => `Regen kann den Strandplan ${day} beeinflussen`,
-      allBody: 'Die Vorhersage zeigt Regen zu den Haupt-Strandzeiten, daher werden Strande in diesem Fenster nicht als geeignet angezeigt.',
-      timedBody: () => `Die Vorhersage zeigt moglichen Regen um ${summary.label}. Behandle den Strand zu diesen Zeiten nicht als geeignet.`,
+      allBody: 'Die Vorhersage zeigt Regen zu den Haupt-Strandzeiten, bleibe in diesem Zeitfenster daher besser nicht im Wasser.',
+      timedBody: () => `Die Vorhersage zeigt möglichen Regen um ${summary.label}, bleibe zu diesen Zeiten daher besser nicht im Wasser.`,
       genericBody: 'Die Vorhersage zeigt ein Regensignal. Fur Wind und Wellen kann es passen, aber die Empfehlung gilt nur fur trockenere Zeitfenster.',
     },
     it: {
       allTitle: 'Bagno non consigliato nelle ore principali per pioggia',
       rainTitle: () => `La pioggia puo influire sul piano spiaggia ${day}`,
-      allBody: 'Le previsioni indicano pioggia nelle ore principali da spiaggia, quindi le spiagge non vengono mostrate come adatte al bagno in quella fascia.',
-      timedBody: () => `Le previsioni indicano possibile pioggia verso ${summary.label}. Non considerare la spiaggia adatta in quelle ore.`,
+      allBody: 'Le previsioni indicano pioggia nelle ore principali da spiaggia, quindi è meglio evitare di restare in mare in quella fascia.',
+      timedBody: () => `Le previsioni indicano possibile pioggia verso ${summary.label}, quindi è meglio evitare di restare in mare in quelle ore.`,
       genericBody: 'La giornata ha un segnale di pioggia. Le spiagge possono andare bene per vento e onde, ma il consiglio vale solo nelle fasce piu asciutte.',
     },
   });
@@ -1399,7 +1414,8 @@ export const App: React.FC = () => {
 
   // --- Beach & Weather Data (Custom Hooks) ---
   const { allIslands, loading: beachesLoading, error: beachesError, getFilteredBeaches, ensureIslandBeachesLoaded, cacheLoadedIsland } = useBeaches(language);
-  const { selectedIsland, selectIsland } = useLocation(allIslands);
+  const { selectedIsland, selectIsland, selectAdHocRegion } = useLocation(allIslands);
+  const isNearMeRegionActive = selectedIsland?.id === NEAR_ME_REGION_ID;
   const { weather, forecast, beachForecasts, loading: weatherLoading, error: weatherError, selectedDayIndex, setSelectedDayIndex, loadWeatherData, lastUpdated } = useWeather(selectedIsland, language);
   const handleRegionSelected = (island: Island, source: 'selector' | 'nearest_location' = 'selector') => {
     trackEvent('region_changed', undefined, {
@@ -1640,6 +1656,82 @@ export const App: React.FC = () => {
     return scoredCandidates[0]?.island || centroidRanked[0].island;
   };
 
+  // Builds the synthetic "Κοντά μου" region: merges beaches from the regions
+  // nearest to the user into a single distance-sorted list, so results reflect
+  // the user's real position instead of whichever region is currently on screen.
+  // Beach ids are only unique within a region, so each merged beach gets a fresh
+  // globally-unique id (keeping its real id + region for detail lookups).
+  const buildNearbyRegion = async (
+    userLoc: { lat: number; lon: number },
+    islands: Island[]
+  ): Promise<Island | null> => {
+    const centroidRanked = islands
+      .map(island => ({
+        island,
+        centroidDistance: calculateDistance(userLoc.lat, userLoc.lon, island.coordinates.lat, island.coordinates.lon),
+      }))
+      .sort((a, b) => a.centroidDistance - b.centroidDistance);
+
+    if (centroidRanked.length === 0) return null;
+
+    const withinRadius = centroidRanked.filter(candidate => candidate.centroidDistance <= NEAR_ME_CANDIDATE_RADIUS_KM);
+    const candidates = (withinRadius.length > 0 ? withinRadius : centroidRanked).slice(0, NEAR_ME_MAX_CANDIDATE_REGIONS);
+
+    const regionIndex = await loadBeachRegionIndex().catch(() => []);
+    const indexById = new Map(regionIndex.map(entry => [entry.id, entry] as const));
+
+    const loadedRegions = await Promise.all(candidates.map(async candidate => {
+      let region = candidate.island;
+      if (region.beaches.length === 0) {
+        const entry = indexById.get(region.id);
+        try {
+          region = await loadAppReadyRegion(region.id, {
+            summaryDataPath: entry?.summaryDataPath,
+            appDataPath: entry?.appDataPath,
+          });
+        } catch (error) {
+          console.warn('Nearby-region beach load failed; skipping region.', { regionId: region.id, error });
+          return [];
+        }
+      }
+      return region.beaches.map(beach => ({
+        beach,
+        regionId: region.id,
+        distance: calculateDistance(userLoc.lat, userLoc.lon, beach.coordinates.lat, beach.coordinates.lon),
+      }));
+    }));
+
+    const ranked = loadedRegions.flat().sort((a, b) => a.distance - b.distance);
+    if (ranked.length === 0) return null;
+
+    const withinBeachRadius = ranked.filter(item => item.distance <= NEAR_ME_BEACH_RADIUS_KM);
+    const selected = (withinBeachRadius.length >= NEAR_ME_MIN_BEACHES ? withinBeachRadius : ranked)
+      .slice(0, NEAR_ME_MAX_BEACHES);
+
+    let nextSyntheticId = 1;
+    const beaches: Beach[] = selected.map(({ beach, regionId }) => ({
+      ...beach,
+      // Globally-unique within the merged region; the real id lives in sourceBeachId.
+      id: nextSyntheticId++,
+      sourceBeachId: beach.sourceBeachId ?? beach.id,
+      regionId: beach.regionId ?? regionId,
+    }));
+
+    return {
+      id: NEAR_ME_REGION_ID,
+      name: {
+        gr: 'Κοντά μου',
+        en: 'Near me',
+        fr: 'Près de moi',
+        de: 'In meiner Nähe',
+        it: 'Vicino a me',
+      },
+      group: 'other',
+      coordinates: userLoc,
+      beaches,
+    };
+  };
+
   const getPositionOnce = (options: PositionOptions): Promise<GeolocationPosition> =>
     new Promise((resolve, reject) => {
       if (typeof navigator === 'undefined' || !navigator.geolocation) {
@@ -1798,10 +1890,82 @@ export const App: React.FC = () => {
     }
   };
 
+  // Powers the "Κοντά μου" button: instead of sorting whichever region is on
+  // screen, it builds a one-off region from the beaches physically nearest to the
+  // user (across region boundaries) and shows them distance-first.
+  const handleShowNearbyBeaches = async () => {
+    if (typeof navigator === 'undefined' || !navigator.geolocation) {
+      setFindNearestError(t.locationErrorUnavailable);
+      return;
+    }
+
+    setBeachSearchQuery('');
+    setIsFindingNearest(true);
+    setFindNearestError(null);
+    try {
+      const position = await getAccuratePosition();
+      const userLoc = applyUserPosition(position);
+      const nearbyRegion = await buildNearbyRegion(userLoc, allIslands);
+      if (!nearbyRegion || nearbyRegion.beaches.length === 0) {
+        setFindNearestError(getLocalizedCopy(language, {
+          en: 'No beaches found near you.',
+          gr: 'Δεν βρέθηκαν παραλίες κοντά σου.',
+          fr: 'Aucune plage trouvée près de vous.',
+          de: 'Keine Strände in deiner Nähe gefunden.',
+          it: 'Nessuna spiaggia trovata vicino a te.',
+        }));
+        return;
+      }
+
+      detailRequestRef.current += 1;
+      setDetailDataStatus('idle');
+      setDetailBeach(null);
+      setView('home');
+      selectAdHocRegion(nearbyRegion);
+      setIsIslandSelectorOpen(false);
+      // Surface the nearest beaches first, mirroring the distance-sort affordance.
+      hasUserSelectedSortRef.current = true;
+      setSortBy('protected');
+      setMobileSuitableDistanceSort(true);
+      setLocationSortResetKey(key => key + 1);
+    } catch (err) {
+      const geoErr = err as GeolocationPositionError;
+      if (geoErr.code === 1) {
+        setFindNearestError(t.locationErrorPermission);
+      } else if (geoErr.code === 2) {
+        setFindNearestError(t.locationErrorUnavailable);
+      } else {
+        setFindNearestError(t.locationErrorTimeout);
+      }
+    } finally {
+      setIsFindingNearest(false);
+    }
+  };
+
+  // Falling back to the manual region picker (e.g. the startup "use my location"
+  // prompt was declined or geolocation failed) should open it on a clean slate.
+  // A failed *automatic* location attempt must not greet the visitor with a red
+  // "Location access denied" alert inside the picker — the picker itself already
+  // invites them to choose a region. The error is only meaningful when the user
+  // explicitly asks for their location from inside the modal (handleSelectNearest).
   const handleChooseStartupRegionManually = () => {
+    setFindNearestError(null);
     setIsStartupLocationPromptOpen(false);
     setIsSelectingStartupRegion(false);
     setIsIslandSelectorOpen(true);
+  };
+
+  // Opening the island picker to browse manually should never carry over a stale
+  // geolocation error, otherwise the red alert reappears every time the modal is
+  // opened even when the user never asked for their location this time.
+  const handleOpenIslandSelector = () => {
+    setFindNearestError(null);
+    setIsIslandSelectorOpen(true);
+  };
+
+  const handleCloseIslandSelector = () => {
+    setFindNearestError(null);
+    setIsIslandSelectorOpen(false);
   };
 
   const handleUseStartupLocation = async () => {
@@ -1948,7 +2112,10 @@ export const App: React.FC = () => {
     setGeospatialExposureProfiles(undefined);
     setGeospatialExposureRegionId(undefined);
 
-    if (!regionId) {
+    // The synthetic "Κοντά μου" region has no exposure profile file of its own;
+    // its beaches fall back to forecast + orientation scoring. Skip the doomed
+    // fetch instead of logging a 404.
+    if (!regionId || regionId === NEAR_ME_REGION_ID) {
       setIsGeospatialExposureLoading(false);
       return () => { cancelled = true; };
     }
@@ -2222,8 +2389,14 @@ export const App: React.FC = () => {
     setDetailDataStatus('loading');
     setView('detail');
 
-    const regionId = selectedIsland?.id;
-    if (options.updateUrl !== false && regionId && typeof window !== 'undefined') {
+    // In the "Κοντά μου" view a beach carries its own (real) region + id; the
+    // selected region is the synthetic merged one and must not drive detail
+    // loading or the URL.
+    const isNearMe = selectedIsland?.id === NEAR_ME_REGION_ID;
+    const regionId = beach.regionId ?? selectedIsland?.id;
+    const detailBeachId = beach.sourceBeachId ?? beach.id;
+
+    if (options.updateUrl !== false && !isNearMe && regionId && typeof window !== 'undefined') {
       const nextPath = buildBeachDetailPath(selectedIsland, beach, language);
       const nextUrl = `${nextPath}${window.location.search}${window.location.hash}`;
       const currentUrl = `${window.location.pathname}${window.location.search}${window.location.hash}`;
@@ -2240,7 +2413,7 @@ export const App: React.FC = () => {
       return;
     }
 
-    void loadBeachDetailData(regionId, beach.id)
+    void loadBeachDetailData(regionId, detailBeachId)
       .then(detail => {
         if (detailRequestRef.current !== requestId) return;
 
@@ -2254,7 +2427,7 @@ export const App: React.FC = () => {
         if (detailRequestRef.current !== requestId) return;
         console.warn('Beach detail data unavailable; showing summary beach data.', {
           regionId,
-          beachId: beach.id,
+          beachId: detailBeachId,
           error,
         });
         setDetailDataStatus('partial');
@@ -2303,6 +2476,10 @@ export const App: React.FC = () => {
   }, [allIslands, language, selectIsland]);
 
   useEffect(() => {
+    // The "Κοντά μου" view is a synthetic region with no URL of its own; the URL
+    // still points at the previously-browsed region. Don't let that stale URL
+    // yank the user out of the nearby-beaches list.
+    if (selectedIsland?.id === NEAR_ME_REGION_ID) return;
     if (parseBeachDetailPath() || beachesLoading) return;
 
     const route = parseBeachRegionPath();
@@ -2334,6 +2511,7 @@ export const App: React.FC = () => {
   }, [allIslands, beachesLoading, ensureIslandBeachesLoaded, language, selectedIsland, selectIsland, view]);
 
   useEffect(() => {
+    if (selectedIsland?.id === NEAR_ME_REGION_ID) return;
     const route = parseBeachDetailPath();
     if (!route || beachesLoading) return;
 
@@ -4709,7 +4887,7 @@ export const App: React.FC = () => {
         selectedIslandName={selectedIsland ? selectedIsland.name[language] : "..."}
         selectedIslandMeta={headerWeatherMeta}
         selectedDate={selectedDayDate}
-        onOpenIslandSelector={() => setIsIslandSelectorOpen(true)} isWinter={isWinter}
+        onOpenIslandSelector={handleOpenIslandSelector} isWinter={isWinter}
         onOpenFavorites={() => handleMobileTab('favorites')}
         forecastSlot={showHeaderForecast ? (
           <>
@@ -4772,15 +4950,21 @@ export const App: React.FC = () => {
               onSearchSubmit={handleDirectorySearchSubmit}
               onSearchSuggestionSelect={handleDirectorySearchSuggestionSelect}
               onOpenFilters={() => setIsFilterModalOpen(true)}
-              onOpenIslandSelector={() => setIsIslandSelectorOpen(true)}
+              onOpenIslandSelector={handleOpenIslandSelector}
               onUseCurrentLocation={() => {
+                // Desktop "sort by distance" dropdown: order the current region by
+                // distance without leaving it.
                 setBeachSearchQuery('');
-                // "Κοντά μου" should surface the beaches closest to the user first.
                 hasUserSelectedSortRef.current = true;
                 setSortBy('protected');
                 setMobileSuitableDistanceSort(true);
                 setLocationSortResetKey(key => key + 1);
                 void handleRequestUserLocation();
+              }}
+              onShowNearbyBeaches={() => {
+                // Mobile "Κοντά μου": surface the beaches physically nearest to the
+                // user, merged across regions — not whichever region is on screen.
+                void handleShowNearbyBeaches();
               }}
               onRequestUserLocation={() => {
                 void handleRequestUserLocation();
@@ -5569,7 +5753,7 @@ export const App: React.FC = () => {
 
       {isIslandSelectorOpen && (
         <Suspense fallback={null}>
-          <IslandSelectorModal isOpen={isIslandSelectorOpen} onClose={() => setIsIslandSelectorOpen(false)} islands={allIslands} onSelect={handleRegionSelected} t={t} language={language} onSelectNearest={handleSelectNearest} isFindingNearest={isFindingNearest} findNearestError={findNearestError} />
+          <IslandSelectorModal isOpen={isIslandSelectorOpen} onClose={handleCloseIslandSelector} islands={allIslands} onSelect={handleRegionSelected} t={t} language={language} onSelectNearest={handleSelectNearest} isFindingNearest={isFindingNearest} findNearestError={findNearestError} />
         </Suspense>
       )}
 
