@@ -24,6 +24,7 @@ import { calculateSeaConditionScore } from '../utils/seaConditions';
 import { TodayScoreBadge } from '../components/TodayScoreBadge';
 import { generateBeachExplanation as generateUiBeachExplanation } from '../utils/beachExplanation';
 import { describeSimpleWindSuitability, describeWindExposure } from '../utils/windExposureCopy';
+import type { ExposureLevel } from '../utils/windExposure';
 import {
   AmenityStatus,
   getAmenityChips,
@@ -430,6 +431,10 @@ interface BeachDetailPageProps {
   beachWeatherById?: BeachWeatherById;
   geospatialExposureProfiles?: Record<number, GeospatialExposureProfile>;
   weatherSource?: WeatherSource;
+  /** Authoritative map-marker exposure level for this beach, taken from the region
+   *  map (single island wind) so the detail map colours the pin identically instead
+   *  of re-deriving a different colour from the per-beach cluster wind. */
+  mapExposureLevelOverride?: ExposureLevel;
 }
 
 export const BeachDetailPage: React.FC<BeachDetailPageProps> = ({
@@ -449,7 +454,8 @@ export const BeachDetailPage: React.FC<BeachDetailPageProps> = ({
   detailDataStatus = 'idle',
   beachWeatherById,
   geospatialExposureProfiles,
-  weatherSource = 'island-fallback'
+  weatherSource = 'island-fallback',
+  mapExposureLevelOverride
 }) => {
   const isFavorite = favorites.includes(beach.id);
   const [feedbackSubmitted, setFeedbackSubmitted] = useState(false);
@@ -718,11 +724,12 @@ export const BeachDetailPage: React.FC<BeachDetailPageProps> = ({
   // "What to bring" — derived only from THIS beach's real gaps, never generic.
   // Each item appears solely when the facility is CONFIRMED absent (status 'no'),
   // never when it is merely unknown — we don't tell people to pack for ignorance.
-  const amenityAvailable = (key: 'beachBar' | 'sunbeds' | 'foodNearby' | 'cafeNearby') =>
+  const amenityAvailable = (key: 'beachBar' | 'sunbeds' | 'foodNearby' | 'cafeNearby' | 'snackCanteen') =>
     amenityRows.some(row => row.key === key && (row.status === 'yes' || row.status === 'seasonal' || row.status === 'limited'));
-  const amenityConfirmedAbsent = (key: 'beachBar' | 'sunbeds' | 'foodNearby' | 'cafeNearby') =>
+  const amenityConfirmedAbsent = (key: 'beachBar' | 'sunbeds' | 'foodNearby' | 'cafeNearby' | 'snackCanteen') =>
     amenityRows.some(row => row.key === key && row.status === 'no');
-  const hasFoodOnSite = amenityAvailable('beachBar') || amenityAvailable('foodNearby') || amenityAvailable('cafeNearby');
+  const hasFoodOnSite = amenityAvailable('beachBar') || amenityAvailable('foodNearby')
+    || amenityAvailable('cafeNearby') || amenityAvailable('snackCanteen');
   const foodConfirmedAbsent = !hasFoodOnSite
     && (amenityConfirmedAbsent('beachBar') || amenityConfirmedAbsent('foodNearby') || amenityConfirmedAbsent('cafeNearby'));
   // naturalShade is a definite boolean in the dataset, so `=== false` is confirmed.
@@ -1294,6 +1301,7 @@ export const BeachDetailPage: React.FC<BeachDetailPageProps> = ({
                   language={language}
                   islandName={islandName}
                   selectedDate={selectedDate}
+                  exposureLevelOverrides={mapExposureLevelOverride ? new Map([[beach.id, mapExposureLevelOverride]]) : undefined}
                   compact
                 />
               </React.Suspense>

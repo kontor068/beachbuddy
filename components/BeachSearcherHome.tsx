@@ -1019,6 +1019,7 @@ const getTopBeachAmenityIcon = (key: AmenityChip['key']): React.ReactNode => {
       return <SunbedIcon className="h-5 w-5" />;
     case 'foodNearby':
     case 'cafeNearby':
+    case 'snackCanteen':
       return <Utensils className="h-5 w-5" />;
     case 'parking':
       return <ParkingCircle className="h-5 w-5" />;
@@ -2350,17 +2351,6 @@ export const BeachSearcherHome: React.FC<BeachSearcherHomeProps> = ({
   // Follow the selected day (today/tomorrow/…) instead of hardcoding "today", since the
   // beach count reflects the selected day's conditions, not necessarily today's.
   const contextStripDayPrefix = getSelectedDayPrefix(selectedDate, new Date(), language);
-  // Natural "X of the Y beaches look good" framing instead of the stiff
-  // "N best beaches" count, which read like a ranking that doesn't exist.
-  const contextStripCountLine = selectedIsland
-    ? getLocalizedCopy(language, {
-      en: `${suitableBeachDisplayCount} of ${selectedIsland.beaches.length} beaches look good ${contextStripDayPrefix}`,
-      gr: `${suitableBeachDisplayCount} από ${selectedIsland.beaches.length} παραλίες φαίνονται καλές ${contextStripDayPrefix}`,
-      fr: `${suitableBeachDisplayCount} plages sur ${selectedIsland.beaches.length} semblent bonnes ${contextStripDayPrefix}`,
-      de: `${suitableBeachDisplayCount} von ${selectedIsland.beaches.length} Stränden sehen ${contextStripDayPrefix} gut aus`,
-      it: `${suitableBeachDisplayCount} spiagge su ${selectedIsland.beaches.length} sembrano buone ${contextStripDayPrefix}`,
-    })
-    : '';
   // Breadcrumb-style eyebrow: region (e.g. "Κυκλάδες") is more useful than a generic
   // country label; fall back to country when the group has no mapping.
   const contextStripEyebrow = getIslandGroupLabel(selectedIsland?.group, language) ?? copy.greece;
@@ -2456,26 +2446,20 @@ export const BeachSearcherHome: React.FC<BeachSearcherHomeProps> = ({
               {searchedBeachStripText}
             </p>
           )}
-          {/* Mobile: a single condensed line (shore + time) — the full sentences
-              plus the count are too much text on a narrow strip. Desktop keeps both. */}
-          {!singleMatchedBeachCard && isMobileViewport && contextStripDaySummary && (
-            <p className="mt-0.5 truncate text-sm font-semibold text-white/90">
-              {contextStripDaySummary.short}
-            </p>
-          )}
-          {!singleMatchedBeachCard && !isMobileViewport && (
-            <>
-              {suitableBeachDisplayCount > 0 && !contextStripDaySummary?.allBeachesSuitable && (
-                <p className="mt-0.5 truncate text-sm font-semibold text-white/90">
-                  {contextStripCountLine}
-                </p>
-              )}
-              {contextStripDaySummary && (
-                <p className="mt-1 line-clamp-2 text-[0.8rem] font-medium leading-snug text-white/80">
-                  {contextStripDaySummary.text}
-                </p>
-              )}
-            </>
+          {/* Wind-guidance line only — no "N of M beaches look good" count.
+              At 4–5 Bft that count reads like "great for a swim" when it isn't;
+              the honest, useful framing is which sheltered coast to head for.
+              Mobile gets the condensed shore+time line, desktop the full sentence. */}
+          {!singleMatchedBeachCard && contextStripDaySummary && (
+            isMobileViewport ? (
+              <p className="mt-0.5 truncate text-sm font-semibold text-white/90">
+                {contextStripDaySummary.short}
+              </p>
+            ) : (
+              <p className="mt-0.5 line-clamp-2 text-sm font-medium leading-snug text-white/90">
+                {contextStripDaySummary.text}
+              </p>
+            )
           )}
         </div>
       </div>

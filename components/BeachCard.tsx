@@ -200,6 +200,7 @@ const cardCopy: Record<LanguageCode, CardCopy> = {
       sunbeds: 'Sunbeds',
       foodNearby: 'Taverna',
       cafeNearby: 'Cafe',
+      snackCanteen: 'Canteen',
       parking: 'Parking',
       organizedFacilities: 'Facilities',
       noFacilities: 'No facilities',
@@ -269,6 +270,7 @@ const cardCopy: Record<LanguageCode, CardCopy> = {
       sunbeds: 'Ξαπλώστρες',
       foodNearby: 'Ταβέρνα',
       cafeNearby: 'Καφέ',
+      snackCanteen: 'Καντίνα',
       parking: 'Parking',
       organizedFacilities: 'Παροχές',
       noFacilities: 'Χωρίς παροχές',
@@ -338,6 +340,7 @@ const cardCopy: Record<LanguageCode, CardCopy> = {
       sunbeds: 'Transats',
       foodNearby: 'Taverne',
       cafeNearby: 'Café',
+      snackCanteen: 'Buvette',
       parking: 'Parking',
       organizedFacilities: 'Services',
       noFacilities: 'Sans services',
@@ -407,6 +410,7 @@ const cardCopy: Record<LanguageCode, CardCopy> = {
       sunbeds: 'Liegen',
       foodNearby: 'Taverne',
       cafeNearby: 'Café',
+      snackCanteen: 'Imbiss',
       parking: 'Parken',
       organizedFacilities: 'Ausstattung',
       noFacilities: 'Keine Ausstattung',
@@ -476,6 +480,7 @@ const cardCopy: Record<LanguageCode, CardCopy> = {
       sunbeds: 'Lettini',
       foodNearby: 'Taverna',
       cafeNearby: 'Caffè',
+      snackCanteen: 'Chiosco',
       parking: 'Parcheggio',
       organizedFacilities: 'Servizi',
       noFacilities: 'Senza servizi',
@@ -650,6 +655,7 @@ const amenityChipIcon = (chip: Pick<AmenityChip, 'key'>): React.ReactNode => {
       return <SunbedIcon className="h-3.5 w-3.5" />;
     case 'foodNearby':
     case 'cafeNearby':
+    case 'snackCanteen':
       return <Utensils className="w-3.5 h-3.5" />;
     case 'parking':
       return <MapPin className="w-3.5 h-3.5" />;

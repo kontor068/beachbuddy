@@ -1,6 +1,7 @@
 import { mkdir, readFile, readdir, writeFile } from 'node:fs/promises';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
+import { amenityTextIncludesAny, SNACK_CANTEEN_AMENITY_TERMS } from '../utils/amenityMatching.js';
 
 const scriptDir = path.dirname(fileURLToPath(import.meta.url));
 const projectRoot = path.resolve(scriptDir, '..');
@@ -169,94 +170,387 @@ const alternateUrlsFor = pathName => [
   },
 ];
 
+// Each landing page targets a distinct search intent and is generated in every
+// locale that provides content. Greek versions live under /el and reciprocate
+// hreflang with their English counterpart. Link hrefs are stored as base
+// (English) paths and localized at render time, so a Greek page links to Greek
+// pages without duplicating the link table.
 const seoLandingPages = [
   {
     pathName: '/best-beaches-greece-today/',
-    title: 'Best Beaches in Greece Today | CalmBeach',
-    description: 'Compare Greek beaches by today\'s wind, waves, weather, exposure, access and beach type before choosing where to swim.',
-    h1: 'Best beaches in Greece today',
-    intro: 'CalmBeach helps you compare beach options across Greece using the conditions that matter for a swim today: wind, waves, weather, exposure, access and beach type.',
-    sections: [
-      {
-        heading: 'How CalmBeach compares beaches',
-        body: 'The app combines forecast conditions with static beach information so you can quickly see which beaches may be more suitable for the day. It avoids treating a famous beach as the best choice when wind or waves make another option more practical.',
+    locales: {
+      en: {
+        title: 'Best Beaches in Greece Today | CalmBeach',
+        description: 'Compare Greek beaches by today\'s wind, waves, weather, exposure, access and beach type before choosing where to swim.',
+        h1: 'Best beaches in Greece today',
+        intro: 'CalmBeach helps you compare beach options across Greece using the conditions that matter for a swim today: wind, waves, weather, exposure, access and beach type.',
+        sections: [
+          {
+            heading: 'How CalmBeach compares beaches',
+            body: 'The app combines forecast conditions with static beach information so you can quickly see which beaches may be more suitable for the day. It avoids treating a famous beach as the best choice when wind or waves make another option more practical.',
+          },
+          {
+            heading: 'What to check before you go',
+            body: 'Look at the current wind direction, wind strength, wave height, beach exposure, access and amenities. Conditions can vary locally, so CalmBeach keeps recommendations cautious instead of promising perfect conditions.',
+          },
+        ],
+        links: [
+          { href: '/', label: 'Open today\'s beach recommendations' },
+          { href: '/where-to-swim-greece-today/', label: 'Where to swim in Greece today' },
+          { href: '/sheltered-beaches-meltemi/', label: 'Sheltered beaches in the Meltemi' },
+        ],
       },
-      {
-        heading: 'What to check before you go',
-        body: 'Look at the current wind direction, wind strength, wave height, beach exposure, access and amenities. Conditions can vary locally, so CalmBeach keeps recommendations cautious instead of promising perfect conditions.',
+      el: {
+        title: 'Καλύτερες παραλίες στην Ελλάδα σήμερα | CalmBeach',
+        description: 'Σύγκρινε ελληνικές παραλίες με βάση τον σημερινό άνεμο, το κύμα, τον καιρό, την έκθεση και την πρόσβαση πριν διαλέξεις πού θα κολυμπήσεις.',
+        h1: 'Καλύτερες παραλίες στην Ελλάδα σήμερα',
+        intro: 'Το CalmBeach σε βοηθά να συγκρίνεις παραλίες σε όλη την Ελλάδα με βάση αυτά που μετράνε για ένα μπάνιο σήμερα: άνεμος, κύμα, καιρός, έκθεση, πρόσβαση και τύπος παραλίας.',
+        sections: [
+          {
+            heading: 'Πώς συγκρίνει τις παραλίες το CalmBeach',
+            body: 'Η εφαρμογή συνδυάζει τις προγνώσεις με σταθερά στοιχεία κάθε παραλίας, ώστε να βλέπεις γρήγορα ποιες ταιριάζουν καλύτερα για τη μέρα. Δεν θεωρεί αυτόματα καλύτερη μια διάσημη παραλία όταν ο άνεμος ή το κύμα κάνουν μια άλλη πιο πρακτική.',
+          },
+          {
+            heading: 'Τι να ελέγξεις πριν πας',
+            body: 'Δες την κατεύθυνση και την ένταση του ανέμου, το ύψος κύματος, την έκθεση της παραλίας, την πρόσβαση και τις παροχές. Οι συνθήκες αλλάζουν τοπικά, γι\' αυτό οι προτάσεις μένουν προσεκτικές και δεν υπόσχονται τέλειες συνθήκες.',
+          },
+        ],
+        links: [
+          { href: '/', label: 'Δες τις σημερινές προτάσεις' },
+          { href: '/where-to-swim-greece-today/', label: 'Πού να κολυμπήσω σήμερα' },
+          { href: '/sheltered-beaches-meltemi/', label: 'Απάνεμες παραλίες με μελτέμι' },
+        ],
       },
-    ],
-    links: [
-      { href: '/', label: 'Open today\'s beach recommendations' },
-      { href: '/where-to-swim-greece-today/', label: 'Where to swim in Greece today' },
-      { href: '/best-beaches-milos-today/', label: 'Best beaches in Milos today' },
-    ],
+    },
   },
   {
     pathName: '/where-to-swim-greece-today/',
-    title: 'Where to Swim in Greece Today | CalmBeach',
-    description: 'Find practical beach options in Greece today with wind, waves, weather, map and beach detail checks from CalmBeach.',
-    h1: 'Where to swim in Greece today',
-    intro: 'Use CalmBeach when you want a quick beach decision instead of reading raw weather data. The app translates wind, waves and exposure into simple beach guidance.',
-    sections: [
-      {
-        heading: 'A fast beach decision screen',
-        body: 'CalmBeach focuses on the top recommendation, suitable alternatives and a map view so tourists can make a choice quickly on mobile.',
+    locales: {
+      en: {
+        title: 'Where to Swim in Greece Today | CalmBeach',
+        description: 'Find practical beach options in Greece today with wind, waves, weather, map and beach detail checks from CalmBeach.',
+        h1: 'Where to swim in Greece today',
+        intro: 'Use CalmBeach when you want a quick beach decision instead of reading raw weather data. The app translates wind, waves and exposure into simple beach guidance.',
+        sections: [
+          {
+            heading: 'A fast beach decision screen',
+            body: 'CalmBeach focuses on the top recommendation, suitable alternatives and a map view so tourists can make a choice quickly on mobile.',
+          },
+          {
+            heading: 'Why conditions matter',
+            body: 'A beach can be excellent on one day and uncomfortable on another. Wind direction, wave height, beach orientation and local exposure can change the right choice.',
+          },
+        ],
+        links: [
+          { href: '/', label: 'Open CalmBeach Greece' },
+          { href: '/calm-beaches-greece-windy-day/', label: 'Find options on a windy day' },
+          { href: '/family-beaches-greece/', label: 'Family beaches with calmer water' },
+        ],
       },
-      {
-        heading: 'Why conditions matter',
-        body: 'A beach can be excellent on one day and uncomfortable on another. Wind direction, wave height, beach orientation and local exposure can change the right choice.',
+      el: {
+        title: 'Πού να κολυμπήσω σήμερα στην Ελλάδα | CalmBeach',
+        description: 'Βρες πρακτικές επιλογές παραλίας στην Ελλάδα σήμερα με ελέγχους ανέμου, κύματος, καιρού, χάρτη και λεπτομερειών παραλίας από το CalmBeach.',
+        h1: 'Πού να κολυμπήσω σήμερα στην Ελλάδα',
+        intro: 'Χρησιμοποίησε το CalmBeach όταν θες μια γρήγορη απόφαση για παραλία αντί να διαβάζεις ακατέργαστα δεδομένα καιρού. Η εφαρμογή μεταφράζει άνεμο, κύμα και έκθεση σε απλή καθοδήγηση.',
+        sections: [
+          {
+            heading: 'Μια γρήγορη οθόνη απόφασης',
+            body: 'Το CalmBeach εστιάζει στην κορυφαία πρόταση, στις κατάλληλες εναλλακτικές και στον χάρτη, ώστε να διαλέγεις γρήγορα από το κινητό.',
+          },
+          {
+            heading: 'Γιατί μετράνε οι συνθήκες',
+            body: 'Μια παραλία μπορεί να είναι εξαιρετική τη μία μέρα και άβολη την άλλη. Η κατεύθυνση του ανέμου, το ύψος κύματος, ο προσανατολισμός και η τοπική έκθεση αλλάζουν τη σωστή επιλογή.',
+          },
+        ],
+        links: [
+          { href: '/', label: 'Άνοιξε το CalmBeach Greece' },
+          { href: '/calm-beaches-greece-windy-day/', label: 'Επιλογές για μέρα με αέρα' },
+          { href: '/family-beaches-greece/', label: 'Οικογενειακές παραλίες με ήρεμα νερά' },
+        ],
       },
-    ],
-    links: [
-      { href: '/', label: 'Open CalmBeach Greece' },
-      { href: '/calm-beaches-greece-windy-day/', label: 'Find options on a windy day' },
-      { href: '/beaches/milos/', label: 'Explore Milos beaches' },
-    ],
+    },
   },
   {
     pathName: '/calm-beaches-greece-windy-day/',
-    title: 'Calm Beaches in Greece on a Windy Day | CalmBeach',
-    description: 'Use CalmBeach to look for more sheltered Greek beach options when wind and waves make exposed beaches less comfortable.',
-    h1: 'Calm beaches in Greece on a windy day',
-    intro: 'On windy days, the best beach choice is often about finding a more sheltered or less exposed option, not simply choosing the most famous beach.',
-    sections: [
-      {
-        heading: 'Shelter is directional',
-        body: 'A beach may be better protected from one wind direction and exposed to another. CalmBeach checks beach exposure together with today\'s forecast before ranking options.',
+    locales: {
+      en: {
+        title: 'Calm Beaches in Greece on a Windy Day | CalmBeach',
+        description: 'Use CalmBeach to look for more sheltered Greek beach options when wind and waves make exposed beaches less comfortable.',
+        h1: 'Calm beaches in Greece on a windy day',
+        intro: 'On windy days, the best beach choice is often about finding a more sheltered or less exposed option, not simply choosing the most famous beach.',
+        sections: [
+          {
+            heading: 'Shelter is directional',
+            body: 'A beach may be better protected from one wind direction and exposed to another. CalmBeach checks beach exposure together with today\'s forecast before ranking options.',
+          },
+          {
+            heading: 'No false guarantees',
+            body: 'The app does not claim that a beach is safe, calm or protected unless the available data supports a cautious recommendation. Always follow local warnings and judge conditions in person.',
+          },
+        ],
+        links: [
+          { href: '/', label: 'Check today\'s recommendations' },
+          { href: '/sheltered-beaches-meltemi/', label: 'Sheltered beaches in the Meltemi' },
+          { href: '/best-beaches-greece-today/', label: 'Best beaches in Greece today' },
+        ],
       },
-      {
-        heading: 'No false guarantees',
-        body: 'The app does not claim that a beach is safe, calm or protected unless the available data supports a cautious recommendation. Always follow local warnings and judge conditions in person.',
+      el: {
+        title: 'Απάνεμες παραλίες όταν έχει αέρα | CalmBeach',
+        description: 'Με το CalmBeach ψάξε πιο προστατευμένες ελληνικές παραλίες όταν ο άνεμος και το κύμα κάνουν τις εκτεθειμένες παραλίες λιγότερο άνετες.',
+        h1: 'Απάνεμες παραλίες όταν έχει αέρα',
+        intro: 'Τις μέρες με αέρα, η καλύτερη επιλογή είναι συχνά να βρεις μια πιο προστατευμένη ή λιγότερο εκτεθειμένη παραλία, όχι απλώς την πιο διάσημη.',
+        sections: [
+          {
+            heading: 'Η προστασία εξαρτάται από την κατεύθυνση',
+            body: 'Μια παραλία μπορεί να προστατεύεται καλά από τη μία κατεύθυνση ανέμου και να είναι εκτεθειμένη σε άλλη. Το CalmBeach ελέγχει την έκθεση μαζί με τη σημερινή πρόγνωση πριν κατατάξει τις επιλογές.',
+          },
+          {
+            heading: 'Χωρίς ψεύτικες εγγυήσεις',
+            body: 'Η εφαρμογή δεν ισχυρίζεται ότι μια παραλία είναι ασφαλής, ήρεμη ή προστατευμένη αν δεν το στηρίζουν τα δεδομένα. Ακολούθησε πάντα τις τοπικές προειδοποιήσεις και κρίνε τις συνθήκες επιτόπου.',
+          },
+        ],
+        links: [
+          { href: '/', label: 'Δες τις σημερινές προτάσεις' },
+          { href: '/sheltered-beaches-meltemi/', label: 'Απάνεμες παραλίες με μελτέμι' },
+          { href: '/best-beaches-greece-today/', label: 'Καλύτερες παραλίες σήμερα' },
+        ],
       },
-    ],
-    links: [
-      { href: '/', label: 'Check today\'s recommendations' },
-      { href: '/best-beaches-greece-today/', label: 'Best beaches in Greece today' },
-      { href: '/where-to-swim-greece-today/', label: 'Where to swim today' },
-    ],
+    },
+  },
+  {
+    pathName: '/sheltered-beaches-meltemi/',
+    locales: {
+      en: {
+        title: 'Sheltered Beaches in the Meltemi Winds | CalmBeach',
+        description: 'Find more sheltered Greek beaches during the summer Meltemi winds. CalmBeach checks beach exposure against today\'s wind direction and strength.',
+        h1: 'Sheltered beaches in the Meltemi',
+        intro: 'In July and August the Meltemi can blow strong from the north across the Aegean. The right beach is usually one that is sheltered from the current wind direction, not simply the most popular one.',
+        sections: [
+          {
+            heading: 'Which coasts stay calmer',
+            body: 'When the Meltemi blows from the north, south and southwest-facing bays are often more protected, while exposed north coasts pick up wind and chop. The sheltered side changes with the wind direction, so CalmBeach checks exposure against today\'s forecast.',
+          },
+          {
+            heading: 'A cautious recommendation',
+            body: 'CalmBeach only endorses a beach as more sheltered when the exposure and forecast support it. On strong wind days it prefers caution and reminds you to follow local flags and lifeguard guidance.',
+          },
+        ],
+        links: [
+          { href: '/', label: 'Check today\'s recommendations' },
+          { href: '/calm-beaches-greece-windy-day/', label: 'Calm beaches on a windy day' },
+          { href: '/best-beaches-milos-today/', label: 'Best beaches in Milos today' },
+        ],
+      },
+      el: {
+        title: 'Απάνεμες παραλίες με μελτέμι | CalmBeach',
+        description: 'Βρες πιο απάνεμες ελληνικές παραλίες όταν φυσάει το μελτέμι. Το CalmBeach ελέγχει την έκθεση κάθε παραλίας σε σχέση με τον σημερινό άνεμο.',
+        h1: 'Απάνεμες παραλίες με μελτέμι',
+        intro: 'Τον Ιούλιο και τον Αύγουστο το μελτέμι φυσά δυνατά από τον βορρά στο Αιγαίο. Η σωστή παραλία είναι συνήθως αυτή που προστατεύεται από τη σημερινή κατεύθυνση του ανέμου, όχι απλώς η πιο δημοφιλής.',
+        sections: [
+          {
+            heading: 'Ποιες ακτές μένουν πιο ήρεμες',
+            body: 'Όταν το μελτέμι φυσά βόρεια, οι νότιοι και νοτιοδυτικοί κόλποι είναι συχνά πιο προστατευμένοι, ενώ οι εκτεθειμένες βόρειες ακτές πιάνουν αέρα και κύμα. Η υπήνεμη πλευρά αλλάζει με την κατεύθυνση, γι\' αυτό το CalmBeach ελέγχει την έκθεση με τη σημερινή πρόγνωση.',
+          },
+          {
+            heading: 'Προσεκτική πρόταση',
+            body: 'Το CalmBeach χαρακτηρίζει μια παραλία πιο υπήνεμη μόνο όταν το επιτρέπουν η έκθεση και η πρόγνωση. Σε μέρες με δυνατό αέρα προτιμά την προσοχή και θυμίζει να ακολουθείς τις τοπικές σημαίες και τον ναυαγοσώστη.',
+          },
+        ],
+        links: [
+          { href: '/', label: 'Δες τις σημερινές προτάσεις' },
+          { href: '/calm-beaches-greece-windy-day/', label: 'Απάνεμες παραλίες όταν έχει αέρα' },
+          { href: '/best-beaches-milos-today/', label: 'Καλύτερες παραλίες στη Μήλο σήμερα' },
+        ],
+      },
+    },
   },
   {
     pathName: '/best-beaches-milos-today/',
-    title: 'Best Beaches in Milos Today | Wind & Waves | CalmBeach',
-    description: 'Compare Milos beaches by today\'s wind, waves, weather, exposure, access and beach type before choosing where to swim.',
-    h1: 'Best beaches in Milos today',
-    intro: 'Milos has very different beach exposures, so wind direction and waves can change the best choice for the day. CalmBeach compares Milos beaches with today\'s conditions.',
-    sections: [
-      {
-        heading: 'Milos beach conditions change by side of the island',
-        body: 'North, south and bay-facing beaches can behave differently in the same forecast. CalmBeach looks at beach exposure and practical access instead of only listing popular beaches.',
+    locales: {
+      en: {
+        title: 'Best Beaches in Milos Today | Wind & Waves | CalmBeach',
+        description: 'Compare Milos beaches by today\'s wind, waves, weather, exposure, access and beach type before choosing where to swim.',
+        h1: 'Best beaches in Milos today',
+        intro: 'Milos has very different beach exposures, so wind direction and waves can change the best choice for the day. CalmBeach compares Milos beaches with today\'s conditions.',
+        sections: [
+          {
+            heading: 'Milos beach conditions change by side of the island',
+            body: 'North, south and bay-facing beaches can behave differently in the same forecast. CalmBeach looks at beach exposure and practical access instead of only listing popular beaches.',
+          },
+          {
+            heading: 'Use the Milos beach page for live guidance',
+            body: 'The Milos page includes current recommendations, beach cards, map context and detail pages for individual beaches.',
+          },
+        ],
+        links: [
+          { href: '/beaches/milos/', label: 'Open Milos beaches' },
+          { href: '/', label: 'Open CalmBeach Greece' },
+          { href: '/sheltered-beaches-meltemi/', label: 'Sheltered beaches in the Meltemi' },
+        ],
       },
-      {
-        heading: 'Use the Milos beach page for live guidance',
-        body: 'The Milos page includes current recommendations, beach cards, map context and detail pages for individual beaches.',
+      el: {
+        title: 'Καλύτερες παραλίες στη Μήλο σήμερα | CalmBeach',
+        description: 'Σύγκρινε τις παραλίες της Μήλου με βάση τον σημερινό άνεμο, το κύμα, τον καιρό, την έκθεση και την πρόσβαση πριν διαλέξεις πού να κολυμπήσεις.',
+        h1: 'Καλύτερες παραλίες στη Μήλο σήμερα',
+        intro: 'Η Μήλος έχει παραλίες με πολύ διαφορετική έκθεση, οπότε η κατεύθυνση του ανέμου και το κύμα αλλάζουν την καλύτερη επιλογή της μέρας. Το CalmBeach συγκρίνει τις παραλίες της Μήλου με τις σημερινές συνθήκες.',
+        sections: [
+          {
+            heading: 'Οι συνθήκες αλλάζουν ανά πλευρά του νησιού',
+            body: 'Οι βόρειες, νότιες και κλειστές παραλίες μπορεί να συμπεριφέρονται διαφορετικά με την ίδια πρόγνωση. Το CalmBeach κοιτά την έκθεση και την πρακτική πρόσβαση, όχι μόνο τη δημοφιλία.',
+          },
+          {
+            heading: 'Χρησιμοποίησε τη σελίδα της Μήλου',
+            body: 'Η σελίδα της Μήλου περιλαμβάνει τρέχουσες προτάσεις, κάρτες παραλιών, χάρτη και σελίδες λεπτομερειών για κάθε παραλία.',
+          },
+        ],
+        links: [
+          { href: '/beaches/milos/', label: 'Άνοιξε τις παραλίες της Μήλου' },
+          { href: '/', label: 'Άνοιξε το CalmBeach Greece' },
+          { href: '/sheltered-beaches-meltemi/', label: 'Απάνεμες παραλίες με μελτέμι' },
+        ],
       },
-    ],
-    links: [
-      { href: '/beaches/milos/', label: 'Open Milos beaches' },
-      { href: '/', label: 'Open CalmBeach Greece' },
-      { href: '/calm-beaches-greece-windy-day/', label: 'Windy day beach guidance' },
-    ],
+    },
+  },
+  {
+    pathName: '/accessible-beaches-greece/',
+    locales: {
+      en: {
+        title: 'Accessible Beaches in Greece (Seatrac) | CalmBeach',
+        description: 'Find Greek beaches with accessibility features for disabled visitors, including Seatrac assisted access where available, then check the day\'s sea.',
+        h1: 'Accessible beaches in Greece',
+        intro: 'Some Greek beaches offer accessibility features such as ramps, accessible parking or Seatrac assisted-access systems. CalmBeach helps you find them and then check the sea for the day.',
+        sections: [
+          {
+            heading: 'What accessibility can mean',
+            body: 'Accessibility varies by beach: step-free access, accessible parking, boardwalks and Seatrac devices that help wheelchair users reach the water. Always confirm that equipment is in service before you travel.',
+          },
+          {
+            heading: 'Conditions still matter',
+            body: 'Even on an accessible beach, wind and waves change comfort and safety. CalmBeach pairs accessibility information with today\'s wind, waves and exposure so you can pick a calmer day and spot.',
+          },
+        ],
+        links: [
+          { href: '/', label: 'Open CalmBeach Greece' },
+          { href: '/family-beaches-greece/', label: 'Family beaches with calmer water' },
+          { href: '/best-beaches-greece-today/', label: 'Best beaches in Greece today' },
+        ],
+      },
+      el: {
+        title: 'Προσβάσιμες παραλίες ΑμεΑ στην Ελλάδα | CalmBeach',
+        description: 'Βρες ελληνικές παραλίες με υποδομές προσβασιμότητας για ΑμεΑ, όπως συστήματα Seatrac όπου υπάρχουν, και έλεγξε τις σημερινές συνθήκες της θάλασσας.',
+        h1: 'Προσβάσιμες παραλίες ΑμεΑ',
+        intro: 'Κάποιες ελληνικές παραλίες διαθέτουν υποδομές προσβασιμότητας, όπως ράμπες, προσβάσιμο πάρκινγκ ή συστήματα Seatrac για αυτόνομη πρόσβαση στη θάλασσα. Το CalmBeach σε βοηθά να τις βρεις και να δεις τον καιρό για τη μέρα.',
+        sections: [
+          {
+            heading: 'Τι μπορεί να σημαίνει προσβασιμότητα',
+            body: 'Η προσβασιμότητα διαφέρει ανά παραλία: πρόσβαση χωρίς σκαλιά, προσβάσιμο πάρκινγκ, διάδρομοι και συσκευές Seatrac που βοηθούν χρήστες αμαξιδίου να φτάσουν στο νερό. Επιβεβαίωσε πάντα ότι ο εξοπλισμός λειτουργεί πριν ταξιδέψεις.',
+          },
+          {
+            heading: 'Οι συνθήκες πάλι μετράνε',
+            body: 'Ακόμη και σε προσβάσιμη παραλία, ο άνεμος και το κύμα αλλάζουν την άνεση και την ασφάλεια. Το CalmBeach συνδυάζει τις πληροφορίες προσβασιμότητας με τον σημερινό άνεμο, το κύμα και την έκθεση, για να διαλέξεις πιο ήρεμη μέρα και σημείο.',
+          },
+        ],
+        links: [
+          { href: '/', label: 'Άνοιξε το CalmBeach Greece' },
+          { href: '/family-beaches-greece/', label: 'Οικογενειακές παραλίες με ήρεμα νερά' },
+          { href: '/best-beaches-greece-today/', label: 'Καλύτερες παραλίες σήμερα' },
+        ],
+      },
+    },
+  },
+  {
+    pathName: '/family-beaches-greece/',
+    locales: {
+      en: {
+        title: 'Family Beaches with Calm Shallow Water | CalmBeach',
+        description: 'Look for family-friendly Greek beaches with calmer, shallower water and easy access, then check today\'s wind and waves before you go.',
+        h1: 'Family beaches in Greece',
+        intro: 'For young children, a calmer beach with shallow water and easy access often matters more than a famous name. CalmBeach helps you find family-friendly options and check the day\'s conditions.',
+        sections: [
+          {
+            heading: 'What makes a beach family-friendly',
+            body: 'Helpful features include shallow, gently shelving water, sand underfoot, shade or amenities nearby and easy access without a difficult path. CalmBeach surfaces these alongside the daily forecast.',
+          },
+          {
+            heading: 'Pick a calmer day',
+            body: 'Small waves and gusts that are fine for adults can be tiring for children. CalmBeach checks wind, waves and exposure so you can choose a more sheltered beach or a calmer time of day.',
+          },
+        ],
+        links: [
+          { href: '/', label: 'Open CalmBeach Greece' },
+          { href: '/accessible-beaches-greece/', label: 'Accessible beaches in Greece' },
+          { href: '/where-to-swim-greece-today/', label: 'Where to swim today' },
+        ],
+      },
+      el: {
+        title: 'Οικογενειακές παραλίες με ρηχά νερά | CalmBeach',
+        description: 'Βρες οικογενειακές ελληνικές παραλίες με πιο ήρεμα, ρηχά νερά και εύκολη πρόσβαση, και έλεγξε τον σημερινό άνεμο και το κύμα πριν πας.',
+        h1: 'Οικογενειακές παραλίες με ρηχά νερά',
+        intro: 'Για μικρά παιδιά, μια πιο ήρεμη παραλία με ρηχά νερά και εύκολη πρόσβαση συχνά μετράει περισσότερο από ένα διάσημο όνομα. Το CalmBeach σε βοηθά να βρεις οικογενειακές επιλογές και να δεις τις συνθήκες της μέρας.',
+        sections: [
+          {
+            heading: 'Τι κάνει μια παραλία κατάλληλη για οικογένειες',
+            body: 'Βοηθούν τα ρηχά νερά με ομαλό βυθό, η άμμος, η σκιά ή οι κοντινές παροχές και η εύκολη πρόσβαση χωρίς δύσκολο μονοπάτι. Το CalmBeach τα δείχνει μαζί με τη σημερινή πρόγνωση.',
+          },
+          {
+            heading: 'Διάλεξε πιο ήρεμη μέρα',
+            body: 'Μικρά κύματα και ριπές που δεν ενοχλούν τους ενήλικες μπορεί να κουράζουν τα παιδιά. Το CalmBeach ελέγχει άνεμο, κύμα και έκθεση, ώστε να διαλέξεις πιο υπήνεμη παραλία ή πιο ήρεμη ώρα.',
+          },
+        ],
+        links: [
+          { href: '/', label: 'Άνοιξε το CalmBeach Greece' },
+          { href: '/accessible-beaches-greece/', label: 'Προσβάσιμες παραλίες ΑμεΑ' },
+          { href: '/where-to-swim-greece-today/', label: 'Πού να κολυμπήσω σήμερα' },
+        ],
+      },
+    },
+  },
+  {
+    pathName: '/beach-camping-greece/',
+    locales: {
+      en: {
+        title: 'Beaches with Camping Nearby in Greece | CalmBeach',
+        description: 'Find Greek beaches with a campsite nearby, then check today\'s wind, waves and exposure to plan a calmer day by the sea.',
+        h1: 'Beaches with camping nearby',
+        intro: 'If you are travelling with a tent or campervan, a beach with a campsite nearby can shape the whole trip. CalmBeach links beaches to nearby campsites and shows the day\'s sea conditions.',
+        sections: [
+          {
+            heading: 'Camping close to the sea',
+            body: 'CalmBeach connects beaches to organised campsites within a short distance, so you can plan where to stay and swim together. It focuses on proper campsites rather than informal or prohibited spots.',
+          },
+          {
+            heading: 'Check conditions before pitching',
+            body: 'Exposed beaches can be windy for tents and choppy for swimming. Looking at wind direction, strength and exposure helps you pick a more sheltered base for the day.',
+          },
+        ],
+        links: [
+          { href: '/', label: 'Open CalmBeach Greece' },
+          { href: '/best-beaches-greece-today/', label: 'Best beaches in Greece today' },
+          { href: '/family-beaches-greece/', label: 'Family beaches with calmer water' },
+        ],
+      },
+      el: {
+        title: 'Παραλίες με camping κοντά στην Ελλάδα | CalmBeach',
+        description: 'Βρες ελληνικές παραλίες με κάμπινγκ κοντά και έλεγξε τον σημερινό άνεμο, το κύμα και την έκθεση για να σχεδιάσεις μια πιο ήρεμη μέρα στη θάλασσα.',
+        h1: 'Παραλίες με camping κοντά',
+        intro: 'Αν ταξιδεύεις με σκηνή ή τροχόσπιτο, μια παραλία με κάμπινγκ κοντά μπορεί να καθορίσει όλο το ταξίδι. Το CalmBeach συνδέει παραλίες με κοντινά κάμπινγκ και δείχνει τις συνθήκες της θάλασσας για τη μέρα.',
+        sections: [
+          {
+            heading: 'Κάμπινγκ δίπλα στη θάλασσα',
+            body: 'Το CalmBeach συνδέει παραλίες με οργανωμένα κάμπινγκ σε μικρή απόσταση, ώστε να σχεδιάζεις μαζί πού θα μείνεις και πού θα κολυμπήσεις. Εστιάζει σε κανονικά κάμπινγκ, όχι σε άτυπες ή απαγορευμένες θέσεις.',
+          },
+          {
+            heading: 'Έλεγξε τις συνθήκες πριν στήσεις',
+            body: 'Οι εκτεθειμένες παραλίες μπορεί να έχουν αέρα για τις σκηνές και κύμα για το μπάνιο. Κοιτώντας κατεύθυνση, ένταση ανέμου και έκθεση, διαλέγεις πιο υπήνεμη βάση για τη μέρα.',
+          },
+        ],
+        links: [
+          { href: '/', label: 'Άνοιξε το CalmBeach Greece' },
+          { href: '/best-beaches-greece-today/', label: 'Καλύτερες παραλίες σήμερα' },
+          { href: '/family-beaches-greece/', label: 'Οικογενειακές παραλίες με ήρεμα νερά' },
+        ],
+      },
+    },
   },
 ];
 
@@ -482,6 +776,7 @@ const staticFallbackCopy = {
     sunbeds: 'Sunbeds',
     parking: 'Parking',
     foodNearby: 'Food nearby',
+    snackCanteen: 'Canteen',
     familyFriendly: 'Family friendly',
     quiet: 'Quiet',
     snorkeling: 'Snorkeling',
@@ -503,6 +798,7 @@ const staticFallbackCopy = {
     sunbeds: 'Ξαπλώστρες',
     parking: 'Parking',
     foodNearby: 'Φαγητό κοντά',
+    snackCanteen: 'Καντίνα',
     familyFriendly: 'Κατάλληλη για οικογένειες',
     quiet: 'Πιο ήσυχη',
     snorkeling: 'Snorkeling',
@@ -532,10 +828,13 @@ const staticHomeFallback = (canonicalUrl, locale = prerenderLocales[0]) => {
       'Search by Greek island or region',
       'Map and beach detail pages',
     ];
-  const guideLinks = isGreek ? [] : seoLandingPages.map(landing => ({
-    href: landing.pathName,
-    label: landing.h1,
-  }));
+  const guideLinks = seoLandingPages
+    .filter(landing => landing.locales[locale.id])
+    .map(landing => ({
+      href: localizedPath(landing.pathName, locale),
+      label: landing.locales[locale.id].h1,
+    }));
+  const guidesHeading = isGreek ? 'Δημοφιλείς οδηγοί παραλιών' : 'Popular beach guides';
 
   return `
     <div id="root">
@@ -547,8 +846,8 @@ const staticHomeFallback = (canonicalUrl, locale = prerenderLocales[0]) => {
           ${features.map(feature => `<li style="border:1px solid #bae6fd;border-radius:12px;padding:12px 14px;background:white;color:#075985;font-weight:700;">${escapeHtml(feature)}</li>`).join('')}
         </ul>
         ${guideLinks.length > 0 ? `
-        <nav aria-label="Popular CalmBeach guides" style="margin:0 0 24px;">
-          <h2 style="margin:0 0 10px;font-size:18px;color:#075985;">Popular beach guides</h2>
+        <nav aria-label="${escapeHtml(guidesHeading)}" style="margin:0 0 24px;">
+          <h2 style="margin:0 0 10px;font-size:18px;color:#075985;">${escapeHtml(guidesHeading)}</h2>
           <ul style="display:flex;flex-wrap:wrap;gap:8px;margin:0;padding:0;list-style:none;">
             ${guideLinks.map(link => `<li><a href="${escapeHtml(link.href)}" style="display:inline-flex;border:1px solid #bae6fd;border-radius:999px;padding:8px 11px;background:white;color:#0e7490;text-decoration:none;font-weight:800;font-size:13px;">${escapeHtml(link.label)}</a></li>`).join('')}
           </ul>
@@ -581,6 +880,7 @@ const staticBeachFallback = (beach, island, canonicalUrl, locale = prerenderLoca
     beach.amenities?.sunbeds ? copy.sunbeds : null,
     beach.amenities?.parking ? copy.parking : null,
     beach.amenities?.restaurant || beach.amenities?.taverna ? copy.foodNearby : null,
+    amenityTextIncludesAny(beach.metadata?.amenities, SNACK_CANTEEN_AMENITY_TERMS) ? copy.snackCanteen : null,
     beach.environment?.familyFriendly ? copy.familyFriendly : null,
     beach.environment?.quiet ? copy.quiet : null,
     beach.activities?.snorkeling ? copy.snorkeling : null,
@@ -644,29 +944,46 @@ const stripClientScripts = html => html
   .replace(/\s*<link rel="modulepreload"[^>]*>\s*/gi, '')
   .replace(/\s*<script\b(?=[^>]*\btype="module"|\btype='module')[^>]*>[\s\S]*?<\/script>\s*/gi, '');
 
-const staticSeoLandingPage = landing => {
+const landingChromeCopy = {
+  en: {
+    openApp: 'Open app',
+    related: 'Related CalmBeach pages',
+    disclaimer: 'Recommendations are indicative and depend on available weather and beach data. Conditions may vary locally.',
+  },
+  gr: {
+    openApp: 'Άνοιγμα',
+    related: 'Σχετικές σελίδες CalmBeach',
+    disclaimer: 'Οι προτάσεις είναι ενδεικτικές και εξαρτώνται από τα διαθέσιμα δεδομένα καιρού και παραλιών. Οι συνθήκες μπορεί να διαφέρουν τοπικά.',
+  },
+};
+
+const staticSeoLandingPage = (content, locale) => {
   // The first link is always the primary entry into the live app; promote it to
   // a prominent CTA so this page reads as a real CalmBeach gateway, not a stray
-  // document. The rest stay as secondary related links.
-  const [primaryLink, ...secondaryLinks] = landing.links;
+  // document. The rest stay as secondary related links. Link hrefs are stored as
+  // base paths and localized so a Greek page funnels into Greek routes.
+  const chrome = landingChromeCopy[locale.language] || landingChromeCopy.en;
+  const homeHref = localizedPath('/', locale);
+  const localizeHref = href => localizedPath(href, locale);
+  const [primaryLink, ...secondaryLinks] = content.links;
 
   return `
     <div id="root">
       <main style="max-width:880px;margin:0 auto;padding:0 20px 56px;font-family:system-ui,-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;color:#0f172a;background:#f8fafc;">
         <header style="display:flex;align-items:center;justify-content:space-between;gap:12px;padding:18px 0;">
-          <a href="/" style="display:inline-flex;align-items:center;gap:10px;text-decoration:none;color:#0e7490;font-weight:800;font-size:18px;">
+          <a href="${escapeHtml(homeHref)}" style="display:inline-flex;align-items:center;gap:10px;text-decoration:none;color:#0e7490;font-weight:800;font-size:18px;">
             <img src="/calmbeach-mark.svg" alt="" width="32" height="32" style="display:block;" />
             CalmBeach Greece
           </a>
-          <a href="/" style="display:inline-flex;align-items:center;border:1px solid #bae6fd;border-radius:999px;padding:8px 14px;background:white;color:#0e7490;text-decoration:none;font-weight:700;font-size:14px;">Open app</a>
+          <a href="${escapeHtml(homeHref)}" style="display:inline-flex;align-items:center;border:1px solid #bae6fd;border-radius:999px;padding:8px 14px;background:white;color:#0e7490;text-decoration:none;font-weight:700;font-size:14px;">${escapeHtml(chrome.openApp)}</a>
         </header>
         <section style="padding:24px 0 8px;">
-          <h1 style="margin:0 0 14px;font-size:38px;line-height:1.08;">${escapeHtml(landing.h1)}</h1>
-          <p style="margin:0 0 24px;font-size:18px;line-height:1.6;color:#334155;">${escapeHtml(landing.intro)}</p>
-          ${primaryLink ? `<a href="${escapeHtml(primaryLink.href)}" style="display:inline-flex;align-items:center;justify-content:center;background:#0e7490;color:white;border-radius:12px;padding:14px 22px;text-decoration:none;font-weight:800;font-size:16px;box-shadow:0 10px 24px -12px rgba(14,116,144,.6);">${escapeHtml(primaryLink.label)} →</a>` : ''}
+          <h1 style="margin:0 0 14px;font-size:38px;line-height:1.08;">${escapeHtml(content.h1)}</h1>
+          <p style="margin:0 0 24px;font-size:18px;line-height:1.6;color:#334155;">${escapeHtml(content.intro)}</p>
+          ${primaryLink ? `<a href="${escapeHtml(localizeHref(primaryLink.href))}" style="display:inline-flex;align-items:center;justify-content:center;background:#0e7490;color:white;border-radius:12px;padding:14px 22px;text-decoration:none;font-weight:800;font-size:16px;box-shadow:0 10px 24px -12px rgba(14,116,144,.6);">${escapeHtml(primaryLink.label)} →</a>` : ''}
         </section>
         <div style="display:grid;gap:16px;margin:28px 0;">
-          ${landing.sections.map(section => `
+          ${content.sections.map(section => `
             <section style="border-top:1px solid #bae6fd;padding-top:16px;">
               <h2 style="margin:0 0 8px;font-size:20px;line-height:1.2;color:#075985;">${escapeHtml(section.heading)}</h2>
               <p style="margin:0;font-size:16px;line-height:1.58;color:#334155;">${escapeHtml(section.body)}</p>
@@ -674,31 +991,47 @@ const staticSeoLandingPage = landing => {
           `).join('')}
         </div>
         ${secondaryLinks.length > 0 ? `
-        <nav aria-label="Related CalmBeach pages">
+        <nav aria-label="${escapeHtml(chrome.related)}">
           <ul style="display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:10px;margin:0;padding:0;list-style:none;">
             ${secondaryLinks.map(link => `
               <li style="margin:0;">
-                <a href="${escapeHtml(link.href)}" style="display:block;border:1px solid #bae6fd;border-radius:12px;padding:12px 14px;background:white;color:#0e7490;text-decoration:none;font-weight:800;">${escapeHtml(link.label)}</a>
+                <a href="${escapeHtml(localizeHref(link.href))}" style="display:block;border:1px solid #bae6fd;border-radius:12px;padding:12px 14px;background:white;color:#0e7490;text-decoration:none;font-weight:800;">${escapeHtml(link.label)}</a>
               </li>
             `).join('')}
           </ul>
         </nav>
         ` : ''}
-        <p data-nosnippet="true" style="margin:24px 0 0;color:#64748b;font-size:13px;line-height:1.5;">Recommendations are indicative and depend on available weather and beach data. Conditions may vary locally.</p>
+        <p data-nosnippet="true" style="margin:24px 0 0;color:#64748b;font-size:13px;line-height:1.5;">${escapeHtml(chrome.disclaimer)}</p>
       </main>
     </div>
   `;
 };
 
-const buildSeoLandingPage = (baseHtml, landing, imageUrl) => {
-  const locale = prerenderLocales[0];
+const landingAlternateUrls = landing => {
+  const supported = prerenderLocales.filter(locale => landing.locales[locale.id]);
+  return [
+    ...supported.map(locale => ({
+      hreflang: locale.hreflang,
+      href: canonicalUrlFor(landing.pathName, locale),
+    })),
+    {
+      hreflang: 'x-default',
+      href: canonicalUrlFor(landing.pathName, prerenderLocales[0]),
+    },
+  ];
+};
+
+const buildSeoLandingPage = (baseHtml, landing, content, locale, imageUrl) => {
   const canonicalUrl = canonicalUrlFor(landing.pathName, locale);
+  const imageAlt = locale.language === 'gr'
+    ? `${content.h1} — CalmBeach Greece`
+    : `${content.h1} on CalmBeach Greece`;
   const jsonLd = [
     {
       '@context': 'https://schema.org',
       '@type': 'WebPage',
-      name: landing.title,
-      description: landing.description,
+      name: content.title,
+      description: content.description,
       url: canonicalUrl,
       image: imageUrl,
       inLanguage: locale.htmlLang,
@@ -710,27 +1043,24 @@ const buildSeoLandingPage = (baseHtml, landing, imageUrl) => {
     },
     breadcrumbJsonLd([
       { name: 'CalmBeach Greece', url: canonicalUrlFor('/', locale) },
-      { name: landing.h1, url: canonicalUrl },
+      { name: content.h1, url: canonicalUrl },
     ]),
   ];
 
   const htmlWithHead = injectBeachHead(baseHtml, {
-    title: landing.title,
-    description: landing.description,
+    title: content.title,
+    description: content.description,
     canonicalUrl,
     imageUrl,
-    imageAlt: `${landing.h1} on CalmBeach Greece`,
+    imageAlt,
     htmlLang: locale.htmlLang,
     ogLocale: locale.ogLocale,
-    alternateUrls: [
-      { hreflang: locale.hreflang, href: canonicalUrl },
-      { hreflang: 'x-default', href: canonicalUrl },
-    ],
+    alternateUrls: landingAlternateUrls(landing),
     ogType: 'website',
     jsonLd,
   });
 
-  return stripClientScripts(htmlWithHead).replace(/<div id="root">\s*<\/div>/i, staticSeoLandingPage(landing));
+  return stripClientScripts(htmlWithHead).replace(/<div id="root">\s*<\/div>/i, staticSeoLandingPage(content, locale));
 };
 
 const buildHomePage = (baseHtml, locale, imageUrl) => {
@@ -914,11 +1244,16 @@ const main = async () => {
   }
 
   for (const landing of seoLandingPages) {
-    const landingOutputDir = outputDirForRoute(landing.pathName);
-    await mkdir(landingOutputDir, { recursive: true });
-    await writeFile(path.join(landingOutputDir, 'index.html'), buildSeoLandingPage(baseHtml, landing, homeOgImageUrl), 'utf8');
-    sitemapEntries.push(sitemapEntry(canonicalUrlFor(landing.pathName, prerenderLocales[0]), homeSitemapImageUrl));
-    landingPageCount += 1;
+    for (const locale of prerenderLocales) {
+      const content = landing.locales[locale.id];
+      if (!content) continue;
+
+      const landingOutputDir = outputDirForRoute(localizedPath(landing.pathName, locale));
+      await mkdir(landingOutputDir, { recursive: true });
+      await writeFile(path.join(landingOutputDir, 'index.html'), buildSeoLandingPage(baseHtml, landing, content, locale, homeOgImageUrl), 'utf8');
+      sitemapEntries.push(sitemapEntry(canonicalUrlFor(landing.pathName, locale), homeSitemapImageUrl));
+      landingPageCount += 1;
+    }
   }
 
   for (const region of beachIndex.regions || []) {

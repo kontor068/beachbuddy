@@ -12,6 +12,7 @@ import { getSelectedDayPrefix } from '../utils/dateLabels';
 import { getLocalizedCopy, languageToLocale } from '../utils/i18n';
 import { getBeachMapCoordinates } from '../utils/mapCoordinates';
 import { getConsistentVisibleMapExposureLevels, getVisibleMapExposureLevel, shouldShowWindExposureColors } from '../utils/mapExposure';
+import type { ExposureLevel } from '../utils/windExposure';
 import { canOpenNavigation, getNavigationBadge, openNavigation } from '../utils/navigation';
 import { AmenityChip, getAmenityChips } from '../utils/amenities';
 import { translations } from '../translations';
@@ -56,6 +57,11 @@ interface BeachMapProps {
   islandName?: string;
   /** Organized campsites near the focused beach (detail map only); rendered as tent pins. */
   campsites?: Array<{ id: string; name: string; lat: number; lon: number }>;
+  /** Authoritative marker exposure level per beach id, overriding this map's own
+   *  computation. Used by the detail map so a beach is coloured exactly as it is on
+   *  the region map (which uses the single island-level wind), instead of letting
+   *  the detail map re-derive a different colour from the per-beach cluster wind. */
+  exposureLevelOverrides?: Map<number, ExposureLevel>;
 }
 
 const visibleExposureLevel = (
@@ -1251,7 +1257,8 @@ const BeachMap: React.FC<BeachMapProps> = ({
   onUserInteraction,
   compactPreviewHeightClassName,
   islandName,
-  campsites
+  campsites,
+  exposureLevelOverrides
 }) => {
   const mapViewportRef = useRef<HTMLDivElement>(null);
   const [mapMode, setMapMode] = useState<'recommendation' | 'wind'>('wind');
@@ -1412,6 +1419,12 @@ const BeachMap: React.FC<BeachMapProps> = ({
     return hasSupportedWindProfile || hasSupportedGeospatial;
   };
   const getMapExposureLevel = (item: SuitableBeach) => {
+    // An override is the authoritative colour computed by the region map (single
+    // island wind), passed in so the detail map matches it exactly instead of
+    // re-deriving a different colour from the per-beach cluster wind.
+    const override = exposureLevelOverrides?.get(item.beach.id);
+    if (override) return override;
+
     if (isExposureLoading && !hasSupportedMapEvidence(item)) {
       return 'partial';
     }

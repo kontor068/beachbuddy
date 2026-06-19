@@ -3,6 +3,7 @@ import {
   CAFE_AMENITY_TERMS,
   RESTAURANT_AMENITY_TERMS,
   TAVERNA_AMENITY_TERMS,
+  SNACK_CANTEEN_AMENITY_TERMS,
   amenityItemIncludesAny,
   hasExplicitBeachBarAmenity,
 } from './amenityMatching.js';
@@ -12,6 +13,7 @@ export type AmenityChipKey =
   | 'sunbeds'
   | 'foodNearby'
   | 'cafeNearby'
+  | 'snackCanteen'
   | 'parking'
   | 'organizedFacilities'
   | 'noFacilities'
@@ -27,7 +29,7 @@ export interface AmenityChip {
 }
 
 export interface AmenityStatusRow {
-  key: Extract<AmenityChipKey, 'beachBar' | 'sunbeds' | 'foodNearby' | 'cafeNearby' | 'parking'>;
+  key: Extract<AmenityChipKey, 'beachBar' | 'sunbeds' | 'foodNearby' | 'cafeNearby' | 'snackCanteen' | 'parking'>;
   label: string;
   value: string;
   status: AmenityStatus;
@@ -40,6 +42,7 @@ const specificAmenityOrder: SpecificAmenityKey[] = [
   'sunbeds',
   'foodNearby',
   'cafeNearby',
+  'snackCanteen',
   'parking',
 ];
 
@@ -59,6 +62,7 @@ const amenityLabels: Record<SpecificAmenityKey, LocalizedAmenityText> = {
   sunbeds: { en: 'Sunbeds', gr: 'Ξαπλώστρες', fr: 'Transats', de: 'Liegen', it: 'Lettini' },
   foodNearby: { en: 'Tavernas nearby', gr: 'Ταβέρνες κοντά', fr: 'Tavernes proches', de: 'Tavernen in der Nähe', it: 'Taverne vicine' },
   cafeNearby: { en: 'Café nearby', gr: 'Καφέ κοντά', fr: 'Café proche', de: 'Café in der Nähe', it: 'Caffè vicino' },
+  snackCanteen: { en: 'Canteen', gr: 'Καντίνα', fr: 'Buvette', de: 'Imbiss', it: 'Chiosco' },
   parking: { en: 'Parking nearby', gr: 'Parking κοντά', fr: 'Parking proche', de: 'Parken in der Nähe', it: 'Parcheggio vicino' },
 };
 
@@ -138,6 +142,8 @@ const itemMatches = (item: string, key: SpecificAmenityKey): boolean => {
       return amenityItemIncludesAny(item, [...TAVERNA_AMENITY_TERMS, ...RESTAURANT_AMENITY_TERMS, 'food']);
     case 'cafeNearby':
       return amenityItemIncludesAny(item, CAFE_AMENITY_TERMS);
+    case 'snackCanteen':
+      return amenityItemIncludesAny(item, SNACK_CANTEEN_AMENITY_TERMS);
     case 'parking':
       return /parking|παρκ|σταθμευσ/.test(text);
     default:
@@ -199,6 +205,7 @@ const getTopLevelStatus = (beach: Beach, key: SpecificAmenityKey): AmenityStatus
     sunbeds?: boolean;
     foodNearby?: boolean;
     cafeNearby?: boolean;
+    snackCanteen?: boolean;
     parking?: boolean;
     seasonal?: boolean;
   };

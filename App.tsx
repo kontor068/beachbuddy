@@ -52,6 +52,7 @@ import { getTopPickTiming, getTopPickTimingLabel, topPickTimingPriority } from '
 import { getActiveWeatherFixtureScenario } from './utils/weatherFixtures';
 import { getBeachTouristRecognitionScore } from './utils/touristPriority';
 import { getConsistentVisibleMapExposureLevels } from './utils/mapExposure';
+import type { ExposureLevel } from './utils/windExposure';
 import { loadGeospatialExposureProfiles, type GeospatialExposureProfileLookup } from './services/geospatialExposureService';
 import { assessBeachWindExposure } from './utils/windExposureEngine';
 import { fuzzySearchScore, getSearchVariants } from './utils/searchNormalize';
@@ -3086,6 +3087,14 @@ export const App: React.FC = () => {
   ), [recommendedSuitableBeaches]);
   const currentBeaufort = selectedForecast ? getBeaufortLevel(selectedForecast.wind.speed * 3.6) : 0;
   const isSevereWindNoTopRecommendationDay = currentBeaufort > MAX_TOP_RECOMMENDATION_BEAUFORT;
+  // The canonical map-marker exposure level per beach, exactly as the region map
+  // colours it (single island wind + neighbour consistency pass). Threaded into the
+  // detail map so a beach's pin is the same colour there instead of being re-derived
+  // from the per-beach cluster wind, which can land on a different colour.
+  const canonicalMapExposureLevels = useMemo<Map<number, ExposureLevel>>(() => {
+    if (!selectedForecast) return new Map();
+    return getConsistentVisibleMapExposureLevels(mapSuitableBeaches, currentBeaufort, selectedForecast.wind.deg);
+  }, [mapSuitableBeaches, currentBeaufort, selectedForecast]);
   const desktopMapVisibleBeachIdSet = useMemo(() => (
     desktopMapVisibleBeachIds ? new Set(desktopMapVisibleBeachIds) : null
   ), [desktopMapVisibleBeachIds]);
@@ -3897,8 +3906,12 @@ export const App: React.FC = () => {
   if (beachesError) return <ErrorDisplay message={beachesError} onRetry={() => window.location.reload()} t={t} />;
 
   if (view === 'detail' && detailBeach && forecast?.[selectedDayIndex]) {
-    const detailBeachForecast = selectedBeachForecasts[detailBeach.id];
-    const detailForecast = detailBeachForecast || forecast[selectedDayIndex];
+    // The detail page uses the SAME island/selected-day wind the overview map and
+    // cards use, so a beach tells one consistent story (pin colour, compass, wind
+    // figure, score all agree) instead of the per-beach cluster wind producing a
+    // different colour/Beaufort than the overview. Per-beach shelter is still
+    // reflected through the geospatial exposure geometry.
+    const detailForecast = forecast[selectedDayIndex];
 
     return (
       <div>
@@ -3913,7 +3926,8 @@ export const App: React.FC = () => {
             detailDataStatus={detailDataStatus}
             beachWeatherById={selectedBeachForecasts}
             geospatialExposureProfiles={geospatialExposureProfiles}
-            weatherSource={detailBeachForecast ? 'beach-cluster' : 'island-fallback'}
+            weatherSource="island-fallback"
+            mapExposureLevelOverride={canonicalMapExposureLevels.get(detailBeach.id)}
           />
         </Suspense>
       </div>
