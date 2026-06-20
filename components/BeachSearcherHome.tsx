@@ -1555,6 +1555,17 @@ export const BeachSearcherHome: React.FC<BeachSearcherHomeProps> = ({
     distance: false,
   });
   const isDistanceSortActive = directoryViewCriteria.distance || suitableDistanceSortActive;
+  // On mobile the sort lives inside the filter sheet, which drives the App-level `sortBy`.
+  // Mirror it into the local directory view so applying "Όλες" actually shows the full list
+  // (and "Καταλληλότερες" the suitable one). Without this the view stayed on the suitable
+  // list no matter what was applied. Desktop keeps using the inline sort dropdown directly.
+  useEffect(() => {
+    if (!isMobileViewport) return;
+    setDirectoryViewCriteria(current => {
+      const nextSuitable = sortBy !== 'all';
+      return current.suitable === nextSuitable ? current : { ...current, suitable: nextSuitable };
+    });
+  }, [isMobileViewport, sortBy]);
   const [localAllBeachesPanelOpen, setLocalAllBeachesPanelOpen] = useState(false);
   const [localWeatherPanelOpen, setLocalWeatherPanelOpen] = useState(false);
   const isAllBeachesPanelOpen = controlledAllBeachesPanelOpen ?? localAllBeachesPanelOpen;
@@ -2605,51 +2616,6 @@ export const BeachSearcherHome: React.FC<BeachSearcherHomeProps> = ({
     (!isMobileViewport && !isDirectorySuitableView && directoryDisplayBeachCards.length > 0) ||
     (isMobileViewport && selectedIsland && !isDirectorySuitableView && directoryDisplayBeachCards.length > 0)
   );
-  // Mobile-only "jump to the ranked beaches below the map" cue. The map stays high and
-  // fills the viewport, so the results underneath aren't obviously there — this pill makes
-  // them discoverable and smooth-scrolls to the first results section that actually renders.
-  // The "Δες τις παραλίες" pill behaves identically in both views. In the "Όλες" view it
-  // points at the all-beaches directory ("Όλες οι παραλίες (N)") with that same count; in the
-  // suitable view it points at the ranked list. Same pill, same bouncing chevron, both modes.
-  const isMobileAllBeachesView = Boolean(selectedIsland) && !isDirectorySuitableView && directoryDisplayBeachCards.length > 0;
-  const mobileResultsAnchorId = isMobileAllBeachesView
-    ? 'all-beaches-section'
-    : hasTopRecommendationView
-      ? 'top-recommendations-section'
-      : isDirectorySuitableView
-        ? 'suitable-beaches-section'
-        : undefined;
-  const mobileResultsCount = isMobileAllBeachesView
-    ? directoryDisplayBeachCards.length
-    : hasTopRecommendationView
-      ? topRecommendationBeachCards.length
-      : suitableBeachDisplayCount;
-  // Short call-to-action for the scroll pill. Deliberately NOT the section title
-  // ("Καταλληλότερες παραλίες…") so the pill doesn't duplicate the header it scrolls to.
-  const seeBeachesCtaLabel = getLocalizedCopy(language, {
-    en: 'See the beaches',
-    gr: 'Δες τις παραλίες',
-    fr: 'Voir les plages',
-    de: 'Strände ansehen',
-    it: 'Vedi le spiagge',
-  });
-  // Mobile/tablet quick-selector row: [Near me] [All] [Most suitable]. "Near me" is an action
-  // (it may exist without a region); All/Most-suitable only when a region is selected.
-  const hasNearMeAction = Boolean(onShowNearbyBeaches ?? onUseCurrentLocation);
-  const mobileTopSelectorCount = (hasNearMeAction ? 1 : 0) + (hasSuitableSortOption ? 2 : 0);
-  const mobileTopSelectorGridCols = mobileTopSelectorCount >= 3
-    ? 'grid-cols-3'
-    : mobileTopSelectorCount === 2
-      ? 'grid-cols-2'
-      : 'grid-cols-1';
-  const scrollToMobileResults = () => {
-    if (!mobileResultsAnchorId) return;
-    const target = document.getElementById(mobileResultsAnchorId);
-    if (!target) return;
-    const prefersReducedMotion = typeof window !== 'undefined'
-      && window.matchMedia?.('(prefers-reduced-motion: reduce)').matches;
-    target.scrollIntoView({ behavior: prefersReducedMotion ? 'auto' : 'smooth', block: 'start' });
-  };
   // Mobile swipe affordance for the horizontal result carousels: the peeking next card
   // already hints there's more, but a small explicit cue makes the sideways scroll obvious.
   // Only shown on mobile and only when more than one card exists (otherwise nothing scrolls).
@@ -3183,54 +3149,39 @@ export const BeachSearcherHome: React.FC<BeachSearcherHomeProps> = ({
                 </div>
               )}
             </div>
-            {/* Desktop: sort dropdown to the right of the search box (mobile uses the row below). */}
-            {selectedIsland && directorySortOptions.length > 0 && (
-              renderDirectorySortControl(desktopDirectorySortRef, 'relative hidden w-[13.5rem] shrink-0 lg:block')
-            )}
-            {/* Mobile/tablet controls: three quick selectors (Κοντά μου · Όλες · Καταλληλότερες)
-                on top, then the full-width Φίλτρο button. The sort lives here now — it is no
-                longer duplicated inside the filter sheet. */}
-            <div className="grid gap-2 sm:col-span-2 lg:hidden">
-              <div className={`grid gap-1.5 ${mobileTopSelectorGridCols}`}>
-                {hasNearMeAction && (
-                  <button
-                    type="button"
-                    onClick={onShowNearbyBeaches ?? onUseCurrentLocation}
-                    disabled={isFindingCurrentLocation}
-                    className={`inline-flex min-h-11 w-full items-center justify-center gap-1.5 rounded-full border px-2 text-xs font-bold transition focus:outline-none focus-visible:ring-2 focus-visible:ring-cyan-700 ${
-                      hasUserLocation
-                        ? 'border-cyan-300 bg-cyan-50 text-[#007a83]'
-                        : 'border-sky-200 bg-white/80 text-slate-900 hover:border-cyan-300 hover:bg-cyan-50'
-                    } ${isFindingCurrentLocation ? 'cursor-wait opacity-70' : ''}`}
-                  >
-                    <MapPin className="h-4 w-4 shrink-0 text-[#007a83]" />
-                    <span className="min-w-0 truncate">
-                      {isFindingCurrentLocation && !hasUserLocation ? copy.findingLocation : copy.currentLocation}
-                    </span>
-                  </button>
-                )}
-                {hasSuitableSortOption && directorySortOptions
-                  .filter(option => option.key === 'all' || option.key === 'suitable')
-                  .map(option => (
-                    <button
-                      key={option.key}
-                      type="button"
-                      onClick={() => { if (!option.isDisabled) option.onSelect(); }}
-                      aria-pressed={option.isActive}
-                      className={`inline-flex min-h-11 w-full items-center justify-center rounded-full border px-2 text-xs font-bold transition focus:outline-none focus-visible:ring-2 focus-visible:ring-cyan-700/30 ${
-                        option.isActive
-                          ? 'border-[#007a83] bg-[#007a83] text-white shadow-sm shadow-cyan-900/15'
-                          : 'border-cyan-200 bg-white/80 text-slate-700 hover:bg-cyan-50'
-                      }`}
-                    >
-                      <span className="truncate">{option.label}</span>
-                    </button>
-                  ))}
-              </div>
+            <div className={`grid gap-2 sm:flex sm:items-center lg:flex-nowrap lg:justify-end ${(onRequestUserLocation ?? onUseCurrentLocation ?? onShowNearbyBeaches) ? 'grid-cols-2' : 'grid-cols-1'}`}>
+              {(onRequestUserLocation ?? onUseCurrentLocation ?? onShowNearbyBeaches) && (
+                <button
+                  type="button"
+                  onClick={() => {
+                    // Mirror the desktop "Πιο κοντά" sort: toggle distance ordering of the
+                    // CURRENT region (fetch location when enabling). Does not change the
+                    // region or the Όλες/Καταλληλότερες view — exactly like the desktop dropdown.
+                    const shouldEnableDistance = !isDistanceSortActive;
+                    if (shouldEnableDistance) {
+                      (onRequestUserLocation ?? onUseCurrentLocation)?.();
+                    }
+                    onDistanceSortActiveChange?.(shouldEnableDistance);
+                    setDirectoryViewCriteria(current => ({ ...current, distance: shouldEnableDistance }));
+                  }}
+                  disabled={isFindingCurrentLocation}
+                  aria-pressed={isDistanceSortActive}
+                  className={`inline-flex min-h-11 w-full items-center justify-center gap-2 rounded-full border px-3 text-sm font-semibold transition focus:outline-none focus-visible:ring-2 focus-visible:ring-cyan-700 sm:px-4 lg:hidden ${
+                    isDistanceSortActive
+                      ? 'border-cyan-200 bg-cyan-50 text-[#007a83]'
+                      : 'border-sky-200 bg-white/80 text-slate-900 hover:border-cyan-300 hover:bg-cyan-50'
+                  } ${isFindingCurrentLocation ? 'cursor-wait opacity-70' : ''}`}
+                >
+                  <MapPin className="h-4 w-4 shrink-0 text-[#007a83]" />
+                  <span className="min-w-0 truncate">
+                    {isFindingCurrentLocation && !hasUserLocation ? copy.findingLocation : copy.currentLocation}
+                  </span>
+                </button>
+              )}
               <button
                 type="button"
                 onClick={onOpenFilters}
-                className="inline-flex min-h-11 w-full items-center justify-center gap-2 rounded-full border border-[#007a83] bg-white px-3 text-sm font-semibold text-slate-900 transition hover:bg-cyan-50 focus:outline-none focus-visible:ring-2 focus-visible:ring-cyan-700"
+                className="inline-flex min-h-11 w-full items-center justify-center gap-2 rounded-full border border-[#007a83] bg-white px-3 text-sm font-semibold text-slate-900 transition hover:bg-cyan-50 focus:outline-none focus-visible:ring-2 focus-visible:ring-cyan-700 sm:px-4 lg:hidden"
               >
                 <SlidersHorizontal className="h-4 w-4 text-[#007a83]" />
                 <span>{copy.filter}</span>
@@ -3240,6 +3191,9 @@ export const BeachSearcherHome: React.FC<BeachSearcherHomeProps> = ({
                   </span>
                 )}
               </button>
+              {selectedIsland && directorySortOptions.length > 0 && (
+                renderDirectorySortControl(desktopDirectorySortRef, 'relative hidden w-[13.5rem] shrink-0 lg:block')
+              )}
             </div>
             {currentLocationError && (
               <p className="text-xs font-semibold text-rose-600 sm:col-span-2" role="alert">
@@ -3403,22 +3357,6 @@ export const BeachSearcherHome: React.FC<BeachSearcherHomeProps> = ({
             <div className="overflow-hidden rounded-[1.35rem] border border-sky-100 bg-white/68 p-2 text-left shadow-sm shadow-sky-900/8 ring-1 ring-white/45 backdrop-blur-md">
               {mapPreview}
             </div>
-            {mobileResultsAnchorId && mobileResultsCount > 0 && (
-              <div className="mt-2 flex justify-center">
-                <button
-                  type="button"
-                  onClick={scrollToMobileResults}
-                  aria-label={`${seeBeachesCtaLabel} (${mobileResultsCount})`}
-                  className="inline-flex min-h-11 max-w-full cursor-pointer items-center gap-2 rounded-full border border-white/80 bg-white/90 px-4 py-2 text-sm font-extrabold text-[#007a83] shadow-sm shadow-sky-900/10 ring-1 ring-white/50 backdrop-blur-md transition hover:bg-white focus:outline-none focus-visible:ring-2 focus-visible:ring-cyan-700"
-                >
-                  <span className="min-w-0 truncate">{seeBeachesCtaLabel}</span>
-                  <span className="grid h-5 min-w-5 shrink-0 place-items-center rounded-full bg-cyan-50 px-1.5 text-[11px] font-extrabold leading-none text-[#007a83] ring-1 ring-cyan-100 tabular-nums">
-                    {mobileResultsCount}
-                  </span>
-                  <ChevronDown className="h-4 w-4 shrink-0 motion-safe:animate-bounce" aria-hidden="true" />
-                </button>
-              </div>
-            )}
           </section>
         )}
 

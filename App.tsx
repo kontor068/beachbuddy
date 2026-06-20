@@ -5882,7 +5882,6 @@ export const App: React.FC = () => {
               protectedSortLabel={protectedSortLabel}
               showProtectedSort={!(calmAllAroundSummary?.isEveryBeachSuitable ?? false)}
               hideDistanceSort={!isDesktopViewport}
-              hideSortSection={!isDesktopViewport}
               getResultCount={getMobileFilterModalResultCount}
               onResultCountChange={setFilterModalResultCount}
             />
