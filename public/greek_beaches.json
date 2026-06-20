@@ -133341,14 +133341,14 @@
         },
         {
           "id": 1906,
-          "name": "Θειάφες",
+          "name": "Θειορυχείο",
           "lat": 36.69413,
           "lon": 24.54479,
           "metadata": {
             "access": {
               "type": "difficult_dirt_road",
               "label": "Δύσβατος χωματόδρομος",
-              "notes": "Οι Θειάφες έχουν δύσκολη χωμάτινη πρόσβαση. Προτιμάται όχημα με καλή απόσταση από το έδαφος ή προσεκτικό περπάτημα στο τελικό τμήμα. Χωρίς παροχές. Επανέλεγχος 2026-05-25: δεν κρατάμε αυστηρό 4x4-only χωρίς σαφή επαλήθευση· παραμένει δύσβατη χωμάτινη πρόσβαση."
+              "notes": "Το Θειορυχείο (παλαιά θειωρυχεία) έχει δύσκολη χωμάτινη πρόσβαση. Προτιμάται όχημα με καλή απόσταση από το έδαφος ή προσεκτικό περπάτημα στο τελικό τμήμα. Χωρίς παροχές. Επανέλεγχος 2026-05-25: δεν κρατάμε αυστηρό 4x4-only χωρίς σαφή επαλήθευση· παραμένει δύσβατη χωμάτινη πρόσβαση."
             },
             "terrain": {
               "types": [
@@ -133390,10 +133390,10 @@
             "googleMapsNavigation": {
               "status": "verified",
               "mode": "place",
-              "checkedAt": "2026-06-16",
-              "method": "osm-nav-audit-v1",
-              "placeId": "ChIJNSu1hhfgmBQRGGmJvr-mqFo",
-              "query": "Θειάφες, Milos"
+              "checkedAt": "2026-06-20",
+              "method": "manual-placeid-correction-v1",
+              "placeId": "ChIJYX4EKxngmBQReaJLyEreCN4",
+              "query": "Παραλία Θειορυχείο, Milos"
             },
             "popularity": {
               "tier": "quiet",
@@ -135440,63 +135440,7 @@
             "accessType": "unknown"
           }
         },
-        {
-          "id": 1937,
-          "name": "Ρέμα",
-          "lat": 36.69887,
-          "lon": 24.54542,
-          "metadata": {
-            "access": {
-              "type": "unknown",
-              "label": "Πρόσβαση μη επιβεβαιωμένη",
-              "notes": "Δεν υπάρχει ακόμη source-backed ένδειξη για χωματόδρομο, μονοπάτι ή εύκολη οδική πρόσβαση. Κράτα την πρόσβαση ως μη επιβεβαιωμένη μέχρι να προστεθεί άμεση πηγή."
-            },
-            "terrain": {
-              "types": [
-                "pebbles",
-                "rocks"
-              ],
-              "label": "βότσαλα, βράχια"
-            },
-            "organized": false,
-            "shade": false,
-            "amenities": [],
-            "confidence": "high",
-            "language": "el",
-            "batch": "019_1801_1900",
-            "waterDepth": {
-              "type": "deep",
-              "label": "Βαθιά νερά",
-              "notes": "Το βάθος συνήθως ανεβαίνει πιο γρήγορα μετά την είσοδο στη θάλασσα."
-            },
-            "sourceNotes": "Milos source confidence pass 2026-05-29: FotoTravel, Greek Panorama, Aegean Sealines and OSM support Rema/Rhema Beach identity/location near the stored coordinates; no stronger service or wind claims were added. Static metadata confidence promoted to high; coordinates, windProfile, scoring, photos, and live sea/wind claims were not changed.",
-            "sourceUrls": [
-              "https://www.openstreetmap.org/way/511515260",
-              "https://www.fototravel.info/en/greece/cyclades/milos/rema-beach",
-              "https://elliniko-panorama.gr/en/milos-the-mil-stone-in-the-aegean-sea/",
-              "https://aegean-sealines.gr/en/destination/milos/"
-            ],
-            "orientation": {
-              "degrees": 85.3,
-              "faces": [
-                "East"
-              ],
-              "protectedFrom": [],
-              "confidence": "medium",
-              "notes": "Generated from Natural Earth geospatial exposure facingDeg. This records shoreline-facing direction only; it does not verify shelter, low-wave behavior, or live sea conditions."
-            },
-            "googleMapsNavigation": {
-              "status": "verified",
-              "mode": "coordinates",
-              "checkedAt": "2026-06-16",
-              "method": "osm-nav-audit-v1"
-            }
-          },
-          "staticLabels": {
-            "accessType": "unknown"
-          }
-        },
-        {
+                {
           "id": 1938,
           "name": "Τρία Πηγάδια",
           "lat": 36.73015,
@@ -135576,6 +135520,9 @@
                 "rocks"
               ],
               "label": "βράχια"
+            },
+            "activities": {
+              "snorkeling": true
             },
             "organized": false,
             "shade": false,

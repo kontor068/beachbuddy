@@ -318,10 +318,20 @@ export const getNavigationUrl = (beach: NavigationBeach, mobile = isMobileDevice
     return undefined;
   }
 
-  const encodedDestination = encodeURIComponent(action.destination.value);
   // A verified Place ID makes Maps open the EXACT place card (query_place_id for search,
   // destination_place_id for directions) — the reliable alternative to a fragile name string.
   const placeId = action.destination.placeId;
+
+  // When we ship a Place ID, the destination/query TEXT is the beach COORDINATE rather than the
+  // place name. Reason: the Maps universal links — especially the native mobile app opening a
+  // /dir/ link — frequently RE-GEOCODE the text and under-prioritize *_place_id, and a beach name
+  // resolves to a nearby resort/restaurant/locality (e.g. "Παραλία Ψαροβολάδα, Milos" -> Psaravolada
+  // Restaurant 172 m away; "Θειάφες, Milos" -> a beach 562 m away). The Place ID still upgrades the
+  // link to the exact Google card when honored; the coordinate guarantees the pin lands on the beach
+  // when it is not. Without a Place ID we keep the human-readable destination value.
+  const placeIdCoordinate = placeId ? getBestCoordinate(beach) : undefined;
+  const destinationText = placeIdCoordinate ? formatCoordinate(placeIdCoordinate) : action.destination.value;
+  const encodedDestination = encodeURIComponent(destinationText);
   const placeIdParam = placeId ? `&query_place_id=${encodeURIComponent(placeId)}` : '';
   const dirPlaceIdParam = placeId ? `&destination_place_id=${encodeURIComponent(placeId)}` : '';
 
