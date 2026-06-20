@@ -2904,7 +2904,7 @@ export const BeachSearcherHome: React.FC<BeachSearcherHomeProps> = ({
         <div className="absolute inset-0 bg-gradient-to-r from-white/24 via-transparent to-white/12" />
       </div>
 
-      <div className="relative mx-auto max-w-[110rem] px-4 pb-1 pt-6 sm:px-5 sm:pb-2 lg:px-6">
+      <div className="relative mx-auto max-w-[110rem] px-4 pb-1 pt-2 sm:px-5 sm:pb-2 sm:pt-6 lg:px-6">
         <section className="mx-auto w-full max-w-[110rem] overflow-visible rounded-[1.5rem] border border-white/60 bg-white/76 p-3 pb-1 shadow-xl shadow-slate-950/14 ring-1 ring-white/35 backdrop-blur-xl sm:p-4 sm:pb-2">
         <form
           className="flex flex-col gap-3"
