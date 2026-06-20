@@ -2601,9 +2601,12 @@ export const App: React.FC = () => {
   };
 
   const scrollToBeachResultsSection = (preferredSection: 'suitable' | 'all' = 'all') => {
+    // Land on the FIRST results section in DOM order (top recommendations → suitable/all) so
+    // apply scrolls just to the top of the results — never *past* a higher section, which made
+    // the page jump near the bottom. preferredSection only breaks the suitable/all tie.
     const targetIds = preferredSection === 'suitable'
-      ? ['suitable-beaches-section', 'all-beaches-section']
-      : ['all-beaches-section', 'suitable-beaches-section'];
+      ? ['top-recommendations-section', 'suitable-beaches-section', 'all-beaches-section']
+      : ['top-recommendations-section', 'all-beaches-section', 'suitable-beaches-section'];
 
     requestAnimationFrame(() => {
       requestAnimationFrame(() => {
