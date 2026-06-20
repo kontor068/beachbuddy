@@ -5202,6 +5202,7 @@ export const App: React.FC = () => {
                       todayScore={r.score}
                       variant="decision"
                       recommendationRank={i + 1}
+                      topPickPodium
                       strongWindContext
                       bestBeachTime={r.bestBeachTime}
                       topPickTimeLabel={getTopPickTimingLabel(r.bestBeachTime, selectedDayDate, language, topPickNow)}
@@ -5417,6 +5418,7 @@ export const App: React.FC = () => {
                           todayScore={r.score}
                       variant="decision"
                       recommendationRank={showStrongManageableSection || !headerTopCandidate ? i + 1 : i + 2}
+                      topPickPodium={recommendationDisplayMode !== 'mild'}
                       recommendationLabel={
                         recommendationDisplayMode === 'mild'
                           ? homeCopy.recommendationMode.mild.cardLabel[language]

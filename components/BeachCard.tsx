@@ -1,7 +1,7 @@
 
 import React, { useEffect, useState } from 'react';
 import { motion } from 'motion/react';
-import { AlertTriangle, MapPin, Star, Share2, Heart, Navigation, Info, Waves, Utensils, Trees, CircleDot, CircleDotDashed, Mountain, Droplets, ArrowDown, BadgeCheck, Leaf, Shield, Users, Clock3, Flag, Footprints, Wind, Tent, Ticket, Euro, Accessibility as AccessibilityIcon } from 'lucide-react';
+import { AlertTriangle, MapPin, Star, Share2, Heart, Navigation, Info, Waves, Utensils, Trees, CircleDot, CircleDotDashed, Mountain, Droplets, ArrowDown, BadgeCheck, Leaf, Shield, Users, Clock3, Flag, Footprints, Wind, Tent, Ticket, Euro, Medal, Accessibility as AccessibilityIcon } from 'lucide-react';
 import { Beach, Accessibility, LanguageCode, BeachType, CrowdLevel, WarningFlag, RecommendationConfidence, SwimmingComfort, WindSuitabilityColor, PaidEntryKind } from '../types';
 import { getBeaufortLevel } from '../utils/weatherUtils';
 import { Translation } from '../types';
@@ -75,6 +75,13 @@ interface BeachCardProps {
    */
   windExposureMode?: 'none' | 'simple';
   showTodayScoreBadge?: boolean;
+  /**
+   * Marks the card as one of the day's curated "Top 3" picks (the podium set).
+   * Adds the teal frame + ranked medal so the trio reads as a distinct group,
+   * separate from the generic suitable-beach list. Only set this from the
+   * top-recommendation surfaces, never from a plain numbered list.
+   */
+  topPickPodium?: boolean;
 }
 
 type CardCopy = {
@@ -1063,6 +1070,7 @@ export const BeachCard: React.FC<BeachCardProps> = ({
   hideExposureBadge = false,
   windExposureMode,
   showTodayScoreBadge = true,
+  topPickPodium = false,
 }) => {
   const [photoIndex, setPhotoIndex] = useState(0);
   const isCompact = density === 'compact';
@@ -1265,6 +1273,27 @@ export const BeachCard: React.FC<BeachCardProps> = ({
       ? !isProtectedToday && windChipIsMeaningful
       : !isProtectedToday && Boolean(windSuitabilityText || isExposedConditionChip);
   const hasMobileDecisionBody = Boolean(topPickTimeLabel);
+  // Curated "top pick" podium treatment — a teal frame + ranked medal so the
+  // highlighted set reads as one group, distinct from the generic suitable list.
+  // #1 keeps the strongest (filled) emphasis; #2/#3 are teal-outlined (emphasis,
+  // not demotion). The honest "what kind of day it is" claim (Top 3 vs "less
+  // exposed") stays in the section heading, so the medal is rank-only and never
+  // overstates in a strong-wind regime. Falls back gracefully when not a podium card.
+  const isPodium = topPickPodium === true && recommendationRank !== undefined;
+  const podiumRankValue = recommendationLabel ?? recommendationRank;
+  const podiumMedalAriaLabel = getLocalizedCopy(language, {
+    en: `Top pick #${podiumRankValue}`,
+    gr: `Κορυφαία επιλογή #${podiumRankValue}`,
+    fr: `Choix #${podiumRankValue}`,
+    de: `Top-Empfehlung #${podiumRankValue}`,
+    it: `Scelta #${podiumRankValue}`,
+  });
+  const rankMedalBase = 'grid h-8 min-w-8 place-items-center rounded-full text-xs font-extrabold';
+  const mobileRankClass = recommendationRank === 1
+    ? `${rankMedalBase} bg-[#007a83] text-white ring-1 ring-[#007a83]/30`
+    : isPodium
+    ? `${rankMedalBase} bg-white text-[#007a83] ring-1 ring-[#007a83]/45`
+    : `${rankMedalBase} bg-sky-50 text-cyan-800 ring-1 ring-sky-100`;
   const mobileWindLabel = `${windBeaufort} Bft`;
   const mobileWaveLabel = typeof waveHeightM === 'number' && Number.isFinite(waveHeightM)
     ? `${waveHeightM.toFixed(1)} m`
@@ -1279,15 +1308,15 @@ export const BeachCard: React.FC<BeachCardProps> = ({
         data-nosnippet="true"
         whileHover={{ y: -3 }}
         transition={{ duration: 0.25 }}
-        className="group relative beach-card flex h-full w-full cursor-pointer flex-col overflow-hidden active:scale-[0.995]"
+        className={`group relative beach-card flex h-full w-full cursor-pointer flex-col overflow-hidden active:scale-[0.995]${isPodium ? ' border-2 border-[#007a83]/45' : ''}`}
       >
-        <div className="border-b border-sky-100/70 bg-white/90 px-3.5 py-3 sm:hidden dark:border-slate-800 dark:bg-slate-900/90">
+        <div className={`border-b px-3.5 py-3 sm:hidden ${isPodium
+          ? 'border-[#007a83]/15 bg-[#007a83]/[0.05] dark:border-[#007a83]/30 dark:bg-[#007a83]/15'
+          : 'border-sky-100/70 bg-white/90 dark:border-slate-800 dark:bg-slate-900/90'}`}>
           <div className="grid min-w-0 grid-cols-[2.75rem_minmax(0,1fr)_2.75rem] items-start gap-2.5">
-            <div className="flex h-11 w-11 items-start justify-start" aria-hidden={recommendationRank === undefined}>
+            <div className="flex h-11 w-11 items-start justify-start" aria-hidden={recommendationRank === undefined ? true : undefined}>
               {recommendationRank !== undefined && (
-                <span className={recommendationRank === 1
-                  ? 'grid h-8 min-w-8 place-items-center rounded-full bg-[#007a83] text-xs font-extrabold text-white ring-1 ring-[#007a83]/30'
-                  : 'grid h-8 min-w-8 place-items-center rounded-full bg-sky-50 text-xs font-extrabold text-cyan-800 ring-1 ring-sky-100'}>
+                <span className={mobileRankClass} aria-label={isPodium ? podiumMedalAriaLabel : undefined}>
                   {recommendationLabel ?? recommendationRank}
                 </span>
               )}
@@ -1405,11 +1434,22 @@ export const BeachCard: React.FC<BeachCardProps> = ({
 
           <div className="absolute left-3 top-3 z-20 hidden max-w-[calc(100%-4.75rem)] flex-wrap items-center gap-2 sm:flex">
             {recommendationRank !== undefined && (
-              <span className={recommendationRank === 1
-                ? 'inline-flex min-h-8 items-center rounded-full bg-[#007a83] px-2.5 py-1 text-xs font-extrabold text-white shadow-sm ring-1 ring-white/30 backdrop-blur-md'
-                : 'inline-flex min-h-8 items-center rounded-full bg-white/82 px-2.5 py-1 text-xs font-bold text-slate-700 shadow-sm ring-1 ring-black/5 backdrop-blur-md'}>
-                {recommendationLabel ?? recommendationRank}
-              </span>
+              isPodium ? (
+                <span
+                  aria-label={podiumMedalAriaLabel}
+                  className={recommendationRank === 1
+                    ? 'inline-flex min-h-8 items-center gap-1 rounded-full bg-[#007a83] px-2.5 py-1 text-xs font-extrabold text-white shadow-sm ring-1 ring-white/30 backdrop-blur-md'
+                    : 'inline-flex min-h-8 items-center gap-1 rounded-full bg-white/92 px-2.5 py-1 text-xs font-extrabold text-[#007a83] shadow-sm ring-1 ring-[#007a83]/35 backdrop-blur-md'}>
+                  <Medal className="h-3.5 w-3.5 shrink-0" aria-hidden="true" />
+                  <span>{podiumRankValue}</span>
+                </span>
+              ) : (
+                <span className={recommendationRank === 1
+                  ? 'inline-flex min-h-8 items-center rounded-full bg-[#007a83] px-2.5 py-1 text-xs font-extrabold text-white shadow-sm ring-1 ring-white/30 backdrop-blur-md'
+                  : 'inline-flex min-h-8 items-center rounded-full bg-white/82 px-2.5 py-1 text-xs font-bold text-slate-700 shadow-sm ring-1 ring-black/5 backdrop-blur-md'}>
+                  {recommendationLabel ?? recommendationRank}
+                </span>
+              )
             )}
             {hasBlueFlag2026 && <BlueFlagBadge language={language} />}
             {hasAccessibleRamp && <AccessibilityBadge language={language} />}

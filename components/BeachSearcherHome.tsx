@@ -47,7 +47,7 @@ import { getBeachFilterDirectoryTitle } from '../utils/filterSummary';
 import { canOpenNavigation, getNavigationBadge, openNavigation } from '../utils/navigation';
 import { getSelectedDayOffset, getSelectedDayPrefix, getSelectedDaySentencePrefix } from '../utils/dateLabels';
 import { getConsistentVisibleMapExposureLevels } from '../utils/mapExposure';
-import { isAdventureBeach } from '../utils/access';
+import { hasBoatOnlyAccess, isAdventureBeach } from '../utils/access';
 import { WeatherSummary } from './WeatherSummary';
 import { BeachCard } from './BeachCard';
 import { SandDotsIcon, SandPebblesIcon, SunbedIcon } from './BeachFeatureIcons';
@@ -165,6 +165,11 @@ interface BeachSearcherHomeProps {
 }
 
 const DRAG_SCROLL_THRESHOLD_PX = 6;
+
+// From 5 Bft up a boat-only beach (e.g. Κλεφτικό) isn't a real option for the day —
+// the boats don't run and you can't drive there — so it must never surface as a "top
+// pick". Mirrors the App-level `shouldHideBoatAccessBeaches` chokepoint (PROTECTED_FIRST_BEAUFORT).
+const PROTECTED_FIRST_BEAUFORT = 5;
 
 const installMouseDragScroll = (element: HTMLElement): (() => void) => {
   let pointerId: number | null = null;
@@ -1773,7 +1778,17 @@ export const BeachSearcherHome: React.FC<BeachSearcherHomeProps> = ({
     // popularityScore/rating are synthetic (deterministic hash of the beach id) and must not
     // drive this ordering — rank by real signals: photo coverage, amenity richness, then name.
     const amenityRichness = (beach: Beach) => Object.values(beach.amenities || {}).filter(value => value === true).length;
+    // Miltos 2026-06-20: this list is the fallback the suitable carousel renders when no beach
+    // is suitable (typically ≥5 Bft), and it gets numbered like top picks. An iconic boat-only
+    // beach (e.g. Κλεφτικό) would otherwise rank high here and show as "top pick #1" at strong
+    // wind — exactly what we promised never to do. Drop boat-only beaches at ≥5 Bft (kept when
+    // the user is actively searching, so they stay findable by name), mirroring the App-level
+    // `shouldHideBoatAccessBeaches` filter that this fallback path bypasses.
+    const hideBoatOnly = typeof currentBeaufort === 'number'
+      && currentBeaufort >= PROTECTED_FIRST_BEAUFORT
+      && searchQuery.trim().length === 0;
     return [...selectedIsland.beaches]
+      .filter(beach => !(hideBoatOnly && hasBoatOnlyAccess(beach)))
       .sort((a, b) => {
         const aPhoto = getBeachPhotoLookup(a.name.gr, a.name.en, a.id, 1, selectedIsland.name[language]).source === 'exact';
         const bPhoto = getBeachPhotoLookup(b.name.gr, b.name.en, b.id, 1, selectedIsland.name[language]).source === 'exact';
@@ -1786,7 +1801,7 @@ export const BeachSearcherHome: React.FC<BeachSearcherHomeProps> = ({
         return (a.name.en || '').localeCompare(b.name.en || '');
       })
       .slice(0, 8);
-  }, [language, selectedIsland]);
+  }, [currentBeaufort, language, searchQuery, selectedIsland]);
   const weatherBeachCards = useMemo(() => {
     if (!selectedIsland) return [];
     if (suitableBeachCards && suitableBeachCards.length > 0) {
@@ -2683,6 +2698,7 @@ export const BeachSearcherHome: React.FC<BeachSearcherHomeProps> = ({
       showTodayScoreBadge?: boolean;
       alignExposureToMap?: boolean;
       windExposureMode?: 'none' | 'simple';
+      topPickPodium?: boolean;
     } = {}
   ) => {
     const directContext = beach as BeachCardContext;
@@ -2746,6 +2762,7 @@ export const BeachSearcherHome: React.FC<BeachSearcherHomeProps> = ({
         density={options.density}
         recommendationRank={options.recommendationRank}
         recommendationLabel={options.recommendationLabel}
+        topPickPodium={options.topPickPodium}
         bestBeachTime={options.context?.bestBeachTime ?? directContext.bestBeachTime ?? weatherContext?.bestBeachTime}
         bestSwimWindow={options.context?.bestTimeWindow ?? directContext.bestTimeWindow ?? weatherContext?.bestTimeWindow}
         topPickTimeLabel={options.topPickTimeLabel}
@@ -3320,6 +3337,7 @@ export const BeachSearcherHome: React.FC<BeachSearcherHomeProps> = ({
                       score,
                       context,
                       recommendationRank: index + 1,
+                      topPickPodium: true,
                       showTodayScoreBadge: false,
                       alignExposureToMap: true,
                       windExposureMode: 'none',
@@ -3347,18 +3365,25 @@ export const BeachSearcherHome: React.FC<BeachSearcherHomeProps> = ({
             className="beach-card-carousel no-scrollbar flex cursor-grab snap-x snap-mandatory items-stretch gap-6 overflow-x-auto overscroll-x-contain pb-5 select-none active:cursor-grabbing data-[dragging=true]:cursor-grabbing data-[dragging=true]:snap-none lg:snap-none lg:px-5"
           >
             {selectedIsland ? (
-              weatherBeachCards.map(({ beach, score, context }, index) => (
+              weatherBeachCards.map(({ beach, score, context }, index) => {
+                // When there's no dedicated top-3 carousel, THIS suitable carousel is the
+                // numbered "best picks" surface (cards get rank 1,2,3…), so its first three
+                // are the day's de-facto top 3 and earn the podium frame. Ranks 4+ stay plain.
+                const cardRank = hasTopRecommendationView ? undefined : weatherBeachCardRankStart + index;
+                return (
                 <div key={beach.id} data-suitable-beach-id={beach.id} {...beachCardHoverProps(beach.id)} className="flex h-[24rem] w-[17rem] shrink-0 snap-start sm:h-[27rem] sm:w-[20rem]">
                   {renderBeachDecisionCard(beach as BeachCardContext, {
                     score,
                     context,
-                    recommendationRank: hasTopRecommendationView ? undefined : weatherBeachCardRankStart + index,
+                    recommendationRank: cardRank,
+                    topPickPodium: cardRank !== undefined && cardRank <= 3,
                     showTodayScoreBadge: false,
                     alignExposureToMap: true,
                     windExposureMode: 'none',
                   })}
                 </div>
-              ))
+                );
+              })
             ) : (
               sortedIslandCards.map(island => {
                 const title = island.name[language];

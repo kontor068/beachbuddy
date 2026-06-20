@@ -356,6 +356,57 @@ const BeachHoverPreviewCard: React.FC<{
   );
 };
 
+// Leaflet caches the container's pixel size at init and only recomputes it on a
+// window 'resize'. When this map remounts via SPA back-navigation (the detail
+// view is a separate render branch, so going back fully re-mounts the map) or
+// its container is revealed/reflowed after an async layout shift (lazy chunk,
+// hero strip, scroll restoration), the cached size goes stale — markers and
+// tiles are then projected against the wrong origin and look off-centre until a
+// manual refresh. react-leaflet doesn't observe the container, so we recompute
+// the size after mount and whenever the container actually resizes.
+const MapAutoResize = () => {
+  const map = useMap();
+
+  useEffect(() => {
+    // invalidateSize no-ops if the size is unchanged and while the map isn't
+    // loaded yet, so calling it speculatively is cheap and safe.
+    const invalidate = () => {
+      const container = map.getContainer();
+      if (!container || !container.isConnected) return;
+      map.invalidateSize({ animate: false });
+    };
+
+    // The initial mount plus a few staggered passes catch late layout shifts
+    // that settle after the first frame (lazy chunk load, hero image, scroll
+    // restoration on back-navigation).
+    const frame = requestAnimationFrame(invalidate);
+    const timers = [60, 250, 600].map(delay => window.setTimeout(invalidate, delay));
+
+    // Recompute whenever the container resizes without a window 'resize' — e.g.
+    // it was revealed after being collapsed, or a parent reflowed.
+    const observer = typeof ResizeObserver !== 'undefined'
+      ? new ResizeObserver(invalidate)
+      : null;
+    observer?.observe(map.getContainer());
+
+    // Restoring from the bfcache (returning to the tab/page) also leaves Leaflet
+    // with a stale size.
+    const handlePageShow = (event: PageTransitionEvent) => {
+      if (event.persisted) invalidate();
+    };
+    window.addEventListener('pageshow', handlePageShow);
+
+    return () => {
+      cancelAnimationFrame(frame);
+      timers.forEach(window.clearTimeout);
+      observer?.disconnect();
+      window.removeEventListener('pageshow', handlePageShow);
+    };
+  }, [map]);
+
+  return null;
+};
+
 // Component to update map center when user location changes
 const RecenterMap = ({ center, zoom }: { center: [number, number]; zoom: number }) => {
   const map = useMap();
@@ -2251,6 +2302,7 @@ const BeachMap: React.FC<BeachMapProps> = ({
             eventHandlers={{ load: () => setTilesReady(true) }}
           />
 
+          <MapAutoResize />
           <RecenterMap center={center} zoom={zoom} />
           <MapViewportGuardrails
             minZoom={viewportGuardrails.minZoom}

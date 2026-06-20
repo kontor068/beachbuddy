@@ -141,8 +141,14 @@ const initializeGoogleTag = () => {
   window.dataLayer = window.dataLayer || [];
 
   if (!window.gtag) {
-    window.gtag = (...args: GtagArguments) => {
-      window.dataLayer?.push(args);
+    // gtag.js only treats a dataLayer entry as a command when it is the native
+    // `arguments` object. Pushing a (spread) array makes the library silently
+    // ignore `config`/`event`/`consent`, so no GA4 destination is ever registered
+    // and zero hits are sent — which looks like "GA is dead" while Search Console
+    // (server-side) still reports traffic. Mirror Google's canonical snippet.
+    window.gtag = function gtag() {
+      // eslint-disable-next-line prefer-rest-params
+      window.dataLayer?.push(arguments as unknown as GtagArguments);
     };
   }
 };
