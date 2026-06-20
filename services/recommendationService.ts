@@ -300,11 +300,13 @@ const isSurfaceFilter = (filter: FilterKey): boolean => (
   filter === 'sandy' || filter === 'pebbles' || filter === 'sandy-pebbles' || filter === 'rocky'
 );
 
-const matchesSurfaceFilter = (beach: Beach, filter: FilterKey): boolean => {
-  if (filter === 'sandy') return beach.beachType === 'sandy' || beach.beachType === 'sandy-pebbles';
-  if (filter === 'pebbles') return beach.beachType === 'pebbles' || beach.beachType === 'sandy-pebbles';
-  return beach.beachType === filter;
-};
+const matchesSurfaceFilter = (beach: Beach, filter: FilterKey): boolean => (
+  // Each surface type is its own category: "Άμμος", "Βότσαλα" and "Άμμος + Βότσαλα" are
+  // mutually exclusive (a beach has a single beachType). So "pebbles" must NOT also match a
+  // sand-and-pebbles beach (and vice versa) — otherwise the same beach shows under two filters
+  // and combining e.g. Βότσαλα + Άμμος+Βότσαλα wrongly returns results.
+  beach.beachType === filter
+);
 
 const hasServiceAmenities = (beach: Beach): boolean => Boolean(
   beach.amenities?.organized ||
@@ -1636,8 +1638,8 @@ export const calculateBeachScore = (
       if (matches) matchCount += 1;
     };
 
-    addMatch(Boolean(preferences.sandy), beach.beachType === 'sandy' || beach.beachType === 'sandy-pebbles');
-    addMatch(Boolean(preferences.pebbles), beach.beachType === 'pebbles' || beach.beachType === 'sandy-pebbles');
+    addMatch(Boolean(preferences.sandy), beach.beachType === 'sandy');
+    addMatch(Boolean(preferences.pebbles), beach.beachType === 'pebbles');
     addMatch(Boolean(preferences.quiet), isQuietBeach(beach));
     addMatch(Boolean(preferences.beachBar), hasBeachBarAmenity(beach));
     addMatch(Boolean(preferences.familyFriendly), isFamilyFriendlyBeach(beach));
