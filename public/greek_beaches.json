@@ -63865,8 +63865,8 @@
         {
           "id": 870,
           "name": "Μονολίθι",
-          "lat": 39.04837,
-          "lon": 20.68064,
+          "lat": 39.03741,
+          "lon": 20.71187,
           "metadata": {
             "access": {
               "type": "asphalt_road",
@@ -63901,7 +63901,8 @@
               "Phase 2 audit 2026-05-25: kept beach bar; Monolithi/Preveza sources support beach-bar service and seasonal beach-bar variability.",
               "Preveza tourist evidence pass 2026-06-01: Travel Preveza and local guide sources support Monolithi identity/location, very long sandy beach extent from Mytikas to Kastrosykia, organized/free sections, beach-bar services in parts, and access/parking context. Confidence was raised to high for source-backed static beach facts only; coordinates, windProfile, scoring, photos, amenities, and live calm/protected/safe claims were not changed.",
               "Blue Flag 2026 import 2026-06-01: official Blue Flag Greece awards page lists one or more matching awarded beach sections for this record. Static certification metadata only; coordinates, access, windProfile, scoring, photos, confidence and live calm/protected/safe claims were not changed.",
-              "Amenity corrected 2026-06-20 (amenity-evidence audit): the organized + beach-bar/sunbeds claim was an unverified default — Google Places shows zero food/drink POI within 180 m and the beach has <20/no Google reviews. Cleared organized=false and removed the bar/sunbed amenities; other amenities, coordinates, windProfile and claims untouched."
+              "Amenity corrected 2026-06-20 (amenity-evidence audit): the organized + beach-bar/sunbeds claim was an unverified default — Google Places shows zero food/drink POI within 180 m and the beach has <20/no Google reviews. Cleared organized=false and removed the bar/sunbed amenities; other amenities, coordinates, windProfile and claims untouched.",
+              "Coordinates corrected 2026-06-20 (pin-coastline audit): stored pin (39.04837,20.68064) was ~3 km from any coastline (OSM-confirmed inland); moved to the verified-coastal Google place location for this beach. Wind exposure regenerated at the new location."
             ],
             "blueFlag2026": {
               "awarded": true,
@@ -64696,8 +64697,8 @@
         {
           "id": 882,
           "name": "Παραλία Καστροσυκιάς",
-          "lat": 39.09498,
-          "lon": 20.60755,
+          "lat": 39.09492,
+          "lon": 20.64875,
           "metadata": {
             "access": {
               "type": "asphalt_road",
@@ -64727,7 +64728,8 @@
             "sourceNotes": [
               "Travel Preveza page for Kastrosykia provided the beach context and embedded coordinates used for this record.",
               "Preveza tourist evidence pass 2026-06-01: Travel Preveza directly supports Kastrosykia beach identity/location, wide sandy/pebbly shoreline, organized areas, beach bars, umbrellas/sunbeds, showers/restrooms, tavernas/cafes and family visitor context. Confidence was raised to high for source-backed static beach facts only; coordinates, windProfile, scoring, photos, amenities, and live calm/protected/safe claims were not changed.",
-              "Amenity corrected 2026-06-20 (amenity-evidence audit): the organized + beach-bar/sunbeds claim was an unverified default — Google Places shows zero food/drink POI within 180 m and the beach has <20/no Google reviews. Cleared organized=false and removed the bar/sunbed amenities; other amenities, coordinates, windProfile and claims untouched."
+              "Amenity corrected 2026-06-20 (amenity-evidence audit): the organized + beach-bar/sunbeds claim was an unverified default — Google Places shows zero food/drink POI within 180 m and the beach has <20/no Google reviews. Cleared organized=false and removed the bar/sunbed amenities; other amenities, coordinates, windProfile and claims untouched.",
+              "Coordinates corrected 2026-06-20 (pin-coastline audit): stored pin (39.09498,20.60755) was ~3.6 km from any coastline (OSM-confirmed inland); moved to the verified-coastal Google place location for this beach. Wind exposure regenerated at the new location."
             ],
             "aliases": [
               "Kastrosykia Beach"
@@ -64895,8 +64897,8 @@
         {
           "id": 885,
           "name": "Παραλία Λυγιάς",
-          "lat": 39.14704,
-          "lon": 20.53138,
+          "lat": 39.14769,
+          "lon": 20.5718,
           "metadata": {
             "access": {
               "type": "asphalt_road",
@@ -64926,7 +64928,8 @@
             "sourceNotes": [
               "Travel Preveza page for Lygia provided the beach context and embedded coordinates used for this record.",
               "Preveza tourist evidence pass 2026-06-01: Travel Preveza directly supports Lygia beach identity/location, sandy/pebbly/rocky sections, easy road access, harbor/village context and nearby tavernas/visitor services. Confidence was raised to high for source-backed static beach facts only; coordinates, windProfile, scoring, photos, amenities, and live calm/protected/safe claims were not changed.",
-              "Amenity corrected 2026-06-20 (amenity-evidence audit): the organized + beach-bar/sunbeds claim was an unverified default — Google Places shows zero food/drink POI within 180 m and the beach has <20/no Google reviews. Cleared organized=false and removed the bar/sunbed amenities; other amenities, coordinates, windProfile and claims untouched."
+              "Amenity corrected 2026-06-20 (amenity-evidence audit): the organized + beach-bar/sunbeds claim was an unverified default — Google Places shows zero food/drink POI within 180 m and the beach has <20/no Google reviews. Cleared organized=false and removed the bar/sunbed amenities; other amenities, coordinates, windProfile and claims untouched.",
+              "Coordinates corrected 2026-06-20 (pin-coastline audit): stored pin (39.14704,20.53138) was ~3.5 km from any coastline (OSM-confirmed inland); moved to the verified-coastal Google place location for this beach. Wind exposure regenerated at the new location."
             ],
             "aliases": [
               "Lygia Beach"
@@ -180397,8 +180400,8 @@
         {
           "id": 2580,
           "name": "Ελιά",
-          "lat": 39.1432,
-          "lon": 23.8917,
+          "lat": 39.17345,
+          "lon": 23.90641,
           "metadata": {
             "access": {
               "type": "unknown",
@@ -180423,7 +180426,7 @@
               "label": "Βαθιά νερά",
               "notes": "Το βάθος συνήθως ανεβαίνει πιο γρήγορα μετά την είσοδο στη θάλασσα."
             },
-            "sourceNotes": "Source follow-up pass 57 2026-05-28: Mapcarta/OpenStreetMap names Elias Cove as a beach on Alonissos. Used only for weak toponym/local-island traceability for the Greek Elia record; the stored coordinate and display-name match remain low-confidence and need geodata review before any promotion.",
+            "sourceNotes": "Source follow-up pass 57 2026-05-28: Mapcarta/OpenStreetMap names Elias Cove as a beach on Alonissos. Used only for weak toponym/local-island traceability for the Greek Elia record; the stored coordinate and display-name match remain low-confidence and need geodata review before any promotion. Coordinates corrected 2026-06-20 (pin-coastline audit): stored pin (39.1432,23.8917) was ~3.6 km from any coastline (OSM-confirmed inland); moved to the verified-coastal Google place location for this beach. Wind exposure regenerated at the new location.",
             "sourceUrls": [
               "https://mapcarta.com/W1109066282"
             ],
@@ -180444,8 +180447,8 @@
         {
           "id": 2581,
           "name": "Γέρακας",
-          "lat": 39.1162,
-          "lon": 23.8598,
+          "lat": 39.2691,
+          "lon": 23.94274,
           "metadata": {
             "access": {
               "type": "unknown",
@@ -180472,7 +180475,7 @@
               "label": "Μέτριο βάθος",
               "notes": "Δεν υπάρχει άμεση source-backed επιβεβαίωση για ρηχά ή βαθιά νερά, οπότε το βάθος μένει συντηρητικά ουδέτερο."
             },
-            "sourceNotes": "Alonissos tourist evidence pass 2026-05-29: Greece Destination directly supports Gerakas as a quiet north-island Alonissos beach with large pebbles, a few seasonal sunbeds and a canteen. Access remains unknown; high confidence covers static identity/terrain/service evidence only. Coordinates, windProfile, scoring, photos and live sea/wind/safety claims were not changed.",
+            "sourceNotes": "Alonissos tourist evidence pass 2026-05-29: Greece Destination directly supports Gerakas as a quiet north-island Alonissos beach with large pebbles, a few seasonal sunbeds and a canteen. Access remains unknown; high confidence covers static identity/terrain/service evidence only. Coordinates, windProfile, scoring, photos and live sea/wind/safety claims were not changed. Coordinates corrected 2026-06-20 (pin-coastline audit): stored pin (39.1162,23.8598) was ~18.4 km from any coastline (OSM-confirmed inland); moved to the verified-coastal Google place location for this beach. Wind exposure regenerated at the new location.",
             "sourceUrls": [
               "https://greecedestination.gr/%CF%80%CE%B1%CF%81%CE%B1%CE%BB%CE%AF%CE%B5%CF%82-%CF%83%CF%84%CE%B7%CE%BD-%CE%B1%CE%BB%CF%8C%CE%BD%CE%BD%CE%B7%CF%83%CE%BF/"
             ],
@@ -180580,8 +180583,8 @@
         {
           "id": 2583,
           "name": "Άγιοι Ανάργυροι",
-          "lat": 39.1755,
-          "lon": 23.8635,
+          "lat": 39.17376,
+          "lon": 23.87701,
           "metadata": {
             "access": {
               "type": "hiking_path_easy",
@@ -180605,7 +180608,7 @@
               "label": "Μέτριο βάθος",
               "notes": "Δεν υπάρχει άμεση source-backed επιβεβαίωση για ρηχά ή βαθιά νερά, οπότε το βάθος μένει συντηρητικά ουδέτερο."
             },
-            "sourceNotes": "Alonissos tourist evidence pass 2026-05-29: Greece Destination directly supports Agioi Anargyroi as a very small unorganized pebble beach reached by dirt footpath after the chapel. Raised to high for source-backed identity, access, terrain and no-organization evidence only. Coordinates, windProfile, scoring, photos and live sea/wind/safety claims were not changed.",
+            "sourceNotes": "Alonissos tourist evidence pass 2026-05-29: Greece Destination directly supports Agioi Anargyroi as a very small unorganized pebble beach reached by dirt footpath after the chapel. Raised to high for source-backed identity, access, terrain and no-organization evidence only. Coordinates, windProfile, scoring, photos and live sea/wind/safety claims were not changed. Coordinates corrected 2026-06-20 (pin-coastline audit): stored pin (39.1755,23.8635) was ~1.2 km from any coastline (OSM-confirmed inland); moved to the verified-coastal Google place location for this beach. Wind exposure regenerated at the new location.",
             "sourceUrls": [
               "https://greecedestination.gr/%CF%80%CE%B1%CF%81%CE%B1%CE%BB%CE%AF%CE%B5%CF%82-%CF%83%CF%84%CE%B7%CE%BD-%CE%B1%CE%BB%CF%8C%CE%BD%CE%BD%CE%B7%CF%83%CE%BF/"
             ],
@@ -180824,8 +180827,8 @@
         {
           "id": 2587,
           "name": "Βρυσίτσα",
-          "lat": 39.1253,
-          "lon": 23.8588,
+          "lat": 39.15562,
+          "lon": 23.8474,
           "metadata": {
             "access": {
               "type": "unknown",
@@ -180850,7 +180853,7 @@
               "label": "Βαθιά νερά",
               "notes": "Η ακτή περιγράφεται ως μικρός, απότομος κολπίσκος. Κρατάμε βαθύτερη είσοδο μέχρι να υπάρξει λεπτομερέστερη υδρομορφολογική πηγή."
             },
-            "sourceNotes": "Alonissos tourist evidence pass 2026-05-29: Alonnisos Travel and secondary beach pages directly support Vrisitsa as an Alonissos beach with dark sand/pebbles, surrounding vegetation and no on-beach facilities. Raised to high for static identity, terrain and no-service evidence only; access remains conservative. Coordinates, windProfile, scoring, photos and live sea/wind/safety claims were not changed.",
+            "sourceNotes": "Alonissos tourist evidence pass 2026-05-29: Alonnisos Travel and secondary beach pages directly support Vrisitsa as an Alonissos beach with dark sand/pebbles, surrounding vegetation and no on-beach facilities. Raised to high for static identity, terrain and no-service evidence only; access remains conservative. Coordinates, windProfile, scoring, photos and live sea/wind/safety claims were not changed. Coordinates corrected 2026-06-20 (pin-coastline audit): stored pin (39.1253,23.8588) was ~3.5 km from any coastline (OSM-confirmed inland); moved to the verified-coastal Google place location for this beach. Wind exposure regenerated at the new location.",
             "sourceUrls": [
               "https://alonnisostravel.gr/beaches/",
               "https://www.hellenic-travelgroup.com/sight/beaches/alonissos-town/vrisitsa",
@@ -181351,8 +181354,8 @@
         {
           "id": 2595,
           "name": "Λένα",
-          "lat": 39.1225,
-          "lon": 23.8535,
+          "lat": 39.14591,
+          "lon": 23.86682,
           "metadata": {
             "access": {
               "type": "unknown",
@@ -181377,7 +181380,7 @@
               "label": "Βαθιά νερά",
               "notes": "Το βάθος συνήθως ανεβαίνει πιο γρήγορα μετά την είσοδο στη θάλασσα."
             },
-            "sourceNotes": "Source follow-up pass 57 2026-05-28: Mapcarta/OpenStreetMap directly names Lena as a beach on Alonissos. Used only for toponym/local-island traceability; the stored coordinate does not receive exact-geometry confidence and access/services stay unchanged.",
+            "sourceNotes": "Source follow-up pass 57 2026-05-28: Mapcarta/OpenStreetMap directly names Lena as a beach on Alonissos. Used only for toponym/local-island traceability; the stored coordinate does not receive exact-geometry confidence and access/services stay unchanged. Coordinates corrected 2026-06-20 (pin-coastline audit): stored pin (39.1225,23.8535) was ~2.8 km from any coastline (OSM-confirmed inland); moved to the verified-coastal Google place location for this beach. Wind exposure regenerated at the new location.",
             "sourceUrls": [
               "https://mapcarta.com/W295333254"
             ],
@@ -185558,8 +185561,8 @@
         {
           "id": 2650,
           "name": "Έλιος",
-          "lat": 39.076,
-          "lon": 23.658,
+          "lat": 39.13944,
+          "lon": 23.6436,
           "metadata": {
             "access": {
               "type": "asphalt_road",
@@ -185591,7 +185594,8 @@
             "sourceNotes": [
               "Source follow-up pass 39 2026-05-28: direct Municipality of Skopelos destination page supports Elios-Neo Klima identity/location on Skopelos. Confidence, coordinates, access, services, amenities, wind profile, and scoring were not changed.",
               "Skopelos tourist evidence pass 2026-06-02: Municipality of Skopelos supports Elios-Neo Klima identity/location and village/harbor context. Skopelos.com and AllOverGreece support Elios as the Neo Klima village beach on west Skopelos, with asphalt/local transport access, sand/pebble terrain, nearby taverns/cafes and seasonal umbrellas/deck chairs from harbor businesses. Coordinates, windProfile, scoring, photos and live calm/protected/safe claims were not changed.",
-              "Amenity corrected 2026-06-20 (amenity-evidence audit): the organized + beach-bar/sunbeds claim was an unverified default — Google Places shows zero food/drink POI within 180 m and the beach has <20/no Google reviews. Cleared organized=false and removed the bar/sunbed amenities; other amenities, coordinates, windProfile and claims untouched."
+              "Amenity corrected 2026-06-20 (amenity-evidence audit): the organized + beach-bar/sunbeds claim was an unverified default — Google Places shows zero food/drink POI within 180 m and the beach has <20/no Google reviews. Cleared organized=false and removed the bar/sunbed amenities; other amenities, coordinates, windProfile and claims untouched.",
+              "Coordinates corrected 2026-06-20 (pin-coastline audit): stored pin (39.076,23.658) was ~7.2 km from any coastline (OSM-confirmed inland); moved to the verified-coastal Google place location for this beach. Wind exposure regenerated at the new location."
             ],
             "sourceUrls": [
               "https://visit.skopelos.gr/en/destinations/elios-neo-klima",
@@ -185981,8 +185985,8 @@
         {
           "id": 2657,
           "name": "Μηλιά",
-          "lat": 39.121,
-          "lon": 23.647,
+          "lat": 39.11704,
+          "lon": 23.6538,
           "metadata": {
             "access": {
               "type": "asphalt_road",
@@ -186017,7 +186021,8 @@
             },
             "sourceNotes": [
               "Source follow-up pass 39 2026-05-28: direct Municipality of Skopelos destination page supports Milia beach identity/location on Skopelos. Confidence, coordinates, access, services, amenities, wind profile, and scoring were not changed.",
-              "Skopelos tourist evidence pass 2026-06-01: Municipality of Skopelos and Skopelos.com support Milia as a major west-coast beach with fine pebbles/white sand, rock formations, beach bars, sunbeds, umbrellas, taverna, parking and road/bus access. Coordinates, windProfile, scoring, photos and live calm/protected/safe claims were not changed."
+              "Skopelos tourist evidence pass 2026-06-01: Municipality of Skopelos and Skopelos.com support Milia as a major west-coast beach with fine pebbles/white sand, rock formations, beach bars, sunbeds, umbrellas, taverna, parking and road/bus access. Coordinates, windProfile, scoring, photos and live calm/protected/safe claims were not changed.",
+              "Coordinates corrected 2026-06-20 (pin-coastline audit): stored pin (39.121,23.647) was ~0.7 km from any coastline (OSM-confirmed inland); moved to the verified-coastal Google place location for this beach. Wind exposure regenerated at the new location."
             ],
             "sourceUrls": [
               "https://visit.skopelos.gr/en/destinations/milia/",
@@ -186751,8 +186756,8 @@
         {
           "id": 2670,
           "name": "Άγιος Ιωάννης",
-          "lat": 39.255,
-          "lon": 23.075,
+          "lat": 39.41674,
+          "lon": 23.16093,
           "metadata": {
             "access": {
               "type": "asphalt_road",
@@ -186791,7 +186796,8 @@
             "sourceNotes": [
               "Phase 2 audit 2026-05-25: kept beach bar; sources confirm beach-bar service in the Agios Ioannis/Plaka beach area.",
               "Pelion tourist evidence pass 2026-06-01: Volos Info identifies Agios Ioannis as a famous organized Pelion beach/resort about 44 km from Volos with sand, white pebbles, beach bars, umbrellas, sunbeds, water sports, taverns and restaurants; Travel.gr and Discover Greece support the Agios Ioannis/Papa Nero/Plaka beach cluster and amenities. Water-depth wording was corrected from shallow to abruptly deepening. Coordinates, windProfile, scoring, photos and live calm/protected/safe claims were not changed.",
-              "Amenity corrected 2026-06-20 (amenity-evidence audit): the organized + beach-bar/sunbeds claim was an unverified default — Google Places shows zero food/drink POI within 180 m and the beach has <20/no Google reviews. Cleared organized=false and removed the bar/sunbed amenities; other amenities, coordinates, windProfile and claims untouched."
+              "Amenity corrected 2026-06-20 (amenity-evidence audit): the organized + beach-bar/sunbeds claim was an unverified default — Google Places shows zero food/drink POI within 180 m and the beach has <20/no Google reviews. Cleared organized=false and removed the bar/sunbed amenities; other amenities, coordinates, windProfile and claims untouched.",
+              "Coordinates corrected 2026-06-20 (pin-coastline audit): stored pin (39.255,23.075) was ~19.4 km from any coastline (OSM-confirmed inland); moved to the verified-coastal Google place location for this beach. Wind exposure regenerated at the new location."
             ]
           }
         },
@@ -187589,8 +187595,8 @@
         {
           "id": 2684,
           "name": "Καλαμιές (Αγριά)",
-          "lat": 39.3425,
-          "lon": 22.989,
+          "lat": 39.33032,
+          "lon": 23.01222,
           "metadata": {
             "access": {
               "type": "unknown",
@@ -187623,7 +187629,8 @@
             },
             "sourceNotes": [
               "Source-backed cleanup 2026-05-29: Beaches-Searcher supports Kalamies beach identity near Agria/Agios Minas, nearby road access with unconfirmed road surface, fine-gravel/small-pebble terrain, gentle depth increase, and organized amenities including loungers/parasols, cafe/bar, showers, toilets, changing rooms, and lifeguard listing. No live sea-state claim was added.",
-              "Magnesia continuation 2026-06-02: BeachSearcher supports Kalamies beach identity near Agria/Agios Minas, fine-gravel cover, gentle depth increase, organized amenities, adjacent-road context, and car/taxi access without a long walk. Road surface remains unconfirmed, so accessType stays unknown. Coordinates, windProfile, scoring, photos, and live condition claims were not changed."
+              "Magnesia continuation 2026-06-02: BeachSearcher supports Kalamies beach identity near Agria/Agios Minas, fine-gravel cover, gentle depth increase, organized amenities, adjacent-road context, and car/taxi access without a long walk. Road surface remains unconfirmed, so accessType stays unknown. Coordinates, windProfile, scoring, photos, and live condition claims were not changed.",
+              "Coordinates corrected 2026-06-20 (pin-coastline audit): stored pin (39.3425,22.989) was ~2.4 km from any coastline (OSM-confirmed inland); moved to the verified-coastal Google place location for this beach. Wind exposure regenerated at the new location."
             ],
             "sourceUrls": [
               "https://beaches-searcher.com/en/beach/300202290/kalamies-beach"
