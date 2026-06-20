@@ -161,6 +161,28 @@ const conditionCopy: Record<LanguageCode, ConditionCopy> = {
   },
 };
 
+// The map pin colour is decided by wind-exposure band (see BeachMap getExposureMarkerTone),
+// not by this widget's sea-comfort score — which is why a beach could read red here while its
+// pin was yellow. Mirror the exact map bands so the headline conditions colour matches the pin:
+// calm→green, mild/moderate (the map's yellow/orange) → amber, rough (the map's red) → rose.
+const getConditionToneClasses = (level: ExposureLevel, beaufort: number) => {
+  const isExposedBand = level === 'exposed';
+  let band: 'calm' | 'amber' | 'rough';
+  if (beaufort >= 7) band = 'rough';
+  else if (beaufort >= 5) band = isExposedBand ? 'rough' : 'amber';
+  else if (beaufort >= 4) band = isExposedBand ? 'amber' : 'amber';
+  else if (beaufort >= 3) band = isExposedBand ? 'amber' : 'calm';
+  else band = 'calm';
+
+  if (band === 'rough') {
+    return { text: 'text-rose-500', bg: 'bg-rose-500', border: 'border-rose-100 dark:border-rose-900/30', gradient: 'from-rose-400 to-rose-600' };
+  }
+  if (band === 'calm') {
+    return { text: 'text-emerald-500', bg: 'bg-emerald-500', border: 'border-emerald-100 dark:border-emerald-900/30', gradient: 'from-emerald-400 to-emerald-600' };
+  }
+  return { text: 'text-amber-500', bg: 'bg-amber-500', border: 'border-amber-100 dark:border-amber-900/30', gradient: 'from-amber-400 to-amber-600' };
+};
+
 export const BeachConditionScore: React.FC<BeachConditionScoreProps> = ({
   isExposed,
   windSpeed,
@@ -245,6 +267,8 @@ export const BeachConditionScore: React.FC<BeachConditionScoreProps> = ({
   // Sea score: protection and waves dominate; air temperature remains visible below as context.
   const totalScore = calculateSeaConditionScore(seaExposureLevel !== 'protected', windSpeed, seaExposureLevel, waveHeightM);
   const windBeaufort = getBeaufortLevel(windSpeed);
+  // Headline colour follows the map pin's exposure band (not the raw sea score) so they agree.
+  const conditionTone = getConditionToneClasses(seaExposureLevel, windBeaufort);
   const waveHeightLabel = typeof waveHeightM === 'number' && Number.isFinite(waveHeightM)
     ? `${waveHeightM.toFixed(1)} m`
     : null;
@@ -321,15 +345,15 @@ export const BeachConditionScore: React.FC<BeachConditionScoreProps> = ({
 
   if (compact) {
     return (
-      <div className={`flex items-center gap-2 bg-slate-50 dark:bg-slate-800/50 p-2 rounded-lg border ${getScoreBorder(totalScore)}`}>
-        <div className={`flex items-center justify-center w-8 h-8 rounded-full text-white ${getScoreBg(totalScore)}`}>
+      <div className={`flex items-center gap-2 bg-slate-50 dark:bg-slate-800/50 p-2 rounded-lg border ${conditionTone.border}`}>
+        <div className={`flex items-center justify-center w-8 h-8 rounded-full text-white ${conditionTone.bg}`}>
           <Waves className="w-4 h-4" />
         </div>
         <div className="flex flex-col">
           <span className="text-xs font-semibold text-slate-700 dark:text-slate-200 leading-tight">
             {copy.seaConditionsCompact}
           </span>
-          <span className={`text-xs font-medium ${getScoreColor(totalScore)} leading-tight`}>
+          <span className={`text-xs font-medium ${conditionTone.text} leading-tight`}>
             {compactConditionParts.join(' · ')}
           </span>
         </div>
@@ -345,12 +369,12 @@ export const BeachConditionScore: React.FC<BeachConditionScoreProps> = ({
             {copy.seaConditionsTitle(getSelectedDayPrefix(selectedDate, new Date(), language))}
           </h3>
           <div className="flex items-baseline gap-2">
-            <span className={`text-2xl font-heading font-bold ${getScoreColor(totalScore)}`}>
+            <span className={`text-2xl font-heading font-bold ${conditionTone.text}`}>
               {getScoreLabel(totalScore)}
             </span>
           </div>
         </div>
-        <div className={`flex items-center justify-center w-12 h-12 rounded-full text-white bg-gradient-to-br ${totalScore >= 8 ? 'from-emerald-400 to-emerald-600' : totalScore >= 5 ? 'from-amber-400 to-amber-600' : 'from-rose-400 to-rose-600'}`}>
+        <div className={`flex items-center justify-center w-12 h-12 rounded-full text-white bg-gradient-to-br ${conditionTone.gradient}`}>
           <Waves className="w-6 h-6" />
         </div>
       </div>
