@@ -355,6 +355,18 @@ const validateBeach = (filePath, regionId, beach, regionIds) => {
     addFinding('high', filePath, 'Beach is marked quiet while also having a beach bar.', beachLabel(beach));
   }
 
+  // Consistency locks (true by construction in buildBeachRegionData — these guard against a future
+  // hand-edit or build change silently breaking the relationship, the regression the amenity audit
+  // showed is easy to introduce). sunbeds are only set when the beach is organized; familyFriendly
+  // is only set for shallow + organized beaches.
+  if (beach?.amenities?.sunbeds === true && beach?.amenities?.organized === false) {
+    addFinding('high', filePath, 'Beach has sunbeds but is marked not organized (sunbeds imply an organized beach).', beachLabel(beach));
+  }
+  if (beach?.environment?.familyFriendly === true &&
+      (beach?.characteristics?.shallowWaters !== true || beach?.amenities?.organized !== true)) {
+    addFinding('medium', filePath, 'Beach is family-friendly but not (shallow + organized).', beachLabel(beach));
+  }
+
   if (beach?.characteristics?.shallowWaters === true && beach?.characteristics?.deepWaters === true) {
     addFinding('medium', filePath, 'Beach is marked as both shallow and deep water.', beachLabel(beach));
   }

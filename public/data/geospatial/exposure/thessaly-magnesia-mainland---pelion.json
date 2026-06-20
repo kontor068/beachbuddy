@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "generatedAt": "2026-06-20T09:31:04.944Z",
+  "generatedAt": "2026-06-20T13:27:02.995Z",
   "region": {
     "id": "thessaly-magnesia-mainland---pelion",
     "name": "Magnesia (Pelion)"
@@ -36,48 +36,48 @@
     "maskConfidence": "medium"
   },
   "summary": {
-    "beachCount": 52,
-    "generatedProfiles": 52,
+    "beachCount": 51,
+    "generatedProfiles": 51,
     "missingCoordinates": 0,
     "sectors": {
       "N": {
         "protected": 24,
         "partial": 4,
-        "exposed": 24
+        "exposed": 23
       },
       "NE": {
         "protected": 19,
-        "partial": 8,
+        "partial": 7,
         "exposed": 25
       },
       "E": {
         "protected": 13,
-        "partial": 6,
+        "partial": 5,
         "exposed": 33
       },
       "SE": {
         "protected": 11,
-        "partial": 27,
+        "partial": 26,
         "exposed": 14
       },
       "S": {
         "protected": 30,
-        "partial": 14,
+        "partial": 13,
         "exposed": 8
       },
       "SW": {
         "protected": 31,
-        "partial": 14,
+        "partial": 13,
         "exposed": 7
       },
       "W": {
         "protected": 39,
-        "partial": 5,
+        "partial": 4,
         "exposed": 8
       },
       "NW": {
-        "protected": 33,
-        "partial": 17,
+        "protected": 34,
+        "partial": 15,
         "exposed": 2
       }
     }
@@ -221,77 +221,6 @@
           "blockedRayRatio": 0.6,
           "onshore": 0.94,
           "intensity": 73.7
-        }
-      },
-      "confidence": "medium"
-    },
-    "2670": {
-      "beachId": 2670,
-      "name": {
-        "en": "Agios Ioannis",
-        "gr": "Άγιος Ιωάννης"
-      },
-      "coordinates": {
-        "lat": 39.41674,
-        "lon": 23.16093
-      },
-      "facingDeg": 45.8,
-      "sectors": {
-        "N": {
-          "level": "exposed",
-          "fetchKm": 25,
-          "blockedRayRatio": 0,
-          "onshore": 0.697,
-          "intensity": 84.9
-        },
-        "NE": {
-          "level": "exposed",
-          "fetchKm": 25,
-          "blockedRayRatio": 0,
-          "onshore": 1,
-          "intensity": 100
-        },
-        "E": {
-          "level": "exposed",
-          "fetchKm": 25,
-          "blockedRayRatio": 0,
-          "onshore": 0.717,
-          "intensity": 85.8
-        },
-        "SE": {
-          "level": "partial",
-          "fetchKm": 15,
-          "blockedRayRatio": 0.4,
-          "onshore": 0.014,
-          "intensity": 42.6
-        },
-        "S": {
-          "level": "protected",
-          "fetchKm": 0,
-          "blockedRayRatio": 1,
-          "onshore": -0.697,
-          "intensity": 9.1
-        },
-        "SW": {
-          "level": "protected",
-          "fetchKm": 0,
-          "blockedRayRatio": 1,
-          "onshore": -1,
-          "intensity": 0
-        },
-        "W": {
-          "level": "protected",
-          "fetchKm": 0,
-          "blockedRayRatio": 1,
-          "onshore": -0.717,
-          "intensity": 8.5
-        },
-        "NW": {
-          "level": "partial",
-          "fetchKm": 10,
-          "blockedRayRatio": 0.6,
-          "onshore": -0.014,
-          "intensity": 36.2
         }
       },
       "confidence": "medium"
@@ -3001,50 +2930,66 @@
         "gr": "Παραλία Ρακοποτάμου"
       },
       "coordinates": {
-        "lat": 39.246,
-        "lon": 23.058
+        "lat": 39.64321,
+        "lon": 22.8976
       },
-      "facingDeg": null,
+      "facingDeg": 74.5,
       "sectors": {
         "N": {
           "level": "partial",
-          "fetchKm": 9,
-          "blockedRayRatio": 1
+          "fetchKm": 20,
+          "blockedRayRatio": 0.2,
+          "onshore": 0.267,
+          "intensity": 58.3
         },
         "NE": {
-          "level": "partial",
-          "fetchKm": 8.5,
-          "blockedRayRatio": 1
+          "level": "exposed",
+          "fetchKm": 25,
+          "blockedRayRatio": 0,
+          "onshore": 0.87,
+          "intensity": 93.5
         },
         "E": {
-          "level": "partial",
-          "fetchKm": 11.1,
-          "blockedRayRatio": 1
+          "level": "exposed",
+          "fetchKm": 25,
+          "blockedRayRatio": 0,
+          "onshore": 0.964,
+          "intensity": 98.2
         },
         "SE": {
           "level": "partial",
-          "fetchKm": 13.4,
-          "blockedRayRatio": 1
+          "fetchKm": 16.9,
+          "blockedRayRatio": 0.6,
+          "onshore": 0.492,
+          "intensity": 56.7
         },
         "S": {
-          "level": "partial",
-          "fetchKm": 15.5,
-          "blockedRayRatio": 1
+          "level": "protected",
+          "fetchKm": 2.4,
+          "blockedRayRatio": 1,
+          "onshore": -0.267,
+          "intensity": 22
         },
         "SW": {
-          "level": "partial",
-          "fetchKm": 17.6,
-          "blockedRayRatio": 1
+          "level": "protected",
+          "fetchKm": 0,
+          "blockedRayRatio": 1,
+          "onshore": -0.87,
+          "intensity": 3.9
         },
         "W": {
-          "level": "partial",
-          "fetchKm": 17,
-          "blockedRayRatio": 1
+          "level": "protected",
+          "fetchKm": 0,
+          "blockedRayRatio": 1,
+          "onshore": -0.964,
+          "intensity": 1.1
         },
         "NW": {
-          "level": "partial",
-          "fetchKm": 13.4,
-          "blockedRayRatio": 1
+          "level": "protected",
+          "fetchKm": 5,
+          "blockedRayRatio": 0.8,
+          "onshore": -0.492,
+          "intensity": 16.1
         }
       },
       "confidence": "medium"
