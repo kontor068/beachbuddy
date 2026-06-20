@@ -155,7 +155,8 @@ export const describeSimpleWindSuitability = (
     if (simpleWindSuitability.explanationKey === 'exposed_to_wind') {
       return definite
         ? `Πιο εκτεθειμένη ${toWind} - θα έχει αισθητό αέρα και κύμα.`
-        : `Πιο εκτεθειμένη ${toWind}${useWind ? ' - θέλει προσοχή.' : '.'}`;
+        // At 4 Bft "θέλει προσοχή" is too strong — describe it plainly instead.
+        : `Πιο εκτεθειμένη ${toWind}${useWind ? ' - μπορεί να έχει λίγο αέρα και κύμα.' : '.'}`;
     }
     return definite
       ? `Πλάγια έκθεση ${toWind} - θα έχει αέρα και κύμα.`
@@ -177,7 +178,8 @@ export const describeSimpleWindSuitability = (
   if (simpleWindSuitability.explanationKey === 'exposed_to_wind') {
     return definite
       ? `More exposed to today's ${wind} ${enNoun} - expect noticeable wind and waves.`
-      : `More exposed to today's ${wind} ${enNoun}${useWind ? ' - use caution.' : '.'}`;
+      // At 4 Bft "use caution" is too strong — describe it plainly instead.
+      : `More exposed to today's ${wind} ${enNoun}${useWind ? ' - some light wind and chop possible.' : '.'}`;
   }
   return definite
     ? `Crosswind from today's ${wind} ${enNoun} - it will be windy with some waves.`
