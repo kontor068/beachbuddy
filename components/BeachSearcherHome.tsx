@@ -1613,10 +1613,7 @@ export const BeachSearcherHome: React.FC<BeachSearcherHomeProps> = ({
       isActive: activeFilters.includes(filter.key),
     })),
     ...visibleDesktopSecondaryPreferenceFilters.map(buildPreferenceItem),
-  ]
-    // Hide a chip whose (faceted) count is 0 for the CURRENT selection — adding it would give
-    // no results. Active chips always stay so they can be turned off; an unknown count is kept.
-    .filter(item => item.isActive || item.count === undefined || item.count > 0);
+  ];
   const [desktopVisibleFilterCount, setDesktopVisibleFilterCount] = useState(desktopFilterItems.length);
   const desktopFilterMeasureKey = desktopFilterItems
     .map(item => `${item.itemKey}:${item.label}:${item.count ?? ''}:${item.isActive ? 1 : 0}`)
@@ -2848,17 +2845,21 @@ export const BeachSearcherHome: React.FC<BeachSearcherHomeProps> = ({
   };
   const renderDesktopInlineFilterButton = (item: DesktopFilterItem) => {
     const count = getDesktopFilterDisplayCount(item);
+    // A chip whose faceted count is 0 for the current selection would give no results.
+    // Fade + disable it (instead of hiding) so the row layout doesn't reshuffle.
+    const isUnavailable = typeof count === 'number' && count === 0 && !item.isActive;
 
     return (
       <button
         key={item.itemKey}
         type="button"
         onClick={() => handleDesktopFilterSelect(item)}
+        disabled={isUnavailable}
         className={`inline-flex min-h-9 shrink-0 items-center gap-2 rounded-full border px-3 py-1.5 text-sm font-medium transition focus:outline-none focus-visible:ring-2 focus-visible:ring-cyan-700/30 ${
           item.isActive
             ? 'border-[#007a83] bg-cyan-50 text-[#007a83] shadow-sm shadow-cyan-900/5'
             : 'border-white/70 bg-white/58 text-slate-600 hover:border-cyan-200 hover:bg-white/86 hover:text-slate-950'
-        }`}
+        } ${isUnavailable ? 'cursor-not-allowed opacity-40 hover:border-white/70 hover:bg-white/58 hover:text-slate-600' : ''}`}
         aria-pressed={item.isActive}
       >
         <span className={item.isActive ? 'text-[#007a83]' : 'text-slate-700'}>
