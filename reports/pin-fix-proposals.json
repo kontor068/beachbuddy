@@ -1,0 +1,245 @@
+{
+  "generatedAt": "2026-06-20T09:25:50.916Z",
+  "note": "Verified mislocated pins: stored pin non-coastal, Google place for the name is coastal. Apply moves coords to googleLoc; regionMismatch=true also needs re-filing. Requires region-scoped geospatial exposure regen after applying.",
+  "count": 14,
+  "proposals": [
+    {
+      "id": 2657,
+      "name": "Μηλιά",
+      "status": "PASS",
+      "move": 734,
+      "stored": {
+        "lat": 39.121,
+        "lon": 23.647
+      },
+      "googleLoc": {
+        "lat": 39.1170377,
+        "lon": 23.6538035
+      },
+      "currentRegion": "magnesia-sporades-skopelos",
+      "googleRegion": "thessaly-skopelos",
+      "regionMismatch": true
+    },
+    {
+      "id": 3040,
+      "name": "Λουτράκι Λίμνη Βουλιαγμένης Ηραίου",
+      "status": "WRONG_TYPE",
+      "move": 902,
+      "stored": {
+        "lat": 38.032406,
+        "lon": 22.89356
+      },
+      "googleLoc": {
+        "lat": 38.0333333,
+        "lon": 22.8833333
+      },
+      "currentRegion": "korinthia-korinthia-mainland",
+      "googleRegion": "peloponnese-korinthia-mainland",
+      "regionMismatch": true
+    },
+    {
+      "id": 2583,
+      "name": "Άγιοι Ανάργυροι",
+      "status": "PASS",
+      "move": 1181,
+      "stored": {
+        "lat": 39.1755,
+        "lon": 23.8635
+      },
+      "googleLoc": {
+        "lat": 39.173756999999995,
+        "lon": 23.8770106
+      },
+      "currentRegion": "magnesia-sporades-alonissos",
+      "googleRegion": "thessaly-alonissos",
+      "regionMismatch": true
+    },
+    {
+      "id": 2684,
+      "name": "Καλαμιές (Αγριά)",
+      "status": "WRONG_PLACE",
+      "move": 2413,
+      "stored": {
+        "lat": 39.3425,
+        "lon": 22.989
+      },
+      "googleLoc": {
+        "lat": 39.330324499999996,
+        "lon": 23.012220799999998
+      },
+      "currentRegion": "magnesia-magnesia-mainland---pelion",
+      "googleRegion": "thessaly-magnesia-mainland---pelion",
+      "regionMismatch": true
+    },
+    {
+      "id": 2595,
+      "name": "Λένα",
+      "status": "WRONG_PLACE",
+      "move": 2845,
+      "stored": {
+        "lat": 39.1225,
+        "lon": 23.8535
+      },
+      "googleLoc": {
+        "lat": 39.145906599999996,
+        "lon": 23.8668172
+      },
+      "currentRegion": "magnesia-sporades-alonissos",
+      "googleRegion": "thessaly-alonissos",
+      "regionMismatch": true
+    },
+    {
+      "id": 870,
+      "name": "Μονολίθι",
+      "status": "WRONG_PLACE",
+      "move": 2960,
+      "stored": {
+        "lat": 39.04837,
+        "lon": 20.68064
+      },
+      "googleLoc": {
+        "lat": 39.0374062,
+        "lon": 20.711873999999998
+      },
+      "currentRegion": "preveza-preveza-mainland",
+      "googleRegion": "epirus-preveza-mainland",
+      "regionMismatch": true
+    },
+    {
+      "id": 885,
+      "name": "Παραλία Λυγιάς",
+      "status": "WRONG_PLACE",
+      "move": 3487,
+      "stored": {
+        "lat": 39.14704,
+        "lon": 20.53138
+      },
+      "googleLoc": {
+        "lat": 39.1476873,
+        "lon": 20.5718037
+      },
+      "currentRegion": "preveza-preveza-mainland",
+      "googleRegion": "epirus-preveza-mainland",
+      "regionMismatch": true
+    },
+    {
+      "id": 2587,
+      "name": "Βρυσίτσα",
+      "status": "WRONG_PLACE",
+      "move": 3512,
+      "stored": {
+        "lat": 39.1253,
+        "lon": 23.8588
+      },
+      "googleLoc": {
+        "lat": 39.15562140000001,
+        "lon": 23.847399
+      },
+      "currentRegion": "magnesia-sporades-alonissos",
+      "googleRegion": "thessaly-alonissos",
+      "regionMismatch": true
+    },
+    {
+      "id": 882,
+      "name": "Παραλία Καστροσυκιάς",
+      "status": "WRONG_PLACE",
+      "move": 3556,
+      "stored": {
+        "lat": 39.09498,
+        "lon": 20.60755
+      },
+      "googleLoc": {
+        "lat": 39.0949174,
+        "lon": 20.648753799999998
+      },
+      "currentRegion": "preveza-preveza-mainland",
+      "googleRegion": "epirus-preveza-mainland",
+      "regionMismatch": true
+    },
+    {
+      "id": 2580,
+      "name": "Ελιά",
+      "status": "WRONG_PLACE",
+      "move": 3595,
+      "stored": {
+        "lat": 39.1432,
+        "lon": 23.8917
+      },
+      "googleLoc": {
+        "lat": 39.1734475,
+        "lon": 23.906413999999998
+      },
+      "currentRegion": "magnesia-sporades-alonissos",
+      "googleRegion": "thessaly-alonissos",
+      "regionMismatch": true
+    },
+    {
+      "id": 2650,
+      "name": "Έλιος",
+      "status": "WRONG_PLACE",
+      "move": 7163,
+      "stored": {
+        "lat": 39.076,
+        "lon": 23.658
+      },
+      "googleLoc": {
+        "lat": 39.139441999999995,
+        "lon": 23.6435985
+      },
+      "currentRegion": "magnesia-sporades-skopelos",
+      "googleRegion": "thessaly-skopelos",
+      "regionMismatch": true
+    },
+    {
+      "id": 2581,
+      "name": "Γέρακας",
+      "status": "WRONG_PLACE",
+      "move": 18444,
+      "stored": {
+        "lat": 39.1162,
+        "lon": 23.8598
+      },
+      "googleLoc": {
+        "lat": 39.2691036,
+        "lon": 23.9427426
+      },
+      "currentRegion": "magnesia-sporades-alonissos",
+      "googleRegion": "thessaly-alonissos",
+      "regionMismatch": true
+    },
+    {
+      "id": 2670,
+      "name": "Άγιος Ιωάννης",
+      "status": "WRONG_PLACE",
+      "move": 19444,
+      "stored": {
+        "lat": 39.255,
+        "lon": 23.075
+      },
+      "googleLoc": {
+        "lat": 39.4167434,
+        "lon": 23.160930399999998
+      },
+      "currentRegion": "magnesia-magnesia-mainland---pelion",
+      "googleRegion": "thessaly-magnesia-mainland---pelion",
+      "regionMismatch": true
+    },
+    {
+      "id": 2714,
+      "name": "Παραλία Ρακοποτάμου",
+      "status": "WRONG_PLACE",
+      "move": 46265,
+      "stored": {
+        "lat": 39.246,
+        "lon": 23.058
+      },
+      "googleLoc": {
+        "lat": 39.6432052,
+        "lon": 22.897595199999998
+      },
+      "currentRegion": "magnesia-magnesia-mainland---pelion",
+      "googleRegion": "thessaly-magnesia-mainland---pelion",
+      "regionMismatch": true
+    }
+  ]
+}
