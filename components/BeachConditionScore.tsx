@@ -327,7 +327,10 @@ export const BeachConditionScore: React.FC<BeachConditionScoreProps> = ({
     // let it fall through to the honest sea state instead.
     if (windBeaufort === 5 && seaExposureLevel === 'protected') return copy.betterWindOption;
     if (score >= 8) return compact ? copy.veryGood : copy.great(day);
-    if (score >= 5) return windBeaufort < 4 ? copy.goodConditions : (windBeaufort === 5 ? copy.choppy : copy.useCaution);
+    // 4 Bft is a moderate breeze — "Με προσοχή" overstates it, so a decent score reads
+    // plainly as good conditions (matching the today badge, which is positive at ≤4 Bft).
+    // Reserve "Με προσοχή" for genuinely strong wind (6+); 5 Bft stays the honest "Κυματισμός".
+    if (score >= 5) return windBeaufort <= 4 ? copy.goodConditions : (windBeaufort === 5 ? copy.choppy : copy.useCaution);
     return copy.notIdeal(day);
   };
 
