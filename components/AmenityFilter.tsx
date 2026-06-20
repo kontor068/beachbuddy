@@ -32,6 +32,10 @@ interface CombinedFilterProps {
     options?: { distanceWithinSuitable?: boolean }
   ) => void;
   onClose: () => void;
+  /** Full reset to the app's default state (clears advanced filters AND quick preferences
+   *  AND search). The sheet only owns selectedFilters, so a stuck preference cannot be cleared
+   *  from here without this — that is what made "Επαναφορά Φίλτρων" appear to do nothing. */
+  onResetAll?: () => void;
   t: Translation;
   isGettingLocation: boolean;
   locationError: string | null;
@@ -154,6 +158,7 @@ export const CombinedFilter: React.FC<CombinedFilterProps> = ({
     initialSortBy, 
     initialDistanceWithinSuitable = false,
     onApplyFilters,
+    onResetAll,
     t,
     isGettingLocation,
     locationError,
@@ -242,6 +247,10 @@ export const CombinedFilter: React.FC<CombinedFilterProps> = ({
         setTempFilters([]);
         setTempSortBy(showProtectedSort ? 'protected' : 'all');
         setTempDistanceWithinSuitable(false);
+        // Also clear the app-level state the sheet doesn't own (quick preferences + search),
+        // so reset actually clears everything — including a stuck preference that shows as an
+        // active count with no selected chip here.
+        onResetAll?.();
     };
     const handleApply = () => {
         const appliedSortBy = normalizeInitialSort(tempSortBy);

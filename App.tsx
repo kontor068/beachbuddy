@@ -3181,18 +3181,19 @@ export const App: React.FC = () => {
       return {} as Partial<Record<keyof UserPreferences, number>>;
     }
 
-    // Honest per-attribute availability: each chip shows how many beaches in this
-    // whole island match that single filter, independent of any other active
-    // filter/preference/search/map-viewport. So "Beach bar" reads the island's
-    // real total (e.g. 4 on Milos) instead of a confusing intersection that drops
-    // to 1 when an unrelated filter is silently active.
+    // Faceted, dynamic counts: each chip shows how many island beaches match the CURRENT
+    // selection (active preferences + advanced filters) WITH this attribute added. Computed
+    // over the WHOLE island (not the wind-filtered/today set), so the numbers narrow as you
+    // pick filters — without the old misleading drop to "1" from an unrelated subset. With no
+    // filters active this reduces to the plain per-attribute island total.
+    const activeAdvancedFilters = selectedFilters.filter(filter => filter !== 'showAll' && filter !== 'restaurant');
     return QUICK_PREFERENCE_FILTERS.reduce((counts, key) => {
-      counts[key] = selectedIsland.beaches.filter(beach =>
-        beachMatchesUserPreferences(beach, { ...defaultPreferences, [key]: true })
-      ).length;
+      const candidatePreferences = { ...preferences, [key]: true };
+      const preferenceMatched = filterBeachesByUserPreferences(selectedIsland.beaches, candidatePreferences);
+      counts[key] = getFilteredBeaches(preferenceMatched, activeAdvancedFilters, '', 'all', WindDirection.N).length;
       return counts;
     }, {} as Partial<Record<keyof UserPreferences, number>>);
-  }, [defaultPreferences, selectedIsland]);
+  }, [getFilteredBeaches, preferences, selectedFilters, selectedIsland]);
   const desktopAdvancedFilterResultCounts = useMemo(() => {
     if (!selectedIsland || selectedIsland.beaches.length === 0) {
       return {} as Partial<Record<FilterKey, number>>;
@@ -3208,21 +3209,20 @@ export const App: React.FC = () => {
       'adventure',
     ];
 
-    // Honest per-attribute availability (see preferenceFilterResultCounts): count
-    // beaches in the whole island that match this single advanced filter, ignoring
-    // other active filters/search/viewport. filterBeaches with a one-key filter is
-    // exactly what selecting that chip applies, so the badge matches its own filter.
+    // Faceted, dynamic counts (see preferenceFilterResultCounts): each chip = island beaches
+    // matching the active preferences + active advanced filters + this filter. Narrows as the
+    // selection grows; computed over the whole island, and reduces to the per-attribute total
+    // when nothing else is selected.
+    const preferenceMatched = filterBeachesByUserPreferences(selectedIsland.beaches, preferences);
+    const activeAdvancedFilters = selectedFilters.filter(filter => filter !== 'showAll' && filter !== 'restaurant');
     return desktopAdvancedFilterKeys.reduce((counts, key) => {
-      counts[key] = getFilteredBeaches(
-        selectedIsland.beaches,
-        [key],
-        '',
-        'all',
-        WindDirection.N
-      ).length;
+      // Adding an already-active key again is a no-op for filtering (idempotent), so we don't
+      // need to dedupe — keeps the type simple (FilterKey[]).
+      const combinedFilters: FilterKey[] = [...activeAdvancedFilters, key];
+      counts[key] = getFilteredBeaches(preferenceMatched, combinedFilters, '', 'all', WindDirection.N).length;
       return counts;
     }, {} as Partial<Record<FilterKey, number>>);
-  }, [getFilteredBeaches, selectedIsland]);
+  }, [getFilteredBeaches, preferences, selectedFilters, selectedIsland]);
   const mobileFilterKeys = useMemo(() => (
     Object.keys(t.filterOptions)
       .filter(key => key !== 'showAll' && key !== 'restaurant' && key !== 'unknown') as FilterKey[]
@@ -5880,6 +5880,7 @@ export const App: React.FC = () => {
                 }
               }}
               onClose={() => setIsFilterModalOpen(false)}
+              onResetAll={handleClearSearchAndFilters}
               t={t}
               language={language}
               isGettingLocation={isFindingNearest}
