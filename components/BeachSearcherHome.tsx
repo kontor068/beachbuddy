@@ -3149,25 +3149,14 @@ export const BeachSearcherHome: React.FC<BeachSearcherHomeProps> = ({
                 </div>
               )}
             </div>
-            <div className={`grid gap-2 sm:flex sm:items-center lg:flex-nowrap lg:justify-end ${(onRequestUserLocation ?? onUseCurrentLocation ?? onShowNearbyBeaches) ? 'grid-cols-2' : 'grid-cols-1'}`}>
-              {(onRequestUserLocation ?? onUseCurrentLocation ?? onShowNearbyBeaches) && (
+            <div className={`grid gap-2 sm:flex sm:items-center lg:flex-nowrap lg:justify-end ${(onShowNearbyBeaches ?? onUseCurrentLocation) ? 'grid-cols-2' : 'grid-cols-1'}`}>
+              {(onShowNearbyBeaches ?? onUseCurrentLocation) && (
                 <button
                   type="button"
-                  onClick={() => {
-                    // Mirror the desktop "Πιο κοντά" sort: toggle distance ordering of the
-                    // CURRENT region (fetch location when enabling). Does not change the
-                    // region or the Όλες/Καταλληλότερες view — exactly like the desktop dropdown.
-                    const shouldEnableDistance = !isDistanceSortActive;
-                    if (shouldEnableDistance) {
-                      (onRequestUserLocation ?? onUseCurrentLocation)?.();
-                    }
-                    onDistanceSortActiveChange?.(shouldEnableDistance);
-                    setDirectoryViewCriteria(current => ({ ...current, distance: shouldEnableDistance }));
-                  }}
+                  onClick={onShowNearbyBeaches ?? onUseCurrentLocation}
                   disabled={isFindingCurrentLocation}
-                  aria-pressed={isDistanceSortActive}
                   className={`inline-flex min-h-11 w-full items-center justify-center gap-2 rounded-full border px-3 text-sm font-semibold transition focus:outline-none focus-visible:ring-2 focus-visible:ring-cyan-700 sm:px-4 lg:hidden ${
-                    isDistanceSortActive
+                    hasUserLocation
                       ? 'border-cyan-200 bg-cyan-50 text-[#007a83]'
                       : 'border-sky-200 bg-white/80 text-slate-900 hover:border-cyan-300 hover:bg-cyan-50'
                   } ${isFindingCurrentLocation ? 'cursor-wait opacity-70' : ''}`}
