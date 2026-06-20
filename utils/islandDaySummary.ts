@@ -164,14 +164,15 @@ export interface IslandDaySummaryInput {
    */
   hourlyWind?: HourlyWindPoint[];
   /**
-   * Current local (Greek) wall-clock hour, 0–23. Provide ONLY when the selected
-   * day is today; leave undefined for any other day. When set, the summary is
-   * anchored on the present hour so a transition that has already happened (e.g.
-   * "until 09:00 calm" read at 19:00) is dropped, and the line instead describes
-   * conditions from now onward. This is what keeps the strip dynamic rather than
-   * replaying a stale morning forecast.
+   * The local (Greek) wall-clock hour, 0–23, the user is currently viewing on the
+   * map's hour slider. The summary is anchored here: an intra-day change is only
+   * flagged when it happens at/after this hour (so a transition already behind the
+   * viewed moment — e.g. "until 09:00 calm" while looking at 16:00 — is dropped),
+   * and the static snapshot is built from `beaufort`/`windDirection`, which the
+   * caller swaps to this same hour. This is what makes the line track the slider
+   * instead of freezing on one moment. Leave undefined to scan the whole beach day.
    */
-  nowHour?: number;
+  anchorHour?: number;
 }
 
 // The beach-relevant window of the day. Outside it we don't summarise (sea is
@@ -332,40 +333,21 @@ export interface IslandDaySummary {
   allBeachesSuitable: boolean;
 }
 
-/** One-snapshot summary for a single, steady regime (no intra-day change). */
-const staticRegimeSummary = (
-  language: LanguageCode,
-  regime: DayRegime,
-  suitableCount: number,
-  totalCount: number,
-): IslandDaySummary => {
-  if (regime.kind === 'calm') {
-    const allSuitable = totalCount > 0 && suitableCount >= totalCount;
-    const kind: CalmKind = allSuitable ? 'all' : 'most';
-    return { text: calmCopy(language, kind), short: calmShort(language, kind), allBeachesSuitable: allSuitable };
-  }
-  const favoured = FAVOURED_SHORE[language][regime.favoured];
-  const windName = WIND_NAME[language][regime.windFrom];
-  return {
-    text: windyCopy(language, windName, favoured, regime.beaufort, regime.beaufort >= 6),
-    short: windyShort(language, favoured),
-    allBeachesSuitable: false,
-  };
-};
-
 export const buildIslandDaySummary = (input: IslandDaySummaryInput): IslandDaySummary | null => {
-  const { language, beaufort, windDirection, suitableCount, totalCount, hourlyWind, nowHour } = input;
+  const { language, beaufort, windDirection, suitableCount, totalCount, hourlyWind, anchorHour } = input;
   if (typeof beaufort !== 'number' || Number.isNaN(beaufort)) return null;
 
-  // When we have hour-by-hour wind, prefer it: it lets us (a) flag an intra-day
-  // regime change with a time, and (b) — when the day is today — anchor on the
-  // current hour so the line tracks the time of day instead of replaying a
-  // morning that has already passed.
+  // With hour-by-hour wind we look ahead from the hour the user is viewing (the
+  // slider hour) for an intra-day regime change worth flagging with a time. The
+  // static snapshot below is built from beaufort/windDirection, which the caller
+  // already swaps to the selected hour — so the line tracks the slider instead of
+  // freezing on one moment.
   if (hourlyWind && hourlyWind.length > 0) {
-    const isToday = typeof nowHour === 'number';
-    // Today: start the window at the current hour so a past transition is never
-    // surfaced. Any other day: the whole beach day is still ahead.
-    const fromHour = isToday ? Math.max(BEACH_DAY_START_HOUR, nowHour) : BEACH_DAY_START_HOUR;
+    // Anchor the look-ahead on the viewed hour so a change already behind it is
+    // never surfaced; with no anchor, scan the whole beach day.
+    const fromHour = typeof anchorHour === 'number'
+      ? Math.max(BEACH_DAY_START_HOUR, anchorHour)
+      : BEACH_DAY_START_HOUR;
     const window = hourlyWind
       .filter(point => point.hour >= fromHour && point.hour <= BEACH_DAY_END_HOUR)
       .sort((a, b) => a.hour - b.hour);
@@ -378,12 +360,7 @@ export const buildIslandDaySummary = (input: IslandDaySummaryInput): IslandDaySu
         allBeachesSuitable: false,
       };
     }
-    // No upcoming change. For today, the window's first hour IS "now", so describe
-    // that current regime — this is what fixes "calm until 09:00" still showing at
-    // 19:00: with the morning trimmed away, only the live windy regime remains.
-    if (isToday && window.length > 0) {
-      return staticRegimeSummary(language, regimeOf(window[0]), suitableCount, totalCount);
-    }
+    // No upcoming change → fall through to the static snapshot for the viewed hour.
   }
 
   const bft = Math.round(beaufort);

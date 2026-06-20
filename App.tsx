@@ -5035,6 +5035,7 @@ export const App: React.FC = () => {
               forecastDays={forecast || undefined}
               selectedDayIndex={selectedDayIndex}
               selectedForecast={selectedForecast}
+              mapSelectedHour={selectedHourDt != null ? new Date(selectedHourDt * 1000).getHours() : undefined}
               selectedDate={selectedDayDate}
               lastUpdated={lastUpdated}
               favorites={favorites}

@@ -139,6 +139,8 @@ interface BeachSearcherHomeProps {
   forecastDays?: DailyForecast[];
   selectedDayIndex?: number;
   selectedForecast?: DailyForecast;
+  /** Local (Greek) wall-clock hour, 0–23, the map's hour slider is currently on, so the island strip headline tracks the scrubbed hour. */
+  mapSelectedHour?: number;
   selectedDate?: Date;
   lastUpdated?: Date | null;
   favorites: number[];
@@ -1520,6 +1522,7 @@ export const BeachSearcherHome: React.FC<BeachSearcherHomeProps> = ({
   forecastDays,
   selectedDayIndex,
   selectedForecast,
+  mapSelectedHour,
   selectedDate,
   lastUpdated,
   favorites,
@@ -2380,13 +2383,12 @@ export const BeachSearcherHome: React.FC<BeachSearcherHomeProps> = ({
     }));
   }, [selectedForecast]);
   // Plain-language "what's happening today" line: all beaches calm vs. which
-  // leeward shore the wind favours. Island-wide narrative, derived from the
-  // selected day's wind (see utils/islandDaySummary.ts). When the selected day is
-  // today we pass the current Greek wall-clock hour so the line stays dynamic —
-  // a morning transition that has already passed ("calm until 09:00") is dropped
-  // once that hour is behind us, leaving the live conditions. getHours() matches
-  // contextStripHourlyWind, which also reads naive location-local timestamps.
-  const contextStripNowHour = getSelectedDayOffset(selectedDate) === 0 ? new Date().getHours() : undefined;
+  // leeward shore the wind favours. Island-wide narrative derived from the wind at
+  // the hour the user is viewing on the map slider (windBeaufort/windDirection are
+  // already swapped to that hour upstream). We anchor the look-ahead on that same
+  // slider hour so the line tracks the bar as it's dragged and never replays a
+  // change that's already behind the viewed moment. mapSelectedHour shares the
+  // getHours() basis with contextStripHourlyWind (naive location-local timestamps).
   const contextStripDaySummary = selectedIsland
     ? buildIslandDaySummary({
       language,
@@ -2395,7 +2397,7 @@ export const BeachSearcherHome: React.FC<BeachSearcherHomeProps> = ({
       suitableCount: suitableBeachDisplayCount,
       totalCount: selectedIsland.beaches.length,
       hourlyWind: contextStripHourlyWind,
-      nowHour: contextStripNowHour,
+      anchorHour: mapSelectedHour,
     })
     : null;
   // When a search/filter narrows the list to a single beach, the generic
