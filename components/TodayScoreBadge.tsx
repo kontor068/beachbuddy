@@ -17,6 +17,13 @@ interface TodayScoreBadgeProps {
   swimmingComfort?: SwimmingComfort;
   noIdealSwimmingWindow?: boolean;
   exposureLevel?: ExposureLevel;
+  /**
+   * Render the verdict even in the light-moderate (3–4 Bft) band that is normally
+   * suppressed. Used when a beach is shown on its own (e.g. a name-search result),
+   * where the user explicitly wants this beach's today status at a glance rather
+   * than a clutter-free list of obviously-fine options.
+   */
+  forceShow?: boolean;
 }
 
 const clampScore = (score: number) => Math.max(0, Math.min(100, Math.round(score)));
@@ -291,12 +298,13 @@ export const TodayScoreBadge: React.FC<TodayScoreBadgeProps> = ({
   swimmingComfort,
   noIdealSwimmingWindow,
   exposureLevel,
+  forceShow = false,
 }) => {
   const normalizedScore = clampScore(score);
   const conditionCapped = hasHardConditionCap(windBeaufort, waveHeightM, swimmingComfort, noIdealSwimmingWindow);
   const tone = getTodayScoreTone(normalizedScore, conditionCapped, windBeaufort);
 
-  if (typeof windBeaufort === 'number' && windBeaufort >= 3 && windBeaufort <= 4) {
+  if (!forceShow && typeof windBeaufort === 'number' && windBeaufort >= 3 && windBeaufort <= 4) {
     return null;
   }
 

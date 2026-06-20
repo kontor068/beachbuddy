@@ -289,19 +289,21 @@ body {
 .beach-map-hour-slider::-webkit-slider-thumb {
   -webkit-appearance: none;
   appearance: none;
-  height: 16px;
-  width: 16px;
+  height: 22px;
+  width: 22px;
   border-radius: 999px;
   background: #007a83;
   border: 2px solid #ffffff;
   box-shadow: 0 1px 4px rgba(2, 132, 153, 0.35);
   cursor: pointer;
   transition: transform 0.15s ease, box-shadow 0.15s ease;
+  /* Centre the thumb on the 16px runnable track now that the input is a 44px touch zone. */
+  margin-top: -3px;
 }
 
 .beach-map-hour-slider::-moz-range-thumb {
-  height: 16px;
-  width: 16px;
+  height: 22px;
+  width: 22px;
   border-radius: 999px;
   background: #007a83;
   border: 2px solid #ffffff;
@@ -337,6 +339,18 @@ body {
   }
 }
 
+/* Touch devices: grow the Leaflet zoom (+/-) buttons from the ~30px default to a
+   comfortable 44px tap target. Scoped to coarse pointers so desktop stays compact. */
+@media (pointer: coarse) {
+  .leaflet-bar a,
+  .leaflet-bar a:hover {
+    width: 44px;
+    height: 44px;
+    line-height: 44px;
+    font-size: 22px;
+  }
+}
+
 .beach-map-marker-dot {
   --beach-map-marker-scale: 1;
   transform-origin: center;
@@ -351,6 +365,26 @@ body {
 .beach-map-marker-evidence-estimated {
   outline: 2px dashed rgba(15, 23, 42, 0.48);
   outline-offset: 3px;
+}
+
+/* "More exposed" wind markers carry a hollow centre (donut) as a non-colour cue, so the
+   less-/more-exposed split reads without relying on hue alone. The same core element is
+   reused by the legend swatches, which is why it sizes off the parent (%). */
+.beach-map-marker-exposed {
+  position: relative;
+}
+
+.beach-map-marker-exposed-core {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 34%;
+  height: 34%;
+  transform: translate(-50%, -50%);
+  border-radius: 999px;
+  background: #ffffff;
+  box-shadow: 0 0 0 1px rgba(15, 23, 42, 0.22);
+  pointer-events: none;
 }
 
 .beach-map-top-pick-marker-dot {

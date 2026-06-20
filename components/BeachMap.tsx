@@ -836,10 +836,19 @@ const createExposureIcon = (
   }
 
   const { colorClass, ringClass } = getExposureMarkerTone(exposureLevel, showWindExposureColors, windBeaufort);
+  // Non-colour cue: "more exposed" markers get a hollow centre (donut), so the
+  // less-/more-exposed split stays legible without relying on hue alone. Only applied at
+  // 3-6 Bft, i.e. exactly where the colour actually splits the two groups (at 0-2 all are
+  // calm-blue and at 7+ all are red, so a shape split there would over-signal). Mirrored
+  // in the legend swatches via the same `beach-map-marker-exposed-core` element.
+  const beaufort = typeof windBeaufort === 'number' ? windBeaufort : 0;
+  const isMoreExposed = exposureLevel === 'exposed' && beaufort >= 3 && beaufort < 7;
+  const exposedClass = isMoreExposed ? 'beach-map-marker-exposed' : '';
+  const exposedCore = isMoreExposed ? '<span class="beach-map-marker-exposed-core"></span>' : '';
 
   return L.divIcon({
     className: 'custom-div-icon',
-    html: `<div class="beach-map-marker-dot ${topPickClass} ${highlightedClass} ${evidenceClass} ${colorClass} w-4 h-4 rounded-full border-2 border-white shadow-lg ring-4 ${ringClass}"></div>`,
+    html: `<div class="beach-map-marker-dot ${topPickClass} ${highlightedClass} ${evidenceClass} ${exposedClass} ${colorClass} w-4 h-4 rounded-full border-2 border-white shadow-lg ring-4 ${ringClass}">${exposedCore}</div>`,
     iconSize: [16, 16],
     iconAnchor: [8, 8],
     popupAnchor: [0, -10]
@@ -2069,6 +2078,12 @@ const BeachMap: React.FC<BeachMapProps> = ({
     ? currentWindColorGuideRows
     : windColorGuideCopy.rows.slice(0, 1);
   const showGroupedExposureLegend = showWindExposureStatusLabels && currentWindColorGuideId !== '7-10';
+  // The hollow-centre (donut) shape cue on the "more exposed" swatch only reads as a
+  // distinction where the two groups actually differ in colour (3-6 Bft). At 0-2 both are
+  // calm-blue, so the shape would imply a split that isn't there. Mirrors createExposureIcon.
+  const showExposedShapeCue = currentWindColorGuideId === '3'
+    || currentWindColorGuideId === '4'
+    || currentWindColorGuideId === '5-6';
 
   const renderWindColorGuideRows = (variant: 'full' | 'preview') => {
     const isPreview = variant === 'preview';
@@ -2094,8 +2109,12 @@ const BeachMap: React.FC<BeachMapProps> = ({
                       aria-label={segment.colorLabel}
                       title={segment.colorLabel}
                       role="img"
-                      className={`h-2.5 w-2.5 shrink-0 rounded-full ring-1 ${windLegendDotClasses[segment.dot]}`}
-                    />
+                      className={`relative h-2.5 w-2.5 shrink-0 rounded-full ring-1 ${windLegendDotClasses[segment.dot]}`}
+                    >
+                      {row.segments.length > 1 && index === row.segments.length - 1 && (
+                        <span className="beach-map-marker-exposed-core" aria-hidden="true" />
+                      )}
+                    </span>
                   </span>
                 </React.Fragment>
               ))}
@@ -2159,7 +2178,9 @@ const BeachMap: React.FC<BeachMapProps> = ({
                     <span className="text-slate-600 dark:text-slate-300">{groupedExposureLabel('protected')}</span>
                   </div>
                   <div className="flex items-center gap-2">
-                    <div className={`h-3 w-3 rounded-full ring-2 ${exposedTone.colorClass} ${exposedTone.ringClass}`}></div>
+                    <div className={`relative h-3 w-3 rounded-full ring-2 ${exposedTone.colorClass} ${exposedTone.ringClass}`}>
+                      {showExposedShapeCue && <span className="beach-map-marker-exposed-core" aria-hidden="true" />}
+                    </div>
                     <span className="text-slate-600 dark:text-slate-300">{groupedExposureLabel('exposed')}</span>
                   </div>
                 </div>
@@ -2203,7 +2224,9 @@ const BeachMap: React.FC<BeachMapProps> = ({
                 <span className="whitespace-nowrap">{groupedExposureLabel('protected')}</span>
               </div>
               <div className={`flex min-w-0 items-center justify-center gap-1 rounded-full px-1.5 py-1 text-[9px] font-bold leading-none ${exposedTone.bgClass} ${exposedTone.textClass}`}>
-                <span className={`h-2.5 w-2.5 shrink-0 rounded-full ring-1 ${exposedTone.colorClass} ${exposedTone.ringClass}`} />
+                <span className={`relative h-2.5 w-2.5 shrink-0 rounded-full ring-1 ${exposedTone.colorClass} ${exposedTone.ringClass}`}>
+                  {showExposedShapeCue && <span className="beach-map-marker-exposed-core" aria-hidden="true" />}
+                </span>
                 <span className="whitespace-nowrap">{groupedExposureLabel('exposed')}</span>
               </div>
             </div>
@@ -2526,7 +2549,7 @@ const BeachMap: React.FC<BeachMapProps> = ({
                 setIsScrubbingHour(false);
               }}
               aria-label={hourSliderLabel}
-              className="beach-map-hour-slider relative z-10 h-4 min-w-0 flex-1 cursor-pointer appearance-none bg-transparent"
+              className="beach-map-hour-slider relative z-10 h-11 min-w-0 flex-1 cursor-pointer appearance-none bg-transparent"
             />
           </div>
           <span className="shrink-0 text-[11px] font-extrabold tabular-nums text-[#007a83]">

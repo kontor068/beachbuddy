@@ -6,6 +6,7 @@ import {
   CalendarDays,
   Check,
   ChevronDown,
+  ChevronRight,
   CloudSun,
   Clock3,
   Droplets,
@@ -113,6 +114,9 @@ interface BeachSearcherHomeProps {
   advancedFilterResultCounts?: Partial<Record<FilterKey, number>>;
   sortResultCounts?: Partial<Record<SortOption, number>>;
   filteredResultCount?: number;
+  /** Count of currently-applied filters (advanced + quick preferences), for the mobile
+   *  Filter button badge. Distinct from filteredResultCount (number of matching beaches). */
+  activeFilterCount?: number;
   searchSuggestions?: DirectorySearchSuggestion[];
   isSearchSuggesting?: boolean;
   protectedSortLabel?: string;
@@ -1495,6 +1499,7 @@ export const BeachSearcherHome: React.FC<BeachSearcherHomeProps> = ({
   filterResultCounts,
   advancedFilterResultCounts,
   filteredResultCount,
+  activeFilterCount,
   searchSuggestions = [],
   isSearchSuggesting = false,
   protectedSortLabel,
@@ -1691,6 +1696,10 @@ export const BeachSearcherHome: React.FC<BeachSearcherHomeProps> = ({
   }, [selectedIsland?.id]);
 
   const trimmedSearchQuery = searchQuery.trim();
+  // A by-name search means cards are matches, not the day's ranking: suppress the
+  // "top beach" medal and instead surface each result's own today-verdict so a
+  // looked-up beach shows its status at a glance (handles the 3–4 Bft band too).
+  const isNameSearchActive = trimmedSearchQuery.length > 0;
   const canShowSearchSuggestions = trimmedSearchQuery.length >= 2 && Boolean(onSearchSuggestionSelect);
   const shouldRenderSearchSuggestions = isSearchSuggestionsOpen && canShowSearchSuggestions;
   const searchSuggestionListId = 'directory-search-suggestions';
@@ -2596,6 +2605,69 @@ export const BeachSearcherHome: React.FC<BeachSearcherHomeProps> = ({
     (!isMobileViewport && !isDirectorySuitableView && directoryDisplayBeachCards.length > 0) ||
     (isMobileViewport && selectedIsland && !isDirectorySuitableView && directoryDisplayBeachCards.length > 0)
   );
+  // Mobile-only "jump to the ranked beaches below the map" cue. The map stays high and
+  // fills the viewport, so the results underneath aren't obviously there — this pill makes
+  // them discoverable and smooth-scrolls to the first results section that actually renders.
+  // The "Δες τις παραλίες" pill behaves identically in both views. In the "Όλες" view it
+  // points at the all-beaches directory ("Όλες οι παραλίες (N)") with that same count; in the
+  // suitable view it points at the ranked list. Same pill, same bouncing chevron, both modes.
+  const isMobileAllBeachesView = Boolean(selectedIsland) && !isDirectorySuitableView && directoryDisplayBeachCards.length > 0;
+  const mobileResultsAnchorId = isMobileAllBeachesView
+    ? 'all-beaches-section'
+    : hasTopRecommendationView
+      ? 'top-recommendations-section'
+      : isDirectorySuitableView
+        ? 'suitable-beaches-section'
+        : undefined;
+  const mobileResultsCount = isMobileAllBeachesView
+    ? directoryDisplayBeachCards.length
+    : hasTopRecommendationView
+      ? topRecommendationBeachCards.length
+      : suitableBeachDisplayCount;
+  // Short call-to-action for the scroll pill. Deliberately NOT the section title
+  // ("Καταλληλότερες παραλίες…") so the pill doesn't duplicate the header it scrolls to.
+  const seeBeachesCtaLabel = getLocalizedCopy(language, {
+    en: 'See the beaches',
+    gr: 'Δες τις παραλίες',
+    fr: 'Voir les plages',
+    de: 'Strände ansehen',
+    it: 'Vedi le spiagge',
+  });
+  // Mobile/tablet quick-selector row: [Near me] [All] [Most suitable]. "Near me" is an action
+  // (it may exist without a region); All/Most-suitable only when a region is selected.
+  const hasNearMeAction = Boolean(onShowNearbyBeaches ?? onUseCurrentLocation);
+  const mobileTopSelectorCount = (hasNearMeAction ? 1 : 0) + (hasSuitableSortOption ? 2 : 0);
+  const mobileTopSelectorGridCols = mobileTopSelectorCount >= 3
+    ? 'grid-cols-3'
+    : mobileTopSelectorCount === 2
+      ? 'grid-cols-2'
+      : 'grid-cols-1';
+  const scrollToMobileResults = () => {
+    if (!mobileResultsAnchorId) return;
+    const target = document.getElementById(mobileResultsAnchorId);
+    if (!target) return;
+    const prefersReducedMotion = typeof window !== 'undefined'
+      && window.matchMedia?.('(prefers-reduced-motion: reduce)').matches;
+    target.scrollIntoView({ behavior: prefersReducedMotion ? 'auto' : 'smooth', block: 'start' });
+  };
+  // Mobile swipe affordance for the horizontal result carousels: the peeking next card
+  // already hints there's more, but a small explicit cue makes the sideways scroll obvious.
+  // Only shown on mobile and only when more than one card exists (otherwise nothing scrolls).
+  const renderMobileSwipeHint = (count: number) => {
+    if (!isMobileViewport || count <= 1) return null;
+    return (
+      <div className="mt-1 flex items-center justify-center gap-1 text-[11px] font-bold text-slate-500" aria-hidden="true">
+        <span>{getLocalizedCopy(language, {
+          en: 'Swipe for more',
+          gr: 'Σύρετε για περισσότερες',
+          fr: 'Glissez pour plus',
+          de: 'Wischen für mehr',
+          it: 'Scorri per altre',
+        })}</span>
+        <ChevronRight className="h-3.5 w-3.5 motion-safe:animate-pulse" />
+      </div>
+    );
+  };
   const directorySortOptions: Array<{
     key: SortOption | 'suitable';
     label: string;
@@ -2696,6 +2768,7 @@ export const BeachSearcherHome: React.FC<BeachSearcherHomeProps> = ({
       topPickTimeLabel?: string;
       density?: 'regular' | 'compact';
       showTodayScoreBadge?: boolean;
+      forceTodayScoreBadge?: boolean;
       alignExposureToMap?: boolean;
       windExposureMode?: 'none' | 'simple';
       topPickPodium?: boolean;
@@ -2782,6 +2855,7 @@ export const BeachSearcherHome: React.FC<BeachSearcherHomeProps> = ({
         windExposureMode={options.windExposureMode}
         hideExposureBadge={options.recommendationRank !== undefined}
         showTodayScoreBadge={options.showTodayScoreBadge}
+        forceTodayScoreBadge={options.forceTodayScoreBadge}
       />
     );
   };
@@ -3025,7 +3099,7 @@ export const BeachSearcherHome: React.FC<BeachSearcherHomeProps> = ({
                 }}
                 onKeyDown={handleSearchKeyDown}
                 placeholder={searchPlaceholder}
-                className="min-h-11 w-full rounded-[1.2rem] border border-slate-300 bg-white/92 px-5 pr-24 text-base font-medium text-slate-800 outline-none transition placeholder:text-slate-700 focus:border-cyan-600 focus:ring-2 focus:ring-cyan-600/20 sm:rounded-full"
+                className="min-h-12 w-full rounded-[1.2rem] border border-slate-300 bg-white/92 px-5 pr-28 text-base font-medium text-slate-800 outline-none transition placeholder:text-slate-700 focus:border-cyan-600 focus:ring-2 focus:ring-cyan-600/20 sm:rounded-full"
               />
               {searchQuery.trim().length > 0 && (
                 <button
@@ -3035,7 +3109,7 @@ export const BeachSearcherHome: React.FC<BeachSearcherHomeProps> = ({
                     setIsSearchSuggestionsOpen(false);
                     setActiveSearchSuggestionIndex(-1);
                   }}
-                  className="absolute right-11 top-1/2 grid h-9 w-9 -translate-y-1/2 place-items-center rounded-full text-slate-600 transition hover:bg-slate-100 hover:text-slate-700 focus:outline-none focus-visible:ring-2 focus-visible:ring-cyan-700/30"
+                  className="absolute right-14 top-1/2 grid h-11 w-11 -translate-y-1/2 place-items-center rounded-full text-slate-600 transition hover:bg-slate-100 hover:text-slate-700 focus:outline-none focus-visible:ring-2 focus-visible:ring-cyan-700/30"
                   aria-label={language === 'gr' ? 'Καθαρισμός αναζήτησης' : 'Clear search'}
                 >
                   <X className="h-4 w-4" aria-hidden="true" />
@@ -3043,7 +3117,7 @@ export const BeachSearcherHome: React.FC<BeachSearcherHomeProps> = ({
               )}
               <button
                 type="submit"
-                className="absolute right-1.5 top-1/2 grid h-9 w-9 -translate-y-1/2 place-items-center rounded-full bg-[#007a83] text-white transition hover:bg-[#00646d] focus:outline-none focus-visible:ring-2 focus-visible:ring-cyan-700 focus-visible:ring-offset-2"
+                className="absolute right-1.5 top-1/2 grid h-11 w-11 -translate-y-1/2 place-items-center rounded-full bg-[#007a83] text-white transition hover:bg-[#00646d] focus:outline-none focus-visible:ring-2 focus-visible:ring-cyan-700 focus-visible:ring-offset-2"
                 aria-label={copy.search}
               >
                 <Search className="h-5 w-5" />
@@ -3109,40 +3183,63 @@ export const BeachSearcherHome: React.FC<BeachSearcherHomeProps> = ({
                 </div>
               )}
             </div>
-            <div className={`grid gap-2 sm:flex sm:items-center lg:flex-nowrap lg:justify-end ${(onShowNearbyBeaches ?? onUseCurrentLocation) ? 'grid-cols-2' : 'grid-cols-1'}`}>
-              {(onShowNearbyBeaches ?? onUseCurrentLocation) && (
-                <button
-                  type="button"
-                  onClick={onShowNearbyBeaches ?? onUseCurrentLocation}
-                  disabled={isFindingCurrentLocation}
-                  className={`inline-flex min-h-11 w-full items-center justify-center gap-2 rounded-full border px-3 text-sm font-semibold transition focus:outline-none focus-visible:ring-2 focus-visible:ring-cyan-700 sm:px-4 lg:hidden ${
-                    hasUserLocation
-                      ? 'border-cyan-200 bg-cyan-50 text-[#007a83]'
-                      : 'border-sky-200 bg-white/80 text-slate-900 hover:border-cyan-300 hover:bg-cyan-50'
-                  } ${isFindingCurrentLocation ? 'cursor-wait opacity-70' : ''}`}
-                >
-                  <MapPin className="h-4 w-4 shrink-0 text-[#007a83]" />
-                  <span className="min-w-0 truncate">
-                    {isFindingCurrentLocation && !hasUserLocation ? copy.findingLocation : copy.currentLocation}
-                  </span>
-                </button>
-              )}
+            {/* Desktop: sort dropdown to the right of the search box (mobile uses the row below). */}
+            {selectedIsland && directorySortOptions.length > 0 && (
+              renderDirectorySortControl(desktopDirectorySortRef, 'relative hidden w-[13.5rem] shrink-0 lg:block')
+            )}
+            {/* Mobile/tablet controls: three quick selectors (Κοντά μου · Όλες · Καταλληλότερες)
+                on top, then the full-width Φίλτρο button. The sort lives here now — it is no
+                longer duplicated inside the filter sheet. */}
+            <div className="grid gap-2 sm:col-span-2 lg:hidden">
+              <div className={`grid gap-1.5 ${mobileTopSelectorGridCols}`}>
+                {hasNearMeAction && (
+                  <button
+                    type="button"
+                    onClick={onShowNearbyBeaches ?? onUseCurrentLocation}
+                    disabled={isFindingCurrentLocation}
+                    className={`inline-flex min-h-11 w-full items-center justify-center gap-1.5 rounded-full border px-2 text-xs font-bold transition focus:outline-none focus-visible:ring-2 focus-visible:ring-cyan-700 ${
+                      hasUserLocation
+                        ? 'border-cyan-300 bg-cyan-50 text-[#007a83]'
+                        : 'border-sky-200 bg-white/80 text-slate-900 hover:border-cyan-300 hover:bg-cyan-50'
+                    } ${isFindingCurrentLocation ? 'cursor-wait opacity-70' : ''}`}
+                  >
+                    <MapPin className="h-4 w-4 shrink-0 text-[#007a83]" />
+                    <span className="min-w-0 truncate">
+                      {isFindingCurrentLocation && !hasUserLocation ? copy.findingLocation : copy.currentLocation}
+                    </span>
+                  </button>
+                )}
+                {hasSuitableSortOption && directorySortOptions
+                  .filter(option => option.key === 'all' || option.key === 'suitable')
+                  .map(option => (
+                    <button
+                      key={option.key}
+                      type="button"
+                      onClick={() => { if (!option.isDisabled) option.onSelect(); }}
+                      aria-pressed={option.isActive}
+                      className={`inline-flex min-h-11 w-full items-center justify-center rounded-full border px-2 text-xs font-bold transition focus:outline-none focus-visible:ring-2 focus-visible:ring-cyan-700/30 ${
+                        option.isActive
+                          ? 'border-[#007a83] bg-[#007a83] text-white shadow-sm shadow-cyan-900/15'
+                          : 'border-cyan-200 bg-white/80 text-slate-700 hover:bg-cyan-50'
+                      }`}
+                    >
+                      <span className="truncate">{option.label}</span>
+                    </button>
+                  ))}
+              </div>
               <button
                 type="button"
                 onClick={onOpenFilters}
-                className="inline-flex min-h-11 w-full items-center justify-center gap-2 rounded-full border border-[#007a83] bg-white px-3 text-sm font-semibold text-slate-900 transition hover:bg-cyan-50 focus:outline-none focus-visible:ring-2 focus-visible:ring-cyan-700 sm:px-4 lg:hidden"
+                className="inline-flex min-h-11 w-full items-center justify-center gap-2 rounded-full border border-[#007a83] bg-white px-3 text-sm font-semibold text-slate-900 transition hover:bg-cyan-50 focus:outline-none focus-visible:ring-2 focus-visible:ring-cyan-700"
               >
                 <SlidersHorizontal className="h-4 w-4 text-[#007a83]" />
                 <span>{copy.filter}</span>
-                {typeof filteredResultCount === 'number' && (
-                  <span className="grid h-5 min-w-5 place-items-center rounded-full bg-cyan-50 px-1.5 text-[11px] font-extrabold leading-none text-[#007a83] ring-1 ring-cyan-100">
-                    {filteredResultCount}
+                {typeof activeFilterCount === 'number' && activeFilterCount > 0 && (
+                  <span className="grid h-5 min-w-5 place-items-center rounded-full bg-[#007a83] px-1.5 text-[11px] font-extrabold leading-none text-white ring-1 ring-cyan-100 tabular-nums">
+                    {activeFilterCount}
                   </span>
                 )}
               </button>
-              {selectedIsland && directorySortOptions.length > 0 && (
-                renderDirectorySortControl(desktopDirectorySortRef, 'relative hidden w-[13.5rem] shrink-0 lg:block')
-              )}
             </div>
             {currentLocationError && (
               <p className="text-xs font-semibold text-rose-600 sm:col-span-2" role="alert">
@@ -3306,6 +3403,22 @@ export const BeachSearcherHome: React.FC<BeachSearcherHomeProps> = ({
             <div className="overflow-hidden rounded-[1.35rem] border border-sky-100 bg-white/68 p-2 text-left shadow-sm shadow-sky-900/8 ring-1 ring-white/45 backdrop-blur-md">
               {mapPreview}
             </div>
+            {mobileResultsAnchorId && mobileResultsCount > 0 && (
+              <div className="mt-2 flex justify-center">
+                <button
+                  type="button"
+                  onClick={scrollToMobileResults}
+                  aria-label={`${seeBeachesCtaLabel} (${mobileResultsCount})`}
+                  className="inline-flex min-h-11 max-w-full cursor-pointer items-center gap-2 rounded-full border border-white/80 bg-white/90 px-4 py-2 text-sm font-extrabold text-[#007a83] shadow-sm shadow-sky-900/10 ring-1 ring-white/50 backdrop-blur-md transition hover:bg-white focus:outline-none focus-visible:ring-2 focus-visible:ring-cyan-700"
+                >
+                  <span className="min-w-0 truncate">{seeBeachesCtaLabel}</span>
+                  <span className="grid h-5 min-w-5 shrink-0 place-items-center rounded-full bg-cyan-50 px-1.5 text-[11px] font-extrabold leading-none text-[#007a83] ring-1 ring-cyan-100 tabular-nums">
+                    {mobileResultsCount}
+                  </span>
+                  <ChevronDown className="h-4 w-4 shrink-0 motion-safe:animate-bounce" aria-hidden="true" />
+                </button>
+              </div>
+            )}
           </section>
         )}
 
@@ -3345,6 +3458,7 @@ export const BeachSearcherHome: React.FC<BeachSearcherHomeProps> = ({
                   </div>
                 ))}
               </div>
+              {renderMobileSwipeHint(topRecommendationBeachCards.length)}
             </section>
           )}
 
@@ -3366,10 +3480,17 @@ export const BeachSearcherHome: React.FC<BeachSearcherHomeProps> = ({
           >
             {selectedIsland ? (
               weatherBeachCards.map(({ beach, score, context }, index) => {
+                // A name search turns this carousel into a match list, not the day's
+                // ranking — so a result must NOT wear the "top beach" medal just for
+                // being the first (often only) match. Drop the rank/podium and instead
+                // lead the card with its own today-verdict (ideal / good / exposed…),
+                // which is what someone looking up a specific beach actually wants.
                 // When there's no dedicated top-3 carousel, THIS suitable carousel is the
                 // numbered "best picks" surface (cards get rank 1,2,3…), so its first three
                 // are the day's de-facto top 3 and earn the podium frame. Ranks 4+ stay plain.
-                const cardRank = hasTopRecommendationView ? undefined : weatherBeachCardRankStart + index;
+                const cardRank = isNameSearchActive || hasTopRecommendationView
+                  ? undefined
+                  : weatherBeachCardRankStart + index;
                 return (
                 <div key={beach.id} data-suitable-beach-id={beach.id} {...beachCardHoverProps(beach.id)} className="flex h-[24rem] w-[17rem] shrink-0 snap-start sm:h-[27rem] sm:w-[20rem]">
                   {renderBeachDecisionCard(beach as BeachCardContext, {
@@ -3377,7 +3498,8 @@ export const BeachSearcherHome: React.FC<BeachSearcherHomeProps> = ({
                     context,
                     recommendationRank: cardRank,
                     topPickPodium: cardRank !== undefined && cardRank <= 3,
-                    showTodayScoreBadge: false,
+                    showTodayScoreBadge: isNameSearchActive,
+                    forceTodayScoreBadge: isNameSearchActive,
                     alignExposureToMap: true,
                     windExposureMode: 'none',
                   })}
@@ -3462,6 +3584,7 @@ export const BeachSearcherHome: React.FC<BeachSearcherHomeProps> = ({
               })
             )}
           </div>
+          {renderMobileSwipeHint(selectedIsland ? weatherBeachCards.length : sortedIslandCards.length)}
           </>
           )}
 
@@ -3485,7 +3608,7 @@ export const BeachSearcherHome: React.FC<BeachSearcherHomeProps> = ({
               <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
                 {directoryDisplayBeachCards.map(beach => (
                   <div key={beach.id} {...beachCardHoverProps(beach.id)} className="h-full">
-                    {renderBeachDecisionCard(beach, { alignExposureToMap: !isDirectorySuitableView, windExposureMode: 'simple' })}
+                    {renderBeachDecisionCard(beach, { alignExposureToMap: !isDirectorySuitableView, windExposureMode: 'simple', forceTodayScoreBadge: isNameSearchActive })}
                   </div>
                 ))}
               </div>
@@ -3493,7 +3616,7 @@ export const BeachSearcherHome: React.FC<BeachSearcherHomeProps> = ({
           )}
 
           {selectedIsland && isMobileViewport && !isDirectorySuitableView && directoryDisplayBeachCards.length > 0 && (
-            <section id="all-beaches-section" className="mt-3">
+            <section id="all-beaches-section">
               <div className="mb-3 flex items-center gap-3 px-1">
                 <span className="h-px flex-1 bg-slate-300/70" aria-hidden="true" />
                 <div className="max-w-full shrink-0 rounded-full border border-white/80 bg-white/86 px-3 py-1.5 text-center shadow-sm shadow-sky-900/10 ring-1 ring-white/50 backdrop-blur-md">
@@ -3510,7 +3633,7 @@ export const BeachSearcherHome: React.FC<BeachSearcherHomeProps> = ({
               >
                 {directoryDisplayBeachCards.map(beach => (
                   <div key={beach.id} data-directory-beach-id={beach.id} {...beachCardHoverProps(beach.id)} className="flex h-[24rem] w-[17rem] shrink-0 snap-start sm:h-[27rem] sm:w-[20rem]">
-                    {renderBeachDecisionCard(beach, { alignExposureToMap: true, windExposureMode: 'simple' })}
+                    {renderBeachDecisionCard(beach, { alignExposureToMap: true, windExposureMode: 'simple', forceTodayScoreBadge: isNameSearchActive })}
                   </div>
                 ))}
               </div>
@@ -3592,9 +3715,9 @@ export const BeachSearcherHome: React.FC<BeachSearcherHomeProps> = ({
                 >
                   <SlidersHorizontal className="h-4 w-4" aria-hidden="true" />
                   {copy.filter}
-                  {typeof filteredResultCount === 'number' && (
-                    <span className="rounded-full bg-white px-1.5 py-0.5 text-[11px] font-black leading-none text-[#007a83] ring-1 ring-cyan-100">
-                      {filteredResultCount}
+                  {typeof activeFilterCount === 'number' && activeFilterCount > 0 && (
+                    <span className="rounded-full bg-[#007a83] px-1.5 py-0.5 text-[11px] font-black leading-none text-white ring-1 ring-cyan-100 tabular-nums">
+                      {activeFilterCount}
                     </span>
                   )}
                 </button>
@@ -3616,7 +3739,7 @@ export const BeachSearcherHome: React.FC<BeachSearcherHomeProps> = ({
                   >
                     {directoryDisplayBeachCards.map(beach => (
                       <div key={beach.id} data-directory-beach-id={beach.id} {...beachCardHoverProps(beach.id)} className="flex h-[24rem] w-[17rem] shrink-0 snap-start sm:h-[27rem] sm:w-[20rem]">
-                        {renderBeachDecisionCard(beach, { alignExposureToMap: !isDirectorySuitableView, windExposureMode: 'simple' })}
+                        {renderBeachDecisionCard(beach, { alignExposureToMap: !isDirectorySuitableView, windExposureMode: 'simple', forceTodayScoreBadge: isNameSearchActive })}
                       </div>
                     ))}
                   </div>

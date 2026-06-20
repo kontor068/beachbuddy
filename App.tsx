@@ -1469,6 +1469,10 @@ export const App: React.FC = () => {
   const [detailDataStatus, setDetailDataStatus] = useState<DetailDataStatus>('idle');
   const [view, setView] = useState<'home' | 'detail'>('home');
   const [mobileTab, setMobileTab] = useState<MobileTab>('home');
+  // On the home tab the bottom nav stays hidden while the map fills the screen, and slides
+  // in once the user reaches the beach list below it (via the "Δες τις παραλίες" pill or by
+  // scrolling). Always visible on the other tabs. See the scroll effect below.
+  const [showBottomNav, setShowBottomNav] = useState(false);
   const [isMobileAllBeachesPanelOpen, setIsMobileAllBeachesPanelOpen] = useState(false);
   const [isMobileWeatherPanelOpen, setIsMobileWeatherPanelOpen] = useState(false);
   const [highlightedMapBeachId, setHighlightedMapBeachId] = useState<number | undefined>(undefined);
@@ -1483,6 +1487,37 @@ export const App: React.FC = () => {
   const [desktopMapVisibleBeachIds, setDesktopMapVisibleBeachIds] = useState<number[] | null>(null);
   const [shouldLoadInsights, setShouldLoadInsights] = useState(false);
   const [showInitialBeachLoader, setShowInitialBeachLoader] = useState(false);
+
+  // Reveal the mobile bottom nav only once the user has moved past the map into the beach
+  // list. On any non-home tab (or a home view without a map) it stays visible. The nav is
+  // CSS-hidden on desktop (md:hidden), so this runs harmlessly there too.
+  useEffect(() => {
+    if (mobileTab !== 'home') {
+      setShowBottomNav(true);
+      return;
+    }
+    const update = () => {
+      const mapEl = document.getElementById('map-section');
+      if (!mapEl) {
+        // No map element yet: if a region is selected the map is just still loading, so keep
+        // the nav hidden (a later run re-measures it). With no region there's no map to hide
+        // behind, so show it.
+        setShowBottomNav(!selectedIsland);
+        return;
+      }
+      const rect = mapEl.getBoundingClientRect();
+      // Once the map's bottom passes the lower third of the viewport, the beach list below
+      // it is in view — that's when the nav slides in.
+      setShowBottomNav(rect.bottom < window.innerHeight * 0.66);
+    };
+    update();
+    window.addEventListener('scroll', update, { passive: true });
+    window.addEventListener('resize', update);
+    return () => {
+      window.removeEventListener('scroll', update);
+      window.removeEventListener('resize', update);
+    };
+  }, [mobileTab, selectedIsland, shouldLoadMap]);
 
   // --- Modals State ---
   const [isFilterModalOpen, setIsFilterModalOpen] = useState(false);
@@ -2116,8 +2151,12 @@ export const App: React.FC = () => {
 
     // The synthetic "Κοντά μου" region has no exposure profile file of its own;
     // its beaches fall back to forecast + orientation scoring. Skip the doomed
-    // fetch instead of logging a 404.
+    // fetch instead of logging a 404. Still mark this region as "resolved" so
+    // isMapExposureLoading clears — otherwise geospatialExposureRegionId stays
+    // undefined, the map thinks exposure is still loading, and it never renders the
+    // beach markers (only campsites showed). See isMapExposureLoading.
     if (!regionId || regionId === NEAR_ME_REGION_ID) {
+      setGeospatialExposureRegionId(regionId);
       setIsGeospatialExposureLoading(false);
       return () => { cancelled = true; };
     }
@@ -3059,12 +3098,23 @@ export const App: React.FC = () => {
       hasActivePreferenceFilters
     );
   }, [beachSearchQuery, defaultBeachListSort, sortBy, selectedFilters, hasActivePreferenceFilters]);
+  // The map pins reflect explicit CONTENT filters (search / amenities / preferences) but must
+  // NOT be emptied by the sort mode. "Κοντά μου" sets sortBy='protected', which would otherwise
+  // flip the map into filtered mode and — for the synthetic near-me region under the suitable
+  // sort — drop every pin. Sorting is order, not inclusion, so it is excluded here.
+  const hasActiveMapFilters = useMemo(() => (
+    beachSearchQuery.trim().length > 0 ||
+    selectedFilters.some(filter => filter !== 'showAll') ||
+    hasActivePreferenceFilters
+  ), [beachSearchQuery, selectedFilters, hasActivePreferenceFilters]);
   const filteredMapSuitableBeaches = useMemo(() => {
-    if (!hasActiveSearchOrFilters) return mapSuitableBeaches;
+    if (!hasActiveMapFilters) return mapSuitableBeaches;
 
-    const filteredBeachIds = new Set(filteredBeaches.map(beach => beach.id));
+    // Filter by amenity/search matches only (sort 'all' = no suitability exclusion), so the
+    // pins never vanish just because the active sort would have hidden "unsuitable" beaches.
+    const filteredBeachIds = new Set(getFilteredBeachResults(selectedFilters, 'all').map(beach => beach.id));
     return mapSuitableBeaches.filter(item => filteredBeachIds.has(item.beach.id));
-  }, [filteredBeaches, hasActiveSearchOrFilters, mapSuitableBeaches]);
+  }, [getFilteredBeachResults, selectedFilters, hasActiveMapFilters, mapSuitableBeaches]);
   const isProtectedSortOnly = useMemo(() => {
     return sortBy === 'protected' &&
       beachSearchQuery.trim().length === 0 &&
@@ -4944,6 +4994,7 @@ export const App: React.FC = () => {
               advancedFilterResultCounts={desktopAdvancedFilterResultCounts}
               sortResultCounts={sortResultCounts}
               filteredResultCount={filteredBeaches.length}
+              activeFilterCount={selectedFilters.filter(filter => filter !== 'showAll').length + Object.values(preferences).filter(Boolean).length}
               searchSuggestions={directorySearchSuggestions}
               isSearchSuggesting={isDirectorySearchSuggesting}
               protectedSortLabel={protectedSortLabel}
@@ -5672,6 +5723,7 @@ export const App: React.FC = () => {
         language={language}
         activeTab={mobileTab}
         onTabChange={handleMobileTab}
+        visible={showBottomNav}
         showBuddy={ENABLE_BEACH_BUDDY_CHAT}
         showPlanner={ENABLE_PLANNER_PRO}
       />
@@ -5830,6 +5882,7 @@ export const App: React.FC = () => {
               protectedSortLabel={protectedSortLabel}
               showProtectedSort={!(calmAllAroundSummary?.isEveryBeachSuitable ?? false)}
               hideDistanceSort={!isDesktopViewport}
+              hideSortSection={!isDesktopViewport}
               getResultCount={getMobileFilterModalResultCount}
               onResultCountChange={setFilterModalResultCount}
             />

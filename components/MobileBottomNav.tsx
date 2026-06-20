@@ -10,6 +10,9 @@ interface MobileBottomNavProps {
   language: LanguageCode;
   activeTab: MobileTab;
   onTabChange: (tab: MobileTab) => void;
+  /** When false the bar slides off-screen (used to keep it hidden over the home map until
+   *  the user reaches the beach list). Defaults to visible. */
+  visible?: boolean;
   showBuddy?: boolean;
   showPlanner?: boolean;
 }
@@ -31,6 +34,7 @@ export const MobileBottomNav: React.FC<MobileBottomNavProps> = ({
   language,
   activeTab,
   onTabChange,
+  visible = true,
   showBuddy = true,
   showPlanner = true,
 }) => {
@@ -59,9 +63,14 @@ export const MobileBottomNav: React.FC<MobileBottomNavProps> = ({
   ];
 
   return (
-    <nav className="fixed bottom-0 left-0 right-0 z-50 md:hidden">
+    <nav
+      className={`fixed bottom-0 left-0 right-0 z-50 transition-transform duration-300 ease-out motion-reduce:transition-none md:hidden ${
+        visible ? 'translate-y-0' : 'pointer-events-none translate-y-full'
+      }`}
+      aria-hidden={visible ? undefined : true}
+    >
       <div className="border-t border-slate-200/80 bg-white/95 px-2 pb-[env(safe-area-inset-bottom)] shadow-[0_-8px_28px_rgba(15,23,42,0.14)] backdrop-blur-xl">
-        <div className="flex h-16 items-center justify-around">
+        <div className="flex h-16 items-center justify-center">
           {tabs.map((tab) => {
             const isActive = activeTab === tab.id;
             const Icon = tab.icon;
@@ -71,7 +80,7 @@ export const MobileBottomNav: React.FC<MobileBottomNavProps> = ({
               <button
                 key={tab.id}
                 onClick={() => onTabChange(tab.id)}
-                className="group relative flex h-full w-full cursor-pointer flex-col items-center justify-center gap-0.5"
+                className="group relative flex h-full max-w-[7rem] flex-1 cursor-pointer flex-col items-center justify-center gap-0.5"
                 aria-label={tabLabel}
               >
                 {isActive && (

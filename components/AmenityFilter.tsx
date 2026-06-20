@@ -42,6 +42,9 @@ interface CombinedFilterProps {
   showProtectedSort?: boolean;
   /** Hide the "near me" (distance) sort option — on mobile it lives in the dedicated front button instead. */
   hideDistanceSort?: boolean;
+  /** Hide the whole sort section — on mobile the sort (Όλες / Καταλληλότερες) is surfaced as
+   *  quick selectors outside the sheet, so it must not be duplicated here. */
+  hideSortSection?: boolean;
   getResultCount?: (filters: FilterKey[], sortBy: SortOption) => number;
   onResultCountChange?: (count: number) => void;
   language: LanguageCode;
@@ -160,6 +163,7 @@ export const CombinedFilter: React.FC<CombinedFilterProps> = ({
     protectedSortLabel,
     showProtectedSort = true,
     hideDistanceSort = false,
+    hideSortSection = false,
     getResultCount,
     onResultCountChange,
     language,
@@ -407,7 +411,7 @@ export const CombinedFilter: React.FC<CombinedFilterProps> = ({
                 </section>
             )}
 
-            {renderSortSection()}
+            {!hideSortSection && renderSortSection()}
 
             <div className="space-y-5" role="group" aria-labelledby="filters-heading">
                 <h3 id="filters-heading" className="sr-only">{t.filterTitle}</h3>

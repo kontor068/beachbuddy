@@ -76,6 +76,13 @@ interface BeachCardProps {
   windExposureMode?: 'none' | 'simple';
   showTodayScoreBadge?: boolean;
   /**
+   * Surface the today-verdict pill even in the 3–4 Bft band the badge normally
+   * hides, and (on mobile) render it in the header in place of the wind chip.
+   * Set on a beach shown for its own sake — e.g. a name-search result — where the
+   * card must answer "what's it like there today?" rather than imply a ranking.
+   */
+  forceTodayScoreBadge?: boolean;
+  /**
    * Marks the card as one of the day's curated "Top 3" picks (the podium set).
    * Adds the teal frame + ranked medal so the trio reads as a distinct group,
    * separate from the generic suitable-beach list. Only set this from the
@@ -1070,6 +1077,7 @@ export const BeachCard: React.FC<BeachCardProps> = ({
   hideExposureBadge = false,
   windExposureMode,
   showTodayScoreBadge = true,
+  forceTodayScoreBadge = false,
   topPickPodium = false,
 }) => {
   const [photoIndex, setPhotoIndex] = useState(0);
@@ -1272,6 +1280,10 @@ export const BeachCard: React.FC<BeachCardProps> = ({
     : simpleWindChipOnly
       ? !isProtectedToday && windChipIsMeaningful
       : !isProtectedToday && Boolean(windSuitabilityText || isExposedConditionChip);
+  // Search-result cards lead with the today-verdict pill (ideal / good / exposed)
+  // so the beach reads its own status at a glance. On mobile it takes the wind-chip
+  // slot in the header (which is hidden on phones for the score body below).
+  const showForcedTodayScoreBadge = forceTodayScoreBadge && showTodayScoreBadge && todayScore !== undefined;
   const hasMobileDecisionBody = Boolean(topPickTimeLabel);
   // Curated "top pick" podium treatment — a teal frame + ranked medal so the
   // highlighted set reads as one group, distinct from the generic suitable list.
@@ -1369,7 +1381,19 @@ export const BeachCard: React.FC<BeachCardProps> = ({
           </div>
 
           <div className="mt-2.5 space-y-1.5">
-            {showMobileProtectionChip ? (
+            {showForcedTodayScoreBadge ? (
+              <TodayScoreBadge
+                score={todayScore}
+                language={language}
+                selectedDate={selectedDate}
+                windBeaufort={windBeaufort}
+                waveHeightM={waveHeightM}
+                swimmingComfort={swimmingComfort}
+                noIdealSwimmingWindow={noIdealSwimmingWindow}
+                exposureLevel={exposureLevel}
+                forceShow
+              />
+            ) : showMobileProtectionChip ? (
               <span className={`inline-flex min-h-9 w-full min-w-0 items-center justify-start gap-1.5 overflow-hidden rounded-xl border px-2.5 py-1.5 text-xs font-semibold leading-tight ${protectionChipTone}`}>
                 {windSuitabilityIcon === 'wind' || (!windSuitabilityColor && isLightWindConditionChip) ? (
                   <Wind className="h-3.5 w-3.5 shrink-0" />
@@ -1506,6 +1530,7 @@ export const BeachCard: React.FC<BeachCardProps> = ({
                 swimmingComfort={swimmingComfort}
                 noIdealSwimmingWindow={noIdealSwimmingWindow}
                 exposureLevel={exposureLevel}
+                forceShow={forceTodayScoreBadge}
               />
             ) : (
               <div className="inline-flex min-h-9 w-full items-center justify-center gap-1.5 rounded-full border border-amber-200 bg-amber-50 px-3 py-1.5 text-xs font-bold text-amber-700 shadow-sm dark:border-amber-900/50 dark:bg-amber-950/30 dark:text-amber-300" title={labels.visitorRating}>
@@ -1676,6 +1701,7 @@ export const BeachCard: React.FC<BeachCardProps> = ({
                 swimmingComfort={swimmingComfort}
                 noIdealSwimmingWindow={noIdealSwimmingWindow}
                 exposureLevel={exposureLevel}
+                forceShow={forceTodayScoreBadge}
               />
               <div className="flex items-center gap-1 text-[11px] font-bold text-slate-600 dark:text-slate-700" title="Visitor rating">
                 <Star className="h-3 w-3 fill-amber-400 text-amber-400" />
