@@ -591,6 +591,22 @@ const buildSummaryBeach = beach => {
     // Trimmed to the nearest one — enough for the card's ⛺ chip without loading detail.
     ...(beach.metadata?.nearbyCamping?.length ? { nearbyCamping: beach.metadata.nearbyCamping.slice(0, 1) } : {}),
     ...(beach.metadata?.paidEntry ? { paidEntry: beach.metadata.paidEntry } : {}),
+    // The summary tier feeds EVERY map-pin / card / home / "Κοντά μου" navigation link, and
+    // utils/navigation.ts builds those links off beach.metadata. Without it, those surfaces lose
+    // the verified Google placeId and Maps drops a raw coordinate pin instead of the place card
+    // (only the detail page, which merges in detail-tier metadata, worked). Carry a TRIMMED metadata
+    // mirroring exactly what navigation.ts reads — placeId/query (googleMapsNavigation), access.type
+    // (boat-only + badge), confidence (low-conf status) — without bloating the tier with terrain/
+    // amenities/notes (already flattened into the fields above).
+    ...((beach.metadata?.googleMapsNavigation || beach.metadata?.access?.type || beach.metadata?.confidence)
+      ? {
+        metadata: {
+          ...(beach.metadata?.access?.type ? { access: { type: beach.metadata.access.type } } : {}),
+          ...(beach.metadata?.confidence ? { confidence: beach.metadata.confidence } : {}),
+          ...(beach.metadata?.googleMapsNavigation ? { googleMapsNavigation: beach.metadata.googleMapsNavigation } : {}),
+        },
+      }
+      : {}),
     staticLabels: {
       beachType: beach.staticLabels?.beachType || beach.beachType,
       accessType,

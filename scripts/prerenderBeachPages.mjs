@@ -178,6 +178,7 @@ const alternateUrlsFor = pathName => [
 const seoLandingPages = [
   {
     pathName: '/best-beaches-greece-today/',
+    kind: 'regionHub',
     locales: {
       en: {
         title: 'Best Beaches in Greece Today | CalmBeach',
@@ -196,7 +197,7 @@ const seoLandingPages = [
         ],
         links: [
           { href: '/', label: 'Open today\'s beach recommendations' },
-          { href: '/where-to-swim-greece-today/', label: 'Where to swim in Greece today' },
+          { href: '/family-beaches-greece/', label: 'Family beaches in Greece' },
           { href: '/sheltered-beaches-meltemi/', label: 'Sheltered beaches in the Meltemi' },
         ],
       },
@@ -217,108 +218,15 @@ const seoLandingPages = [
         ],
         links: [
           { href: '/', label: 'Δες τις σημερινές προτάσεις' },
-          { href: '/where-to-swim-greece-today/', label: 'Πού να κολυμπήσω σήμερα' },
+          { href: '/family-beaches-greece/', label: 'Οικογενειακές παραλίες' },
           { href: '/sheltered-beaches-meltemi/', label: 'Απάνεμες παραλίες με μελτέμι' },
-        ],
-      },
-    },
-  },
-  {
-    pathName: '/where-to-swim-greece-today/',
-    locales: {
-      en: {
-        title: 'Where to Swim in Greece Today | CalmBeach',
-        description: 'Find practical beach options in Greece today with wind, waves, weather, map and beach detail checks from CalmBeach.',
-        h1: 'Where to swim in Greece today',
-        intro: 'Use CalmBeach when you want a quick beach decision instead of reading raw weather data. The app translates wind, waves and exposure into simple beach guidance.',
-        sections: [
-          {
-            heading: 'A fast beach decision screen',
-            body: 'CalmBeach focuses on the top recommendation, suitable alternatives and a map view so tourists can make a choice quickly on mobile.',
-          },
-          {
-            heading: 'Why conditions matter',
-            body: 'A beach can be excellent on one day and uncomfortable on another. Wind direction, wave height, beach orientation and local exposure can change the right choice.',
-          },
-        ],
-        links: [
-          { href: '/', label: 'Open CalmBeach Greece' },
-          { href: '/calm-beaches-greece-windy-day/', label: 'Find options on a windy day' },
-          { href: '/family-beaches-greece/', label: 'Family beaches with calmer water' },
-        ],
-      },
-      el: {
-        title: 'Πού να κολυμπήσω σήμερα στην Ελλάδα | CalmBeach',
-        description: 'Βρες πρακτικές επιλογές παραλίας στην Ελλάδα σήμερα με ελέγχους ανέμου, κύματος, καιρού, χάρτη και λεπτομερειών παραλίας από το CalmBeach.',
-        h1: 'Πού να κολυμπήσω σήμερα στην Ελλάδα',
-        intro: 'Χρησιμοποίησε το CalmBeach όταν θες μια γρήγορη απόφαση για παραλία αντί να διαβάζεις ακατέργαστα δεδομένα καιρού. Η εφαρμογή μεταφράζει άνεμο, κύμα και έκθεση σε απλή καθοδήγηση.',
-        sections: [
-          {
-            heading: 'Μια γρήγορη οθόνη απόφασης',
-            body: 'Το CalmBeach εστιάζει στην κορυφαία πρόταση, στις κατάλληλες εναλλακτικές και στον χάρτη, ώστε να διαλέγεις γρήγορα από το κινητό.',
-          },
-          {
-            heading: 'Γιατί μετράνε οι συνθήκες',
-            body: 'Μια παραλία μπορεί να είναι εξαιρετική τη μία μέρα και άβολη την άλλη. Η κατεύθυνση του ανέμου, το ύψος κύματος, ο προσανατολισμός και η τοπική έκθεση αλλάζουν τη σωστή επιλογή.',
-          },
-        ],
-        links: [
-          { href: '/', label: 'Άνοιξε το CalmBeach Greece' },
-          { href: '/calm-beaches-greece-windy-day/', label: 'Επιλογές για μέρα με αέρα' },
-          { href: '/family-beaches-greece/', label: 'Οικογενειακές παραλίες με ήρεμα νερά' },
-        ],
-      },
-    },
-  },
-  {
-    pathName: '/calm-beaches-greece-windy-day/',
-    locales: {
-      en: {
-        title: 'Calm Beaches in Greece on a Windy Day | CalmBeach',
-        description: 'Use CalmBeach to look for more sheltered Greek beach options when wind and waves make exposed beaches less comfortable.',
-        h1: 'Calm beaches in Greece on a windy day',
-        intro: 'On windy days, the best beach choice is often about finding a more sheltered or less exposed option, not simply choosing the most famous beach.',
-        sections: [
-          {
-            heading: 'Shelter is directional',
-            body: 'A beach may be better protected from one wind direction and exposed to another. CalmBeach checks beach exposure together with today\'s forecast before ranking options.',
-          },
-          {
-            heading: 'No false guarantees',
-            body: 'The app does not claim that a beach is safe, calm or protected unless the available data supports a cautious recommendation. Always follow local warnings and judge conditions in person.',
-          },
-        ],
-        links: [
-          { href: '/', label: 'Check today\'s recommendations' },
-          { href: '/sheltered-beaches-meltemi/', label: 'Sheltered beaches in the Meltemi' },
-          { href: '/best-beaches-greece-today/', label: 'Best beaches in Greece today' },
-        ],
-      },
-      el: {
-        title: 'Απάνεμες παραλίες όταν έχει αέρα | CalmBeach',
-        description: 'Με το CalmBeach ψάξε πιο προστατευμένες ελληνικές παραλίες όταν ο άνεμος και το κύμα κάνουν τις εκτεθειμένες παραλίες λιγότερο άνετες.',
-        h1: 'Απάνεμες παραλίες όταν έχει αέρα',
-        intro: 'Τις μέρες με αέρα, η καλύτερη επιλογή είναι συχνά να βρεις μια πιο προστατευμένη ή λιγότερο εκτεθειμένη παραλία, όχι απλώς την πιο διάσημη.',
-        sections: [
-          {
-            heading: 'Η προστασία εξαρτάται από την κατεύθυνση',
-            body: 'Μια παραλία μπορεί να προστατεύεται καλά από τη μία κατεύθυνση ανέμου και να είναι εκτεθειμένη σε άλλη. Το CalmBeach ελέγχει την έκθεση μαζί με τη σημερινή πρόγνωση πριν κατατάξει τις επιλογές.',
-          },
-          {
-            heading: 'Χωρίς ψεύτικες εγγυήσεις',
-            body: 'Η εφαρμογή δεν ισχυρίζεται ότι μια παραλία είναι ασφαλής, ήρεμη ή προστατευμένη αν δεν το στηρίζουν τα δεδομένα. Ακολούθησε πάντα τις τοπικές προειδοποιήσεις και κρίνε τις συνθήκες επιτόπου.',
-          },
-        ],
-        links: [
-          { href: '/', label: 'Δες τις σημερινές προτάσεις' },
-          { href: '/sheltered-beaches-meltemi/', label: 'Απάνεμες παραλίες με μελτέμι' },
-          { href: '/best-beaches-greece-today/', label: 'Καλύτερες παραλίες σήμερα' },
         ],
       },
     },
   },
   {
     pathName: '/sheltered-beaches-meltemi/',
+    kind: 'regionHub',
     locales: {
       en: {
         title: 'Sheltered Beaches in the Meltemi Winds | CalmBeach',
@@ -337,8 +245,8 @@ const seoLandingPages = [
         ],
         links: [
           { href: '/', label: 'Check today\'s recommendations' },
-          { href: '/calm-beaches-greece-windy-day/', label: 'Calm beaches on a windy day' },
-          { href: '/best-beaches-milos-today/', label: 'Best beaches in Milos today' },
+          { href: '/best-beaches-greece-today/', label: 'Best beaches in Greece today' },
+          { href: '/beach-camping-greece/', label: 'Beaches with camping nearby' },
         ],
       },
       el: {
@@ -358,61 +266,16 @@ const seoLandingPages = [
         ],
         links: [
           { href: '/', label: 'Δες τις σημερινές προτάσεις' },
-          { href: '/calm-beaches-greece-windy-day/', label: 'Απάνεμες παραλίες όταν έχει αέρα' },
-          { href: '/best-beaches-milos-today/', label: 'Καλύτερες παραλίες στη Μήλο σήμερα' },
-        ],
-      },
-    },
-  },
-  {
-    pathName: '/best-beaches-milos-today/',
-    locales: {
-      en: {
-        title: 'Best Beaches in Milos Today | Wind & Waves | CalmBeach',
-        description: 'Compare Milos beaches by today\'s wind, waves, weather, exposure, access and beach type before choosing where to swim.',
-        h1: 'Best beaches in Milos today',
-        intro: 'Milos has very different beach exposures, so wind direction and waves can change the best choice for the day. CalmBeach compares Milos beaches with today\'s conditions.',
-        sections: [
-          {
-            heading: 'Milos beach conditions change by side of the island',
-            body: 'North, south and bay-facing beaches can behave differently in the same forecast. CalmBeach looks at beach exposure and practical access instead of only listing popular beaches.',
-          },
-          {
-            heading: 'Use the Milos beach page for live guidance',
-            body: 'The Milos page includes current recommendations, beach cards, map context and detail pages for individual beaches.',
-          },
-        ],
-        links: [
-          { href: '/beaches/milos/', label: 'Open Milos beaches' },
-          { href: '/', label: 'Open CalmBeach Greece' },
-          { href: '/sheltered-beaches-meltemi/', label: 'Sheltered beaches in the Meltemi' },
-        ],
-      },
-      el: {
-        title: 'Καλύτερες παραλίες στη Μήλο σήμερα | CalmBeach',
-        description: 'Σύγκρινε τις παραλίες της Μήλου με βάση τον σημερινό άνεμο, το κύμα, τον καιρό, την έκθεση και την πρόσβαση πριν διαλέξεις πού να κολυμπήσεις.',
-        h1: 'Καλύτερες παραλίες στη Μήλο σήμερα',
-        intro: 'Η Μήλος έχει παραλίες με πολύ διαφορετική έκθεση, οπότε η κατεύθυνση του ανέμου και το κύμα αλλάζουν την καλύτερη επιλογή της μέρας. Το CalmBeach συγκρίνει τις παραλίες της Μήλου με τις σημερινές συνθήκες.',
-        sections: [
-          {
-            heading: 'Οι συνθήκες αλλάζουν ανά πλευρά του νησιού',
-            body: 'Οι βόρειες, νότιες και κλειστές παραλίες μπορεί να συμπεριφέρονται διαφορετικά με την ίδια πρόγνωση. Το CalmBeach κοιτά την έκθεση και την πρακτική πρόσβαση, όχι μόνο τη δημοφιλία.',
-          },
-          {
-            heading: 'Χρησιμοποίησε τη σελίδα της Μήλου',
-            body: 'Η σελίδα της Μήλου περιλαμβάνει τρέχουσες προτάσεις, κάρτες παραλιών, χάρτη και σελίδες λεπτομερειών για κάθε παραλία.',
-          },
-        ],
-        links: [
-          { href: '/beaches/milos/', label: 'Άνοιξε τις παραλίες της Μήλου' },
-          { href: '/', label: 'Άνοιξε το CalmBeach Greece' },
-          { href: '/sheltered-beaches-meltemi/', label: 'Απάνεμες παραλίες με μελτέμι' },
+          { href: '/best-beaches-greece-today/', label: 'Καλύτερες παραλίες σήμερα' },
+          { href: '/beach-camping-greece/', label: 'Παραλίες με camping' },
         ],
       },
     },
   },
   {
     pathName: '/accessible-beaches-greece/',
+    kind: 'beachList',
+    category: 'accessible',
     locales: {
       en: {
         title: 'Accessible Beaches in Greece (Seatrac) | CalmBeach',
@@ -460,6 +323,8 @@ const seoLandingPages = [
   },
   {
     pathName: '/family-beaches-greece/',
+    kind: 'beachList',
+    category: 'family',
     locales: {
       en: {
         title: 'Family Beaches with Calm Shallow Water | CalmBeach',
@@ -479,7 +344,7 @@ const seoLandingPages = [
         links: [
           { href: '/', label: 'Open CalmBeach Greece' },
           { href: '/accessible-beaches-greece/', label: 'Accessible beaches in Greece' },
-          { href: '/where-to-swim-greece-today/', label: 'Where to swim today' },
+          { href: '/beach-camping-greece/', label: 'Beaches with camping nearby' },
         ],
       },
       el: {
@@ -500,13 +365,15 @@ const seoLandingPages = [
         links: [
           { href: '/', label: 'Άνοιξε το CalmBeach Greece' },
           { href: '/accessible-beaches-greece/', label: 'Προσβάσιμες παραλίες ΑμεΑ' },
-          { href: '/where-to-swim-greece-today/', label: 'Πού να κολυμπήσω σήμερα' },
+          { href: '/beach-camping-greece/', label: 'Παραλίες με camping' },
         ],
       },
     },
   },
   {
     pathName: '/beach-camping-greece/',
+    kind: 'beachList',
+    category: 'camping',
     locales: {
       en: {
         title: 'Beaches with Camping Nearby in Greece | CalmBeach',
@@ -552,6 +419,15 @@ const seoLandingPages = [
       },
     },
   },
+];
+
+// Pages that used to exist as thin generic gateways and were consolidated into a
+// kept, useful page. 301 so the already-submitted URLs never 404; they are also
+// excluded from the sitemap (they are simply absent from seoLandingPages now).
+const landingRedirects = [
+  { from: '/where-to-swim-greece-today/', to: '/best-beaches-greece-today/' },
+  { from: '/calm-beaches-greece-windy-day/', to: '/sheltered-beaches-meltemi/' },
+  { from: '/best-beaches-milos-today/', to: '/beaches/milos/' },
 ];
 
 const breadcrumbJsonLd = items => ({
@@ -957,11 +833,13 @@ const landingChromeCopy = {
   },
 };
 
-const staticSeoLandingPage = (content, locale) => {
+const staticSeoLandingPage = (content, locale, dynamicHtml = '') => {
   // The first link is always the primary entry into the live app; promote it to
   // a prominent CTA so this page reads as a real CalmBeach gateway, not a stray
   // document. The rest stay as secondary related links. Link hrefs are stored as
   // base paths and localized so a Greek page funnels into Greek routes.
+  // `dynamicHtml` is the data-driven section (a real beach list or a region hub)
+  // that makes the page deliver on its title instead of being generic prose.
   const chrome = landingChromeCopy[locale.language] || landingChromeCopy.en;
   const homeHref = localizedPath('/', locale);
   const localizeHref = href => localizedPath(href, locale);
@@ -982,6 +860,7 @@ const staticSeoLandingPage = (content, locale) => {
           <p style="margin:0 0 24px;font-size:18px;line-height:1.6;color:#334155;">${escapeHtml(content.intro)}</p>
           ${primaryLink ? `<a href="${escapeHtml(localizeHref(primaryLink.href))}" style="display:inline-flex;align-items:center;justify-content:center;background:#0e7490;color:white;border-radius:12px;padding:14px 22px;text-decoration:none;font-weight:800;font-size:16px;box-shadow:0 10px 24px -12px rgba(14,116,144,.6);">${escapeHtml(primaryLink.label)} →</a>` : ''}
         </section>
+        ${dynamicHtml}
         <div style="display:grid;gap:16px;margin:28px 0;">
           ${content.sections.map(section => `
             <section style="border-top:1px solid #bae6fd;padding-top:16px;">
@@ -1007,6 +886,88 @@ const staticSeoLandingPage = (content, locale) => {
   `;
 };
 
+// Localized headings for the data-driven sections. Kept here (not in each locale
+// block) so the page content stays focused on intent copy.
+const listSectionHeadings = {
+  accessible: { en: 'Accessible beaches with Seatrac access', gr: 'Προσβάσιμες παραλίες με Seatrac' },
+  family: { en: 'Family-friendly beaches', gr: 'Οικογενειακές παραλίες' },
+  camping: { en: 'Beaches with a campsite nearby', gr: 'Παραλίες με κάμπινγκ κοντά' },
+};
+const hubSectionHeading = { en: 'Browse beaches by island & region', gr: 'Δες παραλίες ανά νησί & περιοχή' };
+const emptyListNote = { en: 'We are still adding beaches to this guide.', gr: 'Προσθέτουμε ακόμη παραλίες σε αυτόν τον οδηγό.' };
+const localeText = (table, locale) => table[locale.language] || table.en;
+
+const renderBeachListSection = (items, locale, category) => {
+  const language = locale.language;
+  const heading = localeText(listSectionHeadings[category] || {}, locale);
+
+  if (!items.length) {
+    return `
+        <section style="margin:28px 0;border-top:1px solid #bae6fd;padding-top:18px;">
+          <h2 style="margin:0 0 8px;font-size:22px;line-height:1.2;color:#075985;">${escapeHtml(heading)}</h2>
+          <p style="margin:0;color:#475569;">${escapeHtml(localeText(emptyListNote, locale))}</p>
+        </section>`;
+  }
+
+  const cards = items.map(({ beach, region, island }) => {
+    const beachName = localized(beach.name, `Beach ${beach.id}`, language);
+    const islandName = localized(island.name, region.id, language);
+    const metaParts = [islandName, readableBeachType(beach, language)].filter(Boolean);
+
+    let extra = '';
+    if (category === 'camping' && Array.isArray(beach.nearbyCamping) && beach.nearbyCamping.length > 0) {
+      const nearest = beach.nearbyCamping.reduce((closest, candidate) => (
+        candidate.distanceMeters < closest.distanceMeters ? candidate : closest
+      ));
+      const campName = (language === 'en' && nearest.nameEn) ? nearest.nameEn : nearest.name;
+      const label = language === 'gr' ? 'κάμπινγκ' : 'campsite';
+      extra = `${label}: ${campName} · ${nearest.distanceMeters} m`;
+    }
+
+    return `
+          <li style="margin:0;">
+            <a href="${escapeHtml(localizedPath(beachPath(region, island, beach), locale))}" style="display:block;border:1px solid #bae6fd;border-radius:12px;padding:10px 12px;background:white;color:#0f172a;text-decoration:none;">
+              <strong style="color:#0e7490;">${escapeHtml(beachName)}</strong>
+              ${metaParts.length ? `<span style="display:block;margin-top:4px;color:#475569;font-size:14px;">${escapeHtml(metaParts.join(' · '))}</span>` : ''}
+              ${extra ? `<span style="display:block;margin-top:2px;color:#0e7490;font-size:13px;font-weight:600;">${escapeHtml(extra)}</span>` : ''}
+            </a>
+          </li>`;
+  }).join('');
+
+  return `
+        <section style="margin:28px 0;border-top:1px solid #bae6fd;padding-top:18px;">
+          <h2 style="margin:0 0 12px;font-size:22px;line-height:1.2;color:#075985;">${escapeHtml(heading)}</h2>
+          <ul style="display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:10px;margin:0;padding:0;list-style:none;">${cards}</ul>
+        </section>`;
+};
+
+const renderRegionHubSection = (hubRegions, locale) => {
+  const language = locale.language;
+  const heading = localeText(hubSectionHeading, locale);
+  const collator = language === 'gr' ? 'el' : 'en';
+  const items = [...hubRegions]
+    .sort((a, b) => localized(a.island.name, a.region.id, language)
+      .localeCompare(localized(b.island.name, b.region.id, language), collator))
+    .map(item => `
+          <li style="margin:0;">
+            <a href="${escapeHtml(localizedPath(item.path, locale))}" style="display:block;border:1px solid #bae6fd;border-radius:10px;padding:8px 11px;background:white;color:#0e7490;text-decoration:none;font-weight:700;font-size:14px;">${escapeHtml(localized(item.island.name, item.region.id, language))}</a>
+          </li>`)
+    .join('');
+
+  return `
+        <section style="margin:28px 0;border-top:1px solid #bae6fd;padding-top:18px;">
+          <h2 style="margin:0 0 12px;font-size:22px;line-height:1.2;color:#075985;">${escapeHtml(heading)}</h2>
+          <ul style="display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:8px;margin:0;padding:0;list-style:none;">${items}</ul>
+        </section>`;
+};
+
+// Pick the data-driven section for a landing based on its kind.
+const renderLandingDynamic = (landing, locale, dynamic) => {
+  if (landing.kind === 'beachList') return renderBeachListSection(dynamic.items || [], locale, landing.category);
+  if (landing.kind === 'regionHub') return renderRegionHubSection(dynamic.hubRegions || [], locale);
+  return '';
+};
+
 const landingAlternateUrls = landing => {
   const supported = prerenderLocales.filter(locale => landing.locales[locale.id]);
   return [
@@ -1021,7 +982,7 @@ const landingAlternateUrls = landing => {
   ];
 };
 
-const buildSeoLandingPage = (baseHtml, landing, content, locale, imageUrl) => {
+const buildSeoLandingPage = (baseHtml, landing, content, locale, imageUrl, dynamic = {}) => {
   const canonicalUrl = canonicalUrlFor(landing.pathName, locale);
   const imageAlt = locale.language === 'gr'
     ? `${content.h1} — CalmBeach Greece`
@@ -1047,6 +1008,22 @@ const buildSeoLandingPage = (baseHtml, landing, content, locale, imageUrl) => {
     ]),
   ];
 
+  // Beach-list guides expose their list as ItemList structured data, mirroring
+  // the region pages, so the curated beaches are machine-readable too.
+  if (landing.kind === 'beachList' && Array.isArray(dynamic.items) && dynamic.items.length > 0) {
+    jsonLd.push({
+      '@context': 'https://schema.org',
+      '@type': 'ItemList',
+      numberOfItems: dynamic.items.length,
+      itemListElement: dynamic.items.map((item, index) => ({
+        '@type': 'ListItem',
+        position: index + 1,
+        name: localized(item.beach.name, `Beach ${item.beach.id}`, locale.language),
+        url: canonicalUrlFor(beachPath(item.region, item.island, item.beach), locale),
+      })),
+    });
+  }
+
   const htmlWithHead = injectBeachHead(baseHtml, {
     title: content.title,
     description: content.description,
@@ -1060,7 +1037,8 @@ const buildSeoLandingPage = (baseHtml, landing, content, locale, imageUrl) => {
     jsonLd,
   });
 
-  return stripClientScripts(htmlWithHead).replace(/<div id="root">\s*<\/div>/i, staticSeoLandingPage(content, locale));
+  const dynamicHtml = renderLandingDynamic(landing, locale, dynamic);
+  return stripClientScripts(htmlWithHead).replace(/<div id="root">\s*<\/div>/i, staticSeoLandingPage(content, locale, dynamicHtml));
 };
 
 const buildHomePage = (baseHtml, locale, imageUrl) => {
@@ -1243,14 +1221,73 @@ const main = async () => {
     sitemapEntries.push(sitemapEntry(canonicalUrlFor('/', locale), homeSitemapImageUrl));
   }
 
+  // Consolidation 301s for the retired generic landing pages.
+  for (const redirect of landingRedirects) {
+    for (const locale of prerenderLocales) {
+      const from = localizedPath(redirect.from, locale);
+      const to = localizedPath(redirect.to, locale);
+      redirects.push(`${from} ${to} 301`);
+      redirects.push(`${from.replace(/\/$/, '')} ${to} 301`);
+    }
+  }
+
+  // Pre-pass: aggregate beaches across all regions for the data-driven guide
+  // pages. Read the full app payload (a superset of the summary) because
+  // `campsites` lives only there; region/beach page generation below stays on
+  // the summary tier unchanged.
+  const categoryBuckets = { accessible: [], family: [], camping: [] };
+  const hubRegions = [];
+  for (const region of beachIndex.regions || []) {
+    let appPayload;
+    try {
+      appPayload = await readJson(toPublicFilePath(region.appDataPath || `/data/beaches/app/${region.id}.json`));
+    } catch {
+      continue;
+    }
+
+    const island = appPayload.island;
+    if (!island?.id || !Array.isArray(island.beaches)) continue;
+
+    hubRegions.push({ region, island, path: regionPath(region, island) });
+
+    for (const beach of island.beaches) {
+      if (!Number.isInteger(beach.id) || !beach.name) continue;
+      const entry = { beach, region, island };
+      if (beach.environment?.familyFriendly === true) categoryBuckets.family.push(entry);
+      // Mirror hasDisabledAccess in services/recommendationService.ts: seatrac may
+      // sit on the beach or under metadata, and only an online unit qualifies
+      // (wrong info can strand a wheelchair user).
+      const seatrac = beach.seatrac ?? beach.metadata?.seatrac;
+      if (seatrac?.hasSeatrac === true && seatrac?.status === 'online') categoryBuckets.accessible.push(entry);
+      if (Array.isArray(beach.nearbyCamping) && beach.nearbyCamping.length > 0) categoryBuckets.camping.push(entry);
+    }
+  }
+
+  // Rank each bucket by crowd popularity (proxy for notability), then cap.
+  const LANDING_LIST_CAP = 24;
+  for (const key of Object.keys(categoryBuckets)) {
+    categoryBuckets[key].sort((a, b) => {
+      const byPopularity = (b.beach.popularityScore ?? 0) - (a.beach.popularityScore ?? 0);
+      if (byPopularity !== 0) return byPopularity;
+      return localized(a.beach.name, '', 'en').localeCompare(localized(b.beach.name, '', 'en'));
+    });
+    categoryBuckets[key] = categoryBuckets[key].slice(0, LANDING_LIST_CAP);
+  }
+
   for (const landing of seoLandingPages) {
+    const dynamic = landing.kind === 'beachList'
+      ? { items: categoryBuckets[landing.category] || [] }
+      : landing.kind === 'regionHub'
+        ? { hubRegions }
+        : {};
+
     for (const locale of prerenderLocales) {
       const content = landing.locales[locale.id];
       if (!content) continue;
 
       const landingOutputDir = outputDirForRoute(localizedPath(landing.pathName, locale));
       await mkdir(landingOutputDir, { recursive: true });
-      await writeFile(path.join(landingOutputDir, 'index.html'), buildSeoLandingPage(baseHtml, landing, content, locale, homeOgImageUrl), 'utf8');
+      await writeFile(path.join(landingOutputDir, 'index.html'), buildSeoLandingPage(baseHtml, landing, content, locale, homeOgImageUrl, dynamic), 'utf8');
       sitemapEntries.push(sitemapEntry(canonicalUrlFor(landing.pathName, locale), homeSitemapImageUrl));
       landingPageCount += 1;
     }

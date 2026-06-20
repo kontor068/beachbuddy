@@ -40,7 +40,7 @@ import { islandHasContextStrip } from './utils/islandContextStrip';
 import { QUICK_PREFERENCE_FILTERS } from './utils/preferenceFilterLabels';
 import { canOpenNavigation, openNavigation } from './utils/navigation';
 import { displayBeachName } from './utils/localization';
-import { hasDifficultTopPickAccess, hasMainstreamTopPickAccess, isAdventureBeach } from './utils/access';
+import { hasBoatOnlyAccess, hasDifficultTopPickAccess, hasMainstreamTopPickAccess, isAdventureBeach } from './utils/access';
 import { buildBeachDetailPath, buildBeachRegionPath, parseBeachDetailPath, parseBeachRegionPath, regionMatchesRouteParam } from './utils/beachUrls';
 import { describeSimpleWindSuitability } from './utils/windExposureCopy';
 import {
@@ -53,6 +53,7 @@ import { getActiveWeatherFixtureScenario } from './utils/weatherFixtures';
 import { getBeachTouristRecognitionScore } from './utils/touristPriority';
 import { getConsistentVisibleMapExposureLevels } from './utils/mapExposure';
 import type { ExposureLevel } from './utils/windExposure';
+import { getRegionWindVariationNote, type RegionBeachWindSample } from './utils/regionWindVariation';
 import { loadGeospatialExposureProfiles, type GeospatialExposureProfileLookup } from './services/geospatialExposureService';
 import { assessBeachWindExposure } from './utils/windExposureEngine';
 import { fuzzySearchScore, getSearchVariants } from './utils/searchNormalize';
@@ -2819,6 +2820,21 @@ export const App: React.FC = () => {
   // and label use the urgent selectedForecast; the beach ranking uses this so a
   // fast scrub doesn't block on re-scoring every beach each frame.
   const deferredSelectedForecast = React.useDeferredValue(selectedForecast);
+  // "Where is calmer today" — when the per-beach cluster winds show one side of the
+  // region clearly calmer than the area average, surface a single plain line in the
+  // strip. Quietly null until the background cluster forecasts land (and when the
+  // region is uniform), so it never adds noise.
+  const regionWindVariationNote = useMemo(() => {
+    if (!selectedIsland || !selectedForecast) return null;
+    const samples: RegionBeachWindSample[] = [];
+    selectedIsland.beaches.forEach(beach => {
+      const beachWind = selectedBeachForecasts[beach.id]?.wind;
+      if (beachWind && Number.isFinite(beachWind.speed)) {
+        samples.push({ lat: beach.coordinates.lat, lon: beach.coordinates.lon, windSpeedMs: beachWind.speed });
+      }
+    });
+    return getRegionWindVariationNote(selectedForecast.wind.speed, samples, selectedIsland.coordinates, language);
+  }, [selectedIsland, selectedForecast, selectedBeachForecasts, language]);
   // Score every beach ONCE per render with the location-aware inputs, then share
   // the result. Previously getFilteredBeachResults, suitableBeaches and
   // mapSuitableBeaches each re-ran calculateBeachScore (the ~500-line hot path)
@@ -3112,26 +3128,18 @@ export const App: React.FC = () => {
       return {} as Partial<Record<keyof UserPreferences, number>>;
     }
 
-    const windDirection = selectedForecast ? degToCompass(selectedForecast.wind.deg) : WindDirection.N;
-    const selectedBeaufort = selectedForecast ? getBeaufortLevel(selectedForecast.wind.speed * 3.6) : 0;
-    const effectiveSortBy = selectedBeaufort < 4 && sortBy === 'recommended' ? 'all' : sortBy;
-
+    // Honest per-attribute availability: each chip shows how many beaches in this
+    // whole island match that single filter, independent of any other active
+    // filter/preference/search/map-viewport. So "Beach bar" reads the island's
+    // real total (e.g. 4 on Milos) instead of a confusing intersection that drops
+    // to 1 when an unrelated filter is silently active.
     return QUICK_PREFERENCE_FILTERS.reduce((counts, key) => {
-      const nextPreferences = { ...preferences, [key]: true };
-      const matchingPreferenceBeaches = filterBeachesByUserPreferences(mapViewportBeaches, nextPreferences);
-      // Counts only need how many beaches pass the filters/search, which is
-      // weather-independent (scoring changes order/fields, never the count). We
-      // already omit `weather` here so getFilteredBeaches skips the heavy scoring.
-      counts[key] = getFilteredBeaches(
-        matchingPreferenceBeaches,
-        selectedFilters,
-        deferredBeachSearchQuery,
-        effectiveSortBy,
-        windDirection
+      counts[key] = selectedIsland.beaches.filter(beach =>
+        beachMatchesUserPreferences(beach, { ...defaultPreferences, [key]: true })
       ).length;
       return counts;
     }, {} as Partial<Record<keyof UserPreferences, number>>);
-  }, [deferredBeachSearchQuery, getFilteredBeaches, mapViewportBeaches, preferences, selectedFilters, selectedForecast, selectedIsland, sortBy]);
+  }, [defaultPreferences, selectedIsland]);
   const desktopAdvancedFilterResultCounts = useMemo(() => {
     if (!selectedIsland || selectedIsland.beaches.length === 0) {
       return {} as Partial<Record<FilterKey, number>>;
@@ -3146,30 +3154,22 @@ export const App: React.FC = () => {
       'rocky',
       'adventure',
     ];
-    const windDirection = selectedForecast ? degToCompass(selectedForecast.wind.deg) : WindDirection.N;
-    const selectedBeaufort = selectedForecast ? getBeaufortLevel(selectedForecast.wind.speed * 3.6) : 0;
-    const effectiveSortBy = selectedBeaufort < 4 && sortBy === 'recommended' ? 'all' : sortBy;
-    const baseBeaches = filterBeachesByUserPreferences(mapViewportBeaches, preferences);
 
+    // Honest per-attribute availability (see preferenceFilterResultCounts): count
+    // beaches in the whole island that match this single advanced filter, ignoring
+    // other active filters/search/viewport. filterBeaches with a one-key filter is
+    // exactly what selecting that chip applies, so the badge matches its own filter.
     return desktopAdvancedFilterKeys.reduce((counts, key) => {
-      const nextFilters = selectedFilters.includes(key)
-        ? selectedFilters
-        : [...selectedFilters.filter(filter => filter !== 'showAll'), key];
-
-      // Count only: omit weather so getFilteredBeaches skips per-beach scoring.
-      // The number of beaches passing the filters/search is weather-independent,
-      // so the displayed count is identical but ~7× cheaper per keystroke (this
-      // memo runs getFilteredBeaches once per advanced-filter key).
       counts[key] = getFilteredBeaches(
-        baseBeaches,
-        nextFilters,
-        deferredBeachSearchQuery,
-        effectiveSortBy,
-        windDirection
+        selectedIsland.beaches,
+        [key],
+        '',
+        'all',
+        WindDirection.N
       ).length;
       return counts;
     }, {} as Partial<Record<FilterKey, number>>);
-  }, [deferredBeachSearchQuery, getFilteredBeaches, mapViewportBeaches, preferences, selectedFilters, selectedForecast, selectedIsland, sortBy]);
+  }, [getFilteredBeaches, selectedIsland]);
   const mobileFilterKeys = useMemo(() => (
     Object.keys(t.filterOptions)
       .filter(key => key !== 'showAll' && key !== 'restaurant' && key !== 'unknown') as FilterKey[]
@@ -4318,11 +4318,20 @@ export const App: React.FC = () => {
 
     return directoryVisibleBeachCardSource.filter(item => !directoryTopRecommendationIds.has(item.beach.id));
   })();
+  // Miltos 2026-06-19: at strong wind (≥5 Bft) a boat-only beach (e.g. Κλεφτικό)
+  // isn't a real option for the day — the boats don't run and you can't drive there —
+  // so it must not appear in the recommended/explore or "Κοντά μου" lists with such
+  // weather. We drop boat-access beaches here only; they stay on the map and remain
+  // findable by an explicit name search (kept whenever the user is actually searching).
+  const shouldHideBoatAccessBeaches = currentBeaufort >= PROTECTED_FIRST_BEAUFORT && beachSearchQuery.trim().length === 0;
+  const recommendableDirectorySuitableBeachCards = shouldHideBoatAccessBeaches
+    ? directorySuitableBeachCards.filter(item => !hasBoatOnlyAccess(item.beach))
+    : directorySuitableBeachCards;
   // Guarantee a distance on every suitable card when the user's location is
   // known (some source pipelines, e.g. calm-wind days, don't carry it), so the
   // "Κοντά μου" distance sort always has a value to order by.
   const directoryHomeSuitableBeachCards = userLocation
-    ? directorySuitableBeachCards.map(item => (
+    ? recommendableDirectorySuitableBeachCards.map(item => (
         typeof item.distance === 'number' && Number.isFinite(item.distance)
           ? item
           : {
@@ -4330,7 +4339,7 @@ export const App: React.FC = () => {
               distance: calculateDistance(userLocation.lat, userLocation.lon, item.beach.coordinates.lat, item.beach.coordinates.lon),
             }
       ))
-    : directorySuitableBeachCards;
+    : recommendableDirectorySuitableBeachCards;
   const directorySuitableBeachTotalCount = directoryHomeSuitableBeachCards.length;
   const shouldShowDirectorySuitableSection = shouldShowDirectoryTopRecommendations
     ? !shouldShowAllBeachesBelowTopRecommendations && directoryHomeSuitableBeachCards.length > 0
@@ -4917,6 +4926,7 @@ export const App: React.FC = () => {
               language={language}
               selectedIsland={selectedIsland}
               allIslands={allIslands}
+              regionWindNote={regionWindVariationNote?.text}
               searchQuery={beachSearchQuery}
               activeCategory={directoryActiveCategory}
               sortBy={sortBy}

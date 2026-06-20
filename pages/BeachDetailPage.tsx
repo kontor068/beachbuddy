@@ -1,7 +1,7 @@
 import React, { useMemo, useEffect, useState, useRef } from 'react';
 import { motion } from 'motion/react';
 import {
-  ArrowLeft, MapPin, Wind, Waves, Thermometer, Droplets,
+  ArrowLeft, MapPin, Wind, Waves, Thermometer, Droplets, Leaf,
   Clock, Sun, Backpack,
   Navigation, Share2, Heart, ChevronRight, ThumbsUp, ThumbsDown, CheckCircle2,
   Camera, ExternalLink, Accessibility, AlertTriangle, Tent, Ticket, Euro
@@ -25,6 +25,7 @@ import { TodayScoreBadge } from '../components/TodayScoreBadge';
 import { generateBeachExplanation as generateUiBeachExplanation } from '../utils/beachExplanation';
 import { describeSimpleWindSuitability, describeWindExposure } from '../utils/windExposureCopy';
 import type { ExposureLevel } from '../utils/windExposure';
+import { getLocalWindNote } from '../utils/localWindNote';
 import {
   AmenityStatus,
   getAmenityChips,
@@ -598,6 +599,10 @@ export const BeachDetailPage: React.FC<BeachDetailPageProps> = ({
     describeSimpleWindSuitability(scoreResult.simpleWindSuitability, language) ||
     detailedWindExposureReason;
   const seaConditionDisplay = getSeaConditionDisplay(seaConditionScore, isExposedToTodayWind, language, selectedDate, canClaimWindProtection, seaCalmClaimAllowed, beaufortLevel, waveHeightM);
+  // The map/figures use the area-wide wind (for consistency with the overview); this
+  // one-line note quietly adds the per-spot reality from the beach's own cluster
+  // forecast, only when it genuinely differs — "a bit windier/calmer right here".
+  const localWindNote = getLocalWindNote(weatherData.wind.speed, beachWeatherById?.[beach.id]?.wind.speed, language);
   const aiExplanation = generateServiceBeachExplanation(beach, weatherData, score, userLocation, language);
   const waveCondition = getWaveCondition(isExposed, windSpeedKmh);
 
@@ -998,6 +1003,18 @@ export const BeachDetailPage: React.FC<BeachDetailPageProps> = ({
               subValue={copy.airTemp[language]}
             />
           </div>
+          {localWindNote && (
+            <p className={`flex items-center gap-2 rounded-xl px-3 py-2 text-sm font-semibold ${
+              localWindNote.tone === 'windier'
+                ? 'bg-amber-50/70 text-amber-800'
+                : 'bg-teal-50/70 text-teal-800'
+            }`}>
+              {localWindNote.tone === 'windier'
+                ? <Wind className="h-4 w-4 shrink-0" aria-hidden="true" />
+                : <Leaf className="h-4 w-4 shrink-0" aria-hidden="true" />}
+              <span>{localWindNote.text}</span>
+            </p>
+          )}
         </section>
 
         {/* 4b. Sun & light — sunset always, peak UV only when actionable (≥6) */}

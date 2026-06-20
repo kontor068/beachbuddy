@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "generatedAt": "2026-06-18T20:17:49.715Z",
+  "generatedAt": "2026-06-19T14:30:57.719Z",
   "purpose": "Offline directional geospatial exposure baseline for CalmBeach. Not user-facing proof of calm/protected conditions.",
   "source": {
     "landMask": {
@@ -41,8 +41,8 @@
   },
   "summary": {
     "regionCount": 110,
-    "beachCount": 2745,
-    "generatedProfiles": 2745,
+    "beachCount": 2746,
+    "generatedProfiles": 2746,
     "missingCoordinates": 0,
     "indexedLandPolygons": 15946,
     "regions": {
@@ -4032,49 +4032,49 @@
       },
       "south-aegean-milos": {
         "regionName": "Milos",
-        "beachCount": 42,
-        "generatedProfiles": 42,
+        "beachCount": 43,
+        "generatedProfiles": 43,
         "missingCoordinates": 0,
         "sectors": {
           "N": {
             "protected": 26,
             "partial": 8,
-            "exposed": 8
+            "exposed": 9
           },
           "NE": {
             "protected": 23,
-            "partial": 14,
+            "partial": 15,
             "exposed": 5
           },
           "E": {
-            "protected": 23,
+            "protected": 24,
             "partial": 9,
             "exposed": 10
           },
           "SE": {
-            "protected": 18,
+            "protected": 19,
             "partial": 7,
             "exposed": 17
           },
           "S": {
-            "protected": 18,
+            "protected": 19,
             "partial": 10,
             "exposed": 14
           },
           "SW": {
-            "protected": 19,
+            "protected": 20,
             "partial": 12,
             "exposed": 11
           },
           "W": {
             "protected": 26,
-            "partial": 10,
+            "partial": 11,
             "exposed": 6
           },
           "NW": {
             "protected": 26,
             "partial": 10,
-            "exposed": 6
+            "exposed": 7
           }
         }
       },

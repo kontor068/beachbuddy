@@ -496,6 +496,50 @@ const validatePlaceResolutionLedger = async () => {
   }
 };
 
+// Offline guard (no network): the summary tier feeds every map-pin / card / home / "Κοντά μου"
+// navigation link, which utils/navigation.ts builds off beach.metadata.googleMapsNavigation. So any
+// beach whose built record carries a verified Google placeId MUST carry that same placeId in the
+// summary tier — otherwise those surfaces silently fall back to a raw coordinate pin (placeId lived
+// in the detail tier only). This is exactly the regression that shipped Gregolimano (#218) as
+// coordinates. Re-run `npm run build:beach-data` if this fires.
+const validateSummaryNavPropagation = async () => {
+  const regionFiles = await listTopLevelJsonFiles(appBeachDir);
+  for (const filePath of regionFiles) {
+    let data;
+    try { data = await readJson(filePath); } catch { continue; }
+    const beaches = data?.island?.beaches;
+    if (!Array.isArray(beaches)) continue;
+
+    const regionId = data?.region?.id || data?.island?.id || path.basename(filePath, '.json');
+    const summaryPath = path.join(appBeachDir, 'summary', `${regionId}.json`);
+    let summary;
+    try {
+      summary = await readJson(summaryPath);
+    } catch {
+      // Only a concern if this region actually has a placeId to propagate.
+      if (beaches.some(beach => beach?.metadata?.googleMapsNavigation?.placeId)) {
+        addFinding('high', summaryPath,
+          `Summary tier missing for region ${regionId}; map/card/home navigation cannot resolve placeIds.`);
+      }
+      continue;
+    }
+
+    const summaryById = new Map(
+      (summary?.island?.beaches || []).map(beach => [beach.id, beach])
+    );
+    for (const beach of beaches) {
+      const placeId = beach?.metadata?.googleMapsNavigation?.placeId;
+      if (!placeId) continue;
+      const summaryPlaceId = summaryById.get(beach.id)?.metadata?.googleMapsNavigation?.placeId;
+      if (summaryPlaceId !== placeId) {
+        addFinding('high', summaryPath,
+          `Beach has a verified Google placeId in the detail tier but it is NOT in the summary tier — map/card/home navigation will drop a raw coordinate pin instead of the place card. Re-run build:beach-data.`,
+          beachLabel(beach));
+      }
+    }
+  }
+};
+
 const severityRank = { critical: 0, high: 1, medium: 2, low: 3 };
 
 const printReport = (regionFileCount, beachCount) => {
@@ -546,6 +590,7 @@ const main = async () => {
 
   await validatePhotoData();
   await validatePlaceResolutionLedger();
+  await validateSummaryNavPropagation();
 
   printReport(regionFiles.length, seenBeachIds.size);
 

@@ -16,22 +16,6 @@ interface LegalFooterProps {
 
 const LAST_UPDATED = '23 May 2026';
 
-// Internal links to the prerendered SEO gateway pages. Paths must match the
-// `seoLandingPages` pathName entries in scripts/prerenderBeachPages.mjs (Greek
-// versions live under /el). Surfacing them from the live footer gives the high
-// authority home page keyword-rich internal links and lets real users discover
-// the guides, not just crawlers reading the static fallback.
-const BEACH_GUIDES: { path: string; en: string; gr: string }[] = [
-  { path: '/best-beaches-greece-today/', en: 'Best beaches today', gr: 'Καλύτερες παραλίες σήμερα' },
-  { path: '/where-to-swim-greece-today/', en: 'Where to swim today', gr: 'Πού να κολυμπήσω σήμερα' },
-  { path: '/calm-beaches-greece-windy-day/', en: 'Calm beaches on windy days', gr: 'Απάνεμες παραλίες με αέρα' },
-  { path: '/sheltered-beaches-meltemi/', en: 'Sheltered beaches in the Meltemi', gr: 'Απάνεμες παραλίες με μελτέμι' },
-  { path: '/best-beaches-milos-today/', en: 'Best beaches in Milos', gr: 'Καλύτερες παραλίες στη Μήλο' },
-  { path: '/accessible-beaches-greece/', en: 'Accessible beaches (disabled access)', gr: 'Προσβάσιμες παραλίες ΑμεΑ' },
-  { path: '/family-beaches-greece/', en: 'Family beaches', gr: 'Οικογενειακές παραλίες' },
-  { path: '/beach-camping-greece/', en: 'Beaches with camping nearby', gr: 'Παραλίες με camping' },
-];
-
 const copy = {
   en: {
     weatherData: 'Weather/marine data',
@@ -344,23 +328,6 @@ export const LegalFooter: React.FC<LegalFooterProps> = ({ language }) => {
     <>
       <footer className="w-full border-t border-sky-100/40 bg-sky-50/60 px-4 py-7 text-center text-slate-600 shadow-[0_-1px_0_rgba(14,165,233,0.04)] backdrop-blur-sm">
         <div className="mx-auto max-w-5xl">
-          <nav aria-label={language === 'gr' ? 'Οδηγοί παραλιών' : 'Beach guides'} className="mb-5 border-b border-sky-100/60 pb-5">
-            <h2 className="mb-2 text-xs font-extrabold uppercase tracking-wide text-slate-500">
-              {language === 'gr' ? 'Οδηγοί παραλιών' : 'Beach guides'}
-            </h2>
-            <ul className="flex flex-wrap justify-center gap-x-3 gap-y-1.5">
-              {BEACH_GUIDES.map(guide => (
-                <li key={guide.path}>
-                  <a
-                    href={language === 'gr' ? `/el${guide.path}` : guide.path}
-                    className="text-xs font-semibold text-sky-700 underline-offset-4 hover:text-sky-800 hover:underline"
-                  >
-                    {language === 'gr' ? guide.gr : guide.en}
-                  </a>
-                </li>
-              ))}
-            </ul>
-          </nav>
           <p className="text-sm font-medium text-slate-600">
             © 2026 Calm Beach Greece. Discover the best beach for today.
           </p>

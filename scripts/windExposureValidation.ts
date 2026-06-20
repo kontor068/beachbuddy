@@ -588,7 +588,7 @@ const naxosWindProfilesCovered = naxosCoverage.overrideProfiles;
 
 assert(parosBeaches.length === 37, 'Coverage: Paros app data must contain 37 beaches.');
 assert(androsBeaches.length === 41, 'Coverage: Andros app data must contain 41 beaches.');
-assert(milosBeaches.length === 42, 'Coverage: Milos app data must contain 42 beaches (41 + Kleftiko #3000 added 2026-06-12).');
+assert(milosBeaches.length === 43, 'Coverage: Milos app data must contain 43 beaches (41 original + Kleftiko #3000 added 2026-06-12 + Pachaina #3054 added 2026-06-19).');
 assert(naxosBeaches.length === 39, 'Coverage: Naxos app data must contain 39 beaches.');
 assert(parosCoverage.p0Profiles === parosP0Ids.length, 'Coverage: all Paros P0 beaches must have windProfile overrides.');
 assert(androsCoverage.p0Profiles === androsP0Ids.length, 'Coverage: all Andros P0 beaches must have windProfile overrides.');
@@ -604,10 +604,11 @@ assert(androsCoverage.overrideProfiles === androsCoverage.total, 'Coverage: Andr
 assert(allProfilesCovered === 78, 'Coverage: Paros and Andros must reach 78/78 combined windProfile coverage.');
 assert(parosCoverage.unknownSourceProfiles === 0, 'Coverage: Paros should have no source-missing windProfiles after Phase 2.1.');
 assert(androsCoverage.unknownSourceProfiles === 0, 'Coverage: Andros should have no source-missing windProfiles after Phase 2.1.');
-// Kleftiko (#3000, added 2026-06-12) is a boat-only sea-cave bay intentionally served by
-// geometry backfill; the curated overrides still cover all 41 original Milos beaches.
-assert(milosCoverage.overrideProfiles === milosCoverage.total - 1, 'Coverage: Milos curated overrides must cover every beach except geometry-backfilled Kleftiko #3000.');
-assert(milosCoverage.unknownSourceProfiles === 1, 'Coverage: Milos may have exactly one source-missing windProfile (Kleftiko #3000, geometry-backfilled at runtime).');
+// Kleftiko (#3000, added 2026-06-12) and Pachaina (#3054, added 2026-06-19) are served by
+// high-confidence geometry backfill (no curated windProfile override); the curated overrides
+// still cover all 41 original Milos beaches.
+assert(milosCoverage.overrideProfiles === milosCoverage.total - 2, 'Coverage: Milos curated overrides must cover every beach except geometry-backfilled Kleftiko #3000 and Pachaina #3054.');
+assert(milosCoverage.unknownSourceProfiles === 2, 'Coverage: Milos may have exactly two source-missing windProfiles (Kleftiko #3000 and Pachaina #3054, geometry-backfilled at runtime).');
 assertExactIds(milosHighConfidenceIds, [achivadolimni.id], 'Coverage: Milos high-confidence profiles must stay limited to evidence-approved wind-sport spots');
 assert(milosCoverage.lowConfidence >= 12, 'Coverage: Milos P0 should remain conservative with many low-confidence profiles.');
 assertExactIds(

@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "generatedAt": "2026-06-12T06:15:05.745Z",
+  "generatedAt": "2026-06-19T14:30:51.925Z",
   "region": {
     "id": "south-aegean-milos",
     "name": "Milos"
@@ -36,49 +36,49 @@
     "maskConfidence": "high"
   },
   "summary": {
-    "beachCount": 42,
-    "generatedProfiles": 42,
+    "beachCount": 43,
+    "generatedProfiles": 43,
     "missingCoordinates": 0,
     "sectors": {
       "N": {
         "protected": 26,
         "partial": 8,
-        "exposed": 8
+        "exposed": 9
       },
       "NE": {
         "protected": 23,
-        "partial": 14,
+        "partial": 15,
         "exposed": 5
       },
       "E": {
-        "protected": 23,
+        "protected": 24,
         "partial": 9,
         "exposed": 10
       },
       "SE": {
-        "protected": 18,
+        "protected": 19,
         "partial": 7,
         "exposed": 17
       },
       "S": {
-        "protected": 18,
+        "protected": 19,
         "partial": 10,
         "exposed": 14
       },
       "SW": {
-        "protected": 19,
+        "protected": 20,
         "partial": 12,
         "exposed": 11
       },
       "W": {
         "protected": 26,
-        "partial": 10,
+        "partial": 11,
         "exposed": 6
       },
       "NW": {
         "protected": 26,
         "partial": 10,
-        "exposed": 6
+        "exposed": 7
       }
     }
   },
@@ -3061,6 +3061,77 @@
           "blockedRayRatio": 1,
           "onshore": -0.978,
           "intensity": 0.7
+        }
+      },
+      "confidence": "high"
+    },
+    "3054": {
+      "beachId": 3054,
+      "name": {
+        "en": "Pachaina",
+        "gr": "Πάχαινα"
+      },
+      "coordinates": {
+        "lat": 36.75253,
+        "lon": 24.49665
+      },
+      "facingDeg": 343.1,
+      "sectors": {
+        "N": {
+          "level": "exposed",
+          "fetchKm": 21.04,
+          "blockedRayRatio": 0.2,
+          "onshore": 0.957,
+          "intensity": 90
+        },
+        "NE": {
+          "level": "partial",
+          "fetchKm": 6.28,
+          "blockedRayRatio": 0.8,
+          "onshore": 0.471,
+          "intensity": 47.2
+        },
+        "E": {
+          "level": "protected",
+          "fetchKm": 0,
+          "blockedRayRatio": 1,
+          "onshore": -0.291,
+          "intensity": 21.3
+        },
+        "SE": {
+          "level": "protected",
+          "fetchKm": 0,
+          "blockedRayRatio": 1,
+          "onshore": -0.882,
+          "intensity": 3.5
+        },
+        "S": {
+          "level": "protected",
+          "fetchKm": 0,
+          "blockedRayRatio": 1,
+          "onshore": -0.957,
+          "intensity": 1.3
+        },
+        "SW": {
+          "level": "protected",
+          "fetchKm": 0.04,
+          "blockedRayRatio": 1,
+          "onshore": -0.471,
+          "intensity": 15.9
+        },
+        "W": {
+          "level": "partial",
+          "fetchKm": 6.28,
+          "blockedRayRatio": 0.8,
+          "onshore": 0.291,
+          "intensity": 41.4
+        },
+        "NW": {
+          "level": "exposed",
+          "fetchKm": 21.2,
+          "blockedRayRatio": 0.2,
+          "onshore": 0.882,
+          "intensity": 86.6
         }
       },
       "confidence": "high"

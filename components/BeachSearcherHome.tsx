@@ -93,6 +93,9 @@ interface BeachSearcherHomeProps {
   language: SupportedLanguage;
   selectedIsland: Island | null;
   allIslands: Island[];
+  /** Plain "calmer in the X of the area today" line, when the region's per-beach
+   *  winds show one side clearly calmer. Omitted when conditions are uniform. */
+  regionWindNote?: string;
   searchQuery: string;
   activeCategory: DirectoryCategory;
   sortBy: SortOption;
@@ -1471,6 +1474,7 @@ export const BeachSearcherHome: React.FC<BeachSearcherHomeProps> = ({
   language,
   selectedIsland,
   allIslands,
+  regionWindNote,
   searchQuery,
   sortBy,
   isMobileViewport = false,
@@ -1991,34 +1995,12 @@ export const BeachSearcherHome: React.FC<BeachSearcherHomeProps> = ({
       selectedForecast?.wind.deg
     )
   ), [beachWeatherContexts, selectedForecast]);
-  const getDesktopFilterDisplayCount = (item: DesktopFilterItem): number | undefined => {
-    if (!isDirectorySuitableView || !suitableBeachCards || suitableBeachCards.length === 0) {
-      return item.count;
-    }
-
-    const locale = language === 'gr' ? 'el-GR' : undefined;
-    const normalizedSearchQuery = normalizeBeachSearchQuery(searchQuery, selectedIsland, language);
-    const preferenceFilters = QUICK_PREFERENCE_FILTERS.filter(filter => (
-      preferences[filter] || (item.kind === 'preference' && item.key === filter)
-    ));
-    const advancedFilters = activeFilters.filter(filter => filter !== 'showAll');
-    if (item.kind === 'advanced' && item.key !== 'showAll' && !advancedFilters.includes(item.key)) {
-      advancedFilters.push(item.key);
-    }
-
-    return suitableBeachCards.filter(({ beach }) => {
-      const matchesSearch = normalizedSearchQuery.length === 0 || [
-        displayBeachName(beach.name, language),
-        beach.name.gr,
-        beach.name.en,
-        ...(beach.aliases || []),
-      ].some(value => value.toLocaleLowerCase(locale).includes(normalizedSearchQuery));
-
-      return matchesSearch &&
-        preferenceFilters.every(filter => beachMatchesPreferenceFilter(beach, filter)) &&
-        advancedFilters.every(filter => beachMatchesAdvancedFilter(beach, filter));
-    }).length;
-  };
+  // Each filter chip shows the honest per-attribute island total (fed by App.tsx's
+  // count memos), independent of wind / active filters / suitable-vs-all view. We
+  // deliberately do NOT recompute over the wind-filtered `suitableBeachCards` here:
+  // that made "Beach bar" read 1 on a windy Milos day (only 1 of 4 beach-bar beaches
+  // was "suitable today"), which users read as "the island has 1 beach bar".
+  const getDesktopFilterDisplayCount = (item: DesktopFilterItem): number | undefined => item.count;
   const directoryDisplayBeachCards = useMemo(() => {
     const sourceBeachCards = isDirectorySuitableView
       ? directorySuitableOnlyBeachCards
@@ -2368,7 +2350,12 @@ export const BeachSearcherHome: React.FC<BeachSearcherHomeProps> = ({
   }, [selectedForecast]);
   // Plain-language "what's happening today" line: all beaches calm vs. which
   // leeward shore the wind favours. Island-wide narrative, derived from the
-  // selected day's wind (see utils/islandDaySummary.ts).
+  // selected day's wind (see utils/islandDaySummary.ts). When the selected day is
+  // today we pass the current Greek wall-clock hour so the line stays dynamic —
+  // a morning transition that has already passed ("calm until 09:00") is dropped
+  // once that hour is behind us, leaving the live conditions. getHours() matches
+  // contextStripHourlyWind, which also reads naive location-local timestamps.
+  const contextStripNowHour = getSelectedDayOffset(selectedDate) === 0 ? new Date().getHours() : undefined;
   const contextStripDaySummary = selectedIsland
     ? buildIslandDaySummary({
       language,
@@ -2377,6 +2364,7 @@ export const BeachSearcherHome: React.FC<BeachSearcherHomeProps> = ({
       suitableCount: suitableBeachDisplayCount,
       totalCount: selectedIsland.beaches.length,
       hourlyWind: contextStripHourlyWind,
+      nowHour: contextStripNowHour,
     })
     : null;
   // When a search/filter narrows the list to a single beach, the generic
@@ -2460,6 +2448,12 @@ export const BeachSearcherHome: React.FC<BeachSearcherHomeProps> = ({
                 {contextStripDaySummary.text}
               </p>
             )
+          )}
+          {!singleMatchedBeachCard && regionWindNote && (
+            <p className="mt-0.5 inline-flex items-center gap-1.5 truncate text-sm font-semibold text-white/90">
+              <MapPin className="h-3.5 w-3.5 shrink-0" aria-hidden="true" />
+              <span className="truncate">{regionWindNote}</span>
+            </p>
           )}
         </div>
       </div>

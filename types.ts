@@ -65,6 +65,9 @@ export interface SimpleWindSuitability {
   explanationKey: WindSuitabilityExplanationKey;
   explanationText: string;
   windSector?: WindSector;
+  /** Beaufort of the wind this assessment was built for; lets copy scale its
+   *  certainty (a 5–6 Bft day definitely has wind/waves, even on a sheltered shore). */
+  windBeaufort?: number;
 }
 
 export interface BeachMapCoordinates {

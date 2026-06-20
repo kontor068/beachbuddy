@@ -322,6 +322,7 @@ export const buildSimpleWindSuitability = ({
       explanationKey: 'generally_calm',
       explanationText: 'Generally manageable choice today',
       windSector,
+      windBeaufort: beaufort,
     };
   }
 
@@ -333,6 +334,7 @@ export const buildSimpleWindSuitability = ({
       explanationKey: 'avoid_today',
       explanationText: `Strong ${windLabel} wind today - better to avoid for calm swimming`,
       windSector,
+      windBeaufort: beaufort,
     };
   }
 
@@ -344,6 +346,7 @@ export const buildSimpleWindSuitability = ({
       explanationKey: 'protected_from_wind',
       explanationText: `Better protected from today's ${windLabel} wind`,
       windSector,
+      windBeaufort: beaufort,
     };
   }
 
@@ -355,6 +358,7 @@ export const buildSimpleWindSuitability = ({
       explanationKey: 'exposed_to_wind',
       explanationText: `More exposed to today's ${windLabel} wind`,
       windSector,
+      windBeaufort: beaufort,
     };
   }
 
@@ -365,6 +369,7 @@ export const buildSimpleWindSuitability = ({
     explanationKey: 'partly_exposed',
     explanationText: `Partly exposed to today's ${windLabel} wind`,
     windSector,
+    windBeaufort: beaufort,
   };
 };
 

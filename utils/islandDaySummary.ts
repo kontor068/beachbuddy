@@ -163,16 +163,30 @@ export interface IslandDaySummaryInput {
    * two-part "until HH:00 … then …" sentence instead of a static one.
    */
   hourlyWind?: HourlyWindPoint[];
+  /**
+   * Current local (Greek) wall-clock hour, 0–23. Provide ONLY when the selected
+   * day is today; leave undefined for any other day. When set, the summary is
+   * anchored on the present hour so a transition that has already happened (e.g.
+   * "until 09:00 calm" read at 19:00) is dropped, and the line instead describes
+   * conditions from now onward. This is what keeps the strip dynamic rather than
+   * replaying a stale morning forecast.
+   */
+  nowHour?: number;
 }
+
+// The beach-relevant window of the day. Outside it we don't summarise (sea is
+// closed for swimming), and a transition before/after it isn't worth a headline.
+const BEACH_DAY_START_HOUR = 8;
+const BEACH_DAY_END_HOUR = 20;
 
 type DayRegime =
   | { kind: 'calm' }
-  | { kind: 'windy'; favoured: WindDirection; beaufort: number };
+  | { kind: 'windy'; windFrom: WindDirection; favoured: WindDirection; beaufort: number };
 
 const regimeOf = (point: HourlyWindPoint): DayRegime =>
   point.beaufort <= 2
     ? { kind: 'calm' }
-    : { kind: 'windy', favoured: LEEWARD_DIRECTION[point.windDirection], beaufort: point.beaufort };
+    : { kind: 'windy', windFrom: point.windDirection, favoured: LEEWARD_DIRECTION[point.windDirection], beaufort: point.beaufort };
 
 const sameRegime = (a: DayRegime, b: DayRegime): boolean => {
   if (a.kind === 'calm' && b.kind === 'calm') return true;
@@ -180,11 +194,13 @@ const sameRegime = (a: DayRegime, b: DayRegime): boolean => {
   return false;
 };
 
-/** First meaningful, persistent regime change during the beach hours, or null. */
-const detectTransition = (hourlyWind: HourlyWindPoint[]): { hour: number; morning: DayRegime; after: DayRegime } | null => {
-  const hours = hourlyWind
-    .filter(point => point.hour >= 8 && point.hour <= 20)
-    .sort((a, b) => a.hour - b.hour);
+/**
+ * First meaningful, persistent regime change within the given window, or null.
+ * `hours` must already be limited to the relevant part of the day and sorted —
+ * the caller decides where the window starts (the whole beach day for a future
+ * day, or "now → end of day" for today), so a past transition is never surfaced.
+ */
+const detectTransition = (hours: HourlyWindPoint[]): { hour: number; morning: DayRegime; after: DayRegime } | null => {
   if (hours.length < 3) return null;
 
   const morning = regimeOf(hours[0]);
@@ -316,20 +332,57 @@ export interface IslandDaySummary {
   allBeachesSuitable: boolean;
 }
 
+/** One-snapshot summary for a single, steady regime (no intra-day change). */
+const staticRegimeSummary = (
+  language: LanguageCode,
+  regime: DayRegime,
+  suitableCount: number,
+  totalCount: number,
+): IslandDaySummary => {
+  if (regime.kind === 'calm') {
+    const allSuitable = totalCount > 0 && suitableCount >= totalCount;
+    const kind: CalmKind = allSuitable ? 'all' : 'most';
+    return { text: calmCopy(language, kind), short: calmShort(language, kind), allBeachesSuitable: allSuitable };
+  }
+  const favoured = FAVOURED_SHORE[language][regime.favoured];
+  const windName = WIND_NAME[language][regime.windFrom];
+  return {
+    text: windyCopy(language, windName, favoured, regime.beaufort, regime.beaufort >= 6),
+    short: windyShort(language, favoured),
+    allBeachesSuitable: false,
+  };
+};
+
 export const buildIslandDaySummary = (input: IslandDaySummaryInput): IslandDaySummary | null => {
-  const { language, beaufort, windDirection, suitableCount, totalCount, hourlyWind } = input;
+  const { language, beaufort, windDirection, suitableCount, totalCount, hourlyWind, nowHour } = input;
   if (typeof beaufort !== 'number' || Number.isNaN(beaufort)) return null;
 
-  // Intra-day change takes priority: if the regime shifts during the beach hours,
-  // say so with a time rather than freezing the whole day on one snapshot.
+  // When we have hour-by-hour wind, prefer it: it lets us (a) flag an intra-day
+  // regime change with a time, and (b) — when the day is today — anchor on the
+  // current hour so the line tracks the time of day instead of replaying a
+  // morning that has already passed.
   if (hourlyWind && hourlyWind.length > 0) {
-    const transition = detectTransition(hourlyWind);
+    const isToday = typeof nowHour === 'number';
+    // Today: start the window at the current hour so a past transition is never
+    // surfaced. Any other day: the whole beach day is still ahead.
+    const fromHour = isToday ? Math.max(BEACH_DAY_START_HOUR, nowHour) : BEACH_DAY_START_HOUR;
+    const window = hourlyWind
+      .filter(point => point.hour >= fromHour && point.hour <= BEACH_DAY_END_HOUR)
+      .sort((a, b) => a.hour - b.hour);
+
+    const transition = detectTransition(window);
     if (transition) {
       return {
         text: transitionCopy(language, transition.hour, transition.morning, transition.after),
         short: transitionShort(language, transition.hour, transition.morning, transition.after),
         allBeachesSuitable: false,
       };
+    }
+    // No upcoming change. For today, the window's first hour IS "now", so describe
+    // that current regime — this is what fixes "calm until 09:00" still showing at
+    // 19:00: with the morning trimmed away, only the live windy regime remains.
+    if (isToday && window.length > 0) {
+      return staticRegimeSummary(language, regimeOf(window[0]), suitableCount, totalCount);
     }
   }
 

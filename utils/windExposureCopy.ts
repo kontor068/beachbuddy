@@ -129,46 +129,57 @@ export const describeSimpleWindSuitability = (
   const wind = windLabel(simpleWindSuitability.windSector, language);
   const strongWind = simpleWindSuitability.suitabilityColor === 'orange' ||
     simpleWindSuitability.suitabilityColor === 'red';
+  // Scale the wording's certainty to the actual wind. A 5–6 Bft day definitely has
+  // wind and waves — even a sheltered shore — so we drop "breeze"/"may have" and
+  // say it plainly. windBeaufort falls back to the colour when it is missing.
+  const beaufort = simpleWindSuitability.windBeaufort ?? (strongWind ? 5 : 3);
+  const definite = beaufort >= 5;
+  const useWind = beaufort >= 4;
 
   if (copyLang === 'gr') {
     if (simpleWindSuitability.explanationKey === 'generally_calm') {
       return 'Ήπιος άνεμος σήμερα - γενικά διαχειρίσιμη επιλογή.';
     }
-    if (simpleWindSuitability.explanationKey === 'protected_from_wind') {
-      return strongWind
-        ? `Καλύτερα προστατευμένη από το σημερινό ${wind} αεράκι, αλλά οι συνθήκες μπορεί να διαφέρουν τοπικά.`
-        : `Καλύτερα προστατευμένη από το σημερινό ${wind} αεράκι.`;
-    }
-    if (simpleWindSuitability.explanationKey === 'exposed_to_wind') {
-      return strongWind
-        ? `Πιο εκτεθειμένη στο σημερινό ${wind} αεράκι - θέλει προσοχή.`
-        : `Πιο εκτεθειμένη στο σημερινό ${wind} αεράκι.`;
-    }
     if (simpleWindSuitability.explanationKey === 'avoid_today') {
       return `Δυνατός ${wind} άνεμος σήμερα - καλύτερα να την αποφύγεις για ήρεμο μπάνιο.`;
     }
-    return strongWind
-      ? `Πλάγια έκθεση στο σημερινό ${wind} αεράκι - μπορεί να έχει αέρα ή κυματάκι.`
-      : `Μερικώς εκτεθειμένη στο σημερινό ${wind} αεράκι.`;
+    const noun = useWind ? 'άνεμο' : 'αεράκι';
+    const fromWind = `από ${useWind ? 'τον' : 'το'} σημερινό ${wind} ${noun}`;
+    const toWind = `${useWind ? 'στον' : 'στο'} σημερινό ${wind} ${noun}`;
+
+    if (simpleWindSuitability.explanationKey === 'protected_from_wind') {
+      return definite
+        ? `Πιο προστατευμένη ${fromWind} - πιο ήρεμη από τις ανοιχτές, αλλά θα έχει κι εδώ λίγο αέρα και κύμα.`
+        : `Καλύτερα προστατευμένη ${fromWind}.`;
+    }
+    if (simpleWindSuitability.explanationKey === 'exposed_to_wind') {
+      return definite
+        ? `Πιο εκτεθειμένη ${toWind} - θα έχει αισθητό αέρα και κύμα.`
+        : `Πιο εκτεθειμένη ${toWind}${useWind ? ' - θέλει προσοχή.' : '.'}`;
+    }
+    return definite
+      ? `Πλάγια έκθεση ${toWind} - θα έχει αέρα και κύμα.`
+      : `Πλάγια έκθεση ${toWind}${useWind ? ' - μπορεί να έχει λίγο αέρα ή κυματάκι.' : '.'}`;
   }
 
   if (simpleWindSuitability.explanationKey === 'generally_calm') {
     return 'Light wind today - generally manageable choice.';
   }
-  if (simpleWindSuitability.explanationKey === 'protected_from_wind') {
-    return strongWind
-      ? `Better protected from today's ${wind} wind, but conditions may still vary locally.`
-      : `Better protected from today's ${wind} wind.`;
-  }
-  if (simpleWindSuitability.explanationKey === 'exposed_to_wind') {
-    return strongWind
-      ? `More exposed to today's ${wind} wind - use caution.`
-      : `More exposed to today's ${wind} wind.`;
-  }
   if (simpleWindSuitability.explanationKey === 'avoid_today') {
     return `Strong ${wind} wind today - better to avoid for calm swimming.`;
   }
-  return strongWind
-    ? `Crosswind from today's ${wind} wind - expect some wind or chop.`
-    : `Partly exposed to today's ${wind} wind.`;
+  const enNoun = useWind ? 'wind' : 'breeze';
+  if (simpleWindSuitability.explanationKey === 'protected_from_wind') {
+    return definite
+      ? `More protected from today's ${wind} ${enNoun} - calmer than open beaches, but it will still be breezy here with some chop.`
+      : `Better protected from today's ${wind} ${enNoun}.`;
+  }
+  if (simpleWindSuitability.explanationKey === 'exposed_to_wind') {
+    return definite
+      ? `More exposed to today's ${wind} ${enNoun} - expect noticeable wind and waves.`
+      : `More exposed to today's ${wind} ${enNoun}${useWind ? ' - use caution.' : '.'}`;
+  }
+  return definite
+    ? `Crosswind from today's ${wind} ${enNoun} - it will be windy with some waves.`
+    : `Partly exposed to today's ${wind} ${enNoun}${useWind ? ' - some wind or chop possible.' : '.'}`;
 };
