@@ -1294,6 +1294,12 @@ export const BeachCard: React.FC<BeachCardProps> = ({
     : isPodium
     ? `${rankMedalBase} bg-white text-[#007a83] ring-1 ring-[#007a83]/45`
     : `${rankMedalBase} bg-sky-50 text-cyan-800 ring-1 ring-sky-100`;
+  // Podium gets the same Medal-icon pill on mobile as on desktop, so the "top 3"
+  // marker is identical across viewports (a bare teal circle was indistinguishable
+  // from the pre-existing #1 badge on phones).
+  const mobilePodiumPillClass = recommendationRank === 1
+    ? 'inline-flex min-h-8 items-center gap-1 rounded-full bg-[#007a83] px-2 py-1 text-xs font-extrabold text-white ring-1 ring-[#007a83]/30'
+    : 'inline-flex min-h-8 items-center gap-1 rounded-full bg-white px-2 py-1 text-xs font-extrabold text-[#007a83] ring-1 ring-[#007a83]/45';
   const mobileWindLabel = `${windBeaufort} Bft`;
   const mobileWaveLabel = typeof waveHeightM === 'number' && Number.isFinite(waveHeightM)
     ? `${waveHeightM.toFixed(1)} m`
@@ -1313,12 +1319,19 @@ export const BeachCard: React.FC<BeachCardProps> = ({
         <div className={`border-b px-3.5 py-3 sm:hidden ${isPodium
           ? 'border-[#007a83]/15 bg-[#007a83]/[0.05] dark:border-[#007a83]/30 dark:bg-[#007a83]/15'
           : 'border-sky-100/70 bg-white/90 dark:border-slate-800 dark:bg-slate-900/90'}`}>
-          <div className="grid min-w-0 grid-cols-[2.75rem_minmax(0,1fr)_2.75rem] items-start gap-2.5">
-            <div className="flex h-11 w-11 items-start justify-start" aria-hidden={recommendationRank === undefined ? true : undefined}>
+          <div className={`grid min-w-0 items-start gap-2.5 ${isPodium ? 'grid-cols-[auto_minmax(0,1fr)_2.75rem]' : 'grid-cols-[2.75rem_minmax(0,1fr)_2.75rem]'}`}>
+            <div className="flex h-11 min-w-11 items-start justify-start" {...(recommendationRank === undefined ? { 'aria-hidden': true } : {})}>
               {recommendationRank !== undefined && (
-                <span className={mobileRankClass} aria-label={isPodium ? podiumMedalAriaLabel : undefined}>
-                  {recommendationLabel ?? recommendationRank}
-                </span>
+                isPodium ? (
+                  <span className={mobilePodiumPillClass} aria-label={podiumMedalAriaLabel}>
+                    <Medal className="h-3.5 w-3.5 shrink-0" aria-hidden="true" />
+                    <span>{recommendationLabel ?? recommendationRank}</span>
+                  </span>
+                ) : (
+                  <span className={mobileRankClass}>
+                    {recommendationLabel ?? recommendationRank}
+                  </span>
+                )
               )}
             </div>
 
