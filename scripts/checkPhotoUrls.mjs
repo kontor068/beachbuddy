@@ -83,6 +83,27 @@ for (const e of milos) {
   }
 }
 
+// Optional --all-wm: also check every wm('File') in beachPhotos.ts, including
+// entries currently SHADOWED by a by-id photo (so never displayed). Only adds
+// URLs not already in the displayed set, labelled src 'wm-shadowed'.
+if (process.argv.includes('--all-wm')) {
+  const ts = fs.readFileSync(path.join(ROOT, 'services', 'beachPhotos.ts'), 'utf8');
+  const wm = (f) => `https://commons.wikimedia.org/w/index.php?title=Special:Redirect/file/${encodeURIComponent(f)}&width=800`;
+  const re = /wm\(\s*(['"`])((?:\\.|(?!\1)[^\\])*)\1\s*\)/g;
+  let m, added = 0;
+  while ((m = re.exec(ts))) {
+    const file = m[2].replace(/\\(.)/g, '$1');
+    const url = wm(file);
+    if (refs.has(url)) continue; // already counted (displayed name-map or dup file)
+    addRef(url, {
+      beachId: null, src: 'wm-shadowed', nameGr: '', nameEn: '', isl: '',
+      sourceFile: 'services/beachPhotos.ts', file,
+    });
+    added++;
+  }
+  process.stderr.write(`--all-wm: added ${added} shadowed/undisplayed wm() files from beachPhotos.ts\n`);
+}
+
 const urls = [...refs.keys()];
 const commonsUrls = [];
 const flickrUrls = [];
