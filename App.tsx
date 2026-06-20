@@ -3964,7 +3964,11 @@ export const App: React.FC = () => {
     // figure, score all agree) instead of the per-beach cluster wind producing a
     // different colour/Beaufort than the overview. Per-beach shelter is still
     // reflected through the geospatial exposure geometry.
-    const detailForecast = forecast[selectedDayIndex];
+    // IMPORTANT: use the HOUR-ADJUSTED selectedForecast (what the slider/region map show), not
+    // the raw day forecast — otherwise the detail mini-map tones the canonical exposure level
+    // with the day's Beaufort while the region map used the slider hour's, so the same beach
+    // reads e.g. orange in the detail map but yellow on the region map.
+    const detailForecast = selectedForecast ?? forecast[selectedDayIndex];
 
     return (
       <div>
