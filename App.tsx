@@ -4930,6 +4930,10 @@ export const App: React.FC = () => {
           windSpeed={selectedForecast?.wind.speed}
           windDirection={selectedForecast ? degToCompass(selectedForecast.wind.deg) : undefined}
           windDirectionDeg={selectedForecast?.wind.deg}
+          // Pin colours come from the canonical full-island exposure pass, so a pin keeps the
+          // SAME colour the beach card shows — and doesn't shift when filters narrow the
+          // visible set (the consistency pass is set-dependent, which made them diverge).
+          exposureLevelOverrides={canonicalMapExposureLevels}
           beachLocalWinds={mapBeachLocalWinds}
           hourSlots={mapHourSlots}
           selectedHourDt={selectedHourDt}
@@ -5323,6 +5327,7 @@ export const App: React.FC = () => {
                     windSpeed={selectedForecast?.wind.speed}
                     windDirection={selectedForecast ? degToCompass(selectedForecast.wind.deg) : undefined}
                     windDirectionDeg={selectedForecast?.wind.deg}
+                    exposureLevelOverrides={canonicalMapExposureLevels}
                               beachLocalWinds={mapBeachLocalWinds}
                     hourSlots={mapHourSlots}
                     selectedHourDt={selectedHourDt}
@@ -5625,6 +5630,7 @@ export const App: React.FC = () => {
                             windSpeed={selectedForecast?.wind.speed}
                             windDirection={selectedForecast ? degToCompass(selectedForecast.wind.deg) : undefined}
                             windDirectionDeg={selectedForecast?.wind.deg}
+                            exposureLevelOverrides={canonicalMapExposureLevels}
                                               beachLocalWinds={mapBeachLocalWinds}
                             hourSlots={mapHourSlots}
                             selectedHourDt={selectedHourDt}
