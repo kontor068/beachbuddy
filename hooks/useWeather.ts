@@ -40,6 +40,22 @@ const clampSelectedDayIndex = (index: number, forecastLength?: number, now: Date
   return Math.min(maxIndex, Math.max(minIndex, index));
 };
 
+const startOfLocalDay = (date: Date): number =>
+  new Date(date.getFullYear(), date.getMonth(), date.getDate()).getTime();
+
+// Drop forecast days that are now in the past. This keeps a tab left open across
+// midnight from still offering yesterday as a selectable day.
+const dropPastForecastDays = (
+  forecast: DailyForecast[] | null,
+  now: Date = new Date(),
+): DailyForecast[] | null => {
+  if (!forecast || forecast.length === 0) return forecast;
+  const todayStart = startOfLocalDay(now);
+  const trimmed = forecast.filter(day => startOfLocalDay(day.date) >= todayStart);
+  if (trimmed.length === 0 || trimmed.length === forecast.length) return forecast;
+  return trimmed;
+};
+
 const getNextDaySelectionBoundaryDelay = (now: Date = new Date()): number => {
   const nextBoundary = new Date(now);
 
@@ -272,11 +288,16 @@ export const useWeather = (selectedIsland: Island | undefined, language: Languag
 
   useEffect(() => {
     const timeoutId = window.setTimeout(() => {
-      setSelectedDayIndex(currentIndex => clampSelectedDayIndex(currentIndex, forecast?.length));
+      const now = new Date();
+      // Drop the day that just rolled into the past so it can no longer be
+      // selected, then refetch to extend the window with a fresh trailing day.
+      setForecast(currentForecast => dropPastForecastDays(currentForecast, now));
+      setSelectedDayIndex(currentIndex => clampSelectedDayIndex(currentIndex, forecast?.length, now));
+      loadWeatherData();
     }, getNextDaySelectionBoundaryDelay());
 
     return () => window.clearTimeout(timeoutId);
-  }, [forecast?.length, selectedDayIndex]);
+  }, [forecast?.length, selectedDayIndex, loadWeatherData]);
 
   const selectDayIndex = useCallback((index: number | ((current: number) => number)) => {
     setSelectedDayIndex(currentIndex => {

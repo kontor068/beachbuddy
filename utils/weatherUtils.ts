@@ -36,9 +36,13 @@ const summarizeDailyMarine = (items: ForecastItem[]): MarineForecast | undefined
 
 export const processForecastData = (forecastItems: ForecastItem[]): DailyForecast[] => {
   if (!forecastItems || forecastItems.length === 0) return [];
+  // Never surface days that have already passed (e.g. cached hourly items that
+  // still carry yesterday's hours when the app is re-opened just after midnight).
+  const todayString = new Date().toLocaleDateString('en-CA');
   const dailyData: { [key: string]: { items: ForecastItem[], temps: number[] } } = {};
   forecastItems.forEach(item => {
     const dayString = new Date(item.dt * 1000).toLocaleDateString('en-CA');
+    if (dayString < todayString) return;
     if (!dailyData[dayString]) dailyData[dayString] = { items: [], temps: [] };
     dailyData[dayString].items.push(item);
     // Safety check for item.main
