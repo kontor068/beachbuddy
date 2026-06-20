@@ -214,13 +214,13 @@ export const CombinedFilter: React.FC<CombinedFilterProps> = ({
     }, [tempSortBy]);
 
     const handleAllSortClick = useCallback(() => {
-        if (tempSortBy === 'protected' && tempDistanceWithinSuitable) {
-            setTempSortBy('distance');
-        } else if (tempSortBy !== 'distance') {
-            setTempSortBy('all');
-        }
+        // "Όλες" always means show all beaches — never silently switch to distance.
+        // (Previously, coming from suitable + distance-within-suitable — the default state in
+        // the "Κοντά μου" region — tapping All flipped to 'distance', so the list stayed on the
+        // suitable view instead of showing everything.)
+        setTempSortBy('all');
         setTempDistanceWithinSuitable(false);
-    }, [tempDistanceWithinSuitable, tempSortBy]);
+    }, []);
 
     const handleDistanceSortClick = useCallback(() => {
         if (tempSortBy === 'protected') {
