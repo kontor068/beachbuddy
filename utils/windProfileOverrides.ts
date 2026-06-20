@@ -1135,7 +1135,7 @@ const legacyMilosOverrideEntries: OverrideEntry[] = [
   { islandTokens: ['milos'], nameTokens: ['Achivadolimni'], profile: windProfileOverridesByBeachId[1731] },
   { islandTokens: ['milos'], nameTokens: ['Gerontas'], profile: windProfileOverridesByBeachId[1732] },
   { islandTokens: ['milos'], nameTokens: ['Gerania'], profile: windProfileOverridesByBeachId[1733] },
-  { islandTokens: ['milos'], nameTokens: ['Theiafes', 'Thiafes'], profile: windProfileOverridesByBeachId[1734] },
+  { islandTokens: ['milos'], nameTokens: ['Theiafes', 'Thiafes', 'Thiorychio'], profile: windProfileOverridesByBeachId[1734] },
   { islandTokens: ['milos'], nameTokens: ['Kapros'], profile: windProfileOverridesByBeachId[1736] },
   { islandTokens: ['milos'], nameTokens: ['Katergo'], profile: windProfileOverridesByBeachId[1737] },
   { islandTokens: ['milos'], nameTokens: ['Kipoi', 'Kipi'], profile: windProfileOverridesByBeachId[1738] },

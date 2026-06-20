@@ -382,14 +382,14 @@ const androsPhase21Ids = [
 ];
 const milosP0Names = [
   'Agios Ioannis', 'Agios Sostis', 'Agia Kyriaki', 'Ammoudaraki', 'Achivadolimni',
-  'Gerontas', 'Gerania', 'Thiafes', 'Kapros', 'Katergo', 'Kipi', 'Lagkada',
+  'Gerontas', 'Gerania', 'Thiorychio', 'Kapros', 'Katergo', 'Kipi', 'Lagkada',
   'Navtikos Omilos Milou', 'Nerodafni', 'Palaiochori', 'Papafragkas', 'Papikinou',
   'Plathiena', 'Provatas', 'Rivari', 'Sarakiniko', 'Tourkothalassa', 'Triades',
   'Tsigkrado', 'Fatourena', 'Fyriplaka', 'Fyropotamos', 'Psathi', 'Psarovolada',
 ];
 const milosPhase3CoverageNames = [
   'Agios Dimitrios', 'Kalamos', 'Kampanes', 'Paralia Angathia', 'Fyrlingkos',
-  'Pollonia', 'Agkali', 'Voudia', 'Kastanas', 'Kolympisionas', 'Rema', 'Tria Pigadia',
+  'Pollonia', 'Agkali', 'Voudia', 'Kastanas', 'Kolympisionas', 'Tria Pigadia',
 ];
 const naxosPhase1CoverageNames = [
   'Agia Anna', 'Agiassos', 'Agii Theodori', 'Agios Georgios', 'Agios Prokopios',
@@ -588,7 +588,7 @@ const naxosWindProfilesCovered = naxosCoverage.overrideProfiles;
 
 assert(parosBeaches.length === 37, 'Coverage: Paros app data must contain 37 beaches.');
 assert(androsBeaches.length === 41, 'Coverage: Andros app data must contain 41 beaches.');
-assert(milosBeaches.length === 43, 'Coverage: Milos app data must contain 43 beaches (41 original + Kleftiko #3000 added 2026-06-12 + Pachaina #3054 added 2026-06-19).');
+assert(milosBeaches.length === 42, 'Coverage: Milos app data must contain 42 beaches (41 original + Kleftiko #3000 added 2026-06-12 + Pachaina #3054 added 2026-06-19, − Rema #1937 removed in the 2026-06-20 Milos data refresh).');
 assert(naxosBeaches.length === 39, 'Coverage: Naxos app data must contain 39 beaches.');
 assert(parosCoverage.p0Profiles === parosP0Ids.length, 'Coverage: all Paros P0 beaches must have windProfile overrides.');
 assert(androsCoverage.p0Profiles === androsP0Ids.length, 'Coverage: all Andros P0 beaches must have windProfile overrides.');
@@ -679,8 +679,7 @@ assert(kythnosNorthFourMapLevels.get(1886) === 'exposed', 'Kythnos N 4BFT: Mikro
   // the Pollonia channel headlands, so these NE-coast beaches drop from 6-9 km
   // of phantom north fetch to 0-4 km and their N sector is now protected.
   1933, // Agkali
-  1937, // Rema
-  1906, // Thiafes
+  1906, // Thiorychio (formerly Thiafes)
 ].forEach(id => {
   assert(milosNorthFourMapLevels.get(id) === 'protected', `Milos N 4BFT: ${id} should show protected/blue when geospatial north exposure is protected.`);
 });
