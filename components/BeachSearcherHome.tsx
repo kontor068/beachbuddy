@@ -1891,12 +1891,13 @@ export const BeachSearcherHome: React.FC<BeachSearcherHomeProps> = ({
     ? suitableBeachTotalCount
     : weatherBeachCards.length;
   const hasSuitableSortOption = Boolean(selectedIsland);
-  // On mobile the sort lives in the filter sheet (App-level `sortBy`), so the view is decided
-  // straight from it: "Όλες" (sortBy==='all') → full list, anything else → suitable list. This
-  // is derived directly (no effect) so applying "Όλες" reliably shows all beaches. Desktop keeps
-  // using its inline sort dropdown state (`directoryViewCriteria.suitable`).
+  // "Όλες" from the mobile filter sheet sets sortBy='all' and must always show the full list —
+  // viewport-independent, because that sheet is used below the lg breakpoint (1024px) while
+  // isMobileViewport only tracks <640px. So: sortBy==='all' → all list everywhere; otherwise
+  // fall back to the desktop dropdown's state. (Desktop never sets sortBy='all', so it keeps
+  // using directoryViewCriteria.suitable unchanged.)
   const isDirectorySuitableView = hasSuitableSortOption && (
-    isMobileViewport ? sortBy !== 'all' : directoryViewCriteria.suitable
+    sortBy === 'all' ? false : directoryViewCriteria.suitable
   );
 
   useEffect(() => {
