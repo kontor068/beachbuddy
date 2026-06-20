@@ -3411,7 +3411,12 @@ export const BeachSearcherHome: React.FC<BeachSearcherHomeProps> = ({
                 // When there's no dedicated top-3 carousel, THIS suitable carousel is the
                 // numbered "best picks" surface (cards get rank 1,2,3…), so its first three
                 // are the day's de-facto top 3 and earn the podium frame. Ranks 4+ stay plain.
-                const cardRank = isNameSearchActive || hasTopRecommendationView
+                // BUT when amenity/preference filters are active the list is a filtered subset,
+                // not the day's ranking — so a beach must NOT wear a "No 1" medal just because
+                // the filter left only a few. Drop the rank/podium then (mirrors how App hides
+                // the top-recommendations carousel when hasActiveSearchOrFilters).
+                const hasActiveDirectoryFilters = (activeFilterCount ?? 0) > 0;
+                const cardRank = isNameSearchActive || hasTopRecommendationView || hasActiveDirectoryFilters
                   ? undefined
                   : weatherBeachCardRankStart + index;
                 return (
