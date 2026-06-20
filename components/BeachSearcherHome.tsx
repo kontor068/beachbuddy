@@ -1555,17 +1555,6 @@ export const BeachSearcherHome: React.FC<BeachSearcherHomeProps> = ({
     distance: false,
   });
   const isDistanceSortActive = directoryViewCriteria.distance || suitableDistanceSortActive;
-  // On mobile the sort lives inside the filter sheet, which drives the App-level `sortBy`.
-  // Mirror it into the local directory view so applying "Όλες" actually shows the full list
-  // (and "Καταλληλότερες" the suitable one). Without this the view stayed on the suitable
-  // list no matter what was applied. Desktop keeps using the inline sort dropdown directly.
-  useEffect(() => {
-    if (!isMobileViewport) return;
-    setDirectoryViewCriteria(current => {
-      const nextSuitable = sortBy !== 'all';
-      return current.suitable === nextSuitable ? current : { ...current, suitable: nextSuitable };
-    });
-  }, [isMobileViewport, sortBy]);
   const [localAllBeachesPanelOpen, setLocalAllBeachesPanelOpen] = useState(false);
   const [localWeatherPanelOpen, setLocalWeatherPanelOpen] = useState(false);
   const isAllBeachesPanelOpen = controlledAllBeachesPanelOpen ?? localAllBeachesPanelOpen;
@@ -1902,7 +1891,13 @@ export const BeachSearcherHome: React.FC<BeachSearcherHomeProps> = ({
     ? suitableBeachTotalCount
     : weatherBeachCards.length;
   const hasSuitableSortOption = Boolean(selectedIsland);
-  const isDirectorySuitableView = hasSuitableSortOption && directoryViewCriteria.suitable;
+  // On mobile the sort lives in the filter sheet (App-level `sortBy`), so the view is decided
+  // straight from it: "Όλες" (sortBy==='all') → full list, anything else → suitable list. This
+  // is derived directly (no effect) so applying "Όλες" reliably shows all beaches. Desktop keeps
+  // using its inline sort dropdown state (`directoryViewCriteria.suitable`).
+  const isDirectorySuitableView = hasSuitableSortOption && (
+    isMobileViewport ? sortBy !== 'all' : directoryViewCriteria.suitable
+  );
 
   useEffect(() => {
     if (!onActiveSuitableBeachChange) return undefined;
