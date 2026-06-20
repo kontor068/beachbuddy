@@ -1613,7 +1613,10 @@ export const BeachSearcherHome: React.FC<BeachSearcherHomeProps> = ({
       isActive: activeFilters.includes(filter.key),
     })),
     ...visibleDesktopSecondaryPreferenceFilters.map(buildPreferenceItem),
-  ];
+  ]
+    // Hide a chip whose (faceted) count is 0 for the CURRENT selection — adding it would give
+    // no results. Active chips always stay so they can be turned off; an unknown count is kept.
+    .filter(item => item.isActive || item.count === undefined || item.count > 0);
   const [desktopVisibleFilterCount, setDesktopVisibleFilterCount] = useState(desktopFilterItems.length);
   const desktopFilterMeasureKey = desktopFilterItems
     .map(item => `${item.itemKey}:${item.label}:${item.count ?? ''}:${item.isActive ? 1 : 0}`)
