@@ -4430,10 +4430,18 @@ export const App: React.FC = () => {
     ));
     const topBeachId = sorted[0]?.beach.id;
 
-    return sorted
-      .filter(item => item.beach.id !== topBeachId)
-      .slice(0, 16)
-      .length;
+    // A separate "top pick" hero is only shown when there are no active filters/search
+    // (see shouldDisplayDirectoryTopPick). When it's shown, the suitable list excludes that
+    // beach — but with filters active there is no hero, so every suitable beach is listed.
+    // Only drop the top beach in the no-filters case, otherwise the modal promised one fewer
+    // than the list actually shows.
+    const hasActiveContext = normalizedFilters.some(filter => filter !== 'showAll')
+      || beachSearchQuery.trim().length > 0;
+    const ranked = hasActiveContext
+      ? sorted
+      : sorted.filter(item => item.beach.id !== topBeachId);
+
+    return ranked.slice(0, 16).length;
   };
   const directoryTopBeachName = directoryTopBeach
     ? displayBeachName(directoryTopBeach.beach.name, language)
