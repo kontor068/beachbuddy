@@ -1914,8 +1914,16 @@ export const BeachSearcherHome: React.FC<BeachSearcherHomeProps> = ({
     }
 
     if ((!hasTopRecommendationView && !isDirectorySuitableView) || !selectedIsland || (topRecommendationBeachCards.length === 0 && weatherBeachCards.length === 0)) {
-      activeSuitableBeachIdRef.current = undefined;
-      onActiveSuitableBeachChange(undefined, { resumeFollow: false });
+      // In the "Όλες" (all-beaches) view the directory carousel effect owns the map
+      // highlight. Don't clear it here: this effect re-runs on nearly every render
+      // (the suitable-cards array is rebuilt each render), and clearing would wipe
+      // the highlight the directory carousel just set — so the pin would never blink
+      // while browsing "Όλες", unlike "Καταλληλότερες".
+      const directoryCarouselOwnsHighlight = isMobileViewport && !isDirectorySuitableView && Boolean(selectedIsland);
+      if (!directoryCarouselOwnsHighlight) {
+        activeSuitableBeachIdRef.current = undefined;
+        onActiveSuitableBeachChange(undefined, { resumeFollow: false });
+      }
       return undefined;
     }
 
