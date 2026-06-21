@@ -318,31 +318,35 @@ export const getNavigationUrl = (beach: NavigationBeach, mobile = isMobileDevice
     return undefined;
   }
 
-  // A verified Place ID makes Maps open the EXACT place card (query_place_id for search,
-  // destination_place_id for directions) — the reliable alternative to a fragile name string.
   const placeId = action.destination.placeId;
 
-  // When we ship a Place ID, the destination/query TEXT is the beach COORDINATE rather than the
-  // place name. Reason: the Maps universal links — especially the native mobile app opening a
-  // /dir/ link — frequently RE-GEOCODE the text and under-prioritize *_place_id, and a beach name
-  // resolves to a nearby resort/restaurant/locality (e.g. "Παραλία Ψαροβολάδα, Milos" -> Psaravolada
-  // Restaurant 172 m away; "Θειάφες, Milos" -> a beach 562 m away). The Place ID still upgrades the
-  // link to the exact Google card when honored; the coordinate guarantees the pin lands on the beach
-  // when it is not. Without a Place ID we keep the human-readable destination value.
-  const placeIdCoordinate = placeId ? getBestCoordinate(beach) : undefined;
-  const destinationText = placeIdCoordinate ? formatCoordinate(placeIdCoordinate) : action.destination.value;
-  const encodedDestination = encodeURIComponent(destinationText);
-  const placeIdParam = placeId ? `&query_place_id=${encodeURIComponent(placeId)}` : '';
-  const dirPlaceIdParam = placeId ? `&destination_place_id=${encodeURIComponent(placeId)}` : '';
+  // A verified Place ID opens the EXACT Google place card via the /search/ endpoint's
+  // query_place_id — honored reliably on BOTH desktop and mobile. We carry the Google-verified place
+  // NAME as the human-readable query text so the card titles the right beach, while query_place_id
+  // pins the exact place. This replaces the earlier coordinate-as-destination /dir/ link: a raw
+  // coordinate drops a pin that Google labels with the NEAREST named POI, which on tightly-packed
+  // shores is a *different* beach (e.g. Μαρτσέλο's pin is correct but sits 52 m from Google's
+  // "Παραλία Κριός" marker, so the /dir/ link surfaced as Κριός). The place card costs one extra tap
+  // to start directions on mobile, but always shows the correct beach. Note: destination_place_id on
+  // a mobile /dir/ link is under-prioritized by the native app (it re-geocodes the text), which is
+  // why we route the Place ID through /search/ rather than /dir/.
+  if (placeId) {
+    const label = encodeURIComponent(action.destination.value);
+    return `https://www.google.com/maps/search/?api=1&query=${label}&query_place_id=${encodeURIComponent(placeId)}`;
+  }
+
+  // No Place ID: route by the destination value — a beach COORDINATE for the collision-immune
+  // default, or a last-resort name query when there is no coordinate at all.
+  const encodedDestination = encodeURIComponent(action.destination.value);
 
   // 'locate' is a position only — always the search API (even on mobile), no routing promise.
   if (action.kind === 'locate') {
-    return `https://www.google.com/maps/search/?api=1&query=${encodedDestination}${placeIdParam}`;
+    return `https://www.google.com/maps/search/?api=1&query=${encodedDestination}`;
   }
 
   return mobile
-    ? `https://www.google.com/maps/dir/?api=1&destination=${encodedDestination}${dirPlaceIdParam}`
-    : `https://www.google.com/maps/search/?api=1&query=${encodedDestination}${placeIdParam}`;
+    ? `https://www.google.com/maps/dir/?api=1&destination=${encodedDestination}`
+    : `https://www.google.com/maps/search/?api=1&query=${encodedDestination}`;
 };
 
 export const openNavigation = (beach: NavigationBeach) => {

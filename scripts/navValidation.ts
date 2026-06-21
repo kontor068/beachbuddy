@@ -17,10 +17,10 @@ for (const f of readdirSync(appDir).filter(n => n.endsWith('.json'))) {
 
 type Case = { id: number; label: string; expectKind: 'directions' | 'locate' | 'none'; expectBadge?: string; expectUrlIncludes?: string; note: string };
 const cases: Case[] = [
-  { id: 2012, label: 'Plaka Naxos', expectKind: 'directions', expectUrlIncludes: '/dir/', note: 'verified/coordinates -> directions to coords (mobile dir)' },
+  { id: 2012, label: 'Plaka Naxos', expectKind: 'directions', expectUrlIncludes: 'query_place_id=ChIJjWrfzhENmBQRB4Q4yH9ItLM', note: 'verified + placeId -> /search/ place card carrying query_place_id (opens the EXACT Google card)' },
   { id: 1922, label: 'Sarakiniko Milos', expectKind: 'directions', expectUrlIncludes: '/dir/', note: 'verified/coordinates (cross-island collision) -> directions to coords' },
   { id: 1707, label: 'Lefkivari Andros', expectKind: 'directions', note: 'verified/place, no query -> directions to coordinate (nationwide coord-first fallback, 2026-06-15)' },
-  { id: 1848, label: 'Lakos Kimolos', expectKind: 'directions', expectUrlIncludes: 'destination_place_id=ChIJpWM4sGHnmBQRGHsHcRpgWFk', note: 'verified + placeId -> directions to the beach COORDINATE carrying destination_place_id (name text is re-geocoded by the Maps app, so we no longer trust it)' },
+  { id: 1848, label: 'Lakos Kimolos', expectKind: 'directions', expectUrlIncludes: 'query_place_id=ChIJpWM4sGHnmBQRGHsHcRpgWFk', note: 'verified + placeId -> /search/ place card carrying query_place_id (opens the EXACT Google card with the right name; a coordinate /dir/ link mislabels the pin with the nearest POI)' },
   { id: 2062, label: 'Red Beach Santorini', expectKind: 'locate', expectBadge: 'boat-access', note: 'verified BUT boat_only -> boat rule wins -> locate' },
   { id: 1159, label: 'Egkremni Lefkada', expectKind: 'locate', expectBadge: 'boat-access', note: 'ABSENT(?) boat_only -> locate' },
   { id: 2011, label: 'Panormos Naxos', expectKind: 'locate', expectBadge: 'nav-unavailable', note: 'blocked -> locate + nav-unavailable' },
