@@ -2474,7 +2474,11 @@ export const BeachSearcherHome: React.FC<BeachSearcherHomeProps> = ({
               At 4–5 Bft that count reads like "great for a swim" when it isn't;
               the honest, useful framing is which sheltered coast to head for.
               Mobile gets the condensed shore+time line, desktop the full sentence. */}
-          {!singleMatchedBeachCard && contextStripDaySummary && (
+          {/* The region note below ("πιο ήρεμα στα …") says the same thing as this
+              leeward-shore line, so when it's present we drop this one to avoid the
+              duplicate; this line stays as the fallback whenever the region note is
+              absent (the common case) so there's always wind guidance. */}
+          {!singleMatchedBeachCard && contextStripDaySummary && !regionWindNote && (
             isMobileViewport ? (
               // Wrap to two lines instead of truncating: the condensed line can still
               // be long with the bigger compass words (e.g. «Ευνοούνται οι
