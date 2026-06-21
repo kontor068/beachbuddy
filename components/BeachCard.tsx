@@ -1409,19 +1409,19 @@ export const BeachCard: React.FC<BeachCardProps> = ({
             {/* Fixed 2-row slot so every card reserves the same height regardless of
                 how many feature chips a beach has — keeps the carousel cards uniform. */}
             {featureChips.length > 0 ? (
-              <div className="grid h-[4.875rem] min-w-0 grid-cols-2 auto-rows-[2.25rem] content-start gap-1.5 overflow-hidden">
+              <div className="grid min-h-[4.875rem] min-w-0 grid-cols-2 auto-rows-min content-start gap-1.5 overflow-hidden">
                 {featureChips.slice(0, 4).map(chip => (
                   <span
                     key={chip.key}
-                    className="inline-flex h-9 w-full min-w-0 items-center justify-center gap-1.5 overflow-hidden rounded-xl border border-cyan-100 bg-cyan-50/70 px-2.5 py-1.5 text-xs font-semibold leading-tight text-cyan-800"
+                    className="inline-flex min-h-9 w-full min-w-0 items-center justify-center gap-1.5 overflow-hidden rounded-xl border border-cyan-100 bg-cyan-50/70 px-2 py-1 text-xs font-semibold leading-tight text-cyan-800"
                   >
                     {chip.icon}
-                    <span className="min-w-0 truncate leading-tight">{chip.label}</span>
+                    <span className="min-w-0 line-clamp-2 text-center leading-tight">{chip.label}</span>
                   </span>
                 ))}
               </div>
             ) : !showMobileProtectionChip ? (
-              <div className="grid h-[4.875rem] content-start overflow-hidden">
+              <div className="grid min-h-[4.875rem] content-start overflow-hidden">
                 <span className="inline-flex min-h-9 w-full min-w-0 items-center justify-start gap-1.5 overflow-hidden rounded-xl border border-slate-200/70 bg-slate-50/70 px-2.5 py-1.5 text-xs font-semibold leading-tight text-slate-600">
                   <Info className="h-3.5 w-3.5 shrink-0" />
                   <span className="min-w-0 line-clamp-2 leading-tight">{localizedCardCopy.localExposureCheck}</span>
