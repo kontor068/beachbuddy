@@ -3385,7 +3385,7 @@ export const BeachSearcherHome: React.FC<BeachSearcherHomeProps> = ({
               <div className="mb-3 flex items-center gap-3 px-1 lg:px-5">
                 <span className="h-px flex-1 bg-slate-300/70" aria-hidden="true" />
                 <div className="max-w-full shrink-0 rounded-full border border-white/80 bg-white/90 px-3 py-1.5 text-center shadow-sm shadow-sky-900/10 ring-1 ring-white/50 backdrop-blur-md">
-                  <h2 className="truncate text-xs font-extrabold leading-none tracking-normal text-slate-800 sm:text-sm">
+                  <h2 className="line-clamp-2 text-xs font-extrabold leading-tight tracking-normal text-slate-800 sm:text-sm">
                     {topRecommendationsLabel}
                   </h2>
                 </div>
@@ -3419,7 +3419,7 @@ export const BeachSearcherHome: React.FC<BeachSearcherHomeProps> = ({
           <div id={selectedIsland ? 'suitable-beaches-section' : undefined} className="mb-3 flex items-center gap-3 px-1 lg:px-5">
             <span className="h-px flex-1 bg-slate-300/70" aria-hidden="true" />
             <div className="max-w-full shrink-0 rounded-full border border-white/80 bg-white/86 px-3 py-1.5 text-center shadow-sm shadow-sky-900/10 ring-1 ring-white/50 backdrop-blur-md">
-              <h2 className="truncate text-xs font-extrabold leading-none tracking-normal text-slate-700 sm:text-sm">
+              <h2 className="line-clamp-2 text-xs font-extrabold leading-tight tracking-normal text-slate-700 sm:text-sm">
                 {selectedIsland ? withCount(suitableSectionLabel, suitableBeachDisplayCount) : copy.popularDestinations}
               </h2>
             </div>
@@ -3577,7 +3577,7 @@ export const BeachSearcherHome: React.FC<BeachSearcherHomeProps> = ({
               <div className="mb-3 flex items-center gap-3 px-1">
                 <span className="h-px flex-1 bg-slate-300/70" aria-hidden="true" />
                 <div className="max-w-full shrink-0 rounded-full border border-white/80 bg-white/86 px-3 py-1.5 text-center shadow-sm shadow-sky-900/10 ring-1 ring-white/50 backdrop-blur-md">
-                  <h2 className="truncate text-xs font-extrabold leading-none tracking-normal text-slate-700">
+                  <h2 className="line-clamp-2 text-xs font-extrabold leading-tight tracking-normal text-slate-700">
                     {withCount(directoryTitle, directoryDisplayBeachCards.length)}
                   </h2>
                 </div>
