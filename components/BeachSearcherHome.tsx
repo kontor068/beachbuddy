@@ -2476,7 +2476,10 @@ export const BeachSearcherHome: React.FC<BeachSearcherHomeProps> = ({
               Mobile gets the condensed shore+time line, desktop the full sentence. */}
           {!singleMatchedBeachCard && contextStripDaySummary && (
             isMobileViewport ? (
-              <p className="mt-0.5 truncate text-sm font-semibold text-white/90">
+              // Wrap to two lines instead of truncating: the condensed line can still
+              // be long with the bigger compass words (e.g. «Ευνοούνται οι
+              // βορειοανατολικές»), and the strip's min-height lets it grow.
+              <p className="mt-0.5 line-clamp-2 text-sm font-semibold leading-snug text-white/90">
                 {contextStripDaySummary.short}
               </p>
             ) : (
