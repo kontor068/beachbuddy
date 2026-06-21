@@ -168,6 +168,8 @@ interface BeachSearcherHomeProps {
   onBeachClick: (beach: Beach) => void;
   onSelectIsland: (island: Island) => void;
   strongWindContext?: boolean;
+  /** True while the region's wind-exposure geometry is still loading. Cards hold back a favourable "sheltered/υπήνεμη" claim until it lands, so they never flash a label the geometry then retracts. */
+  isExposureLoading?: boolean;
 }
 
 const DRAG_SCROLL_THRESHOLD_PX = 6;
@@ -1547,6 +1549,7 @@ export const BeachSearcherHome: React.FC<BeachSearcherHomeProps> = ({
   onBeachClick,
   onSelectIsland,
   strongWindContext = false,
+  isExposureLoading = false,
 }) => {
   const copy = getLocalizedCopy(language, homeCopy);
   const topChoiceCopy = getTopChoiceLabel(language, selectedDate);
@@ -2747,11 +2750,20 @@ export const BeachSearcherHome: React.FC<BeachSearcherHomeProps> = ({
     const alignsToMapLessExposed = Boolean(options.alignExposureToMap && (
       visibleMapExposureLevel === 'protected' || visibleMapExposureLevel === 'partial'
     ));
-    const exposureLevel = options.alignExposureToMap && visibleMapExposureLevel
+    const computedExposureLevel = options.alignExposureToMap && visibleMapExposureLevel
       ? visibleMapExposureLevel
       : rawExposureLevel === 'protected' && visibleMapExposureLevel && visibleMapExposureLevel !== 'protected'
       ? 'partial'
       : rawExposureLevel;
+    // Until the region's wind-exposure geometry has loaded, a beach scored only
+    // from its authored profile can read protected/partial and flash a favourable
+    // "Υπήνεμη/Προστατευμένη" endorsement that the geometry then retracts (escalating
+    // it to exposed). Hold the favourable claim back while loading — exposed reads
+    // stay, since the geometry only escalates — so a card never shows a sheltered
+    // label we immediately take away. Matches how the map hides markers until then.
+    const exposureLevel = isExposureLoading && computedExposureLevel !== 'exposed'
+      ? undefined
+      : computedExposureLevel;
     const isExposed = exposureLevel
       ? exposureLevel !== 'protected'
       : options.context?.isExposed ?? directContext.isExposed ?? false;
@@ -2761,7 +2773,9 @@ export const BeachSearcherHome: React.FC<BeachSearcherHomeProps> = ({
       ? alignsToMapProtected || rawCanClaimWindProtection === true
       : false;
     const seaCalmClaimAllowed = options.context?.seaCalmClaimAllowed ?? directContext.seaCalmClaimAllowed ?? weatherContext?.seaCalmClaimAllowed;
-    const lessExposedToday = alignsToMapLessExposed
+    const lessExposedToday = isExposureLoading
+      ? false
+      : alignsToMapLessExposed
       ? true
       : options.alignExposureToMap && visibleMapExposureLevel === 'exposed'
       ? false
