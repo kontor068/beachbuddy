@@ -98,7 +98,7 @@ const urlLocsFromSitemap = sitemap => Array.from(sitemap.matchAll(/<loc>([\s\S]*
 const imageLocsFromSitemap = sitemap => Array.from(sitemap.matchAll(/<image:loc>([\s\S]*?)<\/image:loc>/g))
   .map(match => decodeEntities(match[1]).trim());
 
-const checkPage = async ({ label, url, requiredTypes, requiredHreflangs = [] }) => {
+const checkPage = async ({ label, url, requiredTypes, requiredHreflangs = [], recommendedTypes = [], minInternalBeachLinks = 0 }) => {
   const filePath = distPathForUrl(url);
   if (!await exists(filePath)) {
     fail(`${label}: generated file missing at ${filePath}`);
@@ -137,6 +137,28 @@ const checkPage = async ({ label, url, requiredTypes, requiredHreflangs = [] }) 
 
   for (const type of requiredTypes) {
     if (!jsonLd.some(block => hasJsonLdType(block, type))) fail(`${label}: missing JSON-LD type ${type}`);
+    else pass();
+  }
+
+  for (const type of recommendedTypes) {
+    if (!jsonLd.some(block => hasJsonLdType(block, type))) warn(`${label}: missing recommended JSON-LD type ${type}`);
+    else pass();
+  }
+
+  // FAQPage, when present, must carry real Question/Answer pairs.
+  const faqBlock = jsonLd.find(block => hasJsonLdType(block, 'FAQPage'));
+  if (faqBlock) {
+    const questions = Array.isArray(faqBlock.mainEntity) ? faqBlock.mainEntity : [];
+    const wellFormed = questions.length > 0 && questions.every(q => q?.['@type'] === 'Question' && q?.name && q?.acceptedAnswer?.text);
+    if (!wellFormed) fail(`${label}: FAQPage has malformed Question/Answer entries`);
+    else pass();
+  }
+
+  // Crawlability: the page must link out to other beach pages with real anchors
+  // (not just self-canonical), so it is not a dead-end for crawlers.
+  if (minInternalBeachLinks > 0) {
+    const anchorBeachLinks = (html.match(/<a\s[^>]*href=["'][^"']*\/beaches\/[^"']*["']/gi) || []).length;
+    if (anchorBeachLinks < minInternalBeachLinks) fail(`${label}: only ${anchorBeachLinks} internal /beaches/ anchor links, expected >= ${minInternalBeachLinks} (crawl dead-end risk)`);
     else pass();
   }
 
@@ -277,6 +299,7 @@ const main = async () => {
 
   const sampleBeachUrl = urls.find(url => /\/beaches\/milos\/\d+-/.test(new URL(url).pathname))
     || urls.find(url => /\/beaches\/[^/]+\/\d+-/.test(new URL(url).pathname));
+  const sampleIntentUrl = urls.find(url => /^\/(sheltered|family)-beaches\/[^/]+\/$/.test(new URL(url).pathname));
 
   await checkPage({
     label: 'home',
@@ -314,10 +337,24 @@ const main = async () => {
       label: 'sample beach detail',
       url: sampleBeachUrl,
       requiredTypes: ['TouristAttraction', 'GeoCoordinates', 'BreadcrumbList'],
+      recommendedTypes: ['FAQPage'],
       requiredHreflangs: ['en', 'el', 'x-default'],
+      minInternalBeachLinks: 2,
     });
   } else {
     fail('No beach detail URL found in sitemap.xml');
+  }
+
+  if (sampleIntentUrl) {
+    await checkPage({
+      label: 'island intent guide',
+      url: sampleIntentUrl,
+      requiredTypes: ['CollectionPage', 'ItemList', 'BreadcrumbList', 'FAQPage'],
+      requiredHreflangs: ['en', 'el', 'x-default'],
+      minInternalBeachLinks: 2,
+    });
+  } else {
+    warn('No per-island intent guide found in sitemap.xml (did any island clear the minimum?)');
   }
 
   await checkImages(imageLocs);

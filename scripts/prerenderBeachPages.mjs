@@ -421,6 +421,76 @@ const seoLandingPages = [
   },
 ];
 
+// Programmatic per-island intent pages. Each (island × intent) page is generated
+// ONLY when the island has at least ISLAND_INTENT_MIN matching beaches, so we
+// never ship near-empty doorway pages. Copy is islandName-specific and the beach
+// list is real, so each page is distinct from the national guide and from one
+// another. `match` uses static, defensible signals (no live data on a static
+// page): sheltered = oriented away from the northerly Meltemi; family = the
+// curated family-friendly flag.
+const ISLAND_INTENT_MIN = 5;
+const ISLAND_INTENT_CAP = 40;
+const NORTHERLY = ['North', 'Northeast', 'Northwest'];
+
+const islandIntents = [
+  {
+    key: 'sheltered',
+    pathPrefix: '/sheltered-beaches',
+    match: beach => Array.isArray(beach.protectedFrom) && NORTHERLY.some(d => beach.protectedFrom.includes(d)),
+    copy: (islandName, count) => ({
+      en: {
+        title: `Sheltered Beaches in ${islandName} for the Meltemi | CalmBeach`,
+        description: `Find beaches in ${islandName} that face away from the northerly Meltemi winds, then check today's wind and waves on CalmBeach.`,
+        h1: `Sheltered beaches in ${islandName}`,
+        intro: `When the Meltemi blows from the north, the calmer beaches in ${islandName} are usually the bays oriented away from it. These ${count} beaches face away from northerly winds — still check today's forecast in CalmBeach before you go.`,
+        sections: [
+          { heading: `Which beaches in ${islandName} are sheltered from the Meltemi?`, body: `The south- and west-facing bays listed here are oriented away from northerly winds, so they tend to stay calmer when the Meltemi blows. Local conditions still vary, so confirm with today's forecast.` },
+          { heading: 'Is the sea always calm at these beaches?', body: 'No. Orientation shows which way a coast faces, not guaranteed shelter or low waves. On strong-wind days follow local flags and check live wind and waves in the app.' },
+        ],
+      },
+      gr: {
+        title: `${islandName}: απάνεμες παραλίες με μελτέμι | CalmBeach`,
+        description: `Παραλίες που κοιτούν μακριά από το βόρειο μελτέμι — ${islandName}. Έλεγξε τον σημερινό άνεμο και το κύμα στο CalmBeach πριν πας.`,
+        h1: `Απάνεμες παραλίες με μελτέμι — ${islandName}`,
+        intro: `Όταν φυσά το μελτέμι από τον βορρά, οι πιο ήρεμες επιλογές εδώ (${islandName}) είναι συνήθως οι κόλποι που κοιτούν μακριά του. Αυτές οι ${count} παραλίες έχουν προσανατολισμό μακριά από βόρειους ανέμους — δες πάντα τη σημερινή πρόγνωση στο CalmBeach πριν πας.`,
+        sections: [
+          { heading: `${islandName}: ποιες παραλίες είναι απάνεμες με μελτέμι;`, body: `Οι νότιοι και δυτικοί κόλποι της λίστας έχουν προσανατολισμό μακριά από βόρειους ανέμους, οπότε μένουν συνήθως πιο ήρεμοι όταν φυσά το μελτέμι. Οι συνθήκες αλλάζουν τοπικά, γι' αυτό επιβεβαίωσε με τη σημερινή πρόγνωση.` },
+          { heading: 'Είναι πάντα ήρεμη η θάλασσα σε αυτές τις παραλίες;', body: 'Όχι. Ο προσανατολισμός δείχνει την πλευρά της ακτής, όχι εγγυημένη προστασία ή χαμηλό κύμα. Σε μέρες με δυνατό αέρα ακολούθησε τις τοπικές σημαίες και έλεγξε live άνεμο και κύμα στην εφαρμογή.' },
+        ],
+      },
+    }),
+  },
+  {
+    key: 'family',
+    pathPrefix: '/family-beaches',
+    match: beach => beach.environment?.familyFriendly === true,
+    copy: (islandName, count) => ({
+      en: {
+        title: `Family Beaches in ${islandName} with Calm, Shallow Water | CalmBeach`,
+        description: `Family-friendly beaches in ${islandName} with calmer, shallower water and easier access. Check today's wind and waves on CalmBeach.`,
+        h1: `Family beaches in ${islandName}`,
+        intro: `Travelling with young children in ${islandName}? These ${count} family-friendly beaches tend to have calmer, shallower water and easier access. Check today's wind and waves in CalmBeach before you go.`,
+        sections: [
+          { heading: `Which beaches in ${islandName} are best for families?`, body: 'The beaches listed here are marked family-friendly, usually with shallower water and easier access. For small children, pick a calmer, more sheltered day.' },
+          { heading: 'How do I know the sea will be calm enough?', body: 'CalmBeach checks wind, waves and exposure for the day, so you can choose a more sheltered beach or a calmer time of day.' },
+        ],
+      },
+      gr: {
+        title: `${islandName}: οικογενειακές παραλίες με ρηχά νερά | CalmBeach`,
+        description: `Οικογενειακές παραλίες με πιο ήρεμα, ρηχά νερά και ευκολότερη πρόσβαση — ${islandName}. Έλεγξε τον σημερινό άνεμο και το κύμα στο CalmBeach.`,
+        h1: `Οικογενειακές παραλίες με ρηχά νερά — ${islandName}`,
+        intro: `Ταξιδεύεις με μικρά παιδιά; Αυτές οι ${count} οικογενειακές παραλίες εδώ (${islandName}) έχουν συνήθως πιο ήρεμα, ρηχά νερά και ευκολότερη πρόσβαση. Δες τον σημερινό άνεμο και το κύμα στο CalmBeach πριν πας.`,
+        sections: [
+          { heading: `${islandName}: ποιες παραλίες είναι καλές για οικογένειες;`, body: 'Οι παραλίες της λίστας είναι σημειωμένες ως οικογενειακές, συνήθως με ρηχότερα νερά και ευκολότερη πρόσβαση. Για μικρά παιδιά, διάλεξε πιο ήρεμη και υπήνεμη μέρα.' },
+          { heading: 'Πώς ξέρω ότι η θάλασσα θα είναι αρκετά ήρεμη;', body: 'Το CalmBeach ελέγχει άνεμο, κύμα και έκθεση για τη μέρα, ώστε να διαλέξεις πιο υπήνεμη παραλία ή πιο ήρεμη ώρα.' },
+        ],
+      },
+    }),
+  },
+];
+
+const islandIntentPath = (intent, region, island) => `${intent.pathPrefix}/${encodeURIComponent(regionSlug(region, island))}/`;
+
 // Pages that used to exist as thin generic gateways and were consolidated into a
 // kept, useful page. 301 so the already-submitted URLs never 404; they are also
 // excluded from the sitemap (they are simply absent from seoLandingPages now).
@@ -438,6 +508,18 @@ const breadcrumbJsonLd = items => ({
     position: index + 1,
     name: item.name,
     item: item.url,
+  })),
+});
+
+// FAQPage from {q, a} pairs. Answers must restate facts already visible on the
+// page (dl, amenity chips, narrative, landing sections) — never volatile data.
+const faqJsonLd = pairs => ({
+  '@context': 'https://schema.org',
+  '@type': 'FAQPage',
+  mainEntity: pairs.map(pair => ({
+    '@type': 'Question',
+    name: pair.q,
+    acceptedAnswer: { '@type': 'Answer', text: pair.a },
   })),
 });
 
@@ -662,6 +744,9 @@ const staticFallbackCopy = {
     viewRegion: islandName => `View ${islandName} in CalmBeach Greece`,
     regionHeading: islandName => `${islandName} beaches`,
     regionDescription: (islandName, count) => `Compare ${count} beaches in ${islandName}, Greece by today's wind, waves, weather, beach exposure, access and beach type before you choose where to swim.`,
+    home: 'Greek beaches',
+    nearbyHeading: islandName => `Other beaches in ${islandName}`,
+    aboutHeading: 'About this beach',
   },
   gr: {
     brand: 'Calm Beach Greece',
@@ -684,6 +769,9 @@ const staticFallbackCopy = {
     viewRegion: islandName => `Δες τις παραλίες για ${islandName} στο Calm Beach Greece`,
     regionHeading: islandName => `Παραλίες: ${islandName}`,
     regionDescription: (islandName, count) => `Σύγκρινε ${count} παραλίες σε ${islandName} με βάση σημερινό άνεμο, κύμα, καιρό, έκθεση, πρόσβαση και τύπο παραλίας πριν διαλέξεις πού να κολυμπήσεις.`,
+    home: 'Παραλίες Ελλάδας',
+    nearbyHeading: islandName => `Άλλες παραλίες σε ${islandName}`,
+    aboutHeading: 'Σχετικά με την παραλία',
   },
 };
 
@@ -738,7 +826,235 @@ const staticHomeFallback = (canonicalUrl, locale = prerenderLocales[0]) => {
   `;
 };
 
-const staticBeachFallback = (beach, island, canonicalUrl, locale = prerenderLocales[0]) => {
+// Compass direction labels. `face` describes which way the shore looks;
+// `wind` is the accusative plural used in "cover from X winds".
+const compassFace = new Map([
+  ['North', { en: 'north', gr: 'βόρεια' }],
+  ['South', { en: 'south', gr: 'νότια' }],
+  ['East', { en: 'east', gr: 'ανατολικά' }],
+  ['West', { en: 'west', gr: 'δυτικά' }],
+  ['Northeast', { en: 'north-east', gr: 'βορειοανατολικά' }],
+  ['Northwest', { en: 'north-west', gr: 'βορειοδυτικά' }],
+  ['Southeast', { en: 'south-east', gr: 'νοτιοανατολικά' }],
+  ['Southwest', { en: 'south-west', gr: 'νοτιοδυτικά' }],
+]);
+const compassWind = new Map([
+  ['North', { en: 'northerly', gr: 'βόρειους' }],
+  ['South', { en: 'southerly', gr: 'νότιους' }],
+  ['East', { en: 'easterly', gr: 'ανατολικούς' }],
+  ['West', { en: 'westerly', gr: 'δυτικούς' }],
+  ['Northeast', { en: 'north-easterly', gr: 'βορειοανατολικούς' }],
+  ['Northwest', { en: 'north-westerly', gr: 'βορειοδυτικούς' }],
+  ['Southeast', { en: 'south-easterly', gr: 'νοτιοανατολικούς' }],
+  ['Southwest', { en: 'south-westerly', gr: 'νοτιοδυτικούς' }],
+]);
+const surfaceWord = new Map([
+  ['sandy', { en: 'sand', gr: 'άμμο' }],
+  ['pebbles', { en: 'pebbles', gr: 'βότσαλα' }],
+  ['sandy-pebbles', { en: 'sand and pebbles', gr: 'άμμο και βότσαλα' }],
+  ['rocky', { en: 'rock', gr: 'βράχια' }],
+]);
+
+const listJoin = (parts, language) => {
+  const clean = parts.filter(Boolean);
+  if (clean.length <= 1) return clean.join('');
+  const conj = language === 'gr' ? ' και ' : ' and ';
+  return `${clean.slice(0, -1).join(', ')}${conj}${clean[clean.length - 1]}`;
+};
+
+// Compose 1-3 short, unique paragraphs from verified structured fields so the
+// 2.740 beach pages stop sharing the same templated description. Each sentence
+// is emitted ONLY when its data exists (no filler) and wind wording stays
+// cautious: orientation records shore facing, not confirmed shelter.
+const buildBeachNarrative = (beach, island, language) => {
+  const beachName = localized(beach.name, `Beach ${beach.id}`, language);
+  const pick = variants => variants[(beach.id ?? 0) % variants.length];
+  const paragraphs = [];
+
+  const faces = Array.isArray(beach.orientation?.faces) ? beach.orientation.faces : [];
+  const protectedFrom = Array.isArray(beach.protectedFrom) ? beach.protectedFrom : [];
+  const faceWords = listJoin(faces.map(f => readableLabel(compassFace.get(f), language)), language);
+  if (faceWords) {
+    // Drop directions the shore itself faces (a bay cannot shelter from the way
+    // it opens) and cap the list so the prose stays readable and not overstated.
+    const protList = protectedFrom.filter(d => !faces.includes(d)).slice(0, 3);
+    const protWords = listJoin(protList.map(f => readableLabel(compassWind.get(f), language)), language);
+    if (language === 'gr') {
+      // Keep the inflected noun "παραλία" and leave the proper name in
+      // nominative apposition, so grammar holds for any beach-name gender.
+      const lead = pick([
+        `Η παραλία ${beachName} κοιτάζει ${faceWords}`,
+        `Ο προσανατολισμός της παραλίας ${beachName} είναι ${faceWords}`,
+        `Η παραλία ${beachName} βλέπει ${faceWords}`,
+      ]);
+      paragraphs.push(`${lead}${protWords ? `, οπότε έχει συνήθως φυσική κάλυψη από ${protWords} ανέμους` : ''}. Ο προσανατολισμός δείχνει μόνο την πλευρά της ακτής, όχι επιβεβαιωμένη προστασία· έλεγξε τον σημερινό άνεμο και το κύμα στην εφαρμογή πριν πας.`);
+    } else {
+      const lead = pick([
+        `The shoreline at ${beachName} faces ${faceWords}`,
+        `${beachName} is oriented towards the ${faceWords}`,
+        `The bay at ${beachName} opens to the ${faceWords}`,
+      ]);
+      paragraphs.push(`${lead}${protWords ? `, so it usually has natural cover from ${protWords} winds` : ''}. Orientation only reflects which way the coast faces, not confirmed shelter, so check today's wind and waves in the app before you go.`);
+    }
+  }
+
+  const surface = readableLabel(surfaceWord.get(beach.beachType), language);
+  const shallow = beach.characteristics?.shallowWaters === true || beach.waterDepth === 'shallow';
+  const deep = beach.characteristics?.deepWaters === true || beach.waterDepth === 'deep';
+  if (surface || shallow || deep) {
+    if (language === 'gr') {
+      const familyClause = (shallow && beach.environment?.familyFriendly === true) ? ' — βολικό για οικογένειες με μικρά παιδιά' : '';
+      if (surface) {
+        const depthClause = shallow ? ' με ρηχά, ομαλά νερά' : deep ? ' με νερά που βαθαίνουν κοντά στην ακτή' : '';
+        paragraphs.push(`Η παραλία έχει ${surface}${depthClause}${familyClause}.`);
+      } else {
+        const depthSentence = shallow ? 'Τα νερά είναι ρηχά και ομαλά' : 'Τα νερά βαθαίνουν κοντά στην ακτή';
+        paragraphs.push(`${depthSentence}${familyClause}.`);
+      }
+    } else {
+      const surfaceClause = surface ? `${beachName} has ${surface} underfoot` : `${beachName}`;
+      const depthClause = shallow ? ' with shallow, gently shelving water' : deep ? ' with water that deepens close to shore' : '';
+      const familyClause = (shallow && beach.environment?.familyFriendly === true) ? ' — handy for families with young children' : '';
+      paragraphs.push(`${surfaceClause}${depthClause}${familyClause}.`);
+    }
+  }
+
+  // Amenities + accessibility + camping. Mirror only what the app already shows
+  // (chips / dl), so prose adds no claim the UI does not already make.
+  const amen = [
+    beach.amenities?.organized ? (language === 'gr' ? 'οργάνωση' : 'an organised beach') : null,
+    beach.amenities?.beachBar ? (language === 'gr' ? 'beach bar' : 'a beach bar') : null,
+    beach.amenities?.sunbeds ? (language === 'gr' ? 'ξαπλώστρες' : 'sunbeds') : null,
+    beach.amenities?.naturalShade ? (language === 'gr' ? 'φυσική σκιά' : 'natural shade') : null,
+    beach.amenities?.parking ? (language === 'gr' ? 'πάρκινγκ κοντά' : 'parking nearby') : null,
+    (beach.amenities?.restaurant || beach.amenities?.taverna) ? (language === 'gr' ? 'φαγητό κοντά' : 'food nearby') : null,
+  ].filter(Boolean);
+  const sentences = [];
+  if (amen.length) {
+    sentences.push(language === 'gr'
+      ? `Σε παροχές, η παραλία έχει ${listJoin(amen, language)}.`
+      : `For amenities, ${beachName} has ${listJoin(amen, language)}.`);
+  }
+  const seatrac = beach.seatrac ?? beach.metadata?.seatrac;
+  if (seatrac?.hasSeatrac === true && seatrac?.status === 'online') {
+    sentences.push(language === 'gr'
+      ? 'Διαθέτει σύστημα Seatrac για προσβασιμότητα ΑμεΑ — επιβεβαίωσε ότι λειτουργεί πριν πας.'
+      : 'It has a Seatrac assisted-access unit for accessibility — confirm it is in service before travelling.');
+  }
+  if (Array.isArray(beach.nearbyCamping) && beach.nearbyCamping.length > 0) {
+    const nearest = beach.nearbyCamping.reduce((a, b) => (b.distanceMeters < a.distanceMeters ? b : a));
+    const campName = (language !== 'gr' && nearest.nameEn) ? nearest.nameEn : nearest.name;
+    sentences.push(language === 'gr'
+      ? `Κοντά υπάρχει κάμπινγκ (${campName}, ~${nearest.distanceMeters} m).`
+      : `There is a campsite nearby (${campName}, ~${nearest.distanceMeters} m).`);
+  }
+  if (sentences.length) paragraphs.push(sentences.join(' '));
+
+  return paragraphs;
+};
+
+const renderBeachNarrative = (beach, island, language, heading) => {
+  const paragraphs = buildBeachNarrative(beach, island, language);
+  if (!paragraphs.length) return '';
+  return `
+        <section style="margin:0 0 22px;">
+          <h2 style="margin:0 0 10px;font-size:20px;line-height:1.2;color:#075985;">${escapeHtml(heading)}</h2>
+          ${paragraphs.map(p => `<p style="margin:0 0 10px;font-size:16px;line-height:1.6;color:#334155;">${escapeHtml(p)}</p>`).join('')}
+        </section>`;
+};
+
+// Visible breadcrumb with real <a href> so crawlers (and users without JS) can
+// climb back to the region and home; the JSON-LD BreadcrumbList mirrors it.
+const renderBeachBreadcrumb = (region, island, beachName, language, locale) => {
+  const copy = getStaticFallbackCopy(language);
+  const homeHref = localizedPath('/', locale);
+  const regionHref = localizedPath(regionPath(region, island), locale);
+  const islandName = localized(island.name, region.id, language);
+  const sep = '<span style="color:#94a3b8;"> › </span>';
+  return `
+        <nav aria-label="breadcrumb" style="margin:0 0 14px;font-size:13px;font-weight:700;">
+          <a href="${escapeHtml(homeHref)}" style="color:#0e7490;text-decoration:none;">${escapeHtml(copy.home)}</a>${sep}<a href="${escapeHtml(regionHref)}" style="color:#0e7490;text-decoration:none;">${escapeHtml(copy.regionHeading(islandName))}</a>${sep}<span style="color:#475569;">${escapeHtml(beachName)}</span>
+        </nav>`;
+};
+
+// Up to 8 sibling beaches on the same island, ranked by popularity, as real
+// links so each beach page funnels equity instead of being a crawl dead-end.
+const renderNearbyBeaches = (beach, island, region, language, locale) => {
+  const copy = getStaticFallbackCopy(language);
+  const siblings = (Array.isArray(island.beaches) ? island.beaches : [])
+    .filter(other => other.id !== beach.id && Number.isInteger(other.id) && other.name)
+    .sort((a, b) => (b.popularityScore ?? 0) - (a.popularityScore ?? 0))
+    .slice(0, 8);
+  if (!siblings.length) return '';
+  const islandName = localized(island.name, region.id, language);
+  const items = siblings.map(other => {
+    const otherName = localized(other.name, `Beach ${other.id}`, language);
+    return `
+            <li style="margin:0;">
+              <a href="${escapeHtml(localizedPath(beachPath(region, island, other), locale))}" style="display:block;border:1px solid #bae6fd;border-radius:12px;padding:10px 12px;background:white;color:#0f172a;text-decoration:none;">
+                <strong style="color:#0e7490;">${escapeHtml(otherName)}</strong>
+                ${renderBeachSummaryMeta(other, language)}
+              </a>
+            </li>`;
+  }).join('');
+  return `
+        <section style="margin:22px 0 0;border-top:1px solid #bae6fd;padding-top:18px;">
+          <h2 style="margin:0 0 12px;font-size:20px;line-height:1.2;color:#075985;">${escapeHtml(copy.nearbyHeading(islandName))}</h2>
+          <ul style="display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:10px;margin:0;padding:0;list-style:none;">${items}</ul>
+        </section>`;
+};
+
+// Q/A pairs for FAQPage structured data. Each answer restates a fact already
+// shown on the page (dl row, amenity chip or narrative sentence) and only
+// positive, stable facts are emitted — so the set differs per beach and never
+// claims something the page does not display.
+const buildBeachFaqPairs = (beach, island, language) => {
+  const beachName = localized(beach.name, `Beach ${beach.id}`, language);
+  const pairs = [];
+
+  const access = readableAccess(beach, language);
+  if (access) {
+    pairs.push(language === 'gr'
+      ? { q: `Πώς πάω στην παραλία ${beachName};`, a: `Η πρόσβαση είναι: ${access}. Δες τις συντεταγμένες και τον χάρτη στο CalmBeach.` }
+      : { q: `How do you get to ${beachName} beach?`, a: `Access is ${access.toLowerCase()}. See the coordinates and map on CalmBeach.` });
+  }
+
+  const type = readableBeachType(beach, language);
+  const shallow = beach.characteristics?.shallowWaters === true || beach.waterDepth === 'shallow';
+  const deep = beach.characteristics?.deepWaters === true || beach.waterDepth === 'deep';
+  if (type || shallow || deep) {
+    const depth = language === 'gr'
+      ? (shallow ? ' με ρηχά νερά' : deep ? ' με βαθιά νερά' : '')
+      : (shallow ? ' with shallow water' : deep ? ' with deep water' : '');
+    pairs.push(language === 'gr'
+      ? { q: `Πώς είναι η παραλία ${beachName};`, a: `${type ? `${type}${depth}.` : `Παραλία${depth}.`}`.trim() }
+      : { q: `What is ${beachName} beach like?`, a: `${type ? `A ${type.toLowerCase()} beach${depth}.` : `A beach${depth}.`}`.trim() });
+  }
+
+  const amen = [
+    beach.amenities?.organized ? (language === 'gr' ? 'οργάνωση' : 'an organised beach') : null,
+    beach.amenities?.beachBar ? (language === 'gr' ? 'beach bar' : 'a beach bar') : null,
+    beach.amenities?.sunbeds ? (language === 'gr' ? 'ξαπλώστρες' : 'sunbeds') : null,
+    beach.amenities?.parking ? (language === 'gr' ? 'πάρκινγκ κοντά' : 'parking nearby') : null,
+    (beach.amenities?.restaurant || beach.amenities?.taverna) ? (language === 'gr' ? 'φαγητό κοντά' : 'food nearby') : null,
+  ].filter(Boolean);
+  if (amen.length) {
+    pairs.push(language === 'gr'
+      ? { q: `Τι παροχές έχει η παραλία ${beachName};`, a: `Έχει ${listJoin(amen, language)}.` }
+      : { q: `What facilities does ${beachName} beach have?`, a: `It has ${listJoin(amen, language)}.` });
+  }
+
+  const seatrac = beach.seatrac ?? beach.metadata?.seatrac;
+  if (seatrac?.hasSeatrac === true && seatrac?.status === 'online') {
+    pairs.push(language === 'gr'
+      ? { q: `Είναι προσβάσιμη για ΑμεΑ η παραλία ${beachName};`, a: 'Διαθέτει σύστημα Seatrac για αυτόνομη πρόσβαση στο νερό. Επιβεβαίωσε ότι λειτουργεί πριν πας.' }
+      : { q: `Is ${beachName} beach wheelchair accessible?`, a: 'It has a Seatrac assisted-access unit for reaching the water. Confirm it is in service before visiting.' });
+  }
+
+  return pairs;
+};
+
+const staticBeachFallback = (beach, island, region, canonicalUrl, locale = prerenderLocales[0]) => {
   const language = locale.language;
   const copy = getStaticFallbackCopy(language);
   const beachName = localized(beach.name, `Beach ${beach.id}`, language);
@@ -766,6 +1082,7 @@ const staticBeachFallback = (beach, island, canonicalUrl, locale = prerenderLoca
     <div id="root">
       <main data-static-fallback style="max-width:720px;margin:0 auto;padding:32px 20px;font-family:system-ui,-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;color:#0f172a;background:#f8fafc;">
         <p style="margin:0 0 8px;color:#0e7490;font-weight:700;">${escapeHtml(copy.brand)}</p>
+        ${renderBeachBreadcrumb(region, island, beachName, language, locale)}
         <h1 style="margin:0 0 12px;font-size:32px;line-height:1.1;">${language === 'gr' ? `Παραλία ${escapeHtml(beachName)}, ${escapeHtml(islandName)}` : `${escapeHtml(beachName)} Beach, ${escapeHtml(islandName)}`}</h1>
         <p style="margin:0 0 20px;font-size:17px;line-height:1.55;color:#334155;">${escapeHtml(description)}</p>
         <dl style="display:grid;grid-template-columns:max-content 1fr;gap:8px 14px;margin:0 0 20px;">
@@ -775,8 +1092,10 @@ const staticBeachFallback = (beach, island, canonicalUrl, locale = prerenderLoca
           <dt style="font-weight:700;">${escapeHtml(copy.coordinates)}</dt><dd style="margin:0;">${escapeHtml(beach.coordinates?.lat)}, ${escapeHtml(beach.coordinates?.lon)}</dd>
         </dl>
         ${amenityLabels.length > 0 ? `<ul style="display:flex;flex-wrap:wrap;gap:8px;margin:0 0 20px;padding:0;list-style:none;">${amenityLabels.map(label => `<li style="border:1px solid #bae6fd;border-radius:999px;padding:6px 10px;background:white;color:#075985;font-weight:700;font-size:13px;">${escapeHtml(label)}</li>`).join('')}</ul>` : ''}
+        ${renderBeachNarrative(beach, island, language, copy.aboutHeading)}
         <p data-nosnippet="true" style="margin:0;color:#475569;">${escapeHtml(copy.openAppBeach)}</p>
         <p data-nosnippet="true" style="margin:16px 0 0;"><a href="${escapeHtml(canonicalUrl)}" style="color:#0e7490;font-weight:700;">${escapeHtml(copy.viewBeach)}</a></p>
+        ${renderNearbyBeaches(beach, island, region, language, locale)}
       </main>
     </div>
   `;
@@ -1127,6 +1446,96 @@ const buildRegionPage = (baseHtml, island, region, imageUrl, locale = prerenderL
   return htmlWithHead.replace(/<div id="root">\s*<\/div>/i, staticRegionFallback(island, region, canonicalUrl, locale));
 };
 
+const staticIslandIntentFallback = (content, island, region, beaches, canonicalUrl, locale) => {
+  const language = locale.language;
+  const copy = getStaticFallbackCopy(language);
+  const islandName = localized(island.name, region.id, language);
+  const homeHref = localizedPath('/', locale);
+  const regionHref = localizedPath(regionPath(region, island), locale);
+  const sep = '<span style="color:#94a3b8;"> › </span>';
+  const beachItems = beaches.map(beach => {
+    const beachName = localized(beach.name, `Beach ${beach.id}`, language);
+    return `
+            <li style="margin:0;">
+              <a href="${escapeHtml(localizedPath(beachPath(region, island, beach), locale))}" style="display:block;border:1px solid #bae6fd;border-radius:12px;padding:10px 12px;background:white;color:#0f172a;text-decoration:none;">
+                <strong style="color:#0e7490;">${escapeHtml(beachName)}</strong>
+                ${renderBeachSummaryMeta(beach, language)}
+              </a>
+            </li>`;
+  }).join('');
+
+  return `
+    <div id="root">
+      <main data-static-fallback style="max-width:840px;margin:0 auto;padding:32px 20px;font-family:system-ui,-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;color:#0f172a;background:#f8fafc;">
+        <p style="margin:0 0 8px;color:#0e7490;font-weight:700;">${escapeHtml(copy.brand)}</p>
+        <nav aria-label="breadcrumb" style="margin:0 0 14px;font-size:13px;font-weight:700;">
+          <a href="${escapeHtml(homeHref)}" style="color:#0e7490;text-decoration:none;">${escapeHtml(copy.home)}</a>${sep}<a href="${escapeHtml(regionHref)}" style="color:#0e7490;text-decoration:none;">${escapeHtml(copy.regionHeading(islandName))}</a>${sep}<span style="color:#475569;">${escapeHtml(content.h1)}</span>
+        </nav>
+        <h1 style="margin:0 0 12px;font-size:32px;line-height:1.1;">${escapeHtml(content.h1)}</h1>
+        <p style="margin:0 0 20px;font-size:17px;line-height:1.55;color:#334155;">${escapeHtml(content.intro)}</p>
+        ${beachItems ? `<ul style="display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:10px;margin:0 0 24px;padding:0;list-style:none;">${beachItems}</ul>` : ''}
+        <div style="display:grid;gap:16px;margin:0 0 8px;">
+          ${content.sections.map(section => `
+            <section style="border-top:1px solid #bae6fd;padding-top:16px;">
+              <h2 style="margin:0 0 8px;font-size:20px;line-height:1.2;color:#075985;">${escapeHtml(section.heading)}</h2>
+              <p style="margin:0;font-size:16px;line-height:1.58;color:#334155;">${escapeHtml(section.body)}</p>
+            </section>`).join('')}
+        </div>
+        <p data-nosnippet="true" style="margin:16px 0 0;"><a href="${escapeHtml(canonicalUrl)}" style="color:#0e7490;font-weight:700;">${escapeHtml(copy.viewRegion(islandName))}</a></p>
+      </main>
+    </div>
+  `;
+};
+
+const buildIslandIntentPage = (baseHtml, intent, content, island, region, beaches, imageUrl, locale) => {
+  const pathName = islandIntentPath(intent, region, island);
+  const canonicalUrl = canonicalUrlFor(pathName, locale);
+  const language = locale.language;
+  const islandName = localized(island.name, region.id, language);
+  const jsonLd = [
+    {
+      '@context': 'https://schema.org',
+      '@type': 'CollectionPage',
+      name: content.h1,
+      description: content.description,
+      url: canonicalUrl,
+      image: imageUrl,
+      inLanguage: locale.htmlLang,
+      mainEntity: {
+        '@type': 'ItemList',
+        numberOfItems: beaches.length,
+        itemListElement: beaches.map((beach, index) => ({
+          '@type': 'ListItem',
+          position: index + 1,
+          name: localized(beach.name, `Beach ${beach.id}`, language),
+          url: canonicalUrlFor(beachPath(region, island, beach), locale),
+        })),
+      },
+    },
+    breadcrumbJsonLd([
+      { name: 'CalmBeach Greece', url: canonicalUrlFor('/', locale) },
+      { name: `${islandName} beaches`, url: canonicalUrlFor(regionPath(region, island), locale) },
+      { name: content.h1, url: canonicalUrl },
+    ]),
+    faqJsonLd(content.sections.map(section => ({ q: section.heading, a: section.body }))),
+  ];
+
+  const htmlWithHead = injectBeachHead(baseHtml, {
+    title: content.title,
+    description: content.description,
+    canonicalUrl,
+    imageUrl,
+    imageAlt: content.h1,
+    htmlLang: locale.htmlLang,
+    ogLocale: locale.ogLocale,
+    alternateUrls: alternateUrlsFor(pathName),
+    ogType: 'website',
+    jsonLd,
+  });
+
+  return stripClientScripts(htmlWithHead).replace(/<div id="root">\s*<\/div>/i, staticIslandIntentFallback(content, island, region, beaches, canonicalUrl, locale));
+};
+
 const buildBeachPage = (baseHtml, island, beach, region, imageUrl, locale = prerenderLocales[0]) => {
   const pathName = beachPath(region, island, beach);
   const canonicalUrl = canonicalUrlFor(pathName, locale);
@@ -1172,6 +1581,8 @@ const buildBeachPage = (baseHtml, island, beach, region, imageUrl, locale = prer
       { name: beachPageName, url: canonicalUrl },
     ]),
   ];
+  const faqPairs = buildBeachFaqPairs(beach, island, language);
+  if (faqPairs.length >= 2) jsonLd.push(faqJsonLd(faqPairs));
 
   const htmlWithHead = injectBeachHead(baseHtml, {
     title,
@@ -1185,17 +1596,17 @@ const buildBeachPage = (baseHtml, island, beach, region, imageUrl, locale = prer
     jsonLd,
   });
 
-  return htmlWithHead.replace(/<div id="root">\s*<\/div>/i, staticBeachFallback(beach, island, canonicalUrl, locale));
+  return htmlWithHead.replace(/<div id="root">\s*<\/div>/i, staticBeachFallback(beach, island, region, canonicalUrl, locale));
 };
 
-const sitemapEntry = (url, imageUrl) => ({ url, imageUrl });
+const sitemapEntry = (url, imageUrl, lastmod) => ({ url, imageUrl, lastmod });
 
-const renderSitemapEntry = (entry, lastmod) => {
+const renderSitemapEntry = (entry, fallbackLastmod) => {
   const imageTag = entry.imageUrl
     ? `<image:image><image:loc>${escapeXml(entry.imageUrl)}</image:loc></image:image>`
     : '';
 
-  return `  <url><loc>${escapeXml(entry.url)}</loc><lastmod>${lastmod}</lastmod>${imageTag}</url>`;
+  return `  <url><loc>${escapeXml(entry.url)}</loc><lastmod>${entry.lastmod || fallbackLastmod}</lastmod>${imageTag}</url>`;
 };
 
 const main = async () => {
@@ -1212,6 +1623,7 @@ const main = async () => {
   let pageCount = 0;
   let regionPageCount = 0;
   let landingPageCount = 0;
+  let islandIntentPageCount = 0;
 
   for (const locale of prerenderLocales) {
     const homeRoutePath = localizedPath('/', locale);
@@ -1237,6 +1649,8 @@ const main = async () => {
   // the summary tier unchanged.
   const categoryBuckets = { accessible: [], family: [], camping: [] };
   const hubRegions = [];
+  const islandIntentPages = [];
+  let islandIntentBelowMin = 0;
   for (const region of beachIndex.regions || []) {
     let appPayload;
     try {
@@ -1260,6 +1674,20 @@ const main = async () => {
       const seatrac = beach.seatrac ?? beach.metadata?.seatrac;
       if (seatrac?.hasSeatrac === true && seatrac?.status === 'online') categoryBuckets.accessible.push(entry);
       if (Array.isArray(beach.nearbyCamping) && beach.nearbyCamping.length > 0) categoryBuckets.camping.push(entry);
+    }
+
+    // Per-island intent guides: only emit when the island clears the minimum so
+    // we never publish near-empty doorway pages.
+    for (const intent of islandIntents) {
+      const matches = island.beaches
+        .filter(beach => Number.isInteger(beach.id) && beach.name && intent.match(beach))
+        .sort((a, b) => (b.popularityScore ?? 0) - (a.popularityScore ?? 0))
+        .slice(0, ISLAND_INTENT_CAP);
+      if (matches.length >= ISLAND_INTENT_MIN) {
+        islandIntentPages.push({ intent, region, island, beaches: matches });
+      } else if (matches.length > 0) {
+        islandIntentBelowMin += 1;
+      }
     }
   }
 
@@ -1293,6 +1721,24 @@ const main = async () => {
     }
   }
 
+  // Programmatic per-island intent guides (gated above by ISLAND_INTENT_MIN).
+  for (const page of islandIntentPages) {
+    const intentOgImageUrl = toAbsolutePublicUrl(resolveRegionOgImagePath(page.region, page.island, publicAssets));
+    const intentSitemapImageUrl = toSitemapImageUrl(intentOgImageUrl, publicAssets);
+    const pathName = islandIntentPath(page.intent, page.region, page.island);
+    for (const locale of prerenderLocales) {
+      const islandName = localized(page.island.name, page.region.id, locale.language);
+      const localeCopy = page.intent.copy(islandName, page.beaches.length);
+      const content = localeCopy[locale.language] || localeCopy.en;
+      const intentOutputDir = outputDirForRoute(localizedPath(pathName, locale));
+      await mkdir(intentOutputDir, { recursive: true });
+      await writeFile(path.join(intentOutputDir, 'index.html'), buildIslandIntentPage(baseHtml, page.intent, content, page.island, page.region, page.beaches, intentOgImageUrl, locale), 'utf8');
+      sitemapEntries.push(sitemapEntry(canonicalUrlFor(pathName, locale), intentSitemapImageUrl));
+      islandIntentPageCount += 1;
+    }
+  }
+  console.log(`Island intent guides: ${islandIntentPages.length} published (≥${ISLAND_INTENT_MIN} beaches), ${islandIntentBelowMin} island×intent combos skipped below threshold.`);
+
   for (const region of beachIndex.regions || []) {
     const summaryPath = region.summaryDataPath || `/data/beaches/app/summary/${region.id}.json`;
     let payload;
@@ -1308,6 +1754,9 @@ const main = async () => {
 
     const regionOgImageUrl = toAbsolutePublicUrl(resolveRegionOgImagePath(region, island, publicAssets));
     const regionSitemapImageUrl = toSitemapImageUrl(regionOgImageUrl, publicAssets);
+    // Per-page freshness: the region's data-generation date, not a single build
+    // stamp for all 5.7k URLs. Falls back to the build date when absent.
+    const regionLastmod = (payload.generatedAt || '').slice(0, 10) || undefined;
     const currentRegionPath = regionPath(region, island);
     const currentLegacyRegionPath = legacyRegionPath(region.id);
     if (currentLegacyRegionPath !== currentRegionPath) {
@@ -1321,7 +1770,7 @@ const main = async () => {
       const regionOutputDir = outputDirForRoute(localizedRegionPath);
       await mkdir(regionOutputDir, { recursive: true });
       await writeFile(path.join(regionOutputDir, 'index.html'), buildRegionPage(baseHtml, island, region, regionOgImageUrl, locale), 'utf8');
-      sitemapEntries.push(sitemapEntry(canonicalUrlFor(currentRegionPath, locale), regionSitemapImageUrl));
+      sitemapEntries.push(sitemapEntry(canonicalUrlFor(currentRegionPath, locale), regionSitemapImageUrl, regionLastmod));
       regionPageCount += 1;
     }
 
@@ -1339,7 +1788,7 @@ const main = async () => {
         const outputDir = outputDirForRoute(localizedRoutePath);
         await mkdir(outputDir, { recursive: true });
         await writeFile(path.join(outputDir, 'index.html'), buildBeachPage(baseHtml, island, beach, region, regionOgImageUrl, locale), 'utf8');
-        sitemapEntries.push(sitemapEntry(canonicalUrlFor(routePath, locale), regionSitemapImageUrl));
+        sitemapEntries.push(sitemapEntry(canonicalUrlFor(routePath, locale), regionSitemapImageUrl, regionLastmod));
         pageCount += 1;
       }
     }
@@ -1358,7 +1807,7 @@ const main = async () => {
   if (redirects.length > 0) {
     await writeFile(path.join(distDir, '_redirects'), `${redirects.join('\n')}\n`, 'utf8');
   }
-  console.log(`Prerendered ${prerenderLocales.length} home pages, ${landingPageCount} SEO landing pages, ${regionPageCount} region pages, ${pageCount} beach pages, ${redirects.length} redirects and sitemap.xml`);
+  console.log(`Prerendered ${prerenderLocales.length} home pages, ${landingPageCount} SEO landing pages, ${islandIntentPageCount} island intent pages, ${regionPageCount} region pages, ${pageCount} beach pages, ${redirects.length} redirects and sitemap.xml`);
 };
 
 main().catch(error => {
