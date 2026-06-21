@@ -3382,7 +3382,7 @@ export const BeachSearcherHome: React.FC<BeachSearcherHomeProps> = ({
         <div className="mx-auto max-w-[110rem] px-4 pb-4 pt-1 sm:px-5 sm:pb-5 sm:pt-2 lg:px-6">
           {selectedIsland && hasTopRecommendationView && (
             <section id="top-recommendations-section" className="mb-5">
-              <div className="mb-3 flex items-center gap-3 px-1 lg:px-5">
+              <div className="mb-3 flex items-center gap-3 px-3 lg:px-5">
                 <span className="h-px flex-1 bg-slate-300/70" aria-hidden="true" />
                 <div className="max-w-full shrink-0 rounded-full border border-white/80 bg-white/90 px-3 py-1.5 text-center shadow-sm shadow-sky-900/10 ring-1 ring-white/50 backdrop-blur-md">
                   <h2 className="line-clamp-2 text-xs font-extrabold leading-tight tracking-normal text-slate-800 sm:text-sm">
@@ -3416,7 +3416,7 @@ export const BeachSearcherHome: React.FC<BeachSearcherHomeProps> = ({
 
           {(!selectedIsland || isDirectorySuitableView) && (
           <>
-          <div id={selectedIsland ? 'suitable-beaches-section' : undefined} className="mb-3 flex items-center gap-3 px-1 lg:px-5">
+          <div id={selectedIsland ? 'suitable-beaches-section' : undefined} className="mb-3 flex items-center gap-3 px-3 lg:px-5">
             <span className="h-px flex-1 bg-slate-300/70" aria-hidden="true" />
             <div className="max-w-full shrink-0 rounded-full border border-white/80 bg-white/86 px-3 py-1.5 text-center shadow-sm shadow-sky-900/10 ring-1 ring-white/50 backdrop-blur-md">
               <h2 className="line-clamp-2 text-xs font-extrabold leading-tight tracking-normal text-slate-700 sm:text-sm">
@@ -3574,7 +3574,7 @@ export const BeachSearcherHome: React.FC<BeachSearcherHomeProps> = ({
 
           {selectedIsland && isMobileViewport && !isDirectorySuitableView && directoryDisplayBeachCards.length > 0 && (
             <section id="all-beaches-section">
-              <div className="mb-3 flex items-center gap-3 px-1">
+              <div className="mb-3 flex items-center gap-3 px-3">
                 <span className="h-px flex-1 bg-slate-300/70" aria-hidden="true" />
                 <div className="max-w-full shrink-0 rounded-full border border-white/80 bg-white/86 px-3 py-1.5 text-center shadow-sm shadow-sky-900/10 ring-1 ring-white/50 backdrop-blur-md">
                   <h2 className="line-clamp-2 text-xs font-extrabold leading-tight tracking-normal text-slate-700">

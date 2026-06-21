@@ -174,10 +174,14 @@ body {
 }
 
 .beach-card-carousel {
-  padding-inline: 1.25rem;
-  scroll-padding-inline: 1.25rem;
-  -webkit-mask-image: linear-gradient(90deg, transparent 0, #000 1rem, #000 calc(100% - 1rem), transparent 100%);
-  mask-image: linear-gradient(90deg, transparent 0, #000 1rem, #000 calc(100% - 1rem), transparent 100%);
+  /* 0.75rem so the first card lines up with the map box and section headers on
+     mobile (page content gutter = container px-4 16px + 0.75rem = 28px, matching
+     the hero card's content inset). The fade mask matches the padding so the
+     first/last card sits exactly at the solid edge, fully visible. */
+  padding-inline: 0.75rem;
+  scroll-padding-inline: 0.75rem;
+  -webkit-mask-image: linear-gradient(90deg, transparent 0, #000 0.75rem, #000 calc(100% - 0.75rem), transparent 100%);
+  mask-image: linear-gradient(90deg, transparent 0, #000 0.75rem, #000 calc(100% - 0.75rem), transparent 100%);
 }
 
 @media (min-width: 640px) {
