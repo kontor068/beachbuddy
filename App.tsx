@@ -300,8 +300,11 @@ const NEAR_ME_REGION_ID = 'near-me';
 // sensible number so we never load the whole country.
 const NEAR_ME_CANDIDATE_RADIUS_KM = 80;
 const NEAR_ME_MAX_CANDIDATE_REGIONS = 14;
-// From the merged beaches, keep those within this radius, then cap the list.
-const NEAR_ME_BEACH_RADIUS_KM = 60;
+// From the merged beaches, keep those within this radius, then cap the list. Kept
+// deliberately tight: at 60 km "Κοντά μου" reached across the water to Evia and the
+// far Saronic, which feels nothing like "near me" (straight-line distance ignores
+// the sea crossing). 40 km still covers a normal beach-day drive on the mainland.
+const NEAR_ME_BEACH_RADIUS_KM = 40;
 const NEAR_ME_MAX_BEACHES = 60;
 // If almost nothing falls inside the radius (sparse coastline), still surface at
 // least this many nearest beaches so the view is never empty.
@@ -4361,6 +4364,16 @@ export const App: React.FC = () => {
     addSource(directoryFallbackSource);
     addSource(directoryVisibleBeachCardSource);
 
+    // In "Κοντά μου" the podium must also lead with the nearest beaches, not the
+    // highest-scoring ones across the merged radius (a 35 km high-scorer should never
+    // sit above a closer pick).
+    if (isNearMeRegionActive) {
+      return [...cards].sort((a, b) => (
+        (typeof a.distance === 'number' ? a.distance : Infinity) -
+        (typeof b.distance === 'number' ? b.distance : Infinity)
+      ));
+    }
+
     return cards;
   })();
   const directoryTopRecommendationIds = new Set(directoryTopRecommendationCards.map(item => item.beach.id));
@@ -4387,16 +4400,27 @@ export const App: React.FC = () => {
   // Guarantee a distance on every suitable card when the user's location is
   // known (some source pipelines, e.g. calm-wind days, don't carry it), so the
   // "Κοντά μου" distance sort always has a value to order by.
-  const directoryHomeSuitableBeachCards = userLocation
-    ? recommendableDirectorySuitableBeachCards.map(item => (
-        typeof item.distance === 'number' && Number.isFinite(item.distance)
-          ? item
-          : {
-              ...item,
-              distance: calculateDistance(userLocation.lat, userLocation.lon, item.beach.coordinates.lat, item.beach.coordinates.lon),
-            }
-      ))
-    : recommendableDirectorySuitableBeachCards;
+  const directoryHomeSuitableBeachCards = (() => {
+    if (!userLocation) return recommendableDirectorySuitableBeachCards;
+    const withDistance = recommendableDirectorySuitableBeachCards.map(item => (
+      typeof item.distance === 'number' && Number.isFinite(item.distance)
+        ? item
+        : {
+            ...item,
+            distance: calculateDistance(userLocation.lat, userLocation.lon, item.beach.coordinates.lat, item.beach.coordinates.lon),
+          }
+    ));
+    // "Κοντά μου": proximity is the whole point, so order strictly by distance — the
+    // nearest beaches must always lead, regardless of the score-based source order or
+    // whether the mobile distance-sort toggle happens to be on at render. (In a normal
+    // region the score order is kept; the in-component distance sort still applies when
+    // the user picks "sort by distance".)
+    if (!isNearMeRegionActive) return withDistance;
+    return [...withDistance].sort((a, b) => (
+      (typeof a.distance === 'number' ? a.distance : Infinity) -
+      (typeof b.distance === 'number' ? b.distance : Infinity)
+    ));
+  })();
   const directorySuitableBeachTotalCount = directoryHomeSuitableBeachCards.length;
   const shouldShowDirectorySuitableSection = shouldShowDirectoryTopRecommendations
     ? !shouldShowAllBeachesBelowTopRecommendations && directoryHomeSuitableBeachCards.length > 0
