@@ -2489,9 +2489,11 @@ export const BeachSearcherHome: React.FC<BeachSearcherHomeProps> = ({
             )
           )}
           {!singleMatchedBeachCard && regionWindNote && (
-            <p className="mt-0.5 inline-flex items-center gap-1.5 truncate text-sm font-semibold text-white/90">
-              <MapPin className="h-3.5 w-3.5 shrink-0" aria-hidden="true" />
-              <span className="truncate">{regionWindNote}</span>
+            // Same wrap fix as the wind line above: this "calmer in the … of the area"
+            // note (its own source — regionWindVariation) was truncating on mobile.
+            <p className="mt-0.5 flex items-start gap-1.5 text-sm font-semibold text-white/90">
+              <MapPin className="mt-0.5 h-3.5 w-3.5 shrink-0" aria-hidden="true" />
+              <span className="min-w-0 line-clamp-2 leading-snug">{regionWindNote}</span>
             </p>
           )}
         </div>
