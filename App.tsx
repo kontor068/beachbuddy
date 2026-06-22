@@ -2875,7 +2875,22 @@ export const App: React.FC = () => {
   // Deferred twin of selectedForecast for the heavy list/scoring path. The map
   // and label use the urgent selectedForecast; the beach ranking uses this so a
   // fast scrub doesn't block on re-scoring every beach each frame.
-  const deferredSelectedForecast = React.useDeferredValue(selectedForecast);
+  //
+  // On a region switch the urgent selectedForecast is already region-safe (gated to
+  // null above), but useDeferredValue keeps returning the PREVIOUS region's forecast
+  // for a few renders while selectedIsland is already the new region. That lag would
+  // score the new region's beaches with the old region's wind — the exact stale
+  // "not ideal today" cards. So we defer a {forecast, regionId} signature and drop
+  // the deferred forecast whenever its region no longer matches the selected one;
+  // the list then shows its loading state until the right forecast catches up.
+  const forecastSignature = useMemo(
+    () => (selectedForecast ? { forecast: selectedForecast, regionId: selectedIsland?.id } : null),
+    [selectedForecast, selectedIsland?.id]
+  );
+  const deferredForecastSignature = React.useDeferredValue(forecastSignature);
+  const deferredSelectedForecast = deferredForecastSignature && deferredForecastSignature.regionId === selectedIsland?.id
+    ? deferredForecastSignature.forecast
+    : undefined;
   // "Where is calmer today" — when the per-beach cluster winds show one side of the
   // region clearly calmer than the area average, surface a single plain line in the
   // strip. Quietly null until the background cluster forecasts land (and when the
