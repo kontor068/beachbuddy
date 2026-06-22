@@ -278,9 +278,13 @@ const getSeaConditionDisplay = (
     if (waveHeightM >= 0.8) {
       return {
         value: { en: 'Choppy', gr: 'Κυματισμός', de: 'Unruhig', it: 'Mosso', fr: 'Clapot' }[language],
+        // The stronger "caution, especially with children" line is reserved for 4 Bft+. At <=3 Bft
+        // the wind is light, so a 0.8 m reading is mild swell — that warning overstated the risk.
         subValue: windBeaufort === 5
           ? { en: 'The sea will have some chop.', gr: 'Η θάλασσα θα έχει κυματισμό.', de: 'Vorsicht, besonders mit Kindern.', it: 'Serve cautela, soprattutto con bambini.', fr: 'Prudence, surtout avec des enfants.' }[language]
-          : { en: 'Use caution, especially with children.', gr: 'Θέλει προσοχή, ειδικά με παιδιά.', de: 'Vorsicht, besonders mit Kindern.', it: 'Serve cautela, soprattutto con bambini.', fr: 'Prudence, surtout avec des enfants.' }[language],
+          : windBeaufort <= 3
+            ? { en: 'Use a bit of caution at more open spots.', gr: 'Θέλει λίγη προσοχή σε πιο ανοιχτά σημεία.', de: 'An offeneren Stellen etwas vorsichtig sein.', it: 'Serve un po di cautela nei punti piu aperti.', fr: 'Un peu de prudence dans les zones plus ouvertes.' }[language]
+            : { en: 'Use caution, especially with children.', gr: 'Θέλει προσοχή, ειδικά με παιδιά.', de: 'Vorsicht, besonders mit Kindern.', it: 'Serve cautela, soprattutto con bambini.', fr: 'Prudence, surtout avec des enfants.' }[language],
       };
     }
   }
