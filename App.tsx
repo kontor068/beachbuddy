@@ -4865,11 +4865,18 @@ export const App: React.FC = () => {
       matched_beach_id: globalBeachMatch?.beachId,
       matched_beach_region_id: globalBeachMatch?.island.id,
     });
-    if (regionMatch && regionMatch.id !== selectedIsland?.id) {
-      preserveSearchQueryOnRegionChangeRef.current = true;
-      handleRegionSelected(regionMatch, 'selector');
-      closeMobileBottomPanels();
-      scrollToMapSection();
+    if (regionMatch) {
+      // A region search is navigation, not a beach-name filter. Leaving "Naxos"
+      // in the query makes the next region render as an active name search and
+      // forces stale-looking today verdict badges until a refresh clears it.
+      setBeachSearchQuery('');
+      if (regionMatch.id !== selectedIsland?.id) {
+        handleRegionSelected(regionMatch, 'selector');
+        closeMobileBottomPanels();
+        scrollToMapSection();
+      } else {
+        scrollToMapSection();
+      }
       return;
     }
     if (globalBeachMatch) {
@@ -4912,7 +4919,6 @@ export const App: React.FC = () => {
   const handleDirectorySearchSuggestionSelect = async (suggestion: DirectorySearchSuggestion) => {
     setDirectorySearchSuggestions([]);
     setIsDirectorySearchSuggesting(false);
-    setBeachSearchQuery(suggestion.label);
 
     trackEvent('search_used', undefined, {
       ...analyticsBaseParams,
@@ -4924,7 +4930,7 @@ export const App: React.FC = () => {
     });
 
     if (suggestion.type === 'region') {
-      preserveSearchQueryOnRegionChangeRef.current = true;
+      setBeachSearchQuery('');
       closeMobileBottomPanels();
       if (suggestion.island.id !== selectedIsland?.id) {
         handleRegionSelected(suggestion.island, 'selector');
@@ -4933,6 +4939,7 @@ export const App: React.FC = () => {
       return;
     }
 
+    setBeachSearchQuery(suggestion.label);
     const suggestionBeachId = suggestion.beachId ?? suggestion.beach?.id;
     if (!suggestionBeachId) return;
 
