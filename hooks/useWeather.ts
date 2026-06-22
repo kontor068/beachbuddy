@@ -154,6 +154,13 @@ const fetchBeachForecastContexts = async (island: Island): Promise<Record<number
 export const useWeather = (selectedIsland: Island | undefined, language: LanguageCode) => {
   const [weather, setWeather] = useState<WeatherData | null>(null);
   const [forecast, setForecast] = useState<DailyForecast[] | null>(null);
+  // The island id the current `forecast`/`weather` belong to. `selectedIsland`
+  // updates synchronously on a region switch, but the forecast for the new region
+  // only loads in an effect AFTER paint — so for one frame the new region's
+  // beaches would be scored with the previous region's wind (stale red "not ideal
+  // today" cards, wrong map pin colours). Callers gate on this id to treat the
+  // forecast as absent until it actually matches the selected region.
+  const [forecastIslandId, setForecastIslandId] = useState<string | null>(null);
   const [beachForecasts, setBeachForecasts] = useState<Record<number, BeachForecastContext>>({});
   const [beachForecastsLoading, setBeachForecastsLoading] = useState(false);
   const [loading, setLoading] = useState(false);
@@ -172,6 +179,7 @@ export const useWeather = (selectedIsland: Island | undefined, language: Languag
     if (!isSameIsland) {
       setWeather(null);
       setForecast(null);
+      setForecastIslandId(null);
       setSelectedDayIndex(getDefaultDayIndex());
     }
 
@@ -184,6 +192,7 @@ export const useWeather = (selectedIsland: Island | undefined, language: Languag
     if (fixture) {
       setWeather(fixture.weather);
       setForecast(fixture.forecast);
+      setForecastIslandId(selectedIsland.id);
       setSelectedDayIndex(currentIndex => clampSelectedDayIndex(currentIndex, fixture.forecast.length));
       setLastUpdated(new Date());
       activeIslandIdRef.current = selectedIsland.id;
@@ -226,6 +235,7 @@ export const useWeather = (selectedIsland: Island | undefined, language: Languag
       if (marineResult.status === 'rejected') failures.push('marine-forecast');
       const nextForecast = processForecastData(mergeMarineForecastData(forecastResult.value, marine));
       setForecast(nextForecast);
+      setForecastIslandId(selectedIsland.id);
       setSelectedDayIndex(currentIndex => clampSelectedDayIndex(currentIndex, nextForecast.length));
     } else {
       failures.push('hourly-forecast');
@@ -276,6 +286,7 @@ export const useWeather = (selectedIsland: Island | undefined, language: Languag
       activeIslandIdRef.current = null;
       setWeather(null);
       setForecast(null);
+      setForecastIslandId(null);
       setBeachForecasts({});
       setBeachForecastsLoading(false);
       setLoading(false);
@@ -309,6 +320,7 @@ export const useWeather = (selectedIsland: Island | undefined, language: Languag
   return {
     weather,
     forecast,
+    forecastIslandId,
     beachForecasts,
     beachForecastsLoading,
     loading,

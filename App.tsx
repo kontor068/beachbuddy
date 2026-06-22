@@ -1421,7 +1421,16 @@ export const App: React.FC = () => {
   const { allIslands, loading: beachesLoading, error: beachesError, getFilteredBeaches, ensureIslandBeachesLoaded, cacheLoadedIsland } = useBeaches(language);
   const { selectedIsland, selectIsland, selectAdHocRegion } = useLocation(allIslands);
   const isNearMeRegionActive = selectedIsland?.id === NEAR_ME_REGION_ID;
-  const { weather, forecast, beachForecasts, loading: weatherLoading, error: weatherError, selectedDayIndex, setSelectedDayIndex, loadWeatherData, lastUpdated } = useWeather(selectedIsland, language);
+  const { weather, forecast: rawForecast, forecastIslandId, beachForecasts, loading: weatherLoading, error: weatherError, selectedDayIndex, setSelectedDayIndex, loadWeatherData, lastUpdated } = useWeather(selectedIsland, language);
+  // On a region switch `selectedIsland` updates synchronously, but the new region's
+  // forecast only lands in an effect after paint. Until the loaded forecast actually
+  // belongs to the selected region, treat it as absent everywhere downstream — so the
+  // beach cards and map pin colours never render the previous region's (stale) wind
+  // for a frame (old red "not ideal today" cards / wrong pin colours). The UI shows
+  // its loading state instead and fills in once the right forecast arrives. Gating at
+  // the source keeps every consumer (and their dependency arrays) consistent.
+  const forecastMatchesRegion = Boolean(selectedIsland && forecastIslandId === selectedIsland.id);
+  const forecast = forecastMatchesRegion ? rawForecast : null;
   const handleRegionSelected = (island: Island, source: 'selector' | 'nearest_location' = 'selector') => {
     trackEvent('region_changed', undefined, {
       locale: languageToLocale(language),
@@ -2805,6 +2814,8 @@ export const App: React.FC = () => {
   }, [selectedBeachForecasts]);
 
   // --- Hour selection (map slider) ---
+  // `forecast` is already gated to the selected region at the source (see useWeather
+  // destructure above), so this reads the right region's day or nothing.
   const baseDailyForecast = forecast?.[selectedDayIndex];
   // Daytime hours available on the slider. For "today" we only expose the
   // current hour onward — you can't scrub back to the morning once it has passed.
