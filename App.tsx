@@ -3063,7 +3063,13 @@ export const App: React.FC = () => {
 
       const beachSpecificForecast = hourAdjustedBeachForecasts[beach.id];
       const beachForecast = beachSpecificForecast || selectedForecast;
-      const scoreResult = beachScoreById.get(beach.id) ?? calculateBeachScore(beach, beachForecast, userLocation, preferences, {
+      // Score from the SAME urgent forecast that drives this item's exposure and the
+      // wind the card displays — NOT the deferred beachScoreById. beachScoreById lags
+      // behind selectedForecast during a region/hour change (useDeferredValue), so
+      // reusing it here made a card's score disagree with its own exposure/wind: the
+      // beach could sit in the "suitable" list (current wind ok) while its badge read
+      // "not ideal today" off the stale low score, until a refresh cleared the lag.
+      const scoreResult = calculateBeachScore(beach, beachForecast, userLocation, preferences, {
         weatherSource: beachSpecificForecast ? 'beach-cluster' : 'island-fallback',
         hourlyForecast: beachForecast.hourly || selectedForecast.hourly,
         geospatialProfile: geospatialExposure,
@@ -3111,7 +3117,7 @@ export const App: React.FC = () => {
         geospatialExposure,
       };
     });
-  }, [beachScoreById, geospatialExposureProfiles, language, preferences, hourAdjustedBeachForecasts, selectedForecast, selectedIsland, userLocation]);
+  }, [geospatialExposureProfiles, language, preferences, hourAdjustedBeachForecasts, selectedForecast, selectedIsland, userLocation]);
 
   const dailySuitableBeaches = useMemo(() => {
     if (!selectedIsland || !deferredSelectedForecast) return [];
