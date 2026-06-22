@@ -104,9 +104,33 @@ registerChunkLoadErrorHandler();
 
 if ('serviceWorker' in navigator) {
   if (import.meta.env.PROD) {
+    // Reload exactly once when a freshly deployed service worker takes control, so
+    // an already-open tab starts running the new code without the user having to
+    // hard-refresh. We only arm this when a controller already exists at load time:
+    // on a first-ever visit the initial SW also fires `controllerchange` (null ->
+    // active) and we must NOT reload then. The guard flag prevents a reload loop.
+    let isReloadingForNewVersion = false;
+    if (navigator.serviceWorker.controller) {
+      navigator.serviceWorker.addEventListener('controllerchange', () => {
+        if (isReloadingForNewVersion) return;
+        isReloadingForNewVersion = true;
+        window.location.reload();
+      });
+    }
+
     window.addEventListener('load', () => {
       navigator.serviceWorker.register('/service-worker.js').then(registration => {
         console.log('SW registered: ', registration);
+
+        // A long-open SPA tab only navigates via pushState, so the browser may not
+        // check for a new SW for hours. Poll for updates when the tab regains focus
+        // and on a light interval; when one is found the SW skipWaiting/claims and
+        // the controllerchange handler above reloads us into the new build.
+        const checkForUpdate = () => { registration.update().catch(() => {}); };
+        document.addEventListener('visibilitychange', () => {
+          if (document.visibilityState === 'visible') checkForUpdate();
+        });
+        window.setInterval(checkForUpdate, 60 * 1000);
       }).catch(registrationError => {
         console.log('SW registration failed: ', registrationError);
       });

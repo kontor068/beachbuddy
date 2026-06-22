@@ -30,7 +30,7 @@
     "images:strips": "node scripts/optimizeStripImages.mjs",
     "images:region-strips": "node scripts/buildRegionStripPhotos.mjs",
     "images:source-region-strips": "node scripts/sourceRegionStripImages.mjs",
-    "build": "vite build && node scripts/prerenderBeachPages.mjs",
+    "build": "vite build && node scripts/stampServiceWorker.mjs && node scripts/prerenderBeachPages.mjs",
     "lint": "tsc --noEmit",
     "preview": "vite preview"
   },
