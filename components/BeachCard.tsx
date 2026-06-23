@@ -15,7 +15,7 @@ import { ExposureLevel } from '../utils/windExposure';
 import { hasDirtRoadAccess } from '../utils/access';
 import { getSelectedDayPrefix, getSelectedDaySentencePrefix } from '../utils/dateLabels';
 import { getLocalizedCopy, languageToLocale } from '../utils/i18n';
-import { buildBeachShareUrl } from '../utils/beachUrls';
+import { buildBeachDetailPath, buildBeachShareUrl } from '../utils/beachUrls';
 import {
   displayBeachName,
   localizedAccessLabel,
@@ -1109,6 +1109,9 @@ export const BeachCard: React.FC<BeachCardProps> = ({
   const favoriteLabel = localizedCardCopy.favorite;
   const unfavoriteLabel = localizedCardCopy.unfavorite;
   const shareLabel = localizedCardCopy.share;
+  const detailRegionId = beach.regionId ?? regionId;
+  const detailBeach = typeof beach.sourceBeachId === 'number' ? { ...beach, id: beach.sourceBeachId } : beach;
+  const detailHref = detailRegionId ? buildBeachDetailPath(detailRegionId, detailBeach, language) : undefined;
 
   const handleFavoriteClick = (e: React.MouseEvent) => {
     e.stopPropagation();
@@ -1128,10 +1131,8 @@ export const BeachCard: React.FC<BeachCardProps> = ({
     // In the cross-region "Κοντά μου" list a beach belongs to its own region and
     // keeps its real id in sourceBeachId (the `id` shown here is synthetic), so
     // share links must use those, not the synthetic region/id.
-    const shareRegionId = beach.regionId ?? regionId;
-    const shareBeach = typeof beach.sourceBeachId === 'number' ? { ...beach, id: beach.sourceBeachId } : beach;
-    const shareUrl = shareRegionId
-      ? buildBeachShareUrl(window.location.origin, shareRegionId, shareBeach)
+    const shareUrl = detailRegionId
+      ? buildBeachShareUrl(window.location.origin, detailRegionId, detailBeach)
       : window.location.origin + window.location.pathname;
     if (navigator.share) {
       try {
@@ -1164,6 +1165,12 @@ export const BeachCard: React.FC<BeachCardProps> = ({
       source: 'beach_card',
     });
     openNavigation(beach);
+  };
+  const handleDetailLinkClick = (e: React.MouseEvent<HTMLAnchorElement>) => {
+    e.stopPropagation();
+    if (e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return;
+    e.preventDefault();
+    onClick?.();
   };
   const canNavigate = canOpenNavigation(beach);
   // Icon-only card buttons have no room for a visible pill; surface the badge reason via the
@@ -1574,14 +1581,27 @@ export const BeachCard: React.FC<BeachCardProps> = ({
         </div>
 
         <div className={`mt-auto flex items-center gap-2 border-t border-sky-50 bg-white/74 pt-3 ${isCompact ? 'px-3.5 pb-3.5 lg:px-3 lg:pb-3' : 'px-3.5 pb-3.5 sm:px-4 sm:pb-4'} dark:border-slate-800 dark:bg-slate-900/60`}>
-          <button
-            onClick={(e) => { e.stopPropagation(); onClick?.(); }}
-            data-nosnippet="true"
-            className={`inline-flex ${isCompact ? 'min-h-11 lg:min-h-10' : 'min-h-11'} flex-1 items-center justify-center gap-2 rounded-xl bg-cyan-600 px-4 py-2 text-sm font-heading font-bold text-white shadow-sm shadow-cyan-600/20 transition-colors hover:bg-cyan-700 focus:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 cursor-pointer`}
-          >
-            <Info className="h-4 w-4" />
-            <span>{t.learnMore}</span>
-          </button>
+          {detailHref ? (
+            <a
+              href={detailHref}
+              onClick={handleDetailLinkClick}
+              data-nosnippet="true"
+              className={`inline-flex ${isCompact ? 'min-h-11 lg:min-h-10' : 'min-h-11'} flex-1 items-center justify-center gap-2 rounded-xl bg-cyan-600 px-4 py-2 text-sm font-heading font-bold text-white shadow-sm shadow-cyan-600/20 transition-colors hover:bg-cyan-700 focus:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 cursor-pointer`}
+            >
+              <Info className="h-4 w-4" />
+              <span>{t.learnMore}</span>
+              <span className="sr-only"> {beachDisplayName}</span>
+            </a>
+          ) : (
+            <button
+              onClick={(e) => { e.stopPropagation(); onClick?.(); }}
+              data-nosnippet="true"
+              className={`inline-flex ${isCompact ? 'min-h-11 lg:min-h-10' : 'min-h-11'} flex-1 items-center justify-center gap-2 rounded-xl bg-cyan-600 px-4 py-2 text-sm font-heading font-bold text-white shadow-sm shadow-cyan-600/20 transition-colors hover:bg-cyan-700 focus:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 cursor-pointer`}
+            >
+              <Info className="h-4 w-4" />
+              <span>{t.learnMore}</span>
+            </button>
+          )}
           {canNavigate && (
             <button
               onClick={handleNavigationClick}
@@ -1794,14 +1814,27 @@ export const BeachCard: React.FC<BeachCardProps> = ({
 
       {/* Action buttons */}
       <div className="px-5 pb-5 flex items-center gap-2">
-        <button
-          onClick={(e) => { e.stopPropagation(); onClick?.(); }}
-          data-nosnippet="true"
-          className="flex-grow inline-flex items-center justify-center gap-2 px-4 py-3 bg-primary hover:bg-primary-dark active:scale-[0.98] text-white font-heading font-semibold rounded-xl transition-all duration-300 cursor-pointer min-h-[44px]"
-        >
-          <Info className="w-4 h-4" />
-          <span className="text-xs">{t.learnMore}</span>
-        </button>
+        {detailHref ? (
+          <a
+            href={detailHref}
+            onClick={handleDetailLinkClick}
+            data-nosnippet="true"
+            className="flex-grow inline-flex min-h-[44px] items-center justify-center gap-2 rounded-xl bg-primary px-4 py-3 font-heading font-semibold text-white transition-all duration-300 hover:bg-primary-dark active:scale-[0.98] cursor-pointer"
+          >
+            <Info className="w-4 h-4" />
+            <span className="text-xs">{t.learnMore}</span>
+            <span className="sr-only"> {beachDisplayName}</span>
+          </a>
+        ) : (
+          <button
+            onClick={(e) => { e.stopPropagation(); onClick?.(); }}
+            data-nosnippet="true"
+            className="flex-grow inline-flex items-center justify-center gap-2 px-4 py-3 bg-primary hover:bg-primary-dark active:scale-[0.98] text-white font-heading font-semibold rounded-xl transition-all duration-300 cursor-pointer min-h-[44px]"
+          >
+            <Info className="w-4 h-4" />
+            <span className="text-xs">{t.learnMore}</span>
+          </button>
+        )}
 
         {canNavigate && (
           <button

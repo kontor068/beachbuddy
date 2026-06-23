@@ -59,6 +59,7 @@ import { CuratedPhotoImage } from './photos';
 import { beachMatchesUserPreferences } from '../services/recommendationService';
 import { assessBeachWindExposure } from '../utils/windExposureEngine';
 import { describeSimpleWindSuitability } from '../utils/windExposureCopy';
+import { scrollElementIntoView } from '../utils/scroll';
 
 export type DirectoryCategory = 'all' | QuickPreferenceFilter;
 
@@ -174,6 +175,11 @@ interface BeachSearcherHomeProps {
 }
 
 const DRAG_SCROLL_THRESHOLD_PX = 6;
+const BEACH_RESULTS_SECTION_IDS = [
+  'top-recommendations-section',
+  'suitable-beaches-section',
+  'all-beaches-section',
+] as const;
 
 // From 5 Bft up a boat-only beach (e.g. Κλεφτικό) isn't a real option for the day —
 // the boats don't run and you can't drive there — so it must never surface as a "top
@@ -1584,6 +1590,7 @@ export const BeachSearcherHome: React.FC<BeachSearcherHomeProps> = ({
   const searchBoxRef = useRef<HTMLDivElement>(null);
   const [isSearchSuggestionsOpen, setIsSearchSuggestionsOpen] = useState(false);
   const [activeSearchSuggestionIndex, setActiveSearchSuggestionIndex] = useState(-1);
+  const [isMapResultsCueDismissed, setIsMapResultsCueDismissed] = useState(false);
   const activePlaceName = selectedIsland?.name[language] || copy.greece;
   const heroBackground = getImageSet(islandBackground);
   const regionBeaches = selectedIsland?.beaches || [];
@@ -1701,6 +1708,7 @@ export const BeachSearcherHome: React.FC<BeachSearcherHomeProps> = ({
   useEffect(() => {
     setIsAllBeachesPanelOpen(false);
     setIsWeatherPanelOpen(false);
+    setIsMapResultsCueDismissed(false);
   }, [selectedIsland?.id]);
 
   const trimmedSearchQuery = searchQuery.trim();
@@ -2636,6 +2644,30 @@ export const BeachSearcherHome: React.FC<BeachSearcherHomeProps> = ({
     (!isMobileViewport && !isDirectorySuitableView && directoryDisplayBeachCards.length > 0) ||
     (isMobileViewport && selectedIsland && !isDirectorySuitableView && directoryDisplayBeachCards.length > 0)
   );
+  const getFirstBeachResultsSectionElement = () => (
+    BEACH_RESULTS_SECTION_IDS
+      .map(id => document.getElementById(id))
+      .find((element): element is HTMLElement => Boolean(element)) ?? null
+  );
+  const handleMapResultsCueClick = () => {
+    setIsMapResultsCueDismissed(true);
+    scrollElementIntoView(getFirstBeachResultsSectionElement());
+  };
+  const mapResultsCueLabel = getLocalizedCopy(language, {
+    en: 'Detailed beaches',
+    gr: 'Παραλίες αναλυτικά',
+    fr: 'Plages détaillées',
+    de: 'Strände im Detail',
+    it: 'Spiagge in dettaglio',
+  });
+  const mapResultsCueAriaLabel = getLocalizedCopy(language, {
+    en: 'See the detailed beach cards below the map',
+    gr: 'Δες τις αναλυτικές κάρτες παραλιών κάτω από τον χάρτη',
+    fr: 'Voir les fiches détaillées des plages sous la carte',
+    de: 'Detaillierte Strandkarten unter der Karte ansehen',
+    it: 'Vedi le schede dettagliate delle spiagge sotto la mappa',
+  });
+
   // Mobile swipe affordance for the horizontal result carousels: the peeking next card
   // already hints there's more, but a small explicit cue makes the sideways scroll obvious.
   // Only shown on mobile and only when more than one card exists (otherwise nothing scrolls).
@@ -3379,8 +3411,21 @@ export const BeachSearcherHome: React.FC<BeachSearcherHomeProps> = ({
           >
             {islandContextStrip}
             {mapDayStrip}
-            <div className="overflow-hidden rounded-[1.35rem] border border-sky-100 bg-white/68 p-2 text-left shadow-sm shadow-sky-900/8 ring-1 ring-white/45 backdrop-blur-md">
+            <div className="relative overflow-hidden rounded-[1.35rem] border border-sky-100 bg-white/68 p-2 text-left shadow-sm shadow-sky-900/8 ring-1 ring-white/45 backdrop-blur-md">
               {mapPreview}
+              {!isMapResultsCueDismissed && (
+                <div className="pointer-events-none absolute inset-x-0 bottom-0 z-[850] flex justify-center bg-gradient-to-t from-white/90 via-white/38 to-transparent px-3 pb-3 pt-12">
+                  <button
+                    type="button"
+                    onClick={handleMapResultsCueClick}
+                    className="pointer-events-auto inline-flex min-h-10 max-w-[calc(100%-0.5rem)] items-center justify-center gap-1.5 rounded-full border border-cyan-100/90 bg-white/94 px-3.5 py-2 text-xs font-extrabold leading-none text-[#007a83] shadow-lg shadow-sky-900/14 ring-1 ring-white/70 backdrop-blur-xl transition active:scale-[0.98] focus:outline-none focus-visible:ring-2 focus-visible:ring-cyan-700"
+                    aria-label={mapResultsCueAriaLabel}
+                  >
+                    <span className="truncate">{mapResultsCueLabel}</span>
+                    <ChevronDown className="h-3.5 w-3.5 shrink-0 motion-safe:animate-pulse" aria-hidden="true" />
+                  </button>
+                </div>
+              )}
             </div>
           </section>
         )}
