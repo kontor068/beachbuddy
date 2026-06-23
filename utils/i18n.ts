@@ -1,4 +1,5 @@
 import { LanguageCode } from '../types';
+import { getBeachPathLanguage } from './beachUrls';
 
 export const LANGUAGE_STORAGE_KEY = 'calmBeachLanguage';
 export const LANGUAGE_PREFERENCE_SET_KEY = 'calmBeachLanguagePreferenceSet';
@@ -30,7 +31,10 @@ export const isSupportedLanguage = (value: unknown): value is SupportedLanguage 
 export const getInitialLanguage = (): SupportedLanguage => {
   if (typeof window === 'undefined') return 'en';
 
-  if (/^\/el(?=\/|$)/.test(window.location.pathname)) return 'gr';
+  // A locale URL prefix (/el, /de, /fr, /it) is the strongest signal — honour it
+  // so a visitor landing on a prerendered localized page boots in that language.
+  const pathLanguage = getBeachPathLanguage(window.location.pathname);
+  if (pathLanguage && isSupportedLanguage(pathLanguage)) return pathLanguage;
 
   const hasExplicitPreference = window.localStorage.getItem(LANGUAGE_PREFERENCE_SET_KEY) === 'true';
   const stored = window.localStorage.getItem(LANGUAGE_STORAGE_KEY);

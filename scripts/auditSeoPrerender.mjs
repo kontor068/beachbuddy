@@ -253,6 +253,43 @@ const checkPerformanceBudget = async () => {
   pass();
 };
 
+// Walk every prerendered index.html and confirm each hreflang alternate points at
+// a file that actually exists. A hreflang link to a missing page is the classic
+// multilingual SEO failure (Search Console "no return tag" / soft-404), and it is
+// easy to introduce when expanding the localized-region set — so this guards the
+// whole tree, not just the sampled pages.
+const collectHtmlFiles = async (dir, out = []) => {
+  for (const entry of await readdir(dir, { withFileTypes: true })) {
+    const full = path.join(dir, entry.name);
+    if (entry.isDirectory()) await collectHtmlFiles(full, out);
+    else if (entry.name === 'index.html') out.push(full);
+  }
+  return out;
+};
+
+const checkHreflangIntegrity = async () => {
+  const htmlFiles = await collectHtmlFiles(distDir);
+  let linksChecked = 0;
+  const orphans = [];
+  for (const file of htmlFiles) {
+    const html = await readText(file);
+    for (const { hreflang, href } of hreflangsOf(html)) {
+      if (hreflang === 'x-default') continue;
+      if (!href.startsWith(siteUrl)) { orphans.push(`${href} (non-canonical origin)`); continue; }
+      linksChecked += 1;
+      const pathname = decodeURIComponent(href.slice(siteUrl.length)).replace(/^\/+/, '');
+      const target = path.join(distDir, pathname, 'index.html');
+      if (!await exists(target)) orphans.push(`${href} -> missing ${path.relative(distDir, target)}`);
+    }
+  }
+  if (orphans.length > 0) {
+    fail(`${orphans.length} hreflang link(s) point to a non-existent page (orphan alternates): ${orphans.slice(0, 5).join('; ')}${orphans.length > 5 ? ' …' : ''}`);
+  } else {
+    pass();
+  }
+  console.log(`Hreflang integrity: ${linksChecked} alternate links across ${htmlFiles.length} pages, ${orphans.length} orphans.`);
+};
+
 const main = async () => {
   if (!await exists(distDir)) {
     fail(`dist directory missing at ${distDir}. Run npm run build first.`);
@@ -358,6 +395,7 @@ const main = async () => {
   }
 
   await checkImages(imageLocs);
+  await checkHreflangIntegrity();
   await checkPerformanceBudget();
 
   const score = Math.max(0, Math.round(100 - failures.length * 10 - warnings.length * 2));
