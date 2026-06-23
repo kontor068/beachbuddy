@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useMemo, useRef, Suspense } from 'react';
-import { Accessibility, Beach, DailyForecast, ForecastItem, Island, LanguageCode, FilterKey, SortOption, UserPreferences, SuitableBeach, WindDirection } from './types';
+import { Accessibility, Beach, DailyForecast, ForecastItem, Island, LanguageCode, FilterKey, SortOption, UserPreferences, SuitableBeach, Translation, WindDirection } from './types';
 import { beachMatchesUserPreferences, calculateBeachScore, calculateBestBeachTime, getSuitableBeaches, filterBeachesByUserPreferences, getTopRecommendationDisplayLimit, hasHourlyRainRisk, isTrustedTopRecommendationCandidate, type BeachScore, type BeachWeatherById, type BestBeachTime } from './services/recommendationService';
 import { motion, AnimatePresence } from 'motion/react';
 import type { Chat } from '@google/genai';
@@ -44,6 +44,7 @@ import { hasBoatOnlyAccess, hasDifficultTopPickAccess, hasMainstreamTopPickAcces
 import { buildBeachDetailPath, buildBeachRegionPath, parseBeachDetailPath, parseBeachRegionPath, regionMatchesRouteParam } from './utils/beachUrls';
 import { describeSimpleWindSuitability } from './utils/windExposureCopy';
 import {
+  getSelectedDayOffset,
   getSelectedDayPrefix,
   getSelectedDaySentencePrefix,
   isSelectedDateToday,
@@ -93,8 +94,29 @@ const ENABLE_AI_ADVISOR = false;
 const ENABLE_BEACH_BUDDY_CHAT = false;
 const ENABLE_PLANNER_PRO = false;
 const ENABLE_USAGE_INSIGHTS = import.meta.env.DEV;
+const MOBILE_MAP_DAY_LIMIT = 5;
 
 type DetailDataStatus = 'idle' | 'loading' | 'ready' | 'partial';
+
+const capitalizeMapDayLabel = (value: string, locale: string): string => {
+  if (!value) return value;
+  return `${value.charAt(0).toLocaleUpperCase(locale)}${value.slice(1)}`;
+};
+
+const getMobileMapDayLabel = (
+  date: Date,
+  language: LanguageCode,
+  t: Translation,
+  now: Date = new Date()
+): string => {
+  const locale = t.locale || languageToLocale(language);
+  const offset = getSelectedDayOffset(date, now);
+
+  if (offset === 0) return capitalizeMapDayLabel(t.today, locale);
+  if (offset === 1) return capitalizeMapDayLabel(t.tomorrow, locale);
+
+  return new Intl.DateTimeFormat(locale, { weekday: 'short' }).format(date);
+};
 
 const ISLAND_BACKGROUND_IMAGES: Record<string, string> = {
   amorgos: '/cyclades-amorgos-bg.webp',
@@ -2811,7 +2833,7 @@ export const App: React.FC = () => {
       }
     });
     return lookup;
-  }, [selectedBeachForecasts]);
+  }, [hourAdjustedBeachForecasts]);
 
   // --- Hour selection (map slider) ---
   // `forecast` is already gated to the selected region at the source (see useWeather
@@ -3293,6 +3315,84 @@ export const App: React.FC = () => {
   }), [language, selectedIsland?.id, selectedIsland?.name.en]);
   const isUnsafeWinter = isWinter && currentBeaufort > 4;
   const isWaitingForForecast = Boolean(selectedIsland && !selectedForecast && !weatherError && !isUnsafeWinter);
+  const handleMobileMapDaySelect = React.useCallback((index: number) => {
+    if (index === selectedDayIndex) return;
+
+    setSelectedDayIndex(index);
+    trackEvent('forecast_day_selected', undefined, {
+      ...analyticsBaseParams,
+      source: 'mobile_map_day_strip',
+      day_index: index,
+    });
+  }, [analyticsBaseParams, selectedDayIndex, setSelectedDayIndex]);
+  const mobileMapDayStrip = useMemo(() => {
+    if (!forecast || forecast.length <= 1) return null;
+
+    const locale = t.locale || languageToLocale(language);
+    const dateFormatter = new Intl.DateTimeFormat(locale, { month: 'short', day: 'numeric' });
+    const stripLabel = getLocalizedCopy(language, {
+      en: 'Map forecast days',
+      gr: 'Ημέρες πρόγνωσης χάρτη',
+      fr: 'Jours de prevision de la carte',
+      de: 'Kartenvorhersage-Tage',
+      it: 'Giorni previsione mappa',
+    });
+
+    return (
+      <div
+        className="sm:hidden rounded-[1.1rem] border border-sky-100 bg-white/90 p-1.5 shadow-sm shadow-sky-900/5 backdrop-blur-xl"
+        data-testid="mobile-map-day-strip"
+      >
+        <div
+          className="no-scrollbar flex min-w-0 gap-1.5 overflow-x-auto overscroll-x-contain"
+          role="tablist"
+          aria-label={stripLabel}
+        >
+          {forecast.slice(0, MOBILE_MAP_DAY_LIMIT).map((day, index) => {
+            const dayLabel = getMobileMapDayLabel(day.date, language, t, topPickNow);
+            const beaufort = getBeaufortLevel(day.wind.speed * 3.6);
+            const isSelected = selectedDayIndex === index;
+            const weatherIconUrl = `https://openweathermap.org/img/wn/${day.weather.icon}@2x.png`;
+            const buttonLabel = `${t.forecastFor} ${dayLabel}, ${dateFormatter.format(day.date)}: ${Math.round(day.temp_max)}°C, ${beaufort} ${t.units.beaufort}, ${day.weather.description}`;
+
+            return (
+              <button
+                key={day.date.toISOString()}
+                type="button"
+                role="tab"
+                aria-selected={isSelected}
+                aria-label={buttonLabel}
+                onClick={() => handleMobileMapDaySelect(index)}
+                data-testid="mobile-map-day-tab"
+                className={`flex min-h-12 min-w-[4.25rem] flex-1 cursor-pointer flex-col items-center justify-center rounded-2xl border px-1.5 py-1 text-center transition-colors duration-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-cyan-600 focus-visible:ring-offset-2 ${
+                  isSelected
+                    ? 'border-[#007a83] bg-cyan-50 text-[#006b73] shadow-sm shadow-cyan-900/10 ring-1 ring-cyan-100'
+                    : 'border-sky-100 bg-white/88 text-slate-700 hover:border-cyan-200 hover:bg-cyan-50/70'
+                }`}
+              >
+                <span className={`max-w-full truncate text-[10px] font-extrabold leading-tight ${isSelected ? 'text-[#006b73]' : 'text-slate-700'}`}>
+                  {dayLabel}
+                </span>
+                <span className="mt-0.5 flex max-w-full items-center justify-center gap-0.5 leading-none">
+                  <img
+                    src={weatherIconUrl}
+                    alt=""
+                    width={24}
+                    height={24}
+                    loading={index === 0 ? 'eager' : 'lazy'}
+                    className="h-5 w-5 shrink-0 drop-shadow-sm"
+                  />
+                  <span className="truncate text-[10px] font-black tabular-nums text-slate-900">
+                    {beaufort} {t.units.beaufort}
+                  </span>
+                </span>
+              </button>
+            );
+          })}
+        </div>
+      </div>
+    );
+  }, [forecast, handleMobileMapDaySelect, language, selectedDayIndex, t, topPickNow]);
 
   useEffect(() => {
     if (trackedAppLoadedRef.current || !selectedIsland) return;
@@ -5083,6 +5183,7 @@ export const App: React.FC = () => {
               currentBeaufort={currentBeaufort}
               mapForecastTimeLabel={mapForecastTimeLabel}
               islandBackground={islandBackground}
+              mapDayStrip={mobileMapDayStrip}
               mapPreview={directoryMapPreview}
               topRecommendationCards={directoryTopRecommendationCards}
               suitableBeachCards={directoryHomeSuitableBeachCards}
@@ -5673,6 +5774,7 @@ export const App: React.FC = () => {
                       {homeCopy.mapSubtitle[language]}
                     </p>
                   </div>
+                  {mobileMapDayStrip}
                   <div className="relative overflow-hidden rounded-2xl border border-white/60 shadow-lg dark:border-slate-800 sm:rounded-3xl">
                     {shouldLoadMap ? (
                       <MapLoadBoundary

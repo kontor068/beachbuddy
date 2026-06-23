@@ -16,6 +16,7 @@ export type AnalyticsEvent =
   | 'share_clicked'
   | 'recommendation_feedback_positive'
   | 'recommendation_feedback_negative'
+  | 'forecast_day_selected'
   | 'forecast_expanded'
   | 'map_viewed'
   | 'map_marker_clicked'

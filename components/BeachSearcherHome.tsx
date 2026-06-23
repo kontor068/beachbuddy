@@ -123,6 +123,7 @@ interface BeachSearcherHomeProps {
   currentBeaufort?: number;
   mapForecastTimeLabel?: string;
   islandBackground?: string;
+  mapDayStrip?: React.ReactNode;
   mapPreview?: React.ReactNode;
   topRecommendationCards?: SuitableBeach[];
   suitableBeachCards?: SuitableBeach[];
@@ -1510,6 +1511,7 @@ export const BeachSearcherHome: React.FC<BeachSearcherHomeProps> = ({
   currentBeaufort,
   mapForecastTimeLabel,
   islandBackground,
+  mapDayStrip,
   mapPreview,
   topRecommendationCards,
   suitableBeachCards,
@@ -3372,10 +3374,11 @@ export const BeachSearcherHome: React.FC<BeachSearcherHomeProps> = ({
         {selectedIsland && mapPreview && isMobileViewport && (
           <section
             id="map-section"
-            className="mt-2"
+            className="mt-2 space-y-2"
             aria-label={copy.beachMapAria}
           >
             {islandContextStrip}
+            {mapDayStrip}
             <div className="overflow-hidden rounded-[1.35rem] border border-sky-100 bg-white/68 p-2 text-left shadow-sm shadow-sky-900/8 ring-1 ring-white/45 backdrop-blur-md">
               {mapPreview}
             </div>
