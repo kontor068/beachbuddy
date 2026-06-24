@@ -2925,13 +2925,13 @@ export const App: React.FC = () => {
     if (!selectedIsland || !selectedForecast) return null;
     const samples: RegionBeachWindSample[] = [];
     selectedIsland.beaches.forEach(beach => {
-      const beachWind = selectedBeachForecasts[beach.id]?.wind;
+      const beachWind = hourAdjustedBeachForecasts[beach.id]?.wind;
       if (beachWind && Number.isFinite(beachWind.speed)) {
         samples.push({ lat: beach.coordinates.lat, lon: beach.coordinates.lon, windSpeedMs: beachWind.speed });
       }
     });
     return getRegionWindVariationNote(selectedForecast.wind.speed, samples, selectedIsland.coordinates, language);
-  }, [selectedIsland, selectedForecast, selectedBeachForecasts, language]);
+  }, [selectedIsland, selectedForecast, hourAdjustedBeachForecasts, language]);
   // Score every beach ONCE per render with the location-aware inputs, then share
   // the result. Previously getFilteredBeachResults, suitableBeaches and
   // mapSuitableBeaches each re-ran calculateBeachScore (the ~500-line hot path)
@@ -4120,7 +4120,7 @@ export const App: React.FC = () => {
             preferences={preferences}
             islandName={selectedIsland?.name[language]}
             detailDataStatus={detailDataStatus}
-            beachWeatherById={selectedBeachForecasts}
+            beachWeatherById={hourAdjustedBeachForecasts}
             geospatialExposureProfiles={geospatialExposureProfiles}
             weatherSource="island-fallback"
             mapExposureLevelOverride={canonicalMapExposureLevels.get(detailBeach.id)}
