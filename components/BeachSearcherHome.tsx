@@ -1930,7 +1930,8 @@ export const BeachSearcherHome: React.FC<BeachSearcherHomeProps> = ({
       // the highlight the directory carousel just set — so the pin would never blink
       // while browsing "Όλες", unlike "Καταλληλότερες".
       const directoryCarouselOwnsHighlight = isMobileViewport && !isDirectorySuitableView && Boolean(selectedIsland);
-      if (!directoryCarouselOwnsHighlight) {
+      const mobileCardScrollOwnsHighlight = isMobileViewport && Boolean(selectedIsland);
+      if (!directoryCarouselOwnsHighlight && !mobileCardScrollOwnsHighlight) {
         activeSuitableBeachIdRef.current = undefined;
         onActiveSuitableBeachChange(undefined, { resumeFollow: false });
       }
@@ -1966,7 +1967,7 @@ export const BeachSearcherHome: React.FC<BeachSearcherHomeProps> = ({
         }
       });
 
-      if (activeSuitableBeachIdRef.current === nearestBeachId) return;
+      if (activeSuitableBeachIdRef.current === nearestBeachId && !resumeFollow) return;
       activeSuitableBeachIdRef.current = nearestBeachId;
       onActiveSuitableBeachChange(nearestBeachId, { resumeFollow });
     };
@@ -1976,14 +1977,11 @@ export const BeachSearcherHome: React.FC<BeachSearcherHomeProps> = ({
       animationFrameId = window.requestAnimationFrame(() => updateActiveBeach(resumeFollow));
     };
     const handleCarouselScroll = () => {
-      // Pause the map indication while the carousel is actively scrolling…
+      // Keep the map indication aligned with the card currently nearest the center
+      // while the user swipes through the carousel.
       isCarouselScrollingRef.current = true;
-      if (activeSuitableBeachIdRef.current !== undefined) {
-        activeSuitableBeachIdRef.current = undefined;
-        onActiveSuitableBeachChange(undefined, { resumeFollow: false });
-      }
+      scheduleUpdate(true);
       if (settleTimeoutId) window.clearTimeout(settleTimeoutId);
-      // …and resume it once the scroll has stabilized.
       settleTimeoutId = window.setTimeout(() => {
         isCarouselScrollingRef.current = false;
         scheduleUpdate(true);
@@ -2176,6 +2174,163 @@ export const BeachSearcherHome: React.FC<BeachSearcherHomeProps> = ({
   );
 
   useEffect(() => {
+    if (!isMobileViewport || !selectedIsland || !onActiveSuitableBeachChange) {
+      return undefined;
+    }
+
+    type CarouselDescriptor = {
+      carousel: HTMLDivElement | null;
+      cardSelector: string;
+      datasetKey: 'suitableBeachId' | 'directoryBeachId';
+    };
+
+    const carousels: CarouselDescriptor[] = [
+      hasTopRecommendationView
+        ? {
+          carousel: topRecommendationsCarouselRef.current,
+          cardSelector: '[data-suitable-beach-id]',
+          datasetKey: 'suitableBeachId',
+        }
+        : null,
+      isDirectorySuitableView
+        ? {
+          carousel: suitableCarouselRef.current,
+          cardSelector: '[data-suitable-beach-id]',
+          datasetKey: 'suitableBeachId',
+        }
+        : null,
+      shouldTrackDirectoryCarouselOnMap
+        ? {
+          carousel: directoryCarouselRef.current,
+          cardSelector: '[data-directory-beach-id]',
+          datasetKey: 'directoryBeachId',
+        }
+        : null,
+    ].filter((item): item is CarouselDescriptor => Boolean(item?.carousel));
+
+    if (carousels.length === 0) return undefined;
+
+    let animationFrameId = 0;
+
+    const getCardFocusY = () => {
+      const viewportHeight = window.innerHeight || document.documentElement.clientHeight;
+      const mapRect = document.getElementById('map-section')?.getBoundingClientRect();
+
+      if (mapRect && mapRect.bottom > 0 && mapRect.bottom < viewportHeight) {
+        return mapRect.bottom + (viewportHeight - mapRect.bottom) * 0.38;
+      }
+
+      return viewportHeight * 0.68;
+    };
+
+    const getVisibleCarousel = () => {
+      const viewportHeight = window.innerHeight || document.documentElement.clientHeight;
+      const focusY = getCardFocusY();
+      let bestCarousel: CarouselDescriptor | null = null;
+      let bestDistance = Number.POSITIVE_INFINITY;
+
+      carousels.forEach(item => {
+        if (!item.carousel) return;
+        const rect = item.carousel.getBoundingClientRect();
+        const visibleTop = Math.max(rect.top, 0);
+        const visibleBottom = Math.min(rect.bottom, viewportHeight);
+        const visibleHeight = visibleBottom - visibleTop;
+        if (visibleHeight < 24) return;
+
+        const distance = focusY >= visibleTop && focusY <= visibleBottom
+          ? 0
+          : Math.min(Math.abs(focusY - visibleTop), Math.abs(focusY - visibleBottom));
+
+        if (distance < bestDistance) {
+          bestDistance = distance;
+          bestCarousel = item;
+        }
+      });
+
+      return bestCarousel;
+    };
+
+    const getActiveBeachId = () => {
+      const activeCarousel = getVisibleCarousel();
+      if (!activeCarousel?.carousel) return undefined;
+
+      const carouselRect = activeCarousel.carousel.getBoundingClientRect();
+      const carouselCenter = carouselRect.left + carouselRect.width / 2;
+      const cards = Array.from(activeCarousel.carousel.querySelectorAll<HTMLElement>(activeCarousel.cardSelector));
+      let nearestBeachId: number | undefined;
+      let nearestDistance = Number.POSITIVE_INFINITY;
+
+      cards.forEach(card => {
+        const rawBeachId = card.dataset[activeCarousel.datasetKey];
+        const beachId = rawBeachId ? Number(rawBeachId) : Number.NaN;
+        if (!Number.isFinite(beachId)) return;
+
+        const cardRect = card.getBoundingClientRect();
+        const visibleWidth = Math.min(cardRect.right, carouselRect.right) - Math.max(cardRect.left, carouselRect.left);
+        if (visibleWidth < Math.min(24, cardRect.width * 0.12)) return;
+
+        const cardCenter = cardRect.left + cardRect.width / 2;
+        const distance = Math.abs(cardCenter - carouselCenter);
+
+        if (distance < nearestDistance) {
+          nearestDistance = distance;
+          nearestBeachId = beachId;
+        }
+      });
+
+      return nearestBeachId;
+    };
+
+    const updateActiveBeach = (resumeFollow = true) => {
+      animationFrameId = 0;
+      const nearestBeachId = getActiveBeachId();
+
+      if (activeSuitableBeachIdRef.current === nearestBeachId && !resumeFollow) return;
+      activeSuitableBeachIdRef.current = nearestBeachId;
+      onActiveSuitableBeachChange(nearestBeachId, { resumeFollow });
+    };
+
+    const scheduleUpdate = (resumeFollow = true) => {
+      if (animationFrameId) return;
+      animationFrameId = window.requestAnimationFrame(() => updateActiveBeach(resumeFollow));
+    };
+
+    const handleScroll = () => scheduleUpdate(true);
+    const handleResize = () => scheduleUpdate(false);
+    const scrollContainers: Array<Window | HTMLDivElement> = [window];
+    if (allBeachesPanelScrollRef.current) {
+      scrollContainers.push(allBeachesPanelScrollRef.current);
+    }
+    carousels.forEach(item => {
+      if (item.carousel) scrollContainers.push(item.carousel);
+    });
+
+    scrollContainers.forEach(container => {
+      container.addEventListener('scroll', handleScroll, { passive: true });
+    });
+    window.addEventListener('resize', handleResize);
+    scheduleUpdate(false);
+
+    return () => {
+      if (animationFrameId) window.cancelAnimationFrame(animationFrameId);
+      scrollContainers.forEach(container => {
+        container.removeEventListener('scroll', handleScroll);
+      });
+      window.removeEventListener('resize', handleResize);
+    };
+  }, [
+    directoryDisplayBeachCards.length,
+    hasTopRecommendationView,
+    isDirectorySuitableView,
+    isMobileViewport,
+    onActiveSuitableBeachChange,
+    selectedIsland,
+    shouldTrackDirectoryCarouselOnMap,
+    topRecommendationBeachCards.length,
+    weatherBeachCards.length,
+  ]);
+
+  useEffect(() => {
     const carousels = [topRecommendationsCarouselRef.current, suitableCarouselRef.current, directoryCarouselRef.current]
       .filter((carousel): carousel is HTMLDivElement => Boolean(carousel));
 
@@ -2230,7 +2385,7 @@ export const BeachSearcherHome: React.FC<BeachSearcherHomeProps> = ({
         }
       });
 
-      if (activeSuitableBeachIdRef.current === nearestBeachId) return;
+      if (activeSuitableBeachIdRef.current === nearestBeachId && !resumeFollow) return;
       activeSuitableBeachIdRef.current = nearestBeachId;
       onActiveSuitableBeachChange(nearestBeachId, { resumeFollow });
     };
@@ -2240,14 +2395,11 @@ export const BeachSearcherHome: React.FC<BeachSearcherHomeProps> = ({
       animationFrameId = window.requestAnimationFrame(() => updateActiveBeach(resumeFollow));
     };
     const handleCarouselScroll = () => {
-      // Pause the map indication while the carousel is actively scrolling…
+      // Keep the map indication aligned with the card currently nearest the center
+      // while the user swipes through the carousel.
       isCarouselScrollingRef.current = true;
-      if (activeSuitableBeachIdRef.current !== undefined) {
-        activeSuitableBeachIdRef.current = undefined;
-        onActiveSuitableBeachChange(undefined, { resumeFollow: false });
-      }
+      scheduleUpdate(true);
       if (settleTimeoutId) window.clearTimeout(settleTimeoutId);
-      // …and resume it once the scroll has stabilized.
       settleTimeoutId = window.setTimeout(() => {
         isCarouselScrollingRef.current = false;
         scheduleUpdate(true);
@@ -2898,8 +3050,10 @@ export const BeachSearcherHome: React.FC<BeachSearcherHomeProps> = ({
     onActiveSuitableBeachChange(undefined, { resumeFollow: false });
   };
   const beachCardHoverProps = (beachId: number) => ({
-    onMouseEnter: () => highlightBeachOnMap(beachId),
-    onMouseLeave: clearBeachHighlightOnMap,
+    ...(isMobileViewport ? {} : {
+      onMouseEnter: () => highlightBeachOnMap(beachId),
+      onMouseLeave: clearBeachHighlightOnMap,
+    }),
   });
   const handleDesktopFilterSelect = (item: DesktopFilterItem) => {
     if (item.kind === 'preference') {
