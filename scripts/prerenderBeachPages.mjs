@@ -344,24 +344,45 @@ const seoLandingPages = [
     category: 'accessible',
     locales: {
       en: {
-        title: 'Accessible Beaches in Greece (Seatrac) | CalmBeach',
-        description: 'Find Greek beaches with accessibility features for disabled visitors, including Seatrac assisted access where available, then check the day\'s sea.',
-        h1: 'Accessible beaches in Greece',
-        intro: 'Some Greek beaches offer accessibility features such as ramps, accessible parking or Seatrac assisted-access systems. CalmBeach helps you find them and then check the sea for the day.',
+        title: 'Accessible Beaches in Greece | Wheelchair-Friendly Beaches | CalmBeach',
+        description: 'Find accessible beaches in Greece with easier entry, wheelchair-friendly facilities and beach access information where available.',
+        h1: 'Accessible Beaches in Greece',
+        intro: 'Find beaches in Greece with easier access information, wheelchair-friendly facilities, ramps, accessible paths or Seatrac-style access where this information is available. CalmBeach helps you compare beach conditions and choose a suitable beach for today.',
+        trustNote: 'Accessibility information can change by season and municipality. Always check local signage or official local sources before visiting.',
+        faq: [
+          {
+            q: 'How does CalmBeach identify accessible beaches?',
+            a: 'CalmBeach uses accessibility-related fields already present in the current beach dataset, especially active Seatrac sea-access records and listed supporting amenities where available.',
+          },
+          {
+            q: 'Are all accessible beaches in Greece listed here?',
+            a: 'No. This guide only shows beaches with accessibility information currently available in CalmBeach, so the list may be incomplete.',
+          },
+          {
+            q: 'Can accessibility information change?',
+            a: 'Yes. Accessible equipment and facilities can change by season, municipality or maintenance status, so always confirm locally when accessibility is critical.',
+          },
+          {
+            q: 'Can I also check wind and sea conditions?',
+            a: 'Yes. Each beach card links to its CalmBeach detail page where available conditions, wind, waves and beach exposure help you decide whether it is suitable today.',
+          },
+        ],
         sections: [
           {
-            heading: 'What accessibility can mean',
-            body: 'Accessibility varies by beach: step-free access, accessible parking, boardwalks and Seatrac devices that help wheelchair users reach the water. Always confirm that equipment is in service before you travel.',
+            heading: 'What the cards show',
+            body: 'Cards highlight only accessibility details already stored for that beach, such as an online Seatrac sea-access ramp, accessible parking, a boardwalk to the water, accessible WC, changing room or shower when those fields are available.',
           },
           {
             heading: 'Conditions still matter',
-            body: 'Even on an accessible beach, wind and waves change comfort and safety. CalmBeach pairs accessibility information with today\'s wind, waves and exposure so you can pick a calmer day and spot.',
+            body: 'Even when access information looks useful, wind and waves can change comfort at the beach. Open a beach page to compare today\'s wind, waves, weather and exposure before you go.',
           },
         ],
         links: [
-          { href: '/', label: 'Open CalmBeach Greece' },
-          { href: '/family-beaches-greece/', label: 'Family beaches with calmer water' },
+          { href: '#accessible-beach-list', label: 'Explore accessible beaches' },
+          { href: '/', label: 'Best beaches today' },
           { href: '/best-beaches-greece-today/', label: 'Best beaches in Greece today' },
+          { href: '/family-beaches-greece/', label: 'Family beaches with calmer water' },
+          { href: '/beaches/milos/', label: 'Browse Milos beaches' },
         ],
       },
       el: {
@@ -1501,8 +1522,9 @@ const staticSeoLandingPage = (content, locale, dynamicHtml = '') => {
   // that makes the page deliver on its title instead of being generic prose.
   const chrome = landingChromeCopy[locale.language] || landingChromeCopy.en;
   const homeHref = localizedPath('/', locale);
-  const localizeHref = href => localizedPath(href, locale);
+  const localizeHref = href => href?.startsWith('#') ? href : localizedPath(href, locale);
   const [primaryLink, ...secondaryLinks] = content.links;
+  const faqItems = Array.isArray(content.faq) ? content.faq.filter(item => item?.q && item?.a) : [];
 
   return `
     <div id="root">
@@ -1518,6 +1540,7 @@ const staticSeoLandingPage = (content, locale, dynamicHtml = '') => {
           <h1 style="margin:0 0 14px;font-size:38px;line-height:1.08;">${escapeHtml(content.h1)}</h1>
           <p style="margin:0 0 24px;font-size:18px;line-height:1.6;color:#334155;">${escapeHtml(content.intro)}</p>
           ${primaryLink ? `<a href="${escapeHtml(localizeHref(primaryLink.href))}" style="display:inline-flex;align-items:center;justify-content:center;background:#0e7490;color:white;border-radius:12px;padding:14px 22px;text-decoration:none;font-weight:800;font-size:16px;box-shadow:0 10px 24px -12px rgba(14,116,144,.6);">${escapeHtml(primaryLink.label)} →</a>` : ''}
+          ${content.trustNote ? `<p style="margin:14px 0 0;border:1px solid #bae6fd;border-radius:12px;background:#ecfeff;padding:11px 13px;color:#334155;font-size:14px;line-height:1.5;">${escapeHtml(content.trustNote)}</p>` : ''}
         </section>
         ${dynamicHtml}
         <div style="display:grid;gap:16px;margin:28px 0;">
@@ -1539,6 +1562,19 @@ const staticSeoLandingPage = (content, locale, dynamicHtml = '') => {
           </ul>
         </nav>
         ` : ''}
+        ${faqItems.length > 0 ? `
+        <section style="margin:28px 0 0;border-top:1px solid #bae6fd;padding-top:18px;">
+          <h2 style="margin:0 0 12px;font-size:22px;line-height:1.2;color:#075985;">Accessible beaches FAQ</h2>
+          <dl style="display:grid;gap:12px;margin:0;">
+            ${faqItems.map(item => `
+              <div style="border:1px solid #bae6fd;border-radius:12px;background:white;padding:12px 14px;">
+                <dt style="margin:0 0 6px;font-size:16px;font-weight:800;color:#0f172a;">${escapeHtml(item.q)}</dt>
+                <dd style="margin:0;color:#475569;font-size:15px;line-height:1.55;">${escapeHtml(item.a)}</dd>
+              </div>
+            `).join('')}
+          </dl>
+        </section>
+        ` : ''}
         <p data-nosnippet="true" style="margin:24px 0 0;color:#64748b;font-size:13px;line-height:1.5;">${escapeHtml(chrome.disclaimer)}</p>
       </main>
     </div>
@@ -1555,16 +1591,72 @@ const listSectionHeadings = {
 const hubSectionHeading = { en: 'Browse beaches by island & region', gr: 'Δες παραλίες ανά νησί & περιοχή' };
 const emptyListNote = { en: 'We are still adding beaches to this guide.', gr: 'Προσθέτουμε ακόμη παραλίες σε αυτόν τον οδηγό.' };
 const localeText = (table, locale) => table[locale.language] || table.en;
+const emptyListNoteFor = (category, locale) => {
+  if (category === 'accessible') {
+    return locale.language === 'gr'
+      ? 'Δεν υπάρχουν ακόμα επιβεβαιωμένα δεδομένα προσβασιμότητας για αυτήν την περιοχή. Μπορείς να δεις κοντινές παραλίες και τις πληροφορίες πρόσβασης σε κάθε σελίδα.'
+      : 'We don\'t have verified accessibility data for this area yet. You can still explore nearby beaches and check access details on each beach page.';
+  }
+  return localeText(emptyListNote, locale);
+};
+
+const getBeachSeatrac = beach => beach?.seatrac ?? beach?.metadata?.seatrac;
+
+const accessFeatureOrder = ['disabledParking', 'boardwalkToWater', 'accessibleWc', 'changingRoom', 'shower', 'shade'];
+const positiveAccessStatuses = new Set(['yes', 'seasonal']);
+const accessFeatureCopy = {
+  seatrac: { en: 'Seatrac sea-access ramp', gr: 'Ράμπα Seatrac' },
+  disabledParking: { en: 'Accessible parking', gr: 'Πάρκινγκ ΑμεΑ' },
+  boardwalkToWater: { en: 'Boardwalk to water', gr: 'Διάδρομος προς τη θάλασσα' },
+  accessibleWc: { en: 'Accessible WC', gr: 'Προσβάσιμο WC' },
+  changingRoom: { en: 'Accessible changing room', gr: 'Προσβάσιμο αποδυτήριο' },
+  shower: { en: 'Accessible shower', gr: 'Προσβάσιμο ντους' },
+  shade: { en: 'Shaded seating listed', gr: 'Καταγεγραμμένη σκιά' },
+  parking: { en: 'Parking listed', gr: 'Καταγεγραμμένο parking' },
+  seasonal: { en: 'Seasonal equipment', gr: 'Εποχικός εξοπλισμός' },
+  verify: { en: 'Verify before visiting', gr: 'Επιβεβαίωση πριν την επίσκεψη' },
+  checked: { en: 'Checked', gr: 'Έλεγχος' },
+  details: { en: 'Open details for today\'s wind and waves', gr: 'Άνοιγμα λεπτομερειών για άνεμο και κύμα' },
+};
+
+const accessCopy = (key, language) => accessFeatureCopy[key]?.[language] || accessFeatureCopy[key]?.en || key;
+
+const accessibleFeatureLabels = (beach, language) => {
+  const seatrac = getBeachSeatrac(beach);
+  if (seatrac?.hasSeatrac !== true || seatrac.status !== 'online') return [];
+
+  const labels = [accessCopy('seatrac', language)];
+  for (const key of accessFeatureOrder) {
+    if (positiveAccessStatuses.has(seatrac.amenities?.[key])) labels.push(accessCopy(key, language));
+  }
+  if (beach.amenities?.parking === true && !positiveAccessStatuses.has(seatrac.amenities?.disabledParking)) {
+    labels.push(accessCopy('parking', language));
+  }
+
+  return Array.from(new Set(labels)).slice(0, 6);
+};
+
+const accessibleCaveatLabels = (beach, language) => {
+  const seatrac = getBeachSeatrac(beach);
+  if (!seatrac) return [];
+
+  return [
+    seatrac.seasonal ? accessCopy('seasonal', language) : '',
+    seatrac.verifiedAt ? `${accessCopy('checked', language)} ${seatrac.verifiedAt}` : '',
+    seatrac.needsVerification ? accessCopy('verify', language) : '',
+  ].filter(Boolean);
+};
 
 const renderBeachListSection = (items, locale, category) => {
   const language = locale.language;
   const heading = localeText(listSectionHeadings[category] || {}, locale);
+  const sectionId = category === 'accessible' ? ' id="accessible-beach-list"' : '';
 
   if (!items.length) {
     return `
-        <section style="margin:28px 0;border-top:1px solid #bae6fd;padding-top:18px;">
+        <section${sectionId} style="margin:28px 0;border-top:1px solid #bae6fd;padding-top:18px;">
           <h2 style="margin:0 0 8px;font-size:22px;line-height:1.2;color:#075985;">${escapeHtml(heading)}</h2>
-          <p style="margin:0;color:#475569;">${escapeHtml(localeText(emptyListNote, locale))}</p>
+          <p style="margin:0;color:#475569;">${escapeHtml(emptyListNoteFor(category, locale))}</p>
         </section>`;
   }
 
@@ -1572,6 +1664,17 @@ const renderBeachListSection = (items, locale, category) => {
     const beachName = displayName(beach.name, `Beach ${beach.id}`, language);
     const islandName = displayName(island.name, region.id, language);
     const metaParts = [islandName, readableBeachType(beach, language)].filter(Boolean);
+    const accessFeatures = category === 'accessible' ? accessibleFeatureLabels(beach, language) : [];
+    const accessCaveats = category === 'accessible' ? accessibleCaveatLabels(beach, language) : [];
+    const accessFeaturesHtml = accessFeatures.length
+      ? `<span style="display:flex;flex-wrap:wrap;gap:5px;margin-top:8px;">${accessFeatures.map(label => `<span style="display:inline-flex;align-items:center;border:1px solid #bae6fd;border-radius:999px;background:#ecfeff;padding:3px 8px;color:#075985;font-size:12px;font-weight:700;">${escapeHtml(label)}</span>`).join('')}</span>`
+      : '';
+    const accessCaveatHtml = accessCaveats.length
+      ? `<span style="display:block;margin-top:7px;color:#64748b;font-size:12px;line-height:1.45;">${escapeHtml(accessCaveats.join(' - '))}</span>`
+      : '';
+    const detailsHintHtml = category === 'accessible'
+      ? `<span style="display:block;margin-top:7px;color:#0e7490;font-size:13px;font-weight:800;">${escapeHtml(accessCopy('details', language))}</span>`
+      : '';
 
     let extra = '';
     if (category === 'camping' && Array.isArray(beach.nearbyCamping) && beach.nearbyCamping.length > 0) {
@@ -1588,13 +1691,16 @@ const renderBeachListSection = (items, locale, category) => {
             <a href="${escapeHtml(localizedPath(beachPath(region, island, beach), locale))}" style="display:block;border:1px solid #bae6fd;border-radius:12px;padding:10px 12px;background:white;color:#0f172a;text-decoration:none;">
               <strong style="color:#0e7490;">${escapeHtml(beachName)}</strong>
               ${metaParts.length ? `<span style="display:block;margin-top:4px;color:#475569;font-size:14px;">${escapeHtml(metaParts.join(' · '))}</span>` : ''}
+              ${accessFeaturesHtml}
+              ${accessCaveatHtml}
+              ${detailsHintHtml}
               ${extra ? `<span style="display:block;margin-top:2px;color:#0e7490;font-size:13px;font-weight:600;">${escapeHtml(extra)}</span>` : ''}
             </a>
           </li>`;
   }).join('');
 
   return `
-        <section style="margin:28px 0;border-top:1px solid #bae6fd;padding-top:18px;">
+        <section${sectionId} style="margin:28px 0;border-top:1px solid #bae6fd;padding-top:18px;">
           <h2 style="margin:0 0 12px;font-size:22px;line-height:1.2;color:#075985;">${escapeHtml(heading)}</h2>
           <ul style="display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:10px;margin:0;padding:0;list-style:none;">${cards}</ul>
         </section>`;
@@ -1681,6 +1787,9 @@ const buildSeoLandingPage = (baseHtml, landing, content, locale, imageUrl, dynam
         url: canonicalUrlFor(beachPath(item.region, item.island, item.beach), locale),
       })),
     });
+  }
+  if (Array.isArray(content.faq) && content.faq.length > 0) {
+    jsonLd.push(faqJsonLd(content.faq.filter(item => item?.q && item?.a)));
   }
 
   const htmlWithHead = injectBeachHead(baseHtml, {
@@ -2014,7 +2123,7 @@ const main = async () => {
       // Mirror hasDisabledAccess in services/recommendationService.ts: seatrac may
       // sit on the beach or under metadata, and only an online unit qualifies
       // (wrong info can strand a wheelchair user).
-      const seatrac = beach.seatrac ?? beach.metadata?.seatrac;
+      const seatrac = getBeachSeatrac(beach);
       if (seatrac?.hasSeatrac === true && seatrac?.status === 'online') categoryBuckets.accessible.push(entry);
       if (Array.isArray(beach.nearbyCamping) && beach.nearbyCamping.length > 0) categoryBuckets.camping.push(entry);
     }
