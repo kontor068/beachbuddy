@@ -2,7 +2,7 @@ import React, { useEffect, useMemo, useRef, useState } from 'react';
 import { Circle, MapContainer, TileLayer, Marker, Popup, Tooltip, ZoomControl, useMap } from 'react-leaflet';
 import L from 'leaflet';
 import 'leaflet/dist/leaflet.css';
-import { BadgeCheck, Footprints, Navigation, MapPin, Clock, Wind, X, Info, Utensils, Waves, Users, Tent, Ticket, Euro, ChevronDown } from 'lucide-react';
+import { BadgeCheck, Footprints, Navigation, MapPin, Clock, Wind, X, Info, Utensils, Waves, Users, Tent, Ticket, Euro } from 'lucide-react';
 import { localizedPopularityLabel, localizedPaidEntryLabel, localizedPaidEntryExplanation } from '../utils/localization';
 import { SuitableBeach, Beach, LanguageCode, ForecastItem } from '../types';
 import { trackEvent } from '../services/analyticsService';
@@ -53,9 +53,6 @@ interface BeachMapProps {
   fitBoundsBeaches?: SuitableBeach[];
   fitBoundsKey?: string;
   onUserInteraction?: () => void;
-  showScrollCue?: boolean;
-  onScrollCueClick?: () => void;
-  scrollCueAriaLabel?: string;
   compactPreviewHeightClassName?: string;
   islandName?: string;
   /** Organized campsites near the focused beach (detail map only); rendered as tent pins. */
@@ -1353,9 +1350,6 @@ const BeachMap: React.FC<BeachMapProps> = ({
   fitBoundsBeaches,
   fitBoundsKey,
   onUserInteraction,
-  showScrollCue = false,
-  onScrollCueClick,
-  scrollCueAriaLabel,
   compactPreviewHeightClassName,
   islandName,
   campsites,
@@ -1423,13 +1417,6 @@ const BeachMap: React.FC<BeachMapProps> = ({
     it: 'Scorri le ore per aggiornare mappa e spiagge consigliate.',
     fr: 'Faites glisser les heures pour mettre à jour la carte et les plages recommandées.',
   };
-  const defaultScrollCueAriaLabel = getLocalizedCopy(language, {
-    en: 'See beach results below the map',
-    gr: 'Δες τις παραλίες κάτω από τον χάρτη',
-    fr: 'Voir les plages sous la carte',
-    de: 'Strände unter der Karte ansehen',
-    it: 'Vedi le spiagge sotto la mappa',
-  });
   const beaufortUnitLabel = language === 'gr' ? 'μποφ.' : 'Bft';
   const formatSliderHour = (dt: number) => new Date(dt * 1000).toLocaleTimeString(
     language === 'gr' ? 'el-GR' : undefined,
@@ -2643,32 +2630,6 @@ const BeachMap: React.FC<BeachMapProps> = ({
       {isCompactPreview && mapMode === 'wind' && (
         <div className="mt-0 rounded-xl border border-sky-100 bg-white/90 px-2 py-1 text-left shadow-sm shadow-sky-900/8 backdrop-blur-xl dark:border-slate-700 dark:bg-slate-900/90">
           {renderWindColorGuidePanel('preview')}
-        </div>
-      )}
-
-      {isCompactPreview && showScrollCue && onScrollCueClick && enableHourSlider && sliderHours.length >= 2 && activeHourItem && (
-        <div className="mt-0.5 flex justify-center bg-white/92 pb-0.5 dark:bg-slate-900/90 sm:hidden">
-          <button
-            type="button"
-            onClick={onScrollCueClick}
-            className="grid h-8 w-12 cursor-pointer place-items-center rounded-full border border-cyan-200/95 bg-white/95 text-[#007a83] shadow-lg shadow-cyan-950/18 ring-1 ring-cyan-100/80 backdrop-blur-md transition hover:border-cyan-300 hover:bg-cyan-50 hover:text-[#006b73] focus:outline-none focus-visible:ring-2 focus-visible:ring-cyan-700"
-            aria-label={scrollCueAriaLabel || defaultScrollCueAriaLabel}
-          >
-            <ChevronDown className="h-5 w-5 motion-safe:animate-bounce" aria-hidden="true" />
-          </button>
-        </div>
-      )}
-
-      {!isCompactPreview && showScrollCue && onScrollCueClick && enableHourSlider && sliderHours.length >= 2 && activeHourItem && (
-        <div className="-mt-0.5 flex justify-center bg-white/92 pb-1 dark:bg-slate-900/90 sm:hidden">
-          <button
-            type="button"
-            onClick={onScrollCueClick}
-            className="grid h-7 w-12 cursor-pointer place-items-center rounded-full border border-cyan-200 bg-cyan-50/95 text-[#007a83] shadow-sm shadow-cyan-900/15 ring-1 ring-white/80 transition hover:border-cyan-300 hover:bg-cyan-100 hover:text-[#006b73] focus:outline-none focus-visible:ring-2 focus-visible:ring-cyan-700"
-            aria-label={scrollCueAriaLabel || defaultScrollCueAriaLabel}
-          >
-            <ChevronDown className="h-5 w-5 motion-safe:animate-bounce" aria-hidden="true" />
-          </button>
         </div>
       )}
 

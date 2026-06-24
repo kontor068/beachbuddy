@@ -2337,13 +2337,6 @@ export const App: React.FC = () => {
     setSelectedHourDt(dt);
   };
 
-  const mapScrollCueAriaLabel = getLocalizedCopy(language, {
-    en: 'See beach results below the map',
-    gr: 'Δες τις παραλίες κάτω από τον χάρτη',
-    fr: 'Voir les plages sous la carte',
-    de: 'Strände unter der Karte ansehen',
-    it: 'Vedi le spiagge sotto la mappa',
-  });
 
   const handleTogglePreference = (key: keyof UserPreferences) => {
     resetMobileResultListPosition();
@@ -5089,8 +5082,8 @@ export const App: React.FC = () => {
     scrollToBeachResultsSection();
   };
   // The mobile directory map keeps a single fixed height at every Beaufort.
-  // Keep it compact enough that the hour slider + scroll cue land at the bottom
-  // of the first mobile viewport, just before the hourly condition summary.
+  // Keep it compact enough that the hour slider and condition summary stay visible
+  // on the first mobile viewport.
   // Keep the height stable as the hour slider changes.
 
   const directoryMapPreview = selectedIsland && !isUnsafeWinter ? (
@@ -5102,7 +5095,7 @@ export const App: React.FC = () => {
         </div>
       }
     >
-      <Suspense fallback={<div className="h-[11.5rem] w-full animate-pulse rounded-[1.1rem] bg-slate-100 sm:h-[26rem] lg:h-[32rem]" />}>
+      <Suspense fallback={<div className="h-[13.5rem] w-full animate-pulse rounded-[1.1rem] bg-slate-100 sm:h-[26rem] lg:h-[32rem]" />}>
         <BeachMap
           center={[selectedIsland.coordinates.lat, selectedIsland.coordinates.lon]}
           zoom={11}
@@ -5132,12 +5125,9 @@ export const App: React.FC = () => {
           fitBoundsBeaches={mapSuitableBeaches}
           fitBoundsKey={selectedIsland.id}
           onUserInteraction={handleDirectoryMapUserInteraction}
-          showScrollCue={!isDesktopViewport}
-          onScrollCueClick={() => scrollToBeachResultsSection('suitable')}
-          scrollCueAriaLabel={mapScrollCueAriaLabel}
           enableScrollWheelZoom={isDesktopViewport}
           isExposureLoading={isMapExposureLoading}
-          compactPreviewHeightClassName="h-[11.5rem] sm:h-[26rem] lg:h-[32rem]"
+          compactPreviewHeightClassName="h-[13.5rem] sm:h-[26rem] lg:h-[32rem]"
           compact
           preview
         />
