@@ -2651,7 +2651,7 @@ export const BeachSearcherHome: React.FC<BeachSearcherHomeProps> = ({
   );
   const handleMapResultsCueClick = () => {
     setIsMapResultsCueDismissed(true);
-    scrollElementIntoView(getFirstBeachResultsSectionElement());
+    scrollElementIntoView(document.getElementById('map-section') ?? getFirstBeachResultsSectionElement());
   };
   const mapResultsCueLabel = getLocalizedCopy(language, {
     en: 'Detailed beaches',
@@ -2666,6 +2666,20 @@ export const BeachSearcherHome: React.FC<BeachSearcherHomeProps> = ({
     fr: 'Voir les fiches détaillées des plages sous la carte',
     de: 'Detaillierte Strandkarten unter der Karte ansehen',
     it: 'Vedi le schede dettagliate delle spiagge sotto la mappa',
+  });
+  const mapResultsCueHelper = getLocalizedCopy(language, {
+    en: 'Swipe cards. The map pin flashes.',
+    gr: 'Σύρε τις κάρτες. Η ένδειξη αναβοσβήνει στον χάρτη.',
+    fr: 'Faites glisser les fiches. Le repère clignote.',
+    de: 'Karten wischen. Die Markierung blinkt.',
+    it: 'Scorri le schede. Il pin lampeggia.',
+  });
+  const mapResultsStickyHelper = getLocalizedCopy(language, {
+    en: 'Swipe the beach cards below. The matching marker flashes on the map.',
+    gr: 'Σύρε τις κάρτες από κάτω. Η αντίστοιχη ένδειξη αναβοσβήνει στον χάρτη.',
+    fr: 'Faites glisser les plages ci-dessous. Le repère correspondant clignote sur la carte.',
+    de: 'Wische die Strandkarten unten. Die passende Markierung blinkt auf der Karte.',
+    it: 'Scorri le spiagge qui sotto. Il marker corrispondente lampeggia sulla mappa.',
   });
 
   // Mobile swipe affordance for the horizontal result carousels: the peeking next card
@@ -3018,7 +3032,7 @@ export const BeachSearcherHome: React.FC<BeachSearcherHomeProps> = ({
   );
 
   return (
-    <section className="relative isolate overflow-hidden bg-sky-50 text-slate-950" aria-label={copy.beachSearchAria} data-nosnippet="true">
+    <section className="relative isolate bg-sky-50 text-slate-950" aria-label={copy.beachSearchAria} data-nosnippet="true">
       <div
         className="pointer-events-none fixed inset-0 -z-10 bg-sky-100 bg-cover bg-center"
         style={heroBackground ? { backgroundImage: heroBackground } : undefined}
@@ -3403,41 +3417,52 @@ export const BeachSearcherHome: React.FC<BeachSearcherHomeProps> = ({
           </section>
         )}
 
-        {selectedIsland && mapPreview && isMobileViewport && (
-          <section
-            id="map-section"
-            className="mt-2 space-y-2"
-            aria-label={copy.beachMapAria}
-          >
-            {islandContextStrip}
-            {mapDayStrip}
-            <div className="relative overflow-hidden rounded-[1.35rem] border border-sky-100 bg-white/68 p-2 text-left shadow-sm shadow-sky-900/8 ring-1 ring-white/45 backdrop-blur-md">
-              {mapPreview}
-              {!isMapResultsCueDismissed && (
-                <div className="pointer-events-none absolute inset-x-0 bottom-0 z-[850] flex justify-center bg-gradient-to-t from-white/90 via-white/38 to-transparent px-3 pb-3 pt-12">
-                  <button
-                    type="button"
-                    onClick={handleMapResultsCueClick}
-                    className="pointer-events-auto inline-flex min-h-10 max-w-[calc(100%-0.5rem)] items-center justify-center gap-1.5 rounded-full border border-cyan-100/90 bg-white/94 px-3.5 py-2 text-xs font-extrabold leading-none text-[#007a83] shadow-lg shadow-sky-900/14 ring-1 ring-white/70 backdrop-blur-xl transition active:scale-[0.98] focus:outline-none focus-visible:ring-2 focus-visible:ring-cyan-700"
-                    aria-label={mapResultsCueAriaLabel}
-                  >
-                    <span className="truncate">{mapResultsCueLabel}</span>
-                    <ChevronDown className="h-3.5 w-3.5 shrink-0 motion-safe:animate-pulse" aria-hidden="true" />
-                  </button>
-                </div>
-              )}
-            </div>
-          </section>
-        )}
-
         </section>
       </div>
 
       {hasBelowHeroContent && (
       <div className="relative">
         <div className="mx-auto max-w-[110rem] px-4 pb-4 pt-1 sm:px-5 sm:pb-5 sm:pt-2 lg:px-6">
+          {selectedIsland && mapPreview && isMobileViewport && (
+            <>
+              {islandContextStrip}
+              <section
+                id="map-section"
+                className="sticky top-2 z-30 mb-4 space-y-2"
+                aria-label={copy.beachMapAria}
+              >
+                {mapDayStrip}
+                <div className="relative overflow-hidden rounded-[1.35rem] border border-sky-100 bg-white/74 p-2 text-left shadow-lg shadow-sky-900/10 ring-1 ring-white/55 backdrop-blur-md">
+                  {mapPreview}
+                  {!isMapResultsCueDismissed && (
+                    <div className="pointer-events-none absolute inset-x-0 bottom-0 z-[850] flex justify-center bg-gradient-to-t from-white/92 via-white/40 to-transparent px-3 pb-3 pt-12">
+                      <button
+                        type="button"
+                        onClick={handleMapResultsCueClick}
+                        className="pointer-events-auto inline-flex min-h-12 max-w-[calc(100%-0.5rem)] items-center justify-center gap-2 rounded-full border border-cyan-100/90 bg-white/95 px-3.5 py-2 text-xs font-extrabold leading-none text-[#007a83] shadow-lg shadow-sky-900/14 ring-1 ring-white/70 backdrop-blur-xl transition active:scale-[0.98] focus:outline-none focus-visible:ring-2 focus-visible:ring-cyan-700"
+                        aria-label={mapResultsCueAriaLabel}
+                      >
+                        <span className="min-w-0 text-left">
+                          <span className="block truncate">{mapResultsCueLabel}</span>
+                          <span className="mt-0.5 block truncate text-[10px] font-bold leading-tight text-cyan-700/80">
+                            {mapResultsCueHelper}
+                          </span>
+                        </span>
+                        <ChevronDown className="h-3.5 w-3.5 shrink-0 motion-safe:animate-pulse" aria-hidden="true" />
+                      </button>
+                    </div>
+                  )}
+                </div>
+                <p className="flex min-h-9 items-start gap-2 rounded-2xl border border-cyan-100 bg-white/92 px-3 py-2 text-[11px] font-bold leading-snug text-slate-700 shadow-sm shadow-sky-900/8 ring-1 ring-white/50 backdrop-blur-md">
+                  <MapPin className="mt-0.5 h-3.5 w-3.5 shrink-0 text-[#007a83]" aria-hidden="true" />
+                  <span>{mapResultsStickyHelper}</span>
+                </p>
+              </section>
+            </>
+          )}
+
           {selectedIsland && hasTopRecommendationView && (
-            <section id="top-recommendations-section" className="mb-5">
+            <section id="top-recommendations-section" className="mb-5 scroll-mt-[25rem] sm:scroll-mt-4">
               <div className="mb-3 flex items-center gap-3 px-3 lg:px-5">
                 <span className="h-px flex-1 bg-slate-300/70" aria-hidden="true" />
                 <div className="max-w-full shrink-0 rounded-full border border-white/80 bg-white/90 px-3 py-1.5 text-center shadow-sm shadow-sky-900/10 ring-1 ring-white/50 backdrop-blur-md">
@@ -3472,7 +3497,7 @@ export const BeachSearcherHome: React.FC<BeachSearcherHomeProps> = ({
 
           {(!selectedIsland || isDirectorySuitableView) && (
           <>
-          <div id={selectedIsland ? 'suitable-beaches-section' : undefined} className="mb-3 flex items-center gap-3 px-3 lg:px-5">
+          <div id={selectedIsland ? 'suitable-beaches-section' : undefined} className="mb-3 flex scroll-mt-[25rem] items-center gap-3 px-3 sm:scroll-mt-4 lg:px-5">
             <span className="h-px flex-1 bg-slate-300/70" aria-hidden="true" />
             <div className="max-w-full shrink-0 rounded-full border border-white/80 bg-white/86 px-3 py-1.5 text-center shadow-sm shadow-sky-900/10 ring-1 ring-white/50 backdrop-blur-md">
               <h2 className="line-clamp-2 text-xs font-extrabold leading-tight tracking-normal text-slate-700 sm:text-sm">
@@ -3603,7 +3628,7 @@ export const BeachSearcherHome: React.FC<BeachSearcherHomeProps> = ({
 
 
           {selectedIsland && !isMobileViewport && !isDirectorySuitableView && directoryDisplayBeachCards.length > 0 && (
-            <section id="all-beaches-section" className="mt-7 rounded-2xl border border-sky-200 bg-white/88 p-4 shadow-sm shadow-sky-900/5 backdrop-blur-md sm:p-5">
+            <section id="all-beaches-section" className="mt-7 scroll-mt-4 rounded-2xl border border-sky-200 bg-white/88 p-4 shadow-sm shadow-sky-900/5 backdrop-blur-md sm:p-5">
               <div className="mb-4 flex flex-wrap items-end justify-between gap-3">
                 <div className="min-w-0">
                   <h2 className="text-xl font-bold leading-tight text-slate-950">
@@ -3629,7 +3654,7 @@ export const BeachSearcherHome: React.FC<BeachSearcherHomeProps> = ({
           )}
 
           {selectedIsland && isMobileViewport && !isDirectorySuitableView && directoryDisplayBeachCards.length > 0 && (
-            <section id="all-beaches-section">
+            <section id="all-beaches-section" className="scroll-mt-[25rem]">
               <div className="mb-3 flex items-center gap-3 px-3">
                 <span className="h-px flex-1 bg-slate-300/70" aria-hidden="true" />
                 <div className="max-w-full shrink-0 rounded-full border border-white/80 bg-white/86 px-3 py-1.5 text-center shadow-sm shadow-sky-900/10 ring-1 ring-white/50 backdrop-blur-md">

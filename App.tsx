@@ -5125,7 +5125,7 @@ export const App: React.FC = () => {
   ) : null;
 
   return (
-    <div className="relative min-h-screen overflow-x-hidden transition-colors duration-500">
+    <div className="relative min-h-screen transition-colors duration-500">
       <div
         className={`atmosphere ${islandBackgroundCss ? 'cyclades-atmosphere' : ''}`}
         style={islandBackgroundCss ? ({ '--cyclades-bg': islandBackgroundCss } as React.CSSProperties) : undefined}
