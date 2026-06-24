@@ -2,7 +2,7 @@ import React, { useEffect, useMemo, useRef, useState } from 'react';
 import { Circle, MapContainer, TileLayer, Marker, Popup, Tooltip, ZoomControl, useMap } from 'react-leaflet';
 import L from 'leaflet';
 import 'leaflet/dist/leaflet.css';
-import { BadgeCheck, Footprints, Navigation, MapPin, Clock, Wind, X, Info, Utensils, Waves, Users, Tent, Ticket, Euro } from 'lucide-react';
+import { BadgeCheck, Footprints, Navigation, MapPin, Clock, Wind, X, Info, Utensils, Waves, Users, Tent, Ticket, Euro, ChevronDown } from 'lucide-react';
 import { localizedPopularityLabel, localizedPaidEntryLabel, localizedPaidEntryExplanation } from '../utils/localization';
 import { SuitableBeach, Beach, LanguageCode, ForecastItem } from '../types';
 import { trackEvent } from '../services/analyticsService';
@@ -53,6 +53,9 @@ interface BeachMapProps {
   fitBoundsBeaches?: SuitableBeach[];
   fitBoundsKey?: string;
   onUserInteraction?: () => void;
+  showScrollCue?: boolean;
+  onScrollCueClick?: () => void;
+  scrollCueAriaLabel?: string;
   compactPreviewHeightClassName?: string;
   islandName?: string;
   /** Organized campsites near the focused beach (detail map only); rendered as tent pins. */
@@ -1315,6 +1318,9 @@ const BeachMap: React.FC<BeachMapProps> = ({
   fitBoundsBeaches,
   fitBoundsKey,
   onUserInteraction,
+  showScrollCue = false,
+  onScrollCueClick,
+  scrollCueAriaLabel,
   compactPreviewHeightClassName,
   islandName,
   campsites,
@@ -1372,6 +1378,13 @@ const BeachMap: React.FC<BeachMapProps> = ({
     it: 'Scorri le ore per aggiornare mappa e spiagge consigliate.',
     fr: 'Faites glisser les heures pour mettre à jour la carte et les plages recommandées.',
   };
+  const defaultScrollCueAriaLabel = getLocalizedCopy(language, {
+    en: 'See beach results below the map',
+    gr: 'Δες τις παραλίες κάτω από τον χάρτη',
+    fr: 'Voir les plages sous la carte',
+    de: 'Strände unter der Karte ansehen',
+    it: 'Vedi le spiagge sotto la mappa',
+  });
   const beaufortUnitLabel = language === 'gr' ? 'μποφ.' : 'Bft';
   const formatSliderHour = (dt: number) => new Date(dt * 1000).toLocaleTimeString(
     language === 'gr' ? 'el-GR' : undefined,
@@ -2507,7 +2520,7 @@ const BeachMap: React.FC<BeachMapProps> = ({
       {/* Hour slider docked under the map: colours and recommendations follow the selected hour */}
       {enableHourSlider && sliderHours.length >= 2 && activeHourItem && (
         <div
-          className="flex flex-wrap items-center gap-x-3 gap-y-2 border-t border-slate-200/80 bg-white/92 px-3 py-2 dark:border-slate-700 dark:bg-slate-900/90 sm:px-4 sm:py-3"
+          className="flex flex-wrap items-center gap-x-3 gap-y-1 border-t border-slate-200/80 bg-white/92 px-3 pb-1.5 pt-0.5 dark:border-slate-700 dark:bg-slate-900/90 sm:px-4 sm:py-3"
           onPointerDown={() => onUserInteraction?.()}
         >
           <span className="shrink-0 text-[11px] font-extrabold text-slate-600 dark:text-slate-300">{hourSliderLabel}</span>
@@ -2558,6 +2571,19 @@ const BeachMap: React.FC<BeachMapProps> = ({
           <p className="hidden basis-full text-[11px] font-bold leading-snug text-slate-700 sm:block dark:text-slate-600">
             {hourSliderHelper[language]}
           </p>
+        </div>
+      )}
+
+      {showScrollCue && onScrollCueClick && enableHourSlider && sliderHours.length >= 2 && activeHourItem && (
+        <div className="-mt-1 flex justify-center bg-white/92 pb-0.5 dark:bg-slate-900/90 sm:hidden">
+          <button
+            type="button"
+            onClick={onScrollCueClick}
+            className="grid h-6 w-10 cursor-pointer place-items-center rounded-full text-[#007a83]/70 transition hover:bg-cyan-50 hover:text-[#007a83] focus:outline-none focus-visible:ring-2 focus-visible:ring-cyan-700"
+            aria-label={scrollCueAriaLabel || defaultScrollCueAriaLabel}
+          >
+            <ChevronDown className="h-4 w-4 motion-safe:animate-pulse" aria-hidden="true" />
+          </button>
         </div>
       )}
 

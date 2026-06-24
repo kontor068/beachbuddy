@@ -2337,6 +2337,14 @@ export const App: React.FC = () => {
     setSelectedHourDt(dt);
   };
 
+  const mapScrollCueAriaLabel = getLocalizedCopy(language, {
+    en: 'See beach results below the map',
+    gr: 'Δες τις παραλίες κάτω από τον χάρτη',
+    fr: 'Voir les plages sous la carte',
+    de: 'Strände unter der Karte ansehen',
+    it: 'Vedi le spiagge sotto la mappa',
+  });
+
   const handleTogglePreference = (key: keyof UserPreferences) => {
     resetMobileResultListPosition();
     setPreferences(prev => {
@@ -5125,6 +5133,9 @@ export const App: React.FC = () => {
           fitBoundsBeaches={mapSuitableBeaches}
           fitBoundsKey={selectedIsland.id}
           onUserInteraction={handleDirectoryMapUserInteraction}
+          showScrollCue={!isDesktopViewport}
+          onScrollCueClick={() => scrollToBeachResultsSection('suitable')}
+          scrollCueAriaLabel={mapScrollCueAriaLabel}
           enableScrollWheelZoom={isDesktopViewport}
           isExposureLoading={isMapExposureLoading}
           compact

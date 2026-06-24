@@ -6,7 +6,6 @@ import {
   CalendarDays,
   Check,
   ChevronDown,
-  ChevronRight,
   CloudSun,
   Clock3,
   Droplets,
@@ -59,7 +58,6 @@ import { CuratedPhotoImage } from './photos';
 import { beachMatchesUserPreferences } from '../services/recommendationService';
 import { assessBeachWindExposure } from '../utils/windExposureEngine';
 import { describeSimpleWindSuitability } from '../utils/windExposureCopy';
-import { scrollElementIntoView } from '../utils/scroll';
 
 export type DirectoryCategory = 'all' | QuickPreferenceFilter;
 
@@ -175,11 +173,6 @@ interface BeachSearcherHomeProps {
 }
 
 const DRAG_SCROLL_THRESHOLD_PX = 6;
-const BEACH_RESULTS_SECTION_IDS = [
-  'top-recommendations-section',
-  'suitable-beaches-section',
-  'all-beaches-section',
-] as const;
 
 // From 5 Bft up a boat-only beach (e.g. Κλεφτικό) isn't a real option for the day —
 // the boats don't run and you can't drive there — so it must never surface as a "top
@@ -2802,42 +2795,6 @@ export const BeachSearcherHome: React.FC<BeachSearcherHomeProps> = ({
     (!isMobileViewport && !isDirectorySuitableView && directoryDisplayBeachCards.length > 0) ||
     (isMobileViewport && selectedIsland && !isDirectorySuitableView && directoryDisplayBeachCards.length > 0)
   );
-  const getFirstBeachResultsSectionElement = () => (
-    BEACH_RESULTS_SECTION_IDS
-      .map(id => document.getElementById(id))
-      .find((element): element is HTMLElement => Boolean(element)) ?? null
-  );
-  const handleMapResultsCueClick = () => {
-    scrollElementIntoView(getFirstBeachResultsSectionElement() ?? document.getElementById('map-section'));
-  };
-  const mapResultsCueLabel = getLocalizedCopy(language, {
-    en: 'Detailed beaches',
-    gr: 'Παραλίες αναλυτικά',
-    fr: 'Plages détaillées',
-    de: 'Strände im Detail',
-    it: 'Spiagge in dettaglio',
-  });
-  const mapResultsCueAriaLabel = getLocalizedCopy(language, {
-    en: 'See the detailed beach cards below the map',
-    gr: 'Δες τις αναλυτικές κάρτες παραλιών κάτω από τον χάρτη',
-    fr: 'Voir les fiches détaillées des plages sous la carte',
-    de: 'Detaillierte Strandkarten unter der Karte ansehen',
-    it: 'Vedi le schede dettagliate delle spiagge sotto la mappa',
-  });
-  const mapLinkedSwipeHint = getLocalizedCopy(language, {
-    en: 'Swipe cards - the beach pin lights up on the map',
-    gr: 'Σύρε τις κάρτες - το σημαδάκι ανάβει στον χάρτη',
-    fr: 'Glissez les cartes - le repere s allume sur la carte',
-    de: 'Karten wischen - der Strandpin leuchtet auf der Karte',
-    it: 'Scorri le schede - il segnaposto si illumina sulla mappa',
-  });
-  const genericSwipeHint = getLocalizedCopy(language, {
-    en: 'Swipe for more',
-    gr: 'Σύρετε για περισσότερες',
-    fr: 'Glissez pour plus',
-    de: 'Wischen fuer mehr',
-    it: 'Scorri per altre',
-  });
   const getMapLinkedCardClassName = (beachId: number, baseClassName: string) => (
     [
       baseClassName,
@@ -2847,19 +2804,6 @@ export const BeachSearcherHome: React.FC<BeachSearcherHomeProps> = ({
         : 'ring-0',
     ].join(' ')
   );
-  const renderMobileMapLinkedSwipeHint = (count: number) => {
-    if (!isMobileViewport || count <= 1) return null;
-    const isMapLinked = Boolean(selectedIsland);
-    return (
-      <div className="mb-2 flex justify-center px-3 text-center text-[11px] font-extrabold leading-snug text-slate-600">
-        <span className="inline-flex min-h-9 max-w-full items-center justify-center gap-1.5 rounded-full border border-cyan-100 bg-white/88 px-3 py-1.5 shadow-sm shadow-sky-900/8 ring-1 ring-white/60 backdrop-blur-md">
-          {isMapLinked && <MapPin className="h-3.5 w-3.5 shrink-0 text-cyan-700" aria-hidden="true" />}
-          <span className="min-w-0">{isMapLinked ? mapLinkedSwipeHint : genericSwipeHint}</span>
-          <ChevronRight className="h-3.5 w-3.5 shrink-0 text-cyan-700 motion-safe:animate-pulse" aria-hidden="true" />
-        </span>
-      </div>
-    );
-  };
   const directorySortOptions: Array<{
     key: SortOption | 'suitable';
     label: string;
@@ -3394,19 +3338,19 @@ export const BeachSearcherHome: React.FC<BeachSearcherHomeProps> = ({
                 </div>
               )}
             </div>
-            <div className={`grid gap-2 sm:flex sm:items-center lg:flex-nowrap lg:justify-end ${(onShowNearbyBeaches ?? onUseCurrentLocation) ? 'grid-cols-2' : 'grid-cols-1'}`}>
+            <div className={`grid gap-1.5 sm:flex sm:items-center lg:flex-nowrap lg:justify-end ${(onShowNearbyBeaches ?? onUseCurrentLocation) ? 'grid-cols-2' : 'grid-cols-1'}`}>
               {(onShowNearbyBeaches ?? onUseCurrentLocation) && (
                 <button
                   type="button"
                   onClick={onShowNearbyBeaches ?? onUseCurrentLocation}
                   disabled={isFindingCurrentLocation}
-                  className={`inline-flex min-h-11 w-full items-center justify-center gap-2 rounded-full border px-3 text-sm font-semibold transition focus:outline-none focus-visible:ring-2 focus-visible:ring-cyan-700 sm:px-4 lg:hidden ${
+                  className={`inline-flex min-h-10 w-full items-center justify-center gap-1.5 rounded-full border px-2.5 text-[13px] font-bold leading-none transition focus:outline-none focus-visible:ring-2 focus-visible:ring-cyan-700 sm:min-h-11 sm:px-4 sm:text-sm lg:hidden ${
                     hasUserLocation
                       ? 'border-cyan-200 bg-cyan-50 text-[#007a83]'
                       : 'border-sky-200 bg-white/80 text-slate-900 hover:border-cyan-300 hover:bg-cyan-50'
                   } ${isFindingCurrentLocation ? 'cursor-wait opacity-70' : ''}`}
                 >
-                  <MapPin className="h-4 w-4 shrink-0 text-[#007a83]" />
+                  <MapPin className="h-3.5 w-3.5 shrink-0 text-[#007a83] sm:h-4 sm:w-4" />
                   <span className="min-w-0 truncate">
                     {isFindingCurrentLocation && !hasUserLocation ? copy.findingLocation : copy.currentLocation}
                   </span>
@@ -3415,10 +3359,10 @@ export const BeachSearcherHome: React.FC<BeachSearcherHomeProps> = ({
               <button
                 type="button"
                 onClick={onOpenFilters}
-                className="inline-flex min-h-11 w-full items-center justify-center gap-2 rounded-full border border-[#007a83] bg-white px-3 text-sm font-semibold text-slate-900 transition hover:bg-cyan-50 focus:outline-none focus-visible:ring-2 focus-visible:ring-cyan-700 sm:px-4 lg:hidden"
+                className="inline-flex min-h-10 w-full items-center justify-center gap-1.5 rounded-full border border-[#007a83] bg-white px-2.5 text-[13px] font-bold leading-none text-slate-900 transition hover:bg-cyan-50 focus:outline-none focus-visible:ring-2 focus-visible:ring-cyan-700 sm:min-h-11 sm:px-4 sm:text-sm lg:hidden"
               >
-                <SlidersHorizontal className="h-4 w-4 text-[#007a83]" />
-                <span>{copy.filter}</span>
+                <SlidersHorizontal className="h-3.5 w-3.5 shrink-0 text-[#007a83] sm:h-4 sm:w-4" />
+                <span className="min-w-0 truncate">{copy.filter}</span>
                 {typeof activeFilterCount === 'number' && activeFilterCount > 0 && (
                   <span className="grid h-5 min-w-5 place-items-center rounded-full bg-[#007a83] px-1.5 text-[11px] font-extrabold leading-none text-white ring-1 ring-cyan-100 tabular-nums">
                     {activeFilterCount}
@@ -3598,17 +3542,6 @@ export const BeachSearcherHome: React.FC<BeachSearcherHomeProps> = ({
                 {mapDayStrip}
                 <div className="relative overflow-hidden rounded-[1.35rem] border border-sky-100 bg-white/74 p-2 text-left shadow-lg shadow-sky-900/10 ring-1 ring-white/55 backdrop-blur-md">
                   {mapPreview}
-                  <div className="mt-2 flex justify-center">
-                    <button
-                      type="button"
-                      onClick={handleMapResultsCueClick}
-                      className="inline-flex min-h-10 max-w-full cursor-pointer items-center justify-center gap-1.5 rounded-full border border-cyan-100 bg-white/92 px-3.5 py-2 text-xs font-extrabold leading-none text-[#007a83] shadow-sm shadow-sky-900/10 ring-1 ring-white/70 backdrop-blur-xl transition hover:bg-cyan-50 active:scale-[0.98] focus:outline-none focus-visible:ring-2 focus-visible:ring-cyan-700"
-                      aria-label={mapResultsCueAriaLabel}
-                    >
-                      <span className="truncate">{mapResultsCueLabel}</span>
-                      <ChevronDown className="h-3.5 w-3.5 shrink-0 motion-safe:animate-pulse" aria-hidden="true" />
-                    </button>
-                  </div>
                 </div>
               </section>
             </>
@@ -3626,7 +3559,6 @@ export const BeachSearcherHome: React.FC<BeachSearcherHomeProps> = ({
                 <span className="h-px flex-1 bg-slate-300/70" aria-hidden="true" />
               </div>
 
-              {renderMobileMapLinkedSwipeHint(topRecommendationBeachCards.length)}
               <div
                 ref={topRecommendationsCarouselRef}
                 className="beach-card-carousel no-scrollbar flex cursor-grab snap-x snap-mandatory items-stretch gap-6 overflow-x-auto overscroll-x-contain pb-5 select-none active:cursor-grabbing data-[dragging=true]:cursor-grabbing data-[dragging=true]:snap-none lg:snap-none lg:px-5"
@@ -3660,7 +3592,6 @@ export const BeachSearcherHome: React.FC<BeachSearcherHomeProps> = ({
             <span className="h-px flex-1 bg-slate-300/70" aria-hidden="true" />
           </div>
 
-          {renderMobileMapLinkedSwipeHint(selectedIsland ? weatherBeachCards.length : sortedIslandCards.length)}
           <div
             ref={suitableCarouselRef}
             className="beach-card-carousel no-scrollbar flex cursor-grab snap-x snap-mandatory items-stretch gap-6 overflow-x-auto overscroll-x-contain pb-5 select-none active:cursor-grabbing data-[dragging=true]:cursor-grabbing data-[dragging=true]:snap-none lg:snap-none lg:px-5"
@@ -3818,7 +3749,6 @@ export const BeachSearcherHome: React.FC<BeachSearcherHomeProps> = ({
                 <span className="h-px flex-1 bg-slate-300/70" aria-hidden="true" />
               </div>
 
-              {renderMobileMapLinkedSwipeHint(directoryDisplayBeachCards.length)}
               <div
                 ref={directoryCarouselRef}
                 className="beach-card-carousel no-scrollbar flex cursor-grab snap-x snap-mandatory items-stretch gap-6 overflow-x-auto overscroll-x-contain pb-5 select-none active:cursor-grabbing data-[dragging=true]:cursor-grabbing data-[dragging=true]:snap-none lg:snap-none"
@@ -3926,7 +3856,6 @@ export const BeachSearcherHome: React.FC<BeachSearcherHomeProps> = ({
 
                 {directoryDisplayBeachCards.length > 0 ? (
                   <>
-                    {renderMobileMapLinkedSwipeHint(directoryDisplayBeachCards.length)}
                     <div
                       ref={directoryCarouselRef}
                       className="beach-card-carousel no-scrollbar flex cursor-grab snap-x snap-mandatory items-stretch gap-6 overflow-x-auto overscroll-x-contain pb-5 select-none active:cursor-grabbing data-[dragging=true]:cursor-grabbing data-[dragging=true]:snap-none lg:snap-none"
