@@ -3358,7 +3358,7 @@ export const App: React.FC = () => {
 
     return (
       <div
-        className="sm:hidden rounded-[1.1rem] border border-sky-100 bg-white/90 p-1.5 shadow-sm shadow-sky-900/5 backdrop-blur-xl"
+        className="relative z-10 sm:hidden rounded-[1.1rem] border border-sky-100 bg-white/90 p-1.5 shadow-sm shadow-sky-900/5 backdrop-blur-xl"
         data-testid="mobile-map-day-strip"
       >
         <div
@@ -3382,7 +3382,7 @@ export const App: React.FC = () => {
                 aria-label={buttonLabel}
                 onClick={() => handleMobileMapDaySelect(index)}
                 data-testid="mobile-map-day-tab"
-                className={`flex min-h-12 min-w-[4.25rem] flex-1 cursor-pointer flex-col items-center justify-center rounded-2xl border px-1.5 py-1 text-center transition-colors duration-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-cyan-600 focus-visible:ring-offset-2 ${
+                className={`relative z-10 flex min-h-12 min-w-[4.25rem] flex-1 cursor-pointer touch-manipulation select-none flex-col items-center justify-center rounded-2xl border px-1.5 py-1 text-center transition-colors duration-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-cyan-600 focus-visible:ring-offset-2 ${
                   isSelected
                     ? 'border-[#007a83] bg-cyan-50 text-[#006b73] shadow-sm shadow-cyan-900/10 ring-1 ring-cyan-100'
                     : 'border-sky-100 bg-white/88 text-slate-700 hover:border-cyan-200 hover:bg-cyan-50/70'

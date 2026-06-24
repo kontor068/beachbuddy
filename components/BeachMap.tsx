@@ -2461,6 +2461,26 @@ const BeachMap: React.FC<BeachMapProps> = ({
           })}
         </MapContainer>
 
+        <div className="pointer-events-auto absolute bottom-1.5 right-1.5 z-[900] rounded bg-white/70 px-1.5 py-0.5 text-[8px] font-medium leading-none text-slate-600 shadow-sm shadow-sky-900/5 backdrop-blur-sm dark:bg-slate-900/70 dark:text-slate-300">
+          <a
+            href="https://leafletjs.com"
+            target="_blank"
+            rel="noreferrer"
+            className="hover:underline"
+          >
+            Leaflet
+          </a>
+          <span> | © </span>
+          <a
+            href="https://www.openstreetmap.org/copyright"
+            target="_blank"
+            rel="noreferrer"
+            className="hover:underline"
+          >
+            OpenStreetMap contributors
+          </a>
+        </div>
+
         {hoveredBeach && hoverPreviewPosition && (
           <BeachHoverPreviewCard
             item={hoveredBeach}
@@ -2587,12 +2607,8 @@ const BeachMap: React.FC<BeachMapProps> = ({
         </div>
       )}
 
-      <div className="bg-white/92 px-2 py-1 text-right text-[9px] font-semibold leading-none text-slate-700 shadow-inner shadow-sky-900/5 dark:bg-slate-900/90 dark:text-slate-600">
-        Leaflet | © OpenStreetMap contributors
-      </div>
-
       {isCompactPreview && mapMode === 'wind' && (
-        <div className="mt-2 rounded-xl border border-sky-100 bg-white/90 p-1.5 text-left shadow-sm shadow-sky-900/8 backdrop-blur-xl dark:border-slate-700 dark:bg-slate-900/90">
+        <div className="mt-1 rounded-xl border border-sky-100 bg-white/90 p-1.5 text-left shadow-sm shadow-sky-900/8 backdrop-blur-xl dark:border-slate-700 dark:bg-slate-900/90">
           {renderWindColorGuidePanel('preview')}
         </div>
       )}
