@@ -1,7 +1,7 @@
 
 import React, { useEffect, useState } from 'react';
 import { motion } from 'motion/react';
-import { AlertTriangle, MapPin, Star, Share2, Heart, Navigation, Info, Waves, Utensils, Trees, CircleDot, CircleDotDashed, Mountain, Droplets, ArrowDown, BadgeCheck, Leaf, Shield, Users, Clock3, Flag, Footprints, Wind, Tent, Ticket, Euro, Medal, Accessibility as AccessibilityIcon } from 'lucide-react';
+import { AlertTriangle, MapPin, Star, Share2, Heart, Navigation, Info, Waves, Utensils, Trees, CircleDot, CircleDotDashed, Mountain, Droplets, ArrowDown, BadgeCheck, Leaf, Shield, Users, Clock3, Flag, Footprints, Wind, Tent, Ticket, Euro, Medal, Camera, Accessibility as AccessibilityIcon } from 'lucide-react';
 import { Beach, Accessibility, LanguageCode, BeachType, CrowdLevel, WarningFlag, RecommendationConfidence, SwimmingComfort, WindSuitabilityColor, PaidEntryKind } from '../types';
 import { getBeaufortLevel } from '../utils/weatherUtils';
 import { Translation } from '../types';
@@ -104,6 +104,7 @@ type CardCopy = {
   favorite: string;
   unfavorite: string;
   share: string;
+  photoBelow: string;
   warnings: {
     seaEstimate: string;
     highWaves: string;
@@ -165,6 +166,7 @@ const cardCopy: Record<LanguageCode, CardCopy> = {
     favorite: 'Add to favorites',
     unfavorite: 'Remove from favorites',
     share: 'Share',
+    photoBelow: 'Photo below',
     warnings: {
       seaEstimate: 'Sea estimate',
       highWaves: 'High waves',
@@ -235,6 +237,7 @@ const cardCopy: Record<LanguageCode, CardCopy> = {
     favorite: 'Προσθήκη στα αγαπημένα',
     unfavorite: 'Αφαίρεση από τα αγαπημένα',
     share: 'Κοινοποίηση',
+    photoBelow: 'Φωτό πιο κάτω',
     warnings: {
       seaEstimate: 'Εκτίμηση θάλασσας',
       highWaves: 'Υψηλό κύμα',
@@ -305,6 +308,7 @@ const cardCopy: Record<LanguageCode, CardCopy> = {
     favorite: 'Ajouter aux favoris',
     unfavorite: 'Retirer des favoris',
     share: 'Partager',
+    photoBelow: 'Photo plus bas',
     warnings: {
       seaEstimate: 'Estimation de mer',
       highWaves: 'Vagues hautes',
@@ -375,6 +379,7 @@ const cardCopy: Record<LanguageCode, CardCopy> = {
     favorite: 'Zu Favoriten hinzufügen',
     unfavorite: 'Aus Favoriten entfernen',
     share: 'Teilen',
+    photoBelow: 'Foto weiter unten',
     warnings: {
       seaEstimate: 'Meeres-Schätzung',
       highWaves: 'Hohe Wellen',
@@ -445,6 +450,7 @@ const cardCopy: Record<LanguageCode, CardCopy> = {
     favorite: 'Aggiungi ai preferiti',
     unfavorite: 'Rimuovi dai preferiti',
     share: 'Condividi',
+    photoBelow: 'Foto più sotto',
     warnings: {
       seaEstimate: 'Stima mare',
       highWaves: 'Onde alte',
@@ -1368,12 +1374,20 @@ export const BeachCard: React.FC<BeachCardProps> = ({
                   {showHeaderProtectedMarker && <ProtectedBeachMarker language={language} selectedDate={selectedDate} />}
                 </div>
               )}
-              {hasBlueFlag2026 && (
-                <div className="mt-1 flex min-w-0 items-center justify-center gap-1.5 text-[11px] font-bold leading-tight text-cyan-800/90">
-                  <Flag className="h-3.5 w-3.5 shrink-0" />
-                  <span className="min-w-0 truncate">
-                    {localizedCardCopy.blueFlag}
-                  </span>
+              {(hasBlueFlag2026 || cardPhoto) && (
+                <div className="mt-1 flex min-w-0 flex-wrap items-center justify-center gap-x-2 gap-y-0.5 text-[11px] font-bold leading-tight text-cyan-800/90">
+                  {hasBlueFlag2026 && (
+                    <span className="inline-flex min-w-0 items-center gap-1.5">
+                      <Flag className="h-3.5 w-3.5 shrink-0" aria-hidden="true" />
+                      <span className="min-w-0 truncate">{localizedCardCopy.blueFlag}</span>
+                    </span>
+                  )}
+                  {cardPhoto && (
+                    <span className="inline-flex min-w-0 items-center gap-1.5 text-cyan-700">
+                      <Camera className="h-3.5 w-3.5 shrink-0" aria-hidden="true" />
+                      <span className="min-w-0 truncate">{localizedCardCopy.photoBelow}</span>
+                    </span>
+                  )}
                 </div>
               )}
             </div>

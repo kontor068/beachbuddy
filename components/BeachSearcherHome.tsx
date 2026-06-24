@@ -3420,7 +3420,7 @@ export const BeachSearcherHome: React.FC<BeachSearcherHomeProps> = ({
                 <div className="relative overflow-hidden rounded-[1.35rem] border border-sky-100 bg-white/74 p-2 text-left shadow-lg shadow-sky-900/10 ring-1 ring-white/55 backdrop-blur-md">
                   {mapPreview}
                   {!isMapResultsCueDismissed && (
-                    <div className="pointer-events-none absolute inset-x-0 bottom-0 z-[850] flex justify-center bg-gradient-to-t from-white/92 via-white/40 to-transparent px-3 pb-3 pt-12">
+                    <div className="pointer-events-none absolute inset-x-0 bottom-7 z-[850] flex justify-center bg-gradient-to-t from-white/92 via-white/40 to-transparent px-3 pb-0 pt-10">
                       <button
                         type="button"
                         onClick={handleMapResultsCueClick}
