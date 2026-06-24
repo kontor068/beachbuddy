@@ -1,6 +1,5 @@
 import React, { useState, useRef, useEffect, useMemo } from 'react';
 import { Search, X, MapPin } from 'lucide-react';
-import { motion, AnimatePresence } from 'motion/react';
 import { Island, LanguageCode, Beach } from '../types';
 import { fuzzySearchBeaches, FuzzyResult } from '../utils/fuzzySearch';
 import { displayBeachName } from '../utils/localization';
@@ -114,32 +113,22 @@ export const TouristSearchBar: React.FC<TouristSearchBarProps> = ({
         />
 
         <div className="absolute right-3 top-0 bottom-0 flex items-center">
-          <AnimatePresence>
-            {query && (
-              <motion.button
+          {query && (
+              <button
                 type="button"
-                initial={{ opacity: 0, scale: 0.8 }}
-                animate={{ opacity: 1, scale: 1 }}
-                exit={{ opacity: 0, scale: 0.8 }}
                 onClick={handleClear}
-                className="p-2 text-slate-600 hover:text-slate-600 dark:hover:text-slate-300 transition-colors cursor-pointer"
+                className="p-2 text-slate-600 hover:text-slate-600 dark:hover:text-slate-300 transition-colors active:scale-95 cursor-pointer"
                 aria-label="Clear search"
               >
                 <X className="w-4 h-4" />
-              </motion.button>
+              </button>
             )}
-          </AnimatePresence>
         </div>
       </form>
 
       {/* Autocomplete dropdown */}
-      <AnimatePresence>
-        {showDropdown && (
-          <motion.div
-            initial={{ opacity: 0, y: -4 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -4 }}
-            transition={{ duration: 0.15 }}
+      {showDropdown && (
+          <div
             className="absolute z-50 left-0 right-0 mt-2 bg-white dark:bg-slate-900 rounded-xl shadow-2xl border border-slate-100 dark:border-slate-800 overflow-hidden max-h-80 overflow-y-auto"
           >
             {suggestions.map((result, i) => {
@@ -175,9 +164,8 @@ export const TouristSearchBar: React.FC<TouristSearchBarProps> = ({
                 </button>
               );
             })}
-          </motion.div>
+          </div>
         )}
-      </AnimatePresence>
     </div>
   );
 };

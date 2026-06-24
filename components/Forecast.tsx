@@ -1,5 +1,4 @@
 ﻿import React, { useEffect, useId, useState } from 'react';
-import { motion, AnimatePresence } from 'motion/react';
 import { DailyForecast, WeatherData, ForecastItem } from '../types';
 import { degToCompass, getBeaufortLevel } from '../utils/weatherUtils';
 import { ArrowRight, CloudSun, Wind, Clock, ChevronDown } from 'lucide-react';
@@ -113,11 +112,8 @@ const HourlyForecastDetail: React.FC<{ hourlyData: ForecastItem[]; t: any }> = (
         const beaufortLevel = getBeaufortLevel(item.wind.speed * 3.6);
         
         return (
-          <motion.div
+          <div
             key={item.dt}
-            initial={{ opacity: 0, x: -8 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ delay: idx * 0.02 }}
             className="flex min-h-10 items-center justify-between gap-3 rounded-xl border border-sky-100/30 bg-white/50 px-3 py-1.5 transition-colors hover:bg-white/72 dark:border-slate-700/20 dark:bg-slate-800/45 dark:hover:bg-slate-800/60"
           >
             <div className="flex min-w-0 items-center gap-3">
@@ -138,7 +134,7 @@ const HourlyForecastDetail: React.FC<{ hourlyData: ForecastItem[]; t: any }> = (
               </div>
               <span className="min-w-10 text-right text-xs font-heading font-bold text-slate-900 dark:text-white">{beaufortLevel} {t.units.beaufort}</span>
             </div>
-          </motion.div>
+          </div>
         );
       })}
       </div>
@@ -170,17 +166,13 @@ const ForecastCard: React.FC<{
 
   if (variant === 'mini') {
     return (
-      <motion.button
+      <button
         type="button"
         onClick={onClick}
         disabled={disabled}
         aria-pressed={isSelected}
         aria-label={buttonLabel}
-        initial={{ opacity: 0, y: 8 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ delay: index * 0.035 }}
-        whileTap={disabled ? undefined : { scale: 0.98 }}
-        className={`flex min-h-[54px] min-w-0 flex-col items-center justify-center gap-0.5 rounded-2xl border px-1.5 transition focus:outline-none focus-visible:ring-2 focus-visible:ring-cyan-500 sm:h-[50px] sm:min-w-[104px] sm:shrink-0 sm:flex-row sm:gap-2 sm:px-3 ${
+        className={`flex min-h-[54px] min-w-0 flex-col items-center justify-center gap-0.5 rounded-2xl border px-1.5 transition active:scale-[0.98] focus:outline-none focus-visible:ring-2 focus-visible:ring-cyan-500 sm:h-[50px] sm:min-w-[104px] sm:shrink-0 sm:flex-row sm:gap-2 sm:px-3 ${
           disabled
             ? 'cursor-not-allowed border-slate-200/45 bg-white/42 text-slate-600 opacity-45 shadow-none grayscale'
             : isSelected
@@ -209,7 +201,7 @@ const ForecastCard: React.FC<{
             </span>
           </span>
         </span>
-      </motion.button>
+      </button>
     );
   }
 
@@ -220,17 +212,13 @@ const ForecastCard: React.FC<{
       ? 'min-h-[64px] flex-col gap-0.5 px-1 py-1.5'
       : 'min-h-[58px] flex-col gap-0.5 px-1 py-1 sm:h-[50px] sm:flex-row sm:gap-2 sm:px-2 sm:py-0 lg:px-3';
     return (
-      <motion.button
+      <button
         type="button"
         onClick={onClick}
         disabled={disabled}
         aria-pressed={isSelected}
         aria-label={buttonLabel}
-        initial={{ opacity: 0, y: 8 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ delay: index * 0.035 }}
-        whileTap={disabled ? undefined : { scale: 0.98 }}
-        className={`flex w-full min-w-0 items-center justify-center rounded-2xl border transition focus:outline-none focus-visible:ring-2 focus-visible:ring-cyan-500 ${pillLayout} ${
+        className={`flex w-full min-w-0 items-center justify-center rounded-2xl border transition active:scale-[0.98] focus:outline-none focus-visible:ring-2 focus-visible:ring-cyan-500 ${pillLayout} ${
           disabled
             ? 'cursor-not-allowed border-slate-200/45 bg-white/42 text-slate-600 opacity-45 shadow-none grayscale'
             : isSelected
@@ -254,23 +242,18 @@ const ForecastCard: React.FC<{
             {Math.round(forecast.temp_max)}°C
           </span>
         </span>
-      </motion.button>
+      </button>
     );
   }
 
   return (
-    <motion.button
+    <button
         type="button"
         onClick={onClick}
         disabled={disabled}
         aria-pressed={isSelected}
         aria-label={buttonLabel}
-        initial={{ opacity: 0, y: 15 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ delay: index * 0.05 }}
-        whileHover={disabled ? undefined : { y: -2 }}
-        whileTap={disabled ? undefined : { scale: 0.98 }}
-        className={`relative flex min-w-0 flex-col items-center border transition-all duration-300 group cursor-pointer ${
+        className={`relative flex min-w-0 flex-col items-center border transition-all duration-300 group cursor-pointer active:scale-[0.98] ${
         'min-h-[86px] rounded-xl px-1 pb-1.5 pt-2 sm:min-h-[92px] sm:w-auto sm:min-w-0 sm:p-2 md:min-h-[96px]'
         } ${
         disabled
@@ -323,7 +306,7 @@ const ForecastCard: React.FC<{
             {beaufortLevel} {t.units.beaufort}
           </span>
         </div>
-    </motion.button>
+    </button>
   );
 };
 
@@ -489,21 +472,13 @@ const Forecast: React.FC<ForecastProps> = ({
                 <ChevronDown className={`h-3 w-3 transition-transform ${isHourlyExpanded ? 'rotate-180' : ''}`} aria-hidden="true" />
               </button>
             </div>
-            <AnimatePresence initial={false}>
-              {isHourlyExpanded && (
-                <motion.div
-                  id={hourlyDetailsId}
-                  initial={{ opacity: 0, height: 0 }}
-                  animate={{ opacity: 1, height: 'auto' }}
-                  exit={{ opacity: 0, height: 0 }}
-                  className="overflow-hidden"
-                >
+            {isHourlyExpanded && (
+                <div id={hourlyDetailsId} className="overflow-hidden">
                   <div className="pt-2">
                     <HourlyForecastDetail hourlyData={selectedForecast.hourly} t={t} />
                   </div>
-                </motion.div>
+                </div>
               )}
-            </AnimatePresence>
           </div>
         )}
       </div>
@@ -567,15 +542,8 @@ const Forecast: React.FC<ForecastProps> = ({
           )}
         </div>
 
-        <AnimatePresence initial={false}>
-          {hasHourlyData && isHourlyExpanded && (
-            <motion.div
-              id={hourlyDetailsId}
-              initial={{ opacity: 0, y: -6, height: 0 }}
-              animate={{ opacity: 1, y: 0, height: 'auto' }}
-              exit={{ opacity: 0, y: -6, height: 0 }}
-              className="overflow-hidden"
-            >
+        {hasHourlyData && isHourlyExpanded && (
+            <div id={hourlyDetailsId} className="overflow-hidden">
               <div className="pt-2">
                 <div className="rounded-2xl border border-white/60 bg-white/70 p-3 shadow-sm shadow-sky-900/5 ring-1 ring-white/40 backdrop-blur-xl">
                   <div className="mb-2 flex min-w-0 items-center gap-2">
@@ -592,9 +560,8 @@ const Forecast: React.FC<ForecastProps> = ({
                   <HourlyForecastDetail hourlyData={selectedForecast.hourly} t={t} />
                 </div>
               </div>
-            </motion.div>
+            </div>
           )}
-        </AnimatePresence>
       </div>
     );
   }
@@ -678,32 +645,24 @@ const Forecast: React.FC<ForecastProps> = ({
           </div>
         )
       ) : (
-        <AnimatePresence initial={false}>
-          {hasHourlyData && isHourlyExpanded && (
-            <motion.div
-              id={hourlyDetailsId}
-              initial={{ opacity: 0, y: -6, height: 0 }}
-              animate={{ opacity: 1, y: 0, height: 'auto' }}
-              exit={{ opacity: 0, y: -6, height: 0 }}
-              className="overflow-hidden"
-            >
-              <div className="rounded-2xl border border-white/60 bg-white/76 p-3 shadow-sm shadow-sky-900/5 ring-1 ring-white/40 backdrop-blur-xl">
-                <div className="mb-2 flex min-w-0 items-center gap-2">
-                  <div className="rounded-lg bg-sky-50/80 p-1.5 text-sky-500">
-                    <Clock className="h-3.5 w-3.5" aria-hidden="true" />
-                  </div>
-                  <h3 className="min-w-0 truncate font-heading text-sm font-semibold text-slate-600">
-                    {hourlyTitle}
-                  </h3>
-                  <span className="ml-auto hidden truncate text-xs font-semibold text-slate-700 sm:block">
-                    {selectedForecastDateLabel}
-                  </span>
+        hasHourlyData && isHourlyExpanded && (
+          <div id={hourlyDetailsId} className="overflow-hidden">
+            <div className="rounded-2xl border border-white/60 bg-white/76 p-3 shadow-sm shadow-sky-900/5 ring-1 ring-white/40 backdrop-blur-xl">
+              <div className="mb-2 flex min-w-0 items-center gap-2">
+                <div className="rounded-lg bg-sky-50/80 p-1.5 text-sky-500">
+                  <Clock className="h-3.5 w-3.5" aria-hidden="true" />
                 </div>
-                <HourlyForecastDetail hourlyData={selectedForecast.hourly} t={t} />
+                <h3 className="min-w-0 truncate font-heading text-sm font-semibold text-slate-600">
+                  {hourlyTitle}
+                </h3>
+                <span className="ml-auto hidden truncate text-xs font-semibold text-slate-700 sm:block">
+                  {selectedForecastDateLabel}
+                </span>
               </div>
-            </motion.div>
-          )}
-        </AnimatePresence>
+              <HourlyForecastDetail hourlyData={selectedForecast.hourly} t={t} />
+            </div>
+          </div>
+        )
       )}
     </div>
   );

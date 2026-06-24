@@ -1,7 +1,6 @@
 import React, { useState, useEffect, useMemo, useRef, Suspense } from 'react';
 import { Accessibility, Beach, DailyForecast, ForecastItem, Island, LanguageCode, FilterKey, SortOption, UserPreferences, SuitableBeach, Translation, WindDirection } from './types';
 import { beachMatchesUserPreferences, calculateBeachScore, calculateBestBeachTime, getSuitableBeaches, filterBeachesByUserPreferences, getTopRecommendationDisplayLimit, hasHourlyRainRisk, isTrustedTopRecommendationCandidate, type BeachScore, type BeachWeatherById, type BestBeachTime } from './services/recommendationService';
-import { motion, AnimatePresence } from 'motion/react';
 import type { Chat } from '@google/genai';
 import { AlertTriangle, CheckCircle2, Clock3, Navigation, RefreshCw, Waves, Wind } from 'lucide-react';
 
@@ -2456,6 +2455,11 @@ export const App: React.FC = () => {
 
   const openBeachDetails = (beach: Beach, source: string, options: { updateUrl?: boolean } = {}) => {
     trackEvent('beach_card_clicked', beach.id, {
+      ...analyticsBaseParams,
+      source,
+      beach_name: beach.name.en,
+    });
+    trackEvent('beach_detail_opened', beach.id, {
       ...analyticsBaseParams,
       source,
       beach_name: beach.name.en,
@@ -5257,10 +5261,7 @@ export const App: React.FC = () => {
             </div>
 
             {calmAllAroundSummary && (
-              <motion.div
-                initial={{ opacity: 0, y: 12 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.34, ease: [0.22, 1, 0.36, 1] }}
+              <div
                 className="border-t border-white/55 px-2 py-3 sm:min-h-[12.5rem] sm:px-4 sm:py-4"
               >
                 <div className="space-y-3 text-center">
@@ -5290,16 +5291,13 @@ export const App: React.FC = () => {
                     </div>
                   </div>
                 </div>
-              </motion.div>
+              </div>
             )}
 
             {headerTopBeach && (
-              <motion.button
+              <button
                 type="button"
                 onClick={() => openBeachDetails(headerTopBeach.beach, 'top_recommendation_panel')}
-                initial={{ opacity: 0, y: 12 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.34, ease: [0.22, 1, 0.36, 1] }}
                 className="block w-full border-t border-white/55 px-2 py-3 text-left transition hover:bg-white/10 focus:outline-none focus-visible:ring-2 focus-visible:ring-cyan-500 sm:px-4 sm:py-4"
               >
                 <div className="space-y-3 text-center">
@@ -5405,7 +5403,7 @@ export const App: React.FC = () => {
                     </div>
                   </div>
                 </div>
-              </motion.button>
+              </button>
             )}
 
               </div>
@@ -5428,7 +5426,7 @@ export const App: React.FC = () => {
               </div>
               <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3 sm:gap-6">
                 {recommendationSectionBeaches.map((r, i) => (
-                  <motion.div key={r.beach.id} initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: i * 0.05, duration: 0.18 }}>
+                  <div key={r.beach.id}>
                     <BeachCard
                       beach={{...r.beach, distance: r.distance}} isExposed={r.isExposed} language={language} t={t}
                       isCalm={r.seaCalmClaimAllowed === true} windSpeed={forecast[selectedDayIndex].wind.speed} temperature={forecast[selectedDayIndex].temp_max}
@@ -5453,7 +5451,7 @@ export const App: React.FC = () => {
                       windSuitabilityText={describeSimpleWindSuitability(r.simpleWindSuitability, language)}
                       windSuitabilityColor={r.simpleWindSuitability?.suitabilityColor}
                     />
-                  </motion.div>
+                  </div>
                 ))}
               </div>
             </div>
@@ -5565,10 +5563,7 @@ export const App: React.FC = () => {
 
             <div className="max-w-7xl mx-auto px-3 sm:px-4 relative z-10">
               {/* Location & beach count */}
-              <motion.div
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.5 }}
+              <div
                 className={`max-w-3xl mx-auto ${selectedIsland ? 'h-0' : 'mb-5'}`}
               >
                 <div className="text-center">
@@ -5578,7 +5573,7 @@ export const App: React.FC = () => {
                     </h1>
                   )}
                 </div>
-              </motion.div>
+              </div>
 
             </div>
           </section>
@@ -5588,13 +5583,8 @@ export const App: React.FC = () => {
       {/* ===== MAIN CONTENT ===== */}
       {shouldRenderMainShell && (
       <main className="max-w-7xl mx-auto px-3 sm:px-4 space-y-8 pb-[calc(6.5rem+env(safe-area-inset-bottom))] sm:space-y-16 md:pb-8 lg:space-y-8 relative z-10">
-        <AnimatePresence initial={false} mode="sync">
-            <motion.div
+            <div
               key={`${selectedIsland?.id}-${selectedDayIndex}`}
-              initial={false}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -8 }}
-              transition={{ duration: 0.16 }}
               className="space-y-6 sm:space-y-16 lg:space-y-8"
             >
               {isWaitingForForecast && (
@@ -5645,7 +5635,7 @@ export const App: React.FC = () => {
                     </div>
                     <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3 sm:gap-6">
                     {recommendationSectionBeaches.map((r, i) => (
-                      <motion.div key={r.beach.id} initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: i * 0.05, duration: 0.18 }}>
+                      <div key={r.beach.id}>
                         <BeachCard
                           beach={{...r.beach, distance: r.distance}} isExposed={r.isExposed} language={language} t={t}
                           isCalm={r.seaCalmClaimAllowed === true} windSpeed={forecast[selectedDayIndex].wind.speed} temperature={forecast[selectedDayIndex].temp_max}
@@ -5677,7 +5667,7 @@ export const App: React.FC = () => {
                           windSuitabilityText={describeSimpleWindSuitability(r.simpleWindSuitability, language)}
                           windSuitabilityColor={r.simpleWindSuitability?.suitabilityColor}
                         />
-                      </motion.div>
+                      </div>
                     ))}
                     </div>
                     <p className="mx-auto mt-3 max-w-2xl px-1 text-center text-[11px] font-semibold leading-relaxed text-slate-700 sm:mt-4 sm:text-xs">
@@ -5689,16 +5679,13 @@ export const App: React.FC = () => {
 
               {/* AI Advisor - temporarily hidden */}
               {ENABLE_AI_ADVISOR && (
-                <motion.div
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: 0.15 }}
+                <div
                   className="max-w-3xl mx-auto"
                 >
                   <Suspense fallback={null}>
                     <AiBeachAdvisor allIslands={allIslands} selectedIsland={selectedIsland} weather={forecast?.[selectedDayIndex] || weather} userLocation={userLocation} language={language} />
                   </Suspense>
-                </motion.div>
+                </div>
               )}
 
               {isUnsafeWinter && <UnsafeConditionsMessage t={t} />}
@@ -5847,8 +5834,7 @@ export const App: React.FC = () => {
                   </Suspense>
                 </div>
               )}
-            </motion.div>
-          </AnimatePresence>
+            </div>
 
       </main>
       )}
@@ -5922,11 +5908,9 @@ export const App: React.FC = () => {
       {(ENABLE_PLANNER_PRO || ENABLE_BEACH_BUDDY_CHAT) && (
       <div className="fixed bottom-6 right-6 z-40 hidden md:flex flex-col gap-3">
         {ENABLE_PLANNER_PRO && (
-        <motion.button
-          whileHover={{ scale: 1.1 }}
-          whileTap={{ scale: 0.95 }}
+        <button
           onClick={() => setIsPlannerOpen(true)}
-          className="group relative p-4 bg-white dark:bg-slate-800 text-primary rounded-2xl shadow-lg hover:shadow-xl border border-sky-100 dark:border-slate-700 transition-all cursor-pointer"
+          className="group relative p-4 bg-white dark:bg-slate-800 text-primary rounded-2xl shadow-lg hover:shadow-xl border border-sky-100 dark:border-slate-700 transition-all hover:scale-105 active:scale-95 cursor-pointer"
           aria-label={homeCopy.tripPlanner[language]}
         >
           <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}><path d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" /></svg>
@@ -5936,22 +5920,20 @@ export const App: React.FC = () => {
           <span className="absolute right-full mr-3 top-1/2 -translate-y-1/2 px-3 py-1.5 bg-slate-900 text-white text-xs font-heading font-semibold rounded-lg opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap pointer-events-none">
             {language === 'gr' ? 'Planner Pro' : 'Planner Pro'}
           </span>
-        </motion.button>
+        </button>
         )}
 
         {ENABLE_BEACH_BUDDY_CHAT && (
-        <motion.button
-          whileHover={{ scale: 1.1 }}
-          whileTap={{ scale: 0.95 }}
+        <button
           onClick={() => setIsChatOpen(true)}
-          className="group relative p-4 bg-cta text-white rounded-2xl shadow-lg hover:shadow-xl transition-all cursor-pointer"
+          className="group relative p-4 bg-cta text-white rounded-2xl shadow-lg hover:shadow-xl transition-all hover:scale-105 active:scale-95 cursor-pointer"
           aria-label={homeCopy.aiAssistant[language]}
         >
           <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}><path d="M8 10h.01M12 10h.01M16 10h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" /></svg>
           <span className="absolute right-full mr-3 top-1/2 -translate-y-1/2 px-3 py-1.5 bg-slate-900 text-white text-xs font-heading font-semibold rounded-lg opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap pointer-events-none">
             AI Chat
           </span>
-        </motion.button>
+        </button>
         )}
       </div>
       )}

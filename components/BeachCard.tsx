@@ -1,6 +1,5 @@
 
 import React, { useEffect, useState } from 'react';
-import { motion } from 'motion/react';
 import { AlertTriangle, MapPin, Star, Share2, Heart, Navigation, Info, Waves, Utensils, Trees, CircleDot, CircleDotDashed, Mountain, Droplets, ArrowDown, BadgeCheck, Leaf, Shield, Users, Clock3, Flag, Footprints, Wind, Tent, Ticket, Euro, Medal, Camera, Accessibility as AccessibilityIcon } from 'lucide-react';
 import { Beach, Accessibility, LanguageCode, BeachType, CrowdLevel, WarningFlag, RecommendationConfidence, SwimmingComfort, WindSuitabilityColor, PaidEntryKind } from '../types';
 import { getBeaufortLevel } from '../utils/weatherUtils';
@@ -1334,12 +1333,10 @@ export const BeachCard: React.FC<BeachCardProps> = ({
     : undefined;
   if (variant === 'decision' || variant === 'default') {
     return (
-      <motion.div
+      <div
         onClick={onClick}
         data-nosnippet="true"
-        whileHover={{ y: -3 }}
-        transition={{ duration: 0.25 }}
-        className={`group relative beach-card flex h-full w-full cursor-pointer flex-col overflow-hidden active:scale-[0.995]${isPodium ? ' border-2 border-[#007a83]/45' : ''}`}
+        className={`group relative beach-card flex h-full w-full cursor-pointer flex-col overflow-hidden transition-transform duration-300 hover:-translate-y-0.5 active:scale-[0.995]${isPodium ? ' border-2 border-[#007a83]/45' : ''}`}
       >
         <div className={`border-b px-3.5 py-3 sm:hidden ${isPodium
           ? 'border-[#007a83]/15 bg-[#007a83]/[0.05] dark:border-[#007a83]/30 dark:bg-[#007a83]/15'
@@ -1636,17 +1633,15 @@ export const BeachCard: React.FC<BeachCardProps> = ({
             </button>
           )}
         </div>
-      </motion.div>
+      </div>
     );
   }
 
   return (
-    <motion.div
+    <div
       onClick={onClick}
       data-nosnippet="true"
-      whileHover={{ y: -4 }}
-      transition={{ duration: 0.3 }}
-      className="group relative beach-card flex h-fit w-full cursor-pointer flex-col overflow-hidden"
+      className="group relative beach-card flex h-fit w-full cursor-pointer flex-col overflow-hidden transition-transform duration-300 hover:-translate-y-1"
     >
       <div className="relative aspect-[16/9] min-h-40 max-h-48 overflow-hidden bg-sky-50">
         {cardPhoto ? (
@@ -1871,6 +1866,6 @@ export const BeachCard: React.FC<BeachCardProps> = ({
           </button>
         )}
       </div>
-    </motion.div>
+    </div>
   );
 };

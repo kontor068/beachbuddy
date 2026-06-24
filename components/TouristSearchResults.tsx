@@ -1,5 +1,4 @@
 import React from 'react';
-import { motion } from 'motion/react';
 import { ChevronRight } from 'lucide-react';
 import { Beach } from '../types';
 import { displayBeachName } from '../utils/localization';
@@ -20,12 +19,9 @@ export const TouristSearchResults: React.FC<TouristSearchResultsProps> = ({ resu
 
   return (
     <div className="space-y-4">
-      {results.map((item, idx) => (
-        <motion.div
+      {results.map((item) => (
+        <div
           key={item.beach.id}
-          initial={{ opacity: 0, y: 10 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: idx * 0.05 }}
           onClick={() => onBeachClick(item.beach)}
           className="p-4 bg-white/80 dark:bg-slate-900/80 backdrop-blur-sm rounded-2xl border border-slate-100 dark:border-slate-800 hover:border-primary/30 transition-all cursor-pointer group"
         >
@@ -47,7 +43,7 @@ export const TouristSearchResults: React.FC<TouristSearchResultsProps> = ({ resu
               {item.explanation}
             </p>
           )}
-        </motion.div>
+        </div>
       ))}
     </div>
   );

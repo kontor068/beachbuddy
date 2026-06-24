@@ -1,5 +1,4 @@
 import React from 'react';
-import { motion } from 'motion/react';
 import { Navigation, Compass } from 'lucide-react';
 import { SecretBeach, LanguageCode, Translation } from '../types';
 
@@ -28,12 +27,9 @@ export const SecretBeachesSection: React.FC<SecretBeachesSectionProps> = ({
 
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-      {beaches.map((item, index) => (
-        <motion.div
+      {beaches.map((item) => (
+        <div
           key={item.beachId}
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: index * 0.1 }}
           onClick={() => onBeachClick(item.beach)}
           className="group relative bg-white dark:bg-slate-900 rounded-[2rem] overflow-hidden shadow-sm hover:shadow-xl transition-all duration-500 cursor-pointer border border-slate-100 dark:border-slate-800"
         >
@@ -114,7 +110,7 @@ export const SecretBeachesSection: React.FC<SecretBeachesSectionProps> = ({
               </button>
             </div>
           </div>
-        </motion.div>
+        </div>
       ))}
     </div>
   );

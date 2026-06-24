@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import { motion, AnimatePresence } from 'motion/react';
 import { Send, Sparkles } from 'lucide-react';
 import { Island, WeatherData, DailyForecast, LanguageCode } from '../types';
 import { getBeachAdvice, AiAdviceResponse } from '../services/aiAdvisorService';
@@ -121,14 +120,9 @@ export const AiBeachAdvisor: React.FC<AiBeachAdvisorProps> = ({
           </button>
         </form>
 
-        <AnimatePresence mode="wait">
+        <>
           {!advice && !isAnalyzing && (
-            <motion.div
-              initial={{ opacity: 0, y: 10 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -10 }}
-              className="grid gap-2 sm:flex sm:flex-wrap"
-            >
+            <div className="grid gap-2 sm:flex sm:flex-wrap">
               {suggestions.slice(0, 3).map((suggestion, idx) => (
                 <button
                   key={idx}
@@ -138,29 +132,20 @@ export const AiBeachAdvisor: React.FC<AiBeachAdvisorProps> = ({
                   {suggestion}
                 </button>
               ))}
-            </motion.div>
+            </div>
           )}
 
           {isAnalyzing && (
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              className="flex items-center justify-center py-8 text-slate-600"
-            >
+            <div className="flex items-center justify-center py-8 text-slate-600">
               <div className="flex items-center gap-3">
                 <Sparkles className="w-5 h-5 animate-spin text-cyan-500" />
                 <span className="text-sm font-medium animate-pulse">{language === 'gr' ? 'Ανάλυση καιρού και δεδομένων παραλίας...' : 'Analyzing weather and beach data...'}</span>
               </div>
-            </motion.div>
+            </div>
           )}
 
           {advice && (
-            <motion.div
-              initial={{ opacity: 0, y: 10 }}
-              animate={{ opacity: 1, y: 0 }}
-              className="space-y-6"
-            >
+            <div className="space-y-6">
               <div className="p-4 bg-cyan-50 dark:bg-cyan-900/20 rounded-2xl border border-cyan-100 dark:border-cyan-800/30">
                 <p className="text-sm text-cyan-900 dark:text-cyan-100 leading-relaxed">
                   {advice.answer}
@@ -169,11 +154,8 @@ export const AiBeachAdvisor: React.FC<AiBeachAdvisorProps> = ({
 
               <div className="space-y-3">
                 {advice.beaches.map((beach, idx) => (
-                  <motion.div
+                  <div
                     key={idx}
-                    initial={{ opacity: 0, x: -10 }}
-                    animate={{ opacity: 1, x: 0 }}
-                    transition={{ delay: idx * 0.1 }}
                     className="flex flex-col sm:flex-row gap-4 p-4 rounded-2xl border border-slate-100 dark:border-slate-800 hover:border-cyan-200 dark:hover:border-cyan-800 transition-colors"
                   >
                     <div className="flex-shrink-0 flex items-center justify-center w-12 h-12 rounded-xl bg-gradient-to-br from-cyan-500 to-blue-600 text-white font-bold text-lg shadow-sm">
@@ -185,7 +167,7 @@ export const AiBeachAdvisor: React.FC<AiBeachAdvisorProps> = ({
                         {beach.explanation}
                       </p>
                     </div>
-                  </motion.div>
+                  </div>
                 ))}
                 
                 {advice.beaches.length === 0 && (
@@ -194,9 +176,9 @@ export const AiBeachAdvisor: React.FC<AiBeachAdvisorProps> = ({
                   </div>
                 )}
               </div>
-            </motion.div>
+            </div>
           )}
-        </AnimatePresence>
+        </>
       </div>
     </div>
   );

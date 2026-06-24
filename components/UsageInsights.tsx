@@ -1,7 +1,6 @@
 import React, { useMemo } from 'react';
 import { getAnalyticsInsights } from '../services/analyticsService';
 import { Beach, LanguageCode } from '../types';
-import { motion } from 'motion/react';
 import { displayBeachName } from '../utils/localization';
 
 interface UsageInsightsProps {
@@ -52,12 +51,9 @@ export const UsageInsights: React.FC<UsageInsightsProps> = ({ allBeaches, langua
             <span className="text-lg">👁️</span> Most Viewed
           </h3>
           <div className="space-y-2">
-            {topBeaches.map(([id, count], idx) => (
-              <motion.div 
+            {topBeaches.map(([id, count]) => (
+              <div
                 key={id}
-                initial={{ opacity: 0, x: -10 }}
-                animate={{ opacity: 1, x: 0 }}
-                transition={{ delay: idx * 0.1 }}
                 className="flex items-center justify-between p-3 bg-slate-50 dark:bg-slate-800/50 rounded-xl"
               >
                 <span className="text-sm font-medium text-slate-700 dark:text-slate-300 truncate max-w-[150px]">
@@ -66,7 +62,7 @@ export const UsageInsights: React.FC<UsageInsightsProps> = ({ allBeaches, langua
                 <span className="text-xs font-bold bg-cyan-100 dark:bg-cyan-900/50 text-cyan-700 dark:text-cyan-300 px-2 py-1 rounded-md">
                   {count} views
                 </span>
-              </motion.div>
+              </div>
             ))}
           </div>
         </div>
@@ -77,12 +73,9 @@ export const UsageInsights: React.FC<UsageInsightsProps> = ({ allBeaches, langua
             <span className="text-lg">🔍</span> Top Searches
           </h3>
           <div className="space-y-2">
-            {topSearches.map(([query, count], idx) => (
-              <motion.div 
+            {topSearches.map(([query, count]) => (
+              <div
                 key={query}
-                initial={{ opacity: 0, x: -10 }}
-                animate={{ opacity: 1, x: 0 }}
-                transition={{ delay: idx * 0.1 }}
                 className="flex items-center justify-between p-3 bg-slate-50 dark:bg-slate-800/50 rounded-xl"
               >
                 <span className="text-sm font-medium text-slate-700 dark:text-slate-300 truncate max-w-[150px]">
@@ -91,7 +84,7 @@ export const UsageInsights: React.FC<UsageInsightsProps> = ({ allBeaches, langua
                 <span className="text-xs font-bold bg-indigo-100 dark:bg-indigo-900/50 text-indigo-700 dark:text-indigo-300 px-2 py-1 rounded-md">
                   {count} times
                 </span>
-              </motion.div>
+              </div>
             ))}
           </div>
         </div>
@@ -102,12 +95,9 @@ export const UsageInsights: React.FC<UsageInsightsProps> = ({ allBeaches, langua
             <span className="text-lg">❤️</span> Most Favorited
           </h3>
           <div className="space-y-2">
-            {topFavorites.map(([id, count], idx) => (
-              <motion.div 
+            {topFavorites.map(([id, count]) => (
+              <div
                 key={id}
-                initial={{ opacity: 0, x: -10 }}
-                animate={{ opacity: 1, x: 0 }}
-                transition={{ delay: idx * 0.1 }}
                 className="flex items-center justify-between p-3 bg-slate-50 dark:bg-slate-800/50 rounded-xl"
               >
                 <span className="text-sm font-medium text-slate-700 dark:text-slate-300 truncate max-w-[150px]">
@@ -116,7 +106,7 @@ export const UsageInsights: React.FC<UsageInsightsProps> = ({ allBeaches, langua
                 <span className="text-xs font-bold bg-rose-100 dark:bg-rose-900/50 text-rose-700 dark:text-rose-300 px-2 py-1 rounded-md">
                   {count} favs
                 </span>
-              </motion.div>
+              </div>
             ))}
           </div>
         </div>

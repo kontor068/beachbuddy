@@ -32,14 +32,27 @@ export default defineConfig(({ mode }) => {
                 }
 
                 if (isAnyProjectModule(id, [
+                  'data/beachPhotosById.generated.json',
+                  'data/destinationPhotoAdapter.ts',
+                  'data/destinationStripPhotos.generated.json',
+                  'data/photoRegistry.ts',
+                  'data/regionStripPhotos.generated.json',
+                  'data/sourcedRegionStripPhotos.generated.json',
+                  'services/beachImageService.ts',
+                  'services/beachPhotos.ts',
+                  'src/data/beachImages.milos.json',
+                  'utils/islandContextStrip.ts',
+                ])) {
+                  return 'beach-media';
+                }
+
+                if (isAnyProjectModule(id, [
                   'services/beachService.ts',
                 ])) {
                   return 'beach-content';
                 }
 
                 if (isAnyProjectModule(id, [
-                  'data/photoRegistry.ts',
-                  'data/destinationPhotoAdapter.ts',
                   'hooks/useBeaches.ts',
                   'hooks/useLocation.ts',
                   'hooks/useWeather.ts',

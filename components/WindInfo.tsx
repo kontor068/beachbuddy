@@ -1,6 +1,5 @@
 
 import React, { useState, useEffect } from 'react';
-import { motion } from 'motion/react';
 import { RefreshCw, Wind, Thermometer, Clock, Droplets } from 'lucide-react';
 import { WeatherData, WindDirection, LanguageCode, WindUnit, DailyForecast } from '../types';
 import { getLocalizedCopy } from '../utils/i18n';
@@ -62,17 +61,16 @@ const Compass: React.FC<{ deg: number; language: LanguageCode }> = ({ deg, langu
       </svg>
 
       {/* Rotating Needle */}
-      <motion.div
-        className="absolute inset-0"
-        animate={{ rotate: deg }}
-        transition={{ type: "spring", stiffness: 50, damping: 15 }}
+      <div
+        className="absolute inset-0 transition-transform duration-500 ease-out"
+        style={{ transform: `rotate(${deg}deg)` }}
       >
         <svg viewBox="0 0 100 100" className="w-full h-full">
           <path d="M50 18 L47 50 L50 53 L53 50 Z" fill="#0EA5E9" opacity="0.9" />
           <path d="M50 82 L47 50 L50 47 L53 50 Z" fill="currentColor" className="text-slate-300 dark:text-slate-600" />
           <circle cx="50" cy="50" r="3" fill="white" stroke="#0EA5E9" strokeWidth="1" />
         </svg>
-      </motion.div>
+      </div>
     </div>
   );
 };

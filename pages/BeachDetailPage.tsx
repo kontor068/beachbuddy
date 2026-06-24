@@ -1,5 +1,4 @@
 import React, { useMemo, useEffect, useState, useRef } from 'react';
-import { motion } from 'motion/react';
 import {
   ArrowLeft, MapPin, Wind, Waves, Thermometer, Droplets, Leaf,
   Clock, Sun, Backpack,
@@ -1349,14 +1348,12 @@ export const BeachDetailPage: React.FC<BeachDetailPageProps> = ({
           </div>
 
           {feedbackSubmitted ? (
-            <motion.div 
-              initial={{ opacity: 0, scale: 0.96 }}
-              animate={{ opacity: 1, scale: 1 }}
+            <div
               className="flex items-center gap-2 rounded-2xl bg-emerald-50 px-3 py-3 text-emerald-700"
             >
               <CheckCircle2 className="w-5 h-5" />
               <p className="font-bold">{{ en: 'Thank you for your feedback!', gr: 'Ευχαριστούμε για το feedback!', de: 'Danke fur dein Feedback!', it: 'Grazie per il feedback!', fr: 'Merci pour votre avis !' }[language]}</p>
-            </motion.div>
+            </div>
           ) : (
             <div className="grid grid-cols-2 gap-2">
               <button 

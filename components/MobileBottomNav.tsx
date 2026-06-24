@@ -1,5 +1,4 @@
 import React from 'react';
-import { motion } from 'motion/react';
 import { Calendar, CloudSun, Home, MessageCircle } from 'lucide-react';
 import { LanguageCode } from '../types';
 import { getLocalizedCopy } from '../utils/i18n';
@@ -84,11 +83,7 @@ export const MobileBottomNav: React.FC<MobileBottomNavProps> = ({
                 aria-label={tabLabel}
               >
                 {isActive && (
-                  <motion.div
-                    layoutId="bottomNavIndicator"
-                    className="absolute -top-0.5 h-1 w-8 rounded-full bg-primary"
-                    transition={{ type: 'spring', stiffness: 400, damping: 30 }}
-                  />
+                  <div className="absolute -top-0.5 h-1 w-8 rounded-full bg-primary transition-all duration-200" />
                 )}
                 <div className="relative">
                   <Icon

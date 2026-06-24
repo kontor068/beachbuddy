@@ -1,5 +1,4 @@
 import React, { useEffect, useMemo, useState } from 'react';
-import { motion } from 'motion/react';
 import { Beach, LanguageCode, SuitableBeach } from '../types';
 import { Translation } from '../types';
 import { canOpenNavigation, openNavigation } from '../utils/navigation';
@@ -146,10 +145,7 @@ const BeachOfTheDay: React.FC<BeachOfTheDayProps> = ({ topBeach, language, t, on
   };
 
   return (
-    <motion.div
-      initial={{ opacity: 0, y: 25 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.45, ease: [0.22, 1, 0.36, 1] }}
+    <div
       className="relative overflow-hidden rounded-3xl border border-white/70 bg-white/84 shadow-lg shadow-cyan-900/5 backdrop-blur-xl dark:border-slate-800 dark:bg-slate-950/88"
     >
       {heroPhoto && (
@@ -267,7 +263,7 @@ const BeachOfTheDay: React.FC<BeachOfTheDayProps> = ({ topBeach, language, t, on
           </div>
         </div>
       </div>
-    </motion.div>
+    </div>
   );
 };
 
