@@ -559,6 +559,16 @@ body {
     animation: none;
   }
 
+  .beach-map-active-scroll-marker-dot {
+    transform: scale(calc(var(--beach-map-marker-scale) * 1.36));
+    filter: brightness(1.16) saturate(1.12);
+  }
+
+  .beach-map-active-scroll-marker-dot::before {
+    border-width: 3px;
+    opacity: 0.95;
+  }
+
   .beach-map-top-pick-marker-dot::after {
     opacity: 0.45;
   }

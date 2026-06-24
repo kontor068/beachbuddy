@@ -2331,6 +2331,12 @@ export const App: React.FC = () => {
     }
   };
 
+  const handleMapHourChange = (dt: number) => {
+    if (dt === selectedHourDt) return;
+    resetMobileResultListPosition();
+    setSelectedHourDt(dt);
+  };
+
   const handleTogglePreference = (key: keyof UserPreferences) => {
     resetMobileResultListPosition();
     setPreferences(prev => {
@@ -5108,7 +5114,7 @@ export const App: React.FC = () => {
           beachLocalWinds={mapBeachLocalWinds}
           hourSlots={mapHourSlots}
           selectedHourDt={selectedHourDt}
-          onHourChange={setSelectedHourDt}
+          onHourChange={handleMapHourChange}
           enableHourSlider
           language={language}
           islandName={selectedIsland.name[language]}
@@ -5499,7 +5505,7 @@ export const App: React.FC = () => {
                               beachLocalWinds={mapBeachLocalWinds}
                     hourSlots={mapHourSlots}
                     selectedHourDt={selectedHourDt}
-                    onHourChange={setSelectedHourDt}
+                    onHourChange={handleMapHourChange}
                     enableHourSlider
                     language={language}
                     islandName={selectedIsland.name[language]}
@@ -5792,7 +5798,7 @@ export const App: React.FC = () => {
                                               beachLocalWinds={mapBeachLocalWinds}
                             hourSlots={mapHourSlots}
                             selectedHourDt={selectedHourDt}
-                            onHourChange={setSelectedHourDt}
+                            onHourChange={handleMapHourChange}
                             enableHourSlider
                             language={language}
                             islandName={selectedIsland.name[language]}

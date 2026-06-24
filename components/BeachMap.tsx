@@ -2386,10 +2386,10 @@ const BeachMap: React.FC<BeachMapProps> = ({
             const markerCoordinate = getBeachMapCoordinates(item.beach, { lat: center[0], lon: center[1] });
             const mapExposureLevel = getMapExposureLevel(item);
             const mapExposureEvidence = getMapExposureEvidence(item);
-            // Hovering a marker reveals its name even when the zoom-based labels
-            // are faded out, so the user can identify beaches at a glance.
-            const isLabelHovered = hoveredBeachId === item.beachId;
-            const labelOpacity = isLabelHovered ? 1 : beachLabelOpacity;
+            // Hovering or scroll-linking a marker reveals its name even when the
+            // zoom-based labels are faded out, so the active card is easy to find.
+            const isLabelActive = isHighlightedMarker || hoveredBeachId === item.beachId;
+            const labelOpacity = isLabelActive ? 1 : beachLabelOpacity;
 
             return (
             <Marker
