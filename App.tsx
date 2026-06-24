@@ -5088,11 +5088,10 @@ export const App: React.FC = () => {
     handleAllBeachesPanelOpenChange(true);
     scrollToBeachResultsSection();
   };
-  // The mobile directory map keeps a single fixed height at every Beaufort
-  // (BeachMap's default h-[19rem]). It used to stretch taller on calm (0-2 Bft)
-  // "all beaches suitable" days, which made the map visibly grow/shrink as the
-  // hour slider crossed the calm⇄breezy boundary — jarring. A constant height
-  // is calmer and keeps the beach list below from jumping.
+  // The mobile directory map keeps a single fixed height at every Beaufort.
+  // Keep it compact enough that the hour slider + scroll cue land at the bottom
+  // of the first mobile viewport, just before the hourly condition summary.
+  // Keep the height stable as the hour slider changes.
 
   const directoryMapPreview = selectedIsland && !isUnsafeWinter ? (
     <MapLoadBoundary
@@ -5103,7 +5102,7 @@ export const App: React.FC = () => {
         </div>
       }
     >
-      <Suspense fallback={<div className="h-[19rem] w-full animate-pulse rounded-[1.1rem] bg-slate-100 sm:h-[26rem] lg:h-[32rem]" />}>
+      <Suspense fallback={<div className="h-[13.5rem] w-full animate-pulse rounded-[1.1rem] bg-slate-100 sm:h-[26rem] lg:h-[32rem]" />}>
         <BeachMap
           center={[selectedIsland.coordinates.lat, selectedIsland.coordinates.lon]}
           zoom={11}
@@ -5138,6 +5137,7 @@ export const App: React.FC = () => {
           scrollCueAriaLabel={mapScrollCueAriaLabel}
           enableScrollWheelZoom={isDesktopViewport}
           isExposureLoading={isMapExposureLoading}
+          compactPreviewHeightClassName="h-[13.5rem] sm:h-[26rem] lg:h-[32rem]"
           compact
           preview
         />

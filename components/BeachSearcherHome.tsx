@@ -2609,7 +2609,7 @@ export const BeachSearcherHome: React.FC<BeachSearcherHomeProps> = ({
     return `${name} · ${getLocalizedCopy(language, condition)} ${contextStripDayPrefix}`;
   })();
   const islandContextStrip = showIslandContextStrip && islandStripPhoto && selectedIsland ? (
-    <div className="relative mb-4 overflow-hidden rounded-[1.35rem] border border-sky-100/80 shadow-sm shadow-sky-900/10 ring-1 ring-white/45">
+    <div className="relative mb-1.5 overflow-hidden rounded-[1.35rem] border border-sky-100/80 shadow-sm shadow-sky-900/10 ring-1 ring-white/45 sm:mb-4">
       <img
         src={islandStripPhoto.src}
         alt={islandStripPhoto.alt}
@@ -3530,13 +3530,13 @@ export const BeachSearcherHome: React.FC<BeachSearcherHomeProps> = ({
 
       {hasBelowHeroContent && (
       <div className="relative">
-        <div className="mx-auto max-w-[110rem] px-4 pb-4 pt-1 sm:px-5 sm:pb-5 sm:pt-2 lg:px-6">
+        <div className="mx-auto max-w-[110rem] px-4 pb-4 pt-0.5 sm:px-5 sm:pb-5 sm:pt-2 lg:px-6">
           {selectedIsland && mapPreview && isMobileViewport && (
             <>
               {islandContextStrip}
               <section
                 id="map-section"
-                className="sticky top-2 z-30 mb-4 space-y-2"
+                className="sticky top-2 z-30 mb-1.5 space-y-1.5 sm:mb-4 sm:space-y-2"
                 aria-label={copy.beachMapAria}
               >
                 {mapDayStrip}
@@ -3548,8 +3548,8 @@ export const BeachSearcherHome: React.FC<BeachSearcherHomeProps> = ({
           )}
 
           {selectedIsland && hasTopRecommendationView && (
-            <section id="top-recommendations-section" className="mb-5 scroll-mt-[25rem] sm:scroll-mt-4">
-              <div className="mb-3 flex items-center gap-3 px-3 lg:px-5">
+            <section id="top-recommendations-section" className="mb-3 scroll-mt-[25rem] sm:mb-5 sm:scroll-mt-4">
+              <div className="mb-1.5 flex items-center gap-3 px-3 sm:mb-3 lg:px-5">
                 <span className="h-px flex-1 bg-slate-300/70" aria-hidden="true" />
                 <div className="max-w-full shrink-0 rounded-full border border-white/80 bg-white/90 px-3 py-1.5 text-center shadow-sm shadow-sky-900/10 ring-1 ring-white/50 backdrop-blur-md">
                   <h2 className="line-clamp-2 text-xs font-extrabold leading-tight tracking-normal text-slate-800 sm:text-sm">
@@ -3561,7 +3561,7 @@ export const BeachSearcherHome: React.FC<BeachSearcherHomeProps> = ({
 
               <div
                 ref={topRecommendationsCarouselRef}
-                className="beach-card-carousel no-scrollbar flex cursor-grab snap-x snap-mandatory items-stretch gap-6 overflow-x-auto overscroll-x-contain pb-5 select-none active:cursor-grabbing data-[dragging=true]:cursor-grabbing data-[dragging=true]:snap-none lg:snap-none lg:px-5"
+                className="beach-card-carousel no-scrollbar flex cursor-grab snap-x snap-mandatory items-stretch gap-6 overflow-x-auto overscroll-x-contain pb-3 select-none active:cursor-grabbing data-[dragging=true]:cursor-grabbing data-[dragging=true]:snap-none sm:pb-5 lg:snap-none lg:px-5"
               >
                 {topRecommendationBeachCards.map(({ beach, score, context }, index) => (
                   <div key={beach.id} data-suitable-beach-id={beach.id} {...beachCardHoverProps(beach.id)} className={getMapLinkedCardClassName(beach.id, 'flex h-[24rem] w-[17rem] shrink-0 snap-start sm:h-[27rem] sm:w-[20rem]')}>
@@ -3582,7 +3582,7 @@ export const BeachSearcherHome: React.FC<BeachSearcherHomeProps> = ({
 
           {(!selectedIsland || isDirectorySuitableView) && (
           <>
-          <div id={selectedIsland ? 'suitable-beaches-section' : undefined} className="mb-3 flex scroll-mt-[25rem] items-center gap-3 px-3 sm:scroll-mt-4 lg:px-5">
+          <div id={selectedIsland ? 'suitable-beaches-section' : undefined} className="mb-1.5 flex scroll-mt-[25rem] items-center gap-3 px-3 sm:mb-3 sm:scroll-mt-4 lg:px-5">
             <span className="h-px flex-1 bg-slate-300/70" aria-hidden="true" />
             <div className="max-w-full shrink-0 rounded-full border border-white/80 bg-white/86 px-3 py-1.5 text-center shadow-sm shadow-sky-900/10 ring-1 ring-white/50 backdrop-blur-md">
               <h2 className="line-clamp-2 text-xs font-extrabold leading-tight tracking-normal text-slate-700 sm:text-sm">
@@ -3594,7 +3594,7 @@ export const BeachSearcherHome: React.FC<BeachSearcherHomeProps> = ({
 
           <div
             ref={suitableCarouselRef}
-            className="beach-card-carousel no-scrollbar flex cursor-grab snap-x snap-mandatory items-stretch gap-6 overflow-x-auto overscroll-x-contain pb-5 select-none active:cursor-grabbing data-[dragging=true]:cursor-grabbing data-[dragging=true]:snap-none lg:snap-none lg:px-5"
+            className="beach-card-carousel no-scrollbar flex cursor-grab snap-x snap-mandatory items-stretch gap-6 overflow-x-auto overscroll-x-contain pb-3 select-none active:cursor-grabbing data-[dragging=true]:cursor-grabbing data-[dragging=true]:snap-none sm:pb-5 lg:snap-none lg:px-5"
           >
             {selectedIsland ? (
               weatherBeachCards.map(({ beach, score, context }, index) => {
@@ -3739,7 +3739,7 @@ export const BeachSearcherHome: React.FC<BeachSearcherHomeProps> = ({
 
           {selectedIsland && isMobileViewport && !isDirectorySuitableView && directoryDisplayBeachCards.length > 0 && (
             <section id="all-beaches-section" className="scroll-mt-[25rem]">
-              <div className="mb-3 flex items-center gap-3 px-3">
+              <div className="mb-1.5 flex items-center gap-3 px-3 sm:mb-3">
                 <span className="h-px flex-1 bg-slate-300/70" aria-hidden="true" />
                 <div className="max-w-full shrink-0 rounded-full border border-white/80 bg-white/86 px-3 py-1.5 text-center shadow-sm shadow-sky-900/10 ring-1 ring-white/50 backdrop-blur-md">
                   <h2 className="line-clamp-2 text-xs font-extrabold leading-tight tracking-normal text-slate-700">
@@ -3751,7 +3751,7 @@ export const BeachSearcherHome: React.FC<BeachSearcherHomeProps> = ({
 
               <div
                 ref={directoryCarouselRef}
-                className="beach-card-carousel no-scrollbar flex cursor-grab snap-x snap-mandatory items-stretch gap-6 overflow-x-auto overscroll-x-contain pb-5 select-none active:cursor-grabbing data-[dragging=true]:cursor-grabbing data-[dragging=true]:snap-none lg:snap-none"
+                className="beach-card-carousel no-scrollbar flex cursor-grab snap-x snap-mandatory items-stretch gap-6 overflow-x-auto overscroll-x-contain pb-3 select-none active:cursor-grabbing data-[dragging=true]:cursor-grabbing data-[dragging=true]:snap-none sm:pb-5 lg:snap-none"
               >
                 {directoryDisplayBeachCards.map(beach => (
                   <div key={beach.id} data-directory-beach-id={beach.id} {...beachCardHoverProps(beach.id)} className={getMapLinkedCardClassName(beach.id, 'flex h-[24rem] w-[17rem] shrink-0 snap-start sm:h-[27rem] sm:w-[20rem]')}>
@@ -3858,7 +3858,7 @@ export const BeachSearcherHome: React.FC<BeachSearcherHomeProps> = ({
                   <>
                     <div
                       ref={directoryCarouselRef}
-                      className="beach-card-carousel no-scrollbar flex cursor-grab snap-x snap-mandatory items-stretch gap-6 overflow-x-auto overscroll-x-contain pb-5 select-none active:cursor-grabbing data-[dragging=true]:cursor-grabbing data-[dragging=true]:snap-none lg:snap-none"
+                      className="beach-card-carousel no-scrollbar flex cursor-grab snap-x snap-mandatory items-stretch gap-6 overflow-x-auto overscroll-x-contain pb-3 select-none active:cursor-grabbing data-[dragging=true]:cursor-grabbing data-[dragging=true]:snap-none sm:pb-5 lg:snap-none"
                     >
                       {directoryDisplayBeachCards.map(beach => (
                         <div key={beach.id} data-directory-beach-id={beach.id} {...beachCardHoverProps(beach.id)} className={getMapLinkedCardClassName(beach.id, 'flex h-[24rem] w-[17rem] shrink-0 snap-start sm:h-[27rem] sm:w-[20rem]')}>

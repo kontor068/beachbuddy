@@ -275,6 +275,9 @@ body {
   -webkit-appearance: none;
   appearance: none;
   background: transparent;
+  --beach-map-hour-slider-thumb: #0ea5e9;
+  --beach-map-hour-slider-shadow: rgba(14, 165, 233, 0.38);
+  --beach-map-hour-slider-focus: #38bdf8;
   touch-action: pan-y;
   user-select: none;
   -webkit-tap-highlight-color: transparent;
@@ -296,11 +299,11 @@ body {
   height: 22px;
   width: 22px;
   border-radius: 999px;
-  background: #007a83;
+  background: var(--beach-map-hour-slider-thumb);
   border: 2px solid #ffffff;
-  box-shadow: 0 1px 4px rgba(2, 132, 153, 0.35);
+  box-shadow: 0 1px 4px var(--beach-map-hour-slider-shadow);
   cursor: pointer;
-  transition: transform 0.15s ease, box-shadow 0.15s ease;
+  transition: transform 0.15s ease, box-shadow 0.15s ease, background-color 0.2s ease;
   /* Centre the thumb on the 16px runnable track now that the input is a 44px touch zone. */
   margin-top: -3px;
 }
@@ -309,30 +312,30 @@ body {
   height: 22px;
   width: 22px;
   border-radius: 999px;
-  background: #007a83;
+  background: var(--beach-map-hour-slider-thumb);
   border: 2px solid #ffffff;
-  box-shadow: 0 1px 4px rgba(2, 132, 153, 0.35);
+  box-shadow: 0 1px 4px var(--beach-map-hour-slider-shadow);
   cursor: pointer;
-  transition: transform 0.15s ease, box-shadow 0.15s ease;
+  transition: transform 0.15s ease, box-shadow 0.15s ease, background-color 0.2s ease;
 }
 
 .beach-map-hour-slider:active::-webkit-slider-thumb {
   transform: scale(1.18);
-  box-shadow: 0 2px 8px rgba(2, 132, 153, 0.45);
+  box-shadow: 0 2px 8px var(--beach-map-hour-slider-shadow);
 }
 
 .beach-map-hour-slider:active::-moz-range-thumb {
   transform: scale(1.18);
-  box-shadow: 0 2px 8px rgba(2, 132, 153, 0.45);
+  box-shadow: 0 2px 8px var(--beach-map-hour-slider-shadow);
 }
 
 .beach-map-hour-slider:focus-visible::-webkit-slider-thumb {
-  outline: 2px solid #06b6d4;
+  outline: 2px solid var(--beach-map-hour-slider-focus);
   outline-offset: 2px;
 }
 
 .beach-map-hour-slider:focus-visible::-moz-range-thumb {
-  outline: 2px solid #06b6d4;
+  outline: 2px solid var(--beach-map-hour-slider-focus);
   outline-offset: 2px;
 }
 

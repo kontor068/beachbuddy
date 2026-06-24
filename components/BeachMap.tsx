@@ -813,6 +813,41 @@ const windLegendDotClasses = {
 type WindLegendDot = keyof typeof windLegendDotClasses;
 type MapExposureEvidence = 'supported' | 'estimated';
 
+const windSliderTones: Record<WindLegendDot, {
+  color: string;
+  shadow: string;
+  focus: string;
+}> = {
+  blue: {
+    color: '#0ea5e9',
+    shadow: 'rgba(14, 165, 233, 0.38)',
+    focus: '#38bdf8',
+  },
+  yellow: {
+    color: '#facc15',
+    shadow: 'rgba(202, 138, 4, 0.34)',
+    focus: '#facc15',
+  },
+  orange: {
+    color: '#f97316',
+    shadow: 'rgba(249, 115, 22, 0.38)',
+    focus: '#fb923c',
+  },
+  red: {
+    color: '#e11d48',
+    shadow: 'rgba(225, 29, 72, 0.38)',
+    focus: '#fb7185',
+  },
+};
+
+const getWindSliderTone = (beaufort?: number): typeof windSliderTones[WindLegendDot] => {
+  if (typeof beaufort !== 'number') return windSliderTones.blue;
+  if (beaufort >= 7) return windSliderTones.red;
+  if (beaufort >= 5) return windSliderTones.orange;
+  if (beaufort >= 3) return windSliderTones.yellow;
+  return windSliderTones.blue;
+};
+
 // Custom marker icons based on exposure
 const createExposureIcon = (
   exposureLevel?: string,
@@ -1357,6 +1392,16 @@ const BeachMap: React.FC<BeachMapProps> = ({
   const sliderMaxIndex = Math.max(0, sliderHours.length - 1);
   const sliderDisplayIndex = Math.min(sliderMaxIndex, Math.max(0, smoothSliderIndex));
   const sliderFillPct = sliderHours.length > 1 ? (sliderDisplayIndex / sliderMaxIndex) * 100 : 0;
+  const sliderDisplayHourItem = sliderHours[Math.round(sliderDisplayIndex)] ?? activeHourItem;
+  const sliderDisplayBeaufort = sliderDisplayHourItem
+    ? getBeaufortLevel(sliderDisplayHourItem.wind.speed * 3.6)
+    : undefined;
+  const sliderTone = getWindSliderTone(sliderDisplayBeaufort);
+  const sliderThumbStyle: React.CSSProperties & Record<string, string> = {
+    '--beach-map-hour-slider-thumb': sliderTone.color,
+    '--beach-map-hour-slider-shadow': sliderTone.shadow,
+    '--beach-map-hour-slider-focus': sliderTone.focus,
+  };
   const commitSliderIndex = (index: number) => {
     const clampedIndex = Math.min(sliderMaxIndex, Math.max(0, index));
     setSmoothSliderIndex(clampedIndex);
@@ -2540,15 +2585,15 @@ const BeachMap: React.FC<BeachMapProps> = ({
       {/* Hour slider docked under the map: colours and recommendations follow the selected hour */}
       {enableHourSlider && sliderHours.length >= 2 && activeHourItem && (
         <div
-          className="flex flex-wrap items-center gap-x-3 gap-y-1 border-t border-slate-200/80 bg-white/92 px-3 pb-1.5 pt-0.5 dark:border-slate-700 dark:bg-slate-900/90 sm:px-4 sm:py-3"
+          className="flex flex-wrap items-center gap-x-2 gap-y-0 border-t border-slate-200/80 bg-white/92 px-3 py-0 dark:border-slate-700 dark:bg-slate-900/90 sm:gap-x-3 sm:gap-y-1 sm:px-4 sm:py-3"
           onPointerDown={() => onUserInteraction?.()}
         >
           <span className="shrink-0 text-[11px] font-extrabold text-slate-600 dark:text-slate-300">{hourSliderLabel}</span>
           <div className="relative flex min-w-0 flex-1 items-center">
             <div className="pointer-events-none absolute inset-x-0 top-1/2 h-1.5 -translate-y-1/2 rounded-full bg-slate-200 dark:bg-slate-700" />
             <div
-              className="pointer-events-none absolute left-0 top-1/2 h-1.5 -translate-y-1/2 rounded-full bg-[#007a83] transition-[width] duration-300 ease-out motion-reduce:transition-none"
-              style={{ width: `${sliderFillPct}%` }}
+              className="pointer-events-none absolute left-0 top-1/2 h-1.5 -translate-y-1/2 rounded-full transition-[width,background-color] duration-300 ease-out motion-reduce:transition-none"
+              style={{ width: `${sliderFillPct}%`, backgroundColor: sliderTone.color }}
             />
             <input
               type="range"
@@ -2582,7 +2627,8 @@ const BeachMap: React.FC<BeachMapProps> = ({
                 setIsScrubbingHour(false);
               }}
               aria-label={hourSliderLabel}
-              className="beach-map-hour-slider relative z-10 h-11 min-w-0 flex-1 cursor-pointer appearance-none bg-transparent"
+              style={sliderThumbStyle}
+              className="beach-map-hour-slider relative z-10 h-10 min-w-0 flex-1 cursor-pointer appearance-none bg-transparent sm:h-11"
             />
           </div>
           <span className="shrink-0 text-[11px] font-extrabold tabular-nums text-[#007a83]">
@@ -2594,21 +2640,34 @@ const BeachMap: React.FC<BeachMapProps> = ({
         </div>
       )}
 
+      {isCompactPreview && showScrollCue && onScrollCueClick && enableHourSlider && sliderHours.length >= 2 && activeHourItem && (
+        <div className="-mt-0.5 flex justify-center bg-white/92 pb-0.5 dark:bg-slate-900/90 sm:hidden">
+          <button
+            type="button"
+            onClick={onScrollCueClick}
+            className="grid h-8 w-12 cursor-pointer place-items-center rounded-full border border-cyan-200/95 bg-white/95 text-[#007a83] shadow-lg shadow-cyan-950/18 ring-1 ring-cyan-100/80 backdrop-blur-md transition hover:border-cyan-300 hover:bg-cyan-50 hover:text-[#006b73] focus:outline-none focus-visible:ring-2 focus-visible:ring-cyan-700"
+            aria-label={scrollCueAriaLabel || defaultScrollCueAriaLabel}
+          >
+            <ChevronDown className="h-5 w-5 motion-safe:animate-bounce" aria-hidden="true" />
+          </button>
+        </div>
+      )}
+
       {isCompactPreview && mapMode === 'wind' && (
-        <div className="mt-1 rounded-xl border border-sky-100 bg-white/90 p-1.5 text-left shadow-sm shadow-sky-900/8 backdrop-blur-xl dark:border-slate-700 dark:bg-slate-900/90">
+        <div className="mt-0 rounded-xl border border-sky-100 bg-white/90 px-2 py-1 text-left shadow-sm shadow-sky-900/8 backdrop-blur-xl dark:border-slate-700 dark:bg-slate-900/90">
           {renderWindColorGuidePanel('preview')}
         </div>
       )}
 
-      {showScrollCue && onScrollCueClick && enableHourSlider && sliderHours.length >= 2 && activeHourItem && (
-        <div className="mt-1 flex justify-center bg-white/92 pb-0.5 dark:bg-slate-900/90 sm:hidden">
+      {!isCompactPreview && showScrollCue && onScrollCueClick && enableHourSlider && sliderHours.length >= 2 && activeHourItem && (
+        <div className="-mt-0.5 flex justify-center bg-white/92 pb-1 dark:bg-slate-900/90 sm:hidden">
           <button
             type="button"
             onClick={onScrollCueClick}
-            className="grid h-6 w-10 cursor-pointer place-items-center rounded-full text-[#007a83]/70 transition hover:bg-cyan-50 hover:text-[#007a83] focus:outline-none focus-visible:ring-2 focus-visible:ring-cyan-700"
+            className="grid h-7 w-12 cursor-pointer place-items-center rounded-full border border-cyan-200 bg-cyan-50/95 text-[#007a83] shadow-sm shadow-cyan-900/15 ring-1 ring-white/80 transition hover:border-cyan-300 hover:bg-cyan-100 hover:text-[#006b73] focus:outline-none focus-visible:ring-2 focus-visible:ring-cyan-700"
             aria-label={scrollCueAriaLabel || defaultScrollCueAriaLabel}
           >
-            <ChevronDown className="h-4 w-4 motion-safe:animate-pulse" aria-hidden="true" />
+            <ChevronDown className="h-5 w-5 motion-safe:animate-bounce" aria-hidden="true" />
           </button>
         </div>
       )}
