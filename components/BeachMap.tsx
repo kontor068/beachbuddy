@@ -2640,8 +2640,14 @@ const BeachMap: React.FC<BeachMapProps> = ({
         </div>
       )}
 
+      {isCompactPreview && mapMode === 'wind' && (
+        <div className="mt-0 rounded-xl border border-sky-100 bg-white/90 px-2 py-1 text-left shadow-sm shadow-sky-900/8 backdrop-blur-xl dark:border-slate-700 dark:bg-slate-900/90">
+          {renderWindColorGuidePanel('preview')}
+        </div>
+      )}
+
       {isCompactPreview && showScrollCue && onScrollCueClick && enableHourSlider && sliderHours.length >= 2 && activeHourItem && (
-        <div className="-mt-0.5 flex justify-center bg-white/92 pb-0.5 dark:bg-slate-900/90 sm:hidden">
+        <div className="mt-0.5 flex justify-center bg-white/92 pb-0.5 dark:bg-slate-900/90 sm:hidden">
           <button
             type="button"
             onClick={onScrollCueClick}
@@ -2650,12 +2656,6 @@ const BeachMap: React.FC<BeachMapProps> = ({
           >
             <ChevronDown className="h-5 w-5 motion-safe:animate-bounce" aria-hidden="true" />
           </button>
-        </div>
-      )}
-
-      {isCompactPreview && mapMode === 'wind' && (
-        <div className="mt-0 rounded-xl border border-sky-100 bg-white/90 px-2 py-1 text-left shadow-sm shadow-sky-900/8 backdrop-blur-xl dark:border-slate-700 dark:bg-slate-900/90">
-          {renderWindColorGuidePanel('preview')}
         </div>
       )}
 

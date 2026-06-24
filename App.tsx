@@ -5102,7 +5102,7 @@ export const App: React.FC = () => {
         </div>
       }
     >
-      <Suspense fallback={<div className="h-[13.5rem] w-full animate-pulse rounded-[1.1rem] bg-slate-100 sm:h-[26rem] lg:h-[32rem]" />}>
+      <Suspense fallback={<div className="h-[11.5rem] w-full animate-pulse rounded-[1.1rem] bg-slate-100 sm:h-[26rem] lg:h-[32rem]" />}>
         <BeachMap
           center={[selectedIsland.coordinates.lat, selectedIsland.coordinates.lon]}
           zoom={11}
@@ -5137,7 +5137,7 @@ export const App: React.FC = () => {
           scrollCueAriaLabel={mapScrollCueAriaLabel}
           enableScrollWheelZoom={isDesktopViewport}
           isExposureLoading={isMapExposureLoading}
-          compactPreviewHeightClassName="h-[13.5rem] sm:h-[26rem] lg:h-[32rem]"
+          compactPreviewHeightClassName="h-[11.5rem] sm:h-[26rem] lg:h-[32rem]"
           compact
           preview
         />
