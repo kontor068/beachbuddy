@@ -2667,21 +2667,6 @@ export const BeachSearcherHome: React.FC<BeachSearcherHomeProps> = ({
     de: 'Detaillierte Strandkarten unter der Karte ansehen',
     it: 'Vedi le schede dettagliate delle spiagge sotto la mappa',
   });
-  const mapResultsCueHelper = getLocalizedCopy(language, {
-    en: 'Swipe cards. The map pin flashes.',
-    gr: 'Σύρε τις κάρτες. Η ένδειξη αναβοσβήνει στον χάρτη.',
-    fr: 'Faites glisser les fiches. Le repère clignote.',
-    de: 'Karten wischen. Die Markierung blinkt.',
-    it: 'Scorri le schede. Il pin lampeggia.',
-  });
-  const mapResultsStickyHelper = getLocalizedCopy(language, {
-    en: 'Swipe the beach cards below. The matching marker flashes on the map.',
-    gr: 'Σύρε τις κάρτες από κάτω. Η αντίστοιχη ένδειξη αναβοσβήνει στον χάρτη.',
-    fr: 'Faites glisser les plages ci-dessous. Le repère correspondant clignote sur la carte.',
-    de: 'Wische die Strandkarten unten. Die passende Markierung blinkt auf der Karte.',
-    it: 'Scorri le spiagge qui sotto. Il marker corrispondente lampeggia sulla mappa.',
-  });
-
   // Mobile swipe affordance for the horizontal result carousels: the peeking next card
   // already hints there's more, but a small explicit cue makes the sideways scroll obvious.
   // Only shown on mobile and only when more than one card exists (otherwise nothing scrolls).
@@ -3439,24 +3424,15 @@ export const BeachSearcherHome: React.FC<BeachSearcherHomeProps> = ({
                       <button
                         type="button"
                         onClick={handleMapResultsCueClick}
-                        className="pointer-events-auto inline-flex min-h-12 max-w-[calc(100%-0.5rem)] items-center justify-center gap-2 rounded-full border border-cyan-100/90 bg-white/95 px-3.5 py-2 text-xs font-extrabold leading-none text-[#007a83] shadow-lg shadow-sky-900/14 ring-1 ring-white/70 backdrop-blur-xl transition active:scale-[0.98] focus:outline-none focus-visible:ring-2 focus-visible:ring-cyan-700"
+                        className="pointer-events-auto inline-flex min-h-10 max-w-[calc(100%-0.5rem)] items-center justify-center gap-1.5 rounded-full border border-cyan-100/90 bg-white/95 px-3.5 py-2 text-xs font-extrabold leading-none text-[#007a83] shadow-lg shadow-sky-900/14 ring-1 ring-white/70 backdrop-blur-xl transition active:scale-[0.98] focus:outline-none focus-visible:ring-2 focus-visible:ring-cyan-700"
                         aria-label={mapResultsCueAriaLabel}
                       >
-                        <span className="min-w-0 text-left">
-                          <span className="block truncate">{mapResultsCueLabel}</span>
-                          <span className="mt-0.5 block truncate text-[10px] font-bold leading-tight text-cyan-700/80">
-                            {mapResultsCueHelper}
-                          </span>
-                        </span>
+                        <span className="truncate">{mapResultsCueLabel}</span>
                         <ChevronDown className="h-3.5 w-3.5 shrink-0 motion-safe:animate-pulse" aria-hidden="true" />
                       </button>
                     </div>
                   )}
                 </div>
-                <p className="flex min-h-9 items-start gap-2 rounded-2xl border border-cyan-100 bg-white/92 px-3 py-2 text-[11px] font-bold leading-snug text-slate-700 shadow-sm shadow-sky-900/8 ring-1 ring-white/50 backdrop-blur-md">
-                  <MapPin className="mt-0.5 h-3.5 w-3.5 shrink-0 text-[#007a83]" aria-hidden="true" />
-                  <span>{mapResultsStickyHelper}</span>
-                </p>
               </section>
             </>
           )}
