@@ -1,5 +1,5 @@
 
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { AlertTriangle, MapPin, Star, Share2, Heart, Navigation, Info, Waves, Utensils, Trees, CircleDot, CircleDotDashed, Mountain, Droplets, ArrowDown, BadgeCheck, Leaf, Shield, Users, Clock3, Flag, Footprints, Wind, Tent, Ticket, Euro, Medal, Camera, Accessibility as AccessibilityIcon } from 'lucide-react';
 import { Beach, Accessibility, LanguageCode, BeachType, CrowdLevel, WarningFlag, RecommendationConfidence, SwimmingComfort, WindSuitabilityColor, PaidEntryKind } from '../types';
 import { getBeaufortLevel } from '../utils/weatherUtils';
@@ -1001,6 +1001,15 @@ const compactLabels = (language: LanguageCode, selectedDate?: Date) => {
   });
 };
 
+const photoCueListeners = new Set<() => void>();
+let hasDismissedPhotoCue = false;
+
+const dismissPhotoCue = () => {
+  if (hasDismissedPhotoCue) return;
+  hasDismissedPhotoCue = true;
+  photoCueListeners.forEach(listener => listener());
+};
+
 const compactAccessLabel = (
   language: LanguageCode,
   accessibility: Accessibility,
@@ -1086,6 +1095,8 @@ export const BeachCard: React.FC<BeachCardProps> = ({
   topPickPodium = false,
 }) => {
   const [photoIndex, setPhotoIndex] = useState(0);
+  const [isPhotoCueDismissed, setIsPhotoCueDismissed] = useState(hasDismissedPhotoCue);
+  const cardPhotoAreaRef = useRef<HTMLDivElement | null>(null);
   const isCompact = density === 'compact';
   const { name, rating, amenities, accessibility, distance, beachType, characteristics, metadata } = beach;
   const beachDisplayName = displayBeachName(name, language);
@@ -1117,15 +1128,46 @@ export const BeachCard: React.FC<BeachCardProps> = ({
   const detailRegionId = beach.regionId ?? regionId;
   const detailBeach = typeof beach.sourceBeachId === 'number' ? { ...beach, id: beach.sourceBeachId } : beach;
   const detailHref = detailRegionId ? buildBeachDetailPath(detailRegionId, detailBeach, language) : undefined;
+  const photoLookup = getBeachPhotoLookup(name.gr, name.en, beach.id, 3, islandName);
+  const cardPhotos = photoLookup.source === 'exact' ? photoLookup.photos : [];
+  const cardPhoto = photoIndex < cardPhotos.length ? cardPhotos[photoIndex] : null;
+
+  useEffect(() => {
+    const listener = () => setIsPhotoCueDismissed(true);
+    photoCueListeners.add(listener);
+    if (hasDismissedPhotoCue) listener();
+
+    return () => {
+      photoCueListeners.delete(listener);
+    };
+  }, []);
+
+  useEffect(() => {
+    if (!cardPhoto || isPhotoCueDismissed || typeof IntersectionObserver === 'undefined') return;
+
+    const photoArea = cardPhotoAreaRef.current;
+    if (!photoArea) return;
+
+    const observer = new IntersectionObserver(
+      entries => {
+        if (entries.some(entry => entry.isIntersecting && entry.intersectionRatio >= 0.3)) {
+          dismissPhotoCue();
+        }
+      },
+      { threshold: [0.3] },
+    );
+
+    observer.observe(photoArea);
+
+    return () => {
+      observer.disconnect();
+    };
+  }, [cardPhoto, isPhotoCueDismissed]);
 
   const handleFavoriteClick = (e: React.MouseEvent) => {
     e.stopPropagation();
     onToggleFavorite(beach.id);
   };
-
-  const photoLookup = getBeachPhotoLookup(name.gr, name.en, beach.id, 3, islandName);
-  const cardPhotos = photoLookup.source === 'exact' ? photoLookup.photos : [];
-  const cardPhoto = photoIndex < cardPhotos.length ? cardPhotos[photoIndex] : null;
 
   useEffect(() => {
     setPhotoIndex(0);
@@ -1371,7 +1413,7 @@ export const BeachCard: React.FC<BeachCardProps> = ({
                   {showHeaderProtectedMarker && <ProtectedBeachMarker language={language} selectedDate={selectedDate} />}
                 </div>
               )}
-              {(hasBlueFlag2026 || cardPhoto) && (
+              {(hasBlueFlag2026 || (cardPhoto && !isPhotoCueDismissed)) && (
                 <div className="mt-1 flex min-w-0 flex-wrap items-center justify-center gap-x-2 gap-y-0.5 text-[11px] font-bold leading-tight text-cyan-800/90">
                   {hasBlueFlag2026 && (
                     <span className="inline-flex min-w-0 items-center gap-1.5">
@@ -1379,7 +1421,7 @@ export const BeachCard: React.FC<BeachCardProps> = ({
                       <span className="min-w-0 truncate">{localizedCardCopy.blueFlag}</span>
                     </span>
                   )}
-                  {cardPhoto && (
+                  {cardPhoto && !isPhotoCueDismissed && (
                     <span className="inline-flex min-w-0 items-center gap-1.5 text-cyan-700">
                       <Camera className="h-3.5 w-3.5 shrink-0" aria-hidden="true" />
                       <span className="min-w-0 truncate">{localizedCardCopy.photoBelow}</span>
@@ -1468,7 +1510,10 @@ export const BeachCard: React.FC<BeachCardProps> = ({
           </div>
         </div>
 
-        <div className={`relative aspect-[16/9] max-h-44 sm:flex-none sm:aspect-[16/9] sm:min-h-36 sm:max-h-44 ${isCompact ? 'lg:min-h-28 lg:max-h-32' : ''} overflow-hidden bg-sky-50`}>
+        <div
+          ref={cardPhotoAreaRef}
+          className={`relative aspect-[16/9] max-h-44 sm:flex-none sm:aspect-[16/9] sm:min-h-36 sm:max-h-44 ${isCompact ? 'lg:min-h-28 lg:max-h-32' : ''} overflow-hidden bg-sky-50`}
+        >
           {cardPhoto ? (
             <img
               src={cardPhoto}
