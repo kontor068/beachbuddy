@@ -83,6 +83,15 @@ const checks = [
     command: npmBin,
     args: ['run', 'build'],
   },
+  {
+    id: 'seo-audit',
+    title: 'SEO prerender audit',
+    description: 'Audits generated prerendered pages, sitemap, robots.txt, canonicals, hreflang links, structured data, internal links, image references, and SEO performance budgets.',
+    protects: 'Prevents broken search-indexing signals from reaching production after prerender generation.',
+    failureAction: 'Fix the generated SEO output, prerender routes, metadata, hreflang/canonical links, or referenced assets reported by the audit.',
+    command: npmBin,
+    args: ['run', 'seo:audit'],
+  },
 ];
 
 const printExplanation = () => {
