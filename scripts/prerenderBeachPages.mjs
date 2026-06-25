@@ -109,6 +109,26 @@ const localesForRegion = regionId =>
 
 const readJson = async filePath => JSON.parse(await readFile(filePath, 'utf8'));
 
+// Curated per-beach editorial stories (geology/history/character). Single source
+// of truth shared with the runtime (data/milosBeachStories.ts). Keyed by frozen
+// Milos beach id; authored only in en/gr. We bake them into the static beach
+// pages so this unique content is crawlable (otherwise it lives only in the
+// client-only React detail page and search engines never see it).
+const MILOS_STORY_REGION_ID = 'south-aegean-milos';
+const milosBeachStories = await readJson(path.join(projectRoot, 'data', 'milosBeachStories.data.json'));
+
+// Returns { title, paragraphs[] } for a beach, or null. Gated to the Milos
+// region (ids are unique only within a region) and to the locales the story is
+// actually authored in (en/gr) so we never leak English onto /de, /fr, /it.
+const getBeachStory = (region, beach, language) => {
+  if (!region || region.id !== MILOS_STORY_REGION_ID) return null;
+  if (language !== 'en' && language !== 'gr') return null;
+  const story = milosBeachStories[String(beach.id)];
+  const paragraphs = story?.paragraphs?.[language];
+  if (!Array.isArray(paragraphs) || paragraphs.length === 0) return null;
+  return { title: story.title?.[language] || '', paragraphs };
+};
+
 const toPublicFilePath = publicPath => path.join(publicDir, publicPath.replace(/^\/+/, ''));
 
 const escapeHtml = value => String(value ?? '')
@@ -1392,6 +1412,38 @@ const beachDescriptionFor = (beach, beachName, islandName, language) => {
     ? localized(beach.description, fallback, language)
     : fallback;
 };
+
+// Trim a sentence to a meta-description length without cutting a word in half.
+const truncateForMeta = (text, max = 160) => {
+  const clean = String(text ?? '').replace(/\s+/g, ' ').trim();
+  if (clean.length <= max) return clean;
+  const slice = clean.slice(0, max);
+  const lastSpace = slice.lastIndexOf(' ');
+  return `${slice.slice(0, lastSpace > 80 ? lastSpace : max).trim()}…`;
+};
+
+// Per-beach <head>/JSON-LD description: prefer the unique editorial opener (so
+// each beach gets a distinct, descriptive snippet) and fall back to the
+// existing templated description for beaches without a curated story.
+const beachMetaDescription = (beach, region, beachName, islandName, language) => {
+  const story = getBeachStory(region, beach, language);
+  if (story?.paragraphs?.[0]) return truncateForMeta(story.paragraphs[0]);
+  return beachDescriptionFor(beach, beachName, islandName, language);
+};
+
+// Visible, crawlable editorial section (unique geology/history/character prose)
+// rendered into the static beach page body. Its <h2> is the curated, keyword-ish
+// story title (e.g. "Το σεληνιακό τοπίο της Μήλου").
+const renderBeachStory = (region, beach, language) => {
+  const story = getBeachStory(region, beach, language);
+  if (!story) return '';
+  const heading = story.title;
+  return `
+        <section style="margin:0 0 22px;">
+          ${heading ? `<h2 style="margin:0 0 10px;font-size:20px;line-height:1.2;color:#075985;">${escapeHtml(heading)}</h2>` : ''}
+          ${story.paragraphs.map(p => `<p style="margin:0 0 10px;font-size:16px;line-height:1.6;color:#334155;">${escapeHtml(p)}</p>`).join('')}
+        </section>`;
+};
 const beachH1For = (beachName, islandName, language) => pickLang(language, {
   en: `${beachName} Beach, ${islandName}`,
   gr: `Παραλία ${beachName}, ${islandName}`,
@@ -1446,6 +1498,7 @@ const staticBeachFallback = (beach, island, region, canonicalUrl, locale = prere
         ${renderBeachBreadcrumb(region, island, beachName, language, locale)}
         <h1 style="margin:0 0 12px;font-size:32px;line-height:1.1;">${escapeHtml(beachH1For(beachName, islandName, language))}</h1>
         <p style="margin:0 0 20px;font-size:17px;line-height:1.55;color:#334155;">${escapeHtml(description)}</p>
+        ${renderBeachStory(region, beach, language)}
         <dl style="display:grid;grid-template-columns:max-content 1fr;gap:8px 14px;margin:0 0 20px;">
           <dt style="font-weight:700;">${escapeHtml(copy.region)}</dt><dd style="margin:0;">${escapeHtml(islandName)}, Greece</dd>
           ${renderDefinitionRow(copy.beachType, readableBeachType(beach, language))}
@@ -1999,15 +2052,20 @@ const buildBeachPage = (baseHtml, island, beach, region, imageUrl, locale = prer
   const language = locale.language;
   const beachName = displayName(beach.name, `Beach ${beach.id}`, language);
   const islandName = displayName(island.name, region.id, language);
-  const description = beachDescriptionFor(beach, beachName, islandName, language);
+  const description = beachMetaDescription(beach, region, beachName, islandName, language);
   const title = beachTitleFor(beachName, islandName, language);
   const beachPageName = `${beachName} Beach`;
   const beachRegionPageName = `${islandName} beaches`;
+  // When a curated editorial story exists, expose its full text as the
+  // schema.org disambiguatingDescription so the entity carries the rich,
+  // unique narrative (the short `description` stays snippet-length).
+  const story = getBeachStory(region, beach, language);
   const pageJsonLd = {
     '@context': 'https://schema.org',
     '@type': 'TouristAttraction',
     name: beachAttractionName(beachName, language),
     description,
+    disambiguatingDescription: story ? story.paragraphs.join(' ') : undefined,
     url: canonicalUrl,
     image: imageUrl,
     inLanguage: locale.htmlLang,

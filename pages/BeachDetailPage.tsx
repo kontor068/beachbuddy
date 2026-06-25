@@ -3,7 +3,7 @@ import {
   ArrowLeft, MapPin, Wind, Waves, Thermometer, Droplets, Leaf,
   Clock, Sun, Backpack,
   Navigation, Share2, Heart, ChevronRight, ThumbsUp, ThumbsDown, CheckCircle2,
-  Camera, ExternalLink, Accessibility, AlertTriangle, Tent, Ticket, Euro
+  Camera, ExternalLink, Accessibility, AlertTriangle, Tent, Ticket, Euro, ScrollText
 } from 'lucide-react';
 import {
   Beach, LanguageCode, Translation, WindDirection,
@@ -25,6 +25,7 @@ import { generateBeachExplanation as generateUiBeachExplanation } from '../utils
 import { describeSimpleWindSuitability, describeWindExposure } from '../utils/windExposureCopy';
 import type { ExposureLevel } from '../utils/windExposure';
 import { getLocalWindNote } from '../utils/localWindNote';
+import { getMilosBeachStory } from '../data/milosBeachStories';
 import {
   AmenityStatus,
   getAmenityChips,
@@ -465,6 +466,9 @@ export const BeachDetailPage: React.FC<BeachDetailPageProps> = ({
   const [feedbackSubmitted, setFeedbackSubmitted] = useState(false);
   const beachDisplayName = displayBeachName(beach.name, language);
   const islandDisplayName = islandName || 'Greece';
+  const [storyExpanded, setStoryExpanded] = useState(false);
+  const beachStory = getMilosBeachStory(beach, islandName);
+  const storyLocale: 'gr' | 'en' = language === 'gr' ? 'gr' : 'en';
   const selectedDate = dayForecast.date;
   const selectedDayPrefix = getSelectedDayPrefix(selectedDate, new Date(), language);
   const selectedDayIsToday = selectedDayPrefix === (language === 'gr' ? 'σήμερα' : 'today');
@@ -481,6 +485,9 @@ export const BeachDetailPage: React.FC<BeachDetailPageProps> = ({
     nearby: { en: 'Nearby Recommendations', gr: 'Κοντινές προτάσεις', de: 'Empfehlungen in der Nahe', it: 'Consigli nelle vicinanze', fr: 'Recommandations proches' },
     decisionSummary: { en: selectedDayIsToday ? 'Today summary' : `Summary ${selectedDayPrefix}`, gr: `Σύνοψη για ${selectedDayPrefix}`, de: 'Kurzfassung', it: 'Riepilogo', fr: 'Resume' },
     conditions: { en: `Conditions ${selectedDayPrefix}`, gr: `Συνθήκες ${selectedDayPrefix}`, de: 'Bedingungen', it: 'Condizioni', fr: 'Conditions' },
+    beachStoryHeading: { en: 'About this beach', gr: 'Πληροφορίες', de: 'Über diesen Strand', it: 'Informazioni', fr: 'À propos' },
+    readMore: { en: 'Read more', gr: 'Διάβασε περισσότερα', de: 'Mehr lesen', it: 'Leggi di più', fr: 'Lire plus' },
+    readLess: { en: 'Show less', gr: 'Λιγότερα', de: 'Weniger', it: 'Meno', fr: 'Moins' },
     windShort: { en: 'Wind', gr: 'Άνεμος', de: 'Wind', it: 'Vento', fr: 'Vent' },
     temperatureShort: { en: 'Temperature', gr: 'Θερμοκρασία', de: 'Temperatur', it: 'Temperatura', fr: 'Temperature' },
     locationTitle: { en: 'Location', gr: 'Πού βρίσκεται', de: 'Lage', it: 'Posizione', fr: 'Localisation' },
@@ -1019,6 +1026,38 @@ export const BeachDetailPage: React.FC<BeachDetailPageProps> = ({
             </p>
           )}
         </section>
+
+        {/* 4a. About this beach — curated history/geology/character (own section so
+            the "Συνθήκες" heading stays about today's weather, not beach info) */}
+        {beachStory && (
+          <section className="space-y-3">
+            <h3 className="flex items-center gap-2 px-1 font-heading text-lg font-bold text-slate-950">
+              <ScrollText className="h-5 w-5 shrink-0 text-teal-600" aria-hidden="true" />
+              {copy.beachStoryHeading[language]}
+            </h3>
+            <div className="rounded-2xl border border-slate-200/70 bg-white/55 px-4 py-3.5">
+              {beachStory.title[storyLocale] && (
+                <p className="text-sm font-semibold text-teal-700">{beachStory.title[storyLocale]}</p>
+              )}
+              <div className="mt-2 space-y-2">
+                {(storyExpanded ? beachStory.paragraphs[storyLocale] : beachStory.paragraphs[storyLocale].slice(0, 1)).map((paragraph, index) => (
+                  <p key={index} className="text-sm leading-relaxed text-slate-600">{paragraph}</p>
+                ))}
+              </div>
+              {beachStory.paragraphs[storyLocale].length > 1 && (
+                <button
+                  type="button"
+                  onClick={() => setStoryExpanded((prev) => !prev)}
+                  className="mt-2 inline-flex items-center gap-1 text-sm font-bold text-teal-700 hover:text-teal-800"
+                  aria-expanded={storyExpanded}
+                >
+                  {storyExpanded ? copy.readLess[language] : copy.readMore[language]}
+                  <ChevronRight className={`h-4 w-4 transition-transform ${storyExpanded ? 'rotate-90' : ''}`} aria-hidden="true" />
+                </button>
+              )}
+            </div>
+          </section>
+        )}
 
         {/* 4b. Sun & light — sunset always, peak UV only when actionable (≥6) */}
         {(sunsetTime || (typeof peakUvIndex === 'number' && peakUvIndex >= 6)) && (
