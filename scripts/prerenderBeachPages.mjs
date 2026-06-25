@@ -538,6 +538,7 @@ const seoLandingPages = [
 const ISLAND_INTENT_MIN = 5;
 const ISLAND_INTENT_CAP = 40;
 const NORTHERLY = ['North', 'Northeast', 'Northwest'];
+const WESTERLY = ['West', 'Northwest', 'Southwest'];
 
 const islandIntents = [
   {
@@ -650,6 +651,234 @@ const islandIntents = [
         sections: [
           { heading: `Quali spiagge di ${islandName} sono migliori per le famiglie?`, body: 'Le spiagge elencate qui sono indicate come adatte alle famiglie, di solito con acqua più bassa e accesso più facile. Per i bambini piccoli, scegli una giornata più calma e riparata.' },
           { heading: 'Come faccio a sapere che il mare sarà abbastanza calmo?', body: 'CalmBeach controlla vento, onde ed esposizione per la giornata, così puoi scegliere una spiaggia più riparata o un momento più tranquillo.' },
+        ],
+      },
+    }),
+  },
+  {
+    key: 'snorkeling',
+    pathPrefix: '/snorkeling-beaches',
+    match: beach => beach.activities?.snorkeling === true,
+    copy: (islandName, count) => ({
+      en: {
+        title: `Best Snorkeling Beaches in ${islandName} | Clear Water & Rocks | CalmBeach`,
+        description: `Beaches in ${islandName} with clearer water and rocky seabed for snorkeling. Check today's wind and waves on CalmBeach before you go.`,
+        h1: `Snorkeling beaches in ${islandName}`,
+        intro: `Want clear water and rocks to explore in ${islandName}? These ${count} beaches are good for snorkeling, usually with clearer water and a rocky or mixed seabed. Visibility is best on calm, low-wind days — check today's wind and waves in CalmBeach first.`,
+        sections: [
+          { heading: `Which beaches in ${islandName} are best for snorkeling?`, body: 'The beaches listed here have rockier seabed and clearer water, where you are more likely to see fish and underwater life. Conditions vary, so confirm with the day\'s forecast.' },
+          { heading: 'When is snorkeling safest?', body: 'Snorkel close to shore on calm days and avoid strong wind, waves or currents. Check live wind and waves in the app and follow any local flags.' },
+        ],
+      },
+      gr: {
+        title: `${islandName}: καλύτερες παραλίες για snorkeling | CalmBeach`,
+        description: `Παραλίες με καθαρότερα νερά και βραχώδη βυθό για snorkeling — ${islandName}. Έλεγξε τον σημερινό άνεμο και το κύμα στο CalmBeach πριν πας.`,
+        h1: `Παραλίες για snorkeling — ${islandName}`,
+        intro: `Ψάχνεις καθαρά νερά και βράχια για εξερεύνηση; Αυτές οι ${count} παραλίες εδώ (${islandName}) είναι καλές για snorkeling, συνήθως με πιο καθαρά νερά και βραχώδη ή μικτό βυθό. Η ορατότητα είναι καλύτερη σε ήρεμες μέρες με λίγο αέρα — δες πρώτα τον σημερινό άνεμο και το κύμα στο CalmBeach.`,
+        sections: [
+          { heading: `${islandName}: ποιες παραλίες είναι καλές για snorkeling;`, body: 'Οι παραλίες της λίστας έχουν πιο βραχώδη βυθό και καθαρότερα νερά, όπου είναι πιο πιθανό να δεις ψάρια και υποθαλάσσια ζωή. Οι συνθήκες αλλάζουν, γι\' αυτό επιβεβαίωσε με τη σημερινή πρόγνωση.' },
+          { heading: 'Πότε είναι ασφαλέστερο το snorkeling;', body: 'Κάνε snorkeling κοντά στην ακτή σε ήρεμες μέρες και απόφυγε δυνατό αέρα, κύμα ή ρεύματα. Έλεγξε live άνεμο και κύμα στην εφαρμογή και ακολούθησε τυχόν τοπικές σημαίες.' },
+        ],
+      },
+      de: {
+        title: `Beste Schnorchelstrände auf ${islandName} | Klares Wasser & Felsen | CalmBeach`,
+        description: `Strände auf ${islandName} mit klarerem Wasser und felsigem Grund zum Schnorcheln. Prüfe Wind und Wellen von heute auf CalmBeach.`,
+        h1: `Schnorchelstrände auf ${islandName}`,
+        intro: `Du suchst klares Wasser und Felsen zum Erkunden auf ${islandName}? Diese ${count} Strände eignen sich zum Schnorcheln, meist mit klarerem Wasser und felsigem oder gemischtem Grund. Die Sicht ist an ruhigen, windarmen Tagen am besten – prüfe zuerst Wind und Wellen von heute in CalmBeach.`,
+        sections: [
+          { heading: `Welche Strände auf ${islandName} eignen sich am besten zum Schnorcheln?`, body: 'Die hier gelisteten Strände haben felsigeren Grund und klareres Wasser, wo du eher Fische und Unterwasserleben siehst. Die Bedingungen ändern sich, prüfe also die heutige Vorhersage.' },
+          { heading: 'Wann ist Schnorcheln am sichersten?', body: 'Schnorchle an ruhigen Tagen ufernah und meide starken Wind, Wellen oder Strömungen. Prüfe Wind und Wellen live in der App und folge örtlichen Flaggen.' },
+        ],
+      },
+      fr: {
+        title: `Meilleures plages de snorkeling à ${islandName} | Eau claire & rochers | CalmBeach`,
+        description: `Plages à ${islandName} à l'eau plus claire et au fond rocheux pour le snorkeling. Vérifiez le vent et les vagues du jour sur CalmBeach.`,
+        h1: `Plages de snorkeling à ${islandName}`,
+        intro: `Vous cherchez une eau claire et des rochers à explorer à ${islandName} ? Ces ${count} plages se prêtent au snorkeling, généralement avec une eau plus claire et un fond rocheux ou mixte. La visibilité est meilleure les jours calmes et peu ventés — vérifiez d'abord le vent et les vagues du jour dans CalmBeach.`,
+        sections: [
+          { heading: `Quelles plages de ${islandName} sont les meilleures pour le snorkeling ?`, body: 'Les plages listées ici ont un fond plus rocheux et une eau plus claire, où vous avez plus de chances de voir des poissons et la vie sous-marine. Les conditions varient, confirmez avec la prévision du jour.' },
+          { heading: 'Quand le snorkeling est-il le plus sûr ?', body: 'Faites du snorkeling près du rivage les jours calmes et évitez vent fort, vagues ou courants. Vérifiez le vent et les vagues en direct dans l\'application et suivez les drapeaux locaux.' },
+        ],
+      },
+      it: {
+        title: `Migliori spiagge per snorkeling a ${islandName} | Acqua limpida e scogli | CalmBeach`,
+        description: `Spiagge a ${islandName} con acqua più limpida e fondale roccioso per lo snorkeling. Controlla vento e onde di oggi su CalmBeach.`,
+        h1: `Spiagge per snorkeling a ${islandName}`,
+        intro: `Cerchi acqua limpida e scogli da esplorare a ${islandName}? Queste ${count} spiagge sono adatte allo snorkeling, di solito con acqua più limpida e fondale roccioso o misto. La visibilità è migliore nei giorni calmi e poco ventosi — controlla prima vento e onde di oggi in CalmBeach.`,
+        sections: [
+          { heading: `Quali spiagge di ${islandName} sono migliori per lo snorkeling?`, body: 'Le spiagge elencate qui hanno fondale più roccioso e acqua più limpida, dove è più probabile vedere pesci e vita sottomarina. Le condizioni variano, conferma con le previsioni di oggi.' },
+          { heading: 'Quando è più sicuro fare snorkeling?', body: 'Fai snorkeling vicino alla riva nei giorni calmi ed evita vento forte, onde o correnti. Controlla vento e onde in tempo reale nell\'app e segui le bandiere locali.' },
+        ],
+      },
+    }),
+  },
+  {
+    key: 'organized',
+    pathPrefix: '/organized-beaches',
+    match: beach => beach.amenities?.organized === true,
+    copy: (islandName, count) => ({
+      en: {
+        title: `Organized Beaches in ${islandName} with Sunbeds & Facilities | CalmBeach`,
+        description: `Organized beaches in ${islandName} with sunbeds, umbrellas and facilities. Check today's wind and waves on CalmBeach before you go.`,
+        h1: `Organized beaches in ${islandName}`,
+        intro: `Prefer sunbeds, umbrellas and a beach bar in ${islandName}? These ${count} organized beaches usually have facilities and easier access. Check today's wind and waves in CalmBeach before you go.`,
+        sections: [
+          { heading: `Which beaches in ${islandName} are organized?`, body: 'The beaches listed here are marked as organized, usually with sunbeds, umbrellas and food or a beach bar nearby. Facilities can change by season, so confirm locally.' },
+          { heading: 'Are organized beaches calmer?', body: 'Not necessarily. Facilities do not change the wind or waves — check live conditions in the app and pick a more sheltered beach on windy days.' },
+        ],
+      },
+      gr: {
+        title: `${islandName}: οργανωμένες παραλίες με ξαπλώστρες | CalmBeach`,
+        description: `Οργανωμένες παραλίες με ξαπλώστρες, ομπρέλες και παροχές — ${islandName}. Έλεγξε τον σημερινό άνεμο και το κύμα στο CalmBeach.`,
+        h1: `Οργανωμένες παραλίες — ${islandName}`,
+        intro: `Προτιμάς ξαπλώστρες, ομπρέλες και beach bar; Αυτές οι ${count} οργανωμένες παραλίες εδώ (${islandName}) έχουν συνήθως παροχές και ευκολότερη πρόσβαση. Δες τον σημερινό άνεμο και το κύμα στο CalmBeach πριν πας.`,
+        sections: [
+          { heading: `${islandName}: ποιες παραλίες είναι οργανωμένες;`, body: 'Οι παραλίες της λίστας είναι σημειωμένες ως οργανωμένες, συνήθως με ξαπλώστρες, ομπρέλες και φαγητό ή beach bar κοντά. Οι παροχές αλλάζουν ανά εποχή, γι\' αυτό επιβεβαίωσε επιτόπου.' },
+          { heading: 'Είναι πιο ήρεμες οι οργανωμένες παραλίες;', body: 'Όχι απαραίτητα. Οι παροχές δεν αλλάζουν τον άνεμο ή το κύμα — έλεγξε live συνθήκες στην εφαρμογή και διάλεξε πιο υπήνεμη παραλία τις μέρες με αέρα.' },
+        ],
+      },
+      de: {
+        title: `Organisierte Strände auf ${islandName} mit Liegen & Einrichtungen | CalmBeach`,
+        description: `Organisierte Strände auf ${islandName} mit Liegen, Sonnenschirmen und Einrichtungen. Prüfe Wind und Wellen von heute auf CalmBeach.`,
+        h1: `Organisierte Strände auf ${islandName}`,
+        intro: `Du bevorzugst Liegen, Sonnenschirme und eine Beach Bar auf ${islandName}? Diese ${count} organisierten Strände bieten meist Einrichtungen und einfacheren Zugang. Prüfe Wind und Wellen von heute in CalmBeach, bevor du losfährst.`,
+        sections: [
+          { heading: `Welche Strände auf ${islandName} sind organisiert?`, body: 'Die hier gelisteten Strände sind als organisiert markiert, meist mit Liegen, Sonnenschirmen und Essen oder einer Beach Bar in der Nähe. Die Einrichtungen ändern sich je nach Saison, bestätige sie vor Ort.' },
+          { heading: 'Sind organisierte Strände ruhiger?', body: 'Nicht unbedingt. Einrichtungen ändern Wind oder Wellen nicht – prüfe die Live-Bedingungen in der App und wähle an windigen Tagen einen geschützteren Strand.' },
+        ],
+      },
+      fr: {
+        title: `Plages aménagées à ${islandName} avec transats et services | CalmBeach`,
+        description: `Plages aménagées à ${islandName} avec transats, parasols et services. Vérifiez le vent et les vagues du jour sur CalmBeach.`,
+        h1: `Plages aménagées à ${islandName}`,
+        intro: `Vous préférez transats, parasols et un bar de plage à ${islandName} ? Ces ${count} plages aménagées offrent généralement des services et un accès plus facile. Vérifiez le vent et les vagues du jour dans CalmBeach avant d'y aller.`,
+        sections: [
+          { heading: `Quelles plages de ${islandName} sont aménagées ?`, body: 'Les plages listées ici sont marquées comme aménagées, généralement avec transats, parasols et restauration ou un bar de plage à proximité. Les services changent selon la saison, confirmez sur place.' },
+          { heading: 'Les plages aménagées sont-elles plus calmes ?', body: 'Pas forcément. Les services ne changent ni le vent ni les vagues — vérifiez les conditions en direct dans l\'application et choisissez une plage plus abritée les jours de vent.' },
+        ],
+      },
+      it: {
+        title: `Spiagge attrezzate a ${islandName} con lettini e servizi | CalmBeach`,
+        description: `Spiagge attrezzate a ${islandName} con lettini, ombrelloni e servizi. Controlla vento e onde di oggi su CalmBeach.`,
+        h1: `Spiagge attrezzate a ${islandName}`,
+        intro: `Preferisci lettini, ombrelloni e un beach bar a ${islandName}? Queste ${count} spiagge attrezzate hanno di solito servizi e un accesso più facile. Controlla vento e onde di oggi in CalmBeach prima di andare.`,
+        sections: [
+          { heading: `Quali spiagge di ${islandName} sono attrezzate?`, body: 'Le spiagge elencate qui sono indicate come attrezzate, di solito con lettini, ombrelloni e ristoro o un beach bar nelle vicinanze. I servizi cambiano con la stagione, conferma sul posto.' },
+          { heading: 'Le spiagge attrezzate sono più tranquille?', body: 'Non necessariamente. I servizi non cambiano vento o onde — controlla le condizioni in tempo reale nell\'app e scegli una spiaggia più riparata nei giorni ventosi.' },
+        ],
+      },
+    }),
+  },
+  {
+    key: 'secluded',
+    pathPrefix: '/secluded-beaches',
+    match: beach => beach.environment?.remote === true,
+    copy: (islandName, count) => ({
+      en: {
+        title: `Secluded Beaches in ${islandName} Away from the Crowds | CalmBeach`,
+        description: `Quiet, remote beaches in ${islandName} away from the crowds. Check access, wind and waves on CalmBeach before you go.`,
+        h1: `Secluded beaches in ${islandName}`,
+        intro: `Looking to escape the crowds in ${islandName}? These ${count} remote beaches are quieter and harder to reach — often by dirt road, on foot or by boat. Bring water and shade, and check today's wind and waves in CalmBeach before you go.`,
+        sections: [
+          { heading: `Which beaches in ${islandName} are the most secluded?`, body: 'The beaches listed here are remote and usually have no facilities. Access can be rough — a dirt track, a hike or boat-only — so plan ahead and bring supplies.' },
+          { heading: 'Are remote beaches safe to swim?', body: 'Remote beaches have no lifeguards or services. Swim only in calm conditions, never alone in big waves, and check live wind and waves in the app first.' },
+        ],
+      },
+      gr: {
+        title: `${islandName}: απομονωμένες παραλίες χωρίς κόσμο | CalmBeach`,
+        description: `Ήσυχες, απομονωμένες παραλίες μακριά από τον κόσμο — ${islandName}. Έλεγξε πρόσβαση, άνεμο και κύμα στο CalmBeach πριν πας.`,
+        h1: `Απομονωμένες παραλίες — ${islandName}`,
+        intro: `Θες να ξεφύγεις από τον κόσμο; Αυτές οι ${count} απομακρυσμένες παραλίες εδώ (${islandName}) είναι πιο ήσυχες και πιο δύσκολες στην πρόσβαση — συχνά με χωματόδρομο, με τα πόδια ή με σκάφος. Φέρε νερό και σκιά, και δες τον σημερινό άνεμο και το κύμα στο CalmBeach πριν πας.`,
+        sections: [
+          { heading: `${islandName}: ποιες παραλίες είναι οι πιο απομονωμένες;`, body: 'Οι παραλίες της λίστας είναι απομακρυσμένες και συνήθως χωρίς παροχές. Η πρόσβαση μπορεί να είναι δύσκολη — χωματόδρομος, πεζοπορία ή μόνο με σκάφος — οπότε προγραμμάτισε και φέρε προμήθειες.' },
+          { heading: 'Είναι ασφαλές το μπάνιο σε απομονωμένες παραλίες;', body: 'Οι απομονωμένες παραλίες δεν έχουν ναυαγοσώστη ή υπηρεσίες. Κολύμπησε μόνο σε ήρεμες συνθήκες, ποτέ μόνος σε μεγάλο κύμα, και έλεγξε πρώτα live άνεμο και κύμα στην εφαρμογή.' },
+        ],
+      },
+      de: {
+        title: `Abgelegene Strände auf ${islandName} abseits der Menschenmengen | CalmBeach`,
+        description: `Ruhige, abgelegene Strände auf ${islandName} abseits der Menschenmengen. Prüfe Zugang, Wind und Wellen auf CalmBeach.`,
+        h1: `Abgelegene Strände auf ${islandName}`,
+        intro: `Du möchtest den Menschenmengen auf ${islandName} entkommen? Diese ${count} abgelegenen Strände sind ruhiger und schwerer erreichbar – oft über Schotterpiste, zu Fuß oder per Boot. Bring Wasser und Schatten mit und prüfe Wind und Wellen von heute in CalmBeach, bevor du losfährst.`,
+        sections: [
+          { heading: `Welche Strände auf ${islandName} sind am abgelegensten?`, body: 'Die hier gelisteten Strände sind abgelegen und haben meist keine Einrichtungen. Der Zugang kann rau sein – Schotterpiste, Wanderung oder nur per Boot – plane also voraus und bring Vorräte mit.' },
+          { heading: 'Ist Schwimmen an abgelegenen Stränden sicher?', body: 'Abgelegene Strände haben keine Rettungsschwimmer oder Dienste. Schwimme nur bei ruhigen Bedingungen, nie allein bei hohen Wellen, und prüfe zuerst Wind und Wellen live in der App.' },
+        ],
+      },
+      fr: {
+        title: `Plages isolées à ${islandName} loin de la foule | CalmBeach`,
+        description: `Plages calmes et isolées à ${islandName}, loin de la foule. Vérifiez l'accès, le vent et les vagues sur CalmBeach.`,
+        h1: `Plages isolées à ${islandName}`,
+        intro: `Vous voulez échapper à la foule à ${islandName} ? Ces ${count} plages isolées sont plus calmes et plus difficiles d'accès — souvent par piste, à pied ou en bateau. Apportez eau et ombre, et vérifiez le vent et les vagues du jour dans CalmBeach avant d'y aller.`,
+        sections: [
+          { heading: `Quelles plages de ${islandName} sont les plus isolées ?`, body: 'Les plages listées ici sont isolées et généralement sans services. L\'accès peut être difficile — piste, randonnée ou bateau uniquement — alors prévoyez et apportez des provisions.' },
+          { heading: 'Peut-on se baigner en sécurité sur les plages isolées ?', body: 'Les plages isolées n\'ont ni surveillants ni services. Ne nagez que par conditions calmes, jamais seul dans de grosses vagues, et vérifiez d\'abord le vent et les vagues en direct dans l\'application.' },
+        ],
+      },
+      it: {
+        title: `Spiagge isolate a ${islandName} lontano dalla folla | CalmBeach`,
+        description: `Spiagge tranquille e isolate a ${islandName}, lontano dalla folla. Controlla accesso, vento e onde su CalmBeach.`,
+        h1: `Spiagge isolate a ${islandName}`,
+        intro: `Vuoi sfuggire alla folla a ${islandName}? Queste ${count} spiagge isolate sono più tranquille e più difficili da raggiungere — spesso su strada sterrata, a piedi o in barca. Porta acqua e ombra e controlla vento e onde di oggi in CalmBeach prima di andare.`,
+        sections: [
+          { heading: `Quali spiagge di ${islandName} sono le più isolate?`, body: 'Le spiagge elencate qui sono isolate e di solito senza servizi. L\'accesso può essere difficile — sterrato, sentiero o solo in barca — quindi pianifica e porta provviste.' },
+          { heading: 'È sicuro nuotare nelle spiagge isolate?', body: 'Le spiagge isolate non hanno bagnini o servizi. Nuota solo in condizioni calme, mai da solo con onde alte, e controlla prima vento e onde in tempo reale nell\'app.' },
+        ],
+      },
+    }),
+  },
+  {
+    key: 'sunset',
+    pathPrefix: '/sunset-beaches',
+    match: beach => Array.isArray(beach.orientation?.faces) && WESTERLY.some(d => beach.orientation.faces.includes(d)),
+    copy: (islandName, count) => ({
+      en: {
+        title: `Best Sunset Beaches in ${islandName} Facing West | CalmBeach`,
+        description: `West-facing beaches in ${islandName} with great sunset views. Check today's wind and waves on CalmBeach before you go.`,
+        h1: `Sunset beaches in ${islandName}`,
+        intro: `Want to watch the sun go down over the sea in ${islandName}? These ${count} west-facing beaches look out toward the sunset. Time your visit for late afternoon — and check today's wind and waves in CalmBeach before you go.`,
+        sections: [
+          { heading: `Which beaches in ${islandName} have the best sunsets?`, body: 'The beaches listed here face west or southwest, so the sun sets over the water in front of you. Arrive before sunset to find a spot and enjoy the light.' },
+          { heading: 'Anything to know for an evening visit?', body: 'Wind can pick up or drop in the evening, and remote beaches have no lights. Check live wind and waves in the app and bring a torch for the walk back.' },
+        ],
+      },
+      gr: {
+        title: `${islandName}: καλύτερες παραλίες για ηλιοβασίλεμα | CalmBeach`,
+        description: `Δυτικές παραλίες με θέα στο ηλιοβασίλεμα — ${islandName}. Έλεγξε τον σημερινό άνεμο και το κύμα στο CalmBeach πριν πας.`,
+        h1: `Παραλίες για ηλιοβασίλεμα — ${islandName}`,
+        intro: `Θες να δεις τον ήλιο να δύει στη θάλασσα; Αυτές οι ${count} δυτικές παραλίες εδώ (${islandName}) κοιτούν προς το ηλιοβασίλεμα. Προγραμμάτισε την επίσκεψη αργά το απόγευμα — και δες τον σημερινό άνεμο και το κύμα στο CalmBeach πριν πας.`,
+        sections: [
+          { heading: `${islandName}: ποιες παραλίες έχουν το καλύτερο ηλιοβασίλεμα;`, body: 'Οι παραλίες της λίστας κοιτούν δυτικά ή νοτιοδυτικά, οπότε ο ήλιος δύει πάνω από τη θάλασσα μπροστά σου. Έλα πριν τη δύση για να βρεις θέση και να απολαύσεις το φως.' },
+          { heading: 'Τι να προσέξω για βραδινή επίσκεψη;', body: 'Ο αέρας μπορεί να δυναμώσει ή να πέσει το βράδυ, και οι απομακρυσμένες παραλίες δεν έχουν φωτισμό. Έλεγξε live άνεμο και κύμα στην εφαρμογή και πάρε φακό για την επιστροφή.' },
+        ],
+      },
+      de: {
+        title: `Beste Sonnenuntergangsstrände auf ${islandName} nach Westen | CalmBeach`,
+        description: `Nach Westen ausgerichtete Strände auf ${islandName} mit tollem Sonnenuntergang. Prüfe Wind und Wellen von heute auf CalmBeach.`,
+        h1: `Sonnenuntergangsstrände auf ${islandName}`,
+        intro: `Du möchtest die Sonne über dem Meer auf ${islandName} untergehen sehen? Diese ${count} nach Westen ausgerichteten Strände blicken zum Sonnenuntergang. Plane deinen Besuch für den späten Nachmittag – und prüfe Wind und Wellen von heute in CalmBeach, bevor du losfährst.`,
+        sections: [
+          { heading: `Welche Strände auf ${islandName} haben die schönsten Sonnenuntergänge?`, body: 'Die hier gelisteten Strände sind nach Westen oder Südwesten ausgerichtet, sodass die Sonne über dem Wasser vor dir untergeht. Komm vor Sonnenuntergang, um einen Platz zu finden und das Licht zu genießen.' },
+          { heading: 'Was sollte ich für einen Besuch am Abend wissen?', body: 'Der Wind kann abends auffrischen oder nachlassen, und abgelegene Strände haben kein Licht. Prüfe Wind und Wellen live in der App und bring eine Taschenlampe für den Rückweg mit.' },
+        ],
+      },
+      fr: {
+        title: `Meilleures plages de coucher de soleil à ${islandName} face à l'ouest | CalmBeach`,
+        description: `Plages orientées à l'ouest à ${islandName} avec une belle vue sur le coucher de soleil. Vérifiez le vent et les vagues du jour sur CalmBeach.`,
+        h1: `Plages de coucher de soleil à ${islandName}`,
+        intro: `Envie de voir le soleil se coucher sur la mer à ${islandName} ? Ces ${count} plages orientées à l'ouest donnent vers le coucher de soleil. Prévoyez votre visite en fin d'après-midi — et vérifiez le vent et les vagues du jour dans CalmBeach avant d'y aller.`,
+        sections: [
+          { heading: `Quelles plages de ${islandName} offrent les plus beaux couchers de soleil ?`, body: 'Les plages listées ici sont orientées à l\'ouest ou au sud-ouest, le soleil se couche donc sur l\'eau devant vous. Arrivez avant le coucher pour trouver une place et profiter de la lumière.' },
+          { heading: 'À savoir pour une visite en soirée ?', body: 'Le vent peut se lever ou tomber le soir, et les plages isolées n\'ont pas d\'éclairage. Vérifiez le vent et les vagues en direct dans l\'application et emportez une lampe pour le retour.' },
+        ],
+      },
+      it: {
+        title: `Migliori spiagge per il tramonto a ${islandName} esposte a ovest | CalmBeach`,
+        description: `Spiagge esposte a ovest a ${islandName} con bella vista sul tramonto. Controlla vento e onde di oggi su CalmBeach.`,
+        h1: `Spiagge per il tramonto a ${islandName}`,
+        intro: `Vuoi vedere il sole tramontare sul mare a ${islandName}? Queste ${count} spiagge esposte a ovest guardano verso il tramonto. Programma la visita nel tardo pomeriggio — e controlla vento e onde di oggi in CalmBeach prima di andare.`,
+        sections: [
+          { heading: `Quali spiagge di ${islandName} hanno i tramonti più belli?`, body: 'Le spiagge elencate qui sono esposte a ovest o sud-ovest, così il sole tramonta sull\'acqua davanti a te. Arriva prima del tramonto per trovare posto e goderti la luce.' },
+          { heading: 'Cosa sapere per una visita serale?', body: 'Il vento può rinforzare o calare la sera, e le spiagge isolate non hanno illuminazione. Controlla vento e onde in tempo reale nell\'app e porta una torcia per il ritorno.' },
         ],
       },
     }),
@@ -1444,6 +1673,18 @@ const renderBeachStory = (region, beach, language) => {
           ${story.paragraphs.map(p => `<p style="margin:0 0 10px;font-size:16px;line-height:1.6;color:#334155;">${escapeHtml(p)}</p>`).join('')}
         </section>`;
 };
+
+// Short per-beach blurb for the guide-article beach lists: the curated story
+// title (a unique, evocative hook) + a trimmed opening sentence. Only beaches
+// with a curated story (Milos, en/gr) get one; others fall back to the plain
+// structured meta. Returns inner text or '' (the <p> wrapper is added by the
+// caller, outside the <a> so it is body text, not anchor text).
+const intentBeachBlurbText = (region, beach, language) => {
+  const story = getBeachStory(region, beach, language);
+  if (!story) return '';
+  const lead = truncateForMeta(story.paragraphs[0], 150);
+  return story.title ? `${story.title} — ${lead}` : lead;
+};
 const beachH1For = (beachName, islandName, language) => pickLang(language, {
   en: `${beachName} Beach, ${islandName}`,
   gr: `Παραλία ${beachName}, ${islandName}`,
@@ -1965,12 +2206,14 @@ const staticIslandIntentFallback = (content, island, region, beaches, canonicalU
   const sep = '<span style="color:#94a3b8;"> › </span>';
   const beachItems = beaches.map(beach => {
     const beachName = displayName(beach.name, `Beach ${beach.id}`, language);
+    const blurb = intentBeachBlurbText(region, beach, language);
     return `
-            <li style="margin:0;">
-              <a href="${escapeHtml(localizedPath(beachPath(region, island, beach), locale))}" style="display:block;border:1px solid #bae6fd;border-radius:12px;padding:10px 12px;background:white;color:#0f172a;text-decoration:none;">
+            <li style="margin:0;border:1px solid #bae6fd;border-radius:12px;background:white;">
+              <a href="${escapeHtml(localizedPath(beachPath(region, island, beach), locale))}" style="display:block;padding:10px 12px ${blurb ? '4px' : '10px'};color:#0f172a;text-decoration:none;">
                 <strong style="color:#0e7490;">${escapeHtml(beachName)}</strong>
                 ${renderBeachSummaryMeta(beach, language)}
               </a>
+              ${blurb ? `<p style="margin:0;padding:0 12px 10px;color:#334155;font-size:14px;line-height:1.5;">${escapeHtml(blurb)}</p>` : ''}
             </li>`;
   }).join('');
 
@@ -2018,6 +2261,7 @@ const buildIslandIntentPage = (baseHtml, intent, content, island, region, beache
           '@type': 'ListItem',
           position: index + 1,
           name: displayName(beach.name, `Beach ${beach.id}`, language),
+          description: intentBeachBlurbText(region, beach, language) || undefined,
           url: canonicalUrlFor(beachPath(region, island, beach), locale),
         })),
       },
