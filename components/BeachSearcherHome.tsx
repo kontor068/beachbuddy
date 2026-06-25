@@ -2726,7 +2726,7 @@ export const BeachSearcherHome: React.FC<BeachSearcherHomeProps> = ({
       </div>
 
       {conditionItems.length > 0 ? (
-        <div className="grid grid-cols-2 gap-2.5 lg:shrink-0">
+        <div className={`grid gap-2.5 lg:shrink-0 ${isWeatherPanelMode ? 'grid-cols-1' : 'grid-cols-2'}`}>
           {conditionItems.map(item => (
             <div key={item.key} className="flex min-h-16 items-center gap-2.5 rounded-xl border border-sky-100 bg-sky-50/70 px-2.5 py-2.5">
               <span className="grid h-9 w-9 shrink-0 place-items-center rounded-xl bg-white text-[#007a83] shadow-sm ring-1 ring-sky-100">
@@ -2734,7 +2734,7 @@ export const BeachSearcherHome: React.FC<BeachSearcherHomeProps> = ({
               </span>
               <div className="min-w-0 flex-1">
                 <p className="text-xs font-bold tracking-normal text-slate-700">{item.label}</p>
-                <p className={`${item.key === 'wind' ? 'whitespace-nowrap text-[0.82rem] min-[380px]:text-sm' : 'whitespace-normal break-words text-sm sm:text-base'} font-extrabold leading-tight text-slate-950`}>
+                <p className={`${item.key === 'wind' ? 'whitespace-normal break-words text-sm' : 'whitespace-normal break-words text-sm sm:text-base'} font-extrabold leading-tight text-slate-950`}>
                   {item.value}
                 </p>
                 {item.detail && <p className="text-xs font-semibold text-[#007a83]">{item.detail}</p>}
