@@ -19,6 +19,7 @@
     "audit:cyclades-google-places": "node scripts/auditCycladesGooglePlaces.mjs",
     "audit:place-resolution": "node scripts/auditPlaceResolution.mjs",
     "audit:wind-profile-evidence": "node scripts/auditWindProfileEvidence.mjs",
+    "validate:meltemi-matrix": "node scripts/validateMeltemiMatrix.mjs",
     "quality:explain": "node scripts/runCriticalQualityChecks.mjs --explain",
     "quality:beach-data": "node scripts/validateCriticalBeachData.mjs",
     "quality:critical": "node scripts/runCriticalQualityChecks.mjs",
