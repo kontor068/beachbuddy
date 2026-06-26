@@ -887,6 +887,47 @@ const islandIntents = [
 
 const islandIntentPath = (intent, region, island) => `${intent.pathPrefix}/${encodeURIComponent(regionSlug(region, island))}/`;
 
+// Short chip labels for each guide topic, used in the "beach guides" link blocks
+// on region and guide pages (the page <h1>s are too long to use as nav labels).
+const INTENT_NAV_LABELS = {
+  family:     { en: 'Family beaches',  gr: 'Οικογενειακές',     de: 'Familienstrände',  fr: 'Plages familiales',  it: 'Per famiglie' },
+  sheltered:  { en: 'Sheltered (Meltemi)', gr: 'Απάνεμες (μελτέμι)', de: 'Windgeschützt', fr: 'Abritées (meltemi)', it: 'Riparate (meltemi)' },
+  snorkeling: { en: 'Snorkeling',      gr: 'Για snorkeling',    de: 'Schnorcheln',      fr: 'Snorkeling',         it: 'Snorkeling' },
+  organized:  { en: 'Organized',       gr: 'Οργανωμένες',       de: 'Organisiert',      fr: 'Aménagées',          it: 'Attrezzate' },
+  secluded:   { en: 'Secluded',        gr: 'Απομονωμένες',      de: 'Abgelegen',        fr: 'Isolées',            it: 'Isolate' },
+  sunset:     { en: 'Sunset',          gr: 'Για ηλιοβασίλεμα',  de: 'Sonnenuntergang',  fr: 'Coucher de soleil',  it: 'Tramonto' },
+};
+
+// The guide articles that were actually generated for this island (same ≥MIN
+// gate as the page generation), so region/guide pages only link to pages that
+// exist. `excludeKey` drops the current page from a "more guides" cross-link.
+const getIslandGuides = (island, region, locale, excludeKey = null) => {
+  const beaches = Array.isArray(island.beaches) ? island.beaches : [];
+  return islandIntents
+    .filter(intent => intent.key !== excludeKey)
+    .filter(intent => beaches.filter(b => Number.isInteger(b.id) && b.name && intent.match(b)).length >= ISLAND_INTENT_MIN)
+    .map(intent => ({
+      href: localizedPath(islandIntentPath(intent, region, island), locale),
+      label: INTENT_NAV_LABELS[intent.key]?.[locale.language] || INTENT_NAV_LABELS[intent.key]?.en || intent.key,
+    }));
+};
+
+// A chip-list "beach guides" block linking to the island's guide articles —
+// gives users a clickable way in and threads internal link equity to the guides
+// (they were sitemap-only before). Returns '' when the island has no guides.
+const renderIslandGuides = (island, region, locale, excludeKey, heading) => {
+  const guides = getIslandGuides(island, region, locale, excludeKey);
+  if (guides.length === 0) return '';
+  const items = guides.map(g =>
+    `<li style="margin:0;"><a href="${escapeHtml(g.href)}" style="display:inline-block;border:1px solid #bae6fd;border-radius:999px;padding:7px 13px;background:white;color:#075985;text-decoration:none;font-weight:700;font-size:14px;">${escapeHtml(g.label)}</a></li>`
+  ).join('');
+  return `
+        <section style="margin:0 0 24px;">
+          <h2 style="margin:0 0 10px;font-size:20px;line-height:1.2;color:#075985;">${escapeHtml(heading)}</h2>
+          <ul style="display:flex;flex-wrap:wrap;gap:8px;margin:0;padding:0;list-style:none;">${items}</ul>
+        </section>`;
+};
+
 // Pages that used to exist as thin generic gateways and were consolidated into a
 // kept, useful page. 301 so the already-submitted URLs never 404; they are also
 // excluded from the sitemap (they are simply absent from seoLandingPages now).
@@ -1750,6 +1791,13 @@ const staticBeachFallback = (beach, island, region, canonicalUrl, locale = prere
         ${renderBeachNarrative(beach, island, language, copy.aboutHeading)}
         <p data-nosnippet="true" style="margin:0;color:#475569;">${escapeHtml(copy.openAppBeach)}</p>
         <p data-nosnippet="true" style="margin:16px 0 0;"><a href="${escapeHtml(canonicalUrl)}" style="color:#0e7490;font-weight:700;">${escapeHtml(copy.viewBeach)}</a></p>
+        ${renderIslandGuides(island, region, locale, null, pickLang(language, {
+          en: `${islandName} beach guides`,
+          gr: `Οδηγοί παραλιών — ${islandName}`,
+          de: `${islandName} Strandführer`,
+          fr: `Guides plages — ${islandName}`,
+          it: `Guide spiagge — ${islandName}`,
+        }))}
         ${renderNearbyBeaches(beach, island, region, language, locale)}
       </main>
     </div>
@@ -1783,6 +1831,13 @@ const staticRegionFallback = (island, region, canonicalUrl, locale = prerenderLo
         <h1 style="margin:0 0 12px;font-size:32px;line-height:1.1;">${escapeHtml(copy.regionHeading(islandName))}</h1>
         <p style="margin:0 0 20px;font-size:17px;line-height:1.55;color:#334155;">${escapeHtml(copy.regionDescription(islandName, beaches.length))}</p>
         ${beachItems ? `<ul style="display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:10px;margin:0 0 20px;padding:0;list-style:none;">${beachItems}</ul>` : ''}
+        ${renderIslandGuides(island, region, locale, null, pickLang(language, {
+          en: `${islandName} beach guides`,
+          gr: `Οδηγοί παραλιών — ${islandName}`,
+          de: `${islandName} Strandführer`,
+          fr: `Guides plages — ${islandName}`,
+          it: `Guide spiagge — ${islandName}`,
+        }))}
         <p data-nosnippet="true" style="margin:0;color:#475569;">${escapeHtml(copy.openAppRegion)}</p>
         <p data-nosnippet="true" style="margin:16px 0 0;"><a href="${escapeHtml(canonicalUrl)}" style="color:#0e7490;font-weight:700;">${escapeHtml(copy.viewRegion(islandName))}</a></p>
       </main>
@@ -2197,7 +2252,7 @@ const buildRegionPage = (baseHtml, island, region, imageUrl, locale = prerenderL
   return htmlWithHead.replace(/<div id="root">\s*<\/div>/i, staticRegionFallback(island, region, canonicalUrl, locale));
 };
 
-const staticIslandIntentFallback = (content, island, region, beaches, canonicalUrl, locale) => {
+const staticIslandIntentFallback = (content, island, region, beaches, canonicalUrl, locale, intent) => {
   const language = locale.language;
   const copy = getStaticFallbackCopy(language);
   const islandName = displayName(island.name, region.id, language);
@@ -2234,6 +2289,13 @@ const staticIslandIntentFallback = (content, island, region, beaches, canonicalU
               <p style="margin:0;font-size:16px;line-height:1.58;color:#334155;">${escapeHtml(section.body)}</p>
             </section>`).join('')}
         </div>
+        ${renderIslandGuides(island, region, locale, intent?.key, pickLang(language, {
+          en: `More ${islandName} beach guides`,
+          gr: `Άλλοι οδηγοί παραλιών — ${islandName}`,
+          de: `Weitere ${islandName} Strandführer`,
+          fr: `Autres guides plages — ${islandName}`,
+          it: `Altre guide spiagge — ${islandName}`,
+        }))}
         <p data-nosnippet="true" style="margin:16px 0 0;"><a href="${escapeHtml(canonicalUrl)}" style="color:#0e7490;font-weight:700;">${escapeHtml(copy.viewRegion(islandName))}</a></p>
       </main>
     </div>
@@ -2287,7 +2349,7 @@ const buildIslandIntentPage = (baseHtml, intent, content, island, region, beache
     jsonLd,
   });
 
-  return stripClientScripts(htmlWithHead).replace(/<div id="root">\s*<\/div>/i, staticIslandIntentFallback(content, island, region, beaches, canonicalUrl, locale));
+  return stripClientScripts(htmlWithHead).replace(/<div id="root">\s*<\/div>/i, staticIslandIntentFallback(content, island, region, beaches, canonicalUrl, locale, intent));
 };
 
 const buildBeachPage = (baseHtml, island, beach, region, imageUrl, locale = prerenderLocales[0], emittedLocales = baseLocales) => {

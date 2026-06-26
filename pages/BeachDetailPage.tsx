@@ -3,7 +3,7 @@ import {
   ArrowLeft, MapPin, Wind, Waves, Thermometer, Droplets, Leaf,
   Clock, Sun, Backpack,
   Navigation, Share2, Heart, ChevronRight, ThumbsUp, ThumbsDown, CheckCircle2,
-  Camera, ExternalLink, Accessibility, AlertTriangle, Tent, Ticket, Euro, ScrollText
+  Camera, ExternalLink, Accessibility, AlertTriangle, Tent, Ticket, Euro, ScrollText, Compass
 } from 'lucide-react';
 import {
   Beach, LanguageCode, Translation, WindDirection,
@@ -26,6 +26,7 @@ import { describeSimpleWindSuitability, describeWindExposure } from '../utils/wi
 import type { ExposureLevel } from '../utils/windExposure';
 import { getLocalWindNote } from '../utils/localWindNote';
 import { getMilosBeachStory } from '../data/milosBeachStories';
+import { getIslandGuideLinks } from '../utils/beachGuides';
 import {
   AmenityStatus,
   getAmenityChips,
@@ -432,6 +433,10 @@ interface BeachDetailPageProps {
   onToggleFavorite: (id: number) => void;
   preferences?: UserPreferences;
   islandName?: string;
+  /** Real region id of this beach's island (e.g. "south-aegean-milos"); used to
+   *  build links to the island's pre-rendered guide articles. Omitted for the
+   *  cross-region "Κοντά μου" view, where there is no single island. */
+  regionId?: string;
   detailDataStatus?: 'idle' | 'loading' | 'ready' | 'partial';
   beachWeatherById?: BeachWeatherById;
   geospatialExposureProfiles?: Record<number, GeospatialExposureProfile>;
@@ -456,6 +461,7 @@ export const BeachDetailPage: React.FC<BeachDetailPageProps> = ({
   onToggleFavorite,
   preferences,
   islandName,
+  regionId,
   detailDataStatus = 'idle',
   beachWeatherById,
   geospatialExposureProfiles,
@@ -469,6 +475,7 @@ export const BeachDetailPage: React.FC<BeachDetailPageProps> = ({
   const [storyExpanded, setStoryExpanded] = useState(false);
   const beachStory = getMilosBeachStory(beach, islandName);
   const storyLocale: 'gr' | 'en' = language === 'gr' ? 'gr' : 'en';
+  const guideLinks = useMemo(() => getIslandGuideLinks(allBeaches, regionId, language), [allBeaches, regionId, language]);
   const selectedDate = dayForecast.date;
   const selectedDayPrefix = getSelectedDayPrefix(selectedDate, new Date(), language);
   const selectedDayIsToday = selectedDayPrefix === (language === 'gr' ? 'σήμερα' : 'today');
@@ -486,6 +493,7 @@ export const BeachDetailPage: React.FC<BeachDetailPageProps> = ({
     decisionSummary: { en: selectedDayIsToday ? 'Today summary' : `Summary ${selectedDayPrefix}`, gr: `Σύνοψη για ${selectedDayPrefix}`, de: 'Kurzfassung', it: 'Riepilogo', fr: 'Resume' },
     conditions: { en: `Conditions ${selectedDayPrefix}`, gr: `Συνθήκες ${selectedDayPrefix}`, de: 'Bedingungen', it: 'Condizioni', fr: 'Conditions' },
     beachStoryHeading: { en: 'About this beach', gr: 'Πληροφορίες', de: 'Über diesen Strand', it: 'Informazioni', fr: 'À propos' },
+    guidesHeading: { en: 'Beach guides', gr: 'Οδηγοί παραλιών', de: 'Strandführer', it: 'Guide spiagge', fr: 'Guides plages' },
     readMore: { en: 'Read more', gr: 'Διάβασε περισσότερα', de: 'Mehr lesen', it: 'Leggi di più', fr: 'Lire plus' },
     readLess: { en: 'Show less', gr: 'Λιγότερα', de: 'Weniger', it: 'Meno', fr: 'Moins' },
     windShort: { en: 'Wind', gr: 'Άνεμος', de: 'Wind', it: 'Vento', fr: 'Vent' },
@@ -1492,6 +1500,27 @@ export const BeachDetailPage: React.FC<BeachDetailPageProps> = ({
               </>
           </div>
         </section>
+        )}
+
+        {/* 9. Beach guides — links to the island's "best X beaches" articles */}
+        {guideLinks.length > 0 && (
+          <section className="space-y-3">
+            <h3 className="flex items-center gap-2 px-1 font-heading text-lg font-bold text-slate-950">
+              <Compass className="h-5 w-5 shrink-0 text-teal-600" aria-hidden="true" />
+              {copy.guidesHeading[language]}{islandName ? ` — ${islandName}` : ''}
+            </h3>
+            <div className="flex flex-wrap gap-2">
+              {guideLinks.map((guide) => (
+                <a
+                  key={guide.key}
+                  href={guide.href}
+                  className="inline-flex items-center rounded-full border border-slate-200 bg-white px-3.5 py-1.5 text-sm font-bold text-teal-700 hover:border-teal-300 hover:bg-teal-50"
+                >
+                  {guide.label}
+                </a>
+              ))}
+            </div>
+          </section>
         )}
 
       </main>

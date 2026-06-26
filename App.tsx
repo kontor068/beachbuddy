@@ -4126,6 +4126,7 @@ export const App: React.FC = () => {
             userLocation={userLocation} favorites={favorites} onToggleFavorite={handleToggleFavorite}
             preferences={preferences}
             islandName={selectedIsland?.name[language]}
+            regionId={isNearMeRegionActive ? undefined : selectedIsland?.id}
             detailDataStatus={detailDataStatus}
             beachWeatherById={hourAdjustedBeachForecasts}
             geospatialExposureProfiles={geospatialExposureProfiles}

@@ -78,7 +78,7 @@ const stripBeachLocalePrefix = (pathname: string): string => (
 // el is applied for every region; de/fr/it only where a localized page actually
 // exists (pilot regions). Elsewhere they fall back to the root path so a language
 // switch never produces a URL that 404s on reload.
-const getBeachLocalePrefix = (language?: LanguageCode, regionSlug?: string): string => {
+export const getBeachLocalePrefix = (language?: LanguageCode, regionSlug?: string): string => {
   if (language === 'gr') return '/el';
   if (language === 'de' || language === 'fr' || language === 'it') {
     return regionSlug && LOCALIZED_REGION_SLUGS.has(regionSlug) ? `/${language}` : '';
