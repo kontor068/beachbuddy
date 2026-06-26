@@ -39,7 +39,9 @@ known shelters** (Naxos Agios Prokopios/Plaka, Milos Fyriplaka, Lefkada Porto Ka
   period is not yet scored, roadmap #2).
 
 ## How later roadmap items should move these numbers
-- #2 swell/period → `choppy3` should diverge from `N3`; a swell scenario should raise red%.
+- #2 swell/period **(LANDED 2026-06-27)** → comfort-only, so `choppy3` correctly STAYS identical
+  (the penalty never touches exposureLevel/colour). Proven instead by the `computeSwellSurgePenalty`
+  asserts the matrix now runs: dormant ≤6 s (no over-fire on today's seas), escalates ≥8 s ground swell.
 - #3 blockedRayRatio fix → the 67 under-warn partials should drop toward exposed (mainland/ionian recall → ~100%).
 - #4 afternoon/temporal → (needs a time dimension added to the matrix).
 - Curating more sheltered labels → label accuracy denominator grows; watch the protected/calm recall.

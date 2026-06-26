@@ -30,6 +30,7 @@ import { readFileSync, writeFileSync, readdirSync } from 'node:fs';
 import path from 'node:path';
 import { assessBeachWindExposure } from '../utils/windExposureEngine';
 import { degToCompass, getBeaufortLevel } from '../utils/weatherUtils';
+import { computeSwellSurgePenalty } from '../utils/swellSurge';
 import type { Beach, GeospatialExposureProfile, WindSector } from '../types';
 
 const APP_DIR = path.join('public', 'data', 'beaches', 'app');
@@ -265,6 +266,27 @@ if (onshoreViolations.length > 0) {
   onshoreViolations.slice(0, 20).forEach(l => console.log(`  - ${l}`));
 }
 console.log(`\nblockedRayRatio under-warn candidates (open onshore stored=partial): ${underWarn.length}`);
+
+// ---------------------------------------------------------------------------
+// SWELL-SURGE helper asserts (roadmap #2 regression guard). The engine ignores
+// period, so the per-scenario level/colour above already prove period never moves
+// the headline (choppy3 stays identical to baseline); these pin the score penalty.
+// ---------------------------------------------------------------------------
+console.log('\n=== swell-surge penalty asserts (roadmap #2; args = period s, height m) ===');
+const surgeCases: Array<[number, number, number]> = [
+  [4, 0.7, 0], [4, 0.6, 0], [6.0, 0.7, 0], [10, 0.3, 0], // dormant on short period / tiny ripple
+  [8, 0.7, 7], [9, 0.7, 14], [9, 1.0, 22], [10, 1.2, 22], // genuine ground-swell escalation
+];
+let surgeFail = 0;
+for (const [t, h, want] of surgeCases) {
+  const got = computeSwellSurgePenalty(t, h);
+  if (got !== want) { surgeFail++; console.log(`  FAIL  surge(${t}s, ${h}m) = ${got} (want ${want})`); }
+}
+for (const [t, h] of [[undefined, 0.7], [9, undefined], [NaN, 0.7]] as Array<[number | undefined, number | undefined]>) {
+  if (computeSwellSurgePenalty(t, h) !== 0) { surgeFail++; console.log(`  FAIL  surge(${t}, ${h}) != 0 (missing/NaN must be a no-op)`); }
+}
+console.log(surgeFail === 0 ? `  all ${surgeCases.length + 3} surge asserts passed (dormant <=6s, escalates >=8s, no-op on missing)` : `  ${surgeFail} surge asserts FAILED`);
+if (surgeFail > 0) process.exitCode = 1;
 
 writeFileSync(jsonOutPath, JSON.stringify({
   beachCount,

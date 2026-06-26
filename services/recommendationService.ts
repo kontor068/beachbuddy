@@ -27,6 +27,7 @@ import {
   WindDirection,
 } from '../types';
 import { degToCompass, calculateDistance, getBeaufortLevel } from '../utils/weatherUtils';
+import { computeSwellSurgePenalty, SWELL_SURGE_PENALTY_MID } from '../utils/swellSurge';
 import { calculateWindExposure } from '../utils/windExposure';
 import { calculateCrowdLevel, CrowdLevel } from './crowdService';
 import { ExposureLevel } from '../utils/windExposure';
@@ -1307,6 +1308,14 @@ export const calculateBeachScore = (
   // only, so we never present an estimate as if it were a real measurement.
   const effectiveWaveHeightM = usingModeledWave ? modeledWaveHeightM : (waveHeightM as number);
 
+  // Long-period swell surge (roadmap #2): prefer the swell channel, else the wave
+  // channel; period-gated so it is a strict no-op on short wind-sea.
+  const swellPeriodS = typeof marine?.swellWavePeriodS === 'number' && Number.isFinite(marine.swellWavePeriodS) ? marine.swellWavePeriodS : undefined;
+  const surgePeriodS = swellPeriodS ?? (typeof marine?.wavePeriodS === 'number' && Number.isFinite(marine.wavePeriodS) ? marine.wavePeriodS : undefined);
+  const surgeUsesSwellChannel = swellPeriodS !== undefined;
+  const surgeHeightM = surgeUsesSwellChannel ? marine?.swellWaveHeightM : marine?.waveHeightM;
+  const swellSurgePenalty = computeSwellSurgePenalty(surgePeriodS, surgeHeightM);
+
   if (windSpeedKmph >= 30) {
     warnings.push({
       type: 'strong_wind',
@@ -1582,7 +1591,8 @@ export const calculateBeachScore = (
   if (highFetchOnshore && effectiveBeaufort >= 4) swimmingScore -= 25;
   else if (mediumFetchOnshore && effectiveBeaufort >= 4) swimmingScore -= 10;
   // R1 (v3 roadmap 2c.3): scale the direct-swell penalty with the swell height.
-  if (directSwell) swimmingScore -= (marine?.swellWaveHeightM ?? 0) >= 0.9 ? 20 : 12;
+  const directSwellPenalty = directSwell ? ((marine?.swellWaveHeightM ?? 0) >= 0.9 ? 20 : 12) : 0;
+  swimmingScore -= directSwellPenalty;
   // Wave penalty applies to the measured wave, or to the (damped) modeled wave
   // when none was reported — gentler for the estimate to avoid over-penalising.
   if (typeof waveHeightM === 'number') {
@@ -1593,6 +1603,19 @@ export const calculateBeachScore = (
     if (modeledWaveHeightM > 1.2) swimmingScore -= 18;
     else if (modeledWaveHeightM >= 0.9) swimmingScore -= 12;
     else if (modeledWaveHeightM >= 0.6) swimmingScore -= 6;
+  }
+  // Period surge, de-duped against direct_swell (max, never sum) so one long-period
+  // onshore swell is charged once. Writes the swim score + a warning only — never the
+  // exposure level, effectiveWaveHeightM, effectiveBeaufort, or the map colour.
+  if (swellSurgePenalty > 0 && typeof surgePeriodS === 'number' && typeof surgeHeightM === 'number') {
+    const marginalSurge = (directSwell && surgeUsesSwellChannel) ? Math.max(0, swellSurgePenalty - directSwellPenalty) : swellSurgePenalty;
+    if (marginalSurge > 0) swimmingScore -= marginalSurge;
+    warnings.push({
+      type: 'long_period_swell',
+      severity: swellSurgePenalty >= SWELL_SURGE_PENALTY_MID ? 'warning' : 'info',
+      message: `Long-period swell (~${Math.round(surgePeriodS)} s) breaks harder than its ${surgeHeightM.toFixed(1)} m height suggests — expect a dumping shorebreak.`,
+    });
+    reasons.push('Long-period swell breaks hard');
   }
   swimmingScore += windAssessment.swimmingScoreModifier;
   if (heavyRecentRain && hasRunoffRisk) {

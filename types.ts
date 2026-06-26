@@ -171,6 +171,7 @@ export type WarningFlagType =
   | 'offshore_wind'
   | 'onshore_chop'
   | 'direct_swell'
+  | 'long_period_swell'
   | 'difficult_access'
   | 'boat_only'
   | 'crowded'
