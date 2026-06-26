@@ -252,6 +252,19 @@ const getOfficialWarningReason = (beach: Beach): string => (
   beach.officialWarningReason || beach.metadata?.officialWarningReason || 'Official warning active for this beach.'
 );
 
+// Gust comfort thresholds (km/h), recalibrated 2026-06-26 when the app switched from a
+// synthetic gust estimate (wind*1.2) to the real wind_gusts_10m feed. A 1.3-3x gust factor
+// is normal marine gustiness and is harmless at low wind, so gusts only modify the verdict
+// when there is real wind (>= GUST_MIN_BASE_BEAUFORT) AND the gust is either absolutely strong
+// or disproportionately above the mean. The old thresholds were tuned for the tiny synthetic
+// spread and made every beach warn once fed real gusts (measured: 100% -> ~25%).
+const GUST_MIN_BASE_BEAUFORT = 3;
+const GUST_NOTE_ABS_KMH = 40;             // gust strong enough to note on its own (~6 Bft)
+const GUST_NOTE_SPREAD_KMH = 18;          // gust-minus-mean worth noting on a windy beach
+const GUST_WARN_ABS_KMH = 55;             // prominent-warning gust (~7+ Bft)
+const GUST_WARN_SPREAD_KMH = 30;          // prominent-warning spread
+const GUST_EFFECTIVE_BFT_SPREAD_KMH = 22; // spread that bumps effective Beaufort +1 / docks experience
+
 const getEffectiveBeaufortForComfort = (
   baseBeaufort: number,
   windSpeedKmph: number,
@@ -260,10 +273,10 @@ const getEffectiveBeaufortForComfort = (
   waveHeightM: number | undefined
 ): number => {
   let effective = baseBeaufort;
-  const gustBeaufort = typeof gustKmph === 'number' ? getBeaufortLevel(gustKmph) : baseBeaufort;
   const gustSpreadKmph = typeof gustKmph === 'number' ? Math.max(0, gustKmph - windSpeedKmph) : 0;
 
-  if (gustSpreadKmph >= 15 || gustBeaufort >= baseBeaufort + 2) effective += 1;
+  // Real gusts: bump effective Beaufort only on a windy beach with a substantial gust spread.
+  if (baseBeaufort >= GUST_MIN_BASE_BEAUFORT && gustSpreadKmph >= GUST_EFFECTIVE_BFT_SPREAD_KMH) effective += 1;
   if (baseBeaufort >= 4 && exposureLevel !== 'protected') effective += 1;
   if (typeof waveHeightM === 'number' && waveHeightM >= 0.9) effective += 1;
   if (exposureLevel === 'protected' && baseBeaufort <= 5 && (waveHeightM === undefined || waveHeightM < 0.5)) {
@@ -1186,7 +1199,6 @@ export const calculateBeachScore = (
   const baseBeaufort = getBeaufortLevel(windSpeedKmph);
   const gustKmph = getWeatherGustKmph(weather, hourlyForecast);
   const gustSpreadKmph = typeof gustKmph === 'number' ? Math.max(0, gustKmph - windSpeedKmph) : undefined;
-  const gustSpreadRatio = typeof gustKmph === 'number' && windSpeedKmph > 0 ? gustKmph / windSpeedKmph : undefined;
   const temp = getWeatherTemp(weather);
   const marine = weather.marine;
   const waveHeightM = marine?.waveHeightM;
@@ -1302,13 +1314,14 @@ export const calculateBeachScore = (
       message: `Strong wind forecast (${Math.round(windSpeedKmph)} km/h).`
     });
   }
-  if (typeof gustKmph === 'number' && (
-    (typeof gustSpreadRatio === 'number' && gustSpreadRatio >= 1.3) ||
-    (typeof gustSpreadKmph === 'number' && gustSpreadKmph >= 8)
-  )) {
+  if (
+    typeof gustKmph === 'number' &&
+    baseBeaufort >= GUST_MIN_BASE_BEAUFORT &&
+    (gustKmph >= GUST_NOTE_ABS_KMH || (gustSpreadKmph || 0) >= GUST_NOTE_SPREAD_KMH)
+  ) {
     warnings.push({
       type: 'gusty_wind',
-      severity: gustKmph >= 50 || (gustSpreadKmph || 0) >= 25 ? 'warning' : 'info',
+      severity: gustKmph >= GUST_WARN_ABS_KMH || (gustSpreadKmph || 0) >= GUST_WARN_SPREAD_KMH ? 'warning' : 'info',
       message: `Gusts may reach ${Math.round(gustKmph)} km/h.`
     });
     reasons.push('Gusty wind affects beach comfort');
@@ -1561,10 +1574,10 @@ export const calculateBeachScore = (
   if (finalExposureLevel === 'protected') swimmingScore += baseBeaufort >= MEANINGFUL_WIND_TOP_PICK_BEAUFORT ? 6 : 2;
   if (finalExposureLevel === 'exposed' && baseBeaufort >= 4) swimmingScore -= 12;
   if (effectiveBeaufort >= 4) swimmingScore -= (effectiveBeaufort - 3) * 7;
-  if (typeof gustSpreadKmph === 'number') {
-    if (gustSpreadKmph >= 25) swimmingScore -= finalExposureLevel === 'protected' ? 8 : 18;
-    else if (gustSpreadKmph >= 15) swimmingScore -= finalExposureLevel === 'protected' ? 4 : 10;
-    else if (gustSpreadKmph >= 8) swimmingScore -= finalExposureLevel === 'protected' ? 2 : 5;
+  if (typeof gustSpreadKmph === 'number' && baseBeaufort >= GUST_MIN_BASE_BEAUFORT) {
+    if (gustSpreadKmph >= 35) swimmingScore -= finalExposureLevel === 'protected' ? 8 : 18;
+    else if (gustSpreadKmph >= 22) swimmingScore -= finalExposureLevel === 'protected' ? 4 : 10;
+    else if (gustSpreadKmph >= 14) swimmingScore -= finalExposureLevel === 'protected' ? 2 : 5;
   }
   if (highFetchOnshore && effectiveBeaufort >= 4) swimmingScore -= 25;
   else if (mediumFetchOnshore && effectiveBeaufort >= 4) swimmingScore -= 10;
@@ -1608,7 +1621,7 @@ export const calculateBeachScore = (
   if (finalExposureLevel === 'protected') experienceScore += baseBeaufort >= MEANINGFUL_WIND_TOP_PICK_BEAUFORT ? 10 : 2;
   else if (finalExposureLevel === 'partial') experienceScore += baseBeaufort >= MEANINGFUL_WIND_TOP_PICK_BEAUFORT ? 4 : 1;
   else if (baseBeaufort >= 4) experienceScore -= 12;
-  if (typeof gustSpreadKmph === 'number' && gustSpreadKmph >= 15) experienceScore -= 8;
+  if (typeof gustSpreadKmph === 'number' && baseBeaufort >= GUST_MIN_BASE_BEAUFORT && gustSpreadKmph >= GUST_EFFECTIVE_BFT_SPREAD_KMH) experienceScore -= 8;
   if (temp >= 23 && temp <= 31) experienceScore += 10;
   else if (temp > 34) experienceScore -= 15;
   else if (temp > 32) experienceScore -= 8;

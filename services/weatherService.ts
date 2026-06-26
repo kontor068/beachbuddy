@@ -181,7 +181,7 @@ export const fetchWeatherData = async (lat: number, lon: number): Promise<Weathe
     return cachedData;
   }
 
-  const API_URL = `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&current=temperature_2m,is_day,weather_code,wind_speed_10m,wind_direction_10m&wind_speed_unit=ms&timezone=auto`;
+  const API_URL = `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&current=temperature_2m,is_day,weather_code,wind_speed_10m,wind_direction_10m,wind_gusts_10m&wind_speed_unit=ms&timezone=auto`;
 
   try {
     const data = await fetchJson<any>(API_URL, 'current-weather');
@@ -192,6 +192,8 @@ export const fetchWeatherData = async (lat: number, lon: number): Promise<Weathe
       wind: {
         speed: current.wind_speed_10m,
         deg: current.wind_direction_10m,
+        // Real measured gust (m/s); fall back to the old synthetic estimate only if the API omits it.
+        gust: optionalNumber(current.wind_gusts_10m) ?? current.wind_speed_10m * 1.2,
       },
       weather: mapWmoToWeather(current.weather_code, current.is_day === 1),
       main: {
@@ -218,7 +220,7 @@ export const fetchForecastData = async (lat: number, lon: number): Promise<Forec
     return cachedData;
   }
 
-  const API_URL = `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&hourly=temperature_2m,weather_code,wind_speed_10m,wind_direction_10m,pressure_msl,uv_index,precipitation_probability&wind_speed_unit=ms&timezone=auto`;
+  const API_URL = `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&hourly=temperature_2m,weather_code,wind_speed_10m,wind_direction_10m,wind_gusts_10m,pressure_msl,uv_index,precipitation_probability&wind_speed_unit=ms&timezone=auto`;
 
   try {
     const data = await fetchJson<any>(API_URL, 'hourly-forecast');
@@ -249,7 +251,8 @@ export const fetchForecastData = async (lat: number, lon: number): Promise<Forec
         wind: {
           speed: hourly.wind_speed_10m[index],
           deg: hourly.wind_direction_10m[index],
-          gust: hourly.wind_speed_10m[index] * 1.2
+          // Real measured gust (m/s); fall back to the old synthetic estimate only if the API omits it.
+          gust: optionalNumber(hourly.wind_gusts_10m?.[index]) ?? hourly.wind_speed_10m[index] * 1.2
         },
         visibility: 10000,
         pop: 0,
