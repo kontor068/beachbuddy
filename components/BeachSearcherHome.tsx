@@ -2570,6 +2570,11 @@ export const BeachSearcherHome: React.FC<BeachSearcherHomeProps> = ({
       totalCount: selectedIsland.beaches.length,
       hourlyWind: contextStripHourlyWind,
       anchorHour: mapSelectedHour,
+      // Anchor the favoured-coast line to the viewed time window (same label the
+      // "best beaches στις 15:00–18:00" headings use) so it reads as a snapshot of
+      // the slider hour, not an all-day claim — the favoured beaches change as the
+      // wind veers later in the day. Absent when no hour is selected (whole-day view).
+      timeLabel: suitableTimePrefix,
     })
     : null;
   // When a search/filter narrows the list to a single beach, the generic

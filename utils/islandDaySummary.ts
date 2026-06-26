@@ -112,29 +112,39 @@ const windyCopy = (
   favoured: string,
   beaufort: number,
   strong: boolean,
+  // The viewed time-window label (e.g. "στις 15:00–18:00"), already carrying its
+  // own preposition. When present, we anchor the line to that window so the
+  // favoured-coast claim reads as a snapshot of the hour the user is viewing on
+  // the slider — NOT an all-day verdict. The wind veers through the day, so the
+  // favoured beaches at 16:00 may not be the favoured beaches at 11:00; without a
+  // time the sentence over-claims "today, head for the X beaches". (When no hour
+  // is selected — the whole-day overview — timeLabel is absent and the line stays
+  // the daily summary it was.)
+  timeLabel?: string,
 ): string => {
+  const at = timeLabel ? ` ${timeLabel}` : '';
   switch (language) {
     case 'gr':
       return strong
-        ? `Με δυνατό ${windName} άνεμο ${beaufort} μποφόρ, προτιμήστε τις απάνεμες ${favoured} παραλίες.`
-        : `Με ${windName} άνεμο ${beaufort} μποφόρ, ευνοούνται οι ${favoured} παραλίες.`;
+        ? `Με δυνατό ${windName} άνεμο ${beaufort} μποφόρ, προτιμήστε τις απάνεμες ${favoured} παραλίες${at}.`
+        : `Με ${windName} άνεμο ${beaufort} μποφόρ, ευνοούνται οι ${favoured} παραλίες${at}.`;
     case 'fr':
       return strong
-        ? `Vent de ${windName} fort (${beaufort} Bft) — préférez les plages ${favoured}, abritées.`
-        : `Avec un vent de ${windName} (${beaufort} Bft), privilégiez les plages ${favoured}, abritées.`;
+        ? `Vent de ${windName} fort (${beaufort} Bft) — préférez les plages ${favoured}, abritées${at}.`
+        : `Avec un vent de ${windName} (${beaufort} Bft), privilégiez les plages ${favoured}, abritées${at}.`;
     case 'de':
       return strong
-        ? `Starker ${windName}wind (${beaufort} Bft) — am besten die geschützten ${favoured} Strände.`
-        : `Bei ${windName}wind (${beaufort} Bft) sind die ${favoured} Strände am besten geschützt.`;
+        ? `Starker ${windName}wind (${beaufort} Bft) — am besten die geschützten ${favoured} Strände${at}.`
+        : `Bei ${windName}wind (${beaufort} Bft) sind die ${favoured} Strände am besten geschützt${at}.`;
     case 'it':
       return strong
-        ? `Forte vento da ${windName} (${beaufort} Bft) — meglio le spiagge ${favoured}, riparate.`
-        : `Con vento da ${windName} (${beaufort} Bft), sono favorite le spiagge ${favoured}, riparate.`;
+        ? `Forte vento da ${windName} (${beaufort} Bft) — meglio le spiagge ${favoured}, riparate${at}.`
+        : `Con vento da ${windName} (${beaufort} Bft), sono favorite le spiagge ${favoured}, riparate${at}.`;
     case 'en':
     default:
       return strong
-        ? `Strong ${windName} wind (${beaufort} Bft) — stick to the sheltered ${favoured}-facing beaches.`
-        : `With a ${windName} wind at ${beaufort} Bft, head for the sheltered ${favoured}-facing beaches.`;
+        ? `Strong ${windName} wind (${beaufort} Bft) — stick to the sheltered ${favoured}-facing beaches${at}.`
+        : `With a ${windName} wind at ${beaufort} Bft, head for the sheltered ${favoured}-facing beaches${at}.`;
   }
 };
 
@@ -173,6 +183,16 @@ export interface IslandDaySummaryInput {
    * instead of freezing on one moment. Leave undefined to scan the whole beach day.
    */
   anchorHour?: number;
+  /**
+   * Localized label for the viewed time window (e.g. "στις 15:00–18:00"), already
+   * carrying its own preposition. When present, the static windy line is anchored
+   * to it so the favoured-coast claim reads as a snapshot of the viewed hour, not
+   * an all-day verdict (the favoured beaches change as the wind veers through the
+   * day). Leave undefined for the whole-day overview, where the daily wording is
+   * correct. The intra-day transition line carries its own explicit times and is
+   * unaffected.
+   */
+  timeLabel?: string;
 }
 
 // The beach-relevant window of the day. Outside it we don't summarise (sea is
@@ -296,14 +316,17 @@ const calmShort = (language: LanguageCode, kind: CalmKind): string => {
   return copy[language][kind];
 };
 
-const windyShort = (language: LanguageCode, favoured: string): string => {
+const windyShort = (language: LanguageCode, favoured: string, timeLabel?: string): string => {
+  // Same time-anchoring as the full line: tie the favoured coast to the viewed
+  // window so the condensed mobile line isn't read as an all-day claim either.
+  const at = timeLabel ? ` ${timeLabel}` : '';
   switch (language) {
-    case 'gr': return `Ευνοούνται οι ${favoured}`;
-    case 'fr': return `Mieux ${favoured}`;
-    case 'de': return `Am besten ${favoured}`;
-    case 'it': return `Meglio ${favoured}`;
+    case 'gr': return `Ευνοούνται οι ${favoured}${at}`;
+    case 'fr': return `Mieux ${favoured}${at}`;
+    case 'de': return `Am besten ${favoured}${at}`;
+    case 'it': return `Meglio ${favoured}${at}`;
     case 'en':
-    default: return `Best on the ${favoured} side`;
+    default: return `Best on the ${favoured} side${at}`;
   }
 };
 
@@ -334,7 +357,7 @@ export interface IslandDaySummary {
 }
 
 export const buildIslandDaySummary = (input: IslandDaySummaryInput): IslandDaySummary | null => {
-  const { language, beaufort, windDirection, suitableCount, totalCount, hourlyWind, anchorHour } = input;
+  const { language, beaufort, windDirection, suitableCount, totalCount, hourlyWind, anchorHour, timeLabel } = input;
   if (typeof beaufort !== 'number' || Number.isNaN(beaufort)) return null;
 
   // With hour-by-hour wind we look ahead from the hour the user is viewing (the
@@ -380,8 +403,8 @@ export const buildIslandDaySummary = (input: IslandDaySummaryInput): IslandDaySu
   const favoured = FAVOURED_SHORE[language][LEEWARD_DIRECTION[windDirection]];
   const windName = WIND_NAME[language][windDirection];
   return {
-    text: windyCopy(language, windName, favoured, bft, bft >= 6),
-    short: windyShort(language, favoured),
+    text: windyCopy(language, windName, favoured, bft, bft >= 6, timeLabel),
+    short: windyShort(language, favoured, timeLabel),
     allBeachesSuitable: false,
   };
 };
