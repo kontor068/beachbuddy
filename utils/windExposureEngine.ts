@@ -545,7 +545,15 @@ export const assessBeachWindExposure = (input: BeachWindExposureInput): WindExpo
   }
   const windSector = input.windDirection ? windSectorFromDirection(input.windDirection) : windSectorFromDegrees(input.windDirectionDeg);
   const baseBeaufort = input.beaufort;
-  const effectiveBeaufort = Math.min(12, input.beaufort + localAmplificationBoost(profile.localWindAmplification));
+  // Local wind amplification (channel/cape venturi) is DIRECTIONAL: it accelerates only
+  // the wind the beach is actually exposed to (the funnel/onshore sectors), not an offshore
+  // wind blowing off the land. Apply the boost only when the live wind is from an exposed
+  // sector; with no listed exposed sectors keep the legacy all-direction behaviour. This
+  // removes an erroneous +1 Bft over-caution on the PROTECTED sectors of the ~15 windsport/
+  // funnel spots, leaving their exposed-direction caution unchanged. (roadmap #6)
+  const amplificationApplies = profile.exposedToWindDirections.length === 0
+    || profile.exposedToWindDirections.includes(windSector);
+  const effectiveBeaufort = Math.min(12, baseBeaufort + (amplificationApplies ? localAmplificationBoost(profile.localWindAmplification) : 0));
   const isKnownWindSportRisk = profile.knownWindSportSpot && baseBeaufort >= 4;
   const isKnownWindSportCaution = profile.knownWindSportSpot && baseBeaufort === 3 && effectiveBeaufort >= 4;
   const canClaimProtected = canClaimProtectedFromWind(profile, windSector) && !isKnownWindSportRisk;
