@@ -170,10 +170,12 @@ const GEOSPATIAL_WIND_PROFILE_BACKFILL_ISLANDS = new Set([
   // ("source=unknown") regions, withheld from confident top picks at >=3 Bft; their
   // high-confidence geometry already drove map colour, so this aligns recommendations
   // with the map. Pelion + Larissa coast are included (the 2026-06-11 Thessaly
-  // re-geocoding cleared their previously-garbage pins). HELD OUT pending a pin fix:
-  // korinthia (#3040 Limni Vouliagmenis is 1.4 km inland yet claims protected) and
-  // kavala (#3012 Perigiali HIGH). Xanthi is in despite #859 Nestos delta — that pin
-  // is unusable (facing null / all-protected) so isUsableGeneratedProfile drops it.
+  // re-geocoding cleared their previously-garbage pins). Xanthi is in despite #859
+  // Nestos delta — that pin is unusable (facing null / all-protected) so
+  // isUsableGeneratedProfile drops it. Korinthia + Kavala are in too: their two
+  // mask-blind seatrac seeds (#3040 Lake Vouliagmeni lagoon, #3012 Perigiali) carry
+  // conservative no-claim windProfile overrides, so only the clean-geometry beaches
+  // in those regions become trusted.
   'lakonia (mainland)',
   'messinia (mainland)',
   'magnesia (mainland - pelion)',
@@ -200,6 +202,8 @@ const GEOSPATIAL_WIND_PROFILE_BACKFILL_ISLANDS = new Set([
   'xanthi (mainland)',
   'arta (mainland)',
   'iraklia',
+  'korinthia (mainland)',
+  'kavala (mainland)',
 ]);
 
 const WIND_SECTOR_LABELS: Record<WindSector, string> = {

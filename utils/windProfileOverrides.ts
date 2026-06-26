@@ -1125,6 +1125,18 @@ export const windProfileOverridesByBeachId: Record<number, WindProfile> = {
     confidence: 'medium',
     notes: 'Korthi/southeast Andros beach. It may differ from north-exposed beaches, but gusts and local exposure still need caution.',
   },
+  // Two unverified Seatrac accessibility seeds whose pins the high-res coastline mask
+  // cannot resolve (added 2026-06-27 so Korinthia/Kavala could graduate). Conservative
+  // no-claim profiles keep them out of confident "calm" picks while their regions'
+  // other beaches use geometry. Follow-up: fix the pins (data quality) — #3012
+  // Perigiali sits ~672 m from its OSM beach; #3040 is the enclosed Lake Vouliagmeni
+  // (Heraion) lagoon, which the sea mask treats as land.
+  3012: unverifiedWindProfile(
+    'Perigiali (Kavala) — unverified Seatrac geocode seed; pin ~672 m from the OSM beach so straight-ray geometry is unreliable. No calm/protected claim until the pin is fixed and verified.'
+  ),
+  3040: unverifiedWindProfile(
+    'Loutraki Lake Vouliagmeni / Heraion lagoon — official Seatrac accessible beach on an enclosed lagoon the coastline mask treats as land, so the geometry origin-jumps ~1.4 km and cannot be trusted. Almost certainly calm in reality, but kept as a no-claim conservative profile pending field verification.'
+  ),
 };
 
 const legacyMilosOverrideEntries: OverrideEntry[] = [
