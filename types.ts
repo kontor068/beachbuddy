@@ -167,6 +167,7 @@ export type WarningFlagType =
   | 'strong_wind'
   | 'gusty_wind'
   | 'rough_sea'
+  | 'afternoon_wind_build'
   | 'exposed_to_wind'
   | 'offshore_wind'
   | 'onshore_chop'

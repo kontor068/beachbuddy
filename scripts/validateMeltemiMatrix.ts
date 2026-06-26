@@ -31,6 +31,7 @@ import path from 'node:path';
 import { assessBeachWindExposure } from '../utils/windExposureEngine';
 import { degToCompass, getBeaufortLevel } from '../utils/weatherUtils';
 import { computeSwellSurgePenalty } from '../utils/swellSurge';
+import { evaluateAfternoonBuild } from '../utils/afternoonBuild';
 import type { Beach, GeospatialExposureProfile, WindSector } from '../types';
 
 const APP_DIR = path.join('public', 'data', 'beaches', 'app');
@@ -287,6 +288,25 @@ for (const [t, h] of [[undefined, 0.7], [9, undefined], [NaN, 0.7]] as Array<[nu
 }
 console.log(surgeFail === 0 ? `  all ${surgeCases.length + 3} surge asserts passed (dormant <=6s, escalates >=8s, no-op on missing)` : `  ${surgeFail} surge asserts FAILED`);
 if (surgeFail > 0) process.exitCode = 1;
+
+// --- afternoon-build helper asserts (roadmap #4) ---
+console.log('\n=== afternoon-build asserts (roadmap #4; afternoonBeauforts[], midday) ===');
+const abCases: Array<[number[], number, boolean]> = [
+  [[3, 4, 5, 6], 3, true],   // calm noon (3) -> builds to 6 = rough
+  [[4, 5], 2, true],         // 2 Bft noon -> 5 = rough
+  [[3, 3, 3], 3, false],     // flat day, no build
+  [[4, 4], 3, false],        // peak 4 but only +1 over midday = not enough build
+  [[6], 6, false],           // already windy at noon (viewing afternoon) = no build
+  [[], 4, false],            // no afternoon data = no-op
+  [[2, 3], 2, false],        // builds to 3 but never reaches windy peak (>=4)
+];
+let abFail = 0;
+for (const [bfts, mid, want] of abCases) {
+  const got = evaluateAfternoonBuild(bfts, mid).buildsRough;
+  if (got !== want) { abFail++; console.log(`  FAIL  evaluateAfternoonBuild([${bfts}], ${mid}).buildsRough = ${got} (want ${want})`); }
+}
+console.log(abFail === 0 ? `  all ${abCases.length} afternoon-build asserts passed (fires only on a real build to a windy peak)` : `  ${abFail} afternoon-build asserts FAILED`);
+if (abFail > 0) process.exitCode = 1;
 
 writeFileSync(jsonOutPath, JSON.stringify({
   beachCount,

@@ -28,6 +28,7 @@ import {
 } from '../types';
 import { degToCompass, calculateDistance, getBeaufortLevel } from '../utils/weatherUtils';
 import { computeSwellSurgePenalty, SWELL_SURGE_PENALTY_MID } from '../utils/swellSurge';
+import { evaluateAfternoonBuild } from '../utils/afternoonBuild';
 import { calculateWindExposure } from '../utils/windExposure';
 import { calculateCrowdLevel, CrowdLevel } from './crowdService';
 import { ExposureLevel } from '../utils/windExposure';
@@ -1485,6 +1486,31 @@ export const calculateBeachScore = (
     }
   }
 
+  // Afternoon wind build (roadmap #4): the headline uses the ~13:00 sample, but the
+  // meltemi peaks 14:00-18:00. When the afternoon climbs well above midday into a windy
+  // state, escalate the per-beach comfort + warn. The MAP stays at the representative
+  // hour by design (the hour slider already shows the afternoon).
+  const afternoonItems = getKeyBeachHours(hourlyForecast).filter(item => {
+    const h = new Date(item.dt * 1000).getHours();
+    return h >= 13 && h <= 18;
+  });
+  const afternoonBuild = evaluateAfternoonBuild(
+    afternoonItems.map(item => getBeaufortLevel(item.wind.speed * 3.6)),
+    baseBeaufort
+  );
+  if (afternoonBuild.buildsRough) {
+    const peakItem = afternoonItems.reduce((max, item) => (
+      getBeaufortLevel(item.wind.speed * 3.6) > getBeaufortLevel(max.wind.speed * 3.6) ? item : max
+    ));
+    const peakHour = new Date(peakItem.dt * 1000).getHours();
+    warnings.push({
+      type: 'afternoon_wind_build',
+      severity: afternoonBuild.peakBeaufort >= 5 ? 'warning' : 'info',
+      message: `Calmer now, but wind builds to ${afternoonBuild.peakBeaufort} Beaufort by about ${peakHour}:00 — better as a morning visit.`,
+    });
+    reasons.push('Wind builds through the afternoon');
+  }
+
   const hourlyRain = calculateHourlyRainRisk(hourlyForecast);
   if (hourlyRain.hasRainRisk) {
     const rainyWindowText = hourlyRain.rainyWindows.length > 0
@@ -1618,6 +1644,9 @@ export const calculateBeachScore = (
     reasons.push('Long-period swell breaks hard');
   }
   swimmingScore += windAssessment.swimmingScoreModifier;
+  // Roadmap #4: dock for a significant afternoon build so a calm-noon verdict cannot read
+  // 'good' when the meltemi turns it rough by mid-afternoon (comfort-only; map unchanged).
+  if (afternoonBuild.buildsRough) swimmingScore -= Math.min(20, 4 + afternoonBuild.buildBeaufort * 5);
   if (heavyRecentRain && hasRunoffRisk) {
     swimmingScore -= waterQualityRiskAfterRain === 'high' ? 16 : 8;
   }
@@ -1746,6 +1775,10 @@ export const calculateBeachScore = (
   }
 
   let swimmingComfort = swimmingComfortFromScore(swimmingScore, effectiveBeaufort, effectiveWaveHeightM, officialWarningOverride);
+  // Roadmap #4: a strong afternoon build never leaves a 'good'/'excellent' headline.
+  if (afternoonBuild.buildsRough && (swimmingComfort === 'good' || swimmingComfort === 'excellent')) {
+    swimmingComfort = 'caution';
+  }
   if (confidence.level === 'low' && swimmingComfort === 'excellent') {
     swimmingComfort = 'good';
   }

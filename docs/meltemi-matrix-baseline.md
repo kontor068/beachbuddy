@@ -48,5 +48,10 @@ known shelters** (Naxos Agios Prokopios/Plaka, Milos Fyriplaka, Lefkada Porto Ka
   (fully-developed sea) sets openness=1 so distant land clipped beyond the fetch no longer caps it.
   Simulated first (2.7% of sectors changed, all long-fetch ≥12 km, 0 calmer-direction regressions),
   then rebuilt + re-validated (ground-truth 127/128, engine suite green, no-false-protected still 0).
-- #4 afternoon/temporal → (needs a time dimension added to the matrix).
+- #4 afternoon/temporal **(LANDED 2026-06-27)** → comfort-only by design (map stays at the
+  representative hour, user-chosen). `evaluateAfternoonBuild` (utils/afternoonBuild.ts) docks the swim
+  score + caps comfort at 'caution' + warns when the 13:00-18:00 peak climbs ≥2 Bft above midday into a
+  ≥4 Bft state. Matrix asserts the helper (7 cases: fires only on a real build to a windy peak; no-op on
+  flat / already-windy-noon / no-data). The engine-level matrix is unaffected (this is a service-layer
+  comfort signal, like #2).
 - Curating more sheltered labels → label accuracy denominator grows; watch the protected/calm recall.
