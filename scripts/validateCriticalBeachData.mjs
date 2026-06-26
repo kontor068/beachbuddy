@@ -225,7 +225,9 @@ const knownIslandCoordinateBounds = {
     areas: [
       { minLat: 38.62, maxLat: 39.08, minLon: 22.88, maxLon: 23.98 },
       { minLat: 38.22, maxLat: 38.82, minLon: 23.18, maxLon: 24.24 },
-      { minLat: 37.88, maxLat: 38.25, minLon: 24.18, maxLon: 24.66 },
+      // SE Evia (Kafireas/Mesochoria) coast — maxLat nudged 38.25->38.28 to close a seam that
+      // excluded the real Almyrichi beach at 38.261,24.252.
+      { minLat: 37.88, maxLat: 38.28, minLon: 24.18, maxLon: 24.66 },
     ],
     exclusions: [
       { minLat: 38.60, maxLat: 38.78, minLon: 22.88, maxLon: 23.22 },

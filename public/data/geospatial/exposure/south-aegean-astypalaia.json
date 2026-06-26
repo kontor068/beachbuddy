@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "generatedAt": "2026-06-12T06:15:01.222Z",
+  "generatedAt": "2026-06-26T10:13:12.567Z",
   "region": {
     "id": "south-aegean-astypalaia",
     "name": "Astypalaia"
@@ -36,47 +36,47 @@
     "maskConfidence": "high"
   },
   "summary": {
-    "beachCount": 20,
-    "generatedProfiles": 20,
+    "beachCount": 22,
+    "generatedProfiles": 22,
     "missingCoordinates": 0,
     "sectors": {
       "N": {
-        "protected": 11,
+        "protected": 13,
         "partial": 6,
         "exposed": 3
       },
       "NE": {
-        "protected": 9,
-        "partial": 10,
+        "protected": 10,
+        "partial": 11,
         "exposed": 1
       },
       "E": {
         "protected": 8,
-        "partial": 7,
-        "exposed": 5
+        "partial": 8,
+        "exposed": 6
       },
       "SE": {
         "protected": 9,
-        "partial": 3,
-        "exposed": 8
+        "partial": 4,
+        "exposed": 9
       },
       "S": {
         "protected": 10,
-        "partial": 3,
-        "exposed": 7
+        "partial": 4,
+        "exposed": 8
       },
       "SW": {
-        "protected": 11,
-        "partial": 6,
+        "protected": 12,
+        "partial": 7,
         "exposed": 3
       },
       "W": {
-        "protected": 15,
+        "protected": 17,
         "partial": 2,
         "exposed": 3
       },
       "NW": {
-        "protected": 13,
+        "protected": 15,
         "partial": 6,
         "exposed": 1
       }
@@ -1499,6 +1499,148 @@
           "blockedRayRatio": 0.8,
           "onshore": 0.311,
           "intensity": 41.5
+        }
+      },
+      "confidence": "high"
+    },
+    "3073": {
+      "beachId": 3073,
+      "name": {
+        "en": "Koutsomiti",
+        "gr": "Koutsomiti"
+      },
+      "coordinates": {
+        "lat": 36.5488348,
+        "lon": 26.4475315
+      },
+      "facingDeg": 104.4,
+      "sectors": {
+        "N": {
+          "level": "protected",
+          "fetchKm": 0,
+          "blockedRayRatio": 1,
+          "onshore": -0.249,
+          "intensity": 22.5
+        },
+        "NE": {
+          "level": "partial",
+          "fetchKm": 5,
+          "blockedRayRatio": 0.8,
+          "onshore": 0.509,
+          "intensity": 47.8
+        },
+        "E": {
+          "level": "exposed",
+          "fetchKm": 15,
+          "blockedRayRatio": 0.4,
+          "onshore": 0.969,
+          "intensity": 82.7
+        },
+        "SE": {
+          "level": "partial",
+          "fetchKm": 5,
+          "blockedRayRatio": 0.8,
+          "onshore": 0.861,
+          "intensity": 58.9
+        },
+        "S": {
+          "level": "partial",
+          "fetchKm": 10,
+          "blockedRayRatio": 0.6,
+          "onshore": 0.249,
+          "intensity": 45.8
+        },
+        "SW": {
+          "level": "protected",
+          "fetchKm": 10,
+          "blockedRayRatio": 0.6,
+          "onshore": -0.509,
+          "intensity": 18
+        },
+        "W": {
+          "level": "protected",
+          "fetchKm": 0,
+          "blockedRayRatio": 1,
+          "onshore": -0.969,
+          "intensity": 0.9
+        },
+        "NW": {
+          "level": "protected",
+          "fetchKm": 0,
+          "blockedRayRatio": 1,
+          "onshore": -0.861,
+          "intensity": 4.2
+        }
+      },
+      "confidence": "high"
+    },
+    "3092": {
+      "beachId": 3092,
+      "name": {
+        "en": "Steno",
+        "gr": "Στενό"
+      },
+      "coordinates": {
+        "lat": 36.5664406,
+        "lon": 26.3542429
+      },
+      "facingDeg": 153.5,
+      "sectors": {
+        "N": {
+          "level": "protected",
+          "fetchKm": 0,
+          "blockedRayRatio": 1,
+          "onshore": -0.895,
+          "intensity": 3.2
+        },
+        "NE": {
+          "level": "protected",
+          "fetchKm": 0,
+          "blockedRayRatio": 1,
+          "onshore": -0.317,
+          "intensity": 20.5
+        },
+        "E": {
+          "level": "partial",
+          "fetchKm": 5.04,
+          "blockedRayRatio": 0.8,
+          "onshore": 0.446,
+          "intensity": 45.8
+        },
+        "SE": {
+          "level": "exposed",
+          "fetchKm": 15.2,
+          "blockedRayRatio": 0.4,
+          "onshore": 0.948,
+          "intensity": 81.8
+        },
+        "S": {
+          "level": "exposed",
+          "fetchKm": 5.44,
+          "blockedRayRatio": 0.8,
+          "onshore": 0.895,
+          "intensity": 60.3
+        },
+        "SW": {
+          "level": "partial",
+          "fetchKm": 0.16,
+          "blockedRayRatio": 1,
+          "onshore": 0.317,
+          "intensity": 39.5
+        },
+        "W": {
+          "level": "protected",
+          "fetchKm": 0,
+          "blockedRayRatio": 1,
+          "onshore": -0.446,
+          "intensity": 16.6
+        },
+        "NW": {
+          "level": "protected",
+          "fetchKm": 0,
+          "blockedRayRatio": 1,
+          "onshore": -0.948,
+          "intensity": 1.6
         }
       },
       "confidence": "high"

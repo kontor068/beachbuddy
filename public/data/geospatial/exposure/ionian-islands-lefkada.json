@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "generatedAt": "2026-06-12T06:14:52.147Z",
+  "generatedAt": "2026-06-26T10:13:03.177Z",
   "region": {
     "id": "ionian-islands-lefkada",
     "name": "Lefkada"
@@ -36,49 +36,49 @@
     "maskConfidence": "high"
   },
   "summary": {
-    "beachCount": 35,
-    "generatedProfiles": 35,
+    "beachCount": 36,
+    "generatedProfiles": 36,
     "missingCoordinates": 0,
     "sectors": {
       "N": {
         "protected": 15,
         "partial": 10,
-        "exposed": 10
+        "exposed": 11
       },
       "NE": {
         "protected": 22,
-        "partial": 13,
+        "partial": 14,
         "exposed": 0
       },
       "E": {
-        "protected": 23,
+        "protected": 24,
         "partial": 12,
         "exposed": 0
       },
       "SE": {
-        "protected": 20,
+        "protected": 21,
         "partial": 14,
         "exposed": 1
       },
       "S": {
-        "protected": 20,
+        "protected": 21,
         "partial": 11,
         "exposed": 4
       },
       "SW": {
-        "protected": 14,
+        "protected": 15,
         "partial": 10,
         "exposed": 11
       },
       "W": {
         "protected": 13,
-        "partial": 10,
+        "partial": 11,
         "exposed": 12
       },
       "NW": {
         "protected": 16,
         "partial": 1,
-        "exposed": 18
+        "exposed": 19
       }
     }
   },
@@ -2564,6 +2564,77 @@
           "blockedRayRatio": 1,
           "onshore": -0.426,
           "intensity": 17.2
+        }
+      },
+      "confidence": "high"
+    },
+    "3098": {
+      "beachId": 3098,
+      "name": {
+        "en": "Ai Giannis (Levkada)",
+        "gr": "Άι Γιάννης (Λευκάδα)"
+      },
+      "coordinates": {
+        "lat": 38.8315858,
+        "lon": 20.6698745
+      },
+      "facingDeg": 349.1,
+      "sectors": {
+        "N": {
+          "level": "exposed",
+          "fetchKm": 21.6,
+          "blockedRayRatio": 0.4,
+          "onshore": 0.982,
+          "intensity": 83.2
+        },
+        "NE": {
+          "level": "partial",
+          "fetchKm": 7.16,
+          "blockedRayRatio": 1,
+          "onshore": 0.561,
+          "intensity": 46.8
+        },
+        "E": {
+          "level": "protected",
+          "fetchKm": 0.44,
+          "blockedRayRatio": 1,
+          "onshore": -0.189,
+          "intensity": 24.3
+        },
+        "SE": {
+          "level": "protected",
+          "fetchKm": 0.08,
+          "blockedRayRatio": 1,
+          "onshore": -0.828,
+          "intensity": 5.2
+        },
+        "S": {
+          "level": "protected",
+          "fetchKm": 0,
+          "blockedRayRatio": 1,
+          "onshore": -0.982,
+          "intensity": 0.5
+        },
+        "SW": {
+          "level": "protected",
+          "fetchKm": 0.04,
+          "blockedRayRatio": 1,
+          "onshore": -0.561,
+          "intensity": 13.2
+        },
+        "W": {
+          "level": "partial",
+          "fetchKm": 5.28,
+          "blockedRayRatio": 0.8,
+          "onshore": 0.189,
+          "intensity": 37.8
+        },
+        "NW": {
+          "level": "exposed",
+          "fetchKm": 20.2,
+          "blockedRayRatio": 0.2,
+          "onshore": 0.828,
+          "intensity": 84.1
         }
       },
       "confidence": "high"

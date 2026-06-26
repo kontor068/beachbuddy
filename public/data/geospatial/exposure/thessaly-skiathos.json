@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "generatedAt": "2026-06-18T20:17:47.507Z",
+  "generatedAt": "2026-06-26T10:13:20.808Z",
   "region": {
     "id": "thessaly-skiathos",
     "name": "Skiathos"
@@ -36,48 +36,48 @@
     "maskConfidence": "high"
   },
   "summary": {
-    "beachCount": 32,
-    "generatedProfiles": 32,
+    "beachCount": 33,
+    "generatedProfiles": 33,
     "missingCoordinates": 0,
     "sectors": {
       "N": {
-        "protected": 16,
+        "protected": 17,
         "partial": 4,
         "exposed": 12
       },
       "NE": {
-        "protected": 17,
+        "protected": 18,
         "partial": 7,
         "exposed": 8
       },
       "E": {
-        "protected": 19,
+        "protected": 20,
         "partial": 12,
         "exposed": 1
       },
       "SE": {
-        "protected": 20,
+        "protected": 21,
         "partial": 5,
         "exposed": 7
       },
       "S": {
         "protected": 19,
-        "partial": 4,
+        "partial": 5,
         "exposed": 9
       },
       "SW": {
         "protected": 16,
         "partial": 9,
-        "exposed": 7
+        "exposed": 8
       },
       "W": {
         "protected": 15,
         "partial": 12,
-        "exposed": 5
+        "exposed": 6
       },
       "NW": {
         "protected": 15,
-        "partial": 10,
+        "partial": 11,
         "exposed": 7
       }
     }
@@ -2351,6 +2351,77 @@
           "blockedRayRatio": 1,
           "onshore": -0.494,
           "intensity": 15.2
+        }
+      },
+      "confidence": "high"
+    },
+    "3085": {
+      "beachId": 3085,
+      "name": {
+        "en": "Paralia Lalarias",
+        "gr": "Παραλία Λαλάριας"
+      },
+      "coordinates": {
+        "lat": 39.1210534,
+        "lon": 23.4953176
+      },
+      "facingDeg": 263,
+      "sectors": {
+        "N": {
+          "level": "protected",
+          "fetchKm": 0.84,
+          "blockedRayRatio": 1,
+          "onshore": -0.122,
+          "intensity": 26.3
+        },
+        "NE": {
+          "level": "protected",
+          "fetchKm": 0,
+          "blockedRayRatio": 1,
+          "onshore": -0.788,
+          "intensity": 6.4
+        },
+        "E": {
+          "level": "protected",
+          "fetchKm": 0,
+          "blockedRayRatio": 1,
+          "onshore": -0.993,
+          "intensity": 0.2
+        },
+        "SE": {
+          "level": "protected",
+          "fetchKm": 0,
+          "blockedRayRatio": 1,
+          "onshore": -0.616,
+          "intensity": 11.5
+        },
+        "S": {
+          "level": "partial",
+          "fetchKm": 13.08,
+          "blockedRayRatio": 0.8,
+          "onshore": 0.122,
+          "intensity": 38.1
+        },
+        "SW": {
+          "level": "exposed",
+          "fetchKm": 19.72,
+          "blockedRayRatio": 0.8,
+          "onshore": 0.788,
+          "intensity": 60.8
+        },
+        "W": {
+          "level": "exposed",
+          "fetchKm": 14.4,
+          "blockedRayRatio": 0.8,
+          "onshore": 0.993,
+          "intensity": 67.7
+        },
+        "NW": {
+          "level": "partial",
+          "fetchKm": 2.88,
+          "blockedRayRatio": 1,
+          "onshore": 0.616,
+          "intensity": 48.5
         }
       },
       "confidence": "high"

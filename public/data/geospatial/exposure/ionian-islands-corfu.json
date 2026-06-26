@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "generatedAt": "2026-06-18T20:17:28.126Z",
+  "generatedAt": "2026-06-26T10:13:01.386Z",
   "region": {
     "id": "ionian-islands-corfu",
     "name": "Corfu"
@@ -36,49 +36,49 @@
     "maskConfidence": "high"
   },
   "summary": {
-    "beachCount": 93,
-    "generatedProfiles": 93,
+    "beachCount": 105,
+    "generatedProfiles": 105,
     "missingCoordinates": 0,
     "sectors": {
       "N": {
-        "protected": 48,
-        "partial": 22,
-        "exposed": 23
+        "protected": 54,
+        "partial": 26,
+        "exposed": 25
       },
       "NE": {
-        "protected": 50,
-        "partial": 29,
+        "protected": 53,
+        "partial": 38,
         "exposed": 14
       },
       "E": {
-        "protected": 48,
-        "partial": 36,
-        "exposed": 9
+        "protected": 50,
+        "partial": 45,
+        "exposed": 10
       },
       "SE": {
-        "protected": 48,
-        "partial": 33,
-        "exposed": 12
+        "protected": 50,
+        "partial": 40,
+        "exposed": 15
       },
       "S": {
-        "protected": 45,
-        "partial": 19,
-        "exposed": 29
-      },
-      "SW": {
-        "protected": 45,
-        "partial": 13,
-        "exposed": 35
-      },
-      "W": {
-        "protected": 48,
-        "partial": 13,
+        "protected": 52,
+        "partial": 21,
         "exposed": 32
       },
+      "SW": {
+        "protected": 55,
+        "partial": 14,
+        "exposed": 36
+      },
+      "W": {
+        "protected": 58,
+        "partial": 14,
+        "exposed": 33
+      },
       "NW": {
-        "protected": 45,
+        "protected": 56,
         "partial": 33,
-        "exposed": 15
+        "exposed": 16
       }
     }
   },
@@ -6682,6 +6682,858 @@
           "blockedRayRatio": 1,
           "onshore": -0.434,
           "intensity": 17
+        }
+      },
+      "confidence": "high"
+    },
+    "3067": {
+      "beachId": 3067,
+      "name": {
+        "en": "Korfovonia",
+        "gr": "Κορφοβόνια"
+      },
+      "coordinates": {
+        "lat": 39.7694447,
+        "lon": 19.9539373
+      },
+      "facingDeg": 87.2,
+      "sectors": {
+        "N": {
+          "level": "protected",
+          "fetchKm": 2.2,
+          "blockedRayRatio": 1,
+          "onshore": 0.049,
+          "intensity": 31.5
+        },
+        "NE": {
+          "level": "partial",
+          "fetchKm": 5.32,
+          "blockedRayRatio": 1,
+          "onshore": 0.741,
+          "intensity": 52.2
+        },
+        "E": {
+          "level": "exposed",
+          "fetchKm": 3.56,
+          "blockedRayRatio": 1,
+          "onshore": 0.999,
+          "intensity": 60
+        },
+        "SE": {
+          "level": "partial",
+          "fetchKm": 2.64,
+          "blockedRayRatio": 1,
+          "onshore": 0.672,
+          "intensity": 50.2
+        },
+        "S": {
+          "level": "protected",
+          "fetchKm": 1.2,
+          "blockedRayRatio": 1,
+          "onshore": -0.049,
+          "intensity": 28.5
+        },
+        "SW": {
+          "level": "protected",
+          "fetchKm": 0,
+          "blockedRayRatio": 1,
+          "onshore": -0.741,
+          "intensity": 7.8
+        },
+        "W": {
+          "level": "protected",
+          "fetchKm": 0,
+          "blockedRayRatio": 1,
+          "onshore": -0.999,
+          "intensity": 0
+        },
+        "NW": {
+          "level": "protected",
+          "fetchKm": 0,
+          "blockedRayRatio": 1,
+          "onshore": -0.672,
+          "intensity": 9.8
+        }
+      },
+      "confidence": "high"
+    },
+    "3068": {
+      "beachId": 3068,
+      "name": {
+        "en": "Moschofili",
+        "gr": "Μοσχοφίλι"
+      },
+      "coordinates": {
+        "lat": 39.7816882,
+        "lon": 19.94921
+      },
+      "facingDeg": 68.2,
+      "sectors": {
+        "N": {
+          "level": "partial",
+          "fetchKm": 11.84,
+          "blockedRayRatio": 0.8,
+          "onshore": 0.371,
+          "intensity": 46.6
+        },
+        "NE": {
+          "level": "partial",
+          "fetchKm": 7.76,
+          "blockedRayRatio": 1,
+          "onshore": 0.919,
+          "intensity": 57.6
+        },
+        "E": {
+          "level": "partial",
+          "fetchKm": 4.36,
+          "blockedRayRatio": 1,
+          "onshore": 0.928,
+          "intensity": 57.9
+        },
+        "SE": {
+          "level": "partial",
+          "fetchKm": 2.16,
+          "blockedRayRatio": 1,
+          "onshore": 0.394,
+          "intensity": 41.8
+        },
+        "S": {
+          "level": "protected",
+          "fetchKm": 0.2,
+          "blockedRayRatio": 1,
+          "onshore": -0.371,
+          "intensity": 18.9
+        },
+        "SW": {
+          "level": "protected",
+          "fetchKm": 0.08,
+          "blockedRayRatio": 1,
+          "onshore": -0.919,
+          "intensity": 2.4
+        },
+        "W": {
+          "level": "protected",
+          "fetchKm": 0,
+          "blockedRayRatio": 1,
+          "onshore": -0.928,
+          "intensity": 2.1
+        },
+        "NW": {
+          "level": "protected",
+          "fetchKm": 5.04,
+          "blockedRayRatio": 0.8,
+          "onshore": -0.394,
+          "intensity": 19.2
+        }
+      },
+      "confidence": "high"
+    },
+    "3069": {
+      "beachId": 3069,
+      "name": {
+        "en": "Paralia Kerasia",
+        "gr": "Παραλία Κερασιά"
+      },
+      "coordinates": {
+        "lat": 39.7542593,
+        "lon": 19.941731
+      },
+      "facingDeg": 142.5,
+      "sectors": {
+        "N": {
+          "level": "protected",
+          "fetchKm": 0,
+          "blockedRayRatio": 1,
+          "onshore": -0.793,
+          "intensity": 6.2
+        },
+        "NE": {
+          "level": "protected",
+          "fetchKm": 0,
+          "blockedRayRatio": 1,
+          "onshore": -0.131,
+          "intensity": 26.1
+        },
+        "E": {
+          "level": "partial",
+          "fetchKm": 2.2,
+          "blockedRayRatio": 1,
+          "onshore": 0.609,
+          "intensity": 48.3
+        },
+        "SE": {
+          "level": "exposed",
+          "fetchKm": 9.04,
+          "blockedRayRatio": 0.8,
+          "onshore": 0.991,
+          "intensity": 65.7
+        },
+        "S": {
+          "level": "exposed",
+          "fetchKm": 11.44,
+          "blockedRayRatio": 0.6,
+          "onshore": 0.793,
+          "intensity": 67.5
+        },
+        "SW": {
+          "level": "partial",
+          "fetchKm": 0.16,
+          "blockedRayRatio": 1,
+          "onshore": 0.131,
+          "intensity": 33.9
+        },
+        "W": {
+          "level": "protected",
+          "fetchKm": 0,
+          "blockedRayRatio": 1,
+          "onshore": -0.609,
+          "intensity": 11.7
+        },
+        "NW": {
+          "level": "protected",
+          "fetchKm": 0,
+          "blockedRayRatio": 1,
+          "onshore": -0.991,
+          "intensity": 0.3
+        }
+      },
+      "confidence": "high"
+    },
+    "3078": {
+      "beachId": 3078,
+      "name": {
+        "en": "Vouvalomantria",
+        "gr": "Βουβαλομάντρια"
+      },
+      "coordinates": {
+        "lat": 39.7848673,
+        "lon": 19.9469849
+      },
+      "facingDeg": 52.9,
+      "sectors": {
+        "N": {
+          "level": "exposed",
+          "fetchKm": 16.8,
+          "blockedRayRatio": 0.6,
+          "onshore": 0.603,
+          "intensity": 60.9
+        },
+        "NE": {
+          "level": "partial",
+          "fetchKm": 7.84,
+          "blockedRayRatio": 1,
+          "onshore": 0.991,
+          "intensity": 59.7
+        },
+        "E": {
+          "level": "partial",
+          "fetchKm": 4.52,
+          "blockedRayRatio": 1,
+          "onshore": 0.798,
+          "intensity": 53.9
+        },
+        "SE": {
+          "level": "partial",
+          "fetchKm": 2.44,
+          "blockedRayRatio": 1,
+          "onshore": 0.137,
+          "intensity": 34.1
+        },
+        "S": {
+          "level": "protected",
+          "fetchKm": 0.12,
+          "blockedRayRatio": 1,
+          "onshore": -0.603,
+          "intensity": 11.9
+        },
+        "SW": {
+          "level": "protected",
+          "fetchKm": 0,
+          "blockedRayRatio": 1,
+          "onshore": -0.991,
+          "intensity": 0.3
+        },
+        "W": {
+          "level": "protected",
+          "fetchKm": 0.08,
+          "blockedRayRatio": 1,
+          "onshore": -0.798,
+          "intensity": 6.1
+        },
+        "NW": {
+          "level": "protected",
+          "fetchKm": 10.12,
+          "blockedRayRatio": 0.6,
+          "onshore": -0.137,
+          "intensity": 31.7
+        }
+      },
+      "confidence": "high"
+    },
+    "3079": {
+      "beachId": 3079,
+      "name": {
+        "en": "Vrachli",
+        "gr": "Βραχλή"
+      },
+      "coordinates": {
+        "lat": 39.7856159,
+        "lon": 19.944811
+      },
+      "facingDeg": 50,
+      "sectors": {
+        "N": {
+          "level": "partial",
+          "fetchKm": 6.72,
+          "blockedRayRatio": 1,
+          "onshore": 0.643,
+          "intensity": 49.3
+        },
+        "NE": {
+          "level": "partial",
+          "fetchKm": 7.92,
+          "blockedRayRatio": 1,
+          "onshore": 0.996,
+          "intensity": 59.9
+        },
+        "E": {
+          "level": "partial",
+          "fetchKm": 3.08,
+          "blockedRayRatio": 1,
+          "onshore": 0.766,
+          "intensity": 53
+        },
+        "SE": {
+          "level": "protected",
+          "fetchKm": 0,
+          "blockedRayRatio": 1,
+          "onshore": 0.087,
+          "intensity": 32.6
+        },
+        "S": {
+          "level": "protected",
+          "fetchKm": 0,
+          "blockedRayRatio": 1,
+          "onshore": -0.643,
+          "intensity": 10.7
+        },
+        "SW": {
+          "level": "protected",
+          "fetchKm": 0,
+          "blockedRayRatio": 1,
+          "onshore": -0.996,
+          "intensity": 0.1
+        },
+        "W": {
+          "level": "protected",
+          "fetchKm": 0,
+          "blockedRayRatio": 1,
+          "onshore": -0.766,
+          "intensity": 7
+        },
+        "NW": {
+          "level": "protected",
+          "fetchKm": 0,
+          "blockedRayRatio": 1,
+          "onshore": -0.087,
+          "intensity": 27.4
+        }
+      },
+      "confidence": "high"
+    },
+    "3080": {
+      "beachId": 3080,
+      "name": {
+        "en": "Paralia Chouchoulio",
+        "gr": "Παραλία Χουχούλιο"
+      },
+      "coordinates": {
+        "lat": 39.7461274,
+        "lon": 19.9387283
+      },
+      "facingDeg": 96.9,
+      "sectors": {
+        "N": {
+          "level": "protected",
+          "fetchKm": 0.16,
+          "blockedRayRatio": 1,
+          "onshore": -0.12,
+          "intensity": 26.4
+        },
+        "NE": {
+          "level": "partial",
+          "fetchKm": 2.96,
+          "blockedRayRatio": 1,
+          "onshore": 0.617,
+          "intensity": 48.5
+        },
+        "E": {
+          "level": "partial",
+          "fetchKm": 4.04,
+          "blockedRayRatio": 1,
+          "onshore": 0.993,
+          "intensity": 59.8
+        },
+        "SE": {
+          "level": "exposed",
+          "fetchKm": 13.08,
+          "blockedRayRatio": 0.6,
+          "onshore": 0.787,
+          "intensity": 67.9
+        },
+        "S": {
+          "level": "partial",
+          "fetchKm": 10.04,
+          "blockedRayRatio": 0.6,
+          "onshore": 0.12,
+          "intensity": 41.1
+        },
+        "SW": {
+          "level": "protected",
+          "fetchKm": 0,
+          "blockedRayRatio": 1,
+          "onshore": -0.617,
+          "intensity": 11.5
+        },
+        "W": {
+          "level": "protected",
+          "fetchKm": 0,
+          "blockedRayRatio": 1,
+          "onshore": -0.993,
+          "intensity": 0.2
+        },
+        "NW": {
+          "level": "protected",
+          "fetchKm": 0,
+          "blockedRayRatio": 1,
+          "onshore": -0.787,
+          "intensity": 6.4
+        }
+      },
+      "confidence": "high"
+    },
+    "3081": {
+      "beachId": 3081,
+      "name": {
+        "en": "Tzoufaka",
+        "gr": "Τζουφάκα"
+      },
+      "coordinates": {
+        "lat": 39.7831304,
+        "lon": 19.947964
+      },
+      "facingDeg": 54.2,
+      "sectors": {
+        "N": {
+          "level": "partial",
+          "fetchKm": 11.8,
+          "blockedRayRatio": 0.8,
+          "onshore": 0.585,
+          "intensity": 53.8
+        },
+        "NE": {
+          "level": "partial",
+          "fetchKm": 7.76,
+          "blockedRayRatio": 1,
+          "onshore": 0.987,
+          "intensity": 59.6
+        },
+        "E": {
+          "level": "partial",
+          "fetchKm": 4.36,
+          "blockedRayRatio": 1,
+          "onshore": 0.811,
+          "intensity": 54.3
+        },
+        "SE": {
+          "level": "partial",
+          "fetchKm": 2.2,
+          "blockedRayRatio": 1,
+          "onshore": 0.16,
+          "intensity": 34.8
+        },
+        "S": {
+          "level": "protected",
+          "fetchKm": 0.08,
+          "blockedRayRatio": 1,
+          "onshore": -0.585,
+          "intensity": 12.5
+        },
+        "SW": {
+          "level": "protected",
+          "fetchKm": 0,
+          "blockedRayRatio": 1,
+          "onshore": -0.987,
+          "intensity": 0.4
+        },
+        "W": {
+          "level": "protected",
+          "fetchKm": 0,
+          "blockedRayRatio": 1,
+          "onshore": -0.811,
+          "intensity": 5.7
+        },
+        "NW": {
+          "level": "protected",
+          "fetchKm": 5,
+          "blockedRayRatio": 0.8,
+          "onshore": -0.16,
+          "intensity": 26.6
+        }
+      },
+      "confidence": "high"
+    },
+    "3099": {
+      "beachId": 3099,
+      "name": {
+        "en": "Akoli (Kerkyra)",
+        "gr": "Άκολη (Κέρκυρα)"
+      },
+      "coordinates": {
+        "lat": 39.7767142,
+        "lon": 19.9546849
+      },
+      "facingDeg": 54.2,
+      "sectors": {
+        "N": {
+          "level": "partial",
+          "fetchKm": 6.84,
+          "blockedRayRatio": 1,
+          "onshore": 0.585,
+          "intensity": 47.5
+        },
+        "NE": {
+          "level": "partial",
+          "fetchKm": 7.24,
+          "blockedRayRatio": 1,
+          "onshore": 0.987,
+          "intensity": 59.6
+        },
+        "E": {
+          "level": "partial",
+          "fetchKm": 3.12,
+          "blockedRayRatio": 1,
+          "onshore": 0.811,
+          "intensity": 54.3
+        },
+        "SE": {
+          "level": "partial",
+          "fetchKm": 0.76,
+          "blockedRayRatio": 1,
+          "onshore": 0.16,
+          "intensity": 34.8
+        },
+        "S": {
+          "level": "protected",
+          "fetchKm": 0,
+          "blockedRayRatio": 1,
+          "onshore": -0.585,
+          "intensity": 12.5
+        },
+        "SW": {
+          "level": "protected",
+          "fetchKm": 0,
+          "blockedRayRatio": 1,
+          "onshore": -0.987,
+          "intensity": 0.4
+        },
+        "W": {
+          "level": "protected",
+          "fetchKm": 0,
+          "blockedRayRatio": 1,
+          "onshore": -0.811,
+          "intensity": 5.7
+        },
+        "NW": {
+          "level": "protected",
+          "fetchKm": 0,
+          "blockedRayRatio": 1,
+          "onshore": -0.16,
+          "intensity": 25.2
+        }
+      },
+      "confidence": "high"
+    },
+    "3100": {
+      "beachId": 3100,
+      "name": {
+        "en": "Avlaki (Kerkyra / Kassiopi)",
+        "gr": "Αυλάκι (Κέρκυρα / Κασσιόπη)"
+      },
+      "coordinates": {
+        "lat": 39.7799223,
+        "lon": 19.9401097
+      },
+      "facingDeg": 339.4,
+      "sectors": {
+        "N": {
+          "level": "exposed",
+          "fetchKm": 12.68,
+          "blockedRayRatio": 0.6,
+          "onshore": 0.936,
+          "intensity": 73.6
+        },
+        "NE": {
+          "level": "partial",
+          "fetchKm": 0.28,
+          "blockedRayRatio": 1,
+          "onshore": 0.413,
+          "intensity": 42.4
+        },
+        "E": {
+          "level": "protected",
+          "fetchKm": 0.08,
+          "blockedRayRatio": 1,
+          "onshore": -0.352,
+          "intensity": 19.4
+        },
+        "SE": {
+          "level": "protected",
+          "fetchKm": 0,
+          "blockedRayRatio": 1,
+          "onshore": -0.911,
+          "intensity": 2.7
+        },
+        "S": {
+          "level": "protected",
+          "fetchKm": 0,
+          "blockedRayRatio": 1,
+          "onshore": -0.936,
+          "intensity": 1.9
+        },
+        "SW": {
+          "level": "protected",
+          "fetchKm": 0.04,
+          "blockedRayRatio": 1,
+          "onshore": -0.413,
+          "intensity": 17.6
+        },
+        "W": {
+          "level": "partial",
+          "fetchKm": 0.2,
+          "blockedRayRatio": 1,
+          "onshore": 0.352,
+          "intensity": 40.6
+        },
+        "NW": {
+          "level": "exposed",
+          "fetchKm": 15.12,
+          "blockedRayRatio": 0.4,
+          "onshore": 0.911,
+          "intensity": 80.2
+        }
+      },
+      "confidence": "high"
+    },
+    "3101": {
+      "beachId": 3101,
+      "name": {
+        "en": "Vromolimni (Erimitis, Kerkyra)",
+        "gr": "Βρωμολίμνη (Ερημίτης, Κέρκυρα)"
+      },
+      "coordinates": {
+        "lat": 39.7734599,
+        "lon": 19.9553668
+      },
+      "facingDeg": 102.8,
+      "sectors": {
+        "N": {
+          "level": "protected",
+          "fetchKm": 2.16,
+          "blockedRayRatio": 1,
+          "onshore": -0.222,
+          "intensity": 23.4
+        },
+        "NE": {
+          "level": "partial",
+          "fetchKm": 5.12,
+          "blockedRayRatio": 1,
+          "onshore": 0.533,
+          "intensity": 46
+        },
+        "E": {
+          "level": "partial",
+          "fetchKm": 3.48,
+          "blockedRayRatio": 1,
+          "onshore": 0.975,
+          "intensity": 59.3
+        },
+        "SE": {
+          "level": "partial",
+          "fetchKm": 4.48,
+          "blockedRayRatio": 1,
+          "onshore": 0.846,
+          "intensity": 55.4
+        },
+        "S": {
+          "level": "partial",
+          "fetchKm": 8.12,
+          "blockedRayRatio": 0.8,
+          "onshore": 0.222,
+          "intensity": 40
+        },
+        "SW": {
+          "level": "protected",
+          "fetchKm": 0.08,
+          "blockedRayRatio": 1,
+          "onshore": -0.533,
+          "intensity": 14
+        },
+        "W": {
+          "level": "protected",
+          "fetchKm": 0,
+          "blockedRayRatio": 1,
+          "onshore": -0.975,
+          "intensity": 0.7
+        },
+        "NW": {
+          "level": "protected",
+          "fetchKm": 0,
+          "blockedRayRatio": 1,
+          "onshore": -0.846,
+          "intensity": 4.6
+        }
+      },
+      "confidence": "high"
+    },
+    "3102": {
+      "beachId": 3102,
+      "name": {
+        "en": "Paralia Agios Gordis (Levkimmi)",
+        "gr": "Παραλία Άγιος Γόρδης (Λευκίμμη)"
+      },
+      "coordinates": {
+        "lat": 39.3755876,
+        "lon": 20.0653892
+      },
+      "facingDeg": 213.3,
+      "sectors": {
+        "N": {
+          "level": "protected",
+          "fetchKm": 0,
+          "blockedRayRatio": 1,
+          "onshore": -0.836,
+          "intensity": 4.9
+        },
+        "NE": {
+          "level": "protected",
+          "fetchKm": 0,
+          "blockedRayRatio": 1,
+          "onshore": -0.979,
+          "intensity": 0.6
+        },
+        "E": {
+          "level": "protected",
+          "fetchKm": 0.04,
+          "blockedRayRatio": 1,
+          "onshore": -0.549,
+          "intensity": 13.5
+        },
+        "SE": {
+          "level": "partial",
+          "fetchKm": 14.44,
+          "blockedRayRatio": 0.6,
+          "onshore": 0.203,
+          "intensity": 45.7
+        },
+        "S": {
+          "level": "exposed",
+          "fetchKm": 24.4,
+          "blockedRayRatio": 0.2,
+          "onshore": 0.836,
+          "intensity": 84.4
+        },
+        "SW": {
+          "level": "exposed",
+          "fetchKm": 25,
+          "blockedRayRatio": 0,
+          "onshore": 0.979,
+          "intensity": 99
+        },
+        "W": {
+          "level": "exposed",
+          "fetchKm": 20.4,
+          "blockedRayRatio": 0.2,
+          "onshore": 0.549,
+          "intensity": 71.3
+        },
+        "NW": {
+          "level": "protected",
+          "fetchKm": 5.44,
+          "blockedRayRatio": 0.8,
+          "onshore": -0.203,
+          "intensity": 25.4
+        }
+      },
+      "confidence": "high"
+    },
+    "3103": {
+      "beachId": 3103,
+      "name": {
+        "en": "Paralia Kalami (Kerkyra)",
+        "gr": "Παραλία Καλάμι (Κέρκυρα)"
+      },
+      "coordinates": {
+        "lat": 39.7435074,
+        "lon": 19.9338657
+      },
+      "facingDeg": 135.4,
+      "sectors": {
+        "N": {
+          "level": "protected",
+          "fetchKm": 0,
+          "blockedRayRatio": 1,
+          "onshore": -0.712,
+          "intensity": 8.6
+        },
+        "NE": {
+          "level": "protected",
+          "fetchKm": 0.04,
+          "blockedRayRatio": 1,
+          "onshore": -0.007,
+          "intensity": 29.8
+        },
+        "E": {
+          "level": "partial",
+          "fetchKm": 2.2,
+          "blockedRayRatio": 1,
+          "onshore": 0.702,
+          "intensity": 51.1
+        },
+        "SE": {
+          "level": "exposed",
+          "fetchKm": 13.24,
+          "blockedRayRatio": 0.6,
+          "onshore": 1,
+          "intensity": 76
+        },
+        "S": {
+          "level": "exposed",
+          "fetchKm": 10.04,
+          "blockedRayRatio": 0.6,
+          "onshore": 0.712,
+          "intensity": 62.8
+        },
+        "SW": {
+          "level": "protected",
+          "fetchKm": 0,
+          "blockedRayRatio": 1,
+          "onshore": 0.007,
+          "intensity": 30.2
+        },
+        "W": {
+          "level": "protected",
+          "fetchKm": 0,
+          "blockedRayRatio": 1,
+          "onshore": -0.702,
+          "intensity": 8.9
+        },
+        "NW": {
+          "level": "protected",
+          "fetchKm": 0,
+          "blockedRayRatio": 1,
+          "onshore": -1,
+          "intensity": 0
         }
       },
       "confidence": "high"

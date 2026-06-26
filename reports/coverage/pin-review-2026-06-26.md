@@ -1,0 +1,38 @@
+# Coordinate-review bucket — pin-move candidates (NOT auto-applied)
+
+Generated 2026-06-26. From the 141 coordinate-review candidates: 84 are minor precision-notes (our pin <1km from OSM same-name — no action), 7 were generic nudist (deferred). Of 50 verified same-name mismatches: 17 distinct missing beaches were ADDED (ids 3097-3113, batch 5), and the following **20 "our pin may be wrong" + 2 borderline are LEFT FOR REVIEW** — moving a production pin needs stronger evidence (Google Places / OSM-coastline ground truth via auditGooglePlaceRouting + human sign-off) than a single web-verification agent, which marked all 20 implausible (a suspicious uniformity; many are likely distinct same-name beaches along long coasts: Pelion/Alonissos/Skopelos span 15-25km).
+
+## 20 fix_our_pin candidates — VERIFY before moving
+
+| Our beach (id) | Our coord | OSM same-name | Dist | Agent reason (short) |
+|---|---|---|--:|---|
+| #2606 Πλάκες | 39.1480,23.8697 | [way/527662085](https://www.openstreetmap.org/way/527662085) @39.1355,23.8572 | 1761m | OSM way 527662085 is tagged natural=beach, name "Plakes", pebblestone, no lifeguard — a real public swimmable beach in Alonissos, Greece. There is only ONE Plak |
+| #2594 Κοκκινόκαστρο | 39.1540,23.8776 | [node/6778609162](https://www.openstreetmap.org/node/6778609162) @39.1646,23.9040 | 2560m | There is only ONE Κοκκινόκαστρο (Red Castle) beach on Alonissos: a famous organized beach on the eastern coast, 6-7 km NE of Patitiri, beneath a red cliff, whos |
+| #2603 Παραλία Μεγάλος Μουρτιάς | 39.1482,23.8750 | [way/293180380](https://www.openstreetmap.org/way/293180380) @39.1404,23.8448 | 2743m | OSM way 293180380 is a genuine natural=beach polygon (name:el "Παραλία Μεγάλος Μουρτιάς", name:en "Megalos Mourtias", last edited by experienced Greek mapper ni |
+| #870 Μονολίθι | 39.0374,20.7119 | [relation/2997732](https://www.openstreetmap.org/relation/2997732) @39.0484,20.6806 | 2959m | The OSM relation 2997732 is the official natural=beach / surface=sand multipolygon for Monolithi (Wikidata Q12881206: "beach in Preveza regional unit, Greece"), |
+| #2604 Παραλία Μικρός Μουρτιάς | 39.1460,23.8730 | [way/293180376](https://www.openstreetmap.org/way/293180376) @39.1433,23.8380 | 3032m | OSM way 293180376 (natural=beach) is the real, public, swimmable Μικρός Μουρτιάς cove on the SW coast of Alonissos, below Chora next to Megalos Mourtias — confi |
+| #2592 Κατερίνας Βάλα | 39.1420,23.8690 | [way/493693318](https://www.openstreetmap.org/way/493693318) @39.1670,23.9001 | 3865m | OSM way 493693318 is a genuine natural=beach polygon named "Κατερίνας Βάλα" that shares nodes with the Alonissos coastline at 39.167,23.900, in the Chrysi Milia |
+| #2656 Καστάνη | 39.0865,23.6865 | [way/289896970](https://www.openstreetmap.org/way/289896970) @39.1216,23.6549 | 4763m | OSM way/289896970 (39.1216, 23.6549) is the REAL, famous Kastani beach: natural=beach with a Wikidata item and sunbed/umbrella pricing, on Skopelos' SW coast ~2 |
+| #2600 Νικόλα Βάλα | 39.1410,23.8670 | [way/493694234](https://www.openstreetmap.org/way/493694234) @39.1862,23.9245 | 7057m | OSM way 493694234 is tagged natural=beach named "Νικόλα Βάλα" and reverse-geocodes to Άγιος Πέτρος, Στενή Βάλα on the EAST coast of Alonissos. Editorial sources |
+| #2652 Βαθιάς | 39.0815,23.6705 | [way/1096906127](https://www.openstreetmap.org/way/1096906127) @39.1513,23.7028 | 8251m | Skopelos has only ONE Βαθιάς (Vathias) beach. Every source (skopelos.com, skopelosweb.gr, greeka) places it unambiguously on the NORTH coast, east of Glisteri ( |
+| #2609 Σπλιθάρι | 39.1285,23.8568 | [way/493693972](https://www.openstreetmap.org/way/493693972) @39.1835,23.9233 | 8387m | OSM way 493693972 (39.1835, 23.9233) is a real natural=beach named Σπλιθάρι in the NORTH-EAST of Alonissos (Sporades, Greece), near Steni Vala / Agios Petros /  |
+| #2584 Άγιος Πέτρος | 39.1305,23.8523 | [way/277862364](https://www.openstreetmap.org/way/277862364) @39.1886,23.9251 | 9010m | Both coordinates are on Alonissos (Sporades, Greece). The OSM feature (way 277862364) is tagged natural=beach named Άγιος Πέτρος and is a well-documented, publi |
+| #2661 Σπηλιά | 39.0895,23.6950 | [way/1270948175](https://www.openstreetmap.org/way/1270948175) @39.1759,23.6453 | 10521m | OSM way 1270948175 is a real public swimmable beach (natural=beach, surface=sand) named "Σπηλιά" on Skopelos, Greece, at 39.1759,23.6453. This is the SAME beach |
+| #2599 Μουρτίτσα | 39.1440,23.8750 | [way/493696377](https://www.openstreetmap.org/way/493696377) @39.2249,23.9467 | 10915m | OSM way 493696377 is tagged natural=beach, intersects the coastline, and sits in the Agios Dimitrios / Mourtero area on the NE/E side of Alonissos (Nominatim re |
+| #2738 Παραλία Στρίντζος | 39.8280,22.6560 | [way/170922109](https://www.openstreetmap.org/way/170922109) @39.9204,22.7148 | 11431m | OSM way 170922109 (39.9203584, 22.714812) is tagged natural=beach and named Παραλία Στρίντζος. Multiple independent sources confirm a single real Strintzos/Alex |
+| #2730 Παραλία Καλύβι | 39.7120,22.7610 | [node/1820339262](https://www.openstreetmap.org/node/1820339262) @39.8474,22.7777 | 15127m | OSM node 1820339262 is tagged natural=beach, named "Παραλία Καλύβι", in Greece on the Larissa coast (municipality of Agia / Kissavos). It is the SAME physical b |
+| #2728 Παραλία Πηγάδι | 39.7080,22.7640 | [node/1820339264](https://www.openstreetmap.org/node/1820339264) @39.8492,22.7757 | 15737m | OSM node 1820339264 is natural=beach "Παραλία Πηγάδι" at 39.8492408, 22.7757094 on the Larissa (Agia-Kissavos) coast, in the genuine Koutsoupia-to-Stomio beach  |
+| #2690 Λίθος | 39.2180,23.2930 | [node/13342960508](https://www.openstreetmap.org/node/13342960508) @39.3567,23.2202 | 16642m | OSM node 13342960508 (39.3566645, 23.2202405) is natural=beach, name=Λίθος, surface=stepping_stones, unsupervised — a real public rocky swim spot ("impressive r |
+| #2668 Κορόπη | 39.1885,23.2870 | [way/848075887](https://www.openstreetmap.org/way/848075887) @39.2891,23.1431 | 16695m | OSM way 848075887 (39.2891, 23.1431) is tagged natural=beach, named "Koropi Beach," and reverse-geocodes to Koropi village (Milies/Mileon unit, South Pelion, Ma |
+| #2708 Παραλία Καλαμάκι | 39.1740,23.2830 | [way/620398857](https://www.openstreetmap.org/way/620398857) @39.3486,23.2264 | 20012m | OSM way 620398857 is natural=beach "Παραλία Καλαμάκι", a real public swimmable pebble cove on the east coast of South Pelion below Kalamaki village (Afetes unit |
+| #2694 Λημνιώνας | 39.1860,23.2880 | [way/124979346](https://www.openstreetmap.org/way/124979346) @39.3641,23.2075 | 20979m | Same beach, our pin is wrong, OSM coordinate is correct. OSM way 124979346 is natural=beach (name:el Λημνιώνας, name:en Limionas Beach, Wikidata Q25162333) at 3 |
+
+## 2 borderline distinct-vs-same (deferred from adds)
+- Άγιος Σώστης (Τήνος) way/265943520 — agent itself noted a reviewer could treat it as one long beach with our #2154.
+- Πλαζ Παράλιου Άστρους way/362923290 — agent flagged our #1518 record's accessNotes ("central beach") inconsistent with its Meligou coordinate; resolve our record first.
+
+## Also deferred
+- Πλάκα (Άνδρος) way/1531469997 — real distinct Andros beach, but Andros has the curated-wind 41/41 invariant; add only with a manual windProfile override.
+- 84 precision-notes (our pin <1km from an OSM same-name point): no action — within normal mapping variance.
+
+**Recommended next step for the 20:** run `node scripts/auditGooglePlaceRouting.mjs --island=<X>` per affected island (Alonissos, Skopelos, Pelion/Magnesia, Larissa Coast, Preveza, Corfu) to ground-truth each pin against Google, then move only confirmed-wrong pins via a coordinate update with provenance.

@@ -2603,8 +2603,59 @@ const main = async () => {
   }
 };
 
-main().catch(error => {
-  console.error('Beach dataset audit failed to run.');
-  console.error(error);
-  process.exitCode = 1;
-});
+// Canonical beach-coverage matching/classification surface. These are the
+// single source of truth for thresholds + OSM-candidate logic; coverage tooling
+// (scripts/lib/beachCoverage.mjs) re-exports them so it can never diverge.
+export {
+  // matching thresholds
+  coverageNearbyMatchMeters,
+  coveragePossibleAliasMeters,
+  coverageNeedsSourceReviewMeters,
+  coverageCoordinateMismatchMeters,
+  likelyDuplicateNameDistanceMeters,
+  greeceBounds,
+  // base utils
+  normalize,
+  isNonEmptyString,
+  isFiniteNumber,
+  isGreeceCoordinate,
+  getLocalizedName,
+  // name-key / greeklish helpers
+  normalizeBeachNameForCoverage,
+  toGreeklishLoose,
+  getCoverageNameKeys,
+  hasSpecificCoverageName,
+  nameKeySetsOverlap,
+  getBeachCoverageNameKeys,
+  // geo helpers
+  haversineMeters,
+  isCoordinateInsideBox,
+  knownIslandCoordinateBounds,
+  isWithinKnownIslandBounds,
+  getKnownIslandCoordinateRegion,
+  // osm-candidate helpers
+  osmElementUrl,
+  getOsmElementCoordinates,
+  getOsmElementName,
+  toCoverageCandidate,
+  dedupeCoverageCandidates,
+  // classification
+  getExternalCandidateReview,
+  // already-adjudicated OSM candidates (accepted sections / deferred), to suppress in reports
+  externalCoverageReviewDecisions,
+  halkidikiAcceptedSectionUrls,
+  rhodesAcceptedSectionUrls,
+  thesprotiaAcceptedSectionUrls,
+  thessalonikiAcceptedSectionUrls,
+};
+
+const isDirectInvocation = process.argv[1]
+  && path.resolve(process.argv[1]) === fileURLToPath(import.meta.url);
+
+if (isDirectInvocation) {
+  main().catch(error => {
+    console.error('Beach dataset audit failed to run.');
+    console.error(error);
+    process.exitCode = 1;
+  });
+}

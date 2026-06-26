@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "generatedAt": "2026-06-12T06:14:34.059Z",
+  "generatedAt": "2026-06-26T10:12:44.152Z",
   "region": {
     "id": "central-greece-fthiotida-mainland",
     "name": "Fthiotida"
@@ -36,47 +36,47 @@
     "maskConfidence": "high"
   },
   "summary": {
-    "beachCount": 16,
-    "generatedProfiles": 16,
+    "beachCount": 18,
+    "generatedProfiles": 18,
     "missingCoordinates": 0,
     "sectors": {
       "N": {
-        "protected": 3,
+        "protected": 5,
         "partial": 10,
         "exposed": 3
       },
       "NE": {
         "protected": 4,
-        "partial": 9,
+        "partial": 11,
         "exposed": 3
       },
       "E": {
         "protected": 9,
         "partial": 3,
-        "exposed": 4
+        "exposed": 6
       },
       "SE": {
         "protected": 10,
-        "partial": 6,
+        "partial": 8,
         "exposed": 0
       },
       "S": {
-        "protected": 13,
-        "partial": 3,
+        "protected": 14,
+        "partial": 4,
         "exposed": 0
       },
       "SW": {
-        "protected": 13,
+        "protected": 15,
         "partial": 2,
         "exposed": 1
       },
       "W": {
-        "protected": 11,
+        "protected": 13,
         "partial": 5,
         "exposed": 0
       },
       "NW": {
-        "protected": 8,
+        "protected": 10,
         "partial": 6,
         "exposed": 2
       }
@@ -1215,6 +1215,148 @@
           "blockedRayRatio": 0.8,
           "onshore": -0.014,
           "intensity": 33.5
+        }
+      },
+      "confidence": "high"
+    },
+    "3063": {
+      "beachId": 3063,
+      "name": {
+        "en": "FAPRIKEZAiNA",
+        "gr": "ΦΑΠΡΙΚΕΖΑΙΝΑ"
+      },
+      "coordinates": {
+        "lat": 38.9660104,
+        "lon": 22.9943569
+      },
+      "facingDeg": 102.8,
+      "sectors": {
+        "N": {
+          "level": "protected",
+          "fetchKm": 0,
+          "blockedRayRatio": 1,
+          "onshore": -0.222,
+          "intensity": 23.4
+        },
+        "NE": {
+          "level": "partial",
+          "fetchKm": 7.08,
+          "blockedRayRatio": 0.8,
+          "onshore": 0.533,
+          "intensity": 49.6
+        },
+        "E": {
+          "level": "exposed",
+          "fetchKm": 11.28,
+          "blockedRayRatio": 0.8,
+          "onshore": 0.975,
+          "intensity": 66.7
+        },
+        "SE": {
+          "level": "partial",
+          "fetchKm": 5.88,
+          "blockedRayRatio": 1,
+          "onshore": 0.846,
+          "intensity": 55.4
+        },
+        "S": {
+          "level": "partial",
+          "fetchKm": 2.36,
+          "blockedRayRatio": 1,
+          "onshore": 0.222,
+          "intensity": 36.6
+        },
+        "SW": {
+          "level": "protected",
+          "fetchKm": 0.04,
+          "blockedRayRatio": 1,
+          "onshore": -0.533,
+          "intensity": 14
+        },
+        "W": {
+          "level": "protected",
+          "fetchKm": 0,
+          "blockedRayRatio": 1,
+          "onshore": -0.975,
+          "intensity": 0.7
+        },
+        "NW": {
+          "level": "protected",
+          "fetchKm": 0,
+          "blockedRayRatio": 1,
+          "onshore": -0.846,
+          "intensity": 4.6
+        }
+      },
+      "confidence": "high"
+    },
+    "3064": {
+      "beachId": 3064,
+      "name": {
+        "en": "Dermária",
+        "gr": "Dermária"
+      },
+      "coordinates": {
+        "lat": 38.9580246,
+        "lon": 22.994257
+      },
+      "facingDeg": 91.2,
+      "sectors": {
+        "N": {
+          "level": "protected",
+          "fetchKm": 0.6,
+          "blockedRayRatio": 1,
+          "onshore": -0.021,
+          "intensity": 29.4
+        },
+        "NE": {
+          "level": "partial",
+          "fetchKm": 8.88,
+          "blockedRayRatio": 0.8,
+          "onshore": 0.692,
+          "intensity": 55.8
+        },
+        "E": {
+          "level": "exposed",
+          "fetchKm": 10.72,
+          "blockedRayRatio": 0.8,
+          "onshore": 1,
+          "intensity": 67.1
+        },
+        "SE": {
+          "level": "partial",
+          "fetchKm": 4.32,
+          "blockedRayRatio": 1,
+          "onshore": 0.722,
+          "intensity": 51.7
+        },
+        "S": {
+          "level": "protected",
+          "fetchKm": 0.96,
+          "blockedRayRatio": 1,
+          "onshore": 0.021,
+          "intensity": 30.6
+        },
+        "SW": {
+          "level": "protected",
+          "fetchKm": 0,
+          "blockedRayRatio": 1,
+          "onshore": -0.692,
+          "intensity": 9.2
+        },
+        "W": {
+          "level": "protected",
+          "fetchKm": 0,
+          "blockedRayRatio": 1,
+          "onshore": -1,
+          "intensity": 0
+        },
+        "NW": {
+          "level": "protected",
+          "fetchKm": 0,
+          "blockedRayRatio": 1,
+          "onshore": -0.722,
+          "intensity": 8.3
         }
       },
       "confidence": "high"

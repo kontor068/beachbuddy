@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "generatedAt": "2026-06-18T20:17:05.316Z",
+  "generatedAt": "2026-06-26T10:12:38.460Z",
   "region": {
     "id": "attica-kythira",
     "name": "Kythira"
@@ -36,47 +36,47 @@
     "maskConfidence": "high"
   },
   "summary": {
-    "beachCount": 43,
-    "generatedProfiles": 43,
+    "beachCount": 42,
+    "generatedProfiles": 42,
     "missingCoordinates": 0,
     "sectors": {
       "N": {
-        "protected": 25,
+        "protected": 24,
         "partial": 11,
         "exposed": 7
       },
       "NE": {
-        "protected": 19,
+        "protected": 18,
         "partial": 14,
         "exposed": 10
       },
       "E": {
-        "protected": 20,
+        "protected": 19,
         "partial": 7,
         "exposed": 16
       },
       "SE": {
         "protected": 17,
         "partial": 11,
-        "exposed": 15
+        "exposed": 14
       },
       "S": {
         "protected": 20,
         "partial": 11,
-        "exposed": 12
+        "exposed": 11
       },
       "SW": {
         "protected": 26,
         "partial": 6,
-        "exposed": 11
+        "exposed": 10
       },
       "W": {
-        "protected": 25,
+        "protected": 24,
         "partial": 8,
         "exposed": 10
       },
       "NW": {
-        "protected": 26,
+        "protected": 25,
         "partial": 7,
         "exposed": 10
       }
@@ -3061,77 +3061,6 @@
           "blockedRayRatio": 0.6,
           "onshore": 0.982,
           "intensity": 73.5
-        }
-      },
-      "confidence": "high"
-    },
-    "3005": {
-      "beachId": 3005,
-      "name": {
-        "en": "Kythira Kapsali",
-        "gr": "Κύθηρα Καψάλι"
-      },
-      "coordinates": {
-        "lat": 36.1467416,
-        "lon": 22.9943886
-      },
-      "facingDeg": 181.6,
-      "sectors": {
-        "N": {
-          "level": "protected",
-          "fetchKm": 0,
-          "blockedRayRatio": 1,
-          "onshore": -1,
-          "intensity": 0
-        },
-        "NE": {
-          "level": "protected",
-          "fetchKm": 0,
-          "blockedRayRatio": 1,
-          "onshore": -0.727,
-          "intensity": 8.2
-        },
-        "E": {
-          "level": "protected",
-          "fetchKm": 0.16,
-          "blockedRayRatio": 1,
-          "onshore": -0.028,
-          "intensity": 29.2
-        },
-        "SE": {
-          "level": "exposed",
-          "fetchKm": 10.2,
-          "blockedRayRatio": 0.6,
-          "onshore": 0.687,
-          "intensity": 62.1
-        },
-        "S": {
-          "level": "exposed",
-          "fetchKm": 21.04,
-          "blockedRayRatio": 0.2,
-          "onshore": 1,
-          "intensity": 92
-        },
-        "SW": {
-          "level": "exposed",
-          "fetchKm": 10.12,
-          "blockedRayRatio": 0.6,
-          "onshore": 0.727,
-          "intensity": 63.4
-        },
-        "W": {
-          "level": "protected",
-          "fetchKm": 0.04,
-          "blockedRayRatio": 1,
-          "onshore": 0.028,
-          "intensity": 30.8
-        },
-        "NW": {
-          "level": "protected",
-          "fetchKm": 0,
-          "blockedRayRatio": 1,
-          "onshore": -0.687,
-          "intensity": 9.4
         }
       },
       "confidence": "high"

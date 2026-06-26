@@ -1,0 +1,429 @@
+{
+  "_meta": {
+    "generatedAt": "2026-06-26",
+    "source": "national-gap-report + adversarial verification (index-joined)",
+    "count": 21,
+    "note": "Verified real distinct Greek swimmable beaches missing from dataset. Nopigia OSM duplicate collapsed to one (dropped way/377197112).",
+    "deferred": [
+      "Αμμουδαριά (Andros) — Andros is a fully-curated windProfile island (wind suite asserts 41/41 override coverage); adding an unverified beach needs a manual windProfile override first. Deferred."
+    ]
+  },
+  "beaches": [
+    {
+      "nameGr": "Δημήτρανι",
+      "displayName": "Dimitrani",
+      "lat": 37.9007238,
+      "lon": 23.4941816,
+      "region": "Attica",
+      "prefecture": "Islands (Saronic & Kythira)",
+      "municipality": "Salamina",
+      "osmUrl": "https://www.openstreetmap.org/way/1422438524",
+      "google": {
+        "placeId": "ChIJc-b9ChO2oRQRCKEdpKe1-uc",
+        "ratingCount": 64,
+        "isBeachType": true,
+        "primaryType": "beach",
+        "distM": 22
+      },
+      "nearestOursM": 3667,
+      "surface": null,
+      "verifyReason": "Multiple independent sources (Wikipedia, allovergreece, beachsearcher, municipality of Salamina) confirm Δημήτρανι is a large organized pebble swimming beach with showers/changing rooms in SE Salamina (Perani Gulf), Attica, Greece; allovergreece coords (37.90103, 23.49483) match the OSM pin within ~70m, Google type=beach with 64 ratings, and it is ~3.7km from and unrelated to our nearest beach Παραλία Αγίου Νικολάου."
+    },
+    {
+      "nameGr": "Κακή Βίγλα",
+      "displayName": "Kaki Vigla",
+      "lat": 37.9128032,
+      "lon": 23.5123165,
+      "region": "Attica",
+      "prefecture": "Islands (Saronic & Kythira)",
+      "municipality": "Salamina",
+      "osmUrl": "https://www.openstreetmap.org/way/1504673015",
+      "google": {
+        "placeId": "ChIJQYdsE1q2oRQRdBdd61G2zPA",
+        "ratingCount": 103,
+        "isBeachType": true,
+        "primaryType": "beach",
+        "distM": 34
+      },
+      "nearestOursM": 5749,
+      "surface": null,
+      "verifyReason": "Multiple independent Greek travel sources (argosaronikos.gr, enjoysalamina.gr, visit-salamina.gr, Tripadvisor, 103 Google ratings) confirm Κακή Βίγλα is a real unorganized public swimmable beach on Salamina island in the Saronic Gulf (Greece), free access, ~5.7km from our nearest listed beach, so it is distinct and not foreign or a non-beach venue."
+    },
+    {
+      "nameGr": "Κύριζα",
+      "displayName": "Kyriza",
+      "lat": 37.900235,
+      "lon": 23.4892779,
+      "region": "Attica",
+      "prefecture": "Islands (Saronic & Kythira)",
+      "municipality": "Salamina",
+      "osmUrl": "https://www.openstreetmap.org/way/1504672636",
+      "google": {
+        "placeId": "ChIJtd2Xiw22oRQR2QlBGqdf3lI",
+        "ratingCount": 37,
+        "isBeachType": true,
+        "primaryType": "beach",
+        "distM": 41
+      },
+      "nearestOursM": 3311,
+      "surface": null,
+      "verifyReason": "Multiple Greek tourism sources (allovergreece, enjoysalamina, tripinview, visit-salamina) confirm Κύριζα is a real public organized sandy swimmable beach on south Salamina with showers/toilets at GPS 37.90061,23.48936 (matching the OSM pin within ~40m); it is in Greece (Attica) and clearly distinct from our nearest beach Άγιος Νικόλαος 3311m away."
+    },
+    {
+      "nameGr": "Ντουλάπι",
+      "displayName": "Ntoulapi",
+      "lat": 37.9012322,
+      "lon": 23.5128309,
+      "region": "Attica",
+      "prefecture": "Islands (Saronic & Kythira)",
+      "municipality": "Salamina",
+      "osmUrl": "https://www.openstreetmap.org/way/1504644765",
+      "google": {
+        "placeId": "ChIJW15u0Ue2oRQR42W5o-eRT2Y",
+        "ratingCount": 31,
+        "isBeachType": true,
+        "primaryType": "beach",
+        "distM": 2
+      },
+      "nearestOursM": 5057,
+      "surface": null,
+      "verifyReason": "Multiple independent Greek/tourism sources (allovergreece, e-nearme, enjoysalamina, tripinview, Salamina municipality) describe Ντουλάπι as a real sandy/pebble swimmable beach on western Salamina, Attica with crystal-clear waters and a 4.9/5 Google rating; it is in Greece (not foreign), not in our dataset, and distinct from the nearest existing beach Αγίου Νικολάου 5057m away."
+    },
+    {
+      "nameGr": "Πέρανι",
+      "displayName": "Perani",
+      "lat": 37.8973585,
+      "lon": 23.4851236,
+      "region": "Attica",
+      "prefecture": "Islands (Saronic & Kythira)",
+      "municipality": "Salamina",
+      "osmUrl": "https://www.openstreetmap.org/way/1504672635",
+      "google": {
+        "placeId": "ChIJExtMJA-2oRQRrcW1GCtSzy8",
+        "ratingCount": 143,
+        "isBeachType": true,
+        "primaryType": "beach",
+        "distM": 48
+      },
+      "nearestOursM": 2827,
+      "surface": null,
+      "verifyReason": "Multiple independent beach directories (allovergreece, tripinview, beachatlas, Salamina municipality, Tripadvisor) confirm Perani as a real sandy/pebble swimmable beach on the south coast of Salamina island, Saronic Gulf, Greece, matching the OSM pin and Google \"beach\" type (143 ratings); it is in Greece (not Turkey/Albania) and is a distinct beach 2827 m from our existing Παραλία Αγίου Νικολάου."
+    },
+    {
+      "nameGr": "Πόρτο Φίνο",
+      "displayName": "Porto Fino",
+      "lat": 37.9050006,
+      "lon": 23.5147584,
+      "region": "Attica",
+      "prefecture": "Islands (Saronic & Kythira)",
+      "municipality": "Salamina",
+      "osmUrl": "https://www.openstreetmap.org/way/1504644764",
+      "google": {
+        "placeId": "ChIJs9o0NgC3oRQRBQl2LzZBwuk",
+        "ratingCount": 2,
+        "isBeachType": false,
+        "primaryType": "service",
+        "distM": 229
+      },
+      "nearestOursM": 5414,
+      "surface": null,
+      "verifyReason": "Πόρτο Φίνο is a real coastal hamlet/swimming spot on Salamina (Attica, Greece) — official Salamina tourism, mapcarta, and Greek \"where to swim in Salamina\" guides describe a public swimming spot with clear deep turquoise water; not in our dataset (no Fino/Φίνο match) and 5.4 km from the nearest existing beach, so genuinely distinct."
+    },
+    {
+      "nameGr": "Χαρουπιάς",
+      "displayName": "Charoupias",
+      "lat": 37.9036947,
+      "lon": 23.5136853,
+      "region": "Attica",
+      "prefecture": "Islands (Saronic & Kythira)",
+      "municipality": "Salamina",
+      "osmUrl": "https://www.openstreetmap.org/way/1504644763",
+      "google": {
+        "placeId": "ChIJv38Hq0i2oRQRVnvlevYkPMY",
+        "ratingCount": 108,
+        "isBeachType": true,
+        "primaryType": "beach",
+        "distM": 18
+      },
+      "nearestOursM": 5258,
+      "surface": null,
+      "verifyReason": "Official Salamina tourism site (visit-salamina.gr) and multiple Greek travel articles describe Παραλία Χαρουπιάς as a real quiet sand-and-pebble public beach on Salamina's southern/SW coast; Google type=beach with 108 ratings 18m from the pin, and it is 5.3km from our nearest beach (Αγίου Νικολάου), so distinct and not a duplicate."
+    },
+    {
+      "nameGr": "Αλμυρίχι",
+      "displayName": "Almyrichi",
+      "lat": 38.2613521,
+      "lon": 24.2517298,
+      "region": "Central Greece",
+      "prefecture": "Evia",
+      "municipality": "Evia",
+      "osmUrl": "https://www.openstreetmap.org/way/493354757",
+      "google": {
+        "placeId": "ChIJz2cBgM7boxQR9h7DNi5nlJY",
+        "ratingCount": 1035,
+        "isBeachType": true,
+        "primaryType": "beach",
+        "distM": 25
+      },
+      "nearestOursM": 2132,
+      "surface": null,
+      "verifyReason": "Αλμυρίχι/Αρμυρίχι is a well-documented sandy-pebble cove beach in Mesochoria, southern Evia (mainland Greece), confirmed by Tripadvisor (with 2026 reviews), multiple Greek travel blogs and beachsearcher; Google Places type=beach with 1035 ratings 25m from the pin, and it is a distinct beach 2132m from our existing Λιμνιώνα."
+    },
+    {
+      "nameGr": "ΦΑΠΡΙΚΕΖΑΙΝΑ",
+      "displayName": "FAPRIKEZAINA",
+      "lat": 38.9660104,
+      "lon": 22.9943569,
+      "region": "Central Greece",
+      "prefecture": "Fthiotida",
+      "municipality": "Fthiotida (mainland)",
+      "osmUrl": "https://www.openstreetmap.org/way/510509596",
+      "google": {
+        "placeId": "ChIJD7ED25hKpxQRSurdwiRrIMw",
+        "ratingCount": 21,
+        "isBeachType": true,
+        "primaryType": "beach",
+        "distM": 7
+      },
+      "nearestOursM": 6168,
+      "surface": null,
+      "verifyReason": "OSM way 510509596 is tagged natural=beach with nodes shared on the actual coastline (way 140418375), MapCarta and Google Places both classify it as a beach (type=beach, 21 ratings, 7m from pin) on the Stylida mainland coast in Phthiotis, Greece; it is 6.1km from Νησιώτισσα so not a duplicate, has a distinct proper name, and is firmly in Greece (not Turkey/Albania).",
+      "slotNote": "mainland Phthiotis coast (across the N. Euboean Gulf from Evia); nearest beach is on the Evia side"
+    },
+    {
+      "nameGr": "Dermária",
+      "displayName": "Dermária",
+      "lat": 38.9580246,
+      "lon": 22.994257,
+      "region": "Central Greece",
+      "prefecture": "Fthiotida",
+      "municipality": "Fthiotida (mainland)",
+      "osmUrl": "https://www.openstreetmap.org/way/510509597",
+      "google": {
+        "placeId": "ChIJWTkhFKRKpxQRU0uRVJwUtZg",
+        "ratingCount": 63,
+        "isBeachType": true,
+        "primaryType": "beach",
+        "distM": 13
+      },
+      "nearestOursM": 5830,
+      "surface": null,
+      "verifyReason": "Multiple independent beach guides (BeachAtlas, Sandee, somemaps, beaches-searcher) plus Google Places (type=beach, 63 ratings, 13m from pin) confirm Dermária as a real unorganized pebble-and-sand swimmable beach in Central Greece (Pelasgia/Stylida, Phthiotis side of the North Euboean Gulf, access via Agios Sostis), and it is a distinct beach from the organized fine-sand Νησιώτισσα 5.8 km away on the Evia side, not a duplicate, bar, resort, or foreign location.",
+      "slotNote": "mainland Phthiotis coast (across the N. Euboean Gulf from Evia); nearest beach is on the Evia side"
+    },
+    {
+      "nameGr": "Nopigia Beach",
+      "displayName": "Nopigia Beach",
+      "lat": 35.509676,
+      "lon": 23.720163,
+      "region": "Crete",
+      "prefecture": "Chania",
+      "municipality": "Crete (Chania)",
+      "osmUrl": "https://www.openstreetmap.org/way/1526021353",
+      "google": {
+        "placeId": "ChIJuXEWcFf0nBQRNoAGGftKi2k",
+        "ratingCount": 110,
+        "isBeachType": true,
+        "primaryType": "beach",
+        "distM": 55
+      },
+      "nearestOursM": 5643,
+      "surface": null,
+      "verifyReason": "Multiple Crete beach guides (Greeka, cretanbeaches, terrabook, discoverkissamos) describe Νωπήγεια/Nopigia as a long sandy organized public swimmable beach east of Kissamos in Chania, Crete; Google type=\"beach\" (110 ratings, 55m from pin) confirms it, and it is 5.6km from the distinct \"Παραλία Τελώνιο\" so not a duplicate."
+    },
+    {
+      "nameGr": "Παραλία Φώλιας",
+      "displayName": "Paralia Folias",
+      "lat": 40.7385665,
+      "lon": 24.1404667,
+      "region": "East Macedonia and Thrace",
+      "prefecture": "Kavala",
+      "municipality": "Kavala (mainland)",
+      "osmUrl": "https://www.openstreetmap.org/way/1367278919",
+      "google": {
+        "placeId": "ChIJDdaYGrUyqRQRdEupW5Fw7J0",
+        "ratingCount": 72,
+        "isBeachType": true,
+        "primaryType": "beach",
+        "distM": 173
+      },
+      "nearestOursM": 5690,
+      "surface": "pebblestone",
+      "verifyReason": "Multiple independent sources (feelgreece.com, visitkavala.gr, govmap.gr with 40 reviews 4.7/5, sandee.com) confirm Paralia Folia is a real coarse-sand swimmable beach in mainland Kavala near the Tower of Apollonia, Google type=beach with 72 ratings 173m from the pin, and it is 5.7km from and distinct from our nearest beach (the Nudist Beach), in Greece not Turkey/Albania."
+    },
+    {
+      "nameGr": "Κορφοβόνια",
+      "displayName": "Korfovonia",
+      "lat": 39.7694447,
+      "lon": 19.9539373,
+      "region": "Ionian Islands",
+      "prefecture": "Corfu",
+      "municipality": "Corfu",
+      "osmUrl": "https://www.openstreetmap.org/way/186957617",
+      "google": {
+        "placeId": "ChIJc--Vp5RrWxMR6PBeIUKpQJw",
+        "ratingCount": 11,
+        "isBeachType": false,
+        "primaryType": null,
+        "distM": 37
+      },
+      "nearestOursM": 2494,
+      "surface": null,
+      "verifyReason": "Multiple sources (AllTrails, World Beach Guide, AtCorfu) confirm Korfovounia/Korfovonia is a real distinct pebble swimming cove in the Erimitis area of NE Corfu near Kassiopi/Sinies, ~2.5 km from Kogevina; OSM tags it natural=beach and Google Places shows 11 ratings 37m from the pin (the AllTrails \"Kefalonia\" slug is an error — all content places it on Corfu, Greece, not Albania)."
+    },
+    {
+      "nameGr": "Μοσχοφίλι",
+      "displayName": "Moschofili",
+      "lat": 39.7816882,
+      "lon": 19.94921,
+      "region": "Ionian Islands",
+      "prefecture": "Corfu",
+      "municipality": "Corfu",
+      "osmUrl": "https://www.openstreetmap.org/way/1268632335",
+      "google": null,
+      "nearestOursM": 1550,
+      "surface": null,
+      "verifyReason": "OSM tags it natural=beach (name:el Μοσχοφίλι, name:en Moshofili) on the Greek NE Corfu coast east of Kassiopi (in the Erimitis cluster), and an independent beach listing describes it as a secluded fine-sand cove with calm swimmable water on calm days; it is 1550 m from our Kogevina Beach, so a genuinely distinct Greek beach, not a bar/duplicate/Albanian feature."
+    },
+    {
+      "nameGr": "Παραλία Κερασιά",
+      "displayName": "Paralia Kerasia",
+      "lat": 39.7542593,
+      "lon": 19.941731,
+      "region": "Ionian Islands",
+      "prefecture": "Corfu",
+      "municipality": "Corfu",
+      "osmUrl": "https://www.openstreetmap.org/way/93943011",
+      "google": {
+        "placeId": "ChIJ1xzOPwxCWxMRdW2eofQ8cGs",
+        "ratingCount": 1106,
+        "isBeachType": true,
+        "primaryType": "beach",
+        "distM": 32
+      },
+      "nearestOursM": 1901,
+      "surface": "sand",
+      "verifyReason": "Multiple guides (Greeka, BeachAtlas/Sandee at 39.7543/19.9414 — matching the OSM pin) confirm Kerasia is a real ~275m public pebble swimming beach on Corfu's NE coast near Kassiopi/Agios Stefanos Sinies, with 1106 Google ratings type=beach; our nearest \"Galiskari/Gialiskari\" is on the opposite (west) coast near Pelekas, so it is a genuinely distinct Greek beach we lack."
+    },
+    {
+      "nameGr": "Παραλία Αλμυρού",
+      "displayName": "Paralia Almyroy",
+      "lat": 36.4625914,
+      "lon": 22.4344993,
+      "region": "Peloponnese",
+      "prefecture": "Lakonia",
+      "municipality": "Lakonia (mainland)",
+      "osmUrl": "https://www.openstreetmap.org/way/345697377",
+      "google": {
+        "placeId": "ChIJlaZEIbICYhMRjFqF3uWBoSU",
+        "ratingCount": 229,
+        "isBeachType": true,
+        "primaryType": "beach",
+        "distM": 16
+      },
+      "nearestOursM": 5352,
+      "surface": "pebblestone",
+      "verifyReason": "Multiple independent sources (MyGreekHeart, exploring-greece.gr, a dedicated TripAdvisor page for \"Paralia Almyrou, Kiparissos, Laconia\") confirm a real wild pebble swimmable beach with clear aquamarine water and a cave near Kyparissos in East Mani, Laconia; Google type=beach with 229 ratings 16m from the pin, and it is ~5.3km from and on a different coast/village than the boat-access Androgialos beach near Porto Kagio, so not a duplicate or foreign."
+    },
+    {
+      "nameGr": "Παραλία Διρού",
+      "displayName": "Paralia Diroy",
+      "lat": 36.6414152,
+      "lon": 22.383039,
+      "region": "Peloponnese",
+      "prefecture": "Lakonia",
+      "municipality": "Lakonia (mainland)",
+      "osmUrl": "https://www.openstreetmap.org/way/189002517",
+      "google": {
+        "placeId": "ChIJbVFd5izwYRMRGQIKXcEu3eM",
+        "ratingCount": 371,
+        "isBeachType": true,
+        "primaryType": "beach",
+        "distM": 36
+      },
+      "nearestOursM": 5740,
+      "surface": null,
+      "verifyReason": "Multiple Greek travel sources confirm Diros beach is a real public pebble swimming beach in Diros bay (Mani, Lakonia, Peloponnese mainland) below the famous Diros Caves with free umbrellas/loungers; Google type=\"beach\" (371 ratings, 36 m from pin), and nearest existing \"Οίτυλο\" is a separate bay 5.7 km away, so it is distinct and not foreign."
+    },
+    {
+      "nameGr": "Παραλία Μονατήρι",
+      "displayName": "Paralia Monatiri",
+      "lat": 37.0037721,
+      "lon": 25.0264719,
+      "region": "South Aegean",
+      "prefecture": "Cyclades",
+      "municipality": "Antiparos",
+      "osmUrl": "https://www.openstreetmap.org/node/5768708365",
+      "google": {
+        "placeId": "ChIJXRMW7j5kmBQRT_eAqLpmDCw",
+        "ratingCount": 93,
+        "isBeachType": true,
+        "primaryType": "beach",
+        "distM": 58
+      },
+      "nearestOursM": 2541,
+      "surface": null,
+      "verifyReason": "OSM \"Μονατήρι\" is a spelling variant of Monastiri/Monastiria, a real public sand-and-pebble swimming beach on western Antiparos (Cyclades, Greece), confirmed by the official Antiparos municipality site, TripAdvisor (93+ Google ratings, type=beach, 58 m from pin), and multiple guides; it is a separate beach from Livadia, which the same sources list distinctly on the other side of the island."
+    },
+    {
+      "nameGr": "Koutsomiti",
+      "displayName": "Koutsomiti",
+      "lat": 36.5488348,
+      "lon": 26.4475315,
+      "region": "South Aegean",
+      "prefecture": "Dodecanese",
+      "municipality": "Astypalaia",
+      "osmUrl": "https://www.openstreetmap.org/way/1212185709",
+      "google": {
+        "placeId": "ChIJ2UGEwOhKlhQRMZl9oOWf-q4",
+        "ratingCount": 136,
+        "isBeachType": true,
+        "primaryType": "beach",
+        "distM": 28
+      },
+      "nearestOursM": 2697,
+      "surface": "sand",
+      "verifyReason": "Koutsomiti (Κουτσομύτη) is a documented pristine pebbly islet beach off Astypalaia (Dodecanese, Greece) covered by Greeka, TripAdvisor (136 Google ratings, type=beach), and travel.gr; it is a separate islet from Kounoupi/Kounoupa (our nearest \"Κούνουπες\"), reachable by daily boat trips, so it is a genuine distinct Greek swimmable beach."
+    },
+    {
+      "nameGr": "Angeletou beach",
+      "displayName": "Angeletou beach",
+      "lat": 39.1967593,
+      "lon": 23.616272,
+      "region": "Thessaly",
+      "prefecture": "Magnesia (Sporades)",
+      "municipality": "Skopelos",
+      "osmUrl": "https://www.openstreetmap.org/way/289044864",
+      "google": {
+        "placeId": "ChIJt1v5BY_pphQRKgd_xOnTo5E",
+        "ratingCount": 23,
+        "isBeachType": true,
+        "primaryType": "beach",
+        "distM": 25
+      },
+      "nearestOursM": 3936,
+      "surface": null,
+      "verifyReason": "Greeka, Skopelos.com and other travel guides confirm Αγγελετού/Aggeletou is a real non-organized sand-and-pebble swimmable cove on Skopelos' NE coast near Perivoliou, distinct from Agios Ioannis (~3.9 km away), and Google Places shows type=beach with 23 ratings 25 m from the OSM pin."
+    },
+    {
+      "nameGr": "Perivoliou Beach",
+      "displayName": "Perivoliou Beach",
+      "lat": 39.1977557,
+      "lon": 23.6145029,
+      "region": "Thessaly",
+      "prefecture": "Magnesia (Sporades)",
+      "municipality": "Skopelos",
+      "osmUrl": "https://www.openstreetmap.org/way/289044865",
+      "google": {
+        "placeId": "ChIJM_DGA9rophQRH9yMPUv-Z1Q",
+        "ratingCount": 565,
+        "isBeachType": true,
+        "primaryType": "beach",
+        "distM": 24
+      },
+      "nearestOursM": 4123,
+      "surface": null,
+      "verifyReason": "Multiple independent sources (Greeka, Lonely Planet, Skopelos.com, TripAdvisor) plus Google Places (type=\"beach\", 565 ratings, 24m from pin) confirm Perivoliou is a real secluded pebble/sand swimmable beach on NE Skopelos near Glossa, distinct from our nearest \"Άγιος Ιωάννης\" 4.1km away."
+    }
+  ]
+}

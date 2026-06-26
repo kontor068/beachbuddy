@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "generatedAt": "2026-06-12T06:14:50.693Z",
+  "generatedAt": "2026-06-26T10:13:01.683Z",
   "region": {
     "id": "ionian-islands-ithaca",
     "name": "Ithaca"
@@ -36,48 +36,48 @@
     "maskConfidence": "high"
   },
   "summary": {
-    "beachCount": 24,
-    "generatedProfiles": 24,
+    "beachCount": 25,
+    "generatedProfiles": 25,
     "missingCoordinates": 0,
     "sectors": {
       "N": {
         "protected": 12,
-        "partial": 10,
+        "partial": 11,
         "exposed": 2
       },
       "NE": {
         "protected": 11,
-        "partial": 7,
+        "partial": 8,
         "exposed": 6
       },
       "E": {
         "protected": 11,
-        "partial": 7,
+        "partial": 8,
         "exposed": 6
       },
       "SE": {
-        "protected": 13,
+        "protected": 14,
         "partial": 6,
         "exposed": 5
       },
       "S": {
-        "protected": 14,
+        "protected": 15,
         "partial": 9,
         "exposed": 1
       },
       "SW": {
-        "protected": 16,
+        "protected": 17,
         "partial": 7,
         "exposed": 1
       },
       "W": {
-        "protected": 14,
+        "protected": 15,
         "partial": 9,
         "exposed": 1
       },
       "NW": {
         "protected": 13,
-        "partial": 10,
+        "partial": 11,
         "exposed": 1
       }
     }
@@ -1783,6 +1783,77 @@
           "blockedRayRatio": 1,
           "onshore": -0.742,
           "intensity": 7.7
+        }
+      },
+      "confidence": "high"
+    },
+    "3104": {
+      "beachId": 3104,
+      "name": {
+        "en": "Paralia Filiatro (Kioni)",
+        "gr": "Παραλία Φιλιατρό (Κιόνι)"
+      },
+      "coordinates": {
+        "lat": 38.4444142,
+        "lon": 20.6972
+      },
+      "facingDeg": 7.1,
+      "sectors": {
+        "N": {
+          "level": "partial",
+          "fetchKm": 7.8,
+          "blockedRayRatio": 1,
+          "onshore": 0.992,
+          "intensity": 59.8
+        },
+        "NE": {
+          "level": "partial",
+          "fetchKm": 14.04,
+          "blockedRayRatio": 1,
+          "onshore": 0.789,
+          "intensity": 53.7
+        },
+        "E": {
+          "level": "partial",
+          "fetchKm": 2.32,
+          "blockedRayRatio": 1,
+          "onshore": 0.124,
+          "intensity": 33.7
+        },
+        "SE": {
+          "level": "protected",
+          "fetchKm": 0,
+          "blockedRayRatio": 1,
+          "onshore": -0.614,
+          "intensity": 11.6
+        },
+        "S": {
+          "level": "protected",
+          "fetchKm": 0,
+          "blockedRayRatio": 1,
+          "onshore": -0.992,
+          "intensity": 0.2
+        },
+        "SW": {
+          "level": "protected",
+          "fetchKm": 0.04,
+          "blockedRayRatio": 1,
+          "onshore": -0.789,
+          "intensity": 6.3
+        },
+        "W": {
+          "level": "protected",
+          "fetchKm": 0.28,
+          "blockedRayRatio": 1,
+          "onshore": -0.124,
+          "intensity": 26.3
+        },
+        "NW": {
+          "level": "partial",
+          "fetchKm": 0.48,
+          "blockedRayRatio": 1,
+          "onshore": 0.614,
+          "intensity": 48.4
         }
       },
       "confidence": "high"

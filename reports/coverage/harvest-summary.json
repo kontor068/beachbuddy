@@ -1,0 +1,2287 @@
+{
+  "generatedAt": "2026-06-26T01:50:20.999Z",
+  "scope": "national",
+  "tiles": 248,
+  "cachedTiles": 247,
+  "fetchedTiles": 1,
+  "failedTiles": 0,
+  "uniqueOsmElements": 7665,
+  "namedCandidates": 3096,
+  "dedupedCandidates": 3046,
+  "sample": [
+    "´Ormos Lidaki (38.0263,24.0091)",
+    "΄Pasa (37.6784,24.0541)",
+    "100 Rizes Seaside Resort (36.6761,22.5241)",
+    "1os Ormos (37.6098,24.7363)",
+    "2os Ormos (37.6075,24.7341)",
+    "3os Ormos (37.6060,24.7352)",
+    "4os Ormos (37.6024,24.7349)",
+    "5os Ormos (37.5998,24.7358)",
+    "Ἀntypsos (39.6390,19.7385)",
+    "Ῥoutsoynas (36.3703,22.9235)",
+    "A’ Plaz Alimou «Stolidi» (37.9091,23.7124)",
+    "Abelakia (38.5651,20.9091)",
+    "Achata (35.5572,27.2037)",
+    "Acheroynes (38.8497,24.5347)",
+    "Achilli (38.8679,24.5763)",
+    "Achivadolimni (36.6905,24.4497)",
+    "Achla (37.8938,24.9512)",
+    "Achlada Beach (40.1015,23.9821)",
+    "Achlada Beach (40.1031,23.9846)",
+    "Achladi (37.1278,24.4311)",
+    "Achladi (37.3881,24.9407)",
+    "Achladies (39.1468,23.4646)",
+    "Acquasanta Beach (39.7948,19.7594)",
+    "Aelos Beach (35.2928,25.4565)",
+    "Aeolus (39.2101,20.1773)",
+    "Afales (38.4672,20.6426)",
+    "Afrata Beach (35.5737,23.7771)",
+    "Afrathia (35.0440,24.7557)",
+    "Afryania (36.9153,25.5819)",
+    "Afteli (38.6106,20.6561)",
+    "Ag, Giannis (39.5085,19.9242)",
+    "Ag. Giannis (34.8676,24.0847)",
+    "Ag. Nikolaos (37.6852,26.6203)",
+    "Ag. Nikolas (37.2980,23.3749)",
+    "Ag.Eleni (38.3284,26.1601)",
+    "Ag.Kyprianos (37.8718,24.7701)",
+    "Agaliasma (37.6314,26.3156)",
+    "Agalipa (38.9631,24.4605)",
+    "Aghiofili Beach (38.6054,20.6129)",
+    "Aghios Pavlos Beach (35.5987,23.7107)"
+  ],
+  "tileManifest": [
+    {
+      "south": 37.5733,
+      "west": 23.4909,
+      "north": 38.1253,
+      "east": 24.0096,
+      "label": "Attica::Central Athens::Athens area (mainland)",
+      "status": "cache",
+      "elements": 221
+    },
+    {
+      "south": 37.4541,
+      "west": 23.4892,
+      "north": 38.0541,
+      "east": 24.0892,
+      "label": "Attica::East Attica::East Attica (mainland)",
+      "status": "cache",
+      "elements": 297
+    },
+    {
+      "south": 37.4541,
+      "west": 24.0892,
+      "north": 38.0541,
+      "east": 24.2826,
+      "label": "Attica::East Attica::East Attica (mainland)",
+      "status": "cache",
+      "elements": 24
+    },
+    {
+      "south": 38.0541,
+      "west": 23.4892,
+      "north": 38.5398,
+      "east": 24.0892,
+      "label": "Attica::East Attica::East Attica (mainland)",
+      "status": "cache",
+      "elements": 104
+    },
+    {
+      "south": 38.0541,
+      "west": 24.0892,
+      "north": 38.5398,
+      "east": 24.2826,
+      "label": "Attica::East Attica::East Attica (mainland)",
+      "status": "cache",
+      "elements": 42
+    },
+    {
+      "south": 37.4779,
+      "west": 23.2236,
+      "north": 37.973,
+      "east": 23.7593,
+      "label": "Attica::Islands (Saronic & Kythira)::Aegina",
+      "status": "cache",
+      "elements": 169
+    },
+    {
+      "south": 37.4842,
+      "west": 23.1233,
+      "north": 37.9112,
+      "east": 23.573,
+      "label": "Attica::Islands (Saronic & Kythira)::Agistri",
+      "status": "cache",
+      "elements": 149
+    },
+    {
+      "south": 37.098,
+      "west": 23.1749,
+      "north": 37.5542,
+      "east": 23.6855,
+      "label": "Attica::Islands (Saronic & Kythira)::Hydra",
+      "status": "cache",
+      "elements": 83
+    },
+    {
+      "south": 35.6869,
+      "west": 22.705,
+      "north": 36.2869,
+      "east": 23.305,
+      "label": "Attica::Islands (Saronic & Kythira)::Kythira",
+      "status": "cache",
+      "elements": 26
+    },
+    {
+      "south": 35.6869,
+      "west": 23.305,
+      "north": 36.2869,
+      "east": 23.4949,
+      "label": "Attica::Islands (Saronic & Kythira)::Kythira",
+      "status": "cache",
+      "elements": 0
+    },
+    {
+      "south": 36.2869,
+      "west": 22.705,
+      "north": 36.58,
+      "east": 23.305,
+      "label": "Attica::Islands (Saronic & Kythira)::Kythira",
+      "status": "cache",
+      "elements": 52
+    },
+    {
+      "south": 36.2869,
+      "west": 23.305,
+      "north": 36.58,
+      "east": 23.4949,
+      "label": "Attica::Islands (Saronic & Kythira)::Kythira",
+      "status": "cache",
+      "elements": 0
+    },
+    {
+      "south": 37.2843,
+      "west": 23.2359,
+      "north": 37.7312,
+      "east": 23.6832,
+      "label": "Attica::Islands (Saronic & Kythira)::Poros",
+      "status": "cache",
+      "elements": 111
+    },
+    {
+      "south": 37.6795,
+      "west": 23.2086,
+      "north": 38.1021,
+      "east": 23.6622,
+      "label": "Attica::Islands (Saronic & Kythira)::Salamina",
+      "status": "cache",
+      "elements": 124
+    },
+    {
+      "south": 37.0396,
+      "west": 22.9,
+      "north": 37.4797,
+      "east": 23.3633,
+      "label": "Attica::Islands (Saronic & Kythira)::Spetses",
+      "status": "cache",
+      "elements": 114
+    },
+    {
+      "south": 37.3458,
+      "west": 23.041,
+      "north": 37.7841,
+      "east": 23.5899,
+      "label": "Attica::Islands (Saronic & Kythira)::Methana",
+      "status": "cache",
+      "elements": 181
+    },
+    {
+      "south": 37.7304,
+      "west": 23.3562,
+      "north": 38.1656,
+      "east": 23.8551,
+      "label": "Attica::Piraeus::Piraeus area",
+      "status": "cache",
+      "elements": 141
+    },
+    {
+      "south": 37.7744,
+      "west": 23.0116,
+      "north": 38.3603,
+      "east": 23.6116,
+      "label": "Attica::West Attica::West Attica (mainland)",
+      "status": "cache",
+      "elements": 106
+    },
+    {
+      "south": 37.7744,
+      "west": 23.6116,
+      "north": 38.3603,
+      "east": 23.6343,
+      "label": "Attica::West Attica::West Attica (mainland)",
+      "status": "cache",
+      "elements": 2
+    },
+    {
+      "south": 37.762,
+      "west": 22.7376,
+      "north": 38.362,
+      "east": 23.3376,
+      "label": "Central Greece::Evia::Evia",
+      "status": "cache",
+      "elements": 184
+    },
+    {
+      "south": 37.762,
+      "west": 23.3376,
+      "north": 38.362,
+      "east": 23.9376,
+      "label": "Central Greece::Evia::Evia",
+      "status": "cache",
+      "elements": 154
+    },
+    {
+      "south": 37.762,
+      "west": 23.9376,
+      "north": 38.362,
+      "east": 24.5376,
+      "label": "Central Greece::Evia::Evia",
+      "status": "cache",
+      "elements": 228
+    },
+    {
+      "south": 37.762,
+      "west": 24.5376,
+      "north": 38.362,
+      "east": 24.7784,
+      "label": "Central Greece::Evia::Evia",
+      "status": "cache",
+      "elements": 41
+    },
+    {
+      "south": 38.362,
+      "west": 22.7376,
+      "north": 38.962,
+      "east": 23.3376,
+      "label": "Central Greece::Evia::Evia",
+      "status": "cache",
+      "elements": 65
+    },
+    {
+      "south": 38.362,
+      "west": 23.3376,
+      "north": 38.962,
+      "east": 23.9376,
+      "label": "Central Greece::Evia::Evia",
+      "status": "cache",
+      "elements": 116
+    },
+    {
+      "south": 38.362,
+      "west": 23.9376,
+      "north": 38.962,
+      "east": 24.5376,
+      "label": "Central Greece::Evia::Evia",
+      "status": "cache",
+      "elements": 55
+    },
+    {
+      "south": 38.362,
+      "west": 24.5376,
+      "north": 38.962,
+      "east": 24.7784,
+      "label": "Central Greece::Evia::Evia",
+      "status": "cache",
+      "elements": 15
+    },
+    {
+      "south": 38.962,
+      "west": 22.7376,
+      "north": 39.2182,
+      "east": 23.3376,
+      "label": "Central Greece::Evia::Evia",
+      "status": "cache",
+      "elements": 73
+    },
+    {
+      "south": 38.962,
+      "west": 23.3376,
+      "north": 39.2182,
+      "east": 23.9376,
+      "label": "Central Greece::Evia::Evia",
+      "status": "cache",
+      "elements": 154
+    },
+    {
+      "south": 38.962,
+      "west": 23.9376,
+      "north": 39.2182,
+      "east": 24.5376,
+      "label": "Central Greece::Evia::Evia",
+      "status": "cache",
+      "elements": 11
+    },
+    {
+      "south": 38.962,
+      "west": 24.5376,
+      "north": 39.2182,
+      "east": 24.7784,
+      "label": "Central Greece::Evia::Evia",
+      "status": "cache",
+      "elements": 0
+    },
+    {
+      "south": 38.5529,
+      "west": 24.2604,
+      "north": 39.1529,
+      "east": 24.8386,
+      "label": "Central Greece::Evia::Skyros",
+      "status": "cache",
+      "elements": 36
+    },
+    {
+      "south": 39.1529,
+      "west": 24.2604,
+      "north": 39.1718,
+      "east": 24.8386,
+      "label": "Central Greece::Evia::Skyros",
+      "status": "cache",
+      "elements": 0
+    },
+    {
+      "south": 38.1046,
+      "west": 21.7221,
+      "north": 38.6252,
+      "east": 22.3221,
+      "label": "Central Greece::Fokida::Fokida (mainland)",
+      "status": "cache",
+      "elements": 123
+    },
+    {
+      "south": 38.1046,
+      "west": 22.3221,
+      "north": 38.6252,
+      "east": 22.8152,
+      "label": "Central Greece::Fokida::Fokida (mainland)",
+      "status": "cache",
+      "elements": 67
+    },
+    {
+      "south": 38.4327,
+      "west": 22.5065,
+      "north": 39.0327,
+      "east": 23.1065,
+      "label": "Central Greece::Fthiotida::Fthiotida (mainland)",
+      "status": "cache",
+      "elements": 58
+    },
+    {
+      "south": 38.4327,
+      "west": 23.1065,
+      "north": 39.0327,
+      "east": 23.4014,
+      "label": "Central Greece::Fthiotida::Fthiotida (mainland)",
+      "status": "cache",
+      "elements": 43
+    },
+    {
+      "south": 39.0327,
+      "west": 22.5065,
+      "north": 39.1237,
+      "east": 23.1065,
+      "label": "Central Greece::Fthiotida::Fthiotida (mainland)",
+      "status": "cache",
+      "elements": 6
+    },
+    {
+      "south": 39.0327,
+      "west": 23.1065,
+      "north": 39.1237,
+      "east": 23.4014,
+      "label": "Central Greece::Fthiotida::Fthiotida (mainland)",
+      "status": "cache",
+      "elements": 5
+    },
+    {
+      "south": 37.9793,
+      "west": 22.3785,
+      "north": 38.5468,
+      "east": 22.9785,
+      "label": "Central Greece::Viotia::Viotia (mainland)",
+      "status": "cache",
+      "elements": 126
+    },
+    {
+      "south": 37.9793,
+      "west": 22.9785,
+      "north": 38.5468,
+      "east": 23.5785,
+      "label": "Central Greece::Viotia::Viotia (mainland)",
+      "status": "cache",
+      "elements": 66
+    },
+    {
+      "south": 37.9793,
+      "west": 23.5785,
+      "north": 38.5468,
+      "east": 23.8691,
+      "label": "Central Greece::Viotia::Viotia (mainland)",
+      "status": "cache",
+      "elements": 44
+    },
+    {
+      "south": 39.7154,
+      "west": 22.8203,
+      "north": 40.3154,
+      "east": 23.4203,
+      "label": "Central Macedonia::Halkidiki::Halkidiki (mainland)",
+      "status": "cache",
+      "elements": 129
+    },
+    {
+      "south": 39.7154,
+      "west": 23.4203,
+      "north": 40.3154,
+      "east": 24.0203,
+      "label": "Central Macedonia::Halkidiki::Halkidiki (mainland)",
+      "status": "cache",
+      "elements": 402
+    },
+    {
+      "south": 39.7154,
+      "west": 24.0203,
+      "north": 40.3154,
+      "east": 24.2186,
+      "label": "Central Macedonia::Halkidiki::Halkidiki (mainland)",
+      "status": "cache",
+      "elements": 4
+    },
+    {
+      "south": 40.3154,
+      "west": 22.8203,
+      "north": 40.8092,
+      "east": 23.4203,
+      "label": "Central Macedonia::Halkidiki::Halkidiki (mainland)",
+      "status": "cache",
+      "elements": 31
+    },
+    {
+      "south": 40.3154,
+      "west": 23.4203,
+      "north": 40.8092,
+      "east": 24.0203,
+      "label": "Central Macedonia::Halkidiki::Halkidiki (mainland)",
+      "status": "cache",
+      "elements": 182
+    },
+    {
+      "south": 40.3154,
+      "west": 24.0203,
+      "north": 40.8092,
+      "east": 24.2186,
+      "label": "Central Macedonia::Halkidiki::Halkidiki (mainland)",
+      "status": "cache",
+      "elements": 28
+    },
+    {
+      "south": 39.814,
+      "west": 22.3667,
+      "north": 40.414,
+      "east": 22.8317,
+      "label": "Central Macedonia::Pieria::Pieria (mainland)",
+      "status": "cache",
+      "elements": 149
+    },
+    {
+      "south": 40.414,
+      "west": 22.3667,
+      "north": 40.5948,
+      "east": 22.8317,
+      "label": "Central Macedonia::Pieria::Pieria (mainland)",
+      "status": "cache",
+      "elements": 7
+    },
+    {
+      "south": 40.1317,
+      "west": 22.6558,
+      "north": 40.7317,
+      "east": 23.2558,
+      "label": "Central Macedonia::Thessaloniki::Thessaloniki area",
+      "status": "cache",
+      "elements": 91
+    },
+    {
+      "south": 40.1317,
+      "west": 23.2558,
+      "north": 40.7317,
+      "east": 23.8558,
+      "label": "Central Macedonia::Thessaloniki::Thessaloniki area",
+      "status": "cache",
+      "elements": 265
+    },
+    {
+      "south": 40.1317,
+      "west": 23.8558,
+      "north": 40.7317,
+      "east": 23.9728,
+      "label": "Central Macedonia::Thessaloniki::Thessaloniki area",
+      "status": "cache",
+      "elements": 77
+    },
+    {
+      "south": 40.7317,
+      "west": 22.6558,
+      "north": 40.9631,
+      "east": 23.2558,
+      "label": "Central Macedonia::Thessaloniki::Thessaloniki area",
+      "status": "cache",
+      "elements": 0
+    },
+    {
+      "south": 40.7317,
+      "west": 23.2558,
+      "north": 40.9631,
+      "east": 23.8558,
+      "label": "Central Macedonia::Thessaloniki::Thessaloniki area",
+      "status": "cache",
+      "elements": 7
+    },
+    {
+      "south": 40.7317,
+      "west": 23.8558,
+      "north": 40.9631,
+      "east": 23.9728,
+      "label": "Central Macedonia::Thessaloniki::Thessaloniki area",
+      "status": "cache",
+      "elements": 30
+    },
+    {
+      "south": 34.9801,
+      "west": 23.3251,
+      "north": 35.5801,
+      "east": 23.9251,
+      "label": "Crete::Chania::Crete (Chania)",
+      "status": "cache",
+      "elements": 107
+    },
+    {
+      "south": 34.9801,
+      "west": 23.9251,
+      "north": 35.5801,
+      "east": 24.4784,
+      "label": "Crete::Chania::Crete (Chania)",
+      "status": "cache",
+      "elements": 160
+    },
+    {
+      "south": 35.5801,
+      "west": 23.3251,
+      "north": 35.8646,
+      "east": 23.9251,
+      "label": "Crete::Chania::Crete (Chania)",
+      "status": "cache",
+      "elements": 6
+    },
+    {
+      "south": 35.5801,
+      "west": 23.9251,
+      "north": 35.8646,
+      "east": 24.4784,
+      "label": "Crete::Chania::Crete (Chania)",
+      "status": "cache",
+      "elements": 5
+    },
+    {
+      "south": 34.6045,
+      "west": 23.8629,
+      "north": 35.0707,
+      "east": 24.3239,
+      "label": "Crete::Chania::Gavdos",
+      "status": "cache",
+      "elements": 18
+    },
+    {
+      "south": 34.725,
+      "west": 24.5417,
+      "north": 35.325,
+      "east": 25.1417,
+      "label": "Crete::Heraklion::Crete (Heraklion)",
+      "status": "cache",
+      "elements": 58
+    },
+    {
+      "south": 34.725,
+      "west": 25.1417,
+      "north": 35.325,
+      "east": 25.6864,
+      "label": "Crete::Heraklion::Crete (Heraklion)",
+      "status": "cache",
+      "elements": 77
+    },
+    {
+      "south": 35.325,
+      "west": 24.5417,
+      "north": 35.6163,
+      "east": 25.1417,
+      "label": "Crete::Heraklion::Crete (Heraklion)",
+      "status": "cache",
+      "elements": 56
+    },
+    {
+      "south": 35.325,
+      "west": 25.1417,
+      "north": 35.6163,
+      "east": 25.6864,
+      "label": "Crete::Heraklion::Crete (Heraklion)",
+      "status": "cache",
+      "elements": 24
+    },
+    {
+      "south": 34.8968,
+      "west": 24.0915,
+      "north": 35.4968,
+      "east": 24.6915,
+      "label": "Crete::Rethymno::Crete (Rethymno)",
+      "status": "cache",
+      "elements": 151
+    },
+    {
+      "south": 34.8968,
+      "west": 24.6915,
+      "north": 35.4968,
+      "east": 25.0279,
+      "label": "Crete::Rethymno::Crete (Rethymno)",
+      "status": "cache",
+      "elements": 63
+    },
+    {
+      "south": 35.4968,
+      "west": 24.0915,
+      "north": 35.6186,
+      "east": 24.6915,
+      "label": "Crete::Rethymno::Crete (Rethymno)",
+      "status": "cache",
+      "elements": 9
+    },
+    {
+      "south": 35.4968,
+      "west": 24.6915,
+      "north": 35.6186,
+      "east": 25.0279,
+      "label": "Crete::Rethymno::Crete (Rethymno)",
+      "status": "cache",
+      "elements": 0
+    },
+    {
+      "south": 34.6742,
+      "west": 25.318,
+      "north": 35.2742,
+      "east": 25.918,
+      "label": "Crete::Lasithi::Crete (Lasithi)",
+      "status": "cache",
+      "elements": 95
+    },
+    {
+      "south": 34.6742,
+      "west": 25.918,
+      "north": 35.2742,
+      "east": 26.4814,
+      "label": "Crete::Lasithi::Crete (Lasithi)",
+      "status": "cache",
+      "elements": 90
+    },
+    {
+      "south": 35.2742,
+      "west": 25.318,
+      "north": 35.5365,
+      "east": 25.918,
+      "label": "Crete::Lasithi::Crete (Lasithi)",
+      "status": "cache",
+      "elements": 64
+    },
+    {
+      "south": 35.2742,
+      "west": 25.918,
+      "north": 35.5365,
+      "east": 26.4814,
+      "label": "Crete::Lasithi::Crete (Lasithi)",
+      "status": "cache",
+      "elements": 1
+    },
+    {
+      "south": 40.6476,
+      "west": 25.5201,
+      "north": 41.0499,
+      "east": 26.0365,
+      "label": "East Macedonia and Thrace::Evros::Evros (mainland)",
+      "status": "cache",
+      "elements": 29
+    },
+    {
+      "south": 40.1951,
+      "west": 25.3172,
+      "north": 40.6237,
+      "east": 25.8064,
+      "label": "East Macedonia and Thrace::Evros::Samothraki",
+      "status": "cache",
+      "elements": 12
+    },
+    {
+      "south": 40.5204,
+      "west": 23.6981,
+      "north": 41.1204,
+      "east": 24.2981,
+      "label": "East Macedonia and Thrace::Kavala::Kavala (mainland)",
+      "status": "cache",
+      "elements": 129
+    },
+    {
+      "south": 40.5204,
+      "west": 24.2981,
+      "north": 41.1204,
+      "east": 24.8981,
+      "label": "East Macedonia and Thrace::Kavala::Kavala (mainland)",
+      "status": "cache",
+      "elements": 162
+    },
+    {
+      "south": 40.5204,
+      "west": 24.8981,
+      "north": 41.1204,
+      "east": 24.9497,
+      "label": "East Macedonia and Thrace::Kavala::Kavala (mainland)",
+      "status": "cache",
+      "elements": 2
+    },
+    {
+      "south": 41.1204,
+      "west": 23.6981,
+      "north": 41.1582,
+      "east": 24.2981,
+      "label": "East Macedonia and Thrace::Kavala::Kavala (mainland)",
+      "status": "cache",
+      "elements": 0
+    },
+    {
+      "south": 41.1204,
+      "west": 24.2981,
+      "north": 41.1582,
+      "east": 24.8981,
+      "label": "East Macedonia and Thrace::Kavala::Kavala (mainland)",
+      "status": "cache",
+      "elements": 0
+    },
+    {
+      "south": 41.1204,
+      "west": 24.8981,
+      "north": 41.1582,
+      "east": 24.9497,
+      "label": "East Macedonia and Thrace::Kavala::Kavala (mainland)",
+      "status": "cache",
+      "elements": 0
+    },
+    {
+      "south": 40.6596,
+      "west": 24.9658,
+      "north": 41.1492,
+      "east": 25.5658,
+      "label": "East Macedonia and Thrace::Rodopi::Rodopi (mainland)",
+      "status": "cache",
+      "elements": 22
+    },
+    {
+      "south": 40.6596,
+      "west": 25.5658,
+      "north": 41.1492,
+      "east": 25.7537,
+      "label": "East Macedonia and Thrace::Rodopi::Rodopi (mainland)",
+      "status": "cache",
+      "elements": 7
+    },
+    {
+      "south": 40.3719,
+      "west": 24.3149,
+      "north": 40.9719,
+      "east": 24.9149,
+      "label": "East Macedonia and Thrace::Thasos::Thasos",
+      "status": "cache",
+      "elements": 145
+    },
+    {
+      "south": 40.3719,
+      "west": 24.9149,
+      "north": 40.9719,
+      "east": 24.9735,
+      "label": "East Macedonia and Thrace::Thasos::Thasos",
+      "status": "cache",
+      "elements": 2
+    },
+    {
+      "south": 40.9719,
+      "west": 24.3149,
+      "north": 40.9933,
+      "east": 24.9149,
+      "label": "East Macedonia and Thrace::Thasos::Thasos",
+      "status": "cache",
+      "elements": 0
+    },
+    {
+      "south": 40.9719,
+      "west": 24.9149,
+      "north": 40.9933,
+      "east": 24.9735,
+      "label": "East Macedonia and Thrace::Thasos::Thasos",
+      "status": "cache",
+      "elements": 0
+    },
+    {
+      "south": 40.7297,
+      "west": 24.5589,
+      "north": 41.2924,
+      "east": 25.1589,
+      "label": "East Macedonia and Thrace::Xanthi::Xanthi (mainland)",
+      "status": "cache",
+      "elements": 52
+    },
+    {
+      "south": 40.7297,
+      "west": 25.1589,
+      "north": 41.2924,
+      "east": 25.191,
+      "label": "East Macedonia and Thrace::Xanthi::Xanthi (mainland)",
+      "status": "cache",
+      "elements": 2
+    },
+    {
+      "south": 38.8114,
+      "west": 20.6581,
+      "north": 39.2331,
+      "east": 21.1257,
+      "label": "Epirus::Arta::Arta (mainland)",
+      "status": "cache",
+      "elements": 49
+    },
+    {
+      "south": 38.7465,
+      "west": 20.1395,
+      "north": 39.3465,
+      "east": 20.7395,
+      "label": "Epirus::Preveza::Preveza (mainland)",
+      "status": "cache",
+      "elements": 125
+    },
+    {
+      "south": 38.7465,
+      "west": 20.7395,
+      "north": 39.3465,
+      "east": 20.9478,
+      "label": "Epirus::Preveza::Preveza (mainland)",
+      "status": "cache",
+      "elements": 40
+    },
+    {
+      "south": 39.3465,
+      "west": 20.1395,
+      "north": 39.4873,
+      "east": 20.7395,
+      "label": "Epirus::Preveza::Preveza (mainland)",
+      "status": "cache",
+      "elements": 61
+    },
+    {
+      "south": 39.3465,
+      "west": 20.7395,
+      "north": 39.4873,
+      "east": 20.9478,
+      "label": "Epirus::Preveza::Preveza (mainland)",
+      "status": "cache",
+      "elements": 0
+    },
+    {
+      "south": 39.1245,
+      "west": 19.9567,
+      "north": 39.7245,
+      "east": 20.4929,
+      "label": "Epirus::Thesprotia::Thesprotia (mainland)",
+      "status": "cache",
+      "elements": 184
+    },
+    {
+      "south": 39.7245,
+      "west": 19.9567,
+      "north": 39.8392,
+      "east": 20.4929,
+      "label": "Epirus::Thesprotia::Thesprotia (mainland)",
+      "status": "cache",
+      "elements": 0
+    },
+    {
+      "south": 39.1658,
+      "west": 19.4427,
+      "north": 39.7658,
+      "east": 20.0427,
+      "label": "Ionian Islands::Corfu::Corfu",
+      "status": "cache",
+      "elements": 142
+    },
+    {
+      "south": 39.1658,
+      "west": 20.0427,
+      "north": 39.7658,
+      "east": 20.3192,
+      "label": "Ionian Islands::Corfu::Corfu",
+      "status": "cache",
+      "elements": 134
+    },
+    {
+      "south": 39.7658,
+      "west": 19.4427,
+      "north": 40.0183,
+      "east": 20.0427,
+      "label": "Ionian Islands::Corfu::Corfu",
+      "status": "cache",
+      "elements": 55
+    },
+    {
+      "south": 39.7658,
+      "west": 20.0427,
+      "north": 40.0183,
+      "east": 20.3192,
+      "label": "Ionian Islands::Corfu::Corfu",
+      "status": "cache",
+      "elements": 0
+    },
+    {
+      "south": 38.9818,
+      "west": 19.9262,
+      "north": 39.4389,
+      "east": 20.4055,
+      "label": "Ionian Islands::Corfu::Paxos",
+      "status": "cache",
+      "elements": 136
+    },
+    {
+      "south": 38.9414,
+      "west": 20.0166,
+      "north": 39.3612,
+      "east": 20.4479,
+      "label": "Ionian Islands::Corfu::Antipaxos",
+      "status": "cache",
+      "elements": 72
+    },
+    {
+      "south": 39.6402,
+      "west": 19.1832,
+      "north": 40.0422,
+      "east": 19.6079,
+      "label": "Ionian Islands::Corfu::Othonoi",
+      "status": "cache",
+      "elements": 9
+    },
+    {
+      "south": 39.676,
+      "west": 19.38,
+      "north": 40.0793,
+      "east": 19.7808,
+      "label": "Ionian Islands::Corfu::Erikoussa",
+      "status": "cache",
+      "elements": 29
+    },
+    {
+      "south": 39.575,
+      "west": 19.3236,
+      "north": 39.975,
+      "east": 19.7236,
+      "label": "Ionian Islands::Corfu::Mathraki",
+      "status": "cache",
+      "elements": 32
+    },
+    {
+      "south": 37.8595,
+      "west": 20.1438,
+      "north": 38.4595,
+      "east": 20.7438,
+      "label": "Ionian Islands::Kefalonia::Kefalonia",
+      "status": "cache",
+      "elements": 197
+    },
+    {
+      "south": 37.8595,
+      "west": 20.7438,
+      "north": 38.4595,
+      "east": 21.0197,
+      "label": "Ionian Islands::Kefalonia::Kefalonia",
+      "status": "cache",
+      "elements": 24
+    },
+    {
+      "south": 38.4595,
+      "west": 20.1438,
+      "north": 38.6834,
+      "east": 20.7438,
+      "label": "Ionian Islands::Kefalonia::Kefalonia",
+      "status": "cache",
+      "elements": 50
+    },
+    {
+      "south": 38.4595,
+      "west": 20.7438,
+      "north": 38.6834,
+      "east": 21.0197,
+      "label": "Ionian Islands::Kefalonia::Kefalonia",
+      "status": "cache",
+      "elements": 72
+    },
+    {
+      "south": 38.4009,
+      "west": 20.35,
+      "north": 39.0009,
+      "east": 20.95,
+      "label": "Ionian Islands::Lefkada::Lefkada",
+      "status": "cache",
+      "elements": 225
+    },
+    {
+      "south": 38.4009,
+      "west": 20.95,
+      "north": 39.0009,
+      "east": 20.968,
+      "label": "Ionian Islands::Lefkada::Lefkada",
+      "status": "cache",
+      "elements": 6
+    },
+    {
+      "south": 39.0009,
+      "west": 20.35,
+      "north": 39.0529,
+      "east": 20.95,
+      "label": "Ionian Islands::Lefkada::Lefkada",
+      "status": "cache",
+      "elements": 10
+    },
+    {
+      "south": 39.0009,
+      "west": 20.95,
+      "north": 39.0529,
+      "east": 20.968,
+      "label": "Ionian Islands::Lefkada::Lefkada",
+      "status": "cache",
+      "elements": 0
+    },
+    {
+      "south": 38.4451,
+      "west": 20.5372,
+      "north": 38.872,
+      "east": 21.0064,
+      "label": "Ionian Islands::Lefkada::Meganisi",
+      "status": "cache",
+      "elements": 204
+    },
+    {
+      "south": 37.4489,
+      "west": 20.4248,
+      "north": 38.0489,
+      "east": 21.0248,
+      "label": "Ionian Islands::Zakynthos::Zakynthos",
+      "status": "cache",
+      "elements": 131
+    },
+    {
+      "south": 37.4489,
+      "west": 21.0248,
+      "north": 38.0489,
+      "east": 21.1899,
+      "label": "Ionian Islands::Zakynthos::Zakynthos",
+      "status": "cache",
+      "elements": 18
+    },
+    {
+      "south": 38.0489,
+      "west": 20.4248,
+      "north": 38.1075,
+      "east": 21.0248,
+      "label": "Ionian Islands::Zakynthos::Zakynthos",
+      "status": "cache",
+      "elements": 30
+    },
+    {
+      "south": 38.0489,
+      "west": 21.0248,
+      "north": 38.1075,
+      "east": 21.1899,
+      "label": "Ionian Islands::Zakynthos::Zakynthos",
+      "status": "cache",
+      "elements": 0
+    },
+    {
+      "south": 38.1078,
+      "west": 20.4288,
+      "north": 38.6801,
+      "east": 20.9453,
+      "label": "Ionian Islands::Ithaca::Ithaca",
+      "status": "cache",
+      "elements": 256
+    },
+    {
+      "south": 37.957,
+      "west": 25.6844,
+      "north": 38.557,
+      "east": 26.2844,
+      "label": "North Aegean::Chios::Chios",
+      "status": "cache",
+      "elements": 67
+    },
+    {
+      "south": 37.957,
+      "west": 26.2844,
+      "north": 38.557,
+      "east": 26.3544,
+      "label": "North Aegean::Chios::Chios",
+      "status": "cache",
+      "elements": 0
+    },
+    {
+      "south": 38.557,
+      "west": 25.6844,
+      "north": 38.7971,
+      "east": 26.2844,
+      "label": "North Aegean::Chios::Chios",
+      "status": "cache",
+      "elements": 12
+    },
+    {
+      "south": 38.557,
+      "west": 26.2844,
+      "north": 38.7971,
+      "east": 26.3544,
+      "label": "North Aegean::Chios::Chios",
+      "status": "cache",
+      "elements": 0
+    },
+    {
+      "south": 38.3324,
+      "west": 25.3176,
+      "north": 38.7666,
+      "east": 25.7792,
+      "label": "North Aegean::Chios::Psara",
+      "status": "cache",
+      "elements": 14
+    },
+    {
+      "south": 38.3174,
+      "west": 25.993,
+      "north": 38.7385,
+      "east": 26.4142,
+      "label": "North Aegean::Chios::Oinousses",
+      "status": "cache",
+      "elements": 38
+    },
+    {
+      "south": 37.3585,
+      "west": 25.8591,
+      "north": 37.8864,
+      "east": 26.4591,
+      "label": "North Aegean::Ikaria::Ikaria",
+      "status": "cache",
+      "elements": 54
+    },
+    {
+      "south": 37.3585,
+      "west": 26.4591,
+      "north": 37.8864,
+      "east": 26.5605,
+      "label": "North Aegean::Ikaria::Ikaria",
+      "status": "cache",
+      "elements": 43
+    },
+    {
+      "south": 37.3337,
+      "west": 26.2772,
+      "north": 37.7874,
+      "east": 26.7063,
+      "label": "North Aegean::Ikaria::Fournoi",
+      "status": "cache",
+      "elements": 110
+    },
+    {
+      "south": 38.7637,
+      "west": 25.6548,
+      "north": 39.3637,
+      "east": 26.2548,
+      "label": "North Aegean::Lesvos::Lesvos",
+      "status": "cache",
+      "elements": 63
+    },
+    {
+      "south": 38.7637,
+      "west": 26.2548,
+      "north": 39.3637,
+      "east": 26.8022,
+      "label": "North Aegean::Lesvos::Lesvos",
+      "status": "cache",
+      "elements": 75
+    },
+    {
+      "south": 39.3637,
+      "west": 25.6548,
+      "north": 39.5786,
+      "east": 26.2548,
+      "label": "North Aegean::Lesvos::Lesvos",
+      "status": "cache",
+      "elements": 13
+    },
+    {
+      "south": 39.3637,
+      "west": 26.2548,
+      "north": 39.5786,
+      "east": 26.8022,
+      "label": "North Aegean::Lesvos::Lesvos",
+      "status": "cache",
+      "elements": 2
+    },
+    {
+      "south": 37.4378,
+      "west": 26.3854,
+      "north": 38.0064,
+      "east": 26.9854,
+      "label": "North Aegean::Samos::Samos",
+      "status": "cache",
+      "elements": 144
+    },
+    {
+      "south": 37.4378,
+      "west": 26.9854,
+      "north": 38.0064,
+      "east": 27.2284,
+      "label": "North Aegean::Samos::Samos",
+      "status": "cache",
+      "elements": 16
+    },
+    {
+      "south": 39.269,
+      "west": 24.7727,
+      "north": 39.7461,
+      "east": 25.2475,
+      "label": "North Aegean::Agios Efstratios::Agios Efstratios",
+      "status": "cache",
+      "elements": 16
+    },
+    {
+      "south": 39.5931,
+      "west": 24.852,
+      "north": 40.1931,
+      "east": 25.452,
+      "label": "North Aegean::Lemnos::Lemnos",
+      "status": "cache",
+      "elements": 206
+    },
+    {
+      "south": 39.5931,
+      "west": 25.452,
+      "north": 40.1931,
+      "east": 25.6372,
+      "label": "North Aegean::Lemnos::Lemnos",
+      "status": "cache",
+      "elements": 0
+    },
+    {
+      "south": 40.1931,
+      "west": 24.852,
+      "north": 40.2138,
+      "east": 25.452,
+      "label": "North Aegean::Lemnos::Lemnos",
+      "status": "cache",
+      "elements": 0
+    },
+    {
+      "south": 40.1931,
+      "west": 25.452,
+      "north": 40.2138,
+      "east": 25.6372,
+      "label": "North Aegean::Lemnos::Lemnos",
+      "status": "cache",
+      "elements": 0
+    },
+    {
+      "south": 37.0972,
+      "west": 22.5177,
+      "north": 37.6972,
+      "east": 23.1177,
+      "label": "Peloponnese::Argolida::Argolida (mainland)",
+      "status": "cache",
+      "elements": 115
+    },
+    {
+      "south": 37.0972,
+      "west": 23.1177,
+      "north": 37.6972,
+      "east": 23.4812,
+      "label": "Peloponnese::Argolida::Argolida (mainland)",
+      "status": "cache",
+      "elements": 148
+    },
+    {
+      "south": 37.6972,
+      "west": 22.5177,
+      "north": 37.8667,
+      "east": 23.1177,
+      "label": "Peloponnese::Argolida::Argolida (mainland)",
+      "status": "cache",
+      "elements": 9
+    },
+    {
+      "south": 37.6972,
+      "west": 23.1177,
+      "north": 37.8667,
+      "east": 23.4812,
+      "label": "Peloponnese::Argolida::Argolida (mainland)",
+      "status": "cache",
+      "elements": 50
+    },
+    {
+      "south": 36.9211,
+      "west": 22.5269,
+      "north": 37.5211,
+      "east": 23.1051,
+      "label": "Peloponnese::Arkadia::Arkadia (mainland)",
+      "status": "cache",
+      "elements": 96
+    },
+    {
+      "south": 37.5211,
+      "west": 22.5269,
+      "north": 37.6961,
+      "east": 23.1051,
+      "label": "Peloponnese::Arkadia::Arkadia (mainland)",
+      "status": "cache",
+      "elements": 22
+    },
+    {
+      "south": 37.6242,
+      "west": 22.2898,
+      "north": 38.2242,
+      "east": 22.8898,
+      "label": "Peloponnese::Korinthia::Korinthia (mainland)",
+      "status": "cache",
+      "elements": 68
+    },
+    {
+      "south": 37.6242,
+      "west": 22.8898,
+      "north": 38.2242,
+      "east": 23.3495,
+      "label": "Peloponnese::Korinthia::Korinthia (mainland)",
+      "status": "cache",
+      "elements": 170
+    },
+    {
+      "south": 38.2242,
+      "west": 22.2898,
+      "north": 38.336,
+      "east": 22.8898,
+      "label": "Peloponnese::Korinthia::Korinthia (mainland)",
+      "status": "cache",
+      "elements": 20
+    },
+    {
+      "south": 38.2242,
+      "west": 22.8898,
+      "north": 38.336,
+      "east": 23.3495,
+      "label": "Peloponnese::Korinthia::Korinthia (mainland)",
+      "status": "cache",
+      "elements": 2
+    },
+    {
+      "south": 36.1998,
+      "west": 22.1829,
+      "north": 36.7998,
+      "east": 22.7829,
+      "label": "Peloponnese::Lakonia::Lakonia (mainland)",
+      "status": "cache",
+      "elements": 75
+    },
+    {
+      "south": 36.1998,
+      "west": 22.7829,
+      "north": 36.7998,
+      "east": 23.3542,
+      "label": "Peloponnese::Lakonia::Lakonia (mainland)",
+      "status": "cache",
+      "elements": 124
+    },
+    {
+      "south": 36.7998,
+      "west": 22.1829,
+      "north": 37.1853,
+      "east": 22.7829,
+      "label": "Peloponnese::Lakonia::Lakonia (mainland)",
+      "status": "cache",
+      "elements": 37
+    },
+    {
+      "south": 36.7998,
+      "west": 22.7829,
+      "north": 37.1853,
+      "east": 23.3542,
+      "label": "Peloponnese::Lakonia::Lakonia (mainland)",
+      "status": "cache",
+      "elements": 22
+    },
+    {
+      "south": 36.5239,
+      "west": 21.3564,
+      "north": 37.1239,
+      "east": 21.9564,
+      "label": "Peloponnese::Messinia::Messinia (mainland)",
+      "status": "cache",
+      "elements": 87
+    },
+    {
+      "south": 36.5239,
+      "west": 21.9564,
+      "north": 37.1239,
+      "east": 22.4934,
+      "label": "Peloponnese::Messinia::Messinia (mainland)",
+      "status": "cache",
+      "elements": 94
+    },
+    {
+      "south": 37.1239,
+      "west": 21.3564,
+      "north": 37.5305,
+      "east": 21.9564,
+      "label": "Peloponnese::Messinia::Messinia (mainland)",
+      "status": "cache",
+      "elements": 20
+    },
+    {
+      "south": 37.1239,
+      "west": 21.9564,
+      "north": 37.5305,
+      "east": 22.4934,
+      "label": "Peloponnese::Messinia::Messinia (mainland)",
+      "status": "cache",
+      "elements": 0
+    },
+    {
+      "south": 36.5862,
+      "west": 25.5434,
+      "north": 37.1242,
+      "east": 26.1434,
+      "label": "South Aegean::Cyclades::Amorgos",
+      "status": "cache",
+      "elements": 120
+    },
+    {
+      "south": 36.5862,
+      "west": 26.1434,
+      "north": 37.1242,
+      "east": 26.1775,
+      "label": "South Aegean::Cyclades::Amorgos",
+      "status": "cache",
+      "elements": 0
+    },
+    {
+      "south": 36.1442,
+      "west": 25.5347,
+      "north": 36.595,
+      "east": 26.0241,
+      "label": "South Aegean::Cyclades::Anafi",
+      "status": "cache",
+      "elements": 19
+    },
+    {
+      "south": 37.5037,
+      "west": 24.4873,
+      "north": 38.1037,
+      "east": 25.0873,
+      "label": "South Aegean::Cyclades::Andros",
+      "status": "cache",
+      "elements": 139
+    },
+    {
+      "south": 37.5037,
+      "west": 25.0873,
+      "north": 38.1037,
+      "east": 25.1841,
+      "label": "South Aegean::Cyclades::Andros",
+      "status": "cache",
+      "elements": 32
+    },
+    {
+      "south": 38.1037,
+      "west": 24.4873,
+      "north": 38.1874,
+      "east": 25.0873,
+      "label": "South Aegean::Cyclades::Andros",
+      "status": "cache",
+      "elements": 1
+    },
+    {
+      "south": 38.1037,
+      "west": 25.0873,
+      "north": 38.1874,
+      "east": 25.1841,
+      "label": "South Aegean::Cyclades::Andros",
+      "status": "cache",
+      "elements": 0
+    },
+    {
+      "south": 36.7429,
+      "west": 24.7999,
+      "north": 37.2488,
+      "east": 25.2864,
+      "label": "South Aegean::Cyclades::Antiparos",
+      "status": "cache",
+      "elements": 121
+    },
+    {
+      "south": 36.3948,
+      "west": 24.6458,
+      "north": 36.8647,
+      "east": 25.1537,
+      "label": "South Aegean::Cyclades::Folegandros",
+      "status": "cache",
+      "elements": 21
+    },
+    {
+      "south": 36.4501,
+      "west": 25.0561,
+      "north": 37.0332,
+      "east": 25.6561,
+      "label": "South Aegean::Cyclades::Ios",
+      "status": "cache",
+      "elements": 233
+    },
+    {
+      "south": 36.4501,
+      "west": 25.6561,
+      "north": 37.0332,
+      "east": 25.674,
+      "label": "South Aegean::Cyclades::Ios",
+      "status": "cache",
+      "elements": 1
+    },
+    {
+      "south": 37.3316,
+      "west": 24.072,
+      "north": 37.8808,
+      "east": 24.6077,
+      "label": "South Aegean::Cyclades::Kea",
+      "status": "cache",
+      "elements": 122
+    },
+    {
+      "south": 36.5741,
+      "west": 24.3213,
+      "north": 37.0344,
+      "east": 24.7995,
+      "label": "South Aegean::Cyclades::Kimolos",
+      "status": "cache",
+      "elements": 137
+    },
+    {
+      "south": 37.1041,
+      "west": 24.1738,
+      "north": 37.6669,
+      "east": 24.6729,
+      "label": "South Aegean::Cyclades::Kythnos",
+      "status": "cache",
+      "elements": 148
+    },
+    {
+      "south": 36.4522,
+      "west": 24.1319,
+      "north": 36.9695,
+      "east": 24.7319,
+      "label": "South Aegean::Cyclades::Milos",
+      "status": "cache",
+      "elements": 124
+    },
+    {
+      "south": 36.4522,
+      "west": 24.7319,
+      "north": 36.9695,
+      "east": 24.7448,
+      "label": "South Aegean::Cyclades::Milos",
+      "status": "cache",
+      "elements": 3
+    },
+    {
+      "south": 37.1856,
+      "west": 25.0124,
+      "north": 37.6841,
+      "east": 25.6124,
+      "label": "South Aegean::Cyclades::Mykonos",
+      "status": "cache",
+      "elements": 174
+    },
+    {
+      "south": 37.1856,
+      "west": 25.6124,
+      "north": 37.6841,
+      "east": 25.6605,
+      "label": "South Aegean::Cyclades::Mykonos",
+      "status": "cache",
+      "elements": 0
+    },
+    {
+      "south": 36.7364,
+      "west": 25.1469,
+      "north": 37.3364,
+      "east": 25.7469,
+      "label": "South Aegean::Cyclades::Naxos",
+      "status": "cache",
+      "elements": 289
+    },
+    {
+      "south": 36.7364,
+      "west": 25.7469,
+      "north": 37.3364,
+      "east": 25.7939,
+      "label": "South Aegean::Cyclades::Naxos",
+      "status": "cache",
+      "elements": 3
+    },
+    {
+      "south": 37.3364,
+      "west": 25.1469,
+      "north": 37.3911,
+      "east": 25.7469,
+      "label": "South Aegean::Cyclades::Naxos",
+      "status": "cache",
+      "elements": 9
+    },
+    {
+      "south": 37.3364,
+      "west": 25.7469,
+      "north": 37.3911,
+      "east": 25.7939,
+      "label": "South Aegean::Cyclades::Naxos",
+      "status": "cache",
+      "elements": 0
+    },
+    {
+      "south": 36.7823,
+      "west": 24.9098,
+      "north": 37.3463,
+      "east": 25.4873,
+      "label": "South Aegean::Cyclades::Paros",
+      "status": "cache",
+      "elements": 219
+    },
+    {
+      "south": 36.139,
+      "west": 25.1683,
+      "north": 36.6793,
+      "east": 25.6862,
+      "label": "South Aegean::Cyclades::Santorini",
+      "status": "cache",
+      "elements": 44
+    },
+    {
+      "south": 36.9214,
+      "west": 24.2311,
+      "north": 37.4042,
+      "east": 24.7322,
+      "label": "South Aegean::Cyclades::Serifos",
+      "status": "cache",
+      "elements": 97
+    },
+    {
+      "south": 36.7068,
+      "west": 24.4509,
+      "north": 37.2342,
+      "east": 24.9526,
+      "label": "South Aegean::Cyclades::Sifnos",
+      "status": "cache",
+      "elements": 97
+    },
+    {
+      "south": 36.4522,
+      "west": 24.9108,
+      "north": 36.9086,
+      "east": 25.3756,
+      "label": "South Aegean::Cyclades::Sikinos",
+      "status": "cache",
+      "elements": 64
+    },
+    {
+      "south": 37.1764,
+      "west": 24.5341,
+      "north": 37.7764,
+      "east": 25.1341,
+      "label": "South Aegean::Cyclades::Syros",
+      "status": "cache",
+      "elements": 111
+    },
+    {
+      "south": 37.1764,
+      "west": 25.1341,
+      "north": 37.7764,
+      "east": 25.165,
+      "label": "South Aegean::Cyclades::Syros",
+      "status": "cache",
+      "elements": 16
+    },
+    {
+      "south": 37.7764,
+      "west": 24.5341,
+      "north": 37.8129,
+      "east": 25.1341,
+      "label": "South Aegean::Cyclades::Syros",
+      "status": "cache",
+      "elements": 10
+    },
+    {
+      "south": 37.7764,
+      "west": 25.1341,
+      "north": 37.8129,
+      "east": 25.165,
+      "label": "South Aegean::Cyclades::Syros",
+      "status": "cache",
+      "elements": 0
+    },
+    {
+      "south": 37.3298,
+      "west": 24.8003,
+      "north": 37.8723,
+      "east": 25.4003,
+      "label": "South Aegean::Cyclades::Tinos",
+      "status": "cache",
+      "elements": 225
+    },
+    {
+      "south": 37.3298,
+      "west": 25.4003,
+      "north": 37.8723,
+      "east": 25.4396,
+      "label": "South Aegean::Cyclades::Tinos",
+      "status": "cache",
+      "elements": 24
+    },
+    {
+      "south": 36.8913,
+      "west": 25.596,
+      "north": 37.3001,
+      "east": 26.0223,
+      "label": "South Aegean::Cyclades::Donousa",
+      "status": "cache",
+      "elements": 45
+    },
+    {
+      "south": 36.6998,
+      "west": 25.3588,
+      "north": 37.1468,
+      "east": 25.8269,
+      "label": "South Aegean::Cyclades::Koufonisia",
+      "status": "cache",
+      "elements": 192
+    },
+    {
+      "south": 36.6571,
+      "west": 25.3127,
+      "north": 37.0858,
+      "east": 25.7374,
+      "label": "South Aegean::Cyclades::Schinoussa",
+      "status": "cache",
+      "elements": 205
+    },
+    {
+      "south": 36.6514,
+      "west": 25.252,
+      "north": 37.0533,
+      "east": 25.6736,
+      "label": "South Aegean::Cyclades::Iraklia",
+      "status": "cache",
+      "elements": 192
+    },
+    {
+      "south": 36.5613,
+      "west": 24.4114,
+      "north": 36.9848,
+      "east": 24.8597,
+      "label": "South Aegean::Cyclades::Polyaigos",
+      "status": "cache",
+      "elements": 105
+    },
+    {
+      "south": 37.2522,
+      "west": 26.7605,
+      "north": 37.6585,
+      "east": 27.1953,
+      "label": "South Aegean::Dodecanese::Agathonisi",
+      "status": "cache",
+      "elements": 47
+    },
+    {
+      "south": 36.3119,
+      "west": 26.0766,
+      "north": 36.7925,
+      "east": 26.668,
+      "label": "South Aegean::Dodecanese::Astypalaia",
+      "status": "cache",
+      "elements": 50
+    },
+    {
+      "south": 36.0168,
+      "west": 27.4161,
+      "north": 36.4342,
+      "east": 27.8186,
+      "label": "South Aegean::Dodecanese::Halki",
+      "status": "cache",
+      "elements": 28
+    },
+    {
+      "south": 36.7385,
+      "west": 26.719,
+      "north": 37.2609,
+      "east": 27.245,
+      "label": "South Aegean::Dodecanese::Kalymnos",
+      "status": "cache",
+      "elements": 164
+    },
+    {
+      "south": 35.21,
+      "west": 26.8631,
+      "north": 35.81,
+      "east": 27.4365,
+      "label": "South Aegean::Dodecanese::Karpathos",
+      "status": "cache",
+      "elements": 107
+    },
+    {
+      "south": 35.81,
+      "west": 26.8631,
+      "north": 36.0975,
+      "east": 27.4365,
+      "label": "South Aegean::Dodecanese::Karpathos",
+      "status": "cache",
+      "elements": 8
+    },
+    {
+      "south": 35.9475,
+      "west": 29.3977,
+      "north": 36.3603,
+      "east": 29.8025,
+      "label": "South Aegean::Dodecanese::Kastellorizo",
+      "status": "cache",
+      "elements": 7
+    },
+    {
+      "south": 36.4847,
+      "west": 26.7188,
+      "north": 37.0847,
+      "east": 27.3188,
+      "label": "South Aegean::Dodecanese::Kos",
+      "status": "cache",
+      "elements": 179
+    },
+    {
+      "south": 36.4847,
+      "west": 27.3188,
+      "north": 37.0847,
+      "east": 27.5525,
+      "label": "South Aegean::Dodecanese::Kos",
+      "status": "fetched",
+      "elements": 8
+    },
+    {
+      "south": 37.0847,
+      "west": 26.7188,
+      "north": 37.1042,
+      "east": 27.3188,
+      "label": "South Aegean::Dodecanese::Kos",
+      "status": "cache",
+      "elements": 0
+    },
+    {
+      "south": 37.0847,
+      "west": 27.3188,
+      "north": 37.1042,
+      "east": 27.5525,
+      "label": "South Aegean::Dodecanese::Kos",
+      "status": "cache",
+      "elements": 0
+    },
+    {
+      "south": 36.9195,
+      "west": 26.6097,
+      "north": 37.3974,
+      "east": 27.0602,
+      "label": "South Aegean::Dodecanese::Leros",
+      "status": "cache",
+      "elements": 98
+    },
+    {
+      "south": 37.0767,
+      "west": 26.536,
+      "north": 37.5139,
+      "east": 27.0046,
+      "label": "South Aegean::Dodecanese::Lipsi",
+      "status": "cache",
+      "elements": 93
+    },
+    {
+      "south": 36.3903,
+      "west": 26.93,
+      "north": 36.8095,
+      "east": 27.4084,
+      "label": "South Aegean::Dodecanese::Nisyros",
+      "status": "cache",
+      "elements": 90
+    },
+    {
+      "south": 37.0783,
+      "west": 26.3381,
+      "north": 37.5702,
+      "east": 26.7876,
+      "label": "South Aegean::Dodecanese::Patmos",
+      "status": "cache",
+      "elements": 65
+    },
+    {
+      "south": 35.6864,
+      "west": 27.507,
+      "north": 36.2864,
+      "east": 28.107,
+      "label": "South Aegean::Dodecanese::Rhodes",
+      "status": "cache",
+      "elements": 96
+    },
+    {
+      "south": 35.6864,
+      "west": 28.107,
+      "north": 36.2864,
+      "east": 28.4369,
+      "label": "South Aegean::Dodecanese::Rhodes",
+      "status": "cache",
+      "elements": 35
+    },
+    {
+      "south": 36.2864,
+      "west": 27.507,
+      "north": 36.6556,
+      "east": 28.107,
+      "label": "South Aegean::Dodecanese::Rhodes",
+      "status": "cache",
+      "elements": 28
+    },
+    {
+      "south": 36.2864,
+      "west": 28.107,
+      "north": 36.6556,
+      "east": 28.4369,
+      "label": "South Aegean::Dodecanese::Rhodes",
+      "status": "cache",
+      "elements": 88
+    },
+    {
+      "south": 36.3823,
+      "west": 27.6139,
+      "north": 36.8227,
+      "east": 28.0713,
+      "label": "South Aegean::Dodecanese::Symi",
+      "status": "cache",
+      "elements": 20
+    },
+    {
+      "south": 36.1858,
+      "west": 27.1047,
+      "north": 36.6777,
+      "east": 27.6055,
+      "label": "South Aegean::Dodecanese::Tilos",
+      "status": "cache",
+      "elements": 40
+    },
+    {
+      "south": 35.1475,
+      "west": 26.653,
+      "north": 35.6101,
+      "east": 27.0951,
+      "label": "South Aegean::Dodecanese::Kasos",
+      "status": "cache",
+      "elements": 18
+    },
+    {
+      "south": 36.7325,
+      "west": 26.9331,
+      "north": 37.1495,
+      "east": 27.3506,
+      "label": "South Aegean::Dodecanese::Pserimos",
+      "status": "cache",
+      "elements": 146
+    },
+    {
+      "south": 36.7932,
+      "west": 26.7182,
+      "north": 37.2064,
+      "east": 27.1241,
+      "label": "South Aegean::Dodecanese::Telendos",
+      "status": "cache",
+      "elements": 90
+    },
+    {
+      "south": 37.1794,
+      "west": 26.5328,
+      "north": 37.5894,
+      "east": 26.9368,
+      "label": "South Aegean::Dodecanese::Arki",
+      "status": "cache",
+      "elements": 67
+    },
+    {
+      "south": 37.1666,
+      "west": 26.525,
+      "north": 37.5675,
+      "east": 26.9461,
+      "label": "South Aegean::Dodecanese::Marathi",
+      "status": "cache",
+      "elements": 71
+    },
+    {
+      "south": 37.9355,
+      "west": 21.1651,
+      "north": 38.5355,
+      "east": 21.7651,
+      "label": "West Greece::Achaia::Achaia (mainland)",
+      "status": "cache",
+      "elements": 50
+    },
+    {
+      "south": 37.9355,
+      "west": 21.7651,
+      "north": 38.5355,
+      "east": 22.3651,
+      "label": "West Greece::Achaia::Achaia (mainland)",
+      "status": "cache",
+      "elements": 123
+    },
+    {
+      "south": 37.9355,
+      "west": 22.3651,
+      "north": 38.5355,
+      "east": 22.545,
+      "label": "West Greece::Achaia::Achaia (mainland)",
+      "status": "cache",
+      "elements": 42
+    },
+    {
+      "south": 38.5355,
+      "west": 21.1651,
+      "north": 38.5363,
+      "east": 21.7651,
+      "label": "West Greece::Achaia::Achaia (mainland)",
+      "status": "cache",
+      "elements": 0
+    },
+    {
+      "south": 38.5355,
+      "west": 21.7651,
+      "north": 38.5363,
+      "east": 22.3651,
+      "label": "West Greece::Achaia::Achaia (mainland)",
+      "status": "cache",
+      "elements": 0
+    },
+    {
+      "south": 38.5355,
+      "west": 22.3651,
+      "north": 38.5363,
+      "east": 22.545,
+      "label": "West Greece::Achaia::Achaia (mainland)",
+      "status": "cache",
+      "elements": 0
+    },
+    {
+      "south": 38.0985,
+      "west": 20.5889,
+      "north": 38.6985,
+      "east": 21.1889,
+      "label": "West Greece::Aetolia-Acarnania::Aetolia-Acarnania (mainland)",
+      "status": "cache",
+      "elements": 208
+    },
+    {
+      "south": 38.0985,
+      "west": 21.1889,
+      "north": 38.6985,
+      "east": 21.7889,
+      "label": "West Greece::Aetolia-Acarnania::Aetolia-Acarnania (mainland)",
+      "status": "cache",
+      "elements": 51
+    },
+    {
+      "south": 38.0985,
+      "west": 21.7889,
+      "north": 38.6985,
+      "east": 22.133,
+      "label": "West Greece::Aetolia-Acarnania::Aetolia-Acarnania (mainland)",
+      "status": "cache",
+      "elements": 83
+    },
+    {
+      "south": 38.6985,
+      "west": 20.5889,
+      "north": 39.1292,
+      "east": 21.1889,
+      "label": "West Greece::Aetolia-Acarnania::Aetolia-Acarnania (mainland)",
+      "status": "cache",
+      "elements": 110
+    },
+    {
+      "south": 38.6985,
+      "west": 21.1889,
+      "north": 39.1292,
+      "east": 21.7889,
+      "label": "West Greece::Aetolia-Acarnania::Aetolia-Acarnania (mainland)",
+      "status": "cache",
+      "elements": 0
+    },
+    {
+      "south": 38.6985,
+      "west": 21.7889,
+      "north": 39.1292,
+      "east": 22.133,
+      "label": "West Greece::Aetolia-Acarnania::Aetolia-Acarnania (mainland)",
+      "status": "cache",
+      "elements": 0
+    },
+    {
+      "south": 37.465,
+      "west": 20.9076,
+      "north": 38.065,
+      "east": 21.5076,
+      "label": "West Greece::Ileia::Ileia (mainland)",
+      "status": "cache",
+      "elements": 95
+    },
+    {
+      "south": 37.465,
+      "west": 21.5076,
+      "north": 38.065,
+      "east": 21.5502,
+      "label": "West Greece::Ileia::Ileia (mainland)",
+      "status": "cache",
+      "elements": 2
+    },
+    {
+      "south": 38.065,
+      "west": 20.9076,
+      "north": 38.3026,
+      "east": 21.5076,
+      "label": "West Greece::Ileia::Ileia (mainland)",
+      "status": "cache",
+      "elements": 19
+    },
+    {
+      "south": 38.065,
+      "west": 21.5076,
+      "north": 38.3026,
+      "east": 21.5502,
+      "label": "West Greece::Ileia::Ileia (mainland)",
+      "status": "cache",
+      "elements": 1
+    },
+    {
+      "south": 38.927,
+      "west": 23.6474,
+      "north": 39.4691,
+      "east": 24.1567,
+      "label": "Thessaly::Magnesia (Sporades)::Alonissos",
+      "status": "cache",
+      "elements": 86
+    },
+    {
+      "south": 38.9293,
+      "west": 23.189,
+      "north": 39.4075,
+      "east": 23.7125,
+      "label": "Thessaly::Magnesia (Sporades)::Skiathos",
+      "status": "cache",
+      "elements": 190
+    },
+    {
+      "south": 38.8815,
+      "west": 23.4355,
+      "north": 39.3728,
+      "east": 23.9537,
+      "label": "Thessaly::Magnesia (Sporades)::Skopelos",
+      "status": "cache",
+      "elements": 121
+    },
+    {
+      "south": 38.912,
+      "west": 22.6188,
+      "north": 39.512,
+      "east": 23.2188,
+      "label": "Thessaly::Magnesia::Magnesia (mainland - Pelion)",
+      "status": "cache",
+      "elements": 140
+    },
+    {
+      "south": 38.912,
+      "west": 23.2188,
+      "north": 39.512,
+      "east": 23.5438,
+      "label": "Thessaly::Magnesia::Magnesia (mainland - Pelion)",
+      "status": "cache",
+      "elements": 132
+    },
+    {
+      "south": 39.512,
+      "west": 22.6188,
+      "north": 39.8432,
+      "east": 23.2188,
+      "label": "Thessaly::Magnesia::Magnesia (mainland - Pelion)",
+      "status": "cache",
+      "elements": 35
+    },
+    {
+      "south": 39.512,
+      "west": 23.2188,
+      "north": 39.8432,
+      "east": 23.5438,
+      "label": "Thessaly::Magnesia::Magnesia (mainland - Pelion)",
+      "status": "cache",
+      "elements": 0
+    },
+    {
+      "south": 39.4554,
+      "west": 22.456,
+      "north": 40.0554,
+      "east": 23.056,
+      "label": "Thessaly::Larissa::Larissa Coast (Agia - Kissavos)",
+      "status": "cache",
+      "elements": 107
+    },
+    {
+      "south": 39.4554,
+      "west": 23.056,
+      "north": 40.0554,
+      "east": 23.0942,
+      "label": "Thessaly::Larissa::Larissa Coast (Agia - Kissavos)",
+      "status": "cache",
+      "elements": 1
+    },
+    {
+      "south": 40.0554,
+      "west": 22.456,
+      "north": 40.0977,
+      "east": 23.056,
+      "label": "Thessaly::Larissa::Larissa Coast (Agia - Kissavos)",
+      "status": "cache",
+      "elements": 3
+    },
+    {
+      "south": 40.0554,
+      "west": 23.056,
+      "north": 40.0977,
+      "east": 23.0942,
+      "label": "Thessaly::Larissa::Larissa Coast (Agia - Kissavos)",
+      "status": "cache",
+      "elements": 0
+    }
+  ]
+}

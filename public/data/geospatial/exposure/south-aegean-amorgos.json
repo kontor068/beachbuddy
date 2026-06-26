@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "generatedAt": "2026-06-12T06:15:00.607Z",
+  "generatedAt": "2026-06-26T10:13:11.944Z",
   "region": {
     "id": "south-aegean-amorgos",
     "name": "Amorgos"
@@ -36,49 +36,49 @@
     "maskConfidence": "high"
   },
   "summary": {
-    "beachCount": 14,
-    "generatedProfiles": 14,
+    "beachCount": 15,
+    "generatedProfiles": 15,
     "missingCoordinates": 0,
     "sectors": {
       "N": {
         "protected": 8,
         "partial": 4,
-        "exposed": 2
+        "exposed": 3
       },
       "NE": {
         "protected": 8,
-        "partial": 5,
+        "partial": 6,
         "exposed": 1
       },
       "E": {
-        "protected": 8,
+        "protected": 9,
         "partial": 4,
         "exposed": 2
       },
       "SE": {
-        "protected": 5,
+        "protected": 6,
         "partial": 6,
         "exposed": 3
       },
       "S": {
-        "protected": 6,
+        "protected": 7,
         "partial": 7,
         "exposed": 1
       },
       "SW": {
-        "protected": 6,
+        "protected": 7,
         "partial": 4,
         "exposed": 4
       },
       "W": {
         "protected": 6,
-        "partial": 6,
+        "partial": 7,
         "exposed": 2
       },
       "NW": {
         "protected": 10,
         "partial": 1,
-        "exposed": 3
+        "exposed": 4
       }
     }
   },
@@ -1073,6 +1073,77 @@
           "blockedRayRatio": 0.6,
           "onshore": 0.894,
           "intensity": 69.5
+        }
+      },
+      "confidence": "high"
+    },
+    "3083": {
+      "beachId": 3083,
+      "name": {
+        "en": "Megali Vlychada",
+        "gr": "Μεγάλη Βλυχάδα"
+      },
+      "coordinates": {
+        "lat": 36.9264438,
+        "lon": 26.0019886
+      },
+      "facingDeg": 334.2,
+      "sectors": {
+        "N": {
+          "level": "exposed",
+          "fetchKm": 5,
+          "blockedRayRatio": 0.8,
+          "onshore": 0.9,
+          "intensity": 60.2
+        },
+        "NE": {
+          "level": "partial",
+          "fetchKm": 0,
+          "blockedRayRatio": 1,
+          "onshore": 0.329,
+          "intensity": 39.9
+        },
+        "E": {
+          "level": "protected",
+          "fetchKm": 0,
+          "blockedRayRatio": 1,
+          "onshore": -0.435,
+          "intensity": 16.9
+        },
+        "SE": {
+          "level": "protected",
+          "fetchKm": 0,
+          "blockedRayRatio": 1,
+          "onshore": -0.944,
+          "intensity": 1.7
+        },
+        "S": {
+          "level": "protected",
+          "fetchKm": 0,
+          "blockedRayRatio": 1,
+          "onshore": -0.9,
+          "intensity": 3
+        },
+        "SW": {
+          "level": "protected",
+          "fetchKm": 0,
+          "blockedRayRatio": 1,
+          "onshore": -0.329,
+          "intensity": 20.1
+        },
+        "W": {
+          "level": "partial",
+          "fetchKm": 0,
+          "blockedRayRatio": 1,
+          "onshore": 0.435,
+          "intensity": 43.1
+        },
+        "NW": {
+          "level": "exposed",
+          "fetchKm": 5.04,
+          "blockedRayRatio": 0.8,
+          "onshore": 0.944,
+          "intensity": 61.6
         }
       },
       "confidence": "high"

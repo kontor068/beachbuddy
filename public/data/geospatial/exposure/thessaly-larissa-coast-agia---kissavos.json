@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "generatedAt": "2026-06-12T06:15:08.101Z",
+  "generatedAt": "2026-06-26T10:13:19.519Z",
   "region": {
     "id": "thessaly-larissa-coast-agia---kissavos",
     "name": "Larissa Coast (Agia - Kissavos)"
@@ -36,48 +36,48 @@
     "maskConfidence": "high"
   },
   "summary": {
-    "beachCount": 8,
-    "generatedProfiles": 8,
+    "beachCount": 9,
+    "generatedProfiles": 9,
     "missingCoordinates": 0,
     "sectors": {
       "N": {
         "protected": 0,
         "partial": 2,
-        "exposed": 6
+        "exposed": 7
       },
       "NE": {
         "protected": 0,
         "partial": 0,
-        "exposed": 8
+        "exposed": 9
       },
       "E": {
         "protected": 0,
         "partial": 0,
-        "exposed": 8
+        "exposed": 9
       },
       "SE": {
-        "protected": 3,
+        "protected": 4,
         "partial": 4,
         "exposed": 1
       },
       "S": {
-        "protected": 8,
+        "protected": 9,
         "partial": 0,
         "exposed": 0
       },
       "SW": {
-        "protected": 8,
+        "protected": 9,
         "partial": 0,
         "exposed": 0
       },
       "W": {
-        "protected": 8,
+        "protected": 9,
         "partial": 0,
         "exposed": 0
       },
       "NW": {
         "protected": 5,
-        "partial": 3,
+        "partial": 4,
         "exposed": 0
       }
     }
@@ -647,6 +647,77 @@
           "blockedRayRatio": 1,
           "onshore": -0.058,
           "intensity": 28.3
+        }
+      },
+      "confidence": "high"
+    },
+    "3110": {
+      "beachId": 3110,
+      "name": {
+        "en": "Agia Paraskevi (Stomio)",
+        "gr": "Αγία Παρασκευή (Στόμιο)"
+      },
+      "coordinates": {
+        "lat": 39.8627532,
+        "lon": 22.7496581
+      },
+      "facingDeg": 35.5,
+      "sectors": {
+        "N": {
+          "level": "exposed",
+          "fetchKm": 20,
+          "blockedRayRatio": 0.2,
+          "onshore": 0.814,
+          "intensity": 83.4
+        },
+        "NE": {
+          "level": "exposed",
+          "fetchKm": 25,
+          "blockedRayRatio": 0,
+          "onshore": 0.986,
+          "intensity": 99.3
+        },
+        "E": {
+          "level": "exposed",
+          "fetchKm": 20,
+          "blockedRayRatio": 0.2,
+          "onshore": 0.581,
+          "intensity": 72.7
+        },
+        "SE": {
+          "level": "protected",
+          "fetchKm": 5,
+          "blockedRayRatio": 0.8,
+          "onshore": -0.165,
+          "intensity": 26.4
+        },
+        "S": {
+          "level": "protected",
+          "fetchKm": 0,
+          "blockedRayRatio": 1,
+          "onshore": -0.814,
+          "intensity": 5.6
+        },
+        "SW": {
+          "level": "protected",
+          "fetchKm": 0,
+          "blockedRayRatio": 1,
+          "onshore": -0.986,
+          "intensity": 0.4
+        },
+        "W": {
+          "level": "protected",
+          "fetchKm": 0,
+          "blockedRayRatio": 1,
+          "onshore": -0.581,
+          "intensity": 12.6
+        },
+        "NW": {
+          "level": "partial",
+          "fetchKm": 5,
+          "blockedRayRatio": 0.8,
+          "onshore": 0.165,
+          "intensity": 36.9
         }
       },
       "confidence": "high"

@@ -1,0 +1,221 @@
+{
+  "_meta": {
+    "generatedAt": "2026-06-26",
+    "source": "national-gap-report batch2 (source-review + plausible-low) + adversarial verification",
+    "count": 12,
+    "note": "12 real distinct beaches; 3 nudist deferred; Μεγάλη Βλυχάδα renamed from OSM MIKRI VLYHADA per verification."
+  },
+  "beaches": [
+    {
+      "nameGr": "Korfalonas Beach",
+      "displayName": "Korfalonas Beach",
+      "lat": 35.4987352,
+      "lon": 23.6743717,
+      "region": "Crete",
+      "prefecture": "Chania",
+      "municipality": "Crete (Chania)",
+      "osmUrl": "https://www.openstreetmap.org/way/180867296",
+      "google": null,
+      "nearestOursM": 1351,
+      "surface": null,
+      "verifyReason": "Multiple independent Crete beach guides (cretanbeaches.com, cretelocals.com, creteinfo.gr, terrabook) document Κορφαλώνας as a real sandy/pebble swimmable beach with sunbeds/showers in Kissamos, Chania; it is the central section between Livadia and Drapanias, distinct from our nearest \"Τελώνιο\" which is the westernmost town section ~1.6km west, and clearly in Greece not Turkey/Albania."
+    },
+    {
+      "nameGr": "Paralia Drapanias",
+      "displayName": "Paralia Drapanias",
+      "lat": 35.5021692,
+      "lon": 23.6971431,
+      "region": "Crete",
+      "prefecture": "Chania",
+      "municipality": "Crete (Chania)",
+      "osmUrl": "https://www.openstreetmap.org/way/377197117",
+      "google": null,
+      "nearestOursM": 3440,
+      "surface": null,
+      "verifyReason": "Multiple independent guides (Greeka, cretanbeaches, cretelocals, discovercrete, explorecrete) describe Drapanias as a real ~2km organized sandy/pebble swimmable beach 5km east of Kissamos near Korfalonas/Nopigia; the nearest existing \"Telonio\" is a separate westernmost section in Kissamos town (~23.657 lon vs candidate ~23.697 lon), so it is genuinely distinct."
+    },
+    {
+      "nameGr": "Βουβαλομάντρια",
+      "displayName": "Vouvalomantria",
+      "lat": 39.7848673,
+      "lon": 19.9469849,
+      "region": "Ionian Islands",
+      "prefecture": "Corfu",
+      "municipality": "Corfu",
+      "osmUrl": "https://www.openstreetmap.org/way/1268632336",
+      "google": {
+        "placeId": "ChIJtb0rBSNBWxMRHsYIqXidoaI",
+        "ratingCount": 58,
+        "isBeachType": false,
+        "primaryType": null,
+        "distM": 7
+      },
+      "nearestOursM": 1354,
+      "surface": null,
+      "verifyReason": "Multiple independent travel sources (Lovin' Corfu, AtCorfu, Navicup, Wikimapia) confirm Vouvalomantria is a real ~30m pebble swimmable beach in Corfu's Erimitis nature reserve (Municipal Unit of Kassiopi, Greece), accessible only by boat/foot and distinct from road-accessible Kogevina Beach near Kassiopi (~1.3km away); the missing Google place is expected for a remote unorganized beach."
+    },
+    {
+      "nameGr": "Βραχλή",
+      "displayName": "Vrachli",
+      "lat": 39.7856159,
+      "lon": 19.944811,
+      "region": "Ionian Islands",
+      "prefecture": "Corfu",
+      "municipality": "Corfu",
+      "osmUrl": "https://www.openstreetmap.org/way/93887501",
+      "google": {
+        "placeId": "ChIJEbN8j71BWxMRNRDMkJp11IQ",
+        "ratingCount": 77,
+        "isBeachType": true,
+        "primaryType": "beach",
+        "distM": 44
+      },
+      "nearestOursM": 1183,
+      "surface": null,
+      "verifyReason": "OSM way 93887501 is tagged natural=beach (Βραχλή/Vrahli) and multiple independent Corfu sources (atcorfu.com, corfuland.gr) confirm it as a distinct swimmable pebble cove in the Erimitis area of NE Corfu, Greece, separate from Kogevina beach (~1.2km away in Bolana Bay), accessed by footpath/sea."
+    },
+    {
+      "nameGr": "Παραλία Χουχούλιο",
+      "displayName": "Paralia Chouchoylio",
+      "lat": 39.7461274,
+      "lon": 19.9387283,
+      "region": "Ionian Islands",
+      "prefecture": "Corfu",
+      "municipality": "Corfu",
+      "osmUrl": "https://www.openstreetmap.org/way/229669034",
+      "google": {
+        "placeId": "ChIJA7VqR7NDWxMRn6mLO9b565s",
+        "ratingCount": 245,
+        "isBeachType": false,
+        "primaryType": null,
+        "distM": 10
+      },
+      "nearestOursM": 994,
+      "surface": "gravel",
+      "verifyReason": "Multiple independent travel sources (mykerkyra, lovincorfu, greeka, feelgreece, hestiatravel, TripAdvisor) plus OSM's natural-beach tagging confirm Chouchoulio is a real unorganized pebble/gravel swimmable beach in its own bay by Kouloura port (Kalami/Gimari, North Corfu, Greece), distinct from our nearby Gialiskari/Gimari beach ~1km away."
+    },
+    {
+      "nameGr": "Τζουφάκα",
+      "displayName": "Tzoufaka",
+      "lat": 39.7831304,
+      "lon": 19.947964,
+      "region": "Ionian Islands",
+      "prefecture": "Corfu",
+      "municipality": "Corfu",
+      "osmUrl": "https://www.openstreetmap.org/way/93887437",
+      "google": {
+        "placeId": "ChIJn1bB-DVBWxMRPwQZZZI8ecA",
+        "ratingCount": 4,
+        "isBeachType": true,
+        "primaryType": "beach",
+        "distM": 11
+      },
+      "nearestOursM": 1431,
+      "surface": null,
+      "verifyReason": "OSM tags it natural=beach and multiple Corfu guides (AtCorfu, Lovin' Corfu, beaches-searcher) confirm Tzoufaka is a real, named virgin pebble cove in the Erimitis peninsula (NE Corfu near Agios Stefanos), distinct from both Avlaki and our nearest Kogevina Beach (a separate cove in Bolana Bay ~1431m away); reverse geocode confirms it is in Greece (GR), not Albania."
+    },
+    {
+      "nameGr": "Αγ.Ελένη",
+      "displayName": "Ag.Eleni",
+      "lat": 38.3283679,
+      "lon": 26.1601236,
+      "region": "North Aegean",
+      "prefecture": "Chios",
+      "municipality": "Chios",
+      "osmUrl": "https://www.openstreetmap.org/node/3408987644",
+      "google": {
+        "placeId": "ChIJB3YpqZJluxQR3sf2IjgVuPM",
+        "ratingCount": 106,
+        "isBeachType": false,
+        "primaryType": "resort_hotel",
+        "distM": 10
+      },
+      "nearestOursM": 976,
+      "surface": null,
+      "verifyReason": "Greek travel source (allovergreece) confirms Agia Eleni as a real small pebbled swimmable beach below the Agia Eleni church near Chios airport/Lefkonas, explicitly distinct from nearby Karfas (our nearest at 976m); coords 38.328/26.160 are on SE Chios, clearly in Greece, and no Eleni entry exists in our 35-beach Chios dataset."
+    },
+    {
+      "nameGr": "Μεγάλη Βλυχάδα",
+      "displayName": "MIKRI VLYHADA",
+      "lat": 36.9264438,
+      "lon": 26.0019886,
+      "region": "South Aegean",
+      "prefecture": "Cyclades",
+      "municipality": "Amorgos",
+      "osmUrl": "https://www.openstreetmap.org/way/450780778",
+      "google": null,
+      "nearestOursM": 2195,
+      "surface": null,
+      "verifyReason": "OSM way 450780778 (natural=beach, NE Amorgos near Tholaria) sits at lon 26.0019, ~2.2km EAST of our existing Mikri Vlychada (lon 25.97745, at Tholaria's longitude, 0.9km away); sources state Mikri is the WESTERN cove and the eastern beach 1.8km from Tholaria is Megali Vlychada, and the OSM way borders \"Όρμος Μεγάλη Βλιχάδα\" bay — so it is a real, distinct, boat/foot-access Greek swimmable beach we lack (the eastern Vlychada/Megali cove), mislabeled \"Mikri\" in OSM (only a name:fr tag) and should be added under the correct name Μεγάλη Βλυχάδα rather than as a duplicate of our existing Μικρή Βλυχάδα.",
+      "renamedFromOsm": "MIKRI VLYHADA"
+    },
+    {
+      "nameGr": "Καλαμιές",
+      "displayName": "Kalamies",
+      "lat": 39.3202681,
+      "lon": 23.0148313,
+      "region": "Thessaly",
+      "prefecture": "Magnesia",
+      "municipality": "Magnesia (mainland - Pelion)",
+      "osmUrl": "https://www.openstreetmap.org/way/320088015",
+      "google": {
+        "placeId": "ChIJoZnvILoUpxQR5Ags1t408hI",
+        "ratingCount": 244,
+        "isBeachType": false,
+        "primaryType": "point_of_interest",
+        "distM": 27
+      },
+      "nearestOursM": 1140,
+      "surface": "sand",
+      "verifyReason": "OSM way/320088015 (natural=beach, surface=sand) at 39.320,23.015 matches ilovepelion's Παραλία Καρνάγιο / Καρνάγιο Πούντα at Κάτω Λεχώνια (coords 39.31946,23.01533), locally nicknamed \"Καλαμιές\" for its shoreline reeds — a real public swimmable Pelion beach in Greece, distinct from our \"Καλαμιές (Αγριά)\" which sits ~3.3 km NW at lon 22.989 in a different village (Agria)."
+    },
+    {
+      "nameGr": "Παραλία Λαλάριας",
+      "displayName": "Paralia Lalarias",
+      "lat": 39.1210534,
+      "lon": 23.4953176,
+      "region": "Thessaly",
+      "prefecture": "Magnesia (Sporades)",
+      "municipality": "Skiathos",
+      "osmUrl": "https://www.openstreetmap.org/relation/15956095",
+      "google": null,
+      "nearestOursM": 915,
+      "surface": "sand",
+      "verifyReason": "Lalaria is a famous iconic white-pebble swimmable beach on NE Skiathos, Greece (OSM natural=beach; widely documented as a top boat-access beach), clearly distinct from our nearest entry Παραλία Τσουγκριάς, which is a different islet off Skiathos's south coast."
+    },
+    {
+      "nameGr": "παραλία Νηές",
+      "displayName": "paralia Nies",
+      "lat": 39.1096965,
+      "lon": 22.934017,
+      "region": "Thessaly",
+      "prefecture": "Magnesia",
+      "municipality": "Magnesia (mainland - Pelion)",
+      "osmUrl": "https://www.openstreetmap.org/way/1484288539",
+      "google": null,
+      "nearestOursM": 7197,
+      "surface": null,
+      "verifyReason": "Νηές is a confirmed real coastal settlement of Sourpi (Almyros, Magnesia) on the Pagasetic Gulf with its own named bay enclosed by Cape Glaros; municipal and Wikipedia sources describe a shallow public sand/pebble beach ideal for swimming, located ~7.2 km from our nearest entry Συκίτσα, so it is a distinct mainland-Greek beach we lack."
+    },
+    {
+      "nameGr": "Χρυσή Μηλιά",
+      "displayName": "Chrysi Milia",
+      "lat": 39.1624101,
+      "lon": 23.8951668,
+      "region": "Thessaly",
+      "prefecture": "Magnesia (Sporades)",
+      "municipality": "Alonissos",
+      "osmUrl": "https://www.openstreetmap.org/way/296512536",
+      "google": {
+        "placeId": "ChIJsfPlVSORphQRFlqMc2VRZUw",
+        "ratingCount": 450,
+        "isBeachType": true,
+        "primaryType": "beach",
+        "distM": 45
+      },
+      "nearestOursM": 861,
+      "surface": null,
+      "verifyReason": "Chrisi Milia is Alonissos' famous golden-sand beach (own TripAdvisor/Greeka/AllOverGreece pages, OSM way/296512536 tagged natural=beach); Greeka lists it as a separate beach from the nearby pebble \"Milia\" (our existing Αλόννησος Μηλιά ~860m W, OSM surface=pebblestone), so it is a genuine distinct Greek swimmable beach we lack."
+    }
+  ]
+}

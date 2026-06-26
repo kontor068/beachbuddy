@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "generatedAt": "2026-06-12T06:14:32.678Z",
+  "generatedAt": "2026-06-26T10:12:42.692Z",
   "region": {
     "id": "central-greece-evia",
     "name": "Evia"
@@ -36,47 +36,47 @@
     "maskConfidence": "high"
   },
   "summary": {
-    "beachCount": 122,
-    "generatedProfiles": 122,
+    "beachCount": 123,
+    "generatedProfiles": 123,
     "missingCoordinates": 0,
     "sectors": {
       "N": {
-        "protected": 56,
+        "protected": 57,
         "partial": 37,
         "exposed": 29
       },
       "NE": {
         "protected": 49,
-        "partial": 33,
+        "partial": 34,
         "exposed": 40
       },
       "E": {
         "protected": 49,
         "partial": 38,
-        "exposed": 35
+        "exposed": 36
       },
       "SE": {
         "protected": 59,
         "partial": 38,
-        "exposed": 25
+        "exposed": 26
       },
       "S": {
         "protected": 72,
-        "partial": 28,
+        "partial": 29,
         "exposed": 22
       },
       "SW": {
-        "protected": 79,
+        "protected": 80,
         "partial": 26,
         "exposed": 17
       },
       "W": {
-        "protected": 79,
+        "protected": 80,
         "partial": 31,
         "exposed": 12
       },
       "NW": {
-        "protected": 66,
+        "protected": 67,
         "partial": 37,
         "exposed": 19
       }
@@ -8741,6 +8741,77 @@
           "blockedRayRatio": 1,
           "onshore": -0.506,
           "intensity": 14.8
+        }
+      },
+      "confidence": "high"
+    },
+    "3062": {
+      "beachId": 3062,
+      "name": {
+        "en": "Almyrichi",
+        "gr": "Αλμυρίχι"
+      },
+      "coordinates": {
+        "lat": 38.2613521,
+        "lon": 24.2517298
+      },
+      "facingDeg": 100.7,
+      "sectors": {
+        "N": {
+          "level": "protected",
+          "fetchKm": 0,
+          "blockedRayRatio": 1,
+          "onshore": -0.186,
+          "intensity": 24.4
+        },
+        "NE": {
+          "level": "partial",
+          "fetchKm": 5,
+          "blockedRayRatio": 0.8,
+          "onshore": 0.564,
+          "intensity": 49.5
+        },
+        "E": {
+          "level": "exposed",
+          "fetchKm": 20,
+          "blockedRayRatio": 0.2,
+          "onshore": 0.983,
+          "intensity": 91.2
+        },
+        "SE": {
+          "level": "exposed",
+          "fetchKm": 10,
+          "blockedRayRatio": 0.6,
+          "onshore": 0.826,
+          "intensity": 67
+        },
+        "S": {
+          "level": "partial",
+          "fetchKm": 0,
+          "blockedRayRatio": 1,
+          "onshore": 0.186,
+          "intensity": 35.6
+        },
+        "SW": {
+          "level": "protected",
+          "fetchKm": 0,
+          "blockedRayRatio": 1,
+          "onshore": -0.564,
+          "intensity": 13.1
+        },
+        "W": {
+          "level": "protected",
+          "fetchKm": 0,
+          "blockedRayRatio": 1,
+          "onshore": -0.983,
+          "intensity": 0.5
+        },
+        "NW": {
+          "level": "protected",
+          "fetchKm": 0,
+          "blockedRayRatio": 1,
+          "onshore": -0.826,
+          "intensity": 5.2
         }
       },
       "confidence": "high"

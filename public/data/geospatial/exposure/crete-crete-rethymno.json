@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "generatedAt": "2026-06-18T20:17:22.299Z",
+  "generatedAt": "2026-06-26T10:12:55.500Z",
   "region": {
     "id": "crete-crete-rethymno",
     "name": "Rethymno"
@@ -36,49 +36,49 @@
     "maskConfidence": "high"
   },
   "summary": {
-    "beachCount": 46,
-    "generatedProfiles": 46,
+    "beachCount": 47,
+    "generatedProfiles": 47,
     "missingCoordinates": 0,
     "sectors": {
       "N": {
         "protected": 34,
         "partial": 2,
-        "exposed": 10
+        "exposed": 11
       },
       "NE": {
         "protected": 35,
-        "partial": 2,
+        "partial": 3,
         "exposed": 9
       },
       "E": {
-        "protected": 27,
+        "protected": 28,
         "partial": 15,
         "exposed": 4
       },
       "SE": {
-        "protected": 16,
+        "protected": 17,
         "partial": 16,
         "exposed": 14
       },
       "S": {
-        "protected": 12,
+        "protected": 13,
         "partial": 3,
         "exposed": 31
       },
       "SW": {
-        "protected": 11,
+        "protected": 12,
         "partial": 10,
         "exposed": 25
       },
       "W": {
         "protected": 21,
-        "partial": 12,
+        "partial": 13,
         "exposed": 13
       },
       "NW": {
         "protected": 31,
         "partial": 9,
-        "exposed": 6
+        "exposed": 7
       }
     }
   },
@@ -3345,6 +3345,77 @@
           "blockedRayRatio": 1,
           "onshore": -0.991,
           "intensity": 0.3
+        }
+      },
+      "confidence": "high"
+    },
+    "3089": {
+      "beachId": 3089,
+      "name": {
+        "en": "Sfagia",
+        "gr": "Sfagia"
+      },
+      "coordinates": {
+        "lat": 35.4187326,
+        "lon": 24.6913027
+      },
+      "facingDeg": 342.6,
+      "sectors": {
+        "N": {
+          "level": "exposed",
+          "fetchKm": 25,
+          "blockedRayRatio": 0,
+          "onshore": 0.954,
+          "intensity": 97.7
+        },
+        "NE": {
+          "level": "partial",
+          "fetchKm": 10.16,
+          "blockedRayRatio": 0.6,
+          "onshore": 0.463,
+          "intensity": 53.8
+        },
+        "E": {
+          "level": "protected",
+          "fetchKm": 0.12,
+          "blockedRayRatio": 1,
+          "onshore": -0.299,
+          "intensity": 21
+        },
+        "SE": {
+          "level": "protected",
+          "fetchKm": 0,
+          "blockedRayRatio": 1,
+          "onshore": -0.886,
+          "intensity": 3.4
+        },
+        "S": {
+          "level": "protected",
+          "fetchKm": 0,
+          "blockedRayRatio": 1,
+          "onshore": -0.954,
+          "intensity": 1.4
+        },
+        "SW": {
+          "level": "protected",
+          "fetchKm": 0.04,
+          "blockedRayRatio": 1,
+          "onshore": -0.463,
+          "intensity": 16.1
+        },
+        "W": {
+          "level": "partial",
+          "fetchKm": 10.12,
+          "blockedRayRatio": 0.6,
+          "onshore": 0.299,
+          "intensity": 47.7
+        },
+        "NW": {
+          "level": "exposed",
+          "fetchKm": 25,
+          "blockedRayRatio": 0,
+          "onshore": 0.886,
+          "intensity": 94.3
         }
       },
       "confidence": "high"

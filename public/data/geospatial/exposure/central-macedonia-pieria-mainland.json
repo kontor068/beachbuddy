@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "generatedAt": "2026-06-12T06:14:38.319Z",
+  "generatedAt": "2026-06-26T10:12:48.665Z",
   "region": {
     "id": "central-macedonia-pieria-mainland",
     "name": "Pieria"
@@ -36,47 +36,47 @@
     "maskConfidence": "high"
   },
   "summary": {
-    "beachCount": 8,
-    "generatedProfiles": 8,
+    "beachCount": 9,
+    "generatedProfiles": 9,
     "missingCoordinates": 0,
     "sectors": {
       "N": {
         "protected": 2,
-        "partial": 5,
+        "partial": 6,
         "exposed": 1
       },
       "NE": {
         "protected": 0,
         "partial": 0,
-        "exposed": 8
+        "exposed": 9
       },
       "E": {
         "protected": 0,
         "partial": 2,
-        "exposed": 6
+        "exposed": 7
       },
       "SE": {
         "protected": 0,
-        "partial": 4,
+        "partial": 5,
         "exposed": 4
       },
       "S": {
-        "protected": 6,
+        "protected": 7,
         "partial": 2,
         "exposed": 0
       },
       "SW": {
-        "protected": 8,
+        "protected": 9,
         "partial": 0,
         "exposed": 0
       },
       "W": {
-        "protected": 8,
+        "protected": 9,
         "partial": 0,
         "exposed": 0
       },
       "NW": {
-        "protected": 8,
+        "protected": 9,
         "partial": 0,
         "exposed": 0
       }
@@ -647,6 +647,77 @@
           "blockedRayRatio": 1,
           "onshore": -0.528,
           "intensity": 14.1
+        }
+      },
+      "confidence": "high"
+    },
+    "3097": {
+      "beachId": 3097,
+      "name": {
+        "en": "Ammos (Alyki Kitrous, Pieria)",
+        "gr": "Άμμος (Αλυκή Κίτρους, Πιερία)"
+      },
+      "coordinates": {
+        "lat": 40.3855183,
+        "lon": 22.6208746
+      },
+      "facingDeg": 61.8,
+      "sectors": {
+        "N": {
+          "level": "partial",
+          "fetchKm": 7.32,
+          "blockedRayRatio": 1,
+          "onshore": 0.473,
+          "intensity": 44.2
+        },
+        "NE": {
+          "level": "exposed",
+          "fetchKm": 18.2,
+          "blockedRayRatio": 0.8,
+          "onshore": 0.957,
+          "intensity": 66.5
+        },
+        "E": {
+          "level": "exposed",
+          "fetchKm": 22.8,
+          "blockedRayRatio": 0.6,
+          "onshore": 0.881,
+          "intensity": 71.5
+        },
+        "SE": {
+          "level": "partial",
+          "fetchKm": 10.36,
+          "blockedRayRatio": 0.6,
+          "onshore": 0.289,
+          "intensity": 47.6
+        },
+        "S": {
+          "level": "protected",
+          "fetchKm": 0,
+          "blockedRayRatio": 1,
+          "onshore": -0.473,
+          "intensity": 15.8
+        },
+        "SW": {
+          "level": "protected",
+          "fetchKm": 0,
+          "blockedRayRatio": 1,
+          "onshore": -0.957,
+          "intensity": 1.3
+        },
+        "W": {
+          "level": "protected",
+          "fetchKm": 0,
+          "blockedRayRatio": 1,
+          "onshore": -0.881,
+          "intensity": 3.6
+        },
+        "NW": {
+          "level": "protected",
+          "fetchKm": 0.2,
+          "blockedRayRatio": 1,
+          "onshore": -0.289,
+          "intensity": 21.3
         }
       },
       "confidence": "high"

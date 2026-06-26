@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "generatedAt": "2026-06-12T06:14:48.016Z",
+  "generatedAt": "2026-06-26T10:12:58.719Z",
   "region": {
     "id": "ionian-islands-antipaxos",
     "name": "Antipaxos"
@@ -36,47 +36,47 @@
     "maskConfidence": "high"
   },
   "summary": {
-    "beachCount": 13,
-    "generatedProfiles": 13,
+    "beachCount": 14,
+    "generatedProfiles": 14,
     "missingCoordinates": 0,
     "sectors": {
       "N": {
-        "protected": 5,
+        "protected": 6,
         "partial": 2,
         "exposed": 6
       },
       "NE": {
-        "protected": 4,
+        "protected": 5,
         "partial": 7,
         "exposed": 2
       },
       "E": {
-        "protected": 4,
+        "protected": 5,
         "partial": 4,
         "exposed": 5
       },
       "SE": {
         "protected": 9,
         "partial": 3,
-        "exposed": 1
+        "exposed": 2
       },
       "S": {
         "protected": 9,
         "partial": 3,
-        "exposed": 1
+        "exposed": 2
       },
       "SW": {
         "protected": 9,
         "partial": 1,
-        "exposed": 3
+        "exposed": 4
       },
       "W": {
         "protected": 9,
-        "partial": 1,
+        "partial": 2,
         "exposed": 3
       },
       "NW": {
-        "protected": 5,
+        "protected": 6,
         "partial": 8,
         "exposed": 0
       }
@@ -1002,6 +1002,77 @@
           "blockedRayRatio": 0.6,
           "onshore": 0.342,
           "intensity": 50.7
+        }
+      },
+      "confidence": "high"
+    },
+    "3090": {
+      "beachId": 3090,
+      "name": {
+        "en": "Spiantza sta Sfoungaria",
+        "gr": "Σπιάντζα στα Σφουγγάρια"
+      },
+      "coordinates": {
+        "lat": 39.1380262,
+        "lon": 20.2411362
+      },
+      "facingDeg": 192.7,
+      "sectors": {
+        "N": {
+          "level": "protected",
+          "fetchKm": 0,
+          "blockedRayRatio": 1,
+          "onshore": -0.976,
+          "intensity": 0.7
+        },
+        "NE": {
+          "level": "protected",
+          "fetchKm": 0,
+          "blockedRayRatio": 1,
+          "onshore": -0.845,
+          "intensity": 4.6
+        },
+        "E": {
+          "level": "protected",
+          "fetchKm": 15,
+          "blockedRayRatio": 0.4,
+          "onshore": -0.22,
+          "intensity": 32.8
+        },
+        "SE": {
+          "level": "exposed",
+          "fetchKm": 20.2,
+          "blockedRayRatio": 0.2,
+          "onshore": 0.534,
+          "intensity": 70.6
+        },
+        "S": {
+          "level": "exposed",
+          "fetchKm": 25,
+          "blockedRayRatio": 0,
+          "onshore": 0.976,
+          "intensity": 98.8
+        },
+        "SW": {
+          "level": "exposed",
+          "fetchKm": 25,
+          "blockedRayRatio": 0,
+          "onshore": 0.845,
+          "intensity": 92.3
+        },
+        "W": {
+          "level": "partial",
+          "fetchKm": 10,
+          "blockedRayRatio": 0.6,
+          "onshore": 0.22,
+          "intensity": 44.7
+        },
+        "NW": {
+          "level": "protected",
+          "fetchKm": 0,
+          "blockedRayRatio": 1,
+          "onshore": -0.534,
+          "intensity": 14
         }
       },
       "confidence": "high"

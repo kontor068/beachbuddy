@@ -1,0 +1,188 @@
+{
+  "_meta": {
+    "generatedAt": "2026-06-26",
+    "source": "national-gap-report batch3 (alias/section bucket) + adversarial verification",
+    "count": 10,
+    "note": "10 real distinct beaches from the alias/section bucket; 4 nudist + Tzanaki(nudist) + 2 review deferred; Milos Rema excluded (deliberately removed). Renames: Στενό, Μεγάλη Άμμος."
+  },
+  "beaches": [
+    {
+      "nameGr": "Μυκονιάτικα",
+      "displayName": "Mykoniatika",
+      "lat": 40.3014362,
+      "lon": 23.092437,
+      "region": "Central Macedonia",
+      "prefecture": "Halkidiki",
+      "municipality": "Halkidiki (mainland)",
+      "osmUrl": "https://www.openstreetmap.org/way/885440824",
+      "google": {
+        "placeId": "ChIJpz2nd4pzqBQRdz-8oZ64AgI",
+        "ratingCount": 246,
+        "isBeachType": false,
+        "primaryType": "tourist_attraction",
+        "distM": 154
+      },
+      "nearestOursM": 553,
+      "surface": null,
+      "verifyReason": "Multiple tourism sources (Greeka, visit-halkidiki, gr-beaches) confirm Mykoniatika as a real 1.5km+ sandy Blue Flag organized swimming beach near Nea Kallikrateia, Halkidiki, Greece, distinct from the separately-named Anthoupoli beach 553m away."
+    },
+    {
+      "nameGr": "Sfagia",
+      "displayName": "Sfagia",
+      "lat": 35.4187326,
+      "lon": 24.6913027,
+      "region": "Crete",
+      "prefecture": "Rethymno",
+      "municipality": "Crete (Rethymno)",
+      "osmUrl": "https://www.openstreetmap.org/way/134453104",
+      "google": null,
+      "nearestOursM": 253,
+      "surface": "sand",
+      "verifyReason": "OSM way 134453104 is tagged natural=beach/surface=sand named \"Sfagia\" at Panormos (Mylopotamos, Rethymno, Crete); multiple travel sites (Beachfarer, VRBO, Hotels.com, Expedia) independently index it as a real swimmable beach distinct from and ~253 m from our existing harbor-side \"Λίμνη\" (Limni) beach."
+    },
+    {
+      "nameGr": "Σπιάντζα στα Σφουγγάρια",
+      "displayName": "Spiantza sta Sfouggaria",
+      "lat": 39.1380262,
+      "lon": 20.2411362,
+      "region": "Ionian Islands",
+      "prefecture": "Corfu",
+      "municipality": "Antipaxos",
+      "osmUrl": "https://www.openstreetmap.org/way/1466111647",
+      "google": null,
+      "nearestOursM": 407,
+      "surface": null,
+      "verifyReason": "OSM way 1466111647 is tagged natural=beach connected to the coastline; \"spiantza\" is the local Paxos/Antipaxos word for a small cove/beach (per Greek Wikipedia \"σπιάντζα Φύκι/Μεσαβρίκα\"), so this is \"the cove at Sfouggaria\" on Antipaxos (Ionian Sea, Greece), sitting 407 m south of our Σαρακίνικο id 1043 and southernmost of all 13 Antipaxos entries — a genuinely distinct unorganized cove, not a bar/resort/duplicate/foreign feature."
+    },
+    {
+      "nameGr": "Παραλία Κάτω Μέζαπος",
+      "displayName": "Paralia Kato Mezapos",
+      "lat": 36.5446735,
+      "lon": 22.388999,
+      "region": "Peloponnese",
+      "prefecture": "Lakonia",
+      "municipality": "Lakonia (mainland)",
+      "osmUrl": "https://www.openstreetmap.org/way/257076528",
+      "google": {
+        "placeId": "ChIJF-u5Txj3YRMRuH-IbpQVrKo",
+        "ratingCount": 140,
+        "isBeachType": true,
+        "primaryType": "beach",
+        "distM": 9
+      },
+      "nearestOursM": 447,
+      "surface": null,
+      "verifyReason": "Multiple independent Greek travel sources (lakonia.mobi, exploring-greece.gr, beachsearcher, inLaconia) describe Κάτω Μέζαπος as a real small pebble swimmable cove with crystalline waters in Mani, Lakonia (Peloponnese, Greece), and the lakonia.mobi page explicitly lists Χαλικιά (~0.4km, our way/257076538) as a separate nearby beach, confirming the candidate (OSM way/257076528) is a distinct beach we lack rather than a duplicate, bar, or foreign place."
+    },
+    {
+      "nameGr": "Στενό",
+      "displayName": "The Steno",
+      "lat": 36.5664406,
+      "lon": 26.3542429,
+      "region": "South Aegean",
+      "prefecture": "Dodecanese",
+      "municipality": "Astypalaia",
+      "osmUrl": "https://www.openstreetmap.org/node/13754032603",
+      "google": null,
+      "nearestOursM": 325,
+      "surface": "sand",
+      "verifyReason": "Στενό is a well-documented organized sandy beach on the narrow isthmus of Astypalaia (TripAdvisor, astypalaia.gr, travel.gr, allovergreece), explicitly listed as separate from the nearby Μαμούνια beach.",
+      "renamedFromOsm": "The Steno"
+    },
+    {
+      "nameGr": "Μεγάλη Άμμος",
+      "displayName": "Sti Megali Ammo",
+      "lat": 39.2315332,
+      "lon": 23.9529184,
+      "region": "Thessaly",
+      "prefecture": "Magnesia (Sporades)",
+      "municipality": "Alonissos",
+      "osmUrl": "https://www.openstreetmap.org/way/493697014",
+      "google": null,
+      "nearestOursM": 511,
+      "surface": null,
+      "verifyReason": "\"Στη Μεγάλη Άμμο\" is the locative form of the well-documented sandy/pebbly Μεγάλη Άμμος beach on Alonissos's west coast (~6.5km N of Patitiri), listed separately on alonissos.gr, greeka.com and exploring-greece.gr; it is a distinct Greek public swimmable beach, different from our nearby rocky Στροβίλι (a separate cove with the Kastanorema gorge).",
+      "renamedFromOsm": "Στη Μεγάλη Άμμο"
+    },
+    {
+      "nameGr": "Σουτραλί",
+      "displayName": "Soutrali",
+      "lat": 39.3258203,
+      "lon": 23.0141285,
+      "region": "Thessaly",
+      "prefecture": "Magnesia",
+      "municipality": "Magnesia (mainland - Pelion)",
+      "osmUrl": "https://www.openstreetmap.org/way/320087252",
+      "google": {
+        "placeId": "ChIJocx4RKUUpxQR5nZvhMHpSpk",
+        "ratingCount": 187,
+        "isBeachType": true,
+        "primaryType": "beach",
+        "distM": 11
+      },
+      "nearestOursM": 527,
+      "surface": "sand",
+      "verifyReason": "Σουτραλί Αγριάς has an official Greek government bathing-water profile (GRBW089105025) and is an organized swimmable beach near Volos, distinct from Καλαμιές which sources explicitly place \"after Soutrali\" (Agria→Soutrali→Kalamies chain)."
+    },
+    {
+      "nameGr": "Elias Cove",
+      "displayName": "Elias Cove",
+      "lat": 39.1376246,
+      "lon": 23.8644183,
+      "region": "Thessaly",
+      "prefecture": "Magnesia (Sporades)",
+      "municipality": "Alonissos",
+      "osmUrl": "https://www.openstreetmap.org/way/1109066282",
+      "google": {
+        "placeId": "ChIJteKYEwCXphQRchvelisKfso",
+        "ratingCount": 0,
+        "isBeachType": false,
+        "primaryType": "tourist_attraction",
+        "distM": 7
+      },
+      "nearestOursM": 436,
+      "surface": null,
+      "verifyReason": "OSM way 1109066282 is tagged natural=beach (lifeguard=no, supervised=no) on the actual coastline of southern Alonissos near Patitiri/Marpounta in Greece — not a bar/hotel/marina/foreign feature; it is a small undeveloped cove ~447 m from our nearest record Νικόλα Βάλα (39.141,23.867), a separate location and name, so it is a genuine distinct Greek swimmable cove we lack (note: thin secondary coverage, OSM-only, no Google place within 400 m)."
+    },
+    {
+      "nameGr": "Olive Bay",
+      "displayName": "Olive Bay",
+      "lat": 39.1857409,
+      "lon": 23.2194038,
+      "region": "Thessaly",
+      "prefecture": "Magnesia",
+      "municipality": "Magnesia (mainland - Pelion)",
+      "osmUrl": "https://www.openstreetmap.org/way/299012994",
+      "google": {
+        "placeId": "ChIJaQ_O_OgipxQRTYbxtt0BSSY",
+        "ratingCount": 614,
+        "isBeachType": true,
+        "primaryType": "beach",
+        "distM": 16
+      },
+      "nearestOursM": 620,
+      "surface": null,
+      "verifyReason": "OSM tags it natural=beach and travel sources (travel.gr, TripAdvisor, beach DBs) describe \"Olive Beach/Olive Bay\" near Horto-Milina, South Pelion as a swimmable pebble cove with turquoise water, explicitly distinct from nearby Vathia Spilia, in mainland Greece (Magnesia)."
+    },
+    {
+      "nameGr": "Patitiri town beach",
+      "displayName": "Patitiri town beach",
+      "lat": 39.1433514,
+      "lon": 23.8636374,
+      "region": "Thessaly",
+      "prefecture": "Magnesia (Sporades)",
+      "municipality": "Alonissos",
+      "osmUrl": "https://www.openstreetmap.org/way/462585721",
+      "google": {
+        "placeId": "ChIJm2Z1bqaWphQRR9azoUQZUXc",
+        "ratingCount": 37,
+        "isBeachType": true,
+        "primaryType": "beach",
+        "distM": 37
+      },
+      "nearestOursM": 391,
+      "surface": null,
+      "verifyReason": "OSM way 462585721 is tagged natural=beach and multiple travel sources (Greeka, alonissos.gr) describe it as a small unorganized pebble beach at the edge of Patitiri harbour (Alonissos capital, Greece) with clear turquoise water, crowded with swimmers daily; it is a distinct named beach from \"Νικόλα Βάλα\" 391 m away, which is a separate coastal area near Steni Vala."
+    }
+  ]
+}

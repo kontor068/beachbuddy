@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "generatedAt": "2026-06-18T20:17:34.225Z",
+  "generatedAt": "2026-06-26T10:13:07.492Z",
   "region": {
     "id": "north-aegean-samos",
     "name": "Samos"
@@ -36,49 +36,49 @@
     "maskConfidence": "high"
   },
   "summary": {
-    "beachCount": 41,
-    "generatedProfiles": 41,
+    "beachCount": 43,
+    "generatedProfiles": 43,
     "missingCoordinates": 0,
     "sectors": {
       "N": {
-        "protected": 28,
-        "partial": 2,
+        "protected": 29,
+        "partial": 3,
         "exposed": 11
       },
       "NE": {
-        "protected": 22,
-        "partial": 12,
+        "protected": 23,
+        "partial": 13,
         "exposed": 7
       },
       "E": {
-        "protected": 18,
+        "protected": 19,
         "partial": 17,
-        "exposed": 6
+        "exposed": 7
       },
       "SE": {
-        "protected": 17,
+        "protected": 18,
         "partial": 10,
-        "exposed": 14
+        "exposed": 15
       },
       "S": {
-        "protected": 16,
-        "partial": 11,
+        "protected": 17,
+        "partial": 12,
         "exposed": 14
       },
       "SW": {
-        "protected": 18,
-        "partial": 12,
+        "protected": 19,
+        "partial": 13,
         "exposed": 11
       },
       "W": {
-        "protected": 25,
+        "protected": 26,
         "partial": 8,
-        "exposed": 8
+        "exposed": 9
       },
       "NW": {
-        "protected": 24,
+        "protected": 25,
         "partial": 6,
-        "exposed": 11
+        "exposed": 12
       }
     }
   },
@@ -2990,6 +2990,148 @@
           "blockedRayRatio": 1,
           "onshore": -0.629,
           "intensity": 11.1
+        }
+      },
+      "confidence": "high"
+    },
+    "3106": {
+      "beachId": 3106,
+      "name": {
+        "en": "Limnionas (Samos)",
+        "gr": "Λιμνιώνας (Σάμος)"
+      },
+      "coordinates": {
+        "lat": 37.6933495,
+        "lon": 26.6317468
+      },
+      "facingDeg": 111.7,
+      "sectors": {
+        "N": {
+          "level": "protected",
+          "fetchKm": 0,
+          "blockedRayRatio": 1,
+          "onshore": -0.37,
+          "intensity": 18.9
+        },
+        "NE": {
+          "level": "partial",
+          "fetchKm": 1.44,
+          "blockedRayRatio": 1,
+          "onshore": 0.396,
+          "intensity": 41.9
+        },
+        "E": {
+          "level": "exposed",
+          "fetchKm": 11.28,
+          "blockedRayRatio": 0.8,
+          "onshore": 0.929,
+          "intensity": 65.1
+        },
+        "SE": {
+          "level": "exposed",
+          "fetchKm": 17.72,
+          "blockedRayRatio": 0.4,
+          "onshore": 0.918,
+          "intensity": 80.6
+        },
+        "S": {
+          "level": "partial",
+          "fetchKm": 5.12,
+          "blockedRayRatio": 0.8,
+          "onshore": 0.37,
+          "intensity": 43.4
+        },
+        "SW": {
+          "level": "protected",
+          "fetchKm": 0.04,
+          "blockedRayRatio": 1,
+          "onshore": -0.396,
+          "intensity": 18.1
+        },
+        "W": {
+          "level": "protected",
+          "fetchKm": 0,
+          "blockedRayRatio": 1,
+          "onshore": -0.929,
+          "intensity": 2.1
+        },
+        "NW": {
+          "level": "protected",
+          "fetchKm": 0,
+          "blockedRayRatio": 1,
+          "onshore": -0.918,
+          "intensity": 2.4
+        }
+      },
+      "confidence": "high"
+    },
+    "3107": {
+      "beachId": 3107,
+      "name": {
+        "en": "Plaka (Samos)",
+        "gr": "Πλάκα (Σάμος)"
+      },
+      "coordinates": {
+        "lat": 37.6989368,
+        "lon": 26.5834421
+      },
+      "facingDeg": 287,
+      "sectors": {
+        "N": {
+          "level": "partial",
+          "fetchKm": 5.36,
+          "blockedRayRatio": 0.8,
+          "onshore": 0.292,
+          "intensity": 41.1
+        },
+        "NE": {
+          "level": "protected",
+          "fetchKm": 0,
+          "blockedRayRatio": 1,
+          "onshore": -0.469,
+          "intensity": 15.9
+        },
+        "E": {
+          "level": "protected",
+          "fetchKm": 0,
+          "blockedRayRatio": 1,
+          "onshore": -0.956,
+          "intensity": 1.3
+        },
+        "SE": {
+          "level": "protected",
+          "fetchKm": 0,
+          "blockedRayRatio": 1,
+          "onshore": -0.883,
+          "intensity": 3.5
+        },
+        "S": {
+          "level": "protected",
+          "fetchKm": 0.12,
+          "blockedRayRatio": 1,
+          "onshore": -0.292,
+          "intensity": 21.2
+        },
+        "SW": {
+          "level": "partial",
+          "fetchKm": 11.16,
+          "blockedRayRatio": 0.8,
+          "onshore": 0.469,
+          "intensity": 49.6
+        },
+        "W": {
+          "level": "exposed",
+          "fetchKm": 24.56,
+          "blockedRayRatio": 0.2,
+          "onshore": 0.956,
+          "intensity": 90
+        },
+        "NW": {
+          "level": "exposed",
+          "fetchKm": 20.36,
+          "blockedRayRatio": 0.2,
+          "onshore": 0.883,
+          "intensity": 86.6
         }
       },
       "confidence": "high"

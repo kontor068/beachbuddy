@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "generatedAt": "2026-06-18T20:17:14.993Z",
+  "generatedAt": "2026-06-26T10:12:48.359Z",
   "region": {
     "id": "central-macedonia-halkidiki-mainland",
     "name": "Halkidiki"
@@ -36,47 +36,47 @@
     "maskConfidence": "high"
   },
   "summary": {
-    "beachCount": 129,
-    "generatedProfiles": 129,
+    "beachCount": 130,
+    "generatedProfiles": 130,
     "missingCoordinates": 0,
     "sectors": {
       "N": {
-        "protected": 62,
+        "protected": 63,
         "partial": 54,
         "exposed": 13
       },
       "NE": {
-        "protected": 57,
+        "protected": 58,
         "partial": 34,
         "exposed": 38
       },
       "E": {
-        "protected": 53,
+        "protected": 54,
         "partial": 34,
         "exposed": 42
       },
       "SE": {
         "protected": 65,
         "partial": 39,
-        "exposed": 25
+        "exposed": 26
       },
       "S": {
         "protected": 72,
         "partial": 32,
-        "exposed": 25
+        "exposed": 26
       },
       "SW": {
         "protected": 78,
         "partial": 17,
-        "exposed": 34
+        "exposed": 35
       },
       "W": {
         "protected": 77,
-        "partial": 30,
+        "partial": 31,
         "exposed": 22
       },
       "NW": {
-        "protected": 74,
+        "protected": 75,
         "partial": 46,
         "exposed": 9
       }
@@ -9222,6 +9222,77 @@
           "blockedRayRatio": 1,
           "onshore": -0.407,
           "intensity": 17.8
+        }
+      },
+      "confidence": "high"
+    },
+    "3088": {
+      "beachId": 3088,
+      "name": {
+        "en": "Mykoniatika",
+        "gr": "Μυκονιάτικα"
+      },
+      "coordinates": {
+        "lat": 40.3014362,
+        "lon": 23.092437
+      },
+      "facingDeg": 190.3,
+      "sectors": {
+        "N": {
+          "level": "protected",
+          "fetchKm": 0,
+          "blockedRayRatio": 1,
+          "onshore": -0.984,
+          "intensity": 0.5
+        },
+        "NE": {
+          "level": "protected",
+          "fetchKm": 0,
+          "blockedRayRatio": 1,
+          "onshore": -0.822,
+          "intensity": 5.3
+        },
+        "E": {
+          "level": "protected",
+          "fetchKm": 0.96,
+          "blockedRayRatio": 1,
+          "onshore": -0.179,
+          "intensity": 24.6
+        },
+        "SE": {
+          "level": "exposed",
+          "fetchKm": 15.96,
+          "blockedRayRatio": 0.4,
+          "onshore": 0.569,
+          "intensity": 65.9
+        },
+        "S": {
+          "level": "exposed",
+          "fetchKm": 25,
+          "blockedRayRatio": 0,
+          "onshore": 0.984,
+          "intensity": 99.2
+        },
+        "SW": {
+          "level": "exposed",
+          "fetchKm": 25,
+          "blockedRayRatio": 0,
+          "onshore": 0.822,
+          "intensity": 91.1
+        },
+        "W": {
+          "level": "partial",
+          "fetchKm": 15,
+          "blockedRayRatio": 0.4,
+          "onshore": 0.179,
+          "intensity": 49.5
+        },
+        "NW": {
+          "level": "protected",
+          "fetchKm": 0,
+          "blockedRayRatio": 1,
+          "onshore": -0.569,
+          "intensity": 12.9
         }
       },
       "confidence": "high"

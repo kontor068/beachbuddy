@@ -9,6 +9,8 @@
     "camping:harvest": "node scripts/harvestCampsitesOsm.mjs",
     "camping:link": "node scripts/linkCampsitesToBeaches.mjs match",
     "camping:apply": "node scripts/linkCampsitesToBeaches.mjs apply",
+    "coverage:harvest": "node scripts/harvestBeachesOsm.mjs",
+    "coverage:report": "node scripts/buildNationalGapReport.mjs",
     "paid:harvest": "node scripts/harvestPaidBeachesOsm.mjs",
     "paid:match": "node scripts/importPaidEntry.mjs match",
     "paid:apply": "node scripts/importPaidEntry.mjs apply",

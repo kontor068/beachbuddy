@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "generatedAt": "2026-06-12T06:15:01.170Z",
+  "generatedAt": "2026-06-26T10:13:12.510Z",
   "region": {
     "id": "south-aegean-antiparos",
     "name": "Antiparos"
@@ -62,8 +62,8 @@
       },
       "S": {
         "protected": 5,
-        "partial": 3,
-        "exposed": 4
+        "partial": 4,
+        "exposed": 3
       },
       "SW": {
         "protected": 7,
@@ -864,73 +864,73 @@
       },
       "confidence": "high"
     },
-    "1738": {
-      "beachId": 1738,
+    "3072": {
+      "beachId": 3072,
       "name": {
-        "en": "Faneromeni",
-        "gr": "Φανερωμένη"
+        "en": "Paralia Monatiri",
+        "gr": "Παραλία Μονατήρι"
       },
       "coordinates": {
-        "lat": 36.94454,
-        "lon": 25.06952
+        "lat": 37.0037721,
+        "lon": 25.0264719
       },
-      "facingDeg": 239.4,
+      "facingDeg": 254.4,
       "sectors": {
         "N": {
           "level": "protected",
-          "fetchKm": 0.04,
+          "fetchKm": 0,
           "blockedRayRatio": 1,
-          "onshore": -0.509,
-          "intensity": 14.7
+          "onshore": -0.269,
+          "intensity": 21.9
         },
         "NE": {
           "level": "protected",
           "fetchKm": 0,
           "blockedRayRatio": 1,
-          "onshore": -0.969,
-          "intensity": 0.9
+          "onshore": -0.871,
+          "intensity": 3.9
         },
         "E": {
           "level": "protected",
           "fetchKm": 0,
           "blockedRayRatio": 1,
-          "onshore": -0.861,
-          "intensity": 4.2
+          "onshore": -0.963,
+          "intensity": 1.1
         },
         "SE": {
           "level": "protected",
-          "fetchKm": 10,
-          "blockedRayRatio": 0.6,
-          "onshore": -0.249,
-          "intensity": 27.5
+          "fetchKm": 0,
+          "blockedRayRatio": 1,
+          "onshore": -0.491,
+          "intensity": 15.3
         },
         "S": {
-          "level": "exposed",
-          "fetchKm": 20.04,
-          "blockedRayRatio": 0.2,
-          "onshore": 0.509,
-          "intensity": 69.4
+          "level": "partial",
+          "fetchKm": 0,
+          "blockedRayRatio": 1,
+          "onshore": 0.269,
+          "intensity": 38.1
         },
         "SW": {
           "level": "exposed",
-          "fetchKm": 20.04,
-          "blockedRayRatio": 0.2,
-          "onshore": 0.969,
-          "intensity": 90.6
+          "fetchKm": 9.84,
+          "blockedRayRatio": 0.8,
+          "onshore": 0.871,
+          "intensity": 62.3
         },
         "W": {
           "level": "exposed",
-          "fetchKm": 12.84,
-          "blockedRayRatio": 0.6,
-          "onshore": 0.861,
-          "intensity": 70.7
+          "fetchKm": 9.88,
+          "blockedRayRatio": 0.8,
+          "onshore": 0.963,
+          "intensity": 65.4
         },
         "NW": {
           "level": "partial",
-          "fetchKm": 1.04,
+          "fetchKm": 0,
           "blockedRayRatio": 1,
-          "onshore": 0.249,
-          "intensity": 37.5
+          "onshore": 0.491,
+          "intensity": 44.7
         }
       },
       "confidence": "high"
