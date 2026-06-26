@@ -1,5 +1,5 @@
 // Bump this when changing cache behavior so stale hashed chunks are cleared.
-const CACHE_NAME = 'calm-beach-v2026-06-19-sw-resilient';
+const CACHE_NAME = 'calm-beach-v2026-06-26-assets-cache-first';
 const WEATHER_API_HOSTS = new Set([
   'api.open-meteo.com',
   'marine-api.open-meteo.com',
@@ -111,7 +111,30 @@ self.addEventListener('fetch', event => {
     return;
   }
 
-  // 4. Versioned app scripts/styles (Network First)
+  // 3b. Content-hashed build assets (Cache First)
+  // Everything under /assets/ is emitted by Vite with a content hash in the
+  // filename, so a given URL is immutable. Serve it from cache instantly and
+  // only hit the network on a miss — this avoids re-fetching/re-validating the
+  // ~200 KB CSS bundle on every page navigation (the cause of slow-to-open
+  // static guide/region pages). A new deploy references new hashes, and the
+  // network-first navigation handler keeps index.html fresh, so we never get
+  // stuck on a stale entry point.
+  if (url.origin === self.location.origin && url.pathname.startsWith('/assets/')) {
+    event.respondWith(
+      matchCache(event.request).then(cached => {
+        if (cached) return cached;
+        return fetch(event.request)
+          .then(networkResponse => {
+            putInCache(event.request, networkResponse);
+            return networkResponse;
+          })
+          .catch(() => Response.error());
+      })
+    );
+    return;
+  }
+
+  // 4. Other versioned app scripts/styles (Network First)
   // If a deploy removed a chunk, cache-first can keep an old entry point alive.
   if (url.origin === self.location.origin && url.pathname.match(/\.(js|css)$/)) {
     event.respondWith(

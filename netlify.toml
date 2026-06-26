@@ -12,6 +12,23 @@
   to = "/beaches/:region/"
   status = 301
 
+# Content-hashed build assets (Vite emits everything under /assets/ with a hash
+# in the filename, so each URL is immutable). Cache them for a year so the
+# 199 KB CSS/JS bundles are not re-validated on every page navigation — that
+# round-trip was making the static guide/region pages slow to open. A new build
+# produces new hashes, so this never serves stale code.
+[[headers]]
+  for = "/assets/*"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"
+
+# The service worker must never be cached long, or behaviour changes won't reach
+# clients. Keep it always-revalidated.
+[[headers]]
+  for = "/service-worker.js"
+  [headers.values]
+    Cache-Control = "public, max-age=0, must-revalidate"
+
 [build.environment]
   # Match the local/CI toolchain (local dev and quality.yml both run Node 22)
   # so Netlify builds are byte-comparable with local clean-worktree builds.
