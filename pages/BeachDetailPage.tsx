@@ -18,7 +18,7 @@ import {
   type BeachWeatherById
 } from '../services/recommendationService';
 import { degToCompass, calculateDistance, getBeaufortLevel, getWaveCondition } from '../utils/weatherUtils';
-import { trackEvent, storeFeedback } from '../services/analyticsService';
+import { trackEvent, storeConditionFeedback, ConditionFeedbackVerdict } from '../services/analyticsService';
 import { calculateSeaConditionScore } from '../utils/seaConditions';
 import { TodayScoreBadge } from '../components/TodayScoreBadge';
 import { generateBeachExplanation as generateUiBeachExplanation } from '../utils/beachExplanation';
@@ -555,8 +555,16 @@ export const BeachDetailPage: React.FC<BeachDetailPageProps> = ({
     };
   }, [onBack]);
 
-  const handleFeedback = (isAccurate: boolean) => {
-    storeFeedback(beach.id, isAccurate ? 'accurate' : 'not_accurate');
+  const handleFeedback = (verdict: ConditionFeedbackVerdict) => {
+    // Pair the observed verdict with the modeled conditions so an offline pass can later
+    // calibrate this beach/sector (roadmap #7). exposureLevel/windDir/windSpeedKmh are
+    // derived below; this handler only runs on click, after they are initialised.
+    storeConditionFeedback(beach.id, verdict, {
+      exposureLevel,
+      beaufort: getBeaufortLevel(windSpeedKmh),
+      windDir,
+      date: selectedDate ? selectedDate.toISOString().slice(0, 10) : undefined,
+    });
     setFeedbackSubmitted(true);
   };
 
@@ -1403,21 +1411,37 @@ export const BeachDetailPage: React.FC<BeachDetailPageProps> = ({
             </div>
           ) : (
             <div className="grid grid-cols-2 gap-2">
-              <button 
+              <button
                 type="button"
-                onClick={() => handleFeedback(true)}
+                onClick={() => handleFeedback('accurate')}
                 className="flex min-h-[44px] items-center justify-center gap-2 rounded-2xl border border-emerald-100 text-sm font-bold text-emerald-700 transition-all hover:bg-emerald-50 active:scale-95"
               >
                 <ThumbsUp className="w-4 h-4" />
                 {{ en: 'Accurate', gr: 'Σωστό', de: 'Stimmt', it: 'Corretto', fr: 'Exact' }[language]}
               </button>
-              <button 
+              <button
                 type="button"
-                onClick={() => handleFeedback(false)}
-                className="flex min-h-[44px] items-center justify-center gap-2 rounded-2xl border border-rose-100 text-sm font-bold text-rose-700 transition-all hover:bg-rose-50 active:scale-95"
+                onClick={() => handleFeedback('had_waves')}
+                className="flex min-h-[44px] items-center justify-center gap-2 rounded-2xl border border-sky-100 text-sm font-bold text-sky-700 transition-all hover:bg-sky-50 active:scale-95"
               >
-                <ThumbsDown className="w-4 h-4" />
-                {{ en: 'Not accurate', gr: 'Όχι σωστό', de: 'Stimmt nicht', it: 'Non corretto', fr: 'Pas exact' }[language]}
+                <span aria-hidden>🌊</span>
+                {{ en: 'Had waves', gr: 'Είχε κύμα', de: 'Wellen', it: 'Onde', fr: 'Des vagues' }[language]}
+              </button>
+              <button
+                type="button"
+                onClick={() => handleFeedback('too_windy')}
+                className="flex min-h-[44px] items-center justify-center gap-2 rounded-2xl border border-amber-100 text-sm font-bold text-amber-700 transition-all hover:bg-amber-50 active:scale-95"
+              >
+                <span aria-hidden>💨</span>
+                {{ en: 'Too windy', gr: 'Πολύς αέρας', de: 'Zu windig', it: 'Troppo vento', fr: 'Trop venteux' }[language]}
+              </button>
+              <button
+                type="button"
+                onClick={() => handleFeedback('calmer')}
+                className="flex min-h-[44px] items-center justify-center gap-2 rounded-2xl border border-slate-200 text-sm font-bold text-slate-700 transition-all hover:bg-slate-50 active:scale-95"
+              >
+                <span aria-hidden>😎</span>
+                {{ en: 'Calmer', gr: 'Πιο ήρεμα', de: 'Ruhiger', it: 'Piu calmo', fr: 'Plus calme' }[language]}
               </button>
             </div>
           )}

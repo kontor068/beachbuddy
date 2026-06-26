@@ -34,7 +34,8 @@ export type AnalyticsEvent =
   | 'filter_used'
   | 'ai_advisor_question'
   | 'photo_suggestion_clicked'
-  | 'recommendation_feedback';
+  | 'recommendation_feedback'
+  | 'condition_feedback';
 
 export interface AnalyticsData {
   event: AnalyticsEvent;
@@ -44,10 +45,15 @@ export interface AnalyticsData {
   metadata?: any;
 }
 
+export type ConditionFeedbackVerdict = 'accurate' | 'had_waves' | 'too_windy' | 'calmer';
+
 export interface FeedbackData {
   beachId: number;
-  feedback: 'accurate' | 'not_accurate';
+  feedback: 'accurate' | 'not_accurate' | ConditionFeedbackVerdict;
   timestamp: string;
+  // Modeled conditions at feedback time, so an offline pass can later calibrate the
+  // per-beach/sector model against what the visitor actually observed (roadmap #7).
+  conditions?: { exposureLevel?: string; beaufort?: number; windDir?: string; date?: string };
 }
 
 const STORAGE_KEY = 'beach_buddy_analytics';
@@ -359,6 +365,25 @@ export const storeFeedback = (beachId: number, feedback: 'accurate' | 'not_accur
     beachId,
     { feedback }
   );
+};
+
+/**
+ * Structured "how was it really?" feedback (roadmap #7 — the capture half of the loop).
+ * Pairs the visitor's observed verdict with the modeled conditions and ships it as a GA4
+ * 'condition_feedback' event + a local record. The CALIBRATION half (aggregate verdicts
+ * per beach/sector and nudge the model / ground truth) is an offline pass over exported
+ * GA data — there is no app backend to close the loop live.
+ */
+export const storeConditionFeedback = (
+  beachId: number,
+  verdict: ConditionFeedbackVerdict,
+  conditions?: FeedbackData['conditions']
+) => {
+  const data: FeedbackData = { beachId, feedback: verdict, timestamp: new Date().toISOString(), conditions };
+  const existing = getFeedback();
+  existing.push(data);
+  setStorageItem(FEEDBACK_KEY, JSON.stringify(existing));
+  trackEvent('condition_feedback', beachId, { verdict, ...(conditions || {}) });
 };
 
 export const getFeedback = (): FeedbackData[] => {
