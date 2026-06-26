@@ -35,6 +35,7 @@ export interface BeachCopyResult {
 type BeachFeatureFacts = {
   protectedToday: boolean;
   partiallyProtected: boolean;
+  manageableEstimate: boolean;
   exposedToday: boolean;
   calmSea: boolean;
   moderateSea: boolean;
@@ -133,6 +134,11 @@ const getFacts = ({
   const protectedToday = exposureLevel === 'protected' && canClaimWindProtection === true;
   // Partial exposure can come from lower-confidence fallbacks, so copy frames it as caution, not verified shelter.
   const partiallyProtected = exposureLevel === 'partial';
+  // Geometry/low-confidence 'protected' we cannot verify as real shelter (e.g. geospatial
+  // backfill): frame as a map estimate ("more manageable"), never verified shelter, and
+  // never let it fall through to the exposed copy that would contradict the protected map
+  // pin. canClaimWindProtection is already source/confidence-aware. (roadmap #5)
+  const manageableEstimate = exposureLevel === 'protected' && canClaimWindProtection !== true;
   const exposedToday = exposureLevel ? exposureLevel === 'exposed' : isExposed;
   const numericModerateWave = typeof waveHeightM === 'number' && Number.isFinite(waveHeightM) && waveHeightM >= 0.5 && waveHeightM < 0.9;
   const numericRoughWave = typeof waveHeightM === 'number' && Number.isFinite(waveHeightM) && waveHeightM >= 0.9;
@@ -143,6 +149,7 @@ const getFacts = ({
   return {
     protectedToday,
     partiallyProtected,
+    manageableEstimate,
     exposedToday,
     calmSea: seaCalmClaimAllowed === true,
     moderateSea: waveCondition === 'moderate' || numericModerateWave,
@@ -393,6 +400,14 @@ const generateWindyCardSummary = (input: BeachCopyInput, facts: BeachFeatureFact
     );
   }
 
+  if (facts.manageableEstimate) {
+    return localize(
+      language,
+      `${sentenceDay} φαίνεται πιο διαχειρίσιμη επιλογή για ${wind} (εκτίμηση από τη γεωμετρία της ακτής, όχι επιβεβαιωμένο καταφύγιο).${wave ? ` ${sentenceCase(wave)}.` : ''}`,
+      `${sentenceDay}, it looks like a more manageable option for ${wind} (estimated from the coastline, not a verified shelter).${wave ? ` ${sentenceCase(wave)}.` : ''}`
+    );
+  }
+
   if (facts.partiallyProtected) {
     return localize(
       language,
@@ -454,6 +469,14 @@ const windBullet = (input: BeachCopyInput, facts: BeachFeatureFacts): string => 
       language,
       `Με ${wind}, αυτή η παραλία είναι πιο προστατευμένη για τη φορά του ανέμου ${day}.`,
       `With ${wind}, this beach is better sheltered for the wind direction ${day}.`
+    );
+  }
+
+  if (facts.manageableEstimate) {
+    return localize(
+      language,
+      `Με ${wind}, φαίνεται πιο διαχειρίσιμη επιλογή ${day} (εκτίμηση από τη γεωμετρία της ακτής, όχι επιβεβαιωμένο καταφύγιο).`,
+      `With ${wind}, it looks like a more manageable option ${day} (estimated from the coastline, not a verified shelter).`
     );
   }
 
