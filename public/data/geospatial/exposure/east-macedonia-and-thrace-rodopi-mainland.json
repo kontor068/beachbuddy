@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "generatedAt": "2026-06-26T10:12:55.884Z",
+  "generatedAt": "2026-06-26T22:46:20.434Z",
   "region": {
     "id": "east-macedonia-and-thrace-rodopi-mainland",
     "name": "Rodopi"
@@ -57,8 +57,8 @@
       },
       "SE": {
         "protected": 1,
-        "partial": 3,
-        "exposed": 2
+        "partial": 1,
+        "exposed": 4
       },
       "S": {
         "protected": 0,
@@ -72,8 +72,8 @@
       },
       "W": {
         "protected": 0,
-        "partial": 4,
-        "exposed": 2
+        "partial": 2,
+        "exposed": 4
       },
       "NW": {
         "protected": 6,
@@ -117,11 +117,11 @@
           "intensity": 14
         },
         "SE": {
-          "level": "partial",
+          "level": "exposed",
           "fetchKm": 15,
           "blockedRayRatio": 0.4,
           "onshore": 0.222,
-          "intensity": 51.3
+          "intensity": 61.1
         },
         "S": {
           "level": "exposed",
@@ -142,7 +142,7 @@
           "fetchKm": 20.08,
           "blockedRayRatio": 0.2,
           "onshore": 0.533,
-          "intensity": 70.5
+          "intensity": 76.6
         },
         "NW": {
           "level": "protected",
@@ -259,11 +259,11 @@
           "intensity": 19.1
         },
         "SE": {
-          "level": "partial",
+          "level": "exposed",
           "fetchKm": 15.48,
           "blockedRayRatio": 0.4,
           "onshore": 0.4,
-          "intensity": 58.8
+          "intensity": 70
         },
         "S": {
           "level": "exposed",
@@ -280,11 +280,11 @@
           "intensity": 95.8
         },
         "W": {
-          "level": "partial",
+          "level": "exposed",
           "fetchKm": 18.84,
           "blockedRayRatio": 0.4,
           "onshore": 0.365,
-          "intensity": 57.3
+          "intensity": 68.2
         },
         "NW": {
           "level": "protected",
@@ -334,7 +334,7 @@
           "fetchKm": 20,
           "blockedRayRatio": 0.2,
           "onshore": 0.565,
-          "intensity": 72
+          "intensity": 78.2
         },
         "S": {
           "level": "exposed",
@@ -355,7 +355,7 @@
           "fetchKm": 15,
           "blockedRayRatio": 0.4,
           "onshore": 0.184,
-          "intensity": 49.7
+          "intensity": 59.2
         },
         "NW": {
           "level": "protected",
@@ -405,7 +405,7 @@
           "fetchKm": 20.08,
           "blockedRayRatio": 0.2,
           "onshore": 0.505,
-          "intensity": 69.2
+          "intensity": 75.2
         },
         "S": {
           "level": "exposed",
@@ -422,11 +422,11 @@
           "intensity": 93.2
         },
         "W": {
-          "level": "partial",
+          "level": "exposed",
           "fetchKm": 15.04,
           "blockedRayRatio": 0.4,
           "onshore": 0.254,
-          "intensity": 52.7
+          "intensity": 62.7
         },
         "NW": {
           "level": "protected",
@@ -483,7 +483,7 @@
           "fetchKm": 20.08,
           "blockedRayRatio": 0.2,
           "onshore": 0.724,
-          "intensity": 79.3
+          "intensity": 86.2
         },
         "SW": {
           "level": "exposed",
@@ -497,7 +497,7 @@
           "fetchKm": 15.36,
           "blockedRayRatio": 0.6,
           "onshore": 0.69,
-          "intensity": 64.2
+          "intensity": 84.5
         },
         "NW": {
           "level": "protected",

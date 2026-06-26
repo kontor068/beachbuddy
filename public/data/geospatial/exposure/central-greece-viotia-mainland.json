@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "generatedAt": "2026-06-26T10:12:44.570Z",
+  "generatedAt": "2026-06-26T22:46:08.834Z",
   "region": {
     "id": "central-greece-viotia-mainland",
     "name": "Viotia"
@@ -62,8 +62,8 @@
       },
       "S": {
         "protected": 2,
-        "partial": 5,
-        "exposed": 1
+        "partial": 3,
+        "exposed": 3
       },
       "SW": {
         "protected": 3,
@@ -192,7 +192,7 @@
           "fetchKm": 18.36,
           "blockedRayRatio": 0.4,
           "onshore": 0.988,
-          "intensity": 83.5
+          "intensity": 99.4
         },
         "S": {
           "level": "partial",
@@ -284,7 +284,7 @@
           "fetchKm": 14.36,
           "blockedRayRatio": 0.6,
           "onshore": 0.992,
-          "intensity": 75.7
+          "intensity": 99.6
         },
         "NW": {
           "level": "partial",
@@ -408,11 +408,11 @@
           "intensity": 59.9
         },
         "S": {
-          "level": "partial",
+          "level": "exposed",
           "fetchKm": 15.16,
           "blockedRayRatio": 1,
           "onshore": 0.647,
-          "intensity": 49.4
+          "intensity": 82.3
         },
         "SW": {
           "level": "protected",
@@ -479,11 +479,11 @@
           "intensity": 48.3
         },
         "S": {
-          "level": "partial",
+          "level": "exposed",
           "fetchKm": 12.12,
           "blockedRayRatio": 1,
           "onshore": 0.992,
-          "intensity": 59.8
+          "intensity": 99.6
         },
         "SW": {
           "level": "partial",

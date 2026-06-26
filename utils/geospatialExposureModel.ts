@@ -269,7 +269,13 @@ const PROTECTED_INTENSITY = 33;
 export const computeDirectionalExposure = ({ fetchKm, blockedRayRatio, onshore }: DirectionalExposureInput): DirectionalExposure => {
   const onshoreFactor = (Math.max(-1, Math.min(1, onshore)) + 1) / 2;
   const fetchFactor = Math.max(0, Math.min(1, fetchKm / FETCH_SATURATION_KM));
-  const openness = 1 - Math.max(0, Math.min(1, blockedRayRatio));
+  // Once a sector reaches FETCH_SATURATION_KM of open water it carries a fully-developed
+  // wind-sea, so land clipped FAR beyond that (a long ray that still eventually hits a
+  // distant coast -> high blockedRayRatio) must NOT discount it. Below saturation, the
+  // blockage ratio still signals a genuinely enclosing shore (a short, walled-in cove).
+  // Without this, ~600 long-fetch onshore sectors were capped one tier too calm
+  // (intensity floored at 60*onshoreFactor -> 'partial' instead of 'exposed').
+  const openness = fetchKm >= FETCH_SATURATION_KM ? 1 : (1 - Math.max(0, Math.min(1, blockedRayRatio)));
   const intensity = Number((100 * onshoreFactor * (0.6 + 0.4 * fetchFactor * openness)).toFixed(1));
 
   const level: ExposureLevel = intensity >= EXPOSED_INTENSITY

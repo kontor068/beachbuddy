@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "generatedAt": "2026-06-26T10:13:01.398Z",
+  "generatedAt": "2026-06-26T22:46:26.070Z",
   "region": {
     "id": "ionian-islands-erikoussa",
     "name": "Erikoussa"
@@ -57,8 +57,8 @@
       },
       "SE": {
         "protected": 0,
-        "partial": 1,
-        "exposed": 1
+        "partial": 0,
+        "exposed": 2
       },
       "S": {
         "protected": 0,
@@ -114,35 +114,35 @@
           "fetchKm": 13.36,
           "blockedRayRatio": 0.8,
           "onshore": 0.08,
-          "intensity": 36.7
+          "intensity": 54
         },
         "SE": {
-          "level": "partial",
+          "level": "exposed",
           "fetchKm": 18.2,
           "blockedRayRatio": 0.8,
           "onshore": 0.762,
-          "intensity": 59.9
+          "intensity": 88.1
         },
         "S": {
           "level": "exposed",
           "fetchKm": 19.84,
           "blockedRayRatio": 0.4,
           "onshore": 0.997,
-          "intensity": 83.9
+          "intensity": 99.8
         },
         "SW": {
           "level": "exposed",
           "fetchKm": 20.24,
           "blockedRayRatio": 0.4,
           "onshore": 0.648,
-          "intensity": 69.2
+          "intensity": 82.4
         },
         "W": {
           "level": "partial",
           "fetchKm": 17.92,
           "blockedRayRatio": 0.4,
           "onshore": -0.08,
-          "intensity": 38.6
+          "intensity": 46
         },
         "NW": {
           "level": "protected",
@@ -192,14 +192,14 @@
           "fetchKm": 13.96,
           "blockedRayRatio": 0.8,
           "onshore": 0.911,
-          "intensity": 65
+          "intensity": 95.5
         },
         "S": {
           "level": "exposed",
           "fetchKm": 19.96,
           "blockedRayRatio": 0.4,
           "onshore": 0.936,
-          "intensity": 81.3
+          "intensity": 96.8
         },
         "SW": {
           "level": "partial",

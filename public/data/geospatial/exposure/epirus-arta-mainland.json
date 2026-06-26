@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "generatedAt": "2026-06-26T10:12:56.627Z",
+  "generatedAt": "2026-06-26T22:46:21.213Z",
   "region": {
     "id": "epirus-arta-mainland",
     "name": "Arta"
@@ -57,8 +57,8 @@
       },
       "SE": {
         "protected": 0,
-        "partial": 2,
-        "exposed": 0
+        "partial": 1,
+        "exposed": 1
       },
       "S": {
         "protected": 0,
@@ -188,11 +188,11 @@
           "intensity": 57.9
         },
         "SE": {
-          "level": "partial",
+          "level": "exposed",
           "fetchKm": 16.16,
           "blockedRayRatio": 1,
           "onshore": 0.918,
-          "intensity": 57.6
+          "intensity": 95.9
         },
         "S": {
           "level": "partial",

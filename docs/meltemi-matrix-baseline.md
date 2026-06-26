@@ -30,9 +30,10 @@ known shelters** (Naxos Agios Prokopios/Plaka, Milos Fyriplaka, Lefkada Porto Ka
   (the legacy wrong-facing pins `windExposureModel.ts` already documents).
 
 ## Signals (measurement, not pass/fail)
-- **Stored-geometry recall** on open onshore sectors (fetch≥15 km & onshore≥0.8): exposed **98%** /
-  partial **2%** / protected 0% (n=2787). The **67 partial** sectors are concrete `blockedRayRatio`
-  under-warn candidates (roadmap #3) — concentrated in **mainland (4%) and ionian (4%)**.
+- **Stored-geometry recall** on open onshore sectors (fetch≥15 km & onshore≥0.8): exposed **100%** /
+  partial **0%** / protected 0% (n=2787) **after roadmap #3 landed** (was 98%/2% with 67 under-warn
+  candidates concentrated in mainland/ionian). The blockedRayRatio openness fix moved those long-fetch
+  onshore sectors to exposed; under-warn candidates now **0**.
 - **Colour ramp** (green/yellow/orange/red): `N3` ≈ all yellow → `N5`/`N6` ≈ 74% orange / 25% red.
   Two model facts surfaced: **N5 ≡ N6** (the colour grid buckets 5–6 Bft together) and
   **choppy3 ≡ N3** (a 0.6 m short-period wave at 3 Bft does not move the headline — confirms wave
@@ -42,6 +43,10 @@ known shelters** (Naxos Agios Prokopios/Plaka, Milos Fyriplaka, Lefkada Porto Ka
 - #2 swell/period **(LANDED 2026-06-27)** → comfort-only, so `choppy3` correctly STAYS identical
   (the penalty never touches exposureLevel/colour). Proven instead by the `computeSwellSurgePenalty`
   asserts the matrix now runs: dormant ≤6 s (no over-fire on today's seas), escalates ≥8 s ground swell.
-- #3 blockedRayRatio fix → the 67 under-warn partials should drop toward exposed (mainland/ionian recall → ~100%).
+- #3 blockedRayRatio fix **(LANDED 2026-06-27)** → the 67 under-warn partials dropped to 0; open-sea
+  recall 98%→100% (mainland/ionian 96%→100%). C4 fix in `computeDirectionalExposure`: fetch ≥12 km
+  (fully-developed sea) sets openness=1 so distant land clipped beyond the fetch no longer caps it.
+  Simulated first (2.7% of sectors changed, all long-fetch ≥12 km, 0 calmer-direction regressions),
+  then rebuilt + re-validated (ground-truth 127/128, engine suite green, no-false-protected still 0).
 - #4 afternoon/temporal → (needs a time dimension added to the matrix).
 - Curating more sheltered labels → label accuracy denominator grows; watch the protected/calm recall.

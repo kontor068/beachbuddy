@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "generatedAt": "2026-06-26T10:13:12.510Z",
+  "generatedAt": "2026-06-26T22:46:37.453Z",
   "region": {
     "id": "south-aegean-antiparos",
     "name": "Antiparos"
@@ -57,8 +57,8 @@
       },
       "SE": {
         "protected": 5,
-        "partial": 3,
-        "exposed": 4
+        "partial": 2,
+        "exposed": 5
       },
       "S": {
         "protected": 5,
@@ -188,11 +188,11 @@
           "intensity": 13.7
         },
         "SE": {
-          "level": "partial",
+          "level": "exposed",
           "fetchKm": 15,
           "blockedRayRatio": 0.4,
           "onshore": 0.21,
-          "intensity": 50.8
+          "intensity": 60.5
         },
         "S": {
           "level": "exposed",
@@ -213,7 +213,7 @@
           "fetchKm": 16.92,
           "blockedRayRatio": 0.4,
           "onshore": 0.543,
-          "intensity": 64.8
+          "intensity": 77.2
         },
         "NW": {
           "level": "protected",
@@ -362,7 +362,7 @@
           "fetchKm": 15.04,
           "blockedRayRatio": 0.4,
           "onshore": 0.999,
-          "intensity": 83.9
+          "intensity": 99.9
         }
       },
       "confidence": "high"
@@ -476,14 +476,14 @@
           "fetchKm": 15,
           "blockedRayRatio": 0.4,
           "onshore": 0.804,
-          "intensity": 75.8
+          "intensity": 90.2
         },
         "S": {
           "level": "exposed",
           "fetchKm": 20.04,
           "blockedRayRatio": 0.2,
           "onshore": 0.989,
-          "intensity": 91.5
+          "intensity": 99.5
         },
         "SW": {
           "level": "partial",
@@ -526,7 +526,7 @@
           "fetchKm": 15,
           "blockedRayRatio": 0.4,
           "onshore": 0.821,
-          "intensity": 76.5
+          "intensity": 91.1
         },
         "NE": {
           "level": "partial",
@@ -575,7 +575,7 @@
           "fetchKm": 20,
           "blockedRayRatio": 0.2,
           "onshore": 0.984,
-          "intensity": 91.3
+          "intensity": 99.2
         }
       },
       "confidence": "high"
@@ -788,7 +788,7 @@
           "fetchKm": 20.04,
           "blockedRayRatio": 0.2,
           "onshore": 0.992,
-          "intensity": 91.6
+          "intensity": 99.6
         }
       },
       "confidence": "high"
@@ -824,14 +824,14 @@
           "fetchKm": 13.56,
           "blockedRayRatio": 0.6,
           "onshore": 0.979,
-          "intensity": 75.2
+          "intensity": 98.9
         },
         "SE": {
           "level": "exposed",
           "fetchKm": 20.16,
           "blockedRayRatio": 0.2,
           "onshore": 0.838,
-          "intensity": 84.5
+          "intensity": 91.9
         },
         "S": {
           "level": "partial",

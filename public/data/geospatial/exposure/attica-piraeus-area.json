@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "generatedAt": "2026-06-26T10:12:38.739Z",
+  "generatedAt": "2026-06-26T22:46:02.820Z",
   "region": {
     "id": "attica-piraeus-area",
     "name": "Piraeus area"
@@ -62,13 +62,13 @@
       },
       "S": {
         "protected": 1,
-        "partial": 2,
-        "exposed": 2
+        "partial": 1,
+        "exposed": 3
       },
       "SW": {
         "protected": 1,
-        "partial": 2,
-        "exposed": 2
+        "partial": 1,
+        "exposed": 3
       },
       "W": {
         "protected": 2,
@@ -195,18 +195,18 @@
           "intensity": 28.1
         },
         "S": {
-          "level": "partial",
+          "level": "exposed",
           "fetchKm": 13.44,
           "blockedRayRatio": 0.8,
           "onshore": 0.621,
-          "intensity": 55.1
+          "intensity": 81.1
         },
         "SW": {
           "level": "exposed",
           "fetchKm": 19.8,
           "blockedRayRatio": 0.6,
           "onshore": 0.993,
-          "intensity": 75.7
+          "intensity": 99.7
         },
         "W": {
           "level": "partial",
@@ -263,21 +263,21 @@
           "fetchKm": 13.2,
           "blockedRayRatio": 0.6,
           "onshore": 0.9,
-          "intensity": 72.2
+          "intensity": 95
         },
         "S": {
           "level": "exposed",
           "fetchKm": 24.2,
           "blockedRayRatio": 0.2,
           "onshore": 0.945,
-          "intensity": 89.5
+          "intensity": 97.2
         },
         "SW": {
-          "level": "partial",
+          "level": "exposed",
           "fetchKm": 14.36,
           "blockedRayRatio": 0.6,
           "onshore": 0.437,
-          "intensity": 54.6
+          "intensity": 71.8
         },
         "W": {
           "level": "protected",
@@ -348,7 +348,7 @@
           "fetchKm": 20.76,
           "blockedRayRatio": 0.4,
           "onshore": 0.999,
-          "intensity": 83.9
+          "intensity": 99.9
         },
         "W": {
           "level": "partial",
@@ -405,14 +405,14 @@
           "fetchKm": 13.56,
           "blockedRayRatio": 0.8,
           "onshore": 0.994,
-          "intensity": 67.8
+          "intensity": 99.7
         },
         "S": {
           "level": "exposed",
           "fetchKm": 23,
           "blockedRayRatio": 0.4,
           "onshore": 0.627,
-          "intensity": 68.3
+          "intensity": 81.3
         },
         "SW": {
           "level": "protected",

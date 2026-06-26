@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "generatedAt": "2026-06-26T10:12:38.054Z",
+  "generatedAt": "2026-06-26T22:46:02.125Z",
   "region": {
     "id": "attica-hydra",
     "name": "Hydra"
@@ -72,13 +72,13 @@
       },
       "W": {
         "protected": 0,
-        "partial": 8,
-        "exposed": 0
+        "partial": 5,
+        "exposed": 3
       },
       "NW": {
         "protected": 1,
-        "partial": 6,
-        "exposed": 1
+        "partial": 5,
+        "exposed": 2
       }
     }
   },
@@ -128,7 +128,7 @@
           "fetchKm": 15.48,
           "blockedRayRatio": 0.4,
           "onshore": 0.938,
-          "intensity": 81.4
+          "intensity": 96.9
         },
         "SW": {
           "level": "exposed",
@@ -178,7 +178,7 @@
           "fetchKm": 13.8,
           "blockedRayRatio": 0.6,
           "onshore": 0.103,
-          "intensity": 41.9
+          "intensity": 55.1
         },
         "E": {
           "level": "protected",
@@ -209,11 +209,11 @@
           "intensity": 26.9
         },
         "W": {
-          "level": "partial",
+          "level": "exposed",
           "fetchKm": 12.04,
           "blockedRayRatio": 1,
           "onshore": 0.631,
-          "intensity": 48.9
+          "intensity": 81.5
         },
         "NW": {
           "level": "partial",
@@ -280,11 +280,11 @@
           "intensity": 26.2
         },
         "W": {
-          "level": "partial",
+          "level": "exposed",
           "fetchKm": 13,
           "blockedRayRatio": 0.8,
           "onshore": 0.574,
-          "intensity": 53.5
+          "intensity": 78.7
         },
         "NW": {
           "level": "partial",
@@ -564,18 +564,18 @@
           "intensity": 29
         },
         "W": {
-          "level": "partial",
+          "level": "exposed",
           "fetchKm": 13.28,
           "blockedRayRatio": 0.8,
           "onshore": 0.64,
-          "intensity": 55.8
+          "intensity": 82
         },
         "NW": {
-          "level": "partial",
+          "level": "exposed",
           "fetchKm": 12.2,
           "blockedRayRatio": 1,
           "onshore": 0.996,
-          "intensity": 59.9
+          "intensity": 99.8
         }
       },
       "confidence": "high"
@@ -604,7 +604,7 @@
           "fetchKm": 13.72,
           "blockedRayRatio": 0.6,
           "onshore": 0.598,
-          "intensity": 60.7
+          "intensity": 79.9
         },
         "E": {
           "level": "protected",
