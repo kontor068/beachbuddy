@@ -165,6 +165,41 @@ const GEOSPATIAL_WIND_PROFILE_BACKFILL_ISLANDS = new Set([
   'viotia (mainland)',
   'west attica (mainland)',
   'zakynthos',
+  // Graduated 2026-06-27 after a fresh national pin audit (auditNationalPins) came
+  // back 0 CRITICAL / 0 unresolved-HIGH for each. These were the last geometry-only
+  // ("source=unknown") regions, withheld from confident top picks at >=3 Bft; their
+  // high-confidence geometry already drove map colour, so this aligns recommendations
+  // with the map. Pelion + Larissa coast are included (the 2026-06-11 Thessaly
+  // re-geocoding cleared their previously-garbage pins). HELD OUT pending a pin fix:
+  // korinthia (#3040 Limni Vouliagmenis is 1.4 km inland yet claims protected) and
+  // kavala (#3012 Perigiali HIGH). Xanthi is in despite #859 Nestos delta — that pin
+  // is unusable (facing null / all-protected) so isUsableGeneratedProfile drops it.
+  'lakonia (mainland)',
+  'messinia (mainland)',
+  'magnesia (mainland - pelion)',
+  'thesprotia (mainland)',
+  'argolida (mainland)',
+  'preveza (mainland)',
+  'koufonisia',
+  'achaia (mainland)',
+  'kimolos',
+  'thessaloniki area',
+  'arkadia (mainland)',
+  'folegandros',
+  'amorgos',
+  'anafi',
+  'antiparos',
+  'pieria (mainland)',
+  'larissa coast (agia - kissavos)',
+  'schinoussa',
+  'rodopi (mainland)',
+  'sikinos',
+  'evros (mainland)',
+  'donousa',
+  'polyaigos',
+  'xanthi (mainland)',
+  'arta (mainland)',
+  'iraklia',
 ]);
 
 const WIND_SECTOR_LABELS: Record<WindSector, string> = {
