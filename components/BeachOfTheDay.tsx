@@ -80,7 +80,7 @@ const getBestTimeDisplay = (
 };
 
 const BeachOfTheDay: React.FC<BeachOfTheDayProps> = ({ topBeach, language, t, onShowDetails, islandName, windSpeed, windDirectionLabel, windBeaufort, selectedDate }) => {
-  const { beach, score, bestBeachTime, isExposed, distance, exposureLevel, waveHeightM, swimmingComfort, warnings } = topBeach;
+  const { beach, score, bestBeachTime, isExposed, distance, exposureLevel, waveHeightM, swimmingComfort, warnings, canClaimWindProtection } = topBeach;
   const [photoIndex, setPhotoIndex] = useState(0);
 
   const beachDisplayName = displayBeachName(beach.name, language);
@@ -179,6 +179,7 @@ const BeachOfTheDay: React.FC<BeachOfTheDayProps> = ({ topBeach, language, t, on
                 swimmingComfort={swimmingComfort}
                 noIdealSwimmingWindow={noIdealSwimmingWindow}
                 exposureLevel={exposureLevel}
+                canClaimWindProtection={canClaimWindProtection}
               />
               <span className="hidden items-center gap-1 text-xs font-bold text-slate-700 sm:inline-flex dark:text-slate-600">
                 <MapPin className="h-3.5 w-3.5" />

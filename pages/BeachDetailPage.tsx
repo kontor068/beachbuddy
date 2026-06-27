@@ -18,7 +18,7 @@ import {
   type BeachWeatherById
 } from '../services/recommendationService';
 import { degToCompass, calculateDistance, getBeaufortLevel, getWaveCondition } from '../utils/weatherUtils';
-import { trackEvent, storeConditionFeedback, ConditionFeedbackVerdict } from '../services/analyticsService';
+import { trackEvent, storeConditionFeedback, getFeedback, ConditionFeedbackVerdict } from '../services/analyticsService';
 import { calculateSeaConditionScore } from '../utils/seaConditions';
 import { TodayScoreBadge } from '../components/TodayScoreBadge';
 import { generateBeachExplanation as generateUiBeachExplanation } from '../utils/beachExplanation';
@@ -478,6 +478,13 @@ export const BeachDetailPage: React.FC<BeachDetailPageProps> = ({
   const guideLinks = useMemo(() => getIslandGuideLinks(allBeaches, regionId, language), [allBeaches, regionId, language]);
   const selectedDate = dayForecast.date;
   const selectedDayPrefix = getSelectedDayPrefix(selectedDate, new Date(), language);
+  // Read-back: don't re-ask for feedback on the same beach + day we already have it for
+  // (roadmap #7 — the buttons used to reappear after reload because only local state gated them).
+  const feedbackDateKey = selectedDate ? selectedDate.toISOString().slice(0, 10) : '';
+  const feedbackAlreadyGiven = useMemo(
+    () => getFeedback().some(f => f.beachId === beach.id && f.conditions?.date === feedbackDateKey),
+    [beach.id, feedbackDateKey]
+  );
   const selectedDayIsToday = selectedDayPrefix === (language === 'gr' ? 'σήμερα' : 'today');
   const copy = {
     whyToday: { en: `What to expect ${selectedDayPrefix}`, gr: `Τι να περιμένεις ${selectedDayPrefix}`, de: 'Was dich erwartet', it: 'Cosa aspettarsi', fr: `À quoi s'attendre` },
@@ -897,6 +904,7 @@ export const BeachDetailPage: React.FC<BeachDetailPageProps> = ({
             swimmingComfort={swimmingComfort}
             noIdealSwimmingWindow={swimWindowDisplay.tone === 'avoid'}
             exposureLevel={exposureLevel}
+            canClaimWindProtection={canClaimWindProtection}
           />
 
           <div className="space-y-2 rounded-3xl border border-cyan-100/70 bg-cyan-50/45 p-3">
@@ -1402,7 +1410,7 @@ export const BeachDetailPage: React.FC<BeachDetailPageProps> = ({
             <p className="text-slate-700 text-sm leading-snug">{copy.feedbackText[language]}</p>
           </div>
 
-          {feedbackSubmitted ? (
+          {(feedbackSubmitted || feedbackAlreadyGiven) ? (
             <div
               className="flex items-center gap-2 rounded-2xl bg-emerald-50 px-3 py-3 text-emerald-700"
             >

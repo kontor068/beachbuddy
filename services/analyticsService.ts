@@ -396,9 +396,15 @@ export const getFeedback = (): FeedbackData[] => {
   }
 };
 
+// "Worse than shown" verdicts that should downrank a beach in live scoring (recommendation
+// Service consumes this count). Includes the structured negatives so the live per-device
+// penalty keeps working after the binary not_accurate button was replaced (roadmap #7).
+// 'calmer' is the opposite signal (model over-warned) and 'accurate' is neutral, so neither
+// penalises here — softening stays evidence-gated in the offline calibration pass.
+const NEGATIVE_FEEDBACK = new Set<FeedbackData['feedback']>(['not_accurate', 'had_waves', 'too_windy']);
 export const getNegativeFeedbackCount = (beachId: number): number => {
   const feedback = getFeedback();
-  return feedback.filter(f => f.beachId === beachId && f.feedback === 'not_accurate').length;
+  return feedback.filter(f => f.beachId === beachId && NEGATIVE_FEEDBACK.has(f.feedback)).length;
 };
 
 export const getAnalyticsInsights = () => {

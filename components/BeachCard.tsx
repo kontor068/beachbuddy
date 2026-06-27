@@ -1451,6 +1451,7 @@ export const BeachCard: React.FC<BeachCardProps> = ({
                 swimmingComfort={swimmingComfort}
                 noIdealSwimmingWindow={noIdealSwimmingWindow}
                 exposureLevel={exposureLevel}
+                canClaimWindProtection={canClaimWindProtection}
                 forceShow
               />
             ) : showMobileProtectionChip ? (
@@ -1593,6 +1594,7 @@ export const BeachCard: React.FC<BeachCardProps> = ({
                 swimmingComfort={swimmingComfort}
                 noIdealSwimmingWindow={noIdealSwimmingWindow}
                 exposureLevel={exposureLevel}
+                canClaimWindProtection={canClaimWindProtection}
                 forceShow={forceTodayScoreBadge}
               />
             ) : (
@@ -1775,6 +1777,7 @@ export const BeachCard: React.FC<BeachCardProps> = ({
                 swimmingComfort={swimmingComfort}
                 noIdealSwimmingWindow={noIdealSwimmingWindow}
                 exposureLevel={exposureLevel}
+                canClaimWindProtection={canClaimWindProtection}
                 forceShow={forceTodayScoreBadge}
               />
               <div className="flex items-center gap-1 text-[11px] font-bold text-slate-600 dark:text-slate-700" title="Visitor rating">

@@ -18,6 +18,12 @@ interface TodayScoreBadgeProps {
   noIdealSwimmingWindow?: boolean;
   exposureLevel?: ExposureLevel;
   /**
+   * True only when the beach has authored/verified shelter, so the badge may say
+   * "sheltered". A geometry-only 'protected' (canClaim=false) must stay a conservative
+   * "more suitable" — otherwise the badge over-claims verified calm (roadmap #5).
+   */
+  canClaimWindProtection?: boolean;
+  /**
    * Render the verdict even in the light-moderate (3–4 Bft) band that is normally
    * suppressed. Used when a beach is shown on its own (e.g. a name-search result),
    * where the user explicitly wants this beach's today status at a glance rather
@@ -156,7 +162,8 @@ const getCappedConditionLabel = (
   variant: TodayScoreVariant,
   selectedDate?: Date,
   windBeaufort?: number,
-  exposureLevel?: ExposureLevel
+  exposureLevel?: ExposureLevel,
+  canClaimWindProtection?: boolean
 ) => {
   const day = getSelectedDayPrefix(selectedDate, new Date(), language);
   const copy = getLocalizedCopy(language, scoreCopy);
@@ -179,7 +186,7 @@ const getCappedConditionLabel = (
     // tricky day, so it gets the "with caution" wording instead of an endorsement
     // — otherwise the badge ("better wind option") contradicts the "difficult
     // conditions" verdict shown for the very same beach.
-    if (exposureLevel === 'protected') {
+    if (exposureLevel === 'protected' && canClaimWindProtection === true) {
       return variant === 'card' ? copy.shelteredCard : copy.shelteredHero;
     }
     if (!highRelativeRank) return copy.caution(day);
@@ -194,8 +201,8 @@ const getCappedConditionLabel = (
     : copy.moreSuitableCard(day);
 };
 
-const getTodayScoreLabel = (score: number, language: LanguageCode, selectedDate?: Date, capped = false, windBeaufort?: number, exposureLevel?: ExposureLevel) => {
-  if (capped) return getCappedConditionLabel(score, language, 'card', selectedDate, windBeaufort, exposureLevel);
+const getTodayScoreLabel = (score: number, language: LanguageCode, selectedDate?: Date, capped = false, windBeaufort?: number, exposureLevel?: ExposureLevel, canClaimWindProtection?: boolean) => {
+  if (capped) return getCappedConditionLabel(score, language, 'card', selectedDate, windBeaufort, exposureLevel, canClaimWindProtection);
 
   const day = getSelectedDayPrefix(selectedDate, new Date(), language);
   const copy = getLocalizedCopy(language, scoreCopy);
@@ -222,8 +229,8 @@ export const getDisplayTodayScore = (score: number): number => {
   return normalized;
 };
 
-const getHeroTodayScoreLabel = (score: number, language: LanguageCode, selectedDate?: Date, capped = false, windBeaufort?: number, exposureLevel?: ExposureLevel) => {
-  if (capped) return getCappedConditionLabel(score, language, 'hero', selectedDate, windBeaufort, exposureLevel);
+const getHeroTodayScoreLabel = (score: number, language: LanguageCode, selectedDate?: Date, capped = false, windBeaufort?: number, exposureLevel?: ExposureLevel, canClaimWindProtection?: boolean) => {
+  if (capped) return getCappedConditionLabel(score, language, 'hero', selectedDate, windBeaufort, exposureLevel, canClaimWindProtection);
 
   const day = getSelectedDayPrefix(selectedDate, new Date(), language);
   const copy = getLocalizedCopy(language, scoreCopy);
@@ -298,6 +305,7 @@ export const TodayScoreBadge: React.FC<TodayScoreBadgeProps> = ({
   swimmingComfort,
   noIdealSwimmingWindow,
   exposureLevel,
+  canClaimWindProtection,
   forceShow = false,
 }) => {
   const normalizedScore = clampScore(score);
@@ -313,7 +321,7 @@ export const TodayScoreBadge: React.FC<TodayScoreBadgeProps> = ({
       <div className={`inline-flex w-full max-w-full min-w-0 items-center gap-2 rounded-2xl border px-3 py-2 shadow-sm sm:w-fit ${tone.container}`}>
         <BarChart3 className={`h-4 w-4 flex-shrink-0 ${tone.icon}`} />
         <span className="min-w-0 text-xs font-bold leading-tight sm:text-sm">
-          <span>{getHeroTodayScoreLabel(normalizedScore, language, selectedDate, conditionCapped, windBeaufort, exposureLevel)}</span>
+          <span>{getHeroTodayScoreLabel(normalizedScore, language, selectedDate, conditionCapped, windBeaufort, exposureLevel, canClaimWindProtection)}</span>
         </span>
       </div>
     );
@@ -322,7 +330,7 @@ export const TodayScoreBadge: React.FC<TodayScoreBadgeProps> = ({
   return (
     <div className={`inline-flex min-h-9 w-full min-w-0 items-center justify-center gap-1.5 rounded-full border px-3 py-1.5 text-xs font-bold shadow-sm ${tone.container}`}>
       <BarChart3 className={`h-3.5 w-3.5 flex-shrink-0 ${tone.icon}`} />
-      <span className="min-w-0 truncate">{getTodayScoreLabel(normalizedScore, language, selectedDate, conditionCapped, windBeaufort, exposureLevel)}</span>
+      <span className="min-w-0 truncate">{getTodayScoreLabel(normalizedScore, language, selectedDate, conditionCapped, windBeaufort, exposureLevel, canClaimWindProtection)}</span>
     </div>
   );
 };
