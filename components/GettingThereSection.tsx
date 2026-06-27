@@ -128,11 +128,12 @@ interface GettingThereSectionProps {
 
 export const GettingThereSection: React.FC<GettingThereSectionProps> = ({ beach, language }) => {
   const kind = classify(beach);
-  const notes = beach.accessNotes?.[language] || beach.metadata?.access?.notes;
   const hasParking = beach.amenities?.parking === true;
 
-  // Nothing trustworthy to say (unknown access, no parking, no notes) → render nothing.
-  if (!kind && !hasParking && !notes) return null;
+  // Nothing trustworthy to say (unknown access, no parking) → render nothing. We deliberately do
+  // NOT render the raw accessNotes: the access label above is clearer, and that field can carry
+  // verbose / internal maintenance text (e.g. "Επανέλεγχος 2026-05-25 ...") that isn't for users.
+  if (!kind && !hasParking) return null;
 
   const Icon = kind ? KIND_ICON[kind] : Car;
 
@@ -148,10 +149,6 @@ export const GettingThereSection: React.FC<GettingThereSectionProps> = ({ beach,
             <p className="text-sm font-medium leading-relaxed opacity-90">{pick(KIND_DESC[kind], language)}</p>
           </div>
         </div>
-      )}
-
-      {notes && (
-        <p className="px-1 text-xs font-medium leading-relaxed text-slate-600">{notes}</p>
       )}
 
       {hasParking && (
