@@ -15,6 +15,7 @@ import { RecommendationSection } from './components/RecommendationSection';
 import { BeachCard } from './components/BeachCard';
 import ErrorDisplay from './components/ErrorDisplay';
 import { MobileBottomNav, type MobileTab } from './components/MobileBottomNav';
+import { SavedBeachesScreen } from './components/SavedBeachesScreen';
 import { PrivacyConsentBanner } from './components/PrivacyConsentBanner';
 import { MapLoadBoundary } from './components/MapLoadBoundary';
 import { LegalFooter, openLegalModal } from './components/LegalFooter';
@@ -2768,9 +2769,11 @@ export const App: React.FC = () => {
       return;
     }
     if (tab === 'favorites') {
+      // The Saved screen renders via an early return on mobileTab === 'favorites';
+      // just clear any open overlays/detail so it shows cleanly.
       closeMobileBottomPanels();
       if (view === 'detail') closeBeachDetails();
-      scrollToBeachResultsSection();
+      return;
     }
   };
 
@@ -3165,6 +3168,19 @@ export const App: React.FC = () => {
       };
     });
   }, [geospatialExposureProfiles, language, preferences, hourAdjustedBeachForecasts, selectedForecast, selectedIsland, userLocation]);
+
+  // Saved beaches (favorites) in the active island, each carrying the SAME scored verdict
+  // the home cards show — reuse mapSuitableBeaches, which scores EVERY island beach, so a
+  // saved rough beach still appears with its real (low) verdict. Favorites on other,
+  // not-currently-loaded islands can't be scored here and are surfaced as an honest count.
+  const savedSuitableBeaches = useMemo(
+    () => mapSuitableBeaches.filter(item => favorites.includes(item.beach.id)),
+    [mapSuitableBeaches, favorites]
+  );
+  const savedOtherIslandsCount = useMemo(() => {
+    const currentIslandBeachIds = new Set((selectedIsland?.beaches ?? []).map(b => b.id));
+    return favorites.filter(id => !currentIslandBeachIds.has(id)).length;
+  }, [favorites, selectedIsland]);
 
   const dailySuitableBeaches = useMemo(() => {
     if (!selectedIsland || !deferredSelectedForecast) return [];
@@ -4149,6 +4165,26 @@ export const App: React.FC = () => {
           />
         </Suspense>
       </div>
+    );
+  }
+
+  if (mobileTab === 'favorites') {
+    return (
+      <SavedBeachesScreen
+        language={language}
+        t={t}
+        items={savedSuitableBeaches}
+        favorites={favorites}
+        onToggleFavorite={handleToggleFavorite}
+        onOpenBeach={(b) => openBeachDetails(b, 'saved_screen')}
+        onClose={() => handleMobileTab('home')}
+        selectedDate={selectedForecast?.date}
+        windSpeed={forecast?.[selectedDayIndex]?.wind.speed}
+        temperature={forecast?.[selectedDayIndex]?.temp_max}
+        islandName={selectedIsland?.name[language] ?? ''}
+        regionId={isNearMeRegionActive ? undefined : selectedIsland?.id}
+        otherIslandsCount={savedOtherIslandsCount}
+      />
     );
   }
 
@@ -5922,6 +5958,7 @@ export const App: React.FC = () => {
         visible={showBottomNav}
         showBuddy={ENABLE_BEACH_BUDDY_CHAT}
         showPlanner={ENABLE_PLANNER_PRO}
+        favoritesCount={favorites.length}
       />
 
       <PrivacyConsentBanner language={language} />

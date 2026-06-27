@@ -1,5 +1,5 @@
 import React from 'react';
-import { Calendar, CloudSun, Home, MessageCircle } from 'lucide-react';
+import { Calendar, CloudSun, Heart, Home, MessageCircle } from 'lucide-react';
 import { LanguageCode } from '../types';
 import { getLocalizedCopy } from '../utils/i18n';
 
@@ -14,19 +14,22 @@ interface MobileBottomNavProps {
   visible?: boolean;
   showBuddy?: boolean;
   showPlanner?: boolean;
+  /** Number of saved beaches — shown as a count badge on the Saved tab. */
+  favoritesCount?: number;
 }
 
 const navCopy: Record<LanguageCode, {
   home: string;
   weather: string;
+  saved: string;
   buddy: string;
   planner: string;
 }> = {
-  en: { home: 'Home', weather: 'Weather', buddy: 'Buddy', planner: 'Planner' },
-  gr: { home: 'Αρχική', weather: 'Καιρός', buddy: 'Buddy', planner: 'Planner' },
-  fr: { home: 'Accueil', weather: 'Meteo', buddy: 'Buddy', planner: 'Planner' },
-  de: { home: 'Start', weather: 'Wetter', buddy: 'Buddy', planner: 'Planner' },
-  it: { home: 'Home', weather: 'Meteo', buddy: 'Buddy', planner: 'Planner' },
+  en: { home: 'Home', weather: 'Weather', saved: 'Saved', buddy: 'Buddy', planner: 'Planner' },
+  gr: { home: 'Αρχική', weather: 'Καιρός', saved: 'Αποθηκευμένα', buddy: 'Buddy', planner: 'Planner' },
+  fr: { home: 'Accueil', weather: 'Meteo', saved: 'Favoris', buddy: 'Buddy', planner: 'Planner' },
+  de: { home: 'Start', weather: 'Wetter', saved: 'Gespeichert', buddy: 'Buddy', planner: 'Planner' },
+  it: { home: 'Home', weather: 'Meteo', saved: 'Salvate', buddy: 'Buddy', planner: 'Planner' },
 };
 
 export const MobileBottomNav: React.FC<MobileBottomNavProps> = ({
@@ -36,6 +39,7 @@ export const MobileBottomNav: React.FC<MobileBottomNavProps> = ({
   visible = true,
   showBuddy = true,
   showPlanner = true,
+  favoritesCount = 0,
 }) => {
   const copy = getLocalizedCopy(language, navCopy);
   const tabs = [
@@ -48,6 +52,11 @@ export const MobileBottomNav: React.FC<MobileBottomNavProps> = ({
       id: 'weather' as const,
       icon: CloudSun,
       label: copy.weather,
+    },
+    {
+      id: 'favorites' as const,
+      icon: Heart,
+      label: copy.saved,
     },
     ...(showBuddy ? [{
       id: 'chat' as const,
@@ -97,6 +106,11 @@ export const MobileBottomNav: React.FC<MobileBottomNavProps> = ({
                   {tab.id === 'planner' && (
                     <span className="absolute -right-2 -top-1.5 flex h-4 min-w-4 items-center justify-center rounded-full bg-slate-900 px-1 text-[8px] font-black text-white">
                       Pro
+                    </span>
+                  )}
+                  {tab.id === 'favorites' && favoritesCount > 0 && (
+                    <span className="absolute -right-2 -top-1.5 flex h-4 min-w-4 items-center justify-center rounded-full bg-rose-500 px-1 text-[8px] font-black text-white">
+                      {favoritesCount > 9 ? '9+' : favoritesCount}
                     </span>
                   )}
                 </div>

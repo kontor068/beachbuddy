@@ -28,8 +28,8 @@ import {
 } from '../types';
 import { degToCompass, calculateDistance, getBeaufortLevel } from '../utils/weatherUtils';
 import { computeSwellSurgePenalty, SWELL_SURGE_PENALTY_MID } from '../utils/swellSurge';
+import { assessSwellExposure } from '../utils/swellExposure';
 import { evaluateAfternoonBuild } from '../utils/afternoonBuild';
-import { calculateWindExposure } from '../utils/windExposure';
 import { calculateCrowdLevel, CrowdLevel } from './crowdService';
 import { ExposureLevel } from '../utils/windExposure';
 import { getNegativeFeedbackCount } from './analyticsService';
@@ -1438,26 +1438,13 @@ export const calculateBeachScore = (
   // AND the sector facing the swell is open (blockedRayRatio < 0.6). A closed bay whose mouth
   // points away from the swell is NOT charged (removes a false-exposed). Falls back to the legacy
   // orientation-bucket rule when no profile/facing is available (unchanged behavior there).
-  const swellGeoProfile = options?.geospatialProfile;
-  const swellFacingDeg = typeof swellGeoProfile?.facingDeg === 'number' ? swellGeoProfile.facingDeg : null;
-  const hasSwellInput = (
-    typeof marine?.swellWaveDirectionDeg === 'number' &&
-    typeof marine?.swellWaveHeightM === 'number' &&
-    marine.swellWaveHeightM >= 0.5
-  );
-  let directSwell = false;
-  if (hasSwellInput) {
-    if (swellFacingDeg !== null && swellGeoProfile) {
-      const swellDir = marine!.swellWaveDirectionDeg!;
-      const swellOnshore = Math.cos((swellDir - swellFacingDeg) * Math.PI / 180);
-      const sectorOrder: WindSector[] = ['N', 'NE', 'E', 'SE', 'S', 'SW', 'W', 'NW'];
-      const nearestSector = sectorOrder[((Math.round(swellDir / 45) % 8) + 8) % 8];
-      const sectorOpen = (swellGeoProfile.sectors?.[nearestSector]?.blockedRayRatio ?? 1) < 0.6;
-      directSwell = swellOnshore > 0.3 && sectorOpen;
-    } else if (beachOrientation !== null) {
-      directSwell = calculateWindExposure(beachOrientation, marine!.swellWaveDirectionDeg!).exposureLevel === 'exposed';
-    }
-  }
+  // Direct-swell geometry now lives in utils/swellExposure (single source of truth shared
+  // with the UI swell-router); `exposed` is the same boolean this scoring used inline.
+  const directSwell = assessSwellExposure(options?.geospatialProfile, beachOrientation, {
+    swellDirectionDeg: marine?.swellWaveDirectionDeg,
+    swellHeightM: marine?.swellWaveHeightM,
+    swellPeriodS: marine?.swellWavePeriodS,
+  }).exposed;
   if (directSwell) {
     const swellHeightM = marine?.swellWaveHeightM ?? 0;
     warnings.push({

@@ -176,6 +176,26 @@ export const localizedPaidEntryVerifyNote = (language: LanguageCode): string => 
   fr: 'Selon les informations — à confirmer avant d’y aller.',
 }[language]);
 
+// The "free / pay?" counterpart to the paid-entry badge. We show this when a beach has
+// NO paid-entry record. Crucially it is NOT a verified per-beach "free" claim — our paid
+// dataset is a small curated subset, so absence of a record is not proof. Instead we lean
+// on the Greek legal default (the αιγιαλός/foreshore is public and shore access is free)
+// and add an honest "no fee on record" caveat, so it answers the anxiety without overclaiming.
+export const localizedFreeAccessLabel = (language: LanguageCode): string => ({
+  en: 'Free shore access',
+  gr: 'Ελεύθερη πρόσβαση',
+  de: 'Freier Strandzugang',
+  it: 'Accesso libero',
+  fr: 'Accès libre',
+}[language]);
+export const localizedFreeAccessExplanation = (language: LanguageCode): string => ({
+  en: 'Public beach — under Greek law the shore is open to all. We have no record of an entrance fee here.',
+  gr: 'Δημόσια παραλία — βάσει νόμου η ακτή είναι ανοιχτή σε όλους. Δεν έχουμε στοιχεία για χρέωση εισόδου εδώ.',
+  de: 'Öffentlicher Strand — nach griechischem Recht ist die Küste für alle frei. Uns liegt kein Eintrittsentgelt vor.',
+  it: 'Spiaggia pubblica — per la legge greca la costa è aperta a tutti. Non abbiamo dati su un costo d’ingresso qui.',
+  fr: 'Plage publique — selon la loi grecque, le rivage est ouvert à tous. Nous n’avons aucune donnée sur un droit d’entrée ici.',
+}[language]);
+
 export const localizedAmenityText = (value: string, language: LanguageCode): string => {
   const normalized = value.toLowerCase();
   if (language === 'gr') {

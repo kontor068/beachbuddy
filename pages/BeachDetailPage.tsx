@@ -21,6 +21,16 @@ import { degToCompass, calculateDistance, getBeaufortLevel, getWaveCondition } f
 import { trackEvent, storeConditionFeedback, getFeedback, ConditionFeedbackVerdict } from '../services/analyticsService';
 import { calculateSeaConditionScore } from '../utils/seaConditions';
 import { TodayScoreBadge } from '../components/TodayScoreBadge';
+import { ForecastTrustNote } from '../components/ForecastTrustNote';
+import { MeltemiShelterSection, type MeltemiShelteredCove } from '../components/MeltemiShelterSection';
+import { GettingThereSection } from '../components/GettingThereSection';
+import { SwellRouterSection, type SwellShelteredCove } from '../components/SwellRouterSection';
+import { assessSwellExposure } from '../utils/swellExposure';
+import { SwitchBeachCard } from '../components/SwitchBeachCard';
+import { assessBeachWindExposure } from '../utils/windExposureEngine';
+import { AccessibleCalmNearbySection, type AccessibleCalmCove } from '../components/AccessibleCalmNearbySection';
+import { ConstraintFitSection, type ConstraintFit } from '../components/ConstraintFitSection';
+import { DayPlanSunsetCard } from '../components/DayPlanSunsetCard';
 import { generateBeachExplanation as generateUiBeachExplanation } from '../utils/beachExplanation';
 import { describeSimpleWindSuitability, describeWindExposure } from '../utils/windExposureCopy';
 import type { ExposureLevel } from '../utils/windExposure';
@@ -50,6 +60,7 @@ import { getSunsetTime } from '../utils/sunTimes';
 import { buildPhotoSuggestionUrl } from '../utils/photoContribution';
 import { getSelectedDayPrefix } from '../utils/dateLabels';
 import { getRainSwimAdvisory } from '../utils/rainAdvisory';
+import { summarizeMeltemiBehavior } from '../utils/windClimatology';
 
 // Lazy load map to avoid blocking main thread
 const BeachMap = React.lazy(() => import('../components/BeachMap'));
@@ -417,7 +428,7 @@ const hasUsefulTimeWindow = (start?: string, end?: string): boolean => {
 
 import { canOpenNavigation, openNavigation } from '../utils/navigation';
 import { NavigationBadge } from '../components/NavigationBadge';
-import { displayBeachName, localizedPaidEntryLabel, localizedPaidEntryExplanation, localizedPaidEntryVerifyNote } from '../utils/localization';
+import { displayBeachName, localizedPaidEntryLabel, localizedPaidEntryExplanation, localizedPaidEntryVerifyNote, localizedFreeAccessLabel, localizedFreeAccessExplanation } from '../utils/localization';
 
 interface BeachDetailPageProps {
   beach: Beach;
@@ -811,6 +822,173 @@ export const BeachDetailPage: React.FC<BeachDetailPageProps> = ({
     }).filter((item): item is NonNullable<typeof item> => item !== null);
   }, [allBeaches, beach, weatherData, userLocation, hourlyForecast, preferences, language, beachWeatherById, geospatialExposureProfiles]);
 
+  // Meltemi seasonal shelter atlas: this cove's N/NE-summer behaviour + the island's
+  // reliably-sheltered coves. Endorsement is gated to genuinely 'protected' meltemi
+  // profiles with non-low confidence — a forward-looking climatology, not today's wind.
+  const meltemiExposure = summarizeMeltemiBehavior(geospatialExposure);
+  const meltemiShelteredCoves = useMemo<MeltemiShelteredCove[]>(() => {
+    return allBeaches
+      .filter(b => b.id !== beach.id)
+      .map(b => {
+        const profile = geospatialExposureProfiles?.[b.id];
+        if (!profile || profile.confidence === 'low') return null;
+        if (summarizeMeltemiBehavior(profile) !== 'protected') return null;
+        const distanceKm = calculateDistance(beach.coordinates.lat, beach.coordinates.lon, b.coordinates.lat, b.coordinates.lon);
+        return { id: b.id, name: displayBeachName(b.name, language), distanceKm };
+      })
+      .filter((c): c is MeltemiShelteredCove => c !== null)
+      .sort((a, b) => a.distanceKm - b.distanceKm)
+      .slice(0, 6);
+  }, [allBeaches, beach.id, beach.coordinates.lat, beach.coordinates.lon, geospatialExposureProfiles, language]);
+
+  // Swell-window router: assess THIS cove against today's ground swell (geometry-based), and —
+  // only when a genuine long-period ground swell is running — rank the island's swell-flat coves.
+  const thisSwell = assessSwellExposure(geospatialExposure, scoreResult.facingDeg ?? null, {
+    swellDirectionDeg: weatherData.marine?.swellWaveDirectionDeg,
+    swellHeightM: weatherData.marine?.swellWaveHeightM,
+    swellPeriodS: weatherData.marine?.swellWavePeriodS,
+  });
+  const swellFromLabel = thisSwell.directionDeg !== undefined
+    ? (t.windDirections[degToCompass(thisSwell.directionDeg) as WindDirection] || degToCompass(thisSwell.directionDeg))
+    : '';
+  const swellShelteredCoves = useMemo<SwellShelteredCove[]>(() => {
+    if (!thisSwell.meaningful) return [];
+    const swellInput = {
+      swellDirectionDeg: weatherData.marine?.swellWaveDirectionDeg,
+      swellHeightM: weatherData.marine?.swellWaveHeightM,
+      swellPeriodS: weatherData.marine?.swellWavePeriodS,
+    };
+    return allBeaches
+      .filter(b => b.id !== beach.id)
+      .map(b => {
+        const profile = geospatialExposureProfiles?.[b.id];
+        if (!profile || profile.confidence === 'low') return null;
+        if (assessSwellExposure(profile, profile.facingDeg ?? null, swellInput).exposed) return null;
+        const distanceKm = calculateDistance(beach.coordinates.lat, beach.coordinates.lon, b.coordinates.lat, b.coordinates.lon);
+        return { id: b.id, name: displayBeachName(b.name, language), distanceKm };
+      })
+      .filter((c): c is SwellShelteredCove => c !== null)
+      .sort((a, b) => a.distanceKm - b.distanceKm)
+      .slice(0, 6);
+  }, [thisSwell.meaningful, weatherData.marine?.swellWaveDirectionDeg, weatherData.marine?.swellWaveHeightM, weatherData.marine?.swellWavePeriodS, allBeaches, beach.id, beach.coordinates.lat, beach.coordinates.lon, geospatialExposureProfiles, language]);
+
+  // "Switch beach": when THIS beach can't claim shelter from today's (meaningful) wind, find the
+  // nearest reachable beach that genuinely CAN — under the same live wind, via its own 8-sector
+  // geometry. Gated on canClaimProtected (same bar as the "πιο υπήνεμη επιλογή" endorsement) so we
+  // never send someone to a beach that isn't actually calmer; capped to a reachable radius.
+  const switchBeach = useMemo<{ beach: Beach; distanceKm: number } | null>(() => {
+    if (canClaimWindProtection || beaufortLevel < 4) return null;
+    const windDeg = weatherData.wind.deg;
+    const windDir = degToCompass(windDeg) as WindDirection;
+    const waveM = weatherData.marine?.waveHeightM;
+    const candidates = allBeaches
+      .filter(b => b.id !== beach.id)
+      .map(b => {
+        const profile = geospatialExposureProfiles?.[b.id];
+        if (!profile || profile.confidence === 'low') return null;
+        const distanceKm = calculateDistance(beach.coordinates.lat, beach.coordinates.lon, b.coordinates.lat, b.coordinates.lon);
+        if (distanceKm > 25) return null;
+        const assessment = assessBeachWindExposure({
+          beach: b,
+          geospatialProfile: profile,
+          windDirectionDeg: windDeg,
+          windDirection: windDir,
+          windSpeedKmh,
+          beaufort: beaufortLevel,
+          waveHeightMeters: waveM,
+        });
+        if (!assessment.canClaimProtected) return null;
+        return { beach: b, distanceKm };
+      })
+      .filter((c): c is { beach: Beach; distanceKm: number } => c !== null)
+      .sort((a, b) => a.distanceKm - b.distanceKm);
+    return candidates[0] ?? null;
+  }, [canClaimWindProtection, beaufortLevel, weatherData.wind.deg, windSpeedKmh, weatherData.marine?.waveHeightM, allBeaches, beach.id, beach.coordinates.lat, beach.coordinates.lon, geospatialExposureProfiles]);
+  const switchBeachWindLabel = switchBeach
+    ? (t.windDirections[degToCompass(weatherData.wind.deg) as WindDirection] || degToCompass(weatherData.wind.deg))
+    : '';
+
+  // Accessible + calm + reachable TODAY: only on accessible beaches, list nearby beaches that
+  // are BOTH verified-accessible (Seatrac, ramp not uninstalled) AND sheltered from today's
+  // wind (canClaimProtected; on light-wind days any accessible beach qualifies). Nearest first.
+  const accessibleCalmNearby = useMemo<AccessibleCalmCove[]>(() => {
+    if (!showAccessibilitySection) return [];
+    const windDeg = weatherData.wind.deg;
+    const windDir = degToCompass(windDeg) as WindDirection;
+    const waveM = weatherData.marine?.waveHeightM;
+    return allBeaches
+      .filter(b => b.id !== beach.id)
+      .map(b => {
+        const access = getSeatracAccess(b);
+        if (!access?.hasSeatrac || access.status === 'uninstalled') return null;
+        const profile = geospatialExposureProfiles?.[b.id];
+        let calm: boolean;
+        if (profile && profile.confidence !== 'low') {
+          const a = assessBeachWindExposure({
+            beach: b, geospatialProfile: profile, windDirectionDeg: windDeg, windDirection: windDir,
+            windSpeedKmh, beaufort: beaufortLevel, waveHeightMeters: waveM,
+          });
+          calm = a.canClaimProtected || a.exposureLevel === 'protected';
+        } else {
+          calm = beaufortLevel <= 3;
+        }
+        if (!calm) return null;
+        const distanceKm = calculateDistance(beach.coordinates.lat, beach.coordinates.lon, b.coordinates.lat, b.coordinates.lon);
+        return { id: b.id, name: displayBeachName(b.name, language), distanceKm };
+      })
+      .filter((c): c is AccessibleCalmCove => c !== null)
+      .sort((a, b) => a.distanceKm - b.distanceKm)
+      .slice(0, 5);
+  }, [showAccessibilitySection, weatherData.wind.deg, weatherData.marine?.waveHeightM, windSpeedKmh, beaufortLevel, allBeaches, beach.id, beach.coordinates.lat, beach.coordinates.lon, geospatialExposureProfiles, language]);
+
+  // Constraint-fit TODAY: show a use-case only when this beach genuinely clears it today —
+  // toddler-safe (shallow/family + calm + no rain-at-swim), snorkeling (flat water), or a
+  // sunset swim (west-facing + calm). Static guides can't make these live intersections.
+  const constraintFits = useMemo<ConstraintFit[]>(() => {
+    const fits: ConstraintFit[] = [];
+    const calm = canClaimWindProtection || beaufortLevel <= 3;
+    const lowWaves = (waveHeightM ?? 1) < 0.4;
+    const shade = beach.amenities?.naturalShade === true;
+    const shallow = beach.characteristics?.shallowWaters === true || beach.waterDepth === 'shallow';
+    const family = beach.environment?.familyFriendly === true;
+    if ((shallow || family) && calm && !rainAdvisory) fits.push({ key: 'kids', withShade: shade });
+    if (beach.activities?.snorkeling === true && (lowWaves || calm)) fits.push({ key: 'snorkel' });
+    const facing = scoreResult.facingDeg;
+    if (typeof facing === 'number' && facing >= 200 && facing <= 340 && calm) fits.push({ key: 'sunset' });
+    return fits;
+  }, [canClaimWindProtection, beaufortLevel, waveHeightM, rainAdvisory, beach, scoreResult.facingDeg]);
+
+  // Day-plan sequencer (sunset leg): if THIS beach isn't itself a west-facing cove that's calm
+  // today, pair it with the nearest one that is — "swim here now, sunset swim there". West-facing
+  // is facingDeg 200–340; calm uses today's wind via each cove's own geometry. Reachable radius.
+  const sunsetLeg = useMemo<{ beach: Beach; distanceKm: number } | null>(() => {
+    const thisFacing = scoreResult.facingDeg;
+    const thisCalm = canClaimWindProtection || beaufortLevel <= 3;
+    if (typeof thisFacing === 'number' && thisFacing >= 200 && thisFacing <= 340 && thisCalm) return null;
+    const windDeg = weatherData.wind.deg;
+    const windDir = degToCompass(windDeg) as WindDirection;
+    const waveM = weatherData.marine?.waveHeightM;
+    const candidates = allBeaches
+      .filter(b => b.id !== beach.id)
+      .map(b => {
+        const profile = geospatialExposureProfiles?.[b.id];
+        if (!profile || profile.confidence === 'low') return null;
+        const facing = profile.facingDeg;
+        if (typeof facing !== 'number' || facing < 200 || facing > 340) return null;
+        const distanceKm = calculateDistance(beach.coordinates.lat, beach.coordinates.lon, b.coordinates.lat, b.coordinates.lon);
+        if (distanceKm > 25) return null;
+        const a = assessBeachWindExposure({
+          beach: b, geospatialProfile: profile, windDirectionDeg: windDeg, windDirection: windDir,
+          windSpeedKmh, beaufort: beaufortLevel, waveHeightMeters: waveM,
+        });
+        if (!a.canClaimProtected) return null;
+        return { beach: b, distanceKm };
+      })
+      .filter((c): c is { beach: Beach; distanceKm: number } => c !== null)
+      .sort((a, b) => a.distanceKm - b.distanceKm);
+    return candidates[0] ?? null;
+  }, [scoreResult.facingDeg, canClaimWindProtection, beaufortLevel, weatherData.wind.deg, weatherData.marine?.waveHeightM, windSpeedKmh, allBeaches, beach.id, beach.coordinates.lat, beach.coordinates.lon, geospatialExposureProfiles]);
+
   const handleShare = async () => {
     if (navigator.share) {
       try {
@@ -925,6 +1103,13 @@ export const BeachDetailPage: React.FC<BeachDetailPageProps> = ({
             </div>
           </div>
 
+          <ForecastTrustNote
+            language={language}
+            weatherSource={weatherSource}
+            forecastConfidence={scoreResult.forecastConfidence}
+            confidenceReasons={scoreResult.confidenceReasons}
+          />
+
           <div className="hidden md:flex items-center justify-end gap-3 pt-1">
             <button
               type="button"
@@ -944,6 +1129,35 @@ export const BeachDetailPage: React.FC<BeachDetailPageProps> = ({
             </button>
           </div>
         </section>
+
+        {/* 1b. Swell-window router — surfaces only on genuine ground swell: warns when this
+            cove is secretly breaking despite calm wind, or routes to coves still flat today. */}
+        <SwellRouterSection
+          language={language}
+          beachName={beachDisplayName}
+          swell={thisSwell}
+          swellFromLabel={swellFromLabel}
+          windBeaufort={beaufortLevel}
+          shelteredCoves={swellShelteredCoves}
+          onSelect={(id) => {
+            const target = allBeaches.find(b => b.id === id);
+            if (target) onBeachClick(target);
+          }}
+        />
+
+        {/* 1c. Switch beach — nearest beach sheltered from today's wind, when this one isn't. */}
+        {switchBeach && (
+          <SwitchBeachCard
+            language={language}
+            targetName={displayBeachName(switchBeach.beach.name, language)}
+            distanceKm={switchBeach.distanceKm}
+            windFromLabel={switchBeachWindLabel}
+            onOpen={() => onBeachClick(switchBeach.beach)}
+          />
+        )}
+
+        {/* 1d. Constraint-fit today — kids / snorkeling / sunset, only when it genuinely fits. */}
+        <ConstraintFitSection language={language} fits={constraintFits} />
 
         {/* 2. Photo Gallery */}
         <section className="space-y-3">
@@ -1213,6 +1427,24 @@ export const BeachDetailPage: React.FC<BeachDetailPageProps> = ({
           </section>
         )}
 
+        {/* 7a-1. Free / public access — the honest counterpart to the paid badge. Shown when we
+            hold NO paid-entry record. Not a verified per-beach claim: it states the Greek legal
+            default (public shore) plus an explicit "no fee on record" caveat, so "free or pay?"
+            always has an answer without overclaiming on un-audited beaches. */}
+        {!paidEntry && (
+          <section className="flex items-start gap-3 rounded-[1.75rem] border border-emerald-200/70 bg-emerald-50/50 p-4 shadow-sm shadow-emerald-900/5">
+            <div className="shrink-0 rounded-2xl bg-emerald-500 p-2.5 text-white shadow-sm">
+              <Waves className="h-5 w-5" aria-hidden />
+            </div>
+            <div className="min-w-0 space-y-1">
+              <h3 className="font-bold text-emerald-950">{localizedFreeAccessLabel(language)}</h3>
+              <p className="text-sm font-semibold leading-snug text-emerald-900">
+                {localizedFreeAccessExplanation(language)}
+              </p>
+            </div>
+          </section>
+        )}
+
         {/* 7a. What to bring — derived from amenity gaps */}
         {whatToBringItems.length > 0 && (
           <section className="flex items-start gap-3 rounded-[1.75rem] border border-amber-100/80 bg-amber-50/70 p-4 shadow-sm shadow-amber-900/5">
@@ -1338,6 +1570,22 @@ export const BeachDetailPage: React.FC<BeachDetailPageProps> = ({
           </section>
         )}
 
+        {/* 7b-1. Accessible + calm today: nearby beaches that clear both the accessibility and
+            the live-shelter gate. Shown only on accessible beaches. */}
+        <AccessibleCalmNearbySection
+          language={language}
+          items={accessibleCalmNearby}
+          onSelect={(id) => {
+            const target = allBeaches.find(b => b.id === id);
+            if (target) onBeachClick(target);
+          }}
+        />
+
+        {/* 7c. Getting there — honest access labels (boat / dirt / 4x4 / hike / car) with a
+            caveat where "easy" is only an unverified default. Sits between accessibility and
+            the map so the "how do I reach it" answers are grouped. */}
+        <GettingThereSection beach={beach} language={language} />
+
         {/* 8. Map Location */}
         <section className="space-y-3" data-nosnippet="true">
           <h3 className="px-1 font-heading text-lg font-bold text-slate-950">{copy.locationTitle[language]}</h3>
@@ -1456,6 +1704,27 @@ export const BeachDetailPage: React.FC<BeachDetailPageProps> = ({
         </section>
 
         {/* 8. Nearby Beaches */}
+        {/* Day-plan sequencer — sunset leg. */}
+        {sunsetLeg && (
+          <DayPlanSunsetCard
+            language={language}
+            targetName={displayBeachName(sunsetLeg.beach.name, language)}
+            distanceKm={sunsetLeg.distanceKm}
+            onOpen={() => onBeachClick(sunsetLeg.beach)}
+          />
+        )}
+
+        <MeltemiShelterSection
+          language={language}
+          beachName={beachDisplayName}
+          thisExposure={meltemiExposure}
+          shelteredCoves={meltemiShelteredCoves}
+          onSelect={(id) => {
+            const target = allBeaches.find(b => b.id === id);
+            if (target) onBeachClick(target);
+          }}
+        />
+
         {nearbyBeaches.length > 0 && (
         <section className="space-y-4" data-nosnippet="true">
           <h3 className="px-1 font-heading text-lg font-bold text-slate-950">{copy.nearby[language]}</h3>
