@@ -947,10 +947,9 @@ export const BeachDetailPage: React.FC<BeachDetailPageProps> = ({
     const fits: ConstraintFit[] = [];
     const calm = canClaimWindProtection || beaufortLevel <= 3;
     const lowWaves = (waveHeightM ?? 1) < 0.4;
-    const shade = beach.amenities?.naturalShade === true;
     const shallow = beach.characteristics?.shallowWaters === true || beach.waterDepth === 'shallow';
     const family = beach.environment?.familyFriendly === true;
-    if ((shallow || family) && calm && !rainAdvisory) fits.push({ key: 'kids', withShade: shade });
+    if ((shallow || family) && calm && !rainAdvisory) fits.push({ key: 'kids' });
     if (beach.activities?.snorkeling === true && (lowWaves || calm)) fits.push({ key: 'snorkel' });
     const facing = scoreResult.facingDeg;
     if (typeof facing === 'number' && facing >= 200 && facing <= 340 && calm) fits.push({ key: 'sunset' });
