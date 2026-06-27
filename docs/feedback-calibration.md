@@ -25,18 +25,22 @@ purely offline — a visitor's own negative reports immediately temper that beac
 evidence-gated, below). The cross-device, model-level calibration is the offline pass.
 
 ## Calibration (offline, run periodically)
-1. Export the `condition_feedback` events from GA4 (BigQuery export or the GA UI), or collect
-   the local `FEEDBACK_KEY` records during testing.
-2. Aggregate per `(beachId, windDir sector)`: count verdicts, weight by sample size.
-3. Read the signal conservatively (wrong-"calm" is the dangerous error):
-   - many `had_waves` / `too_windy` where the model said calm/partial → the beach is
-     UNDER-warned for that sector → add/raise a curated `exposedToWindDirections` entry or a
-     `localWindAmplification` for that sector in `utils/windProfileOverrides.ts`, and lock it in
-     as a `rough` anchor in `scripts/validateWindExposureGroundTruth.mjs`.
-   - many `calmer` where the model said exposed → only soften with ≥2 independent signals
-     (per the project's evidence rule); otherwise leave conservative.
+Steps 1-3 are now executable via **`scripts/calibrateFromFeedback.mjs`** (it does the aggregation +
+emits conservative, human-reviewable proposals; step 3's edits and step 4 stay manual):
+
+1. Export the `condition_feedback` events from GA4 (BigQuery export or the GA UI) to a JSON array,
+   or collect the local `FEEDBACK_KEY` records during testing.
+2. `node scripts/calibrateFromFeedback.mjs --input <export.json>` — aggregates per `(beachId, windDir
+   sector)` and prints/writes proposals. Try `--demo` to see the output shape on synthetic data.
+   It applies the conservative thresholds (≥3 samples, ≥50% negative → UNDER-warn; softening needs
+   ≥6 samples / ≥66% and is never auto-applied).
+3. Act on the proposals BY HAND (the dangerous direction is wrong-"calm", so this stays human-reviewed):
+   - `UNDER_WARN` → add/raise a curated `exposedToWindDirections` entry or a `localWindAmplification`
+     for that sector in `utils/windProfileOverrides.ts`, and lock it in as a `rough` anchor in
+     `scripts/validateWindExposureGroundTruth.mjs`.
+   - `OVER_WARN` (`calmer`) → only soften with a 2nd independent signal per the evidence rule.
 4. Re-run `npm run validate:meltemi-matrix` + the engine/ground-truth gates and review the diff.
 
 So the verdicts become new ground-truth labels feeding the same validation matrix from roadmap #1 —
 human observations close the loop without an ML model or a live backend. A future backend could
-automate steps 1-3, but the conservative, evidence-gated step 3 should stay human-reviewed.
+automate steps 1-2, but the conservative, evidence-gated step 3 must stay human-reviewed.

@@ -131,8 +131,18 @@ const gtText = readFileSync(path.join('scripts', 'validateWindExposureGroundTrut
 const caseRe = /\{\s*regionId:\s*'([^']+)',\s*name:\s*'([^']+)',\s*sector:\s*'([^']+)',\s*expected:\s*'([^']+)'\s*\}/g;
 const gtCases = [...gtText.matchAll(caseRe)].map(m => ({ regionId: m[1], name: m[2], sector: m[3] as WindSector, expected: m[4] }));
 
+// A miss is DANGEROUS only when the engine reads CALMER than the label requires (false
+// calm). When the engine reads ROUGHER than the label — e.g. a verified meltemi shelter the
+// engine deliberately keeps at 'partial' by conservative island policy (Naxos west coast) —
+// the miss is the SAFE direction the project prefers, not a failure.
+const missIsDangerous = (level: string, expected: string): boolean => {
+  if (expected === 'exposed') return level !== 'exposed'; // wanted exposed, got calmer
+  if (expected === 'rough') return level === 'protected'; // wanted not-protected, got protected
+  return false; // expected protected/calm + a miss => engine was rougher = conservative
+};
+
 const labelByGroup: Record<string, { pass: number; total: number }> = {};
-let labelPass = 0, labelFail = 0, labelSkip = 0;
+let labelPass = 0, labelFail = 0, labelSkip = 0, dangerousMisses = 0, conservativeMisses = 0;
 const labelFailures: string[] = [];
 for (const c of gtCases) {
   const { beaches, profiles } = loadRegion(c.regionId);
@@ -146,7 +156,12 @@ for (const c of gtCases) {
   if (!labelByGroup[g]) labelByGroup[g] = { pass: 0, total: 0 };
   labelByGroup[g].total++;
   if (ok) { labelPass++; labelByGroup[g].pass++; }
-  else { labelFail++; labelFailures.push(`${c.regionId}/${c.name} @${c.sector}: engine=${a.exposureLevel} [${a.source}], expected ${c.expected}`); }
+  else {
+    labelFail++;
+    const dangerous = missIsDangerous(a.exposureLevel, c.expected);
+    if (dangerous) dangerousMisses++; else conservativeMisses++;
+    labelFailures.push(`[${dangerous ? 'DANGEROUS' : 'conservative'}] ${c.regionId}/${c.name} @${c.sector}: engine=${a.exposureLevel} [${a.source}], expected ${c.expected}`);
+  }
 }
 
 // ---------------------------------------------------------------------------
@@ -224,7 +239,8 @@ for (const g of groups) {
   const s = labelByGroup[g];
   if (s) console.log(`  ${g.padEnd(11)} ${s.pass}/${s.total} (${pct(s.pass, s.total)}%)`);
 }
-console.log(`  ${'OVERALL'.padEnd(11)} ${labelPass}/${labelPass + labelFail} (${pct(labelPass, labelPass + labelFail)}%)\n`);
+console.log(`  ${'OVERALL'.padEnd(11)} ${labelPass}/${labelPass + labelFail} (${pct(labelPass, labelPass + labelFail)}%)`);
+console.log(`  of ${labelFail} misses: ${dangerousMisses} DANGEROUS (engine calmer than the label), ${conservativeMisses} conservative (engine more cautious — safe)\n`);
 
 console.log('PROPERTY invariants:');
 console.log(`  no-false-protected (open onshore sector -> engine protected, non-curated): ${falseProtected.length}`);

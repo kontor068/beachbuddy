@@ -19,8 +19,11 @@ Beaches evaluated: **2799** · GT label cases: **128** (0 skipped).
 | **OVERALL** | **124/128 (97%)** |
 
 The 4 misses are all `protected` exact-labels where the engine returns `partial` — it **under-calls
-known shelters** (Naxos Agios Prokopios/Plaka, Milos Fyriplaka, Lefkada Porto Katsiki). Safe direction
-(under-promising calm), but it means the model won't confidently surface these meltemi refuges.
+known shelters** (Naxos Agios Prokopios/Plaka, Milos Fyriplaka, Lefkada Porto Katsiki). The matrix now
+classifies miss direction: **0 DANGEROUS / 4 conservative** — every miss is the engine reading ROUGHER
+than the geometry label (the safe, deliberately-preferred direction; Naxos west-coast refuges are kept
+`partial` by island policy). So there are **zero false-calm label misses**; the only cost is not
+confidently surfacing these meltemi refuges, which is a product decision, not a safety bug.
 
 ## Property invariants
 - **no-false-protected** (open onshore sector → engine `protected`, non-curated): **0** ✓ (the dangerous direction is clean)
