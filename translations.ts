@@ -226,6 +226,7 @@ const enTranslation: Translation = {
       deepWaters: 'Deep Waters',
       shallowWaters: 'Shallow Waters',
       easyAccess: 'Easy Access',
+      disabledAccess: 'Accessible',
       showAll: 'All Beaches',
     },
     waveConditions: {
@@ -618,6 +619,7 @@ const deTranslation: Translation = {
       deepWaters: "Tiefes Wasser",
       shallowWaters: "Flaches Wasser",
       easyAccess: "Einfacher Zugang",
+      disabledAccess: "Barrierefrei",
       showAll: "Alle Strände",
     },
     waveConditions: {
@@ -1010,6 +1012,7 @@ const itTranslation: Translation = {
       deepWaters: "Acque profonde",
       shallowWaters: "Acque basse",
       easyAccess: "Accesso facile",
+      disabledAccess: "Accessibile",
       showAll: "Tutte le spiagge",
     },
     waveConditions: {
@@ -1408,6 +1411,7 @@ export const translations: Record<LanguageCode, Translation> = {
       deepWaters: 'Βαθιά Νερά',
       shallowWaters: 'Ρηχά Νερά',
       easyAccess: 'Εύκολη Πρόσβαση',
+      disabledAccess: 'Προσβάσιμη ΑμεΑ',
       showAll: 'Όλες οι Παραλίες',
     },
     waveConditions: {
@@ -1785,6 +1789,7 @@ export const translations: Record<LanguageCode, Translation> = {
       deepWaters: 'Eaux Profondes',
       shallowWaters: 'Eaux Peu Profondes',
       easyAccess: 'Accès Facile',
+      disabledAccess: 'Accessible PMR',
       showAll: 'Toutes les Plages',
     },
     waveConditions: {

@@ -35,6 +35,7 @@ export type FilterKey =
   | keyof Beach['activities']
   | keyof Beach['environment']
   | 'easyAccess'
+  | 'disabledAccess'
   | 'adventure'
   | BeachType
   | 'showAll';
@@ -829,6 +830,7 @@ export type Translation = {
     deepWaters: string;
     shallowWaters: string;
     easyAccess: string;
+    disabledAccess: string;
     showAll: string;
   };
   waveConditions: {

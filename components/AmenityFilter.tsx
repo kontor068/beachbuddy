@@ -18,7 +18,8 @@ import {
   CheckCircle2, 
   Globe,
   MapPin,
-  ShieldCheck
+  ShieldCheck,
+  Accessibility
 } from 'lucide-react';
 import { SandDotsIcon, SandPebblesIcon, SunbedIcon } from './BeachFeatureIcons';
 
@@ -73,6 +74,7 @@ const filterIcons: Record<string, React.ReactNode> = {
   deepWaters: <ArrowDown className="h-5 w-5 shrink-0" />,
   shallowWaters: <ArrowUp className="h-5 w-5 shrink-0" />,
   easyAccess: <CheckCircle2 className="h-5 w-5 shrink-0" />,
+  disabledAccess: <Accessibility className="h-5 w-5 shrink-0" />,
   showAll: <Globe className="h-5 w-5 shrink-0" />,
 };
 
@@ -147,7 +149,7 @@ const filterSheetCopy: Record<LanguageCode, {
 type FilterSectionTitleKey = 'quick' | 'amenities' | 'beachAndWater' | 'experience' | 'more';
 
 const filterGroupDefinitions: Array<{ id: string; titleKey: FilterSectionTitleKey; filters: FilterKey[] }> = [
-  { id: 'quick', titleKey: 'quick', filters: ['familyFriendly', 'beachBar', 'quiet', 'easyAccess'] },
+  { id: 'quick', titleKey: 'quick', filters: ['familyFriendly', 'beachBar', 'quiet', 'easyAccess', 'disabledAccess'] },
   { id: 'amenities', titleKey: 'amenities', filters: ['taverna', 'sunbeds', 'parking', 'organized', 'naturalShade'] },
   { id: 'beachAndWater', titleKey: 'beachAndWater', filters: ['sandy', 'pebbles', 'sandy-pebbles', 'rocky', 'shallowWaters', 'deepWaters'] },
   { id: 'experience', titleKey: 'experience', filters: ['snorkeling', 'adventure'] },
@@ -350,7 +352,7 @@ export const CombinedFilter: React.FC<CombinedFilterProps> = ({
                 }`}
             >
                 {filterIcons[filter as string]}
-                <span className="truncate">{t.filterOptions[filter]}</span>
+                <span className="min-w-0 whitespace-normal text-center leading-tight">{t.filterOptions[filter]}</span>
                 {isSelected && <CheckCircle2 className="ml-0.5 h-4 w-4 shrink-0" aria-hidden="true" />}
             </button>
         );

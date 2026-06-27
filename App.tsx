@@ -871,6 +871,9 @@ const beachMatchesMobileFilter = (
   if (filter === 'easyAccess') {
     return beachMatchesUserPreferences(beach, { ...defaultPreferences, easyAccess: true });
   }
+  if (filter === 'disabledAccess') {
+    return beachMatchesUserPreferences(beach, { ...defaultPreferences, disabledAccess: true });
+  }
   if (filter === 'sandy' || filter === 'pebbles') {
     return beachMatchesUserPreferences(beach, { ...defaultPreferences, [filter]: true });
   }
