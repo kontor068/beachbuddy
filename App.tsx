@@ -57,6 +57,7 @@ import { getRegionWindVariationNote, type RegionBeachWindSample } from './utils/
 import { loadGeospatialExposureProfiles, type GeospatialExposureProfileLookup } from './services/geospatialExposureService';
 import { assessBeachWindExposure } from './utils/windExposureEngine';
 import { fuzzySearchScore, getSearchVariants } from './utils/searchNormalize';
+import { getLandmassId } from './utils/landmass';
 
 // Keep map code out of the first-load path; it renders only near the map section.
 const BeachMap = lazyWithChunkRecovery(() => import('./components/BeachMap'), 'BeachMap');
@@ -321,10 +322,11 @@ const NEAR_ME_REGION_ID = 'near-me';
 // sensible number so we never load the whole country.
 const NEAR_ME_CANDIDATE_RADIUS_KM = 80;
 const NEAR_ME_MAX_CANDIDATE_REGIONS = 14;
-// From the merged beaches, keep those within this radius, then cap the list. Kept
-// deliberately tight: at 60 km "Κοντά μου" reached across the water to Evia and the
-// far Saronic, which feels nothing like "near me" (straight-line distance ignores
-// the sea crossing). 40 km still covers a normal beach-day drive on the mainland.
+// From the merged beaches, keep those within this radius, then cap the list. The
+// landmass guard in buildNearbyRegion is what stops sea crossings (you never see
+// another island's beaches); this radius then keeps the *same-landmass* result
+// local. Kept deliberately tight: 40 km still covers a normal beach-day drive on
+// the mainland without reaching halfway across a prefecture.
 const NEAR_ME_BEACH_RADIUS_KM = 40;
 const NEAR_ME_MAX_BEACHES = 60;
 // If almost nothing falls inside the radius (sparse coastline), still surface at
@@ -1744,6 +1746,7 @@ export const App: React.FC = () => {
 
     if (centroidRanked.length === 0) return null;
 
+    // Cast a wide net by region centroid to decide which region files to load.
     const withinRadius = centroidRanked.filter(candidate => candidate.centroidDistance <= NEAR_ME_CANDIDATE_RADIUS_KM);
     const candidates = (withinRadius.length > 0 ? withinRadius : centroidRanked).slice(0, NEAR_ME_MAX_CANDIDATE_REGIONS);
 
@@ -1774,8 +1777,19 @@ export const App: React.FC = () => {
     const ranked = loadedRegions.flat().sort((a, b) => a.distance - b.distance);
     if (ranked.length === 0) return null;
 
-    const withinBeachRadius = ranked.filter(item => item.distance <= NEAR_ME_BEACH_RADIUS_KM);
-    const selected = (withinBeachRadius.length >= NEAR_ME_MIN_BEACHES ? withinBeachRadius : ranked)
+    // "Near me" must only reach beaches that are drivable from where the user is
+    // standing: straight-line distance happily crosses the sea, so without this
+    // guard standing on Naxos surfaces Koufonisia beaches (a ferry away). The
+    // user's landmass is the one owning the single nearest beach — robust even on
+    // the far tip of a big island, where the nearest region *centroid* can belong
+    // to a neighbouring islet. Keep only beaches on that landmass: for an island
+    // that is just the island itself; on the mainland it still spans adjacent
+    // prefectures, and on Crete the neighbouring prefectures. See utils/landmass.
+    const homeLandmass = getLandmassId(ranked[0].regionId);
+    const sameLandmass = ranked.filter(item => getLandmassId(item.regionId) === homeLandmass);
+
+    const withinBeachRadius = sameLandmass.filter(item => item.distance <= NEAR_ME_BEACH_RADIUS_KM);
+    const selected = (withinBeachRadius.length >= NEAR_ME_MIN_BEACHES ? withinBeachRadius : sameLandmass)
       .slice(0, NEAR_ME_MAX_BEACHES);
 
     let nextSyntheticId = 1;
