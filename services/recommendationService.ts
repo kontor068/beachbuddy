@@ -1075,6 +1075,7 @@ export const filterBeaches = (
       return nonSurfaceFilters.every(f => {
         const filterName = f as string;
         if (f === 'easyAccess') return hasTrulyEasyAccess(b);
+        if (filterName === 'disabledAccess') return hasDisabledAccess(b);
         if (filterName === 'quiet') return isQuietBeach(b);
         if (filterName === 'familyFriendly') return isFamilyFriendlyBeach(b);
         if (filterName === 'snorkeling') return isSnorkelingBeach(b);
