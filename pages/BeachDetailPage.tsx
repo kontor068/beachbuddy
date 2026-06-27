@@ -954,10 +954,8 @@ export const BeachDetailPage: React.FC<BeachDetailPageProps> = ({
     if (beach.activities?.snorkeling === true && (lowWaves || calm)) fits.push({ key: 'snorkel' });
     const facing = scoreResult.facingDeg;
     if (typeof facing === 'number' && facing >= 200 && facing <= 340 && calm) fits.push({ key: 'sunset' });
-    // Warm & calm water (sea-surface temp already fetched): a comfort signal in shoulder season.
-    if (typeof seaTemperatureC === 'number' && seaTemperatureC >= 23 && calm) fits.push({ key: 'warm' });
     return fits;
-  }, [canClaimWindProtection, beaufortLevel, waveHeightM, rainAdvisory, beach, scoreResult.facingDeg, seaTemperatureC]);
+  }, [canClaimWindProtection, beaufortLevel, waveHeightM, rainAdvisory, beach, scoreResult.facingDeg]);
 
   // Day-plan sequencer (sunset leg): if THIS beach isn't itself a west-facing cove that's calm
   // today, pair it with the nearest one that is — "swim here now, sunset swim there". West-facing
