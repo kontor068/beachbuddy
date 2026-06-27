@@ -415,7 +415,7 @@ const generateWindyCardSummary = (input: BeachCopyInput, facts: BeachFeatureFact
         ? 'Οι πιο ανοιχτές παραλίες επηρεάζονται περισσότερο από τον σημερινό άνεμο.'
         :
       strongWind
-        ? `Καταλληλότερη διαθέσιμη επιλογή, με προσοχή. Είναι πιο υπήνεμη για ${wind}, αλλά η θάλασσα μπορεί να μην είναι τελείως ήπια.${wave ? ` ${sentenceCase(wave)}.` : ''}`
+        ? `Καταλληλότερη διαθέσιμη επιλογή, με προσοχή. Είναι πιο υπήνεμη για ${wind}, αλλά με τόσο αέρα η θάλασσα θα έχει κυματισμό.${wave ? ` ${sentenceCase(wave)}.` : ''}`
         : practicalSummary,
       isFiveBeaufort
         ? "More exposed beaches are more affected by today's wind."
@@ -542,7 +542,7 @@ const waveBullet = (input: BeachCopyInput, facts: BeachFeatureFacts): string | u
 
   if (facts.roughSea) {
     return height
-      ? localize(language, `Το κύμα στην πρόγνωση μπορεί να φτάσει περίπου ${height}, οπότε η θάλασσα μπορεί να μην είναι τελείως ήπια.`, `Forecast waves may reach around ${height}, so the sea may not feel fully easy.`)
+      ? localize(language, `Το κύμα στην πρόγνωση μπορεί να φτάσει περίπου ${height}, οπότε περίμενε κυματισμό στη θάλασσα.`, `Forecast waves may reach around ${height}, so expect a choppy sea.`)
       : localize(language, `Το κύμα μπορεί να επηρεάσει το μπάνιο ${day}.`, `Waves may affect swimming ${day}.`);
   }
 
