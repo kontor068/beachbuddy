@@ -1,5 +1,5 @@
 import React from 'react';
-import { Baby, Fish, Sunset } from 'lucide-react';
+import { Baby, Fish, Sunset, Thermometer } from 'lucide-react';
 import { LanguageCode } from '../types';
 
 /**
@@ -11,7 +11,7 @@ import { LanguageCode } from '../types';
  * honest "great today for ___" — never a stale label.
  */
 
-export type ConstraintKey = 'kids' | 'snorkel' | 'sunset';
+export type ConstraintKey = 'kids' | 'snorkel' | 'sunset' | 'warm';
 
 export interface ConstraintFit {
   key: ConstraintKey;
@@ -33,6 +33,7 @@ const LABEL: Record<ConstraintKey, Copy> = {
   kids: { en: 'Kids & toddlers', gr: 'Παιδιά & μωρά', de: 'Kinder & Kleinkinder', it: 'Bambini', fr: 'Enfants' },
   snorkel: { en: 'Snorkeling', gr: 'Snorkeling', de: 'Schnorcheln', it: 'Snorkeling', fr: 'Snorkeling' },
   sunset: { en: 'Sunset swim', gr: 'Μπάνιο στο ηλιοβασίλεμα', de: 'Sonnenuntergang-Bad', it: 'Bagno al tramonto', fr: 'Baignade au coucher' },
+  warm: { en: 'Warm swim', gr: 'Ζεστό μπάνιο', de: 'Warmes Bad', it: 'Bagno caldo', fr: 'Baignade chaude' },
 };
 
 const subKids: Copy = {
@@ -47,22 +48,28 @@ const subSnorkel: Copy = {
 const subSunset: Copy = {
   en: 'west-facing & calm at dusk', gr: 'δυτικός προσανατολισμός & ήρεμα στη δύση', de: 'nach Westen & ruhig zur Dämmerung', it: 'esposta a ovest e calma al tramonto', fr: 'orientée ouest et calme au crépuscule',
 };
+const subWarm: Copy = {
+  en: 'warm & calm water today', gr: 'ζεστά & ήρεμα νερά σήμερα', de: 'warmes & ruhiges Wasser heute', it: 'acqua calda e tranquilla oggi', fr: 'eau chaude et calme aujourd’hui',
+};
 
 const ICON: Record<ConstraintKey, React.ComponentType<{ className?: string }>> = {
   kids: Baby,
   snorkel: Fish,
   sunset: Sunset,
+  warm: Thermometer,
 };
 
 const TONE: Record<ConstraintKey, string> = {
   kids: 'border-rose-200 bg-rose-50/60 text-rose-800',
   snorkel: 'border-cyan-200 bg-cyan-50/60 text-cyan-800',
   sunset: 'border-amber-200 bg-amber-50/70 text-amber-800',
+  warm: 'border-orange-200 bg-orange-50/70 text-orange-800',
 };
 
 const subFor = (fit: ConstraintFit, language: LanguageCode): string => {
   if (fit.key === 'kids') return pick(fit.withShade ? subKidsShade : subKids, language);
   if (fit.key === 'snorkel') return pick(subSnorkel, language);
+  if (fit.key === 'warm') return pick(subWarm, language);
   return pick(subSunset, language);
 };
 

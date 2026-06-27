@@ -21,7 +21,6 @@ import { degToCompass, calculateDistance, getBeaufortLevel, getWaveCondition } f
 import { trackEvent, storeConditionFeedback, getFeedback, ConditionFeedbackVerdict } from '../services/analyticsService';
 import { calculateSeaConditionScore } from '../utils/seaConditions';
 import { TodayScoreBadge } from '../components/TodayScoreBadge';
-import { ForecastTrustNote } from '../components/ForecastTrustNote';
 import { MeltemiShelterSection, type MeltemiShelteredCove } from '../components/MeltemiShelterSection';
 import { GettingThereSection } from '../components/GettingThereSection';
 import { SwellRouterSection, type SwellShelteredCove } from '../components/SwellRouterSection';
@@ -30,7 +29,7 @@ import { SwitchBeachCard } from '../components/SwitchBeachCard';
 import { assessBeachWindExposure } from '../utils/windExposureEngine';
 import { AccessibleCalmNearbySection, type AccessibleCalmCove } from '../components/AccessibleCalmNearbySection';
 import { ConstraintFitSection, type ConstraintFit } from '../components/ConstraintFitSection';
-import { DayPlanSunsetCard } from '../components/DayPlanSunsetCard';
+import { DayPlanSection, type DayPlanStop } from '../components/DayPlanSection';
 import { generateBeachExplanation as generateUiBeachExplanation } from '../utils/beachExplanation';
 import { describeSimpleWindSuitability, describeWindExposure } from '../utils/windExposureCopy';
 import type { ExposureLevel } from '../utils/windExposure';
@@ -955,8 +954,10 @@ export const BeachDetailPage: React.FC<BeachDetailPageProps> = ({
     if (beach.activities?.snorkeling === true && (lowWaves || calm)) fits.push({ key: 'snorkel' });
     const facing = scoreResult.facingDeg;
     if (typeof facing === 'number' && facing >= 200 && facing <= 340 && calm) fits.push({ key: 'sunset' });
+    // Warm & calm water (sea-surface temp already fetched): a comfort signal in shoulder season.
+    if (typeof seaTemperatureC === 'number' && seaTemperatureC >= 23 && calm) fits.push({ key: 'warm' });
     return fits;
-  }, [canClaimWindProtection, beaufortLevel, waveHeightM, rainAdvisory, beach, scoreResult.facingDeg]);
+  }, [canClaimWindProtection, beaufortLevel, waveHeightM, rainAdvisory, beach, scoreResult.facingDeg, seaTemperatureC]);
 
   // Day-plan sequencer (sunset leg): if THIS beach isn't itself a west-facing cove that's calm
   // today, pair it with the nearest one that is — "swim here now, sunset swim there". West-facing
@@ -988,6 +989,44 @@ export const BeachDetailPage: React.FC<BeachDetailPageProps> = ({
       .sort((a, b) => a.distanceKm - b.distanceKm);
     return candidates[0] ?? null;
   }, [scoreResult.facingDeg, canClaimWindProtection, beaufortLevel, weatherData.wind.deg, weatherData.marine?.waveHeightM, windSpeedKmh, allBeaches, beach.id, beach.coordinates.lat, beach.coordinates.lon, geospatialExposureProfiles]);
+
+  // 3-stop day plan: morning swim here (if swimmable today) → midday shade & food (here or the
+  // nearest beach with both) → sunset swim (here if west-facing+calm, else the sunset leg above).
+  const dayPlanStops = useMemo<DayPlanStop[]>(() => {
+    const stops: DayPlanStop[] = [];
+    const hasShadeFood = (b: Beach) => b.amenities?.naturalShade === true && (b.amenities?.taverna === true || b.amenities?.restaurant === true);
+
+    if (swimmingComfort !== 'avoid_swimming') {
+      stops.push({ slot: 'morning', beachName: beachDisplayName, isHere: true });
+    }
+
+    if (hasShadeFood(beach)) {
+      stops.push({ slot: 'midday', beachName: beachDisplayName, isHere: true });
+    } else {
+      let best: { beach: Beach; distanceKm: number } | null = null;
+      for (const b of allBeaches) {
+        if (b.id === beach.id || !hasShadeFood(b)) continue;
+        const d = calculateDistance(beach.coordinates.lat, beach.coordinates.lon, b.coordinates.lat, b.coordinates.lon);
+        if (d > 25) continue;
+        if (!best || d < best.distanceKm) best = { beach: b, distanceKm: d };
+      }
+      if (best) {
+        const lunch = best;
+        stops.push({ slot: 'midday', beachName: displayBeachName(lunch.beach.name, language), isHere: false, distanceKm: lunch.distanceKm, onOpen: () => onBeachClick(lunch.beach) });
+      }
+    }
+
+    const thisFacing = scoreResult.facingDeg;
+    const thisIsSunset = typeof thisFacing === 'number' && thisFacing >= 200 && thisFacing <= 340 && (canClaimWindProtection || beaufortLevel <= 3);
+    if (thisIsSunset) {
+      stops.push({ slot: 'sunset', beachName: beachDisplayName, isHere: true });
+    } else if (sunsetLeg) {
+      stops.push({ slot: 'sunset', beachName: displayBeachName(sunsetLeg.beach.name, language), isHere: false, distanceKm: sunsetLeg.distanceKm, onOpen: () => onBeachClick(sunsetLeg.beach) });
+    }
+
+    // Only a real itinerary if it involves moving to at least one other cove.
+    return stops.some(s => !s.isHere) ? stops : [];
+  }, [swimmingComfort, beach, beachDisplayName, allBeaches, language, scoreResult.facingDeg, canClaimWindProtection, beaufortLevel, sunsetLeg, onBeachClick]);
 
   const handleShare = async () => {
     if (navigator.share) {
@@ -1102,13 +1141,6 @@ export const BeachDetailPage: React.FC<BeachDetailPageProps> = ({
               ))}
             </div>
           </div>
-
-          <ForecastTrustNote
-            language={language}
-            weatherSource={weatherSource}
-            forecastConfidence={scoreResult.forecastConfidence}
-            confidenceReasons={scoreResult.confidenceReasons}
-          />
 
           <div className="hidden md:flex items-center justify-end gap-3 pt-1">
             <button
@@ -1704,15 +1736,8 @@ export const BeachDetailPage: React.FC<BeachDetailPageProps> = ({
         </section>
 
         {/* 8. Nearby Beaches */}
-        {/* Day-plan sequencer — sunset leg. */}
-        {sunsetLeg && (
-          <DayPlanSunsetCard
-            language={language}
-            targetName={displayBeachName(sunsetLeg.beach.name, language)}
-            distanceKm={sunsetLeg.distanceKm}
-            onOpen={() => onBeachClick(sunsetLeg.beach)}
-          />
-        )}
+        {/* Day-plan sequencer — morning → midday shade & food → sunset. */}
+        <DayPlanSection language={language} stops={dayPlanStops} />
 
         <MeltemiShelterSection
           language={language}

@@ -2190,6 +2190,11 @@ export const App: React.FC = () => {
     document.querySelector('link[rel="canonical"]')?.setAttribute('href', canonicalUrl);
   }, [detailBeach, language, selectedIsland?.id, selectedIsland?.name, view]);
 
+  // Re-run the geospatial-profile load when the region changes OR when the cross-region
+  // "Κοντά μου" beach set changes (its region id is constant, so key on the source beaches).
+  const geoEffectKey = selectedIsland?.id === NEAR_ME_REGION_ID
+    ? `nearme:${(selectedIsland?.beaches ?? []).map(b => b.sourceBeachId ?? b.id).join(',')}`
+    : (selectedIsland?.id ?? '');
   useEffect(() => {
     const regionId = selectedIsland?.id;
     let cancelled = false;
@@ -2197,15 +2202,49 @@ export const App: React.FC = () => {
     setGeospatialExposureProfiles(undefined);
     setGeospatialExposureRegionId(undefined);
 
-    // The synthetic "Κοντά μου" region has no exposure profile file of its own;
-    // its beaches fall back to forecast + orientation scoring. Skip the doomed
-    // fetch instead of logging a 404. Still mark this region as "resolved" so
-    // isMapExposureLoading clears — otherwise geospatialExposureRegionId stays
-    // undefined, the map thinks exposure is still loading, and it never renders the
-    // beach markers (only campsites showed). See isMapExposureLoading.
-    if (!regionId || regionId === NEAR_ME_REGION_ID) {
+    if (!regionId) {
       setGeospatialExposureRegionId(regionId);
       setIsGeospatialExposureLoading(false);
+      return () => { cancelled = true; };
+    }
+
+    // The synthetic "Κοντά μου" region has no profile file of its own, but its beaches come from
+    // real islands. Load each constituent island's profiles and merge them keyed by the SYNTHETIC
+    // beach id, so every downstream geospatialExposureProfiles?.[beach.id] lookup resolves to the
+    // real per-cove geometry instead of falling back to island-level wind (the known backlog gap).
+    if (regionId === NEAR_ME_REGION_ID) {
+      const nearbyBeaches = selectedIsland?.beaches ?? [];
+      const sourceRegionIds = Array.from(
+        new Set(nearbyBeaches.map(b => b.regionId).filter((r): r is string => Boolean(r)))
+      );
+      if (sourceRegionIds.length === 0) {
+        setGeospatialExposureRegionId(regionId);
+        setIsGeospatialExposureLoading(false);
+        return () => { cancelled = true; };
+      }
+      setIsGeospatialExposureLoading(true);
+      Promise.all(
+        sourceRegionIds.map(rid =>
+          loadGeospatialExposureProfiles(rid).catch(() => ({} as GeospatialExposureProfileLookup))
+        )
+      ).then(perRegion => {
+        if (cancelled) return;
+        const byRegion = new Map<string, GeospatialExposureProfileLookup>();
+        sourceRegionIds.forEach((rid, i) => byRegion.set(rid, perRegion[i] ?? {}));
+        const merged: GeospatialExposureProfileLookup = {};
+        for (const b of nearbyBeaches) {
+          const src = b.regionId ? byRegion.get(b.regionId) : undefined;
+          const profile = src?.[b.sourceBeachId ?? b.id];
+          if (profile) merged[b.id] = profile;
+        }
+        setGeospatialExposureProfiles(merged);
+        setGeospatialExposureRegionId(regionId);
+        setIsGeospatialExposureLoading(false);
+      }).catch(() => {
+        if (cancelled) return;
+        setGeospatialExposureRegionId(regionId);
+        setIsGeospatialExposureLoading(false);
+      });
       return () => { cancelled = true; };
     }
 
@@ -2224,7 +2263,7 @@ export const App: React.FC = () => {
     });
 
     return () => { cancelled = true; };
-  }, [selectedIsland?.id]);
+  }, [geoEffectKey]);
 
   useEffect(() => {
     const mediaQuery = window.matchMedia('(min-width: 640px)');
