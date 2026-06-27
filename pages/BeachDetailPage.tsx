@@ -945,7 +945,10 @@ export const BeachDetailPage: React.FC<BeachDetailPageProps> = ({
   // sunset swim (west-facing + calm). Static guides can't make these live intersections.
   const constraintFits = useMemo<ConstraintFit[]>(() => {
     const fits: ConstraintFit[] = [];
-    const calm = canClaimWindProtection || beaufortLevel <= 3;
+    // "Calm" here is a claim that the SEA is genuinely mild — only true in light wind with a
+    // small wave. Being merely wind-sheltered (canClaimWindProtection) is NOT enough: at 4-6 Bft
+    // even a protected beach can see ~1+ m waves, so we never call it "ήρεμα" at that wind.
+    const calm = beaufortLevel <= 3 && (typeof waveHeightM !== 'number' || waveHeightM <= 0.5);
     const lowWaves = (waveHeightM ?? 1) < 0.4;
     const shallow = beach.characteristics?.shallowWaters === true || beach.waterDepth === 'shallow';
     const family = beach.environment?.familyFriendly === true;

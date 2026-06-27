@@ -21,11 +21,11 @@ export interface AccessibleCalmCove {
 }
 
 const TITLE: Copy = {
-  en: 'Accessible & calm today nearby',
-  gr: 'Προσβάσιμες & ήρεμες σήμερα κοντά',
-  de: 'Barrierefrei & heute ruhig in der Nähe',
-  it: 'Accessibili e calme oggi vicino',
-  fr: 'Accessibles et calmes aujourd’hui à proximité',
+  en: 'Accessible & sheltered today nearby',
+  gr: 'Προσβάσιμες & υπήνεμες σήμερα κοντά',
+  de: 'Barrierefrei & heute windgeschützt in der Nähe',
+  it: 'Accessibili e riparate oggi vicino',
+  fr: 'Accessibles et abritées aujourd’hui à proximité',
 };
 
 const INTRO: Copy = {
