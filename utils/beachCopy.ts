@@ -511,6 +511,11 @@ const waveBullet = (input: BeachCopyInput, facts: BeachFeatureFacts): string | u
   const { language, waveHeightM } = input;
   const day = dayPrefix(input);
   const height = formatWaveHeight(waveHeightM, language);
+  // The measured wave height is the open-sea / grid value (~island-wide, same for protected and
+  // exposed beaches). On a wind-sheltered beach that figure overstates what you'll actually find,
+  // so we frame it as "open sea ~X — more sheltered here" rather than implying it's the wave AT
+  // the beach. Copy only; no scoring change.
+  const sheltered = facts.protectedToday || facts.partiallyProtected || facts.manageableEstimate;
 
   if (facts.calmSea) {
     if (!height) {
@@ -535,15 +540,17 @@ const waveBullet = (input: BeachCopyInput, facts: BeachFeatureFacts): string | u
   }
 
   if (facts.moderateSea) {
-    return height
-      ? localize(language, `Το κύμα είναι περίπου ${height}, οπότε δεν είναι η πιο ήρεμη επιλογή αν θες απόλυτα ήρεμη θάλασσα.`, `Waves are around ${height}, so this is not the calmest pick if you want flat water.`)
-      : localize(language, `Η θάλασσα μπορεί να έχει λίγο κυματισμό ${day}.`, `The sea may have some chop ${day}.`);
+    if (!height) return localize(language, `Η θάλασσα μπορεί να έχει λίγο κυματισμό ${day}.`, `The sea may have some chop ${day}.`);
+    return sheltered
+      ? localize(language, `Στα ανοιχτά το κύμα είναι περίπου ${height}· εδώ είναι πιο υπήνεμα, αλλά με κάποιο κυματισμό.`, `Open-sea waves are around ${height}; this cove is more sheltered, but still has some chop.`)
+      : localize(language, `Το κύμα είναι περίπου ${height}, οπότε δεν είναι η πιο ήρεμη επιλογή αν θες απόλυτα ήρεμη θάλασσα.`, `Waves are around ${height}, so this is not the calmest pick if you want flat water.`);
   }
 
   if (facts.roughSea) {
-    return height
-      ? localize(language, `Το κύμα στην πρόγνωση μπορεί να φτάσει περίπου ${height}, οπότε περίμενε κυματισμό στη θάλασσα.`, `Forecast waves may reach around ${height}, so expect a choppy sea.`)
-      : localize(language, `Το κύμα μπορεί να επηρεάσει το μπάνιο ${day}.`, `Waves may affect swimming ${day}.`);
+    if (!height) return localize(language, `Το κύμα μπορεί να επηρεάσει το μπάνιο ${day}.`, `Waves may affect swimming ${day}.`);
+    return sheltered
+      ? localize(language, `Στα ανοιχτά το κύμα φτάνει περίπου ${height}· εδώ είναι πιο υπήνεμα, αλλά θα έχει κυματισμό.`, `Open-sea waves reach around ${height}; this cove is more sheltered, but expect some chop.`)
+      : localize(language, `Το κύμα στην πρόγνωση μπορεί να φτάσει περίπου ${height}, οπότε περίμενε κυματισμό στη θάλασσα.`, `Forecast waves may reach around ${height}, so expect a choppy sea.`);
   }
 
   return undefined;
