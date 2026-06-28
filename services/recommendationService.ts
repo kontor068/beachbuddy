@@ -36,7 +36,7 @@ import { getNegativeFeedbackCount } from './analyticsService';
 import { displayBeachName } from '../utils/localization';
 import { isSearchMatch } from '../utils/searchNormalize';
 import { calculateSeaConditionScore } from '../utils/seaConditions';
-import { getSelectedDayPrefix } from '../utils/dateLabels';
+import { getSelectedDayPrefix, isSelectedDateToday } from '../utils/dateLabels';
 import { assessBeachWindExposure } from '../utils/windExposureEngine';
 import { summarizeMeltemiBehavior } from '../utils/windClimatology';
 import { describeSimpleWindSuitability, describeWindExposure } from '../utils/windExposureCopy';
@@ -1872,6 +1872,9 @@ const generateLocalizedBeachExplanation = (
   const beachName = displayBeachName(beach.name, language);
   const selectedDate = 'date' in weather ? weather.date : undefined;
   const day = getSelectedDayPrefix(selectedDate, new Date(), language);
+  // Future-day forecast: condition copy (wind/sea/temperature) must read as future
+  // ("θα είναι" / "will be"), not present, when the user is not viewing today.
+  const future = !isSelectedDateToday(selectedDate);
   const recommendationWarningTypes = new Set((recommendation?.warnings || []).map(warning => warning.type));
   const isCautionSwimDay = Boolean(
     windBeaufort >= 5 ||
@@ -1908,8 +1911,8 @@ const generateLocalizedBeachExplanation = (
 
     if (windBeaufort < MEANINGFUL_WIND_TOP_PICK_BEAUFORT) {
       explanation = recommendation.windProfile?.knownWindSportSpot || recommendationExposure === 'exposed'
-        ? `${cautiousLead}${beachName} is usually more exposed, but the wind is light ${day}. Wind should not be a major issue ${day}.`
-        : `${cautiousLead}${beachName} has good conditions ${day}. Wind should not be a major issue, so choose mainly by access, beach type, facilities and vibe.`;
+        ? `${cautiousLead}${beachName} is usually more exposed, but the wind ${future ? 'will be' : 'is'} light ${day}. Wind should not be a major issue ${day}.`
+        : `${cautiousLead}${beachName} ${future ? 'should have' : 'has'} good conditions ${day}. Wind should not be a major issue, so choose mainly by access, beach type, facilities and vibe.`;
     } else if (warningTypes.has('wind_sport_spot')) {
       explanation = `${cautiousLead}${beachName} is a known wind/watersports spot and may be windy or choppy with ${windBeaufort} Beaufort ${day}. It is not a strong calm-swimming pick ${day}.`;
     } else if (isProtectedToday && windBeaufort >= 5) {
@@ -1926,7 +1929,7 @@ const generateLocalizedBeachExplanation = (
     } else if (isPartialToday) {
       explanation = `${cautiousLead}${beachName} has partial shelter ${day}, so it may work if the wind stays manageable.`;
     } else {
-      explanation = `${cautiousLead}${beachName} is more exposed to the ${windDir} wind ${day}, so choose it only if some chop is acceptable.`;
+      explanation = `${cautiousLead}${beachName} ${future ? 'will be' : 'is'} more exposed to the ${windDir} wind ${day}, so choose it only if some chop is acceptable.`;
     }
 
     if (warningTypes.has('onshore_chop')) {
@@ -1971,14 +1974,14 @@ const generateLocalizedBeachExplanation = (
   if (language === 'gr') {
     if (windBeaufort < MEANINGFUL_WIND_TOP_PICK_BEAUFORT) {
       explanation = windAssessment.windProfile.knownWindSportSpot || exposureLevel === 'exposed'
-        ? `Η ${beachName} είναι συνήθως πιο εκτεθειμένη, αλλά ${day} ο άνεμος είναι ήπιος. Ο άνεμος δεν φαίνεται να είναι βασικό θέμα ${day}.`
-        : `Η ${beachName} έχει καλές συνθήκες ${day}. Ο άνεμος δεν φαίνεται να είναι βασικό θέμα ${day}.`;
+        ? `Η ${beachName} είναι συνήθως πιο εκτεθειμένη, αλλά ${day} ο άνεμος ${future ? 'θα είναι' : 'είναι'} ήπιος. Ο άνεμος δεν φαίνεται να είναι βασικό θέμα ${day}.`
+        : `Η ${beachName} ${future ? 'θα έχει' : 'έχει'} καλές συνθήκες ${day}. Ο άνεμος δεν φαίνεται να είναι βασικό θέμα ${day}.`;
     } else if (recommendationWarningTypes.has('wind_sport_spot')) {
       explanation = `${beachName}: γνωστό σημείο για wind/watersports με ${windBeaufort} μποφόρ ${day}. Μπορεί να έχει αέρα ή κυματισμό, οπότε δεν είναι δυνατή επιλογή για ήρεμο μπάνιο ${day}.`;
     } else if (isProtectedForCopy) {
       explanation = windSpeedKmph > 20 || isCautionSwimDay
         ? (windBeaufort === 5
-          ? `Η ${beachName} είναι πιο υπήνεμη επιλογή.`
+          ? `Η ${beachName} ${future ? 'θα είναι' : 'είναι'} πιο υπήνεμη επιλογή.`
           : `Η ${beachName} φαίνεται πιο κατάλληλη από ανοιχτές παραλίες ${day}, αλλά οι συνθήκες θέλουν προσοχή.`)
         : `Η ${beachName} φαίνεται πιθανόν πιο προστατευμένη από ανοιχτές παραλίες ${day}.`;
     } else {
@@ -1998,7 +2001,7 @@ const generateLocalizedBeachExplanation = (
     }
 
     if (temp >= 25 && temp <= 32) {
-      explanation += ` Η θερμοκρασία είναι ${temp}°C, ιδανική για κολύμπι.`;
+      explanation += ` Η θερμοκρασία ${future ? 'θα είναι' : 'είναι'} ${temp}°C, ιδανική για κολύμπι.`;
     } else if (temp > 32) {
       explanation += ` Ζεστή μέρα στους ${temp}°C, μην ξεχάσετε αντηλιακό.`;
     } else {
@@ -2057,8 +2060,8 @@ const generateLocalizedBeachExplanation = (
 
   if (windBeaufort < MEANINGFUL_WIND_TOP_PICK_BEAUFORT) {
     explanation = windAssessment.windProfile.knownWindSportSpot || exposureLevel === 'exposed'
-      ? `${beachName} is usually more exposed, but the wind is light ${day}. Wind should not be a major issue ${day}.`
-      : `${beachName} has good conditions ${day}. Wind should not be a major issue ${day}.`;
+      ? `${beachName} is usually more exposed, but the wind ${future ? 'will be' : 'is'} light ${day}. Wind should not be a major issue ${day}.`
+      : `${beachName} ${future ? 'should have' : 'has'} good conditions ${day}. Wind should not be a major issue ${day}.`;
   } else if (recommendationWarningTypes.has('wind_sport_spot')) {
       explanation = `${beachName} is a known wind/watersports spot and may be windy or choppy with ${windBeaufort} Beaufort ${day}. It is not a strong calm-swimming pick ${day}.`;
   } else if (isProtectedForCopy) {
@@ -2080,7 +2083,7 @@ const generateLocalizedBeachExplanation = (
   }
 
   if (temp >= 25 && temp <= 32) {
-    explanation += ` The temperature is ${temp}°C, perfect for swimming.`;
+    explanation += ` The temperature ${future ? 'will be' : 'is'} ${temp}°C, perfect for swimming.`;
   } else if (temp > 32) {
     explanation += ` It's a hot day at ${temp}°C, so don't forget your sunscreen!`;
   } else {

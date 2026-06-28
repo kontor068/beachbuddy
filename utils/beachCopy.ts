@@ -1,7 +1,7 @@
 import { Accessibility, Beach, LanguageCode, WarningFlag, WaveCondition } from '../types';
 import { hasBoatOnlyAccess, hasChallengingAccess, hasDirtRoadAccess, hasTrulyEasyAccess } from './access';
 import { hasExplicitBeachBarAmenityInList } from './amenityMatching.js';
-import { getSelectedDayPrefix, getSelectedDaySentencePrefix } from './dateLabels';
+import { getSelectedDayPrefix, getSelectedDaySentencePrefix, isSelectedDateToday } from './dateLabels';
 import { ExposureLevel } from './windExposure';
 
 type BestBeachTime = {
@@ -250,19 +250,20 @@ const waveShortPhrase = (
   facts: BeachFeatureFacts,
   waveHeightM: number | undefined,
   language: LanguageCode,
+  future: boolean,
   seed?: number | string
 ): string | undefined => {
   const height = formatWaveHeight(waveHeightM, language);
   if (facts.calmSea) {
     if (!height) return localize(language, 'το κύμα παραμένει χαμηλό', 'waves stay low');
     const greek = [
-      `το κύμα είναι χαμηλό, περίπου ${height}`,
-      `το κύμα μένει χαμηλό, γύρω στα ${height}`,
-      `η θάλασσα δείχνει ήπια, με κύμα περίπου ${height}`,
+      `το κύμα ${future ? 'θα είναι' : 'είναι'} χαμηλό, περίπου ${height}`,
+      `το κύμα ${future ? 'θα μείνει' : 'μένει'} χαμηλό, γύρω στα ${height}`,
+      `η θάλασσα ${future ? 'θα είναι' : 'δείχνει'} ήπια, με κύμα περίπου ${height}`,
     ];
     const english = [
-      `waves stay low, around ${height}`,
-      `wave height is low, around ${height}`,
+      `waves ${future ? 'will stay' : 'stay'} low, around ${height}`,
+      `wave height ${future ? 'will be' : 'is'} low, around ${height}`,
       `the sea should stay relatively calm, with waves around ${height}`,
     ];
     const variants = language === 'gr' ? greek : english;
@@ -270,7 +271,7 @@ const waveShortPhrase = (
   }
   if (facts.moderateSea) {
     return height
-      ? localize(language, `το κύμα είναι περίπου ${height}`, `waves are around ${height}`)
+      ? localize(language, `το κύμα ${future ? 'θα είναι' : 'είναι'} περίπου ${height}`, `waves ${future ? 'will be' : 'are'} around ${height}`)
       : localize(language, 'το κύμα θέλει λίγη προσοχή', 'the waves need a little attention');
   }
   if (facts.roughSea) {
@@ -286,6 +287,12 @@ const dayPrefix = (input: Pick<BeachCopyInput, 'language' | 'selectedDate'>): st
 
 const sentenceDayPrefix = (input: Pick<BeachCopyInput, 'language' | 'selectedDate'>): string =>
   getSelectedDaySentencePrefix(input.selectedDate, new Date(), input.language);
+
+// True when the user is viewing a forecast for a day other than today. Forecast
+// CONDITION copy (wave height, sea/wind state, temperature) must then read as
+// future ("το κύμα θα είναι ~X" / "waves will be around X"), not present.
+const isFutureDay = (input: Pick<BeachCopyInput, 'selectedDate'>): boolean =>
+  !isSelectedDateToday(input.selectedDate);
 
 const hasBeaufortValue = (input: BeachCopyInput): input is BeachCopyInput & { windBeaufort: number } =>
   typeof input.windBeaufort === 'number' && Number.isFinite(input.windBeaufort);
@@ -336,7 +343,7 @@ const generateCalmCardSummary = (input: BeachCopyInput, facts: BeachFeatureFacts
   const day = dayPrefix(input);
   const sentenceDay = sentenceDayPrefix(input);
   const reasons = cardReasonPhrases(facts, language);
-  const wave = waveShortPhrase(facts, waveHeightM, language, input.beach.id);
+  const wave = waveShortPhrase(facts, waveHeightM, language, isFutureDay(input), input.beach.id);
   const lead = calmLeadPhrase(input);
   const greekReasons = joinGreekPreferencePhrases(reasons);
   const reasonsText = joinPhrases(reasons, language);
@@ -375,8 +382,9 @@ const generateCalmCardSummary = (input: BeachCopyInput, facts: BeachFeatureFacts
 const generateWindyCardSummary = (input: BeachCopyInput, facts: BeachFeatureFacts): string => {
   const { language, waveHeightM } = input;
   const sentenceDay = sentenceDayPrefix(input);
+  const future = isFutureDay(input);
   const wind = windPhrase(input);
-  const wave = waveShortPhrase(facts, waveHeightM, language, input.beach.id);
+  const wave = waveShortPhrase(facts, waveHeightM, language, future, input.beach.id);
   const reasons = cardReasonPhrases(facts, language);
   const practicalSummary = reasons.length > 0
     ? localize(
@@ -395,8 +403,8 @@ const generateWindyCardSummary = (input: BeachCopyInput, facts: BeachFeatureFact
   if (facts.protectedToday) {
     return localize(
       language,
-      `${sentenceDay} είναι πιο προστατευμένη επιλογή για ${wind}.${wave ? ` ${sentenceCase(wave)}.` : ''}`,
-      `${sentenceDay}, it is a better sheltered option for ${wind}.${wave ? ` ${sentenceCase(wave)}.` : ''}`
+      `${sentenceDay} ${future ? 'θα είναι' : 'είναι'} πιο προστατευμένη επιλογή για ${wind}.${wave ? ` ${sentenceCase(wave)}.` : ''}`,
+      `${sentenceDay}, it ${future ? 'will be' : 'is'} a better sheltered option for ${wind}.${wave ? ` ${sentenceCase(wave)}.` : ''}`
     );
   }
 
@@ -431,12 +439,12 @@ const generateWindyCardSummary = (input: BeachCopyInput, facts: BeachFeatureFact
     isFiveBeaufort
       ? 'Εκτεθειμένη στον άνεμο.'
       : strongWind
-      ? `${sentenceDay} είναι εκτεθειμένη στον ${wind} και μπορεί να έχει κύμα. Δεν είναι ιδανική για ήρεμο μπάνιο.`
+      ? `${sentenceDay} ${future ? 'θα είναι' : 'είναι'} εκτεθειμένη στον ${wind} και μπορεί να έχει κύμα. Δεν είναι ιδανική για ήρεμο μπάνιο.`
       : `${sentenceDay} μπορεί να έχει αέρα με ${wind}.${wave ? ` ${sentenceCase(wave)}.` : ''} Προτίμησέ τη αν δεν σε ενοχλεί μια πιο αέρινη παραλία.`,
     isFiveBeaufort
       ? 'Exposed to wind.'
       : strongWind
-      ? `${sentenceDay}, it is exposed to ${wind} and likely to feel choppy. It is not ideal for calm swimming.`
+      ? `${sentenceDay}, it ${future ? 'will be' : 'is'} exposed to ${wind} and likely to feel choppy. It is not ideal for calm swimming.`
       : `${sentenceDay}, it may feel breezy with ${wind}.${wave ? ` ${sentenceCase(wave)}.` : ''} Choose it if you do not mind a breezier beach.`
   );
 };
@@ -444,6 +452,7 @@ const generateWindyCardSummary = (input: BeachCopyInput, facts: BeachFeatureFact
 const windBullet = (input: BeachCopyInput, facts: BeachFeatureFacts): string => {
   const { language } = input;
   const day = dayPrefix(input);
+  const future = isFutureDay(input);
   const windy = hasMeaningfulWind(input.windBeaufort);
 
   if (!windy) {
@@ -467,8 +476,8 @@ const windBullet = (input: BeachCopyInput, facts: BeachFeatureFacts): string => 
   if (facts.protectedToday) {
     return localize(
       language,
-      `Με ${wind}, αυτή η παραλία είναι πιο προστατευμένη για τη φορά του ανέμου ${day}.`,
-      `With ${wind}, this beach is better sheltered for the wind direction ${day}.`
+      `Με ${wind}, αυτή η παραλία ${future ? 'θα είναι' : 'είναι'} πιο προστατευμένη για τη φορά του ανέμου ${day}.`,
+      `With ${wind}, this beach ${future ? 'will be' : 'is'} better sheltered for the wind direction ${day}.`
     );
   }
 
@@ -497,12 +506,12 @@ const windBullet = (input: BeachCopyInput, facts: BeachFeatureFacts): string => 
     isFiveBeaufort
       ? 'Εκτεθειμένη στον άνεμο.'
       : typeof input.windBeaufort === 'number' && input.windBeaufort >= 5
-      ? `Με ${wind}, είναι εκτεθειμένη και πιθανόν όχι ιδανική για ήρεμο μπάνιο ${day}.`
+      ? `Με ${wind}, ${future ? 'θα είναι' : 'είναι'} εκτεθειμένη και πιθανόν όχι ιδανική για ήρεμο μπάνιο ${day}.`
       : `Με ${wind}, μπορεί να έχει αέρα ${day}.`,
     isFiveBeaufort
       ? 'Exposed to wind.'
       : typeof input.windBeaufort === 'number' && input.windBeaufort >= 5
-      ? `With ${wind}, it is exposed and likely not ideal for calm swimming ${day}.`
+      ? `With ${wind}, it ${future ? 'will be' : 'is'} exposed and likely not ideal for calm swimming ${day}.`
       : `With ${wind}, it may feel breezy ${day}.`
   );
 };
@@ -510,6 +519,7 @@ const windBullet = (input: BeachCopyInput, facts: BeachFeatureFacts): string => 
 const waveBullet = (input: BeachCopyInput, facts: BeachFeatureFacts): string | undefined => {
   const { language, waveHeightM } = input;
   const day = dayPrefix(input);
+  const future = isFutureDay(input);
   const height = formatWaveHeight(waveHeightM, language);
   // The measured wave height is the open-sea / grid value (~island-wide, same for protected and
   // exposed beaches). On a wind-sheltered beach that figure overstates what you'll actually find,
@@ -536,7 +546,7 @@ const waveBullet = (input: BeachCopyInput, facts: BeachFeatureFacts): string | u
     ];
     const english = [
       `Waves stay low, around ${height}.`,
-      `Wave height is low, around ${height}.`,
+      `Wave height ${future ? 'will be' : 'is'} low, around ${height}.`,
       `The sea should stay relatively calm, with waves around ${height}.`,
     ];
     const variants = language === 'gr' ? greek : english;
@@ -546,14 +556,14 @@ const waveBullet = (input: BeachCopyInput, facts: BeachFeatureFacts): string | u
   if (facts.moderateSea) {
     if (!height) return localize(language, `Η θάλασσα μπορεί να έχει λίγο κυματισμό ${day}.`, `The sea may have some chop ${day}.`);
     return sheltered
-      ? localize(language, `Στα ανοιχτά το κύμα είναι περίπου ${height}· εδώ είναι πιο υπήνεμα, αλλά με κάποιο κυματισμό.`, `Open-sea waves are around ${height}; this cove is more sheltered, but still has some chop.`)
-      : localize(language, `Το κύμα είναι περίπου ${height}, με ήπιο κυματισμό.`, `Waves are around ${height}, with mild chop.`);
+      ? localize(language, `Στα ανοιχτά το κύμα ${future ? 'θα είναι' : 'είναι'} περίπου ${height}· εδώ ${future ? 'θα είναι' : 'είναι'} πιο υπήνεμα, αλλά με κάποιο κυματισμό.`, `Open-sea waves ${future ? 'will be' : 'are'} around ${height}; this cove ${future ? 'will be' : 'is'} more sheltered, but still has some chop.`)
+      : localize(language, `Το κύμα ${future ? 'θα είναι' : 'είναι'} περίπου ${height}, με ήπιο κυματισμό.`, `Waves ${future ? 'will be' : 'are'} around ${height}, with mild chop.`);
   }
 
   if (facts.roughSea) {
     if (!height) return localize(language, `Το κύμα μπορεί να επηρεάσει το μπάνιο ${day}.`, `Waves may affect swimming ${day}.`);
     return sheltered
-      ? localize(language, `Στα ανοιχτά το κύμα φτάνει περίπου ${height}· εδώ είναι πιο υπήνεμα, αλλά θα έχει κυματισμό.`, `Open-sea waves reach around ${height}; this cove is more sheltered, but expect some chop.`)
+      ? localize(language, `Στα ανοιχτά το κύμα ${future ? 'θα φτάσει' : 'φτάνει'} περίπου ${height}· εδώ ${future ? 'θα είναι' : 'είναι'} πιο υπήνεμα, αλλά θα έχει κυματισμό.`, `Open-sea waves ${future ? 'will reach' : 'reach'} around ${height}; this cove ${future ? 'will be' : 'is'} more sheltered, but expect some chop.`)
       : localize(language, `Το κύμα στην πρόγνωση μπορεί να φτάσει περίπου ${height}, οπότε περίμενε κυματισμό στη θάλασσα.`, `Forecast waves may reach around ${height}, so expect a choppy sea.`);
   }
 
@@ -642,6 +652,7 @@ const tradeoffText = (input: BeachCopyInput, facts: BeachFeatureFacts): string |
 
 export const generateBestTimeReason = (input: Pick<BeachCopyInput, 'language' | 'windBeaufort' | 'waveHeightM' | 'isExposed' | 'exposureLevel' | 'selectedDate'>): string => {
   const windy = hasMeaningfulWind(input.windBeaufort);
+  const future = isFutureDay(input);
   const waveHeight = formatWaveHeight(input.waveHeightM, input.language);
   const numericWaveHeight = typeof input.waveHeightM === 'number' && Number.isFinite(input.waveHeightM)
     ? input.waveHeightM
@@ -687,10 +698,10 @@ export const generateBestTimeReason = (input: Pick<BeachCopyInput, 'language' | 
     return localize(
       input.language,
       input.windBeaufort === 5
-        ? `Το κύμα είναι περίπου ${waveHeight}.`
+        ? `Το κύμα ${future ? 'θα είναι' : 'είναι'} περίπου ${waveHeight}.`
         : `Οι συνθήκες θέλουν προσοχή, με κύμα περίπου ${waveHeight}.`,
       input.windBeaufort === 5
-        ? `Waves are around ${waveHeight}.`
+        ? `Waves ${future ? 'will be' : 'are'} around ${waveHeight}.`
         : `Conditions need caution, with waves around ${waveHeight}.`
     );
   }
