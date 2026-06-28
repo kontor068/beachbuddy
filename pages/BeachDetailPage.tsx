@@ -34,7 +34,7 @@ import { generateBeachExplanation as generateUiBeachExplanation } from '../utils
 import { describeSimpleWindSuitability, describeWindExposure } from '../utils/windExposureCopy';
 import type { ExposureLevel } from '../utils/windExposure';
 import { getLocalWindNote } from '../utils/localWindNote';
-import { getMilosBeachStory } from '../data/milosBeachStories';
+import { getBeachStory } from '../data/beachStories';
 import { getIslandGuideLinks } from '../utils/beachGuides';
 import {
   AmenityStatus,
@@ -483,7 +483,7 @@ export const BeachDetailPage: React.FC<BeachDetailPageProps> = ({
   const beachDisplayName = displayBeachName(beach.name, language);
   const islandDisplayName = islandName || 'Greece';
   const [storyExpanded, setStoryExpanded] = useState(false);
-  const beachStory = getMilosBeachStory(beach, islandName);
+  const beachStory = getBeachStory(beach, regionId);
   const storyLocale: 'gr' | 'en' = language === 'gr' ? 'gr' : 'en';
   const guideLinks = useMemo(() => getIslandGuideLinks(allBeaches, regionId, language), [allBeaches, regionId, language]);
   const selectedDate = dayForecast.date;

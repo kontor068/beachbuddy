@@ -110,20 +110,22 @@ const localesForRegion = regionId =>
 const readJson = async filePath => JSON.parse(await readFile(filePath, 'utf8'));
 
 // Curated per-beach editorial stories (geology/history/character). Single source
-// of truth shared with the runtime (data/milosBeachStories.ts). Keyed by frozen
-// Milos beach id; authored only in en/gr. We bake them into the static beach
-// pages so this unique content is crawlable (otherwise it lives only in the
-// client-only React detail page and search engines never see it).
-const MILOS_STORY_REGION_ID = 'south-aegean-milos';
-const milosBeachStories = await readJson(path.join(projectRoot, 'data', 'milosBeachStories.data.json'));
+// of truth shared with the runtime (data/beachStories.ts), shaped as
+// { regionId: { beachId: { title, paragraphs } } }; authored only in en/gr. We
+// bake them into the static beach pages so this unique content is crawlable
+// (otherwise it lives only in the client-only React detail page and search
+// engines never see it).
+const beachStories = await readJson(path.join(projectRoot, 'data', 'beachStories.data.json'));
 
-// Returns { title, paragraphs[] } for a beach, or null. Gated to the Milos
-// region (ids are unique only within a region) and to the locales the story is
-// actually authored in (en/gr) so we never leak English onto /de, /fr, /it.
+// Returns { title, paragraphs[] } for a beach, or null. Scoped by region id
+// (ids are unique only within a region) and to the locales the story is actually
+// authored in (en/gr) so we never leak English onto /de, /fr, /it.
 const getBeachStory = (region, beach, language) => {
-  if (!region || region.id !== MILOS_STORY_REGION_ID) return null;
+  if (!region) return null;
   if (language !== 'en' && language !== 'gr') return null;
-  const story = milosBeachStories[String(beach.id)];
+  const regionStories = beachStories[region.id];
+  if (!regionStories) return null;
+  const story = regionStories[String(beach.id)];
   const paragraphs = story?.paragraphs?.[language];
   if (!Array.isArray(paragraphs) || paragraphs.length === 0) return null;
   return { title: story.title?.[language] || '', paragraphs };
