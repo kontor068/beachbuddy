@@ -50,7 +50,7 @@ const SELF_STATUS: Record<ExposureLevel, Copy> = {
   },
   partial: {
     en: 'is partly exposed in the meltemi — calm some days, choppy on stronger ones.',
-    gr: 'έχει μερική έκθεση στα μελτέμια — άλλες μέρες ήρεμη, στα δυνατά με κυματάκι.',
+    gr: 'είναι μερικώς εκτεθειμένη στα μελτέμια — κάποιες μέρες ήρεμη, με κυματάκι όταν δυναμώνουν.',
     de: 'ist beim Meltemi teils exponiert — mal ruhig, bei stärkerem Wind kabbelig.',
     it: 'è in parte esposta al meltemi — calma certi giorni, mossa nei più forti.',
     fr: "est en partie exposée au meltemi — calme certains jours, agitée par vent fort.",

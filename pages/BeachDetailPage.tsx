@@ -875,7 +875,7 @@ export const BeachDetailPage: React.FC<BeachDetailPageProps> = ({
     return candidates[0] ?? null;
   }, [canClaimWindProtection, beaufortLevel, weatherData.wind.deg, windSpeedKmh, weatherData.marine?.waveHeightM, allBeaches, beach.id, beach.coordinates.lat, beach.coordinates.lon, geospatialExposureProfiles]);
   const switchBeachWindLabel = switchBeach
-    ? (t.windDirections[degToCompass(weatherData.wind.deg) as WindDirection] || degToCompass(weatherData.wind.deg))
+    ? (t.windDirectionsAccusative?.[degToCompass(weatherData.wind.deg) as WindDirection] || t.windDirections[degToCompass(weatherData.wind.deg) as WindDirection] || degToCompass(weatherData.wind.deg))
     : '';
 
   // Accessible + calm + reachable TODAY: only on accessible beaches, list nearby beaches that

@@ -25,7 +25,7 @@ const TITLE: Copy = {
 
 const body = (windFromLabel: string, targetName: string, km: string, language: LanguageCode): string => ({
   en: `It's exposed to the ${windFromLabel} wind here today. ${targetName} (${km} km) is sheltered from it — switch there.`,
-  gr: `Εδώ είναι εκτεθειμένη στον ${windFromLabel} άνεμο σήμερα. Η ${targetName} (${km} km) είναι προστατευμένη από αυτόν — άλλαξε εκεί.`,
+  gr: `Εδώ είναι εκτεθειμένη στον ${windFromLabel} άνεμο σήμερα. Η ${targetName} (${km} km) είναι προστατευμένη από αυτόν — πήγαινε εκεί.`,
   de: `Hier heute dem ${windFromLabel}-Wind ausgesetzt. ${targetName} (${km} km) ist davor geschützt — wechsle dorthin.`,
   it: `Oggi qui è esposta al vento da ${windFromLabel}. ${targetName} (${km} km) ne è riparata — spostati lì.`,
   fr: `Exposée au vent de ${windFromLabel} ici aujourd'hui. ${targetName} (${km} km) en est abritée — changez pour celle-ci.`,
