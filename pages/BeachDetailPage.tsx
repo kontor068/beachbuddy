@@ -7,7 +7,7 @@ import {
 } from 'lucide-react';
 import {
   Beach, LanguageCode, Translation, WindDirection,
-  ForecastItem, WeatherData, DailyForecast, UserPreferences, SwimmingComfort,
+  ForecastItem, DailyForecast, UserPreferences, SwimmingComfort,
   GeospatialExposureProfile, WeatherSource
 } from '../types';
 import {
@@ -70,46 +70,10 @@ const BeachMap = React.lazy(() => import('../components/BeachMap'));
 
 import { getBeachPhotoLookup } from '../services/beachPhotos';
 
-// Helper to convert ForecastItem to WeatherData for recommendation service
-const forecastToWeather = (item: ForecastItem): WeatherData => ({
-  wind: { speed: item.wind.speed, deg: item.wind.deg },
-  weather: item.weather[0],
-  main: { temp: item.main.temp }
-});
-
-type RecommendationTone = 'excellent' | 'good' | 'watch' | 'poor';
-const getRecommendationTone = (score: number, seaScore: number, isExposed: boolean): RecommendationTone => {
-  if (seaScore < 5 || score < 55) return 'poor';
-  if (seaScore < 8 || isExposed || score < 75) return 'watch';
-  if (score > 85) return 'excellent';
-  return 'good';
-};
-
 const getDetailBadgeScore = (score: number, seaScore: number, isExposed: boolean): number => {
   if (seaScore >= 8) return Math.max(score, 76);
   if (!isExposed && seaScore >= 5) return Math.max(score, 50);
   return score;
-};
-
-const getRecommendationLabel = (tone: RecommendationTone, language: LanguageCode, selectedDate?: Date, windBeaufort?: number): string => {
-  const day = getSelectedDayPrefix(selectedDate, new Date(), language);
-  if (language === 'gr') {
-    const labels: Record<RecommendationTone, string> = {
-      excellent: `Εξαιρετική επιλογή ${day}`,
-      good: `Καλή επιλογή ${day}`,
-      watch: windBeaufort === 5 ? 'Καλύτερη επιλογή για τον άνεμο' : `Με προσοχή ${day}`,
-      poor: `Όχι ιδανική ${day}`,
-    };
-    return labels[tone];
-  }
-
-  const labels: Record<RecommendationTone, Record<LanguageCode, string>> = {
-    excellent: { en: `Excellent ${day}`, gr: '', de: 'Ausgezeichnet', it: 'Eccellente', fr: 'Excellent' },
-    good: { en: `Good ${day}`, gr: '', de: 'Gut', it: 'Buona scelta', fr: 'Bon choix' },
-    watch: { en: windBeaufort === 5 ? 'Better wind option' : `Use caution ${day}`, gr: '', de: 'Bedingungen prüfen', it: 'Controlla condizioni', fr: 'A verifier' },
-    poor: { en: `Not ideal ${day}`, gr: '', de: 'Nicht ideal', it: 'Non ideale', fr: 'Pas ideal' },
-  };
-  return labels[tone][language];
 };
 
 const detailPhotoPlaceholderCopy: Record<LanguageCode, { title: string; body: string }> = {
@@ -605,16 +569,20 @@ export const BeachDetailPage: React.FC<BeachDetailPageProps> = ({
   const canNavigate = canOpenNavigation(beach);
 
   // 1. Calculate Conditions & Scores
-  const currentWeather = hourlyForecast[0];
-  const weatherData = dayForecast || forecastToWeather(currentWeather);
-  const displayTemp = 'temp_max' in weatherData ? weatherData.temp_max : weatherData.main.temp;
+  const beachSpecificWeatherData = beachWeatherById?.[beach.id];
+  const weatherData = beachSpecificWeatherData || dayForecast;
+  const scoringHourlyForecast = beachSpecificWeatherData?.hourly?.length
+    ? beachSpecificWeatherData.hourly
+    : hourlyForecast;
+  const scoringWeatherSource: WeatherSource = beachSpecificWeatherData ? 'beach-cluster' : weatherSource;
+  const displayTemp = weatherData.temp_max;
   const windSpeedKmh = weatherData.wind.speed * 3.6;
   const windDir = degToCompass(weatherData.wind.deg);
   const windDirectionLabel = t.windDirectionsAccusative?.[windDir as WindDirection] || t.windDirections[windDir as WindDirection] || windDir;
   const geospatialExposure = geospatialExposureProfiles?.[beach.id];
   const scoreResult = calculateBeachScore(beach, weatherData, userLocation, preferences, {
-    weatherSource,
-    hourlyForecast,
+    weatherSource: scoringWeatherSource,
+    hourlyForecast: scoringHourlyForecast,
     geospatialProfile: geospatialExposure,
   });
   const { score, exposureLevel, swimmingComfort, canClaimWindProtection = false, seaCalmClaimAllowed = false } = scoreResult;
@@ -646,10 +614,9 @@ export const BeachDetailPage: React.FC<BeachDetailPageProps> = ({
     describeSimpleWindSuitability(scoreResult.simpleWindSuitability, language) ||
     detailedWindExposureReason;
   const seaConditionDisplay = getSeaConditionDisplay(seaConditionScore, isExposedToTodayWind, language, selectedDate, canClaimWindProtection, seaCalmClaimAllowed, beaufortLevel, waveHeightM);
-  // The map/figures use the area-wide wind (for consistency with the overview); this
-  // one-line note quietly adds the per-spot reality from the beach's own cluster
-  // forecast, only when it genuinely differs — "a bit windier/calmer right here".
-  const localWindNote = getLocalWindNote(weatherData.wind.speed, beachWeatherById?.[beach.id]?.wind.speed, language);
+  // Compare the beach-specific cluster forecast with the area-wide forecast only
+  // when they genuinely differ — "a bit windier/calmer right here".
+  const localWindNote = getLocalWindNote(dayForecast.wind.speed, beachSpecificWeatherData?.wind.speed, language);
   const aiExplanation = generateServiceBeachExplanation(beach, weatherData, score, userLocation, language);
   const waveCondition = getWaveCondition(isExposed, windSpeedKmh);
 
@@ -675,14 +642,14 @@ export const BeachDetailPage: React.FC<BeachDetailPageProps> = ({
   
   // Peak UV during core beach hours (10:00–17:00). Only surfaced when actionable (≥6).
   const peakUvIndex = useMemo(() => {
-    const beachHourUv = hourlyForecast
+    const beachHourUv = scoringHourlyForecast
       .filter(item => {
         const hour = new Date(item.dt * 1000).getHours();
         return hour >= 10 && hour <= 17 && typeof item.uvIndex === 'number';
       })
       .map(item => item.uvIndex as number);
     return beachHourUv.length > 0 ? Math.max(...beachHourUv) : undefined;
-  }, [hourlyForecast]);
+  }, [scoringHourlyForecast]);
   const uvDescriptor = typeof peakUvIndex === 'number'
     ? peakUvIndex >= 11
       ? { en: 'extreme', gr: 'ακραίο', de: 'extrem', it: 'estremo', fr: 'extrême' }[language]
@@ -707,12 +674,12 @@ export const BeachDetailPage: React.FC<BeachDetailPageProps> = ({
   // Rain warning: name the hours it is expected to rain and advise against
   // staying in the sea then (lightning/storm safety).
   const rainAdvisory = useMemo(
-    () => getRainSwimAdvisory(hourlyForecast, selectedDate, language),
-    [hourlyForecast, selectedDate, language],
+    () => getRainSwimAdvisory(scoringHourlyForecast, selectedDate, language),
+    [scoringHourlyForecast, selectedDate, language],
   );
 
   // 2. Best Time & Planner
-  const bestTime = useMemo(() => calculateBestBeachTime(hourlyForecast, beach), [beach, hourlyForecast]);
+  const bestTime = useMemo(() => calculateBestBeachTime(scoringHourlyForecast, beach), [beach, scoringHourlyForecast]);
   const usefulBestTimeWindow = Boolean(bestTime && hasUsefulTimeWindow(bestTime.bestStart, bestTime.bestEnd));
   const bestTimeReason = bestTime
     ? {
@@ -809,7 +776,7 @@ export const BeachDetailPage: React.FC<BeachDetailPageProps> = ({
     // Get proportional nearby recommendations from these beaches.
     const recommendations = getTopRecommendedBeaches(
       nearby,
-      weatherData,
+      dayForecast,
       userLocation,
       hourlyForecast,
       preferences,
@@ -823,7 +790,7 @@ export const BeachDetailPage: React.FC<BeachDetailPageProps> = ({
       const dist = calculateDistance(beach.coordinates.lat, beach.coordinates.lon, b.coordinates.lat, b.coordinates.lon);
       return { ...rec, beach: b, distance: dist, geospatialExposure: geospatialExposureProfiles?.[b.id] };
     }).filter((item): item is NonNullable<typeof item> => item !== null);
-  }, [allBeaches, beach, weatherData, userLocation, hourlyForecast, preferences, language, beachWeatherById, geospatialExposureProfiles]);
+  }, [allBeaches, beach, dayForecast, userLocation, hourlyForecast, preferences, language, beachWeatherById, geospatialExposureProfiles]);
 
   // Meltemi seasonal shelter atlas: this cove's N/NE-summer behaviour + the island's
   // reliably-sheltered coves. Endorsement is gated to genuinely 'protected' meltemi
@@ -1118,7 +1085,6 @@ export const BeachDetailPage: React.FC<BeachDetailPageProps> = ({
           <TodayScoreBadge
             score={detailBadgeScore}
             language={language}
-            variant="hero"
             selectedDate={selectedDate}
             windBeaufort={beaufortLevel}
             waveHeightM={waveHeightM}
@@ -1126,6 +1092,7 @@ export const BeachDetailPage: React.FC<BeachDetailPageProps> = ({
             noIdealSwimmingWindow={swimWindowDisplay.tone === 'avoid'}
             exposureLevel={exposureLevel}
             canClaimWindProtection={canClaimWindProtection}
+            forceShow
           />
 
           <div className="space-y-2 rounded-3xl border border-cyan-100/70 bg-cyan-50/45 p-3">
@@ -1766,14 +1733,15 @@ export const BeachDetailPage: React.FC<BeachDetailPageProps> = ({
                 <div className="flex flex-col gap-3">
                   {nearbyBeaches.map((item) => {
                     const itemIsExposed = item.exposureLevel ? item.exposureLevel !== 'protected' : true;
-                    const itemWeatherData = beachWeatherById?.[item.beachId] || weatherData;
+                    const itemWeatherData = beachWeatherById?.[item.beachId] || dayForecast;
                     const itemWindSpeedKmh = itemWeatherData.wind.speed * 3.6;
                     const itemBeaufortLevel = getBeaufortLevel(itemWindSpeedKmh);
                     const itemWindDir = degToCompass(itemWeatherData.wind.deg);
                     const itemWindDirectionLabel = t.windDirectionsAccusative?.[itemWindDir as WindDirection] || t.windDirections[itemWindDir as WindDirection] || itemWindDir;
                     const itemWaveHeightM = item.waveHeightM ?? itemWeatherData.marine?.waveHeightM ?? waveHeightM;
                     const itemSeaScore = calculateSeaConditionScore(itemIsExposed, itemWindSpeedKmh, item.exposureLevel, itemWaveHeightM);
-                    const itemTone = getRecommendationTone(item.score, itemSeaScore, itemIsExposed);
+                    const itemBadgeScore = getDetailBadgeScore(item.score, itemSeaScore, itemIsExposed);
+                    const itemWindSummary = describeSimpleWindSuitability(item.simpleWindSuitability, language);
                     const itemExplanation = generateUiBeachExplanation({
                       beach: item.beach,
                       language,
@@ -1815,11 +1783,23 @@ export const BeachDetailPage: React.FC<BeachDetailPageProps> = ({
                             <p className="text-xs font-bold text-slate-700">
                               {typeof item.distance === 'number' ? `${item.distance.toFixed(1)} km ${copy.away[language]}` : copy.nearby[language]}
                             </p>
+                            <TodayScoreBadge
+                              score={itemBadgeScore}
+                              language={language}
+                              selectedDate={selectedDate}
+                              windBeaufort={itemBeaufortLevel}
+                              waveHeightM={itemWaveHeightM}
+                              swimmingComfort={item.swimmingComfort}
+                              noIdealSwimmingWindow={item.swimmingComfort === 'avoid_swimming'}
+                              exposureLevel={item.exposureLevel}
+                              canClaimWindProtection={item.canClaimWindProtection}
+                              forceShow
+                            />
                             <p
                               className="text-xs font-semibold text-slate-600 line-clamp-2"
                               data-nosnippet="true"
                             >
-                              {itemExplanation.cardSummary || getRecommendationLabel(itemTone, language, selectedDate, itemBeaufortLevel)}
+                              {itemExplanation.cardSummary || itemWindSummary}
                             </p>
                           </div>
                         </div>

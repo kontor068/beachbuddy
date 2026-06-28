@@ -3263,6 +3263,23 @@ export const App: React.FC = () => {
     const filteredBeachIds = new Set(getFilteredBeachResults(selectedFilters, 'all').map(beach => beach.id));
     return mapSuitableBeaches.filter(item => filteredBeachIds.has(item.beach.id));
   }, [getFilteredBeachResults, selectedFilters, hasActiveMapFilters, mapSuitableBeaches]);
+
+  // When the user name-searches a specific beach we want the map to actually
+  // re-center on the match. Amenity/preference filters keep the whole-island fit so
+  // toggling a filter doesn't yank the viewport away from where the user is looking.
+  const isBeachNameSearchActive = deferredBeachSearchQuery.trim().length > 0;
+  const mapFitBoundsBeaches = isBeachNameSearchActive ? filteredMapSuitableBeaches : mapSuitableBeaches;
+  const mapFitBoundsKey = useMemo(() => {
+    if (!selectedIsland) return undefined;
+    if (!isBeachNameSearchActive) return String(selectedIsland.id);
+    // Re-fit whenever the matched set changes (incl. a different single match), so
+    // searching a beach pans/centres onto it instead of staying on the island view.
+    const matchSignature = filteredMapSuitableBeaches
+      .map(item => item.beachId)
+      .sort((a, b) => a - b)
+      .join('-');
+    return `${selectedIsland.id}:q:${matchSignature}`;
+  }, [selectedIsland, isBeachNameSearchActive, filteredMapSuitableBeaches]);
   const isProtectedSortOnly = useMemo(() => {
     return sortBy === 'protected' &&
       beachSearchQuery.trim().length === 0 &&
@@ -4182,11 +4199,9 @@ export const App: React.FC = () => {
   if (beachesError) return <ErrorDisplay message={beachesError} onRetry={() => window.location.reload()} t={t} />;
 
   if (view === 'detail' && detailBeach && forecast?.[selectedDayIndex]) {
-    // The detail page uses the SAME island/selected-day wind the overview map and
-    // cards use, so a beach tells one consistent story (pin colour, compass, wind
-    // figure, score all agree) instead of the per-beach cluster wind producing a
-    // different colour/Beaufort than the overview. Per-beach shelter is still
-    // reflected through the geospatial exposure geometry.
+    // Pass the area-wide selected-day forecast as the detail fallback. The detail
+    // page upgrades to the beach-specific cluster forecast when available, matching
+    // the search/result card score while preserving this forecast for map fallback.
     // IMPORTANT: use the HOUR-ADJUSTED selectedForecast (what the slider/region map show), not
     // the raw day forecast — otherwise the detail mini-map tones the canonical exposure level
     // with the day's Beaufort while the region map used the slider hour's, so the same beach
@@ -5220,8 +5235,9 @@ export const App: React.FC = () => {
           highlightedBeachId={highlightedMapBeachId}
           followHighlightedBeach={!isDirectoryMapFollowPaused}
           fitBoundsToBeaches
-          fitBoundsBeaches={mapSuitableBeaches}
-          fitBoundsKey={selectedIsland.id}
+          fitBoundsBeaches={mapFitBoundsBeaches}
+          fitBoundsKey={mapFitBoundsKey}
+          guardrailBeaches={mapSuitableBeaches}
           onUserInteraction={handleDirectoryMapUserInteraction}
           enableScrollWheelZoom={isDesktopViewport}
           isExposureLoading={isMapExposureLoading}
@@ -5610,8 +5626,9 @@ export const App: React.FC = () => {
                     islandName={selectedIsland.name[language]}
                     selectedDate={selectedDayDate}
                     fitBoundsToBeaches
-                    fitBoundsBeaches={mapSuitableBeaches}
-                    fitBoundsKey={selectedIsland.id}
+                    fitBoundsBeaches={mapFitBoundsBeaches}
+                    fitBoundsKey={mapFitBoundsKey}
+                    guardrailBeaches={mapSuitableBeaches}
                     enableScrollWheelZoom={isDesktopViewport}
                     isExposureLoading={isMapExposureLoading}
                     preview
@@ -5903,8 +5920,9 @@ export const App: React.FC = () => {
                             islandName={selectedIsland.name[language]}
                             selectedDate={selectedDayDate}
                             fitBoundsToBeaches
-                            fitBoundsBeaches={mapSuitableBeaches}
-                            fitBoundsKey={selectedIsland.id}
+                            fitBoundsBeaches={mapFitBoundsBeaches}
+                            fitBoundsKey={mapFitBoundsKey}
+                            guardrailBeaches={mapSuitableBeaches}
                             enableScrollWheelZoom={isDesktopViewport}
                             isExposureLoading={isMapExposureLoading}
                             preview

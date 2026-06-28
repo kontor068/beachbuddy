@@ -52,6 +52,10 @@ interface BeachMapProps {
   fitBoundsToBeaches?: boolean;
   fitBoundsBeaches?: SuitableBeach[];
   fitBoundsKey?: string;
+  /** Beach set used to derive the zoom-out floor and pan bounds. Defaults to `beaches`,
+   *  but callers can pass the full region set so a name-search that narrows the visible
+   *  pins to one beach doesn't trap the user fully zoomed in on it. */
+  guardrailBeaches?: SuitableBeach[];
   onUserInteraction?: () => void;
   compactPreviewHeightClassName?: string;
   islandName?: string;
@@ -1349,6 +1353,7 @@ const BeachMap: React.FC<BeachMapProps> = ({
   fitBoundsToBeaches = false,
   fitBoundsBeaches,
   fitBoundsKey,
+  guardrailBeaches,
   onUserInteraction,
   compactPreviewHeightClassName,
   islandName,
@@ -1795,7 +1800,13 @@ const BeachMap: React.FC<BeachMapProps> = ({
   const zoom = propZoom || (avgCenter ? 10 : (userLocation ? 10 : 6));
   const viewportGuardrails = useMemo(() => {
     const fallbackCenter = { lat: center[0], lon: center[1] };
-    const points = beaches
+    // Derive the zoom-out floor and pan bounds from the full region set when provided,
+    // so narrowing the visible pins (e.g. a name search resolving to one beach) never
+    // collapses the span to a point and traps the user fully zoomed in.
+    const guardrailSource = guardrailBeaches && guardrailBeaches.length > 0
+      ? guardrailBeaches
+      : beaches;
+    const points = guardrailSource
       .map(item => getBeachMapCoordinates(item.beach, fallbackCenter))
       .filter(coordinate => (
         Number.isFinite(coordinate.lat) &&
@@ -1848,7 +1859,7 @@ const BeachMap: React.FC<BeachMapProps> = ({
         [(minLat + maxLat) / 2 + latSpan / 2, (minLon + maxLon) / 2 + lonSpan / 2],
       ),
     };
-  }, [beaches, center, userLocation]);
+  }, [beaches, guardrailBeaches, center, userLocation]);
   const labelZoomThreshold = compact ? 13 : 12;
   const selectedBeach = selectedBeachId !== null
     ? beaches.find(item => item.beachId === selectedBeachId)
