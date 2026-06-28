@@ -515,7 +515,11 @@ const waveBullet = (input: BeachCopyInput, facts: BeachFeatureFacts): string | u
   // exposed beaches). On a wind-sheltered beach that figure overstates what you'll actually find,
   // so we frame it as "open sea ~X — more sheltered here" rather than implying it's the wave AT
   // the beach. Copy only; no scoring change.
-  const sheltered = facts.protectedToday || facts.partiallyProtected || facts.manageableEstimate;
+  // Gated to GENUINELY protected beaches (protectedToday) only: a partial/manageable-estimate
+  // beach must not claim shelter/calm in strong wind (see sheltered-label-protected-only; the
+  // wind-exposure validation gate enforces "no protected/calm claim" for these). Those fall
+  // through to the cautious wording below.
+  const sheltered = facts.protectedToday;
 
   if (facts.calmSea) {
     if (!height) {
