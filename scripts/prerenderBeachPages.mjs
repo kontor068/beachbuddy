@@ -364,8 +364,8 @@ const seoLandingPages = [
     category: 'accessible',
     locales: {
       en: {
-        title: 'Accessible Beaches in Greece | Wheelchair-Friendly Beaches | CalmBeach',
-        description: 'Find accessible beaches in Greece with easier entry, wheelchair-friendly facilities and beach access information where available.',
+        title: 'Accessible Beaches in Greece with Seatrac Sea Access | CalmBeach',
+        description: 'Greek beaches with accessible facilities and Seatrac sea-access ramps where available, plus today’s live wind and sea. Always check locally.',
         h1: 'Accessible Beaches in Greece',
         intro: 'Find beaches in Greece with easier access information, wheelchair-friendly facilities, ramps, accessible paths or Seatrac-style access where this information is available. CalmBeach helps you compare beach conditions and choose a suitable beach for today.',
         trustNote: 'Accessibility information can change by season and municipality. Always check local signage or official local sources before visiting.',
@@ -406,7 +406,7 @@ const seoLandingPages = [
         ],
       },
       el: {
-        title: 'Προσβάσιμες παραλίες ΑμεΑ στην Ελλάδα | CalmBeach',
+        title: 'Προσβάσιμες παραλίες ΑμεΑ & Seatrac στην Ελλάδα | CalmBeach',
         description: 'Βρες ελληνικές παραλίες με υποδομές προσβασιμότητας για ΑμεΑ, όπως συστήματα Seatrac όπου υπάρχουν, και έλεγξε τις σημερινές συνθήκες της θάλασσας.',
         h1: 'Προσβάσιμες παραλίες ΑμεΑ',
         intro: 'Κάποιες ελληνικές παραλίες διαθέτουν υποδομές προσβασιμότητας, όπως ράμπες, προσβάσιμο πάρκινγκ ή συστήματα Seatrac για αυτόνομη πρόσβαση στη θάλασσα. Το CalmBeach σε βοηθά να τις βρεις και να δεις τον καιρό για τη μέρα.',
@@ -483,8 +483,8 @@ const seoLandingPages = [
     category: 'camping',
     locales: {
       en: {
-        title: 'Beaches with Camping Nearby in Greece | CalmBeach',
-        description: 'Find Greek beaches with a campsite nearby, then check today\'s wind, waves and exposure to plan a calmer day by the sea.',
+        title: 'Beach Camping in Greece: Beaches with Campsites Nearby | CalmBeach',
+        description: 'Greek beaches with an official campsite nearby, plus today’s live wind, waves and exposure to plan a calmer day by the sea.',
         h1: 'Beaches with camping nearby',
         intro: 'If you are travelling with a tent or campervan, a beach with a campsite nearby can shape the whole trip. CalmBeach links beaches to nearby campsites and shows the day\'s sea conditions.',
         sections: [
@@ -1692,10 +1692,64 @@ const truncateForMeta = (text, max = 160) => {
   return `${slice.slice(0, lastSpace > 80 ? lastSpace : max).trim()}…`;
 };
 
-// Per-beach <head>/JSON-LD description: prefer the unique editorial opener (so
-// each beach gets a distinct, descriptive snippet) and fall back to the
-// existing templated description for beaches without a curated story.
+// Hand-written meta-description overrides for specific beach pages, keyed by
+// `${region.id}#${beach.id}`. These pages rank well in Search Console but earn
+// almost no clicks: the generated description (built/area template) is identical
+// across beaches and gives no reason to click. Each override states the beach's
+// own durable, data-backed traits (type, shelter orientation, amenities) plus
+// the live-conditions value prop — en/gr only, ≤155 chars. This is the only
+// per-page lever that does NOT touch beach data: the SERP description otherwise
+// comes from the generated `description` field (or the Milos curated story).
+const SEO_META_DESCRIPTION_OVERRIDES = {
+  // Milos (override sits ahead of the curated story so the meta leads with a
+  // conditions hook; the full editorial story still renders in the page body).
+  'south-aegean-milos#1932': {
+    en: 'Pollonia, Milos: a sandy fishing-village beach with sunbeds, parking and tavernas, good for families. See today’s live wind and waves before you go.',
+    gr: 'Πολλώνια Μήλου: αμμώδης παραλία σε ψαροχώρι, με ξαπλώστρες, πάρκινγκ και ταβέρνες, καλή για οικογένειες. Δες ζωντανά άνεμο και κύμα πριν πας.',
+  },
+  'south-aegean-milos#1924': {
+    en: 'Triades, Milos: three remote sand-and-pebble coves on the wild west coast, good for snorkeling and sheltered from the meltemi. Check live wind first.',
+    gr: 'Τριάδες Μήλου: τρεις απομακρυσμένοι όρμοι με άμμο και βότσαλο στη δυτική ακτή, καλοί για snorkeling και υπήνεμοι στο μελτέμι. Δες ζωντανά τον άνεμο.',
+  },
+  'north-aegean-lemnos#1455': {
+    en: 'Mikro Fanaraki, Lemnos: organised sandy beach with sunbeds, bar and parking, sheltered from northerly winds. See today’s live wind and waves.',
+    gr: 'Μικρό Φαναράκι, Λήμνος: οργανωμένη αμμώδης παραλία με ξαπλώστρες, bar και πάρκινγκ, υπήνεμη σε βόρειους ανέμους. Δες ζωντανά άνεμο και κύμα.',
+  },
+  'peloponnese-korinthia-mainland#1528': {
+    en: 'Lychnari, Korinthia: a quiet pebble beach good for snorkeling, sheltered from northerly winds. Check today’s live wind and sea before you go.',
+    gr: 'Λυχνάρι Κορινθίας: ήσυχη παραλία με βότσαλο, καλή για snorkeling και υπήνεμη σε βόρειους ανέμους. Δες ζωντανά άνεμο και θάλασσα πριν πας.',
+  },
+  'peloponnese-korinthia-mainland#1523': {
+    en: 'Kalogerolimano, Korinthia: a sheltered pebble cove good for snorkeling, protected from northerly winds. Check today’s live wind and sea.',
+    gr: 'Καλογερολίμανο Κορινθίας: προστατευμένος όρμος με βότσαλο, καλός για snorkeling, υπήνεμος σε βόρειους ανέμους. Δες ζωντανά άνεμο και θάλασσα.',
+  },
+  'west-greece-ileia-mainland#2568': {
+    en: 'Kounoupeli, Ileia: a quiet, family-friendly sand-and-pebble beach with sunbeds. See today’s live wind and waves before you go.',
+    gr: 'Κουνουπέλι Ηλείας: ήσυχη, οικογενειακή παραλία με άμμο, βότσαλο και ξαπλώστρες. Δες ζωντανά άνεμο και κύμα πριν πας.',
+  },
+  'thessaly-magnesia-mainland---pelion#2721': {
+    en: 'Fakistra, Pelion: a secluded pebble cove with clear water, good for snorkeling. Check today’s live wind and waves before you go.',
+    gr: 'Φακίστρα Πηλίου: απομακρυσμένος όρμος με βότσαλο και καθαρά νερά, καλός για snorkeling. Δες ζωντανά άνεμο και κύμα πριν πας.',
+  },
+  'south-aegean-paros#2029': {
+    en: 'Kalogeros, Paros: a sand-and-pebble beach good for snorkeling, sheltered from the meltemi. Check today’s live wind and waves before you go.',
+    gr: 'Καλόγερος Πάρου: παραλία με άμμο και βότσαλο, καλή για snorkeling και υπήνεμη στο μελτέμι. Δες ζωντανά άνεμο και κύμα πριν πας.',
+  },
+  'crete-crete-chania#574': {
+    en: 'Platanias, Chania: a long organised sandy beach near Chania with sunbeds. See today’s live wind and waves before you go.',
+    gr: 'Πλατανιάς Χανίων: μεγάλη οργανωμένη αμμώδης παραλία κοντά στα Χανιά, με ξαπλώστρες. Δες ζωντανά άνεμο και κύμα πριν πας.',
+  },
+};
+
+// Per-beach <head>/JSON-LD description: prefer a hand-written per-page override
+// (12-page CTR fix), then the unique editorial opener (so each beach gets a
+// distinct, descriptive snippet) and fall back to the existing templated
+// description for beaches without a curated story.
 const beachMetaDescription = (beach, region, beachName, islandName, language) => {
+  const override = SEO_META_DESCRIPTION_OVERRIDES[`${region?.id}#${beach.id}`];
+  if (override && (language === 'en' || language === 'gr') && override[language]) {
+    return override[language];
+  }
   const story = getBeachStory(region, beach, language);
   if (story?.paragraphs?.[0]) return truncateForMeta(story.paragraphs[0]);
   return beachDescriptionFor(beach, beachName, islandName, language);
@@ -1735,7 +1789,7 @@ const beachH1For = (beachName, islandName, language) => pickLang(language, {
 });
 const beachTitleFor = (beachName, islandName, language) => pickLang(language, {
   en: `${beachName} Beach, ${islandName} | Wind & Waves Today`,
-  gr: `Παραλία ${beachName}, ${islandName} | Calm Beach Greece`,
+  gr: `Παραλία ${beachName}, ${islandName} | Άνεμος & προστασία σήμερα`,
   de: `Strand ${beachName}, ${islandName} | Wind & Wellen heute`,
   fr: `Plage ${beachName}, ${islandName} | Vent & vagues aujourd'hui`,
   it: `Spiaggia ${beachName}, ${islandName} | Vento e onde oggi`,
@@ -2203,7 +2257,7 @@ const buildRegionPage = (baseHtml, island, region, imageUrl, locale = prerenderL
   });
   const title = pickLang(language, {
     en: `${islandName} Beaches Today | CalmBeach Greece`,
-    gr: `Παραλίες: ${islandName} | Calm Beach Greece`,
+    gr: `Παραλίες: ${islandName} | Άνεμος & κύμα σήμερα`,
     de: `Strände: ${islandName} | CalmBeach Griechenland`,
     fr: `Plages : ${islandName} | CalmBeach Grèce`,
     it: `Spiagge: ${islandName} | CalmBeach Grecia`,
