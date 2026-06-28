@@ -228,9 +228,21 @@ export const getNavigationAction = (beach: NavigationBeach): NavigationAction =>
     return { kind: 'none' };
   }
 
+  // A verified Google Place ID lets even a "locate" (show-on-map) link open the EXACT place card
+  // instead of a bare coordinate pin. A coordinate query drops an unlabeled marker that Google
+  // snaps to the nearest POI — on a boat-only / restricted-access beach that is often a point in
+  // the sea or a *different* named beach, which is why "the pin doesn't land on the right place".
+  // The place card carries no driving route (so boat-only stays route-free) but always titles the
+  // correct beach. Falls back to the coordinate when no placeId exists.
+  const nav = beach.metadata?.googleMapsNavigation;
+  const verifiedPlaceId = cleanTextPart(nav?.placeId);
+  const locateDestination: NavigationDestination | undefined = verifiedPlaceId
+    ? { kind: 'place', value: cleanTextPart(nav?.query) || getPlaceQuery(beach) || verifiedPlaceId, placeId: verifiedPlaceId }
+    : coordinateDestination;
+
   const locate = (badge: NavigationBadge): NavigationAction => (
-    coordinateDestination
-      ? { kind: 'locate', destination: coordinateDestination, badge }
+    locateDestination
+      ? { kind: 'locate', destination: locateDestination, badge }
       : { kind: 'none' }
   );
 
@@ -239,7 +251,6 @@ export const getNavigationAction = (beach: NavigationBeach): NavigationAction =>
     return locate('boat-access');
   }
 
-  const nav = beach.metadata?.googleMapsNavigation;
   const status = nav?.status
     ?? (beach.metadata?.confidence === 'low' ? 'low-conf-unaudited' : 'default');
 

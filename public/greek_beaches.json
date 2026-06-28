@@ -146456,9 +146456,9 @@
           "lon": 25.39309,
           "metadata": {
             "access": {
-              "type": "boat_only",
-              "label": "μόνο με βάρκα ή σκάφος",
-              "notes": "ΠΡΟΣΩΡΙΝΟ: το χερσαίο μονοπάτι από τον αρχαιολογικό χώρο Ακρωτηρίου έκλεισε μετά από κατολίσθηση/βραχόπτωση (σεισμοί Φεβ. 2025) και παραμένει περιορισμένο - προσέγγιση μόνο με σκάφος. Επαναφορά όταν οι αρχές ανοίξουν ξανά το μονοπάτι."
+              "type": "hiking_path_difficult",
+              "label": "Δύσκολο μονοπάτι — κίνδυνος βραχόπτωσης",
+              "notes": "Η κανονική πρόσβαση είναι με τα πόδια, από δύσκολο/ανώμαλο μονοπάτι κάτω από τα ηφαιστειακά βράχια, ξεκινώντας κοντά στον αρχαιολογικό χώρο του Ακρωτηρίου (parking κοντά). Προσοχή: κίνδυνος βραχόπτωσης — μετά τους σεισμούς του Φεβ. 2025 το μονοπάτι κατά διαστήματα περιορίζεται από τις αρχές, οπότε έλεγξε επιτόπου αν είναι ανοιχτό. Όταν το μονοπάτι είναι κλειστό ή σου φαίνεται επικίνδυνο, εναλλακτικά πας με βαρκάκι από το λιμανάκι του Ακρωτηρίου."
             },
             "terrain": {
               "types": [
@@ -146486,7 +146486,8 @@
               "Santorini 2026 amenities/access audit: Santorini View: steep/uneven path, rockslide caution, and seasonal sunbeds/umbrellas; no beach bar/taverna claimed.",
               "Phase 2 source check 2026-05-25: Red Beach kept as difficult/safety-sensitive path access; sunbed/umbrella organized claim removed, parking/canteen near path kept.",
               "Santorini strict evidence pass 2026-05-29: Cyclades Travel, Santorini Secrets, and U.S. News support Red Beach identity near Akrotiri, red volcanic cliff/rock setting, coarse sand/pebble/rock terrain, parking or Akrotiri approach, rocky uneven footpath, boat alternative, and rockfall/path caution. Promoted to high for static access/terrain/safety-context facts only.",
-              "Iconic info-safety audit 2026-06-12 (batch-approved): access hiking_path_difficult -> boat_only TEMPORARILY. Red Beach closed 2025-02-04 after a rockfall triggered by the Feb 2025 earthquake swarm (tovima.com at source: \"can now only be reached by boat\"; protothema/keeptalkinggreece corroborate; land restrictions still in force into early 2026, authorities discourage the cliff path). REVERT to hiking_path_difficult when the path officially reopens."
+              "Iconic info-safety audit 2026-06-12 (batch-approved): access hiking_path_difficult -> boat_only TEMPORARILY. Red Beach closed 2025-02-04 after a rockfall triggered by the Feb 2025 earthquake swarm (tovima.com at source: \"can now only be reached by boat\"; protothema/keeptalkinggreece corroborate; land restrictions still in force into early 2026, authorities discourage the cliff path). REVERT to hiking_path_difficult when the path officially reopens.",
+              "Access correction 2026-06-29: reverted boat_only -> hiking_path_difficult. The cliff path from Akrotiri is the primary access in 2026 guides (DaytripsfromSantorini, SantoriniSecrets, AllTrails); it is difficult and subject to intermittent rockfall restrictions (check locally), with the Akrotiri-harbour boat as the safe alternative when closed. Nav left coordinate-routed (mode=coordinates) until a Google placeId is resolved via the Places API."
             ],
             "verification_sources": [
               "https://www.santorini-view.com/santorini-beaches/red-beach/"
@@ -146507,9 +146508,10 @@
             },
             "googleMapsNavigation": {
               "status": "verified",
-              "mode": "place",
-              "checkedAt": "2026-06-15",
-              "method": "osm-nav-audit-v1"
+              "mode": "coordinates",
+              "checkedAt": "2026-06-29",
+              "method": "osm-nav-audit-v1",
+              "reason": "No Google placeId resolved yet; routes by exact coordinate. Upgrade to mode=place + placeId via the Places API backfill so Maps opens the named Red Beach card."
             }
           }
         },

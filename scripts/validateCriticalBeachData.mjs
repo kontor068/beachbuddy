@@ -554,6 +554,31 @@ const validateSummaryNavPropagation = async () => {
   }
 };
 
+// Consistency guard: a beach whose nav claims verified PLACE routing (status='verified',
+// mode='place') but carries neither a placeId nor an explicit query silently falls back to a raw
+// COORDINATE pin in utils/navigation.ts (a bare name query is no longer trusted). That pin can land
+// in the sea or snap to a neighbouring POI instead of the named beach card — the "pin doesn't land
+// on the right place in Google Maps" class the Red Beach (Santorini) report surfaced. Such records
+// must either carry a Google placeId (preferred — run the Places API placeId backfill) or be set to
+// mode='coordinates' to be honest that they route by coordinate.
+const validatePlaceModeWithoutPlaceId = async () => {
+  const regionFiles = await listTopLevelJsonFiles(appBeachDir);
+  for (const filePath of regionFiles) {
+    let data;
+    try { data = await readJson(filePath); } catch { continue; }
+    const beaches = data?.island?.beaches;
+    if (!Array.isArray(beaches)) continue;
+    for (const beach of beaches) {
+      const nav = beach?.metadata?.googleMapsNavigation;
+      if (!nav || nav.status !== 'verified' || nav.mode !== 'place') continue;
+      if (nav.placeId || nav.query) continue;
+      addFinding('medium', filePath,
+        `Nav claims verified place-routing (status='verified', mode='place') but has no placeId or query — Maps silently drops a raw coordinate pin instead of the named place card. Add a Google placeId (Places API backfill) or set mode='coordinates'.`,
+        beachLabel(beach));
+    }
+  }
+};
+
 const severityRank = { critical: 0, high: 1, medium: 2, low: 3 };
 
 const printReport = (regionFileCount, beachCount) => {
@@ -605,6 +630,7 @@ const main = async () => {
   await validatePhotoData();
   await validatePlaceResolutionLedger();
   await validateSummaryNavPropagation();
+  await validatePlaceModeWithoutPlaceId();
 
   printReport(regionFiles.length, seenBeachIds.size);
 
