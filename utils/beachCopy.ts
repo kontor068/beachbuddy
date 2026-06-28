@@ -547,7 +547,7 @@ const waveBullet = (input: BeachCopyInput, facts: BeachFeatureFacts): string | u
     if (!height) return localize(language, `Η θάλασσα μπορεί να έχει λίγο κυματισμό ${day}.`, `The sea may have some chop ${day}.`);
     return sheltered
       ? localize(language, `Στα ανοιχτά το κύμα είναι περίπου ${height}· εδώ είναι πιο υπήνεμα, αλλά με κάποιο κυματισμό.`, `Open-sea waves are around ${height}; this cove is more sheltered, but still has some chop.`)
-      : localize(language, `Το κύμα είναι περίπου ${height}, οπότε δεν είναι η πιο ήρεμη επιλογή αν θες απόλυτα ήρεμη θάλασσα.`, `Waves are around ${height}, so this is not the calmest pick if you want flat water.`);
+      : localize(language, `Το κύμα είναι περίπου ${height}, με ήπιο κυματισμό.`, `Waves are around ${height}, with mild chop.`);
   }
 
   if (facts.roughSea) {
