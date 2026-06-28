@@ -231,7 +231,7 @@ const getSeaConditionDisplay = (
         subValue: isExposed
           ? windBeaufort === 5
             ? { en: 'Exposed to wind', gr: 'Εκτεθειμένη στον άνεμο', de: 'Nicht ideal zum entspannten Schwimmen', it: 'Non ideale per nuotare rilassati', fr: 'Pas ideal pour une baignade detendue' }[language]
-            : { en: 'Not ideal for relaxed swimming', gr: 'Όχι ιδανικό για ήρεμο μπάνιο', de: 'Nicht ideal zum entspannten Schwimmen', it: 'Non ideale per nuotare rilassati', fr: 'Pas ideal pour une baignade detendue' }[language]
+            : { en: 'Use caution for relaxed swimming', gr: 'Θέλει προσοχή για ήρεμο μπάνιο', de: 'Vorsicht beim entspannten Schwimmen', it: 'Serve cautela per nuotare rilassati', fr: 'Prudence pour une baignade detendue' }[language]
           : windBeaufort === 5
             ? { en: 'The sea will have waves.', gr: 'Η θάλασσα θα έχει κυματισμό.', de: 'Wellen erfordern Vorsicht', it: 'Serve cautela con le onde', fr: 'Prudence avec les vagues' }[language]
             : { en: 'Wave caution still matters', gr: 'Θέλει προσοχή στο κύμα', de: 'Wellen erfordern Vorsicht', it: 'Serve cautela con le onde', fr: 'Prudence avec les vagues' }[language],
@@ -303,7 +303,7 @@ const getSeaConditionDisplay = (
   return {
     value: windBeaufort === 5
       ? { en: 'Choppy', gr: 'Κυματισμός', de: 'Schlecht', it: 'Scarse', fr: 'Mauvaises' }[language]
-      : language === 'gr' ? `Όχι ιδανικές ${getSelectedDayPrefix(selectedDate, new Date(), language)}` : language === 'en' ? `Not ideal ${getSelectedDayPrefix(selectedDate, new Date(), language)}` : { de: 'Schlecht', it: 'Scarse', fr: 'Mauvaises' }[language],
+      : language === 'gr' ? `Θέλει προσοχή ${getSelectedDayPrefix(selectedDate, new Date(), language)}` : language === 'en' ? `Use caution ${getSelectedDayPrefix(selectedDate, new Date(), language)}` : { de: 'Vorsicht', it: 'Prudenza', fr: 'Prudence' }[language],
     subValue: windBeaufort === 5
       ? (isExposed
         ? { en: 'Exposed to wind', gr: 'Εκτεθειμένη στον άνεμο', de: 'Wahle einen geschutzteren Strand', it: 'Scegli una spiaggia piu riparata', fr: 'Choisis une plage plus abritee' }[language]

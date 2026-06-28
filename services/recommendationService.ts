@@ -34,7 +34,7 @@ import { calculateCrowdLevel, CrowdLevel } from './crowdService';
 import { ExposureLevel } from '../utils/windExposure';
 import { getNegativeFeedbackCount } from './analyticsService';
 import { displayBeachName } from '../utils/localization';
-import { isSearchMatch } from '../utils/searchNormalize';
+import { getSearchVariants, isSearchMatch } from '../utils/searchNormalize';
 import { calculateSeaConditionScore } from '../utils/seaConditions';
 import { getSelectedDayPrefix, isSelectedDateToday } from '../utils/dateLabels';
 import { assessBeachWindExposure } from '../utils/windExposureEngine';
@@ -1040,6 +1040,31 @@ export const calculateBestBeachTime = (hourlyForecast: ForecastItem[], beach?: B
   };
 };
 
+const getBeachSearchFilterValues = (beach: Beach, language: LanguageCode): string[] => {
+  const genericValues = [
+    'paralia',
+    'παραλία',
+    'beach',
+    'plage',
+    'strand',
+    'spiaggia',
+    beach.location?.island,
+    beach.location?.region,
+  ].filter((value): value is string => Boolean(value));
+  const genericVariants = new Set(genericValues.flatMap(getSearchVariants));
+  const aliases = (beach.aliases || []).filter(alias => {
+    const aliasVariants = getSearchVariants(alias);
+    return aliasVariants.length > 0 && !aliasVariants.every(variant => genericVariants.has(variant));
+  });
+
+  return [
+    beach.name[language],
+    beach.name.en,
+    beach.name.gr,
+    ...aliases,
+  ];
+};
+
 /**
  * Filters beaches based on search query and active filters.
  */
@@ -1053,14 +1078,7 @@ export const filterBeaches = (
 
   // 1. Search Query
   if (searchQuery.trim()) {
-    result = result.filter(b => isSearchMatch(searchQuery, [
-      b.name[language],
-      b.name.en,
-      b.name.gr,
-      ...(b.aliases || []),
-      b.location?.island,
-      b.location?.region,
-    ]));
+    result = result.filter(b => isSearchMatch(searchQuery, getBeachSearchFilterValues(b, language)));
   }
 
   // 2. Filters

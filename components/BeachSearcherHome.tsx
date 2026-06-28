@@ -2967,6 +2967,8 @@ export const BeachSearcherHome: React.FC<BeachSearcherHomeProps> = ({
       directContext.windExposureReason ??
       weatherContext?.windExposureReason ??
       describeSimpleWindSuitability(simpleWindSuitability, language);
+    const shouldShowTodayScoreBadge = options.showTodayScoreBadge ?? !isNameSearchActive;
+    const shouldForceTodayScoreBadge = shouldShowTodayScoreBadge && options.forceTodayScoreBadge === true;
 
     return (
       <BeachCard
@@ -3006,8 +3008,8 @@ export const BeachSearcherHome: React.FC<BeachSearcherHomeProps> = ({
         windSuitabilityColor={simpleWindSuitability?.suitabilityColor}
         windExposureMode={options.windExposureMode}
         hideExposureBadge={options.recommendationRank !== undefined}
-        showTodayScoreBadge={options.showTodayScoreBadge}
-        forceTodayScoreBadge={options.forceTodayScoreBadge}
+        showTodayScoreBadge={shouldShowTodayScoreBadge}
+        forceTodayScoreBadge={shouldForceTodayScoreBadge}
       />
     );
   };
@@ -3626,8 +3628,8 @@ export const BeachSearcherHome: React.FC<BeachSearcherHomeProps> = ({
                     context,
                     recommendationRank: cardRank,
                     topPickPodium: cardRank !== undefined && cardRank <= 3,
-                    showTodayScoreBadge: isNameSearchActive,
-                    forceTodayScoreBadge: isNameSearchActive,
+                    showTodayScoreBadge: false,
+                    forceTodayScoreBadge: false,
                     alignExposureToMap: true,
                     windExposureMode: 'none',
                   })}
@@ -3735,7 +3737,7 @@ export const BeachSearcherHome: React.FC<BeachSearcherHomeProps> = ({
               <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
                 {directoryDisplayBeachCards.map(beach => (
                   <div key={beach.id} {...beachCardHoverProps(beach.id)} className="h-full">
-                    {renderBeachDecisionCard(beach, { alignExposureToMap: !isDirectorySuitableView, windExposureMode: 'simple', forceTodayScoreBadge: isNameSearchActive })}
+                    {renderBeachDecisionCard(beach, { alignExposureToMap: !isDirectorySuitableView, windExposureMode: 'simple' })}
                   </div>
                 ))}
               </div>
@@ -3760,7 +3762,7 @@ export const BeachSearcherHome: React.FC<BeachSearcherHomeProps> = ({
               >
                 {directoryDisplayBeachCards.map(beach => (
                   <div key={beach.id} data-directory-beach-id={beach.id} {...beachCardHoverProps(beach.id)} className={getMapLinkedCardClassName(beach.id, 'flex h-[24rem] w-[17rem] shrink-0 snap-start sm:h-[27rem] sm:w-[20rem]')}>
-                    {renderBeachDecisionCard(beach, { alignExposureToMap: true, windExposureMode: 'simple', forceTodayScoreBadge: isNameSearchActive })}
+                    {renderBeachDecisionCard(beach, { alignExposureToMap: true, windExposureMode: 'simple' })}
                   </div>
                 ))}
               </div>
@@ -3867,7 +3869,7 @@ export const BeachSearcherHome: React.FC<BeachSearcherHomeProps> = ({
                     >
                       {directoryDisplayBeachCards.map(beach => (
                         <div key={beach.id} data-directory-beach-id={beach.id} {...beachCardHoverProps(beach.id)} className={getMapLinkedCardClassName(beach.id, 'flex h-[24rem] w-[17rem] shrink-0 snap-start sm:h-[27rem] sm:w-[20rem]')}>
-                          {renderBeachDecisionCard(beach, { alignExposureToMap: !isDirectorySuitableView, windExposureMode: 'simple', forceTodayScoreBadge: isNameSearchActive })}
+                          {renderBeachDecisionCard(beach, { alignExposureToMap: !isDirectorySuitableView, windExposureMode: 'simple' })}
                         </div>
                       ))}
                     </div>
