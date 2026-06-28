@@ -40,9 +40,21 @@
     "images:source-region-strips": "node scripts/sourceRegionStripImages.mjs",
     "build": "vite build && node scripts/stampServiceWorker.mjs && node scripts/prerenderBeachPages.mjs",
     "lint": "tsc --noEmit",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "native:assets": "node scripts/generateNativeIconSources.mjs && capacitor-assets generate --assetPath cap-assets",
+    "cap:sync": "npm run build && cap sync",
+    "android:open": "cap open android"
   },
   "dependencies": {
+    "@capacitor/android": "^8.4.1",
+    "@capacitor/app": "^8.1.0",
+    "@capacitor/browser": "^8.0.3",
+    "@capacitor/cli": "^8.4.1",
+    "@capacitor/core": "^8.4.1",
+    "@capacitor/geolocation": "^8.2.0",
+    "@capacitor/ios": "^8.4.1",
+    "@capacitor/splash-screen": "^8.0.1",
+    "@capacitor/status-bar": "^8.0.2",
     "@google/genai": "^1.16.0",
     "@tailwindcss/vite": "^4.2.1",
     "@types/leaflet": "^1.9.21",
@@ -60,6 +72,7 @@
     "tailwindcss": "^4.2.1"
   },
   "devDependencies": {
+    "@capacitor/assets": "^3.0.5",
     "@playwright/test": "^1.60.0",
     "@types/node": "^22.14.0",
     "@types/react-virtualized-auto-sizer": "^1.0.4",

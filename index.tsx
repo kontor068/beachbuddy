@@ -1,9 +1,11 @@
 
 import React from 'react';
 import ReactDOM from 'react-dom/client';
+import { Capacitor } from '@capacitor/core';
 import { App } from './App';
 import './index.css';
 import { initializeAnalytics } from './services/analyticsService';
+import { initializeNativeApp } from './utils/nativeBootstrap';
 import { isChunkLoadError, recoverFromChunkLoadError, registerChunkLoadErrorHandler } from './utils/chunkLoadRecovery';
 
 declare global {
@@ -101,8 +103,12 @@ root.render(
 
 initializeAnalytics();
 registerChunkLoadErrorHandler();
+void initializeNativeApp();
 
-if ('serviceWorker' in navigator) {
+// In the bundled native shell the web assets are already local, so the service worker
+// adds nothing and its controllerchange->reload behaviour can misfire. Only register on
+// the web build; the calmbeach.gr PWA behaviour is unchanged.
+if ('serviceWorker' in navigator && !Capacitor.isNativePlatform()) {
   if (import.meta.env.PROD) {
     // Reload exactly once when a freshly deployed service worker takes control, so
     // an already-open tab starts running the new code without the user having to

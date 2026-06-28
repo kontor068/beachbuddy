@@ -55,3 +55,14 @@ reports/photo-coverage/qa/
 reports/photo-coverage/qa-img/
 reports/photo-coverage/qa-focus/
 reports/visual-qa/
+
+# Capacitor / native app store packaging
+# Generated icon/splash sources (reproducible via `npm run native:assets`)
+cap-assets/
+store-assets/
+# Android signing keys — NEVER commit; keep an offline backup
+*.jks
+*.keystore
+keystore.properties
+# iOS native project pods (added later on macOS)
+ios/App/Pods/

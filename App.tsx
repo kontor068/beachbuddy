@@ -2801,7 +2801,12 @@ export const App: React.FC = () => {
       return;
     }
     if (tab === 'weather') {
-      if (!selectedIsland || !selectedForecast) {
+      // Weather only makes sense with a selected region, so bounce back to Home only
+      // when there's no island at all. If the island is set but its forecast hasn't
+      // loaded yet, still open the full-screen weather panel (it renders a graceful
+      // "no forecast" state). Bouncing to Home in that case used to dump the user on
+      // the scrollable home page, surfacing the © 2026 legal footer instead.
+      if (!selectedIsland) {
         setMobileTab('home');
         return;
       }

@@ -61,6 +61,10 @@ import { getSelectedDayPrefix } from '../utils/dateLabels';
 import { getRainSwimAdvisory } from '../utils/rainAdvisory';
 import { summarizeMeltemiBehavior } from '../utils/windClimatology';
 
+// Temporarily hidden: the "Σχέδιο ημέρας" (Plan your day) section isn't well
+// implemented yet — hiding it until we rework it. Flip back to true to re-enable.
+const ENABLE_DAY_PLAN_SECTION = false;
+
 // Lazy load map to avoid blocking main thread
 const BeachMap = React.lazy(() => import('../components/BeachMap'));
 
@@ -1736,8 +1740,9 @@ export const BeachDetailPage: React.FC<BeachDetailPageProps> = ({
         </section>
 
         {/* 8. Nearby Beaches */}
-        {/* Day-plan sequencer — morning → midday shade & food → sunset. */}
-        <DayPlanSection language={language} stops={dayPlanStops} />
+        {/* Day-plan sequencer — morning → midday shade & food → sunset.
+            Temporarily hidden via ENABLE_DAY_PLAN_SECTION until reworked. */}
+        {ENABLE_DAY_PLAN_SECTION && <DayPlanSection language={language} stops={dayPlanStops} />}
 
         <MeltemiShelterSection
           language={language}
