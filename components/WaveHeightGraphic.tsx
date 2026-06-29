@@ -36,18 +36,75 @@ interface WaveHeightGraphicProps {
 
 type StripCopy = {
   title: string;
+  heightNote: string;
   throughDay: string;
   calmerMorning: string;
   calmerLater: string;
-  steady: string;
+  selectedHour: (hour: string) => string;
+  hourTooltip: (hour: string, height: string) => string;
+  rangeSummary: (min: string, max: string) => string;
 };
 
 const COPY: LocalizedCopy<StripCopy> = {
-  en: { title: 'Wave to expect', throughDay: 'Through the day', calmerMorning: 'calmer in the morning', calmerLater: 'calmer later', steady: 'steady through the day' },
-  gr: { title: 'Τι κύμα να περιμένεις', throughDay: 'Μέσα στη μέρα', calmerMorning: 'πιο ήρεμα το πρωί', calmerLater: 'πιο ήρεμα αργότερα', steady: 'σταθερό μέσα στη μέρα' },
-  fr: { title: 'Vagues attendues', throughDay: 'Au fil de la journée', calmerMorning: 'plus calme le matin', calmerLater: 'plus calme plus tard', steady: 'stable dans la journée' },
-  de: { title: 'Zu erwartende Wellen', throughDay: 'Im Tagesverlauf', calmerMorning: 'morgens ruhiger', calmerLater: 'später ruhiger', steady: 'gleichbleibend' },
-  it: { title: 'Onde previste', throughDay: 'Durante il giorno', calmerMorning: 'più calmo al mattino', calmerLater: 'più calmo dopo', steady: 'stabile in giornata' },
+  en: {
+    title: 'Wave to expect',
+    heightNote: 'Wave height',
+    throughDay: 'Through the day',
+    calmerMorning: 'calmer in the morning',
+    calmerLater: 'calmer later',
+    selectedHour: (hour) => `shown hour ${hour}`,
+    hourTooltip: (hour, height) => `${hour}: ${height} waves`,
+    rangeSummary: (min, max) => `Wave range ${min} to ${max}`,
+  },
+  gr: {
+    title: 'Τι κύμα να περιμένεις',
+    heightNote: 'Ύψος κύματος',
+    throughDay: 'Μέσα στη μέρα',
+    calmerMorning: 'πιο ήρεμα το πρωί',
+    calmerLater: 'πιο ήρεμα αργότερα',
+    selectedHour: (hour) => `ώρα που βλέπεις ${hour}`,
+    hourTooltip: (hour, height) => `${hour}: κύμα ${height}`,
+    rangeSummary: (min, max) => `Εύρος κύματος ${min} έως ${max}`,
+  },
+  fr: {
+    title: 'Vagues attendues',
+    heightNote: 'Hauteur de vague',
+    throughDay: 'Au fil de la journée',
+    calmerMorning: 'plus calme le matin',
+    calmerLater: 'plus calme plus tard',
+    selectedHour: (hour) => `heure affichée ${hour}`,
+    hourTooltip: (hour, height) => `${hour} : vagues ${height}`,
+    rangeSummary: (min, max) => `Vagues de ${min} à ${max}`,
+  },
+  de: {
+    title: 'Zu erwartende Wellen',
+    heightNote: 'Wellenhöhe',
+    throughDay: 'Im Tagesverlauf',
+    calmerMorning: 'morgens ruhiger',
+    calmerLater: 'später ruhiger',
+    selectedHour: (hour) => `angezeigte Stunde ${hour}`,
+    hourTooltip: (hour, height) => `${hour}: ${height} Wellen`,
+    rangeSummary: (min, max) => `Wellenbereich ${min} bis ${max}`,
+  },
+  it: {
+    title: 'Onde previste',
+    heightNote: 'Altezza onda',
+    throughDay: 'Durante il giorno',
+    calmerMorning: 'più calmo al mattino',
+    calmerLater: 'più calmo dopo',
+    selectedHour: (hour) => `ora mostrata ${hour}`,
+    hourTooltip: (hour, height) => `${hour}: onde ${height}`,
+    rangeSummary: (min, max) => `Onde da ${min} a ${max}`,
+  },
+};
+
+type WaveTrendKey = 'calmerMorning' | 'calmerLater';
+
+const formatHour = (hour: number) => `${String(hour).padStart(2, '0')}:00`;
+
+const formatWaveHeight = (m: number, language: LanguageCode): string => {
+  const value = m.toFixed(1);
+  return language === 'gr' ? `~${value.replace('.', ',')} μ` : `~${value} m`;
 };
 
 // ---------------------------------------------------------------------------------------
@@ -121,36 +178,41 @@ const CompactGlyph: React.FC<{ scale: WaveScaleResult; className?: string }> = (
   );
 };
 
-const HourlyStrip: React.FC<{ hourly: HourlyWavePoint[]; nowHour?: number }> = ({ hourly, nowHour }) => {
+const HourlyStrip: React.FC<{
+  hourly: HourlyWavePoint[];
+  nowHour?: number;
+  language: LanguageCode;
+  copy: StripCopy;
+}> = ({ hourly, nowHour, language, copy }) => {
   // Ticks come from the actual series (data is often 3-hourly), so the labels line up with the bars.
-  const fmtHour = (h: number) => `${String(h).padStart(2, '0')}:00`;
   const firstHour = hourly[0].hour;
   const lastHour = hourly[hourly.length - 1].hour;
   const midHour = hourly[Math.floor((hourly.length - 1) / 2)].hour;
   return (
     <>
-      <div className="flex h-9 items-end gap-[2px]">
+      <div className="flex h-8 items-end gap-[2px] sm:h-9" aria-hidden="true">
         {hourly.map((p) => {
           const isNow = typeof nowHour === 'number' && p.hour === nowHour;
           return (
             <div
               key={p.hour}
-              className={`flex-1 rounded-sm ${getWaveBandClasses(p.waveHeightM).bar} ${isNow ? 'ring-2 ring-slate-900/55 dark:ring-white/70' : ''}`}
+              title={copy.hourTooltip(formatHour(p.hour), formatWaveHeight(p.waveHeightM, language))}
+              className={`flex-1 rounded-sm ${getWaveBandClasses(p.waveHeightM).bar} ${isNow ? 'ring-2 ring-slate-900/60 ring-offset-1 ring-offset-white dark:ring-white/75 dark:ring-offset-slate-800' : ''}`}
               style={{ height: `${waveBarFraction(p.waveHeightM) * 100}%` }}
             />
           );
         })}
       </div>
       <div className="mt-1 flex justify-between text-[10px] font-semibold text-slate-400 dark:text-slate-500">
-        <span>{fmtHour(firstHour)}</span>
-        <span>{fmtHour(midHour)}</span>
-        <span>{fmtHour(lastHour)}</span>
+        <span>{formatHour(firstHour)}</span>
+        <span>{formatHour(midHour)}</span>
+        <span>{formatHour(lastHour)}</span>
       </div>
     </>
   );
 };
 
-const computeTrend = (hourly: HourlyWavePoint[]): keyof StripCopy | null => {
+const computeTrend = (hourly: HourlyWavePoint[]): WaveTrendKey | null => {
   const morning = hourly.filter((p) => p.hour >= 8 && p.hour <= 12);
   const afternoon = hourly.filter((p) => p.hour >= 15 && p.hour <= 20);
   if (morning.length < 2 || afternoon.length < 2) return null;
@@ -159,7 +221,7 @@ const computeTrend = (hourly: HourlyWavePoint[]): keyof StripCopy | null => {
   const a = avg(afternoon);
   if (m < a - 0.15) return 'calmerMorning';
   if (a < m - 0.15) return 'calmerLater';
-  return 'steady';
+  return null; // steady through the day → show no note (it adds nothing actionable)
 };
 
 export const WaveHeightGraphic: React.FC<WaveHeightGraphicProps> = ({
@@ -181,28 +243,59 @@ export const WaveHeightGraphic: React.FC<WaveHeightGraphicProps> = ({
 
   const copy = getLocalizedCopy(language, COPY);
   const labelClass = scale.isEstimate ? WAVE_ESTIMATE_CLASSES.label : WAVE_BAND_CLASSES[scale.band].label;
-  const points = (hourly ?? []).filter((p) => Number.isFinite(p.waveHeightM)).sort((a, b) => a.hour - b.hour);
-  const showStrip = points.length >= 2;
   const isToday = isSelectedDateToday(selectedDate);
   // Mark the hour the forecast is actually showing (the slider hour), falling back to the
   // real wall-clock hour only when no explicit hour is supplied and the day is today.
   const markerHour = typeof selectedHour === 'number' ? selectedHour : (isToday ? new Date().getHours() : undefined);
+  const points = (hourly ?? [])
+    .filter((p) => Number.isFinite(p.waveHeightM))
+    .reduce<HourlyWavePoint[]>((acc, point) => {
+      if (!acc.some(existing => existing.hour === point.hour)) acc.push(point);
+      return acc;
+    }, []);
+  if (
+    typeof selectedHour === 'number'
+    && typeof waveHeightM === 'number'
+    && Number.isFinite(waveHeightM)
+    && !points.some(point => point.hour === selectedHour)
+  ) {
+    points.push({ hour: selectedHour, waveHeightM });
+  }
+  points.sort((a, b) => a.hour - b.hour);
+  const showStrip = points.length >= 2;
   const trendKey = showStrip ? computeTrend(points) : null;
+  const selectedHourLabel = typeof markerHour === 'number'
+    ? copy.selectedHour(formatHour(markerHour))
+    : null;
+  const hourlyRange = showStrip
+    ? copy.rangeSummary(
+      formatWaveHeight(Math.min(...points.map((p) => p.waveHeightM)), language),
+      formatWaveHeight(Math.max(...points.map((p) => p.waveHeightM)), language)
+    )
+    : null;
+  const ariaLabel = [
+    scale.ariaLabel,
+    copy.heightNote,
+    hourlyRange,
+    trendKey ? copy[trendKey] : null,
+    selectedHourLabel,
+  ].filter(Boolean).join('. ');
 
   return (
     <div
       role="img"
-      aria-label={scale.ariaLabel}
-      className={`rounded-xl border border-slate-100 bg-white p-4 shadow-sm dark:border-slate-700 dark:bg-slate-800 ${className ?? ''}`}
+      aria-label={ariaLabel}
+      className={`rounded-xl border border-slate-100 bg-white p-3 shadow-sm dark:border-slate-700 dark:bg-slate-800 sm:p-4 ${className ?? ''}`}
     >
-      <div className="flex items-center gap-4">
-        <div className="w-24 shrink-0">
+      <div className="flex items-center gap-3 sm:gap-4">
+        <div className="w-20 shrink-0 sm:w-24">
           <FigureScene scale={scale} />
         </div>
         <div className="min-w-0">
           <div className="text-xs font-semibold text-slate-500 dark:text-slate-400">{copy.title}</div>
           <div className={`font-heading text-xl font-bold leading-tight ${labelClass}`}>{scale.label}</div>
           <div className="text-sm font-semibold text-slate-600 dark:text-slate-300">{scale.detail}</div>
+          <div className="mt-1 text-xs font-medium leading-snug text-slate-500 dark:text-slate-400">{copy.heightNote}</div>
         </div>
       </div>
 
@@ -210,9 +303,13 @@ export const WaveHeightGraphic: React.FC<WaveHeightGraphicProps> = ({
         <div className="mt-3 border-t border-slate-100 pt-3 dark:border-slate-700">
           <div className="mb-1 flex items-baseline justify-between gap-2">
             <span className="text-[11px] font-bold uppercase tracking-wide text-slate-400 dark:text-slate-500">{copy.throughDay}</span>
-            {trendKey && <span className="truncate text-[11px] font-semibold text-slate-500 dark:text-slate-400">{copy[trendKey]}</span>}
+            {(trendKey || selectedHourLabel) && (
+              <span className="truncate text-[11px] font-semibold text-slate-500 dark:text-slate-400">
+                {trendKey ? copy[trendKey] : selectedHourLabel}
+              </span>
+            )}
           </div>
-          <HourlyStrip hourly={points} nowHour={markerHour} />
+          <HourlyStrip hourly={points} nowHour={markerHour} language={language} copy={copy} />
         </div>
       )}
     </div>

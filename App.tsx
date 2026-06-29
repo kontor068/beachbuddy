@@ -615,28 +615,81 @@ const interpolateHourlyForecast = (items: ForecastItem[], stepHours = 1): Foreca
       continue;
     }
     const lo = sorted[hiIndex - 1];
-    const t = (dt - lo.dt) / (hi.dt - lo.dt);
-    result.push({
-      ...lo,
-      dt,
-      main: { ...lo.main, temp: lerpValue(lo.main.temp, hi.main.temp, t) },
-      wind: {
-        ...lo.wind,
-        speed: lerpValue(lo.wind.speed, hi.wind.speed, t),
-        deg: lerpAngleDeg(lo.wind.deg, hi.wind.deg, t),
-      },
-      marine: lo.marine || hi.marine
-        ? {
-            ...(lo.marine ?? {}),
-            ...(typeof lo.marine?.waveHeightM === 'number' && typeof hi.marine?.waveHeightM === 'number'
-              ? { waveHeightM: lerpValue(lo.marine.waveHeightM, hi.marine.waveHeightM, t) }
-              : {}),
-          }
-        : lo.marine,
-    });
+    result.push(interpolateForecastItem(lo, hi, dt));
   }
 
   return result;
+};
+
+const interpolateForecastItem = (lo: ForecastItem, hi: ForecastItem, dt: number): ForecastItem => {
+  if (hi.dt === lo.dt) return { ...lo, dt };
+
+  const t = (dt - lo.dt) / (hi.dt - lo.dt);
+  return {
+    ...lo,
+    dt,
+    main: { ...lo.main, temp: lerpValue(lo.main.temp, hi.main.temp, t) },
+    wind: {
+      ...lo.wind,
+      speed: lerpValue(lo.wind.speed, hi.wind.speed, t),
+      deg: lerpAngleDeg(lo.wind.deg, hi.wind.deg, t),
+    },
+    marine: lo.marine || hi.marine
+      ? {
+          ...(lo.marine ?? {}),
+          ...(typeof lo.marine?.waveHeightM === 'number' && typeof hi.marine?.waveHeightM === 'number'
+            ? { waveHeightM: lerpValue(lo.marine.waveHeightM, hi.marine.waveHeightM, t) }
+            : {}),
+        }
+      : lo.marine,
+  };
+};
+
+const getNearestForecastItem = (items: ForecastItem[], targetDt: number): ForecastItem | undefined => (
+  items.reduce<ForecastItem | undefined>((nearest, item) => {
+    if (!nearest) return item;
+    return Math.abs(item.dt - targetDt) < Math.abs(nearest.dt - targetDt) ? item : nearest;
+  }, undefined)
+);
+
+const getForecastItemAtDt = (
+  items: ForecastItem[] | undefined,
+  targetDt: number,
+  exactSlots?: ForecastItem[]
+): ForecastItem | undefined => {
+  if (!items || items.length === 0) return undefined;
+
+  const direct = items.find(item => item.dt === targetDt);
+  if (direct) return direct;
+
+  const exactSlot = exactSlots?.find(item => item.dt === targetDt);
+  if (exactSlot) return exactSlot;
+
+  const sorted = [...items].sort((a, b) => a.dt - b.dt);
+  const hiIndex = sorted.findIndex(item => item.dt >= targetDt);
+  if (hiIndex > 0) {
+    return interpolateForecastItem(sorted[hiIndex - 1], sorted[hiIndex], targetDt);
+  }
+
+  return getNearestForecastItem(sorted, targetDt);
+};
+
+const adjustDailyForecastToHour = (
+  dailyForecast: DailyForecast,
+  selectedDt: number | null,
+  exactSlots?: ForecastItem[]
+): DailyForecast => {
+  if (selectedDt == null) return dailyForecast;
+
+  const hourItem = getForecastItemAtDt(dailyForecast.hourly, selectedDt, exactSlots);
+  if (!hourItem) return dailyForecast;
+
+  return {
+    ...dailyForecast,
+    wind: hourItem.wind,
+    marine: hourItem.marine ?? dailyForecast.marine,
+    weather: hourItem.weather?.[0] ?? dailyForecast.weather,
+  };
 };
 
 const getForecastMinutes = (item: ForecastItem): number => {
@@ -2875,25 +2928,23 @@ export const App: React.FC = () => {
         adjusted[Number(beachId)] = beachForecast;
         return;
       }
-      // Match the island swap: prefer the exact slider slot, otherwise the
-      // raw hourly entry nearest the selected time.
-      const exact = hourly.find(item => item.dt === deferredSelectedHourDt);
-      const hourItem = exact ?? hourly.reduce((prev, curr) => (
-        Math.abs(curr.dt - deferredSelectedHourDt) < Math.abs(prev.dt - deferredSelectedHourDt) ? curr : prev
-      ));
-      if (!hourItem) {
-        adjusted[Number(beachId)] = beachForecast;
-        return;
-      }
-      adjusted[Number(beachId)] = {
-        ...beachForecast,
-        wind: hourItem.wind,
-        marine: hourItem.marine ?? beachForecast.marine,
-        weather: hourItem.weather?.[0] ?? beachForecast.weather,
-      };
+      adjusted[Number(beachId)] = adjustDailyForecastToHour(beachForecast, deferredSelectedHourDt);
     });
     return adjusted;
   }, [selectedBeachForecasts, deferredSelectedHourDt]);
+
+  const detailBeachWeatherById = useMemo<BeachWeatherById>(() => {
+    const beachId = detailBeach?.id;
+    if (beachId == null || selectedHourDt == null) return hourAdjustedBeachForecasts;
+
+    const beachForecast = selectedBeachForecasts[beachId];
+    if (!beachForecast) return hourAdjustedBeachForecasts;
+
+    return {
+      ...hourAdjustedBeachForecasts,
+      [beachId]: adjustDailyForecastToHour(beachForecast, selectedHourDt),
+    };
+  }, [detailBeach?.id, selectedBeachForecasts, selectedHourDt, hourAdjustedBeachForecasts]);
 
   // Per-beach local wind (direction + speed) for the map hover card, so a beach
   // coloured differently from the island headline is self-explanatory ("here it
@@ -2957,17 +3008,7 @@ export const App: React.FC = () => {
   const selectedForecast = useMemo(() => {
     if (!baseDailyForecast) return undefined;
     if (selectedHourDt == null) return baseDailyForecast;
-    // Prefer the interpolated slider slot (1-hour granularity); fall back to a
-    // raw 3-hourly entry if needed.
-    const hourItem = mapHourSlots.find(item => item.dt === selectedHourDt)
-      ?? baseDailyForecast.hourly?.find(item => item.dt === selectedHourDt);
-    if (!hourItem) return baseDailyForecast;
-    return {
-      ...baseDailyForecast,
-      wind: hourItem.wind,
-      marine: hourItem.marine ?? baseDailyForecast.marine,
-      weather: hourItem.weather?.[0] ?? baseDailyForecast.weather,
-    };
+    return adjustDailyForecastToHour(baseDailyForecast, selectedHourDt, mapHourSlots);
   }, [baseDailyForecast, mapHourSlots, selectedHourDt]);
   // Deferred twin of selectedForecast for the heavy list/scoring path. The map
   // and label use the urgent selectedForecast; the beach ranking uses this so a
@@ -4229,7 +4270,7 @@ export const App: React.FC = () => {
             islandName={selectedIsland?.name[language]}
             regionId={isNearMeRegionActive ? undefined : selectedIsland?.id}
             detailDataStatus={detailDataStatus}
-            beachWeatherById={hourAdjustedBeachForecasts}
+            beachWeatherById={detailBeachWeatherById}
             selectedHour={selectedHourDt != null ? new Date(selectedHourDt * 1000).getHours() : undefined}
             geospatialExposureProfiles={geospatialExposureProfiles}
             weatherSource="island-fallback"
