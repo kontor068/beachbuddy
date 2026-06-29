@@ -29,6 +29,7 @@ import { SwitchBeachCard } from '../components/SwitchBeachCard';
 import { assessBeachWindExposure } from '../utils/windExposureEngine';
 import { AccessibleCalmNearbySection, type AccessibleCalmCove } from '../components/AccessibleCalmNearbySection';
 import { ConstraintFitSection, type ConstraintFit } from '../components/ConstraintFitSection';
+import { WaveHeightGraphic, type HourlyWavePoint } from '../components/WaveHeightGraphic';
 import { DayPlanSection, type DayPlanStop } from '../components/DayPlanSection';
 import { generateBeachExplanation as generateUiBeachExplanation } from '../utils/beachExplanation';
 import { describeSimpleWindSuitability, describeWindExposure } from '../utils/windExposureCopy';
@@ -589,6 +590,19 @@ export const BeachDetailPage: React.FC<BeachDetailPageProps> = ({
   const isExposed = exposureLevel ? exposureLevel !== 'protected' : true;
   const isExposedToTodayWind = exposureLevel ? exposureLevel === 'exposed' : isExposed;
   const waveHeightM = weatherData.marine?.waveHeightM;
+  const isWaveEstimate = !(typeof waveHeightM === 'number' && Number.isFinite(waveHeightM));
+  // Swim-hours (08–21) wave series for the selected day, straight off the per-beach hourly
+  // forecast already threaded into this page (no extra fetch). Powers the intraday strip.
+  const selectedDayKey = selectedDate ? selectedDate.toDateString() : undefined;
+  const hourlyWave: HourlyWavePoint[] = (selectedDayKey ? scoringHourlyForecast : []).reduce<HourlyWavePoint[]>((acc, item) => {
+    const w = item.marine?.waveHeightM;
+    if (typeof w !== 'number' || !Number.isFinite(w)) return acc;
+    const when = new Date(item.dt * 1000);
+    if (when.toDateString() !== selectedDayKey) return acc;
+    const hour = when.getHours();
+    if (hour >= 8 && hour <= 21) acc.push({ hour, waveHeightM: w });
+    return acc;
+  }, []);
   const seaTemperatureC = weatherData.marine?.seaSurfaceTemperatureC;
   const waterTempDescriptor = typeof seaTemperatureC === 'number'
     ? seaTemperatureC < 20
@@ -1226,6 +1240,14 @@ export const BeachDetailPage: React.FC<BeachDetailPageProps> = ({
         {/* 4. Today's Conditions */}
         <section className="space-y-3" data-nosnippet="true">
           <h3 className="px-1 font-heading text-lg font-bold text-slate-950">{copy.conditions[language]}</h3>
+          <WaveHeightGraphic
+            variant="full"
+            waveHeightM={waveHeightM}
+            isEstimate={isWaveEstimate}
+            hourly={hourlyWave}
+            language={language}
+            selectedDate={selectedDate}
+          />
           <div className={`grid grid-cols-2 gap-2.5 ${typeof seaTemperatureC === 'number' ? 'md:grid-cols-4' : 'md:grid-cols-3'}`}>
             <ConditionCard
               icon={<Wind className="w-5 h-5 text-blue-500" />}

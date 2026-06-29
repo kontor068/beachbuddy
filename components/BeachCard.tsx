@@ -8,6 +8,7 @@ import { Translation } from '../types';
 import { canOpenNavigation, getNavigationBadge, openNavigation } from '../utils/navigation';
 import { BeachConditionScore } from './BeachConditionScore';
 import { TodayScoreBadge } from './TodayScoreBadge';
+import { WaveHeightGraphic } from './WaveHeightGraphic';
 import { getBeachPhotoLookup } from '../services/beachPhotos';
 import { trackEvent } from '../services/analyticsService';
 import { ExposureLevel } from '../utils/windExposure';
@@ -1499,7 +1500,7 @@ export const BeachCard: React.FC<BeachCardProps> = ({
               </span>
               {mobileWaveLabel && (
                 <span className="inline-flex min-w-0 shrink-0 items-center gap-1">
-                  <Waves className="h-3.5 w-3.5 shrink-0" aria-hidden="true" />
+                  <WaveHeightGraphic variant="compact" waveHeightM={waveHeightM} language={language} />
                   <span>{mobileWaveLabel}</span>
                 </span>
               )}
