@@ -220,7 +220,18 @@ const FigureScene: React.FC<{ scale: WaveScaleResult }> = ({ scale }) => {
   const bodySpan = baselineY - headTopY; // 82
   const crestY = baselineY - scale.bodyFraction * bodySpan;
   const waveTopY = Math.max(24, Math.min(92, crestY));
-  const swimmerY = Math.max(30, Math.min(88, crestY + 13));
+  const swimmerImmersionOffset = scale.bodyRef === 'flat'
+    ? 22
+    : scale.bodyRef === 'ankle'
+      ? 18
+      : scale.bodyRef === 'knee'
+        ? 15
+        : 13;
+  const swimmerY = Math.max(30, Math.min(94, crestY + swimmerImmersionOffset));
+  const swimmerWaterlineY = Math.max(
+    waveTopY + 1,
+    Math.min(baselineY + 4, swimmerY + (scale.bodyRef === 'flat' || scale.bodyRef === 'ankle' ? 4 : 2))
+  );
   const sceneId = React.useId().replace(/:/g, '');
   const surfaceGradientId = `wave-surface-${sceneId}`;
   const skyGradientId = `wave-sky-${sceneId}`;
@@ -298,6 +309,22 @@ const FigureScene: React.FC<{ scale: WaveScaleResult }> = ({ scale }) => {
           <path d="M-3 -12 C 2 -15 7 -14 10 -10" stroke="rgba(255,255,255,0.48)" strokeWidth="1.4" opacity="0.7" />
         </g>
       </g>
+
+      <path
+        className="cb-wave-swimmer-wake"
+        d={`M12 ${swimmerWaterlineY} C 28 ${swimmerWaterlineY - 3} 43 ${swimmerWaterlineY + 2} 58 ${swimmerWaterlineY - 1} C 74 ${swimmerWaterlineY - 4} 88 ${swimmerWaterlineY + 2} 104 ${swimmerWaterlineY} L104 ${baselineY + 8} L12 ${baselineY + 8} Z`}
+        fill={`url(#${surfaceGradientId})`}
+        fillOpacity={scale.isEstimate ? 0.34 : 0.62}
+      />
+      <path
+        className="cb-wave-foam"
+        d={`M14 ${swimmerWaterlineY} C 30 ${swimmerWaterlineY - 2} 43 ${swimmerWaterlineY + 2} 58 ${swimmerWaterlineY - 1} C 73 ${swimmerWaterlineY - 3} 87 ${swimmerWaterlineY + 1} 101 ${swimmerWaterlineY}`}
+        fill="none"
+        stroke="var(--cb-wave-foam-color)"
+        strokeWidth="2.2"
+        strokeLinecap="round"
+        opacity="0.86"
+      />
     </svg>
   );
 };

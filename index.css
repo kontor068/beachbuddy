@@ -271,6 +271,12 @@ body {
   animation: cb-wave-surface-drift calc(var(--cb-wave-duration, 3s) * 0.9) ease-in-out infinite;
 }
 
+.cb-wave-swimmer-wake {
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: cb-wave-surface-drift calc(var(--cb-wave-duration, 3s) * 1.04) ease-in-out infinite;
+}
+
 .cb-wave-spray {
   transform-box: fill-box;
   transform-origin: center;
@@ -336,6 +342,7 @@ body {
   .cb-wave-surface,
   .cb-wave-foam,
   .cb-wave-highlight,
+  .cb-wave-swimmer-wake,
   .cb-wave-spray,
   .cb-wave-swimmer,
   .cb-wave-swimmer-arm {
