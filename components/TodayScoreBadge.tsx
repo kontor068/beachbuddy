@@ -1,7 +1,7 @@
 import React from 'react';
 import { BarChart3 } from 'lucide-react';
 import { LanguageCode, SwimmingComfort } from '../types';
-import { getSelectedDayPrefix, isSelectedDateToday } from '../utils/dateLabels';
+import { getSelectedDayPrefix, getSelectedHourPrefix, isSelectedDateToday } from '../utils/dateLabels';
 import { getLocalizedCopy } from '../utils/i18n';
 import { ExposureLevel } from '../utils/windExposure';
 
@@ -17,6 +17,7 @@ interface TodayScoreBadgeProps {
   swimmingComfort?: SwimmingComfort;
   noIdealSwimmingWindow?: boolean;
   exposureLevel?: ExposureLevel;
+  selectedHour?: number;
   /**
    * True only when the beach has authored/verified shelter, so the badge may say
    * "sheltered". A geometry-only 'protected' (canClaim=false) must stay a conservative
@@ -37,9 +38,9 @@ const clampScore = (score: number) => Math.max(0, Math.min(100, Math.round(score
 type DayLabel = (day: string, isToday: boolean) => string;
 
 type ScoreCopy = {
-  exposedToWind: string;
-  shelteredCard: string;
-  shelteredHero: string;
+  exposedToWind: DayLabel;
+  shelteredCard: DayLabel;
+  shelteredHero: DayLabel;
   caution: DayLabel;
   moreSuitableHero: DayLabel;
   moreSuitableCard: DayLabel;
@@ -67,9 +68,9 @@ const dayLabel = (today: string, withDay: (day: string) => string): DayLabel =>
 
 const scoreCopy: Record<LanguageCode, ScoreCopy> = {
   en: {
-    exposedToWind: 'Exposed to wind',
-    shelteredCard: 'Better wind option',
-    shelteredHero: 'Better wind option',
+    exposedToWind: dayLabel('More exposed to wind', (day) => `More exposed to wind ${day}`),
+    shelteredCard: dayLabel('Better wind option', (day) => `Better wind option ${day}`),
+    shelteredHero: dayLabel('Better wind option', (day) => `Better wind option ${day}`),
     caution: dayLabel('use caution', (day) => `use caution ${day}`),
     moreSuitableHero: dayLabel('one of the more suitable options, with caution', (day) => `one of the more suitable options ${day}, with caution`),
     moreSuitableCard: dayLabel('more suitable option, with caution', (day) => `more suitable option ${day}, with caution`),
@@ -78,16 +79,16 @@ const scoreCopy: Record<LanguageCode, ScoreCopy> = {
     excellentCard: dayLabel('very good conditions', (day) => `very good conditions ${day}`),
     veryGoodCard: dayLabel('good conditions', (day) => `good conditions ${day}`),
     goodCard: dayLabel('manageable conditions', (day) => `manageable conditions ${day}`),
-    notIdealLight: dayLabel('decent option, a bit breezy', (day) => `decent option ${day}, a bit breezy`),
-    notIdealModerate: dayLabel('decent option, fairly breezy', (day) => `decent option ${day}, fairly breezy`),
+    notIdealLight: dayLabel('manageable, a bit breezy', (day) => `manageable ${day}, a bit breezy`),
+    notIdealModerate: dayLabel('manageable, fairly breezy', (day) => `manageable ${day}, fairly breezy`),
     excellentHero: dayLabel('very good conditions', (day) => `very good conditions ${day}`),
     veryGoodHero: dayLabel('good conditions', (day) => `good conditions ${day}`),
     goodHero: dayLabel('manageable conditions', (day) => `manageable conditions ${day}`),
   },
   gr: {
-    exposedToWind: 'Εκτεθειμένη στον άνεμο',
-    shelteredCard: 'Υπήνεμη',
-    shelteredHero: 'Πιο υπήνεμη επιλογή',
+    exposedToWind: dayLabel('Πιο εκτεθειμένη στον άνεμο', (day) => `Πιο εκτεθειμένη στον άνεμο ${day}`),
+    shelteredCard: dayLabel('Υπήνεμη', (day) => `Υπήνεμη ${day}`),
+    shelteredHero: dayLabel('Πιο υπήνεμη επιλογή', (day) => `Πιο υπήνεμη επιλογή ${day}`),
     caution: dayLabel('Θέλει προσοχή', (day) => `${day} θέλει προσοχή`),
     moreSuitableHero: dayLabel('Από τις πιο κατάλληλες επιλογές, με προσοχή', (day) => `Από τις πιο κατάλληλες επιλογές ${day}, με προσοχή`),
     moreSuitableCard: dayLabel('Καταλληλότερη επιλογή, με προσοχή', (day) => `Καταλληλότερη επιλογή ${day}, με προσοχή`),
@@ -96,16 +97,16 @@ const scoreCopy: Record<LanguageCode, ScoreCopy> = {
     excellentCard: dayLabel('Πολύ καλές συνθήκες', (day) => `Πολύ καλές συνθήκες ${day}`),
     veryGoodCard: dayLabel('Καλές συνθήκες', (day) => `Καλές συνθήκες ${day}`),
     goodCard: dayLabel('Διαχειρίσιμες συνθήκες', (day) => `Διαχειρίσιμες συνθήκες ${day}`),
-    notIdealLight: dayLabel('Εντάξει επιλογή, με λίγο αέρα', (day) => `Εντάξει επιλογή ${day}, με λίγο αέρα`),
-    notIdealModerate: dayLabel('Εντάξει επιλογή, με αρκετό αέρα', (day) => `Εντάξει επιλογή ${day}, με αρκετό αέρα`),
+    notIdealLight: dayLabel('Διαχειρίσιμη, με λίγο αέρα', (day) => `Διαχειρίσιμη ${day}, με λίγο αέρα`),
+    notIdealModerate: dayLabel('Διαχειρίσιμη, με αρκετό αέρα', (day) => `Διαχειρίσιμη ${day}, με αρκετό αέρα`),
     excellentHero: dayLabel('Πολύ καλές συνθήκες', (day) => `Πολύ καλές συνθήκες ${day}`),
     veryGoodHero: dayLabel('Καλές συνθήκες', (day) => `Καλές συνθήκες ${day}`),
     goodHero: dayLabel('Διαχειρίσιμες συνθήκες', (day) => `Διαχειρίσιμες συνθήκες ${day}`),
   },
   fr: {
-    exposedToWind: 'Exposée au vent',
-    shelteredCard: 'Plus abritée',
-    shelteredHero: 'Option plus abritée',
+    exposedToWind: dayLabel('Plus exposée au vent', (day) => `Plus exposée au vent ${day}`),
+    shelteredCard: dayLabel('Plus abritée', (day) => `Plus abritée ${day}`),
+    shelteredHero: dayLabel('Option plus abritée', (day) => `Option plus abritée ${day}`),
     caution: dayLabel('prudence', (day) => `prudence ${day}`),
     moreSuitableHero: dayLabel('parmi les meilleures options, avec prudence', (day) => `parmi les meilleures options ${day}, avec prudence`),
     moreSuitableCard: dayLabel('option plus adaptée, avec prudence', (day) => `option plus adaptée ${day}, avec prudence`),
@@ -121,9 +122,9 @@ const scoreCopy: Record<LanguageCode, ScoreCopy> = {
     goodHero: dayLabel('conditions correctes', (day) => `conditions correctes ${day}`),
   },
   de: {
-    exposedToWind: 'Windexponiert',
-    shelteredCard: 'Windgeschützter',
-    shelteredHero: 'Windgeschütztere Option',
+    exposedToWind: dayLabel('Windexponiert', (day) => `Windexponiert ${day}`),
+    shelteredCard: dayLabel('Windgeschützter', (day) => `Windgeschützter ${day}`),
+    shelteredHero: dayLabel('Windgeschütztere Option', (day) => `Windgeschütztere Option ${day}`),
     caution: dayLabel('Vorsicht', (day) => `Vorsicht ${day}`),
     moreSuitableHero: dayLabel('eine der besseren Optionen, mit Vorsicht', (day) => `eine der besseren Optionen ${day}, mit Vorsicht`),
     moreSuitableCard: dayLabel('bessere Option, mit Vorsicht', (day) => `bessere Option ${day}, mit Vorsicht`),
@@ -139,9 +140,9 @@ const scoreCopy: Record<LanguageCode, ScoreCopy> = {
     goodHero: dayLabel('machbare Bedingungen', (day) => `machbare Bedingungen ${day}`),
   },
   it: {
-    exposedToWind: 'Esposta al vento',
-    shelteredCard: 'Più riparata',
-    shelteredHero: 'Opzione più riparata',
+    exposedToWind: dayLabel('Più esposta al vento', (day) => `Più esposta al vento ${day}`),
+    shelteredCard: dayLabel('Più riparata', (day) => `Più riparata ${day}`),
+    shelteredHero: dayLabel('Opzione più riparata', (day) => `Opzione più riparata ${day}`),
     caution: dayLabel('prudenza', (day) => `prudenza ${day}`),
     moreSuitableHero: dayLabel('tra le opzioni più adatte, con prudenza', (day) => `tra le opzioni più adatte ${day}, con prudenza`),
     moreSuitableCard: dayLabel('opzione più adatta, con prudenza', (day) => `opzione più adatta ${day}, con prudenza`),
@@ -150,8 +151,8 @@ const scoreCopy: Record<LanguageCode, ScoreCopy> = {
     excellentCard: dayLabel('condizioni molto buone', (day) => `condizioni molto buone ${day}`),
     veryGoodCard: dayLabel('condizioni buone', (day) => `condizioni buone ${day}`),
     goodCard: dayLabel('condizioni gestibili', (day) => `condizioni gestibili ${day}`),
-    notIdealLight: dayLabel("opzione ok, un po' di vento", (day) => `opzione ok ${day}, un po' di vento`),
-    notIdealModerate: dayLabel('opzione ok, abbastanza vento', (day) => `opzione ok ${day}, abbastanza vento`),
+    notIdealLight: dayLabel("gestibile, un po' di vento", (day) => `gestibile ${day}, un po' di vento`),
+    notIdealModerate: dayLabel('gestibile, abbastanza vento', (day) => `gestibile ${day}, abbastanza vento`),
     excellentHero: dayLabel('condizioni molto buone', (day) => `condizioni molto buone ${day}`),
     veryGoodHero: dayLabel('condizioni buone', (day) => `condizioni buone ${day}`),
     goodHero: dayLabel('condizioni gestibili', (day) => `condizioni gestibili ${day}`),
@@ -181,10 +182,13 @@ const getCappedConditionLabel = (
   selectedDate?: Date,
   windBeaufort?: number,
   exposureLevel?: ExposureLevel,
-  canClaimWindProtection?: boolean
+  canClaimWindProtection?: boolean,
+  selectedHour?: number
 ) => {
-  const day = getSelectedDayPrefix(selectedDate, new Date(), language);
+  const hour = getSelectedHourPrefix(selectedHour, language);
+  const day = hour ?? getSelectedDayPrefix(selectedDate, new Date(), language);
   const isToday = isSelectedDateToday(selectedDate);
+  const useCurrentPhrase = isToday && !hour;
   const copy = getLocalizedCopy(language, scoreCopy);
   const highRelativeRank = score >= 50;
   const isFiveBeaufort = windBeaufort === 5;
@@ -192,52 +196,54 @@ const getCappedConditionLabel = (
   const isLightOrModerateWind = typeof windBeaufort === 'number' && windBeaufort <= 4;
 
   if (isLightOrModerateWind) {
-    if (!highRelativeRank) return (typeof windBeaufort === 'number' && windBeaufort >= 4 ? copy.notIdealModerate : copy.notIdealLight)(day, isToday);
+    if (!highRelativeRank) return (typeof windBeaufort === 'number' && windBeaufort >= 4 ? copy.notIdealModerate : copy.notIdealLight)(day, useCurrentPhrase);
     return variant === 'hero'
-      ? copy.goodHero(day, isToday)
-      : copy.goodCard(day, isToday);
+      ? copy.goodHero(day, useCurrentPhrase)
+      : copy.goodCard(day, useCurrentPhrase);
   }
 
   if (isFiveBeaufort) {
-    if (isExposedAtFive) return copy.exposedToWind;
+    if (isExposedAtFive) return copy.exposedToWind(day, useCurrentPhrase);
     // Only a genuinely protected beach earns the clean "sheltered pick" wording.
     // A merely partly-sheltered beach (side exposure) on a 5 Bft day is still a
     // tricky day, so it gets the "with caution" wording instead of an endorsement
     // — otherwise the badge ("better wind option") contradicts the "difficult
     // conditions" verdict shown for the very same beach.
     if (exposureLevel === 'protected' && canClaimWindProtection === true) {
-      return variant === 'card' ? copy.shelteredCard : copy.shelteredHero;
+      return variant === 'card' ? copy.shelteredCard(day, useCurrentPhrase) : copy.shelteredHero(day, useCurrentPhrase);
     }
-    if (!highRelativeRank) return copy.caution(day, isToday);
+    if (!highRelativeRank) return copy.caution(day, useCurrentPhrase);
     return variant === 'hero'
-      ? copy.moreSuitableHero(day, isToday)
-      : copy.moreSuitableCard(day, isToday);
+      ? copy.moreSuitableHero(day, useCurrentPhrase)
+      : copy.moreSuitableCard(day, useCurrentPhrase);
   }
 
-  if (!highRelativeRank) return copy.caution(day, isToday);
+  if (!highRelativeRank) return copy.caution(day, useCurrentPhrase);
   return variant === 'hero'
-    ? copy.moreSuitableHero(day, isToday)
-    : copy.moreSuitableCard(day, isToday);
+    ? copy.moreSuitableHero(day, useCurrentPhrase)
+    : copy.moreSuitableCard(day, useCurrentPhrase);
 };
 
-const getTodayScoreLabel = (score: number, language: LanguageCode, selectedDate?: Date, capped = false, windBeaufort?: number, exposureLevel?: ExposureLevel, canClaimWindProtection?: boolean) => {
-  if (capped) return getCappedConditionLabel(score, language, 'card', selectedDate, windBeaufort, exposureLevel, canClaimWindProtection);
+const getTodayScoreLabel = (score: number, language: LanguageCode, selectedDate?: Date, capped = false, windBeaufort?: number, exposureLevel?: ExposureLevel, canClaimWindProtection?: boolean, selectedHour?: number) => {
+  if (capped) return getCappedConditionLabel(score, language, 'card', selectedDate, windBeaufort, exposureLevel, canClaimWindProtection, selectedHour);
 
-  const day = getSelectedDayPrefix(selectedDate, new Date(), language);
+  const hour = getSelectedHourPrefix(selectedHour, language);
+  const day = hour ?? getSelectedDayPrefix(selectedDate, new Date(), language);
   const isToday = isSelectedDateToday(selectedDate);
+  const useCurrentPhrase = isToday && !hour;
   const copy = getLocalizedCopy(language, scoreCopy);
   if (typeof windBeaufort === 'number' && windBeaufort <= 4) {
-    if (score >= 88) return copy.excellentCard(day, isToday);
-    if (score >= 76) return copy.veryGoodCard(day, isToday);
-    if (score >= 50) return copy.goodCard(day, isToday);
-    return (typeof windBeaufort === 'number' && windBeaufort >= 4 ? copy.notIdealModerate : copy.notIdealLight)(day, isToday);
+    if (score >= 88) return copy.excellentCard(day, useCurrentPhrase);
+    if (score >= 76) return copy.veryGoodCard(day, useCurrentPhrase);
+    if (score >= 50) return copy.goodCard(day, useCurrentPhrase);
+    return (typeof windBeaufort === 'number' && windBeaufort >= 4 ? copy.notIdealModerate : copy.notIdealLight)(day, useCurrentPhrase);
   }
 
-  if (score >= 88) return copy.excellentCard(day, isToday);
-  if (score >= 76) return copy.veryGoodCard(day, isToday);
-  if (score >= 64) return copy.goodCard(day, isToday);
-  if (score >= 50) return copy.caution(day, isToday);
-  return (typeof windBeaufort === 'number' && windBeaufort >= 4 ? copy.notIdealModerate : copy.notIdealLight)(day, isToday);
+  if (score >= 88) return copy.excellentCard(day, useCurrentPhrase);
+  if (score >= 76) return copy.veryGoodCard(day, useCurrentPhrase);
+  if (score >= 64) return copy.goodCard(day, useCurrentPhrase);
+  if (score >= 50) return copy.caution(day, useCurrentPhrase);
+  return (typeof windBeaufort === 'number' && windBeaufort >= 4 ? copy.notIdealModerate : copy.notIdealLight)(day, useCurrentPhrase);
 };
 
 export const getDisplayTodayScore = (score: number): number => {
@@ -249,24 +255,26 @@ export const getDisplayTodayScore = (score: number): number => {
   return normalized;
 };
 
-const getHeroTodayScoreLabel = (score: number, language: LanguageCode, selectedDate?: Date, capped = false, windBeaufort?: number, exposureLevel?: ExposureLevel, canClaimWindProtection?: boolean) => {
-  if (capped) return getCappedConditionLabel(score, language, 'hero', selectedDate, windBeaufort, exposureLevel, canClaimWindProtection);
+const getHeroTodayScoreLabel = (score: number, language: LanguageCode, selectedDate?: Date, capped = false, windBeaufort?: number, exposureLevel?: ExposureLevel, canClaimWindProtection?: boolean, selectedHour?: number) => {
+  if (capped) return getCappedConditionLabel(score, language, 'hero', selectedDate, windBeaufort, exposureLevel, canClaimWindProtection, selectedHour);
 
-  const day = getSelectedDayPrefix(selectedDate, new Date(), language);
+  const hour = getSelectedHourPrefix(selectedHour, language);
+  const day = hour ?? getSelectedDayPrefix(selectedDate, new Date(), language);
   const isToday = isSelectedDateToday(selectedDate);
+  const useCurrentPhrase = isToday && !hour;
   const copy = getLocalizedCopy(language, scoreCopy);
   if (typeof windBeaufort === 'number' && windBeaufort <= 4) {
-    if (score >= 88) return copy.excellentHero(day, isToday);
-    if (score >= 76) return copy.veryGoodHero(day, isToday);
-    if (score >= 50) return copy.goodHero(day, isToday);
-    return (typeof windBeaufort === 'number' && windBeaufort >= 4 ? copy.notIdealModerate : copy.notIdealLight)(day, isToday);
+    if (score >= 88) return copy.excellentHero(day, useCurrentPhrase);
+    if (score >= 76) return copy.veryGoodHero(day, useCurrentPhrase);
+    if (score >= 50) return copy.goodHero(day, useCurrentPhrase);
+    return (typeof windBeaufort === 'number' && windBeaufort >= 4 ? copy.notIdealModerate : copy.notIdealLight)(day, useCurrentPhrase);
   }
 
-  if (score >= 88) return copy.excellentHero(day, isToday);
-  if (score >= 76) return copy.veryGoodHero(day, isToday);
-  if (score >= 64) return copy.goodHero(day, isToday);
-  if (score >= 50) return copy.caution(day, isToday);
-  return (typeof windBeaufort === 'number' && windBeaufort >= 4 ? copy.notIdealModerate : copy.notIdealLight)(day, isToday);
+  if (score >= 88) return copy.excellentHero(day, useCurrentPhrase);
+  if (score >= 76) return copy.veryGoodHero(day, useCurrentPhrase);
+  if (score >= 64) return copy.goodHero(day, useCurrentPhrase);
+  if (score >= 50) return copy.caution(day, useCurrentPhrase);
+  return (typeof windBeaufort === 'number' && windBeaufort >= 4 ? copy.notIdealModerate : copy.notIdealLight)(day, useCurrentPhrase);
 };
 
 const getTodayScoreTone = (score: number, capped = false, windBeaufort?: number) => {
@@ -281,7 +289,7 @@ const getTodayScoreTone = (score: number, capped = false, windBeaufort?: number)
   }
 
   // Light/moderate wind (≤4 Bft) is never an alarm. A weaker pick here is a mild heads-up
-  // ("Εντάξει επιλογή, με αέρα"), so the pill stays amber, not the rose used for strong wind.
+  // ("manageable, with wind"), so the pill stays amber, not the rose used for strong wind.
   if (isLightOrModerateWind) {
     return {
       container: 'border-amber-200/90 bg-amber-50/78 text-amber-800 backdrop-blur-md dark:border-amber-900/50 dark:bg-amber-950/35 dark:text-amber-200',
@@ -337,6 +345,7 @@ export const TodayScoreBadge: React.FC<TodayScoreBadgeProps> = ({
   noIdealSwimmingWindow,
   exposureLevel,
   canClaimWindProtection,
+  selectedHour,
   forceShow = false,
 }) => {
   const normalizedScore = clampScore(score);
@@ -352,7 +361,7 @@ export const TodayScoreBadge: React.FC<TodayScoreBadgeProps> = ({
       <div className={`inline-flex w-full max-w-full min-w-0 items-center gap-2 rounded-2xl border px-3 py-2 shadow-sm sm:w-fit ${tone.container}`}>
         <BarChart3 className={`h-4 w-4 flex-shrink-0 ${tone.icon}`} />
         <span className="min-w-0 text-xs font-bold leading-tight sm:text-sm">
-          <span>{getHeroTodayScoreLabel(normalizedScore, language, selectedDate, conditionCapped, windBeaufort, exposureLevel, canClaimWindProtection)}</span>
+          <span>{getHeroTodayScoreLabel(normalizedScore, language, selectedDate, conditionCapped, windBeaufort, exposureLevel, canClaimWindProtection, selectedHour)}</span>
         </span>
       </div>
     );
@@ -361,7 +370,7 @@ export const TodayScoreBadge: React.FC<TodayScoreBadgeProps> = ({
   return (
     <div className={`inline-flex min-h-9 w-full min-w-0 items-center justify-center gap-1.5 rounded-full border px-3 py-1.5 text-xs font-bold shadow-sm ${tone.container}`}>
       <BarChart3 className={`h-3.5 w-3.5 flex-shrink-0 ${tone.icon}`} />
-      <span className="min-w-0 truncate">{getTodayScoreLabel(normalizedScore, language, selectedDate, conditionCapped, windBeaufort, exposureLevel, canClaimWindProtection)}</span>
+      <span className="min-w-0 truncate">{getTodayScoreLabel(normalizedScore, language, selectedDate, conditionCapped, windBeaufort, exposureLevel, canClaimWindProtection, selectedHour)}</span>
     </div>
   );
 };

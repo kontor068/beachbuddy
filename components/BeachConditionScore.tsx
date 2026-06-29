@@ -3,7 +3,7 @@ import { Wind, Waves, Thermometer, ShieldCheck, ShieldAlert } from 'lucide-react
 import { ExposureLevel } from '../utils/windExposure';
 import { LanguageCode } from '../types';
 import { calculateSeaConditionScore, getSeaExposureLevel } from '../utils/seaConditions';
-import { getSelectedDayPrefix, isSelectedDateToday } from '../utils/dateLabels';
+import { getSelectedDayPrefix, getSelectedHourPrefix, isSelectedDateToday } from '../utils/dateLabels';
 import { getLocalizedCopy } from '../utils/i18n';
 import { getBeaufortLevel } from '../utils/weatherUtils';
 
@@ -16,13 +16,14 @@ interface BeachConditionScoreProps {
   exposureLevel?: ExposureLevel;
   language?: LanguageCode;
   selectedDate?: Date;
+  selectedHour?: number;
   canClaimWindProtection?: boolean;
 }
 
 type DayLabel = (day: string, isToday: boolean) => string;
 
 type ConditionCopy = {
-  exposedToWind: string;
+  exposedToWind: DayLabel;
   openBeachCaution: DayLabel;
   betterSheltered: DayLabel;
   betterProtected: DayLabel;
@@ -31,7 +32,7 @@ type ConditionCopy = {
   roughSea: string;
   choppy: string;
   manageableSea: string;
-  betterWindOption: string;
+  betterWindOption: DayLabel;
   great: DayLabel;
   veryGood: string;
   goodConditions: string;
@@ -57,7 +58,7 @@ const dayLabel = (today: string, withDay: (day: string) => string): DayLabel =>
 
 const conditionCopy: Record<LanguageCode, ConditionCopy> = {
   en: {
-    exposedToWind: 'Exposed to wind',
+    exposedToWind: dayLabel('More exposed to wind', (day) => `More exposed to wind ${day}`),
     openBeachCaution: dayLabel('Open beach - use caution', (day) => `Open beach - use caution ${day}`),
     betterSheltered: dayLabel('Better out of the wind', (day) => `Better out of the wind ${day}`),
     betterProtected: dayLabel('Better sheltered', (day) => `Better sheltered ${day}`),
@@ -66,13 +67,13 @@ const conditionCopy: Record<LanguageCode, ConditionCopy> = {
     roughSea: 'Rough sea',
     choppy: 'Choppy',
     manageableSea: 'Manageable sea',
-    betterWindOption: 'Better wind option',
+    betterWindOption: dayLabel('Better sheltered', (day) => `Better sheltered ${day}`),
     great: dayLabel('Great', (day) => `Great ${day}`),
     veryGood: 'Very good',
     goodConditions: 'Good conditions',
     useCaution: 'Use caution',
-    notIdealLight: dayLabel('OK, a little chop', (day) => `OK, a little chop ${day}`),
-    notIdealModerate: dayLabel('OK, noticeable chop', (day) => `OK, noticeable chop ${day}`),
+    notIdealLight: dayLabel('Manageable, a little chop', (day) => `Manageable ${day}, a little chop`),
+    notIdealModerate: dayLabel('Manageable, noticeable chop', (day) => `Manageable ${day}, noticeable chop`),
     notIdeal: dayLabel('Use caution', (day) => `Use caution ${day}`),
     seaConditionsCompact: 'Sea Conditions',
     seaConditionsTitle: dayLabel('Sea conditions', (day) => `Sea conditions ${day}`),
@@ -82,7 +83,7 @@ const conditionCopy: Record<LanguageCode, ConditionCopy> = {
     temperature: 'Temperature',
   },
   gr: {
-    exposedToWind: 'Εκτεθειμένη στον άνεμο',
+    exposedToWind: dayLabel('Πιο εκτεθειμένη στον άνεμο', (day) => `Πιο εκτεθειμένη στον άνεμο ${day}`),
     openBeachCaution: dayLabel('Ανοιχτή παραλία - θέλει προσοχή', (day) => `Ανοιχτή παραλία - ${day} θέλει προσοχή`),
     betterSheltered: dayLabel('Πιο υπήνεμη', (day) => `Πιο υπήνεμη ${day}`),
     betterProtected: dayLabel('Πιο προστατευμένη', (day) => `Πιο προστατευμένη ${day}`),
@@ -91,13 +92,13 @@ const conditionCopy: Record<LanguageCode, ConditionCopy> = {
     roughSea: 'Έντονος κυματισμός',
     choppy: 'Κυματισμός',
     manageableSea: 'Πιο ήπια θάλασσα',
-    betterWindOption: 'Πιο υπήνεμη επιλογή',
+    betterWindOption: dayLabel('Πιο προστατευμένη επιλογή', (day) => `Πιο προστατευμένη επιλογή ${day}`),
     great: dayLabel('Πολύ καλές', (day) => `Πολύ καλές ${day}`),
     veryGood: 'Πολύ καλές',
     goodConditions: 'Καλές συνθήκες',
     useCaution: 'Με προσοχή',
-    notIdealLight: dayLabel('Εντάξει, με λίγο κύμα', (day) => `Εντάξει ${day}, με λίγο κύμα`),
-    notIdealModerate: dayLabel('Εντάξει, με αρκετό κύμα', (day) => `Εντάξει ${day}, με αρκετό κύμα`),
+    notIdealLight: dayLabel('Διαχειρίσιμη, με λίγο κύμα', (day) => `Διαχειρίσιμη ${day}, με λίγο κύμα`),
+    notIdealModerate: dayLabel('Διαχειρίσιμη, με αρκετό κύμα', (day) => `Διαχειρίσιμη ${day}, με αρκετό κύμα`),
     notIdeal: dayLabel('Θέλει προσοχή', (day) => `Θέλει προσοχή ${day}`),
     seaConditionsCompact: 'Θαλάσσιες Συνθήκες',
     seaConditionsTitle: dayLabel('Θαλάσσιες συνθήκες', (day) => `Θαλάσσιες συνθήκες ${day}`),
@@ -107,7 +108,7 @@ const conditionCopy: Record<LanguageCode, ConditionCopy> = {
     temperature: 'Θερμοκρασία',
   },
   fr: {
-    exposedToWind: 'Exposée au vent',
+    exposedToWind: dayLabel('Plus exposée au vent', (day) => `Plus exposée au vent ${day}`),
     openBeachCaution: dayLabel('Plage ouverte - prudence', (day) => `Plage ouverte - prudence ${day}`),
     betterSheltered: dayLabel("Plus à l'abri du vent", (day) => `Plus à l'abri du vent ${day}`),
     betterProtected: dayLabel('Plus abritée', (day) => `Plus abritée ${day}`),
@@ -116,7 +117,7 @@ const conditionCopy: Record<LanguageCode, ConditionCopy> = {
     roughSea: 'Mer agitée',
     choppy: 'Clapot',
     manageableSea: 'Mer praticable',
-    betterWindOption: 'Option plus abritée',
+    betterWindOption: dayLabel('Option plus abritée', (day) => `Option plus abritée ${day}`),
     great: dayLabel('Très bonnes', (day) => `Très bonnes ${day}`),
     veryGood: 'Très bonnes',
     goodConditions: 'Bonnes conditions',
@@ -132,7 +133,7 @@ const conditionCopy: Record<LanguageCode, ConditionCopy> = {
     temperature: 'Température',
   },
   de: {
-    exposedToWind: 'Windexponiert',
+    exposedToWind: dayLabel('Windexponiert', (day) => `Windexponiert ${day}`),
     openBeachCaution: dayLabel('Offener Strand - Vorsicht', (day) => `Offener Strand - Vorsicht ${day}`),
     betterSheltered: dayLabel('Mehr aus dem Wind', (day) => `Mehr aus dem Wind ${day}`),
     betterProtected: dayLabel('Besser geschützt', (day) => `Besser geschützt ${day}`),
@@ -141,7 +142,7 @@ const conditionCopy: Record<LanguageCode, ConditionCopy> = {
     roughSea: 'Raue See',
     choppy: 'Kabbelig',
     manageableSea: 'Gut machbare See',
-    betterWindOption: 'Windgeschütztere Option',
+    betterWindOption: dayLabel('Windgeschütztere Option', (day) => `Windgeschütztere Option ${day}`),
     great: dayLabel('Sehr gut', (day) => `Sehr gut ${day}`),
     veryGood: 'Sehr gut',
     goodConditions: 'Gute Bedingungen',
@@ -157,7 +158,7 @@ const conditionCopy: Record<LanguageCode, ConditionCopy> = {
     temperature: 'Temperatur',
   },
   it: {
-    exposedToWind: 'Esposta al vento',
+    exposedToWind: dayLabel('Più esposta al vento', (day) => `Più esposta al vento ${day}`),
     openBeachCaution: dayLabel('Spiaggia aperta - prudenza', (day) => `Spiaggia aperta - prudenza ${day}`),
     betterSheltered: dayLabel('Più riparata dal vento', (day) => `Più riparata dal vento ${day}`),
     betterProtected: dayLabel('Più protetta', (day) => `Più protetta ${day}`),
@@ -166,7 +167,7 @@ const conditionCopy: Record<LanguageCode, ConditionCopy> = {
     roughSea: 'Mare mosso',
     choppy: 'Mare increspato',
     manageableSea: 'Mare gestibile',
-    betterWindOption: 'Opzione più riparata',
+    betterWindOption: dayLabel('Opzione più riparata', (day) => `Opzione più riparata ${day}`),
     great: dayLabel('Molto buone', (day) => `Molto buone ${day}`),
     veryGood: 'Molto buone',
     goodConditions: 'Buone condizioni',
@@ -221,6 +222,7 @@ export const BeachConditionScore: React.FC<BeachConditionScoreProps> = ({
   exposureLevel,
   language = 'en',
   selectedDate,
+  selectedHour,
   canClaimWindProtection = false
 }) => {
   const rawSeaExposureLevel: ExposureLevel = getSeaExposureLevel(isExposed, exposureLevel);
@@ -301,20 +303,22 @@ export const BeachConditionScore: React.FC<BeachConditionScoreProps> = ({
   const waveHeightLabel = typeof waveHeightM === 'number' && Number.isFinite(waveHeightM)
     ? `${waveHeightM.toFixed(1)} m`
     : null;
-  const day = getSelectedDayPrefix(selectedDate, new Date(), language);
+  const hour = getSelectedHourPrefix(selectedHour, language);
+  const day = hour ?? getSelectedDayPrefix(selectedDate, new Date(), language);
   const isToday = isSelectedDateToday(selectedDate);
+  const useCurrentPhrase = isToday && !hour;
   const copy = getLocalizedCopy(language, conditionCopy);
   const exposureContextLabel = (() => {
     if (seaExposureLevel === 'exposed' && windBeaufort >= 5) {
       if (windBeaufort === 5) {
-        return copy.exposedToWind;
+        return copy.exposedToWind(day, useCurrentPhrase);
       }
-      return copy.openBeachCaution(day, isToday);
+      return copy.openBeachCaution(day, useCurrentPhrase);
     }
 
-    if (seaExposureLevel === 'protected') return copy.betterProtected(day, isToday);
-    if (seaExposureLevel === 'partial') return windBeaufort >= 4 ? copy.betterSheltered(day, isToday) : copy.mayFeelBreezy;
-    return windBeaufort >= 5 ? (isToday ? copy.exposedToWind : `${copy.exposedToWind} ${day}`) : copy.moreOpenToWind;
+    if (seaExposureLevel === 'protected') return copy.betterProtected(day, useCurrentPhrase);
+    if (seaExposureLevel === 'partial') return windBeaufort >= 4 ? copy.betterSheltered(day, useCurrentPhrase) : copy.mayFeelBreezy;
+    return windBeaufort >= 5 ? copy.exposedToWind(day, useCurrentPhrase) : copy.moreOpenToWind;
   })();
   const seaStateLabel = (() => {
     if (windBeaufort === 5) {
@@ -349,22 +353,21 @@ export const BeachConditionScore: React.FC<BeachConditionScoreProps> = ({
   };
 
   const getScoreLabel = (score: number) => {
-    const day = getSelectedDayPrefix(selectedDate, new Date(), language);
     if (seaStateLabel && (score < 8 || windBeaufort >= 5)) return seaStateLabel;
     // Reserve the clean "sheltered pick" headline for genuinely protected beaches.
     // A partly-sheltered beach at 5 Bft still gets wind/chop, so calling it the
     // "better wind option" misleads (and contradicts the difficult-day verdict);
     // let it fall through to the honest sea state instead.
-    if (windBeaufort === 5 && seaExposureLevel === 'protected') return copy.betterWindOption;
-    if (score >= 8) return compact ? copy.veryGood : copy.great(day, isToday);
+    if (windBeaufort === 5 && seaExposureLevel === 'protected') return copy.betterWindOption(day, useCurrentPhrase);
+    if (score >= 8) return compact ? copy.veryGood : copy.great(day, useCurrentPhrase);
     // 4 Bft is a moderate breeze — "Με προσοχή" overstates it, so a decent score reads
     // plainly as good conditions (matching the today badge, which is positive at ≤4 Bft).
     // Reserve "Με προσοχή" for genuinely strong wind (6+); 5 Bft stays the honest "Κυματισμός".
     if (score >= 5) return windBeaufort <= 4 ? copy.goodConditions : (windBeaufort === 5 ? copy.choppy : copy.useCaution);
     // Low sea score: light relative note at 3 vs 4 Bft; genuine caution only at ≥5 Bft.
-    if (windBeaufort >= 5) return copy.notIdeal(day, isToday);
-    if (windBeaufort === 4) return copy.notIdealModerate(day, isToday);
-    return copy.notIdealLight(day, isToday);
+    if (windBeaufort >= 5) return copy.notIdeal(day, useCurrentPhrase);
+    if (windBeaufort === 4) return copy.notIdealModerate(day, useCurrentPhrase);
+    return copy.notIdealLight(day, useCurrentPhrase);
   };
 
   const getIndicatorIcon = (score: number) => {
@@ -402,7 +405,7 @@ export const BeachConditionScore: React.FC<BeachConditionScoreProps> = ({
       <div className="flex items-center justify-between mb-4 pb-4 border-b border-slate-100 dark:border-slate-700">
         <div>
           <h3 className="text-sm font-semibold text-slate-700 dark:text-slate-600 mb-1">
-            {copy.seaConditionsTitle(getSelectedDayPrefix(selectedDate, new Date(), language), isToday)}
+            {copy.seaConditionsTitle(day, useCurrentPhrase)}
           </h3>
           <div className="flex items-baseline gap-2">
             <span className={`text-2xl font-heading font-bold ${conditionTone.text}`}>

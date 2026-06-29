@@ -468,6 +468,76 @@ const calculateHourlyRainRisk = (
   };
 };
 
+/** Per-hour effective wave height + the exposure/wind context used to derive it. */
+export interface HourlyWaveAssessment {
+  dt: number;
+  /** Local hour 0–23. */
+  hour: number;
+  windSpeedKmh: number;
+  exposureLevel: ExposureLevel;
+  isExposed: boolean;
+  /** Display/scoring wave height (m): max(measured, max(SMB·damping, wind-chop floor)). */
+  effectiveWaveHeightM: number;
+  /** True when this hour had a live marine wave value (not purely wind-modeled). */
+  hasMeasured: boolean;
+}
+
+// Single source of truth for an hour's effective wave: directional exposure (so fetch tracks the
+// hour's own wind direction), fetch-limited SMB damped by exposure, the wind-chop floor, and the
+// live marine value when present. The daily headline, the sea score, and the wave strip all run
+// this same rule so they can never show contradictory wave heights for the same hour.
+const assessHourlyWave = (
+  beach: Beach,
+  item: ForecastItem,
+  geospatialProfile?: GeospatialExposureProfile
+): HourlyWaveAssessment => {
+  const windDirection = degToCompass(item.wind.deg);
+  const windSpeedKmh = item.wind.speed * 3.6;
+  const beaufort = getBeaufortLevel(windSpeedKmh);
+  const gustKmph = typeof item.wind.gustKnots === 'number' && Number.isFinite(item.wind.gustKnots)
+    ? item.wind.gustKnots * 1.852
+    : typeof item.wind.gust === 'number' && Number.isFinite(item.wind.gust)
+      ? item.wind.gust * 3.6
+      : undefined;
+  const windAssessment = assessBeachWindExposure({
+    beach,
+    windDirectionDeg: item.wind.deg,
+    windDirection,
+    windSpeedKmh,
+    beaufort,
+    waveHeightMeters: item.marine?.waveHeightM,
+    geospatialProfile,
+  });
+  const exposureLevel = windAssessment.exposureLevel;
+  const modeledWaveDamping = exposureLevel === 'protected' ? 0.5 : exposureLevel === 'partial' ? 0.75 : 1;
+  const modeledWaveHeightM = Number(Math.max(
+    windAssessment.modeledWaveHeightM * modeledWaveDamping,
+    getWindChopWaveFloorM(exposureLevel, beaufort, windSpeedKmh, gustKmph)
+  ).toFixed(2));
+  const measured = item.marine?.waveHeightM;
+  const hasMeasured = typeof measured === 'number' && Number.isFinite(measured);
+  return {
+    dt: item.dt,
+    hour: new Date(item.dt * 1000).getHours(),
+    windSpeedKmh,
+    exposureLevel,
+    isExposed: exposureLevel !== 'protected',
+    effectiveWaveHeightM: resolveEffectiveWaveHeightM(measured, modeledWaveHeightM),
+    hasMeasured,
+  };
+};
+
+/**
+ * Per-hour effective wave heights for a beach, using the exact same rule as the daily score.
+ * Consumed by the detail-page wave strip so every hourly bar matches the headline figure.
+ */
+export const computeHourlyEffectiveWaves = (
+  beach: Beach,
+  hourlyForecast?: ForecastItem[],
+  geospatialProfile?: GeospatialExposureProfile
+): HourlyWaveAssessment[] =>
+  (hourlyForecast ?? []).map(item => assessHourlyWave(beach, item, geospatialProfile));
+
 const calculateHourlySeaScore = (
   beach: Beach,
   hourlyForecast?: ForecastItem[],
@@ -477,35 +547,12 @@ const calculateHourlySeaScore = (
   if (keyHours.length === 0) return { poorHours: 0, checkedHours: 0 };
 
   const scores = keyHours.map(item => {
-    const windDirection = degToCompass(item.wind.deg);
-    const windSpeedKmh = item.wind.speed * 3.6;
-    const gustKmph = typeof item.wind.gustKnots === 'number' && Number.isFinite(item.wind.gustKnots)
-      ? item.wind.gustKnots * 1.852
-      : typeof item.wind.gust === 'number' && Number.isFinite(item.wind.gust)
-        ? item.wind.gust * 3.6
-        : undefined;
-    const windAssessment = assessBeachWindExposure({
-      beach,
-      windDirectionDeg: item.wind.deg,
-      windDirection,
-      windSpeedKmh,
-      beaufort: getBeaufortLevel(windSpeedKmh),
-      waveHeightMeters: item.marine?.waveHeightM,
-      geospatialProfile,
-    });
-    const exposureLevel = windAssessment.exposureLevel;
-    const isExposed = exposureLevel !== 'protected';
-    const modeledWaveDamping = exposureLevel === 'protected' ? 0.5 : exposureLevel === 'partial' ? 0.75 : 1;
-    const modeledWaveHeightM = Number(Math.max(
-      windAssessment.modeledWaveHeightM * modeledWaveDamping,
-      getWindChopWaveFloorM(exposureLevel, getBeaufortLevel(windSpeedKmh), windSpeedKmh, gustKmph)
-    ).toFixed(2));
-    const effectiveWaveHeightM = resolveEffectiveWaveHeightM(item.marine?.waveHeightM, modeledWaveHeightM);
+    const assessment = assessHourlyWave(beach, item, geospatialProfile);
     return calculateSeaConditionScore(
-      isExposed,
-      windSpeedKmh,
-      exposureLevel,
-      effectiveWaveHeightM
+      assessment.isExposed,
+      assessment.windSpeedKmh,
+      assessment.exposureLevel,
+      assessment.effectiveWaveHeightM
     );
   });
 

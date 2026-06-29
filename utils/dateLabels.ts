@@ -13,6 +13,30 @@ export const getSelectedDayOffset = (selectedDate?: Date, currentDate: Date = ne
 export const isSelectedDateToday = (selectedDate?: Date, currentDate: Date = new Date()): boolean =>
   getSelectedDayOffset(selectedDate, currentDate) === 0;
 
+export const formatSelectedHour = (selectedHour?: number): string | undefined => {
+  if (typeof selectedHour !== 'number' || !Number.isFinite(selectedHour)) return undefined;
+  if (selectedHour < 0 || selectedHour > 23) return undefined;
+  return `${String(Math.round(selectedHour)).padStart(2, '0')}:00`;
+};
+
+export const getSelectedHourPrefix = (
+  selectedHour?: number,
+  language: LanguageCode = 'en'
+): string | undefined => {
+  const hourLabel = formatSelectedHour(selectedHour);
+  if (!hourLabel) return undefined;
+
+  const prefixes: Record<LanguageCode, string> = {
+    en: `at ${hourLabel}`,
+    gr: `στις ${hourLabel}`,
+    fr: `à ${hourLabel}`,
+    de: `um ${hourLabel}`,
+    it: `alle ${hourLabel}`,
+  };
+
+  return prefixes[language];
+};
+
 const greekWeekdayAccusative = ['την Κυριακή', 'τη Δευτέρα', 'την Τρίτη', 'την Τετάρτη', 'την Πέμπτη', 'την Παρασκευή', 'το Σάββατο'];
 const greekWeekdayGenitive = ['της Κυριακής', 'της Δευτέρας', 'της Τρίτης', 'της Τετάρτης', 'της Πέμπτης', 'της Παρασκευής', 'του Σαββάτου'];
 

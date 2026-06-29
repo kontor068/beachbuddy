@@ -148,8 +148,15 @@ export const getWaveScale = (
 export const getWaveBandClasses = (waveHeightM: number): WaveBandClasses =>
   WAVE_BAND_CLASSES[bucketFor(waveHeightM).band];
 
-/** 0..1 height for the hourly strip bars (clamped so even flat days show a sliver). */
+/** Axis top (m) the strip bars are sized against — mirrors the wave meter's base scale. */
+const WAVE_BAR_MAX_M = 1.6;
+
+/**
+ * 0..1 height for the hourly strip bars. Continuous (linear in metres) rather than bucketed, so
+ * neighbouring hours like 0.55 m and 0.79 m read as visibly different bars; clamped so even a flat
+ * hour shows a sliver and a big sea fills the bar.
+ */
 export const waveBarFraction = (waveHeightM: number): number => {
-  const f = bucketFor(waveHeightM).bodyFraction;
-  return Math.max(0.08, Math.min(1, f));
+  const m = Number.isFinite(waveHeightM) ? waveHeightM : 0;
+  return Math.max(0.08, Math.min(1, m / WAVE_BAR_MAX_M));
 };

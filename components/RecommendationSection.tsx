@@ -14,6 +14,7 @@ interface RecommendationSectionProps {
   waveHeightM?: number;
   temperature?: number;
   selectedDate?: Date;
+  selectedHour?: number;
   islandName: string;
   regionId?: string;
   onBeachClick: (beach: Beach) => void;
@@ -53,6 +54,7 @@ export const RecommendationSection: React.FC<RecommendationSectionProps> = ({
   waveHeightM,
   temperature,
   selectedDate,
+  selectedHour,
   islandName,
   regionId,
   onBeachClick,
@@ -147,6 +149,7 @@ export const RecommendationSection: React.FC<RecommendationSectionProps> = ({
           waveHeightM={waveHeightM}
           temperature={temperature}
           selectedDate={selectedDate}
+          selectedHour={selectedHour}
           islandName={islandName}
           regionId={regionId}
           onBeachClick={onBeachClick}

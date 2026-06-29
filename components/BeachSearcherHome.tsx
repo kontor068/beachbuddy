@@ -2994,6 +2994,7 @@ export const BeachSearcherHome: React.FC<BeachSearcherHomeProps> = ({
         bestSwimWindow={options.context?.bestTimeWindow ?? directContext.bestTimeWindow ?? weatherContext?.bestTimeWindow}
         topPickTimeLabel={options.topPickTimeLabel}
         selectedDate={selectedDate}
+        selectedHour={mapSelectedHour}
         showIslandName={!selectedIsland}
         exposureLevel={exposureLevel}
         waveHeightM={options.context?.waveHeightM ?? directContext.waveHeightM ?? weatherContext?.waveHeightM}

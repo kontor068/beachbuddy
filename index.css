@@ -271,12 +271,6 @@ body {
   animation: cb-wave-surface-drift calc(var(--cb-wave-duration, 3s) * 0.9) ease-in-out infinite;
 }
 
-.cb-wave-swimmer-wake {
-  transform-box: fill-box;
-  transform-origin: center;
-  animation: cb-wave-surface-drift calc(var(--cb-wave-duration, 3s) * 1.04) ease-in-out infinite;
-}
-
 .cb-wave-spray {
   transform-box: fill-box;
   transform-origin: center;
@@ -289,10 +283,10 @@ body {
   animation: cb-wave-swimmer-bob var(--cb-wave-duration, 3s) ease-in-out infinite;
 }
 
-.cb-wave-swimmer-arm {
+.cb-wave-boat {
   transform-box: fill-box;
-  transform-origin: 16px -10px;
-  animation: cb-wave-swimmer-arm calc(var(--cb-wave-duration, 3s) * 0.82) ease-in-out infinite;
+  transform-origin: center;
+  animation: cb-wave-boat-bob var(--cb-wave-duration, 3s) ease-in-out infinite;
 }
 
 @keyframes cb-wave-surface-drift {
@@ -315,13 +309,13 @@ body {
   }
 }
 
-@keyframes cb-wave-swimmer-arm {
+@keyframes cb-wave-boat-bob {
   0%, 100% {
-    transform: rotate(-16deg);
+    transform: translateY(calc(var(--cb-swimmer-bob, 3px) * 0.5)) rotate(calc(var(--cb-swimmer-tilt, 2deg) * -0.45));
   }
 
   50% {
-    transform: rotate(18deg);
+    transform: translateY(calc(var(--cb-swimmer-bob, 3px) * -0.7)) rotate(calc(var(--cb-swimmer-tilt, 2deg) * 0.45));
   }
 }
 
@@ -342,10 +336,9 @@ body {
   .cb-wave-surface,
   .cb-wave-foam,
   .cb-wave-highlight,
-  .cb-wave-swimmer-wake,
   .cb-wave-spray,
   .cb-wave-swimmer,
-  .cb-wave-swimmer-arm {
+  .cb-wave-boat {
     animation: none !important;
     transform: none !important;
   }

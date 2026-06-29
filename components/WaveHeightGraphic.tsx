@@ -30,10 +30,9 @@ interface WaveHeightGraphicProps {
   selectedDate?: Date;
   /** The hour the slider/forecast is showing — marks that bar on the strip (overrides wall-clock). */
   selectedHour?: number;
-  /** Wind-modeled wave height (m); sizes the figure when there is no measured value. */
+  /** Wind-modeled wave height (m); sizes the meter when there is no measured value. */
   estimateHeightM?: number;
-  /** Boat-only beach: you board from the boat, so the body-scale "knee/chest" metaphor is
-   *  meaningless — show a boat-on-the-sea scene + a transfer caution instead. */
+  /** Boat-only beach: show a boat-on-the-sea meter scene plus a transfer caution. */
   boatAccess?: boolean;
   /** Wind Beaufort for the selected hour — drives the boat-transfer caution (above 3 Bft). */
   windBeaufort?: number;
@@ -104,8 +103,8 @@ const COPY: LocalizedCopy<StripCopy> = {
   },
 };
 
-// Boat-only beaches: you arrive by boat, so "wave up to your knee/chest" is meaningless. Describe
-// the SEA for the boat instead, and warn that small boats rock more (rough from ~Force 4 up).
+// Boat-only beaches: describe the SEA for the boat and warn that small boats rock more.
+// The visual uses the same metre scale, not a body-height metaphor.
 type BoatCopy = { calm: string; choppy: string; rough: string; heightNote: string; note: string };
 
 const BOAT_COPY: LocalizedCopy<BoatCopy> = {
@@ -119,6 +118,52 @@ const BOAT_COPY: LocalizedCopy<BoatCopy> = {
 type WaveTrendKey = 'calmerMorning' | 'calmerLater';
 
 const formatHour = (hour: number) => `${String(hour).padStart(2, '0')}:00`;
+
+type SwimFeelCopy = {
+  label: string;
+  calm: string;
+  amber: string;
+  rough: string;
+  estimate: string;
+};
+
+const SWIM_FEEL_COPY: LocalizedCopy<SwimFeelCopy> = {
+  en: {
+    label: 'Swimming feel',
+    calm: 'Low waves',
+    amber: 'Some chop',
+    rough: 'Rougher sea',
+    estimate: 'Wind-based estimate',
+  },
+  gr: {
+    label: 'Αίσθηση στο μπάνιο',
+    calm: 'Χαμηλό κύμα',
+    amber: 'Λίγος κυματισμός',
+    rough: 'Πιο έντονο κύμα',
+    estimate: 'Εκτίμηση από άνεμο',
+  },
+  fr: {
+    label: 'Pour la baignade',
+    calm: 'Vagues faibles',
+    amber: 'Un peu de clapot',
+    rough: 'Mer plus agitée',
+    estimate: 'Estimation par le vent',
+  },
+  de: {
+    label: 'Badegefühl',
+    calm: 'Niedrige Wellen',
+    amber: 'Etwas Kabbelwasser',
+    rough: 'Unruhigere See',
+    estimate: 'Windbasierte Schätzung',
+  },
+  it: {
+    label: 'Sensazione in acqua',
+    calm: 'Onde basse',
+    amber: 'Un po’ mosso',
+    rough: 'Mare più mosso',
+    estimate: 'Stima dal vento',
+  },
+};
 
 const getSwimmerMotionStyle = (scale: WaveScaleResult): React.CSSProperties => {
   const motion = (() => {
@@ -159,6 +204,62 @@ const getBlueWaterFillClass = (scale: WaveScaleResult): string => {
   return 'text-teal-500 dark:text-teal-400';
 };
 
+const clamp = (value: number, min: number, max: number): number => Math.max(min, Math.min(max, value));
+
+const waveAmplitudeFor = (scale: WaveScaleResult): number => {
+  switch (scale.bodyRef) {
+    case 'overhead':
+      return 12;
+    case 'chest':
+      return 10;
+    case 'waist':
+      return 8;
+    case 'knee':
+      return 5.5;
+    case 'ankle':
+      return 3.5;
+    case 'flat':
+    default:
+      return 2;
+  }
+};
+
+const METER_BASE_MAX_M = 1.6; // axis top for typical seas — keeps the tuned, well-spaced look
+const METER_HARD_MAX_M = 3.0; // never plot beyond this, however wild the value
+const METER_TICK_STEP = 0.5;
+
+// Axis top for a given wave height: the tuned 1.6 m for typical seas, stepping up in 0.5 m
+// increments for rough days so a 2.5 m sea never silently pegs at the same level as 1.6 m.
+const axisMaxForHeight = (m: number): number =>
+  m <= METER_BASE_MAX_M
+    ? METER_BASE_MAX_M
+    : Math.min(METER_HARD_MAX_M, Math.ceil(m / METER_TICK_STEP) * METER_TICK_STEP);
+
+const axisTicks = (axisMaxM: number): number[] => {
+  const ticks: number[] = [];
+  for (let m = Math.floor(axisMaxM / METER_TICK_STEP) * METER_TICK_STEP; m > 0.0001; m -= METER_TICK_STEP) {
+    ticks.push(Number(m.toFixed(1)));
+  }
+  ticks.push(0);
+  return ticks;
+};
+
+const getVisualWaveHeightM = (
+  scale: WaveScaleResult,
+  waveHeightM?: number,
+  estimateHeightM?: number
+): number => {
+  const source = typeof waveHeightM === 'number' && Number.isFinite(waveHeightM)
+    ? waveHeightM
+    : estimateHeightM;
+
+  if (typeof source === 'number' && Number.isFinite(source)) {
+    return clamp(source, 0, METER_HARD_MAX_M);
+  }
+
+  return clamp(scale.bodyFraction * METER_BASE_MAX_M, 0, METER_BASE_MAX_M);
+};
+
 // ---------------------------------------------------------------------------------------
 const getWaveSceneStyle = (scale: WaveScaleResult): React.CSSProperties => {
   const palette = scale.isEstimate
@@ -170,6 +271,7 @@ const getWaveSceneStyle = (scale: WaveScaleResult): React.CSSProperties => {
         sand: '#e2e8f0',
         swimmer: '#475569',
         foam: 'rgba(255,255,255,0.72)',
+        guide: 'rgba(71,85,105,0.32)',
       }
     : scale.band === 'rough'
       ? {
@@ -180,6 +282,7 @@ const getWaveSceneStyle = (scale: WaveScaleResult): React.CSSProperties => {
           sand: '#fde68a',
           swimmer: '#475569',
           foam: 'rgba(255,255,255,0.84)',
+          guide: 'rgba(71,85,105,0.28)',
         }
       : scale.band === 'amber'
         ? {
@@ -190,6 +293,7 @@ const getWaveSceneStyle = (scale: WaveScaleResult): React.CSSProperties => {
             sand: '#fde68a',
             swimmer: '#475569',
             foam: 'rgba(255,255,255,0.8)',
+            guide: 'rgba(71,85,105,0.26)',
           }
         : {
             crest: '#2dd4bf',
@@ -199,6 +303,7 @@ const getWaveSceneStyle = (scale: WaveScaleResult): React.CSSProperties => {
             sand: '#fde68a',
             swimmer: '#475569',
             foam: 'rgba(255,255,255,0.78)',
+            guide: 'rgba(71,85,105,0.24)',
           };
 
   return {
@@ -209,122 +314,128 @@ const getWaveSceneStyle = (scale: WaveScaleResult): React.CSSProperties => {
     '--cb-wave-sand': palette.sand,
     '--cb-wave-swimmer-color': palette.swimmer,
     '--cb-wave-foam-color': palette.foam,
+    '--cb-wave-guide-color': palette.guide,
   } as React.CSSProperties;
 };
 
-// Illustrated swimmer scene. The height bucket still sizes the wave, but the visible reading is
-// the metre value in the text block, not a body-reference label.
-const FigureScene: React.FC<{ scale: WaveScaleResult }> = ({ scale }) => {
-  const baselineY = 100;
-  const headTopY = 18;
-  const bodySpan = baselineY - headTopY; // 82
-  const crestY = baselineY - scale.bodyFraction * bodySpan;
-  const waveTopY = Math.max(24, Math.min(92, crestY));
-  const swimmerImmersionOffset = scale.bodyRef === 'flat'
-    ? 22
-    : scale.bodyRef === 'ankle'
-      ? 18
-      : scale.bodyRef === 'knee'
-        ? 15
-        : 13;
-  const swimmerY = Math.max(30, Math.min(94, crestY + swimmerImmersionOffset));
-  const swimmerWaterlineY = Math.max(
-    waveTopY + 1,
-    Math.min(baselineY + 4, swimmerY + (scale.bodyRef === 'flat' || scale.bodyRef === 'ankle' ? 4 : 2))
-  );
+// Scientific-first wave meter: the scale is metres, while the swimmer is only a small context cue.
+const WaveMeterScene: React.FC<{ scale: WaveScaleResult; visualHeightM: number }> = ({ scale, visualHeightM }) => {
+  const plotTopY = 18;
+  const plotBottomY = 98;
+  const plotLeftX = 42;
+  const plotRightX = 166;
+  const plotHeight = plotBottomY - plotTopY;
+  const axisMaxM = axisMaxForHeight(visualHeightM);
+  const waterlineY = plotBottomY - (clamp(visualHeightM, 0, axisMaxM) / axisMaxM) * plotHeight;
+  const amplitude = waveAmplitudeFor(scale) * 0.58;
   const sceneId = React.useId().replace(/:/g, '');
-  const surfaceGradientId = `wave-surface-${sceneId}`;
   const skyGradientId = `wave-sky-${sceneId}`;
+  const depthGradientId = `wave-depth-${sceneId}`;
   const sceneStyle = {
     ...getWaveSceneStyle(scale),
     ...getSwimmerMotionStyle(scale),
   } as React.CSSProperties;
+  const tickValues = axisTicks(axisMaxM);
+  const tickY = (m: number) => plotBottomY - (m / axisMaxM) * plotHeight;
+  const swimmerY = clamp(waterlineY, 30, 90);
+  const waterPath = `M${plotLeftX} ${plotBottomY + 10} L${plotLeftX} ${waterlineY + 8} C 61 ${waterlineY - amplitude} 78 ${waterlineY + amplitude * 0.55} 96 ${waterlineY - amplitude * 0.18} C 119 ${waterlineY - amplitude * 0.88} 139 ${waterlineY + amplitude * 0.65} ${plotRightX} ${waterlineY - amplitude * 0.12} L${plotRightX} ${plotBottomY + 10} Z`;
+  const crestPath = `M${plotLeftX} ${waterlineY + 8} C 61 ${waterlineY - amplitude} 78 ${waterlineY + amplitude * 0.55} 96 ${waterlineY - amplitude * 0.18} C 119 ${waterlineY - amplitude * 0.88} 139 ${waterlineY + amplitude * 0.65} ${plotRightX} ${waterlineY - amplitude * 0.12}`;
+  const backwashPath = `M${plotLeftX - 2} ${clamp(waterlineY + 20, 35, 108)} C 66 ${waterlineY + 10} 83 ${waterlineY + 22} 106 ${waterlineY + 14} C 128 ${waterlineY + 7} 143 ${waterlineY + 20} ${plotRightX + 2} ${waterlineY + 12} L${plotRightX + 2} ${plotBottomY + 13} L${plotLeftX - 2} ${plotBottomY + 13} Z`;
 
   return (
-    <svg viewBox="0 0 176 116" preserveAspectRatio="xMidYMid meet" aria-hidden="true" className="h-auto w-full" style={sceneStyle}>
+    <svg viewBox="0 0 176 116" preserveAspectRatio="xMidYMid meet" aria-hidden="true" className="h-auto w-full drop-shadow-sm" style={sceneStyle}>
       <defs>
         <linearGradient id={skyGradientId} x1="0" x2="0" y1="0" y2="1">
           <stop offset="0%" stopColor="var(--cb-wave-sky)" stopOpacity="0.92" />
           <stop offset="100%" stopColor="#ffffff" stopOpacity="0.5" />
         </linearGradient>
-        <linearGradient id={surfaceGradientId} x1="0" x2="0" y1="0" y2="1">
-          <stop offset="0%" stopColor="var(--cb-wave-crest)" />
-          <stop offset="58%" stopColor="var(--cb-wave-mid)" />
-          <stop offset="100%" stopColor="var(--cb-wave-deep)" />
+        <linearGradient id={depthGradientId} x1="0" x2="1" y1="0" y2="0">
+          <stop offset="0%" stopColor="var(--cb-wave-crest)" stopOpacity="0.78" />
+          <stop offset="54%" stopColor="var(--cb-wave-mid)" stopOpacity="0.96" />
+          <stop offset="100%" stopColor="var(--cb-wave-deep)" stopOpacity="0.96" />
         </linearGradient>
       </defs>
 
-      <rect x="2" y="2" width="172" height="112" rx="18" fill={`url(#${skyGradientId})`} />
+      <rect x="2" y="2" width="172" height="112" rx="20" fill={`url(#${skyGradientId})`} />
       <path
         d="M8 100 C 34 95 55 96 78 101 C 105 107 132 106 168 99 L168 116 L8 116 Z"
         fill="var(--cb-wave-sand)"
-        opacity="0.36"
+        opacity="0.28"
       />
+
+      <g aria-hidden="true">
+        {tickValues.map((tick) => (
+          <g key={tick}>
+            <path
+              d={`M${plotLeftX - 4} ${tickY(tick)} H${plotRightX}`}
+              stroke="var(--cb-wave-guide-color)"
+              strokeWidth={Math.abs(tick - visualHeightM) < 0.08 ? 1.6 : 1}
+              strokeDasharray={tick === 0 ? undefined : '3 4'}
+              opacity={tick === 0 ? 0.72 : 0.48}
+            />
+            <text
+              x={plotLeftX - 8}
+              y={tickY(tick) + 3}
+              textAnchor="end"
+              fontSize="8"
+              fontWeight="700"
+              fill="var(--cb-wave-guide-color)"
+            >
+              {tick === 0 ? '0m' : tick.toFixed(1)}
+            </text>
+          </g>
+        ))}
+        <path d={`M${plotLeftX} ${plotTopY} V${plotBottomY}`} stroke="var(--cb-wave-guide-color)" strokeWidth="1.4" strokeLinecap="round" />
+        <circle cx={plotLeftX} cy={waterlineY} r="3" fill="var(--cb-wave-deep)" stroke="white" strokeWidth="1.4" />
+      </g>
 
       <path
         className="cb-wave-backwash"
-        d={`M8 ${Math.min(108, waveTopY + 20)} C 31 ${waveTopY + 10} 48 ${waveTopY + 24} 72 ${waveTopY + 14} C 104 ${waveTopY + 1} 126 ${waveTopY + 23} 168 ${waveTopY + 10} L168 ${baselineY + 13} L8 ${baselineY + 13} Z`}
+        d={backwashPath}
         fill="var(--cb-wave-mid)"
-        opacity={scale.isEstimate ? 0.2 : 0.22}
+        opacity={scale.isEstimate ? 0.16 : 0.2}
       />
 
       <path
-        d={`M10 ${baselineY + 8} L10 ${waveTopY + 10} C 36 ${waveTopY - 4} 55 ${waveTopY + 12} 78 ${waveTopY + 3} C 105 ${waveTopY - 8} 127 ${waveTopY + 14} 166 ${waveTopY + 1} L166 ${baselineY + 8} Z`}
+        d={waterPath}
         className="cb-wave-surface"
-        fill={`url(#${surfaceGradientId})`}
-        fillOpacity={scale.isEstimate ? 0.54 : 0.9}
+        fill={`url(#${depthGradientId})`}
+        fillOpacity={scale.isEstimate ? 0.52 : 0.92}
         {...(scale.isEstimate ? { strokeDasharray: '4 3', stroke: 'var(--cb-wave-deep)', strokeWidth: 1 } : {})}
       />
 
       <path
         className="cb-wave-highlight"
-        d={`M22 ${waveTopY + 18} C 50 ${waveTopY + 8} 72 ${waveTopY + 20} 99 ${waveTopY + 11} C 120 ${waveTopY + 4} 139 ${waveTopY + 12} 160 ${waveTopY + 7}`}
+        d={`M29 ${waterlineY + 19} C 52 ${waterlineY + 11} 74 ${waterlineY + 20} 98 ${waterlineY + 12} C 119 ${waterlineY + 6} 141 ${waterlineY + 13} 160 ${waterlineY + 8}`}
         fill="none"
-        stroke="rgba(255,255,255,0.38)"
-        strokeWidth="5"
+        stroke="rgba(255,255,255,0.34)"
+        strokeWidth="4.6"
         strokeLinecap="round"
       />
 
       <path
-        d={`M10 ${waveTopY + 10} C 36 ${waveTopY - 4} 55 ${waveTopY + 12} 78 ${waveTopY + 3} C 105 ${waveTopY - 8} 127 ${waveTopY + 14} 166 ${waveTopY + 1}`}
+        d={crestPath}
         fill="none"
         className="cb-wave-foam"
         stroke="var(--cb-wave-foam-color)"
-        strokeWidth="3"
+        strokeWidth={scale.band === 'rough' ? 3.6 : 3}
         strokeLinecap="round"
       />
 
       <g className="cb-wave-spray" fill="var(--cb-wave-foam-color)" opacity="0.82">
-        <circle cx="52" cy={waveTopY + 2} r="1.5" />
-        <circle cx="61" cy={waveTopY + 6} r="1" />
-        <circle cx="121" cy={waveTopY + 1} r="1.4" />
+        <circle cx="71" cy={waterlineY + 1} r={scale.band === 'rough' ? 1.7 : 1.1} />
+        <circle cx="82" cy={waterlineY + 5} r="1" />
+        <circle cx="126" cy={waterlineY} r={scale.band === 'rough' ? 1.5 : 1} />
       </g>
 
-      <g transform={`translate(34 ${swimmerY})`}>
+      {/* Small human cue that rides the surface, so its waterline tracks the metre reading. */}
+      <g transform={`translate(112 ${swimmerY}) scale(0.46)`} opacity="0.7">
         <g className="cb-wave-swimmer" fill="none" stroke="var(--cb-wave-swimmer-color)" strokeLinecap="round" strokeLinejoin="round">
           <circle cx="0" cy="-8" r="5.4" fill="var(--cb-wave-swimmer-color)" stroke="none" />
-          <path d="M5 -5 C 17 -9 30 -5 43 1" strokeWidth="5.8" />
-          <path className="cb-wave-swimmer-arm" d="M9 -5 C 17 -19 31 -18 38 -10" strokeWidth="3.6" />
-          <path d="M36 2 C 45 4 52 8 61 12" strokeWidth="3.4" opacity="0.72" />
-          <path d="M-3 -12 C 2 -15 7 -14 10 -10" stroke="rgba(255,255,255,0.48)" strokeWidth="1.4" opacity="0.7" />
+          <path d="M5 -5 C 18 -11 31 -6 45 0" strokeWidth="5.6" />
+          <path d="M10 -5 C 19 -18 33 -17 41 -9" strokeWidth="3.5" />
         </g>
       </g>
-
-      <path
-        className="cb-wave-swimmer-wake"
-        d={`M12 ${swimmerWaterlineY} C 28 ${swimmerWaterlineY - 3} 43 ${swimmerWaterlineY + 2} 58 ${swimmerWaterlineY - 1} C 74 ${swimmerWaterlineY - 4} 88 ${swimmerWaterlineY + 2} 104 ${swimmerWaterlineY} L104 ${baselineY + 8} L12 ${baselineY + 8} Z`}
-        fill={`url(#${surfaceGradientId})`}
-        fillOpacity={scale.isEstimate ? 0.34 : 0.62}
-      />
-      <path
-        className="cb-wave-foam"
-        d={`M14 ${swimmerWaterlineY} C 30 ${swimmerWaterlineY - 2} 43 ${swimmerWaterlineY + 2} 58 ${swimmerWaterlineY - 1} C 73 ${swimmerWaterlineY - 3} 87 ${swimmerWaterlineY + 1} 101 ${swimmerWaterlineY}`}
-        fill="none"
-        stroke="var(--cb-wave-foam-color)"
-        strokeWidth="2.2"
-        strokeLinecap="round"
-        opacity="0.86"
-      />
     </svg>
   );
 };
@@ -334,16 +445,60 @@ const FigureScene: React.FC<{ scale: WaveScaleResult }> = ({ scale }) => {
 const BoatScene: React.FC<{ scale: WaveScaleResult }> = ({ scale }) => {
   const amp = scale.band === 'rough' ? 14 : scale.band === 'amber' ? 8 : 4;
   const tilt = scale.band === 'rough' ? -6 : scale.band === 'amber' ? -3 : 0;
-  const wy = 70;
+  const wy = scale.band === 'rough' ? 66 : scale.band === 'amber' ? 71 : 77;
   const crest = `M0 ${wy} Q 16 ${wy - amp} 32 ${wy} T 64 ${wy} T 96 ${wy} T 128 ${wy} T 160 ${wy}`;
+  const sceneId = React.useId().replace(/:/g, '');
+  const waterGradientId = `boat-wave-${sceneId}`;
+  const skyGradientId = `boat-sky-${sceneId}`;
+  const sceneStyle = {
+    ...getWaveSceneStyle(scale),
+    ...getSwimmerMotionStyle(scale),
+  } as React.CSSProperties;
+
   return (
-    <svg viewBox="0 0 160 116" preserveAspectRatio="xMidYMid meet" aria-hidden="true" className="h-auto w-full">
-      <path d={`${crest} L160 116 L0 116 Z`} className={`fill-current ${getBlueWaterFillClass(scale)}`} fillOpacity={scale.isEstimate ? 0.48 : 0.82} />
-      <path d={crest} fill="none" className="stroke-white/70 dark:stroke-white/40" strokeWidth="2" strokeLinecap="round" />
+    <svg viewBox="0 0 160 116" preserveAspectRatio="xMidYMid meet" aria-hidden="true" className="h-auto w-full drop-shadow-sm" style={sceneStyle}>
+      <defs>
+        <linearGradient id={skyGradientId} x1="0" x2="0" y1="0" y2="1">
+          <stop offset="0%" stopColor="var(--cb-wave-sky)" stopOpacity="0.9" />
+          <stop offset="100%" stopColor="#ffffff" stopOpacity="0.55" />
+        </linearGradient>
+        <linearGradient id={waterGradientId} x1="0" x2="0" y1="0" y2="1">
+          <stop offset="0%" stopColor="var(--cb-wave-crest)" />
+          <stop offset="58%" stopColor="var(--cb-wave-mid)" />
+          <stop offset="100%" stopColor="var(--cb-wave-deep)" />
+        </linearGradient>
+      </defs>
+      <rect x="2" y="2" width="156" height="112" rx="20" fill={`url(#${skyGradientId})`} />
+      <path d="M8 60 C 38 56 76 57 110 61 C 132 63 146 63 152 61" fill="none" stroke="rgba(14,165,233,0.16)" strokeWidth="1.2" strokeLinecap="round" />
+      <path
+        className="cb-wave-backwash"
+        d={`M0 ${wy + 14} Q 16 ${wy + 5} 32 ${wy + 14} T 64 ${wy + 14} T 96 ${wy + 14} T 128 ${wy + 14} T 160 ${wy + 14} L160 116 L0 116 Z`}
+        fill="var(--cb-wave-mid)"
+        opacity={scale.isEstimate ? 0.16 : 0.22}
+      />
+      <path
+        d={`${crest} L160 116 L0 116 Z`}
+        className={`cb-wave-surface fill-current ${getBlueWaterFillClass(scale)}`}
+        fill={`url(#${waterGradientId})`}
+        fillOpacity={scale.isEstimate ? 0.5 : 0.88}
+        {...(scale.isEstimate ? { strokeDasharray: '4 3', stroke: 'var(--cb-wave-deep)', strokeWidth: 1 } : {})}
+      />
+      <path d={crest} fill="none" className="cb-wave-foam" stroke="var(--cb-wave-foam-color)" strokeWidth={scale.band === 'rough' ? 3.2 : 2.4} strokeLinecap="round" />
+      <path
+        d={`M15 ${wy + 18} C 42 ${wy + 9} 68 ${wy + 18} 95 ${wy + 10} C 116 ${wy + 5} 134 ${wy + 11} 151 ${wy + 7}`}
+        fill="none"
+        stroke="rgba(255,255,255,0.34)"
+        strokeWidth="4.2"
+        strokeLinecap="round"
+        className="cb-wave-highlight"
+      />
       <g className="text-slate-500 dark:text-slate-400" fill="currentColor" transform={`rotate(${tilt} 80 ${wy})`}>
-        <path d={`M58 ${wy - 5} L102 ${wy - 5} L95 ${wy + 9} Q80 ${wy + 14} 65 ${wy + 9} Z`} />
-        <rect x="71" y={wy - 17} width="18" height="12" rx="2" />
-        <rect x="79" y={wy - 27} width="2.5" height="11" rx="1" />
+        <g className="cb-wave-boat">
+          <path d={`M56 ${wy - 5} L105 ${wy - 5} L98 ${wy + 10} Q80 ${wy + 16} 62 ${wy + 10} Z`} />
+          <rect x="70" y={wy - 19} width="20" height="13" rx="2.5" />
+          <rect x="79" y={wy - 31} width="2.6" height="12" rx="1" />
+          <path d={`M88 ${wy - 28} L100 ${wy - 21} L88 ${wy - 21} Z`} fill="rgba(255,255,255,0.76)" />
+        </g>
       </g>
     </svg>
   );
@@ -426,35 +581,25 @@ export const WaveHeightGraphic: React.FC<WaveHeightGraphicProps> = ({
   }
 
   const copy = getLocalizedCopy(language, COPY);
+  const swimFeelCopy = getLocalizedCopy(language, SWIM_FEEL_COPY);
   const labelClass = scale.isEstimate ? WAVE_ESTIMATE_CLASSES.label : WAVE_BAND_CLASSES[scale.band].label;
+  const panelClass = scale.isEstimate ? WAVE_ESTIMATE_CLASSES.soft : WAVE_BAND_CLASSES[scale.band].soft;
+  const visualWaveHeightM = getVisualWaveHeightM(scale, waveHeightM, estimateHeightM);
   const isToday = isSelectedDateToday(selectedDate);
   // Mark the hour the forecast is actually showing (the slider hour), falling back to the
   // real wall-clock hour only when no explicit hour is supplied and the day is today.
   const markerHour = typeof selectedHour === 'number' ? selectedHour : (isToday ? new Date().getHours() : undefined);
+  // Each bar already carries its hour's own effective wave height (same rule as the headline),
+  // so the selected hour needs no special-casing — it is just highlighted via markerHour.
   const points = (hourly ?? [])
     .filter((p) => Number.isFinite(p.waveHeightM))
     .reduce<HourlyWavePoint[]>((acc, point) => {
       if (!acc.some(existing => existing.hour === point.hour)) acc.push(point);
       return acc;
-    }, []);
-  if (
-    typeof selectedHour === 'number'
-    && typeof waveHeightM === 'number'
-    && Number.isFinite(waveHeightM)
-  ) {
-    const selectedPointIndex = points.findIndex(point => point.hour === selectedHour);
-    if (selectedPointIndex >= 0) {
-      points[selectedPointIndex] = { hour: selectedHour, waveHeightM };
-    } else {
-      points.push({ hour: selectedHour, waveHeightM });
-    }
-  }
-  points.sort((a, b) => a.hour - b.hour);
+    }, [])
+    .sort((a, b) => a.hour - b.hour);
   const showStrip = points.length >= 2;
   const trendKey = showStrip ? computeTrend(points) : null;
-  const selectedHourLabel = typeof markerHour === 'number'
-    ? copy.selectedHour(formatHour(markerHour))
-    : null;
   const hourlyRange = showStrip
     ? copy.rangeSummary(
       formatWaveHeight(Math.min(...points.map((p) => p.waveHeightM)), language),
@@ -465,7 +610,6 @@ export const WaveHeightGraphic: React.FC<WaveHeightGraphicProps> = ({
     scale.ariaLabel,
     hourlyRange,
     trendKey ? copy[trendKey] : null,
-    selectedHourLabel,
   ]
     .filter(Boolean)
     .map((part) => String(part).replace(/\.+$/, ''))
@@ -473,10 +617,11 @@ export const WaveHeightGraphic: React.FC<WaveHeightGraphicProps> = ({
 
   const boatCopy = boatAccess ? getLocalizedCopy(language, BOAT_COPY) : null;
   const bandKey: keyof BoatCopy = scale.band === 'rough' ? 'rough' : scale.band === 'amber' ? 'choppy' : 'calm';
-  // Boat-only beach: describe the sea for the boat, not a body-scale wading height.
+  // Boat-only beach: describe the sea for the boat, not swimming comfort.
   const headlineLabel = boatCopy ? boatCopy[bandKey] : scale.label;
   const supportingDetail = boatCopy ? scale.label : scale.detail;
   const subHeightNote = boatCopy ? boatCopy.heightNote : null;
+  const swimmingFeel = scale.isEstimate ? swimFeelCopy.estimate : swimFeelCopy[scale.band];
   // Small boats rock more — flag the transfer above 3 Bft (or a genuinely rough sea).
   const showBoatNote = Boolean(boatCopy) && ((typeof windBeaufort === 'number' && windBeaufort >= 4) || scale.band === 'rough');
 
@@ -484,16 +629,22 @@ export const WaveHeightGraphic: React.FC<WaveHeightGraphicProps> = ({
     <div
       role="img"
       aria-label={ariaLabel}
-      className={`rounded-xl border border-slate-100 bg-white p-3 shadow-sm dark:border-slate-700 dark:bg-slate-800 sm:p-4 ${className ?? ''}`}
+      className={`overflow-hidden rounded-2xl border border-cyan-100/70 bg-white/92 p-3.5 shadow-sm shadow-sky-900/5 ring-1 ring-white/60 dark:border-slate-700 dark:bg-slate-800 sm:p-4 ${className ?? ''}`}
     >
-      <div className="flex items-center gap-3 sm:gap-4">
-        <div className="w-24 shrink-0 sm:w-28">
-          {boatAccess ? <BoatScene scale={scale} /> : <FigureScene scale={scale} />}
+      <div className="flex items-center gap-3.5 sm:gap-4">
+        <div className={`w-[108px] shrink-0 rounded-2xl p-1 ring-1 ring-white/70 sm:w-32 ${panelClass}`}>
+          {boatAccess ? <BoatScene scale={scale} /> : <WaveMeterScene scale={scale} visualHeightM={visualWaveHeightM} />}
         </div>
-        <div className="min-w-0">
-          <div className="text-xs font-semibold text-slate-500 dark:text-slate-400">{copy.title}</div>
-          <div className={`font-heading text-xl font-bold leading-tight ${labelClass}`}>{headlineLabel}</div>
-          <div className="text-sm font-semibold text-slate-600 dark:text-slate-300">{supportingDetail}</div>
+        <div className="min-w-0 flex-1 py-0.5">
+          <div className="text-[11px] font-bold leading-tight text-slate-500 dark:text-slate-400">{copy.title}</div>
+          <div className={`mt-1 font-heading text-[1.35rem] font-bold leading-none sm:text-2xl ${labelClass}`}>{headlineLabel}</div>
+          <div className="mt-1 text-sm font-semibold leading-snug text-slate-600 dark:text-slate-300">{supportingDetail}</div>
+          {!boatCopy && (
+            <div className="mt-2 inline-flex max-w-full flex-wrap items-center gap-x-1.5 gap-y-0.5 rounded-full border border-slate-100 bg-white/70 px-2.5 py-1 text-[11px] font-bold leading-tight text-slate-500 shadow-sm shadow-sky-900/5 dark:border-slate-700 dark:bg-slate-900/30 dark:text-slate-400">
+              <span>{swimFeelCopy.label}</span>
+              <span className={labelClass}>{swimmingFeel}</span>
+            </div>
+          )}
           {subHeightNote && (
             <div className="mt-1 text-xs font-medium leading-snug text-slate-500 dark:text-slate-400">{subHeightNote}</div>
           )}
@@ -509,14 +660,11 @@ export const WaveHeightGraphic: React.FC<WaveHeightGraphicProps> = ({
 
       {showStrip && (
         <div className="mt-3 border-t border-slate-100 pt-3 dark:border-slate-700">
-          <div className="mb-1 flex items-baseline justify-between gap-2">
-            <span className="text-[11px] font-bold uppercase tracking-wide text-slate-400 dark:text-slate-500">{copy.throughDay}</span>
-            {(trendKey || selectedHourLabel) && (
-              <span className="truncate text-[11px] font-semibold text-slate-500 dark:text-slate-400">
-                {trendKey ? copy[trendKey] : selectedHourLabel}
-              </span>
-            )}
-          </div>
+          {trendKey && (
+            <div className="mb-1 text-right text-[11px] font-semibold text-slate-500 dark:text-slate-400">
+              {copy[trendKey]}
+            </div>
+          )}
           <HourlyStrip hourly={points} nowHour={markerHour} language={language} copy={copy} />
         </div>
       )}

@@ -15,6 +15,7 @@ import {
   getTopRecommendedBeaches,
   generateBeachExplanation as generateServiceBeachExplanation,
   calculateBeachScore,
+  computeHourlyEffectiveWaves,
   type BeachWeatherById
 } from '../services/recommendationService';
 import { degToCompass, calculateDistance, getBeaufortLevel, getWaveCondition } from '../utils/weatherUtils';
@@ -31,7 +32,6 @@ import { AccessibleCalmNearbySection, type AccessibleCalmCove } from '../compone
 import { ConstraintFitSection, type ConstraintFit } from '../components/ConstraintFitSection';
 import { WaveHeightGraphic, type HourlyWavePoint } from '../components/WaveHeightGraphic';
 import { hasBoatOnlyAccess } from '../utils/access';
-import { getWindChopWaveFloorM } from '../utils/waveModel';
 import { DayPlanSection, type DayPlanStop } from '../components/DayPlanSection';
 import { generateBeachExplanation as generateUiBeachExplanation } from '../utils/beachExplanation';
 import { describeSimpleWindSuitability, describeWindExposure } from '../utils/windExposureCopy';
@@ -60,7 +60,7 @@ import { MapLoadBoundary } from '../components/MapLoadBoundary';
 import { scrollToPageTop } from '../utils/scroll';
 import { getSunsetTime } from '../utils/sunTimes';
 import { buildPhotoSuggestionUrl } from '../utils/photoContribution';
-import { getSelectedDayPrefix } from '../utils/dateLabels';
+import { getSelectedDayPrefix, getSelectedHourPrefix } from '../utils/dateLabels';
 import { getRainSwimAdvisory } from '../utils/rainAdvisory';
 import { summarizeMeltemiBehavior } from '../utils/windClimatology';
 
@@ -217,12 +217,36 @@ const getSeaConditionDisplay = (
   canClaimWindProtection = false,
   seaCalmClaimAllowed = false,
   windBeaufort = 0,
-  waveHeightM?: number
+  waveHeightM?: number,
+  selectedHour?: number
 ) => {
-  const day = getSelectedDayPrefix(selectedDate, new Date(), language);
+  const hour = getSelectedHourPrefix(selectedHour, language);
+  const day = hour ?? getSelectedDayPrefix(selectedDate, new Date(), language);
+  const momentSuffix = hour ? ` ${day}` : '';
+  const exposedWindLabel = {
+    en: `More exposed to wind${momentSuffix}`,
+    gr: `Πιο εκτεθειμένη στον άνεμο${momentSuffix}`,
+    de: `Windexponiert${momentSuffix}`,
+    it: `Più esposta al vento${momentSuffix}`,
+    fr: `Plus exposée au vent${momentSuffix}`,
+  }[language];
+  const shelteredWindLabel = {
+    en: `Better sheltered${momentSuffix}`,
+    gr: `Πιο προστατευμένη επιλογή${momentSuffix}`,
+    de: `Besser geschützt${momentSuffix}`,
+    it: `Più riparata${momentSuffix}`,
+    fr: `Mieux abritée${momentSuffix}`,
+  }[language];
+  const lowWavesShelteredLabel = {
+    en: `Low waves, better sheltered${momentSuffix}`,
+    gr: `Χαμηλό κύμα, πιο προστατευμένη${momentSuffix}`,
+    de: `Niedrige Wellen, geschützter${momentSuffix}`,
+    it: `Onde basse, più riparata${momentSuffix}`,
+    fr: `Vagues faibles, mieux abritée${momentSuffix}`,
+  }[language];
   if (windBeaufort === 5 && !isExposed) {
     return {
-      value: { en: 'Better wind option', gr: 'Πιο υπήνεμη επιλογή', de: 'Besser geschutzt', it: 'Piu riparata', fr: 'Mieux abritee' }[language],
+      value: shelteredWindLabel,
       subValue: { en: 'Better option for the wind.', gr: 'Καλύτερη επιλογή για τον άνεμο.', de: 'Besser geschutzte Stellen', it: 'Meglio punti piu riparati', fr: 'Prefere les coins abrites' }[language],
     };
   }
@@ -233,7 +257,7 @@ const getSeaConditionDisplay = (
         value: { en: 'Rough sea', gr: 'Έντονος κυματισμός', de: 'Raue See', it: 'Mare mosso', fr: 'Mer agitee' }[language],
         subValue: isExposed
           ? windBeaufort === 5
-            ? { en: 'Exposed to wind', gr: 'Εκτεθειμένη στον άνεμο', de: 'Nicht ideal zum entspannten Schwimmen', it: 'Non ideale per nuotare rilassati', fr: 'Pas ideal pour une baignade detendue' }[language]
+            ? exposedWindLabel
             : { en: 'Use caution for relaxed swimming', gr: 'Θέλει προσοχή για ήρεμο μπάνιο', de: 'Vorsicht beim entspannten Schwimmen', it: 'Serve cautela per nuotare rilassati', fr: 'Prudence pour une baignade detendue' }[language]
           : windBeaufort === 5
             ? { en: 'The sea will have waves.', gr: 'Η θάλασσα θα έχει κυματισμό.', de: 'Wellen erfordern Vorsicht', it: 'Serve cautela con le onde', fr: 'Prudence avec les vagues' }[language]
@@ -277,9 +301,9 @@ const getSeaConditionDisplay = (
     return {
       value: { en: 'Good sea', gr: 'Καλή εικόνα', de: 'Gute See', it: 'Buon mare', fr: 'Bonne mer' }[language],
       subValue: verifiedProtectedCalm
-        ? { en: 'Low waves, better sheltered', gr: 'Χαμηλό κύμα, πιο προστατευμένη', de: 'Niedrige Wellen, geschutzter', it: 'Onde basse, piu riparata', fr: 'Vagues basses, mieux abritee' }[language]
+        ? lowWavesShelteredLabel
         : verifiedShelter
-          ? { en: `Better sheltered ${day}`, gr: `Πιο προστατευμένη επιλογή ${day}`, de: 'Heute besser geschutzt', it: 'Piu riparata oggi', fr: 'Mieux abritee aujourd hui' }[language]
+          ? shelteredWindLabel
           : { en: 'Good sea conditions', gr: 'Καλές συνθήκες θάλασσας', de: 'Gute Meeresbedingungen', it: 'Buone condizioni del mare', fr: 'Bonnes conditions de mer' }[language],
     };
   }
@@ -289,12 +313,12 @@ const getSeaConditionDisplay = (
     const cautionCopy = isExposed
       ? (windBeaufort >= 5
         ? (windBeaufort === 5
-          ? { en: 'Exposed to wind', gr: 'Εκτεθειμένη στον άνεμο', de: 'Wahrscheinlich unruhig', it: 'Probabile mare mosso', fr: 'Clapot probable' }[language]
+          ? exposedWindLabel
           : { en: 'Likely choppy', gr: 'Πιθανό κύμα', de: 'Wahrscheinlich unruhig', it: 'Probabile mare mosso', fr: 'Clapot probable' }[language])
         : { en: 'May feel breezy', gr: 'Μπορεί να έχει αέρα', de: 'Kann windig wirken', it: 'Puo essere ventilata', fr: 'Peut etre ventee' }[language])
       : (windBeaufort >= 5
         ? (windBeaufort === 5
-          ? { en: 'Better wind option', gr: 'Πιο υπήνεμη επιλογή', de: 'Besser geschutzte Stellen', it: 'Meglio punti piu riparati', fr: 'Prefere les coins abrites' }[language]
+          ? shelteredWindLabel
           : { en: 'Prefer more sheltered spots', gr: 'Καλύτερα πιο προστατευμένο σημείο', de: 'Besser geschutzte Stellen', it: 'Meglio punti piu riparati', fr: 'Prefere les coins abrites' }[language])
         : { en: 'Some wind - prefer shelter', gr: 'Λίγη έκθεση στον άνεμο', de: 'Etwas Windschutz prufen', it: 'Un po di vento', fr: 'Un peu de vent' }[language]);
     return {
@@ -306,11 +330,11 @@ const getSeaConditionDisplay = (
   return {
     value: windBeaufort === 5
       ? { en: 'Choppy', gr: 'Κυματισμός', de: 'Schlecht', it: 'Scarse', fr: 'Mauvaises' }[language]
-      : language === 'gr' ? `Θέλει προσοχή ${getSelectedDayPrefix(selectedDate, new Date(), language)}` : language === 'en' ? `Use caution ${getSelectedDayPrefix(selectedDate, new Date(), language)}` : { de: 'Vorsicht', it: 'Prudenza', fr: 'Prudence' }[language],
+      : language === 'gr' ? `Θέλει προσοχή ${day}` : language === 'en' ? `Use caution ${day}` : { de: 'Vorsicht', it: 'Prudenza', fr: 'Prudence' }[language],
     subValue: windBeaufort === 5
       ? (isExposed
-        ? { en: 'Exposed to wind', gr: 'Εκτεθειμένη στον άνεμο', de: 'Wahle einen geschutzteren Strand', it: 'Scegli una spiaggia piu riparata', fr: 'Choisis une plage plus abritee' }[language]
-        : { en: 'Better wind option', gr: 'Πιο υπήνεμη επιλογή', de: 'Wahle einen geschutzteren Strand', it: 'Scegli una spiaggia piu riparata', fr: 'Choisis une plage plus abritee' }[language])
+        ? exposedWindLabel
+        : shelteredWindLabel)
       : { en: 'Choose a more sheltered beach', gr: 'Προτίμησε πιο απάνεμη παραλία', de: 'Wahle einen geschutzteren Strand', it: 'Scegli una spiaggia piu riparata', fr: 'Choisis une plage plus abritee' }[language],
   };
 };
@@ -602,26 +626,28 @@ export const BeachDetailPage: React.FC<BeachDetailPageProps> = ({
   // is what the verdict badge and the list cards already use, so the figure now matches them.
   const displayWaveHeightM = waveHeightM ?? measuredWaveHeightM;
   const isWaveEstimate = !(typeof measuredWaveHeightM === 'number' && Number.isFinite(measuredWaveHeightM));
-  // Swim-hours (08–21) wave series for the selected day. Each hour reflects the wind chop its own
-  // wind would whip up near shore (floored), so a windy morning can't show as a flat 0.3 m bar.
+  // Swim-hours (08–21) wave series for the selected day. Each hour runs the SAME effective-wave
+  // rule as the headline figure (directional fetch + damped SMB + wind-chop floor, then the live
+  // marine value when present), so a bar can never contradict the big wave meter beside it.
   const selectedDayKey = selectedDate ? selectedDate.toDateString() : undefined;
-  const hourlyWave: HourlyWavePoint[] = (selectedDayKey ? scoringHourlyForecast : []).reduce<HourlyWavePoint[]>((acc, item) => {
-    const when = new Date(item.dt * 1000);
-    if (when.toDateString() !== selectedDayKey) return acc;
-    const hour = when.getHours();
-    if (hour < 8 || hour > 21) return acc;
-    const measured = item.marine?.waveHeightM;
-    const hasMeasured = typeof measured === 'number' && Number.isFinite(measured);
-    const hourWindKmh = (item.wind?.speed ?? 0) * 3.6;
-    const gustKmh = typeof item.wind?.gustKnots === 'number' && Number.isFinite(item.wind.gustKnots)
-      ? item.wind.gustKnots * 1.852
-      : (typeof item.wind?.gust === 'number' && Number.isFinite(item.wind.gust) ? item.wind.gust * 3.6 : undefined);
-    const chopFloorM = getWindChopWaveFloorM(exposureLevel ?? 'exposed', getBeaufortLevel(hourWindKmh), hourWindKmh, gustKmh);
-    const effective = Math.max(hasMeasured ? (measured as number) : 0, chopFloorM);
-    if (!hasMeasured && chopFloorM <= 0) return acc;
-    acc.push({ hour, waveHeightM: Number(effective.toFixed(2)) });
-    return acc;
-  }, []);
+  const hourlyWave: HourlyWavePoint[] = useMemo(() => {
+    if (!selectedDayKey) return [];
+    const dayHours = scoringHourlyForecast.filter(item => {
+      const when = new Date(item.dt * 1000);
+      if (when.toDateString() !== selectedDayKey) return false;
+      const hour = when.getHours();
+      return hour >= 8 && hour <= 21;
+    });
+    const points: HourlyWavePoint[] = [];
+    for (const point of computeHourlyEffectiveWaves(beach, dayHours, geospatialExposure)) {
+      // A truly flat hour with no measured value carries no signal — leave it out so the strip
+      // shows up only when there is something to read.
+      if (!point.hasMeasured && point.effectiveWaveHeightM <= 0) continue;
+      if (points.some(existing => existing.hour === point.hour)) continue;
+      points.push({ hour: point.hour, waveHeightM: point.effectiveWaveHeightM });
+    }
+    return points;
+  }, [beach, scoringHourlyForecast, geospatialExposure, selectedDayKey]);
   const seaTemperatureC = weatherData.marine?.seaSurfaceTemperatureC;
   const waterTempDescriptor = typeof seaTemperatureC === 'number'
     ? seaTemperatureC < 20
@@ -635,7 +661,7 @@ export const BeachDetailPage: React.FC<BeachDetailPageProps> = ({
   const seaConditionScore = calculateSeaConditionScore(isExposed, windSpeedKmh, exposureLevel, waveHeightM);
   const detailBadgeScore = getDetailBadgeScore(score, seaConditionScore, isExposed);
   const beaufortLevel = getBeaufortLevel(windSpeedKmh);
-  const seaConditionDisplay = getSeaConditionDisplay(seaConditionScore, isExposedToTodayWind, language, selectedDate, canClaimWindProtection, seaCalmClaimAllowed, beaufortLevel, displayWaveHeightM);
+  const seaConditionDisplay = getSeaConditionDisplay(seaConditionScore, isExposedToTodayWind, language, selectedDate, canClaimWindProtection, seaCalmClaimAllowed, beaufortLevel, displayWaveHeightM, selectedHour);
   // Compare the beach-specific cluster forecast with the area-wide forecast only
   // when they genuinely differ — "a bit windier/calmer right here".
   const localWindNote = getLocalWindNote(dayForecast.wind.speed, beachSpecificWeatherData?.wind.speed, language);
@@ -1098,6 +1124,7 @@ export const BeachDetailPage: React.FC<BeachDetailPageProps> = ({
             noIdealSwimmingWindow={swimWindowDisplay.tone === 'avoid'}
             exposureLevel={exposureLevel}
             canClaimWindProtection={canClaimWindProtection}
+            selectedHour={selectedHour}
             forceShow
           />
 
@@ -1794,6 +1821,7 @@ export const BeachDetailPage: React.FC<BeachDetailPageProps> = ({
                               noIdealSwimmingWindow={item.swimmingComfort === 'avoid_swimming'}
                               exposureLevel={item.exposureLevel}
                               canClaimWindProtection={item.canClaimWindProtection}
+                              selectedHour={selectedHour}
                               forceShow
                             />
                             <p

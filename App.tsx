@@ -4398,6 +4398,7 @@ export const App: React.FC = () => {
         onOpenBeach={(b) => openBeachDetails(b, 'saved_screen')}
         onClose={() => handleMobileTab('home')}
         selectedDate={selectedForecast?.date}
+        selectedHour={selectedHourDt != null ? new Date(selectedHourDt * 1000).getHours() : undefined}
         windSpeed={selectedForecast?.wind.speed ?? forecast?.[selectedDayIndex]?.wind.speed}
         temperature={forecast?.[selectedDayIndex]?.temp_max}
         islandName={selectedIsland?.name[language] ?? ''}
@@ -5719,6 +5720,7 @@ export const App: React.FC = () => {
                       bestBeachTime={r.bestBeachTime}
                       topPickTimeLabel={getTopPickTimingLabel(r.bestBeachTime, selectedDayDate, language, topPickNow)}
                       selectedDate={selectedDayDate}
+                      selectedHour={selectedHourDt != null ? new Date(selectedHourDt * 1000).getHours() : undefined}
                       exposureLevel={r.exposureLevel}
                       waveHeightM={r.waveHeightM}
                       warnings={r.warnings}
@@ -5935,6 +5937,7 @@ export const App: React.FC = () => {
                           bestBeachTime={r.bestBeachTime}
                           topPickTimeLabel={getTopPickTimingLabel(r.bestBeachTime, selectedDayDate, language, topPickNow)}
                           selectedDate={selectedDayDate}
+                          selectedHour={selectedHourDt != null ? new Date(selectedHourDt * 1000).getHours() : undefined}
                           exposureLevel={r.exposureLevel}
                           waveHeightM={r.waveHeightM}
                           warnings={r.warnings}
@@ -5977,6 +5980,7 @@ export const App: React.FC = () => {
                   windDirection={degToCompass((selectedForecast?.wind.deg ?? forecast?.[selectedDayIndex]?.wind.deg) || 0)}
                   waveHeightM={selectedForecast?.marine?.waveHeightM ?? forecast?.[selectedDayIndex]?.marine?.waveHeightM}
                   selectedDate={selectedDayDate}
+                  selectedHour={selectedHourDt != null ? new Date(selectedHourDt * 1000).getHours() : undefined}
                   islandName={selectedIsland?.name[language] || ''}
                   regionId={selectedIsland?.id}
                   onBeachClick={(b) => openBeachDetails(b, 'beach_list')}

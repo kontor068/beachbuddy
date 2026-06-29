@@ -13,7 +13,7 @@ import { getBeachPhotoLookup } from '../services/beachPhotos';
 import { trackEvent } from '../services/analyticsService';
 import { ExposureLevel } from '../utils/windExposure';
 import { hasDirtRoadAccess } from '../utils/access';
-import { getSelectedDayPrefix, getSelectedDaySentencePrefix, isSelectedDateToday } from '../utils/dateLabels';
+import { getSelectedDayPrefix, getSelectedDaySentencePrefix, getSelectedHourPrefix, isSelectedDateToday } from '../utils/dateLabels';
 import { getLocalizedCopy, languageToLocale } from '../utils/i18n';
 import { buildBeachDetailPath, buildBeachShareUrl } from '../utils/beachUrls';
 import {
@@ -55,6 +55,7 @@ interface BeachCardProps {
   bestBeachTime?: { bestStart?: string; bestEnd?: string };
   topPickTimeLabel?: string;
   selectedDate?: Date;
+  selectedHour?: number;
   crowdLevel?: CrowdLevel;
   exposureLevel?: ExposureLevel;
   warnings?: WarningFlag[];
@@ -162,7 +163,7 @@ const cardCopy: Record<LanguageCode, CardCopy> = {
     dirtRoad: 'Dirt road',
     localExposureCheck: 'Check local exposure',
     moreOpenToWind: 'More open to wind',
-    exposedToWind: 'Exposed to wind',
+    exposedToWind: 'More exposed to wind',
     favorite: 'Add to favorites',
     unfavorite: 'Remove from favorites',
     share: 'Share',
@@ -173,7 +174,7 @@ const cardCopy: Record<LanguageCode, CardCopy> = {
       someWaves: 'Some waves',
       strongWind: 'Strong wind',
       windSportSpot: 'Wind/watersports spot',
-      exposedToWind: (day, isToday) => (isToday ? 'Exposed to wind' : `Exposed to wind ${day}`),
+      exposedToWind: (day, isToday) => (isToday ? 'More exposed to wind' : `More exposed to wind ${day}`),
       breezy: 'May feel breezy',
       difficultAccess: 'More challenging access',
       boatOnly: 'Boat only',
@@ -184,7 +185,7 @@ const cardCopy: Record<LanguageCode, CardCopy> = {
     compact: {
       calmWaters: 'Low waves',
       goodSea: 'Good sea',
-      protected: (sentenceDay, isToday) => (isToday ? 'Better sheltered' : `${sentenceDay}: better sheltered`),
+      protected: (moment, isToday) => (isToday ? 'Better sheltered' : `Better sheltered ${moment}`),
       lightWind: 'Light wind',
       mildlyBreezy: 'May feel breezy',
       windyExposed: 'Windy / exposed',
@@ -225,7 +226,7 @@ const cardCopy: Record<LanguageCode, CardCopy> = {
     },
   },
   gr: {
-    shelteredChip: () => 'Προστατευμένη',
+    shelteredChip: () => 'Πιο προστατευμένη',
     shelteredChipA11y: (sentenceDay) => `${sentenceDay}: προστατευμένη επιλογή`,
     blueFlag: 'Γαλάζια Σημαία',
     accessible: 'Προσβάσιμη ΑμεΑ',
@@ -233,7 +234,7 @@ const cardCopy: Record<LanguageCode, CardCopy> = {
     dirtRoad: 'Χωματόδρομος',
     localExposureCheck: 'Έλεγχος τοπικής έκθεσης',
     moreOpenToWind: 'Πιο ανοιχτή στον άνεμο',
-    exposedToWind: 'Εκτεθειμένη στον άνεμο',
+    exposedToWind: 'Πιο εκτεθειμένη στον άνεμο',
     favorite: 'Προσθήκη στα αγαπημένα',
     unfavorite: 'Αφαίρεση από τα αγαπημένα',
     share: 'Κοινοποίηση',
@@ -244,7 +245,7 @@ const cardCopy: Record<LanguageCode, CardCopy> = {
       someWaves: 'Λίγο κύμα',
       strongWind: 'Δυνατός αέρας',
       windSportSpot: 'Παραλία για wind sports',
-      exposedToWind: (day, isToday) => (isToday ? 'Εκτεθειμένη στον άνεμο' : `Εκτεθειμένη στον άνεμο ${day}`),
+      exposedToWind: (day, isToday) => (isToday ? 'Πιο εκτεθειμένη στον άνεμο' : `Πιο εκτεθειμένη στον άνεμο ${day}`),
       breezy: 'Μπορεί να έχει αέρα',
       difficultAccess: 'Πιο δύσκολη πρόσβαση',
       boatOnly: 'Μόνο με σκάφος',
@@ -255,11 +256,11 @@ const cardCopy: Record<LanguageCode, CardCopy> = {
     compact: {
       calmWaters: 'Χαμηλό κύμα',
       goodSea: 'Καλή θάλασσα',
-      protected: () => 'Προστατευμένη',
+      protected: (moment, isToday) => (isToday ? 'Πιο προστατευμένη' : `Πιο προστατευμένη ${moment}`),
       lightWind: 'Ήπιος άνεμος',
       mildlyBreezy: 'Μπορεί να έχει αέρα',
-      windyExposed: 'Εκτεθειμένη στον άνεμο',
-      partlyShelteredToday: () => 'Υπήνεμη',
+      windyExposed: 'Πιο εκτεθειμένη στον άνεμο',
+      partlyShelteredToday: (day, isToday) => (isToday ? 'Πιο υπήνεμη' : `Πιο υπήνεμη ${day}`),
       slightlyExposed: 'Μπορεί να έχει αέρα',
       familyFriendly: 'Για παιδιά',
       shallowWaters: 'Ρηχά νερά',
@@ -326,7 +327,7 @@ const cardCopy: Record<LanguageCode, CardCopy> = {
     compact: {
       calmWaters: 'Vagues basses',
       goodSea: 'Mer correcte',
-      protected: (sentenceDay, isToday) => (isToday ? 'Plus abritée' : `${sentenceDay}: plus abritée`),
+      protected: (moment, isToday) => (isToday ? 'Plus abritée' : `Plus abritée ${moment}`),
       lightWind: 'Vent léger',
       mildlyBreezy: 'Peut être venteuse',
       windyExposed: 'Venteuse / exposée',
@@ -397,7 +398,7 @@ const cardCopy: Record<LanguageCode, CardCopy> = {
     compact: {
       calmWaters: 'Niedrige Wellen',
       goodSea: 'Gute See',
-      protected: (sentenceDay, isToday) => (isToday ? 'Geschützter' : `${sentenceDay}: geschützter`),
+      protected: (moment, isToday) => (isToday ? 'Geschützter' : `Geschützter ${moment}`),
       lightWind: 'Leichter Wind',
       mildlyBreezy: 'Kann windig wirken',
       windyExposed: 'Windig / exponiert',
@@ -468,7 +469,7 @@ const cardCopy: Record<LanguageCode, CardCopy> = {
     compact: {
       calmWaters: 'Onde basse',
       goodSea: 'Mare buono',
-      protected: (sentenceDay, isToday) => (isToday ? 'Più riparata' : `${sentenceDay}: più riparata`),
+      protected: (moment, isToday) => (isToday ? 'Più riparata' : `Più riparata ${moment}`),
       lightWind: 'Vento leggero',
       mildlyBreezy: 'Può essere ventilata',
       windyExposed: 'Ventosa / esposta',
@@ -930,10 +931,12 @@ const MetadataTags: React.FC<{ beach: Beach; language: LanguageCode }> = ({ beac
   );
 };
 
-const warningLabel = (warning: WarningFlag, language: LanguageCode, selectedDate?: Date): string => {
+const warningLabel = (warning: WarningFlag, language: LanguageCode, selectedDate?: Date, selectedHour?: number): string => {
   const copy = getLocalizedCopy(language, cardCopy).warnings;
-  const day = getSelectedDayPrefix(selectedDate, new Date(), language);
+  const hour = getSelectedHourPrefix(selectedHour, language);
+  const day = hour ?? getSelectedDayPrefix(selectedDate, new Date(), language);
   const isToday = isSelectedDateToday(selectedDate);
+  const useCurrentPhrase = isToday && !hour;
   switch (warning.type) {
     case 'missing_data':
       return copy.seaEstimate;
@@ -947,7 +950,7 @@ const warningLabel = (warning: WarningFlag, language: LanguageCode, selectedDate
       return copy.windSportSpot;
     case 'exposed_to_wind':
       return warning.severity === 'warning'
-        ? copy.exposedToWind(day, isToday)
+        ? copy.exposedToWind(day, useCurrentPhrase)
         : copy.breezy;
     case 'difficult_access':
       return copy.difficultAccess;
@@ -960,14 +963,14 @@ const warningLabel = (warning: WarningFlag, language: LanguageCode, selectedDate
   }
 };
 
-const waveWarningLabel = (warning: WarningFlag, waveHeightM: number | undefined, language: LanguageCode, selectedDate?: Date): string => {
+const waveWarningLabel = (warning: WarningFlag, waveHeightM: number | undefined, language: LanguageCode, selectedDate?: Date, selectedHour?: number): string => {
   const copy = getLocalizedCopy(language, cardCopy).warnings;
   if (typeof waveHeightM === 'number' && Number.isFinite(waveHeightM)) {
     if (waveHeightM >= 1.2) return copy.roughSea;
     if (waveHeightM >= 0.8) return copy.choppy;
   }
 
-  return warningLabel(warning, language, selectedDate);
+  return warningLabel(warning, language, selectedDate, selectedHour);
 };
 
 const warningToneClass = (warning: WarningFlag): string => {
@@ -976,20 +979,22 @@ const warningToneClass = (warning: WarningFlag): string => {
   return 'border-sky-100 bg-sky-50 text-sky-700 dark:border-sky-900/40 dark:bg-sky-950/20 dark:text-sky-300';
 };
 
-const compactLabels = (language: LanguageCode, selectedDate?: Date) => {
-  const day = getSelectedDayPrefix(selectedDate, new Date(), language);
-  const sentenceDay = getSelectedDaySentencePrefix(selectedDate, new Date(), language);
+const compactLabels = (language: LanguageCode, selectedDate?: Date, selectedHour?: number) => {
+  const hour = getSelectedHourPrefix(selectedHour, language);
+  const day = hour ?? getSelectedDayPrefix(selectedDate, new Date(), language);
+  const sentenceDay = hour ?? getSelectedDaySentencePrefix(selectedDate, new Date(), language);
   const isToday = isSelectedDateToday(selectedDate);
+  const useCurrentPhrase = isToday && !hour;
   const copy = getLocalizedCopy(language, cardCopy).compact;
 
   return ({
   calmWaters: copy.calmWaters,
   goodSea: copy.goodSea,
-  protected: copy.protected(sentenceDay, isToday),
+  protected: copy.protected(sentenceDay, useCurrentPhrase),
   lightWind: copy.lightWind,
   mildlyBreezy: copy.mildlyBreezy,
   windyExposed: copy.windyExposed,
-  partlyShelteredToday: copy.partlyShelteredToday(day, isToday),
+  partlyShelteredToday: copy.partlyShelteredToday(day, useCurrentPhrase),
   slightlyExposed: copy.slightlyExposed,
   familyFriendly: copy.familyFriendly,
   shallowWaters: copy.shallowWaters,
@@ -1081,6 +1086,7 @@ export const BeachCard: React.FC<BeachCardProps> = ({
   bestSwimWindow,
   topPickTimeLabel,
   selectedDate,
+  selectedHour,
   crowdLevel,
   exposureLevel,
   warnings = [],
@@ -1112,7 +1118,7 @@ export const BeachCard: React.FC<BeachCardProps> = ({
   const isPartlyShelteredToday = exposureLevel === 'partial';
   const windBeaufort = getBeaufortLevel(windSpeed * 3.6);
   const isFavorite = favorites.includes(beach.id);
-  const labels = compactLabels(language, selectedDate);
+  const labels = compactLabels(language, selectedDate, selectedHour);
   const localizedCardCopy = getLocalizedCopy(language, cardCopy);
   const visitTimeLabel = getLocalizedCopy(language, {
     en: 'Best time',
@@ -1261,6 +1267,11 @@ export const BeachCard: React.FC<BeachCardProps> = ({
           : labels.windyExposed
         : labels.mildlyBreezy;
   const protectionLabel = windSuitabilityText || baseProtectionLabel;
+  const exposureBadgeLabel = isProtectedToday
+    ? labels.protected
+    : isExposed
+      ? displayOpenBeachLabel
+      : localizedCardCopy.localExposureCheck;
   const isLightWindConditionChip = windBeaufort < 4 && protectionLabel === labels.lightWind;
   const isExposedConditionChip = !isLightWindConditionChip && !isProtectedToday && (
     exposureLevel === 'exposed' ||
@@ -1455,6 +1466,7 @@ export const BeachCard: React.FC<BeachCardProps> = ({
                 noIdealSwimmingWindow={noIdealSwimmingWindow}
                 exposureLevel={exposureLevel}
                 canClaimWindProtection={canClaimWindProtection}
+                selectedHour={selectedHour}
                 forceShow
               />
             ) : showMobileProtectionChip ? (
@@ -1601,6 +1613,7 @@ export const BeachCard: React.FC<BeachCardProps> = ({
                 noIdealSwimmingWindow={noIdealSwimmingWindow}
                 exposureLevel={exposureLevel}
                 canClaimWindProtection={canClaimWindProtection}
+                selectedHour={selectedHour}
                 forceShow={forceTodayScoreBadge}
               />
             ) : (
@@ -1732,8 +1745,8 @@ export const BeachCard: React.FC<BeachCardProps> = ({
               isExposed ? 'bg-amber-500/90 text-white' : 'bg-sky-500/90 text-white'
             }`}>
               {isProtectedToday
-                ? t.shelteredTooltip
-                : (isExposed ? t.exposedTooltip : localizedCardCopy.localExposureCheck)}
+                ? exposureBadgeLabel
+                : (isExposed ? exposureBadgeLabel : localizedCardCopy.localExposureCheck)}
             </div>
           )}
           {hasBlueFlag2026 && <BlueFlagBadge language={language} compact />}
@@ -1784,6 +1797,7 @@ export const BeachCard: React.FC<BeachCardProps> = ({
                 noIdealSwimmingWindow={noIdealSwimmingWindow}
                 exposureLevel={exposureLevel}
                 canClaimWindProtection={canClaimWindProtection}
+                selectedHour={selectedHour}
                 forceShow={forceTodayScoreBadge}
               />
               <div className="flex items-center gap-1 text-[11px] font-bold text-slate-600 dark:text-slate-700" title="Visitor rating">
@@ -1829,7 +1843,7 @@ export const BeachCard: React.FC<BeachCardProps> = ({
 
         {/* Condition Score */}
         <div className="mb-3">
-          <BeachConditionScore isExposed={isExposed} windSpeed={windSpeed * 3.6} waveHeightM={waveHeightM} temperature={temperature} compact={true} exposureLevel={exposureLevel} language={language} selectedDate={selectedDate} canClaimWindProtection={canClaimWindProtection} />
+          <BeachConditionScore isExposed={isExposed} windSpeed={windSpeed * 3.6} waveHeightM={waveHeightM} temperature={temperature} compact={true} exposureLevel={exposureLevel} language={language} selectedDate={selectedDate} selectedHour={selectedHour} canClaimWindProtection={canClaimWindProtection} />
         </div>
 
         {warnings.length > 0 && (
@@ -1841,7 +1855,7 @@ export const BeachCard: React.FC<BeachCardProps> = ({
               >
                 {strongWindContext && warning.type === 'exposed_to_wind'
                   ? displayOpenBeachLabel
-                  : warningLabel(warning, language, selectedDate)}
+                  : warningLabel(warning, language, selectedDate, selectedHour)}
               </span>
             ))}
           </div>

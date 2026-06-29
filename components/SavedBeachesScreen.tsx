@@ -66,6 +66,7 @@ interface SavedBeachesScreenProps {
   onOpenBeach: (beach: Beach) => void;
   onClose: () => void;
   selectedDate?: Date;
+  selectedHour?: number;
   windSpeed?: number;
   temperature?: number;
   islandName: string;
@@ -82,6 +83,7 @@ export const SavedBeachesScreen: React.FC<SavedBeachesScreenProps> = ({
   onOpenBeach,
   onClose,
   selectedDate,
+  selectedHour,
   windSpeed = 0,
   temperature,
   islandName,
@@ -140,6 +142,7 @@ export const SavedBeachesScreen: React.FC<SavedBeachesScreenProps> = ({
                     onClick={() => onOpenBeach(item.beach)}
                     todayScore={item.score}
                     selectedDate={selectedDate}
+                    selectedHour={selectedHour}
                     exposureLevel={item.exposureLevel}
                     warnings={item.warnings}
                     confidence={item.confidence}
