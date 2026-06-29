@@ -707,6 +707,7 @@ export const assessBeachWindExposure = (input: BeachWindExposureInput): WindExpo
   }
 
   const seaCalmClaimAllowed = canClaimProtected &&
+    baseBeaufort <= 3 &&
     typeof input.waveHeightMeters === 'number' &&
     input.waveHeightMeters <= 0.4 &&
     !isKnownWindSportRisk;

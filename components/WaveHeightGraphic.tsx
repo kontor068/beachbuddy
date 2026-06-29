@@ -1,4 +1,5 @@
 import React from 'react';
+import { Ship } from 'lucide-react';
 import { LanguageCode } from '../types';
 import { getLocalizedCopy, type LocalizedCopy } from '../utils/i18n';
 import { isSelectedDateToday } from '../utils/dateLabels';
@@ -31,6 +32,11 @@ interface WaveHeightGraphicProps {
   selectedHour?: number;
   /** Wind-modeled wave height (m); sizes the figure when there is no measured value. */
   estimateHeightM?: number;
+  /** Boat-only beach: you board from the boat, so the body-scale "knee/chest" metaphor is
+   *  meaningless — show a boat-on-the-sea scene + a transfer caution instead. */
+  boatAccess?: boolean;
+  /** Wind Beaufort for the selected hour — drives the boat-transfer caution (above 3 Bft). */
+  windBeaufort?: number;
   className?: string;
 }
 
@@ -98,6 +104,18 @@ const COPY: LocalizedCopy<StripCopy> = {
   },
 };
 
+// Boat-only beaches: you arrive by boat, so "wave up to your knee/chest" is meaningless. Describe
+// the SEA for the boat instead, and warn that small boats rock more (rough from ~Force 4 up).
+type BoatCopy = { calm: string; choppy: string; rough: string; heightNote: string; note: string };
+
+const BOAT_COPY: LocalizedCopy<BoatCopy> = {
+  en: { calm: 'Calm sea', choppy: 'A bit bumpy', rough: 'Bumpy ride', heightNote: 'Sea for the boat', note: 'Small boats rock more — above 3 Bft, take care boarding and getting back on from the water.' },
+  gr: { calm: 'Ήρεμη θάλασσα', choppy: 'Λίγο κουνάει', rough: 'Κουνάει αρκετά', heightNote: 'Θάλασσα για το καραβάκι', note: 'Τα μικρά σκάφη κουνάνε πιο εύκολα — πάνω από 3 μποφόρ πρόσεξε την επιβίβαση και την επιστροφή στο σκάφος μέσα από το νερό.' },
+  fr: { calm: 'Mer calme', choppy: 'Un peu agitée', rough: 'Ça secoue', heightNote: 'Mer pour le bateau', note: 'Les petits bateaux bougent plus — au-delà de 3 Bft, attention pour monter et remonter à bord depuis l’eau.' },
+  de: { calm: 'Ruhige See', choppy: 'Etwas wackelig', rough: 'Schaukelt stark', heightNote: 'See für das Boot', note: 'Kleine Boote schaukeln stärker — über 3 Bft beim Ein- und Wiedereinsteigen aus dem Wasser aufpassen.' },
+  it: { calm: 'Mare calmo', choppy: 'Un po\' mosso', rough: 'Balla parecchio', heightNote: 'Mare per la barca', note: 'Le barche piccole ballano di più — oltre 3 Bft attenzione a salire e risalire a bordo dall’acqua.' },
+};
+
 type WaveTrendKey = 'calmerMorning' | 'calmerLater';
 
 const formatHour = (hour: number) => `${String(hour).padStart(2, '0')}:00`;
@@ -158,6 +176,27 @@ const FigureScene: React.FC<{ scale: WaveScaleResult }> = ({ scale }) => {
         strokeDasharray="3 3"
         opacity={0.45}
       />
+    </svg>
+  );
+};
+
+// Boat-only beaches: a small boat on the colour-coded sea (the swell amplitude and the boat's
+// tilt grow with roughness), instead of a person wading in from the shore.
+const BoatScene: React.FC<{ scale: WaveScaleResult }> = ({ scale }) => {
+  const band = scale.isEstimate ? WAVE_ESTIMATE_CLASSES : WAVE_BAND_CLASSES[scale.band];
+  const amp = scale.band === 'rough' ? 14 : scale.band === 'amber' ? 8 : 4;
+  const tilt = scale.band === 'rough' ? -6 : scale.band === 'amber' ? -3 : 0;
+  const wy = 70;
+  const crest = `M0 ${wy} Q 16 ${wy - amp} 32 ${wy} T 64 ${wy} T 96 ${wy} T 128 ${wy} T 160 ${wy}`;
+  return (
+    <svg viewBox="0 0 160 116" preserveAspectRatio="xMidYMid meet" aria-hidden="true" className="h-auto w-full">
+      <path d={`${crest} L160 116 L0 116 Z`} className={`fill-current ${band.fill}`} fillOpacity={scale.isEstimate ? 0.4 : 0.8} />
+      <path d={crest} fill="none" className="stroke-white/70 dark:stroke-white/40" strokeWidth="2" strokeLinecap="round" />
+      <g className="text-slate-500 dark:text-slate-400" fill="currentColor" transform={`rotate(${tilt} 80 ${wy})`}>
+        <path d={`M58 ${wy - 5} L102 ${wy - 5} L95 ${wy + 9} Q80 ${wy + 14} 65 ${wy + 9} Z`} />
+        <rect x="71" y={wy - 17} width="18" height="12" rx="2" />
+        <rect x="79" y={wy - 27} width="2.5" height="11" rx="1" />
+      </g>
     </svg>
   );
 };
@@ -233,6 +272,8 @@ export const WaveHeightGraphic: React.FC<WaveHeightGraphicProps> = ({
   selectedDate,
   selectedHour,
   estimateHeightM,
+  boatAccess,
+  windBeaufort,
   className,
 }) => {
   const scale = getWaveScale(waveHeightM, language, { isEstimate, estimateHeightM });
@@ -257,9 +298,13 @@ export const WaveHeightGraphic: React.FC<WaveHeightGraphicProps> = ({
     typeof selectedHour === 'number'
     && typeof waveHeightM === 'number'
     && Number.isFinite(waveHeightM)
-    && !points.some(point => point.hour === selectedHour)
   ) {
-    points.push({ hour: selectedHour, waveHeightM });
+    const selectedPointIndex = points.findIndex(point => point.hour === selectedHour);
+    if (selectedPointIndex >= 0) {
+      points[selectedPointIndex] = { hour: selectedHour, waveHeightM };
+    } else {
+      points.push({ hour: selectedHour, waveHeightM });
+    }
   }
   points.sort((a, b) => a.hour - b.hour);
   const showStrip = points.length >= 2;
@@ -281,6 +326,14 @@ export const WaveHeightGraphic: React.FC<WaveHeightGraphicProps> = ({
     selectedHourLabel,
   ].filter(Boolean).join('. ');
 
+  const boatCopy = boatAccess ? getLocalizedCopy(language, BOAT_COPY) : null;
+  const bandKey: keyof BoatCopy = scale.band === 'rough' ? 'rough' : scale.band === 'amber' ? 'choppy' : 'calm';
+  // Boat-only beach: describe the sea for the boat, not a body-scale wading height.
+  const headlineLabel = boatCopy ? boatCopy[bandKey] : scale.label;
+  const subHeightNote = boatCopy ? boatCopy.heightNote : copy.heightNote;
+  // Small boats rock more — flag the transfer above 3 Bft (or a genuinely rough sea).
+  const showBoatNote = Boolean(boatCopy) && ((typeof windBeaufort === 'number' && windBeaufort >= 4) || scale.band === 'rough');
+
   return (
     <div
       role="img"
@@ -289,15 +342,22 @@ export const WaveHeightGraphic: React.FC<WaveHeightGraphicProps> = ({
     >
       <div className="flex items-center gap-3 sm:gap-4">
         <div className="w-20 shrink-0 sm:w-24">
-          <FigureScene scale={scale} />
+          {boatAccess ? <BoatScene scale={scale} /> : <FigureScene scale={scale} />}
         </div>
         <div className="min-w-0">
           <div className="text-xs font-semibold text-slate-500 dark:text-slate-400">{copy.title}</div>
-          <div className={`font-heading text-xl font-bold leading-tight ${labelClass}`}>{scale.label}</div>
+          <div className={`font-heading text-xl font-bold leading-tight ${labelClass}`}>{headlineLabel}</div>
           <div className="text-sm font-semibold text-slate-600 dark:text-slate-300">{scale.detail}</div>
-          <div className="mt-1 text-xs font-medium leading-snug text-slate-500 dark:text-slate-400">{copy.heightNote}</div>
+          <div className="mt-1 text-xs font-medium leading-snug text-slate-500 dark:text-slate-400">{subHeightNote}</div>
         </div>
       </div>
+
+      {showBoatNote && boatCopy && (
+        <div className="mt-3 flex items-start gap-1.5 rounded-lg bg-amber-50/80 px-2.5 py-1.5 text-[11px] font-semibold leading-snug text-amber-800 dark:bg-amber-900/25 dark:text-amber-200">
+          <Ship className="mt-0.5 h-3.5 w-3.5 shrink-0" aria-hidden="true" />
+          <span>{boatCopy.note}</span>
+        </div>
+      )}
 
       {showStrip && (
         <div className="mt-3 border-t border-slate-100 pt-3 dark:border-slate-700">

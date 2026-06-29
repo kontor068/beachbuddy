@@ -42,6 +42,7 @@ import { summarizeMeltemiBehavior } from '../utils/windClimatology';
 import { describeSimpleWindSuitability, describeWindExposure } from '../utils/windExposureCopy';
 import { hasDifficultTopPickAccess, hasMainstreamTopPickAccess, hasTrulyEasyAccess, isAdventureBeach } from '../utils/access';
 import { getBeachTouristRecognitionScore } from '../utils/touristPriority';
+import { getWindChopWaveFloorM, resolveEffectiveWaveHeightM } from '../utils/waveModel';
 
 export interface BeachScore {
   beachId: number;
@@ -59,9 +60,10 @@ export interface BeachScore {
   exposureLevel?: ExposureLevel;
   orientation?: number | null;
   marine?: MarineForecast;
+  /** Display/effective wave height (m), lifted above raw marine grid data when local wind,
+   *  gusts, and fetch indicate wind chop that the grid can under-represent. */
   waveHeightM?: number;
-  /** Damped fetch-limited modeled wave height (m); used when measured marine is absent so the
-   *  "estimate from wind" visual can scale with conditions instead of showing flat calm. */
+  /** Damped wind/fetch modeled wave height (m), including the conservative wind-chop floor. */
   modeledWaveHeightM?: number;
   warnings?: WarningFlag[];
   confidence?: RecommendationConfidence;
@@ -108,9 +110,10 @@ export interface BeachRecommendation {
   exposureLevel?: ExposureLevel;
   orientation?: number | null;
   marine?: MarineForecast;
+  /** Display/effective wave height (m), lifted above raw marine grid data when local wind,
+   *  gusts, and fetch indicate wind chop that the grid can under-represent. */
   waveHeightM?: number;
-  /** Damped fetch-limited modeled wave height (m); used when measured marine is absent so the
-   *  "estimate from wind" visual can scale with conditions instead of showing flat calm. */
+  /** Damped wind/fetch modeled wave height (m), including the conservative wind-chop floor. */
   modeledWaveHeightM?: number;
   warnings?: WarningFlag[];
   confidence?: RecommendationConfidence;
@@ -465,28 +468,6 @@ const calculateHourlyRainRisk = (
   };
 };
 
-const getHourlyExposureLevel = (
-  beach: Beach,
-  windDirectionDeg: number,
-  windDirection: WindDirection,
-  windSpeedKmh: number,
-  waveHeightM?: number,
-  // R1 (v3 roadmap 2c/hourly-path fix): pass the geospatial profile so the hourly exposure
-  // uses the same geometry as the headline assessment (previously it fell back to authored/
-  // legacy buckets, making the key-hour sea score inconsistent with the daily one).
-  geospatialProfile?: GeospatialExposureProfile
-): ExposureLevel => {
-  return assessBeachWindExposure({
-    beach,
-    windDirectionDeg,
-    windDirection,
-    windSpeedKmh,
-    beaufort: getBeaufortLevel(windSpeedKmh),
-    waveHeightMeters: waveHeightM,
-    geospatialProfile,
-  }).exposureLevel;
-};
-
 const calculateHourlySeaScore = (
   beach: Beach,
   hourlyForecast?: ForecastItem[],
@@ -498,13 +479,33 @@ const calculateHourlySeaScore = (
   const scores = keyHours.map(item => {
     const windDirection = degToCompass(item.wind.deg);
     const windSpeedKmh = item.wind.speed * 3.6;
-    const exposureLevel = getHourlyExposureLevel(beach, item.wind.deg, windDirection, windSpeedKmh, item.marine?.waveHeightM, geospatialProfile);
+    const gustKmph = typeof item.wind.gustKnots === 'number' && Number.isFinite(item.wind.gustKnots)
+      ? item.wind.gustKnots * 1.852
+      : typeof item.wind.gust === 'number' && Number.isFinite(item.wind.gust)
+        ? item.wind.gust * 3.6
+        : undefined;
+    const windAssessment = assessBeachWindExposure({
+      beach,
+      windDirectionDeg: item.wind.deg,
+      windDirection,
+      windSpeedKmh,
+      beaufort: getBeaufortLevel(windSpeedKmh),
+      waveHeightMeters: item.marine?.waveHeightM,
+      geospatialProfile,
+    });
+    const exposureLevel = windAssessment.exposureLevel;
     const isExposed = exposureLevel !== 'protected';
+    const modeledWaveDamping = exposureLevel === 'protected' ? 0.5 : exposureLevel === 'partial' ? 0.75 : 1;
+    const modeledWaveHeightM = Number(Math.max(
+      windAssessment.modeledWaveHeightM * modeledWaveDamping,
+      getWindChopWaveFloorM(exposureLevel, getBeaufortLevel(windSpeedKmh), windSpeedKmh, gustKmph)
+    ).toFixed(2));
+    const effectiveWaveHeightM = resolveEffectiveWaveHeightM(item.marine?.waveHeightM, modeledWaveHeightM);
     return calculateSeaConditionScore(
       isExposed,
       windSpeedKmh,
       exposureLevel,
-      item.marine?.waveHeightM
+      effectiveWaveHeightM
     );
   });
 
@@ -1328,11 +1329,15 @@ export const calculateBeachScore = (
   // because no buoy reported. SMB gives open-water Hs, so we damp it toward the
   // shore by exposure (sheltered/cross-shore beaches see far less of it).
   const modeledWaveDamping = finalExposureLevel === 'protected' ? 0.5 : finalExposureLevel === 'partial' ? 0.75 : 1;
-  const modeledWaveHeightM = Number((windAssessment.modeledWaveHeightM * modeledWaveDamping).toFixed(2));
-  const usingModeledWave = !(typeof waveHeightM === 'number' && Number.isFinite(waveHeightM));
-  // Numeric scoring uses this; user-facing "measured" copy still uses waveHeightM
-  // only, so we never present an estimate as if it were a real measurement.
-  const effectiveWaveHeightM = usingModeledWave ? modeledWaveHeightM : (waveHeightM as number);
+  const fetchModeledWaveHeightM = Number((windAssessment.modeledWaveHeightM * modeledWaveDamping).toFixed(2));
+  const windChopFloorM = getWindChopWaveFloorM(finalExposureLevel, baseBeaufort, windSpeedKmph, gustKmph);
+  const modeledWaveHeightM = Number(Math.max(fetchModeledWaveHeightM, windChopFloorM).toFixed(2));
+  const measuredWaveHeightM = typeof waveHeightM === 'number' && Number.isFinite(waveHeightM) ? waveHeightM : undefined;
+  // Numeric scoring and display use the effective beach-level wave/chop value.
+  // The raw Open-Meteo marine value stays in `marine.waveHeightM` for traceability, but
+  // a low grid value must not make a windy exposed beach look flat calm.
+  const effectiveWaveHeightM = resolveEffectiveWaveHeightM(measuredWaveHeightM, modeledWaveHeightM);
+  const waveRaisedByWind = measuredWaveHeightM !== undefined && effectiveWaveHeightM > measuredWaveHeightM + 0.05;
 
   // Long-period swell surge (roadmap #2): prefer the swell channel, else the wave
   // channel; period-gated so it is a strict no-op on short wind-sea.
@@ -1398,26 +1403,29 @@ export const calculateBeachScore = (
   const mediumFetchOnshore = fetchExposure === 'medium' && finalExposureLevel === 'exposed';
 
   // 3. Wave, fetch, and water-quality conditions
-  if (typeof waveHeightM === 'number' && Number.isFinite(waveHeightM)) {
-    if (waveHeightM <= 0.4 && finalExposureLevel === 'protected') {
+  if (measuredWaveHeightM !== undefined) {
+    if (waveRaisedByWind) {
+      reasons.push('Wind and gusts can add chop beyond the marine grid');
+    }
+    if (!waveRaisedByWind && measuredWaveHeightM <= 0.4 && finalExposureLevel === 'protected') {
       reasons.push("Low measured wave height");
-    } else if (waveHeightM >= 1.2) {
-      reasons.push(`High wave forecast (${waveHeightM.toFixed(1)} m)`);
+    } else if (effectiveWaveHeightM >= 1.2) {
+      reasons.push(`High wave forecast (${effectiveWaveHeightM.toFixed(1)} m)`);
       warnings.push({
         type: 'rough_sea',
-        severity: waveHeightM >= 1.5 ? 'critical' : 'warning',
-        message: `Wave forecast is ${waveHeightM.toFixed(1)} m.`
+        severity: effectiveWaveHeightM >= 1.5 ? 'critical' : 'warning',
+        message: `Wave forecast is ${effectiveWaveHeightM.toFixed(1)} m.`
       });
-    } else if (waveHeightM >= 0.8) {
+    } else if (effectiveWaveHeightM >= 0.8) {
       reasons.push(finalExposureLevel === 'protected'
-        ? `Protected from moderate wave forecast (${waveHeightM.toFixed(1)} m)`
-        : `Some wave risk (${waveHeightM.toFixed(1)} m)`
+        ? `Protected from moderate wave forecast (${effectiveWaveHeightM.toFixed(1)} m)`
+        : `Some wave risk (${effectiveWaveHeightM.toFixed(1)} m)`
       );
       if (finalExposureLevel !== 'protected') {
         warnings.push({
           type: 'rough_sea',
           severity: 'warning',
-          message: `Some wave risk (${waveHeightM.toFixed(1)} m).`
+          message: `Some wave risk (${effectiveWaveHeightM.toFixed(1)} m).`
         });
       }
     } else if (finalExposureLevel === 'protected') {
@@ -1633,10 +1641,10 @@ export const calculateBeachScore = (
   swimmingScore -= directSwellPenalty;
   // Wave penalty applies to the measured wave, or to the (damped) modeled wave
   // when none was reported — gentler for the estimate to avoid over-penalising.
-  if (typeof waveHeightM === 'number') {
-    if (waveHeightM > 1.2) swimmingScore -= 25;
-    else if (waveHeightM >= 0.9) swimmingScore -= 16;
-    else if (waveHeightM >= 0.6) swimmingScore -= 8;
+  if (measuredWaveHeightM !== undefined) {
+    if (effectiveWaveHeightM > 1.2) swimmingScore -= 25;
+    else if (effectiveWaveHeightM >= 0.9) swimmingScore -= 16;
+    else if (effectiveWaveHeightM >= 0.6) swimmingScore -= 8;
   } else {
     if (modeledWaveHeightM > 1.2) swimmingScore -= 18;
     else if (modeledWaveHeightM >= 0.9) swimmingScore -= 12;
@@ -1823,7 +1831,7 @@ export const calculateBeachScore = (
     exposureLevel: finalExposureLevel,
     orientation: beachOrientation,
     marine,
-    waveHeightM,
+    waveHeightM: effectiveWaveHeightM,
     modeledWaveHeightM,
     warnings,
     confidence,
@@ -1892,7 +1900,7 @@ const generateLocalizedBeachExplanation = (
   const exposureLevel = recommendation?.exposureLevel || windAssessment.exposureLevel;
   const canClaimWindProtection = Boolean(recommendation?.canClaimWindProtection ?? windAssessment.canClaimProtected);
   const isProtectedForCopy = exposureLevel === 'protected' && canClaimWindProtection;
-  const waveHeightM = weather.marine?.waveHeightM;
+  const waveHeightM = recommendation?.waveHeightM ?? weather.marine?.waveHeightM;
   const seaScore = calculateSeaConditionScore(exposureLevel !== 'protected', windSpeedKmph, exposureLevel, waveHeightM);
   const beachName = displayBeachName(beach.name, language);
   const selectedDate = 'date' in weather ? weather.date : undefined;

@@ -30,6 +30,7 @@ import { assessBeachWindExposure } from '../utils/windExposureEngine';
 import { AccessibleCalmNearbySection, type AccessibleCalmCove } from '../components/AccessibleCalmNearbySection';
 import { ConstraintFitSection, type ConstraintFit } from '../components/ConstraintFitSection';
 import { WaveHeightGraphic, type HourlyWavePoint } from '../components/WaveHeightGraphic';
+import { hasBoatOnlyAccess } from '../utils/access';
 import { DayPlanSection, type DayPlanStop } from '../components/DayPlanSection';
 import { generateBeachExplanation as generateUiBeachExplanation } from '../utils/beachExplanation';
 import { describeSimpleWindSuitability, describeWindExposure } from '../utils/windExposureCopy';
@@ -592,8 +593,9 @@ export const BeachDetailPage: React.FC<BeachDetailPageProps> = ({
   const { score, exposureLevel, swimmingComfort, canClaimWindProtection = false, seaCalmClaimAllowed = false } = scoreResult;
   const isExposed = exposureLevel ? exposureLevel !== 'protected' : true;
   const isExposedToTodayWind = exposureLevel ? exposureLevel === 'exposed' : isExposed;
-  const waveHeightM = weatherData.marine?.waveHeightM;
-  const isWaveEstimate = !(typeof waveHeightM === 'number' && Number.isFinite(waveHeightM));
+  const measuredWaveHeightM = weatherData.marine?.waveHeightM;
+  const waveHeightM = scoreResult.waveHeightM ?? measuredWaveHeightM;
+  const isWaveEstimate = !(typeof measuredWaveHeightM === 'number' && Number.isFinite(measuredWaveHeightM));
   // Swim-hours (08–21) wave series for the selected day, straight off the per-beach hourly
   // forecast already threaded into this page (no extra fetch). Powers the intraday strip.
   const selectedDayKey = selectedDate ? selectedDate.toDateString() : undefined;
@@ -1162,6 +1164,8 @@ export const BeachDetailPage: React.FC<BeachDetailPageProps> = ({
             language={language}
             selectedDate={selectedDate}
             selectedHour={selectedHour}
+            boatAccess={hasBoatOnlyAccess(beach)}
+            windBeaufort={beaufortLevel}
           />
           <div className={`grid grid-cols-2 gap-2.5 ${typeof seaTemperatureC === 'number' ? 'md:grid-cols-4' : 'md:grid-cols-3'}`}>
             <ConditionCard

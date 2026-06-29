@@ -4,6 +4,8 @@ import { Accessibility, Beach, BeachType, GeospatialExposureProfile, WaterDepth,
 import { generateBeachCopy } from '../utils/beachCopy';
 import { assessGeospatialWindExposure, type LandMask } from '../utils/geospatialExposureModel';
 import { getConsistentVisibleMapExposureLevels, getVisibleMapExposureLevel, shouldShowWindExposureColors } from '../utils/mapExposure';
+import { calculateSeaConditionScore } from '../utils/seaConditions';
+import { getWindChopWaveFloorM, resolveEffectiveWaveHeightM } from '../utils/waveModel';
 import type { ExposureLevel } from '../utils/windExposure';
 import { assessBeachWindExposure } from '../utils/windExposureEngine';
 
@@ -266,6 +268,19 @@ const generatedCopyText = (
   });
 
   return [copy.cardSummary, ...copy.detailBullets, copy.tradeoffText || ''].join(' ');
+};
+
+const effectiveWaveHeightFromAssessment = (
+  assessment: ReturnType<typeof assessBeachWindExposure>,
+  scenario: { beaufort: number; windSpeedKmh: number; waveHeightMeters?: number }
+): number => {
+  const exposureLevel = assessment.exposureLevel;
+  const modeledWaveDamping = exposureLevel === 'protected' ? 0.5 : exposureLevel === 'partial' ? 0.75 : 1;
+  const modeledWaveHeightM = Number(Math.max(
+    assessment.modeledWaveHeightM * modeledWaveDamping,
+    getWindChopWaveFloorM(exposureLevel, scenario.beaufort, scenario.windSpeedKmh)
+  ).toFixed(2));
+  return resolveEffectiveWaveHeightM(scenario.waveHeightMeters, modeledWaveHeightM);
 };
 
 const profile = (partial: Partial<WindProfile>): WindProfile => ({
@@ -1219,8 +1234,19 @@ const papikinouGeneratedGeospatialNorthMapLevel = visibleMapExposureDecision(
   milosNorthFiveBeaufort,
   milosGeospatialProfiles[papikinou.id]
 );
-const shelteredCalmAssessment = assessBeachWindExposure({ beach: genericSheltered, ...northFiveBeaufort, waveHeightMeters: 0.3 });
+const shelteredCalmAssessment = assessBeachWindExposure({ beach: genericSheltered, ...northThreeBeaufort, waveHeightMeters: 0.3 });
 const shelteredLabels = visibleLabelDecision(shelteredCalmAssessment);
+const openWindyLowWaveAssessment = assessBeachWindExposure({ beach: genericOpen, ...northFiveBeaufort, waveHeightMeters: 0.3 });
+const openWindyLowWaveEffectiveHeight = effectiveWaveHeightFromAssessment(openWindyLowWaveAssessment, { ...northFiveBeaufort, waveHeightMeters: 0.3 });
+const openWindyLowWaveSeaScore = calculateSeaConditionScore(
+  openWindyLowWaveAssessment.exposureLevel !== 'protected',
+  northFiveBeaufort.windSpeedKmh,
+  openWindyLowWaveAssessment.exposureLevel,
+  openWindyLowWaveEffectiveHeight
+);
+const shelteredWindyLowWaveAssessment = assessBeachWindExposure({ beach: genericSheltered, ...northFiveBeaufort, waveHeightMeters: 0.3 });
+const shelteredWindyLowWaveLabels = visibleLabelDecision(shelteredWindyLowWaveAssessment);
+const shelteredWindyLowWaveEffectiveHeight = effectiveWaveHeightFromAssessment(shelteredWindyLowWaveAssessment, { ...northFiveBeaufort, waveHeightMeters: 0.3 });
 const phase21LowWaveAssessments = phase21Beaches.map(beach => assessBeachWindExposure({
   beach,
   ...northFiveBeaufort,
@@ -1279,7 +1305,11 @@ assert(!unknownLabels.protectedLabel && !unknownLabels.calmLabel, 'UI labels: un
 assert(!lowConfidenceShelterAssessment.canClaimProtected, 'Generic 5 Bft: low-confidence shelter must not claim protection.');
 assert(lowConfidenceShelterAssessment.confidenceReasons.includes('wind exposure profile needs verification'), 'Generic 5 Bft: low-confidence shelter must reduce confidence.');
 assert(!lowConfidenceShelterLabels.protectedLabel && !lowConfidenceShelterLabels.calmLabel, 'UI labels: low-confidence windProfile must not create protected/calm labels.');
-assert(shelteredLabels.protectedLabel && shelteredLabels.calmLabel, 'UI labels: verified sheltered + low waves may still show protected/calm wording.');
+assert(shelteredLabels.protectedLabel && shelteredLabels.calmLabel, 'UI labels: verified sheltered + low waves may show protected/calm wording in 3 Bft.');
+assert(shelteredWindyLowWaveLabels.protectedLabel && !shelteredWindyLowWaveLabels.calmLabel, 'UI labels: verified sheltered + low raw waves must not show calm wording in 5 Bft.');
+assert(openWindyLowWaveEffectiveHeight >= 0.8, 'Effective waves: open 5 Bft with raw 0.3m must not display as flat.');
+assert(openWindyLowWaveSeaScore < 5, 'Effective waves: open 5 Bft with raw 0.3m must still score as poor sea.');
+assert(shelteredWindyLowWaveEffectiveHeight >= 0.4, 'Effective waves: sheltered 5 Bft with raw 0.3m must show at least some chop.');
 assert(phase21Assessments.every(assessment => !assessment.canClaimProtected), 'Phase 2.1: newly added profiles must not create north-wind protection claims.');
 assert(phase21LowWaveAssessments.every(assessment => {
   const labels = visibleLabelDecision(assessment);
@@ -1553,6 +1583,12 @@ console.log(JSON.stringify({
     },
     lowConfidenceShelterLabels,
     shelteredVisibleLabels: shelteredLabels,
+    windyLowRawWave: {
+      openEffectiveWaveHeightM: openWindyLowWaveEffectiveHeight,
+      openSeaScore: openWindyLowWaveSeaScore,
+      shelteredEffectiveWaveHeightM: shelteredWindyLowWaveEffectiveHeight,
+      shelteredLabels: shelteredWindyLowWaveLabels,
+    },
   },
   geospatialExposureModel: {
     mapFallback: {

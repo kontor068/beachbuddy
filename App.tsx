@@ -57,6 +57,7 @@ import type { ExposureLevel } from './utils/windExposure';
 import { getRegionWindVariationNote, type RegionBeachWindSample } from './utils/regionWindVariation';
 import { loadGeospatialExposureProfiles, type GeospatialExposureProfileLookup } from './services/geospatialExposureService';
 import { assessBeachWindExposure } from './utils/windExposureEngine';
+import { getWindChopWaveFloorM, resolveEffectiveWaveHeightM } from './utils/waveModel';
 import { fuzzySearchScore, getSearchVariants } from './utils/searchNormalize';
 import { getLandmassId } from './utils/landmass';
 
@@ -757,12 +758,18 @@ const scoreRemainingTopPickHour = (beach: Beach, item: ForecastItem): number => 
     seaSurfaceTemperature: item.marine?.seaSurfaceTemperatureC,
   });
   const isExposed = exposure.exposureLevel !== 'protected';
-  const seaScore = calculateSeaConditionScore(isExposed, windSpeedKmph, exposure.exposureLevel, waveHeightM);
   const gustKmph = typeof item.wind.gustKnots === 'number'
     ? item.wind.gustKnots * 1.852
     : typeof item.wind.gust === 'number'
       ? item.wind.gust * 3.6
       : undefined;
+  const modeledWaveDamping = exposure.exposureLevel === 'protected' ? 0.5 : exposure.exposureLevel === 'partial' ? 0.75 : 1;
+  const modeledWaveHeightM = Number(Math.max(
+    exposure.modeledWaveHeightM * modeledWaveDamping,
+    getWindChopWaveFloorM(exposure.exposureLevel, beaufort, windSpeedKmph, gustKmph)
+  ).toFixed(2));
+  const effectiveWaveHeightM = resolveEffectiveWaveHeightM(waveHeightM, modeledWaveHeightM);
+  const seaScore = calculateSeaConditionScore(isExposed, windSpeedKmph, exposure.exposureLevel, effectiveWaveHeightM);
   const gustSpread = typeof gustKmph === 'number' ? Math.max(0, gustKmph - windSpeedKmph) : 0;
   const hour = new Date(item.dt * 1000).getHours();
   const temp = item.main.temp;
@@ -3142,13 +3149,13 @@ export const App: React.FC = () => {
         const beachSpecificForecast = hourAdjustedBeachForecasts[beach.id];
         const beachForecast = beachSpecificForecast || selectedForecast;
         const beachWindSpeedKmph = beachForecast.wind.speed * 3.6;
-        const beachWaveHeightM = beachForecast.marine?.waveHeightM ?? waveHeightM;
         const scoreResult = beachScoreById.get(beach.id) ?? calculateBeachScore(beach, beachForecast, userLocation, preferences, {
           weatherSource: beachSpecificForecast ? 'beach-cluster' : 'island-fallback',
           hourlyForecast: beachForecast.hourly || selectedForecast.hourly,
           geospatialProfile: geospatialExposureProfiles?.[beach.id],
         });
         const isExposed = scoreResult.exposureLevel ? scoreResult.exposureLevel !== 'protected' : true;
+        const beachWaveHeightM = scoreResult.waveHeightM ?? beachForecast.marine?.waveHeightM ?? waveHeightM;
         return !hasPoorSeaConditions(isExposed, beachWindSpeedKmph, scoreResult.exposureLevel, beachWaveHeightM);
       });
       beaches = weatherSuitableBeaches.length > 0 ? weatherSuitableBeaches : beaches;

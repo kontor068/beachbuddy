@@ -4,6 +4,7 @@ import { degToCompass, getBeaufortLevel } from '../utils/weatherUtils';
 import { calculateSeaConditionScore } from '../utils/seaConditions';
 import type { ExposureLevel } from '../utils/windExposure';
 import { assessBeachWindExposure } from '../utils/windExposureEngine';
+import { getWindChopWaveFloorM, resolveEffectiveWaveHeightM } from '../utils/waveModel';
 
 export interface BeachDayPlan {
   beachId: number;
@@ -70,14 +71,6 @@ const hasRoughPlannerConditions = (context?: BeachDayPlanContext): boolean => {
   return seaTone === 'rough' || (beaufort !== undefined && beaufort >= 5);
 };
 
-const getMaxForecastWaveHeight = (items: ForecastItem[]): number | undefined => {
-  const waveHeights = items
-    .map(item => getFiniteNumber(item.marine?.waveHeightM))
-    .filter((value): value is number => value !== undefined);
-
-  return waveHeights.length > 0 ? Math.max(...waveHeights) : undefined;
-};
-
 const getMaxForecastWindSpeedKmh = (items: ForecastItem[]): number | undefined => {
   const windSpeeds = items
     .map(item => getFiniteNumber(item.wind?.speed))
@@ -85,25 +78,6 @@ const getMaxForecastWindSpeedKmh = (items: ForecastItem[]): number | undefined =
     .map(speedMps => speedMps * 3.6);
 
   return windSpeeds.length > 0 ? Math.max(...windSpeeds) : undefined;
-};
-
-const getPlannerSummaryContext = (
-  context: BeachDayPlanContext | undefined,
-  relevantHours: ForecastItem[]
-): BeachDayPlanContext => {
-  const summaryContext: BeachDayPlanContext = { ...(context || {}) };
-  const maxWaveHeightM = getMaxForecastWaveHeight(relevantHours);
-  const maxWindSpeedKmh = getMaxForecastWindSpeedKmh(relevantHours);
-
-  if (maxWaveHeightM !== undefined) {
-    summaryContext.waveHeightM = maxWaveHeightM;
-  }
-
-  if (maxWindSpeedKmh !== undefined) {
-    summaryContext.windSpeedKmh = maxWindSpeedKmh;
-  }
-
-  return summaryContext;
 };
 
 const getGoodDaySummary = (
@@ -164,18 +138,29 @@ const hasGoodContextSeaConditions = (context?: BeachDayPlanContext): boolean => 
   context.seaConditionScore >= MIN_GOOD_SEA_CONDITION_SCORE
 );
 
-const getPlannerExposureLevel = (
+const getForecastGustKmh = (item: ForecastItem): number | undefined => {
+  if (typeof item.wind?.gustKnots === 'number' && Number.isFinite(item.wind.gustKnots)) {
+    return item.wind.gustKnots * 1.852;
+  }
+  if (typeof item.wind?.gust === 'number' && Number.isFinite(item.wind.gust)) {
+    return item.wind.gust * 3.6;
+  }
+  return undefined;
+};
+
+const getPlannerSeaInputs = (
   beach: Beach,
   item: ForecastItem,
   fallbackExposureLevel?: ExposureLevel
-): ExposureLevel => {
+): { exposureLevel: ExposureLevel; waveHeightM: number } => {
   const windSpeedKmh = item.wind.speed * 3.6;
+  const beaufort = getBeaufortLevel(windSpeedKmh);
   const assessment = assessBeachWindExposure({
     beach,
     windDirectionDeg: item.wind.deg,
     windDirection: degToCompass(item.wind.deg),
     windSpeedKmh,
-    beaufort: getBeaufortLevel(windSpeedKmh),
+    beaufort,
     waveHeightMeters: item.marine?.waveHeightM,
     waveDirectionDegrees: item.marine?.waveDirectionDeg,
     wavePeriodSeconds: item.marine?.wavePeriodS,
@@ -183,8 +168,52 @@ const getPlannerExposureLevel = (
     swellDirectionDegrees: item.marine?.swellWaveDirectionDeg,
     seaSurfaceTemperature: item.marine?.seaSurfaceTemperatureC,
   });
+  const exposureLevel = assessment.exposureLevel || fallbackExposureLevel || 'exposed';
+  const modeledWaveDamping = exposureLevel === 'protected' ? 0.5 : exposureLevel === 'partial' ? 0.75 : 1;
+  const modeledWaveHeightM = Number(Math.max(
+    assessment.modeledWaveHeightM * modeledWaveDamping,
+    getWindChopWaveFloorM(exposureLevel, beaufort, windSpeedKmh, getForecastGustKmh(item))
+  ).toFixed(2));
 
-  return assessment.exposureLevel || fallbackExposureLevel || 'exposed';
+  return {
+    exposureLevel,
+    waveHeightM: resolveEffectiveWaveHeightM(getFiniteNumber(item.marine?.waveHeightM), modeledWaveHeightM),
+  };
+};
+
+const getMaxForecastWaveHeight = (
+  beach: Beach,
+  items: ForecastItem[],
+  fallbackExposureLevel?: ExposureLevel
+): number | undefined => {
+  const waveHeights = items
+    .map(item => getPlannerSeaInputs(beach, item, fallbackExposureLevel).waveHeightM)
+    .filter((value): value is number => value !== undefined);
+
+  return waveHeights.length > 0 ? Math.max(...waveHeights) : undefined;
+};
+
+const getPlannerSummaryContext = (
+  beach: Beach,
+  context: BeachDayPlanContext | undefined,
+  relevantHours: ForecastItem[]
+): BeachDayPlanContext => {
+  const summaryContext: BeachDayPlanContext = { ...(context || {}) };
+  const maxWaveHeightM = getMaxForecastWaveHeight(beach, relevantHours, context?.exposureLevel);
+  const maxWindSpeedKmh = getMaxForecastWindSpeedKmh(relevantHours);
+
+  if (maxWaveHeightM !== undefined) {
+    const currentWaveHeightM = getFiniteNumber(summaryContext.waveHeightM);
+    summaryContext.waveHeightM = currentWaveHeightM === undefined
+      ? maxWaveHeightM
+      : Math.max(currentWaveHeightM, maxWaveHeightM);
+  }
+
+  if (maxWindSpeedKmh !== undefined) {
+    summaryContext.windSpeedKmh = maxWindSpeedKmh;
+  }
+
+  return summaryContext;
 };
 
 const hasBadHourlyWeather = (item: ForecastItem): boolean => {
@@ -298,9 +327,8 @@ export const generateBeachDayPlan = (
     const beaufort = getBeaufortLevel(windSpeedKmh);
     if (beaufort <= LIGHT_WIND_GOOD_DAY_BFT) return true;
 
-    const exposureLevel = getPlannerExposureLevel(beach, item, context?.exposureLevel);
+    const { exposureLevel, waveHeightM } = getPlannerSeaInputs(beach, item, context?.exposureLevel);
     const isExposed = exposureLevel !== 'protected';
-    const waveHeightM = item.marine?.waveHeightM ?? context?.waveHeightM;
     const seaScore = calculateSeaConditionScore(isExposed, windSpeedKmh, exposureLevel, waveHeightM);
     return seaScore >= MIN_GOOD_SEA_CONDITION_SCORE;
   };
@@ -339,7 +367,7 @@ export const generateBeachDayPlan = (
     }
   }
 
-  const summaryContext = getPlannerSummaryContext(context, relevantHours);
+  const summaryContext = getPlannerSummaryContext(beach, context, relevantHours);
 
   if (bestWindowStart === null) {
     if (

@@ -20,9 +20,14 @@
 const GRAVITY = 9.81;
 const KMH_TO_MS = 1 / 3.6;
 const KM_TO_M = 1000;
+const WIND_CHOP_GUST_MIN_BASE_BEAUFORT = 3;
+const WIND_CHOP_GUST_NOTE_ABS_KMH = 40;
+const WIND_CHOP_GUST_NOTE_SPREAD_KMH = 18;
 
 /** Wind speeds below this (m/s) cannot build meaningful waves over any fetch. */
 const MIN_WIND_MS = 0.5;
+
+export type WaveExposureLevel = 'protected' | 'partial' | 'exposed';
 
 export interface FetchWaveInput {
   /** Sustained 10 m wind speed in km/h. */
@@ -66,4 +71,42 @@ export const resolveEffectiveWaveHeightM = (
     return Number(Math.max(measuredWaveHeightM, modeledWaveHeightM).toFixed(2));
   }
   return modeledWaveHeightM;
+};
+
+/**
+ * Conservative lower bound for wind chop that can be felt near shore even when
+ * the area marine grid reports a low wave height. It is intentionally coarse:
+ * enough to avoid false "flat sea" claims on windy days, while still letting
+ * genuinely protected beaches remain more manageable than exposed ones.
+ */
+export const getWindChopWaveFloorM = (
+  exposureLevel: WaveExposureLevel,
+  beaufort: number,
+  windSpeedKmh: number,
+  gustKmph?: number
+): number => {
+  const gustSpreadKmph = typeof gustKmph === 'number' ? Math.max(0, gustKmph - windSpeedKmh) : 0;
+  const gusty = beaufort >= WIND_CHOP_GUST_MIN_BASE_BEAUFORT && (
+    (typeof gustKmph === 'number' && gustKmph >= WIND_CHOP_GUST_NOTE_ABS_KMH) ||
+    gustSpreadKmph >= WIND_CHOP_GUST_NOTE_SPREAD_KMH
+  );
+
+  let floor = 0;
+  if (beaufort >= 7) {
+    floor = exposureLevel === 'protected' ? 0.6 : exposureLevel === 'partial' ? 0.95 : 1.2;
+  } else if (beaufort >= 6) {
+    floor = exposureLevel === 'protected' ? 0.5 : exposureLevel === 'partial' ? 0.75 : 1;
+  } else if (beaufort >= 5) {
+    floor = exposureLevel === 'protected' ? 0.4 : exposureLevel === 'partial' ? 0.6 : 0.8;
+  } else if (beaufort >= 4) {
+    floor = exposureLevel === 'protected' ? 0.3 : exposureLevel === 'partial' ? 0.45 : 0.6;
+  } else if (gusty) {
+    floor = exposureLevel === 'protected' ? 0.3 : exposureLevel === 'partial' ? 0.4 : 0.5;
+  }
+
+  if (floor === 0) return 0;
+
+  const gustBump = gusty ? (exposureLevel === 'protected' ? 0.05 : 0.1) : 0;
+  const cap = exposureLevel === 'protected' ? 0.45 : exposureLevel === 'partial' ? 0.8 : 1.3;
+  return Number(Math.min(cap, floor + gustBump).toFixed(2));
 };
