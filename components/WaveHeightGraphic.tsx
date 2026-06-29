@@ -370,31 +370,27 @@ const HourlyStrip: React.FC<{
   language: LanguageCode;
   copy: StripCopy;
 }> = ({ hourly, nowHour, language, copy }) => {
-  // Ticks come from the actual series (data is often 3-hourly), so the labels line up with the bars.
-  const firstHour = hourly[0].hour;
-  const lastHour = hourly[hourly.length - 1].hour;
-  const midHour = hourly[Math.floor((hourly.length - 1) / 2)].hour;
   return (
-    <>
-      <div className="flex h-8 items-end gap-[2px] sm:h-9" aria-hidden="true">
-        {hourly.map((p) => {
-          const isNow = typeof nowHour === 'number' && p.hour === nowHour;
-          return (
-            <div
-              key={p.hour}
-              title={copy.hourTooltip(formatHour(p.hour), formatWaveHeight(p.waveHeightM, language))}
-              className={`flex-1 rounded-sm ${getWaveBandClasses(p.waveHeightM).bar} ${isNow ? 'ring-2 ring-slate-900/60 ring-offset-1 ring-offset-white dark:ring-white/75 dark:ring-offset-slate-800' : ''}`}
-              style={{ height: `${waveBarFraction(p.waveHeightM) * 100}%` }}
-            />
-          );
-        })}
-      </div>
-      <div className="mt-1 flex justify-between text-[10px] font-semibold text-slate-400 dark:text-slate-500">
-        <span>{formatHour(firstHour)}</span>
-        <span>{formatHour(midHour)}</span>
-        <span>{formatHour(lastHour)}</span>
-      </div>
-    </>
+    <div className="flex items-end gap-[2px]" aria-hidden="true">
+      {hourly.map((p) => {
+        const isNow = typeof nowHour === 'number' && p.hour === nowHour;
+        return (
+          <div key={p.hour} className="flex min-w-0 flex-1 flex-col items-center">
+            <div className="flex h-8 w-full items-end sm:h-9">
+              <div
+                title={copy.hourTooltip(formatHour(p.hour), formatWaveHeight(p.waveHeightM, language))}
+                className={`w-full rounded-sm ${getWaveBandClasses(p.waveHeightM).bar} ${isNow ? 'ring-2 ring-slate-900/60 ring-offset-1 ring-offset-white dark:ring-white/75 dark:ring-offset-slate-800' : ''}`}
+                style={{ height: `${waveBarFraction(p.waveHeightM) * 100}%` }}
+              />
+            </div>
+            {/* Every hour gets its own tiny label so they all fit; the shown/now hour is emphasised. */}
+            <span className={`mt-0.5 text-[8px] leading-none font-semibold tabular-nums ${isNow ? 'text-slate-700 dark:text-slate-200' : 'text-slate-400 dark:text-slate-500'}`}>
+              {String(p.hour).padStart(2, '0')}
+            </span>
+          </div>
+        );
+      })}
+    </div>
   );
 };
 

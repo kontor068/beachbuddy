@@ -31,6 +31,7 @@ import { AccessibleCalmNearbySection, type AccessibleCalmCove } from '../compone
 import { ConstraintFitSection, type ConstraintFit } from '../components/ConstraintFitSection';
 import { WaveHeightGraphic, type HourlyWavePoint } from '../components/WaveHeightGraphic';
 import { hasBoatOnlyAccess } from '../utils/access';
+import { getWindChopWaveFloorM } from '../utils/waveModel';
 import { DayPlanSection, type DayPlanStop } from '../components/DayPlanSection';
 import { generateBeachExplanation as generateUiBeachExplanation } from '../utils/beachExplanation';
 import { describeSimpleWindSuitability, describeWindExposure } from '../utils/windExposureCopy';
@@ -595,20 +596,30 @@ export const BeachDetailPage: React.FC<BeachDetailPageProps> = ({
   const isExposedToTodayWind = exposureLevel ? exposureLevel === 'exposed' : isExposed;
   const measuredWaveHeightM = weatherData.marine?.waveHeightM;
   const waveHeightM = scoreResult.waveHeightM ?? measuredWaveHeightM;
-  // Keep recommendation/safety scoring on the effective beach-level wave, but
-  // show the visual wave height from the selected-hour marine forecast when it exists.
-  const displayWaveHeightM = measuredWaveHeightM ?? waveHeightM;
+  // Show the EFFECTIVE wave on the visual too — NOT the raw marine grid value. The marine (wave)
+  // model and the wind model are separate; the grid can report ~0.3 m swell while it's blowing
+  // 5-6 Bft, which read as a flat sea. The effective value (max of measured + wind-chop floor)
+  // is what the verdict badge and the list cards already use, so the figure now matches them.
+  const displayWaveHeightM = waveHeightM ?? measuredWaveHeightM;
   const isWaveEstimate = !(typeof measuredWaveHeightM === 'number' && Number.isFinite(measuredWaveHeightM));
-  // Swim-hours (08–21) wave series for the selected day, straight off the per-beach hourly
-  // forecast already threaded into this page (no extra fetch). Powers the intraday strip.
+  // Swim-hours (08–21) wave series for the selected day. Each hour reflects the wind chop its own
+  // wind would whip up near shore (floored), so a windy morning can't show as a flat 0.3 m bar.
   const selectedDayKey = selectedDate ? selectedDate.toDateString() : undefined;
   const hourlyWave: HourlyWavePoint[] = (selectedDayKey ? scoringHourlyForecast : []).reduce<HourlyWavePoint[]>((acc, item) => {
-    const w = item.marine?.waveHeightM;
-    if (typeof w !== 'number' || !Number.isFinite(w)) return acc;
     const when = new Date(item.dt * 1000);
     if (when.toDateString() !== selectedDayKey) return acc;
     const hour = when.getHours();
-    if (hour >= 8 && hour <= 21) acc.push({ hour, waveHeightM: w });
+    if (hour < 8 || hour > 21) return acc;
+    const measured = item.marine?.waveHeightM;
+    const hasMeasured = typeof measured === 'number' && Number.isFinite(measured);
+    const hourWindKmh = (item.wind?.speed ?? 0) * 3.6;
+    const gustKmh = typeof item.wind?.gustKnots === 'number' && Number.isFinite(item.wind.gustKnots)
+      ? item.wind.gustKnots * 1.852
+      : (typeof item.wind?.gust === 'number' && Number.isFinite(item.wind.gust) ? item.wind.gust * 3.6 : undefined);
+    const chopFloorM = getWindChopWaveFloorM(exposureLevel ?? 'exposed', getBeaufortLevel(hourWindKmh), hourWindKmh, gustKmh);
+    const effective = Math.max(hasMeasured ? (measured as number) : 0, chopFloorM);
+    if (!hasMeasured && chopFloorM <= 0) return acc;
+    acc.push({ hour, waveHeightM: Number(effective.toFixed(2)) });
     return acc;
   }, []);
   const seaTemperatureC = weatherData.marine?.seaSurfaceTemperatureC;

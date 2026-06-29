@@ -47,7 +47,7 @@ const ICON: Record<ConstraintKey, React.ComponentType<{ className?: string }>> =
 };
 
 const TONE: Record<ConstraintKey, string> = {
-  kids: 'border-rose-200 bg-rose-50/60 text-rose-800',
+  kids: 'border-emerald-200 bg-emerald-50/70 text-emerald-800',
   snorkel: 'border-cyan-200 bg-cyan-50/60 text-cyan-800',
   sunset: 'border-amber-200 bg-amber-50/70 text-amber-800',
 };
