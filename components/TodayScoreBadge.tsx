@@ -1,7 +1,7 @@
 import React from 'react';
 import { BarChart3 } from 'lucide-react';
 import { LanguageCode, SwimmingComfort } from '../types';
-import { getSelectedDayPrefix } from '../utils/dateLabels';
+import { getSelectedDayPrefix, isSelectedDateToday } from '../utils/dateLabels';
 import { getLocalizedCopy } from '../utils/i18n';
 import { ExposureLevel } from '../utils/windExposure';
 
@@ -34,109 +34,118 @@ interface TodayScoreBadgeProps {
 
 const clampScore = (score: number) => Math.max(0, Math.min(100, Math.round(score)));
 
+type DayLabel = (day: string, isToday: boolean) => string;
+
 type ScoreCopy = {
   exposedToWind: string;
   shelteredCard: string;
   shelteredHero: string;
-  caution: (day: string) => string;
-  moreSuitableHero: (day: string) => string;
-  moreSuitableCard: (day: string) => string;
-  fairOption: (day: string) => string;
+  caution: DayLabel;
+  moreSuitableHero: DayLabel;
+  moreSuitableCard: DayLabel;
+  fairOption: DayLabel;
   affectedByWind: string;
-  excellentCard: (day: string) => string;
-  veryGoodCard: (day: string) => string;
-  goodCard: (day: string) => string;
-  notIdeal: (day: string) => string;
-  excellentHero: (day: string) => string;
-  veryGoodHero: (day: string) => string;
-  goodHero: (day: string) => string;
+  excellentCard: DayLabel;
+  veryGoodCard: DayLabel;
+  goodCard: DayLabel;
+  notIdeal: DayLabel;
+  excellentHero: DayLabel;
+  veryGoodHero: DayLabel;
+  goodHero: DayLabel;
 };
+
+// The verdict pill describes the live, continuously-updating conditions. For *today* (the
+// default) that should read as a clean present-tense phrase — a "σήμερα/today" stamp there
+// feels disconnected, since conditions shift through the day. Only when the user picks a
+// future date do we append the day word (which is then genuinely informative).
+const dayLabel = (today: string, withDay: (day: string) => string): DayLabel =>
+  (day, isToday) => (isToday ? today : withDay(day));
 
 const scoreCopy: Record<LanguageCode, ScoreCopy> = {
   en: {
     exposedToWind: 'Exposed to wind',
     shelteredCard: 'Better wind option',
     shelteredHero: 'Better wind option',
-    caution: (day) => `use caution ${day}`,
-    moreSuitableHero: (day) => `one of the more suitable options ${day}, with caution`,
-    moreSuitableCard: (day) => `more suitable option ${day}, with caution`,
-    fairOption: (day) => `fair option ${day}`,
+    caution: dayLabel('use caution', (day) => `use caution ${day}`),
+    moreSuitableHero: dayLabel('one of the more suitable options, with caution', (day) => `one of the more suitable options ${day}, with caution`),
+    moreSuitableCard: dayLabel('more suitable option, with caution', (day) => `more suitable option ${day}, with caution`),
+    fairOption: dayLabel('fair option', (day) => `fair option ${day}`),
     affectedByWind: 'Affected by wind',
-    excellentCard: (day) => `very good conditions ${day}`,
-    veryGoodCard: (day) => `good conditions ${day}`,
-    goodCard: (day) => `manageable conditions ${day}`,
-    notIdeal: (day) => `use caution ${day}`,
-    excellentHero: (day) => `very good conditions ${day}`,
-    veryGoodHero: (day) => `good conditions ${day}`,
-    goodHero: (day) => `manageable conditions ${day}`,
+    excellentCard: dayLabel('very good conditions', (day) => `very good conditions ${day}`),
+    veryGoodCard: dayLabel('good conditions', (day) => `good conditions ${day}`),
+    goodCard: dayLabel('manageable conditions', (day) => `manageable conditions ${day}`),
+    notIdeal: dayLabel('more demanding conditions', (day) => `more demanding conditions ${day}`),
+    excellentHero: dayLabel('very good conditions', (day) => `very good conditions ${day}`),
+    veryGoodHero: dayLabel('good conditions', (day) => `good conditions ${day}`),
+    goodHero: dayLabel('manageable conditions', (day) => `manageable conditions ${day}`),
   },
   gr: {
     exposedToWind: 'Εκτεθειμένη στον άνεμο',
     shelteredCard: 'Υπήνεμη',
     shelteredHero: 'Πιο υπήνεμη επιλογή',
-    caution: (day) => `${day} θέλει προσοχή`,
-    moreSuitableHero: (day) => `Από τις πιο κατάλληλες επιλογές ${day}, με προσοχή`,
-    moreSuitableCard: (day) => `Καταλληλότερη επιλογή ${day}, με προσοχή`,
-    fairOption: (day) => `Μέτρια επιλογή ${day}`,
+    caution: dayLabel('Θέλει προσοχή', (day) => `${day} θέλει προσοχή`),
+    moreSuitableHero: dayLabel('Από τις πιο κατάλληλες επιλογές, με προσοχή', (day) => `Από τις πιο κατάλληλες επιλογές ${day}, με προσοχή`),
+    moreSuitableCard: dayLabel('Καταλληλότερη επιλογή, με προσοχή', (day) => `Καταλληλότερη επιλογή ${day}, με προσοχή`),
+    fairOption: dayLabel('Μέτρια επιλογή', (day) => `Μέτρια επιλογή ${day}`),
     affectedByWind: 'Επηρεάζεται από τον άνεμο',
-    excellentCard: (day) => `Πολύ καλές συνθήκες ${day}`,
-    veryGoodCard: (day) => `Καλές συνθήκες ${day}`,
-    goodCard: (day) => `Διαχειρίσιμες συνθήκες ${day}`,
-    notIdeal: (day) => `Θέλει προσοχή ${day}`,
-    excellentHero: (day) => `Πολύ καλές συνθήκες ${day}`,
-    veryGoodHero: (day) => `Καλές συνθήκες ${day}`,
-    goodHero: (day) => `Διαχειρίσιμες συνθήκες ${day}`,
+    excellentCard: dayLabel('Πολύ καλές συνθήκες', (day) => `Πολύ καλές συνθήκες ${day}`),
+    veryGoodCard: dayLabel('Καλές συνθήκες', (day) => `Καλές συνθήκες ${day}`),
+    goodCard: dayLabel('Διαχειρίσιμες συνθήκες', (day) => `Διαχειρίσιμες συνθήκες ${day}`),
+    notIdeal: dayLabel('Πιο απαιτητικές συνθήκες', (day) => `Πιο απαιτητικές συνθήκες ${day}`),
+    excellentHero: dayLabel('Πολύ καλές συνθήκες', (day) => `Πολύ καλές συνθήκες ${day}`),
+    veryGoodHero: dayLabel('Καλές συνθήκες', (day) => `Καλές συνθήκες ${day}`),
+    goodHero: dayLabel('Διαχειρίσιμες συνθήκες', (day) => `Διαχειρίσιμες συνθήκες ${day}`),
   },
   fr: {
     exposedToWind: 'Exposée au vent',
     shelteredCard: 'Plus abritée',
     shelteredHero: 'Option plus abritée',
-    caution: (day) => `prudence ${day}`,
-    moreSuitableHero: (day) => `parmi les meilleures options ${day}, avec prudence`,
-    moreSuitableCard: (day) => `option plus adaptée ${day}, avec prudence`,
-    fairOption: (day) => `option correcte ${day}`,
+    caution: dayLabel('prudence', (day) => `prudence ${day}`),
+    moreSuitableHero: dayLabel('parmi les meilleures options, avec prudence', (day) => `parmi les meilleures options ${day}, avec prudence`),
+    moreSuitableCard: dayLabel('option plus adaptée, avec prudence', (day) => `option plus adaptée ${day}, avec prudence`),
+    fairOption: dayLabel('option correcte', (day) => `option correcte ${day}`),
     affectedByWind: 'Affectée par le vent',
-    excellentCard: (day) => `très bonnes conditions ${day}`,
-    veryGoodCard: (day) => `bonnes conditions ${day}`,
-    goodCard: (day) => `conditions correctes ${day}`,
-    notIdeal: (day) => `prudence ${day}`,
-    excellentHero: (day) => `très bonnes conditions ${day}`,
-    veryGoodHero: (day) => `bonnes conditions ${day}`,
-    goodHero: (day) => `conditions correctes ${day}`,
+    excellentCard: dayLabel('très bonnes conditions', (day) => `très bonnes conditions ${day}`),
+    veryGoodCard: dayLabel('bonnes conditions', (day) => `bonnes conditions ${day}`),
+    goodCard: dayLabel('conditions correctes', (day) => `conditions correctes ${day}`),
+    notIdeal: dayLabel('conditions plus exigeantes', (day) => `conditions plus exigeantes ${day}`),
+    excellentHero: dayLabel('très bonnes conditions', (day) => `très bonnes conditions ${day}`),
+    veryGoodHero: dayLabel('bonnes conditions', (day) => `bonnes conditions ${day}`),
+    goodHero: dayLabel('conditions correctes', (day) => `conditions correctes ${day}`),
   },
   de: {
     exposedToWind: 'Windexponiert',
     shelteredCard: 'Windgeschützter',
     shelteredHero: 'Windgeschütztere Option',
-    caution: (day) => `Vorsicht ${day}`,
-    moreSuitableHero: (day) => `eine der besseren Optionen ${day}, mit Vorsicht`,
-    moreSuitableCard: (day) => `bessere Option ${day}, mit Vorsicht`,
-    fairOption: (day) => `brauchbare Option ${day}`,
+    caution: dayLabel('Vorsicht', (day) => `Vorsicht ${day}`),
+    moreSuitableHero: dayLabel('eine der besseren Optionen, mit Vorsicht', (day) => `eine der besseren Optionen ${day}, mit Vorsicht`),
+    moreSuitableCard: dayLabel('bessere Option, mit Vorsicht', (day) => `bessere Option ${day}, mit Vorsicht`),
+    fairOption: dayLabel('brauchbare Option', (day) => `brauchbare Option ${day}`),
     affectedByWind: 'Vom Wind betroffen',
-    excellentCard: (day) => `sehr gute Bedingungen ${day}`,
-    veryGoodCard: (day) => `gute Bedingungen ${day}`,
-    goodCard: (day) => `machbare Bedingungen ${day}`,
-    notIdeal: (day) => `Vorsicht ${day}`,
-    excellentHero: (day) => `sehr gute Bedingungen ${day}`,
-    veryGoodHero: (day) => `gute Bedingungen ${day}`,
-    goodHero: (day) => `machbare Bedingungen ${day}`,
+    excellentCard: dayLabel('sehr gute Bedingungen', (day) => `sehr gute Bedingungen ${day}`),
+    veryGoodCard: dayLabel('gute Bedingungen', (day) => `gute Bedingungen ${day}`),
+    goodCard: dayLabel('machbare Bedingungen', (day) => `machbare Bedingungen ${day}`),
+    notIdeal: dayLabel('anspruchsvollere Bedingungen', (day) => `anspruchsvollere Bedingungen ${day}`),
+    excellentHero: dayLabel('sehr gute Bedingungen', (day) => `sehr gute Bedingungen ${day}`),
+    veryGoodHero: dayLabel('gute Bedingungen', (day) => `gute Bedingungen ${day}`),
+    goodHero: dayLabel('machbare Bedingungen', (day) => `machbare Bedingungen ${day}`),
   },
   it: {
     exposedToWind: 'Esposta al vento',
     shelteredCard: 'Più riparata',
     shelteredHero: 'Opzione più riparata',
-    caution: (day) => `prudenza ${day}`,
-    moreSuitableHero: (day) => `tra le opzioni più adatte ${day}, con prudenza`,
-    moreSuitableCard: (day) => `opzione più adatta ${day}, con prudenza`,
-    fairOption: (day) => `opzione discreta ${day}`,
+    caution: dayLabel('prudenza', (day) => `prudenza ${day}`),
+    moreSuitableHero: dayLabel('tra le opzioni più adatte, con prudenza', (day) => `tra le opzioni più adatte ${day}, con prudenza`),
+    moreSuitableCard: dayLabel('opzione più adatta, con prudenza', (day) => `opzione più adatta ${day}, con prudenza`),
+    fairOption: dayLabel('opzione discreta', (day) => `opzione discreta ${day}`),
     affectedByWind: 'Condizionata dal vento',
-    excellentCard: (day) => `condizioni molto buone ${day}`,
-    veryGoodCard: (day) => `condizioni buone ${day}`,
-    goodCard: (day) => `condizioni gestibili ${day}`,
-    notIdeal: (day) => `prudenza ${day}`,
-    excellentHero: (day) => `condizioni molto buone ${day}`,
-    veryGoodHero: (day) => `condizioni buone ${day}`,
-    goodHero: (day) => `condizioni gestibili ${day}`,
+    excellentCard: dayLabel('condizioni molto buone', (day) => `condizioni molto buone ${day}`),
+    veryGoodCard: dayLabel('condizioni buone', (day) => `condizioni buone ${day}`),
+    goodCard: dayLabel('condizioni gestibili', (day) => `condizioni gestibili ${day}`),
+    notIdeal: dayLabel('condizioni più impegnative', (day) => `condizioni più impegnative ${day}`),
+    excellentHero: dayLabel('condizioni molto buone', (day) => `condizioni molto buone ${day}`),
+    veryGoodHero: dayLabel('condizioni buone', (day) => `condizioni buone ${day}`),
+    goodHero: dayLabel('condizioni gestibili', (day) => `condizioni gestibili ${day}`),
   },
 };
 
@@ -166,6 +175,7 @@ const getCappedConditionLabel = (
   canClaimWindProtection?: boolean
 ) => {
   const day = getSelectedDayPrefix(selectedDate, new Date(), language);
+  const isToday = isSelectedDateToday(selectedDate);
   const copy = getLocalizedCopy(language, scoreCopy);
   const highRelativeRank = score >= 50;
   const isFiveBeaufort = windBeaufort === 5;
@@ -173,10 +183,10 @@ const getCappedConditionLabel = (
   const isLightOrModerateWind = typeof windBeaufort === 'number' && windBeaufort <= 4;
 
   if (isLightOrModerateWind) {
-    if (!highRelativeRank) return copy.notIdeal(day);
+    if (!highRelativeRank) return copy.notIdeal(day, isToday);
     return variant === 'hero'
-      ? copy.goodHero(day)
-      : copy.goodCard(day);
+      ? copy.goodHero(day, isToday)
+      : copy.goodCard(day, isToday);
   }
 
   if (isFiveBeaufort) {
@@ -189,35 +199,36 @@ const getCappedConditionLabel = (
     if (exposureLevel === 'protected' && canClaimWindProtection === true) {
       return variant === 'card' ? copy.shelteredCard : copy.shelteredHero;
     }
-    if (!highRelativeRank) return copy.caution(day);
+    if (!highRelativeRank) return copy.caution(day, isToday);
     return variant === 'hero'
-      ? copy.moreSuitableHero(day)
-      : copy.moreSuitableCard(day);
+      ? copy.moreSuitableHero(day, isToday)
+      : copy.moreSuitableCard(day, isToday);
   }
 
-  if (!highRelativeRank) return copy.caution(day);
+  if (!highRelativeRank) return copy.caution(day, isToday);
   return variant === 'hero'
-    ? copy.moreSuitableHero(day)
-    : copy.moreSuitableCard(day);
+    ? copy.moreSuitableHero(day, isToday)
+    : copy.moreSuitableCard(day, isToday);
 };
 
 const getTodayScoreLabel = (score: number, language: LanguageCode, selectedDate?: Date, capped = false, windBeaufort?: number, exposureLevel?: ExposureLevel, canClaimWindProtection?: boolean) => {
   if (capped) return getCappedConditionLabel(score, language, 'card', selectedDate, windBeaufort, exposureLevel, canClaimWindProtection);
 
   const day = getSelectedDayPrefix(selectedDate, new Date(), language);
+  const isToday = isSelectedDateToday(selectedDate);
   const copy = getLocalizedCopy(language, scoreCopy);
   if (typeof windBeaufort === 'number' && windBeaufort <= 4) {
-    if (score >= 88) return copy.excellentCard(day);
-    if (score >= 76) return copy.veryGoodCard(day);
-    if (score >= 50) return copy.goodCard(day);
-    return copy.notIdeal(day);
+    if (score >= 88) return copy.excellentCard(day, isToday);
+    if (score >= 76) return copy.veryGoodCard(day, isToday);
+    if (score >= 50) return copy.goodCard(day, isToday);
+    return copy.notIdeal(day, isToday);
   }
 
-  if (score >= 88) return copy.excellentCard(day);
-  if (score >= 76) return copy.veryGoodCard(day);
-  if (score >= 64) return copy.goodCard(day);
-  if (score >= 50) return copy.caution(day);
-  return copy.notIdeal(day);
+  if (score >= 88) return copy.excellentCard(day, isToday);
+  if (score >= 76) return copy.veryGoodCard(day, isToday);
+  if (score >= 64) return copy.goodCard(day, isToday);
+  if (score >= 50) return copy.caution(day, isToday);
+  return copy.notIdeal(day, isToday);
 };
 
 export const getDisplayTodayScore = (score: number): number => {
@@ -233,19 +244,20 @@ const getHeroTodayScoreLabel = (score: number, language: LanguageCode, selectedD
   if (capped) return getCappedConditionLabel(score, language, 'hero', selectedDate, windBeaufort, exposureLevel, canClaimWindProtection);
 
   const day = getSelectedDayPrefix(selectedDate, new Date(), language);
+  const isToday = isSelectedDateToday(selectedDate);
   const copy = getLocalizedCopy(language, scoreCopy);
   if (typeof windBeaufort === 'number' && windBeaufort <= 4) {
-    if (score >= 88) return copy.excellentHero(day);
-    if (score >= 76) return copy.veryGoodHero(day);
-    if (score >= 50) return copy.goodHero(day);
-    return copy.notIdeal(day);
+    if (score >= 88) return copy.excellentHero(day, isToday);
+    if (score >= 76) return copy.veryGoodHero(day, isToday);
+    if (score >= 50) return copy.goodHero(day, isToday);
+    return copy.notIdeal(day, isToday);
   }
 
-  if (score >= 88) return copy.excellentHero(day);
-  if (score >= 76) return copy.veryGoodHero(day);
-  if (score >= 64) return copy.goodHero(day);
-  if (score >= 50) return copy.caution(day);
-  return copy.notIdeal(day);
+  if (score >= 88) return copy.excellentHero(day, isToday);
+  if (score >= 76) return copy.veryGoodHero(day, isToday);
+  if (score >= 64) return copy.goodHero(day, isToday);
+  if (score >= 50) return copy.caution(day, isToday);
+  return copy.notIdeal(day, isToday);
 };
 
 const getTodayScoreTone = (score: number, capped = false, windBeaufort?: number) => {

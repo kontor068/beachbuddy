@@ -12,7 +12,7 @@ import { getBeachPhotoLookup } from '../services/beachPhotos';
 import { trackEvent } from '../services/analyticsService';
 import { ExposureLevel } from '../utils/windExposure';
 import { hasDirtRoadAccess } from '../utils/access';
-import { getSelectedDayPrefix, getSelectedDaySentencePrefix } from '../utils/dateLabels';
+import { getSelectedDayPrefix, getSelectedDaySentencePrefix, isSelectedDateToday } from '../utils/dateLabels';
 import { getLocalizedCopy, languageToLocale } from '../utils/i18n';
 import { buildBeachDetailPath, buildBeachShareUrl } from '../utils/beachUrls';
 import {
@@ -110,7 +110,7 @@ type CardCopy = {
     someWaves: string;
     strongWind: string;
     windSportSpot: string;
-    exposedToWind: (day: string) => string;
+    exposedToWind: (day: string, isToday: boolean) => string;
     breezy: string;
     difficultAccess: string;
     boatOnly: string;
@@ -121,11 +121,11 @@ type CardCopy = {
   compact: {
     calmWaters: string;
     goodSea: string;
-    protected: (sentenceDay: string) => string;
+    protected: (sentenceDay: string, isToday: boolean) => string;
     lightWind: string;
     mildlyBreezy: string;
     windyExposed: string;
-    partlyShelteredToday: (day: string) => string;
+    partlyShelteredToday: (day: string, isToday: boolean) => string;
     slightlyExposed: string;
     familyFriendly: string;
     shallowWaters: string;
@@ -172,7 +172,7 @@ const cardCopy: Record<LanguageCode, CardCopy> = {
       someWaves: 'Some waves',
       strongWind: 'Strong wind',
       windSportSpot: 'Wind/watersports spot',
-      exposedToWind: (day) => `Exposed to wind ${day}`,
+      exposedToWind: (day, isToday) => (isToday ? 'Exposed to wind' : `Exposed to wind ${day}`),
       breezy: 'May feel breezy',
       difficultAccess: 'More challenging access',
       boatOnly: 'Boat only',
@@ -183,11 +183,11 @@ const cardCopy: Record<LanguageCode, CardCopy> = {
     compact: {
       calmWaters: 'Low waves',
       goodSea: 'Good sea',
-      protected: (sentenceDay) => `${sentenceDay}: better sheltered`,
+      protected: (sentenceDay, isToday) => (isToday ? 'Better sheltered' : `${sentenceDay}: better sheltered`),
       lightWind: 'Light wind',
       mildlyBreezy: 'May feel breezy',
       windyExposed: 'Windy / exposed',
-      partlyShelteredToday: (day) => `Better out of the wind ${day}`,
+      partlyShelteredToday: (day, isToday) => (isToday ? 'Better out of the wind' : `Better out of the wind ${day}`),
       slightlyExposed: 'May feel breezy',
       familyFriendly: 'Family',
       shallowWaters: 'Shallow water',
@@ -243,7 +243,7 @@ const cardCopy: Record<LanguageCode, CardCopy> = {
       someWaves: 'Λίγο κύμα',
       strongWind: 'Δυνατός αέρας',
       windSportSpot: 'Παραλία για wind sports',
-      exposedToWind: (day) => `Εκτεθειμένη στον άνεμο ${day}`,
+      exposedToWind: (day, isToday) => (isToday ? 'Εκτεθειμένη στον άνεμο' : `Εκτεθειμένη στον άνεμο ${day}`),
       breezy: 'Μπορεί να έχει αέρα',
       difficultAccess: 'Πιο δύσκολη πρόσβαση',
       boatOnly: 'Μόνο με σκάφος',
@@ -314,7 +314,7 @@ const cardCopy: Record<LanguageCode, CardCopy> = {
       someWaves: 'Un peu de clapot',
       strongWind: 'Vent fort',
       windSportSpot: 'Spot de sports nautiques',
-      exposedToWind: (day) => `Exposée au vent ${day}`,
+      exposedToWind: (day, isToday) => (isToday ? 'Exposée au vent' : `Exposée au vent ${day}`),
       breezy: 'Peut être venteuse',
       difficultAccess: 'Accès plus difficile',
       boatOnly: 'Bateau uniquement',
@@ -325,11 +325,11 @@ const cardCopy: Record<LanguageCode, CardCopy> = {
     compact: {
       calmWaters: 'Vagues basses',
       goodSea: 'Mer correcte',
-      protected: (sentenceDay) => `${sentenceDay}: plus abritée`,
+      protected: (sentenceDay, isToday) => (isToday ? 'Plus abritée' : `${sentenceDay}: plus abritée`),
       lightWind: 'Vent léger',
       mildlyBreezy: 'Peut être venteuse',
       windyExposed: 'Venteuse / exposée',
-      partlyShelteredToday: (day) => `Plus à l'abri du vent ${day}`,
+      partlyShelteredToday: (day, isToday) => (isToday ? "Plus à l'abri du vent" : `Plus à l'abri du vent ${day}`),
       slightlyExposed: 'Peut être venteuse',
       familyFriendly: 'Famille',
       shallowWaters: 'Eau peu profonde',
@@ -385,7 +385,7 @@ const cardCopy: Record<LanguageCode, CardCopy> = {
       someWaves: 'Etwas Welle',
       strongWind: 'Starker Wind',
       windSportSpot: 'Wind-/Wassersportspot',
-      exposedToWind: (day) => `Windexponiert ${day}`,
+      exposedToWind: (day, isToday) => (isToday ? 'Windexponiert' : `Windexponiert ${day}`),
       breezy: 'Kann windig wirken',
       difficultAccess: 'Schwieriger Zugang',
       boatOnly: 'Nur per Boot',
@@ -396,11 +396,11 @@ const cardCopy: Record<LanguageCode, CardCopy> = {
     compact: {
       calmWaters: 'Niedrige Wellen',
       goodSea: 'Gute See',
-      protected: (sentenceDay) => `${sentenceDay}: geschützter`,
+      protected: (sentenceDay, isToday) => (isToday ? 'Geschützter' : `${sentenceDay}: geschützter`),
       lightWind: 'Leichter Wind',
       mildlyBreezy: 'Kann windig wirken',
       windyExposed: 'Windig / exponiert',
-      partlyShelteredToday: (day) => `Mehr aus dem Wind ${day}`,
+      partlyShelteredToday: (day, isToday) => (isToday ? 'Mehr aus dem Wind' : `Mehr aus dem Wind ${day}`),
       slightlyExposed: 'Kann windig wirken',
       familyFriendly: 'Familie',
       shallowWaters: 'Flaches Wasser',
@@ -456,7 +456,7 @@ const cardCopy: Record<LanguageCode, CardCopy> = {
       someWaves: 'Un po’ di onda',
       strongWind: 'Vento forte',
       windSportSpot: 'Spot wind/watersport',
-      exposedToWind: (day) => `Esposta al vento ${day}`,
+      exposedToWind: (day, isToday) => (isToday ? 'Esposta al vento' : `Esposta al vento ${day}`),
       breezy: 'Può essere ventilata',
       difficultAccess: 'Accesso più difficile',
       boatOnly: 'Solo in barca',
@@ -467,11 +467,11 @@ const cardCopy: Record<LanguageCode, CardCopy> = {
     compact: {
       calmWaters: 'Onde basse',
       goodSea: 'Mare buono',
-      protected: (sentenceDay) => `${sentenceDay}: più riparata`,
+      protected: (sentenceDay, isToday) => (isToday ? 'Più riparata' : `${sentenceDay}: più riparata`),
       lightWind: 'Vento leggero',
       mildlyBreezy: 'Può essere ventilata',
       windyExposed: 'Ventosa / esposta',
-      partlyShelteredToday: (day) => `Più riparata dal vento ${day}`,
+      partlyShelteredToday: (day, isToday) => (isToday ? 'Più riparata dal vento' : `Più riparata dal vento ${day}`),
       slightlyExposed: 'Può essere ventilata',
       familyFriendly: 'Famiglia',
       shallowWaters: 'Acqua bassa',
@@ -932,6 +932,7 @@ const MetadataTags: React.FC<{ beach: Beach; language: LanguageCode }> = ({ beac
 const warningLabel = (warning: WarningFlag, language: LanguageCode, selectedDate?: Date): string => {
   const copy = getLocalizedCopy(language, cardCopy).warnings;
   const day = getSelectedDayPrefix(selectedDate, new Date(), language);
+  const isToday = isSelectedDateToday(selectedDate);
   switch (warning.type) {
     case 'missing_data':
       return copy.seaEstimate;
@@ -945,7 +946,7 @@ const warningLabel = (warning: WarningFlag, language: LanguageCode, selectedDate
       return copy.windSportSpot;
     case 'exposed_to_wind':
       return warning.severity === 'warning'
-        ? copy.exposedToWind(day)
+        ? copy.exposedToWind(day, isToday)
         : copy.breezy;
     case 'difficult_access':
       return copy.difficultAccess;
@@ -977,16 +978,17 @@ const warningToneClass = (warning: WarningFlag): string => {
 const compactLabels = (language: LanguageCode, selectedDate?: Date) => {
   const day = getSelectedDayPrefix(selectedDate, new Date(), language);
   const sentenceDay = getSelectedDaySentencePrefix(selectedDate, new Date(), language);
+  const isToday = isSelectedDateToday(selectedDate);
   const copy = getLocalizedCopy(language, cardCopy).compact;
 
   return ({
   calmWaters: copy.calmWaters,
   goodSea: copy.goodSea,
-  protected: copy.protected(sentenceDay),
+  protected: copy.protected(sentenceDay, isToday),
   lightWind: copy.lightWind,
   mildlyBreezy: copy.mildlyBreezy,
   windyExposed: copy.windyExposed,
-  partlyShelteredToday: copy.partlyShelteredToday(day),
+  partlyShelteredToday: copy.partlyShelteredToday(day, isToday),
   slightlyExposed: copy.slightlyExposed,
   familyFriendly: copy.familyFriendly,
   shallowWaters: copy.shallowWaters,

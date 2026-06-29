@@ -35,7 +35,10 @@ const copyLanguage = (language: LanguageCode): 'en' | 'gr' => (
 
 const windLabel = (sector: WindSector | undefined, language: LanguageCode): string => {
   const copyLang = copyLanguage(language);
-  if (!sector) return copyLang === 'gr' ? 'σημερινό' : "today's";
+  // No known sector → return an empty token (not a "today's/σημερινό" stamp). The wind
+  // description reads as a continuous present-tense statement; anchoring it to "today"
+  // is misleading because conditions change through the day. Callers guard the spacing.
+  if (!sector) return '';
   return WIND_LABELS[copyLang][sector];
 };
 
@@ -61,40 +64,40 @@ type Phrases = {
 };
 
 const EN_PHRASES: Phrases = {
-  calm: 'Light wind today - most beaches should be manageable, but local conditions may vary.',
-  sport: 'Known windsurf/kite spot - expect more wind or chop today.',
+  calm: 'Light wind - most beaches should be manageable, but local conditions may vary.',
+  sport: 'Known windsurf/kite spot - expect more wind or chop.',
   withFacing: (level, facing, windFrom) => (
     level === 'protected'
-      ? `Faces ${facing}; today's ${windFrom} wind is less direct here, so it is likely calmer than open beaches.`
+      ? `Faces ${facing}; the ${windFrom} wind is less direct here, so it is likely calmer than open beaches.`
       : level === 'exposed'
-        ? `Open toward ${facing}; today's ${windFrom} wind reaches this shore more directly.`
-        : `Crosswind from ${windFrom} today - conditions may be manageable, with some local chop.`
+        ? `Open toward ${facing}; the ${windFrom} wind reaches this shore more directly.`
+        : `Crosswind from ${windFrom} - conditions may be manageable, with some local chop.`
   ),
   withoutFacing: (level) => (
     level === 'protected'
-      ? "Better protected from today's wind; conditions may still vary locally."
+      ? 'Better protected from the wind; conditions may still vary locally.'
       : level === 'exposed'
-        ? "More exposed to today's wind; expect a less calm option."
-        : "Partly exposed to today's wind; conditions may still be manageable."
+        ? 'More exposed to the wind; expect a less calm option.'
+        : 'Partly exposed to the wind; conditions may still be manageable.'
   ),
 };
 
 const GR_PHRASES: Phrases = {
-  calm: 'Ήπιος άνεμος σήμερα - οι περισσότερες παραλίες φαίνονται διαχειρίσιμες, αλλά οι τοπικές συνθήκες μπορεί να διαφέρουν.',
-  sport: 'Γνωστό σημείο για windsurf/kite - περίμενε περισσότερο αέρα ή κυματάκι σήμερα.',
+  calm: 'Ήπιος άνεμος - οι περισσότερες παραλίες φαίνονται διαχειρίσιμες, αλλά οι τοπικές συνθήκες μπορεί να διαφέρουν.',
+  sport: 'Γνωστό σημείο για windsurf/kite - περίμενε περισσότερο αέρα ή κυματάκι.',
   withFacing: (level, facing, windFrom) => (
     level === 'protected'
-      ? `Κοιτάει ${facing}; ο σημερινός άνεμος από ${windFrom} μπαίνει λιγότερο άμεσα εδώ, οπότε είναι πιθανόν πιο ήρεμη από ανοιχτές παραλίες.`
+      ? `Κοιτάει ${facing}; ο άνεμος από ${windFrom} μπαίνει λιγότερο άμεσα εδώ, οπότε είναι πιθανόν πιο ήρεμη από ανοιχτές παραλίες.`
       : level === 'exposed'
-        ? `Είναι ανοιχτή προς ${facing}; ο σημερινός άνεμος από ${windFrom} πιάνει πιο άμεσα αυτή την ακτή.`
-        : `Πλάγιος άνεμος από ${windFrom} σήμερα - μπορεί να είναι διαχειρίσιμη, με λίγο τοπικό κυματάκι.`
+        ? `Είναι ανοιχτή προς ${facing}; ο άνεμος από ${windFrom} πιάνει πιο άμεσα αυτή την ακτή.`
+        : `Πλάγιος άνεμος από ${windFrom} - μπορεί να είναι διαχειρίσιμη, με λίγο τοπικό κυματάκι.`
   ),
   withoutFacing: (level) => (
     level === 'protected'
-      ? 'Καλύτερα προστατευμένη από τον σημερινό άνεμο· οι τοπικές συνθήκες μπορεί να διαφέρουν.'
+      ? 'Καλύτερα προστατευμένη από τον άνεμο· οι τοπικές συνθήκες μπορεί να διαφέρουν.'
       : level === 'exposed'
-        ? 'Πιο εκτεθειμένη στον σημερινό άνεμο· περίμενε λιγότερο ήρεμη επιλογή.'
-        : 'Μερικώς εκτεθειμένη στον σημερινό άνεμο· μπορεί να παραμένει διαχειρίσιμη.'
+        ? 'Πιο εκτεθειμένη στον άνεμο· περίμενε λιγότερο ήρεμη επιλογή.'
+        : 'Μερικώς εκτεθειμένη στον άνεμο· μπορεί να παραμένει διαχειρίσιμη.'
   ),
 };
 
@@ -138,14 +141,17 @@ export const describeSimpleWindSuitability = (
 
   if (copyLang === 'gr') {
     if (simpleWindSuitability.explanationKey === 'generally_calm') {
-      return 'Ήπιος άνεμος σήμερα - γενικά διαχειρίσιμη επιλογή.';
+      return 'Ήπιος άνεμος - γενικά διαχειρίσιμη επιλογή.';
     }
     if (simpleWindSuitability.explanationKey === 'avoid_today') {
-      return `Δυνατός ${wind} άνεμος σήμερα - καλύτερα να την αποφύγεις για ήρεμο μπάνιο.`;
+      return 'Δυνατός άνεμος - καλύτερα να την αποφύγεις για ήρεμο μπάνιο.';
     }
     const noun = useWind ? 'άνεμο' : 'αεράκι';
-    const fromWind = `από ${useWind ? 'τον' : 'το'} σημερινό ${wind} ${noun}`;
-    const toWind = `${useWind ? 'στον' : 'στο'} σημερινό ${wind} ${noun}`;
+    // Drop the "σημερινό" now-anchor; keep the direction word only when we actually
+    // know the sector (guard the space so a missing sector reads "στον άνεμο", not "στον  άνεμο").
+    const windWord = wind ? `${wind} ` : '';
+    const fromWind = `από ${useWind ? 'τον' : 'το'} ${windWord}${noun}`;
+    const toWind = `${useWind ? 'στον' : 'στο'} ${windWord}${noun}`;
 
     if (simpleWindSuitability.explanationKey === 'protected_from_wind') {
       return definite
@@ -164,24 +170,26 @@ export const describeSimpleWindSuitability = (
   }
 
   if (simpleWindSuitability.explanationKey === 'generally_calm') {
-    return 'Light wind today - generally manageable choice.';
+    return 'Light wind - generally manageable choice.';
   }
   if (simpleWindSuitability.explanationKey === 'avoid_today') {
-    return `Strong ${wind} wind today - better to avoid for calm swimming.`;
+    return `Strong ${wind ? `${wind} ` : ''}wind - better to avoid for calm swimming.`;
   }
   const enNoun = useWind ? 'wind' : 'breeze';
+  // Drop the "today's" now-anchor; keep the direction only when the sector is known.
+  const enWind = wind ? `${wind} ` : '';
   if (simpleWindSuitability.explanationKey === 'protected_from_wind') {
     return definite
-      ? `More protected from today's ${wind} ${enNoun} - calmer than open beaches, but it will still be breezy here with some chop.`
-      : `Better protected from today's ${wind} ${enNoun}.`;
+      ? `More protected from the ${enWind}${enNoun} - calmer than open beaches, but it will still be breezy here with some chop.`
+      : `Better protected from the ${enWind}${enNoun}.`;
   }
   if (simpleWindSuitability.explanationKey === 'exposed_to_wind') {
     return definite
-      ? `More exposed to today's ${wind} ${enNoun} - expect noticeable wind and waves.`
+      ? `More exposed to the ${enWind}${enNoun} - expect noticeable wind and waves.`
       // At 4 Bft "use caution" is too strong — describe it plainly instead.
-      : `More exposed to today's ${wind} ${enNoun}${useWind ? ' - some light wind and chop possible.' : '.'}`;
+      : `More exposed to the ${enWind}${enNoun}${useWind ? ' - some light wind and chop possible.' : '.'}`;
   }
   return definite
-    ? `Crosswind from today's ${wind} ${enNoun} - it will be windy with some waves.`
-    : `Partly exposed to today's ${wind} ${enNoun}${useWind ? ' - some wind or chop possible.' : '.'}`;
+    ? `Crosswind from the ${enWind}${enNoun} - it will be windy with some waves.`
+    : `Partly exposed to the ${enWind}${enNoun}${useWind ? ' - some wind or chop possible.' : '.'}`;
 };
