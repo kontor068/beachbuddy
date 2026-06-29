@@ -60,6 +60,9 @@ export interface BeachScore {
   orientation?: number | null;
   marine?: MarineForecast;
   waveHeightM?: number;
+  /** Damped fetch-limited modeled wave height (m); used when measured marine is absent so the
+   *  "estimate from wind" visual can scale with conditions instead of showing flat calm. */
+  modeledWaveHeightM?: number;
   warnings?: WarningFlag[];
   confidence?: RecommendationConfidence;
   weatherSource?: WeatherSource;
@@ -106,6 +109,9 @@ export interface BeachRecommendation {
   orientation?: number | null;
   marine?: MarineForecast;
   waveHeightM?: number;
+  /** Damped fetch-limited modeled wave height (m); used when measured marine is absent so the
+   *  "estimate from wind" visual can scale with conditions instead of showing flat calm. */
+  modeledWaveHeightM?: number;
   warnings?: WarningFlag[];
   confidence?: RecommendationConfidence;
   weatherSource?: WeatherSource;
@@ -298,7 +304,7 @@ const swimmingComfortFromScore = (
   if (effectiveBeaufort >= 6 || (typeof waveHeightM === 'number' && waveHeightM > 1.2) || swimmingScore < 45) {
     return 'avoid_swimming';
   }
-  if (effectiveBeaufort >= 5 || (typeof waveHeightM === 'number' && waveHeightM >= 0.9) || swimmingScore < 60) {
+  if (effectiveBeaufort >= 5 || (typeof waveHeightM === 'number' && waveHeightM >= 0.8) || swimmingScore < 60) {
     return 'caution';
   }
   if (effectiveBeaufort <= 2 && (waveHeightM === undefined || waveHeightM < 0.4) && swimmingScore >= 85) {
@@ -1818,6 +1824,7 @@ export const calculateBeachScore = (
     orientation: beachOrientation,
     marine,
     waveHeightM,
+    modeledWaveHeightM,
     warnings,
     confidence,
     weatherSource,

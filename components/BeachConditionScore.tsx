@@ -187,7 +187,7 @@ const conditionCopy: Record<LanguageCode, ConditionCopy> = {
 // not by this widget's sea-comfort score — which is why a beach could read red here while its
 // pin was yellow. Mirror the exact map bands so the headline conditions colour matches the pin:
 // calm→green, mild/moderate (the map's yellow/orange) → amber, rough (the map's red) → rose.
-const getConditionToneClasses = (level: ExposureLevel, beaufort: number) => {
+const getConditionToneClasses = (level: ExposureLevel, beaufort: number, waveHeightM?: number) => {
   const isExposedBand = level === 'exposed';
   let band: 'calm' | 'amber' | 'rough';
   if (beaufort >= 7) band = 'rough';
@@ -195,6 +195,13 @@ const getConditionToneClasses = (level: ExposureLevel, beaufort: number) => {
   else if (beaufort >= 4) band = isExposedBand ? 'amber' : 'amber';
   else if (beaufort >= 3) band = isExposedBand ? 'amber' : 'calm';
   else band = 'calm';
+
+  // A real measured wave (including low-wind swell) escalates the headline colour, so the pill can't
+  // stay green while the panel text + wave glyph read choppy/rough. Mirrors the seaState/waveScale steps.
+  if (typeof waveHeightM === 'number' && Number.isFinite(waveHeightM)) {
+    if (waveHeightM >= 1.2) band = 'rough';
+    else if (waveHeightM >= 0.8 && band === 'calm') band = 'amber';
+  }
 
   if (band === 'rough') {
     return { text: 'text-rose-500', bg: 'bg-rose-500', border: 'border-rose-100 dark:border-rose-900/30', gradient: 'from-rose-400 to-rose-600' };
@@ -290,7 +297,7 @@ export const BeachConditionScore: React.FC<BeachConditionScoreProps> = ({
   const totalScore = calculateSeaConditionScore(seaExposureLevel !== 'protected', windSpeed, seaExposureLevel, waveHeightM);
   const windBeaufort = getBeaufortLevel(windSpeed);
   // Headline colour follows the map pin's exposure band (not the raw sea score) so they agree.
-  const conditionTone = getConditionToneClasses(seaExposureLevel, windBeaufort);
+  const conditionTone = getConditionToneClasses(seaExposureLevel, windBeaufort, waveHeightM);
   const waveHeightLabel = typeof waveHeightM === 'number' && Number.isFinite(waveHeightM)
     ? `${waveHeightM.toFixed(1)} m`
     : null;

@@ -25,8 +25,12 @@ interface WaveHeightGraphicProps {
   hourly?: HourlyWavePoint[];
   variant: 'full' | 'compact';
   language: LanguageCode;
-  /** Used to decide the "now" marker on the strip (today only). */
+  /** Used to decide the strip marker (today only, when no explicit selectedHour is given). */
   selectedDate?: Date;
+  /** The hour the slider/forecast is showing — marks that bar on the strip (overrides wall-clock). */
+  selectedHour?: number;
+  /** Wind-modeled wave height (m); sizes the figure when there is no measured value. */
+  estimateHeightM?: number;
   className?: string;
 }
 
@@ -117,27 +121,34 @@ const CompactGlyph: React.FC<{ scale: WaveScaleResult; className?: string }> = (
   );
 };
 
-const HourlyStrip: React.FC<{ hourly: HourlyWavePoint[]; nowHour?: number }> = ({ hourly, nowHour }) => (
-  <>
-    <div className="flex h-9 items-end gap-[2px]">
-      {hourly.map((p) => {
-        const isNow = typeof nowHour === 'number' && p.hour === nowHour;
-        return (
-          <div
-            key={p.hour}
-            className={`flex-1 rounded-sm ${getWaveBandClasses(p.waveHeightM).bar} ${isNow ? 'ring-2 ring-slate-900/55 dark:ring-white/70' : ''}`}
-            style={{ height: `${waveBarFraction(p.waveHeightM) * 100}%` }}
-          />
-        );
-      })}
-    </div>
-    <div className="mt-1 flex justify-between text-[10px] font-semibold text-slate-400 dark:text-slate-500">
-      <span>08:00</span>
-      <span>14:00</span>
-      <span>21:00</span>
-    </div>
-  </>
-);
+const HourlyStrip: React.FC<{ hourly: HourlyWavePoint[]; nowHour?: number }> = ({ hourly, nowHour }) => {
+  // Ticks come from the actual series (data is often 3-hourly), so the labels line up with the bars.
+  const fmtHour = (h: number) => `${String(h).padStart(2, '0')}:00`;
+  const firstHour = hourly[0].hour;
+  const lastHour = hourly[hourly.length - 1].hour;
+  const midHour = hourly[Math.floor((hourly.length - 1) / 2)].hour;
+  return (
+    <>
+      <div className="flex h-9 items-end gap-[2px]">
+        {hourly.map((p) => {
+          const isNow = typeof nowHour === 'number' && p.hour === nowHour;
+          return (
+            <div
+              key={p.hour}
+              className={`flex-1 rounded-sm ${getWaveBandClasses(p.waveHeightM).bar} ${isNow ? 'ring-2 ring-slate-900/55 dark:ring-white/70' : ''}`}
+              style={{ height: `${waveBarFraction(p.waveHeightM) * 100}%` }}
+            />
+          );
+        })}
+      </div>
+      <div className="mt-1 flex justify-between text-[10px] font-semibold text-slate-400 dark:text-slate-500">
+        <span>{fmtHour(firstHour)}</span>
+        <span>{fmtHour(midHour)}</span>
+        <span>{fmtHour(lastHour)}</span>
+      </div>
+    </>
+  );
+};
 
 const computeTrend = (hourly: HourlyWavePoint[]): keyof StripCopy | null => {
   const morning = hourly.filter((p) => p.hour >= 8 && p.hour <= 12);
@@ -158,9 +169,11 @@ export const WaveHeightGraphic: React.FC<WaveHeightGraphicProps> = ({
   variant,
   language,
   selectedDate,
+  selectedHour,
+  estimateHeightM,
   className,
 }) => {
-  const scale = getWaveScale(waveHeightM, language, { isEstimate });
+  const scale = getWaveScale(waveHeightM, language, { isEstimate, estimateHeightM });
 
   if (variant === 'compact') {
     return <CompactGlyph scale={scale} className={className} />;
@@ -171,7 +184,9 @@ export const WaveHeightGraphic: React.FC<WaveHeightGraphicProps> = ({
   const points = (hourly ?? []).filter((p) => Number.isFinite(p.waveHeightM)).sort((a, b) => a.hour - b.hour);
   const showStrip = points.length >= 2;
   const isToday = isSelectedDateToday(selectedDate);
-  const nowHour = isToday ? new Date().getHours() : undefined;
+  // Mark the hour the forecast is actually showing (the slider hour), falling back to the
+  // real wall-clock hour only when no explicit hour is supplied and the day is today.
+  const markerHour = typeof selectedHour === 'number' ? selectedHour : (isToday ? new Date().getHours() : undefined);
   const trendKey = showStrip ? computeTrend(points) : null;
 
   return (
@@ -197,7 +212,7 @@ export const WaveHeightGraphic: React.FC<WaveHeightGraphicProps> = ({
             <span className="text-[11px] font-bold uppercase tracking-wide text-slate-400 dark:text-slate-500">{copy.throughDay}</span>
             {trendKey && <span className="truncate text-[11px] font-semibold text-slate-500 dark:text-slate-400">{copy[trendKey]}</span>}
           </div>
-          <HourlyStrip hourly={points} nowHour={nowHour} />
+          <HourlyStrip hourly={points} nowHour={markerHour} />
         </div>
       )}
     </div>

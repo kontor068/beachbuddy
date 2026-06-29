@@ -4230,6 +4230,7 @@ export const App: React.FC = () => {
             regionId={isNearMeRegionActive ? undefined : selectedIsland?.id}
             detailDataStatus={detailDataStatus}
             beachWeatherById={hourAdjustedBeachForecasts}
+            selectedHour={selectedHourDt != null ? new Date(selectedHourDt * 1000).getHours() : undefined}
             geospatialExposureProfiles={geospatialExposureProfiles}
             weatherSource="island-fallback"
             mapExposureLevelOverride={canonicalMapExposureLevels.get(detailBeach.id)}
@@ -4250,7 +4251,7 @@ export const App: React.FC = () => {
         onOpenBeach={(b) => openBeachDetails(b, 'saved_screen')}
         onClose={() => handleMobileTab('home')}
         selectedDate={selectedForecast?.date}
-        windSpeed={forecast?.[selectedDayIndex]?.wind.speed}
+        windSpeed={selectedForecast?.wind.speed ?? forecast?.[selectedDayIndex]?.wind.speed}
         temperature={forecast?.[selectedDayIndex]?.temp_max}
         islandName={selectedIsland?.name[language] ?? ''}
         regionId={isNearMeRegionActive ? undefined : selectedIsland?.id}

@@ -424,6 +424,8 @@ interface BeachDetailPageProps {
    *  map (single island wind) so the detail map colours the pin identically instead
    *  of re-deriving a different colour from the per-beach cluster wind. */
   mapExposureLevelOverride?: ExposureLevel;
+  /** The hour the global slider is showing (0-23), so the wave strip marks the right bar. */
+  selectedHour?: number;
 }
 
 export const BeachDetailPage: React.FC<BeachDetailPageProps> = ({
@@ -445,7 +447,8 @@ export const BeachDetailPage: React.FC<BeachDetailPageProps> = ({
   beachWeatherById,
   geospatialExposureProfiles,
   weatherSource = 'island-fallback',
-  mapExposureLevelOverride
+  mapExposureLevelOverride,
+  selectedHour
 }) => {
   const isFavorite = favorites.includes(beach.id);
   const [feedbackSubmitted, setFeedbackSubmitted] = useState(false);
@@ -1154,9 +1157,11 @@ export const BeachDetailPage: React.FC<BeachDetailPageProps> = ({
             variant="full"
             waveHeightM={waveHeightM}
             isEstimate={isWaveEstimate}
+            estimateHeightM={scoreResult.modeledWaveHeightM}
             hourly={hourlyWave}
             language={language}
             selectedDate={selectedDate}
+            selectedHour={selectedHour}
           />
           <div className={`grid grid-cols-2 gap-2.5 ${typeof seaTemperatureC === 'number' ? 'md:grid-cols-4' : 'md:grid-cols-3'}`}>
             <ConditionCard

@@ -78,7 +78,9 @@ const bucketFor = (m: number): Bucket => {
   if (m >= 1.5) return { bodyRef: 'overhead', band: 'rough', bodyFraction: 0.95 };
   if (m >= 1.2) return { bodyRef: 'chest', band: 'rough', bodyFraction: 0.72 };
   if (m >= 0.8) return { bodyRef: 'waist', band: 'amber', bodyFraction: 0.5 };
-  if (m >= 0.5) return { bodyRef: 'knee', band: 'calm', bodyFraction: 0.3 };
+  // 0.5–0.79 m is a discount in the sea score (measuredWaveScore 7 -> amber dot), so the figure
+  // is amber here too — not a reassuring green that would clash with the panel beside it.
+  if (m >= 0.5) return { bodyRef: 'knee', band: 'amber', bodyFraction: 0.3 };
   if (m >= 0.3) return { bodyRef: 'ankle', band: 'calm', bodyFraction: 0.14 };
   return { bodyRef: 'flat', band: 'calm', bodyFraction: 0.05 };
 };
@@ -110,7 +112,7 @@ const formatHeight = (m: number, language: LanguageCode): string => {
 export const getWaveScale = (
   waveHeightM: number | undefined,
   language: LanguageCode,
-  opts: { isEstimate?: boolean } = {}
+  opts: { isEstimate?: boolean; estimateHeightM?: number } = {}
 ): WaveScaleResult => {
   const hasMeasured = typeof waveHeightM === 'number' && Number.isFinite(waveHeightM);
   const isEstimate = opts.isEstimate === true || !hasMeasured;
@@ -118,10 +120,15 @@ export const getWaveScale = (
   if (isEstimate) {
     const label = getLocalizedCopy(language, ESTIMATE_LABEL);
     const detail = getLocalizedCopy(language, ESTIMATE_DETAIL);
+    // Size the estimate figure from the wind-modeled wave so it can't show flat calm during a
+    // gale; the component keeps the neutral grey "estimate" styling, so only the HEIGHT scales.
+    const est = typeof opts.estimateHeightM === 'number' && Number.isFinite(opts.estimateHeightM)
+      ? bucketFor(opts.estimateHeightM)
+      : null;
     return {
-      bodyRef: 'ankle',
-      band: 'calm',
-      bodyFraction: 0.14,
+      bodyRef: est?.bodyRef ?? 'ankle',
+      band: est?.band ?? 'calm',
+      bodyFraction: est?.bodyFraction ?? 0.14,
       label,
       detail,
       ariaLabel: `${getLocalizedCopy(language, ARIA_PREFIX)}: ${label.toLowerCase()} ${detail}`,
