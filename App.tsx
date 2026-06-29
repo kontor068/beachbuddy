@@ -3269,6 +3269,15 @@ export const App: React.FC = () => {
   // toggling a filter doesn't yank the viewport away from where the user is looking.
   const isBeachNameSearchActive = deferredBeachSearchQuery.trim().length > 0;
   const mapFitBoundsBeaches = isBeachNameSearchActive ? filteredMapSuitableBeaches : mapSuitableBeaches;
+  // A name search narrows filteredMapSuitableBeaches down to the matched beach(es), which is
+  // right for *centering* the directory map (mapFitBoundsBeaches above). But it must NOT strip
+  // the other pins: the result cards still list other beaches, and when the user scrolls them
+  // the HighlightedBeachFollower can only pan to a beach that exists in the map's `beaches`
+  // set — with the set reduced to the match it stayed stuck on the searched beach instead of
+  // following the card scrolled into view. So keep every island pin on the directory map
+  // during a name search (the map still opens centred on the match via mapFitBoundsBeaches).
+  // Amenity/preference filters still narrow the pins as before.
+  const directoryMapPinBeaches = isBeachNameSearchActive ? mapSuitableBeaches : filteredMapSuitableBeaches;
   const mapFitBoundsKey = useMemo(() => {
     if (!selectedIsland) return undefined;
     if (!isBeachNameSearchActive) return String(selectedIsland.id);
@@ -5212,7 +5221,7 @@ export const App: React.FC = () => {
         <BeachMap
           center={[selectedIsland.coordinates.lat, selectedIsland.coordinates.lon]}
           zoom={11}
-          beaches={filteredMapSuitableBeaches}
+          beaches={directoryMapPinBeaches}
           userLocation={userLocation}
           userLocationAccuracy={userLocationAccuracy}
           onBeachClick={(b) => openBeachDetails(b, 'directory_home_map')}
