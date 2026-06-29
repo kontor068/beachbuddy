@@ -1,12 +1,10 @@
 import { LanguageCode } from '../types';
 import { getLocalizedCopy, type LocalizedCopy } from './i18n';
 
-// Translate a wave height (significant wave height, metres) into something a casual swimmer
-// reads at a glance: a human body reference (the surf-report convention — "knee-high",
-// "waist-high" WAVES, i.e. wave size next to the body, NOT water depth), a calm→rough colour
-// band, and a localized label. Bucket boundaries mirror the measured-wave thresholds in
-// utils/seaConditions.ts (>=1.5 / 1.2 / 0.8 / 0.5 / 0.3) so this visual never contradicts the
-// sea-comfort score shown elsewhere.
+// Translate a wave height (significant wave height, metres) into a calm→rough colour band,
+// a visual scale, and a localized headline. Bucket boundaries mirror the measured-wave
+// thresholds in utils/seaConditions.ts (>=1.5 / 1.2 / 0.8 / 0.5 / 0.3) so this visual never
+// contradicts the sea-comfort score shown elsewhere.
 
 export type WaveBodyRef = 'flat' | 'ankle' | 'knee' | 'waist' | 'chest' | 'overhead';
 export type WaveBand = 'calm' | 'amber' | 'rough';
@@ -14,11 +12,11 @@ export type WaveBand = 'calm' | 'amber' | 'rough';
 export interface WaveScaleResult {
   bodyRef: WaveBodyRef;
   band: WaveBand;
-  /** 0..1 fraction of the figure's height the wave reaches — visual only. */
+  /** 0..1 visual height fraction — used only to size the illustrated wave. */
   bodyFraction: number;
-  /** Localized plain-language headline, e.g. "Ως τη μέση". */
+  /** Localized headline, e.g. "~0.8 m" or "Estimate". */
   label: string;
-  /** Localized supporting detail, e.g. "~0,9 μ" or the estimate phrase. */
+  /** Localized supporting detail, e.g. "Wave height" or the estimate phrase. */
   detail: string;
   /** Full sentence for screen readers. */
   ariaLabel: string;
@@ -85,20 +83,14 @@ const bucketFor = (m: number): Bucket => {
   return { bodyRef: 'flat', band: 'calm', bodyFraction: 0.05 };
 };
 
-const BODY_LABELS: Record<WaveBodyRef, LocalizedCopy<string>> = {
-  flat: { en: 'Almost flat', gr: 'Σχεδόν επίπεδη', fr: 'Presque plate', de: 'Fast flach', it: 'Quasi piatta' },
-  ankle: { en: 'Ankle-high', gr: 'Ως τον αστράγαλο', fr: 'Hauteur cheville', de: 'Knöchelhoch', it: 'Alla caviglia' },
-  knee: { en: 'Knee-high', gr: 'Ως το γόνατο', fr: 'Hauteur genou', de: 'Kniehoch', it: 'Al ginocchio' },
-  waist: { en: 'Waist-high', gr: 'Ως τη μέση', fr: 'Hauteur taille', de: 'Hüfthoch', it: 'Alla vita' },
-  chest: { en: 'Chest-high', gr: 'Ως το στήθος', fr: 'Hauteur poitrine', de: 'Brusthoch', it: 'Al petto' },
-  overhead: { en: 'Overhead', gr: 'Πάνω από το κεφάλι', fr: 'Au-dessus de la tête', de: 'Über Kopf', it: 'Sopra la testa' },
-};
-
 const ESTIMATE_LABEL: LocalizedCopy<string> = {
   en: 'Estimate', gr: 'Εκτίμηση', fr: 'Estimation', de: 'Schätzung', it: 'Stima',
 };
 const ESTIMATE_DETAIL: LocalizedCopy<string> = {
   en: 'from the wind', gr: 'από τον άνεμο', fr: 'd’après le vent', de: 'aus dem Wind', it: 'dal vento',
+};
+const HEIGHT_DETAIL: LocalizedCopy<string> = {
+  en: 'Wave height', gr: 'Ύψος κύματος', fr: 'Hauteur de vague', de: 'Wellenhöhe', it: 'Altezza onda',
 };
 const ARIA_PREFIX: LocalizedCopy<string> = {
   en: 'Waves', gr: 'Κύμα', fr: 'Vagues', de: 'Wellen', it: 'Onde',
@@ -106,7 +98,7 @@ const ARIA_PREFIX: LocalizedCopy<string> = {
 
 const formatHeight = (m: number, language: LanguageCode): string => {
   const num = m.toFixed(1);
-  return language === 'gr' ? `~${num.replace('.', ',')} μ` : `~${num} m`;
+  return language === 'gr' ? `~${num.replace('.', ',')} μ.` : `~${num} m`;
 };
 
 export const getWaveScale = (
@@ -118,7 +110,9 @@ export const getWaveScale = (
   const isEstimate = opts.isEstimate === true || !hasMeasured;
 
   if (isEstimate) {
-    const label = getLocalizedCopy(language, ESTIMATE_LABEL);
+    const label = typeof opts.estimateHeightM === 'number' && Number.isFinite(opts.estimateHeightM)
+      ? formatHeight(opts.estimateHeightM, language)
+      : getLocalizedCopy(language, ESTIMATE_LABEL);
     const detail = getLocalizedCopy(language, ESTIMATE_DETAIL);
     // Size the estimate figure from the wind-modeled wave so it can't show flat calm during a
     // gale; the component keeps the neutral grey "estimate" styling, so only the HEIGHT scales.
@@ -131,21 +125,21 @@ export const getWaveScale = (
       bodyFraction: est?.bodyFraction ?? 0.14,
       label,
       detail,
-      ariaLabel: `${getLocalizedCopy(language, ARIA_PREFIX)}: ${label.toLowerCase()} ${detail}`,
+      ariaLabel: `${getLocalizedCopy(language, ARIA_PREFIX)}: ${label}, ${detail}`,
       isEstimate: true,
     };
   }
 
   const bucket = bucketFor(waveHeightM as number);
-  const label = getLocalizedCopy(language, BODY_LABELS[bucket.bodyRef]);
-  const detail = formatHeight(waveHeightM as number, language);
+  const label = formatHeight(waveHeightM as number, language);
+  const detail = getLocalizedCopy(language, HEIGHT_DETAIL);
   return {
     bodyRef: bucket.bodyRef,
     band: bucket.band,
     bodyFraction: bucket.bodyFraction,
     label,
     detail,
-    ariaLabel: `${getLocalizedCopy(language, ARIA_PREFIX)}: ${label}, ${detail}`,
+    ariaLabel: `${getLocalizedCopy(language, ARIA_PREFIX)}: ${detail.toLowerCase()} ${label}`,
     isEstimate: false,
   };
 };

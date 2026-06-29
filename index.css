@@ -247,6 +247,12 @@ body {
   50% { transform: translateY(-8px) rotate(2deg); }
 }
 
+.cb-wave-backwash {
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: cb-wave-surface-drift calc(var(--cb-wave-duration, 3s) * 1.18) ease-in-out infinite reverse;
+}
+
 .cb-wave-surface {
   transform-box: fill-box;
   transform-origin: center;
@@ -257,6 +263,18 @@ body {
   transform-box: fill-box;
   transform-origin: center;
   animation: cb-wave-surface-drift var(--cb-wave-duration, 3s) ease-in-out infinite reverse;
+}
+
+.cb-wave-highlight {
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: cb-wave-surface-drift calc(var(--cb-wave-duration, 3s) * 0.9) ease-in-out infinite;
+}
+
+.cb-wave-spray {
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: cb-wave-spray calc(var(--cb-wave-duration, 3s) * 0.72) ease-in-out infinite;
 }
 
 .cb-wave-swimmer {
@@ -301,9 +319,24 @@ body {
   }
 }
 
+@keyframes cb-wave-spray {
+  0%, 100% {
+    opacity: 0.35;
+    transform: translateY(1px) translateX(0);
+  }
+
+  45% {
+    opacity: 0.88;
+    transform: translateY(-3px) translateX(var(--cb-wave-drift, 4px));
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
+  .cb-wave-backwash,
   .cb-wave-surface,
   .cb-wave-foam,
+  .cb-wave-highlight,
+  .cb-wave-spray,
   .cb-wave-swimmer,
   .cb-wave-swimmer-arm {
     animation: none !important;

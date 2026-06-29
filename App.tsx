@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useMemo, useRef, Suspense } from 'react';
-import { Accessibility, Beach, DailyForecast, ForecastItem, Island, LanguageCode, FilterKey, SortOption, UserPreferences, SuitableBeach, Translation, WindDirection } from './types';
+import { Accessibility, Beach, DailyForecast, ForecastItem, Island, LanguageCode, FilterKey, SortOption, UserPreferences, SuitableBeach, Translation, WindDirection, type BeachForecastContext, type MarineForecast } from './types';
 import { beachMatchesUserPreferences, calculateBeachScore, calculateBestBeachTime, getSuitableBeaches, filterBeachesByUserPreferences, getTopRecommendationDisplayLimit, hasHourlyRainRisk, isTrustedTopRecommendationCandidate, type BeachScore, type BeachWeatherById, type BestBeachTime } from './services/recommendationService';
 import type { Chat } from '@google/genai';
 import { AlertTriangle, CheckCircle2, Clock3, Navigation, RefreshCw, Waves, Wind } from 'lucide-react';
@@ -26,9 +26,10 @@ import { useBeaches } from './hooks/useBeaches';
 import { useWeather } from './hooks/useWeather';
 import { useLocation } from './hooks/useLocation';
 import { translations } from './translations';
-import { degToCompass, getBeaufortLevel, isWinterSeason } from './utils/weatherUtils';
+import { degToCompass, getBeaufortLevel, isWinterSeason, processForecastData } from './utils/weatherUtils';
 import { trackEvent, trackPageView } from './services/analyticsService';
 import { loadAppReadyRegion, loadBeachDetailData, loadBeachRegionIndex, loadBeachSearchIndex, mergeBeachDetailData } from './services/beachDataLoader';
+import { fetchForecastData, fetchMarineForecastData, mergeMarineForecastData } from './services/weatherService';
 import { calculateSeaConditionScore, hasPoorSeaConditions } from './utils/seaConditions';
 import { recordForecastSnapshots } from './services/forecastVerificationService';
 import { getBeachPhotoLookup } from './services/beachPhotos';
@@ -596,6 +597,61 @@ const lerpAngleDeg = (a: number, b: number, t: number): number => {
   return ((a + diff * t) % 360 + 360) % 360;
 };
 
+const lerpOptionalValue = (a: number | undefined, b: number | undefined, t: number): number | undefined => (
+  typeof a === 'number' && Number.isFinite(a) && typeof b === 'number' && Number.isFinite(b)
+    ? lerpValue(a, b, t)
+    : undefined
+);
+
+const lerpOptionalAngleDeg = (a: number | undefined, b: number | undefined, t: number): number | undefined => (
+  typeof a === 'number' && Number.isFinite(a) && typeof b === 'number' && Number.isFinite(b)
+    ? lerpAngleDeg(a, b, t)
+    : undefined
+);
+
+const interpolateMarineForecast = (
+  loMarine: MarineForecast | undefined,
+  hiMarine: MarineForecast | undefined,
+  t: number
+): MarineForecast | undefined => {
+  if (!loMarine && !hiMarine) return undefined;
+
+  return {
+    waveHeightM: lerpOptionalValue(loMarine?.waveHeightM, hiMarine?.waveHeightM, t),
+    waveDirectionDeg: lerpOptionalAngleDeg(loMarine?.waveDirectionDeg, hiMarine?.waveDirectionDeg, t),
+    wavePeriodS: lerpOptionalValue(loMarine?.wavePeriodS, hiMarine?.wavePeriodS, t),
+    swellWaveHeightM: lerpOptionalValue(loMarine?.swellWaveHeightM, hiMarine?.swellWaveHeightM, t),
+    swellWaveDirectionDeg: lerpOptionalAngleDeg(loMarine?.swellWaveDirectionDeg, hiMarine?.swellWaveDirectionDeg, t),
+    swellWavePeriodS: lerpOptionalValue(loMarine?.swellWavePeriodS, hiMarine?.swellWavePeriodS, t),
+    seaSurfaceTemperatureC: lerpOptionalValue(loMarine?.seaSurfaceTemperatureC, hiMarine?.seaSurfaceTemperatureC, t),
+    source: loMarine?.source ?? hiMarine?.source,
+  };
+};
+
+const getSelectedHourMarine = (
+  hourMarine: MarineForecast | undefined,
+  dailyMarine: MarineForecast | undefined
+): MarineForecast | undefined => {
+  if (hourMarine) {
+    return {
+      ...hourMarine,
+      seaSurfaceTemperatureC: hourMarine.seaSurfaceTemperatureC ?? dailyMarine?.seaSurfaceTemperatureC,
+      source: hourMarine.source ?? dailyMarine?.source,
+    };
+  }
+
+  // Do not fall back to the daily marine summary for selected-hour wave fields:
+  // daily `waveHeightM` is the day's max, which makes calm selected hours look choppy.
+  if (typeof dailyMarine?.seaSurfaceTemperatureC === 'number' && Number.isFinite(dailyMarine.seaSurfaceTemperatureC)) {
+    return {
+      seaSurfaceTemperatureC: dailyMarine.seaSurfaceTemperatureC,
+      source: dailyMarine.source,
+    };
+  }
+
+  return undefined;
+};
+
 // The weather API is 3-hourly, which makes the hour slider jump in big, abrupt
 // steps. We linearly interpolate to 1-hour slots so the slider glides smoothly
 // and the wind/colours transition between the real forecast anchors.
@@ -635,14 +691,7 @@ const interpolateForecastItem = (lo: ForecastItem, hi: ForecastItem, dt: number)
       speed: lerpValue(lo.wind.speed, hi.wind.speed, t),
       deg: lerpAngleDeg(lo.wind.deg, hi.wind.deg, t),
     },
-    marine: lo.marine || hi.marine
-      ? {
-          ...(lo.marine ?? {}),
-          ...(typeof lo.marine?.waveHeightM === 'number' && typeof hi.marine?.waveHeightM === 'number'
-            ? { waveHeightM: lerpValue(lo.marine.waveHeightM, hi.marine.waveHeightM, t) }
-            : {}),
-        }
-      : lo.marine,
+    marine: interpolateMarineForecast(lo.marine, hi.marine, t),
   };
 };
 
@@ -688,7 +737,7 @@ const adjustDailyForecastToHour = (
   return {
     ...dailyForecast,
     wind: hourItem.wind,
-    marine: hourItem.marine ?? dailyForecast.marine,
+    marine: getSelectedHourMarine(hourItem.marine, dailyForecast.marine),
     weather: hourItem.weather?.[0] ?? dailyForecast.weather,
   };
 };
@@ -1565,6 +1614,7 @@ export const App: React.FC = () => {
   const [isDirectorySearchSuggesting, setIsDirectorySearchSuggesting] = useState(false);
   const [regionBeachCounts, setRegionBeachCounts] = useState<Record<string, number>>({});
   const [detailBeach, setDetailBeach] = useState<Beach | null>(null);
+  const [detailExactForecastContext, setDetailExactForecastContext] = useState<BeachForecastContext | null>(null);
   const [detailDataStatus, setDetailDataStatus] = useState<DetailDataStatus>('idle');
   const [view, setView] = useState<'home' | 'detail'>('home');
   const [mobileTab, setMobileTab] = useState<MobileTab>('home');
@@ -2906,6 +2956,54 @@ export const App: React.FC = () => {
     }
   };
 
+  useEffect(() => {
+    if (view !== 'detail' || !detailBeach) {
+      setDetailExactForecastContext(null);
+      return undefined;
+    }
+
+    let cancelled = false;
+    const beachId = detailBeach.id;
+    const { lat, lon } = detailBeach.coordinates;
+    setDetailExactForecastContext(null);
+
+    const loadExactDetailForecast = async () => {
+      try {
+        const [forecastItems, marineItems] = await Promise.all([
+          fetchForecastData(lat, lon),
+          fetchMarineForecastData(lat, lon).catch(error => {
+            console.warn('Detail marine forecast unavailable; using exact wind forecast with wind-based sea estimates.', {
+              beachId,
+              error,
+            });
+            return [];
+          }),
+        ]);
+        if (cancelled) return;
+
+        const detailForecast = processForecastData(mergeMarineForecastData(forecastItems, marineItems));
+        setDetailExactForecastContext({
+          forecast: detailForecast,
+          source: 'beach-cluster',
+          clusterKey: `exact:${beachId}:${lat.toFixed(4)}_${lon.toFixed(4)}`,
+        });
+      } catch (error) {
+        if (cancelled) return;
+        console.warn('Exact detail forecast unavailable; falling back to region/cluster forecast.', {
+          beachId,
+          error,
+        });
+        setDetailExactForecastContext(null);
+      }
+    };
+
+    void loadExactDetailForecast();
+
+    return () => {
+      cancelled = true;
+    };
+  }, [detailBeach, view]);
+
   // --- Memos & Filtering Logic ---
   const selectedBeachForecasts = useMemo<BeachWeatherById>(() => {
     if (!forecast?.[selectedDayIndex]) return {};
@@ -2942,16 +3040,17 @@ export const App: React.FC = () => {
 
   const detailBeachWeatherById = useMemo<BeachWeatherById>(() => {
     const beachId = detailBeach?.id;
-    if (beachId == null || selectedHourDt == null) return hourAdjustedBeachForecasts;
+    if (beachId == null) return hourAdjustedBeachForecasts;
 
-    const beachForecast = selectedBeachForecasts[beachId];
+    const exactBeachForecast = detailExactForecastContext?.forecast[selectedDayIndex];
+    const beachForecast = exactBeachForecast ?? selectedBeachForecasts[beachId];
     if (!beachForecast) return hourAdjustedBeachForecasts;
 
     return {
       ...hourAdjustedBeachForecasts,
-      [beachId]: adjustDailyForecastToHour(beachForecast, selectedHourDt),
+      [beachId]: selectedHourDt == null ? beachForecast : adjustDailyForecastToHour(beachForecast, selectedHourDt),
     };
-  }, [detailBeach?.id, selectedBeachForecasts, selectedHourDt, hourAdjustedBeachForecasts]);
+  }, [detailBeach?.id, detailExactForecastContext, selectedDayIndex, selectedBeachForecasts, selectedHourDt, hourAdjustedBeachForecasts]);
 
   // Per-beach local wind (direction + speed) for the map hover card, so a beach
   // coloured differently from the island headline is self-explanatory ("here it

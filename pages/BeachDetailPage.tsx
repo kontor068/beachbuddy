@@ -595,6 +595,9 @@ export const BeachDetailPage: React.FC<BeachDetailPageProps> = ({
   const isExposedToTodayWind = exposureLevel ? exposureLevel === 'exposed' : isExposed;
   const measuredWaveHeightM = weatherData.marine?.waveHeightM;
   const waveHeightM = scoreResult.waveHeightM ?? measuredWaveHeightM;
+  // Keep recommendation/safety scoring on the effective beach-level wave, but
+  // show the visual wave height from the selected-hour marine forecast when it exists.
+  const displayWaveHeightM = measuredWaveHeightM ?? waveHeightM;
   const isWaveEstimate = !(typeof measuredWaveHeightM === 'number' && Number.isFinite(measuredWaveHeightM));
   // Swim-hours (08–21) wave series for the selected day, straight off the per-beach hourly
   // forecast already threaded into this page (no extra fetch). Powers the intraday strip.
@@ -621,7 +624,7 @@ export const BeachDetailPage: React.FC<BeachDetailPageProps> = ({
   const seaConditionScore = calculateSeaConditionScore(isExposed, windSpeedKmh, exposureLevel, waveHeightM);
   const detailBadgeScore = getDetailBadgeScore(score, seaConditionScore, isExposed);
   const beaufortLevel = getBeaufortLevel(windSpeedKmh);
-  const seaConditionDisplay = getSeaConditionDisplay(seaConditionScore, isExposedToTodayWind, language, selectedDate, canClaimWindProtection, seaCalmClaimAllowed, beaufortLevel, waveHeightM);
+  const seaConditionDisplay = getSeaConditionDisplay(seaConditionScore, isExposedToTodayWind, language, selectedDate, canClaimWindProtection, seaCalmClaimAllowed, beaufortLevel, displayWaveHeightM);
   // Compare the beach-specific cluster forecast with the area-wide forecast only
   // when they genuinely differ — "a bit windier/calmer right here".
   const localWindNote = getLocalWindNote(dayForecast.wind.speed, beachSpecificWeatherData?.wind.speed, language);
@@ -1112,7 +1115,7 @@ export const BeachDetailPage: React.FC<BeachDetailPageProps> = ({
           <h3 className="px-1 font-heading text-lg font-bold text-slate-950">{copy.conditions[language]}</h3>
           <WaveHeightGraphic
             variant="full"
-            waveHeightM={waveHeightM}
+            waveHeightM={displayWaveHeightM}
             isEstimate={isWaveEstimate}
             estimateHeightM={scoreResult.modeledWaveHeightM}
             hourly={hourlyWave}
