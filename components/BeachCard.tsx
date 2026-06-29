@@ -1470,6 +1470,27 @@ export const BeachCard: React.FC<BeachCardProps> = ({
               </span>
             ) : null}
 
+            {/* Today's conditions row — wind / wave (with the band-coloured wave glyph) /
+                temperature, surfaced near the top of the card. */}
+            <div className="flex min-w-0 items-center gap-1.5 overflow-hidden rounded-xl border border-slate-100 bg-slate-50/60 px-2.5 py-1.5 text-[11px] font-bold leading-none text-slate-700 dark:border-slate-800 dark:bg-slate-900 dark:text-slate-300">
+              <span className="inline-flex min-w-0 shrink-0 items-center gap-1">
+                <Wind className="h-3.5 w-3.5 shrink-0" aria-hidden="true" />
+                <span>{mobileWindLabel}</span>
+              </span>
+              {mobileWaveLabel && (
+                <span className="inline-flex min-w-0 shrink-0 items-center gap-1">
+                  <WaveHeightGraphic variant="compact" waveHeightM={waveHeightM} language={language} />
+                  <span>{mobileWaveLabel}</span>
+                </span>
+              )}
+              {mobileTemperatureLabel && (
+                <span className="inline-flex min-w-0 shrink-0 items-center gap-1">
+                  <Droplets className="h-3.5 w-3.5 shrink-0" aria-hidden="true" />
+                  <span>{mobileTemperatureLabel}</span>
+                </span>
+              )}
+            </div>
+
             {/* Fixed 2-row slot so every card reserves the same height regardless of
                 how many feature chips a beach has — keeps the carousel cards uniform. */}
             {featureChips.length > 0 ? (
@@ -1493,24 +1514,6 @@ export const BeachCard: React.FC<BeachCardProps> = ({
               </div>
             ) : null}
 
-            <div className="flex min-w-0 items-center gap-1.5 overflow-hidden rounded-xl border border-slate-100 bg-slate-50/60 px-2.5 py-1.5 text-[11px] font-bold leading-none text-slate-700 dark:border-slate-800 dark:bg-slate-900 dark:text-slate-300">
-              <span className="inline-flex min-w-0 shrink-0 items-center gap-1">
-                <Wind className="h-3.5 w-3.5 shrink-0" aria-hidden="true" />
-                <span>{mobileWindLabel}</span>
-              </span>
-              {mobileWaveLabel && (
-                <span className="inline-flex min-w-0 shrink-0 items-center gap-1">
-                  <WaveHeightGraphic variant="compact" waveHeightM={waveHeightM} language={language} />
-                  <span>{mobileWaveLabel}</span>
-                </span>
-              )}
-              {mobileTemperatureLabel && (
-                <span className="inline-flex min-w-0 shrink-0 items-center gap-1">
-                  <Droplets className="h-3.5 w-3.5 shrink-0" aria-hidden="true" />
-                  <span>{mobileTemperatureLabel}</span>
-                </span>
-              )}
-            </div>
           </div>
         </div>
 

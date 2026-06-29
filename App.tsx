@@ -5559,7 +5559,7 @@ export const App: React.FC = () => {
                   <div key={r.beach.id}>
                     <BeachCard
                       beach={{...r.beach, distance: r.distance}} isExposed={r.isExposed} language={language} t={t}
-                      isCalm={r.seaCalmClaimAllowed === true} windSpeed={forecast[selectedDayIndex].wind.speed} temperature={forecast[selectedDayIndex].temp_max}
+                      isCalm={r.seaCalmClaimAllowed === true} windSpeed={selectedForecast?.wind.speed ?? forecast[selectedDayIndex].wind.speed} temperature={forecast[selectedDayIndex].temp_max}
                       favorites={favorites} onToggleFavorite={handleToggleFavorite} islandName={selectedIsland!.name[language]}
                       regionId={selectedIsland?.id}
                       onClick={() => openBeachDetails(r.beach, 'recommendation_card')}
@@ -5769,7 +5769,7 @@ export const App: React.FC = () => {
                       <div key={r.beach.id}>
                         <BeachCard
                           beach={{...r.beach, distance: r.distance}} isExposed={r.isExposed} language={language} t={t}
-                          isCalm={r.seaCalmClaimAllowed === true} windSpeed={forecast[selectedDayIndex].wind.speed} temperature={forecast[selectedDayIndex].temp_max}
+                          isCalm={r.seaCalmClaimAllowed === true} windSpeed={selectedForecast?.wind.speed ?? forecast[selectedDayIndex].wind.speed} temperature={forecast[selectedDayIndex].temp_max}
                           favorites={favorites} onToggleFavorite={handleToggleFavorite} islandName={selectedIsland!.name[language]}
                           regionId={selectedIsland?.id}
                           onClick={() => openBeachDetails(r.beach, 'recommendation_card')}
@@ -5825,9 +5825,9 @@ export const App: React.FC = () => {
               <div data-nosnippet="true">
                 <RecommendationSection
                   beaches={beachListBeaches} language={language} t={t}
-                  windSpeed={forecast?.[selectedDayIndex]?.wind.speed || 0}
-                  windDirection={degToCompass(forecast?.[selectedDayIndex]?.wind.deg || 0)}
-                  waveHeightM={forecast?.[selectedDayIndex]?.marine?.waveHeightM}
+                  windSpeed={(selectedForecast?.wind.speed ?? forecast?.[selectedDayIndex]?.wind.speed) || 0}
+                  windDirection={degToCompass((selectedForecast?.wind.deg ?? forecast?.[selectedDayIndex]?.wind.deg) || 0)}
+                  waveHeightM={selectedForecast?.marine?.waveHeightM ?? forecast?.[selectedDayIndex]?.marine?.waveHeightM}
                   selectedDate={selectedDayDate}
                   islandName={selectedIsland?.name[language] || ''}
                   regionId={selectedIsland?.id}

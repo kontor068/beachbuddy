@@ -1147,6 +1147,59 @@ export const BeachDetailPage: React.FC<BeachDetailPageProps> = ({
           </div>
         </section>
 
+        {/* Today's conditions — surfaced right under the verdict, led by the wave graphic. */}
+        <section className="space-y-3" data-nosnippet="true">
+          <h3 className="px-1 font-heading text-lg font-bold text-slate-950">{copy.conditions[language]}</h3>
+          <WaveHeightGraphic
+            variant="full"
+            waveHeightM={waveHeightM}
+            isEstimate={isWaveEstimate}
+            hourly={hourlyWave}
+            language={language}
+            selectedDate={selectedDate}
+          />
+          <div className={`grid grid-cols-2 gap-2.5 ${typeof seaTemperatureC === 'number' ? 'md:grid-cols-4' : 'md:grid-cols-3'}`}>
+            <ConditionCard
+              icon={<Wind className="w-5 h-5 text-blue-500" />}
+              label={copy.windShort[language]}
+              value={`${windSpeedKmh.toFixed(0)} km/h · ${windDirectionLabel}`}
+              subValue={`${beaufortLevel} ${t.units.beaufort}`}
+            />
+            <ConditionCard
+              icon={<Waves className="w-5 h-5 text-cyan-500" />}
+              label={copy.sea[language]}
+              value={seaConditionDisplay.value}
+              subValue={seaConditionDisplay.subValue}
+            />
+            {typeof seaTemperatureC === 'number' && (
+              <ConditionCard
+                icon={<Droplets className="w-5 h-5 text-sky-500" />}
+                label={copy.waterTemp[language]}
+                value={`${seaTemperatureC.toFixed(0)}°C`}
+                subValue={waterTempDescriptor}
+              />
+            )}
+            <ConditionCard
+              icon={<Thermometer className="w-5 h-5 text-orange-500" />}
+              label={copy.temperatureShort[language]}
+              value={`${displayTemp.toFixed(0)}°C`}
+              subValue={copy.airTemp[language]}
+            />
+          </div>
+          {localWindNote && (
+            <p className={`flex items-center gap-2 rounded-xl px-3 py-2 text-sm font-semibold ${
+              localWindNote.tone === 'windier'
+                ? 'bg-amber-50/70 text-amber-800'
+                : 'bg-teal-50/70 text-teal-800'
+            }`}>
+              {localWindNote.tone === 'windier'
+                ? <Wind className="h-4 w-4 shrink-0" aria-hidden="true" />
+                : <Leaf className="h-4 w-4 shrink-0" aria-hidden="true" />}
+              <span>{localWindNote.text}</span>
+            </p>
+          )}
+        </section>
+
         {/* 1b. Swell-window router — surfaces only on genuine ground swell: warns when this
             cove is secretly breaking despite calm wind, or routes to coves still flat today. */}
         <SwellRouterSection
@@ -1237,58 +1290,6 @@ export const BeachDetailPage: React.FC<BeachDetailPageProps> = ({
           )}
         </section>
 
-        {/* 4. Today's Conditions */}
-        <section className="space-y-3" data-nosnippet="true">
-          <h3 className="px-1 font-heading text-lg font-bold text-slate-950">{copy.conditions[language]}</h3>
-          <WaveHeightGraphic
-            variant="full"
-            waveHeightM={waveHeightM}
-            isEstimate={isWaveEstimate}
-            hourly={hourlyWave}
-            language={language}
-            selectedDate={selectedDate}
-          />
-          <div className={`grid grid-cols-2 gap-2.5 ${typeof seaTemperatureC === 'number' ? 'md:grid-cols-4' : 'md:grid-cols-3'}`}>
-            <ConditionCard
-              icon={<Wind className="w-5 h-5 text-blue-500" />}
-              label={copy.windShort[language]}
-              value={`${windSpeedKmh.toFixed(0)} km/h · ${windDirectionLabel}`}
-              subValue={`${beaufortLevel} ${t.units.beaufort}`}
-            />
-            <ConditionCard
-              icon={<Waves className="w-5 h-5 text-cyan-500" />}
-              label={copy.sea[language]}
-              value={seaConditionDisplay.value}
-              subValue={seaConditionDisplay.subValue}
-            />
-            {typeof seaTemperatureC === 'number' && (
-              <ConditionCard
-                icon={<Droplets className="w-5 h-5 text-sky-500" />}
-                label={copy.waterTemp[language]}
-                value={`${seaTemperatureC.toFixed(0)}°C`}
-                subValue={waterTempDescriptor}
-              />
-            )}
-            <ConditionCard
-              icon={<Thermometer className="w-5 h-5 text-orange-500" />}
-              label={copy.temperatureShort[language]}
-              value={`${displayTemp.toFixed(0)}°C`}
-              subValue={copy.airTemp[language]}
-            />
-          </div>
-          {localWindNote && (
-            <p className={`flex items-center gap-2 rounded-xl px-3 py-2 text-sm font-semibold ${
-              localWindNote.tone === 'windier'
-                ? 'bg-amber-50/70 text-amber-800'
-                : 'bg-teal-50/70 text-teal-800'
-            }`}>
-              {localWindNote.tone === 'windier'
-                ? <Wind className="h-4 w-4 shrink-0" aria-hidden="true" />
-                : <Leaf className="h-4 w-4 shrink-0" aria-hidden="true" />}
-              <span>{localWindNote.text}</span>
-            </p>
-          )}
-        </section>
 
         {/* 4a. About this beach — curated history/geology/character (own section so
             the "Συνθήκες" heading stays about today's weather, not beach info) */}
