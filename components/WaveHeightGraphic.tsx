@@ -120,39 +120,59 @@ type WaveTrendKey = 'calmerMorning' | 'calmerLater';
 
 const formatHour = (hour: number) => `${String(hour).padStart(2, '0')}:00`;
 
+const getSwimmerMotionStyle = (scale: WaveScaleResult): React.CSSProperties => {
+  const motion = (() => {
+    switch (scale.bodyRef) {
+      case 'overhead':
+        return { bobPx: 10, tiltDeg: 9, driftPx: 7, durationS: 1.85 };
+      case 'chest':
+        return { bobPx: 8, tiltDeg: 7, driftPx: 6, durationS: 2.15 };
+      case 'waist':
+        return { bobPx: 6, tiltDeg: 5, driftPx: 5, durationS: 2.45 };
+      case 'knee':
+        return { bobPx: 4, tiltDeg: 3, driftPx: 4, durationS: 2.9 };
+      case 'ankle':
+        return { bobPx: 2.4, tiltDeg: 1.6, driftPx: 3, durationS: 3.4 };
+      case 'flat':
+      default:
+        return { bobPx: 1.4, tiltDeg: 0.8, driftPx: 2, durationS: 4.0 };
+    }
+  })();
+
+  return {
+    '--cb-wave-duration': `${motion.durationS}s`,
+    '--cb-swimmer-bob': `${motion.bobPx}px`,
+    '--cb-swimmer-tilt': `${motion.tiltDeg}deg`,
+    '--cb-wave-drift': `${motion.driftPx}px`,
+  } as React.CSSProperties;
+};
+
 const formatWaveHeight = (m: number, language: LanguageCode): string => {
   const value = m.toFixed(1);
   return language === 'gr' ? `~${value.replace('.', ',')} μ` : `~${value} m`;
 };
 
 // ---------------------------------------------------------------------------------------
-// Body-scale figure: a neutral standing person on the shore with a wave beside it whose
-// crest reaches the body reference (waist, chest, ...). A dashed guide ties the crest height
-// to the figure so the reading is "the wave comes up to about <here>" — wave SIZE, not depth.
+// Body-scale swimmer: the crest still reaches the body reference (waist, chest, ...).
+// The dashed guide keeps the reading as wave size, not water depth.
 const FigureScene: React.FC<{ scale: WaveScaleResult }> = ({ scale }) => {
   const band = scale.isEstimate ? WAVE_ESTIMATE_CLASSES : WAVE_BAND_CLASSES[scale.band];
   const baselineY = 100;
   const headTopY = 18;
   const bodySpan = baselineY - headTopY; // 82
   const crestY = baselineY - scale.bodyFraction * bodySpan;
+  const swimmerY = Math.max(30, Math.min(92, crestY + 14));
+  const motionStyle = getSwimmerMotionStyle(scale);
 
   return (
-    <svg viewBox="0 0 160 116" preserveAspectRatio="xMidYMid meet" aria-hidden="true" className="h-auto w-full">
+    <svg viewBox="0 0 160 116" preserveAspectRatio="xMidYMid meet" aria-hidden="true" className="h-auto w-full" style={motionStyle}>
       {/* sand line */}
       <line x1="6" y1={baselineY} x2="156" y2={baselineY} className="stroke-slate-200 dark:stroke-slate-700" strokeWidth="2" strokeLinecap="round" />
-
-      {/* neutral figure on the shore */}
-      <g className="text-slate-400 dark:text-slate-500" fill="currentColor">
-        <circle cx="30" cy="26" r="8" />
-        <rect x="23" y="35" width="14" height="35" rx="6" />
-        <rect x="25" y="68" width="4.5" height="32" rx="2.25" />
-        <rect x="30.5" y="68" width="4.5" height="32" rx="2.25" />
-      </g>
 
       {/* wave beside the figure, crest at the body reference */}
       <path
         d={`M48 ${baselineY} L48 ${crestY} C 66 ${crestY - 7} 80 ${crestY + 6} 100 ${crestY} C 120 ${crestY - 6} 138 ${crestY + 5} 156 ${crestY} L156 ${baselineY} Z`}
-        className={`fill-current ${band.fill}`}
+        className={`cb-wave-surface fill-current ${band.fill}`}
         fillOpacity={scale.isEstimate ? 0.45 : 0.85}
         {...(scale.isEstimate ? { strokeDasharray: '4 3', stroke: 'currentColor', strokeWidth: 1 } : {})}
       />
@@ -160,7 +180,7 @@ const FigureScene: React.FC<{ scale: WaveScaleResult }> = ({ scale }) => {
       <path
         d={`M48 ${crestY} C 66 ${crestY - 7} 80 ${crestY + 6} 100 ${crestY} C 120 ${crestY - 6} 138 ${crestY + 5} 156 ${crestY}`}
         fill="none"
-        className="stroke-white/70 dark:stroke-white/40"
+        className="cb-wave-foam stroke-white/70 dark:stroke-white/40"
         strokeWidth="2"
         strokeLinecap="round"
       />
@@ -176,6 +196,16 @@ const FigureScene: React.FC<{ scale: WaveScaleResult }> = ({ scale }) => {
         strokeDasharray="3 3"
         opacity={0.45}
       />
+
+      {/* swimmer affected by the wave surface */}
+      <g transform={`translate(28 ${swimmerY})`}>
+        <g className="cb-wave-swimmer text-slate-500 dark:text-slate-400" fill="none" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round">
+          <circle cx="0" cy="-8" r="5.2" fill="currentColor" stroke="none" />
+          <path d="M5 -5 C 15 -8 24 -6 34 -1" strokeWidth="5.5" />
+          <path className="cb-wave-swimmer-arm" d="M7 -5 C 15 -18 26 -17 32 -10" strokeWidth="3.5" />
+          <path d="M28 0 C 36 2 43 5 50 9" strokeWidth="3.5" opacity="0.74" />
+        </g>
+      </g>
     </svg>
   );
 };

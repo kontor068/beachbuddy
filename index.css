@@ -247,6 +247,70 @@ body {
   50% { transform: translateY(-8px) rotate(2deg); }
 }
 
+.cb-wave-surface {
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: cb-wave-surface-drift var(--cb-wave-duration, 3s) ease-in-out infinite;
+}
+
+.cb-wave-foam {
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: cb-wave-surface-drift var(--cb-wave-duration, 3s) ease-in-out infinite reverse;
+}
+
+.cb-wave-swimmer {
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: cb-wave-swimmer-bob var(--cb-wave-duration, 3s) ease-in-out infinite;
+}
+
+.cb-wave-swimmer-arm {
+  transform-box: fill-box;
+  transform-origin: 16px -10px;
+  animation: cb-wave-swimmer-arm calc(var(--cb-wave-duration, 3s) * 0.82) ease-in-out infinite;
+}
+
+@keyframes cb-wave-surface-drift {
+  0%, 100% {
+    transform: translateX(calc(var(--cb-wave-drift, 4px) * -0.55));
+  }
+
+  50% {
+    transform: translateX(var(--cb-wave-drift, 4px));
+  }
+}
+
+@keyframes cb-wave-swimmer-bob {
+  0%, 100% {
+    transform: translateY(var(--cb-swimmer-bob, 3px)) rotate(calc(var(--cb-swimmer-tilt, 2deg) * -1));
+  }
+
+  50% {
+    transform: translateY(calc(var(--cb-swimmer-bob, 3px) * -1)) rotate(var(--cb-swimmer-tilt, 2deg));
+  }
+}
+
+@keyframes cb-wave-swimmer-arm {
+  0%, 100% {
+    transform: rotate(-16deg);
+  }
+
+  50% {
+    transform: rotate(18deg);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .cb-wave-surface,
+  .cb-wave-foam,
+  .cb-wave-swimmer,
+  .cb-wave-swimmer-arm {
+    animation: none !important;
+    transform: none !important;
+  }
+}
+
 @keyframes shimmer {
   0% { background-position: -200% 0; }
   100% { background-position: 200% 0; }
