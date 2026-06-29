@@ -621,17 +621,6 @@ export const BeachDetailPage: React.FC<BeachDetailPageProps> = ({
   const seaConditionScore = calculateSeaConditionScore(isExposed, windSpeedKmh, exposureLevel, waveHeightM);
   const detailBadgeScore = getDetailBadgeScore(score, seaConditionScore, isExposed);
   const beaufortLevel = getBeaufortLevel(windSpeedKmh);
-  const detailedWindExposureReason = describeWindExposure({
-    exposureLevel,
-    windDirectionDeg: weatherData.wind.deg,
-    windBeaufort: beaufortLevel,
-    facingDeg: scoreResult.facingDeg,
-    knownWindSportSpot: scoreResult.windProfile?.knownWindSportSpot,
-    language,
-  });
-  const windExposureReason =
-    describeSimpleWindSuitability(scoreResult.simpleWindSuitability, language) ||
-    detailedWindExposureReason;
   const seaConditionDisplay = getSeaConditionDisplay(seaConditionScore, isExposedToTodayWind, language, selectedDate, canClaimWindProtection, seaCalmClaimAllowed, beaufortLevel, waveHeightM);
   // Compare the beach-specific cluster forecast with the area-wide forecast only
   // when they genuinely differ — "a bit windier/calmer right here".
@@ -734,22 +723,6 @@ export const BeachDetailPage: React.FC<BeachDetailPageProps> = ({
     title: { en: `Good to swim all day`, gr: `Κατάλληλη όλη μέρα`, de: 'Den ganzen Tag gut', it: 'Adatta tutto il giorno', fr: 'Bonne toute la journée' }[language],
     helper: { en: 'Calm conditions with no strong wind today — any time works.', gr: 'Ήρεμες συνθήκες χωρίς δυνατό άνεμο σήμερα — οποιαδήποτε ώρα είναι καλή.', de: 'Ruhige Bedingungen ohne starken Wind heute.', it: 'Condizioni calme senza vento forte oggi.', fr: 'Conditions calmes sans vent fort aujourd hui.' }[language],
   };
-  const displayWhyTodayHeading = copy.whyToday[language];
-  const detailExplanation = generateUiBeachExplanation({
-    beach,
-    language,
-    isExposed,
-    exposureLevel,
-    waveCondition,
-    waveHeightM,
-    bestBeachTime: bestTime || undefined,
-    windDirectionLabel,
-    windBeaufort: beaufortLevel,
-    selectedDate,
-    canClaimWindProtection,
-    seaCalmClaimAllowed,
-  });
-  const decisionBullets = detailExplanation.heroBullets.slice(0, 3);
   const amenityChips = getAmenityChips(beach, language);
   // Per-facility chips (parking/beachBar/…) always mirror a yes/no row below, so we
   // keep only the summary chips that carry information the rows don't.
@@ -1113,24 +1086,6 @@ export const BeachDetailPage: React.FC<BeachDetailPageProps> = ({
             canClaimWindProtection={canClaimWindProtection}
             forceShow
           />
-
-          <div className="space-y-2 rounded-3xl border border-cyan-100/70 bg-cyan-50/45 p-3">
-            <h3 className="text-sm font-bold text-slate-900">{displayWhyTodayHeading}</h3>
-            {windExposureReason && (
-              <div className="flex items-start gap-2 rounded-2xl bg-white/70 px-3 py-2 text-sm font-semibold leading-relaxed text-slate-700">
-                <Wind className="mt-0.5 h-4 w-4 flex-shrink-0 text-cyan-600" />
-                <span>{windExposureReason}</span>
-              </div>
-            )}
-            <div className="grid gap-2 sm:grid-cols-3">
-              {decisionBullets.map((bullet, index) => (
-                <div key={index} className="flex items-start gap-2 text-sm font-medium leading-relaxed text-slate-600">
-                  <CheckCircle2 className="mt-0.5 h-4 w-4 flex-shrink-0 text-cyan-600" />
-                  <span>{bullet}</span>
-                </div>
-              ))}
-            </div>
-          </div>
 
           <div className="hidden md:flex items-center justify-end gap-3 pt-1">
             <button
