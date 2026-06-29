@@ -48,7 +48,11 @@ type ScoreCopy = {
   excellentCard: DayLabel;
   veryGoodCard: DayLabel;
   goodCard: DayLabel;
-  notIdeal: DayLabel;
+  // The bottom tier at light/moderate wind is a relative-quality note, not a warning, so it
+  // differentiates by strength: 3 Bft (and below) gets the lighter "λίγο αέρα", 4 Bft the
+  // more honest "αρκετό αέρα". Genuine caution (≥5 Bft) goes through `caution`, not here.
+  notIdealLight: DayLabel;
+  notIdealModerate: DayLabel;
   excellentHero: DayLabel;
   veryGoodHero: DayLabel;
   goodHero: DayLabel;
@@ -74,7 +78,8 @@ const scoreCopy: Record<LanguageCode, ScoreCopy> = {
     excellentCard: dayLabel('very good conditions', (day) => `very good conditions ${day}`),
     veryGoodCard: dayLabel('good conditions', (day) => `good conditions ${day}`),
     goodCard: dayLabel('manageable conditions', (day) => `manageable conditions ${day}`),
-    notIdeal: dayLabel('more demanding conditions', (day) => `more demanding conditions ${day}`),
+    notIdealLight: dayLabel('decent option, a bit breezy', (day) => `decent option ${day}, a bit breezy`),
+    notIdealModerate: dayLabel('decent option, fairly breezy', (day) => `decent option ${day}, fairly breezy`),
     excellentHero: dayLabel('very good conditions', (day) => `very good conditions ${day}`),
     veryGoodHero: dayLabel('good conditions', (day) => `good conditions ${day}`),
     goodHero: dayLabel('manageable conditions', (day) => `manageable conditions ${day}`),
@@ -91,7 +96,8 @@ const scoreCopy: Record<LanguageCode, ScoreCopy> = {
     excellentCard: dayLabel('Πολύ καλές συνθήκες', (day) => `Πολύ καλές συνθήκες ${day}`),
     veryGoodCard: dayLabel('Καλές συνθήκες', (day) => `Καλές συνθήκες ${day}`),
     goodCard: dayLabel('Διαχειρίσιμες συνθήκες', (day) => `Διαχειρίσιμες συνθήκες ${day}`),
-    notIdeal: dayLabel('Πιο απαιτητικές συνθήκες', (day) => `Πιο απαιτητικές συνθήκες ${day}`),
+    notIdealLight: dayLabel('Εντάξει επιλογή, με λίγο αέρα', (day) => `Εντάξει επιλογή ${day}, με λίγο αέρα`),
+    notIdealModerate: dayLabel('Εντάξει επιλογή, με αρκετό αέρα', (day) => `Εντάξει επιλογή ${day}, με αρκετό αέρα`),
     excellentHero: dayLabel('Πολύ καλές συνθήκες', (day) => `Πολύ καλές συνθήκες ${day}`),
     veryGoodHero: dayLabel('Καλές συνθήκες', (day) => `Καλές συνθήκες ${day}`),
     goodHero: dayLabel('Διαχειρίσιμες συνθήκες', (day) => `Διαχειρίσιμες συνθήκες ${day}`),
@@ -108,7 +114,8 @@ const scoreCopy: Record<LanguageCode, ScoreCopy> = {
     excellentCard: dayLabel('très bonnes conditions', (day) => `très bonnes conditions ${day}`),
     veryGoodCard: dayLabel('bonnes conditions', (day) => `bonnes conditions ${day}`),
     goodCard: dayLabel('conditions correctes', (day) => `conditions correctes ${day}`),
-    notIdeal: dayLabel('conditions plus exigeantes', (day) => `conditions plus exigeantes ${day}`),
+    notIdealLight: dayLabel('choix correct, un peu de vent', (day) => `choix correct ${day}, un peu de vent`),
+    notIdealModerate: dayLabel('choix correct, assez de vent', (day) => `choix correct ${day}, assez de vent`),
     excellentHero: dayLabel('très bonnes conditions', (day) => `très bonnes conditions ${day}`),
     veryGoodHero: dayLabel('bonnes conditions', (day) => `bonnes conditions ${day}`),
     goodHero: dayLabel('conditions correctes', (day) => `conditions correctes ${day}`),
@@ -125,7 +132,8 @@ const scoreCopy: Record<LanguageCode, ScoreCopy> = {
     excellentCard: dayLabel('sehr gute Bedingungen', (day) => `sehr gute Bedingungen ${day}`),
     veryGoodCard: dayLabel('gute Bedingungen', (day) => `gute Bedingungen ${day}`),
     goodCard: dayLabel('machbare Bedingungen', (day) => `machbare Bedingungen ${day}`),
-    notIdeal: dayLabel('anspruchsvollere Bedingungen', (day) => `anspruchsvollere Bedingungen ${day}`),
+    notIdealLight: dayLabel('brauchbar, etwas Wind', (day) => `brauchbar ${day}, etwas Wind`),
+    notIdealModerate: dayLabel('brauchbar, recht windig', (day) => `brauchbar ${day}, recht windig`),
     excellentHero: dayLabel('sehr gute Bedingungen', (day) => `sehr gute Bedingungen ${day}`),
     veryGoodHero: dayLabel('gute Bedingungen', (day) => `gute Bedingungen ${day}`),
     goodHero: dayLabel('machbare Bedingungen', (day) => `machbare Bedingungen ${day}`),
@@ -142,7 +150,8 @@ const scoreCopy: Record<LanguageCode, ScoreCopy> = {
     excellentCard: dayLabel('condizioni molto buone', (day) => `condizioni molto buone ${day}`),
     veryGoodCard: dayLabel('condizioni buone', (day) => `condizioni buone ${day}`),
     goodCard: dayLabel('condizioni gestibili', (day) => `condizioni gestibili ${day}`),
-    notIdeal: dayLabel('condizioni più impegnative', (day) => `condizioni più impegnative ${day}`),
+    notIdealLight: dayLabel("opzione ok, un po' di vento", (day) => `opzione ok ${day}, un po' di vento`),
+    notIdealModerate: dayLabel('opzione ok, abbastanza vento', (day) => `opzione ok ${day}, abbastanza vento`),
     excellentHero: dayLabel('condizioni molto buone', (day) => `condizioni molto buone ${day}`),
     veryGoodHero: dayLabel('condizioni buone', (day) => `condizioni buone ${day}`),
     goodHero: dayLabel('condizioni gestibili', (day) => `condizioni gestibili ${day}`),
@@ -183,7 +192,7 @@ const getCappedConditionLabel = (
   const isLightOrModerateWind = typeof windBeaufort === 'number' && windBeaufort <= 4;
 
   if (isLightOrModerateWind) {
-    if (!highRelativeRank) return copy.notIdeal(day, isToday);
+    if (!highRelativeRank) return (typeof windBeaufort === 'number' && windBeaufort >= 4 ? copy.notIdealModerate : copy.notIdealLight)(day, isToday);
     return variant === 'hero'
       ? copy.goodHero(day, isToday)
       : copy.goodCard(day, isToday);
@@ -221,14 +230,14 @@ const getTodayScoreLabel = (score: number, language: LanguageCode, selectedDate?
     if (score >= 88) return copy.excellentCard(day, isToday);
     if (score >= 76) return copy.veryGoodCard(day, isToday);
     if (score >= 50) return copy.goodCard(day, isToday);
-    return copy.notIdeal(day, isToday);
+    return (typeof windBeaufort === 'number' && windBeaufort >= 4 ? copy.notIdealModerate : copy.notIdealLight)(day, isToday);
   }
 
   if (score >= 88) return copy.excellentCard(day, isToday);
   if (score >= 76) return copy.veryGoodCard(day, isToday);
   if (score >= 64) return copy.goodCard(day, isToday);
   if (score >= 50) return copy.caution(day, isToday);
-  return copy.notIdeal(day, isToday);
+  return (typeof windBeaufort === 'number' && windBeaufort >= 4 ? copy.notIdealModerate : copy.notIdealLight)(day, isToday);
 };
 
 export const getDisplayTodayScore = (score: number): number => {
@@ -250,14 +259,14 @@ const getHeroTodayScoreLabel = (score: number, language: LanguageCode, selectedD
     if (score >= 88) return copy.excellentHero(day, isToday);
     if (score >= 76) return copy.veryGoodHero(day, isToday);
     if (score >= 50) return copy.goodHero(day, isToday);
-    return copy.notIdeal(day, isToday);
+    return (typeof windBeaufort === 'number' && windBeaufort >= 4 ? copy.notIdealModerate : copy.notIdealLight)(day, isToday);
   }
 
   if (score >= 88) return copy.excellentHero(day, isToday);
   if (score >= 76) return copy.veryGoodHero(day, isToday);
   if (score >= 64) return copy.goodHero(day, isToday);
   if (score >= 50) return copy.caution(day, isToday);
-  return copy.notIdeal(day, isToday);
+  return (typeof windBeaufort === 'number' && windBeaufort >= 4 ? copy.notIdealModerate : copy.notIdealLight)(day, isToday);
 };
 
 const getTodayScoreTone = (score: number, capped = false, windBeaufort?: number) => {
@@ -268,6 +277,16 @@ const getTodayScoreTone = (score: number, capped = false, windBeaufort?: number)
       container: 'border-cyan-200/90 bg-cyan-50/78 text-cyan-800 backdrop-blur-md dark:border-cyan-900/50 dark:bg-cyan-950/35 dark:text-cyan-200',
       icon: 'text-cyan-600 dark:text-cyan-300',
       strong: 'text-cyan-700 dark:text-cyan-200',
+    };
+  }
+
+  // Light/moderate wind (≤4 Bft) is never an alarm. A weaker pick here is a mild heads-up
+  // ("Εντάξει επιλογή, με αέρα"), so the pill stays amber, not the rose used for strong wind.
+  if (isLightOrModerateWind) {
+    return {
+      container: 'border-amber-200/90 bg-amber-50/78 text-amber-800 backdrop-blur-md dark:border-amber-900/50 dark:bg-amber-950/35 dark:text-amber-200',
+      icon: 'text-amber-600 dark:text-amber-300',
+      strong: 'text-amber-700 dark:text-amber-200',
     };
   }
 

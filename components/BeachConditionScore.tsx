@@ -36,6 +36,10 @@ type ConditionCopy = {
   veryGood: string;
   goodConditions: string;
   useCaution: string;
+  // Low sea-comfort score: a relative note at light/moderate wind (3 Bft → "λίγο κύμα",
+  // 4 Bft → "αρκετό κύμα"), but genuine caution at ≥5 Bft via `notIdeal`.
+  notIdealLight: DayLabel;
+  notIdealModerate: DayLabel;
   notIdeal: DayLabel;
   seaConditionsCompact: string;
   seaConditionsTitle: DayLabel;
@@ -67,7 +71,9 @@ const conditionCopy: Record<LanguageCode, ConditionCopy> = {
     veryGood: 'Very good',
     goodConditions: 'Good conditions',
     useCaution: 'Use caution',
-    notIdeal: dayLabel('More demanding sea', (day) => `More demanding sea ${day}`),
+    notIdealLight: dayLabel('OK, a little chop', (day) => `OK, a little chop ${day}`),
+    notIdealModerate: dayLabel('OK, noticeable chop', (day) => `OK, noticeable chop ${day}`),
+    notIdeal: dayLabel('Use caution', (day) => `Use caution ${day}`),
     seaConditionsCompact: 'Sea Conditions',
     seaConditionsTitle: dayLabel('Sea conditions', (day) => `Sea conditions ${day}`),
     windProtection: 'Wind Protection',
@@ -90,7 +96,9 @@ const conditionCopy: Record<LanguageCode, ConditionCopy> = {
     veryGood: 'Πολύ καλές',
     goodConditions: 'Καλές συνθήκες',
     useCaution: 'Με προσοχή',
-    notIdeal: dayLabel('Πιο απαιτητική θάλασσα', (day) => `Πιο απαιτητική θάλασσα ${day}`),
+    notIdealLight: dayLabel('Εντάξει, με λίγο κύμα', (day) => `Εντάξει ${day}, με λίγο κύμα`),
+    notIdealModerate: dayLabel('Εντάξει, με αρκετό κύμα', (day) => `Εντάξει ${day}, με αρκετό κύμα`),
+    notIdeal: dayLabel('Θέλει προσοχή', (day) => `Θέλει προσοχή ${day}`),
     seaConditionsCompact: 'Θαλάσσιες Συνθήκες',
     seaConditionsTitle: dayLabel('Θαλάσσιες συνθήκες', (day) => `Θαλάσσιες συνθήκες ${day}`),
     windProtection: 'Προστασία Ανέμου',
@@ -113,7 +121,9 @@ const conditionCopy: Record<LanguageCode, ConditionCopy> = {
     veryGood: 'Très bonnes',
     goodConditions: 'Bonnes conditions',
     useCaution: 'Prudence',
-    notIdeal: dayLabel('Mer plus exigeante', (day) => `Mer plus exigeante ${day}`),
+    notIdealLight: dayLabel('Correct, un peu de clapot', (day) => `Correct ${day}, un peu de clapot`),
+    notIdealModerate: dayLabel('Correct, clapot marqué', (day) => `Correct ${day}, clapot marqué`),
+    notIdeal: dayLabel('Prudence', (day) => `Prudence ${day}`),
     seaConditionsCompact: 'Conditions de mer',
     seaConditionsTitle: dayLabel('Conditions de mer', (day) => `Conditions de mer ${day}`),
     windProtection: 'Protection du vent',
@@ -136,7 +146,9 @@ const conditionCopy: Record<LanguageCode, ConditionCopy> = {
     veryGood: 'Sehr gut',
     goodConditions: 'Gute Bedingungen',
     useCaution: 'Vorsicht',
-    notIdeal: dayLabel('Anspruchsvollere See', (day) => `Anspruchsvollere See ${day}`),
+    notIdealLight: dayLabel('OK, etwas Welle', (day) => `OK ${day}, etwas Welle`),
+    notIdealModerate: dayLabel('OK, spürbare Welle', (day) => `OK ${day}, spürbare Welle`),
+    notIdeal: dayLabel('Vorsicht', (day) => `Vorsicht ${day}`),
     seaConditionsCompact: 'Meeresbedingungen',
     seaConditionsTitle: dayLabel('Meeresbedingungen', (day) => `Meeresbedingungen ${day}`),
     windProtection: 'Windschutz',
@@ -159,7 +171,9 @@ const conditionCopy: Record<LanguageCode, ConditionCopy> = {
     veryGood: 'Molto buone',
     goodConditions: 'Buone condizioni',
     useCaution: 'Prudenza',
-    notIdeal: dayLabel('Mare più impegnativo', (day) => `Mare più impegnativo ${day}`),
+    notIdealLight: dayLabel("Ok, un po' di onda", (day) => `Ok ${day}, un po' di onda`),
+    notIdealModerate: dayLabel('Ok, onda moderata', (day) => `Ok ${day}, onda moderata`),
+    notIdeal: dayLabel('Prudenza', (day) => `Prudenza ${day}`),
     seaConditionsCompact: 'Condizioni mare',
     seaConditionsTitle: dayLabel('Condizioni mare', (day) => `Condizioni mare ${day}`),
     windProtection: 'Protezione dal vento',
@@ -340,7 +354,10 @@ export const BeachConditionScore: React.FC<BeachConditionScoreProps> = ({
     // plainly as good conditions (matching the today badge, which is positive at ≤4 Bft).
     // Reserve "Με προσοχή" for genuinely strong wind (6+); 5 Bft stays the honest "Κυματισμός".
     if (score >= 5) return windBeaufort <= 4 ? copy.goodConditions : (windBeaufort === 5 ? copy.choppy : copy.useCaution);
-    return copy.notIdeal(day, isToday);
+    // Low sea score: light relative note at 3 vs 4 Bft; genuine caution only at ≥5 Bft.
+    if (windBeaufort >= 5) return copy.notIdeal(day, isToday);
+    if (windBeaufort === 4) return copy.notIdealModerate(day, isToday);
+    return copy.notIdealLight(day, isToday);
   };
 
   const getIndicatorIcon = (score: number) => {
