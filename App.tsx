@@ -7,6 +7,7 @@ import { AlertTriangle, CheckCircle2, Clock3, Navigation, RefreshCw, Waves, Wind
 // Components
 import Header from './components/Header';
 import SkeletonLoader from './components/SkeletonLoader';
+import { InstallPrompt } from './components/InstallPrompt';
 import { UnsafeConditionsMessage } from './components/UnsafeConditionsMessage';
 import { PreferenceFilters } from './components/PreferenceFilters';
 import { BeachFilters } from './components/BeachFilters';
@@ -6291,6 +6292,8 @@ export const App: React.FC = () => {
           <IslandSelectorModal isOpen={isIslandSelectorOpen} onClose={handleCloseIslandSelector} islands={allIslands} onSelect={handleRegionSelected} t={t} language={language} onSelectNearest={handleSelectNearest} isFindingNearest={isFindingNearest} findNearestError={findNearestError} />
         </Suspense>
       )}
+
+      <InstallPrompt language={language} />
 
       {isFilterModalOpen && (
         <Suspense fallback={null}>

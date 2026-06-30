@@ -35,7 +35,11 @@ export type AnalyticsEvent =
   | 'ai_advisor_question'
   | 'photo_suggestion_clicked'
   | 'recommendation_feedback'
-  | 'condition_feedback';
+  | 'condition_feedback'
+  | 'install_prompt_shown'
+  | 'install_prompt_accepted'
+  | 'install_prompt_dismissed'
+  | 'app_installed';
 
 export interface AnalyticsData {
   event: AnalyticsEvent;
