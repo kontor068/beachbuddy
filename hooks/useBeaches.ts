@@ -184,6 +184,7 @@ export const useBeaches = (language: LanguageCode) => {
         crowdScore: scoreResult.crowdScore,
         exposureLevel: scoreResult.exposureLevel,
         waveHeightM: scoreResult.waveHeightM,
+        windSpeedKmph: scoreResult.windSpeedKmph,
         warnings: scoreResult.warnings,
         confidence: scoreResult.confidence,
         todayScore: scoreResult.score,

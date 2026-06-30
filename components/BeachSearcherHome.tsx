@@ -79,6 +79,7 @@ type BeachCardContext = Beach & {
   bestTimeWindow?: SuitableBeach['bestTimeWindow'];
   exposureLevel?: SuitableBeach['exposureLevel'];
   waveHeightM?: SuitableBeach['waveHeightM'];
+  windSpeedKmph?: SuitableBeach['windSpeedKmph'];
   warnings?: SuitableBeach['warnings'];
   confidence?: SuitableBeach['confidence'];
   swimmingComfort?: SuitableBeach['swimmingComfort'];
@@ -2017,6 +2018,7 @@ export const BeachSearcherHome: React.FC<BeachSearcherHomeProps> = ({
         bestTimeWindow: context.bestTimeWindow,
         exposureLevel: context.exposureLevel,
         waveHeightM: context.waveHeightM,
+        windSpeedKmph: context.windSpeedKmph,
         warnings: context.warnings,
         confidence: context.confidence,
         swimmingComfort: context.swimmingComfort,
@@ -2978,6 +2980,7 @@ export const BeachSearcherHome: React.FC<BeachSearcherHomeProps> = ({
         t={t}
         isCalm={seaCalmClaimAllowed === true}
         windSpeed={cardWindSpeed}
+        beachWindSpeedKmph={options.context?.windSpeedKmph ?? directContext.windSpeedKmph ?? weatherContext?.windSpeedKmph}
         temperature={cardTemperature}
         favorites={favorites}
         onToggleFavorite={onToggleFavorite}

@@ -133,6 +133,7 @@ export const SavedBeachesScreen: React.FC<SavedBeachesScreenProps> = ({
                     t={t}
                     isCalm={item.seaCalmClaimAllowed === true}
                     windSpeed={windSpeed}
+                    beachWindSpeedKmph={item.windSpeedKmph}
                     temperature={temperature}
                     waveHeightM={item.waveHeightM}
                     favorites={favorites}

@@ -10,6 +10,7 @@ type BeachListBeach = Beach & {
   canClaimWindProtection?: boolean;
   seaCalmClaimAllowed?: boolean;
   waveHeightM?: number;
+  windSpeedKmph?: number;
   warnings?: WarningFlag[];
   confidence?: RecommendationConfidence;
   swimmingComfort?: SwimmingComfort;
@@ -227,10 +228,11 @@ export const BeachList: React.FC<BeachListProps> = ({
             key={b.id}
           >
             <BeachCard 
-              beach={b} 
-              language={language} 
-              t={t} 
-              windSpeed={windSpeed} 
+              beach={b}
+              language={language}
+              t={t}
+              windSpeed={windSpeed}
+              beachWindSpeedKmph={b.windSpeedKmph}
               temperature={temperature}
               selectedDate={selectedDate}
               selectedHour={selectedHour}

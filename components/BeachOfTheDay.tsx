@@ -8,7 +8,7 @@ import { displayBeachName } from '../utils/localization';
 import { TodayScoreBadge } from './TodayScoreBadge';
 import { generateBeachExplanation } from '../utils/beachExplanation';
 import { getSelectedDayPrefix } from '../utils/dateLabels';
-import { getWaveCondition } from '../utils/weatherUtils';
+import { getWaveCondition, getBeaufortLevel } from '../utils/weatherUtils';
 import { getBeachPhotoLookup } from '../services/beachPhotos';
 
 interface BeachOfTheDayProps {
@@ -91,7 +91,15 @@ const BeachOfTheDay: React.FC<BeachOfTheDayProps> = ({ topBeach, language, t, on
     return photoLookup.source === 'exact' ? Array.from(new Set(photoLookup.photos)) : [];
   }, [photoLookup.photos, photoLookup.source]);
   const heroPhoto = photoIndex < heroPhotos.length ? heroPhotos[photoIndex] : null;
-  const waveCondition = getWaveCondition(isExposed, windSpeed * 3.6);
+  // Prefer this beach's own scored wind so the Beaufort matches its (same-wind) wave value; fall
+  // back to the island/region wind only when no beach-specific value is present.
+  const effectiveWindKmph = typeof topBeach.windSpeedKmph === 'number' && Number.isFinite(topBeach.windSpeedKmph)
+    ? topBeach.windSpeedKmph
+    : windSpeed * 3.6;
+  const effectiveWindBeaufort = typeof windBeaufort === 'number' && topBeach.windSpeedKmph === undefined
+    ? windBeaufort
+    : getBeaufortLevel(effectiveWindKmph);
+  const waveCondition = getWaveCondition(isExposed, effectiveWindKmph);
   const beachExplanation = generateBeachExplanation({
     beach,
     language,
@@ -101,7 +109,7 @@ const BeachOfTheDay: React.FC<BeachOfTheDayProps> = ({ topBeach, language, t, on
     waveHeightM,
     bestBeachTime,
     windDirectionLabel,
-    windBeaufort,
+    windBeaufort: effectiveWindBeaufort,
     selectedDate,
   });
   const navigateLabel = {
@@ -174,7 +182,7 @@ const BeachOfTheDay: React.FC<BeachOfTheDayProps> = ({ topBeach, language, t, on
                 language={language}
                 variant="hero"
                 selectedDate={selectedDate}
-                windBeaufort={windBeaufort}
+                windBeaufort={effectiveWindBeaufort}
                 waveHeightM={waveHeightM}
                 swimmingComfort={swimmingComfort}
                 noIdealSwimmingWindow={noIdealSwimmingWindow}

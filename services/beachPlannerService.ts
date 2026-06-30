@@ -4,7 +4,7 @@ import { degToCompass, getBeaufortLevel } from '../utils/weatherUtils';
 import { calculateSeaConditionScore } from '../utils/seaConditions';
 import type { ExposureLevel } from '../utils/windExposure';
 import { assessBeachWindExposure } from '../utils/windExposureEngine';
-import { getWindChopWaveFloorM, resolveEffectiveWaveHeightM } from '../utils/waveModel';
+import { getWindChopWaveFloorM, resolveEffectiveWaveHeightM, capLightWindMeasuredWaveM } from '../utils/waveModel';
 
 export interface BeachDayPlan {
   beachId: number;
@@ -175,9 +175,13 @@ const getPlannerSeaInputs = (
     getWindChopWaveFloorM(exposureLevel, beaufort, windSpeedKmh, getForecastGustKmh(item))
   ).toFixed(2));
 
+  const measured = getFiniteNumber(item.marine?.waveHeightM);
+  const realisticMeasured = typeof measured === 'number'
+    ? capLightWindMeasuredWaveM(measured, beaufort, { heightM: item.marine?.swellWaveHeightM, periodS: item.marine?.swellWavePeriodS })
+    : measured;
   return {
     exposureLevel,
-    waveHeightM: resolveEffectiveWaveHeightM(getFiniteNumber(item.marine?.waveHeightM), modeledWaveHeightM),
+    waveHeightM: resolveEffectiveWaveHeightM(realisticMeasured, modeledWaveHeightM),
   };
 };
 

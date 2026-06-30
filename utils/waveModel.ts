@@ -110,3 +110,33 @@ export const getWindChopWaveFloorM = (
   const cap = exposureLevel === 'protected' ? 0.45 : exposureLevel === 'partial' ? 0.8 : 1.3;
   return Number(Math.min(cap, floor + gustBump).toFixed(2));
 };
+
+/**
+ * Light-wind realism cap for the measured (grid) wave height.
+ *
+ * Open-Meteo's `wave_height` is the TOTAL significant height (wind sea + swell). In an enclosed sea
+ * like the Aegean it over-states a calm day: at 1–2 Bft "λάδι" conditions the global model still
+ * reports ~0.3–0.6 m of residual/model swell that does not actually reach the shore. Because the
+ * displayed value is max(measured, wind-modeled) and the wind term is ~0 in light air, that surfaces
+ * as a misleading "0.5 m wave at 1 Bft". This caps the measured value when the wind is light — unless
+ * there is a genuine long-period groundswell, which is physically present even in calm wind.
+ */
+export const capLightWindMeasuredWaveM = (
+  measuredWaveHeightM: number,
+  beaufort: number,
+  swell?: { heightM?: number; periodS?: number }
+): number => {
+  if (!Number.isFinite(measuredWaveHeightM) || measuredWaveHeightM <= 0) return measuredWaveHeightM;
+  // A gentle breeze (≥3 Bft) can already build a real small sea — leave it to the rest of the model.
+  if (beaufort >= 3) return measuredWaveHeightM;
+
+  // Genuine long-period groundswell reaches the coast even with calm wind — never cap it away.
+  const hasGenuineSwell =
+    typeof swell?.periodS === 'number' && swell.periodS >= 9 &&
+    typeof swell?.heightM === 'number' && swell.heightM >= 0.4;
+  if (hasGenuineSwell) return measuredWaveHeightM;
+
+  // 0–1 Bft: essentially flat; 2 Bft: a light ripple.
+  const cap = beaufort <= 1 ? 0.3 : 0.4;
+  return Math.min(measuredWaveHeightM, cap);
+};

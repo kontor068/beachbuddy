@@ -38,7 +38,11 @@ interface BeachCardProps {
   language: LanguageCode;
   t: Translation;
   isCalm?: boolean;
+  /** Island/region wind (m/s) — the fallback when no beach-specific wind is supplied. */
   windSpeed: number;
+  /** This beach's own scored wind (km/h, beach-cluster when available). Preferred over `windSpeed`
+   *  so the card's Beaufort matches its same-wind wave value. */
+  beachWindSpeedKmph?: number;
   waveHeightM?: number;
   temperature?: number;
   favorites: number[];
@@ -1083,6 +1087,7 @@ export const BeachCard: React.FC<BeachCardProps> = ({
   language,
   t,
   windSpeed,
+  beachWindSpeedKmph,
   waveHeightM,
   temperature,
   favorites,
@@ -1130,7 +1135,12 @@ export const BeachCard: React.FC<BeachCardProps> = ({
   const hasNearbyCamping = (beach.nearbyCamping?.length ?? metadata?.nearbyCamping?.length ?? 0) > 0;
   const paidEntry = beach.paidEntry ?? metadata?.paidEntry;
   const isPartlyShelteredToday = exposureLevel === 'partial';
-  const windBeaufort = getBeaufortLevel(windSpeed * 3.6);
+  // Prefer this beach's own scored wind so the Beaufort matches its (same-wind) wave; fall back to
+  // the island/region wind only when no beach-specific value was supplied.
+  const effectiveWindKmph = typeof beachWindSpeedKmph === 'number' && Number.isFinite(beachWindSpeedKmph)
+    ? beachWindSpeedKmph
+    : windSpeed * 3.6;
+  const windBeaufort = getBeaufortLevel(effectiveWindKmph);
   const isFavorite = favorites.includes(beach.id);
   const labels = compactLabels(language, selectedDate, selectedHour);
   const localizedCardCopy = getLocalizedCopy(language, cardCopy);
@@ -1876,7 +1886,7 @@ export const BeachCard: React.FC<BeachCardProps> = ({
 
         {/* Condition Score */}
         <div className="mb-3">
-          <BeachConditionScore isExposed={isExposed} windSpeed={windSpeed * 3.6} waveHeightM={waveHeightM} temperature={temperature} compact={true} exposureLevel={exposureLevel} language={language} selectedDate={selectedDate} selectedHour={selectedHour} canClaimWindProtection={canClaimWindProtection} boatAccess={isBoatOnlyBeach} />
+          <BeachConditionScore isExposed={isExposed} windSpeed={effectiveWindKmph} waveHeightM={waveHeightM} temperature={temperature} compact={true} exposureLevel={exposureLevel} language={language} selectedDate={selectedDate} selectedHour={selectedHour} canClaimWindProtection={canClaimWindProtection} boatAccess={isBoatOnlyBeach} />
         </div>
 
         {warnings.length > 0 && (

@@ -584,6 +584,8 @@ export interface SuitableBeach {
   orientation?: number | null;
   marine?: MarineForecast;
   waveHeightM?: number;
+  /** Wind (km/h) this beach was scored with, so its card Beaufort matches its same-wind wave. */
+  windSpeedKmph?: number;
   warnings?: WarningFlag[];
   confidence?: RecommendationConfidence;
   weatherSource?: WeatherSource;

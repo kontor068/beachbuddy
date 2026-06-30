@@ -42,7 +42,7 @@ import { summarizeMeltemiBehavior } from '../utils/windClimatology';
 import { describeSimpleWindSuitability, describeWindExposure } from '../utils/windExposureCopy';
 import { hasDifficultTopPickAccess, hasMainstreamTopPickAccess, hasTrulyEasyAccess, isAdventureBeach } from '../utils/access';
 import { getBeachTouristRecognitionScore } from '../utils/touristPriority';
-import { getWindChopWaveFloorM, resolveEffectiveWaveHeightM } from '../utils/waveModel';
+import { getWindChopWaveFloorM, resolveEffectiveWaveHeightM, capLightWindMeasuredWaveM } from '../utils/waveModel';
 
 export interface BeachScore {
   beachId: number;
@@ -65,6 +65,9 @@ export interface BeachScore {
   waveHeightM?: number;
   /** Damped wind/fetch modeled wave height (m), including the conservative wind-chop floor. */
   modeledWaveHeightM?: number;
+  /** The wind speed (km/h) this score was computed from — beach-cluster wind when available.
+   *  Surfaced so cards can show a Beaufort that matches their (same-wind) wave value. */
+  windSpeedKmph?: number;
   warnings?: WarningFlag[];
   confidence?: RecommendationConfidence;
   weatherSource?: WeatherSource;
@@ -115,6 +118,9 @@ export interface BeachRecommendation {
   waveHeightM?: number;
   /** Damped wind/fetch modeled wave height (m), including the conservative wind-chop floor. */
   modeledWaveHeightM?: number;
+  /** Wind speed (km/h) this recommendation was scored with (beach-cluster when available), so a
+   *  card's Beaufort matches its same-wind wave. */
+  windSpeedKmph?: number;
   warnings?: WarningFlag[];
   confidence?: RecommendationConfidence;
   weatherSource?: WeatherSource;
@@ -516,13 +522,16 @@ const assessHourlyWave = (
   ).toFixed(2));
   const measured = item.marine?.waveHeightM;
   const hasMeasured = typeof measured === 'number' && Number.isFinite(measured);
+  const realisticMeasured = hasMeasured
+    ? capLightWindMeasuredWaveM(measured as number, beaufort, { heightM: item.marine?.swellWaveHeightM, periodS: item.marine?.swellWavePeriodS })
+    : measured;
   return {
     dt: item.dt,
     hour: new Date(item.dt * 1000).getHours(),
     windSpeedKmh,
     exposureLevel,
     isExposed: exposureLevel !== 'protected',
-    effectiveWaveHeightM: resolveEffectiveWaveHeightM(measured, modeledWaveHeightM),
+    effectiveWaveHeightM: resolveEffectiveWaveHeightM(realisticMeasured, modeledWaveHeightM),
     hasMeasured,
   };
 };
@@ -1382,8 +1391,12 @@ export const calculateBeachScore = (
   const measuredWaveHeightM = typeof waveHeightM === 'number' && Number.isFinite(waveHeightM) ? waveHeightM : undefined;
   // Numeric scoring and display use the effective beach-level wave/chop value.
   // The raw Open-Meteo marine value stays in `marine.waveHeightM` for traceability, but
-  // a low grid value must not make a windy exposed beach look flat calm.
-  const effectiveWaveHeightM = resolveEffectiveWaveHeightM(measuredWaveHeightM, modeledWaveHeightM);
+  // a low grid value must not make a windy exposed beach look flat calm — and, in the other
+  // direction, the grid's over-reported swell must not make a 1 Bft "λάδι" day look choppy.
+  const realisticMeasuredWaveHeightM = typeof measuredWaveHeightM === 'number'
+    ? capLightWindMeasuredWaveM(measuredWaveHeightM, baseBeaufort, { heightM: marine?.swellWaveHeightM, periodS: marine?.swellWavePeriodS })
+    : undefined;
+  const effectiveWaveHeightM = resolveEffectiveWaveHeightM(realisticMeasuredWaveHeightM, modeledWaveHeightM);
   const waveRaisedByWind = measuredWaveHeightM !== undefined && effectiveWaveHeightM > measuredWaveHeightM + 0.05;
 
   // Long-period swell surge (roadmap #2): prefer the swell channel, else the wave
@@ -1880,6 +1893,7 @@ export const calculateBeachScore = (
     marine,
     waveHeightM: effectiveWaveHeightM,
     modeledWaveHeightM,
+    windSpeedKmph,
     warnings,
     confidence,
     weatherSource,
@@ -2236,6 +2250,7 @@ export const getTopRecommendedBeaches = (
       orientation: scoreResult.orientation,
       marine: scoreResult.marine,
       waveHeightM: scoreResult.waveHeightM,
+      windSpeedKmph: scoreResult.windSpeedKmph,
       warnings: scoreResult.warnings,
       confidence: scoreResult.confidence,
       weatherSource: scoreResult.weatherSource,
@@ -2388,6 +2403,7 @@ export const getSuitableBeaches = (
         orientation: scoreResult.orientation,
         marine: scoreResult.marine,
         waveHeightM: scoreResult.waveHeightM,
+        windSpeedKmph: scoreResult.windSpeedKmph,
         warnings: scoreResult.warnings,
         confidence: scoreResult.confidence,
         weatherSource: scoreResult.weatherSource,

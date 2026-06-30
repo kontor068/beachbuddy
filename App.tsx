@@ -5723,6 +5723,7 @@ export const App: React.FC = () => {
                       selectedHour={selectedHourDt != null ? new Date(selectedHourDt * 1000).getHours() : undefined}
                       exposureLevel={r.exposureLevel}
                       waveHeightM={r.waveHeightM}
+                      beachWindSpeedKmph={r.windSpeedKmph}
                       warnings={r.warnings}
                       confidence={r.confidence}
                       swimmingComfort={r.swimmingComfort}
@@ -5940,6 +5941,7 @@ export const App: React.FC = () => {
                           selectedHour={selectedHourDt != null ? new Date(selectedHourDt * 1000).getHours() : undefined}
                           exposureLevel={r.exposureLevel}
                           waveHeightM={r.waveHeightM}
+                          beachWindSpeedKmph={r.windSpeedKmph}
                           warnings={r.warnings}
                           confidence={r.confidence}
                           swimmingComfort={r.swimmingComfort}
