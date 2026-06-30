@@ -360,9 +360,7 @@ const getSeaConditionDisplay = (
     if (windBeaufort <= 3 && waveHeightM < 0.5) {
       return {
         value: { en: 'Manageable sea', gr: 'Ήπια θάλασσα', de: 'Handhabbare See', it: 'Mare gestibile', fr: 'Mer gerable' }[language],
-        subValue: isExposed
-          ? { en: `This beach is more exposed, but the wind is light ${day}.`, gr: `Η παραλία είναι πιο εκτεθειμένη, αλλά ${day} ο άνεμος είναι ήπιος.`, de: 'Dieser Strand ist offener, aber der Wind ist heute leicht.', it: 'Questa spiaggia e piu esposta, ma oggi il vento e leggero.', fr: 'Cette plage est plus exposee, mais le vent est faible aujourd hui.' }[language]
-          : { en: `Wind should not be a major issue ${day}.`, gr: `Ο άνεμος δεν φαίνεται να είναι πρόβλημα ${day}.`, de: 'Wind sollte heute kein Hauptproblem sein.', it: 'Il vento non dovrebbe essere un problema oggi.', fr: 'Le vent ne devrait pas etre un probleme aujourd hui.' }[language],
+        subValue: undefined,
       };
     }
 
@@ -2007,7 +2005,7 @@ interface ConditionCardProps {
   icon: React.ReactNode;
   label: string;
   value: string;
-  subValue: string;
+  subValue?: string;
 }
 
 const ConditionCard: React.FC<ConditionCardProps> = ({ icon, label, value, subValue }) => (
@@ -2017,7 +2015,7 @@ const ConditionCard: React.FC<ConditionCardProps> = ({ icon, label, value, subVa
     </div>
     <span className="text-[10px] font-bold tracking-normal text-slate-600">{label}</span>
     <span className="text-sm font-bold leading-tight text-slate-900 break-words sm:text-base">{value}</span>
-    <span className="text-[11px] font-semibold text-slate-700 leading-tight line-clamp-2">{subValue}</span>
+    {subValue && <span className="text-[11px] font-semibold text-slate-700 leading-tight line-clamp-2">{subValue}</span>}
   </div>
 );
 
