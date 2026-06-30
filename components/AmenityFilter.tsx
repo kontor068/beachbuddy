@@ -150,10 +150,15 @@ type FilterSectionTitleKey = 'quick' | 'amenities' | 'beachAndWater' | 'experien
 
 const filterGroupDefinitions: Array<{ id: string; titleKey: FilterSectionTitleKey; filters: FilterKey[] }> = [
   { id: 'quick', titleKey: 'quick', filters: ['familyFriendly', 'beachBar', 'quiet', 'easyAccess', 'disabledAccess'] },
-  { id: 'amenities', titleKey: 'amenities', filters: ['taverna', 'sunbeds', 'parking', 'organized', 'naturalShade'] },
+  { id: 'amenities', titleKey: 'amenities', filters: ['taverna', 'sunbeds', 'parking', 'naturalShade'] },
   { id: 'beachAndWater', titleKey: 'beachAndWater', filters: ['sandy', 'pebbles', 'sandy-pebbles', 'rocky', 'shallowWaters', 'deepWaters'] },
   { id: 'experience', titleKey: 'experience', filters: ['snorkeling', 'adventure'] },
 ];
+
+const hiddenUserFacingFilters = new Set<FilterKey>(['organized']);
+const removeHiddenUserFacingFilters = (filters: FilterKey[]): FilterKey[] => (
+    filters.filter(filter => !hiddenUserFacingFilters.has(filter))
+);
 
 export const CombinedFilter: React.FC<CombinedFilterProps> = ({ 
     initialSelectedFilters, 
@@ -179,13 +184,13 @@ export const CombinedFilter: React.FC<CombinedFilterProps> = ({
     const normalizeInitialSort = useCallback((sortBy: SortOption): SortOption => (
         !showProtectedSort && sortBy === 'protected' ? 'all' : sortBy
     ), [showProtectedSort]);
-    const [tempFilters, setTempFilters] = useState<FilterKey[]>(initialSelectedFilters);
+    const [tempFilters, setTempFilters] = useState<FilterKey[]>(() => removeHiddenUserFacingFilters(initialSelectedFilters));
     const [tempSortBy, setTempSortBy] = useState<SortOption>(() => normalizeInitialSort(initialSortBy));
     const [tempDistanceWithinSuitable, setTempDistanceWithinSuitable] = useState(initialDistanceWithinSuitable);
 
     // Sync internal state if the modal is reopened with different initial props
     useEffect(() => {
-        setTempFilters(initialSelectedFilters);
+        setTempFilters(removeHiddenUserFacingFilters(initialSelectedFilters));
         setTempSortBy(normalizeInitialSort(initialSortBy));
         setTempDistanceWithinSuitable(showProtectedSort ? initialDistanceWithinSuitable : false);
     }, [initialDistanceWithinSuitable, initialSelectedFilters, initialSortBy, normalizeInitialSort, showProtectedSort]);
@@ -263,7 +268,7 @@ export const CombinedFilter: React.FC<CombinedFilterProps> = ({
 
     const availableFilterSet = availableFilters ? new Set<FilterKey>(availableFilters) : undefined;
     const filters = (Object.keys(t.filterOptions)
-        .filter(k => k !== 'showAll' && k !== 'restaurant' && k !== 'unknown') as FilterKey[])
+        .filter(k => k !== 'showAll' && k !== 'restaurant' && k !== 'unknown' && !hiddenUserFacingFilters.has(k as FilterKey)) as FilterKey[])
         .filter(filter => !availableFilterSet || availableFilterSet.has(filter) || tempFilters.includes(filter));
     const liveResultCount = useMemo(() => (
         getResultCount ? getResultCount(tempFilters, tempSortBy) : undefined

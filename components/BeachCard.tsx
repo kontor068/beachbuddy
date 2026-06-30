@@ -276,8 +276,8 @@ const cardCopy: Record<LanguageCode, CardCopy> = {
     },
     access: {
       asphaltRoad: 'Εύκολη πρόσβαση',
-      dirtRoad: 'Χωματόδρομος',
-      difficultDirtRoad: 'Κακός χωματόδρομος',
+      dirtRoad: 'Χώμα',
+      difficultDirtRoad: 'Κακός δρόμος',
       difficultRoad: 'Δύσκολη πρόσβαση',
       pathAccess: 'Μονοπάτι',
       hardPath: 'Δύσκολο μονοπάτι',
@@ -1404,6 +1404,8 @@ export const BeachCard: React.FC<BeachCardProps> = ({
   const mobileTemperatureLabel = typeof temperature === 'number' && Number.isFinite(temperature)
     ? `${Math.round(temperature)}°`
     : undefined;
+  const mobileConditionCount = 1 + (mobileWaveLabel ? 1 : 0) + (mobileTemperatureLabel ? 1 : 0);
+  const mobileConditionItemClass = 'inline-flex min-w-0 w-full items-center justify-center gap-1 overflow-hidden rounded-lg px-1';
   if (variant === 'decision' || variant === 'default') {
     return (
       <div
@@ -1502,13 +1504,16 @@ export const BeachCard: React.FC<BeachCardProps> = ({
 
             {/* Today's conditions row — wind / wave (with the band-coloured wave glyph) /
                 temperature, surfaced near the top of the card. */}
-            <div className="flex min-w-0 items-center gap-1.5 overflow-hidden rounded-xl border border-slate-100 bg-slate-50/60 px-2.5 py-1.5 text-[11px] font-bold leading-none text-slate-700 dark:border-slate-800 dark:bg-slate-900 dark:text-slate-300">
-              <span className="inline-flex min-w-0 shrink-0 items-center gap-1">
+            <div
+              className="grid min-w-0 items-center gap-1 overflow-hidden rounded-xl border border-slate-100 bg-slate-50/60 px-2 py-1.5 text-[11px] font-bold leading-none text-slate-700 dark:border-slate-800 dark:bg-slate-900 dark:text-slate-300"
+              style={{ gridTemplateColumns: `repeat(${mobileConditionCount}, minmax(max-content, 1fr))` }}
+            >
+              <span className={mobileConditionItemClass}>
                 <Wind className="h-3.5 w-3.5 shrink-0" aria-hidden="true" />
-                <span>{mobileWindLabel}</span>
+                <span className="min-w-0 truncate">{mobileWindLabel}</span>
               </span>
               {mobileWaveLabel && (
-                <span className="inline-flex min-w-0 shrink-0 items-center gap-1">
+                <span className={mobileConditionItemClass}>
                   <WaveHeightGraphic
                     variant="compact"
                     waveHeightM={waveHeightM}
@@ -1518,13 +1523,13 @@ export const BeachCard: React.FC<BeachCardProps> = ({
                     exposureLevel={exposureLevel}
                     canClaimWindProtection={canClaimWindProtection}
                   />
-                  <span>{mobileWaveLabel}</span>
+                  <span className="min-w-0 truncate">{mobileWaveLabel}</span>
                 </span>
               )}
               {mobileTemperatureLabel && (
-                <span className="inline-flex min-w-0 shrink-0 items-center gap-1">
+                <span className={mobileConditionItemClass}>
                   <Droplets className="h-3.5 w-3.5 shrink-0" aria-hidden="true" />
-                  <span>{mobileTemperatureLabel}</span>
+                  <span className="min-w-0 truncate">{mobileTemperatureLabel}</span>
                 </span>
               )}
             </div>

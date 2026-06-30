@@ -3543,7 +3543,7 @@ export const App: React.FC = () => {
   }, [getFilteredBeaches, preferences, selectedFilters, selectedIsland]);
   const mobileFilterKeys = useMemo(() => (
     Object.keys(t.filterOptions)
-      .filter(key => key !== 'showAll' && key !== 'restaurant' && key !== 'unknown') as FilterKey[]
+      .filter(key => key !== 'showAll' && key !== 'restaurant' && key !== 'unknown' && key !== 'organized') as FilterKey[]
   ), [t.filterOptions]);
   const availableMobileFilterKeys = useMemo(() => {
     if (!selectedIsland || selectedIsland.beaches.length === 0) {
