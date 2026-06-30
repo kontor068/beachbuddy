@@ -1,11 +1,12 @@
 import React from 'react';
-import { Wind, Waves, Thermometer, ShieldCheck, ShieldAlert } from 'lucide-react';
+import { Wind, Waves, Thermometer, ShieldCheck, ShieldAlert, Ship } from 'lucide-react';
 import { ExposureLevel } from '../utils/windExposure';
 import { LanguageCode } from '../types';
 import { calculateSeaConditionScore, getSeaExposureLevel } from '../utils/seaConditions';
 import { getSelectedDayPrefix, getSelectedHourPrefix, isSelectedDateToday } from '../utils/dateLabels';
 import { getLocalizedCopy } from '../utils/i18n';
 import { getBeaufortLevel } from '../utils/weatherUtils';
+import { getBoatRideMotionLevel, type BoatRideMotionLevel } from '../utils/boatRideMotion';
 
 interface BeachConditionScoreProps {
   isExposed: boolean;
@@ -18,6 +19,7 @@ interface BeachConditionScoreProps {
   selectedDate?: Date;
   selectedHour?: number;
   canClaimWindProtection?: boolean;
+  boatAccess?: boolean;
 }
 
 type DayLabel = (day: string, isToday: boolean) => string;
@@ -213,6 +215,47 @@ const getConditionToneClasses = (level: ExposureLevel, beaufort: number, waveHei
   return { text: 'text-amber-500', bg: 'bg-amber-500', border: 'border-amber-100 dark:border-amber-900/30', gradient: 'from-amber-400 to-amber-600' };
 };
 
+const getBoatConditionToneClasses = (level: BoatRideMotionLevel) => {
+  switch (level) {
+    case 'rough':
+      return { text: 'text-rose-500', bg: 'bg-rose-500', border: 'border-rose-100 dark:border-rose-900/30', gradient: 'from-rose-400 to-rose-600' };
+    case 'bumpy':
+      return { text: 'text-amber-500', bg: 'bg-amber-500', border: 'border-amber-100 dark:border-amber-900/30', gradient: 'from-amber-400 to-amber-600' };
+    case 'light':
+      return { text: 'text-cyan-500', bg: 'bg-cyan-500', border: 'border-cyan-100 dark:border-cyan-900/30', gradient: 'from-cyan-400 to-cyan-600' };
+    case 'smooth':
+    default:
+      return { text: 'text-emerald-500', bg: 'bg-emerald-500', border: 'border-emerald-100 dark:border-emerald-900/30', gradient: 'from-emerald-400 to-emerald-600' };
+  }
+};
+
+const getBoatConditionCopy = (level: BoatRideMotionLevel, language: LanguageCode) => {
+  const copy = {
+    en: {
+      title: 'Ride',
+      label: { smooth: 'Smooth ride', light: 'A little motion', bumpy: 'Bumpy ride', rough: 'Very bumpy' },
+    },
+    gr: {
+      title: 'Διαδρομή',
+      label: { smooth: 'Ήρεμη διαδρομή', light: 'Λίγο κούνημα', bumpy: 'Κουνάει αρκετά', rough: 'Πολύ κούνημα' },
+    },
+    fr: {
+      title: 'Trajet',
+      label: { smooth: 'Trajet calme', light: 'Un peu de mouvement', bumpy: 'Trajet agite', rough: 'Tres agite' },
+    },
+    de: {
+      title: 'Fahrt',
+      label: { smooth: 'Ruhige Fahrt', light: 'Etwas Bewegung', bumpy: 'Unruhige Fahrt', rough: 'Sehr unruhig' },
+    },
+    it: {
+      title: 'Tragitto',
+      label: { smooth: 'Tragitto tranquillo', light: 'Un po di movimento', bumpy: 'Tragitto mosso', rough: 'Molto mosso' },
+    },
+  }[language];
+
+  return { title: copy.title, label: copy.label[level] };
+};
+
 export const BeachConditionScore: React.FC<BeachConditionScoreProps> = ({
   isExposed,
   windSpeed,
@@ -223,7 +266,8 @@ export const BeachConditionScore: React.FC<BeachConditionScoreProps> = ({
   language = 'en',
   selectedDate,
   selectedHour,
-  canClaimWindProtection = false
+  canClaimWindProtection = false,
+  boatAccess = false
 }) => {
   const rawSeaExposureLevel: ExposureLevel = getSeaExposureLevel(isExposed, exposureLevel);
   const seaExposureLevel: ExposureLevel = rawSeaExposureLevel === 'protected' && !canClaimWindProtection
@@ -308,6 +352,50 @@ export const BeachConditionScore: React.FC<BeachConditionScoreProps> = ({
   const isToday = isSelectedDateToday(selectedDate);
   const useCurrentPhrase = isToday && !hour;
   const copy = getLocalizedCopy(language, conditionCopy);
+
+  if (boatAccess) {
+    const boatLevel = getBoatRideMotionLevel(waveHeightM, windBeaufort);
+    const boatTone = getBoatConditionToneClasses(boatLevel);
+    const boatCopy = getBoatConditionCopy(boatLevel, language);
+    const waveHeightLabel = typeof waveHeightM === 'number' && Number.isFinite(waveHeightM)
+      ? `${waveHeightM.toFixed(1)} m`
+      : null;
+
+    if (compact) {
+      return (
+        <div className={`flex items-center gap-2 bg-slate-50 dark:bg-slate-800/50 p-2 rounded-lg border ${boatTone.border}`}>
+          <div className={`flex items-center justify-center w-8 h-8 rounded-full text-white ${boatTone.bg}`}>
+            <Ship className="w-4 h-4" />
+          </div>
+          <div className="flex flex-col">
+            <span className="text-xs font-semibold text-slate-700 dark:text-slate-200 leading-tight">
+              {boatCopy.title}
+            </span>
+            <span className={`text-xs font-medium ${boatTone.text} leading-tight`}>
+              {[boatCopy.label, waveHeightLabel].filter(Boolean).join(' · ')}
+            </span>
+          </div>
+        </div>
+      );
+    }
+
+    return (
+      <div className="bg-white dark:bg-slate-800 rounded-xl p-4 shadow-sm border border-slate-100 dark:border-slate-700">
+        <div className="flex items-center justify-between mb-4 pb-4 border-b border-slate-100 dark:border-slate-700">
+          <div>
+            <h3 className="text-sm font-semibold text-slate-700 dark:text-slate-600 mb-1">{boatCopy.title}</h3>
+            <div className="flex items-baseline gap-2">
+              <span className={`text-2xl font-heading font-bold ${boatTone.text}`}>{boatCopy.label}</span>
+            </div>
+          </div>
+          <div className={`flex items-center justify-center w-12 h-12 rounded-full text-white bg-gradient-to-br ${boatTone.gradient}`}>
+            <Ship className="w-6 h-6" />
+          </div>
+        </div>
+      </div>
+    );
+  }
+
   const exposureContextLabel = (() => {
     if (seaExposureLevel === 'exposed' && windBeaufort >= 5) {
       if (windBeaufort === 5) {

@@ -12,7 +12,8 @@ import { WaveHeightGraphic } from './WaveHeightGraphic';
 import { getBeachPhotoLookup } from '../services/beachPhotos';
 import { trackEvent } from '../services/analyticsService';
 import { ExposureLevel } from '../utils/windExposure';
-import { hasDirtRoadAccess } from '../utils/access';
+import { hasBoatOnlyAccess, hasDirtRoadAccess } from '../utils/access';
+import { getBoatRideMotionLevel, type BoatRideMotionLevel } from '../utils/boatRideMotion';
 import { getSelectedDayPrefix, getSelectedDaySentencePrefix, getSelectedHourPrefix, isSelectedDateToday } from '../utils/dateLabels';
 import { getLocalizedCopy, languageToLocale } from '../utils/i18n';
 import { buildBeachDetailPath, buildBeachShareUrl } from '../utils/beachUrls';
@@ -973,6 +974,18 @@ const waveWarningLabel = (warning: WarningFlag, waveHeightM: number | undefined,
   return warningLabel(warning, language, selectedDate, selectedHour);
 };
 
+const boatRideShortLabel = (level: BoatRideMotionLevel, language: LanguageCode): string => {
+  const copy = {
+    en: { smooth: 'Smooth ride', light: 'A little motion', bumpy: 'Bumpy ride', rough: 'Very bumpy' },
+    gr: { smooth: 'Ήρεμη διαδρομή', light: 'Λίγο κούνημα', bumpy: 'Κουνάει αρκετά', rough: 'Πολύ κούνημα' },
+    fr: { smooth: 'Trajet calme', light: 'Un peu de mouvement', bumpy: 'Trajet agite', rough: 'Tres agite' },
+    de: { smooth: 'Ruhige Fahrt', light: 'Etwas Bewegung', bumpy: 'Unruhige Fahrt', rough: 'Sehr unruhig' },
+    it: { smooth: 'Tragitto tranquillo', light: 'Un po di movimento', bumpy: 'Tragitto mosso', rough: 'Molto mosso' },
+  }[language];
+
+  return copy[level];
+};
+
 const warningToneClass = (warning: WarningFlag): string => {
   if (warning.severity === 'critical') return 'border-rose-200 bg-rose-50 text-rose-700 dark:border-rose-900/40 dark:bg-rose-950/20 dark:text-rose-300';
   if (warning.severity === 'warning') return 'border-amber-200 bg-amber-50 text-amber-700 dark:border-amber-900/40 dark:bg-amber-950/20 dark:text-amber-300';
@@ -1109,6 +1122,7 @@ export const BeachCard: React.FC<BeachCardProps> = ({
   const isCompact = density === 'compact';
   const { name, rating, amenities, accessibility, distance, beachType, characteristics, metadata } = beach;
   const beachDisplayName = displayBeachName(name, language);
+  const isBoatOnlyBeach = hasBoatOnlyAccess(beach);
   const hasBlueFlag2026 = beach.blueFlag2026?.awarded === true || metadata?.blueFlag2026?.awarded === true;
   // Badge only for currently-active ramps (same safe rule as the accessibility filter).
   const seatracAccess = beach.seatrac ?? metadata?.seatrac;
@@ -1381,9 +1395,12 @@ export const BeachCard: React.FC<BeachCardProps> = ({
     ? 'inline-flex min-h-8 items-center gap-1 rounded-full bg-[#007a83] px-2 py-1 text-xs font-extrabold text-white ring-1 ring-[#007a83]/30'
     : 'inline-flex min-h-8 items-center gap-1 rounded-full bg-white px-2 py-1 text-xs font-extrabold text-[#007a83] ring-1 ring-[#007a83]/45';
   const mobileWindLabel = `${windBeaufort} Bft`;
-  const mobileWaveLabel = typeof waveHeightM === 'number' && Number.isFinite(waveHeightM)
-    ? `${waveHeightM.toFixed(1)} m`
-    : undefined;
+  const boatRideLevel = isBoatOnlyBeach ? getBoatRideMotionLevel(waveHeightM, windBeaufort) : null;
+  const mobileWaveLabel = boatRideLevel
+    ? boatRideShortLabel(boatRideLevel, language)
+    : typeof waveHeightM === 'number' && Number.isFinite(waveHeightM)
+      ? `${waveHeightM.toFixed(1)} m`
+      : undefined;
   const mobileTemperatureLabel = typeof temperature === 'number' && Number.isFinite(temperature)
     ? `${Math.round(temperature)}°`
     : undefined;
@@ -1467,6 +1484,7 @@ export const BeachCard: React.FC<BeachCardProps> = ({
                 exposureLevel={exposureLevel}
                 canClaimWindProtection={canClaimWindProtection}
                 selectedHour={selectedHour}
+                boatAccess={isBoatOnlyBeach}
                 forceShow
               />
             ) : showMobileProtectionChip ? (
@@ -1491,7 +1509,15 @@ export const BeachCard: React.FC<BeachCardProps> = ({
               </span>
               {mobileWaveLabel && (
                 <span className="inline-flex min-w-0 shrink-0 items-center gap-1">
-                  <WaveHeightGraphic variant="compact" waveHeightM={waveHeightM} language={language} />
+                  <WaveHeightGraphic
+                    variant="compact"
+                    waveHeightM={waveHeightM}
+                    language={language}
+                    boatAccess={isBoatOnlyBeach}
+                    windBeaufort={windBeaufort}
+                    exposureLevel={exposureLevel}
+                    canClaimWindProtection={canClaimWindProtection}
+                  />
                   <span>{mobileWaveLabel}</span>
                 </span>
               )}
@@ -1614,6 +1640,7 @@ export const BeachCard: React.FC<BeachCardProps> = ({
                 exposureLevel={exposureLevel}
                 canClaimWindProtection={canClaimWindProtection}
                 selectedHour={selectedHour}
+                boatAccess={isBoatOnlyBeach}
                 forceShow={forceTodayScoreBadge}
               />
             ) : (
@@ -1798,6 +1825,7 @@ export const BeachCard: React.FC<BeachCardProps> = ({
                 exposureLevel={exposureLevel}
                 canClaimWindProtection={canClaimWindProtection}
                 selectedHour={selectedHour}
+                boatAccess={isBoatOnlyBeach}
                 forceShow={forceTodayScoreBadge}
               />
               <div className="flex items-center gap-1 text-[11px] font-bold text-slate-600 dark:text-slate-700" title="Visitor rating">
@@ -1843,7 +1871,7 @@ export const BeachCard: React.FC<BeachCardProps> = ({
 
         {/* Condition Score */}
         <div className="mb-3">
-          <BeachConditionScore isExposed={isExposed} windSpeed={windSpeed * 3.6} waveHeightM={waveHeightM} temperature={temperature} compact={true} exposureLevel={exposureLevel} language={language} selectedDate={selectedDate} selectedHour={selectedHour} canClaimWindProtection={canClaimWindProtection} />
+          <BeachConditionScore isExposed={isExposed} windSpeed={windSpeed * 3.6} waveHeightM={waveHeightM} temperature={temperature} compact={true} exposureLevel={exposureLevel} language={language} selectedDate={selectedDate} selectedHour={selectedHour} canClaimWindProtection={canClaimWindProtection} boatAccess={isBoatOnlyBeach} />
         </div>
 
         {warnings.length > 0 && (

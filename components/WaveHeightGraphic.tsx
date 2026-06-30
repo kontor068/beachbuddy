@@ -3,6 +3,8 @@ import { Ship } from 'lucide-react';
 import { LanguageCode } from '../types';
 import { getLocalizedCopy, type LocalizedCopy } from '../utils/i18n';
 import { isSelectedDateToday } from '../utils/dateLabels';
+import { getBoatRideMotionLevel, getBoatRideMotionRank, type BoatRideMotionLevel } from '../utils/boatRideMotion';
+import type { ExposureLevel } from '../utils/windExposure';
 import {
   getWaveScale,
   getWaveBandClasses,
@@ -36,6 +38,10 @@ interface WaveHeightGraphicProps {
   boatAccess?: boolean;
   /** Wind Beaufort for the selected hour — drives the boat-transfer caution (above 3 Bft). */
   windBeaufort?: number;
+  /** Live exposure for the selected wind/hour; keeps swimmer feel from being wave-height only. */
+  exposureLevel?: ExposureLevel;
+  /** True only when the current profile can honestly claim wind protection. */
+  canClaimWindProtection?: boolean;
   className?: string;
 }
 
@@ -103,16 +109,111 @@ const COPY: LocalizedCopy<StripCopy> = {
   },
 };
 
-// Boat-only beaches: describe the SEA for the boat and warn that small boats rock more.
+// Boat-only beaches: describe ride motion, not swimmer comfort.
 // The visual uses the same metre scale, not a body-height metaphor.
-type BoatCopy = { calm: string; choppy: string; rough: string; heightNote: string; note: string };
+type BoatCopy = {
+  title: string;
+  smooth: string;
+  light: string;
+  bumpy: string;
+  rough: string;
+  heightDetail: (height: string) => string;
+  estimateDetail: string;
+  selectedHour: (hour: string) => string;
+  hourTooltip: (hour: string, level: BoatRideMotionLevel, height: string) => string;
+  rangeSummary: (min: string, max: string) => string;
+  calmerMorning: string;
+  calmerLater: string;
+  note: string;
+};
 
 const BOAT_COPY: LocalizedCopy<BoatCopy> = {
-  en: { calm: 'Calm sea', choppy: 'A bit bumpy', rough: 'Bumpy ride', heightNote: 'Sea for the boat', note: 'Small boats rock more — above 3 Bft, take care boarding and getting back on from the water.' },
-  gr: { calm: 'Ήρεμη θάλασσα', choppy: 'Λίγο κουνάει', rough: 'Κουνάει αρκετά', heightNote: 'Θάλασσα για το καραβάκι', note: 'Τα μικρά σκάφη κουνάνε πιο εύκολα — πάνω από 3 μποφόρ πρόσεξε την επιβίβαση και την επιστροφή στο σκάφος μέσα από το νερό.' },
-  fr: { calm: 'Mer calme', choppy: 'Un peu agitée', rough: 'Ça secoue', heightNote: 'Mer pour le bateau', note: 'Les petits bateaux bougent plus — au-delà de 3 Bft, attention pour monter et remonter à bord depuis l’eau.' },
-  de: { calm: 'Ruhige See', choppy: 'Etwas wackelig', rough: 'Schaukelt stark', heightNote: 'See für das Boot', note: 'Kleine Boote schaukeln stärker — über 3 Bft beim Ein- und Wiedereinsteigen aus dem Wasser aufpassen.' },
-  it: { calm: 'Mare calmo', choppy: 'Un po\' mosso', rough: 'Balla parecchio', heightNote: 'Mare per la barca', note: 'Le barche piccole ballano di più — oltre 3 Bft attenzione a salire e risalire a bordo dall’acqua.' },
+  en: {
+    title: 'Boat conditions',
+    smooth: 'Smooth ride',
+    light: 'A little motion',
+    bumpy: 'Bumpy ride',
+    rough: 'Very bumpy',
+    heightDetail: (height) => `Wave signal ${height}`,
+    estimateDetail: 'wind-based ride estimate',
+    selectedHour: (hour) => `Shown hour ${hour}`,
+    hourTooltip: (hour, level, height) => {
+      const copy = { smooth: 'smooth ride', light: 'a little motion', bumpy: 'bumpy ride', rough: 'very bumpy' }[level];
+      return `${hour}: ${copy} (${height})`;
+    },
+    rangeSummary: (min, max) => `Boat motion ranges from ${min} to ${max}`,
+    calmerMorning: 'less motion in the morning',
+    calmerLater: 'less motion later',
+    note: 'Small boats rock more — above 3 Bft, take care boarding and getting back on from the water.',
+  },
+  gr: {
+    title: 'Συνθήκες πλεύσης',
+    smooth: 'Ήρεμη διαδρομή',
+    light: 'Λίγο κούνημα',
+    bumpy: 'Κουνάει αρκετά',
+    rough: 'Πολύ κούνημα',
+    heightDetail: (height) => `ένδειξη κύματος ${height}`,
+    estimateDetail: 'εκτίμηση από τον άνεμο',
+    selectedHour: (hour) => `Ώρα πρόγνωσης: ${hour}`,
+    hourTooltip: (hour, level, height) => {
+      const copy = {
+        smooth: 'ήρεμη διαδρομή',
+        light: 'λίγο κούνημα',
+        bumpy: 'θα κουνάει αρκετά',
+        rough: 'θα κουνάει πολύ',
+      }[level];
+      return `${hour}: ${copy} (${height})`;
+    },
+    rangeSummary: (min, max) => `Συνθήκες πλεύσης από ${min} έως ${max}`,
+    calmerMorning: 'πιο ήπια το πρωί',
+    calmerLater: 'πιο ήπια αργότερα',
+    note: 'Πάνω από 3 μποφόρ, η επιβίβαση και η επιστροφή στο σκάφος μέσα από το νερό μπορεί να είναι πιο άβολη.',
+  },
+  fr: {
+    title: 'Mouvement du trajet',
+    smooth: 'Trajet calme',
+    light: 'Un peu de mouvement',
+    bumpy: 'Trajet agite',
+    rough: 'Tres agite',
+    heightDetail: (height) => `signal de vague ${height}`,
+    estimateDetail: 'estimation d apres le vent',
+    selectedHour: (hour) => `Heure affichee ${hour}`,
+    hourTooltip: (hour, level, height) => `${hour} : ${({ smooth: 'trajet calme', light: 'un peu de mouvement', bumpy: 'trajet agite', rough: 'tres agite' }[level])} (${height})`,
+    rangeSummary: (min, max) => `Mouvement du trajet de ${min} a ${max}`,
+    calmerMorning: 'moins de mouvement le matin',
+    calmerLater: 'moins de mouvement plus tard',
+    note: 'Les petits bateaux bougent plus — au-delà de 3 Bft, attention pour monter et remonter à bord depuis l’eau.',
+  },
+  de: {
+    title: 'Bewegung der Bootsfahrt',
+    smooth: 'Ruhige Fahrt',
+    light: 'Etwas Bewegung',
+    bumpy: 'Unruhige Fahrt',
+    rough: 'Sehr unruhig',
+    heightDetail: (height) => `Wellensignal ${height}`,
+    estimateDetail: 'aus dem Wind geschaetzt',
+    selectedHour: (hour) => `Angezeigte Stunde ${hour}`,
+    hourTooltip: (hour, level, height) => `${hour}: ${({ smooth: 'ruhige Fahrt', light: 'etwas Bewegung', bumpy: 'unruhige Fahrt', rough: 'sehr unruhig' }[level])} (${height})`,
+    rangeSummary: (min, max) => `Bewegung der Bootsfahrt von ${min} bis ${max}`,
+    calmerMorning: 'morgens weniger Bewegung',
+    calmerLater: 'spater weniger Bewegung',
+    note: 'Kleine Boote schaukeln stärker — über 3 Bft beim Ein- und Wiedereinsteigen aus dem Wasser aufpassen.',
+  },
+  it: {
+    title: 'Movimento del tragitto',
+    smooth: 'Tragitto tranquillo',
+    light: 'Un po di movimento',
+    bumpy: 'Tragitto mosso',
+    rough: 'Molto mosso',
+    heightDetail: (height) => `segnale onde ${height}`,
+    estimateDetail: 'stima dal vento',
+    selectedHour: (hour) => `Ora mostrata ${hour}`,
+    hourTooltip: (hour, level, height) => `${hour}: ${({ smooth: 'tragitto tranquillo', light: 'un po di movimento', bumpy: 'tragitto mosso', rough: 'molto mosso' }[level])} (${height})`,
+    rangeSummary: (min, max) => `Movimento del tragitto da ${min} a ${max}`,
+    calmerMorning: 'meno movimento al mattino',
+    calmerLater: 'meno movimento dopo',
+    note: 'Le barche piccole ballano di più — oltre 3 Bft attenzione a salire e risalire a bordo dall’acqua.',
+  },
 };
 
 type WaveTrendKey = 'calmerMorning' | 'calmerLater';
@@ -125,6 +226,11 @@ type SwimFeelCopy = {
   amber: string;
   rough: string;
   estimate: string;
+  protectedChop: string;
+  protectedWindChop: string;
+  windChop: string;
+  exposedSea: string;
+  roughSwim: string;
 };
 
 const SWIM_FEEL_COPY: LocalizedCopy<SwimFeelCopy> = {
@@ -134,6 +240,11 @@ const SWIM_FEEL_COPY: LocalizedCopy<SwimFeelCopy> = {
     amber: 'Some chop',
     rough: 'Rougher sea',
     estimate: 'Wind-based estimate',
+    protectedChop: 'More sheltered, with chop',
+    protectedWindChop: 'Milder, but wavy',
+    windChop: 'Wind chop',
+    exposedSea: 'Exposed, with waves',
+    roughSwim: 'Difficult for swimming',
   },
   gr: {
     label: 'Αίσθηση στο μπάνιο',
@@ -141,6 +252,11 @@ const SWIM_FEEL_COPY: LocalizedCopy<SwimFeelCopy> = {
     amber: 'Λίγος κυματισμός',
     rough: 'Πιο έντονο κύμα',
     estimate: 'Εκτίμηση από άνεμο',
+    protectedChop: 'Πιο προστατευμένη, με κυματισμό',
+    protectedWindChop: 'Πιο ήπια, αλλά με κύμα',
+    windChop: 'Κυματισμός με αέρα',
+    exposedSea: 'Εκτεθειμένη, με κύμα',
+    roughSwim: 'Δύσκολη για μπάνιο',
   },
   fr: {
     label: 'Pour la baignade',
@@ -148,6 +264,11 @@ const SWIM_FEEL_COPY: LocalizedCopy<SwimFeelCopy> = {
     amber: 'Un peu de clapot',
     rough: 'Mer plus agitée',
     estimate: 'Estimation par le vent',
+    protectedChop: 'Mieux abrité, avec clapot',
+    protectedWindChop: 'Plus doux, mais agité',
+    windChop: 'Clapot avec vent',
+    exposedSea: 'Exposé, avec vagues',
+    roughSwim: 'Baignade difficile',
   },
   de: {
     label: 'Badegefühl',
@@ -155,6 +276,11 @@ const SWIM_FEEL_COPY: LocalizedCopy<SwimFeelCopy> = {
     amber: 'Etwas Kabbelwasser',
     rough: 'Unruhigere See',
     estimate: 'Windbasierte Schätzung',
+    protectedChop: 'Geschützter, mit Wellen',
+    protectedWindChop: 'Milder, aber wellig',
+    windChop: 'Windiges Kabbelwasser',
+    exposedSea: 'Exponiert, mit Wellen',
+    roughSwim: 'Schwierig zum Baden',
   },
   it: {
     label: 'Sensazione in acqua',
@@ -162,7 +288,139 @@ const SWIM_FEEL_COPY: LocalizedCopy<SwimFeelCopy> = {
     amber: 'Un po’ mosso',
     rough: 'Mare più mosso',
     estimate: 'Stima dal vento',
+    protectedChop: 'Piu riparata, con onde',
+    protectedWindChop: 'Piu mite, ma mosso',
+    windChop: 'Onde con vento',
+    exposedSea: 'Esposta, con onde',
+    roughSwim: 'Difficile per nuotare',
   },
+};
+
+const normalizeBeaufort = (windBeaufort?: number): number | undefined =>
+  typeof windBeaufort === 'number' && Number.isFinite(windBeaufort) ? windBeaufort : undefined;
+
+const isVerifiedProtectedExposure = (
+  exposureLevel?: ExposureLevel,
+  canClaimWindProtection?: boolean
+): boolean => exposureLevel === 'protected' && canClaimWindProtection === true;
+
+const isLessExposedForSwimFeel = (exposureLevel?: ExposureLevel): boolean =>
+  exposureLevel === 'protected' || exposureLevel === 'partial';
+
+const getSwimmingFeel = (
+  copy: SwimFeelCopy,
+  scale: WaveScaleResult,
+  windBeaufort?: number,
+  exposureLevel?: ExposureLevel,
+  canClaimWindProtection?: boolean
+): string => {
+  if (scale.isEstimate) return copy.estimate;
+
+  const beaufort = normalizeBeaufort(windBeaufort);
+  const isProtected = isVerifiedProtectedExposure(exposureLevel, canClaimWindProtection);
+  const isProtectedByExposure = exposureLevel === 'protected';
+  const isLessExposed = isLessExposedForSwimFeel(exposureLevel);
+  const isExposed = exposureLevel === 'exposed';
+
+  if (typeof beaufort === 'number') {
+    if (beaufort >= 6) {
+      return (isProtected || isProtectedByExposure) ? copy.protectedWindChop : copy.roughSwim;
+    }
+
+    if (beaufort >= 5) {
+      if (isProtected || isLessExposed) return scale.band === 'rough' ? copy.protectedWindChop : copy.protectedChop;
+      if (isExposed) return copy.exposedSea;
+      return copy.windChop;
+    }
+
+    if (beaufort >= 4 && (isExposed || exposureLevel === 'partial')) {
+      return scale.band === 'rough' ? copy.rough : copy.windChop;
+    }
+  }
+
+  return copy[scale.band];
+};
+
+const getSwimmingFeelLabelClass = (
+  scale: WaveScaleResult,
+  windBeaufort?: number,
+  exposureLevel?: ExposureLevel,
+  canClaimWindProtection?: boolean
+): string => {
+  if (scale.isEstimate) return WAVE_ESTIMATE_CLASSES.label;
+
+  const beaufort = normalizeBeaufort(windBeaufort);
+  const isProtected = isVerifiedProtectedExposure(exposureLevel, canClaimWindProtection);
+  const isProtectedByExposure = exposureLevel === 'protected';
+  const isLessExposed = isLessExposedForSwimFeel(exposureLevel);
+  const isExposedOrPartial = exposureLevel === 'exposed' || exposureLevel === 'partial';
+
+  if (typeof beaufort === 'number') {
+    if (beaufort >= 6) {
+      return (isProtected || isProtectedByExposure) ? WAVE_BAND_CLASSES.amber.label : WAVE_BAND_CLASSES.rough.label;
+    }
+
+    if (beaufort >= 5) {
+      if (isProtected || isLessExposed) return WAVE_BAND_CLASSES.amber.label;
+      return scale.band === 'rough' ? WAVE_BAND_CLASSES.rough.label : WAVE_BAND_CLASSES.amber.label;
+    }
+
+    if (beaufort >= 4 && isExposedOrPartial && scale.band !== 'rough') {
+      return WAVE_BAND_CLASSES.amber.label;
+    }
+  }
+
+  return WAVE_BAND_CLASSES[scale.band].label;
+};
+
+const getCompactWindSignalMinHeightM = (
+  windBeaufort?: number,
+  exposureLevel?: ExposureLevel,
+  canClaimWindProtection?: boolean
+): number | undefined => {
+  const beaufort = normalizeBeaufort(windBeaufort);
+  if (typeof beaufort !== 'number') return undefined;
+
+  const isProtected = isVerifiedProtectedExposure(exposureLevel, canClaimWindProtection) || exposureLevel === 'protected';
+  const isExposedOrPartial = exposureLevel === 'exposed' || exposureLevel === 'partial';
+
+  if (beaufort >= 6) return isProtected ? 0.65 : 1.2;
+  if (beaufort >= 5) return 0.65;
+  if (beaufort >= 4 && isExposedOrPartial) return 0.5;
+
+  return undefined;
+};
+
+// Compact cards are a quick condition signal, so strong wind/exposure must prevent a
+// reassuring flat-calm glyph even when the raw marine wave height is still low.
+const getCompactWaveSignalScale = (
+  scale: WaveScaleResult,
+  language: LanguageCode,
+  waveHeightM?: number,
+  estimateHeightM?: number,
+  windBeaufort?: number,
+  exposureLevel?: ExposureLevel,
+  canClaimWindProtection?: boolean
+): WaveScaleResult => {
+  const minSignalHeightM = getCompactWindSignalMinHeightM(windBeaufort, exposureLevel, canClaimWindProtection);
+  if (typeof minSignalHeightM !== 'number') return scale;
+
+  const visibleHeightM = typeof waveHeightM === 'number' && Number.isFinite(waveHeightM)
+    ? waveHeightM
+    : typeof estimateHeightM === 'number' && Number.isFinite(estimateHeightM)
+      ? estimateHeightM
+      : undefined;
+
+  if (typeof visibleHeightM === 'number' && visibleHeightM >= minSignalHeightM) return scale;
+
+  if (scale.isEstimate) {
+    return getWaveScale(undefined, language, {
+      isEstimate: true,
+      estimateHeightM: minSignalHeightM,
+    });
+  }
+
+  return getWaveScale(minSignalHeightM, language);
 };
 
 const getSwimmerMotionStyle = (scale: WaveScaleResult): React.CSSProperties => {
@@ -204,32 +462,117 @@ const getBlueWaterFillClass = (scale: WaveScaleResult): string => {
   return 'text-teal-500 dark:text-teal-400';
 };
 
-const clamp = (value: number, min: number, max: number): number => Math.max(min, Math.min(max, value));
+const getCompactWaveFillClass = (scale: WaveScaleResult): string => (
+  scale.isEstimate ? WAVE_ESTIMATE_CLASSES.fill : WAVE_BAND_CLASSES[scale.band].fill
+);
 
-const waveAmplitudeFor = (scale: WaveScaleResult): number => {
-  switch (scale.bodyRef) {
-    case 'overhead':
-      return 12;
-    case 'chest':
-      return 10;
-    case 'waist':
-      return 8;
-    case 'knee':
-      return 5.5;
-    case 'ankle':
-      return 3.5;
-    case 'flat':
+const getBoatRideBandClasses = (level: BoatRideMotionLevel, isEstimate?: boolean) => {
+  if (isEstimate) return WAVE_ESTIMATE_CLASSES;
+  switch (level) {
+    case 'rough':
+      return WAVE_BAND_CLASSES.rough;
+    case 'bumpy':
+      return WAVE_BAND_CLASSES.amber;
+    case 'light':
+      return {
+        fill: 'text-cyan-500 dark:text-cyan-400',
+        bar: 'bg-cyan-400 dark:bg-cyan-500',
+        soft: 'bg-cyan-50/70 dark:bg-cyan-900/20',
+        label: 'text-cyan-700 dark:text-cyan-300',
+      };
+    case 'smooth':
     default:
-      return 2;
+      return WAVE_BAND_CLASSES.calm;
   }
 };
 
-const METER_BASE_MAX_M = 1.6; // axis top for typical seas — keeps the tuned, well-spaced look
+const getBoatMotionStyle = (level: BoatRideMotionLevel): React.CSSProperties => {
+  const motion = {
+    smooth: { bobPx: 1.8, tiltDeg: 1.2, driftPx: 2.5, durationS: 4.2 },
+    light: { bobPx: 3.5, tiltDeg: 3.2, driftPx: 4, durationS: 3.2 },
+    bumpy: { bobPx: 6.5, tiltDeg: 6.4, driftPx: 6, durationS: 2.35 },
+    rough: { bobPx: 9.5, tiltDeg: 10, driftPx: 8, durationS: 1.8 },
+  }[level];
+
+  return {
+    '--cb-wave-duration': `${motion.durationS}s`,
+    '--cb-swimmer-bob': `${motion.bobPx}px`,
+    '--cb-swimmer-tilt': `${motion.tiltDeg}deg`,
+    '--cb-wave-drift': `${motion.driftPx}px`,
+  } as React.CSSProperties;
+};
+
+const clamp = (value: number, min: number, max: number): number => Math.max(min, Math.min(max, value));
+
+type WaveVisualTier = 0 | 1 | 2 | 3 | 4;
+
+const getWaveVisualTier = (
+  windBeaufort?: number,
+  exposureLevel?: ExposureLevel,
+  canClaimWindProtection?: boolean
+): WaveVisualTier => {
+  const beaufort = normalizeBeaufort(windBeaufort);
+  if (typeof beaufort !== 'number' || beaufort <= 2) return 0;
+
+  const isProtected = isVerifiedProtectedExposure(exposureLevel, canClaimWindProtection) || exposureLevel === 'protected';
+
+  if (beaufort <= 3) return 1;
+  if (beaufort === 4) return isProtected ? 1 : 2;
+  if (beaufort === 5) return isProtected ? 2 : 3;
+  if (beaufort === 6) return isProtected ? 3 : 4;
+  return 4;
+};
+
+const visualHeightForTier = (tier: WaveVisualTier): number | undefined => {
+  switch (tier) {
+    case 4:
+      return 1.35;
+    case 3:
+      return 1.05;
+    case 2:
+      return 0.74;
+    case 1:
+      return 0.42;
+    case 0:
+    default:
+      return undefined;
+  }
+};
+
+const waveAmplitudeFor = (scale: WaveScaleResult, visualHeightM: number, windTier: WaveVisualTier): number => {
+  const heightAmplitude = (() => {
+    if (visualHeightM <= 0.3) return 3.2 + visualHeightM * 5;
+    if (visualHeightM <= 0.8) return 4.7 + (visualHeightM - 0.3) * 8;
+    if (visualHeightM <= 1.2) return 8.7 + (visualHeightM - 0.8) * 7;
+    return 11.5 + Math.min(visualHeightM - 1.2, 1.8) * 8;
+  })();
+  const bucketAccent = (() => {
+    switch (scale.bodyRef) {
+    case 'overhead':
+      return 3;
+    case 'chest':
+      return 2;
+    case 'waist':
+      return 1.2;
+    case 'knee':
+      return 0.6;
+    case 'ankle':
+      return 0.2;
+    case 'flat':
+    default:
+      return 0;
+    }
+  })();
+
+  return clamp(heightAmplitude + bucketAccent + windTier * 1.1, 3.2, 22);
+};
+
+const METER_BASE_MAX_M = 2.0; // leaves room so 0.8 m does not visually compete with a 1.5 m sea
 const METER_HARD_MAX_M = 3.0; // never plot beyond this, however wild the value
 const METER_TICK_STEP = 0.5;
 
-// Axis top for a given wave height: the tuned 1.6 m for typical seas, stepping up in 0.5 m
-// increments for rough days so a 2.5 m sea never silently pegs at the same level as 1.6 m.
+// Axis top for a given wave height: typical beach seas use a 2.0 m meter so mid-height
+// waves remain proportionate, then rough days step up in 0.5 m increments.
 const axisMaxForHeight = (m: number): number =>
   m <= METER_BASE_MAX_M
     ? METER_BASE_MAX_M
@@ -319,7 +662,11 @@ const getWaveSceneStyle = (scale: WaveScaleResult): React.CSSProperties => {
 };
 
 // Scientific-first wave meter: the scale is metres, while the swimmer is only a small context cue.
-const WaveMeterScene: React.FC<{ scale: WaveScaleResult; visualHeightM: number }> = ({ scale, visualHeightM }) => {
+const WaveMeterScene: React.FC<{
+  scale: WaveScaleResult;
+  visualHeightM: number;
+  windTier: WaveVisualTier;
+}> = ({ scale, visualHeightM, windTier }) => {
   const plotTopY = 18;
   const plotBottomY = 98;
   const plotLeftX = 42;
@@ -327,7 +674,8 @@ const WaveMeterScene: React.FC<{ scale: WaveScaleResult; visualHeightM: number }
   const plotHeight = plotBottomY - plotTopY;
   const axisMaxM = axisMaxForHeight(visualHeightM);
   const waterlineY = plotBottomY - (clamp(visualHeightM, 0, axisMaxM) / axisMaxM) * plotHeight;
-  const amplitude = waveAmplitudeFor(scale) * 0.58;
+  const amplitude = waveAmplitudeFor(scale, visualHeightM, windTier);
+  const visualIntensity = Math.max(windTier, scale.band === 'rough' ? 4 : scale.band === 'amber' ? 2 : 0);
   const sceneId = React.useId().replace(/:/g, '');
   const skyGradientId = `wave-sky-${sceneId}`;
   const depthGradientId = `wave-depth-${sceneId}`;
@@ -338,9 +686,24 @@ const WaveMeterScene: React.FC<{ scale: WaveScaleResult; visualHeightM: number }
   const tickValues = axisTicks(axisMaxM);
   const tickY = (m: number) => plotBottomY - (m / axisMaxM) * plotHeight;
   const swimmerY = clamp(waterlineY, 30, 90);
-  const waterPath = `M${plotLeftX} ${plotBottomY + 10} L${plotLeftX} ${waterlineY + 8} C 61 ${waterlineY - amplitude} 78 ${waterlineY + amplitude * 0.55} 96 ${waterlineY - amplitude * 0.18} C 119 ${waterlineY - amplitude * 0.88} 139 ${waterlineY + amplitude * 0.65} ${plotRightX} ${waterlineY - amplitude * 0.12} L${plotRightX} ${plotBottomY + 10} Z`;
-  const crestPath = `M${plotLeftX} ${waterlineY + 8} C 61 ${waterlineY - amplitude} 78 ${waterlineY + amplitude * 0.55} 96 ${waterlineY - amplitude * 0.18} C 119 ${waterlineY - amplitude * 0.88} 139 ${waterlineY + amplitude * 0.65} ${plotRightX} ${waterlineY - amplitude * 0.12}`;
-  const backwashPath = `M${plotLeftX - 2} ${clamp(waterlineY + 20, 35, 108)} C 66 ${waterlineY + 10} 83 ${waterlineY + 22} 106 ${waterlineY + 14} C 128 ${waterlineY + 7} 143 ${waterlineY + 20} ${plotRightX + 2} ${waterlineY + 12} L${plotRightX + 2} ${plotBottomY + 13} L${plotLeftX - 2} ${plotBottomY + 13} Z`;
+  const waveStartY = waterlineY + amplitude * 0.38;
+  const waterPath = `M${plotLeftX} ${plotBottomY + 10} L${plotLeftX} ${waveStartY} C 58 ${waterlineY - amplitude * 0.95} 76 ${waterlineY + amplitude * 0.72} 94 ${waterlineY - amplitude * 0.36} C 116 ${waterlineY - amplitude * 1.08} 139 ${waterlineY + amplitude * 0.82} ${plotRightX} ${waterlineY - amplitude * 0.2} L${plotRightX} ${plotBottomY + 10} Z`;
+  const crestPath = `M${plotLeftX} ${waveStartY} C 58 ${waterlineY - amplitude * 0.95} 76 ${waterlineY + amplitude * 0.72} 94 ${waterlineY - amplitude * 0.36} C 116 ${waterlineY - amplitude * 1.08} 139 ${waterlineY + amplitude * 0.82} ${plotRightX} ${waterlineY - amplitude * 0.2}`;
+  const innerWaveY = clamp(waterlineY + amplitude * 1.15, 34, plotBottomY + 4);
+  const innerWavePath = `M${plotLeftX + 8} ${innerWaveY} C 61 ${innerWaveY - amplitude * 0.58} 77 ${innerWaveY + amplitude * 0.34} 96 ${innerWaveY - amplitude * 0.2} C 117 ${innerWaveY - amplitude * 0.68} 138 ${innerWaveY + amplitude * 0.42} ${plotRightX - 3} ${innerWaveY - amplitude * 0.18}`;
+  const foregroundWaveY = clamp(waterlineY + amplitude * 2.15, 50, plotBottomY + 8);
+  const foregroundWavePath = `M${plotLeftX + 16} ${foregroundWaveY} C 61 ${foregroundWaveY - amplitude * 0.36} 78 ${foregroundWaveY + amplitude * 0.22} 98 ${foregroundWaveY - amplitude * 0.28} C 121 ${foregroundWaveY - amplitude * 0.56} 143 ${foregroundWaveY + amplitude * 0.3} ${plotRightX - 5} ${foregroundWaveY - amplitude * 0.18}`;
+  const backwashPath = `M${plotLeftX - 2} ${clamp(waterlineY + amplitude * 1.5, 35, 108)} C 66 ${waterlineY + amplitude * 0.78} 83 ${waterlineY + amplitude * 1.5} 106 ${waterlineY + amplitude * 1.02} C 128 ${waterlineY + amplitude * 0.46} 143 ${waterlineY + amplitude * 1.3} ${plotRightX + 2} ${waterlineY + amplitude * 0.78} L${plotRightX + 2} ${plotBottomY + 13} L${plotLeftX - 2} ${plotBottomY + 13} Z`;
+  const windStreaks = Array.from({ length: windTier }, (_, index) => ({
+    x1: 62 + index * 13,
+    x2: 90 + index * 15,
+    y: 27 + index * 6,
+    opacity: 0.18 + index * 0.08,
+  }));
+  const chopLines = Array.from({ length: Math.max(0, visualIntensity - 1) }, (_, index) => {
+    const y = clamp(waterlineY + amplitude * (1.45 + index * 0.38), 42, plotBottomY + 7);
+    return `M${plotLeftX + 18 + index * 5} ${y} C ${plotLeftX + 40} ${y - amplitude * 0.22} ${plotLeftX + 61} ${y + amplitude * 0.14} ${plotLeftX + 82} ${y - amplitude * 0.2} C ${plotLeftX + 101} ${y - amplitude * 0.34} ${plotLeftX + 114} ${y + amplitude * 0.18} ${plotRightX - 12} ${y - amplitude * 0.1}`;
+  });
 
   return (
     <svg viewBox="0 0 176 116" preserveAspectRatio="xMidYMid meet" aria-hidden="true" className="h-auto w-full drop-shadow-sm" style={sceneStyle}>
@@ -362,6 +725,18 @@ const WaveMeterScene: React.FC<{ scale: WaveScaleResult; visualHeightM: number }
         fill="var(--cb-wave-sand)"
         opacity="0.28"
       />
+      {windStreaks.length > 0 && (
+        <g aria-hidden="true" className="cb-wave-highlight" stroke="var(--cb-wave-deep)" strokeLinecap="round">
+          {windStreaks.map((streak, index) => (
+            <path
+              key={index}
+              d={`M${streak.x1} ${streak.y} H${streak.x2}`}
+              strokeWidth={1.5 + index * 0.35}
+              opacity={streak.opacity}
+            />
+          ))}
+        </g>
+      )}
 
       <g aria-hidden="true">
         {tickValues.map((tick) => (
@@ -406,26 +781,48 @@ const WaveMeterScene: React.FC<{ scale: WaveScaleResult; visualHeightM: number }
 
       <path
         className="cb-wave-highlight"
-        d={`M29 ${waterlineY + 19} C 52 ${waterlineY + 11} 74 ${waterlineY + 20} 98 ${waterlineY + 12} C 119 ${waterlineY + 6} 141 ${waterlineY + 13} 160 ${waterlineY + 8}`}
+        d={innerWavePath}
         fill="none"
-        stroke="rgba(255,255,255,0.34)"
-        strokeWidth="4.6"
+        stroke="rgba(255,255,255,0.42)"
+        strokeWidth={visualIntensity >= 4 ? 5.2 : visualIntensity >= 2 ? 4.4 : 3.8}
         strokeLinecap="round"
       />
+
+      <path
+        className="cb-wave-highlight"
+        d={foregroundWavePath}
+        fill="none"
+        stroke="rgba(255,255,255,0.28)"
+        strokeWidth={visualIntensity >= 4 ? 4.4 : 3.2}
+        strokeLinecap="round"
+      />
+      {chopLines.map((d, index) => (
+        <path
+          key={index}
+          className="cb-wave-highlight"
+          d={d}
+          fill="none"
+          stroke="rgba(255,255,255,0.24)"
+          strokeWidth={2.1 + index * 0.34}
+          strokeLinecap="round"
+        />
+      ))}
 
       <path
         d={crestPath}
         fill="none"
         className="cb-wave-foam"
         stroke="var(--cb-wave-foam-color)"
-        strokeWidth={scale.band === 'rough' ? 3.6 : 3}
+        strokeWidth={visualIntensity >= 4 ? 3.4 : visualIntensity >= 2 ? 2.9 : 2.5}
         strokeLinecap="round"
       />
 
       <g className="cb-wave-spray" fill="var(--cb-wave-foam-color)" opacity="0.82">
-        <circle cx="71" cy={waterlineY + 1} r={scale.band === 'rough' ? 1.7 : 1.1} />
-        <circle cx="82" cy={waterlineY + 5} r="1" />
-        <circle cx="126" cy={waterlineY} r={scale.band === 'rough' ? 1.5 : 1} />
+        <circle cx="68" cy={waterlineY - amplitude * 0.15} r={visualIntensity >= 4 ? 2.2 : visualIntensity >= 2 ? 1.6 : 1.1} />
+        <circle cx="82" cy={waterlineY + amplitude * 0.28} r={visualIntensity >= 4 ? 1.5 : 1} />
+        <circle cx="122" cy={waterlineY - amplitude * 0.32} r={visualIntensity >= 4 ? 2 : visualIntensity >= 2 ? 1.4 : 1} />
+        {visualIntensity >= 2 && <circle cx="142" cy={waterlineY + amplitude * 0.18} r={visualIntensity >= 4 ? 1.6 : 1.1} />}
+        {visualIntensity >= 3 && <circle cx="58" cy={waterlineY + amplitude * 0.58} r={visualIntensity >= 4 ? 1.45 : 1.05} />}
       </g>
 
       {/* Small human cue that rides the surface, so its waterline tracks the metre reading. */}
@@ -440,20 +837,39 @@ const WaveMeterScene: React.FC<{ scale: WaveScaleResult; visualHeightM: number }
   );
 };
 
-// Boat-only beaches: a small boat on blue sea (the swell amplitude and the boat's
-// tilt grow with roughness), instead of a person wading in from the shore.
-const BoatScene: React.FC<{ scale: WaveScaleResult }> = ({ scale }) => {
-  const amp = scale.band === 'rough' ? 14 : scale.band === 'amber' ? 8 : 4;
-  const tilt = scale.band === 'rough' ? -6 : scale.band === 'amber' ? -3 : 0;
-  const wy = scale.band === 'rough' ? 66 : scale.band === 'amber' ? 71 : 77;
+// Boat-only beaches: a small boat on open water. This is a ride-motion illustration, not
+// the swimmer/body-height meter.
+const BoatScene: React.FC<{
+  scale: WaveScaleResult;
+  level: BoatRideMotionLevel;
+  windTier: WaveVisualTier;
+}> = ({ scale, level, windTier }) => {
+  const motion = {
+    smooth: { amp: 5.5, tilt: 0, wy: 78, spray: 0 },
+    light: { amp: 9, tilt: -4.5, wy: 74, spray: 1 },
+    bumpy: { amp: 15, tilt: -8, wy: 68, spray: 2 },
+    rough: { amp: 22, tilt: -11, wy: 61, spray: 3 },
+  }[level];
+  const { amp, tilt, wy } = motion;
   const crest = `M0 ${wy} Q 16 ${wy - amp} 32 ${wy} T 64 ${wy} T 96 ${wy} T 128 ${wy} T 160 ${wy}`;
+  const midCrestY = clamp(wy + amp * 0.82, 72, 96);
+  const midCrest = `M7 ${midCrestY} Q 23 ${midCrestY - amp * 0.54} 39 ${midCrestY} T 71 ${midCrestY} T 103 ${midCrestY} T 135 ${midCrestY} T 153 ${midCrestY}`;
+  const foregroundY = clamp(wy + amp * 1.42, 86, 106);
+  const foregroundCrest = `M16 ${foregroundY} Q 33 ${foregroundY - amp * 0.32} 50 ${foregroundY} T 84 ${foregroundY} T 118 ${foregroundY} T 150 ${foregroundY}`;
   const sceneId = React.useId().replace(/:/g, '');
   const waterGradientId = `boat-wave-${sceneId}`;
   const skyGradientId = `boat-sky-${sceneId}`;
   const sceneStyle = {
     ...getWaveSceneStyle(scale),
-    ...getSwimmerMotionStyle(scale),
+    ...getBoatMotionStyle(level),
   } as React.CSSProperties;
+  const activeBars = getBoatRideMotionRank(level) + 1;
+  const windStreaks = Array.from({ length: windTier }, (_, index) => ({
+    x1: 24 + index * 13,
+    x2: 54 + index * 14,
+    y: 24 + index * 6,
+    opacity: 0.16 + index * 0.08,
+  }));
 
   return (
     <svg viewBox="0 0 160 116" preserveAspectRatio="xMidYMid meet" aria-hidden="true" className="h-auto w-full drop-shadow-sm" style={sceneStyle}>
@@ -470,9 +886,35 @@ const BoatScene: React.FC<{ scale: WaveScaleResult }> = ({ scale }) => {
       </defs>
       <rect x="2" y="2" width="156" height="112" rx="20" fill={`url(#${skyGradientId})`} />
       <path d="M8 60 C 38 56 76 57 110 61 C 132 63 146 63 152 61" fill="none" stroke="rgba(14,165,233,0.16)" strokeWidth="1.2" strokeLinecap="round" />
+      {windStreaks.length > 0 && (
+        <g aria-hidden="true" className="cb-wave-highlight" stroke="var(--cb-wave-deep)" strokeLinecap="round">
+          {windStreaks.map((streak, index) => (
+            <path
+              key={index}
+              d={`M${streak.x1} ${streak.y} H${streak.x2}`}
+              strokeWidth={1.5 + index * 0.35}
+              opacity={streak.opacity}
+            />
+          ))}
+        </g>
+      )}
+      <g aria-hidden="true" transform="translate(118 18)">
+        {[0, 1, 2, 3].map((bar) => (
+          <rect
+            key={bar}
+            x={bar * 7}
+            y={18 - bar * 4}
+            width="4"
+            height={8 + bar * 4}
+            rx="2"
+            fill={bar < activeBars ? 'var(--cb-wave-deep)' : 'rgba(148,163,184,0.32)'}
+            opacity={bar < activeBars ? 0.82 : 0.5}
+          />
+        ))}
+      </g>
       <path
         className="cb-wave-backwash"
-        d={`M0 ${wy + 14} Q 16 ${wy + 5} 32 ${wy + 14} T 64 ${wy + 14} T 96 ${wy + 14} T 128 ${wy + 14} T 160 ${wy + 14} L160 116 L0 116 Z`}
+        d={`M0 ${midCrestY + 7} Q 16 ${midCrestY - amp * 0.22} 32 ${midCrestY + 7} T 64 ${midCrestY + 7} T 96 ${midCrestY + 7} T 128 ${midCrestY + 7} T 160 ${midCrestY + 7} L160 116 L0 116 Z`}
         fill="var(--cb-wave-mid)"
         opacity={scale.isEstimate ? 0.16 : 0.22}
       />
@@ -484,6 +926,15 @@ const BoatScene: React.FC<{ scale: WaveScaleResult }> = ({ scale }) => {
         {...(scale.isEstimate ? { strokeDasharray: '4 3', stroke: 'var(--cb-wave-deep)', strokeWidth: 1 } : {})}
       />
       <path d={crest} fill="none" className="cb-wave-foam" stroke="var(--cb-wave-foam-color)" strokeWidth={scale.band === 'rough' ? 3.2 : 2.4} strokeLinecap="round" />
+      <path d={midCrest} fill="none" className="cb-wave-highlight" stroke="rgba(255,255,255,0.4)" strokeWidth={level === 'rough' ? 5.2 : level === 'bumpy' ? 4.6 : 3.8} strokeLinecap="round" />
+      <path d={foregroundCrest} fill="none" className="cb-wave-highlight" stroke="rgba(255,255,255,0.26)" strokeWidth={level === 'rough' ? 4.4 : 3.4} strokeLinecap="round" />
+      {motion.spray > 0 && (
+        <g className="cb-wave-spray" fill="var(--cb-wave-foam-color)" opacity="0.76">
+          <circle cx="40" cy={wy - amp * 0.35} r={motion.spray >= 2 ? 1.5 : 1} />
+          <circle cx="112" cy={wy - amp * 0.42} r={motion.spray >= 3 ? 1.8 : 1.1} />
+          {motion.spray >= 3 && <circle cx="124" cy={wy - amp * 0.05} r="1.1" />}
+        </g>
+      )}
       <path
         d={`M15 ${wy + 18} C 42 ${wy + 9} 68 ${wy + 18} 95 ${wy + 10} C 116 ${wy + 5} 134 ${wy + 11} 151 ${wy + 7}`}
         fill="none"
@@ -512,9 +963,31 @@ const CompactGlyph: React.FC<{ scale: WaveScaleResult; className?: string }> = (
     <svg viewBox="0 0 28 20" className={className ?? 'h-3.5 w-4 shrink-0'} aria-hidden="true">
       <path
         d={`M2 18 L2 ${top} C 8 ${top - 2} 11 ${top + 2} 14 ${top} C 18 ${top - 2} 22 ${top + 1} 26 ${top} L26 18 Z`}
-        className={`fill-current ${getBlueWaterFillClass(scale)}`}
+        className={`fill-current ${getCompactWaveFillClass(scale)}`}
         fillOpacity={scale.isEstimate ? 0.5 : 0.9}
       />
+    </svg>
+  );
+};
+
+const CompactBoatGlyph: React.FC<{ level: BoatRideMotionLevel; className?: string }> = ({ level, className }) => {
+  const amp = { smooth: 1.5, light: 3, bumpy: 4.8, rough: 6.2 }[level];
+  const tilt = { smooth: 0, light: -4, bumpy: -7, rough: -10 }[level];
+  const y = { smooth: 14, light: 13, bumpy: 12, rough: 11 }[level];
+  const tone = getBoatRideBandClasses(level).fill;
+
+  return (
+    <svg viewBox="0 0 30 20" className={className ?? 'h-3.5 w-4 shrink-0'} aria-hidden="true">
+      <path
+        d={`M2 ${y + 2} C 7 ${y - amp} 12 ${y + amp} 17 ${y} S 25 ${y - amp * 0.6} 28 ${y}`}
+        className={`fill-none stroke-current ${tone}`}
+        strokeWidth="2"
+        strokeLinecap="round"
+      />
+      <g transform={`rotate(${tilt} 15 ${y - 1})`} className="fill-current text-slate-500 dark:text-slate-400">
+        <path d={`M10 ${y - 3} H22 L20 ${y + 2} Q16 ${y + 4} 12 ${y + 2} Z`} />
+        <rect x="14" y={y - 8} width="4.5" height="4" rx="1" />
+      </g>
     </svg>
   );
 };
@@ -524,17 +997,23 @@ const HourlyStrip: React.FC<{
   nowHour?: number;
   language: LanguageCode;
   copy: StripCopy;
-}> = ({ hourly, nowHour, language, copy }) => {
+  boatCopy?: BoatCopy | null;
+}> = ({ hourly, nowHour, language, copy, boatCopy }) => {
   return (
     <div className="flex items-end gap-[2px]" aria-hidden="true">
       {hourly.map((p) => {
         const isNow = typeof nowHour === 'number' && p.hour === nowHour;
+        const boatLevel = boatCopy ? getBoatRideMotionLevel(p.waveHeightM) : null;
+        const barClass = boatLevel ? getBoatRideBandClasses(boatLevel).bar : getWaveBandClasses(p.waveHeightM).bar;
+        const title = boatCopy && boatLevel
+          ? boatCopy.hourTooltip(formatHour(p.hour), boatLevel, formatWaveHeight(p.waveHeightM, language))
+          : copy.hourTooltip(formatHour(p.hour), formatWaveHeight(p.waveHeightM, language));
         return (
           <div key={p.hour} className="flex min-w-0 flex-1 flex-col items-center">
             <div className="flex h-8 w-full items-end sm:h-9">
               <div
-                title={copy.hourTooltip(formatHour(p.hour), formatWaveHeight(p.waveHeightM, language))}
-                className={`w-full rounded-sm ${getWaveBandClasses(p.waveHeightM).bar} ${isNow ? 'ring-2 ring-slate-900/60 ring-offset-1 ring-offset-white dark:ring-white/75 dark:ring-offset-slate-800' : ''}`}
+                title={title}
+                className={`w-full rounded-sm ${barClass} ${isNow ? 'ring-2 ring-slate-900/60 ring-offset-1 ring-offset-white dark:ring-white/75 dark:ring-offset-slate-800' : ''}`}
                 style={{ height: `${waveBarFraction(p.waveHeightM) * 100}%` }}
               />
             </div>
@@ -572,19 +1051,51 @@ export const WaveHeightGraphic: React.FC<WaveHeightGraphicProps> = ({
   estimateHeightM,
   boatAccess,
   windBeaufort,
+  exposureLevel,
+  canClaimWindProtection,
   className,
 }) => {
   const scale = getWaveScale(waveHeightM, language, { isEstimate, estimateHeightM });
+  const boatHeightM = typeof waveHeightM === 'number' && Number.isFinite(waveHeightM)
+    ? waveHeightM
+    : typeof estimateHeightM === 'number' && Number.isFinite(estimateHeightM)
+      ? estimateHeightM
+      : undefined;
+  const boatLevel = boatAccess ? getBoatRideMotionLevel(boatHeightM, windBeaufort) : null;
 
   if (variant === 'compact') {
-    return <CompactGlyph scale={scale} className={className} />;
+    const compactScale = getCompactWaveSignalScale(
+      scale,
+      language,
+      waveHeightM,
+      estimateHeightM,
+      windBeaufort,
+      exposureLevel,
+      canClaimWindProtection
+    );
+    return boatLevel
+      ? <CompactBoatGlyph level={boatLevel} className={className} />
+      : <CompactGlyph scale={compactScale} className={className} />;
   }
 
   const copy = getLocalizedCopy(language, COPY);
   const swimFeelCopy = getLocalizedCopy(language, SWIM_FEEL_COPY);
-  const labelClass = scale.isEstimate ? WAVE_ESTIMATE_CLASSES.label : WAVE_BAND_CLASSES[scale.band].label;
-  const panelClass = scale.isEstimate ? WAVE_ESTIMATE_CLASSES.soft : WAVE_BAND_CLASSES[scale.band].soft;
-  const visualWaveHeightM = getVisualWaveHeightM(scale, waveHeightM, estimateHeightM);
+  const windVisualTier = getWaveVisualTier(windBeaufort, exposureLevel, canClaimWindProtection);
+  const windSignalHeightM = visualHeightForTier(windVisualTier) ?? 0;
+  const rawVisualWaveHeightM = getVisualWaveHeightM(scale, waveHeightM, estimateHeightM);
+  const effectiveVisualWaveHeightM = Math.max(rawVisualWaveHeightM, windSignalHeightM);
+  const isWindAdjustedScene = !boatLevel && effectiveVisualWaveHeightM > rawVisualWaveHeightM + 0.02;
+  const sceneScale = isWindAdjustedScene
+    ? getWaveScale(
+      scale.isEstimate ? undefined : effectiveVisualWaveHeightM,
+      language,
+      { isEstimate: scale.isEstimate, estimateHeightM: effectiveVisualWaveHeightM }
+    )
+    : scale;
+  const boatTone = boatLevel ? getBoatRideBandClasses(boatLevel, scale.isEstimate) : null;
+  const labelClass = boatTone ? boatTone.label : scale.isEstimate ? WAVE_ESTIMATE_CLASSES.label : WAVE_BAND_CLASSES[scale.band].label;
+  const panelClass = boatTone ? boatTone.soft : sceneScale.isEstimate ? WAVE_ESTIMATE_CLASSES.soft : WAVE_BAND_CLASSES[sceneScale.band].soft;
+  const visualWaveHeightM = boatLevel ? rawVisualWaveHeightM : effectiveVisualWaveHeightM;
   const isToday = isSelectedDateToday(selectedDate);
   // Mark the hour the forecast is actually showing (the slider hour), falling back to the
   // real wall-clock hour only when no explicit hour is supplied and the day is today.
@@ -600,30 +1111,45 @@ export const WaveHeightGraphic: React.FC<WaveHeightGraphicProps> = ({
     .sort((a, b) => a.hour - b.hour);
   const showStrip = points.length >= 2;
   const trendKey = showStrip ? computeTrend(points) : null;
+  const boatCopy = boatAccess ? getLocalizedCopy(language, BOAT_COPY) : null;
+  const boatMotionLabel = boatCopy && boatLevel ? boatCopy[boatLevel] : null;
+  const supportingDetail = boatCopy
+    ? typeof boatHeightM === 'number'
+      ? boatCopy.heightDetail(formatWaveHeight(boatHeightM, language))
+      : boatCopy.estimateDetail
+    : scale.detail;
   const hourlyRange = showStrip
-    ? copy.rangeSummary(
-      formatWaveHeight(Math.min(...points.map((p) => p.waveHeightM)), language),
-      formatWaveHeight(Math.max(...points.map((p) => p.waveHeightM)), language)
-    )
+    ? boatCopy
+      ? boatCopy.rangeSummary(
+        boatCopy[getBoatRideMotionLevel(Math.min(...points.map((p) => p.waveHeightM)))],
+        boatCopy[getBoatRideMotionLevel(Math.max(...points.map((p) => p.waveHeightM)))]
+      )
+      : copy.rangeSummary(
+        formatWaveHeight(Math.min(...points.map((p) => p.waveHeightM)), language),
+        formatWaveHeight(Math.max(...points.map((p) => p.waveHeightM)), language)
+      )
     : null;
+  const titleLabel = boatCopy ? boatCopy.title : copy.title;
+  const headlineLabel = boatMotionLabel ?? scale.label;
+  const selectedBoatHourNote = boatCopy && boatLevel && typeof selectedHour === 'number'
+    ? boatCopy.selectedHour(formatHour(selectedHour))
+    : null;
+  const ariaRoot = boatCopy
+    ? `${boatCopy.title}: ${headlineLabel}, ${supportingDetail}`
+    : scale.ariaLabel;
   const ariaLabel = [
-    scale.ariaLabel,
+    ariaRoot,
     hourlyRange,
-    trendKey ? copy[trendKey] : null,
+    trendKey ? (boatCopy ? boatCopy[trendKey] : copy[trendKey]) : null,
+    selectedBoatHourNote,
   ]
     .filter(Boolean)
     .map((part) => String(part).replace(/\.+$/, ''))
     .join('. ');
-
-  const boatCopy = boatAccess ? getLocalizedCopy(language, BOAT_COPY) : null;
-  const bandKey: keyof BoatCopy = scale.band === 'rough' ? 'rough' : scale.band === 'amber' ? 'choppy' : 'calm';
-  // Boat-only beach: describe the sea for the boat, not swimming comfort.
-  const headlineLabel = boatCopy ? boatCopy[bandKey] : scale.label;
-  const supportingDetail = boatCopy ? scale.label : scale.detail;
-  const subHeightNote = boatCopy ? boatCopy.heightNote : null;
-  const swimmingFeel = scale.isEstimate ? swimFeelCopy.estimate : swimFeelCopy[scale.band];
+  const swimmingFeel = getSwimmingFeel(swimFeelCopy, scale, windBeaufort, exposureLevel, canClaimWindProtection);
+  const swimmingFeelLabelClass = getSwimmingFeelLabelClass(scale, windBeaufort, exposureLevel, canClaimWindProtection);
   // Small boats rock more — flag the transfer above 3 Bft (or a genuinely rough sea).
-  const showBoatNote = Boolean(boatCopy) && ((typeof windBeaufort === 'number' && windBeaufort >= 4) || scale.band === 'rough');
+  const showBoatNote = Boolean(boatCopy) && ((typeof windBeaufort === 'number' && windBeaufort >= 4) || boatLevel === 'rough' || boatLevel === 'bumpy');
 
   return (
     <div
@@ -631,24 +1157,22 @@ export const WaveHeightGraphic: React.FC<WaveHeightGraphicProps> = ({
       aria-label={ariaLabel}
       className={`overflow-hidden rounded-2xl border border-cyan-100/70 bg-white/92 p-3.5 shadow-sm shadow-sky-900/5 ring-1 ring-white/60 dark:border-slate-700 dark:bg-slate-800 sm:p-4 ${className ?? ''}`}
     >
-      <div className="flex items-center gap-3.5 sm:gap-4">
-        <div className={`w-[108px] shrink-0 rounded-2xl p-1 ring-1 ring-white/70 sm:w-32 ${panelClass}`}>
-          {boatAccess ? <BoatScene scale={scale} /> : <WaveMeterScene scale={scale} visualHeightM={visualWaveHeightM} />}
+      <div className="space-y-3">
+        <div className={`flex h-56 w-full items-center justify-center overflow-hidden rounded-[2rem] p-1.5 ring-1 ring-white/70 sm:h-64 ${panelClass} [&>svg]:h-full [&>svg]:w-full`}>
+          {boatAccess && boatLevel
+            ? <BoatScene scale={scale} level={boatLevel} windTier={windVisualTier} />
+            : <WaveMeterScene scale={sceneScale} visualHeightM={visualWaveHeightM} windTier={windVisualTier} />}
         </div>
-        <div className="min-w-0 flex-1 py-0.5">
-          <div className="text-[11px] font-bold leading-tight text-slate-500 dark:text-slate-400">{copy.title}</div>
-          <div className={`mt-1 font-heading text-[1.35rem] font-bold leading-none sm:text-2xl ${labelClass}`}>{headlineLabel}</div>
-          <div className="mt-1 text-sm font-semibold leading-snug text-slate-600 dark:text-slate-300">{supportingDetail}</div>
-          {!boatCopy && (
+        {!boatCopy && (
+          <div className="min-w-0 px-0.5">
+            <div className="text-[11px] font-bold leading-tight text-slate-500 dark:text-slate-400">{titleLabel}</div>
+            <div className={`mt-1 font-heading text-[1.35rem] font-bold leading-none sm:text-2xl ${labelClass}`}>{headlineLabel}</div>
             <div className="mt-2 inline-flex max-w-full flex-wrap items-center gap-x-1.5 gap-y-0.5 rounded-full border border-slate-100 bg-white/70 px-2.5 py-1 text-[11px] font-bold leading-tight text-slate-500 shadow-sm shadow-sky-900/5 dark:border-slate-700 dark:bg-slate-900/30 dark:text-slate-400">
               <span>{swimFeelCopy.label}</span>
-              <span className={labelClass}>{swimmingFeel}</span>
+              <span className={swimmingFeelLabelClass}>{swimmingFeel}</span>
             </div>
-          )}
-          {subHeightNote && (
-            <div className="mt-1 text-xs font-medium leading-snug text-slate-500 dark:text-slate-400">{subHeightNote}</div>
-          )}
-        </div>
+          </div>
+        )}
       </div>
 
       {showBoatNote && boatCopy && (
@@ -662,10 +1186,10 @@ export const WaveHeightGraphic: React.FC<WaveHeightGraphicProps> = ({
         <div className="mt-3 border-t border-slate-100 pt-3 dark:border-slate-700">
           {trendKey && (
             <div className="mb-1 text-right text-[11px] font-semibold text-slate-500 dark:text-slate-400">
-              {copy[trendKey]}
+              {boatCopy ? boatCopy[trendKey] : copy[trendKey]}
             </div>
           )}
-          <HourlyStrip hourly={points} nowHour={markerHour} language={language} copy={copy} />
+          <HourlyStrip hourly={points} nowHour={markerHour} language={language} copy={copy} boatCopy={boatCopy} />
         </div>
       )}
     </div>

@@ -17,6 +17,8 @@ import type { ExposureLevel } from '../utils/windExposure';
 
 type Copy = Record<LanguageCode, string>;
 const pick = (copy: Copy, language: LanguageCode): string => copy[language] ?? copy.en;
+const beachSubject = (beachName: string, language: LanguageCode): string =>
+  language === 'gr' ? `Η παραλία ${beachName}` : beachName;
 
 export interface MeltemiShelteredCove {
   id: number;
@@ -123,7 +125,7 @@ export const MeltemiShelterSection: React.FC<MeltemiShelterSectionProps> = ({
 
         {thisExposure && (
           <p className={`rounded-xl border px-3 py-2 text-sm font-semibold leading-relaxed ${SELF_TONE[thisExposure].badge} ${SELF_TONE[thisExposure].text}`}>
-            {beachName} {pick(SELF_STATUS[thisExposure], language)}
+            {beachSubject(beachName, language)} {pick(SELF_STATUS[thisExposure], language)}
           </p>
         )}
 

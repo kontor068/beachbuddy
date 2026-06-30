@@ -67,6 +67,10 @@ Current durable lessons:
 - Avoid repeating the same beach cards in multiple recommendation-only sections. The "All beaches" directory is an exception: it must stay complete for the selected region/search/filter, even if a beach already appears as a top/suitable card.
 - Warning chips must not contradict the main condition summary. Only show wave warnings when the beach has real wave risk after protection/exposure is considered, and use specific wording such as "Some waves" or "High waves" instead of vague "Wave today" copy.
 - When sea condition scores depend on exposure/protection as well as wave height, compact cards must show that context so equal wave heights do not look inconsistent across beaches.
+- Full wave graphics must visibly show wave motion. Do not damp the SVG so much that amber/rough or 4+ Bft weather reads as flat water; the visual wave should follow the same selected-hour wind/exposure signal used by the cards. Adjacent Beaufort tiers (3/4/5/6 Bft) must not render as visually identical; use tiered amplitude, foam/chop lines, and wind streaks while still respecting protected vs exposed context.
+- Full wave graphics must keep metric proportion: 0.8 m should read as moderate/amber, not visually compete with 1.5 m rough sea. Reserve vertical range and stronger foam/crest treatment for 1.2-1.5 m+ conditions.
+- The swimming-feel chip must be exposure-aware at 5-6 Bft. Do not show the same "some chop" label for protected and exposed beaches just because the wave-height band matches.
+- Initial beach-card wave glyphs must follow the same selected-hour wind/exposure context as the card. Do not show a calm glyph solely from raw wave height during 4-6 Bft conditions.
 - Top recommendations must prioritize wind-protected beaches. Do not rank partially protected or exposed beaches above protected options when protected options exist in the selected area.
 - The default beach list should show wind-protected beaches, not all beaches. Only default to all beaches when the weather is good/light wind and every beach in the selected area is protected for the current wind direction.
 - When severe weather or rough sea makes every beach unsuitable, show an explicit no-swimming message instead of a generic empty beach list.
@@ -81,6 +85,7 @@ Current durable lessons:
 - Hero/background photos must be specific to each selectable island or area whenever a license-safe source exists. Do not reuse one regional photo across distinct islands unless the fallback is clearly documented.
 - Beach cards should prefer one verified photo per beach. Island-level fallback photos are only temporary coverage and should not be treated as each beach's own photo.
 - Greek generated beach copy must use inflected area/island phrases, not raw nominative labels. Prefer explicit forms like "της Μήλου", "στη Μήλο", "των Χανίων", "στο Ρέθυμνο" in label metadata.
+- Greek generated beach-name subjects should use "Η παραλία {name}" when the sentence needs a subject, instead of bare "{name}" or gendered "Η {name}".
 
 - Map wind-exposure colors should follow the explicit Beaufort legend: 0-2 Bft all blue because this is light-wind beach mode; 3 Bft protected/less-exposed blue and exposed/partial yellow; 4 Bft protected/less-exposed blue and exposed/partial yellow; 5-6 Bft protected/less-exposed yellow and exposed/partial orange; 7-10 Bft all red. Keep the legend visible and do not imply that blue means guaranteed safety.
 - Map color explanations should only describe colors visible for the current forecast. Do not show red/orange legend rows on a 4 Bft map where users only see blue/yellow markers.
@@ -104,6 +109,7 @@ Current durable lessons:
 - At 4+ Bft, "best/suitable beaches" sections must prefer map-visible protected candidates even if there are fewer than three. Do not fill the section with exposed beaches just to reach a card quota when any protected option exists.
 - Recommendation card exposure badges must align with the same visible map exposure source for the selected forecast. Do not show a beach as exposed in a "best/suitable" card if the map-visible protected filter selected it as protected.
 - For protected/map-aligned suitable cards, the primary condition chip must say the protection state (e.g. "Προστατευμένη"), not a sea-state label such as wave/chop. Do not cap the suitable carousel so low that map-visible protected options disappear.
+- Boat-only sea-condition copy must describe the boat ride/motion, not swimmer comfort or open-beach cautions such as "more open spots". In Greek, use "Συνθήκες πλεύσης" only where a boat condition label is needed, and show "κούνημα" only once as the main verdict rather than repeating it in hour/context/helper lines. If a boat condition card already has the "Συνθήκες πλεύσης" label, the hour subtext should be just the hour. The full boat wave graphic should not repeat the detail-section day heading or duplicate the motion verdict already shown in condition cards. Avoid redundant labels like "for the boat" when the boat visual already provides the context.
 
 ## 4. Verification Before Done
 

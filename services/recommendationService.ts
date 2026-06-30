@@ -2052,27 +2052,29 @@ const generateLocalizedBeachExplanation = (
   }
 
   if (language === 'gr') {
+    const greekBeachSubject = `Η παραλία ${beachName}`;
+
     if (windBeaufort < MEANINGFUL_WIND_TOP_PICK_BEAUFORT) {
       explanation = windAssessment.windProfile.knownWindSportSpot || exposureLevel === 'exposed'
-        ? `Η ${beachName} είναι συνήθως πιο εκτεθειμένη, αλλά ${day} ο άνεμος ${future ? 'θα είναι' : 'είναι'} ήπιος. Ο άνεμος δεν φαίνεται να είναι βασικό θέμα ${day}.`
-        : `Η ${beachName} ${future ? 'θα έχει' : 'έχει'} καλές συνθήκες ${day}. Ο άνεμος δεν φαίνεται να είναι βασικό θέμα ${day}.`;
+        ? `${greekBeachSubject} είναι συνήθως πιο εκτεθειμένη, αλλά ${day} ο άνεμος ${future ? 'θα είναι' : 'είναι'} ήπιος. Ο άνεμος δεν φαίνεται να είναι βασικό θέμα ${day}.`
+        : `${greekBeachSubject} ${future ? 'θα έχει' : 'έχει'} καλές συνθήκες ${day}. Ο άνεμος δεν φαίνεται να είναι βασικό θέμα ${day}.`;
     } else if (recommendationWarningTypes.has('wind_sport_spot')) {
-      explanation = `${beachName}: γνωστό σημείο για wind/watersports με ${windBeaufort} μποφόρ ${day}. Μπορεί να έχει αέρα ή κυματισμό, οπότε δεν είναι δυνατή επιλογή για ήρεμο μπάνιο ${day}.`;
+      explanation = `${greekBeachSubject} είναι γνωστό σημείο για wind/watersports με ${windBeaufort} μποφόρ ${day}. Μπορεί να έχει αέρα ή κυματισμό, οπότε δεν είναι δυνατή επιλογή για ήρεμο μπάνιο ${day}.`;
     } else if (isProtectedForCopy) {
       explanation = windSpeedKmph > 20 || isCautionSwimDay
         ? (windBeaufort === 5
-          ? `Η ${beachName} ${future ? 'θα είναι' : 'είναι'} πιο υπήνεμη επιλογή.`
-          : `Η ${beachName} φαίνεται πιο κατάλληλη από ανοιχτές παραλίες ${day}, αλλά οι συνθήκες θέλουν προσοχή.`)
-        : `Η ${beachName} φαίνεται πιθανόν πιο προστατευμένη από ανοιχτές παραλίες ${day}.`;
+          ? `${greekBeachSubject} ${future ? 'θα είναι' : 'είναι'} πιο υπήνεμη επιλογή.`
+          : `${greekBeachSubject} φαίνεται πιο κατάλληλη από ανοιχτές παραλίες ${day}, αλλά οι συνθήκες θέλουν προσοχή.`)
+        : `${greekBeachSubject} φαίνεται πιθανόν πιο προστατευμένη από ανοιχτές παραλίες ${day}.`;
     } else {
       if (seaScore < 5) {
         explanation = windBeaufort === 5
           ? 'Εκτεθειμένη στον άνεμο.'
-          : `Η ${beachName} φαίνεται πιο ανοιχτή στους ${greekWindDirectionsAccusative[windDir]} ανέμους ${day}, οπότε προτίμησέ την μόνο αν έχεις δει πρώτα τις συνθήκες.`;
+          : `${greekBeachSubject} φαίνεται πιο ανοιχτή στους ${greekWindDirectionsAccusative[windDir]} ανέμους ${day}, οπότε προτίμησέ την μόνο αν έχεις δει πρώτα τις συνθήκες.`;
       } else if (seaScore < 8) {
-        explanation = `Η ${beachName} έχει λίγη έκθεση στους ${greekWindDirectionsAccusative[windDir]} ανέμους. Μπορεί να είναι καλή επιλογή όσο ο άνεμος μένει ήπιος, ειδικά αν δεν ψάχνεις απόλυτα ήρεμα νερά.`;
+        explanation = `${greekBeachSubject} έχει λίγη έκθεση στους ${greekWindDirectionsAccusative[windDir]} ανέμους. Μπορεί να είναι καλή επιλογή όσο ο άνεμος μένει ήπιος, ειδικά αν δεν ψάχνεις απόλυτα ήρεμα νερά.`;
       } else {
-        explanation = `Η ${beachName} φαίνεται να έχει ελαφρύ αεράκι ${day} και οι συνθήκες παραμένουν άνετες για επίσκεψη.`;
+        explanation = `${greekBeachSubject} φαίνεται να έχει ελαφρύ αεράκι ${day} και οι συνθήκες παραμένουν άνετες για επίσκεψη.`;
       }
     }
 

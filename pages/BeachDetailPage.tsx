@@ -3,7 +3,7 @@ import {
   ArrowLeft, MapPin, Wind, Waves, Thermometer, Droplets, Leaf,
   Clock, Sun, Backpack,
   Navigation, Share2, Heart, ChevronRight, ThumbsUp, ThumbsDown, CheckCircle2,
-  Camera, ExternalLink, Accessibility, AlertTriangle, Tent, Ticket, Euro, ScrollText, Compass
+  Camera, ExternalLink, Accessibility, AlertTriangle, Tent, Ticket, Euro, ScrollText, Compass, Ship
 } from 'lucide-react';
 import {
   Beach, LanguageCode, Translation, WindDirection,
@@ -61,6 +61,7 @@ import { scrollToPageTop } from '../utils/scroll';
 import { getSunsetTime } from '../utils/sunTimes';
 import { buildPhotoSuggestionUrl } from '../utils/photoContribution';
 import { getSelectedDayPrefix, getSelectedHourPrefix } from '../utils/dateLabels';
+import { getBoatRideMotionLevel } from '../utils/boatRideMotion';
 import { getRainSwimAdvisory } from '../utils/rainAdvisory';
 import { summarizeMeltemiBehavior } from '../utils/windClimatology';
 
@@ -209,6 +210,9 @@ const PhotoContributionPrompt: React.FC<{
   );
 };
 
+const sentenceCase = (value: string): string =>
+  value ? `${value.charAt(0).toUpperCase()}${value.slice(1)}` : value;
+
 const getSeaConditionDisplay = (
   seaScore: number,
   isExposed: boolean,
@@ -218,7 +222,8 @@ const getSeaConditionDisplay = (
   seaCalmClaimAllowed = false,
   windBeaufort = 0,
   waveHeightM?: number,
-  selectedHour?: number
+  selectedHour?: number,
+  boatAccess = false
 ) => {
   const hour = getSelectedHourPrefix(selectedHour, language);
   const day = hour ?? getSelectedDayPrefix(selectedDate, new Date(), language);
@@ -244,6 +249,93 @@ const getSeaConditionDisplay = (
     it: `Onde basse, più riparata${momentSuffix}`,
     fr: `Vagues faibles, mieux abritée${momentSuffix}`,
   }[language];
+
+  if (boatAccess) {
+    const boatCopy = {
+      en: {
+        value: {
+          smooth: 'Smooth ride',
+          light: 'A little motion',
+          bumpy: 'Bumpy ride',
+          rough: 'Very bumpy',
+        },
+        atHour: (hourPrefix: string) => sentenceCase(hourPrefix),
+        subValue: {
+          smooth: 'Low motion expected on the ride.',
+          light: 'Expect a little motion on the ride.',
+          bumpy: 'The ride may feel less comfortable.',
+          rough: 'Check the trip before setting off.',
+        },
+      },
+      gr: {
+        value: {
+          smooth: 'Ήρεμη διαδρομή',
+          light: 'Λίγο κούνημα',
+          bumpy: 'Κουνάει αρκετά',
+          rough: 'Πολύ κούνημα',
+        },
+        atHour: (hourPrefix: string) => sentenceCase(hourPrefix),
+        subValue: {
+          smooth: 'Με βάση άνεμο και κύμα.',
+          light: 'Με βάση άνεμο και κύμα.',
+          bumpy: 'Η διαδρομή μπορεί να είναι πιο άβολη.',
+          rough: 'Καλύτερα επιβεβαίωσε τη διαδρομή πριν ξεκινήσεις.',
+        },
+      },
+      de: {
+        value: {
+          smooth: 'Ruhige Fahrt',
+          light: 'Etwas Bewegung',
+          bumpy: 'Unruhige Fahrt',
+          rough: 'Sehr unruhig',
+        },
+        atHour: (hourPrefix: string) => sentenceCase(hourPrefix),
+        subValue: {
+          smooth: 'Wenig Bewegung auf der Fahrt.',
+          light: 'Rechne mit leichter Bewegung auf der Fahrt.',
+          bumpy: 'Die Fahrt kann weniger bequem sein.',
+          rough: 'Pruefe die Fahrt vor dem Losfahren.',
+        },
+      },
+      it: {
+        value: {
+          smooth: 'Tragitto tranquillo',
+          light: 'Un po di movimento',
+          bumpy: 'Tragitto mosso',
+          rough: 'Molto mosso',
+        },
+        atHour: (hourPrefix: string) => sentenceCase(hourPrefix),
+        subValue: {
+          smooth: 'Poco movimento previsto nel tragitto.',
+          light: 'Aspettati un po di movimento durante il tragitto.',
+          bumpy: 'Il tragitto puo essere meno comodo.',
+          rough: 'Verifica il tragitto prima di partire.',
+        },
+      },
+      fr: {
+        value: {
+          smooth: 'Trajet calme',
+          light: 'Un peu de mouvement',
+          bumpy: 'Trajet agite',
+          rough: 'Tres agite',
+        },
+        atHour: (hourPrefix: string) => sentenceCase(hourPrefix),
+        subValue: {
+          smooth: 'Peu de mouvement prevu sur le trajet.',
+          light: 'Prevois un peu de mouvement pendant le trajet.',
+          bumpy: 'Le trajet peut etre moins confortable.',
+          rough: 'Verifie le trajet avant de partir.',
+        },
+      },
+    }[language];
+    const level = getBoatRideMotionLevel(waveHeightM, windBeaufort);
+
+    return {
+      value: boatCopy.value[level],
+      subValue: hour ? boatCopy.atHour(hour) : boatCopy.subValue[level],
+    };
+  }
+
   if (windBeaufort === 5 && !isExposed) {
     return {
       value: shelteredWindLabel,
@@ -661,7 +753,15 @@ export const BeachDetailPage: React.FC<BeachDetailPageProps> = ({
   const seaConditionScore = calculateSeaConditionScore(isExposed, windSpeedKmh, exposureLevel, waveHeightM);
   const detailBadgeScore = getDetailBadgeScore(score, seaConditionScore, isExposed);
   const beaufortLevel = getBeaufortLevel(windSpeedKmh);
-  const seaConditionDisplay = getSeaConditionDisplay(seaConditionScore, isExposedToTodayWind, language, selectedDate, canClaimWindProtection, seaCalmClaimAllowed, beaufortLevel, displayWaveHeightM, selectedHour);
+  const isBoatOnlyBeach = hasBoatOnlyAccess(beach);
+  const seaConditionDisplay = getSeaConditionDisplay(seaConditionScore, isExposedToTodayWind, language, selectedDate, canClaimWindProtection, seaCalmClaimAllowed, beaufortLevel, displayWaveHeightM, selectedHour, isBoatOnlyBeach);
+  const boatRideConditionLabel = {
+    en: 'Ride',
+    gr: 'Συνθήκες πλεύσης',
+    de: 'Fahrt',
+    it: 'Tragitto',
+    fr: 'Trajet',
+  }[language];
   // Compare the beach-specific cluster forecast with the area-wide forecast only
   // when they genuinely differ — "a bit windier/calmer right here".
   const localWindNote = getLocalWindNote(dayForecast.wind.speed, beachSpecificWeatherData?.wind.speed, language);
@@ -1125,6 +1225,7 @@ export const BeachDetailPage: React.FC<BeachDetailPageProps> = ({
             exposureLevel={exposureLevel}
             canClaimWindProtection={canClaimWindProtection}
             selectedHour={selectedHour}
+            boatAccess={isBoatOnlyBeach}
             forceShow
           />
 
@@ -1160,8 +1261,10 @@ export const BeachDetailPage: React.FC<BeachDetailPageProps> = ({
             language={language}
             selectedDate={selectedDate}
             selectedHour={selectedHour}
-            boatAccess={hasBoatOnlyAccess(beach)}
+            boatAccess={isBoatOnlyBeach}
             windBeaufort={beaufortLevel}
+            exposureLevel={exposureLevel}
+            canClaimWindProtection={canClaimWindProtection}
           />
           <div className={`grid grid-cols-2 gap-2.5 ${typeof seaTemperatureC === 'number' ? 'md:grid-cols-4' : 'md:grid-cols-3'}`}>
             <ConditionCard
@@ -1171,8 +1274,8 @@ export const BeachDetailPage: React.FC<BeachDetailPageProps> = ({
               subValue={`${beaufortLevel} ${t.units.beaufort}`}
             />
             <ConditionCard
-              icon={<Waves className="w-5 h-5 text-cyan-500" />}
-              label={copy.sea[language]}
+              icon={isBoatOnlyBeach ? <Ship className="w-5 h-5 text-cyan-500" /> : <Waves className="w-5 h-5 text-cyan-500" />}
+              label={isBoatOnlyBeach ? boatRideConditionLabel : copy.sea[language]}
               value={seaConditionDisplay.value}
               subValue={seaConditionDisplay.subValue}
             />
@@ -1822,6 +1925,7 @@ export const BeachDetailPage: React.FC<BeachDetailPageProps> = ({
                               exposureLevel={item.exposureLevel}
                               canClaimWindProtection={item.canClaimWindProtection}
                               selectedHour={selectedHour}
+                              boatAccess={hasBoatOnlyAccess(item.beach)}
                               forceShow
                             />
                             <p
