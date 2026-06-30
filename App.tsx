@@ -41,7 +41,7 @@ import { buildBetaFeedbackUrl } from './utils/betaFeedback';
 import { islandHasContextStrip } from './utils/islandContextStrip';
 import { QUICK_PREFERENCE_FILTERS } from './utils/preferenceFilterLabels';
 import { canOpenNavigation, openNavigation } from './utils/navigation';
-import { displayBeachName } from './utils/localization';
+import { displayBeachName, localizedBeachLabel } from './utils/localization';
 import { hasBoatOnlyAccess, hasDifficultTopPickAccess, hasMainstreamTopPickAccess, isAdventureBeach } from './utils/access';
 import { buildBeachDetailPath, buildBeachRegionPath, parseBeachDetailPath, parseBeachRegionPath, regionMatchesRouteParam } from './utils/beachUrls';
 import { describeSimpleWindSuitability } from './utils/windExposureCopy';
@@ -2269,13 +2269,20 @@ export const App: React.FC = () => {
       detailBeach.id === detailRoute.beachId &&
       selectedIslandName
     );
+    // Match the prerendered <title> exactly (label + locale-specific conditions
+    // suffix) so hydration never overwrites the correct static head with a
+    // different/English-flavoured title. Keep in sync with beachTitleFor in
+    // scripts/prerenderBeachPages.mjs.
+    const detailBeachLabel = detailBeach
+      ? localizedBeachLabel(displayBeachName(detailBeach.name, language), language)
+      : '';
     const detailTitle = canUseDetailSeo && detailBeach
       ? getLocalizedCopy(language, {
-        en: `${displayBeachName(detailBeach.name, language)} Beach, ${selectedIslandName} | Wind & Waves Today`,
-        gr: `Παραλία ${displayBeachName(detailBeach.name, language)}, ${selectedIslandName} | Calm Beach Greece`,
-        fr: `${displayBeachName(detailBeach.name, language)}, ${selectedIslandName} | Calm Beach Greece`,
-        de: `${displayBeachName(detailBeach.name, language)}, ${selectedIslandName} | Calm Beach Greece`,
-        it: `${displayBeachName(detailBeach.name, language)}, ${selectedIslandName} | Calm Beach Greece`,
+        en: `${detailBeachLabel}, ${selectedIslandName} | Wind & Waves Today`,
+        gr: `${detailBeachLabel}, ${selectedIslandName} | Άνεμος & προστασία σήμερα`,
+        de: `${detailBeachLabel}, ${selectedIslandName} | Wind & Wellen heute`,
+        fr: `${detailBeachLabel}, ${selectedIslandName} | Vent & vagues aujourd'hui`,
+        it: `${detailBeachLabel}, ${selectedIslandName} | Vento e onde oggi`,
       })
       : selectedIslandName
         ? getLocalizedCopy(language, {

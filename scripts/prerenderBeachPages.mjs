@@ -930,6 +930,29 @@ const renderIslandGuides = (island, region, locale, excludeKey, heading) => {
         </section>`;
 };
 
+// Greece-wide guide backlinks for individual beach pages. Each beach page only
+// linked up to its own region's guides, never to the national landing pages
+// (so national intent -> beach was one-directional). Only emitted for locales
+// where those pages exist (en root + el); /de//fr//it would 404.
+const NATIONAL_GUIDE_LINKS = [
+  { path: '/best-beaches-greece-today/', label: { en: 'Best beaches today', gr: 'Καλύτερες σήμερα' } },
+  { path: '/sheltered-beaches-meltemi/', label: { en: 'Sheltered in the Meltemi', gr: 'Απάνεμες (μελτέμι)' } },
+  { path: '/family-beaches-greece/', label: { en: 'Family beaches', gr: 'Οικογενειακές' } },
+  { path: '/accessible-beaches-greece/', label: { en: 'Accessible (Seatrac)', gr: 'Προσβάσιμες ΑμεΑ' } },
+  { path: '/beach-camping-greece/', label: { en: 'Beach camping', gr: 'Κάμπινγκ σε παραλίες' } },
+];
+const renderNationalGuides = (locale, heading) => {
+  if (!BASE_LOCALE_IDS.has(locale.id)) return '';
+  const items = NATIONAL_GUIDE_LINKS.map(g =>
+    `<li style="margin:0;"><a href="${escapeHtml(localizedPath(g.path, locale))}" style="display:inline-block;border:1px solid #bae6fd;border-radius:999px;padding:7px 13px;background:white;color:#075985;text-decoration:none;font-weight:700;font-size:14px;">${escapeHtml(g.label[locale.language] || g.label.en)}</a></li>`
+  ).join('');
+  return `
+        <section style="margin:0 0 24px;">
+          <h2 style="margin:0 0 10px;font-size:20px;line-height:1.2;color:#075985;">${escapeHtml(heading)}</h2>
+          <ul style="display:flex;flex-wrap:wrap;gap:8px;margin:0;padding:0;list-style:none;">${items}</ul>
+        </section>`;
+};
+
 // Pages that used to exist as thin generic gateways and were consolidated into a
 // kept, useful page. 301 so the already-submitted URLs never 404; they are also
 // excluded from the sitemap (they are simply absent from seoLandingPages now).
@@ -1596,6 +1619,41 @@ const renderNearbyBeaches = (beach, island, region, language, locale) => {
         </section>`;
 };
 
+// "Calmer alternative nearby" as crawlable links: nearby beaches in the same
+// region oriented away from the northerly Meltemi (the same static signal the
+// sheltered guides use). We deliberately do NOT claim "calmer today" — a static
+// page has no live wind — so the copy stays on the durable orientation fact.
+const renderShelteredNearby = (beach, island, region, language, locale) => {
+  const sheltered = (Array.isArray(island.beaches) ? island.beaches : [])
+    .filter(other => other.id !== beach.id && Number.isInteger(other.id) && other.name)
+    .filter(other => Array.isArray(other.protectedFrom) && NORTHERLY.some(d => other.protectedFrom.includes(d)))
+    .sort((a, b) => (b.popularityScore ?? 0) - (a.popularityScore ?? 0))
+    .slice(0, 6);
+  if (sheltered.length < 2) return '';
+  const heading = pickLang(language, {
+    en: 'Sheltered beaches nearby (oriented away from the Meltemi)',
+    gr: 'Πιο προστατευμένες παραλίες κοντά (μακριά από το μελτέμι)',
+    de: 'Windgeschützte Strände in der Nähe',
+    fr: 'Plages abritées à proximité',
+    it: 'Spiagge riparate nelle vicinanze',
+  });
+  const items = sheltered.map(other => {
+    const otherName = displayName(other.name, `Beach ${other.id}`, language);
+    return `
+            <li style="margin:0;">
+              <a href="${escapeHtml(localizedPath(beachPath(region, island, other), locale))}" style="display:block;border:1px solid #bae6fd;border-radius:12px;padding:10px 12px;background:white;color:#0f172a;text-decoration:none;">
+                <strong style="color:#0e7490;">${escapeHtml(otherName)}</strong>
+                ${renderBeachSummaryMeta(other, language)}
+              </a>
+            </li>`;
+  }).join('');
+  return `
+        <section style="margin:22px 0 0;border-top:1px solid #bae6fd;padding-top:18px;">
+          <h2 style="margin:0 0 12px;font-size:20px;line-height:1.2;color:#075985;">${escapeHtml(heading)}</h2>
+          <ul style="display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:10px;margin:0;padding:0;list-style:none;">${items}</ul>
+        </section>`;
+};
+
 // Q/A pairs for FAQPage structured data. Each answer restates a fact already
 // shown on the page (dl row, amenity chip or narrative sentence) and only
 // positive, stable facts are emitted — so the set differs per beach and never
@@ -1782,34 +1840,39 @@ const intentBeachBlurbText = (region, beach, language) => {
   const lead = truncateForMeta(story.paragraphs[0], 150);
   return story.title ? `${story.title} — ${lead}` : lead;
 };
-const beachH1For = (beachName, islandName, language) => pickLang(language, {
-  en: `${beachName} Beach, ${islandName}`,
-  gr: `Παραλία ${beachName}, ${islandName}`,
-  de: `Strand ${beachName}, ${islandName}`,
-  fr: `Plage ${beachName}, ${islandName}`,
-  it: `Spiaggia ${beachName}, ${islandName}`,
+// Localized "Beach X" / "Παραλία X" label that never doubles the noun when the
+// resolved name already contains it (~21% of Greek names already include
+// "Παραλία", e.g. "Παραλία Φλοίσβου" was rendering "Παραλία Παραλία Φλοίσβου").
+// Mirrors utils/localization.ts#localizedBeachLabel — keep the two in sync.
+const BEACH_NOUN_BY_LANG = { en: 'Beach', gr: 'Παραλία', de: 'Strand', fr: 'Plage', it: 'Spiaggia' };
+const localizedBeachLabel = (beachName, language) => {
+  const noun = BEACH_NOUN_BY_LANG[language] || BEACH_NOUN_BY_LANG.en;
+  const alreadyHasNoun = new RegExp(`(^|\\s)${noun}(\\s|$)`, 'i').test(beachName);
+  if (alreadyHasNoun) return beachName;
+  return language === 'en' ? `${beachName} ${noun}` : `${noun} ${beachName}`;
+};
+const beachConditionsSuffix = language => pickLang(language, {
+  en: 'Wind & Waves Today',
+  gr: 'Άνεμος & προστασία σήμερα',
+  de: 'Wind & Wellen heute',
+  fr: "Vent & vagues aujourd'hui",
+  it: 'Vento e onde oggi',
 });
-const beachTitleFor = (beachName, islandName, language) => pickLang(language, {
-  en: `${beachName} Beach, ${islandName} | Wind & Waves Today`,
-  gr: `Παραλία ${beachName}, ${islandName} | Άνεμος & προστασία σήμερα`,
-  de: `Strand ${beachName}, ${islandName} | Wind & Wellen heute`,
-  fr: `Plage ${beachName}, ${islandName} | Vent & vagues aujourd'hui`,
-  it: `Spiaggia ${beachName}, ${islandName} | Vento e onde oggi`,
-});
-const beachAttractionName = (beachName, language) => pickLang(language, {
-  en: `${beachName} Beach`,
-  gr: `Παραλία ${beachName}`,
-  de: `Strand ${beachName}`,
-  fr: `Plage ${beachName}`,
-  it: `Spiaggia ${beachName}`,
-});
-const beachImageAltFor = (beachName, islandName, language) => pickLang(language, {
-  en: `${beachName} Beach in ${islandName}, Greece`,
-  gr: `Παραλία ${beachName}, ${islandName}`,
-  de: `Strand ${beachName}, ${islandName}, Griechenland`,
-  fr: `Plage ${beachName}, ${islandName}, Grèce`,
-  it: `Spiaggia ${beachName}, ${islandName}, Grecia`,
-});
+const beachH1For = (beachName, islandName, language) =>
+  `${localizedBeachLabel(beachName, language)}, ${islandName}`;
+const beachTitleFor = (beachName, islandName, language) =>
+  `${localizedBeachLabel(beachName, language)}, ${islandName} | ${beachConditionsSuffix(language)}`;
+const beachAttractionName = (beachName, language) => localizedBeachLabel(beachName, language);
+const beachImageAltFor = (beachName, islandName, language) => {
+  const label = localizedBeachLabel(beachName, language);
+  return pickLang(language, {
+    en: `${label} in ${islandName}, Greece`,
+    gr: `${label}, ${islandName}`,
+    de: `${label}, ${islandName}, Griechenland`,
+    fr: `${label}, ${islandName}, Grèce`,
+    it: `${label}, ${islandName}, Grecia`,
+  });
+};
 
 const staticBeachFallback = (beach, island, region, canonicalUrl, locale = prerenderLocales[0]) => {
   const language = locale.language;
@@ -1854,6 +1917,14 @@ const staticBeachFallback = (beach, island, region, canonicalUrl, locale = prere
           fr: `Guides plages — ${islandName}`,
           it: `Guide spiagge — ${islandName}`,
         }))}
+        ${renderNationalGuides(locale, pickLang(language, {
+          en: 'Beach guides across Greece',
+          gr: 'Οδηγοί παραλιών σε όλη την Ελλάδα',
+          de: 'Strandführer für ganz Griechenland',
+          fr: 'Guides plages dans toute la Grèce',
+          it: 'Guide spiagge in tutta la Grecia',
+        }))}
+        ${renderShelteredNearby(beach, island, region, language, locale)}
         ${renderNearbyBeaches(beach, island, region, language, locale)}
       </main>
     </div>
@@ -1992,6 +2063,7 @@ const listSectionHeadings = {
   accessible: { en: 'Accessible beaches with Seatrac access', gr: 'Προσβάσιμες παραλίες με Seatrac' },
   family: { en: 'Family-friendly beaches', gr: 'Οικογενειακές παραλίες' },
   camping: { en: 'Beaches with a campsite nearby', gr: 'Παραλίες με κάμπινγκ κοντά' },
+  top: { en: 'Popular beaches to check today', gr: 'Δημοφιλείς παραλίες για έλεγχο σήμερα' },
 };
 const hubSectionHeading = { en: 'Browse beaches by island & region', gr: 'Δες παραλίες ανά νησί & περιοχή' };
 const emptyListNote = { en: 'We are still adding beaches to this guide.', gr: 'Προσθέτουμε ακόμη παραλίες σε αυτόν τον οδηγό.' };
@@ -2134,7 +2206,15 @@ const renderRegionHubSection = (hubRegions, locale) => {
 // Pick the data-driven section for a landing based on its kind.
 const renderLandingDynamic = (landing, locale, dynamic) => {
   if (landing.kind === 'beachList') return renderBeachListSection(dynamic.items || [], locale, landing.category);
-  if (landing.kind === 'regionHub') return renderRegionHubSection(dynamic.hubRegions || [], locale);
+  if (landing.kind === 'regionHub') {
+    // best-beaches-greece-today also leads with real, crawlable links to the most
+    // popular individual beaches (it used to link regions only — a 2-hop crawl to
+    // any beach). Other regionHub pages (sheltered-meltemi) keep the region grid.
+    const topBeaches = (dynamic.topBeaches || []).length
+      ? renderBeachListSection(dynamic.topBeaches, locale, 'top')
+      : '';
+    return `${topBeaches}${renderRegionHubSection(dynamic.hubRegions || [], locale)}`;
+  }
   return '';
 };
 
@@ -2416,7 +2496,7 @@ const buildBeachPage = (baseHtml, island, beach, region, imageUrl, locale = prer
   const islandName = displayName(island.name, region.id, language);
   const description = beachMetaDescription(beach, region, beachName, islandName, language);
   const title = beachTitleFor(beachName, islandName, language);
-  const beachPageName = `${beachName} Beach`;
+  const beachPageName = localizedBeachLabel(beachName, language);
   const beachRegionPageName = `${islandName} beaches`;
   // When a curated editorial story exists, expose its full text as the
   // schema.org disambiguatingDescription so the entity carries the rich,
@@ -2521,6 +2601,7 @@ const main = async () => {
   // the summary tier unchanged.
   const categoryBuckets = { accessible: [], family: [], camping: [] };
   const hubRegions = [];
+  const topBeaches = [];
   const islandIntentPages = [];
   let islandIntentBelowMin = 0;
   for (const region of beachIndex.regions || []) {
@@ -2539,6 +2620,7 @@ const main = async () => {
     for (const beach of island.beaches) {
       if (!Number.isInteger(beach.id) || !beach.name) continue;
       const entry = { beach, region, island };
+      topBeaches.push(entry);
       if (beach.environment?.familyFriendly === true) categoryBuckets.family.push(entry);
       // Mirror hasDisabledAccess in services/recommendationService.ts: seatrac may
       // sit on the beach or under metadata, and only an online unit qualifies
@@ -2574,11 +2656,15 @@ const main = async () => {
     categoryBuckets[key] = categoryBuckets[key].slice(0, LANDING_LIST_CAP);
   }
 
+  // National most-popular beaches, for the best-beaches-greece-today hub.
+  topBeaches.sort((a, b) => (b.beach.popularityScore ?? 0) - (a.beach.popularityScore ?? 0));
+  const topNationalBeaches = topBeaches.slice(0, LANDING_LIST_CAP);
+
   for (const landing of seoLandingPages) {
     const dynamic = landing.kind === 'beachList'
       ? { items: categoryBuckets[landing.category] || [] }
       : landing.kind === 'regionHub'
-        ? { hubRegions }
+        ? { hubRegions, topBeaches: landing.pathName === '/best-beaches-greece-today/' ? topNationalBeaches : [] }
         : {};
 
     for (const locale of prerenderLocales) {

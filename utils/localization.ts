@@ -29,6 +29,21 @@ export const displayBeachName = (name: Beach['name'], language: LanguageCode): s
   return toGreeklish(name.gr || name.en) || name.en;
 };
 
+// Localized "Beach X" / "Παραλία X" label, but never doubled when the resolved
+// name already contains the noun: ~21% of Greek names already include "Παραλία"
+// (e.g. "Παραλία Φλοίσβου", "Βοτσαλωτή Παραλία"), which was rendering as
+// "Παραλία Παραλία Φλοίσβου". English appends the noun, the other locales prepend it.
+// Keep in sync with the same helper in scripts/prerenderBeachPages.mjs.
+const beachNounByLanguage: Record<LanguageCode, string> = {
+  en: 'Beach', gr: 'Παραλία', de: 'Strand', fr: 'Plage', it: 'Spiaggia',
+};
+export const localizedBeachLabel = (resolvedName: string, language: LanguageCode): string => {
+  const noun = beachNounByLanguage[language] || beachNounByLanguage.en;
+  const alreadyHasNoun = new RegExp(`(^|\\s)${noun}(\\s|$)`, 'i').test(resolvedName);
+  if (alreadyHasNoun) return resolvedName;
+  return language === 'en' ? `${resolvedName} ${noun}` : `${noun} ${resolvedName}`;
+};
+
 export const displayIslandName = (name: { en: string; gr: string; fr: string; de: string; it: string }, language: LanguageCode): string => {
   if (language === 'gr') return name.gr || name.en;
   return name[language] || name.en;
