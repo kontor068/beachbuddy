@@ -3357,6 +3357,10 @@ export const App: React.FC = () => {
         windProfile: islandWindAssessment.windProfile,
         windProfileSource: islandWindAssessment.source,
         windSector: islandWindAssessment.windSector,
+        // Carry the beach's own scored wind (cluster when loaded, else island) so the
+        // directory/list cards derive their Beaufort from the SAME wind as their wave —
+        // and match the detail page. Marker colour still uses the island wind above.
+        windSpeedKmph: scoreResult.windSpeedKmph,
         waveHeightM: scoreResult.waveHeightM,
         warnings: scoreResult.warnings,
         confidence: scoreResult.confidence,
@@ -4004,6 +4008,7 @@ export const App: React.FC = () => {
         exposureLevel: context.exposureLevel,
         canClaimWindProtection: context.canClaimWindProtection,
         seaCalmClaimAllowed: context.seaCalmClaimAllowed,
+        windSpeedKmph: context.windSpeedKmph,
         waveHeightM: context.waveHeightM,
         warnings: context.warnings,
         confidence: context.confidence,
@@ -4025,6 +4030,7 @@ export const App: React.FC = () => {
         exposureLevel: context.exposureLevel,
         canClaimWindProtection: context.canClaimWindProtection,
         seaCalmClaimAllowed: context.seaCalmClaimAllowed,
+        windSpeedKmph: context.windSpeedKmph,
         waveHeightM: context.waveHeightM,
         warnings: context.warnings,
         confidence: context.confidence,
@@ -4058,6 +4064,7 @@ export const App: React.FC = () => {
       exposureLevel: item.exposureLevel,
       canClaimWindProtection: item.canClaimWindProtection,
       seaCalmClaimAllowed: item.seaCalmClaimAllowed,
+      windSpeedKmph: item.windSpeedKmph,
       waveHeightM: item.waveHeightM,
       warnings: item.warnings,
       confidence: item.confidence,
@@ -4074,6 +4081,7 @@ export const App: React.FC = () => {
       exposureLevel: item.exposureLevel,
       canClaimWindProtection: item.canClaimWindProtection,
       seaCalmClaimAllowed: item.seaCalmClaimAllowed,
+      windSpeedKmph: item.windSpeedKmph,
       waveHeightM: item.waveHeightM,
       warnings: item.warnings,
       confidence: item.confidence,
