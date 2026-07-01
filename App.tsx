@@ -3169,16 +3169,19 @@ export const App: React.FC = () => {
     const scores = new Map<number, BeachScore>();
     if (!selectedIsland || !deferredSelectedForecast) return scores;
     selectedIsland.beaches.forEach(beach => {
-      const beachSpecificForecast = hourAdjustedBeachForecasts[beach.id];
-      const beachForecast = beachSpecificForecast || deferredSelectedForecast;
-      scores.set(beach.id, calculateBeachScore(beach, beachForecast, userLocation, preferences, {
-        weatherSource: beachSpecificForecast ? 'beach-cluster' : 'island-fallback',
-        hourlyForecast: beachForecast.hourly || deferredSelectedForecast.hourly,
+      // Score every beach from the AREA (island) forecast so its displayed Beaufort, wave
+      // and verdict are ONE consistent, immediately-available figure — the same on the card
+      // and the detail page, with no flip to a per-beach cluster value once the background
+      // cluster forecasts land. The cluster forecast is surfaced only via the map-hover local
+      // wind and the "a bit windier/calmer right here" note — never the headline number.
+      scores.set(beach.id, calculateBeachScore(beach, deferredSelectedForecast, userLocation, preferences, {
+        weatherSource: 'island-fallback',
+        hourlyForecast: deferredSelectedForecast.hourly,
         geospatialProfile: geospatialExposureProfiles?.[beach.id],
       }));
     });
     return scores;
-  }, [selectedIsland, deferredSelectedForecast, hourAdjustedBeachForecasts, userLocation, preferences, geospatialExposureProfiles]);
+  }, [selectedIsland, deferredSelectedForecast, userLocation, preferences, geospatialExposureProfiles]);
   // Localized "time window" label for the selected slider hour (e.g. "στις 15:00–18:00"),
   // shown in the suitable-beach header so it reflects the moment, not just "today".
   const selectedHourPrefix = useMemo(() => {
@@ -3252,17 +3255,15 @@ export const App: React.FC = () => {
 
     if (!hasBeachSearchQuery && selectedForecast && effectiveSortBy === 'recommended') {
       const waveHeightM = selectedForecast.marine?.waveHeightM;
+      const beachWindSpeedKmph = selectedForecast.wind.speed * 3.6;
       const weatherSuitableBeaches = beaches.filter(beach => {
-        const beachSpecificForecast = hourAdjustedBeachForecasts[beach.id];
-        const beachForecast = beachSpecificForecast || selectedForecast;
-        const beachWindSpeedKmph = beachForecast.wind.speed * 3.6;
-        const scoreResult = beachScoreById.get(beach.id) ?? calculateBeachScore(beach, beachForecast, userLocation, preferences, {
-          weatherSource: beachSpecificForecast ? 'beach-cluster' : 'island-fallback',
-          hourlyForecast: beachForecast.hourly || selectedForecast.hourly,
+        const scoreResult = beachScoreById.get(beach.id) ?? calculateBeachScore(beach, selectedForecast, userLocation, preferences, {
+          weatherSource: 'island-fallback',
+          hourlyForecast: selectedForecast.hourly,
           geospatialProfile: geospatialExposureProfiles?.[beach.id],
         });
         const isExposed = scoreResult.exposureLevel ? scoreResult.exposureLevel !== 'protected' : true;
-        const beachWaveHeightM = scoreResult.waveHeightM ?? beachForecast.marine?.waveHeightM ?? waveHeightM;
+        const beachWaveHeightM = scoreResult.waveHeightM ?? selectedForecast.marine?.waveHeightM ?? waveHeightM;
         return !hasPoorSeaConditions(isExposed, beachWindSpeedKmph, scoreResult.exposureLevel, beachWaveHeightM);
       });
       beaches = weatherSuitableBeaches.length > 0 ? weatherSuitableBeaches : beaches;
@@ -3271,7 +3272,7 @@ export const App: React.FC = () => {
       const result = getFilteredBeaches(beaches, filters, deferredBeachSearchQuery, effectiveSortBy, windDirection, selectedForecast, userLocation, preferences);
     return result;
     }
-  ), [beachScoreById, deferredBeachSearchQuery, geospatialExposureProfiles, getFilteredBeaches, preferences, hourAdjustedBeachForecasts, selectedForecast, selectedIsland, userLocation]);
+  ), [beachScoreById, deferredBeachSearchQuery, geospatialExposureProfiles, getFilteredBeaches, preferences, selectedForecast, selectedIsland, userLocation]);
 
   const filteredBeaches = useMemo(() => (
     getFilteredBeachResults(selectedFilters, sortBy)
@@ -3284,8 +3285,11 @@ export const App: React.FC = () => {
 
   const suitableBeaches = useMemo(() => {
     if (!selectedIsland || !deferredSelectedForecast) return [];
-    return getSuitableBeaches(selectedIsland.beaches, deferredSelectedForecast, language, userLocation, deferredSelectedForecast.hourly, preferences, hourAdjustedBeachForecasts, geospatialExposureProfiles, beachScoreById);
-  }, [selectedIsland, deferredSelectedForecast, language, userLocation, preferences, hourAdjustedBeachForecasts, geospatialExposureProfiles, beachScoreById]);
+    // Pass no per-beach cluster map: the beach's displayed wind/wave/verdict all read from
+    // the AREA forecast (reusing beachScoreById, which is now island-scored) so a beach shows
+    // the same figure on its card and detail. Cluster stays for the notes/map-hover only.
+    return getSuitableBeaches(selectedIsland.beaches, deferredSelectedForecast, language, userLocation, deferredSelectedForecast.hourly, preferences, undefined, geospatialExposureProfiles, beachScoreById);
+  }, [selectedIsland, deferredSelectedForecast, language, userLocation, preferences, geospatialExposureProfiles, beachScoreById]);
 
   const mapSuitableBeaches = useMemo<SuitableBeach[]>(() => {
     if (!selectedIsland) return [];
@@ -3313,17 +3317,14 @@ export const App: React.FC = () => {
         };
       }
 
-      const beachSpecificForecast = hourAdjustedBeachForecasts[beach.id];
-      const beachForecast = beachSpecificForecast || selectedForecast;
-      // Score from the SAME urgent forecast that drives this item's exposure and the
-      // wind the card displays — NOT the deferred beachScoreById. beachScoreById lags
-      // behind selectedForecast during a region/hour change (useDeferredValue), so
-      // reusing it here made a card's score disagree with its own exposure/wind: the
-      // beach could sit in the "suitable" list (current wind ok) while its badge read
-      // "not ideal today" off the stale low score, until a refresh cleared the lag.
-      const scoreResult = calculateBeachScore(beach, beachForecast, userLocation, preferences, {
-        weatherSource: beachSpecificForecast ? 'beach-cluster' : 'island-fallback',
-        hourlyForecast: beachForecast.hourly || selectedForecast.hourly,
+      // Score from the AREA (island) forecast — the same one the map arrow/colour and the
+      // card headline use — so a beach reads ONE consistent wind/wave/verdict everywhere,
+      // available immediately with no flip to a per-beach cluster value on load. Use the
+      // urgent selectedForecast (not the deferred beachScoreById) so the score never lags
+      // behind a region/hour change. Cluster wind stays for the map-hover + local notes only.
+      const scoreResult = calculateBeachScore(beach, selectedForecast, userLocation, preferences, {
+        weatherSource: 'island-fallback',
+        hourlyForecast: selectedForecast.hourly,
         geospatialProfile: geospatialExposure,
       });
 
@@ -3373,7 +3374,7 @@ export const App: React.FC = () => {
         geospatialExposure,
       };
     });
-  }, [geospatialExposureProfiles, language, preferences, hourAdjustedBeachForecasts, selectedForecast, selectedIsland, userLocation]);
+  }, [geospatialExposureProfiles, language, preferences, selectedForecast, selectedIsland, userLocation]);
 
   // Saved beaches (favorites) in the active island, each carrying the SAME scored verdict
   // the home cards show — reuse mapSuitableBeaches, which scores EVERY island beach, so a
@@ -3390,8 +3391,8 @@ export const App: React.FC = () => {
 
   const dailySuitableBeaches = useMemo(() => {
     if (!selectedIsland || !deferredSelectedForecast) return [];
-    return getSuitableBeaches(selectedIsland.beaches, deferredSelectedForecast, language, undefined, deferredSelectedForecast.hourly, undefined, hourAdjustedBeachForecasts, geospatialExposureProfiles);
-  }, [selectedIsland, deferredSelectedForecast, language, hourAdjustedBeachForecasts, geospatialExposureProfiles]);
+    return getSuitableBeaches(selectedIsland.beaches, deferredSelectedForecast, language, undefined, deferredSelectedForecast.hourly, undefined, undefined, geospatialExposureProfiles);
+  }, [selectedIsland, deferredSelectedForecast, language, geospatialExposureProfiles]);
 
   const hasActivePreferenceFilters = useMemo(() => {
     return Object.values(preferences).some(Boolean);

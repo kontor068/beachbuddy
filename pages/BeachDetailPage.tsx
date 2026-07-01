@@ -689,12 +689,14 @@ export const BeachDetailPage: React.FC<BeachDetailPageProps> = ({
   const canNavigate = canOpenNavigation(beach);
 
   // 1. Calculate Conditions & Scores
+  // The per-beach cluster forecast is kept ONLY for the "a bit windier/calmer right here"
+  // note (see localWindNote below). The headline wind, wave and verdict all read from the
+  // AREA (island) forecast so the detail page shows the SAME figure as the card — one
+  // consistent number, immediately, instead of a per-beach value that contradicts the list.
   const beachSpecificWeatherData = beachWeatherById?.[beach.id];
-  const weatherData = beachSpecificWeatherData || dayForecast;
-  const scoringHourlyForecast = beachSpecificWeatherData?.hourly?.length
-    ? beachSpecificWeatherData.hourly
-    : hourlyForecast;
-  const scoringWeatherSource: WeatherSource = beachSpecificWeatherData ? 'beach-cluster' : weatherSource;
+  const weatherData = dayForecast;
+  const scoringHourlyForecast = hourlyForecast;
+  const scoringWeatherSource: WeatherSource = weatherSource;
   const displayTemp = weatherData.temp_max;
   const windSpeedKmh = weatherData.wind.speed * 3.6;
   const windDir = degToCompass(weatherData.wind.deg);
@@ -911,7 +913,8 @@ export const BeachDetailPage: React.FC<BeachDetailPageProps> = ({
       hourlyForecast,
       preferences,
       language,
-      beachWeatherById,
+      // No cluster map: nearby cards read the AREA wind, same as the main headline.
+      undefined,
       geospatialExposureProfiles
     );
     return recommendations.map(rec => {
@@ -920,7 +923,7 @@ export const BeachDetailPage: React.FC<BeachDetailPageProps> = ({
       const dist = calculateDistance(beach.coordinates.lat, beach.coordinates.lon, b.coordinates.lat, b.coordinates.lon);
       return { ...rec, beach: b, distance: dist, geospatialExposure: geospatialExposureProfiles?.[b.id] };
     }).filter((item): item is NonNullable<typeof item> => item !== null);
-  }, [allBeaches, beach, dayForecast, userLocation, hourlyForecast, preferences, language, beachWeatherById, geospatialExposureProfiles]);
+  }, [allBeaches, beach, dayForecast, userLocation, hourlyForecast, preferences, language, geospatialExposureProfiles]);
 
   // Meltemi seasonal shelter atlas: this cove's N/NE-summer behaviour + the island's
   // reliably-sheltered coves. Endorsement is gated to genuinely 'protected' meltemi
@@ -1758,9 +1761,16 @@ export const BeachDetailPage: React.FC<BeachDetailPageProps> = ({
                   campsites={nearbyCampsites.map((c) => ({ id: c.id, name: c.name, lat: c.coordinates.lat, lon: c.coordinates.lon }))}
                   center={[beach.coordinates.lat, beach.coordinates.lon]}
                   zoom={14}
-                  windSpeed={weatherData.wind.speed}
-                  windDirection={windDir}
-                  windDirectionDeg={weatherData.wind.deg}
+                  // Colour the pin from the ISLAND/selected-day wind (dayForecast), the
+                  // same basis the region map and the exposure-level override use — NOT the
+                  // per-beach cluster wind (weatherData), which drives the score/headline but
+                  // would tone the pin off a different Beaufort. The override pins the exposure
+                  // LEVEL, but getExposureMarkerTone also keys on Beaufort, so a cluster wind
+                  // one band lower (e.g. 2 Bft vs the island's 3) rendered the same beach blue
+                  // in the detail map while the region map showed it yellow.
+                  windSpeed={dayForecast.wind.speed}
+                  windDirection={degToCompass(dayForecast.wind.deg)}
+                  windDirectionDeg={dayForecast.wind.deg}
                   language={language}
                   islandName={islandName}
                   selectedDate={selectedDate}
@@ -1862,7 +1872,7 @@ export const BeachDetailPage: React.FC<BeachDetailPageProps> = ({
                 <div className="flex flex-col gap-3">
                   {nearbyBeaches.map((item) => {
                     const itemIsExposed = item.exposureLevel ? item.exposureLevel !== 'protected' : true;
-                    const itemWeatherData = beachWeatherById?.[item.beachId] || dayForecast;
+                    const itemWeatherData = dayForecast;
                     const itemWindSpeedKmh = itemWeatherData.wind.speed * 3.6;
                     const itemBeaufortLevel = getBeaufortLevel(itemWindSpeedKmh);
                     const itemWindDir = degToCompass(itemWeatherData.wind.deg);
