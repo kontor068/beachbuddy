@@ -34,7 +34,7 @@ const rootDir = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..')
 const seedArg = process.argv.find((a) => a.startsWith('--seed='));
 const DATA = path.join(rootDir, 'public', 'greek_beaches.json');
 const SEED = seedArg ? path.resolve(rootDir, seedArg.slice('--seed='.length)) : path.join(rootDir, 'scripts', 'data', 'osm-gap-verified.json');
-const popCachePath = path.join(rootDir, '.tmp', 'google-popularity-cache.json');
+const popCachePath = path.join(rootDir, 'data', 'places-cache', 'google-popularity-cache.json'); // committed cache so re-runs never re-bill (was .tmp/, which gets wiped)
 
 const BATCH = 'osm_coverage_gap_2026_06';
 const NEAR_M = 400;

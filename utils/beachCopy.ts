@@ -98,7 +98,7 @@ const formatWaveHeight = (waveHeightM?: number, language: LanguageCode = 'gr'): 
 const sentenceCase = (value: string): string =>
   value ? `${value.charAt(0).toUpperCase()}${value.slice(1)}` : value;
 
-const stableVariantIndex = (seed: number | string | undefined, count: number): number => {
+export const stableVariantIndex = (seed: number | string | undefined, count: number): number => {
   if (count <= 1) return 0;
   const text = String(seed ?? 0);
   let hash = 0;

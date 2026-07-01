@@ -15,7 +15,7 @@
  * badge (trustworthy Google identity); others are left without popularity data.
  *
  * Writes metadata.popularity = { tier, rating, ratingCount, source:'google-places', checkedAt }.
- * Cached in .tmp/google-popularity-cache.json (gitignored) so re-runs are free. Place Details
+ * Cached in data/places-cache/google-popularity-cache.json (committed) so re-runs are free. Place Details
  * rating/userRatingCount is the Pro SKU.
  *
  * Usage:
@@ -30,7 +30,7 @@ import { openPlaceCache } from './lib/placeResolution.mjs';
 
 const rootDir = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const sourcePath = path.join(rootDir, 'public', 'greek_beaches.json');
-const cachePath = path.join(rootDir, '.tmp', 'google-popularity-cache.json');
+const cachePath = path.join(rootDir, 'data', 'places-cache', 'google-popularity-cache.json'); // committed cache so re-runs never re-bill (was .tmp/, which gets wiped)
 
 const args = { apply: false, limit: undefined, sleepMs: 120 };
 for (const a of process.argv.slice(2)) {

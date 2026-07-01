@@ -23,7 +23,7 @@ const publicDir = path.join(rootDir, 'public');
 const indexPath = path.join(publicDir, 'data', 'beaches', 'index.json');
 const sourcePath = path.join(publicDir, 'greek_beaches.json');
 const outDir = path.join(rootDir, 'reports', 'place-resolution');
-const cachePath = path.join(rootDir, '.tmp', 'google-places-cache.json');
+const cachePath = path.join(rootDir, 'data', 'places-cache', 'google-places-cache.json'); // committed cache so re-runs never re-bill (was .tmp/, which gets wiped)
 const APPLY = process.argv.includes('--apply');
 // Accept a placeId only when the correctly-named Google beach sits within ACCEPT_M of our pin (so the
 // Maps card and the in-app pin agree). A correctly-named beach 400 m–FAR_M away means our PIN is

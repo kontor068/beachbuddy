@@ -23,7 +23,7 @@
  *                    → google-upgrade.json + google-upgrade-fixes.json (navMode place, with query)
  *                      + google-upgrade-skipped.csv (the ones left on coordinates, for visibility).
  *
- * Results are disk-cached (.tmp/google-places-cache.json, gitignored) so batched/re-runs never
+ * Results are disk-cached (data/places-cache/google-places-cache.json, committed) so batched/re-runs never
  * re-bill. Minimal field mask keeps requests in the cheap tier. Needs GOOGLE_PLACES_API_KEY.
  * Read-only on beach data — apply fixes separately via scripts/applyNavigationAudit.mjs.
  *
@@ -41,7 +41,7 @@ const rootDir = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..')
 const publicDir = path.join(rootDir, 'public');
 const indexPath = path.join(publicDir, 'data', 'beaches', 'index.json');
 const outDir = path.join(rootDir, 'reports', 'place-resolution');
-const cachePath = path.join(rootDir, '.tmp', 'google-places-cache.json'); // gitignored; re-runs free
+const cachePath = path.join(rootDir, 'data', 'places-cache', 'google-places-cache.json'); // committed cache so re-runs never re-bill
 
 // API key: env or .env.local (same precedence as the other audit scripts).
 const readKey = () => {

@@ -43,6 +43,7 @@ import { QUICK_PREFERENCE_FILTERS } from './utils/preferenceFilterLabels';
 import { canOpenNavigation, openNavigation } from './utils/navigation';
 import { displayBeachName, localizedBeachLabel } from './utils/localization';
 import { hasBoatOnlyAccess, hasDifficultTopPickAccess, hasMainstreamTopPickAccess, isAdventureBeach } from './utils/access';
+import { getBeachPopularityRating } from './utils/beachRating';
 import { buildBeachDetailPath, buildBeachRegionPath, parseBeachDetailPath, parseBeachRegionPath, regionMatchesRouteParam } from './utils/beachUrls';
 import { describeSimpleWindSuitability } from './utils/windExposureCopy';
 import {
@@ -52,6 +53,7 @@ import {
   isSelectedDateToday,
 } from './utils/dateLabels';
 import { getTopPickTiming, getTopPickTimingLabel, topPickTimingPriority } from './utils/topPickTiming';
+import { rotateEquivalentTopPicks } from './utils/topPickVariety';
 import { getActiveWeatherFixtureScenario } from './utils/weatherFixtures';
 import { getBeachTouristRecognitionScore } from './utils/touristPriority';
 import { getConsistentVisibleMapExposureLevels } from './utils/mapExposure';
@@ -3482,9 +3484,19 @@ export const App: React.FC = () => {
     const protectedPriority = prioritizeProtectedRecommendations(topPickPool, beaufort);
     return prioritizeDynamicTopPickWindows(protectedPriority, selectedForecast.date, topPickNow);
   }, [selectedForecast, dailySuitableBeaches, hasActivePreferenceFilters, selectedBeachForecasts, suitableBeaches, topPickNow]);
-  const topRecommendedSuitableBeaches = useMemo(() => (
-    recommendedSuitableBeaches.slice(0, getTopRecommendationDisplayLimit(recommendedSuitableBeaches.length))
-  ), [recommendedSuitableBeaches]);
+  const topRecommendedSuitableBeaches = useMemo(() => {
+    // Day-to-day variety: on calm days, rotate #2/#3 among beaches that are genuinely
+    // equally-good today (keeps #1 fixed, never surfaces a harder-to-reach or worse
+    // beach). Seeded by island + calendar date so it is stable within a day and changes
+    // across days. Runs AFTER prioritizeDynamicTopPickWindows so the shown #1 is honoured.
+    const beaufort = selectedForecast ? getBeaufortLevel(selectedForecast.wind.speed * 3.6) : 0;
+    const varied = rotateEquivalentTopPicks(recommendedSuitableBeaches, {
+      beaufort,
+      dateKey: selectedForecast ? selectedForecast.date.toISOString().slice(0, 10) : '',
+      regionKey: String(selectedIsland?.id ?? ''),
+    });
+    return varied.slice(0, getTopRecommendationDisplayLimit(varied.length));
+  }, [recommendedSuitableBeaches, selectedForecast, selectedIsland]);
   const currentBeaufort = selectedForecast ? getBeaufortLevel(selectedForecast.wind.speed * 3.6) : 0;
   const isSevereWindNoTopRecommendationDay = currentBeaufort > MAX_TOP_RECOMMENDATION_BEAUFORT;
   // The canonical map-marker exposure level per beach, exactly as the region map
@@ -4137,7 +4149,7 @@ export const App: React.FC = () => {
       return {
         beachId: beach.id,
         name: displayBeachName(beach.name, language),
-        score: beachWithDistance.todayScore ?? Math.max(0, Math.min(100, Math.round(beach.rating * 20))),
+        score: beachWithDistance.todayScore ?? Math.max(0, Math.min(100, Math.round(getBeachPopularityRating(beach) * 20))),
         explanation: '',
         distance,
         beach,
@@ -4331,7 +4343,7 @@ export const App: React.FC = () => {
           island: selectedIsland,
           beachId: beach.id,
           beachName: beach.name,
-          beachRating: beach.rating,
+          beachRating: getBeachPopularityRating(beach),
           aliases: beach.aliases,
           legacySlugs: (beach as Beach & { legacySlugs?: string[] }).legacySlugs,
           regionValues: getIslandSearchValues(selectedIsland),

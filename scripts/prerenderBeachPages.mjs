@@ -265,6 +265,106 @@ const alternateUrlsFor = (pathName, locales = baseLocales) => [
 // pages without duplicating the link table.
 const seoLandingPages = [
   {
+    // A general site FAQ. kind 'info' → no dynamic beach/region block; the Q&A renders
+    // visibly AND becomes FAQPage JSON-LD (buildSeoLandingPage adds it from content.faq).
+    pathName: '/faq/',
+    kind: 'info',
+    locales: {
+      en: {
+        title: 'Frequently Asked Questions | CalmBeach Greece',
+        description: 'Common questions about CalmBeach: how reliable the forecast is, what wind exposure means, how wave height is worked out, where the data comes from and swimming safety.',
+        h1: 'Frequently asked questions',
+        intro: 'CalmBeach helps you pick a calm beach for today by comparing wind, waves, weather, exposure and access across more than 2,500 Greek beaches. Here are the questions people ask most.',
+        sections: [],
+        faq: [
+          {
+            q: 'How reliable is the CalmBeach forecast?',
+            a: 'Wind, waves and temperature are a live weather forecast, not an on-the-spot measurement. It shows what is likely, so it is more accurate closer to the day than a week ahead. We present it as honestly as we can — for example a wave-height range instead of a false single number — and you should always double-check with your own eyes when you arrive.',
+          },
+          {
+            q: 'What does wind exposure mean and how do you find the calmest beaches?',
+            a: 'For each beach we look at the shoreline orientation and the surrounding terrain to work out whether today\'s wind blows onshore (exposed, with waves) or the land shelters it (leeward, calm water). That is how, on the same day, we can tell which beaches will be calm and which choppy — something a plain weather map will not.',
+          },
+          {
+            q: 'How do you work out the wave height, and what does the graphic show?',
+            a: 'We combine the marine forecast with a physical model of how much wave the wind can build at each beach, based on how much open water lies in front of it. The graphic shows a real-scale person (about 1.75 m) and how high the water reaches them, so you grasp the wave size at a glance. The stated height is the average of the bigger waves — occasional sets run higher.',
+          },
+          {
+            q: 'Is CalmBeach free?',
+            a: 'Yes, CalmBeach is completely free to use.',
+          },
+          {
+            q: 'How often is the data updated?',
+            a: 'The weather and sea forecast is live and refreshes several times a day. Beach details such as location, facilities and access are updated periodically.',
+          },
+          {
+            q: 'Where does the data come from?',
+            a: 'Weather and sea conditions come from the Open-Meteo forecast service. Beach details come from open data (OpenStreetMap) plus our own curation and checks. Accessible sea-access (Seatrac) points come from the official seatrac.gr directory.',
+          },
+          {
+            q: 'How many beaches does CalmBeach cover?',
+            a: 'CalmBeach covers over 2,500 beaches across Greece, and we keep adding and refining them.',
+          },
+          {
+            q: 'Can I rely on it for swimming safety?',
+            a: 'It gives a good sense of how calm or rough the sea will be, but it does not replace your own judgement or a lifeguard. Always watch the waves, currents and local signs — even small waves can create dangerous rip currents.',
+          },
+        ],
+        links: [
+          { href: '/', label: 'Open CalmBeach Greece' },
+          { href: '/best-beaches-greece-today/', label: 'Best beaches in Greece today' },
+          { href: '/accessible-beaches-greece/', label: 'Accessible beaches in Greece' },
+        ],
+      },
+      el: {
+        title: 'Συχνές ερωτήσεις | CalmBeach Greece',
+        description: 'Συχνές ερωτήσεις για το CalmBeach: πόσο αξιόπιστη είναι η πρόγνωση, τι σημαίνει έκθεση σε άνεμο, πώς υπολογίζεται το κύμα, από πού είναι τα δεδομένα και ασφάλεια στο μπάνιο.',
+        h1: 'Συχνές ερωτήσεις',
+        intro: 'Το CalmBeach σε βοηθά να διαλέξεις ήρεμη παραλία για σήμερα, συγκρίνοντας άνεμο, κύμα, καιρό, έκθεση και πρόσβαση σε πάνω από 2.500 ελληνικές παραλίες. Εδώ είναι οι πιο συχνές ερωτήσεις.',
+        sections: [],
+        faq: [
+          {
+            q: 'Πόσο αξιόπιστη είναι η πρόγνωση του CalmBeach;',
+            a: 'Ο άνεμος, το κύμα και η θερμοκρασία είναι ζωντανή μετεωρολογική πρόγνωση, όχι μέτρηση επί τόπου. Δείχνει τι είναι πιθανό να επικρατεί, γι\' αυτό είναι πιο ακριβής κοντά στη μέρα παρά μία βδομάδα μπροστά. Την παρουσιάζουμε όσο πιο τίμια γίνεται — π.χ. εύρος κύματος αντί για ένα δήθεν «σίγουρο» νούμερο — και καλό είναι να την ελέγχεις πάντα και με τα μάτια σου φτάνοντας.',
+          },
+          {
+            q: 'Τι σημαίνει «έκθεση σε άνεμο» και πώς βρίσκετε τις πιο ήρεμες παραλίες;',
+            a: 'Για κάθε παραλία κοιτάμε τον προσανατολισμό της ακτής και το γύρω ανάγλυφο, ώστε να δούμε αν ο σημερινός άνεμος φυσάει προς τα μέσα (εκτεθειμένη, με κύμα) ή αν η στεριά την προστατεύει (υπήνεμη, ήρεμα νερά). Έτσι, την ίδια μέρα, ξεχωρίζουμε ποιες παραλίες θα είναι ήρεμες και ποιες αγριεμένες — κάτι που ένας απλός χάρτης καιρού δεν σου λέει.',
+          },
+          {
+            q: 'Πώς υπολογίζετε το ύψος κύματος και τι δείχνει το γραφικό;',
+            a: 'Συνδυάζουμε τη θαλάσσια πρόγνωση με ένα φυσικό μοντέλο που εκτιμά πόσο κύμα μπορεί να χτίσει ο άνεμος σε κάθε παραλία, ανάλογα με το πόσο ανοιχτή θάλασσα έχει μπροστά της. Το γραφικό δείχνει έναν άνθρωπο σε πραγματική κλίμακα (περίπου 1,75 μ.) και μέχρι πού του φτάνει το νερό, ώστε να καταλαβαίνεις το μέγεθος του κύματος με μια ματιά. Το αναγραφόμενο ύψος είναι ο μέσος όρος των μεγαλύτερων κυμάτων — κατά διαστήματα κάποια σετ είναι ψηλότερα.',
+          },
+          {
+            q: 'Είναι δωρεάν το CalmBeach;',
+            a: 'Ναι, το CalmBeach είναι εντελώς δωρεάν.',
+          },
+          {
+            q: 'Κάθε πότε ανανεώνονται τα δεδομένα;',
+            a: 'Η πρόγνωση καιρού και θάλασσας είναι ζωντανή και ανανεώνεται πολλές φορές μέσα στην ημέρα. Τα στοιχεία των παραλιών (τοποθεσία, παροχές, πρόσβαση) ενημερώνονται περιοδικά.',
+          },
+          {
+            q: 'Από πού προέρχονται τα δεδομένα;',
+            a: 'Ο καιρός και η θάλασσα από την υπηρεσία πρόγνωσης Open-Meteo. Τα στοιχεία των παραλιών από ανοιχτά δεδομένα (OpenStreetMap) και δική μας επιμέλεια και έλεγχο. Τα σημεία πρόσβασης ΑμεΑ στη θάλασσα (Seatrac) από την επίσημη λίστα του seatrac.gr.',
+          },
+          {
+            q: 'Πόσες παραλίες καλύπτει το CalmBeach;',
+            a: 'Το CalmBeach καλύπτει πάνω από 2.500 παραλίες σε όλη την Ελλάδα, και συνεχώς προσθέτουμε και βελτιώνουμε.',
+          },
+          {
+            q: 'Μπορώ να βασιστώ σε αυτό για ασφάλεια στο μπάνιο;',
+            a: 'Δίνει καλή εικόνα του πόσο ήρεμη ή αγριεμένη θα είναι η θάλασσα, αλλά δεν αντικαθιστά την κρίση σου ή τον ναυαγοσώστη. Πρόσεχε πάντα τα κύματα, τα ρεύματα και τις τοπικές πινακίδες — ακόμη και μικρά κύματα μπορούν να δημιουργήσουν επικίνδυνα ρεύματα επαναφοράς.',
+          },
+        ],
+        links: [
+          { href: '/', label: 'Άνοιξε το CalmBeach' },
+          { href: '/best-beaches-greece-today/', label: 'Καλύτερες παραλίες σήμερα' },
+          { href: '/accessible-beaches-greece/', label: 'Προσβάσιμες παραλίες ΑμεΑ' },
+        ],
+      },
+    },
+  },
+  {
     pathName: '/best-beaches-greece-today/',
     kind: 'regionHub',
     locales: {
@@ -287,6 +387,7 @@ const seoLandingPages = [
           { href: '/', label: 'Open today\'s beach recommendations' },
           { href: '/family-beaches-greece/', label: 'Family beaches in Greece' },
           { href: '/sheltered-beaches-meltemi/', label: 'Sheltered beaches in the Meltemi' },
+          { href: '/faq/', label: 'How CalmBeach works (FAQ)' },
         ],
       },
       el: {
@@ -308,6 +409,7 @@ const seoLandingPages = [
           { href: '/', label: 'Δες τις σημερινές προτάσεις' },
           { href: '/family-beaches-greece/', label: 'Οικογενειακές παραλίες' },
           { href: '/sheltered-beaches-meltemi/', label: 'Απάνεμες παραλίες με μελτέμι' },
+          { href: '/faq/', label: 'Συχνές ερωτήσεις' },
         ],
       },
     },
@@ -371,6 +473,7 @@ const seoLandingPages = [
         h1: 'Accessible Beaches in Greece',
         intro: 'Find beaches in Greece with easier access information, wheelchair-friendly facilities, ramps, accessible paths or Seatrac-style access where this information is available. CalmBeach helps you compare beach conditions and choose a suitable beach for today.',
         trustNote: 'Accessibility information can change by season and municipality. Always check local signage or official local sources before visiting.',
+        faqHeading: 'Accessible beaches FAQ',
         faq: [
           {
             q: 'How does CalmBeach identify accessible beaches?',
@@ -1980,11 +2083,13 @@ const landingChromeCopy = {
   en: {
     openApp: 'Open app',
     related: 'Related CalmBeach pages',
+    faqLabel: 'Frequently asked questions',
     disclaimer: 'Recommendations are indicative and depend on available weather and beach data. Conditions may vary locally.',
   },
   gr: {
     openApp: 'Άνοιγμα',
     related: 'Σχετικές σελίδες CalmBeach',
+    faqLabel: 'Συχνές ερωτήσεις',
     disclaimer: 'Οι προτάσεις είναι ενδεικτικές και εξαρτώνται από τα διαθέσιμα δεδομένα καιρού και παραλιών. Οι συνθήκες μπορεί να διαφέρουν τοπικά.',
   },
 };
@@ -2027,6 +2132,19 @@ const staticSeoLandingPage = (content, locale, dynamicHtml = '') => {
             </section>
           `).join('')}
         </div>
+        ${faqItems.length > 0 ? `
+        <section style="margin:28px 0;border-top:1px solid #bae6fd;padding-top:18px;">
+          <h2 style="margin:0 0 12px;font-size:22px;line-height:1.2;color:#075985;">${escapeHtml(content.faqHeading || chrome.faqLabel)}</h2>
+          <dl style="display:grid;gap:12px;margin:0;">
+            ${faqItems.map(item => `
+              <div style="border:1px solid #bae6fd;border-radius:12px;background:white;padding:12px 14px;">
+                <dt style="margin:0 0 6px;font-size:16px;font-weight:800;color:#0f172a;">${escapeHtml(item.q)}</dt>
+                <dd style="margin:0;color:#475569;font-size:15px;line-height:1.55;">${escapeHtml(item.a)}</dd>
+              </div>
+            `).join('')}
+          </dl>
+        </section>
+        ` : ''}
         ${secondaryLinks.length > 0 ? `
         <nav aria-label="${escapeHtml(chrome.related)}">
           <ul style="display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:10px;margin:0;padding:0;list-style:none;">
@@ -2037,19 +2155,6 @@ const staticSeoLandingPage = (content, locale, dynamicHtml = '') => {
             `).join('')}
           </ul>
         </nav>
-        ` : ''}
-        ${faqItems.length > 0 ? `
-        <section style="margin:28px 0 0;border-top:1px solid #bae6fd;padding-top:18px;">
-          <h2 style="margin:0 0 12px;font-size:22px;line-height:1.2;color:#075985;">Accessible beaches FAQ</h2>
-          <dl style="display:grid;gap:12px;margin:0;">
-            ${faqItems.map(item => `
-              <div style="border:1px solid #bae6fd;border-radius:12px;background:white;padding:12px 14px;">
-                <dt style="margin:0 0 6px;font-size:16px;font-weight:800;color:#0f172a;">${escapeHtml(item.q)}</dt>
-                <dd style="margin:0;color:#475569;font-size:15px;line-height:1.55;">${escapeHtml(item.a)}</dd>
-              </div>
-            `).join('')}
-          </dl>
-        </section>
         ` : ''}
         <p data-nosnippet="true" style="margin:24px 0 0;color:#64748b;font-size:13px;line-height:1.5;">${escapeHtml(chrome.disclaimer)}</p>
       </main>

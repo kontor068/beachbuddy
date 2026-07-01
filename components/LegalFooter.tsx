@@ -334,6 +334,14 @@ export const LegalFooter: React.FC<LegalFooterProps> = ({ language }) => {
           <p className="mx-auto mt-1 max-w-2xl text-xs font-medium leading-relaxed text-slate-700">
             {c.footerNote}
           </p>
+          <p className="mt-2 text-xs font-semibold text-slate-700">
+            <a
+              href={language === 'gr' ? '/el/faq/' : '/faq/'}
+              className="text-sky-700 underline-offset-4 hover:text-sky-800 hover:underline"
+            >
+              {language === 'gr' ? 'Συχνές ερωτήσεις' : 'FAQ'}
+            </a>
+          </p>
           <p className="mt-2 text-xs font-medium text-slate-700">
             <span>{c.weatherData}: </span>
             <a href="https://open-meteo.com/en/terms" target="_blank" rel="noreferrer" className="font-semibold text-sky-700 underline-offset-4 hover:text-sky-800 hover:underline">

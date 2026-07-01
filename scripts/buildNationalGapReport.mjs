@@ -48,7 +48,7 @@ import {
 const rootDir = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const harvestPath = path.join(rootDir, 'scripts', 'data', 'osm-beaches-national.json');
 const sourcePath = path.join(rootDir, 'public', 'greek_beaches.json');
-const cachePath = path.join(rootDir, '.tmp', 'google-coverage-cache.json');
+const cachePath = path.join(rootDir, 'data', 'places-cache', 'google-coverage-cache.json'); // committed cache so re-runs never re-bill (was .tmp/, which gets wiped)
 const jsonOutPath = path.join(rootDir, 'reports', 'coverage', 'national-gap-report.json');
 const mdOutPath = path.join(rootDir, 'reports', 'coverage', 'national-gap-report.md');
 
