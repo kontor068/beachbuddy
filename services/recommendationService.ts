@@ -43,6 +43,7 @@ import { describeSimpleWindSuitability, describeWindExposure } from '../utils/wi
 import { hasDifficultTopPickAccess, hasMainstreamTopPickAccess, hasTrulyEasyAccess, isAdventureBeach } from '../utils/access';
 import { getBeachTouristRecognitionScore } from '../utils/touristPriority';
 import { getWindChopWaveFloorM, resolveEffectiveWaveHeightM, capLightWindMeasuredWaveM } from '../utils/waveModel';
+import { getBeachPopularityRating } from '../utils/beachRating';
 
 export interface BeachScore {
   beachId: number;
@@ -338,21 +339,18 @@ const matchesSurfaceFilter = (beach: Beach, filter: FilterKey): boolean => (
   beach.beachType === filter
 );
 
-const hasServiceAmenities = (beach: Beach): boolean => Boolean(
-  beach.amenities?.organized ||
-  beach.amenities?.beachBar ||
-  beach.amenities?.sunbeds ||
-  beach.amenities?.taverna ||
-  beach.amenities?.restaurant
-);
-
 const isQuietBeach = (beach: Beach): boolean => {
   if (beach.metadata?.environment?.quiet === false) return false;
   if (beach.amenities?.beachBar) return false;
+  // "Quiet" needs a POSITIVE low-traffic signal: environment.quiet (confirmed few
+  // reviews at build time) or a remote location. We deliberately no longer treat the
+  // mere ABSENCE of amenity data as quiet — amenities are only ever marked positively,
+  // so "no amenities on record" means "unknown", not "uncrowded". The old
+  // !hasServiceAmenities fallback conflated the two and roughly doubled the set
+  // (measured ~60% of all beaches, half of them purely from missing data).
   return Boolean(
     beach.environment?.quiet ||
-    beach.environment?.remote ||
-    !hasServiceAmenities(beach)
+    beach.environment?.remote
   );
 };
 
@@ -1170,7 +1168,11 @@ export const filterBeaches = (
         if (b.activities && f in b.activities) return b.activities[f as keyof typeof b.activities];
         // Check environment
         if (b.environment && f in b.environment) return b.environment[f as keyof typeof b.environment];
-        return true;
+        // Fail safe: an unrecognized filter key (typo, or a new UI filter never wired
+        // to a handler/field here) must EXCLUDE, not silently match every beach. All
+        // currently-offered keys are handled above or exist on one of the objects, so
+        // this only guards against a future key falling through unnoticed.
+        return false;
       });
     });
   }
@@ -1193,15 +1195,15 @@ export const sortBeaches = (
       break;
 
     case 'protected':
-      sorted.sort((a, b) => b.rating - a.rating);
+      sorted.sort((a, b) => getBeachPopularityRating(b) - getBeachPopularityRating(a));
       break;
 
     case 'recommended':
-      sorted.sort((a, b) => b.rating - a.rating);
+      sorted.sort((a, b) => getBeachPopularityRating(b) - getBeachPopularityRating(a));
       break;
       
     case 'rating':
-      sorted.sort((a, b) => b.rating - a.rating);
+      sorted.sort((a, b) => getBeachPopularityRating(b) - getBeachPopularityRating(a));
       break;
       
     case 'distance':
@@ -1220,7 +1222,7 @@ export const sortBeaches = (
             : Number.POSITIVE_INFINITY;
 
         if (distA !== distB) return distA - distB;
-        return b.rating - a.rating;
+        return getBeachPopularityRating(b) - getBeachPopularityRating(a);
       });
       break;
   }

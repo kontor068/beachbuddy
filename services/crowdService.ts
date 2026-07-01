@@ -1,4 +1,5 @@
 import { Beach, ForecastItem } from '../types';
+import { getBeachPopularityRating } from '../utils/beachRating';
 
 export type CrowdLevel = 'low' | 'medium' | 'high';
 
@@ -24,12 +25,14 @@ export function calculateCrowdLevel(
 ): CrowdInfo {
   let score = 0;
 
-  // 1. Popularity Rating (0-30 points)
-  if (beach.rating >= 4.8) {
+  // 1. Popularity Rating (0-30 points) — uses the REAL average Google rating when
+  // available (neutral baseline otherwise), not the old id-hash pseudo-rating.
+  const popularityRating = getBeachPopularityRating(beach);
+  if (popularityRating >= 4.8) {
     score += 30;
-  } else if (beach.rating >= 4.5) {
+  } else if (popularityRating >= 4.5) {
     score += 20;
-  } else if (beach.rating >= 4.0) {
+  } else if (popularityRating >= 4.0) {
     score += 10;
   }
 

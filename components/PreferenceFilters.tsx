@@ -53,8 +53,9 @@ export const PreferenceFilters: React.FC<PreferenceFiltersProps> = ({ preference
           <button
             key={item.key}
             onClick={() => onToggle(item.key)}
+            disabled={wouldReturnNoResults}
             aria-describedby={wouldReturnNoResults ? `${item.key}-no-results-hint` : undefined}
-            className={`flex min-h-11 min-w-0 items-center justify-center gap-2 overflow-hidden rounded-full border px-3 py-2 text-xs font-semibold leading-tight backdrop-blur-md transition-all hover:scale-[1.02] active:scale-[0.98] shadow-sm sm:min-h-10 sm:px-4 sm:text-sm ${
+            className={`flex min-h-11 min-w-0 items-center justify-center gap-2 overflow-hidden rounded-full border px-3 py-2 text-xs font-semibold leading-tight backdrop-blur-md transition-all hover:scale-[1.02] active:scale-[0.98] shadow-sm disabled:cursor-not-allowed disabled:opacity-60 disabled:hover:scale-100 sm:min-h-10 sm:px-4 sm:text-sm ${
               isActive
                 ? 'bg-cyan-600 text-white border-cyan-600 shadow-cyan-200/70'
                 : wouldReturnNoResults

@@ -1,5 +1,6 @@
 import { Beach, Island, LanguageCode } from '../types';
 import { fuzzySearchScore } from './searchNormalize';
+import { getBeachPopularityRating } from './beachRating';
 
 export interface FuzzyResult {
   beach: Beach;
@@ -57,7 +58,7 @@ export const fuzzySearchBeaches = (
   // Sort by score descending, then by rating
   results.sort((a, b) => {
     if (b.matchScore !== a.matchScore) return b.matchScore - a.matchScore;
-    return b.beach.rating - a.beach.rating;
+    return getBeachPopularityRating(b.beach) - getBeachPopularityRating(a.beach);
   });
 
   return results.slice(0, maxResults);

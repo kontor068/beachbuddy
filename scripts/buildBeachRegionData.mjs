@@ -501,7 +501,11 @@ const buildBeach = (rawBeach, island) => {
 
   return {
     id: rawBeach.id,
-    rating: 4.0 + (getDeterministicValue(rawBeach.id, 'rating') * 1.0),
+    // Real average Google rating (Places) when we have it; a neutral 4.0 baseline
+    // otherwise. This used to be `4.0 + hash(id)` — a fabricated pseudo-random score
+    // with no relation to the beach — which quietly biased list order and crowd
+    // estimates. Consumers read this via getBeachPopularityRating (utils/beachRating).
+    rating: (typeof metadata?.popularity?.rating === 'number' ? metadata.popularity.rating : 4.0),
     name: {
       en: englishName,
       gr: getGreekDisplayBeachName(rawBeach.name),

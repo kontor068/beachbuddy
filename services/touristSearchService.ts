@@ -1,6 +1,7 @@
 import { Beach, Island, LanguageCode } from '../types';
 import { ParsedSearch } from '../utils/searchParser';
 import { calculateDistance } from '../utils/weatherUtils';
+import { getBeachPopularityRating } from '../utils/beachRating';
 
 export interface SearchResult {
   beach: Beach;
@@ -31,7 +32,7 @@ export const searchBeaches = (
   targetIslands.forEach(island => {
     island.beaches.forEach(beach => {
       let matches = true;
-      let score = beach.rating * 20; // Base score from rating (0-100 scale)
+      let score = getBeachPopularityRating(beach) * 20; // Base score from real rating (0-100 scale)
       let explanation = beach.description[language] || beach.description['en'];
       let distance: number | undefined;
 

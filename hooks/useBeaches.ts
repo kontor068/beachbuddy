@@ -2,6 +2,7 @@ import { useState, useEffect, useMemo, useCallback } from 'react';
 import { Island, Beach, FilterKey, SortOption, WindDirection, LanguageCode, WeatherData, DailyForecast, UserPreferences } from '../types';
 import { filterBeaches, sortBeaches, calculateBeachScore } from '../services/recommendationService';
 import { calculateDistance, getBeaufortLevel } from '../utils/weatherUtils';
+import { getBeachPopularityRating } from '../utils/beachRating';
 import {
   buildIslandShellFromIndexEntry,
   getPreferredInitialRegionId,
@@ -233,7 +234,7 @@ export const useBeaches = (language: LanguageCode) => {
         const exposureDiff = exposureRank(b.exposureLevel) - exposureRank(a.exposureLevel);
         if (windMattersForProtection && exposureDiff !== 0) return exposureDiff;
 
-        return (b.todayScore ?? b.rating) - (a.todayScore ?? a.rating);
+        return (b.todayScore ?? getBeachPopularityRating(b)) - (a.todayScore ?? getBeachPopularityRating(a));
       });
     }
 
@@ -241,7 +242,7 @@ export const useBeaches = (language: LanguageCode) => {
       return [...visibleBeaches].sort((a, b) => {
         const exposureDiff = exposureSortRank(a) - exposureSortRank(b);
         if (exposureDiff !== 0) return exposureDiff;
-        return (b.todayScore ?? b.rating) - (a.todayScore ?? a.rating);
+        return (b.todayScore ?? getBeachPopularityRating(b)) - (a.todayScore ?? getBeachPopularityRating(a));
       });
     }
 
