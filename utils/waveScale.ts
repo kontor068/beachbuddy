@@ -83,7 +83,7 @@ const bucketFor = (m: number): Bucket => {
   return { bodyRef: 'flat', band: 'calm', bodyFraction: 0.05 };
 };
 
-const ESTIMATE_LABEL: LocalizedCopy<string> = {
+export const ESTIMATE_LABEL: LocalizedCopy<string> = {
   en: 'Estimate', gr: 'Εκτίμηση', fr: 'Estimation', de: 'Schätzung', it: 'Stima',
 };
 const ESTIMATE_DETAIL: LocalizedCopy<string> = {
