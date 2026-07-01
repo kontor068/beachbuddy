@@ -1,5 +1,5 @@
 import React from 'react';
-import { Ship } from 'lucide-react';
+import { Ship, Waves } from 'lucide-react';
 import { LanguageCode } from '../types';
 import { getLocalizedCopy, type LocalizedCopy } from '../utils/i18n';
 import { isSelectedDateToday } from '../utils/dateLabels';
@@ -9,6 +9,8 @@ import {
   getWaveScale,
   getWaveBandClasses,
   waveBarFraction,
+  getWaveRangeM,
+  hasNotableSets,
   WAVE_BAND_CLASSES,
   WAVE_ESTIMATE_CLASSES,
   type WaveScaleResult,
@@ -51,6 +53,10 @@ type StripCopy = {
   throughDay: string;
   calmerMorning: string;
   calmerLater: string;
+  /** Prefix for the significant-wave-height uncertainty band, e.g. "Likely range". */
+  bandLabel: string;
+  /** One-line "bigger sets" note keyed to the Hmax ≈ 1.5–2× Hs spread. */
+  setsNote: string;
   selectedHour: (hour: string) => string;
   hourTooltip: (hour: string, height: string) => string;
   rangeSummary: (min: string, max: string) => string;
@@ -63,6 +69,8 @@ const COPY: LocalizedCopy<StripCopy> = {
     throughDay: 'Through the day',
     calmerMorning: 'calmer in the morning',
     calmerLater: 'calmer later',
+    bandLabel: 'Likely range',
+    setsNote: 'Bigger sets at times — some waves run ~1.5× higher',
     selectedHour: (hour) => `shown hour ${hour}`,
     hourTooltip: (hour, height) => `${hour}: ${height} waves`,
     rangeSummary: (min, max) => `Wave range ${min} to ${max}`,
@@ -73,6 +81,8 @@ const COPY: LocalizedCopy<StripCopy> = {
     throughDay: 'Μέσα στη μέρα',
     calmerMorning: 'πιο ήρεμα το πρωί',
     calmerLater: 'πιο ήρεμα αργότερα',
+    bandLabel: 'Πιθανό εύρος',
+    setsNote: 'Κατά διαστήματα πιο ψηλά σετ — κάποια κύματα ~1,5× πιο ψηλά',
     selectedHour: (hour) => `ώρα που βλέπεις ${hour}`,
     hourTooltip: (hour, height) => `${hour}: κύμα ${height}`,
     rangeSummary: (min, max) => `Εύρος κύματος ${min} έως ${max}`,
@@ -83,6 +93,8 @@ const COPY: LocalizedCopy<StripCopy> = {
     throughDay: 'Au fil de la journée',
     calmerMorning: 'plus calme le matin',
     calmerLater: 'plus calme plus tard',
+    bandLabel: 'Plage probable',
+    setsNote: 'Séries plus grandes par moments — certaines vagues ~1,5× plus hautes',
     selectedHour: (hour) => `heure affichée ${hour}`,
     hourTooltip: (hour, height) => `${hour} : vagues ${height}`,
     rangeSummary: (min, max) => `Vagues de ${min} à ${max}`,
@@ -93,6 +105,8 @@ const COPY: LocalizedCopy<StripCopy> = {
     throughDay: 'Im Tagesverlauf',
     calmerMorning: 'morgens ruhiger',
     calmerLater: 'später ruhiger',
+    bandLabel: 'Wahrscheinlicher Bereich',
+    setsNote: 'Zeitweise größere Sätze — einzelne Wellen ~1,5× höher',
     selectedHour: (hour) => `angezeigte Stunde ${hour}`,
     hourTooltip: (hour, height) => `${hour}: ${height} Wellen`,
     rangeSummary: (min, max) => `Wellenbereich ${min} bis ${max}`,
@@ -103,6 +117,8 @@ const COPY: LocalizedCopy<StripCopy> = {
     throughDay: 'Durante il giorno',
     calmerMorning: 'più calmo al mattino',
     calmerLater: 'più calmo dopo',
+    bandLabel: 'Intervallo probabile',
+    setsNote: 'A tratti serie più grandi — alcune onde ~1,5× più alte',
     selectedHour: (hour) => `ora mostrata ${hour}`,
     hourTooltip: (hour, height) => `${hour}: onde ${height}`,
     rangeSummary: (min, max) => `Onde da ${min} a ${max}`,
@@ -423,22 +439,25 @@ const getCompactWaveSignalScale = (
   return getWaveScale(minSignalHeightM, language);
 };
 
+// The person now STANDS in the sea (a fixed 1.7 m ruler), so vertical bob is subtle — mostly a
+// gentle sway/brace. The drift value still drives the water surface animation, so it keeps its
+// stronger, sea-state-scaled range.
 const getSwimmerMotionStyle = (scale: WaveScaleResult): React.CSSProperties => {
   const motion = (() => {
     switch (scale.bodyRef) {
       case 'overhead':
-        return { bobPx: 10, tiltDeg: 9, driftPx: 7, durationS: 1.85 };
+        return { bobPx: 3, tiltDeg: 3.2, driftPx: 7, durationS: 1.85 };
       case 'chest':
-        return { bobPx: 8, tiltDeg: 7, driftPx: 6, durationS: 2.15 };
+        return { bobPx: 2.5, tiltDeg: 2.6, driftPx: 6, durationS: 2.15 };
       case 'waist':
-        return { bobPx: 6, tiltDeg: 5, driftPx: 5, durationS: 2.45 };
+        return { bobPx: 2, tiltDeg: 2, driftPx: 5, durationS: 2.45 };
       case 'knee':
-        return { bobPx: 4, tiltDeg: 3, driftPx: 4, durationS: 2.9 };
+        return { bobPx: 1.5, tiltDeg: 1.4, driftPx: 4, durationS: 2.9 };
       case 'ankle':
-        return { bobPx: 2.4, tiltDeg: 1.6, driftPx: 3, durationS: 3.4 };
+        return { bobPx: 1, tiltDeg: 0.9, driftPx: 3, durationS: 3.4 };
       case 'flat':
       default:
-        return { bobPx: 1.4, tiltDeg: 0.8, driftPx: 2, durationS: 4.0 };
+        return { bobPx: 0.6, tiltDeg: 0.5, driftPx: 2, durationS: 4.0 };
     }
   })();
 
@@ -453,6 +472,13 @@ const getSwimmerMotionStyle = (scale: WaveScaleResult): React.CSSProperties => {
 const formatWaveHeight = (m: number, language: LanguageCode): string => {
   const value = m.toFixed(1);
   return language === 'gr' ? `~${value.replace('.', ',')} μ.` : `~${value} m`;
+};
+
+// A wave-height band, e.g. "~0,6–1,0 μ." — one unit, one tilde, so it reads as a single range.
+const formatWaveRange = (lowM: number, highM: number, language: LanguageCode): string => {
+  const fmt = (v: number) => (language === 'gr' ? v.toFixed(1).replace('.', ',') : v.toFixed(1));
+  const unit = language === 'gr' ? ' μ.' : ' m';
+  return `~${fmt(lowM)}–${fmt(highM)}${unit}`;
 };
 
 const getBlueWaterFillClass = (scale: WaveScaleResult): string => {
@@ -539,40 +565,12 @@ const visualHeightForTier = (tier: WaveVisualTier): number | undefined => {
   }
 };
 
-const waveAmplitudeFor = (scale: WaveScaleResult, visualHeightM: number, windTier: WaveVisualTier): number => {
-  const heightAmplitude = (() => {
-    if (visualHeightM <= 0.3) return 3.2 + visualHeightM * 5;
-    if (visualHeightM <= 0.8) return 4.7 + (visualHeightM - 0.3) * 8;
-    if (visualHeightM <= 1.2) return 8.7 + (visualHeightM - 0.8) * 7;
-    return 11.5 + Math.min(visualHeightM - 1.2, 1.8) * 8;
-  })();
-  const bucketAccent = (() => {
-    switch (scale.bodyRef) {
-    case 'overhead':
-      return 3;
-    case 'chest':
-      return 2;
-    case 'waist':
-      return 1.2;
-    case 'knee':
-      return 0.6;
-    case 'ankle':
-      return 0.2;
-    case 'flat':
-    default:
-      return 0;
-    }
-  })();
-
-  return clamp(heightAmplitude + bucketAccent + windTier * 1.1, 3.2, 22);
-};
-
-const METER_BASE_MAX_M = 2.0; // leaves room so 0.8 m does not visually compete with a 1.5 m sea
-const METER_HARD_MAX_M = 3.0; // never plot beyond this, however wild the value
+const METER_BASE_MAX_M = 2.0; // calm/normal seas size against a 2 m ceiling
+const METER_HARD_MAX_M = 3.0; // never treat a wave as taller than this, however wild the value
 const METER_TICK_STEP = 0.5;
 
-// Axis top for a given wave height: typical beach seas use a 2.0 m meter so mid-height
-// waves remain proportionate, then rough days step up in 0.5 m increments.
+// Axis top for a given wave height: typical beach seas use a 2.0 m meter so mid-height waves remain
+// proportionate, then rough days step up in 0.5 m increments.
 const axisMaxForHeight = (m: number): number =>
   m <= METER_BASE_MAX_M
     ? METER_BASE_MAX_M
@@ -661,21 +659,69 @@ const getWaveSceneStyle = (scale: WaveScaleResult): React.CSSProperties => {
   } as React.CSSProperties;
 };
 
-// Scientific-first wave meter: the scale is metres, while the swimmer is only a small context cue.
+const HUMAN_HEIGHT_M = 1.75; // canonical adult reference — the ruler the wave is measured against.
+
+// Physically-scaled wave meter. A to-scale ~1.7 m person stands in the sea and the water reaches
+// them at the REAL wave height, so a 2 m sea sits near the shoulders/neck (serious but honest), not
+// 10x over a tiny swimmer. Height is read as position (waterline on the body + metre axis) — the
+// most accurately-decoded channel — while the wave squiggle is only texture. The fill is held at the
+// neck at most so the head always shows (never a "drowning" look); the crest, spray and number carry
+// the "over your head" message when the sea is genuinely that big.
 const WaveMeterScene: React.FC<{
   scale: WaveScaleResult;
   visualHeightM: number;
   windTier: WaveVisualTier;
-}> = ({ scale, visualHeightM, windTier }) => {
-  const plotTopY = 18;
-  const plotBottomY = 98;
-  const plotLeftX = 42;
-  const plotRightX = 166;
+  bandLowM?: number;
+  bandHighM?: number;
+}> = ({ scale, visualHeightM, windTier, bandLowM, bandHighM }) => {
+  const plotTopY = 12;
+  const plotBottomY = 104; // seabed / feet baseline
+  const axisX = 32;
   const plotHeight = plotBottomY - plotTopY;
+  const personCx = 110;
+
   const axisMaxM = axisMaxForHeight(visualHeightM);
-  const waterlineY = plotBottomY - (clamp(visualHeightM, 0, axisMaxM) / axisMaxM) * plotHeight;
-  const amplitude = waveAmplitudeFor(scale, visualHeightM, windTier);
+  const mToY = (m: number) => plotBottomY - (clamp(m, 0, axisMaxM) / axisMaxM) * plotHeight;
+
+  // Person drawn to the same axis: bigger seas → taller axis → a proportionally smaller person,
+  // exactly as in reality. Never taller than the plot.
+  const personHeightPx = Math.min(plotHeight * 0.94, (HUMAN_HEIGHT_M / axisMaxM) * plotHeight);
+  const headTopY = plotBottomY - personHeightPx;
+  const headR = personHeightPx * 0.082;
+  const headCy = headTopY + headR;
+  const shoulderY = headTopY + personHeightPx * 0.23;
+  const hipY = headTopY + personHeightPx * 0.53;
+  const shoulderHalf = personHeightPx * 0.12;
+  const hipHalf = personHeightPx * 0.075;
+  const limbW = clamp(personHeightPx * 0.07, 2.4, 8);
+  const legOffset = personHeightPx * 0.06; // slightly apart → a planted, standing stance
+
+  const trueWaterlineY = mToY(visualHeightM);
+  const neckY = headTopY + personHeightPx * 0.19;
+  const surfaceY = Math.max(trueWaterlineY, neckY); // fill never rises above the neck — head always shows
+  const capGap = surfaceY - trueWaterlineY; // how far we held the fill below the true reading
   const visualIntensity = Math.max(windTier, scale.band === 'rough' ? 4 : scale.band === 'amber' ? 2 : 0);
+  // Amplitude drives how choppy the surface reads — it must clearly say "waves", so it climbs with
+  // the sea state (a 6 Bft sea must never look like a calm level at the neck), and more crests appear
+  // as the wind builds. Kept rounded (not spiky) so it reads as real waves.
+  const amplitude = clamp(2 + visualIntensity * 4 + capGap * 0.35, 2, 18);
+  const nCrests = 2 + visualIntensity; // calm 2 → rough 6 wave crests across the width
+
+  // A relaxed STANDING stance — arms hang down at the sides, feet planted on the seabed — so the
+  // person clearly stands on the bottom and the water simply reaches them at the wave height (never
+  // a swimming/floating pose, whatever the sea state).
+  const armPath = (side: -1 | 1): string => {
+    const sx = personCx + side * shoulderHalf * 0.82;
+    const sy = shoulderY + personHeightPx * 0.02;
+    const ex = personCx + side * shoulderHalf * 1.02;
+    const ey = shoulderY + personHeightPx * 0.2;
+    const hx = personCx + side * (hipHalf + limbW * 0.2);
+    const hy = hipY + personHeightPx * 0.05;
+    return `M${sx} ${sy} Q ${ex} ${ey} ${hx} ${hy}`;
+  };
+
+  const torsoPath = `M${personCx - shoulderHalf} ${shoulderY} C ${personCx - shoulderHalf} ${shoulderY + personHeightPx * 0.04} ${personCx - hipHalf * 1.2} ${hipY - personHeightPx * 0.05} ${personCx - hipHalf} ${hipY} L${personCx + hipHalf} ${hipY} C ${personCx + hipHalf * 1.2} ${hipY - personHeightPx * 0.05} ${personCx + shoulderHalf} ${shoulderY + personHeightPx * 0.04} ${personCx + shoulderHalf} ${shoulderY} Q ${personCx} ${shoulderY - personHeightPx * 0.06} ${personCx - shoulderHalf} ${shoulderY} Z`;
+
   const sceneId = React.useId().replace(/:/g, '');
   const skyGradientId = `wave-sky-${sceneId}`;
   const depthGradientId = `wave-depth-${sceneId}`;
@@ -684,26 +730,37 @@ const WaveMeterScene: React.FC<{
     ...getSwimmerMotionStyle(scale),
   } as React.CSSProperties;
   const tickValues = axisTicks(axisMaxM);
-  const tickY = (m: number) => plotBottomY - (m / axisMaxM) * plotHeight;
-  const swimmerY = clamp(waterlineY, 30, 90);
-  const waveStartY = waterlineY + amplitude * 0.38;
-  const waterPath = `M${plotLeftX} ${plotBottomY + 10} L${plotLeftX} ${waveStartY} C 58 ${waterlineY - amplitude * 0.95} 76 ${waterlineY + amplitude * 0.72} 94 ${waterlineY - amplitude * 0.36} C 116 ${waterlineY - amplitude * 1.08} 139 ${waterlineY + amplitude * 0.82} ${plotRightX} ${waterlineY - amplitude * 0.2} L${plotRightX} ${plotBottomY + 10} Z`;
-  const crestPath = `M${plotLeftX} ${waveStartY} C 58 ${waterlineY - amplitude * 0.95} 76 ${waterlineY + amplitude * 0.72} 94 ${waterlineY - amplitude * 0.36} C 116 ${waterlineY - amplitude * 1.08} 139 ${waterlineY + amplitude * 0.82} ${plotRightX} ${waterlineY - amplitude * 0.2}`;
-  const innerWaveY = clamp(waterlineY + amplitude * 1.15, 34, plotBottomY + 4);
-  const innerWavePath = `M${plotLeftX + 8} ${innerWaveY} C 61 ${innerWaveY - amplitude * 0.58} 77 ${innerWaveY + amplitude * 0.34} 96 ${innerWaveY - amplitude * 0.2} C 117 ${innerWaveY - amplitude * 0.68} 138 ${innerWaveY + amplitude * 0.42} ${plotRightX - 3} ${innerWaveY - amplitude * 0.18}`;
-  const foregroundWaveY = clamp(waterlineY + amplitude * 2.15, 50, plotBottomY + 8);
-  const foregroundWavePath = `M${plotLeftX + 16} ${foregroundWaveY} C 61 ${foregroundWaveY - amplitude * 0.36} 78 ${foregroundWaveY + amplitude * 0.22} 98 ${foregroundWaveY - amplitude * 0.28} C 121 ${foregroundWaveY - amplitude * 0.56} 143 ${foregroundWaveY + amplitude * 0.3} ${plotRightX - 5} ${foregroundWaveY - amplitude * 0.18}`;
-  const backwashPath = `M${plotLeftX - 2} ${clamp(waterlineY + amplitude * 1.5, 35, 108)} C 66 ${waterlineY + amplitude * 0.78} 83 ${waterlineY + amplitude * 1.5} 106 ${waterlineY + amplitude * 1.02} C 128 ${waterlineY + amplitude * 0.46} 143 ${waterlineY + amplitude * 1.3} ${plotRightX + 2} ${waterlineY + amplitude * 0.78} L${plotRightX + 2} ${plotBottomY + 13} L${plotLeftX - 2} ${plotBottomY + 13} Z`;
-  const windStreaks = Array.from({ length: windTier }, (_, index) => ({
-    x1: 62 + index * 13,
-    x2: 90 + index * 15,
-    y: 27 + index * 6,
-    opacity: 0.18 + index * 0.08,
-  }));
-  const chopLines = Array.from({ length: Math.max(0, visualIntensity - 1) }, (_, index) => {
-    const y = clamp(waterlineY + amplitude * (1.45 + index * 0.38), 42, plotBottomY + 7);
-    return `M${plotLeftX + 18 + index * 5} ${y} C ${plotLeftX + 40} ${y - amplitude * 0.22} ${plotLeftX + 61} ${y + amplitude * 0.14} ${plotLeftX + 82} ${y - amplitude * 0.2} C ${plotLeftX + 101} ${y - amplitude * 0.34} ${plotLeftX + 114} ${y + amplitude * 0.18} ${plotRightX - 12} ${y - amplitude * 0.1}`;
+
+  const xL = 2;
+  const xR = 174;
+  // Build an irregular, choppy surface: a sine chain modulated by a second harmonic so it reads as
+  // real waves rather than one smooth swell. The chop rides above and below the mean waterline, so
+  // the sea genuinely looks rough at the level it reaches on the body.
+  const SAMPLES = 64;
+  const surfaceYAt = (i: number): number => {
+    const phase = (i / SAMPLES) * nCrests * Math.PI * 2;
+    const chop = 0.78 + 0.22 * Math.sin(phase * 1.9 + 0.7); // gentle irregularity → rounded, not spiky
+    return surfaceY - amplitude * Math.sin(phase) * chop;
+  };
+  const surfacePts = Array.from({ length: SAMPLES + 1 }, (_, i) => [xL + ((xR - xL) * i) / SAMPLES, surfaceYAt(i)] as const);
+  const surfaceLine = surfacePts.map(([x, y], i) => `${i === 0 ? 'M' : 'L'}${x.toFixed(1)} ${y.toFixed(1)}`).join(' ');
+  const waterPath = `${surfaceLine} L${xR} ${plotBottomY + 12} L${xL} ${plotBottomY + 12} Z`;
+  // Whitecaps break on the wave crests once the sea builds — the signature "this is rough" cue.
+  const crestMarks = Array.from({ length: nCrests }, (_, k) => {
+    const frac = (0.25 + k) / nCrests;
+    return { x: xL + (xR - xL) * frac, y: surfaceYAt(frac * SAMPLES) };
   });
+
+  const hasBand = typeof bandLowM === 'number' && typeof bandHighM === 'number' && bandHighM > bandLowM && !scale.isEstimate;
+  const bandTopY = hasBand ? Math.max(mToY(bandHighM as number), headTopY + personHeightPx * 0.06) : 0;
+  const bandBotY = hasBand ? mToY(bandLowM as number) : 0;
+
+  const windStreaks = Array.from({ length: windTier }, (_, index) => ({
+    x1: 40 + index * 13,
+    x2: 68 + index * 15,
+    y: 22 + index * 6,
+    opacity: 0.16 + index * 0.07,
+  }));
 
   return (
     <svg viewBox="0 0 176 116" preserveAspectRatio="xMidYMid meet" aria-hidden="true" className="h-auto w-full drop-shadow-sm" style={sceneStyle}>
@@ -712,127 +769,103 @@ const WaveMeterScene: React.FC<{
           <stop offset="0%" stopColor="var(--cb-wave-sky)" stopOpacity="0.92" />
           <stop offset="100%" stopColor="#ffffff" stopOpacity="0.5" />
         </linearGradient>
-        <linearGradient id={depthGradientId} x1="0" x2="1" y1="0" y2="0">
-          <stop offset="0%" stopColor="var(--cb-wave-crest)" stopOpacity="0.78" />
-          <stop offset="54%" stopColor="var(--cb-wave-mid)" stopOpacity="0.96" />
-          <stop offset="100%" stopColor="var(--cb-wave-deep)" stopOpacity="0.96" />
+        <linearGradient id={depthGradientId} x1="0" x2="0" y1="0" y2="1">
+          <stop offset="0%" stopColor="var(--cb-wave-crest)" stopOpacity="0.72" />
+          <stop offset="55%" stopColor="var(--cb-wave-mid)" stopOpacity="0.62" />
+          <stop offset="100%" stopColor="var(--cb-wave-deep)" stopOpacity="0.6" />
         </linearGradient>
       </defs>
 
       <rect x="2" y="2" width="172" height="112" rx="20" fill={`url(#${skyGradientId})`} />
-      <path
-        d="M8 100 C 34 95 55 96 78 101 C 105 107 132 106 168 99 L168 116 L8 116 Z"
-        fill="var(--cb-wave-sand)"
-        opacity="0.28"
-      />
+
       {windStreaks.length > 0 && (
         <g aria-hidden="true" className="cb-wave-highlight" stroke="var(--cb-wave-deep)" strokeLinecap="round">
           {windStreaks.map((streak, index) => (
-            <path
-              key={index}
-              d={`M${streak.x1} ${streak.y} H${streak.x2}`}
-              strokeWidth={1.5 + index * 0.35}
-              opacity={streak.opacity}
-            />
+            <path key={index} d={`M${streak.x1} ${streak.y} H${streak.x2}`} strokeWidth={1.4 + index * 0.3} opacity={streak.opacity} />
           ))}
         </g>
       )}
 
+      {/* Honest uncertainty band: the sea will likely sit somewhere in this range. */}
+      {hasBand && (
+        <g aria-hidden="true">
+          <rect x={axisX} y={bandTopY} width={xR - axisX} height={Math.max(0, bandBotY - bandTopY)} fill="var(--cb-wave-deep)" opacity="0.08" />
+          <path d={`M${axisX} ${bandTopY} H${xR}`} stroke="var(--cb-wave-deep)" strokeWidth="1" strokeDasharray="3 3" opacity="0.4" />
+        </g>
+      )}
+
+      {/* Subtle metre axis — precision beside the relatable human ruler. */}
       <g aria-hidden="true">
         {tickValues.map((tick) => (
           <g key={tick}>
-            <path
-              d={`M${plotLeftX - 4} ${tickY(tick)} H${plotRightX}`}
-              stroke="var(--cb-wave-guide-color)"
-              strokeWidth={Math.abs(tick - visualHeightM) < 0.08 ? 1.6 : 1}
-              strokeDasharray={tick === 0 ? undefined : '3 4'}
-              opacity={tick === 0 ? 0.72 : 0.48}
-            />
-            <text
-              x={plotLeftX - 8}
-              y={tickY(tick) + 3}
-              textAnchor="end"
-              fontSize="8"
-              fontWeight="700"
-              fill="var(--cb-wave-guide-color)"
-            >
+            <path d={`M${axisX - 4} ${mToY(tick)} H${axisX}`} stroke="var(--cb-wave-guide-color)" strokeWidth="1" opacity="0.6" />
+            <text x={axisX - 6} y={mToY(tick) + 3} textAnchor="end" fontSize="7.5" fontWeight="700" fill="var(--cb-wave-guide-color)">
               {tick === 0 ? '0m' : tick.toFixed(1)}
             </text>
           </g>
         ))}
-        <path d={`M${plotLeftX} ${plotTopY} V${plotBottomY}`} stroke="var(--cb-wave-guide-color)" strokeWidth="1.4" strokeLinecap="round" />
-        <circle cx={plotLeftX} cy={waterlineY} r="3" fill="var(--cb-wave-deep)" stroke="white" strokeWidth="1.4" />
+        <path d={`M${axisX} ${plotTopY} V${plotBottomY}`} stroke="var(--cb-wave-guide-color)" strokeWidth="1.2" strokeLinecap="round" opacity="0.7" />
+        <circle cx={axisX} cy={trueWaterlineY} r="2.6" fill="var(--cb-wave-deep)" stroke="white" strokeWidth="1.2" />
       </g>
 
-      <path
-        className="cb-wave-backwash"
-        d={backwashPath}
-        fill="var(--cb-wave-mid)"
-        opacity={scale.isEstimate ? 0.16 : 0.2}
-      />
+      {/* Sand shelf the person stands on. */}
+      <path d={`M${axisX} ${plotBottomY + 2} H${xR} L${xR} ${plotBottomY + 12} L${axisX} ${plotBottomY + 12} Z`} fill="var(--cb-wave-sand)" opacity="0.5" />
 
+      {/* To-scale bather standing on the seabed — body drawn before the water so the submerged part
+          reads as underwater. Static: feet planted, arms down. The head is drawn later, above the
+          chop, so it stays clear even when crests wash the shoulders. */}
+      <g opacity="0.94" fill="var(--cb-wave-swimmer-color)" stroke="var(--cb-wave-swimmer-color)" strokeLinecap="round">
+        <path d={`M${personCx - legOffset} ${hipY - personHeightPx * 0.02} V${plotBottomY}`} fill="none" strokeWidth={limbW} />
+        <path d={`M${personCx + legOffset} ${hipY - personHeightPx * 0.02} V${plotBottomY}`} fill="none" strokeWidth={limbW} />
+        <path d={`M${personCx - legOffset} ${plotBottomY} h${-limbW * 0.95}`} fill="none" strokeWidth={limbW * 0.82} />
+        <path d={`M${personCx + legOffset} ${plotBottomY} h${limbW * 0.95}`} fill="none" strokeWidth={limbW * 0.82} />
+        <path d={armPath(-1)} fill="none" strokeWidth={limbW * 0.82} />
+        <path d={armPath(1)} fill="none" strokeWidth={limbW * 0.82} />
+        <path d={torsoPath} stroke="none" />
+      </g>
+
+      {/* Choppy water fill (translucent, so the submerged body reads as underwater). */}
       <path
         d={waterPath}
         className="cb-wave-surface"
         fill={`url(#${depthGradientId})`}
-        fillOpacity={scale.isEstimate ? 0.52 : 0.92}
+        fillOpacity={scale.isEstimate ? 0.5 : 0.82}
         {...(scale.isEstimate ? { strokeDasharray: '4 3', stroke: 'var(--cb-wave-deep)', strokeWidth: 1 } : {})}
       />
 
+      {/* Foam running along the whole choppy surface. */}
       <path
-        className="cb-wave-highlight"
-        d={innerWavePath}
-        fill="none"
-        stroke="rgba(255,255,255,0.42)"
-        strokeWidth={visualIntensity >= 4 ? 5.2 : visualIntensity >= 2 ? 4.4 : 3.8}
-        strokeLinecap="round"
-      />
-
-      <path
-        className="cb-wave-highlight"
-        d={foregroundWavePath}
-        fill="none"
-        stroke="rgba(255,255,255,0.28)"
-        strokeWidth={visualIntensity >= 4 ? 4.4 : 3.2}
-        strokeLinecap="round"
-      />
-      {chopLines.map((d, index) => (
-        <path
-          key={index}
-          className="cb-wave-highlight"
-          d={d}
-          fill="none"
-          stroke="rgba(255,255,255,0.24)"
-          strokeWidth={2.1 + index * 0.34}
-          strokeLinecap="round"
-        />
-      ))}
-
-      <path
-        d={crestPath}
+        d={surfaceLine}
         fill="none"
         className="cb-wave-foam"
         stroke="var(--cb-wave-foam-color)"
-        strokeWidth={visualIntensity >= 4 ? 3.4 : visualIntensity >= 2 ? 2.9 : 2.5}
+        strokeWidth={visualIntensity >= 4 ? 3 : visualIntensity >= 2 ? 2.4 : 1.8}
         strokeLinecap="round"
       />
 
-      <g className="cb-wave-spray" fill="var(--cb-wave-foam-color)" opacity="0.82">
-        <circle cx="68" cy={waterlineY - amplitude * 0.15} r={visualIntensity >= 4 ? 2.2 : visualIntensity >= 2 ? 1.6 : 1.1} />
-        <circle cx="82" cy={waterlineY + amplitude * 0.28} r={visualIntensity >= 4 ? 1.5 : 1} />
-        <circle cx="122" cy={waterlineY - amplitude * 0.32} r={visualIntensity >= 4 ? 2 : visualIntensity >= 2 ? 1.4 : 1} />
-        {visualIntensity >= 2 && <circle cx="142" cy={waterlineY + amplitude * 0.18} r={visualIntensity >= 4 ? 1.6 : 1.1} />}
-        {visualIntensity >= 3 && <circle cx="58" cy={waterlineY + amplitude * 0.58} r={visualIntensity >= 4 ? 1.45 : 1.05} />}
-      </g>
+      {/* Whitecaps — a rounded foam cap sitting on each crest, the "rough sea" signature. */}
+      {visualIntensity >= 2 && crestMarks.map((c, i) => (
+        <path
+          key={i}
+          className="cb-wave-foam"
+          d={`M${(c.x - 7).toFixed(1)} ${(c.y + 2.5).toFixed(1)} Q ${(c.x - 4).toFixed(1)} ${(c.y - 2.5).toFixed(1)} ${c.x.toFixed(1)} ${(c.y - 1).toFixed(1)} Q ${(c.x + 4).toFixed(1)} ${(c.y - 3).toFixed(1)} ${(c.x + 7).toFixed(1)} ${(c.y + 2.5).toFixed(1)} Q ${c.x.toFixed(1)} ${(c.y + 1).toFixed(1)} ${(c.x - 7).toFixed(1)} ${(c.y + 2.5).toFixed(1)} Z`}
+          fill="var(--cb-wave-foam-color)"
+          stroke="none"
+          opacity={visualIntensity >= 4 ? 0.95 : 0.85}
+        />
+      ))}
 
-      {/* Small human cue that rides the surface, so its waterline tracks the metre reading. */}
-      <g transform={`translate(112 ${swimmerY}) scale(0.46)`} opacity="0.7">
-        <g className="cb-wave-swimmer" fill="none" stroke="var(--cb-wave-swimmer-color)" strokeLinecap="round" strokeLinejoin="round">
-          <circle cx="0" cy="-8" r="5.4" fill="var(--cb-wave-swimmer-color)" stroke="none" />
-          <path d="M5 -5 C 18 -11 31 -6 45 0" strokeWidth="5.6" />
-          <path d="M10 -5 C 19 -18 33 -17 41 -9" strokeWidth="3.5" />
+      {/* A little spray off the biggest crests in a strong sea. */}
+      {visualIntensity >= 4 && (
+        <g className="cb-wave-spray" fill="var(--cb-wave-foam-color)" opacity="0.78">
+          {crestMarks.slice(0, 3).map((c, i) => (
+            <circle key={i} cx={c.x + (i % 2 === 0 ? -3 : 4)} cy={c.y - 3.5} r={1.3} />
+          ))}
         </g>
-      </g>
+      )}
+
+      {/* Head rides ABOVE the chop so it stays clear even when crests wash the shoulders. */}
+      <circle cx={personCx} cy={headCy} r={headR} fill="var(--cb-wave-swimmer-color)" opacity="0.94" />
     </svg>
   );
 };
@@ -1134,11 +1167,27 @@ export const WaveHeightGraphic: React.FC<WaveHeightGraphicProps> = ({
   const selectedBoatHourNote = boatCopy && boatLevel && typeof selectedHour === 'number'
     ? boatCopy.selectedHour(formatHour(selectedHour))
     : null;
+
+  // Beaufort→Hs is a range, so we show one: a modest band under the headline number and a shaded
+  // zone on the meter (information, not a confidence hedge). And once the sea is big enough, one line
+  // that the biggest sets run higher than the stated Hs (Hmax ≈ 1.5–2× Hs) — the real safety fact.
+  const headlineHeightM = typeof waveHeightM === 'number' && Number.isFinite(waveHeightM)
+    ? waveHeightM
+    : (typeof estimateHeightM === 'number' && Number.isFinite(estimateHeightM) ? estimateHeightM : undefined);
+  const waveRange = typeof headlineHeightM === 'number' ? getWaveRangeM(headlineHeightM) : null;
+  const waveRangeLabel = !boatCopy && waveRange && waveRange.highM - waveRange.lowM >= 0.2
+    ? formatWaveRange(waveRange.lowM, waveRange.highM, language)
+    : null;
+  const showSetsNote = !boatCopy && !scale.isEstimate && typeof headlineHeightM === 'number' && hasNotableSets(headlineHeightM);
+  const sceneRange = !boatLevel && !scale.isEstimate && visualWaveHeightM >= 0.4 ? getWaveRangeM(visualWaveHeightM) : null;
+
   const ariaRoot = boatCopy
     ? `${boatCopy.title}: ${headlineLabel}, ${supportingDetail}`
     : scale.ariaLabel;
   const ariaLabel = [
     ariaRoot,
+    waveRangeLabel ? `${copy.bandLabel} ${waveRangeLabel}` : null,
+    showSetsNote ? copy.setsNote : null,
     hourlyRange,
     trendKey ? (boatCopy ? boatCopy[trendKey] : copy[trendKey]) : null,
     selectedBoatHourNote,
@@ -1161,16 +1210,27 @@ export const WaveHeightGraphic: React.FC<WaveHeightGraphicProps> = ({
         <div className={`flex h-56 w-full items-center justify-center overflow-hidden rounded-[2rem] p-1.5 ring-1 ring-white/70 sm:h-64 ${panelClass} [&>svg]:h-full [&>svg]:w-full`}>
           {boatAccess && boatLevel
             ? <BoatScene scale={scale} level={boatLevel} windTier={windVisualTier} />
-            : <WaveMeterScene scale={sceneScale} visualHeightM={visualWaveHeightM} windTier={windVisualTier} />}
+            : <WaveMeterScene scale={sceneScale} visualHeightM={visualWaveHeightM} windTier={windVisualTier} bandLowM={sceneRange?.lowM} bandHighM={sceneRange?.highM} />}
         </div>
         {!boatCopy && (
           <div className="min-w-0 px-0.5">
             <div className="text-[11px] font-bold leading-tight text-slate-500 dark:text-slate-400">{titleLabel}</div>
-            <div className={`mt-1 font-heading text-[1.35rem] font-bold leading-none sm:text-2xl ${labelClass}`}>{headlineLabel}</div>
+            <div className="mt-1 flex flex-wrap items-baseline gap-x-2 gap-y-0.5">
+              <span className={`font-heading text-[1.35rem] font-bold leading-none sm:text-2xl ${labelClass}`}>{headlineLabel}</span>
+              {waveRangeLabel && (
+                <span className="text-[11px] font-semibold text-slate-500 dark:text-slate-400">{copy.bandLabel} {waveRangeLabel}</span>
+              )}
+            </div>
             <div className="mt-2 inline-flex max-w-full flex-wrap items-center gap-x-1.5 gap-y-0.5 rounded-full border border-slate-100 bg-white/70 px-2.5 py-1 text-[11px] font-bold leading-tight text-slate-500 shadow-sm shadow-sky-900/5 dark:border-slate-700 dark:bg-slate-900/30 dark:text-slate-400">
               <span>{swimFeelCopy.label}</span>
               <span className={swimmingFeelLabelClass}>{swimmingFeel}</span>
             </div>
+            {showSetsNote && (
+              <div className="mt-1.5 flex items-start gap-1 text-[11px] font-medium leading-snug text-slate-500 dark:text-slate-400">
+                <Waves className="mt-0.5 h-3 w-3 shrink-0" aria-hidden="true" />
+                <span>{copy.setsNote}</span>
+              </div>
+            )}
           </div>
         )}
       </div>

@@ -148,6 +148,34 @@ export const getWaveScale = (
 export const getWaveBandClasses = (waveHeightM: number): WaveBandClasses =>
   WAVE_BAND_CLASSES[bucketFor(waveHeightM).band];
 
+export interface WaveRangeM {
+  lowM: number;
+  highM: number;
+}
+
+/**
+ * Honest spread around a significant-wave-height reading. Hs is the mean of the highest third of
+ * waves, so a real sea runs from calmer lulls to bigger sets, and fetch/model uncertainty adds to
+ * that. We show a MODEST band (not the full 0.6–2× wave spectrum, which would read as alarmist) so
+ * the figure reads as "what to expect", not a false single point — the range is information, not a
+ * confidence hedge.
+ */
+export const getWaveRangeM = (waveHeightM: number): WaveRangeM => {
+  if (!Number.isFinite(waveHeightM) || waveHeightM <= 0) return { lowM: 0, highM: 0 };
+  const round1 = (v: number) => Math.round(v * 10) / 10;
+  const low = round1(Math.max(0, waveHeightM * 0.8));
+  const high = round1(waveHeightM * 1.25);
+  return { lowM: low, highM: Math.max(high, round1(low + 0.1)) };
+};
+
+/**
+ * True once the sea is big enough that occasional bigger sets (Hmax ≈ 1.5–2× Hs) become a genuine
+ * safety factor — this is where the research's "sets are bigger than the stated height" note earns
+ * its place. Mirrors the 0.7 m "uncomfortable for ordinary swimmers" swim-safety threshold.
+ */
+export const hasNotableSets = (waveHeightM: number): boolean =>
+  Number.isFinite(waveHeightM) && waveHeightM >= 0.7;
+
 /** Axis top (m) the strip bars are sized against — mirrors the wave meter's base scale. */
 const WAVE_BAR_MAX_M = 1.6;
 
