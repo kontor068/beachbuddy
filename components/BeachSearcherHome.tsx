@@ -1685,11 +1685,36 @@ export const BeachSearcherHome: React.FC<BeachSearcherHomeProps> = ({
     if (!isAllBeachesPanelOpen && !isWeatherPanelOpen) return undefined;
     if (typeof document === 'undefined') return undefined;
 
-    const previousOverflow = document.body.style.overflow;
-    document.body.style.overflow = 'hidden';
+    // iOS Safari ignores `body { overflow: hidden }` for touch scrolling, so the page
+    // behind the full-screen panel keeps scrolling and peeks through as the fixed
+    // overlay shifts against the dynamic viewport. Pin the body in place instead and
+    // restore the scroll position on close — this actually locks the background.
+    const { body } = document;
+    const scrollY = window.scrollY;
+    const previous = {
+      position: body.style.position,
+      top: body.style.top,
+      left: body.style.left,
+      right: body.style.right,
+      width: body.style.width,
+      overflow: body.style.overflow,
+    };
+
+    body.style.position = 'fixed';
+    body.style.top = `-${scrollY}px`;
+    body.style.left = '0';
+    body.style.right = '0';
+    body.style.width = '100%';
+    body.style.overflow = 'hidden';
 
     return () => {
-      document.body.style.overflow = previousOverflow;
+      body.style.position = previous.position;
+      body.style.top = previous.top;
+      body.style.left = previous.left;
+      body.style.right = previous.right;
+      body.style.width = previous.width;
+      body.style.overflow = previous.overflow;
+      window.scrollTo(0, scrollY);
     };
   }, [isAllBeachesPanelOpen, isWeatherPanelOpen]);
 
@@ -3788,7 +3813,7 @@ export const BeachSearcherHome: React.FC<BeachSearcherHomeProps> = ({
               <div className="flex items-center gap-3">
                 <div className="min-w-0 flex-1">
                   <h2 className="truncate text-lg font-extrabold leading-tight text-[#007a83]">
-                    Calm Beach Greece
+                    {weatherPanelTitle}
                   </h2>
                 </div>
                 <button
@@ -3802,7 +3827,7 @@ export const BeachSearcherHome: React.FC<BeachSearcherHomeProps> = ({
                 </button>
               </div>
             </header>
-            <div className="min-h-0 flex-1 overflow-y-auto px-4 pb-24 pt-4">
+            <div className="min-h-0 flex-1 overflow-y-auto overscroll-contain px-4 pb-24 pt-4">
               {conditionsOverviewContent}
             </div>
           </div>
@@ -3857,7 +3882,7 @@ export const BeachSearcherHome: React.FC<BeachSearcherHomeProps> = ({
                 {renderDirectorySortControl(directorySortRef, 'relative min-w-[9.75rem]')}
               </div>
             </header>
-            <div ref={allBeachesPanelScrollRef} className="min-h-0 flex-1 overflow-y-auto px-4 pb-24 pt-4">
+            <div ref={allBeachesPanelScrollRef} className="min-h-0 flex-1 overflow-y-auto overscroll-contain px-4 pb-24 pt-4">
               <div className="space-y-4">
                 {mapPreview && (
                   <div className="overflow-hidden rounded-[1.35rem] border border-sky-100 bg-white/68 p-2 text-left shadow-sm shadow-sky-900/8 ring-1 ring-white/45 backdrop-blur-md">
