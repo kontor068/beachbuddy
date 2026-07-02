@@ -45,8 +45,8 @@ const prerenderLocales = [
     hreflang: 'en',
     ogLocale: 'en_US',
     pathPrefix: '',
-    homeTitle: 'CalmBeach Greece - Best Beach Today by Wind & Waves',
-    homeDescription: 'Find a calmer beach in Greece today. CalmBeach compares live wind, waves, weather and beach exposure so you know where to swim with confidence.',
+    homeTitle: 'CalmBeach Greece - Compare Beaches by Wind & Waves',
+    homeDescription: 'Compare Greek beaches by wind, waves, weather, beach exposure and protection so you can choose a better spot before you go.',
     homeImageAlt: 'CalmBeach Greece beach recommendations by wind and waves',
   },
   {
@@ -56,8 +56,8 @@ const prerenderLocales = [
     hreflang: 'el',
     ogLocale: 'el_GR',
     pathPrefix: '/el',
-    homeTitle: 'Calm Beach Greece - Καλύτερη Παραλία Σήμερα',
-    homeDescription: 'Calm Beach Greece - Βρες την καλύτερη παραλία για σήμερα με βάση άνεμο, κύμα και καιρό.',
+    homeTitle: 'Calm Beach Greece - Σύγκριση παραλιών με άνεμο και κύμα',
+    homeDescription: 'Calm Beach Greece - Σύγκρινε ελληνικές παραλίες με βάση άνεμο, κύμα, καιρό και έκθεση πριν διαλέξεις πού θα πας.',
     homeImageAlt: 'Calm Beach Greece προτάσεις παραλιών',
   },
   {
@@ -67,8 +67,8 @@ const prerenderLocales = [
     hreflang: 'de',
     ogLocale: 'de_DE',
     pathPrefix: '/de',
-    homeTitle: 'CalmBeach Griechenland – Der ruhigste Strand heute nach Wind & Wellen',
-    homeDescription: 'Finde heute einen ruhigeren Strand in Griechenland. CalmBeach vergleicht Wind, Wellen, Wetter und die Lage der Strände, damit du weißt, wo du sicher schwimmen kannst.',
+    homeTitle: 'CalmBeach Griechenland - Strande nach Wind und Wellen vergleichen',
+    homeDescription: 'Vergleiche griechische Strande nach Wind, Wellen, Wetter und Exposition, bevor du deinen Badeplatz auswählst.',
     homeImageAlt: 'CalmBeach Griechenland – Strandempfehlungen nach Wind und Wellen',
   },
   {
@@ -78,8 +78,8 @@ const prerenderLocales = [
     hreflang: 'fr',
     ogLocale: 'fr_FR',
     pathPrefix: '/fr',
-    homeTitle: 'CalmBeach Grèce – La plage la plus calme aujourd’hui selon le vent et les vagues',
-    homeDescription: 'Trouvez une plage plus calme en Grèce aujourd’hui. CalmBeach compare le vent, les vagues, la météo et l’exposition des plages pour savoir où vous baigner en toute confiance.',
+    homeTitle: 'CalmBeach Grece - Comparer les plages par vent et vagues',
+    homeDescription: 'Comparez les plages grecques selon le vent, les vagues, la meteo et l’exposition avant de choisir ou vous baigner.',
     homeImageAlt: 'CalmBeach Grèce – recommandations de plages selon le vent et les vagues',
   },
   {
@@ -89,8 +89,8 @@ const prerenderLocales = [
     hreflang: 'it',
     ogLocale: 'it_IT',
     pathPrefix: '/it',
-    homeTitle: 'CalmBeach Grecia – La spiaggia più calma oggi in base a vento e onde',
-    homeDescription: 'Trova oggi una spiaggia più tranquilla in Grecia. CalmBeach confronta vento, onde, meteo ed esposizione delle spiagge per sapere dove fare il bagno in sicurezza.',
+    homeTitle: 'CalmBeach Grecia - Confronta spiagge per vento e onde',
+    homeDescription: 'Confronta le spiagge greche per vento, onde, meteo ed esposizione prima di scegliere dove fare il bagno.',
     homeImageAlt: 'CalmBeach Grecia – consigli sulle spiagge in base a vento e onde',
   },
 ];
@@ -274,7 +274,7 @@ const seoLandingPages = [
         title: 'Frequently Asked Questions | CalmBeach Greece',
         description: 'Common questions about CalmBeach: how reliable the forecast is, what wind exposure means, how wave height is worked out, where the data comes from and swimming safety.',
         h1: 'Frequently asked questions',
-        intro: 'CalmBeach helps you pick a calm beach for today by comparing wind, waves, weather, exposure and access across more than 2,500 Greek beaches. Here are the questions people ask most.',
+        intro: 'CalmBeach helps you compare Greek beaches by wind, waves, weather, exposure and access before you choose where to swim. Here are the questions people ask most.',
         sections: [],
         faq: [
           {
@@ -282,8 +282,8 @@ const seoLandingPages = [
             a: 'Wind, waves and temperature are a live weather forecast, not an on-the-spot measurement. It shows what is likely, so it is more accurate closer to the day than a week ahead. We present it as honestly as we can — for example a wave-height range instead of a false single number — and you should always double-check with your own eyes when you arrive.',
           },
           {
-            q: 'What does wind exposure mean and how do you find the calmest beaches?',
-            a: 'For each beach we look at the shoreline orientation and the surrounding terrain to work out whether today\'s wind blows onshore (exposed, with waves) or the land shelters it (leeward, calm water). That is how, on the same day, we can tell which beaches will be calm and which choppy — something a plain weather map will not.',
+            q: 'What does wind exposure mean and how do you find less exposed beaches?',
+            a: 'For each beach we look at shoreline orientation and surrounding terrain to estimate whether wind is likely to blow onshore or whether nearby land may reduce exposure. This helps compare beaches that may feel more manageable with beaches that are likely to pick up chop.',
           },
           {
             q: 'How do you work out the wave height, and what does the graphic show?',
@@ -312,7 +312,7 @@ const seoLandingPages = [
         ],
         links: [
           { href: '/', label: 'Open CalmBeach Greece' },
-          { href: '/best-beaches-greece-today/', label: 'Best beaches in Greece today' },
+          { href: '/best-beaches-greece-today/', label: 'Compare Greek beaches by conditions' },
           { href: '/accessible-beaches-greece/', label: 'Accessible beaches in Greece' },
         ],
       },
@@ -320,7 +320,7 @@ const seoLandingPages = [
         title: 'Συχνές ερωτήσεις | CalmBeach Greece',
         description: 'Συχνές ερωτήσεις για το CalmBeach: πόσο αξιόπιστη είναι η πρόγνωση, τι σημαίνει έκθεση σε άνεμο, πώς υπολογίζεται το κύμα, από πού είναι τα δεδομένα και ασφάλεια στο μπάνιο.',
         h1: 'Συχνές ερωτήσεις',
-        intro: 'Το CalmBeach σε βοηθά να διαλέξεις ήρεμη παραλία για σήμερα, συγκρίνοντας άνεμο, κύμα, καιρό, έκθεση και πρόσβαση σε πάνω από 2.500 ελληνικές παραλίες. Εδώ είναι οι πιο συχνές ερωτήσεις.',
+        intro: 'Το CalmBeach σε βοηθά να συγκρίνεις ελληνικές παραλίες με βάση άνεμο, κύμα, καιρό, έκθεση και πρόσβαση πριν διαλέξεις πού θα κολυμπήσεις. Εδώ είναι οι πιο συχνές ερωτήσεις.',
         sections: [],
         faq: [
           {
@@ -329,7 +329,7 @@ const seoLandingPages = [
           },
           {
             q: 'Τι σημαίνει «έκθεση σε άνεμο» και πώς βρίσκετε τις πιο ήρεμες παραλίες;',
-            a: 'Για κάθε παραλία κοιτάμε τον προσανατολισμό της ακτής και το γύρω ανάγλυφο, ώστε να δούμε αν ο σημερινός άνεμος φυσάει προς τα μέσα (εκτεθειμένη, με κύμα) ή αν η στεριά την προστατεύει (υπήνεμη, ήρεμα νερά). Έτσι, την ίδια μέρα, ξεχωρίζουμε ποιες παραλίες θα είναι ήρεμες και ποιες αγριεμένες — κάτι που ένας απλός χάρτης καιρού δεν σου λέει.',
+            a: 'Για κάθε παραλία κοιτάμε τον προσανατολισμό της ακτής και το γύρω ανάγλυφο, ώστε να εκτιμήσουμε αν ο άνεμος πιθανόν τη χτυπάει πιο άμεσα ή αν η στεριά μπορεί να μειώνει την έκθεση. Έτσι συγκρίνουμε παραλίες που μπορεί να είναι πιο διαχειρίσιμες με παραλίες που πιθανόν πιάνουν περισσότερο κύμα.',
           },
           {
             q: 'Πώς υπολογίζετε το ύψος κύματος και τι δείχνει το γραφικό;',
@@ -358,7 +358,7 @@ const seoLandingPages = [
         ],
         links: [
           { href: '/', label: 'Άνοιξε το CalmBeach' },
-          { href: '/best-beaches-greece-today/', label: 'Καλύτερες παραλίες σήμερα' },
+          { href: '/best-beaches-greece-today/', label: 'Σύγκριση παραλιών με συνθήκες' },
           { href: '/accessible-beaches-greece/', label: 'Προσβάσιμες παραλίες ΑμεΑ' },
         ],
       },
@@ -369,14 +369,14 @@ const seoLandingPages = [
     kind: 'regionHub',
     locales: {
       en: {
-        title: 'Best Beaches in Greece Today | CalmBeach',
-        description: 'Compare Greek beaches by today\'s wind, waves, weather, exposure, access and beach type before choosing where to swim.',
-        h1: 'Best beaches in Greece today',
-        intro: 'CalmBeach helps you compare beach options across Greece using the conditions that matter for a swim today: wind, waves, weather, exposure, access and beach type.',
+        title: 'Compare Greek Beaches by Wind, Waves & Shelter | CalmBeach',
+        description: 'Compare Greek beaches by wind, waves, weather, exposure and shelter, then open any beach for live conditions before you choose where to swim.',
+        h1: 'Compare Greek beaches by wind, waves and protection',
+        intro: 'CalmBeach helps you compare beach options across Greece using the conditions that matter before you swim: wind, waves, weather, exposure, access and beach type.',
         sections: [
           {
             heading: 'How CalmBeach compares beaches',
-            body: 'The app combines forecast conditions with static beach information so you can quickly see which beaches may be more suitable for the day. It avoids treating a famous beach as the best choice when wind or waves make another option more practical.',
+            body: 'The app combines forecast conditions with static beach information so you can quickly see which beaches may be more suitable for your plans. It avoids treating a famous beach as the obvious choice when wind or waves make another option more practical.',
           },
           {
             heading: 'What to check before you go',
@@ -384,17 +384,17 @@ const seoLandingPages = [
           },
         ],
         links: [
-          { href: '/', label: 'Open today\'s beach recommendations' },
+          { href: '/', label: 'Open CalmBeach beach search' },
           { href: '/family-beaches-greece/', label: 'Family beaches in Greece' },
-          { href: '/sheltered-beaches-meltemi/', label: 'Sheltered beaches in the Meltemi' },
+          { href: '/sheltered-beaches-meltemi/', label: 'Beaches usually better with Meltemi winds' },
           { href: '/faq/', label: 'How CalmBeach works (FAQ)' },
         ],
       },
       el: {
-        title: 'Καλύτερες παραλίες στην Ελλάδα σήμερα | CalmBeach',
-        description: 'Σύγκρινε ελληνικές παραλίες με βάση τον σημερινό άνεμο, το κύμα, τον καιρό, την έκθεση και την πρόσβαση πριν διαλέξεις πού θα κολυμπήσεις.',
-        h1: 'Καλύτερες παραλίες στην Ελλάδα σήμερα',
-        intro: 'Το CalmBeach σε βοηθά να συγκρίνεις παραλίες σε όλη την Ελλάδα με βάση αυτά που μετράνε για ένα μπάνιο σήμερα: άνεμος, κύμα, καιρός, έκθεση, πρόσβαση και τύπος παραλίας.',
+        title: 'Σύγκριση Παραλιών στην Ελλάδα: Άνεμος & Κύμα | CalmBeach',
+        description: 'Σύγκρινε ελληνικές παραλίες με άνεμο, κύμα, καιρό, έκθεση και προστασία, και άνοιξε κάθε παραλία για live συνθήκες πριν διαλέξεις πού θα κολυμπήσεις.',
+        h1: 'Σύγκριση ελληνικών παραλιών με άνεμο, κύμα και προστασία',
+        intro: 'Το CalmBeach σε βοηθά να συγκρίνεις παραλίες σε όλη την Ελλάδα με βάση αυτά που μετράνε πριν το μπάνιο: άνεμος, κύμα, καιρός, έκθεση, πρόσβαση και τύπος παραλίας.',
         sections: [
           {
             heading: 'Πώς συγκρίνει τις παραλίες το CalmBeach',
@@ -406,9 +406,9 @@ const seoLandingPages = [
           },
         ],
         links: [
-          { href: '/', label: 'Δες τις σημερινές προτάσεις' },
+          { href: '/', label: 'Άνοιξε την αναζήτηση CalmBeach' },
           { href: '/family-beaches-greece/', label: 'Οικογενειακές παραλίες' },
-          { href: '/sheltered-beaches-meltemi/', label: 'Απάνεμες παραλίες με μελτέμι' },
+          { href: '/sheltered-beaches-meltemi/', label: 'Επιλογές με μελτέμι' },
           { href: '/faq/', label: 'Συχνές ερωτήσεις' },
         ],
       },
@@ -419,35 +419,35 @@ const seoLandingPages = [
     kind: 'regionHub',
     locales: {
       en: {
-        title: 'Sheltered Beaches in the Meltemi Winds | CalmBeach',
-        description: 'Find more sheltered Greek beaches during the summer Meltemi winds. CalmBeach checks beach exposure against today\'s wind direction and strength.',
-        h1: 'Sheltered beaches in the Meltemi',
-        intro: 'In July and August the Meltemi can blow strong from the north across the Aegean. The right beach is usually one that is sheltered from the current wind direction, not simply the most popular one.',
+        title: 'More Sheltered Greek Beaches for the Meltemi | CalmBeach',
+        description: 'Find Greek beaches oriented away from northerly Meltemi winds, then open any beach for live wind and waves before you go.',
+        h1: 'Beaches usually better with Meltemi winds',
+        intro: 'In July and August the Meltemi can blow strong from the north across the Aegean. A more comfortable beach is usually one with less exposure to that wind direction, not simply the most popular one.',
         sections: [
           {
-            heading: 'Which coasts stay calmer',
-            body: 'When the Meltemi blows from the north, south and southwest-facing bays are often more protected, while exposed north coasts pick up wind and chop. The sheltered side changes with the wind direction, so CalmBeach checks exposure against today\'s forecast.',
+            heading: 'Which coasts are often more comfortable',
+            body: 'When the Meltemi blows from the north, south and southwest-facing bays may be more protected, while exposed north coasts often pick up wind and chop. The better side changes with wind direction, so check wind and waves before you go.',
           },
           {
             heading: 'A cautious recommendation',
-            body: 'CalmBeach only endorses a beach as more sheltered when the exposure and forecast support it. On strong wind days it prefers caution and reminds you to follow local flags and lifeguard guidance.',
+            body: 'CalmBeach treats protection as a cautious signal based on beach orientation, exposure and available data. On strong wind days it prefers caution and reminds you to follow local flags and lifeguard guidance.',
           },
         ],
         links: [
-          { href: '/', label: 'Check today\'s recommendations' },
-          { href: '/best-beaches-greece-today/', label: 'Best beaches in Greece today' },
+          { href: '/', label: 'Open CalmBeach beach search' },
+          { href: '/best-beaches-greece-today/', label: 'Compare Greek beaches by conditions' },
           { href: '/beach-camping-greece/', label: 'Beaches with camping nearby' },
         ],
       },
       el: {
-        title: 'Απάνεμες παραλίες με μελτέμι | CalmBeach',
-        description: 'Βρες πιο απάνεμες ελληνικές παραλίες όταν φυσάει το μελτέμι. Το CalmBeach ελέγχει την έκθεση κάθε παραλίας σε σχέση με τον σημερινό άνεμο.',
-        h1: 'Απάνεμες παραλίες με μελτέμι',
-        intro: 'Τον Ιούλιο και τον Αύγουστο το μελτέμι φυσά δυνατά από τον βορρά στο Αιγαίο. Η σωστή παραλία είναι συνήθως αυτή που προστατεύεται από τη σημερινή κατεύθυνση του ανέμου, όχι απλώς η πιο δημοφιλής.',
+        title: 'Πιο Απάνεμες Παραλίες στο Μελτέμι — Ελλάδα | CalmBeach',
+        description: 'Βρες ελληνικές παραλίες με προσανατολισμό μακριά από το βόρειο μελτέμι, και άνοιξε κάθε παραλία για live άνεμο και κύμα πριν πας.',
+        h1: 'Παραλίες που συχνά βολεύουν με μελτέμι',
+        intro: 'Τον Ιούλιο και τον Αύγουστο το μελτέμι φυσά δυνατά από τον βορρά στο Αιγαίο. Μια πιο άνετη παραλία είναι συνήθως αυτή με μικρότερη έκθεση σε αυτή την κατεύθυνση ανέμου, όχι απλώς η πιο δημοφιλής.',
         sections: [
           {
-            heading: 'Ποιες ακτές μένουν πιο ήρεμες',
-            body: 'Όταν το μελτέμι φυσά βόρεια, οι νότιοι και νοτιοδυτικοί κόλποι είναι συχνά πιο προστατευμένοι, ενώ οι εκτεθειμένες βόρειες ακτές πιάνουν αέρα και κύμα. Η υπήνεμη πλευρά αλλάζει με την κατεύθυνση, γι\' αυτό το CalmBeach ελέγχει την έκθεση με τη σημερινή πρόγνωση.',
+            heading: 'Ποιες ακτές είναι συχνά πιο άνετες',
+            body: 'Όταν το μελτέμι φυσά βόρεια, οι νότιοι και νοτιοδυτικοί κόλποι μπορεί να είναι πιο προστατευμένοι, ενώ οι εκτεθειμένες βόρειες ακτές συχνά πιάνουν αέρα και κύμα. Η καλύτερη πλευρά αλλάζει με την κατεύθυνση, γι\' αυτό έλεγξε τις συνθήκες πριν πας.',
           },
           {
             heading: 'Προσεκτική πρόταση',
@@ -455,8 +455,8 @@ const seoLandingPages = [
           },
         ],
         links: [
-          { href: '/', label: 'Δες τις σημερινές προτάσεις' },
-          { href: '/best-beaches-greece-today/', label: 'Καλύτερες παραλίες σήμερα' },
+          { href: '/', label: 'Άνοιξε την αναζήτηση CalmBeach' },
+          { href: '/best-beaches-greece-today/', label: 'Σύγκριση παραλιών με συνθήκες' },
           { href: '/beach-camping-greece/', label: 'Παραλίες με camping' },
         ],
       },
@@ -468,10 +468,10 @@ const seoLandingPages = [
     category: 'accessible',
     locales: {
       en: {
-        title: 'Accessible Beaches in Greece with Seatrac Sea Access | CalmBeach',
-        description: 'Greek beaches with accessible facilities and Seatrac sea-access ramps where available, plus today’s live wind and sea. Always check locally.',
+        title: 'Accessible Beaches in Greece with Seatrac | CalmBeach',
+        description: 'Greek beaches with accessible facilities and Seatrac sea-access ramps where available. Open any beach for live wind & waves, and confirm access locally.',
         h1: 'Accessible Beaches in Greece',
-        intro: 'Find beaches in Greece with easier access information, wheelchair-friendly facilities, ramps, accessible paths or Seatrac-style access where this information is available. CalmBeach helps you compare beach conditions and choose a suitable beach for today.',
+        intro: 'Find beaches in Greece with easier access information, wheelchair-friendly facilities, ramps, accessible paths or Seatrac-style access where this information is available. CalmBeach helps you compare beach conditions before you choose where to go.',
         trustNote: 'Accessibility information can change by season and municipality. Always check local signage or official local sources before visiting.',
         faqHeading: 'Accessible beaches FAQ',
         faq: [
@@ -489,7 +489,7 @@ const seoLandingPages = [
           },
           {
             q: 'Can I also check wind and sea conditions?',
-            a: 'Yes. Each beach card links to its CalmBeach detail page where available conditions, wind, waves and beach exposure help you decide whether it is suitable today.',
+            a: 'Yes. Each beach card links to its CalmBeach detail page where available conditions, wind, waves and beach exposure help you decide whether it fits your visit.',
           },
         ],
         sections: [
@@ -499,20 +499,20 @@ const seoLandingPages = [
           },
           {
             heading: 'Conditions still matter',
-            body: 'Even when access information looks useful, wind and waves can change comfort at the beach. Open a beach page to compare today\'s wind, waves, weather and exposure before you go.',
+            body: 'Even when access information looks useful, wind and waves can change comfort at the beach. Open a beach page to compare wind, waves, weather and exposure before you go.',
           },
         ],
         links: [
           { href: '#accessible-beach-list', label: 'Explore accessible beaches' },
-          { href: '/', label: 'Best beaches today' },
-          { href: '/best-beaches-greece-today/', label: 'Best beaches in Greece today' },
-          { href: '/family-beaches-greece/', label: 'Family beaches with calmer water' },
+          { href: '/', label: 'Open CalmBeach Greece' },
+          { href: '/best-beaches-greece-today/', label: 'Compare Greek beaches by conditions' },
+          { href: '/family-beaches-greece/', label: 'Family-friendly beaches' },
           { href: '/beaches/milos/', label: 'Browse Milos beaches' },
         ],
       },
       el: {
-        title: 'Προσβάσιμες παραλίες ΑμεΑ & Seatrac στην Ελλάδα | CalmBeach',
-        description: 'Βρες ελληνικές παραλίες με υποδομές προσβασιμότητας για ΑμεΑ, όπως συστήματα Seatrac όπου υπάρχουν, και έλεγξε τις σημερινές συνθήκες της θάλασσας.',
+        title: 'Προσβάσιμες Παραλίες ΑμεΑ στην Ελλάδα (Seatrac) | CalmBeach',
+        description: 'Ελληνικές παραλίες με υποδομές ΑμεΑ και συστήματα Seatrac όπου υπάρχουν. Άνοιξε κάθε παραλία για live άνεμο & κύμα και επιβεβαίωσε τοπικά πριν πας.',
         h1: 'Προσβάσιμες παραλίες ΑμεΑ',
         intro: 'Κάποιες ελληνικές παραλίες διαθέτουν υποδομές προσβασιμότητας, όπως ράμπες, προσβάσιμο πάρκινγκ ή συστήματα Seatrac για αυτόνομη πρόσβαση στη θάλασσα. Το CalmBeach σε βοηθά να τις βρεις και να δεις τον καιρό για τη μέρα.',
         sections: [
@@ -522,13 +522,13 @@ const seoLandingPages = [
           },
           {
             heading: 'Οι συνθήκες πάλι μετράνε',
-            body: 'Ακόμη και σε προσβάσιμη παραλία, ο άνεμος και το κύμα αλλάζουν την άνεση και την ασφάλεια. Το CalmBeach συνδυάζει τις πληροφορίες προσβασιμότητας με τον σημερινό άνεμο, το κύμα και την έκθεση, για να διαλέξεις πιο ήρεμη μέρα και σημείο.',
+            body: 'Ακόμη και σε προσβάσιμη παραλία, ο άνεμος και το κύμα αλλάζουν την άνεση. Το CalmBeach συνδυάζει τις πληροφορίες προσβασιμότητας με άνεμο, κύμα και έκθεση, ώστε να συγκρίνεις πριν πας.',
           },
         ],
         links: [
           { href: '/', label: 'Άνοιξε το CalmBeach Greece' },
           { href: '/family-beaches-greece/', label: 'Οικογενειακές παραλίες με ήρεμα νερά' },
-          { href: '/best-beaches-greece-today/', label: 'Καλύτερες παραλίες σήμερα' },
+          { href: '/best-beaches-greece-today/', label: 'Σύγκριση παραλιών με συνθήκες' },
         ],
       },
     },
@@ -539,18 +539,18 @@ const seoLandingPages = [
     category: 'family',
     locales: {
       en: {
-        title: 'Family Beaches with Calm Shallow Water | CalmBeach',
-        description: 'Look for family-friendly Greek beaches with calmer, shallower water and easy access, then check today\'s wind and waves before you go.',
+        title: 'Family Beaches in Greece with Shallow Water | CalmBeach',
+        description: 'Family-friendly Greek beaches with shallow water and easier access. Open any beach for live wind & waves before you go.',
         h1: 'Family beaches in Greece',
-        intro: 'For young children, a calmer beach with shallow water and easy access often matters more than a famous name. CalmBeach helps you find family-friendly options and check the day\'s conditions.',
+        intro: 'For young children, shallow water and easy access often matter more than a famous name. CalmBeach helps you find family-friendly options and check conditions before you go.',
         sections: [
           {
             heading: 'What makes a beach family-friendly',
-            body: 'Helpful features include shallow, gently shelving water, sand underfoot, shade or amenities nearby and easy access without a difficult path. CalmBeach surfaces these alongside the daily forecast.',
+            body: 'Helpful features include shallow, gently shelving water, sand underfoot, shade or amenities nearby and easy access without a difficult path. CalmBeach surfaces these alongside wind and sea information.',
           },
           {
-            heading: 'Pick a calmer day',
-            body: 'Small waves and gusts that are fine for adults can be tiring for children. CalmBeach checks wind, waves and exposure so you can choose a more sheltered beach or a calmer time of day.',
+            heading: 'Check wind and waves first',
+            body: 'Small waves and gusts that are fine for adults can be tiring for children. CalmBeach checks wind, waves and exposure so you can compare less exposed beaches and more comfortable visiting times.',
           },
         ],
         links: [
@@ -560,14 +560,14 @@ const seoLandingPages = [
         ],
       },
       el: {
-        title: 'Οικογενειακές παραλίες με ρηχά νερά | CalmBeach',
-        description: 'Βρες οικογενειακές ελληνικές παραλίες με πιο ήρεμα, ρηχά νερά και εύκολη πρόσβαση, και έλεγξε τον σημερινό άνεμο και το κύμα πριν πας.',
+        title: 'Παραλίες για Οικογένειες & Παιδιά στην Ελλάδα | CalmBeach',
+        description: 'Οικογενειακές ελληνικές παραλίες με ρηχά νερά και εύκολη πρόσβαση. Άνοιξε κάθε παραλία για live άνεμο & κύμα πριν πας.',
         h1: 'Οικογενειακές παραλίες με ρηχά νερά',
         intro: 'Για μικρά παιδιά, μια πιο ήρεμη παραλία με ρηχά νερά και εύκολη πρόσβαση συχνά μετράει περισσότερο από ένα διάσημο όνομα. Το CalmBeach σε βοηθά να βρεις οικογενειακές επιλογές και να δεις τις συνθήκες της μέρας.',
         sections: [
           {
             heading: 'Τι κάνει μια παραλία κατάλληλη για οικογένειες',
-            body: 'Βοηθούν τα ρηχά νερά με ομαλό βυθό, η άμμος, η σκιά ή οι κοντινές παροχές και η εύκολη πρόσβαση χωρίς δύσκολο μονοπάτι. Το CalmBeach τα δείχνει μαζί με τη σημερινή πρόγνωση.',
+            body: 'Βοηθούν τα ρηχά νερά με ομαλό βυθό, η άμμος, η σκιά ή οι κοντινές παροχές και η εύκολη πρόσβαση χωρίς δύσκολο μονοπάτι. Το CalmBeach τα δείχνει μαζί με πληροφορίες ανέμου και θάλασσας.',
           },
           {
             heading: 'Διάλεξε πιο ήρεμη μέρα',
@@ -588,10 +588,10 @@ const seoLandingPages = [
     category: 'camping',
     locales: {
       en: {
-        title: 'Beach Camping in Greece: Beaches with Campsites Nearby | CalmBeach',
-        description: 'Greek beaches with an official campsite nearby, plus today’s live wind, waves and exposure to plan a calmer day by the sea.',
+        title: 'Beaches with Campsites Nearby in Greece | CalmBeach',
+        description: 'Greek beaches with an official campsite nearby. Open any beach for live wind, waves and exposure to plan your stay before you go.',
         h1: 'Beaches with camping nearby',
-        intro: 'If you are travelling with a tent or campervan, a beach with a campsite nearby can shape the whole trip. CalmBeach links beaches to nearby campsites and shows the day\'s sea conditions.',
+        intro: 'If you are travelling with a tent or campervan, a beach with a campsite nearby can shape the whole trip. CalmBeach links beaches to nearby campsites and helps you check wind and sea conditions before you go.',
         sections: [
           {
             heading: 'Camping close to the sea',
@@ -599,18 +599,18 @@ const seoLandingPages = [
           },
           {
             heading: 'Check conditions before pitching',
-            body: 'Exposed beaches can be windy for tents and choppy for swimming. Looking at wind direction, strength and exposure helps you pick a more sheltered base for the day.',
+            body: 'Exposed beaches can be windy for tents and choppy for swimming. Looking at wind direction, strength and exposure helps you pick a less exposed base for your stay.',
           },
         ],
         links: [
           { href: '/', label: 'Open CalmBeach Greece' },
-          { href: '/best-beaches-greece-today/', label: 'Best beaches in Greece today' },
-          { href: '/family-beaches-greece/', label: 'Family beaches with calmer water' },
+          { href: '/best-beaches-greece-today/', label: 'Compare Greek beaches by conditions' },
+          { href: '/family-beaches-greece/', label: 'Family-friendly beaches' },
         ],
       },
       el: {
-        title: 'Παραλίες με camping κοντά στην Ελλάδα | CalmBeach',
-        description: 'Βρες ελληνικές παραλίες με κάμπινγκ κοντά και έλεγξε τον σημερινό άνεμο, το κύμα και την έκθεση για να σχεδιάσεις μια πιο ήρεμη μέρα στη θάλασσα.',
+        title: 'Παραλίες με Κάμπινγκ Κοντά — Ελλάδα | CalmBeach',
+        description: 'Ελληνικές παραλίες με κάμπινγκ κοντά. Άνοιξε κάθε παραλία για live άνεμο, κύμα και έκθεση για να σχεδιάσεις τη διαμονή σου πριν πας.',
         h1: 'Παραλίες με camping κοντά',
         intro: 'Αν ταξιδεύεις με σκηνή ή τροχόσπιτο, μια παραλία με κάμπινγκ κοντά μπορεί να καθορίσει όλο το ταξίδι. Το CalmBeach συνδέει παραλίες με κοντινά κάμπινγκ και δείχνει τις συνθήκες της θάλασσας για τη μέρα.',
         sections: [
@@ -625,7 +625,7 @@ const seoLandingPages = [
         ],
         links: [
           { href: '/', label: 'Άνοιξε το CalmBeach Greece' },
-          { href: '/best-beaches-greece-today/', label: 'Καλύτερες παραλίες σήμερα' },
+          { href: '/best-beaches-greece-today/', label: 'Σύγκριση παραλιών με συνθήκες' },
           { href: '/family-beaches-greece/', label: 'Οικογενειακές παραλίες με ήρεμα νερά' },
         ],
       },
@@ -645,6 +645,62 @@ const ISLAND_INTENT_CAP = 40;
 const NORTHERLY = ['North', 'Northeast', 'Northwest'];
 const WESTERLY = ['West', 'Northwest', 'Southwest'];
 
+// Category (per-island guide) titles, en/gr only. Static articles — NO live/
+// today wording. Editorial "Best/Καλύτερες" is allowed on snorkeling (it is the
+// literal query pattern, backed by a visible curated list); "More sheltered /
+// Πιο Απάνεμες" is a comparative, orientation-based claim (protectedFrom), which
+// the honesty guards accept via the "more"/"πιο" qualifier. de/fr/it titles stay
+// as authored in each intent's copy (honest, Milos pilot only).
+// { main } carries island + keyword; { tail } is the droppable qualifier.
+const CATEGORY_TITLE = {
+  sheltered:  { en: { main: islandName => `More Sheltered Beaches in ${islandName}`, tail: 'for the Meltemi' }, gr: { main: islandName => `${islandName}: Πιο Απάνεμες Παραλίες`, tail: 'στο Μελτέμι' } },
+  family:     { en: { main: islandName => `Family Beaches in ${islandName}`, tail: 'with Shallow Water' },      gr: { main: islandName => `${islandName}: Παραλίες για Οικογένειες`, tail: '& Παιδιά' } },
+  snorkeling: { en: { main: islandName => `Best Snorkeling Beaches in ${islandName}`, tail: '' },               gr: { main: islandName => `${islandName}: Οι Καλύτερες Παραλίες για Snorkeling`, tail: '' } },
+  organized:  { en: { main: islandName => `Organized Beaches in ${islandName}`, tail: 'with Sunbeds' },         gr: { main: islandName => `${islandName}: Οργανωμένες Παραλίες`, tail: 'με Ξαπλώστρες' } },
+  secluded:   { en: { main: islandName => `Secluded Beaches in ${islandName}`, tail: 'Away from Crowds' },      gr: { main: islandName => `${islandName}: Απομονωμένες Παραλίες`, tail: 'χωρίς Κόσμο' } },
+  sunset:     { en: { main: islandName => `Sunset Beaches in ${islandName}`, tail: 'Facing West' },             gr: { main: islandName => `${islandName}: Παραλίες για Ηλιοβασίλεμα`, tail: '(Δυτικές)' } },
+};
+// Same deterministic tiers as beach titles: T1 full → T2 drop brand → T3 drop
+// qualifier tail → T4 bare "{island}: {keyword}".
+const categoryTitleFor = (key, islandName, language) => {
+  const spec = CATEGORY_TITLE[key]?.[language];
+  if (!spec) return null;
+  const main = spec.main(islandName);
+  const withTail = spec.tail ? `${main} ${spec.tail}` : main;
+  const max = language === 'gr' ? 58 : 60;
+  const tiers = [`${withTail} | CalmBeach`, withTail, main];
+  for (const tier of tiers) if (tier.length <= max) return tier;
+  return main;
+};
+
+// Category meta, en/gr only (spec §3.2): "{count} {phrase} — {island}: {basis}.
+// {live CTA as a pointer to the per-beach pages}". The count is rebuild-fresh
+// (never stale like "today"); the basis is the honest selection reason.
+const CATEGORY_META = {
+  sheltered:  { en: { phrase: 'sheltered picks',          basis: 'oriented away from northerly Meltemi winds' }, gr: { phrase: 'πιο απάνεμες επιλογές',     basis: 'με προσανατολισμό μακριά από το βόρειο μελτέμι' } },
+  family:     { en: { phrase: 'family-friendly beaches',  basis: 'with shallow water and easier access' },       gr: { phrase: 'οικογενειακές παραλίες',    basis: 'με ρηχά νερά και ευκολότερη πρόσβαση' } },
+  snorkeling: { en: { phrase: 'snorkeling beaches',       basis: 'with clearer water and rocky seabed' },        gr: { phrase: 'παραλίες για snorkeling',   basis: 'με καθαρότερα νερά και βραχώδη βυθό' } },
+  organized:  { en: { phrase: 'organized beaches',        basis: 'with sunbeds, umbrellas and facilities' },     gr: { phrase: 'οργανωμένες παραλίες',      basis: 'με ξαπλώστρες, ομπρέλες και παροχές' } },
+  secluded:   { en: { phrase: 'secluded beaches',         basis: 'quieter and harder to reach' },                gr: { phrase: 'απομονωμένες παραλίες',     basis: 'πιο ήσυχες και δύσκολες στην πρόσβαση' } },
+  sunset:     { en: { phrase: 'west-facing beaches',      basis: 'that look out toward the sunset' },            gr: { phrase: 'δυτικές παραλίες',          basis: 'με θέα στο ηλιοβασίλεμα' } },
+};
+const CATEGORY_META_CTA = {
+  long:  { en: 'Check live wind & waves for each beach on CalmBeach before you go.', gr: 'Δες live άνεμο & κύμα για κάθε παραλία στο CalmBeach πριν πας.' },
+  short: { en: 'Check live wind & waves on CalmBeach.',                              gr: 'Δες live άνεμο & κύμα στο CalmBeach.' },
+};
+const categoryMetaFor = (key, islandName, count, language) => {
+  const spec = CATEGORY_META[key]?.[language];
+  if (!spec) return null;
+  const head = language === 'en'
+    ? `${count} ${spec.phrase} in ${islandName}: ${spec.basis}. `
+    : `${count} ${spec.phrase} — ${islandName}: ${spec.basis}. `;
+  for (const cta of [CATEGORY_META_CTA.long[language], CATEGORY_META_CTA.short[language]]) {
+    const candidate = `${head}${cta}`;
+    if (candidate.length <= 155) return candidate;
+  }
+  return truncateForMeta(`${head}${CATEGORY_META_CTA.short[language]}`, 155);
+};
+
 const islandIntents = [
   {
     key: 'sheltered',
@@ -652,52 +708,52 @@ const islandIntents = [
     match: beach => Array.isArray(beach.protectedFrom) && NORTHERLY.some(d => beach.protectedFrom.includes(d)),
     copy: (islandName, count) => ({
       en: {
-        title: `Sheltered Beaches in ${islandName} for the Meltemi | CalmBeach`,
-        description: `Find beaches in ${islandName} that face away from the northerly Meltemi winds, then check today's wind and waves on CalmBeach.`,
-        h1: `Sheltered beaches in ${islandName}`,
-        intro: `When the Meltemi blows from the north, the calmer beaches in ${islandName} are usually the bays oriented away from it. These ${count} beaches face away from northerly winds — still check today's forecast in CalmBeach before you go.`,
+        title: categoryTitleFor('sheltered', islandName, 'en'),
+        description: categoryMetaFor('sheltered', islandName, count, 'en'),
+        h1: `Beaches in ${islandName} usually better with Meltemi winds`,
+        intro: `When the Meltemi blows from the north, more comfortable beaches in ${islandName} are often bays oriented away from it. These ${count} beaches face away from northerly winds based on available orientation data — still check conditions before you go.`,
         sections: [
-          { heading: `Which beaches in ${islandName} are sheltered from the Meltemi?`, body: `The south- and west-facing bays listed here are oriented away from northerly winds, so they tend to stay calmer when the Meltemi blows. Local conditions still vary, so confirm with today's forecast.` },
-          { heading: 'Is the sea always calm at these beaches?', body: 'No. Orientation shows which way a coast faces, not guaranteed shelter or low waves. On strong-wind days follow local flags and check live wind and waves in the app.' },
+          { heading: `Which beaches in ${islandName} may be better with Meltemi winds?`, body: `The south- and west-facing bays listed here are oriented away from northerly winds, so they may be more comfortable when the Meltemi blows. Local conditions still vary, so confirm wind and waves before you go.` },
+          { heading: 'Does orientation guarantee low waves?', body: 'No. Orientation shows which way a coast faces, not guaranteed shelter or low waves. On strong-wind days follow local flags and check live wind and waves in the app.' },
         ],
       },
       gr: {
-        title: `${islandName}: απάνεμες παραλίες με μελτέμι | CalmBeach`,
-        description: `Παραλίες που κοιτούν μακριά από το βόρειο μελτέμι — ${islandName}. Έλεγξε τον σημερινό άνεμο και το κύμα στο CalmBeach πριν πας.`,
-        h1: `Απάνεμες παραλίες με μελτέμι — ${islandName}`,
-        intro: `Όταν φυσά το μελτέμι από τον βορρά, οι πιο ήρεμες επιλογές εδώ (${islandName}) είναι συνήθως οι κόλποι που κοιτούν μακριά του. Αυτές οι ${count} παραλίες έχουν προσανατολισμό μακριά από βόρειους ανέμους — δες πάντα τη σημερινή πρόγνωση στο CalmBeach πριν πας.`,
+        title: categoryTitleFor('sheltered', islandName, 'gr'),
+        description: categoryMetaFor('sheltered', islandName, count, 'gr'),
+        h1: `Παραλίες που συχνά βολεύουν με μελτέμι — ${islandName}`,
+        intro: `Όταν φυσά το μελτέμι από τον βορρά, πιο άνετες επιλογές εδώ (${islandName}) είναι συχνά οι κόλποι που κοιτούν μακριά του. Αυτές οι ${count} παραλίες έχουν προσανατολισμό μακριά από βόρειους ανέμους με βάση τα διαθέσιμα στοιχεία — έλεγξε τις συνθήκες πριν πας.`,
         sections: [
-          { heading: `${islandName}: ποιες παραλίες είναι απάνεμες με μελτέμι;`, body: `Οι νότιοι και δυτικοί κόλποι της λίστας έχουν προσανατολισμό μακριά από βόρειους ανέμους, οπότε μένουν συνήθως πιο ήρεμοι όταν φυσά το μελτέμι. Οι συνθήκες αλλάζουν τοπικά, γι' αυτό επιβεβαίωσε με τη σημερινή πρόγνωση.` },
+          { heading: `${islandName}: ποιες παραλίες μπορεί να βολεύουν με μελτέμι;`, body: `Οι νότιοι και δυτικοί κόλποι της λίστας έχουν προσανατολισμό μακριά από βόρειους ανέμους, οπότε μπορεί να είναι πιο άνετοι όταν φυσά το μελτέμι. Οι συνθήκες αλλάζουν τοπικά, γι' αυτό έλεγξε άνεμο και κύμα πριν πας.` },
           { heading: 'Είναι πάντα ήρεμη η θάλασσα σε αυτές τις παραλίες;', body: 'Όχι. Ο προσανατολισμός δείχνει την πλευρά της ακτής, όχι εγγυημένη προστασία ή χαμηλό κύμα. Σε μέρες με δυνατό αέρα ακολούθησε τις τοπικές σημαίες και έλεγξε live άνεμο και κύμα στην εφαρμογή.' },
         ],
       },
       de: {
-        title: `Windgeschützte Strände auf ${islandName} beim Meltemi | CalmBeach`,
-        description: `Finde Strände auf ${islandName}, die vom nördlichen Meltemi abgewandt sind, und prüfe dann Wind und Wellen von heute auf CalmBeach.`,
-        h1: `Windgeschützte Strände auf ${islandName}`,
-        intro: `Wenn der Meltemi aus dem Norden weht, sind die ruhigeren Strände auf ${islandName} meist die Buchten, die von ihm abgewandt liegen. Diese ${count} Strände sind von Nordwinden abgewandt – prüfe trotzdem die heutige Vorhersage in CalmBeach, bevor du losfährst.`,
+        title: `Strände auf ${islandName}, die oft besser beim Meltemi liegen | CalmBeach`,
+        description: `Finde Strände auf ${islandName}, die vom nördlichen Meltemi abgewandt sind, und prüfe Wind und Wellen, bevor du losfährst.`,
+        h1: `Strände auf ${islandName}, die oft besser beim Meltemi liegen`,
+        intro: `Wenn der Meltemi aus dem Norden weht, sind auf ${islandName} oft Buchten angenehmer, die von ihm abgewandt liegen. Diese ${count} Strände sind laut vorhandenen Ausrichtungsdaten von Nordwinden abgewandt – prüfe trotzdem die Bedingungen, bevor du losfährst.`,
         sections: [
-          { heading: `Welche Strände auf ${islandName} sind beim Meltemi windgeschützt?`, body: `Die hier gelisteten, nach Süden und Westen ausgerichteten Buchten liegen abgewandt von Nordwinden und bleiben daher meist ruhiger, wenn der Meltemi weht. Die Bedingungen ändern sich örtlich, prüfe also die heutige Vorhersage.` },
+          { heading: `Welche Strände auf ${islandName} können beim Meltemi besser passen?`, body: `Die hier gelisteten, nach Süden und Westen ausgerichteten Buchten liegen abgewandt von Nordwinden und können beim Meltemi angenehmer sein. Die Bedingungen ändern sich örtlich, prüfe also Wind und Wellen, bevor du losfährst.` },
           { heading: 'Ist das Meer an diesen Stränden immer ruhig?', body: 'Nein. Die Ausrichtung zeigt, wohin eine Küste blickt, keinen garantierten Schutz und keine niedrigen Wellen. An windigen Tagen folge den örtlichen Flaggen und prüfe Wind und Wellen live in der App.' },
         ],
       },
       fr: {
-        title: `Plages abritées à ${islandName} par vent meltemi | CalmBeach`,
-        description: `Trouvez à ${islandName} des plages orientées à l'abri du meltemi de nord, puis vérifiez le vent et les vagues du jour sur CalmBeach.`,
-        h1: `Plages abritées à ${islandName}`,
-        intro: `Quand le meltemi souffle du nord, les plages les plus calmes à ${islandName} sont généralement les baies orientées à l'opposé. Ces ${count} plages sont abritées des vents de nord — vérifiez tout de même la prévision du jour dans CalmBeach avant d'y aller.`,
+        title: `Plages souvent plus confortables à ${islandName} par meltemi | CalmBeach`,
+        description: `Trouvez à ${islandName} des plages orientées à l'opposé du meltemi de nord, puis vérifiez le vent et les vagues avant d'y aller.`,
+        h1: `Plages à ${islandName} souvent plus confortables par meltemi`,
+        intro: `Quand le meltemi souffle du nord, les baies orientées à l'opposé peuvent être plus confortables à ${islandName}. Ces ${count} plages sont listées selon les données d'orientation disponibles — vérifiez quand même les conditions avant d'y aller.`,
         sections: [
-          { heading: `Quelles plages de ${islandName} sont abritées du meltemi ?`, body: `Les baies orientées au sud et à l'ouest listées ici sont tournées à l'opposé des vents de nord et restent donc généralement plus calmes quand le meltemi souffle. Les conditions varient localement, confirmez avec la prévision du jour.` },
+          { heading: `Quelles plages de ${islandName} peuvent mieux convenir par meltemi ?`, body: `Les baies orientées au sud et à l'ouest listées ici sont tournées à l'opposé des vents de nord et peuvent être plus confortables quand le meltemi souffle. Les conditions varient localement, vérifiez donc le vent et les vagues avant d'y aller.` },
           { heading: 'La mer est-elle toujours calme sur ces plages ?', body: "Non. L'orientation indique vers où la côte est tournée, pas un abri garanti ni des vagues faibles. Les jours de vent fort, suivez les drapeaux locaux et vérifiez le vent et les vagues en direct dans l'application." },
         ],
       },
       it: {
-        title: `Spiagge riparate a ${islandName} dal meltemi | CalmBeach`,
-        description: `Trova a ${islandName} spiagge orientate al riparo dal meltemi da nord, poi controlla vento e onde di oggi su CalmBeach.`,
-        h1: `Spiagge riparate a ${islandName}`,
-        intro: `Quando il meltemi soffia da nord, le spiagge più tranquille a ${islandName} sono di solito le insenature orientate dalla parte opposta. Queste ${count} spiagge sono riparate dai venti di nord — controlla comunque le previsioni di oggi in CalmBeach prima di andare.`,
+        title: `Spiagge a ${islandName} spesso migliori con meltemi | CalmBeach`,
+        description: `Trova a ${islandName} spiagge orientate lontano dal meltemi da nord, poi controlla vento e onde prima di andare.`,
+        h1: `Spiagge a ${islandName} spesso migliori con meltemi`,
+        intro: `Quando il meltemi soffia da nord, a ${islandName} possono essere più comode le insenature orientate dalla parte opposta. Queste ${count} spiagge sono elencate in base ai dati di orientamento disponibili — controlla comunque le condizioni prima di andare.`,
         sections: [
-          { heading: `Quali spiagge di ${islandName} sono riparate dal meltemi?`, body: `Le insenature esposte a sud e a ovest elencate qui sono orientate lontano dai venti di nord, quindi di solito restano più tranquille quando soffia il meltemi. Le condizioni variano localmente, conferma con le previsioni di oggi.` },
+          { heading: `Quali spiagge di ${islandName} possono andare meglio con meltemi?`, body: `Le insenature esposte a sud e a ovest elencate qui sono orientate lontano dai venti di nord, quindi possono essere più comode quando soffia il meltemi. Le condizioni variano localmente, controlla vento e onde prima di andare.` },
           { heading: 'Il mare è sempre calmo in queste spiagge?', body: "No. L'orientamento indica verso dove guarda la costa, non un riparo garantito o onde basse. Nei giorni di vento forte segui le bandiere locali e controlla vento e onde in tempo reale nell'app." },
         ],
       },
@@ -709,53 +765,53 @@ const islandIntents = [
     match: beach => beach.environment?.familyFriendly === true,
     copy: (islandName, count) => ({
       en: {
-        title: `Family Beaches in ${islandName} with Calm, Shallow Water | CalmBeach`,
-        description: `Family-friendly beaches in ${islandName} with calmer, shallower water and easier access. Check today's wind and waves on CalmBeach.`,
+        title: categoryTitleFor('family', islandName, 'en'),
+        description: categoryMetaFor('family', islandName, count, 'en'),
         h1: `Family beaches in ${islandName}`,
-        intro: `Travelling with young children in ${islandName}? These ${count} family-friendly beaches tend to have calmer, shallower water and easier access. Check today's wind and waves in CalmBeach before you go.`,
+        intro: `Travelling with young children in ${islandName}? These ${count} family-friendly beaches tend to have shallower water and easier access. Check wind and waves in CalmBeach before you go.`,
         sections: [
-          { heading: `Which beaches in ${islandName} are best for families?`, body: 'The beaches listed here are marked family-friendly, usually with shallower water and easier access. For small children, pick a calmer, more sheltered day.' },
-          { heading: 'How do I know the sea will be calm enough?', body: 'CalmBeach checks wind, waves and exposure for the day, so you can choose a more sheltered beach or a calmer time of day.' },
+          { heading: `Which beaches in ${islandName} are family-friendly?`, body: 'The beaches listed here are marked family-friendly, usually with shallower water and easier access. For small children, still check wind and waves before you go.' },
+          { heading: 'How do I compare sea conditions?', body: 'CalmBeach checks wind, waves and exposure, so you can compare less exposed beaches and more comfortable visiting times.' },
         ],
       },
       gr: {
-        title: `${islandName}: οικογενειακές παραλίες με ρηχά νερά | CalmBeach`,
-        description: `Οικογενειακές παραλίες με πιο ήρεμα, ρηχά νερά και ευκολότερη πρόσβαση — ${islandName}. Έλεγξε τον σημερινό άνεμο και το κύμα στο CalmBeach.`,
+        title: categoryTitleFor('family', islandName, 'gr'),
+        description: categoryMetaFor('family', islandName, count, 'gr'),
         h1: `Οικογενειακές παραλίες με ρηχά νερά — ${islandName}`,
-        intro: `Ταξιδεύεις με μικρά παιδιά; Αυτές οι ${count} οικογενειακές παραλίες εδώ (${islandName}) έχουν συνήθως πιο ήρεμα, ρηχά νερά και ευκολότερη πρόσβαση. Δες τον σημερινό άνεμο και το κύμα στο CalmBeach πριν πας.`,
+        intro: `Ταξιδεύεις με μικρά παιδιά; Αυτές οι ${count} οικογενειακές παραλίες εδώ (${islandName}) έχουν συνήθως ρηχά νερά και ευκολότερη πρόσβαση. Δες άνεμο και κύμα στο CalmBeach πριν πας.`,
         sections: [
           { heading: `${islandName}: ποιες παραλίες είναι καλές για οικογένειες;`, body: 'Οι παραλίες της λίστας είναι σημειωμένες ως οικογενειακές, συνήθως με ρηχότερα νερά και ευκολότερη πρόσβαση. Για μικρά παιδιά, διάλεξε πιο ήρεμη και υπήνεμη μέρα.' },
           { heading: 'Πώς ξέρω ότι η θάλασσα θα είναι αρκετά ήρεμη;', body: 'Το CalmBeach ελέγχει άνεμο, κύμα και έκθεση για τη μέρα, ώστε να διαλέξεις πιο υπήνεμη παραλία ή πιο ήρεμη ώρα.' },
         ],
       },
       de: {
-        title: `Familienstrände auf ${islandName} mit ruhigem, flachem Wasser | CalmBeach`,
-        description: `Familienfreundliche Strände auf ${islandName} mit ruhigerem, flacherem Wasser und einfacherem Zugang. Prüfe Wind und Wellen von heute auf CalmBeach.`,
+        title: `Familienfreundliche Strände auf ${islandName} | CalmBeach`,
+        description: `Familienfreundliche Strände auf ${islandName} mit flacherem Wasser und einfacherem Zugang. Prüfe Wind und Wellen, bevor du losfährst.`,
         h1: `Familienstrände auf ${islandName}`,
-        intro: `Unterwegs mit kleinen Kindern auf ${islandName}? Diese ${count} familienfreundlichen Strände haben meist ruhigeres, flacheres Wasser und einfacheren Zugang. Prüfe Wind und Wellen von heute in CalmBeach, bevor du losfährst.`,
+        intro: `Unterwegs mit kleinen Kindern auf ${islandName}? Diese ${count} familienfreundlichen Strände haben meist flacheres Wasser und einfacheren Zugang. Prüfe Wind und Wellen in CalmBeach, bevor du losfährst.`,
         sections: [
-          { heading: `Welche Strände auf ${islandName} eignen sich am besten für Familien?`, body: 'Die hier gelisteten Strände sind als familienfreundlich markiert, meist mit flacherem Wasser und einfacherem Zugang. Für kleine Kinder wähle einen ruhigeren, windgeschützteren Tag.' },
-          { heading: 'Woher weiß ich, dass das Meer ruhig genug ist?', body: 'CalmBeach prüft Wind, Wellen und Lage für den Tag, sodass du einen geschützteren Strand oder eine ruhigere Tageszeit wählen kannst.' },
+          { heading: `Welche Strände auf ${islandName} sind familienfreundlich?`, body: 'Die hier gelisteten Strände sind als familienfreundlich markiert, meist mit flacherem Wasser und einfacherem Zugang. Prüfe für kleine Kinder trotzdem Wind und Wellen.' },
+          { heading: 'Wie vergleiche ich die Meeresbedingungen?', body: 'CalmBeach prüft Wind, Wellen und Lage, sodass du weniger exponierte Strände und angenehmere Besuchszeiten vergleichen kannst.' },
         ],
       },
       fr: {
         title: `Plages familiales à ${islandName} à l'eau calme et peu profonde | CalmBeach`,
-        description: `Plages adaptées aux familles à ${islandName}, à l'eau plus calme et peu profonde et d'accès facile. Vérifiez le vent et les vagues du jour sur CalmBeach.`,
+        description: `Plages adaptées aux familles à ${islandName}, avec eau généralement peu profonde et accès plus facile. Vérifiez le vent et les vagues avant d'y aller.`,
         h1: `Plages familiales à ${islandName}`,
-        intro: `Vous voyagez avec de jeunes enfants à ${islandName} ? Ces ${count} plages familiales ont généralement une eau plus calme et peu profonde et un accès plus facile. Vérifiez le vent et les vagues du jour dans CalmBeach avant d'y aller.`,
+        intro: `Vous voyagez avec de jeunes enfants à ${islandName} ? Ces ${count} plages familiales ont généralement une eau peu profonde et un accès plus facile. Vérifiez le vent et les vagues dans CalmBeach avant d'y aller.`,
         sections: [
-          { heading: `Quelles plages de ${islandName} conviennent le mieux aux familles ?`, body: "Les plages listées ici sont marquées comme familiales, généralement avec une eau moins profonde et un accès plus facile. Pour les jeunes enfants, choisissez une journée plus calme et plus abritée." },
-          { heading: 'Comment savoir si la mer sera assez calme ?', body: "CalmBeach vérifie le vent, les vagues et l'exposition du jour, pour choisir une plage plus abritée ou un moment plus calme de la journée." },
+          { heading: `Quelles plages de ${islandName} conviennent aux familles ?`, body: "Les plages listées ici sont marquées comme familiales, généralement avec une eau moins profonde et un accès plus facile. Pour les jeunes enfants, vérifiez quand même le vent et les vagues." },
+          { heading: 'Comment comparer les conditions de mer ?', body: "CalmBeach vérifie le vent, les vagues et l'exposition pour comparer les plages moins exposées et les moments plus confortables." },
         ],
       },
       it: {
         title: `Spiagge per famiglie a ${islandName} con acqua calma e bassa | CalmBeach`,
-        description: `Spiagge adatte alle famiglie a ${islandName}, con acqua più calma e bassa e accesso più facile. Controlla vento e onde di oggi su CalmBeach.`,
+        description: `Spiagge adatte alle famiglie a ${islandName}, con acqua bassa e accesso più facile. Controlla vento e onde prima di andare.`,
         h1: `Spiagge per famiglie a ${islandName}`,
-        intro: `Viaggi con bambini piccoli a ${islandName}? Queste ${count} spiagge per famiglie hanno di solito acqua più calma e bassa e un accesso più facile. Controlla vento e onde di oggi in CalmBeach prima di andare.`,
+        intro: `Viaggi con bambini piccoli a ${islandName}? Queste ${count} spiagge per famiglie hanno di solito acqua bassa e un accesso più facile. Controlla vento e onde in CalmBeach prima di andare.`,
         sections: [
-          { heading: `Quali spiagge di ${islandName} sono migliori per le famiglie?`, body: 'Le spiagge elencate qui sono indicate come adatte alle famiglie, di solito con acqua più bassa e accesso più facile. Per i bambini piccoli, scegli una giornata più calma e riparata.' },
-          { heading: 'Come faccio a sapere che il mare sarà abbastanza calmo?', body: 'CalmBeach controlla vento, onde ed esposizione per la giornata, così puoi scegliere una spiaggia più riparata o un momento più tranquillo.' },
+          { heading: `Quali spiagge di ${islandName} sono adatte alle famiglie?`, body: 'Le spiagge elencate qui sono indicate come adatte alle famiglie, di solito con acqua più bassa e accesso più facile. Per i bambini piccoli, controlla comunque vento e onde.' },
+          { heading: 'Come confronto le condizioni del mare?', body: 'CalmBeach controlla vento, onde ed esposizione, così puoi confrontare spiagge meno esposte e orari più comodi.' },
         ],
       },
     }),
@@ -766,53 +822,53 @@ const islandIntents = [
     match: beach => beach.activities?.snorkeling === true,
     copy: (islandName, count) => ({
       en: {
-        title: `Best Snorkeling Beaches in ${islandName} | Clear Water & Rocks | CalmBeach`,
-        description: `Beaches in ${islandName} with clearer water and rocky seabed for snorkeling. Check today's wind and waves on CalmBeach before you go.`,
+        title: categoryTitleFor('snorkeling', islandName, 'en'),
+        description: categoryMetaFor('snorkeling', islandName, count, 'en'),
         h1: `Snorkeling beaches in ${islandName}`,
-        intro: `Want clear water and rocks to explore in ${islandName}? These ${count} beaches are good for snorkeling, usually with clearer water and a rocky or mixed seabed. Visibility is best on calm, low-wind days — check today's wind and waves in CalmBeach first.`,
+        intro: `Want clear water and rocks to explore in ${islandName}? These ${count} beaches are good for snorkeling, usually with clearer water and a rocky or mixed seabed. Visibility is often better on low-wind days — check wind and waves in CalmBeach first.`,
         sections: [
-          { heading: `Which beaches in ${islandName} are best for snorkeling?`, body: 'The beaches listed here have rockier seabed and clearer water, where you are more likely to see fish and underwater life. Conditions vary, so confirm with the day\'s forecast.' },
-          { heading: 'When is snorkeling safest?', body: 'Snorkel close to shore on calm days and avoid strong wind, waves or currents. Check live wind and waves in the app and follow any local flags.' },
+          { heading: `Which beaches in ${islandName} are good for snorkeling?`, body: 'The beaches listed here have rockier seabed and clearer water, where you are more likely to see fish and underwater life. Conditions vary, so check the forecast before you go.' },
+          { heading: 'When is snorkeling more comfortable?', body: 'Snorkel close to shore when conditions are mild and avoid strong wind, waves or currents. Check live wind and waves in the app and follow any local flags.' },
         ],
       },
       gr: {
-        title: `${islandName}: καλύτερες παραλίες για snorkeling | CalmBeach`,
-        description: `Παραλίες με καθαρότερα νερά και βραχώδη βυθό για snorkeling — ${islandName}. Έλεγξε τον σημερινό άνεμο και το κύμα στο CalmBeach πριν πας.`,
+        title: categoryTitleFor('snorkeling', islandName, 'gr'),
+        description: categoryMetaFor('snorkeling', islandName, count, 'gr'),
         h1: `Παραλίες για snorkeling — ${islandName}`,
-        intro: `Ψάχνεις καθαρά νερά και βράχια για εξερεύνηση; Αυτές οι ${count} παραλίες εδώ (${islandName}) είναι καλές για snorkeling, συνήθως με πιο καθαρά νερά και βραχώδη ή μικτό βυθό. Η ορατότητα είναι καλύτερη σε ήρεμες μέρες με λίγο αέρα — δες πρώτα τον σημερινό άνεμο και το κύμα στο CalmBeach.`,
+        intro: `Ψάχνεις καθαρά νερά και βράχια για εξερεύνηση; Αυτές οι ${count} παραλίες εδώ (${islandName}) είναι καλές για snorkeling, συνήθως με πιο καθαρά νερά και βραχώδη ή μικτό βυθό. Η ορατότητα είναι συχνά καλύτερη σε μέρες με λίγο αέρα — δες πρώτα άνεμο και κύμα στο CalmBeach.`,
         sections: [
-          { heading: `${islandName}: ποιες παραλίες είναι καλές για snorkeling;`, body: 'Οι παραλίες της λίστας έχουν πιο βραχώδη βυθό και καθαρότερα νερά, όπου είναι πιο πιθανό να δεις ψάρια και υποθαλάσσια ζωή. Οι συνθήκες αλλάζουν, γι\' αυτό επιβεβαίωσε με τη σημερινή πρόγνωση.' },
+          { heading: `${islandName}: ποιες παραλίες είναι καλές για snorkeling;`, body: 'Οι παραλίες της λίστας έχουν πιο βραχώδη βυθό και καθαρότερα νερά, όπου είναι πιο πιθανό να δεις ψάρια και υποθαλάσσια ζωή. Οι συνθήκες αλλάζουν, γι\' αυτό έλεγξε την πρόγνωση πριν πας.' },
           { heading: 'Πότε είναι ασφαλέστερο το snorkeling;', body: 'Κάνε snorkeling κοντά στην ακτή σε ήρεμες μέρες και απόφυγε δυνατό αέρα, κύμα ή ρεύματα. Έλεγξε live άνεμο και κύμα στην εφαρμογή και ακολούθησε τυχόν τοπικές σημαίες.' },
         ],
       },
       de: {
-        title: `Beste Schnorchelstrände auf ${islandName} | Klares Wasser & Felsen | CalmBeach`,
-        description: `Strände auf ${islandName} mit klarerem Wasser und felsigem Grund zum Schnorcheln. Prüfe Wind und Wellen von heute auf CalmBeach.`,
+        title: `Schnorchelstrände auf ${islandName} | Klares Wasser & Felsen | CalmBeach`,
+        description: `Strände auf ${islandName} mit klarerem Wasser und felsigem Grund zum Schnorcheln. Prüfe Wind und Wellen, bevor du losfährst.`,
         h1: `Schnorchelstrände auf ${islandName}`,
-        intro: `Du suchst klares Wasser und Felsen zum Erkunden auf ${islandName}? Diese ${count} Strände eignen sich zum Schnorcheln, meist mit klarerem Wasser und felsigem oder gemischtem Grund. Die Sicht ist an ruhigen, windarmen Tagen am besten – prüfe zuerst Wind und Wellen von heute in CalmBeach.`,
+        intro: `Du suchst klares Wasser und Felsen zum Erkunden auf ${islandName}? Diese ${count} Strände eignen sich zum Schnorcheln, meist mit klarerem Wasser und felsigem oder gemischtem Grund. Die Sicht ist oft an windarmen Tagen besser – prüfe zuerst Wind und Wellen in CalmBeach.`,
         sections: [
-          { heading: `Welche Strände auf ${islandName} eignen sich am besten zum Schnorcheln?`, body: 'Die hier gelisteten Strände haben felsigeren Grund und klareres Wasser, wo du eher Fische und Unterwasserleben siehst. Die Bedingungen ändern sich, prüfe also die heutige Vorhersage.' },
-          { heading: 'Wann ist Schnorcheln am sichersten?', body: 'Schnorchle an ruhigen Tagen ufernah und meide starken Wind, Wellen oder Strömungen. Prüfe Wind und Wellen live in der App und folge örtlichen Flaggen.' },
+          { heading: `Welche Strände auf ${islandName} eignen sich zum Schnorcheln?`, body: 'Die hier gelisteten Strände haben felsigeren Grund und klareres Wasser, wo du eher Fische und Unterwasserleben siehst. Die Bedingungen ändern sich, prüfe also die Vorhersage vor dem Besuch.' },
+          { heading: 'Wann ist Schnorcheln angenehmer?', body: 'Schnorchle ufernah, wenn die Bedingungen mild sind, und meide starken Wind, Wellen oder Strömungen. Prüfe Wind und Wellen live in der App und folge örtlichen Flaggen.' },
         ],
       },
       fr: {
-        title: `Meilleures plages de snorkeling à ${islandName} | Eau claire & rochers | CalmBeach`,
-        description: `Plages à ${islandName} à l'eau plus claire et au fond rocheux pour le snorkeling. Vérifiez le vent et les vagues du jour sur CalmBeach.`,
+        title: `Plages de snorkeling à ${islandName} | Eau claire & rochers | CalmBeach`,
+        description: `Plages à ${islandName} à l'eau plus claire et au fond rocheux pour le snorkeling. Vérifiez le vent et les vagues avant d'y aller.`,
         h1: `Plages de snorkeling à ${islandName}`,
-        intro: `Vous cherchez une eau claire et des rochers à explorer à ${islandName} ? Ces ${count} plages se prêtent au snorkeling, généralement avec une eau plus claire et un fond rocheux ou mixte. La visibilité est meilleure les jours calmes et peu ventés — vérifiez d'abord le vent et les vagues du jour dans CalmBeach.`,
+        intro: `Vous cherchez une eau claire et des rochers à explorer à ${islandName} ? Ces ${count} plages se prêtent au snorkeling, généralement avec une eau plus claire et un fond rocheux ou mixte. La visibilité est souvent meilleure les jours peu ventés — vérifiez d'abord le vent et les vagues dans CalmBeach.`,
         sections: [
-          { heading: `Quelles plages de ${islandName} sont les meilleures pour le snorkeling ?`, body: 'Les plages listées ici ont un fond plus rocheux et une eau plus claire, où vous avez plus de chances de voir des poissons et la vie sous-marine. Les conditions varient, confirmez avec la prévision du jour.' },
-          { heading: 'Quand le snorkeling est-il le plus sûr ?', body: 'Faites du snorkeling près du rivage les jours calmes et évitez vent fort, vagues ou courants. Vérifiez le vent et les vagues en direct dans l\'application et suivez les drapeaux locaux.' },
+          { heading: `Quelles plages de ${islandName} se prêtent au snorkeling ?`, body: "Les plages listées ici ont un fond plus rocheux et une eau plus claire, où vous avez plus de chances de voir des poissons et la vie sous-marine. Les conditions varient, vérifiez le vent et les vagues avant d'y aller." },
+          { heading: 'Quand le snorkeling est-il plus confortable ?', body: 'Faites du snorkeling près du rivage quand les conditions sont douces et évitez vent fort, vagues ou courants. Vérifiez le vent et les vagues en direct dans l\'application et suivez les drapeaux locaux.' },
         ],
       },
       it: {
-        title: `Migliori spiagge per snorkeling a ${islandName} | Acqua limpida e scogli | CalmBeach`,
-        description: `Spiagge a ${islandName} con acqua più limpida e fondale roccioso per lo snorkeling. Controlla vento e onde di oggi su CalmBeach.`,
+        title: `Spiagge per snorkeling a ${islandName} | Acqua limpida e scogli | CalmBeach`,
+        description: `Spiagge a ${islandName} con acqua più limpida e fondale roccioso per lo snorkeling. Controlla vento e onde prima di andare.`,
         h1: `Spiagge per snorkeling a ${islandName}`,
-        intro: `Cerchi acqua limpida e scogli da esplorare a ${islandName}? Queste ${count} spiagge sono adatte allo snorkeling, di solito con acqua più limpida e fondale roccioso o misto. La visibilità è migliore nei giorni calmi e poco ventosi — controlla prima vento e onde di oggi in CalmBeach.`,
+        intro: `Cerchi acqua limpida e scogli da esplorare a ${islandName}? Queste ${count} spiagge sono adatte allo snorkeling, di solito con acqua più limpida e fondale roccioso o misto. La visibilità è spesso migliore nei giorni poco ventosi — controlla prima vento e onde in CalmBeach.`,
         sections: [
-          { heading: `Quali spiagge di ${islandName} sono migliori per lo snorkeling?`, body: 'Le spiagge elencate qui hanno fondale più roccioso e acqua più limpida, dove è più probabile vedere pesci e vita sottomarina. Le condizioni variano, conferma con le previsioni di oggi.' },
-          { heading: 'Quando è più sicuro fare snorkeling?', body: 'Fai snorkeling vicino alla riva nei giorni calmi ed evita vento forte, onde o correnti. Controlla vento e onde in tempo reale nell\'app e segui le bandiere locali.' },
+          { heading: `Quali spiagge di ${islandName} sono adatte allo snorkeling?`, body: 'Le spiagge elencate qui hanno fondale più roccioso e acqua più limpida, dove è più probabile vedere pesci e vita sottomarina. Le condizioni variano, controlla le previsioni prima di andare.' },
+          { heading: 'Quando lo snorkeling è più comodo?', body: 'Fai snorkeling vicino alla riva quando le condizioni sono miti ed evita vento forte, onde o correnti. Controlla vento e onde in tempo reale nell\'app e segui le bandiere locali.' },
         ],
       },
     }),
@@ -823,20 +879,20 @@ const islandIntents = [
     match: beach => beach.amenities?.organized === true,
     copy: (islandName, count) => ({
       en: {
-        title: `Organized Beaches in ${islandName} with Sunbeds & Facilities | CalmBeach`,
-        description: `Organized beaches in ${islandName} with sunbeds, umbrellas and facilities. Check today's wind and waves on CalmBeach before you go.`,
+        title: categoryTitleFor('organized', islandName, 'en'),
+        description: categoryMetaFor('organized', islandName, count, 'en'),
         h1: `Organized beaches in ${islandName}`,
-        intro: `Prefer sunbeds, umbrellas and a beach bar in ${islandName}? These ${count} organized beaches usually have facilities and easier access. Check today's wind and waves in CalmBeach before you go.`,
+        intro: `Prefer sunbeds, umbrellas and a beach bar in ${islandName}? These ${count} organized beaches usually have facilities and easier access. Check wind and waves in CalmBeach before you go.`,
         sections: [
           { heading: `Which beaches in ${islandName} are organized?`, body: 'The beaches listed here are marked as organized, usually with sunbeds, umbrellas and food or a beach bar nearby. Facilities can change by season, so confirm locally.' },
-          { heading: 'Are organized beaches calmer?', body: 'Not necessarily. Facilities do not change the wind or waves — check live conditions in the app and pick a more sheltered beach on windy days.' },
+          { heading: 'Are organized beaches less windy?', body: 'Not necessarily. Facilities do not change the wind or waves — check live conditions in the app and compare less exposed beaches on windy days.' },
         ],
       },
       gr: {
-        title: `${islandName}: οργανωμένες παραλίες με ξαπλώστρες | CalmBeach`,
-        description: `Οργανωμένες παραλίες με ξαπλώστρες, ομπρέλες και παροχές — ${islandName}. Έλεγξε τον σημερινό άνεμο και το κύμα στο CalmBeach.`,
+        title: categoryTitleFor('organized', islandName, 'gr'),
+        description: categoryMetaFor('organized', islandName, count, 'gr'),
         h1: `Οργανωμένες παραλίες — ${islandName}`,
-        intro: `Προτιμάς ξαπλώστρες, ομπρέλες και beach bar; Αυτές οι ${count} οργανωμένες παραλίες εδώ (${islandName}) έχουν συνήθως παροχές και ευκολότερη πρόσβαση. Δες τον σημερινό άνεμο και το κύμα στο CalmBeach πριν πας.`,
+        intro: `Προτιμάς ξαπλώστρες, ομπρέλες και beach bar; Αυτές οι ${count} οργανωμένες παραλίες εδώ (${islandName}) έχουν συνήθως παροχές και ευκολότερη πρόσβαση. Δες άνεμο και κύμα στο CalmBeach πριν πας.`,
         sections: [
           { heading: `${islandName}: ποιες παραλίες είναι οργανωμένες;`, body: 'Οι παραλίες της λίστας είναι σημειωμένες ως οργανωμένες, συνήθως με ξαπλώστρες, ομπρέλες και φαγητό ή beach bar κοντά. Οι παροχές αλλάζουν ανά εποχή, γι\' αυτό επιβεβαίωσε επιτόπου.' },
           { heading: 'Είναι πιο ήρεμες οι οργανωμένες παραλίες;', body: 'Όχι απαραίτητα. Οι παροχές δεν αλλάζουν τον άνεμο ή το κύμα — έλεγξε live συνθήκες στην εφαρμογή και διάλεξε πιο υπήνεμη παραλία τις μέρες με αέρα.' },
@@ -844,32 +900,32 @@ const islandIntents = [
       },
       de: {
         title: `Organisierte Strände auf ${islandName} mit Liegen & Einrichtungen | CalmBeach`,
-        description: `Organisierte Strände auf ${islandName} mit Liegen, Sonnenschirmen und Einrichtungen. Prüfe Wind und Wellen von heute auf CalmBeach.`,
+        description: `Organisierte Strände auf ${islandName} mit Liegen, Sonnenschirmen und Einrichtungen. Prüfe Wind und Wellen, bevor du losfährst.`,
         h1: `Organisierte Strände auf ${islandName}`,
-        intro: `Du bevorzugst Liegen, Sonnenschirme und eine Beach Bar auf ${islandName}? Diese ${count} organisierten Strände bieten meist Einrichtungen und einfacheren Zugang. Prüfe Wind und Wellen von heute in CalmBeach, bevor du losfährst.`,
+        intro: `Du bevorzugst Liegen, Sonnenschirme und eine Beach Bar auf ${islandName}? Diese ${count} organisierten Strände bieten meist Einrichtungen und einfacheren Zugang. Prüfe Wind und Wellen in CalmBeach, bevor du losfährst.`,
         sections: [
           { heading: `Welche Strände auf ${islandName} sind organisiert?`, body: 'Die hier gelisteten Strände sind als organisiert markiert, meist mit Liegen, Sonnenschirmen und Essen oder einer Beach Bar in der Nähe. Die Einrichtungen ändern sich je nach Saison, bestätige sie vor Ort.' },
-          { heading: 'Sind organisierte Strände ruhiger?', body: 'Nicht unbedingt. Einrichtungen ändern Wind oder Wellen nicht – prüfe die Live-Bedingungen in der App und wähle an windigen Tagen einen geschützteren Strand.' },
+          { heading: 'Sind organisierte Strände weniger windig?', body: 'Nicht unbedingt. Einrichtungen ändern Wind oder Wellen nicht – prüfe die Live-Bedingungen in der App und vergleiche an windigen Tagen weniger exponierte Strände.' },
         ],
       },
       fr: {
         title: `Plages aménagées à ${islandName} avec transats et services | CalmBeach`,
-        description: `Plages aménagées à ${islandName} avec transats, parasols et services. Vérifiez le vent et les vagues du jour sur CalmBeach.`,
+        description: `Plages aménagées à ${islandName} avec transats, parasols et services. Vérifiez le vent et les vagues avant d'y aller.`,
         h1: `Plages aménagées à ${islandName}`,
-        intro: `Vous préférez transats, parasols et un bar de plage à ${islandName} ? Ces ${count} plages aménagées offrent généralement des services et un accès plus facile. Vérifiez le vent et les vagues du jour dans CalmBeach avant d'y aller.`,
+        intro: `Vous préférez transats, parasols et un bar de plage à ${islandName} ? Ces ${count} plages aménagées offrent généralement des services et un accès plus facile. Vérifiez le vent et les vagues dans CalmBeach avant d'y aller.`,
         sections: [
           { heading: `Quelles plages de ${islandName} sont aménagées ?`, body: 'Les plages listées ici sont marquées comme aménagées, généralement avec transats, parasols et restauration ou un bar de plage à proximité. Les services changent selon la saison, confirmez sur place.' },
-          { heading: 'Les plages aménagées sont-elles plus calmes ?', body: 'Pas forcément. Les services ne changent ni le vent ni les vagues — vérifiez les conditions en direct dans l\'application et choisissez une plage plus abritée les jours de vent.' },
+          { heading: 'Les plages aménagées sont-elles moins ventées ?', body: 'Pas forcément. Les services ne changent ni le vent ni les vagues — vérifiez les conditions en direct dans l\'application et comparez les plages moins exposées les jours de vent.' },
         ],
       },
       it: {
         title: `Spiagge attrezzate a ${islandName} con lettini e servizi | CalmBeach`,
-        description: `Spiagge attrezzate a ${islandName} con lettini, ombrelloni e servizi. Controlla vento e onde di oggi su CalmBeach.`,
+        description: `Spiagge attrezzate a ${islandName} con lettini, ombrelloni e servizi. Controlla vento e onde prima di andare.`,
         h1: `Spiagge attrezzate a ${islandName}`,
-        intro: `Preferisci lettini, ombrelloni e un beach bar a ${islandName}? Queste ${count} spiagge attrezzate hanno di solito servizi e un accesso più facile. Controlla vento e onde di oggi in CalmBeach prima di andare.`,
+        intro: `Preferisci lettini, ombrelloni e un beach bar a ${islandName}? Queste ${count} spiagge attrezzate hanno di solito servizi e un accesso più facile. Controlla vento e onde in CalmBeach prima di andare.`,
         sections: [
           { heading: `Quali spiagge di ${islandName} sono attrezzate?`, body: 'Le spiagge elencate qui sono indicate come attrezzate, di solito con lettini, ombrelloni e ristoro o un beach bar nelle vicinanze. I servizi cambiano con la stagione, conferma sul posto.' },
-          { heading: 'Le spiagge attrezzate sono più tranquille?', body: 'Non necessariamente. I servizi non cambiano vento o onde — controlla le condizioni in tempo reale nell\'app e scegli una spiaggia più riparata nei giorni ventosi.' },
+          { heading: 'Le spiagge attrezzate sono meno ventose?', body: 'Non necessariamente. I servizi non cambiano vento o onde — controlla le condizioni in tempo reale nell\'app e confronta spiagge meno esposte nei giorni ventosi.' },
         ],
       },
     }),
@@ -880,20 +936,20 @@ const islandIntents = [
     match: beach => beach.environment?.remote === true,
     copy: (islandName, count) => ({
       en: {
-        title: `Secluded Beaches in ${islandName} Away from the Crowds | CalmBeach`,
-        description: `Quiet, remote beaches in ${islandName} away from the crowds. Check access, wind and waves on CalmBeach before you go.`,
+        title: categoryTitleFor('secluded', islandName, 'en'),
+        description: categoryMetaFor('secluded', islandName, count, 'en'),
         h1: `Secluded beaches in ${islandName}`,
-        intro: `Looking to escape the crowds in ${islandName}? These ${count} remote beaches are quieter and harder to reach — often by dirt road, on foot or by boat. Bring water and shade, and check today's wind and waves in CalmBeach before you go.`,
+        intro: `Looking to escape the crowds in ${islandName}? These ${count} remote beaches are quieter and harder to reach — often by dirt road, on foot or by boat. Bring water and shade, and check wind and waves in CalmBeach before you go.`,
         sections: [
           { heading: `Which beaches in ${islandName} are the most secluded?`, body: 'The beaches listed here are remote and usually have no facilities. Access can be rough — a dirt track, a hike or boat-only — so plan ahead and bring supplies.' },
-          { heading: 'Are remote beaches safe to swim?', body: 'Remote beaches have no lifeguards or services. Swim only in calm conditions, never alone in big waves, and check live wind and waves in the app first.' },
+          { heading: 'What should I know before swimming at remote beaches?', body: 'Remote beaches have no lifeguards or services. Avoid strong wind, big waves and swimming alone, and check live wind and waves in the app first.' },
         ],
       },
       gr: {
-        title: `${islandName}: απομονωμένες παραλίες χωρίς κόσμο | CalmBeach`,
-        description: `Ήσυχες, απομονωμένες παραλίες μακριά από τον κόσμο — ${islandName}. Έλεγξε πρόσβαση, άνεμο και κύμα στο CalmBeach πριν πας.`,
+        title: categoryTitleFor('secluded', islandName, 'gr'),
+        description: categoryMetaFor('secluded', islandName, count, 'gr'),
         h1: `Απομονωμένες παραλίες — ${islandName}`,
-        intro: `Θες να ξεφύγεις από τον κόσμο; Αυτές οι ${count} απομακρυσμένες παραλίες εδώ (${islandName}) είναι πιο ήσυχες και πιο δύσκολες στην πρόσβαση — συχνά με χωματόδρομο, με τα πόδια ή με σκάφος. Φέρε νερό και σκιά, και δες τον σημερινό άνεμο και το κύμα στο CalmBeach πριν πας.`,
+        intro: `Θες να ξεφύγεις από τον κόσμο; Αυτές οι ${count} απομακρυσμένες παραλίες εδώ (${islandName}) είναι πιο ήσυχες και πιο δύσκολες στην πρόσβαση — συχνά με χωματόδρομο, με τα πόδια ή με σκάφος. Φέρε νερό και σκιά, και δες άνεμο και κύμα στο CalmBeach πριν πας.`,
         sections: [
           { heading: `${islandName}: ποιες παραλίες είναι οι πιο απομονωμένες;`, body: 'Οι παραλίες της λίστας είναι απομακρυσμένες και συνήθως χωρίς παροχές. Η πρόσβαση μπορεί να είναι δύσκολη — χωματόδρομος, πεζοπορία ή μόνο με σκάφος — οπότε προγραμμάτισε και φέρε προμήθειες.' },
           { heading: 'Είναι ασφαλές το μπάνιο σε απομονωμένες παραλίες;', body: 'Οι απομονωμένες παραλίες δεν έχουν ναυαγοσώστη ή υπηρεσίες. Κολύμπησε μόνο σε ήρεμες συνθήκες, ποτέ μόνος σε μεγάλο κύμα, και έλεγξε πρώτα live άνεμο και κύμα στην εφαρμογή.' },
@@ -903,30 +959,30 @@ const islandIntents = [
         title: `Abgelegene Strände auf ${islandName} abseits der Menschenmengen | CalmBeach`,
         description: `Ruhige, abgelegene Strände auf ${islandName} abseits der Menschenmengen. Prüfe Zugang, Wind und Wellen auf CalmBeach.`,
         h1: `Abgelegene Strände auf ${islandName}`,
-        intro: `Du möchtest den Menschenmengen auf ${islandName} entkommen? Diese ${count} abgelegenen Strände sind ruhiger und schwerer erreichbar – oft über Schotterpiste, zu Fuß oder per Boot. Bring Wasser und Schatten mit und prüfe Wind und Wellen von heute in CalmBeach, bevor du losfährst.`,
+        intro: `Du möchtest den Menschenmengen auf ${islandName} entkommen? Diese ${count} abgelegenen Strände sind ruhiger und schwerer erreichbar – oft über Schotterpiste, zu Fuß oder per Boot. Bring Wasser und Schatten mit und prüfe Wind und Wellen in CalmBeach, bevor du losfährst.`,
         sections: [
           { heading: `Welche Strände auf ${islandName} sind am abgelegensten?`, body: 'Die hier gelisteten Strände sind abgelegen und haben meist keine Einrichtungen. Der Zugang kann rau sein – Schotterpiste, Wanderung oder nur per Boot – plane also voraus und bring Vorräte mit.' },
-          { heading: 'Ist Schwimmen an abgelegenen Stränden sicher?', body: 'Abgelegene Strände haben keine Rettungsschwimmer oder Dienste. Schwimme nur bei ruhigen Bedingungen, nie allein bei hohen Wellen, und prüfe zuerst Wind und Wellen live in der App.' },
+          { heading: 'Was sollte ich vor dem Schwimmen an abgelegenen Stränden wissen?', body: 'Abgelegene Strände haben keine Rettungsschwimmer oder Dienste. Meide starken Wind, hohe Wellen und Alleinschwimmen, und prüfe zuerst Wind und Wellen live in der App.' },
         ],
       },
       fr: {
         title: `Plages isolées à ${islandName} loin de la foule | CalmBeach`,
-        description: `Plages calmes et isolées à ${islandName}, loin de la foule. Vérifiez l'accès, le vent et les vagues sur CalmBeach.`,
+        description: `Plages isolées à ${islandName}, loin de la foule. Vérifiez l'accès, le vent et les vagues sur CalmBeach.`,
         h1: `Plages isolées à ${islandName}`,
-        intro: `Vous voulez échapper à la foule à ${islandName} ? Ces ${count} plages isolées sont plus calmes et plus difficiles d'accès — souvent par piste, à pied ou en bateau. Apportez eau et ombre, et vérifiez le vent et les vagues du jour dans CalmBeach avant d'y aller.`,
+        intro: `Vous voulez échapper à la foule à ${islandName} ? Ces ${count} plages isolées sont plus difficiles d'accès — souvent par piste, à pied ou en bateau. Apportez eau et ombre, et vérifiez le vent et les vagues dans CalmBeach avant d'y aller.`,
         sections: [
           { heading: `Quelles plages de ${islandName} sont les plus isolées ?`, body: 'Les plages listées ici sont isolées et généralement sans services. L\'accès peut être difficile — piste, randonnée ou bateau uniquement — alors prévoyez et apportez des provisions.' },
-          { heading: 'Peut-on se baigner en sécurité sur les plages isolées ?', body: 'Les plages isolées n\'ont ni surveillants ni services. Ne nagez que par conditions calmes, jamais seul dans de grosses vagues, et vérifiez d\'abord le vent et les vagues en direct dans l\'application.' },
+          { heading: 'À savoir avant de se baigner sur les plages isolées', body: 'Les plages isolées n\'ont ni surveillants ni services. Évitez vent fort, grosses vagues et baignade seul, et vérifiez d\'abord le vent et les vagues en direct dans l\'application.' },
         ],
       },
       it: {
         title: `Spiagge isolate a ${islandName} lontano dalla folla | CalmBeach`,
         description: `Spiagge tranquille e isolate a ${islandName}, lontano dalla folla. Controlla accesso, vento e onde su CalmBeach.`,
         h1: `Spiagge isolate a ${islandName}`,
-        intro: `Vuoi sfuggire alla folla a ${islandName}? Queste ${count} spiagge isolate sono più tranquille e più difficili da raggiungere — spesso su strada sterrata, a piedi o in barca. Porta acqua e ombra e controlla vento e onde di oggi in CalmBeach prima di andare.`,
+        intro: `Vuoi sfuggire alla folla a ${islandName}? Queste ${count} spiagge isolate sono più difficili da raggiungere — spesso su strada sterrata, a piedi o in barca. Porta acqua e ombra e controlla vento e onde in CalmBeach prima di andare.`,
         sections: [
           { heading: `Quali spiagge di ${islandName} sono le più isolate?`, body: 'Le spiagge elencate qui sono isolate e di solito senza servizi. L\'accesso può essere difficile — sterrato, sentiero o solo in barca — quindi pianifica e porta provviste.' },
-          { heading: 'È sicuro nuotare nelle spiagge isolate?', body: 'Le spiagge isolate non hanno bagnini o servizi. Nuota solo in condizioni calme, mai da solo con onde alte, e controlla prima vento e onde in tempo reale nell\'app.' },
+          { heading: 'Cosa sapere prima di nuotare nelle spiagge isolate', body: 'Le spiagge isolate non hanno bagnini o servizi. Evita vento forte, onde alte e il nuoto da solo, e controlla prima vento e onde in tempo reale nell\'app.' },
         ],
       },
     }),
@@ -937,50 +993,50 @@ const islandIntents = [
     match: beach => Array.isArray(beach.orientation?.faces) && WESTERLY.some(d => beach.orientation.faces.includes(d)),
     copy: (islandName, count) => ({
       en: {
-        title: `Best Sunset Beaches in ${islandName} Facing West | CalmBeach`,
-        description: `West-facing beaches in ${islandName} with great sunset views. Check today's wind and waves on CalmBeach before you go.`,
+        title: categoryTitleFor('sunset', islandName, 'en'),
+        description: categoryMetaFor('sunset', islandName, count, 'en'),
         h1: `Sunset beaches in ${islandName}`,
-        intro: `Want to watch the sun go down over the sea in ${islandName}? These ${count} west-facing beaches look out toward the sunset. Time your visit for late afternoon — and check today's wind and waves in CalmBeach before you go.`,
+        intro: `Want to watch the sun go down over the sea in ${islandName}? These ${count} west-facing beaches look out toward the sunset. Time your visit for late afternoon — and check wind and waves in CalmBeach before you go.`,
         sections: [
-          { heading: `Which beaches in ${islandName} have the best sunsets?`, body: 'The beaches listed here face west or southwest, so the sun sets over the water in front of you. Arrive before sunset to find a spot and enjoy the light.' },
+          { heading: `Which beaches in ${islandName} face the sunset?`, body: 'The beaches listed here face west or southwest, so the sun sets over the water in front of you. Arrive before sunset to find a spot and enjoy the light.' },
           { heading: 'Anything to know for an evening visit?', body: 'Wind can pick up or drop in the evening, and remote beaches have no lights. Check live wind and waves in the app and bring a torch for the walk back.' },
         ],
       },
       gr: {
-        title: `${islandName}: καλύτερες παραλίες για ηλιοβασίλεμα | CalmBeach`,
-        description: `Δυτικές παραλίες με θέα στο ηλιοβασίλεμα — ${islandName}. Έλεγξε τον σημερινό άνεμο και το κύμα στο CalmBeach πριν πας.`,
+        title: categoryTitleFor('sunset', islandName, 'gr'),
+        description: categoryMetaFor('sunset', islandName, count, 'gr'),
         h1: `Παραλίες για ηλιοβασίλεμα — ${islandName}`,
-        intro: `Θες να δεις τον ήλιο να δύει στη θάλασσα; Αυτές οι ${count} δυτικές παραλίες εδώ (${islandName}) κοιτούν προς το ηλιοβασίλεμα. Προγραμμάτισε την επίσκεψη αργά το απόγευμα — και δες τον σημερινό άνεμο και το κύμα στο CalmBeach πριν πας.`,
+        intro: `Θες να δεις τον ήλιο να δύει στη θάλασσα; Αυτές οι ${count} δυτικές παραλίες εδώ (${islandName}) κοιτούν προς το ηλιοβασίλεμα. Προγραμμάτισε την επίσκεψη αργά το απόγευμα — και δες άνεμο και κύμα στο CalmBeach πριν πας.`,
         sections: [
           { heading: `${islandName}: ποιες παραλίες έχουν το καλύτερο ηλιοβασίλεμα;`, body: 'Οι παραλίες της λίστας κοιτούν δυτικά ή νοτιοδυτικά, οπότε ο ήλιος δύει πάνω από τη θάλασσα μπροστά σου. Έλα πριν τη δύση για να βρεις θέση και να απολαύσεις το φως.' },
           { heading: 'Τι να προσέξω για βραδινή επίσκεψη;', body: 'Ο αέρας μπορεί να δυναμώσει ή να πέσει το βράδυ, και οι απομακρυσμένες παραλίες δεν έχουν φωτισμό. Έλεγξε live άνεμο και κύμα στην εφαρμογή και πάρε φακό για την επιστροφή.' },
         ],
       },
       de: {
-        title: `Beste Sonnenuntergangsstrände auf ${islandName} nach Westen | CalmBeach`,
-        description: `Nach Westen ausgerichtete Strände auf ${islandName} mit tollem Sonnenuntergang. Prüfe Wind und Wellen von heute auf CalmBeach.`,
+        title: `Sonnenuntergangsstrände auf ${islandName} nach Westen | CalmBeach`,
+        description: `Nach Westen ausgerichtete Strände auf ${islandName} mit Sonnenuntergangsblick. Prüfe Wind und Wellen, bevor du losfährst.`,
         h1: `Sonnenuntergangsstrände auf ${islandName}`,
-        intro: `Du möchtest die Sonne über dem Meer auf ${islandName} untergehen sehen? Diese ${count} nach Westen ausgerichteten Strände blicken zum Sonnenuntergang. Plane deinen Besuch für den späten Nachmittag – und prüfe Wind und Wellen von heute in CalmBeach, bevor du losfährst.`,
+        intro: `Du möchtest die Sonne über dem Meer auf ${islandName} untergehen sehen? Diese ${count} nach Westen ausgerichteten Strände blicken zum Sonnenuntergang. Plane deinen Besuch für den späten Nachmittag – und prüfe Wind und Wellen in CalmBeach, bevor du losfährst.`,
         sections: [
           { heading: `Welche Strände auf ${islandName} haben die schönsten Sonnenuntergänge?`, body: 'Die hier gelisteten Strände sind nach Westen oder Südwesten ausgerichtet, sodass die Sonne über dem Wasser vor dir untergeht. Komm vor Sonnenuntergang, um einen Platz zu finden und das Licht zu genießen.' },
           { heading: 'Was sollte ich für einen Besuch am Abend wissen?', body: 'Der Wind kann abends auffrischen oder nachlassen, und abgelegene Strände haben kein Licht. Prüfe Wind und Wellen live in der App und bring eine Taschenlampe für den Rückweg mit.' },
         ],
       },
       fr: {
-        title: `Meilleures plages de coucher de soleil à ${islandName} face à l'ouest | CalmBeach`,
-        description: `Plages orientées à l'ouest à ${islandName} avec une belle vue sur le coucher de soleil. Vérifiez le vent et les vagues du jour sur CalmBeach.`,
+        title: `Plages de coucher de soleil à ${islandName} face à l'ouest | CalmBeach`,
+        description: `Plages orientées à l'ouest à ${islandName} avec une belle vue sur le coucher de soleil. Vérifiez le vent et les vagues avant d'y aller.`,
         h1: `Plages de coucher de soleil à ${islandName}`,
-        intro: `Envie de voir le soleil se coucher sur la mer à ${islandName} ? Ces ${count} plages orientées à l'ouest donnent vers le coucher de soleil. Prévoyez votre visite en fin d'après-midi — et vérifiez le vent et les vagues du jour dans CalmBeach avant d'y aller.`,
+        intro: `Envie de voir le soleil se coucher sur la mer à ${islandName} ? Ces ${count} plages orientées à l'ouest donnent vers le coucher de soleil. Prévoyez votre visite en fin d'après-midi — et vérifiez le vent et les vagues dans CalmBeach avant d'y aller.`,
         sections: [
           { heading: `Quelles plages de ${islandName} offrent les plus beaux couchers de soleil ?`, body: 'Les plages listées ici sont orientées à l\'ouest ou au sud-ouest, le soleil se couche donc sur l\'eau devant vous. Arrivez avant le coucher pour trouver une place et profiter de la lumière.' },
           { heading: 'À savoir pour une visite en soirée ?', body: 'Le vent peut se lever ou tomber le soir, et les plages isolées n\'ont pas d\'éclairage. Vérifiez le vent et les vagues en direct dans l\'application et emportez une lampe pour le retour.' },
         ],
       },
       it: {
-        title: `Migliori spiagge per il tramonto a ${islandName} esposte a ovest | CalmBeach`,
-        description: `Spiagge esposte a ovest a ${islandName} con bella vista sul tramonto. Controlla vento e onde di oggi su CalmBeach.`,
+        title: `Spiagge per il tramonto a ${islandName} esposte a ovest | CalmBeach`,
+        description: `Spiagge esposte a ovest a ${islandName} con vista sul tramonto. Controlla vento e onde prima di andare.`,
         h1: `Spiagge per il tramonto a ${islandName}`,
-        intro: `Vuoi vedere il sole tramontare sul mare a ${islandName}? Queste ${count} spiagge esposte a ovest guardano verso il tramonto. Programma la visita nel tardo pomeriggio — e controlla vento e onde di oggi in CalmBeach prima di andare.`,
+        intro: `Vuoi vedere il sole tramontare sul mare a ${islandName}? Queste ${count} spiagge esposte a ovest guardano verso il tramonto. Programma la visita nel tardo pomeriggio — e controlla vento e onde in CalmBeach prima di andare.`,
         sections: [
           { heading: `Quali spiagge di ${islandName} hanno i tramonti più belli?`, body: 'Le spiagge elencate qui sono esposte a ovest o sud-ovest, così il sole tramonta sull\'acqua davanti a te. Arriva prima del tramonto per trovare posto e goderti la luce.' },
           { heading: 'Cosa sapere per una visita serale?', body: 'Il vento può rinforzare o calare la sera, e le spiagge isolate non hanno illuminazione. Controlla vento e onde in tempo reale nell\'app e porta una torcia per il ritorno.' },
@@ -996,7 +1052,7 @@ const islandIntentPath = (intent, region, island) => `${intent.pathPrefix}/${enc
 // on region and guide pages (the page <h1>s are too long to use as nav labels).
 const INTENT_NAV_LABELS = {
   family:     { en: 'Family beaches',  gr: 'Οικογενειακές',     de: 'Familienstrände',  fr: 'Plages familiales',  it: 'Per famiglie' },
-  sheltered:  { en: 'Sheltered (Meltemi)', gr: 'Απάνεμες (μελτέμι)', de: 'Windgeschützt', fr: 'Abritées (meltemi)', it: 'Riparate (meltemi)' },
+  sheltered:  { en: 'Meltemi wind options', gr: 'Επιλογές με μελτέμι', de: 'Meltemi-Optionen', fr: 'Options meltemi', it: 'Opzioni meltemi' },
   snorkeling: { en: 'Snorkeling',      gr: 'Για snorkeling',    de: 'Schnorcheln',      fr: 'Snorkeling',         it: 'Snorkeling' },
   organized:  { en: 'Organized',       gr: 'Οργανωμένες',       de: 'Organisiert',      fr: 'Aménagées',          it: 'Attrezzate' },
   secluded:   { en: 'Secluded',        gr: 'Απομονωμένες',      de: 'Abgelegen',        fr: 'Isolées',            it: 'Isolate' },
@@ -1038,8 +1094,8 @@ const renderIslandGuides = (island, region, locale, excludeKey, heading) => {
 // (so national intent -> beach was one-directional). Only emitted for locales
 // where those pages exist (en root + el); /de//fr//it would 404.
 const NATIONAL_GUIDE_LINKS = [
-  { path: '/best-beaches-greece-today/', label: { en: 'Best beaches today', gr: 'Καλύτερες σήμερα' } },
-  { path: '/sheltered-beaches-meltemi/', label: { en: 'Sheltered in the Meltemi', gr: 'Απάνεμες (μελτέμι)' } },
+  { path: '/best-beaches-greece-today/', label: { en: 'Compare beach conditions', gr: 'Σύγκριση συνθηκών' } },
+  { path: '/sheltered-beaches-meltemi/', label: { en: 'Meltemi wind options', gr: 'Επιλογές με μελτέμι' } },
   { path: '/family-beaches-greece/', label: { en: 'Family beaches', gr: 'Οικογενειακές' } },
   { path: '/accessible-beaches-greece/', label: { en: 'Accessible (Seatrac)', gr: 'Προσβάσιμες ΑμεΑ' } },
   { path: '/beach-camping-greece/', label: { en: 'Beach camping', gr: 'Κάμπινγκ σε παραλίες' } },
@@ -1303,12 +1359,12 @@ const staticFallbackCopy = {
     familyFriendly: 'Family friendly',
     quiet: 'Quiet',
     snorkeling: 'Snorkeling',
-    openAppBeach: "Open the app for today's recommendation score, wind exposure, waves, best time of day and nearby alternatives.",
-    openAppRegion: "Weather and sea conditions change during the day. CalmBeach uses the app view for today's live beach recommendations.",
+    openAppBeach: "Open the app for live recommendation score, wind exposure, waves, best time of day and nearby alternatives.",
+    openAppRegion: "Weather and sea conditions change. CalmBeach uses the app view for live beach recommendations.",
     viewBeach: 'View this beach in CalmBeach Greece',
     viewRegion: islandName => `View ${islandName} in CalmBeach Greece`,
     regionHeading: islandName => `${islandName} beaches`,
-    regionDescription: (islandName, count) => `Compare ${count} beaches in ${islandName}, Greece by today's wind, waves, weather, beach exposure, access and beach type before you choose where to swim.`,
+    regionDescription: (islandName, count) => `Compare ${count} beaches in ${islandName}, Greece by wind, waves, weather, beach exposure, access and beach type before you choose where to swim.`,
     home: 'Greek beaches',
     nearbyHeading: islandName => `Other beaches in ${islandName}`,
     aboutHeading: 'About this beach',
@@ -1328,12 +1384,12 @@ const staticFallbackCopy = {
     familyFriendly: 'Κατάλληλη για οικογένειες',
     quiet: 'Πιο ήσυχη',
     snorkeling: 'Snorkeling',
-    openAppBeach: 'Άνοιξε την εφαρμογή για σημερινό σκορ, άνεμο, κύμα, καλύτερη ώρα και κοντινές εναλλακτικές.',
+    openAppBeach: 'Άνοιξε την εφαρμογή για live σκορ, άνεμο, κύμα, καλύτερη ώρα και κοντινές εναλλακτικές.',
     openAppRegion: 'Ο καιρός και η θάλασσα αλλάζουν μέσα στη μέρα. Το Calm Beach δείχνει live προτάσεις παραλιών μέσα στην εφαρμογή.',
     viewBeach: 'Δες την παραλία στο Calm Beach Greece',
     viewRegion: islandName => `Δες τις παραλίες για ${islandName} στο Calm Beach Greece`,
     regionHeading: islandName => `Παραλίες: ${islandName}`,
-    regionDescription: (islandName, count) => `Σύγκρινε ${count} παραλίες σε ${islandName} με βάση σημερινό άνεμο, κύμα, καιρό, έκθεση, πρόσβαση και τύπο παραλίας πριν διαλέξεις πού να κολυμπήσεις.`,
+    regionDescription: (islandName, count) => `Σύγκρινε ${count} παραλίες σε ${islandName} με βάση άνεμο, κύμα, καιρό, έκθεση, πρόσβαση και τύπο παραλίας πριν διαλέξεις πού να κολυμπήσεις.`,
     home: 'Παραλίες Ελλάδας',
     nearbyHeading: islandName => `Άλλες παραλίες σε ${islandName}`,
     aboutHeading: 'Σχετικά με την παραλία',
@@ -1353,8 +1409,8 @@ const staticFallbackCopy = {
     familyFriendly: 'Familienfreundlich',
     quiet: 'Ruhiger',
     snorkeling: 'Schnorcheln',
-    openAppBeach: 'Öffne die App für die heutige Empfehlungsbewertung, Windexposition, Wellen, beste Tageszeit und Alternativen in der Nähe.',
-    openAppRegion: 'Wetter und Meeresbedingungen ändern sich im Tagesverlauf. CalmBeach zeigt die heutigen Live-Empfehlungen in der App-Ansicht.',
+    openAppBeach: 'Öffne die App für Live-Empfehlungsbewertung, Windexposition, Wellen, beste Tageszeit und Alternativen in der Nähe.',
+    openAppRegion: 'Wetter und Meeresbedingungen ändern sich im Tagesverlauf. CalmBeach zeigt Live-Empfehlungen in der App-Ansicht.',
     viewBeach: 'Diesen Strand in CalmBeach Griechenland ansehen',
     viewRegion: islandName => `${islandName} in CalmBeach Griechenland ansehen`,
     regionHeading: islandName => `Strände: ${islandName}`,
@@ -1378,12 +1434,12 @@ const staticFallbackCopy = {
     familyFriendly: 'Adaptée aux familles',
     quiet: 'Plus calme',
     snorkeling: 'Snorkeling',
-    openAppBeach: "Ouvrez l'application pour la note de recommandation du jour, l'exposition au vent, les vagues, le meilleur moment de la journée et les alternatives à proximité.",
-    openAppRegion: "La météo et l'état de la mer changent au cours de la journée. CalmBeach affiche les recommandations du jour en direct dans l'application.",
+    openAppBeach: "Ouvrez l'application pour la note de recommandation en direct, l'exposition au vent, les vagues, les créneaux utiles et les alternatives à proximité.",
+    openAppRegion: "La météo et l'état de la mer changent. CalmBeach affiche les recommandations en direct dans l'application.",
     viewBeach: 'Voir cette plage sur CalmBeach Grèce',
     viewRegion: islandName => `Voir ${islandName} sur CalmBeach Grèce`,
     regionHeading: islandName => `Plages : ${islandName}`,
-    regionDescription: (islandName, count) => `${islandName}, Grèce – comparez ${count} plages selon le vent, les vagues, la météo, l'exposition, l'accès et le type de plage du jour avant de choisir où vous baigner.`,
+    regionDescription: (islandName, count) => `${islandName}, Grèce – comparez ${count} plages selon le vent, les vagues, la météo, l'exposition, l'accès et le type de plage avant de choisir où vous baigner.`,
     home: 'Plages de Grèce',
     nearbyHeading: islandName => `Autres plages – ${islandName}`,
     aboutHeading: 'À propos de cette plage',
@@ -1403,12 +1459,12 @@ const staticFallbackCopy = {
     familyFriendly: 'Adatta alle famiglie',
     quiet: 'Più tranquilla',
     snorkeling: 'Snorkeling',
-    openAppBeach: "Apri l'app per il punteggio consigliato di oggi, l'esposizione al vento, le onde, il momento migliore della giornata e le alternative vicine.",
-    openAppRegion: "Il meteo e le condizioni del mare cambiano durante la giornata. CalmBeach mostra i consigli in tempo reale di oggi nella vista app.",
+    openAppBeach: "Apri l'app per il punteggio consigliato in tempo reale, l'esposizione al vento, le onde, il momento migliore della giornata e le alternative vicine.",
+    openAppRegion: "Il meteo e le condizioni del mare cambiano durante la giornata. CalmBeach mostra consigli in tempo reale nella vista app.",
     viewBeach: 'Vedi questa spiaggia su CalmBeach Grecia',
     viewRegion: islandName => `Vedi ${islandName} su CalmBeach Grecia`,
     regionHeading: islandName => `Spiagge: ${islandName}`,
-    regionDescription: (islandName, count) => `${islandName}, Grecia – confronta ${count} spiagge in base a vento, onde, meteo, esposizione, accesso e tipo di spiaggia di oggi prima di scegliere dove fare il bagno.`,
+    regionDescription: (islandName, count) => `${islandName}, Grecia - confronta ${count} spiagge in base a vento, onde, meteo, esposizione, accesso e tipo di spiaggia prima di scegliere dove fare il bagno.`,
     home: 'Spiagge della Grecia',
     nearbyHeading: islandName => `Altre spiagge – ${islandName}`,
     aboutHeading: 'Informazioni su questa spiaggia',
@@ -1421,13 +1477,13 @@ const staticHomeFallback = (canonicalUrl, locale = prerenderLocales[0]) => {
   const isGreek = locale.language === 'gr';
   const features = isGreek
     ? [
-      'Σημερινές προτάσεις παραλιών',
+      'Προτάσεις παραλιών με βάση τις συνθήκες',
       'Έλεγχος ανέμου, κύματος και καιρού',
       'Αναζήτηση ανά νησί ή περιοχή',
       'Χάρτης και λεπτομέρειες παραλίας',
     ]
     : [
-      "Today's beach recommendations",
+      'Beach recommendations by conditions',
       'Wind, waves and weather checks',
       'Search by Greek island or region',
       'Map and beach detail pages',
@@ -1458,8 +1514,8 @@ const staticHomeFallback = (canonicalUrl, locale = prerenderLocales[0]) => {
         </nav>
         ` : ''}
         <p data-nosnippet="true" style="margin:0;color:#475569;">${escapeHtml(isGreek
-          ? 'Άνοιξε την εφαρμογή για live προτάσεις με βάση τις σημερινές συνθήκες.'
-          : "Open the app for live recommendations based on today's conditions.")}</p>
+          ? 'Άνοιξε την εφαρμογή για live προτάσεις με βάση άνεμο και θάλασσα.'
+          : "Open the app for live recommendations based on wind and sea conditions.")}</p>
         <p data-nosnippet="true" style="margin:16px 0 0;"><a href="${escapeHtml(canonicalUrl)}" style="color:#0e7490;font-weight:800;">${escapeHtml(isGreek ? 'Άνοιγμα Calm Beach Greece' : 'Open Calm Beach Greece')}</a></p>
       </main>
     </div>
@@ -1533,7 +1589,7 @@ const buildBeachNarrative = (beach, island, language) => {
           `The bay at ${beachName} opens to the ${faceWords}`,
         ],
         prot: w => `, so it usually has natural cover from ${w} winds`,
-        tail: `. Orientation only reflects which way the coast faces, not confirmed shelter, so check today's wind and waves in the app before you go.`,
+        tail: `. Orientation only reflects which way the coast faces, not confirmed shelter, so check wind and waves in the app before you go.`,
       },
       gr: {
         leads: [
@@ -1542,7 +1598,7 @@ const buildBeachNarrative = (beach, island, language) => {
           `Η παραλία ${beachName} βλέπει ${faceWords}`,
         ],
         prot: w => `, οπότε έχει συνήθως φυσική κάλυψη από ${w} ανέμους`,
-        tail: `. Ο προσανατολισμός δείχνει μόνο την πλευρά της ακτής, όχι επιβεβαιωμένη προστασία· έλεγξε τον σημερινό άνεμο και το κύμα στην εφαρμογή πριν πας.`,
+        tail: `. Ο προσανατολισμός δείχνει μόνο την πλευρά της ακτής, όχι επιβεβαιωμένη προστασία· έλεγξε άνεμο και κύμα στην εφαρμογή πριν πας.`,
       },
       de: {
         leads: [
@@ -1551,7 +1607,7 @@ const buildBeachNarrative = (beach, island, language) => {
           `Die Bucht von ${beachName} ist nach ${faceWords} orientiert`,
         ],
         prot: w => `, bietet also meist natürlichen Schutz vor ${w} Winden`,
-        tail: `. Die Ausrichtung zeigt nur, wohin die Küste blickt, keinen gesicherten Schutz – prüfe vor dem Besuch Wind und Wellen von heute in der App.`,
+        tail: `. Die Ausrichtung zeigt nur, wohin die Küste blickt, keinen gesicherten Schutz – prüfe vor dem Besuch Wind und Wellen in der App.`,
       },
       fr: {
         leads: [
@@ -1560,7 +1616,7 @@ const buildBeachNarrative = (beach, island, language) => {
           `La baie de ${beachName} donne vers ${faceWords}`,
         ],
         prot: w => `, et bénéficie donc le plus souvent d'un abri naturel contre les vents ${w}`,
-        tail: `. L'orientation indique seulement vers où la côte est tournée, pas un abri garanti — vérifiez le vent et les vagues du jour dans l'application avant d'y aller.`,
+        tail: `. L'orientation indique seulement vers où la côte est tournée, pas un abri garanti — vérifiez le vent et les vagues dans l'application avant d'y aller.`,
       },
       it: {
         leads: [
@@ -1569,7 +1625,7 @@ const buildBeachNarrative = (beach, island, language) => {
           `La baia di ${beachName} guarda verso ${faceWords}`,
         ],
         prot: w => `, quindi di solito ha riparo naturale dai venti ${w}`,
-        tail: `. L'orientamento indica solo verso dove guarda la costa, non un riparo garantito: controlla vento e onde di oggi nell'app prima di andare.`,
+        tail: `. L'orientamento indica solo verso dove guarda la costa, non un riparo garantito: controlla vento e onde nell'app prima di andare.`,
       },
     });
     const lead = pick(orient.leads);
@@ -1734,11 +1790,11 @@ const renderShelteredNearby = (beach, island, region, language, locale) => {
     .slice(0, 6);
   if (sheltered.length < 2) return '';
   const heading = pickLang(language, {
-    en: 'Sheltered beaches nearby (oriented away from the Meltemi)',
-    gr: 'Πιο προστατευμένες παραλίες κοντά (μακριά από το μελτέμι)',
-    de: 'Windgeschützte Strände in der Nähe',
-    fr: 'Plages abritées à proximité',
-    it: 'Spiagge riparate nelle vicinanze',
+    en: 'Nearby beaches oriented away from the Meltemi',
+    gr: 'Κοντινές επιλογές μακριά από το μελτέμι',
+    de: 'Nahegelegene Strände mit Meltemi-Ausrichtung',
+    fr: 'Plages proches orientées contre le meltemi',
+    it: 'Spiagge vicine orientate lontano dal meltemi',
   });
   const items = sheltered.map(other => {
     const otherName = displayName(other.name, `Beach ${other.id}`, language);
@@ -1833,17 +1889,28 @@ const buildBeachFaqPairs = (beach, island, language) => {
 // from the localized template instead of leaking English/Greeklish onto /de etc.
 // en/gr keep using the authored data exactly as before.
 const beachFallbackDescription = (beachName, islandName, language) => pickLang(language, {
-  en: `${beachName} beach in ${islandName}, Greece. Check today's wind, waves, weather and beach exposure before you go.`,
-  gr: `${beachName}, ${islandName}. Δες τον σημερινό άνεμο, το κύμα και τον καιρό πριν πας.`,
+  en: `See practical info for ${beachName} in ${islandName}, including location, beach type, wind exposure, map and tips to help you decide when to visit.`,
+  gr: `Δες πρακτικές πληροφορίες για ${beachName} σε ${islandName}, όπως τοποθεσία, τύπο παραλίας, έκθεση στον άνεμο, χάρτη και χρήσιμες συμβουλές.`,
   de: `Strand ${beachName}, ${islandName} (Griechenland). Prüfe vor dem Besuch Wind, Wellen, Wetter und die Lage des Strandes.`,
   fr: `Plage ${beachName}, ${islandName} (Grèce). Vérifiez le vent, les vagues, la météo et l'exposition de la plage avant d'y aller.`,
   it: `Spiaggia ${beachName}, ${islandName} (Grecia). Controlla vento, onde, meteo ed esposizione della spiaggia prima di andare.`,
 });
+const hasUnsupportedStaticConditionCopy = text => {
+  const value = String(text || '');
+  if (!value) return false;
+  if (/\b(today|today's|today’s|heute|oggi)\b|aujourd['’]hui|\bdu jour\b|\u03c3\u03ae\u03bc\u03b5\u03c1\u03b1|\u03c3\u03b7\u03bc\u03b5\u03c1\u03b9\u03bd/i.test(value)) return true;
+  if (/(?:\bsafe(?:st)?\b|\u03b1\u03c3\u03c6\u03b1\u03bb)/i.test(value) && !/\b(safety|lifeguard|warning flags?|beach flags?|red flags?|yellow flags?|avoid|caution|does not replace|do not replace|not replace|follow)\b/i.test(value)) return true;
+  if (/\bguarantee(?:d)?\b/i.test(value) && !/\b(?:not|no|never|without)\s+\w*\s*guarantee/i.test(value)) return true;
+  if (/\b(calm|calmer|calmest)\b|\u03ae\u03c1\u03b5\u03bc|\u03b3\u03b1\u03bb\u03ae\u03bd|\u03bd\u03b7\u03bd\u03b5\u03bc/i.test(value) && !/\b(not|avoid|conditions?|mild|low-wind|wind and waves|check)\b|\u03ad\u03bb\u03b5\u03b3\u03be\u03b5|\u03c3\u03c5\u03bd\u03b8\u03ae\u03ba/i.test(value)) return true;
+  if (/\b(sheltered|wind-protected|protected from|fully protected)\b|\u03c0\u03c1\u03bf\u03c3\u03c4\u03b1\u03c4\u03b5\u03c5|\u03b1\u03c0\u03ac\u03bd\u03b5\u03bc|\u03c5\u03c0\u03ae\u03bd\u03b5\u03bc/i.test(value) && !/\b(usually|often|may|might|can|more|less|available|orientation|oriented|based on|not guaranteed|check|compare|before you go|conditions vary|depending|signal|data|less exposed|more comfortable)\b|\u03bc\u03c0\u03bf\u03c1\u03b5\u03af|\u03c3\u03c5\u03c7\u03bd|\u03b4\u03b9\u03b1\u03b8\u03ad\u03c3\u03b9\u03bc|\u03c0\u03c1\u03bf\u03c3\u03b1\u03bd\u03b1\u03c4\u03bf\u03bb|\u03b4\u03b5\u03b4\u03bf\u03bc\u03ad\u03bd|\u03c0\u03c1\u03b9\u03bd\s+\u03c0\u03b1\u03c2|\u03c0\u03b9\u03bf/i.test(value)) return true;
+  return false;
+};
+
 const beachDescriptionFor = (beach, beachName, islandName, language) => {
   const fallback = beachFallbackDescription(beachName, islandName, language);
-  return (language === 'en' || language === 'gr')
-    ? localized(beach.description, fallback, language)
-    : fallback;
+  if (language !== 'en' && language !== 'gr') return fallback;
+  const authored = localized(beach.description, '', language);
+  return authored && !hasUnsupportedStaticConditionCopy(authored) ? authored : fallback;
 };
 
 // Trim a sentence to a meta-description length without cutting a word in half.
@@ -1852,7 +1919,9 @@ const truncateForMeta = (text, max = 160) => {
   if (clean.length <= max) return clean;
   const slice = clean.slice(0, max);
   const lastSpace = slice.lastIndexOf(' ');
-  return `${slice.slice(0, lastSpace > 80 ? lastSpace : max).trim()}…`;
+  // Strip trailing dashes/commas/spaces so we never render "… —…" or "…,…".
+  const trimmed = slice.slice(0, lastSpace > 80 ? lastSpace : max).replace(/[\s—–,-]+$/u, '').trim();
+  return `${trimmed}…`;
 };
 
 // Hand-written meta-description overrides for specific beach pages, keyed by
@@ -1867,55 +1936,138 @@ const SEO_META_DESCRIPTION_OVERRIDES = {
   // Milos (override sits ahead of the curated story so the meta leads with a
   // conditions hook; the full editorial story still renders in the page body).
   'south-aegean-milos#1932': {
-    en: 'Pollonia, Milos: a sandy fishing-village beach with sunbeds, parking and tavernas, good for families. See today’s live wind and waves before you go.',
+    en: 'Pollonia, Milos: a sandy fishing-village beach with sunbeds, parking and tavernas, good for families. Check wind and waves before you go.',
     gr: 'Πολλώνια Μήλου: αμμώδης παραλία σε ψαροχώρι, με ξαπλώστρες, πάρκινγκ και ταβέρνες, καλή για οικογένειες. Δες ζωντανά άνεμο και κύμα πριν πας.',
   },
   'south-aegean-milos#1924': {
-    en: 'Triades, Milos: three remote sand-and-pebble coves on the wild west coast, good for snorkeling and sheltered from the meltemi. Check live wind first.',
+    en: 'Triades, Milos: remote sand-and-pebble coves on the wild west coast, good for snorkeling, often better in northerly Meltemi winds. Check live wind first.',
     gr: 'Τριάδες Μήλου: τρεις απομακρυσμένοι όρμοι με άμμο και βότσαλο στη δυτική ακτή, καλοί για snorkeling και υπήνεμοι στο μελτέμι. Δες ζωντανά τον άνεμο.',
   },
   'north-aegean-lemnos#1455': {
-    en: 'Mikro Fanaraki, Lemnos: organised sandy beach with sunbeds, bar and parking, sheltered from northerly winds. See today’s live wind and waves.',
+    en: 'Mikro Fanaraki, Lemnos: organised sandy beach with sunbeds, bar and parking, often better with northerly winds. Check wind and waves.',
     gr: 'Μικρό Φαναράκι, Λήμνος: οργανωμένη αμμώδης παραλία με ξαπλώστρες, bar και πάρκινγκ, υπήνεμη σε βόρειους ανέμους. Δες ζωντανά άνεμο και κύμα.',
   },
   'peloponnese-korinthia-mainland#1528': {
-    en: 'Lychnari, Korinthia: a quiet pebble beach good for snorkeling, sheltered from northerly winds. Check today’s live wind and sea before you go.',
+    en: 'Lychnari, Korinthia: a quiet pebble beach good for snorkeling and often better with northerly winds. Check wind and sea before you go.',
     gr: 'Λυχνάρι Κορινθίας: ήσυχη παραλία με βότσαλο, καλή για snorkeling και υπήνεμη σε βόρειους ανέμους. Δες ζωντανά άνεμο και θάλασσα πριν πας.',
   },
   'peloponnese-korinthia-mainland#1523': {
-    en: 'Kalogerolimano, Korinthia: a sheltered pebble cove good for snorkeling, protected from northerly winds. Check today’s live wind and sea.',
+    en: 'Kalogerolimano, Korinthia: a pebble cove good for snorkeling and often better with northerly winds. Check wind and sea before you go.',
     gr: 'Καλογερολίμανο Κορινθίας: προστατευμένος όρμος με βότσαλο, καλός για snorkeling, υπήνεμος σε βόρειους ανέμους. Δες ζωντανά άνεμο και θάλασσα.',
   },
   'west-greece-ileia-mainland#2568': {
-    en: 'Kounoupeli, Ileia: a quiet, family-friendly sand-and-pebble beach with sunbeds. See today’s live wind and waves before you go.',
+    en: 'Kounoupeli, Ileia: a quiet, family-friendly sand-and-pebble beach with sunbeds. Check wind and waves before you go.',
     gr: 'Κουνουπέλι Ηλείας: ήσυχη, οικογενειακή παραλία με άμμο, βότσαλο και ξαπλώστρες. Δες ζωντανά άνεμο και κύμα πριν πας.',
   },
   'thessaly-magnesia-mainland---pelion#2721': {
-    en: 'Fakistra, Pelion: a secluded pebble cove with clear water, good for snorkeling. Check today’s live wind and waves before you go.',
+    en: 'Fakistra, Pelion: a secluded pebble cove with clear water, good for snorkeling. Check wind and waves before you go.',
     gr: 'Φακίστρα Πηλίου: απομακρυσμένος όρμος με βότσαλο και καθαρά νερά, καλός για snorkeling. Δες ζωντανά άνεμο και κύμα πριν πας.',
   },
   'south-aegean-paros#2029': {
-    en: 'Kalogeros, Paros: a sand-and-pebble beach good for snorkeling, sheltered from the meltemi. Check today’s live wind and waves before you go.',
+    en: 'Kalogeros, Paros: a sand-and-pebble beach good for snorkeling and often better with Meltemi winds. Check wind and waves before you go.',
     gr: 'Καλόγερος Πάρου: παραλία με άμμο και βότσαλο, καλή για snorkeling και υπήνεμη στο μελτέμι. Δες ζωντανά άνεμο και κύμα πριν πας.',
   },
   'crete-crete-chania#574': {
-    en: 'Platanias, Chania: a long organised sandy beach near Chania with sunbeds. See today’s live wind and waves before you go.',
+    en: 'Platanias, Chania: a long organised sandy beach near Chania with sunbeds. Check wind and waves before you go.',
     gr: 'Πλατανιάς Χανίων: μεγάλη οργανωμένη αμμώδης παραλία κοντά στα Χανιά, με ξαπλώστρες. Δες ζωντανά άνεμο και κύμα πριν πας.',
   },
 };
 
-// Per-beach <head>/JSON-LD description: prefer a hand-written per-page override
-// (12-page CTR fix), then the unique editorial opener (so each beach gets a
-// distinct, descriptive snippet) and fall back to the existing templated
-// description for beaches without a curated story.
+// The live-conditions CTA that closes a beach-page meta description. Allowed
+// ONLY on beach pages (they hydrate into the SPA and show live wind/waves) — a
+// functional, truthful promise, never on the static category/national articles.
+const BEACH_META_CTA = {
+  long: {
+    en: 'Check live wind, waves and weather before you go — map, access and nearby beaches.',
+    gr: 'Δες live άνεμο, κύμα και καιρό πριν πας — χάρτης, πρόσβαση και κοντινές παραλίες.',
+  },
+  short: {
+    en: 'Check live wind, waves and weather before you go.',
+    gr: 'Δες live άνεμο, κύμα και καιρό πριν πας.',
+  },
+  tiny: {
+    en: 'Check live wind & waves.',
+    gr: 'Δες live άνεμο & κύμα.',
+  },
+  story: {
+    en: 'Check live wind & waves before you go.',
+    gr: 'Δες live άνεμο & κύμα πριν πας.',
+  },
+};
+
+// Comma-joined, data-backed trait clause for the beach meta template (en/gr).
+// Priority: type → 1–2 amenities → snorkeling → northerly shelter (qualified).
+// Shelter uses "often more / συχνά πιο" so it passes the honesty guards and the
+// audit (it is a comparative, orientation-based claim, not a state promise).
+const BEACH_TYPE_TRAIT = {
+  sandy:           { en: 'Sandy beach',            gr: 'Αμμώδης παραλία' },
+  pebbles:         { en: 'Pebble beach',           gr: 'Παραλία με βότσαλο' },
+  'sandy-pebbles': { en: 'Sand & pebble beach',    gr: 'Παραλία με άμμο & βότσαλο' },
+  rocky:           { en: 'Rocky beach',            gr: 'Βραχώδης παραλία' },
+};
+const beachTraitSentence = (beach, language) => {
+  const lang = language === 'gr' ? 'gr' : 'en';
+  const typePhrase = BEACH_TYPE_TRAIT[beach?.beachType]?.[lang];
+  const features = [];
+  const organized = beach.amenities?.organized === true;
+  const sunbeds = beach.amenities?.sunbeds === true;
+  if (organized && sunbeds) features.push(lang === 'en' ? 'organised with sunbeds' : 'οργανωμένη με ξαπλώστρες');
+  else if (organized) features.push(lang === 'en' ? 'organised' : 'οργανωμένη');
+  else if (sunbeds) features.push(lang === 'en' ? 'with sunbeds' : 'με ξαπλώστρες');
+  if (beach.amenities?.parking === true) features.push(lang === 'en' ? 'with parking' : 'με πάρκινγκ');
+  if (beach.amenities?.restaurant === true || beach.amenities?.taverna === true) features.push(lang === 'en' ? 'with food nearby' : 'με φαγητό κοντά');
+  if (beach.environment?.familyFriendly === true) features.push(lang === 'en' ? 'family-friendly' : 'οικογενειακή');
+  if (beach.activities?.snorkeling === true) features.push(lang === 'en' ? 'good for snorkeling' : 'καλή για snorkeling');
+  if (Array.isArray(beach.protectedFrom) && NORTHERLY.some(d => beach.protectedFrom.includes(d))) {
+    features.push(lang === 'en' ? 'often more sheltered in northerly winds' : 'συχνά πιο απάνεμη σε βόρειους ανέμους');
+  }
+  const parts = [typePhrase, ...features.slice(0, 3)].filter(Boolean);
+  if (parts.length === 0) return '';
+  return `${parts.join(', ')}.`;
+};
+
+// Programmatic beach meta template (en/gr): "{Label}, {island}: {traits} {CTA}".
+// de/fr/it keep the existing localized practical-info template (Milos pilot).
+const beachTraitMetaDescription = (beach, beachName, islandName, language) => {
+  if (language !== 'en' && language !== 'gr') {
+    return beachDescriptionFor(beach, beachName, islandName, language);
+  }
+  const label = localizedBeachLabel(beachName, language);
+  const traits = beachTraitSentence(beach, language);
+  const head = `${label}, ${islandName}: `;
+  // Prefer the richest CTA that fits; keep the traits and the live hook as long
+  // as possible, only dropping to a traits-only snippet as the last resort.
+  const candidates = [
+    traits ? `${head}${traits} ${BEACH_META_CTA.long[language]}` : `${head}${BEACH_META_CTA.long[language]}`,
+    traits ? `${head}${traits} ${BEACH_META_CTA.short[language]}` : `${head}${BEACH_META_CTA.short[language]}`,
+    traits ? `${head}${traits} ${BEACH_META_CTA.tiny[language]}` : `${head}${BEACH_META_CTA.tiny[language]}`,
+    traits ? `${head}${traits}` : `${head}${BEACH_META_CTA.tiny[language]}`,
+  ];
+  for (const candidate of candidates) if (candidate.length <= 155) return candidate;
+  return truncateForMeta(candidates[candidates.length - 1], 155);
+};
+
+// Per-beach <head>/JSON-LD description cascade:
+//   1. hand-written per-page override (12-page CTR fix), unchanged
+//   2. unique editorial story opener + live CTA (en/gr story beaches)
+//   3. programmatic trait template + live CTA (en/gr), or the localized
+//      practical-info template (de/fr/it).
+// The authored `description` data field is no longer used for the meta (it was
+// generic across beaches); it still renders in the visible page body.
 const beachMetaDescription = (beach, region, beachName, islandName, language) => {
   const override = SEO_META_DESCRIPTION_OVERRIDES[`${region?.id}#${beach.id}`];
-  if (override && (language === 'en' || language === 'gr') && override[language]) {
+  if (override && (language === 'en' || language === 'gr') && override[language] && !hasUnsupportedStaticConditionCopy(override[language])) {
     return override[language];
   }
   const story = getBeachStory(region, beach, language);
-  if (story?.paragraphs?.[0]) return truncateForMeta(story.paragraphs[0]);
-  return beachDescriptionFor(beach, beachName, islandName, language);
+  const safeStoryParagraph = story?.paragraphs?.find(paragraph => !hasUnsupportedStaticConditionCopy(paragraph));
+  if (safeStoryParagraph) {
+    const opener = truncateForMeta(safeStoryParagraph, 115);
+    const withCta = `${opener} ${BEACH_META_CTA.story[language]}`;
+    if (withCta.length <= 155) return withCta;
+    return truncateForMeta(safeStoryParagraph, 155);
+  }
+  return beachTraitMetaDescription(beach, beachName, islandName, language);
 };
 
 // Visible, crawlable editorial section (unique geology/history/character prose)
@@ -1924,11 +2076,13 @@ const beachMetaDescription = (beach, region, beachName, islandName, language) =>
 const renderBeachStory = (region, beach, language) => {
   const story = getBeachStory(region, beach, language);
   if (!story) return '';
-  const heading = story.title;
+  const safeParagraphs = story.paragraphs.filter(paragraph => !hasUnsupportedStaticConditionCopy(paragraph));
+  if (safeParagraphs.length === 0) return '';
+  const heading = !hasUnsupportedStaticConditionCopy(story.title) ? story.title : '';
   return `
         <section style="margin:0 0 22px;">
           ${heading ? `<h2 style="margin:0 0 10px;font-size:20px;line-height:1.2;color:#075985;">${escapeHtml(heading)}</h2>` : ''}
-          ${story.paragraphs.map(p => `<p style="margin:0 0 10px;font-size:16px;line-height:1.6;color:#334155;">${escapeHtml(p)}</p>`).join('')}
+          ${safeParagraphs.map(p => `<p style="margin:0 0 10px;font-size:16px;line-height:1.6;color:#334155;">${escapeHtml(p)}</p>`).join('')}
         </section>`;
 };
 
@@ -1940,8 +2094,11 @@ const renderBeachStory = (region, beach, language) => {
 const intentBeachBlurbText = (region, beach, language) => {
   const story = getBeachStory(region, beach, language);
   if (!story) return '';
-  const lead = truncateForMeta(story.paragraphs[0], 150);
-  return story.title ? `${story.title} — ${lead}` : lead;
+  const safeLead = story.paragraphs.find(paragraph => !hasUnsupportedStaticConditionCopy(paragraph));
+  if (!safeLead) return '';
+  const lead = truncateForMeta(safeLead, 150);
+  const title = !hasUnsupportedStaticConditionCopy(story.title) ? story.title : '';
+  return title ? `${title} — ${lead}` : lead;
 };
 // Localized "Beach X" / "Παραλία X" label that never doubles the noun when the
 // resolved name already contains it (~21% of Greek names already include
@@ -1954,17 +2111,35 @@ const localizedBeachLabel = (beachName, language) => {
   if (alreadyHasNoun) return beachName;
   return language === 'en' ? `${beachName} ${noun}` : `${noun} ${beachName}`;
 };
-const beachConditionsSuffix = language => pickLang(language, {
-  en: 'Wind & Waves Today',
-  gr: 'Άνεμος & προστασία σήμερα',
-  de: 'Wind & Wellen heute',
-  fr: "Vent & vagues aujourd'hui",
-  it: 'Vento e onde oggi',
-});
+// The live-conditions hook for beach-page <title>s. This is the whole point of
+// the CTR redesign — no competitor in the SERP can truthfully say "live", and
+// the beach page delivers it (SPA hydration shows live wind/waves/weather).
+const BEACH_TITLE_HOOK = {
+  en: 'Live Wind & Waves',
+  gr: 'Άνεμος & Κύμα Live',
+  de: 'Wind & Wellen live',
+  fr: 'Vent & vagues en direct',
+  it: 'Vento e onde live',
+};
+// Greek glyphs are wider, so Google truncates GR titles a few px earlier.
+const beachTitleMaxLen = language => (language === 'gr' ? 58 : 60);
 const beachH1For = (beachName, islandName, language) =>
   `${localizedBeachLabel(beachName, language)}, ${islandName}`;
-const beachTitleFor = (beachName, islandName, language) =>
-  `${localizedBeachLabel(beachName, language)}, ${islandName} | ${beachConditionsSuffix(language)}`;
+// Deterministic overflow tiers (spec §2.2): T1 full → T2 drop brand → T3 drop
+// island → T4 bare label. The hook is never dropped before brand/island.
+const beachTitleFor = (beachName, islandName, language) => {
+  const label = localizedBeachLabel(beachName, language);
+  const hook = BEACH_TITLE_HOOK[language] || BEACH_TITLE_HOOK.en;
+  const sep = language === 'en' ? ': ' : ' — ';
+  const max = beachTitleMaxLen(language);
+  const tiers = [
+    `${label}, ${islandName}${sep}${hook} | CalmBeach`,
+    `${label}, ${islandName}${sep}${hook}`,
+    `${label}${sep}${hook}`,
+  ];
+  for (const tier of tiers) if (tier.length <= max) return tier;
+  return label;
+};
 const beachAttractionName = (beachName, language) => localizedBeachLabel(beachName, language);
 const beachImageAltFor = (beachName, islandName, language) => {
   const label = localizedBeachLabel(beachName, language);
@@ -2168,7 +2343,7 @@ const listSectionHeadings = {
   accessible: { en: 'Accessible beaches with Seatrac access', gr: 'Προσβάσιμες παραλίες με Seatrac' },
   family: { en: 'Family-friendly beaches', gr: 'Οικογενειακές παραλίες' },
   camping: { en: 'Beaches with a campsite nearby', gr: 'Παραλίες με κάμπινγκ κοντά' },
-  top: { en: 'Popular beaches to check today', gr: 'Δημοφιλείς παραλίες για έλεγχο σήμερα' },
+  top: { en: 'Popular beaches to compare', gr: 'Δημοφιλείς παραλίες για σύγκριση' },
 };
 const hubSectionHeading = { en: 'Browse beaches by island & region', gr: 'Δες παραλίες ανά νησί & περιοχή' };
 const emptyListNote = { en: 'We are still adding beaches to this guide.', gr: 'Προσθέτουμε ακόμη παραλίες σε αυτόν τον οδηγό.' };
@@ -2198,7 +2373,7 @@ const accessFeatureCopy = {
   seasonal: { en: 'Seasonal equipment', gr: 'Εποχικός εξοπλισμός' },
   verify: { en: 'Verify before visiting', gr: 'Επιβεβαίωση πριν την επίσκεψη' },
   checked: { en: 'Checked', gr: 'Έλεγχος' },
-  details: { en: 'Open details for today\'s wind and waves', gr: 'Άνοιγμα λεπτομερειών για άνεμο και κύμα' },
+  details: { en: 'Open details for wind and waves', gr: 'Άνοιγμα λεπτομερειών για άνεμο και κύμα' },
 };
 
 const accessCopy = (key, language) => accessFeatureCopy[key]?.[language] || accessFeatureCopy[key]?.en || key;
@@ -2436,15 +2611,15 @@ const buildRegionPage = (baseHtml, island, region, imageUrl, locale = prerenderL
   const islandName = displayName(island.name, region.id, language);
   const beaches = Array.isArray(island.beaches) ? island.beaches : [];
   const description = pickLang(language, {
-    en: `${islandName} beaches in Greece. Compare ${beaches.length} beaches by live wind, waves, weather and exposure to find calmer swimming spots today.`,
-    gr: `${islandName}: σύγκρινε ${beaches.length} παραλίες και δες σημερινό άνεμο, κύμα, καιρό και προτάσεις για μπάνιο.`,
-    de: `${islandName}, Griechenland – vergleiche ${beaches.length} Strände nach Wind, Wellen, Wetter und Lage und finde heute ruhigere Buchten zum Schwimmen.`,
-    fr: `${islandName}, Grèce – comparez ${beaches.length} plages selon le vent, les vagues, la météo et l'exposition pour trouver aujourd'hui des coins plus calmes où vous baigner.`,
-    it: `${islandName}, Grecia – confronta ${beaches.length} spiagge in base a vento, onde, meteo ed esposizione per trovare oggi insenature più tranquille dove nuotare.`,
+    en: `${islandName} beaches in Greece. Compare ${beaches.length} beaches by wind, waves, weather, exposure, access and beach type before you choose where to swim.`,
+    gr: `${islandName}: σύγκρινε ${beaches.length} παραλίες με βάση άνεμο, κύμα, καιρό, έκθεση, πρόσβαση και τύπο παραλίας πριν διαλέξεις πού θα κολυμπήσεις.`,
+    de: `${islandName}, Griechenland - vergleiche ${beaches.length} Strande nach Wind, Wellen, Wetter, Lage, Zugang und Strandtyp, bevor du deinen Badeplatz auswählst.`,
+    fr: `${islandName}, Grece - comparez ${beaches.length} plages selon le vent, les vagues, la meteo, l'exposition, l'acces et le type de plage avant de choisir ou vous baigner.`,
+    it: `${islandName}, Grecia - confronta ${beaches.length} spiagge in base a vento, onde, meteo, esposizione, accesso e tipo di spiaggia prima di scegliere dove fare il bagno.`,
   });
   const title = pickLang(language, {
-    en: `${islandName} Beaches Today | CalmBeach Greece`,
-    gr: `Παραλίες: ${islandName} | Άνεμος & κύμα σήμερα`,
+    en: `${islandName} Beaches | CalmBeach Greece`,
+    gr: `Παραλίες: ${islandName} | CalmBeach Greece`,
     de: `Strände: ${islandName} | CalmBeach Griechenland`,
     fr: `Plages : ${islandName} | CalmBeach Grèce`,
     it: `Spiagge: ${islandName} | CalmBeach Grecia`,
@@ -2607,12 +2782,16 @@ const buildBeachPage = (baseHtml, island, beach, region, imageUrl, locale = prer
   // schema.org disambiguatingDescription so the entity carries the rich,
   // unique narrative (the short `description` stays snippet-length).
   const story = getBeachStory(region, beach, language);
+  const safeStoryParagraphs = story?.paragraphs?.filter(paragraph => !hasUnsupportedStaticConditionCopy(paragraph)) || [];
   const pageJsonLd = {
     '@context': 'https://schema.org',
-    '@type': 'TouristAttraction',
+    // schema.org/Beach is the precise type; TouristAttraction is kept for
+    // consumers that already read it. Neither yields a SERP rich result — the
+    // value is entity disambiguation (Knowledge Graph / AI answers / Maps).
+    '@type': ['Beach', 'TouristAttraction'],
     name: beachAttractionName(beachName, language),
     description,
-    disambiguatingDescription: story ? story.paragraphs.join(' ') : undefined,
+    disambiguatingDescription: safeStoryParagraphs.length ? safeStoryParagraphs.join(' ') : undefined,
     url: canonicalUrl,
     image: imageUrl,
     inLanguage: locale.htmlLang,
@@ -2635,8 +2814,10 @@ const buildBeachPage = (baseHtml, island, beach, region, imageUrl, locale = prer
       { name: beachPageName, url: canonicalUrl },
     ]),
   ];
-  const faqPairs = buildBeachFaqPairs(beach, island, language);
-  if (faqPairs.length >= 2) jsonLd.push(faqJsonLd(faqPairs));
+  // No FAQPage here: the beach page shows its facts as a definition list and
+  // amenity chips, not as visible question/answer pairs, so FAQPage markup would
+  // not match visible content (structured-data guideline). FAQPage stays only on
+  // the category/national pages that render Q&A visibly.
 
   const htmlWithHead = injectBeachHead(baseHtml, {
     title,

@@ -2281,21 +2281,83 @@ export const App: React.FC = () => {
       detailBeach.id === detailRoute.beachId &&
       selectedIslandName
     );
-    // Match the prerendered <title> exactly (label + locale-specific conditions
-    // suffix) so hydration never overwrites the correct static head with a
-    // different/English-flavoured title. Keep in sync with beachTitleFor in
-    // scripts/prerenderBeachPages.mjs.
+    // Match the prerendered <title>/<meta> exactly so hydration never overwrites
+    // the correct static head. Keep in sync with beachTitleFor /
+    // beachMetaDescription in scripts/prerenderBeachPages.mjs. The "live" hook is
+    // truthful on beach pages: this SPA shows live wind/waves once hydrated.
     const detailBeachLabel = detailBeach
       ? localizedBeachLabel(displayBeachName(detailBeach.name, language), language)
       : '';
+    const beachTitleHook: Record<string, string> = {
+      en: 'Live Wind & Waves',
+      gr: 'Άνεμος & Κύμα Live',
+      de: 'Wind & Wellen live',
+      fr: 'Vent & vagues en direct',
+      it: 'Vento e onde live',
+    };
+    const buildDetailTitle = (): string => {
+      const hook = beachTitleHook[language] || beachTitleHook.en;
+      const sep = language === 'en' ? ': ' : ' — ';
+      const max = language === 'gr' ? 58 : 60;
+      const tiers = [
+        `${detailBeachLabel}, ${selectedIslandName}${sep}${hook} | CalmBeach`,
+        `${detailBeachLabel}, ${selectedIslandName}${sep}${hook}`,
+        `${detailBeachLabel}${sep}${hook}`,
+      ];
+      return tiers.find(tier => tier.length <= max) || detailBeachLabel;
+    };
+    const buildDetailMeta = (): string => {
+      if (!detailBeach) return regionDescription;
+      if (language !== 'en' && language !== 'gr') {
+        return getLocalizedCopy(language, {
+          en: `See practical info for ${detailBeachLabel} in ${selectedIslandName}, including location, beach type, wind exposure, map and tips to help you decide when to visit.`,
+          gr: `Δες πρακτικές πληροφορίες για ${detailBeachLabel} σε ${selectedIslandName}, όπως τοποθεσία, τύπο παραλίας, έκθεση στον άνεμο, χάρτη και χρήσιμες συμβουλές.`,
+          fr: `Plage ${detailBeachLabel}, ${selectedIslandName} (Grèce). Vérifiez le vent, les vagues, la météo et l'exposition de la plage avant d'y aller.`,
+          de: `Strand ${detailBeachLabel}, ${selectedIslandName} (Griechenland). Prüfe vor dem Besuch Wind, Wellen, Wetter und die Lage des Strandes.`,
+          it: `Spiaggia ${detailBeachLabel}, ${selectedIslandName} (Grecia). Controlla vento, onde, meteo ed esposizione della spiaggia prima di andare.`,
+        });
+      }
+      const isEn = language === 'en';
+      const typeTrait: Record<string, { en: string; gr: string }> = {
+        sandy: { en: 'Sandy beach', gr: 'Αμμώδης παραλία' },
+        pebbles: { en: 'Pebble beach', gr: 'Παραλία με βότσαλο' },
+        'sandy-pebbles': { en: 'Sand & pebble beach', gr: 'Παραλία με άμμο & βότσαλο' },
+        rocky: { en: 'Rocky beach', gr: 'Βραχώδης παραλία' },
+      };
+      const features: string[] = [];
+      const organized = detailBeach.amenities?.organized;
+      const sunbeds = detailBeach.amenities?.sunbeds;
+      if (organized && sunbeds) features.push(isEn ? 'organised with sunbeds' : 'οργανωμένη με ξαπλώστρες');
+      else if (organized) features.push(isEn ? 'organised' : 'οργανωμένη');
+      else if (sunbeds) features.push(isEn ? 'with sunbeds' : 'με ξαπλώστρες');
+      if (detailBeach.amenities?.parking) features.push(isEn ? 'with parking' : 'με πάρκινγκ');
+      if (detailBeach.amenities?.restaurant || detailBeach.amenities?.taverna) features.push(isEn ? 'with food nearby' : 'με φαγητό κοντά');
+      if (detailBeach.environment?.familyFriendly) features.push(isEn ? 'family-friendly' : 'οικογενειακή');
+      if (detailBeach.activities?.snorkeling) features.push(isEn ? 'good for snorkeling' : 'καλή για snorkeling');
+      const northerly = [WindDirection.N, WindDirection.NE, WindDirection.NW];
+      if (Array.isArray(detailBeach.protectedFrom) && northerly.some(direction => detailBeach.protectedFrom.includes(direction))) {
+        features.push(isEn ? 'often more sheltered in northerly winds' : 'συχνά πιο απάνεμη σε βόρειους ανέμους');
+      }
+      const parts = [typeTrait[detailBeach.beachType]?.[isEn ? 'en' : 'gr'], ...features.slice(0, 3)].filter(Boolean);
+      const traits = parts.length ? `${parts.join(', ')}.` : '';
+      const head = `${detailBeachLabel}, ${selectedIslandName}: `;
+      const ctaLong = isEn
+        ? 'Check live wind, waves and weather before you go — map, access and nearby beaches.'
+        : 'Δες live άνεμο, κύμα και καιρό πριν πας — χάρτης, πρόσβαση και κοντινές παραλίες.';
+      const ctaShort = isEn
+        ? 'Check live wind, waves and weather before you go.'
+        : 'Δες live άνεμο, κύμα και καιρό πριν πας.';
+      const ctaTiny = isEn ? 'Check live wind & waves.' : 'Δες live άνεμο & κύμα.';
+      const candidates = [
+        traits ? `${head}${traits} ${ctaLong}` : `${head}${ctaLong}`,
+        traits ? `${head}${traits} ${ctaShort}` : `${head}${ctaShort}`,
+        traits ? `${head}${traits} ${ctaTiny}` : `${head}${ctaTiny}`,
+        traits ? `${head}${traits}` : `${head}${ctaTiny}`,
+      ];
+      return candidates.find(candidate => candidate.length <= 155) || candidates[candidates.length - 1].slice(0, 155);
+    };
     const detailTitle = canUseDetailSeo && detailBeach
-      ? getLocalizedCopy(language, {
-        en: `${detailBeachLabel}, ${selectedIslandName}: Wind Protection, Map & Tips`,
-        gr: `${detailBeachLabel}, ${selectedIslandName}: άνεμος, χάρτης και χρήσιμες πληροφορίες`,
-        de: `${detailBeachLabel}, ${selectedIslandName}: Windschutz, Karte & Tipps`,
-        fr: `${detailBeachLabel}, ${selectedIslandName} : vent, carte et conseils`,
-        it: `${detailBeachLabel}, ${selectedIslandName}: vento, mappa e consigli`,
-      })
+      ? buildDetailTitle()
       : selectedIslandName
         ? getLocalizedCopy(language, {
           en: `${selectedIslandName} Beaches | CalmBeach Greece`,
@@ -2306,13 +2368,7 @@ export const App: React.FC = () => {
         })
         : meta.title;
     const detailDescription = canUseDetailSeo && detailBeach
-      ? getLocalizedCopy(language, {
-        en: `See practical info for ${detailBeachLabel} in ${selectedIslandName}, including location, beach type, wind exposure, map and tips to help you decide when to visit.`,
-        gr: `Δες πρακτικές πληροφορίες για ${detailBeachLabel} σε ${selectedIslandName}, όπως τοποθεσία, τύπο παραλίας, έκθεση στον άνεμο, χάρτη και χρήσιμες συμβουλές.`,
-        fr: `Voir les infos pratiques pour ${detailBeachLabel} a ${selectedIslandName}, avec localisation, type de plage, exposition au vent, carte et conseils.`,
-        de: `Praktische Infos zu ${detailBeachLabel} auf ${selectedIslandName}: Lage, Strandtyp, Windexposition, Karte und Tipps fuer den Besuch.`,
-        it: `Vedi informazioni pratiche per ${detailBeachLabel} a ${selectedIslandName}: posizione, tipo di spiaggia, esposizione al vento, mappa e consigli.`,
-      })
+      ? buildDetailMeta()
       : regionDescription;
     const canonicalUrl = typeof window !== 'undefined'
       ? `${window.location.origin}${window.location.pathname}`

@@ -48,11 +48,68 @@ const tagContent = (html, pattern) => {
 };
 
 const titleOf = html => tagContent(html, /<title>([\s\S]*?)<\/title>/i).trim();
+const h1Of = html => tagContent(html, /<h1\b[^>]*>([\s\S]*?)<\/h1>/i).trim();
 const metaContent = (html, name) => tagContent(
   html,
   new RegExp(`<meta\\s+(?:name|property)=["']${name}["']\\s+content=["']([^"']*)["']\\s*\\/?>`, 'i')
 ).trim();
 const canonicalOf = html => tagContent(html, /<link\s+rel=["']canonical["']\s+href=["']([^"']+)["']\s*\/?>/i).trim();
+
+const stripNoSnippet = html => String(html || '')
+  .replace(/<([a-z][\w:-]*)\b(?=[^>]*\bdata-nosnippet(?:=["'][^"']*["'])?)[^>]*>[\s\S]*?<\/\1>/gi, ' ');
+
+const visibleTextOf = html => {
+  const body = html.match(/<body\b[^>]*>([\s\S]*?)<\/body>/i)?.[1] || html;
+  return decodeEntities(stripNoSnippet(body)
+    .replace(/<script\b[^>]*>[\s\S]*?<\/script>/gi, ' ')
+    .replace(/<style\b[^>]*>[\s\S]*?<\/style>/gi, ' ')
+    .replace(/<svg\b[^>]*>[\s\S]*?<\/svg>/gi, ' ')
+    .replace(/<[^>]+>/g, ' ')
+    .replace(/\s+/g, ' ')
+    .trim());
+};
+
+const hasVisibleCurrentConditionData = visibleText => {
+  const text = String(visibleText || '');
+  return /(?:wind|waves?|άνεμ|κύμα|wellen|vagues|vent|vento|onde)[\s\S]{0,90}\d+(?:[.,]\d+)?\s?(?:bft|beaufort|m\b|km\/h|kn|kts|°c)/i.test(text) ||
+    /\d+(?:[.,]\d+)?\s?(?:bft|beaufort|m\b|km\/h|kn|kts|°c)[\s\S]{0,90}(?:wind|waves?|άνεμ|κύμα|wellen|vagues|vent|vento|onde)/i.test(text);
+};
+
+const currentDayClaimPattern = /\b(?:today|today's|today’s|heute|oggi)\b|aujourd['’]hui|\bdu jour\b|σημεριν[α-ωά-ώ]*|σήμερα/i;
+const calmTodayClaimPattern = /\b(?:calm|calmer|calmest)\b[\s\S]{0,32}\b(?:today|today's|today’s)\b|\b(?:today|today's|today’s)\b[\s\S]{0,32}\b(?:calm|calmer|calmest)\b/i;
+const bestTodayClaimPattern = /\b(?:best)\b[\s\S]{0,32}\b(?:today|today's|today’s)\b|\b(?:today|today's|today’s)\b[\s\S]{0,32}\b(?:best)\b/i;
+const unsafeAbsolutePattern = /\bsafe(?:st)?\b/i;
+const safeCaveatPattern = /\b(?:safety|lifeguard|warning flags?|beach flags?|red flags?|yellow flags?|avoid|caution|does not replace|do not replace|not replace|follow)\b/i;
+const guaranteePattern = /\bguarantee(?:d)?\b|garantiert|garanti|garantito|εγγυη/i;
+const guaranteeCaveatPattern = /\b(?:not|no|never|without)\s+\w*\s*guarantee|kein(?:en|er)?\s+garant|pas\s+un\s+abri\s+garanti|non\s+un\s+riparo\s+garantito|όχι\s+εγγυη|δεν\s+.*εγγυη/i;
+const shelterClaimPattern = /\b(?:sheltered|wind-protected|protected from|fully protected)\b|windgeschützt|abritées?|riparate?|προστατευ|απάνεμ/i;
+const shelterQualifierPattern = /\b(?:usually|often|may|might|can|more|less|available|orientation|oriented|based on|not guaranteed|check|compare|before you go|conditions vary|depending|signal|data|less exposed|more comfortable)\b|προσανατολισ|μπορεί|συχν|διαθέσιμ|όχι\s+εγγυη|έλεγξε|σύγκρι|πριν\s+πας|με\s+βάση|δεδομέν|πιο/i;
+
+const riskyClaimFindings = (text, hasCurrentConditionData) => {
+  const value = String(text || '');
+  if (!value) return [];
+
+  const findings = [];
+  if (!hasCurrentConditionData && currentDayClaimPattern.test(value)) {
+    findings.push('current-day wording without visible wind/wave values');
+  }
+  if (!hasCurrentConditionData && calmTodayClaimPattern.test(value)) {
+    findings.push('calm-today claim without visible condition data');
+  }
+  if (!hasCurrentConditionData && bestTodayClaimPattern.test(value)) {
+    findings.push('best-today claim without visible ranking data');
+  }
+  if (unsafeAbsolutePattern.test(value) && !safeCaveatPattern.test(value)) {
+    findings.push('absolute safe/safest wording');
+  }
+  if (guaranteePattern.test(value) && !guaranteeCaveatPattern.test(value)) {
+    findings.push('guarantee wording');
+  }
+  if (!hasCurrentConditionData && shelterClaimPattern.test(value) && !shelterQualifierPattern.test(value)) {
+    findings.push('unqualified sheltered/protected wording');
+  }
+  return Array.from(new Set(findings));
+};
 
 const hreflangsOf = html => Array.from(html.matchAll(/<link\s+rel=["']alternate["']\s+hreflang=["']([^"']+)["']\s+href=["']([^"']+)["']\s*\/?>/gi))
   .map(match => ({ hreflang: match[1], href: match[2] }));
@@ -80,7 +137,9 @@ const parseJsonLd = (html, label) => {
 
 const hasJsonLdType = (value, type) => {
   if (!value || typeof value !== 'object') return false;
-  if (value['@type'] === type) return true;
+  const ownType = value['@type'];
+  // @type can be a single string or an array of strings (e.g. ['Beach', 'TouristAttraction']).
+  if (ownType === type || (Array.isArray(ownType) && ownType.includes(type))) return true;
   if (Array.isArray(value)) return value.some(item => hasJsonLdType(item, type));
   return Object.values(value).some(item => hasJsonLdType(item, type));
 };
@@ -267,6 +326,72 @@ const collectHtmlFiles = async (dir, out = []) => {
   return out;
 };
 
+const routeForHtmlFile = filePath => {
+  const relative = path.relative(distDir, filePath).replace(/\\/g, '/');
+  if (relative === 'index.html') return '/';
+  return `/${relative.replace(/\/index\.html$/, '/')}`;
+};
+
+const conditionClaimAuditExemptRoutePattern = /^\/(?:[a-z]{2}\/)?(?:terms|privacy)\//i;
+
+const checkRiskyConditionClaims = async () => {
+  const htmlFiles = await collectHtmlFiles(distDir);
+  const riskyPages = [];
+
+  for (const file of htmlFiles) {
+    const route = routeForHtmlFile(file);
+    if (conditionClaimAuditExemptRoutePattern.test(route)) continue;
+
+    const html = await readText(file);
+    const visibleText = visibleTextOf(html);
+    const hasCurrentConditionData = hasVisibleCurrentConditionData(visibleText);
+    const contexts = [
+      { field: 'title', text: titleOf(html) },
+      { field: 'meta description', text: metaContent(html, 'description') },
+      { field: 'h1', text: h1Of(html) },
+      { field: 'visible copy', text: visibleText },
+    ];
+
+    const findings = contexts.flatMap(context =>
+      riskyClaimFindings(context.text, hasCurrentConditionData)
+        .map(finding => `${context.field}: ${finding}`)
+    );
+
+    if (findings.length > 0) {
+      riskyPages.push(`${route} (${Array.from(new Set(findings)).slice(0, 3).join('; ')})`);
+    }
+  }
+
+  if (riskyPages.length > 0) {
+    warn(`Risky static SEO condition wording found on ${riskyPages.length} prerendered page(s); review samples: ${riskyPages.slice(0, 8).join(' | ')}${riskyPages.length > 8 ? ` and ${riskyPages.length - 8} more` : ''}`);
+  } else {
+    pass();
+  }
+};
+
+// Titles over ~60 chars get truncated by Google. The deterministic tier logic in
+// the prerender should keep every title within budget; this warns if a new/long
+// name ever slips through so the tiers can be revisited.
+const TITLE_MAX = 60;
+const checkTitleLengths = async () => {
+  const htmlFiles = await collectHtmlFiles(distDir);
+  const longTitles = [];
+
+  for (const file of htmlFiles) {
+    const html = await readText(file);
+    const title = titleOf(html);
+    if (title.length > TITLE_MAX) {
+      longTitles.push(`${routeForHtmlFile(file)} (${title.length}: "${title}")`);
+    }
+  }
+
+  if (longTitles.length > 0) {
+    warn(`${longTitles.length} prerendered <title>(s) exceed ${TITLE_MAX} chars and may be truncated in the SERP: ${longTitles.slice(0, 8).join(' | ')}${longTitles.length > 8 ? ` and ${longTitles.length - 8} more` : ''}`);
+  } else {
+    pass();
+  }
+};
+
 const checkHreflangIntegrity = async () => {
   const htmlFiles = await collectHtmlFiles(distDir);
   let linksChecked = 0;
@@ -373,8 +498,10 @@ const main = async () => {
     await checkPage({
       label: 'sample beach detail',
       url: sampleBeachUrl,
-      requiredTypes: ['TouristAttraction', 'GeoCoordinates', 'BreadcrumbList'],
-      recommendedTypes: ['FAQPage'],
+      requiredTypes: ['Beach', 'TouristAttraction', 'GeoCoordinates', 'BreadcrumbList'],
+      // FAQPage was intentionally dropped from beach pages: the facts render as a
+      // definition list, not visible Q&A, so FAQPage markup would not match
+      // visible content. It stays on the category/national pages that show Q&A.
       requiredHreflangs: ['en', 'el', 'x-default'],
       minInternalBeachLinks: 2,
     });
@@ -395,6 +522,8 @@ const main = async () => {
   }
 
   await checkImages(imageLocs);
+  await checkRiskyConditionClaims();
+  await checkTitleLengths();
   await checkHreflangIntegrity();
   await checkPerformanceBudget();
 
