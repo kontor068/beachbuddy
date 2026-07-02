@@ -3773,11 +3773,9 @@ export const BeachSearcherHome: React.FC<BeachSearcherHomeProps> = ({
             <section id="all-beaches-section" className="scroll-mt-[25rem]">
               <div className="mb-1.5 flex items-center gap-3 px-3 sm:mb-3">
                 <span className="h-px flex-1 bg-slate-300/70" aria-hidden="true" />
-                <div className="max-w-full shrink-0 rounded-full border border-white/80 bg-white/86 px-3 py-1.5 text-center shadow-sm shadow-sky-900/10 ring-1 ring-white/50 backdrop-blur-md">
-                  <h2 className="line-clamp-2 text-xs font-extrabold leading-tight tracking-normal text-slate-700">
-                    {withCount(directoryTitle, directoryDisplayBeachCards.length)}
-                  </h2>
-                </div>
+                <h2 className="line-clamp-2 min-w-0 max-w-full flex-[0_1_auto] text-center text-xs font-extrabold leading-tight tracking-normal text-slate-700">
+                  {withCount(directoryTitle, directoryDisplayBeachCards.length)}
+                </h2>
                 <span className="h-px flex-1 bg-slate-300/70" aria-hidden="true" />
               </div>
 
