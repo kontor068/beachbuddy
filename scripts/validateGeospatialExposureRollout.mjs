@@ -87,9 +87,9 @@ const sampleChecks = [
     regionId: 'south-aegean-naxos',
     name: 'Mikri Vigla',
     sector: 'N',
-    expected: 'protected',
+    expectedGroup: 'notExposed',
     critical: false,
-    reason: 'Raw geometry can see local bay protection here; runtime wind-sport override prevents sheltered map/scoring claims in north wind.',
+    reason: 'Raw geometry sees local bay protection here (protected or partial — the 2026-07 openness ramp moved it conservatively to partial); runtime wind-sport override prevents sheltered map/scoring claims in north wind either way. Must not read exposed.',
   },
 ];
 
@@ -321,7 +321,13 @@ const index = readJson(indexPath);
 assert(index.schemaVersion === 1, 'Geospatial exposure index schemaVersion must be 1.');
 assert(index.summary?.generatedProfiles === index.summary?.beachCount, 'All generated profiles must match beach count.');
 assert(index.summary?.missingCoordinates === 0, 'Geospatial exposure generation must have no missing coordinates.');
-assert(index.source?.landMask?.confidence === 'medium', 'Geospatial exposure source must use the validated medium-confidence baseline.');
+// medium = Natural Earth baseline, high = the OSM high-res coastline the dataset
+// graduated to on 2026-06-10 (runtime backfill accepts both — keep this in sync
+// with canUseGeospatialWindProfileBackfill).
+assert(
+  index.source?.landMask?.confidence === 'medium' || index.source?.landMask?.confidence === 'high',
+  'Geospatial exposure source must use a validated land-mask tier (medium or high).'
+);
 
 const allRegionIds = Object.keys(index.summary?.regions || {});
 const representativeReports = representativeRegionIds.map(summarizeRegion);

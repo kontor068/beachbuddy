@@ -480,13 +480,14 @@ const main = async () => {
   if (regions.length === 0) {
     throw new Error(`No app regions matched the --region filter: ${regionFilter.join(', ')}`);
   }
-  const summaryByRegion: Record<string, {
+  type RegionSummaryEntry = {
     regionName: string;
     beachCount: number;
     generatedProfiles: number;
     missingCoordinates: number;
     sectors: ReturnType<typeof summarizeRegion>;
-  }> = {};
+  };
+  const summaryByRegion: Record<string, RegionSummaryEntry> = {};
   let totalBeachCount = 0;
   let totalProfiles = 0;
   let totalMissingCoordinates = 0;
@@ -539,11 +540,24 @@ const main = async () => {
     };
 
     mkdirSync(outputDirectory, { recursive: true });
-    writeFileSync(
-      path.join(outputDirectory, `${region.regionId}.json`),
-      `${JSON.stringify(regionPayload, null, 2)}\n`,
-      'utf8'
-    );
+    // Content-aware write: an unchanged region keeps its existing file byte-for-byte
+    // (generatedAt included), so no-change rebuilds stop churning 111 files and
+    // busting client HTTP caches. Only genuinely different output gets a new stamp.
+    const regionPath = path.join(outputDirectory, `${region.regionId}.json`);
+    const freshStamp = regionPayload.generatedAt;
+    let unchanged = false;
+    if (existsSync(regionPath)) {
+      const existingContent = readFileSync(regionPath, 'utf8');
+      const existingStamp = existingContent.match(/"generatedAt": "([^"]+)"/)?.[1];
+      if (existingStamp) {
+        regionPayload.generatedAt = existingStamp;
+        unchanged = existingContent === `${JSON.stringify(regionPayload, null, 2)}\n`;
+        if (!unchanged) regionPayload.generatedAt = freshStamp;
+      }
+    }
+    if (!unchanged) {
+      writeFileSync(regionPath, `${JSON.stringify(regionPayload, null, 2)}\n`, 'utf8');
+    }
     summaryByRegion[region.regionId] = {
       regionName: region.regionName,
       beachCount: region.beaches.length,
@@ -552,6 +566,33 @@ const main = async () => {
       sectors: summarizeRegion(profiles),
     };
   });
+
+  // A filtered --region run must NOT clobber the national index: both validators
+  // enumerate their region universe from it, so a subset index makes them go
+  // blind-but-green for the other ~108 regions. Merge into the existing index —
+  // and refuse a filtered run whose mask tier differs from the shipped dataset
+  // (a --region run without --land-geojson would otherwise silently downgrade
+  // those regions to the Natural Earth baseline).
+  const indexPath = path.join(outputDirectory, 'index.json');
+  let mergedRegionSummaries = summaryByRegion;
+  if (regionFilter.length > 0 && existsSync(indexPath)) {
+    const existingIndex = JSON.parse(readFileSync(indexPath, 'utf8')) as {
+      settings?: { maskConfidence?: string };
+      summary?: { regions?: Record<string, RegionSummaryEntry> };
+    };
+    const existingMaskConfidence = existingIndex.settings?.maskConfidence;
+    if (existingMaskConfidence && existingMaskConfidence !== maskConfidence) {
+      throw new Error(
+        `Filtered --region run uses a '${maskConfidence}' land mask but the shipped dataset is '${existingMaskConfidence}'. ` +
+        'Pass the matching --land-geojson (see scripts/fetchHighResLandMask.mjs) or run the full build.'
+      );
+    }
+    mergedRegionSummaries = { ...(existingIndex.summary?.regions || {}), ...summaryByRegion };
+  }
+  const mergedEntries = Object.values(mergedRegionSummaries);
+  const mergedBeachCount = mergedEntries.reduce((sum, entry) => sum + entry.beachCount, 0);
+  const mergedProfiles = mergedEntries.reduce((sum, entry) => sum + entry.generatedProfiles, 0);
+  const mergedMissing = mergedEntries.reduce((sum, entry) => sum + entry.missingCoordinates, 0);
 
   const output = {
     schemaVersion: 1,
@@ -582,17 +623,31 @@ const main = async () => {
       maskConfidence,
     },
     summary: {
-      regionCount: regions.length,
-      beachCount: totalBeachCount,
-      generatedProfiles: totalProfiles,
-      missingCoordinates: totalMissingCoordinates,
+      regionCount: mergedEntries.length,
+      beachCount: mergedBeachCount,
+      generatedProfiles: mergedProfiles,
+      missingCoordinates: mergedMissing,
       indexedLandPolygons: polygons.length,
-      regions: summaryByRegion,
+      regions: mergedRegionSummaries,
     },
   };
 
   mkdirSync(outputDirectory, { recursive: true });
-  writeFileSync(path.join(outputDirectory, 'index.json'), `${JSON.stringify(output, null, 2)}\n`, 'utf8');
+  // Content-aware, like the region files: identical output keeps the old stamp/file.
+  let indexUnchanged = false;
+  if (existsSync(indexPath)) {
+    const existingContent = readFileSync(indexPath, 'utf8');
+    const existingStamp = existingContent.match(/"generatedAt": "([^"]+)"/)?.[1];
+    if (existingStamp) {
+      const freshStamp = output.generatedAt;
+      output.generatedAt = existingStamp;
+      indexUnchanged = existingContent === `${JSON.stringify(output, null, 2)}\n`;
+      if (!indexUnchanged) output.generatedAt = freshStamp;
+    }
+  }
+  if (!indexUnchanged) {
+    writeFileSync(indexPath, `${JSON.stringify(output, null, 2)}\n`, 'utf8');
+  }
 
   console.log(JSON.stringify({
     outputDirectory,

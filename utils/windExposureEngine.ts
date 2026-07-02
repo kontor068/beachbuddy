@@ -46,7 +46,7 @@ export interface WindExposureAssessment {
   swimmingScoreModifier: number;
   experienceScoreModifier: number;
   finalScoreCap?: number;
-  confidencePenalty: number;
+  /** Consumed by calculateRecommendationConfidence via dataQualityReasons (each unique reason costs points there). */
   confidenceReasons: string[];
   reasons: string[];
   warnings: WarningFlag[];
@@ -613,15 +613,17 @@ export const assessBeachWindExposure = (input: BeachWindExposureInput): WindExpo
   const hasGeometry = Boolean(input.geospatialProfile);
 
   const reasons: string[] = [];
+  // Data-quality signal travels through confidenceReasons ONLY: recommendationService
+  // feeds them into dataQualityReasons, where calculateRecommendationConfidence charges
+  // each unique reason. (A parallel numeric confidencePenalty channel existed here but
+  // was never consumed anywhere — removed.)
   const confidenceReasons: string[] = [];
   const warnings: WarningFlag[] = [];
   let swimmingScoreModifier = 0;
   let experienceScoreModifier = 0;
   let finalScoreCap: number | undefined;
-  let confidencePenalty = 0;
 
   if (source === 'unknown' && !hasGeometry) {
-    confidencePenalty += baseBeaufort >= 4 ? 12 : 4;
     confidenceReasons.push('local wind exposure profile missing');
     if (baseBeaufort >= 6) finalScoreCap = scoreCap(finalScoreCap, 60);
     else if (baseBeaufort >= 5) finalScoreCap = scoreCap(finalScoreCap, 65);
@@ -629,7 +631,6 @@ export const assessBeachWindExposure = (input: BeachWindExposureInput): WindExpo
   }
 
   if (profile.confidence === 'low') {
-    confidencePenalty += baseBeaufort >= 4 ? 10 : 5;
     confidenceReasons.push('wind exposure profile needs verification');
     if (baseBeaufort >= 6) finalScoreCap = scoreCap(finalScoreCap, 60);
     else if (baseBeaufort >= 5) finalScoreCap = scoreCap(finalScoreCap, 65);
@@ -637,22 +638,18 @@ export const assessBeachWindExposure = (input: BeachWindExposureInput): WindExpo
   }
 
   if (profile.shelterLevel === 'unknown' && !hasGeometry) {
-    confidencePenalty += 6;
     confidenceReasons.push('shelter level unknown');
   }
 
   if (profile.fetchExposure === 'unknown' && !hasGeometry) {
-    confidencePenalty += 6;
     confidenceReasons.push('fetch exposure unknown');
   }
 
   if (unified.facingDeg === null) {
-    confidencePenalty += 3;
     confidenceReasons.push('beach facing direction not verified');
   }
 
   if (input.waveHeightMeters === undefined) {
-    confidencePenalty += 6;
     confidenceReasons.push('marine wave data missing');
   }
 
@@ -736,7 +733,6 @@ export const assessBeachWindExposure = (input: BeachWindExposureInput): WindExpo
     swimmingScoreModifier,
     experienceScoreModifier,
     finalScoreCap,
-    confidencePenalty,
     confidenceReasons,
     reasons,
     warnings,

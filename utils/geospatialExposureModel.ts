@@ -84,6 +84,12 @@ const normalizeLongitude = (longitude: number): number => {
   return normalized;
 };
 
+// NOTE: nearshoreLandGraceKm only has an effect when it is >= stepKm (a land hit is
+// forgiven only at distances <= grace, and the first sample already sits at stepKm).
+// Both shipped build configs set grace < step (0.3 vs 0.5 baseline, 0.1 vs 0.2
+// high-res), so the mask-noise forgiveness it advertises is currently INERT —
+// behaviour equals grace 0. Activating it means grace >= stepKm plus a full
+// geometry rebuild (needs the OSM land mask via scripts/fetchHighResLandMask.mjs).
 const sampleFetchRay = (
   beach: GeoPoint,
   bearingDeg: number,
@@ -121,9 +127,17 @@ const classifyFetchExposure = (
 
 /**
  * True when a water point has at least `minOpenWaterKm` of continuous open
- * water along some bearing. Used to reject enclosed inland water (lagoons,
- * river mouths carved as holes in high-res land masks) as a sampling origin —
- * those would otherwise read as "all sectors blocked" and ruin the profile.
+ * water along some bearing. Used to reject SMALL enclosed inland water pockets
+ * (river mouths, sub-0.5 km lagoon slivers carved as holes in high-res land
+ * masks) as a sampling origin — those would otherwise read as "all sectors
+ * blocked" and ruin the profile.
+ *
+ * KNOWN LIMIT: this is a local open-span test, NOT sea connectivity — a lagoon
+ * wider than minOpenWaterKm (Korission, Messolonghi, the Lefkada lagoons) still
+ * qualifies, so a spit-beach pin closer to the lagoon than the sea could get a
+ * lagoon-side origin with inverted facing. The eight classic Greek lagoon-spit
+ * beaches were spot-checked in the shipped data (2026-07-02) and all resolve
+ * sea-side; a real fix needs a flood-fill/connectivity test + full rebuild.
  */
 const hasOpenWaterPassage = (
   point: GeoPoint,

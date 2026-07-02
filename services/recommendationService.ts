@@ -684,9 +684,13 @@ const calculateRecommendationConfidence = (
     reasons.push('official warnings not checked');
   }
 
-  if (dataQualityReasons.length > 0) {
-    score -= Math.min(24, dataQualityReasons.length * 4);
-    reasons.push(...dataQualityReasons);
+  // Dedup before counting: the same data-quality reason can be pushed from more
+  // than one code path, and each duplicate silently cost another 4 points while
+  // the displayed list was already deduped.
+  const uniqueDataQualityReasons = Array.from(new Set(dataQualityReasons));
+  if (uniqueDataQualityReasons.length > 0) {
+    score -= Math.min(24, uniqueDataQualityReasons.length * 4);
+    reasons.push(...uniqueDataQualityReasons);
   }
 
   if (warnings.some(warning => warning.severity === 'critical')) score -= 10;
@@ -1740,10 +1744,13 @@ export const calculateBeachScore = (
     else if (modeledWaveHeightM >= 0.6) swimmingScore -= 6;
   }
   // Period surge, de-duped against direct_swell (max, never sum) so one long-period
-  // onshore swell is charged once. Writes the swim score + a warning only — never the
-  // exposure level, effectiveWaveHeightM, effectiveBeaufort, or the map colour.
+  // onshore swell is charged once — on EITHER period channel: when the swell period is
+  // missing and the surge falls back to the wave channel, it still describes the same
+  // onshore energy the direct-swell penalty already charged. Writes the swim score + a
+  // warning only — never the exposure level, effectiveWaveHeightM, effectiveBeaufort,
+  // or the map colour.
   if (swellSurgePenalty > 0 && typeof surgePeriodS === 'number' && typeof surgeHeightM === 'number') {
-    const marginalSurge = (directSwell && surgeUsesSwellChannel) ? Math.max(0, swellSurgePenalty - directSwellPenalty) : swellSurgePenalty;
+    const marginalSurge = directSwell ? Math.max(0, swellSurgePenalty - directSwellPenalty) : swellSurgePenalty;
     if (marginalSurge > 0) swimmingScore -= marginalSurge;
     warnings.push({
       type: 'long_period_swell',

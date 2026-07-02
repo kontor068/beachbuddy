@@ -330,6 +330,12 @@ export const getVisibleMapExposureLevel = (
 
   // Geometry signal: the regenerated geospatial profile now carries the improved
   // onshore/offshore-aware sector levels, so reading them here is enough.
+  // DELIBERATE asymmetry vs scoring: the map follows a geometry-'exposed' sector at
+  // ANY fetch, while the engine escalates authored-partial scoring only at >=8 km
+  // high-confidence fetch (Solution B threshold, pinned in the suite). So for a
+  // short-fetch open onshore sector the pin can read one band redder than the card —
+  // the conservative direction, kept until a Solution-B-style false-positive pass
+  // justifies lowering the scoring threshold.
   if (geospatialExposure === 'exposed' || geospatialExposure === 'protected') return geospatialExposure;
   if (geospatialExposure === 'partial') return fallbackProfileExposure || 'partial';
   if (fallbackProfileExposure) return fallbackProfileExposure;

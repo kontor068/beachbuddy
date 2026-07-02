@@ -555,6 +555,8 @@ const prioritizeProtectedRecommendations = (items: SuitableBeach[], beaufort: nu
 
 type TimeAwareSuitableBeach = SuitableBeach & {
   dynamicTopPickWindowScore?: number;
+  /** Intraday timing bucket (topPickVariety's rotation guard keys on state). */
+  timing?: { state?: string };
 };
 
 type GlobalBeachSearchEntry = {
@@ -849,7 +851,7 @@ const getRemainingTopPickWindow = (
   selectedDate: Date | undefined,
   now: Date,
   hourlyForecast?: ForecastItem[]
-): { bestBeachTime: BestBeachTime; score: number } | undefined => {
+): { bestBeachTime: BestBeachTime; score: number; timingState: string } | undefined => {
   const entries = getRemainingBeachHours(hourlyForecast, selectedDate, now)
     .map(entry => ({
       ...entry,
@@ -878,6 +880,7 @@ const getRemainingTopPickWindow = (
   return {
     score,
     bestBeachTime,
+    timingState: timing.state,
   };
 };
 
@@ -896,6 +899,9 @@ const applyRemainingTopPickWindow = (
     bestTimeWindow: remainingWindow.bestBeachTime.bestTimeWindow,
     timeReason: remainingWindow.bestBeachTime.timeReason,
     dynamicTopPickWindowScore: remainingWindow.score,
+    // topPickVariety's calm-day rotation must never swap picks across intraday
+    // timing buckets — it guards on this field.
+    timing: { state: remainingWindow.timingState },
   };
 };
 
@@ -2875,7 +2881,8 @@ export const App: React.FC = () => {
 
   useEffect(() => {
     const pendingBeachId = pendingDirectorySearchHighlightRef.current;
-    if (!pendingBeachId || !selectedIsland?.beaches.some(beach => beach.id === pendingBeachId)) return;
+    // == null, not falsy: beach id 0 is a real beach (ids are 0-indexed source order).
+    if (pendingBeachId == null || !selectedIsland?.beaches.some(beach => beach.id === pendingBeachId)) return;
 
     pendingDirectorySearchHighlightRef.current = undefined;
     setHighlightedMapBeachId(pendingBeachId);
@@ -5362,7 +5369,8 @@ export const App: React.FC = () => {
 
     setBeachSearchQuery(suggestion.label);
     const suggestionBeachId = suggestion.beachId ?? suggestion.beach?.id;
-    if (!suggestionBeachId) return;
+    // == null, not falsy: beach id 0 is a real beach (ids are 0-indexed source order).
+    if (suggestionBeachId == null) return;
 
     let targetIsland = suggestion.island;
     try {
