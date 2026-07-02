@@ -3587,11 +3587,9 @@ export const BeachSearcherHome: React.FC<BeachSearcherHomeProps> = ({
             <section id="top-recommendations-section" className="mb-3 scroll-mt-[25rem] sm:mb-5 sm:scroll-mt-4">
               <div className="mb-1.5 flex items-center justify-center gap-3 px-3 sm:mb-3 lg:px-5">
                 <span className="hidden h-px flex-1 bg-slate-300/70 min-[430px]:block" aria-hidden="true" />
-                <div className="max-w-full shrink-0 rounded-full border border-white/80 bg-white/90 px-3 py-1.5 text-center shadow-sm shadow-sky-900/10 ring-1 ring-white/50 backdrop-blur-md">
-                  <h2 className="line-clamp-2 text-xs font-extrabold leading-tight tracking-normal text-slate-800 sm:text-sm">
-                    {topRecommendationsLabel}
-                  </h2>
-                </div>
+                <h2 className="line-clamp-2 min-w-0 max-w-full flex-[0_1_auto] text-center text-xs font-extrabold leading-tight tracking-normal text-slate-800 sm:text-sm">
+                  {topRecommendationsLabel}
+                </h2>
                 <span className="hidden h-px flex-1 bg-slate-300/70 min-[430px]:block" aria-hidden="true" />
               </div>
 
@@ -3620,11 +3618,9 @@ export const BeachSearcherHome: React.FC<BeachSearcherHomeProps> = ({
           <>
           <div id={selectedIsland ? 'suitable-beaches-section' : undefined} className="mb-1.5 flex scroll-mt-[25rem] items-center justify-center gap-3 px-3 sm:mb-3 sm:scroll-mt-4 lg:px-5">
             <span className="hidden h-px flex-1 bg-slate-300/70 min-[430px]:block" aria-hidden="true" />
-            <div className="max-w-full shrink-0 rounded-full border border-white/80 bg-white/86 px-3 py-1.5 text-center shadow-sm shadow-sky-900/10 ring-1 ring-white/50 backdrop-blur-md">
-              <h2 className="line-clamp-2 text-xs font-extrabold leading-tight tracking-normal text-slate-700 sm:text-sm">
-                {selectedIsland ? withCount(suitableSectionLabel, suitableBeachDisplayCount) : copy.popularDestinations}
-              </h2>
-            </div>
+            <h2 className="line-clamp-2 min-w-0 max-w-full flex-[0_1_auto] text-center text-xs font-extrabold leading-tight tracking-normal text-slate-700 sm:text-sm">
+              {selectedIsland ? withCount(suitableSectionLabel, suitableBeachDisplayCount) : copy.popularDestinations}
+            </h2>
             <span className="hidden h-px flex-1 bg-slate-300/70 min-[430px]:block" aria-hidden="true" />
           </div>
 
