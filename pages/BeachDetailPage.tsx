@@ -64,6 +64,7 @@ import { getSelectedDayPrefix, getSelectedHourPrefix } from '../utils/dateLabels
 import { getBoatRideMotionLevel } from '../utils/boatRideMotion';
 import { getRainSwimAdvisory } from '../utils/rainAdvisory';
 import { summarizeMeltemiBehavior } from '../utils/windClimatology';
+import { buildWeatherNowContent } from '../utils/weatherNowCopy';
 
 // Temporarily hidden: the "Σχέδιο ημέρας" (Plan your day) section isn't well
 // implemented yet — hiding it until we rework it. Flip back to true to re-enable.
@@ -254,7 +255,7 @@ const getSeaConditionDisplay = (
     const boatCopy = {
       en: {
         value: {
-          smooth: 'Smooth ride',
+          smooth: 'Ideal conditions',
           light: 'A little motion',
           bumpy: 'Bumpy ride',
           rough: 'Very bumpy',
@@ -269,7 +270,7 @@ const getSeaConditionDisplay = (
       },
       gr: {
         value: {
-          smooth: 'Ήρεμη διαδρομή',
+          smooth: 'Ιδανικές συνθήκες',
           light: 'Λίγο κούνημα',
           bumpy: 'Κουνάει αρκετά',
           rough: 'Πολύ κούνημα',
@@ -284,7 +285,7 @@ const getSeaConditionDisplay = (
       },
       de: {
         value: {
-          smooth: 'Ruhige Fahrt',
+          smooth: 'Ideale Bedingungen',
           light: 'Etwas Bewegung',
           bumpy: 'Unruhige Fahrt',
           rough: 'Sehr unruhig',
@@ -299,7 +300,7 @@ const getSeaConditionDisplay = (
       },
       it: {
         value: {
-          smooth: 'Tragitto tranquillo',
+          smooth: 'Condizioni ideali',
           light: 'Un po di movimento',
           bumpy: 'Tragitto mosso',
           rough: 'Molto mosso',
@@ -314,7 +315,7 @@ const getSeaConditionDisplay = (
       },
       fr: {
         value: {
-          smooth: 'Trajet calme',
+          smooth: 'Conditions idéales',
           light: 'Un peu de mouvement',
           bumpy: 'Trajet agite',
           rough: 'Tres agite',
@@ -767,6 +768,33 @@ export const BeachDetailPage: React.FC<BeachDetailPageProps> = ({
   const localWindNote = getLocalWindNote(dayForecast.wind.speed, beachSpecificWeatherData?.wind.speed, language);
   const aiExplanation = generateServiceBeachExplanation(beach, weatherData, score, userLocation, language, geospatialExposure);
   const waveCondition = getWaveCondition(isExposed, windSpeedKmh);
+
+  // "Weather & sea now" block copy — targets the "καιρός/weather {beach}" query.
+  // Client-only + hydrated with live values, so "now" wording is truthful and it
+  // never enters the prerendered static HTML the SEO honesty guards scan. The
+  // dynamic text varies per beach from orientation/protectedFrom (no boilerplate
+  // across ~2.700 pages). dataReady gates the live numbers so no fake values show.
+  const weatherNowDataReady = Number.isFinite(weatherData?.wind?.speed) && Number.isFinite(weatherData?.wind?.deg);
+  const weatherNow = useMemo(() => buildWeatherNowContent({
+    beachName: beachDisplayName,
+    language,
+    isToday: selectedDayIsToday,
+    dataReady: weatherNowDataReady,
+    windDir: windDir as WindDirection,
+    beaufort: beaufortLevel,
+    waveHeightM: displayWaveHeightM,
+    isWaveEstimate,
+    protectedFrom: Array.isArray(beach.protectedFrom) ? beach.protectedFrom : [],
+    faces: beach.orientation?.faces ?? [],
+    canClaimWindProtection,
+    isExposedToTodayWind,
+    seaConditionScore,
+  }), [beachDisplayName, language, selectedDayIsToday, weatherNowDataReady, windDir, beaufortLevel, displayWaveHeightM, isWaveEstimate, beach.protectedFrom, beach.orientation?.faces, canClaimWindProtection, isExposedToTodayWind, seaConditionScore]);
+  const weatherNowToneClass = weatherNow.tone === 'calm'
+    ? 'bg-emerald-50 text-emerald-700'
+    : weatherNow.tone === 'choppy'
+      ? 'bg-orange-50 text-orange-700'
+      : 'bg-amber-50 text-amber-700';
 
   // Show only curated beach-specific photos. Region/island fallbacks are hidden
   // because a wrong landmark damages trust more than a polished placeholder.
@@ -1250,6 +1278,48 @@ export const BeachDetailPage: React.FC<BeachDetailPageProps> = ({
               <Share2 className="w-5 h-5" />
             </button>
           </div>
+        </section>
+
+        {/* Weather & sea now — targets the "καιρός/weather {beach}" intent. The
+            <h2>, the orientation description and the verdict pill are stable or
+            no more volatile than the "τώρα" in the heading, so they stay crawlable
+            (snippet-eligible — the verdict is the CTR hook). Only the raw numbers
+            (wind Bft, wave m) and the live sentence carry data-nosnippet, so
+            Google never freezes a stale value into a SERP snippet. Client-only:
+            this never enters the static prerendered HTML, so "now/live" wording
+            stays out of what the SEO honesty guards scan. No JSON-LD — the honest
+            answer includes live values we must not put in structured data. */}
+        <section className="space-y-3 rounded-[2rem] border border-sky-100 bg-white/90 p-4 shadow-sm shadow-sky-900/5 sm:p-5">
+          <h2 className="font-heading text-xl font-bold leading-tight text-slate-950">{weatherNow.heading}</h2>
+          <p className="text-sm leading-relaxed text-slate-700">{weatherNow.stableDescription}</p>
+          {weatherNow.tone === 'unknown' ? (
+            <div className="flex items-center gap-2 rounded-2xl border border-slate-100 bg-slate-50 px-4 py-3 text-sm font-semibold text-slate-500">
+              <span className="h-2 w-2 animate-pulse rounded-full bg-slate-300" aria-hidden="true" />
+              {weatherNow.loadingLabel}
+            </div>
+          ) : (
+            <div className="space-y-3">
+              <div className="flex flex-wrap items-center gap-2">
+                {/* Verdict is the CTR hook and no more volatile than the "τώρα" in
+                    the <h2> — kept crawlable/snippet-eligible for the same reason. */}
+                <span className={`inline-flex items-center rounded-full px-3 py-1 text-sm font-bold ${weatherNowToneClass}`}>
+                  {weatherNow.verdict}
+                </span>
+                {/* Only the raw numbers carry data-nosnippet, so Google never
+                    freezes a stale "5 Bft" / "~0.9 m" into a SERP snippet. */}
+                <span data-nosnippet="true" className="inline-flex items-center gap-1.5 rounded-full border border-sky-100 bg-sky-50 px-3 py-1 text-sm font-semibold text-sky-900">
+                  <Wind className="h-4 w-4" aria-hidden="true" />
+                  <span className="sr-only">{weatherNow.windLabel}: </span>{weatherNow.windValue}
+                </span>
+                <span data-nosnippet="true" className="inline-flex items-center gap-1.5 rounded-full border border-sky-100 bg-sky-50 px-3 py-1 text-sm font-semibold text-sky-900">
+                  <Waves className="h-4 w-4" aria-hidden="true" />
+                  <span className="sr-only">{weatherNow.waveLabel}: </span>{weatherNow.waveValue}
+                </span>
+              </div>
+              {/* Live sentence names the current wind/Bft → volatile, nosnippet. */}
+              <p data-nosnippet="true" className="text-sm leading-relaxed text-slate-700">{weatherNow.liveSentence}</p>
+            </div>
+          )}
         </section>
 
         {/* Today's conditions — surfaced right under the verdict, led by the wave graphic. */}
