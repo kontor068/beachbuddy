@@ -669,13 +669,6 @@ export const BeachDetailPage: React.FC<BeachDetailPageProps> = ({
       beaufort: getBeaufortLevel(windSpeedKmh),
       windDir,
       date: selectedDate ? selectedDate.toISOString().slice(0, 10) : undefined,
-    }, {
-      source: 'beach_detail_forecast_accuracy',
-      beachName: beachDisplayName,
-      islandName: islandDisplayName,
-      regionId,
-      language,
-      pagePath: typeof window !== 'undefined' ? window.location.pathname : undefined,
     });
     setFeedbackSubmitted(true);
   };
