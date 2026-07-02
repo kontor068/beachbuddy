@@ -1922,7 +1922,7 @@ const overrideEntries: OverrideEntry[] = [
   },
   {
     islandTokens: ['kos', 'κως', 'κω'],
-    nameTokens: ['Mastichari'],
+    nameTokens: ['Mastichari', 'Paralia Mastichari (Neptoun)', 'Ormos Mastichari', 'Παραλία Μαστιχάρι (Νέπτουν)', 'Όρμος Μαστιχάρι'],
     profile: lowConfidenceDirectionalProfile({
       beachFacingDirection: 329,
       shelterLevel: 'open',
@@ -1975,7 +1975,7 @@ const overrideEntries: OverrideEntry[] = [
   // 2026-06-11 Corfu pass: the Korission dune front is the island wind zone.
   {
     islandTokens: ['corfu', 'kerkyra', 'κερκυρα', 'κερκυρας'],
-    nameTokens: ['Chalikouna', 'Halikounas', 'Chalikounas'],
+    nameTokens: ['Chalikouna', 'Halikounas', 'Chalikounas', 'Paralia Chalikouna', 'Παραλία Χαλικούνα'],
     profile: lowConfidenceDirectionalProfile({
       beachFacingDirection: 209,
       shelterLevel: 'open',
@@ -1988,7 +1988,7 @@ const overrideEntries: OverrideEntry[] = [
   },
   {
     islandTokens: ['corfu', 'kerkyra', 'κερκυρα', 'κερκυρας'],
-    nameTokens: ['Issos'],
+    nameTokens: ['Issos', 'Issos Beach'],
     profile: lowConfidenceDirectionalProfile({
       beachFacingDirection: 188,
       shelterLevel: 'open',

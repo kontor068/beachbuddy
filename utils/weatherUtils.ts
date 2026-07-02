@@ -29,6 +29,9 @@ const summarizeDailyMarine = (items: ForecastItem[]): MarineForecast | undefined
     wavePeriodS: maxWavePeriod,
     swellWaveHeightM: maxSwellHeight,
     swellWaveDirectionDeg: highestWaveItem.swellWaveDirectionDeg,
+    // Day max, like the heights: conservative for ground-swell detection (a day
+    // with any long-period hours counts as a swell day).
+    swellWavePeriodS: maxNumber(marineItems.map(item => item.swellWavePeriodS)),
     seaSurfaceTemperatureC: averageNumber(marineItems.map(item => item.seaSurfaceTemperatureC)),
     source: 'open-meteo-marine',
   };

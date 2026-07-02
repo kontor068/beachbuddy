@@ -251,7 +251,10 @@ export const getVisibleMapExposureLevel = (
 ): ExposureLevel => {
   const sector = item.windSector ?? getWindSectorFromDegrees(windDirectionDeg);
   const canUseWindProfile = canUseMapWindProfile(item.windProfile, item.windProfileSource);
-  const geospatialExposure = sector
+  // A curated suspectPin means "geometry from this pin is not trusted" (notch/
+  // tombolo pins) — the map must not colour from it in ANY branch below; only
+  // the authored profile speaks for these beaches.
+  const geospatialExposure = sector && !item.windProfile?.suspectPin
     ? item.geospatialExposure?.sectors?.[sector]?.level
     : undefined;
 

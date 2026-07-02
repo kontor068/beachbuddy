@@ -2417,7 +2417,7 @@ export const getSuitableBeaches = (
         seaCalmClaimAllowed: scoreResult.seaCalmClaimAllowed,
         simpleWindSuitability: scoreResult.simpleWindSuitability,
         geospatialExposure: geospatialProfile,
-        meltemiExposure: summarizeMeltemiBehavior(geospatialProfile),
+        meltemiExposure: summarizeMeltemiBehavior(geospatialProfile, beach),
         windExposureReason: simpleWindReason || windExposureReason
       });
     }

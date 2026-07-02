@@ -85,13 +85,21 @@ export const loadGeospatialExposureProfiles = async (
   const request = fetch(buildProfileUrl(regionId))
     .then(async response => {
       if (!response.ok) {
+        console.warn('Geospatial exposure profiles failed to load — region scores without geometry.', {
+          regionId,
+          status: response.status,
+        });
         profileCache.delete(regionId);
         return undefined;
       }
       const payload = await response.json() as RawGeospatialExposurePayload;
       return normalizeProfiles(payload);
     })
-    .catch(() => {
+    .catch(error => {
+      console.warn('Geospatial exposure profiles failed to load — region scores without geometry.', {
+        regionId,
+        error,
+      });
       profileCache.delete(regionId);
       return undefined;
     });

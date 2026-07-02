@@ -17,6 +17,8 @@
  * with U in m/s, F in metres, g = 9.81 m/s^2, Hs in metres.
  */
 
+import { GROUND_SWELL_MIN_PERIOD_S } from './swellExposure';
+
 const GRAVITY = 9.81;
 const KMH_TO_MS = 1 / 3.6;
 const KM_TO_M = 1000;
@@ -107,7 +109,9 @@ export const getWindChopWaveFloorM = (
   if (floor === 0) return 0;
 
   const gustBump = gusty ? (exposureLevel === 'protected' ? 0.05 : 0.1) : 0;
-  const cap = exposureLevel === 'protected' ? 0.45 : exposureLevel === 'partial' ? 0.8 : 1.3;
+  // Cap = the >=7 Bft floor + gust bump, so the tier escalation above stays
+  // reachable (tighter caps silently flattened 6-8 Bft to the 5 Bft value).
+  const cap = exposureLevel === 'protected' ? 0.65 : exposureLevel === 'partial' ? 1.05 : 1.3;
   return Number(Math.min(cap, floor + gustBump).toFixed(2));
 };
 
@@ -131,8 +135,10 @@ export const capLightWindMeasuredWaveM = (
   if (beaufort >= 3) return measuredWaveHeightM;
 
   // Genuine long-period groundswell reaches the coast even with calm wind — never cap it away.
+  // Same ground-swell threshold as the swell modules (7 s): a 7-9 s swell the app itself
+  // calls "genuine" must not be hidden behind the light-wind cap.
   const hasGenuineSwell =
-    typeof swell?.periodS === 'number' && swell.periodS >= 9 &&
+    typeof swell?.periodS === 'number' && swell.periodS >= GROUND_SWELL_MIN_PERIOD_S &&
     typeof swell?.heightM === 'number' && swell.heightM >= 0.4;
   if (hasGenuineSwell) return measuredWaveHeightM;
 

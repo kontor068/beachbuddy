@@ -669,6 +669,13 @@ export const BeachDetailPage: React.FC<BeachDetailPageProps> = ({
       beaufort: getBeaufortLevel(windSpeedKmh),
       windDir,
       date: selectedDate ? selectedDate.toISOString().slice(0, 10) : undefined,
+    }, {
+      source: 'beach_detail_forecast_accuracy',
+      beachName: beachDisplayName,
+      islandName: islandDisplayName,
+      regionId,
+      language,
+      pagePath: typeof window !== 'undefined' ? window.location.pathname : undefined,
     });
     setFeedbackSubmitted(true);
   };
@@ -928,14 +935,16 @@ export const BeachDetailPage: React.FC<BeachDetailPageProps> = ({
   // Meltemi seasonal shelter atlas: this cove's N/NE-summer behaviour + the island's
   // reliably-sheltered coves. Endorsement is gated to genuinely 'protected' meltemi
   // profiles with non-low confidence — a forward-looking climatology, not today's wind.
-  const meltemiExposure = summarizeMeltemiBehavior(geospatialExposure);
+  // Curated knowledge vetoes raw geometry: wind-sport spots / explicit N-NE exposures /
+  // suspect pins can never appear as meltemi shelter.
+  const meltemiExposure = summarizeMeltemiBehavior(geospatialExposure, beach);
   const meltemiShelteredCoves = useMemo<MeltemiShelteredCove[]>(() => {
     return allBeaches
       .filter(b => b.id !== beach.id)
       .map(b => {
         const profile = geospatialExposureProfiles?.[b.id];
         if (!profile || profile.confidence === 'low') return null;
-        if (summarizeMeltemiBehavior(profile) !== 'protected') return null;
+        if (summarizeMeltemiBehavior(profile, b) !== 'protected') return null;
         const distanceKm = calculateDistance(beach.coordinates.lat, beach.coordinates.lon, b.coordinates.lat, b.coordinates.lon);
         return { id: b.id, name: displayBeachName(b.name, language), distanceKm };
       })

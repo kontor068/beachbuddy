@@ -1,5 +1,6 @@
-import type { GeospatialExposureProfile, WindSector } from '../types';
+import type { Beach, GeospatialExposureProfile, WindSector } from '../types';
 import type { ExposureLevel } from './windExposure';
+import { resolveBeachWindProfile } from './windExposureEngine';
 
 /**
  * Greek summer wind climatology helpers.
@@ -19,10 +20,25 @@ const MELTEMI_SECTORS: WindSector[] = ['N', 'NE'];
 /**
  * How a beach behaves in a typical Meltemi (the more exposed of its N and NE
  * sectors — never under-warn). Returns undefined when the profile lacks data.
+ *
+ * Curated authored knowledge WINS over raw geometry (the model-wide precedence
+ * rule): pass the beach so a wind-sport spot (Prasonisi/Vasiliki class) or an
+ * explicit curated N/NE exposure can never be endorsed as meltemi shelter, and
+ * suspect-pin geometry makes no seasonal claim at all.
  */
 export const summarizeMeltemiBehavior = (
-  profile?: GeospatialExposureProfile
+  profile?: GeospatialExposureProfile,
+  beach?: Beach
 ): ExposureLevel | undefined => {
+  if (beach) {
+    const { profile: curated, source } = resolveBeachWindProfile(beach);
+    if (source !== 'unknown') {
+      if (curated.knownWindSportSpot) return 'exposed';
+      if (MELTEMI_SECTORS.some(sector => curated.exposedToWindDirections.includes(sector))) return 'exposed';
+      if (curated.suspectPin) return undefined;
+    }
+  }
+
   if (!profile?.sectors) return undefined;
   const levels = MELTEMI_SECTORS
     .map(sector => profile.sectors[sector]?.level)
@@ -32,6 +48,6 @@ export const summarizeMeltemiBehavior = (
 };
 
 /** True when a beach stays sheltered in a typical Meltemi (good summer default). */
-export const isMeltemiSheltered = (profile?: GeospatialExposureProfile): boolean => (
-  summarizeMeltemiBehavior(profile) === 'protected'
+export const isMeltemiSheltered = (profile?: GeospatialExposureProfile, beach?: Beach): boolean => (
+  summarizeMeltemiBehavior(profile, beach) === 'protected'
 );

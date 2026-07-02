@@ -302,6 +302,12 @@ export const mergeBeachDetailData = (summary: Beach, detail: BeachDetailData): B
   return {
     ...summary,
     ...detail,
+    // Identity stays the summary's: near-me beaches carry a synthetic id (the
+    // region-scoped id lives in sourceBeachId) while the detail record is keyed
+    // by source id — letting it win would break geometry/profile lookups.
+    id: summary.id,
+    regionId: summary.regionId ?? detail.regionId,
+    sourceBeachId: summary.sourceBeachId ?? detail.sourceBeachId,
     name: {
       ...mergedName,
       gr: getGreekBeachNameDisplay(mergedName.gr, mergedName.en),
