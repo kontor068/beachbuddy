@@ -772,7 +772,7 @@ export const BeachDetailPage: React.FC<BeachDetailPageProps> = ({
   // Compare the beach-specific cluster forecast with the area-wide forecast only
   // when they genuinely differ — "a bit windier/calmer right here".
   const localWindNote = getLocalWindNote(dayForecast.wind.speed, beachSpecificWeatherData?.wind.speed, language);
-  const aiExplanation = generateServiceBeachExplanation(beach, weatherData, score, userLocation, language);
+  const aiExplanation = generateServiceBeachExplanation(beach, weatherData, score, userLocation, language, geospatialExposure);
   const waveCondition = getWaveCondition(isExposed, windSpeedKmh);
 
   // Show only curated beach-specific photos. Region/island fallbacks are hidden

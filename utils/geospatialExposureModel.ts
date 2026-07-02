@@ -257,6 +257,9 @@ export interface DirectionalExposure {
 }
 
 const FETCH_SATURATION_KM = 12;
+// Where the blockage discount starts fading toward full openness — aligned with
+// the engine's GEOMETRY_EXPOSURE_ESCALATION_FETCH_KM / classifyFetchExposure 8 km.
+const OPENNESS_RAMP_START_KM = 8;
 const EXPOSED_INTENSITY = 60;
 const PROTECTED_INTENSITY = 33;
 
@@ -275,7 +278,13 @@ export const computeDirectionalExposure = ({ fetchKm, blockedRayRatio, onshore }
   // blockage ratio still signals a genuinely enclosing shore (a short, walled-in cove).
   // Without this, ~600 long-fetch onshore sectors were capped one tier too calm
   // (intensity floored at 60*onshoreFactor -> 'partial' instead of 'exposed').
-  const openness = fetchKm >= FETCH_SATURATION_KM ? 1 : (1 - Math.max(0, Math.min(1, blockedRayRatio)));
+  // The blockage discount fades linearly from RAMP km (the model-wide "serious
+  // fetch" threshold) to saturation instead of switching off at 12 km in one
+  // step: the old cliff let a ~0.1° wind rotation jump intensity by up to 40
+  // points (map pin flipping a full colour band hour to hour) as the runtime
+  // sector interpolation crossed the threshold.
+  const saturation = Math.max(0, Math.min(1, (fetchKm - OPENNESS_RAMP_START_KM) / (FETCH_SATURATION_KM - OPENNESS_RAMP_START_KM)));
+  const openness = saturation + (1 - saturation) * (1 - Math.max(0, Math.min(1, blockedRayRatio)));
   const intensity = Number((100 * onshoreFactor * (0.6 + 0.4 * fetchFactor * openness)).toFixed(1));
 
   const level: ExposureLevel = intensity >= EXPOSED_INTENSITY

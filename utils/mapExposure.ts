@@ -266,9 +266,20 @@ export const getVisibleMapExposureLevel = (
   // the engine, and a wrong "protected" is the dangerous direction, so the map
   // must not contradict an explicit curated warning (e.g. the Milos-Kimolos
   // channel beaches, where straight-ray fetch cannot see wind funneling).
+  // The same applies when the authored FACING says the live wind is onshore:
+  // the engine's angular check calls that 'exposed' at any confidence (it
+  // drives the card chip), so the map must not paint geometry-protected
+  // against its own card.
+  const authoredAngularExposed =
+    typeof item.windProfile?.beachFacingDirection === 'number' &&
+    Number.isFinite(item.windProfile.beachFacingDirection) &&
+    typeof windDirectionDeg === 'number' &&
+    Number.isFinite(windDirectionDeg) &&
+    calculateWindExposure(item.windProfile.beachFacingDirection, windDirectionDeg).exposureLevel === 'exposed';
   if (
     geospatialExposure === 'protected' &&
     item.windProfile?.confidence === 'low' &&
+    !authoredAngularExposed &&
     !(item.windProfile.knownWindSportSpot && (windBeaufort ?? 0) >= 4) &&
     !(sector && item.windProfile.exposedToWindDirections.includes(sector))
   ) {

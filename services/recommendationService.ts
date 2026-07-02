@@ -226,6 +226,36 @@ const getWeatherGustKmph = (
   return Math.max(dailyGust || 0, ...hourlyGusts);
 };
 
+// Gust spread paired per hour (gust_h - speed_h over the key beach hours): a
+// smooth afternoon build, where the gust tracks the rising mean wind, is NOT
+// gustiness — that rise is the afternoon-build penalty's job. Only same-hour
+// gust excess counts. Falls back to day-max gust minus the representative wind
+// when hourly pairs are missing.
+const getWeatherGustSpreadKmph = (
+  weather: WeatherData | DailyForecast,
+  hourlyForecast: ForecastItem[] | undefined,
+  fallbackBaseWindKmph: number
+): number | undefined => {
+  const spreads = getKeyBeachHours(hourlyForecast || ('hourly' in weather ? weather.hourly : undefined))
+    .map(item => {
+      const gust = typeof item.wind?.gustKnots === 'number' && Number.isFinite(item.wind.gustKnots)
+        ? item.wind.gustKnots * 1.852
+        : typeof item.wind?.gust === 'number' && Number.isFinite(item.wind.gust)
+          ? item.wind.gust * 3.6
+          : undefined;
+      const speed = typeof item.wind?.speed === 'number' && Number.isFinite(item.wind.speed)
+        ? item.wind.speed * 3.6
+        : undefined;
+      return gust === undefined || speed === undefined ? undefined : Math.max(0, gust - speed);
+    })
+    .filter((value): value is number => typeof value === 'number' && Number.isFinite(value));
+
+  if (spreads.length > 0) return Math.max(...spreads);
+
+  const gustKmph = getWeatherGustKmph(weather, hourlyForecast);
+  return typeof gustKmph === 'number' ? Math.max(0, gustKmph - fallbackBaseWindKmph) : undefined;
+};
+
 const getRecentRainMm = (hourlyForecast?: ForecastItem[], fallback?: number): number | undefined => {
   if (typeof fallback === 'number' && Number.isFinite(fallback)) return fallback;
   if (!hourlyForecast || hourlyForecast.length === 0) return undefined;
@@ -285,16 +315,14 @@ const GUST_EFFECTIVE_BFT_SPREAD_KMH = 22; // spread that bumps effective Beaufor
 
 const getEffectiveBeaufortForComfort = (
   baseBeaufort: number,
-  windSpeedKmph: number,
-  gustKmph: number | undefined,
+  gustSpreadKmph: number | undefined,
   exposureLevel: ExposureLevel,
   waveHeightM: number | undefined
 ): number => {
   let effective = baseBeaufort;
-  const gustSpreadKmph = typeof gustKmph === 'number' ? Math.max(0, gustKmph - windSpeedKmph) : 0;
 
   // Real gusts: bump effective Beaufort only on a windy beach with a substantial gust spread.
-  if (baseBeaufort >= GUST_MIN_BASE_BEAUFORT && gustSpreadKmph >= GUST_EFFECTIVE_BFT_SPREAD_KMH) effective += 1;
+  if (baseBeaufort >= GUST_MIN_BASE_BEAUFORT && (gustSpreadKmph ?? 0) >= GUST_EFFECTIVE_BFT_SPREAD_KMH) effective += 1;
   if (baseBeaufort >= 4 && exposureLevel !== 'protected') effective += 1;
   if (typeof waveHeightM === 'number' && waveHeightM >= 0.9) effective += 1;
   if (exposureLevel === 'protected' && baseBeaufort <= 5 && (waveHeightM === undefined || waveHeightM < 0.5)) {
@@ -1284,7 +1312,7 @@ export const calculateBeachScore = (
   const windDir = degToCompass(weather.wind.deg);
   const baseBeaufort = getBeaufortLevel(windSpeedKmph);
   const gustKmph = getWeatherGustKmph(weather, hourlyForecast);
-  const gustSpreadKmph = typeof gustKmph === 'number' ? Math.max(0, gustKmph - windSpeedKmph) : undefined;
+  const gustSpreadKmph = getWeatherGustSpreadKmph(weather, hourlyForecast, windSpeedKmph);
   const temp = getWeatherTemp(weather);
   const marine = weather.marine;
   const waveHeightM = marine?.waveHeightM;
@@ -1456,8 +1484,7 @@ export const calculateBeachScore = (
     : baseBeaufort;
   const effectiveBeaufort = getEffectiveBeaufortForComfort(
     comfortBeaufortInput,
-    windSpeedKmph,
-    gustKmph,
+    gustSpreadKmph,
     finalExposureLevel,
     effectiveWaveHeightM
   );
@@ -1921,9 +1948,10 @@ export const generateBeachExplanation = (
   weather: WeatherData | DailyForecast,
   score: number,
   userLocation?: { lat: number; lon: number },
-  language: LanguageCode = 'en'
+  language: LanguageCode = 'en',
+  geospatialProfile?: GeospatialExposureProfile
 ): string => {
-  return generateLocalizedBeachExplanation(beach, weather, score, userLocation, language);
+  return generateLocalizedBeachExplanation(beach, weather, score, userLocation, language, undefined, geospatialProfile);
 };
 
 const generateLocalizedBeachExplanation = (
@@ -1932,7 +1960,8 @@ const generateLocalizedBeachExplanation = (
   score: number,
   userLocation?: { lat: number; lon: number },
   language: LanguageCode = 'en',
-  recommendation?: Partial<BeachScore> & { bestBeachTime?: BestBeachTime }
+  recommendation?: Partial<BeachScore> & { bestBeachTime?: BestBeachTime },
+  geospatialProfile?: GeospatialExposureProfile
 ): string => {
   if (!weather || !weather.wind) {
     return language === 'gr' ? 'Τα δεδομένα καιρού δεν είναι διαθέσιμα.' : 'Weather data unavailable.';
@@ -1947,8 +1976,11 @@ const generateLocalizedBeachExplanation = (
       : 25;
 
   const windBeaufort = getBeaufortLevel(windSpeedKmph);
+  // Same geometry input as the scoring call: without it the re-derived level
+  // can contradict the pin colour/score shown on the same page.
   const windAssessment = assessBeachWindExposure({
     beach,
+    geospatialProfile,
     windDirectionDeg: weather.wind.deg,
     windDirection: windDir,
     windSpeedKmh: windSpeedKmph,
@@ -2229,8 +2261,8 @@ export const getTopRecommendedBeaches = (
     const explanation = generateLocalizedBeachExplanation(beach, weatherForBeach, scoreResult.score, userLocation, language, {
       ...scoreResult,
       bestBeachTime,
-    });
-    
+    }, geospatialProfiles?.[beach.id]);
+
     return {
       beachId: beach.id,
       score: scoreResult.score,
@@ -2357,7 +2389,7 @@ export const getSuitableBeaches = (
       const explanation = generateLocalizedBeachExplanation(beach, weatherForBeach, scoreResult.score, userLocation, language, {
         ...scoreResult,
         bestBeachTime,
-      });
+      }, geospatialProfile);
       
       let distance: number | undefined;
       if (userLocation) {

@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useMemo, useRef, Suspense } from 'react';
-import { Accessibility, Beach, DailyForecast, ForecastItem, Island, LanguageCode, FilterKey, SortOption, UserPreferences, SuitableBeach, Translation, WindDirection, type BeachForecastContext, type MarineForecast } from './types';
+import { Accessibility, Beach, DailyForecast, ForecastItem, Island, LanguageCode, FilterKey, SortOption, UserPreferences, SuitableBeach, Translation, WindDirection, type BeachForecastContext, type GeospatialExposureProfile, type MarineForecast } from './types';
 import { beachMatchesUserPreferences, calculateBeachScore, calculateBestBeachTime, getSuitableBeaches, filterBeachesByUserPreferences, getTopRecommendationDisplayLimit, hasHourlyRainRisk, isTrustedTopRecommendationCandidate, type BeachScore, type BeachWeatherById, type BestBeachTime } from './services/recommendationService';
 import type { Chat } from '@google/genai';
 import { AlertTriangle, CheckCircle2, Clock3, Navigation, RefreshCw, Waves, Wind } from 'lucide-react';
@@ -238,28 +238,28 @@ const compactWeatherLabels: Record<LanguageCode, Record<string, string>> = {
 
 const seoCopy: Record<SupportedLanguage, { title: string; description: string; locale: string }> = {
   en: {
-    title: 'CalmBeach Greece - Best Beach Today by Wind & Waves',
-    description: 'Find a calmer beach in Greece today. CalmBeach compares live wind, waves, weather and beach exposure so you know where to swim with confidence.',
+    title: 'CalmBeach Greece - Compare Beaches by Wind & Waves',
+    description: 'Compare Greek beaches by wind, waves, weather, beach exposure and protection so you can choose a better spot before you go.',
     locale: 'en_US',
   },
   gr: {
-    title: 'Calm Beach Greece - Καλύτερη Παραλία Σήμερα',
-    description: 'Calm Beach Greece - Βρες την καλύτερη παραλία για σήμερα με βάση άνεμο, κύμα και καιρό.',
+    title: 'Calm Beach Greece - Σύγκριση παραλιών με άνεμο και κύμα',
+    description: 'Calm Beach Greece - Σύγκρινε ελληνικές παραλίες με βάση άνεμο, κύμα, καιρό και έκθεση πριν διαλέξεις πού θα πας.',
     locale: 'el_GR',
   },
   fr: {
-    title: 'Calm Beach Greece',
-    description: 'Calm Beach Greece - Trouvez la meilleure plage pour aujourd hui selon le vent, les vagues et la meteo.',
+    title: 'Calm Beach Greece - Comparer les plages par vent et vagues',
+    description: 'Calm Beach Greece - Comparez les plages grecques selon le vent, les vagues, la meteo et l exposition avant de partir.',
     locale: 'fr_FR',
   },
   de: {
-    title: 'Calm Beach Greece',
-    description: 'Calm Beach Greece - Finden Sie den besten Strand fuer heute basierend auf Wind, Wellen und Wetter.',
+    title: 'Calm Beach Greece - Strande nach Wind und Wellen vergleichen',
+    description: 'Calm Beach Greece - Vergleiche griechische Strande nach Wind, Wellen, Wetter und Exposition, bevor du losfahrst.',
     locale: 'de_DE',
   },
   it: {
-    title: 'Calm Beach Greece',
-    description: 'Calm Beach Greece - Trova la spiaggia migliore per oggi in base a vento, onde e meteo.',
+    title: 'Calm Beach Greece - Confronta spiagge per vento e onde',
+    description: 'Calm Beach Greece - Confronta le spiagge greche per vento, onde, meteo ed esposizione prima di partire.',
     locale: 'it_IT',
   },
 };
@@ -789,15 +789,19 @@ const getRemainingBeachHours = (
     .filter(entry => entry.endMinutes > referenceMinutes);
 };
 
-const scoreRemainingTopPickHour = (beach: Beach, item: ForecastItem): number => {
+const scoreRemainingTopPickHour = (beach: Beach, item: ForecastItem, geospatialProfile?: GeospatialExposureProfile): number => {
   if (hasHourlyRainRisk(item)) return 0;
 
   const windSpeedKmph = item.wind.speed * 3.6;
   const beaufort = getBeaufortLevel(windSpeedKmph);
   const windDirection = degToCompass(item.wind.deg);
   const waveHeightM = item.marine?.waveHeightM;
+  // Same geometry input as the headline verdict — without it, geometry-only
+  // beaches rank their "best remaining hours" with a different exposure level
+  // than the card shows.
   const exposure = assessBeachWindExposure({
     beach,
+    geospatialProfile,
     windDirectionDeg: item.wind.deg,
     windDirection,
     windSpeedKmh: windSpeedKmph,
@@ -849,7 +853,7 @@ const getRemainingTopPickWindow = (
   const entries = getRemainingBeachHours(hourlyForecast, selectedDate, now)
     .map(entry => ({
       ...entry,
-      score: scoreRemainingTopPickHour(item.beach, entry.item),
+      score: scoreRemainingTopPickHour(item.beach, entry.item, item.geospatialExposure),
     }));
   if (entries.length === 0) return undefined;
 
@@ -2258,11 +2262,11 @@ export const App: React.FC = () => {
       : '';
     const regionDescription = selectedIslandName
       ? getLocalizedCopy(language, {
-        en: `${selectedIslandName} beaches in Greece. Compare ${beachCountText}beaches by live wind, waves, weather and exposure to find calmer swimming spots today.`,
-        gr: `${selectedIslandName}: σύγκρινε ${beachCountText}παραλίες και δες σημερινό άνεμο, κύμα, καιρό και προτάσεις για μπάνιο.`,
-        fr: `Plages de ${selectedIslandName} en Grece. Verifiez le vent, les vagues et la meteo du jour avant de choisir ou nager.`,
-        de: `Strande in ${selectedIslandName}, Griechenland. Pruefe Wind, Wellen und Wetter, bevor du den Strand waehlst.`,
-        it: `Spiagge a ${selectedIslandName}, Grecia. Controlla vento, onde e meteo di oggi prima di scegliere dove nuotare.`,
+        en: `${selectedIslandName} beaches in Greece. Compare ${beachCountText}beaches by wind, waves, weather, exposure, access and beach type before you choose where to swim.`,
+        gr: `${selectedIslandName}: σύγκρινε ${beachCountText}παραλίες με βάση άνεμο, κύμα, καιρό, έκθεση, πρόσβαση και τύπο παραλίας πριν διαλέξεις πού θα κολυμπήσεις.`,
+        fr: `Plages de ${selectedIslandName} en Grece. Comparez le vent, les vagues, la meteo, l exposition, l acces et le type de plage avant de choisir ou nager.`,
+        de: `Strande in ${selectedIslandName}, Griechenland. Vergleiche Wind, Wellen, Wetter, Exposition, Zugang und Strandtyp, bevor du den Strand waehlst.`,
+        it: `Spiagge a ${selectedIslandName}, Grecia. Confronta vento, onde, meteo, esposizione, accesso e tipo di spiaggia prima di scegliere dove nuotare.`,
       })
       : meta.description;
     const canUseDetailSeo = Boolean(
@@ -2280,15 +2284,15 @@ export const App: React.FC = () => {
       : '';
     const detailTitle = canUseDetailSeo && detailBeach
       ? getLocalizedCopy(language, {
-        en: `${detailBeachLabel}, ${selectedIslandName} | Wind & Waves Today`,
-        gr: `${detailBeachLabel}, ${selectedIslandName} | Άνεμος & προστασία σήμερα`,
-        de: `${detailBeachLabel}, ${selectedIslandName} | Wind & Wellen heute`,
-        fr: `${detailBeachLabel}, ${selectedIslandName} | Vent & vagues aujourd'hui`,
-        it: `${detailBeachLabel}, ${selectedIslandName} | Vento e onde oggi`,
+        en: `${detailBeachLabel}, ${selectedIslandName}: Wind Protection, Map & Tips`,
+        gr: `${detailBeachLabel}, ${selectedIslandName}: άνεμος, χάρτης και χρήσιμες πληροφορίες`,
+        de: `${detailBeachLabel}, ${selectedIslandName}: Windschutz, Karte & Tipps`,
+        fr: `${detailBeachLabel}, ${selectedIslandName} : vent, carte et conseils`,
+        it: `${detailBeachLabel}, ${selectedIslandName}: vento, mappa e consigli`,
       })
       : selectedIslandName
         ? getLocalizedCopy(language, {
-          en: `${selectedIslandName} Beaches Today | CalmBeach Greece`,
+          en: `${selectedIslandName} Beaches | CalmBeach Greece`,
           gr: `Παραλίες: ${selectedIslandName} | Calm Beach Greece`,
           fr: `Plages de ${selectedIslandName} | Calm Beach Greece`,
           de: `Strande in ${selectedIslandName} | Calm Beach Greece`,
@@ -2296,7 +2300,13 @@ export const App: React.FC = () => {
         })
         : meta.title;
     const detailDescription = canUseDetailSeo && detailBeach
-      ? detailBeach.description?.[language] || detailBeach.description?.en || meta.description
+      ? getLocalizedCopy(language, {
+        en: `See practical info for ${detailBeachLabel} in ${selectedIslandName}, including location, beach type, wind exposure, map and tips to help you decide when to visit.`,
+        gr: `Δες πρακτικές πληροφορίες για ${detailBeachLabel} σε ${selectedIslandName}, όπως τοποθεσία, τύπο παραλίας, έκθεση στον άνεμο, χάρτη και χρήσιμες συμβουλές.`,
+        fr: `Voir les infos pratiques pour ${detailBeachLabel} a ${selectedIslandName}, avec localisation, type de plage, exposition au vent, carte et conseils.`,
+        de: `Praktische Infos zu ${detailBeachLabel} auf ${selectedIslandName}: Lage, Strandtyp, Windexposition, Karte und Tipps fuer den Besuch.`,
+        it: `Vedi informazioni pratiche per ${detailBeachLabel} a ${selectedIslandName}: posizione, tipo di spiaggia, esposizione al vento, mappa e consigli.`,
+      })
       : regionDescription;
     const canonicalUrl = typeof window !== 'undefined'
       ? `${window.location.origin}${window.location.pathname}`
