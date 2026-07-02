@@ -980,11 +980,11 @@ const waveWarningLabel = (warning: WarningFlag, waveHeightM: number | undefined,
 
 const boatRideShortLabel = (level: BoatRideMotionLevel, language: LanguageCode): string => {
   const copy = {
-    en: { smooth: 'Smooth ride', light: 'A little motion', bumpy: 'Bumpy ride', rough: 'Very bumpy' },
-    gr: { smooth: 'Ήρεμη διαδρομή', light: 'Λίγο κούνημα', bumpy: 'Κουνάει αρκετά', rough: 'Πολύ κούνημα' },
-    fr: { smooth: 'Trajet calme', light: 'Un peu de mouvement', bumpy: 'Trajet agite', rough: 'Tres agite' },
-    de: { smooth: 'Ruhige Fahrt', light: 'Etwas Bewegung', bumpy: 'Unruhige Fahrt', rough: 'Sehr unruhig' },
-    it: { smooth: 'Tragitto tranquillo', light: 'Un po di movimento', bumpy: 'Tragitto mosso', rough: 'Molto mosso' },
+    en: { smooth: 'Ideal conditions', light: 'A little motion', bumpy: 'Bumpy ride', rough: 'Very bumpy' },
+    gr: { smooth: 'Ιδανικές συνθήκες', light: 'Λίγο κούνημα', bumpy: 'Κουνάει αρκετά', rough: 'Πολύ κούνημα' },
+    fr: { smooth: 'Conditions idéales', light: 'Un peu de mouvement', bumpy: 'Trajet agite', rough: 'Tres agite' },
+    de: { smooth: 'Ideale Bedingungen', light: 'Etwas Bewegung', bumpy: 'Unruhige Fahrt', rough: 'Sehr unruhig' },
+    it: { smooth: 'Condizioni ideali', light: 'Un po di movimento', bumpy: 'Tragitto mosso', rough: 'Molto mosso' },
   }[language];
 
   return copy[level];

@@ -148,7 +148,7 @@ type BoatCopy = {
 const BOAT_COPY: LocalizedCopy<BoatCopy> = {
   en: {
     title: 'Boat conditions',
-    smooth: 'Smooth ride',
+    smooth: 'Ideal conditions',
     light: 'A little motion',
     bumpy: 'Bumpy ride',
     rough: 'Very bumpy',
@@ -156,7 +156,7 @@ const BOAT_COPY: LocalizedCopy<BoatCopy> = {
     estimateDetail: 'wind-based ride estimate',
     selectedHour: (hour) => `Shown hour ${hour}`,
     hourTooltip: (hour, level, height) => {
-      const copy = { smooth: 'smooth ride', light: 'a little motion', bumpy: 'bumpy ride', rough: 'very bumpy' }[level];
+      const copy = { smooth: 'ideal conditions', light: 'a little motion', bumpy: 'bumpy ride', rough: 'very bumpy' }[level];
       return `${hour}: ${copy} (${height})`;
     },
     rangeSummary: (min, max) => `Boat motion ranges from ${min} to ${max}`,
@@ -166,7 +166,7 @@ const BOAT_COPY: LocalizedCopy<BoatCopy> = {
   },
   gr: {
     title: 'Συνθήκες πλεύσης',
-    smooth: 'Ήρεμη διαδρομή',
+    smooth: 'Ιδανικές συνθήκες',
     light: 'Λίγο κούνημα',
     bumpy: 'Κουνάει αρκετά',
     rough: 'Πολύ κούνημα',
@@ -175,7 +175,7 @@ const BOAT_COPY: LocalizedCopy<BoatCopy> = {
     selectedHour: (hour) => `Ώρα πρόγνωσης: ${hour}`,
     hourTooltip: (hour, level, height) => {
       const copy = {
-        smooth: 'ήρεμη διαδρομή',
+        smooth: 'ιδανικές συνθήκες',
         light: 'λίγο κούνημα',
         bumpy: 'θα κουνάει αρκετά',
         rough: 'θα κουνάει πολύ',
@@ -189,14 +189,14 @@ const BOAT_COPY: LocalizedCopy<BoatCopy> = {
   },
   fr: {
     title: 'Mouvement du trajet',
-    smooth: 'Trajet calme',
+    smooth: 'Conditions idéales',
     light: 'Un peu de mouvement',
     bumpy: 'Trajet agite',
     rough: 'Tres agite',
     heightDetail: (height) => `signal de vague ${height}`,
     estimateDetail: 'estimation d apres le vent',
     selectedHour: (hour) => `Heure affichee ${hour}`,
-    hourTooltip: (hour, level, height) => `${hour} : ${({ smooth: 'trajet calme', light: 'un peu de mouvement', bumpy: 'trajet agite', rough: 'tres agite' }[level])} (${height})`,
+    hourTooltip: (hour, level, height) => `${hour} : ${({ smooth: 'conditions idéales', light: 'un peu de mouvement', bumpy: 'trajet agite', rough: 'tres agite' }[level])} (${height})`,
     rangeSummary: (min, max) => `Mouvement du trajet de ${min} a ${max}`,
     calmerMorning: 'moins de mouvement le matin',
     calmerLater: 'moins de mouvement plus tard',
@@ -204,14 +204,14 @@ const BOAT_COPY: LocalizedCopy<BoatCopy> = {
   },
   de: {
     title: 'Bewegung der Bootsfahrt',
-    smooth: 'Ruhige Fahrt',
+    smooth: 'Ideale Bedingungen',
     light: 'Etwas Bewegung',
     bumpy: 'Unruhige Fahrt',
     rough: 'Sehr unruhig',
     heightDetail: (height) => `Wellensignal ${height}`,
     estimateDetail: 'aus dem Wind geschaetzt',
     selectedHour: (hour) => `Angezeigte Stunde ${hour}`,
-    hourTooltip: (hour, level, height) => `${hour}: ${({ smooth: 'ruhige Fahrt', light: 'etwas Bewegung', bumpy: 'unruhige Fahrt', rough: 'sehr unruhig' }[level])} (${height})`,
+    hourTooltip: (hour, level, height) => `${hour}: ${({ smooth: 'ideale Bedingungen', light: 'etwas Bewegung', bumpy: 'unruhige Fahrt', rough: 'sehr unruhig' }[level])} (${height})`,
     rangeSummary: (min, max) => `Bewegung der Bootsfahrt von ${min} bis ${max}`,
     calmerMorning: 'morgens weniger Bewegung',
     calmerLater: 'spater weniger Bewegung',
@@ -219,14 +219,14 @@ const BOAT_COPY: LocalizedCopy<BoatCopy> = {
   },
   it: {
     title: 'Movimento del tragitto',
-    smooth: 'Tragitto tranquillo',
+    smooth: 'Condizioni ideali',
     light: 'Un po di movimento',
     bumpy: 'Tragitto mosso',
     rough: 'Molto mosso',
     heightDetail: (height) => `segnale onde ${height}`,
     estimateDetail: 'stima dal vento',
     selectedHour: (hour) => `Ora mostrata ${hour}`,
-    hourTooltip: (hour, level, height) => `${hour}: ${({ smooth: 'tragitto tranquillo', light: 'un po di movimento', bumpy: 'tragitto mosso', rough: 'molto mosso' }[level])} (${height})`,
+    hourTooltip: (hour, level, height) => `${hour}: ${({ smooth: 'condizioni ideali', light: 'un po di movimento', bumpy: 'tragitto mosso', rough: 'molto mosso' }[level])} (${height})`,
     rangeSummary: (min, max) => `Movimento del tragitto da ${min} a ${max}`,
     calmerMorning: 'meno movimento al mattino',
     calmerLater: 'meno movimento dopo',
@@ -507,10 +507,10 @@ const getBoatRideBandClasses = (level: BoatRideMotionLevel, isEstimate?: boolean
 
 const getBoatMotionStyle = (level: BoatRideMotionLevel): React.CSSProperties => {
   const motion = {
-    smooth: { bobPx: 1.8, tiltDeg: 1.2, driftPx: 2.5, durationS: 4.2 },
-    light: { bobPx: 3.5, tiltDeg: 3.2, driftPx: 4, durationS: 3.2 },
-    bumpy: { bobPx: 6.5, tiltDeg: 6.4, driftPx: 6, durationS: 2.35 },
-    rough: { bobPx: 9.5, tiltDeg: 10, driftPx: 8, durationS: 1.8 },
+    smooth: { bobPx: 1.1, tiltDeg: 0.6, driftPx: 2, durationS: 4.8 },
+    light: { bobPx: 2.4, tiltDeg: 1.8, driftPx: 3.2, durationS: 3.7 },
+    bumpy: { bobPx: 5, tiltDeg: 5, driftPx: 5.5, durationS: 2.6 },
+    rough: { bobPx: 9, tiltDeg: 9.5, driftPx: 8, durationS: 1.8 },
   }[level];
 
   return {
@@ -903,10 +903,10 @@ const BoatScene: React.FC<{
   windTier: WaveVisualTier;
 }> = ({ scale, level, windTier }) => {
   const motion = {
-    smooth: { amp: 5.5, tilt: 0, wy: 78, spray: 0 },
-    light: { amp: 9, tilt: -4.5, wy: 74, spray: 1 },
-    bumpy: { amp: 15, tilt: -8, wy: 68, spray: 2 },
-    rough: { amp: 22, tilt: -11, wy: 61, spray: 3 },
+    smooth: { amp: 4.5, tilt: 0, wy: 78, spray: 0 },
+    light: { amp: 6.5, tilt: -2, wy: 75, spray: 0 },
+    bumpy: { amp: 12, tilt: -6, wy: 68, spray: 2 },
+    rough: { amp: 20, tilt: -10.5, wy: 61, spray: 3 },
   }[level];
   const { amp, tilt, wy } = motion;
   const crest = `M0 ${wy} Q 16 ${wy - amp} 32 ${wy} T 64 ${wy} T 96 ${wy} T 128 ${wy} T 160 ${wy}`;
@@ -1029,8 +1029,8 @@ const CompactGlyph: React.FC<{ scale: WaveScaleResult; className?: string }> = (
 };
 
 const CompactBoatGlyph: React.FC<{ level: BoatRideMotionLevel; className?: string }> = ({ level, className }) => {
-  const amp = { smooth: 1.5, light: 3, bumpy: 4.8, rough: 6.2 }[level];
-  const tilt = { smooth: 0, light: -4, bumpy: -7, rough: -10 }[level];
+  const amp = { smooth: 1.1, light: 2, bumpy: 4, rough: 6.2 }[level];
+  const tilt = { smooth: 0, light: -2, bumpy: -6, rough: -10 }[level];
   const y = { smooth: 14, light: 13, bumpy: 12, rough: 11 }[level];
   const tone = getBoatRideBandClasses(level).fill;
 
@@ -1171,8 +1171,8 @@ export const WaveHeightGraphic: React.FC<WaveHeightGraphicProps> = ({
   const hourlyRange = showStrip
     ? boatCopy
       ? boatCopy.rangeSummary(
-        boatCopy[getBoatRideMotionLevel(Math.min(...points.map((p) => p.waveHeightM)))],
-        boatCopy[getBoatRideMotionLevel(Math.max(...points.map((p) => p.waveHeightM)))]
+        boatCopy[getBoatRideMotionLevel(Math.min(...points.map((p) => p.waveHeightM)), windBeaufort)],
+        boatCopy[getBoatRideMotionLevel(Math.max(...points.map((p) => p.waveHeightM)), windBeaufort)]
       )
       : copy.rangeSummary(
         formatWaveHeight(Math.min(...points.map((p) => p.waveHeightM)), language),

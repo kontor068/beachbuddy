@@ -165,31 +165,31 @@ type BoatBadgeCopy = Record<BoatRideMotionLevel, string>;
 
 const boatBadgeCopy: Record<LanguageCode, BoatBadgeCopy> = {
   en: {
-    smooth: 'Smooth ride',
+    smooth: 'Ideal conditions',
     light: 'A little motion',
     bumpy: 'Bumpy ride',
     rough: 'Very bumpy',
   },
   gr: {
-    smooth: 'Ήρεμη διαδρομή',
+    smooth: 'Ιδανικές συνθήκες',
     light: 'Λίγο κούνημα',
     bumpy: 'Κουνάει αρκετά',
     rough: 'Πολύ κούνημα',
   },
   fr: {
-    smooth: 'Trajet calme',
+    smooth: 'Conditions idéales',
     light: 'Un peu de mouvement',
     bumpy: 'Trajet agite',
     rough: 'Tres agite',
   },
   de: {
-    smooth: 'Ruhige Fahrt',
+    smooth: 'Ideale Bedingungen',
     light: 'Etwas Bewegung',
     bumpy: 'Unruhige Fahrt',
     rough: 'Sehr unruhig',
   },
   it: {
-    smooth: 'Tragitto tranquillo',
+    smooth: 'Condizioni ideali',
     light: 'Un po di movimento',
     bumpy: 'Tragitto mosso',
     rough: 'Molto mosso',

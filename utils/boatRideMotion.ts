@@ -14,9 +14,16 @@ export const getBoatRideMotionLevel = (
   const height = finiteNumber(waveHeightM);
   const beaufort = finiteNumber(windBeaufort);
 
-  if ((height !== undefined && height >= 1.0) || (beaufort !== undefined && beaufort >= 6)) return 'rough';
-  if ((height !== undefined && height >= 0.6) || (beaufort !== undefined && beaufort >= 5)) return 'bumpy';
-  if ((height !== undefined && height >= 0.3) || (beaufort !== undefined && beaufort >= 4)) return 'light';
+  // Wind (Beaufort) leads the ride motion a small-boat passenger actually feels, so the scale
+  // maps one Beaufort per tier from 4 up (4→light, 5→bumpy, 6→rough) and keeps the top of the
+  // scale for a genuine 6 Bft. Wave height only escalates a tier when the sea is genuinely built
+  // — it can no longer make a breezy 4 Bft day look as dramatic as a 6 Bft one.
+  if ((height !== undefined && height >= 1.4) || (beaufort !== undefined && beaufort >= 6)) return 'rough';
+  if ((height !== undefined && height >= 0.9) || (beaufort !== undefined && beaufort >= 5)) return 'bumpy';
+  // Light winds (≤3 Bft) mean a calm, ideal ride. A small residual swell under the bumpy
+  // threshold is long-period and gentle for a boat, so it shouldn't be dressed up as motion.
+  if (beaufort !== undefined && beaufort <= 3) return 'smooth';
+  if ((height !== undefined && height >= 0.5) || (beaufort !== undefined && beaufort >= 4)) return 'light';
   return 'smooth';
 };
 

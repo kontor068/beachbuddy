@@ -233,23 +233,23 @@ const getBoatConditionCopy = (level: BoatRideMotionLevel, language: LanguageCode
   const copy = {
     en: {
       title: 'Ride',
-      label: { smooth: 'Smooth ride', light: 'A little motion', bumpy: 'Bumpy ride', rough: 'Very bumpy' },
+      label: { smooth: 'Ideal conditions', light: 'A little motion', bumpy: 'Bumpy ride', rough: 'Very bumpy' },
     },
     gr: {
       title: 'Διαδρομή',
-      label: { smooth: 'Ήρεμη διαδρομή', light: 'Λίγο κούνημα', bumpy: 'Κουνάει αρκετά', rough: 'Πολύ κούνημα' },
+      label: { smooth: 'Ιδανικές συνθήκες', light: 'Λίγο κούνημα', bumpy: 'Κουνάει αρκετά', rough: 'Πολύ κούνημα' },
     },
     fr: {
       title: 'Trajet',
-      label: { smooth: 'Trajet calme', light: 'Un peu de mouvement', bumpy: 'Trajet agite', rough: 'Tres agite' },
+      label: { smooth: 'Conditions idéales', light: 'Un peu de mouvement', bumpy: 'Trajet agite', rough: 'Tres agite' },
     },
     de: {
       title: 'Fahrt',
-      label: { smooth: 'Ruhige Fahrt', light: 'Etwas Bewegung', bumpy: 'Unruhige Fahrt', rough: 'Sehr unruhig' },
+      label: { smooth: 'Ideale Bedingungen', light: 'Etwas Bewegung', bumpy: 'Unruhige Fahrt', rough: 'Sehr unruhig' },
     },
     it: {
       title: 'Tragitto',
-      label: { smooth: 'Tragitto tranquillo', light: 'Un po di movimento', bumpy: 'Tragitto mosso', rough: 'Molto mosso' },
+      label: { smooth: 'Condizioni ideali', light: 'Un po di movimento', bumpy: 'Tragitto mosso', rough: 'Molto mosso' },
     },
   }[language];
 
