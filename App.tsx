@@ -2370,8 +2370,15 @@ export const App: React.FC = () => {
     const detailDescription = canUseDetailSeo && detailBeach
       ? buildDetailMeta()
       : regionDescription;
+    // Normalize to a trailing slash so a client-side navigation (or an external
+    // no-slash link) never publishes a non-slash self-canonical: every internal
+    // URL builder and the sitemap use the slash form, and the prerendered
+    // canonical is always the slash form. pathname already excludes query/hash.
+    const canonicalPath = typeof window !== 'undefined'
+      ? (window.location.pathname.endsWith('/') ? window.location.pathname : `${window.location.pathname}/`)
+      : '/';
     const canonicalUrl = typeof window !== 'undefined'
-      ? `${window.location.origin}${window.location.pathname}`
+      ? `${window.location.origin}${canonicalPath}`
       : 'https://calmbeach.gr/';
 
     document.title = detailTitle;
