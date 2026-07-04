@@ -1568,7 +1568,7 @@ export const App: React.FC = () => {
 
   // --- Beach & Weather Data (Custom Hooks) ---
   const { allIslands, loading: beachesLoading, error: beachesError, getFilteredBeaches, ensureIslandBeachesLoaded, cacheLoadedIsland } = useBeaches(language);
-  const { selectedIsland, selectIsland, selectAdHocRegion, showValueProp } = useLocation(allIslands);
+  const { selectedIsland, selectIsland, selectAdHocRegion, showValueProp, markValuePropSeen } = useLocation(allIslands);
   const isNearMeRegionActive = selectedIsland?.id === NEAR_ME_REGION_ID;
   const { weather, forecast: rawForecast, forecastIslandId, beachForecasts, loading: weatherLoading, error: weatherError, selectedDayIndex, setSelectedDayIndex, loadWeatherData, lastUpdated } = useWeather(selectedIsland, language);
   // On a region switch `selectedIsland` updates synchronously, but the new region's
@@ -1581,6 +1581,7 @@ export const App: React.FC = () => {
   const forecastMatchesRegion = Boolean(selectedIsland && forecastIslandId === selectedIsland.id);
   const forecast = forecastMatchesRegion ? rawForecast : null;
   const handleRegionSelected = (island: Island, source: 'selector' | 'nearest_location' = 'selector') => {
+    markValuePropSeen();
     trackEvent('region_changed', undefined, {
       locale: languageToLocale(language),
       region_id: island.id,
@@ -2110,6 +2111,7 @@ export const App: React.FC = () => {
       return;
     }
 
+    markValuePropSeen();
     setBeachSearchQuery('');
     setIsFindingNearest(true);
     setFindNearestError(null);
@@ -5337,6 +5339,7 @@ export const App: React.FC = () => {
 
   const handleDirectorySearchSubmit = async () => {
     const trimmedQuery = beachSearchQuery.trim();
+    if (trimmedQuery) markValuePropSeen();
     const regionMatch = findSearchRegionMatch(beachSearchQuery);
     let globalBeachMatch: GlobalBeachSearchMatch | null = null;
 
@@ -5408,6 +5411,7 @@ export const App: React.FC = () => {
   };
 
   const handleDirectorySearchSuggestionSelect = async (suggestion: DirectorySearchSuggestion) => {
+    markValuePropSeen();
     setDirectorySearchSuggestions([]);
     setIsDirectorySearchSuggesting(false);
 
@@ -5632,7 +5636,7 @@ export const App: React.FC = () => {
               onSortChange={handleSortChange}
               onAdvancedFilterToggle={handleToggleAdvancedFilter}
               onForecastDaySelect={setSelectedDayIndex}
-              onBeachClick={(beach) => openBeachDetails(beach, 'directory_home_card')}
+              onBeachClick={(beach) => { markValuePropSeen(); openBeachDetails(beach, 'directory_home_card'); }}
               onSelectIsland={handleRegionSelected}
               strongWindContext={isStrongRecommendationMode}
             />
