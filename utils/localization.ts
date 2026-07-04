@@ -99,6 +99,16 @@ export const localizedTerrainLabel = (type: string, language: LanguageCode) =>
 export const localizedWaterDepthLabel = (type: string, fallback: string | undefined, language: LanguageCode) =>
   waterDepthLabels[type]?.[language] || (language === 'gr' ? fallback || type : toGreeklish(fallback) || type);
 
+/**
+ * True when a water-depth entry's own note admits there is no evidence behind the
+ * shallow/deep call — batch defaults that flag themselves as unconfirmed. There is
+ * no per-beach depth confidence field, so the note text is the only signal we have.
+ * Such entries must not be shown as a confident depth badge (that presents an
+ * unverified guess as a fact). Keep the phrases in sync with the data notes.
+ */
+export const isWaterDepthUnverified = (waterDepth?: { notes?: string } | null): boolean =>
+  /source-backed|verify locally|Depth can vary/i.test(waterDepth?.notes || '');
+
 // Never surface a raw access enum: unmapped types without an authored label
 // render as nothing rather than leaking internal identifiers to the cards.
 export const localizedAccessLabel = (type: string, fallback: string | undefined, language: LanguageCode) => {

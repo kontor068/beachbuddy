@@ -25,6 +25,7 @@ import {
   localizedShadeLabel,
   localizedTerrainLabel,
   localizedWaterDepthLabel,
+  isWaterDepthUnverified,
   localizedPopularityLabel,
   localizedPaidEntryLabel,
   localizedPaidEntryExplanation,
@@ -899,7 +900,7 @@ const MetadataTags: React.FC<{ beach: Beach; language: LanguageCode }> = ({ beac
           <span>{localizedTerrainLabel(type, language)}</span>
         </div>
       ))}
-      {waterDepth && (
+      {waterDepth && !isWaterDepthUnverified(waterDepth) && (
         <div
           className={`px-2 py-0.5 rounded text-[10px] font-bold flex items-center gap-1.5 ${waterDepthStyles[waterDepth.type] || waterDepthStyles.shallow}`}
           title={waterDepth.notes}
