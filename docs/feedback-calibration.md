@@ -1,18 +1,23 @@
 # Condition-feedback loop (roadmap #7)
 
-The app has no backend, so the loop is split into a **live capture** half (in the app) and an
-**offline calibration** half (run by hand over exported data).
+The app has a lightweight feedback email endpoint, but the model-calibration loop is still split
+into a **live capture** half (in the app) and an **offline calibration** half (run by hand over
+exported data).
 
 ## Capture (live, shipped)
 The beach detail page asks "How accurate was our forecast?" with four structured verdicts:
 `accurate` · `had_waves` · `too_windy` · `calmer`. Each tap calls
-`storeConditionFeedback(beachId, verdict, conditions)` (`services/analyticsService.ts`), which:
+`storeConditionFeedback(beachId, verdict, conditions, context)` (`services/analyticsService.ts`), which:
 - appends a local record to `FEEDBACK_KEY`. The detail page reads this back
   (`feedbackAlreadyGiven`) and shows the "thank you" state instead of the buttons when this
   beach already has feedback **for the selected day** — so we don't re-ask for the same
   conditions, but we DO ask again on a different day (more calibration data), and
 - emits a GA4 `condition_feedback` event carrying the verdict **paired with the modeled
-  conditions at that moment**: `{ verdict, exposureLevel, beaufort, windDir, date }`.
+  conditions at that moment**: `{ verdict, exposureLevel, beaufort, windDir, date }`, and
+- posts the same structured feedback to the Netlify `feedback-email` function. That function
+  sends an email via Resend using server-only env vars (`FEEDBACK_RESEND_API_KEY` or
+  `RESEND_API_KEY`, `FEEDBACK_EMAIL_FROM`, `FEEDBACK_EMAIL_TO`). The temporary default recipient
+  is the operator Gmail inbox until a company inbox is configured.
 
 That pairing is the whole point: it lets us compare what the model SAID against what a visitor
 OBSERVED, per beach and per wind sector.

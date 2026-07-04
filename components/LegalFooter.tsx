@@ -72,7 +72,7 @@ const copy = {
     privacySections: [
       {
         title: 'What data is used',
-        body: 'The app may store selected region, favorites, preferences, language, forecast snapshots, and analytics consent in this browser. If you allow browser location, it is used in the current session to estimate distance and nearby options. Precise location is not sent to analytics.',
+        body: 'The app may store selected region, favorites, preferences, language, forecast snapshots, forecast feedback, and analytics consent in this browser. If you allow browser location, it is used in the current session to estimate distance and nearby options. Precise location is not sent to analytics or feedback email.',
       },
       {
         title: 'Controller and contact details',
@@ -80,15 +80,15 @@ const copy = {
       },
       {
         title: 'Purposes and legal basis',
-        body: 'Essential local storage is used to provide the app, remember choices, and keep the service fast. Browser location is requested only when the user asks for nearby beaches or distance sorting. Optional analytics are based on consent and help understand aggregate product usage.',
+        body: 'Essential local storage is used to provide the app, remember choices, and keep the service fast. Browser location is requested only when the user asks for nearby beaches or distance sorting. Optional analytics are based on consent and help understand aggregate product usage. Forecast feedback may be emailed to the operator so reported beach conditions can be reviewed.',
       },
       {
         title: 'Sharing and processors',
-        body: 'Weather/marine data providers, map providers, hosting/CDN services, Google Analytics if accepted, and other technical providers may process limited technical data under their own terms or processor arrangements. The app should not sell personal data or send precise location to analytics.',
+        body: 'Weather/marine data providers, map providers, hosting/CDN services, Google Analytics if accepted, email delivery providers for submitted feedback, and other technical providers may process limited technical data under their own terms or processor arrangements. The app should not sell personal data or send precise location to analytics.',
       },
       {
         title: 'Retention',
-        body: 'Local browser preferences stay on the user device until cleared by the user or browser. Analytics consent is stored until changed. Optional analytics retention must match the configured Google Analytics property retention before launch.',
+        body: 'Local browser preferences stay on the user device until cleared by the user or browser. Analytics consent is stored until changed. Submitted forecast feedback may be retained in the operator inbox for review. Optional analytics retention must match the configured Google Analytics property retention before launch.',
       },
       {
         title: 'Your rights',
@@ -197,7 +197,7 @@ const copy = {
     privacySections: [
       {
         title: 'Ποια δεδομένα χρησιμοποιούνται',
-        body: 'Η εφαρμογή μπορεί να αποθηκεύει επιλεγμένη περιοχή, αγαπημένα, προτιμήσεις, γλώσσα, στιγμιότυπα πρόγνωσης και επιλογή analytics σε αυτόν τον browser. Αν επιτρέψεις τοποθεσία από τον browser, χρησιμοποιείται στην τρέχουσα συνεδρία για εκτίμηση απόστασης και κοντινών επιλογών. Η ακριβής τοποθεσία δεν αποστέλλεται στα analytics.',
+        body: 'Η εφαρμογή μπορεί να αποθηκεύει επιλεγμένη περιοχή, αγαπημένα, προτιμήσεις, γλώσσα, στιγμιότυπα πρόγνωσης, feedback πρόγνωσης και επιλογή analytics σε αυτόν τον browser. Αν επιτρέψεις τοποθεσία από τον browser, χρησιμοποιείται στην τρέχουσα συνεδρία για εκτίμηση απόστασης και κοντινών επιλογών. Η ακριβής τοποθεσία δεν αποστέλλεται στα analytics ή σε email feedback.',
       },
       {
         title: 'Υπεύθυνος επεξεργασίας και επικοινωνία',
@@ -205,15 +205,15 @@ const copy = {
       },
       {
         title: 'Σκοποί και νομική βάση',
-        body: 'Η απαραίτητη τοπική αποθήκευση χρησιμοποιείται για τη λειτουργία της εφαρμογής, τη μνήμη επιλογών και την ταχύτητα. Η τοποθεσία ζητείται μόνο όταν ο χρήστης ζητήσει κοντινές παραλίες ή ταξινόμηση απόστασης. Τα προαιρετικά analytics βασίζονται σε συγκατάθεση.',
+        body: 'Η απαραίτητη τοπική αποθήκευση χρησιμοποιείται για τη λειτουργία της εφαρμογής, τη μνήμη επιλογών και την ταχύτητα. Η τοποθεσία ζητείται μόνο όταν ο χρήστης ζητήσει κοντινές παραλίες ή ταξινόμηση απόστασης. Τα προαιρετικά analytics βασίζονται σε συγκατάθεση. Το feedback πρόγνωσης μπορεί να αποστέλλεται με email στον διαχειριστή για έλεγχο των αναφερόμενων συνθηκών.',
       },
       {
         title: 'Κοινοποίηση και πάροχοι',
-        body: 'Πάροχοι καιρού/θαλάσσης, χάρτες, hosting/CDN, Google Analytics αν γίνει αποδοχή, και άλλες τεχνικές υπηρεσίες μπορεί να επεξεργάζονται περιορισμένα τεχνικά δεδομένα με τους δικούς τους όρους ή συμφωνίες επεξεργασίας. Η εφαρμογή δεν πρέπει να πουλά προσωπικά δεδομένα ή να στέλνει ακριβή τοποθεσία στα analytics.',
+        body: 'Πάροχοι καιρού/θαλάσσης, χάρτες, hosting/CDN, Google Analytics αν γίνει αποδοχή, πάροχοι αποστολής email για υποβληθέν feedback και άλλες τεχνικές υπηρεσίες μπορεί να επεξεργάζονται περιορισμένα τεχνικά δεδομένα με τους δικούς τους όρους ή συμφωνίες επεξεργασίας. Η εφαρμογή δεν πρέπει να πουλά προσωπικά δεδομένα ή να στέλνει ακριβή τοποθεσία στα analytics.',
       },
       {
         title: 'Διατήρηση',
-        body: 'Οι τοπικές προτιμήσεις μένουν στη συσκευή μέχρι να καθαριστούν από τον χρήστη ή τον browser. Η επιλογή analytics αποθηκεύεται μέχρι να αλλάξει. Η διάρκεια διατήρησης στο Google Analytics πρέπει να επιβεβαιωθεί από τη ρύθμιση του property πριν το launch.',
+        body: 'Οι τοπικές προτιμήσεις μένουν στη συσκευή μέχρι να καθαριστούν από τον χρήστη ή τον browser. Η επιλογή analytics αποθηκεύεται μέχρι να αλλάξει. Το υποβληθέν feedback πρόγνωσης μπορεί να διατηρείται στο inbox του διαχειριστή για έλεγχο. Η διάρκεια διατήρησης στο Google Analytics πρέπει να επιβεβαιωθεί από τη ρύθμιση του property πριν το launch.',
       },
       {
         title: 'Δικαιώματα χρήστη',

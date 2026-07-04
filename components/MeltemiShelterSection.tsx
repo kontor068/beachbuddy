@@ -17,8 +17,12 @@ import type { ExposureLevel } from '../utils/windExposure';
 
 type Copy = Record<LanguageCode, string>;
 const pick = (copy: Copy, language: LanguageCode): string => copy[language] ?? copy.en;
-const beachSubject = (beachName: string, language: LanguageCode): string =>
-  language === 'gr' ? `Η παραλία ${beachName}` : beachName;
+// Boat-only spots (e.g. Kleftiko) aren't "beaches" — use the bare name, and in Greek the neuter
+// article "Το" (which then needs the neuter SELF_STATUS_BOAT_GR predicates below to agree).
+const beachSubject = (beachName: string, language: LanguageCode, isBoatAccess: boolean): string => {
+  if (isBoatAccess) return language === 'gr' ? `Το ${beachName}` : beachName;
+  return language === 'gr' ? `Η παραλία ${beachName}` : beachName;
+};
 
 export interface MeltemiShelteredCove {
   id: number;
@@ -66,6 +70,13 @@ const SELF_STATUS: Record<ExposureLevel, Copy> = {
   },
 };
 
+// Neuter-agreeing Greek variants for boat-only spots ("Το Κλέφτικο είναι εκτεθειμένο …").
+const SELF_STATUS_BOAT_GR: Record<ExposureLevel, string> = {
+  protected: 'συνήθως μένει υπήνεμο όταν φυσά μελτέμι.',
+  partial: 'είναι μερικώς εκτεθειμένο στα μελτέμια — κάποιες μέρες ήρεμο, με κυματάκι όταν δυναμώνουν.',
+  exposed: 'είναι εκτεθειμένο στα μελτέμια — συχνά με κύμα τις καλοκαιρινές Β/ΒΑ μέρες.',
+};
+
 const SHELTERED_LIST_TITLE: Copy = {
   en: 'Coves here that stay calm in the meltemi',
   gr: 'Σταθερά υπήνεμες παραλίες εδώ στα μελτέμια',
@@ -102,6 +113,7 @@ interface MeltemiShelterSectionProps {
   thisExposure?: ExposureLevel;
   shelteredCoves: MeltemiShelteredCove[];
   onSelect: (id: number) => void;
+  isBoatAccess?: boolean;
 }
 
 export const MeltemiShelterSection: React.FC<MeltemiShelterSectionProps> = ({
@@ -110,6 +122,7 @@ export const MeltemiShelterSection: React.FC<MeltemiShelterSectionProps> = ({
   thisExposure,
   shelteredCoves,
   onSelect,
+  isBoatAccess = false,
 }) => {
   if (!thisExposure && shelteredCoves.length === 0) return null;
 
@@ -125,7 +138,7 @@ export const MeltemiShelterSection: React.FC<MeltemiShelterSectionProps> = ({
 
         {thisExposure && (
           <p className={`rounded-xl border px-3 py-2 text-sm font-semibold leading-relaxed ${SELF_TONE[thisExposure].badge} ${SELF_TONE[thisExposure].text}`}>
-            {beachSubject(beachName, language)} {pick(SELF_STATUS[thisExposure], language)}
+            {beachSubject(beachName, language, isBoatAccess)} {isBoatAccess && language === 'gr' ? SELF_STATUS_BOAT_GR[thisExposure] : pick(SELF_STATUS[thisExposure], language)}
           </p>
         )}
 

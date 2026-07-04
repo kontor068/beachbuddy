@@ -147,6 +147,8 @@ export interface WeatherNowInput {
   isExposedToTodayWind: boolean;
   /** 0–10, higher = calmer (from calculateSeaConditionScore). */
   seaConditionScore: number;
+  /** Boat-only spots (e.g. Kleftiko) aren't "beaches" — refer to them by bare name, no "beach" noun. */
+  isBoatAccess?: boolean;
 }
 
 export interface WeatherNowContent {
@@ -166,8 +168,18 @@ export interface WeatherNowContent {
 
 const nowWord = (lang: Lang) => ({ en: 'right now', gr: 'τώρα', de: 'jetzt', fr: 'maintenant', it: 'ora' }[lang]);
 
-const buildHeading = (beachName: string, lang: Lang, isToday: boolean): string => {
+const buildHeading = (beachName: string, lang: Lang, isToday: boolean, isBoatAccess: boolean): string => {
   const now = isToday ? ` ${nowWord(lang)}` : '';
+  // Boat-only spots (e.g. Kleftiko) aren't beaches — drop the "beach" noun, use the bare name.
+  if (isBoatAccess) {
+    switch (lang) {
+      case 'gr': return isToday ? `Καιρός στο ${beachName} τώρα` : `Καιρός & θάλασσα — ${beachName}`;
+      case 'de': return `Wetter${now} — ${beachName}`;
+      case 'fr': return `Météo${now} — ${beachName}`;
+      case 'it': return `Meteo${now} — ${beachName}`;
+      default:   return isToday ? `${beachName} weather right now` : `${beachName} weather & sea`;
+    }
+  }
   switch (lang) {
     case 'gr': return isToday ? `Καιρός στην παραλία ${beachName} τώρα` : `Καιρός & θάλασσα — ${beachName}`;
     case 'de': return `Wetter am Strand ${beachName}${now}`;
@@ -189,8 +201,9 @@ const buildVerdict = (tone: 'calm' | 'mixed' | 'choppy', lang: Lang, isToday: bo
 
 export const buildWeatherNowContent = (input: WeatherNowInput): WeatherNowContent => {
   const { language: lang, beachName, isToday, dataReady } = input;
+  const isBoatAccess = input.isBoatAccess ?? false;
 
-  const heading = buildHeading(beachName, lang, isToday);
+  const heading = buildHeading(beachName, lang, isToday, isBoatAccess);
   const loadingLabel = { en: 'Loading live conditions…', gr: 'Φόρτωση ζωντανών συνθηκών…', de: 'Live-Bedingungen werden geladen…', fr: 'Chargement des conditions en direct…', it: 'Caricamento condizioni in tempo reale…' }[lang];
 
   const windLabel = { en: 'Wind', gr: 'Άνεμος', de: 'Wind', fr: 'Vent', it: 'Vento' }[lang];
@@ -202,7 +215,10 @@ export const buildWeatherNowContent = (input: WeatherNowInput): WeatherNowConten
   let stableDescription: string;
   if (facing || shelter) {
     const clause = [facing, shelter].filter(Boolean).join(lang === 'gr' ? ' και ' : lang === 'de' ? ' und ' : lang === 'fr' ? ' et ' : lang === 'it' ? ' e ' : ' and ');
-    const lead = { en: `${beachName} beach ${clause}.`, gr: `Η παραλία ${beachName} ${clause}.`, de: `Der Strand ${beachName} ${clause}.`, fr: `La plage ${beachName} ${clause}.`, it: `La spiaggia ${beachName} ${clause}.` }[lang];
+    // Boat-only spots aren't "beaches" — refer to them by bare name ("Το Κλέφτικο …"), no noun.
+    const lead = isBoatAccess
+      ? { en: `${beachName} ${clause}.`, gr: `Το ${beachName} ${clause}.`, de: `${beachName} ${clause}.`, fr: `${beachName} ${clause}.`, it: `${beachName} ${clause}.` }[lang]
+      : { en: `${beachName} beach ${clause}.`, gr: `Η παραλία ${beachName} ${clause}.`, de: `Der Strand ${beachName} ${clause}.`, fr: `La plage ${beachName} ${clause}.`, it: `La spiaggia ${beachName} ${clause}.` }[lang];
     const tail = { en: ' Wind and waves shift through the day, so check the live figures below.', gr: ' Ο άνεμος και το κύμα αλλάζουν μέσα στη μέρα, γι\' αυτό δες τις ζωντανές τιμές πιο κάτω.', de: ' Wind und Wellen ändern sich im Tagesverlauf – sieh dir die Live-Werte unten an.', fr: ' Le vent et les vagues changent au cours de la journée, consultez les valeurs en direct ci-dessous.', it: ' Vento e onde cambiano durante il giorno, controlla i valori in tempo reale qui sotto.' }[lang];
     stableDescription = lead + tail;
   } else {

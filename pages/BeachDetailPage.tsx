@@ -295,21 +295,21 @@ const getSeaConditionDisplay = (
           smooth: 'Wenig Bewegung auf der Fahrt.',
           light: 'Rechne mit leichter Bewegung auf der Fahrt.',
           bumpy: 'Die Fahrt kann weniger bequem sein.',
-          rough: 'Pruefe die Fahrt vor dem Losfahren.',
+          rough: 'Prüfe die Fahrt vor dem Losfahren.',
         },
       },
       it: {
         value: {
           smooth: 'Condizioni ideali',
-          light: 'Un po di movimento',
+          light: 'Un po’ di movimento',
           bumpy: 'Tragitto mosso',
           rough: 'Molto mosso',
         },
         atHour: (hourPrefix: string) => sentenceCase(hourPrefix),
         subValue: {
           smooth: 'Poco movimento previsto nel tragitto.',
-          light: 'Aspettati un po di movimento durante il tragitto.',
-          bumpy: 'Il tragitto puo essere meno comodo.',
+          light: 'Aspettati un po’ di movimento durante il tragitto.',
+          bumpy: 'Il tragitto può essere meno comodo.',
           rough: 'Verifica il tragitto prima di partire.',
         },
       },
@@ -317,15 +317,15 @@ const getSeaConditionDisplay = (
         value: {
           smooth: 'Conditions idéales',
           light: 'Un peu de mouvement',
-          bumpy: 'Trajet agite',
-          rough: 'Tres agite',
+          bumpy: 'Trajet agité',
+          rough: 'Très agité',
         },
         atHour: (hourPrefix: string) => sentenceCase(hourPrefix),
         subValue: {
-          smooth: 'Peu de mouvement prevu sur le trajet.',
-          light: 'Prevois un peu de mouvement pendant le trajet.',
-          bumpy: 'Le trajet peut etre moins confortable.',
-          rough: 'Verifie le trajet avant de partir.',
+          smooth: 'Peu de mouvement prévu sur le trajet.',
+          light: 'Prévois un peu de mouvement pendant le trajet.',
+          bumpy: 'Le trajet peut être moins confortable.',
+          rough: 'Vérifie le trajet avant de partir.',
         },
       },
     }[language];
@@ -337,17 +337,24 @@ const getSeaConditionDisplay = (
     };
   }
 
-  if (windBeaufort === 5 && !isExposed) {
-    return {
-      value: shelteredWindLabel,
-      subValue: { en: 'Better option for the wind.', gr: 'Καλύτερη επιλογή για τον άνεμο.', de: 'Besser geschutzte Stellen', it: 'Meglio punti piu riparati', fr: 'Prefere les coins abrites' }[language],
-    };
+  // Strong wind (≥5 Bft — meltemi territory): even a genuinely sheltered beach gets real chop,
+  // so never imply low/little waves here. Keep the honest "relatively more sheltered" framing,
+  // but make clear the sea will have waves.
+  if (windBeaufort >= 5 && !isExposed) {
+    const hasBigWaves = typeof waveHeightM === 'number' && Number.isFinite(waveHeightM) && waveHeightM >= 1.2;
+    const value = hasBigWaves
+      ? { en: 'Rough sea', gr: 'Έντονος κυματισμός', de: 'Raue See', it: 'Mare mosso', fr: 'Mer agitée' }[language]
+      : { en: 'Choppy', gr: 'Κυματισμός', de: 'Unruhig', it: 'Mosso', fr: 'Clapot' }[language];
+    const subValue = canClaimWindProtection
+      ? { en: 'More sheltered, but still some chop', gr: 'Πιο προστατευμένη, αλλά θα έχει κύμα', de: 'Geschützter, aber mit Welle', it: 'Più riparata, ma con onda', fr: 'Plus abritée, mais avec du clapot' }[language]
+      : { en: 'Prefer a more sheltered spot', gr: 'Καλύτερα πιο προστατευμένο σημείο', de: 'Besser geschützte Stellen', it: 'Meglio punti più riparati', fr: 'Préfère les coins abrités' }[language];
+    return { value, subValue };
   }
 
   if (typeof waveHeightM === 'number' && Number.isFinite(waveHeightM)) {
     if (waveHeightM >= 1.2) {
       return {
-        value: { en: 'Rough sea', gr: 'Έντονος κυματισμός', de: 'Raue See', it: 'Mare mosso', fr: 'Mer agitee' }[language],
+        value: { en: 'Rough sea', gr: 'Έντονος κυματισμός', de: 'Raue See', it: 'Mare mosso', fr: 'Mer agitée' }[language],
         subValue: isExposed
           ? windBeaufort === 5
             ? exposedWindLabel
@@ -360,7 +367,7 @@ const getSeaConditionDisplay = (
 
     if (windBeaufort <= 3 && waveHeightM < 0.5) {
       return {
-        value: { en: 'Manageable sea', gr: 'Ήπια θάλασσα', de: 'Handhabbare See', it: 'Mare gestibile', fr: 'Mer gerable' }[language],
+        value: { en: 'Manageable sea', gr: 'Ήπια θάλασσα', de: 'Handhabbare See', it: 'Mare gestibile', fr: 'Mer gérable' }[language],
         subValue: undefined,
       };
     }
@@ -368,7 +375,7 @@ const getSeaConditionDisplay = (
     if (windBeaufort <= 3 && waveHeightM < 0.8) {
       return {
         value: { en: `Some chop ${day}`, gr: 'Λίγος κυματισμός', de: 'Etwas unruhig', it: 'Un po mosso', fr: 'Un peu de clapot' }[language],
-        subValue: { en: 'Use a bit of caution at more open spots.', gr: 'Θέλει λίγη προσοχή σε πιο ανοιχτά σημεία.', de: 'An offeneren Stellen etwas vorsichtig sein.', it: 'Serve un po di cautela nei punti piu aperti.', fr: 'Un peu de prudence dans les zones plus ouvertes.' }[language],
+        subValue: { en: 'Use a bit of caution at more open spots.', gr: 'Θέλει λίγη προσοχή σε πιο ανοιχτά σημεία.', de: 'An offeneren Stellen etwas vorsichtig sein.', it: 'Serve un po’ di cautela nei punti più aperti.', fr: 'Un peu de prudence dans les zones plus ouvertes.' }[language],
       };
     }
 
@@ -380,7 +387,7 @@ const getSeaConditionDisplay = (
         subValue: windBeaufort === 5
           ? { en: 'The sea will have some chop.', gr: 'Η θάλασσα θα έχει κυματισμό.', de: 'Vorsicht, besonders mit Kindern.', it: 'Serve cautela, soprattutto con bambini.', fr: 'Prudence, surtout avec des enfants.' }[language]
           : windBeaufort <= 3
-            ? { en: 'Use a bit of caution at more open spots.', gr: 'Θέλει λίγη προσοχή σε πιο ανοιχτά σημεία.', de: 'An offeneren Stellen etwas vorsichtig sein.', it: 'Serve un po di cautela nei punti piu aperti.', fr: 'Un peu de prudence dans les zones plus ouvertes.' }[language]
+            ? { en: 'Use a bit of caution at more open spots.', gr: 'Θέλει λίγη προσοχή σε πιο ανοιχτά σημεία.', de: 'An offeneren Stellen etwas vorsichtig sein.', it: 'Serve un po’ di cautela nei punti più aperti.', fr: 'Un peu de prudence dans les zones plus ouvertes.' }[language]
             : { en: 'Use caution, especially with children.', gr: 'Θέλει προσοχή, ειδικά με παιδιά.', de: 'Vorsicht, besonders mit Kindern.', it: 'Serve cautela, soprattutto con bambini.', fr: 'Prudence, surtout avec des enfants.' }[language],
       };
     }
@@ -406,14 +413,14 @@ const getSeaConditionDisplay = (
         ? (windBeaufort === 5
           ? exposedWindLabel
           : { en: 'Likely choppy', gr: 'Πιθανό κύμα', de: 'Wahrscheinlich unruhig', it: 'Probabile mare mosso', fr: 'Clapot probable' }[language])
-        : { en: 'May feel breezy', gr: 'Μπορεί να έχει αέρα', de: 'Kann windig wirken', it: 'Puo essere ventilata', fr: 'Peut etre ventee' }[language])
+        : { en: 'May feel breezy', gr: 'Μπορεί να έχει αέρα', de: 'Kann windig wirken', it: 'Può essere ventilata', fr: 'Peut être ventee' }[language])
       : (windBeaufort >= 5
         ? (windBeaufort === 5
           ? shelteredWindLabel
-          : { en: 'Prefer more sheltered spots', gr: 'Καλύτερα πιο προστατευμένο σημείο', de: 'Besser geschutzte Stellen', it: 'Meglio punti piu riparati', fr: 'Prefere les coins abrites' }[language])
-        : { en: 'Some wind - prefer shelter', gr: 'Λίγη έκθεση στον άνεμο', de: 'Etwas Windschutz prufen', it: 'Un po di vento', fr: 'Un peu de vent' }[language]);
+          : { en: 'Prefer more sheltered spots', gr: 'Καλύτερα πιο προστατευμένο σημείο', de: 'Besser geschützte Stellen', it: 'Meglio punti più riparati', fr: 'Préfère les coins abrités' }[language])
+        : { en: 'Some wind - prefer shelter', gr: 'Λίγη έκθεση στον άνεμο', de: 'Etwas Windschutz prufen', it: 'Un po’ di vento', fr: 'Un peu de vent' }[language]);
     return {
-      value: { en: 'Manageable sea', gr: 'Πιο ήπια θάλασσα', de: 'Handhabbare See', it: 'Mare gestibile', fr: 'Mer gerable' }[language],
+      value: { en: 'Manageable sea', gr: 'Πιο ήπια θάλασσα', de: 'Handhabbare See', it: 'Mare gestibile', fr: 'Mer gérable' }[language],
       subValue: windBeaufort < 4 ? lightWindCopy : cautionCopy,
     };
   }
@@ -426,7 +433,7 @@ const getSeaConditionDisplay = (
       ? (isExposed
         ? exposedWindLabel
         : shelteredWindLabel)
-      : { en: 'Choose a more sheltered beach', gr: 'Προτίμησε πιο απάνεμη παραλία', de: 'Wahle einen geschutzteren Strand', it: 'Scegli una spiaggia piu riparata', fr: 'Choisis une plage plus abritee' }[language],
+      : { en: 'Choose a more sheltered beach', gr: 'Προτίμησε πιο απάνεμη παραλία', de: 'Wähle einen geschützteren Strand', it: 'Scegli una spiaggia più riparata', fr: 'Choisis une plage plus abritée' }[language],
   };
 };
 
@@ -443,8 +450,8 @@ const getSwimmingWindowDisplay = (
 
   if (swimmingComfort === 'caution' || roughOrWindy) {
     return {
-      title: { en: `Most suitable time ${selectedDayPrefix}`, gr: `Καταλληλότερη ώρα ${selectedDayPrefix}`, de: 'Am ehesten machbares Zeitfenster', it: 'Momento piu gestibile', fr: 'Moment le plus gerable' }[language],
-      helper: { en: 'This is the better window based on wind and sea conditions.', gr: 'Αυτό είναι το καλύτερο διαθέσιμο διάστημα με βάση τον άνεμο και τη θάλασσα.', de: 'Wenn du gehst, ist dies voraussichtlich das besser handhabbare Zeitfenster, aber Vorsicht bleibt noetig.', it: 'Se vai, questa e probabilmente la fascia piu gestibile, ma serve comunque cautela.', fr: 'Si vous y allez, c est probablement le creneau le plus gerable, mais la prudence reste necessaire.' }[language],
+      title: { en: `Most suitable time ${selectedDayPrefix}`, gr: `Καταλληλότερη ώρα ${selectedDayPrefix}`, de: 'Am ehesten machbares Zeitfenster', it: 'Momento più gestibile', fr: 'Moment le plus gérable' }[language],
+      helper: { en: 'This is the better window based on wind and sea conditions.', gr: 'Αυτό είναι το καλύτερο διαθέσιμο διάστημα με βάση τον άνεμο και τη θάλασσα.', de: 'Wenn du gehst, ist dies voraussichtlich das besser handhabbare Zeitfenster, aber Vorsicht bleibt noetig.', it: 'Se vai, questa e probabilmente la fascia più gestibile, ma serve comunque cautela.', fr: 'Si vous y allez, c est probablement le creneau le plus gérable, mais la prudence reste necessaire.' }[language],
       tone: 'caution',
     };
   }
@@ -594,7 +601,7 @@ export const BeachDetailPage: React.FC<BeachDetailPageProps> = ({
     toVisit: { en: 'To visit', gr: 'Για επίσκεψη', de: 'Zum Besuch', it: 'Per visitare', fr: 'Pour visiter' },
     bestSwim: { en: `Best swimming time ${selectedDayPrefix}`, gr: `Καλύτερη ώρα για μπάνιο ${selectedDayPrefix}`, de: 'Beste Badezeit', it: 'Ora migliore per nuotare', fr: 'Meilleur moment pour se baigner' },
     feedbackTitle: { en: 'How accurate was our forecast?', gr: 'Πόσο σωστή ήταν η πρόβλεψή μας;', de: 'Wie genau war unsere Vorhersage?', it: 'Quanto era accurata la previsione?', fr: 'À quel point notre prévision était-elle juste ?' },
-    feedbackText: { en: 'Your feedback helps us improve our recommendations for everyone.', gr: 'Η γνώμη σου μας βοηθά να βελτιώνουμε τις προτάσεις για όλους.', de: 'Dein Feedback hilft uns, die Empfehlungen fur alle zu verbessern.', it: 'Il tuo feedback ci aiuta a migliorare i consigli per tutti.', fr: 'Votre avis nous aide a ameliorer les recommandations pour tous.' },
+    feedbackText: { en: 'Your feedback helps us improve our recommendations for everyone.', gr: 'Η γνώμη σου μας βοηθά να βελτιώνουμε τις προτάσεις για όλους.', de: 'Dein Feedback hilft uns, die Empfehlungen für alle zu verbessern.', it: 'Il tuo feedback ci aiuta a migliorare i consigli per tutti.', fr: 'Votre avis nous aide a ameliorer les recommandations pour tous.' },
     nearby: { en: 'Nearby Recommendations', gr: 'Κοντινές προτάσεις', de: 'Empfehlungen in der Nahe', it: 'Consigli nelle vicinanze', fr: 'Recommandations proches' },
     decisionSummary: { en: selectedDayIsToday ? 'Today summary' : `Summary ${selectedDayPrefix}`, gr: `Σύνοψη για ${selectedDayPrefix}`, de: 'Kurzfassung', it: 'Riepilogo', fr: 'Resume' },
     conditions: { en: `Conditions ${selectedDayPrefix}`, gr: `Συνθήκες ${selectedDayPrefix}`, de: 'Bedingungen', it: 'Condizioni', fr: 'Conditions' },
@@ -789,7 +796,8 @@ export const BeachDetailPage: React.FC<BeachDetailPageProps> = ({
     canClaimWindProtection,
     isExposedToTodayWind,
     seaConditionScore,
-  }), [beachDisplayName, language, selectedDayIsToday, weatherNowDataReady, windDir, beaufortLevel, displayWaveHeightM, isWaveEstimate, beach.protectedFrom, beach.orientation?.faces, canClaimWindProtection, isExposedToTodayWind, seaConditionScore]);
+    isBoatAccess: isBoatOnlyBeach,
+  }), [beachDisplayName, language, selectedDayIsToday, weatherNowDataReady, windDir, beaufortLevel, displayWaveHeightM, isWaveEstimate, beach.protectedFrom, beach.orientation?.faces, canClaimWindProtection, isExposedToTodayWind, seaConditionScore, isBoatOnlyBeach]);
   const weatherNowToneClass = weatherNow.tone === 'calm'
     ? 'bg-emerald-50 text-emerald-700'
     : weatherNow.tone === 'choppy'
@@ -889,7 +897,7 @@ export const BeachDetailPage: React.FC<BeachDetailPageProps> = ({
   const allDaySuitable = Boolean(bestTime) && !usefulBestTimeWindow && swimWindowDisplay.tone === 'good';
   const allDaySwimCopy = {
     title: { en: `Good to swim all day`, gr: `Κατάλληλη όλη μέρα`, de: 'Den ganzen Tag gut', it: 'Adatta tutto il giorno', fr: 'Bonne toute la journée' }[language],
-    helper: { en: 'Calm conditions with no strong wind today — any time works.', gr: 'Ήρεμες συνθήκες χωρίς δυνατό άνεμο σήμερα — οποιαδήποτε ώρα είναι καλή.', de: 'Ruhige Bedingungen ohne starken Wind heute.', it: 'Condizioni calme senza vento forte oggi.', fr: 'Conditions calmes sans vent fort aujourd hui.' }[language],
+    helper: { en: 'Calm conditions with no strong wind today — any time works.', gr: 'Ήρεμες συνθήκες χωρίς δυνατό άνεμο σήμερα — οποιαδήποτε ώρα είναι καλή.', de: 'Ruhige Bedingungen ohne starken Wind heute.', it: 'Condizioni calme senza vento forte oggi.', fr: 'Conditions calmes sans vent fort aujourd’hui.' }[language],
   };
   const amenityChips = getAmenityChips(beach, language);
   // Per-facility chips (parking/beachBar/…) always mirror a yes/no row below, so we
@@ -1877,7 +1885,7 @@ export const BeachDetailPage: React.FC<BeachDetailPageProps> = ({
               className="flex items-center gap-2 rounded-2xl bg-emerald-50 px-3 py-3 text-emerald-700"
             >
               <CheckCircle2 className="w-5 h-5" />
-              <p className="font-bold">{{ en: 'Thank you for your feedback!', gr: 'Ευχαριστούμε για το feedback!', de: 'Danke fur dein Feedback!', it: 'Grazie per il feedback!', fr: 'Merci pour votre avis !' }[language]}</p>
+              <p className="font-bold">{{ en: 'Thank you for your feedback!', gr: 'Ευχαριστούμε για το feedback!', de: 'Danke für dein Feedback!', it: 'Grazie per il feedback!', fr: 'Merci pour votre avis !' }[language]}</p>
             </div>
           ) : (
             <div className="grid grid-cols-2 gap-2">
@@ -1911,7 +1919,7 @@ export const BeachDetailPage: React.FC<BeachDetailPageProps> = ({
                 className="flex min-h-[44px] items-center justify-center gap-2 rounded-2xl border border-slate-200 text-sm font-bold text-slate-700 transition-all hover:bg-slate-50 active:scale-95"
               >
                 <span aria-hidden>😎</span>
-                {{ en: 'Calmer', gr: 'Πιο ήρεμα', de: 'Ruhiger', it: 'Piu calmo', fr: 'Plus calme' }[language]}
+                {{ en: 'Calmer', gr: 'Πιο ήρεμα', de: 'Ruhiger', it: 'Più calmo', fr: 'Plus calme' }[language]}
               </button>
             </div>
           )}
@@ -1927,6 +1935,7 @@ export const BeachDetailPage: React.FC<BeachDetailPageProps> = ({
           beachName={beachDisplayName}
           thisExposure={meltemiExposure}
           shelteredCoves={meltemiShelteredCoves}
+          isBoatAccess={isBoatOnlyBeach}
           onSelect={(id) => {
             const target = allBeaches.find(b => b.id === id);
             if (target) onBeachClick(target);

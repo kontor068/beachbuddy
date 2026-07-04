@@ -241,7 +241,7 @@ const getBoatConditionCopy = (level: BoatRideMotionLevel, language: LanguageCode
     },
     fr: {
       title: 'Trajet',
-      label: { smooth: 'Conditions idéales', light: 'Un peu de mouvement', bumpy: 'Trajet agite', rough: 'Tres agite' },
+      label: { smooth: 'Conditions idéales', light: 'Un peu de mouvement', bumpy: 'Trajet agité', rough: 'Très agité' },
     },
     de: {
       title: 'Fahrt',
@@ -249,7 +249,7 @@ const getBoatConditionCopy = (level: BoatRideMotionLevel, language: LanguageCode
     },
     it: {
       title: 'Tragitto',
-      label: { smooth: 'Condizioni ideali', light: 'Un po di movimento', bumpy: 'Tragitto mosso', rough: 'Molto mosso' },
+      label: { smooth: 'Condizioni ideali', light: 'Un po’ di movimento', bumpy: 'Tragitto mosso', rough: 'Molto mosso' },
     },
   }[language];
 
@@ -409,9 +409,12 @@ export const BeachConditionScore: React.FC<BeachConditionScoreProps> = ({
     return windBeaufort >= 5 ? copy.exposedToWind(day, useCurrentPhrase) : copy.moreOpenToWind;
   })();
   const seaStateLabel = (() => {
-    if (windBeaufort === 5) {
-      if (seaExposureLevel === 'exposed') return copy.choppy;
-      return undefined;
+    // Strong wind (≥5 Bft — meltemi territory): the sea state is never "calmer", even on a
+    // genuinely sheltered beach — it still gets real chop. Keep it honest (the shelter credit
+    // lives in the suitability badge, not in the sea-state label).
+    if (windBeaufort >= 5) {
+      if (typeof waveHeightM === 'number' && Number.isFinite(waveHeightM) && waveHeightM >= 1.2) return copy.roughSea;
+      return copy.choppy;
     }
 
     if (typeof waveHeightM === 'number' && Number.isFinite(waveHeightM)) {

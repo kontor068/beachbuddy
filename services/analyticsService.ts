@@ -60,6 +60,15 @@ export interface FeedbackData {
   conditions?: { exposureLevel?: string; beaufort?: number; windDir?: string; date?: string };
 }
 
+export interface FeedbackNotificationContext {
+  source?: string;
+  beachName?: string;
+  islandName?: string;
+  regionId?: string;
+  language?: string;
+  pagePath?: string;
+}
+
 const STORAGE_KEY = 'beach_buddy_analytics';
 const FEEDBACK_KEY = 'beach_buddy_feedback';
 const CONSENT_KEY = 'beach_buddy_analytics_consent';
@@ -272,6 +281,32 @@ const trackGoogleAnalyticsEvent = (
   window.gtag('event', event, buildGoogleAnalyticsParams(beachId, metadata));
 };
 
+const sendFeedbackEmail = (payload: {
+  source: string;
+  beachId: number;
+  feedback: FeedbackData['feedback'];
+  timestamp: string;
+  conditions?: FeedbackData['conditions'];
+  context?: FeedbackNotificationContext;
+}) => {
+  if (typeof fetch === 'undefined') return;
+
+  fetch('/.netlify/functions/feedback-email', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(payload),
+    keepalive: true,
+  }).then(response => {
+    if (!response.ok && import.meta.env.DEV) {
+      console.warn(`[Feedback] Email delivery failed with HTTP ${response.status}`);
+    }
+  }).catch(error => {
+    if (import.meta.env.DEV) {
+      console.warn('[Feedback] Email delivery failed.', error);
+    }
+  });
+};
+
 export const getAnalyticsConsent = (): AnalyticsConsent | null => {
   const value = getStorageItem(CONSENT_KEY);
   return value === 'accepted' || value === 'declined' ? value : null;
@@ -353,7 +388,11 @@ export const getEvents = (): AnalyticsData[] => {
   }
 };
 
-export const storeFeedback = (beachId: number, feedback: 'accurate' | 'not_accurate') => {
+export const storeFeedback = (
+  beachId: number,
+  feedback: 'accurate' | 'not_accurate',
+  context?: FeedbackNotificationContext
+) => {
   const data: FeedbackData = {
     beachId,
     feedback,
@@ -369,6 +408,13 @@ export const storeFeedback = (beachId: number, feedback: 'accurate' | 'not_accur
     beachId,
     { feedback }
   );
+  sendFeedbackEmail({
+    source: context?.source || 'recommendation_feedback',
+    beachId,
+    feedback,
+    timestamp: data.timestamp,
+    context,
+  });
 };
 
 /**
@@ -381,13 +427,22 @@ export const storeFeedback = (beachId: number, feedback: 'accurate' | 'not_accur
 export const storeConditionFeedback = (
   beachId: number,
   verdict: ConditionFeedbackVerdict,
-  conditions?: FeedbackData['conditions']
+  conditions?: FeedbackData['conditions'],
+  context?: FeedbackNotificationContext
 ) => {
   const data: FeedbackData = { beachId, feedback: verdict, timestamp: new Date().toISOString(), conditions };
   const existing = getFeedback();
   existing.push(data);
   setStorageItem(FEEDBACK_KEY, JSON.stringify(existing));
   trackEvent('condition_feedback', beachId, { verdict, ...(conditions || {}) });
+  sendFeedbackEmail({
+    source: context?.source || 'condition_feedback',
+    beachId,
+    feedback: verdict,
+    timestamp: data.timestamp,
+    conditions,
+    context,
+  });
 };
 
 export const getFeedback = (): FeedbackData[] => {
