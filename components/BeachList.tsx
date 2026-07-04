@@ -77,7 +77,7 @@ const noSwimmingMessage = (
         body: 'Λόγω πιθανής βροχής στις βασικές ώρες παραλίας, δεν προτείνεται καμία παραλία για μπάνιο σε αυτό το διάστημα. Δες ξανά την πρόγνωση για πιο στεγνή ώρα.',
       },
       fr: {
-        title: `Aucune plage n est recommandee pour se baigner ${day}.`,
+        title: `Aucune plage n’est recommandee pour se baigner ${day}.`,
         body: 'De la pluie est possible pendant les principales heures de plage. Nous ne recommandons aucune plage pour se baigner sur ce creneau.',
       },
       de: {

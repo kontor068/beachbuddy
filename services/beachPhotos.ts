@@ -522,7 +522,7 @@ const MACEDONIA_BEACH_PHOTOS_BY_AREA: Record<string, Record<string, string[]>> =
     'Porto Koufo': [wm('Beach Toroni.jpg')],
     'Παραλία Πευκοχωρίου': [wm('Beach of Pefkochori.IMG 0604.jpg')],
     Pefkochori: [wm('Beach of Pefkochori.IMG 0604.jpg')],
-    Lagomandra: [wm('Grece Sithonia Lagomandra Plage Baigneurs 16082009 - panoramio.jpg')],
+    Lagomandra: [wm('Grèce Sithonia Lagomandra Plage Baigneurs 16082009 - panoramio.jpg')],
     'Akti Kalogrias': [wm('Kalogria Beach, Nikiti, Chalkidiki, Greece.jpg')],
     Sykia: [wm('Chalkidiki Banner Sykia Beach.jpg')],
     'Παραλία Αρετές': [wm('Tourist ship in front of BARbatolis Bar, Aretes Beach, Παραλία Αρετές, Toroni 630 72, Greece 01.jpg')],

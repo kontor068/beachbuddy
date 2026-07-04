@@ -179,8 +179,8 @@ const boatBadgeCopy: Record<LanguageCode, BoatBadgeCopy> = {
   fr: {
     smooth: 'Conditions idéales',
     light: 'Un peu de mouvement',
-    bumpy: 'Trajet agite',
-    rough: 'Tres agite',
+    bumpy: 'Trajet agité',
+    rough: 'Très agité',
   },
   de: {
     smooth: 'Ideale Bedingungen',
@@ -190,7 +190,7 @@ const boatBadgeCopy: Record<LanguageCode, BoatBadgeCopy> = {
   },
   it: {
     smooth: 'Condizioni ideali',
-    light: 'Un po di movimento',
+    light: 'Un po’ di movimento',
     bumpy: 'Tragitto mosso',
     rough: 'Molto mosso',
   },

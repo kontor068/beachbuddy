@@ -134,7 +134,7 @@ const filterSheetCopy: Record<LanguageCode, {
     seeResults: (count) => `${count} Strande anzeigen`,
   },
   it: {
-    quick: 'Piu utili',
+    quick: 'Più utili',
     selected: 'Filtri attivi',
     amenities: 'Servizi',
     beachAndWater: 'Sabbia e acqua',

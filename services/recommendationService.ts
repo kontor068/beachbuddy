@@ -2155,10 +2155,10 @@ const generateLocalizedBeachExplanation = (
 
   if (language === 'de') {
     explanation = isProtectedForCopy
-      ? `${beachName} ist heute eine gute Wahl, weil der Strand vor dem Wind geschutzt ist.`
+      ? `${beachName} ist heute eine gute Wahl, weil der Strand vor dem Wind geschützt ist.`
       : seaScore < 8
-        ? `${beachName} ist heute wenig vor Wind geschutzt. Es kann okay sein, solange der Wind schwach bleibt, ist aber keine sichere Wahl fur ganz ruhiges Wasser.`
-        : `${beachName} hat heute nur eine leichte Brise und bleibt angenehm fur einen Strandbesuch.`;
+        ? `${beachName} ist heute wenig vor Wind geschützt. Es kann okay sein, solange der Wind schwach bleibt, ist aber keine sichere Wahl für ganz ruhiges Wasser.`
+        : `${beachName} hat heute nur eine leichte Brise und bleibt angenehm für einen Strandbesuch.`;
     explanation += temp >= 25 && temp <= 32
       ? ` Die Temperatur liegt bei ${temp}°C, ideal zum Schwimmen.`
       : temp > 32
@@ -2169,24 +2169,24 @@ const generateLocalizedBeachExplanation = (
 
   if (language === 'it') {
     explanation = isProtectedForCopy
-      ? `${beachName} e una buona scelta oggi perche e riparata dal vento.`
+      ? `${beachName} e una buona scelta oggi perché e riparata dal vento.`
       : seaScore < 8
-        ? `${beachName} e poco riparata dal vento oggi. Puo andare bene se il vento resta leggero, ma non e la scelta piu sicura per acqua calma.`
+        ? `${beachName} e poco riparata dal vento oggi. Può andare bene se il vento resta leggero, ma non e la scelta più sicura per acqua calma.`
         : `${beachName} ha una brezza leggera oggi ed e piacevole per una visita.`;
     explanation += temp >= 25 && temp <= 32
       ? ` La temperatura e ${temp}°C, ideale per nuotare.`
       : temp > 32
         ? ` Giornata calda a ${temp}°C, porta la protezione solare.`
-        : ` Con ${temp}°C fa fresco, ma il mare puo comunque essere piacevole.`;
+        : ` Con ${temp}°C fa fresco, ma il mare può comunque essere piacevole.`;
     return explanation;
   }
 
   if (language === 'fr') {
     explanation = isProtectedForCopy
-      ? `${beachName} est un bon choix aujourd hui car la plage est abritee du vent.`
+      ? `${beachName} est un bon choix aujourd’hui car la plage est abritée du vent.`
       : seaScore < 8
-        ? `${beachName} est peu abritee du vent aujourd hui. Cela peut rester correct si le vent reste faible, mais ce n est pas le choix le plus sur pour une eau calme.`
-        : `${beachName} a seulement une legere brise aujourd hui et reste agreable.`;
+        ? `${beachName} est peu abritée du vent aujourd’hui. Cela peut rester correct si le vent reste faible, mais ce n’est pas le choix le plus sur pour une eau calme.`
+        : `${beachName} a seulement une legere brise aujourd’hui et reste agreable.`;
     explanation += temp >= 25 && temp <= 32
       ? ` La temperature est de ${temp}°C, ideale pour se baigner.`
       : temp > 32

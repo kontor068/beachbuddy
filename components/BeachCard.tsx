@@ -982,9 +982,9 @@ const boatRideShortLabel = (level: BoatRideMotionLevel, language: LanguageCode):
   const copy = {
     en: { smooth: 'Ideal conditions', light: 'A little motion', bumpy: 'Bumpy ride', rough: 'Very bumpy' },
     gr: { smooth: 'Ιδανικές συνθήκες', light: 'Λίγο κούνημα', bumpy: 'Κουνάει αρκετά', rough: 'Πολύ κούνημα' },
-    fr: { smooth: 'Conditions idéales', light: 'Un peu de mouvement', bumpy: 'Trajet agite', rough: 'Tres agite' },
+    fr: { smooth: 'Conditions idéales', light: 'Un peu de mouvement', bumpy: 'Trajet agité', rough: 'Très agité' },
     de: { smooth: 'Ideale Bedingungen', light: 'Etwas Bewegung', bumpy: 'Unruhige Fahrt', rough: 'Sehr unruhig' },
-    it: { smooth: 'Condizioni ideali', light: 'Un po di movimento', bumpy: 'Tragitto mosso', rough: 'Molto mosso' },
+    it: { smooth: 'Condizioni ideali', light: 'Un po’ di movimento', bumpy: 'Tragitto mosso', rough: 'Molto mosso' },
   }[language];
 
   return copy[level];

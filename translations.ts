@@ -866,7 +866,7 @@ const itTranslation: Translation = {
     sortByTitle: "Ordina per",
     sortByRecommended: "Consigliate",
     sortByAll: "Tutte",
-    sortByProtected: "Piu adatte",
+    sortByProtected: "Più adatte",
     sortByTopRated: "Miglior voto",
     sortByDistance: "Più vicine",
     sortedByDistance: "Ordinate per distanza",

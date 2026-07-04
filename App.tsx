@@ -249,7 +249,7 @@ const seoCopy: Record<SupportedLanguage, { title: string; description: string; l
   },
   fr: {
     title: 'Calm Beach Greece - Comparer les plages par vent et vagues',
-    description: 'Calm Beach Greece - Comparez les plages grecques selon le vent, les vagues, la meteo et l exposition avant de partir.',
+    description: 'Calm Beach Greece - Comparez les plages grecques selon le vent, les vagues, la meteo et l’exposition avant de partir.',
     locale: 'fr_FR',
   },
   de: {
@@ -370,16 +370,16 @@ const startupLocationPromptCopy = {
     chooseManually: 'Choisir une region',
   },
   de: {
-    title: 'Straende in deiner Naehe zeigen?',
+    title: 'Strände in deiner Naehe zeigen?',
     body: 'CalmBeach kann deinen aktuellen Standort einmal nutzen, um die naechste griechische Strandregion zu oeffnen.',
     privacy: 'Wir speichern deinen genauen GPS-Standort nicht. Du kannst stattdessen eine Region manuell waehlen.',
     useLocation: 'Standort nutzen',
-    finding: 'Suche Straende in der Naehe...',
+    finding: 'Suche Strände in der Naehe...',
     chooseManually: 'Region waehlen',
   },
   it: {
     title: 'Mostrare le spiagge vicino a te?',
-    body: 'CalmBeach puo usare una volta la tua posizione attuale per aprire la zona spiagge greca piu vicina.',
+    body: 'CalmBeach può usare una volta la tua posizione attuale per aprire la zona spiagge greca più vicina.',
     privacy: 'Non salviamo la tua posizione GPS esatta. Puoi scegliere una zona manualmente.',
     useLocation: 'Usa la mia posizione',
     finding: 'Cerco spiagge vicine...',
@@ -1202,7 +1202,7 @@ const getGeneralConditionsHelper = (
     },
     it: {
       mild: () => `${sentenceDay}: ${beaufort} Beaufort con vento ${wind}. La maggior parte delle spiagge sembra adatta al bagno.`,
-      caution: () => `${sentenceDay}: ${beaufort} Beaufort con vento ${wind}. Il vento conta di piu, quindi ${favoredCoasts} sono favorite.`,
+      caution: () => `${sentenceDay}: ${beaufort} Beaufort con vento ${wind}. Il vento conta di più, quindi ${favoredCoasts} sono favorite.`,
       noIdeal: () => {
         if (beaufort <= 3) return `${sentenceDay}: ${beaufort} Beaufort con vento ${wind}. La maggior parte delle spiagge sembra adatta al bagno.`;
         return beaufort <= 5
@@ -1320,21 +1320,21 @@ const getRainRiskCopy = (
       rainTitle: () => `La pluie peut affecter le plan plage ${day}`,
       allBody: 'La prévision indique de la pluie aux heures principales de plage, il vaut donc mieux éviter de rester dans la mer sur ce créneau.',
       timedBody: () => `La prévision indique une pluie possible vers ${summary.label}, il vaut donc mieux éviter de rester dans la mer à ces heures-là.`,
-      genericBody: 'La journee presente un risque de pluie. Les plages peuvent etre correctes cote vent et vagues, mais la recommandation vaut seulement sur les creneaux plus secs.',
+      genericBody: 'La journée presente un risque de pluie. Les plages peuvent être correctes cote vent et vagues, mais la recommandation vaut seulement sur les creneaux plus secs.',
     },
     de: {
       allTitle: 'Schwimmen ist zu den Haupt-Strandzeiten wegen Regen nicht empfohlen',
       rainTitle: () => `Regen kann den Strandplan ${day} beeinflussen`,
       allBody: 'Die Vorhersage zeigt Regen zu den Haupt-Strandzeiten, bleibe in diesem Zeitfenster daher besser nicht im Wasser.',
       timedBody: () => `Die Vorhersage zeigt möglichen Regen um ${summary.label}, bleibe zu diesen Zeiten daher besser nicht im Wasser.`,
-      genericBody: 'Die Vorhersage zeigt ein Regensignal. Fur Wind und Wellen kann es passen, aber die Empfehlung gilt nur fur trockenere Zeitfenster.',
+      genericBody: 'Die Vorhersage zeigt ein Regensignal. Fur Wind und Wellen kann es passen, aber die Empfehlung gilt nur für trockenere Zeitfenster.',
     },
     it: {
       allTitle: 'Bagno non consigliato nelle ore principali per pioggia',
-      rainTitle: () => `La pioggia puo influire sul piano spiaggia ${day}`,
+      rainTitle: () => `La pioggia può influire sul piano spiaggia ${day}`,
       allBody: 'Le previsioni indicano pioggia nelle ore principali da spiaggia, quindi è meglio evitare di restare in mare in quella fascia.',
       timedBody: () => `Le previsioni indicano possibile pioggia verso ${summary.label}, quindi è meglio evitare di restare in mare in quelle ore.`,
-      genericBody: 'La giornata ha un segnale di pioggia. Le spiagge possono andare bene per vento e onde, ma il consiglio vale solo nelle fasce piu asciutte.',
+      genericBody: 'La giornata ha un segnale di pioggia. Le spiagge possono andare bene per vento e onde, ma il consiglio vale solo nelle fasce più asciutte.',
     },
   });
 
@@ -1378,7 +1378,7 @@ export const App: React.FC = () => {
         title: {
           en: 'Most beaches look suitable',
       gr: 'Οι περισσότερες παραλίες φαίνονται κατάλληλες',
-          de: 'Gute Startpunkte fuer heute',
+          de: 'Gute Startpunkte für heute',
           it: 'Buone opzioni da cui iniziare',
           fr: 'Bonnes options pour commencer',
         },
@@ -1386,8 +1386,8 @@ export const App: React.FC = () => {
           en: 'Today the weather is mild, so most beaches look suitable for swimming.',
       gr: 'Σήμερα ο καιρός είναι ήπιος, οπότε οι περισσότερες παραλίες φαίνονται κατάλληλες για μπάνιο.',
           de: 'Heute ist das Wetter mild, daher passen die meisten Strande. Diese fallen eher durch Zugang, Strandtyp, Ausstattung und deine Vorlieben auf.',
-          it: 'Oggi il meteo e mite, quindi la maggior parte delle spiagge va bene. Queste spiccano di piu per accesso, tipo di spiaggia, servizi e preferenze.',
-          fr: 'La meteo est douce aujourd hui, donc la plupart des plages conviennent. Celles-ci ressortent surtout pour l acces, le type de plage, les services et tes preferences.',
+          it: 'Oggi il meteo e mite, quindi la maggior parte delle spiagge va bene. Queste spiccano di più per accesso, tipo di spiaggia, servizi e preferenze.',
+          fr: 'La meteo est douce aujourd’hui, donc la plupart des plages conviennent. Celles-ci ressortent surtout pour l’accès, le type de plage, les services et tes preferences.',
         },
         cardLabel: {
           en: 'Suggested',
@@ -1402,21 +1402,21 @@ export const App: React.FC = () => {
           en: 'More comfortable options today',
       gr: 'Ιδανικότερες παραλίες σήμερα',
           de: 'Angenehmere Optionen heute',
-          it: 'Opzioni piu comode oggi',
+          it: 'Opzioni più comode oggi',
           fr: 'Options plus confortables aujourd hui',
         },
         helper: {
           en: 'Wind starts to matter today, so these options look more comfortable than exposed beaches.',
       gr: 'Σήμερα ο άνεμος αρχίζει να παίζει ρόλο, οπότε αυτές φαίνονται πιο άνετες από πιο εκτεθειμένες παραλίες.',
-          de: 'Heute spielt der Wind eine groessere Rolle, daher wirken diese Optionen angenehmer als offenere Straende.',
-          it: 'Oggi il vento inizia a contare, quindi queste opzioni sembrano piu comode delle spiagge esposte.',
-          fr: 'Le vent commence a compter aujourd hui, donc ces options semblent plus confortables que les plages exposees.',
+          de: 'Heute spielt der Wind eine größere Rolle, daher wirken diese Optionen angenehmer als offenere Strände.',
+          it: 'Oggi il vento inizia a contare, quindi queste opzioni sembrano più comode delle spiagge esposte.',
+          fr: 'Le vent commence a compter aujourd’hui, donc ces options semblent plus confortables que les plages exposées.',
         },
         cardLabel: {
           en: 'More comfortable',
       gr: 'Πιο άνετη',
           de: 'Angenehmer',
-          it: 'Piu comoda',
+          it: 'Più comoda',
           fr: 'Plus confortable',
         },
       },
@@ -1425,22 +1425,22 @@ export const App: React.FC = () => {
           en: 'Most suitable options today',
       gr: 'Καταλληλότερες επιλογές σήμερα',
           de: 'Am besten handhabbare Optionen heute',
-          it: 'Opzioni piu gestibili oggi',
-          fr: 'Options les plus gerables aujourd hui',
+          it: 'Opzioni più gestibili oggi',
+          fr: 'Options les plus gérables aujourd hui',
         },
         helper: {
           en: 'Today the wind affects the beach choice. These look more suitable than more exposed beaches. This does not mean conditions are ideal.',
       gr: 'Σήμερα ο άνεμος επηρεάζει αρκετά τις επιλογές. Αυτές φαίνονται πιο κατάλληλες σε σχέση με πιο εκτεθειμένες παραλίες. Δεν σημαίνει ότι οι συνθήκες είναι ιδανικές.',
-          de: 'Heute ist kein idealer Tag fuer ruhiges Schwimmen. Diese wirken besser handhabbar als exponierte Straende.',
-          it: 'Oggi non e una giornata ideale per nuotare con mare calmo. Queste sembrano piu gestibili delle spiagge esposte.',
-          fr: 'Ce n est pas une journee ideale pour une baignade calme. Ces options semblent plus gerables que les plages exposees.',
+          de: 'Heute ist kein idealer Tag für ruhiges Schwimmen. Diese wirken besser handhabbar als exponierte Strände.',
+          it: 'Oggi non e una giornata ideale per nuotare con mare calmo. Queste sembrano più gestibili delle spiagge esposte.',
+          fr: 'Ce n’est pas une journée ideale pour une baignade calme. Ces options semblent plus gérables que les plages exposées.',
         },
       },
       no_ideal_swimming: {
         title: {
           en: 'No clear calm-swimming option today',
       gr: 'Δεν υπάρχει καθαρή επιλογή για ήρεμο μπάνιο',
-          de: 'Heute keine klare Option fuer ruhiges Schwimmen',
+          de: 'Heute keine klare Option für ruhiges Schwimmen',
           it: 'Oggi nessuna opzione chiaramente tranquilla',
           fr: 'Aucune option clairement calme aujourd hui',
         },
@@ -1449,7 +1449,7 @@ export const App: React.FC = () => {
       gr: 'Ο άνεμος και η θάλασσα κάνουν δύσκολο το ήρεμο μπάνιο σήμερα. Αυτές είναι μόνο λιγότερο εκτεθειμένες επιλογές αν αποφασίσεις να πας.',
           de: 'Wind und Meer machen ruhiges Schwimmen heute unwahrscheinlich. Das sind nur weniger exponierte Optionen, falls du trotzdem gehst.',
           it: 'Vento e mare rendono improbabile un bagno tranquillo oggi. Queste sono solo opzioni meno esposte se decidi comunque di andare.',
-          fr: 'Le vent et la mer rendent une baignade calme peu probable aujourd hui. Ce sont seulement des options moins exposees si tu decides quand meme d y aller.',
+          fr: 'Le vent et la mer rendent une baignade calme peu probable aujourd’hui. Ce sont seulement des options moins exposées si tu decides quand meme d y aller.',
         },
       },
     },
@@ -1457,14 +1457,14 @@ export const App: React.FC = () => {
       en: 'More suitable',
       gr: 'Καταλληλότερες',
       de: 'Besser handhabbar',
-      it: 'Piu gestibili',
-      fr: 'Plus gerables',
+      it: 'Più gestibili',
+      fr: 'Plus gérables',
     },
     lessExposedSortLabel: {
       en: 'Most suitable',
       gr: 'Καταλληλότερες',
       de: 'Am besten geeignet',
-      it: 'Piu adatte',
+      it: 'Più adatte',
       fr: 'Les plus adaptees',
     },
     beaches: { en: 'beaches', gr: 'παραλίες', fr: 'plages', de: 'Strände', it: 'spiagge' },
@@ -1489,21 +1489,21 @@ export const App: React.FC = () => {
       gr: (beaufort: number) => `${beaufort} μποφόρ. Όλες οι παραλίες είναι κατάλληλες!`,
       de: (beaufort: number) => `${beaufort} Bft heute. Alle Strande sind geeignet.`,
       it: (beaufort: number) => `${beaufort} Bft oggi. Tutte le spiagge sono adatte.`,
-      fr: (beaufort: number) => `${beaufort} Bft aujourd hui. Toutes les plages conviennent.`,
+      fr: (beaufort: number) => `${beaufort} Bft aujourd’hui. Toutes les plages conviennent.`,
     },
     calmAllAroundDescription: {
       en: 'Today the weather is mild, so all beaches look suitable for swimming.',
       gr: 'Σήμερα ο καιρός είναι ήπιος, οπότε όλες οι παραλίες φαίνονται κατάλληλες για μπάνιο.',
       de: 'Der Wind ist leicht und das Meer wirkt ruhig. Es muss heute keine einzelne Top-Wahl geben. Entscheide nach Zugang, Sand/Kies, Schatten oder Stimmung.',
       it: 'Il vento e leggero e il mare sembra calmo, quindi non serve forzare una sola scelta top. Scegli per accesso, sabbia/ciottoli, ombra o atmosfera.',
-      fr: 'Le vent est faible et la mer semble calme. Pas besoin de forcer un seul meilleur choix aujourd hui. Choisis selon l acces, le sable/galets, l ombre ou l ambiance.',
+      fr: 'Le vent est faible et la mer semble calme. Pas besoin de forcer un seul meilleur choix aujourd’hui. Choisis selon l’accès, le sable/galets, l’ombre ou l’ambiance.',
     },
     lightWindDayDescription: {
       en: 'Today the weather is mild, so most beaches look suitable for swimming.',
       gr: 'Σήμερα ο καιρός είναι ήπιος, οπότε οι περισσότερες παραλίες φαίνονται κατάλληλες για μπάνιο.',
-      de: 'Wahle einfach nach Sand, Schatten, Zugang oder Stimmung.',
+      de: 'Wähle einfach nach Sand, Schatten, Zugang oder Stimmung.',
       it: 'Scegli quella che preferisci per sabbia, ombra, accesso o atmosfera.',
-      fr: 'Choisis celle que tu preferes selon le sable, l ombre, l acces ou l ambiance.',
+      fr: 'Choisis celle que tu préfères selon le sable, l’ombre, l’accès ou l’ambiance.',
     },
     calmWindBadge: {
       en: (beaufort: number) => `${beaufort} Beaufort`,
@@ -2270,7 +2270,7 @@ export const App: React.FC = () => {
       ? getLocalizedCopy(language, {
         en: `${selectedIslandName} beaches in Greece. Compare ${beachCountText}beaches by wind, waves, weather, exposure, access and beach type before you choose where to swim.`,
         gr: `${selectedIslandName}: σύγκρινε ${beachCountText}παραλίες με βάση άνεμο, κύμα, καιρό, έκθεση, πρόσβαση και τύπο παραλίας πριν διαλέξεις πού θα κολυμπήσεις.`,
-        fr: `Plages de ${selectedIslandName} en Grece. Comparez le vent, les vagues, la meteo, l exposition, l acces et le type de plage avant de choisir ou nager.`,
+        fr: `Plages de ${selectedIslandName} en Grèce. Comparez le vent, les vagues, la meteo, l’exposition, l’accès et le type de plage avant de choisir ou nager.`,
         de: `Strande in ${selectedIslandName}, Griechenland. Vergleiche Wind, Wellen, Wetter, Exposition, Zugang und Strandtyp, bevor du den Strand waehlst.`,
         it: `Spiagge a ${selectedIslandName}, Grecia. Confronta vento, onde, meteo, esposizione, accesso e tipo di spiaggia prima di scegliere dove nuotare.`,
       })
@@ -4628,19 +4628,19 @@ export const App: React.FC = () => {
       fr: {
         caution: `Options plus confortables ${day}`,
         strong: `Options les plus adaptees ${day}`,
-        sheltered: `Options plus abritees ${day}`,
+        sheltered: `Options plus abritées ${day}`,
         noIdeal: `Aucun choix clairement calme ${day}`,
       },
       de: {
         caution: `Komfortablere Optionen ${day}`,
         strong: `Am besten geeignete Optionen ${day}`,
-        sheltered: `Windgeschutztere Optionen ${day}`,
+        sheltered: `Windgeschütztere Optionen ${day}`,
         noIdeal: `Keine klar ruhige Badeoption ${day}`,
       },
       it: {
-        caution: `Opzioni piu comode ${day}`,
-        strong: `Opzioni piu adatte ${day}`,
-        sheltered: `Opzioni piu riparate ${day}`,
+        caution: `Opzioni più comode ${day}`,
+        strong: `Opzioni più adatte ${day}`,
+        sheltered: `Opzioni più riparate ${day}`,
         noIdeal: `Nessuna scelta chiaramente calma ${day}`,
       },
     });
@@ -4666,7 +4666,7 @@ export const App: React.FC = () => {
       gr: `Αργότερα ο άνεμος ανεβαίνει έως ${hourlyWindIncreaseSummary.maxBeaufort} μποφόρ γύρω στις ${hourlyWindIncreaseSummary.label}, οπότε κάποιες παραλίες θα είναι πιο άνετες από άλλες.`,
       fr: `Plus tard, le vent monte jusqu’à ${hourlyWindIncreaseSummary.maxBeaufort} Bft vers ${hourlyWindIncreaseSummary.label}, donc certaines plages seront plus confortables que d’autres.`,
       de: `Spater steigt der Wind gegen ${hourlyWindIncreaseSummary.label} auf ${hourlyWindIncreaseSummary.maxBeaufort} Bft, daher fuhlen sich manche Strande komfortabler an als andere.`,
-      it: `Piu tardi il vento sale fino a ${hourlyWindIncreaseSummary.maxBeaufort} Beaufort verso ${hourlyWindIncreaseSummary.label}, quindi alcune spiagge saranno piu comode di altre.`,
+      it: `Più tardi il vento sale fino a ${hourlyWindIncreaseSummary.maxBeaufort} Beaufort verso ${hourlyWindIncreaseSummary.label}, quindi alcune spiagge saranno più comode di altre.`,
     })
     : '';
   const calmSummaryBaseDescription = calmAllAroundSummary
@@ -4727,18 +4727,18 @@ export const App: React.FC = () => {
         mild: `${selectedDaySentencePrefix}, la meteo est douce, donc la plupart des plages semblent adaptees a la baignade.`,
       },
       de: {
-        avoid: `Kein Strand wirkt ${selectedDayPrefix} ideal fur ruhiges Schwimmen. ${headerTopBeachName} ist eher eine Besuchsoption, wenn die Bedingungen vor Ort akzeptabel wirken.`,
+        avoid: `Kein Strand wirkt ${selectedDayPrefix} ideal für ruhiges Schwimmen. ${headerTopBeachName} ist eher eine Besuchsoption, wenn die Bedingungen vor Ort akzeptabel wirken.`,
         strongFive: `${headerTopBeachName} ist ${selectedDayPrefix} eine bessere Windoption.`,
         strongCaution: `${headerTopBeachName} ist ${selectedDayPrefix} die beste verfugbare Option, aber Schwimmen bleibt vorsichtig zu bewerten.`,
         caution: `${headerTopBeachName} ist ${selectedDayPrefix} die beste Wahl, weil der Wind dort besser handhabbar wirkt.`,
-        timed: `Laut stundlicher Vorhersage ist ${headerTopBeachName} die Top-Wahl fur dieses Zeitfenster.`,
+        timed: `Laut stundlicher Vorhersage ist ${headerTopBeachName} die Top-Wahl für dieses Zeitfenster.`,
         mild: `${selectedDaySentencePrefix} ist das Wetter mild, daher wirken die meisten Strande zum Schwimmen geeignet.`,
       },
       it: {
-        avoid: `Nessuna spiaggia sembra ideale per un bagno calmo ${selectedDayPrefix}. ${headerTopBeachName} e piu una visita, se le condizioni sul posto sembrano accettabili.`,
+        avoid: `Nessuna spiaggia sembra ideale per un bagno calmo ${selectedDayPrefix}. ${headerTopBeachName} e più una visita, se le condizioni sul posto sembrano accettabili.`,
         strongFive: `${headerTopBeachName} e una scelta migliore per il vento ${selectedDayPrefix}.`,
         strongCaution: `${headerTopBeachName} e la migliore opzione disponibile ${selectedDayPrefix}, ma per il bagno serve ancora prudenza.`,
-        caution: `${headerTopBeachName} e la scelta migliore ${selectedDayPrefix}, perche li il vento sembra piu gestibile.`,
+        caution: `${headerTopBeachName} e la scelta migliore ${selectedDayPrefix}, perché li il vento sembra più gestibile.`,
         timed: `In base alle previsioni orarie, ${headerTopBeachName} e la scelta migliore per questa fascia.`,
         mild: `${selectedDaySentencePrefix} il meteo e mite, quindi la maggior parte delle spiagge sembra adatta al bagno.`,
       },
@@ -5011,16 +5011,16 @@ export const App: React.FC = () => {
       ? getLocalizedCopy(language, {
         en: `${directoryTopBeachName} is the best pick ${selectedDayPrefix} because the wind may be less annoying there, with practical access.`,
       gr: `Η παραλία ${directoryTopBeachName} είναι η καλύτερη πρόταση για ${selectedDayPrefix}, γιατί ο άνεμος μπορεί να είναι λιγότερο ενοχλητικός εκεί και η πρόσβαση είναι πρακτική.`,
-        fr: `${directoryTopBeachName} est le meilleur choix ${selectedDayPrefix}, car le vent peut y etre moins genant, avec un acces pratique.`,
+        fr: `${directoryTopBeachName} est le meilleur choix ${selectedDayPrefix}, car le vent peut y être moins gênant, avec un acces pratique.`,
         de: `${directoryTopBeachName} ist ${selectedDayPrefix} die beste Wahl, weil der Wind dort weniger storend sein kann und der Zugang praktisch ist.`,
-        it: `${directoryTopBeachName} e la scelta migliore ${selectedDayPrefix}, perche li il vento puo essere meno fastidioso e l'accesso e pratico.`,
+        it: `${directoryTopBeachName} e la scelta migliore ${selectedDayPrefix}, perché li il vento può essere meno fastidioso e l'accesso e pratico.`,
       })
       : getLocalizedCopy(language, {
         en: `${directoryTopBeachName} is the best pick ${selectedDayPrefix} because it fits the conditions well and combines comfortable sea with practical access.`,
       gr: `Η παραλία ${directoryTopBeachName} είναι η καλύτερη πρόταση για ${selectedDayPrefix}, γιατί ταιριάζει καλά στις συνθήκες και συνδυάζει άνετη θάλασσα με πρακτική πρόσβαση.`,
         fr: `${directoryTopBeachName} est le meilleur choix ${selectedDayPrefix}, car elle correspond bien aux conditions et combine mer agreable et acces pratique.`,
         de: `${directoryTopBeachName} ist ${selectedDayPrefix} die beste Wahl, weil sie gut zu den Bedingungen passt und angenehmes Meer mit praktischem Zugang verbindet.`,
-        it: `${directoryTopBeachName} e la scelta migliore ${selectedDayPrefix}, perche si adatta bene alle condizioni e combina mare piacevole con accesso pratico.`,
+        it: `${directoryTopBeachName} e la scelta migliore ${selectedDayPrefix}, perché si adatta bene alle condizioni e combina mare piacevole con accesso pratico.`,
       })
     : '';
   const getExactBeachPhoto = (item: SuitableBeach | null) => {
