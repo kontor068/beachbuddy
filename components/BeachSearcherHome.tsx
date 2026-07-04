@@ -543,13 +543,13 @@ const homeCopy: Record<LanguageCode, HomeCopy> = {
   en: {
     greece: 'Greece',
     hero: {
-      title: 'Find your ideal beach today',
+      title: 'Find your ideal beach in Greece today',
       subtitle: "Tailored to today's conditions and your beach preferences.",
       wind: 'Wind',
       waves: 'Waves',
       weather: 'Weather',
     },
-    searchPlaceholder: 'Island, region or beach',
+    searchPlaceholder: 'Search beaches',
     currentLocation: 'Near me',
     findingLocation: 'Finding location',
     fallbackFeatureCopy: 'Beaches, map and quick filters',
@@ -623,13 +623,13 @@ const homeCopy: Record<LanguageCode, HomeCopy> = {
   gr: {
     greece: 'Ελλάδα',
     hero: {
-      title: 'Βρες την ιδανική σου παραλία σήμερα',
+      title: 'Βρες την ιδανική σου παραλία στην Ελλάδα σήμερα',
       subtitle: 'Προσαρμοσμένη στις σημερινές συνθήκες και στις προτιμήσεις σου για παραλία.',
       wind: 'Άνεμος',
       waves: 'Κύμα',
       weather: 'Καιρός',
     },
-    searchPlaceholder: 'Νησί, περιοχή ή παραλία',
+    searchPlaceholder: 'Αναζήτηση παραλιών',
     currentLocation: 'Κοντά μου',
     findingLocation: 'Εύρεση τοποθεσίας',
     fallbackFeatureCopy: 'Παραλίες, χάρτης και γρήγορα φίλτρα',
@@ -703,13 +703,13 @@ const homeCopy: Record<LanguageCode, HomeCopy> = {
   fr: {
     greece: 'Grèce',
     hero: {
-      title: 'Trouvez votre plage idéale aujourd’hui',
+      title: 'Trouvez votre plage idéale en Grèce aujourd’hui',
       subtitle: 'Adaptée aux conditions du jour et à vos préférences de plage.',
       wind: 'Vent',
       waves: 'Vagues',
       weather: 'Météo',
     },
-    searchPlaceholder: 'Île, région ou plage',
+    searchPlaceholder: 'Rechercher des plages',
     currentLocation: 'Autour de moi',
     findingLocation: 'Recherche de position',
     fallbackFeatureCopy: 'Plages, carte et filtres rapides',
@@ -783,13 +783,13 @@ const homeCopy: Record<LanguageCode, HomeCopy> = {
   de: {
     greece: 'Griechenland',
     hero: {
-      title: 'Finde heute deinen idealen Strand',
+      title: 'Finde heute deinen idealen Strand in Griechenland',
       subtitle: 'Abgestimmt auf die heutigen Bedingungen und deine Strandvorlieben.',
       wind: 'Wind',
       waves: 'Wellen',
       weather: 'Wetter',
     },
-    searchPlaceholder: 'Insel, Region oder Strand',
+    searchPlaceholder: 'Strände suchen',
     currentLocation: 'In der Nähe',
     findingLocation: 'Standort wird gesucht',
     fallbackFeatureCopy: 'Strände, Karte und Schnellfilter',
@@ -863,13 +863,13 @@ const homeCopy: Record<LanguageCode, HomeCopy> = {
   it: {
     greece: 'Grecia',
     hero: {
-      title: 'Trova la tua spiaggia ideale oggi',
+      title: 'Trova la tua spiaggia ideale in Grecia oggi',
       subtitle: 'Su misura per le condizioni di oggi e le tue preferenze di spiaggia.',
       wind: 'Vento',
       waves: 'Onde',
       weather: 'Meteo',
     },
-    searchPlaceholder: 'Isola, regione o spiaggia',
+    searchPlaceholder: 'Cerca spiagge',
     currentLocation: 'Vicino a me',
     findingLocation: 'Ricerca posizione',
     fallbackFeatureCopy: 'Spiagge, mappa e filtri rapidi',
@@ -2716,36 +2716,6 @@ export const BeachSearcherHome: React.FC<BeachSearcherHomeProps> = ({
           {searchedBeachStripText && (
             <p className="mt-0.5 truncate text-sm font-semibold text-white/90">
               {searchedBeachStripText}
-            </p>
-          )}
-          {/* Wind-guidance line only — no "N of M beaches look good" count.
-              At 4–5 Bft that count reads like "great for a swim" when it isn't;
-              the honest, useful framing is which sheltered coast to head for.
-              Mobile gets the condensed shore+time line, desktop the full sentence. */}
-          {/* The region note below ("πιο ήρεμα στα …") says the same thing as this
-              leeward-shore line, so when it's present we drop this one to avoid the
-              duplicate; this line stays as the fallback whenever the region note is
-              absent (the common case) so there's always wind guidance. */}
-          {!singleMatchedBeachCard && contextStripDaySummary && !regionWindNote && (
-            isMobileViewport ? (
-              // Wrap to two lines instead of truncating: the condensed line can still
-              // be long with the bigger compass words (e.g. «Ευνοούνται οι
-              // βορειοανατολικές»), and the strip's min-height lets it grow.
-              <p className="mt-0.5 line-clamp-2 text-sm font-semibold leading-snug text-white/90">
-                {contextStripDaySummary.short}
-              </p>
-            ) : (
-              <p className="mt-0.5 line-clamp-2 text-sm font-medium leading-snug text-white/90">
-                {contextStripDaySummary.text}
-              </p>
-            )
-          )}
-          {!singleMatchedBeachCard && regionWindNote && (
-            // Same wrap fix as the wind line above: this "calmer in the … of the area"
-            // note (its own source — regionWindVariation) was truncating on mobile.
-            <p className="mt-0.5 flex items-start gap-1.5 text-sm font-semibold text-white/90">
-              <MapPin className="mt-0.5 h-3.5 w-3.5 shrink-0" aria-hidden="true" />
-              <span className="min-w-0 line-clamp-2 leading-snug">{regionWindNote}</span>
             </p>
           )}
         </div>

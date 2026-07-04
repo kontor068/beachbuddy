@@ -112,14 +112,14 @@ const Header: React.FC<HeaderProps> = ({
           <div className="flex min-w-0 shrink-0 items-center gap-3">
             <img
               src="/calmbeach-mark.svg"
-              alt="Calm Beach Greece"
-              className="h-9 w-9 shrink-0"
-              width={36}
-              height={36}
+              alt="CalmBeach"
+              className="h-[39px] w-[39px] shrink-0"
+              width={39}
+              height={39}
             />
             <div className="min-w-0">
-              <span className="block truncate text-base font-extrabold leading-tight tracking-normal text-[#007a83] sm:text-xl">
-                Calm Beach Greece
+              <span className="block truncate text-[17.5px] font-extrabold leading-tight tracking-normal text-[#007a83] sm:text-[22px]">
+                CalmBeach
               </span>
             </div>
           </div>
