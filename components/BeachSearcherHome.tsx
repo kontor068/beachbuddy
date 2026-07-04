@@ -549,7 +549,7 @@ const homeCopy: Record<LanguageCode, HomeCopy> = {
       waves: 'Waves',
       weather: 'Weather',
     },
-    searchPlaceholder: 'Search island, region or beach',
+    searchPlaceholder: 'Island, region or beach',
     currentLocation: 'Near me',
     findingLocation: 'Finding location',
     fallbackFeatureCopy: 'Beaches, map and quick filters',
