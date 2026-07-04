@@ -250,16 +250,24 @@ export const buildWeatherNowContent = (input: WeatherNowInput): WeatherNowConten
   const shelteredNow = input.canClaimWindProtection || (input.protectedFrom || []).includes(input.windDir);
   const bft = Math.round(input.beaufort);
   let liveSentence: string;
+  // "now/τώρα/maintenant…" is only truthful for today. For a future day the same block
+  // shows that day's forecast values, so the wording must be time-neutral (no "now").
   if (shelteredNow) {
     const adjGr = GR_WIND_ADJ_ACC[input.windDir];
     const adjEn = EN_WIND_ADJ[input.windDir];
-    liveSentence = { en: `With the ${adjEn} wind of ${bft} Bft blowing now, it is relatively sheltered here.`, gr: `Με ${adjGr} άνεμο ${bft} Bft που φυσάει τώρα, εδώ είναι σχετικά υπήνεμα.`, de: `Bei ${bft} Bft Wind ist es hier gerade relativ geschützt.`, fr: `Avec un vent de ${bft} Bft en ce moment, c'est relativement abrité ici.`, it: `Con vento di ${bft} Bft in questo momento, qui è relativamente riparato.` }[lang];
+    liveSentence = isToday
+      ? { en: `With the ${adjEn} wind of ${bft} Bft blowing now, it is relatively sheltered here.`, gr: `Με ${adjGr} άνεμο ${bft} Bft που φυσάει τώρα, εδώ είναι σχετικά υπήνεμα.`, de: `Bei ${bft} Bft Wind ist es hier gerade relativ geschützt.`, fr: `Avec un vent de ${bft} Bft en ce moment, c'est relativement abrité ici.`, it: `Con vento di ${bft} Bft in questo momento, qui è relativamente riparato.` }[lang]
+      : { en: `With the ${adjEn} wind of ${bft} Bft, it is relatively sheltered here.`, gr: `Με ${adjGr} άνεμο ${bft} Bft, εδώ είναι σχετικά υπήνεμα.`, de: `Bei ${bft} Bft Wind ist es hier relativ geschützt.`, fr: `Avec un vent de ${bft} Bft, c'est relativement abrité ici.`, it: `Con vento di ${bft} Bft, qui è relativamente riparato.` }[lang];
   } else if (input.isExposedToTodayWind) {
     const adjGr = GR_WIND_ADJ_NOM[input.windDir];
     const adjEn = EN_WIND_ADJ[input.windDir];
-    liveSentence = { en: `The ${adjEn} wind of ${bft} Bft hits more directly now, so expect some chop.`, gr: `Ο ${adjGr} άνεμος ${bft} Bft χτυπάει πιο άμεσα τώρα, οπότε περίμενε κάποιο κύμα.`, de: `Der Wind von ${bft} Bft trifft gerade direkter – rechne mit etwas Welle.`, fr: `Le vent de ${bft} Bft frappe plus directement maintenant, attends-toi à un peu de clapot.`, it: `Il vento di ${bft} Bft colpisce più direttamente ora, aspettati un po' di moto ondoso.` }[lang];
+    liveSentence = isToday
+      ? { en: `The ${adjEn} wind of ${bft} Bft hits more directly now, so expect some chop.`, gr: `Ο ${adjGr} άνεμος ${bft} Bft χτυπάει πιο άμεσα τώρα, οπότε περίμενε κάποιο κύμα.`, de: `Der Wind von ${bft} Bft trifft gerade direkter – rechne mit etwas Welle.`, fr: `Le vent de ${bft} Bft frappe plus directement maintenant, attends-toi à un peu de clapot.`, it: `Il vento di ${bft} Bft colpisce più direttamente ora, aspettati un po' di moto ondoso.` }[lang]
+      : { en: `The ${adjEn} wind of ${bft} Bft hits more directly here, so expect some chop.`, gr: `Ο ${adjGr} άνεμος ${bft} Bft χτυπάει πιο άμεσα εδώ, οπότε περίμενε κάποιο κύμα.`, de: `Der Wind von ${bft} Bft trifft direkter – rechne mit etwas Welle.`, fr: `Le vent de ${bft} Bft frappe plus directement, attends-toi à un peu de clapot.`, it: `Il vento di ${bft} Bft colpisce più direttamente, aspettati un po' di moto ondoso.` }[lang];
   } else {
-    liveSentence = { en: `The wind is ${bft} Bft right now — moderate conditions.`, gr: `Ο άνεμος τώρα είναι ${bft} Bft — μέτριες συνθήκες.`, de: `Der Wind beträgt gerade ${bft} Bft – mäßige Bedingungen.`, fr: `Le vent est de ${bft} Bft maintenant — conditions modérées.`, it: `Il vento è di ${bft} Bft ora — condizioni moderate.` }[lang];
+    liveSentence = isToday
+      ? { en: `The wind is ${bft} Bft right now — moderate conditions.`, gr: `Ο άνεμος τώρα είναι ${bft} Bft — μέτριες συνθήκες.`, de: `Der Wind beträgt gerade ${bft} Bft – mäßige Bedingungen.`, fr: `Le vent est de ${bft} Bft maintenant — conditions modérées.`, it: `Il vento è di ${bft} Bft ora — condizioni moderate.` }[lang]
+      : { en: `The wind is ${bft} Bft — moderate conditions.`, gr: `Ο άνεμος είναι ${bft} Bft — μέτριες συνθήκες.`, de: `Der Wind beträgt ${bft} Bft – mäßige Bedingungen.`, fr: `Le vent est de ${bft} Bft — conditions modérées.`, it: `Il vento è di ${bft} Bft — condizioni moderate.` }[lang];
   }
 
   return { heading, verdict, tone, windLabel, windValue, waveLabel, waveValue, stableDescription, liveSentence, loadingLabel };
