@@ -543,13 +543,13 @@ const homeCopy: Record<LanguageCode, HomeCopy> = {
   en: {
     greece: 'Greece',
     hero: {
-      title: "Find today's best beach",
-      subtitle: "Ranked by today's wind, waves and weather, so you don't pick the wrong beach.",
+      title: 'Find your ideal beach today',
+      subtitle: "Tailored to today's conditions and your beach preferences.",
       wind: 'Wind',
       waves: 'Waves',
       weather: 'Weather',
     },
-    searchPlaceholder: 'Location or beach',
+    searchPlaceholder: 'Search island, region or beach',
     currentLocation: 'Near me',
     findingLocation: 'Finding location',
     fallbackFeatureCopy: 'Beaches, map and quick filters',
@@ -623,13 +623,13 @@ const homeCopy: Record<LanguageCode, HomeCopy> = {
   gr: {
     greece: 'Ελλάδα',
     hero: {
-      title: 'Βρες την καλύτερη παραλία για σήμερα',
-      subtitle: 'Με βάση τον σημερινό άνεμο, το κύμα και τον καιρό — για να μην πας σε λάθος παραλία.',
+      title: 'Βρες την ιδανική σου παραλία σήμερα',
+      subtitle: 'Προσαρμοσμένη στις σημερινές συνθήκες και στις προτιμήσεις σου για παραλία.',
       wind: 'Άνεμος',
       waves: 'Κύμα',
       weather: 'Καιρός',
     },
-    searchPlaceholder: 'Περιοχή ή παραλία',
+    searchPlaceholder: 'Νησί, περιοχή ή παραλία',
     currentLocation: 'Κοντά μου',
     findingLocation: 'Εύρεση τοποθεσίας',
     fallbackFeatureCopy: 'Παραλίες, χάρτης και γρήγορα φίλτρα',
@@ -703,13 +703,13 @@ const homeCopy: Record<LanguageCode, HomeCopy> = {
   fr: {
     greece: 'Grèce',
     hero: {
-      title: 'Trouvez la meilleure plage du jour',
-      subtitle: 'Classées selon le vent, les vagues et la météo du jour, pour ne pas vous tromper de plage.',
+      title: 'Trouvez votre plage idéale aujourd’hui',
+      subtitle: 'Adaptée aux conditions du jour et à vos préférences de plage.',
       wind: 'Vent',
       waves: 'Vagues',
       weather: 'Météo',
     },
-    searchPlaceholder: 'Lieu ou plage',
+    searchPlaceholder: 'Île, région ou plage',
     currentLocation: 'Autour de moi',
     findingLocation: 'Recherche de position',
     fallbackFeatureCopy: 'Plages, carte et filtres rapides',
@@ -783,13 +783,13 @@ const homeCopy: Record<LanguageCode, HomeCopy> = {
   de: {
     greece: 'Griechenland',
     hero: {
-      title: 'Finde heute den besten Strand',
-      subtitle: 'Sortiert nach Wind, Wellen und Wetter von heute – damit du nicht am falschen Strand landest.',
+      title: 'Finde heute deinen idealen Strand',
+      subtitle: 'Abgestimmt auf die heutigen Bedingungen und deine Strandvorlieben.',
       wind: 'Wind',
       waves: 'Wellen',
       weather: 'Wetter',
     },
-    searchPlaceholder: 'Ort oder Strand',
+    searchPlaceholder: 'Insel, Region oder Strand',
     currentLocation: 'In der Nähe',
     findingLocation: 'Standort wird gesucht',
     fallbackFeatureCopy: 'Strände, Karte und Schnellfilter',
@@ -863,13 +863,13 @@ const homeCopy: Record<LanguageCode, HomeCopy> = {
   it: {
     greece: 'Grecia',
     hero: {
-      title: 'Trova la spiaggia migliore di oggi',
-      subtitle: 'In base a vento, onde e meteo di oggi, così non sbagli spiaggia.',
+      title: 'Trova la tua spiaggia ideale oggi',
+      subtitle: 'Su misura per le condizioni di oggi e le tue preferenze di spiaggia.',
       wind: 'Vento',
       waves: 'Onde',
       weather: 'Meteo',
     },
-    searchPlaceholder: 'Località o spiaggia',
+    searchPlaceholder: 'Isola, regione o spiaggia',
     currentLocation: 'Vicino a me',
     findingLocation: 'Ricerca posizione',
     fallbackFeatureCopy: 'Spiagge, mappa e filtri rapidi',
@@ -3247,21 +3247,6 @@ export const BeachSearcherHome: React.FC<BeachSearcherHomeProps> = ({
             <p className="mt-1.5 max-w-xl text-sm font-semibold leading-snug text-slate-600 sm:text-[15px]">
               {copy.hero.subtitle}
             </p>
-            <div className="mt-2.5 flex flex-wrap items-center gap-1.5">
-              {[
-                { key: 'wind', icon: <Wind className="h-3.5 w-3.5" aria-hidden="true" />, label: copy.hero.wind },
-                { key: 'waves', icon: <Waves className="h-3.5 w-3.5" aria-hidden="true" />, label: copy.hero.waves },
-                { key: 'weather', icon: <CloudSun className="h-3.5 w-3.5" aria-hidden="true" />, label: copy.hero.weather },
-              ].map(chip => (
-                <span
-                  key={chip.key}
-                  className="inline-flex items-center gap-1.5 rounded-full border border-cyan-100 bg-cyan-50/70 px-2.5 py-1 text-[11px] font-bold leading-none text-[#007a83]"
-                >
-                  {chip.icon}
-                  {chip.label}
-                </span>
-              ))}
-            </div>
           </div>
         )}
         <form
