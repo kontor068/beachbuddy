@@ -36,14 +36,6 @@ const headerCopy: Record<SupportedLanguage, { changeLanguage: string }> = {
   it: { changeLanguage: 'Cambia lingua' },
 };
 
-const headerTaglineCopy: Record<SupportedLanguage, string> = {
-  en: 'Find the most ideal beach today',
-  gr: 'Βρες την πιο ιδανική παραλία σήμερα',
-  fr: 'Trouvez la plage idéale aujourd’hui',
-  de: 'Finde heute den idealen Strand',
-  it: 'Trova oggi la spiaggia ideale',
-};
-
 const getNextLocalMidnightDelay = (date: Date = new Date()): number => {
   const nextMidnight = new Date(date);
   nextMidnight.setDate(nextMidnight.getDate() + 1);
@@ -64,7 +56,6 @@ const Header: React.FC<HeaderProps> = ({
   const languageMenuRef = useRef<HTMLDivElement>(null);
   const languageLabel = languageLabels[language].label;
   const switchLanguageLabel = getLocalizedCopy(language, headerCopy).changeLanguage;
-  const tagline = headerTaglineCopy[language] || headerTaglineCopy.en;
   const headerDateLabel = useMemo(() => {
     return new Intl.DateTimeFormat(languageToDateLocale(language), {
       weekday: 'long',
@@ -129,15 +120,6 @@ const Header: React.FC<HeaderProps> = ({
             <div className="min-w-0">
               <span className="block truncate text-base font-extrabold leading-tight tracking-normal text-[#007a83] sm:text-xl">
                 Calm Beach Greece
-              </span>
-              <span
-                className="ml-1.5 mt-0.5 block truncate text-[11px] font-semibold italic leading-[1.05] text-[#00879a]/78 sm:ml-2 sm:text-[12px]"
-                style={{
-                  fontFamily: '"Segoe Print", "Bradley Hand ITC", "Comic Sans MS", cursive',
-                  letterSpacing: 0,
-                }}
-              >
-                {tagline}
               </span>
             </div>
           </div>

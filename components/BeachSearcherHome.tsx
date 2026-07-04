@@ -93,6 +93,9 @@ type BeachCardContext = Beach & {
 interface BeachSearcherHomeProps {
   language: SupportedLanguage;
   selectedIsland: Island | null;
+  /** True only for a first-time visitor (never seen the value prop before), regardless of
+   *  entry point — homepage or a region page from a search result. Gates the value-prop block. */
+  showLandingValueProp?: boolean;
   allIslands: Island[];
   /** Plain "calmer in the X of the area today" line, when the region's per-beach
    *  winds show one side clearly calmer. Omitted when conditions are uniform. */
@@ -456,6 +459,14 @@ const normalizeBeachSearchQuery = (
 
 type HomeCopy = {
   greece: string;
+  /** Landing-state value proposition, shown only before an island/area is picked. */
+  hero: {
+    title: string;
+    subtitle: string;
+    wind: string;
+    waves: string;
+    weather: string;
+  };
   searchPlaceholder: string;
   currentLocation: string;
   findingLocation: string;
@@ -531,6 +542,13 @@ type HomeCopy = {
 const homeCopy: Record<LanguageCode, HomeCopy> = {
   en: {
     greece: 'Greece',
+    hero: {
+      title: "Find today's best beach",
+      subtitle: "Ranked by today's wind, waves and weather, so you don't pick the wrong beach.",
+      wind: 'Wind',
+      waves: 'Waves',
+      weather: 'Weather',
+    },
     searchPlaceholder: 'Location or beach',
     currentLocation: 'Near me',
     findingLocation: 'Finding location',
@@ -604,6 +622,13 @@ const homeCopy: Record<LanguageCode, HomeCopy> = {
   },
   gr: {
     greece: 'Ελλάδα',
+    hero: {
+      title: 'Βρες την καλύτερη παραλία για σήμερα',
+      subtitle: 'Με βάση τον σημερινό άνεμο, το κύμα και τον καιρό — για να μην πας σε λάθος παραλία.',
+      wind: 'Άνεμος',
+      waves: 'Κύμα',
+      weather: 'Καιρός',
+    },
     searchPlaceholder: 'Περιοχή ή παραλία',
     currentLocation: 'Κοντά μου',
     findingLocation: 'Εύρεση τοποθεσίας',
@@ -677,6 +702,13 @@ const homeCopy: Record<LanguageCode, HomeCopy> = {
   },
   fr: {
     greece: 'Grèce',
+    hero: {
+      title: 'Trouvez la meilleure plage du jour',
+      subtitle: 'Classées selon le vent, les vagues et la météo du jour, pour ne pas vous tromper de plage.',
+      wind: 'Vent',
+      waves: 'Vagues',
+      weather: 'Météo',
+    },
     searchPlaceholder: 'Lieu ou plage',
     currentLocation: 'Autour de moi',
     findingLocation: 'Recherche de position',
@@ -750,6 +782,13 @@ const homeCopy: Record<LanguageCode, HomeCopy> = {
   },
   de: {
     greece: 'Griechenland',
+    hero: {
+      title: 'Finde heute den besten Strand',
+      subtitle: 'Sortiert nach Wind, Wellen und Wetter von heute – damit du nicht am falschen Strand landest.',
+      wind: 'Wind',
+      waves: 'Wellen',
+      weather: 'Wetter',
+    },
     searchPlaceholder: 'Ort oder Strand',
     currentLocation: 'In der Nähe',
     findingLocation: 'Standort wird gesucht',
@@ -823,6 +862,13 @@ const homeCopy: Record<LanguageCode, HomeCopy> = {
   },
   it: {
     greece: 'Grecia',
+    hero: {
+      title: 'Trova la spiaggia migliore di oggi',
+      subtitle: 'In base a vento, onde e meteo di oggi, così non sbagli spiaggia.',
+      wind: 'Vento',
+      waves: 'Onde',
+      weather: 'Meteo',
+    },
     searchPlaceholder: 'Località o spiaggia',
     currentLocation: 'Vicino a me',
     findingLocation: 'Ricerca posizione',
@@ -1487,6 +1533,7 @@ const withCount = (label: string, count?: number): string => (
 export const BeachSearcherHome: React.FC<BeachSearcherHomeProps> = ({
   language,
   selectedIsland,
+  showLandingValueProp,
   allIslands,
   regionWindNote,
   searchQuery,
@@ -3188,6 +3235,35 @@ export const BeachSearcherHome: React.FC<BeachSearcherHomeProps> = ({
 
       <div className="relative mx-auto max-w-[110rem] px-4 pb-1 pt-2 sm:px-5 sm:pb-2 sm:pt-6 lg:px-6">
         <section className="relative z-[120] mx-auto w-full max-w-[110rem] overflow-visible rounded-[1.5rem] border border-white/60 bg-white/76 p-3 pb-1 shadow-xl shadow-slate-950/14 ring-1 ring-white/35 backdrop-blur-xl sm:p-4 sm:pb-2">
+        {/* Value proposition: tells a first-time visitor in one glance that CalmBeach ranks
+            beaches by today's conditions — not a directory. Shown once to genuine newcomers on
+            any entry point (homepage or a region page from search); never shown again to
+            returning users, so the decision surface stays clean. */}
+        {showLandingValueProp && (
+          <div className="mb-3 border-b border-slate-200/70 pb-3 sm:mb-4 sm:pb-4">
+            <h1 className="text-xl font-extrabold leading-tight tracking-tight text-slate-950 sm:text-[1.7rem]">
+              {copy.hero.title}
+            </h1>
+            <p className="mt-1.5 max-w-xl text-sm font-semibold leading-snug text-slate-600 sm:text-[15px]">
+              {copy.hero.subtitle}
+            </p>
+            <div className="mt-2.5 flex flex-wrap items-center gap-1.5">
+              {[
+                { key: 'wind', icon: <Wind className="h-3.5 w-3.5" aria-hidden="true" />, label: copy.hero.wind },
+                { key: 'waves', icon: <Waves className="h-3.5 w-3.5" aria-hidden="true" />, label: copy.hero.waves },
+                { key: 'weather', icon: <CloudSun className="h-3.5 w-3.5" aria-hidden="true" />, label: copy.hero.weather },
+              ].map(chip => (
+                <span
+                  key={chip.key}
+                  className="inline-flex items-center gap-1.5 rounded-full border border-cyan-100 bg-cyan-50/70 px-2.5 py-1 text-[11px] font-bold leading-none text-[#007a83]"
+                >
+                  {chip.icon}
+                  {chip.label}
+                </span>
+              ))}
+            </div>
+          </div>
+        )}
         <form
           className="flex flex-col gap-3"
           onSubmit={(event) => {

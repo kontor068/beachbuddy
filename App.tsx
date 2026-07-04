@@ -1568,7 +1568,7 @@ export const App: React.FC = () => {
 
   // --- Beach & Weather Data (Custom Hooks) ---
   const { allIslands, loading: beachesLoading, error: beachesError, getFilteredBeaches, ensureIslandBeachesLoaded, cacheLoadedIsland } = useBeaches(language);
-  const { selectedIsland, selectIsland, selectAdHocRegion } = useLocation(allIslands);
+  const { selectedIsland, selectIsland, selectAdHocRegion, showValueProp } = useLocation(allIslands);
   const isNearMeRegionActive = selectedIsland?.id === NEAR_ME_REGION_ID;
   const { weather, forecast: rawForecast, forecastIslandId, beachForecasts, loading: weatherLoading, error: weatherError, selectedDayIndex, setSelectedDayIndex, loadWeatherData, lastUpdated } = useWeather(selectedIsland, language);
   // On a region switch `selectedIsland` updates synchronously, but the new region's
@@ -5550,6 +5550,7 @@ export const App: React.FC = () => {
             <BeachSearcherHome
               language={language}
               selectedIsland={selectedIsland}
+              showLandingValueProp={showValueProp}
               allIslands={allIslands}
               regionWindNote={regionWindVariationNote?.text}
               searchQuery={beachSearchQuery}

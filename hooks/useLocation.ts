@@ -1,13 +1,39 @@
-import { useCallback, useMemo, useState } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 import { Island } from '../types';
 import { getActiveWeatherFixtureTargetRegionId } from '../utils/weatherFixtures';
 import { parseBeachDetailPath, parseBeachRegionPath, regionMatchesRouteParam } from '../utils/beachUrls';
+
+// One-time flag: once a visitor has seen the homepage value proposition, they are a
+// returning user and never see it again — on any entry point.
+const VALUE_PROP_SEEN_STORAGE_KEY = 'calmBeachValuePropSeen';
 
 export const useLocation = (allIslands: Island[]) => {
   const [selectedIslandId, setSelectedIslandId] = useState<string | undefined>(() => {
     const route = parseBeachDetailPath() || parseBeachRegionPath();
     return route?.regionId || getActiveWeatherFixtureTargetRegionId() || localStorage.getItem('selectedIslandId') || undefined;
   });
+
+  // Drives the value-proposition block. True only for a genuine first-time visitor,
+  // regardless of where they land — the homepage OR a region page arrived at from a Google
+  // result. Captured once at init, BEFORE the "seen" flag is written below, so the current
+  // session keeps showing it while any later visit (any entry point) hides it. Returning
+  // users never see it again.
+  const [showValueProp] = useState<boolean>(() => {
+    try {
+      return !window.localStorage.getItem(VALUE_PROP_SEEN_STORAGE_KEY);
+    } catch {
+      return false;
+    }
+  });
+
+  useEffect(() => {
+    if (!showValueProp) return;
+    try {
+      window.localStorage.setItem(VALUE_PROP_SEEN_STORAGE_KEY, '1');
+    } catch {
+      // Storage disabled (private mode): the value prop simply shows each visit.
+    }
+  }, [showValueProp]);
 
   // A synthetic, in-memory region that is NOT part of allIslands — currently used
   // for the cross-region "Κοντά μου" view, whose beaches are merged from several
@@ -41,6 +67,7 @@ export const useLocation = (allIslands: Island[]) => {
   return {
     selectedIsland,
     selectIsland,
-    selectAdHocRegion
+    selectAdHocRegion,
+    showValueProp
   };
 };
