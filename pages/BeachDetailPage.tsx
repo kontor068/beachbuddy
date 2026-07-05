@@ -394,8 +394,10 @@ const getSeaConditionDisplay = (
   }
 
   if (seaScore >= 8) {
-    const verifiedProtectedCalm = canClaimWindProtection && seaCalmClaimAllowed;
-    const verifiedShelter = canClaimWindProtection;
+    // isExposed here is the map-aligned flag (see caller): never call a red-pin beach
+    // "sheltered", even if its static protection claim and a calm score would allow it.
+    const verifiedProtectedCalm = canClaimWindProtection && seaCalmClaimAllowed && !isExposed;
+    const verifiedShelter = canClaimWindProtection && !isExposed;
     return {
       value: { en: 'Good sea', gr: 'Καλή εικόνα', de: 'Gute See', it: 'Buon mare', fr: 'Bonne mer' }[language],
       subValue: verifiedProtectedCalm
@@ -718,6 +720,16 @@ export const BeachDetailPage: React.FC<BeachDetailPageProps> = ({
   const { score, exposureLevel, swimmingComfort, canClaimWindProtection = false, seaCalmClaimAllowed = false } = scoreResult;
   const isExposed = exposureLevel ? exposureLevel !== 'protected' : true;
   const isExposedToTodayWind = exposureLevel ? exposureLevel === 'exposed' : isExposed;
+  // The map pin the user sees can read one band redder than the scoring engine (see
+  // utils/mapExposure). Any user-facing "sheltered/protected" wording must respect the pin,
+  // so reconcile copy inputs to the pin's level — never to the sea SCORE, which stays on the
+  // engine level above. Mirrors how the home cards gate their labels (BeachSearcherHome).
+  // mapExposureLevelOverride is the region-map-aligned level App feeds in.
+  const mapAlignedExposureLevel = mapExposureLevelOverride ?? exposureLevel;
+  const isExposedForCopy = isExposedToTodayWind || mapAlignedExposureLevel === 'exposed';
+  // Never let a red-pin beach claim wind protection in copy, even if its authored profile /
+  // scoring would allow it (same gate as BeachSearcherHome).
+  const canClaimWindProtectionForCopy = canClaimWindProtection && mapAlignedExposureLevel !== 'exposed';
   const measuredWaveHeightM = weatherData.marine?.waveHeightM;
   const waveHeightM = scoreResult.waveHeightM ?? measuredWaveHeightM;
   // Show the EFFECTIVE wave on the visual too — NOT the raw marine grid value. The marine (wave)
@@ -762,7 +774,7 @@ export const BeachDetailPage: React.FC<BeachDetailPageProps> = ({
   const detailBadgeScore = getDetailBadgeScore(score, seaConditionScore, isExposed);
   const beaufortLevel = getBeaufortLevel(windSpeedKmh);
   const isBoatOnlyBeach = hasBoatOnlyAccess(beach);
-  const seaConditionDisplay = getSeaConditionDisplay(seaConditionScore, isExposedToTodayWind, language, selectedDate, canClaimWindProtection, seaCalmClaimAllowed, beaufortLevel, displayWaveHeightM, selectedHour, isBoatOnlyBeach);
+  const seaConditionDisplay = getSeaConditionDisplay(seaConditionScore, isExposedForCopy, language, selectedDate, canClaimWindProtection, seaCalmClaimAllowed, beaufortLevel, displayWaveHeightM, selectedHour, isBoatOnlyBeach);
   const boatRideConditionLabel = {
     en: 'Ride',
     gr: 'Συνθήκες πλεύσης',
@@ -792,12 +804,15 @@ export const BeachDetailPage: React.FC<BeachDetailPageProps> = ({
     waveHeightM: displayWaveHeightM,
     isWaveEstimate,
     protectedFrom: Array.isArray(beach.protectedFrom) ? beach.protectedFrom : [],
+    // Keep the sentence honest against the pin the user sees: use the region-map-aligned
+    // exposure override when present, else the scoring level.
+    mapExposureLevel: mapExposureLevelOverride ?? exposureLevel,
     faces: beach.orientation?.faces ?? [],
     canClaimWindProtection,
     isExposedToTodayWind,
     seaConditionScore,
     isBoatAccess: isBoatOnlyBeach,
-  }), [beachDisplayName, language, selectedDayIsToday, weatherNowDataReady, windDir, beaufortLevel, displayWaveHeightM, isWaveEstimate, beach.protectedFrom, beach.orientation?.faces, canClaimWindProtection, isExposedToTodayWind, seaConditionScore, isBoatOnlyBeach]);
+  }), [beachDisplayName, language, selectedDayIsToday, weatherNowDataReady, windDir, beaufortLevel, displayWaveHeightM, isWaveEstimate, beach.protectedFrom, beach.orientation?.faces, canClaimWindProtection, isExposedToTodayWind, mapExposureLevelOverride, exposureLevel, seaConditionScore, isBoatOnlyBeach]);
   const weatherNowToneClass = weatherNow.tone === 'calm'
     ? 'bg-emerald-50 text-emerald-700'
     : weatherNow.tone === 'choppy'
@@ -1261,8 +1276,8 @@ export const BeachDetailPage: React.FC<BeachDetailPageProps> = ({
             waveHeightM={waveHeightM}
             swimmingComfort={swimmingComfort}
             noIdealSwimmingWindow={swimWindowDisplay.tone === 'avoid'}
-            exposureLevel={exposureLevel}
-            canClaimWindProtection={canClaimWindProtection}
+            exposureLevel={mapAlignedExposureLevel}
+            canClaimWindProtection={canClaimWindProtectionForCopy}
             selectedHour={selectedHour}
             boatAccess={isBoatOnlyBeach}
             forceShow
@@ -1344,8 +1359,8 @@ export const BeachDetailPage: React.FC<BeachDetailPageProps> = ({
             selectedHour={selectedHour}
             boatAccess={isBoatOnlyBeach}
             windBeaufort={beaufortLevel}
-            exposureLevel={exposureLevel}
-            canClaimWindProtection={canClaimWindProtection}
+            exposureLevel={mapAlignedExposureLevel}
+            canClaimWindProtection={canClaimWindProtectionForCopy}
           />
           <div className={`grid grid-cols-2 gap-2.5 ${typeof seaTemperatureC === 'number' ? 'md:grid-cols-4' : 'md:grid-cols-3'}`}>
             <ConditionCard
