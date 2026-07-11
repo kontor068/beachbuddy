@@ -97,7 +97,7 @@ export const PrivacyConsentBanner: React.FC<PrivacyConsentBannerProps> = ({ lang
         <div className="min-w-0 flex-1">
           <h2 id="privacy-consent-title" className="text-xs font-bold text-slate-900 md:text-sm">{c.title}</h2>
           <p id="privacy-consent-description" className="mt-0.5 hidden text-[11px] leading-snug text-slate-600 sm:line-clamp-2 md:text-xs md:leading-relaxed">{c.body}</p>
-          <div className="mt-1 hidden flex-wrap items-center gap-x-3 gap-y-1 text-[11px] font-extrabold text-sky-700 sm:flex md:mt-2">
+          <div className="mt-1 flex flex-wrap items-center gap-x-3 gap-y-1 text-[11px] font-extrabold text-sky-700 md:mt-2">
             <button type="button" onClick={() => openLegalModal('terms')} className="underline-offset-4 hover:underline focus:outline-none focus-visible:ring-2 focus-visible:ring-sky-500">
               {c.terms}
             </button>
