@@ -78,10 +78,10 @@ export const SecretBeachesSection: React.FC<SecretBeachesSectionProps> = ({
                   {(() => {
                     const canClaimWindProtection = (item as { canClaimWindProtection?: boolean }).canClaimWindProtection === true;
                     const label = item.isExposed
-                      ? (language === 'gr' ? 'Πιο ανοιχτή στον άνεμο' : 'More open to wind')
+                      ? (language === 'gr' ? 'Πιο εκτεθειμένη στον άνεμο' : 'More exposed to wind')
                       : canClaimWindProtection
                         ? (language === 'gr' ? 'Πιο προστατευμένη' : 'Likely sheltered')
-                        : (language === 'gr' ? 'Έλεγχος τοπικής έκθεσης' : 'Check local exposure');
+                        : (language === 'gr' ? 'Έλεγχος τοπικής προστασίας' : 'Check local shelter');
 
                     return (
                       <>

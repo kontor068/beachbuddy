@@ -116,9 +116,23 @@ const tierCopy: Record<LanguageCode, TierCopy> = {
   },
 };
 
+// From 7 Bft up the day is a hard "avoid", so the skip verdict is stated more firmly
+// ("Ακατάλληλη σήμερα" / "unsuitable today") than the softer "better another day" the same
+// tier uses for a merely poor day (rough sea / weak pick at 5–6 Bft). This mirrors the map's
+// wind colour guide, where 7-10 Bft reads "Ακατάλληλη!" and 5-6 Bft exposed reads "Δύσκολη".
+const severeSkipCopy: Record<LanguageCode, TierLabel> = {
+  en: dayLabel('Not suitable today', (day) => `Not suitable ${day}`),
+  gr: dayLabel('Ακατάλληλη σήμερα', (day) => `Ακατάλληλη ${day}`),
+  fr: dayLabel("Impraticable aujourd'hui", (day) => `Impraticable ${day}`),
+  de: dayLabel('Heute ungeeignet', (day) => `Ungeeignet ${day}`),
+  it: dayLabel('Non adatta oggi', (day) => `Non adatta ${day}`),
+};
+
 export interface ExperienceTierLabelOptions {
   selectedDate?: Date;
   selectedHour?: number;
+  /** Lets the skip verdict harden to "Ακατάλληλη σήμερα" from 7 Bft up (near-gale). */
+  windBeaufort?: number;
 }
 
 export const getExperienceTierLabel = (
@@ -130,6 +144,9 @@ export const getExperienceTierLabel = (
   const day = hour ?? getSelectedDayPrefix(options.selectedDate, new Date(), language);
   const isToday = isSelectedDateToday(options.selectedDate);
   const useCurrentPhrase = isToday && !hour;
+  if (tier === 'skip' && typeof options.windBeaufort === 'number' && options.windBeaufort >= 7) {
+    return getLocalizedCopy(language, severeSkipCopy)(day, useCurrentPhrase);
+  }
   const copy = getLocalizedCopy(language, tierCopy);
   return copy[tier](day, useCurrentPhrase);
 };

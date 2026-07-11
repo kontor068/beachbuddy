@@ -172,7 +172,7 @@ interface BeachSearcherHomeProps {
   onBeachClick: (beach: Beach) => void;
   onSelectIsland: (island: Island) => void;
   strongWindContext?: boolean;
-  /** True while the region's wind-exposure geometry is still loading. Cards hold back a favourable "sheltered/υπήνεμη" claim until it lands, so they never flash a label the geometry then retracts. */
+  /** True while the region's wind-exposure geometry is still loading. Cards hold back a favourable "sheltered/προστατευμένη" claim until it lands, so they never flash a label the geometry then retracts. */
   isExposureLoading?: boolean;
 }
 
@@ -1374,11 +1374,11 @@ const getTopRecommendationsLabel = (language: LanguageCode, selectedDate: Date |
 
   if (typeof beaufort === 'number' && beaufort > 4) {
     return getLocalizedCopy(language, {
-      en: `Less exposed ${day}`,
-      gr: `Λιγότερο εκτεθειμένες ${day}`,
-      fr: `Moins exposées ${day}`,
-      de: `Weniger exponiert ${day}`,
-      it: `Meno esposte ${day}`,
+      en: `More sheltered ${day}`,
+      gr: `Πιο προστατευμένες ${day}`,
+      fr: `Plus abritées ${day}`,
+      de: `Besser geschützt ${day}`,
+      it: `Più riparate ${day}`,
     });
   }
 
@@ -1420,8 +1420,8 @@ const getTopBeachShortReason = (item: SuitableBeach, language: LanguageCode, sel
     en: {
       lead: `For ${day}`,
       separator: ', ',
-      windProtected: 'less exposed to the wind',
-      windPartial: 'partly sheltered from the wind',
+      windProtected: 'sheltered from the wind',
+      windPartial: 'with partial shelter from the wind',
       wave: (value: string) => `waves ${value} m`,
       calmSea: 'calmer sea signal',
       easyAccess: 'easy access',
@@ -1434,8 +1434,8 @@ const getTopBeachShortReason = (item: SuitableBeach, language: LanguageCode, sel
     gr: {
       lead: `Για ${day}`,
       separator: ', ',
-      windProtected: 'λιγότερο εκτεθειμένη στον άνεμο',
-      windPartial: 'μερικώς προστατευμένη από τον άνεμο',
+      windProtected: 'προστατευμένη από τον άνεμο',
+      windPartial: 'με μερική προστασία από τον άνεμο',
       wave: (value: string) => `κύμα ${value} m`,
       calmSea: 'ένδειξη για πιο ήρεμη θάλασσα',
       easyAccess: 'εύκολη πρόσβαση',

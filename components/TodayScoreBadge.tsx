@@ -165,7 +165,7 @@ export const TodayScoreBadge: React.FC<TodayScoreBadgeProps> = ({
       exposureLevel,
     });
     tone = experienceTierTone[tier];
-    label = getExperienceTierLabel(tier, language, { selectedDate, selectedHour });
+    label = getExperienceTierLabel(tier, language, { selectedDate, selectedHour, windBeaufort });
   }
 
   const BadgeIcon = boatAccess ? Ship : BarChart3;

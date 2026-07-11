@@ -1466,7 +1466,7 @@ export const calculateBeachScore = (
   } else if (baseBeaufort < MEANINGFUL_WIND_TOP_PICK_BEAUFORT) {
     reasons.push('Wind should not be a major issue today');
   } else if (finalExposureLevel === 'exposed' && windSpeedKmph > 15) {
-    reasons.push('More open to wind');
+    reasons.push('More exposed to wind');
   } else if (windSpeedKmph < 10) {
     reasons.push('Gentle breeze');
   } else if (windSpeedKmph <= 20) {
@@ -2118,7 +2118,7 @@ const generateLocalizedBeachExplanation = (
     } else if (isProtectedForCopy) {
       explanation = windSpeedKmph > 20 || isCautionSwimDay
         ? (windBeaufort === 5
-          ? `${greekBeachSubject} ${future ? 'θα είναι' : 'είναι'} πιο υπήνεμη επιλογή.`
+          ? `${greekBeachSubject} ${future ? 'θα είναι' : 'είναι'} πιο προστατευμένη επιλογή.`
           : `${greekBeachSubject} φαίνεται πιο κατάλληλη από ανοιχτές παραλίες ${day}, αλλά οι συνθήκες θέλουν προσοχή.`)
         : `${greekBeachSubject} φαίνεται πιθανόν πιο προστατευμένη από ανοιχτές παραλίες ${day}.`;
     } else {

@@ -267,8 +267,8 @@ export const buildWeatherNowContent = (input: WeatherNowInput): WeatherNowConten
     const adjGr = GR_WIND_ADJ_ACC[input.windDir];
     const adjEn = EN_WIND_ADJ[input.windDir];
     liveSentence = isToday
-      ? { en: `With the ${adjEn} wind of ${bft} Bft blowing now, it is relatively sheltered here.`, gr: `Με ${adjGr} άνεμο ${bft} Bft που φυσάει τώρα, εδώ είναι σχετικά υπήνεμα.`, de: `Bei ${bft} Bft Wind ist es hier gerade relativ geschützt.`, fr: `Avec un vent de ${bft} Bft en ce moment, c'est relativement abrité ici.`, it: `Con vento di ${bft} Bft in questo momento, qui è relativamente riparato.` }[lang]
-      : { en: `With the ${adjEn} wind of ${bft} Bft, it is relatively sheltered here.`, gr: `Με ${adjGr} άνεμο ${bft} Bft, εδώ είναι σχετικά υπήνεμα.`, de: `Bei ${bft} Bft Wind ist es hier relativ geschützt.`, fr: `Avec un vent de ${bft} Bft, c'est relativement abrité ici.`, it: `Con vento di ${bft} Bft, qui è relativamente riparato.` }[lang];
+      ? { en: `With the ${adjEn} wind of ${bft} Bft blowing now, it is relatively sheltered here.`, gr: `Με ${adjGr} άνεμο ${bft} Bft που φυσάει τώρα, εδώ είναι σχετικά προστατευμένα.`, de: `Bei ${bft} Bft Wind ist es hier gerade relativ geschützt.`, fr: `Avec un vent de ${bft} Bft en ce moment, c'est relativement abrité ici.`, it: `Con vento di ${bft} Bft in questo momento, qui è relativamente riparato.` }[lang]
+      : { en: `With the ${adjEn} wind of ${bft} Bft, it is relatively sheltered here.`, gr: `Με ${adjGr} άνεμο ${bft} Bft, εδώ είναι σχετικά προστατευμένα.`, de: `Bei ${bft} Bft Wind ist es hier relativ geschützt.`, fr: `Avec un vent de ${bft} Bft, c'est relativement abrité ici.`, it: `Con vento di ${bft} Bft, qui è relativamente riparato.` }[lang];
   } else if (input.isExposedToTodayWind || exposedOnMap) {
     const adjGr = GR_WIND_ADJ_NOM[input.windDir];
     const adjEn = EN_WIND_ADJ[input.windDir];

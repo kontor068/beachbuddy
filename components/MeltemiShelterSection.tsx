@@ -49,14 +49,14 @@ const INTRO: Copy = {
 const SELF_STATUS: Record<ExposureLevel, Copy> = {
   protected: {
     en: 'usually stays sheltered when the meltemi blows.',
-    gr: 'συνήθως μένει υπήνεμη όταν φυσά μελτέμι.',
+    gr: 'συνήθως μένει προστατευμένη όταν φυσά μελτέμι.',
     de: 'bleibt beim Meltemi meist windgeschützt.',
     it: 'di solito resta riparata quando soffia il meltemi.',
     fr: "reste généralement abritée quand le meltemi souffle.",
   },
   partial: {
-    en: 'is partly exposed in the meltemi — calm some days, choppy on stronger ones.',
-    gr: 'είναι μερικώς εκτεθειμένη στα μελτέμια — κάποιες μέρες ήρεμη, με κυματάκι όταν δυναμώνουν.',
+    en: 'has partial shelter in the meltemi — calm some days, choppy on stronger ones.',
+    gr: 'έχει μερική προστασία στα μελτέμια — κάποιες μέρες ήρεμη, με κυματάκι όταν δυναμώνουν.',
     de: 'ist beim Meltemi teils exponiert — mal ruhig, bei stärkerem Wind kabbelig.',
     it: 'è in parte esposta al meltemi — calma certi giorni, mossa nei più forti.',
     fr: "est en partie exposée au meltemi — calme certains jours, agitée par vent fort.",
@@ -72,14 +72,14 @@ const SELF_STATUS: Record<ExposureLevel, Copy> = {
 
 // Neuter-agreeing Greek variants for boat-only spots ("Το Κλέφτικο είναι εκτεθειμένο …").
 const SELF_STATUS_BOAT_GR: Record<ExposureLevel, string> = {
-  protected: 'συνήθως μένει υπήνεμο όταν φυσά μελτέμι.',
-  partial: 'είναι μερικώς εκτεθειμένο στα μελτέμια — κάποιες μέρες ήρεμο, με κυματάκι όταν δυναμώνουν.',
+  protected: 'συνήθως μένει προστατευμένο όταν φυσά μελτέμι.',
+  partial: 'έχει μερική προστασία στα μελτέμια — κάποιες μέρες ήρεμο, με κυματάκι όταν δυναμώνουν.',
   exposed: 'είναι εκτεθειμένο στα μελτέμια — συχνά με κύμα τις καλοκαιρινές Β/ΒΑ μέρες.',
 };
 
 const SHELTERED_LIST_TITLE: Copy = {
   en: 'Coves here that stay calm in the meltemi',
-  gr: 'Σταθερά υπήνεμες παραλίες εδώ στα μελτέμια',
+  gr: 'Σταθερά προστατευμένες παραλίες εδώ στα μελτέμια',
   de: 'Buchten hier, die beim Meltemi ruhig bleiben',
   it: 'Cale qui che restano calme con il meltemi',
   fr: 'Criques ici qui restent calmes au meltemi',

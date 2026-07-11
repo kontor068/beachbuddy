@@ -383,7 +383,7 @@ export const buildSimpleWindSuitability = ({
       exposureStatus,
       confidence,
       explanationKey: 'protected_from_wind',
-      explanationText: `Better protected from today's ${windLabel} wind`,
+      explanationText: `More sheltered from today's ${windLabel} wind`,
       windSector,
       windBeaufort: beaufort,
     };
@@ -406,7 +406,7 @@ export const buildSimpleWindSuitability = ({
     exposureStatus,
     confidence,
     explanationKey: 'partly_exposed',
-    explanationText: `Partly exposed to today's ${windLabel} wind`,
+    explanationText: `Partial shelter from today's ${windLabel} wind`,
     windSector,
     windBeaufort: beaufort,
   };

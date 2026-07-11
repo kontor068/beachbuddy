@@ -394,7 +394,7 @@ const generateWindyCardSummary = (input: BeachCopyInput, facts: BeachFeatureFact
     )
     : localize(
       language,
-      'Οι πιο ανοιχτές παραλίες επηρεάζονται περισσότερο από τον σημερινό άνεμο.',
+      'Οι πιο εκτεθειμένες παραλίες επηρεάζονται περισσότερο από τον σημερινό άνεμο.',
       "More exposed beaches are more affected by today's wind."
     );
   const strongWind = typeof input.windBeaufort === 'number' && input.windBeaufort >= 5;
@@ -420,10 +420,10 @@ const generateWindyCardSummary = (input: BeachCopyInput, facts: BeachFeatureFact
     return localize(
       language,
       isFiveBeaufort
-        ? 'Οι πιο ανοιχτές παραλίες επηρεάζονται περισσότερο από τον σημερινό άνεμο.'
+        ? 'Οι πιο εκτεθειμένες παραλίες επηρεάζονται περισσότερο από τον σημερινό άνεμο.'
         :
       strongWind
-        ? `Καταλληλότερη διαθέσιμη επιλογή, με προσοχή. Είναι πιο υπήνεμη για ${wind}, αλλά με τόσο αέρα η θάλασσα θα έχει κυματισμό.${wave ? ` ${sentenceCase(wave)}.` : ''}`
+        ? `Καταλληλότερη διαθέσιμη επιλογή, με προσοχή. Είναι πιο προστατευμένη για ${wind}, αλλά με τόσο αέρα η θάλασσα θα έχει κυματισμό.${wave ? ` ${sentenceCase(wave)}.` : ''}`
         : practicalSummary,
       isFiveBeaufort
         ? "More exposed beaches are more affected by today's wind."
@@ -493,8 +493,8 @@ const windBullet = (input: BeachCopyInput, facts: BeachFeatureFacts): string => 
     return localize(
       language,
       isFiveBeaufort
-        ? 'Οι πιο ανοιχτές παραλίες επηρεάζονται περισσότερο από τον σημερινό άνεμο.'
-        : `Με ${wind}, είναι πιο υπήνεμη επιλογή από τις ανοιχτές παραλίες, αλλά η θάλασσα μπορεί να θέλει προσοχή.`,
+        ? 'Οι πιο εκτεθειμένες παραλίες επηρεάζονται περισσότερο από τον σημερινό άνεμο.'
+        : `Με ${wind}, είναι πιο προστατευμένη επιλογή από τις εκτεθειμένες παραλίες, αλλά η θάλασσα μπορεί να θέλει προσοχή.`,
       isFiveBeaufort
         ? "More exposed beaches are more affected by today's wind."
         : `With ${wind}, it looks more suitable than more exposed beaches, but it is not a guaranteed easy-swim choice.`
@@ -556,14 +556,14 @@ const waveBullet = (input: BeachCopyInput, facts: BeachFeatureFacts): string | u
   if (facts.moderateSea) {
     if (!height) return localize(language, `Η θάλασσα μπορεί να έχει λίγο κυματισμό ${day}.`, `The sea may have some chop ${day}.`);
     return sheltered
-      ? localize(language, `Στα ανοιχτά το κύμα ${future ? 'θα είναι' : 'είναι'} περίπου ${height}· εδώ ${future ? 'θα είναι' : 'είναι'} πιο υπήνεμα, αλλά με κάποιο κυματισμό.`, `Open-sea waves ${future ? 'will be' : 'are'} around ${height}; this cove ${future ? 'will be' : 'is'} more sheltered, but still has some chop.`)
+      ? localize(language, `Στα ανοιχτά το κύμα ${future ? 'θα είναι' : 'είναι'} περίπου ${height}· εδώ ${future ? 'θα είναι' : 'είναι'} πιο προστατευμένα, αλλά με κάποιο κυματισμό.`, `Open-sea waves ${future ? 'will be' : 'are'} around ${height}; this cove ${future ? 'will be' : 'is'} more sheltered, but still has some chop.`)
       : localize(language, `Το κύμα ${future ? 'θα είναι' : 'είναι'} περίπου ${height}, με ήπιο κυματισμό.`, `Waves ${future ? 'will be' : 'are'} around ${height}, with mild chop.`);
   }
 
   if (facts.roughSea) {
     if (!height) return localize(language, `Το κύμα μπορεί να επηρεάσει το μπάνιο ${day}.`, `Waves may affect swimming ${day}.`);
     return sheltered
-      ? localize(language, `Στα ανοιχτά το κύμα ${future ? 'θα φτάσει' : 'φτάνει'} περίπου ${height}· εδώ ${future ? 'θα είναι' : 'είναι'} πιο υπήνεμα, αλλά θα έχει κυματισμό.`, `Open-sea waves ${future ? 'will reach' : 'reach'} around ${height}; this cove ${future ? 'will be' : 'is'} more sheltered, but expect some chop.`)
+      ? localize(language, `Στα ανοιχτά το κύμα ${future ? 'θα φτάσει' : 'φτάνει'} περίπου ${height}· εδώ ${future ? 'θα είναι' : 'είναι'} πιο προστατευμένα, αλλά θα έχει κυματισμό.`, `Open-sea waves ${future ? 'will reach' : 'reach'} around ${height}; this cove ${future ? 'will be' : 'is'} more sheltered, but expect some chop.`)
       : localize(language, `Το κύμα στην πρόγνωση μπορεί να φτάσει περίπου ${height}, οπότε περίμενε κυματισμό στη θάλασσα.`, `Forecast waves may reach around ${height}, so expect a choppy sea.`);
   }
 

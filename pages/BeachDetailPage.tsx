@@ -1030,7 +1030,7 @@ export const BeachDetailPage: React.FC<BeachDetailPageProps> = ({
 
   // "Switch beach": when THIS beach can't claim shelter from today's (meaningful) wind, find the
   // nearest reachable beach that genuinely CAN — under the same live wind, via its own 8-sector
-  // geometry. Gated on canClaimProtected (same bar as the "πιο υπήνεμη επιλογή" endorsement) so we
+  // geometry. Gated on canClaimProtected (same bar as the "πιο προστατευμένη επιλογή" endorsement) so we
   // never send someone to a beach that isn't actually calmer; capped to a reachable radius.
   const switchBeach = useMemo<{ beach: Beach; distanceKm: number } | null>(() => {
     if (canClaimWindProtection || beaufortLevel < 4) return null;

@@ -1447,8 +1447,8 @@ export const App: React.FC = () => {
           fr: 'Aucune option clairement calme aujourd’hui',
         },
         helper: {
-          en: 'Wind and sea conditions make calm swimming unlikely today. These are only less exposed options if you still decide to go.',
-      gr: 'Ο άνεμος και η θάλασσα κάνουν δύσκολο το ήρεμο μπάνιο σήμερα. Αυτές είναι μόνο λιγότερο εκτεθειμένες επιλογές αν αποφασίσεις να πας.',
+          en: 'Wind and sea conditions make calm swimming unlikely today. These are only the more sheltered options if you still decide to go.',
+      gr: 'Ο άνεμος και η θάλασσα κάνουν δύσκολο το ήρεμο μπάνιο σήμερα. Αυτές είναι μόνο οι πιο προστατευμένες επιλογές αν αποφασίσεις να πας.',
           de: 'Wind und Meer machen ruhiges Schwimmen heute unwahrscheinlich. Das sind nur weniger exponierte Optionen, falls du trotzdem gehst.',
           it: 'Vento e mare rendono improbabile un bagno tranquillo oggi. Queste sono solo opzioni meno esposte se decidi comunque di andare.',
           fr: 'Le vent et la mer rendent une baignade calme peu probable aujourd’hui. Ce sont seulement des options moins exposées si tu décides quand même d’y aller.',
@@ -1534,7 +1534,7 @@ export const App: React.FC = () => {
     allBeaches: { en: 'All beaches', gr: 'Όλες οι παραλίες', fr: 'Toutes les plages', de: 'Alle Strände', it: 'Tutte le spiagge' },
     exploreTools: { en: 'All suitable beaches', gr: 'Όλες οι κατάλληλες παραλίες', fr: 'Toutes les plages adaptées', de: 'Alle geeigneten Strände', it: 'Tutte le spiagge adatte' },
     moreSuitableOptions: { en: 'More suitable options', gr: 'Περισσότερες κατάλληλες επιλογές', fr: 'Plus d’options adaptées', de: 'Weitere passende Optionen', it: 'Altre opzioni adatte' },
-    lessExposedOptions: { en: 'Less exposed options', gr: 'Λιγότερο εκτεθειμένες επιλογές', fr: 'Options moins exposées', de: 'Weniger exponierte Optionen', it: 'Opzioni meno esposte' },
+    lessExposedOptions: { en: 'More sheltered options', gr: 'Πιο προστατευμένες επιλογές', fr: 'Options plus abritées', de: 'Geschütztere Optionen', it: 'Opzioni più riparate' },
     mapLoadPrompt: { en: 'Loading map', gr: 'Φόρτωση χάρτη', fr: 'Chargement de la carte', de: 'Karte wird geladen', it: 'Caricamento mappa' },
     mapError: { en: 'The map did not load right now. The beach list is still available.', gr: 'Ο χάρτης δεν φορτώθηκε τώρα. Η λίστα παραλιών παραμένει διαθέσιμη.', fr: 'La carte ne s’est pas chargée pour le moment. La liste des plages reste disponible.', de: 'Die Karte wurde gerade nicht geladen. Die Strandliste bleibt verfügbar.', it: 'La mappa non si è caricata ora. La lista delle spiagge resta disponibile.' },
     weatherRetry: { en: 'Refresh', gr: 'Ανανέωση', fr: 'Actualiser', de: 'Aktualisieren', it: 'Aggiorna' },
@@ -4626,7 +4626,7 @@ export const App: React.FC = () => {
       gr: {
       caution: `Ιδανικότερες παραλίες ${day}`,
       strong: `Καταλληλότερες επιλογές ${day}`,
-      sheltered: `Πιο υπήνεμες επιλογές ${day}`,
+      sheltered: `Πιο προστατευμένες επιλογές ${day}`,
       noIdeal: `Δεν υπάρχει καθαρή επιλογή για ήρεμο μπάνιο ${day}`,
       },
       fr: {

@@ -22,7 +22,7 @@ export interface AccessibleCalmCove {
 
 const TITLE: Copy = {
   en: 'Accessible & sheltered today nearby',
-  gr: 'Προσβάσιμες & υπήνεμες σήμερα κοντά',
+  gr: 'Προσβάσιμες & προστατευμένες σήμερα κοντά',
   de: 'Barrierefrei & heute windgeschützt in der Nähe',
   it: 'Accessibili e riparate oggi vicino',
   fr: 'Accessibles et abritées aujourd’hui à proximité',

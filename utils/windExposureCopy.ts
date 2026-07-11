@@ -68,17 +68,17 @@ const EN_PHRASES: Phrases = {
   sport: 'Known windsurf/kite spot - expect more wind or chop.',
   withFacing: (level, facing, windFrom) => (
     level === 'protected'
-      ? `Faces ${facing}; the ${windFrom} wind is less direct here, so it is likely calmer than open beaches.`
+      ? `Faces ${facing}; the ${windFrom} wind is less direct here, so it is likely calmer than exposed beaches.`
       : level === 'exposed'
         ? `Open toward ${facing}; the ${windFrom} wind reaches this shore more directly.`
-        : `Crosswind from ${windFrom} - conditions may be manageable, with some local chop.`
+        : `Partial shelter - crosswind from ${windFrom}, conditions may be manageable with some local chop.`
   ),
   withoutFacing: (level) => (
     level === 'protected'
-      ? 'Better protected from the wind; conditions may still vary locally.'
+      ? 'More sheltered from the wind; conditions may still vary locally.'
       : level === 'exposed'
         ? 'More exposed to the wind; expect a less calm option.'
-        : 'Partly exposed to the wind; conditions may still be manageable.'
+        : 'Partial shelter from the wind; conditions may still be manageable.'
   ),
 };
 
@@ -87,17 +87,17 @@ const GR_PHRASES: Phrases = {
   sport: 'Γνωστό σημείο για windsurf/kite - περίμενε περισσότερο αέρα ή κυματάκι.',
   withFacing: (level, facing, windFrom) => (
     level === 'protected'
-      ? `Κοιτάει ${facing}; ο άνεμος από ${windFrom} μπαίνει λιγότερο άμεσα εδώ, οπότε είναι πιθανόν πιο ήρεμη από ανοιχτές παραλίες.`
+      ? `Κοιτάει ${facing}; ο άνεμος από ${windFrom} μπαίνει λιγότερο άμεσα εδώ, οπότε είναι πιθανόν πιο ήρεμη από εκτεθειμένες παραλίες.`
       : level === 'exposed'
-        ? `Είναι ανοιχτή προς ${facing}; ο άνεμος από ${windFrom} πιάνει πιο άμεσα αυτή την ακτή.`
-        : `Πλάγιος άνεμος από ${windFrom} - μπορεί να είναι διαχειρίσιμη, με λίγο τοπικό κυματάκι.`
+        ? `Είναι εκτεθειμένη προς ${facing}; ο άνεμος από ${windFrom} πιάνει πιο άμεσα αυτή την ακτή.`
+        : `Μερική προστασία - ο άνεμος από ${windFrom} πιάνει πλάγια, μπορεί να είναι διαχειρίσιμη με λίγο τοπικό κυματάκι.`
   ),
   withoutFacing: (level) => (
     level === 'protected'
-      ? 'Καλύτερα προστατευμένη από τον άνεμο· οι τοπικές συνθήκες μπορεί να διαφέρουν.'
+      ? 'Πιο προστατευμένη από τον άνεμο· οι τοπικές συνθήκες μπορεί να διαφέρουν.'
       : level === 'exposed'
         ? 'Πιο εκτεθειμένη στον άνεμο· περίμενε λιγότερο ήρεμη επιλογή.'
-        : 'Μερικώς εκτεθειμένη στον άνεμο· μπορεί να παραμένει διαχειρίσιμη.'
+        : 'Μερική προστασία από τον άνεμο· μπορεί να παραμένει διαχειρίσιμη.'
   ),
 };
 
@@ -155,8 +155,8 @@ export const describeSimpleWindSuitability = (
 
     if (simpleWindSuitability.explanationKey === 'protected_from_wind') {
       return definite
-        ? `Πιο προστατευμένη ${fromWind} - πιο ήρεμη από τις ανοιχτές, αλλά θα έχει κι εδώ λίγο αέρα και κύμα.`
-        : `Καλύτερα προστατευμένη ${fromWind}.`;
+        ? `Πιο προστατευμένη ${fromWind} - πιο ήρεμη από τις εκτεθειμένες, αλλά θα έχει κι εδώ λίγο αέρα και κύμα.`
+        : `Πιο προστατευμένη ${fromWind}.`;
     }
     if (simpleWindSuitability.explanationKey === 'exposed_to_wind') {
       return definite
@@ -165,8 +165,8 @@ export const describeSimpleWindSuitability = (
         : `Πιο εκτεθειμένη ${toWind}${useWind ? ' - μπορεί να έχει λίγο αέρα και κύμα.' : '.'}`;
     }
     return definite
-      ? `Πλάγια έκθεση ${toWind} - θα έχει αέρα και κύμα.`
-      : `Πλάγια έκθεση ${toWind}${useWind ? ' - μπορεί να έχει λίγο αέρα ή κυματάκι.' : '.'}`;
+      ? `Μερική προστασία ${fromWind} - θα έχει αέρα και κύμα.`
+      : `Μερική προστασία ${fromWind}${useWind ? ' - μπορεί να έχει λίγο αέρα ή κυματάκι.' : '.'}`;
   }
 
   if (simpleWindSuitability.explanationKey === 'generally_calm') {
@@ -180,8 +180,8 @@ export const describeSimpleWindSuitability = (
   const enWind = wind ? `${wind} ` : '';
   if (simpleWindSuitability.explanationKey === 'protected_from_wind') {
     return definite
-      ? `More protected from the ${enWind}${enNoun} - calmer than open beaches, but it will still be breezy here with some chop.`
-      : `Better protected from the ${enWind}${enNoun}.`;
+      ? `More sheltered from the ${enWind}${enNoun} - calmer than exposed beaches, but it will still be breezy here with some chop.`
+      : `More sheltered from the ${enWind}${enNoun}.`;
   }
   if (simpleWindSuitability.explanationKey === 'exposed_to_wind') {
     return definite
@@ -190,6 +190,6 @@ export const describeSimpleWindSuitability = (
       : `More exposed to the ${enWind}${enNoun}${useWind ? ' - some light wind and chop possible.' : '.'}`;
   }
   return definite
-    ? `Crosswind from the ${enWind}${enNoun} - it will be windy with some waves.`
-    : `Partly exposed to the ${enWind}${enNoun}${useWind ? ' - some wind or chop possible.' : '.'}`;
+    ? `Partial shelter from the ${enWind}${enNoun} - it will be windy with some waves.`
+    : `Partial shelter from the ${enWind}${enNoun}${useWind ? ' - some wind or chop possible.' : '.'}`;
 };

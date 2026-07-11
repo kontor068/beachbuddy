@@ -8,7 +8,7 @@ import { LanguageCode } from '../types';
  * exact wind direction. This is the canonical real-time decision query Google suppresses
  * synthesis for: it requires fusing the live wind vector with each nearby cove's 8-sector
  * geometry, a per-cove fact that is on no web page. We only ever point at a beach whose own
- * assessment can claim wind protection today (same gate as the "πιο υπήνεμη επιλογή"
+ * assessment can claim wind protection today (same gate as the "πιο προστατευμένη επιλογή"
  * endorsement), so we never send someone to a beach that isn't actually calmer.
  */
 
@@ -17,7 +17,7 @@ const pick = (copy: Copy, language: LanguageCode): string => copy[language] ?? c
 
 const TITLE: Copy = {
   en: 'Calmer option nearby',
-  gr: 'Πιο υπήνεμη επιλογή κοντά',
+  gr: 'Πιο προστατευμένη επιλογή κοντά',
   de: 'Ruhigere Option in der Nähe',
   it: 'Opzione più riparata vicino',
   fr: 'Option plus abritée à proximité',
