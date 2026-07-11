@@ -676,6 +676,7 @@ const getBeachExperienceTier = (
   return getExperienceTier({
     score: item.score,
     windBeaufort: perBeachBeaufort,
+    dayBeaufort: regionWindBeaufort,
     waveHeightM: item.waveHeightM,
     swimmingComfort: item.swimmingComfort,
     exposureLevel: visibleExposureLevel(item),

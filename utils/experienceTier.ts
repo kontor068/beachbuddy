@@ -14,6 +14,10 @@ export interface ExperienceTierInput {
   /** finalSuitabilityScore / today score, 0–100. */
   score: number;
   windBeaufort?: number;
+  /** The day/region Beaufort shown in the header. Falls back to windBeaufort. Used so the
+   *  "sheltered reads yellow" floor tracks the day the user sees (4 Bft), not a slightly
+   *  higher per-beach micro-reading that would keep a lee-side beach orange. */
+  dayBeaufort?: number;
   waveHeightM?: number;
   swimmingComfort?: SwimmingComfort;
   noIdealSwimmingWindow?: boolean;
@@ -63,7 +67,8 @@ export const getExperienceTier = (input: ExperienceTierInput): ExperienceTier =>
   // the map still separates sheltered (yellow) from exposed (orange). `exposureLevel` is
   // already gated to real protection (canClaimWindProtection) by the caller.
   const lessExposed = input.exposureLevel === 'protected' || input.exposureLevel === 'partial';
-  const shelteredFloor = bft <= 4 && lessExposed && ceiling >= 2;
+  const dayBft = typeof input.dayBeaufort === 'number' ? input.dayBeaufort : bft;
+  const shelteredFloor = dayBft <= 4 && lessExposed && ceiling >= 2;
   const finalRank = shelteredFloor ? Math.max(rank, 2) : rank;
   return finalRank === 3 ? 'excellent' : finalRank === 2 ? 'good' : 'fair';
 };
