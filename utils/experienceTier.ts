@@ -55,7 +55,16 @@ export const getExperienceTier = (input: ExperienceTierInput): ExperienceTier =>
 
   const scoreTier: 1 | 2 | 3 = score >= 80 ? 3 : score >= 60 ? 2 : 1;
   const rank = Math.min(ceiling, scoreTier);
-  return rank === 3 ? 'excellent' : rank === 2 ? 'good' : 'fair';
+
+  // Sheltered floor: a GENUINELY wind-protected beach on a moderate day (≤4 Bft), with
+  // a sea that isn't choppy (ceiling ≥ 2), reads at least "good" (yellow) — if it's out
+  // of the wind, a 4 Bft day is a good beach day there, so it shouldn't fall to "OK" just
+  // for a middling composite score. Exposed/partial beaches keep tracking the score, so
+  // the map still separates sheltered (yellow) from exposed (orange). `exposureLevel` is
+  // already gated to real protection (canClaimWindProtection) by the caller.
+  const shelteredFloor = bft <= 4 && input.exposureLevel === 'protected' && ceiling >= 2;
+  const finalRank = shelteredFloor ? Math.max(rank, 2) : rank;
+  return finalRank === 3 ? 'excellent' : finalRank === 2 ? 'good' : 'fair';
 };
 
 // The verdict describes the live, continuously-updating conditions. For *today* (the default)
