@@ -5486,6 +5486,7 @@ export const App: React.FC = () => {
         <BeachMap
           center={[selectedIsland.coordinates.lat, selectedIsland.coordinates.lon]}
           zoom={11}
+          regionId={selectedIsland.id}
           beaches={directoryMapPinBeaches}
           userLocation={userLocation}
           userLocationAccuracy={userLocationAccuracy}
@@ -5886,6 +5887,7 @@ export const App: React.FC = () => {
                   <BeachMap
                     center={[selectedIsland.coordinates.lat, selectedIsland.coordinates.lon]}
                     zoom={11}
+                    regionId={selectedIsland.id}
                     beaches={filteredMapSuitableBeaches}
                     userLocation={userLocation}
                     onBeachClick={(b) => openBeachDetails(b, 'map')}
@@ -6184,6 +6186,7 @@ export const App: React.FC = () => {
                         <Suspense fallback={<div className="h-[195px] w-full animate-pulse bg-slate-100 dark:bg-slate-800 sm:h-[420px]" />}>
                           <BeachMap
                             center={[selectedIsland.coordinates.lat, selectedIsland.coordinates.lon]}
+                            regionId={selectedIsland.id}
                             beaches={filteredMapSuitableBeaches}
                             userLocation={userLocation}
                             onBeachClick={(b) => openBeachDetails(b, 'map')}

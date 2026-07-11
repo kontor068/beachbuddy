@@ -14,6 +14,7 @@ import { getBeachMapCoordinates } from '../utils/mapCoordinates';
 import { getConsistentVisibleMapExposureLevels, getVisibleMapExposureLevel, shouldShowWindExposureColors } from '../utils/mapExposure';
 import type { ExposureLevel } from '../utils/windExposure';
 import { getExperienceTier, getExperienceTierLabel, experienceTierTone, type ExperienceTier } from '../utils/experienceTier';
+import CoastlineRibbonLayer from './CoastlineRibbonLayer';
 import { canOpenNavigation, getNavigationBadge, openNavigation } from '../utils/navigation';
 import { AmenityChip, getAmenityChips } from '../utils/amenities';
 import { translations } from '../translations';
@@ -67,6 +68,10 @@ interface BeachMapProps {
    *  the region map (which uses the single island-level wind), instead of letting
    *  the detail map re-derive a different colour from the per-beach cluster wind. */
   exposureLevelOverrides?: Map<number, ExposureLevel>;
+  /** Region id for the coloured-coastline ribbon (public/data/coastline/<id>.json).
+   *  When set, coastline stretches near each beach are painted in that beach's live
+   *  experience-tier colour. Omit (detail/preview maps) to render markers only. */
+  regionId?: string;
 }
 
 const visibleExposureLevel = (
@@ -1440,7 +1445,8 @@ const BeachMap: React.FC<BeachMapProps> = ({
   compactPreviewHeightClassName,
   islandName,
   campsites,
-  exposureLevelOverrides
+  exposureLevelOverrides,
+  regionId
 }) => {
   const mapViewportRef = useRef<HTMLDivElement>(null);
   const [mapMode, setMapMode] = useState<'recommendation' | 'wind'>('wind');
@@ -1586,6 +1592,14 @@ const BeachMap: React.FC<BeachMapProps> = ({
     return () => window.clearTimeout(fallback);
   }, [tilesReady]);
   const shouldRenderBeachMarkers = !isExposureLoading && tilesReady;
+  // Live tier per beach for the coastline ribbon — the exact same computation the
+  // markers use (getBeachExperienceTier), so ribbon and dots can never disagree.
+  const ribbonTierByBeachId = useMemo(() => {
+    const tiers = new Map<number, ExperienceTier>();
+    if (!regionId) return tiers;
+    for (const item of beaches) tiers.set(item.beachId, getBeachExperienceTier(item, windBeaufort));
+    return tiers;
+  }, [regionId, beaches, windBeaufort]);
   const visibleMapExposureLevels = useMemo(
     () => getConsistentVisibleMapExposureLevels(beaches, windBeaufort, mapWindDirectionDeg),
     [beaches, mapWindDirectionDeg, windBeaufort]
@@ -2363,6 +2377,11 @@ const BeachMap: React.FC<BeachMapProps> = ({
             url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
             eventHandlers={{ load: () => setTilesReady(true) }}
           />
+
+          {/* Coloured coastline: live tier ribbon along the shore, under the markers. */}
+          {regionId && shouldRenderBeachMarkers && (
+            <CoastlineRibbonLayer regionId={regionId} tierByBeachId={ribbonTierByBeachId} />
+          )}
 
           <MapAutoResize />
           <RecenterMap center={center} zoom={zoom} />
