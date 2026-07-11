@@ -33,7 +33,19 @@ const BEACH_DETAIL_ROUTE_PATTERN = /^\/beaches\/([^/]+)\/(\d+)(?:-([^/]+))?\/?$/
 // URL for a region that has no prerendered page (it would 404 on reload).
 const LOCALE_ROUTE_PREFIX_PATTERN = /^\/(el|de|fr|it)(?=\/|$)/;
 const PREFIX_TO_LANGUAGE: Record<string, LanguageCode> = { el: 'gr', de: 'de', fr: 'fr', it: 'it' };
-const LOCALIZED_REGION_SLUGS = new Set<string>(['milos']);
+// MUST stay 1:1 in sync with LOCALIZED_REGIONS in scripts/prerenderBeachPages.mjs
+// (bare URL slug here, full region id there). A drift makes us build /de|fr|it
+// links to pages that were never prerendered (404 on reload).
+const LOCALIZED_REGION_SLUGS = new Set<string>([
+  'milos',      // pilot
+  // Wave 1 — Cyclades core
+  'naxos',
+  'paros',
+  'mykonos',
+  'santorini',
+  'ios',
+  'sifnos',
+]);
 const REGION_ID_PREFIXES = [
   'east-macedonia-and-thrace-',
   'central-macedonia-',
