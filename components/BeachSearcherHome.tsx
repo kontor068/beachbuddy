@@ -1863,7 +1863,7 @@ export const BeachSearcherHome: React.FC<BeachSearcherHomeProps> = ({
 
   const sortedIslandCards = useMemo(() => (
     [...allIslands]
-      .filter(island => island.beaches.length > 0)
+      .filter(island => island.beaches.length > 0 && !isInfoOnlyRegionId(island.id))
       .sort((a, b) => b.beaches.length - a.beaches.length)
       .slice(0, 8)
   ), [allIslands]);

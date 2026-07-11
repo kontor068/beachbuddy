@@ -1572,6 +1572,14 @@ export const App: React.FC = () => {
   // --- Beach & Weather Data (Custom Hooks) ---
   const { allIslands, loading: beachesLoading, error: beachesError, getFilteredBeaches, ensureIslandBeachesLoaded, cacheLoadedIsland } = useBeaches(language);
   const { selectedIsland, selectIsland, selectAdHocRegion, showValueProp, markValuePropSeen } = useLocation(allIslands);
+  // Islands offered in the browsable selector + name search. Info-only regions
+  // (e.g. Milos) are SEO-only: their pages exist and resolve on a direct URL, but
+  // they are never surfaced as a pickable/searchable option in the app. Resolution
+  // still uses the full `allIslands`, so direct links keep working.
+  const selectableIslands = useMemo(
+    () => allIslands.filter(island => !isInfoOnlyRegionId(island.id)),
+    [allIslands],
+  );
   const isNearMeRegionActive = selectedIsland?.id === NEAR_ME_REGION_ID;
   const { weather, forecast: rawForecast, forecastIslandId, beachForecasts, loading: weatherLoading, error: weatherError, selectedDayIndex, setSelectedDayIndex, loadWeatherData, lastUpdated } = useWeather(selectedIsland, language);
   // On a region switch `selectedIsland` updates synchronously, but the new region's
@@ -5072,7 +5080,7 @@ export const App: React.FC = () => {
     if (trimmedQuery.length < 3) return null;
 
     const queryVariants = getSearchVariants(trimmedQuery);
-    const rankedMatches = allIslands
+    const rankedMatches = selectableIslands
       .map(island => {
         const values = [
           island.name[language],
@@ -5196,7 +5204,7 @@ export const App: React.FC = () => {
         return searchIndex
           .map((entry): GlobalBeachSearchEntry | null => {
             const island = islandById.get(entry.regionId);
-            if (!island) return null;
+            if (!island || isInfoOnlyRegionId(entry.regionId)) return null;
             const regionValues = getIslandSearchValues(island);
 
             return {
@@ -5262,7 +5270,7 @@ export const App: React.FC = () => {
   };
 
   const getRegionSearchSuggestions = (query: string): DirectorySearchSuggestion[] => (
-    allIslands
+    selectableIslands
       .map(island => ({
         island,
         score: scoreSearchValues(query, getIslandSearchValues(island)),
@@ -6409,7 +6417,7 @@ export const App: React.FC = () => {
 
       {isIslandSelectorOpen && (
         <Suspense fallback={null}>
-          <IslandSelectorModal isOpen={isIslandSelectorOpen} onClose={handleCloseIslandSelector} islands={allIslands} onSelect={handleRegionSelected} t={t} language={language} onSelectNearest={handleSelectNearest} isFindingNearest={isFindingNearest} findNearestError={findNearestError} />
+          <IslandSelectorModal isOpen={isIslandSelectorOpen} onClose={handleCloseIslandSelector} islands={selectableIslands} onSelect={handleRegionSelected} t={t} language={language} onSelectNearest={handleSelectNearest} isFindingNearest={isFindingNearest} findNearestError={findNearestError} />
         </Suspense>
       )}
 

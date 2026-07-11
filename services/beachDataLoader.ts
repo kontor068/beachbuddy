@@ -4,6 +4,7 @@ import regionDisplayNames from '../utils/regionDisplayNames.json';
 import { getGreekBeachNameDisplay } from '../utils/greekBeachNames';
 import { getActiveWeatherFixtureTargetRegionId } from '../utils/weatherFixtures';
 import { parseBeachDetailPath, parseBeachRegionPath, regionMatchesRouteParam } from '../utils/beachUrls';
+import { isInfoOnlyRegionId } from '../utils/infoOnlyRegions';
 
 export interface BeachRegionIndexEntry {
   id: string;
@@ -182,7 +183,9 @@ export const getPreferredInitialRegionId = (islands: Island[]): string | undefin
     return savedRegionId;
   }
 
-  return islands.find(island => island.id === 'milos' || island.id.endsWith('-milos') || island.name.en === 'Milos')?.id
+  // Default landing region: first non-info-only region. Info-only regions (e.g.
+  // Milos) are SEO-only and must never be the auto-selected homepage region.
+  return islands.find(island => !isInfoOnlyRegionId(island.id))?.id
     || islands[0]?.id;
 };
 
