@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Cookie, FileText, LifeBuoy, Mail, ShieldCheck, X } from 'lucide-react';
+import { Cookie, FileText, LifeBuoy, Mail, ShieldCheck, SlidersHorizontal, X } from 'lucide-react';
 import { LanguageCode } from '../types';
 import { getLocalizedCopy } from '../utils/i18n';
 import { getLegalDoc, legalLastUpdated, LEGAL_OPERATOR, LegalKind } from '../utils/legalContent';
@@ -7,10 +7,12 @@ import { LegalDocument } from './LegalDocument';
 import { CookieSettings } from './CookieSettings';
 
 export type LegalModal = LegalKind;
+// A modal "view" is either a legal document OR the interactive cookie-settings tool.
+export type LegalModalView = LegalKind | 'cookieSettings';
 
-export const openLegalModal = (modal: LegalModal) => {
+export const openLegalModal = (modal: LegalModalView) => {
   if (typeof document === 'undefined') return;
-  document.dispatchEvent(new CustomEvent<LegalModal>('calmbeach:openLegalModal', { detail: modal }));
+  document.dispatchEvent(new CustomEvent<LegalModalView>('calmbeach:openLegalModal', { detail: modal }));
 };
 
 interface LegalFooterProps {
@@ -59,13 +61,14 @@ const modalMeta: Record<LegalModal, { icon: typeof FileText }> = {
 };
 
 export const LegalFooter: React.FC<LegalFooterProps> = ({ language }) => {
-  const [activeModal, setActiveModal] = useState<LegalModal | null>(null);
+  const [activeModal, setActiveModal] = useState<LegalModalView | null>(null);
   const c = getLocalizedCopy(language, copy);
 
   useEffect(() => {
+    const validViews: LegalModalView[] = ['terms', 'privacy', 'cookies', 'cookieSettings'];
     const handleOpenLegalModal = (event: Event) => {
-      const modalName = (event as CustomEvent<LegalModal>).detail;
-      if (modalName && modalName in modalMeta) {
+      const modalName = (event as CustomEvent<LegalModalView>).detail;
+      if (modalName && validViews.includes(modalName)) {
         setActiveModal(modalName);
       }
     };
@@ -73,8 +76,12 @@ export const LegalFooter: React.FC<LegalFooterProps> = ({ language }) => {
     return () => document.removeEventListener('calmbeach:openLegalModal', handleOpenLegalModal);
   }, []);
 
-  const doc = activeModal ? getLegalDoc(activeModal, language) : null;
-  const ModalIcon = activeModal ? modalMeta[activeModal].icon : null;
+  // 'cookieSettings' is the interactive consent tool (no legal document); the rest render text.
+  const doc = activeModal && activeModal !== 'cookieSettings' ? getLegalDoc(activeModal, language) : null;
+  const modalTitle = activeModal === 'cookieSettings' ? c.cookieSettings : doc?.title;
+  const ModalIcon = activeModal === 'cookieSettings'
+    ? SlidersHorizontal
+    : activeModal ? modalMeta[activeModal].icon : null;
 
   // The FAQ is a prerendered static page (built by scripts/prerenderBeachPages.mjs), so it
   // exists in production and in the bundled native app but NOT under `vite dev`/`preview`,
@@ -139,7 +146,7 @@ export const LegalFooter: React.FC<LegalFooterProps> = ({ language }) => {
                 <li><button type="button" onClick={() => setActiveModal('terms')} className={legalLinkClass}>{c.terms}</button></li>
                 <li><button type="button" onClick={() => setActiveModal('privacy')} className={legalLinkClass}>{c.privacy}</button></li>
                 <li><button type="button" onClick={() => setActiveModal('cookies')} className={legalLinkClass}>{c.cookies}</button></li>
-                <li><button type="button" onClick={() => setActiveModal('cookies')} className={legalLinkClass}>{c.cookieSettings}</button></li>
+                <li><button type="button" onClick={() => setActiveModal('cookieSettings')} className={legalLinkClass}>{c.cookieSettings}</button></li>
                 <li>
                   <a href={faqHref} className={legalLinkClass} target={faqExternal ? '_blank' : undefined} rel={faqExternal ? 'noopener noreferrer' : undefined}>
                     {c.faq}
@@ -162,7 +169,7 @@ export const LegalFooter: React.FC<LegalFooterProps> = ({ language }) => {
         </div>
       </footer>
 
-      {activeModal && doc && ModalIcon && (
+      {activeModal && modalTitle && ModalIcon && (
         <div
           className="fixed inset-0 z-[95] flex items-end justify-center bg-slate-950/45 px-3 pb-[calc(1rem+env(safe-area-inset-bottom))] pt-6 backdrop-blur-sm sm:items-center sm:px-4 sm:pb-6"
           role="dialog"
@@ -176,9 +183,11 @@ export const LegalFooter: React.FC<LegalFooterProps> = ({ language }) => {
               </div>
               <div className="min-w-0 flex-1">
                 <h2 id="legal-modal-title" className="font-heading text-lg font-extrabold leading-tight text-slate-950">
-                  {doc.title}
+                  {modalTitle}
                 </h2>
-                <p className="mt-1 text-xs font-semibold text-slate-500">{legalLastUpdated(language)}</p>
+                {activeModal !== 'cookieSettings' && (
+                  <p className="mt-1 text-xs font-semibold text-slate-500">{legalLastUpdated(language)}</p>
+                )}
               </div>
               <button
                 type="button"
@@ -192,21 +201,30 @@ export const LegalFooter: React.FC<LegalFooterProps> = ({ language }) => {
             </div>
 
             <div className="max-h-[calc(85vh-5rem)] space-y-4 overflow-y-auto px-4 py-4 sm:px-5">
-              {activeModal === 'cookies' && (
-                <CookieSettings language={language} source="footer_cookies_modal" />
+              {activeModal === 'cookieSettings' && (
+                <>
+                  <CookieSettings language={language} source="footer_cookie_settings" />
+                  <button
+                    type="button"
+                    onClick={() => setActiveModal('cookies')}
+                    className="text-sm font-bold text-sky-700 underline-offset-4 hover:underline focus:outline-none focus-visible:ring-2 focus-visible:ring-sky-500"
+                  >
+                    {c.cookies} →
+                  </button>
+                </>
               )}
 
-              {activeModal === 'privacy' && (
+              {(activeModal === 'cookies' || activeModal === 'privacy') && (
                 <button
                   type="button"
-                  onClick={() => setActiveModal('cookies')}
+                  onClick={() => setActiveModal('cookieSettings')}
                   className="w-full rounded-xl border border-slate-200 bg-slate-50 px-3 py-2 text-left text-sm font-bold text-sky-700 transition hover:bg-slate-100"
                 >
-                  {c.manageCookies} →
+                  {c.cookieSettings} →
                 </button>
               )}
 
-              <LegalDocument doc={doc} language={language} onOpenModal={setActiveModal} />
+              {doc && <LegalDocument doc={doc} language={language} onOpenModal={setActiveModal} />}
             </div>
           </div>
         </div>

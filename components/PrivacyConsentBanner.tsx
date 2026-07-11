@@ -112,7 +112,7 @@ export const PrivacyConsentBanner: React.FC<PrivacyConsentBannerProps> = ({ lang
           </div>
           <button
             type="button"
-            onClick={() => openLegalModal('cookies')}
+            onClick={() => openLegalModal('cookieSettings')}
             className="mt-2 w-full text-center text-xs font-bold text-sky-700 underline-offset-4 hover:underline focus:outline-none focus-visible:ring-2 focus-visible:ring-sky-500"
           >
             {c.customize}
