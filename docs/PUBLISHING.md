@@ -11,13 +11,22 @@
 
 ## 0. Τι χρειάζεται ΠΡΙΝ τη δημοσίευση (blockers)
 
-1. **Στοιχεία νομικού υπευθύνου** — συμπλήρωσε τα placeholders (`[...]`) σε:
-   - `public/privacy/index.html`
-   - `public/terms/index.html`
-   - `components/LegalFooter.tsx` (το in-app modal — sections «Υπεύθυνος επεξεργασίας» + `ownerTodo`)
-
-   Χρειάζονται: νομική επωνυμία/όνομα, public email επικοινωνίας, έδρα (αν χρειάζεται), εφαρμοστέο δίκαιο.
-   Μετά: `npm run build` και push → οι σελίδες ζουν στο `calmbeach.gr/privacy` & `/terms`.
+1. **Στοιχεία νομικού υπευθύνου** — ✅ ΕΓΙΝΕ (MARIS AND CO Ο.Ε., Πάχαινα Μήλου 84800, ΑΦΜ 803318241).
+   Πλέον **μία πηγή αλήθειας**: `data/legalContent.json` (Όροι + Απόρρητο + Cookies, EL αυθεντικό + EN courtesy).
+   Τροφοδοτεί ΚΑΙ τα in-app modals (`components/LegalDocument.tsx` μέσω `LegalFooter.tsx`) ΚΑΙ τις στατικές
+   σελίδες `public/{terms,privacy,cookies}/index.html` (γεννιούνται από `scripts/buildLegalPages.mjs`, τρέχει
+   πρώτο στο `npm run build`). Οι Όροι Χρήσης είναι browsewrap (link στο footer, όχι forced clickwrap —
+   δεν υπάρχει κρίσιμο ρίσκο ευθύνης που να απαιτεί ρητή καταγεγραμμένη αποδοχή). Cookie consent/log:
+   `services/legalConsent.ts` (κλειδί `calmbeach_consent_log`).
+   - Επικοινωνία: γενικό `hello@calmbeach.gr` + GDPR `privacy@calmbeach.gr` **ορατά στο footer**.
+     Τηλέφωνο `+30 699 554 6953` **μόνο στους Όρους §15** (όχι στο footer, κατόπιν αιτήματος).
+     Defaults: GA retention 14 μήνες, logs 12 μήνες. Όλα στο `data/legalContent.json` + `npm run build:legal`.
+   - **Μελλοντικές αλλαγές (point 5):**
+     1. Μικροδιόρθωση → άλλαξε μόνο `updated` (ημ/νία) στο JSON. Δεν ξαναζητά αποδοχή.
+     2. Ουσιώδης αλλαγή → ανέβασε το `version` (+ `updated` + νέα εγγραφή στο `history`). Ενημέρωσε
+        χρήστες (email/in-app) αν χρειάζεται.
+     3. `npm run build:legal` → γεννά live σελίδες **+ αρχείο** `public/legal-archive/v<version>/` (noindex,
+        committed) ώστε να κρατιέται η προηγούμενη έκδοση.
 2. **Google Play developer account** (25$ εφάπαξ) — https://play.google.com/console (ταυτοποίηση 1–2 μέρες).
 3. **Android Studio** εγκατεστημένο (φέρνει JDK 21 + Android SDK). Το build του `.aab` ΔΕΝ γίνεται χωρίς αυτό.
 
