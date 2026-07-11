@@ -1,8 +1,8 @@
 {
-  "generatedAt": "2026-06-26T10:12:22.838Z",
+  "generatedAt": "2026-07-11T16:59:38.065Z",
   "source": "/greek_beaches.json",
   "appSchemaVersion": 1,
-  "totalBeachCount": 2757,
+  "totalBeachCount": 2799,
   "regions": [
     {
       "id": "attica-athens-area-mainland",
@@ -828,10 +828,10 @@
       "id": "ionian-islands-lefkada",
       "region": "Ionian Islands",
       "prefecture": "Lefkada",
-      "beachCount": 36,
+      "beachCount": 33,
       "coordinates": {
-        "lat": 38.7422646888889,
-        "lon": 20.667590013888898
+        "lat": 38.7370420848485,
+        "lon": 20.65929668181819
       },
       "dataPath": "/data/beaches/ionian-islands-lefkada.json",
       "appDataPath": "/data/beaches/app/ionian-islands-lefkada.json",
@@ -1361,6 +1361,26 @@
         "fr": "Kythnos",
         "de": "Kythnos",
         "it": "Kythnos"
+      },
+      "group": "cyclades"
+    },
+    {
+      "id": "south-aegean-milos",
+      "region": "South Aegean",
+      "prefecture": "Milos",
+      "beachCount": 42,
+      "coordinates": {
+        "lat": 36.70886103095237,
+        "lon": 24.450114057142855
+      },
+      "dataPath": "/data/beaches/south-aegean-milos.json",
+      "appDataPath": "/data/beaches/app/south-aegean-milos.json",
+      "name": {
+        "en": "Milos",
+        "gr": "Μήλος",
+        "fr": "Milos",
+        "de": "Milos",
+        "it": "Milos"
       },
       "group": "cyclades"
     },
@@ -2048,10 +2068,10 @@
       "id": "west-greece-aetolia-acarnania-mainland",
       "region": "West Greece",
       "prefecture": "Aetolia-Acarnania (mainland)",
-      "beachCount": 45,
+      "beachCount": 48,
       "coordinates": {
-        "lat": 38.59855529333334,
-        "lon": 21.211887006666675
+        "lat": 38.611215587500006,
+        "lon": 21.182861985416675
       },
       "dataPath": "/data/beaches/west-greece-aetolia-acarnania-mainland.json",
       "appDataPath": "/data/beaches/app/west-greece-aetolia-acarnania-mainland.json",

@@ -84534,54 +84534,6 @@
           }
         },
         {
-          "id": 1153,
-          "name": "Ασπρογιαλός",
-          "lat": 38.7933,
-          "lon": 20.73999,
-          "metadata": {
-            "access": {
-              "type": "asphalt_road",
-              "label": "Πρόσβαση με άσφαλτο",
-              "notes": "Πρόσβαση από τοπικό δρόμο στη βορειοανατολική Λευκάδα. Μικρή βοτσαλωτή ακτή με περιορισμένες παροχές."
-            },
-            "terrain": {
-              "types": [
-                "pebbles",
-                "coarse_sand"
-              ],
-              "label": "βότσαλα, χοντρή άμμος"
-            },
-            "organized": false,
-            "shade": false,
-            "amenities": [
-              "parking κοντά"
-            ],
-            "confidence": "low",
-            "language": "el",
-            "batch": "011_1001_1100",
-            "waterDepth": {
-              "type": "shallow",
-              "label": "Ρηχά νερά",
-              "notes": "Η είσοδος στη θάλασσα είναι πιο ήπια και το βάθος αυξάνει πιο σταδιακά."
-            },
-            "sourceNotes": [
-              "Lefkada strict evidence pass 2026-05-29: kept low. Current evidence is OSM identity/location only, without independent beach-specific access, terrain, or service evidence."
-            ],
-            "sourceUrls": [
-              "https://www.openstreetmap.org/way/137726047"
-            ],
-            "orientation": {
-              "degrees": 196.7,
-              "faces": [
-                "South"
-              ],
-              "protectedFrom": [],
-              "confidence": "medium",
-              "notes": "Generated from Natural Earth geospatial exposure facingDeg. This records shoreline-facing direction only; it does not verify shelter, low-wave behavior, or live sea conditions."
-            }
-          }
-        },
-        {
           "id": 1154,
           "name": "Αφτέλι",
           "lat": 38.61058,
@@ -85371,8 +85323,8 @@
         {
           "id": 1165,
           "name": "Λυγιά",
-          "lat": 38.78658,
-          "lon": 20.75259,
+          "lat": 38.7908,
+          "lon": 20.7186,
           "metadata": {
             "access": {
               "type": "asphalt_road",
@@ -85409,13 +85361,13 @@
               "https://www.thethinkingtraveller.com/greek-islands/lefkada/beaches-on-lefkada"
             ],
             "orientation": {
-              "degrees": 219.8,
+              "degrees": 112.7,
               "faces": [
-                "Southwest"
+                "Southeast"
               ],
               "protectedFrom": [],
-              "confidence": "medium",
-              "notes": "Generated from Natural Earth geospatial exposure facingDeg. This records shoreline-facing direction only; it does not verify shelter, low-wave behavior, or live sea conditions."
+              "confidence": "high",
+              "notes": "Re-derived from OSM geospatial exposure facingDeg after pin correction onto the Lefkada east coast (Lygia village). Records shoreline-facing direction only."
             },
             "googleMapsNavigation": {
               "status": "needs-review",
@@ -85759,54 +85711,6 @@
           }
         },
         {
-          "id": 1170,
-          "name": "Πλάκα (Βαγιά)",
-          "lat": 38.85293,
-          "lon": 20.73451,
-          "metadata": {
-            "access": {
-              "type": "asphalt_road",
-              "label": "Πρόσβαση με άσφαλτο",
-              "notes": "Πρόσβαση με άσφαλτο στη βόρεια λωρίδα της Λευκάδας. Φυσική αμμώδης ακτή με περιορισμένες παροχές."
-            },
-            "terrain": {
-              "types": [
-                "fine_sand",
-                "coarse_sand"
-              ],
-              "label": "λεπτή άμμος, χοντρή άμμος"
-            },
-            "organized": false,
-            "shade": false,
-            "amenities": [
-              "parking κοντά"
-            ],
-            "confidence": "low",
-            "language": "el",
-            "batch": "011_1001_1100",
-            "waterDepth": {
-              "type": "shallow",
-              "label": "Ρηχά νερά",
-              "notes": "Η είσοδος στη θάλασσα είναι πιο ήπια και το βάθος αυξάνει πιο σταδιακά."
-            },
-            "sourceNotes": [
-              "Lefkada strict evidence pass 2026-05-29: kept low. OSM supports identity/location and sand surface, but the feature is administratively in Aetolia-Acarnania/Palairos, so the Lefkada bucket remains a geodata review risk."
-            ],
-            "sourceUrls": [
-              "https://www.openstreetmap.org/relation/12302810"
-            ],
-            "orientation": {
-              "degrees": 296,
-              "faces": [
-                "Northwest"
-              ],
-              "protectedFrom": [],
-              "confidence": "medium",
-              "notes": "Generated from Natural Earth geospatial exposure facingDeg. This records shoreline-facing direction only; it does not verify shelter, low-wave behavior, or live sea conditions."
-            }
-          }
-        },
-        {
           "id": 1171,
           "name": "Πόρτο Κάτσικι",
           "lat": 38.60092,
@@ -85946,54 +85850,6 @@
           },
           "staticLabels": {
             "accessType": "unknown"
-          }
-        },
-        {
-          "id": 1173,
-          "name": "Φτέρη",
-          "lat": 38.75713,
-          "lon": 20.76796,
-          "metadata": {
-            "access": {
-              "type": "asphalt_road",
-              "label": "Πρόσβαση με άσφαλτο",
-              "notes": "Πρόσβαση με τοπικό δρόμο στην ανατολική Λευκάδα. Μικρή βοτσαλωτή ακτή με περιορισμένες παροχές."
-            },
-            "terrain": {
-              "types": [
-                "pebbles",
-                "coarse_sand"
-              ],
-              "label": "βότσαλα, χοντρή άμμος"
-            },
-            "organized": false,
-            "shade": true,
-            "amenities": [
-              "parking κοντά"
-            ],
-            "confidence": "low",
-            "language": "el",
-            "batch": "011_1001_1100",
-            "waterDepth": {
-              "type": "shallow",
-              "label": "Ρηχά νερά",
-              "notes": "Η είσοδος στη θάλασσα είναι πιο ήπια και το βάθος αυξάνει πιο σταδιακά."
-            },
-            "sourceNotes": [
-              "Lefkada strict evidence pass 2026-05-29: kept low. Current evidence is OSM identity/location only, and search results also risk confusion with Kefalonia Fteri, so no promotion without stronger Lefkada-specific evidence."
-            ],
-            "sourceUrls": [
-              "https://www.openstreetmap.org/way/72157231"
-            ],
-            "orientation": {
-              "degrees": 206.7,
-              "faces": [
-                "Southwest"
-              ],
-              "protectedFrom": [],
-              "confidence": "medium",
-              "notes": "Generated from Natural Earth geospatial exposure facingDeg. This records shoreline-facing direction only; it does not verify shelter, low-wave behavior, or live sea conditions."
-            }
           }
         },
         {
@@ -180723,6 +180579,150 @@
               "ratingCount": 476,
               "source": "google-places",
               "checkedAt": "2026-06-17"
+            }
+          }
+        },
+        {
+          "id": 1153,
+          "name": "Ασπρογιαλός",
+          "lat": 38.7933,
+          "lon": 20.73999,
+          "metadata": {
+            "access": {
+              "type": "asphalt_road",
+              "label": "Πρόσβαση με άσφαλτο",
+              "notes": "Πρόσβαση από τοπικό δρόμο στη βορειοανατολική Λευκάδα. Μικρή βοτσαλωτή ακτή με περιορισμένες παροχές."
+            },
+            "terrain": {
+              "types": [
+                "pebbles",
+                "coarse_sand"
+              ],
+              "label": "βότσαλα, χοντρή άμμος"
+            },
+            "organized": false,
+            "shade": false,
+            "amenities": [
+              "parking κοντά"
+            ],
+            "confidence": "low",
+            "language": "el",
+            "batch": "011_1001_1100",
+            "waterDepth": {
+              "type": "shallow",
+              "label": "Ρηχά νερά",
+              "notes": "Η είσοδος στη θάλασσα είναι πιο ήπια και το βάθος αυξάνει πιο σταδιακά."
+            },
+            "sourceNotes": [
+              "Lefkada strict evidence pass 2026-05-29: kept low. Current evidence is OSM identity/location only, without independent beach-specific access, terrain, or service evidence."
+            ],
+            "sourceUrls": [
+              "https://www.openstreetmap.org/way/137726047"
+            ],
+            "orientation": {
+              "degrees": 196.7,
+              "faces": [
+                "South"
+              ],
+              "protectedFrom": [],
+              "confidence": "medium",
+              "notes": "Generated from Natural Earth geospatial exposure facingDeg. This records shoreline-facing direction only; it does not verify shelter, low-wave behavior, or live sea conditions."
+            }
+          }
+        },
+        {
+          "id": 1170,
+          "name": "Πλάκα (Βαγιά)",
+          "lat": 38.85293,
+          "lon": 20.73451,
+          "metadata": {
+            "access": {
+              "type": "asphalt_road",
+              "label": "Πρόσβαση με άσφαλτο",
+              "notes": "Πρόσβαση με άσφαλτο στη βόρεια λωρίδα της Λευκάδας. Φυσική αμμώδης ακτή με περιορισμένες παροχές."
+            },
+            "terrain": {
+              "types": [
+                "fine_sand",
+                "coarse_sand"
+              ],
+              "label": "λεπτή άμμος, χοντρή άμμος"
+            },
+            "organized": false,
+            "shade": false,
+            "amenities": [
+              "parking κοντά"
+            ],
+            "confidence": "low",
+            "language": "el",
+            "batch": "011_1001_1100",
+            "waterDepth": {
+              "type": "shallow",
+              "label": "Ρηχά νερά",
+              "notes": "Η είσοδος στη θάλασσα είναι πιο ήπια και το βάθος αυξάνει πιο σταδιακά."
+            },
+            "sourceNotes": [
+              "Lefkada strict evidence pass 2026-05-29: kept low. OSM supports identity/location and sand surface, but the feature is administratively in Aetolia-Acarnania/Palairos, so the Lefkada bucket remains a geodata review risk."
+            ],
+            "sourceUrls": [
+              "https://www.openstreetmap.org/relation/12302810"
+            ],
+            "orientation": {
+              "degrees": 296,
+              "faces": [
+                "Northwest"
+              ],
+              "protectedFrom": [],
+              "confidence": "medium",
+              "notes": "Generated from Natural Earth geospatial exposure facingDeg. This records shoreline-facing direction only; it does not verify shelter, low-wave behavior, or live sea conditions."
+            }
+          }
+        },
+        {
+          "id": 1173,
+          "name": "Φτέρη",
+          "lat": 38.75713,
+          "lon": 20.76796,
+          "metadata": {
+            "access": {
+              "type": "asphalt_road",
+              "label": "Πρόσβαση με άσφαλτο",
+              "notes": "Πρόσβαση με τοπικό δρόμο στην ανατολική Λευκάδα. Μικρή βοτσαλωτή ακτή με περιορισμένες παροχές."
+            },
+            "terrain": {
+              "types": [
+                "pebbles",
+                "coarse_sand"
+              ],
+              "label": "βότσαλα, χοντρή άμμος"
+            },
+            "organized": false,
+            "shade": true,
+            "amenities": [
+              "parking κοντά"
+            ],
+            "confidence": "low",
+            "language": "el",
+            "batch": "011_1001_1100",
+            "waterDepth": {
+              "type": "shallow",
+              "label": "Ρηχά νερά",
+              "notes": "Η είσοδος στη θάλασσα είναι πιο ήπια και το βάθος αυξάνει πιο σταδιακά."
+            },
+            "sourceNotes": [
+              "Lefkada strict evidence pass 2026-05-29: kept low. Current evidence is OSM identity/location only, and search results also risk confusion with Kefalonia Fteri, so no promotion without stronger Lefkada-specific evidence."
+            ],
+            "sourceUrls": [
+              "https://www.openstreetmap.org/way/72157231"
+            ],
+            "orientation": {
+              "degrees": 206.7,
+              "faces": [
+                "Southwest"
+              ],
+              "protectedFrom": [],
+              "confidence": "medium",
+              "notes": "Generated from Natural Earth geospatial exposure facingDeg. This records shoreline-facing direction only; it does not verify shelter, low-wave behavior, or live sea conditions."
             }
           }
         }

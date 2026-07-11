@@ -36,53 +36,266 @@
     "maskConfidence": "high"
   },
   "summary": {
-    "beachCount": 45,
-    "generatedProfiles": 45,
+    "beachCount": 48,
+    "generatedProfiles": 48,
     "missingCoordinates": 0,
     "sectors": {
       "N": {
-        "protected": 28,
-        "partial": 14,
-        "exposed": 3
+        "protected": 30,
+        "partial": 12,
+        "exposed": 6
       },
       "NE": {
-        "protected": 32,
-        "partial": 13,
-        "exposed": 0
+        "protected": 35,
+        "partial": 11,
+        "exposed": 2
       },
       "E": {
-        "protected": 24,
+        "protected": 26,
         "partial": 21,
-        "exposed": 0
+        "exposed": 1
       },
       "SE": {
-        "protected": 21,
-        "partial": 8,
-        "exposed": 16
+        "protected": 22,
+        "partial": 9,
+        "exposed": 17
       },
       "S": {
-        "protected": 18,
-        "partial": 12,
-        "exposed": 15
+        "protected": 19,
+        "partial": 10,
+        "exposed": 19
       },
       "SW": {
-        "protected": 18,
-        "partial": 13,
+        "protected": 19,
+        "partial": 15,
         "exposed": 14
       },
       "W": {
         "protected": 24,
-        "partial": 17,
-        "exposed": 4
+        "partial": 15,
+        "exposed": 9
       },
       "NW": {
-        "protected": 26,
-        "partial": 14,
-        "exposed": 5
+        "protected": 28,
+        "partial": 13,
+        "exposed": 7
       }
     }
   },
   "profiles": {
+    "1153": {
+      "beachId": 1153,
+      "name": {
+        "en": "Asprogialos",
+        "gr": "Ασπρογιαλός"
+      },
+      "coordinates": {
+        "lat": 38.7933,
+        "lon": 20.73999
+      },
+      "facingDeg": 214.3,
+      "sectors": {
+        "N": {
+          "level": "protected",
+          "fetchKm": 0,
+          "blockedRayRatio": 1,
+          "onshore": -0.826,
+          "intensity": 5.2
+        },
+        "NE": {
+          "level": "protected",
+          "fetchKm": 0,
+          "blockedRayRatio": 1,
+          "onshore": -0.983,
+          "intensity": 0.5
+        },
+        "E": {
+          "level": "protected",
+          "fetchKm": 0,
+          "blockedRayRatio": 1,
+          "onshore": -0.564,
+          "intensity": 13.1
+        },
+        "SE": {
+          "level": "partial",
+          "fetchKm": 3.68,
+          "blockedRayRatio": 1,
+          "onshore": 0.186,
+          "intensity": 35.6
+        },
+        "S": {
+          "level": "partial",
+          "fetchKm": 6.64,
+          "blockedRayRatio": 1,
+          "onshore": 0.826,
+          "intensity": 54.8
+        },
+        "SW": {
+          "level": "partial",
+          "fetchKm": 2.36,
+          "blockedRayRatio": 1,
+          "onshore": 0.983,
+          "intensity": 59.5
+        },
+        "W": {
+          "level": "partial",
+          "fetchKm": 0.36,
+          "blockedRayRatio": 1,
+          "onshore": 0.564,
+          "intensity": 46.9
+        },
+        "NW": {
+          "level": "protected",
+          "fetchKm": 0,
+          "blockedRayRatio": 1,
+          "onshore": -0.186,
+          "intensity": 24.4
+        }
+      },
+      "confidence": "high"
+    },
+    "1170": {
+      "beachId": 1170,
+      "name": {
+        "en": "Plaka (Vagia)",
+        "gr": "Πλάκα (Βαγιά)"
+      },
+      "coordinates": {
+        "lat": 38.85293,
+        "lon": 20.73451
+      },
+      "facingDeg": 320.6,
+      "sectors": {
+        "N": {
+          "level": "exposed",
+          "fetchKm": 14.28,
+          "blockedRayRatio": 0.6,
+          "onshore": 0.773,
+          "intensity": 88.7
+        },
+        "NE": {
+          "level": "protected",
+          "fetchKm": 3.36,
+          "blockedRayRatio": 1,
+          "onshore": 0.098,
+          "intensity": 32.9
+        },
+        "E": {
+          "level": "protected",
+          "fetchKm": 0.12,
+          "blockedRayRatio": 1,
+          "onshore": -0.635,
+          "intensity": 10.9
+        },
+        "SE": {
+          "level": "protected",
+          "fetchKm": 0,
+          "blockedRayRatio": 1,
+          "onshore": -0.995,
+          "intensity": 0.2
+        },
+        "S": {
+          "level": "protected",
+          "fetchKm": 0,
+          "blockedRayRatio": 1,
+          "onshore": -0.773,
+          "intensity": 6.8
+        },
+        "SW": {
+          "level": "protected",
+          "fetchKm": 0.92,
+          "blockedRayRatio": 1,
+          "onshore": -0.098,
+          "intensity": 27.1
+        },
+        "W": {
+          "level": "exposed",
+          "fetchKm": 15.68,
+          "blockedRayRatio": 0.4,
+          "onshore": 0.635,
+          "intensity": 81.8
+        },
+        "NW": {
+          "level": "exposed",
+          "fetchKm": 25,
+          "blockedRayRatio": 0,
+          "onshore": 0.995,
+          "intensity": 99.8
+        }
+      },
+      "confidence": "high"
+    },
+    "1173": {
+      "beachId": 1173,
+      "name": {
+        "en": "Fteri",
+        "gr": "Φτέρη"
+      },
+      "coordinates": {
+        "lat": 38.75713,
+        "lon": 20.76796
+      },
+      "facingDeg": 199.8,
+      "sectors": {
+        "N": {
+          "level": "protected",
+          "fetchKm": 0,
+          "blockedRayRatio": 1,
+          "onshore": -0.941,
+          "intensity": 1.8
+        },
+        "NE": {
+          "level": "protected",
+          "fetchKm": 0,
+          "blockedRayRatio": 1,
+          "onshore": -0.905,
+          "intensity": 2.8
+        },
+        "E": {
+          "level": "protected",
+          "fetchKm": 0,
+          "blockedRayRatio": 1,
+          "onshore": -0.339,
+          "intensity": 19.8
+        },
+        "SE": {
+          "level": "partial",
+          "fetchKm": 5.96,
+          "blockedRayRatio": 1,
+          "onshore": 0.426,
+          "intensity": 42.8
+        },
+        "S": {
+          "level": "exposed",
+          "fetchKm": 10.88,
+          "blockedRayRatio": 1,
+          "onshore": 0.941,
+          "intensity": 83.6
+        },
+        "SW": {
+          "level": "partial",
+          "fetchKm": 5.16,
+          "blockedRayRatio": 1,
+          "onshore": 0.905,
+          "intensity": 57.1
+        },
+        "W": {
+          "level": "partial",
+          "fetchKm": 1.4,
+          "blockedRayRatio": 1,
+          "onshore": 0.339,
+          "intensity": 40.2
+        },
+        "NW": {
+          "level": "protected",
+          "fetchKm": 0,
+          "blockedRayRatio": 1,
+          "onshore": -0.426,
+          "intensity": 17.2
+        }
+      },
+      "confidence": "high"
+    },
     "2517": {
       "beachId": 2517,
       "name": {
