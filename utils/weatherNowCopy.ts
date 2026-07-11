@@ -1,4 +1,5 @@
 import { WindDirection, LanguageCode } from '../types';
+import type { ExposureLevel } from './windExposure';
 
 /**
  * Copy generator for the visible "Weather & sea now" block on the beach detail
@@ -145,6 +146,11 @@ export interface WeatherNowInput {
   faces: WindDirection[];
   canClaimWindProtection: boolean;
   isExposedToTodayWind: boolean;
+  /** The exposure level that colours the map pin the user sees (region-map aligned override
+   *  ?? scoring level). The map deliberately reads one band redder than the scoring engine
+   *  for open sectors, so we key the live sentence off THIS — never claiming "sheltered" for
+   *  a beach the map shows red. */
+  mapExposureLevel?: ExposureLevel;
   /** 0–10, higher = calmer (from calculateSeaConditionScore). */
   seaConditionScore: number;
   /** Boat-only spots (e.g. Kleftiko) aren't "beaches" — refer to them by bare name, no "beach" noun. */
@@ -247,7 +253,12 @@ export const buildWeatherNowContent = (input: WeatherNowInput): WeatherNowConten
     : lowWord;
 
   // Live sentence: how the current wind meets this beach's shelter (volatile).
-  const shelteredNow = input.canClaimWindProtection || (input.protectedFrom || []).includes(input.windDir);
+  // The beach's own protectedFrom metadata can say "sheltered from N" while the map pin —
+  // which the user is looking at — is red, because the map reads one band redder than the
+  // scoring engine for open sectors (see utils/mapExposure). Never claim shelter against
+  // that: if the pin is red, drop the "sheltered" branch so the text matches the map.
+  const exposedOnMap = input.mapExposureLevel ? input.mapExposureLevel === 'exposed' : input.isExposedToTodayWind;
+  const shelteredNow = !exposedOnMap && (input.canClaimWindProtection || (input.protectedFrom || []).includes(input.windDir));
   const bft = Math.round(input.beaufort);
   let liveSentence: string;
   // "now/τώρα/maintenant…" is only truthful for today. For a future day the same block
@@ -258,7 +269,7 @@ export const buildWeatherNowContent = (input: WeatherNowInput): WeatherNowConten
     liveSentence = isToday
       ? { en: `With the ${adjEn} wind of ${bft} Bft blowing now, it is relatively sheltered here.`, gr: `Με ${adjGr} άνεμο ${bft} Bft που φυσάει τώρα, εδώ είναι σχετικά υπήνεμα.`, de: `Bei ${bft} Bft Wind ist es hier gerade relativ geschützt.`, fr: `Avec un vent de ${bft} Bft en ce moment, c'est relativement abrité ici.`, it: `Con vento di ${bft} Bft in questo momento, qui è relativamente riparato.` }[lang]
       : { en: `With the ${adjEn} wind of ${bft} Bft, it is relatively sheltered here.`, gr: `Με ${adjGr} άνεμο ${bft} Bft, εδώ είναι σχετικά υπήνεμα.`, de: `Bei ${bft} Bft Wind ist es hier relativ geschützt.`, fr: `Avec un vent de ${bft} Bft, c'est relativement abrité ici.`, it: `Con vento di ${bft} Bft, qui è relativamente riparato.` }[lang];
-  } else if (input.isExposedToTodayWind) {
+  } else if (input.isExposedToTodayWind || exposedOnMap) {
     const adjGr = GR_WIND_ADJ_NOM[input.windDir];
     const adjEn = EN_WIND_ADJ[input.windDir];
     liveSentence = isToday

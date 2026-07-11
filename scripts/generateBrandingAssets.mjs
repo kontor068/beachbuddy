@@ -87,8 +87,9 @@ async function main() {
   written.push('favicon.ico');
 
   // Apple touch icon: iOS ignores transparency and composites on black,
-  // so flatten onto the brand teal. Use the full app icon (rounded tile art).
-  const apple = await svgToPng(appiconSvg, 180, { flattenTo: BRAND_TEAL });
+  // so flatten onto white (the app-icon tile is a white background matching the
+  // site header mark). iOS applies its own rounded mask over this.
+  const apple = await svgToPng(appiconSvg, 180, { flattenTo: '#ffffff' });
   await writeFile(path.join(OUT, 'apple-touch-icon.png'), apple);
   written.push('apple-touch-icon.png');
 

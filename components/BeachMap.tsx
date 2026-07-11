@@ -13,6 +13,7 @@ import { getLocalizedCopy, languageToLocale } from '../utils/i18n';
 import { getBeachMapCoordinates } from '../utils/mapCoordinates';
 import { getConsistentVisibleMapExposureLevels, getVisibleMapExposureLevel, shouldShowWindExposureColors } from '../utils/mapExposure';
 import type { ExposureLevel } from '../utils/windExposure';
+import { getExperienceTier, getExperienceTierLabel, experienceTierTone, type ExperienceTier } from '../utils/experienceTier';
 import { canOpenNavigation, getNavigationBadge, openNavigation } from '../utils/navigation';
 import { AmenityChip, getAmenityChips } from '../utils/amenities';
 import { translations } from '../translations';
@@ -645,6 +646,60 @@ const ZoomLabelController = ({
   return null;
 };
 
+// Single source of truth for what a pin colour MEANS: the overall experience tier — the same
+// verdict the card shows — derived from the composite score with the honest hard caps, NOT
+// wind exposure. emerald → sky → amber → rose = excellent · good · OK · not recommended.
+const experienceMarkerTone: Record<ExperienceTier, {
+  colorClass: string; ringClass: string; bgClass: string; textClass: string; badgeClass: string;
+}> = {
+  excellent: { colorClass: 'bg-emerald-500', ringClass: 'ring-emerald-200', bgClass: 'bg-emerald-50', textClass: 'text-emerald-700', badgeClass: 'bg-emerald-100 text-emerald-700' },
+  good: { colorClass: 'bg-sky-500', ringClass: 'ring-sky-200', bgClass: 'bg-sky-50', textClass: 'text-sky-700', badgeClass: 'bg-sky-100 text-sky-700' },
+  fair: { colorClass: 'bg-amber-400', ringClass: 'ring-amber-200', bgClass: 'bg-amber-50', textClass: 'text-amber-700', badgeClass: 'bg-amber-100 text-amber-700' },
+  skip: { colorClass: 'bg-rose-600', ringClass: 'ring-rose-300', bgClass: 'bg-rose-50', textClass: 'text-rose-700', badgeClass: 'bg-rose-100 text-rose-700' },
+};
+
+// Resolve a beach to its experience tier for the map. Uses per-beach wind (so a pin matches
+// its own card, not a region average) and the same composite score the recommendation ranks
+// on — the algorithm is untouched, this only reads the score it already produced.
+const getBeachExperienceTier = (
+  item: Pick<SuitableBeach, 'score' | 'exposureLevel' | 'canClaimWindProtection' | 'waveHeightM' | 'windSpeedKmph' | 'swimmingComfort'>,
+  regionWindBeaufort?: number
+): ExperienceTier => {
+  const perBeachBeaufort = typeof item.windSpeedKmph === 'number'
+    ? getBeaufortLevel(item.windSpeedKmph)
+    : regionWindBeaufort;
+  return getExperienceTier({
+    score: item.score,
+    windBeaufort: perBeachBeaufort,
+    waveHeightM: item.waveHeightM,
+    swimmingComfort: item.swimmingComfort,
+    exposureLevel: visibleExposureLevel(item),
+  });
+};
+
+// Legend vocabulary — one plain word per tier (the only translated part) plus a one-line note
+// that tells tourists the colour is the overall pick, not a weather reading.
+const experienceLegendCopy: { tier: ExperienceTier; label: Record<LanguageCode, string> }[] = [
+  { tier: 'excellent', label: { en: 'Excellent', gr: 'Ιδανική', fr: 'Idéale', de: 'Ideal', it: 'Ideale' } },
+  { tier: 'good', label: { en: 'Good', gr: 'Καλή', fr: 'Bonne', de: 'Gut', it: 'Buona' } },
+  { tier: 'fair', label: { en: 'OK', gr: 'Μέτρια', fr: 'Correcte', de: 'Okay', it: 'Discreta' } },
+  { tier: 'skip', label: { en: 'Not recommended', gr: 'Όχι σήμερα', fr: 'Déconseillée', de: 'Nicht empfohlen', it: 'Sconsigliata' } },
+];
+const experienceLegendTitle: Record<LanguageCode, string> = {
+  en: "Today's beaches",
+  gr: 'Οι παραλίες σήμερα',
+  fr: "Les plages aujourd'hui",
+  de: 'Strände heute',
+  it: 'Le spiagge oggi',
+};
+const experienceLegendNote: Record<LanguageCode, string> = {
+  en: "Overall match from today's wind, waves and conditions — not a weather reading.",
+  gr: 'Συνολική καταλληλότητα από άνεμο, κύμα και συνθήκες σήμερα — όχι μετεωρολογία.',
+  fr: 'Adéquation globale selon le vent, les vagues et les conditions du jour.',
+  de: 'Gesamteignung aus Wind, Wellen und Bedingungen von heute.',
+  it: 'Idoneità complessiva da vento, onde e condizioni di oggi.',
+};
+
 const getRecommendationTone = (
   item: Pick<SuitableBeach, 'score' | 'exposureLevel' | 'canClaimWindProtection' | 'simpleWindSuitability'>,
   showWindExposureColors = true
@@ -744,6 +799,33 @@ const createBeachIcon = (
   return L.divIcon({
     className: 'custom-div-icon',
     html: `<div class="beach-map-marker-dot ${topPickClass} ${highlightedClass} ${colorClass} w-4 h-4 rounded-full border-2 border-white shadow-lg ring-4 ${ringClass}"></div>`,
+    iconSize: [16, 16],
+    iconAnchor: [8, 8],
+    popupAnchor: [0, -10]
+  });
+};
+
+// The marker every beach gets: coloured by its experience tier (suitability), not wind. The
+// "not recommended" tier also carries a hollow centre as a non-colour cue, and the evidence
+// ring (supported vs estimated) is preserved so a low-confidence pin never over-claims.
+const createExperienceIcon = (
+  tier: ExperienceTier,
+  isTopPick = false,
+  evidence: MapExposureEvidence = 'estimated',
+  isHighlighted = false
+) => {
+  const { colorClass, ringClass } = experienceMarkerTone[tier];
+  const topPickClass = isTopPick ? 'beach-map-top-pick-marker-dot' : '';
+  const highlightedClass = isHighlighted ? 'beach-map-active-scroll-marker-dot' : '';
+  const evidenceClass = evidence === 'supported'
+    ? 'beach-map-marker-evidence-supported'
+    : 'beach-map-marker-evidence-estimated';
+  const shapeClass = tier === 'skip' ? 'beach-map-marker-exposed' : '';
+  const core = tier === 'skip' ? '<span class="beach-map-marker-exposed-core"></span>' : '';
+
+  return L.divIcon({
+    className: 'custom-div-icon',
+    html: `<div class="beach-map-marker-dot ${topPickClass} ${highlightedClass} ${evidenceClass} ${shapeClass} ${colorClass} w-4 h-4 rounded-full border-2 border-white shadow-lg ring-4 ${ringClass}">${core}</div>`,
     iconSize: [16, 16],
     iconAnchor: [8, 8],
     popupAnchor: [0, -10]
@@ -1982,18 +2064,14 @@ const BeachMap: React.FC<BeachMapProps> = ({
     const exposureLevel = mapMode === 'wind'
       ? getMapExposureLevel(item)
       : visibleExposureLevel(item);
-    const exposureTone = getExposureMarkerTone(exposureLevel, showWindExposureColors, windBeaufort);
     const exposureReason = getMapExposureReason(exposureLevel);
-    const badge = mapMode === 'recommendation' ? (
-      <span className={`shrink-0 rounded-full px-2 py-1 text-[11px] font-black ${getRecommendationTone(item, showRecommendationWindColors).badgeClass}`}>
-        {item.score}%
-      </span>
-    ) : (
-        <span className={`inline-flex min-w-0 shrink items-center gap-1 rounded-full px-2 py-1 text-[11px] font-black ${exposureTone.bgClass} ${exposureTone.textClass}`}>
-        <Wind className="h-3 w-3 shrink-0" />
-        <span className="truncate">
-          {showWindExposureColors && showWindExposureStatusLabels ? exposureLabel(exposureLevel) : mapCopy.calmWind[language]}
-        </span>
+    // The popup headline is the verdict — the same experience tier as the pin and the card.
+    // Wind detail stays below as the "why", not the headline.
+    const experienceTier = getBeachExperienceTier(item, windBeaufort);
+    const tierTone = experienceMarkerTone[experienceTier];
+    const badge = (
+      <span className={`shrink-0 rounded-full px-2 py-1 text-[11px] font-black ${tierTone.badgeClass}`}>
+        {getExperienceTierLabel(experienceTier, language)}
       </span>
     );
     const handleNavigationClick = () => {
@@ -2193,111 +2271,36 @@ const BeachMap: React.FC<BeachMapProps> = ({
 
   const renderLegend = () => (
     <>
-      {mapMode === 'recommendation' ? (
-        <>
-          <h4 className="mb-1.5 font-bold text-slate-900 sm:mb-2 dark:text-white">{mapCopy.suitability[language]}</h4>
-          <div className="grid gap-1 sm:flex sm:flex-col sm:gap-1.5">
-            <div className="flex items-center gap-2">
-              <div className="h-3 w-3 rounded-full bg-emerald-500 ring-2 ring-emerald-200"></div>
-              <span className="text-slate-600 dark:text-slate-300">
-                {showRecommendationWindColors ? mapCopy.excellent[language] : mapCopy.excellentCalm[language]}
-              </span>
-            </div>
-            <div className="flex items-center gap-2">
-              <div className="h-3 w-3 rounded-full bg-amber-500 ring-2 ring-amber-200"></div>
-              <span className="text-slate-600 dark:text-slate-300">{mapCopy.good[language]}</span>
-            </div>
-            <div className="flex items-center gap-2">
-              <div className="h-3 w-3 rounded-full bg-rose-500 ring-2 ring-rose-200"></div>
-              <span className="text-slate-600 dark:text-slate-300">{mapCopy.notRecommended[language]}</span>
-            </div>
+      <h4 className="mb-1.5 font-bold text-slate-900 sm:mb-2 dark:text-white">{experienceLegendTitle[language]}</h4>
+      <div className="grid gap-1 sm:flex sm:flex-col sm:gap-1.5">
+        {experienceLegendCopy.map(({ tier, label }) => (
+          <div key={tier} className="flex items-center gap-2">
+            <span className={`relative h-3 w-3 shrink-0 rounded-full ring-2 ${experienceMarkerTone[tier].colorClass} ${experienceMarkerTone[tier].ringClass}`}>
+              {tier === 'skip' && <span className="beach-map-marker-exposed-core" aria-hidden="true" />}
+            </span>
+            <span className="text-slate-600 dark:text-slate-300">{label[language]}</span>
           </div>
-        </>
-      ) : (
-        <>
-          <h4 className="mb-1.5 flex items-center gap-1 font-bold text-slate-900 sm:mb-2 dark:text-white">
-            <Wind className="h-3 w-3" />
-            {showWindExposureColors && showWindExposureStatusLabels ? mapCopy.exposure[language] : mapCopy.calmWind[language]}
-          </h4>
-          {windSpeedKmh !== undefined && windDirection && (
-            <div className="mb-1.5 border-b border-slate-200 pb-1.5 text-slate-700 sm:mb-2 sm:pb-2 dark:border-slate-700 dark:text-slate-600">
-              {mapCopy.current[language]}: {localizedWindDirection} {mapCopy.at[language]} {Math.round(windSpeedKmh)} km/h
-              {windBeaufort !== undefined ? ` (${windBeaufort} ${mapCopy.beaufort[language]})` : ''}
-            </div>
-          )}
-          {showWindExposureColors ? (
-            <div className="space-y-2">
-              {showGroupedExposureLegend && (
-                <div className="grid gap-1 sm:flex sm:flex-col sm:gap-1.5">
-                  <div className="flex items-center gap-2">
-                    <div className={`h-3 w-3 rounded-full ring-2 ${protectedTone.colorClass} ${protectedTone.ringClass}`}></div>
-                    <span className="text-slate-600 dark:text-slate-300">{groupedExposureLabel('protected')}</span>
-                  </div>
-                  <div className="flex items-center gap-2">
-                    <div className={`relative h-3 w-3 rounded-full ring-2 ${exposedTone.colorClass} ${exposedTone.ringClass}`}>
-                      {showExposedShapeCue && <span className="beach-map-marker-exposed-core" aria-hidden="true" />}
-                    </div>
-                    <span className="text-slate-600 dark:text-slate-300">{groupedExposureLabel('exposed')}</span>
-                  </div>
-                </div>
-              )}
-              {renderWindColorGuidePanel('full')}
-            </div>
-          ) : (
-            <div className="space-y-2">
-              <div className="flex items-center gap-2">
-                <div className="h-3 w-3 rounded-full bg-sky-500 ring-2 ring-sky-200"></div>
-                <span className="text-slate-600 dark:text-slate-300">{mapCopy.calmWindNote[language]}</span>
-              </div>
-              {renderWindColorGuidePanel('full')}
-            </div>
-          )}
-        </>
-      )}
+        ))}
+      </div>
+      <p className="mt-1.5 border-t border-slate-200 pt-1.5 text-[10px] leading-snug text-slate-500 sm:mt-2 sm:pt-2 dark:border-slate-700 dark:text-slate-500">
+        {experienceLegendNote[language]}
+      </p>
     </>
   );
 
   const renderPreviewLegend = () => (
     <div className="space-y-2">
-      <div className="flex min-w-0 items-center justify-between gap-2">
-        <h4 className="flex min-w-0 items-center gap-1 text-[11px] font-black leading-tight text-slate-800 dark:text-white">
-          <Wind className="h-3 w-3 shrink-0" />
-          <span className="truncate">{showWindExposureColors && showWindExposureStatusLabels ? mapCopy.exposure[language] : mapCopy.calmWind[language]}</span>
-        </h4>
-        {windSpeedKmh !== undefined && windDirection && (
-          <span className="shrink-0 text-[10px] font-semibold leading-tight text-slate-700 dark:text-slate-600">
-            {localizedWindDirection} {Math.round(windSpeedKmh)} km/h
-            {windBeaufort !== undefined ? ` · ${windBeaufort} ${mapCopy.beaufort[language]}` : ''}
-          </span>
-        )}
-      </div>
-      {showWindExposureColors ? (
-        <div className="space-y-2">
-          {showGroupedExposureLegend && (
-            <div className="grid grid-cols-2 gap-1.5">
-              <div className={`flex min-w-0 items-center justify-center gap-1 rounded-full px-1.5 py-1 text-[9px] font-bold leading-none ${protectedTone.bgClass} ${protectedTone.textClass}`}>
-                <span className={`h-2.5 w-2.5 shrink-0 rounded-full ring-1 ${protectedTone.colorClass} ${protectedTone.ringClass}`} />
-                <span className="whitespace-nowrap">{groupedExposureLabel('protected')}</span>
-              </div>
-              <div className={`flex min-w-0 items-center justify-center gap-1 rounded-full px-1.5 py-1 text-[9px] font-bold leading-none ${exposedTone.bgClass} ${exposedTone.textClass}`}>
-                <span className={`relative h-2.5 w-2.5 shrink-0 rounded-full ring-1 ${exposedTone.colorClass} ${exposedTone.ringClass}`}>
-                  {showExposedShapeCue && <span className="beach-map-marker-exposed-core" aria-hidden="true" />}
-                </span>
-                <span className="whitespace-nowrap">{groupedExposureLabel('exposed')}</span>
-              </div>
-            </div>
-          )}
-          {renderWindColorGuidePanel('preview')}
-        </div>
-      ) : (
-        <div className="space-y-2">
-          <div className="flex min-w-0 items-center justify-center gap-1.5 rounded-full bg-sky-50 px-2 py-1.5 text-[10px] font-bold leading-none text-sky-700">
-            <span className="h-2.5 w-2.5 shrink-0 rounded-full bg-sky-500 ring-1 ring-sky-200" />
-            <span className="truncate">{mapCopy.calmWind[language]}</span>
+      <h4 className="text-[11px] font-black leading-tight text-slate-800 dark:text-white">{experienceLegendTitle[language]}</h4>
+      <div className="grid grid-cols-2 gap-1.5">
+        {experienceLegendCopy.map(({ tier, label }) => (
+          <div key={tier} className={`flex min-w-0 items-center justify-center gap-1 rounded-full px-1.5 py-1 text-[9px] font-bold leading-none ${experienceMarkerTone[tier].bgClass} ${experienceMarkerTone[tier].textClass}`}>
+            <span className={`relative h-2.5 w-2.5 shrink-0 rounded-full ring-1 ${experienceMarkerTone[tier].colorClass} ${experienceMarkerTone[tier].ringClass}`}>
+              {tier === 'skip' && <span className="beach-map-marker-exposed-core" aria-hidden="true" />}
+            </span>
+            <span className="whitespace-nowrap">{label[language]}</span>
           </div>
-          {renderWindColorGuidePanel('preview')}
-        </div>
-      )}
+        ))}
+      </div>
     </div>
   );
 
@@ -2334,29 +2337,9 @@ const BeachMap: React.FC<BeachMapProps> = ({
           </button>
         )}
 
-        {/* Map Mode Toggle */}
-        {!compact && !preview && (
-        <div className="absolute left-3 right-3 top-3 z-[1000] flex overflow-hidden rounded-full border border-white/60 bg-white/80 p-1 shadow-lg shadow-sky-900/10 backdrop-blur-xl sm:left-auto sm:right-4 sm:rounded-xl sm:border-slate-200 sm:p-0 dark:border-slate-700 dark:bg-slate-900/85">
-          <button
-            type="button"
-            onClick={() => setMapMode('recommendation')}
-            aria-label={mapCopy.recommendationMode[language]}
-            className={`flex-1 whitespace-nowrap rounded-full px-2.5 py-1.5 text-[10px] font-bold transition-colors sm:flex-none sm:rounded-none sm:px-3 sm:py-2 sm:text-xs ${mapMode === 'recommendation' ? 'bg-cyan-50 text-cyan-600 shadow-sm dark:bg-cyan-900/30 dark:text-cyan-400' : 'text-slate-600 hover:bg-white/60 sm:hover:bg-slate-50 dark:text-slate-600 dark:hover:bg-slate-800'}`}
-          >
-            <span className="sm:hidden">{mapCopy.recommendationShort[language]}</span>
-            <span className="hidden sm:inline">{mapCopy.recommendationMode[language]}</span>
-          </button>
-          <button
-            type="button"
-            onClick={() => setMapMode('wind')}
-            aria-label={mapCopy.windMode[language]}
-            className={`flex-1 whitespace-nowrap rounded-full px-2.5 py-1.5 text-[10px] font-bold transition-colors sm:flex-none sm:rounded-none sm:px-3 sm:py-2 sm:text-xs ${mapMode === 'wind' ? 'bg-cyan-50 text-cyan-600 shadow-sm dark:bg-cyan-900/30 dark:text-cyan-400' : 'text-slate-600 hover:bg-white/60 sm:hover:bg-slate-50 dark:text-slate-600 dark:hover:bg-slate-800'}`}
-          >
-            <span className="sm:hidden">{mapCopy.windShort[language]}</span>
-            <span className="hidden sm:inline">{mapCopy.windMode[language]}</span>
-          </button>
-        </div>
-        )}
+        {/* The map now shows a single meaning — today's overall beach suitability — so the old
+            "Recommendation vs Wind" mode toggle is gone. The hour slider and the wind detail in
+            each pin's popup remain as supporting evidence. */}
 
         <MapContainer
           center={center}
@@ -2442,6 +2425,7 @@ const BeachMap: React.FC<BeachMapProps> = ({
             const markerCoordinate = getBeachMapCoordinates(item.beach, { lat: center[0], lon: center[1] });
             const mapExposureLevel = getMapExposureLevel(item);
             const mapExposureEvidence = getMapExposureEvidence(item);
+            const markerExperienceTier = getBeachExperienceTier(item, windBeaufort);
             // Hovering or scroll-linking a marker reveals its name even when the
             // zoom-based labels are faded out, so the active card is easy to find.
             const isLabelActive = isHighlightedMarker || hoveredBeachId === item.beachId;
@@ -2449,12 +2433,10 @@ const BeachMap: React.FC<BeachMapProps> = ({
 
             return (
             <Marker
-              key={`${item.beachId}-${mapMode}-${mapExposureLevel}-${isTopPickMarker ? 'top' : 'base'}-${isHighlightedMarker ? 'active' : 'idle'}`}
+              key={`${item.beachId}-${mapMode}-${markerExperienceTier}-${isTopPickMarker ? 'top' : 'base'}-${isHighlightedMarker ? 'active' : 'idle'}`}
               position={[markerCoordinate.lat, markerCoordinate.lon]}
               zIndexOffset={isHighlightedMarker ? 1000 : isTopPickMarker ? 700 : 0}
-              icon={mapMode === 'recommendation'
-                ? createBeachIcon(item, showRecommendationWindColors, isTopPickMarker, isHighlightedMarker)
-                : createExposureIcon(mapExposureLevel, showWindExposureColors, windBeaufort, isTopPickMarker, mapExposureEvidence, isHighlightedMarker)}
+              icon={createExperienceIcon(markerExperienceTier, isTopPickMarker, mapExposureEvidence, isHighlightedMarker)}
               eventHandlers={{
                 click: () => {
                   trackEvent('map_marker_clicked', item.beachId, {
@@ -2638,9 +2620,9 @@ const BeachMap: React.FC<BeachMapProps> = ({
         </div>
       )}
 
-      {isCompactPreview && mapMode === 'wind' && (
+      {isCompactPreview && (
         <div className="mt-0 rounded-xl border border-sky-100 bg-white/90 px-2 py-1 text-left shadow-sm shadow-sky-900/8 backdrop-blur-xl dark:border-slate-700 dark:bg-slate-900/90">
-          {renderWindColorGuidePanel('preview')}
+          {renderPreviewLegend()}
         </div>
       )}
 
