@@ -31,9 +31,9 @@ interface RibbonRun {
 }
 
 const TIER_COLOR: Record<ExperienceTier, string> = {
-  excellent: '#10b981', // emerald-500 — matches experienceMarkerTone
-  good: '#0ea5e9',      // sky-500
-  fair: '#fbbf24',      // amber-400
+  excellent: '#3b82f6', // blue-500 — matches experienceMarkerTone
+  good: '#facc15',      // yellow-400
+  fair: '#f97316',      // orange-500
   skip: '#e11d48',      // rose-600
 };
 /** Stretches near a beach that has no tier in the current view: neutral, low-key. */

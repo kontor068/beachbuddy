@@ -41,7 +41,10 @@ export const getExperienceTier = (input: ExperienceTierInput): ExperienceTier =>
   // that is simply wrong today. A strong breeze that only makes swimming choppy is NOT red on
   // its own — it caps the tier at "OK" below, so a 6 Bft afternoon reads amber, not a wall of red.
   const roughSea = wave !== undefined && wave >= 1.5;
-  if (bft >= 7 || roughSea || score < 25) return 'skip';
+  // Red ("skip") tracks the map's wind-colour guide: it only appears from 5 Bft up.
+  // Below that, a rough sea or a weak pick caps the beach at "OK" (orange), never
+  // "avoid" — so a 4 Bft day never paints red. A near-gale (7 Bft+) is always skip.
+  if (bft >= 7 || (bft >= 5 && (roughSea || score < 25))) return 'skip';
 
   // Condition ceiling: 3 excellent · 2 good · 1 OK. Strong wind or real chop pulls it down,
   // and a hard swim advisory holds it at "OK" even when the wind reads a notch lower.
@@ -122,26 +125,26 @@ export interface ExperienceTierTone {
   strong: string;
 }
 
-// One palette, four meanings, used by every surface: emerald → cyan → amber → rose,
-// i.e. 🟢 excellent · 🟡 good · 🟠 fair · 🔴 not recommended.
+// One palette, four meanings, used by every surface: blue → yellow → orange → rose,
+// i.e. 🔵 excellent · 🟡 good · 🟠 fair · 🔴 not recommended.
 export const experienceTierTone: Record<ExperienceTier, ExperienceTierTone> = {
   excellent: {
     container:
-      'border-emerald-200/90 bg-emerald-50/78 text-emerald-800 backdrop-blur-md dark:border-emerald-900/50 dark:bg-emerald-950/35 dark:text-emerald-200',
-    icon: 'text-emerald-600 dark:text-emerald-300',
-    strong: 'text-emerald-700 dark:text-emerald-200',
+      'border-blue-200/90 bg-blue-50/78 text-blue-800 backdrop-blur-md dark:border-blue-900/50 dark:bg-blue-950/35 dark:text-blue-200',
+    icon: 'text-blue-600 dark:text-blue-300',
+    strong: 'text-blue-700 dark:text-blue-200',
   },
   good: {
     container:
-      'border-cyan-200/90 bg-cyan-50/78 text-cyan-800 backdrop-blur-md dark:border-cyan-900/50 dark:bg-cyan-950/35 dark:text-cyan-200',
-    icon: 'text-cyan-600 dark:text-cyan-300',
-    strong: 'text-cyan-700 dark:text-cyan-200',
+      'border-yellow-200/90 bg-yellow-50/78 text-yellow-800 backdrop-blur-md dark:border-yellow-900/50 dark:bg-yellow-950/35 dark:text-yellow-200',
+    icon: 'text-yellow-600 dark:text-yellow-300',
+    strong: 'text-yellow-700 dark:text-yellow-200',
   },
   fair: {
     container:
-      'border-amber-200/90 bg-amber-50/78 text-amber-800 backdrop-blur-md dark:border-amber-900/50 dark:bg-amber-950/35 dark:text-amber-200',
-    icon: 'text-amber-600 dark:text-amber-300',
-    strong: 'text-amber-700 dark:text-amber-200',
+      'border-orange-200/90 bg-orange-50/78 text-orange-800 backdrop-blur-md dark:border-orange-900/50 dark:bg-orange-950/35 dark:text-orange-200',
+    icon: 'text-orange-600 dark:text-orange-300',
+    strong: 'text-orange-700 dark:text-orange-200',
   },
   skip: {
     container:

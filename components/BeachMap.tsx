@@ -653,13 +653,13 @@ const ZoomLabelController = ({
 
 // Single source of truth for what a pin colour MEANS: the overall experience tier — the same
 // verdict the card shows — derived from the composite score with the honest hard caps, NOT
-// wind exposure. emerald → sky → amber → rose = excellent · good · OK · not recommended.
+// wind exposure. blue → yellow → orange → rose = excellent · good · OK · not recommended.
 const experienceMarkerTone: Record<ExperienceTier, {
   colorClass: string; ringClass: string; bgClass: string; textClass: string; badgeClass: string;
 }> = {
-  excellent: { colorClass: 'bg-emerald-500', ringClass: 'ring-emerald-200', bgClass: 'bg-emerald-50', textClass: 'text-emerald-700', badgeClass: 'bg-emerald-100 text-emerald-700' },
-  good: { colorClass: 'bg-sky-500', ringClass: 'ring-sky-200', bgClass: 'bg-sky-50', textClass: 'text-sky-700', badgeClass: 'bg-sky-100 text-sky-700' },
-  fair: { colorClass: 'bg-amber-400', ringClass: 'ring-amber-200', bgClass: 'bg-amber-50', textClass: 'text-amber-700', badgeClass: 'bg-amber-100 text-amber-700' },
+  excellent: { colorClass: 'bg-blue-500', ringClass: 'ring-blue-200', bgClass: 'bg-blue-50', textClass: 'text-blue-700', badgeClass: 'bg-blue-100 text-blue-700' },
+  good: { colorClass: 'bg-yellow-400', ringClass: 'ring-yellow-200', bgClass: 'bg-yellow-50', textClass: 'text-yellow-700', badgeClass: 'bg-yellow-100 text-yellow-700' },
+  fair: { colorClass: 'bg-orange-500', ringClass: 'ring-orange-200', bgClass: 'bg-orange-50', textClass: 'text-orange-700', badgeClass: 'bg-orange-100 text-orange-700' },
   skip: { colorClass: 'bg-rose-600', ringClass: 'ring-rose-300', bgClass: 'bg-rose-50', textClass: 'text-rose-700', badgeClass: 'bg-rose-100 text-rose-700' },
 };
 
