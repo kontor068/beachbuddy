@@ -103,7 +103,20 @@ const prerenderLocales = [
 // en + el stay national and byte-identical; rollout = add region ids here.
 const BASE_LOCALE_IDS = new Set(['en', 'el']);
 const baseLocales = prerenderLocales.filter(locale => BASE_LOCALE_IDS.has(locale.id));
-const LOCALIZED_REGIONS = new Set(['south-aegean-milos']);
+// Multilingual rollout by foreign demand. MUST stay 1:1 in sync with
+// LOCALIZED_REGION_SLUGS in utils/beachUrls.ts (full region id here, bare URL
+// slug there) — a drift makes the client emit /de|fr|it links to pages that were
+// never prerendered (404 on reload).
+const LOCALIZED_REGIONS = new Set([
+  'south-aegean-milos',   // pilot
+  // Wave 1 — Cyclades core
+  'south-aegean-naxos',
+  'south-aegean-paros',
+  'south-aegean-mykonos',
+  'south-aegean-santorini',
+  'south-aegean-ios',
+  'south-aegean-sifnos',
+]);
 const localesForRegion = regionId =>
   LOCALIZED_REGIONS.has(regionId) ? prerenderLocales : baseLocales;
 
