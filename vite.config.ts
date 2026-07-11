@@ -70,6 +70,7 @@ export default defineConfig(({ mode }) => {
                   'utils/dateLabels.ts',
                   'utils/filterSummary.ts',
                   'utils/i18n.ts',
+                  'utils/infoOnlyRegions.ts',
                   'utils/localization.ts',
                   'utils/mapExposure.ts',
                   'utils/navigation.ts',

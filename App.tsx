@@ -42,6 +42,7 @@ import { islandHasContextStrip } from './utils/islandContextStrip';
 import { QUICK_PREFERENCE_FILTERS } from './utils/preferenceFilterLabels';
 import { canOpenNavigation, openNavigation } from './utils/navigation';
 import { displayBeachName, localizedBeachLabel } from './utils/localization';
+import { isInfoOnlyRegionId } from './utils/infoOnlyRegions';
 import { hasBoatOnlyAccess, hasDifficultTopPickAccess, hasMainstreamTopPickAccess, isAdventureBeach } from './utils/access';
 import { getBeachPopularityRating } from './utils/beachRating';
 import { buildBeachDetailPath, buildBeachRegionPath, parseBeachDetailPath, parseBeachRegionPath, regionMatchesRouteParam } from './utils/beachUrls';
@@ -1571,6 +1572,14 @@ export const App: React.FC = () => {
   // --- Beach & Weather Data (Custom Hooks) ---
   const { allIslands, loading: beachesLoading, error: beachesError, getFilteredBeaches, ensureIslandBeachesLoaded, cacheLoadedIsland } = useBeaches(language);
   const { selectedIsland, selectIsland, selectAdHocRegion, showValueProp, markValuePropSeen } = useLocation(allIslands);
+  // Islands offered in the browsable selector + name search. Info-only regions
+  // (e.g. Milos) are SEO-only: their pages exist and resolve on a direct URL, but
+  // they are never surfaced as a pickable/searchable option in the app. Resolution
+  // still uses the full `allIslands`, so direct links keep working.
+  const selectableIslands = useMemo(
+    () => allIslands.filter(island => !isInfoOnlyRegionId(island.id)),
+    [allIslands],
+  );
   const isNearMeRegionActive = selectedIsland?.id === NEAR_ME_REGION_ID;
   const { weather, forecast: rawForecast, forecastIslandId, beachForecasts, loading: weatherLoading, error: weatherError, selectedDayIndex, setSelectedDayIndex, loadWeatherData, lastUpdated } = useWeather(selectedIsland, language);
   // On a region switch `selectedIsland` updates synchronously, but the new region's
@@ -3684,6 +3693,9 @@ export const App: React.FC = () => {
     regionName: selectedIsland?.name.en,
   }), [language, selectedIsland?.id, selectedIsland?.name.en]);
   const isUnsafeWinter = isWinter && currentBeaufort > 4;
+  // Info-only regions (e.g. Milos): pages exist and beaches are browsable, but the
+  // region page hides the interactive map and the today-recommendation ranking.
+  const isInfoOnlyRegion = isInfoOnlyRegionId(selectedIsland?.id);
   const isWaitingForForecast = Boolean(selectedIsland && !selectedForecast && !weatherError && !isUnsafeWinter);
   const handleMobileMapDaySelect = React.useCallback((index: number) => {
     if (index === selectedDayIndex) return;
@@ -5068,7 +5080,7 @@ export const App: React.FC = () => {
     if (trimmedQuery.length < 3) return null;
 
     const queryVariants = getSearchVariants(trimmedQuery);
-    const rankedMatches = allIslands
+    const rankedMatches = selectableIslands
       .map(island => {
         const values = [
           island.name[language],
@@ -5192,7 +5204,7 @@ export const App: React.FC = () => {
         return searchIndex
           .map((entry): GlobalBeachSearchEntry | null => {
             const island = islandById.get(entry.regionId);
-            if (!island) return null;
+            if (!island || isInfoOnlyRegionId(entry.regionId)) return null;
             const regionValues = getIslandSearchValues(island);
 
             return {
@@ -5258,7 +5270,7 @@ export const App: React.FC = () => {
   };
 
   const getRegionSearchSuggestions = (query: string): DirectorySearchSuggestion[] => (
-    allIslands
+    selectableIslands
       .map(island => ({
         island,
         score: scoreSearchValues(query, getIslandSearchValues(island)),
@@ -5473,7 +5485,7 @@ export const App: React.FC = () => {
   // on the first mobile viewport.
   // Keep the height stable as the hour slider changes.
 
-  const directoryMapPreview = selectedIsland && !isUnsafeWinter ? (
+  const directoryMapPreview = selectedIsland && !isUnsafeWinter && !isInfoOnlyRegion ? (
     <MapLoadBoundary
       resetKey={`${selectedIsland.id}-${language}-directory`}
       fallback={
@@ -5809,7 +5821,7 @@ export const App: React.FC = () => {
         ) : undefined}
       />
 
-      {showRecommendationPreviewSection && forecast?.[selectedDayIndex] && !isUnsafeWinter && !showHeaderForecast && recommendationSectionBeaches.length > 0 && (
+      {showRecommendationPreviewSection && forecast?.[selectedDayIndex] && !isUnsafeWinter && !showHeaderForecast && recommendationSectionBeaches.length > 0 && !isInfoOnlyRegion && (
         <section className="relative z-20 px-3 pb-3 pt-1 sm:px-4 sm:pb-5 sm:pt-0" aria-label={recommendationModeTitle}>
           <div className="mx-auto max-w-6xl">
             <div className="relative -mx-3 rounded-[1.35rem] border border-white/70 bg-white/72 px-3 pb-4 pt-4 shadow-sm shadow-sky-900/5 ring-1 ring-white/45 backdrop-blur-xl sm:mx-0 sm:px-5 sm:pb-5 sm:pt-5">
@@ -5858,7 +5870,7 @@ export const App: React.FC = () => {
         </section>
       )}
 
-      {isDesktopViewport && showWindContextSummaryPanel && (
+      {isDesktopViewport && showWindContextSummaryPanel && !isInfoOnlyRegion && (
         <section className="relative z-20 px-3 pb-3 pt-1 sm:px-4 sm:pb-5 sm:pt-0" aria-label={recommendationModeTitle}>
           <div className="mx-auto max-w-3xl rounded-[1.35rem] border border-white/70 bg-white/72 px-4 py-4 text-center shadow-sm shadow-sky-900/5 ring-1 ring-white/45 backdrop-blur-xl sm:px-5 sm:py-5">
             <h2 className="font-heading text-lg font-extrabold leading-tight text-slate-950 sm:text-2xl">
@@ -5871,7 +5883,7 @@ export const App: React.FC = () => {
         </section>
       )}
 
-      {selectedIsland && !isUnsafeWinter && isDesktopViewport && !showHeaderForecast && (
+      {selectedIsland && !isUnsafeWinter && isDesktopViewport && !showHeaderForecast && !isInfoOnlyRegion && (
         <section id="map-section-desktop" className="relative z-20 hidden px-3 pb-3 pt-1 sm:block sm:px-4 sm:pb-5 sm:pt-0">
           <div className="mx-auto max-w-6xl">
             <div className="relative overflow-hidden rounded-2xl border border-white/60 shadow-lg dark:border-slate-800 sm:rounded-3xl">
@@ -6023,7 +6035,7 @@ export const App: React.FC = () => {
               )}
 
               {/* Top Recommendations */}
-              {forecast?.[selectedDayIndex] && !isUnsafeWinter && !showHeaderForecast && !showRecommendationPreviewSection && !hasActiveSearchOrFilters && showDecisionRecommendations && recommendationSectionBeaches.length > 0 && (
+              {forecast?.[selectedDayIndex] && !isUnsafeWinter && !showHeaderForecast && !showRecommendationPreviewSection && !hasActiveSearchOrFilters && showDecisionRecommendations && recommendationSectionBeaches.length > 0 && !isInfoOnlyRegion && (
                 <section className="!mt-0 sm:!mt-5" data-nosnippet="true">
                   <div className="relative -mx-3 rounded-[1.35rem] border border-white/70 bg-white/72 px-3 pb-4 pt-4 shadow-sm shadow-sky-900/5 ring-1 ring-white/45 backdrop-blur-xl sm:mx-0 sm:px-5 sm:pb-5 sm:pt-5">
                     <div className="mb-3 space-y-1 px-1 text-center sm:mb-4">
@@ -6152,7 +6164,7 @@ export const App: React.FC = () => {
                 </section>
               )}
 
-              {selectedIsland && !isUnsafeWinter && !isDesktopViewport && !showHeaderForecast && (
+              {selectedIsland && !isUnsafeWinter && !isDesktopViewport && !showHeaderForecast && !isInfoOnlyRegion && (
                 <section id="map-section" ref={mapSectionRef} className="!mt-4 space-y-2 sm:hidden sm:space-y-5" data-nosnippet="true">
                   <div className="space-y-1 sm:space-y-2">
                     <div className="flex min-h-10 w-full items-center justify-center rounded-full border border-white/50 bg-white/42 px-5 py-2 shadow-sm shadow-sky-900/5 ring-1 ring-white/30 backdrop-blur-xl sm:px-6">
@@ -6359,7 +6371,7 @@ export const App: React.FC = () => {
 
       {isIslandSelectorOpen && (
         <Suspense fallback={null}>
-          <IslandSelectorModal isOpen={isIslandSelectorOpen} onClose={handleCloseIslandSelector} islands={allIslands} onSelect={handleRegionSelected} t={t} language={language} onSelectNearest={handleSelectNearest} isFindingNearest={isFindingNearest} findNearestError={findNearestError} />
+          <IslandSelectorModal isOpen={isIslandSelectorOpen} onClose={handleCloseIslandSelector} islands={selectableIslands} onSelect={handleRegionSelected} t={t} language={language} onSelectNearest={handleSelectNearest} isFindingNearest={isFindingNearest} findNearestError={findNearestError} />
         </Suspense>
       )}
 

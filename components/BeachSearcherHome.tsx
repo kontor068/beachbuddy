@@ -33,6 +33,7 @@ import {
 import type { Beach, DailyForecast, FilterKey, Island, LanguageCode, SortOption, SuitableBeach, Translation, UserPreferences, WindDirection } from '../types';
 import { getLocalizedCopy, languageToDateLocale, languageToLocale, type SupportedLanguage } from '../utils/i18n';
 import { displayBeachName, localizedAccessLabel, localizedPopularityLabel } from '../utils/localization';
+import { isInfoOnlyRegionId } from '../utils/infoOnlyRegions';
 import { getAmenityChips, type AmenityChip } from '../utils/amenities';
 import { getBeachPhotoLookup } from '../services/beachPhotos';
 import { getBeachTouristRecognitionScore } from '../utils/touristPriority';
@@ -1635,6 +1636,9 @@ export const BeachSearcherHome: React.FC<BeachSearcherHomeProps> = ({
   const activePlaceName = selectedIsland?.name[language] || copy.greece;
   const heroBackground = getImageSet(islandBackground);
   const regionBeaches = selectedIsland?.beaches || [];
+  // Info-only regions (e.g. Milos): show a plain browsable beach list, but no
+  // today-recommendation ranking (podium carousel / top-choice hero / rank medals).
+  const infoOnly = isInfoOnlyRegionId(selectedIsland?.id);
   const hasRegionFilterAvailabilityData = regionBeaches.length > 0;
   const filterPreferenceForRegion = (filter: QuickPreferenceFilter) => (
     !hasRegionFilterAvailabilityData ||
@@ -1859,7 +1863,7 @@ export const BeachSearcherHome: React.FC<BeachSearcherHomeProps> = ({
 
   const sortedIslandCards = useMemo(() => (
     [...allIslands]
-      .filter(island => island.beaches.length > 0)
+      .filter(island => island.beaches.length > 0 && !isInfoOnlyRegionId(island.id))
       .sort((a, b) => b.beaches.length - a.beaches.length)
       .slice(0, 8)
   ), [allIslands]);
@@ -1963,11 +1967,13 @@ export const BeachSearcherHome: React.FC<BeachSearcherHomeProps> = ({
   const hasTopRecommendationView = selectedIsland !== null && topRecommendationBeachCards.length > 0;
   const topRecommendationsLabel = getTopRecommendationsLabel(language, selectedDate, topRecommendationBeachCards.length, suitableTimePrefix, currentBeaufort);
   const isCalmAllSuitableDay = typeof currentBeaufort === 'number' && currentBeaufort <= 2;
-  const suitableSectionLabel = hasTopRecommendationView
-    ? getRemainingSuitableLabel(language, selectedDate, suitableTimePrefix)
-    : isCalmAllSuitableDay
-      ? allBeachesLabel
-      : bestBeachesLabel;
+  const suitableSectionLabel = infoOnly
+    ? allBeachesLabel
+    : hasTopRecommendationView
+      ? getRemainingSuitableLabel(language, selectedDate, suitableTimePrefix)
+      : isCalmAllSuitableDay
+        ? allBeachesLabel
+        : bestBeachesLabel;
   const weatherBeachCardRankStart = topBeachToday ? 2 : 1;
   const suitableBeachDisplayCount = typeof suitableBeachTotalCount === 'number'
     ? suitableBeachTotalCount
@@ -3474,7 +3480,7 @@ export const BeachSearcherHome: React.FC<BeachSearcherHomeProps> = ({
           </section>
         )}
 
-        {topBeachToday && !hasTopRecommendationView && (
+        {topBeachToday && !hasTopRecommendationView && !infoOnly && (
           <section
             className="mt-4 border-t border-slate-200/80 pt-4"
             aria-label={topChoiceCopy.aria}
@@ -3614,7 +3620,7 @@ export const BeachSearcherHome: React.FC<BeachSearcherHomeProps> = ({
             </>
           )}
 
-          {selectedIsland && hasTopRecommendationView && (
+          {selectedIsland && hasTopRecommendationView && !infoOnly && (
             <section id="top-recommendations-section" className="mb-3 scroll-mt-[25rem] sm:mb-5 sm:scroll-mt-4">
               <div className="mb-1.5 flex items-center justify-center gap-3 px-3 sm:mb-3 lg:px-5">
                 <span className="hidden h-px flex-1 bg-slate-300/70 min-[430px]:block" aria-hidden="true" />
@@ -3674,7 +3680,7 @@ export const BeachSearcherHome: React.FC<BeachSearcherHomeProps> = ({
                 // the filter left only a few. Drop the rank/podium then (mirrors how App hides
                 // the top-recommendations carousel when hasActiveSearchOrFilters).
                 const hasActiveDirectoryFilters = (activeFilterCount ?? 0) > 0;
-                const cardRank = isNameSearchActive || hasTopRecommendationView || hasActiveDirectoryFilters
+                const cardRank = isNameSearchActive || hasTopRecommendationView || hasActiveDirectoryFilters || infoOnly
                   ? undefined
                   : weatherBeachCardRankStart + index;
                 return (
