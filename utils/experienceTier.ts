@@ -62,7 +62,8 @@ export const getExperienceTier = (input: ExperienceTierInput): ExperienceTier =>
   // for a middling composite score. Exposed/partial beaches keep tracking the score, so
   // the map still separates sheltered (yellow) from exposed (orange). `exposureLevel` is
   // already gated to real protection (canClaimWindProtection) by the caller.
-  const shelteredFloor = bft <= 4 && input.exposureLevel === 'protected' && ceiling >= 2;
+  const lessExposed = input.exposureLevel === 'protected' || input.exposureLevel === 'partial';
+  const shelteredFloor = bft <= 4 && lessExposed && ceiling >= 2;
   const finalRank = shelteredFloor ? Math.max(rank, 2) : rank;
   return finalRank === 3 ? 'excellent' : finalRank === 2 ? 'good' : 'fair';
 };
