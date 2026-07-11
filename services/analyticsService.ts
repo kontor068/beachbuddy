@@ -211,6 +211,9 @@ const ensureGoogleAnalyticsLoaded = () => {
     window.gtag?.('js', new Date());
     window.gtag?.('config', GOOGLE_ANALYTICS_MEASUREMENT_ID, {
       send_page_view: true,
+      // Cap the _ga / _ga_<id> cookie lifetime at ~13 months so it matches the
+      // duration stated in the Cookie Policy (GA4 otherwise defaults to 2 years).
+      cookie_expires: 60 * 60 * 24 * 30 * 13,
     });
     googleAnalyticsInitialized = true;
   }

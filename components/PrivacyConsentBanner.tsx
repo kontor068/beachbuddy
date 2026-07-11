@@ -1,7 +1,12 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { ShieldCheck } from 'lucide-react';
 import { openLegalModal } from './LegalFooter';
-import { AnalyticsConsent, getAnalyticsConsent, setAnalyticsConsent, trackEvent } from '../services/analyticsService';
+import { trackEvent } from '../services/analyticsService';
+import {
+  applyCookieConsent,
+  getCookieConsentState,
+  COOKIE_CONSENT_CHANGED_EVENT,
+} from '../services/legalConsent';
 import { LanguageCode } from '../types';
 import { getLocalizedCopy, languageToLocale } from '../utils/i18n';
 
@@ -9,121 +14,109 @@ interface PrivacyConsentBannerProps {
   language: LanguageCode;
 }
 
-const copy: Record<LanguageCode, {
-  title: string;
-  body: string;
-  terms: string;
-  privacy: string;
-  cookies: string;
-  essential: string;
-  allow: string;
-}> = {
+const copy = {
   en: {
-    title: 'Privacy choices',
-    body: 'Analytics are optional. If you reject them, Google Analytics is not loaded. We do not send precise location to analytics or create personal profiles.',
+    title: 'Cookie choices',
+    body: 'We use essential cookies to run the app. With your consent we also use Google Analytics for anonymous usage stats. Nothing non-essential loads until you choose.',
     terms: 'Terms of Use',
-    privacy: 'Privacy',
-    cookies: 'Cookies',
-    essential: 'Essential only',
-    allow: 'Allow analytics',
+    privacy: 'Privacy Policy',
+    cookies: 'Cookie Policy',
+    reject: 'Reject',
+    accept: 'Accept',
+    customize: 'Customize',
   },
   gr: {
-    title: 'Επιλογές απορρήτου',
-    body: 'Τα analytics είναι προαιρετικά και αλλάζουν αργότερα από τις Ρυθμίσεις cookies στο footer. Αν τα απορρίψεις, το Google Analytics δεν φορτώνεται. Δεν στέλνουμε ακριβή τοποθεσία ούτε δημιουργούμε προσωπικά προφίλ.',
+    title: 'Επιλογές cookies',
+    body: 'Χρησιμοποιούμε απαραίτητα cookies για τη λειτουργία. Με τη συγκατάθεσή σου χρησιμοποιούμε και Google Analytics για ανώνυμα στατιστικά. Τίποτα μη απαραίτητο δεν φορτώνει πριν επιλέξεις.',
     terms: 'Όροι Χρήσης',
-    privacy: 'Απόρρητο',
-    cookies: 'Cookies',
-    essential: 'Μόνο απαραίτητα',
-    allow: 'Ναι στα analytics',
-  },
-  fr: {
-    title: 'Choix de confidentialité',
-    body: "Les analytics sont facultatifs. Si vous les refusez, Google Analytics n'est pas chargé. Nous n'envoyons pas votre position précise et ne créons pas de profils personnels. Favoris et préférences restent dans ce navigateur.",
-    terms: 'Terms of Use',
-    privacy: 'Privacy',
-    cookies: 'Cookies',
-    essential: 'Refuser',
-    allow: 'Autoriser',
-  },
-  de: {
-    title: 'Datenschutzoptionen',
-    body: 'Analytics sind optional. Wenn du ablehnst, wird Google Analytics nicht geladen. Wir senden keinen genauen Standort und erstellen keine persönlichen Profile. Favoriten und Einstellungen bleiben in diesem Browser.',
-    terms: 'Terms of Use',
-    privacy: 'Privacy',
-    cookies: 'Cookies',
-    essential: 'Ablehnen',
-    allow: 'Erlauben',
-  },
-  it: {
-    title: 'Scelte privacy',
-    body: 'Gli analytics sono facoltativi. Se li rifiuti, Google Analytics non viene caricato. Non inviamo la posizione precisa e non creiamo profili personali. Preferiti e preferenze restano in questo browser.',
-    terms: 'Terms of Use',
-    privacy: 'Privacy',
-    cookies: 'Cookies',
-    essential: 'Rifiuta',
-    allow: 'Consenti',
+    privacy: 'Πολιτική Απορρήτου',
+    cookies: 'Πολιτική Cookies',
+    reject: 'Απόρριψη',
+    accept: 'Αποδοχή',
+    customize: 'Προσαρμογή',
   },
 };
 
 export const PrivacyConsentBanner: React.FC<PrivacyConsentBannerProps> = ({ language }) => {
-  const [choice, setChoice] = useState<AnalyticsConsent | null>(() => getAnalyticsConsent());
-  if (choice) return null;
+  const [choiceMade, setChoiceMade] = useState<boolean>(() => getCookieConsentState() !== null);
+
+  useEffect(() => {
+    const onCookieChanged = () => setChoiceMade(getCookieConsentState() !== null);
+    document.addEventListener(COOKIE_CONSENT_CHANGED_EVENT, onCookieChanged);
+    return () => {
+      document.removeEventListener(COOKIE_CONSENT_CHANGED_EVENT, onCookieChanged);
+    };
+  }, []);
+
+  // Hide once any cookie choice exists.
+  if (choiceMade) return null;
 
   const c = getLocalizedCopy(language, copy);
 
-  const handleChoice = (value: AnalyticsConsent) => {
-    setAnalyticsConsent(value);
-    if (value === 'accepted') {
+  const choose = (analytics: boolean) => {
+    applyCookieConsent(
+      { necessary: true, analytics },
+      { choice: analytics ? 'accept_all' : 'reject_all', language, source: 'banner' },
+    );
+    if (analytics) {
       trackEvent('app_loaded', undefined, {
         locale: languageToLocale(language),
         source: 'consent_accept',
       });
     }
-    setChoice(value);
+    setChoiceMade(true);
   };
+
+  const linkClass =
+    'underline-offset-4 hover:underline focus:outline-none focus-visible:ring-2 focus-visible:ring-sky-500 rounded';
 
   return (
     <div
-      className="fixed inset-x-2 bottom-[calc(4.25rem+env(safe-area-inset-bottom))] z-[80] mx-auto max-w-lg rounded-xl border border-slate-200/70 bg-white/95 p-2 shadow-xl shadow-slate-900/15 backdrop-blur-xl md:bottom-5 md:p-4"
+      className="fixed inset-x-2 bottom-[calc(4.25rem+env(safe-area-inset-bottom))] z-[80] mx-auto max-w-lg rounded-xl border border-slate-200/70 bg-white/95 p-3 shadow-xl shadow-slate-900/15 backdrop-blur-xl md:bottom-5 md:p-4"
       data-nosnippet="true"
       role="dialog"
       aria-labelledby="privacy-consent-title"
       aria-describedby="privacy-consent-description"
     >
-      <div className="flex gap-2 md:gap-3">
+      <div className="flex gap-3">
         <div className="mt-0.5 hidden h-9 w-9 shrink-0 place-items-center rounded-xl bg-sky-50 text-sky-600 sm:grid">
           <ShieldCheck className="h-5 w-5" aria-hidden="true" />
         </div>
         <div className="min-w-0 flex-1">
-          <h2 id="privacy-consent-title" className="text-xs font-bold text-slate-900 md:text-sm">{c.title}</h2>
-          <p id="privacy-consent-description" className="mt-0.5 hidden text-[11px] leading-snug text-slate-600 sm:line-clamp-2 md:text-xs md:leading-relaxed">{c.body}</p>
-          <div className="mt-1 flex flex-wrap items-center gap-x-3 gap-y-1 text-[11px] font-extrabold text-sky-700 md:mt-2">
-            <button type="button" onClick={() => openLegalModal('terms')} className="underline-offset-4 hover:underline focus:outline-none focus-visible:ring-2 focus-visible:ring-sky-500">
-              {c.terms}
-            </button>
-            <button type="button" onClick={() => openLegalModal('privacy')} className="underline-offset-4 hover:underline focus:outline-none focus-visible:ring-2 focus-visible:ring-sky-500">
-              {c.privacy}
-            </button>
-            <button type="button" onClick={() => openLegalModal('cookies')} className="underline-offset-4 hover:underline focus:outline-none focus-visible:ring-2 focus-visible:ring-sky-500">
-              {c.cookies}
-            </button>
+          <h2 id="privacy-consent-title" className="text-sm font-bold text-slate-900">{c.title}</h2>
+          <p id="privacy-consent-description" className="mt-0.5 text-[11px] leading-snug text-slate-600 md:text-xs md:leading-relaxed">
+            {c.body}
+          </p>
+          <div className="mt-2 flex flex-wrap items-center gap-x-3 gap-y-1 text-[11px] font-extrabold text-sky-700">
+            <button type="button" onClick={() => openLegalModal('terms')} className={linkClass}>{c.terms}</button>
+            <button type="button" onClick={() => openLegalModal('privacy')} className={linkClass}>{c.privacy}</button>
+            <button type="button" onClick={() => openLegalModal('cookies')} className={linkClass}>{c.cookies}</button>
           </div>
-          <div className="mt-1 grid grid-cols-2 gap-2 sm:mt-2 sm:flex sm:justify-end">
+
+          {/* First-level, equal-weight Accept / Reject (same size and prominence). */}
+          <div className="mt-3 grid grid-cols-2 gap-2">
             <button
               type="button"
-              onClick={() => handleChoice('declined')}
-              className="min-h-9 rounded-xl border border-slate-200 px-3 text-xs font-bold text-slate-700 transition hover:bg-slate-50 sm:min-h-11 sm:px-4 sm:text-sm"
+              onClick={() => choose(false)}
+              className="min-h-11 rounded-xl border border-slate-300 bg-white px-4 text-sm font-bold text-slate-900 transition hover:bg-slate-50 focus:outline-none focus-visible:ring-2 focus-visible:ring-sky-500"
             >
-              {c.essential}
+              {c.reject}
             </button>
             <button
               type="button"
-              onClick={() => handleChoice('accepted')}
-              className="min-h-9 rounded-xl bg-sky-600 px-3 text-xs font-bold text-white transition hover:bg-sky-700 sm:min-h-11 sm:px-4 sm:text-sm"
+              onClick={() => choose(true)}
+              className="min-h-11 rounded-xl border border-slate-300 bg-white px-4 text-sm font-bold text-slate-900 transition hover:bg-slate-50 focus:outline-none focus-visible:ring-2 focus-visible:ring-sky-500"
             >
-              {c.allow}
+              {c.accept}
             </button>
           </div>
+          <button
+            type="button"
+            onClick={() => openLegalModal('cookies')}
+            className="mt-2 w-full text-center text-xs font-bold text-sky-700 underline-offset-4 hover:underline focus:outline-none focus-visible:ring-2 focus-visible:ring-sky-500"
+          >
+            {c.customize}
+          </button>
         </div>
       </div>
     </div>
