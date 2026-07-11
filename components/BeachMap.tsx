@@ -668,7 +668,8 @@ const experienceMarkerTone: Record<ExperienceTier, {
 // on — the algorithm is untouched, this only reads the score it already produced.
 const getBeachExperienceTier = (
   item: Pick<SuitableBeach, 'score' | 'exposureLevel' | 'canClaimWindProtection' | 'waveHeightM' | 'windSpeedKmph' | 'swimmingComfort'>,
-  regionWindBeaufort?: number
+  regionWindBeaufort?: number,
+  canonicalExposure?: ExposureLevel
 ): ExperienceTier => {
   const perBeachBeaufort = typeof item.windSpeedKmph === 'number'
     ? getBeaufortLevel(item.windSpeedKmph)
@@ -679,7 +680,10 @@ const getBeachExperienceTier = (
     dayBeaufort: regionWindBeaufort,
     waveHeightM: item.waveHeightM,
     swimmingComfort: item.swimmingComfort,
-    exposureLevel: visibleExposureLevel(item),
+    // Use the map's canonical exposure (override-aware, single island wind) when given, so the
+    // tier agrees with the exposure map — a lee-side beach the map paints "less exposed" reads
+    // sheltered here too, instead of the per-beach cluster wind quietly calling it exposed.
+    exposureLevel: canonicalExposure ?? visibleExposureLevel(item),
   });
 };
 
@@ -1593,14 +1597,6 @@ const BeachMap: React.FC<BeachMapProps> = ({
     return () => window.clearTimeout(fallback);
   }, [tilesReady]);
   const shouldRenderBeachMarkers = !isExposureLoading && tilesReady;
-  // Live tier per beach for the coastline ribbon — the exact same computation the
-  // markers use (getBeachExperienceTier), so ribbon and dots can never disagree.
-  const ribbonTierByBeachId = useMemo(() => {
-    const tiers = new Map<number, ExperienceTier>();
-    if (!regionId) return tiers;
-    for (const item of beaches) tiers.set(item.beachId, getBeachExperienceTier(item, windBeaufort));
-    return tiers;
-  }, [regionId, beaches, windBeaufort]);
   const visibleMapExposureLevels = useMemo(
     () => getConsistentVisibleMapExposureLevels(beaches, windBeaufort, mapWindDirectionDeg),
     [beaches, mapWindDirectionDeg, windBeaufort]
@@ -1638,6 +1634,15 @@ const BeachMap: React.FC<BeachMapProps> = ({
 
     return visibleMapExposureLevels.get(item.beach.id) || getVisibleMapExposureLevel(item, windBeaufort, mapWindDirectionDeg);
   };
+  // Live tier per beach for the coastline ribbon — the SAME computation and the SAME
+  // canonical exposure the markers use, so ribbon, dots and the exposure map never disagree.
+  const ribbonTierByBeachId = useMemo(() => {
+    const tiers = new Map<number, ExperienceTier>();
+    if (!regionId) return tiers;
+    for (const item of beaches) tiers.set(item.beachId, getBeachExperienceTier(item, windBeaufort, getMapExposureLevel(item)));
+    return tiers;
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [regionId, beaches, windBeaufort, exposureLevelOverrides, visibleMapExposureLevels, isExposureLoading]);
   const getMapExposureEvidence = (item: SuitableBeach): MapExposureEvidence => (
     hasSupportedMapEvidence(item) ? 'supported' : 'estimated'
   );
@@ -2082,7 +2087,7 @@ const BeachMap: React.FC<BeachMapProps> = ({
     const exposureReason = getMapExposureReason(exposureLevel);
     // The popup headline is the verdict — the same experience tier as the pin and the card.
     // Wind detail stays below as the "why", not the headline.
-    const experienceTier = getBeachExperienceTier(item, windBeaufort);
+    const experienceTier = getBeachExperienceTier(item, windBeaufort, getMapExposureLevel(item));
     const tierTone = experienceMarkerTone[experienceTier];
     const badge = (
       <span className={`shrink-0 rounded-full px-2 py-1 text-[11px] font-black ${tierTone.badgeClass}`}>
@@ -2445,7 +2450,7 @@ const BeachMap: React.FC<BeachMapProps> = ({
             const markerCoordinate = getBeachMapCoordinates(item.beach, { lat: center[0], lon: center[1] });
             const mapExposureLevel = getMapExposureLevel(item);
             const mapExposureEvidence = getMapExposureEvidence(item);
-            const markerExperienceTier = getBeachExperienceTier(item, windBeaufort);
+            const markerExperienceTier = getBeachExperienceTier(item, windBeaufort, getMapExposureLevel(item));
             // Hovering or scroll-linking a marker reveals its name even when the
             // zoom-based labels are faded out, so the active card is easy to find.
             const isLabelActive = isHighlightedMarker || hoveredBeachId === item.beachId;
