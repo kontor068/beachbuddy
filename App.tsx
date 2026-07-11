@@ -19,7 +19,7 @@ import { MobileBottomNav, type MobileTab } from './components/MobileBottomNav';
 import { SavedBeachesScreen } from './components/SavedBeachesScreen';
 import { PrivacyConsentBanner } from './components/PrivacyConsentBanner';
 import { MapLoadBoundary } from './components/MapLoadBoundary';
-import { LegalFooter, openLegalModal } from './components/LegalFooter';
+import { LegalFooter } from './components/LegalFooter';
 import { BeachSearcherHome, type DirectoryCategory } from './components/BeachSearcherHome';
 
 // Hooks & Utils
@@ -6248,55 +6248,6 @@ export const App: React.FC = () => {
       <div className={`${isDesktopViewport ? 'relative z-[70] bg-transparent' : 'relative z-50 bg-transparent pb-[calc(5rem+env(safe-area-inset-bottom))]'}`}>
         <LegalFooter language={language} />
       </div>
-
-      {!isDesktopViewport && (
-        <nav
-          className="hidden"
-          aria-label={getLocalizedCopy(language, {
-            en: 'Legal links',
-            gr: 'Νομικοί σύνδεσμοι',
-            fr: 'Liens légaux',
-            de: 'Rechtliche Links',
-            it: 'Link legali',
-          })}
-        >
-          <div className="grid grid-cols-3 gap-1">
-            <button
-              type="button"
-              onClick={() => openLegalModal('terms')}
-              className="min-h-9 rounded-full px-2 text-[11px] font-black text-slate-800 transition hover:bg-sky-50 hover:text-[#007a83] focus:outline-none focus-visible:ring-2 focus-visible:ring-sky-500"
-            >
-              {getLocalizedCopy(language, {
-                en: 'Terms',
-                gr: 'Όροι',
-                fr: 'Terms',
-                de: 'Terms',
-                it: 'Terms',
-              })}
-            </button>
-            <button
-              type="button"
-              onClick={() => openLegalModal('privacy')}
-              className="min-h-9 rounded-full px-2 text-[11px] font-black text-slate-700 transition hover:bg-sky-50 hover:text-[#007a83] focus:outline-none focus-visible:ring-2 focus-visible:ring-sky-500"
-            >
-              {getLocalizedCopy(language, {
-                en: 'Privacy',
-                gr: 'Απόρρητο',
-                fr: 'Privacy',
-                de: 'Privacy',
-                it: 'Privacy',
-              })}
-            </button>
-            <button
-              type="button"
-              onClick={() => openLegalModal('cookies')}
-              className="min-h-9 rounded-full px-2 text-[11px] font-black text-slate-700 transition hover:bg-sky-50 hover:text-[#007a83] focus:outline-none focus-visible:ring-2 focus-visible:ring-sky-500"
-            >
-              Cookies
-            </button>
-          </div>
-        </nav>
-      )}
 
       {/* ===== MOBILE BOTTOM NAVIGATION ===== */}
       <MobileBottomNav

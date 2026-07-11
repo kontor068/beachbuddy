@@ -352,6 +352,30 @@ export const LegalFooter: React.FC<LegalFooterProps> = ({ language }) => {
               DWD
             </a>
           </p>
+
+          <nav
+            aria-label={language === 'gr' ? 'Νομικοί σύνδεσμοι' : 'Legal links'}
+            className="mt-4 flex flex-wrap items-center justify-center gap-x-1.5 gap-y-1 text-xs font-semibold text-slate-500"
+          >
+            {([
+              { key: 'terms', label: c.terms },
+              { key: 'privacy', label: c.privacy },
+              { key: 'cookies', label: c.cookieSettings },
+              { key: 'accessibility', label: c.accessibility },
+              { key: 'sources', label: c.sources },
+            ] as const).map((link, index) => (
+              <React.Fragment key={link.key}>
+                {index > 0 && <span aria-hidden="true" className="text-slate-300">·</span>}
+                <button
+                  type="button"
+                  onClick={() => setActiveModal(link.key)}
+                  className="rounded px-1 py-0.5 underline-offset-4 transition hover:text-sky-700 hover:underline focus:outline-none focus-visible:ring-2 focus-visible:ring-sky-500"
+                >
+                  {link.label}
+                </button>
+              </React.Fragment>
+            ))}
+          </nav>
         </div>
       </footer>
 
