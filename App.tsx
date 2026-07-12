@@ -28,7 +28,7 @@ import { useWeather } from './hooks/useWeather';
 import { useLocation } from './hooks/useLocation';
 import { translations } from './translations';
 import { degToCompass, getBeaufortLevel, isWinterSeason, processForecastData } from './utils/weatherUtils';
-import { trackEvent, trackPageView } from './services/analyticsService';
+import { trackEvent, trackPageView, buildBeachExposureParams } from './services/analyticsService';
 import { loadAppReadyRegion, loadBeachDetailData, loadBeachRegionIndex, loadBeachSearchIndex, mergeBeachDetailData } from './services/beachDataLoader';
 import { fetchForecastData, fetchMarineForecastData, mergeMarineForecastData } from './services/weatherService';
 import { calculateSeaConditionScore, hasPoorSeaConditions } from './utils/seaConditions';
@@ -1539,6 +1539,29 @@ export const App: React.FC = () => {
     mapLoadPrompt: { en: 'Loading map', gr: 'Φόρτωση χάρτη', fr: 'Chargement de la carte', de: 'Karte wird geladen', it: 'Caricamento mappa' },
     mapError: { en: 'The map did not load right now. The beach list is still available.', gr: 'Ο χάρτης δεν φορτώθηκε τώρα. Η λίστα παραλιών παραμένει διαθέσιμη.', fr: 'La carte ne s’est pas chargée pour le moment. La liste des plages reste disponible.', de: 'Die Karte wurde gerade nicht geladen. Die Strandliste bleibt verfügbar.', it: 'La mappa non si è caricata ora. La lista delle spiagge resta disponibile.' },
     weatherRetry: { en: 'Refresh', gr: 'Ανανέωση', fr: 'Actualiser', de: 'Aktualisieren', it: 'Aggiorna' },
+    // Hard-cutoff safety state: the forecast is older than 3 h and could not be refreshed,
+    // so we deliberately show NO conditions/colours rather than risk a stale "calm" reading.
+    conditionsUnavailableTitle: {
+      en: 'Conditions are not available right now',
+      gr: 'Οι συνθήκες δεν είναι διαθέσιμες τώρα',
+      fr: 'Les conditions ne sont pas disponibles pour le moment',
+      de: 'Die Bedingungen sind derzeit nicht verfügbar',
+      it: 'Le condizioni non sono disponibili al momento',
+    },
+    conditionsUnavailableBody: {
+      en: 'We could not refresh the forecast, so we are not showing wind or sea conditions to avoid an out-of-date reading.',
+      gr: 'Δεν μπορέσαμε να ανανεώσουμε την πρόγνωση, γι’ αυτό δεν δείχνουμε συνθήκες ανέμου/θάλασσας ώστε να μη δώσουμε παρωχημένη εικόνα.',
+      fr: 'Nous n’avons pas pu actualiser la prévision ; nous n’affichons donc pas les conditions pour éviter une donnée périmée.',
+      de: 'Wir konnten die Vorhersage nicht aktualisieren und zeigen daher keine Bedingungen, um veraltete Angaben zu vermeiden.',
+      it: 'Non siamo riusciti ad aggiornare la previsione, quindi non mostriamo le condizioni per evitare dati non aggiornati.',
+    },
+    lastForecastAt: {
+      en: (time: string) => `Last forecast: ${time}`,
+      gr: (time: string) => `Τελευταία πρόγνωση: ${time}`,
+      fr: (time: string) => `Dernière prévision : ${time}`,
+      de: (time: string) => `Letzte Vorhersage: ${time}`,
+      it: (time: string) => `Ultima previsione: ${time}`,
+    },
     betaFeedbackTitle: { en: 'Tell us what you think', gr: 'Πες μας τη γνώμη σου', fr: 'Dis-nous ce que tu en penses', de: 'Sag uns deine Meinung', it: 'Dicci cosa ne pensi' },
     betaFeedbackBody: { en: 'Help us improve the recommendations.', gr: 'Βοήθησέ μας να βελτιώσουμε τις προτάσεις.', fr: 'Aide-nous à améliorer les recommandations.', de: 'Hilf uns, die Empfehlungen zu verbessern.', it: 'Aiutaci a migliorare i consigli.' },
     betaFeedbackCta: { en: 'Open form', gr: 'Άνοιγμα φόρμας', fr: 'Ouvrir le formulaire', de: 'Formular öffnen', it: 'Apri modulo' },
@@ -1581,7 +1604,7 @@ export const App: React.FC = () => {
     [allIslands],
   );
   const isNearMeRegionActive = selectedIsland?.id === NEAR_ME_REGION_ID;
-  const { weather, forecast: rawForecast, forecastIslandId, beachForecasts, loading: weatherLoading, error: weatherError, selectedDayIndex, setSelectedDayIndex, loadWeatherData, lastUpdated } = useWeather(selectedIsland, language);
+  const { weather, forecast: rawForecast, forecastIslandId, beachForecasts, loading: weatherLoading, error: weatherError, selectedDayIndex, setSelectedDayIndex, loadWeatherData, lastUpdated, forecastFreshness, isStaleBlocked } = useWeather(selectedIsland, language);
   // On a region switch `selectedIsland` updates synchronously, but the new region's
   // forecast only lands in an effect after paint. Until the loaded forecast actually
   // belongs to the selected region, treat it as absent everywhere downstream — so the
@@ -1590,7 +1613,11 @@ export const App: React.FC = () => {
   // its loading state instead and fills in once the right forecast arrives. Gating at
   // the source keeps every consumer (and their dependency arrays) consistent.
   const forecastMatchesRegion = Boolean(selectedIsland && forecastIslandId === selectedIsland.id);
-  const forecast = forecastMatchesRegion ? rawForecast : null;
+  // SAFETY hard cutoff: a forecast older than 3 h that we could not refresh must never
+  // colour the map / score beaches / claim "calm". Treat it as absent everywhere downstream
+  // (same mechanism as the region-mismatch gate) and surface the "unavailable" banner instead.
+  // Better to show nothing than a stale "ήρεμα" on a meltemi day.
+  const forecast = forecastMatchesRegion && !isStaleBlocked ? rawForecast : null;
   const handleRegionSelected = (island: Island, source: 'selector' | 'nearest_location' = 'selector') => {
     markValuePropSeen();
     trackEvent('region_changed', undefined, {
@@ -2719,9 +2746,11 @@ export const App: React.FC = () => {
   const handleToggleFavorite = (beachId: number) => {
     setFavorites(prev => {
       const isFavoriting = !prev.includes(beachId);
+      const favoriteBeach = selectedIsland?.beaches.find(b => b.id === beachId);
       trackEvent('favorite_clicked', beachId, {
         ...analyticsBaseParams,
         action: isFavoriting ? 'add' : 'remove',
+        ...buildBeachExposureParams(favoriteBeach),
       });
       const newFavs = isFavoriting ? [...prev, beachId] : prev.filter(id => id !== beachId);
       localStorage.setItem('favorites', JSON.stringify(newFavs));
@@ -2734,11 +2763,13 @@ export const App: React.FC = () => {
       ...analyticsBaseParams,
       source,
       beach_name: beach.name.en,
+      ...buildBeachExposureParams(beach),
     });
     trackEvent('beach_detail_opened', beach.id, {
       ...analyticsBaseParams,
       source,
       beach_name: beach.name.en,
+      ...buildBeachExposureParams(beach),
     });
     setDetailBeach(beach);
     setDetailDataStatus('loading');
@@ -3072,23 +3103,26 @@ export const App: React.FC = () => {
 
     const loadExactDetailForecast = async () => {
       try {
-        const [forecastItems, marineItems] = await Promise.all([
+        const [forecastResult, marineItems] = await Promise.all([
           fetchForecastData(lat, lon),
-          fetchMarineForecastData(lat, lon).catch(error => {
-            console.warn('Detail marine forecast unavailable; using exact wind forecast with wind-based sea estimates.', {
-              beachId,
-              error,
-            });
-            return [];
-          }),
+          fetchMarineForecastData(lat, lon)
+            .then(result => result.data)
+            .catch(error => {
+              console.warn('Detail marine forecast unavailable; using exact wind forecast with wind-based sea estimates.', {
+                beachId,
+                error,
+              });
+              return [];
+            }),
         ]);
         if (cancelled) return;
 
-        const detailForecast = processForecastData(mergeMarineForecastData(forecastItems, marineItems));
+        const detailForecast = processForecastData(mergeMarineForecastData(forecastResult.data, marineItems));
         setDetailExactForecastContext({
           forecast: detailForecast,
           source: 'beach-cluster',
           clusterKey: `exact:${beachId}:${lat.toFixed(4)}_${lon.toFixed(4)}`,
+          fetchedAt: forecastResult.fetchedAt,
         });
       } catch (error) {
         if (cancelled) return;
@@ -3696,7 +3730,9 @@ export const App: React.FC = () => {
   // Info-only regions (e.g. Milos): pages exist and beaches are browsable, but the
   // region page hides the interactive map and the today-recommendation ranking.
   const isInfoOnlyRegion = isInfoOnlyRegionId(selectedIsland?.id);
-  const isWaitingForForecast = Boolean(selectedIsland && !selectedForecast && !weatherError && !isUnsafeWinter);
+  // Don't show the loading skeleton for the stale-block state — that never resolves. The
+  // dedicated "conditions unavailable" banner (below) handles it instead.
+  const isWaitingForForecast = Boolean(selectedIsland && !selectedForecast && !weatherError && !isUnsafeWinter && !isStaleBlocked);
   const handleMobileMapDaySelect = React.useCallback((index: number) => {
     if (index === selectedDayIndex) return;
 
@@ -3915,6 +3951,7 @@ export const App: React.FC = () => {
       day_index: selectedDayIndex,
       recommendation_count: topRecommendedSuitableBeaches.length,
       top_beach_id: String(topRecommendedSuitableBeaches[0].beach.id),
+      top_shelter_level: topRecommendedSuitableBeaches[0].beach?.windProfile?.shelterLevel ?? 'unknown',
     });
   }, [analyticsBaseParams, forecast, isUnsafeWinter, selectedDayIndex, selectedIsland, showDecisionRecommendations, topRecommendedSuitableBeaches]);
 
@@ -4479,7 +4516,13 @@ export const App: React.FC = () => {
   if (beachesLoading) return showInitialBeachLoader ? <SkeletonLoader t={t} /> : null;
   if (beachesError) return <ErrorDisplay message={beachesError} onRetry={() => window.location.reload()} t={t} />;
 
-  if (view === 'detail' && detailBeach && forecast?.[selectedDayIndex]) {
+  // When the forecast is stale-blocked, `forecast` is null but the stale day is still held in
+  // `rawForecast` — render the detail page from it purely for STRUCTURE, and pass
+  // conditionsUnavailable so every wind/sea/score block is blanked (never shows stale colours).
+  // This keeps the user ON the beach page (static content + banner) instead of bouncing home.
+  const staleDetailForecastDay = isStaleBlocked && forecastMatchesRegion ? rawForecast?.[selectedDayIndex] : undefined;
+  const detailForecastDay = forecast?.[selectedDayIndex] ?? staleDetailForecastDay;
+  if (view === 'detail' && detailBeach && detailForecastDay) {
     // Pass the area-wide selected-day forecast as the detail fallback. The detail
     // page upgrades to the beach-specific cluster forecast when available, matching
     // the search/result card score while preserving this forecast for map fallback.
@@ -4487,7 +4530,7 @@ export const App: React.FC = () => {
     // the raw day forecast — otherwise the detail mini-map tones the canonical exposure level
     // with the day's Beaufort while the region map used the slider hour's, so the same beach
     // reads e.g. orange in the detail map but yellow on the region map.
-    const detailForecast = selectedForecast ?? forecast[selectedDayIndex];
+    const detailForecast = selectedForecast ?? detailForecastDay;
 
     return (
       <div>
@@ -4506,6 +4549,8 @@ export const App: React.FC = () => {
             geospatialExposureProfiles={geospatialExposureProfiles}
             weatherSource="island-fallback"
             mapExposureLevelOverride={canonicalMapExposureLevels.get(detailBeach.id)}
+            conditionsUnavailable={isStaleBlocked}
+            lastForecastAt={lastUpdated}
           />
         </Suspense>
       </div>
@@ -5616,6 +5661,7 @@ export const App: React.FC = () => {
               isExposureLoading={isMapExposureLoading}
               selectedDate={selectedDayDate}
               lastUpdated={lastUpdated}
+              forecastFreshness={forecastFreshness}
               favorites={favorites}
               t={t}
               onToggleFavorite={handleToggleFavorite}
@@ -5730,6 +5776,7 @@ export const App: React.FC = () => {
                               ...analyticsBaseParams,
                               beach_name: headerTopBeach.beach.name.en,
                               source: 'top_recommendation_panel',
+                              ...buildBeachExposureParams(headerTopBeach.beach, headerTopBeach.simpleWindSuitability?.exposureStatus),
                             });
                             openNavigation(headerTopBeach.beach);
                           }}
@@ -5758,6 +5805,7 @@ export const App: React.FC = () => {
                             ...analyticsBaseParams,
                             beach_name: headerTopBeach.beach.name.en,
                             source: 'top_recommendation_panel',
+                            ...buildBeachExposureParams(headerTopBeach.beach, headerTopBeach.simpleWindSuitability?.exposureStatus),
                           });
                           openNavigation(headerTopBeach.beach);
                         }}
@@ -6011,7 +6059,40 @@ export const App: React.FC = () => {
                 </section>
               )}
 
-              {weatherError && (
+              {isStaleBlocked && (
+                <section
+                  role="status"
+                  data-nosnippet="true"
+                  className="mx-auto flex max-w-3xl items-start gap-3 rounded-2xl border border-slate-300 bg-white/95 p-3 text-slate-800 shadow-sm shadow-slate-900/5 sm:p-4"
+                >
+                  <AlertTriangle className="mt-0.5 h-5 w-5 shrink-0 text-slate-500 sm:mt-0" />
+                  <div className="min-w-0 flex-1">
+                    <p className="text-sm font-black leading-snug text-slate-950">
+                      {homeCopy.conditionsUnavailableTitle[language]}
+                    </p>
+                    <p className="mt-0.5 text-sm font-semibold leading-snug text-slate-600">
+                      {homeCopy.conditionsUnavailableBody[language]}
+                    </p>
+                    {lastUpdated && (
+                      <p className="mt-1 text-xs font-bold text-slate-500">
+                        {homeCopy.lastForecastAt[language](lastUpdated.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }))}
+                      </p>
+                    )}
+                  </div>
+                  <button
+                    type="button"
+                    onClick={handleWeatherRetry}
+                    disabled={weatherLoading}
+                    aria-label={homeCopy.weatherRetry[language]}
+                    className="inline-flex min-h-11 shrink-0 items-center justify-center gap-2 rounded-xl bg-slate-900 px-3 text-xs font-black text-white shadow-sm transition hover:bg-slate-800 disabled:opacity-60"
+                  >
+                    <RefreshCw className={`h-4 w-4 ${weatherLoading ? 'animate-spin' : ''}`} />
+                    <span className="hidden min-[390px]:inline">{homeCopy.weatherRetry[language]}</span>
+                  </button>
+                </section>
+              )}
+
+              {weatherError && !isStaleBlocked && (
                 <section
                   role="status"
                   data-nosnippet="true"

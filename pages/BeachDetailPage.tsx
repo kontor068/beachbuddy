@@ -19,7 +19,7 @@ import {
   type BeachWeatherById
 } from '../services/recommendationService';
 import { degToCompass, calculateDistance, getBeaufortLevel, getWaveCondition } from '../utils/weatherUtils';
-import { trackEvent, storeConditionFeedback, getFeedback, ConditionFeedbackVerdict } from '../services/analyticsService';
+import { trackEvent, storeConditionFeedback, getFeedback, ConditionFeedbackVerdict, buildBeachExposureParams } from '../services/analyticsService';
 import { calculateSeaConditionScore } from '../utils/seaConditions';
 import { TodayScoreBadge } from '../components/TodayScoreBadge';
 import { MeltemiShelterSection, type MeltemiShelteredCove } from '../components/MeltemiShelterSection';
@@ -552,6 +552,12 @@ interface BeachDetailPageProps {
   mapExposureLevelOverride?: ExposureLevel;
   /** The hour the global slider is showing (0-23), so the wave strip marks the right bar. */
   selectedHour?: number;
+  /** SAFETY hard cutoff: the region forecast is >3 h old and could not be refreshed. When
+   *  true, every wind/sea/score/verdict block is blanked and a banner is shown; only the
+   *  static content (name, photo, access, map, info) stays. Never show stale conditions. */
+  conditionsUnavailable?: boolean;
+  /** Real fetch time of the last known forecast, for the "last forecast HH:MM" stamp. */
+  lastForecastAt?: Date | null;
 }
 
 export const BeachDetailPage: React.FC<BeachDetailPageProps> = ({
@@ -574,8 +580,12 @@ export const BeachDetailPage: React.FC<BeachDetailPageProps> = ({
   geospatialExposureProfiles,
   weatherSource = 'island-fallback',
   mapExposureLevelOverride,
-  selectedHour
+  selectedHour,
+  conditionsUnavailable = false,
+  lastForecastAt
 }) => {
+  // Hard-cutoff gate: hide every live wind/sea/score/verdict block, keep static content.
+  const showConditions = !conditionsUnavailable;
   const isFavorite = favorites.includes(beach.id);
   const [feedbackSubmitted, setFeedbackSubmitted] = useState(false);
   const beachDisplayName = displayBeachName(beach.name, language);
@@ -608,6 +618,9 @@ export const BeachDetailPage: React.FC<BeachDetailPageProps> = ({
     decisionSummary: { en: selectedDayIsToday ? 'Today summary' : `Summary ${selectedDayPrefix}`, gr: `Σύνοψη για ${selectedDayPrefix}`, de: 'Kurzfassung', it: 'Riepilogo', fr: 'Resume' },
     conditions: { en: `Conditions ${selectedDayPrefix}`, gr: `Συνθήκες ${selectedDayPrefix}`, de: 'Bedingungen', it: 'Condizioni', fr: 'Conditions' },
     beachStoryHeading: { en: 'About this beach', gr: 'Πληροφορίες', de: 'Über diesen Strand', it: 'Informazioni', fr: 'À propos' },
+    conditionsUnavailableTitle: { en: 'Conditions are not available right now', gr: 'Οι συνθήκες δεν είναι διαθέσιμες τώρα', de: 'Die Bedingungen sind derzeit nicht verfügbar', it: 'Le condizioni non sono disponibili al momento', fr: 'Les conditions ne sont pas disponibles pour le moment' },
+    conditionsUnavailableBody: { en: 'We could not refresh the forecast, so wind and sea conditions are hidden to avoid an out-of-date reading. Beach info below is still accurate.', gr: 'Δεν μπορέσαμε να ανανεώσουμε την πρόγνωση, γι’ αυτό κρύβουμε άνεμο και θάλασσα ώστε να μη δώσουμε παρωχημένη εικόνα. Οι πληροφορίες της παραλίας παρακάτω ισχύουν.', de: 'Wir konnten die Vorhersage nicht aktualisieren, daher sind Wind- und Seebedingungen ausgeblendet. Die Strandinfos unten bleiben gültig.', it: 'Non siamo riusciti ad aggiornare la previsione, quindi vento e mare sono nascosti. Le info sulla spiaggia restano valide.', fr: 'Nous n’avons pas pu actualiser la prévision ; le vent et la mer sont masqués. Les infos plage ci-dessous restent valables.' },
+    lastForecastAt: { en: (time: string) => `Last forecast: ${time}`, gr: (time: string) => `Τελευταία πρόγνωση: ${time}`, de: (time: string) => `Letzte Vorhersage: ${time}`, it: (time: string) => `Ultima previsione: ${time}`, fr: (time: string) => `Dernière prévision : ${time}` },
     guidesHeading: { en: 'Beach guides', gr: 'Οδηγοί παραλιών', de: 'Strandführer', it: 'Guide spiagge', fr: 'Guides plages' },
     readMore: { en: 'Read more', gr: 'Διάβασε περισσότερα', de: 'Mehr lesen', it: 'Leggi di più', fr: 'Lire plus' },
     readLess: { en: 'Show less', gr: 'Λιγότερα', de: 'Weniger', it: 'Meno', fr: 'Moins' },
@@ -643,6 +656,7 @@ export const BeachDetailPage: React.FC<BeachDetailPageProps> = ({
       region: islandDisplayName,
       beach_name: beach.name.en,
       source: 'detail_page',
+      ...buildBeachExposureParams(beach),
     });
   }, [beach.id, beach.name.en, beachDisplayName, islandDisplayName, language]);
 
@@ -693,6 +707,7 @@ export const BeachDetailPage: React.FC<BeachDetailPageProps> = ({
       region: islandDisplayName,
       beach_name: beach.name.en,
       source: 'detail_page',
+      ...buildBeachExposureParams(beach),
     });
     openNavigation(beach);
   };
@@ -1193,6 +1208,7 @@ export const BeachDetailPage: React.FC<BeachDetailPageProps> = ({
           region: islandDisplayName,
           beach_name: beach.name.en,
           source: 'detail_page',
+          ...buildBeachExposureParams(beach),
         });
         await navigator.share({
           title: beachDisplayName,
@@ -1248,7 +1264,22 @@ export const BeachDetailPage: React.FC<BeachDetailPageProps> = ({
               : 'Some beach details could not be loaded. Showing the core beach information.'}
           </div>
         )}
-        
+
+        {conditionsUnavailable && (
+          <section role="status" data-nosnippet="true" className="flex items-start gap-3 rounded-[1.75rem] border border-slate-300 bg-white/95 p-4 shadow-sm shadow-slate-900/5">
+            <AlertTriangle className="mt-0.5 h-5 w-5 shrink-0 text-slate-500" aria-hidden="true" />
+            <div className="min-w-0">
+              <h2 className="text-sm font-black leading-snug text-slate-950">{copy.conditionsUnavailableTitle[language]}</h2>
+              <p className="mt-0.5 text-sm font-semibold leading-snug text-slate-600">{copy.conditionsUnavailableBody[language]}</p>
+              {lastForecastAt && (
+                <p className="mt-1 text-xs font-bold text-slate-500">
+                  {copy.lastForecastAt[language](lastForecastAt.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }))}
+                </p>
+              )}
+            </div>
+          </section>
+        )}
+
         {/* 1. Decision summary */}
         <section className="space-y-4 rounded-[2rem] border border-white/75 bg-white/88 p-4 shadow-sm shadow-sky-900/5 ring-1 ring-white/45 backdrop-blur-sm sm:p-5" data-nosnippet="true">
           <div className="space-y-2">
@@ -1268,6 +1299,7 @@ export const BeachDetailPage: React.FC<BeachDetailPageProps> = ({
             </div>
           </div>
 
+          {showConditions && (
           <TodayScoreBadge
             score={detailBadgeScore}
             language={language}
@@ -1282,6 +1314,7 @@ export const BeachDetailPage: React.FC<BeachDetailPageProps> = ({
             boatAccess={isBoatOnlyBeach}
             forceShow
           />
+          )}
 
           <div className="hidden md:flex items-center justify-end gap-3 pt-1">
             <button
@@ -1303,6 +1336,7 @@ export const BeachDetailPage: React.FC<BeachDetailPageProps> = ({
           </div>
         </section>
 
+        {showConditions && (<>
         {/* Weather & sea now — targets the "καιρός/weather {beach}" intent. The
             <h2>, the orientation description and the verdict pill are stable or
             no more volatile than the "τώρα" in the heading, so they stay crawlable
@@ -1432,6 +1466,7 @@ export const BeachDetailPage: React.FC<BeachDetailPageProps> = ({
 
         {/* 1d. Constraint-fit today — kids / snorkeling / sunset, only when it genuinely fits. */}
         <ConstraintFitSection language={language} fits={constraintFits} />
+        </>)}
 
         {/* 2. Photo Gallery */}
         <section className="space-y-3">
@@ -1527,8 +1562,9 @@ export const BeachDetailPage: React.FC<BeachDetailPageProps> = ({
           </section>
         )}
 
-        {/* 4b. Sun & light — sunset always, peak UV only when actionable (≥6) */}
-        {(sunsetTime || (typeof peakUvIndex === 'number' && peakUvIndex >= 6)) && (
+        {/* 4b. Sun & light — sunset always, peak UV only when actionable (≥6). Hidden with
+            conditions since peak UV is forecast-derived (stale). */}
+        {showConditions && (sunsetTime || (typeof peakUvIndex === 'number' && peakUvIndex >= 6)) && (
           <section className="flex flex-wrap items-center gap-x-5 gap-y-2 rounded-2xl border border-amber-100/70 bg-amber-50/45 px-4 py-3" data-nosnippet="true">
             {sunsetTime && (
               <span className="inline-flex items-center gap-2 text-sm font-bold text-slate-800">
@@ -1549,7 +1585,7 @@ export const BeachDetailPage: React.FC<BeachDetailPageProps> = ({
         )}
 
         {/* 4c. Rain warning — name the rainy hours and advise leaving the sea then */}
-        {rainAdvisory && (
+        {showConditions && rainAdvisory && (
           <section
             className="flex items-start gap-3 rounded-[1.75rem] border border-sky-200/80 bg-sky-50/70 p-4 shadow-sm shadow-sky-900/5"
             role="alert"
@@ -1568,7 +1604,7 @@ export const BeachDetailPage: React.FC<BeachDetailPageProps> = ({
         )}
 
         {/* 5. Best Time Today */}
-        {bestTime && (usefulBestTimeWindow || allDaySuitable) && (
+        {showConditions && bestTime && (usefulBestTimeWindow || allDaySuitable) && (
           <section className={`flex items-start gap-3 rounded-[1.75rem] border p-4 shadow-sm ${swimWindowToneClasses.section}`} data-nosnippet="true">
             <div className={`rounded-2xl p-2.5 text-white shadow-sm ${swimWindowToneClasses.icon}`}>
               <Clock className="w-5 h-5" />
@@ -1801,7 +1837,8 @@ export const BeachDetailPage: React.FC<BeachDetailPageProps> = ({
         )}
 
         {/* 7b-1. Accessible + calm today: nearby beaches that clear both the accessibility and
-            the live-shelter gate. Shown only on accessible beaches. */}
+            the live-shelter gate. Shown only on accessible beaches. Live-shelter → hidden with conditions. */}
+        {showConditions && (
         <AccessibleCalmNearbySection
           language={language}
           items={accessibleCalmNearby}
@@ -1810,6 +1847,7 @@ export const BeachDetailPage: React.FC<BeachDetailPageProps> = ({
             if (target) onBeachClick(target);
           }}
         />
+        )}
 
         {/* 7c. Getting there — honest access labels (boat / dirt / 4x4 / hike / car) with a
             caveat where "easy" is only an unverified default. Sits between accessibility and
@@ -1863,13 +1901,15 @@ export const BeachDetailPage: React.FC<BeachDetailPageProps> = ({
                   // LEVEL, but getExposureMarkerTone also keys on Beaufort, so a cluster wind
                   // one band lower (e.g. 2 Bft vs the island's 3) rendered the same beach blue
                   // in the detail map while the region map showed it yellow.
-                  windSpeed={dayForecast.wind.speed}
-                  windDirection={degToCompass(dayForecast.wind.deg)}
-                  windDirectionDeg={dayForecast.wind.deg}
+                  // When conditions are stale-blocked, keep the location map but drop the wind so
+                  // the pin renders neutral (no stale colour) — matches the region map's behaviour.
+                  windSpeed={showConditions ? dayForecast.wind.speed : undefined}
+                  windDirection={showConditions ? degToCompass(dayForecast.wind.deg) : undefined}
+                  windDirectionDeg={showConditions ? dayForecast.wind.deg : undefined}
                   language={language}
                   islandName={islandName}
                   selectedDate={selectedDate}
-                  exposureLevelOverrides={mapExposureLevelOverride ? new Map([[beach.id, mapExposureLevelOverride]]) : undefined}
+                  exposureLevelOverrides={showConditions && mapExposureLevelOverride ? new Map([[beach.id, mapExposureLevelOverride]]) : undefined}
                   compact
                 />
               </React.Suspense>
@@ -1888,7 +1928,8 @@ export const BeachDetailPage: React.FC<BeachDetailPageProps> = ({
           {canNavigate && <NavigationBadge beach={beach} language={language} className="mt-2" />}
         </section>
 
-        {/* Feedback System */}
+        {/* Feedback System — asks "was our forecast accurate?"; moot when we showed no conditions. */}
+        {showConditions && (
         <section className="bg-white p-4 rounded-[1.75rem] border border-slate-100 shadow-sm space-y-4" data-nosnippet="true">
           <div className="space-y-1">
             <h3 className="text-base font-heading font-bold text-slate-900">{copy.feedbackTitle[language]}</h3>
@@ -1939,6 +1980,7 @@ export const BeachDetailPage: React.FC<BeachDetailPageProps> = ({
             </div>
           )}
         </section>
+        )}
 
         {/* 8. Nearby Beaches */}
         {/* Day-plan sequencer — morning → midday shade & food → sunset.
@@ -1957,7 +1999,7 @@ export const BeachDetailPage: React.FC<BeachDetailPageProps> = ({
           }}
         />
 
-        {nearbyBeaches.length > 0 && (
+        {showConditions && nearbyBeaches.length > 0 && (
         <section className="space-y-4" data-nosnippet="true">
           <h3 className="px-1 font-heading text-lg font-bold text-slate-950">{copy.nearby[language]}</h3>
           <div className="space-y-3">

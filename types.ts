@@ -607,6 +607,8 @@ export interface BeachForecastContext {
   forecast: DailyForecast[];
   source: WeatherSource;
   clusterKey: string;
+  /** epoch ms when this forecast's raw data was fetched from Open-Meteo (freshness gate). */
+  fetchedAt?: number;
 }
 
 export interface SecretBeach {

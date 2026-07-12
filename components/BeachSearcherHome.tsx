@@ -37,7 +37,7 @@ import { isInfoOnlyRegionId } from '../utils/infoOnlyRegions';
 import { getAmenityChips, type AmenityChip } from '../utils/amenities';
 import { getBeachPhotoLookup } from '../services/beachPhotos';
 import { getBeachTouristRecognitionScore } from '../utils/touristPriority';
-import { trackEvent } from '../services/analyticsService';
+import { trackEvent, buildBeachExposureParams } from '../services/analyticsService';
 import { degToCompass, getBeaufortLevel } from '../utils/weatherUtils';
 import {
   getPreferenceFilterLabel,
@@ -148,6 +148,9 @@ interface BeachSearcherHomeProps {
   mapSelectedHour?: number;
   selectedDate?: Date;
   lastUpdated?: Date | null;
+  /** Freshness of the region forecast; 'soft' switches the "updated" chip to an explicit
+   *  amber "βάσει πρόγνωσης HH:MM" stamp. (The 'stale' hard cutoff is handled in App.) */
+  forecastFreshness?: 'fresh' | 'soft' | 'stale' | 'unknown';
   favorites: number[];
   t: Translation;
   onToggleFavorite: (id: number) => void;
@@ -499,6 +502,7 @@ type HomeCopy = {
   updatedJustNow: string;
   updatedMinutes: (minutes: number) => string;
   updatedHours: (hours: number) => string;
+  forecastAt: (time: string) => string;
   beachFeatures: {
     sandy: string;
     pebbles: string;
@@ -581,6 +585,7 @@ const homeCopy: Record<LanguageCode, HomeCopy> = {
     updatedJustNow: 'Updated just now',
     updatedMinutes: (minutes) => `Updated ${minutes} min ago`,
     updatedHours: (hours) => `Updated ${hours} ${hours === 1 ? 'hour' : 'hours'} ago`,
+    forecastAt: (time) => `Forecast from ${time}`,
     beachFeatures: {
       sandy: 'Sandy beach',
       pebbles: 'Pebbles',
@@ -661,6 +666,7 @@ const homeCopy: Record<LanguageCode, HomeCopy> = {
     updatedJustNow: 'Ενημερώθηκε μόλις τώρα',
     updatedMinutes: (minutes) => `Ενημερώθηκε πριν ${minutes} λεπτά`,
     updatedHours: (hours) => `Ενημερώθηκε πριν ${hours} ${hours === 1 ? 'ώρα' : 'ώρες'}`,
+    forecastAt: (time) => `Βάσει πρόγνωσης ${time}`,
     beachFeatures: {
       sandy: 'Αμμώδης ακτή',
       pebbles: 'Βότσαλα',
@@ -741,6 +747,7 @@ const homeCopy: Record<LanguageCode, HomeCopy> = {
     updatedJustNow: 'Mis à jour à l’instant',
     updatedMinutes: (minutes) => `Mis à jour il y a ${minutes} min`,
     updatedHours: (hours) => `Mis à jour il y a ${hours} h`,
+    forecastAt: (time) => `Prévision de ${time}`,
     beachFeatures: {
       sandy: 'Plage de sable',
       pebbles: 'Galets',
@@ -821,6 +828,7 @@ const homeCopy: Record<LanguageCode, HomeCopy> = {
     updatedJustNow: 'Gerade aktualisiert',
     updatedMinutes: (minutes) => `Vor ${minutes} Min. aktualisiert`,
     updatedHours: (hours) => `Vor ${hours} Std. aktualisiert`,
+    forecastAt: (time) => `Vorhersage von ${time}`,
     beachFeatures: {
       sandy: 'Sandstrand',
       pebbles: 'Kiesel',
@@ -901,6 +909,7 @@ const homeCopy: Record<LanguageCode, HomeCopy> = {
     updatedJustNow: 'Aggiornato ora',
     updatedMinutes: (minutes) => `Aggiornato ${minutes} min fa`,
     updatedHours: (hours) => `Aggiornato ${hours} h fa`,
+    forecastAt: (time) => `Previsione delle ${time}`,
     beachFeatures: {
       sandy: 'Spiaggia sabbiosa',
       pebbles: 'Ciottoli',
@@ -1574,6 +1583,7 @@ export const BeachSearcherHome: React.FC<BeachSearcherHomeProps> = ({
   forecastDays,
   selectedDayIndex,
   selectedForecast,
+  forecastFreshness = 'fresh',
   mapSelectedHour,
   selectedDate,
   lastUpdated,
@@ -2552,6 +2562,7 @@ export const BeachSearcherHome: React.FC<BeachSearcherHomeProps> = ({
       region: selectedIsland?.name.en || activePlaceName,
       beach_name: topBeachToday.beach.name.en,
       source: 'top_beach_today_card',
+      ...buildBeachExposureParams(topBeachToday.beach, topBeachToday.simpleWindSuitability?.exposureStatus),
     });
     openNavigation(topBeachToday.beach);
   };
@@ -2578,6 +2589,12 @@ export const BeachSearcherHome: React.FC<BeachSearcherHomeProps> = ({
     })} · ${selectedIsland.name[language]}`
     : undefined;
   const updatedLabel = formatUpdatedAgo(lastUpdated, language);
+  // Soft-stale window (60 min–3 h old): make the freshness explicit — an amber
+  // "βάσει πρόγνωσης HH:MM" chip instead of the quiet grey "updated X ago".
+  const isSoftStaleForecast = forecastFreshness === 'soft';
+  const forecastStampLabel = isSoftStaleForecast && lastUpdated
+    ? copy.forecastAt(lastUpdated.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }))
+    : updatedLabel;
   const windDirection = selectedForecast ? degToCompass(selectedForecast.wind.deg) : undefined;
   const localizedWindDirection = windDirection
     ? t.windDirections[windDirection as WindDirection] || windDirection
@@ -2770,10 +2787,10 @@ export const BeachSearcherHome: React.FC<BeachSearcherHomeProps> = ({
                 {conditionsOverviewDate}
               </span>
             )}
-            {updatedLabel && (
-              <span className="inline-flex items-center gap-1.5">
+            {forecastStampLabel && (
+              <span className={`inline-flex items-center gap-1.5 ${isSoftStaleForecast ? 'rounded-full bg-amber-100 px-2 py-0.5 font-bold text-amber-800 ring-1 ring-amber-200' : ''}`}>
                 <Clock3 className="h-3.5 w-3.5" />
-                {updatedLabel}
+                {forecastStampLabel}
               </span>
             )}
           </div>

@@ -1,51 +1,89 @@
 
 import { WeatherData, ForecastItem, MarineForecast } from '../types';
+import { recordOpenMeteoCall, OpenMeteoEndpoint } from './analyticsService';
 
-const CACHE_DURATION = 15 * 60 * 1000;
-const STALE_CACHE_DURATION = 6 * 60 * 60 * 1000;
+// --- Freshness policy (safety-critical) --------------------------------------
+// A forecast is a prediction for each hour, so a recently fetched payload still
+// predicts "now" with full skill. But a payload we cannot refresh must never be
+// shown silently as if fresh — a stale "calm" reading on a meltemi day is the
+// worst possible bug. So we split age into three windows and let the UI gate on
+// the real fetch time (see FetchResult.fetchedAt):
+//   • fresh  (age ≤ FRESH_TTL_MS)      → serve from cache, no network, no warning
+//   • soft   (FRESH_TTL_MS … SOFT_STALE_LIMIT_MS) → still usable WITH a visible
+//                                         "βάσει πρόγνωσης HH:MM" stamp (UI concern)
+//   • stale  (> SOFT_STALE_LIMIT_MS)   → unusable; the UI blanks colours/verdicts
+// This module owns the fetch/cache half; the UI owns the display half. The one
+// hard rule here: we NEVER return data older than SOFT_STALE_LIMIT_MS, and every
+// value carries its real fetchedAt so the UI can tell how old it is.
+export const FRESH_TTL_MS = 60 * 60 * 1000;          // 60 min — matches Open-Meteo refresh cadence
+export const SOFT_STALE_LIMIT_MS = 3 * 60 * 60 * 1000; // 3 h — hard cutoff; older is never served
 const WEATHER_REQUEST_TIMEOUT_MS = 8000;
+
+/** A forecast payload plus the real epoch-ms time its data was fetched from Open-Meteo. */
+export interface FetchResult<T> {
+  data: T;
+  /** epoch ms when this data was actually retrieved from the origin (NOT when the caller asked). */
+  fetchedAt: number;
+}
 
 interface CacheEntry<T> {
   timestamp: number;
   data: T;
 }
 
-const getCacheEntry = <T>(key: string): CacheEntry<T> | null => {
-  const cached = localStorage.getItem(key);
-  if (!cached) return null;
+// In-memory mirror of the localStorage cache: instant same-session hits with no
+// JSON parse, and it survives even if localStorage is unavailable/full.
+const memoryCache = new Map<string, CacheEntry<unknown>>();
 
+// In-flight request dedup: two beaches / re-renders asking for the same coordinate
+// before the first response lands share ONE network call instead of double-fetching.
+const inFlight = new Map<string, Promise<FetchResult<unknown>>>();
+
+const readLocalStorageEntry = <T>(key: string): CacheEntry<T> | null => {
   try {
+    if (typeof localStorage === 'undefined') return null;
+    const cached = localStorage.getItem(key);
+    if (!cached) return null;
     return JSON.parse(cached) as CacheEntry<T>;
-  } catch (e) {
-    localStorage.removeItem(key);
+  } catch {
+    try { localStorage.removeItem(key); } catch { /* ignore */ }
     return null;
   }
 };
 
-const getFromCache = <T>(key: string): T | null => {
-  const entry = getCacheEntry<T>(key);
-  if (!entry) return null;
-  const isExpired = Date.now() - entry.timestamp > CACHE_DURATION;
-  return isExpired ? null : entry.data;
+const getCacheEntry = <T>(key: string): CacheEntry<T> | null => {
+  const inMemory = memoryCache.get(key) as CacheEntry<T> | undefined;
+  if (inMemory) return inMemory;
+
+  const fromStorage = readLocalStorageEntry<T>(key);
+  if (fromStorage) memoryCache.set(key, fromStorage);
+  return fromStorage;
 };
 
-const getStaleFromCache = <T>(key: string): { data: T; ageMs: number } | null => {
+/** A cache entry still inside the fresh TTL, or null. */
+const getFreshEntry = <T>(key: string): CacheEntry<T> | null => {
   const entry = getCacheEntry<T>(key);
   if (!entry) return null;
-
-  const ageMs = Date.now() - entry.timestamp;
-  if (ageMs > STALE_CACHE_DURATION) return null;
-
-  return { data: entry.data, ageMs };
+  return Date.now() - entry.timestamp > FRESH_TTL_MS ? null : entry;
 };
 
-const saveToCache = <T>(key: string, data: T) => {
-  const entry: CacheEntry<T> = {
-    timestamp: Date.now(),
-    data
-  };
+/**
+ * A cache entry usable as a failure fallback: older than fresh but still within the
+ * hard cutoff. Beyond SOFT_STALE_LIMIT_MS this returns null so expired data is never
+ * served — the caller then surfaces "conditions unavailable" instead.
+ */
+const getStaleFallbackEntry = <T>(key: string): CacheEntry<T> | null => {
+  const entry = getCacheEntry<T>(key);
+  if (!entry) return null;
+  return Date.now() - entry.timestamp > SOFT_STALE_LIMIT_MS ? null : entry;
+};
+
+const saveToCache = <T>(key: string, data: T, timestamp: number) => {
+  const entry: CacheEntry<T> = { timestamp, data };
+  memoryCache.set(key, entry);
 
   try {
+    if (typeof localStorage === 'undefined') return;
     localStorage.setItem(key, JSON.stringify(entry));
   } catch (error) {
     const isQuotaError = error instanceof DOMException && (
@@ -99,36 +137,73 @@ const fetchJson = async <T>(url: string, source: string): Promise<T> => {
   }
 };
 
-const handleWeatherRequestFailure = <T>(
-  source: string,
-  url: string,
-  lat: number,
-  lon: number,
+/**
+ * Shared cache/dedup/failure pipeline for every Open-Meteo fetcher.
+ *
+ * 1. Fresh cache hit (≤ FRESH_TTL_MS)          → return cached data + its real fetchedAt, no network.
+ * 2. Identical request already in flight        → share that promise (no double fetch).
+ * 3. Otherwise fetch once. On success: cache + count the origin call. On failure: fall
+ *    back to cache ONLY if within SOFT_STALE_LIMIT_MS, still tagged with its real (old)
+ *    fetchedAt so the UI can label/gate it. Older than the cutoff → throw (never serve).
+ */
+const withCache = async <T>(
   cacheKey: string,
-  error: unknown
-): T => {
-  const stale = getStaleFromCache<T>(cacheKey);
-
-  console.warn('[weather] Open-Meteo request failed', {
-    source,
-    lat,
-    lon,
-    url,
-    error: describeError(error),
-    staleCacheAvailable: Boolean(stale),
-    staleCacheAgeMinutes: stale ? Math.round(stale.ageMs / 60000) : null,
-  });
-
-  if (stale) {
-    console.warn('[weather] Using stale cached weather data after request failure', {
-      source,
-      cacheKey,
-      ageMinutes: Math.round(stale.ageMs / 60000),
-    });
-    return stale.data;
+  endpoint: OpenMeteoEndpoint,
+  source: string,
+  meta: { lat: number; lon: number; url: string },
+  runFetch: () => Promise<T>,
+): Promise<FetchResult<T>> => {
+  const fresh = getFreshEntry<T>(cacheKey);
+  if (fresh) {
+    return { data: fresh.data, fetchedAt: fresh.timestamp };
   }
 
-  throw error;
+  const pending = inFlight.get(cacheKey) as Promise<FetchResult<T>> | undefined;
+  if (pending) return pending;
+
+  const request = (async (): Promise<FetchResult<T>> => {
+    try {
+      const data = await runFetch();
+      const fetchedAt = Date.now();
+      saveToCache(cacheKey, data, fetchedAt);
+      // Count only real origin calls (cache misses) so the counter tracks how close
+      // we are to the Open-Meteo rate limit.
+      recordOpenMeteoCall(endpoint);
+      return { data, fetchedAt };
+    } catch (error) {
+      const stale = getStaleFallbackEntry<T>(cacheKey);
+      const staleAgeMs = stale ? Date.now() - stale.timestamp : null;
+
+      console.warn('[weather] Open-Meteo request failed', {
+        source,
+        lat: meta.lat,
+        lon: meta.lon,
+        url: meta.url,
+        error: describeError(error),
+        staleFallbackAvailable: Boolean(stale),
+        staleFallbackAgeMinutes: staleAgeMs === null ? null : Math.round(staleAgeMs / 60000),
+      });
+
+      if (stale) {
+        // Within the hard cutoff: reuse it, but carry its REAL age so the UI shows the
+        // stamp / applies the cutoff. Never presented as fresh.
+        console.warn('[weather] Serving cached data after request failure (still within cutoff)', {
+          source,
+          cacheKey,
+          ageMinutes: staleAgeMs === null ? null : Math.round(staleAgeMs / 60000),
+        });
+        return { data: stale.data, fetchedAt: stale.timestamp };
+      }
+
+      // No usable data within the cutoff → let the caller show "conditions unavailable".
+      throw error;
+    } finally {
+      inFlight.delete(cacheKey);
+    }
+  })();
+
+  inFlight.set(cacheKey, request);
+  return request;
 };
 
 export interface MarineForecastItem {
@@ -170,25 +245,20 @@ export const getMockWeatherData = (): WeatherData => {
 };
 
 /**
- * Fetches real weather data using Open-Meteo with caching logic
+ * Fetches real weather data using Open-Meteo with caching logic.
+ * Returns the data plus the real time it was fetched (fetchedAt) so callers can
+ * apply the freshness/staleness policy.
  */
-export const fetchWeatherData = async (lat: number, lon: number): Promise<WeatherData> => {
+export const fetchWeatherData = async (lat: number, lon: number): Promise<FetchResult<WeatherData>> => {
   const cacheKey = `weather_${lat.toFixed(3)}_${lon.toFixed(3)}`;
-  const cachedData = getFromCache<WeatherData>(cacheKey);
-  
-  if (cachedData) {
-    console.log('Returning cached weather data');
-    return cachedData;
-  }
-
   const API_URL = `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&current=temperature_2m,is_day,weather_code,wind_speed_10m,wind_direction_10m,wind_gusts_10m&wind_speed_unit=ms&timezone=auto`;
 
-  try {
+  return withCache<WeatherData>(cacheKey, 'current', 'current-weather', { lat, lon, url: API_URL }, async () => {
     const data = await fetchJson<any>(API_URL, 'current-weather');
     const current = data.current;
     if (!current) throw new Error('Weather fetch failed: missing current data');
 
-    const weatherResult: WeatherData = {
+    return {
       wind: {
         speed: current.wind_speed_10m,
         deg: current.wind_direction_10m,
@@ -200,39 +270,27 @@ export const fetchWeatherData = async (lat: number, lon: number): Promise<Weathe
         temp: current.temperature_2m
       }
     };
-
-    saveToCache(cacheKey, weatherResult);
-    return weatherResult;
-  } catch (error) {
-    return handleWeatherRequestFailure<WeatherData>('current-weather', API_URL, lat, lon, cacheKey, error);
-  }
+  });
 };
 
 /**
- * Fetches forecast data using Open-Meteo with caching logic
+ * Fetches forecast data using Open-Meteo with caching logic.
  */
-export const fetchForecastData = async (lat: number, lon: number): Promise<ForecastItem[]> => {
+export const fetchForecastData = async (lat: number, lon: number): Promise<FetchResult<ForecastItem[]>> => {
   const cacheKey = `forecast_${lat.toFixed(3)}_${lon.toFixed(3)}`;
-  const cachedData = getFromCache<ForecastItem[]>(cacheKey);
-
-  if (cachedData) {
-    console.log('Returning cached forecast data');
-    return cachedData;
-  }
-
   const API_URL = `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&hourly=temperature_2m,weather_code,wind_speed_10m,wind_direction_10m,wind_gusts_10m,pressure_msl,uv_index,precipitation_probability&wind_speed_unit=ms&timezone=auto`;
 
-  try {
+  return withCache<ForecastItem[]>(cacheKey, 'hourly', 'hourly-forecast', { lat, lon, url: API_URL }, async () => {
     const data = await fetchJson<any>(API_URL, 'hourly-forecast');
     const hourly = data.hourly;
     if (!hourly?.time || !Array.isArray(hourly.time)) {
       throw new Error('Forecast fetch failed: missing hourly data');
     }
 
-    const forecastResult: ForecastItem[] = hourly.time.map((timeStr: string, index: number): ForecastItem => {
+    return hourly.time.map((timeStr: string, index: number): ForecastItem => {
       const date = new Date(timeStr);
       const isDay = date.getHours() > 6 && date.getHours() < 20;
-      
+
       return {
         dt: Math.floor(date.getTime() / 1000),
         dt_txt: timeStr.replace('T', ' '),
@@ -264,12 +322,7 @@ export const fetchForecastData = async (lat: number, lon: number): Promise<Forec
         uvIndex: optionalNumber(hourly.uv_index?.[index]),
       };
     });
-
-    saveToCache(cacheKey, forecastResult);
-    return forecastResult;
-  } catch (error) {
-    return handleWeatherRequestFailure<ForecastItem[]>('hourly-forecast', API_URL, lat, lon, cacheKey, error);
-  }
+  });
 };
 
 /**
@@ -277,15 +330,8 @@ export const fetchForecastData = async (lat: number, lon: number): Promise<Forec
  * This is intentionally separate from the weather forecast so a marine outage
  * does not force the app into mock weather mode.
  */
-export const fetchMarineForecastData = async (lat: number, lon: number): Promise<MarineForecastItem[]> => {
+export const fetchMarineForecastData = async (lat: number, lon: number): Promise<FetchResult<MarineForecastItem[]>> => {
   const cacheKey = `marine_${lat.toFixed(3)}_${lon.toFixed(3)}`;
-  const cachedData = getFromCache<MarineForecastItem[]>(cacheKey);
-
-  if (cachedData) {
-    console.log('Returning cached marine data');
-    return cachedData;
-  }
-
   const hourly = [
     'wave_height',
     'wave_direction',
@@ -297,7 +343,7 @@ export const fetchMarineForecastData = async (lat: number, lon: number): Promise
   ].join(',');
   const API_URL = `https://marine-api.open-meteo.com/v1/marine?latitude=${lat}&longitude=${lon}&hourly=${hourly}&timezone=auto&forecast_days=6&cell_selection=sea`;
 
-  try {
+  return withCache<MarineForecastItem[]>(cacheKey, 'marine', 'marine-forecast', { lat, lon, url: API_URL }, async () => {
     const data = await fetchJson<any>(API_URL, 'marine-forecast');
     const marineHourly = data.hourly;
 
@@ -305,7 +351,7 @@ export const fetchMarineForecastData = async (lat: number, lon: number): Promise
       throw new Error('Marine fetch failed: missing hourly data');
     }
 
-    const marineResult: MarineForecastItem[] = marineHourly.time
+    return marineHourly.time
       .map((timeStr: string, index: number): MarineForecastItem => ({
         dt_txt: timeStr.replace('T', ' '),
         marine: {
@@ -319,7 +365,7 @@ export const fetchMarineForecastData = async (lat: number, lon: number): Promise
           source: 'open-meteo-marine',
         },
       }))
-      .filter(item => (
+      .filter((item: MarineForecastItem) => (
         item.marine.waveHeightM !== undefined ||
         item.marine.waveDirectionDeg !== undefined ||
         item.marine.wavePeriodS !== undefined ||
@@ -327,12 +373,7 @@ export const fetchMarineForecastData = async (lat: number, lon: number): Promise
         item.marine.swellWaveDirectionDeg !== undefined ||
         item.marine.seaSurfaceTemperatureC !== undefined
       ));
-
-    saveToCache(cacheKey, marineResult);
-    return marineResult;
-  } catch (error) {
-    return handleWeatherRequestFailure<MarineForecastItem[]>('marine-forecast', API_URL, lat, lon, cacheKey, error);
-  }
+  });
 };
 
 export const mergeMarineForecastData = (

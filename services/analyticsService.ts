@@ -39,7 +39,13 @@ export type AnalyticsEvent =
   | 'install_prompt_shown'
   | 'install_prompt_accepted'
   | 'install_prompt_dismissed'
-  | 'app_installed';
+  | 'app_installed'
+  // One real Open-Meteo origin fetch (cache MISS only). The GA4 aggregate of these
+  // ≈ our real calls/day and is the trigger signal for moving to a shared server cache.
+  | 'open_meteo_fetch';
+
+/** Which Open-Meteo endpoint a counted origin call hit. */
+export type OpenMeteoEndpoint = 'current' | 'hourly' | 'marine';
 
 export interface AnalyticsData {
   event: AnalyticsEvent;
@@ -72,6 +78,7 @@ export interface FeedbackNotificationContext {
 const STORAGE_KEY = 'beach_buddy_analytics';
 const FEEDBACK_KEY = 'beach_buddy_feedback';
 const CONSENT_KEY = 'beach_buddy_analytics_consent';
+const OPEN_METEO_CALLS_KEY = 'beach_buddy_open_meteo_calls';
 const GOOGLE_ANALYTICS_MEASUREMENT_ID = import.meta.env.VITE_GA_MEASUREMENT_ID?.trim() || '';
 const GOOGLE_ANALYTICS_SCRIPT_ID = 'beach-buddy-google-analytics';
 const GOOGLE_ANALYTICS_DENYLISTED_METADATA = new Set([
@@ -210,7 +217,9 @@ const ensureGoogleAnalyticsLoaded = () => {
   if (!googleAnalyticsInitialized) {
     window.gtag?.('js', new Date());
     window.gtag?.('config', GOOGLE_ANALYTICS_MEASUREMENT_ID, {
-      send_page_view: true,
+      // We emit page_view manually from the app router (state-based navigation),
+      // so GA4's automatic first-load page_view is disabled to avoid double-counting.
+      send_page_view: false,
       // Cap the _ga / _ga_<id> cookie lifetime at ~13 months so it matches the
       // duration stated in the Cookie Policy (GA4 otherwise defaults to 2 years).
       cookie_expires: 60 * 60 * 24 * 30 * 13,
@@ -375,11 +384,38 @@ export const trackPageView = (
   path: string,
   metadata?: Record<string, string | number | boolean | undefined>
 ) => {
+  const loc = typeof window !== 'undefined' ? window.location : undefined;
   trackEvent('page_view', undefined, {
+    // GA4-recommended page params (send_page_view is off, so these are the
+    // canonical source of truth for the page_view event).
+    page_path: path,
+    page_location: loc ? `${loc.origin}${path}${loc.search}${loc.hash}` : path,
+    page_title: typeof document !== 'undefined' ? document.title : undefined,
+    // Retained for the local event log / existing consumers.
     path,
     ...(metadata || {}),
   });
 };
+
+/**
+ * Static wind-exposure descriptors for a beach, normalized for GA4. Every field
+ * falls back to 'unknown' (never undefined). Notes on the data model:
+ *  - shelterLevel lives on Beach.windProfile, not top-level.
+ *  - fetchExposure is a top-level Beach field.
+ *  - exposureStatus is NOT a static Beach field; it is a live/computed value
+ *    (SimpleWindSuitability) and is only known when passed in explicitly.
+ */
+export const buildBeachExposureParams = (
+  beach?: {
+    windProfile?: { shelterLevel?: string | null } | null;
+    fetchExposure?: string | null;
+  } | null,
+  exposureStatus?: string | null,
+): { shelter_level: string; exposure_status: string; fetch_exposure: string } => ({
+  shelter_level: beach?.windProfile?.shelterLevel ?? 'unknown',
+  exposure_status: exposureStatus ?? 'unknown',
+  fetch_exposure: beach?.fetchExposure ?? 'unknown',
+});
 
 export const getEvents = (): AnalyticsData[] => {
   const stored = getStorageItem(STORAGE_KEY);
@@ -467,6 +503,60 @@ const NEGATIVE_FEEDBACK = new Set<FeedbackData['feedback']>(['not_accurate', 'ha
 export const getNegativeFeedbackCount = (beachId: number): number => {
   const feedback = getFeedback();
   return feedback.filter(f => f.beachId === beachId && NEGATIVE_FEEDBACK.has(f.feedback)).length;
+};
+
+// --- Open-Meteo call counter -------------------------------------------------
+// A per-UTC-day count of REAL origin fetches (cache misses), so we can see how close
+// we are to Open-Meteo's 10,000/day limit without any backend. Two sinks:
+//   • localStorage (always, no PII) — a local operational counter for quick inspection.
+//   • GA4 event (consent-gated)     — the cross-user aggregate = real calls/day. Because
+//     it is consent-gated it UNDER-counts (declined users), so treat it as a lower bound /
+//     trend alarm, not an exact meter.
+// Rough Tier-B (shared server cache) trigger: amber at a sustained ~4,000–5,000/day, red
+// beyond ~7,000/day or on repeated HTTP 429s.
+const utcDayKey = (date: Date): string => date.toISOString().slice(0, 10);
+
+interface OpenMeteoDayCount {
+  day: string;
+  count: number;
+}
+
+const readOpenMeteoDayCount = (): OpenMeteoDayCount | null => {
+  const stored = getStorageItem(OPEN_METEO_CALLS_KEY);
+  if (!stored) return null;
+  try {
+    const parsed = JSON.parse(stored) as OpenMeteoDayCount;
+    return typeof parsed?.day === 'string' && typeof parsed?.count === 'number' ? parsed : null;
+  } catch {
+    return null;
+  }
+};
+
+export const recordOpenMeteoCall = (endpoint: OpenMeteoEndpoint) => {
+  // Local counter — always on (operational, no personal data).
+  const today = utcDayKey(new Date());
+  const existing = readOpenMeteoDayCount();
+  const next: OpenMeteoDayCount = existing && existing.day === today
+    ? { day: today, count: existing.count + 1 }
+    : { day: today, count: 1 };
+  setStorageItem(OPEN_METEO_CALLS_KEY, JSON.stringify(next));
+
+  // Cross-user aggregate — consent-gated. Sent directly (NOT via trackEvent) so the
+  // high-frequency counter never bloats the local analytics event log.
+  if (canTrackAnalytics()) {
+    trackGoogleAnalyticsEvent('open_meteo_fetch', undefined, { endpoint });
+  }
+
+  if (import.meta.env.DEV) {
+    console.log(`[weather] Open-Meteo origin call #${next.count} today (${endpoint})`);
+  }
+};
+
+/** Real Open-Meteo origin calls counted on THIS device today (UTC). 0 if none / new day. */
+export const getOpenMeteoCallCountToday = (): number => {
+  const today = utcDayKey(new Date());
+  const stored = readOpenMeteoDayCount();
+  return stored && stored.day === today ? stored.count : 0;
 };
 
 export const getAnalyticsInsights = () => {

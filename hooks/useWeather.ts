@@ -1,13 +1,34 @@
-import { useState, useCallback, useEffect, useRef } from 'react';
+import { useState, useCallback, useEffect, useRef, useMemo } from 'react';
 import { WeatherData, DailyForecast, Island, LanguageCode, Beach, BeachForecastContext } from '../types';
 import {
   fetchWeatherData,
   fetchForecastData,
   fetchMarineForecastData,
   mergeMarineForecastData,
+  FRESH_TTL_MS,
+  SOFT_STALE_LIMIT_MS,
 } from '../services/weatherService';
 import { processForecastData } from '../utils/weatherUtils'; // Assuming I move this helper or recreate it
 import { getLocalWeatherFixture } from '../utils/weatherFixtures';
+
+/**
+ * Freshness of the forecast currently held in state, derived from its real fetch time.
+ *   • fresh   — age ≤ 60 min: render normally.
+ *   • soft    — 60 min…3 h: render WITH a visible "βάσει πρόγνωσης HH:MM" stamp.
+ *   • stale   — > 3 h: HARD CUTOFF; callers must blank wind colours / verdicts / scores.
+ *   • unknown — no forecast loaded yet (loading / absent). Not a safety state.
+ */
+export type ForecastFreshness = 'fresh' | 'soft' | 'stale' | 'unknown';
+
+const FRESHNESS_REEVAL_INTERVAL_MS = 60 * 1000;
+
+const freshnessFromAge = (fetchedAt: number | null, now: number): ForecastFreshness => {
+  if (fetchedAt == null) return 'unknown';
+  const age = now - fetchedAt;
+  if (age <= FRESH_TTL_MS) return 'fresh';
+  if (age <= SOFT_STALE_LIMIT_MS) return 'soft';
+  return 'stale';
+};
 
 const BEACH_FORECAST_CLUSTER_STEPS = [0.05, 0.08, 0.12];
 const MAX_BEACH_FORECAST_CLUSTERS = 6;
@@ -130,20 +151,25 @@ const fetchBeachForecastContexts = async (island: Island): Promise<Record<number
   if (clusters.length === 0) return {};
 
   const entries = await Promise.all(clusters.map(async cluster => {
-    const [forecastItems, marineItems] = await Promise.all([
+    const [forecastResult, marineItems] = await Promise.all([
       fetchForecastData(cluster.lat, cluster.lon),
-      fetchMarineForecastData(cluster.lat, cluster.lon).catch(error => {
-        console.warn('Cluster marine forecast unavailable; using wind-based sea estimates.', error);
-        return [];
-      }),
+      fetchMarineForecastData(cluster.lat, cluster.lon)
+        .then(result => result.data)
+        .catch(error => {
+          console.warn('Cluster marine forecast unavailable; using wind-based sea estimates.', error);
+          return [];
+        }),
     ]);
-    const forecast = processForecastData(mergeMarineForecastData(forecastItems, marineItems));
+    const forecast = processForecastData(mergeMarineForecastData(forecastResult.data, marineItems));
     return cluster.beachIds.map(beachId => [
       beachId,
       {
         forecast,
         source: 'beach-cluster' as const,
         clusterKey: cluster.key,
+        // Wind drives the safety-critical colours, so the cluster's freshness follows
+        // its hourly-forecast fetch time (marine is supplementary).
+        fetchedAt: forecastResult.fetchedAt,
       },
     ] as const);
   }));
@@ -167,6 +193,12 @@ export const useWeather = (selectedIsland: Island | undefined, language: Languag
   const [error, setError] = useState<string | null>(null);
   const [selectedDayIndex, setSelectedDayIndex] = useState(0);
   const [lastUpdated, setLastUpdated] = useState<Date | null>(null);
+  // Real fetch time of the region forecast in state — the single source of truth for the
+  // safety freshness gate (NOT "when loadWeatherData last ran").
+  const [forecastFetchedAt, setForecastFetchedAt] = useState<number | null>(null);
+  // Ticks every minute so a tab left open flips fresh→soft→stale even with no user action
+  // and even if the day-boundary refetch fails.
+  const [freshnessNow, setFreshnessNow] = useState<number>(() => Date.now());
   const requestIdRef = useRef(0);
   const activeIslandIdRef = useRef<string | null>(null);
 
@@ -180,6 +212,7 @@ export const useWeather = (selectedIsland: Island | undefined, language: Languag
       setWeather(null);
       setForecast(null);
       setForecastIslandId(null);
+      setForecastFetchedAt(null);
       setSelectedDayIndex(getDefaultDayIndex());
     }
 
@@ -190,11 +223,13 @@ export const useWeather = (selectedIsland: Island | undefined, language: Languag
 
     const fixture = getLocalWeatherFixture(selectedIsland);
     if (fixture) {
+      const fixtureFetchedAt = Date.now();
       setWeather(fixture.weather);
       setForecast(fixture.forecast);
       setForecastIslandId(selectedIsland.id);
+      setForecastFetchedAt(fixtureFetchedAt);
       setSelectedDayIndex(currentIndex => clampSelectedDayIndex(currentIndex, fixture.forecast.length));
-      setLastUpdated(new Date());
+      setLastUpdated(new Date(fixtureFetchedAt));
       activeIslandIdRef.current = selectedIsland.id;
       setLoading(false);
       setBeachForecastsLoading(false);
@@ -213,10 +248,12 @@ export const useWeather = (selectedIsland: Island | undefined, language: Languag
     const [weatherResult, forecastResult, marineResult] = await Promise.allSettled([
       fetchWeatherData(lat, lon),
       fetchForecastData(lat, lon),
-      fetchMarineForecastData(lat, lon).catch(error => {
-        console.warn('Marine forecast unavailable; using wind-based sea estimates.', error);
-        return [];
-      }),
+      fetchMarineForecastData(lat, lon)
+        .then(result => result.data)
+        .catch(error => {
+          console.warn('Marine forecast unavailable; using wind-based sea estimates.', error);
+          return [];
+        }),
     ]);
 
     if (requestIdRef.current !== requestId) return;
@@ -224,7 +261,7 @@ export const useWeather = (selectedIsland: Island | undefined, language: Languag
     const failures: string[] = [];
 
     if (weatherResult.status === 'fulfilled') {
-      setWeather(weatherResult.value);
+      setWeather(weatherResult.value.data);
     } else {
       failures.push('current-weather');
       if (!isSameIsland) setWeather(null);
@@ -233,16 +270,25 @@ export const useWeather = (selectedIsland: Island | undefined, language: Languag
     if (forecastResult.status === 'fulfilled') {
       const marine = marineResult.status === 'fulfilled' ? marineResult.value : [];
       if (marineResult.status === 'rejected') failures.push('marine-forecast');
-      const nextForecast = processForecastData(mergeMarineForecastData(forecastResult.value, marine));
+      const nextForecast = processForecastData(mergeMarineForecastData(forecastResult.value.data, marine));
       setForecast(nextForecast);
       setForecastIslandId(selectedIsland.id);
+      // Real data time (may be older than "now" if withCache served a within-cutoff
+      // cached copy after a failed refresh) — drives the freshness gate + timestamp.
+      setForecastFetchedAt(forecastResult.value.fetchedAt);
+      setLastUpdated(new Date(forecastResult.value.fetchedAt));
       setSelectedDayIndex(currentIndex => clampSelectedDayIndex(currentIndex, nextForecast.length));
     } else {
       failures.push('hourly-forecast');
-      if (!isSameIsland) setForecast(null);
+      if (!isSameIsland) {
+        setForecast(null);
+        setForecastFetchedAt(null);
+      }
+      // On a same-region refresh failure we keep the previous forecast in state, but we do
+      // NOT touch forecastFetchedAt — its real (old) age lets the freshness gate blank it
+      // once it crosses the 3 h cutoff.
     }
 
-    setLastUpdated(new Date());
     activeIslandIdRef.current = selectedIsland.id;
     setLoading(false);
 
@@ -287,6 +333,7 @@ export const useWeather = (selectedIsland: Island | undefined, language: Languag
       setWeather(null);
       setForecast(null);
       setForecastIslandId(null);
+      setForecastFetchedAt(null);
       setBeachForecasts({});
       setBeachForecastsLoading(false);
       setLoading(false);
@@ -296,6 +343,22 @@ export const useWeather = (selectedIsland: Island | undefined, language: Languag
   useEffect(() => {
     setSelectedDayIndex(currentIndex => clampSelectedDayIndex(currentIndex, forecast?.length));
   }, [forecast?.length]);
+
+  // Re-evaluate freshness every minute so a long-open tab crosses fresh→soft→stale on its
+  // own — the hard cutoff must fire even when nothing triggers a re-render or a refetch.
+  useEffect(() => {
+    const intervalId = window.setInterval(() => {
+      setFreshnessNow(Date.now());
+    }, FRESHNESS_REEVAL_INTERVAL_MS);
+    return () => window.clearInterval(intervalId);
+  }, []);
+
+  const forecastFreshness = useMemo(
+    () => freshnessFromAge(forecastFetchedAt, freshnessNow),
+    [forecastFetchedAt, freshnessNow],
+  );
+  // Hard cutoff: forecast older than 3 h must not colour the map / score beaches / claim "calm".
+  const isStaleBlocked = forecastFreshness === 'stale';
 
   useEffect(() => {
     const timeoutId = window.setTimeout(() => {
@@ -328,6 +391,12 @@ export const useWeather = (selectedIsland: Island | undefined, language: Languag
     selectedDayIndex,
     setSelectedDayIndex: selectDayIndex,
     loadWeatherData,
-    lastUpdated
+    lastUpdated,
+    // Freshness of the region forecast, derived from its real fetch time. `isStaleBlocked`
+    // is the hard cutoff: when true, callers MUST treat the forecast as absent for
+    // colouring/scoring and show the "conditions unavailable" state instead.
+    forecastFreshness,
+    isStaleBlocked,
+    forecastFetchedAt,
   };
 };
