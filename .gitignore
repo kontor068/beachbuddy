@@ -21,6 +21,9 @@ dist-ssr
 __pycache__/
 *.py[cod]
 
+# Secrets — service-account keys, etc. NEVER commit. (.env is already ignored above.)
+.secrets/
+
 # Local assistant/tooling caches and generated backups
 .cache/
 .tmp/
