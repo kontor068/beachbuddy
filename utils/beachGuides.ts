@@ -11,7 +11,6 @@ import { getRegionUrlSlug, getBeachLocalePrefix } from './beachUrls';
  * shape mirrors `islandIntentPath` + `localizedPath` there.
  */
 
-const NORTHERLY: WindDirection[] = [WindDirection.N, WindDirection.NE, WindDirection.NW];
 const WESTERLY: WindDirection[] = [WindDirection.W, WindDirection.NW, WindDirection.SW];
 const ISLAND_INTENT_MIN = 5;
 
@@ -28,8 +27,10 @@ const GUIDE_TOPICS: GuideTopic[] = [
   {
     key: 'sheltered',
     pathPrefix: '/sheltered-beaches',
-    match: beach => Array.isArray(beach.protectedFrom) && NORTHERLY.some(d => beach.protectedFrom.includes(d)),
-    label: { en: 'Sheltered (Meltemi)', gr: 'Απάνεμες (μελτέμι)', de: 'Windgeschützt', fr: 'Abritées (meltemi)', it: 'Riparate (meltemi)' },
+    // Single source: the baked, curated-aware, context-specific flag (meltemi /
+    // maistros). Matches the sheltered guide the prerender actually publishes.
+    match: beach => beach.shelteredFromLocalWind === true,
+    label: { en: 'Wind-sheltered', gr: 'Απάνεμες', de: 'Windgeschützt', fr: 'Abritées du vent', it: 'Riparate dal vento' },
   },
   {
     key: 'family',
@@ -82,8 +83,15 @@ export const getIslandGuideLinks = (
   if (!regionId || !Array.isArray(beaches) || beaches.length === 0) return [];
   const slug = getRegionUrlSlug(regionId);
   const prefix = getBeachLocalePrefix(language, slug);
+  const total = beaches.length;
   return GUIDE_TOPICS
-    .filter(topic => beaches.filter(topic.match).length >= ISLAND_INTENT_MIN)
+    .filter(topic => {
+      const matchCount = beaches.filter(topic.match).length;
+      // 'sheltered' uses the same proportional gate as the prerender (a small
+      // island with >=25% sheltered is useful), so the link and the page agree.
+      if (topic.key === 'sheltered') return matchCount >= ISLAND_INTENT_MIN || (total > 0 && matchCount / total >= 0.25);
+      return matchCount >= ISLAND_INTENT_MIN;
+    })
     .map(topic => ({
       key: topic.key,
       href: `${prefix}${topic.pathPrefix}/${encodeURIComponent(slug)}/`,

@@ -28,6 +28,7 @@ import { useWeather } from './hooks/useWeather';
 import { useLocation } from './hooks/useLocation';
 import { translations } from './translations';
 import { degToCompass, getBeaufortLevel, isWinterSeason, processForecastData } from './utils/weatherUtils';
+import { getRegionWindContext, LOCAL_WIND_LABEL } from './utils/localWindContext.mjs';
 import { trackEvent, trackPageView, buildBeachExposureParams } from './services/analyticsService';
 import { loadAppReadyRegion, loadBeachDetailData, loadBeachRegionIndex, loadBeachSearchIndex, mergeBeachDetailData } from './services/beachDataLoader';
 import { fetchForecastData, fetchMarineForecastData, mergeMarineForecastData } from './services/weatherService';
@@ -2374,9 +2375,9 @@ export const App: React.FC = () => {
       if (detailBeach.amenities?.restaurant || detailBeach.amenities?.taverna) features.push(isEn ? 'with food nearby' : 'με φαγητό κοντά');
       if (detailBeach.environment?.familyFriendly) features.push(isEn ? 'family-friendly' : 'οικογενειακή');
       if (detailBeach.activities?.snorkeling) features.push(isEn ? 'good for snorkeling' : 'καλή για snorkeling');
-      const northerly = [WindDirection.N, WindDirection.NE, WindDirection.NW];
-      if (Array.isArray(detailBeach.protectedFrom) && northerly.some(direction => detailBeach.protectedFrom.includes(direction))) {
-        features.push(isEn ? 'often more sheltered in northerly winds' : 'συχνά πιο απάνεμη σε βόρειους ανέμους');
+      if (detailBeach.shelteredFromLocalWind === true) {
+        const w = LOCAL_WIND_LABEL[getRegionWindContext(selectedIsland?.id ?? '')];
+        features.push(isEn ? `often sheltered from ${w.en}` : `συχνά υπήνεμη ${w.elIn}`);
       }
       const parts = [typeTrait[detailBeach.beachType]?.[isEn ? 'en' : 'gr'], ...features.slice(0, 3)].filter(Boolean);
       const traits = parts.length ? `${parts.join(', ')}.` : '';

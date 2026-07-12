@@ -2,6 +2,7 @@ import { mkdir, readFile, readdir, writeFile } from 'node:fs/promises';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { amenityTextIncludesAny, SNACK_CANTEEN_AMENITY_TERMS } from '../utils/amenityMatching.js';
+import { localWindLabelFor, getRegionWindContext } from '../utils/localWindContext.mjs';
 
 const scriptDir = path.dirname(fileURLToPath(import.meta.url));
 const projectRoot = path.resolve(scriptDir, '..');
@@ -718,26 +719,39 @@ const islandIntents = [
   {
     key: 'sheltered',
     pathPrefix: '/sheltered-beaches',
+    // NOTE: the loop special-cases 'sheltered' to use the geospatial meltemi set
+    // (getMeltemiShelteredIds), so this per-beach match is a defensive fallback only.
     match: beach => Array.isArray(beach.protectedFrom) && NORTHERLY.some(d => beach.protectedFrom.includes(d)),
-    copy: (islandName, count) => ({
+    // Wind-aware copy: `regionId` selects the regime word (meltemi / βοριάς /
+    // Vardaris). de/fr/it stay on "meltemi" — only Aegean regions are localized.
+    copy: (islandName, count, regionId = '') => {
+      const w = windWordsFor(regionId);
+      const prep = regionPrepGr(regionId, islandName);
+      const enMain = `More Sheltered Beaches in ${islandName}`;
+      const enWithTail = `${enMain} for ${w.en}`;
+      const enTitle = pickUnderLimit([`${enWithTail} | CalmBeach`, enWithTail, enMain], 60);
+      const grMain = `${islandName}: Πιο Απάνεμες Παραλίες`;
+      const grWithTail = `${grMain} ${w.elIn}`;
+      const grTitle = pickUnderLimit([`${grWithTail} | CalmBeach`, grWithTail, grMain], 58);
+      return {
       en: {
-        title: categoryTitleFor('sheltered', islandName, 'en'),
-        description: categoryMetaFor('sheltered', islandName, count, 'en'),
-        h1: `Beaches in ${islandName} usually better with Meltemi winds`,
-        intro: `When the Meltemi blows from the north, more comfortable beaches in ${islandName} are often bays oriented away from it. These ${count} beaches face away from northerly winds based on available orientation data — still check conditions before you go.`,
+        title: enTitle,
+        description: truncateForMeta(`${count} sheltered beaches in ${islandName}, oriented away from ${w.en}. Check live wind & waves on CalmBeach before you go.`, 155),
+        h1: `Beaches in ${islandName} usually better when ${w.enSubject} blows`,
+        intro: `When ${w.enSubject} blows, more comfortable beaches in ${islandName} are often bays oriented away from it. These ${count} beaches sit away from it based on the geospatial exposure model — still check live conditions before you go.`,
         sections: [
-          { heading: `Which beaches in ${islandName} may be better with Meltemi winds?`, body: `The south- and west-facing bays listed here are oriented away from northerly winds, so they may be more comfortable when the Meltemi blows. Local conditions still vary, so confirm wind and waves before you go.` },
-          { heading: 'Does orientation guarantee low waves?', body: 'No. Orientation shows which way a coast faces, not guaranteed shelter or low waves. On strong-wind days follow local flags and check live wind and waves in the app.' },
+          { heading: `Which beaches in ${islandName} may be better when ${w.enSubject} blows?`, body: `The bays listed here are shielded from ${w.en} in the exposure model, so they may be more comfortable when it blows. Local conditions still vary, so confirm wind and waves before you go.` },
+          { heading: 'Does this guarantee low waves?', body: 'No. Shelter shows which coasts are shielded from a wind direction, not guaranteed calm or low waves. On strong-wind days follow local flags and check live wind and waves in the app.' },
         ],
       },
       gr: {
-        title: categoryTitleFor('sheltered', islandName, 'gr'),
-        description: categoryMetaFor('sheltered', islandName, count, 'gr'),
-        h1: `Παραλίες που συχνά βολεύουν με μελτέμι — ${islandName}`,
-        intro: `Όταν φυσά το μελτέμι από τον βορρά, πιο άνετες επιλογές εδώ (${islandName}) είναι συχνά οι κόλποι που κοιτούν μακριά του. Αυτές οι ${count} παραλίες έχουν προσανατολισμό μακριά από βόρειους ανέμους με βάση τα διαθέσιμα στοιχεία — έλεγξε τις συνθήκες πριν πας.`,
+        title: grTitle,
+        description: truncateForMeta(`${count} πιο απάνεμες παραλίες ${prep}, προστατευμένες ${w.elFrom}. Δες live άνεμο & κύμα στο CalmBeach πριν πας.`, 155),
+        h1: `Παραλίες ${prep} που μένουν υπήνεμες ${w.elIn}`,
+        intro: `Όταν φυσά ${w.elNom}, πιο άνετες επιλογές ${prep} είναι συχνά οι κόλποι που προστατεύονται ${w.elFrom}. Αυτές οι ${count} παραλίες είναι υπήνεμες με βάση το γεωχωρικό μοντέλο έκθεσης — έλεγξε ζωντανά τις συνθήκες πριν πας.`,
         sections: [
-          { heading: `${islandName}: ποιες παραλίες μπορεί να βολεύουν με μελτέμι;`, body: `Οι νότιοι και δυτικοί κόλποι της λίστας έχουν προσανατολισμό μακριά από βόρειους ανέμους, οπότε μπορεί να είναι πιο άνετοι όταν φυσά το μελτέμι. Οι συνθήκες αλλάζουν τοπικά, γι' αυτό έλεγξε άνεμο και κύμα πριν πας.` },
-          { heading: 'Είναι πάντα ήρεμη η θάλασσα σε αυτές τις παραλίες;', body: 'Όχι. Ο προσανατολισμός δείχνει την πλευρά της ακτής, όχι εγγυημένη προστασία ή χαμηλό κύμα. Σε μέρες με δυνατό αέρα ακολούθησε τις τοπικές σημαίες και έλεγξε live άνεμο και κύμα στην εφαρμογή.' },
+          { heading: `${islandName}: ποιες παραλίες μένουν υπήνεμες ${w.elIn};`, body: `Οι κόλποι της λίστας προστατεύονται ${w.elFrom} σύμφωνα με το μοντέλο έκθεσης, οπότε μπορεί να είναι πιο άνετοι όταν φυσά. Οι συνθήκες αλλάζουν τοπικά, γι' αυτό έλεγξε άνεμο και κύμα πριν πας.` },
+          { heading: 'Σημαίνει σίγουρα χαμηλό κύμα;', body: 'Όχι. Η προστασία δείχνει ποιες ακτές είναι υπήνεμες σε μια κατεύθυνση ανέμου, όχι εγγυημένη γαλήνη ή χαμηλό κύμα. Σε μέρες με δυνατό αέρα ακολούθησε τις τοπικές σημαίες και έλεγξε live άνεμο και κύμα στην εφαρμογή.' },
         ],
       },
       de: {
@@ -770,7 +784,8 @@ const islandIntents = [
           { heading: 'Il mare è sempre calmo in queste spiagge?', body: "No. L'orientamento indica verso dove guarda la costa, non un riparo garantito o onde basse. Nei giorni di vento forte segui le bandiere locali e controlla vento e onde in tempo reale nell'app." },
         ],
       },
-    }),
+      };
+    },
   },
   {
     key: 'family',
@@ -2264,7 +2279,178 @@ const staticBeachFallback = (beach, island, region, canonicalUrl, locale = prere
   `;
 };
 
-const staticRegionFallback = (island, region, canonicalUrl, locale = prerenderLocales[0]) => {
+// --- Region-page shelter hook (dataset-driven, differentiates from a plain list) ---
+// Count = beaches carrying the baked `shelteredFromLocalWind` flag (computed once by
+// scripts/bakeLocalWindShelter.ts via the curated-aware windClimatology, with
+// context-specific sectors: meltemi N+NE / maistros NW+W). This is the SINGLE source
+// shared with beachGuides + App; the prerender never recomputes it here.
+const countShelteredBeaches = beaches =>
+  beaches.filter(b => Number.isInteger(b.id) && b.name && b.shelteredFromLocalWind === true).length;
+
+// Wind-regime copy tokens (meltemi / maistros / summer wind) come from the shared
+// localWindContext.mjs so the labels never drift between build scripts and runtime.
+const windWordsFor = regionId => localWindLabelFor(regionId);
+
+// Explicit Greek declension per region (genitive for "Παραλίες {gen}" + the
+// "σε"+accusative phrase "στη/στον/στο/στους/στις/στα {name}" for meta/H1/intro).
+// Hand-authored (Greek toponyms have exceptions) — NOT rule-generated. Keyed by
+// region id. `en` overrides an unnatural admin display name.
+const REGION_DECLENSION = {
+  'attica-aegina': { gen: 'Αίγινας', prep: 'στην Αίγινα' },
+  'attica-agistri': { gen: 'Αγκιστρίου', prep: 'στο Αγκίστρι' },
+  'attica-athens-area-mainland': { gen: 'Αττικής', prep: 'στην Αττική', en: 'Attica' },
+  'attica-east-attica-mainland': { gen: 'Ανατολικής Αττικής', prep: 'στην Ανατολική Αττική' },
+  'attica-hydra': { gen: 'Ύδρας', prep: 'στην Ύδρα' },
+  'attica-kythira': { gen: 'Κυθήρων', prep: 'στα Κύθηρα' },
+  'attica-methana': { gen: 'Μεθάνων', prep: 'στα Μέθανα' },
+  'attica-piraeus-area': { gen: 'Πειραιά', prep: 'στον Πειραιά', en: 'Piraeus' },
+  'attica-poros': { gen: 'Πόρου', prep: 'στον Πόρο' },
+  'attica-salamina': { gen: 'Σαλαμίνας', prep: 'στη Σαλαμίνα' },
+  'attica-spetses': { gen: 'Σπετσών', prep: 'στις Σπέτσες' },
+  'attica-west-attica-mainland': { gen: 'Δυτικής Αττικής', prep: 'στη Δυτική Αττική' },
+  'central-greece-evia': { gen: 'Εύβοιας', prep: 'στην Εύβοια' },
+  'central-greece-fokida-mainland': { gen: 'Φωκίδας', prep: 'στη Φωκίδα' },
+  'central-greece-fthiotida-mainland': { gen: 'Φθιώτιδας', prep: 'στη Φθιώτιδα' },
+  'central-greece-skyros': { gen: 'Σκύρου', prep: 'στη Σκύρο' },
+  'central-greece-viotia-mainland': { gen: 'Βοιωτίας', prep: 'στη Βοιωτία' },
+  'central-macedonia-halkidiki-mainland': { gen: 'Χαλκιδικής', prep: 'στη Χαλκιδική' },
+  'central-macedonia-pieria-mainland': { gen: 'Πιερίας', prep: 'στην Πιερία' },
+  'central-macedonia-thessaloniki-area': { gen: 'Θεσσαλονίκης', prep: 'στη Θεσσαλονίκη', en: 'Thessaloniki' },
+  'crete-crete-chania': { gen: 'Χανίων', prep: 'στα Χανιά' },
+  'crete-crete-heraklion': { gen: 'Ηρακλείου', prep: 'στο Ηράκλειο' },
+  'crete-crete-lasithi': { gen: 'Λασιθίου', prep: 'στο Λασίθι' },
+  'crete-crete-rethymno': { gen: 'Ρεθύμνου', prep: 'στο Ρέθυμνο' },
+  'crete-gavdos': { gen: 'Γαύδου', prep: 'στη Γαύδο' },
+  'east-macedonia-and-thrace-evros-mainland': { gen: 'Έβρου', prep: 'στον Έβρο' },
+  'east-macedonia-and-thrace-kavala-mainland': { gen: 'Καβάλας', prep: 'στην Καβάλα' },
+  'east-macedonia-and-thrace-rodopi-mainland': { gen: 'Ροδόπης', prep: 'στη Ροδόπη' },
+  'east-macedonia-and-thrace-samothraki': { gen: 'Σαμοθράκης', prep: 'στη Σαμοθράκη' },
+  'east-macedonia-and-thrace-thasos': { gen: 'Θάσου', prep: 'στη Θάσο' },
+  'east-macedonia-and-thrace-xanthi-mainland': { gen: 'Ξάνθης', prep: 'στην Ξάνθη' },
+  'epirus-arta-mainland': { gen: 'Άρτας', prep: 'στην Άρτα' },
+  'epirus-preveza-mainland': { gen: 'Πρέβεζας', prep: 'στην Πρέβεζα' },
+  'epirus-thesprotia-mainland': { gen: 'Θεσπρωτίας', prep: 'στη Θεσπρωτία' },
+  'ionian-islands-antipaxos': { gen: 'Αντίπαξων', prep: 'στους Αντίπαξους' },
+  'ionian-islands-corfu': { gen: 'Κέρκυρας', prep: 'στην Κέρκυρα' },
+  'ionian-islands-erikoussa': { gen: 'Ερείκουσας', prep: 'στην Ερείκουσα' },
+  'ionian-islands-ithaca': { gen: 'Ιθάκης', prep: 'στην Ιθάκη' },
+  'ionian-islands-kefalonia': { gen: 'Κεφαλονιάς', prep: 'στην Κεφαλονιά' },
+  'ionian-islands-lefkada': { gen: 'Λευκάδας', prep: 'στη Λευκάδα' },
+  'ionian-islands-mathraki': { gen: 'Μαθρακίου', prep: 'στο Μαθράκι' },
+  'ionian-islands-meganisi': { gen: 'Μεγανησίου', prep: 'στο Μεγανήσι' },
+  'ionian-islands-othonoi': { gen: 'Οθωνών', prep: 'στους Οθωνούς' },
+  'ionian-islands-paxos': { gen: 'Παξών', prep: 'στους Παξούς' },
+  'ionian-islands-zakynthos': { gen: 'Ζακύνθου', prep: 'στη Ζάκυνθο' },
+  'north-aegean-agios-efstratios': { gen: 'Αγίου Ευστρατίου', prep: 'στον Άγιο Ευστράτιο' },
+  'north-aegean-chios': { gen: 'Χίου', prep: 'στη Χίο' },
+  'north-aegean-fournoi': { gen: 'Φούρνων', prep: 'στους Φούρνους' },
+  'north-aegean-ikaria': { gen: 'Ικαρίας', prep: 'στην Ικαρία' },
+  'north-aegean-lemnos': { gen: 'Λήμνου', prep: 'στη Λήμνο' },
+  'north-aegean-lesvos': { gen: 'Λέσβου', prep: 'στη Λέσβο' },
+  'north-aegean-oinousses': { gen: 'Οινουσσών', prep: 'στις Οινούσσες' },
+  'north-aegean-psara': { gen: 'Ψαρών', prep: 'στα Ψαρά' },
+  'north-aegean-samos': { gen: 'Σάμου', prep: 'στη Σάμο' },
+  'peloponnese-argolida-mainland': { gen: 'Αργολίδας', prep: 'στην Αργολίδα' },
+  'peloponnese-arkadia-mainland': { gen: 'Αρκαδίας', prep: 'στην Αρκαδία' },
+  'peloponnese-korinthia-mainland': { gen: 'Κορινθίας', prep: 'στην Κορινθία' },
+  'peloponnese-lakonia-mainland': { gen: 'Λακωνίας', prep: 'στη Λακωνία' },
+  'peloponnese-messinia-mainland': { gen: 'Μεσσηνίας', prep: 'στη Μεσσηνία' },
+  'south-aegean-agathonisi': { gen: 'Αγαθονησίου', prep: 'στο Αγαθονήσι' },
+  'south-aegean-amorgos': { gen: 'Αμοργού', prep: 'στην Αμοργό' },
+  'south-aegean-anafi': { gen: 'Ανάφης', prep: 'στην Ανάφη' },
+  'south-aegean-andros': { gen: 'Άνδρου', prep: 'στην Άνδρο' },
+  'south-aegean-antiparos': { gen: 'Αντιπάρου', prep: 'στην Αντίπαρο' },
+  'south-aegean-arki': { gen: 'Αρκών', prep: 'στους Αρκούς' },
+  'south-aegean-astypalaia': { gen: 'Αστυπάλαιας', prep: 'στην Αστυπάλαια' },
+  'south-aegean-donousa': { gen: 'Δονούσας', prep: 'στη Δονούσα' },
+  'south-aegean-folegandros': { gen: 'Φολεγάνδρου', prep: 'στη Φολέγανδρο' },
+  'south-aegean-halki': { gen: 'Χάλκης', prep: 'στη Χάλκη' },
+  'south-aegean-ios': { gen: 'Ίου', prep: 'στην Ίο' },
+  'south-aegean-iraklia': { gen: 'Ηρακλειάς', prep: 'στην Ηρακλειά' },
+  'south-aegean-kalymnos': { gen: 'Καλύμνου', prep: 'στην Κάλυμνο' },
+  'south-aegean-karpathos': { gen: 'Καρπάθου', prep: 'στην Κάρπαθο' },
+  'south-aegean-kasos': { gen: 'Κάσου', prep: 'στην Κάσο' },
+  'south-aegean-kastellorizo': { gen: 'Καστελλορίζου', prep: 'στο Καστελλόριζο' },
+  'south-aegean-kea': { gen: 'Κέας', prep: 'στην Κέα' },
+  'south-aegean-kimolos': { gen: 'Κιμώλου', prep: 'στην Κίμωλο' },
+  'south-aegean-kos': { gen: 'Κω', prep: 'στην Κω' },
+  'south-aegean-koufonisia': { gen: 'Κουφονησίων', prep: 'στα Κουφονήσια' },
+  'south-aegean-kythnos': { gen: 'Κύθνου', prep: 'στην Κύθνο' },
+  'south-aegean-leros': { gen: 'Λέρου', prep: 'στη Λέρο' },
+  'south-aegean-lipsi': { gen: 'Λειψών', prep: 'στους Λειψούς' },
+  'south-aegean-marathi': { gen: 'Μαραθίου', prep: 'στο Μαράθι' },
+  'south-aegean-milos': { gen: 'Μήλου', prep: 'στη Μήλο' },
+  'south-aegean-mykonos': { gen: 'Μυκόνου', prep: 'στη Μύκονο' },
+  'south-aegean-naxos': { gen: 'Νάξου', prep: 'στη Νάξο' },
+  'south-aegean-nisyros': { gen: 'Νισύρου', prep: 'στη Νίσυρο' },
+  'south-aegean-paros': { gen: 'Πάρου', prep: 'στην Πάρο' },
+  'south-aegean-patmos': { gen: 'Πάτμου', prep: 'στην Πάτμο' },
+  'south-aegean-polyaigos': { gen: 'Πολυαίγου', prep: 'στην Πολύαιγο' },
+  'south-aegean-pserimos': { gen: 'Ψερίμου', prep: 'στην Ψέριμο' },
+  'south-aegean-rhodes': { gen: 'Ρόδου', prep: 'στη Ρόδο' },
+  'south-aegean-santorini': { gen: 'Σαντορίνης', prep: 'στη Σαντορίνη' },
+  'south-aegean-schinoussa': { gen: 'Σχοινούσας', prep: 'στη Σχοινούσα' },
+  'south-aegean-serifos': { gen: 'Σερίφου', prep: 'στη Σέριφο' },
+  'south-aegean-sifnos': { gen: 'Σίφνου', prep: 'στη Σίφνο' },
+  'south-aegean-sikinos': { gen: 'Σικίνου', prep: 'στη Σίκινο' },
+  'south-aegean-symi': { gen: 'Σύμης', prep: 'στη Σύμη' },
+  'south-aegean-syros': { gen: 'Σύρου', prep: 'στη Σύρο' },
+  'south-aegean-telendos': { gen: 'Τελένδου', prep: 'στην Τέλενδο' },
+  'south-aegean-tilos': { gen: 'Τήλου', prep: 'στην Τήλο' },
+  'south-aegean-tinos': { gen: 'Τήνου', prep: 'στην Τήνο' },
+  'thessaly-alonissos': { gen: 'Αλοννήσου', prep: 'στην Αλόννησο' },
+  'thessaly-larissa-coast-agia---kissavos': { gen: 'Λάρισας', prep: 'στη Λάρισα', en: 'Larissa' },
+  'thessaly-magnesia-mainland---pelion': { gen: 'Πηλίου', prep: 'στο Πήλιο', en: 'Pelion' },
+  'thessaly-skiathos': { gen: 'Σκιάθου', prep: 'στη Σκιάθο' },
+  'thessaly-skopelos': { gen: 'Σκοπέλου', prep: 'στη Σκόπελο' },
+  'west-greece-achaia-mainland': { gen: 'Αχαΐας', prep: 'στην Αχαΐα' },
+  'west-greece-aetolia-acarnania-mainland': { gen: 'Αιτωλοακαρνανίας', prep: 'στην Αιτωλοακαρνανία' },
+  'west-greece-ileia-mainland': { gen: 'Ηλείας', prep: 'στην Ηλεία' },
+};
+// Greek genitive for the title, falling back to the raw name if unmapped.
+const regionGenGr = (regionId, fallbackName) => REGION_DECLENSION[regionId]?.gen || fallbackName;
+// Greek "σε"+accusative phrase for meta/H1/intro, falling back to "σε {name}".
+const regionPrepGr = (regionId, fallbackName) => REGION_DECLENSION[regionId]?.prep || `σε ${fallbackName}`;
+// English display name (override for unnatural admin names), else the dataset name.
+const regionDisplayEn = (regionId, fallbackName) => REGION_DECLENSION[regionId]?.en || fallbackName;
+
+// Region-page copy: dataset-driven shelter hook. `sheltered` is the meltemi/βοριάς/
+// Vardaris-protected count; `total` the region's beach count. Numberless fallback
+// when the count is not compelling (0, 1, or all) so we never write "0 sheltered".
+const pickUnderLimit = (tiers, max) => tiers.find(t => t.length <= max) || tiers[tiers.length - 1];
+const buildRegionShelterCopy = (regionId, nameEl, nameEn, total, sheltered, language) => {
+  const w = windWordsFor(regionId);
+  const numberless = sheltered < 2 || sheltered >= total;
+  if (language === 'gr') {
+    const gen = regionGenGr(regionId, nameEl);
+    const prep = regionPrepGr(regionId, nameEl);
+    const title = numberless
+      ? pickUnderLimit([`Παραλίες ${gen}: σύγκρινε προστασία από τον άνεμο | CalmBeach`, `Παραλίες ${gen}: σύγκρινε προστασία από τον άνεμο`, `Παραλίες ${gen}: προστασία από τον άνεμο`], 50)
+      : pickUnderLimit([`Παραλίες ${gen}: ${sheltered} προστατευμένες από τον άνεμο | CalmBeach`, `Παραλίες ${gen}: ${sheltered} προστατευμένες από τον άνεμο`, `Παραλίες ${gen}: ${sheltered} χωρίς αέρα`], 50);
+    const description = numberless
+      ? `${total} παραλίες ${prep}. Σύγκρινε προστασία ${w.elFrom} και ζωντανό άνεμο και κύμα πριν πας.`
+      : `${total} παραλίες ${prep}. Οι ${sheltered} είναι προστατευμένες ${w.elFrom}. Δες ζωντανά άνεμο και κύμα πριν πας.`;
+    const h1 = `Ποιες παραλίες ${prep} μένουν υπήνεμες ${w.elIn};`;
+    const intro = numberless
+      ? `Οι ${total} παραλίες ${prep} διαφέρουν πολύ στην προστασία ${w.elFrom}. Σύγκρινέ τες και δες ζωντανά άνεμο και κύμα πριν πας.`
+      : `Από τις ${total} παραλίες ${prep}, οι ${sheltered} δεν είναι εκτεθειμένες ${w.elIn} — αυτές με τις καλύτερες πιθανότητες για μπάνιο μια μέρα με αέρα. Άνοιξε όποια θες για ζωντανό άνεμο και κύμα.`;
+    return { title, description, h1, intro };
+  }
+  // en (+ de/fr/it region pages reuse the en shelter framing with localized copy below)
+  const title = numberless
+    ? pickUnderLimit([`${nameEn} Beaches: Compare Wind & Wave Shelter | CalmBeach`, `${nameEn} Beaches: Compare Wind & Wave Shelter`, `${nameEn} Beaches: Wind & Wave Shelter`], 60)
+    : pickUnderLimit([`${nameEn} Beaches: ${sheltered} Sheltered from the Wind | CalmBeach`, `${nameEn} Beaches: ${sheltered} Sheltered from the Wind`, `${nameEn} Beaches: ${sheltered} Wind-Sheltered`], 60);
+  const description = numberless
+    ? `${total} beaches in ${nameEn}. Compare each by shelter from ${w.en} and live wind & waves before you go.`
+    : `${total} beaches in ${nameEn}, ${sheltered} sheltered from ${w.en}. See live wind & wave conditions for each before you go.`;
+  const h1 = `Which ${nameEn} beaches are sheltered from the wind?`;
+  const intro = numberless
+    ? `The ${total} beaches in ${nameEn} vary widely in shelter from ${w.en}. Compare them and check live wind and waves before you go.`
+    : `Of the ${total} beaches in ${nameEn}, ${sheltered} sit away from ${w.en} — the ones likeliest to stay swimmable on a windy day. Open any for live wind and waves before you go.`;
+  return { title, description, h1, intro };
+};
+
+const staticRegionFallback = (island, region, canonicalUrl, locale = prerenderLocales[0], shelterCopy = null) => {
   const language = locale.language;
   const copy = getStaticFallbackCopy(language);
   const islandName = displayName(island.name, region.id, language);
@@ -2288,8 +2474,8 @@ const staticRegionFallback = (island, region, canonicalUrl, locale = prerenderLo
     <div id="root">
       <main data-static-fallback style="max-width:840px;margin:0 auto;padding:32px 20px;font-family:system-ui,-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;color:#0f172a;background:#f8fafc;">
         <p style="margin:0 0 8px;color:#0e7490;font-weight:700;">${escapeHtml(copy.brand)}</p>
-        <h1 style="margin:0 0 12px;font-size:32px;line-height:1.1;">${escapeHtml(copy.regionHeading(islandName))}</h1>
-        <p style="margin:0 0 20px;font-size:17px;line-height:1.55;color:#334155;">${escapeHtml(copy.regionDescription(islandName, beaches.length))}</p>
+        <h1 style="margin:0 0 12px;font-size:32px;line-height:1.1;">${escapeHtml(shelterCopy ? shelterCopy.h1 : copy.regionHeading(islandName))}</h1>
+        <p style="margin:0 0 20px;font-size:17px;line-height:1.55;color:#334155;">${escapeHtml(shelterCopy ? shelterCopy.intro : copy.regionDescription(islandName, beaches.length))}</p>
         ${beachItems ? `<ul style="display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:10px;margin:0 0 20px;padding:0;list-style:none;">${beachItems}</ul>` : ''}
         ${renderIslandGuides(island, region, locale, null, pickLang(language, {
           en: `${islandName} beach guides`,
@@ -2659,31 +2845,43 @@ const buildHomePage = (baseHtml, locale, imageUrl, emittedLocales = baseLocales)
   return htmlWithHead.replace(/<div id="root">\s*<\/div>/i, staticHomeFallback(canonicalUrl, locale));
 };
 
-const buildRegionPage = (baseHtml, island, region, imageUrl, locale = prerenderLocales[0], emittedLocales = baseLocales) => {
+const buildRegionPage = (baseHtml, island, region, imageUrl, locale = prerenderLocales[0], emittedLocales = baseLocales, sheltered = 0) => {
   const pathName = regionPath(region, island);
   const canonicalUrl = canonicalUrlFor(pathName, locale);
   const language = locale.language;
   const islandName = displayName(island.name, region.id, language);
   const beaches = Array.isArray(island.beaches) ? island.beaches : [];
-  const description = pickLang(language, {
-    en: `${islandName} beaches in Greece. Compare ${beaches.length} beaches by wind, waves, weather, exposure, access and beach type before you choose where to swim.`,
-    gr: `${islandName}: σύγκρινε ${beaches.length} παραλίες με βάση άνεμο, κύμα, καιρό, έκθεση, πρόσβαση και τύπο παραλίας πριν διαλέξεις πού θα κολυμπήσεις.`,
-    de: `${islandName}, Griechenland - vergleiche ${beaches.length} Strande nach Wind, Wellen, Wetter, Lage, Zugang und Strandtyp, bevor du deinen Badeplatz auswählst.`,
-    fr: `${islandName}, Grece - comparez ${beaches.length} plages selon le vent, les vagues, la meteo, l'exposition, l'acces et le type de plage avant de choisir ou vous baigner.`,
-    it: `${islandName}, Grecia - confronta ${beaches.length} spiagge in base a vento, onde, meteo, esposizione, accesso e tipo di spiaggia prima di scegliere dove fare il bagno.`,
+  const total = beaches.filter(b => Number.isInteger(b.id) && b.name).length;
+  // Dataset-driven shelter hook (meltemi/βοριάς/Vardaris count) — replaces the
+  // generic, near-identical "compare N beaches by wind, waves…" copy for en/gr.
+  const nameEl = displayName(island.name, region.id, 'gr');
+  const nameEn = regionDisplayEn(region.id, displayName(island.name, region.id, 'en'));
+  const w = windWordsFor(region.id);
+  const numberless = sheltered < 2 || sheltered >= total;
+  const shelterCopy = (language === 'en' || language === 'gr')
+    ? buildRegionShelterCopy(region.id, nameEl, nameEn, total, sheltered, language)
+    : null;
+  const description = shelterCopy ? shelterCopy.description : pickLang(language, {
+    de: numberless
+      ? `${nameEn}, Griechenland: ${total} Strände. Vergleiche sie nach Schutz vor ${w.de} und prüfe Wind und Wellen, bevor du losfährst.`
+      : `${nameEn}, Griechenland: ${total} Strände, ${sheltered} vor ${w.de} geschützt. Prüfe Wind und Wellen für jeden, bevor du losfährst.`,
+    fr: numberless
+      ? `${nameEn}, Grèce : ${total} plages. Comparez leur abri ${w.fr} et vérifiez le vent et les vagues avant d'y aller.`
+      : `${nameEn}, Grèce : ${total} plages, ${sheltered} abritées ${w.fr}. Vérifiez le vent et les vagues pour chacune avant d'y aller.`,
+    it: numberless
+      ? `${nameEn}, Grecia: ${total} spiagge. Confronta il riparo ${w.it} e controlla vento e onde prima di andare.`
+      : `${nameEn}, Grecia: ${total} spiagge, ${sheltered} riparate ${w.it}. Controlla vento e onde per ciascuna prima di andare.`,
   });
-  const title = pickLang(language, {
-    en: `${islandName} Beaches | CalmBeach Greece`,
-    gr: `Παραλίες: ${islandName} | CalmBeach Greece`,
-    de: `Strände: ${islandName} | CalmBeach Griechenland`,
-    fr: `Plages : ${islandName} | CalmBeach Grèce`,
-    it: `Spiagge: ${islandName} | CalmBeach Grecia`,
+  const title = shelterCopy ? shelterCopy.title : pickLang(language, {
+    de: numberless ? `${nameEn}: Strände nach Windschutz | CalmBeach` : `${nameEn}: ${sheltered} windgeschützte Strände | CalmBeach`,
+    fr: numberless ? `${nameEn} : plages à l'abri du vent | CalmBeach` : `${nameEn} : ${sheltered} plages abritées du vent | CalmBeach`,
+    it: numberless ? `${nameEn}: spiagge riparate dal vento | CalmBeach` : `${nameEn}: ${sheltered} spiagge riparate dal vento | CalmBeach`,
   });
   const regionPageName = `${islandName} beaches`;
   const pageJsonLd = {
     '@context': 'https://schema.org',
     '@type': 'CollectionPage',
-    name: pickLang(language, { en: `${islandName} beaches`, gr: `Παραλίες: ${islandName}`, de: `Strände: ${islandName}`, fr: `Plages : ${islandName}`, it: `Spiagge: ${islandName}` }),
+    name: shelterCopy ? shelterCopy.h1 : pickLang(language, { de: `Strände: ${islandName}`, fr: `Plages : ${islandName}`, it: `Spiagge: ${islandName}` }),
     description,
     url: canonicalUrl,
     image: imageUrl,
@@ -2712,7 +2910,7 @@ const buildRegionPage = (baseHtml, island, region, imageUrl, locale = prerenderL
     description,
     canonicalUrl,
     imageUrl,
-    imageAlt: pickLang(language, { en: `${islandName} beaches in Greece`, gr: `Παραλίες σε ${islandName}`, de: `Strände – ${islandName}, Griechenland`, fr: `Plages – ${islandName}, Grèce`, it: `Spiagge – ${islandName}, Grecia` }),
+    imageAlt: pickLang(language, { en: `${nameEn} beaches in Greece`, gr: `Παραλίες ${regionPrepGr(region.id, islandName)}`, de: `Strände – ${nameEn}, Griechenland`, fr: `Plages – ${nameEn}, Grèce`, it: `Spiagge – ${nameEn}, Grecia` }),
     htmlLang: locale.htmlLang,
     ogLocale: locale.ogLocale,
     alternateUrls: alternateUrlsFor(pathName, emittedLocales),
@@ -2720,7 +2918,7 @@ const buildRegionPage = (baseHtml, island, region, imageUrl, locale = prerenderL
     jsonLd,
   });
 
-  return htmlWithHead.replace(/<div id="root">\s*<\/div>/i, staticRegionFallback(island, region, canonicalUrl, locale));
+  return htmlWithHead.replace(/<div id="root">\s*<\/div>/i, staticRegionFallback(island, region, canonicalUrl, locale, shelterCopy));
 };
 
 const staticIslandIntentFallback = (content, island, region, beaches, canonicalUrl, locale, intent) => {
@@ -2973,13 +3171,24 @@ const main = async () => {
 
     // Per-island intent guides: only emit when the island clears the minimum so
     // we never publish near-empty doorway pages.
+    const validBeaches = island.beaches.filter(beach => Number.isInteger(beach.id) && beach.name);
+    // 'sheltered' uses the baked, curated-aware `shelteredFromLocalWind` flag (one
+    // source), so it lists only genuinely sheltered beaches for the region's regime.
     for (const intent of islandIntents) {
-      const matches = island.beaches
-        .filter(beach => Number.isInteger(beach.id) && beach.name && intent.match(beach))
+      const predicate = intent.key === 'sheltered'
+        ? (beach => beach.shelteredFromLocalWind === true)
+        : (beach => intent.match(beach));
+      const matchedAll = validBeaches.filter(predicate);
+      const matches = matchedAll
         .sort((a, b) => (b.popularityScore ?? 0) - (a.popularityScore ?? 0))
         .slice(0, ISLAND_INTENT_CAP);
-      if (matches.length >= ISLAND_INTENT_MIN) {
-        islandIntentPages.push({ intent, region, island, beaches: matches });
+      // Proportional gate for 'sheltered': a small island where >=25% of beaches are
+      // sheltered is useful, not a failure (e.g. Santorini 4/13).
+      const passes = intent.key === 'sheltered'
+        ? (matchedAll.length >= ISLAND_INTENT_MIN || (validBeaches.length > 0 && matchedAll.length / validBeaches.length >= 0.25))
+        : matches.length >= ISLAND_INTENT_MIN;
+      if (passes && matches.length > 0) {
+        islandIntentPages.push({ intent, region, island, beaches: matches, shelteredCount: intent.key === 'sheltered' ? matchedAll.length : matches.length });
       } else if (matches.length > 0) {
         islandIntentBelowMin += 1;
       }
@@ -3028,7 +3237,8 @@ const main = async () => {
     const emittedLocales = localesForRegion(page.region.id);
     for (const locale of emittedLocales) {
       const islandName = displayName(page.island.name, page.region.id, locale.language);
-      const localeCopy = page.intent.copy(islandName, page.beaches.length);
+      const intentCount = page.intent.key === 'sheltered' ? (page.shelteredCount ?? page.beaches.length) : page.beaches.length;
+      const localeCopy = page.intent.copy(islandName, intentCount, page.region.id);
       const baseContent = localeCopy[locale.language] || localeCopy.en;
       // Swap in the hand-written GR intro + H1 for targeted family pages; the
       // beach list and the family Q&A sections stay as generated.
@@ -3046,6 +3256,13 @@ const main = async () => {
     }
   }
   console.log(`Island intent guides: ${islandIntentPages.length} published (≥${ISLAND_INTENT_MIN} beaches), ${islandIntentBelowMin} island×intent combos skipped below threshold.`);
+
+  // Regions whose sheltered guide is actually published under the new geospatial
+  // metric. Regions NOT in this set get a 301 from any previously-indexed
+  // /sheltered-beaches/{slug}/ to the region page (never a 404).
+  const publishedShelteredRegions = new Set(
+    islandIntentPages.filter(p => p.intent.key === 'sheltered').map(p => p.region.id),
+  );
 
   for (const region of beachIndex.regions || []) {
     const summaryPath = region.summaryDataPath || `/data/beaches/app/summary/${region.id}.json`;
@@ -3073,12 +3290,25 @@ const main = async () => {
       redirects.push(`${currentLegacyRegionPath}* ${currentRegionPath}:splat 301`);
     }
 
+    // 301 any retired sheltered guide (no longer clears the geospatial gate) to the
+    // region page — same beaches, natural parent — so indexed URLs never 404.
+    if (!publishedShelteredRegions.has(region.id)) {
+      const shelteredPath = `/sheltered-beaches/${encodeURIComponent(regionSlug(region, island))}/`;
+      for (const locale of baseLocales) {
+        const from = localizedPath(shelteredPath, locale);
+        const to = localizedPath(currentRegionPath, locale);
+        redirects.push(`${from} ${to} 301`);
+        redirects.push(`${from.replace(/\/$/, '')} ${to} 301`);
+      }
+    }
+
+    const regionShelteredCount = countShelteredBeaches(island.beaches);
     const emittedLocales = localesForRegion(region.id);
     for (const locale of emittedLocales) {
       const localizedRegionPath = localizedPath(currentRegionPath, locale);
       const regionOutputDir = outputDirForRoute(localizedRegionPath);
       await mkdir(regionOutputDir, { recursive: true });
-      await writeFile(path.join(regionOutputDir, 'index.html'), buildRegionPage(baseHtml, island, region, regionOgImageUrl, locale, emittedLocales), 'utf8');
+      await writeFile(path.join(regionOutputDir, 'index.html'), buildRegionPage(baseHtml, island, region, regionOgImageUrl, locale, emittedLocales, regionShelteredCount), 'utf8');
       sitemapEntries.push(sitemapEntry(canonicalUrlFor(currentRegionPath, locale), regionSitemapImageUrl, regionLastmod));
       regionPageCount += 1;
     }

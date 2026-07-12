@@ -18,34 +18,51 @@ const moreExposed = (a: ExposureLevel, b: ExposureLevel): ExposureLevel => (rank
 const MELTEMI_SECTORS: WindSector[] = ['N', 'NE'];
 
 /**
- * How a beach behaves in a typical Meltemi (the more exposed of its N and NE
- * sectors — never under-warn). Returns undefined when the profile lacks data.
+ * How a beach behaves in a given wind regime (the more exposed of the regime's
+ * sectors — never under-warn). `sectors` is the local summer wind's directions:
+ * ['N','NE'] for the Aegean meltemi, ['NW','W'] for the Ionian maistros / Thermaic
+ * summer breeze (see utils/localWindContext.mjs). Returns undefined when the
+ * profile lacks data.
  *
  * Curated authored knowledge WINS over raw geometry (the model-wide precedence
  * rule): pass the beach so a wind-sport spot (Prasonisi/Vasiliki class) or an
- * explicit curated N/NE exposure can never be endorsed as meltemi shelter, and
- * suspect-pin geometry makes no seasonal claim at all.
+ * explicit curated exposure in a regime sector can never be endorsed as shelter,
+ * and suspect-pin geometry makes no seasonal claim at all.
  */
-export const summarizeMeltemiBehavior = (
+export const summarizeLocalWindBehavior = (
   profile?: GeospatialExposureProfile,
-  beach?: Beach
+  beach?: Beach,
+  sectors: WindSector[] = MELTEMI_SECTORS
 ): ExposureLevel | undefined => {
   if (beach) {
     const { profile: curated, source } = resolveBeachWindProfile(beach);
     if (source !== 'unknown') {
       if (curated.knownWindSportSpot) return 'exposed';
-      if (MELTEMI_SECTORS.some(sector => curated.exposedToWindDirections.includes(sector))) return 'exposed';
+      if (sectors.some(sector => curated.exposedToWindDirections.includes(sector))) return 'exposed';
       if (curated.suspectPin) return undefined;
     }
   }
 
   if (!profile?.sectors) return undefined;
-  const levels = MELTEMI_SECTORS
+  const levels = sectors
     .map(sector => profile.sectors[sector]?.level)
     .filter((level): level is ExposureLevel => Boolean(level));
   if (levels.length === 0) return undefined;
   return levels.reduce(moreExposed);
 };
+
+/** True when a beach stays sheltered in a given regime's sectors. */
+export const isLocalWindSheltered = (
+  profile?: GeospatialExposureProfile,
+  beach?: Beach,
+  sectors: WindSector[] = MELTEMI_SECTORS
+): boolean => summarizeLocalWindBehavior(profile, beach, sectors) === 'protected';
+
+/** Meltemi = the Aegean special case (N+NE). Kept for existing callers. */
+export const summarizeMeltemiBehavior = (
+  profile?: GeospatialExposureProfile,
+  beach?: Beach
+): ExposureLevel | undefined => summarizeLocalWindBehavior(profile, beach, MELTEMI_SECTORS);
 
 /** True when a beach stays sheltered in a typical Meltemi (good summer default). */
 export const isMeltemiSheltered = (profile?: GeospatialExposureProfile, beach?: Beach): boolean => (

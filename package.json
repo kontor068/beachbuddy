@@ -5,7 +5,7 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build:beach-data": "node scripts/buildBeachRegionData.mjs",
+    "build:beach-data": "node scripts/buildBeachRegionData.mjs && node scripts/bakeLocalWindShelter.mjs",
     "camping:harvest": "node scripts/harvestCampsitesOsm.mjs",
     "camping:link": "node scripts/linkCampsitesToBeaches.mjs match",
     "camping:apply": "node scripts/linkCampsitesToBeaches.mjs apply",

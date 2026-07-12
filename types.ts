@@ -292,6 +292,10 @@ export interface Beach {
   seatrac?: BeachMetadata['seatrac'];
   nearbyCamping?: NearbyCampsite[];
   paidEntry?: BeachPaidEntry;
+  // Categorical: sheltered from the region's local SUMMER wind (meltemi / maistros),
+  // baked by scripts/bakeLocalWindShelter.ts via the curated-aware windClimatology.
+  // Single source for region-page counts, the sheltered guide gate, and the chip.
+  shelteredFromLocalWind?: boolean;
   aliases?: string[];
   staticLabels?: {
     beachType?: string;
