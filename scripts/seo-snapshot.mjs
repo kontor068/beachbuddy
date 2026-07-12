@@ -29,6 +29,12 @@ const DAY_MS = 86_400_000;
 const JSON_BUDGET_BYTES = 180 * 1024;
 const SCOPE = 'https://www.googleapis.com/auth/webmasters.readonly';
 
+// CTR-curve anchoring: a position is trusted only with enough queries AND enough
+// total impressions (5 tiny queries are noise). Uplift math targets position 3.
+const CTR_CURVE_SAMPLE_MIN = 5;
+const CTR_CURVE_IMPR_MIN = 200;
+const CTR_CURVE_TARGET_POS = 3;
+
 const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
 const r3 = (v) => (typeof v === 'number' && Number.isFinite(v) ? Math.round(v * 1000) / 1000 : v);
 const r1 = (v) => (typeof v === 'number' && Number.isFinite(v) ? Math.round(v * 10) / 10 : v);
@@ -327,42 +333,127 @@ function computeCtrCurve(raw) {
   const rows = raw.current?.query;
   if (!rows) return { error: 'missing current query data' };
 
-  const byPos = new Map(); // integer position -> array of ctr values
+  // Impression-WEIGHTED CTR per integer position: Σclicks / Σimpressions.
+  // (A median/mean of per-query CTRs collapses to ~0 because most queries at any
+  // position have zero clicks — that was the bug.)
+  const byPos = new Map(); // pos -> { clicks, impressions, sampleSize }
   for (const row of rows) {
     const pos = Math.round(row.position || 0);
     if (pos < 1 || pos > 20) continue;
-    const arr = byPos.get(pos) || [];
-    arr.push(row.ctr || 0);
-    byPos.set(pos, arr);
+    const b = byPos.get(pos) || { clicks: 0, impressions: 0, sampleSize: 0 };
+    b.clicks += row.clicks || 0;
+    b.impressions += row.impressions || 0;
+    b.sampleSize += 1;
+    byPos.set(pos, b);
   }
 
+  // Anchors: positions with enough evidence (>=5 queries AND >=200 impressions).
+  const anchors = [];
+  for (let pos = 1; pos <= 20; pos++) {
+    const b = byPos.get(pos);
+    if (!b || b.sampleSize < CTR_CURVE_SAMPLE_MIN || b.impressions < CTR_CURVE_IMPR_MIN) continue;
+    anchors.push({ pos, weightedCtr: b.clicks / b.impressions, weight: b.impressions });
+  }
+
+  if (!anchors.length) {
+    return {
+      note: 'no position cleared the sample/impression gate — CTR curve unavailable',
+      targetPos: null,
+      byPosition: {},
+    };
+  }
+
+  // Isotonic regression (weighted PAVA), NON-INCREASING in position: CTR must not
+  // rise as rank worsens. Pools adjacent violators instead of the cruder cumulative
+  // min, so a single noisy anchor does not drag the whole tail down.
+  const isotonic = isotonicNonIncreasing(anchors.map((a) => ({ pos: a.pos, value: a.weightedCtr, weight: a.weight })));
+  const monoAnchors = anchors.map((a) => ({ pos: a.pos, ctr: isotonic.get(a.pos) }));
+
+  // Continuous 1..20 curve: linear interpolation between monotone anchors, with a
+  // flat hold before the first and after the last anchor.
+  const smoothedAt = (pos) => {
+    const first = monoAnchors[0];
+    const last = monoAnchors[monoAnchors.length - 1];
+    if (pos <= first.pos) return first.ctr;
+    if (pos >= last.pos) return last.ctr;
+    for (let i = 0; i < monoAnchors.length - 1; i++) {
+      const lo = monoAnchors[i];
+      const hi = monoAnchors[i + 1];
+      if (pos >= lo.pos && pos <= hi.pos) {
+        const t = (pos - lo.pos) / (hi.pos - lo.pos);
+        return lo.ctr + t * (hi.ctr - lo.ctr);
+      }
+    }
+    return last.ctr;
+  };
+
+  const anchorPositions = new Set(anchors.map((a) => a.pos));
   const byPosition = {};
   for (let pos = 1; pos <= 20; pos++) {
-    const arr = byPos.get(pos);
-    if (!arr || arr.length < 5) continue; // require >= 5 query samples
-    byPosition[pos] = { medianCtr: r3(median(arr)), sampleSize: arr.length };
+    const b = byPos.get(pos);
+    byPosition[pos] = {
+      weightedCtr: b && b.impressions ? r3(b.clicks / b.impressions) : null,
+      smoothedCtr: r3(smoothedAt(pos)),
+      sampleSize: b ? b.sampleSize : 0,
+      totalImpressions: b ? b.impressions : 0,
+      interpolated: !anchorPositions.has(pos),
+    };
   }
+
+  // Uplift target: position 3 if the (continuous) curve has a value there, else the
+  // nearest position <= 3 that does — recorded in meta.ctrCurveTargetPos.
+  let targetPos = CTR_CURVE_TARGET_POS;
+  if (!byPosition[targetPos] || typeof byPosition[targetPos].smoothedCtr !== 'number') {
+    targetPos = null;
+    for (let p = CTR_CURVE_TARGET_POS; p >= 1; p--) {
+      if (byPosition[p] && typeof byPosition[p].smoothedCtr === 'number') { targetPos = p; break; }
+    }
+  }
+
   return {
-    note: 'median CTR per integer position, positions with >=5 query samples only',
+    note:
+      `impression-weighted CTR per integer position (Σclicks/Σimpressions); anchored on positions with ` +
+      `>=${CTR_CURVE_SAMPLE_MIN} queries AND >=${CTR_CURVE_IMPR_MIN} impressions, isotonic (non-increasing) ` +
+      `smoothing, linearly interpolated to a continuous 1..20 curve. Shows raw weightedCtr and smoothedCtr.`,
+    targetPos,
     byPosition,
   };
 }
 
-function median(values) {
-  const sorted = [...values].sort((a, b) => a - b);
-  const mid = Math.floor(sorted.length / 2);
-  return sorted.length % 2 ? sorted[mid] : (sorted[mid - 1] + sorted[mid]) / 2;
+// Weighted pool-adjacent-violators: returns Map(pos -> value) enforcing a
+// non-increasing sequence over ascending positions (input sorted by pos asc).
+function isotonicNonIncreasing(points) {
+  const blocks = [];
+  for (const p of points) {
+    let cur = { value: p.value, weight: p.weight || 1, items: [p.pos] };
+    while (blocks.length && blocks[blocks.length - 1].value < cur.value) {
+      const prev = blocks.pop();
+      const weight = prev.weight + cur.weight;
+      cur = {
+        value: (prev.value * prev.weight + cur.value * cur.weight) / weight,
+        weight,
+        items: [...prev.items, ...cur.items],
+      };
+    }
+    blocks.push(cur);
+  }
+  const out = new Map();
+  for (const b of blocks) for (const pos of b.items) out.set(pos, b.value);
+  return out;
 }
 
-/** CTR from the curve at a position, falling back to the nearest available <= pos. */
+/** Smoothed CTR from the (continuous) curve at a position. */
 function curveCtrAt(curve, pos) {
   if (!curve?.byPosition) return null;
   const target = Math.max(1, Math.min(20, Math.round(pos)));
-  for (let p = target; p >= 1; p--) {
-    if (curve.byPosition[p]) return curve.byPosition[p].medianCtr;
-  }
-  for (let p = target + 1; p <= 20; p++) {
-    if (curve.byPosition[p]) return curve.byPosition[p].medianCtr;
+  const entry = curve.byPosition[target];
+  if (entry && typeof entry.smoothedCtr === 'number') return entry.smoothedCtr;
+  // Safety net for an empty/partial curve: nearest position with a smoothed value.
+  for (let d = 1; d <= 20; d++) {
+    const lo = curve.byPosition[target - d];
+    if (lo && typeof lo.smoothedCtr === 'number') return lo.smoothedCtr;
+    const hi = curve.byPosition[target + d];
+    if (hi && typeof hi.smoothedCtr === 'number') return hi.smoothedCtr;
   }
   return null;
 }
@@ -370,8 +461,9 @@ function curveCtrAt(curve, pos) {
 function computeStrikingDistance(raw, curve, cap) {
   const rows = raw.current?.query_page;
   if (!rows) return { error: 'missing current query+page data' };
-  const ctrAtPos3 = curveCtrAt(curve, 3);
-  if (ctrAtPos3 == null) return { error: 'ctrCurve position 3 unavailable' };
+  const targetPos = curve?.targetPos ?? null;
+  const targetCtr = targetPos == null ? null : curveCtrAt(curve, targetPos);
+  if (targetCtr == null) return { error: 'ctrCurve target position unavailable' };
 
   const out = [];
   for (const row of rows) {
@@ -379,7 +471,9 @@ function computeStrikingDistance(raw, curve, cap) {
     const impressions = row.impressions || 0;
     if (position < 4 || position > 15 || impressions < 40) continue;
     const ctr = row.ctr || 0;
-    const estClicks = impressions * (ctrAtPos3 - ctr);
+    // Uplift is only the POSITIVE headroom to the target-position CTR. A query
+    // already outperforming the curve has no room from ranking better -> 0.
+    const estClicks = impressions * Math.max(0, targetCtr - ctr);
     out.push({
       query: row.keys?.[0],
       page: toPath(row.keys?.[1]),
@@ -387,7 +481,8 @@ function computeStrikingDistance(raw, curve, cap) {
       clicks: row.clicks || 0,
       ctr: r3(ctr),
       position: r3(position),
-      ctrAtPos3: r3(ctrAtPos3),
+      targetPos,
+      targetCtr: r3(targetCtr),
       estClicks: r1(estClicks),
     });
   }
@@ -399,15 +494,21 @@ function computeCtrGaps(raw, curve, cap) {
   const rows = raw.current?.query_page;
   if (!rows) return { error: 'missing current query+page data' };
 
+  let considered = 0;
+  let hadCurve = 0;
+  let belowThreshold = 0;
   const out = [];
   for (const row of rows) {
     const impressions = row.impressions || 0;
     if (impressions < 100) continue;
+    considered += 1;
     const position = row.position || 0;
-    const expectedCtr = curveCtrAt(curve, position);
+    const expectedCtr = curveCtrAt(curve, Math.round(position)); // smoothed CTR at rounded position
     if (expectedCtr == null || expectedCtr <= 0) continue;
+    hadCurve += 1;
     const ctr = row.ctr || 0;
     if (ctr >= 0.6 * expectedCtr) continue;
+    belowThreshold += 1;
     out.push({
       query: row.keys?.[0],
       page: toPath(row.keys?.[1]),
@@ -416,10 +517,12 @@ function computeCtrGaps(raw, curve, cap) {
       ctr: r3(ctr),
       position: r3(position),
       expectedCtr: r3(expectedCtr),
-      ctrRatio: r3(ctr / expectedCtr),
+      ctrRatio: expectedCtr ? r3(ctr / expectedCtr) : null,
       _lost: impressions * (expectedCtr - ctr),
     });
   }
+  // Diagnostic so an empty result is explainable (not silently "no gaps").
+  log(`  ctrGaps: ${considered} rows >=100 impr → ${hadCurve} had a curve value → ${belowThreshold} below 0.6× threshold`);
   out.sort((a, b) => b._lost - a._lost);
   return out.slice(0, cap).map(({ _lost, ...rest }) => rest);
 }
@@ -813,6 +916,17 @@ function buildDigest(snapshot) {
         `(ours ${fmtPct(sa.clicksPctVsPrevious)} − seasonal ${fmtPct(sa.expectedFromSeasonality)})`,
     );
   }
+  // Low-data guard: a window with almost no impressions makes every delta noise.
+  for (const [name, m] of Object.entries({
+    current: totals.current,
+    previous: totals.previous,
+    lastYear: totals.lastYear,
+    lastYearPrevious: totals.lastYearPrevious,
+  })) {
+    if (m && m.impressions < 100) {
+      out.push(`> ⚠️ Period **${name}** has only ${m.impressions} impressions — ignore comparisons against it.`);
+    }
+  }
   out.push('');
 
   if (Array.isArray(bySegment.byLocale)) {
@@ -923,11 +1037,14 @@ async function main() {
   const client = google.webmasters({ version: 'v3', auth });
 
   const now = new Date();
+  // All four windows are exactly 28 days (previously current was 29). current ends
+  // at the 3-day GSC lag; previous is the contiguous 28 days before it; the last-
+  // year pair is the same two windows shifted back 365 days.
   const periods = {
-    current: { start: isoDay(daysAgo(now, 31)), end: isoDay(daysAgo(now, 3)) },
-    previous: { start: isoDay(daysAgo(now, 59)), end: isoDay(daysAgo(now, 32)) },
-    lastYear: { start: isoDay(daysAgo(now, 396)), end: isoDay(daysAgo(now, 368)) },
-    lastYearPrevious: { start: isoDay(daysAgo(now, 424)), end: isoDay(daysAgo(now, 397)) },
+    current: { start: isoDay(daysAgo(now, 30)), end: isoDay(daysAgo(now, 3)) },
+    previous: { start: isoDay(daysAgo(now, 58)), end: isoDay(daysAgo(now, 31)) },
+    lastYear: { start: isoDay(daysAgo(now, 395)), end: isoDay(daysAgo(now, 368)) },
+    lastYearPrevious: { start: isoDay(daysAgo(now, 423)), end: isoDay(daysAgo(now, 396)) },
   };
   for (const p of Object.values(periods)) p.days = inclusiveDays(p.start, p.end);
 
@@ -997,7 +1114,9 @@ async function main() {
     timezoneNote: 'GSC data is bucketed in America/Los_Angeles days',
     periods,
     lagDays: 3,
-    ctrCurveSampleMin: 5,
+    ctrCurveSampleMin: CTR_CURVE_SAMPLE_MIN,
+    ctrCurveImpressionMin: CTR_CURVE_IMPR_MIN,
+    ctrCurveTargetPos: curve?.targetPos ?? null,
     jsonBytes: 0,
   };
 
