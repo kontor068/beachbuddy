@@ -50,7 +50,7 @@ const copy = {
     manageCookies: 'Διαχείριση cookies',
     contact: 'Επικοινωνία',
     dataProtection: 'Προσωπικά δεδομένα',
-    tagline: 'Βρες την καλύτερη παραλία για σήμερα.',
+    tagline: 'Βρες την ιδανική σου παραλία στην Ελλάδα σήμερα',
   },
 };
 
@@ -96,7 +96,6 @@ export const LegalFooter: React.FC<LegalFooterProps> = ({ language }) => {
   const legalLinkClass =
     'cursor-pointer text-sm font-medium text-slate-600 transition-colors hover:text-teal-700 focus:outline-none focus-visible:ring-2 focus-visible:ring-teal-500 rounded';
   const columnHeadingClass = 'text-xs font-bold uppercase tracking-wider text-slate-500';
-  const address = language === 'gr' ? LEGAL_OPERATOR.addressGr : LEGAL_OPERATOR.addressEn;
 
   return (
     <>
@@ -157,8 +156,8 @@ export const LegalFooter: React.FC<LegalFooterProps> = ({ language }) => {
           </div>
 
           {/* Fine print */}
-          <div className="mt-10 flex flex-col items-center gap-3 border-t border-slate-200/80 pt-6 text-center text-xs text-slate-500 sm:flex-row sm:justify-between sm:text-left">
-            <p>© 2026 Calm Beach Greece · {LEGAL_OPERATOR.legalName} · {address}</p>
+          <div className="mt-10 flex flex-col items-center gap-3 border-t border-slate-200/80 pt-6 text-center text-xs text-slate-400 sm:flex-row sm:justify-between sm:text-left">
+            <p>© 2026 Calm Beach · {LEGAL_OPERATOR.legalName}</p>
             <p className="flex items-center gap-1.5">
               <span>{c.weatherData}:</span>
               <a href="https://open-meteo.com/en/terms" target="_blank" rel="noopener noreferrer" className="font-semibold text-slate-600 underline-offset-4 transition-colors hover:text-teal-700 hover:underline">Open-Meteo</a>
