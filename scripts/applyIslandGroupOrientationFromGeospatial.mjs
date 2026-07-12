@@ -62,6 +62,24 @@ const groupMatchers = {
     region === 'North Aegean' ||
     (region === 'East Macedonia and Thrace' && pathParts.includes('Samothraki'))
   ),
+  // Mainland groups added to close the orientation.faces gap: these regions have
+  // full geospatial exposure profiles (facingDeg) but were never covered by a
+  // matcher, so metadata.orientation was never generated. Each blanket clause is
+  // scoped to a top-level region and excludes prefectures already owned by an
+  // existing group (Sporades under Thessaly, Thasos/Samothraki under East Mac).
+  central_macedonia: (region) => region === 'Central Macedonia',
+  peloponnese: (region, pathParts) => (
+    region === 'Peloponnese' ||
+    (region === 'West Greece' && pathParts[0] === 'Achaia')
+  ),
+  thessaly_mainland: (region, pathParts) => (
+    region === 'Thessaly' && ['Magnesia', 'Larissa'].includes(pathParts[0])
+  ),
+  epirus: (region) => region === 'Epirus',
+  thrace_east_mac: (region, pathParts) => (
+    region === 'East Macedonia and Thrace' &&
+    ['Kavala', 'Rodopi', 'Xanthi', 'Evros', 'Drama', 'Serres'].includes(pathParts[0])
+  ),
 };
 
 const sectors = Object.keys(windDirectionBySector);
