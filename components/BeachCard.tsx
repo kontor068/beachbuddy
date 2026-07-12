@@ -10,7 +10,7 @@ import { BeachConditionScore } from './BeachConditionScore';
 import { TodayScoreBadge } from './TodayScoreBadge';
 import { WaveHeightGraphic } from './WaveHeightGraphic';
 import { getBeachPhotoLookup } from '../services/beachPhotos';
-import { trackEvent } from '../services/analyticsService';
+import { trackEvent, buildBeachExposureParams } from '../services/analyticsService';
 import { ExposureLevel } from '../utils/windExposure';
 import { hasBoatOnlyAccess, hasDirtRoadAccess } from '../utils/access';
 import { getBoatRideMotionLevel, type BoatRideMotionLevel } from '../utils/boatRideMotion';
@@ -1222,6 +1222,7 @@ export const BeachCard: React.FC<BeachCardProps> = ({
           region: islandName,
           beach_name: name.en,
           source: 'beach_card',
+          ...buildBeachExposureParams(beach),
         });
         await navigator.share({
           text: t.sharing.text(beachDisplayName),
@@ -1244,6 +1245,7 @@ export const BeachCard: React.FC<BeachCardProps> = ({
       region: islandName,
       beach_name: name.en,
       source: 'beach_card',
+      ...buildBeachExposureParams(beach),
     });
     openNavigation(beach);
   };

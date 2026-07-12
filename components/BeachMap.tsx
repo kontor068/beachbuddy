@@ -5,7 +5,7 @@ import 'leaflet/dist/leaflet.css';
 import { BadgeCheck, Footprints, Navigation, MapPin, Clock, Wind, X, Info, Utensils, Waves, Users, Tent, Ticket, Euro, AlertTriangle } from 'lucide-react';
 import { localizedPopularityLabel, localizedPaidEntryLabel, localizedPaidEntryExplanation } from '../utils/localization';
 import { SuitableBeach, Beach, LanguageCode, ForecastItem } from '../types';
-import { trackEvent } from '../services/analyticsService';
+import { trackEvent, buildBeachExposureParams } from '../services/analyticsService';
 import { getBeachPhotoLookup } from '../services/beachPhotos';
 import { degToCompass, getBeaufortLevel } from '../utils/weatherUtils';
 import { getSelectedDayPrefix } from '../utils/dateLabels';
@@ -2011,6 +2011,7 @@ const BeachMap: React.FC<BeachMapProps> = ({
         source: compact ? 'detail_map' : preview ? 'home_map_preview' : 'full_map',
         map_mode: mapMode,
         beach_name: item.beach.name.en,
+        ...buildBeachExposureParams(item.beach, item.simpleWindSuitability?.exposureStatus),
       });
       openNavigation(item.beach);
     };
@@ -2475,6 +2476,7 @@ const BeachMap: React.FC<BeachMapProps> = ({
                     source: compact ? 'detail_map' : preview ? 'home_map_preview' : 'full_map',
                     map_mode: mapMode,
                     beach_name: item.beach.name.en,
+                    ...buildBeachExposureParams(item.beach, item.simpleWindSuitability?.exposureStatus),
                   });
                   // Clicking a marker goes straight to the beach card. Maps that
                   // don't wire a handler fall back to the in-map info panel.
