@@ -1,24 +1,20 @@
-const DEFAULT_TO = 'marismiltos@gmail.com';
-const DEFAULT_FROM = 'CalmBeach Feedback <feedback@calmbeach.gr>';
-const DEFAULT_SUBJECT_PREFIX = 'CalmBeach feedback';
+// Delivers structured "how was it really?" feedback to a Telegram chat as an instant
+// push notification. Zero cost: Telegram Bot API is free and unmetered for this volume,
+// and no email domain/DNS setup is required. The client still POSTs to this same endpoint
+// (/.netlify/functions/feedback-email); only the delivery channel changed from email.
 const MAX_BODY_LENGTH = 12_000;
-
-const splitEmailList = (value) => String(value || '')
-  .split(',')
-  .map((item) => item.trim())
-  .filter(Boolean);
+const MAX_MESSAGE_LENGTH = 3_800; // Telegram hard limit is 4096; leave headroom.
 
 const clamp = (value, max = 180) => String(value ?? '')
   .replace(/\s+/g, ' ')
   .trim()
   .slice(0, max);
 
-const escapeHtml = (value) => String(value ?? '')
+// Telegram HTML parse_mode only needs & < > escaped (unlike full HTML — do NOT escape quotes).
+const escapeTelegram = (value) => String(value ?? '')
   .replace(/&/g, '&amp;')
   .replace(/</g, '&lt;')
-  .replace(/>/g, '&gt;')
-  .replace(/"/g, '&quot;')
-  .replace(/'/g, '&#39;');
+  .replace(/>/g, '&gt;');
 
 const json = (statusCode, body) => ({
   statusCode,
@@ -30,12 +26,8 @@ const json = (statusCode, body) => ({
 });
 
 const getConfig = () => ({
-  apiKey: process.env.FEEDBACK_RESEND_API_KEY || process.env.RESEND_API_KEY || process.env.AUDIT_RESEND_API_KEY || '',
-  from: process.env.FEEDBACK_EMAIL_FROM || process.env.AUDIT_EMAIL_FROM || DEFAULT_FROM,
-  to: splitEmailList(process.env.FEEDBACK_EMAIL_TO || DEFAULT_TO),
-  cc: splitEmailList(process.env.FEEDBACK_EMAIL_CC),
-  bcc: splitEmailList(process.env.FEEDBACK_EMAIL_BCC),
-  subjectPrefix: process.env.FEEDBACK_EMAIL_SUBJECT_PREFIX || DEFAULT_SUBJECT_PREFIX,
+  botToken: process.env.FEEDBACK_TELEGRAM_BOT_TOKEN || process.env.TELEGRAM_BOT_TOKEN || '',
+  chatId: process.env.FEEDBACK_TELEGRAM_CHAT_ID || process.env.TELEGRAM_CHAT_ID || '',
 });
 
 const parseBody = (event) => {
@@ -55,27 +47,28 @@ const parseBody = (event) => {
   }
 };
 
-const formatVerdict = (value) => {
-  const verdicts = {
-    accurate: 'Accurate',
-    not_accurate: 'Not accurate',
-    had_waves: 'Had waves',
-    too_windy: 'Too windy',
-    calmer: 'Calmer than shown',
-  };
-  return verdicts[value] || clamp(value || 'Unknown feedback', 80);
+const VERDICTS = {
+  accurate: { label: 'Accurate', emoji: '👍' },
+  not_accurate: { label: 'Not accurate', emoji: '👎' },
+  had_waves: { label: 'Had waves', emoji: '🌊' },
+  too_windy: { label: 'Too windy', emoji: '💨' },
+  calmer: { label: 'Calmer than shown', emoji: '😎' },
 };
+
+const formatVerdict = (value) => VERDICTS[value] || { label: clamp(value || 'Unknown feedback', 80), emoji: '📩' };
 
 const normalizePayload = (body, event) => {
   const feedback = body && typeof body === 'object' ? body : {};
   const conditions = feedback.conditions && typeof feedback.conditions === 'object' ? feedback.conditions : {};
   const context = feedback.context && typeof feedback.context === 'object' ? feedback.context : {};
+  const verdict = formatVerdict(feedback.feedback || feedback.verdict);
 
   return {
     source: clamp(feedback.source || context.source || 'unknown', 80),
     beachId: Number.isFinite(Number(feedback.beachId)) ? Number(feedback.beachId) : undefined,
     feedback: clamp(feedback.feedback || feedback.verdict || 'unknown', 80),
-    verdictLabel: formatVerdict(feedback.feedback || feedback.verdict),
+    verdictLabel: verdict.label,
+    verdictEmoji: verdict.emoji,
     timestamp: clamp(feedback.timestamp || new Date().toISOString(), 80),
     beachName: clamp(context.beachName || feedback.beachName, 120),
     islandName: clamp(context.islandName || feedback.islandName, 120),
@@ -92,7 +85,6 @@ const normalizePayload = (body, event) => {
 };
 
 const fieldLines = (payload) => [
-  ['Verdict', payload.verdictLabel],
   ['Beach', payload.beachName || (payload.beachId ? `#${payload.beachId}` : 'Unknown')],
   ['Beach ID', payload.beachId ?? ''],
   ['Island/region', [payload.islandName, payload.regionId].filter(Boolean).join(' / ')],
@@ -106,30 +98,12 @@ const fieldLines = (payload) => [
   ['Timestamp', payload.timestamp],
 ].filter(([, value]) => value !== undefined && value !== null && String(value).trim() !== '');
 
-const formatText = (payload) => [
-  'New CalmBeach feedback',
-  '',
-  ...fieldLines(payload).map(([label, value]) => `${label}: ${value}`),
-  '',
-  'This message contains structured feedback only. No exact user location or contact details are included.',
-].join('\n');
-
-const formatHtml = (payload) => {
+const formatMessage = (payload) => {
+  const header = `${payload.verdictEmoji} <b>CalmBeach feedback: ${escapeTelegram(payload.verdictLabel)}</b>`;
   const rows = fieldLines(payload)
-    .map(([label, value]) => (
-      `<tr><th align="left" style="padding:8px 12px;border-bottom:1px solid #e2e8f0;color:#475569">${escapeHtml(label)}</th><td style="padding:8px 12px;border-bottom:1px solid #e2e8f0;color:#0f172a">${escapeHtml(value)}</td></tr>`
-    ))
-    .join('');
-
-  return [
-    '<div style="font-family:system-ui,-apple-system,BlinkMacSystemFont,Segoe UI,sans-serif;line-height:1.5;color:#0f172a">',
-    '<h1 style="font-size:20px;margin:0 0 12px">New CalmBeach feedback</h1>',
-    '<table style="border-collapse:collapse;width:100%;max-width:720px;border:1px solid #e2e8f0;border-radius:8px;overflow:hidden">',
-    rows,
-    '</table>',
-    '<p style="margin-top:16px;color:#64748b;font-size:13px">Structured feedback only. No exact user location or contact details are included.</p>',
-    '</div>',
-  ].join('');
+    .map(([label, value]) => `<b>${escapeTelegram(label)}:</b> ${escapeTelegram(value)}`)
+    .join('\n');
+  return [header, '', rows].join('\n').slice(0, MAX_MESSAGE_LENGTH);
 };
 
 export const handler = async (event) => {
@@ -149,48 +123,33 @@ export const handler = async (event) => {
   }
 
   const config = getConfig();
-  if (!config.apiKey || !config.from || config.to.length === 0) {
-    console.error('Feedback email is not configured.', {
-      hasApiKey: Boolean(config.apiKey),
-      hasFrom: Boolean(config.from),
-      hasTo: config.to.length > 0,
+  if (!config.botToken || !config.chatId) {
+    console.error('Feedback notification is not configured.', {
+      hasBotToken: Boolean(config.botToken),
+      hasChatId: Boolean(config.chatId),
     });
-    return json(503, { error: 'Feedback email is not configured.' });
+    return json(503, { error: 'Feedback notification is not configured.' });
   }
 
-  const subjectParts = [
-    config.subjectPrefix,
-    payload.verdictLabel,
-    payload.beachName || (payload.beachId ? `Beach #${payload.beachId}` : ''),
-  ].filter(Boolean);
-
-  const emailPayload = {
-    from: config.from,
-    to: config.to,
-    subject: subjectParts.join(' - '),
-    text: formatText(payload),
-    html: formatHtml(payload),
-  };
-  if (config.cc.length > 0) emailPayload.cc = config.cc;
-  if (config.bcc.length > 0) emailPayload.bcc = config.bcc;
-
-  const response = await fetch('https://api.resend.com/emails', {
+  const response = await fetch(`https://api.telegram.org/bot${config.botToken}/sendMessage`, {
     method: 'POST',
-    headers: {
-      Authorization: `Bearer ${config.apiKey}`,
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify(emailPayload),
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+      chat_id: config.chatId,
+      text: formatMessage(payload),
+      parse_mode: 'HTML',
+      disable_web_page_preview: true,
+    }),
   });
   const responseBody = await response.json().catch(() => null);
 
-  if (!response.ok) {
-    console.error('Feedback email failed.', {
+  if (!response.ok || responseBody?.ok === false) {
+    console.error('Feedback notification failed.', {
       status: response.status,
-      error: responseBody?.message || responseBody?.error,
+      error: responseBody?.description || responseBody?.error,
     });
-    return json(502, { error: 'Feedback email failed.' });
+    return json(502, { error: 'Feedback notification failed.' });
   }
 
-  return json(202, { ok: true, id: responseBody?.id || null });
+  return json(202, { ok: true, id: responseBody?.result?.message_id ?? null });
 };
