@@ -22,7 +22,7 @@ import { degToCompass, calculateDistance, getBeaufortLevel, getWaveCondition } f
 import { trackEvent, storeConditionFeedback, getFeedback, ConditionFeedbackVerdict, buildBeachExposureParams } from '../services/analyticsService';
 import { calculateSeaConditionScore } from '../utils/seaConditions';
 import { TodayScoreBadge } from '../components/TodayScoreBadge';
-import { MeltemiShelterSection, type MeltemiShelteredCove } from '../components/MeltemiShelterSection';
+import { LocalWindShelterSection, type LocalWindShelteredCove } from '../components/LocalWindShelterSection';
 import { GettingThereSection } from '../components/GettingThereSection';
 import { SwellRouterSection, type SwellShelteredCove } from '../components/SwellRouterSection';
 import { assessSwellExposure } from '../utils/swellExposure';
@@ -63,7 +63,8 @@ import { buildPhotoSuggestionUrl } from '../utils/photoContribution';
 import { getSelectedDayPrefix, getSelectedHourPrefix } from '../utils/dateLabels';
 import { getBoatRideMotionLevel } from '../utils/boatRideMotion';
 import { getRainSwimAdvisory } from '../utils/rainAdvisory';
-import { summarizeMeltemiBehavior } from '../utils/windClimatology';
+import { summarizeLocalWindBehavior } from '../utils/windClimatology';
+import { getRegionWindContext, LOCAL_WIND_SECTORS } from '../utils/localWindContext.mjs';
 import { buildWeatherNowContent } from '../utils/weatherNowCopy';
 
 // Temporarily hidden: the "Σχέδιο ημέρας" (Plan your day) section isn't well
@@ -991,26 +992,28 @@ export const BeachDetailPage: React.FC<BeachDetailPageProps> = ({
     }).filter((item): item is NonNullable<typeof item> => item !== null);
   }, [allBeaches, beach, dayForecast, userLocation, hourlyForecast, preferences, language, geospatialExposureProfiles]);
 
-  // Meltemi seasonal shelter atlas: this cove's N/NE-summer behaviour + the island's
-  // reliably-sheltered coves. Endorsement is gated to genuinely 'protected' meltemi
-  // profiles with non-low confidence — a forward-looking climatology, not today's wind.
-  // Curated knowledge vetoes raw geometry: wind-sport spots / explicit N-NE exposures /
-  // suspect pins can never appear as meltemi shelter.
-  const meltemiExposure = summarizeMeltemiBehavior(geospatialExposure, beach);
-  const meltemiShelteredCoves = useMemo<MeltemiShelteredCove[]>(() => {
+  // Local-summer-wind seasonal shelter atlas: this cove's behaviour in the region's
+  // regime (meltemi N+NE / maistros NW+W) + the island's reliably-sheltered coves.
+  // Endorsement is gated to genuinely 'protected' profiles with non-low confidence —
+  // forward-looking climatology, not today's wind. Curated knowledge vetoes raw
+  // geometry: wind-sport spots / explicit exposures / suspect pins never appear.
+  const windContext = getRegionWindContext(regionId ?? '');
+  const localWindSectors = LOCAL_WIND_SECTORS[windContext];
+  const localWindExposure = summarizeLocalWindBehavior(geospatialExposure, beach, localWindSectors);
+  const localWindShelteredCoves = useMemo<LocalWindShelteredCove[]>(() => {
     return allBeaches
       .filter(b => b.id !== beach.id)
       .map(b => {
         const profile = geospatialExposureProfiles?.[b.id];
         if (!profile || profile.confidence === 'low') return null;
-        if (summarizeMeltemiBehavior(profile, b) !== 'protected') return null;
+        if (summarizeLocalWindBehavior(profile, b, localWindSectors) !== 'protected') return null;
         const distanceKm = calculateDistance(beach.coordinates.lat, beach.coordinates.lon, b.coordinates.lat, b.coordinates.lon);
         return { id: b.id, name: displayBeachName(b.name, language), distanceKm };
       })
-      .filter((c): c is MeltemiShelteredCove => c !== null)
+      .filter((c): c is LocalWindShelteredCove => c !== null)
       .sort((a, b) => a.distanceKm - b.distanceKm)
       .slice(0, 6);
-  }, [allBeaches, beach.id, beach.coordinates.lat, beach.coordinates.lon, geospatialExposureProfiles, language]);
+  }, [allBeaches, beach.id, beach.coordinates.lat, beach.coordinates.lon, geospatialExposureProfiles, language, localWindSectors]);
 
   // Swell-window router: assess THIS cove against today's ground swell (geometry-based), and —
   // only when a genuine long-period ground swell is running — rank the island's swell-flat coves.
@@ -1987,11 +1990,12 @@ export const BeachDetailPage: React.FC<BeachDetailPageProps> = ({
             Temporarily hidden via ENABLE_DAY_PLAN_SECTION until reworked. */}
         {ENABLE_DAY_PLAN_SECTION && <DayPlanSection language={language} stops={dayPlanStops} />}
 
-        <MeltemiShelterSection
+        <LocalWindShelterSection
           language={language}
+          windContext={windContext}
           beachName={beachDisplayName}
-          thisExposure={meltemiExposure}
-          shelteredCoves={meltemiShelteredCoves}
+          thisExposure={localWindExposure}
+          shelteredCoves={localWindShelteredCoves}
           isBoatAccess={isBoatOnlyBeach}
           onSelect={(id) => {
             const target = allBeaches.find(b => b.id === id);

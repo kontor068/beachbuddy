@@ -38,7 +38,8 @@ import { getSearchVariants, isSearchMatch } from '../utils/searchNormalize';
 import { calculateSeaConditionScore } from '../utils/seaConditions';
 import { getSelectedDayPrefix, isSelectedDateToday } from '../utils/dateLabels';
 import { assessBeachWindExposure } from '../utils/windExposureEngine';
-import { summarizeMeltemiBehavior } from '../utils/windClimatology';
+import { summarizeLocalWindBehavior } from '../utils/windClimatology';
+import { getRegionWindContext, LOCAL_WIND_SECTORS } from '../utils/localWindContext.mjs';
 import { describeSimpleWindSuitability, describeWindExposure } from '../utils/windExposureCopy';
 import { hasDifficultTopPickAccess, hasMainstreamTopPickAccess, hasTrulyEasyAccess, isAdventureBeach } from '../utils/access';
 import { getBeachTouristRecognitionScore } from '../utils/touristPriority';
@@ -2456,7 +2457,7 @@ export const getSuitableBeaches = (
         seaCalmClaimAllowed: scoreResult.seaCalmClaimAllowed,
         simpleWindSuitability: scoreResult.simpleWindSuitability,
         geospatialExposure: geospatialProfile,
-        meltemiExposure: summarizeMeltemiBehavior(geospatialProfile, beach),
+        meltemiExposure: summarizeLocalWindBehavior(geospatialProfile, beach, LOCAL_WIND_SECTORS[getRegionWindContext(beach.regionId ?? '')]),
         windExposureReason: simpleWindReason || windExposureReason
       });
     }
