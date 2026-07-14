@@ -99,6 +99,21 @@ const interpolateSector = (
   };
 };
 
+/**
+ * Public, display-only accessor for the interpolated sector geometry (fetch + blockage) at a
+ * live wind direction — the same lerp the resolver uses internally. Exposed so the cove-aware
+ * wave guard (utils/coveWaveGuard.ts) can read the two raw geometry inputs it needs without
+ * duplicating the interpolation or pulling in the full exposure resolution. Reads only; changes
+ * nothing about scoring, levels, or colour.
+ */
+export const interpolateSectorGeometry = (
+  profile: GeospatialExposureProfile,
+  windDirectionDeg: number
+): { fetchKm: number; blockedRayRatio: number } => {
+  const { fetchKm, blockedRayRatio } = interpolateSector(profile, normalizeDegrees(windDirectionDeg));
+  return { fetchKm, blockedRayRatio };
+};
+
 const angularDeltaDegrees = (a: number, b: number): number => {
   const diff = Math.abs(normalizeDegrees(a) - normalizeDegrees(b));
   return diff > 180 ? 360 - diff : diff;

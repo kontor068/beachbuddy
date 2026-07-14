@@ -36,6 +36,9 @@ export type AnalyticsEvent =
   | 'photo_suggestion_clicked'
   | 'recommendation_feedback'
   | 'condition_feedback'
+  // Two-dimensional "calm water / strong wind" cove card: did the user find it useful?
+  // The revealed-preference signal for whether the hidden-calm coves are worth surfacing.
+  | 'cove_conditions_feedback'
   | 'install_prompt_shown'
   | 'install_prompt_accepted'
   | 'install_prompt_dismissed'
