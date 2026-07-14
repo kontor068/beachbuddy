@@ -25,8 +25,29 @@ import { interpolateSectorGeometry } from './windExposureModel';
 
 /** Blockage at/above which the cove's own shore, not open fetch, sets the near-shore height. */
 export const COVE_BLOCKED_MIN = 0.8;
-/** Below the model-wide "serious fetch" threshold — above it, fetch itself carries the height. */
-export const COVE_FETCH_MAX_KM = 8;
+/**
+ * The cove's fetch must be SHORT — this is where the dense re-scan certified the geometry (the
+ * validated calm regime is fetch < ~1 km; 2 km is a modest, still-calm extension, SMB <= ~0.35 m
+ * at 6 Bft). NOT the 8 km "serious fetch" threshold: at 2-8 km with blocked>=0.8 the average fetch
+ * hides a longer channel ray (the mean-hides-channel case), so the near-shore wave is not reliably
+ * small there and max() must stand (e.g. Kythira Vlychada N, fetch 5.5 km / SMB 0.64 m).
+ */
+export const COVE_FETCH_MAX_KM = 2;
+/**
+ * MANDATORY. blocked>=0.8 & fetch<8 alone is ALSO true for every OFFSHORE sector of every beach
+ * (rays fired toward the land the wind blows from hit it at ~0 km → blocked=1, fetch=0). An
+ * offshore wind leaves the local wind-sea ~0, but NOT the sea — residual wave / swell the offshore
+ * SMB cannot see, which max(live-marine, modeled) correctly keeps. Without this gate the guard
+ * fires on ~12x too many sectors and writes false-calm on open beaches. The cove path applies ONLY
+ * when the live wind actually blows ONTO the shore (onshore component positive and non-grazing).
+ */
+export const COVE_ONSHORE_MIN = 0.2;
+/**
+ * Display floor. A near-zero SMB (fully-enclosed 0-fetch corner) reads as "0.00 m", which looks
+ * like a broken figure, not calm water — the sea is never perfectly flat. Below this, do NOT
+ * override; keep max() (its small residual is more honest than a bare zero).
+ */
+export const COVE_DISPLAY_FLOOR_M = 0.10;
 
 export interface CoveWaveInput {
   geospatialProfile?: GeospatialExposureProfile;
@@ -72,10 +93,17 @@ export const resolveCoveAwareWaveHeightM = (input: CoveWaveInput): CoveWave => {
     ? Number(onshoreComponent(input.windDirectionDeg, input.facingDeg).toFixed(3))
     : undefined;
 
+  // Geometry+direction qualifier: an enclosed shore (blocked, short fetch) that the live wind
+  // actually blows ONTO. The onshore gate is what separates a genuine cove from any beach's
+  // offshore sectors (which also read blocked=1/fetch=0 but face a sea max() must not erase).
   const isCove = geom !== undefined
     && geom.blockedRayRatio >= COVE_BLOCKED_MIN
-    && geom.fetchKm < COVE_FETCH_MAX_KM;
-  const coveApplied = isCove && !input.swellPresent;
+    && geom.fetchKm < COVE_FETCH_MAX_KM
+    && onshore !== undefined
+    && onshore > COVE_ONSHORE_MIN;
+  // Take the cove path only when it is also swell-free and the SMB figure is a believable
+  // non-zero height (see COVE_DISPLAY_FLOOR_M).
+  const coveApplied = isCove && !input.swellPresent && smbWaveHeightM >= COVE_DISPLAY_FLOOR_M;
 
   return {
     waveHeightM: coveApplied ? smbWaveHeightM : standardMax,
