@@ -31,6 +31,8 @@ import { assessBeachWindExposure } from '../utils/windExposureEngine';
 import { AccessibleCalmNearbySection, type AccessibleCalmCove } from '../components/AccessibleCalmNearbySection';
 import { ConstraintFitSection, type ConstraintFit } from '../components/ConstraintFitSection';
 import { WaveHeightGraphic, type HourlyWavePoint } from '../components/WaveHeightGraphic';
+import { resolveCoveAwareWaveHeightM } from '../utils/coveWaveGuard';
+import { CoveConditionsCard } from '../components/CoveConditionsCard';
 import { hasBoatOnlyAccess } from '../utils/access';
 import { DayPlanSection, type DayPlanStop } from '../components/DayPlanSection';
 import { generateBeachExplanation as generateUiBeachExplanation } from '../utils/beachExplanation';
@@ -748,12 +750,31 @@ export const BeachDetailPage: React.FC<BeachDetailPageProps> = ({
   const canClaimWindProtectionForCopy = canClaimWindProtection && mapAlignedExposureLevel !== 'exposed';
   const measuredWaveHeightM = weatherData.marine?.waveHeightM;
   const waveHeightM = scoreResult.waveHeightM ?? measuredWaveHeightM;
-  // Show the EFFECTIVE wave on the visual too — NOT the raw marine grid value. The marine (wave)
-  // model and the wind model are separate; the grid can report ~0.3 m swell while it's blowing
-  // 5-6 Bft, which read as a flat sea. The effective value (max of measured + wind-chop floor)
-  // is what the verdict badge and the list cards already use, so the figure now matches them.
-  const displayWaveHeightM = waveHeightM ?? measuredWaveHeightM;
-  const isWaveEstimate = !(typeof measuredWaveHeightM === 'number' && Number.isFinite(measuredWaveHeightM));
+  // Cove-aware DISPLAY wave (utils/coveWaveGuard): in a genuinely enclosed cove (blocked shore,
+  // short fetch) the live-marine grid cell sits offshore and OVER-reads the near-shore height, so
+  // max(measured, modeled) surfaces the wrong (larger) number. There we show the fetch-limited SMB
+  // instead — UNLESS meaningful swell is present (it can wrap into the bay, the one real false-calm
+  // risk), where we keep max(). DISPLAY ONLY: scoring / level / colour / ranking are untouched
+  // (they still use scoreResult.waveHeightM below). swellPresent mirrors assessSwellExposure's
+  // hasSwell (presence, not the geometric 'exposed' flag which is structurally false for a blocked
+  // cove and would reopen the wrap-in false-calm).
+  const swellPresent = (weatherData.marine?.swellWaveHeightM ?? 0) >= 0.5
+    && typeof weatherData.marine?.swellWaveDirectionDeg === 'number';
+  const coveWave = resolveCoveAwareWaveHeightM({
+    geospatialProfile: geospatialExposure,
+    facingDeg: scoreResult.facingDeg ?? null,
+    windDirectionDeg: weatherData.wind.deg,
+    windSpeedKmh,
+    measuredWaveHeightM,
+    appModeledWaveHeightM: scoreResult.modeledWaveHeightM ?? 0,
+    swellPresent,
+  });
+  // Only OVERRIDE when the cove path is actually taken; otherwise keep the exact prior value so
+  // non-cove beaches are byte-for-byte unchanged. The effective value (max of measured + wind-chop
+  // floor) is what the verdict badge and the list cards already use, so the figure matches them.
+  const displayWaveHeightM = coveWave.coveApplied ? coveWave.waveHeightM : (waveHeightM ?? measuredWaveHeightM);
+  // When the cove path is taken we are showing the modeled SMB, not the live grid value → estimate.
+  const isWaveEstimate = coveWave.coveApplied || !(typeof measuredWaveHeightM === 'number' && Number.isFinite(measuredWaveHeightM));
   // Swim-hours (08–21) wave series for the selected day. Each hour runs the SAME effective-wave
   // rule as the headline figure (directional fetch + damped SMB + wind-chop floor, then the live
   // marine value when present), so a bar can never contradict the big wave meter beside it.
@@ -766,16 +787,36 @@ export const BeachDetailPage: React.FC<BeachDetailPageProps> = ({
       const hour = when.getHours();
       return hour >= 8 && hour <= 21;
     });
+    const hourItems = new Map(dayHours.map(item => [new Date(item.dt * 1000).getHours(), item]));
     const points: HourlyWavePoint[] = [];
     for (const point of computeHourlyEffectiveWaves(beach, dayHours, geospatialExposure)) {
+      // Apply the SAME cove-aware guard per hour so a bar can never contradict the big meter above:
+      // where the cove path fires for that hour, the bar shows the fetch-limited SMB, not the
+      // offshore grid over-read. Non-cove hours stay exactly as computeHourlyEffectiveWaves gives.
+      let waveM = point.effectiveWaveHeightM;
+      const item = hourItems.get(point.hour);
+      if (item && geospatialExposure) {
+        const hourSwellPresent = (item.marine?.swellWaveHeightM ?? 0) >= 0.5
+          && typeof item.marine?.swellWaveDirectionDeg === 'number';
+        const hourCove = resolveCoveAwareWaveHeightM({
+          geospatialProfile: geospatialExposure,
+          facingDeg: scoreResult.facingDeg ?? null,
+          windDirectionDeg: item.wind.deg,
+          windSpeedKmh: item.wind.speed * 3.6,
+          measuredWaveHeightM: item.marine?.waveHeightM,
+          appModeledWaveHeightM: 0,
+          swellPresent: hourSwellPresent,
+        });
+        if (hourCove.coveApplied) waveM = hourCove.waveHeightM;
+      }
       // A truly flat hour with no measured value carries no signal — leave it out so the strip
       // shows up only when there is something to read.
-      if (!point.hasMeasured && point.effectiveWaveHeightM <= 0) continue;
+      if (!point.hasMeasured && waveM <= 0) continue;
       if (points.some(existing => existing.hour === point.hour)) continue;
-      points.push({ hour: point.hour, waveHeightM: point.effectiveWaveHeightM });
+      points.push({ hour: point.hour, waveHeightM: waveM });
     }
     return points;
-  }, [beach, scoringHourlyForecast, geospatialExposure, selectedDayKey]);
+  }, [beach, scoringHourlyForecast, geospatialExposure, selectedDayKey, scoreResult.facingDeg]);
   const seaTemperatureC = weatherData.marine?.seaSurfaceTemperatureC;
   const waterTempDescriptor = typeof seaTemperatureC === 'number'
     ? seaTemperatureC < 20
@@ -1389,7 +1430,7 @@ export const BeachDetailPage: React.FC<BeachDetailPageProps> = ({
             variant="full"
             waveHeightM={displayWaveHeightM}
             isEstimate={isWaveEstimate}
-            estimateHeightM={scoreResult.modeledWaveHeightM}
+            estimateHeightM={coveWave.coveApplied ? coveWave.waveHeightM : scoreResult.modeledWaveHeightM}
             hourly={hourlyWave}
             language={language}
             selectedDate={selectedDate}
@@ -1399,6 +1440,21 @@ export const BeachDetailPage: React.FC<BeachDetailPageProps> = ({
             exposureLevel={mapAlignedExposureLevel}
             canClaimWindProtection={canClaimWindProtectionForCopy}
           />
+          {/* Two-dimensional "calm water / strong wind" cove card — display only, renders only in
+              the decoupling case (enclosed cove + strong wind). Explains why the pin reads breezy
+              while the water is flat; never recommends. See utils/coveWaveGuard. */}
+          {coveWave.coveApplied && beaufortLevel >= 4 && typeof coveWave.fetchKm === 'number' && (
+            <CoveConditionsCard
+              beachId={beach.id}
+              waveHeightM={displayWaveHeightM}
+              windSpeedKmh={windSpeedKmh}
+              windBeaufort={beaufortLevel}
+              onshore={coveWave.onshore ?? 0}
+              fetchKm={coveWave.fetchKm}
+              fetchDirectionLabel={t.windDirections[windDir as WindDirection] || windDir}
+              language={language}
+            />
+          )}
           <div className={`grid grid-cols-2 gap-2.5 ${typeof seaTemperatureC === 'number' ? 'md:grid-cols-4' : 'md:grid-cols-3'}`}>
             <ConditionCard
               icon={<Wind className="w-5 h-5 text-blue-500" />}
