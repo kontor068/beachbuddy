@@ -45,6 +45,18 @@ const LOCALIZED_REGION_SLUGS = new Set<string>([
   'santorini',
   'ios',
   'sifnos',
+  // Wave 2 — top foreign-tourist destinations (2026-07-15). MUST stay 1:1 with
+  // LOCALIZED_REGIONS in scripts/prerenderBeachPages.mjs (full region id there).
+  'chania',
+  'heraklion',
+  'rethymno',
+  'lasithi',
+  'rhodes',
+  'kos',
+  'corfu',
+  'zakynthos',
+  'kefalonia',
+  'lefkada',
 ]);
 const REGION_ID_PREFIXES = [
   'east-macedonia-and-thrace-',

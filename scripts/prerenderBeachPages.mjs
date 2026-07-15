@@ -117,6 +117,19 @@ const LOCALIZED_REGIONS = new Set([
   'south-aegean-santorini',
   'south-aegean-ios',
   'south-aegean-sifnos',
+  // Wave 2 — top foreign-tourist destinations (Crete + Dodecanese majors + Ionian)
+  // Rolled out 2026-07-15 after Wave 1 held healthy for 4 days (de/fr/it impressions
+  // rising, de→Germany targeting 0.65, zero errors). Slugs mirror LOCALIZED_REGION_SLUGS.
+  'crete-crete-chania',
+  'crete-crete-heraklion',
+  'crete-crete-rethymno',
+  'crete-crete-lasithi',
+  'south-aegean-rhodes',
+  'south-aegean-kos',
+  'ionian-islands-corfu',
+  'ionian-islands-zakynthos',
+  'ionian-islands-kefalonia',
+  'ionian-islands-lefkada',
 ]);
 const localesForRegion = regionId =>
   LOCALIZED_REGIONS.has(regionId) ? prerenderLocales : baseLocales;
@@ -2040,6 +2053,20 @@ const SEO_META_DESCRIPTION_OVERRIDES = {
   'crete-crete-chania#574': {
     en: 'Platanias, Chania: a long organised sandy beach near Chania with sunbeds. Check wind and waves before you go.',
     gr: 'Πλατανιάς Χανίων: μεγάλη οργανωμένη αμμώδης παραλία κοντά στα Χανιά, με ξαπλώστρες. Δες ζωντανά άνεμο και κύμα πριν πας.',
+  },
+  // Ranks well (~pos 9) with impressions but near-zero clicks: no traits/story in
+  // data, so the generated meta is the bare live-CTA template. The durable, verified
+  // hook the template can't see is the adjacent Diros Caves (Vlychada) in Mani.
+  'peloponnese-lakonia-mainland#3071': {
+    en: 'Diros Beach, Mani: a pebble cove with clear water right beside the Diros Caves in Laconia. Check live wind & waves before you go.',
+    gr: 'Παραλία Διρού, Μάνη: όρμος με βότσαλα και καθαρά νερά, ακριβώς δίπλα στα Σπήλαια Διρού. Δες live άνεμο & κύμα πριν πας.',
+  },
+  // Same pattern (impressions, ~zero clicks, empty traits): the honest hook is a
+  // quiet, natural beach with clear water and tavernas nearby, an easy Saronic
+  // escape from Athens — none of which the generated template surfaces.
+  'attica-salamina#3056': {
+    en: 'Kaki Vigla, Salamina: a quiet natural beach with clear water and tavernas nearby, an easy escape from Athens. Check live wind & waves.',
+    gr: 'Κακή Βίγλα, Σαλαμίνα: ήσυχη φυσική παραλία με καθαρά νερά και ταβέρνες δίπλα, κοντά στην Αθήνα. Δες live άνεμο & κύμα πριν πας.',
   },
 };
 
