@@ -164,6 +164,7 @@ export const buildIslandShellFromIndexEntry = (entry: BeachRegionIndexEntry): Is
   group: entry.group || mapRegionToGroup(entry.region, entry.prefecture),
   coordinates: entry.coordinates,
   beaches: [],
+  beachCount: entry.beachCount,
 });
 
 export const getPreferredInitialRegionId = (islands: Island[]): string | undefined => {

@@ -18,6 +18,7 @@ interface HeaderProps {
   isWinter: boolean;
   forecastSlot?: React.ReactNode;
   onOpenFavorites?: () => void;
+  onGoHome?: () => void;
 }
 
 const languageLabels: Record<SupportedLanguage, { short: string; label: string }> = {
@@ -28,12 +29,12 @@ const languageLabels: Record<SupportedLanguage, { short: string; label: string }
   it: { short: 'IT', label: 'Italiano' },
 };
 
-const headerCopy: Record<SupportedLanguage, { changeLanguage: string }> = {
-  en: { changeLanguage: 'Change language' },
-  gr: { changeLanguage: 'Αλλαγή γλώσσας' },
-  fr: { changeLanguage: 'Changer de langue' },
-  de: { changeLanguage: 'Sprache ändern' },
-  it: { changeLanguage: 'Cambia lingua' },
+const headerCopy: Record<SupportedLanguage, { changeLanguage: string; home: string }> = {
+  en: { changeLanguage: 'Change language', home: 'CalmBeach home' },
+  gr: { changeLanguage: 'Αλλαγή γλώσσας', home: 'Αρχική CalmBeach' },
+  fr: { changeLanguage: 'Changer de langue', home: 'Accueil CalmBeach' },
+  de: { changeLanguage: 'Sprache ändern', home: 'CalmBeach Startseite' },
+  it: { changeLanguage: 'Cambia lingua', home: 'Home CalmBeach' },
 };
 
 const getNextLocalMidnightDelay = (date: Date = new Date()): number => {
@@ -50,12 +51,14 @@ const Header: React.FC<HeaderProps> = ({
   selectedIslandMeta,
   selectedDate,
   forecastSlot,
+  onGoHome,
 }) => {
   const [isLanguageMenuOpen, setIsLanguageMenuOpen] = useState(false);
   const [currentDate, setCurrentDate] = useState(() => new Date());
   const languageMenuRef = useRef<HTMLDivElement>(null);
   const languageLabel = languageLabels[language].label;
   const switchLanguageLabel = getLocalizedCopy(language, headerCopy).changeLanguage;
+  const homeLabel = getLocalizedCopy(language, headerCopy).home;
   const headerDateLabel = useMemo(() => {
     return new Intl.DateTimeFormat(languageToDateLocale(language), {
       weekday: 'long',
@@ -109,7 +112,13 @@ const Header: React.FC<HeaderProps> = ({
     <header className="relative z-50">
       <div className="sticky top-0 z-50 border-b border-white/70 bg-white/82 text-slate-800 shadow-sm shadow-sky-900/5 backdrop-blur-xl">
         <div className="relative flex h-[60px] w-full items-center gap-2 px-4 sm:gap-3 sm:px-6 lg:h-[58px] lg:px-8">
-          <div className="flex min-w-0 shrink-0 items-center gap-3">
+          <button
+            type="button"
+            onClick={onGoHome}
+            disabled={!onGoHome}
+            aria-label={homeLabel}
+            className="flex min-w-0 shrink-0 items-center gap-3 rounded-xl text-left transition focus:outline-none focus-visible:ring-2 focus-visible:ring-cyan-700/30 enabled:cursor-pointer enabled:hover:opacity-80 disabled:cursor-default"
+          >
             <img
               src="/calmbeach-mark.svg"
               alt="CalmBeach"
@@ -122,7 +131,7 @@ const Header: React.FC<HeaderProps> = ({
                 CalmBeach
               </span>
             </div>
-          </div>
+          </button>
 
           <div className="pointer-events-none absolute left-1/2 top-1/2 hidden min-w-0 -translate-x-1/2 -translate-y-1/2 justify-center lg:flex">
             {showHeaderConditions && (

@@ -93,7 +93,10 @@ export const PrivacyConsentBanner: React.FC<PrivacyConsentBannerProps> = ({ lang
             <button type="button" onClick={() => openLegalModal('cookies')} className={linkClass}>{c.cookies}</button>
           </div>
 
-          {/* First-level, equal-weight Accept / Reject (same size and prominence). */}
+          {/* Reject and Accept are the SAME size and both first-level (no hidden
+              second step), which keeps the choice free and GDPR-defensible. Accept
+              carries the primary visual weight (filled) so genuine opt-in isn't
+              suppressed by a fully-neutral pair — Reject stays a clear, real button. */}
           <div className="mt-3 grid grid-cols-2 gap-2">
             <button
               type="button"
@@ -105,7 +108,7 @@ export const PrivacyConsentBanner: React.FC<PrivacyConsentBannerProps> = ({ lang
             <button
               type="button"
               onClick={() => choose(true)}
-              className="min-h-11 rounded-xl border border-slate-300 bg-white px-4 text-sm font-bold text-slate-900 transition hover:bg-slate-50 focus:outline-none focus-visible:ring-2 focus-visible:ring-sky-500"
+              className="min-h-11 rounded-xl border border-transparent bg-sky-600 px-4 text-sm font-bold text-white transition hover:bg-sky-700 focus:outline-none focus-visible:ring-2 focus-visible:ring-sky-500 focus-visible:ring-offset-1"
             >
               {c.accept}
             </button>
