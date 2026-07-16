@@ -21,6 +21,7 @@ import { PrivacyConsentBanner } from './components/PrivacyConsentBanner';
 import { MapLoadBoundary } from './components/MapLoadBoundary';
 import { LegalFooter } from './components/LegalFooter';
 import { BeachSearcherHome, type DirectoryCategory } from './components/BeachSearcherHome';
+import { LandingView } from './components/landing/LandingView';
 
 // Hooks & Utils
 import { useBeaches } from './hooks/useBeaches';
@@ -1595,7 +1596,7 @@ export const App: React.FC = () => {
 
   // --- Beach & Weather Data (Custom Hooks) ---
   const { allIslands, loading: beachesLoading, error: beachesError, getFilteredBeaches, ensureIslandBeachesLoaded, cacheLoadedIsland } = useBeaches(language);
-  const { selectedIsland, selectIsland, selectAdHocRegion, showValueProp, markValuePropSeen } = useLocation(allIslands);
+  const { selectedIsland, selectIsland, selectAdHocRegion, showValueProp, markValuePropSeen, showLanding, goToLanding } = useLocation(allIslands);
   // Islands offered in the browsable selector + name search. Info-only regions
   // (e.g. Milos) are SEO-only: their pages exist and resolve on a direct URL, but
   // they are never surfaced as a pickable/searchable option in the app. Resolution
@@ -1644,6 +1645,24 @@ export const App: React.FC = () => {
     }
   };
 
+  // Return to the national landing (logo / home action). Clears the committed
+  // region AND resets the URL to the localized home path, otherwise the
+  // region-sync effect (which re-reads parseBeachRegionPath) would immediately
+  // re-select the region the URL still pointed at and bounce us off the landing.
+  const handleGoHome = () => {
+    goToLanding();
+    detailRequestRef.current += 1;
+    setDetailDataStatus('idle');
+    setDetailBeach(null);
+    setView('home');
+    if (typeof window !== 'undefined') {
+      const homePath = language === 'gr' ? '/el/' : '/';
+      if (window.location.pathname !== homePath) {
+        window.history.pushState({ view: 'home' }, '', homePath);
+      }
+    }
+  };
+
   // --- Functional State ---
   const [selectedFilters, setSelectedFilters] = useState<FilterKey[]>([]);
   const [sortBy, setSortBy] = useState<SortOption>('protected');
@@ -1678,6 +1697,16 @@ export const App: React.FC = () => {
   const [isMobileAllBeachesPanelOpen, setIsMobileAllBeachesPanelOpen] = useState(false);
   const [isMobileWeatherPanelOpen, setIsMobileWeatherPanelOpen] = useState(false);
   const [highlightedMapBeachId, setHighlightedMapBeachId] = useState<number | undefined>(undefined);
+  // A discrete "centre this beach's card" signal, fired ONLY when the user picks a
+  // beach from search (not while swiping the carousel). The nonce lets the same beach
+  // be re-focused on a repeat search; BeachSearcherHome centres the matching card below
+  // the map on each change. See handleDirectorySearchSuggestionSelect / the pending-highlight effect.
+  const [directorySearchCardFocus, setDirectorySearchCardFocus] = useState<{ beachId: number; nonce: number } | undefined>(undefined);
+  const directorySearchCardFocusNonceRef = useRef(0);
+  const focusDirectorySearchCard = (beachId: number) => {
+    directorySearchCardFocusNonceRef.current += 1;
+    setDirectorySearchCardFocus({ beachId, nonce: directorySearchCardFocusNonceRef.current });
+  };
   const [isDirectoryMapFollowPaused, setIsDirectoryMapFollowPaused] = useState(false);
   const [shouldLoadMap, setShouldLoadMap] = useState(false);
   const [geospatialExposureProfiles, setGeospatialExposureProfiles] = useState<GeospatialExposureProfileLookup | undefined>(undefined);
@@ -2995,7 +3024,11 @@ export const App: React.FC = () => {
     pendingDirectorySearchHighlightRef.current = undefined;
     setHighlightedMapBeachId(pendingBeachId);
     setIsDirectoryMapFollowPaused(false);
-    scrollToBeachResultsSection();
+    // Land on the map (pin highlighted) with the beach's card centred below it —
+    // NOT on the results list, which on a short name-search page scrolled past to
+    // the legal footer.
+    focusDirectorySearchCard(pendingBeachId);
+    scrollToMapSection();
   }, [beachSearchQuery, selectedIsland]);
 
   const handleDirectoryMapUserInteraction = React.useCallback(() => {
@@ -5456,7 +5489,6 @@ export const App: React.FC = () => {
 
       setIsDirectoryMapFollowPaused(false);
       pendingDirectorySearchHighlightRef.current = targetBeach.id;
-      handleAllBeachesPanelOpenChange(true);
       if (targetIsland.id !== selectedIsland?.id) {
         cacheLoadedIsland(targetIsland);
         preserveSearchQueryOnRegionChangeRef.current = true;
@@ -5464,7 +5496,8 @@ export const App: React.FC = () => {
         return;
       }
       setHighlightedMapBeachId(targetBeach.id);
-      scrollToBeachResultsSection();
+      focusDirectorySearchCard(targetBeach.id);
+      scrollToMapSection();
       return;
     }
     scrollToBeachResultsSection();
@@ -5523,8 +5556,10 @@ export const App: React.FC = () => {
     }
 
     setHighlightedMapBeachId(targetBeach.id);
-    handleAllBeachesPanelOpenChange(true);
-    scrollToBeachResultsSection();
+    // Show the map with the beach's pin + its card centred right below it, instead of
+    // scrolling down the results list (which dumped mobile users on the legal footer).
+    focusDirectorySearchCard(targetBeach.id);
+    scrollToMapSection();
   };
   // The mobile directory map keeps a single fixed height at every Beaufort.
   // Keep it compact enough that the hour slider and condition summary stay visible
@@ -5598,11 +5633,12 @@ export const App: React.FC = () => {
       <Header
         language={language} onLanguageChange={handleLanguageChange}
         selectedIslandName={selectedIsland ? selectedIsland.name[language] : "..."}
-        selectedIslandMeta={headerWeatherMeta}
+        selectedIslandMeta={showLanding ? undefined : headerWeatherMeta}
         selectedDate={selectedDayDate}
         onOpenIslandSelector={handleOpenIslandSelector} isWinter={isWinter}
+        onGoHome={handleGoHome}
         onOpenFavorites={() => handleMobileTab('favorites')}
-        forecastSlot={showHeaderForecast ? (
+        forecastSlot={showHeaderForecast && !showLanding ? (
           <>
             {isStartupLocationPromptOpen && (
               <StartupLocationPrompt
@@ -5649,6 +5685,7 @@ export const App: React.FC = () => {
               suitableBeachTotalCount={directorySuitableBeachTotalCount}
               suitableTimePrefix={selectedHourPrefix}
               onActiveSuitableBeachChange={handleActiveDirectoryBeachChange}
+              directorySearchCardFocus={directorySearchCardFocus}
               showSuitableBeachSection={shouldShowDirectorySuitableSection}
               allBeachCards={directoryAllSourceBeaches}
               beachWeatherContexts={mapSuitableBeaches}
@@ -5869,6 +5906,25 @@ export const App: React.FC = () => {
           </>
         ) : undefined}
       />
+
+      {showLanding ? (
+        <LandingView
+          language={language}
+          allIslands={allIslands}
+          searchQuery={beachSearchQuery}
+          searchSuggestions={directorySearchSuggestions}
+          isSearchSuggesting={isDirectorySearchSuggesting}
+          onSearchChange={setBeachSearchQuery}
+          onSearchSubmit={handleDirectorySearchSubmit}
+          onSearchSuggestionSelect={handleDirectorySearchSuggestionSelect}
+          onShowNearbyBeaches={() => { void handleShowNearbyBeaches(); }}
+          isFindingLocation={isFindingNearest}
+          locationError={findNearestError}
+          onSelectIsland={handleRegionSelected}
+          onOpenIslandSelector={handleOpenIslandSelector}
+        />
+      ) : (
+      <>
 
       {showRecommendationPreviewSection && forecast?.[selectedDayIndex] && !isUnsafeWinter && !showHeaderForecast && recommendationSectionBeaches.length > 0 && !isInfoOnlyRegion && (
         <section className="relative z-20 px-3 pb-3 pt-1 sm:px-4 sm:pb-5 sm:pt-0" aria-label={recommendationModeTitle}>
@@ -6337,6 +6393,9 @@ export const App: React.FC = () => {
             </div>
 
       </main>
+      )}
+
+      </>
       )}
 
       <div className={`${isDesktopViewport ? 'relative z-[70] bg-transparent' : 'relative z-50 bg-transparent pb-[calc(5rem+env(safe-area-inset-bottom))]'}`}>

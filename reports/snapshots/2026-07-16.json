@@ -1,0 +1,3088 @@
+{
+  "meta": {
+    "generatedAt": "2026-07-16T19:47:33.552Z",
+    "siteUrl": "https://calmbeach.gr/",
+    "propertyType": "url-prefix",
+    "timezoneNote": "GSC data is bucketed in America/Los_Angeles days",
+    "periods": {
+      "current": {
+        "start": "2026-06-16",
+        "end": "2026-07-13",
+        "days": 28
+      },
+      "previous": {
+        "start": "2026-05-19",
+        "end": "2026-06-15",
+        "days": 28
+      },
+      "lastYear": {
+        "start": "2025-06-16",
+        "end": "2025-07-13",
+        "days": 28
+      },
+      "lastYearPrevious": {
+        "start": "2025-05-19",
+        "end": "2025-06-15",
+        "days": 28
+      }
+    },
+    "lagDays": 3,
+    "ctrCurveSampleMin": 5,
+    "ctrCurveImpressionMin": 200,
+    "ctrCurveTargetPos": 3,
+    "jsonBytes": 38574,
+    "caps": {
+      "queries": 200,
+      "pages": 150,
+      "perAnalysis": 50,
+      "strikingDistance": 40,
+      "ctrGaps": 30,
+      "zeroClick": 30,
+      "cannibalization": 20,
+      "risingDecaying": 20,
+      "newQueries": 30,
+      "byRegion": 50,
+      "byCountry": 20,
+      "contentRegions": 50,
+      "localeMatchCountries": 5
+    }
+  },
+  "totals": {
+    "current": {
+      "clicks": 878,
+      "impressions": 27737,
+      "ctr": 0.032,
+      "position": 11.153
+    },
+    "previous": {
+      "clicks": 18,
+      "impressions": 47,
+      "ctr": 0.383,
+      "position": 1.681
+    },
+    "lastYear": {
+      "clicks": 0,
+      "impressions": 0,
+      "ctr": 0,
+      "position": 0
+    },
+    "lastYearPrevious": {
+      "clicks": 0,
+      "impressions": 0,
+      "ctr": 0,
+      "position": 0
+    },
+    "deltas": {
+      "vsPrevious": {
+        "clicks": 860,
+        "clicksPct": 47.778,
+        "impressions": 27690,
+        "impressionsPct": 589.149,
+        "ctr": -0.351,
+        "position": 9.472
+      },
+      "vsLastYear": {
+        "clicks": 878,
+        "clicksPct": null,
+        "impressions": 27737,
+        "impressionsPct": null,
+        "ctr": 0.032,
+        "position": 11.153
+      }
+    },
+    "seasonalityAdjusted": {
+      "clicksPctVsPrevious": 47.778,
+      "expectedFromSeasonality": null,
+      "excess": null
+    }
+  },
+  "dailySeries": [
+    {
+      "date": "2026-06-16",
+      "clicks": 1,
+      "impressions": 1,
+      "position": 2
+    },
+    {
+      "date": "2026-06-17",
+      "clicks": 1,
+      "impressions": 8,
+      "position": 4.875
+    },
+    {
+      "date": "2026-06-18",
+      "clicks": 5,
+      "impressions": 47,
+      "position": 8.021
+    },
+    {
+      "date": "2026-06-19",
+      "clicks": 9,
+      "impressions": 267,
+      "position": 9.479
+    },
+    {
+      "date": "2026-06-20",
+      "clicks": 17,
+      "impressions": 1024,
+      "position": 12.813
+    },
+    {
+      "date": "2026-06-21",
+      "clicks": 17,
+      "impressions": 1135,
+      "position": 12.446
+    },
+    {
+      "date": "2026-06-22",
+      "clicks": 14,
+      "impressions": 695,
+      "position": 11.742
+    },
+    {
+      "date": "2026-06-23",
+      "clicks": 15,
+      "impressions": 554,
+      "position": 11.042
+    },
+    {
+      "date": "2026-06-24",
+      "clicks": 5,
+      "impressions": 356,
+      "position": 13.565
+    },
+    {
+      "date": "2026-06-25",
+      "clicks": 5,
+      "impressions": 248,
+      "position": 16.198
+    },
+    {
+      "date": "2026-06-26",
+      "clicks": 10,
+      "impressions": 359,
+      "position": 11.616
+    },
+    {
+      "date": "2026-06-27",
+      "clicks": 17,
+      "impressions": 539,
+      "position": 8.972
+    },
+    {
+      "date": "2026-06-28",
+      "clicks": 29,
+      "impressions": 790,
+      "position": 9.839
+    },
+    {
+      "date": "2026-06-29",
+      "clicks": 34,
+      "impressions": 1005,
+      "position": 11.053
+    },
+    {
+      "date": "2026-06-30",
+      "clicks": 41,
+      "impressions": 1079,
+      "position": 12.753
+    },
+    {
+      "date": "2026-07-01",
+      "clicks": 28,
+      "impressions": 1188,
+      "position": 9.737
+    },
+    {
+      "date": "2026-07-02",
+      "clicks": 53,
+      "impressions": 1313,
+      "position": 10.935
+    },
+    {
+      "date": "2026-07-03",
+      "clicks": 51,
+      "impressions": 1558,
+      "position": 11.044
+    },
+    {
+      "date": "2026-07-04",
+      "clicks": 60,
+      "impressions": 1914,
+      "position": 10.362
+    },
+    {
+      "date": "2026-07-05",
+      "clicks": 74,
+      "impressions": 2240,
+      "position": 10.241
+    },
+    {
+      "date": "2026-07-06",
+      "clicks": 62,
+      "impressions": 1888,
+      "position": 15.342
+    },
+    {
+      "date": "2026-07-07",
+      "clicks": 47,
+      "impressions": 1444,
+      "position": 10.832
+    },
+    {
+      "date": "2026-07-08",
+      "clicks": 50,
+      "impressions": 1474,
+      "position": 10.929
+    },
+    {
+      "date": "2026-07-09",
+      "clicks": 63,
+      "impressions": 1447,
+      "position": 11.084
+    },
+    {
+      "date": "2026-07-10",
+      "clicks": 38,
+      "impressions": 1268,
+      "position": 10.692
+    },
+    {
+      "date": "2026-07-11",
+      "clicks": 41,
+      "impressions": 1474,
+      "position": 10.307
+    },
+    {
+      "date": "2026-07-12",
+      "clicks": 66,
+      "impressions": 1657,
+      "position": 9.368
+    },
+    {
+      "date": "2026-07-13",
+      "clicks": 25,
+      "impressions": 765,
+      "position": 9.737
+    }
+  ],
+  "bySegment": {
+    "byLocale": [
+      {
+        "key": "en",
+        "current": {
+          "clicks": 479,
+          "impressions": 14559,
+          "ctr": 0.033,
+          "position": 9.912
+        },
+        "deltas": {
+          "vsPrevious": {
+            "clicksPct": 25.611,
+            "impressionsPct": 308.766
+          },
+          "vsLastYear": {
+            "clicksPct": null,
+            "impressionsPct": null
+          }
+        }
+      },
+      {
+        "key": "el",
+        "current": {
+          "clicks": 387,
+          "impressions": 13320,
+          "ctr": 0.029,
+          "position": 13.067
+        },
+        "deltas": {
+          "vsPrevious": {
+            "clicksPct": null,
+            "impressionsPct": null
+          },
+          "vsLastYear": {
+            "clicksPct": null,
+            "impressionsPct": null
+          }
+        }
+      },
+      {
+        "key": "it",
+        "current": {
+          "clicks": 9,
+          "impressions": 178,
+          "ctr": 0.051,
+          "position": 10.904
+        },
+        "deltas": {
+          "vsPrevious": {
+            "clicksPct": null,
+            "impressionsPct": null
+          },
+          "vsLastYear": {
+            "clicksPct": null,
+            "impressionsPct": null
+          }
+        }
+      },
+      {
+        "key": "de",
+        "current": {
+          "clicks": 7,
+          "impressions": 115,
+          "ctr": 0.061,
+          "position": 21.591
+        },
+        "deltas": {
+          "vsPrevious": {
+            "clicksPct": null,
+            "impressionsPct": null
+          },
+          "vsLastYear": {
+            "clicksPct": null,
+            "impressionsPct": null
+          }
+        }
+      },
+      {
+        "key": "fr",
+        "current": {
+          "clicks": 1,
+          "impressions": 51,
+          "ctr": 0.02,
+          "position": 11.176
+        },
+        "deltas": {
+          "vsPrevious": {
+            "clicksPct": null,
+            "impressionsPct": null
+          },
+          "vsLastYear": {
+            "clicksPct": null,
+            "impressionsPct": null
+          }
+        }
+      }
+    ],
+    "byPageType": [
+      {
+        "key": "beach",
+        "current": {
+          "clicks": 306,
+          "impressions": 14443,
+          "ctr": 0.021,
+          "position": 10.382
+        },
+        "deltas": {
+          "vsPrevious": {
+            "clicksPct": null,
+            "impressionsPct": null
+          },
+          "vsLastYear": {
+            "clicksPct": null,
+            "impressionsPct": null
+          }
+        }
+      },
+      {
+        "key": "other",
+        "current": {
+          "clicks": 488,
+          "impressions": 12775,
+          "ctr": 0.038,
+          "position": 12.676
+        },
+        "deltas": {
+          "vsPrevious": {
+            "clicksPct": null,
+            "impressionsPct": null
+          },
+          "vsLastYear": {
+            "clicksPct": null,
+            "impressionsPct": null
+          }
+        }
+      },
+      {
+        "key": "region",
+        "current": {
+          "clicks": 9,
+          "impressions": 570,
+          "ctr": 0.016,
+          "position": 14.132
+        },
+        "deltas": {
+          "vsPrevious": {
+            "clicksPct": null,
+            "impressionsPct": null
+          },
+          "vsLastYear": {
+            "clicksPct": null,
+            "impressionsPct": null
+          }
+        }
+      },
+      {
+        "key": "home",
+        "current": {
+          "clicks": 80,
+          "impressions": 435,
+          "ctr": 0.184,
+          "position": 7.832
+        },
+        "deltas": {
+          "vsPrevious": {
+            "clicksPct": 3.444,
+            "impressionsPct": 8.255
+          },
+          "vsLastYear": {
+            "clicksPct": null,
+            "impressionsPct": null
+          }
+        }
+      }
+    ],
+    "byRegion": [
+      {
+        "key": "milos",
+        "current": {
+          "clicks": 22,
+          "impressions": 1022,
+          "ctr": 0.022,
+          "position": 11.587
+        },
+        "deltas": {
+          "vsPrevious": {
+            "clicksPct": null,
+            "impressionsPct": null
+          },
+          "vsLastYear": {
+            "clicksPct": null,
+            "impressionsPct": null
+          }
+        }
+      },
+      {
+        "key": "salamina",
+        "current": {
+          "clicks": 5,
+          "impressions": 490,
+          "ctr": 0.01,
+          "position": 9.676
+        },
+        "deltas": {
+          "vsPrevious": {
+            "clicksPct": null,
+            "impressionsPct": null
+          },
+          "vsLastYear": {
+            "clicksPct": null,
+            "impressionsPct": null
+          }
+        }
+      },
+      {
+        "key": "corfu",
+        "current": {
+          "clicks": 6,
+          "impressions": 476,
+          "ctr": 0.013,
+          "position": 10.105
+        },
+        "deltas": {
+          "vsPrevious": {
+            "clicksPct": null,
+            "impressionsPct": null
+          },
+          "vsLastYear": {
+            "clicksPct": null,
+            "impressionsPct": null
+          }
+        }
+      },
+      {
+        "key": "magnesia-pelion",
+        "current": {
+          "clicks": 6,
+          "impressions": 460,
+          "ctr": 0.013,
+          "position": 10.013
+        },
+        "deltas": {
+          "vsPrevious": {
+            "clicksPct": null,
+            "impressionsPct": null
+          },
+          "vsLastYear": {
+            "clicksPct": null,
+            "impressionsPct": null
+          }
+        }
+      },
+      {
+        "key": "lefkada",
+        "current": {
+          "clicks": 6,
+          "impressions": 459,
+          "ctr": 0.013,
+          "position": 9.301
+        },
+        "deltas": {
+          "vsPrevious": {
+            "clicksPct": null,
+            "impressionsPct": null
+          },
+          "vsLastYear": {
+            "clicksPct": null,
+            "impressionsPct": null
+          }
+        }
+      },
+      {
+        "key": "lakonia",
+        "current": {
+          "clicks": 6,
+          "impressions": 439,
+          "ctr": 0.014,
+          "position": 10.421
+        },
+        "deltas": {
+          "vsPrevious": {
+            "clicksPct": null,
+            "impressionsPct": null
+          },
+          "vsLastYear": {
+            "clicksPct": null,
+            "impressionsPct": null
+          }
+        }
+      },
+      {
+        "key": "evia",
+        "current": {
+          "clicks": 8,
+          "impressions": 428,
+          "ctr": 0.019,
+          "position": 8.117
+        },
+        "deltas": {
+          "vsPrevious": {
+            "clicksPct": null,
+            "impressionsPct": null
+          },
+          "vsLastYear": {
+            "clicksPct": null,
+            "impressionsPct": null
+          }
+        }
+      },
+      {
+        "key": "paros",
+        "current": {
+          "clicks": 13,
+          "impressions": 413,
+          "ctr": 0.031,
+          "position": 10
+        },
+        "deltas": {
+          "vsPrevious": {
+            "clicksPct": null,
+            "impressionsPct": null
+          },
+          "vsLastYear": {
+            "clicksPct": null,
+            "impressionsPct": null
+          }
+        }
+      },
+      {
+        "key": "kefalonia",
+        "current": {
+          "clicks": 16,
+          "impressions": 412,
+          "ctr": 0.039,
+          "position": 8.257
+        },
+        "deltas": {
+          "vsPrevious": {
+            "clicksPct": null,
+            "impressionsPct": null
+          },
+          "vsLastYear": {
+            "clicksPct": null,
+            "impressionsPct": null
+          }
+        }
+      },
+      {
+        "key": "chania",
+        "current": {
+          "clicks": 3,
+          "impressions": 351,
+          "ctr": 0.009,
+          "position": 10.271
+        },
+        "deltas": {
+          "vsPrevious": {
+            "clicksPct": null,
+            "impressionsPct": null
+          },
+          "vsLastYear": {
+            "clicksPct": null,
+            "impressionsPct": null
+          }
+        }
+      },
+      {
+        "key": "lemnos",
+        "current": {
+          "clicks": 16,
+          "impressions": 343,
+          "ctr": 0.047,
+          "position": 8.362
+        },
+        "deltas": {
+          "vsPrevious": {
+            "clicksPct": null,
+            "impressionsPct": null
+          },
+          "vsLastYear": {
+            "clicksPct": null,
+            "impressionsPct": null
+          }
+        }
+      },
+      {
+        "key": "halkidiki",
+        "current": {
+          "clicks": 4,
+          "impressions": 322,
+          "ctr": 0.012,
+          "position": 8.152
+        },
+        "deltas": {
+          "vsPrevious": {
+            "clicksPct": null,
+            "impressionsPct": null
+          },
+          "vsLastYear": {
+            "clicksPct": null,
+            "impressionsPct": null
+          }
+        }
+      },
+      {
+        "key": "lipsi",
+        "current": {
+          "clicks": 2,
+          "impressions": 297,
+          "ctr": 0.007,
+          "position": 9.091
+        },
+        "deltas": {
+          "vsPrevious": {
+            "clicksPct": null,
+            "impressionsPct": null
+          },
+          "vsLastYear": {
+            "clicksPct": null,
+            "impressionsPct": null
+          }
+        }
+      },
+      {
+        "key": "thesprotia",
+        "current": {
+          "clicks": 10,
+          "impressions": 275,
+          "ctr": 0.036,
+          "position": 7.742
+        },
+        "deltas": {
+          "vsPrevious": {
+            "clicksPct": null,
+            "impressionsPct": null
+          },
+          "vsLastYear": {
+            "clicksPct": null,
+            "impressionsPct": null
+          }
+        }
+      },
+      {
+        "key": "west-attica",
+        "current": {
+          "clicks": 2,
+          "impressions": 265,
+          "ctr": 0.008,
+          "position": 12.272
+        },
+        "deltas": {
+          "vsPrevious": {
+            "clicksPct": null,
+            "impressionsPct": null
+          },
+          "vsLastYear": {
+            "clicksPct": null,
+            "impressionsPct": null
+          }
+        }
+      },
+      {
+        "key": "samos",
+        "current": {
+          "clicks": 3,
+          "impressions": 263,
+          "ctr": 0.011,
+          "position": 8.783
+        },
+        "deltas": {
+          "vsPrevious": {
+            "clicksPct": null,
+            "impressionsPct": null
+          },
+          "vsLastYear": {
+            "clicksPct": null,
+            "impressionsPct": null
+          }
+        }
+      },
+      {
+        "key": "mykonos",
+        "current": {
+          "clicks": 7,
+          "impressions": 261,
+          "ctr": 0.027,
+          "position": 10.471
+        },
+        "deltas": {
+          "vsPrevious": {
+            "clicksPct": null,
+            "impressionsPct": null
+          },
+          "vsLastYear": {
+            "clicksPct": null,
+            "impressionsPct": null
+          }
+        }
+      },
+      {
+        "key": "aegina",
+        "current": {
+          "clicks": 4,
+          "impressions": 240,
+          "ctr": 0.017,
+          "position": 14.383
+        },
+        "deltas": {
+          "vsPrevious": {
+            "clicksPct": null,
+            "impressionsPct": null
+          },
+          "vsLastYear": {
+            "clicksPct": null,
+            "impressionsPct": null
+          }
+        }
+      },
+      {
+        "key": "korinthia",
+        "current": {
+          "clicks": 3,
+          "impressions": 239,
+          "ctr": 0.013,
+          "position": 9.218
+        },
+        "deltas": {
+          "vsPrevious": {
+            "clicksPct": null,
+            "impressionsPct": null
+          },
+          "vsLastYear": {
+            "clicksPct": null,
+            "impressionsPct": null
+          }
+        }
+      },
+      {
+        "key": "aetolia-acarnania",
+        "current": {
+          "clicks": 7,
+          "impressions": 233,
+          "ctr": 0.03,
+          "position": 7.773
+        },
+        "deltas": {
+          "vsPrevious": {
+            "clicksPct": null,
+            "impressionsPct": null
+          },
+          "vsLastYear": {
+            "clicksPct": null,
+            "impressionsPct": null
+          }
+        }
+      },
+      {
+        "key": "preveza",
+        "current": {
+          "clicks": 1,
+          "impressions": 215,
+          "ctr": 0.005,
+          "position": 11.935
+        },
+        "deltas": {
+          "vsPrevious": {
+            "clicksPct": null,
+            "impressionsPct": null
+          },
+          "vsLastYear": {
+            "clicksPct": null,
+            "impressionsPct": null
+          }
+        }
+      },
+      {
+        "key": "chios",
+        "current": {
+          "clicks": 4,
+          "impressions": 193,
+          "ctr": 0.021,
+          "position": 9.777
+        },
+        "deltas": {
+          "vsPrevious": {
+            "clicksPct": null,
+            "impressionsPct": null
+          },
+          "vsLastYear": {
+            "clicksPct": null,
+            "impressionsPct": null
+          }
+        }
+      },
+      {
+        "key": "paxos",
+        "current": {
+          "clicks": 6,
+          "impressions": 182,
+          "ctr": 0.033,
+          "position": 8.808
+        },
+        "deltas": {
+          "vsPrevious": {
+            "clicksPct": null,
+            "impressionsPct": null
+          },
+          "vsLastYear": {
+            "clicksPct": null,
+            "impressionsPct": null
+          }
+        }
+      },
+      {
+        "key": "karpathos",
+        "current": {
+          "clicks": 11,
+          "impressions": 180,
+          "ctr": 0.061,
+          "position": 6.522
+        },
+        "deltas": {
+          "vsPrevious": {
+            "clicksPct": null,
+            "impressionsPct": null
+          },
+          "vsLastYear": {
+            "clicksPct": null,
+            "impressionsPct": null
+          }
+        }
+      },
+      {
+        "key": "symi",
+        "current": {
+          "clicks": 1,
+          "impressions": 177,
+          "ctr": 0.006,
+          "position": 13.508
+        },
+        "deltas": {
+          "vsPrevious": {
+            "clicksPct": null,
+            "impressionsPct": null
+          },
+          "vsLastYear": {
+            "clicksPct": null,
+            "impressionsPct": null
+          }
+        }
+      },
+      {
+        "key": "rodopi",
+        "current": {
+          "clicks": 7,
+          "impressions": 172,
+          "ctr": 0.041,
+          "position": 8.209
+        },
+        "deltas": {
+          "vsPrevious": {
+            "clicksPct": null,
+            "impressionsPct": null
+          },
+          "vsLastYear": {
+            "clicksPct": null,
+            "impressionsPct": null
+          }
+        }
+      },
+      {
+        "key": "telendos",
+        "current": {
+          "clicks": 4,
+          "impressions": 172,
+          "ctr": 0.023,
+          "position": 9.756
+        },
+        "deltas": {
+          "vsPrevious": {
+            "clicksPct": null,
+            "impressionsPct": null
+          },
+          "vsLastYear": {
+            "clicksPct": null,
+            "impressionsPct": null
+          }
+        }
+      },
+      {
+        "key": "naxos",
+        "current": {
+          "clicks": 4,
+          "impressions": 170,
+          "ctr": 0.024,
+          "position": 11.094
+        },
+        "deltas": {
+          "vsPrevious": {
+            "clicksPct": null,
+            "impressionsPct": null
+          },
+          "vsLastYear": {
+            "clicksPct": null,
+            "impressionsPct": null
+          }
+        }
+      },
+      {
+        "key": "patmos",
+        "current": {
+          "clicks": 3,
+          "impressions": 170,
+          "ctr": 0.018,
+          "position": 10.165
+        },
+        "deltas": {
+          "vsPrevious": {
+            "clicksPct": null,
+            "impressionsPct": null
+          },
+          "vsLastYear": {
+            "clicksPct": null,
+            "impressionsPct": null
+          }
+        }
+      },
+      {
+        "key": "santorini",
+        "current": {
+          "clicks": 3,
+          "impressions": 158,
+          "ctr": 0.019,
+          "position": 26.367
+        },
+        "deltas": {
+          "vsPrevious": {
+            "clicksPct": null,
+            "impressionsPct": null
+          },
+          "vsLastYear": {
+            "clicksPct": null,
+            "impressionsPct": null
+          }
+        }
+      },
+      {
+        "key": "achaia",
+        "current": {
+          "clicks": 2,
+          "impressions": 153,
+          "ctr": 0.013,
+          "position": 8.654
+        },
+        "deltas": {
+          "vsPrevious": {
+            "clicksPct": null,
+            "impressionsPct": null
+          },
+          "vsLastYear": {
+            "clicksPct": null,
+            "impressionsPct": null
+          }
+        }
+      },
+      {
+        "key": "zakynthos",
+        "current": {
+          "clicks": 4,
+          "impressions": 153,
+          "ctr": 0.026,
+          "position": 10.752
+        },
+        "deltas": {
+          "vsPrevious": {
+            "clicksPct": null,
+            "impressionsPct": null
+          },
+          "vsLastYear": {
+            "clicksPct": null,
+            "impressionsPct": null
+          }
+        }
+      },
+      {
+        "key": "east-attica",
+        "current": {
+          "clicks": 4,
+          "impressions": 144,
+          "ctr": 0.028,
+          "position": 11.688
+        },
+        "deltas": {
+          "vsPrevious": {
+            "clicksPct": null,
+            "impressionsPct": null
+          },
+          "vsLastYear": {
+            "clicksPct": null,
+            "impressionsPct": null
+          }
+        }
+      },
+      {
+        "key": "antiparos",
+        "current": {
+          "clicks": 3,
+          "impressions": 141,
+          "ctr": 0.021,
+          "position": 10.631
+        },
+        "deltas": {
+          "vsPrevious": {
+            "clicksPct": null,
+            "impressionsPct": null
+          },
+          "vsLastYear": {
+            "clicksPct": null,
+            "impressionsPct": null
+          }
+        }
+      },
+      {
+        "key": "kythira",
+        "current": {
+          "clicks": 4,
+          "impressions": 136,
+          "ctr": 0.029,
+          "position": 8.375
+        },
+        "deltas": {
+          "vsPrevious": {
+            "clicksPct": null,
+            "impressionsPct": null
+          },
+          "vsLastYear": {
+            "clicksPct": null,
+            "impressionsPct": null
+          }
+        }
+      },
+      {
+        "key": "ithaca",
+        "current": {
+          "clicks": 2,
+          "impressions": 134,
+          "ctr": 0.015,
+          "position": 10.694
+        },
+        "deltas": {
+          "vsPrevious": {
+            "clicksPct": null,
+            "impressionsPct": null
+          },
+          "vsLastYear": {
+            "clicksPct": null,
+            "impressionsPct": null
+          }
+        }
+      },
+      {
+        "key": "kavala",
+        "current": {
+          "clicks": 2,
+          "impressions": 133,
+          "ctr": 0.015,
+          "position": 9.805
+        },
+        "deltas": {
+          "vsPrevious": {
+            "clicksPct": null,
+            "impressionsPct": null
+          },
+          "vsLastYear": {
+            "clicksPct": null,
+            "impressionsPct": null
+          }
+        }
+      },
+      {
+        "key": "messinia",
+        "current": {
+          "clicks": 1,
+          "impressions": 133,
+          "ctr": 0.008,
+          "position": 8.511
+        },
+        "deltas": {
+          "vsPrevious": {
+            "clicksPct": null,
+            "impressionsPct": null
+          },
+          "vsLastYear": {
+            "clicksPct": null,
+            "impressionsPct": null
+          }
+        }
+      },
+      {
+        "key": "viotia",
+        "current": {
+          "clicks": 2,
+          "impressions": 133,
+          "ctr": 0.015,
+          "position": 9.752
+        },
+        "deltas": {
+          "vsPrevious": {
+            "clicksPct": null,
+            "impressionsPct": null
+          },
+          "vsLastYear": {
+            "clicksPct": null,
+            "impressionsPct": null
+          }
+        }
+      },
+      {
+        "key": "andros",
+        "current": {
+          "clicks": 2,
+          "impressions": 132,
+          "ctr": 0.015,
+          "position": 9.773
+        },
+        "deltas": {
+          "vsPrevious": {
+            "clicksPct": null,
+            "impressionsPct": null
+          },
+          "vsLastYear": {
+            "clicksPct": null,
+            "impressionsPct": null
+          }
+        }
+      },
+      {
+        "key": "skopelos",
+        "current": {
+          "clicks": 1,
+          "impressions": 131,
+          "ctr": 0.008,
+          "position": 9.466
+        },
+        "deltas": {
+          "vsPrevious": {
+            "clicksPct": null,
+            "impressionsPct": null
+          },
+          "vsLastYear": {
+            "clicksPct": null,
+            "impressionsPct": null
+          }
+        }
+      },
+      {
+        "key": "lasithi",
+        "current": {
+          "clicks": 3,
+          "impressions": 125,
+          "ctr": 0.024,
+          "position": 9.536
+        },
+        "deltas": {
+          "vsPrevious": {
+            "clicksPct": null,
+            "impressionsPct": null
+          },
+          "vsLastYear": {
+            "clicksPct": null,
+            "impressionsPct": null
+          }
+        }
+      },
+      {
+        "key": "kythnos",
+        "current": {
+          "clicks": 8,
+          "impressions": 123,
+          "ctr": 0.065,
+          "position": 6.488
+        },
+        "deltas": {
+          "vsPrevious": {
+            "clicksPct": null,
+            "impressionsPct": null
+          },
+          "vsLastYear": {
+            "clicksPct": null,
+            "impressionsPct": null
+          }
+        }
+      },
+      {
+        "key": "athens-area",
+        "current": {
+          "clicks": 0,
+          "impressions": 121,
+          "ctr": 0,
+          "position": 12.198
+        },
+        "deltas": {
+          "vsPrevious": {
+            "clicksPct": null,
+            "impressionsPct": null
+          },
+          "vsLastYear": {
+            "clicksPct": null,
+            "impressionsPct": null
+          }
+        }
+      },
+      {
+        "key": "thasos",
+        "current": {
+          "clicks": 1,
+          "impressions": 120,
+          "ctr": 0.008,
+          "position": 15.233
+        },
+        "deltas": {
+          "vsPrevious": {
+            "clicksPct": null,
+            "impressionsPct": null
+          },
+          "vsLastYear": {
+            "clicksPct": null,
+            "impressionsPct": null
+          }
+        }
+      },
+      {
+        "key": "rhodes",
+        "current": {
+          "clicks": 3,
+          "impressions": 119,
+          "ctr": 0.025,
+          "position": 13.151
+        },
+        "deltas": {
+          "vsPrevious": {
+            "clicksPct": null,
+            "impressionsPct": null
+          },
+          "vsLastYear": {
+            "clicksPct": null,
+            "impressionsPct": null
+          }
+        }
+      },
+      {
+        "key": "argolida",
+        "current": {
+          "clicks": 1,
+          "impressions": 119,
+          "ctr": 0.008,
+          "position": 8.899
+        },
+        "deltas": {
+          "vsPrevious": {
+            "clicksPct": null,
+            "impressionsPct": null
+          },
+          "vsLastYear": {
+            "clicksPct": null,
+            "impressionsPct": null
+          }
+        }
+      },
+      {
+        "key": "ileia",
+        "current": {
+          "clicks": 3,
+          "impressions": 115,
+          "ctr": 0.026,
+          "position": 7.661
+        },
+        "deltas": {
+          "vsPrevious": {
+            "clicksPct": null,
+            "impressionsPct": null
+          },
+          "vsLastYear": {
+            "clicksPct": null,
+            "impressionsPct": null
+          }
+        }
+      },
+      {
+        "key": "skiathos",
+        "current": {
+          "clicks": 8,
+          "impressions": 113,
+          "ctr": 0.071,
+          "position": 9.522
+        },
+        "deltas": {
+          "vsPrevious": {
+            "clicksPct": null,
+            "impressionsPct": null
+          },
+          "vsLastYear": {
+            "clicksPct": null,
+            "impressionsPct": null
+          }
+        }
+      },
+      {
+        "key": "tinos",
+        "current": {
+          "clicks": 5,
+          "impressions": 112,
+          "ctr": 0.045,
+          "position": 9.393
+        },
+        "deltas": {
+          "vsPrevious": {
+            "clicksPct": null,
+            "impressionsPct": null
+          },
+          "vsLastYear": {
+            "clicksPct": null,
+            "impressionsPct": null
+          }
+        }
+      }
+    ],
+    "byCountry": [
+      {
+        "key": "grc",
+        "current": {
+          "clicks": 726,
+          "impressions": 19040,
+          "ctr": 0.038,
+          "position": 11.266
+        },
+        "deltas": {
+          "vsPrevious": {
+            "clicksPct": 39.333,
+            "impressionsPct": 513.595
+          },
+          "vsLastYear": {
+            "clicksPct": null,
+            "impressionsPct": null
+          }
+        }
+      },
+      {
+        "key": "nld",
+        "current": {
+          "clicks": 6,
+          "impressions": 1895,
+          "ctr": 0.003,
+          "position": 8.307
+        },
+        "deltas": {
+          "vsPrevious": {
+            "clicksPct": null,
+            "impressionsPct": null
+          },
+          "vsLastYear": {
+            "clicksPct": null,
+            "impressionsPct": null
+          }
+        }
+      },
+      {
+        "key": "deu",
+        "current": {
+          "clicks": 8,
+          "impressions": 959,
+          "ctr": 0.008,
+          "position": 11.634
+        },
+        "deltas": {
+          "vsPrevious": {
+            "clicksPct": null,
+            "impressionsPct": null
+          },
+          "vsLastYear": {
+            "clicksPct": null,
+            "impressionsPct": null
+          }
+        }
+      },
+      {
+        "key": "usa",
+        "current": {
+          "clicks": 7,
+          "impressions": 891,
+          "ctr": 0.008,
+          "position": 13.816
+        },
+        "deltas": {
+          "vsPrevious": {
+            "clicksPct": null,
+            "impressionsPct": 110.375
+          },
+          "vsLastYear": {
+            "clicksPct": null,
+            "impressionsPct": null
+          }
+        }
+      },
+      {
+        "key": "gbr",
+        "current": {
+          "clicks": 13,
+          "impressions": 809,
+          "ctr": 0.016,
+          "position": 15.881
+        },
+        "deltas": {
+          "vsPrevious": {
+            "clicksPct": null,
+            "impressionsPct": null
+          },
+          "vsLastYear": {
+            "clicksPct": null,
+            "impressionsPct": null
+          }
+        }
+      },
+      {
+        "key": "ita",
+        "current": {
+          "clicks": 13,
+          "impressions": 528,
+          "ctr": 0.025,
+          "position": 13.545
+        },
+        "deltas": {
+          "vsPrevious": {
+            "clicksPct": null,
+            "impressionsPct": 527
+          },
+          "vsLastYear": {
+            "clicksPct": null,
+            "impressionsPct": null
+          }
+        }
+      },
+      {
+        "key": "rou",
+        "current": {
+          "clicks": 10,
+          "impressions": 359,
+          "ctr": 0.028,
+          "position": 10.702
+        },
+        "deltas": {
+          "vsPrevious": {
+            "clicksPct": null,
+            "impressionsPct": null
+          },
+          "vsLastYear": {
+            "clicksPct": null,
+            "impressionsPct": null
+          }
+        }
+      },
+      {
+        "key": "tur",
+        "current": {
+          "clicks": 6,
+          "impressions": 203,
+          "ctr": 0.03,
+          "position": 9.079
+        },
+        "deltas": {
+          "vsPrevious": {
+            "clicksPct": null,
+            "impressionsPct": null
+          },
+          "vsLastYear": {
+            "clicksPct": null,
+            "impressionsPct": null
+          }
+        }
+      },
+      {
+        "key": "swe",
+        "current": {
+          "clicks": 7,
+          "impressions": 198,
+          "ctr": 0.035,
+          "position": 8.687
+        },
+        "deltas": {
+          "vsPrevious": {
+            "clicksPct": null,
+            "impressionsPct": null
+          },
+          "vsLastYear": {
+            "clicksPct": null,
+            "impressionsPct": null
+          }
+        }
+      },
+      {
+        "key": "bgr",
+        "current": {
+          "clicks": 4,
+          "impressions": 195,
+          "ctr": 0.021,
+          "position": 8.903
+        },
+        "deltas": {
+          "vsPrevious": {
+            "clicksPct": null,
+            "impressionsPct": null
+          },
+          "vsLastYear": {
+            "clicksPct": null,
+            "impressionsPct": null
+          }
+        }
+      },
+      {
+        "key": "cyp",
+        "current": {
+          "clicks": 1,
+          "impressions": 167,
+          "ctr": 0.006,
+          "position": 9.778
+        },
+        "deltas": {
+          "vsPrevious": {
+            "clicksPct": null,
+            "impressionsPct": null
+          },
+          "vsLastYear": {
+            "clicksPct": null,
+            "impressionsPct": null
+          }
+        }
+      },
+      {
+        "key": "srb",
+        "current": {
+          "clicks": 2,
+          "impressions": 157,
+          "ctr": 0.013,
+          "position": 8.471
+        },
+        "deltas": {
+          "vsPrevious": {
+            "clicksPct": null,
+            "impressionsPct": null
+          },
+          "vsLastYear": {
+            "clicksPct": null,
+            "impressionsPct": null
+          }
+        }
+      },
+      {
+        "key": "esp",
+        "current": {
+          "clicks": 17,
+          "impressions": 154,
+          "ctr": 0.11,
+          "position": 11.513
+        },
+        "deltas": {
+          "vsPrevious": {
+            "clicksPct": null,
+            "impressionsPct": null
+          },
+          "vsLastYear": {
+            "clicksPct": null,
+            "impressionsPct": null
+          }
+        }
+      },
+      {
+        "key": "fra",
+        "current": {
+          "clicks": 9,
+          "impressions": 151,
+          "ctr": 0.06,
+          "position": 7.139
+        },
+        "deltas": {
+          "vsPrevious": {
+            "clicksPct": null,
+            "impressionsPct": null
+          },
+          "vsLastYear": {
+            "clicksPct": null,
+            "impressionsPct": null
+          }
+        }
+      },
+      {
+        "key": "che",
+        "current": {
+          "clicks": 3,
+          "impressions": 145,
+          "ctr": 0.021,
+          "position": 8.979
+        },
+        "deltas": {
+          "vsPrevious": {
+            "clicksPct": null,
+            "impressionsPct": null
+          },
+          "vsLastYear": {
+            "clicksPct": null,
+            "impressionsPct": null
+          }
+        }
+      },
+      {
+        "key": "aut",
+        "current": {
+          "clicks": 3,
+          "impressions": 127,
+          "ctr": 0.024,
+          "position": 11.803
+        },
+        "deltas": {
+          "vsPrevious": {
+            "clicksPct": null,
+            "impressionsPct": null
+          },
+          "vsLastYear": {
+            "clicksPct": null,
+            "impressionsPct": null
+          }
+        }
+      },
+      {
+        "key": "hun",
+        "current": {
+          "clicks": 2,
+          "impressions": 115,
+          "ctr": 0.017,
+          "position": 9.939
+        },
+        "deltas": {
+          "vsPrevious": {
+            "clicksPct": null,
+            "impressionsPct": null
+          },
+          "vsLastYear": {
+            "clicksPct": null,
+            "impressionsPct": null
+          }
+        }
+      },
+      {
+        "key": "cze",
+        "current": {
+          "clicks": 2,
+          "impressions": 112,
+          "ctr": 0.018,
+          "position": 7.893
+        },
+        "deltas": {
+          "vsPrevious": {
+            "clicksPct": null,
+            "impressionsPct": null
+          },
+          "vsLastYear": {
+            "clicksPct": null,
+            "impressionsPct": null
+          }
+        }
+      },
+      {
+        "key": "bel",
+        "current": {
+          "clicks": 4,
+          "impressions": 104,
+          "ctr": 0.038,
+          "position": 9.115
+        },
+        "deltas": {
+          "vsPrevious": {
+            "clicksPct": null,
+            "impressionsPct": null
+          },
+          "vsLastYear": {
+            "clicksPct": null,
+            "impressionsPct": null
+          }
+        }
+      },
+      {
+        "key": "aus",
+        "current": {
+          "clicks": 3,
+          "impressions": 96,
+          "ctr": 0.031,
+          "position": 19.156
+        },
+        "deltas": {
+          "vsPrevious": {
+            "clicksPct": null,
+            "impressionsPct": null
+          },
+          "vsLastYear": {
+            "clicksPct": null,
+            "impressionsPct": null
+          }
+        }
+      }
+    ],
+    "byDevice": [
+      {
+        "key": "mobile",
+        "current": {
+          "clicks": 717,
+          "impressions": 18857,
+          "ctr": 0.038,
+          "position": 8.768
+        },
+        "deltas": {
+          "vsPrevious": {
+            "clicksPct": 88.625,
+            "impressionsPct": 1449.538
+          },
+          "vsLastYear": {
+            "clicksPct": null,
+            "impressionsPct": null
+          }
+        }
+      },
+      {
+        "key": "desktop",
+        "current": {
+          "clicks": 149,
+          "impressions": 8687,
+          "ctr": 0.017,
+          "position": 16.389
+        },
+        "deltas": {
+          "vsPrevious": {
+            "clicksPct": 13.9,
+            "impressionsPct": 254.5
+          },
+          "vsLastYear": {
+            "clicksPct": null,
+            "impressionsPct": null
+          }
+        }
+      },
+      {
+        "key": "tablet",
+        "current": {
+          "clicks": 12,
+          "impressions": 193,
+          "ctr": 0.062,
+          "position": 8.477
+        },
+        "deltas": {
+          "vsPrevious": {
+            "clicksPct": null,
+            "impressionsPct": null
+          },
+          "vsLastYear": {
+            "clicksPct": null,
+            "impressionsPct": null
+          }
+        }
+      }
+    ]
+  },
+  "localeCountryMatch": [
+    {
+      "locale": "el",
+      "totalImpressions": 3196,
+      "topCountries": [
+        {
+          "country": "grc",
+          "impressions": 2988,
+          "share": 0.935
+        },
+        {
+          "country": "gbr",
+          "impressions": 37,
+          "share": 0.012
+        },
+        {
+          "country": "deu",
+          "impressions": 34,
+          "share": 0.011
+        },
+        {
+          "country": "nld",
+          "impressions": 29,
+          "share": 0.009
+        },
+        {
+          "country": "ita",
+          "impressions": 21,
+          "share": 0.007
+        }
+      ],
+      "matchedShare": 0.935,
+      "verdict": "working"
+    },
+    {
+      "locale": "en",
+      "totalImpressions": 2998,
+      "topCountries": [
+        {
+          "country": "grc",
+          "impressions": 1380,
+          "share": 0.46
+        },
+        {
+          "country": "gbr",
+          "impressions": 207,
+          "share": 0.069
+        },
+        {
+          "country": "ita",
+          "impressions": 146,
+          "share": 0.049
+        },
+        {
+          "country": "usa",
+          "impressions": 137,
+          "share": 0.046
+        },
+        {
+          "country": "deu",
+          "impressions": 112,
+          "share": 0.037
+        }
+      ],
+      "matchedShare": 0.138,
+      "verdict": "wrong_audience"
+    },
+    {
+      "locale": "it",
+      "totalImpressions": 69,
+      "topCountries": [
+        {
+          "country": "grc",
+          "impressions": 39,
+          "share": 0.565
+        },
+        {
+          "country": "ita",
+          "impressions": 28,
+          "share": 0.406
+        },
+        {
+          "country": "rou",
+          "impressions": 1,
+          "share": 0.014
+        },
+        {
+          "country": "ind",
+          "impressions": 1,
+          "share": 0.014
+        }
+      ],
+      "matchedShare": 0.406,
+      "verdict": "no_traffic"
+    },
+    {
+      "locale": "de",
+      "totalImpressions": 45,
+      "topCountries": [
+        {
+          "country": "deu",
+          "impressions": 24,
+          "share": 0.533
+        },
+        {
+          "country": "aut",
+          "impressions": 10,
+          "share": 0.222
+        },
+        {
+          "country": "che",
+          "impressions": 4,
+          "share": 0.089
+        },
+        {
+          "country": "grc",
+          "impressions": 2,
+          "share": 0.044
+        },
+        {
+          "country": "esp",
+          "impressions": 1,
+          "share": 0.022
+        }
+      ],
+      "matchedShare": 0.533,
+      "verdict": "no_traffic"
+    },
+    {
+      "locale": "fr",
+      "totalImpressions": 15,
+      "topCountries": [
+        {
+          "country": "grc",
+          "impressions": 7,
+          "share": 0.467
+        },
+        {
+          "country": "fra",
+          "impressions": 7,
+          "share": 0.467
+        },
+        {
+          "country": "che",
+          "impressions": 1,
+          "share": 0.067
+        }
+      ],
+      "matchedShare": 0.467,
+      "verdict": "no_traffic"
+    }
+  ],
+  "ctrCurve": {
+    "note": "impression-weighted CTR per integer position (Σclicks/Σimpressions); anchored on positions with >=5 queries AND >=200 impressions, isotonic (non-increasing) smoothing, linearly interpolated to a continuous 1..20 curve. Shows raw weightedCtr and smoothedCtr.",
+    "targetPos": 3,
+    "byPosition": {
+      "1": {
+        "weightedCtr": 0.014,
+        "smoothedCtr": 0.038,
+        "sampleSize": 102,
+        "totalImpressions": 139,
+        "interpolated": true
+      },
+      "2": {
+        "weightedCtr": 0.333,
+        "smoothedCtr": 0.038,
+        "sampleSize": 22,
+        "totalImpressions": 36,
+        "interpolated": true
+      },
+      "3": {
+        "weightedCtr": 0,
+        "smoothedCtr": 0.038,
+        "sampleSize": 5,
+        "totalImpressions": 21,
+        "interpolated": true
+      },
+      "4": {
+        "weightedCtr": 0.26,
+        "smoothedCtr": 0.038,
+        "sampleSize": 13,
+        "totalImpressions": 104,
+        "interpolated": true
+      },
+      "5": {
+        "weightedCtr": 0.059,
+        "smoothedCtr": 0.038,
+        "sampleSize": 17,
+        "totalImpressions": 118,
+        "interpolated": true
+      },
+      "6": {
+        "weightedCtr": 0.026,
+        "smoothedCtr": 0.038,
+        "sampleSize": 21,
+        "totalImpressions": 116,
+        "interpolated": true
+      },
+      "7": {
+        "weightedCtr": 0.04,
+        "smoothedCtr": 0.038,
+        "sampleSize": 57,
+        "totalImpressions": 173,
+        "interpolated": true
+      },
+      "8": {
+        "weightedCtr": 0.038,
+        "smoothedCtr": 0.038,
+        "sampleSize": 75,
+        "totalImpressions": 319,
+        "interpolated": false
+      },
+      "9": {
+        "weightedCtr": 0.01,
+        "smoothedCtr": 0.011,
+        "sampleSize": 102,
+        "totalImpressions": 486,
+        "interpolated": false
+      },
+      "10": {
+        "weightedCtr": 0.007,
+        "smoothedCtr": 0.011,
+        "sampleSize": 150,
+        "totalImpressions": 695,
+        "interpolated": false
+      },
+      "11": {
+        "weightedCtr": 0.007,
+        "smoothedCtr": 0.011,
+        "sampleSize": 193,
+        "totalImpressions": 758,
+        "interpolated": false
+      },
+      "12": {
+        "weightedCtr": 0.017,
+        "smoothedCtr": 0.011,
+        "sampleSize": 95,
+        "totalImpressions": 423,
+        "interpolated": false
+      },
+      "13": {
+        "weightedCtr": 0.03,
+        "smoothedCtr": 0.011,
+        "sampleSize": 61,
+        "totalImpressions": 232,
+        "interpolated": false
+      },
+      "14": {
+        "weightedCtr": 0.016,
+        "smoothedCtr": 0.011,
+        "sampleSize": 31,
+        "totalImpressions": 64,
+        "interpolated": true
+      },
+      "15": {
+        "weightedCtr": 0.027,
+        "smoothedCtr": 0.011,
+        "sampleSize": 21,
+        "totalImpressions": 75,
+        "interpolated": true
+      },
+      "16": {
+        "weightedCtr": 0.012,
+        "smoothedCtr": 0.011,
+        "sampleSize": 22,
+        "totalImpressions": 84,
+        "interpolated": true
+      },
+      "17": {
+        "weightedCtr": 0,
+        "smoothedCtr": 0.011,
+        "sampleSize": 13,
+        "totalImpressions": 39,
+        "interpolated": true
+      },
+      "18": {
+        "weightedCtr": 0,
+        "smoothedCtr": 0.011,
+        "sampleSize": 27,
+        "totalImpressions": 61,
+        "interpolated": true
+      },
+      "19": {
+        "weightedCtr": 0,
+        "smoothedCtr": 0.011,
+        "sampleSize": 16,
+        "totalImpressions": 24,
+        "interpolated": true
+      },
+      "20": {
+        "weightedCtr": 0.022,
+        "smoothedCtr": 0.011,
+        "sampleSize": 20,
+        "totalImpressions": 45,
+        "interpolated": true
+      }
+    }
+  },
+  "strikingDistance": [
+    {
+      "query": "παξοι παραλιεσ για παιδια",
+      "page": "/el/family-beaches/paxos/",
+      "impressions": 60,
+      "clicks": 0,
+      "ctr": 0,
+      "position": 10.4,
+      "targetPos": 3,
+      "targetCtr": 0.038,
+      "estClicks": 2.3
+    },
+    {
+      "query": "τελενδοσ παραλιεσ",
+      "page": "/el/beaches/telendos/",
+      "impressions": 58,
+      "clicks": 0,
+      "ctr": 0,
+      "position": 9.983,
+      "targetPos": 3,
+      "targetCtr": 0.038,
+      "estClicks": 2.2
+    },
+    {
+      "query": "tholos beach",
+      "page": "/beaches/lasithi/739-tholos/",
+      "impressions": 52,
+      "clicks": 0,
+      "ctr": 0,
+      "position": 11.442,
+      "targetPos": 3,
+      "targetCtr": 0.038,
+      "estClicks": 2
+    },
+    {
+      "query": "κατσαδια λειψοι",
+      "page": "/el/beaches/lipsi/2373-katsadia/",
+      "impressions": 49,
+      "clicks": 0,
+      "ctr": 0,
+      "position": 9.184,
+      "targetPos": 3,
+      "targetCtr": 0.038,
+      "estClicks": 1.9
+    },
+    {
+      "query": "παραλία διρού",
+      "page": "/el/beaches/lakonia/3071-paralia-dirou/",
+      "impressions": 67,
+      "clicks": 1,
+      "ctr": 0.015,
+      "position": 9.119,
+      "targetPos": 3,
+      "targetCtr": 0.038,
+      "estClicks": 1.5
+    },
+    {
+      "query": "καιρός παραλία ψάθα",
+      "page": "/el/beaches/west-attica/192-psatha/",
+      "impressions": 55,
+      "clicks": 1,
+      "ctr": 0.018,
+      "position": 10.473,
+      "targetPos": 3,
+      "targetCtr": 0.038,
+      "estClicks": 1.1
+    },
+    {
+      "query": "σκοπελοσ παραλιεσ για παιδια",
+      "page": "/el/family-beaches/skopelos/",
+      "impressions": 51,
+      "clicks": 1,
+      "ctr": 0.02,
+      "position": 12.137,
+      "targetPos": 3,
+      "targetCtr": 0.038,
+      "estClicks": 0.9
+    },
+    {
+      "query": "calm beach",
+      "page": "/",
+      "impressions": 78,
+      "clicks": 26,
+      "ctr": 0.333,
+      "position": 4.321,
+      "targetPos": 3,
+      "targetCtr": 0.038,
+      "estClicks": 0
+    },
+    {
+      "query": "αιγινα παραλιεσ οργανωμενεσ",
+      "page": "/el/organized-beaches/aegina/",
+      "impressions": 66,
+      "clicks": 3,
+      "ctr": 0.045,
+      "position": 13.288,
+      "targetPos": 3,
+      "targetCtr": 0.038,
+      "estClicks": 0
+    }
+  ],
+  "ctrGaps": [],
+  "zeroClick": [
+    {
+      "page": "/sunset-beaches/sifnos/",
+      "impressions": 127,
+      "clicks": 0,
+      "position": 9.457,
+      "locale": "en",
+      "pageType": "other",
+      "region": null
+    },
+    {
+      "page": "/el/beaches/salamina/3056-kaki-vigla/",
+      "impressions": 109,
+      "clicks": 0,
+      "position": 11.991,
+      "locale": "el",
+      "pageType": "beach",
+      "region": "salamina"
+    },
+    {
+      "page": "/el/beaches/west-attica/191-prosili/",
+      "impressions": 106,
+      "clicks": 0,
+      "position": 12.774,
+      "locale": "el",
+      "pageType": "beach",
+      "region": "west-attica"
+    },
+    {
+      "page": "/el/beaches/lipsi/2373-katsadia/",
+      "impressions": 103,
+      "clicks": 0,
+      "position": 8.689,
+      "locale": "el",
+      "pageType": "beach",
+      "region": "lipsi"
+    }
+  ],
+  "cannibalization": [],
+  "risingDecaying": {
+    "risingQueries": [
+      {
+        "query": "calm beach",
+        "clicksCurrent": 26,
+        "clicksPrevious": 2,
+        "clicksDelta": 24,
+        "seasonalityLikely": null
+      },
+      {
+        "query": "calmbeach",
+        "clicksCurrent": 10,
+        "clicksPrevious": 0,
+        "clicksDelta": 10,
+        "seasonalityLikely": null
+      },
+      {
+        "query": "αιγινα παραλιεσ οργανωμενεσ",
+        "clicksCurrent": 3,
+        "clicksPrevious": 0,
+        "clicksDelta": 3,
+        "seasonalityLikely": null
+      },
+      {
+        "query": "best snorkeling halkidiki",
+        "clicksCurrent": 2,
+        "clicksPrevious": 0,
+        "clicksDelta": 2,
+        "seasonalityLikely": null
+      },
+      {
+        "query": "gerania beach milos",
+        "clicksCurrent": 2,
+        "clicksPrevious": 0,
+        "clicksDelta": 2,
+        "seasonalityLikely": null
+      },
+      {
+        "query": "halkidiki snorkeling",
+        "clicksCurrent": 2,
+        "clicksPrevious": 0,
+        "clicksDelta": 2,
+        "seasonalityLikely": null
+      },
+      {
+        "query": "kampanes beach",
+        "clicksCurrent": 2,
+        "clicksPrevious": 0,
+        "clicksDelta": 2,
+        "seasonalityLikely": null
+      },
+      {
+        "query": "naxos snorkeling spots",
+        "clicksCurrent": 2,
+        "clicksPrevious": 0,
+        "clicksDelta": 2,
+        "seasonalityLikely": null
+      },
+      {
+        "query": "αργολιδα παραλιεσ για παιδια",
+        "clicksCurrent": 2,
+        "clicksPrevious": 0,
+        "clicksDelta": 2,
+        "seasonalityLikely": null
+      },
+      {
+        "query": "παραλια ναυτιλος",
+        "clicksCurrent": 2,
+        "clicksPrevious": 0,
+        "clicksDelta": 2,
+        "seasonalityLikely": null
+      },
+      {
+        "query": "παραλιεσ πιεριασ για παιδια",
+        "clicksCurrent": 2,
+        "clicksPrevious": 0,
+        "clicksDelta": 2,
+        "seasonalityLikely": null
+      },
+      {
+        "query": "σκοπελοσ παραλιεσ οργανωμενεσ",
+        "clicksCurrent": 2,
+        "clicksPrevious": 0,
+        "clicksDelta": 2,
+        "seasonalityLikely": null
+      },
+      {
+        "query": "agios nikolaos symi",
+        "clicksCurrent": 1,
+        "clicksPrevious": 0,
+        "clicksDelta": 1,
+        "seasonalityLikely": null
+      },
+      {
+        "query": "alonissos snorkeling",
+        "clicksCurrent": 1,
+        "clicksPrevious": 0,
+        "clicksDelta": 1,
+        "seasonalityLikely": null
+      },
+      {
+        "query": "ammoglossa beach lefkada",
+        "clicksCurrent": 1,
+        "clicksPrevious": 0,
+        "clicksDelta": 1,
+        "seasonalityLikely": null
+      },
+      {
+        "query": "ampovos beach",
+        "clicksCurrent": 1,
+        "clicksPrevious": 0,
+        "clicksDelta": 1,
+        "seasonalityLikely": null
+      },
+      {
+        "query": "andros snorkeling",
+        "clicksCurrent": 1,
+        "clicksPrevious": 0,
+        "clicksDelta": 1,
+        "seasonalityLikely": null
+      },
+      {
+        "query": "calm beach near me",
+        "clicksCurrent": 1,
+        "clicksPrevious": 0,
+        "clicksDelta": 1,
+        "seasonalityLikely": null
+      },
+      {
+        "query": "gerontas beach milos",
+        "clicksCurrent": 1,
+        "clicksPrevious": 0,
+        "clicksDelta": 1,
+        "seasonalityLikely": null
+      },
+      {
+        "query": "halkidiki hidden beaches",
+        "clicksCurrent": 1,
+        "clicksPrevious": 0,
+        "clicksDelta": 1,
+        "seasonalityLikely": null
+      }
+    ],
+    "decayingQueries": [],
+    "risingPages": [
+      {
+        "page": "/",
+        "clicksCurrent": 77,
+        "clicksPrevious": 18,
+        "clicksDelta": 59,
+        "seasonalityLikely": null
+      },
+      {
+        "page": "/snorkeling-beaches/halkidiki/",
+        "clicksCurrent": 13,
+        "clicksPrevious": 0,
+        "clicksDelta": 13,
+        "seasonalityLikely": null
+      },
+      {
+        "page": "/snorkeling-beaches/lemnos/",
+        "clicksCurrent": 13,
+        "clicksPrevious": 0,
+        "clicksDelta": 13,
+        "seasonalityLikely": null
+      },
+      {
+        "page": "/el/organized-beaches/aegina/",
+        "clicksCurrent": 10,
+        "clicksPrevious": 0,
+        "clicksDelta": 10,
+        "seasonalityLikely": null
+      },
+      {
+        "page": "/snorkeling-beaches/samos/",
+        "clicksCurrent": 10,
+        "clicksPrevious": 0,
+        "clicksDelta": 10,
+        "seasonalityLikely": null
+      },
+      {
+        "page": "/el/family-beaches/pieria/",
+        "clicksCurrent": 9,
+        "clicksPrevious": 0,
+        "clicksDelta": 9,
+        "seasonalityLikely": null
+      },
+      {
+        "page": "/snorkeling-beaches/syros/",
+        "clicksCurrent": 9,
+        "clicksPrevious": 0,
+        "clicksDelta": 9,
+        "seasonalityLikely": null
+      },
+      {
+        "page": "/el/secluded-beaches/kea/",
+        "clicksCurrent": 8,
+        "clicksPrevious": 0,
+        "clicksDelta": 8,
+        "seasonalityLikely": null
+      },
+      {
+        "page": "/best-beaches-milos-today/",
+        "clicksCurrent": 7,
+        "clicksPrevious": 0,
+        "clicksDelta": 7,
+        "seasonalityLikely": null
+      },
+      {
+        "page": "/el/organized-beaches/milos/",
+        "clicksCurrent": 7,
+        "clicksPrevious": 0,
+        "clicksDelta": 7,
+        "seasonalityLikely": null
+      },
+      {
+        "page": "/el/sheltered-beaches/andros/",
+        "clicksCurrent": 7,
+        "clicksPrevious": 0,
+        "clicksDelta": 7,
+        "seasonalityLikely": null
+      },
+      {
+        "page": "/el/sunset-beaches/skyros/",
+        "clicksCurrent": 7,
+        "clicksPrevious": 0,
+        "clicksDelta": 7,
+        "seasonalityLikely": null
+      },
+      {
+        "page": "/secluded-beaches/skiathos/",
+        "clicksCurrent": 7,
+        "clicksPrevious": 0,
+        "clicksDelta": 7,
+        "seasonalityLikely": null
+      },
+      {
+        "page": "/snorkeling-beaches/lesvos/",
+        "clicksCurrent": 7,
+        "clicksPrevious": 0,
+        "clicksDelta": 7,
+        "seasonalityLikely": null
+      },
+      {
+        "page": "/snorkeling-beaches/rethymno/",
+        "clicksCurrent": 7,
+        "clicksPrevious": 0,
+        "clicksDelta": 7,
+        "seasonalityLikely": null
+      },
+      {
+        "page": "/beaches/milos/1911-kampanes/",
+        "clicksCurrent": 6,
+        "clicksPrevious": 0,
+        "clicksDelta": 6,
+        "seasonalityLikely": null
+      },
+      {
+        "page": "/el/organized-beaches/astypalaia/",
+        "clicksCurrent": 6,
+        "clicksPrevious": 0,
+        "clicksDelta": 6,
+        "seasonalityLikely": null
+      },
+      {
+        "page": "/el/organized-beaches/corfu/",
+        "clicksCurrent": 6,
+        "clicksPrevious": 0,
+        "clicksDelta": 6,
+        "seasonalityLikely": null
+      },
+      {
+        "page": "/el/organized-beaches/skopelos/",
+        "clicksCurrent": 6,
+        "clicksPrevious": 0,
+        "clicksDelta": 6,
+        "seasonalityLikely": null
+      },
+      {
+        "page": "/el/sunset-beaches/thasos/",
+        "clicksCurrent": 6,
+        "clicksPrevious": 0,
+        "clicksDelta": 6,
+        "seasonalityLikely": null
+      }
+    ],
+    "decayingPages": []
+  },
+  "newQueries": [
+    {
+      "query": "παραλία διρού",
+      "impressions": 67,
+      "clicks": 1,
+      "ctr": 0.015,
+      "position": 9.119
+    },
+    {
+      "query": "αιγινα παραλιεσ οργανωμενεσ",
+      "impressions": 66,
+      "clicks": 3,
+      "ctr": 0.045,
+      "position": 13.288
+    },
+    {
+      "query": "παξοι παραλιεσ για παιδια",
+      "impressions": 60,
+      "clicks": 0,
+      "ctr": 0,
+      "position": 10.4
+    },
+    {
+      "query": "τελενδοσ παραλιεσ",
+      "impressions": 58,
+      "clicks": 0,
+      "ctr": 0,
+      "position": 9.983
+    },
+    {
+      "query": "καιρός παραλία ψάθα",
+      "impressions": 55,
+      "clicks": 1,
+      "ctr": 0.018,
+      "position": 10.473
+    },
+    {
+      "query": "tholos beach",
+      "impressions": 52,
+      "clicks": 0,
+      "ctr": 0,
+      "position": 11.442
+    },
+    {
+      "query": "σκοπελοσ παραλιεσ για παιδια",
+      "impressions": 51,
+      "clicks": 1,
+      "ctr": 0.02,
+      "position": 12.137
+    },
+    {
+      "query": "κατσαδια λειψοι",
+      "impressions": 49,
+      "clicks": 0,
+      "ctr": 0,
+      "position": 9.184
+    },
+    {
+      "query": "gerania milos",
+      "impressions": 38,
+      "clicks": 0,
+      "ctr": 0,
+      "position": 10.868
+    },
+    {
+      "query": "nopigia beach",
+      "impressions": 37,
+      "clicks": 0,
+      "ctr": 0,
+      "position": 10.865
+    },
+    {
+      "query": "πορτο φινο σαλαμινα παραλια",
+      "impressions": 36,
+      "clicks": 1,
+      "ctr": 0.028,
+      "position": 6.194
+    },
+    {
+      "query": "καραβοστασι πλυτρα",
+      "impressions": 34,
+      "clicks": 1,
+      "ctr": 0.029,
+      "position": 10.941
+    },
+    {
+      "query": "beach",
+      "impressions": 33,
+      "clicks": 0,
+      "ctr": 0,
+      "position": 21.727
+    },
+    {
+      "query": "παραλια λαιμος χαλκιδικη",
+      "impressions": 32,
+      "clicks": 1,
+      "ctr": 0.031,
+      "position": 12.063
+    },
+    {
+      "query": "snorkeling mykonos",
+      "impressions": 32,
+      "clicks": 0,
+      "ctr": 0,
+      "position": 29.656
+    },
+    {
+      "query": "lipsi beaches",
+      "impressions": 31,
+      "clicks": 0,
+      "ctr": 0,
+      "position": 11.29
+    },
+    {
+      "query": "kampanes beach",
+      "impressions": 28,
+      "clicks": 2,
+      "ctr": 0.071,
+      "position": 4.893
+    },
+    {
+      "query": "kampanes milos",
+      "impressions": 28,
+      "clicks": 1,
+      "ctr": 0.036,
+      "position": 6.214
+    },
+    {
+      "query": "kalogeros beach",
+      "impressions": 28,
+      "clicks": 0,
+      "ctr": 0,
+      "position": 27.393
+    },
+    {
+      "query": "agios sostis milos",
+      "impressions": 27,
+      "clicks": 0,
+      "ctr": 0,
+      "position": 10.704
+    },
+    {
+      "query": "σκοπελοσ παραλιεσ οργανωμενεσ",
+      "impressions": 26,
+      "clicks": 2,
+      "ctr": 0.077,
+      "position": 12.192
+    },
+    {
+      "query": "πορτο φινο σαλαμινα",
+      "impressions": 26,
+      "clicks": 0,
+      "ctr": 0,
+      "position": 9.192
+    },
+    {
+      "query": "calma skopelos",
+      "impressions": 25,
+      "clicks": 0,
+      "ctr": 0,
+      "position": 5.24
+    },
+    {
+      "query": "πατμοσ παραλιεσ οργανωμενεσ",
+      "impressions": 25,
+      "clicks": 0,
+      "ctr": 0,
+      "position": 12.32
+    },
+    {
+      "query": "sunset folegandros",
+      "impressions": 23,
+      "clicks": 0,
+      "ctr": 0,
+      "position": 10.522
+    },
+    {
+      "query": "περανι σαλαμινα παραλια",
+      "impressions": 23,
+      "clicks": 0,
+      "ctr": 0,
+      "position": 10.391
+    },
+    {
+      "query": "snorkeling halkidiki",
+      "impressions": 22,
+      "clicks": 1,
+      "ctr": 0.045,
+      "position": 9.091
+    },
+    {
+      "query": "παραλιεσ αργολιδασ",
+      "impressions": 22,
+      "clicks": 0,
+      "ctr": 0,
+      "position": 33.455
+    },
+    {
+      "query": "παραλια ναυτιλος",
+      "impressions": 21,
+      "clicks": 2,
+      "ctr": 0.095,
+      "position": 7.238
+    },
+    {
+      "query": "τουρκομνημα λειψοι",
+      "impressions": 21,
+      "clicks": 0,
+      "ctr": 0,
+      "position": 9.762
+    }
+  ],
+  "contentInventory": {
+    "totalBeaches": 2799,
+    "beachesWithPage": 2799,
+    "beachesSeenInGsc": 1454,
+    "invisibleBeaches": 1345,
+    "byRegion": [
+      {
+        "region": "central-macedonia-halkidiki-mainland",
+        "total": 130,
+        "seenInGsc": 58,
+        "invisible": 72
+      },
+      {
+        "region": "central-greece-evia",
+        "total": 123,
+        "seenInGsc": 64,
+        "invisible": 59
+      },
+      {
+        "region": "north-aegean-lesvos",
+        "total": 60,
+        "seenInGsc": 14,
+        "invisible": 46
+      },
+      {
+        "region": "crete-crete-chania",
+        "total": 88,
+        "seenInGsc": 47,
+        "invisible": 41
+      },
+      {
+        "region": "ionian-islands-kefalonia",
+        "total": 77,
+        "seenInGsc": 37,
+        "invisible": 40
+      },
+      {
+        "region": "attica-east-attica-mainland",
+        "total": 59,
+        "seenInGsc": 20,
+        "invisible": 39
+      },
+      {
+        "region": "crete-crete-lasithi",
+        "total": 60,
+        "seenInGsc": 21,
+        "invisible": 39
+      },
+      {
+        "region": "ionian-islands-corfu",
+        "total": 105,
+        "seenInGsc": 66,
+        "invisible": 39
+      },
+      {
+        "region": "south-aegean-rhodes",
+        "total": 61,
+        "seenInGsc": 24,
+        "invisible": 37
+      },
+      {
+        "region": "peloponnese-lakonia-mainland",
+        "total": 66,
+        "seenInGsc": 32,
+        "invisible": 34
+      },
+      {
+        "region": "crete-crete-heraklion",
+        "total": 53,
+        "seenInGsc": 20,
+        "invisible": 33
+      },
+      {
+        "region": "peloponnese-messinia-mainland",
+        "total": 56,
+        "seenInGsc": 25,
+        "invisible": 31
+      },
+      {
+        "region": "east-macedonia-and-thrace-thasos",
+        "total": 58,
+        "seenInGsc": 29,
+        "invisible": 29
+      },
+      {
+        "region": "south-aegean-ios",
+        "total": 40,
+        "seenInGsc": 12,
+        "invisible": 28
+      },
+      {
+        "region": "thessaly-magnesia-mainland---pelion",
+        "total": 56,
+        "seenInGsc": 28,
+        "invisible": 28
+      },
+      {
+        "region": "thessaly-alonissos",
+        "total": 39,
+        "seenInGsc": 15,
+        "invisible": 24
+      },
+      {
+        "region": "south-aegean-tinos",
+        "total": 40,
+        "seenInGsc": 17,
+        "invisible": 23
+      },
+      {
+        "region": "crete-crete-rethymno",
+        "total": 47,
+        "seenInGsc": 25,
+        "invisible": 22
+      },
+      {
+        "region": "south-aegean-kos",
+        "total": 38,
+        "seenInGsc": 16,
+        "invisible": 22
+      },
+      {
+        "region": "south-aegean-kythnos",
+        "total": 40,
+        "seenInGsc": 18,
+        "invisible": 22
+      },
+      {
+        "region": "south-aegean-andros",
+        "total": 41,
+        "seenInGsc": 20,
+        "invisible": 21
+      },
+      {
+        "region": "north-aegean-chios",
+        "total": 36,
+        "seenInGsc": 16,
+        "invisible": 20
+      },
+      {
+        "region": "west-greece-aetolia-acarnania-mainland",
+        "total": 48,
+        "seenInGsc": 28,
+        "invisible": 20
+      },
+      {
+        "region": "epirus-thesprotia-mainland",
+        "total": 39,
+        "seenInGsc": 20,
+        "invisible": 19
+      },
+      {
+        "region": "south-aegean-karpathos",
+        "total": 45,
+        "seenInGsc": 27,
+        "invisible": 18
+      },
+      {
+        "region": "south-aegean-kea",
+        "total": 34,
+        "seenInGsc": 16,
+        "invisible": 18
+      },
+      {
+        "region": "south-aegean-naxos",
+        "total": 39,
+        "seenInGsc": 22,
+        "invisible": 17
+      },
+      {
+        "region": "peloponnese-argolida-mainland",
+        "total": 34,
+        "seenInGsc": 18,
+        "invisible": 16
+      },
+      {
+        "region": "attica-kythira",
+        "total": 42,
+        "seenInGsc": 27,
+        "invisible": 15
+      },
+      {
+        "region": "north-aegean-lemnos",
+        "total": 40,
+        "seenInGsc": 25,
+        "invisible": 15
+      },
+      {
+        "region": "south-aegean-milos",
+        "total": 42,
+        "seenInGsc": 27,
+        "invisible": 15
+      },
+      {
+        "region": "south-aegean-serifos",
+        "total": 25,
+        "seenInGsc": 10,
+        "invisible": 15
+      },
+      {
+        "region": "thessaly-skiathos",
+        "total": 33,
+        "seenInGsc": 18,
+        "invisible": 15
+      },
+      {
+        "region": "ionian-islands-zakynthos",
+        "total": 39,
+        "seenInGsc": 25,
+        "invisible": 14
+      },
+      {
+        "region": "north-aegean-samos",
+        "total": 43,
+        "seenInGsc": 29,
+        "invisible": 14
+      },
+      {
+        "region": "central-greece-skyros",
+        "total": 21,
+        "seenInGsc": 8,
+        "invisible": 13
+      },
+      {
+        "region": "peloponnese-arkadia-mainland",
+        "total": 16,
+        "seenInGsc": 3,
+        "invisible": 13
+      },
+      {
+        "region": "south-aegean-kalymnos",
+        "total": 20,
+        "seenInGsc": 7,
+        "invisible": 13
+      },
+      {
+        "region": "south-aegean-mykonos",
+        "total": 39,
+        "seenInGsc": 26,
+        "invisible": 13
+      },
+      {
+        "region": "south-aegean-syros",
+        "total": 24,
+        "seenInGsc": 11,
+        "invisible": 13
+      },
+      {
+        "region": "west-greece-ileia-mainland",
+        "total": 16,
+        "seenInGsc": 4,
+        "invisible": 12
+      },
+      {
+        "region": "south-aegean-kimolos",
+        "total": 17,
+        "seenInGsc": 6,
+        "invisible": 11
+      },
+      {
+        "region": "central-greece-fokida-mainland",
+        "total": 20,
+        "seenInGsc": 10,
+        "invisible": 10
+      },
+      {
+        "region": "central-greece-fthiotida-mainland",
+        "total": 18,
+        "seenInGsc": 8,
+        "invisible": 10
+      },
+      {
+        "region": "peloponnese-korinthia-mainland",
+        "total": 25,
+        "seenInGsc": 15,
+        "invisible": 10
+      },
+      {
+        "region": "south-aegean-sifnos",
+        "total": 20,
+        "seenInGsc": 10,
+        "invisible": 10
+      },
+      {
+        "region": "attica-athens-area-mainland",
+        "total": 26,
+        "seenInGsc": 17,
+        "invisible": 9
+      },
+      {
+        "region": "central-macedonia-thessaloniki-area",
+        "total": 16,
+        "seenInGsc": 7,
+        "invisible": 9
+      },
+      {
+        "region": "epirus-preveza-mainland",
+        "total": 26,
+        "seenInGsc": 17,
+        "invisible": 9
+      },
+      {
+        "region": "ionian-islands-ithaca",
+        "total": 25,
+        "seenInGsc": 16,
+        "invisible": 9
+      }
+    ],
+    "note": "Regions sorted by invisible count desc; beachesWithPage assumes every dataset beach is prerendered."
+  },
+  "errors": {}
+}

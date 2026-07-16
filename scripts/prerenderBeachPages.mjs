@@ -3108,6 +3108,20 @@ const staticIslandIntentFallback = (content, island, region, beaches, canonicalU
   `;
 };
 
+// Intent-page titles show in the SERP where Google budgets ~60 chars (gr ~58 —
+// wider glyphs). en/gr already fit via categoryTitleFor/pickUnderLimit, but the
+// de/fr/it intent titles are authored as single strings ending in "| CalmBeach"
+// with no overflow tier, so many ran 67–73 chars and truncated. Google renders the
+// site name separately on mobile (from the WebSite JSON-LD), so the brand is the
+// safe thing to drop when a title is over budget. No-op for titles already fitting.
+const INTENT_BRAND_SUFFIX = ' | CalmBeach';
+const fitIntentTitle = (title, language) => {
+  const max = language === 'gr' ? 58 : 60;
+  return title.length > max && title.endsWith(INTENT_BRAND_SUFFIX)
+    ? title.slice(0, -INTENT_BRAND_SUFFIX.length)
+    : title;
+};
+
 const buildIslandIntentPage = (baseHtml, intent, content, island, region, beaches, imageUrl, locale, emittedLocales = baseLocales) => {
   const pathName = islandIntentPath(intent, region, island);
   const canonicalUrl = canonicalUrlFor(pathName, locale);
@@ -3143,7 +3157,7 @@ const buildIslandIntentPage = (baseHtml, intent, content, island, region, beache
   ];
 
   const htmlWithHead = injectBeachHead(baseHtml, {
-    title: content.title,
+    title: fitIntentTitle(content.title, language),
     description: content.description,
     canonicalUrl,
     imageUrl,

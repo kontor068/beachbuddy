@@ -10,6 +10,17 @@ export const useLocation = (allIslands: Island[]) => {
     return route?.regionId || getActiveWeatherFixtureTargetRegionId() || localStorage.getItem('selectedIslandId') || undefined;
   });
 
+  // True once the visitor has committed to a region — via a deep link, a weather
+  // fixture, a persisted previous choice on load, or by picking a region / "near
+  // me" this session. While false we show the national landing instead of dropping
+  // a first-time visitor straight into a default region. `selectedIsland` below
+  // still resolves to a real region in the background, so every existing
+  // region-scoped memo/effect keeps working unchanged (no null ripple in App.tsx).
+  const [hasCommittedRegion, setHasCommittedRegion] = useState<boolean>(() => {
+    const route = parseBeachDetailPath() || parseBeachRegionPath();
+    return Boolean(route?.regionId || getActiveWeatherFixtureTargetRegionId() || localStorage.getItem('selectedIslandId'));
+  });
+
   // Drives the value-proposition block (homepage hero headline + subheadline). Always shown:
   // the hero is a permanent part of the landing/region view, not a first-visit-only onboarding.
   const [showValueProp, setShowValueProp] = useState<boolean>(true);
@@ -36,6 +47,7 @@ export const useLocation = (allIslands: Island[]) => {
   const selectIsland = useCallback((island: Island) => {
     setAdHocIsland(undefined);
     setSelectedIslandId(island.id);
+    setHasCommittedRegion(true);
     localStorage.setItem('selectedIslandId', island.id);
   }, []);
 
@@ -45,13 +57,29 @@ export const useLocation = (allIslands: Island[]) => {
   const selectAdHocRegion = useCallback((island: Island) => {
     setAdHocIsland(island);
     setSelectedIslandId(island.id);
+    setHasCommittedRegion(true);
   }, []);
+
+  // Return to the national landing (e.g. tapping the logo). Clears the persisted
+  // region so a reload stays on the landing rather than restoring the last region.
+  const goToLanding = useCallback(() => {
+    setAdHocIsland(undefined);
+    setSelectedIslandId(undefined);
+    setHasCommittedRegion(false);
+    if (typeof localStorage !== 'undefined') localStorage.removeItem('selectedIslandId');
+  }, []);
+
+  // Show the landing only once island data exists (so the region grid has content)
+  // and the visitor hasn't committed to a region yet.
+  const showLanding = allIslands.length > 0 && !hasCommittedRegion;
 
   return {
     selectedIsland,
     selectIsland,
     selectAdHocRegion,
     showValueProp,
-    markValuePropSeen
+    markValuePropSeen,
+    showLanding,
+    goToLanding
   };
 };
