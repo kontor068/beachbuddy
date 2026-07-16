@@ -836,7 +836,7 @@ const islandIntents = [
         ],
       },
       fr: {
-        title: `Plages familiales à ${islandName} à l'eau calme et peu profonde | CalmBeach`,
+        title: `Plages familiales à ${islandName} à l'eau peu profonde | CalmBeach`,
         description: `Plages adaptées aux familles à ${islandName}, avec eau généralement peu profonde et accès plus facile. Vérifiez le vent et les vagues avant d'y aller.`,
         h1: `Plages familiales à ${islandName}`,
         intro: `Vous voyagez avec de jeunes enfants à ${islandName} ? Ces ${count} plages familiales ont généralement une eau peu profonde et un accès plus facile. Vérifiez le vent et les vagues dans CalmBeach avant d'y aller.`,
@@ -846,7 +846,7 @@ const islandIntents = [
         ],
       },
       it: {
-        title: `Spiagge per famiglie a ${islandName} con acqua calma e bassa | CalmBeach`,
+        title: `Spiagge per famiglie a ${islandName} con acqua bassa | CalmBeach`,
         description: `Spiagge adatte alle famiglie a ${islandName}, con acqua bassa e accesso più facile. Controlla vento e onde prima di andare.`,
         h1: `Spiagge per famiglie a ${islandName}`,
         intro: `Viaggi con bambini piccoli a ${islandName}? Queste ${count} spiagge per famiglie hanno di solito acqua bassa e un accesso più facile. Controlla vento e onde in CalmBeach prima di andare.`,
@@ -940,7 +940,7 @@ const islandIntents = [
         ],
       },
       de: {
-        title: `Organisierte Strände auf ${islandName} mit Liegen & Einrichtungen | CalmBeach`,
+        title: `Organisierte Strände auf ${islandName} mit Liegen | CalmBeach`,
         description: `Organisierte Strände auf ${islandName} mit Liegen, Sonnenschirmen und Einrichtungen. Prüfe Wind und Wellen, bevor du losfährst.`,
         h1: `Organisierte Strände auf ${islandName}`,
         intro: `Du bevorzugst Liegen, Sonnenschirme und eine Beach Bar auf ${islandName}? Diese ${count} organisierten Strände bieten meist Einrichtungen und einfacheren Zugang. Prüfe Wind und Wellen in CalmBeach, bevor du losfährst.`,
@@ -2445,6 +2445,19 @@ const regionDisplayEn = (regionId, fallbackName) => REGION_DECLENSION[regionId]?
 // Vardaris-protected count; `total` the region's beach count. Numberless fallback
 // when the count is not compelling (0, 1, or all) so we never write "0 sheltered".
 const pickUnderLimit = (tiers, max) => tiers.find(t => t.length <= max) || tiers[tiers.length - 1];
+
+// Static de/fr/it intent titles are authored with a "| CalmBeach" suffix but, unlike
+// en/gr (which run through pickUnderLimit tiers), get no overflow handling — long
+// localized phrases push them past the ~60-char SERP limit and truncate. Drop the
+// brand suffix when the title exceeds the per-language limit (the site name still shows
+// separately on mobile SERPs via the WebSite JSON-LD, §1.3). Idempotent: en/gr and any
+// title already within limit pass through unchanged.
+const INTENT_TITLE_BRAND = ' | CalmBeach';
+const fitIntentTitle = (title, language) => {
+  const max = language === 'gr' ? 58 : 60;
+  if (typeof title !== 'string' || title.length <= max) return title;
+  return title.endsWith(INTENT_TITLE_BRAND) ? title.slice(0, -INTENT_TITLE_BRAND.length) : title;
+};
 const buildRegionShelterCopy = (regionId, nameEl, nameEn, total, sheltered, language) => {
   const w = windWordsFor(regionId);
   const numberless = sheltered < 2 || sheltered >= total;
@@ -3033,7 +3046,7 @@ const buildIslandIntentPage = (baseHtml, intent, content, island, region, beache
   ];
 
   const htmlWithHead = injectBeachHead(baseHtml, {
-    title: content.title,
+    title: fitIntentTitle(content.title, locale.language),
     description: content.description,
     canonicalUrl,
     imageUrl,
