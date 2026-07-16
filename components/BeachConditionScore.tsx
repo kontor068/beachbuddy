@@ -20,6 +20,10 @@ interface BeachConditionScoreProps {
   selectedHour?: number;
   canClaimWindProtection?: boolean;
   boatAccess?: boolean;
+  /** True when a geometric direct swell breaks on this beach (from the ranking's direct_swell
+   *  warning); drops the protected/partial wave floor so the displayed sea score/icon matches
+   *  how the ranking already scores it. */
+  directSwell?: boolean;
 }
 
 type DayLabel = (day: string, isToday: boolean) => string;
@@ -267,7 +271,8 @@ export const BeachConditionScore: React.FC<BeachConditionScoreProps> = ({
   selectedDate,
   selectedHour,
   canClaimWindProtection = false,
-  boatAccess = false
+  boatAccess = false,
+  directSwell = false
 }) => {
   const rawSeaExposureLevel: ExposureLevel = getSeaExposureLevel(isExposed, exposureLevel);
   const seaExposureLevel: ExposureLevel = rawSeaExposureLevel === 'protected' && !canClaimWindProtection
@@ -324,9 +329,9 @@ export const BeachConditionScore: React.FC<BeachConditionScoreProps> = ({
     else if (waveHeightM >= 0.3) measuredWaveScore = 9;
 
     if (seaExposureLevel === 'protected') {
-      waveScore = Math.min(waveScore, Math.max(measuredWaveScore, 6));
+      waveScore = Math.min(waveScore, directSwell ? measuredWaveScore : Math.max(measuredWaveScore, 6));
     } else if (seaExposureLevel === 'partial') {
-      waveScore = Math.min(waveScore, Math.max(measuredWaveScore, 4));
+      waveScore = Math.min(waveScore, directSwell ? measuredWaveScore : Math.max(measuredWaveScore, 4));
     } else {
       waveScore = Math.min(waveScore, measuredWaveScore);
     }
@@ -340,7 +345,7 @@ export const BeachConditionScore: React.FC<BeachConditionScoreProps> = ({
   else tempScore = 8;
 
   // Sea score: protection and waves dominate; air temperature remains visible below as context.
-  const totalScore = calculateSeaConditionScore(seaExposureLevel !== 'protected', windSpeed, seaExposureLevel, waveHeightM);
+  const totalScore = calculateSeaConditionScore(seaExposureLevel !== 'protected', windSpeed, seaExposureLevel, waveHeightM, directSwell);
   const windBeaufort = getBeaufortLevel(windSpeed);
   // Headline colour follows the map pin's exposure band (not the raw sea score) so they agree.
   const conditionTone = getConditionToneClasses(seaExposureLevel, windBeaufort, waveHeightM);

@@ -827,7 +827,15 @@ export const BeachDetailPage: React.FC<BeachDetailPageProps> = ({
           ? { en: 'pleasant', gr: 'ιδανικό', de: 'angenehm', it: 'piacevole', fr: 'agréable' }[language]
           : { en: 'warm', gr: 'ζεστό', de: 'warm', it: 'calda', fr: 'chaude' }[language]
     : undefined;
-  const seaConditionScore = calculateSeaConditionScore(isExposed, windSpeedKmh, exposureLevel, waveHeightM);
+  // R1: mirror the ranking's direct-swell detection so the DISPLAYED sea sub-score drops the
+  // protected/partial wave floor exactly when the ranking does — otherwise a west-facing cove on
+  // real ground swell shows an optimistic sea score while being correctly down-ranked.
+  const directSwellHere = assessSwellExposure(geospatialExposure, scoreResult.facingDeg ?? null, {
+    swellDirectionDeg: weatherData.marine?.swellWaveDirectionDeg,
+    swellHeightM: weatherData.marine?.swellWaveHeightM,
+    swellPeriodS: weatherData.marine?.swellWavePeriodS,
+  }).exposed;
+  const seaConditionScore = calculateSeaConditionScore(isExposed, windSpeedKmh, exposureLevel, waveHeightM, directSwellHere);
   const detailBadgeScore = getDetailBadgeScore(score, seaConditionScore, isExposed);
   const beaufortLevel = getBeaufortLevel(windSpeedKmh);
   const isBoatOnlyBeach = hasBoatOnlyAccess(beach);
@@ -2076,7 +2084,15 @@ export const BeachDetailPage: React.FC<BeachDetailPageProps> = ({
                     const itemWindDir = degToCompass(itemWeatherData.wind.deg);
                     const itemWindDirectionLabel = t.windDirectionsAccusative?.[itemWindDir as WindDirection] || t.windDirections[itemWindDir as WindDirection] || itemWindDir;
                     const itemWaveHeightM = item.waveHeightM ?? itemWeatherData.marine?.waveHeightM ?? waveHeightM;
-                    const itemSeaScore = calculateSeaConditionScore(itemIsExposed, itemWindSpeedKmh, item.exposureLevel, itemWaveHeightM);
+                    const itemProfile = geospatialExposureProfiles?.[item.beach.id];
+                    const itemDirectSwell = itemProfile
+                      ? assessSwellExposure(itemProfile, itemProfile.facingDeg ?? null, {
+                          swellDirectionDeg: itemWeatherData.marine?.swellWaveDirectionDeg,
+                          swellHeightM: itemWeatherData.marine?.swellWaveHeightM,
+                          swellPeriodS: itemWeatherData.marine?.swellWavePeriodS,
+                        }).exposed
+                      : false;
+                    const itemSeaScore = calculateSeaConditionScore(itemIsExposed, itemWindSpeedKmh, item.exposureLevel, itemWaveHeightM, itemDirectSwell);
                     const itemBadgeScore = getDetailBadgeScore(item.score, itemSeaScore, itemIsExposed);
                     const itemWindSummary = describeSimpleWindSuitability(item.simpleWindSuitability, language);
                     const itemExplanation = generateUiBeachExplanation({
