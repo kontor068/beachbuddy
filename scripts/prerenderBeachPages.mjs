@@ -2,7 +2,7 @@ import { mkdir, readFile, readdir, writeFile } from 'node:fs/promises';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { amenityTextIncludesAny, SNACK_CANTEEN_AMENITY_TERMS } from '../utils/amenityMatching.js';
-import { localWindLabelFor, getRegionWindContext } from '../utils/localWindContext.mjs';
+import { localWindLabelFor, getRegionWindContext, localWindSectorsFor, LOCAL_WIND_ATOMS } from '../utils/localWindContext.mjs';
 
 const scriptDir = path.dirname(fileURLToPath(import.meta.url));
 const projectRoot = path.resolve(scriptDir, '..');
@@ -2441,6 +2441,116 @@ const regionPrepGr = (regionId, fallbackName) => REGION_DECLENSION[regionId]?.pr
 // English display name (override for unnatural admin names), else the dataset name.
 const regionDisplayEn = (regionId, fallbackName) => REGION_DECLENSION[regionId]?.en || fallbackName;
 
+// --- Computed geometry intro for the 'sheltered' guide (defeats doorway-page risk) ---
+// Instead of a template intro with a swapped toponym, we read the region's ray-cast
+// exposure profiles and STATE what the geometry actually shows: how many beaches take
+// no open water toward the local wind, which coast they cluster on, and the arc they
+// face. Every number is computed; the paragraph cannot survive a find-and-replace of
+// the island name. Falls back to the template intro when the data is missing or the
+// sheltered set does not cluster cleanly (honesty guard).
+const COMPASS_8 = ['N', 'NE', 'E', 'SE', 'S', 'SW', 'W', 'NW'];
+const compassBin = deg => COMPASS_8[Math.round(((deg % 360) / 45)) % 8];
+const levelRank = level => (level === 'exposed' ? 2 : level === 'partial' ? 1 : 0);
+// Coast the shore faces + the wind that then hits it, keyed by 8-point bin.
+const COAST_WORD = {
+  N:  { gr: 'βόρεια', en: 'north' },        NE: { gr: 'βορειοανατολική', en: 'northeast' },
+  E:  { gr: 'ανατολική', en: 'east' },      SE: { gr: 'νοτιοανατολική', en: 'southeast' },
+  S:  { gr: 'νότια', en: 'south' },         SW: { gr: 'νοτιοδυτική', en: 'southwest' },
+  W:  { gr: 'δυτική', en: 'west' },         NW: { gr: 'βορειοδυτική', en: 'northwest' },
+};
+const DIR_ABBR_GR = { N: 'Β', NE: 'ΒΑ', E: 'Α', SE: 'ΝΑ', S: 'Ν', SW: 'ΝΔ', W: 'Δ', NW: 'ΒΔ' };
+const DIR_ABBR_EN = { N: 'N', NE: 'NE', E: 'E', SE: 'SE', S: 'S', SW: 'SW', W: 'W', NW: 'NW' };
+// "the wind blows from …" — used for the opposite wind that reverses the shelter.
+const DIR_FROM = {
+  N:  { gr: 'τον βορρά', en: 'the north' },        NE: { gr: 'τα βορειοανατολικά', en: 'the northeast' },
+  E:  { gr: 'την ανατολή', en: 'the east' },       SE: { gr: 'τα νοτιοανατολικά', en: 'the southeast' },
+  S:  { gr: 'τον νότο', en: 'the south' },          SW: { gr: 'τα νοτιοδυτικά', en: 'the southwest' },
+  W:  { gr: 'τη δύση', en: 'the west' },            NW: { gr: 'τα βορειοδυτικά', en: 'the northwest' },
+};
+
+// Read + cache a region's ray-cast exposure profiles (may not exist for every region).
+const exposureCache = new Map();
+const loadExposureProfiles = async regionId => {
+  if (exposureCache.has(regionId)) return exposureCache.get(regionId);
+  let data = null;
+  try {
+    data = await readJson(toPublicFilePath(`/data/geospatial/exposure/${regionId}.json`));
+  } catch {
+    data = null;
+  }
+  exposureCache.set(regionId, data);
+  return data;
+};
+
+// Turn the exposure profiles into the handful of numbers the intro asserts.
+// Returns { usable:false } when the data can't support a specific, honest claim.
+const computeShelterGeometry = (regionId, exposure) => {
+  const profiles = exposure?.profiles && typeof exposure.profiles === 'object'
+    ? Object.values(exposure.profiles)
+    : null;
+  if (!Array.isArray(profiles) || profiles.length < 8) return { usable: false };
+  const windSectors = localWindSectorsFor(regionId);
+  const total = profiles.length;
+  const protectedFromWind = [];
+  let exposedToWind = 0;
+  for (const p of profiles) {
+    const s = p.sectors;
+    if (!s || !Number.isFinite(p.facingDeg)) continue;
+    const worst = Math.max(...windSectors.map(d => levelRank(s[d]?.level)));
+    if (windSectors.every(d => s[d]?.level === 'protected')) protectedFromWind.push(p);
+    if (worst === 2) exposedToWind += 1;
+  }
+  if (protectedFromWind.length < 4) return { usable: false };
+  // Circular mean of the sheltered set's facing direction → the lee coast.
+  let sx = 0, sy = 0;
+  for (const p of protectedFromWind) { const r = (p.facingDeg * Math.PI) / 180; sx += Math.cos(r); sy += Math.sin(r); }
+  const meanDeg = ((Math.atan2(sy / protectedFromWind.length, sx / protectedFromWind.length) * 180) / Math.PI + 360) % 360;
+  const offset = deg => ((deg - meanDeg + 540) % 360) - 180; // signed distance from mean
+  const inCluster = protectedFromWind.filter(p => Math.abs(offset(p.facingDeg)) <= 67.5).length;
+  const clusterFrac = inCluster / protectedFromWind.length;
+  if (clusterFrac < 0.6) return { usable: false }; // scattered → template is more honest
+  const offsets = protectedFromWind.map(p => offset(p.facingDeg)).sort((a, b) => a - b);
+  const arcStartBin = compassBin((meanDeg + offsets[0] + 360) % 360);
+  const arcEndBin = compassBin((meanDeg + offsets[offsets.length - 1] + 360) % 360);
+  const meanBin = compassBin(meanDeg);
+  return {
+    usable: true,
+    total,
+    protectedCount: protectedFromWind.length,
+    exposedCount: exposedToWind,
+    leeCoastBin: meanBin,
+    arcStartBin,
+    arcEndBin,
+    windSectors,
+  };
+};
+
+// Compose the 3-paragraph computed intro (gr/en only; de/fr/it keep the template).
+const buildShelteredGeometryIntro = (regionId, geo, language) => {
+  if (!geo?.usable || (language !== 'gr' && language !== 'en')) return null;
+  const w = windWordsFor(regionId);
+  const atoms = LOCAL_WIND_ATOMS[getRegionWindContext(regionId)];
+  const windFromAbbr = language === 'gr' ? atoms.dir.gr : atoms.dir.en;
+  const coast = COAST_WORD[geo.leeCoastBin][language];
+  const arcAbbr = language === 'gr' ? DIR_ABBR_GR : DIR_ABBR_EN;
+  const arc = geo.arcStartBin === geo.arcEndBin ? arcAbbr[geo.arcStartBin] : `${arcAbbr[geo.arcStartBin]}–${arcAbbr[geo.arcEndBin]}`;
+  const oppFrom = DIR_FROM[geo.leeCoastBin][language]; // the wind that reverses the shelter
+  if (language === 'gr') {
+    const windNom = w.elNom;         // "το μελτέμι" / "ο μαΐστρος" (nominative)
+    const eis = /^[αεηιουω]/i.test(coast) ? 'στην' : 'στη'; // "στην ανατολική" vs "στη νότια"
+    return [
+      `${windNom.charAt(0).toUpperCase()}${windNom.slice(1)} πνέει από ${windFromAbbr}, και στα δεδομένα μας ο διαχωρισμός φαίνεται καθαρά. Από τις ${geo.total} παραλίες που έχουμε μοντελοποιήσει, οι ${geo.protectedCount} δεν βλέπουν καθόλου ανοιχτό νερό προς ${windFromAbbr}· μαζεύονται ${eis} ${coast} ακτή, με προσανατολισμό σε ένα τόξο ${arc}. Οι πιο σταθερές απ' αυτές είναι στη λίστα πιο κάτω. Αντίθετα, ${geo.exposedCount} παραλίες είναι ορθάνοιχτες σε αυτόν τον άνεμο.`,
+      `Ο λόγος είναι η ίδια η μορφολογία: αυτές οι παραλίες έχουν στεριά πίσω τους, από τη μεριά που έρχεται ${windNom}. Δεν είναι απαραίτητα κλειστοί κόλποι — απλώς κάθονται στον άνεμο-σκιά της απέναντι ακτής.`,
+      `Το τίμημα το λέμε ανοιχτά: η ίδια ${coast} ακτή είναι ανοιχτή στον αντίθετο άνεμο. Τις μέρες που ο άνεμος γυρίζει από ${oppFrom}, η προστασία αντιστρέφεται και καλύτερη γίνεται η άλλη πλευρά. Γι' αυτό η λίστα περιορίζει την επιλογή — δεν αντικαθιστά την πρόγνωση· δες ζωντανό άνεμο και κύμα στη σελίδα της παραλίας πριν πας.`,
+    ].join('\n\n');
+  }
+  return [
+    `${w.en.charAt(0).toUpperCase()}${w.en.slice(1)} blows from ${windFromAbbr}, and the split shows up clearly in the data. Of the ${geo.total} beaches we have modelled, ${geo.protectedCount} take no open water toward ${windFromAbbr}; they cluster on the ${coast} coast, facing an arc of ${arc}. The most reliable of them are listed below. The other ${geo.exposedCount} sit wide open to it.`,
+    `The reason is the shape of the coast itself: these beaches have land behind them on the side the wind comes from. They are not necessarily enclosed bays — they simply sit in the wind shadow of the shore opposite.`,
+    `The trade-off, plainly: the same ${coast} coast is open to the opposite wind. On days the wind swings from ${oppFrom}, the shelter reverses and the far side is the better call. So this list narrows the choice — it does not replace the forecast; check live wind and waves on the beach page before you go.`,
+  ].join('\n\n');
+};
+
 // Region-page copy: dataset-driven shelter hook. `sheltered` is the meltemi/βοριάς/
 // Vardaris-protected count; `total` the region's beach count. Numberless fallback
 // when the count is not compelling (0, 1, or all) so we never write "0 sheltered".
@@ -3275,6 +3385,9 @@ const main = async () => {
     const intentSitemapImageUrl = toSitemapImageUrl(intentOgImageUrl, publicAssets);
     const pathName = islandIntentPath(page.intent, page.region, page.island);
     const emittedLocales = localesForRegion(page.region.id);
+    const shelterGeo = page.intent.key === 'sheltered'
+      ? computeShelterGeometry(page.region.id, await loadExposureProfiles(page.region.id))
+      : null;
     for (const locale of emittedLocales) {
       const islandName = displayName(page.island.name, page.region.id, locale.language);
       const intentCount = page.intent.key === 'sheltered' ? (page.shelteredCount ?? page.beaches.length) : page.beaches.length;
@@ -3285,9 +3398,15 @@ const main = async () => {
       const familyOverride = page.intent.key === 'family' && locale.language === 'gr'
         ? FAMILY_INTRO_OVERRIDES[page.region.id]
         : null;
+      // Computed geometry intro for the sheltered guide (gr/en; null → template).
+      const shelteredIntro = page.intent.key === 'sheltered'
+        ? buildShelteredGeometryIntro(page.region.id, shelterGeo, locale.language)
+        : null;
       const content = familyOverride
         ? { ...baseContent, h1: familyOverride.h1, intro: familyOverride.intro }
-        : baseContent;
+        : shelteredIntro
+          ? { ...baseContent, intro: shelteredIntro }
+          : baseContent;
       const intentOutputDir = outputDirForRoute(localizedPath(pathName, locale));
       await mkdir(intentOutputDir, { recursive: true });
       await writeFile(path.join(intentOutputDir, 'index.html'), buildIslandIntentPage(baseHtml, page.intent, content, page.island, page.region, page.beaches, intentOgImageUrl, locale, emittedLocales), 'utf8');
