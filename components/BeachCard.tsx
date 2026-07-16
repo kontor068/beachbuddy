@@ -1126,7 +1126,13 @@ export const BeachCard: React.FC<BeachCardProps> = ({
   const [isPhotoCueDismissed, setIsPhotoCueDismissed] = useState(hasDismissedPhotoCue);
   const cardPhotoAreaRef = useRef<HTMLDivElement | null>(null);
   const isCompact = density === 'compact';
-  const { name, rating, amenities, accessibility, distance, beachType, characteristics, metadata } = beach;
+  const { name, amenities, accessibility, distance, beachType, characteristics, metadata } = beach;
+  // Honesty: only surface a "visitor rating" when we have a REAL Google rating on record.
+  // The legacy `beach.rating` field falls back to a neutral 4.0 for the ~900 beaches with no
+  // reviews (see utils/beachRating.ts), and showing that 4.0 as a visitor rating is fabricated.
+  // Gate the star chips on the raw popularity.rating, which is present only when it's real.
+  const realGoogleRating = metadata?.popularity?.rating ?? beach.popularity?.rating;
+  const realVisitorRating = typeof realGoogleRating === 'number' && Number.isFinite(realGoogleRating) ? realGoogleRating : null;
   const beachDisplayName = displayBeachName(name, language);
   const isBoatOnlyBeach = hasBoatOnlyAccess(beach);
   const hasBlueFlag2026 = beach.blueFlag2026?.awarded === true || metadata?.blueFlag2026?.awarded === true;
@@ -1661,12 +1667,12 @@ export const BeachCard: React.FC<BeachCardProps> = ({
                 boatAccess={isBoatOnlyBeach}
                 forceShow={forceTodayScoreBadge}
               />
-            ) : (
+            ) : realVisitorRating !== null ? (
               <div className="inline-flex min-h-9 w-full items-center justify-center gap-1.5 rounded-full border border-amber-200 bg-amber-50 px-3 py-1.5 text-xs font-bold text-amber-700 shadow-sm dark:border-amber-900/50 dark:bg-amber-950/30 dark:text-amber-300" title={labels.visitorRating}>
                 <Star className="h-3.5 w-3.5 fill-amber-400 text-amber-400" />
-                <span>{rating.toFixed(1)}</span>
+                <span>{realVisitorRating.toFixed(1)}</span>
               </div>
-            )}
+            ) : null}
           </div>
           )}
 
@@ -1846,17 +1852,19 @@ export const BeachCard: React.FC<BeachCardProps> = ({
                 boatAccess={isBoatOnlyBeach}
                 forceShow={forceTodayScoreBadge}
               />
-              <div className="flex items-center gap-1 text-[11px] font-bold text-slate-600 dark:text-slate-700" title="Visitor rating">
-                <Star className="h-3 w-3 fill-amber-400 text-amber-400" />
-                <span>{rating.toFixed(1)}</span>
-              </div>
+              {realVisitorRating !== null && (
+                <div className="flex items-center gap-1 text-[11px] font-bold text-slate-600 dark:text-slate-700" title="Visitor rating">
+                  <Star className="h-3 w-3 fill-amber-400 text-amber-400" />
+                  <span>{realVisitorRating.toFixed(1)}</span>
+                </div>
+              )}
             </>
-          ) : (
+          ) : realVisitorRating !== null ? (
             <div className="flex items-center gap-1 px-2 py-0.5 bg-amber-50 dark:bg-amber-900/20 rounded-md">
               <Star className="w-3.5 h-3.5 fill-amber-400 text-amber-400" />
-              <span className="text-xs font-bold text-amber-700 dark:text-amber-400">{rating.toFixed(1)}</span>
+              <span className="text-xs font-bold text-amber-700 dark:text-amber-400">{realVisitorRating.toFixed(1)}</span>
             </div>
-          )}
+          ) : null}
 
           {crowdLevel && (
             <span className={`text-[10px] font-bold ${
