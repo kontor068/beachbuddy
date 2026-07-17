@@ -37,6 +37,7 @@ export type FilterKey =
   | 'easyAccess'
   | 'disabledAccess'
   | 'adventure'
+  | 'sunset'
   | BeachType
   | 'showAll';
 export type Theme = 'light' | 'dark' | 'system';
@@ -831,6 +832,7 @@ export type Translation = {
     quiet: string;
     snorkeling: string;
     adventure: string;
+    sunset: string;
     familyFriendly: string;
     'sandy-pebbles': string;
     rocky: string;

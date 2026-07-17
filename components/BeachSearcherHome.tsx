@@ -21,6 +21,7 @@ import {
   ShieldCheck,
   SlidersHorizontal,
   Star,
+  Sunset,
   Thermometer,
   Trees,
   Utensils,
@@ -49,6 +50,7 @@ import { canOpenNavigation, getNavigationBadge, openNavigation } from '../utils/
 import { getSelectedDayOffset, getSelectedDayPrefix, getSelectedDaySentencePrefix } from '../utils/dateLabels';
 import { getConsistentVisibleMapExposureLevels } from '../utils/mapExposure';
 import { hasBoatOnlyAccess, isAdventureBeach } from '../utils/access';
+import { isSunsetFacingBeach } from '../utils/beachOrientation';
 import { WeatherSummary } from './WeatherSummary';
 import { BeachCard } from './BeachCard';
 import { SandDotsIcon, SandPebblesIcon, SunbedIcon } from './BeachFeatureIcons';
@@ -355,6 +357,7 @@ const desktopAdvancedFilters: Array<{ key: FilterKey; icon: React.ReactNode }> =
   { key: 'sandy-pebbles', icon: <SandPebblesIcon className="h-5 w-5" /> },
   { key: 'rocky', icon: <Mountain className="h-5 w-5" /> },
   { key: 'adventure', icon: <MapPin className="h-5 w-5" /> },
+  { key: 'sunset', icon: <Sunset className="h-5 w-5" /> },
 ];
 const desktopPrimaryPreferenceFilters = [
   'sandy',
@@ -423,6 +426,9 @@ const beachMatchesAdvancedFilter = (beach: Beach, filter: FilterKey): boolean =>
   }
   if (filter === 'adventure') {
     return isAdventureBeach(beach);
+  }
+  if (filter === 'sunset') {
+    return isSunsetFacingBeach(beach);
   }
   if (filter === 'familyFriendly') {
     return beachMatchesPreferenceFilter(beach, 'familyFriendly');

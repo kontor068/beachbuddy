@@ -45,6 +45,8 @@ import { canOpenNavigation, openNavigation } from './utils/navigation';
 import { displayBeachName, localizedBeachLabel } from './utils/localization';
 import { isInfoOnlyRegionId } from './utils/infoOnlyRegions';
 import { hasBoatOnlyAccess, hasDifficultTopPickAccess, hasMainstreamTopPickAccess, isAdventureBeach } from './utils/access';
+import { isSunsetFacingBeach } from './utils/beachOrientation';
+import { detectSearchIntentFilters } from './utils/searchIntent';
 import { getBeachPopularityRating } from './utils/beachRating';
 import { buildBeachDetailPath, buildBeachRegionPath, parseBeachDetailPath, parseBeachRegionPath, regionMatchesRouteParam } from './utils/beachUrls';
 import { describeSimpleWindSuitability } from './utils/windExposureCopy';
@@ -1019,6 +1021,9 @@ const beachMatchesMobileFilter = (
   if (filter === 'adventure') {
     return isAdventureBeach(beach);
   }
+  if (filter === 'sunset') {
+    return isSunsetFacingBeach(beach);
+  }
   if (filter === 'familyFriendly') {
     return beachMatchesUserPreferences(beach, { ...defaultPreferences, familyFriendly: true });
   }
@@ -1782,6 +1787,11 @@ export const App: React.FC = () => {
   // scroll to its map immediately (map-section isn't mounted yet). Deferred to the effect
   // that fires once selectedIsland switches.
   const pendingRegionMapScrollRef = useRef(false);
+  // Set when a SEARCH combines a region with an intent word ("Νάξος ... ηλιοβασίλεμα"):
+  // the new region loads async AND the region-change effect force-clears selectedFilters,
+  // so we stash the intent filter(s) here and let that same effect re-apply them once the
+  // region has switched — the only way a cross-region search can land with a filter active.
+  const pendingRegionIntentFiltersRef = useRef<FilterKey[]>([]);
   // Set when a SEARCH picks a beach: setBeachSearchQuery(name) starts a name-search whose
   // beach filtering runs on the DEFERRED query, so the page re-renders shorter a beat later.
   // Scrolling to the map at select-time would clamp to the (now shorter) page bottom — the
@@ -2550,7 +2560,14 @@ export const App: React.FC = () => {
     } else {
       setBeachSearchQuery('');
     }
-    setSelectedFilters([]);
+    // A cross-region "region + intent" search stashes its filter(s) here so they survive
+    // the region switch; every other region change starts with a clean filter slate.
+    if (pendingRegionIntentFiltersRef.current.length > 0) {
+      setSelectedFilters(pendingRegionIntentFiltersRef.current);
+      pendingRegionIntentFiltersRef.current = [];
+    } else {
+      setSelectedFilters([]);
+    }
   }, [selectedIsland?.id]);
 
   useEffect(() => {
@@ -5494,12 +5511,34 @@ export const App: React.FC = () => {
       // in the query makes the next region render as an active name search and
       // forces stale-looking today verdict badges until a refresh clears it.
       setBeachSearchQuery('');
+      // A combined "region + intent" query ("Νάξος ... ηλιοβασίλεμα") should land on the
+      // region WITH the matching filter(s) already applied. Strip the region's own name so
+      // it can't itself trip a filter (e.g. "Σκιάθος" → σκιά, "Βαθύ" → βαθιά).
+      const intentFilters = detectSearchIntentFilters(trimmedQuery, [
+        regionMatch.name[language],
+        regionMatch.name.en,
+        regionMatch.name.gr,
+        regionMatch.id.replace(/-/g, ' '),
+      ]);
       if (regionMatch.id !== selectedIsland?.id) {
         // New region loads async — defer the map scroll until it's mounted (effect above).
         pendingRegionMapScrollRef.current = true;
+        // Carry the intent across the region switch; the reset effect re-applies it
+        // after it force-clears the previous region's filters.
+        pendingRegionIntentFiltersRef.current = intentFilters;
         handleRegionSelected(regionMatch, 'selector');
         closeMobileBottomPanels();
       } else {
+        // Already on this region — the reset effect won't fire, so apply directly.
+        if (intentFilters.length > 0) {
+          setSelectedFilters(prev => {
+            const next: FilterKey[] = prev.filter(item => item !== 'showAll');
+            for (const filter of intentFilters) {
+              if (!next.includes(filter)) next.push(filter);
+            }
+            return next;
+          });
+        }
         scrollToMapSection();
       }
       return;
@@ -5538,6 +5577,34 @@ export const App: React.FC = () => {
       // down the results list (which dumped mobile users on the legal footer).
       focusDirectorySearchCard(targetBeach.id);
       pendingBeachMapScrollRef.current = true;
+      return;
+    }
+    // Free-text intent ("ηλιοβασίλεμα", "παιδιά") that matched neither a region nor a
+    // beach name snaps onto the matching filter(s) for the current region, instead of
+    // running as a name search that would match nothing. Clearing the query stops the name
+    // filter from zeroing out the very beaches we just selected. The current region's name
+    // is stripped defensively so a stray place token can't trip a filter.
+    const intentFilters = trimmedQuery
+      ? detectSearchIntentFilters(
+          trimmedQuery,
+          selectedIsland ? [selectedIsland.name[language], selectedIsland.name.en, selectedIsland.name.gr] : [],
+        )
+      : [];
+    if (intentFilters.length > 0 && selectedIsland) {
+      setBeachSearchQuery('');
+      setSelectedFilters(prev => {
+        const next: FilterKey[] = prev.filter(item => item !== 'showAll');
+        for (const filter of intentFilters) {
+          if (!next.includes(filter)) next.push(filter);
+        }
+        return next;
+      });
+      trackEvent('filter_applied', undefined, {
+        ...analyticsBaseParams,
+        source: 'search_intent',
+        intent_filters: intentFilters.join(','),
+      });
+      scrollToBeachResultsSection();
       return;
     }
     scrollToBeachResultsSection();
