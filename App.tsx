@@ -1803,6 +1803,12 @@ export const App: React.FC = () => {
   // the scroll to the effect that fires once selectedIsland has switched (see below),
   // mirroring how cross-region beach selection defers via pendingDirectorySearchHighlightRef.
   const pendingRegionMapScrollRef = useRef(false);
+  // Set when a SEARCH picks a beach: setBeachSearchQuery(name) starts a name-search whose
+  // beach filtering runs on the DEFERRED query, so the page re-renders shorter a beat later.
+  // Scrolling to the map at select-time computes against the still-long page, then the
+  // deferred re-render shrinks it and the scroll clamps to the bottom (the legal footer).
+  // So we defer the scroll to the effect that fires once deferredBeachSearchQuery settles.
+  const pendingBeachMapScrollRef = useRef(false);
   const trackedAppLoadedRef = useRef(false);
   const trackedPageViewRef = useRef<string | null>(null);
   const trackedWeatherFallbackRef = useRef<string | null>(null);
@@ -3033,7 +3039,9 @@ export const App: React.FC = () => {
     // NOT on the results list, which on a short name-search page scrolled past to
     // the legal footer.
     focusDirectorySearchCard(pendingBeachId);
-    scrollToMapSection();
+    // Defer the scroll until the name-search layout settles (see effect below) — scrolling
+    // now would land on the not-yet-shortened page and clamp to the footer.
+    pendingBeachMapScrollRef.current = true;
   }, [beachSearchQuery, selectedIsland]);
 
   // A region search switches islands async; once the new region is committed (and its
@@ -3044,6 +3052,16 @@ export const App: React.FC = () => {
     pendingRegionMapScrollRef.current = false;
     scrollToMapSection();
   }, [selectedIsland?.id]);
+
+  // Beach search lands on the map, but only AFTER the name-search filtering (which runs on
+  // the deferred query) has re-rendered the page to its final, shorter height — otherwise
+  // the scroll clamps to the bottom (the legal footer). deferredBeachSearchQuery updating is
+  // exactly that "layout settled" signal; selectedIsland?.id covers the cross-region case.
+  useEffect(() => {
+    if (!pendingBeachMapScrollRef.current || !selectedIsland) return;
+    pendingBeachMapScrollRef.current = false;
+    scrollToMapSection();
+  }, [deferredBeachSearchQuery, selectedIsland?.id]);
 
   const handleDirectoryMapUserInteraction = React.useCallback(() => {
     setIsDirectoryMapFollowPaused(true);
@@ -5512,7 +5530,8 @@ export const App: React.FC = () => {
       }
       setHighlightedMapBeachId(targetBeach.id);
       focusDirectorySearchCard(targetBeach.id);
-      scrollToMapSection();
+      // Defer the scroll until the name-search layout settles (effect on deferredBeachSearchQuery).
+      pendingBeachMapScrollRef.current = true;
       return;
     }
     scrollToBeachResultsSection();
@@ -5577,7 +5596,9 @@ export const App: React.FC = () => {
     // Show the map with the beach's pin + its card centred right below it, instead of
     // scrolling down the results list (which dumped mobile users on the legal footer).
     focusDirectorySearchCard(targetBeach.id);
-    scrollToMapSection();
+    // Defer the scroll until the name-search layout settles (effect on deferredBeachSearchQuery),
+    // otherwise it lands on the still-long page and clamps to the footer once it shrinks.
+    pendingBeachMapScrollRef.current = true;
   };
   // The mobile directory map keeps a single fixed height at every Beaufort.
   // Keep it compact enough that the hour slider and condition summary stay visible
