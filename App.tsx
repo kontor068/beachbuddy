@@ -2983,43 +2983,42 @@ export const App: React.FC = () => {
   };
 
   const scrollToMapSection = () => {
+    if (typeof window === 'undefined') return;
     const id = isDesktopViewport ? 'map-section-desktop' : 'map-section';
     // A cross-region search loads the new region's view asynchronously: the island strip and
     // hero images finish laying out AFTER we scroll — sometimes seconds later on a slow phone —
-    // shrinking the space above the sticky map and leaving the page scrolled PAST it (map above
-    // the viewport → the user lands near the legal footer). Fixed timeouts weren't enough, so we
-    // re-anchor the map to the top on EVERY reflow (ResizeObserver on <body>) for a bounded
-    // window, and stop the moment the user scrolls/touches so we never fight them. Once the map
-    // is at the top (rect.top within the sticky offset) each pass is a no-op.
-    const anchor = () => {
+    // and the space ABOVE the sticky map shrinks while the card carousel BELOW grows, so the
+    // body height barely changes (a ResizeObserver on <body> misses it) yet the map slides up
+    // and the page ends scrolled PAST it, near the legal footer.
+    //
+    // So poll the MAP's own position each frame and re-anchor it to the top (instant scrollBy,
+    // not a smooth scroll that we'd re-trigger every frame) until it holds still. We re-anchor
+    // unconditionally: browser scroll anchoring shifts window.scrollY when content above changes,
+    // so we can't reliably distinguish "user scrolled" from "layout shifted" — and this only runs
+    // for the brief settle window right after a search-select, when the user is waiting to land on
+    // the map, not scrolling. Verified with a throttled (slow-image) mobile Playwright repro.
+    const STICKY_TOP = 8;      // the map-section's `sticky top-2` resting offset (0.5rem)
+    const TOLERANCE = 6;
+    const MAX_MS = 5000;       // give a slow region up to 5s to mount + settle
+    const STABLE_MS = 500;     // stop once the map has held the top this long
+    const start = performance.now();
+    let stableSince: number | null = null;
+    const tick = () => {
+      const nowMs = performance.now();
       const target = document.getElementById(id);
-      if (target && Math.abs(target.getBoundingClientRect().top) > 12) {
-        scrollElementIntoView(target);
+      if (target) {
+        const delta = target.getBoundingClientRect().top - STICKY_TOP;
+        if (Math.abs(delta) > TOLERANCE) {
+          window.scrollBy(0, delta);
+          stableSince = null;
+        } else if (stableSince === null) {
+          stableSince = nowMs;
+        }
       }
+      const settled = stableSince !== null && nowMs - stableSince >= STABLE_MS;
+      if (!settled && nowMs - start < MAX_MS) requestAnimationFrame(tick);
     };
-    if (typeof window === 'undefined') return;
-    let ro: ResizeObserver | undefined;
-    let endTimer = 0;
-    const stop = () => {
-      ro?.disconnect();
-      window.clearTimeout(endTimer);
-      window.removeEventListener('wheel', stop);
-      window.removeEventListener('touchmove', stop);
-      window.removeEventListener('keydown', stop);
-    };
-    // User-initiated gestures cancel the settling (NOT 'scroll', which our own anchoring fires).
-    window.addEventListener('wheel', stop, { passive: true });
-    window.addEventListener('touchmove', stop, { passive: true });
-    window.addEventListener('keydown', stop);
-    endTimer = window.setTimeout(stop, 3500);
-    if (typeof ResizeObserver !== 'undefined') {
-      ro = new ResizeObserver(() => requestAnimationFrame(anchor));
-      ro.observe(document.body);
-    }
-    // Initial fast-path passes (covers the case where no further reflow fires).
-    [0, 120, 300, 550, 850].forEach(delay => {
-      window.setTimeout(() => requestAnimationFrame(anchor), delay);
-    });
+    requestAnimationFrame(tick);
   };
 
   const closeMobileBottomPanels = () => {
