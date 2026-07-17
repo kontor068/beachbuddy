@@ -135,6 +135,9 @@ interface BeachSearcherHomeProps {
   /** Localized time-window prefix from the map slider (e.g. "στις 15:00–18:00") used in the suitable/best-beaches headers. */
   suitableTimePrefix?: string;
   onActiveSuitableBeachChange?: (beachId: number | undefined, options?: { resumeFollow?: boolean }) => void;
+  /** Discrete signal (nonce-keyed) to centre a specific beach's card in the carousel below the
+   *  mobile map — fired when the user picks a beach from search, so they land on map + card. */
+  directorySearchCardFocus?: { beachId: number; nonce: number };
   showSuitableBeachSection?: boolean;
   allBeachCards?: BeachCardContext[];
   beachWeatherContexts?: SuitableBeach[];
@@ -1575,6 +1578,7 @@ export const BeachSearcherHome: React.FC<BeachSearcherHomeProps> = ({
   suitableBeachTotalCount,
   suitableTimePrefix,
   onActiveSuitableBeachChange,
+  directorySearchCardFocus,
   showSuitableBeachSection = true,
   allBeachCards,
   beachWeatherContexts,
@@ -2436,6 +2440,48 @@ export const BeachSearcherHome: React.FC<BeachSearcherHomeProps> = ({
     topRecommendationBeachCards.length,
     weatherBeachCards.length,
   ]);
+
+  // When the user picks a beach from search, App scrolls the page to the map and fires this
+  // nonce-keyed signal so we horizontally centre that beach's card in whichever carousel holds
+  // it — landing them on "map on top, the beach's card right below". Horizontal-only (scrollBy
+  // on the carousel), so it never fights the vertical page scroll to the map.
+  useEffect(() => {
+    if (!directorySearchCardFocus || !isMobileViewport) return undefined;
+
+    const { beachId } = directorySearchCardFocus;
+    let rafId = 0;
+    const centreCard = () => {
+      const carousels = [
+        topRecommendationsCarouselRef.current,
+        suitableCarouselRef.current,
+        directoryCarouselRef.current,
+      ].filter((carousel): carousel is HTMLDivElement => Boolean(carousel));
+
+      for (const carousel of carousels) {
+        const card = carousel.querySelector<HTMLElement>(
+          `[data-suitable-beach-id="${beachId}"], [data-directory-beach-id="${beachId}"]`
+        );
+        if (!card) continue;
+        const carouselRect = carousel.getBoundingClientRect();
+        const cardRect = card.getBoundingClientRect();
+        const delta = (cardRect.left + cardRect.width / 2) - (carouselRect.left + carouselRect.width / 2);
+        if (Math.abs(delta) > 1) {
+          carousel.scrollBy({ left: delta, behavior: 'smooth' });
+        }
+        return;
+      }
+    };
+
+    // Double rAF: let the name-search-filtered carousels re-render (and, on a cross-region
+    // jump, the new island mount) before we measure and centre.
+    rafId = window.requestAnimationFrame(() => {
+      rafId = window.requestAnimationFrame(centreCard);
+    });
+
+    return () => {
+      if (rafId) window.cancelAnimationFrame(rafId);
+    };
+  }, [directorySearchCardFocus, isMobileViewport, weatherBeachCards.length, directoryDisplayBeachCards.length]);
 
   useEffect(() => {
     if (!onActiveSuitableBeachChange) return undefined;
