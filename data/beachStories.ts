@@ -1,5 +1,4 @@
 import type { Beach } from '../types';
-import storiesData from './beachStories.data.json';
 
 /**
  * Curated editorial "get to know this beach" stories for the major beaches of
@@ -29,21 +28,36 @@ export interface BeachStory {
 }
 
 /** regionId → beachId → story */
-export const BEACH_STORIES = storiesData as unknown as Record<string, Record<number, BeachStory>>;
+type StoriesByRegion = Record<string, Record<number, BeachStory>>;
+
+// The editorial corpus is ~1.6 MB. A static import bundled the whole thing into the eager
+// beach-detail chunk (it dominated it), so every visitor downloaded all ~788 stories just to
+// view one beach. Load it lazily on first request — a code-split async chunk — and cache the
+// promise, so the detail page paints immediately and the "Πληροφορίες" text streams in after.
+let storiesPromise: Promise<StoriesByRegion> | null = null;
+const loadStories = (): Promise<StoriesByRegion> => {
+  if (!storiesPromise) {
+    storiesPromise = import('./beachStories.data.json')
+      .then(mod => ((mod as { default?: unknown }).default ?? mod) as StoriesByRegion);
+  }
+  return storiesPromise;
+};
 
 /**
- * Returns the curated story for a beach, scoped to its region (ids are unique
- * only within a region). Pass the region id explicitly; falls back to the
- * beach's own `regionId` (set in the merged cross-region "Κοντά μου" view).
- * Uses `sourceBeachId ?? id` so it also resolves merged-view beaches.
+ * Returns the curated story for a beach (or null), scoped to its region (ids are unique only
+ * within a region). ASYNC: the ~1.6 MB corpus is lazy-loaded and cached on first call so it
+ * stays out of the eager detail-page bundle. Pass the region id explicitly; falls back to the
+ * beach's own `regionId` (set in the merged cross-region "Κοντά μου" view). Uses
+ * `sourceBeachId ?? id` so it also resolves merged-view beaches.
  */
-export function getBeachStory(
+export async function getBeachStory(
   beach: Pick<Beach, 'id' | 'regionId' | 'sourceBeachId'>,
   regionId?: string,
-): BeachStory | null {
+): Promise<BeachStory | null> {
   const region = regionId ?? beach.regionId;
-  if (!region) return null;
-  const regionStories = BEACH_STORIES[region];
+  if (!region) return null; // cheap out before pulling the async corpus
+  const stories = await loadStories();
+  const regionStories = stories[region];
   if (!regionStories) return null;
   const key = beach.sourceBeachId ?? beach.id;
   return regionStories[key] ?? null;
