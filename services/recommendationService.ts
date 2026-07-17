@@ -42,6 +42,7 @@ import { summarizeLocalWindBehavior } from '../utils/windClimatology';
 import { getRegionWindContext, LOCAL_WIND_SECTORS } from '../utils/localWindContext.mjs';
 import { describeSimpleWindSuitability, describeWindExposure } from '../utils/windExposureCopy';
 import { hasDifficultTopPickAccess, hasMainstreamTopPickAccess, hasTrulyEasyAccess, isAdventureBeach } from '../utils/access';
+import { isSunsetFacingBeach } from '../utils/beachOrientation';
 import { getBeachTouristRecognitionScore } from '../utils/touristPriority';
 import { getWindChopWaveFloorM, resolveEffectiveWaveHeightM, capLightWindMeasuredWaveM } from '../utils/waveModel';
 import { getBeachPopularityRating } from '../utils/beachRating';
@@ -1192,6 +1193,7 @@ export const filterBeaches = (
         if (filterName === 'familyFriendly') return isFamilyFriendlyBeach(b);
         if (filterName === 'snorkeling') return isSnorkelingBeach(b);
         if (filterName === 'adventure') return isAdventureBeach(b);
+        if (filterName === 'sunset') return isSunsetFacingBeach(b);
         if (filterName === 'beachBar') return hasBeachBarAmenity(b);
         // Check amenities
         if (b.amenities && f in b.amenities) return b.amenities[f as keyof typeof b.amenities];

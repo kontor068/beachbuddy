@@ -1,6 +1,6 @@
 import type { Beach, LanguageCode } from '../types';
-import { WindDirection } from '../types';
 import { getRegionUrlSlug, getBeachLocalePrefix } from './beachUrls';
+import { isSunsetFacingBeach } from './beachOrientation';
 
 /**
  * Clickable links to the per-island "best X beaches" guide articles that are
@@ -11,7 +11,6 @@ import { getRegionUrlSlug, getBeachLocalePrefix } from './beachUrls';
  * shape mirrors `islandIntentPath` + `localizedPath` there.
  */
 
-const WESTERLY: WindDirection[] = [WindDirection.W, WindDirection.NW, WindDirection.SW];
 const ISLAND_INTENT_MIN = 5;
 
 type LocalizedLabel = Record<LanguageCode, string>;
@@ -59,7 +58,7 @@ const GUIDE_TOPICS: GuideTopic[] = [
   {
     key: 'sunset',
     pathPrefix: '/sunset-beaches',
-    match: beach => Array.isArray(beach.orientation?.faces) && WESTERLY.some(d => beach.orientation!.faces.includes(d)),
+    match: isSunsetFacingBeach,
     label: { en: 'Sunset', gr: 'Για ηλιοβασίλεμα', de: 'Sonnenuntergang', fr: 'Coucher de soleil', it: 'Tramonto' },
   },
 ];
