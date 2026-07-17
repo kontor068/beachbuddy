@@ -1360,6 +1360,28 @@ export const BeachDetailPage: React.FC<BeachDetailPageProps> = ({
           />
           )}
 
+          {/* TEMPORARY verdict diagnostics — invisible unless ?debug=1 is in the URL.
+              Remove once the Άγιος Ερμογένης "Μέτρια vs Καλή" mismatch is pinned down. */}
+          {typeof window !== 'undefined' && new URLSearchParams(window.location.search).has('debug') && (
+            <pre className="mt-2 overflow-x-auto whitespace-pre-wrap rounded-lg border border-fuchsia-300 bg-fuchsia-50 p-2 text-[11px] font-bold leading-snug text-fuchsia-900">
+{`VERDICT DEBUG (beach ${beach.id})
+bft(headline)      = ${beaufortLevel}
+windSpeedKmh       = ${Math.round(windSpeedKmh * 10) / 10}
+exposure(mapAligned)= ${String(mapAlignedExposureLevel)}
+exposure(scoring)  = ${String(exposureLevel)}
+isExposed          = ${String(isExposed)}
+wave SCORING (badge)= ${String(waveHeightM)}
+wave measured(grid) = ${String(measuredWaveHeightM)}
+wave DISPLAY(cove)  = ${String(displayWaveHeightM)}  coveApplied=${String(coveWave.coveApplied)}
+swimmingComfort    = ${String(swimmingComfort)}
+noIdealSwimWindow  = ${String(swimWindowDisplay.tone === 'avoid')}
+score(raw)         = ${String(score)}
+seaConditionScore  = ${String(seaConditionScore)}
+detailBadgeScore   = ${String(detailBadgeScore)}
+canClaimWindProt   = ${String(canClaimWindProtectionForCopy)}`}
+            </pre>
+          )}
+
           <div className="hidden md:flex items-center justify-end gap-3 pt-1">
             <button
               type="button"
