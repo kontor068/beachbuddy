@@ -39,7 +39,7 @@ import { generateBeachExplanation as generateUiBeachExplanation } from '../utils
 import { describeSimpleWindSuitability, describeWindExposure } from '../utils/windExposureCopy';
 import type { ExposureLevel } from '../utils/windExposure';
 import { getLocalWindNote } from '../utils/localWindNote';
-import { getBeachStory } from '../data/beachStories';
+import { getBeachStory, type BeachStory } from '../data/beachStories';
 import { getIslandGuideLinks } from '../utils/beachGuides';
 import {
   AmenityStatus,
@@ -594,7 +594,16 @@ export const BeachDetailPage: React.FC<BeachDetailPageProps> = ({
   const beachDisplayName = displayBeachName(beach.name, language);
   const islandDisplayName = islandName || 'Greece';
   const [storyExpanded, setStoryExpanded] = useState(false);
-  const beachStory = getBeachStory(beach, regionId);
+  // The editorial corpus is lazy-loaded (kept out of the eager detail bundle), so the story
+  // resolves asynchronously; the "Πληροφορίες" section streams in once it's ready. Null while
+  // loading and when the beach has no story. Reset on beach change so the old text can't flash.
+  const [beachStory, setBeachStory] = useState<BeachStory | null>(null);
+  useEffect(() => {
+    let cancelled = false;
+    setBeachStory(null);
+    getBeachStory(beach, regionId).then(story => { if (!cancelled) setBeachStory(story); });
+    return () => { cancelled = true; };
+  }, [beach.id, beach.regionId, beach.sourceBeachId, regionId]);
   const storyLocale: 'gr' | 'en' = language === 'gr' ? 'gr' : 'en';
   const guideLinks = useMemo(() => getIslandGuideLinks(allBeaches, regionId, language), [allBeaches, regionId, language]);
   const selectedDate = dayForecast.date;
