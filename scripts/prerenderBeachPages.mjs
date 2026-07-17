@@ -104,6 +104,12 @@ const prerenderLocales = [
 // en + el stay national and byte-identical; rollout = add region ids here.
 const BASE_LOCALE_IDS = new Set(['en', 'el']);
 const baseLocales = prerenderLocales.filter(locale => BASE_LOCALE_IDS.has(locale.id));
+// hreflang x-default = Greek. calmbeach.gr is a Greek-market (.gr) site, so search engines should
+// serve Greek to visitors whose language/region matches none of the hreflang entries. English (and
+// de/fr/it) visitors still get their own version via their own hreflang tag — this only changes the
+// fallback for undetermined users, which was English and surfaced en pages to Greek searchers (the
+// GSC "wrong_audience" signal). Falls back to the first locale if 'el' is ever removed.
+const xDefaultLocale = prerenderLocales.find(locale => locale.id === 'el') ?? prerenderLocales[0];
 // Multilingual rollout by foreign demand. MUST stay 1:1 in sync with
 // LOCALIZED_REGION_SLUGS in utils/beachUrls.ts (full region id here, bare URL
 // slug there) — a drift makes the client emit /de|fr|it links to pages that were
@@ -281,7 +287,7 @@ const alternateUrlsFor = (pathName, locales = baseLocales) => [
   })),
   {
     hreflang: 'x-default',
-    href: canonicalUrlFor(pathName, prerenderLocales[0]),
+    href: canonicalUrlFor(pathName, xDefaultLocale),
   },
 ];
 
@@ -2885,7 +2891,7 @@ const landingAlternateUrls = landing => {
     })),
     {
       hreflang: 'x-default',
-      href: canonicalUrlFor(landing.pathName, prerenderLocales[0]),
+      href: canonicalUrlFor(landing.pathName, xDefaultLocale),
     },
   ];
 };
