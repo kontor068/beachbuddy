@@ -2985,19 +2985,40 @@ export const App: React.FC = () => {
   const scrollToMapSection = () => {
     const id = isDesktopViewport ? 'map-section-desktop' : 'map-section';
     // A cross-region search loads the new region's view asynchronously: the island strip and
-    // hero images finish laying out AFTER we scroll, shrinking the space above the sticky map
-    // and leaving the page scrolled PAST it (map above the viewport → the user lands near the
-    // legal footer). So re-anchor the map to the top a few times as the layout settles — once
-    // it's stable (rect.top ≈ the sticky offset) every later pass is a no-op, so this is
-    // harmless for the same-region case that already worked.
-    const settle = () => {
+    // hero images finish laying out AFTER we scroll — sometimes seconds later on a slow phone —
+    // shrinking the space above the sticky map and leaving the page scrolled PAST it (map above
+    // the viewport → the user lands near the legal footer). Fixed timeouts weren't enough, so we
+    // re-anchor the map to the top on EVERY reflow (ResizeObserver on <body>) for a bounded
+    // window, and stop the moment the user scrolls/touches so we never fight them. Once the map
+    // is at the top (rect.top within the sticky offset) each pass is a no-op.
+    const anchor = () => {
       const target = document.getElementById(id);
       if (target && Math.abs(target.getBoundingClientRect().top) > 12) {
         scrollElementIntoView(target);
       }
     };
+    if (typeof window === 'undefined') return;
+    let ro: ResizeObserver | undefined;
+    let endTimer = 0;
+    const stop = () => {
+      ro?.disconnect();
+      window.clearTimeout(endTimer);
+      window.removeEventListener('wheel', stop);
+      window.removeEventListener('touchmove', stop);
+      window.removeEventListener('keydown', stop);
+    };
+    // User-initiated gestures cancel the settling (NOT 'scroll', which our own anchoring fires).
+    window.addEventListener('wheel', stop, { passive: true });
+    window.addEventListener('touchmove', stop, { passive: true });
+    window.addEventListener('keydown', stop);
+    endTimer = window.setTimeout(stop, 3500);
+    if (typeof ResizeObserver !== 'undefined') {
+      ro = new ResizeObserver(() => requestAnimationFrame(anchor));
+      ro.observe(document.body);
+    }
+    // Initial fast-path passes (covers the case where no further reflow fires).
     [0, 120, 300, 550, 850].forEach(delay => {
-      window.setTimeout(() => requestAnimationFrame(settle), delay);
+      window.setTimeout(() => requestAnimationFrame(anchor), delay);
     });
   };
 
