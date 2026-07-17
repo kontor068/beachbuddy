@@ -1798,6 +1798,11 @@ export const App: React.FC = () => {
   const preserveSearchQueryOnRegionChangeRef = useRef(false);
   const globalBeachSearchIndexRef = useRef<Promise<GlobalBeachSearchEntry[]> | null>(null);
   const pendingDirectorySearchHighlightRef = useRef<number | undefined>(undefined);
+  // Set when a SEARCH picks a region (not a beach): the new region loads async, so we
+  // can't scroll to its map immediately — the map-section isn't mounted yet. We defer
+  // the scroll to the effect that fires once selectedIsland has switched (see below),
+  // mirroring how cross-region beach selection defers via pendingDirectorySearchHighlightRef.
+  const pendingRegionMapScrollRef = useRef(false);
   const trackedAppLoadedRef = useRef(false);
   const trackedPageViewRef = useRef<string | null>(null);
   const trackedWeatherFallbackRef = useRef<string | null>(null);
@@ -3030,6 +3035,15 @@ export const App: React.FC = () => {
     focusDirectorySearchCard(pendingBeachId);
     scrollToMapSection();
   }, [beachSearchQuery, selectedIsland]);
+
+  // A region search switches islands async; once the new region is committed (and its
+  // map-section mounted), land on the map — same "go to the map" outcome a beach search
+  // gets. Deferred here because scrolling at select-time misses the not-yet-mounted map.
+  useEffect(() => {
+    if (!pendingRegionMapScrollRef.current || !selectedIsland) return;
+    pendingRegionMapScrollRef.current = false;
+    scrollToMapSection();
+  }, [selectedIsland?.id]);
 
   const handleDirectoryMapUserInteraction = React.useCallback(() => {
     setIsDirectoryMapFollowPaused(true);
@@ -5458,9 +5472,10 @@ export const App: React.FC = () => {
       // forces stale-looking today verdict badges until a refresh clears it.
       setBeachSearchQuery('');
       if (regionMatch.id !== selectedIsland?.id) {
+        // New region loads async — defer the map scroll until it's mounted (effect above).
+        pendingRegionMapScrollRef.current = true;
         handleRegionSelected(regionMatch, 'selector');
         closeMobileBottomPanels();
-        scrollToMapSection();
       } else {
         scrollToMapSection();
       }
@@ -5521,9 +5536,12 @@ export const App: React.FC = () => {
       setBeachSearchQuery('');
       closeMobileBottomPanels();
       if (suggestion.island.id !== selectedIsland?.id) {
+        // New region loads async — defer the map scroll until it's mounted (effect above).
+        pendingRegionMapScrollRef.current = true;
         handleRegionSelected(suggestion.island, 'selector');
+      } else {
+        scrollToMapSection();
       }
-      scrollToMapSection();
       return;
     }
 
