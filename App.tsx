@@ -2983,11 +2983,21 @@ export const App: React.FC = () => {
   };
 
   const scrollToMapSection = () => {
-    requestAnimationFrame(() => {
-      requestAnimationFrame(() => {
-        const target = document.getElementById(isDesktopViewport ? 'map-section-desktop' : 'map-section');
-        scrollElementIntoView(target ?? null);
-      });
+    const id = isDesktopViewport ? 'map-section-desktop' : 'map-section';
+    // A cross-region search loads the new region's view asynchronously: the island strip and
+    // hero images finish laying out AFTER we scroll, shrinking the space above the sticky map
+    // and leaving the page scrolled PAST it (map above the viewport → the user lands near the
+    // legal footer). So re-anchor the map to the top a few times as the layout settles — once
+    // it's stable (rect.top ≈ the sticky offset) every later pass is a no-op, so this is
+    // harmless for the same-region case that already worked.
+    const settle = () => {
+      const target = document.getElementById(id);
+      if (target && Math.abs(target.getBoundingClientRect().top) > 12) {
+        scrollElementIntoView(target);
+      }
+    };
+    [0, 120, 300, 550, 850].forEach(delay => {
+      window.setTimeout(() => requestAnimationFrame(settle), delay);
     });
   };
 
