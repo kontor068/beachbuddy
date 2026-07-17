@@ -60,15 +60,24 @@ export const getExperienceTier = (input: ExperienceTierInput): ExperienceTier =>
   const scoreTier: 1 | 2 | 3 = score >= 80 ? 3 : score >= 60 ? 2 : 1;
   const rank = Math.min(ceiling, scoreTier);
 
-  // Sheltered floor: a GENUINELY wind-protected beach on a moderate day (≤4 Bft), with
-  // a sea that isn't choppy (ceiling ≥ 2), reads at least "good" (yellow) — if it's out
-  // of the wind, a 4 Bft day is a good beach day there, so it shouldn't fall to "OK" just
-  // for a middling composite score. Exposed/partial beaches keep tracking the score, so
-  // the map still separates sheltered (yellow) from exposed (orange). `exposureLevel` is
-  // already gated to real protection (canClaimWindProtection) by the caller.
-  const lessExposed = input.exposureLevel === 'protected' || input.exposureLevel === 'partial';
+  // Sheltered floor: a GENUINELY wind-protected beach, with a sea that isn't choppy
+  // (ceiling ≥ 2), reads at least "good" (yellow) — if it's out of the wind it's a good
+  // beach day there, so it shouldn't fall to "OK" for a middling composite score.
+  //
+  // The Beaufort cutoff tracks the map's simple wind-suitability layer so the pin colour
+  // and the verdict word can't contradict each other: a VERIFIED-protected beach paints
+  // YELLOW ("Καλή") up to 5 Bft (see windExposureValidation "protected 5 Bft should be
+  // yellow"), so the verdict must too — otherwise the map read "Καλή" while the detail
+  // said "Μέτρια" for the same sheltered cove (Άγιος Ερμογένης). PARTIAL shelter keeps the
+  // ≤4 cutoff, matching its pin (partial-at-5-Bft is orange/"Μέτρια"). The ceiling ≥ 2 gate
+  // still holds, so real chop/waves (ceiling 1 at ≥6 Bft or ≥1.2 m) or a swim advisory pull
+  // it back down regardless. `exposureLevel` is already gated to real protection
+  // (canClaimWindProtection) by the caller.
+  const isProtected = input.exposureLevel === 'protected';
+  const lessExposed = isProtected || input.exposureLevel === 'partial';
   const dayBft = typeof input.dayBeaufort === 'number' ? input.dayBeaufort : bft;
-  const shelteredFloor = dayBft <= 4 && lessExposed && ceiling >= 2;
+  const shelteredFloorMaxBft = isProtected ? 5 : 4;
+  const shelteredFloor = dayBft <= shelteredFloorMaxBft && lessExposed && ceiling >= 2;
   const finalRank = shelteredFloor ? Math.max(rank, 2) : rank;
   return finalRank === 3 ? 'excellent' : finalRank === 2 ? 'good' : 'fair';
 };
