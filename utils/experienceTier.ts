@@ -52,9 +52,17 @@ export const getExperienceTier = (input: ExperienceTierInput): ExperienceTier =>
 
   // Condition ceiling: 3 excellent · 2 good · 1 OK. Strong wind or real chop pulls it down,
   // and a hard swim advisory holds it at "OK" even when the wind reads a notch lower.
+  //
+  // A VERIFIED-protected beach is sheltered FROM the wind, so wind alone never caps it below
+  // "good" (ceiling 2) — this matches the map's simple wind layer, which paints a protected
+  // beach YELLOW ("Καλή") right through 5–6 Bft (getSimpleWindColor: protected + beaufort ≥ 5
+  // → yellow). Only real WAVES (≥1.2 m) or a swim advisory pull a protected beach down to OK.
+  // Exposed/partial beaches keep tracking the wind fully. (7 Bft+ already returned 'skip'.)
+  const isProtected = input.exposureLevel === 'protected';
+  const windForCeiling = isProtected ? Math.min(bft, 5) : bft;
   let ceiling: 1 | 2 | 3 = 3;
-  if (bft >= 6 || (wave !== undefined && wave >= 1.2)) ceiling = 1;
-  else if (bft >= 5 || (wave !== undefined && wave >= 0.8)) ceiling = 2;
+  if (windForCeiling >= 6 || (wave !== undefined && wave >= 1.2)) ceiling = 1;
+  else if (windForCeiling >= 5 || (wave !== undefined && wave >= 0.8)) ceiling = 2;
   if (swimmingComfort === 'avoid_swimming') ceiling = 1;
 
   const scoreTier: 1 | 2 | 3 = score >= 80 ? 3 : score >= 60 ? 2 : 1;
@@ -64,19 +72,17 @@ export const getExperienceTier = (input: ExperienceTierInput): ExperienceTier =>
   // (ceiling ≥ 2), reads at least "good" (yellow) — if it's out of the wind it's a good
   // beach day there, so it shouldn't fall to "OK" for a middling composite score.
   //
-  // The Beaufort cutoff tracks the map's simple wind-suitability layer so the pin colour
-  // and the verdict word can't contradict each other: a VERIFIED-protected beach paints
-  // YELLOW ("Καλή") up to 5 Bft (see windExposureValidation "protected 5 Bft should be
-  // yellow"), so the verdict must too — otherwise the map read "Καλή" while the detail
-  // said "Μέτρια" for the same sheltered cove (Άγιος Ερμογένης). PARTIAL shelter keeps the
-  // ≤4 cutoff, matching its pin (partial-at-5-Bft is orange/"Μέτρια"). The ceiling ≥ 2 gate
-  // still holds, so real chop/waves (ceiling 1 at ≥6 Bft or ≥1.2 m) or a swim advisory pull
-  // it back down regardless. `exposureLevel` is already gated to real protection
-  // (canClaimWindProtection) by the caller.
-  const isProtected = input.exposureLevel === 'protected';
+  // The Beaufort cutoff tracks the map's simple wind-suitability layer so the pin colour and
+  // the verdict word can't contradict each other: a VERIFIED-protected beach paints YELLOW
+  // ("Καλή") through 5–6 Bft (getSimpleWindColor), so the verdict must too — otherwise the map
+  // read "Καλή" while the detail said "Μέτρια" for the same sheltered cove (Άγιος Ερμογένης,
+  // still calm with minimal wave at 6 Bft in the lee). PARTIAL shelter keeps the ≤4 cutoff,
+  // matching its pin (partial-at-5-Bft is orange/"Μέτρια"). The ceiling ≥ 2 gate still holds
+  // (protected wind is relaxed above, but real waves ≥1.2 m or a swim advisory still cap it at
+  // OK). `exposureLevel` is already gated to real protection (canClaimWindProtection) by the caller.
   const lessExposed = isProtected || input.exposureLevel === 'partial';
   const dayBft = typeof input.dayBeaufort === 'number' ? input.dayBeaufort : bft;
-  const shelteredFloorMaxBft = isProtected ? 5 : 4;
+  const shelteredFloorMaxBft = isProtected ? 6 : 4;
   const shelteredFloor = dayBft <= shelteredFloorMaxBft && lessExposed && ceiling >= 2;
   const finalRank = shelteredFloor ? Math.max(rank, 2) : rank;
   return finalRank === 3 ? 'excellent' : finalRank === 2 ? 'good' : 'fair';
