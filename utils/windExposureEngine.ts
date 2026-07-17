@@ -495,6 +495,36 @@ export const canClaimProtectedFromWind = (
   !profile.knownWindSportSpot
 );
 
+// Geometry-earned protection (2026-07-17): an ENCLOSED cove is calm on its blocked
+// sectors regardless of authored evidence, but the conservative geospatial backfill
+// caps every un-curated beach at shelterLevel 'semi_sheltered', which the authored-only
+// gate above rejects — so a fetch-0, fully land-blocked sector could never claim
+// protection (Άγιος Ερμογένης id 1321: N sector fetchKm 0, blockedRayRatio 1, intensity 7,
+// yet scored 'partial' + canClaim=false on a meltemi). This is the SAME strict gate the
+// region map already trusts to paint a protected pin (mapExposure.hasStableGeospatialProtection):
+// the live wind sector must be level 'protected', near-totally land-blocked (ratio ≥ 0.95),
+// low residual wind energy (intensity < 33) in a HIGH-confidence mask. It is strictly
+// per-live-sector, so the same cove stays honestly 'exposed' on its open sectors (SE/S here),
+// and it never applies to a suspect pin. Downstream wave/swell ceilings are untouched.
+const GEOMETRY_ENCLOSURE_BLOCKED_RATIO = 0.95;
+const GEOMETRY_ENCLOSURE_MAX_INTENSITY = 33;
+
+const hasGeometryEnclosedProtection = (
+  profile: GeospatialExposureProfile | undefined,
+  windSector: WindSector,
+  suspectPin: boolean
+): boolean => {
+  if (suspectPin) return false;
+  if (profile?.confidence !== 'high') return false;
+  const sector = profile.sectors?.[windSector];
+  if (!sector || sector.level !== 'protected') return false;
+  const fullyLandBlocked = typeof sector.blockedRayRatio === 'number'
+    && sector.blockedRayRatio >= GEOMETRY_ENCLOSURE_BLOCKED_RATIO;
+  const lowResidualWind = typeof sector.intensity === 'number'
+    && sector.intensity < GEOMETRY_ENCLOSURE_MAX_INTENSITY;
+  return fullyLandBlocked && lowResidualWind;
+};
+
 const angularExposureFromProfile = (
   profile: WindProfile,
   windDirectionDeg: number,
@@ -556,7 +586,15 @@ export const assessBeachWindExposure = (input: BeachWindExposureInput): WindExpo
   const effectiveBeaufort = Math.min(12, baseBeaufort + (amplificationApplies ? localAmplificationBoost(profile.localWindAmplification) : 0));
   const isKnownWindSportRisk = profile.knownWindSportSpot && baseBeaufort >= 4;
   const isKnownWindSportCaution = profile.knownWindSportSpot && baseBeaufort === 3 && effectiveBeaufort >= 4;
-  const canClaimProtected = canClaimProtectedFromWind(profile, windSector) && !isKnownWindSportRisk;
+  // Authored profiles encode deliberate, conservative local knowledge, so their claim
+  // policy wins; only where there is NO authored shelter profile (geospatial backfill or
+  // a bare geospatial region) do we let strong enclosure geometry earn the protected claim,
+  // aligning scoring with the map. Explicit exposed sectors always keep winning.
+  const noAuthoredShelterProfile = source === 'geospatial' || source === 'unknown';
+  const geometryEnclosed = noAuthoredShelterProfile
+    && !profile.exposedToWindDirections.includes(windSector)
+    && hasGeometryEnclosedProtection(input.geospatialProfile, windSector, profile.suspectPin);
+  const canClaimProtected = (canClaimProtectedFromWind(profile, windSector) || geometryEnclosed) && !isKnownWindSportRisk;
   const isExplicitlyExposed = profile.exposedToWindDirections.includes(windSector);
   const isExplicitlyProtected = canClaimProtected;
 
