@@ -847,6 +847,34 @@ export const BeachDetailPage: React.FC<BeachDetailPageProps> = ({
   const seaConditionScore = calculateSeaConditionScore(isExposed, windSpeedKmh, exposureLevel, waveHeightM, directSwellHere);
   const detailBadgeScore = getDetailBadgeScore(score, seaConditionScore, isExposed);
   const beaufortLevel = getBeaufortLevel(windSpeedKmh);
+  // VERDICT ALIGNMENT (the "Καλή vs Μέτρια" fix): the map/list cards judge a beach by its
+  // per-beach cluster forecast (see BeachCard effectiveWindKmph / recommendationService
+  // weatherSource 'beach-cluster'), so a cove sheltered in the lee reads calmer — and "Καλή"
+  // — there. The detail verdict must say the SAME thing, so we compute the badge tier from the
+  // same per-beach forecast the cards use, falling back to the area forecast when no cluster
+  // reading exists. This touches ONLY the verdict badge; the headline wind figure and the
+  // sea-condition text keep reading the area forecast by design (and the localWindNote still
+  // explains "a bit calmer/windier right here").
+  const verdictWeather = beachSpecificWeatherData ?? weatherData;
+  const verdictScoreResult = beachSpecificWeatherData
+    ? calculateBeachScore(beach, verdictWeather, userLocation, preferences, {
+        weatherSource: 'beach-cluster',
+        hourlyForecast: scoringHourlyForecast,
+        geospatialProfile: geospatialExposure,
+      })
+    : scoreResult;
+  const verdictWindSpeedKmh = verdictWeather.wind.speed * 3.6;
+  const verdictBeaufort = getBeaufortLevel(verdictWindSpeedKmh);
+  const verdictExposureLevel = verdictScoreResult.exposureLevel;
+  const verdictIsExposed = verdictExposureLevel ? verdictExposureLevel !== 'protected' : true;
+  const verdictWaveHeightM = verdictScoreResult.waveHeightM ?? verdictWeather.marine?.waveHeightM;
+  const verdictDirectSwell = assessSwellExposure(geospatialExposure, verdictScoreResult.facingDeg ?? null, {
+    swellDirectionDeg: verdictWeather.marine?.swellWaveDirectionDeg,
+    swellHeightM: verdictWeather.marine?.swellWaveHeightM,
+    swellPeriodS: verdictWeather.marine?.swellWavePeriodS,
+  }).exposed;
+  const verdictSeaScore = calculateSeaConditionScore(verdictIsExposed, verdictWindSpeedKmh, verdictExposureLevel, verdictWaveHeightM, verdictDirectSwell);
+  const verdictBadgeScore = getDetailBadgeScore(verdictScoreResult.score, verdictSeaScore, verdictIsExposed);
   const isBoatOnlyBeach = hasBoatOnlyAccess(beach);
   const seaConditionDisplay = getSeaConditionDisplay(seaConditionScore, isExposedForCopy, language, selectedDate, canClaimWindProtection, seaCalmClaimAllowed, beaufortLevel, displayWaveHeightM, selectedHour, isBoatOnlyBeach);
   const boatRideConditionLabel = {
@@ -1362,12 +1390,12 @@ export const BeachDetailPage: React.FC<BeachDetailPageProps> = ({
 
           {showConditions && (
           <TodayScoreBadge
-            score={detailBadgeScore}
+            score={verdictBadgeScore}
             language={language}
             selectedDate={selectedDate}
-            windBeaufort={beaufortLevel}
-            waveHeightM={waveHeightM}
-            swimmingComfort={swimmingComfort}
+            windBeaufort={verdictBeaufort}
+            waveHeightM={verdictWaveHeightM}
+            swimmingComfort={verdictScoreResult.swimmingComfort}
             noIdealSwimmingWindow={swimWindowDisplay.tone === 'avoid'}
             exposureLevel={mapAlignedExposureLevel}
             canClaimWindProtection={canClaimWindProtectionForCopy}
