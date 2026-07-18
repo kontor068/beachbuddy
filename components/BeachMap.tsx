@@ -655,14 +655,6 @@ const getRecommendationTone = (
   const exposureLevel = visibleExposureLevel(item);
 
   if (showWindExposureColors && item.simpleWindSuitability) {
-    if (item.simpleWindSuitability.suitabilityColor === 'cyan') {
-      return {
-        colorClass: 'bg-cyan-500',
-        ringClass: 'ring-cyan-200',
-        badgeClass: 'bg-cyan-100 text-cyan-700',
-      };
-    }
-
     if (item.simpleWindSuitability.suitabilityColor === 'green') {
       return {
         colorClass: 'bg-emerald-500',
@@ -768,11 +760,11 @@ const getExposureMarkerTone = (
   isEnclosedCove = false
 ) => {
   const tones = {
-    cyan: {
-      colorClass: 'bg-cyan-500',
-      ringClass: 'ring-cyan-200',
-      bgClass: 'bg-cyan-50',
-      textClass: 'text-cyan-700',
+    green: {
+      colorClass: 'bg-emerald-500',
+      ringClass: 'ring-emerald-200',
+      bgClass: 'bg-emerald-50',
+      textClass: 'text-emerald-700',
     },
     blue: {
       colorClass: 'bg-sky-500',
@@ -811,10 +803,10 @@ const getExposureMarkerTone = (
   // it) — from 4 Bft up even sheltered shores get visible chop.
   const isExposed = exposureLevel === 'exposed';
   if (beaufort >= 7) return tones.red;
-  // Enclosed cove (όρμος) protected from the live wind: its own calmer tier at
-  // 3-6 Bft, matching the engine's cyan suitability colour. Open sectors of the
+  // Enclosed cove (όρμος) protected from the live wind: reads green (calm) at
+  // 3-6 Bft, matching the engine's green suitability colour. Open sectors of the
   // same cove resolve 'exposed' and never reach this branch.
-  if (isEnclosedCove && isProtected && beaufort >= 3) return tones.cyan;
+  if (isEnclosedCove && isProtected && beaufort >= 3) return tones.green;
   if (beaufort >= 5) return isExposed ? tones.red : tones.orange;
   // At 4 Bft only genuinely exposed shores escalate to orange; protected and the
   // uncertain "partial" middle get a yellow "mild chop" heads-up.
@@ -827,7 +819,7 @@ const getExposureMarkerTone = (
 };
 
 const windLegendDotClasses = {
-  cyan: 'bg-cyan-500 ring-cyan-200',
+  green: 'bg-emerald-500 ring-emerald-200',
   blue: 'bg-sky-500 ring-sky-200',
   yellow: 'bg-yellow-400 ring-yellow-200',
   orange: 'bg-orange-500 ring-orange-200',
@@ -842,10 +834,10 @@ const windSliderTones: Record<WindLegendDot, {
   shadow: string;
   focus: string;
 }> = {
-  cyan: {
-    color: '#06b6d4',
-    shadow: 'rgba(6, 182, 212, 0.38)',
-    focus: '#22d3ee',
+  green: {
+    color: '#10b981',
+    shadow: 'rgba(16, 185, 129, 0.38)',
+    focus: '#34d399',
   },
   blue: {
     color: '#0ea5e9',
@@ -2229,7 +2221,7 @@ const BeachMap: React.FC<BeachMapProps> = ({
               })}</span>
               <span
                 role="img"
-                className={`relative h-2.5 w-2.5 shrink-0 rounded-full ring-1 ${windLegendDotClasses.cyan}`}
+                className={`relative h-2.5 w-2.5 shrink-0 rounded-full ring-1 ${windLegendDotClasses.green}`}
               />
             </span>
           </div>

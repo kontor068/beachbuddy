@@ -729,13 +729,11 @@ const AmenityTags: React.FC<{ beach: Beach; language: LanguageCode }> = ({ beach
 const ProtectedBeachMarker: React.FC<{ language: LanguageCode; selectedDate?: Date; enclosedCove?: boolean }> = ({ language, selectedDate, enclosedCove = false }) => {
   const day = getSelectedDaySentencePrefix(selectedDate, new Date(), language);
   const copy = getLocalizedCopy(language, cardCopy);
-  // An enclosed cove (όρμος) earns a stronger, visually distinct claim than plain
-  // directional shelter: cyan pill + waves icon vs the emerald shield.
+  // An enclosed cove (όρμος) reads green like a genuinely calm shore; the waves icon
+  // and «Κλειστός όρμος» label carry its distinct identity, not a separate colour.
   const label = enclosedCove ? copy.enclosedCoveChip : copy.shelteredChip(day);
   const accessibleLabel = enclosedCove ? copy.enclosedCoveChipA11y : copy.shelteredChipA11y(day);
-  const pillClass = enclosedCove
-    ? 'inline-flex min-h-6 shrink-0 items-center gap-1 rounded-full border border-cyan-200 bg-cyan-50/80 px-2 py-0.5 text-[10px] font-bold leading-none text-cyan-700'
-    : 'inline-flex min-h-6 shrink-0 items-center gap-1 rounded-full border border-emerald-100 bg-emerald-50/75 px-2 py-0.5 text-[10px] font-bold leading-none text-emerald-700';
+  const pillClass = 'inline-flex min-h-6 shrink-0 items-center gap-1 rounded-full border border-emerald-100 bg-emerald-50/75 px-2 py-0.5 text-[10px] font-bold leading-none text-emerald-700';
 
   return (
     <span
@@ -1346,7 +1344,6 @@ export const BeachCard: React.FC<BeachCardProps> = ({
   // high-value signal the card exists to surface, so only that case renders the marker.
   const showHeaderProtectedMarker = enclosedCove && isProtectedToday;
   const windSuitabilityChipTone: Record<WindSuitabilityColor, string> = {
-    cyan: 'border-cyan-200/80 bg-cyan-50/72 text-cyan-700 dark:border-cyan-900/50 dark:bg-cyan-950/30 dark:text-cyan-300',
     green: 'border-emerald-200/80 bg-emerald-50/72 text-emerald-700 dark:border-emerald-900/50 dark:bg-emerald-950/30 dark:text-emerald-300',
     yellow: 'border-yellow-200/90 bg-yellow-50/78 text-yellow-800 dark:border-yellow-900/50 dark:bg-yellow-950/30 dark:text-yellow-300',
     orange: 'border-orange-200/90 bg-orange-50/78 text-orange-800 dark:border-orange-900/50 dark:bg-orange-950/30 dark:text-orange-300',
