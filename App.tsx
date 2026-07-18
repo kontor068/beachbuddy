@@ -4956,7 +4956,12 @@ export const App: React.FC = () => {
     !hasActiveSearchOrFilters &&
     !isCalmAllSuitable
   );
-  const displayedDirectoryTopBeach = shouldDisplayDirectoryTopPick ? directoryTopBeach : null;
+  // The standalone "★ Top choice" hero is a highest-priority/best-conditions pick, not a
+  // nearest one, so it must not headline "Κοντά μου": proximity leads there, and the
+  // distance-sorted podium + suitable list already surface the nearest beaches. (It only
+  // ever showed here when no beach qualified for the podium, i.e. a farther beach would
+  // have taken the #1 hero slot over the one right next to the user.)
+  const displayedDirectoryTopBeach = shouldDisplayDirectoryTopPick && !isNearMeRegionActive ? directoryTopBeach : null;
   const directoryBaseBeachCardSource = (() => {
     if (sortBy === 'distance') {
       return distanceSortedDirectoryBeachCards;
@@ -5022,9 +5027,17 @@ export const App: React.FC = () => {
 
     const seenIds = new Set<number>();
     const cards: SuitableBeach[] = [];
+    // In "Κοντά μου" the podium must be the NEAREST qualifying beaches. The display
+    // limit therefore can't be applied while collecting in score order: that lets the
+    // highest-scoring beaches across the whole radius fill the podium and pushes a
+    // closer, still-qualifying beach off it entirely (it only reappears far down the
+    // distance-sorted list). A plain final reorder of an already score-limited set
+    // can't put back a beach the limit removed — so for near-me collect EVERY
+    // qualifying candidate, then distance-sort and slice.
+    const collectLimit = isNearMeRegionActive ? Infinity : directoryTopRecommendationLimit;
     const addSource = (source: SuitableBeach[]) => {
       source.forEach(item => {
-        if (cards.length >= directoryTopRecommendationLimit || seenIds.has(item.beach.id)) return;
+        if (cards.length >= collectLimit || seenIds.has(item.beach.id)) return;
         if (!isDirectoryTopRecommendationCandidate(item)) return;
         seenIds.add(item.beach.id);
         cards.push(item);
@@ -5042,14 +5055,17 @@ export const App: React.FC = () => {
     addSource(directoryFallbackSource);
     addSource(directoryVisibleBeachCardSource);
 
-    // In "Κοντά μου" the podium must also lead with the nearest beaches, not the
-    // highest-scoring ones across the merged radius (a 35 km high-scorer should never
-    // sit above a closer pick).
+    // In "Κοντά μου" the podium leads with the nearest beaches, not the highest-scoring
+    // ones across the merged radius (a 35 km high-scorer should never sit above a closer
+    // pick). Distance-sort the full qualifying set, then apply the display limit so the
+    // podium is genuinely the nearest qualifying beaches.
     if (isNearMeRegionActive) {
-      return [...cards].sort((a, b) => (
-        (typeof a.distance === 'number' ? a.distance : Infinity) -
-        (typeof b.distance === 'number' ? b.distance : Infinity)
-      ));
+      return [...cards]
+        .sort((a, b) => (
+          (typeof a.distance === 'number' ? a.distance : Infinity) -
+          (typeof b.distance === 'number' ? b.distance : Infinity)
+        ))
+        .slice(0, directoryTopRecommendationLimit);
     }
 
     return cards;
