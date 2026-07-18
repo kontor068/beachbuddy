@@ -87,6 +87,7 @@ type BeachCardContext = Beach & {
   confidence?: SuitableBeach['confidence'];
   swimmingComfort?: SuitableBeach['swimmingComfort'];
   canClaimWindProtection?: SuitableBeach['canClaimWindProtection'];
+  enclosedCove?: SuitableBeach['enclosedCove'];
   seaCalmClaimAllowed?: SuitableBeach['seaCalmClaimAllowed'];
   lessExposedToday?: boolean;
   simpleWindSuitability?: SuitableBeach['simpleWindSuitability'];
@@ -3066,6 +3067,7 @@ export const BeachSearcherHome: React.FC<BeachSearcherHomeProps> = ({
       ? alignsToMapProtected || rawCanClaimWindProtection === true
       : false;
     const seaCalmClaimAllowed = options.context?.seaCalmClaimAllowed ?? directContext.seaCalmClaimAllowed ?? weatherContext?.seaCalmClaimAllowed;
+    const enclosedCove = options.context?.enclosedCove ?? directContext.enclosedCove ?? weatherContext?.enclosedCove;
     const lessExposedToday = isExposureLoading
       ? false
       : alignsToMapLessExposed
@@ -3122,6 +3124,7 @@ export const BeachSearcherHome: React.FC<BeachSearcherHomeProps> = ({
         confidence={options.context?.confidence ?? directContext.confidence ?? weatherContext?.confidence}
         swimmingComfort={options.context?.swimmingComfort ?? directContext.swimmingComfort ?? weatherContext?.swimmingComfort}
         canClaimWindProtection={canClaimWindProtection}
+        enclosedCove={enclosedCove}
         seaCalmClaimAllowed={seaCalmClaimAllowed}
         strongWindContext={strongWindContext}
         lessExposedToday={lessExposedToday}

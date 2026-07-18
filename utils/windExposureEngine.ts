@@ -39,6 +39,10 @@ export interface WindExposureAssessment {
   windSector: WindSector;
   exposureLevel: ExposureLevel;
   canClaimProtected: boolean;
+  /** Closed-cove (όρμος) morphology: ≥5/8 sectors strictly land-blocked in a
+   *  high-confidence mask. Static geometry — pair with canClaimProtected for
+   *  "stays calm TODAY" claims. */
+  enclosedCove: boolean;
   isKnownWindSportRisk: boolean;
   isExplicitlyExposed: boolean;
   isExplicitlyProtected: boolean;
@@ -525,6 +529,30 @@ const hasGeometryEnclosedProtection = (
   return fullyLandBlocked && lowResidualWind;
 };
 
+// A "closed cove" (όρμος) is enclosed beyond the trivial landward half: every beach
+// blocks ~4 of 8 sectors (the land behind it), so ≥5 strictly-enclosed sectors means
+// headlands also wrap at least one seaward-ish direction — the cove morphology that
+// keeps water flat (Άγιος Ερμογένης: 5/8). ~15% of beaches nationally qualify, so the
+// distinction stays meaningful. Static geometry only; TODAY's calm still requires the
+// live sector to be blocked (canClaimProtected), which callers must AND with this.
+const ENCLOSED_COVE_MIN_SECTORS = 5;
+
+export const isEnclosedCoveGeometry = (
+  profile: GeospatialExposureProfile | undefined,
+  suspectPin: boolean
+): boolean => {
+  if (suspectPin || profile?.confidence !== 'high') return false;
+  const enclosedSectors = SECTORS.filter(sector => {
+    const s = profile.sectors?.[sector];
+    return Boolean(
+      s && s.level === 'protected' &&
+      typeof s.blockedRayRatio === 'number' && s.blockedRayRatio >= GEOMETRY_ENCLOSURE_BLOCKED_RATIO &&
+      typeof s.intensity === 'number' && s.intensity < GEOMETRY_ENCLOSURE_MAX_INTENSITY
+    );
+  });
+  return enclosedSectors.length >= ENCLOSED_COVE_MIN_SECTORS;
+};
+
 const angularExposureFromProfile = (
   profile: WindProfile,
   windDirectionDeg: number,
@@ -764,6 +792,7 @@ export const assessBeachWindExposure = (input: BeachWindExposureInput): WindExpo
     windSector,
     exposureLevel,
     canClaimProtected,
+    enclosedCove: isEnclosedCoveGeometry(input.geospatialProfile, profile.suspectPin ?? false),
     isKnownWindSportRisk,
     isExplicitlyExposed,
     isExplicitlyProtected,

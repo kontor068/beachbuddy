@@ -82,6 +82,9 @@ export interface BeachScore {
   windProfileSource?: WindProfileSource;
   windSector?: WindSector;
   canClaimWindProtection?: boolean;
+  /** Closed-cove (όρμος) morphology (≥5/8 sectors land-blocked). With
+   *  canClaimWindProtection true, the cove genuinely stays calm today. */
+  enclosedCove?: boolean;
   seaCalmClaimAllowed?: boolean;
   facingDeg?: number | null;
   simpleWindSuitability?: SimpleWindSuitability;
@@ -1944,6 +1947,7 @@ export const calculateBeachScore = (
     windProfileSource: windAssessment.source,
     windSector: windAssessment.windSector,
     canClaimWindProtection: windAssessment.canClaimProtected,
+    enclosedCove: windAssessment.enclosedCove,
     seaCalmClaimAllowed: windAssessment.seaCalmClaimAllowed,
     facingDeg: windAssessment.facingDeg,
     simpleWindSuitability: windAssessment.simpleWindSuitability,
@@ -2303,6 +2307,7 @@ export const getTopRecommendedBeaches = (
       windProfileSource: scoreResult.windProfileSource,
       windSector: scoreResult.windSector,
       canClaimWindProtection: scoreResult.canClaimWindProtection,
+      enclosedCove: scoreResult.enclosedCove,
       seaCalmClaimAllowed: scoreResult.seaCalmClaimAllowed,
       simpleWindSuitability: scoreResult.simpleWindSuitability
     };
@@ -2456,6 +2461,7 @@ export const getSuitableBeaches = (
         windProfileSource: scoreResult.windProfileSource,
         windSector: scoreResult.windSector,
         canClaimWindProtection: scoreResult.canClaimWindProtection,
+        enclosedCove: scoreResult.enclosedCove,
         seaCalmClaimAllowed: scoreResult.seaCalmClaimAllowed,
         simpleWindSuitability: scoreResult.simpleWindSuitability,
         geospatialExposure: geospatialProfile,

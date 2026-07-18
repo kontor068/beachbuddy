@@ -8,6 +8,7 @@ import { ExposureLevel } from '../utils/windExposure';
 type BeachListBeach = Beach & {
   exposureLevel?: ExposureLevel;
   canClaimWindProtection?: boolean;
+  enclosedCove?: boolean;
   seaCalmClaimAllowed?: boolean;
   waveHeightM?: number;
   windSpeedKmph?: number;
@@ -250,6 +251,7 @@ export const BeachList: React.FC<BeachListProps> = ({
               confidence={b.confidence}
               swimmingComfort={b.swimmingComfort}
               canClaimWindProtection={isProtected}
+              enclosedCove={b.enclosedCove}
               seaCalmClaimAllowed={b.seaCalmClaimAllowed}
               strongWindContext={strongWindContext}
               lessExposedToday={b.lessExposedToday}

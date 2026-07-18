@@ -68,6 +68,8 @@ interface BeachCardProps {
   confidence?: RecommendationConfidence;
   swimmingComfort?: SwimmingComfort;
   canClaimWindProtection?: boolean;
+  /** Closed-cove (όρμος) morphology — upgrades the sheltered chip/label wording. */
+  enclosedCove?: boolean;
   seaCalmClaimAllowed?: boolean;
   strongWindContext?: boolean;
   lessExposedToday?: boolean;
@@ -101,6 +103,10 @@ interface BeachCardProps {
 type CardCopy = {
   shelteredChip: (sentenceDay: string) => string;
   shelteredChipA11y: (sentenceDay: string) => string;
+  /** Enclosed-cove (όρμος) variant of the sheltered chip — a MORE protected claim
+   *  than plain directional shelter, earned only by ≥5/8 land-blocked sectors. */
+  enclosedCoveChip: string;
+  enclosedCoveChipA11y: string;
   blueFlag: string;
   accessible: string;
   camping: string;
@@ -163,6 +169,8 @@ const cardCopy: Record<LanguageCode, CardCopy> = {
   en: {
     shelteredChip: (sentenceDay) => `${sentenceDay}: better sheltered`,
     shelteredChipA11y: (sentenceDay) => `${sentenceDay}: better sheltered option`,
+    enclosedCoveChip: 'Enclosed bay',
+    enclosedCoveChipA11y: 'Enclosed bay: calmer water even in wind',
     blueFlag: 'Blue Flag',
     accessible: 'Accessible',
     camping: 'Camping',
@@ -234,6 +242,8 @@ const cardCopy: Record<LanguageCode, CardCopy> = {
   gr: {
     shelteredChip: () => 'Πιο προστατευμένη',
     shelteredChipA11y: (sentenceDay) => `${sentenceDay}: προστατευμένη επιλογή`,
+    enclosedCoveChip: 'Κλειστός όρμος',
+    enclosedCoveChipA11y: 'Κλειστός όρμος: πιο ήρεμα νερά ακόμα κι όταν φυσάει',
     blueFlag: 'Γαλάζια Σημαία',
     accessible: 'Προσβάσιμη ΑμεΑ',
     camping: 'Camping',
@@ -305,6 +315,8 @@ const cardCopy: Record<LanguageCode, CardCopy> = {
   fr: {
     shelteredChip: (sentenceDay) => `${sentenceDay}: plus abritée`,
     shelteredChipA11y: (sentenceDay) => `${sentenceDay}: option plus abritée`,
+    enclosedCoveChip: 'Baie fermée',
+    enclosedCoveChipA11y: 'Baie fermée : eau plus calme même par vent',
     blueFlag: 'Pavillon Bleu',
     accessible: 'Accessible PMR',
     camping: 'Camping',
@@ -376,6 +388,8 @@ const cardCopy: Record<LanguageCode, CardCopy> = {
   de: {
     shelteredChip: (sentenceDay) => `${sentenceDay}: geschützter`,
     shelteredChipA11y: (sentenceDay) => `${sentenceDay}: windgeschütztere Option`,
+    enclosedCoveChip: 'Geschlossene Bucht',
+    enclosedCoveChipA11y: 'Geschlossene Bucht: ruhigeres Wasser auch bei Wind',
     blueFlag: 'Blaue Flagge',
     accessible: 'Barrierefrei',
     camping: 'Camping',
@@ -447,6 +461,8 @@ const cardCopy: Record<LanguageCode, CardCopy> = {
   it: {
     shelteredChip: (sentenceDay) => `${sentenceDay}: più riparata`,
     shelteredChipA11y: (sentenceDay) => `${sentenceDay}: opzione più riparata`,
+    enclosedCoveChip: 'Baia chiusa',
+    enclosedCoveChipA11y: 'Baia chiusa: acqua più calma anche col vento',
     blueFlag: 'Bandiera Blu',
     accessible: 'Accessibile',
     camping: 'Campeggio',
@@ -709,19 +725,26 @@ const AmenityTags: React.FC<{ beach: Beach; language: LanguageCode }> = ({ beach
   );
 };
 
-const ProtectedBeachMarker: React.FC<{ language: LanguageCode; selectedDate?: Date }> = ({ language, selectedDate }) => {
+const ProtectedBeachMarker: React.FC<{ language: LanguageCode; selectedDate?: Date; enclosedCove?: boolean }> = ({ language, selectedDate, enclosedCove = false }) => {
   const day = getSelectedDaySentencePrefix(selectedDate, new Date(), language);
   const copy = getLocalizedCopy(language, cardCopy);
-  const label = copy.shelteredChip(day);
-  const accessibleLabel = copy.shelteredChipA11y(day);
+  // An enclosed cove (όρμος) earns a stronger, visually distinct claim than plain
+  // directional shelter: cyan pill + waves icon vs the emerald shield.
+  const label = enclosedCove ? copy.enclosedCoveChip : copy.shelteredChip(day);
+  const accessibleLabel = enclosedCove ? copy.enclosedCoveChipA11y : copy.shelteredChipA11y(day);
+  const pillClass = enclosedCove
+    ? 'inline-flex min-h-6 shrink-0 items-center gap-1 rounded-full border border-cyan-200 bg-cyan-50/80 px-2 py-0.5 text-[10px] font-bold leading-none text-cyan-700'
+    : 'inline-flex min-h-6 shrink-0 items-center gap-1 rounded-full border border-emerald-100 bg-emerald-50/75 px-2 py-0.5 text-[10px] font-bold leading-none text-emerald-700';
 
   return (
     <span
       title={accessibleLabel}
       aria-label={accessibleLabel}
-      className="inline-flex min-h-6 shrink-0 items-center gap-1 rounded-full border border-emerald-100 bg-emerald-50/75 px-2 py-0.5 text-[10px] font-bold leading-none text-emerald-700"
+      className={pillClass}
     >
-      <Shield className="h-3 w-3 shrink-0" aria-hidden="true" />
+      {enclosedCove
+        ? <Waves className="h-3 w-3 shrink-0" aria-hidden="true" />
+        : <Shield className="h-3 w-3 shrink-0" aria-hidden="true" />}
       <span className="whitespace-nowrap">{label}</span>
     </span>
   );
@@ -1111,6 +1134,7 @@ export const BeachCard: React.FC<BeachCardProps> = ({
   warnings = [],
   swimmingComfort,
   canClaimWindProtection = false,
+  enclosedCove = false,
   seaCalmClaimAllowed = false,
   strongWindContext = false,
   lessExposedToday,
@@ -1287,7 +1311,7 @@ export const BeachCard: React.FC<BeachCardProps> = ({
     ? displayStrongOpenBeachLabel
     : localizedCardCopy.moreOpenToWind;
   const baseProtectionLabel = isProtectedToday
-    ? labels.protected
+    ? (enclosedCove ? localizedCardCopy.enclosedCoveChip : labels.protected)
     : strongWindContext && isLessExposedToday && isPartlyShelteredToday
       ? labels.partlyShelteredToday
     : strongWindContext
@@ -1301,7 +1325,7 @@ export const BeachCard: React.FC<BeachCardProps> = ({
         : labels.mildlyBreezy;
   const protectionLabel = windSuitabilityText || baseProtectionLabel;
   const exposureBadgeLabel = isProtectedToday
-    ? labels.protected
+    ? (enclosedCove ? localizedCardCopy.enclosedCoveChip : labels.protected)
     : isExposed
       ? displayOpenBeachLabel
       : localizedCardCopy.localExposureCheck;
@@ -1462,7 +1486,7 @@ export const BeachCard: React.FC<BeachCardProps> = ({
                   {(showIslandName || distance !== undefined) && <MapPin className="h-3.5 w-3.5 shrink-0" />}
                   {showIslandName && <span className="min-w-0 truncate">{islandName}</span>}
                   {distance !== undefined && <span className="shrink-0 text-primary">{distance.toFixed(1)} km</span>}
-                  {showHeaderProtectedMarker && <ProtectedBeachMarker language={language} selectedDate={selectedDate} />}
+                  {showHeaderProtectedMarker && <ProtectedBeachMarker language={language} selectedDate={selectedDate} enclosedCove={enclosedCove && isProtectedToday} />}
                 </div>
               )}
               {(hasBlueFlag2026 || (cardPhoto && !isPhotoCueDismissed)) && (
@@ -1645,7 +1669,7 @@ export const BeachCard: React.FC<BeachCardProps> = ({
                 {(showIslandName || distance !== undefined) && <MapPin className="h-3.5 w-3.5 shrink-0" />}
                 {showIslandName && <span className="min-w-0 flex-1 truncate">{islandName}</span>}
                 {distance !== undefined && <span className="shrink-0 text-primary">{distance.toFixed(1)} km</span>}
-                {showHeaderProtectedMarker && <ProtectedBeachMarker language={language} selectedDate={selectedDate} />}
+                {showHeaderProtectedMarker && <ProtectedBeachMarker language={language} selectedDate={selectedDate} enclosedCove={enclosedCove && isProtectedToday} />}
               </div>
             )}
           </div>

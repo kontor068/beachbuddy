@@ -149,6 +149,7 @@ export const SavedBeachesScreen: React.FC<SavedBeachesScreenProps> = ({
                     confidence={item.confidence}
                     swimmingComfort={item.swimmingComfort}
                     canClaimWindProtection={item.canClaimWindProtection}
+                    enclosedCove={item.enclosedCove}
                     seaCalmClaimAllowed={item.seaCalmClaimAllowed}
                     bestBeachTime={item.bestBeachTime}
                     windSuitabilityText={describeSimpleWindSuitability(item.simpleWindSuitability, language)}

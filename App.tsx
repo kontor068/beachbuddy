@@ -3584,6 +3584,7 @@ export const App: React.FC = () => {
         confidence: scoreResult.confidence,
         swimmingComfort: scoreResult.swimmingComfort,
         canClaimWindProtection: scoreResult.canClaimWindProtection,
+        enclosedCove: scoreResult.enclosedCove,
         seaCalmClaimAllowed: scoreResult.seaCalmClaimAllowed,
         simpleWindSuitability: scoreResult.simpleWindSuitability,
         windExposureReason: describeSimpleWindSuitability(scoreResult.simpleWindSuitability, language),
@@ -4241,6 +4242,7 @@ export const App: React.FC = () => {
         crowdLevel: context.beach.crowdLevel ?? beach.crowdLevel,
         exposureLevel: context.exposureLevel,
         canClaimWindProtection: context.canClaimWindProtection,
+        enclosedCove: context.enclosedCove,
         seaCalmClaimAllowed: context.seaCalmClaimAllowed,
         windSpeedKmph: context.windSpeedKmph,
         waveHeightM: context.waveHeightM,
@@ -4263,6 +4265,7 @@ export const App: React.FC = () => {
         crowdLevel: context.beach.crowdLevel ?? beach.crowdLevel,
         exposureLevel: context.exposureLevel,
         canClaimWindProtection: context.canClaimWindProtection,
+        enclosedCove: context.enclosedCove,
         seaCalmClaimAllowed: context.seaCalmClaimAllowed,
         windSpeedKmph: context.windSpeedKmph,
         waveHeightM: context.waveHeightM,
@@ -4297,6 +4300,7 @@ export const App: React.FC = () => {
       distance: item.distance,
       exposureLevel: item.exposureLevel,
       canClaimWindProtection: item.canClaimWindProtection,
+      enclosedCove: item.enclosedCove,
       seaCalmClaimAllowed: item.seaCalmClaimAllowed,
       windSpeedKmph: item.windSpeedKmph,
       waveHeightM: item.waveHeightM,
@@ -4314,6 +4318,7 @@ export const App: React.FC = () => {
       distance: item.distance,
       exposureLevel: item.exposureLevel,
       canClaimWindProtection: item.canClaimWindProtection,
+      enclosedCove: item.enclosedCove,
       seaCalmClaimAllowed: item.seaCalmClaimAllowed,
       windSpeedKmph: item.windSpeedKmph,
       waveHeightM: item.waveHeightM,
@@ -6054,6 +6059,7 @@ export const App: React.FC = () => {
                       confidence={r.confidence}
                       swimmingComfort={r.swimmingComfort}
                       canClaimWindProtection={r.canClaimWindProtection}
+                      enclosedCove={r.enclosedCove}
                       seaCalmClaimAllowed={r.seaCalmClaimAllowed}
                       windSuitabilityText={describeSimpleWindSuitability(r.simpleWindSuitability, language)}
                       windSuitabilityColor={r.simpleWindSuitability?.suitabilityColor}
@@ -6306,6 +6312,7 @@ export const App: React.FC = () => {
                           confidence={r.confidence}
                           swimmingComfort={r.swimmingComfort}
                           canClaimWindProtection={r.canClaimWindProtection}
+                          enclosedCove={r.enclosedCove}
                           seaCalmClaimAllowed={r.seaCalmClaimAllowed}
                           strongWindContext={isStrongRecommendationMode}
                           windSuitabilityText={describeSimpleWindSuitability(r.simpleWindSuitability, language)}
