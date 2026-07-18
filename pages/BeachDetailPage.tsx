@@ -227,7 +227,8 @@ const getSeaConditionDisplay = (
   windBeaufort = 0,
   waveHeightM?: number,
   selectedHour?: number,
-  boatAccess = false
+  boatAccess = false,
+  enclosedCove = false
 ) => {
   const hour = getSelectedHourPrefix(selectedHour, language);
   const day = hour ?? getSelectedDayPrefix(selectedDate, new Date(), language);
@@ -345,6 +346,19 @@ const getSeaConditionDisplay = (
   // but make clear the sea will have waves.
   if (windBeaufort >= 5 && !isExposed) {
     const hasBigWaves = typeof waveHeightM === 'number' && Number.isFinite(waveHeightM) && waveHeightM >= 1.2;
+    // An ENCLOSED cove (όρμος) with today's wind genuinely blocked and a measured low wave
+    // keeps calm water even at 5-6 Bft — saying "Choppy" here contradicted the calm verdict
+    // right above it (Άγιος Ερμογένης at 5 Bft N). The claim stays honest: it needs the
+    // enclosure geometry AND today's protection claim AND a genuinely low displayed wave;
+    // any real wave (≥0.5 m, e.g. swell wrapping in) falls back to the hedged chop wording.
+    const calmEnclosedWater = enclosedCove && canClaimWindProtection &&
+      typeof waveHeightM === 'number' && Number.isFinite(waveHeightM) && waveHeightM < 0.5;
+    if (calmEnclosedWater && !hasBigWaves) {
+      return {
+        value: { en: 'Calm water, breezy', gr: 'Ήρεμο νερό, με αέρα', de: 'Ruhiges Wasser, windig', it: 'Acqua calma, ventoso', fr: 'Eau calme, venteux' }[language],
+        subValue: { en: 'Enclosed bay — the wind blows, the water stays calmer', gr: 'Κλειστός όρμος — ο αέρας φυσάει, το νερό μένει πιο ήρεμο', de: 'Geschlossene Bucht — windig, aber ruhigeres Wasser', it: 'Baia chiusa — vento sì, ma acqua più calma', fr: 'Baie fermée — du vent, mais une eau plus calme' }[language],
+      };
+    }
     const value = hasBigWaves
       ? { en: 'Rough sea', gr: 'Έντονος κυματισμός', de: 'Raue See', it: 'Mare mosso', fr: 'Mer agitée' }[language]
       : { en: 'Choppy', gr: 'Κυματισμός', de: 'Unruhig', it: 'Mosso', fr: 'Clapot' }[language];
@@ -744,7 +758,7 @@ export const BeachDetailPage: React.FC<BeachDetailPageProps> = ({
     hourlyForecast: scoringHourlyForecast,
     geospatialProfile: geospatialExposure,
   });
-  const { score, exposureLevel, swimmingComfort, canClaimWindProtection = false, seaCalmClaimAllowed = false } = scoreResult;
+  const { score, exposureLevel, swimmingComfort, canClaimWindProtection = false, enclosedCove = false, seaCalmClaimAllowed = false } = scoreResult;
   const isExposed = exposureLevel ? exposureLevel !== 'protected' : true;
   const isExposedToTodayWind = exposureLevel ? exposureLevel === 'exposed' : isExposed;
   // The map pin the user sees can read one band redder than the scoring engine (see
@@ -848,7 +862,7 @@ export const BeachDetailPage: React.FC<BeachDetailPageProps> = ({
   const detailBadgeScore = getDetailBadgeScore(score, seaConditionScore, isExposed);
   const beaufortLevel = getBeaufortLevel(windSpeedKmh);
   const isBoatOnlyBeach = hasBoatOnlyAccess(beach);
-  const seaConditionDisplay = getSeaConditionDisplay(seaConditionScore, isExposedForCopy, language, selectedDate, canClaimWindProtection, seaCalmClaimAllowed, beaufortLevel, displayWaveHeightM, selectedHour, isBoatOnlyBeach);
+  const seaConditionDisplay = getSeaConditionDisplay(seaConditionScore, isExposedForCopy, language, selectedDate, canClaimWindProtectionForCopy, seaCalmClaimAllowed, beaufortLevel, displayWaveHeightM, selectedHour, isBoatOnlyBeach, enclosedCove);
   const boatRideConditionLabel = {
     en: 'Ride',
     gr: 'Συνθήκες πλεύσης',
