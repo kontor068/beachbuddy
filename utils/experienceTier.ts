@@ -45,10 +45,14 @@ export const getExperienceTier = (input: ExperienceTierInput): ExperienceTier =>
   // that is simply wrong today. A strong breeze that only makes swimming choppy is NOT red on
   // its own — it caps the tier at "OK" below, so a 6 Bft afternoon reads amber, not a wall of red.
   const roughSea = wave !== undefined && wave >= 1.5;
-  // Red ("skip") tracks the map's wind-colour guide: it only appears from 5 Bft up.
-  // Below that, a rough sea or a weak pick caps the beach at "OK" (orange), never
-  // "avoid" — so a 4 Bft day never paints red. A near-gale (7 Bft+) is always skip.
-  if (bft >= 7 || (bft >= 5 && (roughSea || score < 25))) return 'skip';
+  // Red ("skip") tracks the map's wind-colour guide: it only appears from 5 Bft up, and —
+  // like the pin — only for beaches the map paints RED there. At 5–6 Bft the pin is red
+  // solely for EXPOSED beaches (getSimpleWindColor: partial → orange, protected → yellow),
+  // so a partial/protected beach must never read a red "Δεν συνιστάται" under an orange or
+  // yellow pin — it caps at "OK" via the ceiling below instead. A near-gale (7 Bft+) is
+  // always skip, whatever the shelter.
+  const pinRedInStrongWind = input.exposureLevel !== 'protected' && input.exposureLevel !== 'partial';
+  if (bft >= 7 || (bft >= 5 && pinRedInStrongWind && (roughSea || score < 25))) return 'skip';
 
   // Condition ceiling: 3 excellent · 2 good · 1 OK. Strong wind or real chop pulls it down,
   // and a hard swim advisory holds it at "OK" even when the wind reads a notch lower.
