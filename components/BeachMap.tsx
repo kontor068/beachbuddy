@@ -655,6 +655,14 @@ const getRecommendationTone = (
   const exposureLevel = visibleExposureLevel(item);
 
   if (showWindExposureColors && item.simpleWindSuitability) {
+    if (item.simpleWindSuitability.suitabilityColor === 'cyan') {
+      return {
+        colorClass: 'bg-cyan-500',
+        ringClass: 'ring-cyan-200',
+        badgeClass: 'bg-cyan-100 text-cyan-700',
+      };
+    }
+
     if (item.simpleWindSuitability.suitabilityColor === 'green') {
       return {
         colorClass: 'bg-emerald-500',
@@ -756,9 +764,16 @@ const createBeachIcon = (
 const getExposureMarkerTone = (
   exposureLevel?: string,
   showWindExposureColors = true,
-  windBeaufort?: number
+  windBeaufort?: number,
+  isEnclosedCove = false
 ) => {
   const tones = {
+    cyan: {
+      colorClass: 'bg-cyan-500',
+      ringClass: 'ring-cyan-200',
+      bgClass: 'bg-cyan-50',
+      textClass: 'text-cyan-700',
+    },
     blue: {
       colorClass: 'bg-sky-500',
       ringClass: 'ring-sky-200',
@@ -796,6 +811,10 @@ const getExposureMarkerTone = (
   // it) — from 4 Bft up even sheltered shores get visible chop.
   const isExposed = exposureLevel === 'exposed';
   if (beaufort >= 7) return tones.red;
+  // Enclosed cove (όρμος) protected from the live wind: its own calmer tier at
+  // 3-6 Bft, matching the engine's cyan suitability colour. Open sectors of the
+  // same cove resolve 'exposed' and never reach this branch.
+  if (isEnclosedCove && isProtected && beaufort >= 3) return tones.cyan;
   if (beaufort >= 5) return isExposed ? tones.red : tones.orange;
   // At 4 Bft only genuinely exposed shores escalate to orange; protected and the
   // uncertain "partial" middle get a yellow "mild chop" heads-up.
@@ -808,6 +827,7 @@ const getExposureMarkerTone = (
 };
 
 const windLegendDotClasses = {
+  cyan: 'bg-cyan-500 ring-cyan-200',
   blue: 'bg-sky-500 ring-sky-200',
   yellow: 'bg-yellow-400 ring-yellow-200',
   orange: 'bg-orange-500 ring-orange-200',
@@ -822,6 +842,11 @@ const windSliderTones: Record<WindLegendDot, {
   shadow: string;
   focus: string;
 }> = {
+  cyan: {
+    color: '#06b6d4',
+    shadow: 'rgba(6, 182, 212, 0.38)',
+    focus: '#22d3ee',
+  },
   blue: {
     color: '#0ea5e9',
     shadow: 'rgba(14, 165, 233, 0.38)',
@@ -859,7 +884,8 @@ const createExposureIcon = (
   windBeaufort?: number,
   isTopPick = false,
   evidence: MapExposureEvidence = 'estimated',
-  isHighlighted = false
+  isHighlighted = false,
+  isEnclosedCove = false
 ) => {
   const topPickClass = isTopPick ? 'beach-map-top-pick-marker-dot' : '';
   const highlightedClass = isHighlighted ? 'beach-map-active-scroll-marker-dot' : '';
@@ -877,7 +903,7 @@ const createExposureIcon = (
     });
   }
 
-  const { colorClass, ringClass } = getExposureMarkerTone(exposureLevel, showWindExposureColors, windBeaufort);
+  const { colorClass, ringClass } = getExposureMarkerTone(exposureLevel, showWindExposureColors, windBeaufort, isEnclosedCove);
   // Non-colour cue: "more exposed" markers get a hollow centre (donut), so the
   // less-/more-exposed split stays legible without relying on hue alone. Only applied at
   // 3-6 Bft, i.e. exactly where the colour actually splits the two groups (at 0-2 all are
@@ -2191,6 +2217,23 @@ const BeachMap: React.FC<BeachMapProps> = ({
             </span>
           </div>
         ))}
+        {showExposedShapeCue && (
+          <div className={`${isPreview ? 'text-[10px] sm:text-[11px]' : 'text-[11px]'} flex min-w-0 flex-wrap items-center gap-x-1.5 gap-y-1 font-semibold leading-snug text-slate-600 dark:text-slate-300`}>
+            <span className="inline-flex min-w-0 items-center gap-1">
+              <span className="min-w-0">{getLocalizedCopy(language, {
+                en: 'Enclosed bay, calmer today',
+                gr: 'Κλειστός όρμος, πιο ήρεμος σήμερα',
+                fr: 'Baie fermée, plus calme aujourd’hui',
+                de: 'Geschlossene Bucht, heute ruhiger',
+                it: 'Baia chiusa, più calma oggi',
+              })}</span>
+              <span
+                role="img"
+                className={`relative h-2.5 w-2.5 shrink-0 rounded-full ring-1 ${windLegendDotClasses.cyan}`}
+              />
+            </span>
+          </div>
+        )}
       </div>
     );
   };
@@ -2468,7 +2511,7 @@ const BeachMap: React.FC<BeachMapProps> = ({
               zIndexOffset={isHighlightedMarker ? 1000 : isTopPickMarker ? 700 : 0}
               icon={mapMode === 'recommendation'
                 ? createBeachIcon(item, showRecommendationWindColors, isTopPickMarker, isHighlightedMarker)
-                : createExposureIcon(mapExposureLevel, showWindExposureColors, windBeaufort, isTopPickMarker, mapExposureEvidence, isHighlightedMarker)}
+                : createExposureIcon(mapExposureLevel, showWindExposureColors, windBeaufort, isTopPickMarker, mapExposureEvidence, isHighlightedMarker, Boolean(item.enclosedCove))}
               eventHandlers={{
                 click: () => {
                   trackEvent('map_marker_clicked', item.beachId, {

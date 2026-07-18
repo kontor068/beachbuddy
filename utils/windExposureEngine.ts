@@ -302,12 +302,15 @@ const getSimpleWindColor = (
   if (beaufort >= 7) return 'red';
   if (beaufort <= 2) return 'green';
 
+  // An enclosed cove (όρμος, ≥5/8 land-blocked sectors) protected from the LIVE wind
+  // gets its own palette tier at 3-6 Bft: cyan, one step calmer than any classic
+  // protected beach — its water genuinely stays flat (operator-verified at Άγιος
+  // Ερμογένης at 4 AND 5 Bft). 7 Bft+ stays red (near-gale is never endorsed) and
+  // the same cove's open sectors never reach here (gated to 'protected' by the caller).
+  if (enclosedCove) return 'cyan';
+
   if (beaufort >= 5) {
-    // An enclosed cove (όρμος, ≥5/8 land-blocked sectors) that is protected from the
-    // LIVE wind reads one palette step calmer than plain directional shelter: green
-    // where classic protected shows yellow. Its water genuinely stays flat at 5-6 Bft
-    // (operator-verified at Άγιος Ερμογένης); 7 Bft+ stays red — near-gale is never green.
-    if (exposureLevel === 'protected') return enclosedCove ? 'green' : 'yellow';
+    if (exposureLevel === 'protected') return 'yellow';
     if (exposureLevel === 'partial') return 'orange';
     return 'red';
   }

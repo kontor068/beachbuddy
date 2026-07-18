@@ -9,6 +9,19 @@ type BestBeachTime = {
   bestEnd?: string;
 };
 
+// Many proper names already contain the beach noun («Παραλία Άναξου», "Vatera Beach").
+// When a sentence template supplies its own noun («Η παραλία …», "… Beach weather"),
+// the embedded noun must be stripped or the copy doubles it («Η παραλία Παραλία Άναξου»).
+// Greek strips a leading «Παραλία», English a trailing "Beach"; other languages pair a
+// foreign noun («La plage Paralia …») with the transliterated proper name, which reads
+// fine, so they pass through unchanged.
+export const beachSentenceName = (name: string, language: LanguageCode): string => {
+  const trimmed = (name || '').trim();
+  if (language === 'gr') return trimmed.replace(/^παραλία\s+/i, '') || trimmed;
+  if (language === 'en') return trimmed.replace(/\s+beach$/i, '') || trimmed;
+  return trimmed;
+};
+
 export interface BeachCopyInput {
   beach: Beach;
   language: LanguageCode;

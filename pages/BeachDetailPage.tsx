@@ -68,6 +68,7 @@ import { getRainSwimAdvisory } from '../utils/rainAdvisory';
 import { summarizeLocalWindBehavior } from '../utils/windClimatology';
 import { getRegionWindContext, LOCAL_WIND_SECTORS } from '../utils/localWindContext.mjs';
 import { buildWeatherNowContent } from '../utils/weatherNowCopy';
+import { beachSentenceName } from '../utils/beachCopy';
 
 // Temporarily hidden: the "Σχέδιο ημέρας" (Plan your day) section isn't well
 // implemented yet — hiding it until we rework it. Flip back to true to re-enable.
@@ -156,7 +157,7 @@ const photoContributionCopy: Record<LanguageCode, {
     title: 'Έχεις φωτογραφία αυτής της παραλίας;',
     body: 'Στείλε μας μια δική σου φωτογραφία ή μια εικόνα με ξεκάθαρη άδεια χρήσης. Δεν δημοσιεύεται τίποτα χωρίς έλεγχο.',
     button: 'Πρότεινε φωτογραφία',
-    buttonLabel: (beachName) => `Πρότεινε φωτογραφία για την παραλία ${beachName}`,
+    buttonLabel: (beachName) => `Πρότεινε φωτογραφία για την παραλία ${beachSentenceName(beachName, 'gr')}`,
   },
   de: {
     title: 'Hast du ein Foto von diesem Strand?',

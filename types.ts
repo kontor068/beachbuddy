@@ -52,7 +52,9 @@ export type SeabedSlope = 'shallow_gradual' | 'moderate' | 'steep' | 'unknown';
 export type WaterEntry = 'easy' | 'moderate' | 'difficult' | 'rocks_only' | 'unknown';
 export type WaterQualityRiskAfterRain = 'low' | 'medium' | 'high';
 export type SwimmingComfort = 'excellent' | 'good' | 'caution' | 'avoid_swimming';
-export type WindSuitabilityColor = 'green' | 'yellow' | 'orange' | 'red';
+/** 'cyan' is the enclosed-cove (όρμος) tier: one step calmer than 'green', shown only
+ *  when the cove is genuinely protected from the live wind at 3-6 Bft. */
+export type WindSuitabilityColor = 'cyan' | 'green' | 'yellow' | 'orange' | 'red';
 export type WindSuitabilityExplanationKey =
   | 'generally_calm'
   | 'protected_from_wind'

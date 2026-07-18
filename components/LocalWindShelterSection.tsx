@@ -2,6 +2,7 @@ import React from 'react';
 import { Compass, ChevronRight } from 'lucide-react';
 import { LanguageCode } from '../types';
 import type { ExposureLevel } from '../utils/windExposure';
+import { beachSentenceName } from '../utils/beachCopy';
 import { LOCAL_WIND_SECTION } from '../utils/localWindContext.mjs';
 
 /**
@@ -21,7 +22,7 @@ const pick = (copy: Copy, language: LanguageCode): string => copy[language] ?? c
 // article "Το" (which then needs the neuter statusBoatGr predicates to agree).
 const beachSubject = (beachName: string, language: LanguageCode, isBoatAccess: boolean): string => {
   if (isBoatAccess) return language === 'gr' ? `Το ${beachName}` : beachName;
-  return language === 'gr' ? `Η παραλία ${beachName}` : beachName;
+  return language === 'gr' ? `Η παραλία ${beachSentenceName(beachName, 'gr')}` : beachName;
 };
 
 export interface LocalWindShelteredCove {

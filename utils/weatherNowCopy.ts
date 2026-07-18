@@ -1,4 +1,5 @@
 import { WindDirection, LanguageCode } from '../types';
+import { beachSentenceName } from './beachCopy';
 import type { ExposureLevel } from './windExposure';
 
 /**
@@ -96,10 +97,15 @@ const joinList = (items: string[], lang: Lang) => {
   return `${items.slice(0, -1).join(', ')}${and}${items[items.length - 1]}`;
 };
 
-// "protected from northerly and westerly winds" / "από βόρειους και δυτικούς ανέμους"
-const shelterPhrase = (protectedFrom: WindDirection[], lang: Lang): string => {
+// "protected from northerly and westerly winds" / "από βόρειους και δυτικούς ανέμους".
+// A beach can never claim shelter from the side it FACES: the coarse sector lumping
+// (NE counts toward "northerly") otherwise lets a north-facing beach protected only
+// from NE read "βλέπει βόρεια και προστατεύεται από βόρειους ανέμους" — a visible
+// contradiction (Παραλία Άναξου, Lesvos). Facing sectors are excluded from the claim.
+const shelterPhrase = (protectedFrom: WindDirection[], lang: Lang, faces: WindDirection[]): string => {
   const s = sectorsOf(protectedFrom);
-  const parts = (['north', 'south', 'east', 'west'] as const).filter(k => s[k]).map(k => SECTOR_WORDS[k][lang]);
+  const f = sectorsOf(faces || []);
+  const parts = (['north', 'south', 'east', 'west'] as const).filter(k => s[k] && !f[k]).map(k => SECTOR_WORDS[k][lang]);
   if (parts.length === 0) return '';
   const list = joinList(parts, lang);
   switch (lang) {
@@ -186,12 +192,15 @@ const buildHeading = (beachName: string, lang: Lang, isToday: boolean, isBoatAcc
       default:   return isToday ? `${beachName} weather right now` : `${beachName} weather & sea`;
     }
   }
+  // These templates supply their own beach noun, so strip the one embedded in the
+  // proper name («Παραλία Άναξου» → «στην παραλία Άναξου», not «στην παραλία Παραλία Άναξου»).
+  const nounSafe = beachSentenceName(beachName, lang);
   switch (lang) {
-    case 'gr': return isToday ? `Καιρός στην παραλία ${beachName} τώρα` : `Καιρός & θάλασσα — ${beachName}`;
+    case 'gr': return isToday ? `Καιρός στην παραλία ${nounSafe} τώρα` : `Καιρός & θάλασσα — ${beachName}`;
     case 'de': return `Wetter am Strand ${beachName}${now}`;
     case 'fr': return `Météo à la plage ${beachName}${now}`;
     case 'it': return `Meteo alla spiaggia ${beachName}${now}`;
-    default:   return isToday ? `${beachName} Beach weather right now` : `${beachName} Beach weather & sea`;
+    default:   return isToday ? `${nounSafe} Beach weather right now` : `${nounSafe} Beach weather & sea`;
   }
 };
 
@@ -217,14 +226,14 @@ export const buildWeatherNowContent = (input: WeatherNowInput): WeatherNowConten
 
   // Stable description (no live values): orientation + shelter, always true.
   const facing = facingPhrase(input.faces || [], lang);
-  const shelter = shelterPhrase(input.protectedFrom || [], lang);
+  const shelter = shelterPhrase(input.protectedFrom || [], lang, input.faces || []);
   let stableDescription: string;
   if (facing || shelter) {
     const clause = [facing, shelter].filter(Boolean).join(lang === 'gr' ? ' και ' : lang === 'de' ? ' und ' : lang === 'fr' ? ' et ' : lang === 'it' ? ' e ' : ' and ');
     // Boat-only spots aren't "beaches" — refer to them by bare name ("Το Κλέφτικο …"), no noun.
     const lead = isBoatAccess
       ? { en: `${beachName} ${clause}.`, gr: `Το ${beachName} ${clause}.`, de: `${beachName} ${clause}.`, fr: `${beachName} ${clause}.`, it: `${beachName} ${clause}.` }[lang]
-      : { en: `${beachName} beach ${clause}.`, gr: `Η παραλία ${beachName} ${clause}.`, de: `Der Strand ${beachName} ${clause}.`, fr: `La plage ${beachName} ${clause}.`, it: `La spiaggia ${beachName} ${clause}.` }[lang];
+      : { en: `${beachSentenceName(beachName, 'en')} beach ${clause}.`, gr: `Η παραλία ${beachSentenceName(beachName, 'gr')} ${clause}.`, de: `Der Strand ${beachName} ${clause}.`, fr: `La plage ${beachName} ${clause}.`, it: `La spiaggia ${beachName} ${clause}.` }[lang];
     const tail = { en: ' Wind and waves shift through the day, so check the live figures below.', gr: ' Ο άνεμος και το κύμα αλλάζουν μέσα στη μέρα, γι\' αυτό δες τις ζωντανές τιμές πιο κάτω.', de: ' Wind und Wellen ändern sich im Tagesverlauf – sieh dir die Live-Werte unten an.', fr: ' Le vent et les vagues changent au cours de la journée, consultez les valeurs en direct ci-dessous.', it: ' Vento e onde cambiano durante il giorno, controlla i valori in tempo reale qui sotto.' }[lang];
     stableDescription = lead + tail;
   } else {

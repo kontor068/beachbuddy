@@ -1654,6 +1654,16 @@ const listJoin = (parts, language) => {
 // 2.740 beach pages stop sharing the same templated description. Each sentence
 // is emitted ONLY when its data exists (no filler) and wind wording stays
 // cautious: orientation records shore facing, not confirmed shelter.
+// Mirrors utils/beachCopy.ts beachSentenceName: when a template supplies its own
+// beach noun («Η παραλία …»), strip the noun already embedded in the proper name so
+// «Παραλία Άναξου» doesn't render as «Η παραλία Παραλία Άναξου».
+const sentenceName = (name, language) => {
+  const trimmed = (name || '').trim();
+  if (language === 'gr') return trimmed.replace(/^παραλία\s+/iu, '') || trimmed;
+  if (language === 'en') return trimmed.replace(/\s+beach$/i, '') || trimmed;
+  return trimmed;
+};
+
 const buildBeachNarrative = (beach, island, language) => {
   const beachName = displayName(beach.name, `Beach ${beach.id}`, language);
   const pick = variants => variants[(beach.id ?? 0) % variants.length];
@@ -1682,9 +1692,9 @@ const buildBeachNarrative = (beach, island, language) => {
       },
       gr: {
         leads: [
-          `Η παραλία ${beachName} κοιτάζει ${faceWords}`,
-          `Ο προσανατολισμός της παραλίας ${beachName} είναι ${faceWords}`,
-          `Η παραλία ${beachName} βλέπει ${faceWords}`,
+          `Η παραλία ${sentenceName(beachName, 'gr')} κοιτάζει ${faceWords}`,
+          `Ο προσανατολισμός της παραλίας ${sentenceName(beachName, 'gr')} είναι ${faceWords}`,
+          `Η παραλία ${sentenceName(beachName, 'gr')} βλέπει ${faceWords}`,
         ],
         prot: w => `, οπότε έχει συνήθως φυσική κάλυψη από ${w} ανέμους`,
         tail: `. Ο προσανατολισμός δείχνει μόνο την πλευρά της ακτής, όχι επιβεβαιωμένη προστασία· έλεγξε άνεμο και κύμα στην εφαρμογή πριν πας.`,
@@ -1914,7 +1924,7 @@ const buildBeachFaqPairs = (beach, island, language) => {
   if (access) {
     pairs.push(pickLang(language, {
       en: { q: `How do you get to ${beachName} beach?`, a: `Access is ${access.toLowerCase()}. See the coordinates and map on CalmBeach.` },
-      gr: { q: `Πώς πάω στην παραλία ${beachName};`, a: `Η πρόσβαση είναι: ${access}. Δες τις συντεταγμένες και τον χάρτη στο CalmBeach.` },
+      gr: { q: `Πώς πάω στην παραλία ${sentenceName(beachName, 'gr')};`, a: `Η πρόσβαση είναι: ${access}. Δες τις συντεταγμένες και τον χάρτη στο CalmBeach.` },
       de: { q: `Wie kommt man zum Strand ${beachName}?`, a: `${access}. Koordinaten und Karte findest du in CalmBeach.` },
       fr: { q: `Comment se rendre à la plage ${beachName} ?`, a: `${access}. Retrouvez les coordonnées et la carte sur CalmBeach.` },
       it: { q: `Come si arriva alla spiaggia ${beachName}?`, a: `${access}. Coordinate e mappa su CalmBeach.` },
@@ -1934,7 +1944,7 @@ const buildBeachFaqPairs = (beach, island, language) => {
     });
     pairs.push(pickLang(language, {
       en: { q: `What is ${beachName} beach like?`, a: `${type ? `A ${type.toLowerCase()} beach${depth}.` : `A beach${depth}.`}`.trim() },
-      gr: { q: `Πώς είναι η παραλία ${beachName};`, a: `${type ? `${type}${depth}.` : `Παραλία${depth}.`}`.trim() },
+      gr: { q: `Πώς είναι η παραλία ${sentenceName(beachName, 'gr')};`, a: `${type ? `${type}${depth}.` : `Παραλία${depth}.`}`.trim() },
       de: { q: `Wie ist der Strand ${beachName}?`, a: `${type ? `Strandtyp: ${type}${depth}.` : `Strand${depth}.`}`.trim() },
       fr: { q: `À quoi ressemble la plage ${beachName} ?`, a: `${type ? `Plage ${type.toLowerCase()}${depth}.` : `Plage${depth}.`}`.trim() },
       it: { q: `Com'è la spiaggia ${beachName}?`, a: `${type ? `Spiaggia ${type.toLowerCase()}${depth}.` : `Spiaggia${depth}.`}`.trim() },
@@ -1951,7 +1961,7 @@ const buildBeachFaqPairs = (beach, island, language) => {
   if (amen.length) {
     pairs.push(pickLang(language, {
       en: { q: `What facilities does ${beachName} beach have?`, a: `It has ${listJoin(amen, language)}.` },
-      gr: { q: `Τι παροχές έχει η παραλία ${beachName};`, a: `Έχει ${listJoin(amen, language)}.` },
+      gr: { q: `Τι παροχές έχει η παραλία ${sentenceName(beachName, 'gr')};`, a: `Έχει ${listJoin(amen, language)}.` },
       de: { q: `Welche Ausstattung hat der Strand ${beachName}?`, a: `Es gibt ${listJoin(amen, language)}.` },
       fr: { q: `Quels équipements y a-t-il à la plage ${beachName} ?`, a: `Il y a ${listJoin(amen, language)}.` },
       it: { q: `Quali servizi offre la spiaggia ${beachName}?`, a: `Ci sono ${listJoin(amen, language)}.` },
@@ -1962,7 +1972,7 @@ const buildBeachFaqPairs = (beach, island, language) => {
   if (seatrac?.hasSeatrac === true && seatrac?.status === 'online') {
     pairs.push(pickLang(language, {
       en: { q: `Is ${beachName} beach wheelchair accessible?`, a: 'It has a Seatrac assisted-access unit for reaching the water. Confirm it is in service before visiting.' },
-      gr: { q: `Είναι προσβάσιμη για ΑμεΑ η παραλία ${beachName};`, a: 'Διαθέτει σύστημα Seatrac για αυτόνομη πρόσβαση στο νερό. Επιβεβαίωσε ότι λειτουργεί πριν πας.' },
+      gr: { q: `Είναι προσβάσιμη για ΑμεΑ η παραλία ${sentenceName(beachName, 'gr')};`, a: 'Διαθέτει σύστημα Seatrac για αυτόνομη πρόσβαση στο νερό. Επιβεβαίωσε ότι λειτουργεί πριν πας.' },
       de: { q: `Ist der Strand ${beachName} barrierefrei?`, a: 'Er hat eine Seatrac-Anlage für den selbstständigen Zugang zum Wasser. Bestätige vor dem Besuch, dass sie in Betrieb ist.' },
       fr: { q: `La plage ${beachName} est-elle accessible aux personnes à mobilité réduite ?`, a: "Elle dispose d'un dispositif Seatrac pour accéder à l'eau. Confirmez qu'il est en service avant votre visite." },
       it: { q: `La spiaggia ${beachName} è accessibile alle persone con disabilità?`, a: "Dispone di un sistema Seatrac per raggiungere l'acqua. Verifica che sia in funzione prima della visita." },

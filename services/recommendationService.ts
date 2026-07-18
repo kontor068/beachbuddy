@@ -34,6 +34,7 @@ import { calculateCrowdLevel, CrowdLevel } from './crowdService';
 import { ExposureLevel } from '../utils/windExposure';
 import { getNegativeFeedbackCount } from './analyticsService';
 import { displayBeachName } from '../utils/localization';
+import { beachSentenceName } from '../utils/beachCopy';
 import { getSearchVariants, isSearchMatch } from '../utils/searchNormalize';
 import { calculateSeaConditionScore } from '../utils/seaConditions';
 import { getSelectedDayPrefix, isSelectedDateToday } from '../utils/dateLabels';
@@ -2114,7 +2115,7 @@ const generateLocalizedBeachExplanation = (
   }
 
   if (language === 'gr') {
-    const greekBeachSubject = `Η παραλία ${beachName}`;
+    const greekBeachSubject = `Η παραλία ${beachSentenceName(beachName, 'gr')}`;
 
     if (windBeaufort < MEANINGFUL_WIND_TOP_PICK_BEAUFORT) {
       explanation = windAssessment.windProfile.knownWindSportSpot || exposureLevel === 'exposed'

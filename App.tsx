@@ -43,6 +43,7 @@ import { islandHasContextStrip } from './utils/islandContextStrip';
 import { QUICK_PREFERENCE_FILTERS } from './utils/preferenceFilterLabels';
 import { canOpenNavigation, openNavigation } from './utils/navigation';
 import { displayBeachName, localizedBeachLabel } from './utils/localization';
+import { beachSentenceName } from './utils/beachCopy';
 import { isInfoOnlyRegionId } from './utils/infoOnlyRegions';
 import { hasBoatOnlyAccess, hasDifficultTopPickAccess, hasMainstreamTopPickAccess, isAdventureBeach } from './utils/access';
 import { isSunsetFacingBeach } from './utils/beachOrientation';
@@ -4865,11 +4866,11 @@ export const App: React.FC = () => {
         mild: `${selectedDaySentencePrefix} the weather is mild, so most beaches look suitable for swimming.`,
       },
       gr: {
-      avoid: `Δεν υπάρχει ιδανική επιλογή για ήρεμο μπάνιο ${selectedDayPrefix}. Η παραλία ${headerTopBeachName} είναι καλύτερη μόνο ως επιλογή επίσκεψης, αν οι συνθήκες φαίνονται αποδεκτές όταν φτάσεις.`,
-      strongFive: `Η παραλία ${headerTopBeachName} είναι καλύτερη επιλογή για τον άνεμο ${selectedDayPrefix}.`,
-      strongCaution: `Η παραλία ${headerTopBeachName} είναι η καλύτερη διαθέσιμη επιλογή ${selectedDayPrefix}, αλλά οι συνθήκες θέλουν προσοχή.`,
-      caution: `Η παραλία ${headerTopBeachName} είναι η καλύτερη πρόταση για ${selectedDayPrefix}, γιατί ο άνεμος μπορεί να είναι λιγότερο ενοχλητικός εκεί.`,
-      timed: `Με βάση την ωριαία πρόγνωση, η παραλία ${headerTopBeachName} είναι η κορυφαία επιλογή για αυτό το χρονικό παράθυρο.`,
+      avoid: `Δεν υπάρχει ιδανική επιλογή για ήρεμο μπάνιο ${selectedDayPrefix}. Η παραλία ${beachSentenceName(headerTopBeachName, 'gr')} είναι καλύτερη μόνο ως επιλογή επίσκεψης, αν οι συνθήκες φαίνονται αποδεκτές όταν φτάσεις.`,
+      strongFive: `Η παραλία ${beachSentenceName(headerTopBeachName, 'gr')} είναι καλύτερη επιλογή για τον άνεμο ${selectedDayPrefix}.`,
+      strongCaution: `Η παραλία ${beachSentenceName(headerTopBeachName, 'gr')} είναι η καλύτερη διαθέσιμη επιλογή ${selectedDayPrefix}, αλλά οι συνθήκες θέλουν προσοχή.`,
+      caution: `Η παραλία ${beachSentenceName(headerTopBeachName, 'gr')} είναι η καλύτερη πρόταση για ${selectedDayPrefix}, γιατί ο άνεμος μπορεί να είναι λιγότερο ενοχλητικός εκεί.`,
+      timed: `Με βάση την ωριαία πρόγνωση, η παραλία ${beachSentenceName(headerTopBeachName, 'gr')} είναι η κορυφαία επιλογή για αυτό το χρονικό παράθυρο.`,
       mild: `${selectedDaySentencePrefix} ο καιρός είναι ήπιος, οπότε οι περισσότερες παραλίες φαίνονται κατάλληλες για μπάνιο.`,
       },
       fr: {
@@ -5164,14 +5165,14 @@ export const App: React.FC = () => {
       : directoryTopUsesWindPriority
       ? getLocalizedCopy(language, {
         en: `${directoryTopBeachName} is the best pick ${selectedDayPrefix} because the wind may be less annoying there, with practical access.`,
-      gr: `Η παραλία ${directoryTopBeachName} είναι η καλύτερη πρόταση για ${selectedDayPrefix}, γιατί ο άνεμος μπορεί να είναι λιγότερο ενοχλητικός εκεί και η πρόσβαση είναι πρακτική.`,
+      gr: `Η παραλία ${beachSentenceName(directoryTopBeachName, 'gr')} είναι η καλύτερη πρόταση για ${selectedDayPrefix}, γιατί ο άνεμος μπορεί να είναι λιγότερο ενοχλητικός εκεί και η πρόσβαση είναι πρακτική.`,
         fr: `${directoryTopBeachName} est le meilleur choix ${selectedDayPrefix}, car le vent peut y être moins gênant, avec un accès pratique.`,
         de: `${directoryTopBeachName} ist ${selectedDayPrefix} die beste Wahl, weil der Wind dort weniger störend sein kann und der Zugang praktisch ist.`,
         it: `${directoryTopBeachName} è la scelta migliore ${selectedDayPrefix}, perché lì il vento può essere meno fastidioso e l’accesso è pratico.`,
       })
       : getLocalizedCopy(language, {
         en: `${directoryTopBeachName} is the best pick ${selectedDayPrefix} because it fits the conditions well and combines comfortable sea with practical access.`,
-      gr: `Η παραλία ${directoryTopBeachName} είναι η καλύτερη πρόταση για ${selectedDayPrefix}, γιατί ταιριάζει καλά στις συνθήκες και συνδυάζει άνετη θάλασσα με πρακτική πρόσβαση.`,
+      gr: `Η παραλία ${beachSentenceName(directoryTopBeachName, 'gr')} είναι η καλύτερη πρόταση για ${selectedDayPrefix}, γιατί ταιριάζει καλά στις συνθήκες και συνδυάζει άνετη θάλασσα με πρακτική πρόσβαση.`,
         fr: `${directoryTopBeachName} est le meilleur choix ${selectedDayPrefix}, car elle correspond bien aux conditions et combine mer agréable et accès pratique.`,
         de: `${directoryTopBeachName} ist ${selectedDayPrefix} die beste Wahl, weil sie gut zu den Bedingungen passt und angenehmes Meer mit praktischem Zugang verbindet.`,
         it: `${directoryTopBeachName} è la scelta migliore ${selectedDayPrefix}, perché si adatta bene alle condizioni e combina mare piacevole con accesso pratico.`,
