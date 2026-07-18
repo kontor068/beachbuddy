@@ -236,11 +236,17 @@ export const buildWeatherNowContent = (input: WeatherNowInput): WeatherNowConten
     return { heading, verdict: '', tone: 'unknown', windLabel, windValue: '', waveLabel, waveValue: '', stableDescription, liveSentence: '', loadingLabel };
   }
 
-  // Verdict from the same sea-condition score the rest of the page uses.
+  // Verdict from the same sea-condition score the rest of the page uses. Strong wind
+  // (≥5 Bft) caps the claim: even a genuinely sheltered beach gets gusts and some surface
+  // chop then, so this chip must never read "Calm" while the experience verdict above
+  // reads "OK"/orange — the same ≥5 Bft honesty rule getSeaConditionDisplay applies.
+  const bft = Math.round(input.beaufort);
   const tone: 'calm' | 'mixed' | 'choppy' =
-    (input.canClaimWindProtection || input.seaConditionScore >= 7) ? 'calm'
-    : input.seaConditionScore <= 4 ? 'choppy'
-    : 'mixed';
+    bft >= 5
+      ? (input.seaConditionScore <= 4 ? 'choppy' : 'mixed')
+      : (input.canClaimWindProtection || input.seaConditionScore >= 7) ? 'calm'
+      : input.seaConditionScore <= 4 ? 'choppy'
+      : 'mixed';
   const verdict = buildVerdict(tone, lang, isToday);
 
   // Compact live stats.
@@ -259,7 +265,6 @@ export const buildWeatherNowContent = (input: WeatherNowInput): WeatherNowConten
   // that: if the pin is red, drop the "sheltered" branch so the text matches the map.
   const exposedOnMap = input.mapExposureLevel ? input.mapExposureLevel === 'exposed' : input.isExposedToTodayWind;
   const shelteredNow = !exposedOnMap && (input.canClaimWindProtection || (input.protectedFrom || []).includes(input.windDir));
-  const bft = Math.round(input.beaufort);
   let liveSentence: string;
   // "now/τώρα/maintenant…" is only truthful for today. For a future day the same block
   // shows that day's forecast values, so the wording must be time-neutral (no "now").
