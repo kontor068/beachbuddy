@@ -296,13 +296,18 @@ const getSimpleWindConfidence = (
 
 const getSimpleWindColor = (
   exposureLevel: ExposureLevel,
-  beaufort: number
+  beaufort: number,
+  enclosedCove = false
 ): SimpleWindSuitability['suitabilityColor'] => {
   if (beaufort >= 7) return 'red';
   if (beaufort <= 2) return 'green';
 
   if (beaufort >= 5) {
-    if (exposureLevel === 'protected') return 'yellow';
+    // An enclosed cove (όρμος, ≥5/8 land-blocked sectors) that is protected from the
+    // LIVE wind reads one palette step calmer than plain directional shelter: green
+    // where classic protected shows yellow. Its water genuinely stays flat at 5-6 Bft
+    // (operator-verified at Άγιος Ερμογένης); 7 Bft+ stays red — near-gale is never green.
+    if (exposureLevel === 'protected') return enclosedCove ? 'green' : 'yellow';
     if (exposureLevel === 'partial') return 'orange';
     return 'red';
   }
@@ -341,6 +346,7 @@ export const buildSimpleWindSuitability = ({
   source,
   beach,
   hasGeometry,
+  enclosedCove = false,
 }: {
   exposureLevel: ExposureLevel;
   beaufort: number;
@@ -351,10 +357,11 @@ export const buildSimpleWindSuitability = ({
   source: WindProfileSource;
   beach: Beach;
   hasGeometry: boolean;
+  enclosedCove?: boolean;
 }): SimpleWindSuitability => {
   const confidence = getSimpleWindConfidence(profile, source, beach, hasGeometry);
   const exposureStatus = getSimpleExposureStatus(exposureLevel, source, beach, windDirection, windDirectionDeg);
-  const suitabilityColor = getSimpleWindColor(exposureStatus, beaufort);
+  const suitabilityColor = getSimpleWindColor(exposureStatus, beaufort, enclosedCove && exposureStatus === 'protected');
   const windLabel = WIND_SECTOR_LABELS[windSector];
 
   if (beaufort <= 2) {
@@ -774,6 +781,7 @@ export const assessBeachWindExposure = (input: BeachWindExposureInput): WindExpo
     typeof input.waveHeightMeters === 'number' &&
     input.waveHeightMeters <= 0.4 &&
     !isKnownWindSportRisk;
+  const enclosedCove = isEnclosedCoveGeometry(input.geospatialProfile, profile.suspectPin ?? false);
   const simpleWindSuitability = buildSimpleWindSuitability({
     exposureLevel,
     beaufort: baseBeaufort,
@@ -784,6 +792,7 @@ export const assessBeachWindExposure = (input: BeachWindExposureInput): WindExpo
     source,
     beach: input.beach,
     hasGeometry,
+    enclosedCove,
   });
 
   return {
@@ -792,7 +801,7 @@ export const assessBeachWindExposure = (input: BeachWindExposureInput): WindExpo
     windSector,
     exposureLevel,
     canClaimProtected,
-    enclosedCove: isEnclosedCoveGeometry(input.geospatialProfile, profile.suspectPin ?? false),
+    enclosedCove,
     isKnownWindSportRisk,
     isExplicitlyExposed,
     isExplicitlyProtected,

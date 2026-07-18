@@ -1339,7 +1339,11 @@ export const BeachCard: React.FC<BeachCardProps> = ({
   const simpleWindChipOnly = windExposureMode === 'simple';
   // For the simplified chip we only surface clearly protected or clearly exposed beaches.
   const windChipIsMeaningful = isProtectedToday || isExposedConditionChip;
-  const showHeaderProtectedMarker = false;
+  // The generic "better sheltered" header pill proved too noisy for every protected
+  // beach and stays off — but a genuine enclosed cove (όρμος, ≥5/8 land-blocked
+  // sectors) that is verifiably protected TODAY is the rare, high-value signal the
+  // card exists to surface, so only that case renders the marker.
+  const showHeaderProtectedMarker = enclosedCove && isProtectedToday;
   const windSuitabilityChipTone: Record<WindSuitabilityColor, string> = {
     green: 'border-emerald-200/80 bg-emerald-50/72 text-emerald-700 dark:border-emerald-900/50 dark:bg-emerald-950/30 dark:text-emerald-300',
     yellow: 'border-yellow-200/90 bg-yellow-50/78 text-yellow-800 dark:border-yellow-900/50 dark:bg-yellow-950/30 dark:text-yellow-300',
