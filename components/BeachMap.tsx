@@ -803,10 +803,12 @@ const getExposureMarkerTone = (
   // it) — from 4 Bft up even sheltered shores get visible chop.
   const isExposed = exposureLevel === 'exposed';
   if (beaufort >= 7) return tones.red;
-  // Enclosed cove (όρμος) protected from the live wind: reads green (calm) at
-  // 3-6 Bft, matching the engine's green suitability colour. Open sectors of the
-  // same cove resolve 'exposed' and never reach this branch.
-  if (isEnclosedCove && isProtected && beaufort >= 3) return tones.green;
+  // Enclosed cove (όρμος) protected from the live wind: holds green (calm) only from
+  // 5 Bft, where a classic protected shore would drop to orange. Below 5 Bft it colours
+  // like any shore (blue/yellow) — the cove distinction only matters once the wind is
+  // strong. Matches the engine's green suitability colour. Open sectors of the same
+  // cove resolve 'exposed' and never reach this branch.
+  if (isEnclosedCove && isProtected && beaufort >= 5) return tones.green;
   if (beaufort >= 5) return isExposed ? tones.red : tones.orange;
   // At 4 Bft only genuinely exposed shores escalate to orange; protected and the
   // uncertain "partial" middle get a yellow "mild chop" heads-up.
@@ -2164,6 +2166,10 @@ const BeachMap: React.FC<BeachMapProps> = ({
   const showExposedShapeCue = currentWindColorGuideId === '3'
     || currentWindColorGuideId === '4'
     || currentWindColorGuideId === '5-6';
+  // The enclosed-cove legend line only earns its place where the cove actually paints
+  // green — from 5 Bft up. Below that a cove colours like any protected shore, so the
+  // "calmer today" note would be a distinction without a difference.
+  const showCoveLegendCue = currentWindColorGuideId === '5-6';
 
   const renderWindColorGuideRows = (variant: 'full' | 'preview') => {
     const isPreview = variant === 'preview';
@@ -2209,7 +2215,7 @@ const BeachMap: React.FC<BeachMapProps> = ({
             </span>
           </div>
         ))}
-        {showExposedShapeCue && (
+        {showCoveLegendCue && (
           <div className={`${isPreview ? 'text-[10px] sm:text-[11px]' : 'text-[11px]'} flex min-w-0 flex-wrap items-center gap-x-1.5 gap-y-1 font-semibold leading-snug text-slate-600 dark:text-slate-300`}>
             <span className="inline-flex min-w-0 items-center gap-1">
               <span className="min-w-0">{getLocalizedCopy(language, {
