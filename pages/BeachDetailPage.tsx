@@ -355,9 +355,20 @@ const getSeaConditionDisplay = (
     const calmEnclosedWater = enclosedCove && canClaimWindProtection &&
       typeof waveHeightM === 'number' && Number.isFinite(waveHeightM) && waveHeightM < 0.5;
     if (calmEnclosedWater && !hasBigWaves) {
+      // Coastal-safety fact that rides WITH the calm claim (HM Coastguard/NOAA): a
+      // protected cove at 5+ Bft means the wind blows from blocked land toward open
+      // water — flat surface, but it pushes floats/SUPs/swimmers seaward. The one
+      // deceptive-calm hazard of exactly this promotion, so it is never shown apart
+      // from it.
       return {
         value: { en: 'Calm water, breezy', gr: 'Ήρεμο νερό, με αέρα', de: 'Ruhiges Wasser, windig', it: 'Acqua calma, ventoso', fr: 'Eau calme, venteux' }[language],
-        subValue: { en: 'Enclosed bay — the wind blows, the water stays calmer', gr: 'Κλειστός όρμος — ο αέρας φυσάει, το νερό μένει πιο ήρεμο', de: 'Geschlossene Bucht — windig, aber ruhigeres Wasser', it: 'Baia chiusa — vento sì, ma acqua più calma', fr: 'Baie fermée — du vent, mais une eau plus calme' }[language],
+        subValue: {
+          en: 'Enclosed bay — the wind blows, the water stays calmer. The wind pushes toward open water: keep inflatables and swimming close to shore',
+          gr: 'Κλειστός όρμος — ο αέρας φυσάει, το νερό μένει πιο ήρεμο. Ο αέρας σπρώχνει προς τα ανοιχτά: κράτα φουσκωτά και κολύμπι κοντά στην ακτή',
+          de: 'Geschlossene Bucht — windig, aber ruhigeres Wasser. Der Wind drückt seewärts: Luftmatratzen und Schwimmen nah am Ufer halten',
+          it: 'Baia chiusa — vento sì, ma acqua più calma. Il vento spinge verso il largo: tieni gonfiabili e nuoto vicino a riva',
+          fr: "Baie fermée — du vent, mais une eau plus calme. Le vent pousse vers le large : gardez bouées et baignade près du rivage",
+        }[language],
       };
     }
     const value = hasBigWaves

@@ -34,6 +34,16 @@ const T = {
     it: 'L\'acqua resta piatta perché la baia taglia il fetch — ma il vento è forte. Bene per un bagno in acqua calma, non per una giornata riparata sulla sabbia.',
     fr: 'L\'eau reste plate car la crique coupe le fetch — mais le vent souffle fort. Bien pour une baignade en eau calme, pas pour une journée abritée sur le sable.',
   } as Copy,
+  // Classic coastal-safety hazard (HM Coastguard / NOAA): an offshore wind leaves the
+  // cove's water deceptively flat while it pushes floats, SUPs and weak swimmers away
+  // from shore. Shown exactly where we make the "calm water" claim under offshore wind.
+  drift: {
+    en: 'The wind blows away from shore: it can push inflatables, SUPs and swimmers seaward — stay close to the beach.',
+    gr: 'Ο αέρας φυσάει από τη στεριά προς τα ανοιχτά: μπορεί να παρασύρει φουσκωτά, SUP και κολυμβητές — μείνε κοντά στην ακτή.',
+    de: 'Der Wind weht ablandig: Er kann Luftmatratzen, SUPs und Schwimmer aufs Meer hinaustreiben — bleib nah am Ufer.',
+    it: 'Il vento soffia da terra verso il largo: può trascinare gonfiabili, SUP e nuotatori — resta vicino alla riva.',
+    fr: 'Le vent souffle de la terre vers le large : il peut emporter bouées, paddles et nageurs — restez près du rivage.',
+  } as Copy,
   onshore: { en: 'onshore', gr: 'κατάμουτρα', de: 'auflandig', it: 'di faccia', fr: 'de face' } as Copy,
   cross: { en: 'cross-shore', gr: 'πλάγιος', de: 'seitlich', it: 'laterale', fr: 'de côté' } as Copy,
   offshore: { en: 'offshore', gr: 'από τη στεριά', de: 'ablandig', it: 'da terra', fr: 'de terre' } as Copy,
@@ -103,6 +113,11 @@ export const CoveConditionsCard: React.FC<CoveConditionsCardProps> = ({
           {waterWord} <span className="text-amber-600">{pick(T.strongWind, language)}</span>
         </p>
         <p className="mt-1 text-xs leading-relaxed text-slate-500">{pick(T.explain, language)}</p>
+        {onshore < 0.15 && windBeaufort >= 4 && (
+          <p className="mt-1.5 rounded-lg bg-amber-50/80 px-2 py-1.5 text-xs font-semibold leading-relaxed text-amber-700">
+            {pick(T.drift, language)}
+          </p>
+        )}
       </div>
 
       <div className="mt-3 flex items-center justify-end gap-2">
