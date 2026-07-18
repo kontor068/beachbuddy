@@ -28,11 +28,9 @@ const ATTICA_FLISVOS_PHOTOS = [
 ];
 const ATTICA_PALMYRA_PHOTOS = [
   wm('Attica 06-13 Paleo Faliro 04 beach.jpg'),
-  wm('ParaliaEdem2016.png'),
 ];
 const ATTICA_BATIS_PHOTOS = [wm('Batis Palaio Faliro beach.jpg')];
 const ATTICA_EDEM_PHOTOS = [
-  wm('ParaliaEdem2016.png'),
   wm('Edem beach - panoramio.jpg'),
   wm('Edem beach - panoramio - Robert Freeman.jpg'),
 ];
@@ -519,7 +517,7 @@ const MACEDONIA_BEACH_PHOTOS_BY_AREA: Record<string, Record<string, string[]>> =
     'Porto Koufo': [wm('Beach Toroni.jpg')],
     'Παραλία Πευκοχωρίου': [wm('Beach of Pefkochori.IMG 0604.jpg')],
     Pefkochori: [wm('Beach of Pefkochori.IMG 0604.jpg')],
-    Lagomandra: [wm('Grèce Sithonia Lagomandra Plage Baigneurs 16082009 - panoramio.jpg')],
+    Lagomandra: [wm('Lagomandra Beach 03.jpg'), wm('Lagomandra Beach 02.jpg')],
     'Akti Kalogrias': [wm('Kalogria Beach, Nikiti, Chalkidiki, Greece.jpg')],
     Sykia: [wm('Chalkidiki Banner Sykia Beach.jpg')],
     'Παραλία Αρετές': [wm('Tourist ship in front of BARbatolis Bar, Aretes Beach, Παραλία Αρετές, Toroni 630 72, Greece 01.jpg')],
