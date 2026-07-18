@@ -1,7 +1,7 @@
 import React, { useMemo, useEffect, useState, useRef } from 'react';
 import {
   ArrowLeft, MapPin, Wind, Waves, Thermometer, Droplets, Leaf,
-  Clock, Sun, Backpack,
+  Clock, Sun, Sunset, Backpack,
   Navigation, Share2, Heart, ChevronRight, ThumbsUp, ThumbsDown, CheckCircle2,
   Camera, ExternalLink, Accessibility, AlertTriangle, Tent, Ticket, Euro, ScrollText, Compass, Ship
 } from 'lucide-react';
@@ -61,6 +61,7 @@ import {
 import { MapLoadBoundary } from '../components/MapLoadBoundary';
 import { scrollToPageTop } from '../utils/scroll';
 import { getSunsetTime } from '../utils/sunTimes';
+import { sunsetOverSeaWindow, sunsetSeasonRange, type SunsetOverSea } from '../utils/sunsetOverSea';
 import { buildPhotoSuggestionUrl } from '../utils/photoContribution';
 import { getSelectedDayPrefix, getSelectedHourPrefix } from '../utils/dateLabels';
 import { getBoatRideMotionLevel } from '../utils/boatRideMotion';
@@ -589,6 +590,61 @@ interface BeachDetailPageProps {
   lastForecastAt?: Date | null;
 }
 
+// "Sunset over the sea" card: localised copy + short month names for every
+// LanguageCode (falls back to English). The value is an orientation-based estimate
+// (utils/sunsetOverSea.ts), so the note keeps the honesty caveat visible.
+const SUNSET_SHORT_MONTHS: Record<LanguageCode, string[]> = {
+  en: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
+  gr: ['Ιαν', 'Φεβ', 'Μάρ', 'Απρ', 'Μάι', 'Ιούν', 'Ιούλ', 'Αύγ', 'Σεπ', 'Οκτ', 'Νοέ', 'Δεκ'],
+  de: ['Jan', 'Feb', 'Mär', 'Apr', 'Mai', 'Jun', 'Jul', 'Aug', 'Sep', 'Okt', 'Nov', 'Dez'],
+  fr: ['jan', 'fév', 'mar', 'avr', 'mai', 'juin', 'juil', 'août', 'sep', 'oct', 'nov', 'déc'],
+  it: ['gen', 'feb', 'mar', 'apr', 'mag', 'giu', 'lug', 'ago', 'set', 'ott', 'nov', 'dic'],
+};
+
+// title = badge label · allYear = value when every month qualifies · expect = plain-language
+// "what you'll get here" · tip = a practical suggestion · caveat = the honesty note (tiny).
+const SUNSET_SEA_COPY: Record<LanguageCode, { title: string; allYear: string; expect: string; tip: string; caveat: string }> = {
+  en: {
+    title: 'Sunset over the sea', allYear: 'all year',
+    expect: 'The sun goes down over the water right in front of you here — one of the nicer spots to watch the sunset.',
+    tip: 'Come in the late afternoon and stay for the golden hour; bring a camera and a layer for when the breeze picks up.',
+    caveat: 'Based on the shore’s orientation — a headland or island can still block the horizon.',
+  },
+  gr: {
+    title: 'Ηλιοβασίλεμα στη θάλασσα', allYear: 'όλο τον χρόνο',
+    expect: 'Εδώ ο ήλιος δύει πάνω στο νερό, μπροστά σου — από τις ωραίες παραλίες για να δεις το ηλιοβασίλεμα.',
+    tip: 'Έλα αργά το απόγευμα και μείνε για το χρυσό φως· πάρε φωτογραφική και μια ζακέτα για όταν σηκωθεί αεράκι.',
+    caveat: 'Εκτίμηση από τον προσανατολισμό της ακτής — ακρωτήρι ή νησί μπορεί να κρύβει τον ορίζοντα.',
+  },
+  de: {
+    title: 'Sonnenuntergang über dem Meer', allYear: 'ganzjährig',
+    expect: 'Hier geht die Sonne direkt vor dir über dem Wasser unter — einer der schöneren Orte für den Sonnenuntergang.',
+    tip: 'Komm am späten Nachmittag und bleib zur goldenen Stunde; nimm eine Kamera und etwas Warmes für den Abendwind mit.',
+    caveat: 'Geschätzt aus der Ausrichtung der Küste — eine Landzunge oder Insel kann den Horizont verdecken.',
+  },
+  fr: {
+    title: 'Coucher de soleil sur la mer', allYear: 'toute l’année',
+    expect: 'Ici le soleil se couche sur l’eau, droit devant vous — l’un des plus beaux endroits pour le coucher de soleil.',
+    tip: 'Venez en fin d’après-midi et restez pour l’heure dorée ; prenez un appareil photo et une petite laine pour le vent du soir.',
+    caveat: 'Estimé d’après l’orientation du rivage — un cap ou une île peut masquer l’horizon.',
+  },
+  it: {
+    title: 'Tramonto sul mare', allYear: 'tutto l’anno',
+    expect: 'Qui il sole tramonta sull’acqua, proprio davanti a te — uno dei posti migliori per il tramonto.',
+    tip: 'Vieni nel tardo pomeriggio e resta per l’ora d’oro; porta una macchina fotografica e una felpa per la brezza serale.',
+    caveat: 'Stimato dall’orientamento della costa — un promontorio o un’isola può nascondere l’orizzonte.',
+  },
+};
+
+const formatSunsetSeason = (window: SunsetOverSea, language: LanguageCode): string => {
+  const copy = SUNSET_SEA_COPY[language] ?? SUNSET_SEA_COPY.en;
+  if (window.allYear) return copy.allYear;
+  const range = sunsetSeasonRange(window.months);
+  if (!range) return copy.allYear;
+  const months = SUNSET_SHORT_MONTHS[language] ?? SUNSET_SHORT_MONTHS.en;
+  return range.start === range.end ? months[range.start] : `${months[range.start]}–${months[range.end]}`;
+};
+
 export const BeachDetailPage: React.FC<BeachDetailPageProps> = ({
   beach,
   allBeaches,
@@ -969,6 +1025,10 @@ export const BeachDetailPage: React.FC<BeachDetailPageProps> = ({
     const mm = String(sunset.getMinutes()).padStart(2, '0');
     return `${hh}:${mm}`;
   }, [beach.coordinates.lat, beach.coordinates.lon, selectedDate]);
+
+  // Evergreen "sunset over the sea" window (orientation-based, not forecast-derived,
+  // so it shows even when live conditions are hidden). Empty for east-facing beaches.
+  const sunsetSea = useMemo(() => sunsetOverSeaWindow(beach), [beach]);
 
   // Rain warning: name the hours it is expected to rain and advise against
   // staying in the sea then (lightning/storm safety).
@@ -1685,6 +1745,25 @@ export const BeachDetailPage: React.FC<BeachDetailPageProps> = ({
             )}
           </section>
         )}
+
+        {/* 4b-ii. Sunset over the sea — evergreen orientation fact (NOT forecast-gated),
+            our answer to the competitor sun diagram. Hidden for beaches that never face
+            the setting sun so we never show a negative. */}
+        {sunsetSea.everOverSea && (() => {
+          const sunsetCopy = SUNSET_SEA_COPY[language] ?? SUNSET_SEA_COPY.en;
+          return (
+            <section className="rounded-2xl border border-amber-100/70 bg-gradient-to-r from-amber-50/70 to-orange-50/55 px-4 py-3.5">
+              <span className="flex flex-wrap items-center gap-x-2 gap-y-1 text-sm font-bold text-slate-800">
+                <Sunset className="h-4 w-4 shrink-0 text-orange-500" aria-hidden="true" />
+                {sunsetCopy.title}:
+                <span className="text-orange-700">{formatSunsetSeason(sunsetSea, language)}</span>
+              </span>
+              <p className="mt-1.5 text-sm leading-snug text-slate-700">{sunsetCopy.expect}</p>
+              <p className="mt-1 text-sm font-medium leading-snug text-slate-600">{sunsetCopy.tip}</p>
+              <p className="mt-1.5 text-xs leading-snug text-amber-700/70">{sunsetCopy.caveat}</p>
+            </section>
+          );
+        })()}
 
         {/* 4c. Rain warning — name the rainy hours and advise leaving the sea then */}
         {showConditions && rainAdvisory && (
