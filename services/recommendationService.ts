@@ -911,7 +911,17 @@ const compareProximityZone = <T extends { distance?: number }>(a: T, b: T): numb
   return proximityZone(aDistance) - proximityZone(bDistance);
 };
 
-const compareRecommendationPriority = <T extends { score: number; exposureLevel?: ExposureLevel; canClaimWindProtection?: boolean; beach?: Beach; distance?: number }>(
+// Cove refuge sub-tier (Miltos 2026-07-18), STRONG-WIND ONLY (caller gates on ≥5 Bft).
+// Among beaches that already tie on the protected exposure tier, a genuine enclosed cove
+// (curated / >225° geometry) whose shelter still holds today outranks a merely-leeward
+// "protected" beach: at strong wind a closed basin is the more reliable calm swim than an
+// open shoreline that only happens to face away. Lower rank = earlier. Below 5 Bft this is
+// never consulted (calm everywhere, no cove edge), and hard-access/boat coves never reach
+// here anyway — the adventure partition demotes them first, so only REACHABLE coves gain.
+const coveRefugeRank = (item: { enclosedCove?: boolean; canClaimWindProtection?: boolean }): number =>
+  item.enclosedCove === true && item.canClaimWindProtection !== false ? 0 : 1;
+
+const compareRecommendationPriority = <T extends { score: number; exposureLevel?: ExposureLevel; canClaimWindProtection?: boolean; enclosedCove?: boolean; beach?: Beach; distance?: number }>(
   a: T,
   b: T,
   beachById?: Map<number, Beach>,
@@ -971,6 +981,9 @@ const compareRecommendationPriority = <T extends { score: number; exposureLevel?
 
   if (windBeaufort >= PROTECTED_FIRST_BEAUFORT) {
     if (exposureDiff !== 0) return exposureDiff;
+    // Genuine enclosed cove wins the protected tie at strong wind (see coveRefugeRank).
+    const coveDiff = coveRefugeRank(a) - coveRefugeRank(b);
+    if (coveDiff !== 0) return coveDiff;
     const touristDiff = compareTouristPriority();
     return touristDiff || scoreDiff;
   }
