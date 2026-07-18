@@ -46,6 +46,7 @@ import { hasDifficultTopPickAccess, hasMainstreamTopPickAccess, hasTrulyEasyAcce
 import { isSunsetFacingBeach } from '../utils/beachOrientation';
 import { getBeachTouristRecognitionScore } from '../utils/touristPriority';
 import { getWindChopWaveFloorM, resolveEffectiveWaveHeightM, capLightWindMeasuredWaveM } from '../utils/waveModel';
+import { COVE_DISPLAY_FLOOR_M, resolveCoveAwareWaveHeightM } from '../utils/coveWaveGuard';
 import { getBeachPopularityRating } from '../utils/beachRating';
 
 export interface BeachScore {
@@ -1573,11 +1574,12 @@ export const calculateBeachScore = (
   // orientation-bucket rule when no profile/facing is available (unchanged behavior there).
   // Direct-swell geometry now lives in utils/swellExposure (single source of truth shared
   // with the UI swell-router); `exposed` is the same boolean this scoring used inline.
-  const directSwell = assessSwellExposure(options?.geospatialProfile, beachOrientation, {
+  const swell = assessSwellExposure(options?.geospatialProfile, beachOrientation, {
     swellDirectionDeg: marine?.swellWaveDirectionDeg,
     swellHeightM: marine?.swellWaveHeightM,
     swellPeriodS: marine?.swellWavePeriodS,
-  }).exposed;
+  });
+  const directSwell = swell.exposed;
   if (directSwell) {
     const swellHeightM = marine?.swellWaveHeightM ?? 0;
     warnings.push({
@@ -1918,6 +1920,35 @@ export const calculateBeachScore = (
 
   const finalSuitabilityScore = clampScore(finalScore);
 
+  // Display-only cove wave (the same guard the detail page ships), so a card and its
+  // detail page can never disagree on the wave NUMBER: in a genuinely enclosed cove the
+  // open-water grid cell over-reads the near-shore height, and the displayed value takes
+  // the fetch-limited SMB estimate instead. Every score/level/comfort above keeps
+  // reading effectiveWaveHeightM — the guard remains display-only by doctrine.
+  const coveWave = resolveCoveAwareWaveHeightM({
+    geospatialProfile: options?.geospatialProfile,
+    facingDeg: windAssessment.facingDeg,
+    windDirectionDeg: weather.wind.deg,
+    windSpeedKmh: windSpeedKmph,
+    measuredWaveHeightM: realisticMeasuredWaveHeightM,
+    appModeledWaveHeightM: modeledWaveHeightM,
+    swellPresent: swell.hasSwell,
+  });
+  // Offshore extension: the guard's onshore gate exists because ANY beach's offshore
+  // sectors read blocked/0-fetch while a real sea remains. A verified enclosed-cove
+  // MORPHOLOGY (isEnclosedCoveGeometry) with no swell present is the stronger statement:
+  // an offshore wind inside a closed cove leaves near-flat water the cove-blind grid
+  // cannot see, so the SMB cap applies to the display there too. It never raises the
+  // number and never fires while swell is present.
+  // The SMB in a fully-enclosed 0-fetch corner reads ~0.00 m; clamp it UP to the display
+  // floor (the sea is never perfectly flat) rather than abandoning the cap there.
+  const coveDisplayCandidateM = Math.max(coveWave.smbWaveHeightM, COVE_DISPLAY_FLOOR_M);
+  const displayWaveHeightM = coveWave.coveApplied
+    ? coveWave.waveHeightM
+    : windAssessment.enclosedCove && !swell.hasSwell && coveDisplayCandidateM < effectiveWaveHeightM
+      ? coveDisplayCandidateM
+      : effectiveWaveHeightM;
+
   return {
     beachId: beach.id,
     score: finalSuitabilityScore,
@@ -1934,7 +1965,7 @@ export const calculateBeachScore = (
     exposureLevel: finalExposureLevel,
     orientation: beachOrientation,
     marine,
-    waveHeightM: effectiveWaveHeightM,
+    waveHeightM: displayWaveHeightM,
     modeledWaveHeightM,
     windSpeedKmph,
     warnings,
