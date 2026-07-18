@@ -242,28 +242,28 @@ const compactWeatherLabels: Record<LanguageCode, Record<string, string>> = {
 
 const seoCopy: Record<SupportedLanguage, { title: string; description: string; locale: string }> = {
   en: {
-    title: 'CalmBeach Greece - Compare Beaches by Wind & Waves',
-    description: 'Compare Greek beaches by wind, waves, weather, beach exposure and protection so you can choose a better spot before you go.',
+    title: 'Find Your Ideal Beach in Greece Today | CalmBeach',
+    description: "Tailored to today's conditions and your beach preferences — live wind, waves and shelter for thousands of Greek beaches.",
     locale: 'en_US',
   },
   gr: {
-    title: 'Calm Beach Greece - Σύγκριση παραλιών με άνεμο και κύμα',
-    description: 'Calm Beach Greece - Σύγκρινε ελληνικές παραλίες με βάση άνεμο, κύμα, καιρό και έκθεση πριν διαλέξεις πού θα πας.',
+    title: 'Βρες την ιδανική σου παραλία στην Ελλάδα σήμερα | CalmBeach',
+    description: 'Προσαρμοσμένη στις σημερινές συνθήκες και στις προτιμήσεις σου — ζωντανός άνεμος, κύμα και προστασία για χιλιάδες ελληνικές παραλίες.',
     locale: 'el_GR',
   },
   fr: {
-    title: 'Calm Beach Greece - Comparer les plages par vent et vagues',
-    description: 'Calm Beach Greece - Comparez les plages grecques selon le vent, les vagues, la météo et l’exposition avant de partir.',
+    title: 'Trouvez votre plage idéale en Grèce aujourd’hui | CalmBeach',
+    description: 'Adaptée aux conditions du jour et à vos préférences — vent, vagues et abri en direct pour des milliers de plages grecques.',
     locale: 'fr_FR',
   },
   de: {
-    title: 'Calm Beach Greece - Strände nach Wind und Wellen vergleichen',
-    description: 'Calm Beach Greece - Vergleiche griechische Strände nach Wind, Wellen, Wetter und Exposition, bevor du losfahrst.',
+    title: 'Dein idealer Strand in Griechenland heute | CalmBeach',
+    description: 'Abgestimmt auf die heutigen Bedingungen und deine Strandvorlieben — Wind, Wellen und Schutz live für tausende Strände in Griechenland.',
     locale: 'de_DE',
   },
   it: {
-    title: 'Calm Beach Greece - Confronta spiagge per vento e onde',
-    description: 'Calm Beach Greece - Confronta le spiagge greche per vento, onde, meteo ed esposizione prima di partire.',
+    title: 'Trova la tua spiaggia ideale in Grecia oggi | CalmBeach',
+    description: 'Su misura per le condizioni di oggi e le tue preferenze — vento, onde e riparo in tempo reale per migliaia di spiagge greche.',
     locale: 'it_IT',
   },
 };
