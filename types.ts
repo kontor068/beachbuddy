@@ -601,7 +601,8 @@ export interface SuitableBeach {
   windProfileSource?: WindProfileSource;
   windSector?: WindSector;
   canClaimWindProtection?: boolean;
-  /** Closed-cove (όρμος) morphology (≥5/8 sectors land-blocked). With
+  /** Closed-cove (όρμος) morphology: >225° contiguous enclosure with a narrow (≤135°)
+   *  mouth, or a curated iconic cove (wind-sport spots vetoed). With
    *  canClaimWindProtection true, the cove genuinely stays calm today. */
   enclosedCove?: boolean;
   seaCalmClaimAllowed?: boolean;

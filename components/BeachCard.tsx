@@ -104,7 +104,8 @@ type CardCopy = {
   shelteredChip: (sentenceDay: string) => string;
   shelteredChipA11y: (sentenceDay: string) => string;
   /** Enclosed-cove (όρμος) variant of the sheltered chip — a MORE protected claim
-   *  than plain directional shelter, earned only by ≥5/8 land-blocked sectors. */
+   *  than plain directional shelter, earned only by genuine cove morphology
+   *  (>225° enclosure with a narrow mouth, or a curated iconic cove). */
   enclosedCoveChip: string;
   enclosedCoveChipA11y: string;
   blueFlag: string;
@@ -1340,9 +1341,9 @@ export const BeachCard: React.FC<BeachCardProps> = ({
   // For the simplified chip we only surface clearly protected or clearly exposed beaches.
   const windChipIsMeaningful = isProtectedToday || isExposedConditionChip;
   // The generic "better sheltered" header pill proved too noisy for every protected
-  // beach and stays off — but a genuine enclosed cove (όρμος, ≥5/8 land-blocked
-  // sectors) that is verifiably protected TODAY is the rare, high-value signal the
-  // card exists to surface, so only that case renders the marker.
+  // beach and stays off — but a genuine enclosed cove (όρμος: >225° enclosure with a
+  // narrow mouth, or curated) that is verifiably protected TODAY is the rare,
+  // high-value signal the card exists to surface, so only that case renders the marker.
   const showHeaderProtectedMarker = enclosedCove && isProtectedToday;
   const windSuitabilityChipTone: Record<WindSuitabilityColor, string> = {
     cyan: 'border-cyan-200/80 bg-cyan-50/72 text-cyan-700 dark:border-cyan-900/50 dark:bg-cyan-950/30 dark:text-cyan-300',

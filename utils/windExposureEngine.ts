@@ -15,6 +15,7 @@ import {
 import { calculateWindExposure, estimateBeachOrientation, ExposureLevel } from './windExposure';
 import { resolveWindExposure } from './windExposureModel';
 import { getWindProfileOverride } from './windProfileOverrides';
+import { CURATED_ENCLOSED_COVE_IDS } from './enclosedCoves';
 
 export interface BeachWindExposureInput {
   beach: Beach;
@@ -39,9 +40,10 @@ export interface WindExposureAssessment {
   windSector: WindSector;
   exposureLevel: ExposureLevel;
   canClaimProtected: boolean;
-  /** Closed-cove (όρμος) morphology: ≥5/8 sectors strictly land-blocked in a
-   *  high-confidence mask. Static geometry — pair with canClaimProtected for
-   *  "stays calm TODAY" claims. */
+  /** Closed-cove (όρμος) morphology: >225° contiguous land-blocked arc with a ≤135°
+   *  mouth and close (<0.5 km) arms, or a curated iconic cove; wind-sport/venturi
+   *  spots vetoed. Static geometry — pair with canClaimProtected for "stays calm
+   *  TODAY" claims. */
   enclosedCove: boolean;
   isKnownWindSportRisk: boolean;
   isExplicitlyExposed: boolean;
@@ -539,20 +541,59 @@ const hasGeometryEnclosedProtection = (
   return fullyLandBlocked && lowResidualWind;
 };
 
-// A "closed cove" (όρμος) is enclosed beyond the trivial landward half: every beach
-// blocks ~4 of 8 sectors (the land behind it), so ≥5 strictly-enclosed sectors means
-// headlands also wrap at least one seaward-ish direction — the cove morphology that
-// keeps water flat (Άγιος Ερμογένης: 5/8). ~15% of beaches nationally qualify, so the
-// distinction stays meaningful. Static geometry only; TODAY's calm still requires the
-// live sector to be blocked (canClaimProtected), which callers must AND with this.
-const ENCLOSED_COVE_MIN_SECTORS = 5;
+// A "closed cove" (όρμος) per coastal geomorphology: a SMALL inlet enclosed beyond a
+// semicircle with a NARROW entrance flanked by close headlands (literature: often
+// <300 m across). Sector translation, calibrated 2026-07-18 against a labeled set of
+// iconic coves (Βοϊδοκοιλιά, Ερμογένης, Πόρτο Λιμνιώνας…) vs known non-coves (Μικρή
+// Βίγλα, Άναξος, Σχινιάς, αστικές πλαζ):
+//   • strictly land-blocked arc (protected, blockedRayRatio ≥0.95, intensity <33)
+//     spanning ≥5 CONTIGUOUS sectors (>225° enclosure), AND
+//   • land within 0.5 km in ≥5 contiguous sectors (the close cove arms), AND
+//   • the opening (fetch >0.5 km) confined to ≤3 contiguous sectors (≤135° mouth), AND
+//   • real open water somewhere (max fetch ≥1 km — excludes lagoon/inland pins).
+// ~10% of beaches qualify. The measured limit of this geometry: it cannot see
+// sub-sector morphology (fjord threads, tiny rock arms) nor separate a marina pocket
+// from a natural cove in every case — CURATED_ENCLOSED_COVE_IDS promotes documented
+// coves the rays miss, and the caller vetoes wind-sport/venturi spots geometry cannot
+// know about. Static morphology only; TODAY's calm still requires the live sector to
+// be blocked (canClaimProtected), which callers must AND with this.
+const ENCLOSED_COVE_MIN_ARC_SECTORS = 5;
+const ENCLOSED_COVE_NEAR_LAND_KM = 0.5;
+const ENCLOSED_COVE_MAX_MOUTH_SECTORS = 3;
+const ENCLOSED_COVE_MIN_MAX_FETCH_KM = 1;
+
+/** Longest run of `true` around the circular 8-sector compass. */
+const maxCircularSectorRun = (flags: boolean[]): number => {
+  if (flags.every(Boolean)) return flags.length;
+  let max = 0;
+  let run = 0;
+  for (let i = 0; i < flags.length * 2; i++) {
+    if (flags[i % flags.length]) {
+      run++;
+      max = Math.max(max, Math.min(run, flags.length));
+    } else {
+      run = 0;
+    }
+  }
+  return max;
+};
 
 export const isEnclosedCoveGeometry = (
+  beachId: number,
   profile: GeospatialExposureProfile | undefined,
-  suspectPin: boolean
+  windProfile: Pick<WindProfile, 'suspectPin' | 'knownWindSportSpot' | 'localWindAmplification' | 'shelterLevel'>
 ): boolean => {
-  if (suspectPin || profile?.confidence !== 'high') return false;
-  const enclosedSectors = SECTORS.filter(sector => {
+  // Curated vetoes always win: a wind-sport/venturi spot (Μικρή Βίγλα, Πούντα, Φτελιά)
+  // or an authored-open shore is never a cove, whatever the rays say; a suspect pin's
+  // geometry is untrusted entirely.
+  if (windProfile.suspectPin || windProfile.knownWindSportSpot) return false;
+  if (windProfile.localWindAmplification === 'high') return false;
+  if (windProfile.shelterLevel === 'open') return false;
+
+  if (CURATED_ENCLOSED_COVE_IDS.has(beachId)) return true;
+
+  if (profile?.confidence !== 'high') return false;
+  const enclosed = SECTORS.map(sector => {
     const s = profile.sectors?.[sector];
     return Boolean(
       s && s.level === 'protected' &&
@@ -560,7 +601,13 @@ export const isEnclosedCoveGeometry = (
       typeof s.intensity === 'number' && s.intensity < GEOMETRY_ENCLOSURE_MAX_INTENSITY
     );
   });
-  return enclosedSectors.length >= ENCLOSED_COVE_MIN_SECTORS;
+  const nearLand = SECTORS.map(sector => (profile.sectors?.[sector]?.fetchKm ?? Number.POSITIVE_INFINITY) <= ENCLOSED_COVE_NEAR_LAND_KM);
+  const maxFetchKm = Math.max(...SECTORS.map(sector => profile.sectors?.[sector]?.fetchKm ?? 0));
+
+  return maxCircularSectorRun(enclosed) >= ENCLOSED_COVE_MIN_ARC_SECTORS
+    && maxCircularSectorRun(nearLand) >= ENCLOSED_COVE_MIN_ARC_SECTORS
+    && maxCircularSectorRun(nearLand.map(v => !v)) <= ENCLOSED_COVE_MAX_MOUTH_SECTORS
+    && maxFetchKm >= ENCLOSED_COVE_MIN_MAX_FETCH_KM;
 };
 
 const angularExposureFromProfile = (
@@ -784,7 +831,7 @@ export const assessBeachWindExposure = (input: BeachWindExposureInput): WindExpo
     typeof input.waveHeightMeters === 'number' &&
     input.waveHeightMeters <= 0.4 &&
     !isKnownWindSportRisk;
-  const enclosedCove = isEnclosedCoveGeometry(input.geospatialProfile, profile.suspectPin ?? false);
+  const enclosedCove = isEnclosedCoveGeometry(input.beach.id, input.geospatialProfile, profile);
   const simpleWindSuitability = buildSimpleWindSuitability({
     exposureLevel,
     beaufort: baseBeaufort,

@@ -1637,7 +1637,8 @@ const naxosPhase1CoverageOverrideEntries: OverrideEntry[] = [
       shelterLevel: 'semi_sheltered',
       fetchExposure: 'medium',
       exposedToWindDirections: ['S', 'SW', 'W'],
-      notes: 'South side of the Mikri Vigla area inferred from coordinates. Exact wind separation from the north side needs local verification.',
+      knownWindSportSpot: true,
+      notes: 'South side of the Mikri Vigla cape: documented kite-school launch area on the same venturi as the north side — treat as a wind/watersports spot, never a calm-swimming or enclosed-cove claim. Exact wind separation from the north side still needs local verification.',
     }),
   },
   {
