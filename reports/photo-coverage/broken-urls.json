@@ -1,9 +1,25 @@
 {
-  "generatedAt": "2026-07-04T20:02:14.981Z",
-  "totalUrls": 1536,
-  "ok": 1536,
-  "brokenCount": 0,
+  "generatedAt": "2026-07-18T13:10:07.456Z",
+  "totalUrls": 1351,
+  "ok": 1350,
+  "brokenCount": 1,
   "uncertainCount": 0,
-  "broken": [],
+  "broken": [
+    {
+      "url": "https://commons.wikimedia.org/w/index.php?title=Special:Redirect/file/Gr%C3%A8ce%20Sithonia%20Lagomandra%20Plage%20Baigneurs%2016082009%20-%20panoramio.jpg&width=800",
+      "status": "missing",
+      "refs": [
+        {
+          "beachId": 415,
+          "src": "name-map",
+          "nameGr": "Lagomandra",
+          "nameEn": "Lagomandra",
+          "isl": "Χαλκιδική",
+          "sourceFile": "services/beachPhotos.ts",
+          "file": "Grèce Sithonia Lagomandra Plage Baigneurs 16082009 - panoramio.jpg"
+        }
+      ]
+    }
+  ],
   "uncertain": []
 }

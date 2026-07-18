@@ -42,7 +42,6 @@ const ATTICA_ALIMOS_A_PLAZ_PHOTOS = [
   wm('Kalamaki from the Saronic Gulf.jpg'),
 ];
 const ATTICA_AKTI_TOU_ILIOU_PHOTOS = [
-  wm('Loutra Alimou April 2014 - panoramio.jpg'),
   wm('Alimos - panoramio (15).jpg'),
   wm('Kalamaki from the Saronic Gulf.jpg'),
 ];
@@ -134,8 +133,8 @@ const BEACH_PHOTOS: Record<string, string[]> = {
 
   // ==================== CYCLADES ====================
   // --- Santorini ---
-  'Περίσσα': [wm('Beach - Perissa - Santorini - Greece - 06.jpg'), wm('Beach - Perissa - Santorini - Greece - 04.jpg')],
-  'Perissa': [wm('Beach - Perissa - Santorini - Greece - 06.jpg'), wm('Perissa Beach, Santorini on June 7, 2009.jpg')],
+  'Περίσσα': [wm('Beach - Perissa - Santorini - Greece - 04.jpg')],
+  'Perissa': [wm('Perissa Beach, Santorini on June 7, 2009.jpg')],
   'Καμάρι': [wm('Kamari Beach, Santorini, Greece - panoramio (3).jpg')],
   'Kamari': [wm('Boat at Kamari beach, Santorini, Greece.jpg')],
   'Κόκκινη Παραλία': [wm('Red Beach, Santorini.jpg'), wm('Red Beach in Santorini.jpg')],
@@ -314,8 +313,6 @@ const BEACH_PHOTOS: Record<string, string[]> = {
   'Kavourotrypes': [wm('Kavourotripes Beach, Sykia, Sithonia, Chalkidiki, Greece 02.jpg')],
 
   // ==================== SPORADES ====================
-  'Λαλάρια': [wm('Lalaria beach girl (Unsplash).jpg')],
-  'Lalaria': [wm('Lalaria beach girl (Unsplash).jpg')],
 
   // ==================== PELOPONNESE ====================
   'Βοϊδοκοιλιά': [wm('Voidokilia Beach1.jpg')],
@@ -831,17 +828,14 @@ const MILOS_BEACH_PHOTOS: Record<string, string[]> = {
 const CYCLADES_BEACH_PHOTOS_BY_ISLAND: Record<string, Record<string, string[]>> = {
   milos: MILOS_BEACH_PHOTOS,
   santorini: {
-    'Περίσσα': [wm('Beach - Perissa - Santorini - Greece - 06.jpg'), wm('Beach - Perissa - Santorini - Greece - 04.jpg')],
-    'Perissa': [wm('Beach - Perissa - Santorini - Greece - 06.jpg'), wm('Perissa Beach, Santorini on June 7, 2009.jpg')],
-    'Perissa beach': [wm('Beach - Perissa - Santorini - Greece - 06.jpg'), wm('Perissa Beach, Santorini on June 7, 2009.jpg')],
+    'Περίσσα': [wm('Beach - Perissa - Santorini - Greece - 04.jpg')],
+    'Perissa': [wm('Perissa Beach, Santorini on June 7, 2009.jpg')],
+    'Perissa beach': [wm('Perissa Beach, Santorini on June 7, 2009.jpg')],
     'Καμάρι': [wm('Kamari Beach, Santorini, Greece - panoramio (3).jpg')],
     'Kamari': [wm('Boat at Kamari beach, Santorini, Greece.jpg')],
     'Kamari Beach': [wm('Boat at Kamari beach, Santorini, Greece.jpg')],
     'Κόκκινη Παραλία': [wm('Red Beach, Santorini.jpg'), wm('Red Beach in Santorini.jpg')],
     'Red Beach': [wm('Red Beach, Santorini.jpg'), wm('Red Beach, Santorini, 226476.jpg')],
-    'Βλυχάδα': [wm('Vlychada - Santorini 2019.jpg'), wm('SANTORINI VLYCHADA 7848.jpg')],
-    'Vlychada': [wm('Vlychada - Santorini 2019.jpg')],
-    'Γυμνιστική παραλία Βλυχάδα': [wm('Vlychada - Santorini 2019.jpg')],
     'Περίβολος': [wm('Perivolos (Santorini).jpg'), wm('Perivolos beach, Santorini (1335681187).jpg')],
     'Perivolos': [wm('Perivolos (Santorini).jpg'), wm('Perivolos beach, Santorini (1335681187).jpg')],
     'Μονόλιθος': [wm('Santorini Beach - panoramio.jpg')],
@@ -1138,8 +1132,6 @@ const IONIAN_BEACH_PHOTOS_BY_ISLAND: Record<string, Record<string, string[]>> = 
     'Banana': [wm('1 banana beach july 23 (1).jpg')],
     'Δάφνη': [wm('Dafni Beach - panoramio.jpg')],
     'Dafni': [wm('Dafni Beach - panoramio.jpg')],
-    'Λαγανάς': [wm('1 laganas beach july 23 (1).jpg')],
-    'Laganas': [wm('1 laganas beach july 23 (1).jpg')],
     'Παραλία Γέρακας': [wm('1 gerakas beach on july 2023 (1).jpg')],
     'Paralia Gerakas': [wm('1 gerakas beach on july 2023 (1).jpg')],
     'Πόρτο Ζόρο': ['https://live.staticflickr.com/1284/4693782786_e418c20963_b.jpg'],
