@@ -1149,7 +1149,13 @@ assert(!visibleLabelDecision(mikriViglaNorthFiveAssessment).protectedLabel, 'Nax
 assert(scenarioScore(mikriVigla, northFiveBeaufort) < 70, 'Naxos 5 Bft N: Mikri Vigla must not rank as a strong calm-swimming pick.');
 assert(scenarioScore(mikriVigla, northThreeBeaufort) > 45, 'Naxos 3 Bft N: Mikri Vigla must not collapse to score 0.');
 assert(!mikriViglaNorthThreeAssessment.warnings.some(warning => warning.type === 'wind_sport_spot' && warning.severity === 'warning'), 'Naxos 3 Bft N: Mikri Vigla must not show strong wind-sport warning.');
-assert(mikriViglaSouthNorthFiveAssessment.exposureLevel !== mikriViglaNorthFiveAssessment.exposureLevel, 'Naxos 5 Bft N: Mikri Vigla south side should differ from the exposed north/wind side.');
+// Both sides of the Mikri Vigla cape are documented wind-sport launch areas on the same
+// venturi (south side hosts a kite school), so at 5 Bft BOTH must read as wind-sport
+// exposed — the south side must never present as a calm/protected/cove alternative.
+assert(mikriViglaSouthNorthFiveAssessment.exposureLevel === 'exposed', 'Naxos 5 Bft N: Mikri Vigla south side must read exposed (kite-launch side of the same venturi cape).');
+assert(mikriViglaSouthNorthFiveAssessment.isKnownWindSportRisk, 'Naxos 5 Bft N: Mikri Vigla south side must be treated as a wind/watersports caution.');
+assert(!mikriViglaSouthNorthFiveAssessment.canClaimProtected, 'Naxos 5 Bft N: Mikri Vigla south side must not claim wind protection.');
+assert(!mikriViglaSouthNorthFiveAssessment.enclosedCove, 'Naxos 5 Bft N: Mikri Vigla south side must never carry the enclosed-cove badge.');
 assert(!plakaNorthFiveAssessment.canClaimProtected, 'Naxos 5 Bft N: Plaka must not make guaranteed protected claims.');
 assert(!visibleLabelDecision(plakaNorthFiveAssessment).protectedLabel, 'Naxos 5 Bft N: Plaka must not show protected label.');
 assertHasClearCautionCopy(
