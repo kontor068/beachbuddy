@@ -71,3 +71,10 @@ store-assets/
 keystore.properties
 # iOS native project pods (added later on macOS)
 ios/App/Pods/
+
+# Internal, non-shippable, or sensitive-in-a-public-repo files
+# (repo is public — keep competitive strategy, GSC analytics data and the
+# machine-specific MCP config out of git so they never get pushed by accident)
+.mcp.json
+docs/competitor-strategy.md
+reports/snapshots/
