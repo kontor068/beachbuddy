@@ -97,6 +97,36 @@ const GOOGLE_ANALYTICS_DENYLISTED_METADATA = new Set([
   'phone',
 ]);
 
+// GA4 RESERVES these event-parameter names for campaign / traffic-source attribution.
+// An event carrying a param literally named `source` (or `medium`, `campaign`, …) silently
+// OVERWRITES the session's source/medium — so our internal UI-origin `source` values
+// (`detail_map`, `consent_accept`, `recommendation_card`, …) were being recorded as the
+// traffic source, inflating sessions and dumping ~70% of traffic into "Unassigned"
+// (those values match no channel grouping). We still want the UI-origin signal, so we
+// PREFIX any collision (`source` → `ui_source`) instead of dropping it: the analytics
+// stays, attribution is left to Google's real source/medium. See services docs / GA4:
+// "manually collected traffic-source parameters".
+const GOOGLE_ANALYTICS_RESERVED_PARAM_NAMES = new Set([
+  'source',
+  'medium',
+  'campaign',
+  'term',
+  'content',
+  'campaign_id',
+  'campaign_source',
+  'campaign_medium',
+  'campaign_name',
+  'campaign_term',
+  'campaign_content',
+  'source_platform',
+  'creative_format',
+  'marketing_tactic',
+  'gclid',
+  'dclid',
+  'gclsrc',
+  'srsltid',
+]);
+
 type GoogleAnalyticsParams = Record<string, string | number | boolean>;
 type GtagArguments = [string, ...unknown[]];
 type GoogleConsentValue = 'granted' | 'denied';
@@ -263,7 +293,14 @@ const sanitizeAnalyticsMetadata = (metadata?: unknown): GoogleAnalyticsParams =>
     const analyticsValue = toGoogleAnalyticsValue(value);
     if (analyticsValue === undefined) return;
 
-    params[normalizeGoogleAnalyticsParamName(key)] = analyticsValue;
+    let name = normalizeGoogleAnalyticsParamName(key);
+    if (GOOGLE_ANALYTICS_RESERVED_PARAM_NAMES.has(name)) {
+      // Prefix so it can never be read as GA4 traffic-source attribution. Re-slice to
+      // stay within the 40-char param-name limit. Idempotent (`ui_source` is not reserved),
+      // so the second sanitize pass inside trackGoogleAnalyticsEvent leaves it unchanged.
+      name = `ui_${name}`.slice(0, 40);
+    }
+    params[name] = analyticsValue;
   });
 
   return params;
