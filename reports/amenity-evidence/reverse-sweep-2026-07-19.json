@@ -1,0 +1,5228 @@
+{
+  "generatedAt": "2026-07-19T16:06:04.213Z",
+  "method": "reverse-amenity-sweep-v1 (no-API, on-disk signals only)",
+  "signalsUsed": {
+    "ownGoogleType": 1589,
+    "nearbyCacheCoverage": 1326,
+    "editorialStories": 788
+  },
+  "totals": {
+    "beachesScanned": 2852,
+    "omissionsStrong": 27,
+    "omissionsMedium": 280,
+    "errorsOrganizedButEmpty": 1,
+    "errorsFlagMismatch": 0,
+    "errorsClaimUnsupported": 54
+  },
+  "omissions": [
+    {
+      "id": 1644,
+      "name": "Παραλία Φονέας",
+      "regionId": "peloponnese-messinia-mainland",
+      "strength": "strong",
+      "currentAmenities": [
+        "parking κοντά"
+      ],
+      "evidence": [
+        "bar/beach-club ON sand: \"\" (bar, 37m)"
+      ],
+      "ratingCount": 2693
+    },
+    {
+      "id": 43,
+      "name": "Ερωτοσπηλιά",
+      "regionId": "attica-east-attica-mainland",
+      "strength": "strong",
+      "currentAmenities": [
+        "beach bar κοντά",
+        "θαλάσσια σπορ εποχικά",
+        "parking κοντά"
+      ],
+      "evidence": [
+        "bar/beach-club ON sand: \"\" (bar, 24m)",
+        "editorial story mentions a beach bar / club"
+      ],
+      "ratingCount": 1406
+    },
+    {
+      "id": 2437,
+      "name": "Παραλία Φούρνοι",
+      "regionId": "south-aegean-rhodes",
+      "strength": "strong",
+      "currentAmenities": [],
+      "evidence": [
+        "bar/beach-club ON sand: \"Kantina\" (bar, 78m)"
+      ],
+      "ratingCount": 1236
+    },
+    {
+      "id": 877,
+      "name": "Σκάλα",
+      "regionId": "epirus-preveza-mainland",
+      "strength": "strong",
+      "currentAmenities": [
+        "καμία οργανωμένη παροχή"
+      ],
+      "evidence": [
+        "bar/beach-club ON sand: \"\" (bar, 57m)"
+      ],
+      "ratingCount": 1203
+    },
+    {
+      "id": 677,
+      "name": "Γεροπόταμος",
+      "regionId": "crete-crete-rethymno",
+      "strength": "strong",
+      "currentAmenities": [
+        "ταβέρνα",
+        "parking"
+      ],
+      "evidence": [
+        "bar/beach-club ON sand: \"\" (bar, 65m)"
+      ],
+      "ratingCount": 1160
+    },
+    {
+      "id": 1546,
+      "name": "Αμπελάκια",
+      "regionId": "peloponnese-lakonia-mainland",
+      "strength": "strong",
+      "currentAmenities": [
+        "ταβέρνες κοντά",
+        "καφέ κοντά",
+        "parking κοντά"
+      ],
+      "evidence": [
+        "bar/beach-club ON sand: \"\" (bar, 48m)"
+      ],
+      "ratingCount": 992
+    },
+    {
+      "id": 49,
+      "name": "Παραλία Κοκολόκο",
+      "regionId": "attica-east-attica-mainland",
+      "strength": "strong",
+      "currentAmenities": [
+        "ελεύθερη παραλία χωρίς πλήρη οργάνωση",
+        "parking ή στάθμευση δρόμου κοντά"
+      ],
+      "evidence": [
+        "bar/beach-club ON sand: \"\" (bar, 22m)"
+      ],
+      "ratingCount": 967
+    },
+    {
+      "id": 871,
+      "name": "Πίσω Κρυονέρι",
+      "regionId": "epirus-preveza-mainland",
+      "strength": "strong",
+      "currentAmenities": [
+        "ταβέρνες",
+        "καφέ"
+      ],
+      "evidence": [
+        "bar/beach-club ON sand: \"Atrium Bar\" (bar, 73m)",
+        "taverna/cafe ON sand: \"Golfo Beach Taverna\" (restaurant, 51m)",
+        "editorial story mentions sunbeds/umbrellas"
+      ],
+      "ratingCount": 948
+    },
+    {
+      "id": 600,
+      "name": "Ilingas",
+      "regionId": "crete-crete-chania",
+      "strength": "strong",
+      "currentAmenities": [
+        "φαγητό/νερό κοντά",
+        "καταλύματα κοντά",
+        "βραχώδης σκιά σε σημεία"
+      ],
+      "evidence": [
+        "bar/beach-club ON sand: \"\" (bar, 54m)"
+      ],
+      "ratingCount": 936
+    },
+    {
+      "id": 1470,
+      "name": "Χαβούλι",
+      "regionId": "north-aegean-lemnos",
+      "strength": "strong",
+      "currentAmenities": [
+        "καφέ κοντά",
+        "ταβέρνες κοντά",
+        "parking κοντά"
+      ],
+      "evidence": [
+        "bar/beach-club ON sand: \"Beach Bar\" (bar, 75m)"
+      ],
+      "ratingCount": 497
+    },
+    {
+      "id": 2545,
+      "name": "Παραλία Αμφιλοχίας",
+      "regionId": "west-greece-aetolia-acarnania-mainland",
+      "strength": "strong",
+      "currentAmenities": [
+        "καντίνα / πρόχειρο φαγητό κοντά"
+      ],
+      "evidence": [
+        "bar/beach-club ON sand: \"\" (bar, 33m)",
+        "taverna/cafe ON sand: \"\" (cafe, 35m)"
+      ],
+      "ratingCount": 314
+    },
+    {
+      "id": 124,
+      "name": "Παραλια Κακιά Λαγκάδα",
+      "regionId": "attica-kythira",
+      "strength": "strong",
+      "currentAmenities": [
+        "καντίνα κοντά",
+        "καφέ κοντά",
+        "ταβέρνα κοντά",
+        "parking ή στάθμευση δρόμου κοντά"
+      ],
+      "evidence": [
+        "bar/beach-club ON sand: \"\" (bar, 55m)"
+      ],
+      "ratingCount": 197
+    },
+    {
+      "id": 868,
+      "name": "Κρυονέρι",
+      "regionId": "epirus-preveza-mainland",
+      "strength": "strong",
+      "currentAmenities": [
+        "ταβέρνες",
+        "καφέ"
+      ],
+      "evidence": [
+        "bar/beach-club ON sand: \"Nisaki\" (bar, 73m)",
+        "taverna/cafe ON sand: \"Balthazar\" (restaurant, 51m)"
+      ],
+      "ratingCount": 189
+    },
+    {
+      "id": 686,
+      "name": "Λίμνη",
+      "regionId": "crete-crete-rethymno",
+      "strength": "strong",
+      "currentAmenities": [
+        "ταβέρνες κοντά"
+      ],
+      "evidence": [
+        "bar/beach-club ON sand: \"\" (pub, 45m)",
+        "taverna/cafe ON sand: \"Kostas\" (restaurant, 42m)"
+      ],
+      "ratingCount": 163
+    },
+    {
+      "id": 1477,
+      "name": "Καστράκι",
+      "regionId": "peloponnese-argolida-mainland",
+      "strength": "strong",
+      "currentAmenities": [
+        "χωρίς οργανωμένες παροχές",
+        "parking κοντά"
+      ],
+      "evidence": [
+        "bar/beach-club ON sand: \"Red Rock\" (bar, 75m)",
+        "taverna/cafe ON sand: \"Asinin Te\" (restaurant, 30m)"
+      ],
+      "ratingCount": 137
+    },
+    {
+      "id": 807,
+      "name": "Αλυκές",
+      "regionId": "east-macedonia-and-thrace-thasos",
+      "strength": "strong",
+      "currentAmenities": [
+        "ταβέρνες",
+        "parking",
+        "αρχαιολογικός χώρος κοντά"
+      ],
+      "evidence": [
+        "bar/beach-club ON sand: \"Koala Cafe Bar\" (bar, 76m)",
+        "taverna/cafe ON sand: \"Όμορφη Αλυκή\" (restaurant, 50m)"
+      ],
+      "ratingCount": 95
+    },
+    {
+      "id": 933,
+      "name": "Black Rocks Beach",
+      "regionId": "ionian-islands-corfu",
+      "strength": "strong",
+      "currentAmenities": [
+        "καμία οργανωμένη παροχή"
+      ],
+      "evidence": [
+        "bar/beach-club ON sand: \"Black Rocks\" (bar, 72m)"
+      ],
+      "ratingCount": 79
+    },
+    {
+      "id": 2687,
+      "name": "Καστρί",
+      "regionId": "thessaly-magnesia-mainland---pelion",
+      "strength": "strong",
+      "currentAmenities": [],
+      "evidence": [
+        "bar/beach-club ON sand: \"\" (pub, 31m)"
+      ],
+      "ratingCount": 65
+    },
+    {
+      "id": 922,
+      "name": "Σοφάς",
+      "regionId": "epirus-thesprotia-mainland",
+      "strength": "strong",
+      "currentAmenities": [
+        "camping κοντά",
+        "καφές ή ποτό στο camping",
+        "φαγητό στο camping",
+        "δυνατότητα πρόσβασης με βάρκα από Αρίλλα"
+      ],
+      "evidence": [
+        "bar/beach-club ON sand: \"\" (bar, 78m)",
+        "taverna/cafe ON sand: \"Restaurant Camping Sofas\" (restaurant, 77m)"
+      ],
+      "ratingCount": 34
+    },
+    {
+      "id": 1418,
+      "name": "Ψιλή Άμμος Μαραθοκάμπου",
+      "regionId": "north-aegean-samos",
+      "strength": "strong",
+      "currentAmenities": [
+        "καφέ κοντά",
+        "ταβέρνες κοντά",
+        "parking κοντά"
+      ],
+      "evidence": [
+        "bar/beach-club ON sand: \"Poolbar Golden Sand\" (bar, 80m)",
+        "taverna/cafe ON sand: \"Φλοίσβος Ψιλή Αμμος\" (restaurant, 67m)",
+        "editorial story mentions sunbeds/umbrellas"
+      ],
+      "ratingCount": 32
+    },
+    {
+      "id": 3043,
+      "name": "Σύμη Γυάλα",
+      "regionId": "south-aegean-symi",
+      "strength": "strong",
+      "currentAmenities": [],
+      "evidence": [
+        "bar/beach-club ON sand: \"\" (bar, 22m)"
+      ],
+      "ratingCount": 3
+    },
+    {
+      "id": 3007,
+      "name": "Αμμουλιανή",
+      "regionId": "central-macedonia-halkidiki-mainland",
+      "strength": "strong",
+      "currentAmenities": [],
+      "evidence": [
+        "bar/beach-club ON sand: \"\" (bar, 20m)",
+        "taverna/cafe ON sand: \"\" (fast_food_restaurant, 59m)"
+      ],
+      "ratingCount": null
+    },
+    {
+      "id": 820,
+      "name": "Πλάτανα",
+      "regionId": "east-macedonia-and-thrace-thasos",
+      "strength": "strong",
+      "currentAmenities": [
+        "ταβέρνες κοντά",
+        "καφέ κοντά",
+        "parking"
+      ],
+      "evidence": [
+        "bar/beach-club ON sand: \"\" (bar, 56m)"
+      ],
+      "ratingCount": null
+    },
+    {
+      "id": 855,
+      "name": "Ταρσανάς",
+      "regionId": "east-macedonia-and-thrace-thasos",
+      "strength": "strong",
+      "currentAmenities": [
+        "ταβέρνα κοντά",
+        "καφέ κοντά",
+        "parking"
+      ],
+      "evidence": [
+        "bar/beach-club ON sand: \"Africa Beach Bar\" (bar, 79m)"
+      ],
+      "ratingCount": null
+    },
+    {
+      "id": 3109,
+      "name": "Καραβοστάσι (Πλύτρα)",
+      "regionId": "peloponnese-lakonia-mainland",
+      "strength": "strong",
+      "currentAmenities": [],
+      "evidence": [
+        "bar/beach-club ON sand: \"\" (bar, 62m)"
+      ],
+      "ratingCount": null
+    },
+    {
+      "id": 1715,
+      "name": "Παλαιοπολη",
+      "regionId": "south-aegean-andros",
+      "strength": "strong",
+      "currentAmenities": [],
+      "evidence": [
+        "bar/beach-club ON sand: \"\" (bar, 52m)"
+      ],
+      "ratingCount": null
+    },
+    {
+      "id": 2237,
+      "name": "Κούνουπες",
+      "regionId": "south-aegean-astypalaia",
+      "strength": "strong",
+      "currentAmenities": [
+        "πρόσβαση με ιδιωτικό ή εκδρομικό σκάφος"
+      ],
+      "evidence": [
+        "bar/beach-club ON sand: \"\" (bar, 60m)"
+      ],
+      "ratingCount": null
+    },
+    {
+      "id": 1209,
+      "name": "Παραλία Γέρακας",
+      "regionId": "ionian-islands-zakynthos",
+      "strength": "medium",
+      "currentAmenities": [
+        "parking",
+        "εστιατόριο εκτός παραλίας",
+        "κανόνες προστασίας χελώνας"
+      ],
+      "evidence": [
+        "editorial story mentions sunbeds/umbrellas"
+      ],
+      "ratingCount": 7511
+    },
+    {
+      "id": 3004,
+      "name": "Γκιόλα",
+      "regionId": "east-macedonia-and-thrace-thasos",
+      "strength": "medium",
+      "currentAmenities": [
+        "ταβέρνα κοντά"
+      ],
+      "evidence": [
+        "bar/resort 154m away: \"Giola Tavern\" (bar)"
+      ],
+      "ratingCount": 6926
+    },
+    {
+      "id": 1167,
+      "name": "Μύλος",
+      "regionId": "ionian-islands-lefkada",
+      "strength": "medium",
+      "currentAmenities": [
+        "καραβάκι από Άγιο Νικήτα εποχικά"
+      ],
+      "evidence": [
+        "bar/resort 179m away: \"Utopia Sunset\" (bar)"
+      ],
+      "ratingCount": 6161
+    },
+    {
+      "id": 8,
+      "name": "Παραλία Γλυφάδας Ακτή Α",
+      "regionId": "attica-athens-area-mainland",
+      "strength": "medium",
+      "currentAmenities": [
+        "ελεύθερη είσοδος",
+        "parking ή στάθμευση δρόμου κοντά"
+      ],
+      "evidence": [
+        "editorial story mentions sunbeds/umbrellas"
+      ],
+      "ratingCount": 3470
+    },
+    {
+      "id": 3019,
+      "name": "Αγία Γαλήνη",
+      "regionId": "crete-crete-rethymno",
+      "strength": "medium",
+      "currentAmenities": [
+        "πρόσβαση ΑμεΑ (Seatrac)",
+        "ράμπα/διάδρομος προς τη θάλασσα",
+        "προσβάσιμη τουαλέτα",
+        "αποδυτήριο",
+        "ντους"
+      ],
+      "evidence": [
+        "taverna/cafe ON sand: \"Καφενείο Ουζερι Γιορταμήις\" (cafe, 72m)",
+        "bar/resort 89m away: \"Zorbas\" (bar)"
+      ],
+      "ratingCount": 3186
+    },
+    {
+      "id": 1067,
+      "name": "Έμπλυση",
+      "regionId": "ionian-islands-kefalonia",
+      "strength": "medium",
+      "currentAmenities": [
+        "καντίνα εποχικά",
+        "parking"
+      ],
+      "evidence": [
+        "editorial story mentions sunbeds/umbrellas"
+      ],
+      "ratingCount": 2967
+    },
+    {
+      "id": 474,
+      "name": "Παραλία Χρουσώ",
+      "regionId": "central-macedonia-halkidiki-mainland",
+      "strength": "medium",
+      "currentAmenities": [
+        "χωρίς επιβεβαιωμένες σταθερές παροχές",
+        "περιορισμένο ή άτυπο parking"
+      ],
+      "evidence": [
+        "editorial story mentions a beach bar / club"
+      ],
+      "ratingCount": 2874
+    },
+    {
+      "id": 1263,
+      "name": "Μαύρα Βόλια",
+      "regionId": "north-aegean-chios",
+      "strength": "medium",
+      "currentAmenities": [
+        "ταβέρνες στον Εμπορειό",
+        "καφέ στον Εμπορειό",
+        "parking κοντά",
+        "ναυαγοσώστης εποχικά 2026"
+      ],
+      "evidence": [
+        "bar/resort 124m away: \"\" (bar)"
+      ],
+      "ratingCount": 2712
+    },
+    {
+      "id": 1194,
+      "name": "Πόρτο Ρόξα",
+      "regionId": "ionian-islands-zakynthos",
+      "strength": "medium",
+      "currentAmenities": [
+        "ταβέρνα",
+        "καφέ",
+        "parking"
+      ],
+      "evidence": [
+        "taverna/cafe ON sand: \"\" (cafe, 24m)"
+      ],
+      "ratingCount": 2526
+    },
+    {
+      "id": 2293,
+      "name": "Λιμάνι Παναγιάς",
+      "regionId": "south-aegean-karpathos",
+      "strength": "medium",
+      "currentAmenities": [],
+      "evidence": [
+        "taverna/cafe ON sand: \"Taverna Ammos\" (restaurant, 49m)"
+      ],
+      "ratingCount": 1826
+    },
+    {
+      "id": 707,
+      "name": "Σπήλιες",
+      "regionId": "crete-crete-rethymno",
+      "strength": "medium",
+      "currentAmenities": [
+        "ταβέρνα",
+        "parking"
+      ],
+      "evidence": [
+        "taverna/cafe ON sand: \"\" (restaurant, 48m)"
+      ],
+      "ratingCount": 1714
+    },
+    {
+      "id": 1086,
+      "name": "Αγια Κυριακη",
+      "regionId": "ionian-islands-kefalonia",
+      "strength": "medium",
+      "currentAmenities": [
+        "ταβέρνα",
+        "parking",
+        "λιμανάκι κοντά"
+      ],
+      "evidence": [
+        "taverna/cafe ON sand: \"Η Ακρογιαλιά του Κώστα\" (restaurant, 73m)"
+      ],
+      "ratingCount": 1665
+    },
+    {
+      "id": 1386,
+      "name": "Πάππα",
+      "regionId": "north-aegean-samos",
+      "strength": "medium",
+      "currentAmenities": [
+        "καφέ κοντά",
+        "ταβέρνες κοντά",
+        "parking κοντά"
+      ],
+      "evidence": [
+        "taverna/cafe ON sand: \"Pappa Beach\" (restaurant, 21m)"
+      ],
+      "ratingCount": 1607
+    },
+    {
+      "id": 1413,
+      "name": "Ποτάμι",
+      "regionId": "north-aegean-samos",
+      "strength": "medium",
+      "currentAmenities": [
+        "καφέ κοντά",
+        "ταβέρνες κοντά",
+        "parking κοντά"
+      ],
+      "evidence": [
+        "editorial story mentions a beach bar / club"
+      ],
+      "ratingCount": 1540
+    },
+    {
+      "id": 1131,
+      "name": "Φωκι",
+      "regionId": "ionian-islands-kefalonia",
+      "strength": "medium",
+      "currentAmenities": [
+        "ταβέρνα κοντά"
+      ],
+      "evidence": [
+        "taverna/cafe ON sand: \"Taverna Foki\" (restaurant, 76m)"
+      ],
+      "ratingCount": 1507
+    },
+    {
+      "id": 1008,
+      "name": "Παραλία Μυρτιώτισσας",
+      "regionId": "ionian-islands-corfu",
+      "strength": "medium",
+      "currentAmenities": [
+        "ταβέρνα κοντά",
+        "pop-up bar εποχικά"
+      ],
+      "evidence": [
+        "taverna/cafe ON sand: \"\" (fast_food_restaurant, 35m)"
+      ],
+      "ratingCount": 1492
+    },
+    {
+      "id": 996,
+      "name": "Παραλία Λογγάς",
+      "regionId": "ionian-islands-corfu",
+      "strength": "medium",
+      "currentAmenities": [
+        "beach bar πάνω από την παραλία",
+        "καφέ πάνω από την παραλία",
+        "parking"
+      ],
+      "evidence": [
+        "taverna/cafe ON sand: \"7th heaven\" (restaurant, 75m)"
+      ],
+      "ratingCount": 1454
+    },
+    {
+      "id": 680,
+      "name": "Καραβοστάσι",
+      "regionId": "crete-crete-rethymno",
+      "strength": "medium",
+      "currentAmenities": [
+        "ταβέρνες",
+        "parking"
+      ],
+      "evidence": [
+        "taverna/cafe ON sand: \"Ligo Vouno Ligo Thalassa\" (restaurant, 41m)"
+      ],
+      "ratingCount": 1265
+    },
+    {
+      "id": 1140,
+      "name": "Δεσίμι",
+      "regionId": "ionian-islands-lefkada",
+      "strength": "medium",
+      "currentAmenities": [
+        "ταβέρνες",
+        "parking"
+      ],
+      "evidence": [
+        "taverna/cafe ON sand: \"Taverna Pirofani\" (restaurant, 78m)"
+      ],
+      "ratingCount": 1224
+    },
+    {
+      "id": 3035,
+      "name": "Κομοτηνή Φανάρι Αρωγή",
+      "regionId": "east-macedonia-and-thrace-rodopi-mainland",
+      "strength": "medium",
+      "currentAmenities": [],
+      "evidence": [
+        "bar/resort 118m away: \"\" (bar)"
+      ],
+      "ratingCount": 1221
+    },
+    {
+      "id": 716,
+      "name": "Αγία Φωτιά",
+      "regionId": "crete-crete-lasithi",
+      "strength": "medium",
+      "currentAmenities": [
+        "ταβέρνα",
+        "parking"
+      ],
+      "evidence": [
+        "taverna/cafe ON sand: \"Πουλής\" (restaurant, 63m)"
+      ],
+      "ratingCount": 1187
+    },
+    {
+      "id": 1182,
+      "name": "Άγιος Νικόλαος Βολιμών",
+      "regionId": "ionian-islands-zakynthos",
+      "strength": "medium",
+      "currentAmenities": [
+        "ταβέρνες",
+        "λιμανάκι",
+        "καραβάκια",
+        "parking"
+      ],
+      "evidence": [
+        "taverna/cafe ON sand: \"\" (cafe, 31m)"
+      ],
+      "ratingCount": 1114
+    },
+    {
+      "id": 2427,
+      "name": "Παραλία Κοπριά",
+      "regionId": "south-aegean-rhodes",
+      "strength": "medium",
+      "currentAmenities": [],
+      "evidence": [
+        "taverna/cafe ON sand: \"Johnny's Grill Taverna\" (restaurant, 43m)"
+      ],
+      "ratingCount": 1048
+    },
+    {
+      "id": 758,
+      "name": "Μπούφος",
+      "regionId": "crete-crete-lasithi",
+      "strength": "medium",
+      "currentAmenities": [
+        "ταβέρνες κοντά",
+        "parking"
+      ],
+      "evidence": [
+        "bar/resort 108m away: \"Gyroscopio\" (pub)"
+      ],
+      "ratingCount": 1040
+    },
+    {
+      "id": 149,
+      "name": "Παραλία Χαλκός",
+      "regionId": "attica-kythira",
+      "strength": "medium",
+      "currentAmenities": [
+        "snack bar",
+        "parking σε χωμάτινο χώρο"
+      ],
+      "evidence": [
+        "taverna/cafe ON sand: \"\" (cafe, 52m)"
+      ],
+      "ratingCount": 1036
+    },
+    {
+      "id": 223,
+      "name": "Θαψά",
+      "regionId": "central-greece-evia",
+      "strength": "medium",
+      "currentAmenities": [
+        "χωρίς σταθερές παροχές",
+        "πρόσβαση και με καΐκι εποχικά από Κύμη",
+        "απαιτείται κατάλληλο όχημα"
+      ],
+      "evidence": [
+        "editorial story mentions sunbeds/umbrellas"
+      ],
+      "ratingCount": 1033
+    },
+    {
+      "id": 306,
+      "name": "Σχοινοδαύλεια",
+      "regionId": "central-greece-evia",
+      "strength": "medium",
+      "currentAmenities": [
+        "χωρίς σταθερές παροχές",
+        "περιορισμένη ή άτυπη στάθμευση"
+      ],
+      "evidence": [
+        "taverna/cafe ON sand: \"\" (fast_food_restaurant, 70m)"
+      ],
+      "ratingCount": 1004
+    },
+    {
+      "id": 403,
+      "name": "Kakoudia",
+      "regionId": "central-macedonia-halkidiki-mainland",
+      "strength": "medium",
+      "currentAmenities": [
+        "καμία οργανωμένη παροχή",
+        "φέρνεις δικό σου νερό/ομπρέλα",
+        "snorkeling"
+      ],
+      "evidence": [
+        "editorial story mentions sunbeds/umbrellas"
+      ],
+      "ratingCount": 941
+    },
+    {
+      "id": 15,
+      "name": "Μικρό Καβούρι",
+      "regionId": "attica-athens-area-mainland",
+      "strength": "medium",
+      "currentAmenities": [
+        "καφέ εποχικά",
+        "parking ή στάθμευση δρόμου κοντά",
+        "φυσική σκιά σε σημεία"
+      ],
+      "evidence": [
+        "bar/resort 103m away: \"\" (beach_resort)"
+      ],
+      "ratingCount": 928
+    },
+    {
+      "id": 17,
+      "name": "Μεγάλο Καβούρι",
+      "regionId": "attica-athens-area-mainland",
+      "strength": "medium",
+      "currentAmenities": [
+        "καφέ εποχικά",
+        "parking ή στάθμευση δρόμου κοντά",
+        "φυσική σκιά σε σημεία"
+      ],
+      "evidence": [
+        "bar/resort 120m away: \"Kavouri Beach Bar\" (bar)",
+        "editorial story mentions sunbeds/umbrellas"
+      ],
+      "ratingCount": 928
+    },
+    {
+      "id": 261,
+      "name": "Νησιώτισσα",
+      "regionId": "central-greece-evia",
+      "strength": "medium",
+      "currentAmenities": [
+        "καφέ κοντά",
+        "ταβέρνες κοντά",
+        "παροχές οικισμού κοντά",
+        "parking ή στάθμευση δρόμου κοντά"
+      ],
+      "evidence": [
+        "editorial story mentions sunbeds/umbrellas"
+      ],
+      "ratingCount": 920
+    },
+    {
+      "id": 1117,
+      "name": "Παραλία Αγία Ιερουσαλήμ",
+      "regionId": "ionian-islands-kefalonia",
+      "strength": "medium",
+      "currentAmenities": [
+        "ταβέρνα",
+        "parking"
+      ],
+      "evidence": [
+        "editorial story mentions sunbeds/umbrellas"
+      ],
+      "ratingCount": 910
+    },
+    {
+      "id": 377,
+      "name": "Παραλία Σαράντη",
+      "regionId": "central-greece-viotia-mainland",
+      "strength": "medium",
+      "currentAmenities": [
+        "καντίνα κοντά",
+        "καφέ κοντά",
+        "ταβέρνα κοντά",
+        "parking ή στάθμευση δρόμου κοντά"
+      ],
+      "evidence": [
+        "taverna/cafe ON sand: \"Coolabah\" (cafe, 25m)"
+      ],
+      "ratingCount": 887
+    },
+    {
+      "id": 1445,
+      "name": "Ζεματάς",
+      "regionId": "north-aegean-lemnos",
+      "strength": "medium",
+      "currentAmenities": [
+        "parking κοντά"
+      ],
+      "evidence": [
+        "taverna/cafe ON sand: \"\" (cafe, 80m)",
+        "editorial story mentions sunbeds/umbrellas"
+      ],
+      "ratingCount": 874
+    },
+    {
+      "id": 1399,
+      "name": "Καλαδάκια",
+      "regionId": "north-aegean-samos",
+      "strength": "medium",
+      "currentAmenities": [
+        "καφέ κοντά",
+        "ταβέρνες κοντά",
+        "parking κοντά"
+      ],
+      "evidence": [
+        "editorial story mentions a beach bar / club",
+        "editorial story mentions sunbeds/umbrellas"
+      ],
+      "ratingCount": 829
+    },
+    {
+      "id": 2649,
+      "name": "Άγιος Ιωάννης",
+      "regionId": "thessaly-skopelos",
+      "strength": "medium",
+      "currentAmenities": [
+        "καντίνα κοντά",
+        "WC στην καντίνα",
+        "parking ή στάθμευση δρόμου κοντά"
+      ],
+      "evidence": [
+        "bar/resort 82m away: \"\" (bar)"
+      ],
+      "ratingCount": 823
+    },
+    {
+      "id": 249,
+      "name": "Λιμνιώνας Ψαχνών",
+      "regionId": "central-greece-evia",
+      "strength": "medium",
+      "currentAmenities": [
+        "καντίνα κοντά",
+        "καφέ κοντά",
+        "ταβέρνα κοντά",
+        "parking ή στάθμευση δρόμου κοντά"
+      ],
+      "evidence": [
+        "editorial story mentions sunbeds/umbrellas"
+      ],
+      "ratingCount": 775
+    },
+    {
+      "id": 839,
+      "name": "Γλυφονέρι",
+      "regionId": "east-macedonia-and-thrace-thasos",
+      "strength": "medium",
+      "currentAmenities": [
+        "ταβέρνα",
+        "parking"
+      ],
+      "evidence": [
+        "taverna/cafe ON sand: \"Γλυφονέρι\" (restaurant, 36m)"
+      ],
+      "ratingCount": 761
+    },
+    {
+      "id": 2702,
+      "name": "Νταμούχαρη",
+      "regionId": "thessaly-magnesia-mainland---pelion",
+      "strength": "medium",
+      "currentAmenities": [
+        "ταβέρνα κοντά",
+        "καφέ κοντά",
+        "θαλάσσια σπορ εποχικά"
+      ],
+      "evidence": [
+        "taverna/cafe ON sand: \"Old Ntamouxari\" (restaurant, 56m)",
+        "bar/resort 167m away: \"\" (bar)"
+      ],
+      "ratingCount": 757
+    },
+    {
+      "id": 1268,
+      "name": "Παραλία Βρουλίδια",
+      "regionId": "north-aegean-chios",
+      "strength": "medium",
+      "currentAmenities": [
+        "καντίνα εποχικά πάνω από την παραλία",
+        "parking"
+      ],
+      "evidence": [
+        "taverna/cafe ON sand: \"\" (cafe, 70m)"
+      ],
+      "ratingCount": 756
+    },
+    {
+      "id": 195,
+      "name": "Αγία Παρασκευή",
+      "regionId": "central-greece-evia",
+      "strength": "medium",
+      "currentAmenities": [
+        "εποχική καντίνα κοντά",
+        "περιορισμένη στάθμευση ή στάθμευση δρόμου κοντά"
+      ],
+      "evidence": [
+        "taverna/cafe ON sand: \"Καντίνα (καλοκαιρινή)\" (restaurant, 37m)"
+      ],
+      "ratingCount": 745
+    },
+    {
+      "id": 3028,
+      "name": "Ωρωπός Σκάλα Ωρωπού",
+      "regionId": "attica-east-attica-mainland",
+      "strength": "medium",
+      "currentAmenities": [],
+      "evidence": [
+        "taverna/cafe ON sand: \"Coco Pan\" (cafe, 45m)"
+      ],
+      "ratingCount": 724
+    },
+    {
+      "id": 2502,
+      "name": "Άκολη",
+      "regionId": "west-greece-achaia-mainland",
+      "strength": "medium",
+      "currentAmenities": [
+        "beach volley",
+        "kite surf spot"
+      ],
+      "evidence": [
+        "bar/resort 191m away: \"\" (bar)"
+      ],
+      "ratingCount": 715
+    },
+    {
+      "id": 1457,
+      "name": "Εβγάτης",
+      "regionId": "north-aegean-lemnos",
+      "strength": "medium",
+      "currentAmenities": [
+        "καφέ κοντά",
+        "ταβέρνες κοντά",
+        "parking κοντά"
+      ],
+      "evidence": [
+        "editorial story mentions a beach bar / club"
+      ],
+      "ratingCount": 689
+    },
+    {
+      "id": 901,
+      "name": "Μέγα Ντράφι",
+      "regionId": "epirus-thesprotia-mainland",
+      "strength": "medium",
+      "currentAmenities": [
+        "καντίνα εποχικά",
+        "καφέ εποχικά",
+        "parking στον δρόμο"
+      ],
+      "evidence": [
+        "taverna/cafe ON sand: \"\" (restaurant, 32m)",
+        "editorial story mentions sunbeds/umbrellas"
+      ],
+      "ratingCount": 676
+    },
+    {
+      "id": 943,
+      "name": "Kanoni Beach",
+      "regionId": "ionian-islands-corfu",
+      "strength": "medium",
+      "currentAmenities": [
+        "ταβέρνες κοντά",
+        "καφέ κοντά"
+      ],
+      "evidence": [
+        "taverna/cafe ON sand: \"Kastro\" (cafe, 55m)"
+      ],
+      "ratingCount": 675
+    },
+    {
+      "id": 1474,
+      "name": "Γκλιάτη",
+      "regionId": "peloponnese-argolida-mainland",
+      "strength": "medium",
+      "currentAmenities": [],
+      "evidence": [
+        "taverna/cafe ON sand: \"\" (restaurant, 35m)"
+      ],
+      "ratingCount": 674
+    },
+    {
+      "id": 1266,
+      "name": "Παραλία Αυλωνία",
+      "regionId": "north-aegean-chios",
+      "strength": "medium",
+      "currentAmenities": [
+        "parking κοντά"
+      ],
+      "evidence": [
+        "taverna/cafe ON sand: \"\" (cafe, 27m)"
+      ],
+      "ratingCount": 660
+    },
+    {
+      "id": 1211,
+      "name": "Παραλία Μαραθιά",
+      "regionId": "ionian-islands-zakynthos",
+      "strength": "medium",
+      "currentAmenities": [
+        "ταβέρνες κοντά",
+        "καφέ κοντά",
+        "parking"
+      ],
+      "evidence": [
+        "editorial story mentions sunbeds/umbrellas"
+      ],
+      "ratingCount": 649
+    },
+    {
+      "id": 1545,
+      "name": "Αλύπα",
+      "regionId": "peloponnese-lakonia-mainland",
+      "strength": "medium",
+      "currentAmenities": [
+        "ταβέρνα κοντά",
+        "μικρή προβλήτα κοντά"
+      ],
+      "evidence": [
+        "taverna/cafe ON sand: \"Ταβέρνα Αλύπα\" (restaurant, 8m)"
+      ],
+      "ratingCount": 647
+    },
+    {
+      "id": 470,
+      "name": "Παραλία Καστρί",
+      "regionId": "central-macedonia-halkidiki-mainland",
+      "strength": "medium",
+      "currentAmenities": [
+        "καμία οργανωμένη παροχή",
+        "φέρνεις δικό σου νερό/ομπρέλα",
+        "snorkeling"
+      ],
+      "evidence": [
+        "editorial story mentions sunbeds/umbrellas"
+      ],
+      "ratingCount": 638
+    },
+    {
+      "id": 65,
+      "name": "Μαύρο Λιθάρι / Eden Beach",
+      "regionId": "attica-east-attica-mainland",
+      "strength": "medium",
+      "currentAmenities": [
+        "αναψυκτήρια",
+        "parking ή στάθμευση δρόμου κοντά"
+      ],
+      "evidence": [
+        "editorial story mentions sunbeds/umbrellas"
+      ],
+      "ratingCount": 634
+    },
+    {
+      "id": 541,
+      "name": "Μαχαιρίδα",
+      "regionId": "crete-crete-chania",
+      "strength": "medium",
+      "currentAmenities": [
+        "φαγητό/νερό κοντά στην ευρύτερη περιοχή",
+        "καταλύματα κοντά"
+      ],
+      "evidence": [
+        "editorial story mentions sunbeds/umbrellas"
+      ],
+      "ratingCount": 609
+    },
+    {
+      "id": 1728,
+      "name": "Ακτή Παναγίας Φανερωμένης",
+      "regionId": "south-aegean-antiparos",
+      "strength": "medium",
+      "currentAmenities": [],
+      "evidence": [
+        "editorial story mentions a beach bar / club",
+        "editorial story mentions sunbeds/umbrellas"
+      ],
+      "ratingCount": 606
+    },
+    {
+      "id": 469,
+      "name": "Παραλία Λατούρα",
+      "regionId": "central-macedonia-halkidiki-mainland",
+      "strength": "medium",
+      "currentAmenities": [
+        "parking κοντά",
+        "καμία οργανωμένη παροχή πάνω στην παραλία",
+        "φέρνεις δικό σου νερό/ομπρέλα"
+      ],
+      "evidence": [
+        "editorial story mentions sunbeds/umbrellas"
+      ],
+      "ratingCount": 593
+    },
+    {
+      "id": 2193,
+      "name": "Άμμος",
+      "regionId": "south-aegean-koufonisia",
+      "strength": "medium",
+      "currentAmenities": [
+        "καφέ κοντά",
+        "ταβέρνες κοντά",
+        "parking κοντά"
+      ],
+      "evidence": [
+        "bar/resort 121m away: \"Το Κύμα\" (bar)"
+      ],
+      "ratingCount": 560
+    },
+    {
+      "id": 2135,
+      "name": "Δελφίνι",
+      "regionId": "south-aegean-syros",
+      "strength": "medium",
+      "currentAmenities": [
+        "ταβέρνες κοντά",
+        "καφέ κοντά",
+        "parking κοντά"
+      ],
+      "evidence": [
+        "editorial story mentions a beach bar / club",
+        "editorial story mentions sunbeds/umbrellas"
+      ],
+      "ratingCount": 547
+    },
+    {
+      "id": 1206,
+      "name": "Μαυράτζης",
+      "regionId": "ionian-islands-zakynthos",
+      "strength": "medium",
+      "currentAmenities": [
+        "parking"
+      ],
+      "evidence": [
+        "taverna/cafe ON sand: \"\" (cafe, 21m)"
+      ],
+      "ratingCount": 534
+    },
+    {
+      "id": 1580,
+      "name": "Παραλία Κότρωνα",
+      "regionId": "peloponnese-lakonia-mainland",
+      "strength": "medium",
+      "currentAmenities": [
+        "ταβέρνες κοντά",
+        "καφέ κοντά",
+        "parking κοντά"
+      ],
+      "evidence": [
+        "taverna/cafe ON sand: \"Crown Cafe\" (cafe, 64m)"
+      ],
+      "ratingCount": 532
+    },
+    {
+      "id": 859,
+      "name": "Παραλία Γαλάνης Νέστου",
+      "regionId": "east-macedonia-and-thrace-xanthi-mainland",
+      "strength": "medium",
+      "currentAmenities": [
+        "parking κοντά"
+      ],
+      "evidence": [
+        "taverna/cafe ON sand: \"\" (fast_food_restaurant, 56m)",
+        "editorial story mentions sunbeds/umbrellas"
+      ],
+      "ratingCount": 529
+    },
+    {
+      "id": 852,
+      "name": "Σκάλα Πρίνου",
+      "regionId": "east-macedonia-and-thrace-thasos",
+      "strength": "medium",
+      "currentAmenities": [
+        "ταβέρνες",
+        "καφέ",
+        "parking",
+        "λιμάνι κοντά"
+      ],
+      "evidence": [
+        "taverna/cafe ON sand: \"Viento\" (cafe, 79m)"
+      ],
+      "ratingCount": 523
+    },
+    {
+      "id": 1417,
+      "name": "Ψιλή Άμμος ανατολικής Σάμου",
+      "regionId": "north-aegean-samos",
+      "strength": "medium",
+      "currentAmenities": [
+        "καφέ κοντά",
+        "ταβέρνες κοντά",
+        "parking κοντά"
+      ],
+      "evidence": [
+        "taverna/cafe ON sand: \"Anatoli\" (restaurant, 33m)",
+        "bar/resort 84m away: \"Noya Beach Experience\" (bar)"
+      ],
+      "ratingCount": 510
+    },
+    {
+      "id": 2382,
+      "name": "Πλατύς Γιαλός",
+      "regionId": "south-aegean-lipsi",
+      "strength": "medium",
+      "currentAmenities": [
+        "ταβέρνα κοντά"
+      ],
+      "evidence": [
+        "taverna/cafe ON sand: \"\"Πλατύς Γιαλός\"\" (restaurant, 51m)"
+      ],
+      "ratingCount": 509
+    },
+    {
+      "id": 2697,
+      "name": "Μικρό",
+      "regionId": "thessaly-magnesia-mainland---pelion",
+      "strength": "medium",
+      "currentAmenities": [
+        "ταβέρνες κοντά",
+        "καφέ κοντά"
+      ],
+      "evidence": [
+        "taverna/cafe ON sand: \"\" (restaurant, 70m)"
+      ],
+      "ratingCount": 505
+    },
+    {
+      "id": 1741,
+      "name": "Αγκάλη",
+      "regionId": "south-aegean-folegandros",
+      "strength": "medium",
+      "currentAmenities": [
+        "ταβέρνες κοντά",
+        "καφέ κοντά",
+        "parking κοντά"
+      ],
+      "evidence": [
+        "taverna/cafe ON sand: \"Psaromiligkas\" (restaurant, 36m)"
+      ],
+      "ratingCount": 500
+    },
+    {
+      "id": 9,
+      "name": "Παραλία Γλυφάδας Ακτή Β",
+      "regionId": "attica-athens-area-mainland",
+      "strength": "medium",
+      "currentAmenities": [
+        "ελεύθερη είσοδος",
+        "parking ή στάθμευση δρόμου κοντά"
+      ],
+      "evidence": [
+        "editorial story mentions sunbeds/umbrellas"
+      ],
+      "ratingCount": 497
+    },
+    {
+      "id": 1531,
+      "name": "Παραλία Αγία Σωτήρα",
+      "regionId": "peloponnese-korinthia-mainland",
+      "strength": "medium",
+      "currentAmenities": [],
+      "evidence": [
+        "taverna/cafe ON sand: \"Cariocas beach bar\" (cafe, 30m)"
+      ],
+      "ratingCount": 494
+    },
+    {
+      "id": 2095,
+      "name": "Αποκοφτό",
+      "regionId": "south-aegean-sifnos",
+      "strength": "medium",
+      "currentAmenities": [
+        "ταβέρνες κοντά",
+        "καφέ κοντά",
+        "parking κοντά"
+      ],
+      "evidence": [
+        "taverna/cafe ON sand: \"Η Χρυσοπηγή\" (restaurant, 79m)"
+      ],
+      "ratingCount": 494
+    },
+    {
+      "id": 50,
+      "name": "Λομπάρδα / Mojito Bay",
+      "regionId": "attica-east-attica-mainland",
+      "strength": "medium",
+      "currentAmenities": [
+        "εστίαση εποχικά",
+        "εστίαση",
+        "beach volley",
+        "parking ή στάθμευση δρόμου κοντά"
+      ],
+      "evidence": [
+        "editorial story mentions a beach bar / club"
+      ],
+      "ratingCount": 486
+    },
+    {
+      "id": 1553,
+      "name": "Βλυχάδα",
+      "regionId": "peloponnese-lakonia-mainland",
+      "strength": "medium",
+      "currentAmenities": [],
+      "evidence": [
+        "taverna/cafe ON sand: \"Kantina\" (restaurant, 31m)"
+      ],
+      "ratingCount": 483
+    },
+    {
+      "id": 1186,
+      "name": "Δάφνη",
+      "regionId": "ionian-islands-zakynthos",
+      "strength": "medium",
+      "currentAmenities": [
+        "ταβέρνες",
+        "parking"
+      ],
+      "evidence": [
+        "taverna/cafe ON sand: \"Porto Mela\" (restaurant, 46m)"
+      ],
+      "ratingCount": 482
+    },
+    {
+      "id": 1376,
+      "name": "Χαραμίδα",
+      "regionId": "north-aegean-lesvos",
+      "strength": "medium",
+      "currentAmenities": [
+        "καφέ κοντά",
+        "ταβέρνες κοντά",
+        "parking κοντά"
+      ],
+      "evidence": [
+        "editorial story mentions a beach bar / club",
+        "editorial story mentions sunbeds/umbrellas"
+      ],
+      "ratingCount": 479
+    },
+    {
+      "id": 3051,
+      "name": "ΠΔΕ Πάτρα Αγ.Βασίλειος",
+      "regionId": "west-greece-aetolia-acarnania-mainland",
+      "strength": "medium",
+      "currentAmenities": [],
+      "evidence": [
+        "taverna/cafe ON sand: \"\" (cafe, 16m)"
+      ],
+      "ratingCount": 476
+    },
+    {
+      "id": 930,
+      "name": "Alipa beach",
+      "regionId": "ionian-islands-corfu",
+      "strength": "medium",
+      "currentAmenities": [
+        "λιμανάκι κοντά",
+        "ταβέρνες"
+      ],
+      "evidence": [
+        "taverna/cafe ON sand: \"Alipa\" (restaurant, 13m)"
+      ],
+      "ratingCount": 474
+    },
+    {
+      "id": 1569,
+      "name": "Μποζάς",
+      "regionId": "peloponnese-lakonia-mainland",
+      "strength": "medium",
+      "currentAmenities": [
+        "ταβέρνα-καφετέρια κοντά",
+        "beach volley",
+        "parking κοντά",
+        "φυσική σκιά σε σημεία"
+      ],
+      "evidence": [
+        "taverna/cafe ON sand: \"The \"Bozo\" Agathoklis\" (restaurant, 55m)",
+        "editorial story mentions sunbeds/umbrellas"
+      ],
+      "ratingCount": 474
+    },
+    {
+      "id": 488,
+      "name": "Παραλία Σπαθιών",
+      "regionId": "central-macedonia-halkidiki-mainland",
+      "strength": "medium",
+      "currentAmenities": [
+        "καμία οργανωμένη παροχή",
+        "φέρνεις δικό σου νερό/ομπρέλα",
+        "snorkeling"
+      ],
+      "evidence": [
+        "editorial story mentions sunbeds/umbrellas"
+      ],
+      "ratingCount": 473
+    },
+    {
+      "id": 1601,
+      "name": "Χαλικιά Βάτα",
+      "regionId": "peloponnese-lakonia-mainland",
+      "strength": "medium",
+      "currentAmenities": [
+        "parking κοντά"
+      ],
+      "evidence": [
+        "taverna/cafe ON sand: \"\" (restaurant, 53m)"
+      ],
+      "ratingCount": 473
+    },
+    {
+      "id": 1583,
+      "name": "Παραλία Νερατζιώνα",
+      "regionId": "peloponnese-lakonia-mainland",
+      "strength": "medium",
+      "currentAmenities": [
+        "ταβέρνες κοντά",
+        "καφέ κοντά",
+        "parking κοντά"
+      ],
+      "evidence": [
+        "editorial story mentions sunbeds/umbrellas"
+      ],
+      "ratingCount": 428
+    },
+    {
+      "id": 1322,
+      "name": "Άγιος Ισίδωρος",
+      "regionId": "north-aegean-lesvos",
+      "strength": "medium",
+      "currentAmenities": [
+        "καφέ",
+        "εστίαση",
+        "parking κοντά"
+      ],
+      "evidence": [
+        "taverna/cafe ON sand: \"To μαγαζάκι\" (cafe, 50m)",
+        "editorial story mentions sunbeds/umbrellas"
+      ],
+      "ratingCount": 426
+    },
+    {
+      "id": 1087,
+      "name": "Αθέρας",
+      "regionId": "ionian-islands-kefalonia",
+      "strength": "medium",
+      "currentAmenities": [
+        "ταβέρνες κοντά",
+        "parking"
+      ],
+      "evidence": [
+        "taverna/cafe ON sand: \"Taverna Drosos\" (restaurant, 67m)"
+      ],
+      "ratingCount": 418
+    },
+    {
+      "id": 809,
+      "name": "Αστρίς",
+      "regionId": "east-macedonia-and-thrace-thasos",
+      "strength": "medium",
+      "currentAmenities": [
+        "ταβέρνες κοντά",
+        "parking"
+      ],
+      "evidence": [
+        "bar/resort 109m away: \"Marley beach lounge bar\" (bar)"
+      ],
+      "ratingCount": 414
+    },
+    {
+      "id": 353,
+      "name": "Σκάλωμα",
+      "regionId": "central-greece-fokida-mainland",
+      "strength": "medium",
+      "currentAmenities": [
+        "καφέ κοντά",
+        "ταβέρνες κοντά",
+        "parking ή στάθμευση δρόμου κοντά"
+      ],
+      "evidence": [
+        "bar/resort 110m away: \"\" (bar)"
+      ],
+      "ratingCount": 411
+    },
+    {
+      "id": 322,
+      "name": "Άγιος Φωκάς",
+      "regionId": "central-greece-skyros",
+      "strength": "medium",
+      "currentAmenities": [
+        "καντίνα εποχικά",
+        "καφέ κοντά",
+        "ταβέρνα κοντά",
+        "parking κοντά",
+        "στάθμευση δρόμου κοντά"
+      ],
+      "evidence": [
+        "taverna/cafe ON sand: \"\" (restaurant, 47m)"
+      ],
+      "ratingCount": 410
+    },
+    {
+      "id": 74,
+      "name": "Ασημάκη",
+      "regionId": "attica-east-attica-mainland",
+      "strength": "medium",
+      "currentAmenities": [
+        "ελεύθερη παραλία χωρίς πλήρη οργάνωση",
+        "parking ή στάθμευση δρόμου κοντά"
+      ],
+      "evidence": [
+        "taverna/cafe ON sand: \"Coast Asimaki\" (restaurant, 71m)"
+      ],
+      "ratingCount": 391
+    },
+    {
+      "id": 3047,
+      "name": "ΠΔΕ Καστελόκαμπος",
+      "regionId": "west-greece-achaia-mainland",
+      "strength": "medium",
+      "currentAmenities": [],
+      "evidence": [
+        "taverna/cafe ON sand: \"Μεσόγειος\" (restaurant, 63m)",
+        "bar/resort 150m away: \"kastelo - beach bar & grill\" (bar)"
+      ],
+      "ratingCount": 389
+    },
+    {
+      "id": 2209,
+      "name": "Φοίνικας",
+      "regionId": "south-aegean-koufonisia",
+      "strength": "medium",
+      "currentAmenities": [
+        "καφέ κοντά",
+        "ταβέρνες κοντά",
+        "parking κοντά"
+      ],
+      "evidence": [
+        "taverna/cafe ON sand: \"Φοίνικας\" (restaurant, 46m)"
+      ],
+      "ratingCount": 387
+    },
+    {
+      "id": 3022,
+      "name": "Αίγινα Μαραθώνας",
+      "regionId": "attica-aegina",
+      "strength": "medium",
+      "currentAmenities": [],
+      "evidence": [
+        "bar/resort 131m away: \"\" (beach_resort)"
+      ],
+      "ratingCount": 376
+    },
+    {
+      "id": 2637,
+      "name": "Παραλία Κάστρου",
+      "regionId": "thessaly-skiathos",
+      "strength": "medium",
+      "currentAmenities": [
+        "καμία οργανωμένη παροχή"
+      ],
+      "evidence": [
+        "taverna/cafe ON sand: \"Kastro Beach Taverna\" (restaurant, 39m)"
+      ],
+      "ratingCount": 375
+    },
+    {
+      "id": 1099,
+      "name": "Κατελειός",
+      "regionId": "ionian-islands-kefalonia",
+      "strength": "medium",
+      "currentAmenities": [
+        "ταβέρνες",
+        "καφέ",
+        "parking"
+      ],
+      "evidence": [
+        "taverna/cafe ON sand: \"Captain Jerry\" (restaurant, 41m)",
+        "bar/resort 129m away: \"Floridita Bar\" (bar)"
+      ],
+      "ratingCount": 373
+    },
+    {
+      "id": 1850,
+      "name": "Μαυροσπηλιά",
+      "regionId": "south-aegean-kimolos",
+      "strength": "medium",
+      "currentAmenities": [
+        "parking κοντά",
+        "καντίνα εποχικά"
+      ],
+      "evidence": [
+        "taverna/cafe ON sand: \"\" (cafe, 31m)"
+      ],
+      "ratingCount": 366
+    },
+    {
+      "id": 102,
+      "name": "Αυλάκι",
+      "regionId": "attica-hydra",
+      "strength": "medium",
+      "currentAmenities": [
+        "ελεύθερη παραλία χωρίς πλήρη οργάνωση",
+        "περιορισμένα καλάθια απορριμμάτων",
+        "μεταλλικές σκάλες πρόσβασης στο νερό",
+        "τσιμεντένιες πλατφόρμες σε τμήματα",
+        "φαγητό ή διαμονή κοντά στον οικισμό"
+      ],
+      "evidence": [
+        "taverna/cafe ON sand: \"techne restaurant & social\" (restaurant, 80m)"
+      ],
+      "ratingCount": 364
+    },
+    {
+      "id": 1858,
+      "name": "Άγιος Δημήτριος",
+      "regionId": "south-aegean-kythnos",
+      "strength": "medium",
+      "currentAmenities": [
+        "καφέ κοντά",
+        "ταβέρνες κοντά",
+        "parking κοντά"
+      ],
+      "evidence": [
+        "taverna/cafe ON sand: \"Ακρογιάλι\" (restaurant, 60m)",
+        "editorial story mentions sunbeds/umbrellas"
+      ],
+      "ratingCount": 355
+    },
+    {
+      "id": 3013,
+      "name": "Γουβιά",
+      "regionId": "ionian-islands-corfu",
+      "strength": "medium",
+      "currentAmenities": [],
+      "evidence": [
+        "bar/resort 96m away: \"Molfetta Beach Bar\" (bar)"
+      ],
+      "ratingCount": 339
+    },
+    {
+      "id": 702,
+      "name": "Πολύριζος",
+      "regionId": "crete-crete-rethymno",
+      "strength": "medium",
+      "currentAmenities": [
+        "parking ή στάθμευση δρόμου κοντά"
+      ],
+      "evidence": [
+        "taverna/cafe ON sand: \"Dentro Taverna-Cafe\" (restaurant, 75m)"
+      ],
+      "ratingCount": 333
+    },
+    {
+      "id": 1359,
+      "name": "Παραλία Τάρτι",
+      "regionId": "north-aegean-lesvos",
+      "strength": "medium",
+      "currentAmenities": [
+        "ταβέρνες κοντά",
+        "parking κοντά"
+      ],
+      "evidence": [
+        "taverna/cafe ON sand: \"Katarti\" (cafe, 79m)"
+      ],
+      "ratingCount": 331
+    },
+    {
+      "id": 317,
+      "name": "Καλαμίτσα",
+      "regionId": "central-greece-skyros",
+      "strength": "medium",
+      "currentAmenities": [
+        "καντίνα εποχικά",
+        "καφέ κοντά",
+        "ταβέρνα κοντά",
+        "parking κοντά",
+        "στάθμευση δρόμου κοντά"
+      ],
+      "evidence": [
+        "editorial story mentions sunbeds/umbrellas"
+      ],
+      "ratingCount": 326
+    },
+    {
+      "id": 2099,
+      "name": "Βλυχό",
+      "regionId": "south-aegean-sifnos",
+      "strength": "medium",
+      "currentAmenities": [
+        "ντους/τουαλέτες κοντά ή εποχικά"
+      ],
+      "evidence": [
+        "bar/resort 132m away: \"\" (pub)"
+      ],
+      "ratingCount": 324
+    },
+    {
+      "id": 1478,
+      "name": "Λεπίτσα",
+      "regionId": "peloponnese-argolida-mainland",
+      "strength": "medium",
+      "currentAmenities": [
+        "ταβέρνες κοντά",
+        "καφέ κοντά",
+        "parking κοντά"
+      ],
+      "evidence": [
+        "taverna/cafe ON sand: \"Ολγα\" (fast_food_restaurant, 34m)",
+        "bar/resort 85m away: \"Lepitsa Sunset - Reception, Bar\" (bar)"
+      ],
+      "ratingCount": 316
+    },
+    {
+      "id": 226,
+      "name": "Κακολίμανο",
+      "regionId": "central-greece-evia",
+      "strength": "medium",
+      "currentAmenities": [
+        "καντίνα κοντά",
+        "γήπεδο beach volley",
+        "ταβέρνες/καφέ στον κοντινό οικισμό",
+        "parking ή στάθμευση δρόμου κοντά"
+      ],
+      "evidence": [
+        "taverna/cafe ON sand: \"Κακολίμανο (Καραβάς Γεώργιος)\" (cafe, 50m)"
+      ],
+      "ratingCount": 310
+    },
+    {
+      "id": 2373,
+      "name": "Κατσαδιά",
+      "regionId": "south-aegean-lipsi",
+      "strength": "medium",
+      "currentAmenities": [
+        "ταβέρνα/μπαρ στην άκρη της παραλίας",
+        "φυσική σκιά από μεγάλα δέντρα"
+      ],
+      "evidence": [
+        "taverna/cafe ON sand: \"Dilaila Restaurant - Bar - Cafe\" (restaurant, 78m)",
+        "editorial story mentions sunbeds/umbrellas"
+      ],
+      "ratingCount": 307
+    },
+    {
+      "id": 319,
+      "name": "Αχερούνες",
+      "regionId": "central-greece-skyros",
+      "strength": "medium",
+      "currentAmenities": [
+        "καφέ κοντά",
+        "ταβέρνες κοντά",
+        "παροχές οικισμού κοντά",
+        "parking κοντά",
+        "στάθμευση δρόμου κοντά"
+      ],
+      "evidence": [
+        "taverna/cafe ON sand: \"Apanema\" (restaurant, 77m)"
+      ],
+      "ratingCount": 301
+    },
+    {
+      "id": 1488,
+      "name": "Παραλία Κιβερίου",
+      "regionId": "peloponnese-argolida-mainland",
+      "strength": "medium",
+      "currentAmenities": [
+        "ταβέρνες κοντά",
+        "καφέ κοντά",
+        "parking κοντά"
+      ],
+      "evidence": [
+        "taverna/cafe ON sand: \"Ίσαλος\" (restaurant, 46m)"
+      ],
+      "ratingCount": 296
+    },
+    {
+      "id": 615,
+      "name": "Σαρακίνικο",
+      "regionId": "crete-gavdos",
+      "strength": "medium",
+      "currentAmenities": [
+        "ταβέρνες κοντά",
+        "καφέ κοντά",
+        "mini market κοντά",
+        "δωμάτια κοντά",
+        "parking κοντά"
+      ],
+      "evidence": [
+        "bar/resort 162m away: \"\" (bar)"
+      ],
+      "ratingCount": 294
+    },
+    {
+      "id": 773,
+      "name": "Palm Bay Beach",
+      "regionId": "crete-crete-lasithi",
+      "strength": "medium",
+      "currentAmenities": [
+        "ξενοδοχείο κοντά",
+        "parking κοντά"
+      ],
+      "evidence": [
+        "bar/resort 84m away: \"Ormos\" (bar)"
+      ],
+      "ratingCount": 286
+    },
+    {
+      "id": 942,
+      "name": "Kaminaki Beach",
+      "regionId": "ionian-islands-corfu",
+      "strength": "medium",
+      "currentAmenities": [
+        "ταβέρνες",
+        "parking περιορισμένο"
+      ],
+      "evidence": [
+        "taverna/cafe ON sand: \"Thalassa Sea Food Taverna\" (restaurant, 22m)"
+      ],
+      "ratingCount": 286
+    },
+    {
+      "id": 1192,
+      "name": "Μαδράκια",
+      "regionId": "ionian-islands-zakynthos",
+      "strength": "medium",
+      "currentAmenities": [
+        "ταβέρνες κοντά",
+        "λιμανάκι κοντά",
+        "parking"
+      ],
+      "evidence": [
+        "taverna/cafe ON sand: \"Madrakia\" (restaurant, 29m)"
+      ],
+      "ratingCount": 285
+    },
+    {
+      "id": 3006,
+      "name": "Πόρτο Ράφτη Αυλάκι",
+      "regionId": "attica-east-attica-mainland",
+      "strength": "medium",
+      "currentAmenities": [],
+      "evidence": [
+        "bar/resort 137m away: \"\" (beach_resort)"
+      ],
+      "ratingCount": 283
+    },
+    {
+      "id": 134,
+      "name": "Παραλία Παλαιόπολη",
+      "regionId": "attica-kythira",
+      "strength": "medium",
+      "currentAmenities": [
+        "καφέ κοντά",
+        "ταβέρνες κοντά",
+        "παροχές οικισμού κοντά",
+        "parking ή στάθμευση δρόμου κοντά"
+      ],
+      "evidence": [
+        "editorial story mentions sunbeds/umbrellas"
+      ],
+      "ratingCount": 277
+    },
+    {
+      "id": 2089,
+      "name": "Μέγα Λιβάδι",
+      "regionId": "south-aegean-serifos",
+      "strength": "medium",
+      "currentAmenities": [
+        "ταβέρνες κοντά",
+        "καφέ κοντά",
+        "parking κοντά"
+      ],
+      "evidence": [
+        "taverna/cafe ON sand: \"Μαρδιτσα\" (restaurant, 38m)"
+      ],
+      "ratingCount": 273
+    },
+    {
+      "id": 62,
+      "name": "Κεντρική παραλία Σαρωνίδας",
+      "regionId": "attica-east-attica-mainland",
+      "strength": "medium",
+      "currentAmenities": [
+        "καφέ εποχικά",
+        "parking ή στάθμευση δρόμου κοντά"
+      ],
+      "evidence": [
+        "bar/resort 169m away: \"Barbados\" (bar)"
+      ],
+      "ratingCount": 272
+    },
+    {
+      "id": 1558,
+      "name": "Καλαμάκια",
+      "regionId": "peloponnese-lakonia-mainland",
+      "strength": "medium",
+      "currentAmenities": [
+        "ταβέρνες κοντά",
+        "καφέ κοντά",
+        "parking κοντά"
+      ],
+      "evidence": [
+        "taverna/cafe ON sand: \"Kalamakia Tavern\" (restaurant, 25m)"
+      ],
+      "ratingCount": 270
+    },
+    {
+      "id": 2386,
+      "name": "Χοχλάκουρα",
+      "regionId": "south-aegean-lipsi",
+      "strength": "medium",
+      "currentAmenities": [],
+      "evidence": [
+        "editorial story mentions sunbeds/umbrellas"
+      ],
+      "ratingCount": 268
+    },
+    {
+      "id": 2681,
+      "name": "Βρωμονέρι",
+      "regionId": "thessaly-magnesia-mainland---pelion",
+      "strength": "medium",
+      "currentAmenities": [],
+      "evidence": [
+        "taverna/cafe ON sand: \"MeNaGia\" (restaurant, 6m)"
+      ],
+      "ratingCount": 254
+    },
+    {
+      "id": 1324,
+      "name": "Αμμουδέλι",
+      "regionId": "north-aegean-lesvos",
+      "strength": "medium",
+      "currentAmenities": [
+        "ταβέρνες κοντά",
+        "parking κοντά"
+      ],
+      "evidence": [
+        "taverna/cafe ON sand: \"Το αμμουδέλι\" (restaurant, 23m)"
+      ],
+      "ratingCount": 250
+    },
+    {
+      "id": 2003,
+      "name": "Λίωνας",
+      "regionId": "south-aegean-naxos",
+      "strength": "medium",
+      "currentAmenities": [
+        "ταβέρνες κοντά",
+        "restaurant κοντά",
+        "parking κοντά"
+      ],
+      "evidence": [
+        "taverna/cafe ON sand: \"Ntoyzenia\" (restaurant, 58m)"
+      ],
+      "ratingCount": 244
+    },
+    {
+      "id": 1251,
+      "name": "Μέγας Λιμνιώνας",
+      "regionId": "north-aegean-chios",
+      "strength": "medium",
+      "currentAmenities": [
+        "ταβέρνες",
+        "καφέ",
+        "parking"
+      ],
+      "evidence": [
+        "bar/resort 87m away: \"Terrazaka\" (bar)"
+      ],
+      "ratingCount": 236
+    },
+    {
+      "id": 1224,
+      "name": "Παραλία Σαρακήνικο",
+      "regionId": "ionian-islands-ithaca",
+      "strength": "medium",
+      "currentAmenities": [
+        "καμία οργανωμένη παροχή"
+      ],
+      "evidence": [
+        "taverna/cafe ON sand: \"Lea's Beach Bar\" (restaurant, 38m)"
+      ],
+      "ratingCount": 230
+    },
+    {
+      "id": 1129,
+      "name": "Σπαρτιάς",
+      "regionId": "ionian-islands-kefalonia",
+      "strength": "medium",
+      "currentAmenities": [
+        "ταβέρνες κοντά",
+        "καφέ κοντά",
+        "parking"
+      ],
+      "evidence": [
+        "taverna/cafe ON sand: \"Waterway Cafe Bar Restaurant\" (restaurant, 40m)"
+      ],
+      "ratingCount": 222
+    },
+    {
+      "id": 538,
+      "name": "Λύκος",
+      "regionId": "crete-crete-chania",
+      "strength": "medium",
+      "currentAmenities": [
+        "φαγητό/νερό κοντά",
+        "καταλύματα κοντά"
+      ],
+      "evidence": [
+        "taverna/cafe ON sand: \"\" (restaurant, 20m)"
+      ],
+      "ratingCount": 206
+    },
+    {
+      "id": 929,
+      "name": "Agni Beach",
+      "regionId": "ionian-islands-corfu",
+      "strength": "medium",
+      "currentAmenities": [
+        "ταβέρνες",
+        "parking περιορισμένο"
+      ],
+      "evidence": [
+        "taverna/cafe ON sand: \"Taverna Agni\" (restaurant, 33m)"
+      ],
+      "ratingCount": 202
+    },
+    {
+      "id": 1191,
+      "name": "Μικρή Ξύγκια",
+      "regionId": "ionian-islands-zakynthos",
+      "strength": "medium",
+      "currentAmenities": [
+        "καντίνα κοντά στο parking"
+      ],
+      "evidence": [
+        "taverna/cafe ON sand: \"Magda's snack bar\" (cafe, 64m)"
+      ],
+      "ratingCount": 198
+    },
+    {
+      "id": 3094,
+      "name": "Σουτραλί",
+      "regionId": "thessaly-magnesia-mainland---pelion",
+      "strength": "medium",
+      "currentAmenities": [],
+      "evidence": [
+        "taverna/cafe ON sand: \"Οίστρος\" (cafe, 75m)"
+      ],
+      "ratingCount": 187
+    },
+    {
+      "id": 2115,
+      "name": "Άγιος Γεώργιος",
+      "regionId": "south-aegean-sikinos",
+      "strength": "medium",
+      "currentAmenities": [
+        "ταβέρνες κοντά",
+        "καφέ κοντά",
+        "parking κοντά"
+      ],
+      "evidence": [
+        "taverna/cafe ON sand: \"Αλμύρα\" (restaurant, 63m)"
+      ],
+      "ratingCount": 185
+    },
+    {
+      "id": 2174,
+      "name": "Όρμος Υστερνίων",
+      "regionId": "south-aegean-tinos",
+      "strength": "medium",
+      "currentAmenities": [
+        "καφέ",
+        "parking κοντά"
+      ],
+      "evidence": [
+        "taverna/cafe ON sand: \"Thalassaki\" (restaurant, 59m)"
+      ],
+      "ratingCount": 184
+    },
+    {
+      "id": 1957,
+      "name": "Κόρφος",
+      "regionId": "south-aegean-mykonos",
+      "strength": "medium",
+      "currentAmenities": [
+        "καφέ",
+        "ντους εποχικά",
+        "WC εποχικά",
+        "parking κοντά"
+      ],
+      "evidence": [
+        "bar/resort 165m away: \"\" (bar)"
+      ],
+      "ratingCount": 182
+    },
+    {
+      "id": 2612,
+      "name": "Τζώρτζη",
+      "regionId": "thessaly-alonissos",
+      "strength": "medium",
+      "currentAmenities": [
+        "καφέ κοντά",
+        "ταβέρνες κοντά",
+        "parking κοντά"
+      ],
+      "evidence": [
+        "taverna/cafe ON sand: \"\" (restaurant, 35m)"
+      ],
+      "ratingCount": 174
+    },
+    {
+      "id": 613,
+      "name": "Κόρφος",
+      "regionId": "crete-gavdos",
+      "strength": "medium",
+      "currentAmenities": [
+        "ταβέρνες κοντά",
+        "δωμάτια/καταλύματα κοντά",
+        "ντους",
+        "αποδυτήρια",
+        "τουαλέτα"
+      ],
+      "evidence": [
+        "taverna/cafe ON sand: \"\" (restaurant, 41m)"
+      ],
+      "ratingCount": 167
+    },
+    {
+      "id": 3103,
+      "name": "Παραλία Καλάμι (Κέρκυρα)",
+      "regionId": "ionian-islands-corfu",
+      "strength": "medium",
+      "currentAmenities": [],
+      "evidence": [
+        "taverna/cafe ON sand: \"Thomas' Place\" (restaurant, 51m)",
+        "bar/resort 93m away: \"Taverna Kalami Beach\" (bar)"
+      ],
+      "ratingCount": 152
+    },
+    {
+      "id": 2189,
+      "name": "Κέδρος",
+      "regionId": "south-aegean-donousa",
+      "strength": "medium",
+      "currentAmenities": [
+        "αναψυκτήριο/φαγητό εποχικά",
+        "ντους",
+        "αποδυτήρια",
+        "τουαλέτα",
+        "πρόσβαση με καΐκι"
+      ],
+      "evidence": [
+        "taverna/cafe ON sand: \"Kedros Beach Bar\" (cafe, 79m)"
+      ],
+      "ratingCount": 152
+    },
+    {
+      "id": 1384,
+      "name": "Ηραίο",
+      "regionId": "north-aegean-samos",
+      "strength": "medium",
+      "currentAmenities": [
+        "ταβέρνες κοντά",
+        "καφέ κοντά",
+        "parking κοντά"
+      ],
+      "evidence": [
+        "taverna/cafe ON sand: \"Panselino Full Moon \" (restaurant, 42m)",
+        "bar/resort 85m away: \"Varelaki\" (bar)"
+      ],
+      "ratingCount": 142
+    },
+    {
+      "id": 47,
+      "name": "Πανόραμα",
+      "regionId": "attica-east-attica-mainland",
+      "strength": "medium",
+      "currentAmenities": [
+        "ελεύθερη παραλία χωρίς πλήρη οργάνωση",
+        "parking ή στάθμευση δρόμου κοντά"
+      ],
+      "evidence": [
+        "taverna/cafe ON sand: \"Πανόραμα\" (restaurant, 26m)"
+      ],
+      "ratingCount": 141
+    },
+    {
+      "id": 798,
+      "name": "Παραλία Ίμερου",
+      "regionId": "east-macedonia-and-thrace-rodopi-mainland",
+      "strength": "medium",
+      "currentAmenities": [
+        "κάδοι απορριμμάτων"
+      ],
+      "evidence": [
+        "editorial story mentions sunbeds/umbrellas"
+      ],
+      "ratingCount": 136
+    },
+    {
+      "id": 1585,
+      "name": "Παραλία Σελινίτσας",
+      "regionId": "peloponnese-lakonia-mainland",
+      "strength": "medium",
+      "currentAmenities": [
+        "ταβέρνες κοντά",
+        "καφέ κοντά",
+        "parking κοντά"
+      ],
+      "evidence": [
+        "bar/resort 105m away: \"Bayano Beach Bar\" (bar)",
+        "editorial story mentions a beach bar / club",
+        "editorial story mentions sunbeds/umbrellas"
+      ],
+      "ratingCount": 135
+    },
+    {
+      "id": 268,
+      "name": "Παραλία Γιάλτρων",
+      "regionId": "central-greece-evia",
+      "strength": "medium",
+      "currentAmenities": [
+        "καφέ κοντά",
+        "ταβέρνες κοντά",
+        "παροχές οικισμού κοντά"
+      ],
+      "evidence": [
+        "taverna/cafe ON sand: \"ST/BY\" (cafe, 45m)"
+      ],
+      "ratingCount": 132
+    },
+    {
+      "id": 1740,
+      "name": "Άγιος Νικόλαος",
+      "regionId": "south-aegean-folegandros",
+      "strength": "medium",
+      "currentAmenities": [
+        "ταβέρνες κοντά"
+      ],
+      "evidence": [
+        "taverna/cafe ON sand: \"Agios Nikolaos Taverna Folegandros\" (restaurant, 53m)"
+      ],
+      "ratingCount": 131
+    },
+    {
+      "id": 3024,
+      "name": "Αίγινα Αγ. Βασίλειος",
+      "regionId": "attica-aegina",
+      "strength": "medium",
+      "currentAmenities": [],
+      "evidence": [
+        "editorial story mentions a beach bar / club",
+        "editorial story mentions sunbeds/umbrellas"
+      ],
+      "ratingCount": 129
+    },
+    {
+      "id": 1640,
+      "name": "Παραλία Σάλιο",
+      "regionId": "peloponnese-messinia-mainland",
+      "strength": "medium",
+      "currentAmenities": [
+        "ταβέρνες κοντά",
+        "parking κοντά"
+      ],
+      "evidence": [
+        "taverna/cafe ON sand: \"ΨΑΡΑΣ Εστιατόριο\" (restaurant, 37m)",
+        "bar/resort 160m away: \"Psaltiras\" (bar)"
+      ],
+      "ratingCount": 128
+    },
+    {
+      "id": 597,
+      "name": "Finikas",
+      "regionId": "crete-crete-chania",
+      "strength": "medium",
+      "currentAmenities": [
+        "φαγητό/νερό κοντά",
+        "καταλύματα κοντά"
+      ],
+      "evidence": [
+        "taverna/cafe ON sand: \"The Old Phoenix\" (restaurant, 31m)"
+      ],
+      "ratingCount": 122
+    },
+    {
+      "id": 734,
+      "name": "Βουρλιά",
+      "regionId": "crete-crete-lasithi",
+      "strength": "medium",
+      "currentAmenities": [
+        "φαγητό/νερό κοντά",
+        "καταλύματα κοντά"
+      ],
+      "evidence": [
+        "taverna/cafe ON sand: \"Akrogiali Tavern\" (restaurant, 57m)"
+      ],
+      "ratingCount": 118
+    },
+    {
+      "id": 3034,
+      "name": "Κομοτηνή Παραλία Κρυονερίου Μαρώνεια",
+      "regionId": "east-macedonia-and-thrace-rodopi-mainland",
+      "strength": "medium",
+      "currentAmenities": [],
+      "evidence": [
+        "bar/resort 162m away: \"\" (bar)",
+        "editorial story mentions sunbeds/umbrellas"
+      ],
+      "ratingCount": 116
+    },
+    {
+      "id": 631,
+      "name": "Τρυπητή",
+      "regionId": "crete-crete-heraklion",
+      "strength": "medium",
+      "currentAmenities": [
+        "ταβέρνα σε απόσταση",
+        "καντίνα εποχικά σε απόσταση"
+      ],
+      "evidence": [
+        "taverna/cafe ON sand: \"Ο Μαθιός\" (restaurant, 77m)"
+      ],
+      "ratingCount": 113
+    },
+    {
+      "id": 2069,
+      "name": "Κάθαρος",
+      "regionId": "south-aegean-santorini",
+      "strength": "medium",
+      "currentAmenities": [
+        "parking πάνω από την παραλία",
+        "μεζέ bar κοντά εκτός ακτής"
+      ],
+      "evidence": [
+        "bar/resort 126m away: \"Katharos Lounge Meze Bar\" (bar)"
+      ],
+      "ratingCount": 113
+    },
+    {
+      "id": 1742,
+      "name": "Αμπέλι",
+      "regionId": "south-aegean-folegandros",
+      "strength": "medium",
+      "currentAmenities": [],
+      "evidence": [
+        "editorial story mentions sunbeds/umbrellas"
+      ],
+      "ratingCount": 112
+    },
+    {
+      "id": 2107,
+      "name": "Σεράλια",
+      "regionId": "south-aegean-sifnos",
+      "strength": "medium",
+      "currentAmenities": [
+        "ταβέρνα κοντά"
+      ],
+      "evidence": [
+        "taverna/cafe ON sand: \"Καπεταν Γιωργισ\" (restaurant, 44m)"
+      ],
+      "ratingCount": 112
+    },
+    {
+      "id": 2126,
+      "name": "Αζόλιμνος",
+      "regionId": "south-aegean-syros",
+      "strength": "medium",
+      "currentAmenities": [
+        "ταβέρνες κοντά",
+        "καφέ κοντά",
+        "parking κοντά"
+      ],
+      "evidence": [
+        "taverna/cafe ON sand: \"\" (restaurant, 61m)"
+      ],
+      "ratingCount": 109
+    },
+    {
+      "id": 295,
+      "name": "Ροδιές",
+      "regionId": "central-greece-evia",
+      "strength": "medium",
+      "currentAmenities": [
+        "καφέ κοντά",
+        "ταβέρνες κοντά",
+        "παροχές οικισμού κοντά",
+        "parking ή στάθμευση δρόμου κοντά"
+      ],
+      "evidence": [
+        "taverna/cafe ON sand: \"Beach Cafe/Bar\" (fast_food_restaurant, 33m)"
+      ],
+      "ratingCount": 100
+    },
+    {
+      "id": 1354,
+      "name": "Παραλία Γυμνιστών Ερεσού",
+      "regionId": "north-aegean-lesvos",
+      "strength": "medium",
+      "currentAmenities": [
+        "εστίαση κοντά"
+      ],
+      "evidence": [
+        "bar/resort 176m away: \"\" (bar)"
+      ],
+      "ratingCount": 100
+    },
+    {
+      "id": 1355,
+      "name": "Παραλία Γυμνιστών Χρούσος",
+      "regionId": "north-aegean-lesvos",
+      "strength": "medium",
+      "currentAmenities": [
+        "καντίνα κοντά",
+        "ταβέρνα κοντά"
+      ],
+      "evidence": [
+        "taverna/cafe ON sand: \"canteen\" (fast_food_restaurant, 55m)"
+      ],
+      "ratingCount": 97
+    },
+    {
+      "id": 2567,
+      "name": "Κουνουπελάκι",
+      "regionId": "west-greece-ileia-mainland",
+      "strength": "medium",
+      "currentAmenities": [
+        "parking κοντά"
+      ],
+      "evidence": [
+        "bar/resort 173m away: \"\" (bar)"
+      ],
+      "ratingCount": 89
+    },
+    {
+      "id": 2601,
+      "name": "Παραλία Βότση",
+      "regionId": "thessaly-alonissos",
+      "strength": "medium",
+      "currentAmenities": [
+        "καφέ κοντά",
+        "ταβέρνες κοντά",
+        "parking κοντά"
+      ],
+      "evidence": [
+        "taverna/cafe ON sand: \"Restaurant Dendrolimano\" (restaurant, 30m)"
+      ],
+      "ratingCount": 87
+    },
+    {
+      "id": 853,
+      "name": "Σκάλα Ραχώνι",
+      "regionId": "east-macedonia-and-thrace-thasos",
+      "strength": "medium",
+      "currentAmenities": [
+        "ταβέρνες",
+        "parking"
+      ],
+      "evidence": [
+        "bar/resort 100m away: \"Mitropolis\" (bar)"
+      ],
+      "ratingCount": 83
+    },
+    {
+      "id": 1134,
+      "name": "Λιθοβάτης",
+      "regionId": "ionian-islands-kefalonia",
+      "strength": "medium",
+      "currentAmenities": [
+        "χωρίς παροχές πάνω στην ακτή",
+        "εστιατόριο κοντά"
+      ],
+      "evidence": [
+        "taverna/cafe ON sand: \"\" (restaurant, 52m)"
+      ],
+      "ratingCount": 82
+    },
+    {
+      "id": 2549,
+      "name": "Παραλία Διόνι",
+      "regionId": "west-greece-aetolia-acarnania-mainland",
+      "strength": "medium",
+      "currentAmenities": [
+        "καντίνα / πρόχειρο φαγητό"
+      ],
+      "evidence": [
+        "taverna/cafe ON sand: \"\" (restaurant, 77m)"
+      ],
+      "ratingCount": 79
+    },
+    {
+      "id": 1357,
+      "name": "Παραλία Καγιά",
+      "regionId": "north-aegean-lesvos",
+      "strength": "medium",
+      "currentAmenities": [
+        "ταβέρνες κοντά",
+        "parking κοντά"
+      ],
+      "evidence": [
+        "taverna/cafe ON sand: \"Ποσειδών\" (restaurant, 47m)"
+      ],
+      "ratingCount": 78
+    },
+    {
+      "id": 120,
+      "name": "Παραλία Αγία Πελαγία",
+      "regionId": "attica-kythira",
+      "strength": "medium",
+      "currentAmenities": [
+        "καφέ",
+        "ταβέρνα",
+        "parking κοντά"
+      ],
+      "evidence": [
+        "taverna/cafe ON sand: \"\" (cafe, 63m)"
+      ],
+      "ratingCount": 73
+    },
+    {
+      "id": 3106,
+      "name": "Λιμνιώνας (Σάμος)",
+      "regionId": "north-aegean-samos",
+      "strength": "medium",
+      "currentAmenities": [],
+      "evidence": [
+        "bar/resort 159m away: \"Seapark\" (bar)"
+      ],
+      "ratingCount": 70
+    },
+    {
+      "id": 1347,
+      "name": "Μόλυβος",
+      "regionId": "north-aegean-lesvos",
+      "strength": "medium",
+      "currentAmenities": [
+        "καφέ",
+        "εστίαση",
+        "parking κοντά"
+      ],
+      "evidence": [
+        "editorial story mentions sunbeds/umbrellas"
+      ],
+      "ratingCount": 69
+    },
+    {
+      "id": 1073,
+      "name": "Αγία Παρασκευή",
+      "regionId": "ionian-islands-kefalonia",
+      "strength": "medium",
+      "currentAmenities": [
+        "ταβέρνα",
+        "καφέ",
+        "parking"
+      ],
+      "evidence": [
+        "bar/resort 165m away: \"\" (bar)"
+      ],
+      "ratingCount": 67
+    },
+    {
+      "id": 94,
+      "name": "Σουβάλα",
+      "regionId": "attica-aegina",
+      "strength": "medium",
+      "currentAmenities": [
+        "ελεύθερη παραλία χωρίς πλήρη οργάνωση",
+        "εστιατόρια στον οικισμό κοντά",
+        "αναψυκτήρια στον οικισμό κοντά",
+        "χώροι στάθμευσης στην περιοχή του λιμανιού",
+        "παροχές παραθεριστικού οικισμού κοντά"
+      ],
+      "evidence": [
+        "taverna/cafe ON sand: \"Cafe NOTOS\" (cafe, 39m)",
+        "bar/resort 196m away: \"Barcoffee\" (pub)"
+      ],
+      "ratingCount": 65
+    },
+    {
+      "id": 673,
+      "name": "Άγιος Γεώργιος",
+      "regionId": "crete-crete-rethymno",
+      "strength": "medium",
+      "currentAmenities": [
+        "ταβέρνα κοντά",
+        "parking"
+      ],
+      "evidence": [
+        "taverna/cafe ON sand: \"Georgios Taverna\" (fast_food_restaurant, 66m)"
+      ],
+      "ratingCount": 65
+    },
+    {
+      "id": 1363,
+      "name": "Πλαζ Κανόνι",
+      "regionId": "north-aegean-lesvos",
+      "strength": "medium",
+      "currentAmenities": [
+        "καφέ",
+        "εστίαση",
+        "parking κοντά"
+      ],
+      "evidence": [
+        "taverna/cafe ON sand: \"Balloni\" (cafe, 62m)"
+      ],
+      "ratingCount": 60
+    },
+    {
+      "id": 2401,
+      "name": "Παραλία Λεύκες",
+      "regionId": "south-aegean-patmos",
+      "strength": "medium",
+      "currentAmenities": [
+        "parking κοντά"
+      ],
+      "evidence": [
+        "taverna/cafe ON sand: \"Καντίνα Λεύκες\" (restaurant, 46m)"
+      ],
+      "ratingCount": 54
+    },
+    {
+      "id": 2485,
+      "name": "Χέλατρος",
+      "regionId": "south-aegean-kasos",
+      "strength": "medium",
+      "currentAmenities": [],
+      "evidence": [
+        "taverna/cafe ON sand: \"\" (restaurant, 56m)"
+      ],
+      "ratingCount": 53
+    },
+    {
+      "id": 1431,
+      "name": "Αυλώνας",
+      "regionId": "north-aegean-lemnos",
+      "strength": "medium",
+      "currentAmenities": [
+        "καφέ κοντά",
+        "ταβέρνες κοντά",
+        "parking κοντά"
+      ],
+      "evidence": [
+        "bar/resort 138m away: \"\" (beach_resort)"
+      ],
+      "ratingCount": 52
+    },
+    {
+      "id": 2028,
+      "name": "Δρυός",
+      "regionId": "south-aegean-paros",
+      "strength": "medium",
+      "currentAmenities": [
+        "καφέ κοντά",
+        "parking κοντά"
+      ],
+      "evidence": [
+        "taverna/cafe ON sand: \"To Kyma\" (restaurant, 45m)",
+        "bar/resort 94m away: \"Resalto\" (bar)"
+      ],
+      "ratingCount": 52
+    },
+    {
+      "id": 1731,
+      "name": "Καλούδια",
+      "regionId": "south-aegean-antiparos",
+      "strength": "medium",
+      "currentAmenities": [
+        "parking κοντά"
+      ],
+      "evidence": [
+        "editorial story mentions a beach bar / club",
+        "editorial story mentions sunbeds/umbrellas"
+      ],
+      "ratingCount": 50
+    },
+    {
+      "id": 1994,
+      "name": "Γρόττα",
+      "regionId": "south-aegean-naxos",
+      "strength": "medium",
+      "currentAmenities": [],
+      "evidence": [
+        "bar/resort 161m away: \"Labyrinth\" (bar)"
+      ],
+      "ratingCount": 49
+    },
+    {
+      "id": 1375,
+      "name": "Χαλατσές",
+      "regionId": "north-aegean-lesvos",
+      "strength": "medium",
+      "currentAmenities": [],
+      "evidence": [
+        "taverna/cafe ON sand: \"Seacret\" (cafe, 34m)"
+      ],
+      "ratingCount": 44
+    },
+    {
+      "id": 1509,
+      "name": "Ζαρίτσι",
+      "regionId": "peloponnese-arkadia-mainland",
+      "strength": "medium",
+      "currentAmenities": [
+        "ταβέρνες κοντά",
+        "καφέ κοντά",
+        "parking κοντά"
+      ],
+      "evidence": [
+        "taverna/cafe ON sand: \"Pame Zaritsi\" (cafe, 40m)"
+      ],
+      "ratingCount": 41
+    },
+    {
+      "id": 1098,
+      "name": "Καραβόμυλος",
+      "regionId": "ionian-islands-kefalonia",
+      "strength": "medium",
+      "currentAmenities": [
+        "ταβέρνες κοντά",
+        "καφέ κοντά",
+        "parking"
+      ],
+      "evidence": [
+        "taverna/cafe ON sand: \"Open SeaSami\" (restaurant, 73m)"
+      ],
+      "ratingCount": 39
+    },
+    {
+      "id": 1373,
+      "name": "Φαρά",
+      "regionId": "north-aegean-lesvos",
+      "strength": "medium",
+      "currentAmenities": [
+        "ταβέρνες κοντά",
+        "parking κοντά"
+      ],
+      "evidence": [
+        "taverna/cafe ON sand: \"Canteen Fara Beach - Καντίνα Παραλία Φαρά\" (cafe, 36m)"
+      ],
+      "ratingCount": 34
+    },
+    {
+      "id": 939,
+      "name": "Imerolia Beach",
+      "regionId": "ionian-islands-corfu",
+      "strength": "medium",
+      "currentAmenities": [
+        "ταβέρνες κοντά",
+        "parking"
+      ],
+      "evidence": [
+        "taverna/cafe ON sand: \"Imerolia Taverna\" (restaurant, 31m)"
+      ],
+      "ratingCount": 33
+    },
+    {
+      "id": 3045,
+      "name": "Άκτιο Βόνιτσας Πάλαιρος",
+      "regionId": "west-greece-aetolia-acarnania-mainland",
+      "strength": "medium",
+      "currentAmenities": [],
+      "evidence": [
+        "taverna/cafe ON sand: \"Το Ναυτάκι\" (cafe, 76m)",
+        "bar/resort 98m away: \"Palairos Yacht Club\" (bar)"
+      ],
+      "ratingCount": 30
+    },
+    {
+      "id": 1910,
+      "name": "Κήποι",
+      "regionId": "south-aegean-milos",
+      "strength": "medium",
+      "currentAmenities": [
+        "parking κοντά"
+      ],
+      "evidence": [
+        "taverna/cafe ON sand: \"Kipos\" (restaurant, 64m)"
+      ],
+      "ratingCount": 28
+    },
+    {
+      "id": 1311,
+      "name": "Φύτεμα",
+      "regionId": "north-aegean-ikaria",
+      "strength": "medium",
+      "currentAmenities": [
+        "parking κοντά"
+      ],
+      "evidence": [
+        "taverna/cafe ON sand: \"Καλυψώ\" (restaurant, 45m)"
+      ],
+      "ratingCount": 24
+    },
+    {
+      "id": 1652,
+      "name": "Χαλικούρα",
+      "regionId": "peloponnese-messinia-mainland",
+      "strength": "medium",
+      "currentAmenities": [],
+      "evidence": [
+        "taverna/cafe ON sand: \"Akrogiali\" (restaurant, 72m)",
+        "bar/resort 119m away: \"360\" (bar)"
+      ],
+      "ratingCount": 23
+    },
+    {
+      "id": 1559,
+      "name": "Καμάρες",
+      "regionId": "peloponnese-lakonia-mainland",
+      "strength": "medium",
+      "currentAmenities": [
+        "ταβέρνες κοντά",
+        "εστίαση κοντά",
+        "parking κοντά"
+      ],
+      "evidence": [
+        "bar/resort 152m away: \"Kamares beach bar\" (bar)"
+      ],
+      "ratingCount": 22
+    },
+    {
+      "id": 938,
+      "name": "Glyfa Beach",
+      "regionId": "ionian-islands-corfu",
+      "strength": "medium",
+      "currentAmenities": [
+        "ταβέρνα",
+        "καφέ",
+        "parking"
+      ],
+      "evidence": [
+        "taverna/cafe ON sand: \"Glyfa\" (restaurant, 27m)",
+        "bar/resort 188m away: \"\" (bar)"
+      ],
+      "ratingCount": 21
+    },
+    {
+      "id": 1060,
+      "name": "Πόρτο",
+      "regionId": "ionian-islands-erikoussa",
+      "strength": "medium",
+      "currentAmenities": [
+        "παροχές οικισμού κοντά"
+      ],
+      "evidence": [
+        "taverna/cafe ON sand: \"\" (restaurant, 80m)",
+        "bar/resort 181m away: \"\" (bar)"
+      ],
+      "ratingCount": 20
+    },
+    {
+      "id": 2090,
+      "name": "Μεσιανό",
+      "regionId": "south-aegean-serifos",
+      "strength": "medium",
+      "currentAmenities": [
+        "καφέ/εστιατόριο κοντά"
+      ],
+      "evidence": [
+        "taverna/cafe ON sand: \"Nikoulias\" (restaurant, 55m)"
+      ],
+      "ratingCount": 20
+    },
+    {
+      "id": 3111,
+      "name": "Άι Γιάννης (Κεραμίδι, Πήλιο)",
+      "regionId": "thessaly-magnesia-mainland---pelion",
+      "strength": "medium",
+      "currentAmenities": [],
+      "evidence": [
+        "editorial story mentions a beach bar / club",
+        "editorial story mentions sunbeds/umbrellas"
+      ],
+      "ratingCount": 18
+    },
+    {
+      "id": 1287,
+      "name": "Μπιλάλι",
+      "regionId": "north-aegean-oinousses",
+      "strength": "medium",
+      "currentAmenities": [
+        "parking κοντά"
+      ],
+      "evidence": [
+        "editorial story mentions a beach bar / club"
+      ],
+      "ratingCount": 16
+    },
+    {
+      "id": 1857,
+      "name": "Ψάθη",
+      "regionId": "south-aegean-kimolos",
+      "strength": "medium",
+      "currentAmenities": [
+        "ταβέρνες κοντά",
+        "καφέ κοντά",
+        "parking κοντά",
+        "λιμάνι κοντά"
+      ],
+      "evidence": [
+        "taverna/cafe ON sand: \"Εχινούσα - Καφενέον\" (cafe, 24m)",
+        "bar/resort 84m away: \"Lostromos - Cafe Bar\" (bar)"
+      ],
+      "ratingCount": 13
+    },
+    {
+      "id": 273,
+      "name": "Παραλία Κρύας Βρύσης",
+      "regionId": "central-greece-evia",
+      "strength": "medium",
+      "currentAmenities": [
+        "παροχές οικισμού κοντά",
+        "parking ή στάθμευση δρόμου κοντά"
+      ],
+      "evidence": [
+        "taverna/cafe ON sand: \"\" (restaurant, 26m)"
+      ],
+      "ratingCount": 12
+    },
+    {
+      "id": 1946,
+      "name": "Άγιος Χαράλαμπος",
+      "regionId": "south-aegean-mykonos",
+      "strength": "medium",
+      "currentAmenities": [],
+      "evidence": [
+        "bar/resort 154m away: \"Bar d'angelo\" (bar)"
+      ],
+      "ratingCount": 12
+    },
+    {
+      "id": 253,
+      "name": "Μακρύς Γιαλός",
+      "regionId": "central-greece-evia",
+      "strength": "medium",
+      "currentAmenities": [
+        "καφέ κοντά",
+        "ταβέρνες κοντά",
+        "παροχές οικισμού κοντά",
+        "parking ή στάθμευση δρόμου κοντά"
+      ],
+      "evidence": [
+        "taverna/cafe ON sand: \"Meltémia\" (restaurant, 73m)"
+      ],
+      "ratingCount": 6
+    },
+    {
+      "id": 1846,
+      "name": "Καλαμίτσι",
+      "regionId": "south-aegean-kimolos",
+      "strength": "medium",
+      "currentAmenities": [
+        "ταβέρνα κοντά",
+        "καφέ κοντά",
+        "parking κοντά"
+      ],
+      "evidence": [
+        "taverna/cafe ON sand: \"Kalamitsi Tavern\" (restaurant, 60m)",
+        "bar/resort 163m away: \"Ammos Beach Bar\" (bar)"
+      ],
+      "ratingCount": 6
+    },
+    {
+      "id": 3032,
+      "name": "Αποκορώνου Αλμυρίδα",
+      "regionId": "crete-crete-chania",
+      "strength": "medium",
+      "currentAmenities": [],
+      "evidence": [
+        "taverna/cafe ON sand: \"Tsunami\" (restaurant, 34m)",
+        "bar/resort 143m away: \"nikita's place\" (bar)"
+      ],
+      "ratingCount": 2
+    },
+    {
+      "id": 919,
+      "name": "Παραλία Πλαταριάς",
+      "regionId": "epirus-thesprotia-mainland",
+      "strength": "medium",
+      "currentAmenities": [
+        "ταβέρνες κοντά",
+        "καφέ κοντά",
+        "parking"
+      ],
+      "evidence": [
+        "taverna/cafe ON sand: \"Θάλαττα Θάλαττα\" (restaurant, 29m)"
+      ],
+      "ratingCount": 2
+    },
+    {
+      "id": 290,
+      "name": "Πόρτο Λάφια",
+      "regionId": "central-greece-evia",
+      "strength": "medium",
+      "currentAmenities": [
+        "καφέ κοντά",
+        "ταβέρνες κοντά",
+        "παροχές οικισμού κοντά",
+        "parking ή στάθμευση δρόμου κοντά"
+      ],
+      "evidence": [
+        "taverna/cafe ON sand: \"Καντίνα Πόρτο Λάφια\" (restaurant, 44m)"
+      ],
+      "ratingCount": 1
+    },
+    {
+      "id": 3027,
+      "name": "Ωρωπός Άγιοι Απόστολοι Καλάμου",
+      "regionId": "attica-east-attica-mainland",
+      "strength": "medium",
+      "currentAmenities": [],
+      "evidence": [
+        "taverna/cafe ON sand: \"Mariana\" (cafe, 65m)"
+      ],
+      "ratingCount": null
+    },
+    {
+      "id": 101,
+      "name": "Άγιος Νικόλαος",
+      "regionId": "attica-hydra",
+      "strength": "medium",
+      "currentAmenities": [
+        "θαλάσσιο ταξί ή καΐκι",
+        "περιορισμένες παροχές εποχικά"
+      ],
+      "evidence": [
+        "editorial story mentions sunbeds/umbrellas"
+      ],
+      "ratingCount": null
+    },
+    {
+      "id": 164,
+      "name": "Παραλία Αγίου Νικολάου",
+      "regionId": "attica-salamina",
+      "strength": "medium",
+      "currentAmenities": [
+        "εστιατόριο κοντά",
+        "αναψυκτήριο κοντά",
+        "παροχές οικισμού κοντά",
+        "parking ή στάθμευση δρόμου κοντά"
+      ],
+      "evidence": [
+        "taverna/cafe ON sand: \"Καντίνα περιστέρια Άγιος Νικόλαος\" (coffee_shop, 46m)"
+      ],
+      "ratingCount": null
+    },
+    {
+      "id": 176,
+      "name": "Μικρή Ζωγεριά",
+      "regionId": "attica-spetses",
+      "strength": "medium",
+      "currentAmenities": [
+        "κυρίως πρόσβαση με σκάφος",
+        "ελεύθερη παραλία χωρίς πλήρη οργάνωση",
+        "φυσική σκιά από πεύκα σε σημεία"
+      ],
+      "evidence": [
+        "taverna/cafe ON sand: \"Zogeria\" (restaurant, 54m)"
+      ],
+      "ratingCount": null
+    },
+    {
+      "id": 197,
+      "name": "Άγιος Αντώνιος",
+      "regionId": "central-greece-evia",
+      "strength": "medium",
+      "currentAmenities": [
+        "χωρίς σταθερές παροχές",
+        "περιορισμένη ή άτυπη στάθμευση"
+      ],
+      "evidence": [
+        "taverna/cafe ON sand: \"Το Κύμα\" (restaurant, 45m)"
+      ],
+      "ratingCount": null
+    },
+    {
+      "id": 207,
+      "name": "Αράλιμος",
+      "regionId": "central-greece-evia",
+      "strength": "medium",
+      "currentAmenities": [
+        "χωρίς σταθερές παροχές",
+        "περιορισμένη ή άτυπη στάθμευση"
+      ],
+      "evidence": [
+        "beach pin's own Google type is food: restaurant"
+      ],
+      "ratingCount": null
+    },
+    {
+      "id": 222,
+      "name": "Ζέφυρος",
+      "regionId": "central-greece-evia",
+      "strength": "medium",
+      "currentAmenities": [
+        "καφέ/beach bar κοντά",
+        "παροχές Νέας Αρτάκης κοντά",
+        "parking ή στάθμευση δρόμου κοντά"
+      ],
+      "evidence": [
+        "taverna/cafe ON sand: \"Ζέφυρος\" (cafe, 68m)",
+        "beach pin's own Google type is food: restaurant"
+      ],
+      "ratingCount": null
+    },
+    {
+      "id": 258,
+      "name": "Μνήματα",
+      "regionId": "central-greece-evia",
+      "strength": "medium",
+      "currentAmenities": [
+        "χωρίς σταθερές παροχές",
+        "περιορισμένη ή άτυπη στάθμευση"
+      ],
+      "evidence": [
+        "beach pin's own Google type is food: coffee_shop"
+      ],
+      "ratingCount": null
+    },
+    {
+      "id": 263,
+      "name": "Παραλία Αγίου Νικολάου",
+      "regionId": "central-greece-evia",
+      "strength": "medium",
+      "currentAmenities": [
+        "ταβέρνα κοντά",
+        "parking ή στάθμευση δρόμου κοντά"
+      ],
+      "evidence": [
+        "taverna/cafe ON sand: \"Nayra cafe bar\" (coffee_shop, 45m)"
+      ],
+      "ratingCount": null
+    },
+    {
+      "id": 274,
+      "name": "Παραλία Μετοχίου",
+      "regionId": "central-greece-evia",
+      "strength": "medium",
+      "currentAmenities": [
+        "ταβέρνες κοντά",
+        "καφέ κοντά",
+        "ενοικιαζόμενα δωμάτια κοντά"
+      ],
+      "evidence": [
+        "bar/resort 102m away: \"στροφείο\" (bar)"
+      ],
+      "ratingCount": 0
+    },
+    {
+      "id": 277,
+      "name": "Παραλία Πολιτικών",
+      "regionId": "central-greece-evia",
+      "strength": "medium",
+      "currentAmenities": [
+        "καφέ κοντά",
+        "ταβέρνες κοντά",
+        "ουζερί κοντά",
+        "μικρό λιμάνι/μόλος κοντά",
+        "parking ή στάθμευση δρόμου κοντά"
+      ],
+      "evidence": [
+        "taverna/cafe ON sand: \"Reina Beach Bar\" (cafe, 14m)"
+      ],
+      "ratingCount": null
+    },
+    {
+      "id": 281,
+      "name": "Παραλία Φάρου",
+      "regionId": "central-greece-evia",
+      "strength": "medium",
+      "currentAmenities": [
+        "καφέ κοντά",
+        "ταβέρνες κοντά",
+        "παροχές οικισμού κοντά",
+        "parking ή στάθμευση δρόμου κοντά"
+      ],
+      "evidence": [
+        "taverna/cafe ON sand: \"To Thalami\" (restaurant, 59m)"
+      ],
+      "ratingCount": null
+    },
+    {
+      "id": 303,
+      "name": "Στενή",
+      "regionId": "central-greece-evia",
+      "strength": "medium",
+      "currentAmenities": [
+        "ελεύθερη παραλία χωρίς πλήρη οργάνωση",
+        "περιορισμένη στάθμευση ή στάθμευση δρόμου κοντά"
+      ],
+      "evidence": [
+        "taverna/cafe ON sand: \"Θάλασσα\" (restaurant, 43m)"
+      ],
+      "ratingCount": null
+    },
+    {
+      "id": 305,
+      "name": "Συκιές",
+      "regionId": "central-greece-evia",
+      "strength": "medium",
+      "currentAmenities": [
+        "καφέ κοντά",
+        "ταβέρνες κοντά",
+        "παροχές οικισμού κοντά",
+        "parking ή στάθμευση δρόμου κοντά"
+      ],
+      "evidence": [
+        "bar/resort 128m away: \"Γαλατικό Χωριό Beer Hall\" (pub)"
+      ],
+      "ratingCount": null
+    },
+    {
+      "id": 3030,
+      "name": "Δωρίδα Ερατεινή",
+      "regionId": "central-greece-fokida-mainland",
+      "strength": "medium",
+      "currentAmenities": [],
+      "evidence": [
+        "taverna/cafe ON sand: \"Vento\" (cafe, 55m)",
+        "editorial story mentions a beach bar / club",
+        "editorial story mentions sunbeds/umbrellas"
+      ],
+      "ratingCount": null
+    },
+    {
+      "id": 358,
+      "name": "Κέδρος",
+      "regionId": "central-greece-fthiotida-mainland",
+      "strength": "medium",
+      "currentAmenities": [
+        "καφέ κοντά",
+        "ταβέρνες κοντά",
+        "παροχές οικισμού κοντά",
+        "parking ή στάθμευση δρόμου κοντά"
+      ],
+      "evidence": [
+        "taverna/cafe ON sand: \"Marathóriza Arkitsa\" (greek_restaurant, 24m)"
+      ],
+      "ratingCount": null
+    },
+    {
+      "id": 375,
+      "name": "Παραλία Κορομίλι",
+      "regionId": "central-greece-viotia-mainland",
+      "strength": "medium",
+      "currentAmenities": [
+        "καφέ στο συγκρότημα κοντά",
+        "εστιατόριο στο συγκρότημα κοντά",
+        "λίγα δέντρα για φυσική σκιά",
+        "parking ή στάθμευση δρόμου κοντά"
+      ],
+      "evidence": [
+        "editorial story mentions sunbeds/umbrellas"
+      ],
+      "ratingCount": null
+    },
+    {
+      "id": 511,
+      "name": "Πλαζ Αρετσούς",
+      "regionId": "central-macedonia-thessaloniki-area",
+      "strength": "medium",
+      "currentAmenities": [
+        "WC",
+        "ντους",
+        "καλάθια απορριμμάτων",
+        "δημοτικό αναψυκτήριο στην ακτή",
+        "σποραδική ψηλή βλάστηση από ευκαλύπτους",
+        "αστικές παροχές Καλαμαριάς κοντά",
+        "ειδική σήμανση απαγόρευσης κολύμβησης σύμφωνα με το επίσημο προφίλ"
+      ],
+      "evidence": [
+        "taverna/cafe ON sand: \"\" (cafe, 68m)",
+        "beach pin's own Google type is food: coffee_shop"
+      ],
+      "ratingCount": null
+    },
+    {
+      "id": 518,
+      "name": "Κυανή Ακτή",
+      "regionId": "central-macedonia-thessaloniki-area",
+      "strength": "medium",
+      "currentAmenities": [
+        "καφέ κοντά",
+        "ταβέρνα κοντά",
+        "parking ή στάθμευση δρόμου κοντά"
+      ],
+      "evidence": [
+        "bar/resort 137m away: \"Bratsáki\" (bar)"
+      ],
+      "ratingCount": null
+    },
+    {
+      "id": 552,
+      "name": "Παραλία Θανάσης",
+      "regionId": "crete-crete-chania",
+      "strength": "medium",
+      "currentAmenities": [],
+      "evidence": [
+        "taverna/cafe ON sand: \"Taverna Thanasis\" (restaurant, 20m)"
+      ],
+      "ratingCount": null
+    },
+    {
+      "id": 556,
+      "name": "Παραλία Κούτελος",
+      "regionId": "crete-crete-chania",
+      "strength": "medium",
+      "currentAmenities": [
+        "φαγητό/νερό κοντά",
+        "καταλύματα κοντά",
+        "φυσική/βραχώδης σκιά σε σημεία"
+      ],
+      "evidence": [
+        "taverna/cafe ON sand: \"Περογιώργη\" (restaurant, 44m)",
+        "beach pin's own Google type is a resort: resort_hotel"
+      ],
+      "ratingCount": null
+    },
+    {
+      "id": 569,
+      "name": "Παραλία Χαλέπα",
+      "regionId": "crete-crete-chania",
+      "strength": "medium",
+      "currentAmenities": [
+        "φαγητό/νερό κοντά",
+        "καταλύματα κοντά",
+        "φυσική σκιά σε σημεία"
+      ],
+      "evidence": [
+        "taverna/cafe ON sand: \"Οξω Νού\" (cafe, 51m)"
+      ],
+      "ratingCount": null
+    },
+    {
+      "id": 571,
+      "name": "Παραλίες Βάταλου",
+      "regionId": "crete-crete-chania",
+      "strength": "medium",
+      "currentAmenities": [
+        "φαγητό/νερό κοντά",
+        "καταλύματα κοντά",
+        "φυσική σκιά σε σημεία"
+      ],
+      "evidence": [
+        "taverna/cafe ON sand: \"Stavros\" (restaurant, 76m)"
+      ],
+      "ratingCount": null
+    },
+    {
+      "id": 572,
+      "name": "Παχιά Άμμος",
+      "regionId": "crete-crete-chania",
+      "strength": "medium",
+      "currentAmenities": [
+        "ναυαγοσώστης εποχικά",
+        "ντους",
+        "φαγητό/νερό κοντά",
+        "καταλύματα κοντά",
+        "φυσική σκιά σε σημεία"
+      ],
+      "evidence": [
+        "bar/resort 148m away: \"\" (beach_resort)"
+      ],
+      "ratingCount": null
+    },
+    {
+      "id": 582,
+      "name": "Τραχήλι",
+      "regionId": "crete-crete-chania",
+      "strength": "medium",
+      "currentAmenities": [
+        "φυσική σκιά σε σημεία"
+      ],
+      "evidence": [
+        "bar/resort 153m away: \"Ammos Beach\" (beach_resort)"
+      ],
+      "ratingCount": null
+    },
+    {
+      "id": 617,
+      "name": "Λίβας",
+      "regionId": "crete-gavdos",
+      "strength": "medium",
+      "currentAmenities": [
+        "καμία οργανωμένη παροχή"
+      ],
+      "evidence": [
+        "taverna/cafe ON sand: \"Αϊ Γιάννης\" (restaurant, 52m)",
+        "bar/resort 89m away: \"Λιβυκόν\" (bar)"
+      ],
+      "ratingCount": null
+    },
+    {
+      "id": 622,
+      "name": "Φόδελε",
+      "regionId": "crete-crete-heraklion",
+      "strength": "medium",
+      "currentAmenities": [
+        "ταβέρνες",
+        "parking"
+      ],
+      "evidence": [
+        "taverna/cafe ON sand: \"Xilouris Family - Fodele Beach\" (restaurant, 69m)"
+      ],
+      "ratingCount": 0
+    },
+    {
+      "id": 732,
+      "name": "Βόλια",
+      "regionId": "crete-crete-lasithi",
+      "strength": "medium",
+      "currentAmenities": [
+        "ταβέρνες σε απόσταση",
+        "parking κοντά"
+      ],
+      "evidence": [
+        "taverna/cafe ON sand: \"Meltemi\" (restaurant, 32m)"
+      ],
+      "ratingCount": null
+    },
+    {
+      "id": 763,
+      "name": "Πλάκα",
+      "regionId": "crete-crete-lasithi",
+      "strength": "medium",
+      "currentAmenities": [
+        "ταβέρνες",
+        "parking",
+        "καραβάκια για Σπιναλόγκα"
+      ],
+      "evidence": [
+        "taverna/cafe ON sand: \"Akrogiali Taverna\" (family_restaurant, 12m)"
+      ],
+      "ratingCount": null
+    },
+    {
+      "id": 778,
+      "name": "Παραλία Αλεξανδρούπολης",
+      "regionId": "east-macedonia-and-thrace-evros-mainland",
+      "strength": "medium",
+      "currentAmenities": [
+        "καφέ",
+        "ταβέρνες"
+      ],
+      "evidence": [
+        "editorial story mentions sunbeds/umbrellas"
+      ],
+      "ratingCount": null
+    },
+    {
+      "id": 865,
+      "name": "Άη Γιαννάκης",
+      "regionId": "epirus-preveza-mainland",
+      "strength": "medium",
+      "currentAmenities": [
+        "parking"
+      ],
+      "evidence": [
+        "taverna/cafe ON sand: \"\" (restaurant, 28m)"
+      ],
+      "ratingCount": null
+    },
+    {
+      "id": 882,
+      "name": "Παραλία Καστροσυκιάς",
+      "regionId": "epirus-preveza-mainland",
+      "strength": "medium",
+      "currentAmenities": [
+        "ταβέρνες κοντά",
+        "καφέ κοντά",
+        "parking κοντά"
+      ],
+      "evidence": [
+        "taverna/cafe ON sand: \"Ταβέρνα Μπάρμπα-Θωμάς\" (restaurant, 43m)",
+        "bar/resort 186m away: \"Palmos Beach Bar\" (bar)"
+      ],
+      "ratingCount": null
+    },
+    {
+      "id": 885,
+      "name": "Παραλία Λυγιάς",
+      "regionId": "epirus-preveza-mainland",
+      "strength": "medium",
+      "currentAmenities": [
+        "ταβέρνες κοντά",
+        "parking κοντά"
+      ],
+      "evidence": [
+        "taverna/cafe ON sand: \"Iliotropio Ligia\" (restaurant, 79m)"
+      ],
+      "ratingCount": null
+    },
+    {
+      "id": 907,
+      "name": "Παραλία Plataria Beach Hotel",
+      "regionId": "epirus-thesprotia-mainland",
+      "strength": "medium",
+      "currentAmenities": [
+        "ταβέρνες κοντά",
+        "καφέ κοντά",
+        "parking"
+      ],
+      "evidence": [
+        "beach pin's own Google type is a resort: resort_hotel"
+      ],
+      "ratingCount": null
+    },
+    {
+      "id": 908,
+      "name": "Παραλία Έλενα",
+      "regionId": "epirus-thesprotia-mainland",
+      "strength": "medium",
+      "currentAmenities": [
+        "ταβέρνες κοντά",
+        "καφέ κοντά",
+        "parking"
+      ],
+      "evidence": [
+        "taverna/cafe ON sand: \"Taverne Caming Elena‘s ΤΑΒΕΡΝΑ\" (restaurant, 79m)"
+      ],
+      "ratingCount": null
+    },
+    {
+      "id": 909,
+      "name": "Παραλία Γάτα",
+      "regionId": "epirus-thesprotia-mainland",
+      "strength": "medium",
+      "currentAmenities": [
+        "ταβέρνες κοντά",
+        "καφέ κοντά",
+        "parking"
+      ],
+      "evidence": [
+        "beach pin's own Google type is food: cafe"
+      ],
+      "ratingCount": null
+    },
+    {
+      "id": 913,
+      "name": "Παραλία Καλάμι",
+      "regionId": "epirus-thesprotia-mainland",
+      "strength": "medium",
+      "currentAmenities": [
+        "ταβέρνες κοντά",
+        "καφέ κοντά",
+        "parking"
+      ],
+      "evidence": [
+        "taverna/cafe ON sand: \"\" (restaurant, 68m)"
+      ],
+      "ratingCount": null
+    },
+    {
+      "id": 931,
+      "name": "Alonaki Bay",
+      "regionId": "ionian-islands-corfu",
+      "strength": "medium",
+      "currentAmenities": [
+        "καμία οργανωμένη παροχή"
+      ],
+      "evidence": [
+        "taverna/cafe ON sand: \"Alonaki Bay View\" (restaurant, 62m)"
+      ],
+      "ratingCount": null
+    },
+    {
+      "id": 969,
+      "name": "Κρουζερή",
+      "regionId": "ionian-islands-corfu",
+      "strength": "medium",
+      "currentAmenities": [
+        "ταβέρνες",
+        "parking περιορισμένο"
+      ],
+      "evidence": [
+        "taverna/cafe ON sand: \"Krouzeri Taverna Snack Bar\" (fast_food_restaurant, 55m)",
+        "bar/resort 187m away: \"\" (beach_resort)"
+      ],
+      "ratingCount": null
+    },
+    {
+      "id": 1000,
+      "name": "Παραλία Παρακλάδι",
+      "regionId": "ionian-islands-corfu",
+      "strength": "medium",
+      "currentAmenities": [
+        "παροχές μη επιβεβαιωμένες"
+      ],
+      "evidence": [
+        "bar/resort 135m away: \"Sunrise Bar\" (bar)"
+      ],
+      "ratingCount": null
+    },
+    {
+      "id": 1023,
+      "name": "Γαλάζιο",
+      "regionId": "ionian-islands-paxos",
+      "strength": "medium",
+      "currentAmenities": [
+        "καμία οργανωμένη παροχή"
+      ],
+      "evidence": [
+        "resort ON sand: \"Galazio Beach\" (75m)",
+        "bar/resort 75m away: \"Galazio Beach\" (beach_resort)"
+      ],
+      "ratingCount": null
+    },
+    {
+      "id": 1026,
+      "name": "Δεύτερη Σπιάντζα",
+      "regionId": "ionian-islands-paxos",
+      "strength": "medium",
+      "currentAmenities": [],
+      "evidence": [
+        "taverna/cafe ON sand: \"Klis\" (restaurant, 48m)"
+      ],
+      "ratingCount": null
+    },
+    {
+      "id": 1064,
+      "name": "Central Square Beach",
+      "regionId": "ionian-islands-kefalonia",
+      "strength": "medium",
+      "currentAmenities": [
+        "καφέ κοντά",
+        "ταβέρνες κοντά",
+        "parking"
+      ],
+      "evidence": [
+        "taverna/cafe ON sand: \"Manentis Bakery\" (bakery, 70m)"
+      ],
+      "ratingCount": null
+    },
+    {
+      "id": 1083,
+      "name": "Άσπρος Βράχος",
+      "regionId": "ionian-islands-kefalonia",
+      "strength": "medium",
+      "currentAmenities": [
+        "καμία οργανωμένη παροχή"
+      ],
+      "evidence": [
+        "resort ON sand: \"\" (8m)",
+        "bar/resort 8m away: \"\" (beach_resort)"
+      ],
+      "ratingCount": null
+    },
+    {
+      "id": 1133,
+      "name": "Ελιές",
+      "regionId": "ionian-islands-kefalonia",
+      "strength": "medium",
+      "currentAmenities": [
+        "parking κοντά"
+      ],
+      "evidence": [
+        "taverna/cafe ON sand: \"themis ristorante\" (restaurant, 65m)",
+        "bar/resort 118m away: \"Carena Bar - Restaurant\" (bar)"
+      ],
+      "ratingCount": null
+    },
+    {
+      "id": 3098,
+      "name": "Άι Γιάννης (Λευκάδα)",
+      "regionId": "ionian-islands-lefkada",
+      "strength": "medium",
+      "currentAmenities": [],
+      "evidence": [
+        "taverna/cafe ON sand: \"Λιόγερμα\" (restaurant, 24m)"
+      ],
+      "ratingCount": null
+    },
+    {
+      "id": 1175,
+      "name": "Αμπελάκια",
+      "regionId": "ionian-islands-meganisi",
+      "strength": "medium",
+      "currentAmenities": [
+        "ντους",
+        "αποδυτήρια",
+        "τουαλέτα"
+      ],
+      "evidence": [
+        "taverna/cafe ON sand: \"Taverna Abelaki\" (restaurant, 0m)",
+        "beach pin's own Google type is food: restaurant"
+      ],
+      "ratingCount": null
+    },
+    {
+      "id": 1177,
+      "name": "Αθερινός",
+      "regionId": "ionian-islands-meganisi",
+      "strength": "medium",
+      "currentAmenities": [
+        "ταβέρνες κοντά",
+        "λιμανάκι κοντά",
+        "parking",
+        "ντους",
+        "αποδυτήρια",
+        "τουαλέτα",
+        "mini-market κοντά"
+      ],
+      "evidence": [
+        "taverna/cafe ON sand: \"Atherinos\" (cafe, 0m)",
+        "beach pin's own Google type is food: restaurant"
+      ],
+      "ratingCount": null
+    },
+    {
+      "id": 1188,
+      "name": "Κορακονήσι",
+      "regionId": "ionian-islands-zakynthos",
+      "strength": "medium",
+      "currentAmenities": [
+        "καμία οργανωμένη παροχή"
+      ],
+      "evidence": [
+        "taverna/cafe ON sand: \"Korakonisi\" (restaurant, 49m)"
+      ],
+      "ratingCount": null
+    },
+    {
+      "id": 3104,
+      "name": "Παραλία Φιλιατρό (Κιόνι)",
+      "regionId": "ionian-islands-ithaca",
+      "strength": "medium",
+      "currentAmenities": [],
+      "evidence": [
+        "taverna/cafe ON sand: \"\" (cafe, 14m)"
+      ],
+      "ratingCount": null
+    },
+    {
+      "id": 1248,
+      "name": "Bella Vista",
+      "regionId": "north-aegean-chios",
+      "strength": "medium",
+      "currentAmenities": [
+        "καφέ κοντά",
+        "παροχές κοντά",
+        "parking"
+      ],
+      "evidence": [
+        "editorial story mentions sunbeds/umbrellas"
+      ],
+      "ratingCount": null
+    },
+    {
+      "id": 1280,
+      "name": "Κατσούνι",
+      "regionId": "north-aegean-psara",
+      "strength": "medium",
+      "currentAmenities": [
+        "καμία οργανωμένη παροχή"
+      ],
+      "evidence": [
+        "beach pin's own Google type is food: restaurant"
+      ],
+      "ratingCount": null
+    },
+    {
+      "id": 1285,
+      "name": "Κακοπετριά",
+      "regionId": "north-aegean-oinousses",
+      "strength": "medium",
+      "currentAmenities": [
+        "parking κοντά"
+      ],
+      "evidence": [
+        "beach pin's own Google type is a resort: resort_hotel"
+      ],
+      "ratingCount": null
+    },
+    {
+      "id": 1356,
+      "name": "Παραλία Δρότας",
+      "regionId": "north-aegean-lesvos",
+      "strength": "medium",
+      "currentAmenities": [
+        "ταβέρνα κοντά",
+        "ντους"
+      ],
+      "evidence": [
+        "taverna/cafe ON sand: \"Restaurant ΔΡΟΤΑ\" (restaurant, 58m)"
+      ],
+      "ratingCount": 0
+    },
+    {
+      "id": 1391,
+      "name": "Μικρά Λεμονάκια",
+      "regionId": "north-aegean-samos",
+      "strength": "medium",
+      "currentAmenities": [
+        "καλάθι απορριμμάτων",
+        "αναψυκτήρια στην ακτή",
+        "εστιατόρια στην ακτή"
+      ],
+      "evidence": [
+        "taverna/cafe ON sand: \"Rosmarin\" (restaurant, 26m)"
+      ],
+      "ratingCount": null
+    },
+    {
+      "id": 1473,
+      "name": "Βερβερόντα",
+      "regionId": "peloponnese-argolida-mainland",
+      "strength": "medium",
+      "currentAmenities": [
+        "ταβέρνες κοντά",
+        "καφέ κοντά",
+        "parking κοντά"
+      ],
+      "evidence": [
+        "bar/resort 94m away: \"Salty - Ververoda Beach\" (bar)"
+      ],
+      "ratingCount": null
+    },
+    {
+      "id": 1539,
+      "name": "Σιδερώνα",
+      "regionId": "peloponnese-korinthia-mainland",
+      "strength": "medium",
+      "currentAmenities": [
+        "ταβέρνα κοντά"
+      ],
+      "evidence": [
+        "taverna/cafe ON sand: \"Ψαροταβέρνα Η Σιδερώνα\" (seafood_restaurant, 27m)"
+      ],
+      "ratingCount": null
+    },
+    {
+      "id": 3040,
+      "name": "Λουτράκι Λίμνη Βουλιαγμένης Ηραίου",
+      "regionId": "peloponnese-korinthia-mainland",
+      "strength": "medium",
+      "currentAmenities": [],
+      "evidence": [
+        "taverna/cafe ON sand: \"Ήρα\" (restaurant, 23m)"
+      ],
+      "ratingCount": null
+    },
+    {
+      "id": 1550,
+      "name": "Αρτάνη",
+      "regionId": "peloponnese-lakonia-mainland",
+      "strength": "medium",
+      "currentAmenities": [],
+      "evidence": [
+        "taverna/cafe ON sand: \"Το νησί\" (restaurant, 74m)"
+      ],
+      "ratingCount": null
+    },
+    {
+      "id": 1552,
+      "name": "Βιανδίνη (Βούρκος)",
+      "regionId": "peloponnese-lakonia-mainland",
+      "strength": "medium",
+      "currentAmenities": [
+        "ταβέρνες κοντά",
+        "καφέ κοντά",
+        "parking κοντά"
+      ],
+      "evidence": [
+        "taverna/cafe ON sand: \"Βιανδίνη\" (cafe, 50m)",
+        "beach pin's own Google type is food: restaurant"
+      ],
+      "ratingCount": null
+    },
+    {
+      "id": 1557,
+      "name": "Θυνί",
+      "regionId": "peloponnese-lakonia-mainland",
+      "strength": "medium",
+      "currentAmenities": [],
+      "evidence": [
+        "taverna/cafe ON sand: \"Novellon\" (restaurant, 42m)"
+      ],
+      "ratingCount": null
+    },
+    {
+      "id": 1565,
+      "name": "Λιμάνι",
+      "regionId": "peloponnese-lakonia-mainland",
+      "strength": "medium",
+      "currentAmenities": [
+        "ταβέρνες κοντά",
+        "καφέ κοντά",
+        "parking κοντά"
+      ],
+      "evidence": [
+        "taverna/cafe ON sand: \"Seaελ the daily spot\" (restaurant, 16m)"
+      ],
+      "ratingCount": null
+    },
+    {
+      "id": 1591,
+      "name": "Πόρτο Κάγιο",
+      "regionId": "peloponnese-lakonia-mainland",
+      "strength": "medium",
+      "currentAmenities": [
+        "ταβέρνες κοντά",
+        "δωμάτια κοντά",
+        "parking κοντά"
+      ],
+      "evidence": [
+        "taverna/cafe ON sand: \"Ippocambos Restaurant\" (restaurant, 31m)",
+        "bar/resort 155m away: \"Cafe Bar Spilia [Lakonia, Portokagio, Peloponnisos]\" (bar)"
+      ],
+      "ratingCount": null
+    },
+    {
+      "id": 1633,
+      "name": "Παραλία Δελφίνια",
+      "regionId": "peloponnese-messinia-mainland",
+      "strength": "medium",
+      "currentAmenities": [
+        "ταβέρνες κοντά",
+        "καφέ κοντά",
+        "parking κοντά",
+        "snack bar ή καντίνα κοντά"
+      ],
+      "evidence": [
+        "taverna/cafe ON sand: \"Delfinia Cafe\" (cafe, 57m)"
+      ],
+      "ratingCount": null
+    },
+    {
+      "id": 1645,
+      "name": "Παραλία Χωμάτι",
+      "regionId": "peloponnese-messinia-mainland",
+      "strength": "medium",
+      "currentAmenities": [],
+      "evidence": [
+        "taverna/cafe ON sand: \"Akti\" (restaurant, 66m)"
+      ],
+      "ratingCount": null
+    },
+    {
+      "id": 3021,
+      "name": "Πεταλίδι",
+      "regionId": "peloponnese-messinia-mainland",
+      "strength": "medium",
+      "currentAmenities": [
+        "πρόσβαση ΑμεΑ (Seatrac)",
+        "ράμπα/διάδρομος προς τη θάλασσα",
+        "προσβάσιμη τουαλέτα",
+        "αποδυτήριο",
+        "ντους"
+      ],
+      "evidence": [
+        "taverna/cafe ON sand: \"\" (cafe, 50m)"
+      ],
+      "ratingCount": null
+    },
+    {
+      "id": 1681,
+      "name": "Ξετρυπητή",
+      "regionId": "south-aegean-anafi",
+      "strength": "medium",
+      "currentAmenities": [],
+      "evidence": [
+        "taverna/cafe ON sand: \"Floarans cafe\" (cafe, 44m)"
+      ],
+      "ratingCount": null
+    },
+    {
+      "id": 1696,
+      "name": "Βίντζι",
+      "regionId": "south-aegean-andros",
+      "strength": "medium",
+      "currentAmenities": [
+        "ντους",
+        "αποδυτήρια",
+        "ταβέρνα κοντά"
+      ],
+      "evidence": [
+        "bar/resort 137m away: \"\" (bar)",
+        "beach pin's own Google type is food: restaurant"
+      ],
+      "ratingCount": null
+    },
+    {
+      "id": 1863,
+      "name": "Αγία Ειρήνη",
+      "regionId": "south-aegean-kythnos",
+      "strength": "medium",
+      "currentAmenities": [
+        "καφέ κοντά",
+        "ταβέρνες κοντά",
+        "parking κοντά"
+      ],
+      "evidence": [
+        "taverna/cafe ON sand: \"Ag. Irini 840 06, Grecja\" (restaurant, 34m)"
+      ],
+      "ratingCount": null
+    },
+    {
+      "id": 1939,
+      "name": "Αγία Άννα",
+      "regionId": "south-aegean-mykonos",
+      "strength": "medium",
+      "currentAmenities": [
+        "εστιατόρια κοντά",
+        "παροχές Χώρας κοντά",
+        "στάση λεωφορείου κοντά"
+      ],
+      "evidence": [
+        "taverna/cafe ON sand: \"Ladurée Mykonos\" (restaurant, 58m)",
+        "bar/resort 159m away: \"Stairs\" (bar)"
+      ],
+      "ratingCount": null
+    },
+    {
+      "id": 1991,
+      "name": "Βίντζι",
+      "regionId": "south-aegean-naxos",
+      "strength": "medium",
+      "currentAmenities": [],
+      "evidence": [
+        "taverna/cafe ON sand: \"Ρελάξ\" (restaurant, 29m)",
+        "bar/resort 146m away: \"\" (bar)"
+      ],
+      "ratingCount": null
+    },
+    {
+      "id": 2009,
+      "name": "Μουτσούνα",
+      "regionId": "south-aegean-naxos",
+      "strength": "medium",
+      "currentAmenities": [
+        "ταβέρνες κοντά",
+        "restaurant κοντά",
+        "καφέ κοντά",
+        "parking κοντά"
+      ],
+      "evidence": [
+        "taverna/cafe ON sand: \"Sea you soon\" (restaurant, 23m)"
+      ],
+      "ratingCount": null
+    },
+    {
+      "id": 2062,
+      "name": "Κόκκινη Παραλία",
+      "regionId": "south-aegean-santorini",
+      "strength": "medium",
+      "currentAmenities": [
+        "parking κοντά",
+        "καντίνα στην αρχή του μονοπατιού εποχικά"
+      ],
+      "evidence": [
+        "bar/resort 91m away: \"Kaminia Beach Bar\" (bar)"
+      ],
+      "ratingCount": null
+    },
+    {
+      "id": 2203,
+      "name": "Λουτρό",
+      "regionId": "south-aegean-koufonisia",
+      "strength": "medium",
+      "currentAmenities": [],
+      "evidence": [
+        "taverna/cafe ON sand: \"Καρναγίο\" (restaurant, 35m)",
+        "bar/resort 197m away: \"Σχολειό\" (bar)"
+      ],
+      "ratingCount": null
+    },
+    {
+      "id": 2251,
+      "name": "Κάνια",
+      "regionId": "south-aegean-halki",
+      "strength": "medium",
+      "currentAmenities": [
+        "ταβέρνες κοντά",
+        "καφέ κοντά",
+        "parking κοντά"
+      ],
+      "evidence": [
+        "taverna/cafe ON sand: \"Kania\" (cafe, 33m)",
+        "beach pin's own Google type is food: restaurant"
+      ],
+      "ratingCount": null
+    },
+    {
+      "id": 2319,
+      "name": "Πλάκες",
+      "regionId": "south-aegean-kastellorizo",
+      "strength": "medium",
+      "currentAmenities": [],
+      "evidence": [
+        "editorial story mentions sunbeds/umbrellas"
+      ],
+      "ratingCount": null
+    },
+    {
+      "id": 2392,
+      "name": "Άγιος Θεολόγος",
+      "regionId": "south-aegean-patmos",
+      "strength": "medium",
+      "currentAmenities": [
+        "ταβέρνες κοντά",
+        "καφέ κοντά",
+        "parking κοντά"
+      ],
+      "evidence": [
+        "taverna/cafe ON sand: \"Ammos cafe\" (cafe, 21m)"
+      ],
+      "ratingCount": null
+    },
+    {
+      "id": 2424,
+      "name": "Παραλία Καλαβάρδα",
+      "regionId": "south-aegean-rhodes",
+      "strength": "medium",
+      "currentAmenities": [
+        "ταβέρνες κοντά",
+        "καφέ κοντά",
+        "parking κοντά"
+      ],
+      "evidence": [
+        "bar/resort 102m away: \"\" (bar)"
+      ],
+      "ratingCount": null
+    },
+    {
+      "id": 2500,
+      "name": "Μαράθι",
+      "regionId": "south-aegean-marathi",
+      "strength": "medium",
+      "currentAmenities": [
+        "ταβέρνες κοντά"
+      ],
+      "evidence": [
+        "taverna/cafe ON sand: \"\" (restaurant, 33m)"
+      ],
+      "ratingCount": null
+    },
+    {
+      "id": 2503,
+      "name": "Αμμόλοφος",
+      "regionId": "west-greece-achaia-mainland",
+      "strength": "medium",
+      "currentAmenities": [
+        "parking κοντά"
+      ],
+      "evidence": [
+        "taverna/cafe ON sand: \"Sandhill - All Day Beach bar\" (cafe, 75m)",
+        "bar/resort 107m away: \"\" (beach_resort)"
+      ],
+      "ratingCount": null
+    },
+    {
+      "id": 3049,
+      "name": "ΠΔΕ Λακκόπετρα",
+      "regionId": "west-greece-achaia-mainland",
+      "strength": "medium",
+      "currentAmenities": [],
+      "evidence": [
+        "editorial story mentions a beach bar / club",
+        "editorial story mentions sunbeds/umbrellas"
+      ],
+      "ratingCount": null
+    },
+    {
+      "id": 2540,
+      "name": "Παραθάλασσο",
+      "regionId": "west-greece-aetolia-acarnania-mainland",
+      "strength": "medium",
+      "currentAmenities": [],
+      "evidence": [
+        "bar/resort 144m away: \"\" (bar)"
+      ],
+      "ratingCount": null
+    },
+    {
+      "id": 2542,
+      "name": "Παραλία Αγ. Σπυρίδωνα Λουτρακίου",
+      "regionId": "west-greece-aetolia-acarnania-mainland",
+      "strength": "medium",
+      "currentAmenities": [
+        "καφέ κοντά",
+        "ταβέρνες κοντά",
+        "parking κοντά"
+      ],
+      "evidence": [
+        "taverna/cafe ON sand: \"Bardis Tavern\" (greek_restaurant, 51m)"
+      ],
+      "ratingCount": null
+    },
+    {
+      "id": 2606,
+      "name": "Πλάκες",
+      "regionId": "thessaly-alonissos",
+      "strength": "medium",
+      "currentAmenities": [],
+      "evidence": [
+        "taverna/cafe ON sand: \"Ο Γυαλλός\" (restaurant, 35m)"
+      ],
+      "ratingCount": null
+    },
+    {
+      "id": 2644,
+      "name": "Στυγερό",
+      "regionId": "thessaly-skiathos",
+      "strength": "medium",
+      "currentAmenities": [
+        "πρόσβαση με ιδιωτικό ή εκδρομικό σκάφος"
+      ],
+      "evidence": [
+        "bar/resort 152m away: \"\" (bar)"
+      ],
+      "ratingCount": null
+    },
+    {
+      "id": 2650,
+      "name": "Έλιος",
+      "regionId": "thessaly-skopelos",
+      "strength": "medium",
+      "currentAmenities": [
+        "ταβέρνες/καφέ κοντά",
+        "parking/road access nearby",
+        "local bus access nearby"
+      ],
+      "evidence": [
+        "taverna/cafe ON sand: \"Ο Τάσος\" (restaurant, 40m)"
+      ],
+      "ratingCount": null
+    },
+    {
+      "id": 3113,
+      "name": "Πλάκα (Χώρα Σκοπέλου)",
+      "regionId": "thessaly-skopelos",
+      "strength": "medium",
+      "currentAmenities": [],
+      "evidence": [
+        "taverna/cafe ON sand: \"\" (cafe, 66m)",
+        "bar/resort 101m away: \"\" (bar)"
+      ],
+      "ratingCount": null
+    },
+    {
+      "id": 2676,
+      "name": "Αγιά Θυμιά",
+      "regionId": "thessaly-magnesia-mainland---pelion",
+      "strength": "medium",
+      "currentAmenities": [],
+      "evidence": [
+        "taverna/cafe ON sand: \"\" (fast_food_restaurant, 45m)"
+      ],
+      "ratingCount": 0
+    },
+    {
+      "id": 2698,
+      "name": "Μορτίτσα",
+      "regionId": "thessaly-magnesia-mainland---pelion",
+      "strength": "medium",
+      "currentAmenities": [
+        "καφέ κοντά"
+      ],
+      "evidence": [
+        "taverna/cafe ON sand: \"Karlas\" (restaurant, 56m)"
+      ],
+      "ratingCount": null
+    },
+    {
+      "id": 2714,
+      "name": "Παραλία Ρακοποτάμου",
+      "regionId": "thessaly-magnesia-mainland---pelion",
+      "strength": "medium",
+      "currentAmenities": [
+        "καφέ",
+        "ντους εποχικά",
+        "WC εποχικά",
+        "parking κοντά"
+      ],
+      "evidence": [
+        "editorial story mentions a beach bar / club"
+      ],
+      "ratingCount": null
+    }
+  ],
+  "errors": [
+    {
+      "id": 12,
+      "name": "Παραλία Αστέρα Γλυφάδας",
+      "regionId": "attica-athens-area-mainland",
+      "kind": "claim-unsupported-by-cache",
+      "detail": "claims bar sunbeds but cached nearby POIs (1) show no food/bar within 200m",
+      "currentAmenities": [
+        "ξαπλώστρες",
+        "ομπρέλες",
+        "beach bar",
+        "ντους",
+        "WC",
+        "εστίαση",
+        "parking ή στάθμευση δρόμου κοντά",
+        "ναυαγοσώστης εποχικά"
+      ],
+      "ratingCount": 667
+    },
+    {
+      "id": 16,
+      "name": "Παραλία Βάρκιζας",
+      "regionId": "attica-athens-area-mainland",
+      "kind": "claim-unsupported-by-cache",
+      "detail": "claims bar sunbeds but cached nearby POIs (1) show no food/bar within 200m",
+      "currentAmenities": [
+        "ξαπλώστρες",
+        "ομπρέλες",
+        "beach bar",
+        "ντους",
+        "WC",
+        "θαλάσσια σπορ",
+        "parking"
+      ],
+      "ratingCount": 602
+    },
+    {
+      "id": 105,
+      "name": "Μανδράκι",
+      "regionId": "attica-hydra",
+      "kind": "claim-unsupported-by-cache",
+      "detail": "claims bar sunbeds but cached nearby POIs (1) show no food/bar within 200m",
+      "currentAmenities": [
+        "ξαπλώστρες",
+        "ομπρέλες",
+        "beach bar",
+        "καφέ κοντά",
+        "ταβέρνα κοντά",
+        "ντους εποχικά",
+        "WC εποχικά",
+        "θαλάσσια σπορ εποχικά",
+        "θαλάσσιο ταξί ή καΐκι"
+      ],
+      "ratingCount": 128
+    },
+    {
+      "id": 106,
+      "name": "Μπίστι",
+      "regionId": "attica-hydra",
+      "kind": "claim-unsupported-by-cache",
+      "detail": "claims  sunbeds but cached nearby POIs (0) show no food/bar within 200m",
+      "currentAmenities": [
+        "ξαπλώστρες",
+        "ομπρέλες",
+        "θαλάσσιο ταξί ή καΐκι",
+        "snack bar εποχικά",
+        "θαλάσσια σπορ εποχικά",
+        "snorkeling",
+        "φυσική σκιά από πεύκα σε σημεία"
+      ],
+      "ratingCount": null
+    },
+    {
+      "id": 153,
+      "name": "Άγιος Στέφανος",
+      "regionId": "attica-poros",
+      "kind": "claim-unsupported-by-cache",
+      "detail": "claims  sunbeds but cached nearby POIs (0) show no food/bar within 200m",
+      "currentAmenities": [
+        "κοινόχρηστες ομπρέλες",
+        "SEATRAC",
+        "διάδρομος παραλίας",
+        "αποδυτήρια",
+        "ντους",
+        "WC"
+      ],
+      "ratingCount": 25
+    },
+    {
+      "id": 321,
+      "name": "Αχίλλι",
+      "regionId": "central-greece-skyros",
+      "kind": "claim-unsupported-by-cache",
+      "detail": "claims  sunbeds but cached nearby POIs (0) show no food/bar within 200m",
+      "currentAmenities": [
+        "χωρίς ξαπλώστρες",
+        "χωρίς ομπρέλες"
+      ],
+      "ratingCount": 35
+    },
+    {
+      "id": 391,
+      "name": "Dimotiki Plaz 1",
+      "regionId": "central-macedonia-halkidiki-mainland",
+      "kind": "claim-unsupported-by-cache",
+      "detail": "claims bar sunbeds but cached nearby POIs (1) show no food/bar within 200m",
+      "currentAmenities": [
+        "ξαπλώστρες εποχικά",
+        "ομπρέλες εποχικά",
+        "beach bar εποχικά",
+        "καφέ κοντά",
+        "ταβέρνα κοντά",
+        "ντους εποχικά",
+        "WC εποχικά",
+        "parking κοντά"
+      ],
+      "ratingCount": null
+    },
+    {
+      "id": 405,
+      "name": "Kallithea",
+      "regionId": "central-macedonia-halkidiki-mainland",
+      "kind": "claim-unsupported-by-cache",
+      "detail": "claims bar sunbeds but cached nearby POIs (1) show no food/bar within 200m",
+      "currentAmenities": [
+        "ξαπλώστρες εποχικά",
+        "ομπρέλες εποχικά",
+        "beach bar εποχικά",
+        "καφέ κοντά",
+        "ταβέρνα κοντά",
+        "parking κοντά ή στάθμευση δρόμου"
+      ],
+      "ratingCount": 1855
+    },
+    {
+      "id": 426,
+      "name": "Mikri Elia",
+      "regionId": "central-macedonia-halkidiki-mainland",
+      "kind": "claim-unsupported-by-cache",
+      "detail": "claims  sunbeds but cached nearby POIs (2) show no food/bar within 200m",
+      "currentAmenities": [
+        "ξαπλώστρες εποχικά",
+        "ομπρέλες εποχικά",
+        "καφέ κοντά",
+        "ταβέρνα κοντά",
+        "parking κοντά ή στάθμευση δρόμου"
+      ],
+      "ratingCount": 92
+    },
+    {
+      "id": 435,
+      "name": "Plagia Flogita",
+      "regionId": "central-macedonia-halkidiki-mainland",
+      "kind": "claim-unsupported-by-cache",
+      "detail": "claims bar sunbeds but cached nearby POIs (6) show no food/bar within 200m",
+      "currentAmenities": [
+        "ξαπλώστρες εποχικά",
+        "ομπρέλες εποχικά",
+        "beach bar εποχικά",
+        "καφέ κοντά",
+        "ταβέρνα κοντά",
+        "parking κοντά ή στάθμευση δρόμου"
+      ],
+      "ratingCount": 613
+    },
+    {
+      "id": 455,
+      "name": "Vourvourou",
+      "regionId": "central-macedonia-halkidiki-mainland",
+      "kind": "claim-unsupported-by-cache",
+      "detail": "claims bar sunbeds but cached nearby POIs (1) show no food/bar within 200m",
+      "currentAmenities": [
+        "ξαπλώστρες εποχικά",
+        "ομπρέλες εποχικά",
+        "beach bar εποχικά",
+        "καφέ κοντά",
+        "ταβέρνα κοντά",
+        "parking κοντά ή στάθμευση δρόμου"
+      ],
+      "ratingCount": 423
+    },
+    {
+      "id": 462,
+      "name": "Παραλία Στρατώνι",
+      "regionId": "central-macedonia-halkidiki-mainland",
+      "kind": "claim-unsupported-by-cache",
+      "detail": "claims  sunbeds but cached nearby POIs (3) show no food/bar within 200m",
+      "currentAmenities": [
+        "ξαπλώστρες εποχικά ή σε τμήματα",
+        "ομπρέλες εποχικά ή σε τμήματα",
+        "καφέ κοντά",
+        "ταβέρνα κοντά",
+        "παροχές οικισμού κοντά",
+        "parking ή στάθμευση δρόμου κοντά"
+      ],
+      "ratingCount": 197
+    },
+    {
+      "id": 463,
+      "name": "Παραλία Κάμπος (Πυργαδίκια)",
+      "regionId": "central-macedonia-halkidiki-mainland",
+      "kind": "claim-unsupported-by-cache",
+      "detail": "claims bar but cached nearby POIs (2) show no food/bar within 200m",
+      "currentAmenities": [
+        "beach bar εποχικά",
+        "φαγητό/αναψυκτικά εποχικά",
+        "parking",
+        "ναυαγοσώστης εποχικά",
+        "snorkeling",
+        "θαλάσσια σπορ εποχικά"
+      ],
+      "ratingCount": 107
+    },
+    {
+      "id": 465,
+      "name": "Παραλία Σαλονικιού",
+      "regionId": "central-macedonia-halkidiki-mainland",
+      "kind": "claim-unsupported-by-cache",
+      "detail": "claims bar sunbeds but cached nearby POIs (0) show no food/bar within 200m",
+      "currentAmenities": [
+        "μικρά beach bars εποχικά",
+        "ξαπλώστρες/ομπρέλες σε τμήματα εποχικά",
+        "parking κοντά ή στάθμευση δρόμου",
+        "ελεύθερος χώρος"
+      ],
+      "ratingCount": 39
+    },
+    {
+      "id": 482,
+      "name": "Παραλία Ζέπκου",
+      "regionId": "central-macedonia-halkidiki-mainland",
+      "kind": "claim-unsupported-by-cache",
+      "detail": "claims  sunbeds but cached nearby POIs (0) show no food/bar within 200m",
+      "currentAmenities": [
+        "χωρίς ομπρέλες/ξαπλώστρες",
+        "πρόσβαση από κεντρικό δρόμο",
+        "camping στην ευρύτερη περιοχή"
+      ],
+      "ratingCount": 19
+    },
+    {
+      "id": 484,
+      "name": "Παραλία Σχοινιά",
+      "regionId": "central-macedonia-halkidiki-mainland",
+      "kind": "claim-unsupported-by-cache",
+      "detail": "claims  sunbeds but cached nearby POIs (0) show no food/bar within 200m",
+      "currentAmenities": [
+        "χωρίς σταθερές παροχές",
+        "φέρνεις δική σου ομπρέλα/νερό",
+        "μικρό diving center εποχικά κοντά",
+        "περιορισμένο ή άτυπο parking"
+      ],
+      "ratingCount": 35
+    },
+    {
+      "id": 535,
+      "name": "Κυανή Ακτή",
+      "regionId": "crete-crete-chania",
+      "kind": "claim-unsupported-by-cache",
+      "detail": "claims bar sunbeds but cached nearby POIs (1) show no food/bar within 200m",
+      "currentAmenities": [
+        "ομπρέλες εποχικά",
+        "ξαπλώστρες εποχικά",
+        "beach bar",
+        "καφέ κοντά",
+        "ταβέρνες κοντά",
+        "parking κοντά"
+      ],
+      "ratingCount": 100
+    },
+    {
+      "id": 545,
+      "name": "Ορθή Άμμος",
+      "regionId": "crete-crete-chania",
+      "kind": "claim-unsupported-by-cache",
+      "detail": "claims  sunbeds but cached nearby POIs (3) show no food/bar within 200m",
+      "currentAmenities": [
+        "ξαπλώστρες/ομπρέλες εποχικά",
+        "φαγητό/νερό κοντά",
+        "καταλύματα κοντά"
+      ],
+      "ratingCount": 585
+    },
+    {
+      "id": 588,
+      "name": "Alonaki",
+      "regionId": "crete-crete-chania",
+      "kind": "claim-unsupported-by-cache",
+      "detail": "claims  sunbeds but cached nearby POIs (2) show no food/bar within 200m",
+      "currentAmenities": [
+        "ξαπλώστρες/ομπρέλες εποχικά",
+        "φαγητό/νερό κοντά",
+        "φυσική σκιά σε σημεία"
+      ],
+      "ratingCount": 34
+    },
+    {
+      "id": 634,
+      "name": "Καρτερός",
+      "regionId": "crete-crete-heraklion",
+      "kind": "claim-unsupported-by-cache",
+      "detail": "claims bar sunbeds but cached nearby POIs (1) show no food/bar within 200m",
+      "currentAmenities": [
+        "ξαπλώστρες",
+        "ομπρέλες",
+        "beach bar",
+        "καφέ",
+        "ντουζ",
+        "τουαλέτες",
+        "parking"
+      ],
+      "ratingCount": 1472
+    },
+    {
+      "id": 641,
+      "name": "Κοκκίνη Χάνι",
+      "regionId": "crete-crete-heraklion",
+      "kind": "claim-unsupported-by-cache",
+      "detail": "claims bar sunbeds but cached nearby POIs (0) show no food/bar within 200m",
+      "currentAmenities": [
+        "ξαπλώστρες",
+        "ομπρέλες",
+        "beach bar",
+        "restaurant",
+        "parking"
+      ],
+      "ratingCount": 21
+    },
+    {
+      "id": 743,
+      "name": "Καραβοστάσι",
+      "regionId": "crete-crete-lasithi",
+      "kind": "claim-unsupported-by-cache",
+      "detail": "claims  sunbeds but cached nearby POIs (2) show no food/bar within 200m",
+      "currentAmenities": [
+        "ξαπλώστρες",
+        "ομπρέλες",
+        "καφέ κοντά",
+        "φαγητό κοντά",
+        "νερό κοντά",
+        "χώρος στάθμευσης"
+      ],
+      "ratingCount": 355
+    },
+    {
+      "id": 748,
+      "name": "Κουρεμένος",
+      "regionId": "crete-crete-lasithi",
+      "kind": "claim-unsupported-by-cache",
+      "detail": "claims  sunbeds but cached nearby POIs (2) show no food/bar within 200m",
+      "currentAmenities": [
+        "ταβέρνες",
+        "καφέ",
+        "ξαπλώστρες εποχικά",
+        "ομπρέλες εποχικά",
+        "windsurf σχολές",
+        "kitesurf σχολές",
+        "ντουζ",
+        "parking"
+      ],
+      "ratingCount": 82
+    },
+    {
+      "id": 782,
+      "name": "Τόσκα",
+      "regionId": "east-macedonia-and-thrace-kavala-mainland",
+      "kind": "claim-unsupported-by-cache",
+      "detail": "claims bar sunbeds but cached nearby POIs (0) show no food/bar within 200m",
+      "currentAmenities": [
+        "οργανωμένη πλαζ",
+        "ξαπλώστρες",
+        "ομπρέλες",
+        "beach bar",
+        "εστιατόριο",
+        "αναψυκτήριο",
+        "ντους",
+        "αποδυτήρια",
+        "parking",
+        "ναυαγοσώστης εποχικά",
+        "ξενοδοχείο / δωμάτια",
+        "παιδική λέσχη",
+        "παιδική χαρά",
+        "γήπεδο beach volley",
+        "είσοδος με εισιτήριο",
+        "φυσική σκιά από δέντρα / πεύκα"
+      ],
+      "ratingCount": 20
+    },
+    {
+      "id": 827,
+      "name": "Τρυπητή",
+      "regionId": "east-macedonia-and-thrace-thasos",
+      "kind": "claim-unsupported-by-cache",
+      "detail": "claims bar sunbeds but cached nearby POIs (1) show no food/bar within 200m",
+      "currentAmenities": [
+        "beach bars",
+        "ξαπλώστρες",
+        "ομπρέλες",
+        "ταβέρνες κοντά",
+        "parking",
+        "ναυαγοσώστης εποχικά 2025"
+      ],
+      "ratingCount": 1876
+    },
+    {
+      "id": 832,
+      "name": "Ilio Mare",
+      "regionId": "east-macedonia-and-thrace-thasos",
+      "kind": "claim-unsupported-by-cache",
+      "detail": "claims  sunbeds but cached nearby POIs (2) show no food/bar within 200m",
+      "currentAmenities": [
+        "ξενοδοχειακές παροχές",
+        "ομπρέλες/ξαπλώστρες",
+        "κάδοι απορριμμάτων",
+        "parking κοντά"
+      ],
+      "ratingCount": null
+    },
+    {
+      "id": 874,
+      "name": "Παραλία Βάλτου",
+      "regionId": "epirus-preveza-mainland",
+      "kind": "claim-unsupported-by-cache",
+      "detail": "claims bar sunbeds but cached nearby POIs (3) show no food/bar within 200m",
+      "currentAmenities": [
+        "beach bars",
+        "ξαπλώστρες",
+        "ομπρέλες",
+        "ταβέρνες",
+        "θαλάσσια σπορ"
+      ],
+      "ratingCount": 1290
+    },
+    {
+      "id": 952,
+      "name": "Santa Barbara beach",
+      "regionId": "ionian-islands-corfu",
+      "kind": "claim-unsupported-by-cache",
+      "detail": "claims  sunbeds but cached nearby POIs (1) show no food/bar within 200m",
+      "currentAmenities": [
+        "ταβέρνες",
+        "ξαπλώστρες",
+        "ομπρέλες",
+        "parking"
+      ],
+      "ratingCount": 429
+    },
+    {
+      "id": 1162,
+      "name": "Καβαλικευτά",
+      "regionId": "ionian-islands-lefkada",
+      "kind": "claim-unsupported-by-cache",
+      "detail": "claims  sunbeds but cached nearby POIs (1) show no food/bar within 200m",
+      "currentAmenities": [
+        "εστίαση εποχικά",
+        "ξαπλώστρες εποχικά",
+        "ομπρέλες εποχικά",
+        "parking με χρέωση ή κοντά"
+      ],
+      "ratingCount": 2189
+    },
+    {
+      "id": 1272,
+      "name": "Παραλία Λιθί",
+      "regionId": "north-aegean-chios",
+      "kind": "claim-unsupported-by-cache",
+      "detail": "claims  sunbeds but cached nearby POIs (2) show no food/bar within 200m",
+      "currentAmenities": [
+        "ταβέρνες",
+        "καφέ",
+        "ξαπλώστρες εποχικά",
+        "parking",
+        "ναυαγοσώστης εποχικά 2026"
+      ],
+      "ratingCount": 386
+    },
+    {
+      "id": 1412,
+      "name": "Παραλία Κάμπου Βουρλιωτών",
+      "regionId": "north-aegean-samos",
+      "kind": "claim-unsupported-by-cache",
+      "detail": "claims  sunbeds but cached nearby POIs (0) show no food/bar within 200m",
+      "currentAmenities": [
+        "ομπρέλες",
+        "κάδοι απορριμμάτων",
+        "περιορισμένη φυσική σκιά από αλμυρίκια"
+      ],
+      "ratingCount": 42
+    },
+    {
+      "id": 1414,
+      "name": "Ροδίτσες",
+      "regionId": "north-aegean-samos",
+      "kind": "claim-unsupported-by-cache",
+      "detail": "claims  sunbeds but cached nearby POIs (2) show no food/bar within 200m",
+      "currentAmenities": [
+        "ξαπλώστρες/ομπρέλες",
+        "ταβέρνες κοντά",
+        "καφέ κοντά",
+        "καταλύματα κοντά",
+        "parking κοντά"
+      ],
+      "ratingCount": 40
+    },
+    {
+      "id": 1506,
+      "name": "Άμμος του Μουλά",
+      "regionId": "peloponnese-arkadia-mainland",
+      "kind": "organized-but-empty",
+      "detail": "organized:true but amenities:[] — nothing backs the claim",
+      "ratingCount": null
+    },
+    {
+      "id": 1507,
+      "name": "Ατσίγγανος",
+      "regionId": "peloponnese-arkadia-mainland",
+      "kind": "claim-unsupported-by-cache",
+      "detail": "claims  sunbeds but cached nearby POIs (2) show no food/bar within 200m",
+      "currentAmenities": [
+        "ομπρέλες/ξαπλώστρες εποχικά",
+        "WC",
+        "ντους",
+        "ναυαγοσωστική βάση",
+        "αναψυκτήριο",
+        "parking στο νότιο άκρο",
+        "χώρος για ρακέτες",
+        "γήπεδο ποδοσφαίρου"
+      ],
+      "ratingCount": 103
+    },
+    {
+      "id": 1524,
+      "name": "Κανταρέ",
+      "regionId": "peloponnese-korinthia-mainland",
+      "kind": "claim-unsupported-by-cache",
+      "detail": "claims  sunbeds but cached nearby POIs (0) show no food/bar within 200m",
+      "currentAmenities": [
+        "οργανωμένο τμήμα",
+        "ξαπλώστρες",
+        "ομπρέλες",
+        "ντους",
+        "κάδοι και καλάθια απορριμμάτων",
+        "εγκαταστάσεις αθλητισμού",
+        "καντίνα/κινητή υποδομή",
+        "εστιατόρια στην παραλιακή ζώνη",
+        "αναψυκτήρια στην παραλιακή ζώνη"
+      ],
+      "ratingCount": null
+    },
+    {
+      "id": 1532,
+      "name": "Παραλία Αγίων Θεωδώρων",
+      "regionId": "peloponnese-korinthia-mainland",
+      "kind": "claim-unsupported-by-cache",
+      "detail": "claims bar sunbeds but cached nearby POIs (1) show no food/bar within 200m",
+      "currentAmenities": [
+        "ομπρέλες εποχικά",
+        "ξαπλώστρες εποχικά",
+        "beach bar",
+        "καφέ",
+        "ταβέρνες κοντά",
+        "parking κοντά"
+      ],
+      "ratingCount": 291
+    },
+    {
+      "id": 1586,
+      "name": "Παραλία Σίμος",
+      "regionId": "peloponnese-lakonia-mainland",
+      "kind": "claim-unsupported-by-cache",
+      "detail": "claims bar sunbeds but cached nearby POIs (2) show no food/bar within 200m",
+      "currentAmenities": [
+        "ομπρέλες εποχικά",
+        "ξαπλώστρες εποχικά",
+        "beach bar",
+        "καφέ",
+        "ντους εποχικά",
+        "WC εποχικά",
+        "parking κοντά"
+      ],
+      "ratingCount": 5055
+    },
+    {
+      "id": 1615,
+      "name": "Ζάγκα",
+      "regionId": "peloponnese-messinia-mainland",
+      "kind": "claim-unsupported-by-cache",
+      "detail": "claims bar sunbeds but cached nearby POIs (4) show no food/bar within 200m",
+      "currentAmenities": [
+        "ομπρέλες εποχικά",
+        "ξαπλώστρες εποχικά",
+        "beach bar",
+        "καφέ",
+        "ντους εποχικά",
+        "WC εποχικά",
+        "parking κοντά"
+      ],
+      "ratingCount": 394
+    },
+    {
+      "id": 1717,
+      "name": "Παραπόρτι",
+      "regionId": "south-aegean-andros",
+      "kind": "claim-unsupported-by-cache",
+      "detail": "claims bar sunbeds but cached nearby POIs (2) show no food/bar within 200m",
+      "currentAmenities": [
+        "beach bar",
+        "ξαπλώστρες εποχικά",
+        "ομπρέλες εποχικά",
+        "ντους",
+        "αποδυτήρια",
+        "ταβέρνα κοντά"
+      ],
+      "ratingCount": 33
+    },
+    {
+      "id": 1735,
+      "name": "Πρώτη Ψαραλυκή",
+      "regionId": "south-aegean-antiparos",
+      "kind": "claim-unsupported-by-cache",
+      "detail": "claims bar sunbeds but cached nearby POIs (1) show no food/bar within 200m",
+      "currentAmenities": [
+        "ομπρέλες εποχικά",
+        "ξαπλώστρες εποχικά",
+        "beach bar",
+        "καφέ",
+        "ντους εποχικά",
+        "WC εποχικά",
+        "parking κοντά"
+      ],
+      "ratingCount": 454
+    },
+    {
+      "id": 1952,
+      "name": "Καλαφάτη",
+      "regionId": "south-aegean-mykonos",
+      "kind": "claim-unsupported-by-cache",
+      "detail": "claims bar sunbeds but cached nearby POIs (2) show no food/bar within 200m",
+      "currentAmenities": [
+        "ομπρέλες εποχικά",
+        "ξαπλώστρες εποχικά",
+        "beach bar εποχικά",
+        "καφέ",
+        "ντους εποχικά",
+        "WC εποχικά",
+        "parking κοντά"
+      ],
+      "ratingCount": 2945
+    },
+    {
+      "id": 1961,
+      "name": "Μεγάλη Άμμος",
+      "regionId": "south-aegean-mykonos",
+      "kind": "claim-unsupported-by-cache",
+      "detail": "claims  sunbeds but cached nearby POIs (2) show no food/bar within 200m",
+      "currentAmenities": [
+        "ομπρέλες εποχικά",
+        "ξαπλώστρες εποχικά",
+        "parking κοντά"
+      ],
+      "ratingCount": 320
+    },
+    {
+      "id": 1997,
+      "name": "Καστράκι",
+      "regionId": "south-aegean-naxos",
+      "kind": "claim-unsupported-by-cache",
+      "detail": "claims  sunbeds but cached nearby POIs (1) show no food/bar within 200m",
+      "currentAmenities": [
+        "ομπρέλες εποχικά",
+        "ξαπλώστρες εποχικά",
+        "parking κοντά"
+      ],
+      "ratingCount": null
+    },
+    {
+      "id": 2059,
+      "name": "Βουρβούλος",
+      "regionId": "south-aegean-santorini",
+      "kind": "claim-unsupported-by-cache",
+      "detail": "claims  sunbeds but cached nearby POIs (0) show no food/bar within 200m",
+      "currentAmenities": [
+        "λίγες ξαπλώστρες και ομπρέλες εποχικά",
+        "parking κοντά"
+      ],
+      "ratingCount": null
+    },
+    {
+      "id": 2063,
+      "name": "Λευκή Παραλία",
+      "regionId": "south-aegean-santorini",
+      "kind": "claim-unsupported-by-cache",
+      "detail": "claims  sunbeds but cached nearby POIs (0) show no food/bar within 200m",
+      "currentAmenities": [
+        "λίγες ξαπλώστρες εποχικά μη εγγυημένες",
+        "λίγες ομπρέλες εποχικά μη εγγυημένες",
+        "πάρε νερό",
+        "πάρε προμήθειες"
+      ],
+      "ratingCount": null
+    },
+    {
+      "id": 2065,
+      "name": "Μπαξές",
+      "regionId": "south-aegean-santorini",
+      "kind": "claim-unsupported-by-cache",
+      "detail": "claims  sunbeds but cached nearby POIs (0) show no food/bar within 200m",
+      "currentAmenities": [
+        "ξαπλώστρες και ομπρέλες σε σημεία",
+        "εστιατόρια/μπαρ κοντά",
+        "parking κοντά",
+        "καταλύματα κοντά",
+        "φυσική σκιά από πρανές σε σημεία"
+      ],
+      "ratingCount": 32
+    },
+    {
+      "id": 2304,
+      "name": "Βάθια",
+      "regionId": "south-aegean-karpathos",
+      "kind": "claim-unsupported-by-cache",
+      "detail": "claims bar sunbeds but cached nearby POIs (0) show no food/bar within 200m",
+      "currentAmenities": [
+        "beach bar",
+        "windsurf station",
+        "ξαπλώστρες και ομπρέλες εποχικά"
+      ],
+      "ratingCount": 37
+    },
+    {
+      "id": 2332,
+      "name": "Πολέμι / Magic Beach",
+      "regionId": "south-aegean-kos",
+      "kind": "claim-unsupported-by-cache",
+      "detail": "claims  sunbeds but cached nearby POIs (0) show no food/bar within 200m",
+      "currentAmenities": [
+        "περιορισμένες ξαπλώστρες εποχικά",
+        "περιορισμένες ομπρέλες εποχικά",
+        "εστιατόριο κοντά",
+        "καντίνα κοντά",
+        "parking κοντά"
+      ],
+      "ratingCount": null
+    },
+    {
+      "id": 2348,
+      "name": "Παραλία Καμήλα",
+      "regionId": "south-aegean-kos",
+      "kind": "claim-unsupported-by-cache",
+      "detail": "claims  sunbeds but cached nearby POIs (1) show no food/bar within 200m",
+      "currentAmenities": [
+        "ομπρέλες εποχικά",
+        "ξαπλώστρες εποχικά",
+        "καφέ",
+        "ντους εποχικά",
+        "WC εποχικά",
+        "parking κοντά"
+      ],
+      "ratingCount": 1210
+    },
+    {
+      "id": 2356,
+      "name": "Ψαλίδι",
+      "regionId": "south-aegean-kos",
+      "kind": "claim-unsupported-by-cache",
+      "detail": "claims bar sunbeds but cached nearby POIs (1) show no food/bar within 200m",
+      "currentAmenities": [
+        "ομπρέλες εποχικά",
+        "ξαπλώστρες εποχικά",
+        "beach bar",
+        "καφέ",
+        "ντους εποχικά",
+        "WC εποχικά",
+        "parking κοντά"
+      ],
+      "ratingCount": 884
+    },
+    {
+      "id": 2405,
+      "name": "Παραλία Κρεμαστής",
+      "regionId": "south-aegean-rhodes",
+      "kind": "claim-unsupported-by-cache",
+      "detail": "claims  sunbeds but cached nearby POIs (1) show no food/bar within 200m",
+      "currentAmenities": [
+        "ομπρέλες εποχικά",
+        "ξαπλώστρες εποχικά",
+        "καφέ κοντά",
+        "ντους εποχικά",
+        "WC εποχικά",
+        "parking κοντά",
+        "ταβέρνες κοντά"
+      ],
+      "ratingCount": 125
+    },
+    {
+      "id": 2421,
+      "name": "Παραλία Ζέφυρος",
+      "regionId": "south-aegean-rhodes",
+      "kind": "claim-unsupported-by-cache",
+      "detail": "claims bar sunbeds but cached nearby POIs (5) show no food/bar within 200m",
+      "currentAmenities": [
+        "ομπρέλες εποχικά",
+        "ξαπλώστρες εποχικά",
+        "beach bar",
+        "καφέ κοντά",
+        "ντους εποχικά",
+        "WC εποχικά",
+        "parking κοντά",
+        "ταβέρνες κοντά"
+      ],
+      "ratingCount": 1039
+    },
+    {
+      "id": 2449,
+      "name": "Παραλία Κιοτάρι",
+      "regionId": "south-aegean-rhodes",
+      "kind": "claim-unsupported-by-cache",
+      "detail": "claims  sunbeds but cached nearby POIs (1) show no food/bar within 200m",
+      "currentAmenities": [
+        "sunbeds seasonally or partly",
+        "umbrellas seasonally or partly",
+        "καφέ κοντά",
+        "ταβέρνες κοντά",
+        "parking or road parking nearby"
+      ],
+      "ratingCount": 47
+    },
+    {
+      "id": 2508,
+      "name": "Παραλία Ακράτας",
+      "regionId": "west-greece-achaia-mainland",
+      "kind": "claim-unsupported-by-cache",
+      "detail": "claims  sunbeds but cached nearby POIs (1) show no food/bar within 200m",
+      "currentAmenities": [
+        "ομπρέλες",
+        "ξαπλώστρες",
+        "ντους",
+        "καλάθια/κάδοι απορριμμάτων",
+        "καταστήματα εστίασης κοντά"
+      ],
+      "ratingCount": 558
+    },
+    {
+      "id": 2729,
+      "name": "Πλατιά Άμμος",
+      "regionId": "thessaly-larissa-coast-agia---kissavos",
+      "kind": "claim-unsupported-by-cache",
+      "detail": "claims bar sunbeds but cached nearby POIs (1) show no food/bar within 200m",
+      "currentAmenities": [
+        "ομπρέλες εποχικά",
+        "ξαπλώστρες εποχικά",
+        "beach bar",
+        "καφέ",
+        "ντους εποχικά",
+        "WC εποχικά",
+        "parking κοντά"
+      ],
+      "ratingCount": 244
+    }
+  ]
+}

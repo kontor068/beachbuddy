@@ -42,14 +42,21 @@ for (const f of regionFiles) {
 if (!regions.length) { console.error('No matching regions. Use --all, --region <id>, or --group <id>.'); process.exit(1); }
 
 const MIRRORS = ['https://overpass-api.de/api/interpreter', 'https://overpass.kumi.systems/api/interpreter', 'https://overpass.private.coffee/api/interpreter'];
-const fetchOverpass = async (query) => {
-  for (const url of MIRRORS) {
-    try {
-      const res = await fetch(url, { method: 'POST', headers: { 'User-Agent': 'CalmBeachNavAudit/0.1 (calmbeach.gr; marismiltos@gmail.com)', 'Content-Type': 'application/x-www-form-urlencoded' }, body: 'data=' + encodeURIComponent(query) });
-      const text = await res.text();
-      if (!res.ok || text.trimStart().startsWith('<')) { console.error('  mirror', url, res.status); continue; }
-      return JSON.parse(text);
-    } catch (e) { console.error('  mirror', url, e.message); }
+const sleep = (ms) => new Promise(r => setTimeout(r, ms));
+const chunk = (arr, n) => { const out = []; for (let i = 0; i < arr.length; i += n) out.push(arr.slice(i, i + n)); return out; };
+// Resilient fetch: cycle all mirrors, retry the whole cycle with backoff on 429/5xx/timeout.
+const fetchOverpass = async (query, attempts = 4) => {
+  for (let a = 0; a < attempts; a++) {
+    for (const url of MIRRORS) {
+      try {
+        const res = await fetch(url, { method: 'POST', headers: { 'User-Agent': 'CalmBeachNavAudit/0.1 (calmbeach.gr; marismiltos@gmail.com)', 'Content-Type': 'application/x-www-form-urlencoded' }, body: 'data=' + encodeURIComponent(query) });
+        const text = await res.text();
+        if (res.status === 429 || res.status >= 500) continue;                 // overloaded → next mirror
+        if (!res.ok || text.trimStart().startsWith('<')) continue;             // HTML error page
+        return JSON.parse(text);
+      } catch { /* network error → next mirror */ }
+    }
+    await sleep(2500 * (a + 1));                                               // backoff before retrying the cycle
   }
   return null;
 };
@@ -58,19 +65,35 @@ const M = 111320;
 const distM = (aLat, aLon, bLat, bLon) => Math.sqrt(((bLat - aLat) * M) ** 2 + ((bLon - aLon) * M * Math.cos(aLat * Math.PI / 180)) ** 2);
 const FOOD_TERMS = [...TAVERNA_AMENITY_TERMS, ...RESTAURANT_AMENITY_TERMS, ...CAFE_AMENITY_TERMS, ...SNACK_CANTEEN_AMENITY_TERMS, ...BEACH_BAR_AMENITY_TERMS];
 
+// Per-beach nearby POIs in the SAME shape as reports/amenity-evidence/google-nearby-cache.json
+// ({ id: [{name, primaryType, d}] }) so reverseAmenitySweep/applyAmenityFixes can consume OSM
+// exactly like the (paid, partial) Google cache — giving national physical-evidence coverage.
+const osmNearby = {};
+const KIND_TO_TYPE = { bar: 'bar', pub: 'pub', cafe: 'cafe', restaurant: 'restaurant', fast_food: 'fast_food_restaurant', taverna: 'restaurant', beach_resort: 'beach_resort' };
+
 const rows = [];
 for (const d of regions) {
   let beaches = d.island.beaches;
   if (onlyOrganized) beaches = beaches.filter(b => b.metadata?.organized === true);
   if (!beaches.length) continue;
-  const around = beaches.map(b => {
-    const { lat, lon } = b.coordinates;
-    return `node(around:${radius},${lat},${lon})[~"^(amenity|tourism|leisure)$"~"restaurant|bar|cafe|fast_food|taverna|pub|parking|beach_resort|shower|toilets"];way(around:${radius},${lat},${lon})[~"^(amenity|leisure)$"~"restaurant|bar|cafe|parking|beach_resort"];`;
-  }).join('\n');
-  const query = `[out:json][timeout:120];(\n${around}\n);out center tags;`;
-  console.error(`[${d.region.id}] ${beaches.length} beaches, fetching...`);
-  const data = await fetchOverpass(query);
-  if (!data) { console.error(`  FAILED ${d.region.id}`); continue; }
+  // Chunk into small batches so no single Overpass query is heavy enough to 504/time out.
+  const batches = chunk(beaches, 15);
+  const elements = [];
+  let failedBatches = 0;
+  for (let bi = 0; bi < batches.length; bi++) {
+    const around = batches[bi].map(b => {
+      const { lat, lon } = b.coordinates;
+      return `node(around:${radius},${lat},${lon})[~"^(amenity|tourism|leisure)$"~"restaurant|bar|cafe|fast_food|taverna|pub|parking|beach_resort|shower|toilets"];way(around:${radius},${lat},${lon})[~"^(amenity|leisure)$"~"restaurant|bar|cafe|parking|beach_resort"];`;
+    }).join('\n');
+    const query = `[out:json][timeout:60];(\n${around}\n);out center tags;`;
+    console.error(`[${d.region.id}] batch ${bi + 1}/${batches.length} (${batches[bi].length} beaches)...`);
+    const data = await fetchOverpass(query);
+    if (!data) { failedBatches++; console.error('  batch FAILED after retries'); continue; }
+    if (data.elements) elements.push(...data.elements);
+    await sleep(600);
+  }
+  if (failedBatches) console.error(`  ${d.region.id}: ${failedBatches}/${batches.length} batches failed`);
+  const data = { elements };
   for (const b of beaches) {
     const { lat, lon } = b.coordinates;
     const pois = [];
@@ -82,6 +105,13 @@ for (const d of regions) {
       const t = el.tags || {};
       pois.push({ d: Math.round(dist), kind: t.amenity || t.tourism || t.leisure, name: t.name || '' });
     }
+    // record the close, relevant POIs (≤250m) for the shared nearby-cache output
+    const cachePois = pois
+      .filter(p => p.d <= 250 && KIND_TO_TYPE[p.kind])
+      .map(p => ({ name: p.name || '', primaryType: KIND_TO_TYPE[p.kind], d: p.d }))
+      .sort((a, b) => a.d - b.d);
+    if (cachePois.length) osmNearby[b.id] = cachePois;
+
     const foodPois = pois.filter(p => /restaurant|bar|cafe|fast_food|pub|taverna/.test(p.kind || ''));
     const resortPois = pois.filter(p => p.kind === 'beach_resort');
     const nearestFood = foodPois.length ? Math.min(...foodPois.map(p => p.d)) : null;
@@ -134,6 +164,11 @@ const headers = ['region', 'group', 'id', 'name', 'organized', 'claimsFood', 'cl
 const csv = [headers.join(','), ...rows.map(r => headers.map(h => csvEscape(r[h])).join(','))].join('\n');
 writeFileSync(outBase + '.csv', csv, 'utf8');
 writeFileSync(outBase + '.json', JSON.stringify(rows, null, 1), 'utf8');
+// shared nearby-cache (only on a full national run, so partial runs don't overwrite it)
+if (all) {
+  writeFileSync('reports/amenity-evidence/osm-nearby-cache.json', JSON.stringify(osmNearby), 'utf8');
+  console.log(`Wrote reports/amenity-evidence/osm-nearby-cache.json (${Object.keys(osmNearby).length} beaches with POIs)`);
+}
 
 // Per-region flag rates
 const byRegion = new Map();

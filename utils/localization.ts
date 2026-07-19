@@ -106,8 +106,18 @@ export const localizedWaterDepthLabel = (type: string, fallback: string | undefi
  * Such entries must not be shown as a confident depth badge (that presents an
  * unverified guess as a fact). Keep the phrases in sync with the data notes.
  */
-export const isWaterDepthUnverified = (waterDepth?: { notes?: string } | null): boolean =>
-  /source-backed|verify locally|Depth can vary/i.test(waterDepth?.notes || '');
+export const isWaterDepthUnverified = (waterDepth?: { type?: string; label?: string; notes?: string } | null): boolean => {
+  if (/source-backed|verify locally|Depth can vary|Μη επιβεβαιωμέν/i.test(waterDepth?.notes || waterDepth?.label || '')) return true;
+  // Internal contradiction between the type (drives filters) and the human label (drives the
+  // badge) means we can't trust either — hide the depth rather than show a confident wrong value.
+  const type = waterDepth?.type;
+  const label = (waterDepth?.label || '').toLowerCase();
+  if (type && label) {
+    const labelDepth = label.includes('ρηχ') ? 'shallow' : label.includes('βαθ') ? 'deep' : label.includes('μετρ') ? 'medium' : null;
+    if (labelDepth && labelDepth !== type) return true;
+  }
+  return false;
+};
 
 // Never surface a raw access enum: unmapped types without an authored label
 // render as nothing rather than leaking internal identifiers to the cards.

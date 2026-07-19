@@ -444,6 +444,10 @@ export interface BeachMetadata {
     type: BeachAccessType;
     label: string;
     notes: string;
+    /** Set by the OSM access-road audit when a confident "asphalt" claim could not be
+     * corroborated (nearest paved road far, only a track/footpath nearby). The UI then
+     * shows honest "likely easy — not verified" instead of confident "paved road". */
+    roadSurfaceUnverified?: boolean;
   };
   terrain: {
     types: BeachTerrainType[];

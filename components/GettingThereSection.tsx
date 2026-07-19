@@ -26,6 +26,9 @@ const classify = (beach: Beach): AccessKind | null => {
   if (hasChallengingAccess(beach)) return 'hard';
   if (hasDirtRoadAccess(beach)) return 'dirt';
   if (accessType === 'hiking_path_easy') return 'walk';
+  // An "asphalt" claim the OSM road audit could not corroborate (nearest paved road far,
+  // only a track/footpath nearby) is shown honestly as unverified rather than confident paved.
+  if (accessType === 'asphalt_road' && beach.metadata?.access?.roadSurfaceUnverified) return 'carUnverified';
   if (accessType === 'asphalt_road') return 'car';
   if (!accessType && (beach.accessibility === Accessibility.EASY || beach.accessibility === Accessibility.MODERATE)) {
     return 'carUnverified';
