@@ -9429,13 +9429,14 @@
               ],
               "label": "βότσαλο, βράχια"
             },
-            "organized": false,
+            "organized": true,
             "shade": false,
             "amenities": [
               "καντίνα κοντά",
               "καφέ κοντά",
               "ταβέρνα κοντά",
-              "parking ή στάθμευση δρόμου κοντά"
+              "parking ή στάθμευση δρόμου κοντά",
+              "beach bar εποχικά"
             ],
             "confidence": "high",
             "language": "el",
@@ -9445,11 +9446,7 @@
               "label": "Βαθιά νερά",
               "notes": "Το βάθος συνήθως ανεβαίνει πιο γρήγορα μετά την είσοδο στη θάλασσα."
             },
-            "sourceNotes": [
-              "Phase 2 final global organized-service cleanup 2026-05-26: downgraded unsupported organized-service claim because no direct source URL is recorded; kept nearby food/parking notes only.",
-              "Source follow-up pass 19 2026-05-27: direct Visit Kythera beach page supports Limni Kakias Lagadas/Kakia Lagada coastal identity near Agia Pelagia on Kythira only. Confidence, coordinates, access, services, amenities, wind profile, and scoring were not changed.",
-              "Tourism-priority evidence pass 2026-05-29: Visit Kythera and the Kythira.info beach guide support Kakia Lagada/Limni Kakia Lagada identity/location near Agia Pelagia, gorge/lagoon coastal setting, road-access context, pebbly/rocky shore, and seasonal visitor-service context. Promoted to high for static beach facts only; no wind, wave, calm-water, protection, or live-condition claim was added."
-            ],
+            "sourceNotes": "Phase 2 final global organized-service cleanup 2026-05-26: downgraded unsupported organized-service claim because no direct source URL is recorded; kept nearby food/parking notes only. Source follow-up pass 19 2026-05-27: direct Visit Kythera beach page supports Limni Kakias Lagadas/Kakia Lagada coastal identity near Agia Pelagia on Kythira only. Confidence, coordinates, access, services, amenities, wind profile, and scoring were not changed. Tourism-priority evidence pass 2026-05-29: Visit Kythera and the Kythira.info beach guide support Kakia Lagada/Limni Kakia Lagada identity/location near Agia Pelagia, gorge/lagoon coastal setting, road-access context, pebbly/rocky shore, and seasonal visitor-service context. Promoted to high for static beach facts only; no wind, wave, calm-water, protection, or live-condition claim was added. Medium-omission multi-signal pass 2026-07-19 (no-API): organized flag corrected to true — 2 independent signals (barNear, ownAmenityFood); beach bar added.",
             "sourceUrls": [
               "https://visitkythera.com/beaches/limni-kakias-lagadas/",
               "https://www.kythira.info/paralies-straende-beaches.pdf"
@@ -19776,7 +19773,7 @@
               ],
               "label": "βότσαλο"
             },
-            "organized": false,
+            "organized": true,
             "shade": true,
             "amenities": [
               "ταβέρνες κοντά",
@@ -19798,10 +19795,7 @@
               "https://visit-kimi-aliveri.gr/drastiriotites/paralia-metoxiou/",
               "https://plextari.gr/"
             ],
-            "sourceNotes": [
-              "Evia source check 2026-05-27: OSM way 397224345 and node 5214690733 confirm Paralia Metochiou, with pebblestone surface on the node and nearby restaurant evidence. GTP and the Kymi-Aliveri municipality page place it between Thapsa and Chiliadou, support pebble terrain, non-organized beach status, and water that deepens quickly. The municipality and Plextari support nearby tavern/cafe/room services; on-beach loungers are not promoted.",
-              "Evia tourist-priority evidence pass 2026-05-29: Metochi has live GTP and Kymi-Aliveri municipality sources supporting identity between Thapsa and Chiliadou, pebble terrain, road access and nearby tavern/cafe/room services. Confidence promoted to high for static identity/access/terrain/service metadata only; coordinates, windProfile, scoring, photos and live sea/wind/calm/protected/safe claims were not changed."
-            ],
+            "sourceNotes": "Evia source check 2026-05-27: OSM way 397224345 and node 5214690733 confirm Paralia Metochiou, with pebblestone surface on the node and nearby restaurant evidence. GTP and the Kymi-Aliveri municipality page place it between Thapsa and Chiliadou, support pebble terrain, non-organized beach status, and water that deepens quickly. The municipality and Plextari support nearby tavern/cafe/room services; on-beach loungers are not promoted. Evia tourist-priority evidence pass 2026-05-29: Metochi has live GTP and Kymi-Aliveri municipality sources supporting identity between Thapsa and Chiliadou, pebble terrain, road access and nearby tavern/cafe/room services. Confidence promoted to high for static identity/access/terrain/service metadata only; coordinates, windProfile, scoring, photos and live sea/wind/calm/protected/safe claims were not changed. Medium-omission multi-signal pass 2026-07-19 (no-API): organized flag corrected to true — 2 independent signals (barNear, ownAmenityFood).",
             "orientation": {
               "degrees": 357.9,
               "faces": [
@@ -21693,7 +21687,7 @@
               ],
               "label": "χοντρή άμμος, βότσαλο"
             },
-            "organized": false,
+            "organized": true,
             "shade": false,
             "amenities": [
               "καφέ κοντά",
@@ -21709,7 +21703,7 @@
               "label": "Ρηχά νερά",
               "notes": "Η είσοδος στη θάλασσα είναι πιο ήπια και το βάθος αυξάνει πιο σταδιακά."
             },
-            "sourceNotes": "Evia OSM identity/location pass 2026-05-27: OSM way 552250474 matches the current coordinates as Sykies. Kept low confidence because OSM verifies identity/location only; access and nearby amenity context still needs a direct local source.",
+            "sourceNotes": "Evia OSM identity/location pass 2026-05-27: OSM way 552250474 matches the current coordinates as Sykies. Kept low confidence because OSM verifies identity/location only; access and nearby amenity context still needs a direct local source. Medium-omission multi-signal pass 2026-07-19 (no-API): organized flag corrected to true — 2 independent signals (barNear, ownAmenityFood).",
             "sourceUrls": [
               "https://www.openstreetmap.org/way/552250474"
             ],
@@ -26033,7 +26027,7 @@
               ],
               "label": "χοντρή άμμος, βότσαλο"
             },
-            "organized": false,
+            "organized": true,
             "shade": false,
             "amenities": [
               "καντίνα κοντά",
@@ -26049,10 +26043,7 @@
               "label": "Ρηχά νερά",
               "notes": "Η είσοδος στη θάλασσα είναι πιο ήπια και το βάθος αυξάνει πιο σταδιακά."
             },
-            "sourceNotes": [
-              "Phase 2 final global organized-service cleanup 2026-05-26: downgraded unsupported organized-service claim because no direct source URL is recorded; kept nearby food/parking notes only.",
-              "Source follow-up pass 21 2026-05-27: direct Vrisko map/address page supports Paralia Traganas, Martino, Fthiotida identity/location traceability only. Confidence, coordinates, access, services, amenities, wind profile, and scoring were not changed."
-            ],
+            "sourceNotes": "Phase 2 final global organized-service cleanup 2026-05-26: downgraded unsupported organized-service claim because no direct source URL is recorded; kept nearby food/parking notes only. Source follow-up pass 21 2026-05-27: direct Vrisko map/address page supports Paralia Traganas, Martino, Fthiotida identity/location traceability only. Confidence, coordinates, access, services, amenities, wind profile, and scoring were not changed. Medium-omission multi-signal pass 2026-07-19 (no-API): organized flag corrected to true — 2 independent signals (storyOrganized, ownAmenityFood).",
             "sourceUrls": [
               "https://www.vrisko.gr/maps/diefthinsi/paralia-traganas-martino-fthiotidas-35005"
             ],
@@ -37191,17 +37182,16 @@
               ],
               "label": "άμμος"
             },
-            "organized": false,
+            "organized": true,
             "shade": false,
-            "amenities": [],
+            "amenities": [
+              "beach bar εποχικά"
+            ],
             "confidence": "low",
             "language": "el",
             "batch": "seatrac_d2_2026_06",
             "needsVerification": true,
-            "sourceNotes": [
-              "Seatrac Phase D2 geocode (2026-06): created from no-match seed \"Αμμουλιανή\" (Ammouliani), Aristotelis, Central Macedonia. Nominatim hit nom-node-280887835; Overpass natural=beach corroboration 200 m. Slot via nearest existing beach #419 (592 m). Conservative — access/terrain unknown, amenities only as stated.",
-              "Terrain corrected 2026-06-20 (OSM surface audit): our type \"\" contradicted the OSM natural=beach surface \"sand\" (crowd-verified); set to sand."
-            ],
+            "sourceNotes": "Seatrac Phase D2 geocode (2026-06): created from no-match seed \"Αμμουλιανή\" (Ammouliani), Aristotelis, Central Macedonia. Nominatim hit nom-node-280887835; Overpass natural=beach corroboration 200 m. Slot via nearest existing beach #419 (592 m). Conservative — access/terrain unknown, amenities only as stated. Terrain corrected 2026-06-20 (OSM surface audit): our type \"\" contradicted the OSM natural=beach surface \"sand\" (crowd-verified); set to sand. Medium-omission multi-signal pass 2026-07-19 (no-API): organized flag corrected to true — 2 independent signals (barNear, foodOnSand); beach bar added.",
             "sourceUrls": [
               "https://seatrac.gr/"
             ],
@@ -38943,7 +38933,7 @@
               ],
               "label": "ψιλή άμμος, χοντρή άμμος"
             },
-            "organized": false,
+            "organized": true,
             "shade": false,
             "amenities": [
               "καφέ κοντά",
@@ -38958,12 +38948,7 @@
               "label": "Ρηχά νερά",
               "notes": "Η είσοδος στη θάλασσα είναι πιο ήπια και το βάθος αυξάνει πιο σταδιακά."
             },
-            "sourceNotes": [
-              "No direct beach-bar source was found for Kyani Akti in this pass; beach-bar amenity removed.",
-              "Phase 2 final global organized-service cleanup 2026-05-26: downgraded unsupported organized-service claim because no direct source URL is recorded; kept nearby food/parking notes only.",
-              "Source follow-up pass 22 2026-05-27: official Visit Central Macedonia page supports Kyani Akti Serron identity/location near Asprovalta/Strymonikos only. Confidence, coordinates, access, services, amenities, wind profile, and scoring were not changed.",
-              "Popular confidence pass 2026-06-02 L: official regional tourism, official bathing-profile, Blue Flag, or direct dedicated beach sources support the recorded static identity, access, terrain, depth, and service context for this record. Promoted to high for static beach facts only; windProfile, scoring, coordinates, photos, and live calm/protected/safe claims were not changed."
-            ],
+            "sourceNotes": "No direct beach-bar source was found for Kyani Akti in this pass; beach-bar amenity removed. Phase 2 final global organized-service cleanup 2026-05-26: downgraded unsupported organized-service claim because no direct source URL is recorded; kept nearby food/parking notes only. Source follow-up pass 22 2026-05-27: official Visit Central Macedonia page supports Kyani Akti Serron identity/location near Asprovalta/Strymonikos only. Confidence, coordinates, access, services, amenities, wind profile, and scoring were not changed. Popular confidence pass 2026-06-02 L: official regional tourism, official bathing-profile, Blue Flag, or direct dedicated beach sources support the recorded static identity, access, terrain, depth, and service context for this record. Promoted to high for static beach facts only; windProfile, scoring, coordinates, photos, and live calm/protected/safe claims were not changed. Medium-omission multi-signal pass 2026-07-19 (no-API): organized flag corrected to true — 2 independent signals (barNear, ownAmenityFood).",
             "sourceUrls": [
               "https://visit-centralmacedonia.gr/el/1-%CF%84%CE%B9-%CE%BD%CE%B1-%CE%BA%CE%B1%CE%BD%CE%B5%CF%84%CE%B5/73/%CE%B7%CE%BB%CE%B9%CE%BF%CF%82-%CE%B8%CE%B1%CE%BB%CE%B1%CF%83%CF%83%CE%B1/91/%CE%BA%CF%85%CE%B1%CE%BD%CE%B7-%CE%B1%CE%BA%CF%84%CE%B7-%CF%83%CE%B5%CF%81%CF%81%CF%89%CE%BD",
               "https://visit-centralmacedonia.gr/en/what-to-do/73/sun-sea/91/blue-coast-of-serres",
@@ -41998,7 +41983,7 @@
               ],
               "label": "βότσαλα, βράχια σε σημεία"
             },
-            "organized": false,
+            "organized": true,
             "shade": true,
             "amenities": [
               "φαγητό/νερό κοντά",
@@ -42018,7 +42003,7 @@
               "https://www.openstreetmap.org/way/1350874203",
               "https://www.openstreetmap.org/way/1351870936"
             ],
-            "sourceNotes": "Chania medium-to-high pass 2026-05-29: direct structured beach source supports static access, terrain, depth, and facility metadata for this exact record. Confidence is high for static metadata only; coordinates, windProfile, scoring, and live-condition behavior were not changed.",
+            "sourceNotes": "Chania medium-to-high pass 2026-05-29: direct structured beach source supports static access, terrain, depth, and facility metadata for this exact record. Confidence is high for static metadata only; coordinates, windProfile, scoring, and live-condition behavior were not changed. Medium-omission multi-signal pass 2026-07-19 (no-API): organized flag corrected to true — 2 independent signals (ownBarResort, foodOnSand).",
             "orientation": {
               "degrees": 167.8,
               "faces": [
@@ -46143,16 +46128,14 @@
               "types": [],
               "label": "—"
             },
-            "organized": false,
+            "organized": true,
             "shade": false,
             "amenities": [],
             "confidence": "low",
             "language": "el",
             "batch": "seatrac_directory_2026_06",
             "needsVerification": true,
-            "sourceNotes": [
-              "Seatrac directory import (2026-06): created from official seatrac.gr entry \"Αποκορώνου Αλμυρίδα\" (id 145772), Χανιά, Crete. Coordinates from seatrac.gr. Slot via nearest existing beach #605 (1082 m). Conservative — access/terrain unknown; accessibility added by the Seatrac importer."
-            ],
+            "sourceNotes": "Seatrac directory import (2026-06): created from official seatrac.gr entry \"Αποκορώνου Αλμυρίδα\" (id 145772), Χανιά, Crete. Coordinates from seatrac.gr. Slot via nearest existing beach #605 (1082 m). Conservative — access/terrain unknown; accessibility added by the Seatrac importer. Medium-omission multi-signal pass 2026-07-19 (no-API): organized flag corrected to true — 2 independent signals (barNear, foodOnSand).",
             "sourceUrls": [
               "https://seatrac.gr/el/paralies/apokoronou-almyrida/"
             ],
@@ -46764,7 +46747,7 @@
               ],
               "label": "λεπτή άμμος, βότσαλα"
             },
-            "organized": false,
+            "organized": true,
             "shade": true,
             "amenities": [
               "καμία οργανωμένη παροχή"
@@ -46777,7 +46760,7 @@
               "label": "Ρηχά νερά",
               "notes": "Η είσοδος στη θάλασσα είναι πιο ήπια και το βάθος αυξάνει πιο σταδιακά."
             },
-            "sourceNotes": "OSM source pass 2026-05-27: same-name natural=beach feature near stored coordinates supports identity/location only. Confidence, access, services, amenities, and scoring were not changed.",
+            "sourceNotes": "OSM source pass 2026-05-27: same-name natural=beach feature near stored coordinates supports identity/location only. Confidence, access, services, amenities, and scoring were not changed. Medium-omission multi-signal pass 2026-07-19 (no-API): organized flag corrected to true — 2 independent signals (barNear, foodOnSand).",
             "sourceUrls": [
               "https://www.openstreetmap.org/way/184323164"
             ],
@@ -52006,10 +51989,11 @@
               ],
               "label": "άμμος"
             },
-            "organized": false,
+            "organized": true,
             "shade": true,
             "amenities": [
-              "ταβέρνες κοντά"
+              "ταβέρνες κοντά",
+              "beach bar εποχικά"
             ],
             "confidence": "high",
             "language": "el",
@@ -52019,12 +52003,7 @@
               "label": "Βαθιά νερά",
               "notes": "Το βάθος συνήθως ανεβαίνει πιο γρήγορα μετά την είσοδο στη θάλασσα."
             },
-            "sourceNotes": [
-              "Source follow-up pass 25 2026-05-28: direct CretanBeaches Panormo page supports Limni beach identity/location in Rethymno only. Confidence, coordinates, access, services, amenities, wind profile, and scoring were not changed.",
-              "Strict Rethymno evidence pass 2026-05-29: CretanBeaches supports the Panormo beach system including Limni harbor-beach context, with organized settlement facilities and exact area identity.",
-              "Blue Flag 2026 import 2026-06-01: official Blue Flag Greece awards page lists one or more matching awarded beach sections for this record. Static certification metadata only; coordinates, access, windProfile, scoring, photos, confidence and live calm/protected/safe claims were not changed.",
-              "Terrain corrected 2026-06-20 (OSM surface audit): our type \"pebbles+rocks\" contradicted the OSM natural=beach surface \"sand\" (crowd-verified); set to sand."
-            ],
+            "sourceNotes": "Source follow-up pass 25 2026-05-28: direct CretanBeaches Panormo page supports Limni beach identity/location in Rethymno only. Confidence, coordinates, access, services, amenities, wind profile, and scoring were not changed. Strict Rethymno evidence pass 2026-05-29: CretanBeaches supports the Panormo beach system including Limni harbor-beach context, with organized settlement facilities and exact area identity. Blue Flag 2026 import 2026-06-01: official Blue Flag Greece awards page lists one or more matching awarded beach sections for this record. Static certification metadata only; coordinates, access, windProfile, scoring, photos, confidence and live calm/protected/safe claims were not changed. Terrain corrected 2026-06-20 (OSM surface audit): our type \"pebbles+rocks\" contradicted the OSM natural=beach surface \"sand\" (crowd-verified); set to sand. Medium-omission multi-signal pass 2026-07-19 (no-API): organized flag corrected to true — 3 independent signals (barNear, foodOnSand, ownAmenityFood); beach bar added.",
             "sourceUrls": [
               "https://www.cretanbeaches.com/en/sea-tourism/central-crete-beaches-rethymnon/panormo-beaches-rethymnon",
               "https://www.blueflag.gr/el/awards/2026"
@@ -54385,7 +54364,7 @@
               "types": [],
               "label": "—"
             },
-            "organized": false,
+            "organized": true,
             "shade": false,
             "amenities": [
               "πρόσβαση ΑμεΑ (Seatrac)",
@@ -54398,9 +54377,7 @@
             "language": "el",
             "batch": "seatrac_d2_2026_06",
             "needsVerification": true,
-            "sourceNotes": [
-              "Seatrac Phase D2 geocode (2026-06): created from no-match seed \"Αγία Γαλήνη\" (Agia Galini), Agios Vasileios, Crete. Nominatim hit nom-node-29459170; Overpass natural=beach corroboration 377 m. Slot via nearest existing beach #673 (2896 m). Conservative — access/terrain unknown, amenities only as stated."
-            ],
+            "sourceNotes": "Seatrac Phase D2 geocode (2026-06): created from no-match seed \"Αγία Γαλήνη\" (Agia Galini), Agios Vasileios, Crete. Nominatim hit nom-node-29459170; Overpass natural=beach corroboration 377 m. Slot via nearest existing beach #673 (2896 m). Conservative — access/terrain unknown, amenities only as stated. Medium-omission multi-signal pass 2026-07-19 (no-API): organized flag corrected to true — 2 independent signals (barNear, foodOnSand).",
             "sourceUrls": [
               "https://seatrac.gr/"
             ],
@@ -57588,7 +57565,7 @@
               ],
               "label": "χοντρή άμμος, βότσαλα"
             },
-            "organized": false,
+            "organized": true,
             "shade": false,
             "amenities": [
               "ταβέρνες κοντά",
@@ -57602,11 +57579,7 @@
               "label": "Ρηχά νερά",
               "notes": "Η είσοδος στη θάλασσα είναι πιο ήπια και το βάθος αυξάνει πιο σταδιακά."
             },
-            "sourceNotes": [
-              "Source follow-up pass 25 2026-05-28: direct CretanBeaches page supports Boufos beach identity/location at Sissi in Lasithi only. Confidence, coordinates, access, services, amenities, wind profile, and scoring were not changed.",
-              "Strict Lasithi evidence pass 2026-05-29: source-backed static beach facts were reviewed against the attached direct source URLs. Confidence is upgraded only for identity/location plus concrete static evidence such as terrain, access, organization, nearby facilities, or explicit limitations. Coordinates, windProfile, scoring, photos, and live sea/wind/safety claims were not changed.",
-              "Blue Flag 2026 import 2026-06-01: official Blue Flag Greece awards page lists one or more matching awarded beach sections for this record. Static certification metadata only; coordinates, access, windProfile, scoring, photos, confidence and live calm/protected/safe claims were not changed."
-            ],
+            "sourceNotes": "Source follow-up pass 25 2026-05-28: direct CretanBeaches page supports Boufos beach identity/location at Sissi in Lasithi only. Confidence, coordinates, access, services, amenities, wind profile, and scoring were not changed. Strict Lasithi evidence pass 2026-05-29: source-backed static beach facts were reviewed against the attached direct source URLs. Confidence is upgraded only for identity/location plus concrete static evidence such as terrain, access, organization, nearby facilities, or explicit limitations. Coordinates, windProfile, scoring, photos, and live sea/wind/safety claims were not changed. Blue Flag 2026 import 2026-06-01: official Blue Flag Greece awards page lists one or more matching awarded beach sections for this record. Static certification metadata only; coordinates, access, windProfile, scoring, photos, confidence and live calm/protected/safe claims were not changed. Medium-omission multi-signal pass 2026-07-19 (no-API): organized flag corrected to true — 2 independent signals (barNear, ownAmenityFood).",
             "sourceUrls": [
               "https://www.cretanbeaches.com/en/sea-tourism/east-crete-beaches-lassithi/boufos-beach-at-sissi",
               "https://www.blueflag.gr/el/awards/2026"
@@ -61717,12 +61690,13 @@
               ],
               "label": "λεπτή άμμος, βότσαλα"
             },
-            "organized": false,
+            "organized": true,
             "shade": true,
             "amenities": [
               "ταβέρνες",
               "parking",
-              "αρχαιολογικός χώρος κοντά"
+              "αρχαιολογικός χώρος κοντά",
+              "beach bar εποχικά"
             ],
             "confidence": "high",
             "language": "el",
@@ -61732,10 +61706,7 @@
               "label": "Ρηχά νερά",
               "notes": "Η είσοδος στη θάλασσα είναι πιο ήπια και το βάθος αυξάνει πιο σταδιακά."
             },
-            "sourceNotes": [
-              "Source follow-up pass 26 2026-05-28: direct Thassos View beach page supports Aliki/Alykes beach identity/location on Thasos only. Confidence, coordinates, access, services, amenities, wind profile, and scoring were not changed.",
-              "Strict Thasos evidence pass 2026-05-29: Thassos View directly supports Aliki/Alykes with the two-bay identity, sand/pebble beach character, visitor-service area, and access/location context."
-            ],
+            "sourceNotes": "Source follow-up pass 26 2026-05-28: direct Thassos View beach page supports Aliki/Alykes beach identity/location on Thasos only. Confidence, coordinates, access, services, amenities, wind profile, and scoring were not changed. Strict Thasos evidence pass 2026-05-29: Thassos View directly supports Aliki/Alykes with the two-bay identity, sand/pebble beach character, visitor-service area, and access/location context. Medium-omission multi-signal pass 2026-07-19 (no-API): organized flag corrected to true — 3 independent signals (barNear, foodOnSand, ownAmenityFood); beach bar added.",
             "sourceUrls": [
               "https://www.thassos-view.com/places/beaches/aliki-beach"
             ],
@@ -62204,7 +62175,7 @@
               ],
               "label": "λεπτή άμμος, χοντρή άμμος"
             },
-            "organized": false,
+            "organized": true,
             "shade": false,
             "amenities": [
               "ταβέρνες",
@@ -62219,10 +62190,7 @@
               "label": "Ρηχά νερά",
               "notes": "Η είσοδος στη θάλασσα είναι πιο ήπια και το βάθος αυξάνει πιο σταδιακά."
             },
-            "sourceNotes": [
-              "Source follow-up pass 26 2026-05-28: direct Thassos View beach page supports Limenaria beach identity/location on Thasos only. Confidence, coordinates, access, services, amenities, wind profile, and scoring were not changed.",
-              "Strict Thasos evidence pass 2026-05-29: Thassos View directly supports Limenaria beach identity/location on the southwest coast and town-service context."
-            ],
+            "sourceNotes": "Source follow-up pass 26 2026-05-28: direct Thassos View beach page supports Limenaria beach identity/location on Thasos only. Confidence, coordinates, access, services, amenities, wind profile, and scoring were not changed. Strict Thasos evidence pass 2026-05-29: Thassos View directly supports Limenaria beach identity/location on the southwest coast and town-service context. Medium-omission multi-signal pass 2026-07-19 (no-API): organized flag corrected to true — 2 independent signals (storyOrganized, ownAmenityFood).",
             "sourceUrls": [
               "https://www.thassos-view.com/places/beaches/limenaria-beach"
             ],
@@ -62668,12 +62636,13 @@
               ],
               "label": "χοντρή άμμος, βότσαλα"
             },
-            "organized": false,
+            "organized": true,
             "shade": true,
             "amenities": [
               "ταβέρνες κοντά",
               "καφέ κοντά",
-              "parking"
+              "parking",
+              "beach bar εποχικά"
             ],
             "confidence": "high",
             "language": "el",
@@ -62683,10 +62652,7 @@
               "label": "Ρηχά νερά",
               "notes": "Η είσοδος στη θάλασσα είναι πιο ήπια και το βάθος αυξάνει πιο σταδιακά."
             },
-            "sourceNotes": [
-              "Source follow-up pass 26 2026-05-28: direct Thassos View beach page supports Platana beach identity/location near Skala Maries on Thasos only. Confidence, coordinates, access, services, amenities, wind profile, and scoring were not changed.",
-              "Strict Thasos evidence pass 2026-05-29: Thassos View directly supports Platana near Skala Maries with exact identity/location and static beach context."
-            ],
+            "sourceNotes": "Source follow-up pass 26 2026-05-28: direct Thassos View beach page supports Platana beach identity/location near Skala Maries on Thasos only. Confidence, coordinates, access, services, amenities, wind profile, and scoring were not changed. Strict Thasos evidence pass 2026-05-29: Thassos View directly supports Platana near Skala Maries with exact identity/location and static beach context. Medium-omission multi-signal pass 2026-07-19 (no-API): organized flag corrected to true — 2 independent signals (barNear, ownAmenityFood); beach bar added.",
             "sourceUrls": [
               "https://www.thassos-view.com/places/beaches/platana-beach"
             ],
@@ -65109,7 +65075,7 @@
               ],
               "label": "λεπτή άμμος"
             },
-            "organized": false,
+            "organized": true,
             "shade": true,
             "amenities": [
               "ταβέρνες",
@@ -65123,10 +65089,7 @@
               "label": "Ρηχά νερά",
               "notes": "Η είσοδος στη θάλασσα είναι πιο ήπια και το βάθος αυξάνει πιο σταδιακά."
             },
-            "sourceNotes": [
-              "Source follow-up pass 26 2026-05-28: direct Thassos View beach page supports Skala Rachoni beach identity/location on Thasos only. Confidence, coordinates, access, services, amenities, wind profile, and scoring were not changed.",
-              "Strict Thasos evidence pass 2026-05-29: Thassos View directly supports Skala Rachoni beach identity/location and west-coast village beach context."
-            ],
+            "sourceNotes": "Source follow-up pass 26 2026-05-28: direct Thassos View beach page supports Skala Rachoni beach identity/location on Thasos only. Confidence, coordinates, access, services, amenities, wind profile, and scoring were not changed. Strict Thasos evidence pass 2026-05-29: Thassos View directly supports Skala Rachoni beach identity/location and west-coast village beach context. Medium-omission multi-signal pass 2026-07-19 (no-API): organized flag corrected to true — 2 independent signals (barNear, ownAmenityFood).",
             "sourceUrls": [
               "https://www.thassos-view.com/places/beaches/skala-rachoni-beach"
             ],
@@ -65253,12 +65216,13 @@
               ],
               "label": "βότσαλα, βράχια"
             },
-            "organized": false,
+            "organized": true,
             "shade": false,
             "amenities": [
               "ταβέρνα κοντά",
               "καφέ κοντά",
-              "parking"
+              "parking",
+              "beach bar εποχικά"
             ],
             "confidence": "high",
             "language": "el",
@@ -65268,10 +65232,7 @@
               "label": "Βαθιά νερά",
               "notes": "Το βάθος συνήθως ανεβαίνει πιο γρήγορα μετά την είσοδο στη θάλασσα."
             },
-            "sourceNotes": [
-              "Source follow-up pass 27 2026-05-28: direct Thassos View beach page supports Tarsanas beach identity/location near Limenas on Thasos only. Confidence, coordinates, access, services, amenities, wind profile, and scoring were not changed.",
-              "Strict Thasos evidence pass 2026-05-29: Thassos View directly supports Tarsanas near Limenas with exact beach identity and local service/location context."
-            ],
+            "sourceNotes": "Source follow-up pass 27 2026-05-28: direct Thassos View beach page supports Tarsanas beach identity/location near Limenas on Thasos only. Confidence, coordinates, access, services, amenities, wind profile, and scoring were not changed. Strict Thasos evidence pass 2026-05-29: Thassos View directly supports Tarsanas near Limenas with exact beach identity and local service/location context. Medium-omission multi-signal pass 2026-07-19 (no-API): organized flag corrected to true — 2 independent signals (barNear, ownAmenityFood); beach bar added.",
             "sourceUrls": [
               "https://www.thassos-view.com/places/beaches/tarsanas-beach"
             ],
@@ -66368,11 +66329,12 @@
               ],
               "label": "βότσαλα, βράχια"
             },
-            "organized": false,
+            "organized": true,
             "shade": true,
             "amenities": [
               "ταβέρνες",
-              "καφέ"
+              "καφέ",
+              "beach bar εποχικά"
             ],
             "confidence": "high",
             "language": "el",
@@ -66382,10 +66344,7 @@
               "label": "Βαθιά νερά",
               "notes": "Το βάθος συνήθως ανεβαίνει πιο γρήγορα μετά την είσοδο στη θάλασσα."
             },
-            "sourceNotes": [
-              "Source follow-up pass 40 2026-05-28: direct Visit Preveza beach page supports Kryoneri beach identity/location in Parga. Confidence, coordinates, access, services, amenities, wind profile, and scoring were not changed.",
-              "Preveza tourist evidence pass 2026-06-01: Visit Preveza and Parga Greece support Kryoneri identity in Parga town, central/town-beach access, mixed sand/pebble character, and nearby shops/cafes/restaurants context. Confidence was raised to high for source-backed static beach facts only; coordinates, windProfile, scoring, photos, amenities, and live calm/protected/safe claims were not changed."
-            ],
+            "sourceNotes": "Source follow-up pass 40 2026-05-28: direct Visit Preveza beach page supports Kryoneri beach identity/location in Parga. Confidence, coordinates, access, services, amenities, wind profile, and scoring were not changed. Preveza tourist evidence pass 2026-06-01: Visit Preveza and Parga Greece support Kryoneri identity in Parga town, central/town-beach access, mixed sand/pebble character, and nearby shops/cafes/restaurants context. Confidence was raised to high for source-backed static beach facts only; coordinates, windProfile, scoring, photos, amenities, and live calm/protected/safe claims were not changed. Medium-omission multi-signal pass 2026-07-19 (no-API): organized flag corrected to true — 3 independent signals (barNear, foodOnSand, ownAmenityFood); beach bar added.",
             "sourceUrls": [
               "https://www.visitpreveza.gr/anakalipste/paralia-kryoneri/",
               "https://pargagreece.com/beaches-of-parga-kryoneri-beachtown-beach/"
@@ -66642,11 +66601,13 @@
               ],
               "label": "βότσαλα, βράχια"
             },
-            "organized": false,
+            "organized": true,
             "shade": true,
             "amenities": [
               "ταβέρνες",
-              "καφέ"
+              "καφέ",
+              "beach bar εποχικά",
+              "ξαπλώστρες, ομπρέλες εποχικά"
             ],
             "confidence": "high",
             "language": "el",
@@ -66656,10 +66617,7 @@
               "label": "Βαθιά νερά",
               "notes": "Το βάθος συνήθως ανεβαίνει πιο γρήγορα μετά την είσοδο στη θάλασσα."
             },
-            "sourceNotes": [
-              "Source follow-up pass 42 2026-05-28: direct AllOverGreece Parga page supports Piso Kryoneri beach identity/location within Parga. Confidence, coordinates, access, services, amenities, wind profile, and scoring were not changed.",
-              "Preveza tourist evidence pass 2026-06-01: Dimos Pargas and Travel Parga support Piso Kryoneri identity inside/near Parga, position behind Agios Athanasios hill, small beach character, and nearby commercial/food-service context. Confidence was raised to high for source-backed static beach facts only; coordinates, windProfile, scoring, photos, amenities, and live calm/protected/safe claims were not changed."
-            ],
+            "sourceNotes": "Source follow-up pass 42 2026-05-28: direct AllOverGreece Parga page supports Piso Kryoneri beach identity/location within Parga. Confidence, coordinates, access, services, amenities, wind profile, and scoring were not changed. Preveza tourist evidence pass 2026-06-01: Dimos Pargas and Travel Parga support Piso Kryoneri identity inside/near Parga, position behind Agios Athanasios hill, small beach character, and nearby commercial/food-service context. Confidence was raised to high for source-backed static beach facts only; coordinates, windProfile, scoring, photos, amenities, and live calm/protected/safe claims were not changed. Medium-omission multi-signal pass 2026-07-19 (no-API): organized flag corrected to true — 3 independent signals (barNear, foodOnSand, ownAmenityFood); beach bar+sunbeds added.",
             "sourceUrls": [
               "https://www.allovergreece.com/el/beautiful-greek-villages/parga-ipeiros",
               "https://dimospargas.gr/location/paralia-piso-kryoneri/",
@@ -69229,7 +69187,7 @@
               ],
               "label": "βότσαλα, χοντρή άμμος"
             },
-            "organized": false,
+            "organized": true,
             "shade": true,
             "amenities": [
               "ταβέρνες κοντά",
@@ -69247,7 +69205,7 @@
             "sourceUrls": [
               "https://www.visit-thesprotia.gr/item/%CF%80%CE%B1%CF%81%CE%B1%CE%BB%CE%AF%CE%B1-%CF%80%CE%BB%CE%B1%CF%84%CE%B1%CF%81%CE%B9%CE%AC%CF%82/"
             ],
-            "sourceNotes": "Source follow-up pass 51: Visit Thesprotia supports Plataria beach identity/location context for the Plataria waterfront record. Confidence, coordinates, access, services, amenities, wind profile, and scoring were not changed.",
+            "sourceNotes": "Source follow-up pass 51: Visit Thesprotia supports Plataria beach identity/location context for the Plataria waterfront record. Confidence, coordinates, access, services, amenities, wind profile, and scoring were not changed. Medium-omission multi-signal pass 2026-07-19 (no-API): organized flag corrected to true — 2 independent signals (ownBarResort, ownAmenityFood).",
             "nearbyCamping": [
               {
                 "id": "osm-node-26859951",
@@ -70433,13 +70391,14 @@
               ],
               "label": "άμμος με χοντρό βότσαλο"
             },
-            "organized": false,
+            "organized": true,
             "shade": false,
             "amenities": [
               "camping κοντά",
               "καφές ή ποτό στο camping",
               "φαγητό στο camping",
-              "δυνατότητα πρόσβασης με βάρκα από Αρίλλα"
+              "δυνατότητα πρόσβασης με βάρκα από Αρίλλα",
+              "beach bar εποχικά"
             ],
             "confidence": "high",
             "language": "el",
@@ -70449,12 +70408,7 @@
               "label": "Μέτριο βάθος",
               "notes": "Δεν υπάρχει άμεση source-backed επιβεβαίωση για ρηχά ή βαθιά νερά, οπότε το βάθος μένει συντηρητικά ουδέτερο."
             },
-            "sourceNotes": [
-              "Phase 2 final global low-evidence cleanup 2026-05-26: no direct source is recorded for stronger access/confidence claims; record kept as low-confidence baseline until source-backed review.",
-              "Thesprotia OSM identity/location pass 2026-05-27: OSM way 224767293 is a same-name, transliterated, or compatible-name beach feature at or very near the current coordinates. This verifies identity/location only; confidence stays low and access/services remain unchanged until direct local sources support stronger claims.",
-              "Thesprotia/Sivota follow-up 2026-05-29: direct Visit Thesprotia page supports Sofas identity/location near Perdika, sandy shore with high/coarse pebble, access through the camping area, camping food/drink services, and alternative boat access from Arilla. Road surface, shade, and shallow/deep water remain unconfirmed, so they were kept conservative. Confidence promoted to medium; no water-quality or live-condition claim was imported.",
-              "Thesprotia tourist evidence pass 2026-06-01: Visit Thesprotia directly supports Sofas identity near Perdika, sandy/coarse-pebble terrain, access through the camping area, camping food/drink services, and boat alternative from Arilla. Confidence was raised to high for source-backed static beach facts only; coordinates, windProfile, scoring, photos, amenities, and live calm/protected/safe claims were not changed."
-            ],
+            "sourceNotes": "Phase 2 final global low-evidence cleanup 2026-05-26: no direct source is recorded for stronger access/confidence claims; record kept as low-confidence baseline until source-backed review. Thesprotia OSM identity/location pass 2026-05-27: OSM way 224767293 is a same-name, transliterated, or compatible-name beach feature at or very near the current coordinates. This verifies identity/location only; confidence stays low and access/services remain unchanged until direct local sources support stronger claims. Thesprotia/Sivota follow-up 2026-05-29: direct Visit Thesprotia page supports Sofas identity/location near Perdika, sandy shore with high/coarse pebble, access through the camping area, camping food/drink services, and alternative boat access from Arilla. Road surface, shade, and shallow/deep water remain unconfirmed, so they were kept conservative. Confidence promoted to medium; no water-quality or live-condition claim was imported. Thesprotia tourist evidence pass 2026-06-01: Visit Thesprotia directly supports Sofas identity near Perdika, sandy/coarse-pebble terrain, access through the camping area, camping food/drink services, and boat alternative from Arilla. Confidence was raised to high for source-backed static beach facts only; coordinates, windProfile, scoring, photos, amenities, and live calm/protected/safe claims were not changed. Medium-omission multi-signal pass 2026-07-19 (no-API): organized flag corrected to true — 3 independent signals (barNear, foodOnSand, ownAmenityFood); beach bar added.",
             "sourceUrls": [
               "https://www.visit-thesprotia.gr/item/%CF%80%CE%B1%CF%81%CE%B1%CE%BB%CE%AF%CE%B1-%CF%83%CE%BF%CF%86%CE%AC%CF%82-%CF%80%CE%AD%CF%81%CE%B4%CE%B9%CE%BA%CE%B1/"
             ],
@@ -78061,16 +78015,14 @@
               "types": [],
               "label": "—"
             },
-            "organized": false,
+            "organized": true,
             "shade": false,
             "amenities": [],
             "confidence": "low",
             "language": "el",
             "batch": "osm_coverage_gap_2026_06",
             "needsVerification": true,
-            "sourceNotes": [
-              "OSM coverage-gap import (2026-06): created from OpenStreetMap beach \"Παραλία Καλάμι (Κέρκυρα)\" (https://www.openstreetmap.org/way/42749230) in Corfu, Ionian Islands. Coordinates from OSM. Verified as a real, distinct Greek swimmable beach by adversarial web check (>534m from any existing beach). Google confirms a beach (152 ratings) 57m from the pin. Slot via nearest existing beach #3080 (508m). Access/terrain unknown — needs field verification."
-            ],
+            "sourceNotes": "OSM coverage-gap import (2026-06): created from OpenStreetMap beach \"Παραλία Καλάμι (Κέρκυρα)\" (https://www.openstreetmap.org/way/42749230) in Corfu, Ionian Islands. Coordinates from OSM. Verified as a real, distinct Greek swimmable beach by adversarial web check (>534m from any existing beach). Google confirms a beach (152 ratings) 57m from the pin. Slot via nearest existing beach #3080 (508m). Access/terrain unknown — needs field verification. Medium-omission multi-signal pass 2026-07-19 (no-API): organized flag corrected to true — 2 independent signals (barNear, foodOnSand).",
             "sourceUrls": [
               "https://www.openstreetmap.org/way/42749230"
             ],
@@ -83406,7 +83358,7 @@
               ],
               "label": "λεπτή άμμος"
             },
-            "organized": false,
+            "organized": true,
             "shade": false,
             "amenities": [
               "ταβέρνες",
@@ -83421,10 +83373,7 @@
               "label": "Ρηχά νερά",
               "notes": "Η είσοδος στη θάλασσα είναι πιο ήπια και το βάθος αυξάνει πιο σταδιακά."
             },
-            "sourceNotes": [
-              "Source follow-up pass 29 2026-05-28: direct Terrabook beach page supports Katelios beach identity/location in southern Kefalonia only. Confidence, coordinates, access, services, amenities, wind profile, and scoring were not changed.",
-              "Kefalonia source confidence pass 2026-05-29: existing direct beach/local tourism source coverage from the Kefalonia audit is sufficient for high static metadata confidence. Coordinates, windProfile, recommendation scoring, photos, and live sea/wind behavior were not changed."
-            ],
+            "sourceNotes": "Source follow-up pass 29 2026-05-28: direct Terrabook beach page supports Katelios beach identity/location in southern Kefalonia only. Confidence, coordinates, access, services, amenities, wind profile, and scoring were not changed. Kefalonia source confidence pass 2026-05-29: existing direct beach/local tourism source coverage from the Kefalonia audit is sufficient for high static metadata confidence. Coordinates, windProfile, recommendation scoring, photos, and live sea/wind behavior were not changed. Medium-omission multi-signal pass 2026-07-19 (no-API): organized flag corrected to true — 3 independent signals (barNear, foodOnSand, ownAmenityFood).",
             "sourceUrls": [
               "https://greece.terrabook.com/kefalonia/page/katelios-kefalonia/"
             ],
@@ -85669,7 +85618,7 @@
               ],
               "label": "βότσαλα, βράχια"
             },
-            "organized": false,
+            "organized": true,
             "shade": true,
             "amenities": [
               "parking κοντά"
@@ -85682,10 +85631,7 @@
               "label": "Βαθιά νερά",
               "notes": "Το βάθος συνήθως ανεβαίνει πιο γρήγορα μετά την είσοδο στη θάλασσα."
             },
-            "sourceNotes": [
-              "Kefalonia OSM identity/location pass 2026-05-27: OSM way 585212191 is a same-name, transliterated, or compatible-name beach feature at the current coordinates. This verifies identity/location only; confidence stays low and access/services remain unchanged until direct local sources support stronger claims.",
-              "Kefalonia source confidence pass 2026-05-29: World Beach Guide, Agia Efimia accommodation pages, Kefalonia by Anna and AmazingKefalonia support Elies Beach near Agia Efimia as a small gravel/pebble local beach/cove area. Confidence promoted to high; windProfile, scoring, photos, and live conditions were not changed."
-            ],
+            "sourceNotes": "Kefalonia OSM identity/location pass 2026-05-27: OSM way 585212191 is a same-name, transliterated, or compatible-name beach feature at the current coordinates. This verifies identity/location only; confidence stays low and access/services remain unchanged until direct local sources support stronger claims. Kefalonia source confidence pass 2026-05-29: World Beach Guide, Agia Efimia accommodation pages, Kefalonia by Anna and AmazingKefalonia support Elies Beach near Agia Efimia as a small gravel/pebble local beach/cove area. Confidence promoted to high; windProfile, scoring, photos, and live conditions were not changed. Medium-omission multi-signal pass 2026-07-19 (no-API): organized flag corrected to true — 2 independent signals (barNear, foodOnSand).",
             "sourceUrls": [
               "https://www.openstreetmap.org/way/585212191",
               "https://www.worldbeachguide.com/greece/elies.htm",
@@ -91051,7 +90997,7 @@
               ],
               "label": "λεπτή άμμος, βότσαλα"
             },
-            "organized": false,
+            "organized": true,
             "shade": true,
             "amenities": [
               "ταβέρνες",
@@ -91067,10 +91013,7 @@
               "label": "Ρηχά νερά",
               "notes": "Η είσοδος στη θάλασσα είναι πιο ήπια και το βάθος αυξάνει πιο σταδιακά."
             },
-            "sourceNotes": [
-              "Strict evidence re-audit 2026-05-29: Kalimera Greece directly supports Keri beach in Laganas Bay with pebble/partly sandy terrain, port/village setting, parking, sunbeds/umbrellas, tavern/cafe/bar context, and boat-trip context. Kept high for static beach facts only.",
-              "Blue Flag 2026 import 2026-06-01: official Blue Flag Greece awards page lists one or more matching awarded beach sections for this record. Static certification metadata only; coordinates, access, windProfile, scoring, photos, confidence and live calm/protected/safe claims were not changed."
-            ],
+            "sourceNotes": "Strict evidence re-audit 2026-05-29: Kalimera Greece directly supports Keri beach in Laganas Bay with pebble/partly sandy terrain, port/village setting, parking, sunbeds/umbrellas, tavern/cafe/bar context, and boat-trip context. Kept high for static beach facts only. Blue Flag 2026 import 2026-06-01: official Blue Flag Greece awards page lists one or more matching awarded beach sections for this record. Static certification metadata only; coordinates, access, windProfile, scoring, photos, confidence and live calm/protected/safe claims were not changed. Medium-omission multi-signal pass 2026-07-19 (no-API): organized flag corrected to true — 2 independent signals (storyOrganized, ownAmenityFood).",
             "sourceUrls": [
               "https://www.kalimera-greece.eu/zakynthos-beaches/keri-beach-zakynthos/",
               "https://www.blueflag.gr/el/awards/2026"
@@ -93642,7 +93585,7 @@
               ],
               "label": "λεπτή άμμος, χοντρή άμμος"
             },
-            "organized": false,
+            "organized": true,
             "shade": false,
             "amenities": [
               "ταβέρνες",
@@ -93657,10 +93600,7 @@
               "label": "Ρηχά νερά",
               "notes": "Η είσοδος στη θάλασσα είναι πιο ήπια και το βάθος αυξάνει πιο σταδιακά."
             },
-            "sourceNotes": [
-              "Chios source confidence pass 2026-05-29: official Chios Travel Guide, GetGreece and FotoTravel support Megas Limnionas Beach identity/location near the stored coordinates. Static metadata confidence promoted to high; coordinates, windProfile, scoring, photos, and live sea/wind claims were not changed.",
-              "Blue Flag 2026 import 2026-06-01: official Blue Flag Greece awards page lists one or more matching awarded beach sections for this record. Static certification metadata only; coordinates, access, windProfile, scoring, photos, confidence and live calm/protected/safe claims were not changed."
-            ],
+            "sourceNotes": "Chios source confidence pass 2026-05-29: official Chios Travel Guide, GetGreece and FotoTravel support Megas Limnionas Beach identity/location near the stored coordinates. Static metadata confidence promoted to high; coordinates, windProfile, scoring, photos, and live sea/wind claims were not changed. Blue Flag 2026 import 2026-06-01: official Blue Flag Greece awards page lists one or more matching awarded beach sections for this record. Static certification metadata only; coordinates, access, windProfile, scoring, photos, confidence and live calm/protected/safe claims were not changed. Medium-omission multi-signal pass 2026-07-19 (no-API): organized flag corrected to true — 2 independent signals (barNear, ownAmenityFood).",
             "sourceUrls": [
               "https://www.getgreece.com/beaches/megas-limnionas-beach-chios",
               "https://www.chios.gr/en/anaklipse-ti-xio/paralies/poli-chios/megas-limnionas",
@@ -100957,7 +100897,7 @@
               ],
               "label": "βότσαλα, χοντρή άμμος"
             },
-            "organized": false,
+            "organized": true,
             "shade": true,
             "amenities": [
               "ταβέρνες κοντά",
@@ -100971,10 +100911,7 @@
               "label": "Ρηχά νερά",
               "notes": "Η είσοδος στη θάλασσα είναι πιο ήπια και το βάθος αυξάνει πιο σταδιακά."
             },
-            "sourceNotes": [
-              "Source follow-up pass 34 2026-05-28: direct Visit Lesvos beach page supports Tsonia beach identity/location next to Kleiou village in the Mantamados region. Confidence, coordinates, access, services, amenities, wind profile, and scoring were not changed.",
-              "Lesvos strict evidence pass 2026-05-29: Visit Lesvos direct page and index support Tsonia identity near Kleiou/Mantamados and red-sand/natural beach context. Static calm wording is not imported."
-            ],
+            "sourceNotes": "Source follow-up pass 34 2026-05-28: direct Visit Lesvos beach page supports Tsonia beach identity/location next to Kleiou village in the Mantamados region. Confidence, coordinates, access, services, amenities, wind profile, and scoring were not changed. Lesvos strict evidence pass 2026-05-29: Visit Lesvos direct page and index support Tsonia identity near Kleiou/Mantamados and red-sand/natural beach context. Static calm wording is not imported. Medium-omission multi-signal pass 2026-07-19 (no-API): organized flag corrected to true — 2 independent signals (storyOrganized, ownAmenityFood).",
             "sourceUrls": [
               "https://www.visitlesvos.gr/en/pois/tsonia/",
               "https://www.visitlesvos.gr/en/natural-environment/beaches/"
@@ -102585,7 +102522,7 @@
               ],
               "label": "χοντρή άμμος, βότσαλα"
             },
-            "organized": false,
+            "organized": true,
             "shade": true,
             "amenities": [
               "ταβέρνες κοντά",
@@ -102600,10 +102537,7 @@
               "label": "Ρηχά νερά",
               "notes": "Η είσοδος στη θάλασσα είναι πιο ήπια και το βάθος αυξάνει πιο σταδιακά."
             },
-            "sourceNotes": [
-              "Source follow-up pass 33 2026-05-28: direct SamosIn beach page supports Ireon/Heraion beach identity/location at the homonymous Samos settlement only. Confidence, coordinates, access, services, amenities, wind profile, and scoring were not changed.",
-              "Samos strict evidence pass 2026-05-29: Removed unreachable SamosIn URL. Samos Guide, Samos Hoteliers and Mijn Samos support Ireon/Heraion beach identity at the settlement, tourist-village context and nearby food/bar amenities."
-            ],
+            "sourceNotes": "Source follow-up pass 33 2026-05-28: direct SamosIn beach page supports Ireon/Heraion beach identity/location at the homonymous Samos settlement only. Confidence, coordinates, access, services, amenities, wind profile, and scoring were not changed. Samos strict evidence pass 2026-05-29: Removed unreachable SamosIn URL. Samos Guide, Samos Hoteliers and Mijn Samos support Ireon/Heraion beach identity at the settlement, tourist-village context and nearby food/bar amenities. Medium-omission multi-signal pass 2026-07-19 (no-API): organized flag corrected to true — 3 independent signals (barNear, foodOnSand, ownAmenityFood).",
             "sourceUrls": [
               "https://mwsamos.gr/files/documents/Samos-Guide-en.pdf",
               "https://www.samoshotels.gr/en/samos/beaches/",
@@ -103420,7 +103354,7 @@
               ],
               "label": "βότσαλα"
             },
-            "organized": false,
+            "organized": true,
             "shade": true,
             "amenities": [
               "καφέ κοντά",
@@ -103435,10 +103369,7 @@
               "label": "Βαθιά νερά",
               "notes": "Το βάθος συνήθως ανεβαίνει πιο γρήγορα μετά την είσοδο στη θάλασσα."
             },
-            "sourceNotes": [
-              "Source follow-up pass 33 2026-05-28: direct SamosIn beach page supports Gagou/Gangou beach identity/location near Samos town with matching GPS-level context. Confidence, coordinates, access, services, amenities, wind profile, and scoring were not changed.",
-              "Samos strict evidence pass 2026-05-29: Removed unreachable SamosIn URL. Samos Guide, Samos Hoteliers, iSamos and Gagou Beach hotel location source support Gagou identity near Samos town/port and accessible town-beach context."
-            ],
+            "sourceNotes": "Source follow-up pass 33 2026-05-28: direct SamosIn beach page supports Gagou/Gangou beach identity/location near Samos town with matching GPS-level context. Confidence, coordinates, access, services, amenities, wind profile, and scoring were not changed. Samos strict evidence pass 2026-05-29: Removed unreachable SamosIn URL. Samos Guide, Samos Hoteliers, iSamos and Gagou Beach hotel location source support Gagou identity near Samos town/port and accessible town-beach context. Medium-omission multi-signal pass 2026-07-19 (no-API): organized flag corrected to true — 2 independent signals (storyOrganized, ownAmenityFood).",
             "sourceUrls": [
               "https://mwsamos.gr/files/documents/Samos-Guide-en.pdf",
               "https://www.samoshotels.gr/en/samos/beaches/",
@@ -104909,12 +104840,14 @@
               ],
               "label": "λεπτή άμμος"
             },
-            "organized": false,
+            "organized": true,
             "shade": false,
             "amenities": [
               "καφέ κοντά",
               "ταβέρνες κοντά",
-              "parking κοντά"
+              "parking κοντά",
+              "beach bar εποχικά",
+              "ξαπλώστρες, ομπρέλες εποχικά"
             ],
             "confidence": "high",
             "language": "el",
@@ -104924,10 +104857,7 @@
               "label": "Ρηχά νερά",
               "notes": "Η είσοδος στη θάλασσα είναι πιο ήπια και το βάθος αυξάνει πιο σταδιακά."
             },
-            "sourceNotes": [
-              "Source follow-up pass 33 2026-05-28: direct SamosIn beach page supports Psili Ammos at Marathokampos, also known as Chrisi Ammos, with matching western Samos location context. Confidence, coordinates, access, services, amenities, wind profile, and scoring were not changed.",
-              "Samos strict evidence pass 2026-05-29: Removed unreachable SamosIn URL. Samos Guide, Samos Hoteliers, Mijn Samos and Samos24 support western Psili Ammos/Chrysi Ammos in the Marathokampos/Votsalakia area with sandy beach context and nearby tourist facilities."
-            ],
+            "sourceNotes": "Source follow-up pass 33 2026-05-28: direct SamosIn beach page supports Psili Ammos at Marathokampos, also known as Chrisi Ammos, with matching western Samos location context. Confidence, coordinates, access, services, amenities, wind profile, and scoring were not changed. Samos strict evidence pass 2026-05-29: Removed unreachable SamosIn URL. Samos Guide, Samos Hoteliers, Mijn Samos and Samos24 support western Psili Ammos/Chrysi Ammos in the Marathokampos/Votsalakia area with sandy beach context and nearby tourist facilities. Medium-omission multi-signal pass 2026-07-19 (no-API): organized flag corrected to true — 4 independent signals (barNear, storyOrganized, foodOnSand, ownAmenityFood); beach bar+sunbeds added.",
             "sourceUrls": [
               "https://mwsamos.gr/files/documents/Samos-Guide-en.pdf",
               "https://www.samoshotels.gr/en/samos/beaches/",
@@ -105875,7 +105805,7 @@
               ],
               "label": "λεπτή άμμος, χοντρή άμμος"
             },
-            "organized": false,
+            "organized": true,
             "shade": true,
             "amenities": [
               "καφέ κοντά",
@@ -105890,10 +105820,7 @@
               "label": "Ρηχά νερά",
               "notes": "Η είσοδος στη θάλασσα είναι πιο ήπια και το βάθος αυξάνει πιο σταδιακά."
             },
-            "sourceNotes": [
-              "Source follow-up pass 35 2026-05-28: direct Lemnos beaches page names Avlonas as a bay outside Myrina with a beach and watersports. Confidence, coordinates, access, services, amenities, wind profile, and scoring were not changed.",
-              "Lemnos tourist evidence pass 2026-06-01: Limnos Tourist Guide directly supports Avlonas near Myrina with sandy beach character, easy asphalt-road access, beach-bar/sunbed/water-sports context and municipal umbrellas. Confidence was raised to high for source-backed static beach facts only; coordinates, windProfile, scoring, photos, amenities, and live calm/protected/safe claims were not changed."
-            ],
+            "sourceNotes": "Source follow-up pass 35 2026-05-28: direct Lemnos beaches page names Avlonas as a bay outside Myrina with a beach and watersports. Confidence, coordinates, access, services, amenities, wind profile, and scoring were not changed. Lemnos tourist evidence pass 2026-06-01: Limnos Tourist Guide directly supports Avlonas near Myrina with sandy beach character, easy asphalt-road access, beach-bar/sunbed/water-sports context and municipal umbrellas. Confidence was raised to high for source-backed static beach facts only; coordinates, windProfile, scoring, photos, amenities, and live calm/protected/safe claims were not changed. Medium-omission multi-signal pass 2026-07-19 (no-API): organized flag corrected to true — 2 independent signals (resortNear, ownAmenityFood).",
             "sourceUrls": [
               "https://varosvillagehotels.com/beaches/",
               "https://limnosguide.com.gr/en/sea-sports-beaches/avlonas"
@@ -108288,7 +108215,7 @@
               ],
               "label": "χοντρή άμμος, βότσαλα"
             },
-            "organized": false,
+            "organized": true,
             "shade": true,
             "amenities": [
               "ταβέρνες κοντά",
@@ -108303,10 +108230,7 @@
               "label": "Ρηχά νερά",
               "notes": "Η είσοδος στη θάλασσα είναι πιο ήπια και το βάθος αυξάνει πιο σταδιακά."
             },
-            "sourceNotes": [
-              "Source follow-up pass 52 2026-05-28: the Municipality of Lemnos accessibility guide references the Tourkikos Gialos coastline, supporting identity/location traceability only. Confidence, coordinates, access, services, amenities, wind profile, and scoring were not changed.",
-              "Lemnos tourist evidence pass 2026-06-01: Limnos Tourist Guide directly supports Tourkikos Gialos by Myrina port with sandy/shallow beach character, in-town asphalt-road access, municipal umbrellas and cafe/sunbed context. Confidence was raised to high for source-backed static beach facts only; coordinates, windProfile, scoring, photos, amenities, and live calm/protected/safe claims were not changed."
-            ],
+            "sourceNotes": "Source follow-up pass 52 2026-05-28: the Municipality of Lemnos accessibility guide references the Tourkikos Gialos coastline, supporting identity/location traceability only. Confidence, coordinates, access, services, amenities, wind profile, and scoring were not changed. Lemnos tourist evidence pass 2026-06-01: Limnos Tourist Guide directly supports Tourkikos Gialos by Myrina port with sandy/shallow beach character, in-town asphalt-road access, municipal umbrellas and cafe/sunbed context. Confidence was raised to high for source-backed static beach facts only; coordinates, windProfile, scoring, photos, amenities, and live calm/protected/safe claims were not changed. Medium-omission multi-signal pass 2026-07-19 (no-API): organized flag corrected to true — 2 independent signals (storyOrganized, ownAmenityFood).",
             "sourceUrls": [
               "https://www.limnos.gov.gr/files/007/ERMIS/odigos_prosvasimotitas.pdf",
               "https://limnosguide.com.gr/en/organized-beaches/tourkikos-gialos"
@@ -108401,12 +108325,13 @@
               ],
               "label": "λεπτή άμμος"
             },
-            "organized": false,
+            "organized": true,
             "shade": true,
             "amenities": [
               "καφέ κοντά",
               "ταβέρνες κοντά",
-              "parking κοντά"
+              "parking κοντά",
+              "beach bar εποχικά"
             ],
             "confidence": "high",
             "language": "el",
@@ -108416,10 +108341,7 @@
               "label": "Ρηχά νερά",
               "notes": "Η είσοδος στη θάλασσα είναι πιο ήπια και το βάθος αυξάνει πιο σταδιακά."
             },
-            "sourceNotes": [
-              "Source follow-up pass 35 2026-05-28: direct Lemnos beaches page names Havouli Beach and supports its identity/location near Moudros. Confidence, coordinates, access, services, amenities, wind profile, and scoring were not changed.",
-              "Lemnos tourist evidence pass 2026-06-01: Limnos Tourist Guide and Varos Village Hotels directly support Chavouli near Moudros with sandy/shallow beach character, dirt-road access, organized beach-bar/sunbed/umbrella and beach-volley context. Confidence was raised to high for source-backed static beach facts only; coordinates, windProfile, scoring, photos, amenities, and live calm/protected/safe claims were not changed."
-            ],
+            "sourceNotes": "Source follow-up pass 35 2026-05-28: direct Lemnos beaches page names Havouli Beach and supports its identity/location near Moudros. Confidence, coordinates, access, services, amenities, wind profile, and scoring were not changed. Lemnos tourist evidence pass 2026-06-01: Limnos Tourist Guide and Varos Village Hotels directly support Chavouli near Moudros with sandy/shallow beach character, dirt-road access, organized beach-bar/sunbed/umbrella and beach-volley context. Confidence was raised to high for source-backed static beach facts only; coordinates, windProfile, scoring, photos, amenities, and live calm/protected/safe claims were not changed. Medium-omission multi-signal pass 2026-07-19 (no-API): organized flag corrected to true — 2 independent signals (barNear, ownAmenityFood); beach bar added.",
             "sourceUrls": [
               "https://varosvillagehotels.com/beaches/",
               "https://limnosguide.com.gr/en/organized-beaches/chavouli"
@@ -108605,7 +108527,7 @@
               ],
               "label": "χοντρή άμμος, βότσαλα"
             },
-            "organized": false,
+            "organized": true,
             "shade": true,
             "amenities": [
               "ταβέρνες κοντά",
@@ -108623,10 +108545,7 @@
             "sourceUrls": [
               "https://greece.terrabook.com/el/argolis/page/berberonta/"
             ],
-            "sourceNotes": [
-              "Source follow-up pass 44: TerraBook Argolis page supports Ververonta beach identity/location in Argolida. Confidence, coordinates, access, services, amenities, wind profile, and scoring were not changed.",
-              "Argolida tourist evidence pass 2026-06-01: live direct sources support the recorded static beach identity plus concrete access, terrain, amenity, or limitation details already captured in this record. Promoted to high for static facts only; no coordinates, windProfile, scoring, or live calm/protected/safe claim was changed."
-            ],
+            "sourceNotes": "Source follow-up pass 44: TerraBook Argolis page supports Ververonta beach identity/location in Argolida. Confidence, coordinates, access, services, amenities, wind profile, and scoring were not changed. Argolida tourist evidence pass 2026-06-01: live direct sources support the recorded static beach identity plus concrete access, terrain, amenity, or limitation details already captured in this record. Promoted to high for static facts only; no coordinates, windProfile, scoring, or live calm/protected/safe claim was changed. Medium-omission multi-signal pass 2026-07-19 (no-API): organized flag corrected to true — 2 independent signals (barNear, ownAmenityFood).",
             "orientation": {
               "degrees": 273.5,
               "faces": [
@@ -108941,11 +108860,12 @@
               ],
               "label": "βότσαλα, βράχια"
             },
-            "organized": false,
+            "organized": true,
             "shade": false,
             "amenities": [
               "χωρίς οργανωμένες παροχές",
-              "parking κοντά"
+              "parking κοντά",
+              "beach bar εποχικά"
             ],
             "confidence": "high",
             "language": "el",
@@ -108955,10 +108875,7 @@
               "label": "Μέτρια νερά",
               "notes": "Source supports sandy sea bottom, but not a precise stable shallow/deep class, so depth stays neutral."
             },
-            "sourceNotes": [
-              "Phase 2 Argolida OSM identity/location pass 2026-05-27: OpenStreetMap natural=beach same-name or compatible-name match is 0m from stored coordinates and supports identity/location only; confidence, access, services, and amenities remain unchanged pending stronger local or official sources.",
-              "Peloponnese source pass CQ2 2026-06-05: Tolo.gr directly supports Kastraki beach identity next to Ancient Asini, pebbles/sand with rocks on one side, sandy seabed, access via short dirt road, no facilities and free parking. Depth was made neutral because source does not document a stable shallow/deep class. No coordinates, windProfile, scoring, photos, water-quality, or live calm/protected/safe claims were changed."
-            ],
+            "sourceNotes": "Phase 2 Argolida OSM identity/location pass 2026-05-27: OpenStreetMap natural=beach same-name or compatible-name match is 0m from stored coordinates and supports identity/location only; confidence, access, services, and amenities remain unchanged pending stronger local or official sources. Peloponnese source pass CQ2 2026-06-05: Tolo.gr directly supports Kastraki beach identity next to Ancient Asini, pebbles/sand with rocks on one side, sandy seabed, access via short dirt road, no facilities and free parking. Depth was made neutral because source does not document a stable shallow/deep class. No coordinates, windProfile, scoring, photos, water-quality, or live calm/protected/safe claims were changed. Medium-omission multi-signal pass 2026-07-19 (no-API): organized flag corrected to true — 2 independent signals (barNear, foodOnSand); beach bar added.",
             "sourceUrls": [],
             "googleMapsNavigation": {
               "status": "verified",
@@ -109064,7 +108981,7 @@
               ],
               "label": "λεπτή άμμος, χοντρή άμμος"
             },
-            "organized": false,
+            "organized": true,
             "shade": true,
             "amenities": [
               "ταβέρνες κοντά",
@@ -109079,10 +108996,7 @@
               "label": "Ρηχά νερά",
               "notes": "Η είσοδος στη θάλασσα είναι πιο ήπια και το βάθος αυξάνει πιο σταδιακά."
             },
-            "sourceNotes": [
-              "Source follow-up pass 42 2026-05-28: direct AllOverGreece beach page supports Lepitsa beach identity/location in Argolida. Confidence, coordinates, access, services, amenities, wind profile, and scoring were not changed.",
-              "Argolida tourist evidence pass 2026-06-01: live direct sources support the recorded static beach identity plus concrete access, terrain, amenity, or limitation details already captured in this record. Promoted to high for static facts only; no coordinates, windProfile, scoring, or live calm/protected/safe claim was changed."
-            ],
+            "sourceNotes": "Source follow-up pass 42 2026-05-28: direct AllOverGreece beach page supports Lepitsa beach identity/location in Argolida. Confidence, coordinates, access, services, amenities, wind profile, and scoring were not changed. Argolida tourist evidence pass 2026-06-01: live direct sources support the recorded static beach identity plus concrete access, terrain, amenity, or limitation details already captured in this record. Promoted to high for static facts only; no coordinates, windProfile, scoring, or live calm/protected/safe claim was changed. Medium-omission multi-signal pass 2026-07-19 (no-API): organized flag corrected to true — 3 independent signals (barNear, foodOnSand, ownAmenityFood).",
             "sourceUrls": [
               "https://www.allovergreece.com/Beaches/Descr/R99/1120/el"
             ],
@@ -114631,12 +114545,13 @@
               ],
               "label": "χοντρή άμμος, βότσαλα"
             },
-            "organized": false,
+            "organized": true,
             "shade": true,
             "amenities": [
               "ταβέρνες κοντά",
               "καφέ κοντά",
-              "parking κοντά"
+              "parking κοντά",
+              "beach bar εποχικά"
             ],
             "confidence": "high",
             "language": "el",
@@ -114649,10 +114564,7 @@
             "sourceUrls": [
               "https://bathingwaterprofiles.gr/el/bathingprofiles/elbw039251072101"
             ],
-            "sourceNotes": [
-              "Source follow-up pass 46: official bathing-water profile supports Ambelakia beach identity/location in Lakonia. Confidence, coordinates, access, services, amenities, wind profile, and scoring were not changed.",
-              "Lakonia tourist evidence pass 2026-06-01: live direct sources support the recorded static beach identity plus concrete access, terrain, amenity, or limitation details already captured in this record. Promoted to high for static facts only; no coordinates, windProfile, scoring, or live calm/protected/safe claim was changed."
-            ],
+            "sourceNotes": "Source follow-up pass 46: official bathing-water profile supports Ambelakia beach identity/location in Lakonia. Confidence, coordinates, access, services, amenities, wind profile, and scoring were not changed. Lakonia tourist evidence pass 2026-06-01: live direct sources support the recorded static beach identity plus concrete access, terrain, amenity, or limitation details already captured in this record. Promoted to high for static facts only; no coordinates, windProfile, scoring, or live calm/protected/safe claim was changed. Medium-omission multi-signal pass 2026-07-19 (no-API): organized flag corrected to true — 2 independent signals (barNear, ownAmenityFood); beach bar added.",
             "googleMapsNavigation": {
               "status": "verified",
               "mode": "place",
@@ -117515,7 +117427,7 @@
               ],
               "label": "βότσαλα, χοντρή άμμος"
             },
-            "organized": false,
+            "organized": true,
             "shade": true,
             "amenities": [
               "ταβέρνες κοντά",
@@ -117530,9 +117442,7 @@
               "label": "Μέτρια νερά",
               "notes": "Δεν κρατάμε ισχυρό ρηχό ή βαθύ claim, γιατί η πηγή στηρίζει κυρίως την ταυτότητα/πρόσβαση του οικισμού."
             },
-            "sourceNotes": [
-              "Lakonia confidence continuation 2026-06-02: AllOverGreece directly supports Porto Kagio as a seaside village/natural harbor in East Mani/Lakonia with road access from Gytheio/Gerolimenas/Areopoli, few taverns and rooms to rent. Promoted to high for static identity/access/visitor-context facts only; existing terrain remains conservative and water depth was changed to medium to avoid unsupported shallow-water certainty. No coordinates, photos, live calm/protected/safe claim, windProfile or scoring were changed."
-            ],
+            "sourceNotes": "Lakonia confidence continuation 2026-06-02: AllOverGreece directly supports Porto Kagio as a seaside village/natural harbor in East Mani/Lakonia with road access from Gytheio/Gerolimenas/Areopoli, few taverns and rooms to rent. Promoted to high for static identity/access/visitor-context facts only; existing terrain remains conservative and water depth was changed to medium to avoid unsupported shallow-water certainty. No coordinates, photos, live calm/protected/safe claim, windProfile or scoring were changed. Medium-omission multi-signal pass 2026-07-19 (no-API): organized flag corrected to true — 3 independent signals (barNear, foodOnSand, ownAmenityFood).",
             "sourceUrls": [
               "https://www.allovergreece.com/Town-Village/Descr/3/730/el"
             ],
@@ -122310,7 +122220,7 @@
               ],
               "label": "βότσαλα, βράχια"
             },
-            "organized": false,
+            "organized": true,
             "shade": false,
             "amenities": [],
             "confidence": "high",
@@ -122321,7 +122231,7 @@
               "label": "Βαθιά νερά",
               "notes": "Το βάθος συνήθως ανεβαίνει πιο γρήγορα μετά την είσοδο στη θάλασσα."
             },
-            "sourceNotes": "OSM source pass 2026-05-27: compatible-name natural=beach feature near stored coordinates supports identity/location only. Confidence, access, services, amenities, and scoring were not changed. Messinia low-confidence source pass 2026-05-29: Kardamyli/Mani visitor sources directly identify Halikoura beach; upgraded from OSM-only low confidence.",
+            "sourceNotes": "OSM source pass 2026-05-27: compatible-name natural=beach feature near stored coordinates supports identity/location only. Confidence, access, services, amenities, and scoring were not changed. Messinia low-confidence source pass 2026-05-29: Kardamyli/Mani visitor sources directly identify Halikoura beach; upgraded from OSM-only low confidence. Medium-omission multi-signal pass 2026-07-19 (no-API): organized flag corrected to true — 2 independent signals (barNear, foodOnSand).",
             "sourceUrls": [
               "https://www.openstreetmap.org/way/606058635",
               "https://www.kardamili-greece.com/en/amenities/beaches/halikoura-beach.html",
@@ -125500,7 +125410,7 @@
               ],
               "label": "λίγη άμμος, βράχια"
             },
-            "organized": false,
+            "organized": true,
             "shade": true,
             "amenities": [
               "ντους",
@@ -125525,7 +125435,7 @@
               "https://greecedestination.gr/%CF%80%CE%B1%CF%81%CE%B1%CE%BB%CE%AF%CE%B5%CF%82-%CF%83%CF%84%CE%B7%CE%BD-%CE%AC%CE%BD%CE%B4%CF%81%CE%BF/",
               "https://andros-guide.gr/item/%CE%B1%CE%B3%CE%AF%CE%B1-%CE%B1%CE%B9%CE%BA%CE%B1%CF%84%CE%B5%CF%81%CE%AF%CE%BD%CE%B7-%CE%B2%CE%AF%CE%BD%CF%84%CE%B6%CE%B9-%CE%B1%CE%BD%CE%B4%CF%81%CE%BF%CF%83/"
             ],
-            "sourceNotes": "Andros second low/no-source batch 2026-05-27: Municipality of Andros and GreeceDestination identify Vintzi/Agia Ekaterini near Ormos Korthiou as a small easy-road beach with deep water, changing cabins/showers, and nearby taverna. Corrected the display name from mixed Latin/Greek `Βiντζι` to `Βίντζι` and kept the old spelling as an alias. Andros strict evidence pass 2026-05-29: Municipality of Andros, GreeceDestination and Andros Guide support Vintzi/Agia Ekaterini identity near Ormos Korthiou, easy-road access, showers/changing cabins and nearby taverna context.",
+            "sourceNotes": "Andros second low/no-source batch 2026-05-27: Municipality of Andros and GreeceDestination identify Vintzi/Agia Ekaterini near Ormos Korthiou as a small easy-road beach with deep water, changing cabins/showers, and nearby taverna. Corrected the display name from mixed Latin/Greek `Βiντζι` to `Βίντζι` and kept the old spelling as an alias. Andros strict evidence pass 2026-05-29: Municipality of Andros, GreeceDestination and Andros Guide support Vintzi/Agia Ekaterini identity near Ormos Korthiou, easy-road access, showers/changing cabins and nearby taverna context. Medium-omission multi-signal pass 2026-07-19 (no-API): organized flag corrected to true — 3 independent signals (barNear, ownFoodType, ownAmenityFood).",
             "orientation": {
               "degrees": 98.2,
               "faces": [
@@ -136257,7 +136167,7 @@
               ],
               "label": "λεπτή άμμος, χοντρή άμμος"
             },
-            "organized": false,
+            "organized": true,
             "shade": true,
             "amenities": [
               "ταβέρνες κοντά",
@@ -136273,10 +136183,7 @@
               "label": "Ρηχά νερά",
               "notes": "Η είσοδος στη θάλασσα είναι πιο ήπια και το βάθος αυξάνει πιο σταδιακά."
             },
-            "sourceNotes": [
-              "Phase 2 final South Aegean organized-service cleanup 2026-05-25: downgraded unsupported organized-service claim because no direct source URL is recorded; kept nearby food/parking notes only. Source follow-up pass 36 2026-05-28: official Kimolos beaches page supports Psathi beach identity/location on Kimolos. Confidence, coordinates, access, services, amenities, wind profile, and scoring were not changed.",
-              "Kimolos official evidence pass 2026-06-02: the Municipality of Kimolos beaches page notes Psathi as a beach and the municipal water-quality page lists the official Psathi bathing-water profile. Confidence was raised to high for source-backed static identity/registry trace only; no wind, wave, calm/protected/safe, coordinate, photo, or scoring claim was changed."
-            ],
+            "sourceNotes": "Phase 2 final South Aegean organized-service cleanup 2026-05-25: downgraded unsupported organized-service claim because no direct source URL is recorded; kept nearby food/parking notes only. Source follow-up pass 36 2026-05-28: official Kimolos beaches page supports Psathi beach identity/location on Kimolos. Confidence, coordinates, access, services, amenities, wind profile, and scoring were not changed. Kimolos official evidence pass 2026-06-02: the Municipality of Kimolos beaches page notes Psathi as a beach and the municipal water-quality page lists the official Psathi bathing-water profile. Confidence was raised to high for source-backed static identity/registry trace only; no wind, wave, calm/protected/safe, coordinate, photo, or scoring claim was changed. Medium-omission multi-signal pass 2026-07-19 (no-API): organized flag corrected to true — 3 independent signals (barNear, foodOnSand, ownAmenityFood).",
             "sourceUrls": [
               "https://www.kimolos.gr/en/tourism-at-kimolos/beaches",
               "https://www.kimolos.gr/en/tourism-at-kimolos/beaches/water-quality"
@@ -138578,7 +138485,7 @@
               ],
               "label": "άμμος, βράχια"
             },
-            "organized": false,
+            "organized": true,
             "shade": true,
             "amenities": [
               "ταβέρνα κοντά"
@@ -138596,10 +138503,7 @@
               "https://www.exploring-greece.gr/en/show/52223/%3Attd/SCHINARI",
               "https://www.kythnos.gr/en/beaches/"
             ],
-            "sourceNotes": [
-              "Kythnos final batch source pass 2026-05-26: Kythnos.net places Schinari north of Loutra, describes a large sandy beach with rock formations, many tamarisk trees offering shade, nearby taverna/rooms, and road/path access. No organized-service claim added.",
-              "Kythnos follow-up tourist evidence pass 2026-05-29: Kythnos.net, Exploring Greece and the Municipality of Kythnos support Schinari north of Loutra, with large sandy shore, rocks, tamarisk shade, nearby taverna/rooms and road/path access. Confidence is high for static identity/access/terrain/service evidence only. Coordinates, windProfile, scoring, photos and live sea/wind/safety claims were not changed."
-            ],
+            "sourceNotes": "Kythnos final batch source pass 2026-05-26: Kythnos.net places Schinari north of Loutra, describes a large sandy beach with rock formations, many tamarisk trees offering shade, nearby taverna/rooms, and road/path access. No organized-service claim added. Kythnos follow-up tourist evidence pass 2026-05-29: Kythnos.net, Exploring Greece and the Municipality of Kythnos support Schinari north of Loutra, with large sandy shore, rocks, tamarisk shade, nearby taverna/rooms and road/path access. Confidence is high for static identity/access/terrain/service evidence only. Coordinates, windProfile, scoring, photos and live sea/wind/safety claims were not changed. Medium-omission multi-signal pass 2026-07-19 (no-API): organized flag corrected to true — 2 independent signals (storyOrganized, ownAmenityFood).",
             "orientation": {
               "degrees": 85.3,
               "faces": [
@@ -145496,7 +145400,7 @@
               ],
               "label": "βράχια"
             },
-            "organized": false,
+            "organized": true,
             "shade": false,
             "amenities": [],
             "confidence": "high",
@@ -145507,12 +145411,7 @@
               "label": "Μέτριο βάθος",
               "notes": "Depth can vary by section; verify locally when conditions change."
             },
-            "sourceNotes": [
-              "Naxos missing-beaches audit 2026-05-23",
-              "Small Chora-side beach; coordinate source: OpenStreetMap way 1204646781.",
-              "Naxos evidence confidence pass 2026-05-29: high confidence here required a live official Naxos page or a direct beach-specific source plus map/geographic corroboration, with concrete static facts such as identity, location, surface, access, parking, amenities, or no-service context. High does not certify live calm/protected/safe conditions; coordinates, windProfile, scoring, photos, and live sea/wind claims were not changed.",
-              "Terrain corrected 2026-06-20 (OSM surface audit): our type \"pebbles\" contradicted the OSM natural=beach surface \"stone\" (crowd-verified); set to rocks."
-            ],
+            "sourceNotes": "Naxos missing-beaches audit 2026-05-23 Small Chora-side beach; coordinate source: OpenStreetMap way 1204646781. Naxos evidence confidence pass 2026-05-29: high confidence here required a live official Naxos page or a direct beach-specific source plus map/geographic corroboration, with concrete static facts such as identity, location, surface, access, parking, amenities, or no-service context. High does not certify live calm/protected/safe conditions; coordinates, windProfile, scoring, photos, and live sea/wind claims were not changed. Terrain corrected 2026-06-20 (OSM surface audit): our type \"pebbles\" contradicted the OSM natural=beach surface \"stone\" (crowd-verified); set to rocks. Medium-omission multi-signal pass 2026-07-19 (no-API): organized flag corrected to true — 2 independent signals (barNear, foodOnSand).",
             "verification_sources": [
               "https://www.openstreetmap.org/way/1204646781",
               "https://www.naxos.gr/vintzi-beach/?lang=en"
@@ -148006,7 +147905,7 @@
               ],
               "label": "βότσαλα"
             },
-            "organized": false,
+            "organized": true,
             "shade": true,
             "amenities": [
               "καφέ κοντά",
@@ -148024,11 +147923,7 @@
               "https://cycladesmap.gr/en/listings/paros/drios-beach/",
               "https://poloscarsparos.gr/about-paros/beaches-east-of-paros/"
             ],
-            "sourceNotes": [
-              "Phase 2 organized audit 2026-05-25: removed organized claim; Drios-specific sources say no sunbeds/umbrellas, despite nearby organized Golden Beach options.",
-              "Paros tourist-priority confidence pass 2026-05-29: existing Paros official/local source URLs were live-checked and unavailable links were replaced or removed where needed. Static metadata confidence promoted to high for identity, location, and source-backed beach context only; coordinates, windProfile, scoring, photos, and live sea/wind claims were not changed.",
-              "Terrain corrected 2026-06-20 (OSM surface audit): our type \"fine_sand+coarse_sand\" contradicted the OSM natural=beach surface \"sand/pebblestone\" (crowd-verified); set to pebbles."
-            ],
+            "sourceNotes": "Phase 2 organized audit 2026-05-25: removed organized claim; Drios-specific sources say no sunbeds/umbrellas, despite nearby organized Golden Beach options. Paros tourist-priority confidence pass 2026-05-29: existing Paros official/local source URLs were live-checked and unavailable links were replaced or removed where needed. Static metadata confidence promoted to high for identity, location, and source-backed beach context only; coordinates, windProfile, scoring, photos, and live sea/wind claims were not changed. Terrain corrected 2026-06-20 (OSM surface audit): our type \"fine_sand+coarse_sand\" contradicted the OSM natural=beach surface \"sand/pebblestone\" (crowd-verified); set to pebbles. Medium-omission multi-signal pass 2026-07-19 (no-API): organized flag corrected to true — 2 independent signals (barNear, foodOnSand).",
             "orientation": {
               "degrees": 144.8,
               "faces": [
@@ -160115,7 +160010,7 @@
               ],
               "label": "λεπτή άμμος"
             },
-            "organized": false,
+            "organized": true,
             "shade": false,
             "amenities": [
               "καφέ κοντά",
@@ -160137,10 +160032,7 @@
               "https://visitkoufonisia.com/koufonisia-beaches.html",
               "https://www.naxos.gr/wp-content/uploads/2018/04/SMALL-CYCLADES-GUIDE-EN.pdf"
             ],
-            "sourceNotes": [
-              "Phase 2 organized audit 2026-05-25: removed organized claim; Ammos Koufonisia sources support village beach/cafes but no sunbeds, with sunbeds described as prohibited/unorganized.",
-              "Koufonisia official evidence pass 2026-06-02: Visit Koufonisia and the Small Cyclades municipal guide directly support Ammos as the main village/port beach, sandy, easy on-foot access, shallow turquoise water, and small shops/food nearby. Kept organization false and removed unsupported shade. No windProfile, scoring, coordinates, photos, or live calm/protected/safe claim was changed."
-            ],
+            "sourceNotes": "Phase 2 organized audit 2026-05-25: removed organized claim; Ammos Koufonisia sources support village beach/cafes but no sunbeds, with sunbeds described as prohibited/unorganized. Koufonisia official evidence pass 2026-06-02: Visit Koufonisia and the Small Cyclades municipal guide directly support Ammos as the main village/port beach, sandy, easy on-foot access, shallow turquoise water, and small shops/food nearby. Kept organization false and removed unsupported shade. No windProfile, scoring, coordinates, photos, or live calm/protected/safe claim was changed. Medium-omission multi-signal pass 2026-07-19 (no-API): organized flag corrected to true — 2 independent signals (barNear, ownAmenityFood).",
             "googleMapsNavigation": {
               "status": "verified",
               "mode": "place",
@@ -175232,7 +175124,7 @@
               ],
               "label": "χοντρή άμμος, βότσαλα"
             },
-            "organized": false,
+            "organized": true,
             "shade": true,
             "amenities": [
               "ταβέρνες κοντά",
@@ -175247,9 +175139,7 @@
               "label": "Ρηχά νερά",
               "notes": "Η είσοδος στη θάλασσα είναι πιο ήπια και το βάθος αυξάνει πιο σταδιακά."
             },
-            "sourceNotes": [
-              "Rhodes confidence pass 2026-05-29: direct beach/tourism sources support static identity/location and access/amenity context enough to set static metadata confidence to high. No windProfile, coordinates, scoring, photos, or live sea/wind behavior were changed."
-            ],
+            "sourceNotes": "Rhodes confidence pass 2026-05-29: direct beach/tourism sources support static identity/location and access/amenity context enough to set static metadata confidence to high. No windProfile, coordinates, scoring, photos, or live sea/wind behavior were changed. Medium-omission multi-signal pass 2026-07-19 (no-API): organized flag corrected to true — 2 independent signals (barNear, ownAmenityFood).",
             "sourceUrls": [
               "https://www.openstreetmap.org/way/283359532",
               "https://www.visitrhodes.com/what-to-see/beaches/kalavarda-beach"
@@ -180870,7 +180760,7 @@
               ],
               "label": "χοντρή άμμος, βότσαλα"
             },
-            "organized": false,
+            "organized": true,
             "shade": true,
             "amenities": [
               "parking κοντά"
@@ -180883,7 +180773,7 @@
               "label": "Ρηχά νερά",
               "notes": "Η είσοδος στη θάλασσα είναι πιο ήπια και το βάθος αυξάνει πιο σταδιακά."
             },
-            "sourceNotes": "Source follow-up pass 4 2026-05-27: direct local beach article supports beach identity/location only. Confidence, coordinates, access, services, amenities, wind profile, and scoring were not changed.",
+            "sourceNotes": "Source follow-up pass 4 2026-05-27: direct local beach article supports beach identity/location only. Confidence, coordinates, access, services, amenities, wind profile, and scoring were not changed. Medium-omission multi-signal pass 2026-07-19 (no-API): organized flag corrected to true — 2 independent signals (resortNear, foodOnSand).",
             "sourceUrls": [
               "https://www.patrasevents.gr/article/425089-paralia-kalogrias-enas-kautos-kalokerinos-proorismos-ligo-ekso-apo-tin-patra-video"
             ],
@@ -181942,17 +181832,14 @@
               ],
               "label": "βότσαλα"
             },
-            "organized": false,
+            "organized": true,
             "shade": false,
             "amenities": [],
             "confidence": "low",
             "language": "el",
             "batch": "seatrac_directory_2026_06",
             "needsVerification": true,
-            "sourceNotes": [
-              "Seatrac directory import (2026-06): created from official seatrac.gr entry \"ΠΔΕ Καστελόκαμπος\" (id 136592), Αχαΐα, West Greece. Coordinates from seatrac.gr. Slot via nearest existing beach #2514 (1937 m). Conservative — access/terrain unknown; accessibility added by the Seatrac importer.",
-              "Terrain corrected 2026-06-20 (OSM surface audit): our type \"\" contradicted the OSM natural=beach surface \"pebblestone\" (crowd-verified); set to pebbles."
-            ],
+            "sourceNotes": "Seatrac directory import (2026-06): created from official seatrac.gr entry \"ΠΔΕ Καστελόκαμπος\" (id 136592), Αχαΐα, West Greece. Coordinates from seatrac.gr. Slot via nearest existing beach #2514 (1937 m). Conservative — access/terrain unknown; accessibility added by the Seatrac importer. Terrain corrected 2026-06-20 (OSM surface audit): our type \"\" contradicted the OSM natural=beach surface \"pebblestone\" (crowd-verified); set to pebbles. Medium-omission multi-signal pass 2026-07-19 (no-API): organized flag corrected to true — 2 independent signals (barNear, foodOnSand).",
             "sourceUrls": [
               "https://seatrac.gr/el/paralies/kastelokampos/"
             ],
@@ -183884,10 +183771,11 @@
               ],
               "label": "βράχια"
             },
-            "organized": false,
+            "organized": true,
             "shade": true,
             "amenities": [
-              "καντίνα / πρόχειρο φαγητό κοντά"
+              "καντίνα / πρόχειρο φαγητό κοντά",
+              "beach bar εποχικά"
             ],
             "confidence": "high",
             "language": "el",
@@ -183900,9 +183788,7 @@
             "sourceUrls": [
               "https://bathingwaterprofiles.gr/el/bathingprofiles/elbw049125012101"
             ],
-            "sourceNotes": [
-              "Aetolia-Acarnania confidence continuation 2026-06-02: official bathing-water profile directly supports the Amfilochia-Koulouraki identity, Amfilochia Bay location, rocky shore/seabed, normal first-metre depth, local-road access, unorganized status and mobile snack/food context. No windProfile, scoring, coordinates, photos, or live calm/protected/safe claim was changed."
-            ],
+            "sourceNotes": "Aetolia-Acarnania confidence continuation 2026-06-02: official bathing-water profile directly supports the Amfilochia-Koulouraki identity, Amfilochia Bay location, rocky shore/seabed, normal first-metre depth, local-road access, unorganized status and mobile snack/food context. No windProfile, scoring, coordinates, photos, or live calm/protected/safe claim was changed. Medium-omission multi-signal pass 2026-07-19 (no-API): organized flag corrected to true — 2 independent signals (barNear, foodOnSand); beach bar added.",
             "orientation": {
               "degrees": 324.5,
               "faces": [
@@ -185263,16 +185149,14 @@
               "types": [],
               "label": "—"
             },
-            "organized": false,
+            "organized": true,
             "shade": false,
             "amenities": [],
             "confidence": "low",
             "language": "el",
             "batch": "seatrac_directory_2026_06",
             "needsVerification": true,
-            "sourceNotes": [
-              "Seatrac directory import (2026-06): created from official seatrac.gr entry \"Άκτιο Βόνιτσας Πάλαιρος\" (id 7541), Αιτωλοακαρνανία, West Greece. Coordinates from seatrac.gr. Slot via nearest existing beach #2544 (4781 m). Conservative — access/terrain unknown; accessibility added by the Seatrac importer."
-            ],
+            "sourceNotes": "Seatrac directory import (2026-06): created from official seatrac.gr entry \"Άκτιο Βόνιτσας Πάλαιρος\" (id 7541), Αιτωλοακαρνανία, West Greece. Coordinates from seatrac.gr. Slot via nearest existing beach #2544 (4781 m). Conservative — access/terrain unknown; accessibility added by the Seatrac importer. Medium-omission multi-signal pass 2026-07-19 (no-API): organized flag corrected to true — 2 independent signals (barNear, foodOnSand).",
             "sourceUrls": [
               "https://seatrac.gr/el/paralies/aktio-vonitsa-palairos/"
             ],
@@ -186722,7 +186606,7 @@
               ],
               "label": "λεπτή άμμος, χοντρή άμμος"
             },
-            "organized": false,
+            "organized": true,
             "shade": true,
             "amenities": [
               "ταβέρνες κοντά",
@@ -186737,7 +186621,7 @@
               "label": "Ρηχά νερά",
               "notes": "Η είσοδος στη θάλασσα είναι πιο ήπια και το βάθος αυξάνει πιο σταδιακά."
             },
-            "sourceNotes": "Phase 2 Ileia OSM identity/location pass 2026-05-27: OpenStreetMap natural=beach same-name or compatible-name match is 0m from stored coordinates and supports identity/location only; confidence, access, services, and amenities remain unchanged pending stronger local or official sources.",
+            "sourceNotes": "Phase 2 Ileia OSM identity/location pass 2026-05-27: OpenStreetMap natural=beach same-name or compatible-name match is 0m from stored coordinates and supports identity/location only; confidence, access, services, and amenities remain unchanged pending stronger local or official sources. Medium-omission multi-signal pass 2026-07-19 (no-API): organized flag corrected to true — 2 independent signals (storyOrganized, ownAmenityFood).",
             "sourceUrls": [
               "https://www.openstreetmap.org/way/764395198"
             ],
@@ -193668,16 +193552,14 @@
               "types": [],
               "label": "—"
             },
-            "organized": false,
+            "organized": true,
             "shade": false,
             "amenities": [],
             "confidence": "low",
             "language": "el",
             "batch": "osm_coverage_gap_2026_06",
             "needsVerification": true,
-            "sourceNotes": [
-              "OSM coverage-gap import (2026-06): created from OpenStreetMap beach \"Πλάκα (Χώρα Σκοπέλου)\" (https://www.openstreetmap.org/way/1082118806) in Skopelos, Thessaly. Coordinates from OSM. Verified as a real, distinct Greek swimmable beach by adversarial web check (>911m from any existing beach). Slot via nearest existing beach #2654 (911m). Access/terrain unknown — needs field verification."
-            ],
+            "sourceNotes": "OSM coverage-gap import (2026-06): created from OpenStreetMap beach \"Πλάκα (Χώρα Σκοπέλου)\" (https://www.openstreetmap.org/way/1082118806) in Skopelos, Thessaly. Coordinates from OSM. Verified as a real, distinct Greek swimmable beach by adversarial web check (>911m from any existing beach). Slot via nearest existing beach #2654 (911m). Access/terrain unknown — needs field verification. Medium-omission multi-signal pass 2026-07-19 (no-API): organized flag corrected to true — 2 independent signals (barNear, foodOnSand).",
             "sourceUrls": [
               "https://www.openstreetmap.org/way/1082118806"
             ],
