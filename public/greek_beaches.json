@@ -26138,11 +26138,13 @@
               ],
               "label": "βότσαλο, χοντρή άμμος"
             },
-            "organized": false,
+            "organized": true,
             "shade": true,
             "amenities": [
               "ελεύθερη παραλία χωρίς πλήρη οργάνωση",
-              "περιορισμένη στάθμευση ή στάθμευση δρόμου κοντά"
+              "περιορισμένη στάθμευση ή στάθμευση δρόμου κοντά",
+              "beach bar εποχικά",
+              "ξαπλώστρες, ομπρέλες εποχικά"
             ],
             "confidence": "low",
             "language": "el",
@@ -26152,10 +26154,7 @@
               "label": "Ρηχά νερά",
               "notes": "Η είσοδος στη θάλασσα είναι πιο ήπια και το βάθος αυξάνει πιο σταδιακά."
             },
-            "sourceNotes": [
-              "Phase 2 final global low-evidence cleanup 2026-05-26: no direct source is recorded for stronger access/confidence claims; record kept as low-confidence baseline until source-backed review.",
-              "Fthiotida OSM identity/location pass 2026-05-27: OSM node 4712257569 is a same-name, transliterated, or compatible-name beach feature at or very near the current coordinates. This verifies identity/location only; confidence stays low and access/services remain unchanged until direct local sources support stronger claims."
-            ],
+            "sourceNotes": "Phase 2 final global low-evidence cleanup 2026-05-26: no direct source is recorded for stronger access/confidence claims; record kept as low-confidence baseline until source-backed review. Fthiotida OSM identity/location pass 2026-05-27: OSM node 4712257569 is a same-name, transliterated, or compatible-name beach feature at or very near the current coordinates. This verifies identity/location only; confidence stays low and access/services remain unchanged until direct local sources support stronger claims. Web-verified 2026-07-20 (web-high): organized — Disambiguated from Schinias Attica by anchoring on Livanates (lat/lng matches the Livanates coast, Dimos Lokron). Multiple specific sources: municipality-placed [https://pointfinder.eu/listing/blanco-beach-bar/]; beach bar+sunbeds added.",
             "sourceUrls": [
               "https://www.openstreetmap.org/node/4712257569"
             ],
@@ -71181,10 +71180,12 @@
               ],
               "label": "βράχια, βότσαλα"
             },
-            "organized": false,
+            "organized": true,
             "shade": true,
             "amenities": [
-              "καμία οργανωμένη παροχή"
+              "καμία οργανωμένη παροχή",
+              "beach bar εποχικά",
+              "ξαπλώστρες, ομπρέλες εποχικά"
             ],
             "confidence": "high",
             "language": "el",
@@ -71194,10 +71195,7 @@
               "label": "Μέτρια νερά",
               "notes": "Το βάθος φαίνεται κανονικό/μέτριο στα πρώτα μέτρα, χωρίς ισχυρότερο claim."
             },
-            "sourceNotes": [
-              "Direct Black Rocks Beach listing/reviews support identity near Agios Gordios, rocky character, limited/no amenities, and walking access. Confidence is medium, not high, because the source is not official.",
-              "Corfu tourist-priority confidence pass 2026-05-29: existing direct Corfu beach/local source URLs were live-checked and broken/blocked links were replaced where needed. Static metadata confidence promoted to high for identity, location, and source-backed beach context only; coordinates, windProfile, scoring, photos, and live sea/wind claims were not changed."
-            ],
+            "sourceNotes": "Direct Black Rocks Beach listing/reviews support identity near Agios Gordios, rocky character, limited/no amenities, and walking access. Confidence is medium, not high, because the source is not official. Corfu tourist-priority confidence pass 2026-05-29: existing direct Corfu beach/local source URLs were live-checked and broken/blocked links were replaced where needed. Static metadata confidence promoted to high for identity, location, and source-backed beach context only; coordinates, windProfile, scoring, photos, and live sea/wind claims were not changed. Web-verified 2026-07-20 (web-medium+core-signal): organized — Black Rocks at the far southern end of Agios Gordios, Corfu (matches lat/lng). Black Rocks Seaside Restaurant Bar sits at the water's edge on this beach and Tri [https://www.tripadvisor.com/Restaurant_Review-g1191902-d3320293-Reviews-Black_Rocks_Seaside_Restaurant_Bar-Agios_Gordios_Corfu_Ionian_Islands.html]; beach bar+sunbeds added.",
             "sourceUrls": [
               "https://www.openstreetmap.org/way/1068821447",
               "https://www.projectcorfu.com/business-100274-Corfu_Restaurants-Corfu-Black_Rocks_Seaside_Restaurant_Bar?lang=en"
@@ -71989,11 +71987,13 @@
               ],
               "label": "βότσαλα, βράχια"
             },
-            "organized": false,
+            "organized": true,
             "shade": false,
             "amenities": [
               "ταβέρνες κοντά",
-              "καφέ κοντά"
+              "καφέ κοντά",
+              "beach bar εποχικά",
+              "ξαπλώστρες, ομπρέλες εποχικά"
             ],
             "confidence": "high",
             "language": "el",
@@ -72003,9 +72003,7 @@
               "label": "Βαθιά νερά",
               "notes": "Το βάθος συνήθως ανεβαίνει πιο γρήγορα μετά την είσοδο στη θάλασσα."
             },
-            "sourceNotes": [
-              "Strict evidence re-audit 2026-05-29: Lovin Corfu directly supports Kanoni at Kassiopi as a rocky/stony peninsula beach with tiny bays, a small pebble area, nearby Kassiopi bus context, and no broad sandy-beach assumption. Kept high for static beach facts only."
-            ],
+            "sourceNotes": "Strict evidence re-audit 2026-05-29: Lovin Corfu directly supports Kanoni at Kassiopi as a rocky/stony peninsula beach with tiny bays, a small pebble area, nearby Kassiopi bus context, and no broad sandy-beach assumption. Kept high for static beach facts only. Web-verified 2026-07-20 (web-high): organized — Name collision resolved by lat/lng (39.794, 19.920): this is Kanoni at Kassiopi, NOT Kanoni of Corfu Town (39.585). Multiple dedicated pages (Greeka, Lovin' Cor [https://www.greeka.com/ionian/corfu/beaches/kanoni-kassiopi/]; beach bar+sunbeds added.",
             "sourceUrls": [
               "https://lovincorfu.com/attractions/kanoni-beach-kassiopi/"
             ],
@@ -80628,10 +80626,11 @@
               ],
               "label": "λεπτή άμμος"
             },
-            "organized": false,
+            "organized": true,
             "shade": false,
             "amenities": [
-              "παροχές οικισμού κοντά"
+              "παροχές οικισμού κοντά",
+              "ξαπλώστρες, ομπρέλες εποχικά"
             ],
             "confidence": "high",
             "language": "el",
@@ -80641,11 +80640,7 @@
               "label": "Ρηχά νερά",
               "notes": "Η είσοδος στη θάλασσα είναι πιο ήπια και το βάθος αυξάνει πιο σταδιακά."
             },
-            "sourceNotes": [
-              "Source follow-up pass 41 2026-05-28: direct Greek Travel Pages Erikoussa page supports Porto beach/settlement identity/location on Erikoussa. Confidence, coordinates, access, services, amenities, wind profile, and scoring were not changed.",
-              "Greek Travel Pages supports Porto as the south-coast Erikoussa settlement/port beach, describing a large shallow sandy beach at the settlement. Nearby settlement-service wording stays generic; no live condition claim was added.",
-              "Island confidence pass 2026-06-05: promoted to high for static beach facts only after reviewing direct island/beach source coverage for recorded access, terrain, depth, shade and service context. Source scenic/calm/clear wording was not imported into scoring, windProfile, photos, water-quality, or live condition claims."
-            ],
+            "sourceNotes": "Source follow-up pass 41 2026-05-28: direct Greek Travel Pages Erikoussa page supports Porto beach/settlement identity/location on Erikoussa. Confidence, coordinates, access, services, amenities, wind profile, and scoring were not changed. Greek Travel Pages supports Porto as the south-coast Erikoussa settlement/port beach, describing a large shallow sandy beach at the settlement. Nearby settlement-service wording stays generic; no live condition claim was added. Island confidence pass 2026-06-05: promoted to high for static beach facts only after reviewing direct island/beach source coverage for recorded access, terrain, depth, shade and service context. Source scenic/calm/clear wording was not imported into scoring, windProfile, photos, water-quality, or live condition claims. Web-verified 2026-07-20 (web-high): organized — Porto, the main port beach of Erikoussa (unambiguous — one settlement on the island, matches lat/lng). Tripadvisor hotel/beach reviews state 'there are sunbeds  [https://www.tripadvisor.com/Hotel_Feature-g4713540-d4662625-zft1-Hotel_Erikousa.html]; sunbeds added.",
             "sourceUrls": [
               "https://www.gtp.gr/PortPage.asp?id=5890"
             ],
@@ -90423,11 +90418,13 @@
               ],
               "label": "λεπτή άμμος"
             },
-            "organized": false,
+            "organized": true,
             "shade": false,
             "amenities": [
               "ταβέρνες κοντά",
-              "parking"
+              "parking",
+              "beach bar εποχικά",
+              "ξαπλώστρες, ομπρέλες εποχικά"
             ],
             "confidence": "high",
             "language": "el",
@@ -90441,11 +90438,7 @@
               "https://www.portoazzuro.gr/",
               "https://zakynthos-guide.com/restaurants/porto-zoro-beach-bar"
             ],
-            "sourceNotes": [
-              "Nearby Vasilikos/Porto Azzuro and Porto Zoro sources support beach bars close to Vourderi; keep as nearby beach-bars claim.",
-              "Zakynthos tourist-priority confidence pass 2026-05-29: existing Zakynthos beach/local source URLs were live-checked and unavailable links were replaced or removed where needed. Static metadata confidence promoted to high for identity, location, and source-backed beach context only; coordinates, windProfile, scoring, photos, and live sea/wind claims were not changed.",
-              "Amenity corrected 2026-06-20 (amenity-evidence audit): the organized + beach-bar/sunbeds claim was an unverified default — Google Places shows zero food/drink POI within 180 m and the beach has <20/no Google reviews. Cleared organized=false and removed the bar/sunbed amenities; other amenities, coordinates, windProfile and claims untouched."
-            ],
+            "sourceNotes": "Nearby Vasilikos/Porto Azzuro and Porto Zoro sources support beach bars close to Vourderi; keep as nearby beach-bars claim. Zakynthos tourist-priority confidence pass 2026-05-29: existing Zakynthos beach/local source URLs were live-checked and unavailable links were replaced or removed where needed. Static metadata confidence promoted to high for identity, location, and source-backed beach context only; coordinates, windProfile, scoring, photos, and live sea/wind claims were not changed. Amenity corrected 2026-06-20 (amenity-evidence audit): the organized + beach-bar/sunbeds claim was an unverified default — Google Places shows zero food/drink POI within 180 m and the beach has <20/no Google reviews. Cleared organized=false and removed the bar/sunbed amenities; other amenities, coordinates, windProfile and claims untouched. Web-verified 2026-07-20 (web-high): organized — Pin matches Vourderi in Vasilikos, Zakynthos. The local Vasilikos guide's page for this exact beach: 'Along the beach there are many beach bars, sun beds and um [http://www.zakynthos-vasilikos.com/en/zante/beaches/vourderi-beach]; beach bar+sunbeds added.",
             "orientation": {
               "degrees": 32.9,
               "faces": [
@@ -91858,12 +91851,14 @@
               ],
               "label": "βότσαλα"
             },
-            "organized": false,
+            "organized": true,
             "shade": true,
             "amenities": [
               "καντίνα εποχικά",
               "ταβέρνες εποχικά",
-              "parking"
+              "parking",
+              "beach bar εποχικά",
+              "ξαπλώστρες, ομπρέλες εποχικά"
             ],
             "confidence": "high",
             "language": "el",
@@ -91873,10 +91868,7 @@
               "label": "Βαθιά νερά",
               "notes": "Το βάθος συνήθως ανεβαίνει πιο γρήγορα μετά την είσοδο στη θάλασσα."
             },
-            "sourceNotes": [
-              "Source follow-up pass 32 2026-05-28: direct Municipality of Ithaca beach page supports Dexia/Dexa Beach identity/location near Vathy on Ithaca only. Confidence, coordinates, access, services, amenities, wind profile, and scoring were not changed.",
-              "Ithaca tourist evidence pass 2026-06-01: Municipality of Ithaca and Terrabook directly support Dexa/Dexia near Vathy with pebble/rocky beach character, canteen, nearby shade from olive trees, shallow-water/family context and accessibility traceability. Confidence was raised to high for source-backed static beach facts only; coordinates, windProfile, scoring, photos, amenities, and live calm/protected/safe claims were not changed."
-            ],
+            "sourceNotes": "Source follow-up pass 32 2026-05-28: direct Municipality of Ithaca beach page supports Dexia/Dexa Beach identity/location near Vathy on Ithaca only. Confidence, coordinates, access, services, amenities, wind profile, and scoring were not changed. Ithaca tourist evidence pass 2026-06-01: Municipality of Ithaca and Terrabook directly support Dexa/Dexia near Vathy with pebble/rocky beach character, canteen, nearby shade from olive trees, shallow-water/family context and accessibility traceability. Confidence was raised to high for source-backed static beach facts only; coordinates, windProfile, scoring, photos, amenities, and live calm/protected/safe claims were not changed. Web-verified 2026-07-20 (web-high): organized — Dexa/Dexia near Vathy, Ithaca (pin matches). Multiple beach-specific sources (ithacorama, Greeka, Tripadvisor reviews): sunbeds/umbrellas for rent in peak seaso [https://ithacorama.com/listing/dexa-beach/]; beach bar+sunbeds added.",
             "sourceUrls": [
               "https://www.ithaca.gr/en/home/interests-activities/paralies-en/dexa-en/",
               "https://greece.terrabook.com/ithaca/page/dexa/"
@@ -118727,12 +118719,14 @@
               ],
               "label": "χοντρή άμμος, βότσαλα"
             },
-            "organized": false,
+            "organized": true,
             "shade": false,
             "amenities": [
               "ταβέρνες κοντά",
               "καφέ κοντά",
-              "parking κοντά"
+              "parking κοντά",
+              "beach bar εποχικά",
+              "ξαπλώστρες, ομπρέλες εποχικά"
             ],
             "confidence": "high",
             "language": "el",
@@ -118746,10 +118740,7 @@
               "https://bathingwaterprofiles.gr/el/bathingprofiles/elbw019258052101",
               "https://messinia.mobi/en/article/fusi/paralies/bromoneri-paralia/168"
             ],
-            "sourceNotes": [
-              "Source follow-up pass 47: official bathing-water profile supports Vromoneri beach identity/location in Messinia. Confidence, coordinates, access, services, amenities, wind profile, and scoring were not changed.",
-              "Messinia medium-upgrade pass 2026-05-29: official bathing-water profile plus Messinia.mobi directly support Vromoneri beach identity/location, sandy cove character, shallow-entry family suitability context, and local settlement access. Confidence promoted to high."
-            ],
+            "sourceNotes": "Source follow-up pass 47: official bathing-water profile supports Vromoneri beach identity/location in Messinia. Confidence, coordinates, access, services, amenities, wind profile, and scoring were not changed. Messinia medium-upgrade pass 2026-05-29: official bathing-water profile plus Messinia.mobi directly support Vromoneri beach identity/location, sandy cove character, shallow-entry family suitability context, and local settlement access. Confidence promoted to high. Web-verified 2026-07-20 (web-high): organized — Disambiguated to the Vromoneri settlement 7 km from Gargaliani (matches pin 37.018, 21.620). messinia.mobi/completegreece beach pages: «Μέρος της αποτελεί οργαν [https://messinia.mobi/el/article/fusi/paralies/bromoneri-paralia/168]; beach bar+sunbeds added.",
             "googleMapsNavigation": {
               "status": "verified",
               "mode": "place",
@@ -178632,17 +178623,16 @@
               ],
               "label": "βότσαλα"
             },
-            "organized": false,
+            "organized": true,
             "shade": false,
-            "amenities": [],
+            "amenities": [
+              "beach bar εποχικά"
+            ],
             "confidence": "low",
             "language": "el",
             "batch": "seatrac_directory_2026_06",
             "needsVerification": true,
-            "sourceNotes": [
-              "Seatrac directory import (2026-06): created from official seatrac.gr entry \"Σύμη Γυάλα\" (id 145742), Δωδεκάνησα, South Aegean. Coordinates from seatrac.gr. Slot via nearest existing beach #2472 (1385 m). Conservative — access/terrain unknown; accessibility added by the Seatrac importer.",
-              "Terrain corrected 2026-06-20 (OSM surface audit): our type \"\" contradicted the OSM natural=beach surface \"fine_gravel\" (crowd-verified); set to pebbles."
-            ],
+            "sourceNotes": "Seatrac directory import (2026-06): created from official seatrac.gr entry \"Σύμη Γυάλα\" (id 145742), Δωδεκάνησα, South Aegean. Coordinates from seatrac.gr. Slot via nearest existing beach #2472 (1385 m). Conservative — access/terrain unknown; accessibility added by the Seatrac importer. Terrain corrected 2026-06-20 (OSM surface audit): our type \"\" contradicted the OSM natural=beach surface \"fine_gravel\" (crowd-verified); set to pebbles. Web-verified 2026-07-20 (web-medium+core-signal): organized — Dedicated Tripadvisor attraction 'Giala beach bar' listed under Emporios (Nimborio), Symi — same locality as the coords (36.621/27.821, adjacent to Nimborio). A [https://www.tripadvisor.com/Attraction_Review-g8838776-d20379513-Reviews-Giala_beach_bar-Emporios_Symi_Dodecanese_South_Aegean.html]; beach bar added.",
             "sourceUrls": [
               "https://seatrac.gr/el/paralies/symi-gyala/"
             ],
@@ -195406,11 +195396,13 @@
               ],
               "label": "χοντρή άμμος, βότσαλα"
             },
-            "organized": false,
+            "organized": true,
             "shade": false,
             "amenities": [
               "ταβέρνες κοντά",
-              "καφέ κοντά"
+              "καφέ κοντά",
+              "beach bar εποχικά",
+              "ξαπλώστρες, ομπρέλες εποχικά"
             ],
             "confidence": "high",
             "language": "el",
@@ -195420,12 +195412,7 @@
               "label": "Βαθιά νερά",
               "notes": "Το βάθος ανεβαίνει πιο γρήγορα μετά την είσοδο στη θάλασσα."
             },
-            "sourceNotes": [
-              "Source follow-up pass 3 2026-05-27: direct local beach guide supports beach identity/location only. Confidence, coordinates, access, services, amenities, wind profile, and scoring were not changed.",
-              "Magnesia/Pelion low-confidence cleanup 2026-05-28: Discover Pelion supports coarse-sand/pebble type, deep water, easy access wording, unorganized status, and nearby tavernas/cafes. Wind profile and scoring were not changed.",
-              "Tourism-priority evidence pass 2026-05-29: Traveling-Greece and Discover Pelion directly support Mikro beach identity/location, coarse-sand/pebble terrain, deep water, easy-access wording, unorganized status, and nearby cafe/taverna context. Road-surface type remains unconfirmed. Promoted to high for static beach facts only; no wind, wave, calm-water, protection, or live-condition claim was added.",
-              "Thessaly re-geocoding 2026-06-11 (batch-approved): coordinates moved 7.48 km from the imported village/POI point to the OSM-mapped beach (https://www.openstreetmap.org/way/491163471, name \"Μικρό\", match score 1, coastal-verified on the osmdata 2026-06-10 land mask). Previous pin: 39.2015,23.2855. Only coordinates changed; windProfile, scoring, photos and live claims untouched."
-            ],
+            "sourceNotes": "Source follow-up pass 3 2026-05-27: direct local beach guide supports beach identity/location only. Confidence, coordinates, access, services, amenities, wind profile, and scoring were not changed. Magnesia/Pelion low-confidence cleanup 2026-05-28: Discover Pelion supports coarse-sand/pebble type, deep water, easy access wording, unorganized status, and nearby tavernas/cafes. Wind profile and scoring were not changed. Tourism-priority evidence pass 2026-05-29: Traveling-Greece and Discover Pelion directly support Mikro beach identity/location, coarse-sand/pebble terrain, deep water, easy-access wording, unorganized status, and nearby cafe/taverna context. Road-surface type remains unconfirmed. Promoted to high for static beach facts only; no wind, wave, calm-water, protection, or live-condition claim was added. Thessaly re-geocoding 2026-06-11 (batch-approved): coordinates moved 7.48 km from the imported village/POI point to the OSM-mapped beach (https://www.openstreetmap.org/way/491163471, name \"Μικρό\", match score 1, coastal-verified on the osmdata 2026-06-10 land mask). Previous pin: 39.2015,23.2855. Only coordinates changed; windProfile, scoring, photos and live claims untouched. Web-verified 2026-07-20 (web-high): organized — Greek Wikipedia on Μικρό Μαγνησίας (the Aegean-side beach settlement 8km from Lafkos, next to Platanias — matches coords, distinct from Platanias itself): 'Η πα [https://el.wikipedia.org/wiki/Μικρό_Μαγνησίας]; beach bar+sunbeds added.",
             "sourceUrls": [
               "https://traveling-greece.com/pelion-mikro/",
               "https://www.discover-pelion.gr/mikro-pelion/"

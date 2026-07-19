@@ -1,0 +1,272 @@
+[
+ {
+  "id": 7,
+  "name": "Παραλία Αγίου Αλεξάνδρου",
+  "verdict": "UNCLEAR",
+  "sunbeds": null,
+  "beachBar": null,
+  "evidence": "Two locality-anchored queries (Παλαιό Φάληρο + ελεύθερη παραλία/δήμος) still return only the homonymous church of Agios Alexandros in Palaio Faliro; no source describes amenities on the beach strip itself. Our own 'ελεύθερη παραλία χωρίς πλήρη οργάνωση' remains uncontradicted but unconfirmed.",
+  "sourceUrl": "https://inaapf.gr/",
+  "confidence": "low"
+ },
+ {
+  "id": 31,
+  "name": "Θέρετρο Αξιωματικών Ναυτικού",
+  "verdict": "ORGANIZED",
+  "sunbeds": true,
+  "beachBar": true,
+  "evidence": "Disambiguated via NBNE (Naval Base South Evoikos) at Agia Marina/Kato Souli — matches our pin. limenikanea.gr feature on the ΘΑΝ beach: 'οι θέσεις των λουόμενων καθορίζονται κυρίως από τις 350 διαθέσιμες ξαπλώστρες', plus 'ντουζιέρες και Beach Bar συμπληρώνουν τις απαραίτητες ανέσεις' and all-day lifeguards. Note: access restricted to entitled Navy personnel/members.",
+  "sourceUrl": "https://limenikanea.gr/nbne-than-to-theretro-tou-pn-stin-agia-marina/",
+  "confidence": "high"
+ },
+ {
+  "id": 36,
+  "name": "Πλαζ Ραφήνας",
+  "verdict": "UNCLEAR",
+  "sunbeds": null,
+  "beachBar": null,
+  "evidence": "Pin (38.019, 24.012) sits at Rafina's Κεντρική Πλαζ just south of the port — NOT Marikes (further south), where the 'Bye Bye Beach Bar' evidence belongs. For Kentriki Plaz itself only a Seatrac accessibility device install was found (iselida.gr); no sunbed/umbrella/bar evidence for this specific plaz, and a Jan 2026 port-authority notice even advised avoiding it after flood damage. Not attributing the Marikes bar to this beach.",
+  "sourceUrl": "https://iselida.gr/index.php/eidiseis/eidiseis-ellada/item/44952-rafina-stin-kentriki-plaz-i-syskevi-gia-amea-seatrac",
+  "confidence": "low"
+ },
+ {
+  "id": 3028,
+  "name": "Ωρωπός Σκάλα Ωρωπού",
+  "verdict": "UNCLEAR",
+  "sunbeds": null,
+  "beachBar": null,
+  "evidence": "Locality is unambiguous (Skala Oropou), but the only amenity mention remains the same weak/generic line as round 1 — 'cantina-bar with umbrellas and chairs' surfacing via aggregator/hotel blurbs (travelmyth/beachsearcher). A dedicated αιγιαλός-concession search returned only national legislation, no Oropos concession for this beach. Not enough for an organized claim.",
+  "sourceUrl": "https://beachsearcher.com/el/greece/attica/-/47328/skala-oropou",
+  "confidence": "low"
+ },
+ {
+  "id": 93,
+  "name": "Τούρλος",
+  "verdict": "UNORGANIZED",
+  "sunbeds": false,
+  "beachBar": false,
+  "evidence": "Fetched the beach-specific allovergreece page for Tourlos, Aegina (east coast, matches our pin near Agia Marina/Vagia): 'Οργανωμένη Παραλία ΟΧΙ'; amenities listed are only ντους/αποδυτήρια/τουαλέτα (exactly our amenity set); described as 'ερημική για εσάς που αποζητάτε ηρεμία και ιδιωτικότητα'. The round-1 'organized' line was a search-snippet conflation with Perdika beaches.",
+  "sourceUrl": "https://www.allovergreece.com/Beaches/Descr/55/529/el",
+  "confidence": "high"
+ },
+ {
+  "id": 3057,
+  "name": "Κύριζα",
+  "verdict": "UNORGANIZED",
+  "sunbeds": false,
+  "beachBar": false,
+  "evidence": "Locality confirmed (Kyriza, SE Salamina, Peristeria/Perani bay — official bathing-water profile GRBW069211099 exists for it). The 'large organized sandy beach' line is allovergreece directory boilerplate; visitor reviews and tripinview describe it as unorganized — bring your own umbrella and food. Preferring the specific visitor accounts over directory boilerplate.",
+  "sourceUrl": "https://tripinview.com/el/places/beach/53889/greece-attica-salamina",
+  "confidence": "medium"
+ },
+ {
+  "id": 176,
+  "name": "Μικρή Ζωγεριά",
+  "verdict": "ORGANIZED",
+  "sunbeds": true,
+  "beachBar": false,
+  "evidence": "Zogeria bay, NW Spetses, has two coves; guides (argosaronikos.gr, travelgo) place the taverna and the rented umbrella/sunbed sets (10€/σετ) in the bay, with the small cove specifically holding the taverna and sunbeds. Caveat: some sources describe the bay as a whole, so attribution to the small cove is good but not airtight.",
+  "sourceUrl": "https://argosaronikos.gr/spetses/paralies/zogeria/",
+  "confidence": "medium"
+ },
+ {
+  "id": 182,
+  "name": "Παραλία Περάματος",
+  "verdict": "UNCLEAR",
+  "sunbeds": null,
+  "beachBar": null,
+  "evidence": "Second locality-anchored pass (Πειραιάς/Πέραμα) again produced no beach-specific source: Piraeus-coast results cover Votsalakia and suitability lists; Perama's shore is mostly shipyard/port frontage and no guide describes an organized beach there. No amenity claim supportable either way.",
+  "sourceUrl": "https://www.destinationpiraeus.com/en/basiki-selida/beaches",
+  "confidence": "low"
+ },
+ {
+  "id": 207,
+  "name": "Αράλιμος",
+  "verdict": "UNCLEAR",
+  "sunbeds": null,
+  "beachBar": null,
+  "evidence": "Locality pinned (Aralimos at Agios Ioannis Aliveriou via topo.directory), but only directory/photo listings exist; municipal and travel guides for Kymi-Aliveri beaches do not describe amenities for Aralimos specifically. Our 'χωρίς σταθερές παροχές' remains uncontradicted but no explicit statement found.",
+  "sourceUrl": "https://topo.directory/index.php?Area_id=99627&ln=el&sel=areainfo",
+  "confidence": "low"
+ },
+ {
+  "id": 222,
+  "name": "Ζέφυρος",
+  "verdict": "ORGANIZED",
+  "sunbeds": true,
+  "beachBar": true,
+  "evidence": "Disambiguated from the Rhodes namesake: Zefiros is the cafe/beach bar ON the Nea Artaki beach (eviagreece.gr item, e-chalkida video 'Παραλία Ζέφυρος - Νέα Αρτάκη'). Sources on the Nea Artaki beachfront describe beachfront bars with umbrellas and sunbeds (extra charge for sunbeds on weekends), with Zefiros named as the beachfront venue at this spot.",
+  "sourceUrl": "https://eviagreece.gr/en/item/zefiros-cafe-en/",
+  "confidence": "medium"
+ },
+ {
+  "id": 225,
+  "name": "Κακιά",
+  "verdict": "UNORGANIZED",
+  "sunbeds": false,
+  "beachBar": false,
+  "evidence": "Kalamos double beach clearly disambiguated: the northern cove 'Καλή' has the sunbeds/cafes/tavernas; the second cove 'Κακιά' (ours) is explicitly the wild one — 'πιο άγρια ομορφιά χωρίς ξαπλώστρες', used mainly for free camping (travel.gr / visit-kimi-aliveri / ghettomagazine all agree).",
+  "sourceUrl": "https://www.travel.gr/experiences/kalamos-i-dipli-paralia-tis-eyvoias-me/",
+  "confidence": "high"
+ },
+ {
+  "id": 230,
+  "name": "Καναπίτσα",
+  "verdict": "UNCLEAR",
+  "sunbeds": null,
+  "beachBar": null,
+  "evidence": "Kanapitsa here is the Chalkida-area suburb (pin 38.47, 23.60), not Skiathos — but even locality-anchored queries return only restaurants/ouzeri in the Kanapitsa district (e.g. '25 Δράμια') with sea view, no description of a beach with amenities. Skiathos collision dominates everything else.",
+  "sourceUrl": "https://ghettomagazine.gr/ta-authentika-ouzeri-se-xalkida-artakh-k-lampsako-pou-prepei-na-episkefteis-th-sarakosth/",
+  "confidence": "low"
+ },
+ {
+  "id": 253,
+  "name": "Μακρύς Γιαλός",
+  "verdict": "UNORGANIZED",
+  "sunbeds": false,
+  "beachBar": false,
+  "evidence": "Disambiguated to Makrys Gialos / Makrygialos 2.5km south of Vlachia, North Evia (theblogofdimi, e-camping forum, YouTube titles all name Vlachia). Consistently described as a campers' beach: municipal/semi-organized camping in the plane-tree forest, a canteen and a beachfront restaurant, southern part quiet with no shade — no source mentions sunbeds/umbrellas or a beach bar on the sand.",
+  "sourceUrl": "https://theblogofdimi.com/makrys-gialos-beach-secluded-campers-paradise-evia-island/",
+  "confidence": "medium"
+ },
+ {
+  "id": 263,
+  "name": "Παραλία Αγίου Νικολάου",
+  "verdict": "UNCLEAR",
+  "sunbeds": null,
+  "beachBar": null,
+  "evidence": "Could not pin the exact locality: our coordinates (39.015, 23.342, north Evia coast) do not match either well-documented namesake (Agios Nikolaos Aidipsou at ~38.90/23.02, described as not organized with seasonal beach bars, or Agios Nikolaos at Ellinika ~38.996/23.419). Without locality certainty no verdict is safe.",
+  "sourceUrl": "https://www.voriaevia.gr/",
+  "confidence": "low"
+ },
+ {
+  "id": 267,
+  "name": "Παραλία Βλαχιάς",
+  "verdict": "UNCLEAR",
+  "sunbeds": null,
+  "beachBar": null,
+  "evidence": "Locality certain (Vlachia village beach, North Evia). Sources (eviaportal, eviagreece) list a καφετέρια-ταβέρνα, a souvlaki canteen and a mini market at the beach — matching our food amenities — but none mentions sunbeds/umbrellas or calls it organized; none calls it explicitly unorganized either. Food yes, organization unproven.",
+  "sourceUrl": "https://eviaportal.gr/eksereynontas-ti-blachia-sti-boreia-eyboia/",
+  "confidence": "medium"
+ },
+ {
+  "id": 268,
+  "name": "Παραλία Γιάλτρων",
+  "verdict": "UNCLEAR",
+  "sunbeds": null,
+  "beachBar": null,
+  "evidence": "Locality certain (Loutra Gialtron, NW Evia). Best evidence remains 'η πιο αμμώδης αριστερή πλευρά από το λιμανάκι είναι πιο οργανωμένη' (comparative, no explicit sunbeds), while the 'three beach bars with loungers' found are on the Aidipsos–Lichada road, not attributable to this beach. Also easy to confuse with nearby Mpania Gialtron. Insufficient.",
+  "sourceUrl": "https://visitgialtra.com/",
+  "confidence": "low"
+ },
+ {
+  "id": 269,
+  "name": "Παραλία Δάφνης",
+  "verdict": "ORGANIZED",
+  "sunbeds": null,
+  "beachBar": true,
+  "evidence": "Disambiguated to Dafni Nerotrivias (west-coast central Evia, matches pin 38.63/23.49; the other Dafni is at Chiliadou on the Aegean side). eviaportal's beach-specific page: a seasonal 'beach bar με εστιατόριο' operates on the first section and 'βγάζει μερικές ομπρέλες' when open, plus a taverna on the second section — but it advises bringing your own gear and never mentions ξαπλώστρες. Beach bar confirmed; sunbeds unconfirmed and organization is partial/seasonal.",
+  "sourceUrl": "https://eviaportal.gr/paralia-dafnis-nerotrivias-evia/",
+  "confidence": "medium"
+ },
+ {
+  "id": 284,
+  "name": "Πέλαγος",
+  "verdict": "UNCLEAR",
+  "sunbeds": null,
+  "beachBar": null,
+  "evidence": "No source found for a distinct beach named 'Πέλαγος' near Nea Artaki (pin 38.483/23.577); results describe the general Nea Artaki beachfront (bars with umbrellas/loungers) but never name Pelagos, so nothing can be attributed to this specific record.",
+  "sourceUrl": "https://eviagreece.gr/en/region/nea-artaki-en/",
+  "confidence": "low"
+ },
+ {
+  "id": 290,
+  "name": "Πόρτο Λάφια",
+  "verdict": "UNORGANIZED",
+  "sunbeds": false,
+  "beachBar": false,
+  "evidence": "Locality certain (Porto Lafia/Elafolimano, Styra, SW Evia). in.gr and evia-guide describe a long quiet sandy beach with a canteen and a taverna along it; no source mentions sunbeds/umbrellas or a beach bar, and the in.gr history piece notes grand development plans were never realized — 'ο τελευταίος παράδεισος' framing implies undeveloped. Food yes, beach furniture no.",
+  "sourceUrl": "https://www.in.gr/2021/08/16/life/diakopes/porto-lafia-o-teleytaios-paradeisos-tis-notiodytikis-eyvoias/",
+  "confidence": "medium"
+ },
+ {
+  "id": 295,
+  "name": "Ροδιές",
+  "verdict": "UNCLEAR",
+  "sunbeds": null,
+  "beachBar": null,
+  "evidence": "Second pass still finds no beach source named 'Ροδιές' near Nea Artaki — only a Rodies apartment listing 'near Asterias beach Chalkida' and the Ροβιές (Rovies) name collision. Cannot attribute any amenity either way.",
+  "sourceUrl": "https://eviagreece.gr/item/rodies-apartment/",
+  "confidence": "low"
+ },
+ {
+  "id": 299,
+  "name": "Σουβάλα",
+  "verdict": "ORGANIZED",
+  "sunbeds": null,
+  "beachBar": false,
+  "evidence": "Disambiguated from the Aegina namesake: our pin matches Πλαζ Σουβάλα at Chalkida's north port (YouTube 'Χαλκίδα Παραλία (Πλαζ Σουβάλα)', egnomi coverage, official bathing-water profile GRBW079155162). The bathing-water profile states part of the beach is organized with permanent umbrellas, showers and bins (municipal-style). No sunbed-rental or beach-bar evidence.",
+  "sourceUrl": "https://bathingwaterprofiles.gr/bathingprofiles/GRBW079155162",
+  "confidence": "medium"
+ },
+ {
+  "id": 303,
+  "name": "Στενή",
+  "verdict": "UNCLEAR",
+  "sunbeds": null,
+  "beachBar": null,
+  "evidence": "Pin (38.045, 24.32) is on the coast near Marmari, South Evia, but every search collapses to the mountain village Steni Dirfyos or generic Marmari beaches; no source documents a beach named Στενή here. Unresolvable.",
+  "sourceUrl": "https://my-diakopes.gr/paralies-tis-notias-evvoias/",
+  "confidence": "low"
+ },
+ {
+  "id": 306,
+  "name": "Σχοινοδαύλεια",
+  "verdict": "UNORGANIZED",
+  "sunbeds": false,
+  "beachBar": false,
+  "evidence": "Locality certain (remote SE Evia 'unknown exotic beach' with gorge/pond/stalactites features, consistent across round 1 and this pass). All descriptions are of a remote undiscovered beach; no source mentions any facility, and the access/character make organization implausible. Matches our 'χωρίς σταθερές παροχές'. No explicit 'μη οργανωμένη' quote, hence medium not high.",
+  "sourceUrl": "https://www.evima.gr/",
+  "confidence": "medium"
+ },
+ {
+  "id": 340,
+  "name": "Γιάννακης",
+  "verdict": "UNCLEAR",
+  "sunbeds": null,
+  "beachBar": null,
+  "evidence": "Locality pinned via exploring-greece: 'Η Παραλία Γιάννακη βρίσκεται στην Πέρα Πάντα... πριν από την είσοδο της Σχολής Τουριστικών Επαγγελμάτων' near Itea — a locals' quick-dip fine-pebble beach. No source states whether it has sunbeds/bar; nearby Itea beaches with sunbeds (Trokantero) are separate. No explicit unorganized statement either.",
+  "sourceUrl": "https://www.exploring-greece.gr/el/show/37922/:ttd/PARALIA-GIANNAKI",
+  "confidence": "low"
+ },
+ {
+  "id": 346,
+  "name": "Μονιά",
+  "verdict": "UNCLEAR",
+  "sunbeds": null,
+  "beachBar": null,
+  "evidence": "Second pass still finds no source for a beach named Μονιά near Itea/Pera Panta (pin 38.378/22.391); Fokida beach guides list Trokantero, Vrachakia, Monastiraki (the round-1 collision) but never Monia. Unresolvable.",
+  "sourceUrl": "https://greecedestination.gr/%CF%80%CE%B1%CF%81%CE%B1%CE%BB%CE%AF%CE%B5%CF%82-%CF%83%CF%84%CE%BF-%CE%BD%CE%BF%CE%BC%CF%8C-%CF%86%CF%89%CE%BA%CE%AF%CE%B4%CE%B1%CF%82/",
+  "confidence": "low"
+ },
+ {
+  "id": 349,
+  "name": "Παραλία Αγίου Μηνά",
+  "verdict": "ORGANIZED",
+  "sunbeds": true,
+  "beachBar": false,
+  "evidence": "Locality certain: Agios Minas at Genimakia, Desfina — the Corinthian-gulf cove between Chiliadou and Monastiraki, matching our pin. The local municipal-community site e-desfina.gr states a canteen with the emblematic name «Ο ΑΓΙΟΣ» operates on the beach offering everything 'από νερό μέχρι ξαπλώστρα'. This local, beach-specific source outweighs the generic 'δεν θα βρεις beach bar ή ομπρέλες' guide line; sunbeds are canteen-run and seasonal, no beach bar.",
+  "sourceUrl": "https://e-desfina.gr/site/exhibition/%CE%B1%CE%B3%CE%B9%CE%BF%CF%82-%CE%BC%CE%B7%CE%BD%CE%B1%CF%82/",
+  "confidence": "medium"
+ },
+ {
+  "id": 355,
+  "name": "Άι Γιάννης",
+  "verdict": "UNCLEAR",
+  "sunbeds": null,
+  "beachBar": null,
+  "evidence": "Pin (38.725, 23.061) is the Agios Ioannis beach by Livanates (confirmed by the whitewashed cliff chapel of Ai Giannis over the Euboean Gulf). The round-1 'Agios Ioannis beach bar renting sunbeds' belongs to Theologos ~20km away and the 'organized Agios Ioannis' to Alykes — neither attributable here. No amenity statement found for the Livanates beach itself.",
+  "sourceUrl": "https://www.tripadvisor.com/Attractions-g4976001-Activities-c61-t52-Livanates_Phthiotis_Region_Central_Greece.html",
+  "confidence": "low"
+ }
+]

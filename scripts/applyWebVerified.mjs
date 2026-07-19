@@ -12,11 +12,12 @@ import { normalizeAmenity, SUNBED_AMENITY_TERMS, hasExplicitBeachBarAmenityInLis
 const rootDir = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const R = (...p) => path.join(rootDir, ...p);
 const write = process.argv.includes('--write');
-const STAMP = '2026-07-19';
+const STAMP = '2026-07-20';
 const readJson = (p) => JSON.parse(readFileSync(p, 'utf8').replace(/^﻿/, ''));
 
-const HOLD = new Set([511, 2062]); // 511 no-swim signage; 2062 Red Beach official landslide access warning
-const results = readJson(R('reports', 'amenity-evidence', 'websearch-merged-2026-07-19.json'));
+const HOLD = new Set([511, 2062, 31, 2540]); // 511 no-swim; 2062 landslide; 31 Navy-only; 2540 pin possibly 3-4km off — verify pin first
+const fileArg = process.argv.find(a => a.startsWith('--file='));
+const results = readJson(fileArg ? R(fileArg.slice(7)) : R('reports', 'amenity-evidence', 'websearch-merged-2026-07-19.json'));
 const omission = readJson(R('reports', 'amenity-evidence', 'medium-omission-pass-2026-07-19.json'));
 const CORE = new Set(['barNear', 'resortNear', 'ownBarResort', 'storyOrganized', 'ownAmenityOnBeach']);
 const coreIds = new Set(omission.weak.filter(w => (w.signals || []).some(s => CORE.has(s))).map(w => w.id));
@@ -51,4 +52,4 @@ const addAmen = (m, a) => { m.amenities = m.amenities || []; if (!m.amenities.so
 console.log(`applyWebVerified — ${write ? 'WRITE' : 'DRY-RUN'} — ${applied.length} beaches (held: 511; medium-without-core skipped: ${skippedMed.length})`);
 for (const a of applied) console.log(`  #${a.id} ${(a.name || '').slice(0, 30).padEnd(30)} ${a.basis}${a.added.length ? ' +' + a.added.join('+') : ''}`);
 if (write) { writeFileSync(R('public', 'greek_beaches.json'), JSON.stringify(data, null, 2) + '\n', 'utf8'); console.log('\nWrote public/greek_beaches.json'); }
-writeFileSync(R('reports', 'amenity-evidence', `web-verified-apply-${STAMP}.json`), JSON.stringify({ applied, skippedMediumNoCore: skippedMed.map(r => ({ id: r.id, name: r.name, evidence: r.evidence, sourceUrl: r.sourceUrl })) }, null, 1));
+writeFileSync(R('reports', 'amenity-evidence', `web-verified-apply-${STAMP}${fileArg ? '-r2' : ''}.json`), JSON.stringify({ applied, skippedMediumNoCore: skippedMed.map(r => ({ id: r.id, name: r.name, evidence: r.evidence, sourceUrl: r.sourceUrl })) }, null, 1));

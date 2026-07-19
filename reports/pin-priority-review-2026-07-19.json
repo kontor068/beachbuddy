@@ -1,123 +1,147 @@
 [
-  {
-    "id": 3008,
-    "name": "Geoponika",
-    "region": "central-macedonia-halkidiki-mainland",
-    "severity": "CRITICAL",
-    "current": [
-      40.3041431,
-      23.1000758
-    ],
-    "note": "manual coastline verification needed — do not auto-move"
-  },
-  {
-    "id": 859,
-    "name": "Paralia Galanis Nestou",
-    "region": "east-macedonia-and-thrace-xanthi-mainland",
-    "severity": "CRITICAL",
-    "current": [
-      41.09238,
-      24.75886
-    ],
-    "note": "manual coastline verification needed — do not auto-move"
-  },
-  {
-    "id": 3040,
-    "name": "Loutraki Limni Vouliagmenis Iraiou",
-    "region": "peloponnese-korinthia-mainland",
-    "severity": "CRITICAL",
-    "current": [
-      38.032406,
-      22.89356
-    ],
-    "note": "manual coastline verification needed — do not auto-move"
-  },
-  {
-    "id": 3009,
-    "name": "Nea Roda",
-    "region": "central-macedonia-halkidiki-mainland",
-    "severity": "HIGH",
-    "current": [
-      40.3815557,
-      23.9234575
-    ],
-    "note": "manual coastline verification needed — do not auto-move"
-  },
-  {
-    "id": 3018,
-    "name": "Nea Flogita",
-    "region": "central-macedonia-halkidiki-mainland",
-    "severity": "HIGH",
-    "current": [
-      40.2599201,
-      23.2214367
-    ],
-    "note": "manual coastline verification needed — do not auto-move"
-  },
-  {
-    "id": 3088,
-    "name": "Mykoniatika",
-    "region": "central-macedonia-halkidiki-mainland",
-    "severity": "HIGH",
-    "current": [
-      40.3014362,
-      23.092437
-    ],
-    "note": "manual coastline verification needed — do not auto-move"
-  },
-  {
-    "id": 3010,
-    "name": "Elounta",
-    "region": "crete-crete-lasithi",
-    "severity": "HIGH",
-    "current": [
-      35.2189667,
-      25.7096531
-    ],
-    "note": "manual coastline verification needed — do not auto-move"
-  },
-  {
-    "id": 3012,
-    "name": "Perigiali",
-    "region": "east-macedonia-and-thrace-kavala-mainland",
-    "severity": "HIGH",
-    "current": [
-      40.9482064,
-      24.4300973
-    ],
-    "note": "manual coastline verification needed — do not auto-move"
-  },
-  {
-    "id": 2052,
-    "name": "Tourkou Ammos",
-    "region": "south-aegean-paros",
-    "severity": "HIGH",
-    "current": [
-      37.14409,
-      25.23238
-    ],
-    "note": "manual coastline verification needed — do not auto-move"
-  },
-  {
-    "id": 3015,
-    "name": "Patmos Kampos",
-    "region": "south-aegean-patmos",
-    "severity": "HIGH",
-    "current": [
-      37.3247471,
-      26.5381556
-    ],
-    "note": "manual coastline verification needed — do not auto-move"
-  },
-  {
-    "id": 2581,
-    "name": "Gerakas",
-    "region": "thessaly-alonissos",
-    "severity": "HIGH",
-    "current": [
-      39.2691,
-      23.94274
-    ],
-    "note": "manual coastline verification needed — do not auto-move"
-  }
+ {
+  "id": 3008,
+  "name": "Geoponika",
+  "region": "central-macedonia-halkidiki-mainland",
+  "severity": "CRITICAL",
+  "current": [
+   40.3041431,
+   23.1000758
+  ],
+  "note": "manual coastline verification needed — do not auto-move"
+ },
+ {
+  "id": 859,
+  "name": "Paralia Galanis Nestou",
+  "region": "east-macedonia-and-thrace-xanthi-mainland",
+  "severity": "CRITICAL",
+  "current": [
+   41.09238,
+   24.75886
+  ],
+  "note": "manual coastline verification needed — do not auto-move"
+ },
+ {
+  "id": 3040,
+  "name": "Loutraki Limni Vouliagmenis Iraiou",
+  "region": "peloponnese-korinthia-mainland",
+  "severity": "CRITICAL",
+  "current": [
+   38.032406,
+   22.89356
+  ],
+  "note": "manual coastline verification needed — do not auto-move"
+ },
+ {
+  "id": 3009,
+  "name": "Nea Roda",
+  "region": "central-macedonia-halkidiki-mainland",
+  "severity": "HIGH",
+  "current": [
+   40.3815557,
+   23.9234575
+  ],
+  "note": "manual coastline verification needed — do not auto-move"
+ },
+ {
+  "id": 3018,
+  "name": "Nea Flogita",
+  "region": "central-macedonia-halkidiki-mainland",
+  "severity": "HIGH",
+  "current": [
+   40.2599201,
+   23.2214367
+  ],
+  "note": "manual coastline verification needed — do not auto-move"
+ },
+ {
+  "id": 3088,
+  "name": "Mykoniatika",
+  "region": "central-macedonia-halkidiki-mainland",
+  "severity": "HIGH",
+  "current": [
+   40.3014362,
+   23.092437
+  ],
+  "note": "manual coastline verification needed — do not auto-move"
+ },
+ {
+  "id": 3010,
+  "name": "Elounta",
+  "region": "crete-crete-lasithi",
+  "severity": "HIGH",
+  "current": [
+   35.2189667,
+   25.7096531
+  ],
+  "note": "manual coastline verification needed — do not auto-move"
+ },
+ {
+  "id": 3012,
+  "name": "Perigiali",
+  "region": "east-macedonia-and-thrace-kavala-mainland",
+  "severity": "HIGH",
+  "current": [
+   40.9482064,
+   24.4300973
+  ],
+  "note": "manual coastline verification needed — do not auto-move"
+ },
+ {
+  "id": 2052,
+  "name": "Tourkou Ammos",
+  "region": "south-aegean-paros",
+  "severity": "HIGH",
+  "current": [
+   37.14409,
+   25.23238
+  ],
+  "note": "manual coastline verification needed — do not auto-move"
+ },
+ {
+  "id": 3015,
+  "name": "Patmos Kampos",
+  "region": "south-aegean-patmos",
+  "severity": "HIGH",
+  "current": [
+   37.3247471,
+   26.5381556
+  ],
+  "note": "manual coastline verification needed — do not auto-move"
+ },
+ {
+  "id": 2581,
+  "name": "Gerakas",
+  "region": "thessaly-alonissos",
+  "severity": "HIGH",
+  "current": [
+   39.2691,
+   23.94274
+  ],
+  "note": "manual coastline verification needed — do not auto-move"
+ },
+ {
+  "id": 2540,
+  "name": "Παραθάλασσο (Φωκίδα)",
+  "severity": "HIGH",
+  "note": "Web round-2 2026-07-20: amenity source places the beach 500m W of Μοναστηράκι; our pin ~3-4km west (near Sergoula). Organized flip HELD until pin verified."
+ },
+ {
+  "id": 1604,
+  "name": "(Μεσσηνία)",
+  "severity": "HIGH",
+  "note": "Web round-2: coords resolve near Marathopoli/Vromoneri, not the Mani namesake researched earlier — verify record identity/pin."
+ },
+ {
+  "id": 1624,
+  "name": "(Μεσσηνία)",
+  "severity": "MEDIUM",
+  "note": "Web round-2: coords at Koroni — verify against record name."
+ },
+ {
+  "id": 1942,
+  "name": "Αγία Τριάδα (Μύκονος)",
+  "severity": "CRITICAL",
+  "note": "Web round-2: pin sits on uninhabited Rhenia islet, not Mykonos."
+ }
 ]
