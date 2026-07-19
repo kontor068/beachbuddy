@@ -664,67 +664,6 @@ const seoLandingPages = [
       },
     },
   },
-  {
-    // Flagship top-of-funnel editorial guide (EN-led, el too). Wind/shelter is our
-    // un-copyable angle, so the piece is built to earn links. The beach list is the
-    // curated `shelteredCyclades` bucket — data-driven (shelteredFromLocalWind), so
-    // the page never hand-writes a "calm/protected" claim; copy stays hedged.
-    pathName: '/cyclades-beaches-meltemi/',
-    kind: 'beachList',
-    category: 'shelteredCyclades',
-    locales: {
-      en: {
-        title: 'Cyclades Beaches in the Meltemi: Where to Swim | CalmBeach',
-        description: 'When the Meltemi blows across the Aegean, the calmer side of each Cycladic island changes. How to choose a more sheltered beach — and check it before you go.',
-        h1: 'Where to swim in the Cyclades when the Meltemi blows',
-        intro: 'The Meltemi is the strong, dry north wind that sweeps down the Aegean through July and August. It can turn a postcard bay into a wind tunnel while the beach on the other side of the same island stays glassy and swimmable, so knowing which side to choose is the difference between a rough afternoon and a perfect one. The shortlist below is built only from Cycladic beaches whose shoreline faces away from the northerly wind — a starting point, never a guarantee, so always check the live wind and waves before you set out.',
-        sections: [
-          { heading: 'What the Meltemi is, and when it blows', body: 'The Meltemi is a persistent north to north-east wind that builds over the Aegean in summer, strongest from mid-July to the end of August. It often rises through the morning, peaks in the afternoon and eases overnight. On a strong day it can reach 6 to 7 on the Beaufort scale, raising short, steep chop that leaves north- and east-facing beaches uncomfortable for swimming and hard work for a sun umbrella.' },
-          { heading: 'Which coasts tend to stay calmer', body: 'Because the wind comes from the north, the more sheltered side of a Cycladic island is usually the south and south-west coast, where the land blocks the wind and there is less open water in front of the beach for waves to build. On Naxos the south around Pyrgaki and Agiassos is often calmer than the exposed west; on Paros the south coast near Aliki; on Ios the bays towards Manganari. The better side shifts with the exact wind direction, so a south coast is a strong bet in a northerly Meltemi rather than a fixed rule.' },
-          { heading: 'How to pick a beach on the day', body: 'Orientation is a filter, not a forecast. Before you drive out, check the actual wind direction and strength and the wave height for that day: a beach that faces away from the wind can still catch swell wrapping around a headland, and on a light-wind day almost any beach is swimmable. Open any beach on CalmBeach to see its exposure, the wind and the expected wave range together, then decide where to go.' },
-          { heading: 'A note on safety', body: 'A calmer-looking coast is not a safe-swimming promise. Even modest waves can set up a rip current along an open beach, and wind that feels manageable on the sand can be strong on an inflatable. Watch the flags, the sea and any local signs when you arrive, and keep children close to shore.' },
-        ],
-        faq: [
-          { q: 'When is the Meltemi strongest in the Cyclades?', a: 'It is most persistent from mid-July through the end of August. It usually builds through the morning, peaks in the afternoon and eases at night, and it can blow for several days in a row.' },
-          { q: 'Which side of a Cycladic island is more sheltered from the Meltemi?', a: 'Because the wind comes from the north, the south and south-west coasts are usually more sheltered, where the island itself blocks the wind. The best side changes with the exact wind direction, so check the conditions before you go.' },
-          { q: 'Can I still swim in the Cyclades during a strong Meltemi?', a: 'Usually yes — you move to the sheltered side of the island. On a strong Meltemi day a south-facing bay can be calm while the north coast is rough. Always check the wind and waves for that specific beach first.' },
-          { q: 'Does a sheltered orientation guarantee a calm sea?', a: 'No. Orientation only tells you which way the shore faces. Swell can wrap around headlands and local gusts vary, so treat it as a starting point and confirm the live conditions before you travel.' },
-        ],
-        links: [
-          { href: '/best-beaches-greece-today/', label: 'Compare Greek beaches by conditions' },
-          { href: '/sheltered-beaches-meltemi/', label: 'More sheltered beaches across Greece' },
-          { href: '/beaches/naxos/', label: 'Browse Naxos beaches' },
-          { href: '/beaches/paros/', label: 'Browse Paros beaches' },
-          { href: '/faq/', label: 'How CalmBeach works (FAQ)' },
-        ],
-      },
-      el: {
-        title: 'Κυκλάδες με Μελτέμι: Πού να Κολυμπήσεις | CalmBeach',
-        description: 'Όταν φυσά το μελτέμι στο Αιγαίο, η πιο απάνεμη πλευρά κάθε κυκλαδίτικου νησιού αλλάζει. Πώς να διαλέξεις πιο προστατευμένη παραλία — και να την ελέγξεις πριν πας.',
-        h1: 'Πού να κολυμπήσεις στις Κυκλάδες όταν φυσά το μελτέμι',
-        intro: 'Το μελτέμι είναι ο δυνατός, ξηρός βόρειος άνεμος που σαρώνει το Αιγαίο τον Ιούλιο και τον Αύγουστο. Μπορεί να μετατρέψει έναν όμορφο κόλπο σε αεροδιάδρομο ενώ η παραλία στην άλλη πλευρά του ίδιου νησιού μένει λάδι, οπότε το να ξέρεις ποια πλευρά να διαλέξεις κάνει τη διαφορά. Η λίστα παρακάτω φτιάχνεται μόνο από κυκλαδίτικες παραλίες με προσανατολισμό μακριά από τον βόρειο άνεμο — αφετηρία, όχι εγγύηση, γι\' αυτό έλεγχε πάντα τον ζωντανό άνεμο και το κύμα πριν ξεκινήσεις.',
-        sections: [
-          { heading: 'Τι είναι το μελτέμι και πότε φυσά', body: 'Το μελτέμι είναι ένας επίμονος βόρειος έως βορειοανατολικός άνεμος που δυναμώνει πάνω από το Αιγαίο το καλοκαίρι, με ένταση κυρίως από τα μέσα Ιουλίου ως το τέλος Αυγούστου. Συχνά ανεβαίνει μέσα στο πρωί, κορυφώνεται το απόγευμα και κοπάζει τη νύχτα. Σε δυνατή μέρα φτάνει τα 6 με 7 μποφόρ, σηκώνοντας κοφτό κύμα που κάνει τις βόρειες και ανατολικές παραλίες δύσκολες για μπάνιο και για ομπρέλα.' },
-          { heading: 'Ποιες ακτές τείνουν να μένουν πιο ήρεμες', body: 'Επειδή ο άνεμος έρχεται από τον βορρά, η πιο απάνεμη πλευρά ενός κυκλαδίτικου νησιού είναι συνήθως η νότια και νοτιοδυτική ακτή, όπου η στεριά κόβει τον αέρα και υπάρχει λιγότερη ανοιχτή θάλασσα μπροστά για να χτιστεί κύμα. Στη Νάξο ο νότος γύρω από το Πυργάκι και τον Αγιασσό είναι συχνά πιο ήρεμος από την εκτεθειμένη δύση· στην Πάρο η νότια ακτή κοντά στην Αλυκή· στην Ίο οι κόλποι προς τον Μαγγανάρι. Η καλύτερη πλευρά αλλάζει με την ακριβή κατεύθυνση, οπότε ο νότος είναι καλό στοίχημα σε βόρειο μελτέμι, όχι σταθερός κανόνας.' },
-          { heading: 'Πώς να διαλέξεις παραλία τη μέρα', body: 'Ο προσανατολισμός είναι φίλτρο, όχι πρόγνωση. Πριν ξεκινήσεις, έλεγξε την πραγματική κατεύθυνση και ένταση του ανέμου και το ύψος κύματος για τη μέρα: μια παραλία που κοιτάζει μακριά από τον αέρα μπορεί να πιάσει αποθαλασσιά που γυρίζει γύρω από ένα ακρωτήρι, ενώ σε μέρα με λίγο αέρα σχεδόν κάθε παραλία κολυμπιέται. Άνοιξε κάθε παραλία στο CalmBeach για να δεις μαζί την έκθεση, τον άνεμο και το αναμενόμενο εύρος κύματος, και μετά διάλεξε.' },
-          { heading: 'Μια σημείωση για την ασφάλεια', body: 'Μια πιο ήρεμη όψη ακτής δεν είναι υπόσχεση ασφαλούς μπάνιου. Ακόμη και μέτριο κύμα μπορεί να δημιουργήσει ρεύμα επαναφοράς σε ανοιχτή παραλία, και αέρας που μοιάζει διαχειρίσιμος στην άμμο μπορεί να είναι δυνατός σε ένα φουσκωτό. Πρόσεχε τις σημαίες, τη θάλασσα και τις τοπικές πινακίδες όταν φτάσεις, και κράτα τα παιδιά κοντά στην ακτή.' },
-        ],
-        faq: [
-          { q: 'Πότε είναι πιο δυνατό το μελτέμι στις Κυκλάδες;', a: 'Είναι πιο επίμονο από τα μέσα Ιουλίου ως το τέλος Αυγούστου. Συνήθως ανεβαίνει μέσα στο πρωί, κορυφώνεται το απόγευμα και κοπάζει τη νύχτα, και μπορεί να φυσά αρκετές μέρες συνεχόμενα.' },
-          { q: 'Ποια πλευρά ενός κυκλαδίτικου νησιού είναι πιο απάνεμη στο μελτέμι;', a: 'Επειδή ο άνεμος έρχεται από τον βορρά, η νότια και νοτιοδυτική ακτή είναι συνήθως πιο προστατευμένη, εκεί που το νησί κόβει τον αέρα. Η καλύτερη πλευρά αλλάζει με την ακριβή κατεύθυνση, γι\' αυτό έλεγξε τις συνθήκες πριν πας.' },
-          { q: 'Μπορώ να κολυμπήσω στις Κυκλάδες σε δυνατό μελτέμι;', a: 'Συνήθως ναι — απλώς πηγαίνεις στην απάνεμη πλευρά του νησιού. Σε δυνατό μελτέμι ένας νότιος κόλπος μπορεί να είναι ήρεμος ενώ η βόρεια ακτή είναι αγριεμένη. Πάντα έλεγξε πρώτα τον άνεμο και το κύμα για τη συγκεκριμένη παραλία.' },
-          { q: 'Εγγυάται γαλήνια θάλασσα ο απάνεμος προσανατολισμός;', a: 'Όχι. Ο προσανατολισμός λέει μόνο προς τα πού κοιτάζει η ακτή. Η αποθαλασσιά μπορεί να γυρίσει γύρω από ακρωτήρια και οι τοπικές ριπές διαφέρουν, οπότε πάρ\' το ως αφετηρία και επιβεβαίωσε τις ζωντανές συνθήκες πριν ταξιδέψεις.' },
-        ],
-        links: [
-          { href: '/best-beaches-greece-today/', label: 'Σύγκριση παραλιών με συνθήκες' },
-          { href: '/sheltered-beaches-meltemi/', label: 'Πιο απάνεμες παραλίες σε όλη την Ελλάδα' },
-          { href: '/beaches/naxos/', label: 'Παραλίες στη Νάξο' },
-          { href: '/beaches/paros/', label: 'Παραλίες στην Πάρο' },
-          { href: '/faq/', label: 'Συχνές ερωτήσεις' },
-        ],
-      },
-    },
-  },
 ];
 
 // Programmatic per-island intent pages. Each (island × intent) page is generated
@@ -2812,20 +2751,7 @@ const listSectionHeadings = {
   family: { en: 'Family-friendly beaches', gr: 'Οικογενειακές παραλίες' },
   camping: { en: 'Beaches with a campsite nearby', gr: 'Παραλίες με κάμπινγκ κοντά' },
   top: { en: 'Popular beaches to compare', gr: 'Δημοφιλείς παραλίες για σύγκριση' },
-  shelteredCyclades: { en: 'More sheltered Cyclades beaches to start with', gr: 'Πιο απάνεμες παραλίες των Κυκλάδων για αρχή' },
 };
-
-// Cyclades island regions (a subset of south-aegean; the rest of south-aegean is the
-// Dodecanese). Used to build the curated "sheltered-in-the-Meltemi" guide list from
-// only Cycladic beaches that carry the baked shelteredFromLocalWind flag.
-const CYCLADES_REGION_IDS = new Set([
-  'south-aegean-milos', 'south-aegean-naxos', 'south-aegean-paros', 'south-aegean-mykonos',
-  'south-aegean-santorini', 'south-aegean-ios', 'south-aegean-sifnos', 'south-aegean-amorgos',
-  'south-aegean-andros', 'south-aegean-tinos', 'south-aegean-syros', 'south-aegean-kea',
-  'south-aegean-kythnos', 'south-aegean-serifos', 'south-aegean-folegandros', 'south-aegean-antiparos',
-  'south-aegean-koufonisia', 'south-aegean-kimolos', 'south-aegean-sikinos', 'south-aegean-anafi',
-  'south-aegean-iraklia', 'south-aegean-schinoussa', 'south-aegean-donousa', 'south-aegean-polyaigos',
-]);
 const hubSectionHeading = { en: 'Browse beaches by island & region', gr: 'Δες παραλίες ανά νησί & περιοχή' };
 const emptyListNote = { en: 'We are still adding beaches to this guide.', gr: 'Προσθέτουμε ακόμη παραλίες σε αυτόν τον οδηγό.' };
 const localeText = (table, locale) => table[locale.language] || table.en;
@@ -3378,7 +3304,7 @@ const main = async () => {
   // pages. Read the full app payload (a superset of the summary) because
   // `campsites` lives only there; region/beach page generation below stays on
   // the summary tier unchanged.
-  const categoryBuckets = { accessible: [], family: [], camping: [], shelteredCyclades: [] };
+  const categoryBuckets = { accessible: [], family: [], camping: [] };
   const hubRegions = [];
   const topBeaches = [];
   const islandIntentPages = [];
@@ -3407,10 +3333,6 @@ const main = async () => {
       const seatrac = getBeachSeatrac(beach);
       if (seatrac?.hasSeatrac === true && seatrac?.status === 'online') categoryBuckets.accessible.push(entry);
       if (Array.isArray(beach.nearbyCamping) && beach.nearbyCamping.length > 0) categoryBuckets.camping.push(entry);
-      // Curated Meltemi guide: only Cycladic beaches carrying the baked, curated-aware
-      // shelteredFromLocalWind flag (oriented away from the northerly wind). Honest by
-      // construction — the list is the data, not a hand-written "calm" claim.
-      if (CYCLADES_REGION_IDS.has(region.id) && beach.shelteredFromLocalWind === true) categoryBuckets.shelteredCyclades.push(entry);
     }
 
     // Per-island intent guides: only emit when the island clears the minimum so
