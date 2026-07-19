@@ -426,6 +426,24 @@ body {
   }
 }
 
+/* "Reset view" home button next to the Leaflet zoom controls: center its icon
+   within the same square hit-area the +/- buttons use (desktop and touch). */
+.leaflet-control-home {
+  display: flex !important;
+  align-items: center;
+  justify-content: center;
+}
+.leaflet-control-home svg {
+  width: 16px;
+  height: 16px;
+}
+@media (pointer: coarse) {
+  .leaflet-control-home svg {
+    width: 22px;
+    height: 22px;
+  }
+}
+
 /* Touch devices: grow the Leaflet zoom (+/-) buttons from the ~30px default to a
    comfortable 44px tap target. Scoped to coarse pointers so desktop stays compact. */
 @media (pointer: coarse) {

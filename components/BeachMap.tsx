@@ -426,6 +426,57 @@ const RecenterMap = ({ center, zoom }: { center: [number, number]; zoom: number 
   return null;
 };
 
+// Small "home" button that snaps the map back to its default center/zoom for the
+// place after the user has panned or zoomed far away. Sits next to the +/- zoom
+// buttons as a native Leaflet control so it shares their styling and stacking.
+const HOME_ICON_SVG = '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>';
+
+const HomeControl = ({
+  center,
+  zoom,
+  position,
+  title,
+}: {
+  center: [number, number];
+  zoom: number;
+  position: L.ControlPosition;
+  title: string;
+}) => {
+  const map = useMap();
+  // Keep the reset target current without re-creating the control on every render.
+  const targetRef = useRef<{ center: [number, number]; zoom: number }>({ center, zoom });
+  targetRef.current = { center, zoom };
+
+  useEffect(() => {
+    const HomeControlClass = L.Control.extend({
+      onAdd() {
+        const container = L.DomUtil.create('div', 'leaflet-bar leaflet-control');
+        const link = L.DomUtil.create('a', 'leaflet-control-home', container) as HTMLAnchorElement;
+        link.href = '#';
+        link.title = title;
+        link.setAttribute('role', 'button');
+        link.setAttribute('aria-label', title);
+        link.innerHTML = HOME_ICON_SVG;
+        L.DomEvent.disableClickPropagation(container);
+        L.DomEvent.on(link, 'click', (event: Event) => {
+          L.DomEvent.preventDefault(event);
+          L.DomEvent.stopPropagation(event);
+          const { center: resetCenter, zoom: resetZoom } = targetRef.current;
+          map.setView(resetCenter, resetZoom, { animate: true });
+        });
+        return container;
+      },
+    });
+    const control = new HomeControlClass({ position });
+    control.addTo(map);
+    return () => {
+      control.remove();
+    };
+  }, [map, position, title]);
+
+  return null;
+};
+
 const FitBeachBounds = ({
   beaches,
   center,
@@ -1624,6 +1675,7 @@ const BeachMap: React.FC<BeachMapProps> = ({
     windMode: { en: 'Wind Protection Mode', gr: 'Προστασία από άνεμο', de: 'Windschutz', it: 'Protezione dal vento', fr: 'Protection du vent' },
     windShort: { en: 'Wind', gr: 'Άνεμος', de: 'Wind', it: 'Vento', fr: 'Vent' },
     youAreHere: { en: 'You are here', gr: 'Είστε εδώ', de: 'Sie sind hier', it: 'Sei qui', fr: 'Vous êtes ici' },
+    resetView: { en: 'Reset view', gr: 'Επαναφορά θέασης', de: 'Ansicht zurücksetzen', it: 'Ripristina vista', fr: 'Réinitialiser la vue' },
     campingToggle: { en: 'Camping', gr: 'Camping', de: 'Camping', it: 'Campeggi', fr: 'Camping' },
     bestTime: { en: 'Best Time', gr: 'Καλύτερη ώρα', de: 'Beste Zeit', it: 'Ora migliore', fr: 'Meilleur moment' },
     view: { en: 'View', gr: 'Προβολή', de: 'Ansehen', it: 'Vedi', fr: 'Voir' },
@@ -2430,7 +2482,21 @@ const BeachMap: React.FC<BeachMapProps> = ({
           className="w-full h-full z-0"
           style={{ height: '100%', width: '100%' }}
         >
-          <ZoomControl position={preview || compact ? 'topright' : 'bottomright'} />
+          {/* Zoom (+/-) with a "reset view" home button directly beneath it. Leaflet
+              stacks same-corner controls bottom-first at bottom corners and top-first
+              at top corners, so the add order is flipped per corner to keep the home
+              button under the zoom buttons in both. */}
+          {preview || compact ? (
+            <>
+              <ZoomControl position="topright" />
+              <HomeControl center={center} zoom={zoom} position="topright" title={mapCopy.resetView[language]} />
+            </>
+          ) : (
+            <>
+              <HomeControl center={center} zoom={zoom} position="bottomright" title={mapCopy.resetView[language]} />
+              <ZoomControl position="bottomright" />
+            </>
+          )}
           <TileLayer
             url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
             eventHandlers={{ load: () => setTilesReady(true) }}
