@@ -1,0 +1,172 @@
+[
+  {
+    "id": 1096,
+    "name": "Καμίνια",
+    "verdict": "CONFIRMED",
+    "sunbeds": true,
+    "beachBar": false,
+    "evidence": "teamkefalonia.com (2nd source, ≠ round1 visitkefaloniaisland.gr): 'Sunbeds and umbrellas are available for hire, and nearby tavernas provide delightful local cuisine.' Corroborated by meraviglioseisolegreche.com ('A part of the beach is organized with umbrellas and sun beds... a small snack bar') and Tripadvisor reviews (€13 per set). Locality pinned: Kaminia/Ratzakli, southern Kefalonia ~4km from Skala — all sources agree. Sunbeds confirmed; kept beachBar false (only a small snack bar / nearby tavernas, no standalone beach bar).",
+    "sourceUrl": "https://teamkefalonia.com/kaminia-beach-a-serene-haven-of-soft-sands-and-gentle-tides/",
+    "confidence": "high"
+  },
+  {
+    "id": 1098,
+    "name": "Καραβόμυλος",
+    "verdict": "CONFIRMED",
+    "sunbeds": true,
+    "beachBar": false,
+    "evidence": "Independent of round1 (kefaloniaguide.com): the beachfront Sami Beach Hotel at Karavomilos rents loungers/umbrellas on this beach to non-guests — oyster.com review: 'visitors can rent sunbeds and umbrellas at the Sami Beach Hotel's beach — two beds and a brolly cost 12 euros.' Also beaches-searcher lists 'sun loungers' among Karavomilos amenities. Locality pinned: Karavomilos village beach next to the lake-mill, Sami (matches lat/lng). Sunbeds confirmed via the beachfront resort; no distinct beach bar (hotel pool bar only) → beachBar false. Medium because a plain travel guide (nikana.gr) did not mention sunbeds.",
+    "sourceUrl": "https://www.oyster.com/cephalonia/hotels/sami-beach-hotel/",
+    "confidence": "medium"
+  },
+  {
+    "id": 1102,
+    "name": "Κουνόπετρα",
+    "verdict": "CONFIRMED",
+    "sunbeds": true,
+    "beachBar": false,
+    "evidence": "amazingkefalonia.com (2nd source, ≠ round1 feelgreece.com): 'Facilities: free parking, restaurant, sunbeds and parasols.' Corroborated by kefalonia-parga.com and sandee.com (sunbeds ~€8/set, canteen/tavern above the beach). Locality pinned: Kounopetra rock beach, south of the Paliki peninsula (matches lat/lng). Sunbeds confirmed; only a restaurant/canteen, no standalone beach bar → beachBar false.",
+    "sourceUrl": "https://amazingkefalonia.com/kounopetra-beach/",
+    "confidence": "high"
+  },
+  {
+    "id": 1116,
+    "name": "Παραλία Αγία Βαρβάρα",
+    "verdict": "CONFIRMED",
+    "sunbeds": true,
+    "beachBar": false,
+    "evidence": "beachatlas.com/katelios (2nd source, ≠ round1 wondergreece.gr): 'on the main Kateliós beach (Agia Varvara), sunbeds and umbrellas are available for hire' and 'beachfront tavernas provide sun loungers for their customers, sometimes requiring a drink purchase.' Corroborated by terrabook.com. Locality pinned: Agia Varvara is the main Katelios beach, SE Kefalonia (matches lat/lng); disambiguated from the namesake Agia Varvara in East Crete. Sunbeds confirmed (taverna-run); no standalone beach bar → beachBar false.",
+    "sourceUrl": "https://www.beachatlas.com/katelios",
+    "confidence": "high"
+  },
+  {
+    "id": 1140,
+    "name": "Δεσίμι",
+    "verdict": "REFUTED",
+    "sunbeds": false,
+    "beachBar": false,
+    "evidence": "amazinglefkada.com/desimi-beach (2nd source, ≠ round1 lefkadabeaches.gr): 'The coast of Desimi beach is usually not organized, there can't be rented sunbeds due to the narrow shore, but restaurants were built here.' Only seasonal tavernas (Maza Masa, Menes, Pirofani) and boat/kayak rentals; no sunbeds, no beach bar. Locality pinned: Dessimi bay south of Nydri, east Lefkada (matches lat/lng). Independent source directly contradicts round1's 'organized in a small part with loungers' — bring-your-own beach.",
+    "sourceUrl": "https://amazinglefkada.com/desimi-beach/",
+    "confidence": "medium"
+  },
+  {
+    "id": 1142,
+    "name": "Παραλία Νικιάνας",
+    "verdict": "CONFIRMED",
+    "sunbeds": true,
+    "beachBar": true,
+    "evidence": "themediterraneantraveller.com (2nd source, ≠ round1 lefkadabeaches.gr): 'The widest section of the beach is home to NV Beach Bar... daybeds and bean bags as well as thick mattress-style loungers... there is the possibility to rent sunbeds and umbrella at a cost of 12 €.' NV Beach Bar is a named operator on Nikiana's central sands, corroborated by its own site (nvbeachbar.com), Tripadvisor (d4603422) and lefkadabooking.gr. Locality pinned: central/main Nikiana beach, east Lefkada. Caveat: NV sits on the 'widest section' — I attribute it to this main-beach pin; the adjacent Nikiana pin (1143) I left unclear because I could not obtain NV's exact coordinates. One guide (greeka.com) calls the beach largely unorganized, hence medium confidence.",
+    "sourceUrl": "https://www.themediterraneantraveller.com/nikiana-lefkada/",
+    "confidence": "medium"
+  },
+  {
+    "id": 1143,
+    "name": "Νότια Παραλία Νικιάνας",
+    "verdict": "STILL_UNCLEAR",
+    "sunbeds": null,
+    "beachBar": null,
+    "evidence": "This pin (38.758) is a separate Nikiana segment ~680m from the main-beach pin (1142). Independent source greeka.com/lefkada/beaches/nikiana states the beach 'has no on-the-beach tourist facilities,' and amazinglefkada says the bay 'usually lacks sunbeds for rent and bars.' Nikiana's one clear organized feature — NV Beach Bar with sunbeds — is on the 'widest section' but I could not obtain its coordinates to confirm it sits at THIS pin rather than 1142. No independent source confirms sunbeds/beach bar specifically at this segment, so keep organized:false (a miss is safer than a false positive). Note: dataset labels this 'south' though it is geographically north of 1142.",
+    "sourceUrl": "https://www.greeka.com/ionian/lefkada/beaches/nikiana/",
+    "confidence": "low"
+  },
+  {
+    "id": 1149,
+    "name": "Αμμούσα",
+    "verdict": "CONFIRMED",
+    "sunbeds": true,
+    "beachBar": false,
+    "evidence": "greeka.com/lefkada/beaches/amousa (2nd source, ≠ round1 lefkadabeaches.gr): 'Almost the whole beach is covered with sunbeds and parasols which are owned by cafe bars and taverns right by the beach' — '2 sunbeds and umbrella for 14 euros.' Corroborated by hellenicseason.com and nikana.gr. Locality pinned: Ammoussa, south Lefkada near Kontarena/Apollonii (matches lat/lng). Sunbeds strongly confirmed; sunbeds are owned by the beachside cafe-bars/tavernas, so kept beachBar false conservatively (no clearly standalone music beach bar).",
+    "sourceUrl": "https://www.greeka.com/ionian/lefkada/beaches/amousa/",
+    "confidence": "high"
+  },
+  {
+    "id": 1165,
+    "name": "Λυγιά",
+    "verdict": "CONFIRMED",
+    "sunbeds": true,
+    "beachBar": false,
+    "evidence": "greeka.com/lefkada/beaches/lygia (2nd source, ≠ round1 lefkadabeaches.gr): 'Lygia is a partly-organized seashore, hosting a few sunbed pairs and cozy sun umbrellas for rent... The wider sections are organised with sun loungers and a cafe.' Corroborated by themediterraneantraveller.com. Locality pinned: Lygia fishing village on the east coast, north of Nikiana (matches lat/lng). Sunbeds confirmed; the on-beach food is described as a cafe/snack bar so kept beachBar false conservatively.",
+    "sourceUrl": "https://www.greeka.com/ionian/lefkada/beaches/lygia/",
+    "confidence": "high"
+  },
+  {
+    "id": 1178,
+    "name": "Άγιος Ιωάννης",
+    "verdict": "REFUTED",
+    "sunbeds": false,
+    "beachBar": false,
+    "evidence": "NAME COLLISION overturned. round1 credited 'Agrios Beach Bar' to this pin, but greeka.com confirms Agrios is on Spilia/Spartochori beach (a different beach near the port). greeka.com/meganisi/beaches/agios-ioannis (this pin, west/SW coast reached by dirt road from Spartochori or boat from Vathi): 'It is not organized with sunbeds and umbrellas, so make sure you take some supplies with you.' No beach bar. Locality pinned: Agios Ioannis beach on Meganisi's west/southwest coast (matches lat/lng ~38.645,20.737), NOT the Spilia port cove where Agrios operates. Genuinely unorganized.",
+    "sourceUrl": "https://www.greeka.com/ionian/meganisi/beaches/agios-ioannis/",
+    "confidence": "high"
+  },
+  {
+    "id": 1184,
+    "name": "Αμπούλα",
+    "verdict": "CONFIRMED",
+    "sunbeds": true,
+    "beachBar": false,
+    "evidence": "greeka.com/zakynthos/beaches/amboula and kalimera-greece.eu (2nd sources, ≠ round1 zante.info): 'The partially organized beach offers visitors sunbeds and umbrellas' — '2 sunbeds and 1 umbrella cost 12 euros'; 'Above the beach there is a fish tavern, which also functions as a beach bar with traditional fast food.' Locality pinned: Ampoula, a small Blue Flag beach at Tragaki, east Zakynthos ~3km NW of Tsilivi (matches lat/lng). Sunbeds confirmed; kept beachBar false conservatively (a fish tavern that also serves fast food, not a dedicated beach bar).",
+    "sourceUrl": "https://www.kalimera-greece.eu/zakynthos-beaches/amboula-beach-zakynthos/",
+    "confidence": "high"
+  },
+  {
+    "id": 1186,
+    "name": "Δάφνη",
+    "verdict": "CONFIRMED",
+    "sunbeds": true,
+    "beachBar": false,
+    "evidence": "zanteisland.com / dafnibeach.com (2nd sources, ≠ round1 zakynthos-guide.com): sun loungers and umbrellas are available, placed by/behind the tavernas since umbrellas are forbidden on the sand (turtle nesting); 'In the middle, between Petalida restaurant and the Grill House, there is a green area with free sunbeds.' Locality pinned: Dafni, Marine Park nesting beach in the Vasilikos area, SE Zakynthos (matches lat/lng). Sunbeds confirmed (taverna-provided); no standalone beach bar → beachBar false.",
+    "sourceUrl": "https://www.zanteisland.com/zakynthos/servizi.php?key=41&language=english",
+    "confidence": "high"
+  },
+  {
+    "id": 1187,
+    "name": "Καλαμάκι",
+    "verdict": "CONFIRMED",
+    "sunbeds": true,
+    "beachBar": false,
+    "evidence": "greeka.com/zakynthos/beaches/kalamaki and visitkalamaki.com (2nd sources, ≠ round1 ecozante.com): 'Sunbeds and umbrellas are available at the northern end of the beach (€8-10 per set)'; 'partly organized... sun loungers and umbrellas, showers and changing cabins.' Locality pinned: Kalamaki, Marine Park nesting beach, SE Zakynthos next to Laganas bay (matches lat/lng). Sunbeds confirmed (limited by turtle rules); no standalone beach bar confirmed → beachBar false.",
+    "sourceUrl": "https://www.greeka.com/ionian/zakynthos/beaches/kalamaki/",
+    "confidence": "high"
+  },
+  {
+    "id": 1192,
+    "name": "Μαδράκια",
+    "verdict": "CONFIRMED",
+    "sunbeds": true,
+    "beachBar": false,
+    "evidence": "kalimera-greece.eu (2nd source, ≠ round1 greeka.com): 'there is no beach bar, but Madrakia taverna serves delicious (sea)food and drinks and has just a few (free!) sunbeds on the beach.' Corroborated by Madrakia Tavern listings and beaches-searcher. Locality pinned: tiny Madrakia beach by the harbour of Agios Nikolaos (Volimes), NW Zakynthos (matches lat/lng). Sunbeds confirmed (a few, free, taverna-run); source explicitly says NO beach bar → beachBar false (round1 had this null).",
+    "sourceUrl": "https://www.kalimera-greece.eu/zakynthos-beaches/agios-nikolaos-volimes-beach-zakynthos/",
+    "confidence": "high"
+  },
+  {
+    "id": 1224,
+    "name": "Παραλία Σαρακήνικο",
+    "verdict": "CONFIRMED",
+    "sunbeds": true,
+    "beachBar": false,
+    "evidence": "ithacorama.com and hellenic-travelgroup.com (2nd sources, ≠ round1 ithaca.gr): 'A convenient canteen serves refreshments and rents sunbeds and umbrellas for the first beach'; 'organized with a few sunbeds, umbrellas, and a snack bar.' Reviews cite sunbed sets €10-13. Locality pinned: Sarakiniko, a twin-cove beach ~3km from Vathy, Ithaca (matches lat/lng). Sunbeds confirmed; the food outlet is a canteen/snack bar → kept beachBar false.",
+    "sourceUrl": "https://ithacorama.com/listing/sarakiniko-beach/",
+    "confidence": "high"
+  },
+  {
+    "id": 1227,
+    "name": "Λούτσα",
+    "verdict": "CONFIRMED",
+    "sunbeds": true,
+    "beachBar": false,
+    "evidence": "greeka.com/ithaca/beaches/loutsa (2nd source, ≠ round1 ithaca.gr): 'The beach of Loutsa is partially organized, with only a few sun beds and umbrellas to rent. Additionally, there is also a canteen that provides you with all the necessities.' Corroborated by ithacorama.com and allovergreece.com. Locality pinned: Loutsa, a Blue Flag bay ~20 min walk from Vathy, Ithaca (matches lat/lng). Sunbeds confirmed; a canteen only → beachBar false.",
+    "sourceUrl": "https://www.greeka.com/ionian/ithaca/beaches/loutsa/",
+    "confidence": "high"
+  },
+  {
+    "id": 3104,
+    "name": "Παραλία Φιλιατρό (Κιόνι)",
+    "verdict": "REFUTED",
+    "sunbeds": false,
+    "beachBar": false,
+    "evidence": "NAME COLLISION overturned. round1 (ithaki.travelfind.gr) described the famous cosmopolitan Filiatro beach with a beach bar — but that Filiatro is ~8km south near Vathy (discovergreece: 'closest to Vathy, 15-minute drive'). THIS pin is the Kioni Filiatro. ithaca.gr/filiatro-kioni-en: 'near the entrance of the Gulf of Kioni... a modest, semi-organized beach... a canteen that functions during summer months... pebbles and small stones... fifty meters,' with no mention of sunbeds/umbrellas and no beach bar. Locality pinned: ~1km SE of Kioni village, NE Ithaca (matches lat/lng 38.444,20.697). Kioni Filiatro has only a seasonal canteen — the sunbeds/beach bar belong to the Vathy Filiatro.",
+    "sourceUrl": "https://www.ithaca.gr/en/home/interests-activities/paralies-en/filiatro-kioni-en/",
+    "confidence": "medium"
+  }
+]

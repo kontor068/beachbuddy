@@ -1,0 +1,195 @@
+{
+ "generatedAt": "2026-07-20",
+ "base": 2799,
+ "rows": [
+  {
+   "characteristic": "Access road surface (OSM disagrees — SCREEN)",
+   "uncertain": 954,
+   "base": 1500,
+   "how": "asphalt claim but OSM shows no nearby paved road — OVER-flags (screening), only strongest were downgraded",
+   "actionable": true
+  },
+  {
+   "characteristic": "Google Maps landing (wrong place)",
+   "uncertain": 420,
+   "base": 2626,
+   "how": "our name resolves to the WRONG place on Google Maps — routed to coordinates as mitigation",
+   "actionable": true
+  },
+  {
+   "characteristic": "Record confidence = low",
+   "uncertain": 385,
+   "base": 2799,
+   "how": "self-declared low confidence",
+   "actionable": true
+  },
+  {
+   "characteristic": "Google Maps landing (wrong type)",
+   "uncertain": 228,
+   "base": 2626,
+   "how": "resolves to a non-beach place (hotel/village) — weaker signal",
+   "actionable": true
+  },
+  {
+   "characteristic": "Explicit needsVerification flag",
+   "uncertain": 108,
+   "base": 2799,
+   "how": "record already tagged by an earlier pass as needing a look",
+   "actionable": true
+  },
+  {
+   "characteristic": "Water depth (type↔label contradiction)",
+   "uncertain": 103,
+   "base": 2799,
+   "how": "waterDepth.type disagrees with its own label — badge already hidden by isWaterDepthUnverified gate",
+   "actionable": true
+  },
+  {
+   "characteristic": "Source URL dead (needs re-sourcing)",
+   "uncertain": 101,
+   "base": 4180,
+   "how": "a cited evidence link is dead — provenance broken, not the value itself",
+   "actionable": true
+  },
+  {
+   "characteristic": "Terrain type (our label vs OSM surface)",
+   "uncertain": 98,
+   "base": 849,
+   "how": "our sand/pebble label disagrees with OSM surface tag (where OSM has one: 849)",
+   "actionable": true
+  },
+  {
+   "characteristic": "Organized flag (web LEANS organized, held for 2nd signal)",
+   "uncertain": 86,
+   "base": 387,
+   "how": "web search says organized but at medium confidence with no independent corroboration — most likely genuine misses; safe to apply once a 2nd source confirms",
+   "actionable": true
+  },
+  {
+   "characteristic": "Organized flag (unclear after 2 web rounds)",
+   "uncertain": 61,
+   "base": 387,
+   "how": "UNCLEAR verdict after coordinate-anchored web search — no reliable source either way",
+   "actionable": true
+  },
+  {
+   "characteristic": "Google Maps landing (unstable/no result)",
+   "uncertain": 26,
+   "base": 2626,
+   "how": "resolution flaps or returns nothing",
+   "actionable": true
+  },
+  {
+   "characteristic": "Pin location (priority mislocations)",
+   "uncertain": 15,
+   "base": 2799,
+   "how": "flagged pins on land / far from coastline / wrong island (e.g. #1942 on Rhenia) — blind moves unsafe",
+   "actionable": true
+  },
+  {
+   "characteristic": "Shade flag (false but text says natural shade)",
+   "uncertain": 2,
+   "base": 2799,
+   "how": "shade:false yet amenities mention trees/natural shade — text does not render as a chip",
+   "actionable": true
+  },
+  {
+   "characteristic": "Source URL inconclusive",
+   "uncertain": 278,
+   "base": 4180,
+   "how": "link check ambiguous (timeout/blocked)",
+   "actionable": false
+  },
+  {
+   "characteristic": "Record confidence = medium",
+   "uncertain": 123,
+   "base": 2799,
+   "how": "self-declared medium confidence (note: \"high\" covers static facts only, not live)",
+   "actionable": false
+  },
+  {
+   "characteristic": "Water depth (missing entirely)",
+   "uncertain": 111,
+   "base": 2799,
+   "how": "no waterDepth object — nothing shown",
+   "actionable": false
+  },
+  {
+   "characteristic": "Access road surface (already downgraded, honest)",
+   "uncertain": 27,
+   "base": 2799,
+   "how": "roadSurfaceUnverified=true → UI already shows \"likely easy, unverified\" (RESOLVED, informational)",
+   "actionable": false
+  },
+  {
+   "characteristic": "Orientation missing",
+   "uncertain": 2,
+   "base": 2799,
+   "how": "no coast orientation → sunset-facing + some wind context unavailable",
+   "actionable": false
+  }
+ ],
+ "stillUnclearIds": [
+  7,
+  36,
+  3028,
+  182,
+  207,
+  230,
+  263,
+  267,
+  268,
+  284,
+  295,
+  303,
+  340,
+  346,
+  355,
+  358,
+  374,
+  380,
+  722,
+  732,
+  773,
+  859,
+  860,
+  883,
+  908,
+  963,
+  980,
+  1000,
+  1026,
+  1064,
+  1091,
+  1134,
+  1175,
+  1191,
+  1311,
+  1328,
+  1356,
+  1357,
+  1371,
+  1391,
+  1480,
+  1537,
+  1550,
+  1552,
+  1565,
+  1604,
+  1624,
+  1736,
+  1861,
+  1910,
+  1939,
+  1989,
+  2043,
+  2107,
+  2156,
+  2309,
+  2317,
+  2448,
+  2500,
+  2542,
+  2681
+ ]
+}

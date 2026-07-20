@@ -1,0 +1,142 @@
+[
+  {
+    "id": 2013,
+    "name": "Πυργάκι",
+    "verdict": "CONFIRMED",
+    "sunbeds": true,
+    "beachBar": null,
+    "evidence": "Second source Greeka (independent of round-1 travelgirl.gr) confirms sunbeds/umbrellas at Pyrgaki, SW Naxos (the beach with views to Herakleia/Ios, coordinate 36.976/25.400): 'It boasts a one-digit number of umbrellas and sunbeds, while the nearby restaurant serves coffee, drinks, and snacks.' Corroborated by naxos.net/naxos.guide ('a small organized area offers well-spaced sunbeds and umbrellas'). Small operation; most of the beach unorganized. beachBar left null (nearby restaurant, not a beach bar on the sand).",
+    "sourceUrl": "https://www.greeka.com/cyclades/naxos/beaches/pyrgaki/",
+    "confidence": "high"
+  },
+  {
+    "id": 2174,
+    "name": "Όρμος Υστερνίων",
+    "verdict": "REFUTED",
+    "sunbeds": false,
+    "beachBar": false,
+    "evidence": "Second source Greeka (independent of round-1 restarttourism.gr) for Isternia beach in the Ormos bay, NW Tinos (~13km from Chora, coordinate 37.615/25.043) states plainly: 'The beach does not boast amenities such as sunbeds and umbrellas' and only 'a couple of taverns and a cafe within walking distance from the beach' (i.e. in the harbour/village, not on the sand). This aligns with round-1's straw/tamarisk natural shade and no sunbed rental. Leans unorganized/bring-your-own.",
+    "sourceUrl": "https://www.greeka.com/cyclades/tinos/beaches/isternia-beach/",
+    "confidence": "medium"
+  },
+  {
+    "id": 2293,
+    "name": "Λιμάνι Παναγιάς",
+    "verdict": "CONFIRMED",
+    "sunbeds": true,
+    "beachBar": false,
+    "evidence": "Second source hellas-beach.gr (independent of round-1 karpathos.gr) names this exact beach in Lefkos bay, Karpathos and disambiguates it from the adjacent Gialou Chorafi and the separate Kyra Panagia: 'Η παραλία της Παναγιάς το Λιμάνι έχει λίγες ομπρέλες και ξαπλώστρες' (Panagias-to-Limani beach has a few umbrellas and sunbeds). Restaurants/cafes are noted at the neighbouring Gialou Chorafi, not on this beach, so beachBar stays false.",
+    "sourceUrl": "https://hellas-beach.gr/2015/10/13/karpathos-lefkos/",
+    "confidence": "high"
+  },
+  {
+    "id": 2354,
+    "name": "Προτοκάραβος",
+    "verdict": "STILL_UNCLEAR",
+    "sunbeds": null,
+    "beachBar": null,
+    "evidence": "No independent source names a beach 'Πρωτοκάραβος/Protokaravos' on Kos. It is absent from the official Kos municipality beach directory and from the Greek Wikipedia list of Kos beaches (18 beaches enumerated, e.g. Kamari, Kefalos, Mastichari, Kardamena, Camel, Agios Theologos — none is Protokaravos). The pin (36.831/27.053) also does not cleanly match the Kefalos area round-1 cited (Kefalos/Kamari sit near 36.74/26.96). Locality cannot be pinned and there is no second-source amenity confirmation, so keep organized:false.",
+    "sourceUrl": "https://el.wikipedia.org/wiki/%CE%A0%CE%B1%CF%81%CE%B1%CE%BB%CE%AF%CE%B5%CF%82_%CE%9A%CF%89",
+    "confidence": "low"
+  },
+  {
+    "id": 2401,
+    "name": "Παραλία Λεύκες",
+    "verdict": "CONFIRMED",
+    "sunbeds": null,
+    "beachBar": true,
+    "evidence": "Second source patmosislandinfo.gr (independent of round-1 patmosweb.gr) confirms a canteen operates on Lefkes beach, Patmos (the beach reached by turning left just before Kampos): 'Στην παραλία υπάρχει μια όμορφη καντίνα για τα απαραίτητα' (at the beach there is a nice canteen for essentials). Two independent sources now agree on a beach canteen/refreshment (recorded as beachBar). No sunbed/umbrella evidence, so sunbeds left null.",
+    "sourceUrl": "https://www.patmosislandinfo.gr/patmos/beaches/lefkes/index.html",
+    "confidence": "high"
+  },
+  {
+    "id": 2418,
+    "name": "Παραλία Αλυκή",
+    "verdict": "CONFIRMED",
+    "sunbeds": true,
+    "beachBar": false,
+    "evidence": "Second source kalimera-greece.eu (independent of round-1 greeka.com) for Alyki beach below Monolithos, SW Rhodes (disambiguated by its named neighbour 'Fourni Beach, just south along the coast'): 'an unorganised beach, but there are sunbeds available' for rent, and visitors should 'bring your own water and food' — i.e. sunbed rental yes, no bar/canteen. Matches round-1's dozen-set operation.",
+    "sourceUrl": "https://www.kalimera-greece.eu/rhodes-beaches/alyki-beach-rhodes/",
+    "confidence": "high"
+  },
+  {
+    "id": 2549,
+    "name": "Παραλία Διόνι",
+    "verdict": "CONFIRMED",
+    "sunbeds": null,
+    "beachBar": true,
+    "evidence": "Second source: an independent Yandex Maps business listing (with reviews) for 'Mammos Beach Bar Dioni Katochi' places a functioning beach bar at Dioni beach, Katochi/Oiniades (Acheloos mouth, coordinate 38.347/21.100) — separate from the operator's own Facebook page cited in round-1. Local press (agriniopress) independently cites the beach-bar establishment as Dioni's main draw. Beach bar confirmed at this exact locality; no sunbed evidence, so sunbeds left null.",
+    "sourceUrl": "https://yandex.com/maps/org/mammos_beach_bar_dioni_katochi/24527735782/reviews/",
+    "confidence": "medium"
+  },
+  {
+    "id": 2555,
+    "name": "Παραλία Πλατανίτη",
+    "verdict": "CONFIRMED",
+    "sunbeds": true,
+    "beachBar": null,
+    "evidence": "Second source beachsearcher.com (independent of round-1 nafpaktos.gr) describes Platanitis beach in Aetolia-Acarnania as 'organized with restaurants, cafeterias, and sun loungers'; gtp.gr/xo.gr/buk.gr independently confirm restaurants and cafeterias directly at this ~2.5km pebble beach, a developed coastal settlement with hotels/rooms/camping. Coordinate (38.373/21.786) matches the Corinthian-Gulf Platanitis ~5km NE of Antirrio — NOT the Rhodope namesake. Sunbeds supported (medium); beachBar left null (cafeterias confirmed but not named as a beach bar).",
+    "sourceUrl": "https://beachsearcher.com/el/beach/300202078/platanitis-beach",
+    "confidence": "medium"
+  },
+  {
+    "id": 3051,
+    "name": "ΠΔΕ Πάτρα Αγ.Βασίλειος",
+    "verdict": "CONFIRMED",
+    "sunbeds": true,
+    "beachBar": true,
+    "evidence": "Second source geografikoi.gr (independent of round-1 patrasinfo.com) for Agios Vasileios beach at Rio, ~11km from Patras (Seatrac-equipped): 'Μεγάλο μέρος της παραλίας είναι οργανωμένο με ομπρέλες και ξαπλώστρες, υπάρχουν όμως και ελεύθερα τμήματα' (a large part is organized with umbrellas and loungers, with free sections too) and along the shore 'beach bars και ταβέρνες'. Both sunbeds and beach bar confirmed.",
+    "sourceUrl": "https://www.geografikoi.gr/paralies-konta-stin-patra/",
+    "confidence": "high"
+  },
+  {
+    "id": 2576,
+    "name": "Παραλία Λεβεντοχωρίου",
+    "verdict": "CONFIRMED",
+    "sunbeds": true,
+    "beachBar": false,
+    "evidence": "Second source patrasevents.gr (independent of round-1 pyrgoshotels.gr) for Leventochori beach, ~5km from Katakolo, Ileia: 'Ομπρέλες και ξαπλώστρες μαζί με την καντίνα δίνουν αρκετές επιλογές στον επισκέπτη' (umbrellas and sunbeds together with the canteen give visitors plenty of options). Sunbeds/umbrellas confirmed; refreshment is a canteen (not a full beach bar), so beachBar stays false.",
+    "sourceUrl": "https://www.patrasevents.gr/article/294856-oi-oreoteres-paralies-tis-ileias-ti-apostasi-exei-i-kathe-mia-apo-tin-patra-picsvideo",
+    "confidence": "high"
+  },
+  {
+    "id": 2588,
+    "name": "Γλυφά",
+    "verdict": "CONFIRMED",
+    "sunbeds": true,
+    "beachBar": null,
+    "evidence": "Second source restarttourism.gr (independent of round-1 exploring-greece.gr) for Glyfa beach on Alonissos (by Steni Vala, coordinate 39.195/23.927): 'large and organized beach with white pebbles ... Διαθέτει ομπρέλες και ξαπλώστρες' (it has umbrellas and sunbeds), near a small harbour with dining. Sunbeds confirmed.",
+    "sourceUrl": "https://www.restarttourism.gr/travel-news/proorismoi/thessalia/sporades/alonnisos-to-kataprasino-nisi-ton-sporadon/",
+    "confidence": "high"
+  },
+  {
+    "id": 2601,
+    "name": "Παραλία Βότση",
+    "verdict": "CONFIRMED",
+    "sunbeds": true,
+    "beachBar": null,
+    "evidence": "Second source restarttourism.gr (independent of round-1 taxidologio.gr) for Votsi cove on Alonissos (small harbour south of Patitiri, coordinate 39.150/23.876): has 'ομπρέλες και ξαπλώστρες' (umbrellas and sunbeds), with tavernas in the settlement for food. Sunbeds confirmed; beachBar left null (tavernas are in the village).",
+    "sourceUrl": "https://www.restarttourism.gr/travel-news/proorismoi/thessalia/sporades/alonnisos-to-kataprasino-nisi-ton-sporadon/",
+    "confidence": "high"
+  },
+  {
+    "id": 2614,
+    "name": "Τσουκαλιά",
+    "verdict": "CONFIRMED",
+    "sunbeds": true,
+    "beachBar": false,
+    "evidence": "Second source greecedestination.gr (independent of round-1 taxidologio.gr) for Tsoukalia, the largest north-side beach of Alonissos (famed for its sunset, old mill behind it, coordinate 39.170/23.871): 'Υπάρχουν λίγες ξαπλώστρες και ομπρέλες στην παραλία, μια καντίνα για τα απαραίτητα' (a few sunbeds and umbrellas on the beach, a canteen for essentials). Sunbeds confirmed; refreshment is a canteen, so beachBar stays false.",
+    "sourceUrl": "https://greecedestination.gr/%CF%80%CE%B1%CF%81%CE%B1%CE%BB%CE%AF%CE%B5%CF%82-%CF%83%CF%84%CE%B7%CE%BD-%CE%B1%CE%BB%CF%8C%CE%BD%CE%BD%CE%B7%CF%83%CE%BF/",
+    "confidence": "high"
+  },
+  {
+    "id": 2703,
+    "name": "Πάλτση",
+    "verdict": "STILL_UNCLEAR",
+    "sunbeds": null,
+    "beachBar": null,
+    "evidence": "Multiple independent sources (grefis.gr/reader.gr, ilovepelion.gr, taxidologio.gr, aroundpelion.com) all describe Paltsi, SE Pelion near Argalasti (coordinate 39.237/23.316), as a quiet 'alternative' beach with only 'λίγες επιλογές διαμονής και φαγητού' (a few accommodation/food options) in the settlement and a taverna — none independently confirms sunbeds/umbrellas ON the beach; the 'organized with umbrellas/sunbeds/beach bars' language in guides refers to OTHER area beaches. Round-1's seasonal-sunbed claim (pelioxenia.com) is not corroborated, so keep organized:false.",
+    "sourceUrl": "https://www.grefis.gr/%CE%BF%CE%B9-%CF%89%CF%81%CE%B1%CE%B9%CF%8C%CF%84%CE%B5%CF%81%CE%B5%CF%82-%CF%80%CE%B1%CF%81%CE%B1%CE%BB%CE%AF%CE%B5%CF%82-%CF%84%CE%BF%CF%85-%CF%80%CE%B7%CE%BB%CE%AF%CE%BF%CF%85-reader-gr/",
+    "confidence": "low"
+  }
+]
