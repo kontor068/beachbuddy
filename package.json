@@ -25,6 +25,8 @@
     "quality:beach-data": "node scripts/validateCriticalBeachData.mjs",
     "contract:check": "node scripts/checkBeachContract.mjs",
     "contract:check:full": "node scripts/checkBeachContract.mjs --detail",
+    "build:sqlite": "node --experimental-sqlite scripts/buildBeachSqlite.mjs",
+    "db:query": "node --experimental-sqlite scripts/queryBeaches.mjs",
     "quality:critical": "node scripts/runCriticalQualityChecks.mjs",
     "quality:auto": "node scripts/runCriticalQualityChecks.mjs --auto --max-attempts=3",
     "content:audit": "node scripts/auditStaticBeachContent.mjs",

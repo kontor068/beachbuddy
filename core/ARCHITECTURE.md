@@ -123,6 +123,34 @@ Full model: `reports/capacity/capacity-model.md`. In short:
   **distinct beaches**, not users. Activate with
   `VITE_FORECAST_PROXY_BASE="/api/forecast"` after a deploy-preview smoke test.
 
+## 7. Data engine — SQLite baked (built)
+
+The canonical JSON now also bakes into a single portable **SQLite** file:
+
+```bash
+npm run build:sqlite        # public/data/beaches.sqlite (~1.7 MB, git-ignored artifact)
+npm run db:query "SELECT region_id, COUNT(*) n FROM beaches GROUP BY 1 ORDER BY n DESC"
+```
+
+- `scripts/buildBeachSqlite.mjs` uses **Node 22's built-in `node:sqlite`** — no
+  native build, no npm dependency, zero cost. Every row is validated against the
+  canonical contract first (one more consumer of the single source of truth).
+- 2,799 beaches with indexes on region/rating/geo and an **accent-insensitive
+  FTS5** search (tonos-stripped, so "βαγιας" finds "Παραλία Βαγίας").
+- Gives the same data a real query engine — filters, joins, geo range scans,
+  full-text — while staying **one portable file** on the CDN/disk. It's the
+  migration foundation: when filters/search outgrow looping JSON in JS, the
+  data-access seam (`beachDataLoader`) can read this instead — no data re-model.
+
+**SQLite vs DuckDB is not a fork** — one file, two engines. SQLite for point
+lookups; **DuckDB** for analytics + native spatial, reading the very same file
+(`scripts/duckdb-queries.sql`: `ATTACH 'beaches.sqlite'` + `ST_Distance_Sphere`).
+
+**Postgres/PostGIS — deliberately NOT built now.** It needs a running server
+(real cost + ops) and buys nothing while data changes at build-time and there's
+no user-generated content. It becomes the right call the day accounts/reviews
+land — and the data-access seam means adopting it is a swap, not a rewrite.
+
 ## Gates wired
 
 `npm run contract:check` now runs as the **first step of `build`** — a dataset

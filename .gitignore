@@ -78,3 +78,9 @@ ios/App/Pods/
 .mcp.json
 docs/competitor-strategy.md
 reports/snapshots/
+
+# Baked SQLite database — a build artifact regenerated from the canonical JSON
+# via `npm run build:sqlite`; not committed (binary, 1.7MB).
+public/data/beaches.sqlite
+public/data/beaches.sqlite-wal
+public/data/beaches.sqlite-shm
