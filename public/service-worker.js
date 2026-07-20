@@ -97,6 +97,25 @@ self.addEventListener('fetch', event => {
     return;
   }
 
+  // 2b. Same-origin forecast proxy (network only)
+  // When the app routes forecasts through our own edge proxy (/api/forecast/*,
+  // enabled via VITE_FORECAST_PROXY_BASE) the request is same-origin, so the
+  // WEATHER_API_HOSTS check above no longer catches it. Apply the SAME rule: never
+  // let the SW serve a stale forecast. The app's localStorage layer owns freshness
+  // and the Netlify CDN owns shared caching — the SW just passes through to network.
+  if (url.origin === self.location.origin && url.pathname.startsWith('/api/forecast/')) {
+    event.respondWith(
+      fetch(event.request, { cache: 'no-store' }).catch(error => {
+        console.warn('[Service Worker] Forecast proxy request failed', {
+          url: event.request.url,
+          error: error instanceof Error ? error.message : String(error),
+        });
+        throw error;
+      })
+    );
+    return;
+  }
+
   // 3. Beach Dataset (Network First)
   // Beach counts and attributes must update immediately after data rebuilds.
   if (url.origin === self.location.origin && (url.pathname === '/greek_beaches.json' || url.pathname.startsWith('/data/beaches/'))) {

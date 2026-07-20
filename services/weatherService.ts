@@ -1,6 +1,7 @@
 
 import { WeatherData, ForecastItem, MarineForecast } from '../types';
 import { recordOpenMeteoCall, OpenMeteoEndpoint } from './analyticsService';
+import { activeForecastProvider } from './forecast';
 
 // --- Freshness policy (safety-critical) --------------------------------------
 // A forecast is a prediction for each hour, so a recently fetched payload still
@@ -251,7 +252,7 @@ export const getMockWeatherData = (): WeatherData => {
  */
 export const fetchWeatherData = async (lat: number, lon: number): Promise<FetchResult<WeatherData>> => {
   const cacheKey = `weather_${lat.toFixed(3)}_${lon.toFixed(3)}`;
-  const API_URL = `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&current=temperature_2m,is_day,weather_code,wind_speed_10m,wind_direction_10m,wind_gusts_10m&wind_speed_unit=ms&timezone=auto`;
+  const API_URL = activeForecastProvider.currentWeatherUrl(lat, lon);
 
   return withCache<WeatherData>(cacheKey, 'current', 'current-weather', { lat, lon, url: API_URL }, async () => {
     const data = await fetchJson<any>(API_URL, 'current-weather');
@@ -278,7 +279,7 @@ export const fetchWeatherData = async (lat: number, lon: number): Promise<FetchR
  */
 export const fetchForecastData = async (lat: number, lon: number): Promise<FetchResult<ForecastItem[]>> => {
   const cacheKey = `forecast_${lat.toFixed(3)}_${lon.toFixed(3)}`;
-  const API_URL = `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&hourly=temperature_2m,weather_code,wind_speed_10m,wind_direction_10m,wind_gusts_10m,pressure_msl,uv_index,precipitation_probability&wind_speed_unit=ms&timezone=auto`;
+  const API_URL = activeForecastProvider.hourlyForecastUrl(lat, lon);
 
   return withCache<ForecastItem[]>(cacheKey, 'hourly', 'hourly-forecast', { lat, lon, url: API_URL }, async () => {
     const data = await fetchJson<any>(API_URL, 'hourly-forecast');
@@ -332,16 +333,7 @@ export const fetchForecastData = async (lat: number, lon: number): Promise<Fetch
  */
 export const fetchMarineForecastData = async (lat: number, lon: number): Promise<FetchResult<MarineForecastItem[]>> => {
   const cacheKey = `marine_${lat.toFixed(3)}_${lon.toFixed(3)}`;
-  const hourly = [
-    'wave_height',
-    'wave_direction',
-    'wave_period',
-    'swell_wave_height',
-    'swell_wave_direction',
-    'swell_wave_period',
-    'sea_surface_temperature',
-  ].join(',');
-  const API_URL = `https://marine-api.open-meteo.com/v1/marine?latitude=${lat}&longitude=${lon}&hourly=${hourly}&timezone=auto&forecast_days=6&cell_selection=sea`;
+  const API_URL = activeForecastProvider.marineForecastUrl(lat, lon);
 
   return withCache<MarineForecastItem[]>(cacheKey, 'marine', 'marine-forecast', { lat, lon, url: API_URL }, async () => {
     const data = await fetchJson<any>(API_URL, 'marine-forecast');
