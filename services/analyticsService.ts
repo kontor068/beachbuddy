@@ -188,8 +188,22 @@ const removeStorageItem = (key: string) => {
   }
 };
 
+// The build's deploy environment. Set per Netlify context in netlify.toml:
+// "production" on main, "staging" on branch deploys, "preview" on deploy previews.
+// Unset (local `npm run build`) defaults to "production" so we never accidentally
+// kill production GA if the env var is ever missing — non-production deploys must
+// OPT OUT explicitly, which the netlify.toml context blocks do.
+const APP_ENV = import.meta.env.VITE_APP_ENV?.trim() || 'production';
+
+/** True only on the real production deploy — used to fence GA off everywhere else. */
+export const isProductionEnvironment = () => APP_ENV === 'production';
+
+// GA runs only on the production deploy: a shipped measurement id, a production Vite
+// build, AND VITE_APP_ENV === "production". This last gate is what stops a Netlify
+// branch deploy or deploy preview (which are also PROD Vite builds) from sending hits
+// into the production GA4 property and inflating real traffic.
 export const isGoogleAnalyticsConfigured = () =>
-  Boolean(GOOGLE_ANALYTICS_MEASUREMENT_ID) && import.meta.env.PROD;
+  Boolean(GOOGLE_ANALYTICS_MEASUREMENT_ID) && import.meta.env.PROD && isProductionEnvironment();
 
 const setGoogleAnalyticsDisabled = (disabled: boolean) => {
   if (!isGoogleAnalyticsConfigured() || typeof window === 'undefined') return;

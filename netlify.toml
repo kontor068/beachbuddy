@@ -45,14 +45,26 @@
 # See reports/capacity/activation-runbook.md.
 [context.deploy-preview.environment]
   VITE_FORECAST_PROXY_BASE = "/api/forecast"
+  # Non-production: disables GA (services/analyticsService.ts gate) and triggers the
+  # noindex/robots/ribbon guards (scripts/applyDeployContextGuards.mjs) at build end.
+  VITE_APP_ENV = "preview"
 
+# Branch deploys are our DEV / STAGING environment: push any non-`main` branch (we
+# recommend a long-lived `dev` branch) and Netlify serves it at <branch>--<site>.netlify.app,
+# fully isolated from production. VITE_APP_ENV="staging" keeps GA off and the deploy noindex.
+# See docs/DEV-ENVIRONMENT.md.
 [context.branch-deploy.environment]
   VITE_FORECAST_PROXY_BASE = "/api/forecast"
+  VITE_APP_ENV = "staging"
 
 [build.environment]
   # Match the local/CI toolchain (local dev and quality.yml both run Node 22)
   # so Netlify builds are byte-comparable with local clean-worktree builds.
   NODE_VERSION = "22"
+  # Deploy environment. Production (`main`) keeps this "production" so GA stays live
+  # and the site stays indexable; deploy-preview and branch-deploy contexts override
+  # it above to disable analytics and force noindex.
+  VITE_APP_ENV = "production"
   # Google Analytics 4 Measurement ID. Pinned here (not a secret — it ships in the
   # client bundle anyway) so it's version-controlled and immune to dashboard typos.
   # netlify.toml takes precedence over the UI env var of the same name.
