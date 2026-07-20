@@ -1,0 +1,182 @@
+[
+ {
+  "id": 1628,
+  "name": "Μεγάλο Μαράθι",
+  "verdict": "SAND",
+  "agreesWith": "OURS",
+  "evidence": "Messinia guides (Pylos, between Finikounda-Koroni) repeatedly call Mikro/Megalo Marathi 'two wonderful sandy beaches (αμμώδεις)'; disambiguated by Pylos/Tsapi dirt-road access matching lat/lng.",
+  "sourceUrl": "https://www.anagnostis.org/2025/06/20/mikro-kai-megalo-marathi-oi-panemorfes-mystikes-paralies-tis-messinias/",
+  "confidence": "high"
+ },
+ {
+  "id": 1630,
+  "name": "Μικρό Μαράθι",
+  "verdict": "SAND",
+  "agreesWith": "OURS",
+  "evidence": "Same Messinia cove pair as Megalo Marathi: 'The beaches are sandy... two wonderful sandy beaches, small and large Marathi'; Pylos.info/pylos-area sources confirm.",
+  "sourceUrl": "https://www.pylos.info/en/marathi-beach/",
+  "confidence": "high"
+ },
+ {
+  "id": 1658,
+  "name": "Άγιος Παύλος",
+  "verdict": "MIXED_SAND_PEBBLE",
+  "agreesWith": "NEITHER",
+  "evidence": "Amorgos guides: 'tongue of fine white pebbles' with 'a strip of sand extending into the sea', opposite Nikouria islet (matches lat/lng) - sand-and-pebble, not rock.",
+  "sourceUrl": "https://www.amorgos-island.gr/agios-pavlos/",
+  "confidence": "high"
+ },
+ {
+  "id": 1660,
+  "name": "Καμπί",
+  "verdict": "PEBBLES",
+  "agreesWith": "NEITHER",
+  "evidence": "Amorgos (near Hozoviotissa/Agia Anna, matches lat/lng): 'coarse and fine pebbles', a small pebbled nudist cove - pebbles, not rock.",
+  "sourceUrl": "https://www.amorgos-island.gr/chora-beaches-kambi/",
+  "confidence": "medium"
+ },
+ {
+  "id": 1755,
+  "name": "Foniadiko",
+  "verdict": "UNCLEAR",
+  "agreesWith": "OURS",
+  "evidence": "Remote Ios beach ('Φοντάδικο', reached by dirt road branching toward Agia Theodoti) with no published composition data found; kept our label (ours and OSM both say sand).",
+  "sourceUrl": "https://iospaths.gr/d19-2/",
+  "confidence": "low"
+ },
+ {
+  "id": 1922,
+  "name": "Σαρακήνικο",
+  "verdict": "SAND",
+  "agreesWith": "OURS",
+  "evidence": "Milos Sarakiniko (north coast, ~5km from Plaka, matches lat/lng): Wikipedia describes it as 'a narrow strip of sand between all-white volcanic rocks' - beach surface is sand though famed for surrounding white rock slabs.",
+  "sourceUrl": "https://el.wikipedia.org/wiki/%CE%A3%CE%B1%CF%81%CE%B1%CE%BA%CE%AE%CE%BD%CE%B9%CE%BA%CE%BF_%CE%9C%CE%AE%CE%BB%CE%BF%CF%85",
+  "confidence": "medium"
+ },
+ {
+  "id": 1934,
+  "name": "Βούδια",
+  "verdict": "MIXED_SAND_PEBBLE",
+  "agreesWith": "NEITHER",
+  "evidence": "Milos Voudia (near Pollonia, pink volcanic cliffs, matches lat/lng): 'pebbles beach... white pebble and pink sand', clear stones of various sizes mixed with light sand - mixed, leans pebbles, not pure sand.",
+  "sourceUrl": "https://www.greeka.com/cyclades/milos/beaches/voudia/",
+  "confidence": "medium"
+ },
+ {
+  "id": 1991,
+  "name": "Βίντζι",
+  "verdict": "SAND",
+  "agreesWith": "NEITHER",
+  "evidence": "Naxos Chora, below Portara (matches lat/lng): the smaller Chora beach, 'small stretch of sand', a man-made sandy beach for a quick swim - sand, not rock (distinct from rocky Grotta next door).",
+  "sourceUrl": "https://www.naxos.gr/vintzi-beach/?lang=en",
+  "confidence": "medium"
+ },
+ {
+  "id": 1994,
+  "name": "Γρόττα",
+  "verdict": "ROCKS",
+  "agreesWith": "OURS",
+  "evidence": "Naxos Chora north seaside (matches lat/lng): 'very rocky... a small bay strewn with a mixture of pebbles and some sand', for snorkeling rather than swimming - predominantly rock/pebble.",
+  "sourceUrl": "https://www.naxos.net/beaches/grotta/",
+  "confidence": "medium"
+ },
+ {
+  "id": 2028,
+  "name": "Δρυός",
+  "verdict": "MIXED_SAND_PEBBLE",
+  "agreesWith": "NEITHER",
+  "evidence": "Paros SE coast settlement Dryos (matches lat/lng): 'the beach of Dryos consists of sand and pebbles' - mixed, not pure pebbles.",
+  "sourceUrl": "https://www.parosislandinfo.gr/parosgenika/parosparalies/paraliadryos/index.html",
+  "confidence": "medium"
+ },
+ {
+  "id": 2129,
+  "name": "Αμπέλα",
+  "verdict": "SAND",
+  "agreesWith": "NEITHER",
+  "evidence": "Syros SW near Megas Gialos (matches lat/lng): Greeka 'a small, sandy shore with some scattered pebbles... soft sand' - predominantly sand, not pebbles.",
+  "sourceUrl": "https://www.greeka.com/cyclades/syros/beaches/ampela/",
+  "confidence": "medium"
+ },
+ {
+  "id": 2146,
+  "name": "Παραλία Λωτό",
+  "verdict": "MIXED_SAND_PEBBLE",
+  "agreesWith": "NEITHER",
+  "evidence": "Syros western coast Lotos (matches lat/lng): 'partly organized seashore with sand and pebbles... soft sand and pebbles around the shore' - mixed, not pure pebbles.",
+  "sourceUrl": "https://www.greeka.com/cyclades/syros/beaches/",
+  "confidence": "medium"
+ },
+ {
+  "id": 2259,
+  "name": "Κασόνια",
+  "verdict": "SAND",
+  "agreesWith": "NEITHER",
+  "evidence": "Kalymnos town beach (Kasonia, closest to Pothia, matches lat/lng): 'a long sandy beach... strewn with sand and pebbles', with tamarisk trees - predominantly sand, not pebbles.",
+  "sourceUrl": "https://www.greeka.com/dodecanese/kalymnos/beaches/town-beach/",
+  "confidence": "medium"
+ },
+ {
+  "id": 2296,
+  "name": "Ποτάλι",
+  "verdict": "MIXED_SAND_PEBBLE",
+  "agreesWith": "NEITHER",
+  "evidence": "Karpathos west coast near Kato Lefkos (matches lat/lng): 'characterized by gray pebbles and coarse sand in some places', with some rocks at the sides in the sea - pebble/coarse-sand, not primarily rock.",
+  "sourceUrl": "https://karpathosinfo.com/potali-beach/",
+  "confidence": "medium"
+ },
+ {
+  "id": 2337,
+  "name": "Θερμά",
+  "verdict": "MIXED_SAND_PEBBLE",
+  "agreesWith": "NEITHER",
+  "evidence": "Kos SE hot-springs beach (Embros Thermae after Agios Fokas, matches lat/lng): 'mostly covered with dark sand and stones... dark pebbles' from volcanic activity - mixed dark sand and pebbles/stones, not pure sand.",
+  "sourceUrl": "https://kos.gr/beaches-in-kos-island/therma-beach",
+  "confidence": "medium"
+ },
+ {
+  "id": 2374,
+  "name": "Κισσίρια",
+  "verdict": "UNCLEAR",
+  "agreesWith": "OURS",
+  "evidence": "Obscure northern Lipsi beach (listed by name in the municipality/CityMobile catalog but with no composition description); no reliable surface source found, kept our label.",
+  "sourceUrl": "https://lipsi.by.citymobile.gr/en/taxonomy/term/67",
+  "confidence": "low"
+ },
+ {
+  "id": 2375,
+  "name": "Κοίμηση",
+  "verdict": "PEBBLES",
+  "agreesWith": "NEITHER",
+  "evidence": "Lipsi, below the Church of Koimisis (SW/NW, reached via carved path, matches lat/lng): 'characterized by pebbles... pebble and gravel' - pebbles, not sand.",
+  "sourceUrl": "https://www.tripadvisor.com/Attraction_Review-g1152207-d19080653-Reviews-Kimisi_Beach-Lipsi_Dodecanese_South_Aegean.html",
+  "confidence": "medium"
+ },
+ {
+  "id": 2376,
+  "name": "Κορακιά",
+  "verdict": "UNCLEAR",
+  "agreesWith": "OURS",
+  "evidence": "Obscure eastern Lipsi cove not featured in any beach guide (Korakia hits return other regions - Lavreotiki/Crete); could not pin the Lipsi one, kept our label.",
+  "sourceUrl": "https://lipsi.gov.gr/el/paralies-paralies-paralies",
+  "confidence": "low"
+ },
+ {
+  "id": 2383,
+  "name": "Πνιγμένος",
+  "verdict": "UNCLEAR",
+  "agreesWith": "OURS",
+  "evidence": "Obscure Lipsi cove absent from all beach listings/guides; no composition source found, kept our label.",
+  "sourceUrl": "https://lipsi.gov.gr/el/paralies-paralies-paralies",
+  "confidence": "low"
+ },
+ {
+  "id": 2384,
+  "name": "Στίφη",
+  "verdict": "UNCLEAR",
+  "agreesWith": "OURS",
+  "evidence": "Obscure Lipsi cove absent from all beach listings/guides; no composition source found, kept our label.",
+  "sourceUrl": "https://lipsi.gov.gr/el/paralies-paralies-paralies",
+  "confidence": "low"
+ }
+]

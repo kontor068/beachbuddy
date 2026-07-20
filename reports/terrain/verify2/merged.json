@@ -1,0 +1,884 @@
+[
+ {
+  "id": 10,
+  "name": "Παραλία Γλυφάδας Ακτή Γ",
+  "verdict": "SAND",
+  "agreesWith": "OURS",
+  "evidence": "Glyfada's organized Asteras/Akti beaches are described as sandy ('unique sandy beach with turquoise waters'), though the far-north edge is slightly pebbly; disambiguated to the Glyfada Riviera coast (37.86N).",
+  "sourceUrl": "https://www.mytraveler.gr/place/asteras-beach-of-glyfada",
+  "confidence": "medium"
+ },
+ {
+  "id": 24,
+  "name": "Νησίδα Φλέβες",
+  "verdict": "SAND",
+  "agreesWith": "OURS",
+  "evidence": "'Paralia Fleves is covered with sand and rocks' on this rocky uninhabited islet off Vouliagmeni; the ~40m beach pocket itself is sandy (rocks form the surrounding shore), so sand is the beach material.",
+  "sourceUrl": "https://beaches-searcher.com/en/beach/300203285/paralia-fleves",
+  "confidence": "medium"
+ },
+ {
+  "id": 3025,
+  "name": "Άλιμος Λουτρά",
+  "verdict": "SAND",
+  "agreesWith": "OURS",
+  "evidence": "Alimos (Loutra) organized Athens-Riviera beach is 'covered with white sand and fine pebbles'; predominantly white sand; disambiguated to the Loutra tram-stop beach in Alimos.",
+  "sourceUrl": "https://seatrac.gr/en/beach-directory/alimos-loutra/",
+  "confidence": "high"
+ },
+ {
+  "id": 35,
+  "name": "Όρμος Ληδάκι",
+  "verdict": "UNCLEAR",
+  "agreesWith": "OURS",
+  "evidence": "No beach-specific source found for 'Ληδάκι' cove on the Nea Makri/Rafina coast (38.03N); neighbouring coves (Ag. Andreas) are sand+fine-pebble, but the exact beach could not be pinned, so we keep our current label.",
+  "sourceUrl": "https://beachsearcher.com/el/greece/attica/-/47081/nea-makri",
+  "confidence": "low"
+ },
+ {
+  "id": 3006,
+  "name": "Πόρτο Ράφτη Αυλάκι",
+  "verdict": "MIXED_SAND_PEBBLE",
+  "agreesWith": "NEITHER",
+  "evidence": "Avlaki (Markopoulo, blue-flag) is an organized beach 'with sand' but 'the shore is pebbly' turning sandy in the sea; sand-and-pebble mix, not pure pebbles; disambiguated to the Porto Rafti/Markopoulo Avlaki (37.87N).",
+  "sourceUrl": "https://mtctaxi.gr/oi-kalyteres-paralies-sto-porto-rafti/",
+  "confidence": "medium"
+ },
+ {
+  "id": 3028,
+  "name": "Ωρωπός Σκάλα Ωρωπού",
+  "verdict": "PEBBLES",
+  "agreesWith": "OURS",
+  "evidence": "Skala Oropou beach is a 'soft sandy shore interspersed with pebbles... beach is pebbly, water shoes recommended, pebbles the main characteristic'; disambiguated to Skala Oropou on the North Euboean Gulf (38.32N).",
+  "sourceUrl": "https://el.wikipedia.org/wiki/%CE%A3%CE%BA%CE%AC%CE%BB%CE%B1_%CE%A9%CF%81%CF%89%CF%80%CE%BF%CF%8D",
+  "confidence": "medium"
+ },
+ {
+  "id": 86,
+  "name": "Λουτρά",
+  "verdict": "SAND",
+  "agreesWith": "OURS",
+  "evidence": "Loutra (Souvala, Aegina) is 'sandy and organized' though described as 'a small beach of coarse sand and shingle'; predominantly sand; disambiguated to Loutra Souvalas on Aegina's north coast (37.77N).",
+  "sourceUrl": "https://argosaronikos.gr/aigina/paralies/loutra/",
+  "confidence": "medium"
+ },
+ {
+  "id": 3022,
+  "name": "Αίγινα Μαραθώνας",
+  "verdict": "SAND",
+  "agreesWith": "OURS",
+  "evidence": "Marathonas A/B on Aegina is a 'long sandy beach with crystal-clear shallow water', both sections sandy and family-friendly; disambiguated to Marathonas 4km from Aegina town (37.72N).",
+  "sourceUrl": "https://www.greeka.com/saronic/aegina/beaches/marathon/",
+  "confidence": "high"
+ },
+ {
+  "id": 132,
+  "name": "Παραλία Καλάμι",
+  "verdict": "PEBBLES",
+  "agreesWith": "NEITHER",
+  "evidence": "Kalami (Kythira) 'consists of pebbles and some sand... it has fine pebbles', a hard-to-reach cove reached from Mylopotamos; disambiguated to the center-west Kythira Kalami below Mylopotamos (36.25N).",
+  "sourceUrl": "https://www.kithera.gr/en/kythira/kalami-beach/",
+  "confidence": "medium"
+ },
+ {
+  "id": 135,
+  "name": "Παραλία Λίμνη (Παλαιόπολη)",
+  "verdict": "MIXED_SAND_PEBBLE",
+  "agreesWith": "NEITHER",
+  "evidence": "Limni/Paleopoli beach is 'a unique blend of crimson pebbles and pristine white sands... red and white fine pebbles'; genuine sand-and-pebble mix, not sand-only; disambiguated to the Paleopoli bay, Kythira (36.22N).",
+  "sourceUrl": "https://visitkythera.com/beaches/limni-of-paleopoli/",
+  "confidence": "medium"
+ },
+ {
+  "id": 139,
+  "name": "Φυρή Άμμος (Κάλαμος)",
+  "verdict": "MIXED_SAND_PEBBLE",
+  "agreesWith": "NEITHER",
+  "evidence": "Fyri Ammos (Kalamos) is 'a long beach with red sand and pebbles' (blue-flag, name literally = red sand); definitely not rocks; disambiguated to the SE-Kythira Fyri Ammos near Kalamos (36.17N).",
+  "sourceUrl": "https://www.kythera.gr/en/whattosee/beaches/fyri-ammos-kalamos/",
+  "confidence": "high"
+ },
+ {
+  "id": 164,
+  "name": "Παραλία Αγίου Νικολάου",
+  "verdict": "PEBBLES",
+  "agreesWith": "NEITHER",
+  "evidence": "North Agios Nikolaos beach on Salamina is classified 'pebble' ('a great beach with pebbles', blue-flag organized); disambiguated to the north Salamina Agios Nikolaos (37.88N).",
+  "sourceUrl": "https://www.allovergreece.com/Beaches/Descr/57/502/en",
+  "confidence": "medium"
+ },
+ {
+  "id": 176,
+  "name": "Μικρή Ζωγεριά",
+  "verdict": "MIXED_SAND_PEBBLE",
+  "agreesWith": "NEITHER",
+  "evidence": "The small/secluded Zogeria cove has 'a mixture of sand, dirt, and pebbles where the water breaks' (the large cove is coarse sand); disambiguated to Mikri Zogeria on Spetses' north side (37.28N).",
+  "sourceUrl": "https://www.greeka.com/saronic/spetses/beaches/zogeria/",
+  "confidence": "medium"
+ },
+ {
+  "id": 189,
+  "name": "Παραλία Πόρτο Γερμενό",
+  "verdict": "PEBBLES",
+  "agreesWith": "NEITHER",
+  "evidence": "Porto Germeno is 'a pebble beach... covered in small beige pebbles, the seabed very fine pebbles', split into three beaches of sand-and-small-pebble mix but pebble-dominant; disambiguated to Porto Germeno, Gulf of Corinth (38.15N).",
+  "sourceUrl": "https://beaches-searcher.com/en/beach/300203003/porto-germeno-beach",
+  "confidence": "medium"
+ },
+ {
+  "id": 277,
+  "name": "Παραλία Πολιτικών",
+  "verdict": "MIXED_SAND_PEBBLE",
+  "agreesWith": "NEITHER",
+  "evidence": "Politika beach is 'covered in fine pebbles mixed with dark sand... dark sand punctuated by white and gray pebbles'; genuine sand-and-pebble mix; disambiguated to Politika, central Evia N-Euboean Gulf (38.77N).",
+  "sourceUrl": "https://theblogofdimi.com/politika-beach-evia-relaxing-spot-near-chalkida/",
+  "confidence": "medium"
+ },
+ {
+  "id": 306,
+  "name": "Σχοινοδαύλεια",
+  "verdict": "SAND",
+  "agreesWith": "OURS",
+  "evidence": "Schinodavlia (aka Agios Dimitrios) is 'listed among the sandy beaches of Karystos' with shallow warm clean water; disambiguated to the south-Evia/Karystos gorge beach (38.14N).",
+  "sourceUrl": "https://karystion.gr/en/travel-experiences/sandy-beaches",
+  "confidence": "medium"
+ },
+ {
+  "id": 350,
+  "name": "Παραλία Χιλιαδού",
+  "verdict": "PEBBLES",
+  "agreesWith": "NEITHER",
+  "evidence": "Chiliadou (Fokida/Dorida, near Nafpaktos) is 'a very beautiful beach with pebble outside and sand in the sea' - the walking shore is pebble; disambiguated to the Fokida Chiliadou 7km from Nafpaktos (38.39N), not the Evia one.",
+  "sourceUrl": "https://beachgreece.com/beach/fokida/efpalio/chiliadou-beach/",
+  "confidence": "medium"
+ },
+ {
+  "id": 390,
+  "name": "Diaporti",
+  "verdict": "PEBBLES",
+  "agreesWith": "NEITHER",
+  "evidence": "Diaporti (Vourvourou, Sithonia) mostly described as 'gravel and pebbles with a pebbled sea bottom... a pebble/stone beach not really suitable for lying down' (one outlier says fine white sand); disambiguated to Diaporti by the Pounta islet, Sithonia (40.01N).",
+  "sourceUrl": "https://chalkidikihub.gr/en/beaches/diaporti-beach-sithonia",
+  "confidence": "low"
+ },
+ {
+  "id": 496,
+  "name": "Παραλία Πύργου",
+  "verdict": "PEBBLES",
+  "agreesWith": "NEITHER",
+  "evidence": "Pirgos beach (Halkidiki) is 'a secluded, pebbly beach with a few farmhouses among plane trees and fishing boats' per Visit Halkidiki; disambiguated to Pyrgos near Metamorfosi/Nikiti on the Toroneos gulf neck (40.25N).",
+  "sourceUrl": "https://www.visit-halkidiki.gr/portfolio-view/pirgos-beach/",
+  "confidence": "medium"
+ },
+ {
+  "id": 3007,
+  "name": "Αμμουλιανή",
+  "verdict": "SAND",
+  "agreesWith": "OURS",
+  "evidence": "Ammouliani island beaches (Alykes, Megali Ammos, Karagatsia) are 'white/golden sand with crystal-clear shallow water'; disambiguated to Ammouliani island off the Athos gulf (40.33N).",
+  "sourceUrl": "https://nikana.gr/en/tourist-guide/athos/beaches/3826/the-most-beautiful-beaches-on-ammouliani-island",
+  "confidence": "high"
+ },
+ {
+  "id": 527,
+  "name": "Άργιλος",
+  "verdict": "SAND",
+  "agreesWith": "OURS",
+  "evidence": "Argilos is a clay/sand beach type (named for the argilos-clay used for natural spa); Greek guides describe it as an ammoudia, not pebble/rock. Locality note: the well-documented Argilos-with-clay is the East-Crete/Xerokampos one; the Chania/SW-coast beach at these coords is same clay-sand class. Our label (άμμος) and OSM (SAND) agree.",
+  "sourceUrl": "https://agonaskritis.gr/%CE%AC%CF%81%CE%B3%CE%B9%CE%BB%CE%BF%CF%82-%CE%B7-%CF%80%CE%B1%CF%81%CE%B1%CE%BB%CE%AF%CE%B1-%CF%84%CE%B7%CF%82-%CE%BA%CF%81%CE%AE%CF%84%CE%B7%CF%82-%CF%80%CE%BF%CF%85-%CE%BA%CF%81%CF%8D%CE%B2%CE%B5/",
+  "confidence": "medium"
+ },
+ {
+  "id": 535,
+  "name": "Κυανή Ακτή",
+  "verdict": "SAND",
+  "agreesWith": "NEITHER",
+  "evidence": "Grecorama/Terrabook: Kiani Akti at Kalyves/Souda (Apokoronas, Chania, 17km E of Chania) is a large sandy beach with fine sand (ψιλή άμμος) and shallow water. Coords match Kalyves. Both our label (βράχια) and OSM (ROCKS) are wrong; our own ourTypes [fine_sand,coarse_sand] were actually correct.",
+  "sourceUrl": "http://grecorama.com/en/kyani-akti-beach-kyani-cote/",
+  "confidence": "high"
+ },
+ {
+  "id": 555,
+  "name": "Παραλία Κουταλάς",
+  "verdict": "PEBBLES",
+  "agreesWith": "NEITHER",
+  "evidence": "Discover Crete / Vamos Village: Koutalas at Kokkino Chorio (Cape Drapano, Apokoronas, ~27km E of Chania) 'έχει βότσαλα και μεγάλες πέτρες' with a rocky seabed and a small sand strip. Coords match. Predominant surface is pebbles/large stones — not the ROCKS both our label (βράχια) and OSM claim.",
+  "sourceUrl": "https://www.discovercrete.com/el/places-to-go/koutalas-beach-a-secluded-haven",
+  "confidence": "medium"
+ },
+ {
+  "id": 642,
+  "name": "Γούβες",
+  "verdict": "SAND",
+  "agreesWith": "NEITHER",
+  "evidence": "cretanbeaches/okaycrete: Kato Gouves (18km E of Heraklion) has fine sand (λεπτή άμμος) and shallow water. Coords match Gouves. Both our label (βότσαλα) and OSM (PEBBLES) are wrong; ourTypes [fine_sand] was correct.",
+  "sourceUrl": "https://www.okaycrete.com/article/Kato-gouves.html",
+  "confidence": "high"
+ },
+ {
+  "id": 645,
+  "name": "Σταλίδα",
+  "verdict": "SAND",
+  "agreesWith": "NEITHER",
+  "evidence": "explorecrete/cretanbeaches: Stalida (Stalis, near Malia, Heraklion) is a ~3km organized beach of fine sand (ψιλή άμμος) with shallow water. Coords match. Both our label (βότσαλα) and OSM (PEBBLES) are wrong; ourTypes [fine_sand] was correct.",
+  "sourceUrl": "https://www.explorecrete.com/heraklion-region/stalis-stalida",
+  "confidence": "high"
+ },
+ {
+  "id": 686,
+  "name": "Λίμνη",
+  "verdict": "SAND",
+  "agreesWith": "OURS",
+  "evidence": "cretanbeaches: the Skaleta/Sfakaki coast (Almyros gulf, ~12km NE of Rethymno) at these coords is golden fine sand (χρυσή ψιλή άμμος), a Caretta nesting shore. Disambiguated to the Rethymno gulf (lng 24.688 is E of Rethymno town, not Georgioupoli). Our label (άμμος) and OSM (SAND) agree.",
+  "sourceUrl": "https://www.cretanbeaches.com/el/thalassios-tourismos/paralies-kentrikis-kritis-rethymno/paralia-sfakaki",
+  "confidence": "medium"
+ },
+ {
+  "id": 690,
+  "name": "Παραλία Ανατολικά",
+  "verdict": "SAND",
+  "agreesWith": "OURS",
+  "evidence": "cretanbeaches/originalcrete: these coords (35.148/24.500) are the Agios Pavlos–Akoumiani Gialia dune coast of S Rethymno (Ammolofoi/Alatsogkremnoi), described as expansive αμμουδιά with sand dunes. Disambiguated to Agios Pavlos (Sachtouria), not Plakias. Our label (άμμος) and OSM (SAND) agree.",
+  "sourceUrl": "https://www.originalcrete.gr/en/article/agios-paulos",
+  "confidence": "medium"
+ },
+ {
+  "id": 696,
+  "name": "Παραλία Κεφάλα",
+  "verdict": "SAND",
+  "agreesWith": "OURS",
+  "evidence": "cretanbeaches/originalcrete: Kefala is the NW end of the Akoumiani Gialia / Agios Pavlos sandy-dune stretch (S Rethymno), a sandy shore (with some scattered pebbles near the Agios Pavlos hamlet). Coords ~1km from id 690, same dune system. Our label (άμμος) and OSM (SAND) agree.",
+  "sourceUrl": "https://www.cretanbeaches.com/el/thalassios-tourismos/paralies-kentrikis-kritis-rethymno/ammolofoi-agiou-paulou-triopetra",
+  "confidence": "medium"
+ },
+ {
+  "id": 705,
+  "name": "Σκίνος",
+  "verdict": "MIXED_SAND_PEBBLE",
+  "agreesWith": "NEITHER",
+  "evidence": "cretanbeaches: Skinos, the second beach of Plakias (Sellia, W of the fishing shelter), 'has sand and many small rocks/stones, ideal for snorkeling; organized near the village, rockier to the west.' Sand base with pebbles/small rocks = mixed, not the pure PEBBLES our label (βότσαλα) and OSM state.",
+  "sourceUrl": "https://www.cretanbeaches.com/el/thalassios-tourismos/paralies-kentrikis-kritis-rethymno/paralia-skinos-ston-plakia",
+  "confidence": "medium"
+ },
+ {
+  "id": 722,
+  "name": "Άμμος Ξερόκαμπου",
+  "verdict": "SAND",
+  "agreesWith": "NEITHER",
+  "evidence": "cretanbeaches/originalcrete: this is the sandy sector of Xerokampos (Siteia, Lasithi) — the name itself is 'Ammos' (sand) and the main beaches here (Mazida Ammos) are white/golden sand. Both our label (βότσαλα) and OSM (PEBBLES) wrong; ourTypes [fine_sand] correct.",
+  "sourceUrl": "https://www.cretanbeaches.com/el/thalassios-tourismos/anatoliki-kriti-lasithi/paralia-mazida-ammos-xerokampos",
+  "confidence": "medium"
+ },
+ {
+  "id": 765,
+  "name": "Ποταμός Ξερόκαμπου",
+  "verdict": "PEBBLES",
+  "agreesWith": "OURS",
+  "evidence": "cretanbeaches: the 'Potamos' beach at the mouth of the Katsounaki gorge (Xerokampos, Siteia) is a beach 'με μεγάλα βότσαλα' (large pebbles) with a rocky seabed, not family-friendly. Coords match. Our label (βότσαλα) and OSM (PEBBLES) agree; ourTypes [fine_sand] was the outlier.",
+  "sourceUrl": "https://www.cretanbeaches.com/el/thalassios-tourismos/anatoliki-kriti-lasithi/paralia-xerokampos",
+  "confidence": "high"
+ },
+ {
+  "id": 816,
+  "name": "Μικρή παραλία",
+  "verdict": "PEBBLES",
+  "agreesWith": "OURS",
+  "evidence": "hotelpotos/afrodite-studios: ~150m from the central Pefkari beach (S Thasos, near Potos) there is 'a second, pebbly and completely unorganized beach' — the small beach at these coords. Our label (βότσαλα) and OSM (PEBBLES) agree; ourTypes [fine_sand] was the outlier.",
+  "sourceUrl": "https://www.hotelpotos.com/gr/pefkari-beach/",
+  "confidence": "medium"
+ },
+ {
+  "id": 819,
+  "name": "Πευκάρι",
+  "verdict": "MIXED_SAND_PEBBLE",
+  "agreesWith": "NEITHER",
+  "evidence": "thassos-view/tripadvisor: Pefkari (S Thasos) 'combines soft sand with small pebbles' — sand is the main surface with pebbles/small rocks at the edges (aqua shoes advised). Coords match. Genuinely mixed, not the pure PEBBLES our label (βότσαλα) and OSM claim.",
+  "sourceUrl": "https://www.thassos-view.com/places/beaches/pefkari-beach",
+  "confidence": "medium"
+ },
+ {
+  "id": 841,
+  "name": "Καρνάγιο",
+  "verdict": "ROCKS",
+  "agreesWith": "NEITHER",
+  "evidence": "thassos-view/karnagiothassos: Karnagio at the end of Thasos-town (Limenas) old harbour sits 'at the edge of the last rock' — a rocky swim spot/beach bar, not sandy. Coords match Limenas. Both our label (άμμος) and OSM (SAND) wrong; ourTypes [rocks,pebbles] closer.",
+  "sourceUrl": "http://www.karnagiothassos.gr/en/",
+  "confidence": "medium"
+ },
+ {
+  "id": 842,
+  "name": "Κλίσμα",
+  "verdict": "PEBBLES",
+  "agreesWith": "OURS",
+  "evidence": "Greeka: Klisma (near Skala Kalirachi, W coast Thasos, 22km SW of Limenas) is 'a beautiful pebbled beach... covered with large smooth pebbles' (aqua shoes recommended). Coords match. Our label (βότσαλα) and OSM (PEBBLES) agree; ourTypes [fine_sand] was the outlier.",
+  "sourceUrl": "https://www.greeka.com/eastern-aegean/thassos/beaches/klisma/",
+  "confidence": "high"
+ },
+ {
+  "id": 852,
+  "name": "Σκάλα Πρίνου",
+  "verdict": "SAND",
+  "agreesWith": "NEITHER",
+  "evidence": "thassos-view/go-thassos: Skala Prinou (Dasyllion, N Thasos, 15km from port) is a white/fine sandy beach (blue flag), shallow and waveless. Coords match. Both our label (βότσαλα) and OSM (PEBBLES) wrong; ourTypes [fine_sand] correct.",
+  "sourceUrl": "https://www.go-thassos.gr/gr/about-thassos/places/skala-prinos",
+  "confidence": "high"
+ },
+ {
+  "id": 893,
+  "name": "Δεή πλους",
+  "verdict": "UNCLEAR",
+  "agreesWith": "OURS",
+  "evidence": "Name is garbled/untraceable; coords sit in the Plataria bay (Thesprotia) where the 1.5km main beach is golden sand but nearby coves (Gata/Kalami) are coarse/fine pebbles. Could not pin this exact spot to one source, so retain our label; our label (βότσαλα) and OSM (PEBBLES) already agree.",
+  "sourceUrl": "https://www.visit-thesprotia.gr/item/%CF%80%CE%B1%CF%81%CE%B1%CE%BB%CE%AF%CE%B1-%CF%80%CE%BB%CE%B1%CF%84%CE%B1%CF%81%CE%B9%CE%AC%CF%82/",
+  "confidence": "low"
+ },
+ {
+  "id": 3013,
+  "name": "Γουβιά",
+  "verdict": "PEBBLES",
+  "agreesWith": "OURS",
+  "evidence": "discover-corfu: Gouvia Beach (sheltered bay, 8km N of Corfu Town) is 'mostly small pebbles and shingle, with some patches of coarse sand... not a fine sand beach.' Coords match. Our label (βότσαλα) and OSM (PEBBLES) agree.",
+  "sourceUrl": "https://discover-corfu.com/beaches/gouvia/",
+  "confidence": "high"
+ },
+ {
+  "id": 1020,
+  "name": "Αρκουδάκι",
+  "verdict": "PEBBLES",
+  "agreesWith": "OURS",
+  "evidence": "paxosinfo/greekvillaholidays: Arkoudaki (N Paxos, near Lakka) is a pebble beach with a tented area by flat rocks for sunbathing; the swimmable beach surface is pebbles (some call it 'rocky' for the flanking flat rocks). Coords match. Our label (βότσαλα) and OSM (PEBBLES) agree.",
+  "sourceUrl": "https://www.paxosinfo.com/paxos-greece/paxos-beaches.html",
+  "confidence": "medium"
+ },
+ {
+  "id": 1026,
+  "name": "Δεύτερη Σπιάντζα",
+  "verdict": "PEBBLES",
+  "agreesWith": "OURS",
+  "evidence": "cycladia/sandee: the Paxos 'spiantzes' near Gaios are small pebbly beaches enclosed by low rocky cliffs; Spiantza is 'a small pebbly beach' with translucent water. Coords match (SE of Gaios). Our label (βότσαλα) and OSM (PEBBLES) agree.",
+  "sourceUrl": "https://www.cycladia.com/best-beaches-greece/paxi",
+  "confidence": "medium"
+ },
+ {
+  "id": 1056,
+  "name": "Αγία Τριάδα",
+  "verdict": "MIXED_SAND_PEBBLE",
+  "agreesWith": "NEITHER",
+  "evidence": "Agia Triada is the port/settlement area of Othonoi (Ammos village, with Ammos Hotel + 'Ammos Beach Bar Agia Triada'); the island's main port beach 'consists of fine sand mixed with white pebbles'. Disambiguated to Othonoi (not the Corfu-Palaiokastritsa or Thessaloniki Agia Triada) via lat/lng 39.84/19.41.",
+  "sourceUrl": "https://holidaysindassia.com/corfu-places-to-visit/beach/othonoi/",
+  "confidence": "medium"
+ },
+ {
+  "id": 1073,
+  "name": "Αγία Παρασκευή",
+  "verdict": "PEBBLES",
+  "agreesWith": "NEITHER",
+  "evidence": "Kefalonia's Agia Paraskevi between Sami and Agia Efimia is a pebbly beach ('white pebbles and blue waters, descend a few steps'). Disambiguated to Kefalonia (not the Thesprotia/Perdika beach of the same name) via coords near Sami 38.28/20.62.",
+  "sourceUrl": "https://greece.terrabook.com/kefalonia/page/agia-paraskevi-2/",
+  "confidence": "high"
+ },
+ {
+  "id": 1121,
+  "name": "Παραλία Κόλπος Κορμοράνων",
+  "verdict": "PEBBLES",
+  "agreesWith": "OURS",
+  "evidence": "Kormoranon (Cormorant Bay) is 'a beautiful secluded pebbly cove' on the Fanari-to-Argostoli coastal road near Lassi; matches lat/lng 38.19/20.47. Our label (βότσαλα) and OSM (PEBBLES) both correct.",
+  "sourceUrl": "https://oskars.gr/kefalonia/kefalonia-beaches",
+  "confidence": "medium"
+ },
+ {
+  "id": 1125,
+  "name": "Πλατιά Άμμος",
+  "verdict": "PEBBLES",
+  "agreesWith": "NEITHER",
+  "evidence": "Platia Ammos (Paliki peninsula, ~400 steps down) 'shore is carpeted with fine white pebbles, though some areas have pebbles so small they create the impression of a sandy beach'. Name means 'wide sand' but it is pebble. Coords 38.22/20.35 = Paliki west coast.",
+  "sourceUrl": "https://www.travel.gr/en/experiences-ee/platia-ammos-kefalonia-a-virgin-paradise-beach/",
+  "confidence": "high"
+ },
+ {
+  "id": 1181,
+  "name": "Φανάρι",
+  "verdict": "PEBBLES",
+  "agreesWith": "NEITHER",
+  "evidence": "Fanari on Meganisi is 'characterized by fine white pebbles... has the finest pebbles of all the beaches on the island'. Disambiguated to Meganisi via coords 38.67/20.81 (cape Atherino).",
+  "sourceUrl": "https://www.allovergreece.com/Beaches/Descr/86/830/en",
+  "confidence": "high"
+ },
+ {
+  "id": 1207,
+  "name": "Μεγάλη Μυζήθρα",
+  "verdict": "PEBBLES",
+  "agreesWith": "NEITHER",
+  "evidence": "Greek Wikipedia/guides: the Megali Myzithra beach strip below the white conical Myzithres rocks is 'κυρίως καλυμμένη με βότσαλα' (mostly covered with pebbles), boat-access only. Coords 37.65/20.82 = SW Zakynthos cliffs.",
+  "sourceUrl": "https://el.wikipedia.org/wiki/%CE%9C%CE%B5%CE%B3%CE%AC%CE%BB%CE%B7_%CE%9C%CF%85%CE%B6%CE%AE%CE%B8%CF%81%CE%B1_%CE%96%CE%B1%CE%BA%CF%8D%CE%BD%CE%B8%CE%BF%CF%85",
+  "confidence": "high"
+ },
+ {
+  "id": 1264,
+  "name": "Ναγός",
+  "verdict": "MIXED_SAND_PEBBLE",
+  "agreesWith": "NEITHER",
+  "evidence": "Chios Travel Guide (Nagos, NE Chios near Kardamyla): 'αποτελείται από μικρά βότσαλα ενώ στο εσωτερικό έχει χοντρή άμμο' (small pebbles with coarse sand in the inner part). Coords 38.56/26.08 = NE Chios.",
+  "sourceUrl": "https://chios.gr/el/anaklipse-ti-xio/paralies/voria-chios/nagos",
+  "confidence": "high"
+ },
+ {
+  "id": 1273,
+  "name": "Παραλία Μυρσινίδι",
+  "verdict": "MIXED_SAND_PEBBLE",
+  "agreesWith": "NEITHER",
+  "evidence": "Chios.gr (Mersinidi, Vrontados near the monastery): two beaches N and S of the church, 'αποτελούνται από άμμο και βότσαλο' (sand and pebbles), unorganized with natural shade. Coords 38.43/26.14 = Vrontados.",
+  "sourceUrl": "https://www.chios.gr/el/anaklipse-ti-xio/paralies/poli-chios/mersinidi",
+  "confidence": "high"
+ },
+ {
+  "id": 1276,
+  "name": "Σαλάγωνα",
+  "verdict": "MIXED_SAND_PEBBLE",
+  "agreesWith": "NEITHER",
+  "evidence": "Chios.gr (Salagona, SW Chios ~6km from Pyrgi): 'a quiet, relatively isolated beach with coarse sand and fine pebbles'. Coords 38.22/25.91 = SW Chios (not the Karfas fine-sand beach). ",
+  "sourceUrl": "https://www.chios.gr/en/anaklipse-ti-xio/paralies/notia-chios/salagona",
+  "confidence": "high"
+ },
+ {
+  "id": 1303,
+  "name": "Παραλία Ξυλοσύρτη",
+  "verdict": "PEBBLES",
+  "agreesWith": "NEITHER",
+  "evidence": "Xylosyrtis (S Ikaria, S of Agios Kirykos): 'a peaceful, long, pebble beach... white beach with glittering pebbles'. Described as pebble-rock but predominantly pebbles. Coords 37.59/26.25 = Xylosyrtis village. Our label βράχια and OSM ROCKS both overstate the rock.",
+  "sourceUrl": "https://ecotourism-greece.com/activity/xylosyrtis-beach/",
+  "confidence": "high"
+ },
+ {
+  "id": 1474,
+  "name": "Γκλιάτη",
+  "verdict": "MIXED_SAND_PEBBLE",
+  "agreesWith": "NEITHER",
+  "evidence": "Gliati at Palaia/Ancient Epidavros: 'about 500m long, with sand and fine pebbles and clean blue waters' (sunken Roman ruins offshore). Coords 37.63/23.16 = Palaia Epidavros, not Porto Heli.",
+  "sourceUrl": "https://argolidalife.gr/en/gkliati/",
+  "confidence": "high"
+ },
+ {
+  "id": 1484,
+  "name": "Παραλία Αρβανιτιά",
+  "verdict": "PEBBLES",
+  "agreesWith": "NEITHER",
+  "evidence": "Arvanitia, the town beach of Nafplio below Palamidi, is 'made up of white pebbles and rocks... umbrellas on the pebbles, becomes rocky at its edges'. Coords 37.56/22.80 = Nafplio.",
+  "sourceUrl": "https://cityofnafplio.net/en/beaches/arvanitia-beach",
+  "confidence": "high"
+ },
+ {
+  "id": 1485,
+  "name": "Παραλία Ασίνης",
+  "verdict": "MIXED_SAND_PEBBLE",
+  "agreesWith": "NEITHER",
+  "evidence": "Ancient Asini beach near Tolo: 'small and large pebbles on the shore... pebbles and sand, with rocky areas on the right side' (Plaka/larger Asini offers sand, fine and coarse pebbles). Coords 37.53/22.88 = Asini/Tolo. Leans pebble-dominant.",
+  "sourceUrl": "https://cityofnafplio.net/el/beaches/asini-beach",
+  "confidence": "medium"
+ },
+ {
+  "id": 1524,
+  "name": "Κανταρέ",
+  "verdict": "SAND",
+  "agreesWith": "NEITHER",
+  "evidence": "Kantare (west of Corinth, before Lechaio) is consistently described as 'a sandy beach with shallow waters, perfect for families' across multiple Corinthia guides. Coords 37.93/22.90 = near Lechaio. Both our label (βότσαλα) and OSM (PEBBLES) appear wrong.",
+  "sourceUrl": "https://korinthiaguide.com/en/beaches/kantare-2/",
+  "confidence": "high"
+ },
+ {
+  "id": 1531,
+  "name": "Παραλία Αγία Σωτήρα",
+  "verdict": "PEBBLES",
+  "agreesWith": "NEITHER",
+  "evidence": "Agia Sotira (Loutraki-Perachora-Agioi Theodoroi coast): 'the coastline is covered with fine pebbles, while in the eastern section the beach has more rocks'. Coords 38.05/23.03 = near Agioi Theodoroi.",
+  "sourceUrl": "https://www.mytraveler.gr/place/agia-sotira-beach/",
+  "confidence": "high"
+ },
+ {
+  "id": 1534,
+  "name": "Παραλία Λυκοποριάς",
+  "verdict": "SAND",
+  "agreesWith": "OURS",
+  "evidence": "Lykoporia (Xylokastro-Evrostini coast) is described with 'γαλαζοπράσινα νερά και αμμουδερό βυθό' (sandy seabed) and grouped among the area's sandy beaches ('αμμουδιές'); no source specifies pebble shore. Coords 38.14/22.49. Weakly corroborates our label; kept.",
+  "sourceUrl": "https://klife.gr/news/17180/",
+  "confidence": "low"
+ },
+ {
+  "id": 1536,
+  "name": "Παραλία Σκαλωσιά",
+  "verdict": "PEBBLES",
+  "agreesWith": "NEITHER",
+  "evidence": "Skalosia (Loutraki, below Geraneia mtns): 'this beach with its large white pebbles and deep turquoise waters', access via stairs of sea-stones to 'the pebble beach'. Coords 38.07/22.94.",
+  "sourceUrl": "https://www.visitloutraki.com/en/place/skalosia-beach",
+  "confidence": "high"
+ },
+ {
+  "id": 1554,
+  "name": "Βορδόνας",
+  "verdict": "SAND",
+  "agreesWith": "OURS",
+  "evidence": "Greeka (Vordonas, ~15km from Gythio near Skoutari, East Mani): 'a mostly sandy coastline, except for some rocks... rocky seafloor; predominantly sandy'. Coords 36.66/22.50. Our label and OSM (both SAND) correct.",
+  "sourceUrl": "https://www.greeka.com/peloponnese/gythio/beaches/vordonas/",
+  "confidence": "high"
+ },
+ {
+  "id": 1565,
+  "name": "Λιμάνι",
+  "verdict": "UNCLEAR",
+  "agreesWith": "OURS",
+  "evidence": "Generic beach name 'Λιμάνι' (harbor) at coords 36.75/22.80 (Laconian Gulf, roughly between Skala and Asopos) could not be pinned to any beach-specific source without name collision (many 'Λιμάνι/Λιμένι' beaches in Lakonia). Keeping our current label (άμμος).",
+  "sourceUrl": "",
+  "confidence": "low"
+ },
+ {
+  "id": 1602,
+  "name": "Χαρακιά",
+  "verdict": "SAND",
+  "agreesWith": "OURS",
+  "evidence": "Charakia in Xylis bay (S of Plytra, NW coast of Archangelos bay): 'a sandy beach of 3.5km... golden sand, deep turquoise waters, and colorful pebbles where the waves break', some rocks in the water. Coords 36.66/22.88 confirm Plytra/Archangelos (not the East-Mani Kotronas 'Charakia'). Predominantly sand; our label and OSM (SAND) correct.",
+  "sourceUrl": "https://www.fosonline.gr/travel/article/255351/xarakia-o-orismos-tis-erimikis-paralias",
+  "confidence": "high"
+ },
+ {
+  "id": 1628,
+  "name": "Μεγάλο Μαράθι",
+  "verdict": "SAND",
+  "agreesWith": "OURS",
+  "evidence": "Messinia guides (Pylos, between Finikounda-Koroni) repeatedly call Mikro/Megalo Marathi 'two wonderful sandy beaches (αμμώδεις)'; disambiguated by Pylos/Tsapi dirt-road access matching lat/lng.",
+  "sourceUrl": "https://www.anagnostis.org/2025/06/20/mikro-kai-megalo-marathi-oi-panemorfes-mystikes-paralies-tis-messinias/",
+  "confidence": "high"
+ },
+ {
+  "id": 1630,
+  "name": "Μικρό Μαράθι",
+  "verdict": "SAND",
+  "agreesWith": "OURS",
+  "evidence": "Same Messinia cove pair as Megalo Marathi: 'The beaches are sandy... two wonderful sandy beaches, small and large Marathi'; Pylos.info/pylos-area sources confirm.",
+  "sourceUrl": "https://www.pylos.info/en/marathi-beach/",
+  "confidence": "high"
+ },
+ {
+  "id": 1658,
+  "name": "Άγιος Παύλος",
+  "verdict": "MIXED_SAND_PEBBLE",
+  "agreesWith": "NEITHER",
+  "evidence": "Amorgos guides: 'tongue of fine white pebbles' with 'a strip of sand extending into the sea', opposite Nikouria islet (matches lat/lng) - sand-and-pebble, not rock.",
+  "sourceUrl": "https://www.amorgos-island.gr/agios-pavlos/",
+  "confidence": "high"
+ },
+ {
+  "id": 1660,
+  "name": "Καμπί",
+  "verdict": "PEBBLES",
+  "agreesWith": "NEITHER",
+  "evidence": "Amorgos (near Hozoviotissa/Agia Anna, matches lat/lng): 'coarse and fine pebbles', a small pebbled nudist cove - pebbles, not rock.",
+  "sourceUrl": "https://www.amorgos-island.gr/chora-beaches-kambi/",
+  "confidence": "medium"
+ },
+ {
+  "id": 1755,
+  "name": "Foniadiko",
+  "verdict": "UNCLEAR",
+  "agreesWith": "OURS",
+  "evidence": "Remote Ios beach ('Φοντάδικο', reached by dirt road branching toward Agia Theodoti) with no published composition data found; kept our label (ours and OSM both say sand).",
+  "sourceUrl": "https://iospaths.gr/d19-2/",
+  "confidence": "low"
+ },
+ {
+  "id": 1922,
+  "name": "Σαρακήνικο",
+  "verdict": "SAND",
+  "agreesWith": "OURS",
+  "evidence": "Milos Sarakiniko (north coast, ~5km from Plaka, matches lat/lng): Wikipedia describes it as 'a narrow strip of sand between all-white volcanic rocks' - beach surface is sand though famed for surrounding white rock slabs.",
+  "sourceUrl": "https://el.wikipedia.org/wiki/%CE%A3%CE%B1%CF%81%CE%B1%CE%BA%CE%AE%CE%BD%CE%B9%CE%BA%CE%BF_%CE%9C%CE%AE%CE%BB%CE%BF%CF%85",
+  "confidence": "medium"
+ },
+ {
+  "id": 1934,
+  "name": "Βούδια",
+  "verdict": "MIXED_SAND_PEBBLE",
+  "agreesWith": "NEITHER",
+  "evidence": "Milos Voudia (near Pollonia, pink volcanic cliffs, matches lat/lng): 'pebbles beach... white pebble and pink sand', clear stones of various sizes mixed with light sand - mixed, leans pebbles, not pure sand.",
+  "sourceUrl": "https://www.greeka.com/cyclades/milos/beaches/voudia/",
+  "confidence": "medium"
+ },
+ {
+  "id": 1991,
+  "name": "Βίντζι",
+  "verdict": "SAND",
+  "agreesWith": "NEITHER",
+  "evidence": "Naxos Chora, below Portara (matches lat/lng): the smaller Chora beach, 'small stretch of sand', a man-made sandy beach for a quick swim - sand, not rock (distinct from rocky Grotta next door).",
+  "sourceUrl": "https://www.naxos.gr/vintzi-beach/?lang=en",
+  "confidence": "medium"
+ },
+ {
+  "id": 1994,
+  "name": "Γρόττα",
+  "verdict": "ROCKS",
+  "agreesWith": "OURS",
+  "evidence": "Naxos Chora north seaside (matches lat/lng): 'very rocky... a small bay strewn with a mixture of pebbles and some sand', for snorkeling rather than swimming - predominantly rock/pebble.",
+  "sourceUrl": "https://www.naxos.net/beaches/grotta/",
+  "confidence": "medium"
+ },
+ {
+  "id": 2028,
+  "name": "Δρυός",
+  "verdict": "MIXED_SAND_PEBBLE",
+  "agreesWith": "NEITHER",
+  "evidence": "Paros SE coast settlement Dryos (matches lat/lng): 'the beach of Dryos consists of sand and pebbles' - mixed, not pure pebbles.",
+  "sourceUrl": "https://www.parosislandinfo.gr/parosgenika/parosparalies/paraliadryos/index.html",
+  "confidence": "medium"
+ },
+ {
+  "id": 2129,
+  "name": "Αμπέλα",
+  "verdict": "SAND",
+  "agreesWith": "NEITHER",
+  "evidence": "Syros SW near Megas Gialos (matches lat/lng): Greeka 'a small, sandy shore with some scattered pebbles... soft sand' - predominantly sand, not pebbles.",
+  "sourceUrl": "https://www.greeka.com/cyclades/syros/beaches/ampela/",
+  "confidence": "medium"
+ },
+ {
+  "id": 2146,
+  "name": "Παραλία Λωτό",
+  "verdict": "MIXED_SAND_PEBBLE",
+  "agreesWith": "NEITHER",
+  "evidence": "Syros western coast Lotos (matches lat/lng): 'partly organized seashore with sand and pebbles... soft sand and pebbles around the shore' - mixed, not pure pebbles.",
+  "sourceUrl": "https://www.greeka.com/cyclades/syros/beaches/",
+  "confidence": "medium"
+ },
+ {
+  "id": 2259,
+  "name": "Κασόνια",
+  "verdict": "SAND",
+  "agreesWith": "NEITHER",
+  "evidence": "Kalymnos town beach (Kasonia, closest to Pothia, matches lat/lng): 'a long sandy beach... strewn with sand and pebbles', with tamarisk trees - predominantly sand, not pebbles.",
+  "sourceUrl": "https://www.greeka.com/dodecanese/kalymnos/beaches/town-beach/",
+  "confidence": "medium"
+ },
+ {
+  "id": 2296,
+  "name": "Ποτάλι",
+  "verdict": "MIXED_SAND_PEBBLE",
+  "agreesWith": "NEITHER",
+  "evidence": "Karpathos west coast near Kato Lefkos (matches lat/lng): 'characterized by gray pebbles and coarse sand in some places', with some rocks at the sides in the sea - pebble/coarse-sand, not primarily rock.",
+  "sourceUrl": "https://karpathosinfo.com/potali-beach/",
+  "confidence": "medium"
+ },
+ {
+  "id": 2337,
+  "name": "Θερμά",
+  "verdict": "MIXED_SAND_PEBBLE",
+  "agreesWith": "NEITHER",
+  "evidence": "Kos SE hot-springs beach (Embros Thermae after Agios Fokas, matches lat/lng): 'mostly covered with dark sand and stones... dark pebbles' from volcanic activity - mixed dark sand and pebbles/stones, not pure sand.",
+  "sourceUrl": "https://kos.gr/beaches-in-kos-island/therma-beach",
+  "confidence": "medium"
+ },
+ {
+  "id": 2374,
+  "name": "Κισσίρια",
+  "verdict": "UNCLEAR",
+  "agreesWith": "OURS",
+  "evidence": "Obscure northern Lipsi beach (listed by name in the municipality/CityMobile catalog but with no composition description); no reliable surface source found, kept our label.",
+  "sourceUrl": "https://lipsi.by.citymobile.gr/en/taxonomy/term/67",
+  "confidence": "low"
+ },
+ {
+  "id": 2375,
+  "name": "Κοίμηση",
+  "verdict": "PEBBLES",
+  "agreesWith": "NEITHER",
+  "evidence": "Lipsi, below the Church of Koimisis (SW/NW, reached via carved path, matches lat/lng): 'characterized by pebbles... pebble and gravel' - pebbles, not sand.",
+  "sourceUrl": "https://www.tripadvisor.com/Attraction_Review-g1152207-d19080653-Reviews-Kimisi_Beach-Lipsi_Dodecanese_South_Aegean.html",
+  "confidence": "medium"
+ },
+ {
+  "id": 2376,
+  "name": "Κορακιά",
+  "verdict": "UNCLEAR",
+  "agreesWith": "OURS",
+  "evidence": "Obscure eastern Lipsi cove not featured in any beach guide (Korakia hits return other regions - Lavreotiki/Crete); could not pin the Lipsi one, kept our label.",
+  "sourceUrl": "https://lipsi.gov.gr/el/paralies-paralies-paralies",
+  "confidence": "low"
+ },
+ {
+  "id": 2383,
+  "name": "Πνιγμένος",
+  "verdict": "UNCLEAR",
+  "agreesWith": "OURS",
+  "evidence": "Obscure Lipsi cove absent from all beach listings/guides; no composition source found, kept our label.",
+  "sourceUrl": "https://lipsi.gov.gr/el/paralies-paralies-paralies",
+  "confidence": "low"
+ },
+ {
+  "id": 2384,
+  "name": "Στίφη",
+  "verdict": "UNCLEAR",
+  "agreesWith": "OURS",
+  "evidence": "Obscure Lipsi cove absent from all beach listings/guides; no composition source found, kept our label.",
+  "sourceUrl": "https://lipsi.gov.gr/el/paralies-paralies-paralies",
+  "confidence": "low"
+ },
+ {
+  "id": 2407,
+  "name": "Παραλία Καλλιθέας (Oasis)",
+  "verdict": "ROCKS",
+  "agreesWith": "OURS",
+  "evidence": "Rhodes Kallithea/Oasis (lat 36.375, coast S of Rhodes town): sources state 'Oasis Beach features a rocky beach rather than sandy' with sculpted rocks and micro-coves; matches our βράχια and OSM ROCKS.",
+  "sourceUrl": "https://www.rodosapex.com/best-beaches-in-rhodes/kallithea",
+  "confidence": "medium"
+ },
+ {
+  "id": 2437,
+  "name": "Παραλία Φούρνοι",
+  "verdict": "MIXED_SAND_PEBBLE",
+  "agreesWith": "NEITHER",
+  "evidence": "Fourni below Monolithos, SW Rhodes (lat 36.106): 'covered with golden brown sand which turns a bit stony near the water, a significant portion is pebbled, but sandy patches can also be found' — sand+pebble mix, not pure sand as our label and OSM claim.",
+  "sourceUrl": "https://1001beach.com/en/europe/greece/rhodes/fourni",
+  "confidence": "medium"
+ },
+ {
+  "id": 3043,
+  "name": "Σύμη Γυάλα",
+  "verdict": "PEBBLES",
+  "agreesWith": "OURS",
+  "evidence": "Symi (lat 36.62): island beaches 'almost all have pebbles and little or no sand'; consistent with our βότσαλα and OSM PEBBLES for this Symi cove.",
+  "sourceUrl": "https://www.allaboutsymi.com/beaches/",
+  "confidence": "medium"
+ },
+ {
+  "id": 3047,
+  "name": "ΠΔΕ Καστελόκαμπος",
+  "verdict": "MIXED_SAND_PEBBLE",
+  "agreesWith": "NEITHER",
+  "evidence": "Kastelokampos by the Rio bridge, Achaia (lat 38.29, lng 21.77): 'a mix of golden sand and pebbles ... continuous strip of sand and pebbles ~1.2km' — mixed, not the pebbles-only of our label and OSM.",
+  "sourceUrl": "https://beaches-searcher.com/en/beach/300204060/kastelokampos",
+  "confidence": "medium"
+ },
+ {
+  "id": 2522,
+  "name": "Kitesurf Spot",
+  "verdict": "PEBBLES",
+  "agreesWith": "OURS",
+  "evidence": "Kite spot on the SE coastal section of Nafpaktos near Grimbovo (lat 38.38, lng 21.85); the Nafpaktos shoreline here is fine-pebble/gravel, matching our βότσαλα and OSM PEBBLES.",
+  "sourceUrl": "https://www.nafpaktianews.gr/kitesurf-%CF%83%CF%84%CE%B7%CE%BD-%CE%BD%CE%B1%CF%8D%CF%80%CE%B1%CE%BA%CF%84%CE%BF/",
+  "confidence": "low"
+ },
+ {
+  "id": 2528,
+  "name": "Ασπρογιάλι",
+  "verdict": "PEBBLES",
+  "agreesWith": "NEITHER",
+  "evidence": "Asprogiali 7km from Astakos toward Vonitsa (lat 38.54, lng 21.01): 'Η παραλία είναι βοτσαλωτή' (pebbly) — contradicts our άμμος and OSM SAND.",
+  "sourceUrl": "https://iaitoloakarnania.gr/2020/06/i-mageytiki-paralia-asprogyali-ston-astako/",
+  "confidence": "high"
+ },
+ {
+  "id": 2532,
+  "name": "Γρίμποβο",
+  "verdict": "MIXED_SAND_PEBBLE",
+  "agreesWith": "NEITHER",
+  "evidence": "Gribovo in Nafpaktos (lat 38.39, lng 21.835): 'coarse sand and pebbles, with velvety sand ... pebbles dotting the water's edge' — mixed, not pebbles-only as our label/OSM say.",
+  "sourceUrl": "https://www.gtp.gr/LocPage.asp?id=59347&lng=2",
+  "confidence": "medium"
+ },
+ {
+  "id": 2550,
+  "name": "Παραλία Κανάλι",
+  "verdict": "UNCLEAR",
+  "agreesWith": "OURS",
+  "evidence": "Coords (lat 38.44, lng 21.35) sit in the Kryoneri/Kato Vasiliki stretch of Nafpaktia (Kryoneri = 'fine-pebbled and sandy'), but no source specifically identifies a beach named 'Κανάλι' here to confirm composition; keep current label.",
+  "sourceUrl": "https://olympianland.gr/en/listing/kryoneri",
+  "confidence": "low"
+ },
+ {
+  "id": 2552,
+  "name": "Παραλία Κουλούρι",
+  "verdict": "UNCLEAR",
+  "agreesWith": "OURS",
+  "evidence": "Koulouri at Sparto on the Ambrakian Gulf, Amfilochia (lat 38.91, lng 21.11) is confirmed as an existing swimming beach, but no source states its sand/pebble composition; keep current άμμος label.",
+  "sourceUrl": "https://www.dimosamfilochias.gr/paralies/koulouri/",
+  "confidence": "low"
+ },
+ {
+  "id": 2558,
+  "name": "Παραλία Ρούγας",
+  "verdict": "PEBBLES",
+  "agreesWith": "NEITHER",
+  "evidence": "Rouga cove near Paliambela on the S Ambrakian Gulf (lat 38.92, lng 21.00): 'a pebbly beach and deeply shaded trees' — contradicts our άμμος and OSM SAND.",
+  "sourceUrl": "https://olympianland.gr/en/listing/rouga-beach",
+  "confidence": "high"
+ },
+ {
+  "id": 2561,
+  "name": "Πλαζ Ναυπάκτου",
+  "verdict": "PEBBLES",
+  "agreesWith": "OURS",
+  "evidence": "Psani plage W of Nafpaktos harbor (lat 38.39, lng 21.827): 'continuous strip of fine pebbles extends ~1.7km ... also has sandy areas' — fine-pebble predominant, matching our βότσαλα and OSM PEBBLES (some sand present).",
+  "sourceUrl": "https://www.nafpaktianporthouse.gr/el/paralies",
+  "confidence": "medium"
+ },
+ {
+  "id": 3023,
+  "name": "Αλόννησος Μηλιά",
+  "verdict": "PEBBLES",
+  "agreesWith": "OURS",
+  "evidence": "Milia (not Chrysi Milia) on Alonissos (lat 39.16): 'there are large pebbles at first, while deeper into the water there is sand' — pebble shore, matching our βότσαλα and OSM PEBBLES.",
+  "sourceUrl": "https://alonissos.gr/%CE%BC%CE%AD%CF%81%CE%B7-%CE%BD%CE%B1-%CE%B5%CF%80%CE%B9%CF%83%CE%BA%CE%B5%CF%86%CE%B8%CE%B5%CE%AF%CF%84%CE%B5/%CF%80%CE%B1%CF%81%CE%B1%CE%BB%CE%AF%CE%B5%CF%82-%CF%83%CF%84%CE%B7%CE%BD-%CE%B1%CE%BB%CE%BF%CE%BD%CE%BD%CE%B7%CF%83%CE%BF/%CE%BC%CE%B7%CE%BB%CE%B9%CE%AC.html",
+  "confidence": "medium"
+ },
+ {
+  "id": 2635,
+  "name": "Ξάνεμο",
+  "verdict": "MIXED_SAND_PEBBLE",
+  "agreesWith": "NEITHER",
+  "evidence": "Xanemos by Skiathos airport (lat 39.19, lng 23.51): 'coarse grey sand mixed with pebbles ... a line of shingle around the water's edge' — mixed, not pure sand as our label and OSM claim.",
+  "sourceUrl": "https://www.whichgreekisland.co.uk/islands/skiathos/beaches/xanemos/",
+  "confidence": "medium"
+ },
+ {
+  "id": 2649,
+  "name": "Άγιος Ιωάννης",
+  "verdict": "PEBBLES",
+  "agreesWith": "NEITHER",
+  "evidence": "Agios Ioannis Kastri (Mamma Mia chapel), NW Skopelos (lat 39.17, lng 23.65): 'a narrow pebble beach ... combination of sand, pebbles and small rocks' — predominantly pebble/rock, not sand as our label and OSM claim.",
+  "sourceUrl": "https://www.greeka.com/sporades/skopelos/beaches/agios-ioannis/",
+  "confidence": "medium"
+ },
+ {
+  "id": 2662,
+  "name": "Στάφυλος",
+  "verdict": "MIXED_SAND_PEBBLE",
+  "agreesWith": "NEITHER",
+  "evidence": "Stafylos, 4km S of Skopelos town (lat 39.09, lng 23.75): 'mixed pebbles with fine gray sand ... a delightful mix of golden sand and smooth pebbles' — sand+pebble mix, not pebbles-only as our label/OSM say.",
+  "sourceUrl": "https://www.greeka.com/sporades/skopelos/beaches/stafilos/",
+  "confidence": "high"
+ },
+ {
+  "id": 2670,
+  "name": "Άγιος Ιωάννης",
+  "verdict": "MIXED_SAND_PEBBLE",
+  "agreesWith": "NEITHER",
+  "evidence": "Agios Ioannis, Pelion/Zagora (lat 39.417, lng 23.16): 'built on a unique sandy area with white pearl-like pebbles', longest organized beach in Magnesia — sand+pebble, definitely not the βράχια/ROCKS our label and OSM claim.",
+  "sourceUrl": "https://ilovepelion.gr/el/destinations/aegeanbeach/agiosioannis",
+  "confidence": "high"
+ },
+ {
+  "id": 2674,
+  "name": "Άγιος Ιωάννης (Ζαγορά)",
+  "verdict": "MIXED_SAND_PEBBLE",
+  "agreesWith": "NEITHER",
+  "evidence": "Same beach as id 2670 (lat 39.418, lng 23.16), Agios Ioannis Pelion: 'sandy area with white pearl-like pebbles' — sand+pebble, not βράχια/ROCKS as our label and OSM claim.",
+  "sourceUrl": "https://ilovepelion.gr/el/destinations/aegeanbeach/agiosioannis",
+  "confidence": "high"
+ },
+ {
+  "id": 2676,
+  "name": "Αγιά Θυμιά",
+  "verdict": "PEBBLES",
+  "agreesWith": "NEITHER",
+  "evidence": "Agia Thymia, S Pelion Pagasitic coast near Afissos/Lefokastro (lat 39.26, lng 23.18): 'a spacious pebbly cove, wild, with no amenities' (sandy seafloor) — pebble surface, not sand as our label and OSM claim.",
+  "sourceUrl": "https://beaches-searcher.com/en/beach/300202304/ayia-thymia-beach",
+  "confidence": "medium"
+ }
+]

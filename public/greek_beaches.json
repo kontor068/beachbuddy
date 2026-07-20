@@ -875,7 +875,7 @@
               "types": [
                 "sand"
               ],
-              "label": "άμμος"
+              "label": "sand"
             },
             "organized": true,
             "shade": false,
@@ -892,7 +892,7 @@
               "label": "Ρηχά νερά",
               "notes": "Η είσοδος στη θάλασσα είναι πιο ήπια και το βάθος αυξάνει πιο σταδιακά."
             },
-            "sourceNotes": "Phase 2 final global organized-service cleanup 2026-05-26: downgraded unsupported organized-service claim because no direct source URL is recorded; kept nearby food/parking notes only.\nSource follow-up pass 17 2026-05-27: Athens Transport beach-access guide directly references Paralia Glyfadas G, supporting Glyfada C beach identity/local-area traceability only. Confidence, coordinates, access, services, amenities, wind profile, and scoring were not changed. Attica tourist-priority confidence pass BR 2026-06-02: the official bathing-water profile for Glyfada supports Municipality of Glyfada identity, beach length/width, road and public-transport access, pebble shore and seabed, normal first-meter depth with mild seabed slope, umbrellas, showers, bins, lifeguard bases, nearby refreshments/restaurants and parking/urban beach-front context. Athens Attica independently supports the organized Glyfada beach-front context, free entrance, umbrellas, showers, changing rooms, seating, parking and Seatrac. Promoted to high for static metadata only; historical Blue Flag/water-quality status and source protection/wind wording were not imported into scoring, windProfile, photos, or live calm/protected/safe claims. Terrain corrected 2026-06-20 (OSM surface audit): our type \"pebbles\" contradicted the OSM natural=beach surface \"sand\" (crowd-verified); set to sand.",
+            "sourceNotes": "Phase 2 final global organized-service cleanup 2026-05-26: downgraded unsupported organized-service claim because no direct source URL is recorded; kept nearby food/parking notes only.\nSource follow-up pass 17 2026-05-27: Athens Transport beach-access guide directly references Paralia Glyfadas G, supporting Glyfada C beach identity/local-area traceability only. Confidence, coordinates, access, services, amenities, wind profile, and scoring were not changed. Attica tourist-priority confidence pass BR 2026-06-02: the official bathing-water profile for Glyfada supports Municipality of Glyfada identity, beach length/width, road and public-transport access, pebble shore and seabed, normal first-meter depth with mild seabed slope, umbrellas, showers, bins, lifeguard bases, nearby refreshments/restaurants and parking/urban beach-front context. Athens Attica independently supports the organized Glyfada beach-front context, free entrance, umbrellas, showers, changing rooms, seating, parking and Seatrac. Promoted to high for static metadata only; historical Blue Flag/water-quality status and source protection/wind wording were not imported into scoring, windProfile, photos, or live calm/protected/safe claims. Terrain corrected 2026-06-20 (OSM surface audit): our type \"pebbles\" contradicted the OSM natural=beach surface \"sand\" (crowd-verified); set to sand. Terrain web-verify 2026-07-20 (no-API): label synced to types — Glyfada's organized Asteras/Akti beaches are described as sandy ('unique sandy beach with turquoise waters'), though the far-north [https://www.mytraveler.gr/place/asteras-beach-of-glyfada].",
             "sourceUrls": [
               "https://www.athenstransport.com/2016/07/paralies-attikis-notia/",
               "https://bathingwaterprofiles.gr/sites/all/themes/danland/docs/pdf_profiles/ELBW069196026.pdf",
@@ -2107,7 +2107,7 @@
               "types": [
                 "sand"
               ],
-              "label": "άμμος"
+              "label": "sand"
             },
             "organized": false,
             "shade": false,
@@ -2128,12 +2128,7 @@
               "https://greekreporter.com/2025/07/21/fleves-mysterious-island-guarded-athens-shores/",
               "https://viamare.com.gr/destination/glyfada-t%CE%BF-astir-beach-fleves-gulf-of-vouliagmeni/"
             ],
-            "sourceNotes": [
-              "Phase 2 Batch 3C source check 2026-05-25: Fleves sources back the offshore, uninhabited island context and swimming coves reached by boat/kayak; keep boat-only, offshore-islet and no-fixed-service wording.",
-              "Existing-source confidence cleanup 2026-05-29: GreekReporter and Viamare sources already recorded on this item support the offshore uninhabited-islet context, boat/kayak access to swimming coves, and no fixed beach services. Confidence promoted to medium; no wind, wave, or live-condition claim was added.",
-              "Attica tourist-priority confidence pass BU 2026-06-02: GreekReporter supports Fleves as a small uninhabited rugged island opposite Vouliagmeni, with rocky coastline, turquoise waters, boat/kayak visitor context, military-history restrictions on the western side, and no mainland road access. Viamare supports Fleves as a boat/yachting destination from the Athens Riviera/Vouliagmeni-Glyfada context. Promoted to high for offshore identity/access/static metadata only; no simple-mainland-beach claim, scoring, windProfile, photos, or live calm/protected/safe claim was added.",
-              "Terrain corrected 2026-06-20 (OSM surface audit): our type \"rocks+pebbles\" contradicted the OSM natural=beach surface \"sand\" (crowd-verified); set to sand."
-            ],
+            "sourceNotes": "Phase 2 Batch 3C source check 2026-05-25: Fleves sources back the offshore, uninhabited island context and swimming coves reached by boat/kayak; keep boat-only, offshore-islet and no-fixed-service wording. Existing-source confidence cleanup 2026-05-29: GreekReporter and Viamare sources already recorded on this item support the offshore uninhabited-islet context, boat/kayak access to swimming coves, and no fixed beach services. Confidence promoted to medium; no wind, wave, or live-condition claim was added. Attica tourist-priority confidence pass BU 2026-06-02: GreekReporter supports Fleves as a small uninhabited rugged island opposite Vouliagmeni, with rocky coastline, turquoise waters, boat/kayak visitor context, military-history restrictions on the western side, and no mainland road access. Viamare supports Fleves as a boat/yachting destination from the Athens Riviera/Vouliagmeni-Glyfada context. Promoted to high for offshore identity/access/static metadata only; no simple-mainland-beach claim, scoring, windProfile, photos, or live calm/protected/safe claim was added. Terrain corrected 2026-06-20 (OSM surface audit): our type \"rocks+pebbles\" contradicted the OSM natural=beach surface \"sand\" (crowd-verified); set to sand. Terrain web-verify 2026-07-20 (no-API): label synced to types — 'Paralia Fleves is covered with sand and rocks' on this rocky uninhabited islet off Vouliagmeni; the ~40m beach pocket itself is s [https://beaches-searcher.com/en/beach/300203285/paralia-fleves].",
             "activities": {
               "snorkeling": true,
               "surfing": false
@@ -2164,7 +2159,7 @@
               "types": [
                 "sand"
               ],
-              "label": "άμμος"
+              "label": "sand"
             },
             "organized": true,
             "shade": false,
@@ -2175,7 +2170,7 @@
             "language": "el",
             "batch": "seatrac_directory_2026_06",
             "needsVerification": true,
-            "sourceNotes": "Seatrac directory import (2026-06): created from official seatrac.gr entry \"Άλιμος Λουτρά\" (id 4806), Αττική, Attica. Coordinates from seatrac.gr. Slot via nearest existing beach #5 (521 m). Conservative — access/terrain unknown; accessibility added by the Seatrac importer. Terrain corrected 2026-06-20 (OSM surface audit): our type \"\" contradicted the OSM natural=beach surface \"sand\" (crowd-verified); set to sand. Reverse amenity sweep 2026-07-19 (no-API): organized flag corrected to true + beach bar added — bar POI on the sand: \"Bikini\" (bar, 45m).",
+            "sourceNotes": "Seatrac directory import (2026-06): created from official seatrac.gr entry \"Άλιμος Λουτρά\" (id 4806), Αττική, Attica. Coordinates from seatrac.gr. Slot via nearest existing beach #5 (521 m). Conservative — access/terrain unknown; accessibility added by the Seatrac importer. Terrain corrected 2026-06-20 (OSM surface audit): our type \"\" contradicted the OSM natural=beach surface \"sand\" (crowd-verified); set to sand. Reverse amenity sweep 2026-07-19 (no-API): organized flag corrected to true + beach bar added — bar POI on the sand: \"Bikini\" (bar, 45m). Terrain web-verify 2026-07-20 (no-API): label synced to types — Alimos (Loutra) organized Athens-Riviera beach is 'covered with white sand and fine pebbles'; predominantly white sand; disambigua [https://seatrac.gr/en/beach-directory/alimos-loutra/].",
             "sourceUrls": [
               "https://seatrac.gr/el/paralies/alimos-loutra/"
             ],
@@ -5989,9 +5984,10 @@
             },
             "terrain": {
               "types": [
+                "coarse_sand",
                 "pebbles"
               ],
-              "label": "βότσαλα"
+              "label": "χοντρή άμμος, βότσαλα"
             },
             "organized": true,
             "shade": false,
@@ -6003,7 +5999,7 @@
             "language": "el",
             "batch": "seatrac_d2_2026_06",
             "needsVerification": true,
-            "sourceNotes": "Seatrac Phase D2 geocode (2026-06): created from no-match seed \"Πόρτο Ράφτη Αυλάκι\" (Porto Rafti Avlaki), —, Attica. Nominatim hit nom-node-6177494345; Overpass natural=beach corroboration 153 m. Slot via nearest existing beach #45 (1071 m). Conservative — access/terrain unknown, amenities only as stated. Terrain corrected 2026-06-20 (OSM surface audit): our type \"\" contradicted the OSM natural=beach surface \"pebblestone\" (crowd-verified); set to pebbles. Web-verified 2026-07-19 (web-high): organized — Ticketed Blue Flag beach with sun loungers, umbrellas, beach bars, restaurant-bar, medical post and lifeguards. [https://www.athens24.gr/directory/avlaki-beach.html]; beach bar+sunbeds added.",
+            "sourceNotes": "Seatrac Phase D2 geocode (2026-06): created from no-match seed \"Πόρτο Ράφτη Αυλάκι\" (Porto Rafti Avlaki), —, Attica. Nominatim hit nom-node-6177494345; Overpass natural=beach corroboration 153 m. Slot via nearest existing beach #45 (1071 m). Conservative — access/terrain unknown, amenities only as stated. Terrain corrected 2026-06-20 (OSM surface audit): our type \"\" contradicted the OSM natural=beach surface \"pebblestone\" (crowd-verified); set to pebbles. Web-verified 2026-07-19 (web-high): organized — Ticketed Blue Flag beach with sun loungers, umbrellas, beach bars, restaurant-bar, medical post and lifeguards. [https://www.athens24.gr/directory/avlaki-beach.html]; beach bar+sunbeds added. Terrain web-verify 2026-07-20 (no-API): corrected to MIXED_SAND_PEBBLE — Avlaki (Markopoulo, blue-flag) is an organized beach 'with sand' but 'the shore is pebbly' turning sandy in the sea; sand-and-pebb [https://mtctaxi.gr/oi-kalyteres-paralies-sto-porto-rafti/].",
             "sourceUrls": [
               "https://seatrac.gr/"
             ],
@@ -6859,7 +6855,7 @@
               "types": [
                 "sand"
               ],
-              "label": "άμμος"
+              "label": "sand"
             },
             "organized": true,
             "shade": false,
@@ -6881,7 +6877,7 @@
               "https://weloveaegina.com/en/aigina/souvala/",
               "https://www.aeginagreece.com/aegina-island/directory/aegina-listing/aegina-island-spots/souvala-loutra-beach/"
             ],
-            "sourceNotes": "Souvala/Loutra sources identify the beach bar and sunbeds at Loutra/Souvala. Terrain corrected 2026-06-20 (OSM surface audit): our type \"pebbles+rocks\" contradicted the OSM natural=beach surface \"sand\" (crowd-verified); set to sand.",
+            "sourceNotes": "Souvala/Loutra sources identify the beach bar and sunbeds at Loutra/Souvala. Terrain corrected 2026-06-20 (OSM surface audit): our type \"pebbles+rocks\" contradicted the OSM natural=beach surface \"sand\" (crowd-verified); set to sand. Terrain web-verify 2026-07-20 (no-API): label synced to types — Loutra (Souvala, Aegina) is 'sandy and organized' though described as 'a small beach of coarse sand and shingle'; predominantly sa [https://argosaronikos.gr/aigina/paralies/loutra/].",
             "orientation": {
               "degrees": 356,
               "faces": [
@@ -7437,7 +7433,7 @@
               "types": [
                 "sand"
               ],
-              "label": "άμμος"
+              "label": "sand"
             },
             "organized": true,
             "shade": false,
@@ -7449,7 +7445,7 @@
             "language": "el",
             "batch": "seatrac_d2_2026_06",
             "needsVerification": true,
-            "sourceNotes": "Seatrac Phase D2 pass-3 (2026-06): created from no-match seed \"Αίγινα Μαραθώνας\" (Aigina Marathonas), Aigina, Attica. Matched OSM natural=beach \"Παραλία Μαραθώνα\" near the locality centroid (name score 80). Slot via nearest existing beach #90 (157 m). Conservative — access/terrain unknown, amenities only as stated. Terrain corrected 2026-06-20 (OSM surface audit): our type \"\" contradicted the OSM natural=beach surface \"sand\" (crowd-verified); set to sand. Web-verified 2026-07-19 (web-high): organized — Marathonas A & B are two organized beaches with ξαπλώστρες-ομπρέλες, beach bar, wooden cantina and tavernas. [https://argosaronikos.gr/aigina/paralies/marathonas/]; beach bar+sunbeds added.",
+            "sourceNotes": "Seatrac Phase D2 pass-3 (2026-06): created from no-match seed \"Αίγινα Μαραθώνας\" (Aigina Marathonas), Aigina, Attica. Matched OSM natural=beach \"Παραλία Μαραθώνα\" near the locality centroid (name score 80). Slot via nearest existing beach #90 (157 m). Conservative — access/terrain unknown, amenities only as stated. Terrain corrected 2026-06-20 (OSM surface audit): our type \"\" contradicted the OSM natural=beach surface \"sand\" (crowd-verified); set to sand. Web-verified 2026-07-19 (web-high): organized — Marathonas A & B are two organized beaches with ξαπλώστρες-ομπρέλες, beach bar, wooden cantina and tavernas. [https://argosaronikos.gr/aigina/paralies/marathonas/]; beach bar+sunbeds added. Terrain web-verify 2026-07-20 (no-API): label synced to types — Marathonas A/B on Aegina is a 'long sandy beach with crystal-clear shallow water', both sections sandy and family-friendly; disamb [https://www.greeka.com/saronic/aegina/beaches/marathon/].",
             "sourceUrls": [
               "https://seatrac.gr/"
             ],
@@ -9902,9 +9898,9 @@
             },
             "terrain": {
               "types": [
-                "sand"
+                "pebbles"
               ],
-              "label": "άμμος"
+              "label": "βότσαλα"
             },
             "organized": false,
             "shade": true,
@@ -9926,11 +9922,7 @@
               "https://www.allovergreece.com/Beaches/Descr/64/950/el",
               "https://visitkythera.com/in/kalami/"
             ],
-            "sourceNotes": [
-              "Phase 2 source check 2026-05-25: Kalami Kythira backed as very difficult/steep path access; no stable amenities kept.",
-              "Kythira tourist evidence pass 2026-06-01: Visit Kythera, Kythera.gr and Kithera.gr support Kalami near Mylopotamos/Panagia Orfani identity, difficult hiking/steep descent access, pebbly beach character, cave/rocky setting and lack of organized facilities. Confidence was raised to high for source-backed static beach facts only; coordinates, windProfile, scoring, photos, amenities, and live calm/protected/safe claims were not changed.",
-              "Terrain corrected 2026-06-20 (OSM surface audit): our type \"pebbles+rocks\" contradicted the OSM natural=beach surface \"sand\" (crowd-verified); set to sand."
-            ],
+            "sourceNotes": "Phase 2 source check 2026-05-25: Kalami Kythira backed as very difficult/steep path access; no stable amenities kept. Kythira tourist evidence pass 2026-06-01: Visit Kythera, Kythera.gr and Kithera.gr support Kalami near Mylopotamos/Panagia Orfani identity, difficult hiking/steep descent access, pebbly beach character, cave/rocky setting and lack of organized facilities. Confidence was raised to high for source-backed static beach facts only; coordinates, windProfile, scoring, photos, amenities, and live calm/protected/safe claims were not changed. Terrain corrected 2026-06-20 (OSM surface audit): our type \"pebbles+rocks\" contradicted the OSM natural=beach surface \"sand\" (crowd-verified); set to sand. Terrain web-verify 2026-07-20 (no-API): corrected to PEBBLES — Kalami (Kythira) 'consists of pebbles and some sand... it has fine pebbles', a hard-to-reach cove reached from Mylopotamos; disamb [https://www.kithera.gr/en/kythira/kalami-beach/].",
             "orientation": {
               "degrees": 276.1,
               "faces": [
@@ -10103,9 +10095,10 @@
             },
             "terrain": {
               "types": [
-                "sand"
+                "coarse_sand",
+                "pebbles"
               ],
-              "label": "άμμος"
+              "label": "χοντρή άμμος, βότσαλα"
             },
             "organized": false,
             "shade": false,
@@ -10121,11 +10114,7 @@
               "label": "Βαθιά νερά",
               "notes": "Το βάθος συνήθως ανεβαίνει πιο γρήγορα μετά την είσοδο στη θάλασσα."
             },
-            "sourceNotes": [
-              "Kythira OSM identity/location pass 2026-05-27: OSM way 366650725 is a same-name, transliterated, or compatible-name beach feature at or very near the current coordinates. This verifies identity/location only; confidence stays low and access/services remain unchanged until direct local sources support stronger claims.",
-              "Kythira tourist evidence pass 2026-06-01: Visit Kythera directly supports Limni of Paleopoli identity, Paleopoli location, asphalt road plus final rugged section, large pebbly-sand/pebble beach character and isolated/deserted status. Confidence was raised to high for source-backed static beach facts only; coordinates, windProfile, scoring, photos, amenities, and live calm/protected/safe claims were not changed.",
-              "Terrain corrected 2026-06-20 (OSM surface audit): our type \"pebbles\" contradicted the OSM natural=beach surface \"sand\" (crowd-verified); set to sand."
-            ],
+            "sourceNotes": "Kythira OSM identity/location pass 2026-05-27: OSM way 366650725 is a same-name, transliterated, or compatible-name beach feature at or very near the current coordinates. This verifies identity/location only; confidence stays low and access/services remain unchanged until direct local sources support stronger claims. Kythira tourist evidence pass 2026-06-01: Visit Kythera directly supports Limni of Paleopoli identity, Paleopoli location, asphalt road plus final rugged section, large pebbly-sand/pebble beach character and isolated/deserted status. Confidence was raised to high for source-backed static beach facts only; coordinates, windProfile, scoring, photos, amenities, and live calm/protected/safe claims were not changed. Terrain corrected 2026-06-20 (OSM surface audit): our type \"pebbles\" contradicted the OSM natural=beach surface \"sand\" (crowd-verified); set to sand. Terrain web-verify 2026-07-20 (no-API): corrected to MIXED_SAND_PEBBLE — Limni/Paleopoli beach is 'a unique blend of crimson pebbles and pristine white sands... red and white fine pebbles'; genuine sand- [https://visitkythera.com/beaches/limni-of-paleopoli/].",
             "sourceUrls": [
               "https://www.openstreetmap.org/way/366650725",
               "https://visitkythera.com/beaches/limni-of-paleopoli/"
@@ -10376,9 +10365,10 @@
             },
             "terrain": {
               "types": [
-                "rocks"
+                "coarse_sand",
+                "pebbles"
               ],
-              "label": "βράχια"
+              "label": "χοντρή άμμος, βότσαλα"
             },
             "organized": true,
             "shade": false,
@@ -10396,12 +10386,7 @@
               "label": "Ρηχά νερά",
               "notes": "Η είσοδος στη θάλασσα είναι πιο ήπια και το βάθος αυξάνει πιο σταδιακά."
             },
-            "sourceNotes": [
-              "Phase 2 final global organized-service cleanup 2026-05-26: downgraded unsupported organized-service claim because no direct source URL is recorded; kept nearby food/parking notes only.",
-              "Source follow-up pass 20 2026-05-27: direct Visit Kythera beach page supports Fyri Ammos of Kalamos identity/location on Kythira only. Confidence, coordinates, access, services, amenities, wind profile, and scoring were not changed.",
-              "Tourism-priority evidence pass 2026-05-29: Visit Kythera and Kythira.info support Fyri Ammos Kalamos identity/location, purple-pebble/coarse-sand terrain, dirt-road access context, and seasonal canteen/sunbed/umbrella organization in part of the beach. Promoted to high for static beach facts only; no wind, wave, calm-water, protection, or live-condition claim was added.",
-              "Terrain corrected 2026-06-20 (OSM surface audit): our type \"pebbles+coarse_sand\" contradicted the OSM natural=beach surface \"cobblestone\" (crowd-verified); set to rocks."
-            ],
+            "sourceNotes": "Phase 2 final global organized-service cleanup 2026-05-26: downgraded unsupported organized-service claim because no direct source URL is recorded; kept nearby food/parking notes only. Source follow-up pass 20 2026-05-27: direct Visit Kythera beach page supports Fyri Ammos of Kalamos identity/location on Kythira only. Confidence, coordinates, access, services, amenities, wind profile, and scoring were not changed. Tourism-priority evidence pass 2026-05-29: Visit Kythera and Kythira.info support Fyri Ammos Kalamos identity/location, purple-pebble/coarse-sand terrain, dirt-road access context, and seasonal canteen/sunbed/umbrella organization in part of the beach. Promoted to high for static beach facts only; no wind, wave, calm-water, protection, or live-condition claim was added. Terrain corrected 2026-06-20 (OSM surface audit): our type \"pebbles+coarse_sand\" contradicted the OSM natural=beach surface \"cobblestone\" (crowd-verified); set to rocks. Terrain web-verify 2026-07-20 (no-API): corrected to MIXED_SAND_PEBBLE — Fyri Ammos (Kalamos) is 'a long beach with red sand and pebbles' (blue-flag, name literally = red sand); definitely not rocks; dis [https://www.kythera.gr/en/whattosee/beaches/fyri-ammos-kalamos/].",
             "sourceUrls": [
               "https://visitkythera.com/in/fyri-ammos-kalamos/",
               "https://www.kythira.info/en/beaches/"
@@ -12232,9 +12217,9 @@
             },
             "terrain": {
               "types": [
-                "sand"
+                "pebbles"
               ],
-              "label": "άμμος"
+              "label": "βότσαλα"
             },
             "organized": false,
             "shade": false,
@@ -12252,11 +12237,7 @@
               "label": "Ρηχά νερά",
               "notes": "Η είσοδος στη θάλασσα είναι πιο ήπια και το βάθος αυξάνει πιο σταδιακά."
             },
-            "sourceNotes": [
-              "Low-confidence follow-up 2026-05-28: the official bathing-water profile identifies Agios Nikolaos Anatolika in Salamina Bay and lists pebble/rock shore context plus nearby refreshment/restaurant services; map source supports stored coordinates. Promoted to medium for identity, terrain and nearby services; no wind or sea-state claims were added.",
-              "Popular confidence pass 2026-06-02 J: direct official, bathing-profile, or dedicated local beach sources support the recorded static identity, access, terrain, and service context for this record. Promoted to high for static beach facts only; windProfile, scoring, coordinates, photos, and live calm/protected/safe claims were not changed.",
-              "Terrain corrected 2026-06-20 (OSM surface audit): our type \"pebbles+rocks\" contradicted the OSM natural=beach surface \"sand\" (crowd-verified); set to sand."
-            ],
+            "sourceNotes": "Low-confidence follow-up 2026-05-28: the official bathing-water profile identifies Agios Nikolaos Anatolika in Salamina Bay and lists pebble/rock shore context plus nearby refreshment/restaurant services; map source supports stored coordinates. Promoted to medium for identity, terrain and nearby services; no wind or sea-state claims were added. Popular confidence pass 2026-06-02 J: direct official, bathing-profile, or dedicated local beach sources support the recorded static identity, access, terrain, and service context for this record. Promoted to high for static beach facts only; windProfile, scoring, coordinates, photos, and live calm/protected/safe claims were not changed. Terrain corrected 2026-06-20 (OSM surface audit): our type \"pebbles+rocks\" contradicted the OSM natural=beach surface \"sand\" (crowd-verified); set to sand. Terrain web-verify 2026-07-20 (no-API): corrected to PEBBLES — North Agios Nikolaos beach on Salamina is classified 'pebble' ('a great beach with pebbles', blue-flag organized); disambiguated t [https://www.allovergreece.com/Beaches/Descr/57/502/en].",
             "sourceUrls": [
               "https://bathingwaterprofiles.gr/el/bathingprofiles/elbw069211097101",
               "https://mapcarta.com/W353391442"
@@ -13425,9 +13406,10 @@
             },
             "terrain": {
               "types": [
-                "sand"
+                "coarse_sand",
+                "pebbles"
               ],
-              "label": "άμμος"
+              "label": "χοντρή άμμος, βότσαλα"
             },
             "organized": false,
             "shade": true,
@@ -13444,7 +13426,7 @@
               "label": "Βαθιά νερά",
               "notes": "Το βάθος συνήθως ανεβαίνει πιο γρήγορα μετά την είσοδο στη θάλασσα."
             },
-            "sourceNotes": "Spetses direct source cleanup 2026-05-29: the Municipality of Spetses material supports the broader Zogeria bay and smaller Zogeria bays as beach/swim areas mostly approached by boat; existing OSM supports this separate same-name point. Confidence promoted to medium for identity/access context only; main Zogeria services were not copied here and no live-condition claim was added. Terrain corrected 2026-06-20 (OSM surface audit): our type \"pebbles+rocks\" contradicted the OSM natural=beach surface \"sand\" (crowd-verified); set to sand.",
+            "sourceNotes": "Spetses direct source cleanup 2026-05-29: the Municipality of Spetses material supports the broader Zogeria bay and smaller Zogeria bays as beach/swim areas mostly approached by boat; existing OSM supports this separate same-name point. Confidence promoted to medium for identity/access context only; main Zogeria services were not copied here and no live-condition claim was added. Terrain corrected 2026-06-20 (OSM surface audit): our type \"pebbles+rocks\" contradicted the OSM natural=beach surface \"sand\" (crowd-verified); set to sand. Terrain web-verify 2026-07-20 (no-API): corrected to MIXED_SAND_PEBBLE — The small/secluded Zogeria cove has 'a mixture of sand, dirt, and pebbles where the water breaks' (the large cove is coarse sand); [https://www.greeka.com/saronic/spetses/beaches/zogeria/].",
             "sourceUrls": [
               "https://www.openstreetmap.org/way/517530114"
             ],
@@ -14176,9 +14158,9 @@
             },
             "terrain": {
               "types": [
-                "sand"
+                "pebbles"
               ],
-              "label": "άμμος"
+              "label": "βότσαλα"
             },
             "organized": false,
             "shade": false,
@@ -14196,11 +14178,7 @@
               "label": "Κανονικό βάθος",
               "notes": "Η επίσημη ταυτότητα αναφέρει κανονικό βάθος και ήπια κλίση πυθμένα. Δεν αποτελεί live safety claim."
             },
-            "sourceNotes": [
-              "West Attica official bathing-profile cleanup 2026-05-29: official Porto Germeno bathing profile supports identity, path/stairs access, pebble shore/seabed, rocky edges, normal depth with gentle seabed slope, unorganized status, nearby restaurants/refreshment facilities, small boats, and windsurfing activity. Confidence promoted to medium; no wind, wave, or live-condition claim was added. Natural-shade flag kept false because the official profile places trees in the immediate area, not clearly on the bathing beach.",
-              "Popular-beach confidence pass 2026-06-02: official bathing-water profile plus PDF support Porto Germeno identity, path/stairs access, pebble/rocky terrain, unorganized status, normal depth/gentle seabed slope and nearby refreshment/restaurant context. Promoted to high for static metadata only; no live wind/wave/safety claim was added.",
-              "Terrain corrected 2026-06-20 (OSM surface audit): our type \"pebbles+rocks\" contradicted the OSM natural=beach surface \"sand\" (crowd-verified); set to sand."
-            ],
+            "sourceNotes": "West Attica official bathing-profile cleanup 2026-05-29: official Porto Germeno bathing profile supports identity, path/stairs access, pebble shore/seabed, rocky edges, normal depth with gentle seabed slope, unorganized status, nearby restaurants/refreshment facilities, small boats, and windsurfing activity. Confidence promoted to medium; no wind, wave, or live-condition claim was added. Natural-shade flag kept false because the official profile places trees in the immediate area, not clearly on the bathing beach. Popular-beach confidence pass 2026-06-02: official bathing-water profile plus PDF support Porto Germeno identity, path/stairs access, pebble/rocky terrain, unorganized status, normal depth/gentle seabed slope and nearby refreshment/restaurant context. Promoted to high for static metadata only; no live wind/wave/safety claim was added. Terrain corrected 2026-06-20 (OSM surface audit): our type \"pebbles+rocks\" contradicted the OSM natural=beach surface \"sand\" (crowd-verified); set to sand. Terrain web-verify 2026-07-20 (no-API): corrected to PEBBLES — Porto Germeno is 'a pebble beach... covered in small beige pebbles, the seabed very fine pebbles', split into three beaches of san [https://beaches-searcher.com/en/beach/300203003/porto-germeno-beach].",
             "sourceUrls": [
               "https://bathingwaterprofiles.gr/sites/all/themes/danland/docs/pdf_profiles/ELBW069230049.pdf",
               "https://www.openstreetmap.org/way/362625307"
@@ -19949,9 +19927,10 @@
             },
             "terrain": {
               "types": [
-                "sand"
+                "coarse_sand",
+                "pebbles"
               ],
-              "label": "άμμος"
+              "label": "χοντρή άμμος, βότσαλα"
             },
             "organized": true,
             "shade": true,
@@ -19977,7 +19956,7 @@
               "https://theblogofdimi.com/el/politika-paralia-evia/",
               "https://www.gtp.gr/LocPage.asp?id=5274&lng=1"
             ],
-            "sourceNotes": "Evia source check 2026-05-27: OSM node 4903678788 and nearby OSM beach/parking/restaurant features support the Politika beach zone. EviaGreece describes Paralia Politikon as a pebble beach with fishing-boat pier/mole and ouzeries. The Blog of Dimi places it on the south coast of the North Evian Gulf, supports fine pebble mixed with dark sand, shade from trees/public umbrellas, good road access, and quicker deepening. GTP supports a large pebble beach with taverns/cafes. Evia tourist-priority evidence pass 2026-05-29: Politika has live EviaGreece, GTP and local guide sources supporting identity, road access, pebble terrain and nearby cafe/taverna/ouzeri services. Confidence promoted to high for static identity/access/terrain/service metadata only; coordinates, windProfile, scoring, photos and live sea/wind/calm/protected/safe claims were not changed. Terrain corrected 2026-06-20 (OSM surface audit): our type \"fine_pebbles+pebbles\" contradicted the OSM natural=beach surface \"sand\" (crowd-verified); set to sand. Web-verified 2026-07-19 (web-high): organized — Official bathing-water profile: part of the 3.5km Politika beach is organized with 'ξαπλώστρες και ομπρέλες, ντους, καλάθια και κάδους απορριμμάτων'; there is a [https://bathingwaterprofiles.gr/bathingprofiles/GRBW079148016]; sunbeds added.",
+            "sourceNotes": "Evia source check 2026-05-27: OSM node 4903678788 and nearby OSM beach/parking/restaurant features support the Politika beach zone. EviaGreece describes Paralia Politikon as a pebble beach with fishing-boat pier/mole and ouzeries. The Blog of Dimi places it on the south coast of the North Evian Gulf, supports fine pebble mixed with dark sand, shade from trees/public umbrellas, good road access, and quicker deepening. GTP supports a large pebble beach with taverns/cafes. Evia tourist-priority evidence pass 2026-05-29: Politika has live EviaGreece, GTP and local guide sources supporting identity, road access, pebble terrain and nearby cafe/taverna/ouzeri services. Confidence promoted to high for static identity/access/terrain/service metadata only; coordinates, windProfile, scoring, photos and live sea/wind/calm/protected/safe claims were not changed. Terrain corrected 2026-06-20 (OSM surface audit): our type \"fine_pebbles+pebbles\" contradicted the OSM natural=beach surface \"sand\" (crowd-verified); set to sand. Web-verified 2026-07-19 (web-high): organized — Official bathing-water profile: part of the 3.5km Politika beach is organized with 'ξαπλώστρες και ομπρέλες, ντους, καλάθια και κάδους απορριμμάτων'; there is a [https://bathingwaterprofiles.gr/bathingprofiles/GRBW079148016]; sunbeds added. Terrain web-verify 2026-07-20 (no-API): corrected to MIXED_SAND_PEBBLE — Politika beach is 'covered in fine pebbles mixed with dark sand... dark sand punctuated by white and gray pebbles'; genuine sand-a [https://theblogofdimi.com/politika-beach-evia-relaxing-spot-near-chalkida/].",
             "orientation": {
               "degrees": 213.2,
               "faces": [
@@ -21714,7 +21693,7 @@
               "types": [
                 "sand"
               ],
-              "label": "άμμος"
+              "label": "sand"
             },
             "organized": false,
             "shade": true,
@@ -21730,7 +21709,7 @@
               "label": "Βαθιά νερά",
               "notes": "Το βάθος συνήθως ανεβαίνει πιο γρήγορα μετά την είσοδο στη θάλασσα."
             },
-            "sourceNotes": "Evia OSM identity/location pass 2026-05-27: OSM way 365663003 matches the current coordinates as Schoinodayleia and lists alt_name:el Paralia Agiou Dimitriou. Kept low confidence and unknown access because access/services are not directly verified. Terrain corrected 2026-06-20 (OSM surface audit): our type \"pebbles+rocks\" contradicted the OSM natural=beach surface \"sand\" (crowd-verified); set to sand.",
+            "sourceNotes": "Evia OSM identity/location pass 2026-05-27: OSM way 365663003 matches the current coordinates as Schoinodayleia and lists alt_name:el Paralia Agiou Dimitriou. Kept low confidence and unknown access because access/services are not directly verified. Terrain corrected 2026-06-20 (OSM surface audit): our type \"pebbles+rocks\" contradicted the OSM natural=beach surface \"sand\" (crowd-verified); set to sand. Terrain web-verify 2026-07-20 (no-API): label synced to types — Schinodavlia (aka Agios Dimitrios) is 'listed among the sandy beaches of Karystos' with shallow warm clean water; disambiguated to [https://karystion.gr/en/travel-experiences/sandy-beaches].",
             "sourceUrls": [
               "https://www.openstreetmap.org/way/365663003"
             ],
@@ -24810,9 +24789,9 @@
             },
             "terrain": {
               "types": [
-                "sand"
+                "pebbles"
               ],
-              "label": "άμμος"
+              "label": "βότσαλα"
             },
             "organized": true,
             "shade": false,
@@ -24837,11 +24816,7 @@
               "https://bathingwaterprofiles.gr/sites/all/themes/danland/docs/pdf_profiles/ELBW049166018.pdf",
               "https://www.blueflag.gr/el/awards/2026"
             ],
-            "sourceNotes": [
-              "Popular source-backed confidence pass AF 2026-06-02: moved Paralia Chiliadou from West Greece/Aetolia-Acarnania to Central Greece/Fokida because the official bathing-water profile places Chiliadou in Fokida, Dorida Municipality, and the Blue Flag 2026 official list also places Chiliadou under Fokida/Dorida. Promoted to high for static source-backed facts only.",
-              "Pass AF static metadata: official profile supports Monastiraki bay identity, asphalt-road access, rocky shore/seabed, deep first metres, partly organized umbrellas/loungers, shower/WC, seasonal water-sport facilities, refreshment building and nearby restaurants/tavernas. Removed unsupported natural-shade claim. Source wind/exposure wording was not imported into windProfile, scoring, or live calm/protected/safe claims. Coordinates and photos were not changed.",
-              "Terrain corrected 2026-06-20 (OSM surface audit): our type \"rocks\" contradicted the OSM natural=beach surface \"sand\" (crowd-verified); set to sand."
-            ],
+            "sourceNotes": "Popular source-backed confidence pass AF 2026-06-02: moved Paralia Chiliadou from West Greece/Aetolia-Acarnania to Central Greece/Fokida because the official bathing-water profile places Chiliadou in Fokida, Dorida Municipality, and the Blue Flag 2026 official list also places Chiliadou under Fokida/Dorida. Promoted to high for static source-backed facts only. Pass AF static metadata: official profile supports Monastiraki bay identity, asphalt-road access, rocky shore/seabed, deep first metres, partly organized umbrellas/loungers, shower/WC, seasonal water-sport facilities, refreshment building and nearby restaurants/tavernas. Removed unsupported natural-shade claim. Source wind/exposure wording was not imported into windProfile, scoring, or live calm/protected/safe claims. Coordinates and photos were not changed. Terrain corrected 2026-06-20 (OSM surface audit): our type \"rocks\" contradicted the OSM natural=beach surface \"sand\" (crowd-verified); set to sand. Terrain web-verify 2026-07-20 (no-API): corrected to PEBBLES — Chiliadou (Fokida/Dorida, near Nafpaktos) is 'a very beautiful beach with pebble outside and sand in the sea' - the walking shore  [https://beachgreece.com/beach/fokida/efpalio/chiliadou-beach/].",
             "blueFlag2026": {
               "awarded": true,
               "year": 2026,
@@ -36608,9 +36583,9 @@
             },
             "terrain": {
               "types": [
-                "sand"
+                "pebbles"
               ],
-              "label": "άμμος"
+              "label": "βότσαλα"
             },
             "organized": true,
             "shade": true,
@@ -36632,7 +36607,7 @@
               "https://www.visit-halkidiki.gr/portfolio-view/pirgos-beach/",
               "https://mapcarta.com/W362807124"
             ],
-            "sourceNotes": "Halkidiki tourist-priority evidence pass 2026-05-29: upgraded to high because Visit Halkidiki and map sources directly support Pirgos/Pyrgos Beach in Halkidiki as a secluded, pebbly, non-organized beach with parking. The similarly named Central Macedonia Pyrgos page was checked but not used because it may refer to a different Gomati beach. No windProfile, coordinates, scoring, photos, or live sea/wind behavior were changed. Terrain corrected 2026-06-20 (OSM surface audit): our type \"pebbles\" contradicted the OSM natural=beach surface \"sand\" (crowd-verified); set to sand. Reverse amenity sweep 2026-07-19 (no-API): organized flag corrected to true + sunbeds added — OSM beach_resort \"(unnamed)\" 48m from the pin.",
+            "sourceNotes": "Halkidiki tourist-priority evidence pass 2026-05-29: upgraded to high because Visit Halkidiki and map sources directly support Pirgos/Pyrgos Beach in Halkidiki as a secluded, pebbly, non-organized beach with parking. The similarly named Central Macedonia Pyrgos page was checked but not used because it may refer to a different Gomati beach. No windProfile, coordinates, scoring, photos, or live sea/wind behavior were changed. Terrain corrected 2026-06-20 (OSM surface audit): our type \"pebbles\" contradicted the OSM natural=beach surface \"sand\" (crowd-verified); set to sand. Reverse amenity sweep 2026-07-19 (no-API): organized flag corrected to true + sunbeds added — OSM beach_resort \"(unnamed)\" 48m from the pin. Terrain web-verify 2026-07-20 (no-API): corrected to PEBBLES — Pirgos beach (Halkidiki) is 'a secluded, pebbly beach with a few farmhouses among plane trees and fishing boats' per Visit Halkidi [https://www.visit-halkidiki.gr/portfolio-view/pirgos-beach/].",
             "waterDepth": {
               "type": "medium",
               "label": "medium depth",
@@ -37175,7 +37150,7 @@
               "types": [
                 "sand"
               ],
-              "label": "άμμος"
+              "label": "sand"
             },
             "organized": true,
             "shade": false,
@@ -37186,7 +37161,7 @@
             "language": "el",
             "batch": "seatrac_d2_2026_06",
             "needsVerification": true,
-            "sourceNotes": "Seatrac Phase D2 geocode (2026-06): created from no-match seed \"Αμμουλιανή\" (Ammouliani), Aristotelis, Central Macedonia. Nominatim hit nom-node-280887835; Overpass natural=beach corroboration 200 m. Slot via nearest existing beach #419 (592 m). Conservative — access/terrain unknown, amenities only as stated. Terrain corrected 2026-06-20 (OSM surface audit): our type \"\" contradicted the OSM natural=beach surface \"sand\" (crowd-verified); set to sand. Medium-omission multi-signal pass 2026-07-19 (no-API): organized flag corrected to true — 2 independent signals (barNear, foodOnSand); beach bar added.",
+            "sourceNotes": "Seatrac Phase D2 geocode (2026-06): created from no-match seed \"Αμμουλιανή\" (Ammouliani), Aristotelis, Central Macedonia. Nominatim hit nom-node-280887835; Overpass natural=beach corroboration 200 m. Slot via nearest existing beach #419 (592 m). Conservative — access/terrain unknown, amenities only as stated. Terrain corrected 2026-06-20 (OSM surface audit): our type \"\" contradicted the OSM natural=beach surface \"sand\" (crowd-verified); set to sand. Medium-omission multi-signal pass 2026-07-19 (no-API): organized flag corrected to true — 2 independent signals (barNear, foodOnSand); beach bar added. Terrain web-verify 2026-07-20 (no-API): label synced to types — Ammouliani island beaches (Alykes, Megali Ammos, Karagatsia) are 'white/golden sand with crystal-clear shallow water'; disambiguat [https://nikana.gr/en/tourist-guide/athos/beaches/3826/the-most-beautiful-beaches-on-ammouliani-island].",
             "sourceUrls": [
               "https://seatrac.gr/"
             ],
@@ -39654,7 +39629,7 @@
               "types": [
                 "sand"
               ],
-              "label": "άμμος"
+              "label": "sand"
             },
             "organized": false,
             "shade": false,
@@ -39671,11 +39646,7 @@
               "https://www.openstreetmap.org/way/996151777",
               "https://mapcarta.com/W996151777"
             ],
-            "sourceNotes": [
-              "Chania tourist-priority evidence pass 2026-05-29: kept medium because no stronger live source was found beyond OSM identity/location for this Chania-batch Argilos record. Existing access and terrain remain conservative; no windProfile, coordinates, scoring, photos, or live sea/wind behavior were changed.",
-              "Chania medium-confidence cleanup 2026-06-05 DM: neutralized unsupported asphalt-road, sandy-terrain and shallow-water claims for Argilos. Mapcarta/OSM support the exact Argilos Beach identity/location and natural=beach feature near Frangokastello, but not access, terrain, amenities, depth, windProfile, scoring, photos, or live calm/protected/safe claims.",
-              "Terrain corrected 2026-06-20 (OSM surface audit): our type \"\" contradicted the OSM natural=beach surface \"sand\" (crowd-verified); set to sand."
-            ],
+            "sourceNotes": "Chania tourist-priority evidence pass 2026-05-29: kept medium because no stronger live source was found beyond OSM identity/location for this Chania-batch Argilos record. Existing access and terrain remain conservative; no windProfile, coordinates, scoring, photos, or live sea/wind behavior were changed. Chania medium-confidence cleanup 2026-06-05 DM: neutralized unsupported asphalt-road, sandy-terrain and shallow-water claims for Argilos. Mapcarta/OSM support the exact Argilos Beach identity/location and natural=beach feature near Frangokastello, but not access, terrain, amenities, depth, windProfile, scoring, photos, or live calm/protected/safe claims. Terrain corrected 2026-06-20 (OSM surface audit): our type \"\" contradicted the OSM natural=beach surface \"sand\" (crowd-verified); set to sand. Terrain web-verify 2026-07-20 (no-API): label synced to types — Argilos is a clay/sand beach type (named for the argilos-clay used for natural spa); Greek guides describe it as an ammoudia, not  [https://agonaskritis.gr/%CE%AC%CF%81%CE%B3%CE%B9%CE%BB%CE%BF%CF%82-%CE%B7-%CF%80%CE%B1%CF%81%CE%B1%CE%BB%CE%AF%CE%B1-%CF%84%CE%B7%CF%82-%CE%BA%CF%81%CE%AE%CF%84%CE%B7%CF%82-%CF%80%CE%BF%CF%85-%CE%BA%CF%81%CF%8D%CE%B2%CE%B5/].",
             "orientation": {
               "degrees": 188.9,
               "faces": [
@@ -40286,9 +40257,10 @@
             },
             "terrain": {
               "types": [
-                "rocks"
+                "fine_sand",
+                "coarse_sand"
               ],
-              "label": "βράχια"
+              "label": "λεπτή άμμος, χοντρή άμμος"
             },
             "organized": true,
             "shade": false,
@@ -40316,10 +40288,7 @@
               "https://www.openstreetmap.org/way/485173614",
               "https://www.openstreetmap.org/way/485173618"
             ],
-            "sourceNotes": [
-              "OpenStreetMap Overpass Chania audit 2026-05-23",
-              "Terrain corrected 2026-06-20 (OSM surface audit): our type \"fine_sand+coarse_sand\" contradicted the OSM natural=beach surface \"stone\" (crowd-verified); set to rocks."
-            ],
+            "sourceNotes": "OpenStreetMap Overpass Chania audit 2026-05-23 Terrain corrected 2026-06-20 (OSM surface audit): our type \"fine_sand+coarse_sand\" contradicted the OSM natural=beach surface \"stone\" (crowd-verified); set to rocks. Terrain web-verify 2026-07-20 (no-API): corrected to SAND — Grecorama/Terrabook: Kiani Akti at Kalyves/Souda (Apokoronas, Chania, 17km E of Chania) is a large sandy beach with fine sand (ψιλ [http://grecorama.com/en/kyani-akti-beach-kyani-cote/].",
             "orientation": {
               "degrees": 33,
               "faces": [
@@ -41898,9 +41867,9 @@
             },
             "terrain": {
               "types": [
-                "rocks"
+                "pebbles"
               ],
-              "label": "βράχια"
+              "label": "βότσαλα"
             },
             "organized": false,
             "shade": true,
@@ -41918,7 +41887,7 @@
               "https://www.cretanbeaches.com/en/sea-tourism/west-crete-beaches/koutalis-beach-plaka",
               "https://www.beachatlas.com/koutalas"
             ],
-            "sourceNotes": "Chania tourist-priority evidence pass 2026-05-29: upgraded to high because CretanBeaches and BeachAtlas directly support Koutalis/Koutalas Beach near Kokkino Chorio/Cape Drepano, including isolated pebble/rock terrain, passable road/dirt-track access and lack of full organization. No static calm/safe claim, windProfile, coordinates, scoring, photos, or live sea/wind behavior were changed. Terrain corrected 2026-06-20 (OSM surface audit): our type \"pebbles\" contradicted the OSM natural=beach surface \"stone\" (crowd-verified); set to rocks.",
+            "sourceNotes": "Chania tourist-priority evidence pass 2026-05-29: upgraded to high because CretanBeaches and BeachAtlas directly support Koutalis/Koutalas Beach near Kokkino Chorio/Cape Drepano, including isolated pebble/rock terrain, passable road/dirt-track access and lack of full organization. No static calm/safe claim, windProfile, coordinates, scoring, photos, or live sea/wind behavior were changed. Terrain corrected 2026-06-20 (OSM surface audit): our type \"pebbles\" contradicted the OSM natural=beach surface \"stone\" (crowd-verified); set to rocks. Terrain web-verify 2026-07-20 (no-API): corrected to PEBBLES — Discover Crete / Vamos Village: Koutalas at Kokkino Chorio (Cape Drapano, Apokoronas, ~27km E of Chania) 'έχει βότσαλα και μεγάλες [https://www.discovercrete.com/el/places-to-go/koutalas-beach-a-secluded-haven].",
             "orientation": {
               "degrees": 327.2,
               "faces": [
@@ -48668,9 +48637,10 @@
             },
             "terrain": {
               "types": [
-                "pebbles"
+                "fine_sand",
+                "coarse_sand"
               ],
-              "label": "βότσαλα"
+              "label": "λεπτή άμμος, χοντρή άμμος"
             },
             "organized": true,
             "shade": false,
@@ -48695,11 +48665,7 @@
               "https://www.openstreetmap.org/search?query=Gouves%20beach%20Heraklion",
               "https://www.blueflag.gr/el/awards/2026"
             ],
-            "sourceNotes": [
-              "Heraklion source confidence pass 2026-05-29: CretanBeaches supports Gouves beaches identity/location and north-coast resort beach context. Static metadata confidence promoted to high; coordinates, windProfile, scoring, photos, and live sea/wind claims were not changed.",
-              "Blue Flag 2026 import 2026-06-01: official Blue Flag Greece awards page lists one or more matching awarded beach sections for this record. Static certification metadata only; coordinates, access, windProfile, scoring, photos, confidence and live calm/protected/safe claims were not changed.",
-              "Terrain corrected 2026-06-20 (OSM surface audit): our type \"fine_sand\" contradicted the OSM natural=beach surface \"pebblestone\" (crowd-verified); set to pebbles."
-            ],
+            "sourceNotes": "Heraklion source confidence pass 2026-05-29: CretanBeaches supports Gouves beaches identity/location and north-coast resort beach context. Static metadata confidence promoted to high; coordinates, windProfile, scoring, photos, and live sea/wind claims were not changed. Blue Flag 2026 import 2026-06-01: official Blue Flag Greece awards page lists one or more matching awarded beach sections for this record. Static certification metadata only; coordinates, access, windProfile, scoring, photos, confidence and live calm/protected/safe claims were not changed. Terrain corrected 2026-06-20 (OSM surface audit): our type \"fine_sand\" contradicted the OSM natural=beach surface \"pebblestone\" (crowd-verified); set to pebbles. Terrain web-verify 2026-07-20 (no-API): corrected to SAND — cretanbeaches/okaycrete: Kato Gouves (18km E of Heraklion) has fine sand (λεπτή άμμος) and shallow water. Coords match Gouves. Bot [https://www.okaycrete.com/article/Kato-gouves.html].",
             "blueFlag2026": {
               "awarded": true,
               "year": 2026,
@@ -48953,9 +48919,10 @@
             },
             "terrain": {
               "types": [
-                "pebbles"
+                "fine_sand",
+                "coarse_sand"
               ],
-              "label": "βότσαλα"
+              "label": "λεπτή άμμος, χοντρή άμμος"
             },
             "organized": true,
             "shade": false,
@@ -48979,10 +48946,7 @@
               "https://www.cretanbeaches.com/en/sea-tourism/central-crete-beaches-heraklion/stalida-beach",
               "https://www.openstreetmap.org/search?query=Stalis%20beach%20Heraklion"
             ],
-            "sourceNotes": [
-              "Heraklion source confidence pass 2026-05-29: CretanBeaches supports Stalida beach identity/location and organized resort beach context. Static metadata confidence promoted to high; coordinates, windProfile, scoring, photos, and live sea/wind claims were not changed.",
-              "Terrain corrected 2026-06-20 (OSM surface audit): our type \"fine_sand\" contradicted the OSM natural=beach surface \"sand;pebblestone;rock\" (crowd-verified); set to pebbles."
-            ],
+            "sourceNotes": "Heraklion source confidence pass 2026-05-29: CretanBeaches supports Stalida beach identity/location and organized resort beach context. Static metadata confidence promoted to high; coordinates, windProfile, scoring, photos, and live sea/wind claims were not changed. Terrain corrected 2026-06-20 (OSM surface audit): our type \"fine_sand\" contradicted the OSM natural=beach surface \"sand;pebblestone;rock\" (crowd-verified); set to pebbles. Terrain web-verify 2026-07-20 (no-API): corrected to SAND — explorecrete/cretanbeaches: Stalida (Stalis, near Malia, Heraklion) is a ~3km organized beach of fine sand (ψιλή άμμος) with shall [https://www.explorecrete.com/heraklion-region/stalis-stalida].",
             "orientation": {
               "degrees": 25.3,
               "faces": [
@@ -51975,7 +51939,7 @@
               "types": [
                 "sand"
               ],
-              "label": "άμμος"
+              "label": "sand"
             },
             "organized": true,
             "shade": true,
@@ -51991,7 +51955,7 @@
               "label": "Βαθιά νερά",
               "notes": "Το βάθος συνήθως ανεβαίνει πιο γρήγορα μετά την είσοδο στη θάλασσα."
             },
-            "sourceNotes": "Source follow-up pass 25 2026-05-28: direct CretanBeaches Panormo page supports Limni beach identity/location in Rethymno only. Confidence, coordinates, access, services, amenities, wind profile, and scoring were not changed. Strict Rethymno evidence pass 2026-05-29: CretanBeaches supports the Panormo beach system including Limni harbor-beach context, with organized settlement facilities and exact area identity. Blue Flag 2026 import 2026-06-01: official Blue Flag Greece awards page lists one or more matching awarded beach sections for this record. Static certification metadata only; coordinates, access, windProfile, scoring, photos, confidence and live calm/protected/safe claims were not changed. Terrain corrected 2026-06-20 (OSM surface audit): our type \"pebbles+rocks\" contradicted the OSM natural=beach surface \"sand\" (crowd-verified); set to sand. Medium-omission multi-signal pass 2026-07-19 (no-API): organized flag corrected to true — 3 independent signals (barNear, foodOnSand, ownAmenityFood); beach bar added.",
+            "sourceNotes": "Source follow-up pass 25 2026-05-28: direct CretanBeaches Panormo page supports Limni beach identity/location in Rethymno only. Confidence, coordinates, access, services, amenities, wind profile, and scoring were not changed. Strict Rethymno evidence pass 2026-05-29: CretanBeaches supports the Panormo beach system including Limni harbor-beach context, with organized settlement facilities and exact area identity. Blue Flag 2026 import 2026-06-01: official Blue Flag Greece awards page lists one or more matching awarded beach sections for this record. Static certification metadata only; coordinates, access, windProfile, scoring, photos, confidence and live calm/protected/safe claims were not changed. Terrain corrected 2026-06-20 (OSM surface audit): our type \"pebbles+rocks\" contradicted the OSM natural=beach surface \"sand\" (crowd-verified); set to sand. Medium-omission multi-signal pass 2026-07-19 (no-API): organized flag corrected to true — 3 independent signals (barNear, foodOnSand, ownAmenityFood); beach bar added. Terrain web-verify 2026-07-20 (no-API): label synced to types — cretanbeaches: the Skaleta/Sfakaki coast (Almyros gulf, ~12km NE of Rethymno) at these coords is golden fine sand (χρυσή ψιλή άμμο [https://www.cretanbeaches.com/el/thalassios-tourismos/paralies-kentrikis-kritis-rethymno/paralia-sfakaki].",
             "sourceUrls": [
               "https://www.cretanbeaches.com/en/sea-tourism/central-crete-beaches-rethymnon/panormo-beaches-rethymnon",
               "https://www.blueflag.gr/el/awards/2026"
@@ -52287,7 +52251,7 @@
               "types": [
                 "sand"
               ],
-              "label": "άμμος"
+              "label": "sand"
             },
             "organized": false,
             "shade": false,
@@ -52304,10 +52268,7 @@
               "https://www.openstreetmap.org/way/553233495",
               "https://www.cretanbeaches.com/en/sea-tourism/central-crete-beaches-rethymnon/drymiskos-beaches-ammoudi-rethymnon"
             ],
-            "sourceNotes": [
-              "Strict Rethymno evidence pass 2026-05-29: CretanBeaches directly supports Anatolika/East beaches within the Drymiskos beach series east of Ammoudi/Preveli, with sandy cove sequence, deep clear-water description, sparse crowds, and paved-road/rock-shade access context.",
-              "Terrain corrected 2026-06-20 (OSM surface audit): our type \"pebbles+rocks\" contradicted the OSM natural=beach surface \"sand\" (crowd-verified); set to sand."
-            ],
+            "sourceNotes": "Strict Rethymno evidence pass 2026-05-29: CretanBeaches directly supports Anatolika/East beaches within the Drymiskos beach series east of Ammoudi/Preveli, with sandy cove sequence, deep clear-water description, sparse crowds, and paved-road/rock-shade access context. Terrain corrected 2026-06-20 (OSM surface audit): our type \"pebbles+rocks\" contradicted the OSM natural=beach surface \"sand\" (crowd-verified); set to sand. Terrain web-verify 2026-07-20 (no-API): label synced to types — cretanbeaches/originalcrete: these coords (35.148/24.500) are the Agios Pavlos–Akoumiani Gialia dune coast of S Rethymno (Ammolofo [https://www.originalcrete.gr/en/article/agios-paulos].",
             "orientation": {
               "degrees": 199.1,
               "faces": [
@@ -52683,7 +52644,7 @@
               "types": [
                 "sand"
               ],
-              "label": "άμμος"
+              "label": "sand"
             },
             "organized": false,
             "shade": false,
@@ -52701,10 +52662,7 @@
               "https://www.cretanbeaches.com/en/sea-tourism/central-crete-beaches-rethymnon/drymiskos-beaches-ammoudi-rethymnon",
               "https://greece.terrabook.com/el/rethymno/page/drumiskianos/"
             ],
-            "sourceNotes": [
-              "Strict Rethymno evidence pass 2026-05-29: CretanBeaches and Terrabook support Kefala as the central part of the Drymiskos/Drymiskianos beach series, with sand-pebble cove sequence, limited organization, and access from the Preveli/Drymiskos road context.",
-              "Terrain corrected 2026-06-20 (OSM surface audit): our type \"pebbles+rocks\" contradicted the OSM natural=beach surface \"sand\" (crowd-verified); set to sand."
-            ],
+            "sourceNotes": "Strict Rethymno evidence pass 2026-05-29: CretanBeaches and Terrabook support Kefala as the central part of the Drymiskos/Drymiskianos beach series, with sand-pebble cove sequence, limited organization, and access from the Preveli/Drymiskos road context. Terrain corrected 2026-06-20 (OSM surface audit): our type \"pebbles+rocks\" contradicted the OSM natural=beach surface \"sand\" (crowd-verified); set to sand. Terrain web-verify 2026-07-20 (no-API): label synced to types — cretanbeaches/originalcrete: Kefala is the NW end of the Akoumiani Gialia / Agios Pavlos sandy-dune stretch (S Rethymno), a sandy  [https://www.cretanbeaches.com/el/thalassios-tourismos/paralies-kentrikis-kritis-rethymno/ammolofoi-agiou-paulou-triopetra].",
             "orientation": {
               "degrees": 190,
               "faces": [
@@ -53450,9 +53408,10 @@
             },
             "terrain": {
               "types": [
+                "coarse_sand",
                 "pebbles"
               ],
-              "label": "βότσαλα"
+              "label": "χοντρή άμμος, βότσαλα"
             },
             "organized": true,
             "shade": false,
@@ -53477,11 +53436,7 @@
               "https://greece.terrabook.com/rethymno/page/skinos-2/",
               "https://www.cretanbeaches.com/en/sea-tourism/central-crete-beaches-rethymnon/skinos-beach-plakias"
             ],
-            "sourceNotes": [
-              "Rethymno audit 2026-05-25: Skinos has sunbeds, umbrellas, showers and many taverns/accommodation nearby; remove generic copied note.",
-              "Strict Rethymno evidence pass 2026-05-29: CretanBeaches and Terrabook directly support Skinos as the second Plakias beach between the settlement and harbor, with sand/rock terrain, snorkeling context, umbrellas/showers near the village, nearby taverns/rooms, and shore-road access.",
-              "Terrain corrected 2026-06-20 (OSM surface audit): our type \"fine_sand+rocks\" contradicted the OSM natural=beach surface \"pebblestone\" (crowd-verified); set to pebbles."
-            ],
+            "sourceNotes": "Rethymno audit 2026-05-25: Skinos has sunbeds, umbrellas, showers and many taverns/accommodation nearby; remove generic copied note. Strict Rethymno evidence pass 2026-05-29: CretanBeaches and Terrabook directly support Skinos as the second Plakias beach between the settlement and harbor, with sand/rock terrain, snorkeling context, umbrellas/showers near the village, nearby taverns/rooms, and shore-road access. Terrain corrected 2026-06-20 (OSM surface audit): our type \"fine_sand+rocks\" contradicted the OSM natural=beach surface \"pebblestone\" (crowd-verified); set to pebbles. Terrain web-verify 2026-07-20 (no-API): corrected to MIXED_SAND_PEBBLE — cretanbeaches: Skinos, the second beach of Plakias (Sellia, W of the fishing shelter), 'has sand and many small rocks/stones, idea [https://www.cretanbeaches.com/el/thalassios-tourismos/paralies-kentrikis-kritis-rethymno/paralia-skinos-ston-plakia].",
             "orientation": {
               "degrees": 198.9,
               "faces": [
@@ -55017,9 +54972,10 @@
             },
             "terrain": {
               "types": [
-                "pebbles"
+                "fine_sand",
+                "coarse_sand"
               ],
-              "label": "βότσαλα"
+              "label": "λεπτή άμμος, χοντρή άμμος"
             },
             "organized": false,
             "shade": false,
@@ -55035,7 +54991,7 @@
               "label": "Ρηχά νερά",
               "notes": "Η είσοδος στη θάλασσα είναι πιο ήπια και το βάθος αυξάνει πιο σταδιακά."
             },
-            "sourceNotes": "Source follow-up pass 6 2026-05-27: direct official bathing-water profile supports beach identity/location only. Confidence, coordinates, access, services, amenities, wind profile, and scoring were not changed. Existing-source confidence cleanup 2026-05-29: the official bathing-water profile and Xerokampos local guide support the Xerokampos beach identity/location, sandy/fine-pebble shore, shallow-water profile, car access, limited amenities, nearby food, and parking context. Confidence promoted to medium; no wind, wave, or live-condition claim was added. Strict Lasithi evidence pass 2026-05-29: source-backed static beach facts were reviewed against the attached direct source URLs. Confidence is upgraded only for identity/location plus concrete static evidence such as terrain, access, organization, nearby facilities, or explicit limitations. Coordinates, windProfile, scoring, photos, and live sea/wind/safety claims were not changed. Terrain corrected 2026-06-20 (OSM surface audit): our type \"fine_sand\" contradicted the OSM natural=beach surface \"gravel\" (crowd-verified); set to pebbles. Access-road audit 2026-07-19: OSM shows the nearest paved road ~401m away with only a track/footpath nearer (37m/—m); the confident \"asphalt\" label is not ground-verified. Display downgraded to unverified (no dirt-road claim asserted).",
+            "sourceNotes": "Source follow-up pass 6 2026-05-27: direct official bathing-water profile supports beach identity/location only. Confidence, coordinates, access, services, amenities, wind profile, and scoring were not changed. Existing-source confidence cleanup 2026-05-29: the official bathing-water profile and Xerokampos local guide support the Xerokampos beach identity/location, sandy/fine-pebble shore, shallow-water profile, car access, limited amenities, nearby food, and parking context. Confidence promoted to medium; no wind, wave, or live-condition claim was added. Strict Lasithi evidence pass 2026-05-29: source-backed static beach facts were reviewed against the attached direct source URLs. Confidence is upgraded only for identity/location plus concrete static evidence such as terrain, access, organization, nearby facilities, or explicit limitations. Coordinates, windProfile, scoring, photos, and live sea/wind/safety claims were not changed. Terrain corrected 2026-06-20 (OSM surface audit): our type \"fine_sand\" contradicted the OSM natural=beach surface \"gravel\" (crowd-verified); set to pebbles. Access-road audit 2026-07-19: OSM shows the nearest paved road ~401m away with only a track/footpath nearer (37m/—m); the confident \"asphalt\" label is not ground-verified. Display downgraded to unverified (no dirt-road claim asserted). Terrain web-verify 2026-07-20 (no-API): corrected to SAND — cretanbeaches/originalcrete: this is the sandy sector of Xerokampos (Siteia, Lasithi) — the name itself is 'Ammos' (sand) and the  [https://www.cretanbeaches.com/el/thalassios-tourismos/anatoliki-kriti-lasithi/paralia-mazida-ammos-xerokampos].",
             "sourceUrls": [
               "https://bathingwaterprofiles.gr/el/bathingprofiles/elbw139313158101",
               "https://www.rental-center-crete.com/blog/xerokambos-crete/"
@@ -62498,9 +62454,10 @@
             },
             "terrain": {
               "types": [
+                "coarse_sand",
                 "pebbles"
               ],
-              "label": "βότσαλα"
+              "label": "χοντρή άμμος, βότσαλα"
             },
             "organized": true,
             "shade": false,
@@ -62525,12 +62482,7 @@
               "https://www.thassos-view.com/places/beaches/pefkari-beach",
               "https://www.blueflag.gr/el/awards/2026"
             ],
-            "sourceNotes": [
-              "Thasos audit 2026-05-25: 2025 municipal lifeguard study lists this beach or its mapped local section for seasonal lifeguard coverage.",
-              "Strict Thasos evidence pass 2026-05-29: Thassos View plus the municipal lifeguard study support Pefkari with named beach identity near Potos/Limenaria, organized tourist beach services, and seasonal guarded-section traceability.",
-              "Blue Flag 2026 import 2026-06-01: official Blue Flag Greece awards page lists one or more matching awarded beach sections for this record. Static certification metadata only; coordinates, access, windProfile, scoring, photos, confidence and live calm/protected/safe claims were not changed.",
-              "Terrain corrected 2026-06-20 (OSM surface audit): our type \"fine_sand+coarse_sand\" contradicted the OSM natural=beach surface \"pebblestone\" (crowd-verified); set to pebbles."
-            ],
+            "sourceNotes": "Thasos audit 2026-05-25: 2025 municipal lifeguard study lists this beach or its mapped local section for seasonal lifeguard coverage. Strict Thasos evidence pass 2026-05-29: Thassos View plus the municipal lifeguard study support Pefkari with named beach identity near Potos/Limenaria, organized tourist beach services, and seasonal guarded-section traceability. Blue Flag 2026 import 2026-06-01: official Blue Flag Greece awards page lists one or more matching awarded beach sections for this record. Static certification metadata only; coordinates, access, windProfile, scoring, photos, confidence and live calm/protected/safe claims were not changed. Terrain corrected 2026-06-20 (OSM surface audit): our type \"fine_sand+coarse_sand\" contradicted the OSM natural=beach surface \"pebblestone\" (crowd-verified); set to pebbles. Terrain web-verify 2026-07-20 (no-API): corrected to MIXED_SAND_PEBBLE — thassos-view/tripadvisor: Pefkari (S Thasos) 'combines soft sand with small pebbles' — sand is the main surface with pebbles/small [https://www.thassos-view.com/places/beaches/pefkari-beach].",
             "blueFlag2026": {
               "awarded": true,
               "year": 2026,
@@ -64160,9 +64112,9 @@
             },
             "terrain": {
               "types": [
-                "sand"
+                "rocks"
               ],
-              "label": "άμμος"
+              "label": "βράχια"
             },
             "organized": true,
             "shade": false,
@@ -64181,7 +64133,7 @@
               "label": "Βαθιά νερά",
               "notes": "Το βάθος συνήθως ανεβαίνει πιο γρήγορα μετά την είσοδο στη θάλασσα."
             },
-            "sourceNotes": "Source follow-up pass 43: Thassos View Karnagio page supports Karnagio identity/location at the old port of Thasos/Limenas. Confidence, coordinates, access, services, amenities, wind profile, and scoring were not changed. Strict Thasos evidence pass 2026-05-29: Thassos View Karnagio page supports Karnagio at the old port of Limenas with exact place identity and beach-bar/service context. Terrain corrected 2026-06-20 (OSM surface audit): our type \"rocks+pebbles\" contradicted the OSM natural=beach surface \"sand\" (crowd-verified); set to sand. Reverse amenity sweep 2026-07-19 (no-API): organized flag corrected to true + beach bar added — pin's own Google type is a bar.",
+            "sourceNotes": "Source follow-up pass 43: Thassos View Karnagio page supports Karnagio identity/location at the old port of Thasos/Limenas. Confidence, coordinates, access, services, amenities, wind profile, and scoring were not changed. Strict Thasos evidence pass 2026-05-29: Thassos View Karnagio page supports Karnagio at the old port of Limenas with exact place identity and beach-bar/service context. Terrain corrected 2026-06-20 (OSM surface audit): our type \"rocks+pebbles\" contradicted the OSM natural=beach surface \"sand\" (crowd-verified); set to sand. Reverse amenity sweep 2026-07-19 (no-API): organized flag corrected to true + beach bar added — pin's own Google type is a bar. Terrain web-verify 2026-07-20 (no-API): corrected to ROCKS — thassos-view/karnagiothassos: Karnagio at the end of Thasos-town (Limenas) old harbour sits 'at the edge of the last rock' — a roc [http://www.karnagiothassos.gr/en/].",
             "sourceUrls": [
               "https://www.thassos-view.com/el/epixeiriseis/beach-bars/karnagio"
             ],
@@ -64940,9 +64892,10 @@
             },
             "terrain": {
               "types": [
-                "pebbles"
+                "fine_sand",
+                "coarse_sand"
               ],
-              "label": "βότσαλα"
+              "label": "λεπτή άμμος, χοντρή άμμος"
             },
             "organized": false,
             "shade": true,
@@ -64960,11 +64913,7 @@
               "label": "Ρηχά νερά",
               "notes": "Η είσοδος στη θάλασσα είναι πιο ήπια και το βάθος αυξάνει πιο σταδιακά."
             },
-            "sourceNotes": [
-              "Source follow-up pass 26 2026-05-28: direct Thassos View beach page supports Skala Prinos beach identity/location on Thasos only. Confidence, coordinates, access, services, amenities, wind profile, and scoring were not changed.",
-              "Strict Thasos evidence pass 2026-05-29: Thassos View directly supports Skala Prinos beach identity/location and port/village-front beach context.",
-              "Terrain corrected 2026-06-20 (OSM surface audit): our type \"fine_sand\" contradicted the OSM natural=beach surface \"sand;pebblestone\" (crowd-verified); set to pebbles."
-            ],
+            "sourceNotes": "Source follow-up pass 26 2026-05-28: direct Thassos View beach page supports Skala Prinos beach identity/location on Thasos only. Confidence, coordinates, access, services, amenities, wind profile, and scoring were not changed. Strict Thasos evidence pass 2026-05-29: Thassos View directly supports Skala Prinos beach identity/location and port/village-front beach context. Terrain corrected 2026-06-20 (OSM surface audit): our type \"fine_sand\" contradicted the OSM natural=beach surface \"sand;pebblestone\" (crowd-verified); set to pebbles. Terrain web-verify 2026-07-20 (no-API): corrected to SAND — thassos-view/go-thassos: Skala Prinou (Dasyllion, N Thasos, 15km from port) is a white/fine sandy beach (blue flag), shallow and w [https://www.go-thassos.gr/gr/about-thassos/places/skala-prinos].",
             "sourceUrls": [
               "https://www.thassos-view.com/places/beaches/skala-prinos-beach"
             ],
@@ -80401,9 +80350,10 @@
             },
             "terrain": {
               "types": [
-                "sand"
+                "coarse_sand",
+                "pebbles"
               ],
-              "label": "άμμος"
+              "label": "χοντρή άμμος, βότσαλα"
             },
             "organized": false,
             "shade": false,
@@ -80416,11 +80366,7 @@
               "label": "Μέτριο βάθος",
               "notes": "No direct source confirms shallow water for this specific record, so depth remains neutral."
             },
-            "sourceNotes": [
-              "Source follow-up pass 53 2026-05-28: Sandee directly names Ayia Triada Beach on Othonoi in the Ionian Islands, supporting identity/location traceability only. Confidence, coordinates, access, services, amenities, wind profile, and scoring were not changed.",
-              "Ionian medium-confidence cleanup 2026-06-05 DK: neutralized unsupported asphalt-road, cafe/taverna, parking and shallow-water claims for Ayia Triada. The existing Sandee page supports identity/location and large white-stone beach character, but its broader nearby-service copy is not enough for high-confidence access or amenities. Coordinates, windProfile, scoring, photos and live calm/protected/safe claims were not changed.",
-              "Terrain corrected 2026-06-20 (OSM surface audit): our type \"large_stones\" contradicted the OSM natural=beach surface \"sand\" (crowd-verified); set to sand."
-            ],
+            "sourceNotes": "Source follow-up pass 53 2026-05-28: Sandee directly names Ayia Triada Beach on Othonoi in the Ionian Islands, supporting identity/location traceability only. Confidence, coordinates, access, services, amenities, wind profile, and scoring were not changed. Ionian medium-confidence cleanup 2026-06-05 DK: neutralized unsupported asphalt-road, cafe/taverna, parking and shallow-water claims for Ayia Triada. The existing Sandee page supports identity/location and large white-stone beach character, but its broader nearby-service copy is not enough for high-confidence access or amenities. Coordinates, windProfile, scoring, photos and live calm/protected/safe claims were not changed. Terrain corrected 2026-06-20 (OSM surface audit): our type \"large_stones\" contradicted the OSM natural=beach surface \"sand\" (crowd-verified); set to sand. Terrain web-verify 2026-07-20 (no-API): corrected to MIXED_SAND_PEBBLE — Agia Triada is the port/settlement area of Othonoi (Ammos village, with Ammos Hotel + 'Ammos Beach Bar Agia Triada'); the island's [https://holidaysindassia.com/corfu-places-to-visit/beach/othonoi/].",
             "sourceUrls": [
               "https://sandee.com/greece/ionian-islands/othonoi/ayia-triada-beach"
             ],
@@ -81501,9 +81447,9 @@
             },
             "terrain": {
               "types": [
-                "sand"
+                "pebbles"
               ],
-              "label": "άμμος"
+              "label": "βότσαλα"
             },
             "organized": true,
             "shade": true,
@@ -81521,7 +81467,7 @@
               "label": "Βαθιά νερά",
               "notes": "Το βάθος συνήθως ανεβαίνει πιο γρήγορα μετά την είσοδο στη θάλασσα."
             },
-            "sourceNotes": "Source follow-up pass 29 2026-05-28: direct Terrabook beach page supports Agia Paraskevi beach identity/location on eastern Kefalonia between Sami/Karavomilos and Agia Efimia only. Confidence, coordinates, access, services, amenities, wind profile, and scoring were not changed. Kefalonia source confidence pass 2026-05-29: existing direct beach/local tourism source coverage from the Kefalonia audit is sufficient for high static metadata confidence. Coordinates, windProfile, recommendation scoring, photos, and live sea/wind behavior were not changed. Terrain corrected 2026-06-20 (OSM surface audit): our type \"pebbles\" contradicted the OSM natural=beach surface \"sand\" (crowd-verified); set to sand. Amenity re-verify 2026-07-20 (no-API): organized confirmed by TWO independent sources — (1) visitkefaloniaisland.gr/terrabook: Agia Paraskevi (between Sami and Agia Efimia) has organ [https://visitkefaloniaisland.gr/agia-paraskevi-beach/]; (2) Sami-Agia Efimia coast: sunbeds for rent in a small park behind the beach, showers/toilets (greeka/amazingkefalonia). On [https://amazingkefalonia.com/agia-paraskevi-beach/]; sunbeds added.",
+            "sourceNotes": "Source follow-up pass 29 2026-05-28: direct Terrabook beach page supports Agia Paraskevi beach identity/location on eastern Kefalonia between Sami/Karavomilos and Agia Efimia only. Confidence, coordinates, access, services, amenities, wind profile, and scoring were not changed. Kefalonia source confidence pass 2026-05-29: existing direct beach/local tourism source coverage from the Kefalonia audit is sufficient for high static metadata confidence. Coordinates, windProfile, recommendation scoring, photos, and live sea/wind behavior were not changed. Terrain corrected 2026-06-20 (OSM surface audit): our type \"pebbles\" contradicted the OSM natural=beach surface \"sand\" (crowd-verified); set to sand. Amenity re-verify 2026-07-20 (no-API): organized confirmed by TWO independent sources — (1) visitkefaloniaisland.gr/terrabook: Agia Paraskevi (between Sami and Agia Efimia) has organ [https://visitkefaloniaisland.gr/agia-paraskevi-beach/]; (2) Sami-Agia Efimia coast: sunbeds for rent in a small park behind the beach, showers/toilets (greeka/amazingkefalonia). On [https://amazingkefalonia.com/agia-paraskevi-beach/]; sunbeds added. Terrain web-verify 2026-07-20 (no-API): corrected to PEBBLES — Kefalonia's Agia Paraskevi between Sami and Agia Efimia is a pebbly beach ('white pebbles and blue waters, descend a few steps').  [https://greece.terrabook.com/kefalonia/page/agia-paraskevi-2/].",
             "sourceUrls": [
               "https://greece.terrabook.com/kefalonia/page/agia-paraskevi-2/",
               "https://amazingkefalonia.com/agia-paraskevi-beach/",
@@ -85003,9 +84949,9 @@
             },
             "terrain": {
               "types": [
-                "sand"
+                "pebbles"
               ],
-              "label": "άμμος"
+              "label": "βότσαλα"
             },
             "organized": false,
             "shade": true,
@@ -85024,11 +84970,7 @@
               "https://amazingkefalonia.com/platia-ammos-beach/",
               "https://www.greecevacationsearch.com/beach.php?destination=Kefalonia&name=Platia+Ammos"
             ],
-            "sourceNotes": [
-              "Phase 2 source check 2026-05-25: Platia Ammos Kefalonia source backs special/difficult access via boat, dirt road and damaged/long stair access; keep hard-access warning.",
-              "Kefalonia source confidence pass 2026-05-29: existing direct beach/local tourism source coverage from the Kefalonia audit is sufficient for high static metadata confidence. Coordinates, windProfile, recommendation scoring, photos, and live sea/wind behavior were not changed.",
-              "Terrain corrected 2026-06-20 (OSM surface audit): our type \"pebbles\" contradicted the OSM natural=beach surface \"sand\" (crowd-verified); set to sand."
-            ],
+            "sourceNotes": "Phase 2 source check 2026-05-25: Platia Ammos Kefalonia source backs special/difficult access via boat, dirt road and damaged/long stair access; keep hard-access warning. Kefalonia source confidence pass 2026-05-29: existing direct beach/local tourism source coverage from the Kefalonia audit is sufficient for high static metadata confidence. Coordinates, windProfile, recommendation scoring, photos, and live sea/wind behavior were not changed. Terrain corrected 2026-06-20 (OSM surface audit): our type \"pebbles\" contradicted the OSM natural=beach surface \"sand\" (crowd-verified); set to sand. Terrain web-verify 2026-07-20 (no-API): corrected to PEBBLES — Platia Ammos (Paliki peninsula, ~400 steps down) 'shore is carpeted with fine white pebbles, though some areas have pebbles so sma [https://www.travel.gr/en/experiences-ee/platia-ammos-kefalonia-a-virgin-paradise-beach/].",
             "orientation": {
               "degrees": 297.9,
               "faces": [
@@ -88843,9 +88785,9 @@
             },
             "terrain": {
               "types": [
-                "sand"
+                "pebbles"
               ],
-              "label": "άμμος"
+              "label": "βότσαλα"
             },
             "organized": true,
             "shade": true,
@@ -88864,11 +88806,7 @@
               "label": "Μέτρια νερά",
               "notes": "Οι πηγές τεκμηριώνουν την οργανωμένη βοτσαλωτή παραλία, αλλά όχι σταθερά ρηχά ή βαθιά νερά."
             },
-            "sourceNotes": [
-              "Source follow-up pass 41 2026-05-28: official Visit Meganisi beaches page supports Fanari beach identity/location on Meganisi. Confidence, coordinates, access, services, amenities, wind profile, and scoring were not changed.",
-              "Popular regions source-promote pass R 2026-06-02: the official Visit Meganisi beaches page and direct local Meganisi guide support Fanari identity on northeastern Meganisi, pebbled terrain, road/foot access, organized beach-bar context, loungers/parasols, tree shade, lifeguard/accessible visitor context, and free/nearby parking. Promoted to high for static beach facts only; unsupported asphalt-road and deep-water claims were neutralized. Source calm/clear-water wording was not imported into windProfile, scoring, coordinates, photos, or live calm/protected/safe claims.",
-              "Terrain corrected 2026-06-20 (OSM surface audit): our type \"pebbles\" contradicted the OSM natural=beach surface \"sand\" (crowd-verified); set to sand."
-            ],
+            "sourceNotes": "Source follow-up pass 41 2026-05-28: official Visit Meganisi beaches page supports Fanari beach identity/location on Meganisi. Confidence, coordinates, access, services, amenities, wind profile, and scoring were not changed. Popular regions source-promote pass R 2026-06-02: the official Visit Meganisi beaches page and direct local Meganisi guide support Fanari identity on northeastern Meganisi, pebbled terrain, road/foot access, organized beach-bar context, loungers/parasols, tree shade, lifeguard/accessible visitor context, and free/nearby parking. Promoted to high for static beach facts only; unsupported asphalt-road and deep-water claims were neutralized. Source calm/clear-water wording was not imported into windProfile, scoring, coordinates, photos, or live calm/protected/safe claims. Terrain corrected 2026-06-20 (OSM surface audit): our type \"pebbles\" contradicted the OSM natural=beach surface \"sand\" (crowd-verified); set to sand. Terrain web-verify 2026-07-20 (no-API): corrected to PEBBLES — Fanari on Meganisi is 'characterized by fine white pebbles... has the finest pebbles of all the beaches on the island'. Disambigua [https://www.allovergreece.com/Beaches/Descr/86/830/en].",
             "sourceUrls": [
               "https://www.visitmeganisi.com/beaches",
               "https://www.exclusivemeganisi.com/fanari"
@@ -90730,9 +90668,9 @@
             },
             "terrain": {
               "types": [
-                "sand"
+                "pebbles"
               ],
-              "label": "άμμος"
+              "label": "βότσαλα"
             },
             "organized": false,
             "shade": true,
@@ -90752,12 +90690,7 @@
               "https://gozakynthos.gr/beaches/mizithres/",
               "https://zakynthos-view.com/destinations/mizithres-keri-zakynthos/"
             ],
-            "sourceNotes": [
-              "Phase 2 Batch 3B source check 2026-05-25: ArrivalGuides describes the Mizithres beach under Keri cliffs as boat-access-only; keep boat-only and no services.",
-              "Zakynthos tourist-priority confidence pass 2026-05-29: existing Zakynthos beach/local source URLs were live-checked and unavailable links were replaced or removed where needed. Static metadata confidence promoted to high for identity, location, and source-backed beach context only; coordinates, windProfile, scoring, photos, and live sea/wind claims were not changed.",
-              "Zakynthos source live-check cleanup 2026-05-29: replaced an ArrivalGuides URL returning 504 with live Mizithres beach sources supporting identity, Keri-area location, cliff/sea-stack beach context, and sea/boat access context. No coordinates, windProfile, scoring, photos, or live condition claims were changed.",
-              "Terrain corrected 2026-06-20 (OSM surface audit): our type \"pebbles+rocks\" contradicted the OSM natural=beach surface \"sand\" (crowd-verified); set to sand."
-            ],
+            "sourceNotes": "Phase 2 Batch 3B source check 2026-05-25: ArrivalGuides describes the Mizithres beach under Keri cliffs as boat-access-only; keep boat-only and no services. Zakynthos tourist-priority confidence pass 2026-05-29: existing Zakynthos beach/local source URLs were live-checked and unavailable links were replaced or removed where needed. Static metadata confidence promoted to high for identity, location, and source-backed beach context only; coordinates, windProfile, scoring, photos, and live sea/wind claims were not changed. Zakynthos source live-check cleanup 2026-05-29: replaced an ArrivalGuides URL returning 504 with live Mizithres beach sources supporting identity, Keri-area location, cliff/sea-stack beach context, and sea/boat access context. No coordinates, windProfile, scoring, photos, or live condition claims were changed. Terrain corrected 2026-06-20 (OSM surface audit): our type \"pebbles+rocks\" contradicted the OSM natural=beach surface \"sand\" (crowd-verified); set to sand. Terrain web-verify 2026-07-20 (no-API): corrected to PEBBLES — Greek Wikipedia/guides: the Megali Myzithra beach strip below the white conical Myzithres rocks is 'κυρίως καλυμμένη με βότσαλα' ( [https://el.wikipedia.org/wiki/%CE%9C%CE%B5%CE%B3%CE%AC%CE%BB%CE%B7_%CE%9C%CF%85%CE%B6%CE%AE%CE%B8%CF%81%CE%B1_%CE%96%CE%B1%CE%BA%CF%8D%CE%BD%CE%B8%CE%BF%CF%85].",
             "orientation": {
               "degrees": 197.6,
               "faces": [
@@ -94468,9 +94401,10 @@
             },
             "terrain": {
               "types": [
-                "sand"
+                "coarse_sand",
+                "pebbles"
               ],
-              "label": "άμμος"
+              "label": "χοντρή άμμος, βότσαλα"
             },
             "organized": false,
             "shade": true,
@@ -94487,7 +94421,7 @@
               "label": "Βαθιά νερά",
               "notes": "Το βάθος συνήθως ανεβαίνει πιο γρήγορα μετά την είσοδο στη θάλασσα."
             },
-            "sourceNotes": "Chios source confidence pass 2026-05-29: official Chios Travel Guide, FotoTravel and OSM support Nagos Beach identity/location in north-east Chios. Static metadata confidence promoted to high; coordinates, windProfile, scoring, photos, and live sea/wind claims were not changed. Terrain corrected 2026-06-20 (OSM surface audit): our type \"pebbles+rocks\" contradicted the OSM natural=beach surface \"sand\" (crowd-verified); set to sand.",
+            "sourceNotes": "Chios source confidence pass 2026-05-29: official Chios Travel Guide, FotoTravel and OSM support Nagos Beach identity/location in north-east Chios. Static metadata confidence promoted to high; coordinates, windProfile, scoring, photos, and live sea/wind claims were not changed. Terrain corrected 2026-06-20 (OSM surface audit): our type \"pebbles+rocks\" contradicted the OSM natural=beach surface \"sand\" (crowd-verified); set to sand. Terrain web-verify 2026-07-20 (no-API): corrected to MIXED_SAND_PEBBLE — Chios Travel Guide (Nagos, NE Chios near Kardamyla): 'αποτελείται από μικρά βότσαλα ενώ στο εσωτερικό έχει χοντρή άμμο' (small peb [https://chios.gr/el/anaklipse-ti-xio/paralies/voria-chios/nagos].",
             "sourceUrls": [
               "https://www.openstreetmap.org/way/295467456",
               "https://www.chios.gr/en/anaklipse-ti-xio/paralies/voria-chios/nagos",
@@ -95097,9 +95031,10 @@
             },
             "terrain": {
               "types": [
-                "sand"
+                "coarse_sand",
+                "pebbles"
               ],
-              "label": "άμμος"
+              "label": "χοντρή άμμος, βότσαλα"
             },
             "organized": false,
             "shade": true,
@@ -95116,7 +95051,7 @@
               "label": "Βαθιά νερά",
               "notes": "Το βάθος συνήθως ανεβαίνει πιο γρήγορα μετά την είσοδο στη θάλασσα."
             },
-            "sourceNotes": "Chios source confidence pass 2026-05-29: official Chios Travel Guide, FotoTravel and OSM support Mersinidi/Myrsinidi Beach identity/location near the stored coordinates. Static metadata confidence promoted to high; coordinates, windProfile, scoring, photos, and live sea/wind claims were not changed. Terrain corrected 2026-06-20 (OSM surface audit): our type \"pebbles+rocks\" contradicted the OSM natural=beach surface \"sand\" (crowd-verified); set to sand.",
+            "sourceNotes": "Chios source confidence pass 2026-05-29: official Chios Travel Guide, FotoTravel and OSM support Mersinidi/Myrsinidi Beach identity/location near the stored coordinates. Static metadata confidence promoted to high; coordinates, windProfile, scoring, photos, and live sea/wind claims were not changed. Terrain corrected 2026-06-20 (OSM surface audit): our type \"pebbles+rocks\" contradicted the OSM natural=beach surface \"sand\" (crowd-verified); set to sand. Terrain web-verify 2026-07-20 (no-API): corrected to MIXED_SAND_PEBBLE — Chios.gr (Mersinidi, Vrontados near the monastery): two beaches N and S of the church, 'αποτελούνται από άμμο και βότσαλο' (sand a [https://www.chios.gr/el/anaklipse-ti-xio/paralies/poli-chios/mersinidi].",
             "sourceUrls": [
               "https://www.openstreetmap.org/way/376013550",
               "https://www.chios.gr/en/anaklipse-ti-xio/paralies/poli-chios/mersinidi",
@@ -95295,9 +95230,10 @@
             },
             "terrain": {
               "types": [
-                "sand"
+                "coarse_sand",
+                "pebbles"
               ],
-              "label": "άμμος"
+              "label": "χοντρή άμμος, βότσαλα"
             },
             "organized": false,
             "shade": true,
@@ -95312,7 +95248,7 @@
               "label": "Βαθιά νερά",
               "notes": "Το βάθος συνήθως ανεβαίνει πιο γρήγορα μετά την είσοδο στη θάλασσα."
             },
-            "sourceNotes": "Chios source confidence pass 2026-05-29: official Chios Travel Guide, FotoTravel and OSM support Salagona Beach identity/location in south-west Chios. Static metadata confidence promoted to high; coordinates, windProfile, scoring, photos, and live sea/wind claims were not changed. Terrain corrected 2026-06-20 (OSM surface audit): our type \"pebbles+rocks\" contradicted the OSM natural=beach surface \"sand\" (crowd-verified); set to sand.",
+            "sourceNotes": "Chios source confidence pass 2026-05-29: official Chios Travel Guide, FotoTravel and OSM support Salagona Beach identity/location in south-west Chios. Static metadata confidence promoted to high; coordinates, windProfile, scoring, photos, and live sea/wind claims were not changed. Terrain corrected 2026-06-20 (OSM surface audit): our type \"pebbles+rocks\" contradicted the OSM natural=beach surface \"sand\" (crowd-verified); set to sand. Terrain web-verify 2026-07-20 (no-API): corrected to MIXED_SAND_PEBBLE — Chios.gr (Salagona, SW Chios ~6km from Pyrgi): 'a quiet, relatively isolated beach with coarse sand and fine pebbles'. Coords 38.2 [https://www.chios.gr/en/anaklipse-ti-xio/paralies/notia-chios/salagona].",
             "sourceUrls": [
               "https://www.openstreetmap.org/way/228351194",
               "https://www.chios.gr/en/anaklipse-ti-xio/paralies/notia-chios/salagona",
@@ -97083,9 +97019,9 @@
             },
             "terrain": {
               "types": [
-                "rocks"
+                "pebbles"
               ],
-              "label": "βράχια"
+              "label": "βότσαλα"
             },
             "organized": false,
             "shade": true,
@@ -97100,11 +97036,7 @@
               "label": "Βαθιά νερά",
               "notes": "Το βάθος συνήθως ανεβαίνει πιο γρήγορα μετά την είσοδο στη θάλασσα."
             },
-            "sourceNotes": [
-              "Direct Visit Ikaria page supports Xylosyrtis on the south coast, pebbly unorganized beach character, beach-bar presence, and access by a small path with steps from the village. Updated access/services/source detail and promoted to medium. No wind, wave, or live-condition claim was added.",
-              "Ikaria popular-region confidence pass 2026-06-05 A: official Visit Ikaria directly supports Xylosyrtis on the south coast, pebbly terrain, unorganized beach character, beach-bar presence, and access by a small path with steps from Xylosyrtis village. Promoted to high for static beach facts only. No coordinates, windProfile, scoring, photos, or live calm/protected/safe claims were changed.",
-              "Terrain corrected 2026-06-20 (OSM surface audit): our type \"pebbles\" contradicted the OSM natural=beach surface \"paving_stones\" (crowd-verified); set to rocks."
-            ],
+            "sourceNotes": "Direct Visit Ikaria page supports Xylosyrtis on the south coast, pebbly unorganized beach character, beach-bar presence, and access by a small path with steps from the village. Updated access/services/source detail and promoted to medium. No wind, wave, or live-condition claim was added. Ikaria popular-region confidence pass 2026-06-05 A: official Visit Ikaria directly supports Xylosyrtis on the south coast, pebbly terrain, unorganized beach character, beach-bar presence, and access by a small path with steps from Xylosyrtis village. Promoted to high for static beach facts only. No coordinates, windProfile, scoring, photos, or live calm/protected/safe claims were changed. Terrain corrected 2026-06-20 (OSM surface audit): our type \"pebbles\" contradicted the OSM natural=beach surface \"paving_stones\" (crowd-verified); set to rocks. Terrain web-verify 2026-07-20 (no-API): corrected to PEBBLES — Xylosyrtis (S Ikaria, S of Agios Kirykos): 'a peaceful, long, pebble beach... white beach with glittering pebbles'. Described as p [https://ecotourism-greece.com/activity/xylosyrtis-beach/].",
             "sourceUrls": [
               "https://www.visitikaria.gr/en/discover/beaches/xylosyrtis"
             ],
@@ -108485,9 +108417,10 @@
             },
             "terrain": {
               "types": [
-                "sand"
+                "coarse_sand",
+                "pebbles"
               ],
-              "label": "άμμος"
+              "label": "χοντρή άμμος, βότσαλα"
             },
             "organized": false,
             "shade": false,
@@ -108500,7 +108433,7 @@
               "label": "Βαθιά νερά",
               "notes": "Το βάθος συνήθως ανεβαίνει πιο γρήγορα μετά την είσοδο στη θάλασσα."
             },
-            "sourceNotes": "Phase 2 Argolida OSM identity/location pass 2026-05-27: OpenStreetMap natural=beach same-name or compatible-name match is 0m from stored coordinates and supports identity/location only; confidence, access, services, and amenities remain unchanged pending stronger local or official sources. Terrain corrected 2026-06-20 (OSM surface audit): our type \"pebbles+rocks\" contradicted the OSM natural=beach surface \"sand\" (crowd-verified); set to sand.",
+            "sourceNotes": "Phase 2 Argolida OSM identity/location pass 2026-05-27: OpenStreetMap natural=beach same-name or compatible-name match is 0m from stored coordinates and supports identity/location only; confidence, access, services, and amenities remain unchanged pending stronger local or official sources. Terrain corrected 2026-06-20 (OSM surface audit): our type \"pebbles+rocks\" contradicted the OSM natural=beach surface \"sand\" (crowd-verified); set to sand. Terrain web-verify 2026-07-20 (no-API): corrected to MIXED_SAND_PEBBLE — Gliati at Palaia/Ancient Epidavros: 'about 500m long, with sand and fine pebbles and clean blue waters' (sunken Roman ruins offsho [https://argolidalife.gr/en/gkliati/].",
             "sourceUrls": [
               "https://www.openstreetmap.org/way/1078289073"
             ],
@@ -109305,9 +109238,9 @@
             },
             "terrain": {
               "types": [
-                "sand"
+                "pebbles"
               ],
-              "label": "άμμος"
+              "label": "βότσαλα"
             },
             "organized": true,
             "shade": true,
@@ -109331,11 +109264,7 @@
             "sourceUrls": [
               "https://www.allaboutpeloponnisos.com/en/type/beaches/arbanitia"
             ],
-            "sourceNotes": [
-              "Phase 2 audit 2026-05-25: kept beach bar; Blublanc/cafe-bar sources confirm beach-bar service at Arvanitia.",
-              "Argolida tourist evidence pass 2026-06-01: live direct sources support the recorded static beach identity plus concrete access, terrain, amenity, or limitation details already captured in this record. Promoted to high for static facts only; no coordinates, windProfile, scoring, or live calm/protected/safe claim was changed.",
-              "Terrain corrected 2026-06-20 (OSM surface audit): our type \"pebbles+rocks\" contradicted the OSM natural=beach surface \"sand\" (crowd-verified); set to sand."
-            ],
+            "sourceNotes": "Phase 2 audit 2026-05-25: kept beach bar; Blublanc/cafe-bar sources confirm beach-bar service at Arvanitia. Argolida tourist evidence pass 2026-06-01: live direct sources support the recorded static beach identity plus concrete access, terrain, amenity, or limitation details already captured in this record. Promoted to high for static facts only; no coordinates, windProfile, scoring, or live calm/protected/safe claim was changed. Terrain corrected 2026-06-20 (OSM surface audit): our type \"pebbles+rocks\" contradicted the OSM natural=beach surface \"sand\" (crowd-verified); set to sand. Terrain web-verify 2026-07-20 (no-API): corrected to PEBBLES — Arvanitia, the town beach of Nafplio below Palamidi, is 'made up of white pebbles and rocks... umbrellas on the pebbles, becomes r [https://cityofnafplio.net/en/beaches/arvanitia-beach].",
             "googleMapsNavigation": {
               "status": "verified",
               "mode": "place",
@@ -109375,9 +109304,10 @@
             },
             "terrain": {
               "types": [
-                "sand"
+                "coarse_sand",
+                "pebbles"
               ],
-              "label": "άμμος"
+              "label": "χοντρή άμμος, βότσαλα"
             },
             "organized": true,
             "shade": false,
@@ -109400,7 +109330,7 @@
               "https://www.elepod.gr/business/58090-beach-bar-restaurant-drepano",
               "https://www.lefkos-gr.gr/lefkos-accommodation-nafplio-beaches-area.html"
             ],
-            "sourceNotes": "Phase 2 audit 2026-05-25: kept beach bar; local sources list beach-bar/cafe-bar service around Paralia Asinis/Kastraki. Amenity corrected 2026-06-20 (amenity-evidence audit): the organized + beach-bar/sunbeds claim was an unverified default — Google Places shows zero food/drink POI within 180 m and the beach has <20/no Google reviews. Cleared organized=false and removed the bar/sunbed amenities; other amenities, coordinates, windProfile and claims untouched. Terrain corrected 2026-06-20 (OSM surface audit): our type \"pebbles\" contradicted the OSM natural=beach surface \"sand\" (crowd-verified); set to sand. Web-verified 2026-07-19 (web-high): organized — Ancient Asini beach next to Tolo is organized with a cafe, sunbeds, rental umbrellas and showers. [https://www.stemajourneys.com/paralies-nafplio]; sunbeds added.",
+            "sourceNotes": "Phase 2 audit 2026-05-25: kept beach bar; local sources list beach-bar/cafe-bar service around Paralia Asinis/Kastraki. Amenity corrected 2026-06-20 (amenity-evidence audit): the organized + beach-bar/sunbeds claim was an unverified default — Google Places shows zero food/drink POI within 180 m and the beach has <20/no Google reviews. Cleared organized=false and removed the bar/sunbed amenities; other amenities, coordinates, windProfile and claims untouched. Terrain corrected 2026-06-20 (OSM surface audit): our type \"pebbles\" contradicted the OSM natural=beach surface \"sand\" (crowd-verified); set to sand. Web-verified 2026-07-19 (web-high): organized — Ancient Asini beach next to Tolo is organized with a cafe, sunbeds, rental umbrellas and showers. [https://www.stemajourneys.com/paralies-nafplio]; sunbeds added. Terrain web-verify 2026-07-20 (no-API): corrected to MIXED_SAND_PEBBLE — Ancient Asini beach near Tolo: 'small and large pebbles on the shore... pebbles and sand, with rocky areas on the right side' (Pla [https://cityofnafplio.net/el/beaches/asini-beach].",
             "googleMapsNavigation": {
               "status": "verified",
               "mode": "place",
@@ -112537,9 +112467,10 @@
             },
             "terrain": {
               "types": [
-                "pebbles"
+                "fine_sand",
+                "coarse_sand"
               ],
-              "label": "βότσαλα"
+              "label": "λεπτή άμμος, χοντρή άμμος"
             },
             "organized": true,
             "shade": true,
@@ -112562,11 +112493,7 @@
               "label": "Ρηχά στην αρχή",
               "notes": "Το official bathing-water profile αναφέρει ότι τα πρώτα μέτρα είναι αβαθή, με ήπια κλίση πυθμένα και ισοβαθή 5 μ. περίπου στα 150 μ. από την ακτή. Αυτό είναι static profile fact και δεν αποτελεί live safety claim."
             },
-            "sourceNotes": [
-              "Popular source-backed confidence pass BA 2026-06-02: official bathing-water profile/PDF supports the Kantare/Korinthos/Corinthian Gulf identity, west-Corinth position, monitoring-point coordinates close to the existing record, open-bay coastal-zone context, 600 m beach length, 10-30 m width, northwest orientation, rocky coastal zone, sandy seabed, tamarisk coastal vegetation, shallow first metres with gentle seabed slope, access through the Old National Road Athens-Patras/road passable by regular cars, partly organized sections, loungers, umbrellas, showers, waste bins, sports facilities, canteen/mobile-structure context, restaurants and refreshment stands along the beach. Coordinates were kept unchanged; OSM remains as geometry trace.",
-              "Pass BA static metadata: existing low-confidence baseline, non-organized claim, coarse-sand/pebble terrain and generic nearby-only amenity wording were corrected. Unsupported parking was removed. Source excellent-quality, not-protected-from-prevailing-winds, water-clarity and current-condition wording was not imported into environment quiet, windProfile, scoring logic, or live calm/protected/safe claims.",
-              "Terrain corrected 2026-06-20 (OSM surface audit): our type \"rocks+fine_sand\" contradicted the OSM natural=beach surface \"gravel\" (crowd-verified); set to pebbles."
-            ],
+            "sourceNotes": "Popular source-backed confidence pass BA 2026-06-02: official bathing-water profile/PDF supports the Kantare/Korinthos/Corinthian Gulf identity, west-Corinth position, monitoring-point coordinates close to the existing record, open-bay coastal-zone context, 600 m beach length, 10-30 m width, northwest orientation, rocky coastal zone, sandy seabed, tamarisk coastal vegetation, shallow first metres with gentle seabed slope, access through the Old National Road Athens-Patras/road passable by regular cars, partly organized sections, loungers, umbrellas, showers, waste bins, sports facilities, canteen/mobile-structure context, restaurants and refreshment stands along the beach. Coordinates were kept unchanged; OSM remains as geometry trace. Pass BA static metadata: existing low-confidence baseline, non-organized claim, coarse-sand/pebble terrain and generic nearby-only amenity wording were corrected. Unsupported parking was removed. Source excellent-quality, not-protected-from-prevailing-winds, water-clarity and current-condition wording was not imported into environment quiet, windProfile, scoring logic, or live calm/protected/safe claims. Terrain corrected 2026-06-20 (OSM surface audit): our type \"rocks+fine_sand\" contradicted the OSM natural=beach surface \"gravel\" (crowd-verified); set to pebbles. Terrain web-verify 2026-07-20 (no-API): corrected to SAND — Kantare (west of Corinth, before Lechaio) is consistently described as 'a sandy beach with shallow waters, perfect for families' a [https://korinthiaguide.com/en/beaches/kantare-2/].",
             "sourceUrls": [
               "https://bathingwaterprofiles.gr/en/node/3080",
               "https://bathingwaterprofiles.gr/sites/all/themes/danland/docs/pdf_profiles/ELBW029243098.pdf",
@@ -113057,9 +112984,9 @@
             },
             "terrain": {
               "types": [
-                "sand"
+                "pebbles"
               ],
-              "label": "άμμος"
+              "label": "βότσαλα"
             },
             "organized": false,
             "shade": true,
@@ -113072,11 +112999,7 @@
               "label": "Βαθιά νερά",
               "notes": "Το βάθος συνήθως ανεβαίνει πιο γρήγορα μετά την είσοδο στη θάλασσα."
             },
-            "sourceNotes": [
-              "Phase 2 final global low-evidence cleanup 2026-05-26: no direct source is recorded for stronger access/confidence claims; record kept as low-confidence baseline until source-backed review.",
-              "Korinthia OSM identity/location pass 2026-05-27: OSM way 515011158 is a same-name, transliterated, or compatible-name beach feature at or very near the current coordinates. This verifies identity/location only; confidence stays low and access/services remain unchanged until direct local sources support stronger claims.",
-              "Terrain corrected 2026-06-20 (OSM surface audit): our type \"pebbles+rocks\" contradicted the OSM natural=beach surface \"sand\" (crowd-verified); set to sand."
-            ],
+            "sourceNotes": "Phase 2 final global low-evidence cleanup 2026-05-26: no direct source is recorded for stronger access/confidence claims; record kept as low-confidence baseline until source-backed review. Korinthia OSM identity/location pass 2026-05-27: OSM way 515011158 is a same-name, transliterated, or compatible-name beach feature at or very near the current coordinates. This verifies identity/location only; confidence stays low and access/services remain unchanged until direct local sources support stronger claims. Terrain corrected 2026-06-20 (OSM surface audit): our type \"pebbles+rocks\" contradicted the OSM natural=beach surface \"sand\" (crowd-verified); set to sand. Terrain web-verify 2026-07-20 (no-API): corrected to PEBBLES — Agia Sotira (Loutraki-Perachora-Agioi Theodoroi coast): 'the coastline is covered with fine pebbles, while in the eastern section  [https://www.mytraveler.gr/place/agia-sotira-beach/].",
             "sourceUrls": [
               "https://www.openstreetmap.org/way/515011158"
             ],
@@ -113447,9 +113370,9 @@
             },
             "terrain": {
               "types": [
-                "sand"
+                "pebbles"
               ],
-              "label": "άμμος"
+              "label": "βότσαλα"
             },
             "organized": false,
             "shade": false,
@@ -113462,7 +113385,7 @@
               "label": "Βαθιά νερά",
               "notes": "Οι πηγές τη χαρακτηρίζουν παραλία με βαθιά νερά που βαθαίνουν απότομα."
             },
-            "sourceNotes": "Popular-beach evidence pass 2026-06-02: OSM verifies the same-name beach feature, All About Peloponnisos documents Skalosia as a Loutraki/Geraneia beach with large white pebbles, deep water and stair descent, and GTP supports the Skalosia Korinthia place identity. Promoted to high with difficult-access framing. No wind profile, scoring, photos, or live-condition claims were changed. Terrain corrected 2026-06-20 (OSM surface audit): our type \"pebbles+rocks\" contradicted the OSM natural=beach surface \"sand\" (crowd-verified); set to sand.",
+            "sourceNotes": "Popular-beach evidence pass 2026-06-02: OSM verifies the same-name beach feature, All About Peloponnisos documents Skalosia as a Loutraki/Geraneia beach with large white pebbles, deep water and stair descent, and GTP supports the Skalosia Korinthia place identity. Promoted to high with difficult-access framing. No wind profile, scoring, photos, or live-condition claims were changed. Terrain corrected 2026-06-20 (OSM surface audit): our type \"pebbles+rocks\" contradicted the OSM natural=beach surface \"sand\" (crowd-verified); set to sand. Terrain web-verify 2026-07-20 (no-API): corrected to PEBBLES — Skalosia (Loutraki, below Geraneia mtns): 'this beach with its large white pebbles and deep turquoise waters', access via stairs o [https://www.visitloutraki.com/en/place/skalosia-beach].",
             "sourceUrls": [
               "https://www.openstreetmap.org/way/366818148",
               "https://www.allaboutpeloponnisos.com/type/beaches/paralia-skalosia",
@@ -115008,7 +114931,7 @@
               "types": [
                 "sand"
               ],
-              "label": "άμμος"
+              "label": "sand"
             },
             "organized": false,
             "shade": false,
@@ -115021,7 +114944,7 @@
               "label": "Βαθιά νερά",
               "notes": "Το βάθος συνήθως ανεβαίνει πιο γρήγορα μετά την είσοδο στη θάλασσα."
             },
-            "sourceNotes": "Lakonia OSM identity/location pass 2026-05-27: OSM way 350603289 is a same-name, transliterated, or compatible-name beach feature at the current coordinates. This verifies identity/location only; confidence stays low and access/services remain unchanged until direct local sources support stronger claims. Terrain corrected 2026-06-20 (OSM surface audit): our type \"pebbles+rocks\" contradicted the OSM natural=beach surface \"sand\" (crowd-verified); set to sand.",
+            "sourceNotes": "Lakonia OSM identity/location pass 2026-05-27: OSM way 350603289 is a same-name, transliterated, or compatible-name beach feature at the current coordinates. This verifies identity/location only; confidence stays low and access/services remain unchanged until direct local sources support stronger claims. Terrain corrected 2026-06-20 (OSM surface audit): our type \"pebbles+rocks\" contradicted the OSM natural=beach surface \"sand\" (crowd-verified); set to sand. Terrain web-verify 2026-07-20 (no-API): label synced to types — Greeka (Vordonas, ~15km from Gythio near Skoutari, East Mani): 'a mostly sandy coastline, except for some rocks... rocky seafloor; [https://www.greeka.com/peloponnese/gythio/beaches/vordonas/].",
             "sourceUrls": [
               "https://www.openstreetmap.org/way/350603289"
             ],
@@ -117968,7 +117891,7 @@
               "types": [
                 "sand"
               ],
-              "label": "άμμος"
+              "label": "sand"
             },
             "organized": false,
             "shade": false,
@@ -117981,7 +117904,7 @@
               "label": "Βαθιά νερά",
               "notes": "Το βάθος συνήθως ανεβαίνει πιο γρήγορα μετά την είσοδο στη θάλασσα."
             },
-            "sourceNotes": "Lakonia OSM identity/location pass 2026-05-27: OSM way 273193420 is a same-name, transliterated, or compatible-name beach feature at the current coordinates. This verifies identity/location only; confidence stays low and access/services remain unchanged until direct local sources support stronger claims. Terrain corrected 2026-06-20 (OSM surface audit): our type \"pebbles+rocks\" contradicted the OSM natural=beach surface \"sand\" (crowd-verified); set to sand.",
+            "sourceNotes": "Lakonia OSM identity/location pass 2026-05-27: OSM way 273193420 is a same-name, transliterated, or compatible-name beach feature at the current coordinates. This verifies identity/location only; confidence stays low and access/services remain unchanged until direct local sources support stronger claims. Terrain corrected 2026-06-20 (OSM surface audit): our type \"pebbles+rocks\" contradicted the OSM natural=beach surface \"sand\" (crowd-verified); set to sand. Terrain web-verify 2026-07-20 (no-API): label synced to types — Charakia in Xylis bay (S of Plytra, NW coast of Archangelos bay): 'a sandy beach of 3.5km... golden sand, deep turquoise waters, a [https://www.fosonline.gr/travel/article/255351/xarakia-o-orismos-tis-erimikis-paralias].",
             "sourceUrls": [
               "https://www.openstreetmap.org/way/273193420"
             ],
@@ -120133,7 +120056,7 @@
               "types": [
                 "sand"
               ],
-              "label": "άμμος"
+              "label": "sand"
             },
             "organized": false,
             "shade": false,
@@ -120151,11 +120074,7 @@
               "https://www.costanavarino.com/stories/messinias-best-beaches/",
               "https://methonibeachhotel.gr/methoni-beaches/"
             ],
-            "sourceNotes": [
-              "CNN Greece describes Mikro and Megalo Marathi as difficult to access from land, reached after Finikounda via the Tsapi route and then a dirt road to the beaches, with boat access from Finikounda as an alternative.",
-              "Messinia medium-upgrade pass 2026-05-29: CNN Greece, Costa Navarino, and Methoni Beach Hotel support Mikro/Megalo Marathi as two remote Marathi beaches between Foinikounda and Koroni, with boat or dirt-road land access and low-service character. Confidence promoted to high.",
-              "Terrain corrected 2026-06-20 (OSM surface audit): our type \"pebbles+rocks\" contradicted the OSM natural=beach surface \"sand\" (crowd-verified); set to sand."
-            ],
+            "sourceNotes": "CNN Greece describes Mikro and Megalo Marathi as difficult to access from land, reached after Finikounda via the Tsapi route and then a dirt road to the beaches, with boat access from Finikounda as an alternative. Messinia medium-upgrade pass 2026-05-29: CNN Greece, Costa Navarino, and Methoni Beach Hotel support Mikro/Megalo Marathi as two remote Marathi beaches between Foinikounda and Koroni, with boat or dirt-road land access and low-service character. Confidence promoted to high. Terrain corrected 2026-06-20 (OSM surface audit): our type \"pebbles+rocks\" contradicted the OSM natural=beach surface \"sand\" (crowd-verified); set to sand. Terrain web-verify 2026-07-20 (no-API): label synced to types — Messinia guides (Pylos, between Finikounda-Koroni) repeatedly call Mikro/Megalo Marathi 'two wonderful sandy beaches (αμμώδεις)';  [https://www.anagnostis.org/2025/06/20/mikro-kai-megalo-marathi-oi-panemorfes-mystikes-paralies-tis-messinias/].",
             "googleMapsNavigation": {
               "status": "verified",
               "mode": "place",
@@ -120301,7 +120220,7 @@
               "types": [
                 "sand"
               ],
-              "label": "άμμος"
+              "label": "sand"
             },
             "organized": false,
             "shade": false,
@@ -120319,11 +120238,7 @@
               "https://www.costanavarino.com/stories/messinias-best-beaches/",
               "https://methonibeachhotel.gr/methoni-beaches/"
             ],
-            "sourceNotes": [
-              "CNN Greece describes Mikro and Megalo Marathi as difficult to access from land, reached after Finikounda via the Tsapi route and then a dirt road to the beaches, with boat access from Finikounda as an alternative.",
-              "Messinia medium-upgrade pass 2026-05-29: CNN Greece, Costa Navarino, and Methoni Beach Hotel support Mikro/Megalo Marathi as two remote Marathi beaches between Foinikounda and Koroni, with boat or dirt-road land access and low-service character. Confidence promoted to high.",
-              "Terrain corrected 2026-06-20 (OSM surface audit): our type \"pebbles+rocks\" contradicted the OSM natural=beach surface \"sand\" (crowd-verified); set to sand."
-            ],
+            "sourceNotes": "CNN Greece describes Mikro and Megalo Marathi as difficult to access from land, reached after Finikounda via the Tsapi route and then a dirt road to the beaches, with boat access from Finikounda as an alternative. Messinia medium-upgrade pass 2026-05-29: CNN Greece, Costa Navarino, and Methoni Beach Hotel support Mikro/Megalo Marathi as two remote Marathi beaches between Foinikounda and Koroni, with boat or dirt-road land access and low-service character. Confidence promoted to high. Terrain corrected 2026-06-20 (OSM surface audit): our type \"pebbles+rocks\" contradicted the OSM natural=beach surface \"sand\" (crowd-verified); set to sand. Terrain web-verify 2026-07-20 (no-API): label synced to types — Same Messinia cove pair as Megalo Marathi: 'The beaches are sandy... two wonderful sandy beaches, small and large Marathi'; Pylos. [https://www.pylos.info/en/marathi-beach/].",
             "googleMapsNavigation": {
               "status": "verified",
               "mode": "place",
@@ -122715,9 +122630,10 @@
             },
             "terrain": {
               "types": [
-                "rocks"
+                "coarse_sand",
+                "pebbles"
               ],
-              "label": "βράχια"
+              "label": "χοντρή άμμος, βότσαλα"
             },
             "organized": true,
             "shade": false,
@@ -122741,11 +122657,7 @@
               "https://amorgos.gr/explore-amorgos/agios-pavlos-beach/",
               "https://www.hotelaquapetra.gr/activities/"
             ],
-            "sourceNotes": [
-              "Amorgos municipality and Aquapetra venue pages support seasonal beach-bar/taverna services at Agios Pavlos.",
-              "Popular-beach confidence pass 2026-06-02: Amorgos municipality directly supports Agios Pavlos identity, pebbled terrain, Aegiali-area location, rentable sunbeds/umbrellas, beach bar/taverna and transfer boat to Nikouria. Promoted to high for static metadata only; no live calm/protected/safe claim was added.",
-              "Terrain corrected 2026-06-20 (OSM surface audit): our type \"pebbles+coarse_sand\" contradicted the OSM natural=beach surface \"cobblestone\" (crowd-verified); set to rocks."
-            ],
+            "sourceNotes": "Amorgos municipality and Aquapetra venue pages support seasonal beach-bar/taverna services at Agios Pavlos. Popular-beach confidence pass 2026-06-02: Amorgos municipality directly supports Agios Pavlos identity, pebbled terrain, Aegiali-area location, rentable sunbeds/umbrellas, beach bar/taverna and transfer boat to Nikouria. Promoted to high for static metadata only; no live calm/protected/safe claim was added. Terrain corrected 2026-06-20 (OSM surface audit): our type \"pebbles+coarse_sand\" contradicted the OSM natural=beach surface \"cobblestone\" (crowd-verified); set to rocks. Terrain web-verify 2026-07-20 (no-API): corrected to MIXED_SAND_PEBBLE — Amorgos guides: 'tongue of fine white pebbles' with 'a strip of sand extending into the sea', opposite Nikouria islet (matches lat [https://www.amorgos-island.gr/agios-pavlos/].",
             "orientation": {
               "degrees": 331.6,
               "faces": [
@@ -122853,9 +122765,9 @@
             },
             "terrain": {
               "types": [
-                "rocks"
+                "pebbles"
               ],
-              "label": "βράχια"
+              "label": "βότσαλα"
             },
             "organized": false,
             "shade": false,
@@ -122873,11 +122785,7 @@
               "https://www.amorgos-island.gr/en/chora-beaches-kambi/",
               "https://www.beachatlas.com/kambi"
             ],
-            "sourceNotes": [
-              "Amorgos first low/no-source batch 2026-05-26: Amorgos municipality describes Kambi as a pebble beach near Hozoviotissa, about 10 min walk from Agia Anna, with no shade and no nearby shopping. Amorgos Island supports the rough path from Agia Anna and small grey sandy beach context. No services added.",
-              "Next popular-area confidence pass 2026-06-02: Amorgos municipality directly supports Kambi near Hozoviotissa/Agia Anna, about 10 minutes walking from Agia Anna, pebble terrain, no shade and no nearby shopping. Source strong-wind/open-east wording was not imported into windProfile, scoring, photos, or live calm/protected/safe claims.",
-              "Terrain corrected 2026-06-20 (OSM surface audit): our type \"pebbles\" contradicted the OSM natural=beach surface \"cobblestone\" (crowd-verified); set to rocks."
-            ],
+            "sourceNotes": "Amorgos first low/no-source batch 2026-05-26: Amorgos municipality describes Kambi as a pebble beach near Hozoviotissa, about 10 min walk from Agia Anna, with no shade and no nearby shopping. Amorgos Island supports the rough path from Agia Anna and small grey sandy beach context. No services added. Next popular-area confidence pass 2026-06-02: Amorgos municipality directly supports Kambi near Hozoviotissa/Agia Anna, about 10 minutes walking from Agia Anna, pebble terrain, no shade and no nearby shopping. Source strong-wind/open-east wording was not imported into windProfile, scoring, photos, or live calm/protected/safe claims. Terrain corrected 2026-06-20 (OSM surface audit): our type \"pebbles\" contradicted the OSM natural=beach surface \"cobblestone\" (crowd-verified); set to rocks. Terrain web-verify 2026-07-20 (no-API): corrected to PEBBLES — Amorgos (near Hozoviotissa/Agia Anna, matches lat/lng): 'coarse and fine pebbles', a small pebbled nudist cove - pebbles, not rock [https://www.amorgos-island.gr/chora-beaches-kambi/].",
             "orientation": {
               "degrees": 121.4,
               "faces": [
@@ -140341,7 +140249,7 @@
               "types": [
                 "sand"
               ],
-              "label": "άμμος"
+              "label": "sand"
             },
             "organized": false,
             "shade": false,
@@ -140371,7 +140279,7 @@
               "confidence": "medium",
               "notes": "Source-backed north-coast orientation for Sarakiniko; verify exact swim pockets locally."
             },
-            "sourceNotes": "Milos source confidence pass 2026-05-29: travel.gr, FotoTravel and OSM support Sarakiniko as the named north-coast volcanic-rock beach near the stored coordinates. Static metadata confidence promoted to high; coordinates, windProfile, scoring, photos, and live sea/wind claims were not changed. Milos filter-audit correction 2026-06-15: Sarakiniko reclassified from sandy-pebbles to rocky: sources (Wikipedia, DiscoverGreece, HopOnWorld) describe a white volcanic-rock moonscape with only a tiny sand strip; the previous sandy-pebbles type wrongly surfaced it under the Sandy filter. Snorkeling unaffected (rocky terrain). No coordinates, windProfile, scoring, photos, or live calm/protected/safe claims were changed. Terrain corrected 2026-06-20 (OSM surface audit): our type \"rocks\" contradicted the OSM natural=beach surface \"sand\" (crowd-verified); set to sand. Access-road audit 2026-07-19: OSM shows the nearest paved road ~500m away with only a track/footpath nearer (97m/62m); the confident \"asphalt\" label is not ground-verified. Display downgraded to unverified (no dirt-road claim asserted).",
+            "sourceNotes": "Milos source confidence pass 2026-05-29: travel.gr, FotoTravel and OSM support Sarakiniko as the named north-coast volcanic-rock beach near the stored coordinates. Static metadata confidence promoted to high; coordinates, windProfile, scoring, photos, and live sea/wind claims were not changed. Milos filter-audit correction 2026-06-15: Sarakiniko reclassified from sandy-pebbles to rocky: sources (Wikipedia, DiscoverGreece, HopOnWorld) describe a white volcanic-rock moonscape with only a tiny sand strip; the previous sandy-pebbles type wrongly surfaced it under the Sandy filter. Snorkeling unaffected (rocky terrain). No coordinates, windProfile, scoring, photos, or live calm/protected/safe claims were changed. Terrain corrected 2026-06-20 (OSM surface audit): our type \"rocks\" contradicted the OSM natural=beach surface \"sand\" (crowd-verified); set to sand. Access-road audit 2026-07-19: OSM shows the nearest paved road ~500m away with only a track/footpath nearer (97m/62m); the confident \"asphalt\" label is not ground-verified. Display downgraded to unverified (no dirt-road claim asserted). Terrain web-verify 2026-07-20 (no-API): label synced to types — Milos Sarakiniko (north coast, ~5km from Plaka, matches lat/lng): Wikipedia describes it as 'a narrow strip of sand between all-wh [https://el.wikipedia.org/wiki/%CE%A3%CE%B1%CF%81%CE%B1%CE%BA%CE%AE%CE%BD%CE%B9%CE%BA%CE%BF_%CE%9C%CE%AE%CE%BB%CE%BF%CF%85].",
             "sourceUrls": [
               "https://www.openstreetmap.org/way/305534258",
               "https://www.travel.gr/en/experiences-ee/a-guide-to-the-best-beaches-on-the-island-of-milos/",
@@ -141162,9 +141070,10 @@
             },
             "terrain": {
               "types": [
-                "sand"
+                "coarse_sand",
+                "pebbles"
               ],
-              "label": "άμμος"
+              "label": "χοντρή άμμος, βότσαλα"
             },
             "organized": false,
             "shade": false,
@@ -141179,7 +141088,7 @@
               "label": "Βαθιά νερά",
               "notes": "Το βάθος συνήθως ανεβαίνει πιο γρήγορα μετά την είσοδο στη θάλασσα."
             },
-            "sourceNotes": "Milos source confidence pass 2026-05-29: Greece.com, FotoTravel and OSM support Voudia as a north-east Milos beach/settlement coast near the stored coordinates. Static metadata confidence promoted to high; coordinates, windProfile, scoring, photos, and live sea/wind claims were not changed. Terrain corrected 2026-06-20 (OSM surface audit): our type \"pebbles+rocks\" contradicted the OSM natural=beach surface \"sand\" (crowd-verified); set to sand.",
+            "sourceNotes": "Milos source confidence pass 2026-05-29: Greece.com, FotoTravel and OSM support Voudia as a north-east Milos beach/settlement coast near the stored coordinates. Static metadata confidence promoted to high; coordinates, windProfile, scoring, photos, and live sea/wind claims were not changed. Terrain corrected 2026-06-20 (OSM surface audit): our type \"pebbles+rocks\" contradicted the OSM natural=beach surface \"sand\" (crowd-verified); set to sand. Terrain web-verify 2026-07-20 (no-API): corrected to MIXED_SAND_PEBBLE — Milos Voudia (near Pollonia, pink volcanic cliffs, matches lat/lng): 'pebbles beach... white pebble and pink sand', clear stones o [https://www.greeka.com/cyclades/milos/beaches/voudia/].",
             "sourceUrls": [
               "https://www.openstreetmap.org/way/305564266",
               "https://www.greece.com/destinations/Cyclades/Milos/Settlement/Voudia.html",
@@ -145302,9 +145211,10 @@
             },
             "terrain": {
               "types": [
-                "rocks"
+                "fine_sand",
+                "coarse_sand"
               ],
-              "label": "βράχια"
+              "label": "λεπτή άμμος, χοντρή άμμος"
             },
             "organized": true,
             "shade": false,
@@ -145317,7 +145227,7 @@
               "label": "Μέτριο βάθος",
               "notes": "Depth can vary by section; verify locally when conditions change."
             },
-            "sourceNotes": "Naxos missing-beaches audit 2026-05-23 Small Chora-side beach; coordinate source: OpenStreetMap way 1204646781. Naxos evidence confidence pass 2026-05-29: high confidence here required a live official Naxos page or a direct beach-specific source plus map/geographic corroboration, with concrete static facts such as identity, location, surface, access, parking, amenities, or no-service context. High does not certify live calm/protected/safe conditions; coordinates, windProfile, scoring, photos, and live sea/wind claims were not changed. Terrain corrected 2026-06-20 (OSM surface audit): our type \"pebbles\" contradicted the OSM natural=beach surface \"stone\" (crowd-verified); set to rocks. Medium-omission multi-signal pass 2026-07-19 (no-API): organized flag corrected to true — 2 independent signals (barNear, foodOnSand).",
+            "sourceNotes": "Naxos missing-beaches audit 2026-05-23 Small Chora-side beach; coordinate source: OpenStreetMap way 1204646781. Naxos evidence confidence pass 2026-05-29: high confidence here required a live official Naxos page or a direct beach-specific source plus map/geographic corroboration, with concrete static facts such as identity, location, surface, access, parking, amenities, or no-service context. High does not certify live calm/protected/safe conditions; coordinates, windProfile, scoring, photos, and live sea/wind claims were not changed. Terrain corrected 2026-06-20 (OSM surface audit): our type \"pebbles\" contradicted the OSM natural=beach surface \"stone\" (crowd-verified); set to rocks. Medium-omission multi-signal pass 2026-07-19 (no-API): organized flag corrected to true — 2 independent signals (barNear, foodOnSand). Terrain web-verify 2026-07-20 (no-API): corrected to SAND — Naxos Chora, below Portara (matches lat/lng): the smaller Chora beach, 'small stretch of sand', a man-made sandy beach for a quick [https://www.naxos.gr/vintzi-beach/?lang=en].",
             "verification_sources": [
               "https://www.openstreetmap.org/way/1204646781",
               "https://www.naxos.gr/vintzi-beach/?lang=en"
@@ -147807,9 +147717,10 @@
             },
             "terrain": {
               "types": [
+                "coarse_sand",
                 "pebbles"
               ],
-              "label": "βότσαλα"
+              "label": "χοντρή άμμος, βότσαλα"
             },
             "organized": true,
             "shade": true,
@@ -147829,7 +147740,7 @@
               "https://cycladesmap.gr/en/listings/paros/drios-beach/",
               "https://poloscarsparos.gr/about-paros/beaches-east-of-paros/"
             ],
-            "sourceNotes": "Phase 2 organized audit 2026-05-25: removed organized claim; Drios-specific sources say no sunbeds/umbrellas, despite nearby organized Golden Beach options. Paros tourist-priority confidence pass 2026-05-29: existing Paros official/local source URLs were live-checked and unavailable links were replaced or removed where needed. Static metadata confidence promoted to high for identity, location, and source-backed beach context only; coordinates, windProfile, scoring, photos, and live sea/wind claims were not changed. Terrain corrected 2026-06-20 (OSM surface audit): our type \"fine_sand+coarse_sand\" contradicted the OSM natural=beach surface \"sand/pebblestone\" (crowd-verified); set to pebbles. Medium-omission multi-signal pass 2026-07-19 (no-API): organized flag corrected to true — 2 independent signals (barNear, foodOnSand).",
+            "sourceNotes": "Phase 2 organized audit 2026-05-25: removed organized claim; Drios-specific sources say no sunbeds/umbrellas, despite nearby organized Golden Beach options. Paros tourist-priority confidence pass 2026-05-29: existing Paros official/local source URLs were live-checked and unavailable links were replaced or removed where needed. Static metadata confidence promoted to high for identity, location, and source-backed beach context only; coordinates, windProfile, scoring, photos, and live sea/wind claims were not changed. Terrain corrected 2026-06-20 (OSM surface audit): our type \"fine_sand+coarse_sand\" contradicted the OSM natural=beach surface \"sand/pebblestone\" (crowd-verified); set to pebbles. Medium-omission multi-signal pass 2026-07-19 (no-API): organized flag corrected to true — 2 independent signals (barNear, foodOnSand). Terrain web-verify 2026-07-20 (no-API): corrected to MIXED_SAND_PEBBLE — Paros SE coast settlement Dryos (matches lat/lng): 'the beach of Dryos consists of sand and pebbles' - mixed, not pure pebbles. [https://www.parosislandinfo.gr/parosgenika/parosparalies/paraliadryos/index.html].",
             "orientation": {
               "degrees": 144.8,
               "faces": [
@@ -155212,9 +155123,10 @@
             },
             "terrain": {
               "types": [
-                "pebbles"
+                "fine_sand",
+                "coarse_sand"
               ],
-              "label": "βότσαλα"
+              "label": "λεπτή άμμος, χοντρή άμμος"
             },
             "organized": true,
             "shade": true,
@@ -155234,12 +155146,7 @@
               "label": "Ρηχά νερά",
               "notes": "Η είσοδος στη θάλασσα είναι πιο ήπια και το βάθος αυξάνει πιο σταδιακά."
             },
-            "sourceNotes": [
-              "Coordinates updated from OSM same-name candidate https://www.openstreetmap.org/way/329290961. Audit/data update 2026-05-23.",
-              "Official Syros page was found for Ambela, but no direct beach-bar claim; downgraded to organized/cafe amenities only.",
-              "Syros tourist evidence pass 2026-05-29: SyrosIsland supports Ambela as a sandy beach after Megas Gialos with umbrellas and nearby snacks, coffee and restaurant service. Confidence is high for static identity/access/terrain/service evidence only. Coordinates, windProfile, scoring, photos and live sea/wind/safety claims were not changed.",
-              "Terrain corrected 2026-06-20 (OSM surface audit): our type \"fine_sand+coarse_sand\" contradicted the OSM natural=beach surface \"pebblestone\" (crowd-verified); set to pebbles."
-            ],
+            "sourceNotes": "Coordinates updated from OSM same-name candidate https://www.openstreetmap.org/way/329290961. Audit/data update 2026-05-23. Official Syros page was found for Ambela, but no direct beach-bar claim; downgraded to organized/cafe amenities only. Syros tourist evidence pass 2026-05-29: SyrosIsland supports Ambela as a sandy beach after Megas Gialos with umbrellas and nearby snacks, coffee and restaurant service. Confidence is high for static identity/access/terrain/service evidence only. Coordinates, windProfile, scoring, photos and live sea/wind/safety claims were not changed. Terrain corrected 2026-06-20 (OSM surface audit): our type \"fine_sand+coarse_sand\" contradicted the OSM natural=beach surface \"pebblestone\" (crowd-verified); set to pebbles. Terrain web-verify 2026-07-20 (no-API): corrected to SAND — Syros SW near Megas Gialos (matches lat/lng): Greeka 'a small, sandy shore with some scattered pebbles... soft sand' - predominant [https://www.greeka.com/cyclades/syros/beaches/ampela/].",
             "sourceUrls": [
               "https://www.syrosisland.gr/en/place/ampela-beach/"
             ],
@@ -156466,9 +156373,10 @@
             },
             "terrain": {
               "types": [
+                "coarse_sand",
                 "pebbles"
               ],
-              "label": "βότσαλα"
+              "label": "χοντρή άμμος, βότσαλα"
             },
             "organized": true,
             "shade": true,
@@ -156491,11 +156399,7 @@
             "sourceUrls": [
               "https://syrosisland.gr/en/place/lotos-beach/"
             ],
-            "sourceNotes": [
-              "Official Syros page supports Lotos tavern/parking, but not a direct beach-bar claim; beach-bar amenity removed.",
-              "Syros tourist evidence pass 2026-05-29: SyrosIsland supports Lotos as a western Syros beach next to Kini with tavern and parking-area context. Confidence is high for static identity/access/terrain/service evidence only. Coordinates, windProfile, scoring, photos and live sea/wind/safety claims were not changed.",
-              "Terrain corrected 2026-06-20 (OSM surface audit): our type \"fine_sand+coarse_sand\" contradicted the OSM natural=beach surface \"pebblestone\" (crowd-verified); set to pebbles."
-            ],
+            "sourceNotes": "Official Syros page supports Lotos tavern/parking, but not a direct beach-bar claim; beach-bar amenity removed. Syros tourist evidence pass 2026-05-29: SyrosIsland supports Lotos as a western Syros beach next to Kini with tavern and parking-area context. Confidence is high for static identity/access/terrain/service evidence only. Coordinates, windProfile, scoring, photos and live sea/wind/safety claims were not changed. Terrain corrected 2026-06-20 (OSM surface audit): our type \"fine_sand+coarse_sand\" contradicted the OSM natural=beach surface \"pebblestone\" (crowd-verified); set to pebbles. Terrain web-verify 2026-07-20 (no-API): corrected to MIXED_SAND_PEBBLE — Syros western coast Lotos (matches lat/lng): 'partly organized seashore with sand and pebbles... soft sand and pebbles around the  [https://www.greeka.com/cyclades/syros/beaches/].",
             "orientation": {
               "degrees": 298,
               "faces": [
@@ -164248,9 +164152,10 @@
             },
             "terrain": {
               "types": [
-                "pebbles"
+                "fine_sand",
+                "coarse_sand"
               ],
-              "label": "βότσαλα"
+              "label": "λεπτή άμμος, χοντρή άμμος"
             },
             "organized": true,
             "shade": true,
@@ -164269,11 +164174,7 @@
               "label": "Ρηχά νερά",
               "notes": "Η τοπική πηγή το παρουσιάζει ως παραλία που προτιμούν οικογένειες με παιδιά. Δεν αποτελεί live safety claim."
             },
-            "sourceNotes": [
-              "OSM source pass 2026-05-27: same-name natural=beach feature near stored coordinates supports identity/location only. Confidence, access, services, amenities, and scoring were not changed.",
-              "Kalymnos official evidence pass 2026-06-02: the Municipality of Kalymnos lists Town Beach/Kasonia, and Stay in Kalymnos directly describes Kasonia behind the main port on the road to Therma, with direct city access, sandy shore, tamarisk shade, sunbeds/umbrellas, locker rooms, beach bars and taverns. Promoted static metadata confidence only; no windProfile, scoring, coordinates, photos, or live calm/protected/safe claim was changed.",
-              "Terrain corrected 2026-06-20 (OSM surface audit): our type \"fine_sand\" contradicted the OSM natural=beach surface \"pebblestone\" (crowd-verified); set to pebbles."
-            ],
+            "sourceNotes": "OSM source pass 2026-05-27: same-name natural=beach feature near stored coordinates supports identity/location only. Confidence, access, services, amenities, and scoring were not changed. Kalymnos official evidence pass 2026-06-02: the Municipality of Kalymnos lists Town Beach/Kasonia, and Stay in Kalymnos directly describes Kasonia behind the main port on the road to Therma, with direct city access, sandy shore, tamarisk shade, sunbeds/umbrellas, locker rooms, beach bars and taverns. Promoted static metadata confidence only; no windProfile, scoring, coordinates, photos, or live calm/protected/safe claim was changed. Terrain corrected 2026-06-20 (OSM surface audit): our type \"fine_sand\" contradicted the OSM natural=beach surface \"pebblestone\" (crowd-verified); set to pebbles. Terrain web-verify 2026-07-20 (no-API): corrected to SAND — Kalymnos town beach (Kasonia, closest to Pothia, matches lat/lng): 'a long sandy beach... strewn with sand and pebbles', with tama [https://www.greeka.com/dodecanese/kalymnos/beaches/town-beach/].",
             "sourceUrls": [
               "https://www.openstreetmap.org/way/554533590",
               "https://kalymnos.gr/en/activities/places-to-visit-sightseeings/beaches/",
@@ -166470,9 +166371,10 @@
             },
             "terrain": {
               "types": [
-                "rocks"
+                "coarse_sand",
+                "pebbles"
               ],
-              "label": "βράχια"
+              "label": "χοντρή άμμος, βότσαλα"
             },
             "organized": true,
             "shade": true,
@@ -166494,11 +166396,7 @@
               "https://www.allovergreece.com/Beaches/Descr/29/560/en",
               "https://karpathosinfo.com/lefkos-beach/"
             ],
-            "sourceNotes": [
-              "Phase 2 organized audit 2026-05-25: kept organized claim; Potali/Lefkos sources support a slightly organized area with parasols/sunbeds and nearby services.",
-              "Karpathos strict evidence pass 2026-05-29: KarpathosInfo and AllOverGreece support Potali/Lefkos identity, beach position south of the Lefkos settlement, sandy/pebbly terrain, road access, limited organized sunbed service, and nearby taverns.",
-              "Terrain corrected 2026-06-20 (OSM surface audit): our type \"fine_sand+coarse_sand\" contradicted the OSM natural=beach surface \"stone\" (crowd-verified); set to rocks."
-            ],
+            "sourceNotes": "Phase 2 organized audit 2026-05-25: kept organized claim; Potali/Lefkos sources support a slightly organized area with parasols/sunbeds and nearby services. Karpathos strict evidence pass 2026-05-29: KarpathosInfo and AllOverGreece support Potali/Lefkos identity, beach position south of the Lefkos settlement, sandy/pebbly terrain, road access, limited organized sunbed service, and nearby taverns. Terrain corrected 2026-06-20 (OSM surface audit): our type \"fine_sand+coarse_sand\" contradicted the OSM natural=beach surface \"stone\" (crowd-verified); set to rocks. Terrain web-verify 2026-07-20 (no-API): corrected to MIXED_SAND_PEBBLE — Karpathos west coast near Kato Lefkos (matches lat/lng): 'characterized by gray pebbles and coarse sand in some places', with some [https://karpathosinfo.com/potali-beach/].",
             "orientation": {
               "degrees": 214.8,
               "faces": [
@@ -169147,9 +169045,10 @@
             },
             "terrain": {
               "types": [
-                "sand"
+                "coarse_sand",
+                "pebbles"
               ],
-              "label": "άμμος"
+              "label": "χοντρή άμμος, βότσαλα"
             },
             "organized": true,
             "shade": false,
@@ -169167,11 +169066,7 @@
               "label": "Βαθιά νερά",
               "notes": "Η επίσημη πηγή χαρακτηρίζει τα νερά βαθύτερα."
             },
-            "sourceNotes": [
-              "Source-backed Kos pass 2026-05-28: official Kos tourism page lists Therma with pebbles, deeper waters, public transport, a small beach bar, and some sunbeds/umbrellas in a rocky thermal-spring setting. Confidence lifted to medium; coordinates, wind profile, and scoring were not changed.",
-              "Kos tourist-priority confidence pass 2026-05-29: existing Kos official/local source URLs were live-checked and unavailable or blocked links were replaced or removed where needed. Static metadata confidence promoted to high for identity, location, and source-backed beach context only; coordinates, windProfile, scoring, photos, and live sea/wind claims were not changed.",
-              "Terrain corrected 2026-06-20 (OSM surface audit): our type \"pebbles+large_stones+rocks\" contradicted the OSM natural=beach surface \"sand\" (crowd-verified); set to sand."
-            ],
+            "sourceNotes": "Source-backed Kos pass 2026-05-28: official Kos tourism page lists Therma with pebbles, deeper waters, public transport, a small beach bar, and some sunbeds/umbrellas in a rocky thermal-spring setting. Confidence lifted to medium; coordinates, wind profile, and scoring were not changed. Kos tourist-priority confidence pass 2026-05-29: existing Kos official/local source URLs were live-checked and unavailable or blocked links were replaced or removed where needed. Static metadata confidence promoted to high for identity, location, and source-backed beach context only; coordinates, windProfile, scoring, photos, and live sea/wind claims were not changed. Terrain corrected 2026-06-20 (OSM surface audit): our type \"pebbles+large_stones+rocks\" contradicted the OSM natural=beach surface \"sand\" (crowd-verified); set to sand. Terrain web-verify 2026-07-20 (no-API): corrected to MIXED_SAND_PEBBLE — Kos SE hot-springs beach (Embros Thermae after Agios Fokas, matches lat/lng): 'mostly covered with dark sand and stones... dark pe [https://kos.gr/beaches-in-kos-island/therma-beach].",
             "sourceUrls": [
               "https://kos.gr/beaches-in-kos-island/therma-beach"
             ],
@@ -171641,9 +171536,9 @@
             },
             "terrain": {
               "types": [
-                "sand"
+                "pebbles"
               ],
-              "label": "άμμος"
+              "label": "βότσαλα"
             },
             "organized": false,
             "shade": false,
@@ -171656,7 +171551,7 @@
               "label": "Μέτριο βάθος",
               "notes": "Το βάθος δεν τεκμηριώνεται ως ρηχό ή απότομα βαθύ από την διαθέσιμη πηγή."
             },
-            "sourceNotes": "Lipsi OSM identity/location pass 2026-05-27: OSM way 502606863 is a same-name, transliterated, or compatible-name beach feature at or very near the current coordinates. This verifies identity/location only; confidence stays low and access/services remain unchanged until direct local sources support stronger claims. Popular-source confidence pass CJ 2026-06-05: Official Municipality of Lipsi beach page directly supports this beach identity and the recorded static access/terrain/shade/service context. Promoted to high for static beach facts only; source calm/sheltered/wind-exposure wording was not imported into windProfile, scoring, photos, water-quality, or live calm/protected/safe claims. Terrain corrected 2026-06-20 (OSM surface audit): our type \"pebbles\" contradicted the OSM natural=beach surface \"sand\" (crowd-verified); set to sand.",
+            "sourceNotes": "Lipsi OSM identity/location pass 2026-05-27: OSM way 502606863 is a same-name, transliterated, or compatible-name beach feature at or very near the current coordinates. This verifies identity/location only; confidence stays low and access/services remain unchanged until direct local sources support stronger claims. Popular-source confidence pass CJ 2026-06-05: Official Municipality of Lipsi beach page directly supports this beach identity and the recorded static access/terrain/shade/service context. Promoted to high for static beach facts only; source calm/sheltered/wind-exposure wording was not imported into windProfile, scoring, photos, water-quality, or live calm/protected/safe claims. Terrain corrected 2026-06-20 (OSM surface audit): our type \"pebbles\" contradicted the OSM natural=beach surface \"sand\" (crowd-verified); set to sand. Terrain web-verify 2026-07-20 (no-API): corrected to PEBBLES — Lipsi, below the Church of Koimisis (SW/NW, reached via carved path, matches lat/lng): 'characterized by pebbles... pebble and gra [https://www.tripadvisor.com/Attraction_Review-g1152207-d19080653-Reviews-Kimisi_Beach-Lipsi_Dodecanese_South_Aegean.html].",
             "sourceUrls": [
               "https://www.openstreetmap.org/way/502606863",
               "https://lipsi.gov.gr/en/beaches-beaches-beaches"
@@ -175890,9 +175785,10 @@
             },
             "terrain": {
               "types": [
-                "sand"
+                "coarse_sand",
+                "pebbles"
               ],
-              "label": "άμμος"
+              "label": "χοντρή άμμος, βότσαλα"
             },
             "organized": true,
             "shade": false,
@@ -175907,7 +175803,7 @@
               "label": "Βαθιά νερά",
               "notes": "Το βάθος συνήθως ανεβαίνει πιο γρήγορα μετά την είσοδο στη θάλασσα."
             },
-            "sourceNotes": "Rhodes confidence pass 2026-05-29: direct beach/tourism sources support static identity/location and access/amenity context enough to set static metadata confidence to high. No windProfile, coordinates, scoring, photos, or live sea/wind behavior were changed. Terrain corrected 2026-06-20 (OSM surface audit): our type \"pebbles+rocks\" contradicted the OSM natural=beach surface \"sand\" (crowd-verified); set to sand. Web-verified 2026-07-19 (web-medium+core-signal): organized — Fourni (Monolithos, Rhodes) is not organized overall but 'υπάρχει μια μικρή καντίνα' selling drinks/snacks, and one source also mentions umbrellas present. [https://www.rhodesguide.com/el/travelguide/rhodes_beach_guide.php?ssp=30]; beach bar added.",
+            "sourceNotes": "Rhodes confidence pass 2026-05-29: direct beach/tourism sources support static identity/location and access/amenity context enough to set static metadata confidence to high. No windProfile, coordinates, scoring, photos, or live sea/wind behavior were changed. Terrain corrected 2026-06-20 (OSM surface audit): our type \"pebbles+rocks\" contradicted the OSM natural=beach surface \"sand\" (crowd-verified); set to sand. Web-verified 2026-07-19 (web-medium+core-signal): organized — Fourni (Monolithos, Rhodes) is not organized overall but 'υπάρχει μια μικρή καντίνα' selling drinks/snacks, and one source also mentions umbrellas present. [https://www.rhodesguide.com/el/travelguide/rhodes_beach_guide.php?ssp=30]; beach bar added. Terrain web-verify 2026-07-20 (no-API): corrected to MIXED_SAND_PEBBLE — Fourni below Monolithos, SW Rhodes (lat 36.106): 'covered with golden brown sand which turns a bit stony near the water, a signifi [https://1001beach.com/en/europe/greece/rhodes/fourni].",
             "sourceUrls": [
               "https://www.openstreetmap.org/way/123928285",
               "https://www.visitrhodes.com/what-to-see/beaches/fourni-beach"
@@ -181722,9 +181618,10 @@
             },
             "terrain": {
               "types": [
+                "coarse_sand",
                 "pebbles"
               ],
-              "label": "βότσαλα"
+              "label": "χοντρή άμμος, βότσαλα"
             },
             "organized": true,
             "shade": false,
@@ -181733,7 +181630,7 @@
             "language": "el",
             "batch": "seatrac_directory_2026_06",
             "needsVerification": true,
-            "sourceNotes": "Seatrac directory import (2026-06): created from official seatrac.gr entry \"ΠΔΕ Καστελόκαμπος\" (id 136592), Αχαΐα, West Greece. Coordinates from seatrac.gr. Slot via nearest existing beach #2514 (1937 m). Conservative — access/terrain unknown; accessibility added by the Seatrac importer. Terrain corrected 2026-06-20 (OSM surface audit): our type \"\" contradicted the OSM natural=beach surface \"pebblestone\" (crowd-verified); set to pebbles. Medium-omission multi-signal pass 2026-07-19 (no-API): organized flag corrected to true — 2 independent signals (barNear, foodOnSand).",
+            "sourceNotes": "Seatrac directory import (2026-06): created from official seatrac.gr entry \"ΠΔΕ Καστελόκαμπος\" (id 136592), Αχαΐα, West Greece. Coordinates from seatrac.gr. Slot via nearest existing beach #2514 (1937 m). Conservative — access/terrain unknown; accessibility added by the Seatrac importer. Terrain corrected 2026-06-20 (OSM surface audit): our type \"\" contradicted the OSM natural=beach surface \"pebblestone\" (crowd-verified); set to pebbles. Medium-omission multi-signal pass 2026-07-19 (no-API): organized flag corrected to true — 2 independent signals (barNear, foodOnSand). Terrain web-verify 2026-07-20 (no-API): corrected to MIXED_SAND_PEBBLE — Kastelokampos by the Rio bridge, Achaia (lat 38.29, lng 21.77): 'a mix of golden sand and pebbles ... continuous strip of sand and [https://beaches-searcher.com/en/beach/300204060/kastelokampos].",
             "sourceUrls": [
               "https://seatrac.gr/el/paralies/kastelokampos/"
             ],
@@ -182674,9 +182571,9 @@
             },
             "terrain": {
               "types": [
-                "sand"
+                "pebbles"
               ],
-              "label": "άμμος"
+              "label": "βότσαλα"
             },
             "organized": false,
             "shade": true,
@@ -182691,10 +182588,7 @@
               "label": "Βαθιά νερά",
               "notes": "Το επίσημο προφίλ αναφέρει βαθιά νερά στα πρώτα μέτρα και ισοβαθή 5 μ. περίπου 50 μ. από την ακτή."
             },
-            "sourceNotes": [
-              "Aetolia-Acarnania confidence continuation 2026-06-02: official bathing-water PDF profile already supports Asprogiali identity/location, rocky shore/seabed, deep first metres, passable dirt-road access, unorganized status, low visitation and mobile canteen context. Promoted to high for static source-backed facts only. No windProfile, scoring, coordinates, photos, or live calm/protected/safe claim was changed.",
-              "Terrain corrected 2026-06-20 (OSM surface audit): our type \"rocks\" contradicted the OSM natural=beach surface \"sand\" (crowd-verified); set to sand."
-            ],
+            "sourceNotes": "Aetolia-Acarnania confidence continuation 2026-06-02: official bathing-water PDF profile already supports Asprogiali identity/location, rocky shore/seabed, deep first metres, passable dirt-road access, unorganized status, low visitation and mobile canteen context. Promoted to high for static source-backed facts only. No windProfile, scoring, coordinates, photos, or live calm/protected/safe claim was changed. Terrain corrected 2026-06-20 (OSM surface audit): our type \"rocks\" contradicted the OSM natural=beach surface \"sand\" (crowd-verified); set to sand. Terrain web-verify 2026-07-20 (no-API): corrected to PEBBLES — Asprogiali 7km from Astakos toward Vonitsa (lat 38.54, lng 21.01): 'Η παραλία είναι βοτσαλωτή' (pebbly) — contradicts our άμμος an [https://iaitoloakarnania.gr/2020/06/i-mageytiki-paralia-asprogyali-ston-astako/].",
             "sourceUrls": [
               "https://bathingwaterprofiles.gr/sites/all/themes/danland/docs/pdf_profiles/ELBW049129058.pdf"
             ],
@@ -182898,9 +182792,10 @@
             },
             "terrain": {
               "types": [
+                "coarse_sand",
                 "pebbles"
               ],
-              "label": "βότσαλα"
+              "label": "χοντρή άμμος, βότσαλα"
             },
             "organized": true,
             "shade": true,
@@ -182926,10 +182821,7 @@
               "https://www.nafpaktos.gr/paralies",
               "https://www.nafpaktos.gr/en/beaches"
             ],
-            "sourceNotes": [
-              "Popular source-backed confidence pass AE 2026-06-02: official bathing-water profile and Nafpaktia municipal pages support Gribovo identity in Nafpaktos, road access, rocky shore/seabed, normal first-metre depth, organized umbrellas/loungers/showers/changing facilities, plane-tree shade and nearby cafes/restaurants. Promoted/synced to high for static facts only. No windProfile, scoring, coordinates, photos, or live calm/protected/safe claims changed.",
-              "Terrain corrected 2026-06-20 (OSM surface audit): our type \"rocks\" contradicted the OSM natural=beach surface \"pebblestone\" (crowd-verified); set to pebbles."
-            ],
+            "sourceNotes": "Popular source-backed confidence pass AE 2026-06-02: official bathing-water profile and Nafpaktia municipal pages support Gribovo identity in Nafpaktos, road access, rocky shore/seabed, normal first-metre depth, organized umbrellas/loungers/showers/changing facilities, plane-tree shade and nearby cafes/restaurants. Promoted/synced to high for static facts only. No windProfile, scoring, coordinates, photos, or live calm/protected/safe claims changed. Terrain corrected 2026-06-20 (OSM surface audit): our type \"rocks\" contradicted the OSM natural=beach surface \"pebblestone\" (crowd-verified); set to pebbles. Terrain web-verify 2026-07-20 (no-API): corrected to MIXED_SAND_PEBBLE — Gribovo in Nafpaktos (lat 38.39, lng 21.835): 'coarse sand and pebbles, with velvety sand ... pebbles dotting the water's edge' —  [https://www.gtp.gr/LocPage.asp?id=59347&lng=2].",
             "activities": {
               "snorkeling": false,
               "surfing": false
@@ -184439,9 +184331,9 @@
             },
             "terrain": {
               "types": [
-                "sand"
+                "pebbles"
               ],
-              "label": "άμμος"
+              "label": "βότσαλα"
             },
             "organized": true,
             "shade": true,
@@ -184456,7 +184348,7 @@
               "label": "Ρηχά νερά",
               "notes": "Η διαθέσιμη πηγή περιγράφει ρηχά νερά. Δεν αποτελεί live safety ή sea-state claim."
             },
-            "sourceNotes": "Source pass 2026-05-28: Greece Destination supports Rouga near Paliampela/Vonitsa, shallow waters, fine pebble shore/seabed, natural shade, a small organized section by a restaurant and easy asphalt access. Coordinates, wind profile and scoring were not changed. Popular-source confidence pass CK 2026-06-05: Greece Destination directly supports this Aetolia-Acarnania beach identity and the recorded static access/terrain/shade/service/depth context. Promoted to high for static beach facts only; source calm/sheltered/wind-exposure wording was not imported into windProfile, scoring, photos, water-quality, or live calm/protected/safe claims. Terrain corrected 2026-06-20 (OSM surface audit): our type \"small_pebbles\" contradicted the OSM natural=beach surface \"sand\" (crowd-verified); set to sand.",
+            "sourceNotes": "Source pass 2026-05-28: Greece Destination supports Rouga near Paliampela/Vonitsa, shallow waters, fine pebble shore/seabed, natural shade, a small organized section by a restaurant and easy asphalt access. Coordinates, wind profile and scoring were not changed. Popular-source confidence pass CK 2026-06-05: Greece Destination directly supports this Aetolia-Acarnania beach identity and the recorded static access/terrain/shade/service/depth context. Promoted to high for static beach facts only; source calm/sheltered/wind-exposure wording was not imported into windProfile, scoring, photos, water-quality, or live calm/protected/safe claims. Terrain corrected 2026-06-20 (OSM surface audit): our type \"small_pebbles\" contradicted the OSM natural=beach surface \"sand\" (crowd-verified); set to sand. Terrain web-verify 2026-07-20 (no-API): corrected to PEBBLES — Rouga cove near Paliambela on the S Ambrakian Gulf (lat 38.92, lng 21.00): 'a pebbly beach and deeply shaded trees' — contradicts  [https://olympianland.gr/en/listing/rouga-beach].",
             "sourceUrls": [
               "https://greecedestination.gr/%CF%80%CE%B1%CF%81%CE%B1%CE%BB%CE%AF%CE%B5%CF%82-%CF%83%CF%84%CE%BF-%CE%BD%CE%BF%CE%BC%CF%8C-%CE%B1%CE%B9%CF%84%CF%89%CE%BB%CE%BF%CE%B1%CE%BA%CE%B1%CF%81%CE%BD%CE%B1%CE%BD%CE%AF%CE%B1%CF%82/"
             ],
@@ -191134,9 +191026,10 @@
             },
             "terrain": {
               "types": [
-                "sand"
+                "coarse_sand",
+                "pebbles"
               ],
-              "label": "άμμος"
+              "label": "χοντρή άμμος, βότσαλα"
             },
             "organized": true,
             "shade": false,
@@ -191153,11 +191046,7 @@
               "label": "Μέτριο βάθος",
               "notes": "Οι πηγές περιγράφουν χοντρά βότσαλα αλλά δεν τεκμηριώνουν καθαρά ρηχά ή βαθιά νερά, οπότε κρατείται μέτριο βάθος."
             },
-            "sourceNotes": [
-              "Skiathos OSM identity/location pass 2026-05-27: OSM way 62170301 is a same-name, transliterated, or compatible-name beach feature at or very near the current coordinates. This verifies identity/location only; confidence stays low and access/services remain unchanged until direct local sources support stronger claims.",
-              "Skiathos source confidence pass 2026-05-29: Skiathos municipality supports Xanemos as the beach by the airport, with thick pebbles, umbrellas and beach-bar/canteen context; AllOverGreece lists it as a Skiathos beach. Static metadata confidence promoted to high; coordinates, windProfile, scoring, photos, and live sea/wind claims were not changed.",
-              "Terrain corrected 2026-06-20 (OSM surface audit): our type \"pebbles\" contradicted the OSM natural=beach surface \"sand\" (crowd-verified); set to sand."
-            ],
+            "sourceNotes": "Skiathos OSM identity/location pass 2026-05-27: OSM way 62170301 is a same-name, transliterated, or compatible-name beach feature at or very near the current coordinates. This verifies identity/location only; confidence stays low and access/services remain unchanged until direct local sources support stronger claims. Skiathos source confidence pass 2026-05-29: Skiathos municipality supports Xanemos as the beach by the airport, with thick pebbles, umbrellas and beach-bar/canteen context; AllOverGreece lists it as a Skiathos beach. Static metadata confidence promoted to high; coordinates, windProfile, scoring, photos, and live sea/wind claims were not changed. Terrain corrected 2026-06-20 (OSM surface audit): our type \"pebbles\" contradicted the OSM natural=beach surface \"sand\" (crowd-verified); set to sand. Terrain web-verify 2026-07-20 (no-API): corrected to MIXED_SAND_PEBBLE — Xanemos by Skiathos airport (lat 39.19, lng 23.51): 'coarse grey sand mixed with pebbles ... a line of shingle around the water's  [https://www.whichgreekisland.co.uk/islands/skiathos/beaches/xanemos/].",
             "sourceUrls": [
               "https://www.openstreetmap.org/way/62170301",
               "https://www.skiathos.gr/index.php/en/paralies-3/ksanemos.html",
@@ -192255,9 +192144,9 @@
             },
             "terrain": {
               "types": [
-                "sand"
+                "pebbles"
               ],
-              "label": "άμμος"
+              "label": "βότσαλα"
             },
             "organized": true,
             "shade": false,
@@ -192275,7 +192164,7 @@
               "label": "Βαθιά νερά",
               "notes": "Το Skopelosweb καταγράφει βαθιά θάλασσα για τις μικρές παραλίες του Αγίου Ιωάννη. Δεν αποτελεί live safety ή sea-state claim."
             },
-            "sourceNotes": "Low-confidence cleanup 2026-05-29: Skopelosweb directly supports Agios Ioannis/Kastri as two small Skopelos beaches, with road approach and short foot access from the main road/canteen area, pebble/rock character, deep water, nearby canteen/WC, and no full beach organization. Confidence promoted to medium; coordinates, wind profile, scoring, and live-condition claims were not changed. Skopelos tourist evidence pass 2026-06-01: Skopelosweb provides direct beach-specific evidence for Agios Ioannis/Kastri: two small beaches, road approach, short foot access from the main-road/canteen area, pebbles/rocks, deep water, nearby canteen/WC and no full beach organization. Coordinates, windProfile, scoring, photos and live calm/protected/safe claims were not changed. Thessaly re-geocoding 2026-06-11 (batch-approved): coordinates moved 1.35 km from the imported village/POI point to the OSM-mapped beach (https://www.openstreetmap.org/way/303432176, name \"Άγιος Ιωάννης\", match score 1, coastal-verified on the osmdata 2026-06-10 land mask). Previous pin: 39.1635,23.66. Only coordinates changed; windProfile, scoring, photos and live claims untouched. Terrain corrected 2026-06-20 (OSM surface audit): our type \"pebbles+rocks\" contradicted the OSM natural=beach surface \"sand\" (crowd-verified); set to sand. Web-verified 2026-07-19 (web-medium+core-signal): organized — Agios Ioannis sto Kastri (Mamma Mia chapel beach) has umbrellas/sunbeds (very few for the crowds) and a canteen serving coffee, drinks and cold food. [https://www.skopelosweb.gr/beaches/agios_ioannis_sto_kastri]; sunbeds added.",
+            "sourceNotes": "Low-confidence cleanup 2026-05-29: Skopelosweb directly supports Agios Ioannis/Kastri as two small Skopelos beaches, with road approach and short foot access from the main road/canteen area, pebble/rock character, deep water, nearby canteen/WC, and no full beach organization. Confidence promoted to medium; coordinates, wind profile, scoring, and live-condition claims were not changed. Skopelos tourist evidence pass 2026-06-01: Skopelosweb provides direct beach-specific evidence for Agios Ioannis/Kastri: two small beaches, road approach, short foot access from the main-road/canteen area, pebbles/rocks, deep water, nearby canteen/WC and no full beach organization. Coordinates, windProfile, scoring, photos and live calm/protected/safe claims were not changed. Thessaly re-geocoding 2026-06-11 (batch-approved): coordinates moved 1.35 km from the imported village/POI point to the OSM-mapped beach (https://www.openstreetmap.org/way/303432176, name \"Άγιος Ιωάννης\", match score 1, coastal-verified on the osmdata 2026-06-10 land mask). Previous pin: 39.1635,23.66. Only coordinates changed; windProfile, scoring, photos and live claims untouched. Terrain corrected 2026-06-20 (OSM surface audit): our type \"pebbles+rocks\" contradicted the OSM natural=beach surface \"sand\" (crowd-verified); set to sand. Web-verified 2026-07-19 (web-medium+core-signal): organized — Agios Ioannis sto Kastri (Mamma Mia chapel beach) has umbrellas/sunbeds (very few for the crowds) and a canteen serving coffee, drinks and cold food. [https://www.skopelosweb.gr/beaches/agios_ioannis_sto_kastri]; sunbeds added. Terrain web-verify 2026-07-20 (no-API): corrected to PEBBLES — Agios Ioannis Kastri (Mamma Mia chapel), NW Skopelos (lat 39.17, lng 23.65): 'a narrow pebble beach ... combination of sand, pebbl [https://www.greeka.com/sporades/skopelos/beaches/agios-ioannis/].",
             "sourceUrls": [
               "https://www.skopelosweb.gr/beaches/agios_ioannis_sto_kastri"
             ],
@@ -193062,9 +192951,10 @@
             },
             "terrain": {
               "types": [
+                "coarse_sand",
                 "pebbles"
               ],
-              "label": "βότσαλα"
+              "label": "χοντρή άμμος, βότσαλα"
             },
             "organized": true,
             "shade": true,
@@ -193083,12 +192973,7 @@
               "label": "Ρηχά νερά",
               "notes": "Η είσοδος στη θάλασσα είναι πιο ήπια και το βάθος αυξάνει πιο σταδιακά."
             },
-            "sourceNotes": [
-              "Phase 2 audit 2026-05-25: removed unverified lifeguard claim until a direct official/current source URL is added. Phase 2 audit 2026-05-25: kept beach bar; Skopelos beach guides list Stafilos as organized with a beach bar.",
-              "Skopelos tourist evidence pass 2026-06-01: Municipality of Skopelos and Skopelos.com support Stafylos as one of Skopelos’ best-known sandy beaches, close to Chora, organized with beach bar/sunbeds/umbrellas, road/bus/parking context and walking descent to the cove. Coordinates, windProfile, scoring, photos and live calm/protected/safe claims were not changed.",
-              "Thessaly re-geocoding 2026-06-11 (batch-approved): coordinates moved 1.36 km from the imported village/POI point to the OSM-mapped beach (https://www.openstreetmap.org/way/293800402, name \"Στάφυλος\", match score 1, coastal-verified on the osmdata 2026-06-10 land mask). Previous pin: 39.095,23.7395. Only coordinates changed; windProfile, scoring, photos and live claims untouched.",
-              "Terrain corrected 2026-06-20 (OSM surface audit): our type \"fine_sand+rocks\" contradicted the OSM natural=beach surface \"gravel\" (crowd-verified); set to pebbles."
-            ],
+            "sourceNotes": "Phase 2 audit 2026-05-25: removed unverified lifeguard claim until a direct official/current source URL is added. Phase 2 audit 2026-05-25: kept beach bar; Skopelos beach guides list Stafilos as organized with a beach bar. Skopelos tourist evidence pass 2026-06-01: Municipality of Skopelos and Skopelos.com support Stafylos as one of Skopelos’ best-known sandy beaches, close to Chora, organized with beach bar/sunbeds/umbrellas, road/bus/parking context and walking descent to the cove. Coordinates, windProfile, scoring, photos and live calm/protected/safe claims were not changed. Thessaly re-geocoding 2026-06-11 (batch-approved): coordinates moved 1.36 km from the imported village/POI point to the OSM-mapped beach (https://www.openstreetmap.org/way/293800402, name \"Στάφυλος\", match score 1, coastal-verified on the osmdata 2026-06-10 land mask). Previous pin: 39.095,23.7395. Only coordinates changed; windProfile, scoring, photos and live claims untouched. Terrain corrected 2026-06-20 (OSM surface audit): our type \"fine_sand+rocks\" contradicted the OSM natural=beach surface \"gravel\" (crowd-verified); set to pebbles. Terrain web-verify 2026-07-20 (no-API): corrected to MIXED_SAND_PEBBLE — Stafylos, 4km S of Skopelos town (lat 39.09, lng 23.75): 'mixed pebbles with fine gray sand ... a delightful mix of golden sand an [https://www.greeka.com/sporades/skopelos/beaches/stafilos/].",
             "sourceUrls": [
               "https://skopelos.com/beaches/skopelos-stafilos-beach/",
               "https://www.skopelosweb.gr/greek/beaches/stafilos_staphylos_beach",
@@ -193690,9 +193575,10 @@
             },
             "terrain": {
               "types": [
-                "rocks"
+                "coarse_sand",
+                "pebbles"
               ],
-              "label": "βράχια"
+              "label": "χοντρή άμμος, βότσαλα"
             },
             "organized": true,
             "shade": true,
@@ -193718,7 +193604,7 @@
               "https://www.volosinfo.gr/discover/agios-ioannis-beach/",
               "https://www.discovergreece.com/travel-ideas/best-of/14-best-beaches-pelion"
             ],
-            "sourceNotes": "Phase 2 audit 2026-05-25: kept beach bar; sources confirm beach-bar service in the Agios Ioannis/Plaka beach area. Pelion tourist evidence pass 2026-06-01: Volos Info identifies Agios Ioannis as a famous organized Pelion beach/resort about 44 km from Volos with sand, white pebbles, beach bars, umbrellas, sunbeds, water sports, taverns and restaurants; Travel.gr and Discover Greece support the Agios Ioannis/Papa Nero/Plaka beach cluster and amenities. Water-depth wording was corrected from shallow to abruptly deepening. Coordinates, windProfile, scoring, photos and live calm/protected/safe claims were not changed. Amenity corrected 2026-06-20 (amenity-evidence audit): the organized + beach-bar/sunbeds claim was an unverified default — Google Places shows zero food/drink POI within 180 m and the beach has <20/no Google reviews. Cleared organized=false and removed the bar/sunbed amenities; other amenities, coordinates, windProfile and claims untouched. Coordinates corrected 2026-06-20 (pin-coastline audit): stored pin (39.255,23.075) was ~19.4 km from any coastline (OSM-confirmed inland); moved to the verified-coastal Google place location for this beach. Wind exposure regenerated at the new location. Terrain corrected 2026-06-20 (OSM surface audit): our type \"sand+pebbles\" contradicted the OSM natural=beach surface \"rocks\" (crowd-verified); set to rocks. Excluded 2026-06-20 (duplicate audit): same beach as #2674; redundant entry hidden from the app (excludeFromApp). Web-verified 2026-07-19 (web-high): organized — Agios Ioannis (East Pelion) is fully organized, Blue Flag, with sunbeds, umbrellas, showers, beach bar, lifeguard and water sports. [https://ilovepelion.gr/el/destinations/aegeanbeach/agiosioannis]; beach bar+sunbeds added.",
+            "sourceNotes": "Phase 2 audit 2026-05-25: kept beach bar; sources confirm beach-bar service in the Agios Ioannis/Plaka beach area. Pelion tourist evidence pass 2026-06-01: Volos Info identifies Agios Ioannis as a famous organized Pelion beach/resort about 44 km from Volos with sand, white pebbles, beach bars, umbrellas, sunbeds, water sports, taverns and restaurants; Travel.gr and Discover Greece support the Agios Ioannis/Papa Nero/Plaka beach cluster and amenities. Water-depth wording was corrected from shallow to abruptly deepening. Coordinates, windProfile, scoring, photos and live calm/protected/safe claims were not changed. Amenity corrected 2026-06-20 (amenity-evidence audit): the organized + beach-bar/sunbeds claim was an unverified default — Google Places shows zero food/drink POI within 180 m and the beach has <20/no Google reviews. Cleared organized=false and removed the bar/sunbed amenities; other amenities, coordinates, windProfile and claims untouched. Coordinates corrected 2026-06-20 (pin-coastline audit): stored pin (39.255,23.075) was ~19.4 km from any coastline (OSM-confirmed inland); moved to the verified-coastal Google place location for this beach. Wind exposure regenerated at the new location. Terrain corrected 2026-06-20 (OSM surface audit): our type \"sand+pebbles\" contradicted the OSM natural=beach surface \"rocks\" (crowd-verified); set to rocks. Excluded 2026-06-20 (duplicate audit): same beach as #2674; redundant entry hidden from the app (excludeFromApp). Web-verified 2026-07-19 (web-high): organized — Agios Ioannis (East Pelion) is fully organized, Blue Flag, with sunbeds, umbrellas, showers, beach bar, lifeguard and water sports. [https://ilovepelion.gr/el/destinations/aegeanbeach/agiosioannis]; beach bar+sunbeds added. Terrain web-verify 2026-07-20 (no-API): corrected to MIXED_SAND_PEBBLE — Agios Ioannis, Pelion/Zagora (lat 39.417, lng 23.16): 'built on a unique sandy area with white pearl-like pebbles', longest organi [https://ilovepelion.gr/el/destinations/aegeanbeach/agiosioannis].",
             "excludeFromApp": true
           }
         },
@@ -193940,9 +193826,10 @@
             },
             "terrain": {
               "types": [
-                "rocks"
+                "coarse_sand",
+                "pebbles"
               ],
-              "label": "βράχια"
+              "label": "χοντρή άμμος, βότσαλα"
             },
             "organized": true,
             "shade": true,
@@ -193968,12 +193855,7 @@
               "https://www.gtp.gr/LocPage.asp?id=13083&lng=2",
               "https://pelion-greece.com/agios-ioannis/"
             ],
-            "sourceNotes": [
-              "Phase 2 audit 2026-05-25: kept beach bar; sources confirm beach-bar service in the Agios Ioannis/Plaka beach area.",
-              "Tourism-priority evidence pass 2026-05-29: Travel.gr, GTP, and Pelion-Greece support Agios Ioannis/Pelion as a major eastern Pelion beach resort with long beach/coastal village identity and developed visitor services. Promoted to high for static identity, location, and service context only; no wind, wave, calm-water, protection, or live-condition claim was added.",
-              "Thessaly re-geocoding 2026-06-11 (batch-approved): coordinates moved 4.63 km from the imported village/POI point to the OSM-mapped beach (https://www.openstreetmap.org/node/1998444423, name \"Άγιος Ιωάννης\", match score 0.85, coastal-verified on the osmdata 2026-06-10 land mask). Previous pin: 39.415,23.108. Only coordinates changed; windProfile, scoring, photos and live claims untouched.",
-              "Terrain corrected 2026-06-20 (OSM surface audit): our type \"coarse_sand+pebbles\" contradicted the OSM natural=beach surface \"rocks\" (crowd-verified); set to rocks."
-            ],
+            "sourceNotes": "Phase 2 audit 2026-05-25: kept beach bar; sources confirm beach-bar service in the Agios Ioannis/Plaka beach area. Tourism-priority evidence pass 2026-05-29: Travel.gr, GTP, and Pelion-Greece support Agios Ioannis/Pelion as a major eastern Pelion beach resort with long beach/coastal village identity and developed visitor services. Promoted to high for static identity, location, and service context only; no wind, wave, calm-water, protection, or live-condition claim was added. Thessaly re-geocoding 2026-06-11 (batch-approved): coordinates moved 4.63 km from the imported village/POI point to the OSM-mapped beach (https://www.openstreetmap.org/node/1998444423, name \"Άγιος Ιωάννης\", match score 0.85, coastal-verified on the osmdata 2026-06-10 land mask). Previous pin: 39.415,23.108. Only coordinates changed; windProfile, scoring, photos and live claims untouched. Terrain corrected 2026-06-20 (OSM surface audit): our type \"coarse_sand+pebbles\" contradicted the OSM natural=beach surface \"rocks\" (crowd-verified); set to rocks. Terrain web-verify 2026-07-20 (no-API): corrected to MIXED_SAND_PEBBLE — Same beach as id 2670 (lat 39.418, lng 23.16), Agios Ioannis Pelion: 'sandy area with white pearl-like pebbles' — sand+pebble, not [https://ilovepelion.gr/el/destinations/aegeanbeach/agiosioannis].",
             "googleMapsNavigation": {
               "status": "verified",
               "mode": "place",
@@ -194102,9 +193984,9 @@
             },
             "terrain": {
               "types": [
-                "sand"
+                "pebbles"
               ],
-              "label": "άμμος"
+              "label": "βότσαλα"
             },
             "organized": false,
             "shade": true,
@@ -194117,11 +193999,7 @@
               "label": "Βαθιά νερά",
               "notes": "Το βάθος συνήθως ανεβαίνει πιο γρήγορα μετά την είσοδο στη θάλασσα."
             },
-            "sourceNotes": [
-              "Source follow-up pass 8 2026-05-27: direct local Lefokastro/Afissos sources support Agia Thymia / Agia Efthymia beach identity/location only. Confidence, coordinates, access, services, amenities, wind profile, and scoring were not changed.",
-              "Thessaly re-geocoding 2026-06-11 (batch-approved): coordinates moved 11.4 km from the imported village/POI point to the OSM-mapped beach (https://www.openstreetmap.org/way/37551500, name \"Αγιά Θυμιά\", match score 1, coastal-verified on the osmdata 2026-06-10 land mask). Previous pin: 39.212,23.295. Only coordinates changed; windProfile, scoring, photos and live claims untouched.",
-              "Terrain corrected 2026-06-20 (OSM surface audit): our type \"pebbles+rocks\" contradicted the OSM natural=beach surface \"sand\" (crowd-verified); set to sand."
-            ],
+            "sourceNotes": "Source follow-up pass 8 2026-05-27: direct local Lefokastro/Afissos sources support Agia Thymia / Agia Efthymia beach identity/location only. Confidence, coordinates, access, services, amenities, wind profile, and scoring were not changed. Thessaly re-geocoding 2026-06-11 (batch-approved): coordinates moved 11.4 km from the imported village/POI point to the OSM-mapped beach (https://www.openstreetmap.org/way/37551500, name \"Αγιά Θυμιά\", match score 1, coastal-verified on the osmdata 2026-06-10 land mask). Previous pin: 39.212,23.295. Only coordinates changed; windProfile, scoring, photos and live claims untouched. Terrain corrected 2026-06-20 (OSM surface audit): our type \"pebbles+rocks\" contradicted the OSM natural=beach surface \"sand\" (crowd-verified); set to sand. Terrain web-verify 2026-07-20 (no-API): corrected to PEBBLES — Agia Thymia, S Pelion Pagasitic coast near Afissos/Lefokastro (lat 39.26, lng 23.18): 'a spacious pebbly cove, wild, with no ameni [https://beaches-searcher.com/en/beach/300202304/ayia-thymia-beach].",
             "sourceUrls": [
               "https://artespelion.gr/%CE%B5%CE%BB%CE%BB%CE%B7%CE%BD%CE%B9%CE%BA%CE%AC/%CE%BF%CE%B4%CE%B7%CE%B3%CF%8C%CF%82-%CF%80%CE%B7%CE%BB%CE%AF%CE%BF%CF%85/%CE%BC%CE%BF%CE%BD%CE%BF%CE%AE%CE%BC%CE%B5%CF%81%CE%B5%CF%82-%CE%B5%CE%BA%CE%B4%CF%81%CE%BF%CE%BC%CE%AD%CF%82/%CE%BA%CE%B5%CE%BD%CF%84%CF%81%CE%B9%CE%BA%CF%8C-%CE%B4%CF%85%CF%84%CE%B9%CE%BA%CF%8C-%CF%80%CE%AE%CE%BB%CE%B9%CE%BF/",
               "https://andromahistudios.com/?page_id=23"

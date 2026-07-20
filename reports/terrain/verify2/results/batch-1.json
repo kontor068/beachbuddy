@@ -1,0 +1,182 @@
+[
+ {
+  "id": 527,
+  "name": "Άργιλος",
+  "verdict": "SAND",
+  "agreesWith": "OURS",
+  "evidence": "Argilos is a clay/sand beach type (named for the argilos-clay used for natural spa); Greek guides describe it as an ammoudia, not pebble/rock. Locality note: the well-documented Argilos-with-clay is the East-Crete/Xerokampos one; the Chania/SW-coast beach at these coords is same clay-sand class. Our label (άμμος) and OSM (SAND) agree.",
+  "sourceUrl": "https://agonaskritis.gr/%CE%AC%CF%81%CE%B3%CE%B9%CE%BB%CE%BF%CF%82-%CE%B7-%CF%80%CE%B1%CF%81%CE%B1%CE%BB%CE%AF%CE%B1-%CF%84%CE%B7%CF%82-%CE%BA%CF%81%CE%AE%CF%84%CE%B7%CF%82-%CF%80%CE%BF%CF%85-%CE%BA%CF%81%CF%8D%CE%B2%CE%B5/",
+  "confidence": "medium"
+ },
+ {
+  "id": 535,
+  "name": "Κυανή Ακτή",
+  "verdict": "SAND",
+  "agreesWith": "NEITHER",
+  "evidence": "Grecorama/Terrabook: Kiani Akti at Kalyves/Souda (Apokoronas, Chania, 17km E of Chania) is a large sandy beach with fine sand (ψιλή άμμος) and shallow water. Coords match Kalyves. Both our label (βράχια) and OSM (ROCKS) are wrong; our own ourTypes [fine_sand,coarse_sand] were actually correct.",
+  "sourceUrl": "http://grecorama.com/en/kyani-akti-beach-kyani-cote/",
+  "confidence": "high"
+ },
+ {
+  "id": 555,
+  "name": "Παραλία Κουταλάς",
+  "verdict": "PEBBLES",
+  "agreesWith": "NEITHER",
+  "evidence": "Discover Crete / Vamos Village: Koutalas at Kokkino Chorio (Cape Drapano, Apokoronas, ~27km E of Chania) 'έχει βότσαλα και μεγάλες πέτρες' with a rocky seabed and a small sand strip. Coords match. Predominant surface is pebbles/large stones — not the ROCKS both our label (βράχια) and OSM claim.",
+  "sourceUrl": "https://www.discovercrete.com/el/places-to-go/koutalas-beach-a-secluded-haven",
+  "confidence": "medium"
+ },
+ {
+  "id": 642,
+  "name": "Γούβες",
+  "verdict": "SAND",
+  "agreesWith": "NEITHER",
+  "evidence": "cretanbeaches/okaycrete: Kato Gouves (18km E of Heraklion) has fine sand (λεπτή άμμος) and shallow water. Coords match Gouves. Both our label (βότσαλα) and OSM (PEBBLES) are wrong; ourTypes [fine_sand] was correct.",
+  "sourceUrl": "https://www.okaycrete.com/article/Kato-gouves.html",
+  "confidence": "high"
+ },
+ {
+  "id": 645,
+  "name": "Σταλίδα",
+  "verdict": "SAND",
+  "agreesWith": "NEITHER",
+  "evidence": "explorecrete/cretanbeaches: Stalida (Stalis, near Malia, Heraklion) is a ~3km organized beach of fine sand (ψιλή άμμος) with shallow water. Coords match. Both our label (βότσαλα) and OSM (PEBBLES) are wrong; ourTypes [fine_sand] was correct.",
+  "sourceUrl": "https://www.explorecrete.com/heraklion-region/stalis-stalida",
+  "confidence": "high"
+ },
+ {
+  "id": 686,
+  "name": "Λίμνη",
+  "verdict": "SAND",
+  "agreesWith": "OURS",
+  "evidence": "cretanbeaches: the Skaleta/Sfakaki coast (Almyros gulf, ~12km NE of Rethymno) at these coords is golden fine sand (χρυσή ψιλή άμμος), a Caretta nesting shore. Disambiguated to the Rethymno gulf (lng 24.688 is E of Rethymno town, not Georgioupoli). Our label (άμμος) and OSM (SAND) agree.",
+  "sourceUrl": "https://www.cretanbeaches.com/el/thalassios-tourismos/paralies-kentrikis-kritis-rethymno/paralia-sfakaki",
+  "confidence": "medium"
+ },
+ {
+  "id": 690,
+  "name": "Παραλία Ανατολικά",
+  "verdict": "SAND",
+  "agreesWith": "OURS",
+  "evidence": "cretanbeaches/originalcrete: these coords (35.148/24.500) are the Agios Pavlos–Akoumiani Gialia dune coast of S Rethymno (Ammolofoi/Alatsogkremnoi), described as expansive αμμουδιά with sand dunes. Disambiguated to Agios Pavlos (Sachtouria), not Plakias. Our label (άμμος) and OSM (SAND) agree.",
+  "sourceUrl": "https://www.originalcrete.gr/en/article/agios-paulos",
+  "confidence": "medium"
+ },
+ {
+  "id": 696,
+  "name": "Παραλία Κεφάλα",
+  "verdict": "SAND",
+  "agreesWith": "OURS",
+  "evidence": "cretanbeaches/originalcrete: Kefala is the NW end of the Akoumiani Gialia / Agios Pavlos sandy-dune stretch (S Rethymno), a sandy shore (with some scattered pebbles near the Agios Pavlos hamlet). Coords ~1km from id 690, same dune system. Our label (άμμος) and OSM (SAND) agree.",
+  "sourceUrl": "https://www.cretanbeaches.com/el/thalassios-tourismos/paralies-kentrikis-kritis-rethymno/ammolofoi-agiou-paulou-triopetra",
+  "confidence": "medium"
+ },
+ {
+  "id": 705,
+  "name": "Σκίνος",
+  "verdict": "MIXED_SAND_PEBBLE",
+  "agreesWith": "NEITHER",
+  "evidence": "cretanbeaches: Skinos, the second beach of Plakias (Sellia, W of the fishing shelter), 'has sand and many small rocks/stones, ideal for snorkeling; organized near the village, rockier to the west.' Sand base with pebbles/small rocks = mixed, not the pure PEBBLES our label (βότσαλα) and OSM state.",
+  "sourceUrl": "https://www.cretanbeaches.com/el/thalassios-tourismos/paralies-kentrikis-kritis-rethymno/paralia-skinos-ston-plakia",
+  "confidence": "medium"
+ },
+ {
+  "id": 722,
+  "name": "Άμμος Ξερόκαμπου",
+  "verdict": "SAND",
+  "agreesWith": "NEITHER",
+  "evidence": "cretanbeaches/originalcrete: this is the sandy sector of Xerokampos (Siteia, Lasithi) — the name itself is 'Ammos' (sand) and the main beaches here (Mazida Ammos) are white/golden sand. Both our label (βότσαλα) and OSM (PEBBLES) wrong; ourTypes [fine_sand] correct.",
+  "sourceUrl": "https://www.cretanbeaches.com/el/thalassios-tourismos/anatoliki-kriti-lasithi/paralia-mazida-ammos-xerokampos",
+  "confidence": "medium"
+ },
+ {
+  "id": 765,
+  "name": "Ποταμός Ξερόκαμπου",
+  "verdict": "PEBBLES",
+  "agreesWith": "OURS",
+  "evidence": "cretanbeaches: the 'Potamos' beach at the mouth of the Katsounaki gorge (Xerokampos, Siteia) is a beach 'με μεγάλα βότσαλα' (large pebbles) with a rocky seabed, not family-friendly. Coords match. Our label (βότσαλα) and OSM (PEBBLES) agree; ourTypes [fine_sand] was the outlier.",
+  "sourceUrl": "https://www.cretanbeaches.com/el/thalassios-tourismos/anatoliki-kriti-lasithi/paralia-xerokampos",
+  "confidence": "high"
+ },
+ {
+  "id": 816,
+  "name": "Μικρή παραλία",
+  "verdict": "PEBBLES",
+  "agreesWith": "OURS",
+  "evidence": "hotelpotos/afrodite-studios: ~150m from the central Pefkari beach (S Thasos, near Potos) there is 'a second, pebbly and completely unorganized beach' — the small beach at these coords. Our label (βότσαλα) and OSM (PEBBLES) agree; ourTypes [fine_sand] was the outlier.",
+  "sourceUrl": "https://www.hotelpotos.com/gr/pefkari-beach/",
+  "confidence": "medium"
+ },
+ {
+  "id": 819,
+  "name": "Πευκάρι",
+  "verdict": "MIXED_SAND_PEBBLE",
+  "agreesWith": "NEITHER",
+  "evidence": "thassos-view/tripadvisor: Pefkari (S Thasos) 'combines soft sand with small pebbles' — sand is the main surface with pebbles/small rocks at the edges (aqua shoes advised). Coords match. Genuinely mixed, not the pure PEBBLES our label (βότσαλα) and OSM claim.",
+  "sourceUrl": "https://www.thassos-view.com/places/beaches/pefkari-beach",
+  "confidence": "medium"
+ },
+ {
+  "id": 841,
+  "name": "Καρνάγιο",
+  "verdict": "ROCKS",
+  "agreesWith": "NEITHER",
+  "evidence": "thassos-view/karnagiothassos: Karnagio at the end of Thasos-town (Limenas) old harbour sits 'at the edge of the last rock' — a rocky swim spot/beach bar, not sandy. Coords match Limenas. Both our label (άμμος) and OSM (SAND) wrong; ourTypes [rocks,pebbles] closer.",
+  "sourceUrl": "http://www.karnagiothassos.gr/en/",
+  "confidence": "medium"
+ },
+ {
+  "id": 842,
+  "name": "Κλίσμα",
+  "verdict": "PEBBLES",
+  "agreesWith": "OURS",
+  "evidence": "Greeka: Klisma (near Skala Kalirachi, W coast Thasos, 22km SW of Limenas) is 'a beautiful pebbled beach... covered with large smooth pebbles' (aqua shoes recommended). Coords match. Our label (βότσαλα) and OSM (PEBBLES) agree; ourTypes [fine_sand] was the outlier.",
+  "sourceUrl": "https://www.greeka.com/eastern-aegean/thassos/beaches/klisma/",
+  "confidence": "high"
+ },
+ {
+  "id": 852,
+  "name": "Σκάλα Πρίνου",
+  "verdict": "SAND",
+  "agreesWith": "NEITHER",
+  "evidence": "thassos-view/go-thassos: Skala Prinou (Dasyllion, N Thasos, 15km from port) is a white/fine sandy beach (blue flag), shallow and waveless. Coords match. Both our label (βότσαλα) and OSM (PEBBLES) wrong; ourTypes [fine_sand] correct.",
+  "sourceUrl": "https://www.go-thassos.gr/gr/about-thassos/places/skala-prinos",
+  "confidence": "high"
+ },
+ {
+  "id": 893,
+  "name": "Δεή πλους",
+  "verdict": "UNCLEAR",
+  "agreesWith": "OURS",
+  "evidence": "Name is garbled/untraceable; coords sit in the Plataria bay (Thesprotia) where the 1.5km main beach is golden sand but nearby coves (Gata/Kalami) are coarse/fine pebbles. Could not pin this exact spot to one source, so retain our label; our label (βότσαλα) and OSM (PEBBLES) already agree.",
+  "sourceUrl": "https://www.visit-thesprotia.gr/item/%CF%80%CE%B1%CF%81%CE%B1%CE%BB%CE%AF%CE%B1-%CF%80%CE%BB%CE%B1%CF%84%CE%B1%CF%81%CE%B9%CE%AC%CF%82/",
+  "confidence": "low"
+ },
+ {
+  "id": 3013,
+  "name": "Γουβιά",
+  "verdict": "PEBBLES",
+  "agreesWith": "OURS",
+  "evidence": "discover-corfu: Gouvia Beach (sheltered bay, 8km N of Corfu Town) is 'mostly small pebbles and shingle, with some patches of coarse sand... not a fine sand beach.' Coords match. Our label (βότσαλα) and OSM (PEBBLES) agree.",
+  "sourceUrl": "https://discover-corfu.com/beaches/gouvia/",
+  "confidence": "high"
+ },
+ {
+  "id": 1020,
+  "name": "Αρκουδάκι",
+  "verdict": "PEBBLES",
+  "agreesWith": "OURS",
+  "evidence": "paxosinfo/greekvillaholidays: Arkoudaki (N Paxos, near Lakka) is a pebble beach with a tented area by flat rocks for sunbathing; the swimmable beach surface is pebbles (some call it 'rocky' for the flanking flat rocks). Coords match. Our label (βότσαλα) and OSM (PEBBLES) agree.",
+  "sourceUrl": "https://www.paxosinfo.com/paxos-greece/paxos-beaches.html",
+  "confidence": "medium"
+ },
+ {
+  "id": 1026,
+  "name": "Δεύτερη Σπιάντζα",
+  "verdict": "PEBBLES",
+  "agreesWith": "OURS",
+  "evidence": "cycladia/sandee: the Paxos 'spiantzes' near Gaios are small pebbly beaches enclosed by low rocky cliffs; Spiantza is 'a small pebbly beach' with translucent water. Coords match (SE of Gaios). Our label (βότσαλα) and OSM (PEBBLES) agree.",
+  "sourceUrl": "https://www.cycladia.com/best-beaches-greece/paxi",
+  "confidence": "medium"
+ }
+]
