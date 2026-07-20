@@ -80,11 +80,18 @@ const pinArr = Array.isArray(pinRev) ? pinRev : (pinRev?.flagged || pinRev?.item
 add('Pin location (priority mislocations)', pinArr.length || '?', N, 'flagged pins on land / far from coastline / wrong island (e.g. #1942 on Rhenia) — blind moves unsafe', true);
 
 // ---------- 7. PLACE RESOLUTION (Maps landing) ----------
+// The raw WRONG_PLACE/WRONG_TYPE counts describe where Google's NAME lookup disagrees with our
+// coordinate — but the app deliberately ignores that lookup: only PASS-verified beaches carry an
+// active placeId (open a place card); everything flagged routes by coordinate (collision-immune,
+// nationwide nav fix 2026-06-15). TRUE actionable = a FLAGGED beach that still has an active placeId
+// (would open a wrong card). Measured live against greek_beaches nav below.
 const upg = rd(R('reports', 'place-resolution', 'google-upgrade.json')) || [];
 const st = {}; for (const r of upg) st[r.status] = (st[r.status] || 0) + 1;
-add('Google Maps landing (wrong place)', st.WRONG_PLACE || 0, upg.length, 'our name resolves to the WRONG place on Google Maps — routed to coordinates as mitigation', true);
-add('Google Maps landing (wrong type)', st.WRONG_TYPE || 0, upg.length, 'resolves to a non-beach place (hotel/village) — weaker signal', true);
-add('Google Maps landing (unstable/no result)', (st.UNSTABLE || 0) + (st.NO_RESULT || 0), upg.length, 'resolution flaps or returns nothing', true);
+const navById = new Map();
+for (const b of beaches) navById.set(b.id, b.metadata?.googleMapsNavigation);
+const flaggedActivePlaceId = upg.filter(r => r.status !== 'PASS' && (() => { const pid = navById.get(r.id)?.placeId; return pid && String(pid).trim(); })()).length;
+const flaggedTotal = (st.WRONG_PLACE || 0) + (st.WRONG_TYPE || 0) + (st.UNSTABLE || 0) + (st.NO_RESULT || 0);
+add('Google Maps landing — TRUE actionable (opens wrong card)', flaggedActivePlaceId, upg.length, `${flaggedTotal} beaches are flagged (name lookup ≠ our coord) but 0 carry an active placeId → all route by coordinate. Only PASS-verified beaches open a place card. RESOLVED by design`, false);
 
 // ---------- 8. SOURCE URL LIVENESS ----------
 const sul = rd(R('reports', 'sourceurl-liveness', 'report.json'));

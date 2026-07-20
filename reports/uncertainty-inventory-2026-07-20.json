@@ -3,24 +3,10 @@
  "base": 2799,
  "rows": [
   {
-   "characteristic": "Google Maps landing (wrong place)",
-   "uncertain": 420,
-   "base": 2626,
-   "how": "our name resolves to the WRONG place on Google Maps — routed to coordinates as mitigation",
-   "actionable": true
-  },
-  {
    "characteristic": "Record confidence = low",
    "uncertain": 385,
    "base": 2799,
    "how": "self-declared low confidence",
-   "actionable": true
-  },
-  {
-   "characteristic": "Google Maps landing (wrong type)",
-   "uncertain": 228,
-   "base": 2626,
-   "how": "resolves to a non-beach place (hotel/village) — weaker signal",
    "actionable": true
   },
   {
@@ -63,13 +49,6 @@
    "uncertain": 34,
    "base": 387,
    "how": "web search says organized but at medium confidence with no independent corroboration — most likely genuine misses; safe to apply once a 2nd source confirms",
-   "actionable": true
-  },
-  {
-   "characteristic": "Google Maps landing (unstable/no result)",
-   "uncertain": 26,
-   "base": 2626,
-   "how": "resolution flaps or returns nothing",
    "actionable": true
   },
   {
@@ -126,6 +105,13 @@
    "uncertain": 2,
    "base": 2799,
    "how": "no coast orientation → sunset-facing + some wind context unavailable",
+   "actionable": false
+  },
+  {
+   "characteristic": "Google Maps landing — TRUE actionable (opens wrong card)",
+   "uncertain": 0,
+   "base": 2626,
+   "how": "674 beaches are flagged (name lookup ≠ our coord) but 0 carry an active placeId → all route by coordinate. Only PASS-verified beaches open a place card. RESOLVED by design",
    "actionable": false
   }
  ],
