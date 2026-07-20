@@ -6,23 +6,23 @@ Ranked by how actionable + how trust-damaging. "SCREEN" rows over-flag (screenin
 
 | # | Characteristic | Uncertain | of base | How it's detected | Actionable |
 |---|---|---|---|---|---|
-| 1 | Access road surface (OSM disagrees — SCREEN) | **954** (63.6%) | 1500 | asphalt claim but OSM shows no nearby paved road — OVER-flags (screening), only strongest were downgraded | ✅ |
-| 2 | Google Maps landing (wrong place) | **420** (16.0%) | 2626 | our name resolves to the WRONG place on Google Maps — routed to coordinates as mitigation | ✅ |
-| 3 | Record confidence = low | **385** (13.8%) | 2799 | self-declared low confidence | ✅ |
-| 4 | Google Maps landing (wrong type) | **228** (8.7%) | 2626 | resolves to a non-beach place (hotel/village) — weaker signal | ✅ |
-| 5 | Explicit needsVerification flag | **108** (3.9%) | 2799 | record already tagged by an earlier pass as needing a look | ✅ |
-| 6 | Water depth (type↔label contradiction) | **103** (3.7%) | 2799 | waterDepth.type disagrees with its own label — badge already hidden by isWaterDepthUnverified gate | ✅ |
-| 7 | Source URL dead (needs re-sourcing) | **101** (2.4%) | 4180 | a cited evidence link is dead — provenance broken, not the value itself | ✅ |
-| 8 | Terrain type (our label vs OSM surface) | **98** (11.5%) | 849 | our sand/pebble label disagrees with OSM surface tag (where OSM has one: 849) | ✅ |
-| 9 | Organized flag (web LEANS organized, held for 2nd signal) | **86** (22.2%) | 387 | web search says organized but at medium confidence with no independent corroboration — most likely genuine misses; safe to apply once a 2nd source confirms | ✅ |
-| 10 | Organized flag (unclear after 2 web rounds) | **61** (15.8%) | 387 | UNCLEAR verdict after coordinate-anchored web search — no reliable source either way | ✅ |
-| 11 | Google Maps landing (unstable/no result) | **26** (1.0%) | 2626 | resolution flaps or returns nothing | ✅ |
-| 12 | Pin location (priority mislocations) | **15** (0.5%) | 2799 | flagged pins on land / far from coastline / wrong island (e.g. #1942 on Rhenia) — blind moves unsafe | ✅ |
-| 13 | Shade flag (false but text says natural shade) | **2** (0.1%) | 2799 | shade:false yet amenities mention trees/natural shade — text does not render as a chip | ✅ |
-| 14 | Source URL inconclusive | **278** (6.7%) | 4180 | link check ambiguous (timeout/blocked) | — |
-| 15 | Record confidence = medium | **123** (4.4%) | 2799 | self-declared medium confidence (note: "high" covers static facts only, not live) | — |
-| 16 | Water depth (missing entirely) | **111** (4.0%) | 2799 | no waterDepth object — nothing shown | — |
-| 17 | Access road surface (already downgraded, honest) | **27** (1.0%) | 2799 | roadSurfaceUnverified=true → UI already shows "likely easy, unverified" (RESOLVED, informational) | — |
+| 1 | Google Maps landing (wrong place) | **420** (16.0%) | 2626 | our name resolves to the WRONG place on Google Maps — routed to coordinates as mitigation | ✅ |
+| 2 | Record confidence = low | **385** (13.8%) | 2799 | self-declared low confidence | ✅ |
+| 3 | Google Maps landing (wrong type) | **228** (8.7%) | 2626 | resolves to a non-beach place (hotel/village) — weaker signal | ✅ |
+| 4 | Explicit needsVerification flag | **108** (3.9%) | 2799 | record already tagged by an earlier pass as needing a look | ✅ |
+| 5 | Water depth (type↔label contradiction) | **103** (3.7%) | 2799 | waterDepth.type disagrees with its own label — badge already hidden by isWaterDepthUnverified gate | ✅ |
+| 6 | Source URL dead (needs re-sourcing) | **101** (2.4%) | 4180 | a cited evidence link is dead — provenance broken, not the value itself | ✅ |
+| 7 | Terrain type (our label vs OSM surface) | **98** (11.5%) | 849 | our sand/pebble label disagrees with OSM surface tag (where OSM has one: 849) | ✅ |
+| 8 | Organized flag (unclear after 2 web rounds) | **61** (15.8%) | 387 | UNCLEAR verdict after coordinate-anchored web search — no reliable source either way | ✅ |
+| 9 | Organized flag (web LEANS organized, held for 2nd signal) | **34** (8.8%) | 387 | web search says organized but at medium confidence with no independent corroboration — most likely genuine misses; safe to apply once a 2nd source confirms | ✅ |
+| 10 | Google Maps landing (unstable/no result) | **26** (1.0%) | 2626 | resolution flaps or returns nothing | ✅ |
+| 11 | Pin location (priority mislocations) | **15** (0.5%) | 2799 | flagged pins on land / far from coastline / wrong island (e.g. #1942 on Rhenia) — blind moves unsafe | ✅ |
+| 12 | Shade flag (false but text says natural shade) | **2** (0.1%) | 2799 | shade:false yet amenities mention trees/natural shade — text does not render as a chip | ✅ |
+| 13 | Source URL inconclusive | **278** (6.7%) | 4180 | link check ambiguous (timeout/blocked) | — |
+| 14 | Record confidence = medium | **123** (4.4%) | 2799 | self-declared medium confidence (note: "high" covers static facts only, not live) | — |
+| 15 | Water depth (missing entirely) | **111** (4.0%) | 2799 | no waterDepth object — nothing shown | — |
+| 16 | Access road surface (total honest-downgraded) | **40** (1.4%) | 2799 | roadSurfaceUnverified=true → UI shows "likely easy, unverified" (RESOLVED). 954 screening flags were a 120m-threshold artifact, NOT real errors | — |
+| 17 | Access road surface — TRUE actionable | **13** (76.5%) | 17 | re-measured from the 954 screening flags → 13 web-verified as not paved-easy, honestly downgraded (roadSurfaceUnverified); 4 confirmed paved & kept | — |
 | 18 | Orientation missing | **2** (0.1%) | 2799 | no coast orientation → sunset-facing + some wind context unavailable | — |
 
 ## Notes

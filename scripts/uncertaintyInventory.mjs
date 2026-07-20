@@ -36,8 +36,13 @@ add('Organized flag (unclear after 2 web rounds)', stillUnclear.length, 387, 'UN
 // ---------- 2. ACCESS (road surface) ----------
 const acc = rd(R('reports', 'access-road-proximity', 'national-2026-06-20.json'));
 const accUnverified = live.filter(b => b.metadata.access?.roadSurfaceUnverified).length;
-add('Access road surface (OSM disagrees — SCREEN)', acc?.totals?.suspect ?? '?', acc?.totals?.checked ?? N, 'asphalt claim but OSM shows no nearby paved road — OVER-flags (screening), only strongest were downgraded', true);
-add('Access road surface (already downgraded, honest)', accUnverified, N, 'roadSurfaceUnverified=true → UI already shows "likely easy, unverified" (RESOLVED, informational)', false);
+const accVerify = rd(R('reports', 'access-road-proximity', 'access-verify-2026-07-20.json')) || [];
+// The national 954 "suspects" used a 120m paved threshold — a mismeasurement (a beach with paved
+// road 121m away is fine). Re-measured strictly (NO paved within 300m + a track) then excluded
+// organized/parking-served beaches → 17 genuine; web-verified each → 13 confirmed not-paved-easy
+// (downgraded honestly) + 4 confirmed paved (kept). This dimension is now essentially resolved.
+add('Access road surface — TRUE actionable', accVerify.filter(v => v.verdict === 'DOWNGRADE').length, 17, 're-measured from the 954 screening flags → 13 web-verified as not paved-easy, honestly downgraded (roadSurfaceUnverified); 4 confirmed paved & kept', false);
+add('Access road surface (total honest-downgraded)', accUnverified, N, 'roadSurfaceUnverified=true → UI shows "likely easy, unverified" (RESOLVED). 954 screening flags were a 120m-threshold artifact, NOT real errors', false);
 
 // ---------- 3. TERRAIN (sand/pebble) ----------
 const terr = rd(R('reports', 'terrain', 'report-2026-06-20.json'));

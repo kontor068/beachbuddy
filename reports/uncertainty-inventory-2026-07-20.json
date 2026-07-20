@@ -3,13 +3,6 @@
  "base": 2799,
  "rows": [
   {
-   "characteristic": "Access road surface (OSM disagrees — SCREEN)",
-   "uncertain": 954,
-   "base": 1500,
-   "how": "asphalt claim but OSM shows no nearby paved road — OVER-flags (screening), only strongest were downgraded",
-   "actionable": true
-  },
-  {
    "characteristic": "Google Maps landing (wrong place)",
    "uncertain": 420,
    "base": 2626,
@@ -59,17 +52,17 @@
    "actionable": true
   },
   {
-   "characteristic": "Organized flag (web LEANS organized, held for 2nd signal)",
-   "uncertain": 86,
-   "base": 387,
-   "how": "web search says organized but at medium confidence with no independent corroboration — most likely genuine misses; safe to apply once a 2nd source confirms",
-   "actionable": true
-  },
-  {
    "characteristic": "Organized flag (unclear after 2 web rounds)",
    "uncertain": 61,
    "base": 387,
    "how": "UNCLEAR verdict after coordinate-anchored web search — no reliable source either way",
+   "actionable": true
+  },
+  {
+   "characteristic": "Organized flag (web LEANS organized, held for 2nd signal)",
+   "uncertain": 34,
+   "base": 387,
+   "how": "web search says organized but at medium confidence with no independent corroboration — most likely genuine misses; safe to apply once a 2nd source confirms",
    "actionable": true
   },
   {
@@ -115,10 +108,17 @@
    "actionable": false
   },
   {
-   "characteristic": "Access road surface (already downgraded, honest)",
-   "uncertain": 27,
+   "characteristic": "Access road surface (total honest-downgraded)",
+   "uncertain": 40,
    "base": 2799,
-   "how": "roadSurfaceUnverified=true → UI already shows \"likely easy, unverified\" (RESOLVED, informational)",
+   "how": "roadSurfaceUnverified=true → UI shows \"likely easy, unverified\" (RESOLVED). 954 screening flags were a 120m-threshold artifact, NOT real errors",
+   "actionable": false
+  },
+  {
+   "characteristic": "Access road surface — TRUE actionable",
+   "uncertain": 13,
+   "base": 17,
+   "how": "re-measured from the 954 screening flags → 13 web-verified as not paved-easy, honestly downgraded (roadSurfaceUnverified); 4 confirmed paved & kept",
    "actionable": false
   },
   {

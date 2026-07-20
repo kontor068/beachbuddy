@@ -7734,7 +7734,8 @@
             "access": {
               "type": "asphalt_road",
               "label": "Πρόσβαση με δρόμο/λεωφορείο",
-              "notes": "Βοτσαλωτή απομονωμένη παραλία περίπου 1 χλμ. δυτικά από το Μεγαλοχώρι, προσβάσιμη και με λεωφορείο."
+              "notes": "Βοτσαλωτή απομονωμένη παραλία περίπου 1 χλμ. δυτικά από το Μεγαλοχώρι, προσβάσιμη και με λεωφορείο.",
+              "roadSurfaceUnverified": true
             },
             "terrain": {
               "types": [
@@ -7753,10 +7754,7 @@
               "label": "Βαθιά νερά",
               "notes": "Το βάθος συνήθως ανεβαίνει πιο γρήγορα μετά την είσοδο στη θάλασσα."
             },
-            "sourceNotes": [
-              "Source-backed Agistri pass 2026-05-28: We Love Agistri describes Xekofti as a pebbly isolated beach about 1 km west of Megalochori, accessible by bus, with pines close to the water and no listed organized services. Confidence lifted to medium; coordinates, wind profile, and scoring were not changed.",
-              "Popular confidence pass 2026-06-02 I: direct municipality, official accessibility, or dedicated local beach sources support the recorded static identity, access, terrain, and service context for this record. Promoted to high for static beach facts only; windProfile, scoring, coordinates, photos, and live calm/protected/safe claims were not changed."
-            ],
+            "sourceNotes": "Source-backed Agistri pass 2026-05-28: We Love Agistri describes Xekofti as a pebbly isolated beach about 1 km west of Megalochori, accessible by bus, with pines close to the water and no listed organized services. Confidence lifted to medium; coordinates, wind profile, and scoring were not changed. Popular confidence pass 2026-06-02 I: direct municipality, official accessibility, or dedicated local beach sources support the recorded static identity, access, terrain, and service context for this record. Promoted to high for static beach facts only; windProfile, scoring, coordinates, photos, and live calm/protected/safe claims were not changed. Access honest-downgrade 2026-07-20 (no-API): OSM showed no paved road within 300m + a track; web check — Quiet/secluded 1km from Megalochori; no positive confirmation of paved access to the beach (island roads generally OK). Honest-unverified. [https://weloveagistri.com/en/agistri/beaches/]. Set roadSurfaceUnverified so the UI shows \"likely easy, not verified\" instead of asserting paved access.",
             "sourceUrls": [
               "https://weloveagistri.com/en/agkistri/xekofti-beach/",
               "https://www.gtp.gr/LocInfo.asp?IncludeWide=0&Level=6&LocId=409&PrimeCode=EGRAAP21&PrimeLevel=6&code=EGRAAP21&infoid=13"
@@ -19290,7 +19288,8 @@
             "access": {
               "type": "asphalt_road",
               "label": "άσφαλτος μέχρι κοντά στην παραλία",
-              "notes": "Η Βλαχιά προσεγγίζεται από τον δρόμο Πήλι - Βλαχιά και βρίσκεται κοντά στο ομώνυμο χωριό της βορειοανατολικής Εύβοιας."
+              "notes": "Η Βλαχιά προσεγγίζεται από τον δρόμο Πήλι - Βλαχιά και βρίσκεται κοντά στο ομώνυμο χωριό της βορειοανατολικής Εύβοιας.",
+              "roadSurfaceUnverified": true
             },
             "terrain": {
               "types": [
@@ -19317,10 +19316,7 @@
             "sourceUrls": [
               "https://www.gtp.gr/Locpage.asp?id=72972"
             ],
-            "sourceNotes": [
-              "Evia source check 2026-05-27: OSM way 166255400 confirms Paralia Vlachias and nearby OSM roads show the Pili-Vlachia approach. GTP places Vlachia beach near Vlachia village in northeastern Evia and supports trees plus tavern/snack-bar presence. HellenicaWorld supports the Vlachia village beach context and coarse-sand/pebble terrain wording.",
-              "Evia tourist evidence pass 2026-05-29: live direct sources support the recorded static beach identity plus concrete access, terrain, amenity, or limitation details already captured in this record. Promoted to high for static facts only; no coordinates, windProfile, scoring, or live calm/protected/safe claim was changed."
-            ],
+            "sourceNotes": "Evia source check 2026-05-27: OSM way 166255400 confirms Paralia Vlachias and nearby OSM roads show the Pili-Vlachia approach. GTP places Vlachia beach near Vlachia village in northeastern Evia and supports trees plus tavern/snack-bar presence. HellenicaWorld supports the Vlachia village beach context and coarse-sand/pebble terrain wording. Evia tourist evidence pass 2026-05-29: live direct sources support the recorded static beach identity plus concrete access, terrain, amenity, or limitation details already captured in this record. Promoted to high for static facts only; no coordinates, windProfile, scoring, or live calm/protected/safe claim was changed. Access honest-downgrade 2026-07-20 (no-API): OSM showed no paved road within 300m + a track; web check — The real Vlachia beach is reachable only by boat or a hiking path; the side dirt roads to hidden coves are difficult/dead-ends. [https://viewsofgreece.gr/anatoliki-evia-to-pili-h-vlaxia-kai-oi-oneiremenes-aktes-tous/]. Set roadSurfaceUnverified so the UI shows \"likely easy, not verified\" instead of asserting paved access.",
             "orientation": {
               "degrees": 351.1,
               "faces": [
@@ -24108,7 +24104,8 @@
             "access": {
               "type": "asphalt_road",
               "label": "άσφαλτος μέχρι κοντά στην παραλία",
-              "notes": "Τα Άσπρα Χαλίκια είναι βοτσαλωτή ακτή της Φωκίδας με εύκολη οδική πρόσβαση και φυσικό χαρακτήρα."
+              "notes": "Τα Άσπρα Χαλίκια είναι βοτσαλωτή ακτή της Φωκίδας με εύκολη οδική πρόσβαση και φυσικό χαρακτήρα.",
+              "roadSurfaceUnverified": true
             },
             "terrain": {
               "types": [
@@ -24130,7 +24127,7 @@
               "label": "Βαθιά νερά",
               "notes": "Το βάθος συνήθως ανεβαίνει πιο γρήγορα μετά την είσοδο στη θάλασσα."
             },
-            "sourceNotes": "OSM source pass 2026-05-27: same-name natural=beach feature near stored coordinates supports identity/location only. Confidence, access, services, amenities, and scoring were not changed.",
+            "sourceNotes": "OSM source pass 2026-05-27: same-name natural=beach feature near stored coordinates supports identity/location only. Confidence, access, services, amenities, and scoring were not changed. Access honest-downgrade 2026-07-20 (no-API): OSM showed no paved road within 300m + a track; web check — On Trizonia island — reached by a ~20min walk from the harbor through olive groves; Trizonia is car-free (boat access only). \"Asphalt\" is wrong. [https://www.xpatathens.com/living-in-athens/taste-experience/travel-in-greece/item/9005-trizonia-island-a-secret-paradise-in-greece]. Set roadSurfaceUnverified so the UI shows \"likely easy, not verified\" instead of asserting paved access.",
             "sourceUrls": [
               "https://www.openstreetmap.org/way/901947085"
             ],
@@ -24316,7 +24313,8 @@
             "access": {
               "type": "asphalt_road",
               "label": "άσφαλτος μέχρι κοντά στην παραλία",
-              "notes": "Οι Καψάλες είναι βοτσαλωτό παραλιακό σημείο με οδική πρόσβαση και χαμηλή οργάνωση."
+              "notes": "Οι Καψάλες είναι βοτσαλωτό παραλιακό σημείο με οδική πρόσβαση και χαμηλή οργάνωση.",
+              "roadSurfaceUnverified": true
             },
             "terrain": {
               "types": [
@@ -24338,7 +24336,7 @@
               "label": "Βαθιά νερά",
               "notes": "Το βάθος συνήθως ανεβαίνει πιο γρήγορα μετά την είσοδο στη θάλασσα."
             },
-            "sourceNotes": "OSM source pass 2026-05-27: same-name natural=beach feature near stored coordinates supports identity/location only. Confidence, access, services, amenities, and scoring were not changed.",
+            "sourceNotes": "OSM source pass 2026-05-27: same-name natural=beach feature near stored coordinates supports identity/location only. Confidence, access, services, amenities, and scoring were not changed. Access honest-downgrade 2026-07-20 (no-API): OSM showed no paved road within 300m + a track; web check — On Trizonia — cars are NOT allowed, barely any roads; boat access only. \"Asphalt/easy\" is wrong. [https://www.xpatathens.com/living-in-athens/taste-experience/travel-in-greece/item/9005-trizonia-island-a-secret-paradise-in-greece]. Set roadSurfaceUnverified so the UI shows \"likely easy, not verified\" instead of asserting paved access.",
             "sourceUrls": [
               "https://www.openstreetmap.org/way/901946395"
             ],
@@ -24640,7 +24638,8 @@
             "access": {
               "type": "asphalt_road",
               "label": "άσφαλτος μέχρι κοντά στην παραλία",
-              "notes": "Ο Μονόλιθος είναι βοτσαλωτή/βραχώδης ακτή με οδική πρόσβαση και χαμηλή οργάνωση."
+              "notes": "Ο Μονόλιθος είναι βοτσαλωτή/βραχώδης ακτή με οδική πρόσβαση και χαμηλή οργάνωση.",
+              "roadSurfaceUnverified": true
             },
             "terrain": {
               "types": [
@@ -24663,7 +24662,7 @@
               "label": "Βαθιά νερά",
               "notes": "Το βάθος συνήθως ανεβαίνει πιο γρήγορα μετά την είσοδο στη θάλασσα."
             },
-            "sourceNotes": "OSM source pass 2026-05-27: same-name natural=beach feature near stored coordinates supports identity/location only. Confidence, access, services, amenities, and scoring were not changed.",
+            "sourceNotes": "OSM source pass 2026-05-27: same-name natural=beach feature near stored coordinates supports identity/location only. Confidence, access, services, amenities, and scoring were not changed. Access honest-downgrade 2026-07-20 (no-API): OSM showed no paved road within 300m + a track; web check — Could not positively confirm paved access to the Fokida Monolithos (results conflated with Santorini/Rhodes). Honest-unverified.. Set roadSurfaceUnverified so the UI shows \"likely easy, not verified\" instead of asserting paved access.",
             "sourceUrls": [
               "https://www.openstreetmap.org/way/901950672"
             ],
@@ -28821,7 +28820,8 @@
             "access": {
               "type": "asphalt_road",
               "label": "Οδική πρόσβαση κοντά στην Ιερισσό",
-              "notes": "Τα Κακούδια κοντά στην Ιερισσό είναι φυσική, ανοργάνωτη ακτή με χαρακτηριστικούς λευκούς βράχους και άμμο."
+              "notes": "Τα Κακούδια κοντά στην Ιερισσό είναι φυσική, ανοργάνωτη ακτή με χαρακτηριστικούς λευκούς βράχους και άμμο.",
+              "roadSurfaceUnverified": true
             },
             "terrain": {
               "types": [
@@ -28845,7 +28845,7 @@
               "label": "Ρηχά νερά",
               "notes": "Η ακτή έχει άμμο και βράχια/σχηματισμούς σε σημεία, οπότε η είσοδος θέλει προσοχή όπου υπάρχουν πέτρες."
             },
-            "sourceNotes": "Halkidiki direct-source confidence pass 2026-05-29: direct beach page or official/regional tourism page supports this record enough to promote static metadata confidence to high. This is static metadata confidence only; coordinates, windProfile, recommendation scoring, photos, and live sea/wind behavior were not changed. Previous note: Halkidiki low-confidence cleanup 2026-05-28: Visit Central Macedonia supports Kakoudia near Ierissos as an unorganized natural beach with sand, sculpted rocks and no beach bars/sunbeds/umbrellas.",
+            "sourceNotes": "Halkidiki direct-source confidence pass 2026-05-29: direct beach page or official/regional tourism page supports this record enough to promote static metadata confidence to high. This is static metadata confidence only; coordinates, windProfile, recommendation scoring, photos, and live sea/wind behavior were not changed. Previous note: Halkidiki low-confidence cleanup 2026-05-28: Visit Central Macedonia supports Kakoudia near Ierissos as an unorganized natural beach with sand, sculpted rocks and no beach bars/sunbeds/umbrellas. Access honest-downgrade 2026-07-20 (no-API): OSM showed no paved road within 300m + a track; web check — Turn off the main road onto a DIRT road that leads to the beach; ample parking, unorganized/virgin beach. [https://www.visit-halkidiki.gr/portfolio-view/kakoudia-beach/]. Set roadSurfaceUnverified so the UI shows \"likely easy, not verified\" instead of asserting paved access.",
             "sourceUrls": [
               "https://visit-centralmacedonia.gr/en/what-to-do/73/sun-sea/118/kakoudia-beach",
               "https://www.openstreetmap.org/way/363019603"
@@ -43865,7 +43865,8 @@
             "access": {
               "type": "asphalt_road",
               "label": "άσφαλτος μέχρι κοντά στην παραλία",
-              "notes": "Το Τραχήλι βρίσκεται στην ευρύτερη χερσόνησο Γραμμένο/Παλαιόχωρα, όπου η πρόσβαση γίνεται από τον δρόμο Παλαιόχωρας-Κουντούρας."
+              "notes": "Το Τραχήλι βρίσκεται στην ευρύτερη χερσόνησο Γραμμένο/Παλαιόχωρα, όπου η πρόσβαση γίνεται από τον δρόμο Παλαιόχωρας-Κουντούρας.",
+              "roadSurfaceUnverified": true
             },
             "terrain": {
               "types": [
@@ -43887,7 +43888,7 @@
               "label": "Μέτρια βάθυνση",
               "notes": "Οι πηγές δίνουν ρηχό έως κανονικό βάθος για την ευρύτερη ομάδα παραλιών Γραμμένου, αλλά όχι ξεχωριστά για το Τραχήλι."
             },
-            "sourceNotes": "Popular source-backed confidence pass AA 2026-06-02: CretanBeaches and VisitPaleochora support the Grammeno/Paleochora beach group identity, road-access context from the Paleochora-Kountoura area, mixed sand/pebble group terrain, tree/natural-shade context, and shallow-to-normal group-water wording; OSM relation 537009 directly supports the Trahili Beach sub-record identity/location. Promoted to high for static metadata only; exact sub-cove depth remains conservative as medium and unsupported app activity flags are pinned false. Source wind/calm/shelter wording was not imported into windProfile, scoring, coordinates, photos, or live sea-condition claims.",
+            "sourceNotes": "Popular source-backed confidence pass AA 2026-06-02: CretanBeaches and VisitPaleochora support the Grammeno/Paleochora beach group identity, road-access context from the Paleochora-Kountoura area, mixed sand/pebble group terrain, tree/natural-shade context, and shallow-to-normal group-water wording; OSM relation 537009 directly supports the Trahili Beach sub-record identity/location. Promoted to high for static metadata only; exact sub-cove depth remains conservative as medium and unsupported app activity flags are pinned false. Source wind/calm/shelter wording was not imported into windProfile, scoring, coordinates, photos, or live sea-condition claims. Access honest-downgrade 2026-07-20 (no-API): OSM showed no paved road within 300m + a track; web check — Could not confirm the Chania beach (only a Chios Trachili found, which is unpaved). OSM shows no paved road + a track → honest-downgrade; possible ide. Set roadSurfaceUnverified so the UI shows \"likely easy, not verified\" instead of asserting paved access.",
             "sourceUrls": [
               "https://www.cretanbeaches.com/en/sea-tourism/west-crete-beaches/grammeno-beaches-paleohora",
               "https://www.visitpaleochora.com/grammeno-beach/",
@@ -79482,7 +79483,8 @@
             "access": {
               "type": "asphalt_road",
               "label": "Πρόσβαση με άσφαλτο",
-              "notes": "The Thinking Traveller περιγράφει το Plani/Πλάνος στο βορειοδυτικό άκρο των Παξών, με εύκολη πρόσβαση με αυτοκίνητο και σύντομο περπάτημα."
+              "notes": "The Thinking Traveller περιγράφει το Plani/Πλάνος στο βορειοδυτικό άκρο των Παξών, με εύκολη πρόσβαση με αυτοκίνητο και σύντομο περπάτημα.",
+              "roadSurfaceUnverified": true
             },
             "terrain": {
               "types": [
@@ -79504,10 +79506,7 @@
               "label": "Μέτρια νερά",
               "notes": "Το βάθος κρατιέται ως μέτριο/κανονικό χωρίς ισχυρότερο claim."
             },
-            "sourceNotes": [
-              "The Thinking Traveller supports Plani/Planos as a pebbly/rocky northwestern beach near Lakka lighthouse, accessible by car and short walk, with a wild/unorganized character.",
-              "Paxos tourist-priority evidence pass 2026-05-29: The Thinking Traveller and Paxosinfo support Plani/Planos as a pebbly/rocky northwest beach near Lakka/lighthouse area, accessible by car plus short walk, with wild/unorganized character. OSM is geometry support only."
-            ],
+            "sourceNotes": "The Thinking Traveller supports Plani/Planos as a pebbly/rocky northwestern beach near Lakka lighthouse, accessible by car and short walk, with a wild/unorganized character. Paxos tourist-priority evidence pass 2026-05-29: The Thinking Traveller and Paxosinfo support Plani/Planos as a pebbly/rocky northwest beach near Lakka/lighthouse area, accessible by car plus short walk, with wild/unorganized character. OSM is geometry support only. Access honest-downgrade 2026-07-20 (no-API): OSM showed no paved road within 300m + a track; web check — Accessible via an UNPAVED road from the outskirts of Lakka; paths not on Google Maps. Not asphalt to the beach. [https://www.feelgreece.com/en/planos-beach]. Set roadSurfaceUnverified so the UI shows \"likely easy, not verified\" instead of asserting paved access.",
             "sourceUrls": [
               "https://www.thethinkingtraveller.com/greece/paxos-and-antipaxos/beaches",
               "https://paxosinfo.com/paxos-greece/paxos-beaches.html",
@@ -98027,7 +98026,8 @@
             "access": {
               "type": "asphalt_road",
               "label": "Πρόσβαση με άσφαλτο",
-              "notes": "Η επίσημη τουριστική πλατφόρμα Explore Fourni τοποθετεί την Κουμαρά στο βορειοανατολικό τμήμα των Φούρνων, 5.3 χλμ. από το λιμάνι και περίπου 10 λεπτά με αυτοκίνητο."
+              "notes": "Η επίσημη τουριστική πλατφόρμα Explore Fourni τοποθετεί την Κουμαρά στο βορειοανατολικό τμήμα των Φούρνων, 5.3 χλμ. από το λιμάνι και περίπου 10 λεπτά με αυτοκίνητο.",
+              "roadSurfaceUnverified": true
             },
             "terrain": {
               "types": [
@@ -98049,11 +98049,7 @@
               "label": "Βαθιά νερά",
               "notes": "Το βάθος συνήθως ανεβαίνει πιο γρήγορα μετά την είσοδο στη θάλασσα."
             },
-            "sourceNotes": [
-              "Phase 2 Fournoi OSM identity/location pass 2026-05-27: OpenStreetMap natural=beach same-name or compatible-name match is 1m from stored coordinates and supports identity/location only; confidence, access, services, and amenities remain unchanged pending stronger local or official sources.",
-              "Explore Fourni supports Koumara as a northeastern Fournoi beach 5.3 km from the port, about 10 minutes by car, with sandy shore. The source does not document organized services, so amenities stay conservative. Scenic/quiet wording was not imported into scoring, windProfile, photos, water-quality, or live condition claims.",
-              "Island confidence pass 2026-06-05: promoted to high for static beach facts only after reviewing direct island/beach source coverage. Static source wording was not imported into scoring, windProfile, photos, water-quality, or live condition claims."
-            ],
+            "sourceNotes": "Phase 2 Fournoi OSM identity/location pass 2026-05-27: OpenStreetMap natural=beach same-name or compatible-name match is 1m from stored coordinates and supports identity/location only; confidence, access, services, and amenities remain unchanged pending stronger local or official sources. Explore Fourni supports Koumara as a northeastern Fournoi beach 5.3 km from the port, about 10 minutes by car, with sandy shore. The source does not document organized services, so amenities stay conservative. Scenic/quiet wording was not imported into scoring, windProfile, photos, water-quality, or live condition claims. Island confidence pass 2026-06-05: promoted to high for static beach facts only after reviewing direct island/beach source coverage. Static source wording was not imported into scoring, windProfile, photos, water-quality, or live condition claims. Access honest-downgrade 2026-07-20 (no-API): OSM showed no paved road within 300m + a track; web check — Park up the hill and walk down a paved path, OR a downhill difficult DIRT road, or boat. Not easy asphalt to the beach. [https://www.greeka.com/eastern-aegean/fourni/beaches/koumara/]. Set roadSurfaceUnverified so the UI shows \"likely easy, not verified\" instead of asserting paved access.",
             "sourceUrls": [
               "https://www.openstreetmap.org/way/504547098",
               "https://explorefourni.gr/en/destination-item/koumara/"
@@ -102113,7 +102109,8 @@
             "access": {
               "type": "asphalt_road",
               "label": "Πρόσβαση με άσφαλτο",
-              "notes": "Μικρή παραλία στον ομώνυμο οικισμό της Σάμου, με εύκολη οδική πρόσβαση. Κυρίως ελεύθερη, με υπηρεσίες στον οικισμό."
+              "notes": "Μικρή παραλία στον ομώνυμο οικισμό της Σάμου, με εύκολη οδική πρόσβαση. Κυρίως ελεύθερη, με υπηρεσίες στον οικισμό.",
+              "roadSurfaceUnverified": true
             },
             "terrain": {
               "types": [
@@ -102132,10 +102129,7 @@
               "label": "Ρηχά νερά",
               "notes": "Η είσοδος στη θάλασσα είναι πιο ήπια και το βάθος αυξάνει πιο σταδιακά."
             },
-            "sourceNotes": [
-              "Popular source-backed confidence pass BP 2026-06-02: World Beach Guide, the Municipality of West Samos guide/PDF, Samos Hoteliers and Cycladia directly support the Agios Nikolaos / Samos beach identity, small beach character, chapel/village context, pebble terrain and nearby tavern/cafe context. Static facts were promoted to high; unsupported shallow-water certainty, parking and natural-shade claims were neutralized. No windProfile, scoring, photos, or live calm/protected/safe claims were changed.",
-              "Amenity corrected 2026-06-20 (amenity-evidence re-verify @400m): the taverna/beach-bar claim had zero Google food/drink POI within 400 m and <50/no reviews; unverified \"nearby\" default removed (other amenities untouched)."
-            ],
+            "sourceNotes": "Popular source-backed confidence pass BP 2026-06-02: World Beach Guide, the Municipality of West Samos guide/PDF, Samos Hoteliers and Cycladia directly support the Agios Nikolaos / Samos beach identity, small beach character, chapel/village context, pebble terrain and nearby tavern/cafe context. Static facts were promoted to high; unsupported shallow-water certainty, parking and natural-shade claims were neutralized. No windProfile, scoring, photos, or live calm/protected/safe claims were changed. Amenity corrected 2026-06-20 (amenity-evidence re-verify @400m): the taverna/beach-bar claim had zero Google food/drink POI within 400 m and <50/no reviews; unverified \"nearby\" default removed (other amenities untouched). Access honest-downgrade 2026-07-20 (no-API): OSM showed no paved road within 300m + a track; web check — Small unorganized village beach; no positive paved-access confirmation and OSM shows no paved within 300m. Honest-unverified. [https://visit.samos.gr/index.php/en/samos-en/things-to-see-samos/beaches/item/402-agios-nikolaos]. Set roadSurfaceUnverified so the UI shows \"likely easy, not verified\" instead of asserting paved access.",
             "sourceUrls": [
               "https://www.worldbeachguide.com/greece/agios-nikolaos.htm",
               "https://mwsamos.gr/files/documents/Samos-Guide-en.pdf",
@@ -122325,7 +122319,8 @@
             "access": {
               "type": "asphalt_road",
               "label": "Πρόσβαση με άσφαλτο",
-              "notes": "Μεγάλη οργανωμένη αμμώδης παραλία στη Μπούκα Μεσσήνης, περίπου 4 χλμ. από την πόλη της Μεσσήνης."
+              "notes": "Μεγάλη οργανωμένη αμμώδης παραλία στη Μπούκα Μεσσήνης, περίπου 4 χλμ. από την πόλη της Μεσσήνης.",
+              "roadSurfaceUnverified": true
             },
             "terrain": {
               "types": [
@@ -122349,11 +122344,7 @@
               "label": "Μέτρια νερά",
               "notes": "Το βάθος κρατιέται ως μέτριο/κανονικό γιατί οι πηγές δεν τεκμηριώνουν με ασφάλεια ούτε ρηχά ούτε βαθιά νερά."
             },
-            "sourceNotes": [
-              "Messinia OSM identity/location pass 2026-05-27: OSM way 300965745 is a same-name, transliterated, or compatible-name beach feature at or very near the current coordinates. This verifies identity/location only; confidence stays low and access/services remain unchanged until direct local sources support stronger claims. Messinia low-confidence source pass 2026-05-29: Oasi/Bouka accommodation and visitor sources support the beach-area identity, but Oasi appears to be a local/Bouka sub-area rather than a widely documented standalone beach; upgraded only to medium.",
-              "Popular-source confidence pass BY 2026-06-02: The Municipality of Messini tourist leaflet supports Bouka as a large organized beach 4 km from Messini city, Terrabook supports Bouka as a wide fine-sand organized beach on the Messini municipal coast with umbrellas, loungers, beach bar, volleyball, showers, changing rooms and lifeguard, Messinia.mobi supports Bouka as Messini main beach with fine sand and organized services, and GMP Bouka supports the local Bouka/Oasi accommodation-beach context. Existing OSM supports the mapped beach geometry. Promoted to high for static identity/location, sandy terrain, easy-access urban-coast context and organized amenities only; Blue Flag/water-quality, quiet-water, wind/wave, scoring, windProfile, coordinates, photos, and live calm/protected/safe claims were not imported.",
-              "Amenity corrected 2026-06-20 (amenity-evidence audit): the organized + beach-bar/sunbeds claim was an unverified default — Google Places shows zero food/drink POI within 180 m and the beach has <20/no Google reviews. Cleared organized=false and removed the bar/sunbed amenities; other amenities, coordinates, windProfile and claims untouched."
-            ],
+            "sourceNotes": "Messinia OSM identity/location pass 2026-05-27: OSM way 300965745 is a same-name, transliterated, or compatible-name beach feature at or very near the current coordinates. This verifies identity/location only; confidence stays low and access/services remain unchanged until direct local sources support stronger claims. Messinia low-confidence source pass 2026-05-29: Oasi/Bouka accommodation and visitor sources support the beach-area identity, but Oasi appears to be a local/Bouka sub-area rather than a widely documented standalone beach; upgraded only to medium. Popular-source confidence pass BY 2026-06-02: The Municipality of Messini tourist leaflet supports Bouka as a large organized beach 4 km from Messini city, Terrabook supports Bouka as a wide fine-sand organized beach on the Messini municipal coast with umbrellas, loungers, beach bar, volleyball, showers, changing rooms and lifeguard, Messinia.mobi supports Bouka as Messini main beach with fine sand and organized services, and GMP Bouka supports the local Bouka/Oasi accommodation-beach context. Existing OSM supports the mapped beach geometry. Promoted to high for static identity/location, sandy terrain, easy-access urban-coast context and organized amenities only; Blue Flag/water-quality, quiet-water, wind/wave, scoring, windProfile, coordinates, photos, and live calm/protected/safe claims were not imported. Amenity corrected 2026-06-20 (amenity-evidence audit): the organized + beach-bar/sunbeds claim was an unverified default — Google Places shows zero food/drink POI within 180 m and the beach has <20/no Google reviews. Cleared organized=false and removed the bar/sunbed amenities; other amenities, coordinates, windProfile and claims untouched. Access honest-downgrade 2026-07-20 (no-API): OSM showed no paved road within 300m + a track; web check — No positive access confirmation found for the Messinia Oasi; OSM shows no paved within 300m + a track. Honest-unverified.. Set roadSurfaceUnverified so the UI shows \"likely easy, not verified\" instead of asserting paved access.",
             "sourceUrls": [
               "https://www.openstreetmap.org/way/300965745",
               "https://eservices.messini.gr/files/items/3/3482/toyristiko_fylladio_dimoy_messinis_el-eng.pdf",
@@ -124535,7 +124526,8 @@
             "access": {
               "type": "asphalt_road",
               "label": "Πρόσβαση με άσφαλτο",
-              "notes": "Η πιο γνωστή μεγάλη παραλία της Ανάφης, προσβάσιμη από τον περιφερειακό δρόμο. Δεν έχει ξαπλώστρες, αλλά έχει αρμυρίκια και ταβέρνα."
+              "notes": "Η πιο γνωστή μεγάλη παραλία της Ανάφης, προσβάσιμη από τον περιφερειακό δρόμο. Δεν έχει ξαπλώστρες, αλλά έχει αρμυρίκια και ταβέρνα.",
+              "roadSurfaceUnverified": true
             },
             "terrain": {
               "types": [
@@ -124562,7 +124554,7 @@
               "https://cycladesmap.gr/en/listings/anafi/paralia-roukounas/",
               "https://www.exploring-greece.gr/en/show/52503/%3Attd/MEGALOS-RUKUNAS"
             ],
-            "sourceNotes": "Popular source-backed confidence pass X 2026-06-02: Anafi municipality supports Roukounas as a large sandy beach with shade trees and main-road/bus-stop plus path access; AllOverGreece, CycladesMap, and Exploring Greece support sandy/fine-sand beach, tamarisk shade, nearby tavern, no organization/sunbeds, and shallow/gradual water from direct Roukounas sources. Promoted to high for static metadata only; unsupported parking metadata was removed. Static wind wording was not imported into windProfile, scoring, or live calm/protected/safe claims.",
+            "sourceNotes": "Popular source-backed confidence pass X 2026-06-02: Anafi municipality supports Roukounas as a large sandy beach with shade trees and main-road/bus-stop plus path access; AllOverGreece, CycladesMap, and Exploring Greece support sandy/fine-sand beach, tamarisk shade, nearby tavern, no organization/sunbeds, and shallow/gradual water from direct Roukounas sources. Promoted to high for static metadata only; unsupported parking metadata was removed. Static wind wording was not imported into windProfile, scoring, or live calm/protected/safe claims. Access honest-downgrade 2026-07-20 (no-API): OSM showed no paved road within 300m + a track; web check — Access from the main peripheral road then a path; a streamside road was opened by machinery without permit (fined). Not paved to the beach. [https://www.greeka.com/cyclades/anafi/beaches/roukounas/]. Set roadSurfaceUnverified so the UI shows \"likely easy, not verified\" instead of asserting paved access.",
             "orientation": {
               "degrees": 164.8,
               "faces": [
@@ -161536,7 +161528,8 @@
             "access": {
               "type": "asphalt_road",
               "label": "Πρόσβαση με άσφαλτο",
-              "notes": "Ψιλή Άμμος: δημοφιλής αμμώδης παραλία κοντά στη Μεσσαριά, περίπου 2 χλμ. από τη Χώρα."
+              "notes": "Ψιλή Άμμος: δημοφιλής αμμώδης παραλία κοντά στη Μεσσαριά, περίπου 2 χλμ. από τη Χώρα.",
+              "roadSurfaceUnverified": true
             },
             "terrain": {
               "types": [
@@ -161563,7 +161556,7 @@
               "https://www.allovergreece.com/Beaches/Descr/23/1065/en",
               "https://www.travel.gr/en/experiences-ee/schinoussa-a-lilliputian-island-full-of-gorgeous-isolated-beaches/"
             ],
-            "sourceNotes": "Phase 2 organized audit 2026-05-25: removed organized claim; Psili Ammos Schinoussa sources support taverna/natural beach context but not sunbed/umbrella service. Popular-source confidence pass CM 2026-06-05: Schinoussa.com, Travel.gr, Exploring Greece, Aegean Islands, Cyclades Map, AllOverGreece and direct local beach sources support this Schinoussa beach identity and the recorded static access/terrain/shade/service/depth context. Promoted to high for static beach facts only; source calm/clear/protected/wind-exposure wording was not imported into windProfile, scoring, photos, water-quality, or live calm/protected/safe claims.",
+            "sourceNotes": "Phase 2 organized audit 2026-05-25: removed organized claim; Psili Ammos Schinoussa sources support taverna/natural beach context but not sunbed/umbrella service. Popular-source confidence pass CM 2026-06-05: Schinoussa.com, Travel.gr, Exploring Greece, Aegean Islands, Cyclades Map, AllOverGreece and direct local beach sources support this Schinoussa beach identity and the recorded static access/terrain/shade/service/depth context. Promoted to high for static beach facts only; source calm/clear/protected/wind-exposure wording was not imported into windProfile, scoring, photos, water-quality, or live calm/protected/safe claims. Access honest-downgrade 2026-07-20 (no-API): OSM showed no paved road within 300m + a track; web check — Reached by a track road or boat; 450m dirt path from Messaria; Schinoussa roads mostly dirt. [https://www.greeka.com/cyclades/schinoussa/beaches/psili-ammos/]. Set roadSurfaceUnverified so the UI shows \"likely easy, not verified\" instead of asserting paved access.",
             "googleMapsNavigation": {
               "status": "verified",
               "mode": "place",
