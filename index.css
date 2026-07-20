@@ -426,8 +426,16 @@ body {
   }
 }
 
-/* "Reset view" home button next to the Leaflet zoom controls: center its icon
-   within the same square hit-area the +/- buttons use (desktop and touch). */
+/* "Reset view" home button next to the Leaflet zoom controls. Hidden until the
+   user has panned/zoomed far from the default view (see BeachMap HomeControl),
+   so it never sits there permanently. */
+.leaflet-control-home-wrap {
+  display: none;
+}
+.leaflet-control-home-wrap.leaflet-control-home--visible {
+  display: block;
+}
+/* Center the icon within the same square hit-area the +/- buttons use. */
 .leaflet-control-home {
   display: flex !important;
   align-items: center;

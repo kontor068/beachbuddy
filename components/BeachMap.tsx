@@ -448,9 +448,27 @@ const HomeControl = ({
   targetRef.current = { center, zoom };
 
   useEffect(() => {
+    let container: HTMLDivElement | null = null;
+
+    // Only worth offering the button once the user has strayed far enough that the
+    // default view isn't a trivial nudge away: the home point has scrolled off the
+    // viewport, or the zoom differs by a couple of levels.
+    const isFarFromHome = () => {
+      const { center: home, zoom: homeZoom } = targetRef.current;
+      const homePoint = L.latLng(home[0], home[1]);
+      const panned = !map.getBounds().pad(-0.15).contains(homePoint);
+      const zoomed = Math.abs(map.getZoom() - homeZoom) >= 2;
+      return panned || zoomed;
+    };
+
+    const updateVisibility = () => {
+      if (!container) return;
+      container.classList.toggle('leaflet-control-home--visible', isFarFromHome());
+    };
+
     const HomeControlClass = L.Control.extend({
       onAdd() {
-        const container = L.DomUtil.create('div', 'leaflet-bar leaflet-control');
+        container = L.DomUtil.create('div', 'leaflet-bar leaflet-control leaflet-control-home-wrap') as HTMLDivElement;
         const link = L.DomUtil.create('a', 'leaflet-control-home', container) as HTMLAnchorElement;
         link.href = '#';
         link.title = title;
@@ -464,13 +482,17 @@ const HomeControl = ({
           const { center: resetCenter, zoom: resetZoom } = targetRef.current;
           map.setView(resetCenter, resetZoom, { animate: true });
         });
+        updateVisibility();
         return container;
       },
     });
     const control = new HomeControlClass({ position });
     control.addTo(map);
+    map.on('move zoom moveend zoomend', updateVisibility);
     return () => {
+      map.off('move zoom moveend zoomend', updateVisibility);
       control.remove();
+      container = null;
     };
   }, [map, position, title]);
 
