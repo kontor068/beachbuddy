@@ -2,6 +2,15 @@
   command = "npm run build"
   publish = "dist"
 
+# Edge-cached forecast proxy (capacity fix — see reports/capacity/capacity-model.md).
+# Routes the client's ForecastProvider calls to the allow-list proxy function, which
+# sets CDN cache headers so one upstream Open-Meteo call serves all users per TTL.
+# Dormant until VITE_FORECAST_PROXY_BASE="/api/forecast" is set in build.environment.
+[[redirects]]
+  from = "/api/forecast/*"
+  to = "/.netlify/functions/forecast/:splat"
+  status = 200
+
 [[redirects]]
   from = "/beaches/:region/:beach"
   to = "/beaches/:region/:beach/"
@@ -28,6 +37,17 @@
   for = "/service-worker.js"
   [headers.values]
     Cache-Control = "public, max-age=0, must-revalidate"
+
+# Forecast edge proxy — enabled ONLY on deploy previews and branch deploys so it can
+# be smoke-tested before it ever touches production. Production stays on the direct
+# Open-Meteo path until you're satisfied. TO GO LIVE: add the same VITE_FORECAST_PROXY_BASE
+# line under [context.production.environment] (or [build.environment]) and redeploy.
+# See reports/capacity/activation-runbook.md.
+[context.deploy-preview.environment]
+  VITE_FORECAST_PROXY_BASE = "/api/forecast"
+
+[context.branch-deploy.environment]
+  VITE_FORECAST_PROXY_BASE = "/api/forecast"
 
 [build.environment]
   # Match the local/CI toolchain (local dev and quality.yml both run Node 22)
