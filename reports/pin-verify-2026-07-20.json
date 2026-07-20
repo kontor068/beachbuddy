@@ -1,0 +1,198 @@
+[
+ {
+  "id": 1942,
+  "name": "Αγία Τριάδα (Μύκονος)",
+  "current": [
+   37.41492,
+   25.21235
+  ],
+  "verdict": "KEEP_SCOPE",
+  "osm": [
+   37.4149722,
+   25.2128941
+  ],
+  "evidence": "OSM has an 'Agia Triada natural beach' at essentially our exact coords, in Δήμος Μυκόνου (which admin-includes uninhabited Rhenia). Pin is OSM-correct; the real question is scope — a boat-only Rhenia beach under 'Mykonos'. No coordinate move.",
+  "action": "none — consider relabel to Rhenia or scope review"
+ },
+ {
+  "id": 3015,
+  "name": "Πάτμος Κάμπος",
+  "current": [
+   37.3247471,
+   26.5381556
+  ],
+  "verdict": "MOVE",
+  "target": [
+   37.3504265,
+   26.5658112
+  ],
+  "evidence": "OSM natural beach «Παραλία Κάμπου, Πάτμος» is 3.7km NE of our pin.",
+  "confidence": "high"
+ },
+ {
+  "id": 2581,
+  "name": "Γέρακας (Αλόννησος)",
+  "current": [
+   39.2691,
+   23.94274
+  ],
+  "verdict": "KEEP",
+  "evidence": "OSM Gerakas beach node only ~270m away — within tolerance, likely a heuristic false-flag.",
+  "confidence": "high"
+ },
+ {
+  "id": 3009,
+  "name": "Νέα Ρόδα",
+  "current": [
+   40.3815557,
+   23.9234575
+  ],
+  "verdict": "KEEP",
+  "evidence": "Pin is EXACTLY the OSM village center of Nea Roda — geocoded to the village; ~300m from the sand. Not misplaced (coastline-heuristic false flag).",
+  "confidence": "high"
+ },
+ {
+  "id": 3018,
+  "name": "Νέα Φλόγητα",
+  "current": [
+   40.2599201,
+   23.2214367
+  ],
+  "verdict": "KEEP",
+  "evidence": "Pin is EXACTLY the OSM village center of Nea Flogita — geocoded to the village. Not misplaced.",
+  "confidence": "high"
+ },
+ {
+  "id": 3012,
+  "name": "Περιγιάλι (Καβάλα)",
+  "current": [
+   40.9482064,
+   24.4300973
+  ],
+  "verdict": "KEEP",
+  "evidence": "Pin is EXACTLY the OSM center of the Perigiali seaside quarter of Kavala. Right place, minor inland offset.",
+  "confidence": "high"
+ },
+ {
+  "id": 3088,
+  "name": "Μυκονιάτικα",
+  "current": [
+   40.3014362,
+   23.092437
+  ],
+  "verdict": "MOVE",
+  "target": [
+   40.3013103,
+   23.0868668
+  ],
+  "evidence": "OSM natural beach «Παραλία Γυμνιστών Μυκονιάτικα» ~475m west of our pin (Nea Kallikrateia).",
+  "confidence": "medium"
+ },
+ {
+  "id": 3010,
+  "name": "Ελούντα",
+  "current": [
+   35.2189667,
+   25.7096531
+  ],
+  "verdict": "MOVE_PENDING",
+  "evidence": "Current pin is 4.5km SOUTH of Elounda town (OSM village 35.2620,25.7225) — clearly wrong. Need precise town-beach coord.",
+  "confidence": "high"
+ },
+ {
+  "id": 859,
+  "name": "Παραλία Γαλάνης Νέστου",
+  "current": [
+   41.09238,
+   24.75886
+  ],
+  "verdict": "KEEP",
+  "evidence": "This is a RIVER beach in the Nestos gorge (Galani, Topeiros, ~12km from Xanthi near Toxotes), NOT a sea beach. Our pin matches. The coastline-distance audit false-flagged it (no nearby SEA coast by design).",
+  "confidence": "high"
+ },
+ {
+  "id": 3040,
+  "name": "Λίμνη Βουλιαγμένης Ηραίου",
+  "current": [
+   38.032406,
+   22.89356
+  ],
+  "verdict": "MOVE",
+  "target": [
+   38.0284213,
+   22.8831444
+  ],
+  "evidence": "OSM «Λιμνοθάλασσα Βουλιαγμένη» lagoon centre is ~1km SW; our pin sits E/inland of the lagoon. The swim spot is the lagoon shore.",
+  "confidence": "medium"
+ },
+ {
+  "id": 2540,
+  "name": "Παραθάλασσο (Φωκίδα)",
+  "current": [
+   38.40512,
+   21.93296
+  ],
+  "verdict": "KEEP",
+  "evidence": "OSM Monastiraki-Dorida is at 21.9445; Parathalasso is ~800m W of it → our pin (~1km W, ~200m from the beach) is correct. Earlier \"3-4km off\" was a wrong assumption about Monastiraki location. Pin OK → organized-flip hold can be released.",
+  "confidence": "high"
+ },
+ {
+  "id": 1624,
+  "name": "Λιβάδια (Κορώνη)",
+  "current": [
+   36.79512,
+   21.96412
+  ],
+  "verdict": "KEEP",
+  "evidence": "Livadia IS a real Koroni beach (near the castle; Zaga E / Memi W). Record name matches the location. Pin is at Koroni.",
+  "confidence": "high"
+ },
+ {
+  "id": 3010,
+  "name": "Ελούντα",
+  "current": [
+   35.2189667,
+   25.7096531
+  ],
+  "verdict": "MOVE",
+  "target": [
+   35.2620067,
+   25.7225374
+  ],
+  "evidence": "Current pin 4.5km S of Elounda. Moved to the verified OSM Elounda town/waterfront (Lasithi). Town-level anchor (no exact OSM sand node); fixes the gross error.",
+  "confidence": "medium"
+ },
+ {
+  "id": 2052,
+  "name": "Τούρκου Άμμος (Πάρος)",
+  "current": [
+   37.14409,
+   25.23238
+  ],
+  "verdict": "KEEP",
+  "evidence": "Pin is IDENTICAL to the OSM Tourkou Ammos beach node (Naousa, Paros) — spot-on. False-flag.",
+  "confidence": "high"
+ },
+ {
+  "id": 1604,
+  "name": "Άγιος Νικόλαος (Μεσσηνία)",
+  "current": [
+   36.97592,
+   21.65767
+  ],
+  "verdict": "FLAG",
+  "evidence": "Identity ambiguity: pin is on the WEST coast (Pylos/Voidokilia, 21.66E) but the well-known Agios Nikolaos Messinia is in the Mani (22.28E, ~55km E). Could be a different small beach or a mis-coordinate. Blind move unsafe — manual review.",
+  "confidence": "low"
+ },
+ {
+  "id": 3008,
+  "name": "Γεωπονικά",
+  "current": [
+   40.3041431,
+   23.1000758
+  ],
+  "verdict": "FLAG",
+  "evidence": "Geoponika and Mykoniatika (#3088) are the SAME Blue-Flag beach (Nea Kallikrateia) per local guides → likely DUPLICATE records; pin also ~1km E of the OSM beach node. Needs dedup decision, not a blind move.",
+  "confidence": "medium"
+ }
+]

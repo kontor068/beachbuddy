@@ -37489,8 +37489,8 @@
         {
           "id": 3088,
           "name": "Μυκονιάτικα",
-          "lat": 40.3014362,
-          "lon": 23.092437,
+          "lat": 40.3013103,
+          "lon": 23.0868668,
           "metadata": {
             "access": {
               "type": "unknown",
@@ -37510,7 +37510,7 @@
             "language": "el",
             "batch": "osm_coverage_gap_2026_06",
             "needsVerification": true,
-            "sourceNotes": "OSM coverage-gap import (2026-06): created from OpenStreetMap beach \"Μυκονιάτικα\" (https://www.openstreetmap.org/way/885440824) in Halkidiki (mainland), Central Macedonia. Coordinates from OSM. Verified as a real, distinct Greek swimmable beach by adversarial web check (>553m from any existing beach). Google confirms a tourist_attraction (246 ratings) 154m from the pin. Slot via nearest existing beach #478 (553m). Access/terrain unknown — needs field verification. Reverse amenity sweep 2026-07-19 (no-API): organized flag corrected to true + sunbeds added — OSM beach_resort \"Μυκονιάτικα\" 0m from the pin.",
+            "sourceNotes": "OSM coverage-gap import (2026-06): created from OpenStreetMap beach \"Μυκονιάτικα\" (https://www.openstreetmap.org/way/885440824) in Halkidiki (mainland), Central Macedonia. Coordinates from OSM. Verified as a real, distinct Greek swimmable beach by adversarial web check (>553m from any existing beach). Google confirms a tourist_attraction (246 ratings) 154m from the pin. Slot via nearest existing beach #478 (553m). Access/terrain unknown — needs field verification. Reverse amenity sweep 2026-07-19 (no-API): organized flag corrected to true + sunbeds added — OSM beach_resort \"Μυκονιάτικα\" 0m from the pin. Pin corrected 2026-07-20 (no-API): moved from 40.30144,23.09244 to 40.3013103,23.0868668 — OSM natural beach «Παραλία Γυμνιστών Μυκονιάτικα» ~475m west of our pin (Nea Kallikrateia). (confidence medium).",
             "sourceUrls": [
               "https://www.openstreetmap.org/way/885440824"
             ],
@@ -58738,8 +58738,8 @@
         {
           "id": 3010,
           "name": "Ελούντα",
-          "lat": 35.2189667,
-          "lon": 25.7096531,
+          "lat": 35.2620067,
+          "lon": 25.7225374,
           "metadata": {
             "access": {
               "type": "unknown",
@@ -58757,9 +58757,7 @@
             "language": "el",
             "batch": "seatrac_d2_2026_06",
             "needsVerification": true,
-            "sourceNotes": [
-              "Seatrac Phase D2 geocode (2026-06): created from no-match seed \"Ελούντα\" (Elounda), Agios Nikolaos, Crete. Nominatim hit nom-way-903356951; Overpass natural=beach corroboration 385 m. Slot via nearest existing beach #768 (662 m). Conservative — access/terrain unknown, amenities only as stated."
-            ],
+            "sourceNotes": "Seatrac Phase D2 geocode (2026-06): created from no-match seed \"Ελούντα\" (Elounda), Agios Nikolaos, Crete. Nominatim hit nom-way-903356951; Overpass natural=beach corroboration 385 m. Slot via nearest existing beach #768 (662 m). Conservative — access/terrain unknown, amenities only as stated. Pin corrected 2026-07-20 (no-API): moved from 35.21897,25.70965 to 35.2620067,25.7225374 — Current pin 4.5km S of Elounda. Moved to the verified OSM Elounda town/waterfront (Lasithi). Town-level anchor (no exact OSM sand node); fixes the gro (confidence medium).",
             "sourceUrls": [
               "https://seatrac.gr/"
             ],
@@ -113866,8 +113864,8 @@
         {
           "id": 3040,
           "name": "Λουτράκι Λίμνη Βουλιαγμένης Ηραίου",
-          "lat": 38.032406,
-          "lon": 22.89356,
+          "lat": 38.0284213,
+          "lon": 22.8831444,
           "metadata": {
             "access": {
               "type": "unknown",
@@ -113888,7 +113886,7 @@
             "language": "el",
             "batch": "seatrac_directory_2026_06",
             "needsVerification": true,
-            "sourceNotes": "Seatrac directory import (2026-06): created from official seatrac.gr entry \"Λουτράκι Λίμνη Βουλιαγμένης Ηραίου\" (id 144651), Κορινθία, Peloponnese. Coordinates from seatrac.gr. Slot via nearest existing beach #1538 (2065 m). Conservative — access/terrain unknown; accessibility added by the Seatrac importer. Web-verified 2026-07-19 (web-high): organized — The western-shore beach of Lake Vouliagmeni 'features umbrellas, loungers, and showers', and 'around the water there are small beach bars with loungers and beds [https://www.visitloutraki.com/el/place/limni-voyliagmeni-iraioy]; beach bar+sunbeds added.",
+            "sourceNotes": "Seatrac directory import (2026-06): created from official seatrac.gr entry \"Λουτράκι Λίμνη Βουλιαγμένης Ηραίου\" (id 144651), Κορινθία, Peloponnese. Coordinates from seatrac.gr. Slot via nearest existing beach #1538 (2065 m). Conservative — access/terrain unknown; accessibility added by the Seatrac importer. Web-verified 2026-07-19 (web-high): organized — The western-shore beach of Lake Vouliagmeni 'features umbrellas, loungers, and showers', and 'around the water there are small beach bars with loungers and beds [https://www.visitloutraki.com/el/place/limni-voyliagmeni-iraioy]; beach bar+sunbeds added. Pin corrected 2026-07-20 (no-API): moved from 38.03241,22.89356 to 38.0284213,22.8831444 — OSM «Λιμνοθάλασσα Βουλιαγμένη» lagoon centre is ~1km SW; our pin sits E/inland of the lagoon. The swim spot is the lagoon shore. (confidence medium).",
             "sourceUrls": [
               "https://seatrac.gr/el/paralies/loutraki-limni-iraiou/"
             ],
@@ -173325,8 +173323,8 @@
         {
           "id": 3015,
           "name": "Πάτμος Κάμπος",
-          "lat": 37.3247471,
-          "lon": 26.5381556,
+          "lat": 37.3504265,
+          "lon": 26.5658112,
           "metadata": {
             "access": {
               "type": "unknown",
@@ -173344,9 +173342,7 @@
             "language": "el",
             "batch": "seatrac_d2_2026_06",
             "needsVerification": true,
-            "sourceNotes": [
-              "Seatrac Phase D2 geocode (2026-06): created from no-match seed \"Πάτμος Κάμπος\" (Patmos Kampos), Patmos, South Aegean. Nominatim hit nom-relation-533714; Overpass natural=beach corroboration 452 m. Slot via nearest existing beach #2391 (452 m). Conservative — access/terrain unknown, amenities only as stated."
-            ],
+            "sourceNotes": "Seatrac Phase D2 geocode (2026-06): created from no-match seed \"Πάτμος Κάμπος\" (Patmos Kampos), Patmos, South Aegean. Nominatim hit nom-relation-533714; Overpass natural=beach corroboration 452 m. Slot via nearest existing beach #2391 (452 m). Conservative — access/terrain unknown, amenities only as stated. Pin corrected 2026-07-20 (no-API): moved from 37.32475,26.53816 to 37.3504265,26.5658112 — OSM natural beach «Παραλία Κάμπου, Πάτμος» is 3.7km NE of our pin. (confidence high).",
             "sourceUrls": [
               "https://seatrac.gr/"
             ],
