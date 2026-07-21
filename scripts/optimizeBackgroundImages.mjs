@@ -11,6 +11,9 @@ const publicDir = path.join(rootDir, 'public');
 const force = process.argv.includes('--force');
 const maxWidth = Number(process.env.BG_MAX_WIDTH || 1600);
 const quality = Number(process.env.BG_WEBP_QUALITY || 74);
+// AVIF at q≈50 is visually on par with WebP q74 while ~30% smaller. Served first in the
+// image-set() so AVIF-capable browsers get it and everyone else falls back to the WebP.
+const avifQuality = Number(process.env.BG_AVIF_QUALITY || 50);
 
 const formatBytes = (bytes) => `${(bytes / 1024).toFixed(1)}KB`;
 
@@ -82,12 +85,48 @@ const optimizeBackground = async (basePath) => {
   };
 };
 
+// Generate the AVIF sibling from the original JPG (not the WebP — avoids double-lossy).
+// Runs independently of the WebP logic so it never disturbs the "keep smaller existing" path.
+const ensureAvif = async (basePath) => {
+  const jpgPath = path.join(publicDir, `${basePath}.jpg`);
+  const avifPath = path.join(publicDir, `${basePath}.avif`);
+
+  if (!(await fileExists(jpgPath))) return { basePath, status: 'missing-source', avifSize: 0 };
+  if ((await fileExists(avifPath)) && !force) {
+    return { basePath, status: 'exists', avifSize: await statSize(avifPath) };
+  }
+
+  const tmpPath = `${avifPath}.tmp`;
+  await sharp(jpgPath)
+    .rotate()
+    .resize({ width: maxWidth, withoutEnlargement: true })
+    .avif({ quality: avifQuality, effort: 4 })
+    .toFile(tmpPath);
+  await fs.rename(tmpPath, avifPath);
+
+  return { basePath, status: 'created', avifSize: await statSize(avifPath) };
+};
+
 const main = async () => {
   const backgroundBasePaths = await readBackgroundBasePaths();
   const results = [];
+  const avifResults = [];
 
   for (const basePath of backgroundBasePaths) {
     results.push(await optimizeBackground(basePath));
+    avifResults.push(await ensureAvif(basePath));
+  }
+
+  // Reliability gate: image-set() commits to AVIF by type support, not file existence, so a
+  // missing .avif would 404 with no fallback on AVIF-capable browsers. Fail the build if any
+  // referenced background lacks its AVIF sibling.
+  const avifMissing = avifResults.filter((r) => r.status === 'missing-source' || r.avifSize === 0);
+  const avifTotal = avifResults.reduce((sum, r) => sum + r.avifSize, 0);
+  console.log(`AVIF siblings: ${avifResults.length - avifMissing.length}/${avifResults.length} present, ${formatBytes(avifTotal)} total`);
+  if (avifMissing.length > 0) {
+    console.error('Missing AVIF for backgrounds (image-set has no fallback for these):');
+    avifMissing.forEach((r) => console.error(`- public/${r.basePath}.avif`));
+    process.exitCode = 1;
   }
 
   const missing = results.filter((result) => result.status === 'missing-source');
