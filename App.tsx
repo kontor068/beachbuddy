@@ -46,6 +46,7 @@ import { displayBeachName, localizedBeachLabel } from './utils/localization';
 import { beachSentenceName } from './utils/beachCopy';
 import { isInfoOnlyRegionId } from './utils/infoOnlyRegions';
 import { hasBoatOnlyAccess, hasDifficultTopPickAccess, hasMainstreamTopPickAccess, isAdventureBeach } from './utils/access';
+import { isNaturistBeach } from './utils/naturistBeaches';
 import { isSunsetFacingBeach } from './utils/beachOrientation';
 import { detectSearchIntentFilters } from './utils/searchIntent';
 import { getBeachPopularityRating } from './utils/beachRating';
@@ -1024,6 +1025,9 @@ const beachMatchesMobileFilter = (
   }
   if (filter === 'sunset') {
     return isSunsetFacingBeach(beach);
+  }
+  if (filter === 'naturist') {
+    return isNaturistBeach(beach);
   }
   if (filter === 'familyFriendly') {
     return beachMatchesUserPreferences(beach, { ...defaultPreferences, familyFriendly: true });
@@ -3564,13 +3568,21 @@ export const App: React.FC = () => {
     setFilterModalResultCount(getFilteredBeachResults(selectedFilters, sortBy).length);
   }, [getFilteredBeachResults, isFilterModalOpen, selectedFilters, sortBy]);
 
+  // Naturist (nudist) beaches are a sensitive category (Miltos 2026-07-21): never surface
+  // them in the recommendation / directory / "Κοντά μου" lists. They stay on the map and
+  // are findable by an explicit name search or the dedicated "Γυμνιστών" filter (opt-in).
+  // This gate is true whenever we are in that default, non-opted-in browsing mode; every
+  // recommendation-facing source below strips naturist beaches while it holds.
+  const suppressNaturistFromRecommendations = !selectedFilters.includes('naturist') && beachSearchQuery.trim().length === 0;
+
   const suitableBeaches = useMemo(() => {
     if (!selectedIsland || !deferredSelectedForecast) return [];
     // Pass no per-beach cluster map: the beach's displayed wind/wave/verdict all read from
     // the AREA forecast (reusing beachScoreById, which is now island-scored) so a beach shows
     // the same figure on its card and detail. Cluster stays for the notes/map-hover only.
-    return getSuitableBeaches(selectedIsland.beaches, deferredSelectedForecast, language, userLocation, deferredSelectedForecast.hourly, preferences, undefined, geospatialExposureProfiles, beachScoreById);
-  }, [selectedIsland, deferredSelectedForecast, language, userLocation, preferences, geospatialExposureProfiles, beachScoreById]);
+    const scored = getSuitableBeaches(selectedIsland.beaches, deferredSelectedForecast, language, userLocation, deferredSelectedForecast.hourly, preferences, undefined, geospatialExposureProfiles, beachScoreById);
+    return suppressNaturistFromRecommendations ? scored.filter(item => !isNaturistBeach(item.beach)) : scored;
+  }, [selectedIsland, deferredSelectedForecast, language, userLocation, preferences, geospatialExposureProfiles, beachScoreById, suppressNaturistFromRecommendations]);
 
   const mapSuitableBeaches = useMemo<SuitableBeach[]>(() => {
     if (!selectedIsland) return [];
@@ -3661,6 +3673,15 @@ export const App: React.FC = () => {
     });
   }, [geospatialExposureProfiles, language, nearMeBeachForecastById, preferences, selectedForecast, selectedIsland, userLocation]);
 
+  // mapSuitableBeaches drives BOTH the map (keep every beach, incl. naturist) and, when
+  // reused as a recommendation fallback source, the directory/top-pick lists. This variant
+  // is the recommendation-safe view: it drops naturist beaches while in default browsing so
+  // no fallback path can surface one. The map itself keeps using mapSuitableBeaches.
+  const recommendableMapSuitableBeaches = useMemo(
+    () => suppressNaturistFromRecommendations ? mapSuitableBeaches.filter(item => !isNaturistBeach(item.beach)) : mapSuitableBeaches,
+    [mapSuitableBeaches, suppressNaturistFromRecommendations]
+  );
+
   // Saved beaches (favorites) in the active island, each carrying the SAME scored verdict
   // the home cards show — reuse mapSuitableBeaches, which scores EVERY island beach, so a
   // saved rough beach still appears with its real (low) verdict. Favorites on other,
@@ -3676,8 +3697,9 @@ export const App: React.FC = () => {
 
   const dailySuitableBeaches = useMemo(() => {
     if (!selectedIsland || !deferredSelectedForecast) return [];
-    return getSuitableBeaches(selectedIsland.beaches, deferredSelectedForecast, language, undefined, deferredSelectedForecast.hourly, undefined, undefined, geospatialExposureProfiles);
-  }, [selectedIsland, deferredSelectedForecast, language, geospatialExposureProfiles]);
+    const scored = getSuitableBeaches(selectedIsland.beaches, deferredSelectedForecast, language, undefined, deferredSelectedForecast.hourly, undefined, undefined, geospatialExposureProfiles);
+    return suppressNaturistFromRecommendations ? scored.filter(item => !isNaturistBeach(item.beach)) : scored;
+  }, [selectedIsland, deferredSelectedForecast, language, geospatialExposureProfiles, suppressNaturistFromRecommendations]);
 
   const hasActivePreferenceFilters = useMemo(() => {
     return Object.values(preferences).some(Boolean);
@@ -3708,6 +3730,15 @@ export const App: React.FC = () => {
     const filteredBeachIds = new Set(getFilteredBeachResults(selectedFilters, 'all').map(beach => beach.id));
     return mapSuitableBeaches.filter(item => filteredBeachIds.has(item.beach.id));
   }, [getFilteredBeachResults, selectedFilters, hasActiveMapFilters, mapSuitableBeaches]);
+
+  // Recommendation-safe view of filteredMapSuitableBeaches: the directory/top-pick sources
+  // that read from the filtered map list use THIS one so naturist beaches never appear in a
+  // recommendation, while the actual map pins keep using filteredMapSuitableBeaches. When the
+  // "Γυμνιστών" filter is active (or a name search is on) the gate is off and both are equal.
+  const recommendableFilteredMapSuitableBeaches = useMemo(
+    () => suppressNaturistFromRecommendations ? filteredMapSuitableBeaches.filter(item => !isNaturistBeach(item.beach)) : filteredMapSuitableBeaches,
+    [filteredMapSuitableBeaches, suppressNaturistFromRecommendations]
+  );
 
   // When the user name-searches a specific beach we want the map to actually
   // re-center on the match. Amenity/preference filters keep the whole-island fit so
@@ -4188,7 +4219,7 @@ export const App: React.FC = () => {
 
     const rankedFallback = dailySuitableBeaches.length > 0
       ? dailySuitableBeaches
-      : [...mapSuitableBeaches].sort((a, b) => b.score - a.score);
+      : [...recommendableMapSuitableBeaches].sort((a, b) => b.score - a.score);
     const rankedById = new Map<number, SuitableBeach>();
     const windSpeedKmph = selectedForecast.wind.speed * 3.6;
     const waveHeightM = selectedForecast.marine?.waveHeightM;
@@ -4209,13 +4240,13 @@ export const App: React.FC = () => {
     const candidates = getWindPriorityTopPickPool(timeAwareItems, currentBeaufort);
     const protectedPriority = prioritizeProtectedRecommendations(candidates, currentBeaufort);
     return prioritizeDynamicTopPickWindows(protectedPriority, selectedForecast.date, topPickNow);
-  }, [currentBeaufort, dailySuitableBeaches, isStrongRecommendationMode, mapSuitableBeaches, recommendedSuitableBeaches, selectedBeachForecasts, selectedForecast, topPickNow]);
+  }, [currentBeaufort, dailySuitableBeaches, isStrongRecommendationMode, recommendableMapSuitableBeaches, recommendedSuitableBeaches, selectedBeachForecasts, selectedForecast, topPickNow]);
   const noIdealFallbackCandidates = useMemo(() => {
     if (!hasNoSwimmableBeachesToday || !isStrongRecommendationMode || !selectedForecast) return [];
 
     const windSpeedKmph = selectedForecast.wind.speed * 3.6;
     const waveHeightM = selectedForecast.marine?.waveHeightM;
-    const rankedFallback = [...mapSuitableBeaches]
+    const rankedFallback = [...recommendableMapSuitableBeaches]
       .filter(item => (
         isTrustedTopRecommendationCandidate(item, undefined, currentBeaufort) &&
         isNoIdealFallbackCandidate(item, windSpeedKmph, waveHeightM)
@@ -4233,7 +4264,7 @@ export const App: React.FC = () => {
     ));
     const protectedPriority = prioritizeProtectedRecommendations(timeAwareItems, currentBeaufort);
     return prioritizeDynamicTopPickWindows(protectedPriority, selectedForecast.date, topPickNow);
-  }, [currentBeaufort, hasNoSwimmableBeachesToday, isStrongRecommendationMode, mapSuitableBeaches, selectedBeachForecasts, selectedForecast, topPickNow]);
+  }, [currentBeaufort, hasNoSwimmableBeachesToday, isStrongRecommendationMode, recommendableMapSuitableBeaches, selectedBeachForecasts, selectedForecast, topPickNow]);
   const windPreviewCandidates = useMemo(() => {
     if (!isStrongRecommendationMode || !selectedForecast) return [];
     if (strongSuitableCandidates.length > 0) return strongSuitableCandidates;
@@ -4242,7 +4273,7 @@ export const App: React.FC = () => {
       ? recommendedSuitableBeaches
       : dailySuitableBeaches.length > 0
       ? dailySuitableBeaches
-      : [...mapSuitableBeaches].sort((a, b) => b.score - a.score);
+      : [...recommendableMapSuitableBeaches].sort((a, b) => b.score - a.score);
     const rankedById = new Map<number, SuitableBeach>();
 
     fallbackSource.forEach(item => {
@@ -4261,7 +4292,7 @@ export const App: React.FC = () => {
     const candidates = getWindPriorityTopPickPool(timeAwareItems, currentBeaufort);
     const protectedPriority = prioritizeProtectedRecommendations(candidates, currentBeaufort);
     return prioritizeDynamicTopPickWindows(protectedPriority, selectedForecast.date, topPickNow);
-  }, [currentBeaufort, dailySuitableBeaches, isStrongRecommendationMode, mapSuitableBeaches, recommendedSuitableBeaches, selectedBeachForecasts, selectedForecast, strongSuitableCandidates, topPickNow]);
+  }, [currentBeaufort, dailySuitableBeaches, isStrongRecommendationMode, recommendableMapSuitableBeaches, recommendedSuitableBeaches, selectedBeachForecasts, selectedForecast, strongSuitableCandidates, topPickNow]);
   const strongManageableBeaches = useMemo(() => (
     windPreviewCandidates.slice(0, getTopRecommendationDisplayLimit(windPreviewCandidates.length))
   ), [windPreviewCandidates]);
@@ -4407,12 +4438,15 @@ export const App: React.FC = () => {
     ? strongSuitableFilterBeaches
     : filteredBeachesWithWeatherContext;
   const beachListBeaches = useMemo(() => {
-    if (!isDesktopMapViewportFilterActive || !desktopMapVisibleBeachIdSet) {
-      return beachListBaseBeaches;
-    }
-
-    return beachListBaseBeaches.filter(beach => desktopMapVisibleBeachIdSet.has(beach.id));
-  }, [beachListBaseBeaches, desktopMapVisibleBeachIdSet, isDesktopMapViewportFilterActive]);
+    const viewportScoped = (!isDesktopMapViewportFilterActive || !desktopMapVisibleBeachIdSet)
+      ? beachListBaseBeaches
+      : beachListBaseBeaches.filter(beach => desktopMapVisibleBeachIdSet.has(beach.id));
+    // Directory/explore list: strip naturist beaches in default browsing (kept on the map and
+    // reachable via the "Γυμνιστών" filter or a name search — see suppressNaturistFromRecommendations).
+    return suppressNaturistFromRecommendations
+      ? viewportScoped.filter(beach => !isNaturistBeach(beach))
+      : viewportScoped;
+  }, [beachListBaseBeaches, desktopMapVisibleBeachIdSet, isDesktopMapViewportFilterActive, suppressNaturistFromRecommendations]);
   const distanceSortedDirectoryBeachCards = useMemo<SuitableBeach[]>(() => {
     if (sortBy !== 'distance') return [];
 
@@ -4560,17 +4594,17 @@ export const App: React.FC = () => {
   const mapAlignedVisibleProtectedDirectorySource = useMemo(() => {
     if (!selectedForecast || currentBeaufort < MEANINGFUL_WIND_TOP_PICK_BEAUFORT) return [];
     const visibleExposureLevels = getConsistentVisibleMapExposureLevels(
-      filteredMapSuitableBeaches,
+      recommendableFilteredMapSuitableBeaches,
       currentBeaufort,
       selectedForecast.wind.deg
     );
 
-    return filteredMapSuitableBeaches
+    return recommendableFilteredMapSuitableBeaches
       .filter(item => visibleExposureLevels.get(item.beach.id) === 'protected')
       .sort((a, b) => (
         compareTouristTopPickPriority(a, b) || b.score - a.score
       ));
-  }, [currentBeaufort, filteredMapSuitableBeaches, selectedForecast]);
+  }, [currentBeaufort, recommendableFilteredMapSuitableBeaches, selectedForecast]);
   const mapAlignedProtectedDirectorySource = useMemo(() => {
     const trustedCandidates = mapAlignedVisibleProtectedDirectorySource.filter(item => (
       isTrustedTopRecommendationCandidate(item, undefined, currentBeaufort)
@@ -4998,7 +5032,7 @@ export const App: React.FC = () => {
     ? mapAlignedProtectedDirectorySource
     : prioritizeProtectedRecommendations(
     getWindPriorityTopPickPool(
-      mapSuitableBeaches.filter(item => isTrustedTopRecommendationCandidate(item, undefined, currentBeaufort)),
+      recommendableMapSuitableBeaches.filter(item => isTrustedTopRecommendationCandidate(item, undefined, currentBeaufort)),
       currentBeaufort
     ),
     currentBeaufort
@@ -5037,7 +5071,7 @@ export const App: React.FC = () => {
     }
 
     if (isCalmAllSuitable) {
-      return [...filteredMapSuitableBeaches].sort((a, b) => (
+      return [...recommendableFilteredMapSuitableBeaches].sort((a, b) => (
         compareTouristTopPickPriority(a, b) || b.score - a.score
       ));
     }

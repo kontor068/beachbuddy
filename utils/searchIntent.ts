@@ -39,6 +39,9 @@ const SEARCH_INTENT_RULES: SearchIntentRule[] = [
   { filter: 'pebbles', stems: ['βοτσαλ', 'pebble'] },
   { filter: 'rocky', stems: ['βραχ', 'rocky'] },
   { filter: 'adventure', stems: ['δυσβατ', 'απροσιτ', 'adventure'] },
+  // naturist / nudist — only ever triggered by an explicit search for these; the beaches are
+  // otherwise never surfaced proactively (see utils/naturistBeaches.ts).
+  { filter: 'naturist', stems: ['γυμνιστ', 'nudist', 'naturist', 'fkk'] },
   { filter: 'deepWaters', stems: ['βαθ', 'deep'] },
   { filter: 'shallowWaters', stems: ['ρηχ', 'shallow'] },
   { filter: 'easyAccess', stems: ['ευκολ', 'easy'] },

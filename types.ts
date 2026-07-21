@@ -38,6 +38,7 @@ export type FilterKey =
   | 'disabledAccess'
   | 'adventure'
   | 'sunset'
+  | 'naturist'
   | BeachType
   | 'showAll';
 export type Theme = 'light' | 'dark' | 'system';
@@ -843,6 +844,7 @@ export type Translation = {
     snorkeling: string;
     adventure: string;
     sunset: string;
+    naturist: string;
     familyFriendly: string;
     'sandy-pebbles': string;
     rocky: string;
