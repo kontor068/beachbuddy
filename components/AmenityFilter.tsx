@@ -20,7 +20,8 @@ import {
   Globe,
   MapPin,
   ShieldCheck,
-  Accessibility
+  Accessibility,
+  PersonStanding
 } from 'lucide-react';
 import { SandDotsIcon, SandPebblesIcon, SunbedIcon } from './BeachFeatureIcons';
 
@@ -70,6 +71,7 @@ const filterIcons: Record<string, React.ReactNode> = {
   snorkeling: <Search className="h-5 w-5 shrink-0" />,
   adventure: <MapPin className="h-5 w-5 shrink-0" />,
   sunset: <Sunset className="h-5 w-5 shrink-0" />,
+  naturist: <PersonStanding className="h-5 w-5 shrink-0" />,
   familyFriendly: <Users className="h-5 w-5 shrink-0" />,
   'sandy-pebbles': <SandPebblesIcon className="h-5 w-5 shrink-0" />,
   rocky: <Mountain className="h-5 w-5 shrink-0" />,
@@ -154,7 +156,7 @@ const filterGroupDefinitions: Array<{ id: string; titleKey: FilterSectionTitleKe
   { id: 'quick', titleKey: 'quick', filters: ['familyFriendly', 'beachBar', 'quiet', 'easyAccess', 'disabledAccess'] },
   { id: 'amenities', titleKey: 'amenities', filters: ['taverna', 'sunbeds', 'parking', 'naturalShade'] },
   { id: 'beachAndWater', titleKey: 'beachAndWater', filters: ['sandy', 'pebbles', 'sandy-pebbles', 'rocky', 'shallowWaters', 'deepWaters'] },
-  { id: 'experience', titleKey: 'experience', filters: ['snorkeling', 'adventure', 'sunset'] },
+  { id: 'experience', titleKey: 'experience', filters: ['snorkeling', 'adventure', 'sunset', 'naturist'] },
 ];
 
 const hiddenUserFacingFilters = new Set<FilterKey>(['organized']);

@@ -51,6 +51,7 @@ import { getSelectedDayOffset, getSelectedDayPrefix, getSelectedDaySentencePrefi
 import { getConsistentVisibleMapExposureLevels } from '../utils/mapExposure';
 import { hasBoatOnlyAccess, isAdventureBeach } from '../utils/access';
 import { isSunsetFacingBeach } from '../utils/beachOrientation';
+import { isNaturistBeach } from '../utils/naturistBeaches';
 import { WeatherSummary } from './WeatherSummary';
 import { BeachCard } from './BeachCard';
 import { SandDotsIcon, SandPebblesIcon, SunbedIcon } from './BeachFeatureIcons';
@@ -430,6 +431,9 @@ const beachMatchesAdvancedFilter = (beach: Beach, filter: FilterKey): boolean =>
   }
   if (filter === 'sunset') {
     return isSunsetFacingBeach(beach);
+  }
+  if (filter === 'naturist') {
+    return isNaturistBeach(beach);
   }
   if (filter === 'familyFriendly') {
     return beachMatchesPreferenceFilter(beach, 'familyFriendly');
