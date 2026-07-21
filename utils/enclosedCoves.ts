@@ -13,8 +13,6 @@
  * or on-site report). Wind-sport spots must never be added.
  */
 export const CURATED_ENCLOSED_COVE_IDS: ReadonlySet<number> = new Set([
-  // Ionian
-  1148, // Αγιοφύλλι (Lefkada): pocket cove tucked E of Cape Lefkatas, cliff arms N/NE/E/SE; open only S/SW.
   // Dodecanese
   2269, // Παλιόνησος (Kalymnos): deep fjord-like inlet, max fetch 2 km in ANY direction.
   // Cyclades
@@ -51,4 +49,19 @@ export const CURATED_ENCLOSED_COVE_IDS: ReadonlySet<number> = new Set([
   2171, // Μαλλί (Tinos): near-land 6/8, 2-sector mouth, max fetch 1.8 km.
   // Dodecanese
   2261, // Αργίνωντα (Kalymnos): near-land 6/8, 2-sector mouth, max fetch 2.1 km.
+
+  // ── Audit batch 2 (2026-07-20, scripts/auditEnclosedCoves + web morphology verification) ──
+  // Strong near-miss geometry (enclosedRun 4, nearLand 6-7, 1-2 sector mouth, short
+  // fetch) CONFIRMED as genuine enclosed swim coves by map/pilot-guide review — no
+  // wind-sport, no commercial marina. Same pass removed Αγιοφύλλι (was 1148): verified
+  // an open S-facing pocket beach with "no natural protection from waves", not a cove.
+  // Ionian & West
+  897,  // Κάρβουνο (Thesprotia/Sivota): bay screened by the Μουρτεμένο/Άγ.Νικόλαος islets acting as a natural breakwater; near-land 6/8, mouth 2, max fetch 3.1 km.
+  1177, // Αθερινός (Meganisi): fjord-like inlet "sheltered from most winds" (protected from the NW maistros); near-land 6/8, mouth 2, max fetch 3.0 km. Small municipal quay only, not a marina.
+  1529, // Μεγάλο Αμόνι (Korinthia): small E-facing pocket «κολπίσκος», water reported always calm; near-land 7/8, single-sector mouth, max fetch 5.2 km.
+  // Cyclades
+  1661, // Κάτω Κάμπος (Amorgos, Kolofana): deep narrow cove with only a small pier; near-land 7/8, single-sector mouth, max fetch 5.4 km.
+  // Dodecanese
+  2367, // Μπλεφούτης (Leros): near-landlocked north bay guarded by the Στρογγυλή/Τρυπητή islets across the mouth; near-land 6/8, mouth 2, max fetch 3.4 km.
+  2469, // Άγιος Νικόλαος (Symi): small sheltered pocket bay, boat/foot access only, ringed by rocky hills; near-land 6/8, mouth 2, max fetch 3.7 km.
 ]);
