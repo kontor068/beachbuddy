@@ -54,19 +54,30 @@ export const getExperienceTier = (input: ExperienceTierInput): ExperienceTier =>
   const pinRedInStrongWind = input.exposureLevel !== 'protected' && input.exposureLevel !== 'partial';
   if (bft >= 7 || (bft >= 5 && pinRedInStrongWind && (roughSea || score < 25))) return 'skip';
 
-  // Condition ceiling: 3 excellent · 2 good · 1 OK. Strong wind or real chop pulls it down,
-  // and a hard swim advisory holds it at "OK" even when the wind reads a notch lower.
+  // Condition ceiling: 3 excellent · 2 good · 1 OK. The wind ceiling MIRRORS the map's
+  // wind-colour engine (getSimpleWindColor) so the verdict word can never sit a tier ABOVE
+  // the pin. Colour → tier: green → 3 ("Ιδανική") · yellow → 2 ("Καλή") · orange → 1 ("Μέτρια").
   //
-  // A VERIFIED-protected beach is sheltered FROM the wind, so wind alone never caps it below
-  // "good" (ceiling 2) — this matches the map's simple wind layer, which paints a protected
-  // beach YELLOW ("Καλή") right through 5–6 Bft (getSimpleWindColor: protected + beaufort ≥ 5
-  // → yellow). Only real WAVES (≥1.2 m) or a swim advisory pull a protected beach down to OK.
-  // Exposed/partial beaches keep tracking the wind fully. (7 Bft+ already returned 'skip'.)
+  // The old model applied NO wind penalty below 5 Bft (ceiling 3 for every beach), so an
+  // exposed, onshore shore at 4 Bft read "Ιδανική" while its own pin was already orange
+  // ("Μέτρια") — the Καγιά case (faces due north, straight into the meltemi). The badge is
+  // normally hidden at 3–4 Bft, so this only ever surfaced where it's forced on (detail page,
+  // single searched beach). Now the ceiling tracks exposure through the whole 3–5 Bft band,
+  // exactly like the pin:
+  //   protected: green to 4 Bft, yellow at 5–6           → 3 up to 4, 2 at 5–6
+  //   partial:   yellow at 3–4, orange at 5+ (uncertain) → 3 at ≤2, 2 at 3–4, 1 at 5+
+  //   exposed:   yellow at 3, orange at 4, red at 5+     → 3 at ≤2, 2 at 3, 1 at 4+
+  // Unknown exposure is treated as exposed, matching getSimpleWindColor's fall-through.
+  // Real WAVES (≥1.2 m → OK, ≥0.8 m → cap "good") and a hard swim advisory pull it down
+  // further, independent of wind. (7 Bft+ already returned 'skip'.)
   const isProtected = input.exposureLevel === 'protected';
-  const windForCeiling = isProtected ? Math.min(bft, 5) : bft;
-  let ceiling: 1 | 2 | 3 = 3;
-  if (windForCeiling >= 6 || (wave !== undefined && wave >= 1.2)) ceiling = 1;
-  else if (windForCeiling >= 5 || (wave !== undefined && wave >= 0.8)) ceiling = 2;
+  let ceiling: 1 | 2 | 3;
+  if (bft <= 2) ceiling = 3;
+  else if (isProtected) ceiling = bft >= 5 ? 2 : 3;
+  else if (input.exposureLevel === 'partial') ceiling = bft >= 5 ? 1 : bft >= 3 ? 2 : 3;
+  else ceiling = bft >= 4 ? 1 : bft >= 3 ? 2 : 3;
+  if (wave !== undefined && wave >= 1.2) ceiling = 1;
+  else if (wave !== undefined && wave >= 0.8 && ceiling > 2) ceiling = 2;
   if (swimmingComfort === 'avoid_swimming') ceiling = 1;
 
   const scoreTier: 1 | 2 | 3 = score >= 80 ? 3 : score >= 60 ? 2 : 1;
