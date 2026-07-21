@@ -81,6 +81,14 @@ export const sunsetOverSeaWindow = (beach: Beach): SunsetOverSea => {
   if (facing == null || typeof lat !== 'number' || !Number.isFinite(lat)) {
     return { everOverSea: false, allYear: false, months: [] };
   }
+  // The shore must face broadly WEST (SW→W→NW, ~200–340°) before a sunset-over-sea claim is
+  // honest — the same seaward-west gate the detail page's sunset constraint and sunset-leg use
+  // (facingDeg 200–340). Without it the wide ±67.5° arc lets a due-NORTH shore clip the WNW
+  // midsummer sunset (~300°) and read as a sunset beach — e.g. Καγιά (faces ~0°), which is not.
+  // Keeps this window consistent with isSunsetFacingBeach (W/NW/SW) instead of over-claiming.
+  if (facing < 200 || facing > 340) {
+    return { everOverSea: false, allYear: false, months: [] };
+  }
   const months: number[] = [];
   for (let m = 0; m < 12; m += 1) {
     const az = sunsetAzimuthDeg(lat, MID_MONTH_DAY_OF_YEAR[m]);
