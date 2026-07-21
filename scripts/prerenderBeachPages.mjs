@@ -2268,6 +2268,31 @@ const SEO_META_DESCRIPTION_OVERRIDES = {
     en: 'Kaki Vigla, Salamina: a quiet natural beach with clear water and tavernas nearby, an easy escape from Athens. Check live wind & waves.',
     gr: 'Κακή Βίγλα, Σαλαμίνα: ήσυχη φυσική παραλία με καθαρά νερά και ταβέρνες δίπλα, κοντά στην Αθήνα. Δες live άνεμο & κύμα πριν πας.',
   },
+  // Zero-click rescue (2026-07-21): high-impression pages stuck ~pos 9 with 0 clicks
+  // in GSC because the generated meta is the bare template. Each hook below is a
+  // verified, data-backed trait (type/amenities/orientation) — reliability first,
+  // no invented claims; the 3 OSM-only bleeders (Porto Fino, Perani, Nopigia) are
+  // left on the template since their data carries no honest distinguishing hook.
+  'south-aegean-lipsi#2373': {
+    en: 'Katsadia, Lipsi: an organised sandy beach with sunbeds and a taverna, often better in northerly winds. Check live wind & waves before you go.',
+    gr: 'Κατσαδιά, Λειψοί: οργανωμένη αμμώδης παραλία με ξαπλώστρες και ταβέρνα, υπήνεμη σε βόρειους ανέμους. Δες live άνεμο & κύμα πριν πας.',
+  },
+  'attica-west-attica-mainland#191': {
+    en: 'Prosili, West Attica: a quiet pebble beach in Aigosthena bay, good for snorkeling, with a taverna nearby. Check live wind & waves before you go.',
+    gr: 'Προσήλι, Δυτική Αττική: ήσυχη παραλία με βότσαλο στον όρμο Αιγοσθένων, καλή για snorkeling, με ταβέρνα κοντά. Δες live άνεμο & κύμα πριν πας.',
+  },
+  'south-aegean-milos#1900': {
+    en: 'Agios Sostis, Milos: a sandy beach with shallow water, parking and a taverna nearby, often better in northerly winds. Check live wind & waves.',
+    gr: 'Άγιος Σώστης, Μήλος: αμμώδης παραλία με ρηχά νερά, πάρκινγκ και ταβέρνα κοντά, υπήνεμη σε βόρειους ανέμους. Δες live άνεμο & κύμα πριν πας.',
+  },
+  'south-aegean-milos#1905': {
+    en: 'Gerania, Milos: a quiet sand-and-pebble beach with shallow water and parking, reached by a dirt road with few facilities. Check live wind & waves.',
+    gr: 'Γερανιά, Μήλος: ήσυχη παραλία με άμμο και βότσαλο, ρηχά νερά και πάρκινγκ, πρόσβαση από χωματόδρομο με λίγες παροχές. Δες live άνεμο & κύμα.',
+  },
+  'south-aegean-symi#2465': {
+    en: 'Nos, Symi: an organised sandy beach with sunbeds, a short walk from Symi town and the harbour at Gialos. Check live wind & waves before you go.',
+    gr: 'Νος, Σύμη: οργανωμένη αμμώδης παραλία με ξαπλώστρες, λίγα λεπτά με τα πόδια από τη Σύμη και το λιμάνι στον Γιαλό. Δες live άνεμο & κύμα.',
+  },
 };
 
 // The live-conditions CTA that closes a beach-page meta description. Allowed
