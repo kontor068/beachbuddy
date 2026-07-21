@@ -3376,6 +3376,68 @@ export const App: React.FC = () => {
     });
     return getRegionWindVariationNote(selectedForecast.wind.speed, samples, selectedIsland.coordinates, language);
   }, [selectedIsland, selectedForecast, hourAdjustedBeachForecasts, language]);
+  // --- "Κοντά μου" home-region forecasts ------------------------------------------------
+  // The synthetic near-me region is anchored on the user's GPS (coordinates: userLoc), so the
+  // single area forecast useWeather fetches for it is taken AT THE USER — wrong for a beach
+  // 40 km up the coast, and it makes the SAME beach read a different wind/colour than when it
+  // is browsed on its home island (there it is scored from the island-centre forecast). To keep
+  // a beach identical across both views, near-me scores each beach from ITS OWN home-region area
+  // forecast — the same anchor the home-island view uses. Fetched once per contributing region
+  // (≤14, Open-Meteo-cached). Every consumer falls back to the existing area forecast, so a
+  // normal island — where beach.regionId === selectedIsland.id — is a byte-for-byte no-op.
+  const [nearMeRegionForecasts, setNearMeRegionForecasts] = useState<Record<string, DailyForecast[]>>({});
+
+  useEffect(() => {
+    if (!isNearMeRegionActive || !selectedIsland) {
+      setNearMeRegionForecasts(current => (Object.keys(current).length === 0 ? current : {}));
+      return;
+    }
+    const regionIds = Array.from(
+      new Set(selectedIsland.beaches.map(beach => beach.regionId).filter((id): id is string => Boolean(id)))
+    );
+    if (regionIds.length === 0) return;
+
+    let cancelled = false;
+    const loadRegionForecasts = async () => {
+      const entries = await Promise.all(regionIds.map(async regionId => {
+        const center = allIslands.find(island => island.id === regionId)?.coordinates;
+        if (!center) return null;
+        try {
+          const [forecastResult, marineItems] = await Promise.all([
+            fetchForecastData(center.lat, center.lon),
+            fetchMarineForecastData(center.lat, center.lon).then(result => result.data).catch(() => []),
+          ]);
+          return [regionId, processForecastData(mergeMarineForecastData(forecastResult.data, marineItems))] as const;
+        } catch (error) {
+          console.warn('Near-me home-region forecast unavailable; that region\'s beaches fall back to the near-me area forecast.', { regionId, error });
+          return null;
+        }
+      }));
+      if (cancelled) return;
+      const next: Record<string, DailyForecast[]> = {};
+      for (const entry of entries) if (entry) next[entry[0]] = entry[1];
+      setNearMeRegionForecasts(next);
+    };
+
+    void loadRegionForecasts();
+    return () => { cancelled = true; };
+  }, [isNearMeRegionActive, selectedIsland, allIslands]);
+
+  // Each near-me beach's home-region area forecast, day-selected + hour-adjusted exactly like
+  // selectedForecast, so the near-me card/map reads the same wind/wave/verdict/colour the beach
+  // shows on its home island. Empty outside near-me → the area-forecast fallback applies below.
+  const nearMeBeachForecastById = useMemo<Record<number, DailyForecast>>(() => {
+    if (!isNearMeRegionActive || !selectedIsland) return {};
+    const out: Record<number, DailyForecast> = {};
+    selectedIsland.beaches.forEach(beach => {
+      const days = beach.regionId ? nearMeRegionForecasts[beach.regionId] : undefined;
+      const day = days?.[selectedDayIndex];
+      if (!day) return;
+      out[beach.id] = selectedHourDt == null ? day : adjustDailyForecastToHour(day, selectedHourDt, mapHourSlots);
+    });
+    return out;
+  }, [isNearMeRegionActive, selectedIsland, nearMeRegionForecasts, selectedDayIndex, selectedHourDt, mapHourSlots]);
+
   // Score every beach ONCE per render with the location-aware inputs, then share
   // the result. Previously getFilteredBeachResults, suitableBeaches and
   // mapSuitableBeaches each re-ran calculateBeachScore (the ~500-line hot path)
@@ -3387,19 +3449,20 @@ export const App: React.FC = () => {
     const scores = new Map<number, BeachScore>();
     if (!selectedIsland || !deferredSelectedForecast) return scores;
     selectedIsland.beaches.forEach(beach => {
-      // Score every beach from the AREA (island) forecast so its displayed Beaufort, wave
-      // and verdict are ONE consistent, immediately-available figure — the same on the card
-      // and the detail page, with no flip to a per-beach cluster value once the background
-      // cluster forecasts land. The cluster forecast is surfaced only via the map-hover local
-      // wind and the "a bit windier/calmer right here" note — never the headline number.
-      scores.set(beach.id, calculateBeachScore(beach, deferredSelectedForecast, userLocation, preferences, {
+      // Score every beach from the AREA forecast so its displayed Beaufort, wave and verdict
+      // are ONE consistent, immediately-available figure — the same on the card and the detail
+      // page. For a normal island that AREA forecast is the island's; in "Κοντά μου" it is the
+      // beach's OWN home-region forecast (nearMeBeachForecastById), so a beach reads identically
+      // whether browsed on its island or in the near-me list, and never off the user's GPS point.
+      const beachAreaForecast = nearMeBeachForecastById[beach.id] ?? deferredSelectedForecast;
+      scores.set(beach.id, calculateBeachScore(beach, beachAreaForecast, userLocation, preferences, {
         weatherSource: 'island-fallback',
-        hourlyForecast: deferredSelectedForecast.hourly,
+        hourlyForecast: beachAreaForecast.hourly,
         geospatialProfile: geospatialExposureProfiles?.[beach.id],
       }));
     });
     return scores;
-  }, [selectedIsland, deferredSelectedForecast, userLocation, preferences, geospatialExposureProfiles]);
+  }, [selectedIsland, deferredSelectedForecast, nearMeBeachForecastById, userLocation, preferences, geospatialExposureProfiles]);
   // Localized "time window" label for the selected slider hour (e.g. "στις 15:00–18:00"),
   // shown in the suitable-beach header so it reflects the moment, not just "today".
   const selectedHourPrefix = useMemo(() => {
@@ -3535,29 +3598,32 @@ export const App: React.FC = () => {
         };
       }
 
-      // Score from the AREA (island) forecast — the same one the map arrow/colour and the
-      // card headline use — so a beach reads ONE consistent wind/wave/verdict everywhere,
-      // available immediately with no flip to a per-beach cluster value on load. Use the
-      // urgent selectedForecast (not the deferred beachScoreById) so the score never lags
-      // behind a region/hour change. Cluster wind stays for the map-hover + local notes only.
-      const scoreResult = calculateBeachScore(beach, selectedForecast, userLocation, preferences, {
+      // Score from the AREA forecast — the same one the map arrow/colour and the card headline
+      // use — so a beach reads ONE consistent wind/wave/verdict everywhere, available immediately
+      // with no flip to a per-beach cluster value on load. Use the urgent selectedForecast (not
+      // the deferred beachScoreById) so the score never lags behind a region/hour change. In
+      // "Κοντά μου" the AREA forecast is the beach's OWN home-region one so it matches the beach's
+      // home-island view (see nearMeBeachForecastById); a normal island falls back to selectedForecast.
+      const beachAreaForecast = nearMeBeachForecastById[beach.id] ?? selectedForecast;
+
+      const scoreResult = calculateBeachScore(beach, beachAreaForecast, userLocation, preferences, {
         weatherSource: 'island-fallback',
-        hourlyForecast: selectedForecast.hourly,
+        hourlyForecast: beachAreaForecast.hourly,
         geospatialProfile: geospatialExposure,
       });
 
-      // Map MARKER COLOUR uses the single island-level wind (the one the compass
+      // Map MARKER COLOUR uses the single area-level wind (the one the compass
       // shows), not the per-beach cluster wind — so on a "SW" day every beach is
       // coloured for that SW wind and the map agrees with the arrow, instead of
       // each coast using its own slightly different local wind direction.
       const islandWindAssessment = assessBeachWindExposure({
         beach,
         geospatialProfile: geospatialExposure,
-        windDirectionDeg: selectedForecast.wind.deg,
-        windDirection: degToCompass(selectedForecast.wind.deg),
-        windSpeedKmh: selectedForecast.wind.speed * 3.6,
-        beaufort: getBeaufortLevel(selectedForecast.wind.speed * 3.6),
-        waveHeightMeters: selectedForecast.marine?.waveHeightM,
+        windDirectionDeg: beachAreaForecast.wind.deg,
+        windDirection: degToCompass(beachAreaForecast.wind.deg),
+        windSpeedKmh: beachAreaForecast.wind.speed * 3.6,
+        beaufort: getBeaufortLevel(beachAreaForecast.wind.speed * 3.6),
+        waveHeightMeters: beachAreaForecast.marine?.waveHeightM,
       });
       const mapExposureLevel = islandWindAssessment.exposureLevel;
 
@@ -3593,7 +3659,7 @@ export const App: React.FC = () => {
         geospatialExposure,
       };
     });
-  }, [geospatialExposureProfiles, language, preferences, selectedForecast, selectedIsland, userLocation]);
+  }, [geospatialExposureProfiles, language, nearMeBeachForecastById, preferences, selectedForecast, selectedIsland, userLocation]);
 
   // Saved beaches (favorites) in the active island, each carrying the SAME scored verdict
   // the home cards show — reuse mapSuitableBeaches, which scores EVERY island beach, so a
@@ -4624,7 +4690,10 @@ export const App: React.FC = () => {
     // the raw day forecast — otherwise the detail mini-map tones the canonical exposure level
     // with the day's Beaufort while the region map used the slider hour's, so the same beach
     // reads e.g. orange in the detail map but yellow on the region map.
-    const detailForecast = selectedForecast ?? detailForecastDay;
+    // In "Κοντά μου" the card/map score this beach from its OWN home-region forecast
+    // (nearMeBeachForecastById); the detail must use the SAME one or the card and the detail
+    // would disagree — so prefer it here too, falling back to the near-me area forecast.
+    const detailForecast = (isNearMeRegionActive ? nearMeBeachForecastById[detailBeach.id] : undefined) ?? selectedForecast ?? detailForecastDay;
 
     return (
       <div>
