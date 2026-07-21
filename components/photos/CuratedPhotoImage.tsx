@@ -29,18 +29,27 @@ export const CuratedPhotoImage = ({
   const resolvedAttributionClassName =
     attributionClassName ?? defaultAttributionClassName;
 
+  // Curated photos ship an AVIF sibling next to the WebP (scripts/generateCuratedPhotoAvif.mjs,
+  // which fails the build if any is missing). Offer AVIF first via <picture>; browsers without
+  // AVIF support fall back to the WebP <img>. The <img> keeps every layout/loading attribute so
+  // sizing, lazy-loading and LCP priority are unchanged.
+  const avifSrc = /\.webp$/i.test(photo.src) ? photo.src.replace(/\.webp$/i, '.avif') : null;
+
   return (
     <figure className={className}>
-      <img
-        src={photo.src}
-        alt={photo.alt}
-        width={photo.width}
-        height={photo.height}
-        loading={photo.loading}
-        decoding="async"
-        fetchPriority={photo.fetchPriority}
-        className={imgClassName}
-      />
+      <picture>
+        {avifSrc && <source srcSet={avifSrc} type="image/avif" />}
+        <img
+          src={photo.src}
+          alt={photo.alt}
+          width={photo.width}
+          height={photo.height}
+          loading={photo.loading}
+          decoding="async"
+          fetchPriority={photo.fetchPriority}
+          className={imgClassName}
+        />
+      </picture>
       {shouldShowAttribution && (
         <figcaption className={resolvedAttributionClassName}>
           {photo.sourceUrl ? (
