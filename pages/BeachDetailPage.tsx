@@ -912,15 +912,16 @@ export const BeachDetailPage: React.FC<BeachDetailPageProps> = ({
   // Water-temperature gradation — 3 coarse buckets on purpose. The Open-Meteo SST is a basin-scale
   // model value (~8 km sea cell), not a nearshore measurement, so wide buckets absorb its error and
   // stay honest; a finer word would over-claim, especially on meltemi days when nearshore upwelling
-  // runs colder than the open-sea value. Thresholds tuned to the Greek swimming season (mid-summer
-  // sea ≈ 24-26°C reads as warm; spring/autumn/cold-snap < 21°C as cold). Shown with the existing
-  // "κατά προσέγγιση" note, so the number stays advisory rather than a precise claim.
+  // runs colder than the open-sea value. Thresholds tuned to the Greek swimming season: the common
+  // summer range (≈ 24-26°C) reads as "ideal" rather than "warm" — the Aegean stays refreshing even
+  // then, so "warm" would over-claim — and < 21°C (spring/autumn/cold-snap) reads as cold. Shown
+  // with the "κατά προσέγγιση" note + a ~ prefix, so the number stays advisory, not a precise claim.
   const waterTempDescriptor = typeof seaTemperatureC === 'number'
     ? seaTemperatureC < 21
       ? { en: 'cold', gr: 'κρύο', de: 'kalt', it: 'fredda', fr: 'froide' }[language]
       : seaTemperatureC <= 24
         ? { en: 'mild', gr: 'μέτριο', de: 'mild', it: 'tiepida', fr: 'tempérée' }[language]
-        : { en: 'warm', gr: 'ζεστό', de: 'warm', it: 'calda', fr: 'chaude' }[language]
+        : { en: 'ideal', gr: 'ιδανικό', de: 'ideal', it: 'ideale', fr: 'idéale' }[language]
     : undefined;
   // R1: mirror the ranking's direct-swell detection so the DISPLAYED sea sub-score drops the
   // protected/partial wave floor exactly when the ranking does — otherwise a west-facing cove on
