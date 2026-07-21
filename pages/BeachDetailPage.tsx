@@ -909,14 +909,18 @@ export const BeachDetailPage: React.FC<BeachDetailPageProps> = ({
     return points;
   }, [beach, scoringHourlyForecast, geospatialExposure, selectedDayKey, scoreResult.facingDeg]);
   const seaTemperatureC = weatherData.marine?.seaSurfaceTemperatureC;
+  // Water-temperature gradation — 3 coarse buckets on purpose. The Open-Meteo SST is a basin-scale
+  // model value (~8 km sea cell), not a nearshore measurement, so wide buckets absorb its error and
+  // stay honest; a finer word would over-claim, especially on meltemi days when nearshore upwelling
+  // runs colder than the open-sea value. Thresholds tuned to the Greek swimming season (mid-summer
+  // sea ≈ 24-26°C reads as warm; spring/autumn/cold-snap < 21°C as cold). Shown with the existing
+  // "κατά προσέγγιση" note, so the number stays advisory rather than a precise claim.
   const waterTempDescriptor = typeof seaTemperatureC === 'number'
-    ? seaTemperatureC < 20
+    ? seaTemperatureC < 21
       ? { en: 'cold', gr: 'κρύο', de: 'kalt', it: 'fredda', fr: 'froide' }[language]
-      : seaTemperatureC < 23
-        ? { en: 'cool', gr: 'δροσερό', de: 'kühl', it: 'fresca', fr: 'fraîche' }[language]
-        : seaTemperatureC <= 26
-          ? { en: 'pleasant', gr: 'ιδανικό', de: 'angenehm', it: 'piacevole', fr: 'agréable' }[language]
-          : { en: 'warm', gr: 'ζεστό', de: 'warm', it: 'calda', fr: 'chaude' }[language]
+      : seaTemperatureC <= 24
+        ? { en: 'mild', gr: 'μέτριο', de: 'mild', it: 'tiepida', fr: 'tempérée' }[language]
+        : { en: 'warm', gr: 'ζεστό', de: 'warm', it: 'calda', fr: 'chaude' }[language]
     : undefined;
   // R1: mirror the ranking's direct-swell detection so the DISPLAYED sea sub-score drops the
   // protected/partial wave floor exactly when the ranking does — otherwise a west-facing cove on
@@ -1575,7 +1579,7 @@ export const BeachDetailPage: React.FC<BeachDetailPageProps> = ({
               <ConditionCard
                 icon={<Droplets className="w-5 h-5 text-sky-500" />}
                 label={copy.waterTemp[language]}
-                value={`${seaTemperatureC.toFixed(0)}°C`}
+                value={`~${seaTemperatureC.toFixed(0)}°C`}
                 subValue={waterTempDescriptor}
               />
             )}
