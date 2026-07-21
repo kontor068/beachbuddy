@@ -220,10 +220,15 @@ const ISLAND_BACKGROUND_IMAGES: Record<string, string> = {
 
 const getBackgroundImageCss = (imagePath?: string) => {
   if (!imagePath) return undefined;
-  if (!imagePath.endsWith('.jpg')) return `url(${imagePath})`;
 
-  const webpPath = imagePath.replace(/\.jpg$/, '.webp');
-  return `image-set(url(${webpPath}) type("image/webp"), url(${imagePath}) type("image/jpeg"))`;
+  // Island backgrounds ship as AVIF + WebP + JPG siblings (scripts/optimizeBackgroundImages.mjs,
+  // which fails the build if any AVIF is missing). Serve them via image-set() so AVIF-capable
+  // browsers get the smallest file (~25% under WebP) and everyone else falls back to WebP, then JPG.
+  const base = imagePath.replace(/\.(jpe?g|webp|avif)$/i, '');
+  if (base === imagePath) return `url(${imagePath})`; // unknown extension — serve as-is
+
+  const jpgFallback = /\.jpe?g$/i.test(imagePath) ? `, url(${base}.jpg) type("image/jpeg")` : '';
+  return `image-set(url(${base}.avif) type("image/avif"), url(${base}.webp) type("image/webp")${jpgFallback})`;
 };
 
 const compactWindDirections: Record<LanguageCode, Record<string, string>> = {
