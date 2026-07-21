@@ -7,8 +7,11 @@ import type { Beach } from '../types';
  * description + JSON-LD) by scripts/prerenderBeachPages.mjs.
  *
  * SINGLE SOURCE OF TRUTH: the text lives in `beachStories.data.json`, shaped as
- * `{ [regionId]: { [beachId]: { title, paragraphs } } }`, so both this runtime
- * module and the prerender script read the same data. Edit the JSON, never
+ * `{ [regionId]: { [beachId]: { title, paragraphs } } }`. The prerender script and
+ * the audit scripts read that file directly; the client instead reads the per-region
+ * split (data/beachStories/{regionId}.json, produced from it by
+ * scripts/splitBeachStories.mjs) so it fetches only the island being viewed. Edit the
+ * JSON, run `npm run build:beach-data` (or the split script) to regenerate, never
  * duplicate the text here.
  *
  * Beach ids are unique only WITHIN a region, so stories are scoped by region id
@@ -27,20 +30,27 @@ export interface BeachStory {
   paragraphs: Record<StoryLocale, string[]>;
 }
 
-/** regionId → beachId → story */
-type StoriesByRegion = Record<string, Record<number, BeachStory>>;
+/** beachId → story (one region's slice of the corpus) */
+type RegionStories = Record<number, BeachStory>;
 
-// The editorial corpus is ~1.6 MB. A static import bundled the whole thing into the eager
-// beach-detail chunk (it dominated it), so every visitor downloaded all ~788 stories just to
-// view one beach. Load it lazily on first request — a code-split async chunk — and cache the
-// promise, so the detail page paints immediately and the "Πληροφορίες" text streams in after.
-let storiesPromise: Promise<StoriesByRegion> | null = null;
-const loadStories = (): Promise<StoriesByRegion> => {
-  if (!storiesPromise) {
-    storiesPromise = import('./beachStories.data.json')
-      .then(mod => ((mod as { default?: unknown }).default ?? mod) as StoriesByRegion);
-  }
-  return storiesPromise;
+// The editorial corpus is ~1.4 MB across ~788 stories. It is partitioned per region into
+// data/beachStories/{regionId}.json (by scripts/splitBeachStories.mjs) so a detail-page
+// visitor downloads ONLY the island they are viewing (≤130 KB, usually far less) instead of
+// the whole country. Vite turns each glob entry into its own code-split async chunk; we cache
+// the per-region promise so repeat views on the same island reuse the first fetch.
+const regionStoryLoaders = import.meta.glob<{ default: RegionStories }>('./beachStories/*.json');
+const regionStoriesCache = new Map<string, Promise<RegionStories | null>>();
+
+const loadRegionStories = (region: string): Promise<RegionStories | null> => {
+  const cached = regionStoriesCache.get(region);
+  if (cached) return cached;
+
+  const loader = regionStoryLoaders[`./beachStories/${region}.json`];
+  const promise: Promise<RegionStories | null> = loader
+    ? loader().then(mod => (mod.default ?? (mod as unknown as RegionStories)))
+    : Promise.resolve(null);
+  regionStoriesCache.set(region, promise);
+  return promise;
 };
 
 /**
@@ -56,8 +66,7 @@ export async function getBeachStory(
 ): Promise<BeachStory | null> {
   const region = regionId ?? beach.regionId;
   if (!region) return null; // cheap out before pulling the async corpus
-  const stories = await loadStories();
-  const regionStories = stories[region];
+  const regionStories = await loadRegionStories(region);
   if (!regionStories) return null;
   const key = beach.sourceBeachId ?? beach.id;
   return regionStories[key] ?? null;
