@@ -451,14 +451,13 @@ const HomeControl = ({
     let container: HTMLDivElement | null = null;
 
     // Only worth offering the button once the user has strayed far enough that the
-    // default view isn't a trivial nudge away: the home point has scrolled off the
-    // viewport, or the zoom differs by a couple of levels.
+    // home point (their location, or the region default) has scrolled off the
+    // viewport. A small negative pad means it appears just before the point fully
+    // leaves the screen. Kept pan-based so it never shows just from the zoom level.
     const isFarFromHome = () => {
-      const { center: home, zoom: homeZoom } = targetRef.current;
+      const { center: home } = targetRef.current;
       const homePoint = L.latLng(home[0], home[1]);
-      const panned = !map.getBounds().pad(-0.15).contains(homePoint);
-      const zoomed = Math.abs(map.getZoom() - homeZoom) >= 2;
-      return panned || zoomed;
+      return !map.getBounds().pad(-0.15).contains(homePoint);
     };
 
     const updateVisibility = () => {
@@ -1698,6 +1697,7 @@ const BeachMap: React.FC<BeachMapProps> = ({
     windShort: { en: 'Wind', gr: 'Άνεμος', de: 'Wind', it: 'Vento', fr: 'Vent' },
     youAreHere: { en: 'You are here', gr: 'Είστε εδώ', de: 'Sie sind hier', it: 'Sei qui', fr: 'Vous êtes ici' },
     resetView: { en: 'Reset view', gr: 'Επαναφορά θέασης', de: 'Ansicht zurücksetzen', it: 'Ripristina vista', fr: 'Réinitialiser la vue' },
+    centerOnMe: { en: 'Center on my location', gr: 'Κέντραρε στη θέση μου', de: 'Auf meinen Standort zentrieren', it: 'Centra sulla mia posizione', fr: 'Centrer sur ma position' },
     campingToggle: { en: 'Camping', gr: 'Camping', de: 'Camping', it: 'Campeggi', fr: 'Camping' },
     bestTime: { en: 'Best Time', gr: 'Καλύτερη ώρα', de: 'Beste Zeit', it: 'Ora migliore', fr: 'Meilleur moment' },
     view: { en: 'View', gr: 'Προβολή', de: 'Ansehen', it: 'Vedi', fr: 'Voir' },
@@ -1897,6 +1897,14 @@ const BeachMap: React.FC<BeachMapProps> = ({
     : defaultCenter));
   
   const zoom = propZoom || (avgCenter ? 10 : (userLocation ? 10 : 6));
+
+  // The "home" button snaps to the user's own location when we have a GPS fix,
+  // zoomed in to a comfortable local view; otherwise it falls back to the region's
+  // default framing. Labelled accordingly.
+  const homeCenter: [number, number] = userLocation ? [userLocation.lat, userLocation.lon] : center;
+  const homeZoom = userLocation ? 13 : zoom;
+  const homeTitle = (userLocation ? mapCopy.centerOnMe : mapCopy.resetView)[language];
+
   const viewportGuardrails = useMemo(() => {
     const fallbackCenter = { lat: center[0], lon: center[1] };
     // Derive the zoom-out floor and pan bounds from the full region set when provided,
@@ -2511,11 +2519,11 @@ const BeachMap: React.FC<BeachMapProps> = ({
           {preview || compact ? (
             <>
               <ZoomControl position="topright" />
-              <HomeControl center={center} zoom={zoom} position="topright" title={mapCopy.resetView[language]} />
+              <HomeControl center={homeCenter} zoom={homeZoom} position="topright" title={homeTitle} />
             </>
           ) : (
             <>
-              <HomeControl center={center} zoom={zoom} position="bottomright" title={mapCopy.resetView[language]} />
+              <HomeControl center={homeCenter} zoom={homeZoom} position="bottomright" title={homeTitle} />
               <ZoomControl position="bottomright" />
             </>
           )}
