@@ -84,3 +84,6 @@ reports/snapshots/
 public/data/beaches.sqlite
 public/data/beaches.sqlite-wal
 public/data/beaches.sqlite-shm
+
+# Build/analysis artifact — whole-country SQLite, never served (see sqlite-verdict)
+data/derived/

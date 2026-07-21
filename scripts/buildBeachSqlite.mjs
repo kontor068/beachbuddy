@@ -24,7 +24,11 @@ import { validateBeachRecord } from '../core/beachContract.mjs';
 
 const rootDir = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const summaryDir = path.join(rootDir, 'public', 'data', 'beaches', 'app', 'summary');
-const outDir = path.join(rootDir, 'public', 'data');
+// Write OUTSIDE public/ so the whole-country database is a build/analysis artifact only and is
+// NOT served (it used to sit at /data/beaches.sqlite — a one-request national data dump). The
+// client never reads it (see sqlite-verdict): the app loads per-region JSON, and this file feeds
+// queryBeaches.mjs / audits. Keeping the national dataset off the CDN raises the scraping cost.
+const outDir = path.join(rootDir, 'data', 'derived');
 const outFile = path.join(outDir, 'beaches.sqlite');
 
 const bool = (v) => (v ? 1 : 0);
