@@ -2283,12 +2283,12 @@ const BEACH_META_CTA = {
     gr: 'Δες live άνεμο, κύμα και καιρό πριν πας.',
   },
   tiny: {
-    en: 'Check live wind & waves.',
-    gr: 'Δες live άνεμο & κύμα.',
+    en: 'Check live weather, wind & waves.',
+    gr: 'Δες live καιρό, άνεμο & κύμα.',
   },
   story: {
-    en: 'Check live wind & waves before you go.',
-    gr: 'Δες live άνεμο & κύμα πριν πας.',
+    en: 'Check live weather, wind & waves.',
+    gr: 'Δες live καιρό, άνεμο & κύμα.',
   },
 };
 
@@ -2408,15 +2408,19 @@ const localizedBeachLabel = (beachName, language) => {
   if (alreadyHasNoun) return beachName;
   return language === 'en' ? `${beachName} ${noun}` : `${noun} ${beachName}`;
 };
-// The live-conditions hook for beach-page <title>s. This is the whole point of
-// the CTR redesign — no competitor in the SERP can truthfully say "live", and
-// the beach page delivers it (SPA hydration shows live wind/waves/weather).
+// The conditions hook for beach-page <title>s. Leads with the WEATHER query word
+// (καιρός / weather / Wetter / météo / meteo) because that is the single highest-
+// demand thing users actually type — "καιρός παραλία {name}" is our exact product,
+// yet no title targeted it. Wind & wave stay (our moat); "live" is dropped from the
+// title to keep the region in-title (the 3-tier overflow never sacrifices the
+// island for a hook word) and instead lives in the H1/description, which still
+// deliver live wind/waves/weather on SPA hydration.
 const BEACH_TITLE_HOOK = {
-  en: 'Live Wind & Waves',
-  gr: 'Άνεμος & Κύμα Live',
-  de: 'Wind & Wellen live',
-  fr: 'Vent & vagues en direct',
-  it: 'Vento e onde live',
+  en: 'Weather, Wind & Waves',
+  gr: 'Καιρός, Άνεμος & Κύμα',
+  de: 'Wetter, Wind & Wellen',
+  fr: 'Météo, vent & vagues',
+  it: 'Meteo, vento e onde',
 };
 // Greek glyphs are wider, so Google truncates GR titles a few px earlier.
 const beachTitleMaxLen = language => (language === 'gr' ? 58 : 60);
