@@ -1,4 +1,10 @@
+# calmbeach.gr — content pages stay open for SEO; raw bulk data is off-limits.
+
 User-agent: *
 Allow: /
+# Block one-request national data dumps (the curated dataset is the product, not the pages).
+Disallow: /greek_beaches.json
+Disallow: /data/beaches.sqlite
+Disallow: /*.sqlite$
 
 Sitemap: https://calmbeach.gr/sitemap.xml

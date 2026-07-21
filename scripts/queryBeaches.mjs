@@ -12,7 +12,7 @@ import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 
 const rootDir = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
-const dbFile = path.join(rootDir, 'public', 'data', 'beaches.sqlite');
+const dbFile = path.join(rootDir, 'data', 'derived', 'beaches.sqlite');
 
 const sql = process.argv.slice(2).join(' ').trim();
 if (!sql) {
