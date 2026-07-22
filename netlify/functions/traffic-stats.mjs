@@ -201,6 +201,30 @@ export const handler = async (event) => {
     const store = getStore(TRAFFIC_STORE);
     const today = new Date();
 
+    // Admin: wipe one day's data (operator use only — key-gated). Used to clear a
+    // contaminated day (e.g. launch-day test traffic) so counting restarts clean.
+    // Since visitor hashes are irreversible we cannot delete selectively, so this
+    // removes the WHOLE day; real visitors after the reset are counted fresh.
+    if (params.reset) {
+      const day = /^\d{4}-\d{2}-\d{2}$/.test(params.reset) ? params.reset : null;
+      if (!day) {
+        return { statusCode: 400, headers: { 'Content-Type': 'text/plain; charset=utf-8' }, body: 'reset must be YYYY-MM-DD' };
+      }
+      let deleted = 0;
+      for await (const page of store.list({ prefix: `d/${day}/`, paginate: true })) {
+        for (const b of page.blobs) {
+          await store.delete(b.key);
+          deleted += 1;
+        }
+      }
+      await store.delete(`totals/${day}`);
+      return {
+        statusCode: 200,
+        headers: { 'Content-Type': 'text/plain; charset=utf-8', 'Cache-Control': 'no-store' },
+        body: `Reset ${day}: διαγράφηκαν ${deleted} επισκέπτες + το rollup. Μετράει καθαρά από τώρα.`,
+      };
+    }
+
     const merged = { refs: {}, sections: {}, devices: {}, countries: {} };
     const mergeInto = (target, src) => {
       for (const [k, v] of Object.entries(src || {})) target[k] = (target[k] || 0) + v;
