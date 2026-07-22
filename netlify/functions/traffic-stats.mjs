@@ -39,6 +39,30 @@ const uniqueForDay = async (store, dayKey) => {
   return count;
 };
 
+// Greek names for the countries a Greek beach site actually sees; fall back to the code.
+const COUNTRY_NAMES = {
+  GR: '🇬🇷 Ελλάδα', DE: '🇩🇪 Γερμανία', GB: '🇬🇧 Ην. Βασίλειο', US: '🇺🇸 ΗΠΑ',
+  FR: '🇫🇷 Γαλλία', IT: '🇮🇹 Ιταλία', NL: '🇳🇱 Ολλανδία', AT: '🇦🇹 Αυστρία',
+  CH: '🇨🇭 Ελβετία', BE: '🇧🇪 Βέλγιο', SE: '🇸🇪 Σουηδία', PL: '🇵🇱 Πολωνία',
+  RO: '🇷🇴 Ρουμανία', BG: '🇧🇬 Βουλγαρία', CY: '🇨🇾 Κύπρος', ES: '🇪🇸 Ισπανία',
+  CZ: '🇨🇿 Τσεχία', DK: '🇩🇰 Δανία', NO: '🇳🇴 Νορβηγία', FI: '🇫🇮 Φινλανδία',
+  IE: '🇮🇪 Ιρλανδία', IL: '🇮🇱 Ισραήλ', TR: '🇹🇷 Τουρκία', RU: '🇷🇺 Ρωσία',
+  CA: '🇨🇦 Καναδάς', AU: '🇦🇺 Αυστραλία', HU: '🇭🇺 Ουγγαρία', SK: '🇸🇰 Σλοβακία',
+};
+const countryLabel = (code) => COUNTRY_NAMES[code] || (code === '??' ? 'Άγνωστη' : code);
+const deviceLabel = (d) => ({ mobile: '📱 Κινητό', desktop: '💻 Υπολογιστής', tablet: '📱 Tablet' }[d] || d);
+
+const num = (v) => (v || 0).toLocaleString('el-GR');
+
+/** A compact "label → count" table for a breakdown dictionary, top `limit` by count. */
+const breakdownTable = (title, obj, labelFn, limit = 12) => {
+  const entries = Object.entries(obj || {}).sort((a, b) => b[1] - a[1]).slice(0, limit);
+  const body = entries.length
+    ? entries.map(([k, v]) => `<tr><td>${labelFn ? labelFn(k) : k}</td><td class="n">${num(v)}</td></tr>`).join('')
+    : '<tr><td colspan="2" class="muted">Καμία ακόμη</td></tr>';
+  return `<h2>${title}</h2><table><tbody>${body}</tbody></table>`;
+};
+
 const html = (rows, totals, days) => {
   const maxU = Math.max(1, ...rows.map((r) => r.unique));
   const bar = (v) => Math.round((v / maxU) * 100);
@@ -46,21 +70,19 @@ const html = (rows, totals, days) => {
     .map(
       (r) => `<tr>
         <td class="d">${r.day}</td>
-        <td class="n">${r.unique.toLocaleString('el-GR')}</td>
-        <td class="n muted">${(r.hits || 0).toLocaleString('el-GR')}</td>
+        <td class="n">${num(r.unique)}</td>
+        <td class="n grn">${num(r.newV)}</td>
+        <td class="n muted">${num(r.retV)}</td>
         <td class="bar"><span style="width:${bar(r.unique)}%"></span></td>
       </tr>`
     )
     .join('');
 
-  const refRows = Object.entries(totals.refs)
-    .sort((a, b) => b[1] - a[1])
-    .slice(0, 12)
-    .map(([k, v]) => `<tr><td>${k}</td><td class="n">${v.toLocaleString('el-GR')}</td></tr>`)
-    .join('');
-
   const sumUnique = rows.reduce((s, r) => s + r.unique, 0);
+  const sumNew = rows.reduce((s, r) => s + (r.newV || 0), 0);
   const sumHits = rows.reduce((s, r) => s + (r.hits || 0), 0);
+  // Best-effort split vs exact unique can drift slightly out of range; clamp to [0,100].
+  const retPct = sumUnique ? Math.min(100, Math.max(0, Math.round(((sumUnique - sumNew) / sumUnique) * 100))) : 0;
 
   return `<!doctype html><html lang="el"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1"><meta name="robots" content="noindex">
@@ -91,23 +113,34 @@ const html = (rows, totals, days) => {
   th{font-size:11px;text-transform:uppercase;letter-spacing:.04em;color:#64748b}
   td.n{text-align:right;font-variant-numeric:tabular-nums;font-weight:600}
   td.muted{color:#94a3b8;font-weight:400}
+  td.grn{color:#059669}
+  @media(prefers-color-scheme:dark){td.grn{color:#34d399}}
   td.d{font-variant-numeric:tabular-nums;color:#475569}
-  td.bar{width:34%}
+  td.bar{width:28%}
   td.bar span{display:block;height:8px;border-radius:5px;background:#0ea5e9}
   h2{font-size:13px;text-transform:uppercase;letter-spacing:.04em;color:#64748b;margin:0 0 8px}
+  .grid2{display:grid;grid-template-columns:1fr 1fr;gap:0 20px}
+  @media(max-width:520px){.grid2{grid-template-columns:1fr}}
+  .foot{color:#94a3b8;font-size:12px;line-height:1.6;margin-top:8px}
 </style></head><body><div class="wrap">
   <h1>Πραγματική κίνηση — CalmBeach</h1>
   <p class="sub">First-party, χωρίς cookies, χωρίς consent gate, δεν το κόβουν τα ad-blockers. Μετράει κάθε πραγματικό επισκέπτη. Τελευταίες ${days} μέρες (UTC).</p>
   <div class="cards">
-    <div class="card"><div class="k">Μοναδικοί σήμερα</div><div class="v">${rows[0] ? rows[0].unique.toLocaleString('el-GR') : 0}</div></div>
-    <div class="card"><div class="k">Μοναδικοί (${days}ημ.)</div><div class="v">${sumUnique.toLocaleString('el-GR')}</div></div>
+    <div class="card"><div class="k">Μοναδικοί σήμερα</div><div class="v">${rows[0] ? num(rows[0].unique) : 0}</div></div>
+    <div class="card"><div class="k">Μοναδικοί (${days}ημ.)</div><div class="v">${num(sumUnique)}</div></div>
+    <div class="card"><div class="k">Νέοι σήμερα</div><div class="v">${rows[0] ? num(rows[0].newV) : 0}</div></div>
+    <div class="card"><div class="k">Επιστρέφοντες (${days}ημ.)</div><div class="v">${retPct}%</div></div>
   </div>
   <h2>Ανά ημέρα</h2>
-  <table><thead><tr><th>Ημέρα</th><th class="n">Μοναδικοί</th><th class="n">Προβολές</th><th></th></tr></thead>
+  <table><thead><tr><th>Ημέρα</th><th class="n">Μοναδ.</th><th class="n">Νέοι</th><th class="n">Επιστρ.</th><th></th></tr></thead>
     <tbody>${dayRows}</tbody></table>
-  <h2>Πηγές (${days}ημ. · σύνολο ${sumHits.toLocaleString('el-GR')} προβολές)</h2>
-  <table><thead><tr><th>Παραπομπή</th><th class="n">Προβολές</th></tr></thead>
-    <tbody>${refRows || '<tr><td colspan="2" class="muted">Καμία ακόμη</td></tr>'}</tbody></table>
+  <div class="grid2">
+    <div>${breakdownTable('Χώρες', totals.countries, countryLabel)}</div>
+    <div>${breakdownTable('Συσκευές', totals.devices, deviceLabel)}</div>
+    <div>${breakdownTable('Δημοφιλείς περιοχές', totals.sections, null)}</div>
+    <div>${breakdownTable('Πηγές', totals.refs, null)}</div>
+  </div>
+  <p class="foot">Σύνολο προβολών (${days}ημ.): <b>${num(sumHits)}</b> · «Μοναδικοί» = ξεχωριστές συσκευές/μέρα (ακριβές). Νέοι/επιστρέφοντες, χώρες, συσκευές &amp; περιοχές μετρώνται ανά μοναδικό επισκέπτη και είναι <b>κατά προσέγγιση</b>. Χώρα «Άγνωστη» = δεν εντοπίστηκε geo.</p>
 </div></body></html>`;
 };
 
@@ -127,27 +160,41 @@ export const handler = async (event) => {
     const store = getStore(TRAFFIC_STORE);
     const today = new Date();
 
+    const merged = { refs: {}, sections: {}, devices: {}, countries: {} };
+    const mergeInto = (target, src) => {
+      for (const [k, v] of Object.entries(src || {})) target[k] = (target[k] || 0) + v;
+    };
+
     const rows = [];
-    const mergedRefs = {};
     for (const day of recentDays(days, today)) {
       const unique = await uniqueForDay(store, day);
-      const totals = (await store.get(`totals/${day}`, { type: 'json' })) || { hits: 0, refs: {} };
-      for (const [k, v] of Object.entries(totals.refs || {})) mergedRefs[k] = (mergedRefs[k] || 0) + v;
-      rows.push({ day, unique, hits: totals.hits || 0 });
+      const totals = (await store.get(`totals/${day}`, { type: 'json' })) || {};
+      mergeInto(merged.refs, totals.refs);
+      mergeInto(merged.sections, totals.sections);
+      mergeInto(merged.devices, totals.devices);
+      mergeInto(merged.countries, totals.countries);
+      const kinds = totals.kinds || {};
+      rows.push({
+        day,
+        unique,
+        hits: totals.hits || 0,
+        newV: kinds.new || 0,
+        retV: (kinds.ret || 0) + (kinds.unknown || 0),
+      });
     }
 
     if (params.format === 'json') {
       return {
         statusCode: 200,
         headers: { 'Content-Type': 'application/json', 'Cache-Control': 'no-store' },
-        body: JSON.stringify({ days, rows, referrers: mergedRefs }, null, 2),
+        body: JSON.stringify({ days, rows, breakdowns: merged }, null, 2),
       };
     }
 
     return {
       statusCode: 200,
       headers: { 'Content-Type': 'text/html; charset=utf-8', 'Cache-Control': 'no-store' },
-      body: html(rows, { refs: mergedRefs }, days),
+      body: html(rows, merged, days),
     };
   } catch (error) {
     // Never 502: surface the cause behind the secret key so the operator (and the

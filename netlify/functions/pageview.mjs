@@ -60,6 +60,34 @@ const clientIp = (headers) =>
   (headers['x-forwarded-for'] || '').split(',')[0].trim() ||
   'unknown';
 
+/** Coarse device class from the user-agent — enough for a mobile/desktop split. */
+const deviceClass = (ua) => {
+  if (/iPad|Tablet|PlayBook|Silk/i.test(ua)) return 'tablet';
+  if (/Mobi|Android|iPhone|iPod|Windows Phone/i.test(ua)) return 'mobile';
+  return 'desktop';
+};
+
+/** Two-letter country code from Netlify's geo header (best-effort; '??' if unknown). */
+const countryCode = (headers) => {
+  const raw = headers['x-nf-geo'];
+  if (raw) {
+    try {
+      const geo = JSON.parse(Buffer.from(raw, 'base64').toString('utf8'));
+      const code = geo && geo.country && geo.country.code;
+      if (code) return String(code).toUpperCase().slice(0, 2);
+    } catch {
+      // fall through
+    }
+  }
+  const alt = headers['x-country'] || headers['x-nf-country'];
+  return alt ? String(alt).toUpperCase().slice(0, 2) : '??';
+};
+
+const bump = (obj, key) => {
+  if (!key) return;
+  obj[key] = (obj[key] || 0) + 1;
+};
+
 /** Host of the referrer only (never the full URL) — enough for a traffic-source view. */
 const referrerHost = (raw) => {
   if (!raw) return 'direct';
@@ -103,22 +131,44 @@ export const handler = async (event) => {
 
     const pageType = safeToken(params.t, 24) || 'page';
     const ref = referrerHost(headers.referer || headers.referrer || params.r);
+    const section = safeToken(params.s, 32) || 'home';
+    const device = deviceClass(userAgent);
+    const country = countryCode(headers);
+    const kind = params.v === 'new' ? 'new' : params.v === 'ret' ? 'ret' : 'unknown';
 
     const store = getStore(TRAFFIC_STORE);
+    const visitorKey = `d/${dayKey}/${hash}`;
 
-    // (1) RACE-FREE uniqueness: one blob per unique visitor per day. Overwriting on a
-    //     repeat visit is intentional and harmless — presence is all that's counted.
-    await store.setJSON(`d/${dayKey}/${hash}`, { r: ref, p: pageType });
+    // (1) RACE-FREE uniqueness: one blob per unique visitor per day. We read it first to
+    //     learn whether this is the visitor's FIRST hit today, then (over)write it —
+    //     presence is all the unique count needs, so overwriting is harmless.
+    const already = await store.get(visitorKey, { type: 'json' });
+    await store.setJSON(visitorKey, { r: ref, p: pageType, s: section });
 
-    // (2) Best-effort day rollup: total hits + per-referrer / per-page-type tallies.
-    //     Read-modify-write, so a concurrent hit can lose a count — an acceptable
-    //     slight under-estimate for the coarse totals (uniqueness above is exact).
+    // (2) Best-effort day rollup. `hits` counts every pageview; the qualitative
+    //     breakdowns are counted once per UNIQUE visitor (only on their first hit of the
+    //     day) so they read as "visitors", not "pageviews". Read-modify-write, so under
+    //     heavy concurrency a count can be lost — an acceptable slight under-estimate
+    //     (the daily UNIQUE total, listed separately, stays exact).
     try {
       const key = `totals/${dayKey}`;
-      const prev = (await store.get(key, { type: 'json' })) || { hits: 0, refs: {}, types: {} };
+      const prev = (await store.get(key, { type: 'json' })) || {};
       prev.hits = (prev.hits || 0) + 1;
-      prev.refs[ref] = (prev.refs[ref] || 0) + 1;
-      prev.types[pageType] = (prev.types[pageType] || 0) + 1;
+      prev.types = prev.types || {};
+      bump(prev.types, pageType);
+
+      if (!already) {
+        prev.refs = prev.refs || {};
+        prev.sections = prev.sections || {};
+        prev.devices = prev.devices || {};
+        prev.countries = prev.countries || {};
+        prev.kinds = prev.kinds || {};
+        bump(prev.refs, ref);
+        bump(prev.sections, section);
+        bump(prev.devices, device);
+        bump(prev.countries, country);
+        bump(prev.kinds, kind);
+      }
       await store.setJSON(key, prev);
     } catch {
       // Totals are advisory; never fail the request over them.
