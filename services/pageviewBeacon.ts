@@ -18,6 +18,18 @@ const HIT_ENDPOINT = '/api/hit';
 // an id — a single boolean in localStorage, used only to split new vs returning. If
 // storage is blocked (private mode) we simply report 'unknown' and move on.
 const SEEN_KEY = 'cb_seen';
+// Per-device opt-out: when set, this device is never counted (so the operator's own
+// visits don't pollute the numbers). Toggled from a button on the /api/traffic
+// dashboard — same origin, so the flag it sets is visible here.
+const OPTOUT_KEY = 'cb_optout';
+
+const isOptedOut = (): boolean => {
+  try {
+    return typeof localStorage !== 'undefined' && localStorage.getItem(OPTOUT_KEY) === '1';
+  } catch {
+    return false;
+  }
+};
 
 // Coalesce identical consecutive pings (e.g. an effect firing twice) so one logical
 // page view is one beacon. Uniqueness is server-side regardless, but this keeps the
@@ -50,6 +62,7 @@ const sectionFromPath = (): string => {
  */
 export const recordPageview = (type: string = 'page'): void => {
   if (typeof window === 'undefined' || !isProductionEnvironment()) return;
+  if (isOptedOut()) return; // operator's own device — do not count
 
   // Coalesce by PATH only: the initial `load` ping and the first in-app page-view
   // effect share a path, so this counts that load once. A real navigation changes

@@ -137,9 +137,35 @@ const html = (rows, totals, days) => {
   .grid2{display:grid;grid-template-columns:1fr 1fr;gap:0 20px}
   @media(max-width:520px){.grid2{grid-template-columns:1fr}}
   .foot{color:#94a3b8;font-size:12px;line-height:1.6;margin-top:8px}
+  #optout{appearance:none;border:1px solid #cbd5e1;background:#fff;color:#0f172a;border-radius:999px;
+    padding:8px 14px;font:600 13px system-ui,sans-serif;cursor:pointer;margin:0 0 20px}
+  @media(prefers-color-scheme:dark){#optout{background:#111a2e;border-color:#334155;color:#e2e8f0}}
+  #optout.on{background:#065f46;border-color:#065f46;color:#fff}
 </style></head><body><div class="wrap">
   <h1>Πραγματική κίνηση — CalmBeach</h1>
   <p class="sub">First-party, χωρίς cookies, χωρίς consent gate, δεν το κόβουν τα ad-blockers. Μετράει κάθε πραγματικό επισκέπτη. Τελευταίες ${days} μέρες (UTC).</p>
+  <button id="optout" type="button">🚫 Μην μετράς αυτή τη συσκευή</button>
+  <script>
+    (function () {
+      var K = 'cb_optout', b = document.getElementById('optout');
+      function render() {
+        var on = false;
+        try { on = localStorage.getItem(K) === '1'; } catch (e) {}
+        b.className = on ? 'on' : '';
+        b.textContent = on
+          ? '✅ Αυτή η συσκευή ΔΕΝ μετριέται — πάτα για επαναφορά'
+          : '🚫 Μην μετράς αυτή τη συσκευή';
+      }
+      b.addEventListener('click', function () {
+        try {
+          if (localStorage.getItem(K) === '1') localStorage.removeItem(K);
+          else localStorage.setItem(K, '1');
+        } catch (e) { alert('Ο browser μπλοκάρει την αποθήκευση — δοκίμασε εκτός ιδιωτικής περιήγησης.'); }
+        render();
+      });
+      render();
+    })();
+  </script>
   <div class="cards">
     <div class="card"><div class="k">Μοναδικοί σήμερα</div><div class="v">${rows[0] ? num(rows[0].unique) : 0}</div></div>
     <div class="card"><div class="k">Μοναδικοί (${days}ημ.)</div><div class="v">${num(sumUnique)}</div></div>
