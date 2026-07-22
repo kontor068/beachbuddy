@@ -65,6 +65,14 @@ const html = (rows, totals, days) => {
   return `<!doctype html><html lang="el"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1"><meta name="robots" content="noindex">
 <title>CalmBeach · Πραγματική κίνηση</title>
+<!-- Home-screen shortcut: clean short name + standalone fullscreen. -->
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Κίνηση">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="application-name" content="Κίνηση">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="theme-color" content="#0ea5e9">
+<link rel="apple-touch-icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Crect width='180' height='180' rx='40' fill='%230ea5e9'/%3E%3Ctext x='90' y='125' font-size='110' text-anchor='middle' fill='white' font-family='system-ui'%3E%F0%9F%93%8A%3C/text%3E%3C/svg%3E">
 <style>
   :root{color-scheme:light dark}
   *{box-sizing:border-box}
