@@ -13,7 +13,7 @@
 // per-day unique number is exact; totals/referrers are the best-effort rollup.
 // ─────────────────────────────────────────────────────────────────────────────
 
-import { getStore } from '@netlify/blobs';
+import { connectLambda, getStore } from '@netlify/blobs';
 
 const TRAFFIC_STORE = 'traffic';
 
@@ -112,29 +112,42 @@ export const handler = async (event) => {
 
   const params = event.queryStringParameters || {};
   const days = Math.min(90, Math.max(1, Number(params.days) || 30));
-  const store = getStore(TRAFFIC_STORE);
-  const today = new Date();
 
-  const rows = [];
-  const mergedRefs = {};
-  for (const day of recentDays(days, today)) {
-    const unique = await uniqueForDay(store, day);
-    const totals = (await store.get(`totals/${day}`, { type: 'json' })) || { hits: 0, refs: {} };
-    for (const [k, v] of Object.entries(totals.refs || {})) mergedRefs[k] = (mergedRefs[k] || 0) + v;
-    rows.push({ day, unique, hits: totals.hits || 0 });
-  }
+  try {
+    // Wire the Blobs environment from the Lambda event (see pageview.mjs).
+    connectLambda(event);
+    const store = getStore(TRAFFIC_STORE);
+    const today = new Date();
 
-  if (params.format === 'json') {
+    const rows = [];
+    const mergedRefs = {};
+    for (const day of recentDays(days, today)) {
+      const unique = await uniqueForDay(store, day);
+      const totals = (await store.get(`totals/${day}`, { type: 'json' })) || { hits: 0, refs: {} };
+      for (const [k, v] of Object.entries(totals.refs || {})) mergedRefs[k] = (mergedRefs[k] || 0) + v;
+      rows.push({ day, unique, hits: totals.hits || 0 });
+    }
+
+    if (params.format === 'json') {
+      return {
+        statusCode: 200,
+        headers: { 'Content-Type': 'application/json', 'Cache-Control': 'no-store' },
+        body: JSON.stringify({ days, rows, referrers: mergedRefs }, null, 2),
+      };
+    }
+
     return {
       statusCode: 200,
-      headers: { 'Content-Type': 'application/json', 'Cache-Control': 'no-store' },
-      body: JSON.stringify({ days, rows, referrers: mergedRefs }, null, 2),
+      headers: { 'Content-Type': 'text/html; charset=utf-8', 'Cache-Control': 'no-store' },
+      body: html(rows, { refs: mergedRefs }, days),
+    };
+  } catch (error) {
+    // Never 502: surface the cause behind the secret key so the operator (and the
+    // build) can see exactly what failed (e.g. Blobs not configured on the site).
+    return {
+      statusCode: 200,
+      headers: { 'Content-Type': 'text/plain; charset=utf-8', 'Cache-Control': 'no-store' },
+      body: `traffic-stats error: ${error && error.name}: ${error && error.message}\n\n${error && error.stack}`,
     };
   }
-
-  return {
-    statusCode: 200,
-    headers: { 'Content-Type': 'text/html; charset=utf-8', 'Cache-Control': 'no-store' },
-    body: html(rows, { refs: mergedRefs }, days),
-  };
 };

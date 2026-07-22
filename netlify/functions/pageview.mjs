@@ -31,7 +31,7 @@
 // ─────────────────────────────────────────────────────────────────────────────
 
 import { createHash } from 'node:crypto';
-import { getStore } from '@netlify/blobs';
+import { connectLambda, getStore } from '@netlify/blobs';
 
 const TRAFFIC_STORE = 'traffic';
 
@@ -85,6 +85,11 @@ export const handler = async (event) => {
   if (event.httpMethod !== 'POST' && event.httpMethod !== 'GET') return noContent;
 
   try {
+    // Classic Lambda-signature functions must wire the Blobs environment from the
+    // event before getStore() works; without this getStore() throws and every write
+    // is silently swallowed below (zero data recorded).
+    connectLambda(event);
+
     const headers = event.headers || {};
     const userAgent = headers['user-agent'] || '';
 
