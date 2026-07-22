@@ -5,6 +5,7 @@ import { Capacitor } from '@capacitor/core';
 import { App } from './App';
 import './index.css';
 import { initializeAnalytics } from './services/analyticsService';
+import { recordPageview } from './services/pageviewBeacon';
 import { initializeNativeApp } from './utils/nativeBootstrap';
 import { isChunkLoadError, recoverFromChunkLoadError, registerChunkLoadErrorHandler } from './utils/chunkLoadRecovery';
 
@@ -102,6 +103,9 @@ root.render(
 );
 
 initializeAnalytics();
+// First-party, consent-free real-visitor count for the initial load. SPA navigations
+// are counted from App.tsx's page-view effect. See services/pageviewBeacon.ts.
+recordPageview('load');
 registerChunkLoadErrorHandler();
 void initializeNativeApp();
 

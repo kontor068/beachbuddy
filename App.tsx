@@ -30,6 +30,7 @@ import { translations } from './translations';
 import { degToCompass, getBeaufortLevel, isWinterSeason, processForecastData } from './utils/weatherUtils';
 import { getRegionWindContext, LOCAL_WIND_LABEL } from './utils/localWindContext.mjs';
 import { trackEvent, trackPageView, buildBeachExposureParams } from './services/analyticsService';
+import { recordPageview } from './services/pageviewBeacon';
 import { loadAppReadyRegion, loadBeachDetailData, loadBeachRegionIndex, loadBeachSearchIndex, mergeBeachDetailData } from './services/beachDataLoader';
 import { fetchForecastData, fetchMarineForecastData, mergeMarineForecastData } from './services/weatherService';
 import { calculateSeaConditionScore, hasPoorSeaConditions } from './utils/seaConditions';
@@ -4026,6 +4027,9 @@ export const App: React.FC = () => {
       view,
       beach_id: detailBeach?.id ? String(detailBeach.id) : undefined,
     });
+    // Consent-free first-party count for this in-app navigation (GA above is
+    // consent-gated). `view` is a coarse page kind, never identifying.
+    recordPageview(view || 'page');
   }, [analyticsBaseParams, detailBeach?.id, selectedIsland, view]);
 
   useEffect(() => {

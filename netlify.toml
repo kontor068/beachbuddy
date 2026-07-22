@@ -11,6 +11,21 @@
   to = "/.netlify/functions/forecast/:splat"
   status = 200
 
+# First-party visitor counter (see netlify/functions/pageview.mjs). The client pings
+# this clean, same-origin path so it is NOT on any ad-block filter list and needs no
+# consent (cookieless, zero PII stored). This is what makes real traffic visible even
+# when GA4 is blocked/declined.
+[[redirects]]
+  from = "/api/hit"
+  to = "/.netlify/functions/pageview"
+  status = 200
+
+# Private traffic dashboard — real unique visitors/day. Gated by TRAFFIC_STATS_KEY.
+[[redirects]]
+  from = "/api/traffic"
+  to = "/.netlify/functions/traffic-stats"
+  status = 200
+
 [[redirects]]
   from = "/beaches/:region/:beach"
   to = "/beaches/:region/:beach/"
