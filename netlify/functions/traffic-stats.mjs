@@ -54,13 +54,28 @@ const deviceLabel = (d) => ({ mobile: '📱 Κινητό', desktop: '💻 Υπο
 
 const num = (v) => (v || 0).toLocaleString('el-GR');
 
-/** A compact "label → count" table for a breakdown dictionary, top `limit` by count. */
-const breakdownTable = (title, obj, labelFn, limit = 12) => {
-  const entries = Object.entries(obj || {}).sort((a, b) => b[1] - a[1]).slice(0, limit);
-  const body = entries.length
+/**
+ * A compact "label → count" table for a breakdown dictionary, top `limit` by count.
+ * If `total` (the exact unique count) is given and exceeds the tagged sum, a muted
+ * "Λοιπά / χωρίς στοιχεία" row makes the table always add up to the headline — those
+ * are visitors counted in the exact unique total but without this tag (e.g. tagged
+ * before the metric shipped, geo unresolved, or a best-effort write lost).
+ */
+const breakdownTable = (title, obj, labelFn, total, limit = 12) => {
+  const all = Object.entries(obj || {}).sort((a, b) => b[1] - a[1]);
+  const entries = all.slice(0, limit);
+  let rows = entries.length
     ? entries.map(([k, v]) => `<tr><td>${labelFn ? labelFn(k) : k}</td><td class="n">${num(v)}</td></tr>`).join('')
-    : '<tr><td colspan="2" class="muted">Καμία ακόμη</td></tr>';
-  return `<h2>${title}</h2><table><tbody>${body}</tbody></table>`;
+    : '';
+
+  const tagged = all.reduce((s, [, v]) => s + v, 0);
+  const shown = entries.reduce((s, [, v]) => s + v, 0);
+  const other = (typeof total === 'number' ? Math.max(0, total - shown) : tagged - shown);
+  if (other > 0) {
+    rows += `<tr><td class="muted">Λοιπά / χωρίς στοιχεία</td><td class="n muted">${num(other)}</td></tr>`;
+  }
+  if (!rows) rows = '<tr><td colspan="2" class="muted">Καμία ακόμη</td></tr>';
+  return `<h2>${title}</h2><table><tbody>${rows}</tbody></table>`;
 };
 
 const html = (rows, totals, days) => {
@@ -135,10 +150,10 @@ const html = (rows, totals, days) => {
   <table><thead><tr><th>Ημέρα</th><th class="n">Μοναδ.</th><th class="n">Νέοι</th><th class="n">Επιστρ.</th><th></th></tr></thead>
     <tbody>${dayRows}</tbody></table>
   <div class="grid2">
-    <div>${breakdownTable('Χώρες', totals.countries, countryLabel)}</div>
-    <div>${breakdownTable('Συσκευές', totals.devices, deviceLabel)}</div>
-    <div>${breakdownTable('Δημοφιλείς περιοχές', totals.sections, null)}</div>
-    <div>${breakdownTable('Πηγές', totals.refs, null)}</div>
+    <div>${breakdownTable('Χώρες', totals.countries, countryLabel, sumUnique)}</div>
+    <div>${breakdownTable('Συσκευές', totals.devices, deviceLabel, sumUnique)}</div>
+    <div>${breakdownTable('Δημοφιλείς περιοχές', totals.sections, null, sumUnique)}</div>
+    <div>${breakdownTable('Πηγές', totals.refs, null, sumUnique)}</div>
   </div>
   <p class="foot">Σύνολο προβολών (${days}ημ.): <b>${num(sumHits)}</b> · «Μοναδικοί» = ξεχωριστές συσκευές/μέρα (ακριβές). Νέοι/επιστρέφοντες, χώρες, συσκευές &amp; περιοχές μετρώνται ανά μοναδικό επισκέπτη και είναι <b>κατά προσέγγιση</b>. Χώρα «Άγνωστη» = δεν εντοπίστηκε geo.</p>
 </div></body></html>`;
