@@ -26,4 +26,11 @@ jobs:
         run: npm ci
 
       - name: Run critical quality gate
+        # Build the SAME way Netlify ships production, so the SEO prerender audit sees
+        # real index/follow robots meta. Without these the deploy guards mark the CI
+        # build noindex (safe default for non-production) and the audit fails on every
+        # push — even though the live Netlify build (CONTEXT=production) is fine.
+        env:
+          CONTEXT: production
+          VITE_APP_ENV: production
         run: npm run quality:critical
