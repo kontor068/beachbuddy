@@ -31,6 +31,25 @@ const isOptedOut = (): boolean => {
   }
 };
 
+// Last UTC day this device pinged. Lets the client assert "definitely NOT my first
+// ping today" (f=0), which the server uses to suppress a Blobs eventual-consistency
+// race that was re-counting one visitor's 2nd/3rd pageview in the per-visitor
+// breakdowns (devices summed to 50 with 47 uniques). Not an id — just a date.
+const DAY_KEY = 'cb_day';
+
+/** '1' first ping of this UTC day, '0' definitely not, '' if storage is blocked. */
+const firstOfDay = (): '1' | '0' | '' => {
+  try {
+    if (typeof localStorage === 'undefined') return '';
+    const today = new Date().toISOString().slice(0, 10);
+    if (localStorage.getItem(DAY_KEY) === today) return '0';
+    localStorage.setItem(DAY_KEY, today);
+    return '1';
+  } catch {
+    return '';
+  }
+};
+
 // Coalesce identical consecutive pings (e.g. an effect firing twice) so one logical
 // page view is one beacon. Uniqueness is server-side regardless, but this keeps the
 // pageview total clean.
@@ -78,7 +97,8 @@ export const recordPageview = (type: string = 'page'): void => {
   const url =
     `${HIT_ENDPOINT}?t=${encodeURIComponent(type.slice(0, 24))}` +
     `&v=${visitorKind()}` +
-    `&s=${encodeURIComponent(sectionFromPath())}`;
+    `&s=${encodeURIComponent(sectionFromPath())}` +
+    `&f=${firstOfDay()}`;
 
   try {
     if (typeof navigator !== 'undefined' && typeof navigator.sendBeacon === 'function') {

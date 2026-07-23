@@ -88,6 +88,7 @@ const html = (rows, totals, days) => {
         <td class="n">${num(r.unique)}</td>
         <td class="n grn">${num(r.newV)}</td>
         <td class="n muted">${num(r.retV)}</td>
+        <td class="n muted">${r.unique ? (r.hits / r.unique).toFixed(1) : '—'}</td>
         <td class="bar"><span style="width:${bar(r.unique)}%"></span></td>
       </tr>`
     )
@@ -173,7 +174,7 @@ const html = (rows, totals, days) => {
     <div class="card"><div class="k">Επιστρέφοντες (${days}ημ.)</div><div class="v">${retPct}%</div></div>
   </div>
   <h2>Ανά ημέρα</h2>
-  <table><thead><tr><th>Ημέρα</th><th class="n">Μοναδ.</th><th class="n">Νέοι</th><th class="n">Επιστρ.</th><th></th></tr></thead>
+  <table><thead><tr><th>Ημέρα</th><th class="n">Μοναδ.</th><th class="n">Νέοι</th><th class="n">Επιστρ.</th><th class="n">Προβ./άτομο</th><th></th></tr></thead>
     <tbody>${dayRows}</tbody></table>
   <div class="grid2">
     <div>${breakdownTable('Χώρες', totals.countries, countryLabel, sumUnique)}</div>

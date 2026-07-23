@@ -121,8 +121,11 @@ export const handler = async (event) => {
     const headers = event.headers || {};
     const userAgent = headers['user-agent'] || '';
 
-    // Drop bots and empty-UA junk without touching storage.
+    // Drop bots and empty-UA junk without touching storage. Every real browser also
+    // sends Accept-Language; most scrapers/scripts that fake a browser UA do not —
+    // requiring it screens out the "plain curl with a Chrome UA" class for free.
     if (!userAgent || BOT_UA.test(userAgent)) return noContent;
+    if (!headers['accept-language']) return noContent;
 
     const params = event.queryStringParameters || {};
     const dayKey = utcDayKey(new Date());
@@ -157,7 +160,12 @@ export const handler = async (event) => {
       prev.types = prev.types || {};
       bump(prev.types, pageType);
 
-      if (!already) {
+      // Once per unique visitor: the blob check is the gate, but Blobs reads are
+      // eventually consistent (~up to 60s), so a visitor's 2nd pageview inside that
+      // window still reads `already` as empty and was re-counted here. The client
+      // knows its own "first ping of the day" for certain (localStorage); f='0'
+      // (definitely not first) suppresses that race. f='1'/'' keep the blob gate.
+      if (!already && params.f !== '0') {
         prev.refs = prev.refs || {};
         prev.sections = prev.sections || {};
         prev.devices = prev.devices || {};
