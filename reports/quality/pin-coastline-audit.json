@@ -1,0 +1,71 @@
+{
+  "coastalThresholdM": 400,
+  "totals": {
+    "audited": 5,
+    "inland": 2,
+    "offshore": 0,
+    "coastal": 3
+  },
+  "results": [
+    {
+      "id": 2734,
+      "name": "Αγία Παρασκευή (Αγιά)",
+      "lat": 39.7235,
+      "lon": 22.752,
+      "region": "Thessaly",
+      "municipality": "Larissa Coast (Agia - Kissavos)",
+      "confidence": "low",
+      "coastDistM": 9816,
+      "onLand": true,
+      "verdict": "INLAND"
+    },
+    {
+      "id": 2669,
+      "name": "Ελιά",
+      "lat": 39.185,
+      "lon": 23.281,
+      "region": "Thessaly",
+      "municipality": "Magnesia (mainland - Pelion)",
+      "confidence": "low",
+      "coastDistM": 4956,
+      "onLand": true,
+      "verdict": "INLAND"
+    },
+    {
+      "id": 2738,
+      "name": "Παραλία Στρίντζος",
+      "lat": 39.92036,
+      "lon": 22.71481,
+      "region": "Thessaly",
+      "municipality": "Larissa Coast (Agia - Kissavos)",
+      "confidence": "medium",
+      "coastDistM": 263,
+      "onLand": false,
+      "verdict": "COASTAL"
+    },
+    {
+      "id": 2728,
+      "name": "Παραλία Πηγάδι",
+      "lat": 39.84924,
+      "lon": 22.77571,
+      "region": "Thessaly",
+      "municipality": "Larissa Coast (Agia - Kissavos)",
+      "confidence": "low",
+      "coastDistM": 11,
+      "onLand": true,
+      "verdict": "COASTAL"
+    },
+    {
+      "id": 2730,
+      "name": "Παραλία Καλύβι",
+      "lat": 39.84743,
+      "lon": 22.77772,
+      "region": "Thessaly",
+      "municipality": "Larissa Coast (Agia - Kissavos)",
+      "confidence": "medium",
+      "coastDistM": 11,
+      "onLand": true,
+      "verdict": "COASTAL"
+    }
+  ]
+}

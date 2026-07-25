@@ -1,0 +1,117 @@
+{
+  "batch": "hidden_beach_discovery_2026_07",
+  "note": "South Evia / Karystia wild beaches discovered from Greek guides + Wikipedia + topo.directory, cross-checked against OSM geometry. All confidence:low + needsVerification. Pilot for the national non-OSM discovery pipeline.",
+  "beaches": [
+    {
+      "nameGr": "Καστρί",
+      "aliases": ["Γεραιστός"],
+      "lat": 37.9757,
+      "lon": 24.5387,
+      "region": "Central Greece",
+      "prefecture": "Evia",
+      "municipality": "Evia",
+      "coordSrc": "OSM way 269212431 + el.wikipedia (συμφωνούν)",
+      "sourceNote": "Το Καστρί (αρχαία Γεραιστός) ΝΑ της Καρύστου προς Κάβο Ντόρο· ~350μ ακτή στον όρμο της αρχαίας Γεραιστού, απέναντι από Άνδρο. Ημι-άγρια με μικρό λιμανάκι. Ήταν ανώνυμο OSM polygon (γι' αυτό δεν το έπιανε το coverage pipeline).",
+      "sourceUrls": [
+        "https://el.wikipedia.org/wiki/Καστρί_Καρύστου_Ευβοίας",
+        "https://www.topoguide.gr/mountains/sterea_ellada/advs_south_evia/south_evia_cavo_doro.php",
+        "https://karystion.gr/gr/travel-experiences/sandy-beaches"
+      ],
+      "metadata": {
+        "access": { "type": "passable_dirt_road", "label": "Βατός χωματόδρομος", "notes": "Μακρύς χωματόδρομος ~19,6 χλμ ΝΑ της Καρύστου (από θέση Τσολιάς). Μικρό λιμανάκι. Χωρίς επιτόπου επιβεβαίωση." },
+        "terrain": { "types": ["sand", "pebbles", "rocks"], "label": "άμμος, βότσαλο, μικρές πέτρες" },
+        "organized": false,
+        "shade": false,
+        "amenities": []
+      }
+    },
+    {
+      "nameGr": "Αμυγδαλιά",
+      "aliases": ["Άγιος Ιωάννης"],
+      "lat": 38.1260,
+      "lon": 24.5823,
+      "region": "Central Greece",
+      "prefecture": "Evia",
+      "municipality": "Evia",
+      "coordSrc": "OSM way 591811669 (κέντρο polygon)",
+      "sourceNote": "Άγρια παραλία με λευκή άμμο και μικρό μόλο, ~800μ ΒΑ του οικισμού Αμυγδαλιά, στην ανατολική ακτή του Καφηρέα. Βραχώδης βυθός, κατάλληλος για καταδύσεις.",
+      "sourceUrls": [
+        "https://el.wikipedia.org/wiki/Αμυγδαλιά_Εύβοιας",
+        "https://www.travel.gr/experiences/oi-oraioteres-paralies-tis-notias-eyv/"
+      ],
+      "metadata": {
+        "access": { "type": "passable_dirt_road", "label": "Βατός χωματόδρομος", "notes": "Απότομος χωματόδρομος-κατηφόρα ~800μ από τον οικισμό Αμυγδαλιά. Χωρίς επιτόπου επιβεβαίωση." },
+        "terrain": { "types": ["sand", "pebbles", "rocks"], "label": "λευκή άμμος, μικρές πέτρες, βραχώδης βυθός" },
+        "organized": false,
+        "shade": false,
+        "amenities": []
+      }
+    },
+    {
+      "nameGr": "Ευαγγελισμός",
+      "aliases": ["Δράμεσι"],
+      "lat": 38.0749,
+      "lon": 24.5773,
+      "region": "Central Greece",
+      "prefecture": "Evia",
+      "municipality": "Evia",
+      "coordSrc": "topo.directory Area 99513",
+      "sourceNote": "Παραλία του οικισμού Δράμεσι/Ευαγγελισμός στην ανατολική (πορθμού) ακτή· χρυσή άμμος και χρωματιστά βότσαλα, σκιά από πλατάνια, ανάμεσα σε βράχια, ήσυχη.",
+      "sourceUrls": [
+        "https://topo.directory/index.php?sel=areainfo&Area_id=99513&ln=el",
+        "http://dimoskarystou.gr/visit/2017/03/09/παραλίες/",
+        "https://karystion.gr/gr/travel-experiences/sandy-beaches"
+      ],
+      "metadata": {
+        "access": { "type": "passable_dirt_road", "label": "Άσφαλτος και τελικό χωμάτινο τμήμα", "notes": "Άσφαλτος ως τον οικισμό Δράμεσι, μετά χωμάτινο ~1 χλμ ως την παραλία. Χωρίς επιτόπου επιβεβαίωση." },
+        "terrain": { "types": ["sand", "pebbles"], "label": "χρυσή άμμος και βότσαλα" },
+        "organized": false,
+        "shade": true,
+        "amenities": []
+      }
+    },
+    {
+      "nameGr": "Ζαχαριάς",
+      "aliases": ["Μύλος"],
+      "lat": 38.1071,
+      "lon": 24.5737,
+      "region": "Central Greece",
+      "prefecture": "Evia",
+      "municipality": "Evia",
+      "coordSrc": "topo.directory Area 99512",
+      "sourceNote": "Απομονωμένη παραλία (Μύλος ή Ζαχαριάς) στην ανατολική ακτή· άμμος και ψιλό χαλίκι, ρέμα με νερό όλο τον χρόνο, μεγάλη θαλασσοσπηλιά, παλιός πέτρινος νερόμυλος.",
+      "sourceUrls": [
+        "https://topo.directory/index.php?sel=areainfo&Area_id=99512&ln=el",
+        "https://el.wikipedia.org/wiki/Αμυγδαλιά_Εύβοιας"
+      ],
+      "metadata": {
+        "access": { "type": "difficult_dirt_road", "label": "Δύσβατος χωματόδρομος", "notes": "Απαιτητικός ορεινός/χωματόδρομος. Χωρίς επιτόπου επιβεβαίωση." },
+        "terrain": { "types": ["sand", "pebbles", "rocks"], "label": "άμμος, ψιλό χαλίκι, βραχώδης βυθός" },
+        "organized": false,
+        "shade": false,
+        "amenities": []
+      }
+    },
+    {
+      "nameGr": "Σπηλίτσες",
+      "aliases": ["Λιμιώνας", "Λιμνιώνας Πορθμού"],
+      "lat": 38.0456,
+      "lon": 24.5816,
+      "region": "Central Greece",
+      "prefecture": "Evia",
+      "municipality": "Evia",
+      "coordSrc": "topo.directory Area 99515 = OSM way 548307068 (συμφωνούν ~20m)",
+      "sourceNote": "Απομονωμένη παραλία στον πορθμό, ~3,5 χλμ Ν του Ευαγγελισμού· βότσαλο και άμμος με θαλασσοσπηλιές («σπηλίτσες»). Ονομάζεται Σπηλίτσες για να μη μπερδεύεται με τα άλλα 3 «Λιμνιώνας» της Εύβοιας.",
+      "sourceUrls": [
+        "https://topo.directory/index.php?sel=areainfo&Area_id=99515&ln=el"
+      ],
+      "metadata": {
+        "access": { "type": "difficult_dirt_road", "label": "Δύσβατος χωματόδρομος", "notes": "Χωματόδρομοι (αιολικό πάρκο) ή με βάρκα. Χωρίς επιτόπου επιβεβαίωση." },
+        "terrain": { "types": ["pebbles", "sand", "rocks"], "label": "βότσαλο, άμμος, θαλασσοσπηλιές" },
+        "organized": false,
+        "shade": false,
+        "amenities": []
+      }
+    }
+  ]
+}

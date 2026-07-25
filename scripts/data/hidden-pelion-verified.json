@@ -1,0 +1,216 @@
+{
+  "batch": "hidden_beach_discovery_2026_07_pelion",
+  "note": "Pelion (Magnesia) wild + guide-known beaches discovered from Greek guides/Wikipedia cross-checked against OSM geometry, then adversarially verified and pinned. All confidence:low + needsVerification. Region slot: Thessaly / Magnesia / Magnesia (mainland - Pelion).",
+  "beaches": [
+    {
+      "nameGr": "Τζάστενη",
+      "aliases": ["Tzasteni"],
+      "lat": 39.12803,
+      "lon": 23.16291,
+      "region": "Thessaly", "prefecture": "Magnesia", "municipality": "Magnesia (mainland - Pelion)",
+      "coordSrc": "OSM node (13m από την ακτογραμμή) + ilovepelion δημοσιευμένες συντεταγμένες (~100m)",
+      "sourceNote": "Άγρια, μη οργανωμένη παραλία στον Παγασητικό ανάμεσα σε Μηλίνα και Τρίκερι· ψιλό βότσαλο, απότομο βάθος, βράχια και πυκνή βλάστηση. Δεν υπάρχει καθόλου ως παραλία στο OpenStreetMap — εντοπίστηκε μόνο από τοπικούς οδηγούς.",
+      "sourceUrls": ["https://www.thessaliatv.gr/news/125570/tzasteni-i-aorati-paralia-tou-piliou-pou-ksexeilizei-omorfia-foto/", "https://ilovepelion.gr/el/destinations/pagasiticbeach/tzasteni", "https://thessalyadvisor.gr/listing-item/tzasteni-beach-pelion/"],
+      "metadata": {
+        "access": { "type": "hiking_path_easy", "label": "Μονοπάτι με τα πόδια", "notes": "~150 μ. από τον δρόμο Μηλίνα–Τρίκερι, ασήμαντο μονοπάτι μέσα από ελιές και απότομη κατηφόρα ~5 λεπτών. Σημείωση: υπάρχει κόμβος OSM με access=private στον όρμο — η πρόσβαση δεν έχει επιβεβαιωθεί επιτόπου." },
+        "terrain": { "types": ["pebbles"], "label": "ψιλό βότσαλο" },
+        "organized": false, "shade": false, "amenities": []
+      }
+    },
+    {
+      "nameGr": "Πράσινη Άμμος",
+      "aliases": ["Prasini Ammos"],
+      "lat": 39.16499,
+      "lon": 23.06908,
+      "region": "Thessaly", "prefecture": "Magnesia", "municipality": "Magnesia (mainland - Pelion)",
+      "coordSrc": "allovergreece δημοσιευμένες συντεταγμένες (10m από την ακτογραμμή)",
+      "sourceNote": "Άγρια παραλία στο νησί Παλαιό Τρίκερι· ψιλή άμμος με πρασινωπή απόχρωση και βλάστηση ως το νερό. Το νησί δεν έχει αυτοκίνητα. Δεν υπάρχει ως παραλία στο OpenStreetMap.",
+      "sourceUrls": ["https://www.allovergreece.com/Beaches/Descr/95/291/el", "https://www.larissanet.gr/2025/08/31/prasini-ammos-afti-einai-i-agnosti-paralia-tis-magnisias-pou-latrefoun-osoi-tin-episkeptontai-vinteo/", "https://www.enikos.gr/society/palaio-trikeri-to-mystiko-diamanti-tou-pagasitikou-oi-treis-paral/1598843/"],
+      "metadata": {
+        "access": { "type": "hiking_path_difficult", "label": "Απαιτητικό μονοπάτι", "notes": "Παλαιό Τρίκερι: νησί χωρίς αυτοκίνητα. Απαιτητικό μονοπάτι από το λιμάνι (μονοπάτι OSM φτάνει ~120 μ. από την ακτή) ή καΐκι ~30 λεπτά." },
+        "terrain": { "types": ["fine_sand"], "label": "ψιλή άμμος" },
+        "organized": false, "shade": false, "amenities": []
+      }
+    },
+    {
+      "nameGr": "Αγία Βάσω",
+      "aliases": ["Άγιος Βάτος", "Agia Vaso"],
+      "lat": 39.08744,
+      "lon": 23.11706,
+      "region": "Thessaly", "prefecture": "Magnesia", "municipality": "Magnesia (mainland - Pelion)",
+      "coordSrc": "mytraveler.gr δημοσιευμένο GPS 39.087444,23.117061 (ταύτιση 5 δεκαδικών) + ανώνυμο OSM polygon 81m",
+      "sourceNote": "Άγρια παραλία στη νότια ακτή της χερσονήσου Τρικερίου· ψιλό βότσαλο, δέντρα ως το νερό. Στους χάρτες εμφανίζεται και ως «Άγιος Βάτος».",
+      "sourceUrls": ["https://www.mytraveler.gr/place/παραλία-αγία-βάσω", "https://www.in2life.gr/article/2003162/oi-paralies-toy-phlioy-poy-den-xereis"],
+      "metadata": {
+        "access": { "type": "difficult_dirt_road", "label": "Δύσβατος χωματόδρομος", "notes": "~4 χλμ χωματόδρομος από τον δρόμο Μηλίνα–Τρίκερι, με απότομη κατηφόρα." },
+        "terrain": { "types": ["pebbles"], "label": "ψιλό βότσαλο" },
+        "organized": false, "shade": true, "amenities": []
+      }
+    },
+    {
+      "nameGr": "Αλογόπορος",
+      "aliases": ["Αλογόπυρος", "Alogoporos"],
+      "lat": 39.14422,
+      "lon": 23.08170,
+      "region": "Thessaly", "prefecture": "Magnesia", "municipality": "Magnesia (mainland - Pelion)",
+      "coordSrc": "OSM way 491163482 (ακριβής)",
+      "sourceNote": "Παραλία και λιμανάκι στο Τρίκερι, με βότσαλο και βραχώδη ακτή· σημείο αναχώρησης θαλάσσιου ταξί για το Παλαιό Τρίκερι. Πευκόδασος πίσω από την ακτή.",
+      "sourceUrls": ["https://www.topoguide.gr/mountains/thessaly/advs_pelion/pelion_southern/Pelion_Trikeri_Alogoporos.php", "https://ilovepelion.gr/el/destinations/aegeanbeach/alogoporos"],
+      "metadata": {
+        "access": { "type": "asphalt_road", "label": "άσφαλτος μέχρι κοντά στην παραλία", "notes": "6 χλμ από το Τρίκερι μέσω παρακαμπτηρίου, ~10 λεπτά." },
+        "terrain": { "types": ["pebbles", "rocks"], "label": "βότσαλο, βράχια" },
+        "organized": true, "shade": true, "amenities": ["ταβέρνα", "ξαπλώστρες"]
+      }
+    },
+    {
+      "nameGr": "Θεριάκοντας",
+      "aliases": ["Θεριακόντας", "Theriakontas"],
+      "lat": 39.14114,
+      "lon": 23.07445,
+      "region": "Thessaly", "prefecture": "Magnesia", "municipality": "Magnesia (mainland - Pelion)",
+      "coordSrc": "OSM way 1326223309· η απόσταση 715m από τον Αλογόπορο ταιριάζει με την περιγραφή topoguide «640 μ. μετά το πρώτο ακρωτήρι»",
+      "sourceNote": "Απομονωμένη παραλία στη νότια ακτή του Τρικερίου, με ελαιώνα ως την ακτή. Καμία παροχή.",
+      "sourceUrls": ["https://www.topoguide.gr/mountains/thessaly/advs_pelion/pelion_southern/Pelion_Trikeri_Theriakontas.php"],
+      "metadata": {
+        "access": { "type": "difficult_dirt_road", "label": "Δύσβατος χωματόδρομος", "notes": "Χωματόδρομος από τον Αλογόπορο ως το δυτικό άκρο· εναλλακτικά παραλιακό μονοπάτι (~6,8 χλμ από το Τρίκερι)." },
+        "terrain": { "types": [], "label": "—" },
+        "organized": false, "shade": true, "amenities": []
+      }
+    },
+    {
+      "nameGr": "Κατηγιώργης",
+      "aliases": ["Katigiorgis"],
+      "lat": 39.17259,
+      "lon": 23.34299,
+      "region": "Thessaly", "prefecture": "Magnesia", "municipality": "Magnesia (mainland - Pelion)",
+      "coordSrc": "OSM way 318723672, 50m από τον οικισμό Κατηγιώργης",
+      "sourceNote": "Αμμώδης όρμος ψαροχωριού στην ανατολική ακτή του νότιου Πηλίου, απέναντι από τη Σκιάθο. Ταβέρνες και δωμάτια στον οικισμό.",
+      "sourceUrls": ["https://viewsofgreece.gr/pilio-kalamos-kamari-paou-katigiorgis-mikro-pente-kryfa-diamantia-tis-magnisias/", "https://ilovepelion.gr/el/destinations/aegeanbeach/katigiorgis"],
+      "metadata": {
+        "access": { "type": "asphalt_road", "label": "άσφαλτος μέχρι κοντά στην παραλία", "notes": "Άσφαλτος, ~65 χλμ από τον Βόλο." },
+        "terrain": { "types": ["fine_sand"], "label": "άμμος" },
+        "organized": false, "shade": false, "amenities": ["ταβέρνες κοντά", "ενοικιαζόμενα δωμάτια κοντά"]
+      }
+    },
+    {
+      "nameGr": "Πλατανιάς",
+      "aliases": ["Platanias"],
+      "lat": 39.13990,
+      "lon": 23.26985,
+      "region": "Thessaly", "prefecture": "Magnesia", "municipality": "Magnesia (mainland - Pelion)",
+      "coordSrc": "μεγαλύτερο OSM polygon της περιοχής (273 μ.)· Wikimapia id 16725458",
+      "sourceNote": "Ψιλή καθαρή αμμουδιά στη ΝΑ ακτή του Πηλίου· στον οικισμό λειτουργεί το μεγαλύτερο αλιευτικό καταφύγιο της Μαγνησίας (~400 μ. ανατολικά).",
+      "sourceUrls": ["https://el.wikipedia.org/wiki/Πλατανιά_Μαγνησίας", "https://ilovepelion.gr/el/destinations/aegeanbeach/platanias"],
+      "metadata": {
+        "access": { "type": "asphalt_road", "label": "άσφαλτος μέχρι κοντά στην παραλία", "notes": "Άσφαλτος, ~60 χλμ από τον Βόλο." },
+        "terrain": { "types": ["fine_sand"], "label": "ψιλή άμμος" },
+        "organized": false, "shade": false, "amenities": ["ταβέρνες κοντά"]
+      }
+    },
+    {
+      "nameGr": "Παλιουράκια",
+      "aliases": ["Παλιοράκια", "Paliourakia"],
+      "lat": 39.14756,
+      "lon": 23.31617,
+      "region": "Thessaly", "prefecture": "Magnesia", "municipality": "Magnesia (mainland - Pelion)",
+      "coordSrc": "OSM way 510172660, 348m ανατολικά του Λεπετούς — ταιριάζει με τη δημοσιευμένη σειρά Λεπετούς → Παλιουράκια → Βρωμονέρι",
+      "sourceNote": "Μικρός άγριος όρμος στη ΝΑ ακτή, στην αλυσίδα Λεπετούς–Βρωμονέρι. Σημείωση: υπάρχουν άλλοι δύο ανώνυμοι όρμοι ανατολικότερα και το όνομα (πληθυντικός) ίσως καλύπτει όλη την ομάδα.",
+      "sourceUrls": ["https://www.visit-pilio.gr/pilio/platanias-piliou/"],
+      "metadata": {
+        "access": { "type": "hiking_path_easy", "label": "Μονοπάτι με τα πόδια", "notes": "Μονοπάτια 40–70 μ. πάνω από την παραλία· χωματόδρομος σταματά ~110 μ. μακριά." },
+        "terrain": { "types": [], "label": "—" },
+        "organized": false, "shade": false, "amenities": []
+      }
+    },
+    {
+      "nameGr": "Καμάρι Κεραμιδίου",
+      "aliases": ["Καμάρι", "Kamari"],
+      "lat": 39.57458,
+      "lon": 22.93502,
+      "region": "Thessaly", "prefecture": "Magnesia", "municipality": "Magnesia (mainland - Pelion)",
+      "coordSrc": "ανώνυμο OSM polygon, 160m από τον οικισμό Καμάρι· OSM δρόμος «Κεραμίδι - Καμάρι»",
+      "sourceNote": "Η κύρια παραλία του Κεραμιδίου στο βόρειο Πήλιο (πλευρά Αιγαίου)· χοντρή άμμος και βότσαλο με μεγάλα πλατάνια. Ονομάζεται «Καμάρι Κεραμιδίου» για να ξεχωρίζει από τα άλλα Καμάρι (Κέρκυρα, Λευκάδα, Σαντορίνη).",
+      "sourceUrls": ["https://keramidi-magnisias.gr/καμάρι/", "https://mythessaly.gr/riga-feraiou/kamari-paralia-pilio/", "https://viewsofgreece.gr/pilio-kalamos-kamari-paou-katigiorgis-mikro-pente-kryfa-diamantia-tis-magnisias/"],
+      "metadata": {
+        "access": { "type": "asphalt_road", "label": "άσφαλτος μέχρι κοντά στην παραλία", "notes": "Επαρχιακός ασφαλτόδρομος «Κεραμίδι – Καμάρι», στριφογυριστός, 4–5 χλμ από το Κεραμίδι." },
+        "terrain": { "types": ["coarse_sand", "pebbles"], "label": "χοντρή άμμος, βότσαλο" },
+        "organized": true, "shade": true, "amenities": ["beach bar", "ομπρέλες και ξαπλώστρες", "ντους", "αποδυτήρια"]
+      }
+    },
+    {
+      "nameGr": "Οβριός",
+      "aliases": ["Βρυός", "Παλιά Μιτζέλα", "Ovrios"],
+      "lat": 39.50746,
+      "lon": 23.07965,
+      "region": "Thessaly", "prefecture": "Magnesia", "municipality": "Magnesia (mainland - Pelion)",
+      "coordSrc": "ανώνυμο OSM polygon με surface=sand (554 μ., το μεγαλύτερο της παρτίδας)· δημοσιευμένες συντεταγμένες 39.506918,23.079972 (~90m)",
+      "sourceNote": "Παραλία στη ΒΑ ακτή κάτω από το Πουρί, μέσα σε πλατανόδασος· γνωστή για ελεύθερη κατασκήνωση. Καμία παροχή.",
+      "sourceUrls": ["https://ilovepelion.gr/el/destinations/epaigaiou/ovriospouriou", "https://el.wikipedia.org/wiki/Οβριός_Μαγνησίας", "https://www.topoguide.gr/mountains/thessaly/advs_pelion/pelion_eastern/pelion_eastern_Ovrios_Pouri.php"],
+      "metadata": {
+        "access": { "type": "difficult_dirt_road", "label": "Δύσβατος χωματόδρομος", "notes": "Αρκετά δύσκολος χωματόδρομος από το Πουρί (~7 χλμ)· εναλλακτικά μονοπάτι Πουρί–Οβριός." },
+        "terrain": { "types": ["fine_sand"], "label": "άμμος" },
+        "organized": false, "shade": true, "amenities": []
+      }
+    },
+    {
+      "nameGr": "Κάλα Νερά",
+      "aliases": ["Kala Nera", "Καλά Νερά"],
+      "lat": 39.30500,
+      "lon": 23.12030,
+      "region": "Thessaly", "prefecture": "Magnesia", "municipality": "Magnesia (mainland - Pelion)",
+      "coordSrc": "μπροστά από τον οικισμό Καλά Νερά (OSM κόμβος οικισμού 39.30530,23.12067) — η ίδια η παραλία ΔΕΝ είναι χαρτογραφημένη στο OSM",
+      "sourceNote": "Μεγάλη οργανωμένη παραλία του Παγασητικού μπροστά από τον ομώνυμο οικισμό, με άμμο και ψιλό λευκό βότσαλο και ευκαλύπτους/πλατάνια στον παραλιακό. Δεν υπάρχει ως polygon στο OpenStreetMap, γι' αυτό και έλειπε.",
+      "sourceUrls": ["https://www.travelstyle.gr/pilio-7-paralies-poy-tha-se-kanoyn-na-to-latrepseis-kai-to-kalokairi/", "https://my-diakopes.gr/pilio-paralia-kala-nera-pou-tha-se-trelanei/"],
+      "metadata": {
+        "access": { "type": "asphalt_road", "label": "άσφαλτος μέχρι την παραλία", "notes": "Παραλιακός ασφαλτόδρομος μέσα στον οικισμό." },
+        "terrain": { "types": ["fine_sand", "pebbles"], "label": "άμμος, ψιλό λευκό βότσαλο" },
+        "organized": true, "shade": true, "amenities": ["ξαπλώστρες και ομπρέλες", "ταβέρνες κοντά", "παροχές οικισμού κοντά"]
+      }
+    },
+    {
+      "nameGr": "Κάλαμος Πηλίου",
+      "aliases": ["Κάλαμος", "Kalamos"],
+      "lat": 39.22668,
+      "lon": 23.18263,
+      "region": "Thessaly", "prefecture": "Magnesia", "municipality": "Magnesia (mainland - Pelion)",
+      "coordSrc": "ανώνυμο OSM polygon, 400m ΒΔ του οικισμού Κάλαμος",
+      "sourceNote": "Παραλία του Παγασητικού κοντά στην Αργαλαστή, με πρόσβαση μέσα από ελαιώνες. Σημείωση: το OSM polygon φέρει fixme=beach?, οπότε το υλικό της ακτής δεν είναι απόλυτα βεβαιωμένο. Ονομάζεται «Κάλαμος Πηλίου» για να ξεχωρίζει από τον Κάλαμο Ευβοίας.",
+      "sourceUrls": ["https://viewsofgreece.gr/pilio-kalamos-kamari-paou-katigiorgis-mikro-pente-kryfa-diamantia-tis-magnisias/", "https://www.visit-pilio.gr/pilio/kalamos-pelion-greece/"],
+      "metadata": {
+        "access": { "type": "asphalt_road", "label": "άσφαλτος μέχρι κοντά στην παραλία", "notes": "Παραλιακός ασφαλτόδρομος από την Αργαλαστή." },
+        "terrain": { "types": ["fine_sand", "pebbles"], "label": "άμμος, βότσαλο" },
+        "organized": false, "shade": false, "amenities": ["ταβέρνες κοντά", "ενοικιαζόμενα δωμάτια κοντά"]
+      }
+    },
+    {
+      "nameGr": "Μεγάλη Πάου",
+      "aliases": ["Megali Paou"],
+      "lat": 39.20311,
+      "lon": 23.19633,
+      "region": "Thessaly", "prefecture": "Magnesia", "municipality": "Magnesia (mainland - Pelion)",
+      "coordSrc": "OSM way 740974680 (160 μ., ο μεγάλος όρμος)· ο οικισμός Πάου κατά el.wikipedia στο 39.203528,23.196639",
+      "sourceNote": "Ο μεγαλύτερος από τους δύο όρμους του Πάου κοντά στην Αργαλαστή, με ψιλό βότσαλο.",
+      "sourceUrls": ["https://el.wikipedia.org/wiki/Πάου_Μαγνησίας", "https://ilovepelion.gr/el/destinations/eppagasitikos/megalipaou"],
+      "metadata": {
+        "access": { "type": "asphalt_road", "label": "άσφαλτος μέχρι κοντά στην παραλία", "notes": "Τοπικός ασφαλτόδρομος από Αργαλαστή προς Χόρτο (~6 χλμ)." },
+        "terrain": { "types": ["pebbles"], "label": "ψιλό βότσαλο" },
+        "organized": false, "shade": false, "amenities": []
+      }
+    },
+    {
+      "nameGr": "Μικρή Πάου",
+      "aliases": ["Mikri Paou"],
+      "lat": 39.20691,
+      "lon": 23.19329,
+      "region": "Thessaly", "prefecture": "Magnesia", "municipality": "Magnesia (mainland - Pelion)",
+      "coordSrc": "OSM way 740974681 (27 μ., ο μικρός όρμος)",
+      "sourceNote": "Μικρός όρμος-τσέπη βόρεια της Μεγάλης Πάου, με πλακέ πέτρες και χωρίς παροχές.",
+      "sourceUrls": ["https://ilovepelion.gr/el/destinations/eppagasitikos/mikripaou"],
+      "metadata": {
+        "access": { "type": "passable_dirt_road", "label": "Άσφαλτος και τελικό χωμάτινο τμήμα", "notes": "Από Αργαλαστή άσφαλτος και ~2,5 χλμ βατός χωματόδρομος· τα τελευταία ~80 μ. σε χωματόδρομο." },
+        "terrain": { "types": ["pebbles", "large_stones"], "label": "βότσαλο, πλακέ πέτρες" },
+        "organized": false, "shade": false, "amenities": []
+      }
+    }
+  ]
+}
