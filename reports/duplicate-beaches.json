@@ -1,11 +1,12 @@
 {
- "generatedAt": "2026-07-25T15:14:19.100Z",
+ "generatedAt": "2026-07-25T21:32:47.742Z",
  "scanned": 2842,
  "maxM": 150,
  "counts": {
   "certain": 1,
   "likely": 4,
-  "proximityOnly": 17
+  "proximityOnly": 17,
+  "sameNameFar": 2
  },
  "certain": [
   {
@@ -605,6 +606,46 @@
    "region": "south-aegean-symi",
    "richerId": 2472,
    "poorerId": 2466
+  }
+ ],
+ "sameNameFar": [
+  {
+   "region": "south-aegean-astypalaia",
+   "distanceM": 1704,
+   "a": {
+    "id": 2248,
+    "name": "Στενό",
+    "lat": 36.57797,
+    "lon": 26.36681,
+    "score": 7
+   },
+   "b": {
+    "id": 3092,
+    "name": "Στενό",
+    "lat": 36.5664406,
+    "lon": 26.3542429,
+    "score": 4
+   },
+   "resolution": "unresolved — check which member sits on the OSM beach of this name (scripts/auditPinVsOsm.mjs), then confirm what beach is actually at the other coordinate before merging or deleting"
+  },
+  {
+   "region": "thessaly-alonissos",
+   "distanceM": 8524,
+   "a": {
+    "id": 2597,
+    "name": "Μεγάλη Άμμος",
+    "lat": 39.181275,
+    "lon": 23.878219,
+    "score": 5
+   },
+   "b": {
+    "id": 3093,
+    "name": "Μεγάλη Άμμος",
+    "lat": 39.2315332,
+    "lon": 23.9529184,
+    "score": 4
+   },
+   "resolution": "unresolved — check which member sits on the OSM beach of this name (scripts/auditPinVsOsm.mjs), then confirm what beach is actually at the other coordinate before merging or deleting"
   }
  ]
 }

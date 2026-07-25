@@ -137,6 +137,32 @@ certain.sort((x, y) => x.distanceM - y.distanceM);
 likely.sort((x, y) => x.distanceM - y.distanceM);
 proximityOnly.sort((x, y) => x.distanceM - y.distanceM);
 
+// Same core name in the same region at ANY distance. This is the bucket the pin
+// audit was really seeing: a duplicate whose second copy also carries a bad pin
+// lands kilometres away, so no proximity radius can catch it. It is NOT a verdict
+// — sharing a beach name within one island is ordinary in Greece — so each pair
+// is reported with the OSM tie-break: whichever member sits on the OSM beach of
+// that name is the corroborated one.
+const sameNameFar = [];
+for (const [regionId, list] of byRegion) {
+  for (let i = 0; i < list.length; i++) {
+    for (let j = i + 1; j < list.length; j++) {
+      const a = list[i]; const b = list[j];
+      if (!core(a.name) || core(a.name) !== core(b.name)) continue;
+      const d = distM(a.lat, a.lon, b.lat, b.lon);
+      if (d <= MAX_M) continue; // already covered above
+      sameNameFar.push({
+        region: regionId,
+        distanceM: Math.round(d),
+        a: { id: a.id, name: a.name, lat: a.lat, lon: a.lon, score: score(a.richness) },
+        b: { id: b.id, name: b.name, lat: b.lat, lon: b.lon, score: score(b.richness) },
+        resolution: 'unresolved — check which member sits on the OSM beach of this name (scripts/auditPinVsOsm.mjs), then confirm what beach is actually at the other coordinate before merging or deleting',
+      });
+    }
+  }
+}
+sameNameFar.sort((x, y) => x.distanceM - y.distanceM);
+
 const show = (label, rows, limit) => {
   console.log(`\n${label}: ${rows.length}`);
   rows.slice(0, limit).forEach((r) => {
@@ -151,12 +177,20 @@ show('CERTAIN duplicates (<=60 m + same core name)', certain, 40);
 show('LIKELY duplicates (name link, <=' + MAX_M + ' m)', likely, 25);
 show('PROXIMITY ONLY (close but unrelated names — probably two real beaches)', proximityOnly, 12);
 
+console.log(`\nSAME NAME, FAR APART (same region, >${MAX_M} m): ${sameNameFar.length}`);
+sameNameFar.forEach((r) => console.log(
+  `   ${r.distanceM} m  #${r.a.id} "${r.a.name}"  <->  #${r.b.id} "${r.b.name}"  [${r.region}]`));
+if (sameNameFar.length) {
+  console.log('   ^ not a verdict: sharing a beach name within one island is ordinary.');
+  console.log('     Resolve by asking which member OSM corroborates, then what is at the other point.');
+}
+
 if (OUT) {
   writeFileSync(OUT, JSON.stringify({
     generatedAt: new Date().toISOString(),
     scanned: all.length, maxM: MAX_M,
-    counts: { certain: certain.length, likely: likely.length, proximityOnly: proximityOnly.length },
-    certain, likely, proximityOnly,
+    counts: { certain: certain.length, likely: likely.length, proximityOnly: proximityOnly.length, sameNameFar: sameNameFar.length },
+    certain, likely, proximityOnly, sameNameFar,
   }, null, 1), 'utf8');
   console.log(`\nwrote ${OUT}`);
 }
