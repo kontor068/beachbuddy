@@ -21,6 +21,7 @@ import { PrivacyConsentBanner } from './components/PrivacyConsentBanner';
 import { MapLoadBoundary } from './components/MapLoadBoundary';
 import { LegalFooter } from './components/LegalFooter';
 import { BeachSearcherHome, type DirectoryCategory } from './components/BeachSearcherHome';
+import { LandingView } from './components/landing/LandingView';
 
 // Hooks & Utils
 import { useBeaches } from './hooks/useBeaches';
@@ -59,6 +60,7 @@ import {
   getSelectedDaySentencePrefix,
   isSelectedDateToday,
 } from './utils/dateLabels';
+import { athensNow, toAthensWallClock, wallClockDayKey } from './utils/athensTime';
 import { getTopPickTiming, getTopPickTimingLabel, topPickTimingPriority } from './utils/topPickTiming';
 import { rotateEquivalentTopPicks } from './utils/topPickVariety';
 import { getActiveWeatherFixtureScenario } from './utils/weatherFixtures';
@@ -120,7 +122,7 @@ const getMobileMapDayLabel = (
   date: Date,
   language: LanguageCode,
   t: Translation,
-  now: Date = new Date()
+  now: Date = athensNow()
 ): string => {
   const locale = t.locale || languageToLocale(language);
   const offset = getSelectedDayOffset(date, now);
@@ -1170,7 +1172,7 @@ const getGeneralConditionsHelper = (
   waveHeightM?: number,
   selectedDate?: Date
 ): string => {
-  const sentenceDay = getSelectedDaySentencePrefix(selectedDate, new Date(), language);
+  const sentenceDay = getSelectedDaySentencePrefix(selectedDate, athensNow(), language);
   void waveHeightM;
   const wind = windLabel.toLocaleLowerCase();
   const copy = getLocalizedCopy(language, {
@@ -1248,19 +1250,40 @@ const getBeachHourForecast = (forecast?: DailyForecast) => {
   return daytime.length >= 3 ? daytime : forecast.hourly.slice(0, 12);
 };
 
-const getUpcomingBeachHourForecast = (forecast?: DailyForecast, now: Date = new Date()) => (
+const getUpcomingBeachHourForecast = (forecast?: DailyForecast, now: Date = athensNow()) => (
   getBeachHourForecast(forecast).filter(item => item.dt * 1000 > now.getTime())
 );
 
-const getRainRiskSummary = (forecast?: DailyForecast, now: Date = new Date()): {
+// Rain is judged on the hours you can still be caught in, which includes the hour
+// we are currently inside — it started in the past but is still happening, so
+// "it is raining right now" must not be filtered away as a passed hour.
+const getRainRelevantHourForecast = (forecast?: DailyForecast, now: Date = athensNow()) => (
+  getBeachHourForecast(forecast).filter(item => item.dt * 1000 + 3_600_000 > now.getTime())
+);
+
+const getRainRiskSummary = (forecast?: DailyForecast, now: Date = athensNow()): {
   hasRainRisk: boolean;
   allBeachHoursRainy: boolean;
+  isRainingNow: boolean;
   rainyTimes: string[];
   label: string;
 } => {
   const allBeachHours = getBeachHourForecast(forecast);
-  const beachHours = getUpcomingBeachHourForecast(forecast, now);
+  const beachHours = getRainRelevantHourForecast(forecast, now);
   const rainyHours = beachHours.filter(hasHourlyRainRisk);
+  // "It is raining now" is read from the full hourly series, not just the 10–18
+  // window, and on the same 8–21 window as the per-beach advisory: someone
+  // reading this at 09:00 or 19:30 can still be in the water.
+  const currentHourItem = (forecast?.hourly || []).find(item =>
+    item.dt * 1000 <= now.getTime() && now.getTime() < item.dt * 1000 + 3_600_000
+  );
+  const currentHour = currentHourItem ? new Date(currentHourItem.dt * 1000).getHours() : -1;
+  const isRainingNow = Boolean(
+    currentHourItem &&
+    currentHour >= 8 &&
+    currentHour <= 21 &&
+    hasHourlyRainRisk(currentHourItem)
+  );
   const weatherText = `${forecast?.weather?.main || ''} ${forecast?.weather?.description || ''}`.toLowerCase();
   const hasDailyRainIcon = allBeachHours.length === 0 && /rain|storm|thunder|drizzle|shower/.test(weatherText);
   const formatHour = (item: ForecastItem) => new Date(item.dt * 1000).toLocaleTimeString('el-GR', {
@@ -1274,12 +1297,13 @@ const getRainRiskSummary = (forecast?: DailyForecast, now: Date = new Date()): {
   return {
     hasRainRisk,
     allBeachHoursRainy: beachHours.length > 0 && rainyHours.length === beachHours.length,
+    isRainingNow,
     rainyTimes,
     label: rainyTimes.length > 0 ? rainyTimes.slice(0, 4).join(', ') : '',
   };
 };
 
-const getHourlyWindIncreaseSummary = (forecast?: DailyForecast, now: Date = new Date()): {
+const getHourlyWindIncreaseSummary = (forecast?: DailyForecast, now: Date = athensNow()): {
   hasIncrease: boolean;
   maxBeaufort: number;
   label: string;
@@ -1314,12 +1338,18 @@ const getRainRiskCopy = (
   selectedDate?: Date
 ): { title: string; body: string } => {
   const hasSpecificTimes = summary.label.length > 0;
-  const day = getSelectedDayPrefix(selectedDate, new Date(), language);
-  const sentenceDay = getSelectedDaySentencePrefix(selectedDate, new Date(), language);
+  const day = getSelectedDayPrefix(selectedDate, athensNow(), language);
+  const sentenceDay = getSelectedDaySentencePrefix(selectedDate, athensNow(), language);
   const lowerSentenceDay = sentenceDay.toLocaleLowerCase();
+
+  // More than one rainy hour left means the rain is not a passing minute — worth
+  // naming the hours even in the "raining now" copy.
+  const hasMoreRainAhead = summary.rainyTimes.length > 1;
 
   const copy = getLocalizedCopy(language, {
     en: {
+      nowTitle: 'It is raining right now',
+      nowBody: `It is raining right now, so it is best not to stay in the sea until it passes.${hasMoreRainAhead ? ` The forecast shows more rain in the hours ahead (${summary.label}).` : ''}`,
       allTitle: 'Swimming is not recommended during the main beach hours because of rain',
       rainTitle: () => `Rain may affect the beach plan ${day}`,
       allBody: 'The forecast shows rain during the main beach hours, so it is best to avoid staying in the sea during that window.',
@@ -1327,6 +1357,8 @@ const getRainRiskCopy = (
       genericBody: 'Note that the day has a rain signal in the forecast. Beaches may be fine for wind and waves, but the recommendation only applies to drier windows.',
     },
     gr: {
+      nowTitle: 'Βρέχει τώρα',
+      nowBody: `Βρέχει αυτή την ώρα, οπότε καλό είναι να μη μένεις στη θάλασσα μέχρι να περάσει.${hasMoreRainAhead ? ` Η πρόγνωση δείχνει βροχή και στη συνέχεια (${summary.label}).` : ''}`,
       allTitle: 'Δεν προτείνεται μπάνιο στις βασικές ώρες λόγω βροχής',
       rainTitle: () => `Προσοχή στη βροχή ${day}`,
       allBody: `Η πρόγνωση δείχνει βροχή στις βασικές ώρες παραλίας, οπότε ${lowerSentenceDay} καλό είναι να αποφεύγεις την παραμονή στη θάλασσα σε αυτό το διάστημα.`,
@@ -1334,6 +1366,8 @@ const getRainRiskCopy = (
       genericBody: 'Πρόσεξε όμως ότι υπάρχει ένδειξη βροχής στην πρόγνωση. Οι παραλίες μπορεί να είναι οκ από άνεμο/κύμα, αλλά η σύσταση ισχύει μόνο για στεγνά διαστήματα.',
     },
     fr: {
+      nowTitle: 'Il pleut en ce moment',
+      nowBody: `Il pleut en ce moment, mieux vaut donc ne pas rester dans la mer le temps que ça passe.${hasMoreRainAhead ? ` La prévision indique encore de la pluie dans les heures qui viennent (${summary.label}).` : ''}`,
       allTitle: 'Baignade non recommandée aux heures principales à cause de la pluie',
       rainTitle: () => `La pluie peut affecter le plan plage ${day}`,
       allBody: 'La prévision indique de la pluie aux heures principales de plage, il vaut donc mieux éviter de rester dans la mer sur ce créneau.',
@@ -1341,6 +1375,8 @@ const getRainRiskCopy = (
       genericBody: 'La journée présente un risque de pluie. Les plages peuvent être correctes côté vent et vagues, mais la recommandation vaut seulement sur les créneaux plus secs.',
     },
     de: {
+      nowTitle: 'Es regnet gerade',
+      nowBody: `Es regnet gerade, bleibe daher besser nicht im Wasser, bis es vorbei ist.${hasMoreRainAhead ? ` Die Vorhersage zeigt auch in den nächsten Stunden Regen (${summary.label}).` : ''}`,
       allTitle: 'Schwimmen ist zu den Haupt-Strandzeiten wegen Regen nicht empfohlen',
       rainTitle: () => `Regen kann den Strandplan ${day} beeinflussen`,
       allBody: 'Die Vorhersage zeigt Regen zu den Haupt-Strandzeiten, bleibe in diesem Zeitfenster daher besser nicht im Wasser.',
@@ -1348,6 +1384,8 @@ const getRainRiskCopy = (
       genericBody: 'Die Vorhersage zeigt ein Regensignal. Für Wind und Wellen kann es passen, aber die Empfehlung gilt nur für trockenere Zeitfenster.',
     },
     it: {
+      nowTitle: 'Sta piovendo ora',
+      nowBody: `Sta piovendo in questo momento, quindi è meglio non restare in mare finché non passa.${hasMoreRainAhead ? ` Le previsioni indicano pioggia anche nelle prossime ore (${summary.label}).` : ''}`,
       allTitle: 'Bagno non consigliato nelle ore principali per pioggia',
       rainTitle: () => `La pioggia può influire sul piano spiaggia ${day}`,
       allBody: 'Le previsioni indicano pioggia nelle ore principali da spiaggia, quindi è meglio evitare di restare in mare in quella fascia.',
@@ -1355,6 +1393,12 @@ const getRainRiskCopy = (
       genericBody: 'La giornata ha un segnale di pioggia. Le spiagge possono andare bene per vento e onde, ma il consiglio vale solo nelle fasce più asciutte.',
     },
   });
+
+  // Live rain wins over the forecast wording: if it is raining at this moment,
+  // "rain around 14:00, 15:00" reads as something you can still plan around.
+  if (summary.isRainingNow) {
+    return { title: copy.nowTitle, body: copy.nowBody };
+  }
 
   return {
     title: summary.allBeachHoursRainy ? copy.allTitle : copy.rainTitle(),
@@ -1611,7 +1655,7 @@ export const App: React.FC = () => {
 
   // --- Beach & Weather Data (Custom Hooks) ---
   const { allIslands, loading: beachesLoading, error: beachesError, getFilteredBeaches, ensureIslandBeachesLoaded, cacheLoadedIsland } = useBeaches(language);
-  const { selectedIsland, selectIsland, selectAdHocRegion, showValueProp, markValuePropSeen } = useLocation(allIslands);
+  const { selectedIsland, selectIsland, selectAdHocRegion, showValueProp, markValuePropSeen, showLanding, goToLanding } = useLocation(allIslands);
   // Islands offered in the browsable selector + name search. Info-only regions
   // (e.g. Milos) are SEO-only: their pages exist and resolve on a direct URL, but
   // they are never surfaced as a pickable/searchable option in the app. Resolution
@@ -1660,6 +1704,24 @@ export const App: React.FC = () => {
     }
   };
 
+  // Return to the national landing (logo / home action). Clears the committed
+  // region AND resets the URL to the localized home path, otherwise the
+  // region-sync effect (which re-reads parseBeachRegionPath) would immediately
+  // re-select the region the URL still pointed at and bounce us off the landing.
+  const handleGoHome = () => {
+    goToLanding();
+    detailRequestRef.current += 1;
+    setDetailDataStatus('idle');
+    setDetailBeach(null);
+    setView('home');
+    if (typeof window !== 'undefined') {
+      const homePath = language === 'gr' ? '/el/' : '/';
+      if (window.location.pathname !== homePath) {
+        window.history.pushState({ view: 'home' }, '', homePath);
+      }
+    }
+  };
+
   // --- Functional State ---
   const [selectedFilters, setSelectedFilters] = useState<FilterKey[]>([]);
   const [sortBy, setSortBy] = useState<SortOption>('protected');
@@ -1676,7 +1738,7 @@ export const App: React.FC = () => {
   // expensive beach re-render instead of blocking each frame of the scrub.
   const deferredSelectedHourDt = React.useDeferredValue(selectedHourDt);
   const hasUserSelectedSortRef = useRef(false);
-  const [topPickClock, setTopPickClock] = useState(() => Date.now());
+  const [topPickClock, setTopPickClock] = useState(() => athensNow().getTime());
   const [beachSearchQuery, setBeachSearchQuery] = useState('');
   const deferredBeachSearchQuery = React.useDeferredValue(beachSearchQuery);
   const [directorySearchSuggestions, setDirectorySearchSuggestions] = useState<DirectorySearchSuggestion[]>([]);
@@ -1855,7 +1917,7 @@ export const App: React.FC = () => {
   const locationRefinementRequestRef = useRef(0);
 
   useEffect(() => {
-    const intervalId = window.setInterval(() => setTopPickClock(Date.now()), 5 * 60 * 1000);
+    const intervalId = window.setInterval(() => setTopPickClock(athensNow().getTime()), 5 * 60 * 1000);
     return () => window.clearInterval(intervalId);
   }, []);
 
@@ -3171,8 +3233,8 @@ export const App: React.FC = () => {
   const handleChatSend = async (msg: string, model: string = 'google') => {
     if (!selectedIsland) return;
     
-    const userMsg = { id: Date.now().toString(), text: msg, sender: 'user' };
-    const loadingId = 'bot-loading-' + Date.now();
+    const userMsg = { id: Date.now().toString(), text: msg, sender: 'user' }; // athens-clock-exempt: unique id, not a time-of-day
+    const loadingId = 'bot-loading-' + Date.now(); // athens-clock-exempt: unique id, not a time-of-day
     setChatMessages(prev => [...prev, userMsg, { id: loadingId, text: '...', sender: 'bot' }]);
 
     try {
@@ -3312,7 +3374,9 @@ export const App: React.FC = () => {
   const mapHourSlots = useMemo(() => {
     const hourly = baseDailyForecast?.hourly;
     if (!hourly || hourly.length === 0) return [];
-    const now = new Date();
+    // Greek wall clock: forecast hours are Greek local, so "now" must be too —
+    // otherwise a viewer abroad starts the slider on the wrong hour.
+    const now = athensNow();
     const day = baseDailyForecast?.date;
     const isToday = day ? isSameCalendarDay(day, now) : false;
     const daytime = hourly
@@ -3337,7 +3401,7 @@ export const App: React.FC = () => {
   const defaultHourDt = useMemo(() => {
     if (mapHourSlots.length === 0) return null;
     const day = baseDailyForecast?.date;
-    const isToday = day ? isSameCalendarDay(day, new Date()) : false;
+    const isToday = day ? isSameCalendarDay(day, athensNow()) : false;
     if (isToday) return mapHourSlots[0].dt;
     return mapHourSlots[0].dt;
   }, [mapHourSlots, baseDailyForecast]);
@@ -3509,7 +3573,7 @@ export const App: React.FC = () => {
     });
     const currentSlot = mapHourSlots[index];
     const nextSlot = mapHourSlots[index + 1];
-    const dayLabel = getSelectedDaySentencePrefix(new Date(currentSlot.dt * 1000), new Date(), language);
+    const dayLabel = getSelectedDaySentencePrefix(new Date(currentSlot.dt * 1000), athensNow(), language);
     const windowLabel = nextSlot
       ? `${formatHour(currentSlot.dt)}–${formatHour(nextSlot.dt)}`
       : formatHour(currentSlot.dt);
@@ -3812,7 +3876,7 @@ export const App: React.FC = () => {
     const beaufort = selectedForecast ? getBeaufortLevel(selectedForecast.wind.speed * 3.6) : 0;
     const varied = rotateEquivalentTopPicks(recommendedSuitableBeaches, {
       beaufort,
-      dateKey: selectedForecast ? selectedForecast.date.toISOString().slice(0, 10) : '',
+      dateKey: selectedForecast ? wallClockDayKey(selectedForecast.date) : '',
       regionKey: String(selectedIsland?.id ?? ''),
     });
     return varied.slice(0, getTopRecommendationDisplayLimit(varied.length));
@@ -4806,7 +4870,7 @@ export const App: React.FC = () => {
   const recommendationDisplayMode = listRecommendationDisplayMode;
   const recommendationModeCopy = homeCopy.recommendationMode[recommendationDisplayMode];
   const protectedSortLabel = homeCopy.lessExposedSortLabel[language];
-  const protectedSortDay = getSelectedDayPrefix(selectedForecast?.date, new Date(), language);
+  const protectedSortDay = getSelectedDayPrefix(selectedForecast?.date, athensNow(), language);
   const protectedSortEmptyCopy = isNoIdealFallbackSortOnly
     ? getLocalizedCopy(language, {
       en: {
@@ -4878,7 +4942,7 @@ export const App: React.FC = () => {
     : recommendationModeCopy.helper[language];
   const selectedDayDate = selectedForecast?.date;
   const recommendationModeTitle = (() => {
-    const day = getSelectedDayPrefix(selectedDayDate, new Date(), language);
+    const day = getSelectedDayPrefix(selectedDayDate, athensNow(), language);
     const copy = getLocalizedCopy(language, {
       en: {
         caution: `More comfortable options ${day}`,
@@ -4925,8 +4989,8 @@ export const App: React.FC = () => {
     ? getTopPickTimingLabel(headerTopBeach.bestBeachTime, selectedDayDate, language, topPickNow)
     : undefined;
   const headerTopIsAvoidDay = headerTopBeach?.swimmingComfort === 'avoid_swimming';
-  const selectedDayPrefix = getSelectedDayPrefix(selectedDayDate, new Date(), language);
-  const selectedDaySentencePrefix = getSelectedDaySentencePrefix(selectedDayDate, new Date(), language);
+  const selectedDayPrefix = getSelectedDayPrefix(selectedDayDate, athensNow(), language);
+  const selectedDaySentencePrefix = getSelectedDaySentencePrefix(selectedDayDate, athensNow(), language);
   const hourlyWindIncreaseCopy = currentBeaufort <= 3 && hourlyWindIncreaseSummary.hasIncrease
     ? getLocalizedCopy(language, {
       en: `Later the wind rises to ${hourlyWindIncreaseSummary.maxBeaufort} Beaufort around ${hourlyWindIncreaseSummary.label}, so some beaches will feel more comfortable than others.`,
@@ -5019,7 +5083,10 @@ export const App: React.FC = () => {
     if (headerTopTimingLabel) return copy.timed;
     return copy.mild;
   })();
-  const headerTopDescription = withRainRiskContext(headerTopDescriptionBase, rainRiskSummary, rainRiskCopy);
+  // The rain caveat used to be appended here; it now has its own alert at the top
+  // of the home, so the top-pick description stays about the beach itself and the
+  // same sentence is not printed twice on one screen.
+  const headerTopDescription = headerTopDescriptionBase;
   const visitTimeLabel = getLocalizedCopy(language, {
     en: 'Best time',
       gr: 'Καλύτερη ώρα',
@@ -5878,11 +5945,12 @@ export const App: React.FC = () => {
       <Header
         language={language} onLanguageChange={handleLanguageChange}
         selectedIslandName={selectedIsland ? selectedIsland.name[language] : "..."}
-        selectedIslandMeta={headerWeatherMeta}
+        selectedIslandMeta={showLanding ? undefined : headerWeatherMeta}
         selectedDate={selectedDayDate}
         onOpenIslandSelector={handleOpenIslandSelector} isWinter={isWinter}
+        onGoHome={handleGoHome}
         onOpenFavorites={() => handleMobileTab('favorites')}
-        forecastSlot={showHeaderForecast ? (
+        forecastSlot={showHeaderForecast && !showLanding ? (
           <>
             {isStartupLocationPromptOpen && (
               <StartupLocationPrompt
@@ -5898,6 +5966,11 @@ export const App: React.FC = () => {
               showLandingValueProp={showValueProp}
               allIslands={allIslands}
               regionWindNote={regionWindVariationNote?.text}
+              rainWarning={
+                selectedIsland && rainRiskSummary.hasRainRisk && !isUnsafeWinter && !isStaleBlocked && !isInfoOnlyRegion
+                  ? { title: rainRiskCopy.title, body: rainRiskCopy.body, isNow: rainRiskSummary.isRainingNow }
+                  : undefined
+              }
               searchQuery={beachSearchQuery}
               activeCategory={directoryActiveCategory}
               sortBy={sortBy}
@@ -6151,6 +6224,25 @@ export const App: React.FC = () => {
         ) : undefined}
       />
 
+      {showLanding ? (
+        <LandingView
+          language={language}
+          allIslands={allIslands}
+          searchQuery={beachSearchQuery}
+          searchSuggestions={directorySearchSuggestions}
+          isSearchSuggesting={isDirectorySearchSuggesting}
+          onSearchChange={setBeachSearchQuery}
+          onSearchSubmit={handleDirectorySearchSubmit}
+          onSearchSuggestionSelect={handleDirectorySearchSuggestionSelect}
+          onShowNearbyBeaches={() => { void handleShowNearbyBeaches(); }}
+          isFindingLocation={isFindingNearest}
+          locationError={findNearestError}
+          onSelectIsland={handleRegionSelected}
+          onOpenIslandSelector={handleOpenIslandSelector}
+        />
+      ) : (
+      <>
+
       {showRecommendationPreviewSection && forecast?.[selectedDayIndex] && !isUnsafeWinter && !showHeaderForecast && recommendationSectionBeaches.length > 0 && !isInfoOnlyRegion && (
         <section className="relative z-20 px-3 pb-3 pt-1 sm:px-4 sm:pb-5 sm:pt-0" aria-label={recommendationModeTitle}>
           <div className="mx-auto max-w-6xl">
@@ -6358,7 +6450,7 @@ export const App: React.FC = () => {
                     </p>
                     {lastUpdated && (
                       <p className="mt-1 text-xs font-bold text-slate-500">
-                        {homeCopy.lastForecastAt[language](lastUpdated.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }))}
+                        {homeCopy.lastForecastAt[language](toAthensWallClock(lastUpdated).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }))}
                       </p>
                     )}
                   </div>
@@ -6620,6 +6712,9 @@ export const App: React.FC = () => {
             </div>
 
       </main>
+      )}
+
+      </>
       )}
 
       <div className={`${isDesktopViewport ? 'relative z-[70] bg-transparent' : 'relative z-50 bg-transparent pb-[calc(5rem+env(safe-area-inset-bottom))]'}`}>

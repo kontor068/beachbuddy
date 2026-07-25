@@ -3,7 +3,8 @@ import {
   ArrowLeft, MapPin, Wind, Waves, Thermometer, Droplets, Leaf,
   Clock, Sun, Sunset, Backpack,
   Navigation, Share2, Heart, ChevronRight, ThumbsUp, ThumbsDown, CheckCircle2,
-  Camera, ExternalLink, Accessibility, AlertTriangle, Tent, Ticket, Euro, ScrollText, Compass, Ship, BadgeCheck
+  Camera, ExternalLink, Accessibility, AlertTriangle, Tent, Ticket, Euro, ScrollText, Compass, Ship, BadgeCheck,
+  CloudRain
 } from 'lucide-react';
 import {
   Beach, LanguageCode, Translation, WindDirection,
@@ -34,7 +35,7 @@ import { WaveHeightGraphic, type HourlyWavePoint } from '../components/WaveHeigh
 import { resolveCoveAwareWaveHeightM } from '../utils/coveWaveGuard';
 import { CoveConditionsCard } from '../components/CoveConditionsCard';
 import { hasBoatOnlyAccess } from '../utils/access';
-import { getBeachCertification } from '../utils/certifiedBeaches';
+import { getBeachCertification, localizeCertificationNote } from '../utils/certifiedBeaches';
 import { DayPlanSection, type DayPlanStop } from '../components/DayPlanSection';
 import { generateBeachExplanation as generateUiBeachExplanation } from '../utils/beachExplanation';
 import { describeSimpleWindSuitability, describeWindExposure } from '../utils/windExposureCopy';
@@ -65,6 +66,7 @@ import { getSunsetTime } from '../utils/sunTimes';
 import { sunsetOverSeaWindow, sunsetSeasonRange, type SunsetOverSea } from '../utils/sunsetOverSea';
 import { buildPhotoSuggestionUrl } from '../utils/photoContribution';
 import { getSelectedDayPrefix, getSelectedHourPrefix } from '../utils/dateLabels';
+import { athensNow, toAthensWallClock, wallClockDayKey } from '../utils/athensTime';
 import { getBoatRideMotionLevel } from '../utils/boatRideMotion';
 import { getRainSwimAdvisory } from '../utils/rainAdvisory';
 import { summarizeLocalWindBehavior } from '../utils/windClimatology';
@@ -234,7 +236,7 @@ const getSeaConditionDisplay = (
   enclosedCove = false
 ) => {
   const hour = getSelectedHourPrefix(selectedHour, language);
-  const day = hour ?? getSelectedDayPrefix(selectedDate, new Date(), language);
+  const day = hour ?? getSelectedDayPrefix(selectedDate, athensNow(), language);
   const momentSuffix = hour ? ` ${day}` : '';
   const exposedWindLabel = {
     en: `More exposed to wind${momentSuffix}`,
@@ -690,10 +692,10 @@ export const BeachDetailPage: React.FC<BeachDetailPageProps> = ({
   const storyLocale: 'gr' | 'en' = language === 'gr' ? 'gr' : 'en';
   const guideLinks = useMemo(() => getIslandGuideLinks(allBeaches, regionId, language), [allBeaches, regionId, language]);
   const selectedDate = dayForecast.date;
-  const selectedDayPrefix = getSelectedDayPrefix(selectedDate, new Date(), language);
+  const selectedDayPrefix = getSelectedDayPrefix(selectedDate, athensNow(), language);
   // Read-back: don't re-ask for feedback on the same beach + day we already have it for
   // (roadmap #7 — the buttons used to reappear after reload because only local state gated them).
-  const feedbackDateKey = selectedDate ? selectedDate.toISOString().slice(0, 10) : '';
+  const feedbackDateKey = selectedDate ? wallClockDayKey(selectedDate) : '';
   const feedbackAlreadyGiven = useMemo(
     () => getFeedback().some(f => f.beachId === beach.id && f.conditions?.date === feedbackDateKey),
     [beach.id, feedbackDateKey]
@@ -762,6 +764,8 @@ export const BeachDetailPage: React.FC<BeachDetailPageProps> = ({
           : { year: 'numeric', month: 'long' });
       })()
     : null;
+  // Our first-person note, rendered in the visitor's language (falls back gr -> en).
+  const certifiedNote = localizeCertificationNote(certification?.note, language);
 
   // Organized campsites within ~2.5 km (OSM). Detail metadata carries the full list (≤3);
   // the top-level field may be the summary-trimmed single — prefer whichever is richer.
@@ -812,7 +816,7 @@ export const BeachDetailPage: React.FC<BeachDetailPageProps> = ({
       exposureLevel,
       beaufort: getBeaufortLevel(windSpeedKmh),
       windDir,
-      date: selectedDate ? selectedDate.toISOString().slice(0, 10) : undefined,
+      date: selectedDate ? wallClockDayKey(selectedDate) : undefined,
     });
     setFeedbackSubmitted(true);
   };
@@ -1451,7 +1455,7 @@ export const BeachDetailPage: React.FC<BeachDetailPageProps> = ({
               <p className="mt-0.5 text-sm font-semibold leading-snug text-slate-600">{copy.conditionsUnavailableBody[language]}</p>
               {lastForecastAt && (
                 <p className="mt-1 text-xs font-bold text-slate-500">
-                  {copy.lastForecastAt[language](lastForecastAt.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }))}
+                  {copy.lastForecastAt[language](toAthensWallClock(lastForecastAt).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }))}
                 </p>
               )}
             </div>
@@ -1796,19 +1800,39 @@ export const BeachDetailPage: React.FC<BeachDetailPageProps> = ({
           );
         })()}
 
-        {/* 4c. Rain warning — name the rainy hours and advise leaving the sea then */}
+        {/* 4c. Rain warning — name the rainy hours and advise leaving the sea then.
+             Rain happening right now is a live safety warning (amber), rain later
+             today is information you can plan around (blue). */}
         {showConditions && rainAdvisory && (
           <section
-            className="flex items-start gap-3 rounded-[1.75rem] border border-sky-200/80 bg-sky-50/70 p-4 shadow-sm shadow-sky-900/5"
+            className={`flex items-start gap-3 rounded-[1.75rem] border p-4 shadow-sm ${
+              rainAdvisory.isRainingNow
+                ? 'border-amber-300/80 bg-amber-50/80 shadow-amber-900/5'
+                : 'border-sky-200/80 bg-sky-50/70 shadow-sky-900/5'
+            }`}
             role="alert"
             data-nosnippet="true"
           >
-            <div className="shrink-0 rounded-2xl bg-sky-500 p-2.5 text-white shadow-sm">
-              <Droplets className="h-5 w-5" />
+            <div
+              className={`shrink-0 rounded-2xl p-2.5 text-white shadow-sm ${
+                rainAdvisory.isRainingNow ? 'bg-amber-500' : 'bg-sky-500'
+              }`}
+            >
+              {rainAdvisory.isRainingNow ? (
+                <CloudRain className="h-5 w-5" />
+              ) : (
+                <Droplets className="h-5 w-5" />
+              )}
             </div>
             <div className="min-w-0">
-              <h3 className="font-bold text-sky-900">{rainAdvisory.title}</h3>
-              <p className="mt-1 text-sm font-medium leading-snug text-sky-900/85">
+              <h3 className={`font-bold ${rainAdvisory.isRainingNow ? 'text-amber-900' : 'text-sky-900'}`}>
+                {rainAdvisory.title}
+              </h3>
+              <p
+                className={`mt-1 text-sm font-medium leading-snug ${
+                  rainAdvisory.isRainingNow ? 'text-amber-900/85' : 'text-sky-900/85'
+                }`}
+              >
                 {rainAdvisory.body}
               </p>
             </div>
@@ -1915,9 +1939,9 @@ export const BeachDetailPage: React.FC<BeachDetailPageProps> = ({
             <div className="min-w-0 space-y-1.5">
               <h3 className="font-bold text-teal-950">{copy.certifiedTitle[language]}</h3>
               <p className="text-sm font-semibold leading-snug text-teal-900">{copy.certifiedBody[language]}</p>
-              {certification.note && (
+              {certifiedNote && (
                 <p className="border-l-2 border-teal-300 pl-3 text-sm font-semibold italic leading-snug text-teal-800">
-                  «{certification.note}»
+                  «{certifiedNote}»
                 </p>
               )}
               <p className="text-xs font-bold text-teal-700">

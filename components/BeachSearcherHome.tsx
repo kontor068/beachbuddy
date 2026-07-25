@@ -6,6 +6,7 @@ import {
   CalendarDays,
   Check,
   ChevronDown,
+  CloudRain,
   CloudSun,
   Clock3,
   Droplets,
@@ -48,6 +49,7 @@ import {
 import { getBeachFilterDirectoryTitle } from '../utils/filterSummary';
 import { canOpenNavigation, getNavigationBadge, openNavigation } from '../utils/navigation';
 import { getSelectedDayOffset, getSelectedDayPrefix, getSelectedDaySentencePrefix } from '../utils/dateLabels';
+import { athensNow, toAthensWallClock } from '../utils/athensTime';
 import { getConsistentVisibleMapExposureLevels } from '../utils/mapExposure';
 import { hasBoatOnlyAccess, isAdventureBeach } from '../utils/access';
 import { isSunsetFacingBeach } from '../utils/beachOrientation';
@@ -105,6 +107,10 @@ interface BeachSearcherHomeProps {
   /** Plain "calmer in the X of the area today" line, when the region's per-beach
    *  winds show one side clearly calmer. Omitted when conditions are uniform. */
   regionWindNote?: string;
+  /** Rain warning for the selected day: it is unsafe to stay in the sea while it
+   *  rains, so this is surfaced at the top of the home instead of being buried
+   *  in a description line. `isNow` means the rain is falling at this moment. */
+  rainWarning?: { title: string; body: string; isNow: boolean };
   searchQuery: string;
   activeCategory: DirectoryCategory;
   sortBy: SortOption;
@@ -1009,7 +1015,7 @@ const formatDirectoryDate = (date: Date, language: LanguageCode) => {
   const dayOffset = getSelectedDayOffset(date);
 
   if (dayOffset >= 0 && dayOffset <= 2) {
-    return `${getSelectedDaySentencePrefix(date, new Date(), language)}, ${absoluteDateLabel}`;
+    return `${getSelectedDaySentencePrefix(date, athensNow(), language)}, ${absoluteDateLabel}`;
   }
 
   return absoluteDateLabel;
@@ -1022,40 +1028,41 @@ const getConditionsOverviewTitle = (language: LanguageCode, selectedDate?: Date)
     if (dayOffset === 0) return 'Σύνοψη σημερινών συνθηκών';
     if (dayOffset === 1) return 'Σύνοψη αυριανών συνθηκών';
     if (dayOffset === 2) return 'Σύνοψη μεθαυριανών συνθηκών';
-    return `Σύνοψη συνθηκών ${getSelectedDayPrefix(selectedDate, new Date(), language)}`;
+    return `Σύνοψη συνθηκών ${getSelectedDayPrefix(selectedDate, athensNow(), language)}`;
   }
 
   if (language === 'en') {
     if (dayOffset === 0) return "Today's conditions overview";
     if (dayOffset === 1) return "Tomorrow's conditions overview";
     if (dayOffset === 2) return 'Day-after-tomorrow conditions overview';
-    return `Conditions overview ${getSelectedDayPrefix(selectedDate, new Date(), language)}`;
+    return `Conditions overview ${getSelectedDayPrefix(selectedDate, athensNow(), language)}`;
   }
 
   if (language === 'fr') {
     if (dayOffset === 0) return "Conditions d'aujourd'hui";
     if (dayOffset === 1) return 'Conditions de demain';
     if (dayOffset === 2) return "Conditions d'après-demain";
-    return `Conditions ${getSelectedDayPrefix(selectedDate, new Date(), language)}`;
+    return `Conditions ${getSelectedDayPrefix(selectedDate, athensNow(), language)}`;
   }
 
   if (language === 'de') {
     if (dayOffset === 0) return 'Heutige Bedingungen';
     if (dayOffset === 1) return 'Morgige Bedingungen';
     if (dayOffset === 2) return 'Übermorgige Bedingungen';
-    return `Bedingungen ${getSelectedDayPrefix(selectedDate, new Date(), language)}`;
+    return `Bedingungen ${getSelectedDayPrefix(selectedDate, athensNow(), language)}`;
   }
 
   if (dayOffset === 0) return 'Condizioni di oggi';
   if (dayOffset === 1) return 'Condizioni di domani';
   if (dayOffset === 2) return 'Condizioni di dopodomani';
-  return `Condizioni ${getSelectedDayPrefix(selectedDate, new Date(), language)}`;
+  return `Condizioni ${getSelectedDayPrefix(selectedDate, athensNow(), language)}`;
 };
 
 const formatUpdatedAgo = (lastUpdated: Date | null | undefined, language: LanguageCode) => {
   if (!lastUpdated) return undefined;
 
   const copy = getLocalizedCopy(language, homeCopy);
+  // athens-clock-exempt: age of the forecast in real minutes, not a wall-clock reading.
   const minutes = Math.max(0, Math.round((Date.now() - lastUpdated.getTime()) / 60000));
   if (minutes < 1) return copy.updatedJustNow;
   if (minutes < 60) return copy.updatedMinutes(minutes);
@@ -1269,7 +1276,7 @@ const getTopChoiceLabel = (
   language: LanguageCode,
   selectedDate?: Date
 ): { aria: string; badge: string } => {
-  const day = getSelectedDayPrefix(selectedDate, new Date(), language);
+  const day = getSelectedDayPrefix(selectedDate, athensNow(), language);
 
   return getLocalizedCopy(language, {
     en: {
@@ -1296,7 +1303,7 @@ const getTopChoiceLabel = (
 };
 
 const getBestBeachesLabel = (language: LanguageCode, selectedDate?: Date, timePrefix?: string, beaufort?: number): string => {
-  const day = timePrefix ?? getSelectedDayPrefix(selectedDate, new Date(), language);
+  const day = timePrefix ?? getSelectedDayPrefix(selectedDate, athensNow(), language);
 
   // From 5 Bft up, the wind dominates the decision: we're no longer ranking the
   // "best" beaches but pointing to the more sheltered ones, so the framing shifts.
@@ -1324,7 +1331,7 @@ const getBestBeachesLabel = (language: LanguageCode, selectedDate?: Date, timePr
 // "best/most suitable" implies a curated subset that doesn't exist. The
 // "καταλληλότερες/best" framing is reserved for the windy regime (≥3 Bft).
 const getAllBeachesLabel = (language: LanguageCode, selectedDate?: Date, timePrefix?: string): string => {
-  const day = timePrefix ?? getSelectedDayPrefix(selectedDate, new Date(), language);
+  const day = timePrefix ?? getSelectedDayPrefix(selectedDate, athensNow(), language);
 
   return getLocalizedCopy(language, {
     en: `All beaches suitable ${day}`,
@@ -1393,7 +1400,7 @@ const buildBeachIntradayShift = (
 };
 
 const getTopRecommendationsLabel = (language: LanguageCode, selectedDate: Date | undefined, count: number, timePrefix?: string, beaufort?: number): string => {
-  const day = timePrefix ?? getSelectedDayPrefix(selectedDate, new Date(), language);
+  const day = timePrefix ?? getSelectedDayPrefix(selectedDate, athensNow(), language);
   const displayCount = Math.max(1, Math.min(3, count));
 
   if (typeof beaufort === 'number' && beaufort > 4) {
@@ -1426,7 +1433,7 @@ const getTopRecommendationsLabel = (language: LanguageCode, selectedDate: Date |
 };
 
 const getRemainingSuitableLabel = (language: LanguageCode, selectedDate?: Date, timePrefix?: string): string => {
-  const day = timePrefix ?? getSelectedDayPrefix(selectedDate, new Date(), language);
+  const day = timePrefix ?? getSelectedDayPrefix(selectedDate, athensNow(), language);
 
   return getLocalizedCopy(language, {
     en: `Other suitable beaches ${day}`,
@@ -1438,7 +1445,7 @@ const getRemainingSuitableLabel = (language: LanguageCode, selectedDate?: Date, 
 };
 
 const getTopBeachShortReason = (item: SuitableBeach, language: LanguageCode, selectedDate?: Date): string => {
-  const day = getSelectedDayPrefix(selectedDate, new Date(), language);
+  const day = getSelectedDayPrefix(selectedDate, athensNow(), language);
   const waveHeightM = item.waveHeightM;
   const copy = getLocalizedCopy(language, {
     en: {
@@ -1560,6 +1567,7 @@ export const BeachSearcherHome: React.FC<BeachSearcherHomeProps> = ({
   showLandingValueProp,
   allIslands,
   regionWindNote,
+  rainWarning,
   searchQuery,
   sortBy,
   isMobileViewport = false,
@@ -2650,7 +2658,7 @@ export const BeachSearcherHome: React.FC<BeachSearcherHomeProps> = ({
   // "βάσει πρόγνωσης HH:MM" chip instead of the quiet grey "updated X ago".
   const isSoftStaleForecast = forecastFreshness === 'soft';
   const forecastStampLabel = isSoftStaleForecast && lastUpdated
-    ? copy.forecastAt(lastUpdated.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }))
+    ? copy.forecastAt(toAthensWallClock(lastUpdated).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }))
     : updatedLabel;
   const windDirection = selectedForecast ? degToCompass(selectedForecast.wind.deg) : undefined;
   const localizedWindDirection = windDirection
@@ -2692,7 +2700,7 @@ export const BeachSearcherHome: React.FC<BeachSearcherHomeProps> = ({
   const showIslandContextStrip = Boolean(selectedIsland && islandStripPhoto);
   // Follow the selected day (today/tomorrow/…) instead of hardcoding "today", since the
   // beach count reflects the selected day's conditions, not necessarily today's.
-  const contextStripDayPrefix = getSelectedDayPrefix(selectedDate, new Date(), language);
+  const contextStripDayPrefix = getSelectedDayPrefix(selectedDate, athensNow(), language);
   // Breadcrumb-style eyebrow: region (e.g. "Κυκλάδες") is more useful than a generic
   // country label; fall back to country when the group has no mapping.
   const contextStripEyebrow = getIslandGroupLabel(selectedIsland?.group, language) ?? copy.greece;
@@ -3530,6 +3538,34 @@ export const BeachSearcherHome: React.FC<BeachSearcherHomeProps> = ({
           </div>
 
         </form>
+
+        {/* Rain warning — staying in the sea in the rain is a safety call, not a
+            comfort one, so it sits above the map and the recommendations. Amber
+            while it is actually raining, blue when the rain is still ahead. */}
+        {rainWarning && (
+          <div
+            role="alert"
+            className={`mt-3 flex items-start gap-3 rounded-2xl border p-3 text-left shadow-sm sm:p-3.5 ${
+              rainWarning.isNow
+                ? 'border-amber-300 bg-amber-50/92 text-amber-900 shadow-amber-900/5'
+                : 'border-sky-200 bg-sky-50/90 text-sky-900 shadow-sky-900/5'
+            }`}
+          >
+            <span
+              className={`grid h-9 w-9 shrink-0 place-items-center rounded-xl text-white shadow-sm ${
+                rainWarning.isNow ? 'bg-amber-500' : 'bg-sky-500'
+              }`}
+            >
+              <CloudRain className="h-5 w-5" aria-hidden="true" />
+            </span>
+            <span className="min-w-0 flex-1">
+              <span className="block text-sm font-black leading-snug">{rainWarning.title}</span>
+              <span className="mt-0.5 block text-sm font-semibold leading-snug opacity-90">
+                {rainWarning.body}
+              </span>
+            </span>
+          </div>
+        )}
 
         {selectedIsland && mapPreview && !isMobileViewport && (
           <section
