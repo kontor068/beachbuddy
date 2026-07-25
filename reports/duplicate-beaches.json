@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-07-25T21:32:47.742Z",
+ "generatedAt": "2026-07-25T21:56:35.416Z",
  "scanned": 2842,
  "maxM": 150,
  "counts": {
@@ -626,7 +626,12 @@
     "lon": 26.3542429,
     "score": 4
    },
-   "resolution": "unresolved — check which member sits on the OSM beach of this name (scripts/auditPinVsOsm.mjs), then confirm what beach is actually at the other coordinate before merging or deleting"
+   "resolution": "unresolved — check which member sits on the OSM beach of this name (scripts/auditPinVsOsm.mjs), then confirm what beach is actually at the other coordinate before merging or deleting",
+   "resolved": {
+    "verdict": "DIFFERENT_BEACHES",
+    "action": "RENAME #3092 «Στενό» → «Μαρμάρι»",
+    "why": "Στενό means the narrow neck of land; Astypalaia's true isthmus (128 m wide) sits ~400 m from #2248, while #3092 is 1.6 km from it. #3092 is 110 m from the published Μαρμάρι position (allovergreece), and the only OSM feature naming it \"The Steno\" is a v1 English node added 2026-04-23 in a \"Road refinements\" changeset — a drive-by misnaming. Note #2241 Μαμούνια sits 325 m away and its notes already claim the Marmari/Mamounia zone, so check for overlap before adding photos."
+   }
   },
   {
    "region": "thessaly-alonissos",
@@ -645,7 +650,12 @@
     "lon": 23.9529184,
     "score": 4
    },
-   "resolution": "unresolved — check which member sits on the OSM beach of this name (scripts/auditPinVsOsm.mjs), then confirm what beach is actually at the other coordinate before merging or deleting"
+   "resolution": "unresolved — check which member sits on the OSM beach of this name (scripts/auditPinVsOsm.mjs), then confirm what beach is actually at the other coordinate before merging or deleting",
+   "resolved": {
+    "verdict": "DIFFERENT_BEACHES",
+    "action": "RENAME #3093 «Μεγάλη Άμμος» → «Στη Μεγάλη Άμμο»",
+    "why": "Alonissos reuses toponyms. #3093 is OSM way/493697014 «Στη Μεγάλη Άμμο» in the NE-coast chain we already carry separately (Καλύβια Σταματίου 640 m SW, Στροβίλι 510 m NE); #2597 is the Πατητήρι-side «Μεγάλη Άμμος» that guides place \"μετά το Τουρκονέρι\" — and Τουρκονέρι/Άγιοι Ανάργυροι are indeed its neighbours. Renaming removes the apparent duplicate without losing a real beach."
+   }
   }
  ]
 }

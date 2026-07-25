@@ -61,6 +61,24 @@ const nameRelation = (a, b) => {
   return null;
 };
 
+/**
+ * Pairs already resolved against sources, so a re-run does not re-open them.
+ * Both turned out to be DIFFERENT beaches — nothing to delete — but one carries
+ * the wrong name, which is the real defect the duplicate hunt uncovered.
+ */
+const RESOLVED = {
+  '2248|3092': {
+    verdict: 'DIFFERENT_BEACHES',
+    action: 'RENAME #3092 «Στενό» → «Μαρμάρι»',
+    why: 'Στενό means the narrow neck of land; Astypalaia\'s true isthmus (128 m wide) sits ~400 m from #2248, while #3092 is 1.6 km from it. #3092 is 110 m from the published Μαρμάρι position (allovergreece), and the only OSM feature naming it "The Steno" is a v1 English node added 2026-04-23 in a "Road refinements" changeset — a drive-by misnaming. Note #2241 Μαμούνια sits 325 m away and its notes already claim the Marmari/Mamounia zone, so check for overlap before adding photos.',
+  },
+  '2597|3093': {
+    verdict: 'DIFFERENT_BEACHES',
+    action: 'RENAME #3093 «Μεγάλη Άμμος» → «Στη Μεγάλη Άμμο»',
+    why: 'Alonissos reuses toponyms. #3093 is OSM way/493697014 «Στη Μεγάλη Άμμο» in the NE-coast chain we already carry separately (Καλύβια Σταματίου 640 m SW, Στροβίλι 510 m NE); #2597 is the Πατητήρι-side «Μεγάλη Άμμος» that guides place "μετά το Τουρκονέρι" — and Τουρκονέρι/Άγιοι Ανάργυροι are indeed its neighbours. Renaming removes the apparent duplicate without losing a real beach.',
+  },
+};
+
 const beachDir = path.join('public', 'data', 'beaches', 'app');
 const detailDir = path.join(beachDir, 'detail');
 
@@ -178,12 +196,17 @@ show('LIKELY duplicates (name link, <=' + MAX_M + ' m)', likely, 25);
 show('PROXIMITY ONLY (close but unrelated names — probably two real beaches)', proximityOnly, 12);
 
 console.log(`\nSAME NAME, FAR APART (same region, >${MAX_M} m): ${sameNameFar.length}`);
-sameNameFar.forEach((r) => console.log(
-  `   ${r.distanceM} m  #${r.a.id} "${r.a.name}"  <->  #${r.b.id} "${r.b.name}"  [${r.region}]`));
-if (sameNameFar.length) {
-  console.log('   ^ not a verdict: sharing a beach name within one island is ordinary.');
-  console.log('     Resolve by asking which member OSM corroborates, then what is at the other point.');
-}
+sameNameFar.forEach((r) => {
+  const key = `${Math.min(r.a.id, r.b.id)}|${Math.max(r.a.id, r.b.id)}`;
+  const res = RESOLVED[key];
+  r.resolved = res || null;
+  console.log(`   ${r.distanceM} m  #${r.a.id} "${r.a.name}"  <->  #${r.b.id} "${r.b.name}"  [${r.region}]`);
+  if (res) {
+    console.log(`        RESOLVED: ${res.verdict} — ${res.action}`);
+  } else {
+    console.log('        unresolved — check which member OSM corroborates, then what is at the other point');
+  }
+});
 
 if (OUT) {
   writeFileSync(OUT, JSON.stringify({
