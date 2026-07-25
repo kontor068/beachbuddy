@@ -575,6 +575,49 @@ const ENCLOSED_COVE_MIN_MAX_FETCH_KM = 1;
 const ENCLOSED_COVE_MOUTH_LONG_FETCH_KM = 8;
 const ENCLOSED_COVE_MAX_LONG_FETCH_MOUTH_SECTORS = 2;
 
+// How far the derived facing may drift from authored knowledge before the whole
+// geospatial profile is treated as describing a different piece of coast. 75° is
+// two compass points: beyond it the two are not the same shoreline in any reading.
+const GEOMETRY_FACING_CONFLICT_DEG = 75;
+
+/** Smallest angle between two compass bearings, 0-180. */
+const bearingDelta = (a: number, b: number): number => Math.abs(((a - b) % 360 + 540) % 360 - 180);
+
+/**
+ * True when the precomputed geometry describes DIFFERENT WATER than the beach
+ * actually faces.
+ *
+ * The profile builder locates a nearshore water origin by searching outward from
+ * the pin, and near an indented coast it can latch onto the wrong body — an
+ * adjacent harbour notch, or across a headland. The pin is then perfectly
+ * correct (OSM corroborates 2,129 of our pins to the metre) while every derived
+ * number — facing, per-sector fetch, enclosure — belongs to another bay.
+ *
+ * Detected by disagreement with authored facing, and only where that authored
+ * value is real knowledge: a 'low' confidence override is itself inferred from
+ * coordinates, so disagreeing with it is guess-vs-computation and proves nothing.
+ * Measured nationally 2026-07-25 (scripts/auditPinOriginConflict.mjs): 22 beaches,
+ * concentrated in Paros (15) and Andros (6) — a regional coastline-mask problem,
+ * not scattered noise. Three of them were claiming όρμος off geometry that read
+ * the coast backwards (Κολυμπήθρες authored NW vs derived SE, 178° apart).
+ *
+ * Consequence is deliberately one-directional: we DROP geometry-earned claims,
+ * never add any. Under-claiming on a conflicted beach is cheap; painting it
+ * green off a misread coastline is the expensive error.
+ */
+export const geospatialProfileConflictsWithAuthoredFacing = (
+  profile: GeospatialExposureProfile | undefined,
+  windProfile: Pick<WindProfile, 'beachFacingDirection' | 'confidence'>,
+  source: WindProfileSource
+): boolean => {
+  if (source !== 'override' && source !== 'beach' && source !== 'metadata') return false;
+  if (windProfile.confidence !== 'high' && windProfile.confidence !== 'medium') return false;
+  const authored = windProfile.beachFacingDirection;
+  const derived = profile?.facingDeg;
+  if (typeof authored !== 'number' || typeof derived !== 'number') return false;
+  return bearingDelta(authored, derived) >= GEOMETRY_FACING_CONFLICT_DEG;
+};
+
 /** Longest run of `true` around the circular 8-sector compass. */
 const maxCircularSectorRun = (flags: boolean[]): number => {
   if (flags.every(Boolean)) return flags.length;
@@ -594,7 +637,8 @@ const maxCircularSectorRun = (flags: boolean[]): number => {
 export const isEnclosedCoveGeometry = (
   beachId: number,
   profile: GeospatialExposureProfile | undefined,
-  windProfile: Pick<WindProfile, 'suspectPin' | 'knownWindSportSpot' | 'localWindAmplification' | 'shelterLevel'>
+  windProfile: Pick<WindProfile, 'suspectPin' | 'knownWindSportSpot' | 'localWindAmplification' | 'shelterLevel' | 'beachFacingDirection' | 'confidence'>,
+  source: WindProfileSource = 'unknown'
 ): boolean => {
   // Curated vetoes always win: a wind-sport/venturi spot (Μικρή Βίγλα, Πούντα, Φτελιά)
   // or an authored-open shore is never a cove, whatever the rays say; a suspect pin's
@@ -607,6 +651,11 @@ export const isEnclosedCoveGeometry = (
   // tell from real coves — human-pinned out, ahead of the allowlist.
   if (CURATED_NON_COVE_IDS.has(beachId)) return false;
   if (CURATED_ENCLOSED_COVE_IDS.has(beachId)) return true;
+
+  // Geometry that reads the coast backwards cannot EARN an όρμος claim. Ordered
+  // after curation on purpose: this invalidates the computation, not the human
+  // who inspected the morphology, so a curated cove survives a bad profile.
+  if (geospatialProfileConflictsWithAuthoredFacing(profile, windProfile, source)) return false;
 
   if (profile?.confidence !== 'high') return false;
   // The intensity term here looks redundant next to fetch/blockage but is load-
@@ -856,7 +905,7 @@ export const assessBeachWindExposure = (input: BeachWindExposureInput): WindExpo
     typeof input.waveHeightMeters === 'number' &&
     input.waveHeightMeters <= 0.4 &&
     !isKnownWindSportRisk;
-  const enclosedCove = isEnclosedCoveGeometry(input.beach.id, input.geospatialProfile, profile);
+  const enclosedCove = isEnclosedCoveGeometry(input.beach.id, input.geospatialProfile, profile, source);
   const simpleWindSuitability = buildSimpleWindSuitability({
     exposureLevel,
     beaufort: baseBeaufort,
