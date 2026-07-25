@@ -1,90 +1,118 @@
-# User Login — setup & build plan (Supabase + Google/Apple)
+# User Login & Photos — setup & build plan (Supabase, free-tier, Google login)
 
-Stack decision: **Supabase Auth + Postgres**, social login (**Google + Apple**), for
-**favorites + saved preferences + reviews**. Static-first is preserved — Supabase is
-reached client-side from the browser; no server of our own to run.
+Stack: **Supabase Auth + Postgres + Storage**, **Google** social login, for
+**favorites + saved preferences + reviews + user-uploaded beach photos**.
+Constraint: **everything free**. Static-first is preserved — Supabase is reached
+client-side from the browser; no server of ours to run.
 
-The data model + Row Level Security already live in
-`supabase/migrations/0001_auth_and_user_data.sql`. This doc is the ordered plan and the
-split of **what you must do** (accounts/credentials I can't create) vs **what I build**.
+Data model + Row Level Security: `supabase/migrations/0001_auth_and_user_data.sql`.
 
 ---
 
-## Phase 0 — Prerequisites YOU must do (accounts & credentials)
+## Cost — everything free except Apple (which we park)
 
-These need your identity/billing, so they're on you; everything after is code I write.
+| Component | Cost | Notes |
+|---|---|---|
+| Supabase (Auth + Postgres + Storage) | **Free** | 50k MAU, 500MB DB, 1GB storage. ⚠️ pauses after 7 days idle — see keep-alive. |
+| Google OAuth | **Free** | Always free. |
+| Netlify | **Free** | Already hosting. |
+| Client-side image processing | **Free** | Runs in the browser (Canvas). |
+| ~~Apple Sign-In~~ | ❌ $99/yr | **Parked** — add only if/when we ship the iOS App Store (you pay Apple anyway then). |
 
-1. **Supabase project** — create at supabase.com, **region = EU (Frankfurt)** (you're an
-   EU operator; keep PII in the EU). Note the **Project URL** and **anon public key**
-   (safe for the browser) and the **service_role key** (SECRET — server/CLI only, never
-   ship it).
-2. **Google OAuth** — Google Cloud Console → OAuth consent screen + OAuth 2.0 Client ID.
-   Add Supabase's callback (`https://<project>.supabase.co/auth/v1/callback`) as an
-   authorized redirect URI. Paste client id/secret into Supabase → Auth → Providers →
-   Google.
-3. **Apple Sign-In** — the heavy one (⚠️ needs a paid **Apple Developer account, $99/yr**):
-   create a Service ID, enable Sign in with Apple, register the Supabase callback,
-   generate a private key (.p8). Paste into Supabase → Auth → Providers → Apple.
-   *Apple is mandatory only if you also ship social login on the iOS App Store; for web
-   you can launch with Google alone and add Apple later.*
-4. Decide the **account-deletion path** (GDPR, below) — a button that calls a delete flow.
+**Login method: Google only** — the simplest AND the most free: zero password/email
+infrastructure. (Email/magic-link would need an SMTP provider; skip until needed —
+Resend has a free 3k/mo tier if we ever add it.)
+
+---
+
+## Phase 0 — Prerequisites YOU do (accounts/credentials I can't create)
+
+1. **Supabase project** — region **EU (Frankfurt)** (you're an EU operator; keep PII in
+   the EU). Give me the **Project URL** + **anon public key** (browser-safe). The
+   **service_role key** is SECRET — server/CLI/dashboard only, never shipped.
+2. **Google OAuth** — Google Cloud Console → OAuth client; add Supabase's callback
+   (`https://<project>.supabase.co/auth/v1/callback`); paste id/secret into Supabase →
+   Auth → Providers → Google.
+3. In Supabase: create a **private Storage bucket** named `beach-photos`.
+
+Everything below is code/config I write.
 
 ## Phase 1 — Database (I do)
-- Run `supabase/migrations/0001_auth_and_user_data.sql` in your project.
-- ✅ Tables: `profiles`, `favorites`, `user_preferences`, `reviews` — all with RLS so a
-  user only ever touches their own rows; reviews are public only when `approved`.
+- Run the migration → tables `profiles`, `favorites`, `user_preferences`, `reviews`,
+  `beach_photos`, all with RLS (a user only ever touches their own rows; reviews/photos
+  public only when `approved`; per-user photo quota trigger).
+- Apply the Storage bucket RLS (upload only into your own uid folder) — SQL is noted at
+  the bottom of the migration.
 
 ## Phase 2 — Auth seam + client (I do)
 - Add `@supabase/supabase-js`.
-- `services/supabaseClient.ts` — init from env vars (URL + anon key).
-- `services/authService.ts` — the **seam**: `signInWithGoogle()`, `signInWithApple()`,
-  `signOut()`, `onAuthChange()`, `getSession()`. Everything else imports THIS, never
-  supabase directly → provider stays swappable.
-- `hooks/useAuth.ts` — React state for the current user/session.
-- **Env vars** (Netlify + `.env.local`): `VITE_SUPABASE_URL`, `VITE_SUPABASE_ANON_KEY`.
+- `services/supabaseClient.ts` — init from env vars.
+- `services/authService.ts` — the **seam**: `signInWithGoogle()`, `signOut()`,
+  `onAuthChange()`, `getSession()`. Everything imports THIS, never supabase directly →
+  provider stays swappable.
+- `hooks/useAuth.ts` — current user/session state.
+- Env vars (Netlify + `.env.local`): `VITE_SUPABASE_URL`, `VITE_SUPABASE_ANON_KEY`.
 
 ## Phase 3 — Data hooks (I do)
-- `useFavorites()` — toggle/list saved beaches (writes `favorites`).
-- `usePreferences()` — load/save the filter blob (writes `user_preferences`); merge with
-  the existing local preference state so logged-out users still work unchanged.
-- `useReviews(regionId, beachId)` — read approved + submit own (writes `reviews`).
+- `useFavorites()` — toggle/list saved beaches.
+- `usePreferences()` — load/save the filter blob; merges with the existing local
+  preference state so logged-out users are unchanged.
+- `useReviews(regionId, beachId)` — read approved + submit own.
 
-## Phase 4 — UI (I do)
-- Login/sign-up modal ("Continue with Google / Apple"), account menu, signed-in states.
-- Heart/save control on cards + detail; a "My beaches" view.
-- Review form + list on the beach detail page.
+## Phase 4 — Photo upload pipeline (I do) — the heavy one
+The rule: **never store the raw phone photo.** Process it in the browser first.
 
-## Phase 5 — Moderation & reliability (design, then I do)
-⚠️ **Reviews vs your reliability mandate.** UGC can carry wrong/spam info — the opposite of
-your curated trust. Guardrails baked into the schema: reviews start **pending**, only
-**approved** ones are public, clients can't self-approve. You still need to **approve them**
-(Supabase dashboard to start; an admin screen later). Also: show reviews **visually
-separate** from the curated verdict/amenities so a user opinion never reads as your
-verified data.
+1. **Client-side processing** (free, non-negotiable — solves perf + cost + privacy at once):
+   on select → **resize ≤1600px + encode WebP (q≈70) + STRIP EXIF/GPS** via Canvas. An
+   8MB photo becomes ~150KB before it ever leaves the device. The schema enforces this
+   with a `bytes ≤ 600KB` guard.
+2. **Upload** direct to Supabase Storage into the user's own folder (`{uid}/...`), insert
+   a `beach_photos` row (`status='pending'`).
+3. **Serve** approved photos via the existing `<picture>`/AVIF path where possible, or
+   signed URLs; label them **"Community photos"** — visually separate from the curated
+   set so UGC never reads as your verified data (reliability mandate).
+4. **Quota** — 30 photos/user (schema trigger), size/type validation client + server.
+- **Storage seam** `services/photoStorage.ts` — so we can swap **Supabase Storage (1GB
+  free)** → **Cloudflare R2 (10GB free, zero egress)** cheaply if volume grows.
+
+## Phase 5 — Moderation (design + I do)
+⚠️ **Reviews AND photos are UGC** — the opposite of your curated trust, and photos can be
+inappropriate/stolen. Guards in the schema: **pending by default, only approved is public,
+no self-approve.** You approve them (Supabase dashboard to start → a small admin screen
+later). At low volume, manual moderation is the free path; no paid NSFW service needed yet.
 
 ## Phase 6 — Legal / GDPR (you + I)
-- **Privacy Policy update** — you now process PII (email, name, IP). Extend the existing
-  legal system: what you store, why, retention, and the sub-processors (Supabase, Google,
-  Apple).
-- **Right to erasure** — a "delete my account" action; deleting the `auth.users` row
-  cascades all their data (the FKs are `on delete cascade`).
-- **Consent** — you already have a consent manager; add the auth/PII basis.
+- **Privacy Policy** — you now process PII (email, name, IP, uploaded images). Extend the
+  existing legal system: what/why/retention + sub-processors (Supabase, Google).
+- **Right to erasure** — "delete my account" → deleting `auth.users` cascades all rows;
+  also purge their Storage folder.
+- **Photo license + DMCA** — Terms clause: user grants display license + warrants they own
+  the photo; a takedown path. EXIF-strip already covers the GPS-privacy angle.
+- **Consent** — extend the existing consent manager with the auth/PII basis.
 
-## Phase 7 — SEO / prerender guard (I do)
-- Auth is **client-only**. The 8091 prerendered pages stay public & crawlable; nothing
-  gates content behind login. Verify the prerender build ignores auth (no user context at
-  build time).
+## Phase 7 — Keep-alive (I do) — free-tier pause fix
+⚠️ Supabase free **pauses the project after 7 days idle** — a real risk for a seasonal
+beach app in winter. **Free fix:** a weekly scheduled **GitHub Action** (cron) that runs a
+trivial `SELECT 1` against the project, keeping it warm. Zero cost, ~5 lines of YAML. (If
+it ever pauses anyway, it auto-restores on the next request — just a cold-start delay.)
+
+## Phase 8 — SEO / prerender guard (I do)
+Auth is **client-only**. The 8091 prerendered pages stay public & crawlable; no content
+sits behind login. Verify the prerender build has no user context.
 
 ---
 
-## The three landmines (call them early)
-1. **Apple Sign-In** = paid Apple Developer account + fiddly Service ID/key setup. Launch
-   with Google first if you want to move fast.
-2. **Reviews = moderation forever.** Budget for the ongoing approve/spam work, or launch
-   favorites+preferences first and add reviews once the moderation flow exists.
-3. **GDPR** — you're an EU operator adding PII; the privacy/deletion work is not optional.
+## The landmines (call them early)
+1. **UGC moderation is forever** (reviews + photos) — budget the ongoing approve/spam work,
+   or launch favorites+preferences first, photos/reviews once moderation exists.
+2. **Storage is the one thing that can break "free" at scale** — held down by three free
+   guards: client compression (~150KB), per-user quota (30), and the moderation gate (few
+   approved). Past 1GB → Cloudflare R2 (10GB, zero egress) behind the storage seam.
+3. **GDPR** — EU operator + PII + user images → privacy/deletion/DMCA work is not optional.
+4. **Supabase pause** — mitigated by the keep-alive Action (Phase 7).
 
-## Suggested launch order
-**Favorites + preferences (Google login) first** — small, safe, fits static-first, real
-user value. **Reviews second**, once moderation + the review-vs-curated separation are in
-place. Apple + iOS whenever you tackle the store.
+## Recommended launch order
+1. **Favorites + preferences** (Google login) — small, safe, fits static-first.
+2. **User photos** — with client-side processing + moderation + "Community photos" label.
+3. **Reviews** — once the moderation flow is proven.
+4. **Apple + iOS** — whenever you tackle the App Store.
