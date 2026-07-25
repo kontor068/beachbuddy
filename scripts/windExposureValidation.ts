@@ -71,6 +71,7 @@ const baseBeach = (input: ScenarioBeach): Beach => ({
     sunbeds: false,
     restaurant: false,
     parking: true,
+    shower: false,
   },
   characteristics: {
     shallowWaters: true,

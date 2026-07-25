@@ -1,0 +1,912 @@
+{
+  "batch": "shower_beach_discovery_2026_07",
+  "note": "Unnamed OSM beach polygons carrying amenity=shower nodes, >2km from any beach we list. Found by making every one of the 985 national shower points account for itself. Named from nearest settlement (Nominatim) — names NOT verified. All confidence:low + needsVerification.",
+  "beaches": [
+    {
+      "nameGr": "Παραλία Καλλιθέα",
+      "lat": 35.00309,
+      "lon": 25.58373,
+      "region": "Crete",
+      "prefecture": "Heraklion",
+      "municipality": "Crete (Heraklion)",
+      "coordSrc": "OSM way/105904008 (κέντρο polygon)",
+      "sourceNote": "Παραλία με 8 χαρτογραφημένο/α ντους (OSM amenity=shower) πάνω στο polygon, ~838μ ακτή, κοντά σε Καλλιθέα. ΑΝΩΝΥΜΗ στο OSM — γι' αυτό δεν την έπιανε το coverage pipeline που ψάχνει με όνομα. Το όνομα προκύπτει από τον πλησιέστερο οικισμό (ΔΕΝ είναι επιβεβαιωμένο τοπωνύμιο).",
+      "sourceUrls": [
+        "https://www.openstreetmap.org/way/105904008",
+        "https://www.openstreetmap.org/?mlat=35.003094925423724&mlon=25.58372884915254#map=17/35.003094925423724/25.58372884915254"
+      ],
+      "metadata": {
+        "access": {
+          "type": "unknown",
+          "label": "Άγνωστη πρόσβαση",
+          "notes": "Δεν έχει επιβεβαιωθεί επιτόπου."
+        },
+        "terrain": {
+          "types": [
+            "sand",
+            "pebbles"
+          ],
+          "label": "άμμος και βότσαλο"
+        },
+        "organized": true,
+        "shade": false,
+        "amenities": [
+          "ντους"
+        ],
+        "hasShower": true
+      }
+    },
+    {
+      "nameGr": "Παραλία Κίρρα",
+      "lat": 38.42738,
+      "lon": 22.43176,
+      "region": "Central Greece",
+      "prefecture": "Fokida",
+      "municipality": "Fokida (mainland)",
+      "coordSrc": "OSM way/201566452 (κέντρο polygon)",
+      "sourceNote": "Παραλία με 6 χαρτογραφημένο/α ντους (OSM amenity=shower) πάνω στο polygon, ~576μ ακτή, κοντά σε Κίρρα. ΑΝΩΝΥΜΗ στο OSM — γι' αυτό δεν την έπιανε το coverage pipeline που ψάχνει με όνομα. Το όνομα προκύπτει από τον πλησιέστερο οικισμό (ΔΕΝ είναι επιβεβαιωμένο τοπωνύμιο).",
+      "sourceUrls": [
+        "https://www.openstreetmap.org/way/201566452",
+        "https://www.openstreetmap.org/?mlat=38.42737687812499&mlon=22.431760453124998#map=17/38.42737687812499/22.431760453124998"
+      ],
+      "metadata": {
+        "access": {
+          "type": "unknown",
+          "label": "Άγνωστη πρόσβαση",
+          "notes": "Δεν έχει επιβεβαιωθεί επιτόπου."
+        },
+        "terrain": {
+          "types": [
+            "sand",
+            "pebbles"
+          ],
+          "label": "άμμος και βότσαλο"
+        },
+        "organized": true,
+        "shade": false,
+        "amenities": [
+          "ντους"
+        ],
+        "hasShower": true
+      }
+    },
+    {
+      "nameGr": "Παραλία Λάχι",
+      "lat": 36.51166,
+      "lon": 23.05589,
+      "region": "Peloponnese",
+      "prefecture": "Lakonia",
+      "municipality": "Lakonia (mainland)",
+      "coordSrc": "OSM way/520396385 (κέντρο polygon)",
+      "sourceNote": "Παραλία με 6 χαρτογραφημένο/α ντους (OSM amenity=shower) πάνω στο polygon, ~420μ ακτή, κοντά σε Λάχι. ΑΝΩΝΥΜΗ στο OSM — γι' αυτό δεν την έπιανε το coverage pipeline που ψάχνει με όνομα. Το όνομα προκύπτει από τον πλησιέστερο οικισμό (ΔΕΝ είναι επιβεβαιωμένο τοπωνύμιο).",
+      "sourceUrls": [
+        "https://www.openstreetmap.org/way/520396385",
+        "https://www.openstreetmap.org/?mlat=36.511663420000005&mlon=23.05588739333333#map=17/36.511663420000005/23.05588739333333"
+      ],
+      "metadata": {
+        "access": {
+          "type": "unknown",
+          "label": "Άγνωστη πρόσβαση",
+          "notes": "Δεν έχει επιβεβαιωθεί επιτόπου."
+        },
+        "terrain": {
+          "types": [
+            "sand",
+            "pebbles"
+          ],
+          "label": "άμμος και βότσαλο"
+        },
+        "organized": true,
+        "shade": false,
+        "amenities": [
+          "ντους"
+        ],
+        "hasShower": true
+      }
+    },
+    {
+      "nameGr": "Παραλία Πέτρα",
+      "lat": 39.33165,
+      "lon": 26.17889,
+      "region": "North Aegean",
+      "prefecture": "Lesvos",
+      "municipality": "Lesvos",
+      "coordSrc": "OSM way/298756347 (κέντρο polygon)",
+      "sourceNote": "Παραλία με 3 χαρτογραφημένο/α ντους (OSM amenity=shower) πάνω στο polygon, ~920μ ακτή, κοντά σε Πέτρα. ΑΝΩΝΥΜΗ στο OSM — γι' αυτό δεν την έπιανε το coverage pipeline που ψάχνει με όνομα. Το όνομα προκύπτει από τον πλησιέστερο οικισμό (ΔΕΝ είναι επιβεβαιωμένο τοπωνύμιο).",
+      "sourceUrls": [
+        "https://www.openstreetmap.org/way/298756347",
+        "https://www.openstreetmap.org/?mlat=39.33165476461536&mlon=26.178888920000006#map=17/39.33165476461536/26.178888920000006"
+      ],
+      "metadata": {
+        "access": {
+          "type": "unknown",
+          "label": "Άγνωστη πρόσβαση",
+          "notes": "Δεν έχει επιβεβαιωθεί επιτόπου."
+        },
+        "terrain": {
+          "types": [
+            "sand"
+          ],
+          "label": "άμμος"
+        },
+        "organized": true,
+        "shade": false,
+        "amenities": [
+          "ντους"
+        ],
+        "hasShower": true
+      }
+    },
+    {
+      "nameGr": "Παραλία Μύτικας",
+      "lat": 38.67008,
+      "lon": 20.95103,
+      "region": "West Greece",
+      "prefecture": "Aetolia-Acarnania",
+      "municipality": "Aetolia-Acarnania (mainland)",
+      "coordSrc": "OSM way/362760071 (κέντρο polygon)",
+      "sourceNote": "Παραλία με 3 χαρτογραφημένο/α ντους (OSM amenity=shower) πάνω στο polygon, ~416μ ακτή, κοντά σε Μύτικας. ΑΝΩΝΥΜΗ στο OSM — γι' αυτό δεν την έπιανε το coverage pipeline που ψάχνει με όνομα. Το όνομα προκύπτει από τον πλησιέστερο οικισμό (ΔΕΝ είναι επιβεβαιωμένο τοπωνύμιο).",
+      "sourceUrls": [
+        "https://www.openstreetmap.org/way/362760071",
+        "https://www.openstreetmap.org/?mlat=38.670082573684205&mlon=20.95103305789474#map=17/38.670082573684205/20.95103305789474"
+      ],
+      "metadata": {
+        "access": {
+          "type": "unknown",
+          "label": "Άγνωστη πρόσβαση",
+          "notes": "Δεν έχει επιβεβαιωθεί επιτόπου."
+        },
+        "terrain": {
+          "types": [
+            "sand"
+          ],
+          "label": "άμμος"
+        },
+        "organized": true,
+        "shade": false,
+        "amenities": [
+          "ντους"
+        ],
+        "hasShower": true
+      }
+    },
+    {
+      "nameGr": "Παραλία Καλό Νερό",
+      "lat": 37.29667,
+      "lon": 21.69412,
+      "region": "Peloponnese",
+      "prefecture": "Messinia",
+      "municipality": "Messinia (mainland)",
+      "coordSrc": "OSM way/295714556 (κέντρο polygon)",
+      "sourceNote": "Παραλία με 2 χαρτογραφημένο/α ντους (OSM amenity=shower) πάνω στο polygon, ~1365μ ακτή, κοντά σε Καλό Νερό. ΑΝΩΝΥΜΗ στο OSM — γι' αυτό δεν την έπιανε το coverage pipeline που ψάχνει με όνομα. Το όνομα προκύπτει από τον πλησιέστερο οικισμό (ΔΕΝ είναι επιβεβαιωμένο τοπωνύμιο).",
+      "sourceUrls": [
+        "https://www.openstreetmap.org/way/295714556",
+        "https://www.openstreetmap.org/?mlat=37.296671020370376&mlon=21.694122872222223#map=17/37.296671020370376/21.694122872222223"
+      ],
+      "metadata": {
+        "access": {
+          "type": "unknown",
+          "label": "Άγνωστη πρόσβαση",
+          "notes": "Δεν έχει επιβεβαιωθεί επιτόπου."
+        },
+        "terrain": {
+          "types": [
+            "sand",
+            "pebbles"
+          ],
+          "label": "άμμος και βότσαλο"
+        },
+        "organized": true,
+        "shade": false,
+        "amenities": [
+          "ντους"
+        ],
+        "hasShower": true
+      }
+    },
+    {
+      "nameGr": "Παραλία Δράμια",
+      "lat": 35.3535,
+      "lon": 24.29632,
+      "region": "Crete",
+      "prefecture": "Chania",
+      "municipality": "Crete (Chania)",
+      "coordSrc": "OSM way/152252569 (κέντρο polygon)",
+      "sourceNote": "Παραλία με 2 χαρτογραφημένο/α ντους (OSM amenity=shower) πάνω στο polygon, ~1012μ ακτή, κοντά σε Δράμια. ΑΝΩΝΥΜΗ στο OSM — γι' αυτό δεν την έπιανε το coverage pipeline που ψάχνει με όνομα. Το όνομα προκύπτει από τον πλησιέστερο οικισμό (ΔΕΝ είναι επιβεβαιωμένο τοπωνύμιο).",
+      "sourceUrls": [
+        "https://www.openstreetmap.org/way/152252569",
+        "https://www.openstreetmap.org/?mlat=35.353502350793654&mlon=24.296317085714286#map=17/35.353502350793654/24.296317085714286"
+      ],
+      "metadata": {
+        "access": {
+          "type": "unknown",
+          "label": "Άγνωστη πρόσβαση",
+          "notes": "Δεν έχει επιβεβαιωθεί επιτόπου."
+        },
+        "terrain": {
+          "types": [
+            "sand"
+          ],
+          "label": "άμμος"
+        },
+        "organized": true,
+        "shade": false,
+        "amenities": [
+          "ντους"
+        ],
+        "hasShower": true
+      }
+    },
+    {
+      "nameGr": "Παραλία Νεάπολη",
+      "lat": 36.50677,
+      "lon": 23.06238,
+      "region": "Peloponnese",
+      "prefecture": "Lakonia",
+      "municipality": "Lakonia (mainland)",
+      "coordSrc": "OSM way/276178177 (κέντρο polygon)",
+      "sourceNote": "Παραλία με 2 χαρτογραφημένο/α ντους (OSM amenity=shower) πάνω στο polygon, ~485μ ακτή, κοντά σε Νεάπολη. ΑΝΩΝΥΜΗ στο OSM — γι' αυτό δεν την έπιανε το coverage pipeline που ψάχνει με όνομα. Το όνομα προκύπτει από τον πλησιέστερο οικισμό (ΔΕΝ είναι επιβεβαιωμένο τοπωνύμιο).",
+      "sourceUrls": [
+        "https://www.openstreetmap.org/way/276178177",
+        "https://www.openstreetmap.org/?mlat=36.50676573846153&mlon=23.06237854230769#map=17/36.50676573846153/23.06237854230769"
+      ],
+      "metadata": {
+        "access": {
+          "type": "unknown",
+          "label": "Άγνωστη πρόσβαση",
+          "notes": "Δεν έχει επιβεβαιωθεί επιτόπου."
+        },
+        "terrain": {
+          "types": [
+            "sand",
+            "pebbles"
+          ],
+          "label": "άμμος και βότσαλο"
+        },
+        "organized": true,
+        "shade": false,
+        "amenities": [
+          "ντους"
+        ],
+        "hasShower": true
+      }
+    },
+    {
+      "nameGr": "Παραλία Παληό",
+      "lat": 40.89551,
+      "lon": 24.33705,
+      "region": "East Macedonia and Thrace",
+      "prefecture": "Kavala",
+      "municipality": "Kavala (mainland)",
+      "coordSrc": "OSM way/230955856 (κέντρο polygon)",
+      "sourceNote": "Παραλία με 2 χαρτογραφημένο/α ντους (OSM amenity=shower) πάνω στο polygon, ~195μ ακτή, κοντά σε Παληό. ΑΝΩΝΥΜΗ στο OSM — γι' αυτό δεν την έπιανε το coverage pipeline που ψάχνει με όνομα. Το όνομα προκύπτει από τον πλησιέστερο οικισμό (ΔΕΝ είναι επιβεβαιωμένο τοπωνύμιο).",
+      "sourceUrls": [
+        "https://www.openstreetmap.org/way/230955856",
+        "https://www.openstreetmap.org/?mlat=40.89550633333333&mlon=24.337047666666663#map=17/40.89550633333333/24.337047666666663"
+      ],
+      "metadata": {
+        "access": {
+          "type": "unknown",
+          "label": "Άγνωστη πρόσβαση",
+          "notes": "Δεν έχει επιβεβαιωθεί επιτόπου."
+        },
+        "terrain": {
+          "types": [
+            "sand"
+          ],
+          "label": "άμμος"
+        },
+        "organized": true,
+        "shade": false,
+        "amenities": [
+          "ντους"
+        ],
+        "hasShower": true
+      }
+    },
+    {
+      "nameGr": "Παραλία Πλάκα",
+      "lat": 37.1496,
+      "lon": 22.89453,
+      "region": "Peloponnese",
+      "prefecture": "Arkadia",
+      "municipality": "Arkadia (mainland)",
+      "coordSrc": "OSM way/282904473 (κέντρο polygon)",
+      "sourceNote": "Παραλία με 1 χαρτογραφημένο/α ντους (OSM amenity=shower) πάνω στο polygon, ~1055μ ακτή, κοντά σε Πλάκα. ΑΝΩΝΥΜΗ στο OSM — γι' αυτό δεν την έπιανε το coverage pipeline που ψάχνει με όνομα. Το όνομα προκύπτει από τον πλησιέστερο οικισμό (ΔΕΝ είναι επιβεβαιωμένο τοπωνύμιο).",
+      "sourceUrls": [
+        "https://www.openstreetmap.org/way/282904473",
+        "https://www.openstreetmap.org/?mlat=37.14960464637682&mlon=22.894525378260862#map=17/37.14960464637682/22.894525378260862"
+      ],
+      "metadata": {
+        "access": {
+          "type": "unknown",
+          "label": "Άγνωστη πρόσβαση",
+          "notes": "Δεν έχει επιβεβαιωθεί επιτόπου."
+        },
+        "terrain": {
+          "types": [
+            "sand",
+            "pebbles"
+          ],
+          "label": "άμμος και βότσαλο"
+        },
+        "organized": true,
+        "shade": false,
+        "amenities": [
+          "ντους"
+        ],
+        "hasShower": true
+      }
+    },
+    {
+      "nameGr": "Παραλία Νέα Κερδύλια",
+      "lat": 40.78075,
+      "lon": 23.82726,
+      "region": "Central Macedonia",
+      "prefecture": "Thessaloniki",
+      "municipality": "Thessaloniki area",
+      "coordSrc": "OSM way/1367295655 (κέντρο polygon)",
+      "sourceNote": "Παραλία με 1 χαρτογραφημένο/α ντους (OSM amenity=shower) πάνω στο polygon, ~1049μ ακτή, κοντά σε Νέα Κερδύλια. ΑΝΩΝΥΜΗ στο OSM — γι' αυτό δεν την έπιανε το coverage pipeline που ψάχνει με όνομα. Το όνομα προκύπτει από τον πλησιέστερο οικισμό (ΔΕΝ είναι επιβεβαιωμένο τοπωνύμιο).",
+      "sourceUrls": [
+        "https://www.openstreetmap.org/way/1367295655",
+        "https://www.openstreetmap.org/?mlat=40.78075362432434&mlon=23.82725516216216#map=17/40.78075362432434/23.82725516216216"
+      ],
+      "metadata": {
+        "access": {
+          "type": "unknown",
+          "label": "Άγνωστη πρόσβαση",
+          "notes": "Δεν έχει επιβεβαιωθεί επιτόπου."
+        },
+        "terrain": {
+          "types": [
+            "sand",
+            "pebbles"
+          ],
+          "label": "άμμος και βότσαλο"
+        },
+        "organized": true,
+        "shade": false,
+        "amenities": [
+          "ντους"
+        ],
+        "hasShower": true
+      }
+    },
+    {
+      "nameGr": "Παραλία Πετράς",
+      "lat": 35.20338,
+      "lon": 26.11225,
+      "region": "Crete",
+      "prefecture": "Lasithi",
+      "municipality": "Crete (Lasithi)",
+      "coordSrc": "OSM way/52495254 (κέντρο polygon)",
+      "sourceNote": "Παραλία με 1 χαρτογραφημένο/α ντους (OSM amenity=shower) πάνω στο polygon, ~929μ ακτή, κοντά σε Πετράς. ΑΝΩΝΥΜΗ στο OSM — γι' αυτό δεν την έπιανε το coverage pipeline που ψάχνει με όνομα. Το όνομα προκύπτει από τον πλησιέστερο οικισμό (ΔΕΝ είναι επιβεβαιωμένο τοπωνύμιο).",
+      "sourceUrls": [
+        "https://www.openstreetmap.org/way/52495254",
+        "https://www.openstreetmap.org/?mlat=35.20337819714286&mlon=26.112251545714287#map=17/35.20337819714286/26.112251545714287"
+      ],
+      "metadata": {
+        "access": {
+          "type": "unknown",
+          "label": "Άγνωστη πρόσβαση",
+          "notes": "Δεν έχει επιβεβαιωθεί επιτόπου."
+        },
+        "terrain": {
+          "types": [
+            "sand",
+            "pebbles"
+          ],
+          "label": "άμμος και βότσαλο"
+        },
+        "organized": true,
+        "shade": false,
+        "amenities": [
+          "ντους"
+        ],
+        "hasShower": true
+      }
+    },
+    {
+      "nameGr": "Παραλία Μουριές",
+      "lat": 40.24922,
+      "lon": 23.24856,
+      "region": "Central Macedonia",
+      "prefecture": "Halkidiki",
+      "municipality": "Halkidiki (mainland)",
+      "coordSrc": "OSM way/91364352 (κέντρο polygon)",
+      "sourceNote": "Παραλία με 1 χαρτογραφημένο/α ντους (OSM amenity=shower) πάνω στο polygon, ~830μ ακτή, κοντά σε Μουριές. ΑΝΩΝΥΜΗ στο OSM — γι' αυτό δεν την έπιανε το coverage pipeline που ψάχνει με όνομα. Το όνομα προκύπτει από τον πλησιέστερο οικισμό (ΔΕΝ είναι επιβεβαιωμένο τοπωνύμιο).",
+      "sourceUrls": [
+        "https://www.openstreetmap.org/way/91364352",
+        "https://www.openstreetmap.org/?mlat=40.24922000952382&mlon=23.24855651904762#map=17/40.24922000952382/23.24855651904762"
+      ],
+      "metadata": {
+        "access": {
+          "type": "unknown",
+          "label": "Άγνωστη πρόσβαση",
+          "notes": "Δεν έχει επιβεβαιωθεί επιτόπου."
+        },
+        "terrain": {
+          "types": [
+            "sand",
+            "pebbles"
+          ],
+          "label": "άμμος και βότσαλο"
+        },
+        "organized": true,
+        "shade": false,
+        "amenities": [
+          "ντους"
+        ],
+        "hasShower": true
+      }
+    },
+    {
+      "nameGr": "Παραλία Κρυοπηγή",
+      "lat": 40.0301,
+      "lon": 23.50118,
+      "region": "Central Macedonia",
+      "prefecture": "Halkidiki",
+      "municipality": "Halkidiki (mainland)",
+      "coordSrc": "OSM way/277235084 (κέντρο polygon)",
+      "sourceNote": "Παραλία με 1 χαρτογραφημένο/α ντους (OSM amenity=shower) πάνω στο polygon, ~725μ ακτή, κοντά σε Κρυοπηγή. ΑΝΩΝΥΜΗ στο OSM — γι' αυτό δεν την έπιανε το coverage pipeline που ψάχνει με όνομα. Το όνομα προκύπτει από τον πλησιέστερο οικισμό (ΔΕΝ είναι επιβεβαιωμένο τοπωνύμιο).",
+      "sourceUrls": [
+        "https://www.openstreetmap.org/way/277235084",
+        "https://www.openstreetmap.org/?mlat=40.030096627083346&mlon=23.501181504166677#map=17/40.030096627083346/23.501181504166677"
+      ],
+      "metadata": {
+        "access": {
+          "type": "unknown",
+          "label": "Άγνωστη πρόσβαση",
+          "notes": "Δεν έχει επιβεβαιωθεί επιτόπου."
+        },
+        "terrain": {
+          "types": [
+            "sand"
+          ],
+          "label": "άμμος"
+        },
+        "organized": true,
+        "shade": false,
+        "amenities": [
+          "ντους"
+        ],
+        "hasShower": true
+      }
+    },
+    {
+      "nameGr": "Παραλία Ιαλυσός",
+      "lat": 36.41981,
+      "lon": 28.17415,
+      "region": "South Aegean",
+      "prefecture": "Dodecanese",
+      "municipality": "Rhodes",
+      "coordSrc": "OSM way/1186277389 (κέντρο polygon)",
+      "sourceNote": "Παραλία με 1 χαρτογραφημένο/α ντους (OSM amenity=shower) πάνω στο polygon, ~712μ ακτή, κοντά σε Ιαλυσός. ΑΝΩΝΥΜΗ στο OSM — γι' αυτό δεν την έπιανε το coverage pipeline που ψάχνει με όνομα. Το όνομα προκύπτει από τον πλησιέστερο οικισμό (ΔΕΝ είναι επιβεβαιωμένο τοπωνύμιο).",
+      "sourceUrls": [
+        "https://www.openstreetmap.org/way/1186277389",
+        "https://www.openstreetmap.org/?mlat=36.419808629032275&mlon=28.17414579032257#map=17/36.419808629032275/28.17414579032257"
+      ],
+      "metadata": {
+        "access": {
+          "type": "unknown",
+          "label": "Άγνωστη πρόσβαση",
+          "notes": "Δεν έχει επιβεβαιωθεί επιτόπου."
+        },
+        "terrain": {
+          "types": [
+            "pebbles"
+          ],
+          "label": "βότσαλο"
+        },
+        "organized": true,
+        "shade": false,
+        "amenities": [
+          "ντους"
+        ],
+        "hasShower": true
+      }
+    },
+    {
+      "nameGr": "Παραλία Νέος Μαρμαράς",
+      "lat": 40.08613,
+      "lon": 23.79222,
+      "region": "Central Macedonia",
+      "prefecture": "Halkidiki",
+      "municipality": "Halkidiki (mainland)",
+      "coordSrc": "OSM way/374752064 (κέντρο polygon)",
+      "sourceNote": "Παραλία με 1 χαρτογραφημένο/α ντους (OSM amenity=shower) πάνω στο polygon, ~638μ ακτή, κοντά σε Νέος Μαρμαράς. ΑΝΩΝΥΜΗ στο OSM — γι' αυτό δεν την έπιανε το coverage pipeline που ψάχνει με όνομα. Το όνομα προκύπτει από τον πλησιέστερο οικισμό (ΔΕΝ είναι επιβεβαιωμένο τοπωνύμιο).",
+      "sourceUrls": [
+        "https://www.openstreetmap.org/way/374752064",
+        "https://www.openstreetmap.org/?mlat=40.0861286857143&mlon=23.79221961071428#map=17/40.0861286857143/23.79221961071428"
+      ],
+      "metadata": {
+        "access": {
+          "type": "unknown",
+          "label": "Άγνωστη πρόσβαση",
+          "notes": "Δεν έχει επιβεβαιωθεί επιτόπου."
+        },
+        "terrain": {
+          "types": [
+            "sand"
+          ],
+          "label": "άμμος"
+        },
+        "organized": true,
+        "shade": false,
+        "amenities": [
+          "ντους"
+        ],
+        "hasShower": true
+      }
+    },
+    {
+      "nameGr": "Παραλία Λιβάδια",
+      "lat": 35.35763,
+      "lon": 23.53209,
+      "region": "Crete",
+      "prefecture": "Chania",
+      "municipality": "Crete (Chania)",
+      "coordSrc": "OSM way/1431432627 (κέντρο polygon)",
+      "sourceNote": "Παραλία με 1 χαρτογραφημένο/α ντους (OSM amenity=shower) πάνω στο polygon, ~562μ ακτή, κοντά σε Λιβάδια. ΑΝΩΝΥΜΗ στο OSM — γι' αυτό δεν την έπιανε το coverage pipeline που ψάχνει με όνομα. Το όνομα προκύπτει από τον πλησιέστερο οικισμό (ΔΕΝ είναι επιβεβαιωμένο τοπωνύμιο).",
+      "sourceUrls": [
+        "https://www.openstreetmap.org/way/1431432627",
+        "https://www.openstreetmap.org/?mlat=35.357634287179486&mlon=23.532088443589743#map=17/35.357634287179486/23.532088443589743"
+      ],
+      "metadata": {
+        "access": {
+          "type": "unknown",
+          "label": "Άγνωστη πρόσβαση",
+          "notes": "Δεν έχει επιβεβαιωθεί επιτόπου."
+        },
+        "terrain": {
+          "types": [
+            "rocks"
+          ],
+          "label": "βράχια"
+        },
+        "organized": true,
+        "shade": false,
+        "amenities": [
+          "ντους"
+        ],
+        "hasShower": true
+      }
+    },
+    {
+      "nameGr": "Παραλία Κάτω Ζάκρος",
+      "lat": 35.09686,
+      "lon": 26.26364,
+      "region": "Crete",
+      "prefecture": "Lasithi",
+      "municipality": "Crete (Lasithi)",
+      "coordSrc": "OSM way/442598465 (κέντρο polygon)",
+      "sourceNote": "Παραλία με 1 χαρτογραφημένο/α ντους (OSM amenity=shower) πάνω στο polygon, ~521μ ακτή, κοντά σε Κάτω Ζάκρος. ΑΝΩΝΥΜΗ στο OSM — γι' αυτό δεν την έπιανε το coverage pipeline που ψάχνει με όνομα. Το όνομα προκύπτει από τον πλησιέστερο οικισμό (ΔΕΝ είναι επιβεβαιωμένο τοπωνύμιο).",
+      "sourceUrls": [
+        "https://www.openstreetmap.org/way/442598465",
+        "https://www.openstreetmap.org/?mlat=35.09686495140188&mlon=26.2636390093458#map=17/35.09686495140188/26.2636390093458"
+      ],
+      "metadata": {
+        "access": {
+          "type": "unknown",
+          "label": "Άγνωστη πρόσβαση",
+          "notes": "Δεν έχει επιβεβαιωθεί επιτόπου."
+        },
+        "terrain": {
+          "types": [
+            "sand"
+          ],
+          "label": "άμμος"
+        },
+        "organized": true,
+        "shade": false,
+        "amenities": [
+          "ντους"
+        ],
+        "hasShower": true
+      }
+    },
+    {
+      "nameGr": "Παραλία Πήλι",
+      "lat": 38.76503,
+      "lon": 23.58976,
+      "region": "Central Greece",
+      "prefecture": "Evia",
+      "municipality": "Evia",
+      "coordSrc": "OSM way/166234824 (κέντρο polygon)",
+      "sourceNote": "Παραλία με 1 χαρτογραφημένο/α ντους (OSM amenity=shower) πάνω στο polygon, ~520μ ακτή, κοντά σε Πήλι. ΑΝΩΝΥΜΗ στο OSM — γι' αυτό δεν την έπιανε το coverage pipeline που ψάχνει με όνομα. Το όνομα προκύπτει από τον πλησιέστερο οικισμό (ΔΕΝ είναι επιβεβαιωμένο τοπωνύμιο).",
+      "sourceUrls": [
+        "https://www.openstreetmap.org/way/166234824",
+        "https://www.openstreetmap.org/?mlat=38.76502542&mlon=23.58976076444445#map=17/38.76502542/23.58976076444445"
+      ],
+      "metadata": {
+        "access": {
+          "type": "unknown",
+          "label": "Άγνωστη πρόσβαση",
+          "notes": "Δεν έχει επιβεβαιωθεί επιτόπου."
+        },
+        "terrain": {
+          "types": [
+            "sand",
+            "pebbles"
+          ],
+          "label": "άμμος και βότσαλο"
+        },
+        "organized": true,
+        "shade": false,
+        "amenities": [
+          "ντους"
+        ],
+        "hasShower": true
+      }
+    },
+    {
+      "nameGr": "Παραλία Άρβη",
+      "lat": 34.9914,
+      "lon": 25.45183,
+      "region": "Crete",
+      "prefecture": "Heraklion",
+      "municipality": "Crete (Heraklion)",
+      "coordSrc": "OSM way/865924485 (κέντρο polygon)",
+      "sourceNote": "Παραλία με 1 χαρτογραφημένο/α ντους (OSM amenity=shower) πάνω στο polygon, ~398μ ακτή, κοντά σε Άρβη. ΑΝΩΝΥΜΗ στο OSM — γι' αυτό δεν την έπιανε το coverage pipeline που ψάχνει με όνομα. Το όνομα προκύπτει από τον πλησιέστερο οικισμό (ΔΕΝ είναι επιβεβαιωμένο τοπωνύμιο).",
+      "sourceUrls": [
+        "https://www.openstreetmap.org/way/865924485",
+        "https://www.openstreetmap.org/?mlat=34.991397868750006&mlon=25.4518251125#map=17/34.991397868750006/25.4518251125"
+      ],
+      "metadata": {
+        "access": {
+          "type": "unknown",
+          "label": "Άγνωστη πρόσβαση",
+          "notes": "Δεν έχει επιβεβαιωθεί επιτόπου."
+        },
+        "terrain": {
+          "types": [
+            "sand"
+          ],
+          "label": "άμμος"
+        },
+        "organized": true,
+        "shade": false,
+        "amenities": [
+          "ντους"
+        ],
+        "hasShower": true
+      }
+    },
+    {
+      "nameGr": "Παραλία Νέα Πέραμος",
+      "lat": 40.84205,
+      "lon": 24.30627,
+      "region": "East Macedonia and Thrace",
+      "prefecture": "Kavala",
+      "municipality": "Kavala (mainland)",
+      "coordSrc": "OSM way/368997450 (κέντρο polygon)",
+      "sourceNote": "Παραλία με 1 χαρτογραφημένο/α ντους (OSM amenity=shower) πάνω στο polygon, ~327μ ακτή, κοντά σε Νέα Πέραμος. ΑΝΩΝΥΜΗ στο OSM — γι' αυτό δεν την έπιανε το coverage pipeline που ψάχνει με όνομα. Το όνομα προκύπτει από τον πλησιέστερο οικισμό (ΔΕΝ είναι επιβεβαιωμένο τοπωνύμιο).",
+      "sourceUrls": [
+        "https://www.openstreetmap.org/way/368997450",
+        "https://www.openstreetmap.org/?mlat=40.84204796923078&mlon=24.306271476923072#map=17/40.84204796923078/24.306271476923072"
+      ],
+      "metadata": {
+        "access": {
+          "type": "unknown",
+          "label": "Άγνωστη πρόσβαση",
+          "notes": "Δεν έχει επιβεβαιωθεί επιτόπου."
+        },
+        "terrain": {
+          "types": [
+            "sand"
+          ],
+          "label": "άμμος"
+        },
+        "organized": true,
+        "shade": false,
+        "amenities": [
+          "ντους"
+        ],
+        "hasShower": true
+      }
+    },
+    {
+      "nameGr": "Παραλία Λάρισος",
+      "lat": 39.1195,
+      "lon": 26.48593,
+      "region": "North Aegean",
+      "prefecture": "Lesvos",
+      "municipality": "Lesvos",
+      "coordSrc": "OSM way/1508855387 (κέντρο polygon)",
+      "sourceNote": "Παραλία με 1 χαρτογραφημένο/α ντους (OSM amenity=shower) πάνω στο polygon, ~298μ ακτή, κοντά σε Λάρισος. ΑΝΩΝΥΜΗ στο OSM — γι' αυτό δεν την έπιανε το coverage pipeline που ψάχνει με όνομα. Το όνομα προκύπτει από τον πλησιέστερο οικισμό (ΔΕΝ είναι επιβεβαιωμένο τοπωνύμιο).",
+      "sourceUrls": [
+        "https://www.openstreetmap.org/way/1508855387",
+        "https://www.openstreetmap.org/?mlat=39.11949520312501&mlon=26.485928634375004#map=17/39.11949520312501/26.485928634375004"
+      ],
+      "metadata": {
+        "access": {
+          "type": "unknown",
+          "label": "Άγνωστη πρόσβαση",
+          "notes": "Δεν έχει επιβεβαιωθεί επιτόπου."
+        },
+        "terrain": {
+          "types": [
+            "pebbles"
+          ],
+          "label": "βότσαλο"
+        },
+        "organized": true,
+        "shade": false,
+        "amenities": [
+          "ντους"
+        ],
+        "hasShower": true
+      }
+    },
+    {
+      "nameGr": "Παραλία Μαΐστρος",
+      "lat": 40.84183,
+      "lon": 25.87591,
+      "region": "East Macedonia and Thrace",
+      "prefecture": "Evros",
+      "municipality": "Evros (mainland)",
+      "coordSrc": "OSM way/788245818 (κέντρο polygon)",
+      "sourceNote": "Παραλία με 1 χαρτογραφημένο/α ντους (OSM amenity=shower) πάνω στο polygon, ~296μ ακτή, κοντά σε Μαΐστρος. ΑΝΩΝΥΜΗ στο OSM — γι' αυτό δεν την έπιανε το coverage pipeline που ψάχνει με όνομα. Το όνομα προκύπτει από τον πλησιέστερο οικισμό (ΔΕΝ είναι επιβεβαιωμένο τοπωνύμιο).",
+      "sourceUrls": [
+        "https://www.openstreetmap.org/way/788245818",
+        "https://www.openstreetmap.org/?mlat=40.84182977297298&mlon=25.8759094027027#map=17/40.84182977297298/25.8759094027027"
+      ],
+      "metadata": {
+        "access": {
+          "type": "unknown",
+          "label": "Άγνωστη πρόσβαση",
+          "notes": "Δεν έχει επιβεβαιωθεί επιτόπου."
+        },
+        "terrain": {
+          "types": [
+            "sand",
+            "pebbles"
+          ],
+          "label": "άμμος και βότσαλο"
+        },
+        "organized": true,
+        "shade": false,
+        "amenities": [
+          "ντους"
+        ],
+        "hasShower": true
+      }
+    },
+    {
+      "nameGr": "Παραλία Λέκκα",
+      "lat": 37.79545,
+      "lon": 26.68836,
+      "region": "North Aegean",
+      "prefecture": "Samos",
+      "municipality": "Samos",
+      "coordSrc": "OSM way/1104017880 (κέντρο polygon)",
+      "sourceNote": "Παραλία με 1 χαρτογραφημένο/α ντους (OSM amenity=shower) πάνω στο polygon, ~255μ ακτή, κοντά σε Λέκκα. ΑΝΩΝΥΜΗ στο OSM — γι' αυτό δεν την έπιανε το coverage pipeline που ψάχνει με όνομα. Το όνομα προκύπτει από τον πλησιέστερο οικισμό (ΔΕΝ είναι επιβεβαιωμένο τοπωνύμιο).",
+      "sourceUrls": [
+        "https://www.openstreetmap.org/way/1104017880",
+        "https://www.openstreetmap.org/?mlat=37.79544852222222&mlon=26.68835935555555#map=17/37.79544852222222/26.68835935555555"
+      ],
+      "metadata": {
+        "access": {
+          "type": "unknown",
+          "label": "Άγνωστη πρόσβαση",
+          "notes": "Δεν έχει επιβεβαιωθεί επιτόπου."
+        },
+        "terrain": {
+          "types": [
+            "sand",
+            "pebbles"
+          ],
+          "label": "άμμος και βότσαλο"
+        },
+        "organized": true,
+        "shade": false,
+        "amenities": [
+          "ντους"
+        ],
+        "hasShower": true
+      }
+    },
+    {
+      "nameGr": "Παραλία Κρυονέρι",
+      "lat": 38.33479,
+      "lon": 21.58131,
+      "region": "West Greece",
+      "prefecture": "Aetolia-Acarnania",
+      "municipality": "Aetolia-Acarnania (mainland)",
+      "coordSrc": "OSM way/91908051 (κέντρο polygon)",
+      "sourceNote": "Παραλία με 1 χαρτογραφημένο/α ντους (OSM amenity=shower) πάνω στο polygon, ~246μ ακτή, κοντά σε Κρυονέρι. ΑΝΩΝΥΜΗ στο OSM — γι' αυτό δεν την έπιανε το coverage pipeline που ψάχνει με όνομα. Το όνομα προκύπτει από τον πλησιέστερο οικισμό (ΔΕΝ είναι επιβεβαιωμένο τοπωνύμιο).",
+      "sourceUrls": [
+        "https://www.openstreetmap.org/way/91908051",
+        "https://www.openstreetmap.org/?mlat=38.334785703333324&mlon=21.581311130000007#map=17/38.334785703333324/21.581311130000007"
+      ],
+      "metadata": {
+        "access": {
+          "type": "unknown",
+          "label": "Άγνωστη πρόσβαση",
+          "notes": "Δεν έχει επιβεβαιωθεί επιτόπου."
+        },
+        "terrain": {
+          "types": [
+            "sand",
+            "pebbles"
+          ],
+          "label": "άμμος και βότσαλο"
+        },
+        "organized": true,
+        "shade": false,
+        "amenities": [
+          "ντους"
+        ],
+        "hasShower": true
+      }
+    },
+    {
+      "nameGr": "Παραλία Μαγούλα",
+      "lat": 38.39039,
+      "lon": 23.80234,
+      "region": "Attica",
+      "prefecture": "East Attica",
+      "municipality": "East Attica (mainland)",
+      "coordSrc": "OSM way/369237211 (κέντρο polygon)",
+      "sourceNote": "Παραλία με 1 χαρτογραφημένο/α ντους (OSM amenity=shower) πάνω στο polygon, ~229μ ακτή, κοντά σε Μαγούλα. ΑΝΩΝΥΜΗ στο OSM — γι' αυτό δεν την έπιανε το coverage pipeline που ψάχνει με όνομα. Το όνομα προκύπτει από τον πλησιέστερο οικισμό (ΔΕΝ είναι επιβεβαιωμένο τοπωνύμιο).",
+      "sourceUrls": [
+        "https://www.openstreetmap.org/way/369237211",
+        "https://www.openstreetmap.org/?mlat=38.39039136363636&mlon=23.80233672727273#map=17/38.39039136363636/23.80233672727273"
+      ],
+      "metadata": {
+        "access": {
+          "type": "unknown",
+          "label": "Άγνωστη πρόσβαση",
+          "notes": "Δεν έχει επιβεβαιωθεί επιτόπου."
+        },
+        "terrain": {
+          "types": [
+            "sand",
+            "pebbles"
+          ],
+          "label": "άμμος και βότσαλο"
+        },
+        "organized": true,
+        "shade": false,
+        "amenities": [
+          "ντους"
+        ],
+        "hasShower": true
+      }
+    },
+    {
+      "nameGr": "Παραλία Αρχάγγελος",
+      "lat": 36.62853,
+      "lon": 22.87917,
+      "region": "Peloponnese",
+      "prefecture": "Lakonia",
+      "municipality": "Lakonia (mainland)",
+      "coordSrc": "OSM way/273730067 (κέντρο polygon)",
+      "sourceNote": "Παραλία με 1 χαρτογραφημένο/α ντους (OSM amenity=shower) πάνω στο polygon, ~171μ ακτή, κοντά σε Αρχάγγελος. ΑΝΩΝΥΜΗ στο OSM — γι' αυτό δεν την έπιανε το coverage pipeline που ψάχνει με όνομα. Το όνομα προκύπτει από τον πλησιέστερο οικισμό (ΔΕΝ είναι επιβεβαιωμένο τοπωνύμιο).",
+      "sourceUrls": [
+        "https://www.openstreetmap.org/way/273730067",
+        "https://www.openstreetmap.org/?mlat=36.62852972352941&mlon=22.879165105882354#map=17/36.62852972352941/22.879165105882354"
+      ],
+      "metadata": {
+        "access": {
+          "type": "unknown",
+          "label": "Άγνωστη πρόσβαση",
+          "notes": "Δεν έχει επιβεβαιωθεί επιτόπου."
+        },
+        "terrain": {
+          "types": [
+            "sand",
+            "pebbles"
+          ],
+          "label": "άμμος και βότσαλο"
+        },
+        "organized": true,
+        "shade": false,
+        "amenities": [
+          "ντους"
+        ],
+        "hasShower": true
+      }
+    }
+  ]
+}

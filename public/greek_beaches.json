@@ -40490,51 +40490,6 @@
               "notes": "Generated from Natural Earth geospatial exposure facingDeg. This records shoreline-facing direction only; it does not verify shelter, low-wave behavior, or live sea conditions."
             }
           }
-        },
-        {
-          "id": 3124,
-          "name": "Παραλία Νέα Κερδύλια",
-          "lat": 40.78075,
-          "lon": 23.82726,
-          "metadata": {
-            "access": {
-              "type": "unknown",
-              "label": "Άγνωστη πρόσβαση",
-              "notes": "Δεν έχει επιβεβαιωθεί επιτόπου."
-            },
-            "terrain": {
-              "types": [
-                "sand",
-                "pebbles"
-              ],
-              "label": "άμμος και βότσαλο"
-            },
-            "organized": true,
-            "shade": false,
-            "amenities": [
-              "ντους"
-            ],
-            "confidence": "low",
-            "language": "el",
-            "batch": "shower_beach_discovery_2026_07",
-            "needsVerification": true,
-            "activities": {
-              "surfing": false
-            },
-            "sourceUrls": [
-              "https://www.openstreetmap.org/way/1367295655",
-              "https://www.openstreetmap.org/?mlat=40.78075362432434&mlon=23.82725516216216#map=17/40.78075362432434/23.82725516216216"
-            ],
-            "sourceNotes": [
-              "Hidden-beach discovery (2026-07): Παραλία με 1 χαρτογραφημένο/α ντους (OSM amenity=shower) πάνω στο polygon, ~1049μ ακτή, κοντά σε Νέα Κερδύλια. ΑΝΩΝΥΜΗ στο OSM — γι' αυτό δεν την έπιανε το coverage pipeline που ψάχνει με όνομα. Το όνομα προκύπτει από τον πλησιέστερο οικισμό (ΔΕΝ είναι επιβεβαιωμένο τοπωνύμιο). Συντεταγμένες: OSM way/1367295655 (κέντρο polygon). Slot κοντά στο #518 (Κυανή Ακτή, 4986m). Πρόσβαση/χαρακτηριστικά από οδηγούς — ΔΕΝ έχουν επιβεβαιωθεί επιτόπου."
-            ],
-            "googleMapsNavigation": {
-              "status": "verified",
-              "mode": "coordinates",
-              "checkedAt": "2026-07-23",
-              "method": "guide-discovery-v1"
-            }
-          }
         }
       ]
     }
@@ -47463,50 +47418,6 @@
           }
         },
         {
-          "id": 3127,
-          "name": "Παραλία Δράμια",
-          "lat": 35.3535,
-          "lon": 24.29632,
-          "metadata": {
-            "access": {
-              "type": "unknown",
-              "label": "Άγνωστη πρόσβαση",
-              "notes": "Δεν έχει επιβεβαιωθεί επιτόπου."
-            },
-            "terrain": {
-              "types": [
-                "sand"
-              ],
-              "label": "άμμος"
-            },
-            "organized": true,
-            "shade": false,
-            "amenities": [
-              "ντους"
-            ],
-            "confidence": "low",
-            "language": "el",
-            "batch": "shower_beach_discovery_2026_07",
-            "needsVerification": true,
-            "activities": {
-              "surfing": false
-            },
-            "sourceUrls": [
-              "https://www.openstreetmap.org/way/152252569",
-              "https://www.openstreetmap.org/?mlat=35.353502350793654&mlon=24.296317085714286#map=17/35.353502350793654/24.296317085714286"
-            ],
-            "sourceNotes": [
-              "Hidden-beach discovery (2026-07): Παραλία με 2 χαρτογραφημένο/α ντους (OSM amenity=shower) πάνω στο polygon, ~1012μ ακτή, κοντά σε Δράμια. ΑΝΩΝΥΜΗ στο OSM — γι' αυτό δεν την έπιανε το coverage pipeline που ψάχνει με όνομα. Το όνομα προκύπτει από τον πλησιέστερο οικισμό (ΔΕΝ είναι επιβεβαιωμένο τοπωνύμιο). Συντεταγμένες: OSM way/152252569 (κέντρο polygon). Slot κοντά στο #598 (Georgioupoli, 1668m). Πρόσβαση/χαρακτηριστικά από οδηγούς — ΔΕΝ έχουν επιβεβαιωθεί επιτόπου."
-            ],
-            "googleMapsNavigation": {
-              "status": "verified",
-              "mode": "coordinates",
-              "checkedAt": "2026-07-23",
-              "method": "guide-discovery-v1"
-            }
-          }
-        },
-        {
           "id": 3130,
           "name": "Παραλία Λιβάδια",
           "lat": 35.35763,
@@ -52267,122 +52178,6 @@
               "protectedFrom": [],
               "confidence": "medium",
               "notes": "Generated from Natural Earth geospatial exposure facingDeg. This records shoreline-facing direction only; it does not verify shelter, low-wave behavior, or live sea conditions."
-            }
-          }
-        },
-        {
-          "id": 3126,
-          "name": "Παραλία Άρβη",
-          "lat": 34.9914,
-          "lon": 25.45183,
-          "metadata": {
-            "access": {
-              "type": "unknown",
-              "label": "Άγνωστη πρόσβαση",
-              "notes": "Δεν έχει επιβεβαιωθεί επιτόπου."
-            },
-            "terrain": {
-              "types": [
-                "sand"
-              ],
-              "label": "άμμος"
-            },
-            "organized": true,
-            "shade": false,
-            "amenities": [
-              "ντους"
-            ],
-            "confidence": "low",
-            "language": "el",
-            "batch": "shower_beach_discovery_2026_07",
-            "needsVerification": true,
-            "activities": {
-              "surfing": false
-            },
-            "sourceUrls": [
-              "https://www.openstreetmap.org/way/865924485",
-              "https://www.openstreetmap.org/?mlat=34.991397868750006&mlon=25.4518251125#map=17/34.991397868750006/25.4518251125"
-            ],
-            "sourceNotes": [
-              "Hidden-beach discovery (2026-07): Παραλία με 1 χαρτογραφημένο/α ντους (OSM amenity=shower) πάνω στο polygon, ~398μ ακτή, κοντά σε Άρβη. ΑΝΩΝΥΜΗ στο OSM — γι' αυτό δεν την έπιανε το coverage pipeline που ψάχνει με όνομα. Το όνομα προκύπτει από τον πλησιέστερο οικισμό (ΔΕΝ είναι επιβεβαιωμένο τοπωνύμιο). Συντεταγμένες: OSM way/865924485 (κέντρο polygon). Slot κοντά στο #651 (Keratokambos, 4885m). Πρόσβαση/χαρακτηριστικά από οδηγούς — ΔΕΝ έχουν επιβεβαιωθεί επιτόπου."
-            ],
-            "googleMapsNavigation": {
-              "status": "verified",
-              "mode": "coordinates",
-              "checkedAt": "2026-07-23",
-              "method": "guide-discovery-v1"
-            },
-            "hasShower": true,
-            "showerEvidence": {
-              "source": "osm",
-              "nearestMeters": 17,
-              "count": 1,
-              "osm": [
-                "https://www.openstreetmap.org/node/8069701286"
-              ],
-              "checkedAt": "2026-07-25"
-            }
-          }
-        },
-        {
-          "id": 3128,
-          "name": "Παραλία Καλλιθέα",
-          "lat": 35.00309,
-          "lon": 25.58373,
-          "metadata": {
-            "access": {
-              "type": "unknown",
-              "label": "Άγνωστη πρόσβαση",
-              "notes": "Δεν έχει επιβεβαιωθεί επιτόπου."
-            },
-            "terrain": {
-              "types": [
-                "sand",
-                "pebbles"
-              ],
-              "label": "άμμος και βότσαλο"
-            },
-            "organized": true,
-            "shade": false,
-            "amenities": [
-              "ντους"
-            ],
-            "confidence": "low",
-            "language": "el",
-            "batch": "shower_beach_discovery_2026_07",
-            "needsVerification": true,
-            "activities": {
-              "surfing": false
-            },
-            "sourceUrls": [
-              "https://www.openstreetmap.org/way/105904008",
-              "https://www.openstreetmap.org/?mlat=35.003094925423724&mlon=25.58372884915254#map=17/35.003094925423724/25.58372884915254"
-            ],
-            "sourceNotes": [
-              "Hidden-beach discovery (2026-07): Παραλία με 8 χαρτογραφημένο/α ντους (OSM amenity=shower) πάνω στο polygon, ~838μ ακτή, κοντά σε Καλλιθέα. ΑΝΩΝΥΜΗ στο OSM — γι' αυτό δεν την έπιανε το coverage pipeline που ψάχνει με όνομα. Το όνομα προκύπτει από τον πλησιέστερο οικισμό (ΔΕΝ είναι επιβεβαιωμένο τοπωνύμιο). Συντεταγμένες: OSM way/105904008 (κέντρο polygon). Slot κοντά στο #651 (Keratokambos, 16919m). Πρόσβαση/χαρακτηριστικά από οδηγούς — ΔΕΝ έχουν επιβεβαιωθεί επιτόπου."
-            ],
-            "googleMapsNavigation": {
-              "status": "verified",
-              "mode": "coordinates",
-              "checkedAt": "2026-07-23",
-              "method": "guide-discovery-v1"
-            },
-            "hasShower": true,
-            "showerEvidence": {
-              "source": "osm",
-              "nearestMeters": 42,
-              "count": 8,
-              "osm": [
-                "https://www.openstreetmap.org/node/12266005917",
-                "https://www.openstreetmap.org/node/13256135925",
-                "https://www.openstreetmap.org/node/12271752322",
-                "https://www.openstreetmap.org/node/13234489695",
-                "https://www.openstreetmap.org/node/12271752326",
-                "https://www.openstreetmap.org/node/12271752328",
-                "https://www.openstreetmap.org/node/12271752329",
-                "https://www.openstreetmap.org/node/12271752330"
-              ],
-              "checkedAt": "2026-07-25"
             }
           }
         }
@@ -60628,6 +60423,68 @@
               "mode": "coordinates",
               "checkedAt": "2026-07-23",
               "method": "guide-discovery-v1"
+            }
+          }
+        },
+        {
+          "id": 3128,
+          "name": "Παραλία Καλλιθέα",
+          "lat": 35.00309,
+          "lon": 25.58373,
+          "metadata": {
+            "access": {
+              "type": "unknown",
+              "label": "Άγνωστη πρόσβαση",
+              "notes": "Δεν έχει επιβεβαιωθεί επιτόπου."
+            },
+            "terrain": {
+              "types": [
+                "sand",
+                "pebbles"
+              ],
+              "label": "άμμος και βότσαλο"
+            },
+            "organized": true,
+            "shade": false,
+            "amenities": [
+              "ντους"
+            ],
+            "confidence": "low",
+            "language": "el",
+            "batch": "shower_beach_discovery_2026_07",
+            "needsVerification": true,
+            "activities": {
+              "surfing": false
+            },
+            "sourceUrls": [
+              "https://www.openstreetmap.org/way/105904008",
+              "https://www.openstreetmap.org/?mlat=35.003094925423724&mlon=25.58372884915254#map=17/35.003094925423724/25.58372884915254"
+            ],
+            "sourceNotes": [
+              "Hidden-beach discovery (2026-07): Παραλία με 8 χαρτογραφημένο/α ντους (OSM amenity=shower) πάνω στο polygon, ~838μ ακτή, κοντά σε Καλλιθέα. ΑΝΩΝΥΜΗ στο OSM — γι' αυτό δεν την έπιανε το coverage pipeline που ψάχνει με όνομα. Το όνομα προκύπτει από τον πλησιέστερο οικισμό (ΔΕΝ είναι επιβεβαιωμένο τοπωνύμιο). Συντεταγμένες: OSM way/105904008 (κέντρο polygon). Slot κοντά στο #651 (Keratokambos, 16919m). Πρόσβαση/χαρακτηριστικά από οδηγούς — ΔΕΝ έχουν επιβεβαιωθεί επιτόπου."
+            ],
+            "googleMapsNavigation": {
+              "status": "verified",
+              "mode": "coordinates",
+              "checkedAt": "2026-07-23",
+              "method": "guide-discovery-v1"
+            },
+            "hasShower": true,
+            "showerEvidence": {
+              "source": "osm",
+              "nearestMeters": 42,
+              "count": 8,
+              "osm": [
+                "https://www.openstreetmap.org/node/12266005917",
+                "https://www.openstreetmap.org/node/13256135925",
+                "https://www.openstreetmap.org/node/12271752322",
+                "https://www.openstreetmap.org/node/13234489695",
+                "https://www.openstreetmap.org/node/12271752326",
+                "https://www.openstreetmap.org/node/12271752328",
+                "https://www.openstreetmap.org/node/12271752329",
+                "https://www.openstreetmap.org/node/12271752330"
+              ],
+              "checkedAt": "2026-07-25"
             }
           }
         }
