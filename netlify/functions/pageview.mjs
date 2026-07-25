@@ -88,12 +88,18 @@ const bump = (obj, key) => {
   obj[key] = (obj[key] || 0) + 1;
 };
 
-/** Host of the referrer only (never the full URL) — enough for a traffic-source view. */
-const referrerHost = (raw) => {
+/**
+ * Host of the referrer only (never the full URL) — enough for a traffic-source view.
+ * Our own host maps to 'direct': the beacon's Referer HEADER is always our own page
+ * (same-origin request), and a same-origin document.referrer is an internal hop,
+ * not a traffic source — neither says where the visitor came FROM.
+ */
+const referrerHost = (raw, ownHost) => {
   if (!raw) return 'direct';
   try {
     const host = new URL(raw).hostname.replace(/^www\./, '');
-    return host.slice(0, 60) || 'direct';
+    if (!host || host === ownHost) return 'direct';
+    return host.slice(0, 60);
   } catch {
     return 'other';
   }
@@ -133,7 +139,10 @@ export const handler = async (event) => {
     const hash = visitorHash(ip, userAgent, dayKey);
 
     const pageType = safeToken(params.t, 24) || 'page';
-    const ref = referrerHost(headers.referer || headers.referrer || params.r);
+    // Prefer the client-passed document.referrer (the real visit origin); the Referer
+    // header is only a fallback for old cached bundles and is our own page anyway.
+    const ownHost = (headers.host || '').replace(/^www\./, '');
+    const ref = referrerHost(params.r || headers.referer || headers.referrer, ownHost);
     const section = safeToken(params.s, 32) || 'home';
     const device = deviceClass(userAgent);
     const country = countryCode(headers);
