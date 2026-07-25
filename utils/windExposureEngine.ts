@@ -15,7 +15,7 @@ import {
 import { calculateWindExposure, estimateBeachOrientation, ExposureLevel } from './windExposure';
 import { resolveWindExposure } from './windExposureModel';
 import { getWindProfileOverride } from './windProfileOverrides';
-import { CURATED_ENCLOSED_COVE_IDS } from './enclosedCoves';
+import { CURATED_ENCLOSED_COVE_IDS, CURATED_NON_COVE_IDS } from './enclosedCoves';
 
 export interface BeachWindExposureInput {
   beach: Beach;
@@ -553,6 +553,14 @@ const hasGeometryEnclosedProtection = (
 //     spanning ≥5 CONTIGUOUS sectors (>225° enclosure), AND
 //   • land within 0.5 km in ≥5 contiguous sectors (the close cove arms), AND
 //   • the opening (fetch >0.5 km) confined to ≤3 contiguous sectors (≤135° mouth), AND
+//   • the opening NARROW in energy terms: ≤2 mouth sectors reach long fetch (≥8 km,
+//     aligned with the model's OPENNESS_RAMP_START_KM). With ±30° fan rays a true
+//     narrow entrance (<45° wide) can light up at most 2 adjacent sectors with open
+//     sea; 3+ long-fetch sectors means a ≥90° open-water window — a bight like
+//     Μουτσούνα (Naxos E coast), not an όρμος. Measured 2026-07-25: every labeled
+//     true cove (Βοϊδοκοιλιά, Ερμογένης, Πόρτο Λιμνιώνας…) has ≤2;
+//     the veto removes 69 Μουτσούνα-class bights (Πετάνι, Star Beach, αστικές
+//     Καβάλας…) and zero labeled coves. AND
 //   • real open water somewhere (max fetch ≥1 km — excludes lagoon/inland pins).
 // ~10% of beaches qualify. The measured limit of this geometry: it cannot see
 // sub-sector morphology (fjord threads, tiny rock arms) nor separate a marina pocket
@@ -564,6 +572,8 @@ const ENCLOSED_COVE_MIN_ARC_SECTORS = 5;
 const ENCLOSED_COVE_NEAR_LAND_KM = 0.5;
 const ENCLOSED_COVE_MAX_MOUTH_SECTORS = 3;
 const ENCLOSED_COVE_MIN_MAX_FETCH_KM = 1;
+const ENCLOSED_COVE_MOUTH_LONG_FETCH_KM = 8;
+const ENCLOSED_COVE_MAX_LONG_FETCH_MOUTH_SECTORS = 2;
 
 /** Longest run of `true` around the circular 8-sector compass. */
 const maxCircularSectorRun = (flags: boolean[]): number => {
@@ -593,9 +603,19 @@ export const isEnclosedCoveGeometry = (
   if (windProfile.localWindAmplification === 'high') return false;
   if (windProfile.shelterLevel === 'open') return false;
 
+  // Verified look-alikes (urban mole pockets, wide bays) that the rays cannot
+  // tell from real coves — human-pinned out, ahead of the allowlist.
+  if (CURATED_NON_COVE_IDS.has(beachId)) return false;
   if (CURATED_ENCLOSED_COVE_IDS.has(beachId)) return true;
 
   if (profile?.confidence !== 'high') return false;
+  // The intensity term here looks redundant next to fetch/blockage but is load-
+  // bearing: relaxing it to "close land counts regardless of wind alignment" was
+  // measured 2026-07-25 to flood the gate (215→748 positives, re-admitting labeled
+  // negatives Βάρκιζα/Λιμανάκια/Astir). Panormos-class true coves that this
+  // strictness misses (arm sectors aligned with the beach's own facing) are a
+  // CURATION funnel — see the near-miss bucket in scripts/auditEnclosedCoves.ts —
+  // never an auto-claim.
   const enclosed = SECTORS.map(sector => {
     const s = profile.sectors?.[sector];
     return Boolean(
@@ -606,10 +626,12 @@ export const isEnclosedCoveGeometry = (
   });
   const nearLand = SECTORS.map(sector => (profile.sectors?.[sector]?.fetchKm ?? Number.POSITIVE_INFINITY) <= ENCLOSED_COVE_NEAR_LAND_KM);
   const maxFetchKm = Math.max(...SECTORS.map(sector => profile.sectors?.[sector]?.fetchKm ?? 0));
+  const longFetchMouthSectors = SECTORS.filter(sector => (profile.sectors?.[sector]?.fetchKm ?? 0) >= ENCLOSED_COVE_MOUTH_LONG_FETCH_KM).length;
 
   return maxCircularSectorRun(enclosed) >= ENCLOSED_COVE_MIN_ARC_SECTORS
     && maxCircularSectorRun(nearLand) >= ENCLOSED_COVE_MIN_ARC_SECTORS
     && maxCircularSectorRun(nearLand.map(v => !v)) <= ENCLOSED_COVE_MAX_MOUTH_SECTORS
+    && longFetchMouthSectors <= ENCLOSED_COVE_MAX_LONG_FETCH_MOUTH_SECTORS
     && maxFetchKm >= ENCLOSED_COVE_MIN_MAX_FETCH_KM;
 };
 

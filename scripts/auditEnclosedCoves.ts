@@ -35,6 +35,8 @@ const MAX_MOUTH = 3;
 const MIN_MAX_FETCH_KM = 1;
 const BLOCKED_RATIO = 0.95;
 const MAX_INTENSITY = 33;
+const MOUTH_LONG_FETCH_KM = 8;
+const MAX_LONG_FETCH_MOUTH = 2;
 
 const maxCircularSectorRun = (flags: boolean[]): number => {
   if (flags.every(Boolean)) return flags.length;
@@ -111,6 +113,7 @@ for (const file of regionFiles) {
     let nearLandRun = 0;
     let mouthSectors = 0;
     let maxFetchKm = 0;
+    let longFetchMouth = 0;
     if (geo?.sectors) {
       const enclosed = SECTORS.map(s => {
         const sec = geo.sectors[s];
@@ -125,13 +128,15 @@ for (const file of regionFiles) {
       enclosedRun = maxCircularSectorRun(enclosed);
       nearLandRun = maxCircularSectorRun(nearLand);
       mouthSectors = maxCircularSectorRun(nearLand.map(v => !v));
+      longFetchMouth = SECTORS.filter(s => (geo.sectors[s]?.fetchKm ?? 0) >= MOUTH_LONG_FETCH_KM).length;
     }
 
     const vetoActive = Boolean(wp.suspectPin) || Boolean(wp.knownWindSportSpot)
       || wp.localWindAmplification === 'high' || wp.shelterLevel === 'open';
     const geometryPasses = geo?.confidence === 'high'
       && enclosedRun >= MIN_ARC && nearLandRun >= MIN_ARC
-      && mouthSectors <= MAX_MOUTH && maxFetchKm >= MIN_MAX_FETCH_KM;
+      && mouthSectors <= MAX_MOUTH && longFetchMouth <= MAX_LONG_FETCH_MOUTH
+      && maxFetchKm >= MIN_MAX_FETCH_KM;
 
     const rec: Rec = {
       id: beach.id,
@@ -166,9 +171,11 @@ for (const file of regionFiles) {
       continue;
     }
     // One sector short of the gate, tight mouth, no veto — genuine curate candidate.
+    // Fetch cap 8 (was 6): Πάνορμος Νάξου (maxFetch 6.2, land 6/8, 2-sector mouth)
+    // sat invisibly past the old cap — a verified όρμος the funnel must surface.
     if (geo?.confidence === 'high' && !vetoActive
       && enclosedRun === MIN_ARC - 1 && nearLandRun >= MIN_ARC - 1
-      && mouthSectors <= MAX_MOUTH + 1 && maxFetchKm >= MIN_MAX_FETCH_KM && maxFetchKm <= 6) {
+      && mouthSectors <= MAX_MOUTH + 1 && maxFetchKm >= MIN_MAX_FETCH_KM && maxFetchKm <= 8) {
       fnMorphology.push(rec);
     }
   }

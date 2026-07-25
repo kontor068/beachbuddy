@@ -64,4 +64,54 @@ export const CURATED_ENCLOSED_COVE_IDS: ReadonlySet<number> = new Set([
   // Dodecanese
   2367, // Μπλεφούτης (Leros): near-landlocked north bay guarded by the Στρογγυλή/Τρυπητή islets across the mouth; near-land 6/8, mouth 2, max fetch 3.4 km.
   2469, // Άγιος Νικόλαος (Symi): small sheltered pocket bay, boat/foot access only, ringed by rocky hills; near-land 6/8, mouth 2, max fetch 3.7 km.
+
+  // ── National audit batch 3 (2026-07-25, Πάνορμος-class near-miss funnel + web
+  // morphology verification). All: land ≤0.5 km in 6-7/8 sectors, 1-2 sector mouth,
+  // max fetch ≤6.2 km, no wind-sport/marina; the strict gate misses them only
+  // because a facing-aligned arm sector reads 'partial' by intensity. ──
+  // Mainland West & Gulf of Corinth
+  340,  // Γιάννακης (Galaxidi, Fokida): islet-screened pocket on the indented Galaxidi shore inside the sheltered Krissaios gulf.
+  1528, // Λυχνάρι (Korinthia, Katakali): natural «λιμανάκι» on the deeply indented Sofiko coast, small-boat shelter.
+  1530, // Μικρό Αμόνι (Korinthia, Sofiko): «κολπίσκος» with calm/serene water, twin of the curated Μεγάλο Αμόνι.
+  1591, // Πόρτο Κάγιο (Mani): historic near-circular natural harbour, "lake-like waters"; southernmost natural port of the mainland.
+  // Crete
+  632,  // Βαθύ (Asterousia, Heraklion): gorge-mouth cove between long cliffs, "protected from all winds except SW"; historic pirate anchorage.
+  // Ionian
+  1216, // Πόρτο Βρώμη (Zakynthos): twin fjord inlets, ~100 m mouth; only the Ναυάγιο excursion jetty, no marina.
+  // North Aegean
+  1259, // Ελίντα (Chios): narrow W/SW-mouth cove ringed by pine hills; deep enough that the submarine «Παπανικολής» hid there in WWII.
+  1368, // Τσίλια (Lesvos, Tarti): tiny boat-access-only cove with ~100-200 m mouth at the Gera gulf approaches.
+  // Cyclades
+  1798, // Τρεις Κλεισιές βόρειος (Ios): the island's ancient port — "well protected from the winds", path access only.
+  1861, // Άγιος Στέφανος (Kythnos): family cove sheltered from the etesians; yachts overnight in the bay.
+  // NOTE: Πάνορμος (Naxos, 2011) deliberately NOT listed even though it is very
+  // likely a real όρμος. Its authored windProfile carries suspectPin: true — the
+  // app pin sits in a SW-opening harbour notch while the real bay opens SE, so
+  // the computed geometry describes the wrong water. Curating around a position
+  // caution would claim shelter from an untrusted point. Fix the PIN first; the
+  // geometry can then speak for itself.
+  2089, // Μέγα Λιβάδι (Serifos): deep SW bay "well sheltered from summer winds"; ore bridge is a defunct 1900s relic, not a port.
+  2097, // Βαθή (Sifnos): horseshoe bay, "one of the most sheltered in the Cyclades — safe anchorage even in full meltemi".
+  2143, // Βάρη (Syros): deep south bay, "one of the most protected" swim spots of the island.
+  // Dodecanese
+  2229, // Τσαγκάρι (Agathonisi): near-land 7/8 with single-sector mouth on the deeply indented, anchorage-grade south coast.
+  2377, // Λεντού (Lipsi): shallow family cove screened by the Λέντου islet, "well protected from the meltemia".
+]);
+
+/**
+ * Curated NON-cove denylist — the symmetric correction. These pass the strict
+ * ray gate yet map/photo/source verification shows the enclosure is not a real
+ * swim-cove enclosure (urban mole pockets, straight-shore artefacts, wide bays,
+ * wind-sport shores). Doctrine: a false «Κλειστός όρμος» badge is the expensive
+ * error, so verified look-alikes are pinned out — geometry can never re-promote
+ * them, only a human removing the entry can.
+ */
+export const CURATED_NON_COVE_IDS: ReadonlySet<number> = new Set([
+  185,  // Πλαζ Καλαμπάκα (Piraeus): urban rock/mole pocket at the harbour mouth beside the Naval School — not a natural όρμος.
+  554,  // Κούμ Καπί (Chania): straight, fully open N-facing city shore; the "arms" are alongshore ray artefacts, not headlands.
+  743,  // Καραβοστάσι (Lasithi, Kalo Chorio): relatively long open north-coast beach, no topographic shelter.
+  768,  // Χαβάνια (Agios Nikolaos): small picturesque bay but no evidence of ≥5/8 enclosure — under-claim wins.
+  857,  // Χρυσή Αμμουδιά / Golden Beach (Thasos): 3 km sweep of one huge E-facing bay AND an established windsurf/kite spot.
+  1537, // Πλαζ Αλκυονίδας (Korinthia): long straight Alkyonides-gulf shore, no named enclosure resolves here.
+  2044, // Αλυκή (Paros): open ~0.5 km village bay with fishing-harbour mole; meltemi-lee comfort, not cove morphology.
 ]);
