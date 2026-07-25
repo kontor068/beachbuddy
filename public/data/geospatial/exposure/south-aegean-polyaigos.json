@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "generatedAt": "2026-06-26T10:13:17.974Z",
+  "generatedAt": "2026-07-25T15:20:31.203Z",
   "region": {
     "id": "south-aegean-polyaigos",
     "name": "Polyaigos"
@@ -47,8 +47,8 @@
       },
       "NE": {
         "protected": 3,
-        "partial": 1,
-        "exposed": 0
+        "partial": 0,
+        "exposed": 1
       },
       "E": {
         "protected": 3,
@@ -142,7 +142,7 @@
           "fetchKm": 0,
           "blockedRayRatio": 1,
           "onshore": -0.982,
-          "intensity": 0.5
+          "intensity": 0.6
         },
         "NW": {
           "level": "protected",

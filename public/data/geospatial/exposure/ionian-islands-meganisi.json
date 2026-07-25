@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "generatedAt": "2026-06-26T22:46:27.952Z",
+  "generatedAt": "2026-07-25T15:20:15.809Z",
   "region": {
     "id": "ionian-islands-meganisi",
     "name": "Meganisi"
@@ -42,8 +42,8 @@
     "sectors": {
       "N": {
         "protected": 2,
-        "partial": 5,
-        "exposed": 1
+        "partial": 4,
+        "exposed": 2
       },
       "NE": {
         "protected": 4,
@@ -185,7 +185,7 @@
           "fetchKm": 0.12,
           "blockedRayRatio": 1,
           "onshore": -0.038,
-          "intensity": 28.9
+          "intensity": 28.8
         },
         "SE": {
           "level": "protected",
@@ -213,7 +213,7 @@
           "fetchKm": 0.08,
           "blockedRayRatio": 1,
           "onshore": 0.038,
-          "intensity": 31.1
+          "intensity": 31.2
         },
         "NW": {
           "level": "partial",
@@ -320,7 +320,7 @@
           "fetchKm": 2.92,
           "blockedRayRatio": 1,
           "onshore": 0.335,
-          "intensity": 40
+          "intensity": 40.1
         },
         "E": {
           "level": "protected",
@@ -384,7 +384,7 @@
           "fetchKm": 2.32,
           "blockedRayRatio": 1,
           "onshore": 0.405,
-          "intensity": 42.1
+          "intensity": 42.2
         },
         "NE": {
           "level": "protected",

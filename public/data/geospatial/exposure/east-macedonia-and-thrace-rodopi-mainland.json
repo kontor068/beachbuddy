@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "generatedAt": "2026-06-26T22:46:20.434Z",
+  "generatedAt": "2026-07-25T15:20:08.261Z",
   "region": {
     "id": "east-macedonia-and-thrace-rodopi-mainland",
     "name": "Rodopi"
@@ -72,8 +72,8 @@
       },
       "W": {
         "protected": 0,
-        "partial": 2,
-        "exposed": 4
+        "partial": 1,
+        "exposed": 5
       },
       "NW": {
         "protected": 6,
@@ -107,7 +107,7 @@
           "fetchKm": 0,
           "blockedRayRatio": 1,
           "onshore": -0.975,
-          "intensity": 0.8
+          "intensity": 0.7
         },
         "E": {
           "level": "protected",
@@ -270,7 +270,7 @@
           "fetchKm": 25,
           "blockedRayRatio": 0,
           "onshore": 0.931,
-          "intensity": 96.5
+          "intensity": 96.6
         },
         "SW": {
           "level": "exposed",
@@ -284,7 +284,7 @@
           "fetchKm": 18.84,
           "blockedRayRatio": 0.4,
           "onshore": 0.365,
-          "intensity": 68.3
+          "intensity": 68.2
         },
         "NW": {
           "level": "protected",
@@ -320,7 +320,7 @@
           "fetchKm": 0,
           "blockedRayRatio": 1,
           "onshore": -0.825,
-          "intensity": 5.3
+          "intensity": 5.2
         },
         "E": {
           "level": "protected",
@@ -334,14 +334,14 @@
           "fetchKm": 20,
           "blockedRayRatio": 0.2,
           "onshore": 0.565,
-          "intensity": 78.3
+          "intensity": 78.2
         },
         "S": {
           "level": "exposed",
           "fetchKm": 25,
           "blockedRayRatio": 0,
           "onshore": 0.983,
-          "intensity": 99.2
+          "intensity": 99.1
         },
         "SW": {
           "level": "exposed",
@@ -398,14 +398,14 @@
           "fetchKm": 5.08,
           "blockedRayRatio": 0.8,
           "onshore": -0.254,
-          "intensity": 23.6
+          "intensity": 23.7
         },
         "SE": {
           "level": "exposed",
           "fetchKm": 20.08,
           "blockedRayRatio": 0.2,
           "onshore": 0.505,
-          "intensity": 75.3
+          "intensity": 75.2
         },
         "S": {
           "level": "exposed",
@@ -433,7 +433,7 @@
           "fetchKm": 0.04,
           "blockedRayRatio": 1,
           "onshore": -0.505,
-          "intensity": 14.8
+          "intensity": 14.9
         }
       },
       "confidence": "high"

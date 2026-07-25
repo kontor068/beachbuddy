@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "generatedAt": "2026-06-26T22:46:07.586Z",
+  "generatedAt": "2026-07-25T15:19:55.046Z",
   "region": {
     "id": "central-greece-fokida-mainland",
     "name": "Fokida"
@@ -36,47 +36,47 @@
     "maskConfidence": "high"
   },
   "summary": {
-    "beachCount": 20,
-    "generatedProfiles": 20,
+    "beachCount": 21,
+    "generatedProfiles": 21,
     "missingCoordinates": 0,
     "sectors": {
       "N": {
-        "protected": 15,
+        "protected": 16,
         "partial": 5,
         "exposed": 0
       },
       "NE": {
-        "protected": 14,
+        "protected": 15,
         "partial": 5,
         "exposed": 1
       },
       "E": {
-        "protected": 12,
-        "partial": 7,
-        "exposed": 1
+        "protected": 13,
+        "partial": 6,
+        "exposed": 2
       },
       "SE": {
         "protected": 9,
         "partial": 4,
-        "exposed": 7
+        "exposed": 8
       },
       "S": {
         "protected": 5,
-        "partial": 9,
-        "exposed": 6
+        "partial": 7,
+        "exposed": 9
       },
       "SW": {
         "protected": 7,
-        "partial": 9,
-        "exposed": 4
+        "partial": 5,
+        "exposed": 9
       },
       "W": {
         "protected": 12,
         "partial": 4,
-        "exposed": 4
+        "exposed": 5
       },
       "NW": {
-        "protected": 12,
+        "protected": 13,
         "partial": 8,
         "exposed": 0
       }
@@ -107,7 +107,7 @@
           "fetchKm": 0,
           "blockedRayRatio": 1,
           "onshore": -0.918,
-          "intensity": 2.5
+          "intensity": 2.4
         },
         "E": {
           "level": "protected",
@@ -320,7 +320,7 @@
           "fetchKm": 0,
           "blockedRayRatio": 1,
           "onshore": -0.465,
-          "intensity": 16
+          "intensity": 16.1
         },
         "E": {
           "level": "partial",
@@ -526,7 +526,7 @@
           "fetchKm": 0.08,
           "blockedRayRatio": 1,
           "onshore": -0.412,
-          "intensity": 17.6
+          "intensity": 17.7
         },
         "NE": {
           "level": "protected",
@@ -554,21 +554,21 @@
           "fetchKm": 7.8,
           "blockedRayRatio": 1,
           "onshore": 0.412,
-          "intensity": 42.4
+          "intensity": 42.3
         },
         "SW": {
           "level": "exposed",
           "fetchKm": 10.16,
           "blockedRayRatio": 1,
           "onshore": 0.935,
-          "intensity": 75.7
+          "intensity": 75.8
         },
         "W": {
           "level": "exposed",
           "fetchKm": 13.8,
           "blockedRayRatio": 1,
           "onshore": 0.911,
-          "intensity": 95.5
+          "intensity": 95.6
         },
         "NW": {
           "level": "partial",
@@ -760,7 +760,7 @@
           "fetchKm": 12.64,
           "blockedRayRatio": 0.8,
           "onshore": 0.927,
-          "intensity": 96.4
+          "intensity": 96.3
         },
         "S": {
           "level": "exposed",
@@ -888,7 +888,7 @@
           "fetchKm": 0,
           "blockedRayRatio": 1,
           "onshore": -0.905,
-          "intensity": 2.8
+          "intensity": 2.9
         },
         "E": {
           "level": "protected",
@@ -973,7 +973,7 @@
           "fetchKm": 18.56,
           "blockedRayRatio": 0.4,
           "onshore": 0.881,
-          "intensity": 94
+          "intensity": 94.1
         },
         "S": {
           "level": "partial",
@@ -1058,14 +1058,14 @@
           "fetchKm": 22.12,
           "blockedRayRatio": 0.2,
           "onshore": 0.951,
-          "intensity": 97.5
+          "intensity": 97.6
         },
         "W": {
           "level": "exposed",
           "fetchKm": 13.2,
           "blockedRayRatio": 0.8,
           "onshore": 0.891,
-          "intensity": 94.5
+          "intensity": 94.6
         },
         "NW": {
           "level": "partial",
@@ -1108,7 +1108,7 @@
           "fetchKm": 10.08,
           "blockedRayRatio": 0.8,
           "onshore": 0.731,
-          "intensity": 69.8
+          "intensity": 69.9
         },
         "SE": {
           "level": "exposed",
@@ -1129,7 +1129,7 @@
           "fetchKm": 3.16,
           "blockedRayRatio": 1,
           "onshore": -0.035,
-          "intensity": 28.9
+          "intensity": 29
         },
         "W": {
           "level": "protected",
@@ -1186,14 +1186,14 @@
           "fetchKm": 16.92,
           "blockedRayRatio": 0.6,
           "onshore": 0.757,
-          "intensity": 87.9
+          "intensity": 87.8
         },
         "S": {
           "level": "exposed",
           "fetchKm": 16.44,
           "blockedRayRatio": 0.4,
           "onshore": 0.997,
-          "intensity": 99.8
+          "intensity": 99.9
         },
         "SW": {
           "level": "partial",
@@ -1278,7 +1278,7 @@
           "fetchKm": 10.8,
           "blockedRayRatio": 0.8,
           "onshore": 0.876,
-          "intensity": 81.9
+          "intensity": 82
         },
         "NW": {
           "level": "partial",
@@ -1321,7 +1321,7 @@
           "fetchKm": 0,
           "blockedRayRatio": 1,
           "onshore": -0.612,
-          "intensity": 11.6
+          "intensity": 11.7
         },
         "SE": {
           "level": "partial",
@@ -1349,7 +1349,7 @@
           "fetchKm": 5.68,
           "blockedRayRatio": 1,
           "onshore": 0.612,
-          "intensity": 48.4
+          "intensity": 48.3
         },
         "NW": {
           "level": "protected",
@@ -1477,7 +1477,7 @@
           "fetchKm": 16.92,
           "blockedRayRatio": 0.8,
           "onshore": 0.937,
-          "intensity": 96.9
+          "intensity": 96.8
         },
         "SW": {
           "level": "partial",
@@ -1499,6 +1499,77 @@
           "blockedRayRatio": 1,
           "onshore": -0.91,
           "intensity": 2.7
+        }
+      },
+      "confidence": "high"
+    },
+    "3120": {
+      "beachId": 3120,
+      "name": {
+        "en": "Paralia Kirra",
+        "gr": "Παραλία Κίρρα"
+      },
+      "coordinates": {
+        "lat": 38.42738,
+        "lon": 22.43176
+      },
+      "facingDeg": 218.5,
+      "sectors": {
+        "N": {
+          "level": "protected",
+          "fetchKm": 0,
+          "blockedRayRatio": 1,
+          "onshore": -0.783,
+          "intensity": 6.5
+        },
+        "NE": {
+          "level": "protected",
+          "fetchKm": 0,
+          "blockedRayRatio": 1,
+          "onshore": -0.994,
+          "intensity": 0.2
+        },
+        "E": {
+          "level": "protected",
+          "fetchKm": 0.64,
+          "blockedRayRatio": 1,
+          "onshore": -0.623,
+          "intensity": 11.3
+        },
+        "SE": {
+          "level": "partial",
+          "fetchKm": 12.56,
+          "blockedRayRatio": 0.6,
+          "onshore": 0.113,
+          "intensity": 55.7
+        },
+        "S": {
+          "level": "exposed",
+          "fetchKm": 21.2,
+          "blockedRayRatio": 0.2,
+          "onshore": 0.783,
+          "intensity": 89.1
+        },
+        "SW": {
+          "level": "exposed",
+          "fetchKm": 7.24,
+          "blockedRayRatio": 0.8,
+          "onshore": 0.994,
+          "intensity": 64.6
+        },
+        "W": {
+          "level": "partial",
+          "fetchKm": 1.96,
+          "blockedRayRatio": 1,
+          "onshore": 0.623,
+          "intensity": 48.7
+        },
+        "NW": {
+          "level": "protected",
+          "fetchKm": 0.76,
+          "blockedRayRatio": 1,
+          "onshore": -0.113,
+          "intensity": 26.6
         }
       },
       "confidence": "high"

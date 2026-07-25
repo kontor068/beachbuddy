@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "generatedAt": "2026-06-26T10:13:12.613Z",
+  "generatedAt": "2026-07-25T15:20:25.785Z",
   "region": {
     "id": "south-aegean-halki",
     "name": "Halki"
@@ -52,8 +52,8 @@
       },
       "E": {
         "protected": 0,
-        "partial": 2,
-        "exposed": 0
+        "partial": 1,
+        "exposed": 1
       },
       "SE": {
         "protected": 0,
@@ -107,7 +107,7 @@
           "fetchKm": 3.84,
           "blockedRayRatio": 1,
           "onshore": 0.762,
-          "intensity": 52.9
+          "intensity": 52.8
         },
         "E": {
           "level": "partial",
@@ -135,7 +135,7 @@
           "fetchKm": 0,
           "blockedRayRatio": 1,
           "onshore": -0.762,
-          "intensity": 7.1
+          "intensity": 7.2
         },
         "W": {
           "level": "protected",

@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "generatedAt": "2026-07-25T14:20:09.440Z",
+  "generatedAt": "2026-07-25T15:20:03.383Z",
   "region": {
     "id": "crete-crete-chania",
     "name": "Chania"
@@ -36,48 +36,48 @@
     "maskConfidence": "high"
   },
   "summary": {
-    "beachCount": 90,
-    "generatedProfiles": 90,
+    "beachCount": 89,
+    "generatedProfiles": 89,
     "missingCoordinates": 0,
     "sectors": {
       "N": {
         "protected": 51,
         "partial": 10,
-        "exposed": 29
+        "exposed": 28
       },
       "NE": {
         "protected": 51,
         "partial": 16,
-        "exposed": 23
+        "exposed": 22
       },
       "E": {
         "protected": 47,
-        "partial": 30,
+        "partial": 29,
         "exposed": 13
       },
       "SE": {
-        "protected": 46,
+        "protected": 45,
         "partial": 11,
         "exposed": 33
       },
       "S": {
-        "protected": 42,
+        "protected": 41,
         "partial": 11,
         "exposed": 37
       },
       "SW": {
-        "protected": 41,
+        "protected": 40,
         "partial": 15,
         "exposed": 34
       },
       "W": {
-        "protected": 46,
+        "protected": 45,
         "partial": 25,
         "exposed": 19
       },
       "NW": {
         "protected": 47,
-        "partial": 22,
+        "partial": 21,
         "exposed": 21
       }
     }
@@ -6327,77 +6327,6 @@
           "blockedRayRatio": 0.6,
           "onshore": 0.867,
           "intensity": 93.3
-        }
-      },
-      "confidence": "high"
-    },
-    "3127": {
-      "beachId": 3127,
-      "name": {
-        "en": "Paralia Dramia",
-        "gr": "Παραλία Δράμια"
-      },
-      "coordinates": {
-        "lat": 35.3535,
-        "lon": 24.29632
-      },
-      "facingDeg": 8.3,
-      "sectors": {
-        "N": {
-          "level": "exposed",
-          "fetchKm": 21.24,
-          "blockedRayRatio": 0.2,
-          "onshore": 0.99,
-          "intensity": 99.5
-        },
-        "NE": {
-          "level": "exposed",
-          "fetchKm": 25,
-          "blockedRayRatio": 0,
-          "onshore": 0.802,
-          "intensity": 90.1
-        },
-        "E": {
-          "level": "partial",
-          "fetchKm": 11.32,
-          "blockedRayRatio": 0.6,
-          "onshore": 0.144,
-          "intensity": 53.7
-        },
-        "SE": {
-          "level": "protected",
-          "fetchKm": 0.08,
-          "blockedRayRatio": 1,
-          "onshore": -0.598,
-          "intensity": 12.1
-        },
-        "S": {
-          "level": "protected",
-          "fetchKm": 0,
-          "blockedRayRatio": 1,
-          "onshore": -0.99,
-          "intensity": 0.3
-        },
-        "SW": {
-          "level": "protected",
-          "fetchKm": 0,
-          "blockedRayRatio": 1,
-          "onshore": -0.802,
-          "intensity": 5.9
-        },
-        "W": {
-          "level": "protected",
-          "fetchKm": 1.36,
-          "blockedRayRatio": 1,
-          "onshore": -0.144,
-          "intensity": 25.7
-        },
-        "NW": {
-          "level": "partial",
-          "fetchKm": 8.52,
-          "blockedRayRatio": 0.8,
-          "onshore": 0.598,
-          "intensity": 54.8
         }
       },
       "confidence": "high"

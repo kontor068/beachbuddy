@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "generatedAt": "2026-06-26T22:46:02.820Z",
+  "generatedAt": "2026-07-25T15:19:50.005Z",
   "region": {
     "id": "attica-piraeus-area",
     "name": "Piraeus area"
@@ -62,8 +62,8 @@
       },
       "S": {
         "protected": 1,
-        "partial": 1,
-        "exposed": 3
+        "partial": 0,
+        "exposed": 4
       },
       "SW": {
         "protected": 1,
@@ -72,8 +72,8 @@
       },
       "W": {
         "protected": 2,
-        "partial": 3,
-        "exposed": 0
+        "partial": 2,
+        "exposed": 1
       },
       "NW": {
         "protected": 3,
@@ -199,14 +199,14 @@
           "fetchKm": 13.44,
           "blockedRayRatio": 0.8,
           "onshore": 0.621,
-          "intensity": 81
+          "intensity": 81.1
         },
         "SW": {
           "level": "exposed",
           "fetchKm": 19.8,
           "blockedRayRatio": 0.6,
           "onshore": 0.993,
-          "intensity": 99.6
+          "intensity": 99.7
         },
         "W": {
           "level": "exposed",
@@ -277,7 +277,7 @@
           "fetchKm": 14.36,
           "blockedRayRatio": 0.6,
           "onshore": 0.437,
-          "intensity": 71.9
+          "intensity": 71.8
         },
         "W": {
           "level": "protected",
@@ -348,7 +348,7 @@
           "fetchKm": 20.76,
           "blockedRayRatio": 0.4,
           "onshore": 0.999,
-          "intensity": 100
+          "intensity": 99.9
         },
         "W": {
           "level": "partial",

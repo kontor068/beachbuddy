@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "generatedAt": "2026-06-26T22:46:42.806Z",
+  "generatedAt": "2026-07-25T15:20:30.976Z",
   "region": {
     "id": "south-aegean-nisyros",
     "name": "Nisyros"
@@ -42,8 +42,8 @@
     "sectors": {
       "N": {
         "protected": 0,
-        "partial": 1,
-        "exposed": 1
+        "partial": 0,
+        "exposed": 2
       },
       "NE": {
         "protected": 1,
@@ -220,7 +220,7 @@
           "fetchKm": 17.24,
           "blockedRayRatio": 0.8,
           "onshore": 0.963,
-          "intensity": 98.2
+          "intensity": 98.1
         }
       },
       "confidence": "high"

@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "generatedAt": "2026-06-26T22:46:27.955Z",
+  "generatedAt": "2026-07-25T15:20:15.812Z",
   "region": {
     "id": "ionian-islands-othonoi",
     "name": "Othonoi"
@@ -57,8 +57,8 @@
       },
       "SE": {
         "protected": 0,
-        "partial": 2,
-        "exposed": 1
+        "partial": 1,
+        "exposed": 2
       },
       "S": {
         "protected": 0,
@@ -128,14 +128,14 @@
           "fetchKm": 25,
           "blockedRayRatio": 0,
           "onshore": 0.965,
-          "intensity": 98.3
+          "intensity": 98.2
         },
         "SW": {
           "level": "exposed",
           "fetchKm": 20.12,
           "blockedRayRatio": 0.2,
           "onshore": 0.869,
-          "intensity": 93.5
+          "intensity": 93.4
         },
         "W": {
           "level": "partial",
@@ -277,7 +277,7 @@
           "fetchKm": 25,
           "blockedRayRatio": 0,
           "onshore": 0.913,
-          "intensity": 95.7
+          "intensity": 95.6
         },
         "W": {
           "level": "partial",

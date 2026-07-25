@@ -197672,8 +197672,8 @@
         {
           "id": 2668,
           "name": "Κορόπη",
-          "lat": 39.1885,
-          "lon": 23.287,
+          "lat": 39.28912,
+          "lon": 23.14313,
           "metadata": {
             "access": {
               "type": "asphalt_road",
@@ -197698,7 +197698,7 @@
               "WC εποχικά",
               "parking κοντά"
             ],
-            "confidence": "high",
+            "confidence": "medium",
             "language": "el",
             "batch": "pelion_tourist_evidence_pass_2026_06_01",
             "waterDepth": {
@@ -197713,9 +197713,11 @@
             "sourceNotes": [
               "Phase 2 audit 2026-05-25: kept beach bar; local accommodation guide notes beach bars operating at Koropi in summer.",
               "Pelion tourist evidence pass 2026-06-01: Volos Info directly describes Koropi/Boufa between Afissos and Kala Nera, with fine sand and small pebbles, umbrellas/sunbeds, beach bars, restaurants, water sports and beach volley; Accommo independently supports easy access and summer beach bars. Coordinates, windProfile, scoring, photos and live calm/protected/safe claims were not changed.",
-              "Thessaly re-geocoding 2026-06-11: no reliable OSM beach match for the imported village/POI coordinates - excluded from the app (excludeFromApp) until the true location is field-verified."
+              "Thessaly re-geocoding 2026-06-11: no reliable OSM beach match for the imported village/POI coordinates - excluded from the app (excludeFromApp) until the true location is field-verified.",
+              "Pin fix 2026-07 (hidden-beach discovery pin audit): οι προηγούμενες συντεταγμένες 39.1885,23.287 βρίσκονταν 4608 μ. μακριά από ΟΠΟΙΑΔΗΠΟΤΕ χαρτογραφημένη παραλία OSM — μέσα στη στεριά (περιοχή Προμυρίου/Λαύκου/Αργαλαστής), υπόλειμμα του αρχικού synthetic generator. Το pin μεταφέρθηκε στην ομώνυμη πραγματική παραλία: OSM way 848075887 \"Koropi Beach\" (391 μ.) δίπλα στο χωριό Κορόπη/Μπούφα (39.29324,23.14290), Παγασητικός. Η έκθεση στον άνεμο πρέπει να ξαναϋπολογιστεί (geospatial rebuild)."
             ],
-            "excludeFromApp": true
+            "excludeFromApp": true,
+            "needsVerification": true
           },
           "excludeFromApp": true
         },
@@ -199088,8 +199090,8 @@
         {
           "id": 2690,
           "name": "Λίθος",
-          "lat": 39.218,
-          "lon": 23.293,
+          "lat": 39.35666,
+          "lon": 23.22024,
           "metadata": {
             "access": {
               "type": "unknown",
@@ -199116,12 +199118,14 @@
             },
             "sourceNotes": [
               "Source follow-up pass 57 2026-05-28: Wikiloc route/waypoints identify Lithos in the Labinou/Pelion coastal walking context. Used for toponym/local-area traceability only, not as proof of public access, services, exact geometry, or confidence promotion.",
-              "Thessaly re-geocoding 2026-06-11: no reliable OSM beach match for the imported village/POI coordinates - excluded from the app (excludeFromApp) until the true location is field-verified."
+              "Thessaly re-geocoding 2026-06-11: no reliable OSM beach match for the imported village/POI coordinates - excluded from the app (excludeFromApp) until the true location is field-verified.",
+              "Pin fix 2026-07 (hidden-beach discovery pin audit): οι προηγούμενες συντεταγμένες 39.218,23.293 βρίσκονταν 2886 μ. μακριά από ΟΠΟΙΑΔΗΠΟΤΕ χαρτογραφημένη παραλία OSM — μέσα στη στεριά (περιοχή Προμυρίου/Λαύκου/Αργαλαστής), υπόλειμμα του αρχικού synthetic generator. Το pin μεταφέρθηκε στην ομώνυμη πραγματική παραλία: OSM node 13342960508 (natural=beach, surface=stepping_stones) στη Λαμπινού. Η έκθεση στον άνεμο πρέπει να ξαναϋπολογιστεί (geospatial rebuild)."
             ],
             "sourceUrls": [
               "https://www.wikiloc.com/hiking-trails/pelio-propan-lampinou-mone-lampedonos-lithos-kuklike-pelion-propan-labinou-labidona-monastery-litho-84890102"
             ],
-            "excludeFromApp": true
+            "excludeFromApp": true,
+            "needsVerification": true
           },
           "staticLabels": {
             "accessType": "unknown"
@@ -199324,8 +199328,8 @@
         {
           "id": 2694,
           "name": "Λημνιώνας",
-          "lat": 39.186,
-          "lon": 23.288,
+          "lat": 39.36407,
+          "lon": 23.20748,
           "metadata": {
             "access": {
               "type": "passable_dirt_road",
@@ -199341,7 +199345,7 @@
             "organized": false,
             "shade": true,
             "amenities": [],
-            "confidence": "high",
+            "confidence": "medium",
             "language": "el",
             "batch": "026_2501_2600",
             "waterDepth": {
@@ -199353,14 +199357,16 @@
               "Source follow-up pass 56 2026-05-28: Amanita directly describes Limnionas Beach in Pelion; used for identity/location traceability only, with existing confidence/access/service data unchanged.",
               "Magnesia/Pelion low-confidence cleanup 2026-05-28: Discover Pelion supports fine-sand type, deep water, medium/partly dirt-road access, unorganized status, and vegetation reaching the beach edge. Wind profile and scoring were not changed.",
               "Tourism-priority evidence pass 2026-05-29: Discover Pelion, Pilion Terra, and BeachAtlas support Limnionas beach identity/location, sandy/rocky natural cove character, harder/partly dirt-road access context, limited development, and static terrain/depth/service context. Promoted to high for static beach facts only; no wind, wave, calm-water, protection, or live-condition claim was added.",
-              "Thessaly re-geocoding 2026-06-11: no reliable OSM beach match for the imported village/POI coordinates - excluded from the app (excludeFromApp) until the true location is field-verified."
+              "Thessaly re-geocoding 2026-06-11: no reliable OSM beach match for the imported village/POI coordinates - excluded from the app (excludeFromApp) until the true location is field-verified.",
+              "Pin fix 2026-07 (hidden-beach discovery pin audit): οι προηγούμενες συντεταγμένες 39.186,23.288 βρίσκονταν 4627 μ. μακριά από ΟΠΟΙΑΔΗΠΟΤΕ χαρτογραφημένη παραλία OSM — μέσα στη στεριά (περιοχή Προμυρίου/Λαύκου/Αργαλαστής), υπόλειμμα του αρχικού synthetic generator. Το pin μεταφέρθηκε στην ομώνυμη πραγματική παραλία: OSM way 124979346 (name:en=Limionas Beach, wikidata=Q25162333) ανάμεσα σε Μυλοπόταμο και Λαμπινού· υπάρχει ΕΝΑΣ Λημνιώνας στο Πήλιο. Η έκθεση στον άνεμο πρέπει να ξαναϋπολογιστεί (geospatial rebuild)."
             ],
             "sourceUrls": [
               "https://www.discover-pelion.gr/limnionas-pelion/",
               "https://pilionterra.gr/beaches/limnionas-beach/",
               "https://www.beachatlas.com/limnionas"
             ],
-            "excludeFromApp": true
+            "excludeFromApp": true,
+            "needsVerification": true
           },
           "excludeFromApp": true
         },
@@ -200321,8 +200327,8 @@
         {
           "id": 2708,
           "name": "Παραλία Καλαμάκι",
-          "lat": 39.174,
-          "lon": 23.283,
+          "lat": 39.34856,
+          "lon": 23.22642,
           "metadata": {
             "access": {
               "type": "hiking_path_easy",
@@ -200339,7 +200345,7 @@
             "organized": false,
             "shade": true,
             "amenities": [],
-            "confidence": "high",
+            "confidence": "medium",
             "language": "el",
             "batch": "magnesia_confidence_continuation_2026_06_02",
             "waterDepth": {
@@ -200355,9 +200361,11 @@
             "sourceNotes": [
               "Phase 2 audit 2026-05-25: removed unverified beach bar claim; source lookup describes Kalamaki Pelion as unorganized/limited-facility, not beach-bar supported.",
               "Magnesia continuation 2026-06-02: Discover Pelion supports Kalamaki/Propan identity, pebble terrain, medium depth, easy access and non-organized status; ArtEsPelion adds practical access detail of about 75 well-laid steps from the parking area and large pebbles/rocks. Corrected previous organized/asphalt-style metadata to a step-access, non-organized beach. Coordinates, windProfile, scoring, photos, and live condition claims were not changed.",
-              "Thessaly re-geocoding 2026-06-11: no reliable OSM beach match for the imported village/POI coordinates - excluded from the app (excludeFromApp) until the true location is field-verified."
+              "Thessaly re-geocoding 2026-06-11: no reliable OSM beach match for the imported village/POI coordinates - excluded from the app (excludeFromApp) until the true location is field-verified.",
+              "Pin fix 2026-07 (hidden-beach discovery pin audit): οι προηγούμενες συντεταγμένες 39.174,23.283 βρίσκονταν 3764 μ. μακριά από ΟΠΟΙΑΔΗΠΟΤΕ χαρτογραφημένη παραλία OSM — μέσα στη στεριά (περιοχή Προμυρίου/Λαύκου/Αργαλαστής), υπόλειμμα του αρχικού synthetic generator. Το pin μεταφέρθηκε στην ομώνυμη πραγματική παραλία: OSM way 620398857 κοντά στο χωριό Καλαμάκι (39.33974,23.21231)· οι οδηγοί τοποθετούν την παραλία ~2 χλμ από το χωριό και τη Λαμπινού 2 χλμ ΒΔ. Η έκθεση στον άνεμο πρέπει να ξαναϋπολογιστεί (geospatial rebuild)."
             ],
-            "excludeFromApp": true
+            "excludeFromApp": true,
+            "needsVerification": true
           },
           "staticLabels": {
             "accessType": "hiking_path_easy"
@@ -201770,6 +201778,667 @@
               "notes": "Generated from Natural Earth geospatial exposure facingDeg. This records shoreline-facing direction only; it does not verify shelter, low-wave behavior, or live sea conditions."
             }
           }
+        },
+        {
+          "id": 3146,
+          "name": "Αγία Βάσω",
+          "lat": 39.08744,
+          "lon": 23.11706,
+          "metadata": {
+            "access": {
+              "type": "difficult_dirt_road",
+              "label": "Δύσβατος χωματόδρομος",
+              "notes": "~4 χλμ χωματόδρομος από τον δρόμο Μηλίνα–Τρίκερι, με απότομη κατηφόρα."
+            },
+            "terrain": {
+              "types": [
+                "pebbles"
+              ],
+              "label": "ψιλό βότσαλο"
+            },
+            "organized": false,
+            "shade": true,
+            "amenities": [],
+            "confidence": "low",
+            "language": "el",
+            "batch": "hidden_beach_discovery_2026_07_pelion",
+            "needsVerification": true,
+            "activities": {
+              "surfing": false
+            },
+            "aliases": [
+              "Άγιος Βάτος",
+              "Agia Vaso"
+            ],
+            "sourceUrls": [
+              "https://www.mytraveler.gr/place/παραλία-αγία-βάσω",
+              "https://www.in2life.gr/article/2003162/oi-paralies-toy-phlioy-poy-den-xereis"
+            ],
+            "sourceNotes": [
+              "Hidden-beach discovery (2026-07): Άγρια παραλία στη νότια ακτή της χερσονήσου Τρικερίου· ψιλό βότσαλο, δέντρα ως το νερό. Στους χάρτες εμφανίζεται και ως «Άγιος Βάτος». Συντεταγμένες: mytraveler.gr δημοσιευμένο GPS 39.087444,23.117061 (ταύτιση 5 δεκαδικών) + ανώνυμο OSM polygon 81m. Slot κοντά στο #2667 (Ιζγκούδ (Τρίκερι), 6467m). Πρόσβαση/χαρακτηριστικά από οδηγούς — ΔΕΝ έχουν επιβεβαιωθεί επιτόπου."
+            ],
+            "googleMapsNavigation": {
+              "status": "verified",
+              "mode": "coordinates",
+              "checkedAt": "2026-07-23",
+              "method": "guide-discovery-v1"
+            }
+          }
+        },
+        {
+          "id": 3147,
+          "name": "Αλογόπορος",
+          "lat": 39.14422,
+          "lon": 23.0817,
+          "metadata": {
+            "access": {
+              "type": "asphalt_road",
+              "label": "άσφαλτος μέχρι κοντά στην παραλία",
+              "notes": "6 χλμ από το Τρίκερι μέσω παρακαμπτηρίου, ~10 λεπτά."
+            },
+            "terrain": {
+              "types": [
+                "pebbles",
+                "rocks"
+              ],
+              "label": "βότσαλο, βράχια"
+            },
+            "organized": true,
+            "shade": true,
+            "amenities": [
+              "ταβέρνα",
+              "ξαπλώστρες"
+            ],
+            "confidence": "low",
+            "language": "el",
+            "batch": "hidden_beach_discovery_2026_07_pelion",
+            "needsVerification": true,
+            "activities": {
+              "surfing": false
+            },
+            "aliases": [
+              "Αλογόπυρος",
+              "Alogoporos"
+            ],
+            "sourceUrls": [
+              "https://www.topoguide.gr/mountains/thessaly/advs_pelion/pelion_southern/Pelion_Trikeri_Alogoporos.php",
+              "https://ilovepelion.gr/el/destinations/aegeanbeach/alogoporos"
+            ],
+            "sourceNotes": [
+              "Hidden-beach discovery (2026-07): Παραλία και λιμανάκι στο Τρίκερι, με βότσαλο και βραχώδη ακτή· σημείο αναχώρησης θαλάσσιου ταξί για το Παλαιό Τρίκερι. Πευκόδασος πίσω από την ακτή. Συντεταγμένες: OSM way 491163482 (ακριβής). Slot κοντά στο #2667 (Ιζγκούδ (Τρίκερι), 987m). Πρόσβαση/χαρακτηριστικά από οδηγούς — ΔΕΝ έχουν επιβεβαιωθεί επιτόπου."
+            ],
+            "googleMapsNavigation": {
+              "status": "verified",
+              "mode": "coordinates",
+              "checkedAt": "2026-07-23",
+              "method": "guide-discovery-v1"
+            }
+          }
+        },
+        {
+          "id": 3148,
+          "name": "Θεριάκοντας",
+          "lat": 39.14114,
+          "lon": 23.07445,
+          "metadata": {
+            "access": {
+              "type": "difficult_dirt_road",
+              "label": "Δύσβατος χωματόδρομος",
+              "notes": "Χωματόδρομος από τον Αλογόπορο ως το δυτικό άκρο· εναλλακτικά παραλιακό μονοπάτι (~6,8 χλμ από το Τρίκερι)."
+            },
+            "terrain": {
+              "types": [],
+              "label": "—"
+            },
+            "organized": false,
+            "shade": true,
+            "amenities": [],
+            "confidence": "low",
+            "language": "el",
+            "batch": "hidden_beach_discovery_2026_07_pelion",
+            "needsVerification": true,
+            "activities": {
+              "surfing": false
+            },
+            "aliases": [
+              "Θεριακόντας",
+              "Theriakontas"
+            ],
+            "sourceUrls": [
+              "https://www.topoguide.gr/mountains/thessaly/advs_pelion/pelion_southern/Pelion_Trikeri_Theriakontas.php"
+            ],
+            "sourceNotes": [
+              "Hidden-beach discovery (2026-07): Απομονωμένη παραλία στη νότια ακτή του Τρικερίου, με ελαιώνα ως την ακτή. Καμία παροχή. Συντεταγμένες: OSM way 1326223309· η απόσταση 715m από τον Αλογόπορο ταιριάζει με την περιγραφή topoguide «640 μ. μετά το πρώτο ακρωτήρι». Slot κοντά στο #2667 (Ιζγκούδ (Τρίκερι), 1600m). Πρόσβαση/χαρακτηριστικά από οδηγούς — ΔΕΝ έχουν επιβεβαιωθεί επιτόπου."
+            ],
+            "googleMapsNavigation": {
+              "status": "verified",
+              "mode": "coordinates",
+              "checkedAt": "2026-07-23",
+              "method": "guide-discovery-v1"
+            }
+          }
+        },
+        {
+          "id": 3149,
+          "name": "Κάλα Νερά",
+          "lat": 39.305,
+          "lon": 23.1203,
+          "metadata": {
+            "access": {
+              "type": "asphalt_road",
+              "label": "άσφαλτος μέχρι την παραλία",
+              "notes": "Παραλιακός ασφαλτόδρομος μέσα στον οικισμό."
+            },
+            "terrain": {
+              "types": [
+                "fine_sand",
+                "pebbles"
+              ],
+              "label": "άμμος, ψιλό λευκό βότσαλο"
+            },
+            "organized": true,
+            "shade": true,
+            "amenities": [
+              "ξαπλώστρες και ομπρέλες",
+              "ταβέρνες κοντά",
+              "παροχές οικισμού κοντά"
+            ],
+            "confidence": "low",
+            "language": "el",
+            "batch": "hidden_beach_discovery_2026_07_pelion",
+            "needsVerification": true,
+            "activities": {
+              "surfing": false
+            },
+            "aliases": [
+              "Kala Nera",
+              "Καλά Νερά"
+            ],
+            "sourceUrls": [
+              "https://www.travelstyle.gr/pilio-7-paralies-poy-tha-se-kanoyn-na-to-latrepseis-kai-to-kalokairi/",
+              "https://my-diakopes.gr/pilio-paralia-kala-nera-pou-tha-se-trelanei/"
+            ],
+            "sourceNotes": [
+              "Hidden-beach discovery (2026-07): Μεγάλη οργανωμένη παραλία του Παγασητικού μπροστά από τον ομώνυμο οικισμό, με άμμο και ψιλό λευκό βότσαλο και ευκαλύπτους/πλατάνια στον παραλιακό. Δεν υπάρχει ως polygon στο OpenStreetMap, γι' αυτό και έλειπε. Συντεταγμένες: μπροστά από τον οικισμό Καλά Νερά (OSM κόμβος οικισμού 39.30530,23.12067) — η ίδια η παραλία ΔΕΝ είναι χαρτογραφημένη στο OSM. Slot κοντά στο #2685 (Καλλιφτέρη, 4553m). Πρόσβαση/χαρακτηριστικά από οδηγούς — ΔΕΝ έχουν επιβεβαιωθεί επιτόπου."
+            ],
+            "googleMapsNavigation": {
+              "status": "verified",
+              "mode": "coordinates",
+              "checkedAt": "2026-07-23",
+              "method": "guide-discovery-v1"
+            }
+          }
+        },
+        {
+          "id": 3150,
+          "name": "Κάλαμος Πηλίου",
+          "lat": 39.22668,
+          "lon": 23.18263,
+          "metadata": {
+            "access": {
+              "type": "asphalt_road",
+              "label": "άσφαλτος μέχρι κοντά στην παραλία",
+              "notes": "Παραλιακός ασφαλτόδρομος από την Αργαλαστή."
+            },
+            "terrain": {
+              "types": [
+                "fine_sand",
+                "pebbles"
+              ],
+              "label": "άμμος, βότσαλο"
+            },
+            "organized": false,
+            "shade": false,
+            "amenities": [
+              "ταβέρνες κοντά",
+              "ενοικιαζόμενα δωμάτια κοντά"
+            ],
+            "confidence": "low",
+            "language": "el",
+            "batch": "hidden_beach_discovery_2026_07_pelion",
+            "needsVerification": true,
+            "activities": {
+              "surfing": false
+            },
+            "aliases": [
+              "Κάλαμος",
+              "Kalamos"
+            ],
+            "sourceUrls": [
+              "https://viewsofgreece.gr/pilio-kalamos-kamari-paou-katigiorgis-mikro-pente-kryfa-diamantia-tis-magnisias/",
+              "https://www.visit-pilio.gr/pilio/kalamos-pelion-greece/"
+            ],
+            "sourceNotes": [
+              "Hidden-beach discovery (2026-07): Παραλία του Παγασητικού κοντά στην Αργαλαστή, με πρόσβαση μέσα από ελαιώνες. Σημείωση: το OSM polygon φέρει fixme=beach?, οπότε το υλικό της ακτής δεν είναι απόλυτα βεβαιωμένο. Ονομάζεται «Κάλαμος Πηλίου» για να ξεχωρίζει από τον Κάλαμο Ευβοίας. Συντεταγμένες: ανώνυμο OSM polygon, 400m ΒΔ του οικισμού Κάλαμος. Slot κοντά στο #2682 (Γούρνα, 2211m). Πρόσβαση/χαρακτηριστικά από οδηγούς — ΔΕΝ έχουν επιβεβαιωθεί επιτόπου."
+            ],
+            "googleMapsNavigation": {
+              "status": "verified",
+              "mode": "coordinates",
+              "checkedAt": "2026-07-23",
+              "method": "guide-discovery-v1"
+            }
+          }
+        },
+        {
+          "id": 3151,
+          "name": "Καμάρι Κεραμιδίου",
+          "lat": 39.57458,
+          "lon": 22.93502,
+          "metadata": {
+            "access": {
+              "type": "asphalt_road",
+              "label": "άσφαλτος μέχρι κοντά στην παραλία",
+              "notes": "Επαρχιακός ασφαλτόδρομος «Κεραμίδι – Καμάρι», στριφογυριστός, 4–5 χλμ από το Κεραμίδι."
+            },
+            "terrain": {
+              "types": [
+                "coarse_sand",
+                "pebbles"
+              ],
+              "label": "χοντρή άμμος, βότσαλο"
+            },
+            "organized": true,
+            "shade": true,
+            "amenities": [
+              "beach bar",
+              "ομπρέλες και ξαπλώστρες",
+              "ντους",
+              "αποδυτήρια"
+            ],
+            "confidence": "low",
+            "language": "el",
+            "batch": "hidden_beach_discovery_2026_07_pelion",
+            "needsVerification": true,
+            "activities": {
+              "surfing": false
+            },
+            "aliases": [
+              "Καμάρι",
+              "Kamari"
+            ],
+            "sourceUrls": [
+              "https://keramidi-magnisias.gr/καμάρι/",
+              "https://mythessaly.gr/riga-feraiou/kamari-paralia-pilio/",
+              "https://viewsofgreece.gr/pilio-kalamos-kamari-paou-katigiorgis-mikro-pente-kryfa-diamantia-tis-magnisias/"
+            ],
+            "sourceNotes": [
+              "Hidden-beach discovery (2026-07): Η κύρια παραλία του Κεραμιδίου στο βόρειο Πήλιο (πλευρά Αιγαίου)· χοντρή άμμος και βότσαλο με μεγάλα πλατάνια. Ονομάζεται «Καμάρι Κεραμιδίου» για να ξεχωρίζει από τα άλλα Καμάρι (Κέρκυρα, Λευκάδα, Σαντορίνη). Συντεταγμένες: ανώνυμο OSM polygon, 160m από τον οικισμό Καμάρι· OSM δρόμος «Κεραμίδι - Καμάρι». Slot κοντά στο #3111 (Άι Γιάννης (Κεραμίδι, Πήλιο), 1426m). Πρόσβαση/χαρακτηριστικά από οδηγούς — ΔΕΝ έχουν επιβεβαιωθεί επιτόπου."
+            ],
+            "googleMapsNavigation": {
+              "status": "verified",
+              "mode": "coordinates",
+              "checkedAt": "2026-07-23",
+              "method": "guide-discovery-v1"
+            }
+          }
+        },
+        {
+          "id": 3152,
+          "name": "Κατηγιώργης",
+          "lat": 39.17259,
+          "lon": 23.34299,
+          "metadata": {
+            "access": {
+              "type": "asphalt_road",
+              "label": "άσφαλτος μέχρι κοντά στην παραλία",
+              "notes": "Άσφαλτος, ~65 χλμ από τον Βόλο."
+            },
+            "terrain": {
+              "types": [
+                "fine_sand"
+              ],
+              "label": "άμμος"
+            },
+            "organized": false,
+            "shade": false,
+            "amenities": [
+              "ταβέρνες κοντά",
+              "ενοικιαζόμενα δωμάτια κοντά"
+            ],
+            "confidence": "low",
+            "language": "el",
+            "batch": "hidden_beach_discovery_2026_07_pelion",
+            "needsVerification": true,
+            "activities": {
+              "surfing": false
+            },
+            "aliases": [
+              "Katigiorgis"
+            ],
+            "sourceUrls": [
+              "https://viewsofgreece.gr/pilio-kalamos-kamari-paou-katigiorgis-mikro-pente-kryfa-diamantia-tis-magnisias/",
+              "https://ilovepelion.gr/el/destinations/aegeanbeach/katigiorgis"
+            ],
+            "sourceNotes": [
+              "Hidden-beach discovery (2026-07): Αμμώδης όρμος ψαροχωριού στην ανατολική ακτή του νότιου Πηλίου, απέναντι από τη Σκιάθο. Ταβέρνες και δωμάτια στον οικισμό. Συντεταγμένες: OSM way 318723672, 50m από τον οικισμό Κατηγιώργης. Slot κοντά στο #2680 (Βλαχόρεμα, 756m). Πρόσβαση/χαρακτηριστικά από οδηγούς — ΔΕΝ έχουν επιβεβαιωθεί επιτόπου."
+            ],
+            "googleMapsNavigation": {
+              "status": "verified",
+              "mode": "coordinates",
+              "checkedAt": "2026-07-23",
+              "method": "guide-discovery-v1"
+            }
+          }
+        },
+        {
+          "id": 3153,
+          "name": "Μεγάλη Πάου",
+          "lat": 39.20311,
+          "lon": 23.19633,
+          "metadata": {
+            "access": {
+              "type": "asphalt_road",
+              "label": "άσφαλτος μέχρι κοντά στην παραλία",
+              "notes": "Τοπικός ασφαλτόδρομος από Αργαλαστή προς Χόρτο (~6 χλμ)."
+            },
+            "terrain": {
+              "types": [
+                "pebbles"
+              ],
+              "label": "ψιλό βότσαλο"
+            },
+            "organized": false,
+            "shade": false,
+            "amenities": [],
+            "confidence": "low",
+            "language": "el",
+            "batch": "hidden_beach_discovery_2026_07_pelion",
+            "needsVerification": true,
+            "activities": {
+              "surfing": false
+            },
+            "aliases": [
+              "Megali Paou"
+            ],
+            "sourceUrls": [
+              "https://el.wikipedia.org/wiki/Πάου_Μαγνησίας",
+              "https://ilovepelion.gr/el/destinations/eppagasitikos/megalipaou"
+            ],
+            "sourceNotes": [
+              "Hidden-beach discovery (2026-07): Ο μεγαλύτερος από τους δύο όρμους του Πάου κοντά στην Αργαλαστή, με ψιλό βότσαλο. Συντεταγμένες: OSM way 740974680 (160 μ., ο μεγάλος όρμος)· ο οικισμός Πάου κατά el.wikipedia στο 39.203528,23.196639. Slot κοντά στο #2709 (Παραλία Κορνέλια, 1243m). Πρόσβαση/χαρακτηριστικά από οδηγούς — ΔΕΝ έχουν επιβεβαιωθεί επιτόπου."
+            ],
+            "googleMapsNavigation": {
+              "status": "verified",
+              "mode": "coordinates",
+              "checkedAt": "2026-07-23",
+              "method": "guide-discovery-v1"
+            }
+          }
+        },
+        {
+          "id": 3154,
+          "name": "Μικρή Πάου",
+          "lat": 39.20691,
+          "lon": 23.19329,
+          "metadata": {
+            "access": {
+              "type": "passable_dirt_road",
+              "label": "Άσφαλτος και τελικό χωμάτινο τμήμα",
+              "notes": "Από Αργαλαστή άσφαλτος και ~2,5 χλμ βατός χωματόδρομος· τα τελευταία ~80 μ. σε χωματόδρομο."
+            },
+            "terrain": {
+              "types": [
+                "pebbles",
+                "large_stones"
+              ],
+              "label": "βότσαλο, πλακέ πέτρες"
+            },
+            "organized": false,
+            "shade": false,
+            "amenities": [],
+            "confidence": "low",
+            "language": "el",
+            "batch": "hidden_beach_discovery_2026_07_pelion",
+            "needsVerification": true,
+            "activities": {
+              "surfing": false
+            },
+            "aliases": [
+              "Mikri Paou"
+            ],
+            "sourceUrls": [
+              "https://ilovepelion.gr/el/destinations/eppagasitikos/mikripaou"
+            ],
+            "sourceNotes": [
+              "Hidden-beach discovery (2026-07): Μικρός όρμος-τσέπη βόρεια της Μεγάλης Πάου, με πλακέ πέτρες και χωρίς παροχές. Συντεταγμένες: OSM way 740974681 (27 μ., ο μικρός όρμος). Slot κοντά στο #2709 (Παραλία Κορνέλια, 1734m). Πρόσβαση/χαρακτηριστικά από οδηγούς — ΔΕΝ έχουν επιβεβαιωθεί επιτόπου."
+            ],
+            "googleMapsNavigation": {
+              "status": "verified",
+              "mode": "coordinates",
+              "checkedAt": "2026-07-23",
+              "method": "guide-discovery-v1"
+            }
+          }
+        },
+        {
+          "id": 3155,
+          "name": "Οβριός",
+          "lat": 39.50746,
+          "lon": 23.07965,
+          "metadata": {
+            "access": {
+              "type": "difficult_dirt_road",
+              "label": "Δύσβατος χωματόδρομος",
+              "notes": "Αρκετά δύσκολος χωματόδρομος από το Πουρί (~7 χλμ)· εναλλακτικά μονοπάτι Πουρί–Οβριός."
+            },
+            "terrain": {
+              "types": [
+                "fine_sand"
+              ],
+              "label": "άμμος"
+            },
+            "organized": false,
+            "shade": true,
+            "amenities": [],
+            "confidence": "low",
+            "language": "el",
+            "batch": "hidden_beach_discovery_2026_07_pelion",
+            "needsVerification": true,
+            "activities": {
+              "surfing": false
+            },
+            "aliases": [
+              "Βρυός",
+              "Παλιά Μιτζέλα",
+              "Ovrios"
+            ],
+            "sourceUrls": [
+              "https://ilovepelion.gr/el/destinations/epaigaiou/ovriospouriou",
+              "https://el.wikipedia.org/wiki/Οβριός_Μαγνησίας",
+              "https://www.topoguide.gr/mountains/thessaly/advs_pelion/pelion_eastern/pelion_eastern_Ovrios_Pouri.php"
+            ],
+            "sourceNotes": [
+              "Hidden-beach discovery (2026-07): Παραλία στη ΒΑ ακτή κάτω από το Πουρί, μέσα σε πλατανόδασος· γνωστή για ελεύθερη κατασκήνωση. Καμία παροχή. Συντεταγμένες: ανώνυμο OSM polygon με surface=sand (554 μ., το μεγαλύτερο της παρτίδας)· δημοσιευμένες συντεταγμένες 39.506918,23.079972 (~90m). Slot κοντά στο #2707 (Παραλία Ελίτσα, 4333m). Πρόσβαση/χαρακτηριστικά από οδηγούς — ΔΕΝ έχουν επιβεβαιωθεί επιτόπου."
+            ],
+            "googleMapsNavigation": {
+              "status": "verified",
+              "mode": "coordinates",
+              "checkedAt": "2026-07-23",
+              "method": "guide-discovery-v1"
+            }
+          }
+        },
+        {
+          "id": 3156,
+          "name": "Παλιουράκια",
+          "lat": 39.14756,
+          "lon": 23.31617,
+          "metadata": {
+            "access": {
+              "type": "hiking_path_easy",
+              "label": "Μονοπάτι με τα πόδια",
+              "notes": "Μονοπάτια 40–70 μ. πάνω από την παραλία· χωματόδρομος σταματά ~110 μ. μακριά."
+            },
+            "terrain": {
+              "types": [],
+              "label": "—"
+            },
+            "organized": false,
+            "shade": false,
+            "amenities": [],
+            "confidence": "low",
+            "language": "el",
+            "batch": "hidden_beach_discovery_2026_07_pelion",
+            "needsVerification": true,
+            "activities": {
+              "surfing": false
+            },
+            "aliases": [
+              "Παλιοράκια",
+              "Paliourakia"
+            ],
+            "sourceUrls": [
+              "https://www.visit-pilio.gr/pilio/platanias-piliou/"
+            ],
+            "sourceNotes": [
+              "Hidden-beach discovery (2026-07): Μικρός άγριος όρμος στη ΝΑ ακτή, στην αλυσίδα Λεπετούς–Βρωμονέρι. Σημείωση: υπάρχουν άλλοι δύο ανώνυμοι όρμοι ανατολικότερα και το όνομα (πληθυντικός) ίσως καλύπτει όλη την ομάδα. Συντεταγμένες: OSM way 510172660, 348m ανατολικά του Λεπετούς — ταιριάζει με τη δημοσιευμένη σειρά Λεπετούς → Παλιουράκια → Βρωμονέρι. Slot κοντά στο #2692 (Λεπετούς, 347m). Πρόσβαση/χαρακτηριστικά από οδηγούς — ΔΕΝ έχουν επιβεβαιωθεί επιτόπου."
+            ],
+            "googleMapsNavigation": {
+              "status": "verified",
+              "mode": "coordinates",
+              "checkedAt": "2026-07-23",
+              "method": "guide-discovery-v1"
+            }
+          }
+        },
+        {
+          "id": 3157,
+          "name": "Πλατανιάς",
+          "lat": 39.1399,
+          "lon": 23.26985,
+          "metadata": {
+            "access": {
+              "type": "asphalt_road",
+              "label": "άσφαλτος μέχρι κοντά στην παραλία",
+              "notes": "Άσφαλτος, ~60 χλμ από τον Βόλο."
+            },
+            "terrain": {
+              "types": [
+                "fine_sand"
+              ],
+              "label": "ψιλή άμμος"
+            },
+            "organized": false,
+            "shade": false,
+            "amenities": [
+              "ταβέρνες κοντά"
+            ],
+            "confidence": "low",
+            "language": "el",
+            "batch": "hidden_beach_discovery_2026_07_pelion",
+            "needsVerification": true,
+            "activities": {
+              "surfing": false
+            },
+            "aliases": [
+              "Platanias"
+            ],
+            "sourceUrls": [
+              "https://el.wikipedia.org/wiki/Πλατανιά_Μαγνησίας",
+              "https://ilovepelion.gr/el/destinations/aegeanbeach/platanias"
+            ],
+            "sourceNotes": [
+              "Hidden-beach discovery (2026-07): Ψιλή καθαρή αμμουδιά στη ΝΑ ακτή του Πηλίου· στον οικισμό λειτουργεί το μεγαλύτερο αλιευτικό καταφύγιο της Μαγνησίας (~400 μ. ανατολικά). Συντεταγμένες: μεγαλύτερο OSM polygon της περιοχής (273 μ.)· Wikimapia id 16725458. Slot κοντά στο #2697 (Μικρό, 660m). Πρόσβαση/χαρακτηριστικά από οδηγούς — ΔΕΝ έχουν επιβεβαιωθεί επιτόπου."
+            ],
+            "googleMapsNavigation": {
+              "status": "verified",
+              "mode": "coordinates",
+              "checkedAt": "2026-07-23",
+              "method": "guide-discovery-v1"
+            }
+          }
+        },
+        {
+          "id": 3158,
+          "name": "Πράσινη Άμμος",
+          "lat": 39.16499,
+          "lon": 23.06908,
+          "metadata": {
+            "access": {
+              "type": "hiking_path_difficult",
+              "label": "Απαιτητικό μονοπάτι",
+              "notes": "Παλαιό Τρίκερι: νησί χωρίς αυτοκίνητα. Απαιτητικό μονοπάτι από το λιμάνι (μονοπάτι OSM φτάνει ~120 μ. από την ακτή) ή καΐκι ~30 λεπτά."
+            },
+            "terrain": {
+              "types": [
+                "fine_sand"
+              ],
+              "label": "ψιλή άμμος"
+            },
+            "organized": false,
+            "shade": false,
+            "amenities": [],
+            "confidence": "low",
+            "language": "el",
+            "batch": "hidden_beach_discovery_2026_07_pelion",
+            "needsVerification": true,
+            "activities": {
+              "surfing": false
+            },
+            "aliases": [
+              "Prasini Ammos"
+            ],
+            "sourceUrls": [
+              "https://www.allovergreece.com/Beaches/Descr/95/291/el",
+              "https://www.larissanet.gr/2025/08/31/prasini-ammos-afti-einai-i-agnosti-paralia-tis-magnisias-pou-latrefoun-osoi-tin-episkeptontai-vinteo/",
+              "https://www.enikos.gr/society/palaio-trikeri-to-mystiko-diamanti-tou-pagasitikou-oi-treis-paral/1598843/"
+            ],
+            "sourceNotes": [
+              "Hidden-beach discovery (2026-07): Άγρια παραλία στο νησί Παλαιό Τρίκερι· ψιλή άμμος με πρασινωπή απόχρωση και βλάστηση ως το νερό. Το νησί δεν έχει αυτοκίνητα. Δεν υπάρχει ως παραλία στο OpenStreetMap. Συντεταγμένες: allovergreece δημοσιευμένες συντεταγμένες (10m από την ακτογραμμή). Slot κοντά στο #2667 (Ιζγκούδ (Τρίκερι), 3237m). Πρόσβαση/χαρακτηριστικά από οδηγούς — ΔΕΝ έχουν επιβεβαιωθεί επιτόπου."
+            ],
+            "googleMapsNavigation": {
+              "status": "verified",
+              "mode": "coordinates",
+              "checkedAt": "2026-07-23",
+              "method": "guide-discovery-v1"
+            }
+          }
+        },
+        {
+          "id": 3159,
+          "name": "Τζάστενη",
+          "lat": 39.12803,
+          "lon": 23.16291,
+          "metadata": {
+            "access": {
+              "type": "hiking_path_easy",
+              "label": "Μονοπάτι με τα πόδια",
+              "notes": "~150 μ. από τον δρόμο Μηλίνα–Τρίκερι, ασήμαντο μονοπάτι μέσα από ελιές και απότομη κατηφόρα ~5 λεπτών. Σημείωση: υπάρχει κόμβος OSM με access=private στον όρμο — η πρόσβαση δεν έχει επιβεβαιωθεί επιτόπου."
+            },
+            "terrain": {
+              "types": [
+                "pebbles"
+              ],
+              "label": "ψιλό βότσαλο"
+            },
+            "organized": false,
+            "shade": false,
+            "amenities": [],
+            "confidence": "low",
+            "language": "el",
+            "batch": "hidden_beach_discovery_2026_07_pelion",
+            "needsVerification": true,
+            "activities": {
+              "surfing": false
+            },
+            "aliases": [
+              "Tzasteni"
+            ],
+            "sourceUrls": [
+              "https://www.thessaliatv.gr/news/125570/tzasteni-i-aorati-paralia-tou-piliou-pou-ksexeilizei-omorfia-foto/",
+              "https://ilovepelion.gr/el/destinations/pagasiticbeach/tzasteni",
+              "https://thessalyadvisor.gr/listing-item/tzasteni-beach-pelion/"
+            ],
+            "sourceNotes": [
+              "Hidden-beach discovery (2026-07): Άγρια, μη οργανωμένη παραλία στον Παγασητικό ανάμεσα σε Μηλίνα και Τρίκερι· ψιλό βότσαλο, απότομο βάθος, βράχια και πυκνή βλάστηση. Δεν υπάρχει καθόλου ως παραλία στο OpenStreetMap — εντοπίστηκε μόνο από τοπικούς οδηγούς. Συντεταγμένες: OSM node (13m από την ακτογραμμή) + ilovepelion δημοσιευμένες συντεταγμένες (~100m). Slot κοντά στο #2666 (Δερμαριά (Πτελεός), 4046m). Πρόσβαση/χαρακτηριστικά από οδηγούς — ΔΕΝ έχουν επιβεβαιωθεί επιτόπου."
+            ],
+            "googleMapsNavigation": {
+              "status": "verified",
+              "mode": "coordinates",
+              "checkedAt": "2026-07-23",
+              "method": "guide-discovery-v1"
+            }
+          }
         }
       ]
     },
@@ -201888,8 +202557,8 @@
         {
           "id": 2728,
           "name": "Παραλία Πηγάδι",
-          "lat": 39.708,
-          "lon": 22.764,
+          "lat": 39.84924,
+          "lon": 22.77571,
           "metadata": {
             "access": {
               "type": "asphalt_road",
@@ -201918,12 +202587,14 @@
             },
             "sourceNotes": [
               "Source follow-up pass 4 2026-05-27: direct official regional tourism beach guide supports beach identity/location only. Confidence, coordinates, access, services, amenities, wind profile, and scoring were not changed.",
-              "Thessaly re-geocoding 2026-06-11: no reliable OSM beach match for the imported village/POI coordinates - excluded from the app (excludeFromApp) until the true location is field-verified."
+              "Thessaly re-geocoding 2026-06-11: no reliable OSM beach match for the imported village/POI coordinates - excluded from the app (excludeFromApp) until the true location is field-verified.",
+              "Pin fix 2026-07 (εθνικό pin-placement audit): οι προηγούμενες συντεταγμένες 39.708,22.764 ήταν 9160 μ. μακριά από τη θάλασσα (μέσα στη στεριά, κοντά στην κωμόπολη Αγιά) και 12579 μ. από οποιαδήποτε χαρτογραφημένη παραλία — υπόλειμμα του αρχικού synthetic generator. Το pin μεταφέρθηκε στην ομώνυμη πραγματική παραλία: OSM «Παραλία Πηγάδι» στην ίδια ακτή. Πλησιέστερη άλλη παραλία: Ψαρόλακας 579 μ. (διαφορετικό όνομα, όχι διπλοεγγραφή). Η έκθεση στον άνεμο ξαναϋπολογίστηκε."
             ],
             "sourceUrls": [
               "https://visitthessaly.gr/proorismoi/paralia-larisas-ametrita-hiliometra-aigaioy"
             ],
-            "excludeFromApp": true
+            "excludeFromApp": true,
+            "needsVerification": true
           },
           "excludeFromApp": true
         },
@@ -202002,8 +202673,8 @@
         {
           "id": 2730,
           "name": "Παραλία Καλύβι",
-          "lat": 39.712,
-          "lon": 22.761,
+          "lat": 39.84743,
+          "lon": 22.77772,
           "metadata": {
             "access": {
               "type": "passable_dirt_road",
@@ -202021,7 +202692,7 @@
             "organized": false,
             "shade": false,
             "amenities": [],
-            "confidence": "high",
+            "confidence": "medium",
             "language": "el",
             "batch": "larissa_kalyvi_confidence_pass_be_2026_06_02",
             "waterDepth": {
@@ -202037,14 +202708,16 @@
               "Source follow-up pass 4 2026-05-27: direct official regional tourism beach guide supports beach identity/location only. Confidence, coordinates, access, services, amenities, wind profile, and scoring were not changed.",
               "Official Larissa bathing-profile cleanup 2026-05-29: the official Kalyvi profile supports exact identity/location, pebble/coarse-material shore and seabed with rocks at the edges, asphalt plus passable dirt-road access, unorganized status, and normal first-meter depth. Confidence promoted to medium; no wind, wave, water-quality, or live-condition claim was imported.",
               "Popular source-backed confidence pass BE 2026-06-02: official Kalyvi bathing-water profile/PDF and Visit Thessaly region guide support Kalyvi on the Larissa coast near Karitsa, 120 m open-bay beach length, 15 m average width, northeast orientation, pebble/coarse-material shore and seabed with rocks at the edges, natural phryganic-vegetation coastal zone, normal first-metre depth, gentle seabed slope, 5 m isobath around 125 m from shore, initial asphalt-road approach followed by passable dirt road, unorganized status and limited visitation. Promoted to high for static metadata only; unsupported snorkeling/surfing app activity flags are pinned false. Source wind-protection, clear-water, water-quality and live-condition wording was not imported into windProfile, scoring or calm/protected/safe claims.",
-              "Thessaly re-geocoding 2026-06-11: no reliable OSM beach match for the imported village/POI coordinates - excluded from the app (excludeFromApp) until the true location is field-verified."
+              "Thessaly re-geocoding 2026-06-11: no reliable OSM beach match for the imported village/POI coordinates - excluded from the app (excludeFromApp) until the true location is field-verified.",
+              "Pin fix 2026-07 (εθνικό pin-placement audit): οι προηγούμενες συντεταγμένες 39.712,22.761 ήταν 9309 μ. μακριά από τη θάλασσα (μέσα στη στεριά, κοντά στην κωμόπολη Αγιά) και 12307 μ. από οποιαδήποτε χαρτογραφημένη παραλία — υπόλειμμα του αρχικού synthetic generator. Το pin μεταφέρθηκε στην ομώνυμη πραγματική παραλία: OSM «Παραλία Καλύβι» στην ακτή Σωτηρίτσας/Βελίκας. Πλησιέστερη άλλη παραλία της βάσης: Πλατιά Άμμος 686 μ. (δεν δημιουργείται διπλοεγγραφή). Η έκθεση στον άνεμο ξαναϋπολογίστηκε."
             ],
             "sourceUrls": [
               "https://bathingwaterprofiles.gr/el/bathingprofiles/elbw089097005101",
               "https://bathingwaterprofiles.gr/sites/all/themes/danland/docs/pdf_profiles/ELBW089097005.pdf",
               "https://visitthessaly.gr/proorismoi/paralia-larisas-ametrita-hiliometra-aigaioy"
             ],
-            "excludeFromApp": true
+            "excludeFromApp": true,
+            "needsVerification": true
           },
           "staticLabels": {
             "accessType": "passable_dirt_road"
@@ -202476,8 +203149,8 @@
         {
           "id": 2738,
           "name": "Παραλία Στρίντζος",
-          "lat": 39.828,
-          "lon": 22.656,
+          "lat": 39.92036,
+          "lon": 22.71481,
           "metadata": {
             "access": {
               "type": "passable_dirt_road",
@@ -202505,12 +203178,14 @@
             },
             "sourceNotes": [
               "Source cleanup 2026-05-29: ERT Larissa source supports Strintzos identity/location at the Pinios delta, sandy beach with shells, asphalt plus 2 km dirt-road access, and nearby supply points. No wind, wave, calm-water, or protection claim was added.",
-              "Thessaly re-geocoding 2026-06-11: no reliable OSM beach match for the imported village/POI coordinates - excluded from the app (excludeFromApp) until the true location is field-verified."
+              "Thessaly re-geocoding 2026-06-11: no reliable OSM beach match for the imported village/POI coordinates - excluded from the app (excludeFromApp) until the true location is field-verified.",
+              "Pin fix 2026-07 (εθνικό pin-placement audit): οι προηγούμενες συντεταγμένες 39.828,22.656 ήταν 8250 μ. μακριά από τη θάλασσα (μέσα στη στεριά, κοντά στην κωμόπολη Αγιά) και 8266 μ. από οποιαδήποτε χαρτογραφημένη παραλία — υπόλειμμα του αρχικού synthetic generator. Το pin μεταφέρθηκε στην ομώνυμη πραγματική παραλία: OSM «Παραλία Στρίντζος» βόρεια του Στομίου. Πλησιέστερη άλλη παραλία: Αλεξανδρινής 2553 μ. Η έκθεση στον άνεμο ξαναϋπολογίστηκε."
             ],
             "sourceUrls": [
               "https://www.ertnews.gr/perifereiakoi-stathmoi/larisa/dimos-agias-h-paralia-tou-strintzou-sto-delta-tou-pineiou-potamou/"
             ],
-            "excludeFromApp": true
+            "excludeFromApp": true,
+            "needsVerification": true
           },
           "staticLabels": {
             "accessType": "passable_dirt_road"

@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "generatedAt": "2026-06-26T22:46:43.736Z",
+  "generatedAt": "2026-07-25T15:20:31.914Z",
   "region": {
     "id": "south-aegean-sikinos",
     "name": "Sikinos"
@@ -52,8 +52,8 @@
       },
       "E": {
         "protected": 0,
-        "partial": 3,
-        "exposed": 2
+        "partial": 2,
+        "exposed": 3
       },
       "SE": {
         "protected": 0,
@@ -67,8 +67,8 @@
       },
       "SW": {
         "protected": 3,
-        "partial": 1,
-        "exposed": 1
+        "partial": 0,
+        "exposed": 2
       },
       "W": {
         "protected": 5,
@@ -256,7 +256,7 @@
           "fetchKm": 8.64,
           "blockedRayRatio": 0.8,
           "onshore": 0.637,
-          "intensity": 56.8
+          "intensity": 56.9
         },
         "SE": {
           "level": "exposed",

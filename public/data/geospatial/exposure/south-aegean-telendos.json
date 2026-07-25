@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "generatedAt": "2026-06-26T22:46:43.906Z",
+  "generatedAt": "2026-07-25T15:20:32.084Z",
   "region": {
     "id": "south-aegean-telendos",
     "name": "Telendos"
@@ -77,8 +77,8 @@
       },
       "NW": {
         "protected": 2,
-        "partial": 2,
-        "exposed": 1
+        "partial": 1,
+        "exposed": 2
       }
     }
   },
@@ -142,7 +142,7 @@
           "fetchKm": 25,
           "blockedRayRatio": 0,
           "onshore": 0.993,
-          "intensity": 99.6
+          "intensity": 99.7
         },
         "NW": {
           "level": "exposed",
@@ -220,7 +220,7 @@
           "fetchKm": 10.28,
           "blockedRayRatio": 0.6,
           "onshore": 0.727,
-          "intensity": 73.8
+          "intensity": 73.7
         }
       },
       "confidence": "high"
@@ -327,7 +327,7 @@
           "fetchKm": 1.4,
           "blockedRayRatio": 1,
           "onshore": 0.885,
-          "intensity": 56.5
+          "intensity": 56.6
         },
         "SE": {
           "level": "partial",
@@ -341,7 +341,7 @@
           "fetchKm": 0.28,
           "blockedRayRatio": 1,
           "onshore": -0.465,
-          "intensity": 16
+          "intensity": 16.1
         },
         "SW": {
           "level": "protected",

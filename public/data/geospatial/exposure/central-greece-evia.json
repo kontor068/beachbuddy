@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "generatedAt": "2026-06-26T22:46:06.894Z",
+  "generatedAt": "2026-07-25T15:19:54.248Z",
   "region": {
     "id": "central-greece-evia",
     "name": "Evia"
@@ -36,49 +36,49 @@
     "maskConfidence": "high"
   },
   "summary": {
-    "beachCount": 123,
-    "generatedProfiles": 123,
+    "beachCount": 129,
+    "generatedProfiles": 129,
     "missingCoordinates": 0,
     "sectors": {
       "N": {
-        "protected": 57,
-        "partial": 34,
-        "exposed": 32
+        "protected": 61,
+        "partial": 26,
+        "exposed": 42
       },
       "NE": {
-        "protected": 49,
-        "partial": 34,
-        "exposed": 40
+        "protected": 50,
+        "partial": 28,
+        "exposed": 51
       },
       "E": {
         "protected": 49,
-        "partial": 36,
-        "exposed": 38
+        "partial": 33,
+        "exposed": 47
       },
       "SE": {
-        "protected": 59,
-        "partial": 36,
-        "exposed": 28
+        "protected": 60,
+        "partial": 35,
+        "exposed": 34
       },
       "S": {
-        "protected": 72,
-        "partial": 28,
-        "exposed": 23
+        "protected": 75,
+        "partial": 26,
+        "exposed": 28
       },
       "SW": {
-        "protected": 80,
-        "partial": 24,
-        "exposed": 19
+        "protected": 86,
+        "partial": 19,
+        "exposed": 24
       },
       "W": {
-        "protected": 80,
-        "partial": 30,
-        "exposed": 13
+        "protected": 86,
+        "partial": 26,
+        "exposed": 17
       },
       "NW": {
-        "protected": 67,
-        "partial": 35,
-        "exposed": 21
+        "protected": 72,
+        "partial": 34,
+        "exposed": 23
       }
     }
   },
@@ -114,7 +114,7 @@
           "fetchKm": 0,
           "blockedRayRatio": 1,
           "onshore": -0.938,
-          "intensity": 1.9
+          "intensity": 1.8
         },
         "SE": {
           "level": "protected",
@@ -128,7 +128,7 @@
           "fetchKm": 10,
           "blockedRayRatio": 0.6,
           "onshore": 0.345,
-          "intensity": 56
+          "intensity": 56.1
         },
         "SW": {
           "level": "exposed",
@@ -185,7 +185,7 @@
           "fetchKm": 0,
           "blockedRayRatio": 1,
           "onshore": -0.845,
-          "intensity": 4.7
+          "intensity": 4.6
         },
         "SE": {
           "level": "protected",
@@ -270,7 +270,7 @@
           "fetchKm": 0.12,
           "blockedRayRatio": 1,
           "onshore": -0.155,
-          "intensity": 25.3
+          "intensity": 25.4
         },
         "SW": {
           "level": "protected",
@@ -341,7 +341,7 @@
           "fetchKm": 21.16,
           "blockedRayRatio": 0.2,
           "onshore": 0.953,
-          "intensity": 97.6
+          "intensity": 97.7
         },
         "SW": {
           "level": "exposed",
@@ -433,7 +433,7 @@
           "fetchKm": 0,
           "blockedRayRatio": 1,
           "onshore": -0.555,
-          "intensity": 13.3
+          "intensity": 13.4
         }
       },
       "confidence": "high"
@@ -504,7 +504,7 @@
           "fetchKm": 1.64,
           "blockedRayRatio": 1,
           "onshore": 0.375,
-          "intensity": 41.3
+          "intensity": 41.2
         }
       },
       "confidence": "high"
@@ -568,7 +568,7 @@
           "fetchKm": 1.4,
           "blockedRayRatio": 1,
           "onshore": 0.515,
-          "intensity": 45.4
+          "intensity": 45.5
         },
         "NW": {
           "level": "protected",
@@ -682,7 +682,7 @@
           "fetchKm": 20.04,
           "blockedRayRatio": 0.2,
           "onshore": 0.997,
-          "intensity": 99.8
+          "intensity": 99.9
         },
         "SE": {
           "level": "partial",
@@ -1406,7 +1406,7 @@
           "fetchKm": 0,
           "blockedRayRatio": 1,
           "onshore": -0.875,
-          "intensity": 3.8
+          "intensity": 3.7
         },
         "SW": {
           "level": "protected",
@@ -1463,7 +1463,7 @@
           "fetchKm": 15.72,
           "blockedRayRatio": 0.4,
           "onshore": 0.923,
-          "intensity": 96.2
+          "intensity": 96.1
         },
         "SE": {
           "level": "partial",
@@ -1527,7 +1527,7 @@
           "fetchKm": 25,
           "blockedRayRatio": 0,
           "onshore": 0.967,
-          "intensity": 98.4
+          "intensity": 98.3
         },
         "E": {
           "level": "exposed",
@@ -1605,7 +1605,7 @@
           "fetchKm": 3.2,
           "blockedRayRatio": 1,
           "onshore": -0.825,
-          "intensity": 5.3
+          "intensity": 5.2
         },
         "SE": {
           "level": "protected",
@@ -1640,7 +1640,7 @@
           "fetchKm": 19.36,
           "blockedRayRatio": 0.8,
           "onshore": 0.983,
-          "intensity": 99.2
+          "intensity": 99.1
         }
       },
       "confidence": "high"
@@ -1740,7 +1740,7 @@
           "fetchKm": 0.32,
           "blockedRayRatio": 1,
           "onshore": -0.228,
-          "intensity": 23.2
+          "intensity": 23.1
         },
         "E": {
           "level": "partial",
@@ -1768,7 +1768,7 @@
           "fetchKm": 1.24,
           "blockedRayRatio": 1,
           "onshore": 0.228,
-          "intensity": 36.8
+          "intensity": 36.9
         },
         "W": {
           "level": "protected",
@@ -1818,7 +1818,7 @@
           "fetchKm": 14.6,
           "blockedRayRatio": 0.6,
           "onshore": 0.811,
-          "intensity": 90.5
+          "intensity": 90.6
         },
         "SE": {
           "level": "partial",
@@ -1832,7 +1832,7 @@
           "fetchKm": 0,
           "blockedRayRatio": 1,
           "onshore": -0.585,
-          "intensity": 12.4
+          "intensity": 12.5
         },
         "SW": {
           "level": "protected",
@@ -1896,7 +1896,7 @@
           "fetchKm": 19.24,
           "blockedRayRatio": 0.4,
           "onshore": 0.953,
-          "intensity": 97.6
+          "intensity": 97.7
         },
         "S": {
           "level": "exposed",
@@ -1946,7 +1946,7 @@
           "fetchKm": 15.04,
           "blockedRayRatio": 0.4,
           "onshore": 0.827,
-          "intensity": 91.3
+          "intensity": 91.4
         },
         "NE": {
           "level": "exposed",
@@ -2088,7 +2088,7 @@
           "fetchKm": 2.64,
           "blockedRayRatio": 1,
           "onshore": -0.645,
-          "intensity": 10.7
+          "intensity": 10.6
         },
         "NE": {
           "level": "protected",
@@ -2159,7 +2159,7 @@
           "fetchKm": 0,
           "blockedRayRatio": 1,
           "onshore": -0.645,
-          "intensity": 10.7
+          "intensity": 10.6
         },
         "NE": {
           "level": "protected",
@@ -2279,7 +2279,7 @@
           "fetchKm": 15.2,
           "blockedRayRatio": 0.4,
           "onshore": 0.969,
-          "intensity": 98.4
+          "intensity": 98.5
         }
       },
       "confidence": "high"
@@ -2393,7 +2393,7 @@
           "fetchKm": 20.08,
           "blockedRayRatio": 0.2,
           "onshore": 0.889,
-          "intensity": 94.5
+          "intensity": 94.4
         },
         "S": {
           "level": "partial",
@@ -2457,7 +2457,7 @@
           "fetchKm": 25,
           "blockedRayRatio": 0,
           "onshore": 0.985,
-          "intensity": 99.3
+          "intensity": 99.2
         },
         "SE": {
           "level": "exposed",
@@ -2542,7 +2542,7 @@
           "fetchKm": 11.76,
           "blockedRayRatio": 0.6,
           "onshore": 0.705,
-          "intensity": 83.4
+          "intensity": 83.3
         },
         "SW": {
           "level": "protected",
@@ -2606,7 +2606,7 @@
           "fetchKm": 0,
           "blockedRayRatio": 1,
           "onshore": 0.225,
-          "intensity": 36.8
+          "intensity": 36.7
         },
         "S": {
           "level": "exposed",
@@ -2677,7 +2677,7 @@
           "fetchKm": 20.52,
           "blockedRayRatio": 0.2,
           "onshore": 0.979,
-          "intensity": 99
+          "intensity": 98.9
         },
         "S": {
           "level": "partial",
@@ -2812,7 +2812,7 @@
           "fetchKm": 3.12,
           "blockedRayRatio": 1,
           "onshore": 0.555,
-          "intensity": 46.7
+          "intensity": 46.6
         },
         "SE": {
           "level": "exposed",
@@ -2840,7 +2840,7 @@
           "fetchKm": 0,
           "blockedRayRatio": 1,
           "onshore": -0.555,
-          "intensity": 13.3
+          "intensity": 13.4
         },
         "NW": {
           "level": "protected",
@@ -2890,7 +2890,7 @@
           "fetchKm": 5.96,
           "blockedRayRatio": 0.8,
           "onshore": 0.449,
-          "intensity": 46.3
+          "intensity": 46.4
         },
         "S": {
           "level": "exposed",
@@ -2968,7 +2968,7 @@
           "fetchKm": 0.08,
           "blockedRayRatio": 1,
           "onshore": 0.215,
-          "intensity": 36.5
+          "intensity": 36.4
         },
         "SW": {
           "level": "protected",
@@ -3018,7 +3018,7 @@
           "fetchKm": 10.04,
           "blockedRayRatio": 0.6,
           "onshore": 0.211,
-          "intensity": 50.6
+          "intensity": 50.7
         },
         "E": {
           "level": "protected",
@@ -3060,7 +3060,7 @@
           "fetchKm": 20.92,
           "blockedRayRatio": 0.4,
           "onshore": 0.977,
-          "intensity": 98.8
+          "intensity": 98.9
         }
       },
       "confidence": "high"
@@ -3160,7 +3160,7 @@
           "fetchKm": 25,
           "blockedRayRatio": 0,
           "onshore": 0.989,
-          "intensity": 99.4
+          "intensity": 99.5
         },
         "E": {
           "level": "exposed",
@@ -3309,7 +3309,7 @@
           "fetchKm": 2.2,
           "blockedRayRatio": 1,
           "onshore": 0.255,
-          "intensity": 37.6
+          "intensity": 37.7
         },
         "SE": {
           "level": "exposed",
@@ -3323,7 +3323,7 @@
           "fetchKm": 16.52,
           "blockedRayRatio": 0.4,
           "onshore": 0.967,
-          "intensity": 98.4
+          "intensity": 98.3
         },
         "SW": {
           "level": "partial",
@@ -3387,7 +3387,7 @@
           "fetchKm": 20.04,
           "blockedRayRatio": 0.2,
           "onshore": 0.937,
-          "intensity": 96.9
+          "intensity": 96.8
         },
         "S": {
           "level": "exposed",
@@ -3628,7 +3628,7 @@
           "fetchKm": 10.28,
           "blockedRayRatio": 0.8,
           "onshore": 0.856,
-          "intensity": 76.5
+          "intensity": 76.6
         }
       },
       "confidence": "high"
@@ -3650,7 +3650,7 @@
           "fetchKm": 0.12,
           "blockedRayRatio": 1,
           "onshore": 0.355,
-          "intensity": 40.6
+          "intensity": 40.7
         },
         "NE": {
           "level": "exposed",
@@ -3664,7 +3664,7 @@
           "fetchKm": 20.04,
           "blockedRayRatio": 0.2,
           "onshore": 0.935,
-          "intensity": 96.8
+          "intensity": 96.7
         },
         "SE": {
           "level": "partial",
@@ -3692,7 +3692,7 @@
           "fetchKm": 0,
           "blockedRayRatio": 1,
           "onshore": -0.935,
-          "intensity": 1.9
+          "intensity": 2
         },
         "NW": {
           "level": "protected",
@@ -3735,7 +3735,7 @@
           "fetchKm": 5.08,
           "blockedRayRatio": 1,
           "onshore": 0.965,
-          "intensity": 58.9
+          "intensity": 59
         },
         "SE": {
           "level": "exposed",
@@ -3763,7 +3763,7 @@
           "fetchKm": 0,
           "blockedRayRatio": 1,
           "onshore": -0.965,
-          "intensity": 1.1
+          "intensity": 1
         },
         "NW": {
           "level": "protected",
@@ -3834,7 +3834,7 @@
           "fetchKm": 0.08,
           "blockedRayRatio": 1,
           "onshore": -0.555,
-          "intensity": 13.3
+          "intensity": 13.4
         },
         "NW": {
           "level": "partial",
@@ -3969,7 +3969,7 @@
           "fetchKm": 0.04,
           "blockedRayRatio": 1,
           "onshore": -0.155,
-          "intensity": 25.3
+          "intensity": 25.4
         },
         "W": {
           "level": "protected",
@@ -4097,7 +4097,7 @@
           "fetchKm": 4.36,
           "blockedRayRatio": 1,
           "onshore": 0.225,
-          "intensity": 36.8
+          "intensity": 36.7
         },
         "S": {
           "level": "protected",
@@ -4161,14 +4161,14 @@
           "fetchKm": 20.56,
           "blockedRayRatio": 0.4,
           "onshore": 0.995,
-          "intensity": 99.8
+          "intensity": 99.7
         },
         "SE": {
           "level": "partial",
           "fetchKm": 5.68,
           "blockedRayRatio": 1,
           "onshore": 0.775,
-          "intensity": 53.3
+          "intensity": 53.2
         },
         "S": {
           "level": "partial",
@@ -4196,7 +4196,7 @@
           "fetchKm": 0,
           "blockedRayRatio": 1,
           "onshore": -0.775,
-          "intensity": 6.7
+          "intensity": 6.8
         }
       },
       "confidence": "high"
@@ -4360,14 +4360,14 @@
           "fetchKm": 25,
           "blockedRayRatio": 0,
           "onshore": 0.991,
-          "intensity": 99.6
+          "intensity": 99.5
         },
         "NE": {
           "level": "exposed",
           "fetchKm": 10.28,
           "blockedRayRatio": 0.6,
           "onshore": 0.605,
-          "intensity": 68.6
+          "intensity": 68.5
         },
         "E": {
           "level": "protected",
@@ -4395,7 +4395,7 @@
           "fetchKm": 0,
           "blockedRayRatio": 1,
           "onshore": -0.605,
-          "intensity": 11.8
+          "intensity": 11.9
         },
         "W": {
           "level": "partial",
@@ -4409,7 +4409,7 @@
           "fetchKm": 19.72,
           "blockedRayRatio": 0.4,
           "onshore": 0.797,
-          "intensity": 89.9
+          "intensity": 89.8
         }
       },
       "confidence": "high"
@@ -4502,7 +4502,7 @@
           "fetchKm": 15.36,
           "blockedRayRatio": 0.8,
           "onshore": 0.923,
-          "intensity": 96.2
+          "intensity": 96.1
         },
         "NE": {
           "level": "exposed",
@@ -4580,7 +4580,7 @@
           "fetchKm": 1.44,
           "blockedRayRatio": 1,
           "onshore": 0.362,
-          "intensity": 40.9
+          "intensity": 40.8
         },
         "E": {
           "level": "protected",
@@ -4601,14 +4601,14 @@
           "fetchKm": 0.32,
           "blockedRayRatio": 1,
           "onshore": -0.915,
-          "intensity": 2.5
+          "intensity": 2.6
         },
         "SW": {
           "level": "protected",
           "fetchKm": 0.84,
           "blockedRayRatio": 1,
           "onshore": -0.362,
-          "intensity": 19.1
+          "intensity": 19.2
         },
         "W": {
           "level": "partial",
@@ -4644,7 +4644,7 @@
           "fetchKm": 0,
           "blockedRayRatio": 1,
           "onshore": -0.875,
-          "intensity": 3.8
+          "intensity": 3.7
         },
         "NE": {
           "level": "protected",
@@ -4715,7 +4715,7 @@
           "fetchKm": 3.04,
           "blockedRayRatio": 1,
           "onshore": 0.972,
-          "intensity": 59.2
+          "intensity": 59.1
         },
         "NE": {
           "level": "partial",
@@ -4743,7 +4743,7 @@
           "fetchKm": 0,
           "blockedRayRatio": 1,
           "onshore": -0.972,
-          "intensity": 0.8
+          "intensity": 0.9
         },
         "SW": {
           "level": "protected",
@@ -4793,7 +4793,7 @@
           "fetchKm": 5.64,
           "blockedRayRatio": 1,
           "onshore": 0.875,
-          "intensity": 56.3
+          "intensity": 56.2
         },
         "E": {
           "level": "partial",
@@ -4835,7 +4835,7 @@
           "fetchKm": 0,
           "blockedRayRatio": 1,
           "onshore": -0.485,
-          "intensity": 15.4
+          "intensity": 15.5
         }
       },
       "confidence": "high"
@@ -4899,14 +4899,14 @@
           "fetchKm": 12,
           "blockedRayRatio": 0.8,
           "onshore": 0.997,
-          "intensity": 99.8
+          "intensity": 99.9
         },
         "NW": {
           "level": "exposed",
           "fetchKm": 19.16,
           "blockedRayRatio": 0.4,
           "onshore": 0.759,
-          "intensity": 87.9
+          "intensity": 88
         }
       },
       "confidence": "high"
@@ -4942,7 +4942,7 @@
           "fetchKm": 1.12,
           "blockedRayRatio": 1,
           "onshore": 0.235,
-          "intensity": 37
+          "intensity": 37.1
         },
         "SE": {
           "level": "protected",
@@ -5070,7 +5070,7 @@
           "fetchKm": 12.84,
           "blockedRayRatio": 1,
           "onshore": 0.995,
-          "intensity": 99.8
+          "intensity": 99.7
         },
         "NE": {
           "level": "exposed",
@@ -5112,7 +5112,7 @@
           "fetchKm": 0.08,
           "blockedRayRatio": 1,
           "onshore": -0.105,
-          "intensity": 26.8
+          "intensity": 26.9
         },
         "NW": {
           "level": "partial",
@@ -5141,7 +5141,7 @@
           "fetchKm": 20.36,
           "blockedRayRatio": 0.2,
           "onshore": 0.977,
-          "intensity": 98.8
+          "intensity": 98.9
         },
         "NE": {
           "level": "exposed",
@@ -5290,7 +5290,7 @@
           "fetchKm": 24.88,
           "blockedRayRatio": 0.2,
           "onshore": 0.887,
-          "intensity": 94.3
+          "intensity": 94.4
         },
         "E": {
           "level": "exposed",
@@ -5403,7 +5403,7 @@
           "fetchKm": 15.2,
           "blockedRayRatio": 0.4,
           "onshore": 0.857,
-          "intensity": 92.8
+          "intensity": 92.9
         }
       },
       "confidence": "high"
@@ -5531,7 +5531,7 @@
           "fetchKm": 15.64,
           "blockedRayRatio": 1,
           "onshore": 0.953,
-          "intensity": 97.6
+          "intensity": 97.7
         },
         "W": {
           "level": "exposed",
@@ -5666,14 +5666,14 @@
           "fetchKm": 0,
           "blockedRayRatio": 1,
           "onshore": -0.985,
-          "intensity": 0.5
+          "intensity": 0.4
         },
         "SW": {
           "level": "protected",
           "fetchKm": 0,
           "blockedRayRatio": 1,
           "onshore": -0.575,
-          "intensity": 12.8
+          "intensity": 12.7
         },
         "W": {
           "level": "partial",
@@ -5829,7 +5829,7 @@
           "fetchKm": 3.12,
           "blockedRayRatio": 1,
           "onshore": -0.038,
-          "intensity": 28.9
+          "intensity": 28.8
         }
       },
       "confidence": "high"
@@ -5872,7 +5872,7 @@
           "fetchKm": 0.04,
           "blockedRayRatio": 1,
           "onshore": -0.735,
-          "intensity": 7.9
+          "intensity": 8
         },
         "S": {
           "level": "protected",
@@ -5900,7 +5900,7 @@
           "fetchKm": 20,
           "blockedRayRatio": 0.2,
           "onshore": 0.735,
-          "intensity": 86.8
+          "intensity": 86.7
         }
       },
       "confidence": "high"
@@ -5922,7 +5922,7 @@
           "fetchKm": 19.96,
           "blockedRayRatio": 0.8,
           "onshore": 0.911,
-          "intensity": 95.5
+          "intensity": 95.6
         },
         "NE": {
           "level": "exposed",
@@ -5936,7 +5936,7 @@
           "fetchKm": 5.08,
           "blockedRayRatio": 0.8,
           "onshore": 0.412,
-          "intensity": 44.8
+          "intensity": 44.7
         },
         "SE": {
           "level": "protected",
@@ -5964,7 +5964,7 @@
           "fetchKm": 0,
           "blockedRayRatio": 1,
           "onshore": -0.412,
-          "intensity": 17.6
+          "intensity": 17.7
         },
         "NW": {
           "level": "partial",
@@ -6035,7 +6035,7 @@
           "fetchKm": 12.08,
           "blockedRayRatio": 0.8,
           "onshore": 0.779,
-          "intensity": 88.9
+          "intensity": 89
         },
         "NW": {
           "level": "exposed",
@@ -6085,7 +6085,7 @@
           "fetchKm": 11.4,
           "blockedRayRatio": 0.6,
           "onshore": 0.703,
-          "intensity": 80.5
+          "intensity": 80.6
         },
         "S": {
           "level": "exposed",
@@ -6106,7 +6106,7 @@
           "fetchKm": 3.96,
           "blockedRayRatio": 1,
           "onshore": 0.005,
-          "intensity": 30.1
+          "intensity": 30.2
         },
         "NW": {
           "level": "protected",
@@ -6142,7 +6142,7 @@
           "fetchKm": 9.76,
           "blockedRayRatio": 0.8,
           "onshore": 0.71,
-          "intensity": 66.7
+          "intensity": 66.6
         },
         "E": {
           "level": "protected",
@@ -6284,21 +6284,21 @@
           "fetchKm": 15,
           "blockedRayRatio": 0.4,
           "onshore": 0.869,
-          "intensity": 93.5
+          "intensity": 93.4
         },
         "E": {
           "level": "exposed",
           "fetchKm": 20,
           "blockedRayRatio": 0.2,
           "onshore": 0.965,
-          "intensity": 98.3
+          "intensity": 98.2
         },
         "SE": {
           "level": "partial",
           "fetchKm": 5,
           "blockedRayRatio": 0.8,
           "onshore": 0.495,
-          "intensity": 47.3
+          "intensity": 47.4
         },
         "S": {
           "level": "protected",
@@ -6397,7 +6397,7 @@
           "fetchKm": 10.72,
           "blockedRayRatio": 0.8,
           "onshore": 0.999,
-          "intensity": 86.5
+          "intensity": 86.6
         }
       },
       "confidence": "high"
@@ -6419,7 +6419,7 @@
           "fetchKm": 0,
           "blockedRayRatio": 1,
           "onshore": -0.965,
-          "intensity": 1.1
+          "intensity": 1
         },
         "NE": {
           "level": "protected",
@@ -6497,7 +6497,7 @@
           "fetchKm": 22.72,
           "blockedRayRatio": 0.4,
           "onshore": 0.979,
-          "intensity": 99
+          "intensity": 98.9
         },
         "E": {
           "level": "exposed",
@@ -6561,7 +6561,7 @@
           "fetchKm": 5.4,
           "blockedRayRatio": 1,
           "onshore": 0.698,
-          "intensity": 50.9
+          "intensity": 51
         },
         "NE": {
           "level": "exposed",
@@ -6589,7 +6589,7 @@
           "fetchKm": 0,
           "blockedRayRatio": 1,
           "onshore": -0.698,
-          "intensity": 9.1
+          "intensity": 9
         },
         "SW": {
           "level": "protected",
@@ -6703,21 +6703,21 @@
           "fetchKm": 25,
           "blockedRayRatio": 0,
           "onshore": 0.965,
-          "intensity": 98.3
+          "intensity": 98.2
         },
         "NE": {
           "level": "exposed",
           "fetchKm": 25,
           "blockedRayRatio": 0,
           "onshore": 0.869,
-          "intensity": 93.5
+          "intensity": 93.4
         },
         "E": {
           "level": "partial",
           "fetchKm": 10.04,
           "blockedRayRatio": 0.6,
           "onshore": 0.264,
-          "intensity": 52.9
+          "intensity": 52.8
         },
         "SE": {
           "level": "protected",
@@ -6795,7 +6795,7 @@
           "fetchKm": 5,
           "blockedRayRatio": 0.8,
           "onshore": -0.266,
-          "intensity": 23.2
+          "intensity": 23.3
         },
         "S": {
           "level": "exposed",
@@ -6994,7 +6994,7 @@
           "fetchKm": 0,
           "blockedRayRatio": 1,
           "onshore": -0.845,
-          "intensity": 4.7
+          "intensity": 4.6
         },
         "E": {
           "level": "protected",
@@ -7136,7 +7136,7 @@
           "fetchKm": 15.16,
           "blockedRayRatio": 0.4,
           "onshore": 0.779,
-          "intensity": 88.9
+          "intensity": 89
         },
         "E": {
           "level": "exposed",
@@ -7249,7 +7249,7 @@
           "fetchKm": 20.76,
           "blockedRayRatio": 0.4,
           "onshore": 0.751,
-          "intensity": 87.5
+          "intensity": 87.6
         }
       },
       "confidence": "high"
@@ -7413,7 +7413,7 @@
           "fetchKm": 15.04,
           "blockedRayRatio": 0.4,
           "onshore": 0.985,
-          "intensity": 99.3
+          "intensity": 99.2
         },
         "NE": {
           "level": "partial",
@@ -7491,21 +7491,21 @@
           "fetchKm": 0.08,
           "blockedRayRatio": 1,
           "onshore": -0.162,
-          "intensity": 25.1
+          "intensity": 25.2
         },
         "E": {
           "level": "exposed",
           "fetchKm": 10.08,
           "blockedRayRatio": 0.6,
           "onshore": 0.584,
-          "intensity": 66.5
+          "intensity": 66.4
         },
         "SE": {
           "level": "exposed",
           "fetchKm": 14.24,
           "blockedRayRatio": 0.6,
           "onshore": 0.987,
-          "intensity": 99.4
+          "intensity": 99.3
         },
         "S": {
           "level": "partial",
@@ -7519,7 +7519,7 @@
           "fetchKm": 0.28,
           "blockedRayRatio": 1,
           "onshore": 0.162,
-          "intensity": 34.9
+          "intensity": 34.8
         },
         "W": {
           "level": "protected",
@@ -7704,7 +7704,7 @@
           "fetchKm": 15,
           "blockedRayRatio": 0.4,
           "onshore": -0.175,
-          "intensity": 41.3
+          "intensity": 41.2
         },
         "E": {
           "level": "protected",
@@ -7860,7 +7860,7 @@
           "fetchKm": 12.44,
           "blockedRayRatio": 0.6,
           "onshore": 0.505,
-          "intensity": 75.3
+          "intensity": 75.2
         },
         "S": {
           "level": "protected",
@@ -7888,7 +7888,7 @@
           "fetchKm": 0.08,
           "blockedRayRatio": 1,
           "onshore": -0.505,
-          "intensity": 14.8
+          "intensity": 14.9
         }
       },
       "confidence": "high"
@@ -7959,7 +7959,7 @@
           "fetchKm": 7.8,
           "blockedRayRatio": 0.8,
           "onshore": 0.713,
-          "intensity": 55.8
+          "intensity": 55.9
         }
       },
       "confidence": "high"
@@ -7988,7 +7988,7 @@
           "fetchKm": 21.84,
           "blockedRayRatio": 0.2,
           "onshore": 0.937,
-          "intensity": 96.9
+          "intensity": 96.8
         },
         "E": {
           "level": "partial",
@@ -8123,7 +8123,7 @@
           "fetchKm": 5,
           "blockedRayRatio": 0.8,
           "onshore": 0.498,
-          "intensity": 47.4
+          "intensity": 47.5
         },
         "NE": {
           "level": "exposed",
@@ -8151,14 +8151,14 @@
           "fetchKm": 0,
           "blockedRayRatio": 1,
           "onshore": -0.498,
-          "intensity": 15.1
+          "intensity": 15
         },
         "SW": {
           "level": "protected",
           "fetchKm": 0,
           "blockedRayRatio": 1,
           "onshore": -0.965,
-          "intensity": 1.1
+          "intensity": 1
         },
         "W": {
           "level": "protected",
@@ -8222,7 +8222,7 @@
           "fetchKm": 12.32,
           "blockedRayRatio": 0.6,
           "onshore": 0.823,
-          "intensity": 91.1
+          "intensity": 91.2
         },
         "SW": {
           "level": "exposed",
@@ -8286,7 +8286,7 @@
           "fetchKm": 0.04,
           "blockedRayRatio": 1,
           "onshore": -0.358,
-          "intensity": 19.3
+          "intensity": 19.2
         },
         "S": {
           "level": "protected",
@@ -8314,7 +8314,7 @@
           "fetchKm": 0.12,
           "blockedRayRatio": 1,
           "onshore": 0.358,
-          "intensity": 40.7
+          "intensity": 40.8
         }
       },
       "confidence": "high"
@@ -8364,7 +8364,7 @@
           "fetchKm": 2.12,
           "blockedRayRatio": 1,
           "onshore": 0.235,
-          "intensity": 37
+          "intensity": 37.1
         },
         "SW": {
           "level": "exposed",
@@ -8435,7 +8435,7 @@
           "fetchKm": 0,
           "blockedRayRatio": 1,
           "onshore": -0.555,
-          "intensity": 13.3
+          "intensity": 13.4
         },
         "SW": {
           "level": "protected",
@@ -8556,7 +8556,7 @@
           "fetchKm": 20.04,
           "blockedRayRatio": 0.2,
           "onshore": 0.911,
-          "intensity": 95.5
+          "intensity": 95.6
         },
         "E": {
           "level": "exposed",
@@ -8570,7 +8570,7 @@
           "fetchKm": 0.8,
           "blockedRayRatio": 1,
           "onshore": -0.412,
-          "intensity": 17.6
+          "intensity": 17.7
         },
         "S": {
           "level": "protected",
@@ -8776,7 +8776,7 @@
           "fetchKm": 20,
           "blockedRayRatio": 0.2,
           "onshore": 0.983,
-          "intensity": 99.2
+          "intensity": 99.1
         },
         "SE": {
           "level": "exposed",
@@ -8812,6 +8812,432 @@
           "blockedRayRatio": 1,
           "onshore": -0.826,
           "intensity": 5.2
+        }
+      },
+      "confidence": "high"
+    },
+    "3114": {
+      "beachId": 3114,
+      "name": {
+        "en": "Amygdalia",
+        "gr": "Αμυγδαλιά"
+      },
+      "coordinates": {
+        "lat": 38.126,
+        "lon": 24.5823
+      },
+      "facingDeg": 115.3,
+      "sectors": {
+        "N": {
+          "level": "protected",
+          "fetchKm": 0.2,
+          "blockedRayRatio": 1,
+          "onshore": -0.427,
+          "intensity": 17.2
+        },
+        "NE": {
+          "level": "exposed",
+          "fetchKm": 15.2,
+          "blockedRayRatio": 0.4,
+          "onshore": 0.337,
+          "intensity": 66.9
+        },
+        "E": {
+          "level": "exposed",
+          "fetchKm": 25,
+          "blockedRayRatio": 0,
+          "onshore": 0.904,
+          "intensity": 95.2
+        },
+        "SE": {
+          "level": "exposed",
+          "fetchKm": 23.2,
+          "blockedRayRatio": 0.4,
+          "onshore": 0.941,
+          "intensity": 97.1
+        },
+        "S": {
+          "level": "partial",
+          "fetchKm": 10.32,
+          "blockedRayRatio": 0.8,
+          "onshore": 0.427,
+          "intensity": 59.1
+        },
+        "SW": {
+          "level": "protected",
+          "fetchKm": 0,
+          "blockedRayRatio": 1,
+          "onshore": -0.337,
+          "intensity": 19.9
+        },
+        "W": {
+          "level": "protected",
+          "fetchKm": 0,
+          "blockedRayRatio": 1,
+          "onshore": -0.904,
+          "intensity": 2.9
+        },
+        "NW": {
+          "level": "protected",
+          "fetchKm": 0,
+          "blockedRayRatio": 1,
+          "onshore": -0.941,
+          "intensity": 1.8
+        }
+      },
+      "confidence": "high"
+    },
+    "3115": {
+      "beachId": 3115,
+      "name": {
+        "en": "Evangelismos",
+        "gr": "Ευαγγελισμός"
+      },
+      "coordinates": {
+        "lat": 38.0749,
+        "lon": 24.5773
+      },
+      "facingDeg": 71.5,
+      "sectors": {
+        "N": {
+          "level": "partial",
+          "fetchKm": 10.24,
+          "blockedRayRatio": 0.6,
+          "onshore": 0.317,
+          "intensity": 56.1
+        },
+        "NE": {
+          "level": "exposed",
+          "fetchKm": 25,
+          "blockedRayRatio": 0,
+          "onshore": 0.895,
+          "intensity": 94.7
+        },
+        "E": {
+          "level": "exposed",
+          "fetchKm": 23.56,
+          "blockedRayRatio": 0.2,
+          "onshore": 0.948,
+          "intensity": 97.4
+        },
+        "SE": {
+          "level": "partial",
+          "fetchKm": 8.68,
+          "blockedRayRatio": 0.8,
+          "onshore": 0.446,
+          "intensity": 50.4
+        },
+        "S": {
+          "level": "protected",
+          "fetchKm": 0.08,
+          "blockedRayRatio": 1,
+          "onshore": -0.317,
+          "intensity": 20.5
+        },
+        "SW": {
+          "level": "protected",
+          "fetchKm": 0,
+          "blockedRayRatio": 1,
+          "onshore": -0.895,
+          "intensity": 3.2
+        },
+        "W": {
+          "level": "protected",
+          "fetchKm": 0,
+          "blockedRayRatio": 1,
+          "onshore": -0.948,
+          "intensity": 1.6
+        },
+        "NW": {
+          "level": "protected",
+          "fetchKm": 0,
+          "blockedRayRatio": 1,
+          "onshore": -0.446,
+          "intensity": 16.6
+        }
+      },
+      "confidence": "high"
+    },
+    "3116": {
+      "beachId": 3116,
+      "name": {
+        "en": "Zacharias",
+        "gr": "Ζαχαριάς"
+      },
+      "coordinates": {
+        "lat": 38.1071,
+        "lon": 24.5737
+      },
+      "facingDeg": 96.2,
+      "sectors": {
+        "N": {
+          "level": "protected",
+          "fetchKm": 5.08,
+          "blockedRayRatio": 0.8,
+          "onshore": -0.108,
+          "intensity": 28.3
+        },
+        "NE": {
+          "level": "exposed",
+          "fetchKm": 20.04,
+          "blockedRayRatio": 0.2,
+          "onshore": 0.627,
+          "intensity": 81.3
+        },
+        "E": {
+          "level": "exposed",
+          "fetchKm": 25,
+          "blockedRayRatio": 0,
+          "onshore": 0.994,
+          "intensity": 99.7
+        },
+        "SE": {
+          "level": "exposed",
+          "fetchKm": 18,
+          "blockedRayRatio": 0.6,
+          "onshore": 0.779,
+          "intensity": 89
+        },
+        "S": {
+          "level": "partial",
+          "fetchKm": 4.24,
+          "blockedRayRatio": 1,
+          "onshore": 0.108,
+          "intensity": 33.2
+        },
+        "SW": {
+          "level": "protected",
+          "fetchKm": 0.04,
+          "blockedRayRatio": 1,
+          "onshore": -0.627,
+          "intensity": 11.2
+        },
+        "W": {
+          "level": "protected",
+          "fetchKm": 0,
+          "blockedRayRatio": 1,
+          "onshore": -0.994,
+          "intensity": 0.2
+        },
+        "NW": {
+          "level": "protected",
+          "fetchKm": 0,
+          "blockedRayRatio": 1,
+          "onshore": -0.779,
+          "intensity": 6.6
+        }
+      },
+      "confidence": "high"
+    },
+    "3117": {
+      "beachId": 3117,
+      "name": {
+        "en": "Kastri",
+        "gr": "Καστρί"
+      },
+      "coordinates": {
+        "lat": 37.9757,
+        "lon": 24.5387
+      },
+      "facingDeg": 137.6,
+      "sectors": {
+        "N": {
+          "level": "protected",
+          "fetchKm": 0,
+          "blockedRayRatio": 1,
+          "onshore": -0.738,
+          "intensity": 7.8
+        },
+        "NE": {
+          "level": "protected",
+          "fetchKm": 0,
+          "blockedRayRatio": 1,
+          "onshore": -0.045,
+          "intensity": 28.6
+        },
+        "E": {
+          "level": "partial",
+          "fetchKm": 3.16,
+          "blockedRayRatio": 1,
+          "onshore": 0.674,
+          "intensity": 50.2
+        },
+        "SE": {
+          "level": "exposed",
+          "fetchKm": 13.2,
+          "blockedRayRatio": 0.6,
+          "onshore": 0.999,
+          "intensity": 99.9
+        },
+        "S": {
+          "level": "partial",
+          "fetchKm": 5.12,
+          "blockedRayRatio": 0.8,
+          "onshore": 0.738,
+          "intensity": 55.1
+        },
+        "SW": {
+          "level": "protected",
+          "fetchKm": 0.04,
+          "blockedRayRatio": 1,
+          "onshore": 0.045,
+          "intensity": 31.4
+        },
+        "W": {
+          "level": "protected",
+          "fetchKm": 0,
+          "blockedRayRatio": 1,
+          "onshore": -0.674,
+          "intensity": 9.8
+        },
+        "NW": {
+          "level": "protected",
+          "fetchKm": 0,
+          "blockedRayRatio": 1,
+          "onshore": -0.999,
+          "intensity": 0
+        }
+      },
+      "confidence": "high"
+    },
+    "3118": {
+      "beachId": 3118,
+      "name": {
+        "en": "Spilitses",
+        "gr": "Σπηλίτσες"
+      },
+      "coordinates": {
+        "lat": 38.0456,
+        "lon": 24.5816
+      },
+      "facingDeg": 95.5,
+      "sectors": {
+        "N": {
+          "level": "protected",
+          "fetchKm": 0,
+          "blockedRayRatio": 1,
+          "onshore": -0.096,
+          "intensity": 27.1
+        },
+        "NE": {
+          "level": "exposed",
+          "fetchKm": 10,
+          "blockedRayRatio": 0.6,
+          "onshore": 0.636,
+          "intensity": 68.2
+        },
+        "E": {
+          "level": "exposed",
+          "fetchKm": 22.92,
+          "blockedRayRatio": 0.2,
+          "onshore": 0.995,
+          "intensity": 99.8
+        },
+        "SE": {
+          "level": "partial",
+          "fetchKm": 7.92,
+          "blockedRayRatio": 0.8,
+          "onshore": 0.772,
+          "intensity": 57.8
+        },
+        "S": {
+          "level": "protected",
+          "fetchKm": 0,
+          "blockedRayRatio": 1,
+          "onshore": 0.096,
+          "intensity": 32.9
+        },
+        "SW": {
+          "level": "protected",
+          "fetchKm": 0,
+          "blockedRayRatio": 1,
+          "onshore": -0.636,
+          "intensity": 10.9
+        },
+        "W": {
+          "level": "protected",
+          "fetchKm": 0,
+          "blockedRayRatio": 1,
+          "onshore": -0.995,
+          "intensity": 0.1
+        },
+        "NW": {
+          "level": "protected",
+          "fetchKm": 0,
+          "blockedRayRatio": 1,
+          "onshore": -0.772,
+          "intensity": 6.9
+        }
+      },
+      "confidence": "high"
+    },
+    "3121": {
+      "beachId": 3121,
+      "name": {
+        "en": "Paralia Pili",
+        "gr": "Παραλία Πήλι"
+      },
+      "coordinates": {
+        "lat": 38.76503,
+        "lon": 23.58976
+      },
+      "facingDeg": 32.5,
+      "sectors": {
+        "N": {
+          "level": "exposed",
+          "fetchKm": 10.44,
+          "blockedRayRatio": 0.6,
+          "onshore": 0.843,
+          "intensity": 79.9
+        },
+        "NE": {
+          "level": "exposed",
+          "fetchKm": 20.04,
+          "blockedRayRatio": 0.2,
+          "onshore": 0.976,
+          "intensity": 98.8
+        },
+        "E": {
+          "level": "partial",
+          "fetchKm": 5.16,
+          "blockedRayRatio": 0.8,
+          "onshore": 0.537,
+          "intensity": 48.8
+        },
+        "SE": {
+          "level": "protected",
+          "fetchKm": 0.08,
+          "blockedRayRatio": 1,
+          "onshore": -0.216,
+          "intensity": 23.5
+        },
+        "S": {
+          "level": "protected",
+          "fetchKm": 0,
+          "blockedRayRatio": 1,
+          "onshore": -0.843,
+          "intensity": 4.7
+        },
+        "SW": {
+          "level": "protected",
+          "fetchKm": 0,
+          "blockedRayRatio": 1,
+          "onshore": -0.976,
+          "intensity": 0.7
+        },
+        "W": {
+          "level": "protected",
+          "fetchKm": 0,
+          "blockedRayRatio": 1,
+          "onshore": -0.537,
+          "intensity": 13.9
+        },
+        "NW": {
+          "level": "partial",
+          "fetchKm": 0.08,
+          "blockedRayRatio": 1,
+          "onshore": 0.216,
+          "intensity": 36.5
         }
       },
       "confidence": "high"

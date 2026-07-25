@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "generatedAt": "2026-06-26T22:46:02.673Z",
+  "generatedAt": "2026-07-25T15:19:49.843Z",
   "region": {
     "id": "attica-methana",
     "name": "Methana"
@@ -47,8 +47,8 @@
       },
       "NE": {
         "protected": 0,
-        "partial": 2,
-        "exposed": 2
+        "partial": 0,
+        "exposed": 4
       },
       "E": {
         "protected": 1,
@@ -77,8 +77,8 @@
       },
       "NW": {
         "protected": 2,
-        "partial": 2,
-        "exposed": 0
+        "partial": 1,
+        "exposed": 1
       }
     }
   },
@@ -135,7 +135,7 @@
           "fetchKm": 0,
           "blockedRayRatio": 1,
           "onshore": -0.952,
-          "intensity": 1.4
+          "intensity": 1.5
         },
         "W": {
           "level": "protected",
@@ -242,14 +242,14 @@
           "fetchKm": 18.2,
           "blockedRayRatio": 0.6,
           "onshore": 0.891,
-          "intensity": 94.5
+          "intensity": 94.6
         },
         "NE": {
           "level": "exposed",
           "fetchKm": 8.44,
           "blockedRayRatio": 1,
           "onshore": 0.951,
-          "intensity": 61.5
+          "intensity": 61.6
         },
         "E": {
           "level": "partial",
@@ -320,7 +320,7 @@
           "fetchKm": 12.12,
           "blockedRayRatio": 0.8,
           "onshore": 0.437,
-          "intensity": 71.9
+          "intensity": 71.8
         },
         "E": {
           "level": "protected",

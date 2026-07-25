@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "generatedAt": "2026-06-26T22:46:43.031Z",
+  "generatedAt": "2026-07-25T15:20:31.192Z",
   "region": {
     "id": "south-aegean-patmos",
     "name": "Patmos"
@@ -51,34 +51,34 @@
         "exposed": 1
       },
       "E": {
-        "protected": 8,
+        "protected": 7,
         "partial": 8,
-        "exposed": 0
+        "exposed": 1
       },
       "SE": {
-        "protected": 6,
+        "protected": 5,
         "partial": 3,
-        "exposed": 7
+        "exposed": 8
       },
       "S": {
-        "protected": 7,
+        "protected": 6,
         "partial": 5,
-        "exposed": 4
+        "exposed": 5
       },
       "SW": {
         "protected": 5,
-        "partial": 10,
-        "exposed": 1
+        "partial": 11,
+        "exposed": 0
       },
       "W": {
-        "protected": 8,
+        "protected": 9,
         "partial": 3,
-        "exposed": 5
+        "exposed": 4
       },
       "NW": {
-        "protected": 10,
+        "protected": 11,
         "partial": 1,
-        "exposed": 5
+        "exposed": 4
       }
     }
   },
@@ -263,7 +263,7 @@
           "fetchKm": 0,
           "blockedRayRatio": 1,
           "onshore": -0.862,
-          "intensity": 4.1
+          "intensity": 4.2
         },
         "S": {
           "level": "protected",
@@ -327,7 +327,7 @@
           "fetchKm": 5.28,
           "blockedRayRatio": 0.8,
           "onshore": 0.853,
-          "intensity": 58.9
+          "intensity": 58.8
         },
         "SE": {
           "level": "exposed",
@@ -575,7 +575,7 @@
           "fetchKm": 10.32,
           "blockedRayRatio": 0.6,
           "onshore": 0.949,
-          "intensity": 83.5
+          "intensity": 83.6
         }
       },
       "confidence": "high"
@@ -668,7 +668,7 @@
           "fetchKm": 0,
           "blockedRayRatio": 1,
           "onshore": -0.825,
-          "intensity": 5.3
+          "intensity": 5.2
         },
         "NE": {
           "level": "protected",
@@ -788,7 +788,7 @@
           "fetchKm": 0,
           "blockedRayRatio": 1,
           "onshore": -0.445,
-          "intensity": 16.6
+          "intensity": 16.7
         }
       },
       "confidence": "high"
@@ -831,7 +831,7 @@
           "fetchKm": 15.24,
           "blockedRayRatio": 0.6,
           "onshore": 0.963,
-          "intensity": 98.2
+          "intensity": 98.1
         },
         "S": {
           "level": "exposed",
@@ -895,7 +895,7 @@
           "fetchKm": 9.96,
           "blockedRayRatio": 0.8,
           "onshore": 0.774,
-          "intensity": 70.7
+          "intensity": 70.6
         },
         "SE": {
           "level": "partial",
@@ -916,7 +916,7 @@
           "fetchKm": 0,
           "blockedRayRatio": 1,
           "onshore": -0.995,
-          "intensity": 0.2
+          "intensity": 0.1
         },
         "W": {
           "level": "protected",
@@ -1072,7 +1072,7 @@
           "fetchKm": 0.16,
           "blockedRayRatio": 1,
           "onshore": -0.905,
-          "intensity": 2.8
+          "intensity": 2.9
         }
       },
       "confidence": "high"
@@ -1136,7 +1136,7 @@
           "fetchKm": 20,
           "blockedRayRatio": 0.2,
           "onshore": 0.741,
-          "intensity": 87.1
+          "intensity": 87
         },
         "NW": {
           "level": "exposed",
@@ -1155,66 +1155,66 @@
         "gr": "Πάτμος Κάμπος"
       },
       "coordinates": {
-        "lat": 37.3247471,
-        "lon": 26.5381556
+        "lat": 37.3504265,
+        "lon": 26.5658112
       },
-      "facingDeg": 265.7,
+      "facingDeg": 151.2,
       "sectors": {
         "N": {
           "level": "protected",
           "fetchKm": 0,
           "blockedRayRatio": 1,
-          "onshore": -0.075,
-          "intensity": 27.8
+          "onshore": -0.876,
+          "intensity": 3.7
         },
         "NE": {
           "level": "protected",
           "fetchKm": 0,
           "blockedRayRatio": 1,
-          "onshore": -0.758,
-          "intensity": 7.3
+          "onshore": -0.279,
+          "intensity": 21.6
         },
         "E": {
+          "level": "partial",
+          "fetchKm": 0.04,
+          "blockedRayRatio": 1,
+          "onshore": 0.482,
+          "intensity": 44.5
+        },
+        "SE": {
+          "level": "exposed",
+          "fetchKm": 14.96,
+          "blockedRayRatio": 0.6,
+          "onshore": 0.96,
+          "intensity": 98
+        },
+        "S": {
+          "level": "exposed",
+          "fetchKm": 10.2,
+          "blockedRayRatio": 0.6,
+          "onshore": 0.876,
+          "intensity": 79.6
+        },
+        "SW": {
+          "level": "partial",
+          "fetchKm": 0.16,
+          "blockedRayRatio": 1,
+          "onshore": 0.279,
+          "intensity": 38.4
+        },
+        "W": {
           "level": "protected",
           "fetchKm": 0,
           "blockedRayRatio": 1,
-          "onshore": -0.997,
-          "intensity": 0.1
-        },
-        "SE": {
-          "level": "protected",
-          "fetchKm": 0.04,
-          "blockedRayRatio": 1,
-          "onshore": -0.652,
-          "intensity": 10.4
-        },
-        "S": {
-          "level": "protected",
-          "fetchKm": 0.16,
-          "blockedRayRatio": 1,
-          "onshore": 0.075,
-          "intensity": 32.3
-        },
-        "SW": {
-          "level": "exposed",
-          "fetchKm": 10.16,
-          "blockedRayRatio": 0.6,
-          "onshore": 0.758,
-          "intensity": 74.3
-        },
-        "W": {
-          "level": "exposed",
-          "fetchKm": 25,
-          "blockedRayRatio": 0,
-          "onshore": 0.997,
-          "intensity": 99.8
+          "onshore": -0.482,
+          "intensity": 15.5
         },
         "NW": {
-          "level": "exposed",
-          "fetchKm": 10,
-          "blockedRayRatio": 0.6,
-          "onshore": 0.652,
-          "intensity": 68.8
+          "level": "protected",
+          "fetchKm": 0,
+          "blockedRayRatio": 1,
+          "onshore": -0.96,
+          "intensity": 1.2
         }
       },
       "confidence": "high"

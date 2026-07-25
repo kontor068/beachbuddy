@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "generatedAt": "2026-06-26T22:46:03.203Z",
+  "generatedAt": "2026-07-25T15:19:50.425Z",
   "region": {
     "id": "attica-salamina",
     "name": "Salamina"
@@ -62,8 +62,8 @@
       },
       "S": {
         "protected": 2,
-        "partial": 5,
-        "exposed": 3
+        "partial": 4,
+        "exposed": 4
       },
       "SW": {
         "protected": 6,
@@ -121,7 +121,7 @@
           "fetchKm": 5.6,
           "blockedRayRatio": 1,
           "onshore": 0.228,
-          "intensity": 36.8
+          "intensity": 36.9
         },
         "S": {
           "level": "exposed",
@@ -142,14 +142,14 @@
           "fetchKm": 13.56,
           "blockedRayRatio": 0.6,
           "onshore": 0.527,
-          "intensity": 76.4
+          "intensity": 76.3
         },
         "NW": {
           "level": "protected",
           "fetchKm": 0,
           "blockedRayRatio": 1,
           "onshore": -0.228,
-          "intensity": 23.2
+          "intensity": 23.1
         }
       },
       "confidence": "high"
@@ -185,7 +185,7 @@
           "fetchKm": 18.8,
           "blockedRayRatio": 0.6,
           "onshore": 0.667,
-          "intensity": 83.4
+          "intensity": 83.3
         },
         "SE": {
           "level": "exposed",
@@ -220,7 +220,7 @@
           "fetchKm": 0,
           "blockedRayRatio": 1,
           "onshore": -0.998,
-          "intensity": 0.1
+          "intensity": 0
         }
       },
       "confidence": "high"
@@ -277,7 +277,7 @@
           "fetchKm": 14.76,
           "blockedRayRatio": 0.6,
           "onshore": 0.717,
-          "intensity": 85.9
+          "intensity": 85.8
         },
         "W": {
           "level": "exposed",
@@ -355,7 +355,7 @@
           "fetchKm": 0.36,
           "blockedRayRatio": 1,
           "onshore": -0.155,
-          "intensity": 25.3
+          "intensity": 25.4
         },
         "NW": {
           "level": "protected",
@@ -455,7 +455,7 @@
           "fetchKm": 0,
           "blockedRayRatio": 1,
           "onshore": -0.885,
-          "intensity": 3.4
+          "intensity": 3.5
         },
         "NE": {
           "level": "protected",
@@ -483,7 +483,7 @@
           "fetchKm": 13.92,
           "blockedRayRatio": 0.8,
           "onshore": 0.885,
-          "intensity": 94.3
+          "intensity": 94.2
         },
         "SW": {
           "level": "partial",
@@ -504,7 +504,7 @@
           "fetchKm": 0,
           "blockedRayRatio": 1,
           "onshore": -0.955,
-          "intensity": 1.4
+          "intensity": 1.3
         }
       },
       "confidence": "high"
@@ -788,7 +788,7 @@
           "fetchKm": 0,
           "blockedRayRatio": 1,
           "onshore": -0.845,
-          "intensity": 4.7
+          "intensity": 4.6
         }
       },
       "confidence": "high"

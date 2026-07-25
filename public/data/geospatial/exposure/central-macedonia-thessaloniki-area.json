@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "generatedAt": "2026-07-25T14:20:06.570Z",
+  "generatedAt": "2026-07-25T15:20:01.330Z",
   "region": {
     "id": "central-macedonia-thessaloniki-area",
     "name": "Thessaloniki area"
@@ -36,47 +36,47 @@
     "maskConfidence": "high"
   },
   "summary": {
-    "beachCount": 17,
-    "generatedProfiles": 17,
+    "beachCount": 16,
+    "generatedProfiles": 16,
     "missingCoordinates": 0,
     "sectors": {
       "N": {
-        "protected": 10,
+        "protected": 9,
         "partial": 4,
         "exposed": 3
       },
       "NE": {
-        "protected": 7,
+        "protected": 6,
         "partial": 4,
         "exposed": 6
       },
       "E": {
         "protected": 6,
-        "partial": 1,
+        "partial": 0,
         "exposed": 10
       },
       "SE": {
         "protected": 7,
         "partial": 1,
-        "exposed": 9
+        "exposed": 8
       },
       "S": {
         "protected": 7,
         "partial": 4,
-        "exposed": 6
+        "exposed": 5
       },
       "SW": {
         "protected": 11,
-        "partial": 1,
+        "partial": 0,
         "exposed": 5
       },
       "W": {
-        "protected": 12,
+        "protected": 11,
         "partial": 2,
         "exposed": 3
       },
       "NW": {
-        "protected": 13,
+        "protected": 12,
         "partial": 2,
         "exposed": 2
       }
@@ -1215,77 +1215,6 @@
           "blockedRayRatio": 1,
           "onshore": 0.063,
           "intensity": 31.9
-        }
-      },
-      "confidence": "high"
-    },
-    "3124": {
-      "beachId": 3124,
-      "name": {
-        "en": "Paralia Nea Kerdylia",
-        "gr": "Παραλία Νέα Κερδύλια"
-      },
-      "coordinates": {
-        "lat": 40.78075,
-        "lon": 23.82726
-      },
-      "facingDeg": 154.7,
-      "sectors": {
-        "N": {
-          "level": "protected",
-          "fetchKm": 0,
-          "blockedRayRatio": 1,
-          "onshore": -0.904,
-          "intensity": 2.9
-        },
-        "NE": {
-          "level": "protected",
-          "fetchKm": 0.36,
-          "blockedRayRatio": 1,
-          "onshore": -0.337,
-          "intensity": 19.9
-        },
-        "E": {
-          "level": "partial",
-          "fetchKm": 7.08,
-          "blockedRayRatio": 0.8,
-          "onshore": 0.427,
-          "intensity": 46.2
-        },
-        "SE": {
-          "level": "exposed",
-          "fetchKm": 21.16,
-          "blockedRayRatio": 0.2,
-          "onshore": 0.941,
-          "intensity": 97.1
-        },
-        "S": {
-          "level": "exposed",
-          "fetchKm": 21.52,
-          "blockedRayRatio": 0.6,
-          "onshore": 0.904,
-          "intensity": 95.2
-        },
-        "SW": {
-          "level": "partial",
-          "fetchKm": 9.88,
-          "blockedRayRatio": 1,
-          "onshore": 0.337,
-          "intensity": 50.5
-        },
-        "W": {
-          "level": "protected",
-          "fetchKm": 0,
-          "blockedRayRatio": 1,
-          "onshore": -0.427,
-          "intensity": 17.2
-        },
-        "NW": {
-          "level": "protected",
-          "fetchKm": 0,
-          "blockedRayRatio": 1,
-          "onshore": -0.941,
-          "intensity": 1.8
         }
       },
       "confidence": "high"

@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "generatedAt": "2026-06-26T22:46:45.755Z",
+  "generatedAt": "2026-07-25T15:20:34.188Z",
   "region": {
     "id": "thessaly-magnesia-mainland---pelion",
     "name": "Magnesia (Pelion)"
@@ -36,49 +36,49 @@
     "maskConfidence": "high"
   },
   "summary": {
-    "beachCount": 56,
-    "generatedProfiles": 56,
+    "beachCount": 70,
+    "generatedProfiles": 70,
     "missingCoordinates": 0,
     "sectors": {
       "N": {
-        "protected": 25,
-        "partial": 7,
-        "exposed": 24
+        "protected": 33,
+        "partial": 9,
+        "exposed": 28
       },
       "NE": {
-        "protected": 21,
-        "partial": 9,
-        "exposed": 26
+        "protected": 30,
+        "partial": 11,
+        "exposed": 29
       },
       "E": {
-        "protected": 19,
-        "partial": 3,
-        "exposed": 34
+        "protected": 27,
+        "partial": 5,
+        "exposed": 38
       },
       "SE": {
-        "protected": 17,
+        "protected": 25,
         "partial": 24,
-        "exposed": 15
+        "exposed": 21
       },
       "S": {
-        "protected": 32,
-        "partial": 11,
-        "exposed": 13
+        "protected": 38,
+        "partial": 13,
+        "exposed": 19
       },
       "SW": {
-        "protected": 35,
-        "partial": 8,
-        "exposed": 13
+        "protected": 41,
+        "partial": 10,
+        "exposed": 19
       },
       "W": {
-        "protected": 38,
+        "protected": 44,
         "partial": 9,
-        "exposed": 9
+        "exposed": 17
       },
       "NW": {
-        "protected": 39,
+        "protected": 47,
         "partial": 16,
-        "exposed": 1
+        "exposed": 7
       }
     }
   },
@@ -149,7 +149,7 @@
           "fetchKm": 0.12,
           "blockedRayRatio": 1,
           "onshore": -0.445,
-          "intensity": 16.6
+          "intensity": 16.7
         }
       },
       "confidence": "high"
@@ -185,7 +185,7 @@
           "fetchKm": 0,
           "blockedRayRatio": 1,
           "onshore": 0.225,
-          "intensity": 36.8
+          "intensity": 36.7
         },
         "SE": {
           "level": "protected",
@@ -391,7 +391,7 @@
           "fetchKm": 25,
           "blockedRayRatio": 0,
           "onshore": 0.983,
-          "intensity": 99.2
+          "intensity": 99.1
         },
         "E": {
           "level": "exposed",
@@ -455,7 +455,7 @@
           "fetchKm": 15.08,
           "blockedRayRatio": 0.4,
           "onshore": 0.537,
-          "intensity": 76.8
+          "intensity": 76.9
         },
         "NE": {
           "level": "exposed",
@@ -526,7 +526,7 @@
           "fetchKm": 0,
           "blockedRayRatio": 1,
           "onshore": -0.985,
-          "intensity": 0.5
+          "intensity": 0.4
         },
         "NE": {
           "level": "protected",
@@ -575,7 +575,7 @@
           "fetchKm": 0,
           "blockedRayRatio": 1,
           "onshore": -0.575,
-          "intensity": 12.8
+          "intensity": 12.7
         }
       },
       "confidence": "high"
@@ -618,7 +618,7 @@
           "fetchKm": 0.24,
           "blockedRayRatio": 1,
           "onshore": -0.168,
-          "intensity": 25
+          "intensity": 24.9
         },
         "S": {
           "level": "partial",
@@ -646,7 +646,7 @@
           "fetchKm": 6.96,
           "blockedRayRatio": 1,
           "onshore": 0.168,
-          "intensity": 35
+          "intensity": 35.1
         }
       },
       "confidence": "high"
@@ -781,7 +781,7 @@
           "fetchKm": 21.08,
           "blockedRayRatio": 0.4,
           "onshore": 0.969,
-          "intensity": 98.4
+          "intensity": 98.5
         },
         "NW": {
           "level": "partial",
@@ -817,7 +817,7 @@
           "fetchKm": 0,
           "blockedRayRatio": 1,
           "onshore": -0.445,
-          "intensity": 16.6
+          "intensity": 16.7
         },
         "E": {
           "level": "protected",
@@ -845,7 +845,7 @@
           "fetchKm": 4.24,
           "blockedRayRatio": 1,
           "onshore": 0.445,
-          "intensity": 43.4
+          "intensity": 43.3
         },
         "W": {
           "level": "exposed",
@@ -930,7 +930,7 @@
           "fetchKm": 0,
           "blockedRayRatio": 1,
           "onshore": -0.985,
-          "intensity": 0.5
+          "intensity": 0.4
         }
       },
       "confidence": "high"
@@ -959,7 +959,7 @@
           "fetchKm": 6.92,
           "blockedRayRatio": 0.8,
           "onshore": 0.413,
-          "intensity": 45.6
+          "intensity": 45.7
         },
         "E": {
           "level": "exposed",
@@ -1264,7 +1264,7 @@
           "fetchKm": 24.6,
           "blockedRayRatio": 0.4,
           "onshore": 0.989,
-          "intensity": 99.4
+          "intensity": 99.5
         },
         "SW": {
           "level": "exposed",
@@ -1328,7 +1328,7 @@
           "fetchKm": 22.12,
           "blockedRayRatio": 0.2,
           "onshore": 0.979,
-          "intensity": 99
+          "intensity": 98.9
         },
         "S": {
           "level": "exposed",
@@ -1385,7 +1385,7 @@
           "fetchKm": 20,
           "blockedRayRatio": 0.2,
           "onshore": 0.985,
-          "intensity": 99.3
+          "intensity": 99.2
         },
         "E": {
           "level": "partial",
@@ -1399,7 +1399,7 @@
           "fetchKm": 0,
           "blockedRayRatio": 1,
           "onshore": -0.175,
-          "intensity": 24.8
+          "intensity": 24.7
         },
         "S": {
           "level": "protected",
@@ -1449,7 +1449,7 @@
           "fetchKm": 15.24,
           "blockedRayRatio": 0.4,
           "onshore": 0.623,
-          "intensity": 81.2
+          "intensity": 81.1
         },
         "NE": {
           "level": "exposed",
@@ -1470,7 +1470,7 @@
           "fetchKm": 5,
           "blockedRayRatio": 0.8,
           "onshore": 0.113,
-          "intensity": 35.2
+          "intensity": 35.3
         },
         "S": {
           "level": "protected",
@@ -1555,7 +1555,7 @@
           "fetchKm": 20.84,
           "blockedRayRatio": 0.6,
           "onshore": 0.991,
-          "intensity": 99.6
+          "intensity": 99.5
         },
         "W": {
           "level": "exposed",
@@ -1733,14 +1733,14 @@
           "fetchKm": 15.08,
           "blockedRayRatio": 0.4,
           "onshore": 0.489,
-          "intensity": 74.4
+          "intensity": 74.5
         },
         "NE": {
           "level": "exposed",
           "fetchKm": 25,
           "blockedRayRatio": 0,
           "onshore": 0.963,
-          "intensity": 98.2
+          "intensity": 98.1
         },
         "E": {
           "level": "exposed",
@@ -1924,7 +1924,7 @@
           "fetchKm": 0,
           "blockedRayRatio": 1,
           "onshore": -0.982,
-          "intensity": 0.5
+          "intensity": 0.6
         }
       },
       "confidence": "high"
@@ -1981,7 +1981,7 @@
           "fetchKm": 0,
           "blockedRayRatio": 1,
           "onshore": -0.965,
-          "intensity": 1.1
+          "intensity": 1
         },
         "W": {
           "level": "protected",
@@ -2045,7 +2045,7 @@
           "fetchKm": 0,
           "blockedRayRatio": 1,
           "onshore": -0.505,
-          "intensity": 14.8
+          "intensity": 14.9
         },
         "SW": {
           "level": "protected",
@@ -2102,7 +2102,7 @@
           "fetchKm": 25,
           "blockedRayRatio": 0,
           "onshore": 0.949,
-          "intensity": 97.4
+          "intensity": 97.5
         },
         "SE": {
           "level": "exposed",
@@ -2237,7 +2237,7 @@
           "fetchKm": 25,
           "blockedRayRatio": 0,
           "onshore": 0.931,
-          "intensity": 96.5
+          "intensity": 96.6
         },
         "E": {
           "level": "exposed",
@@ -2279,7 +2279,7 @@
           "fetchKm": 10.08,
           "blockedRayRatio": 0.6,
           "onshore": -0.365,
-          "intensity": 26.6
+          "intensity": 26.7
         }
       },
       "confidence": "high"
@@ -2308,14 +2308,14 @@
           "fetchKm": 20.04,
           "blockedRayRatio": 0.2,
           "onshore": 0.881,
-          "intensity": 94
+          "intensity": 94.1
         },
         "E": {
           "level": "exposed",
           "fetchKm": 20,
           "blockedRayRatio": 0.4,
           "onshore": 0.957,
-          "intensity": 97.8
+          "intensity": 97.9
         },
         "SE": {
           "level": "partial",
@@ -2372,7 +2372,7 @@
           "fetchKm": 20.04,
           "blockedRayRatio": 0.2,
           "onshore": 0.721,
-          "intensity": 86.1
+          "intensity": 86
         },
         "NE": {
           "level": "exposed",
@@ -2457,7 +2457,7 @@
           "fetchKm": 25,
           "blockedRayRatio": 0,
           "onshore": 0.885,
-          "intensity": 94.3
+          "intensity": 94.2
         },
         "SE": {
           "level": "exposed",
@@ -2478,14 +2478,14 @@
           "fetchKm": 0,
           "blockedRayRatio": 1,
           "onshore": -0.955,
-          "intensity": 1.4
+          "intensity": 1.3
         },
         "W": {
           "level": "protected",
           "fetchKm": 0,
           "blockedRayRatio": 1,
           "onshore": -0.885,
-          "intensity": 3.4
+          "intensity": 3.5
         },
         "NW": {
           "level": "protected",
@@ -2521,7 +2521,7 @@
           "fetchKm": 25,
           "blockedRayRatio": 0,
           "onshore": 0.909,
-          "intensity": 95.5
+          "intensity": 95.4
         },
         "E": {
           "level": "exposed",
@@ -2592,14 +2592,14 @@
           "fetchKm": 25,
           "blockedRayRatio": 0,
           "onshore": 0.921,
-          "intensity": 96
+          "intensity": 96.1
         },
         "E": {
           "level": "exposed",
           "fetchKm": 25,
           "blockedRayRatio": 0,
           "onshore": 0.927,
-          "intensity": 96.4
+          "intensity": 96.3
         },
         "SE": {
           "level": "exposed",
@@ -2698,7 +2698,7 @@
           "fetchKm": 21.92,
           "blockedRayRatio": 0.2,
           "onshore": 0.733,
-          "intensity": 86.7
+          "intensity": 86.6
         },
         "NW": {
           "level": "partial",
@@ -2883,7 +2883,7 @@
           "fetchKm": 25,
           "blockedRayRatio": 0,
           "onshore": 0.717,
-          "intensity": 85.9
+          "intensity": 85.8
         },
         "SE": {
           "level": "partial",
@@ -2954,7 +2954,7 @@
           "fetchKm": 25,
           "blockedRayRatio": 0,
           "onshore": 0.953,
-          "intensity": 97.6
+          "intensity": 97.7
         },
         "SE": {
           "level": "exposed",
@@ -3153,7 +3153,7 @@
           "fetchKm": 15.76,
           "blockedRayRatio": 0.4,
           "onshore": 0.585,
-          "intensity": 79.3
+          "intensity": 79.2
         },
         "NE": {
           "level": "exposed",
@@ -3167,7 +3167,7 @@
           "fetchKm": 23,
           "blockedRayRatio": 0.2,
           "onshore": 0.811,
-          "intensity": 90.5
+          "intensity": 90.6
         },
         "SE": {
           "level": "partial",
@@ -3181,7 +3181,7 @@
           "fetchKm": 0.08,
           "blockedRayRatio": 1,
           "onshore": -0.585,
-          "intensity": 12.4
+          "intensity": 12.5
         },
         "SW": {
           "level": "protected",
@@ -3266,7 +3266,7 @@
           "fetchKm": 0,
           "blockedRayRatio": 1,
           "onshore": -0.952,
-          "intensity": 1.4
+          "intensity": 1.5
         },
         "NW": {
           "level": "protected",
@@ -3330,7 +3330,7 @@
           "fetchKm": 21.24,
           "blockedRayRatio": 0.6,
           "onshore": 0.991,
-          "intensity": 99.6
+          "intensity": 99.5
         },
         "W": {
           "level": "exposed",
@@ -3394,7 +3394,7 @@
           "fetchKm": 23.56,
           "blockedRayRatio": 0.6,
           "onshore": 0.953,
-          "intensity": 97.6
+          "intensity": 97.7
         },
         "SW": {
           "level": "exposed",
@@ -3437,7 +3437,7 @@
           "fetchKm": 15.04,
           "blockedRayRatio": 0.4,
           "onshore": 0.585,
-          "intensity": 79.3
+          "intensity": 79.2
         },
         "NE": {
           "level": "exposed",
@@ -3451,7 +3451,7 @@
           "fetchKm": 25,
           "blockedRayRatio": 0,
           "onshore": 0.811,
-          "intensity": 90.5
+          "intensity": 90.6
         },
         "SE": {
           "level": "partial",
@@ -3465,7 +3465,7 @@
           "fetchKm": 0,
           "blockedRayRatio": 1,
           "onshore": -0.585,
-          "intensity": 12.4
+          "intensity": 12.5
         },
         "SW": {
           "level": "protected",
@@ -3657,21 +3657,21 @@
           "fetchKm": 25,
           "blockedRayRatio": 0,
           "onshore": 0.997,
-          "intensity": 99.8
+          "intensity": 99.9
         },
         "E": {
           "level": "exposed",
           "fetchKm": 25,
           "blockedRayRatio": 0,
           "onshore": 0.757,
-          "intensity": 87.9
+          "intensity": 87.8
         },
         "SE": {
           "level": "partial",
           "fetchKm": 15.32,
           "blockedRayRatio": 0.4,
           "onshore": 0.073,
-          "intensity": 53.6
+          "intensity": 53.7
         },
         "S": {
           "level": "protected",
@@ -3884,7 +3884,7 @@
           "fetchKm": 0.04,
           "blockedRayRatio": 1,
           "onshore": -0.485,
-          "intensity": 15.4
+          "intensity": 15.5
         },
         "S": {
           "level": "exposed",
@@ -3898,7 +3898,7 @@
           "fetchKm": 18.12,
           "blockedRayRatio": 1,
           "onshore": 0.875,
-          "intensity": 93.8
+          "intensity": 93.7
         },
         "W": {
           "level": "exposed",
@@ -4012,14 +4012,14 @@
           "fetchKm": 25,
           "blockedRayRatio": 0,
           "onshore": 0.903,
-          "intensity": 95.2
+          "intensity": 95.1
         },
         "E": {
           "level": "exposed",
           "fetchKm": 25,
           "blockedRayRatio": 0,
           "onshore": 0.943,
-          "intensity": 97.2
+          "intensity": 97.1
         },
         "SE": {
           "level": "exposed",
@@ -4054,7 +4054,1001 @@
           "fetchKm": 5.16,
           "blockedRayRatio": 0.8,
           "onshore": -0.431,
-          "intensity": 18
+          "intensity": 18.1
+        }
+      },
+      "confidence": "high"
+    },
+    "3146": {
+      "beachId": 3146,
+      "name": {
+        "en": "Agia Vaso",
+        "gr": "Αγία Βάσω"
+      },
+      "coordinates": {
+        "lat": 39.08744,
+        "lon": 23.11706
+      },
+      "facingDeg": 196,
+      "sectors": {
+        "N": {
+          "level": "protected",
+          "fetchKm": 0,
+          "blockedRayRatio": 1,
+          "onshore": -0.961,
+          "intensity": 1.2
+        },
+        "NE": {
+          "level": "protected",
+          "fetchKm": 0,
+          "blockedRayRatio": 1,
+          "onshore": -0.875,
+          "intensity": 3.8
+        },
+        "E": {
+          "level": "protected",
+          "fetchKm": 0,
+          "blockedRayRatio": 1,
+          "onshore": -0.276,
+          "intensity": 21.7
+        },
+        "SE": {
+          "level": "partial",
+          "fetchKm": 4,
+          "blockedRayRatio": 1,
+          "onshore": 0.485,
+          "intensity": 44.5
+        },
+        "S": {
+          "level": "exposed",
+          "fetchKm": 11.36,
+          "blockedRayRatio": 1,
+          "onshore": 0.961,
+          "intensity": 90
+        },
+        "SW": {
+          "level": "exposed",
+          "fetchKm": 10.04,
+          "blockedRayRatio": 1,
+          "onshore": 0.875,
+          "intensity": 72.2
+        },
+        "W": {
+          "level": "partial",
+          "fetchKm": 3.12,
+          "blockedRayRatio": 1,
+          "onshore": 0.276,
+          "intensity": 38.3
+        },
+        "NW": {
+          "level": "protected",
+          "fetchKm": 0,
+          "blockedRayRatio": 1,
+          "onshore": -0.485,
+          "intensity": 15.5
+        }
+      },
+      "confidence": "high"
+    },
+    "3147": {
+      "beachId": 3147,
+      "name": {
+        "en": "Alogoporos",
+        "gr": "Αλογόπορος"
+      },
+      "coordinates": {
+        "lat": 39.14422,
+        "lon": 23.0817
+      },
+      "facingDeg": 40.6,
+      "sectors": {
+        "N": {
+          "level": "partial",
+          "fetchKm": 3.48,
+          "blockedRayRatio": 1,
+          "onshore": 0.759,
+          "intensity": 52.8
+        },
+        "NE": {
+          "level": "partial",
+          "fetchKm": 6.2,
+          "blockedRayRatio": 1,
+          "onshore": 0.997,
+          "intensity": 59.9
+        },
+        "E": {
+          "level": "partial",
+          "fetchKm": 0.56,
+          "blockedRayRatio": 1,
+          "onshore": 0.651,
+          "intensity": 49.5
+        },
+        "SE": {
+          "level": "protected",
+          "fetchKm": 0.08,
+          "blockedRayRatio": 1,
+          "onshore": -0.077,
+          "intensity": 27.7
+        },
+        "S": {
+          "level": "protected",
+          "fetchKm": 0,
+          "blockedRayRatio": 1,
+          "onshore": -0.759,
+          "intensity": 7.2
+        },
+        "SW": {
+          "level": "protected",
+          "fetchKm": 0,
+          "blockedRayRatio": 1,
+          "onshore": -0.997,
+          "intensity": 0.1
+        },
+        "W": {
+          "level": "protected",
+          "fetchKm": 0,
+          "blockedRayRatio": 1,
+          "onshore": -0.651,
+          "intensity": 10.5
+        },
+        "NW": {
+          "level": "protected",
+          "fetchKm": 0,
+          "blockedRayRatio": 1,
+          "onshore": 0.077,
+          "intensity": 32.3
+        }
+      },
+      "confidence": "high"
+    },
+    "3148": {
+      "beachId": 3148,
+      "name": {
+        "en": "Theriakontas",
+        "gr": "Θεριάκοντας"
+      },
+      "coordinates": {
+        "lat": 39.14114,
+        "lon": 23.07445
+      },
+      "facingDeg": 305.1,
+      "sectors": {
+        "N": {
+          "level": "partial",
+          "fetchKm": 6.04,
+          "blockedRayRatio": 1,
+          "onshore": 0.575,
+          "intensity": 47.3
+        },
+        "NE": {
+          "level": "protected",
+          "fetchKm": 0.76,
+          "blockedRayRatio": 1,
+          "onshore": -0.172,
+          "intensity": 24.8
+        },
+        "E": {
+          "level": "protected",
+          "fetchKm": 0,
+          "blockedRayRatio": 1,
+          "onshore": -0.818,
+          "intensity": 5.5
+        },
+        "SE": {
+          "level": "protected",
+          "fetchKm": 0,
+          "blockedRayRatio": 1,
+          "onshore": -0.985,
+          "intensity": 0.4
+        },
+        "S": {
+          "level": "protected",
+          "fetchKm": 0,
+          "blockedRayRatio": 1,
+          "onshore": -0.575,
+          "intensity": 12.7
+        },
+        "SW": {
+          "level": "partial",
+          "fetchKm": 1.96,
+          "blockedRayRatio": 1,
+          "onshore": 0.172,
+          "intensity": 35.2
+        },
+        "W": {
+          "level": "exposed",
+          "fetchKm": 12.72,
+          "blockedRayRatio": 0.8,
+          "onshore": 0.818,
+          "intensity": 90.9
+        },
+        "NW": {
+          "level": "exposed",
+          "fetchKm": 17.88,
+          "blockedRayRatio": 0.8,
+          "onshore": 0.985,
+          "intensity": 99.3
+        }
+      },
+      "confidence": "high"
+    },
+    "3149": {
+      "beachId": 3149,
+      "name": {
+        "en": "Kala Nera",
+        "gr": "Κάλα Νερά"
+      },
+      "coordinates": {
+        "lat": 39.305,
+        "lon": 23.1203
+      },
+      "facingDeg": 220.3,
+      "sectors": {
+        "N": {
+          "level": "protected",
+          "fetchKm": 0,
+          "blockedRayRatio": 1,
+          "onshore": -0.763,
+          "intensity": 7.1
+        },
+        "NE": {
+          "level": "protected",
+          "fetchKm": 0,
+          "blockedRayRatio": 1,
+          "onshore": -0.997,
+          "intensity": 0.1
+        },
+        "E": {
+          "level": "protected",
+          "fetchKm": 0,
+          "blockedRayRatio": 1,
+          "onshore": -0.647,
+          "intensity": 10.6
+        },
+        "SE": {
+          "level": "protected",
+          "fetchKm": 3.68,
+          "blockedRayRatio": 1,
+          "onshore": 0.082,
+          "intensity": 32.5
+        },
+        "S": {
+          "level": "exposed",
+          "fetchKm": 15.56,
+          "blockedRayRatio": 0.8,
+          "onshore": 0.763,
+          "intensity": 88.1
+        },
+        "SW": {
+          "level": "exposed",
+          "fetchKm": 23.16,
+          "blockedRayRatio": 0.2,
+          "onshore": 0.997,
+          "intensity": 99.8
+        },
+        "W": {
+          "level": "exposed",
+          "fetchKm": 13.08,
+          "blockedRayRatio": 0.6,
+          "onshore": 0.647,
+          "intensity": 82.3
+        },
+        "NW": {
+          "level": "protected",
+          "fetchKm": 0.04,
+          "blockedRayRatio": 1,
+          "onshore": -0.082,
+          "intensity": 27.5
+        }
+      },
+      "confidence": "high"
+    },
+    "3150": {
+      "beachId": 3150,
+      "name": {
+        "en": "Kalamos Piliou",
+        "gr": "Κάλαμος Πηλίου"
+      },
+      "coordinates": {
+        "lat": 39.22668,
+        "lon": 23.18263
+      },
+      "facingDeg": 220.8,
+      "sectors": {
+        "N": {
+          "level": "protected",
+          "fetchKm": 0,
+          "blockedRayRatio": 1,
+          "onshore": -0.757,
+          "intensity": 7.3
+        },
+        "NE": {
+          "level": "protected",
+          "fetchKm": 0,
+          "blockedRayRatio": 1,
+          "onshore": -0.997,
+          "intensity": 0.1
+        },
+        "E": {
+          "level": "protected",
+          "fetchKm": 0,
+          "blockedRayRatio": 1,
+          "onshore": -0.653,
+          "intensity": 10.4
+        },
+        "SE": {
+          "level": "protected",
+          "fetchKm": 1.48,
+          "blockedRayRatio": 1,
+          "onshore": 0.073,
+          "intensity": 32.2
+        },
+        "S": {
+          "level": "partial",
+          "fetchKm": 7.44,
+          "blockedRayRatio": 1,
+          "onshore": 0.757,
+          "intensity": 52.7
+        },
+        "SW": {
+          "level": "exposed",
+          "fetchKm": 16.88,
+          "blockedRayRatio": 1,
+          "onshore": 0.997,
+          "intensity": 99.9
+        },
+        "W": {
+          "level": "exposed",
+          "fetchKm": 14.68,
+          "blockedRayRatio": 0.8,
+          "onshore": 0.653,
+          "intensity": 82.7
+        },
+        "NW": {
+          "level": "protected",
+          "fetchKm": 0,
+          "blockedRayRatio": 1,
+          "onshore": -0.073,
+          "intensity": 27.8
+        }
+      },
+      "confidence": "high"
+    },
+    "3151": {
+      "beachId": 3151,
+      "name": {
+        "en": "Kamari Keramidiou",
+        "gr": "Καμάρι Κεραμιδίου"
+      },
+      "coordinates": {
+        "lat": 39.57458,
+        "lon": 22.93502
+      },
+      "facingDeg": 52,
+      "sectors": {
+        "N": {
+          "level": "exposed",
+          "fetchKm": 15,
+          "blockedRayRatio": 0.4,
+          "onshore": 0.616,
+          "intensity": 80.8
+        },
+        "NE": {
+          "level": "exposed",
+          "fetchKm": 25,
+          "blockedRayRatio": 0,
+          "onshore": 0.993,
+          "intensity": 99.6
+        },
+        "E": {
+          "level": "exposed",
+          "fetchKm": 20.04,
+          "blockedRayRatio": 0.2,
+          "onshore": 0.788,
+          "intensity": 89.4
+        },
+        "SE": {
+          "level": "partial",
+          "fetchKm": 5.08,
+          "blockedRayRatio": 0.8,
+          "onshore": 0.122,
+          "intensity": 35.6
+        },
+        "S": {
+          "level": "protected",
+          "fetchKm": 0,
+          "blockedRayRatio": 1,
+          "onshore": -0.616,
+          "intensity": 11.5
+        },
+        "SW": {
+          "level": "protected",
+          "fetchKm": 0,
+          "blockedRayRatio": 1,
+          "onshore": -0.993,
+          "intensity": 0.2
+        },
+        "W": {
+          "level": "protected",
+          "fetchKm": 0,
+          "blockedRayRatio": 1,
+          "onshore": -0.788,
+          "intensity": 6.4
+        },
+        "NW": {
+          "level": "protected",
+          "fetchKm": 0,
+          "blockedRayRatio": 1,
+          "onshore": -0.122,
+          "intensity": 26.3
+        }
+      },
+      "confidence": "high"
+    },
+    "3152": {
+      "beachId": 3152,
+      "name": {
+        "en": "Katigiorgis",
+        "gr": "Κατηγιώργης"
+      },
+      "coordinates": {
+        "lat": 39.17259,
+        "lon": 23.34299
+      },
+      "facingDeg": 110,
+      "sectors": {
+        "N": {
+          "level": "protected",
+          "fetchKm": 5,
+          "blockedRayRatio": 0.8,
+          "onshore": -0.342,
+          "intensity": 20.8
+        },
+        "NE": {
+          "level": "exposed",
+          "fetchKm": 16.76,
+          "blockedRayRatio": 0.4,
+          "onshore": 0.423,
+          "intensity": 71.1
+        },
+        "E": {
+          "level": "exposed",
+          "fetchKm": 9.72,
+          "blockedRayRatio": 0.8,
+          "onshore": 0.94,
+          "intensity": 75.3
+        },
+        "SE": {
+          "level": "exposed",
+          "fetchKm": 16.72,
+          "blockedRayRatio": 0.6,
+          "onshore": 0.906,
+          "intensity": 95.3
+        },
+        "S": {
+          "level": "exposed",
+          "fetchKm": 16.48,
+          "blockedRayRatio": 0.8,
+          "onshore": 0.342,
+          "intensity": 67.1
+        },
+        "SW": {
+          "level": "protected",
+          "fetchKm": 3.04,
+          "blockedRayRatio": 1,
+          "onshore": -0.423,
+          "intensity": 17.3
+        },
+        "W": {
+          "level": "protected",
+          "fetchKm": 0,
+          "blockedRayRatio": 1,
+          "onshore": -0.94,
+          "intensity": 1.8
+        },
+        "NW": {
+          "level": "protected",
+          "fetchKm": 0,
+          "blockedRayRatio": 1,
+          "onshore": -0.906,
+          "intensity": 2.8
+        }
+      },
+      "confidence": "high"
+    },
+    "3153": {
+      "beachId": 3153,
+      "name": {
+        "en": "Megali Paou",
+        "gr": "Μεγάλη Πάου"
+      },
+      "coordinates": {
+        "lat": 39.20311,
+        "lon": 23.19633
+      },
+      "facingDeg": 247.9,
+      "sectors": {
+        "N": {
+          "level": "protected",
+          "fetchKm": 0.2,
+          "blockedRayRatio": 1,
+          "onshore": -0.376,
+          "intensity": 18.7
+        },
+        "NE": {
+          "level": "protected",
+          "fetchKm": 0,
+          "blockedRayRatio": 1,
+          "onshore": -0.921,
+          "intensity": 2.4
+        },
+        "E": {
+          "level": "protected",
+          "fetchKm": 0,
+          "blockedRayRatio": 1,
+          "onshore": -0.927,
+          "intensity": 2.2
+        },
+        "SE": {
+          "level": "protected",
+          "fetchKm": 1.52,
+          "blockedRayRatio": 1,
+          "onshore": -0.389,
+          "intensity": 18.3
+        },
+        "S": {
+          "level": "partial",
+          "fetchKm": 6.04,
+          "blockedRayRatio": 1,
+          "onshore": 0.376,
+          "intensity": 41.3
+        },
+        "SW": {
+          "level": "exposed",
+          "fetchKm": 14.72,
+          "blockedRayRatio": 0.8,
+          "onshore": 0.921,
+          "intensity": 96.1
+        },
+        "W": {
+          "level": "exposed",
+          "fetchKm": 24.36,
+          "blockedRayRatio": 0.2,
+          "onshore": 0.927,
+          "intensity": 96.3
+        },
+        "NW": {
+          "level": "exposed",
+          "fetchKm": 13.56,
+          "blockedRayRatio": 0.6,
+          "onshore": 0.389,
+          "intensity": 69.5
+        }
+      },
+      "confidence": "high"
+    },
+    "3154": {
+      "beachId": 3154,
+      "name": {
+        "en": "Mikri Paou",
+        "gr": "Μικρή Πάου"
+      },
+      "coordinates": {
+        "lat": 39.20691,
+        "lon": 23.19329
+      },
+      "facingDeg": 235.4,
+      "sectors": {
+        "N": {
+          "level": "protected",
+          "fetchKm": 0,
+          "blockedRayRatio": 1,
+          "onshore": -0.568,
+          "intensity": 13
+        },
+        "NE": {
+          "level": "protected",
+          "fetchKm": 0,
+          "blockedRayRatio": 1,
+          "onshore": -0.984,
+          "intensity": 0.5
+        },
+        "E": {
+          "level": "protected",
+          "fetchKm": 0.04,
+          "blockedRayRatio": 1,
+          "onshore": -0.823,
+          "intensity": 5.3
+        },
+        "SE": {
+          "level": "protected",
+          "fetchKm": 1.08,
+          "blockedRayRatio": 1,
+          "onshore": -0.181,
+          "intensity": 24.6
+        },
+        "S": {
+          "level": "partial",
+          "fetchKm": 6.28,
+          "blockedRayRatio": 1,
+          "onshore": 0.568,
+          "intensity": 47
+        },
+        "SW": {
+          "level": "exposed",
+          "fetchKm": 10.76,
+          "blockedRayRatio": 1,
+          "onshore": 0.984,
+          "intensity": 84.1
+        },
+        "W": {
+          "level": "exposed",
+          "fetchKm": 19.48,
+          "blockedRayRatio": 0.4,
+          "onshore": 0.823,
+          "intensity": 91.2
+        },
+        "NW": {
+          "level": "partial",
+          "fetchKm": 10.04,
+          "blockedRayRatio": 0.6,
+          "onshore": 0.181,
+          "intensity": 49.4
+        }
+      },
+      "confidence": "high"
+    },
+    "3155": {
+      "beachId": 3155,
+      "name": {
+        "en": "Ovrios",
+        "gr": "Οβριός"
+      },
+      "coordinates": {
+        "lat": 39.50746,
+        "lon": 23.07965
+      },
+      "facingDeg": 39.3,
+      "sectors": {
+        "N": {
+          "level": "exposed",
+          "fetchKm": 25,
+          "blockedRayRatio": 0,
+          "onshore": 0.774,
+          "intensity": 88.7
+        },
+        "NE": {
+          "level": "exposed",
+          "fetchKm": 25,
+          "blockedRayRatio": 0,
+          "onshore": 0.995,
+          "intensity": 99.8
+        },
+        "E": {
+          "level": "exposed",
+          "fetchKm": 25,
+          "blockedRayRatio": 0,
+          "onshore": 0.633,
+          "intensity": 81.7
+        },
+        "SE": {
+          "level": "partial",
+          "fetchKm": 10.08,
+          "blockedRayRatio": 0.6,
+          "onshore": -0.099,
+          "intensity": 37.8
+        },
+        "S": {
+          "level": "protected",
+          "fetchKm": 0.04,
+          "blockedRayRatio": 1,
+          "onshore": -0.774,
+          "intensity": 6.8
+        },
+        "SW": {
+          "level": "protected",
+          "fetchKm": 0,
+          "blockedRayRatio": 1,
+          "onshore": -0.995,
+          "intensity": 0.1
+        },
+        "W": {
+          "level": "protected",
+          "fetchKm": 0,
+          "blockedRayRatio": 1,
+          "onshore": -0.633,
+          "intensity": 11
+        },
+        "NW": {
+          "level": "partial",
+          "fetchKm": 14.4,
+          "blockedRayRatio": 0.6,
+          "onshore": 0.099,
+          "intensity": 55
+        }
+      },
+      "confidence": "high"
+    },
+    "3156": {
+      "beachId": 3156,
+      "name": {
+        "en": "Paliourakia",
+        "gr": "Παλιουράκια"
+      },
+      "coordinates": {
+        "lat": 39.14756,
+        "lon": 23.31617
+      },
+      "facingDeg": 140.1,
+      "sectors": {
+        "N": {
+          "level": "protected",
+          "fetchKm": 0,
+          "blockedRayRatio": 1,
+          "onshore": -0.767,
+          "intensity": 7
+        },
+        "NE": {
+          "level": "protected",
+          "fetchKm": 1.48,
+          "blockedRayRatio": 1,
+          "onshore": -0.089,
+          "intensity": 27.3
+        },
+        "E": {
+          "level": "exposed",
+          "fetchKm": 12.72,
+          "blockedRayRatio": 0.6,
+          "onshore": 0.641,
+          "intensity": 82.1
+        },
+        "SE": {
+          "level": "exposed",
+          "fetchKm": 23.2,
+          "blockedRayRatio": 0.2,
+          "onshore": 0.996,
+          "intensity": 99.8
+        },
+        "S": {
+          "level": "exposed",
+          "fetchKm": 16.44,
+          "blockedRayRatio": 0.8,
+          "onshore": 0.767,
+          "intensity": 88.4
+        },
+        "SW": {
+          "level": "protected",
+          "fetchKm": 5.84,
+          "blockedRayRatio": 1,
+          "onshore": 0.089,
+          "intensity": 32.7
+        },
+        "W": {
+          "level": "protected",
+          "fetchKm": 0,
+          "blockedRayRatio": 1,
+          "onshore": -0.641,
+          "intensity": 10.8
+        },
+        "NW": {
+          "level": "protected",
+          "fetchKm": 0,
+          "blockedRayRatio": 1,
+          "onshore": -0.996,
+          "intensity": 0.1
+        }
+      },
+      "confidence": "high"
+    },
+    "3157": {
+      "beachId": 3157,
+      "name": {
+        "en": "Platanias",
+        "gr": "Πλατανιάς"
+      },
+      "coordinates": {
+        "lat": 39.1399,
+        "lon": 23.26985
+      },
+      "facingDeg": 177.5,
+      "sectors": {
+        "N": {
+          "level": "protected",
+          "fetchKm": 0,
+          "blockedRayRatio": 1,
+          "onshore": -0.999,
+          "intensity": 0
+        },
+        "NE": {
+          "level": "protected",
+          "fetchKm": 0.04,
+          "blockedRayRatio": 1,
+          "onshore": -0.676,
+          "intensity": 9.7
+        },
+        "E": {
+          "level": "partial",
+          "fetchKm": 5.12,
+          "blockedRayRatio": 0.8,
+          "onshore": 0.044,
+          "intensity": 33.1
+        },
+        "SE": {
+          "level": "exposed",
+          "fetchKm": 14.64,
+          "blockedRayRatio": 0.6,
+          "onshore": 0.737,
+          "intensity": 86.9
+        },
+        "S": {
+          "level": "exposed",
+          "fetchKm": 13.12,
+          "blockedRayRatio": 1,
+          "onshore": 0.999,
+          "intensity": 100
+        },
+        "SW": {
+          "level": "exposed",
+          "fetchKm": 11.16,
+          "blockedRayRatio": 0.8,
+          "onshore": 0.676,
+          "intensity": 76.2
+        },
+        "W": {
+          "level": "protected",
+          "fetchKm": 0,
+          "blockedRayRatio": 1,
+          "onshore": -0.044,
+          "intensity": 28.7
+        },
+        "NW": {
+          "level": "protected",
+          "fetchKm": 0,
+          "blockedRayRatio": 1,
+          "onshore": -0.737,
+          "intensity": 7.9
+        }
+      },
+      "confidence": "high"
+    },
+    "3158": {
+      "beachId": 3158,
+      "name": {
+        "en": "Prasini Ammos",
+        "gr": "Πράσινη Άμμος"
+      },
+      "coordinates": {
+        "lat": 39.16499,
+        "lon": 23.06908
+      },
+      "facingDeg": 275,
+      "sectors": {
+        "N": {
+          "level": "partial",
+          "fetchKm": 14.48,
+          "blockedRayRatio": 1,
+          "onshore": 0.087,
+          "intensity": 54.4
+        },
+        "NE": {
+          "level": "protected",
+          "fetchKm": 3.2,
+          "blockedRayRatio": 1,
+          "onshore": -0.643,
+          "intensity": 10.7
+        },
+        "E": {
+          "level": "protected",
+          "fetchKm": 0,
+          "blockedRayRatio": 1,
+          "onshore": -0.996,
+          "intensity": 0.1
+        },
+        "SE": {
+          "level": "protected",
+          "fetchKm": 0,
+          "blockedRayRatio": 1,
+          "onshore": -0.766,
+          "intensity": 7
+        },
+        "S": {
+          "level": "protected",
+          "fetchKm": 0,
+          "blockedRayRatio": 1,
+          "onshore": -0.087,
+          "intensity": 27.4
+        },
+        "SW": {
+          "level": "partial",
+          "fetchKm": 4.8,
+          "blockedRayRatio": 1,
+          "onshore": 0.643,
+          "intensity": 49.3
+        },
+        "W": {
+          "level": "exposed",
+          "fetchKm": 16.96,
+          "blockedRayRatio": 1,
+          "onshore": 0.996,
+          "intensity": 99.8
+        },
+        "NW": {
+          "level": "exposed",
+          "fetchKm": 17.64,
+          "blockedRayRatio": 1,
+          "onshore": 0.766,
+          "intensity": 88.3
+        }
+      },
+      "confidence": "high"
+    },
+    "3159": {
+      "beachId": 3159,
+      "name": {
+        "en": "Tzasteni",
+        "gr": "Τζάστενη"
+      },
+      "coordinates": {
+        "lat": 39.12803,
+        "lon": 23.16291
+      },
+      "facingDeg": 352.9,
+      "sectors": {
+        "N": {
+          "level": "exposed",
+          "fetchKm": 14.32,
+          "blockedRayRatio": 1,
+          "onshore": 0.992,
+          "intensity": 99.6
+        },
+        "NE": {
+          "level": "partial",
+          "fetchKm": 2.96,
+          "blockedRayRatio": 1,
+          "onshore": 0.614,
+          "intensity": 48.4
+        },
+        "E": {
+          "level": "protected",
+          "fetchKm": 0.96,
+          "blockedRayRatio": 1,
+          "onshore": -0.124,
+          "intensity": 26.3
+        },
+        "SE": {
+          "level": "protected",
+          "fetchKm": 0.44,
+          "blockedRayRatio": 1,
+          "onshore": -0.789,
+          "intensity": 6.3
+        },
+        "S": {
+          "level": "protected",
+          "fetchKm": 0.12,
+          "blockedRayRatio": 1,
+          "onshore": -0.992,
+          "intensity": 0.2
+        },
+        "SW": {
+          "level": "protected",
+          "fetchKm": 0.32,
+          "blockedRayRatio": 1,
+          "onshore": -0.614,
+          "intensity": 11.6
+        },
+        "W": {
+          "level": "partial",
+          "fetchKm": 1.32,
+          "blockedRayRatio": 1,
+          "onshore": 0.124,
+          "intensity": 33.7
+        },
+        "NW": {
+          "level": "exposed",
+          "fetchKm": 15,
+          "blockedRayRatio": 0.8,
+          "onshore": 0.789,
+          "intensity": 89.5
         }
       },
       "confidence": "high"

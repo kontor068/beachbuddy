@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "generatedAt": "2026-06-26T22:46:43.889Z",
+  "generatedAt": "2026-07-25T15:20:32.069Z",
   "region": {
     "id": "south-aegean-syros",
     "name": "Syros"
@@ -42,8 +42,8 @@
     "sectors": {
       "N": {
         "protected": 17,
-        "partial": 6,
-        "exposed": 1
+        "partial": 5,
+        "exposed": 2
       },
       "NE": {
         "protected": 21,
@@ -77,8 +77,8 @@
       },
       "NW": {
         "protected": 11,
-        "partial": 8,
-        "exposed": 5
+        "partial": 7,
+        "exposed": 6
       }
     }
   },
@@ -575,7 +575,7 @@
           "fetchKm": 0,
           "blockedRayRatio": 1,
           "onshore": -0.938,
-          "intensity": 1.9
+          "intensity": 1.8
         }
       },
       "confidence": "high"
@@ -604,7 +604,7 @@
           "fetchKm": 12.6,
           "blockedRayRatio": 1,
           "onshore": 0.881,
-          "intensity": 94
+          "intensity": 94.1
         },
         "E": {
           "level": "partial",
@@ -696,7 +696,7 @@
           "fetchKm": 0,
           "blockedRayRatio": 1,
           "onshore": 0.215,
-          "intensity": 36.5
+          "intensity": 36.4
         },
         "SW": {
           "level": "exposed",
@@ -746,7 +746,7 @@
           "fetchKm": 0.04,
           "blockedRayRatio": 1,
           "onshore": -0.442,
-          "intensity": 16.7
+          "intensity": 16.8
         },
         "E": {
           "level": "partial",
@@ -774,7 +774,7 @@
           "fetchKm": 1.6,
           "blockedRayRatio": 1,
           "onshore": 0.442,
-          "intensity": 43.3
+          "intensity": 43.2
         },
         "W": {
           "level": "protected",
@@ -881,7 +881,7 @@
           "fetchKm": 0.12,
           "blockedRayRatio": 1,
           "onshore": 0.358,
-          "intensity": 40.7
+          "intensity": 40.8
         },
         "NE": {
           "level": "protected",
@@ -909,7 +909,7 @@
           "fetchKm": 0,
           "blockedRayRatio": 1,
           "onshore": -0.358,
-          "intensity": 19.3
+          "intensity": 19.2
         },
         "SW": {
           "level": "partial",
@@ -980,7 +980,7 @@
           "fetchKm": 25,
           "blockedRayRatio": 0,
           "onshore": 0.901,
-          "intensity": 95
+          "intensity": 95.1
         },
         "SW": {
           "level": "partial",
@@ -1214,7 +1214,7 @@
           "fetchKm": 0,
           "blockedRayRatio": 1,
           "onshore": -0.938,
-          "intensity": 1.9
+          "intensity": 1.8
         }
       },
       "confidence": "high"
@@ -1321,7 +1321,7 @@
           "fetchKm": 0,
           "blockedRayRatio": 1,
           "onshore": -0.585,
-          "intensity": 12.4
+          "intensity": 12.5
         },
         "SE": {
           "level": "partial",
@@ -1335,7 +1335,7 @@
           "fetchKm": 5,
           "blockedRayRatio": 0.8,
           "onshore": 0.811,
-          "intensity": 57.3
+          "intensity": 57.4
         },
         "SW": {
           "level": "exposed",
@@ -1527,7 +1527,7 @@
           "fetchKm": 0.24,
           "blockedRayRatio": 1,
           "onshore": 0.498,
-          "intensity": 44.9
+          "intensity": 45
         },
         "E": {
           "level": "protected",
@@ -1548,14 +1548,14 @@
           "fetchKm": 0,
           "blockedRayRatio": 1,
           "onshore": -0.965,
-          "intensity": 1.1
+          "intensity": 1
         },
         "SW": {
           "level": "protected",
           "fetchKm": 0,
           "blockedRayRatio": 1,
           "onshore": -0.498,
-          "intensity": 15.1
+          "intensity": 15
         },
         "W": {
           "level": "partial",
@@ -1619,7 +1619,7 @@
           "fetchKm": 25,
           "blockedRayRatio": 0,
           "onshore": 0.973,
-          "intensity": 98.6
+          "intensity": 98.7
         },
         "SW": {
           "level": "exposed",
@@ -1640,7 +1640,7 @@
           "fetchKm": 0,
           "blockedRayRatio": 1,
           "onshore": -0.525,
-          "intensity": 14.3
+          "intensity": 14.2
         }
       },
       "confidence": "high"

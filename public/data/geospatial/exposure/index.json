@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "generatedAt": "2026-07-25T14:20:15.724Z",
+  "generatedAt": "2026-07-25T15:20:36.574Z",
   "purpose": "Offline directional geospatial exposure baseline for CalmBeach. Not user-facing proof of calm/protected conditions.",
   "source": {
     "landMask": {
@@ -41,8 +41,8 @@
   },
   "summary": {
     "regionCount": 110,
-    "beachCount": 2807,
-    "generatedProfiles": 2807,
+    "beachCount": 2842,
+    "generatedProfiles": 2842,
     "missingCoordinates": 0,
     "indexedLandPolygons": 15946,
     "regions": {
@@ -192,47 +192,47 @@
       },
       "attica-east-attica-mainland": {
         "regionName": "East Attica",
-        "beachCount": 59,
-        "generatedProfiles": 59,
+        "beachCount": 60,
+        "generatedProfiles": 60,
         "missingCoordinates": 0,
         "sectors": {
           "N": {
-            "protected": 38,
+            "protected": 39,
             "partial": 11,
             "exposed": 10
           },
           "NE": {
             "protected": 31,
-            "partial": 12,
+            "partial": 13,
             "exposed": 16
           },
           "E": {
             "protected": 27,
-            "partial": 14,
+            "partial": 15,
             "exposed": 18
           },
           "SE": {
             "protected": 23,
             "partial": 17,
-            "exposed": 19
+            "exposed": 20
           },
           "S": {
             "protected": 23,
-            "partial": 17,
+            "partial": 18,
             "exposed": 19
           },
           "SW": {
-            "protected": 32,
+            "protected": 33,
             "partial": 8,
             "exposed": 19
           },
           "W": {
-            "protected": 35,
+            "protected": 36,
             "partial": 14,
             "exposed": 10
           },
           "NW": {
-            "protected": 41,
+            "protected": 42,
             "partial": 10,
             "exposed": 8
           }
@@ -624,95 +624,95 @@
       },
       "central-greece-evia": {
         "regionName": "Evia",
-        "beachCount": 123,
-        "generatedProfiles": 123,
+        "beachCount": 129,
+        "generatedProfiles": 129,
         "missingCoordinates": 0,
         "sectors": {
           "N": {
-            "protected": 57,
-            "partial": 25,
-            "exposed": 41
+            "protected": 61,
+            "partial": 26,
+            "exposed": 42
           },
           "NE": {
-            "protected": 49,
+            "protected": 50,
             "partial": 28,
-            "exposed": 46
+            "exposed": 51
           },
           "E": {
             "protected": 49,
-            "partial": 31,
-            "exposed": 43
+            "partial": 33,
+            "exposed": 47
           },
           "SE": {
-            "protected": 59,
-            "partial": 33,
-            "exposed": 31
+            "protected": 60,
+            "partial": 35,
+            "exposed": 34
           },
           "S": {
-            "protected": 72,
-            "partial": 23,
+            "protected": 75,
+            "partial": 26,
             "exposed": 28
           },
           "SW": {
-            "protected": 80,
+            "protected": 86,
             "partial": 19,
             "exposed": 24
           },
           "W": {
-            "protected": 80,
+            "protected": 86,
             "partial": 26,
             "exposed": 17
           },
           "NW": {
-            "protected": 67,
-            "partial": 33,
+            "protected": 72,
+            "partial": 34,
             "exposed": 23
           }
         }
       },
       "central-greece-fokida-mainland": {
         "regionName": "Fokida",
-        "beachCount": 20,
-        "generatedProfiles": 20,
+        "beachCount": 21,
+        "generatedProfiles": 21,
         "missingCoordinates": 0,
         "sectors": {
           "N": {
-            "protected": 15,
+            "protected": 16,
             "partial": 5,
             "exposed": 0
           },
           "NE": {
-            "protected": 14,
+            "protected": 15,
             "partial": 5,
             "exposed": 1
           },
           "E": {
-            "protected": 12,
+            "protected": 13,
             "partial": 6,
             "exposed": 2
           },
           "SE": {
             "protected": 9,
-            "partial": 3,
+            "partial": 4,
             "exposed": 8
           },
           "S": {
             "protected": 5,
             "partial": 7,
-            "exposed": 8
+            "exposed": 9
           },
           "SW": {
             "protected": 7,
             "partial": 5,
-            "exposed": 8
+            "exposed": 9
           },
           "W": {
             "protected": 12,
-            "partial": 3,
+            "partial": 4,
             "exposed": 5
           },
           "NW": {
-            "protected": 12,
+            "protected": 13,
             "partial": 8,
             "exposed": 0
           }
@@ -960,47 +960,47 @@
       },
       "central-macedonia-thessaloniki-area": {
         "regionName": "Thessaloniki area",
-        "beachCount": 17,
-        "generatedProfiles": 17,
+        "beachCount": 16,
+        "generatedProfiles": 16,
         "missingCoordinates": 0,
         "sectors": {
           "N": {
-            "protected": 10,
+            "protected": 9,
             "partial": 4,
             "exposed": 3
           },
           "NE": {
-            "protected": 7,
+            "protected": 6,
             "partial": 4,
             "exposed": 6
           },
           "E": {
             "protected": 6,
-            "partial": 1,
+            "partial": 0,
             "exposed": 10
           },
           "SE": {
             "protected": 7,
             "partial": 1,
-            "exposed": 9
+            "exposed": 8
           },
           "S": {
             "protected": 7,
             "partial": 4,
-            "exposed": 6
+            "exposed": 5
           },
           "SW": {
             "protected": 11,
-            "partial": 1,
+            "partial": 0,
             "exposed": 5
           },
           "W": {
-            "protected": 12,
+            "protected": 11,
             "partial": 2,
             "exposed": 3
           },
           "NW": {
-            "protected": 13,
+            "protected": 12,
             "partial": 2,
             "exposed": 2
           }
@@ -1008,95 +1008,95 @@
       },
       "crete-crete-chania": {
         "regionName": "Chania",
-        "beachCount": 90,
-        "generatedProfiles": 90,
+        "beachCount": 89,
+        "generatedProfiles": 89,
         "missingCoordinates": 0,
         "sectors": {
           "N": {
             "protected": 51,
             "partial": 10,
-            "exposed": 29
+            "exposed": 28
           },
           "NE": {
             "protected": 51,
             "partial": 16,
-            "exposed": 23
+            "exposed": 22
           },
           "E": {
             "protected": 47,
-            "partial": 30,
+            "partial": 29,
             "exposed": 13
           },
           "SE": {
-            "protected": 46,
+            "protected": 45,
             "partial": 11,
             "exposed": 33
           },
           "S": {
-            "protected": 42,
+            "protected": 41,
             "partial": 11,
             "exposed": 37
           },
           "SW": {
-            "protected": 41,
+            "protected": 40,
             "partial": 15,
             "exposed": 34
           },
           "W": {
-            "protected": 46,
+            "protected": 45,
             "partial": 25,
             "exposed": 19
           },
           "NW": {
             "protected": 47,
-            "partial": 22,
+            "partial": 21,
             "exposed": 21
           }
         }
       },
       "crete-crete-heraklion": {
         "regionName": "Heraklion",
-        "beachCount": 55,
-        "generatedProfiles": 55,
+        "beachCount": 53,
+        "generatedProfiles": 53,
         "missingCoordinates": 0,
         "sectors": {
           "N": {
-            "protected": 34,
+            "protected": 32,
             "partial": 6,
             "exposed": 15
           },
           "NE": {
-            "protected": 31,
+            "protected": 29,
             "partial": 6,
             "exposed": 18
           },
           "E": {
-            "protected": 22,
+            "protected": 21,
             "partial": 19,
-            "exposed": 14
+            "exposed": 13
           },
           "SE": {
             "protected": 20,
             "partial": 8,
-            "exposed": 27
+            "exposed": 25
           },
           "S": {
             "protected": 21,
             "partial": 6,
-            "exposed": 28
+            "exposed": 26
           },
           "SW": {
             "protected": 25,
             "partial": 2,
-            "exposed": 28
+            "exposed": 26
           },
           "W": {
-            "protected": 32,
-            "partial": 16,
+            "protected": 31,
+            "partial": 15,
             "exposed": 7
           },
           "NW": {
-            "protected": 37,
+            "protected": 35,
             "partial": 3,
             "exposed": 15
           }
@@ -1104,47 +1104,47 @@
       },
       "crete-crete-lasithi": {
         "regionName": "Lasithi",
-        "beachCount": 60,
-        "generatedProfiles": 60,
+        "beachCount": 63,
+        "generatedProfiles": 63,
         "missingCoordinates": 0,
         "sectors": {
           "N": {
-            "protected": 36,
-            "partial": 7,
-            "exposed": 17
+            "protected": 37,
+            "partial": 8,
+            "exposed": 18
           },
           "NE": {
-            "protected": 17,
+            "protected": 18,
             "partial": 14,
-            "exposed": 29
+            "exposed": 31
           },
           "E": {
             "protected": 17,
-            "partial": 14,
-            "exposed": 29
+            "partial": 16,
+            "exposed": 30
           },
           "SE": {
             "protected": 18,
-            "partial": 15,
-            "exposed": 27
+            "partial": 17,
+            "exposed": 28
           },
           "S": {
-            "protected": 28,
-            "partial": 9,
-            "exposed": 23
+            "protected": 31,
+            "partial": 8,
+            "exposed": 24
           },
           "SW": {
-            "protected": 44,
+            "protected": 46,
             "partial": 6,
-            "exposed": 10
+            "exposed": 11
           },
           "W": {
-            "protected": 44,
+            "protected": 47,
             "partial": 11,
             "exposed": 5
           },
           "NW": {
-            "protected": 43,
+            "protected": 46,
             "partial": 7,
             "exposed": 10
           }
@@ -1248,47 +1248,47 @@
       },
       "east-macedonia-and-thrace-evros-mainland": {
         "regionName": "Evros",
-        "beachCount": 4,
-        "generatedProfiles": 4,
+        "beachCount": 5,
+        "generatedProfiles": 5,
         "missingCoordinates": 0,
         "sectors": {
           "N": {
-            "protected": 4,
+            "protected": 5,
             "partial": 0,
             "exposed": 0
           },
           "NE": {
-            "protected": 4,
+            "protected": 5,
             "partial": 0,
             "exposed": 0
           },
           "E": {
-            "protected": 4,
+            "protected": 5,
             "partial": 0,
             "exposed": 0
           },
           "SE": {
             "protected": 0,
-            "partial": 0,
+            "partial": 1,
             "exposed": 4
           },
           "S": {
             "protected": 0,
             "partial": 0,
-            "exposed": 4
+            "exposed": 5
           },
           "SW": {
             "protected": 0,
             "partial": 0,
-            "exposed": 4
+            "exposed": 5
           },
           "W": {
             "protected": 0,
             "partial": 4,
-            "exposed": 0
+            "exposed": 1
           },
           "NW": {
-            "protected": 4,
+            "protected": 5,
             "partial": 0,
             "exposed": 0
           }
@@ -1296,47 +1296,47 @@
       },
       "east-macedonia-and-thrace-kavala-mainland": {
         "regionName": "Kavala",
-        "beachCount": 17,
-        "generatedProfiles": 17,
+        "beachCount": 19,
+        "generatedProfiles": 19,
         "missingCoordinates": 0,
         "sectors": {
           "N": {
-            "protected": 14,
+            "protected": 16,
             "partial": 3,
             "exposed": 0
           },
           "NE": {
-            "protected": 13,
-            "partial": 1,
+            "protected": 14,
+            "partial": 2,
             "exposed": 3
           },
           "E": {
             "protected": 3,
             "partial": 5,
-            "exposed": 9
+            "exposed": 11
           },
           "SE": {
             "protected": 3,
             "partial": 1,
-            "exposed": 13
+            "exposed": 15
           },
           "S": {
             "protected": 4,
-            "partial": 0,
-            "exposed": 13
+            "partial": 1,
+            "exposed": 14
           },
           "SW": {
-            "protected": 7,
+            "protected": 9,
             "partial": 2,
             "exposed": 8
           },
           "W": {
-            "protected": 14,
+            "protected": 16,
             "partial": 2,
             "exposed": 1
           },
           "NW": {
-            "protected": 15,
+            "protected": 17,
             "partial": 2,
             "exposed": 0
           }
@@ -1493,42 +1493,42 @@
         "missingCoordinates": 0,
         "sectors": {
           "N": {
-            "protected": 2,
+            "protected": 3,
             "partial": 0,
             "exposed": 0
           },
           "NE": {
-            "protected": 1,
+            "protected": 2,
             "partial": 1,
             "exposed": 0
           },
           "E": {
-            "protected": 0,
+            "protected": 1,
             "partial": 1,
             "exposed": 1
           },
           "SE": {
-            "protected": 0,
+            "protected": 1,
             "partial": 0,
             "exposed": 2
           },
           "S": {
-            "protected": 0,
+            "protected": 1,
             "partial": 0,
             "exposed": 2
           },
           "SW": {
-            "protected": 1,
+            "protected": 2,
             "partial": 0,
             "exposed": 1
           },
           "W": {
-            "protected": 2,
+            "protected": 3,
             "partial": 0,
             "exposed": 0
           },
           "NW": {
-            "protected": 2,
+            "protected": 3,
             "partial": 0,
             "exposed": 0
           }
@@ -2448,49 +2448,49 @@
       },
       "north-aegean-lesvos": {
         "regionName": "Lesvos",
-        "beachCount": 60,
-        "generatedProfiles": 60,
+        "beachCount": 62,
+        "generatedProfiles": 62,
         "missingCoordinates": 0,
         "sectors": {
           "N": {
-            "protected": 35,
-            "partial": 8,
+            "protected": 36,
+            "partial": 9,
             "exposed": 17
           },
           "NE": {
-            "protected": 35,
+            "protected": 37,
             "partial": 10,
             "exposed": 15
           },
           "E": {
-            "protected": 35,
+            "protected": 37,
             "partial": 15,
             "exposed": 10
           },
           "SE": {
-            "protected": 27,
-            "partial": 10,
+            "protected": 28,
+            "partial": 11,
             "exposed": 23
           },
           "S": {
-            "protected": 28,
-            "partial": 5,
+            "protected": 29,
+            "partial": 6,
             "exposed": 27
           },
           "SW": {
             "protected": 26,
-            "partial": 12,
+            "partial": 14,
             "exposed": 22
           },
           "W": {
             "protected": 29,
-            "partial": 12,
-            "exposed": 19
+            "partial": 13,
+            "exposed": 20
           },
           "NW": {
-            "protected": 34,
+            "protected": 35,
             "partial": 11,
-            "exposed": 15
+            "exposed": 16
           }
         }
       },
@@ -2592,49 +2592,49 @@
       },
       "north-aegean-samos": {
         "regionName": "Samos",
-        "beachCount": 43,
-        "generatedProfiles": 43,
+        "beachCount": 44,
+        "generatedProfiles": 44,
         "missingCoordinates": 0,
         "sectors": {
           "N": {
             "protected": 29,
             "partial": 3,
-            "exposed": 11
+            "exposed": 12
           },
           "NE": {
             "protected": 23,
             "partial": 11,
-            "exposed": 9
+            "exposed": 10
           },
           "E": {
             "protected": 18,
-            "partial": 14,
+            "partial": 15,
             "exposed": 11
           },
           "SE": {
-            "protected": 18,
+            "protected": 19,
             "partial": 8,
             "exposed": 17
           },
           "S": {
-            "protected": 17,
+            "protected": 18,
             "partial": 11,
             "exposed": 15
           },
           "SW": {
-            "protected": 19,
+            "protected": 20,
             "partial": 5,
             "exposed": 19
           },
           "W": {
             "protected": 26,
-            "partial": 4,
+            "partial": 5,
             "exposed": 13
           },
           "NW": {
             "protected": 25,
             "partial": 5,
-            "exposed": 13
+            "exposed": 14
           }
         }
       },
@@ -2688,47 +2688,47 @@
       },
       "peloponnese-arkadia-mainland": {
         "regionName": "Arkadia",
-        "beachCount": 16,
-        "generatedProfiles": 16,
+        "beachCount": 17,
+        "generatedProfiles": 17,
         "missingCoordinates": 0,
         "sectors": {
           "N": {
-            "protected": 5,
+            "protected": 6,
             "partial": 6,
             "exposed": 5
           },
           "NE": {
             "protected": 0,
             "partial": 4,
-            "exposed": 12
+            "exposed": 13
           },
           "E": {
             "protected": 0,
             "partial": 2,
-            "exposed": 14
+            "exposed": 15
           },
           "SE": {
             "protected": 2,
             "partial": 6,
-            "exposed": 8
+            "exposed": 9
           },
           "S": {
             "protected": 13,
-            "partial": 3,
+            "partial": 4,
             "exposed": 0
           },
           "SW": {
-            "protected": 16,
+            "protected": 17,
             "partial": 0,
             "exposed": 0
           },
           "W": {
-            "protected": 16,
+            "protected": 17,
             "partial": 0,
             "exposed": 0
           },
           "NW": {
-            "protected": 14,
+            "protected": 15,
             "partial": 2,
             "exposed": 0
           }
@@ -2784,97 +2784,97 @@
       },
       "peloponnese-lakonia-mainland": {
         "regionName": "Lakonia",
-        "beachCount": 66,
-        "generatedProfiles": 66,
+        "beachCount": 69,
+        "generatedProfiles": 69,
         "missingCoordinates": 0,
         "sectors": {
           "N": {
-            "protected": 43,
-            "partial": 19,
+            "protected": 45,
+            "partial": 20,
             "exposed": 4
           },
           "NE": {
-            "protected": 40,
-            "partial": 10,
+            "protected": 42,
+            "partial": 11,
             "exposed": 16
           },
           "E": {
-            "protected": 28,
+            "protected": 31,
             "partial": 16,
             "exposed": 22
           },
           "SE": {
-            "protected": 25,
+            "protected": 28,
             "partial": 13,
             "exposed": 28
           },
           "S": {
-            "protected": 25,
+            "protected": 26,
             "partial": 17,
-            "exposed": 24
+            "exposed": 26
           },
           "SW": {
-            "protected": 32,
+            "protected": 33,
             "partial": 17,
-            "exposed": 17
+            "exposed": 19
           },
           "W": {
             "protected": 41,
-            "partial": 6,
-            "exposed": 19
+            "partial": 8,
+            "exposed": 20
           },
           "NW": {
-            "protected": 42,
-            "partial": 15,
+            "protected": 44,
+            "partial": 16,
             "exposed": 9
           }
         }
       },
       "peloponnese-messinia-mainland": {
         "regionName": "Messinia",
-        "beachCount": 56,
-        "generatedProfiles": 56,
+        "beachCount": 57,
+        "generatedProfiles": 57,
         "missingCoordinates": 0,
         "sectors": {
           "N": {
             "protected": 39,
-            "partial": 10,
+            "partial": 11,
             "exposed": 7
           },
           "NE": {
-            "protected": 42,
+            "protected": 43,
             "partial": 2,
             "exposed": 12
           },
           "E": {
-            "protected": 32,
+            "protected": 33,
             "partial": 6,
             "exposed": 18
           },
           "SE": {
-            "protected": 28,
+            "protected": 29,
             "partial": 11,
             "exposed": 17
           },
           "S": {
-            "protected": 18,
+            "protected": 19,
             "partial": 16,
             "exposed": 22
           },
           "SW": {
             "protected": 15,
             "partial": 14,
-            "exposed": 27
+            "exposed": 28
           },
           "W": {
             "protected": 26,
             "partial": 7,
-            "exposed": 23
+            "exposed": 24
           },
           "NW": {
             "protected": 31,
             "partial": 13,
-            "exposed": 12
+            "exposed": 13
           }
         }
       },
@@ -3845,43 +3845,43 @@
         "missingCoordinates": 0,
         "sectors": {
           "N": {
-            "protected": 26,
+            "protected": 27,
             "partial": 10,
             "exposed": 3
           },
           "NE": {
-            "protected": 27,
+            "protected": 28,
             "partial": 7,
             "exposed": 5
           },
           "E": {
-            "protected": 15,
+            "protected": 16,
             "partial": 11,
             "exposed": 13
           },
           "SE": {
-            "protected": 15,
+            "protected": 16,
             "partial": 5,
             "exposed": 19
           },
           "S": {
-            "protected": 16,
+            "protected": 17,
             "partial": 16,
             "exposed": 7
           },
           "SW": {
-            "protected": 19,
+            "protected": 20,
             "partial": 18,
             "exposed": 2
           },
           "W": {
             "protected": 25,
-            "partial": 5,
+            "partial": 6,
             "exposed": 9
           },
           "NW": {
             "protected": 24,
-            "partial": 6,
+            "partial": 7,
             "exposed": 9
           }
         }
@@ -4287,34 +4287,34 @@
             "exposed": 1
           },
           "E": {
-            "protected": 8,
-            "partial": 7,
+            "protected": 7,
+            "partial": 8,
             "exposed": 1
           },
           "SE": {
-            "protected": 6,
+            "protected": 5,
             "partial": 3,
-            "exposed": 7
+            "exposed": 8
           },
           "S": {
-            "protected": 7,
+            "protected": 6,
             "partial": 5,
-            "exposed": 4
+            "exposed": 5
           },
           "SW": {
             "protected": 5,
-            "partial": 10,
-            "exposed": 1
+            "partial": 11,
+            "exposed": 0
           },
           "W": {
-            "protected": 8,
+            "protected": 9,
             "partial": 3,
-            "exposed": 5
+            "exposed": 4
           },
           "NW": {
-            "protected": 10,
+            "protected": 11,
             "partial": 1,
-            "exposed": 5
+            "exposed": 4
           }
         }
       },
@@ -4416,49 +4416,49 @@
       },
       "south-aegean-rhodes": {
         "regionName": "Rhodes",
-        "beachCount": 61,
-        "generatedProfiles": 61,
+        "beachCount": 62,
+        "generatedProfiles": 62,
         "missingCoordinates": 0,
         "sectors": {
           "N": {
             "protected": 40,
             "partial": 14,
-            "exposed": 7
+            "exposed": 8
           },
           "NE": {
             "protected": 26,
             "partial": 15,
-            "exposed": 20
+            "exposed": 21
           },
           "E": {
-            "protected": 18,
+            "protected": 19,
             "partial": 6,
             "exposed": 37
           },
           "SE": {
-            "protected": 15,
+            "protected": 16,
             "partial": 10,
             "exposed": 36
           },
           "S": {
-            "protected": 23,
+            "protected": 24,
             "partial": 7,
             "exposed": 31
           },
           "SW": {
-            "protected": 35,
+            "protected": 36,
             "partial": 13,
             "exposed": 13
           },
           "W": {
             "protected": 44,
-            "partial": 9,
+            "partial": 10,
             "exposed": 8
           },
           "NW": {
             "protected": 48,
             "partial": 4,
-            "exposed": 9
+            "exposed": 10
           }
         }
       },
@@ -5040,49 +5040,49 @@
       },
       "thessaly-magnesia-mainland---pelion": {
         "regionName": "Magnesia (Pelion)",
-        "beachCount": 56,
-        "generatedProfiles": 56,
+        "beachCount": 70,
+        "generatedProfiles": 70,
         "missingCoordinates": 0,
         "sectors": {
           "N": {
-            "protected": 25,
-            "partial": 6,
-            "exposed": 25
+            "protected": 33,
+            "partial": 9,
+            "exposed": 28
           },
           "NE": {
-            "protected": 21,
-            "partial": 9,
-            "exposed": 26
+            "protected": 30,
+            "partial": 11,
+            "exposed": 29
           },
           "E": {
-            "protected": 19,
-            "partial": 3,
-            "exposed": 34
+            "protected": 27,
+            "partial": 5,
+            "exposed": 38
           },
           "SE": {
-            "protected": 17,
-            "partial": 21,
-            "exposed": 18
+            "protected": 25,
+            "partial": 24,
+            "exposed": 21
           },
           "S": {
-            "protected": 32,
-            "partial": 10,
-            "exposed": 14
+            "protected": 38,
+            "partial": 13,
+            "exposed": 19
           },
           "SW": {
-            "protected": 35,
-            "partial": 8,
-            "exposed": 13
+            "protected": 41,
+            "partial": 10,
+            "exposed": 19
           },
           "W": {
-            "protected": 38,
-            "partial": 7,
-            "exposed": 11
+            "protected": 44,
+            "partial": 9,
+            "exposed": 17
           },
           "NW": {
-            "protected": 39,
-            "partial": 14,
-            "exposed": 3
+            "protected": 47,
+            "partial": 16,
+            "exposed": 7
           }
         }
       },
@@ -5232,47 +5232,47 @@
       },
       "west-greece-aetolia-acarnania-mainland": {
         "regionName": "Aetolia-Acarnania",
-        "beachCount": 48,
-        "generatedProfiles": 48,
+        "beachCount": 50,
+        "generatedProfiles": 50,
         "missingCoordinates": 0,
         "sectors": {
           "N": {
-            "protected": 30,
+            "protected": 32,
             "partial": 12,
             "exposed": 6
           },
           "NE": {
-            "protected": 35,
-            "partial": 11,
+            "protected": 36,
+            "partial": 12,
             "exposed": 2
           },
           "E": {
             "protected": 26,
-            "partial": 21,
-            "exposed": 1
+            "partial": 22,
+            "exposed": 2
           },
           "SE": {
             "protected": 22,
             "partial": 9,
-            "exposed": 17
+            "exposed": 19
           },
           "S": {
             "protected": 19,
-            "partial": 10,
-            "exposed": 19
+            "partial": 11,
+            "exposed": 20
           },
           "SW": {
-            "protected": 19,
+            "protected": 21,
             "partial": 15,
             "exposed": 14
           },
           "W": {
-            "protected": 24,
+            "protected": 26,
             "partial": 15,
             "exposed": 9
           },
           "NW": {
-            "protected": 28,
+            "protected": 30,
             "partial": 13,
             "exposed": 7
           }

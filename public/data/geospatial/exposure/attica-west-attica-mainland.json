@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "generatedAt": "2026-06-26T22:46:03.466Z",
+  "generatedAt": "2026-07-25T15:19:50.682Z",
   "region": {
     "id": "attica-west-attica-mainland",
     "name": "West Attica"
@@ -67,8 +67,8 @@
       },
       "SW": {
         "protected": 0,
-        "partial": 5,
-        "exposed": 1
+        "partial": 4,
+        "exposed": 2
       },
       "W": {
         "protected": 2,
@@ -77,8 +77,8 @@
       },
       "NW": {
         "protected": 3,
-        "partial": 3,
-        "exposed": 0
+        "partial": 2,
+        "exposed": 1
       }
     }
   },
@@ -199,7 +199,7 @@
           "fetchKm": 21.48,
           "blockedRayRatio": 0.6,
           "onshore": 0.953,
-          "intensity": 97.6
+          "intensity": 97.7
         },
         "SW": {
           "level": "exposed",
@@ -327,7 +327,7 @@
           "fetchKm": 0,
           "blockedRayRatio": 1,
           "onshore": -0.862,
-          "intensity": 4.1
+          "intensity": 4.2
         },
         "SE": {
           "level": "protected",
@@ -355,7 +355,7 @@
           "fetchKm": 7.56,
           "blockedRayRatio": 0.8,
           "onshore": 0.862,
-          "intensity": 60.6
+          "intensity": 60.5
         },
         "NW": {
           "level": "partial",
@@ -391,7 +391,7 @@
           "fetchKm": 0,
           "blockedRayRatio": 1,
           "onshore": -0.805,
-          "intensity": 5.8
+          "intensity": 5.9
         },
         "E": {
           "level": "protected",
@@ -497,7 +497,7 @@
           "fetchKm": 17.76,
           "blockedRayRatio": 0.8,
           "onshore": 0.997,
-          "intensity": 99.8
+          "intensity": 99.9
         },
         "NW": {
           "level": "exposed",
