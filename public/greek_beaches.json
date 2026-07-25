@@ -15370,11 +15370,12 @@
             "showerEvidence": {
               "source": "osm",
               "nearestMeters": 98,
-              "count": 3,
+              "count": 4,
               "osm": [
                 "https://www.openstreetmap.org/node/12294044901",
                 "https://www.openstreetmap.org/node/12294048901",
-                "https://www.openstreetmap.org/node/12294059601"
+                "https://www.openstreetmap.org/node/12294059601",
+                "https://www.openstreetmap.org/node/12293515801"
               ],
               "checkedAt": "2026-07-25"
             }
@@ -22286,10 +22287,11 @@
             "showerEvidence": {
               "source": "osm",
               "nearestMeters": 76,
-              "count": 2,
+              "count": 3,
               "osm": [
                 "https://www.openstreetmap.org/node/4585884536",
-                "https://www.openstreetmap.org/node/4254518267"
+                "https://www.openstreetmap.org/node/4254518267",
+                "https://www.openstreetmap.org/node/4254518266"
               ],
               "checkedAt": "2026-07-25"
             }
@@ -27894,6 +27896,19 @@
               "protectedFrom": [],
               "confidence": "medium",
               "notes": "Generated from Natural Earth geospatial exposure facingDeg. This records shoreline-facing direction only; it does not verify shelter, low-wave behavior, or live sea conditions."
+            },
+            "hasShower": true,
+            "showerEvidence": {
+              "source": "osm",
+              "nearestMeters": 800,
+              "count": 4,
+              "osm": [
+                "https://www.openstreetmap.org/node/7881033633",
+                "https://www.openstreetmap.org/node/5875611501",
+                "https://www.openstreetmap.org/node/5875611502",
+                "https://www.openstreetmap.org/node/5875323662"
+              ],
+              "checkedAt": "2026-07-25"
             }
           }
         },
@@ -31837,6 +31852,16 @@
               "protectedFrom": [],
               "confidence": "medium",
               "notes": "Generated from Natural Earth geospatial exposure facingDeg. This records shoreline-facing direction only; it does not verify shelter, low-wave behavior, or live sea conditions."
+            },
+            "hasShower": true,
+            "showerEvidence": {
+              "source": "osm",
+              "nearestMeters": 252,
+              "count": 1,
+              "osm": [
+                "https://www.openstreetmap.org/node/10907489066"
+              ],
+              "checkedAt": "2026-07-25"
             }
           }
         },
@@ -34370,9 +34395,11 @@
             "showerEvidence": {
               "source": "osm",
               "nearestMeters": 144,
-              "count": 1,
+              "count": 3,
               "osm": [
-                "https://www.openstreetmap.org/node/8982376718"
+                "https://www.openstreetmap.org/node/8982376718",
+                "https://www.openstreetmap.org/node/8982377120",
+                "https://www.openstreetmap.org/node/8982377121"
               ],
               "checkedAt": "2026-07-25"
             }
@@ -38289,6 +38316,16 @@
               "protectedFrom": [],
               "confidence": "medium",
               "notes": "Generated from Natural Earth geospatial exposure facingDeg. This records shoreline-facing direction only; it does not verify shelter, low-wave behavior, or live sea conditions."
+            },
+            "hasShower": true,
+            "showerEvidence": {
+              "source": "osm",
+              "nearestMeters": 438,
+              "count": 1,
+              "osm": [
+                "https://www.openstreetmap.org/node/13105441488"
+              ],
+              "checkedAt": "2026-07-25"
             }
           },
           "staticLabels": {
@@ -38415,6 +38452,16 @@
               "protectedFrom": [],
               "confidence": "medium",
               "notes": "Generated from Natural Earth geospatial exposure facingDeg. This records shoreline-facing direction only; it does not verify shelter, low-wave behavior, or live sea conditions."
+            },
+            "hasShower": true,
+            "showerEvidence": {
+              "source": "osm",
+              "nearestMeters": 342,
+              "count": 1,
+              "osm": [
+                "https://www.openstreetmap.org/node/5351752875"
+              ],
+              "checkedAt": "2026-07-25"
             }
           }
         },
@@ -38659,10 +38706,13 @@
             "showerEvidence": {
               "source": "osm",
               "nearestMeters": 243,
-              "count": 2,
+              "count": 5,
               "osm": [
                 "https://www.openstreetmap.org/node/5339737362",
-                "https://www.openstreetmap.org/node/12917293342"
+                "https://www.openstreetmap.org/node/12917293342",
+                "https://www.openstreetmap.org/node/12914371751",
+                "https://www.openstreetmap.org/node/5339737361",
+                "https://www.openstreetmap.org/node/5339737360"
               ],
               "checkedAt": "2026-07-25"
             }
@@ -39353,6 +39403,16 @@
               "protectedFrom": [],
               "confidence": "medium",
               "notes": "Generated from Natural Earth geospatial exposure facingDeg. This records shoreline-facing direction only; it does not verify shelter, low-wave behavior, or live sea conditions."
+            },
+            "hasShower": true,
+            "showerEvidence": {
+              "source": "osm",
+              "nearestMeters": 892,
+              "count": 1,
+              "osm": [
+                "https://www.openstreetmap.org/node/13081904892"
+              ],
+              "checkedAt": "2026-07-25"
             }
           }
         },
@@ -41851,6 +41911,16 @@
               "ratingCount": 289,
               "source": "google-places",
               "checkedAt": "2026-06-17"
+            },
+            "hasShower": true,
+            "showerEvidence": {
+              "source": "osm",
+              "nearestMeters": 1095,
+              "count": 1,
+              "osm": [
+                "https://www.openstreetmap.org/node/6786364370"
+              ],
+              "checkedAt": "2026-07-25"
             }
           }
         },
@@ -43787,7 +43857,18 @@
                 "osmUrl": "https://www.openstreetmap.org/way/348305673",
                 "checkedAt": "2026-06-17"
               }
-            ]
+            ],
+            "hasShower": true,
+            "showerEvidence": {
+              "source": "osm",
+              "nearestMeters": 274,
+              "count": 2,
+              "osm": [
+                "https://www.openstreetmap.org/node/5381046046",
+                "https://www.openstreetmap.org/node/13175377049"
+              ],
+              "checkedAt": "2026-07-25"
+            }
           }
         },
         {
@@ -45691,6 +45772,16 @@
               "ratingCount": 1847,
               "source": "google-places",
               "checkedAt": "2026-06-17"
+            },
+            "hasShower": true,
+            "showerEvidence": {
+              "source": "osm",
+              "nearestMeters": 1382,
+              "count": 1,
+              "osm": [
+                "https://www.openstreetmap.org/node/794795956"
+              ],
+              "checkedAt": "2026-07-25"
             }
           }
         },
@@ -45880,6 +45971,19 @@
               "mode": "coordinates",
               "checkedAt": "2026-06-16",
               "method": "osm-nav-audit-v1"
+            },
+            "hasShower": true,
+            "showerEvidence": {
+              "source": "osm",
+              "nearestMeters": 717,
+              "count": 4,
+              "osm": [
+                "https://www.openstreetmap.org/node/5024263226",
+                "https://www.openstreetmap.org/way/569723312",
+                "https://www.openstreetmap.org/way/569723311",
+                "https://www.openstreetmap.org/node/5022367723"
+              ],
+              "checkedAt": "2026-07-25"
             }
           }
         },
@@ -47681,6 +47785,16 @@
               "ratingCount": 305,
               "source": "google-places",
               "checkedAt": "2026-06-17"
+            },
+            "hasShower": true,
+            "showerEvidence": {
+              "source": "osm",
+              "nearestMeters": 453,
+              "count": 1,
+              "osm": [
+                "https://www.openstreetmap.org/node/13035949201"
+              ],
+              "checkedAt": "2026-07-25"
             }
           },
           "staticLabels": {
@@ -48066,7 +48180,18 @@
                 "osmUrl": "https://www.openstreetmap.org/way/41340605",
                 "checkedAt": "2026-06-17"
               }
-            ]
+            ],
+            "hasShower": true,
+            "showerEvidence": {
+              "source": "osm",
+              "nearestMeters": 315,
+              "count": 2,
+              "osm": [
+                "https://www.openstreetmap.org/node/11429860460",
+                "https://www.openstreetmap.org/node/9983717420"
+              ],
+              "checkedAt": "2026-07-25"
+            }
           }
         },
         {
@@ -49605,11 +49730,19 @@
             "showerEvidence": {
               "source": "osm",
               "nearestMeters": 75,
-              "count": 3,
+              "count": 11,
               "osm": [
                 "https://www.openstreetmap.org/node/5866298815",
                 "https://www.openstreetmap.org/node/13037926850",
-                "https://www.openstreetmap.org/node/13037967535"
+                "https://www.openstreetmap.org/node/13037967535",
+                "https://www.openstreetmap.org/node/13037945279",
+                "https://www.openstreetmap.org/node/13034628857",
+                "https://www.openstreetmap.org/node/13031654726",
+                "https://www.openstreetmap.org/node/13034415232",
+                "https://www.openstreetmap.org/node/13031778651",
+                "https://www.openstreetmap.org/node/13041062789",
+                "https://www.openstreetmap.org/node/13031573525",
+                "https://www.openstreetmap.org/node/13041091943"
               ],
               "checkedAt": "2026-07-25"
             }
@@ -53020,10 +53153,11 @@
             "showerEvidence": {
               "source": "osm",
               "nearestMeters": 19,
-              "count": 2,
+              "count": 3,
               "osm": [
                 "https://www.openstreetmap.org/node/3366664102",
-                "https://www.openstreetmap.org/node/11226578561"
+                "https://www.openstreetmap.org/node/11226578561",
+                "https://www.openstreetmap.org/node/11226578560"
               ],
               "checkedAt": "2026-07-25"
             }
@@ -53100,10 +53234,17 @@
             "showerEvidence": {
               "source": "osm",
               "nearestMeters": 70,
-              "count": 2,
+              "count": 9,
               "osm": [
                 "https://www.openstreetmap.org/node/9969827514",
-                "https://www.openstreetmap.org/node/9969827513"
+                "https://www.openstreetmap.org/node/9969827513",
+                "https://www.openstreetmap.org/node/11114404857",
+                "https://www.openstreetmap.org/node/9969827510",
+                "https://www.openstreetmap.org/node/9970593410",
+                "https://www.openstreetmap.org/node/9970593412",
+                "https://www.openstreetmap.org/node/9969827512",
+                "https://www.openstreetmap.org/node/9969827511",
+                "https://www.openstreetmap.org/node/9969827515"
               ],
               "checkedAt": "2026-07-25"
             }
@@ -53731,7 +53872,19 @@
                 "osmUrl": "https://www.openstreetmap.org/way/239961453",
                 "checkedAt": "2026-06-17"
               }
-            ]
+            ],
+            "hasShower": true,
+            "showerEvidence": {
+              "source": "osm",
+              "nearestMeters": 1373,
+              "count": 3,
+              "osm": [
+                "https://www.openstreetmap.org/node/11985667792",
+                "https://www.openstreetmap.org/node/9966103709",
+                "https://www.openstreetmap.org/node/9966103708"
+              ],
+              "checkedAt": "2026-07-25"
+            }
           }
         },
         {
@@ -54787,6 +54940,16 @@
               "ratingCount": 2808,
               "source": "google-places",
               "checkedAt": "2026-06-17"
+            },
+            "hasShower": true,
+            "showerEvidence": {
+              "source": "osm",
+              "nearestMeters": 282,
+              "count": 1,
+              "osm": [
+                "https://www.openstreetmap.org/node/9979443804"
+              ],
+              "checkedAt": "2026-07-25"
             }
           }
         },
@@ -58193,9 +58356,10 @@
             "showerEvidence": {
               "source": "osm",
               "nearestMeters": 62,
-              "count": 1,
+              "count": 2,
               "osm": [
-                "https://www.openstreetmap.org/node/4345939063"
+                "https://www.openstreetmap.org/node/4345939063",
+                "https://www.openstreetmap.org/node/2419985505"
               ],
               "checkedAt": "2026-07-25"
             }
@@ -61427,6 +61591,17 @@
               "protectedFrom": [],
               "confidence": "medium",
               "notes": "Generated from Natural Earth geospatial exposure facingDeg. This records shoreline-facing direction only; it does not verify shelter, low-wave behavior, or live sea conditions."
+            },
+            "hasShower": true,
+            "showerEvidence": {
+              "source": "osm",
+              "nearestMeters": 1472,
+              "count": 2,
+              "osm": [
+                "https://www.openstreetmap.org/node/13059556482",
+                "https://www.openstreetmap.org/node/13059570079"
+              ],
+              "checkedAt": "2026-07-25"
             }
           }
         },
@@ -61972,6 +62147,16 @@
               "protectedFrom": [],
               "confidence": "medium",
               "notes": "Generated from Natural Earth geospatial exposure facingDeg. This records shoreline-facing direction only; it does not verify shelter, low-wave behavior, or live sea conditions."
+            },
+            "hasShower": true,
+            "showerEvidence": {
+              "source": "osm",
+              "nearestMeters": 364,
+              "count": 1,
+              "osm": [
+                "https://www.openstreetmap.org/node/8992038417"
+              ],
+              "checkedAt": "2026-07-25"
             }
           }
         },
@@ -62018,6 +62203,18 @@
               "protectedFrom": [],
               "confidence": "medium",
               "notes": "Generated from Natural Earth geospatial exposure facingDeg. This records shoreline-facing direction only; it does not verify shelter, low-wave behavior, or live sea conditions."
+            },
+            "hasShower": true,
+            "showerEvidence": {
+              "source": "osm",
+              "nearestMeters": 164,
+              "count": 3,
+              "osm": [
+                "https://www.openstreetmap.org/node/5936957155",
+                "https://www.openstreetmap.org/node/12120630131",
+                "https://www.openstreetmap.org/node/6657213509"
+              ],
+              "checkedAt": "2026-07-25"
             }
           },
           "staticLabels": {
@@ -67645,6 +67842,19 @@
               "protectedFrom": [],
               "confidence": "medium",
               "notes": "Generated from Natural Earth geospatial exposure facingDeg. This records shoreline-facing direction only; it does not verify shelter, low-wave behavior, or live sea conditions."
+            },
+            "hasShower": true,
+            "showerEvidence": {
+              "source": "osm",
+              "nearestMeters": 1299,
+              "count": 4,
+              "osm": [
+                "https://www.openstreetmap.org/node/6481329365",
+                "https://www.openstreetmap.org/node/6481329366",
+                "https://www.openstreetmap.org/node/6481345039",
+                "https://www.openstreetmap.org/node/6481347359"
+              ],
+              "checkedAt": "2026-07-25"
             }
           }
         },
@@ -67900,12 +68110,14 @@
             "showerEvidence": {
               "source": "osm",
               "nearestMeters": 144,
-              "count": 4,
+              "count": 6,
               "osm": [
                 "https://www.openstreetmap.org/node/1448658040",
                 "https://www.openstreetmap.org/node/1448658055",
                 "https://www.openstreetmap.org/node/1448658057",
-                "https://www.openstreetmap.org/node/1448657884"
+                "https://www.openstreetmap.org/node/1448657884",
+                "https://www.openstreetmap.org/node/1448658060",
+                "https://www.openstreetmap.org/node/1448657840"
               ],
               "checkedAt": "2026-07-25"
             }
@@ -68566,6 +68778,16 @@
               "protectedFrom": [],
               "confidence": "medium",
               "notes": "Generated from Natural Earth geospatial exposure facingDeg. This records shoreline-facing direction only; it does not verify shelter, low-wave behavior, or live sea conditions."
+            },
+            "hasShower": true,
+            "showerEvidence": {
+              "source": "osm",
+              "nearestMeters": 1256,
+              "count": 1,
+              "osm": [
+                "https://www.openstreetmap.org/node/6492918245"
+              ],
+              "checkedAt": "2026-07-25"
             }
           }
         },
@@ -70687,6 +70909,23 @@
               "protectedFrom": [],
               "confidence": "medium",
               "notes": "Generated from Natural Earth geospatial exposure facingDeg. This records shoreline-facing direction only; it does not verify shelter, low-wave behavior, or live sea conditions."
+            },
+            "hasShower": true,
+            "showerEvidence": {
+              "source": "osm",
+              "nearestMeters": 252,
+              "count": 8,
+              "osm": [
+                "https://www.openstreetmap.org/node/6484414003",
+                "https://www.openstreetmap.org/node/6484411184",
+                "https://www.openstreetmap.org/node/6484410367",
+                "https://www.openstreetmap.org/node/6484383880",
+                "https://www.openstreetmap.org/node/6484417059",
+                "https://www.openstreetmap.org/node/6484418572",
+                "https://www.openstreetmap.org/node/6484421484",
+                "https://www.openstreetmap.org/node/6484424854"
+              ],
+              "checkedAt": "2026-07-25"
             }
           }
         },
@@ -71089,6 +71328,16 @@
               "protectedFrom": [],
               "confidence": "medium",
               "notes": "Generated from Natural Earth geospatial exposure facingDeg. This records shoreline-facing direction only; it does not verify shelter, low-wave behavior, or live sea conditions."
+            },
+            "hasShower": true,
+            "showerEvidence": {
+              "source": "osm",
+              "nearestMeters": 634,
+              "count": 1,
+              "osm": [
+                "https://www.openstreetmap.org/node/6484438661"
+              ],
+              "checkedAt": "2026-07-25"
             }
           }
         },
@@ -71347,6 +71596,16 @@
               "protectedFrom": [],
               "confidence": "medium",
               "notes": "Generated from Natural Earth geospatial exposure facingDeg. This records shoreline-facing direction only; it does not verify shelter, low-wave behavior, or live sea conditions."
+            },
+            "hasShower": true,
+            "showerEvidence": {
+              "source": "osm",
+              "nearestMeters": 398,
+              "count": 1,
+              "osm": [
+                "https://www.openstreetmap.org/node/13798870971"
+              ],
+              "checkedAt": "2026-07-25"
             }
           }
         },
@@ -73037,6 +73296,16 @@
               "ratingCount": 3525,
               "source": "google-places",
               "checkedAt": "2026-06-17"
+            },
+            "hasShower": true,
+            "showerEvidence": {
+              "source": "osm",
+              "nearestMeters": 696,
+              "count": 1,
+              "osm": [
+                "https://www.openstreetmap.org/node/13103541873"
+              ],
+              "checkedAt": "2026-07-25"
             }
           }
         },
@@ -73598,9 +73867,11 @@
             "showerEvidence": {
               "source": "osm",
               "nearestMeters": 196,
-              "count": 1,
+              "count": 3,
               "osm": [
-                "https://www.openstreetmap.org/node/13183531301"
+                "https://www.openstreetmap.org/node/13183531301",
+                "https://www.openstreetmap.org/node/13183547101",
+                "https://www.openstreetmap.org/node/13183487101"
               ],
               "checkedAt": "2026-07-25"
             }
@@ -74276,6 +74547,16 @@
               "ratingCount": 161,
               "source": "google-places",
               "checkedAt": "2026-06-17"
+            },
+            "hasShower": true,
+            "showerEvidence": {
+              "source": "osm",
+              "nearestMeters": 451,
+              "count": 1,
+              "osm": [
+                "https://www.openstreetmap.org/node/5904841156"
+              ],
+              "checkedAt": "2026-07-25"
             }
           }
         },
@@ -74413,10 +74694,11 @@
             "showerEvidence": {
               "source": "osm",
               "nearestMeters": 93,
-              "count": 2,
+              "count": 3,
               "osm": [
                 "https://www.openstreetmap.org/node/4416587372",
-                "https://www.openstreetmap.org/node/4416202676"
+                "https://www.openstreetmap.org/node/4416202676",
+                "https://www.openstreetmap.org/node/4413476866"
               ],
               "checkedAt": "2026-07-25"
             }
@@ -75653,6 +75935,16 @@
               "ratingCount": 3279,
               "source": "google-places",
               "checkedAt": "2026-06-17"
+            },
+            "hasShower": true,
+            "showerEvidence": {
+              "source": "osm",
+              "nearestMeters": 365,
+              "count": 1,
+              "osm": [
+                "https://www.openstreetmap.org/node/9677355917"
+              ],
+              "checkedAt": "2026-07-25"
             }
           }
         },
@@ -75727,10 +76019,11 @@
             "showerEvidence": {
               "source": "osm",
               "nearestMeters": 87,
-              "count": 2,
+              "count": 3,
               "osm": [
                 "https://www.openstreetmap.org/node/3025781848",
-                "https://www.openstreetmap.org/node/3025781849"
+                "https://www.openstreetmap.org/node/3025781849",
+                "https://www.openstreetmap.org/node/3611402836"
               ],
               "checkedAt": "2026-07-25"
             }
@@ -76298,9 +76591,12 @@
             "showerEvidence": {
               "source": "osm",
               "nearestMeters": 233,
-              "count": 1,
+              "count": 4,
               "osm": [
-                "https://www.openstreetmap.org/node/9627710291"
+                "https://www.openstreetmap.org/node/9627710291",
+                "https://www.openstreetmap.org/node/2925080597",
+                "https://www.openstreetmap.org/node/5900464187",
+                "https://www.openstreetmap.org/node/5902766026"
               ],
               "checkedAt": "2026-07-25"
             }
@@ -76366,6 +76662,16 @@
               "ratingCount": 1846,
               "source": "google-places",
               "checkedAt": "2026-06-17"
+            },
+            "hasShower": true,
+            "showerEvidence": {
+              "source": "osm",
+              "nearestMeters": 299,
+              "count": 1,
+              "osm": [
+                "https://www.openstreetmap.org/node/12071975843"
+              ],
+              "checkedAt": "2026-07-25"
             }
           }
         },
@@ -88801,6 +89107,16 @@
               "ratingCount": 267,
               "source": "google-places",
               "checkedAt": "2026-06-17"
+            },
+            "hasShower": true,
+            "showerEvidence": {
+              "source": "osm",
+              "nearestMeters": 652,
+              "count": 1,
+              "osm": [
+                "https://www.openstreetmap.org/node/12085355169"
+              ],
+              "checkedAt": "2026-07-25"
             }
           }
         },
@@ -88863,6 +89179,16 @@
               "ratingCount": 352,
               "source": "google-places",
               "checkedAt": "2026-06-17"
+            },
+            "hasShower": true,
+            "showerEvidence": {
+              "source": "osm",
+              "nearestMeters": 384,
+              "count": 1,
+              "osm": [
+                "https://www.openstreetmap.org/node/5767917914"
+              ],
+              "checkedAt": "2026-07-25"
             }
           }
         },
@@ -90715,6 +91041,17 @@
               "ratingCount": 5193,
               "source": "google-places",
               "checkedAt": "2026-06-17"
+            },
+            "hasShower": true,
+            "showerEvidence": {
+              "source": "osm",
+              "nearestMeters": 303,
+              "count": 2,
+              "osm": [
+                "https://www.openstreetmap.org/node/9929937124",
+                "https://www.openstreetmap.org/node/9929937125"
+              ],
+              "checkedAt": "2026-07-25"
             }
           }
         },
@@ -110263,6 +110600,17 @@
               "protectedFrom": [],
               "confidence": "medium",
               "notes": "Generated from Natural Earth geospatial exposure facingDeg. This records shoreline-facing direction only; it does not verify shelter, low-wave behavior, or live sea conditions."
+            },
+            "hasShower": true,
+            "showerEvidence": {
+              "source": "osm",
+              "nearestMeters": 387,
+              "count": 2,
+              "osm": [
+                "https://www.openstreetmap.org/node/12083490979",
+                "https://www.openstreetmap.org/node/6828680430"
+              ],
+              "checkedAt": "2026-07-25"
             }
           }
         },
@@ -111495,6 +111843,16 @@
               "protectedFrom": [],
               "confidence": "medium",
               "notes": "Generated from Natural Earth geospatial exposure facingDeg. This records shoreline-facing direction only; it does not verify shelter, low-wave behavior, or live sea conditions."
+            },
+            "hasShower": true,
+            "showerEvidence": {
+              "source": "osm",
+              "nearestMeters": 481,
+              "count": 1,
+              "osm": [
+                "https://www.openstreetmap.org/node/5841788743"
+              ],
+              "checkedAt": "2026-07-25"
             }
           }
         },
@@ -113654,6 +114012,16 @@
               "protectedFrom": [],
               "confidence": "medium",
               "notes": "Generated from Natural Earth geospatial exposure facingDeg. This records shoreline-facing direction only; it does not verify shelter, low-wave behavior, or live sea conditions."
+            },
+            "hasShower": true,
+            "showerEvidence": {
+              "source": "osm",
+              "nearestMeters": 255,
+              "count": 1,
+              "osm": [
+                "https://www.openstreetmap.org/node/10782430317"
+              ],
+              "checkedAt": "2026-07-25"
             }
           },
           "aliases": [
@@ -114898,6 +115266,16 @@
               "protectedFrom": [],
               "confidence": "medium",
               "notes": "Generated from Natural Earth geospatial exposure facingDeg. This records shoreline-facing direction only; it does not verify shelter, low-wave behavior, or live sea conditions."
+            },
+            "hasShower": true,
+            "showerEvidence": {
+              "source": "osm",
+              "nearestMeters": 355,
+              "count": 1,
+              "osm": [
+                "https://www.openstreetmap.org/node/12288062492"
+              ],
+              "checkedAt": "2026-07-25"
             }
           }
         },
@@ -117277,6 +117655,16 @@
               "protectedFrom": [],
               "confidence": "medium",
               "notes": "Generated from Natural Earth geospatial exposure facingDeg. This records shoreline-facing direction only; it does not verify shelter, low-wave behavior, or live sea conditions."
+            },
+            "hasShower": true,
+            "showerEvidence": {
+              "source": "osm",
+              "nearestMeters": 436,
+              "count": 1,
+              "osm": [
+                "https://www.openstreetmap.org/node/13072282190"
+              ],
+              "checkedAt": "2026-07-25"
             }
           },
           "staticLabels": {
@@ -118451,6 +118839,17 @@
               "protectedFrom": [],
               "confidence": "medium",
               "notes": "Generated from Natural Earth geospatial exposure facingDeg. This records shoreline-facing direction only; it does not verify shelter, low-wave behavior, or live sea conditions."
+            },
+            "hasShower": true,
+            "showerEvidence": {
+              "source": "osm",
+              "nearestMeters": 270,
+              "count": 2,
+              "osm": [
+                "https://www.openstreetmap.org/node/6646935618",
+                "https://www.openstreetmap.org/node/6732035547"
+              ],
+              "checkedAt": "2026-07-25"
             }
           }
         },
@@ -118834,6 +119233,16 @@
               "protectedFrom": [],
               "confidence": "medium",
               "notes": "Generated from Natural Earth geospatial exposure facingDeg. This records shoreline-facing direction only; it does not verify shelter, low-wave behavior, or live sea conditions."
+            },
+            "hasShower": true,
+            "showerEvidence": {
+              "source": "osm",
+              "nearestMeters": 1733,
+              "count": 1,
+              "osm": [
+                "https://www.openstreetmap.org/node/10209826304"
+              ],
+              "checkedAt": "2026-07-25"
             }
           }
         },
@@ -120833,6 +121242,16 @@
               "protectedFrom": [],
               "confidence": "medium",
               "notes": "Generated from Natural Earth geospatial exposure facingDeg. This records shoreline-facing direction only; it does not verify shelter, low-wave behavior, or live sea conditions."
+            },
+            "hasShower": true,
+            "showerEvidence": {
+              "source": "osm",
+              "nearestMeters": 293,
+              "count": 1,
+              "osm": [
+                "https://www.openstreetmap.org/node/11245680037"
+              ],
+              "checkedAt": "2026-07-25"
             }
           }
         },
@@ -121827,6 +122246,16 @@
               "protectedFrom": [],
               "confidence": "medium",
               "notes": "Generated from Natural Earth geospatial exposure facingDeg. This records shoreline-facing direction only; it does not verify shelter, low-wave behavior, or live sea conditions."
+            },
+            "hasShower": true,
+            "showerEvidence": {
+              "source": "osm",
+              "nearestMeters": 379,
+              "count": 1,
+              "osm": [
+                "https://www.openstreetmap.org/node/3907487699"
+              ],
+              "checkedAt": "2026-07-25"
             }
           },
           "amenities": {
@@ -122446,6 +122875,17 @@
               "protectedFrom": [],
               "confidence": "medium",
               "notes": "Generated from Natural Earth geospatial exposure facingDeg. This records shoreline-facing direction only; it does not verify shelter, low-wave behavior, or live sea conditions."
+            },
+            "hasShower": true,
+            "showerEvidence": {
+              "source": "osm",
+              "nearestMeters": 152,
+              "count": 2,
+              "osm": [
+                "https://www.openstreetmap.org/node/12299047001",
+                "https://www.openstreetmap.org/node/6699055073"
+              ],
+              "checkedAt": "2026-07-25"
             }
           }
         },
@@ -123572,6 +124012,16 @@
               "protectedFrom": [],
               "confidence": "medium",
               "notes": "Generated from Natural Earth geospatial exposure facingDeg. This records shoreline-facing direction only; it does not verify shelter, low-wave behavior, or live sea conditions."
+            },
+            "hasShower": true,
+            "showerEvidence": {
+              "source": "osm",
+              "nearestMeters": 330,
+              "count": 1,
+              "osm": [
+                "https://www.openstreetmap.org/node/11964308303"
+              ],
+              "checkedAt": "2026-07-25"
             }
           },
           "amenities": {
@@ -124115,6 +124565,16 @@
               "protectedFrom": [],
               "confidence": "medium",
               "notes": "Generated from Natural Earth geospatial exposure facingDeg. This records shoreline-facing direction only; it does not verify shelter, low-wave behavior, or live sea conditions."
+            },
+            "hasShower": true,
+            "showerEvidence": {
+              "source": "osm",
+              "nearestMeters": 1176,
+              "count": 1,
+              "osm": [
+                "https://www.openstreetmap.org/node/10886015985"
+              ],
+              "checkedAt": "2026-07-25"
             }
           }
         },
@@ -148603,7 +149063,17 @@
                 "osmUrl": "https://www.openstreetmap.org/node/1350115794",
                 "checkedAt": "2026-06-17"
               }
-            ]
+            ],
+            "hasShower": true,
+            "showerEvidence": {
+              "source": "osm",
+              "nearestMeters": 1535,
+              "count": 1,
+              "osm": [
+                "https://www.openstreetmap.org/node/1350115794"
+              ],
+              "checkedAt": "2026-07-25"
+            }
           }
         },
         {
@@ -152375,6 +152845,16 @@
               "ratingCount": 4897,
               "source": "google-places",
               "checkedAt": "2026-06-17"
+            },
+            "hasShower": true,
+            "showerEvidence": {
+              "source": "osm",
+              "nearestMeters": 794,
+              "count": 1,
+              "osm": [
+                "https://www.openstreetmap.org/node/11132828284"
+              ],
+              "checkedAt": "2026-07-25"
             }
           }
         },
@@ -152971,6 +153451,18 @@
               "ratingCount": 4315,
               "source": "google-places",
               "checkedAt": "2026-06-17"
+            },
+            "hasShower": true,
+            "showerEvidence": {
+              "source": "osm",
+              "nearestMeters": 547,
+              "count": 3,
+              "osm": [
+                "https://www.openstreetmap.org/node/9782185918",
+                "https://www.openstreetmap.org/node/5920656233",
+                "https://www.openstreetmap.org/node/5920656962"
+              ],
+              "checkedAt": "2026-07-25"
             }
           }
         },
@@ -170818,10 +171310,12 @@
             "showerEvidence": {
               "source": "osm",
               "nearestMeters": 40,
-              "count": 2,
+              "count": 4,
               "osm": [
                 "https://www.openstreetmap.org/node/5749408045",
-                "https://www.openstreetmap.org/node/5749408042"
+                "https://www.openstreetmap.org/node/5749408042",
+                "https://www.openstreetmap.org/node/5749408044",
+                "https://www.openstreetmap.org/node/5749408043"
               ],
               "checkedAt": "2026-07-25"
             }
@@ -170997,10 +171491,13 @@
             "showerEvidence": {
               "source": "osm",
               "nearestMeters": 173,
-              "count": 2,
+              "count": 5,
               "osm": [
                 "https://www.openstreetmap.org/node/12168368597",
-                "https://www.openstreetmap.org/node/9007759817"
+                "https://www.openstreetmap.org/node/9007759817",
+                "https://www.openstreetmap.org/way/1314931535",
+                "https://www.openstreetmap.org/way/1314931534",
+                "https://www.openstreetmap.org/way/1314931542"
               ],
               "checkedAt": "2026-07-25"
             }
@@ -171078,7 +171575,7 @@
             "showerEvidence": {
               "source": "osm",
               "nearestMeters": 66,
-              "count": 7,
+              "count": 9,
               "osm": [
                 "https://www.openstreetmap.org/node/12147689846",
                 "https://www.openstreetmap.org/node/12147674473",
@@ -171086,7 +171583,9 @@
                 "https://www.openstreetmap.org/node/12227861546",
                 "https://www.openstreetmap.org/node/12227872225",
                 "https://www.openstreetmap.org/node/12227865688",
-                "https://www.openstreetmap.org/node/12227837081"
+                "https://www.openstreetmap.org/node/12227837081",
+                "https://www.openstreetmap.org/node/12227861517",
+                "https://www.openstreetmap.org/node/12227846873"
               ],
               "checkedAt": "2026-07-25"
             }
@@ -171479,6 +171978,17 @@
               "ratingCount": 2973,
               "source": "google-places",
               "checkedAt": "2026-06-17"
+            },
+            "hasShower": true,
+            "showerEvidence": {
+              "source": "osm",
+              "nearestMeters": 701,
+              "count": 2,
+              "osm": [
+                "https://www.openstreetmap.org/node/12222547046",
+                "https://www.openstreetmap.org/node/12222532966"
+              ],
+              "checkedAt": "2026-07-25"
             }
           }
         },
@@ -172066,6 +172576,19 @@
               "protectedFrom": [],
               "confidence": "medium",
               "notes": "Generated from Natural Earth geospatial exposure facingDeg. This records shoreline-facing direction only; it does not verify shelter, low-wave behavior, or live sea conditions."
+            },
+            "hasShower": true,
+            "showerEvidence": {
+              "source": "osm",
+              "nearestMeters": 957,
+              "count": 4,
+              "osm": [
+                "https://www.openstreetmap.org/node/9187305526",
+                "https://www.openstreetmap.org/node/4406877207",
+                "https://www.openstreetmap.org/node/4406883002",
+                "https://www.openstreetmap.org/node/4406937089"
+              ],
+              "checkedAt": "2026-07-25"
             }
           }
         },
@@ -176691,6 +177214,19 @@
               "ratingCount": 294,
               "source": "google-places",
               "checkedAt": "2026-06-17"
+            },
+            "hasShower": true,
+            "showerEvidence": {
+              "source": "osm",
+              "nearestMeters": 923,
+              "count": 4,
+              "osm": [
+                "https://www.openstreetmap.org/node/9934925258",
+                "https://www.openstreetmap.org/node/6029535609",
+                "https://www.openstreetmap.org/node/6029535610",
+                "https://www.openstreetmap.org/node/6029535611"
+              ],
+              "checkedAt": "2026-07-25"
             }
           }
         },
@@ -177414,6 +177950,16 @@
               "protectedFrom": [],
               "confidence": "medium",
               "notes": "Generated from Natural Earth geospatial exposure facingDeg. This records shoreline-facing direction only; it does not verify shelter, low-wave behavior, or live sea conditions."
+            },
+            "hasShower": true,
+            "showerEvidence": {
+              "source": "osm",
+              "nearestMeters": 307,
+              "count": 1,
+              "osm": [
+                "https://www.openstreetmap.org/node/5181719641"
+              ],
+              "checkedAt": "2026-07-25"
             }
           },
           "staticLabels": {
@@ -177537,6 +178083,16 @@
               "ratingCount": 252,
               "source": "google-places",
               "checkedAt": "2026-06-17"
+            },
+            "hasShower": true,
+            "showerEvidence": {
+              "source": "osm",
+              "nearestMeters": 460,
+              "count": 1,
+              "osm": [
+                "https://www.openstreetmap.org/node/1375217925"
+              ],
+              "checkedAt": "2026-07-25"
             }
           },
           "staticLabels": {
@@ -177988,6 +178544,17 @@
               "ratingCount": 3486,
               "source": "google-places",
               "checkedAt": "2026-06-17"
+            },
+            "hasShower": true,
+            "showerEvidence": {
+              "source": "osm",
+              "nearestMeters": 982,
+              "count": 2,
+              "osm": [
+                "https://www.openstreetmap.org/node/9843907127",
+                "https://www.openstreetmap.org/node/5154923421"
+              ],
+              "checkedAt": "2026-07-25"
             }
           }
         },
@@ -180323,6 +180890,16 @@
               "ratingCount": 146,
               "source": "google-places",
               "checkedAt": "2026-06-17"
+            },
+            "hasShower": true,
+            "showerEvidence": {
+              "source": "osm",
+              "nearestMeters": 436,
+              "count": 1,
+              "osm": [
+                "https://www.openstreetmap.org/node/3053233413"
+              ],
+              "checkedAt": "2026-07-25"
             }
           }
         }
@@ -183412,6 +183989,19 @@
               "protectedFrom": [],
               "confidence": "medium",
               "notes": "Generated from Natural Earth geospatial exposure facingDeg. This records shoreline-facing direction only; it does not verify shelter, low-wave behavior, or live sea conditions."
+            },
+            "hasShower": true,
+            "showerEvidence": {
+              "source": "osm",
+              "nearestMeters": 261,
+              "count": 4,
+              "osm": [
+                "https://www.openstreetmap.org/node/5918141198",
+                "https://www.openstreetmap.org/node/5918390478",
+                "https://www.openstreetmap.org/node/5918378184",
+                "https://www.openstreetmap.org/node/7724718438"
+              ],
+              "checkedAt": "2026-07-25"
             }
           },
           "staticLabels": {
@@ -183646,6 +184236,18 @@
               "protectedFrom": [],
               "confidence": "medium",
               "notes": "Generated from Natural Earth geospatial exposure facingDeg. This records shoreline-facing direction only; it does not verify shelter, low-wave behavior, or live sea conditions."
+            },
+            "hasShower": true,
+            "showerEvidence": {
+              "source": "osm",
+              "nearestMeters": 2306,
+              "count": 3,
+              "osm": [
+                "https://www.openstreetmap.org/node/5289167727",
+                "https://www.openstreetmap.org/node/12800519420",
+                "https://www.openstreetmap.org/node/12800551545"
+              ],
+              "checkedAt": "2026-07-25"
             }
           }
         },
@@ -183857,6 +184459,16 @@
               "protectedFrom": [],
               "confidence": "medium",
               "notes": "Generated from Natural Earth geospatial exposure facingDeg. This records shoreline-facing direction only; it does not verify shelter, low-wave behavior, or live sea conditions."
+            },
+            "hasShower": true,
+            "showerEvidence": {
+              "source": "osm",
+              "nearestMeters": 300,
+              "count": 1,
+              "osm": [
+                "https://www.openstreetmap.org/way/614206960"
+              ],
+              "checkedAt": "2026-07-25"
             }
           }
         },
@@ -184001,6 +184613,17 @@
               "protectedFrom": [],
               "confidence": "medium",
               "notes": "Generated from Natural Earth geospatial exposure facingDeg. This records shoreline-facing direction only; it does not verify shelter, low-wave behavior, or live sea conditions."
+            },
+            "hasShower": true,
+            "showerEvidence": {
+              "source": "osm",
+              "nearestMeters": 789,
+              "count": 2,
+              "osm": [
+                "https://www.openstreetmap.org/node/6822105288",
+                "https://www.openstreetmap.org/node/6822105287"
+              ],
+              "checkedAt": "2026-07-25"
             }
           }
         },
@@ -199720,6 +200343,22 @@
               "protectedFrom": [],
               "confidence": "medium",
               "notes": "Generated from Natural Earth geospatial exposure facingDeg. This records shoreline-facing direction only; it does not verify shelter, low-wave behavior, or live sea conditions."
+            },
+            "hasShower": true,
+            "showerEvidence": {
+              "source": "osm",
+              "nearestMeters": 760,
+              "count": 7,
+              "osm": [
+                "https://www.openstreetmap.org/node/8869449955",
+                "https://www.openstreetmap.org/node/8869448022",
+                "https://www.openstreetmap.org/node/8869393213",
+                "https://www.openstreetmap.org/node/8869454012",
+                "https://www.openstreetmap.org/node/8869408909",
+                "https://www.openstreetmap.org/node/5858341438",
+                "https://www.openstreetmap.org/node/5595159324"
+              ],
+              "checkedAt": "2026-07-25"
             }
           }
         },

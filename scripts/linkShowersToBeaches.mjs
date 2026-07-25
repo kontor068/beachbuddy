@@ -77,6 +77,13 @@ const NAME_CONFIRMED_HIGH = new Map([
   [1098, 'shower node/26860001 "Camping Karavomilos Beach" — names Καραβόμυλος beach'],
 ]);
 
+// Orphan-rescue map (from rescueOrphanShowers.mjs): showers whose beach PIN is 250 m-4 km away
+// because the beach is long / its polygon is split in OSM (Ελαφονήσι, Χορευτό, Αφάντου…).
+// Each entry is confirmed by the shower sitting on that beach's OSM polygon, and/or the polygon
+// name matching our beach name (inflection-tolerant). Attribution here bypasses the pin radius.
+const RESCUE = new URL('./data/shower-orphan-rescue.json', import.meta.url);
+const rescueMap = existsSync(RESCUE) ? JSON.parse(readFileSync(RESCUE, 'utf8')) : {};
+
 // Flatten beaches once with coords for the nearest-beach search.
 const beaches = [];
 for (const { beach, region } of iterBeaches(data)) {
@@ -97,6 +104,7 @@ const perBeach = new Map(); // beachId -> { beach, region, showers:[{shower, m, 
 let attributed = 0, orphaned = 0;
 const orphans = [];
 
+const byId = new Map(beaches.map(e => [e.beach.id, e]));
 for (const s of showers) {
   const { lat, lon } = s.coordinates;
   let best = null, bestM = Infinity;
@@ -105,6 +113,15 @@ for (const s of showers) {
     if (Math.abs(beach.lat - lat) > DEG || Math.abs(beach.lon - lon) > DEG) continue;
     const m = distanceMeters({ lat, lon }, { lat: beach.lat, lon: beach.lon });
     if (Number.isFinite(m) && m < bestM) { bestM = m; best = entry; }
+  }
+  // Rescued orphan: polygon/name-confirmed to a beach the pin radius couldn't reach.
+  const rescued = rescueMap[s.osmUrl] != null ? byId.get(rescueMap[s.osmUrl]) : null;
+  if (rescued && (!best || bestM > LOW_M)) {
+    attributed += 1;
+    if (!perBeach.has(rescued.beach.id)) perBeach.set(rescued.beach.id, { beach: rescued.beach, region: rescued.region, showers: [] });
+    const rm = distanceMeters({ lat, lon }, { lat: rescued.beach.lat, lon: rescued.beach.lon });
+    perBeach.get(rescued.beach.id).showers.push({ shower: s, m: rm, tier: 'high' });
+    continue;
   }
   const tier = best ? tierOf(bestM, s) : null;
   if (!best || !tier) { orphaned += 1; orphans.push({ osmUrl: s.osmUrl, name: s.name, nearestBeachM: best ? Math.round(bestM) : null }); continue; }
