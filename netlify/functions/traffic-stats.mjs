@@ -97,6 +97,16 @@ const html = (rows, totals, days) => {
   const sumUnique = rows.reduce((s, r) => s + r.unique, 0);
   const sumNew = rows.reduce((s, r) => s + (r.newV || 0), 0);
   const sumHits = rows.reduce((s, r) => s + (r.hits || 0), 0);
+
+  // Best single "people" number for a day: the truth sits between the tagged count
+  // (new+returning — devices whose FIRST ping of the day landed; misses a few lost
+  // best-effort writes ⇒ a floor) and the unique hash count (inflated by mobile IP
+  // rotation ⇒ a ceiling). The midpoint is the honest point estimate; with no tags
+  // yet (e.g. just after midnight) fall back to uniques.
+  const peopleEstimate = (r) => {
+    const tagged = (r.newV || 0) + (r.retV || 0);
+    return tagged ? Math.round((tagged + r.unique) / 2) : r.unique;
+  };
   // Best-effort split vs exact unique can drift slightly out of range; clamp to [0,100].
   const retPct = sumUnique ? Math.min(100, Math.max(0, Math.round(((sumUnique - sumNew) / sumUnique) * 100))) : 0;
 
@@ -168,8 +178,8 @@ const html = (rows, totals, days) => {
     })();
   </script>
   <div class="cards">
-    <div class="card"><div class="k">Μοναδικοί σήμερα</div><div class="v">${rows[0] ? num(rows[0].unique) : 0}</div></div>
-    <div class="card"><div class="k">Μοναδικοί (${days}ημ.)</div><div class="v">${num(sumUnique)}</div></div>
+    <div class="card"><div class="k">≈ Άτομα σήμερα</div><div class="v">~${rows[0] ? num(peopleEstimate(rows[0])) : 0}</div></div>
+    <div class="card"><div class="k">Συσκευές/συνδέσεις σήμερα</div><div class="v">${rows[0] ? num(rows[0].unique) : 0}</div></div>
     <div class="card"><div class="k">Νέοι σήμερα</div><div class="v">${rows[0] ? num(rows[0].newV) : 0}</div></div>
     <div class="card"><div class="k">Επιστρέφοντες (${days}ημ.)</div><div class="v">${retPct}%</div></div>
   </div>
@@ -182,7 +192,9 @@ const html = (rows, totals, days) => {
     <div>${breakdownTable('Δημοφιλείς περιοχές', totals.sections, null, sumUnique)}</div>
     <div>${breakdownTable('Πηγές', totals.refs, null, sumUnique)}</div>
   </div>
-  <p class="foot">Σύνολο προβολών (${days}ημ.): <b>${num(sumHits)}</b> · «Μοναδικοί» = ξεχωριστές συσκευές/μέρα (ακριβές). Νέοι/επιστρέφοντες, χώρες, συσκευές &amp; περιοχές μετρώνται ανά μοναδικό επισκέπτη και είναι <b>κατά προσέγγιση</b>. Χώρα «Άγνωστη» = δεν εντοπίστηκε geo.</p>
+  <p class="foot">Σύνολο προβολών (${days}ημ.): <b>${num(sumHits)}</b> · Μοναδικοί (${days}ημ.): <b>${num(sumUnique)}</b> ·
+  «<b>≈ Άτομα</b>» = η καλύτερη εκτίμηση πραγματικών ανθρώπων: ανάμεσα στο σίγουρο ελάχιστο (Νέοι+Επιστρέφοντες) και στις «Συσκευές/συνδέσεις» (ο ίδιος με αλλαγμένη IP μετριέται 2η φορά εκεί).
+  Νέοι/επιστρέφοντες, χώρες, συσκευές &amp; περιοχές μετρώνται ανά μοναδικό επισκέπτη και είναι <b>κατά προσέγγιση</b>. Χώρα «Άγνωστη» = δεν εντοπίστηκε geo.</p>
 </div></body></html>`;
 };
 
