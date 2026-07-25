@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "generatedAt": "2026-06-26T22:46:48.104Z",
+  "generatedAt": "2026-07-25T14:20:15.724Z",
   "purpose": "Offline directional geospatial exposure baseline for CalmBeach. Not user-facing proof of calm/protected conditions.",
   "source": {
     "landMask": {
@@ -41,8 +41,8 @@
   },
   "summary": {
     "regionCount": 110,
-    "beachCount": 2799,
-    "generatedProfiles": 2799,
+    "beachCount": 2807,
+    "generatedProfiles": 2807,
     "missingCoordinates": 0,
     "indexedLandPolygons": 15946,
     "regions": {
@@ -250,8 +250,8 @@
             "exposed": 2
           },
           "NE": {
-            "protected": 2,
-            "partial": 5,
+            "protected": 3,
+            "partial": 4,
             "exposed": 1
           },
           "E": {
@@ -270,8 +270,8 @@
             "exposed": 1
           },
           "SW": {
-            "protected": 7,
-            "partial": 0,
+            "protected": 6,
+            "partial": 1,
             "exposed": 1
           },
           "W": {
@@ -864,49 +864,49 @@
       },
       "central-macedonia-halkidiki-mainland": {
         "regionName": "Halkidiki",
-        "beachCount": 130,
-        "generatedProfiles": 130,
+        "beachCount": 133,
+        "generatedProfiles": 133,
         "missingCoordinates": 0,
         "sectors": {
           "N": {
-            "protected": 63,
-            "partial": 30,
-            "exposed": 36
-          },
-          "NE": {
-            "protected": 58,
-            "partial": 16,
-            "exposed": 55
-          },
-          "E": {
-            "protected": 54,
-            "partial": 25,
-            "exposed": 50
-          },
-          "SE": {
-            "protected": 63,
-            "partial": 29,
+            "protected": 65,
+            "partial": 31,
             "exposed": 37
           },
-          "S": {
-            "protected": 71,
-            "partial": 20,
+          "NE": {
+            "protected": 60,
+            "partial": 17,
+            "exposed": 56
+          },
+          "E": {
+            "protected": 56,
+            "partial": 25,
+            "exposed": 52
+          },
+          "SE": {
+            "protected": 65,
+            "partial": 30,
             "exposed": 38
           },
+          "S": {
+            "protected": 72,
+            "partial": 22,
+            "exposed": 39
+          },
           "SW": {
-            "protected": 77,
+            "protected": 79,
             "partial": 8,
-            "exposed": 44
+            "exposed": 46
           },
           "W": {
-            "protected": 76,
+            "protected": 78,
             "partial": 21,
-            "exposed": 32
+            "exposed": 34
           },
           "NW": {
-            "protected": 75,
-            "partial": 37,
-            "exposed": 17
+            "protected": 76,
+            "partial": 39,
+            "exposed": 18
           }
         }
       },
@@ -960,47 +960,47 @@
       },
       "central-macedonia-thessaloniki-area": {
         "regionName": "Thessaloniki area",
-        "beachCount": 16,
-        "generatedProfiles": 16,
+        "beachCount": 17,
+        "generatedProfiles": 17,
         "missingCoordinates": 0,
         "sectors": {
           "N": {
-            "protected": 9,
+            "protected": 10,
             "partial": 4,
             "exposed": 3
           },
           "NE": {
-            "protected": 6,
+            "protected": 7,
             "partial": 4,
             "exposed": 6
           },
           "E": {
             "protected": 6,
-            "partial": 0,
+            "partial": 1,
             "exposed": 10
           },
           "SE": {
-            "protected": 6,
-            "partial": 2,
-            "exposed": 8
+            "protected": 7,
+            "partial": 1,
+            "exposed": 9
           },
           "S": {
             "protected": 7,
             "partial": 4,
-            "exposed": 5
+            "exposed": 6
           },
           "SW": {
             "protected": 11,
-            "partial": 0,
+            "partial": 1,
             "exposed": 5
           },
           "W": {
-            "protected": 11,
+            "protected": 12,
             "partial": 2,
             "exposed": 3
           },
           "NW": {
-            "protected": 12,
+            "protected": 13,
             "partial": 2,
             "exposed": 2
           }
@@ -1008,95 +1008,95 @@
       },
       "crete-crete-chania": {
         "regionName": "Chania",
-        "beachCount": 88,
-        "generatedProfiles": 88,
+        "beachCount": 90,
+        "generatedProfiles": 90,
         "missingCoordinates": 0,
         "sectors": {
           "N": {
-            "protected": 50,
+            "protected": 51,
             "partial": 10,
-            "exposed": 28
+            "exposed": 29
           },
           "NE": {
-            "protected": 50,
-            "partial": 15,
+            "protected": 51,
+            "partial": 16,
             "exposed": 23
           },
           "E": {
-            "protected": 45,
+            "protected": 47,
             "partial": 30,
             "exposed": 13
           },
           "SE": {
-            "protected": 44,
+            "protected": 46,
             "partial": 11,
             "exposed": 33
           },
           "S": {
-            "protected": 41,
-            "partial": 10,
+            "protected": 42,
+            "partial": 11,
             "exposed": 37
           },
           "SW": {
-            "protected": 40,
+            "protected": 41,
             "partial": 15,
-            "exposed": 33
+            "exposed": 34
           },
           "W": {
-            "protected": 45,
+            "protected": 46,
             "partial": 25,
-            "exposed": 18
+            "exposed": 19
           },
           "NW": {
             "protected": 47,
-            "partial": 21,
-            "exposed": 20
+            "partial": 22,
+            "exposed": 21
           }
         }
       },
       "crete-crete-heraklion": {
         "regionName": "Heraklion",
-        "beachCount": 53,
-        "generatedProfiles": 53,
+        "beachCount": 55,
+        "generatedProfiles": 55,
         "missingCoordinates": 0,
         "sectors": {
           "N": {
-            "protected": 32,
+            "protected": 34,
             "partial": 6,
             "exposed": 15
           },
           "NE": {
-            "protected": 29,
+            "protected": 31,
             "partial": 6,
             "exposed": 18
           },
           "E": {
-            "protected": 21,
+            "protected": 22,
             "partial": 19,
-            "exposed": 13
+            "exposed": 14
           },
           "SE": {
             "protected": 20,
             "partial": 8,
-            "exposed": 25
+            "exposed": 27
           },
           "S": {
             "protected": 21,
             "partial": 6,
-            "exposed": 26
+            "exposed": 28
           },
           "SW": {
             "protected": 25,
             "partial": 2,
-            "exposed": 26
+            "exposed": 28
           },
           "W": {
-            "protected": 31,
-            "partial": 15,
+            "protected": 32,
+            "partial": 16,
             "exposed": 7
           },
           "NW": {
-            "protected": 35,
+            "protected": 37,
             "partial": 3,
             "exposed": 15
           }
@@ -2767,8 +2767,8 @@
           },
           "SW": {
             "protected": 21,
-            "partial": 3,
-            "exposed": 1
+            "partial": 2,
+            "exposed": 2
           },
           "W": {
             "protected": 15,
@@ -4969,8 +4969,8 @@
             "exposed": 20
           },
           "S": {
-            "protected": 10,
-            "partial": 10,
+            "protected": 9,
+            "partial": 11,
             "exposed": 19
           },
           "SW": {
@@ -4985,8 +4985,8 @@
           },
           "NW": {
             "protected": 31,
-            "partial": 1,
-            "exposed": 7
+            "partial": 2,
+            "exposed": 6
           }
         }
       },

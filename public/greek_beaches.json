@@ -6460,6 +6460,51 @@
               "notes": "Generated from Natural Earth geospatial exposure facingDeg. This records shoreline-facing direction only; it does not verify shelter, low-wave behavior, or live sea conditions."
             }
           }
+        },
+        {
+          "id": 3119,
+          "name": "Παραλία Μαγούλα",
+          "lat": 38.39039,
+          "lon": 23.80234,
+          "metadata": {
+            "access": {
+              "type": "unknown",
+              "label": "Άγνωστη πρόσβαση",
+              "notes": "Δεν έχει επιβεβαιωθεί επιτόπου."
+            },
+            "terrain": {
+              "types": [
+                "sand",
+                "pebbles"
+              ],
+              "label": "άμμος και βότσαλο"
+            },
+            "organized": true,
+            "shade": false,
+            "amenities": [
+              "ντους"
+            ],
+            "confidence": "low",
+            "language": "el",
+            "batch": "shower_beach_discovery_2026_07",
+            "needsVerification": true,
+            "activities": {
+              "surfing": false
+            },
+            "sourceUrls": [
+              "https://www.openstreetmap.org/way/369237211",
+              "https://www.openstreetmap.org/?mlat=38.39039136363636&mlon=23.80233672727273#map=17/38.39039136363636/23.80233672727273"
+            ],
+            "sourceNotes": [
+              "Hidden-beach discovery (2026-07): Παραλία με 1 χαρτογραφημένο/α ντους (OSM amenity=shower) πάνω στο polygon, ~229μ ακτή, κοντά σε Μαγούλα. ΑΝΩΝΥΜΗ στο OSM — γι' αυτό δεν την έπιανε το coverage pipeline που ψάχνει με όνομα. Το όνομα προκύπτει από τον πλησιέστερο οικισμό (ΔΕΝ είναι επιβεβαιωμένο τοπωνύμιο). Συντεταγμένες: OSM way/369237211 (κέντρο polygon). Slot κοντά στο #26 (Παραλία Ακρωτηρίου, 6805m). Πρόσβαση/χαρακτηριστικά από οδηγούς — ΔΕΝ έχουν επιβεβαιωθεί επιτόπου."
+            ],
+            "googleMapsNavigation": {
+              "status": "verified",
+              "mode": "coordinates",
+              "checkedAt": "2026-07-23",
+              "method": "guide-discovery-v1"
+            }
+          }
         }
       ]
     },
@@ -8406,8 +8451,8 @@
         {
           "id": 106,
           "name": "Μπίστι",
-          "lat": 37.30281,
-          "lon": 23.37579,
+          "lat": 37.304899,
+          "lon": 23.377265,
           "metadata": {
             "access": {
               "type": "boat_only",
@@ -8439,10 +8484,7 @@
               "label": "Βαθιά νερά",
               "notes": "Το βάθος συνήθως ανεβαίνει πιο γρήγορα μετά την είσοδο στη θάλασσα."
             },
-            "sourceNotes": [
-              "Source-backed Hydra pass 2026-05-28: AllOverGreece, HydraRooms, and GetGreece support Bisti as a pebbly Hydra beach reached practically by sea transport, with seasonal loungers/umbrellas and snack/water-activity context. Confidence lifted to medium; coordinates, wind profile, and scoring were not changed. The nearby duplicate “Παραλία Μπίστι” remains low until a deduplication pass.",
-              "Popular confidence pass 2026-06-02 J: direct official, bathing-profile, or dedicated local beach sources support the recorded static identity, access, terrain, and service context for this record. Promoted to high for static beach facts only; windProfile, scoring, coordinates, photos, and live calm/protected/safe claims were not changed."
-            ],
+            "sourceNotes": "Source-backed Hydra pass 2026-05-28: AllOverGreece, HydraRooms, and GetGreece support Bisti as a pebbly Hydra beach reached practically by sea transport, with seasonal loungers/umbrellas and snack/water-activity context. Confidence lifted to medium; coordinates, wind profile, and scoring were not changed. The nearby duplicate “Παραλία Μπίστι” remains low until a deduplication pass. Popular confidence pass 2026-06-02 J: direct official, bathing-profile, or dedicated local beach sources support the recorded static identity, access, terrain, and service context for this record. Promoted to high for static beach facts only; windProfile, scoring, coordinates, photos, and live calm/protected/safe claims were not changed. Pin corrected 2026-07-25 (no-API): moved from 37.30281,23.37579 to 37.304899,23.377265 — pin is 266 m from the OSM beach outline (confidence OSM polygon 266 m).",
             "sourceUrls": [
               "https://www.allovergreece.com/Beaches/Descr/59/406/el",
               "https://www.hydrarooms.com/beaches/bisti/",
@@ -22800,6 +22842,51 @@
               "method": "guide-discovery-v1"
             }
           }
+        },
+        {
+          "id": 3121,
+          "name": "Παραλία Πήλι",
+          "lat": 38.76503,
+          "lon": 23.58976,
+          "metadata": {
+            "access": {
+              "type": "unknown",
+              "label": "Άγνωστη πρόσβαση",
+              "notes": "Δεν έχει επιβεβαιωθεί επιτόπου."
+            },
+            "terrain": {
+              "types": [
+                "sand",
+                "pebbles"
+              ],
+              "label": "άμμος και βότσαλο"
+            },
+            "organized": true,
+            "shade": false,
+            "amenities": [
+              "ντους"
+            ],
+            "confidence": "low",
+            "language": "el",
+            "batch": "shower_beach_discovery_2026_07",
+            "needsVerification": true,
+            "activities": {
+              "surfing": false
+            },
+            "sourceUrls": [
+              "https://www.openstreetmap.org/way/166234824",
+              "https://www.openstreetmap.org/?mlat=38.76502542&mlon=23.58976076444445#map=17/38.76502542/23.58976076444445"
+            ],
+            "sourceNotes": [
+              "Hidden-beach discovery (2026-07): Παραλία με 1 χαρτογραφημένο/α ντους (OSM amenity=shower) πάνω στο polygon, ~520μ ακτή, κοντά σε Πήλι. ΑΝΩΝΥΜΗ στο OSM — γι' αυτό δεν την έπιανε το coverage pipeline που ψάχνει με όνομα. Το όνομα προκύπτει από τον πλησιέστερο οικισμό (ΔΕΝ είναι επιβεβαιωμένο τοπωνύμιο). Συντεταγμένες: OSM way/166234824 (κέντρο polygon). Slot κοντά στο #209 (Ατάλαντος, 2045m). Πρόσβαση/χαρακτηριστικά από οδηγούς — ΔΕΝ έχουν επιβεβαιωθεί επιτόπου."
+            ],
+            "googleMapsNavigation": {
+              "status": "verified",
+              "mode": "coordinates",
+              "checkedAt": "2026-07-23",
+              "method": "guide-discovery-v1"
+            }
+          }
         }
       ],
       "Skyros": [
@@ -25700,6 +25787,65 @@
               "protectedFrom": [],
               "confidence": "medium",
               "notes": "Generated from Natural Earth geospatial exposure facingDeg. This records shoreline-facing direction only; it does not verify shelter, low-wave behavior, or live sea conditions."
+            }
+          }
+        },
+        {
+          "id": 3120,
+          "name": "Παραλία Κίρρα",
+          "lat": 38.42738,
+          "lon": 22.43176,
+          "metadata": {
+            "access": {
+              "type": "unknown",
+              "label": "Άγνωστη πρόσβαση",
+              "notes": "Δεν έχει επιβεβαιωθεί επιτόπου."
+            },
+            "terrain": {
+              "types": [
+                "sand",
+                "pebbles"
+              ],
+              "label": "άμμος και βότσαλο"
+            },
+            "organized": true,
+            "shade": false,
+            "amenities": [
+              "ντους"
+            ],
+            "confidence": "low",
+            "language": "el",
+            "batch": "shower_beach_discovery_2026_07",
+            "needsVerification": true,
+            "activities": {
+              "surfing": false
+            },
+            "sourceUrls": [
+              "https://www.openstreetmap.org/way/201566452",
+              "https://www.openstreetmap.org/?mlat=38.42737687812499&mlon=22.431760453124998#map=17/38.42737687812499/22.431760453124998"
+            ],
+            "sourceNotes": [
+              "Hidden-beach discovery (2026-07): Παραλία με 6 χαρτογραφημένο/α ντους (OSM amenity=shower) πάνω στο polygon, ~576μ ακτή, κοντά σε Κίρρα. ΑΝΩΝΥΜΗ στο OSM — γι' αυτό δεν την έπιανε το coverage pipeline που ψάχνει με όνομα. Το όνομα προκύπτει από τον πλησιέστερο οικισμό (ΔΕΝ είναι επιβεβαιωμένο τοπωνύμιο). Συντεταγμένες: OSM way/201566452 (κέντρο polygon). Slot κοντά στο #338 (Ακτή Βραχάκια, 2235m). Πρόσβαση/χαρακτηριστικά από οδηγούς — ΔΕΝ έχουν επιβεβαιωθεί επιτόπου."
+            ],
+            "googleMapsNavigation": {
+              "status": "verified",
+              "mode": "coordinates",
+              "checkedAt": "2026-07-23",
+              "method": "guide-discovery-v1"
+            },
+            "hasShower": true,
+            "showerEvidence": {
+              "source": "osm",
+              "nearestMeters": 54,
+              "count": 5,
+              "osm": [
+                "https://www.openstreetmap.org/node/13180535578",
+                "https://www.openstreetmap.org/node/13180573630",
+                "https://www.openstreetmap.org/node/13180578116",
+                "https://www.openstreetmap.org/node/13180564236",
+                "https://www.openstreetmap.org/node/13180547816"
+              ],
+              "checkedAt": "2026-07-25"
             }
           }
         }
@@ -38030,8 +38176,8 @@
         {
           "id": 3088,
           "name": "Μυκονιάτικα",
-          "lat": 40.3013103,
-          "lon": 23.0868668,
+          "lat": 40.30157,
+          "lon": 23.090941,
           "metadata": {
             "access": {
               "type": "unknown",
@@ -38051,7 +38197,7 @@
             "language": "el",
             "batch": "osm_coverage_gap_2026_06",
             "needsVerification": true,
-            "sourceNotes": "OSM coverage-gap import (2026-06): created from OpenStreetMap beach \"Μυκονιάτικα\" (https://www.openstreetmap.org/way/885440824) in Halkidiki (mainland), Central Macedonia. Coordinates from OSM. Verified as a real, distinct Greek swimmable beach by adversarial web check (>553m from any existing beach). Google confirms a tourist_attraction (246 ratings) 154m from the pin. Slot via nearest existing beach #478 (553m). Access/terrain unknown — needs field verification. Reverse amenity sweep 2026-07-19 (no-API): organized flag corrected to true + sunbeds added — OSM beach_resort \"Μυκονιάτικα\" 0m from the pin. Pin corrected 2026-07-20 (no-API): moved from 40.30144,23.09244 to 40.3013103,23.0868668 — OSM natural beach «Παραλία Γυμνιστών Μυκονιάτικα» ~475m west of our pin (Nea Kallikrateia). (confidence medium).",
+            "sourceNotes": "OSM coverage-gap import (2026-06): created from OpenStreetMap beach \"Μυκονιάτικα\" (https://www.openstreetmap.org/way/885440824) in Halkidiki (mainland), Central Macedonia. Coordinates from OSM. Verified as a real, distinct Greek swimmable beach by adversarial web check (>553m from any existing beach). Google confirms a tourist_attraction (246 ratings) 154m from the pin. Slot via nearest existing beach #478 (553m). Access/terrain unknown — needs field verification. Reverse amenity sweep 2026-07-19 (no-API): organized flag corrected to true + sunbeds added — OSM beach_resort \"Μυκονιάτικα\" 0m from the pin. Pin corrected 2026-07-20 (no-API): moved from 40.30144,23.09244 to 40.3013103,23.0868668 — OSM natural beach «Παραλία Γυμνιστών Μυκονιάτικα» ~475m west of our pin (Nea Kallikrateia). (confidence medium). Pin corrected 2026-07-25 (no-API): moved from 40.30131,23.08687 to 40.30157,23.090941 — pin is 347 m from the OSM beach outline (confidence OSM polygon 347 m).",
             "sourceUrls": [
               "https://www.openstreetmap.org/way/885440824"
             ],
@@ -38069,6 +38215,139 @@
               "protectedFrom": [],
               "confidence": "medium",
               "notes": "Generated from Natural Earth geospatial exposure facingDeg. This records shoreline-facing direction only; it does not verify shelter, low-wave behavior, or live sea conditions."
+            }
+          }
+        },
+        {
+          "id": 3122,
+          "name": "Παραλία Κρυοπηγή",
+          "lat": 40.0301,
+          "lon": 23.50118,
+          "metadata": {
+            "access": {
+              "type": "unknown",
+              "label": "Άγνωστη πρόσβαση",
+              "notes": "Δεν έχει επιβεβαιωθεί επιτόπου."
+            },
+            "terrain": {
+              "types": [
+                "sand"
+              ],
+              "label": "άμμος"
+            },
+            "organized": true,
+            "shade": false,
+            "amenities": [
+              "ντους"
+            ],
+            "confidence": "low",
+            "language": "el",
+            "batch": "shower_beach_discovery_2026_07",
+            "needsVerification": true,
+            "activities": {
+              "surfing": false
+            },
+            "sourceUrls": [
+              "https://www.openstreetmap.org/way/277235084",
+              "https://www.openstreetmap.org/?mlat=40.030096627083346&mlon=23.501181504166677#map=17/40.030096627083346/23.501181504166677"
+            ],
+            "sourceNotes": [
+              "Hidden-beach discovery (2026-07): Παραλία με 1 χαρτογραφημένο/α ντους (OSM amenity=shower) πάνω στο polygon, ~725μ ακτή, κοντά σε Κρυοπηγή. ΑΝΩΝΥΜΗ στο OSM — γι' αυτό δεν την έπιανε το coverage pipeline που ψάχνει με όνομα. Το όνομα προκύπτει από τον πλησιέστερο οικισμό (ΔΕΝ είναι επιβεβαιωμένο τοπωνύμιο). Συντεταγμένες: OSM way/277235084 (κέντρο polygon). Slot κοντά στο #381 (Παραλία Πευκοχωρίου, 3361m). Πρόσβαση/χαρακτηριστικά από οδηγούς — ΔΕΝ έχουν επιβεβαιωθεί επιτόπου."
+            ],
+            "googleMapsNavigation": {
+              "status": "verified",
+              "mode": "coordinates",
+              "checkedAt": "2026-07-23",
+              "method": "guide-discovery-v1"
+            }
+          }
+        },
+        {
+          "id": 3123,
+          "name": "Παραλία Μουριές",
+          "lat": 40.24922,
+          "lon": 23.24856,
+          "metadata": {
+            "access": {
+              "type": "unknown",
+              "label": "Άγνωστη πρόσβαση",
+              "notes": "Δεν έχει επιβεβαιωθεί επιτόπου."
+            },
+            "terrain": {
+              "types": [
+                "sand",
+                "pebbles"
+              ],
+              "label": "άμμος και βότσαλο"
+            },
+            "organized": true,
+            "shade": false,
+            "amenities": [
+              "ντους"
+            ],
+            "confidence": "low",
+            "language": "el",
+            "batch": "shower_beach_discovery_2026_07",
+            "needsVerification": true,
+            "activities": {
+              "surfing": false
+            },
+            "sourceUrls": [
+              "https://www.openstreetmap.org/way/91364352",
+              "https://www.openstreetmap.org/?mlat=40.24922000952382&mlon=23.24855651904762#map=17/40.24922000952382/23.24855651904762"
+            ],
+            "sourceNotes": [
+              "Hidden-beach discovery (2026-07): Παραλία με 1 χαρτογραφημένο/α ντους (OSM amenity=shower) πάνω στο polygon, ~830μ ακτή, κοντά σε Μουριές. ΑΝΩΝΥΜΗ στο OSM — γι' αυτό δεν την έπιανε το coverage pipeline που ψάχνει με όνομα. Το όνομα προκύπτει από τον πλησιέστερο οικισμό (ΔΕΝ είναι επιβεβαιωμένο τοπωνύμιο). Συντεταγμένες: OSM way/91364352 (κέντρο polygon). Slot κοντά στο #3018 (Νέα Φλόγητα, 2591m). Πρόσβαση/χαρακτηριστικά από οδηγούς — ΔΕΝ έχουν επιβεβαιωθεί επιτόπου."
+            ],
+            "googleMapsNavigation": {
+              "status": "verified",
+              "mode": "coordinates",
+              "checkedAt": "2026-07-23",
+              "method": "guide-discovery-v1"
+            }
+          }
+        },
+        {
+          "id": 3125,
+          "name": "Παραλία Νέος Μαρμαράς",
+          "lat": 40.08613,
+          "lon": 23.79222,
+          "metadata": {
+            "access": {
+              "type": "unknown",
+              "label": "Άγνωστη πρόσβαση",
+              "notes": "Δεν έχει επιβεβαιωθεί επιτόπου."
+            },
+            "terrain": {
+              "types": [
+                "sand"
+              ],
+              "label": "άμμος"
+            },
+            "organized": true,
+            "shade": false,
+            "amenities": [
+              "ντους"
+            ],
+            "confidence": "low",
+            "language": "el",
+            "batch": "shower_beach_discovery_2026_07",
+            "needsVerification": true,
+            "activities": {
+              "surfing": false
+            },
+            "sourceUrls": [
+              "https://www.openstreetmap.org/way/374752064",
+              "https://www.openstreetmap.org/?mlat=40.0861286857143&mlon=23.79221961071428#map=17/40.0861286857143/23.79221961071428"
+            ],
+            "sourceNotes": [
+              "Hidden-beach discovery (2026-07): Παραλία με 1 χαρτογραφημένο/α ντους (OSM amenity=shower) πάνω στο polygon, ~638μ ακτή, κοντά σε Νέος Μαρμαράς. ΑΝΩΝΥΜΗ στο OSM — γι' αυτό δεν την έπιανε το coverage pipeline που ψάχνει με όνομα. Το όνομα προκύπτει από τον πλησιέστερο οικισμό (ΔΕΝ είναι επιβεβαιωμένο τοπωνύμιο). Συντεταγμένες: OSM way/374752064 (κέντρο polygon). Slot κοντά στο #432 (Paradisos, 2295m). Πρόσβαση/χαρακτηριστικά από οδηγούς — ΔΕΝ έχουν επιβεβαιωθεί επιτόπου."
+            ],
+            "googleMapsNavigation": {
+              "status": "verified",
+              "mode": "coordinates",
+              "checkedAt": "2026-07-23",
+              "method": "guide-discovery-v1"
             }
           }
         }
@@ -39198,8 +39477,8 @@
         {
           "id": 515,
           "name": "Παραλία Σταυρού",
-          "lat": 40.66722,
-          "lon": 23.69545,
+          "lat": 40.667263,
+          "lon": 23.701929,
           "metadata": {
             "aliases": [
               "Jazz",
@@ -39244,11 +39523,7 @@
               "https://www.stavrosapp.gr/beach-bar/fuskes-beach-bar",
               "https://www.blueflag.gr/el/awards/2026"
             ],
-            "sourceNotes": [
-              "Thessaloniki official bathing-profile cleanup 2026-05-29: official Stavros bathing profile supports identity, road and public-transport access, partly organized beach sections, sunbeds, fixed umbrellas, showers, waste bins/baskets, refreshment facilities along the coast, lifeguard staff, broadleaf-tree area behind the central section, and generally shallow bathing water. Confidence promoted to medium; no wind, wave, or live-condition claim was added.",
-              "Blue Flag 2026 import 2026-06-01: official Blue Flag Greece awards page lists one or more matching awarded beach sections for this record. Static certification metadata only; coordinates, access, windProfile, scoring, photos, confidence and live calm/protected/safe claims were not changed.",
-              "Popular confidence pass 2026-06-02 K: official bathing-profile, official regional tourism, Blue Flag, or direct dedicated beach sources support the recorded static identity, access, terrain, depth, and service context for this record. Promoted to high for static beach facts only; windProfile, scoring, coordinates, photos, and live calm/protected/safe claims were not changed."
-            ],
+            "sourceNotes": "Thessaloniki official bathing-profile cleanup 2026-05-29: official Stavros bathing profile supports identity, road and public-transport access, partly organized beach sections, sunbeds, fixed umbrellas, showers, waste bins/baskets, refreshment facilities along the coast, lifeguard staff, broadleaf-tree area behind the central section, and generally shallow bathing water. Confidence promoted to medium; no wind, wave, or live-condition claim was added. Blue Flag 2026 import 2026-06-01: official Blue Flag Greece awards page lists one or more matching awarded beach sections for this record. Static certification metadata only; coordinates, access, windProfile, scoring, photos, confidence and live calm/protected/safe claims were not changed. Popular confidence pass 2026-06-02 K: official bathing-profile, official regional tourism, Blue Flag, or direct dedicated beach sources support the recorded static identity, access, terrain, depth, and service context for this record. Promoted to high for static beach facts only; windProfile, scoring, coordinates, photos, and live calm/protected/safe claims were not changed. Pin corrected 2026-07-25 (no-API): moved from 40.66722,23.69545 to 40.667263,23.701929 — pin is 544 m from the OSM beach outline (confidence OSM polygon 544 m).",
             "blueFlag2026": {
               "awarded": true,
               "year": 2026,
@@ -40213,6 +40488,51 @@
               "protectedFrom": [],
               "confidence": "medium",
               "notes": "Generated from Natural Earth geospatial exposure facingDeg. This records shoreline-facing direction only; it does not verify shelter, low-wave behavior, or live sea conditions."
+            }
+          }
+        },
+        {
+          "id": 3124,
+          "name": "Παραλία Νέα Κερδύλια",
+          "lat": 40.78075,
+          "lon": 23.82726,
+          "metadata": {
+            "access": {
+              "type": "unknown",
+              "label": "Άγνωστη πρόσβαση",
+              "notes": "Δεν έχει επιβεβαιωθεί επιτόπου."
+            },
+            "terrain": {
+              "types": [
+                "sand",
+                "pebbles"
+              ],
+              "label": "άμμος και βότσαλο"
+            },
+            "organized": true,
+            "shade": false,
+            "amenities": [
+              "ντους"
+            ],
+            "confidence": "low",
+            "language": "el",
+            "batch": "shower_beach_discovery_2026_07",
+            "needsVerification": true,
+            "activities": {
+              "surfing": false
+            },
+            "sourceUrls": [
+              "https://www.openstreetmap.org/way/1367295655",
+              "https://www.openstreetmap.org/?mlat=40.78075362432434&mlon=23.82725516216216#map=17/40.78075362432434/23.82725516216216"
+            ],
+            "sourceNotes": [
+              "Hidden-beach discovery (2026-07): Παραλία με 1 χαρτογραφημένο/α ντους (OSM amenity=shower) πάνω στο polygon, ~1049μ ακτή, κοντά σε Νέα Κερδύλια. ΑΝΩΝΥΜΗ στο OSM — γι' αυτό δεν την έπιανε το coverage pipeline που ψάχνει με όνομα. Το όνομα προκύπτει από τον πλησιέστερο οικισμό (ΔΕΝ είναι επιβεβαιωμένο τοπωνύμιο). Συντεταγμένες: OSM way/1367295655 (κέντρο polygon). Slot κοντά στο #518 (Κυανή Ακτή, 4986m). Πρόσβαση/χαρακτηριστικά από οδηγούς — ΔΕΝ έχουν επιβεβαιωθεί επιτόπου."
+            ],
+            "googleMapsNavigation": {
+              "status": "verified",
+              "mode": "coordinates",
+              "checkedAt": "2026-07-23",
+              "method": "guide-discovery-v1"
             }
           }
         }
@@ -41998,8 +42318,8 @@
         {
           "id": 548,
           "name": "Παραλία Αγίων Αποστόλων",
-          "lat": 35.51411,
-          "lon": 23.98321,
+          "lat": 35.513676,
+          "lon": 23.979909,
           "metadata": {
             "access": {
               "type": "asphalt_road",
@@ -42038,9 +42358,7 @@
             "sourceUrls": [
               "https://www.openstreetmap.org/way/52595603"
             ],
-            "sourceNotes": [
-              "OpenStreetMap Overpass Chania audit 2026-05-23"
-            ],
+            "sourceNotes": "OpenStreetMap Overpass Chania audit 2026-05-23 Pin corrected 2026-07-25 (no-API): moved from 35.51411,23.98321 to 35.513676,23.979909 — pin is 303 m from the OSM beach outline (confidence OSM polygon 303 m).",
             "orientation": {
               "degrees": 5.8,
               "faces": [
@@ -47143,6 +47461,94 @@
               "notes": "Generated from Natural Earth geospatial exposure facingDeg. This records shoreline-facing direction only; it does not verify shelter, low-wave behavior, or live sea conditions."
             }
           }
+        },
+        {
+          "id": 3127,
+          "name": "Παραλία Δράμια",
+          "lat": 35.3535,
+          "lon": 24.29632,
+          "metadata": {
+            "access": {
+              "type": "unknown",
+              "label": "Άγνωστη πρόσβαση",
+              "notes": "Δεν έχει επιβεβαιωθεί επιτόπου."
+            },
+            "terrain": {
+              "types": [
+                "sand"
+              ],
+              "label": "άμμος"
+            },
+            "organized": true,
+            "shade": false,
+            "amenities": [
+              "ντους"
+            ],
+            "confidence": "low",
+            "language": "el",
+            "batch": "shower_beach_discovery_2026_07",
+            "needsVerification": true,
+            "activities": {
+              "surfing": false
+            },
+            "sourceUrls": [
+              "https://www.openstreetmap.org/way/152252569",
+              "https://www.openstreetmap.org/?mlat=35.353502350793654&mlon=24.296317085714286#map=17/35.353502350793654/24.296317085714286"
+            ],
+            "sourceNotes": [
+              "Hidden-beach discovery (2026-07): Παραλία με 2 χαρτογραφημένο/α ντους (OSM amenity=shower) πάνω στο polygon, ~1012μ ακτή, κοντά σε Δράμια. ΑΝΩΝΥΜΗ στο OSM — γι' αυτό δεν την έπιανε το coverage pipeline που ψάχνει με όνομα. Το όνομα προκύπτει από τον πλησιέστερο οικισμό (ΔΕΝ είναι επιβεβαιωμένο τοπωνύμιο). Συντεταγμένες: OSM way/152252569 (κέντρο polygon). Slot κοντά στο #598 (Georgioupoli, 1668m). Πρόσβαση/χαρακτηριστικά από οδηγούς — ΔΕΝ έχουν επιβεβαιωθεί επιτόπου."
+            ],
+            "googleMapsNavigation": {
+              "status": "verified",
+              "mode": "coordinates",
+              "checkedAt": "2026-07-23",
+              "method": "guide-discovery-v1"
+            }
+          }
+        },
+        {
+          "id": 3130,
+          "name": "Παραλία Λιβάδια",
+          "lat": 35.35763,
+          "lon": 23.53209,
+          "metadata": {
+            "access": {
+              "type": "unknown",
+              "label": "Άγνωστη πρόσβαση",
+              "notes": "Δεν έχει επιβεβαιωθεί επιτόπου."
+            },
+            "terrain": {
+              "types": [
+                "rocks"
+              ],
+              "label": "βράχια"
+            },
+            "organized": true,
+            "shade": false,
+            "amenities": [
+              "ντους"
+            ],
+            "confidence": "low",
+            "language": "el",
+            "batch": "shower_beach_discovery_2026_07",
+            "needsVerification": true,
+            "activities": {
+              "surfing": false
+            },
+            "sourceUrls": [
+              "https://www.openstreetmap.org/way/1431432627",
+              "https://www.openstreetmap.org/?mlat=35.357634287179486&mlon=23.532088443589743#map=17/35.357634287179486/23.532088443589743"
+            ],
+            "sourceNotes": [
+              "Hidden-beach discovery (2026-07): Παραλία με 1 χαρτογραφημένο/α ντους (OSM amenity=shower) πάνω στο polygon, ~562μ ακτή, κοντά σε Λιβάδια. ΑΝΩΝΥΜΗ στο OSM — γι' αυτό δεν την έπιανε το coverage pipeline που ψάχνει με όνομα. Το όνομα προκύπτει από τον πλησιέστερο οικισμό (ΔΕΝ είναι επιβεβαιωμένο τοπωνύμιο). Συντεταγμένες: OSM way/1431432627 (κέντρο polygon). Slot κοντά στο #608 (Stomio beach, 3709m). Πρόσβαση/χαρακτηριστικά από οδηγούς — ΔΕΝ έχουν επιβεβαιωθεί επιτόπου."
+            ],
+            "googleMapsNavigation": {
+              "status": "verified",
+              "mode": "coordinates",
+              "checkedAt": "2026-07-23",
+              "method": "guide-discovery-v1"
+            }
+          }
         }
       ],
       "Gavdos": [
@@ -51595,8 +52001,8 @@
         {
           "id": 670,
           "name": "Σαραντάρι",
-          "lat": 35.3324492,
-          "lon": 25.3850435,
+          "lat": 35.331658,
+          "lon": 25.385025,
           "metadata": {
             "aliases": [
               "Sarantari",
@@ -51641,11 +52047,7 @@
               "https://www.cretanbeaches.com/en/sea-tourism/central-crete-beaches-heraklion/sarandaris-beaches-hersonissos",
               "https://www.blueflag.gr/el/awards/2026"
             ],
-            "sourceNotes": [
-              "Heraklion audit 2026-05-25: removed copied generic Schinias-style note; keep conservative organized-cove amenities.",
-              "Heraklion source confidence pass 2026-05-29: CretanBeaches Sarandaris page and OSM support Sarantari cove identity/location and organized Hersonissos cove context. Static metadata confidence promoted to high; coordinates, windProfile, scoring, photos, and live sea/wind claims were not changed.",
-              "Blue Flag 2026 import 2026-06-01: official Blue Flag Greece awards page lists one or more matching awarded beach sections for this record. Static certification metadata only; coordinates, access, windProfile, scoring, photos, confidence and live calm/protected/safe claims were not changed."
-            ],
+            "sourceNotes": "Heraklion audit 2026-05-25: removed copied generic Schinias-style note; keep conservative organized-cove amenities. Heraklion source confidence pass 2026-05-29: CretanBeaches Sarandaris page and OSM support Sarantari cove identity/location and organized Hersonissos cove context. Static metadata confidence promoted to high; coordinates, windProfile, scoring, photos, and live sea/wind claims were not changed. Blue Flag 2026 import 2026-06-01: official Blue Flag Greece awards page lists one or more matching awarded beach sections for this record. Static certification metadata only; coordinates, access, windProfile, scoring, photos, confidence and live calm/protected/safe claims were not changed. Pin corrected 2026-07-25 (no-API): moved from 35.33245,25.38504 to 35.331658,25.385025 — pin is 88 m from the OSM beach outline (confidence OSM polygon 88 m).",
             "blueFlag2026": {
               "awarded": true,
               "year": 2026,
@@ -51865,6 +52267,122 @@
               "protectedFrom": [],
               "confidence": "medium",
               "notes": "Generated from Natural Earth geospatial exposure facingDeg. This records shoreline-facing direction only; it does not verify shelter, low-wave behavior, or live sea conditions."
+            }
+          }
+        },
+        {
+          "id": 3126,
+          "name": "Παραλία Άρβη",
+          "lat": 34.9914,
+          "lon": 25.45183,
+          "metadata": {
+            "access": {
+              "type": "unknown",
+              "label": "Άγνωστη πρόσβαση",
+              "notes": "Δεν έχει επιβεβαιωθεί επιτόπου."
+            },
+            "terrain": {
+              "types": [
+                "sand"
+              ],
+              "label": "άμμος"
+            },
+            "organized": true,
+            "shade": false,
+            "amenities": [
+              "ντους"
+            ],
+            "confidence": "low",
+            "language": "el",
+            "batch": "shower_beach_discovery_2026_07",
+            "needsVerification": true,
+            "activities": {
+              "surfing": false
+            },
+            "sourceUrls": [
+              "https://www.openstreetmap.org/way/865924485",
+              "https://www.openstreetmap.org/?mlat=34.991397868750006&mlon=25.4518251125#map=17/34.991397868750006/25.4518251125"
+            ],
+            "sourceNotes": [
+              "Hidden-beach discovery (2026-07): Παραλία με 1 χαρτογραφημένο/α ντους (OSM amenity=shower) πάνω στο polygon, ~398μ ακτή, κοντά σε Άρβη. ΑΝΩΝΥΜΗ στο OSM — γι' αυτό δεν την έπιανε το coverage pipeline που ψάχνει με όνομα. Το όνομα προκύπτει από τον πλησιέστερο οικισμό (ΔΕΝ είναι επιβεβαιωμένο τοπωνύμιο). Συντεταγμένες: OSM way/865924485 (κέντρο polygon). Slot κοντά στο #651 (Keratokambos, 4885m). Πρόσβαση/χαρακτηριστικά από οδηγούς — ΔΕΝ έχουν επιβεβαιωθεί επιτόπου."
+            ],
+            "googleMapsNavigation": {
+              "status": "verified",
+              "mode": "coordinates",
+              "checkedAt": "2026-07-23",
+              "method": "guide-discovery-v1"
+            },
+            "hasShower": true,
+            "showerEvidence": {
+              "source": "osm",
+              "nearestMeters": 17,
+              "count": 1,
+              "osm": [
+                "https://www.openstreetmap.org/node/8069701286"
+              ],
+              "checkedAt": "2026-07-25"
+            }
+          }
+        },
+        {
+          "id": 3128,
+          "name": "Παραλία Καλλιθέα",
+          "lat": 35.00309,
+          "lon": 25.58373,
+          "metadata": {
+            "access": {
+              "type": "unknown",
+              "label": "Άγνωστη πρόσβαση",
+              "notes": "Δεν έχει επιβεβαιωθεί επιτόπου."
+            },
+            "terrain": {
+              "types": [
+                "sand",
+                "pebbles"
+              ],
+              "label": "άμμος και βότσαλο"
+            },
+            "organized": true,
+            "shade": false,
+            "amenities": [
+              "ντους"
+            ],
+            "confidence": "low",
+            "language": "el",
+            "batch": "shower_beach_discovery_2026_07",
+            "needsVerification": true,
+            "activities": {
+              "surfing": false
+            },
+            "sourceUrls": [
+              "https://www.openstreetmap.org/way/105904008",
+              "https://www.openstreetmap.org/?mlat=35.003094925423724&mlon=25.58372884915254#map=17/35.003094925423724/25.58372884915254"
+            ],
+            "sourceNotes": [
+              "Hidden-beach discovery (2026-07): Παραλία με 8 χαρτογραφημένο/α ντους (OSM amenity=shower) πάνω στο polygon, ~838μ ακτή, κοντά σε Καλλιθέα. ΑΝΩΝΥΜΗ στο OSM — γι' αυτό δεν την έπιανε το coverage pipeline που ψάχνει με όνομα. Το όνομα προκύπτει από τον πλησιέστερο οικισμό (ΔΕΝ είναι επιβεβαιωμένο τοπωνύμιο). Συντεταγμένες: OSM way/105904008 (κέντρο polygon). Slot κοντά στο #651 (Keratokambos, 16919m). Πρόσβαση/χαρακτηριστικά από οδηγούς — ΔΕΝ έχουν επιβεβαιωθεί επιτόπου."
+            ],
+            "googleMapsNavigation": {
+              "status": "verified",
+              "mode": "coordinates",
+              "checkedAt": "2026-07-23",
+              "method": "guide-discovery-v1"
+            },
+            "hasShower": true,
+            "showerEvidence": {
+              "source": "osm",
+              "nearestMeters": 42,
+              "count": 8,
+              "osm": [
+                "https://www.openstreetmap.org/node/12266005917",
+                "https://www.openstreetmap.org/node/13256135925",
+                "https://www.openstreetmap.org/node/12271752322",
+                "https://www.openstreetmap.org/node/13234489695",
+                "https://www.openstreetmap.org/node/12271752326",
+                "https://www.openstreetmap.org/node/12271752328",
+                "https://www.openstreetmap.org/node/12271752329",
+                "https://www.openstreetmap.org/node/12271752330"
+              ],
+              "checkedAt": "2026-07-25"
             }
           }
         }
@@ -60013,6 +60531,105 @@
               "notes": "Generated from Natural Earth geospatial exposure facingDeg. This records shoreline-facing direction only; it does not verify shelter, low-wave behavior, or live sea conditions."
             }
           }
+        },
+        {
+          "id": 3129,
+          "name": "Παραλία Κάτω Ζάκρος",
+          "lat": 35.09686,
+          "lon": 26.26364,
+          "metadata": {
+            "access": {
+              "type": "unknown",
+              "label": "Άγνωστη πρόσβαση",
+              "notes": "Δεν έχει επιβεβαιωθεί επιτόπου."
+            },
+            "terrain": {
+              "types": [
+                "sand"
+              ],
+              "label": "άμμος"
+            },
+            "organized": true,
+            "shade": false,
+            "amenities": [
+              "ντους"
+            ],
+            "confidence": "low",
+            "language": "el",
+            "batch": "shower_beach_discovery_2026_07",
+            "needsVerification": true,
+            "activities": {
+              "surfing": false
+            },
+            "sourceUrls": [
+              "https://www.openstreetmap.org/way/442598465",
+              "https://www.openstreetmap.org/?mlat=35.09686495140188&mlon=26.2636390093458#map=17/35.09686495140188/26.2636390093458"
+            ],
+            "sourceNotes": [
+              "Hidden-beach discovery (2026-07): Παραλία με 1 χαρτογραφημένο/α ντους (OSM amenity=shower) πάνω στο polygon, ~521μ ακτή, κοντά σε Κάτω Ζάκρος. ΑΝΩΝΥΜΗ στο OSM — γι' αυτό δεν την έπιανε το coverage pipeline που ψάχνει με όνομα. Το όνομα προκύπτει από τον πλησιέστερο οικισμό (ΔΕΝ είναι επιβεβαιωμένο τοπωνύμιο). Συντεταγμένες: OSM way/442598465 (κέντρο polygon). Slot κοντά στο #749 (Κρινάκια, 4690m). Πρόσβαση/χαρακτηριστικά από οδηγούς — ΔΕΝ έχουν επιβεβαιωθεί επιτόπου."
+            ],
+            "googleMapsNavigation": {
+              "status": "verified",
+              "mode": "coordinates",
+              "checkedAt": "2026-07-23",
+              "method": "guide-discovery-v1"
+            },
+            "hasShower": true,
+            "showerEvidence": {
+              "source": "osm",
+              "nearestMeters": 45,
+              "count": 1,
+              "osm": [
+                "https://www.openstreetmap.org/node/2419956711"
+              ],
+              "checkedAt": "2026-07-25"
+            }
+          }
+        },
+        {
+          "id": 3131,
+          "name": "Παραλία Πετράς",
+          "lat": 35.20338,
+          "lon": 26.11225,
+          "metadata": {
+            "access": {
+              "type": "unknown",
+              "label": "Άγνωστη πρόσβαση",
+              "notes": "Δεν έχει επιβεβαιωθεί επιτόπου."
+            },
+            "terrain": {
+              "types": [
+                "sand",
+                "pebbles"
+              ],
+              "label": "άμμος και βότσαλο"
+            },
+            "organized": true,
+            "shade": false,
+            "amenities": [
+              "ντους"
+            ],
+            "confidence": "low",
+            "language": "el",
+            "batch": "shower_beach_discovery_2026_07",
+            "needsVerification": true,
+            "activities": {
+              "surfing": false
+            },
+            "sourceUrls": [
+              "https://www.openstreetmap.org/way/52495254",
+              "https://www.openstreetmap.org/?mlat=35.20337819714286&mlon=26.112251545714287#map=17/35.20337819714286/26.112251545714287"
+            ],
+            "sourceNotes": [
+              "Hidden-beach discovery (2026-07): Παραλία με 1 χαρτογραφημένο/α ντους (OSM amenity=shower) πάνω στο polygon, ~929μ ακτή, κοντά σε Πετράς. ΑΝΩΝΥΜΗ στο OSM — γι' αυτό δεν την έπιανε το coverage pipeline που ψάχνει με όνομα. Το όνομα προκύπτει από τον πλησιέστερο οικισμό (ΔΕΝ είναι επιβεβαιωμένο τοπωνύμιο). Συντεταγμένες: OSM way/52495254 (κέντρο polygon). Slot κοντά στο #774 (Trachilias Beach, 4543m). Πρόσβαση/χαρακτηριστικά από οδηγούς — ΔΕΝ έχουν επιβεβαιωθεί επιτόπου."
+            ],
+            "googleMapsNavigation": {
+              "status": "verified",
+              "mode": "coordinates",
+              "checkedAt": "2026-07-23",
+              "method": "guide-discovery-v1"
+            }
+          }
         }
       ]
     }
@@ -60309,6 +60926,51 @@
               "protectedFrom": [],
               "confidence": "medium",
               "notes": "Generated from Natural Earth geospatial exposure facingDeg. This records shoreline-facing direction only; it does not verify shelter, low-wave behavior, or live sea conditions."
+            }
+          }
+        },
+        {
+          "id": 3132,
+          "name": "Παραλία Μαΐστρος",
+          "lat": 40.84183,
+          "lon": 25.87591,
+          "metadata": {
+            "access": {
+              "type": "unknown",
+              "label": "Άγνωστη πρόσβαση",
+              "notes": "Δεν έχει επιβεβαιωθεί επιτόπου."
+            },
+            "terrain": {
+              "types": [
+                "sand",
+                "pebbles"
+              ],
+              "label": "άμμος και βότσαλο"
+            },
+            "organized": true,
+            "shade": false,
+            "amenities": [
+              "ντους"
+            ],
+            "confidence": "low",
+            "language": "el",
+            "batch": "shower_beach_discovery_2026_07",
+            "needsVerification": true,
+            "activities": {
+              "surfing": false
+            },
+            "sourceUrls": [
+              "https://www.openstreetmap.org/way/788245818",
+              "https://www.openstreetmap.org/?mlat=40.84182977297298&mlon=25.8759094027027#map=17/40.84182977297298/25.8759094027027"
+            ],
+            "sourceNotes": [
+              "Hidden-beach discovery (2026-07): Παραλία με 1 χαρτογραφημένο/α ντους (OSM amenity=shower) πάνω στο polygon, ~296μ ακτή, κοντά σε Μαΐστρος. ΑΝΩΝΥΜΗ στο OSM — γι' αυτό δεν την έπιανε το coverage pipeline που ψάχνει με όνομα. Το όνομα προκύπτει από τον πλησιέστερο οικισμό (ΔΕΝ είναι επιβεβαιωμένο τοπωνύμιο). Συντεταγμένες: OSM way/788245818 (κέντρο polygon). Slot κοντά στο #778 (Παραλία Αλεξανδρούπολης, 3380m). Πρόσβαση/χαρακτηριστικά από οδηγούς — ΔΕΝ έχουν επιβεβαιωθεί επιτόπου."
+            ],
+            "googleMapsNavigation": {
+              "status": "verified",
+              "mode": "coordinates",
+              "checkedAt": "2026-07-23",
+              "method": "guide-discovery-v1"
             }
           }
         }
@@ -62012,6 +62674,105 @@
               "protectedFrom": [],
               "confidence": "medium",
               "notes": "Generated from Natural Earth geospatial exposure facingDeg. This records shoreline-facing direction only; it does not verify shelter, low-wave behavior, or live sea conditions."
+            }
+          }
+        },
+        {
+          "id": 3133,
+          "name": "Παραλία Νέα Πέραμος",
+          "lat": 40.84205,
+          "lon": 24.30627,
+          "metadata": {
+            "access": {
+              "type": "unknown",
+              "label": "Άγνωστη πρόσβαση",
+              "notes": "Δεν έχει επιβεβαιωθεί επιτόπου."
+            },
+            "terrain": {
+              "types": [
+                "sand"
+              ],
+              "label": "άμμος"
+            },
+            "organized": true,
+            "shade": false,
+            "amenities": [
+              "ντους"
+            ],
+            "confidence": "low",
+            "language": "el",
+            "batch": "shower_beach_discovery_2026_07",
+            "needsVerification": true,
+            "activities": {
+              "surfing": false
+            },
+            "sourceUrls": [
+              "https://www.openstreetmap.org/way/368997450",
+              "https://www.openstreetmap.org/?mlat=40.84204796923078&mlon=24.306271476923072#map=17/40.84204796923078/24.306271476923072"
+            ],
+            "sourceNotes": [
+              "Hidden-beach discovery (2026-07): Παραλία με 1 χαρτογραφημένο/α ντους (OSM amenity=shower) πάνω στο polygon, ~327μ ακτή, κοντά σε Νέα Πέραμος. ΑΝΩΝΥΜΗ στο OSM — γι' αυτό δεν την έπιανε το coverage pipeline που ψάχνει με όνομα. Το όνομα προκύπτει από τον πλησιέστερο οικισμό (ΔΕΝ είναι επιβεβαιωμένο τοπωνύμιο). Συντεταγμένες: OSM way/368997450 (κέντρο polygon). Slot κοντά στο #794 (Ρέμβη, 2854m). Πρόσβαση/χαρακτηριστικά από οδηγούς — ΔΕΝ έχουν επιβεβαιωθεί επιτόπου."
+            ],
+            "googleMapsNavigation": {
+              "status": "verified",
+              "mode": "coordinates",
+              "checkedAt": "2026-07-23",
+              "method": "guide-discovery-v1"
+            }
+          }
+        },
+        {
+          "id": 3134,
+          "name": "Παραλία Παληό",
+          "lat": 40.89551,
+          "lon": 24.33705,
+          "metadata": {
+            "access": {
+              "type": "unknown",
+              "label": "Άγνωστη πρόσβαση",
+              "notes": "Δεν έχει επιβεβαιωθεί επιτόπου."
+            },
+            "terrain": {
+              "types": [
+                "sand"
+              ],
+              "label": "άμμος"
+            },
+            "organized": true,
+            "shade": false,
+            "amenities": [
+              "ντους"
+            ],
+            "confidence": "low",
+            "language": "el",
+            "batch": "shower_beach_discovery_2026_07",
+            "needsVerification": true,
+            "activities": {
+              "surfing": false
+            },
+            "sourceUrls": [
+              "https://www.openstreetmap.org/way/230955856",
+              "https://www.openstreetmap.org/?mlat=40.89550633333333&mlon=24.337047666666663#map=17/40.89550633333333/24.337047666666663"
+            ],
+            "sourceNotes": [
+              "Hidden-beach discovery (2026-07): Παραλία με 2 χαρτογραφημένο/α ντους (OSM amenity=shower) πάνω στο polygon, ~195μ ακτή, κοντά σε Παληό. ΑΝΩΝΥΜΗ στο OSM — γι' αυτό δεν την έπιανε το coverage pipeline που ψάχνει με όνομα. Το όνομα προκύπτει από τον πλησιέστερο οικισμό (ΔΕΝ είναι επιβεβαιωμένο τοπωνύμιο). Συντεταγμένες: OSM way/230955856 (κέντρο polygon). Slot κοντά στο #782 (Τόσκα, 2885m). Πρόσβαση/χαρακτηριστικά από οδηγούς — ΔΕΝ έχουν επιβεβαιωθεί επιτόπου."
+            ],
+            "googleMapsNavigation": {
+              "status": "verified",
+              "mode": "coordinates",
+              "checkedAt": "2026-07-23",
+              "method": "guide-discovery-v1"
+            },
+            "hasShower": true,
+            "showerEvidence": {
+              "source": "osm",
+              "nearestMeters": 28,
+              "count": 2,
+              "osm": [
+                "https://www.openstreetmap.org/node/4348583908",
+                "https://www.openstreetmap.org/node/4348583906"
+              ],
+              "checkedAt": "2026-07-25"
             }
           }
         }
@@ -74922,8 +75683,8 @@
         {
           "id": 963,
           "name": "Καλυβιώτης",
-          "lat": 39.43737,
-          "lon": 20.0139,
+          "lat": 39.433766,
+          "lon": 20.017352,
           "metadata": {
             "access": {
               "type": "asphalt_road",
@@ -74957,9 +75718,7 @@
               "https://olivegrovegroup.com/south-corfu/nature-and-beaches/",
               "https://lovincorfu.com/attractions/kaliviotis-beach/"
             ],
-            "sourceNotes": [
-              "Strict evidence re-audit 2026-05-29: added live Lovin Corfu Kaliviotis page, which directly supports Kaliviotis as a long sandy beach in Lefkimmi Bay near Perivoli with quiet setting and green scenery. Kept high for static identity/location/terrain context only."
-            ],
+            "sourceNotes": "Strict evidence re-audit 2026-05-29: added live Lovin Corfu Kaliviotis page, which directly supports Kaliviotis as a long sandy beach in Lefkimmi Bay near Perivoli with quiet setting and green scenery. Kept high for static identity/location/terrain context only. Pin corrected 2026-07-25 (no-API): moved from 39.43737,20.01390 to 39.433766,20.017352 — pin is 498 m from the OSM beach outline (confidence OSM polygon 498 m).",
             "orientation": {
               "degrees": 31.8,
               "faces": [
@@ -103911,6 +104670,114 @@
           "staticLabels": {
             "accessType": "unknown"
           }
+        },
+        {
+          "id": 3135,
+          "name": "Παραλία Λάρισος",
+          "lat": 39.1195,
+          "lon": 26.48593,
+          "metadata": {
+            "access": {
+              "type": "unknown",
+              "label": "Άγνωστη πρόσβαση",
+              "notes": "Δεν έχει επιβεβαιωθεί επιτόπου."
+            },
+            "terrain": {
+              "types": [
+                "pebbles"
+              ],
+              "label": "βότσαλο"
+            },
+            "organized": true,
+            "shade": false,
+            "amenities": [
+              "ντους"
+            ],
+            "confidence": "low",
+            "language": "el",
+            "batch": "shower_beach_discovery_2026_07",
+            "needsVerification": true,
+            "activities": {
+              "surfing": false
+            },
+            "sourceUrls": [
+              "https://www.openstreetmap.org/way/1508855387",
+              "https://www.openstreetmap.org/?mlat=39.11949520312501&mlon=26.485928634375004#map=17/39.11949520312501/26.485928634375004"
+            ],
+            "sourceNotes": [
+              "Hidden-beach discovery (2026-07): Παραλία με 1 χαρτογραφημένο/α ντους (OSM amenity=shower) πάνω στο polygon, ~298μ ακτή, κοντά σε Λάρισος. ΑΝΩΝΥΜΗ στο OSM — γι' αυτό δεν την έπιανε το coverage pipeline που ψάχνει με όνομα. Το όνομα προκύπτει από τον πλησιέστερο οικισμό (ΔΕΝ είναι επιβεβαιωμένο τοπωνύμιο). Συντεταγμένες: OSM way/1508855387 (κέντρο polygon). Slot κοντά στο #1350 (Ξέρες Ευρειακής, 6042m). Πρόσβαση/χαρακτηριστικά από οδηγούς — ΔΕΝ έχουν επιβεβαιωθεί επιτόπου."
+            ],
+            "googleMapsNavigation": {
+              "status": "verified",
+              "mode": "coordinates",
+              "checkedAt": "2026-07-23",
+              "method": "guide-discovery-v1"
+            },
+            "hasShower": true,
+            "showerEvidence": {
+              "source": "osm",
+              "nearestMeters": 29,
+              "count": 1,
+              "osm": [
+                "https://www.openstreetmap.org/node/13794088201"
+              ],
+              "checkedAt": "2026-07-25"
+            }
+          }
+        },
+        {
+          "id": 3137,
+          "name": "Παραλία Πέτρα",
+          "lat": 39.33165,
+          "lon": 26.17889,
+          "metadata": {
+            "access": {
+              "type": "unknown",
+              "label": "Άγνωστη πρόσβαση",
+              "notes": "Δεν έχει επιβεβαιωθεί επιτόπου."
+            },
+            "terrain": {
+              "types": [
+                "sand"
+              ],
+              "label": "άμμος"
+            },
+            "organized": true,
+            "shade": false,
+            "amenities": [
+              "ντους"
+            ],
+            "confidence": "low",
+            "language": "el",
+            "batch": "shower_beach_discovery_2026_07",
+            "needsVerification": true,
+            "activities": {
+              "surfing": false
+            },
+            "sourceUrls": [
+              "https://www.openstreetmap.org/way/298756347",
+              "https://www.openstreetmap.org/?mlat=39.33165476461536&mlon=26.178888920000006#map=17/39.33165476461536/26.178888920000006"
+            ],
+            "sourceNotes": [
+              "Hidden-beach discovery (2026-07): Παραλία με 3 χαρτογραφημένο/α ντους (OSM amenity=shower) πάνω στο polygon, ~920μ ακτή, κοντά σε Πέτρα. ΑΝΩΝΥΜΗ στο OSM — γι' αυτό δεν την έπιανε το coverage pipeline που ψάχνει με όνομα. Το όνομα προκύπτει από τον πλησιέστερο οικισμό (ΔΕΝ είναι επιβεβαιωμένο τοπωνύμιο). Συντεταγμένες: OSM way/298756347 (κέντρο polygon). Slot κοντά στο #1320 (Παραλία Γυμνιστών Μολύβου, 2486m). Πρόσβαση/χαρακτηριστικά από οδηγούς — ΔΕΝ έχουν επιβεβαιωθεί επιτόπου."
+            ],
+            "googleMapsNavigation": {
+              "status": "verified",
+              "mode": "coordinates",
+              "checkedAt": "2026-07-23",
+              "method": "guide-discovery-v1"
+            },
+            "hasShower": true,
+            "showerEvidence": {
+              "source": "osm",
+              "nearestMeters": 42,
+              "count": 1,
+              "osm": [
+                "https://www.openstreetmap.org/node/7754278021"
+              ],
+              "checkedAt": "2026-07-25"
+            }
+          }
         }
       ]
     },
@@ -106815,6 +107682,61 @@
               "notes": "Generated from Natural Earth geospatial exposure facingDeg. This records shoreline-facing direction only; it does not verify shelter, low-wave behavior, or live sea conditions."
             }
           }
+        },
+        {
+          "id": 3136,
+          "name": "Παραλία Λέκκα",
+          "lat": 37.79545,
+          "lon": 26.68836,
+          "metadata": {
+            "access": {
+              "type": "unknown",
+              "label": "Άγνωστη πρόσβαση",
+              "notes": "Δεν έχει επιβεβαιωθεί επιτόπου."
+            },
+            "terrain": {
+              "types": [
+                "sand",
+                "pebbles"
+              ],
+              "label": "άμμος και βότσαλο"
+            },
+            "organized": true,
+            "shade": false,
+            "amenities": [
+              "ντους"
+            ],
+            "confidence": "low",
+            "language": "el",
+            "batch": "shower_beach_discovery_2026_07",
+            "needsVerification": true,
+            "activities": {
+              "surfing": false
+            },
+            "sourceUrls": [
+              "https://www.openstreetmap.org/way/1104017880",
+              "https://www.openstreetmap.org/?mlat=37.79544852222222&mlon=26.68835935555555#map=17/37.79544852222222/26.68835935555555"
+            ],
+            "sourceNotes": [
+              "Hidden-beach discovery (2026-07): Παραλία με 1 χαρτογραφημένο/α ντους (OSM amenity=shower) πάνω στο polygon, ~255μ ακτή, κοντά σε Λέκκα. ΑΝΩΝΥΜΗ στο OSM — γι' αυτό δεν την έπιανε το coverage pipeline που ψάχνει με όνομα. Το όνομα προκύπτει από τον πλησιέστερο οικισμό (ΔΕΝ είναι επιβεβαιωμένο τοπωνύμιο). Συντεταγμένες: OSM way/1104017880 (κέντρο polygon). Slot κοντά στο #1413 (Ποτάμι, 2247m). Πρόσβαση/χαρακτηριστικά από οδηγούς — ΔΕΝ έχουν επιβεβαιωθεί επιτόπου."
+            ],
+            "googleMapsNavigation": {
+              "status": "verified",
+              "mode": "coordinates",
+              "checkedAt": "2026-07-23",
+              "method": "guide-discovery-v1"
+            },
+            "hasShower": true,
+            "showerEvidence": {
+              "source": "osm",
+              "nearestMeters": 42,
+              "count": 1,
+              "osm": [
+                "https://www.openstreetmap.org/node/11006195402"
+              ],
+              "checkedAt": "2026-07-25"
+            }
+          }
         }
       ]
     },
@@ -107544,8 +108466,8 @@
         {
           "id": 1431,
           "name": "Αυλώνας",
-          "lat": 39.89567,
-          "lon": 25.06279,
+          "lat": 39.895003,
+          "lon": 25.062464,
           "metadata": {
             "access": {
               "type": "asphalt_road",
@@ -107574,7 +108496,7 @@
               "label": "Ρηχά νερά",
               "notes": "Η είσοδος στη θάλασσα είναι πιο ήπια και το βάθος αυξάνει πιο σταδιακά."
             },
-            "sourceNotes": "Source follow-up pass 35 2026-05-28: direct Lemnos beaches page names Avlonas as a bay outside Myrina with a beach and watersports. Confidence, coordinates, access, services, amenities, wind profile, and scoring were not changed. Lemnos tourist evidence pass 2026-06-01: Limnos Tourist Guide directly supports Avlonas near Myrina with sandy beach character, easy asphalt-road access, beach-bar/sunbed/water-sports context and municipal umbrellas. Confidence was raised to high for source-backed static beach facts only; coordinates, windProfile, scoring, photos, amenities, and live calm/protected/safe claims were not changed. Medium-omission multi-signal pass 2026-07-19 (no-API): organized flag corrected to true — 2 independent signals (resortNear, ownAmenityFood).",
+            "sourceNotes": "Source follow-up pass 35 2026-05-28: direct Lemnos beaches page names Avlonas as a bay outside Myrina with a beach and watersports. Confidence, coordinates, access, services, amenities, wind profile, and scoring were not changed. Lemnos tourist evidence pass 2026-06-01: Limnos Tourist Guide directly supports Avlonas near Myrina with sandy beach character, easy asphalt-road access, beach-bar/sunbed/water-sports context and municipal umbrellas. Confidence was raised to high for source-backed static beach facts only; coordinates, windProfile, scoring, photos, amenities, and live calm/protected/safe claims were not changed. Medium-omission multi-signal pass 2026-07-19 (no-API): organized flag corrected to true — 2 independent signals (resortNear, ownAmenityFood). Pin corrected 2026-07-25 (no-API): moved from 39.89567,25.06279 to 39.895003,25.062464 — pin is 79 m from the OSM beach outline (confidence OSM polygon 79 m).",
             "sourceUrls": [
               "https://varosvillagehotels.com/beaches/",
               "https://limnosguide.com.gr/en/sea-sports-beaches/avlonas"
@@ -114222,6 +115144,51 @@
             "familyFriendly": true,
             "remote": false
           }
+        },
+        {
+          "id": 3142,
+          "name": "Παραλία Πλάκα",
+          "lat": 37.1496,
+          "lon": 22.89453,
+          "metadata": {
+            "access": {
+              "type": "unknown",
+              "label": "Άγνωστη πρόσβαση",
+              "notes": "Δεν έχει επιβεβαιωθεί επιτόπου."
+            },
+            "terrain": {
+              "types": [
+                "sand",
+                "pebbles"
+              ],
+              "label": "άμμος και βότσαλο"
+            },
+            "organized": true,
+            "shade": false,
+            "amenities": [
+              "ντους"
+            ],
+            "confidence": "low",
+            "language": "el",
+            "batch": "shower_beach_discovery_2026_07",
+            "needsVerification": true,
+            "activities": {
+              "surfing": false
+            },
+            "sourceUrls": [
+              "https://www.openstreetmap.org/way/282904473",
+              "https://www.openstreetmap.org/?mlat=37.14960464637682&mlon=22.894525378260862#map=17/37.14960464637682/22.894525378260862"
+            ],
+            "sourceNotes": [
+              "Hidden-beach discovery (2026-07): Παραλία με 1 χαρτογραφημένο/α ντους (OSM amenity=shower) πάνω στο polygon, ~1055μ ακτή, κοντά σε Πλάκα. ΑΝΩΝΥΜΗ στο OSM — γι' αυτό δεν την έπιανε το coverage pipeline που ψάχνει με όνομα. Το όνομα προκύπτει από τον πλησιέστερο οικισμό (ΔΕΝ είναι επιβεβαιωμένο τοπωνύμιο). Συντεταγμένες: OSM way/282904473 (κέντρο polygon). Slot κοντά στο #1519 (Πούλιθρα, 3171m). Πρόσβαση/χαρακτηριστικά από οδηγούς — ΔΕΝ έχουν επιβεβαιωθεί επιτόπου."
+            ],
+            "googleMapsNavigation": {
+              "status": "verified",
+              "mode": "coordinates",
+              "checkedAt": "2026-07-23",
+              "method": "guide-discovery-v1"
+            }
+          }
         }
       ]
     },
@@ -115537,8 +116504,8 @@
         {
           "id": 1538,
           "name": "Πλαζ Λίμνης Ηραίου",
-          "lat": 38.024288,
-          "lon": 22.872357,
+          "lat": 38.026243,
+          "lon": 22.873217,
           "metadata": {
             "access": {
               "type": "asphalt_road",
@@ -115571,10 +116538,7 @@
               "https://www.visitloutraki.com/en/place/heraion-lake-vouliagmeni",
               "https://www.visitloutraki.com/en/place/limni-vouliagmenis"
             ],
-            "sourceNotes": [
-              "Source follow-up pass 44: Visit Loutraki page supports Lake Vouliagmeni/Heraion beach identity/location in Korinthia. Confidence, coordinates, access, services, amenities, wind profile, and scoring were not changed.",
-              "Next popular-area confidence pass 2026-06-02: Visit Loutraki supports the Heraion/Lake Vouliagmeni beach identity near Loutraki, sandy beach/lagoonside setting, initially shallow water, taverns/restaurants, sea-sports/activity context and beach-bar/resto services. Static metadata only; windProfile, scoring, photos and live calm/protected/safe claims were not changed."
-            ],
+            "sourceNotes": "Source follow-up pass 44: Visit Loutraki page supports Lake Vouliagmeni/Heraion beach identity/location in Korinthia. Confidence, coordinates, access, services, amenities, wind profile, and scoring were not changed. Next popular-area confidence pass 2026-06-02: Visit Loutraki supports the Heraion/Lake Vouliagmeni beach identity near Loutraki, sandy beach/lagoonside setting, initially shallow water, taverns/restaurants, sea-sports/activity context and beach-bar/resto services. Static metadata only; windProfile, scoring, photos and live calm/protected/safe claims were not changed. Pin corrected 2026-07-25 (no-API): moved from 38.02429,22.87236 to 38.026243,22.873217 — pin is 230 m from the OSM beach outline (confidence OSM polygon 230 m).",
             "googleMapsNavigation": {
               "status": "verified",
               "mode": "place",
@@ -120381,6 +121345,155 @@
               "checkedAt": "2026-07-25"
             }
           }
+        },
+        {
+          "id": 3138,
+          "name": "Παραλία Αρχάγγελος",
+          "lat": 36.62853,
+          "lon": 22.87917,
+          "metadata": {
+            "access": {
+              "type": "unknown",
+              "label": "Άγνωστη πρόσβαση",
+              "notes": "Δεν έχει επιβεβαιωθεί επιτόπου."
+            },
+            "terrain": {
+              "types": [
+                "sand",
+                "pebbles"
+              ],
+              "label": "άμμος και βότσαλο"
+            },
+            "organized": true,
+            "shade": false,
+            "amenities": [
+              "ντους"
+            ],
+            "confidence": "low",
+            "language": "el",
+            "batch": "shower_beach_discovery_2026_07",
+            "needsVerification": true,
+            "activities": {
+              "surfing": false
+            },
+            "sourceUrls": [
+              "https://www.openstreetmap.org/way/273730067",
+              "https://www.openstreetmap.org/?mlat=36.62852972352941&mlon=22.879165105882354#map=17/36.62852972352941/22.879165105882354"
+            ],
+            "sourceNotes": [
+              "Hidden-beach discovery (2026-07): Παραλία με 1 χαρτογραφημένο/α ντους (OSM amenity=shower) πάνω στο polygon, ~171μ ακτή, κοντά σε Αρχάγγελος. ΑΝΩΝΥΜΗ στο OSM — γι' αυτό δεν την έπιανε το coverage pipeline που ψάχνει με όνομα. Το όνομα προκύπτει από τον πλησιέστερο οικισμό (ΔΕΝ είναι επιβεβαιωμένο τοπωνύμιο). Συντεταγμένες: OSM way/273730067 (κέντρο polygon). Slot κοντά στο #1595 (Πύλα, 2129m). Πρόσβαση/χαρακτηριστικά από οδηγούς — ΔΕΝ έχουν επιβεβαιωθεί επιτόπου."
+            ],
+            "googleMapsNavigation": {
+              "status": "verified",
+              "mode": "coordinates",
+              "checkedAt": "2026-07-23",
+              "method": "guide-discovery-v1"
+            }
+          }
+        },
+        {
+          "id": 3140,
+          "name": "Παραλία Λάχι",
+          "lat": 36.51166,
+          "lon": 23.05589,
+          "metadata": {
+            "access": {
+              "type": "unknown",
+              "label": "Άγνωστη πρόσβαση",
+              "notes": "Δεν έχει επιβεβαιωθεί επιτόπου."
+            },
+            "terrain": {
+              "types": [
+                "sand",
+                "pebbles"
+              ],
+              "label": "άμμος και βότσαλο"
+            },
+            "organized": true,
+            "shade": false,
+            "amenities": [
+              "ντους"
+            ],
+            "confidence": "low",
+            "language": "el",
+            "batch": "shower_beach_discovery_2026_07",
+            "needsVerification": true,
+            "activities": {
+              "surfing": false
+            },
+            "sourceUrls": [
+              "https://www.openstreetmap.org/way/520396385",
+              "https://www.openstreetmap.org/?mlat=36.511663420000005&mlon=23.05588739333333#map=17/36.511663420000005/23.05588739333333"
+            ],
+            "sourceNotes": [
+              "Hidden-beach discovery (2026-07): Παραλία με 6 χαρτογραφημένο/α ντους (OSM amenity=shower) πάνω στο polygon, ~420μ ακτή, κοντά σε Λάχι. ΑΝΩΝΥΜΗ στο OSM — γι' αυτό δεν την έπιανε το coverage pipeline που ψάχνει με όνομα. Το όνομα προκύπτει από τον πλησιέστερο οικισμό (ΔΕΝ είναι επιβεβαιωμένο τοπωνύμιο). Συντεταγμένες: OSM way/520396385 (κέντρο polygon). Slot κοντά στο #1583 (Παραλία Νερατζιώνα, 4729m). Πρόσβαση/χαρακτηριστικά από οδηγούς — ΔΕΝ έχουν επιβεβαιωθεί επιτόπου."
+            ],
+            "googleMapsNavigation": {
+              "status": "verified",
+              "mode": "coordinates",
+              "checkedAt": "2026-07-23",
+              "method": "guide-discovery-v1"
+            },
+            "hasShower": true,
+            "showerEvidence": {
+              "source": "osm",
+              "nearestMeters": 18,
+              "count": 5,
+              "osm": [
+                "https://www.openstreetmap.org/node/11222519637",
+                "https://www.openstreetmap.org/node/11222487538",
+                "https://www.openstreetmap.org/node/9269879617",
+                "https://www.openstreetmap.org/node/9269879517",
+                "https://www.openstreetmap.org/node/9269879618"
+              ],
+              "checkedAt": "2026-07-25"
+            }
+          }
+        },
+        {
+          "id": 3141,
+          "name": "Παραλία Νεάπολη",
+          "lat": 36.50677,
+          "lon": 23.06238,
+          "metadata": {
+            "access": {
+              "type": "unknown",
+              "label": "Άγνωστη πρόσβαση",
+              "notes": "Δεν έχει επιβεβαιωθεί επιτόπου."
+            },
+            "terrain": {
+              "types": [
+                "sand",
+                "pebbles"
+              ],
+              "label": "άμμος και βότσαλο"
+            },
+            "organized": true,
+            "shade": false,
+            "amenities": [
+              "ντους"
+            ],
+            "confidence": "low",
+            "language": "el",
+            "batch": "shower_beach_discovery_2026_07",
+            "needsVerification": true,
+            "activities": {
+              "surfing": false
+            },
+            "sourceUrls": [
+              "https://www.openstreetmap.org/way/276178177",
+              "https://www.openstreetmap.org/?mlat=36.50676573846153&mlon=23.06237854230769#map=17/36.50676573846153/23.06237854230769"
+            ],
+            "sourceNotes": [
+              "Hidden-beach discovery (2026-07): Παραλία με 2 χαρτογραφημένο/α ντους (OSM amenity=shower) πάνω στο polygon, ~485μ ακτή, κοντά σε Νεάπολη. ΑΝΩΝΥΜΗ στο OSM — γι' αυτό δεν την έπιανε το coverage pipeline που ψάχνει με όνομα. Το όνομα προκύπτει από τον πλησιέστερο οικισμό (ΔΕΝ είναι επιβεβαιωμένο τοπωνύμιο). Συντεταγμένες: OSM way/276178177 (κέντρο polygon). Slot κοντά στο #1583 (Παραλία Νερατζιώνα, 5453m). Πρόσβαση/χαρακτηριστικά από οδηγούς — ΔΕΝ έχουν επιβεβαιωθεί επιτόπου."
+            ],
+            "googleMapsNavigation": {
+              "status": "verified",
+              "mode": "coordinates",
+              "checkedAt": "2026-07-23",
+              "method": "guide-discovery-v1"
+            }
+          }
         }
       ]
     },
@@ -124825,6 +125938,51 @@
               "protectedFrom": [],
               "confidence": "medium",
               "notes": "Generated from Natural Earth geospatial exposure facingDeg. This records shoreline-facing direction only; it does not verify shelter, low-wave behavior, or live sea conditions."
+            }
+          }
+        },
+        {
+          "id": 3139,
+          "name": "Παραλία Καλό Νερό",
+          "lat": 37.29667,
+          "lon": 21.69412,
+          "metadata": {
+            "access": {
+              "type": "unknown",
+              "label": "Άγνωστη πρόσβαση",
+              "notes": "Δεν έχει επιβεβαιωθεί επιτόπου."
+            },
+            "terrain": {
+              "types": [
+                "sand",
+                "pebbles"
+              ],
+              "label": "άμμος και βότσαλο"
+            },
+            "organized": true,
+            "shade": false,
+            "amenities": [
+              "ντους"
+            ],
+            "confidence": "low",
+            "language": "el",
+            "batch": "shower_beach_discovery_2026_07",
+            "needsVerification": true,
+            "activities": {
+              "surfing": false
+            },
+            "sourceUrls": [
+              "https://www.openstreetmap.org/way/295714556",
+              "https://www.openstreetmap.org/?mlat=37.296671020370376&mlon=21.694122872222223#map=17/37.296671020370376/21.694122872222223"
+            ],
+            "sourceNotes": [
+              "Hidden-beach discovery (2026-07): Παραλία με 2 χαρτογραφημένο/α ντους (OSM amenity=shower) πάνω στο polygon, ~1365μ ακτή, κοντά σε Καλό Νερό. ΑΝΩΝΥΜΗ στο OSM — γι' αυτό δεν την έπιανε το coverage pipeline που ψάχνει με όνομα. Το όνομα προκύπτει από τον πλησιέστερο οικισμό (ΔΕΝ είναι επιβεβαιωμένο τοπωνύμιο). Συντεταγμένες: OSM way/295714556 (κέντρο polygon). Slot κοντά στο #1654 (Kartela, 3484m). Πρόσβαση/χαρακτηριστικά από οδηγούς — ΔΕΝ έχουν επιβεβαιωθεί επιτόπου."
+            ],
+            "googleMapsNavigation": {
+              "status": "verified",
+              "mode": "coordinates",
+              "checkedAt": "2026-07-23",
+              "method": "guide-discovery-v1"
             }
           }
         }
@@ -180902,6 +182060,50 @@
               "checkedAt": "2026-07-25"
             }
           }
+        },
+        {
+          "id": 3143,
+          "name": "Παραλία Ιαλυσός",
+          "lat": 36.41981,
+          "lon": 28.17415,
+          "metadata": {
+            "access": {
+              "type": "unknown",
+              "label": "Άγνωστη πρόσβαση",
+              "notes": "Δεν έχει επιβεβαιωθεί επιτόπου."
+            },
+            "terrain": {
+              "types": [
+                "pebbles"
+              ],
+              "label": "βότσαλο"
+            },
+            "organized": true,
+            "shade": false,
+            "amenities": [
+              "ντους"
+            ],
+            "confidence": "low",
+            "language": "el",
+            "batch": "shower_beach_discovery_2026_07",
+            "needsVerification": true,
+            "activities": {
+              "surfing": false
+            },
+            "sourceUrls": [
+              "https://www.openstreetmap.org/way/1186277389",
+              "https://www.openstreetmap.org/?mlat=36.419808629032275&mlon=28.17414579032257#map=17/36.419808629032275/28.17414579032257"
+            ],
+            "sourceNotes": [
+              "Hidden-beach discovery (2026-07): Παραλία με 1 χαρτογραφημένο/α ντους (OSM amenity=shower) πάνω στο polygon, ~712μ ακτή, κοντά σε Ιαλυσός. ΑΝΩΝΥΜΗ στο OSM — γι' αυτό δεν την έπιανε το coverage pipeline που ψάχνει με όνομα. Το όνομα προκύπτει από τον πλησιέστερο οικισμό (ΔΕΝ είναι επιβεβαιωμένο τοπωνύμιο). Συντεταγμένες: OSM way/1186277389 (κέντρο polygon). Slot κοντά στο #2422 (Παραλία Ιξιάς, 3415m). Πρόσβαση/χαρακτηριστικά από οδηγούς — ΔΕΝ έχουν επιβεβαιωθεί επιτόπου."
+            ],
+            "googleMapsNavigation": {
+              "status": "verified",
+              "mode": "coordinates",
+              "checkedAt": "2026-07-23",
+              "method": "guide-discovery-v1"
+            }
+          }
         }
       ],
       "Symi": [
@@ -188390,6 +189592,107 @@
               "notes": "Generated from Natural Earth geospatial exposure facingDeg. This records shoreline-facing direction only; it does not verify shelter, low-wave behavior, or live sea conditions."
             }
           }
+        },
+        {
+          "id": 3144,
+          "name": "Παραλία Κρυονέρι",
+          "lat": 38.33479,
+          "lon": 21.58131,
+          "metadata": {
+            "access": {
+              "type": "unknown",
+              "label": "Άγνωστη πρόσβαση",
+              "notes": "Δεν έχει επιβεβαιωθεί επιτόπου."
+            },
+            "terrain": {
+              "types": [
+                "sand",
+                "pebbles"
+              ],
+              "label": "άμμος και βότσαλο"
+            },
+            "organized": true,
+            "shade": false,
+            "amenities": [
+              "ντους"
+            ],
+            "confidence": "low",
+            "language": "el",
+            "batch": "shower_beach_discovery_2026_07",
+            "needsVerification": true,
+            "activities": {
+              "surfing": false
+            },
+            "sourceUrls": [
+              "https://www.openstreetmap.org/way/91908051",
+              "https://www.openstreetmap.org/?mlat=38.334785703333324&mlon=21.581311130000007#map=17/38.334785703333324/21.581311130000007"
+            ],
+            "sourceNotes": [
+              "Hidden-beach discovery (2026-07): Παραλία με 1 χαρτογραφημένο/α ντους (OSM amenity=shower) πάνω στο polygon, ~246μ ακτή, κοντά σε Κρυονέρι. ΑΝΩΝΥΜΗ στο OSM — γι' αυτό δεν την έπιανε το coverage pipeline που ψάχνει με όνομα. Το όνομα προκύπτει από τον πλησιέστερο οικισμό (ΔΕΝ είναι επιβεβαιωμένο τοπωνύμιο). Συντεταγμένες: OSM way/91908051 (κέντρο polygon). Slot κοντά στο #2553 (Παραλία Λιμνοπούλα, 3193m). Πρόσβαση/χαρακτηριστικά από οδηγούς — ΔΕΝ έχουν επιβεβαιωθεί επιτόπου."
+            ],
+            "googleMapsNavigation": {
+              "status": "verified",
+              "mode": "coordinates",
+              "checkedAt": "2026-07-23",
+              "method": "guide-discovery-v1"
+            }
+          }
+        },
+        {
+          "id": 3145,
+          "name": "Παραλία Μύτικας",
+          "lat": 38.67008,
+          "lon": 20.95103,
+          "metadata": {
+            "access": {
+              "type": "unknown",
+              "label": "Άγνωστη πρόσβαση",
+              "notes": "Δεν έχει επιβεβαιωθεί επιτόπου."
+            },
+            "terrain": {
+              "types": [
+                "sand"
+              ],
+              "label": "άμμος"
+            },
+            "organized": true,
+            "shade": false,
+            "amenities": [
+              "ντους"
+            ],
+            "confidence": "low",
+            "language": "el",
+            "batch": "shower_beach_discovery_2026_07",
+            "needsVerification": true,
+            "activities": {
+              "surfing": false
+            },
+            "sourceUrls": [
+              "https://www.openstreetmap.org/way/362760071",
+              "https://www.openstreetmap.org/?mlat=38.670082573684205&mlon=20.95103305789474#map=17/38.670082573684205/20.95103305789474"
+            ],
+            "sourceNotes": [
+              "Hidden-beach discovery (2026-07): Παραλία με 3 χαρτογραφημένο/α ντους (OSM amenity=shower) πάνω στο polygon, ~416μ ακτή, κοντά σε Μύτικας. ΑΝΩΝΥΜΗ στο OSM — γι' αυτό δεν την έπιανε το coverage pipeline που ψάχνει με όνομα. Το όνομα προκύπτει από τον πλησιέστερο οικισμό (ΔΕΝ είναι επιβεβαιωμένο τοπωνύμιο). Συντεταγμένες: OSM way/362760071 (κέντρο polygon). Slot κοντά στο #2537 (Μυρτιά, 4564m). Πρόσβαση/χαρακτηριστικά από οδηγούς — ΔΕΝ έχουν επιβεβαιωθεί επιτόπου."
+            ],
+            "googleMapsNavigation": {
+              "status": "verified",
+              "mode": "coordinates",
+              "checkedAt": "2026-07-23",
+              "method": "guide-discovery-v1"
+            },
+            "hasShower": true,
+            "showerEvidence": {
+              "source": "osm",
+              "nearestMeters": 24,
+              "count": 3,
+              "osm": [
+                "https://www.openstreetmap.org/node/5752440747",
+                "https://www.openstreetmap.org/node/5753624545",
+                "https://www.openstreetmap.org/node/5752438201"
+              ],
+              "checkedAt": "2026-07-25"
+            }
+          }
         }
       ]
     },
@@ -190884,8 +192187,8 @@
         {
           "id": 2597,
           "name": "Μεγάλη Άμμος",
-          "lat": 39.18,
-          "lon": 23.8796,
+          "lat": 39.181275,
+          "lon": 23.878219,
           "metadata": {
             "access": {
               "type": "difficult_dirt_road",
@@ -190915,7 +192218,7 @@
               "https://www.allovergreece.com/Beaches/Descr/50/1113/el",
               "https://alonissos.gr/en/places-to-go/beaches-in-alonissos/"
             ],
-            "sourceNotes": "Alonissos tourist evidence pass 2026-05-29: AllOverGreece directly supports Megali Ammos Alonissos with difficult dirt-road/parking-plus-walk access and seasonal beach equipment; the official page includes Megali Ammos among named local beaches. Raised to high for static identity/access/service evidence only. Coordinates, windProfile, scoring, photos and live sea/wind/safety claims were not changed. Amenity corrected 2026-06-20 (amenity-evidence audit): the organized + beach-bar/sunbeds claim was an unverified default — Google Places shows zero food/drink POI within 180 m and the beach has <20/no Google reviews. Cleared organized=false and removed the bar/sunbed amenities; other amenities, coordinates, windProfile and claims untouched.",
+            "sourceNotes": "Alonissos tourist evidence pass 2026-05-29: AllOverGreece directly supports Megali Ammos Alonissos with difficult dirt-road/parking-plus-walk access and seasonal beach equipment; the official page includes Megali Ammos among named local beaches. Raised to high for static identity/access/service evidence only. Coordinates, windProfile, scoring, photos and live sea/wind/safety claims were not changed. Amenity corrected 2026-06-20 (amenity-evidence audit): the organized + beach-bar/sunbeds claim was an unverified default — Google Places shows zero food/drink POI within 180 m and the beach has <20/no Google reviews. Cleared organized=false and removed the bar/sunbed amenities; other amenities, coordinates, windProfile and claims untouched. Pin corrected 2026-07-25 (no-API): moved from 39.18000,23.87960 to 39.181275,23.878219 — pin is 185 m from the OSM beach outline (confidence OSM polygon 185 m).",
             "orientation": {
               "degrees": 305.3,
               "faces": [
@@ -194703,8 +196006,8 @@
         {
           "id": 2643,
           "name": "Παραλία Τσουγκριάς",
-          "lat": 39.129268,
-          "lon": 23.494793,
+          "lat": 39.129468,
+          "lon": 23.495821,
           "metadata": {
             "access": {
               "type": "boat_only",
@@ -194735,10 +196038,7 @@
               "https://www.skiathos.gr/index.php/en/paralies-3/tsougkrias.html",
               "https://www.allovergreece.com/Beaches/Descr/51/169/en"
             ],
-            "sourceNotes": [
-              "Phase 2 Batch 3D source check 2026-05-25: Skiathos municipality identifies Tsougrias as an offshore island near Skiathos port; Skiathos Boats backs boat anchoring/visit context and seasonal beach services on one beach.",
-              "Skiathos source confidence pass 2026-05-29: Skiathos municipality and AllOverGreece support Tsougrias as the offshore island beach area opposite Skiathos port, reached by boat, with seasonal beach-service context on one beach. Static metadata confidence promoted to high; coordinates, windProfile, scoring, photos, and live sea/wind claims were not changed."
-            ],
+            "sourceNotes": "Phase 2 Batch 3D source check 2026-05-25: Skiathos municipality identifies Tsougrias as an offshore island near Skiathos port; Skiathos Boats backs boat anchoring/visit context and seasonal beach services on one beach. Skiathos source confidence pass 2026-05-29: Skiathos municipality and AllOverGreece support Tsougrias as the offshore island beach area opposite Skiathos port, reached by boat, with seasonal beach-service context on one beach. Static metadata confidence promoted to high; coordinates, windProfile, scoring, photos, and live sea/wind claims were not changed. Pin corrected 2026-07-25 (no-API): moved from 39.12927,23.49479 to 39.129468,23.495821 — pin is 91 m from the OSM beach outline (confidence OSM polygon 91 m).",
             "orientation": {
               "degrees": 325.6,
               "faces": [

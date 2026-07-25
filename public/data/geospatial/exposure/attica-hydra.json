@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "generatedAt": "2026-06-26T22:46:02.125Z",
+  "generatedAt": "2026-07-25T14:20:01.399Z",
   "region": {
     "id": "attica-hydra",
     "name": "Hydra"
@@ -42,12 +42,12 @@
     "sectors": {
       "N": {
         "protected": 1,
-        "partial": 7,
-        "exposed": 0
+        "partial": 5,
+        "exposed": 2
       },
       "NE": {
-        "protected": 2,
-        "partial": 5,
+        "protected": 3,
+        "partial": 4,
         "exposed": 1
       },
       "E": {
@@ -66,8 +66,8 @@
         "exposed": 1
       },
       "SW": {
-        "protected": 7,
-        "partial": 0,
+        "protected": 6,
+        "partial": 1,
         "exposed": 1
       },
       "W": {
@@ -77,8 +77,8 @@
       },
       "NW": {
         "protected": 1,
-        "partial": 5,
-        "exposed": 2
+        "partial": 1,
+        "exposed": 6
       }
     }
   },
@@ -100,7 +100,7 @@
           "fetchKm": 0,
           "blockedRayRatio": 1,
           "onshore": -0.938,
-          "intensity": 1.9
+          "intensity": 1.8
         },
         "NE": {
           "level": "protected",
@@ -445,66 +445,66 @@
         "gr": "Μπίστι"
       },
       "coordinates": {
-        "lat": 37.30281,
-        "lon": 23.37579
+        "lat": 37.304899,
+        "lon": 23.377265
       },
-      "facingDeg": 328.4,
+      "facingDeg": 293.6,
       "sectors": {
         "N": {
           "level": "partial",
-          "fetchKm": 2.84,
+          "fetchKm": 4.8,
           "blockedRayRatio": 1,
-          "onshore": 0.852,
-          "intensity": 55.6
+          "onshore": 0.4,
+          "intensity": 42
         },
         "NE": {
-          "level": "partial",
-          "fetchKm": 2.32,
+          "level": "protected",
+          "fetchKm": 2.24,
           "blockedRayRatio": 1,
-          "onshore": 0.232,
-          "intensity": 37
+          "onshore": -0.365,
+          "intensity": 19.1
         },
         "E": {
           "level": "protected",
           "fetchKm": 0,
           "blockedRayRatio": 1,
-          "onshore": -0.524,
-          "intensity": 14.3
+          "onshore": -0.916,
+          "intensity": 2.5
         },
         "SE": {
           "level": "protected",
           "fetchKm": 0,
           "blockedRayRatio": 1,
-          "onshore": -0.973,
-          "intensity": 0.8
+          "onshore": -0.931,
+          "intensity": 2.1
         },
         "S": {
           "level": "protected",
-          "fetchKm": 0,
+          "fetchKm": 0.08,
           "blockedRayRatio": 1,
-          "onshore": -0.852,
-          "intensity": 4.4
+          "onshore": -0.4,
+          "intensity": 18
         },
         "SW": {
-          "level": "protected",
-          "fetchKm": 0,
+          "level": "partial",
+          "fetchKm": 4,
           "blockedRayRatio": 1,
-          "onshore": -0.232,
-          "intensity": 23
+          "onshore": 0.365,
+          "intensity": 40.9
         },
         "W": {
           "level": "partial",
-          "fetchKm": 4.08,
+          "fetchKm": 8.28,
           "blockedRayRatio": 1,
-          "onshore": 0.524,
-          "intensity": 45.7
+          "onshore": 0.916,
+          "intensity": 59.3
         },
         "NW": {
           "level": "partial",
-          "fetchKm": 4.56,
+          "fetchKm": 1.8,
           "blockedRayRatio": 1,
-          "onshore": 0.973,
-          "intensity": 59.2
+          "onshore": 0.931,
+          "intensity": 57.9
         }
       },
       "confidence": "high"
@@ -561,7 +561,7 @@
           "fetchKm": 5.52,
           "blockedRayRatio": 0.8,
           "onshore": -0.091,
-          "intensity": 28.9
+          "intensity": 29
         },
         "W": {
           "level": "exposed",

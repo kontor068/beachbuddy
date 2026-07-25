@@ -8,10 +8,22 @@ import { fileURLToPath } from 'node:url';
 
 const rootDir = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const write = process.argv.includes('--write');
-const STAMP = '2026-07-20';
+const argOf = (name, fallback) => {
+  const i = process.argv.indexOf(name);
+  return i === -1 ? fallback : process.argv[i + 1];
+};
+const IN = argOf('--in', path.join('reports', 'pin-verify-2026-07-20.json'));
+const STAMP = argOf('--stamp', '2026-07-20');
 const rd = (p) => (existsSync(p) ? JSON.parse(readFileSync(p, 'utf8').replace(/^﻿/, '')) : null);
 
-const verify = rd(path.join(rootDir, 'reports', 'pin-verify-2026-07-20.json')) || [];
+const raw = rd(path.isAbsolute(IN) ? IN : path.join(rootDir, IN)) || [];
+// Accept both the original flat array and the {results:[…]} shape emitted by
+// scripts/verifyPinDisplacement.mjs, so any verified report can be applied.
+const verify = (Array.isArray(raw) ? raw : raw.results || []).map((v) => ({
+  ...v,
+  evidence: v.evidence || v.reason || '',
+  confidence: v.confidence || (v.polygonDistM != null ? `OSM polygon ${v.polygonDistM} m` : 'verified'),
+}));
 // dedupe by id, prefer a MOVE verdict with a target
 const moveById = new Map();
 for (const v of verify) if (v.verdict === 'MOVE' && Array.isArray(v.target)) moveById.set(v.id, v);
