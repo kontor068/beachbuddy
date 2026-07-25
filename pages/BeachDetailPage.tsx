@@ -3,7 +3,7 @@ import {
   ArrowLeft, MapPin, Wind, Waves, Thermometer, Droplets, Leaf,
   Clock, Sun, Sunset, Backpack,
   Navigation, Share2, Heart, ChevronRight, ThumbsUp, ThumbsDown, CheckCircle2,
-  Camera, ExternalLink, Accessibility, AlertTriangle, Tent, Ticket, Euro, ScrollText, Compass, Ship
+  Camera, ExternalLink, Accessibility, AlertTriangle, Tent, Ticket, Euro, ScrollText, Compass, Ship, BadgeCheck
 } from 'lucide-react';
 import {
   Beach, LanguageCode, Translation, WindDirection,
@@ -34,6 +34,7 @@ import { WaveHeightGraphic, type HourlyWavePoint } from '../components/WaveHeigh
 import { resolveCoveAwareWaveHeightM } from '../utils/coveWaveGuard';
 import { CoveConditionsCard } from '../components/CoveConditionsCard';
 import { hasBoatOnlyAccess } from '../utils/access';
+import { getBeachCertification } from '../utils/certifiedBeaches';
 import { DayPlanSection, type DayPlanStop } from '../components/DayPlanSection';
 import { generateBeachExplanation as generateUiBeachExplanation } from '../utils/beachExplanation';
 import { describeSimpleWindSuitability, describeWindExposure } from '../utils/windExposureCopy';
@@ -735,7 +736,32 @@ export const BeachDetailPage: React.FC<BeachDetailPageProps> = ({
     campingWebsite: { en: 'Website', gr: 'Ιστότοπος', de: 'Website', it: 'Sito web', fr: 'Site web' },
     campingSource: { en: 'Campsite data from OpenStreetMap.', gr: 'Δεδομένα camping από το OpenStreetMap.', de: 'Campingplatz-Daten von OpenStreetMap.', it: 'Dati dei campeggi da OpenStreetMap.', fr: 'Donnees des campings via OpenStreetMap.' },
     paidEntrySource: { en: 'Source', gr: 'Πηγή', de: 'Quelle', it: 'Fonte', fr: 'Source' },
+    certifiedTitle: { en: 'CalmBeach Certified', gr: 'CalmBeach Certified', de: 'CalmBeach Certified', it: 'CalmBeach Certified', fr: 'CalmBeach Certified' },
+    certifiedBody: {
+      en: 'We have personally been to this beach and confirmed on site that its details — shelter, amenities, access and water — match what we show here.',
+      gr: 'Έχουμε πάει οι ίδιοι σε αυτή την παραλία κι επαληθεύσαμε επιτόπου ότι τα χαρακτηριστικά της — προστασία από τον άνεμο, παροχές, πρόσβαση και νερά — ανταποκρίνονται σε όσα δείχνουμε εδώ.',
+      de: 'Wir waren persönlich an diesem Strand und haben vor Ort bestätigt, dass die Angaben — Windschutz, Ausstattung, Zugang und Wasser — mit dem übereinstimmen, was wir hier zeigen.',
+      it: 'Siamo stati di persona in questa spiaggia e abbiamo verificato sul posto che le caratteristiche — riparo dal vento, servizi, accesso e acqua — corrispondono a quanto mostriamo qui.',
+      fr: 'Nous sommes allés en personne sur cette plage et avons vérifié sur place que ses caractéristiques — abri du vent, services, accès et eau — correspondent à ce que nous indiquons ici.',
+    },
+    certifiedVerifiedOn: { en: 'Verified on site', gr: 'Επιτόπου επαλήθευση', de: 'Vor Ort geprüft', it: 'Verificata sul posto', fr: 'Vérifié sur place' },
   };
+
+  // CalmBeach Certified — first-party "we were here" seal (utils/certifiedBeaches.ts).
+  const certification = getBeachCertification(beach.id);
+  const certifiedWhen = certification
+    ? (() => {
+        // Full YYYY-MM-DD → show the day; a YYYY-MM only → month + year.
+        const hasDay = /^\d{4}-\d{2}-\d{2}/.test(certification.visitedOn);
+        const iso = hasDay ? certification.visitedOn.slice(0, 10) : `${certification.visitedOn.slice(0, 7)}-01`;
+        const parsed = new Date(`${iso}T00:00:00`);
+        if (Number.isNaN(parsed.getTime())) return certification.visitedOn;
+        const locale = ({ en: 'en', gr: 'el', de: 'de', it: 'it', fr: 'fr' } as const)[language] ?? 'en';
+        return parsed.toLocaleDateString(locale, hasDay
+          ? { year: 'numeric', month: 'long', day: 'numeric' }
+          : { year: 'numeric', month: 'long' });
+      })()
+    : null;
 
   // Organized campsites within ~2.5 km (OSM). Detail metadata carries the full list (≤3);
   // the top-level field may be the summary-trimmed single — prefer whichever is richer.
@@ -1875,6 +1901,28 @@ export const BeachDetailPage: React.FC<BeachDetailPageProps> = ({
                   </a>
                 )}
               </div>
+            </div>
+          </section>
+        )}
+
+        {/* 7-cert. CalmBeach Certified — the first-party house seal. Shown only for beaches we
+            have physically visited and verified (curated in utils/certifiedBeaches.ts). */}
+        {certification && (
+          <section className="flex items-start gap-3 rounded-[1.75rem] border border-teal-200/70 bg-teal-50/50 p-4 shadow-sm shadow-teal-900/5">
+            <div className="shrink-0 rounded-2xl bg-[#007a83] p-2.5 text-white shadow-sm">
+              <BadgeCheck className="h-5 w-5" aria-hidden />
+            </div>
+            <div className="min-w-0 space-y-1.5">
+              <h3 className="font-bold text-teal-950">{copy.certifiedTitle[language]}</h3>
+              <p className="text-sm font-semibold leading-snug text-teal-900">{copy.certifiedBody[language]}</p>
+              {certification.note && (
+                <p className="border-l-2 border-teal-300 pl-3 text-sm font-semibold italic leading-snug text-teal-800">
+                  «{certification.note}»
+                </p>
+              )}
+              <p className="text-xs font-bold text-teal-700">
+                {copy.certifiedVerifiedOn[language]}: {certifiedWhen}
+              </p>
             </div>
           </section>
         )}

@@ -13,6 +13,7 @@ import { getBeachPhotoLookup } from '../services/beachPhotos';
 import { trackEvent, buildBeachExposureParams } from '../services/analyticsService';
 import { ExposureLevel } from '../utils/windExposure';
 import { hasBoatOnlyAccess, hasDirtRoadAccess } from '../utils/access';
+import { isCalmBeachCertified } from '../utils/certifiedBeaches';
 import { getBoatRideMotionLevel, type BoatRideMotionLevel } from '../utils/boatRideMotion';
 import { getSelectedDayPrefix, getSelectedDaySentencePrefix, getSelectedHourPrefix, isSelectedDateToday } from '../utils/dateLabels';
 import { getLocalizedCopy, languageToLocale } from '../utils/i18n';
@@ -111,6 +112,9 @@ type CardCopy = {
   blueFlag: string;
   accessible: string;
   camping: string;
+  /** CalmBeach Certified — first-party "we were here and verified it" seal. */
+  certified: string;
+  certifiedA11y: string;
   dirtRoad: string;
   localExposureCheck: string;
   moreOpenToWind: string;
@@ -175,6 +179,8 @@ const cardCopy: Record<LanguageCode, CardCopy> = {
     blueFlag: 'Blue Flag',
     accessible: 'Accessible',
     camping: 'Camping',
+    certified: 'CalmBeach Certified',
+    certifiedA11y: 'CalmBeach Certified — we visited this beach and verified its details on site',
     dirtRoad: 'Dirt road',
     localExposureCheck: 'Check local shelter',
     moreOpenToWind: 'A bit exposed',
@@ -234,6 +240,7 @@ const cardCopy: Record<LanguageCode, CardCopy> = {
       cafeNearby: 'Cafe',
       snackCanteen: 'Canteen',
       parking: 'Parking',
+      shower: 'Shower',
       organizedFacilities: 'Facilities',
       noFacilities: 'No facilities',
       seasonalFacilities: 'Seasonal',
@@ -248,6 +255,8 @@ const cardCopy: Record<LanguageCode, CardCopy> = {
     blueFlag: 'Γαλάζια Σημαία',
     accessible: 'Προσβάσιμη ΑμεΑ',
     camping: 'Camping',
+    certified: 'CalmBeach Certified',
+    certifiedA11y: 'CalmBeach Certified — το επισκεφθήκαμε κι επαληθεύσαμε επιτόπου τα χαρακτηριστικά του',
     dirtRoad: 'Χωματόδρομος',
     localExposureCheck: 'Έλεγχος τοπικής προστασίας',
     moreOpenToWind: 'Λίγο εκτεθειμένη στον άνεμο',
@@ -307,6 +316,7 @@ const cardCopy: Record<LanguageCode, CardCopy> = {
       cafeNearby: 'Καφέ',
       snackCanteen: 'Καντίνα',
       parking: 'Parking',
+      shower: 'Ντους',
       organizedFacilities: 'Παροχές',
       noFacilities: 'Χωρίς παροχές',
       seasonalFacilities: 'Εποχικές παροχές',
@@ -321,6 +331,8 @@ const cardCopy: Record<LanguageCode, CardCopy> = {
     blueFlag: 'Pavillon Bleu',
     accessible: 'Accessible PMR',
     camping: 'Camping',
+    certified: 'CalmBeach Certified',
+    certifiedA11y: 'CalmBeach Certified — nous avons visité cette plage et vérifié ses caractéristiques sur place',
     dirtRoad: 'Piste',
     localExposureCheck: "Exposition locale à vérifier",
     moreOpenToWind: 'Plus ouverte au vent',
@@ -380,6 +392,7 @@ const cardCopy: Record<LanguageCode, CardCopy> = {
       cafeNearby: 'Café',
       snackCanteen: 'Buvette',
       parking: 'Parking',
+      shower: 'Douche',
       organizedFacilities: 'Services',
       noFacilities: 'Sans services',
       seasonalFacilities: 'Saisonnier',
@@ -394,6 +407,8 @@ const cardCopy: Record<LanguageCode, CardCopy> = {
     blueFlag: 'Blaue Flagge',
     accessible: 'Barrierefrei',
     camping: 'Camping',
+    certified: 'CalmBeach Certified',
+    certifiedA11y: 'CalmBeach Certified — wir waren vor Ort und haben die Angaben persönlich geprüft',
     dirtRoad: 'Schotterweg',
     localExposureCheck: 'Lokale Exposition prüfen',
     moreOpenToWind: 'Offener zum Wind',
@@ -453,6 +468,7 @@ const cardCopy: Record<LanguageCode, CardCopy> = {
       cafeNearby: 'Café',
       snackCanteen: 'Imbiss',
       parking: 'Parken',
+      shower: 'Dusche',
       organizedFacilities: 'Ausstattung',
       noFacilities: 'Keine Ausstattung',
       seasonalFacilities: 'Saisonal',
@@ -467,6 +483,8 @@ const cardCopy: Record<LanguageCode, CardCopy> = {
     blueFlag: 'Bandiera Blu',
     accessible: 'Accessibile',
     camping: 'Campeggio',
+    certified: 'CalmBeach Certified',
+    certifiedA11y: 'CalmBeach Certified — abbiamo visitato la spiaggia e verificato le caratteristiche sul posto',
     dirtRoad: 'Strada sterrata',
     localExposureCheck: 'Verifica esposizione locale',
     moreOpenToWind: 'Più aperta al vento',
@@ -526,6 +544,7 @@ const cardCopy: Record<LanguageCode, CardCopy> = {
       cafeNearby: 'Caffè',
       snackCanteen: 'Chiosco',
       parking: 'Parcheggio',
+      shower: 'Doccia',
       organizedFacilities: 'Servizi',
       noFacilities: 'Senza servizi',
       seasonalFacilities: 'Stagionale',
@@ -745,6 +764,23 @@ const ProtectedBeachMarker: React.FC<{ language: LanguageCode; selectedDate?: Da
         ? <Waves className="h-3 w-3 shrink-0" aria-hidden="true" />
         : <Shield className="h-3 w-3 shrink-0" aria-hidden="true" />}
       <span className="whitespace-nowrap">{label}</span>
+    </span>
+  );
+};
+
+// "We were here and verified it" — the house seal, in brand teal so it reads as OUR
+// first-party guarantee, distinct from the sky (Blue Flag / accessible) credentials.
+const CertifiedBadge: React.FC<{ language: LanguageCode; compact?: boolean }> = ({ language, compact = false }) => {
+  const copy = getLocalizedCopy(language, cardCopy);
+
+  return (
+    <span
+      title={copy.certifiedA11y}
+      aria-label={copy.certifiedA11y}
+      className={`inline-flex shrink-0 items-center gap-1 rounded-full border border-teal-200 bg-white/90 font-bold leading-none text-[#007a83] shadow-sm ring-1 ring-black/5 backdrop-blur-md ${compact ? 'min-h-7 px-2 py-1 text-[10px]' : 'min-h-8 px-2.5 py-1 text-xs'}`}
+    >
+      <BadgeCheck className="h-3.5 w-3.5 shrink-0 fill-teal-100 text-[#007a83]" aria-hidden="true" />
+      <span className="whitespace-nowrap">{copy.certified}</span>
     </span>
   );
 };
@@ -1158,6 +1194,7 @@ export const BeachCard: React.FC<BeachCardProps> = ({
   const realVisitorRating = typeof realGoogleRating === 'number' && Number.isFinite(realGoogleRating) ? realGoogleRating : null;
   const beachDisplayName = displayBeachName(name, language);
   const isBoatOnlyBeach = hasBoatOnlyAccess(beach);
+  const isCertified = isCalmBeachCertified(beach.id);
   const hasBlueFlag2026 = beach.blueFlag2026?.awarded === true || metadata?.blueFlag2026?.awarded === true;
   // Badge only for currently-active ramps (same safe rule as the accessibility filter).
   const seatracAccess = beach.seatrac ?? metadata?.seatrac;
@@ -1647,6 +1684,7 @@ export const BeachCard: React.FC<BeachCardProps> = ({
                 </span>
               )
             )}
+            {isCertified && <CertifiedBadge language={language} />}
             {hasBlueFlag2026 && <BlueFlagBadge language={language} />}
             {hasAccessibleRamp && <AccessibilityBadge language={language} />}
             {hasNearbyCamping && <CampingBadge language={language} />}
@@ -1827,6 +1865,7 @@ export const BeachCard: React.FC<BeachCardProps> = ({
                 : (isExposed ? exposureBadgeLabel : localizedCardCopy.localExposureCheck)}
             </div>
           )}
+          {isCertified && <CertifiedBadge language={language} compact />}
           {hasBlueFlag2026 && <BlueFlagBadge language={language} compact />}
           {hasAccessibleRamp && <AccessibilityBadge language={language} compact />}
           {hasNearbyCamping && <CampingBadge language={language} compact />}
