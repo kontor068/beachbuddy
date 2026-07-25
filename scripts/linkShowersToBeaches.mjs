@@ -66,6 +66,17 @@ const geomConfirms = (s) => {
   return g && typeof g.polyDistM === 'number' && g.polyDistM <= PROMOTE_POLY_M;
 };
 
+// Name-match confirmation (the "do the 36" pass): a handful of residual showers sit just
+// beyond the polygon buffer (45-59 m, in the campground backshore) but their OSM name names
+// the beach itself, which unambiguously ties the shower to THIS beach → promote to high.
+// Only cases where the facility name contains the beach name; campsite/wrong-beach names that
+// did NOT match were deliberately left at medium/low (a false "has shower" is worse than a miss).
+const NAME_CONFIRMED_HIGH = new Map([
+  [922, 'shower way/1327618649 "Camping Sofas" — names Σοφάς beach'],
+  [430, 'shower node/5081651699 "Ακτή ονείρου Camping-Bungalows" — names Oneiro/Ακτή ονείρου beach'],
+  [1098, 'shower node/26860001 "Camping Karavomilos Beach" — names Καραβόμυλος beach'],
+]);
+
 // Flatten beaches once with coords for the nearest-beach search.
 const beaches = [];
 for (const { beach, region } of iterBeaches(data)) {
@@ -108,7 +119,8 @@ const TIER_RANK = { high: 3, medium: 2, low: 1 };
 const beachVerdicts = [];
 for (const { beach, region, showers: list } of perBeach.values()) {
   list.sort((a, b) => a.m - b.m);
-  const bestTier = list.reduce((t, x) => (TIER_RANK[x.tier] > TIER_RANK[t] ? x.tier : t), 'low');
+  let bestTier = list.reduce((t, x) => (TIER_RANK[x.tier] > TIER_RANK[t] ? x.tier : t), 'low');
+  if (NAME_CONFIRMED_HIGH.has(beach.id)) bestTier = 'high'; // curated name-match confirmation
   beachVerdicts.push({
     beachId: beach.id,
     beach: beach.name,

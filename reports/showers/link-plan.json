@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-07-22T20:46:36.008Z",
+  "generatedAt": "2026-07-25T09:35:47.586Z",
   "thresholds": {
     "highM": 80,
     "mediumM": 150,
@@ -10,11 +10,11 @@
   "showersOrphaned": 574,
   "beachesWithShower": 239,
   "byTier": {
-    "high": 203,
-    "medium": 15,
+    "high": 206,
+    "medium": 12,
     "low": 21
   },
-  "autoApplyHigh": 203,
+  "autoApplyHigh": 206,
   "byRegion": {
     "Crete": {
       "high": 44,
@@ -27,8 +27,8 @@
       "low": 3
     },
     "Ionian Islands": {
-      "high": 29,
-      "medium": 2,
+      "high": 30,
+      "medium": 1,
       "low": 6
     },
     "Peloponnese": {
@@ -37,8 +37,8 @@
       "low": 2
     },
     "Central Macedonia": {
-      "high": 11,
-      "medium": 3,
+      "high": 12,
+      "medium": 2,
       "low": 2
     },
     "Attica": {
@@ -52,8 +52,8 @@
       "low": 1
     },
     "Epirus": {
-      "high": 7,
-      "medium": 2,
+      "high": 8,
+      "medium": 1,
       "low": 0
     },
     "East Macedonia and Thrace": {
@@ -3177,6 +3177,24 @@
       ]
     },
     {
+      "beachId": 922,
+      "beach": "Σοφάς",
+      "region": "Epirus",
+      "tier": "high",
+      "showerCount": 1,
+      "nearestM": 87,
+      "evidence": [
+        {
+          "osmUrl": "https://www.openstreetmap.org/way/1327618649",
+          "kind": "shower-tag",
+          "distanceMeters": 87,
+          "tier": "medium",
+          "polyDistM": 59,
+          "name": "Camping Sofas"
+        }
+      ]
+    },
+    {
       "beachId": 979,
       "beach": "Παραλία Άγιος Γόρδης",
       "region": "Ionian Islands",
@@ -3345,6 +3363,24 @@
           "tier": "high",
           "polyDistM": 0,
           "fee": "yes"
+        }
+      ]
+    },
+    {
+      "beachId": 430,
+      "beach": "Oneiro",
+      "region": "Central Macedonia",
+      "tier": "high",
+      "showerCount": 1,
+      "nearestM": 91,
+      "evidence": [
+        {
+          "osmUrl": "https://www.openstreetmap.org/node/5081651699",
+          "kind": "shower-tag",
+          "distanceMeters": 91,
+          "tier": "medium",
+          "polyDistM": 50,
+          "name": "Ακτή ονείρου Camping-Bungalows"
         }
       ]
     },
@@ -3894,6 +3930,24 @@
           "distanceMeters": 106,
           "tier": "high",
           "polyDistM": 0
+        }
+      ]
+    },
+    {
+      "beachId": 1098,
+      "beach": "Καραβόμυλος",
+      "region": "Ionian Islands",
+      "tier": "high",
+      "showerCount": 1,
+      "nearestM": 106,
+      "evidence": [
+        {
+          "osmUrl": "https://www.openstreetmap.org/node/26860001",
+          "kind": "shower-tag",
+          "distanceMeters": 106,
+          "tier": "medium",
+          "polyDistM": 45,
+          "name": "Camping Karavomilos Beach"
         }
       ]
     },
@@ -4797,24 +4851,6 @@
       ]
     },
     {
-      "beachId": 922,
-      "beach": "Σοφάς",
-      "region": "Epirus",
-      "tier": "medium",
-      "showerCount": 1,
-      "nearestM": 87,
-      "evidence": [
-        {
-          "osmUrl": "https://www.openstreetmap.org/way/1327618649",
-          "kind": "shower-tag",
-          "distanceMeters": 87,
-          "tier": "medium",
-          "polyDistM": 59,
-          "name": "Camping Sofas"
-        }
-      ]
-    },
-    {
       "beachId": 679,
       "beach": "Καλυψώ",
       "region": "Crete",
@@ -4856,24 +4892,6 @@
       ]
     },
     {
-      "beachId": 430,
-      "beach": "Oneiro",
-      "region": "Central Macedonia",
-      "tier": "medium",
-      "showerCount": 1,
-      "nearestM": 91,
-      "evidence": [
-        {
-          "osmUrl": "https://www.openstreetmap.org/node/5081651699",
-          "kind": "shower-tag",
-          "distanceMeters": 91,
-          "tier": "medium",
-          "polyDistM": 50,
-          "name": "Ακτή ονείρου Camping-Bungalows"
-        }
-      ]
-    },
-    {
       "beachId": 477,
       "beach": "Παραλία Ποσείδι",
       "region": "Central Macedonia",
@@ -4905,24 +4923,6 @@
           "tier": "medium",
           "polyDistM": 63,
           "name": "Κάμπιγκ Ποσειδών"
-        }
-      ]
-    },
-    {
-      "beachId": 1098,
-      "beach": "Καραβόμυλος",
-      "region": "Ionian Islands",
-      "tier": "medium",
-      "showerCount": 1,
-      "nearestM": 106,
-      "evidence": [
-        {
-          "osmUrl": "https://www.openstreetmap.org/node/26860001",
-          "kind": "shower-tag",
-          "distanceMeters": 106,
-          "tier": "medium",
-          "polyDistM": 45,
-          "name": "Camping Karavomilos Beach"
         }
       ]
     },
