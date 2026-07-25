@@ -94,11 +94,17 @@ export const recordPageview = (type: string = 'page'): void => {
   // coarse page-type, the new/returning flag, and the section. Query params are the
   // payload so navigator.sendBeacon can post with no body (the most reliable transport,
   // it survives the unload of the page). None of this identifies the visitor.
+  // The HTTP Referer header on a same-origin beacon is OUR OWN page URL, so the
+  // server can't see where the visit came from — pass document.referrer (the real
+  // origin of the visit: google.com, facebook, empty for direct) explicitly. It is
+  // set at document load and survives SPA navigations, and only its hostname is
+  // ever kept server-side.
   const url =
     `${HIT_ENDPOINT}?t=${encodeURIComponent(type.slice(0, 24))}` +
     `&v=${visitorKind()}` +
     `&s=${encodeURIComponent(sectionFromPath())}` +
-    `&f=${firstOfDay()}`;
+    `&f=${firstOfDay()}` +
+    `&r=${encodeURIComponent((document.referrer || '').slice(0, 200))}`;
 
   try {
     if (typeof navigator !== 'undefined' && typeof navigator.sendBeacon === 'function') {
