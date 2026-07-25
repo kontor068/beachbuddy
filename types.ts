@@ -252,6 +252,9 @@ export interface Beach {
     sunbeds: boolean;
     restaurant: boolean;
     parking: boolean;
+    /** Beach has a rinse shower (from OSM amenity=shower on/at the beach). Under-claimed:
+     *  true only for high-confidence OSM matches; false/absent means "not that we know of". */
+    shower: boolean;
   };
   characteristics: {
     shallowWaters: boolean;
@@ -838,6 +841,7 @@ export type Translation = {
     sunbeds: string;
     restaurant: string;
     parking: string;
+    shower: string;
     sandy: string;
     pebbles: string;
     quiet: string;

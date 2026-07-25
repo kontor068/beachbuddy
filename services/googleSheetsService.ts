@@ -88,7 +88,8 @@ export const fetchIslandsDirectlyFromSheets = async (): Promise<Island[]> => {
                     beachBar: hasBeachBar,
                     sunbeds: getDeterministicValue(beachId, 'sunbeds') > 0.5,
                     restaurant: getDeterministicValue(beachId, 'restaurant') > 0.5,
-                    parking: getDeterministicValue(beachId, 'parking') > 0.5
+                    parking: getDeterministicValue(beachId, 'parking') > 0.5,
+                    shower: false // no deterministic guess for showers
                 },
                 characteristics: { deepWaters: isDeep, shallowWaters: !isDeep },
                 waterDepth: isDeep ? 'deep' : 'shallow',

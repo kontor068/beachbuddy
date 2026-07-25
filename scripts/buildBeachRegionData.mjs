@@ -476,6 +476,10 @@ const buildBeach = (rawBeach, island) => {
   const hasParking = metadata ? amenityTextIncludesAny(metadata.amenities, PARKING_AMENITY_TERMS) : getDeterministicValue(rawBeach.id, 'parking') > 0.4;
   const hasSunbeds = metadata ? metadata.organized && amenityTextIncludesAny(metadata.amenities, SUNBED_AMENITY_TERMS) : organized || getDeterministicValue(rawBeach.id, 'sunbeds') > 0.5;
   const hasRestaurant = metadata ? hasTaverna || amenityTextIncludesAny(metadata.amenities, RESTAURANT_AMENITY_TERMS) : hasTaverna || getDeterministicValue(rawBeach.id, 'restaurant') > 0.7;
+  // Rinse shower: physical OSM signal only (metadata.hasShower, set by linkShowersToBeaches
+  // for high-confidence amenity=shower matches). No deterministic fallback — we never guess a
+  // shower; absence means "not that we know of" (under-claim, per the reliability mandate).
+  const hasShower = metadata ? metadata.hasShower === true : false;
   // 'quiet' = how few people visit, driven by Google review count (popularity). A beach is quiet
   // when we HAVE Google data and it has fewer than QUIET_REVIEW_THRESHOLD reviews. Beaches with no
   // popularity data are "unknown", not quiet (we don't claim it without evidence). Single meaning:
@@ -528,6 +532,7 @@ const buildBeach = (rawBeach, island) => {
       sunbeds: hasSunbeds,
       restaurant: hasRestaurant,
       parking: hasParking,
+      shower: hasShower,
     },
     beachType,
     characteristics: {

@@ -1,0 +1,10705 @@
+{
+ "generatedAt": "2026-07-22T19:14:28.654Z",
+ "scope": "national",
+ "query": "amenity=shower | (natural=beach|beach_resort)[shower], area=GR",
+ "elements": [
+  {
+   "type": "node",
+   "id": 26860001,
+   "lat": 38.2508097,
+   "lon": 20.6379173,
+   "tags": {
+    "addr:city": "Sami",
+    "addr:postcode": "28080",
+    "caravans": "yes",
+    "description:en": "40.000 m2 site with all the pitches separated by bushes and flowers. (source:website)",
+    "dog": "yes",
+    "drinking_water": "yes",
+    "internet_access": "wlan",
+    "name": "Camping Karavomilos Beach",
+    "phone": "+30 26470 22480",
+    "power_supply": "yes",
+    "shower": "yes",
+    "tents": "yes",
+    "toilets": "yes",
+    "toilets:wheelchair": "no",
+    "tourism": "camp_site",
+    "website": "https://www.camping-karavomilos.gr/",
+    "wheelchair": "yes"
+   }
+  },
+  {
+   "type": "node",
+   "id": 26860012,
+   "lat": 38.1500298,
+   "lon": 21.5774237,
+   "tags": {
+    "addr:housenumber": "1",
+    "addr:postcode": "25002",
+    "addr:street": "Kato Alissos",
+    "capacity": "180",
+    "caravans": "yes",
+    "drinking_water": "yes",
+    "email": "info@camping-kato-alissos.gr",
+    "int_name": "Kato Alissos",
+    "internet_access": "yes",
+    "name": "Κάτω Αλισσός",
+    "name:el": "Κάτω Αλισσός",
+    "name:en": "Kato Alissos",
+    "name:ru": "Като Алисос",
+    "operator": "Ntemiris Konstantinos",
+    "payment:american_express": "yes",
+    "payment:cash": "yes",
+    "payment:credit_cards": "yes",
+    "payment:maestro": "yes",
+    "payment:mastercard": "yes",
+    "payment:visa": "yes",
+    "payment:visa_debit": "yes",
+    "payment:visa_electron": "yes",
+    "phone": "+30-2693071249",
+    "power_supply": "yes",
+    "sanitary_dump_station": "yes",
+    "shower": "yes",
+    "tents": "yes",
+    "toilets": "yes",
+    "tourism": "camp_site",
+    "website": "https://www.camping-kato-alissos.gr/",
+    "wheelchair": "yes"
+   }
+  },
+  {
+   "type": "node",
+   "id": 26860076,
+   "lat": 36.9818887,
+   "lon": 21.9289075,
+   "tags": {
+    "cabins": "yes",
+    "caravans": "yes",
+    "email": "info@campingpetalidi.gr",
+    "internet_access": "wlan",
+    "internet_access:fee": "no",
+    "name": "Petalidi Beach",
+    "opening_hours": "Apr 1 - Oct 31",
+    "phone": "+30 2722 031154",
+    "shower": "yes",
+    "tents": "yes",
+    "toilets": "yes",
+    "tourism": "camp_site",
+    "website": "http://www.campingpetalidi.gr/"
+   }
+  },
+  {
+   "type": "node",
+   "id": 26860092,
+   "lat": 38.8323399,
+   "lon": 23.1990155,
+   "tags": {
+    "caravans": "yes",
+    "drinking_water": "yes",
+    "name": "Camping Rovies",
+    "operator": "Thanos",
+    "power_supply": "yes",
+    "shower": "yes",
+    "tents": "yes",
+    "toilets": "yes",
+    "tourism": "camp_site"
+   }
+  },
+  {
+   "type": "node",
+   "id": 26860094,
+   "lat": 40.0425,
+   "lon": 23.813611,
+   "tags": {
+    "dog": "leashed",
+    "drinking_water": "yes",
+    "fee": "yes",
+    "name": "Stavros",
+    "phone": "+30 23750 71375",
+    "shower": "yes",
+    "toilets": "yes",
+    "tourism": "camp_site",
+    "website": "https://campingstavros.gr"
+   }
+  },
+  {
+   "type": "node",
+   "id": 26860101,
+   "lat": 38.320833,
+   "lon": 21.971944,
+   "tags": {
+    "caravans": "yes",
+    "drinking_water": "yes",
+    "name": "Tsolis camp",
+    "name:en": "Tsolis Camping (Patras)",
+    "payment:mastercard": "yes",
+    "payment:visa": "yes",
+    "phone": "+30 26910 31469",
+    "power_supply": "yes",
+    "shower": "yes",
+    "tents": "yes",
+    "tourism": "camp_site",
+    "website": "https://www.campingtsolis.gr/"
+   }
+  },
+  {
+   "type": "node",
+   "id": 250689752,
+   "lat": 35.5182757,
+   "lon": 24.0189196,
+   "tags": {
+    "amenity": "toilets",
+    "check_date": "2022-09-10",
+    "fee": "no",
+    "female": "yes",
+    "male": "yes",
+    "paper_supplied": "yes",
+    "shower": "yes",
+    "toilets:handwashing": "yes",
+    "wheelchair": "yes"
+   }
+  },
+  {
+   "type": "node",
+   "id": 287480713,
+   "lat": 39.3096258,
+   "lon": 23.109583,
+   "tags": {
+    "addr:city": "Κάτω Γατζέα",
+    "addr:postcode": "37300",
+    "addr:street": "Εθνική Οδός Βόλου - Τσαγκαράδας",
+    "cabins": "yes",
+    "caravans": "yes",
+    "email": "info@camping-sikia.gr",
+    "internet_access": "wlan",
+    "name": "Sikia",
+    "name:el": "Συκιά",
+    "name:en": "Sikia Camping (Volos)",
+    "phone": "+30 2423 022279; +30 2423 022081",
+    "shower": "yes",
+    "tents": "yes",
+    "toilets": "yes",
+    "tourism": "camp_site",
+    "website": "https://camping-sikia.gr/",
+    "wheelchair": "yes"
+   }
+  },
+  {
+   "type": "node",
+   "id": 302078689,
+   "lat": 35.4150591,
+   "lon": 23.5599692,
+   "tags": {
+    "caravans": "yes",
+    "created_by": "Potlatch 0.10c",
+    "drinking_water": "no",
+    "name": "Sunset",
+    "power_supply": "no",
+    "sanitary_dump_station": "no",
+    "shower": "yes",
+    "tents": "yes",
+    "toilets": "no",
+    "tourism": "camp_site"
+   }
+  },
+  {
+   "type": "node",
+   "id": 794795956,
+   "lat": 35.2717497,
+   "lon": 23.5424467,
+   "tags": {
+    "amenity": "shower",
+    "fee": "no"
+   }
+  },
+  {
+   "type": "node",
+   "id": 913721079,
+   "lat": 37.8219123,
+   "lon": 20.8627014,
+   "tags": {
+    "amenity": "shower"
+   }
+  },
+  {
+   "type": "node",
+   "id": 925429147,
+   "lat": 37.7268674,
+   "lon": 20.9891667,
+   "tags": {
+    "amenity": "shower"
+   }
+  },
+  {
+   "type": "node",
+   "id": 1278885091,
+   "lat": 35.1871705,
+   "lon": 25.7158099,
+   "tags": {
+    "access": "yes",
+    "amenity": "shower",
+    "check_date": "2025-09-22",
+    "fee": "no",
+    "supervised": "no"
+   }
+  },
+  {
+   "type": "node",
+   "id": 1338608628,
+   "lat": 39.6483512,
+   "lon": 19.8485611,
+   "tags": {
+    "amenity": "shower",
+    "seamark:small_craft_facility:category": "showers",
+    "seamark:type": "small_craft_facility"
+   }
+  },
+  {
+   "type": "node",
+   "id": 1338608654,
+   "lat": 39.6462804,
+   "lon": 19.8533799,
+   "tags": {
+    "amenity": "shower",
+    "seamark:small_craft_facility:category": "showers",
+    "seamark:type": "small_craft_facility"
+   }
+  },
+  {
+   "type": "node",
+   "id": 1339643508,
+   "lat": 38.8305544,
+   "lon": 20.711283,
+   "tags": {
+    "amenity": "shower",
+    "fee": "no"
+   }
+  },
+  {
+   "type": "node",
+   "id": 1340038270,
+   "lat": 39.6242576,
+   "lon": 19.9284155,
+   "tags": {
+    "access": "customers",
+    "amenity": "shower",
+    "check_date": "2026-05-05",
+    "fee": "no",
+    "hot_water": "yes",
+    "seamark:small_craft_facility:category": "showers",
+    "seamark:type": "small_craft_facility"
+   }
+  },
+  {
+   "type": "node",
+   "id": 1350115794,
+   "lat": 37.0607094,
+   "lon": 25.3573478,
+   "tags": {
+    "caravans": "yes",
+    "email": "maragas@naxos-island.com",
+    "internet_access": "wlan",
+    "internet_access:fee": "no",
+    "name": "Maragas Camping",
+    "phone": "+30 22850 42552",
+    "shower": "yes",
+    "tents": "yes",
+    "toilets": "yes",
+    "tourism": "camp_site",
+    "website": "https://www.maragascamping.gr"
+   }
+  },
+  {
+   "type": "node",
+   "id": 1375217925,
+   "lat": 36.4487056,
+   "lon": 28.2146661,
+   "tags": {
+    "amenity": "shower",
+    "fee": "no",
+    "supervised": "no"
+   }
+  },
+  {
+   "type": "node",
+   "id": 1375293109,
+   "lat": 36.0947152,
+   "lon": 28.0859134,
+   "tags": {
+    "amenity": "shower"
+   }
+  },
+  {
+   "type": "node",
+   "id": 1400250626,
+   "lat": 36.3496535,
+   "lon": 27.9482645,
+   "tags": {
+    "amenity": "shower"
+   }
+  },
+  {
+   "type": "node",
+   "id": 1400250630,
+   "lat": 36.3499386,
+   "lon": 27.9490252,
+   "tags": {
+    "amenity": "shower"
+   }
+  },
+  {
+   "type": "node",
+   "id": 1400250632,
+   "lat": 36.3497921,
+   "lon": 27.9486186,
+   "tags": {
+    "amenity": "shower"
+   }
+  },
+  {
+   "type": "node",
+   "id": 1407327329,
+   "lat": 38.0673325,
+   "lon": 20.7537264,
+   "tags": {
+    "amenity": "shower",
+    "fee": "no",
+    "hot_water": "no",
+    "supervised": "no"
+   }
+  },
+  {
+   "type": "node",
+   "id": 1407327343,
+   "lat": 38.0676143,
+   "lon": 20.7548784,
+   "tags": {
+    "amenity": "shower",
+    "fee": "no",
+    "hot_water": "no",
+    "supervised": "no"
+   }
+  },
+  {
+   "type": "node",
+   "id": 1419915906,
+   "lat": 38.4734646,
+   "lon": 22.4576105,
+   "tags": {
+    "amenity": "shower"
+   }
+  },
+  {
+   "type": "node",
+   "id": 1419915909,
+   "lat": 38.473536,
+   "lon": 22.4577715,
+   "tags": {
+    "amenity": "shower"
+   }
+  },
+  {
+   "type": "node",
+   "id": 1419925782,
+   "lat": 38.4734509,
+   "lon": 22.4588282,
+   "tags": {
+    "amenity": "shower"
+   }
+  },
+  {
+   "type": "node",
+   "id": 1421704277,
+   "lat": 38.6727604,
+   "lon": 20.711287,
+   "tags": {
+    "amenity": "shower"
+   }
+  },
+  {
+   "type": "node",
+   "id": 1448657840,
+   "lat": 39.2367783,
+   "lon": 20.4805105,
+   "tags": {
+    "amenity": "shower"
+   }
+  },
+  {
+   "type": "node",
+   "id": 1448657884,
+   "lat": 39.2379124,
+   "lon": 20.4807171,
+   "tags": {
+    "amenity": "shower"
+   }
+  },
+  {
+   "type": "node",
+   "id": 1448658040,
+   "lat": 39.2387612,
+   "lon": 20.480798,
+   "tags": {
+    "amenity": "shower"
+   }
+  },
+  {
+   "type": "node",
+   "id": 1448658055,
+   "lat": 39.2395335,
+   "lon": 20.4808968,
+   "tags": {
+    "amenity": "shower"
+   }
+  },
+  {
+   "type": "node",
+   "id": 1448658057,
+   "lat": 39.2404449,
+   "lon": 20.4801602,
+   "tags": {
+    "amenity": "shower"
+   }
+  },
+  {
+   "type": "node",
+   "id": 1448658060,
+   "lat": 39.2413772,
+   "lon": 20.4789564,
+   "tags": {
+    "amenity": "shower"
+   }
+  },
+  {
+   "type": "node",
+   "id": 1770373121,
+   "lat": 36.4561356,
+   "lon": 28.2212189,
+   "tags": {
+    "amenity": "shower",
+    "fee": "no",
+    "opening_hours": "24/7",
+    "supervised": "no"
+   }
+  },
+  {
+   "type": "node",
+   "id": 1770373134,
+   "lat": 36.4547615,
+   "lon": 28.2221065,
+   "tags": {
+    "access": "yes",
+    "amenity": "shower",
+    "fee": "no",
+    "opening_hours": "24/7",
+    "supervised": "no"
+   }
+  },
+  {
+   "type": "node",
+   "id": 1770373148,
+   "lat": 36.455284,
+   "lon": 28.2215678,
+   "tags": {
+    "access": "yes",
+    "amenity": "shower",
+    "fee": "no",
+    "opening_hours": "24/7",
+    "supervised": "no"
+   }
+  },
+  {
+   "type": "node",
+   "id": 1770373169,
+   "lat": 36.4557914,
+   "lon": 28.2212909,
+   "tags": {
+    "access": "yes",
+    "amenity": "shower",
+    "check_date": "2025-10-17",
+    "fee": "no",
+    "opening_hours": "24/7",
+    "supervised": "no"
+   }
+  },
+  {
+   "type": "node",
+   "id": 1770622357,
+   "lat": 39.6649902,
+   "lon": 19.8449296,
+   "tags": {
+    "caravans": "yes",
+    "drinking_water": "yes",
+    "fee": "yes",
+    "internet_access": "wlan",
+    "name": "Dionysus Camping Village",
+    "power_supply": "yes",
+    "shower": "yes",
+    "tents": "yes",
+    "toilets": "yes",
+    "toilets:wheelchair": "no",
+    "tourism": "camp_site",
+    "website": "http://dionysuscamping.gr",
+    "wheelchair": "limited",
+    "wikidata": "Q111121244"
+   }
+  },
+  {
+   "type": "node",
+   "id": 1798408706,
+   "lat": 39.5087896,
+   "lon": 21.1248807,
+   "tags": {
+    "capacity": "26",
+    "contact:facebook": "https://www.facebook.com/tzoumerkarefuge",
+    "contact:phone": "+302659300645",
+    "ele": "1250",
+    "electricity": "grid",
+    "fee": "yes",
+    "internet_access": "yes",
+    "name": "Καταφύγιο Πραμάντων",
+    "reservation": "required",
+    "shower": "yes",
+    "tourism": "alpine_hut"
+   }
+  },
+  {
+   "type": "node",
+   "id": 1830811773,
+   "lat": 36.0956858,
+   "lon": 28.0850963,
+   "tags": {
+    "amenity": "shower",
+    "fee": "no",
+    "location": "outdoor",
+    "opening_hours": "24/7",
+    "supervised": "no"
+   }
+  },
+  {
+   "type": "node",
+   "id": 1849508590,
+   "lat": 35.8913143,
+   "lon": 27.7730149,
+   "tags": {
+    "amenity": "shower"
+   }
+  },
+  {
+   "type": "node",
+   "id": 1849508592,
+   "lat": 35.8916202,
+   "lon": 27.772768,
+   "tags": {
+    "amenity": "shower"
+   }
+  },
+  {
+   "type": "node",
+   "id": 1849508601,
+   "lat": 35.8919899,
+   "lon": 27.7726818,
+   "tags": {
+    "amenity": "shower"
+   }
+  },
+  {
+   "type": "node",
+   "id": 1855172162,
+   "lat": 35.8912911,
+   "lon": 27.7737762,
+   "tags": {
+    "amenity": "shower"
+   }
+  },
+  {
+   "type": "node",
+   "id": 1912857179,
+   "lat": 34.9841968,
+   "lon": 25.2810565,
+   "tags": {
+    "amenity": "shower"
+   }
+  },
+  {
+   "type": "node",
+   "id": 2338148076,
+   "lat": 37.7266121,
+   "lon": 20.9889262,
+   "tags": {
+    "amenity": "shower"
+   }
+  },
+  {
+   "type": "node",
+   "id": 2351550937,
+   "lat": 37.7268837,
+   "lon": 20.9885326,
+   "tags": {
+    "amenity": "shower"
+   }
+  },
+  {
+   "type": "node",
+   "id": 2365517669,
+   "lat": 36.3376206,
+   "lon": 28.2051689,
+   "tags": {
+    "amenity": "shower"
+   }
+  },
+  {
+   "type": "node",
+   "id": 2365534379,
+   "lat": 36.3371808,
+   "lon": 28.2054845,
+   "tags": {
+    "amenity": "shower"
+   }
+  },
+  {
+   "type": "node",
+   "id": 2365534382,
+   "lat": 36.3358737,
+   "lon": 28.2065784,
+   "tags": {
+    "amenity": "shower",
+    "check_date": "2026-04-22",
+    "fee": "no",
+    "hot_water": "no"
+   }
+  },
+  {
+   "type": "node",
+   "id": 2365650244,
+   "lat": 36.3391816,
+   "lon": 28.2044381,
+   "tags": {
+    "amenity": "shower"
+   }
+  },
+  {
+   "type": "node",
+   "id": 2369344294,
+   "lat": 36.3785312,
+   "lon": 28.2380101,
+   "tags": {
+    "amenity": "shower"
+   }
+  },
+  {
+   "type": "node",
+   "id": 2380341049,
+   "lat": 36.3360541,
+   "lon": 28.206251,
+   "tags": {
+    "amenity": "shower"
+   }
+  },
+  {
+   "type": "node",
+   "id": 2380341060,
+   "lat": 36.3362602,
+   "lon": 28.2060785,
+   "tags": {
+    "amenity": "shower"
+   }
+  },
+  {
+   "type": "node",
+   "id": 2380341066,
+   "lat": 36.3368597,
+   "lon": 28.2058478,
+   "tags": {
+    "amenity": "shower"
+   }
+  },
+  {
+   "type": "node",
+   "id": 2380388223,
+   "lat": 36.334492,
+   "lon": 28.2081899,
+   "tags": {
+    "amenity": "shower"
+   }
+  },
+  {
+   "type": "node",
+   "id": 2380388385,
+   "lat": 36.3381101,
+   "lon": 28.2047629,
+   "tags": {
+    "amenity": "shower"
+   }
+  },
+  {
+   "type": "node",
+   "id": 2380388389,
+   "lat": 36.3383784,
+   "lon": 28.2045436,
+   "tags": {
+    "amenity": "shower"
+   }
+  },
+  {
+   "type": "node",
+   "id": 2380388402,
+   "lat": 36.3388088,
+   "lon": 28.2044691,
+   "tags": {
+    "amenity": "shower"
+   }
+  },
+  {
+   "type": "node",
+   "id": 2384403848,
+   "lat": 36.3412851,
+   "lon": 28.2042233,
+   "tags": {
+    "amenity": "shower"
+   }
+  },
+  {
+   "type": "node",
+   "id": 2384403876,
+   "lat": 36.3415682,
+   "lon": 28.2042446,
+   "tags": {
+    "amenity": "shower"
+   }
+  },
+  {
+   "type": "node",
+   "id": 2384403921,
+   "lat": 36.3420261,
+   "lon": 28.2042441,
+   "tags": {
+    "amenity": "shower"
+   }
+  },
+  {
+   "type": "node",
+   "id": 2400324501,
+   "lat": 35.5223073,
+   "lon": 23.8517316,
+   "tags": {
+    "amenity": "shower"
+   }
+  },
+  {
+   "type": "node",
+   "id": 2419956711,
+   "lat": 35.0970256,
+   "lon": 26.2631885,
+   "tags": {
+    "amenity": "shower"
+   }
+  },
+  {
+   "type": "node",
+   "id": 2419985505,
+   "lat": 35.0358388,
+   "lon": 26.2175753,
+   "tags": {
+    "amenity": "shower"
+   }
+  },
+  {
+   "type": "node",
+   "id": 2475514510,
+   "lat": 40.0973801,
+   "lon": 23.3118294,
+   "tags": {
+    "amenity": "shower"
+   }
+  },
+  {
+   "type": "node",
+   "id": 2612180742,
+   "lat": 38.9424427,
+   "lon": 21.8056701,
+   "tags": {
+    "beds": "27",
+    "capacity": "34",
+    "contact:email": "katafygio.velouchi@gmail.com",
+    "contact:facebook": "www.facebook.com/katafygio.velouchi",
+    "ele": "1875",
+    "fee": "yes",
+    "int_name": "Velouchi alpine hut",
+    "name": "Ορειβατικό Καταφύγιο Βελουχίου",
+    "name:el": "Ορειβατικό Καταφύγιο Βελουχίου",
+    "name:en": "Oreivatiko Katafygio Velouchiou",
+    "reservation": "recommended",
+    "shower": "yes",
+    "start_date": "1962",
+    "tourism": "alpine_hut",
+    "website": "http://www.katafygio-velouchi.gr"
+   }
+  },
+  {
+   "type": "node",
+   "id": 2744868559,
+   "lat": 38.0086612,
+   "lon": 24.5631878,
+   "tags": {
+    "amenity": "shower"
+   }
+  },
+  {
+   "type": "node",
+   "id": 2925080597,
+   "lat": 39.7940624,
+   "lon": 19.8079191,
+   "tags": {
+    "amenity": "shower"
+   }
+  },
+  {
+   "type": "node",
+   "id": 2958895885,
+   "lat": 35.451438,
+   "lon": 24.1769253,
+   "tags": {
+    "amenity": "shower",
+    "shower": "outdoor"
+   }
+  },
+  {
+   "type": "node",
+   "id": 3022138074,
+   "lat": 38.6032446,
+   "lon": 20.5537588,
+   "tags": {
+    "access": "customers",
+    "amenity": "shower"
+   }
+  },
+  {
+   "type": "node",
+   "id": 3025781848,
+   "lat": 39.5465753,
+   "lon": 19.8498499,
+   "tags": {
+    "amenity": "shower",
+    "source": "survey"
+   }
+  },
+  {
+   "type": "node",
+   "id": 3025781849,
+   "lat": 39.5475081,
+   "lon": 19.8493348,
+   "tags": {
+    "amenity": "shower",
+    "source": "survey"
+   }
+  },
+  {
+   "type": "node",
+   "id": 3053233413,
+   "lat": 36.1100165,
+   "lon": 28.0663602,
+   "tags": {
+    "amenity": "shower"
+   }
+  },
+  {
+   "type": "node",
+   "id": 3103766084,
+   "lat": 40.0317544,
+   "lon": 23.4979736,
+   "tags": {
+    "amenity": "shower"
+   }
+  },
+  {
+   "type": "node",
+   "id": 3105343236,
+   "lat": 40.0385681,
+   "lon": 23.4875845,
+   "tags": {
+    "amenity": "shower"
+   }
+  },
+  {
+   "type": "node",
+   "id": 3105343241,
+   "lat": 40.0401315,
+   "lon": 23.4858723,
+   "tags": {
+    "amenity": "shower"
+   }
+  },
+  {
+   "type": "node",
+   "id": 3114522071,
+   "lat": 35.5279236,
+   "lon": 24.0671572,
+   "tags": {
+    "amenity": "shower"
+   }
+  },
+  {
+   "type": "node",
+   "id": 3366664102,
+   "lat": 35.1725648,
+   "lon": 24.4189423,
+   "tags": {
+    "access": "yes",
+    "amenity": "shower",
+    "fee": "no",
+    "hot_water": "no",
+    "opening_hours": "24/7",
+    "supervised": "no",
+    "wheelchair": "limited"
+   }
+  },
+  {
+   "type": "node",
+   "id": 3521788590,
+   "lat": 40.9350223,
+   "lon": 24.3978567,
+   "tags": {
+    "access": "yes",
+    "amenity": "shower",
+    "fee": "no"
+   }
+  },
+  {
+   "type": "node",
+   "id": 3521788591,
+   "lat": 40.935052,
+   "lon": 24.3980406,
+   "tags": {
+    "access": "yes",
+    "amenity": "shower",
+    "fee": "no"
+   }
+  },
+  {
+   "type": "node",
+   "id": 3530429865,
+   "lat": 37.7131958,
+   "lon": 24.058594,
+   "tags": {
+    "amenity": "shower",
+    "seamark:small_craft_facility:category": "showers",
+    "seamark:type": "small_craft_facility"
+   }
+  },
+  {
+   "type": "node",
+   "id": 3541501755,
+   "lat": 40.9007088,
+   "lon": 24.3438771,
+   "tags": {
+    "access": "yes",
+    "amenity": "shower",
+    "fee": "no"
+   }
+  },
+  {
+   "type": "node",
+   "id": 3554940720,
+   "lat": 35.2292913,
+   "lon": 23.9635734,
+   "tags": {
+    "amenity": "shower",
+    "fee": "no",
+    "hot_water": "yes"
+   }
+  },
+  {
+   "type": "node",
+   "id": 3600589591,
+   "lat": 37.5194573,
+   "lon": 21.6030762,
+   "tags": {
+    "access": "customers",
+    "amenity": "shower"
+   }
+  },
+  {
+   "type": "node",
+   "id": 3611402836,
+   "lat": 39.5442825,
+   "lon": 19.850589,
+   "tags": {
+    "amenity": "shower"
+   }
+  },
+  {
+   "type": "node",
+   "id": 3611402837,
+   "lat": 39.5448648,
+   "lon": 19.8505514,
+   "tags": {
+    "amenity": "shower"
+   }
+  },
+  {
+   "type": "node",
+   "id": 3635955961,
+   "lat": 35.5207734,
+   "lon": 23.8851517,
+   "tags": {
+    "amenity": "shower",
+    "shower": "outdoor"
+   }
+  },
+  {
+   "type": "node",
+   "id": 3635999013,
+   "lat": 35.5207938,
+   "lon": 23.8864515,
+   "tags": {
+    "amenity": "shower",
+    "shower": "outdoor"
+   }
+  },
+  {
+   "type": "node",
+   "id": 3635999014,
+   "lat": 35.5208003,
+   "lon": 23.8863993,
+   "tags": {
+    "amenity": "shower",
+    "shower": "outdoor"
+   }
+  },
+  {
+   "type": "node",
+   "id": 3635999017,
+   "lat": 35.5208927,
+   "lon": 23.8857419,
+   "tags": {
+    "amenity": "shower",
+    "shower": "outdoor"
+   }
+  },
+  {
+   "type": "node",
+   "id": 3635999018,
+   "lat": 35.5208935,
+   "lon": 23.8857054,
+   "tags": {
+    "amenity": "shower",
+    "shower": "outdoor"
+   }
+  },
+  {
+   "type": "node",
+   "id": 3649053218,
+   "lat": 36.3648537,
+   "lon": 28.2121243,
+   "tags": {
+    "amenity": "shower"
+   }
+  },
+  {
+   "type": "node",
+   "id": 3649136387,
+   "lat": 36.3634495,
+   "lon": 28.2136405,
+   "tags": {
+    "amenity": "shower"
+   }
+  },
+  {
+   "type": "node",
+   "id": 3650130240,
+   "lat": 40.8629379,
+   "lon": 24.3263295,
+   "tags": {
+    "access": "customers",
+    "amenity": "shower"
+   }
+  },
+  {
+   "type": "node",
+   "id": 3673431451,
+   "lat": 35.1891428,
+   "lon": 25.7208095,
+   "tags": {
+    "access": "yes",
+    "amenity": "shower",
+    "fee": "no"
+   }
+  },
+  {
+   "type": "node",
+   "id": 3692047645,
+   "lat": 35.1530096,
+   "lon": 24.4791797,
+   "tags": {
+    "access": "yes",
+    "amenity": "shower"
+   }
+  },
+  {
+   "type": "node",
+   "id": 3703769604,
+   "lat": 35.3365751,
+   "lon": 25.3516093,
+   "tags": {
+    "amenity": "shower"
+   }
+  },
+  {
+   "type": "node",
+   "id": 3708234626,
+   "lat": 36.8504625,
+   "lon": 22.2587768,
+   "tags": {
+    "access": "yes",
+    "amenity": "shower",
+    "fee": "no"
+   }
+  },
+  {
+   "type": "node",
+   "id": 3708234627,
+   "lat": 36.8447536,
+   "lon": 22.2595154,
+   "tags": {
+    "access": "yes",
+    "amenity": "shower",
+    "fee": "no"
+   }
+  },
+  {
+   "type": "node",
+   "id": 3708234825,
+   "lat": 36.8460681,
+   "lon": 22.2590708,
+   "tags": {
+    "access": "yes",
+    "amenity": "shower",
+    "fee": "no"
+   }
+  },
+  {
+   "type": "node",
+   "id": 3712616240,
+   "lat": 39.9928088,
+   "lon": 23.9922998,
+   "tags": {
+    "cabins": "yes",
+    "caravans": "yes",
+    "mobile": "+30 693 285 4529; +30 699 713 2462",
+    "motorhome": "yes",
+    "name": "Καλαμίτσι",
+    "name:el": "Καλαμίτσι",
+    "name:en": "Kalamitsi",
+    "phone": "+30 2375 042086",
+    "shower": "yes",
+    "tents": "yes",
+    "toilets": "yes",
+    "tourism": "camp_site",
+    "website": "https://www.tsitreli.gr"
+   }
+  },
+  {
+   "type": "node",
+   "id": 3715704701,
+   "lat": 39.9896042,
+   "lon": 23.989626,
+   "tags": {
+    "access": "yes",
+    "amenity": "shower",
+    "building": "yes"
+   }
+  },
+  {
+   "type": "node",
+   "id": 3721460410,
+   "lat": 36.6870469,
+   "lon": 23.0564588,
+   "tags": {
+    "amenity": "shower"
+   }
+  },
+  {
+   "type": "node",
+   "id": 3721460415,
+   "lat": 36.6857961,
+   "lon": 23.0476267,
+   "tags": {
+    "amenity": "shower",
+    "check_date": "2025-10-01",
+    "location": "outdoor",
+    "shower": "outdoor"
+   }
+  },
+  {
+   "type": "node",
+   "id": 3721460418,
+   "lat": 36.687002,
+   "lon": 23.0439182,
+   "tags": {
+    "amenity": "shower",
+    "check_date": "2025-10-01",
+    "fee": "no",
+    "location": "outdoor",
+    "shower": "outdoor"
+   }
+  },
+  {
+   "type": "node",
+   "id": 3721474433,
+   "lat": 36.8172664,
+   "lon": 21.7072952,
+   "tags": {
+    "amenity": "shower"
+   }
+  },
+  {
+   "type": "node",
+   "id": 3752787325,
+   "lat": 35.2954614,
+   "lon": 25.4867433,
+   "tags": {
+    "amenity": "shower",
+    "fee": "no"
+   }
+  },
+  {
+   "type": "node",
+   "id": 3761397370,
+   "lat": 36.9915014,
+   "lon": 26.9313579,
+   "tags": {
+    "amenity": "shower",
+    "source": "survey"
+   }
+  },
+  {
+   "type": "node",
+   "id": 3761736923,
+   "lat": 36.6055395,
+   "lon": 24.9514973,
+   "tags": {
+    "amenity": "shower"
+   }
+  },
+  {
+   "type": "node",
+   "id": 3761738063,
+   "lat": 36.6058703,
+   "lon": 24.951808,
+   "tags": {
+    "amenity": "shower"
+   }
+  },
+  {
+   "type": "node",
+   "id": 3761738067,
+   "lat": 36.6058934,
+   "lon": 24.9517966,
+   "tags": {
+    "amenity": "shower"
+   }
+  },
+  {
+   "type": "node",
+   "id": 3761738075,
+   "lat": 36.6059474,
+   "lon": 24.9517521,
+   "tags": {
+    "amenity": "shower"
+   }
+  },
+  {
+   "type": "node",
+   "id": 3761738080,
+   "lat": 36.6060014,
+   "lon": 24.9517495,
+   "tags": {
+    "amenity": "shower"
+   }
+  },
+  {
+   "type": "node",
+   "id": 3827703398,
+   "lat": 38.3444471,
+   "lon": 21.5954051,
+   "tags": {
+    "amenity": "shower",
+    "fee": "no",
+    "shower": "outdoor"
+   }
+  },
+  {
+   "type": "node",
+   "id": 3907487699,
+   "lat": 36.8046114,
+   "lon": 21.7954345,
+   "tags": {
+    "access": "yes",
+    "amenity": "shower"
+   }
+  },
+  {
+   "type": "node",
+   "id": 4040603960,
+   "lat": 35.2880559,
+   "lon": 25.7295236,
+   "tags": {
+    "amenity": "shower"
+   }
+  },
+  {
+   "type": "node",
+   "id": 4254518266,
+   "lat": 38.6670872,
+   "lon": 23.9289006,
+   "tags": {
+    "amenity": "shower",
+    "fee": "no"
+   }
+  },
+  {
+   "type": "node",
+   "id": 4254518267,
+   "lat": 38.6681415,
+   "lon": 23.926602,
+   "tags": {
+    "amenity": "shower",
+    "fee": "no"
+   }
+  },
+  {
+   "type": "node",
+   "id": 4284109092,
+   "lat": 38.3945708,
+   "lon": 23.7639681,
+   "tags": {
+    "amenity": "shower",
+    "fee": "no"
+   }
+  },
+  {
+   "type": "node",
+   "id": 4291078912,
+   "lat": 37.9791513,
+   "lon": 23.5943322,
+   "tags": {
+    "amenity": "shower",
+    "female": "yes"
+   }
+  },
+  {
+   "type": "node",
+   "id": 4291078918,
+   "lat": 37.9791831,
+   "lon": 23.5944584,
+   "tags": {
+    "amenity": "shower",
+    "male": "yes"
+   }
+  },
+  {
+   "type": "node",
+   "id": 4333651062,
+   "lat": 37.7913903,
+   "lon": 20.8999992,
+   "tags": {
+    "amenity": "shower",
+    "name": "Beach shower"
+   }
+  },
+  {
+   "type": "node",
+   "id": 4341725246,
+   "lat": 39.9919943,
+   "lon": 23.9914055,
+   "tags": {
+    "access": "customers",
+    "amenity": "shower",
+    "fee": "no"
+   }
+  },
+  {
+   "type": "node",
+   "id": 4345939063,
+   "lat": 35.0364795,
+   "lon": 26.2200375,
+   "tags": {
+    "access": "yes",
+    "amenity": "shower"
+   }
+  },
+  {
+   "type": "node",
+   "id": 4348583906,
+   "lat": 40.8946471,
+   "lon": 24.335817,
+   "tags": {
+    "amenity": "shower"
+   }
+  },
+  {
+   "type": "node",
+   "id": 4348583908,
+   "lat": 40.8955047,
+   "lon": 24.3367156,
+   "tags": {
+    "amenity": "shower"
+   }
+  },
+  {
+   "type": "node",
+   "id": 4355149599,
+   "lat": 36.8058874,
+   "lon": 21.8012006,
+   "tags": {
+    "amenity": "toilets",
+    "shower": "yes"
+   }
+  },
+  {
+   "type": "node",
+   "id": 4365148136,
+   "lat": 36.4123256,
+   "lon": 25.4826093,
+   "tags": {
+    "amenity": "shower",
+    "fee": "no",
+    "location": "outdoor"
+   }
+  },
+  {
+   "type": "node",
+   "id": 4394725750,
+   "lat": 40.2489475,
+   "lon": 23.2519114,
+   "tags": {
+    "amenity": "shower"
+   }
+  },
+  {
+   "type": "node",
+   "id": 4406877207,
+   "lat": 36.898361,
+   "lon": 27.245657,
+   "tags": {
+    "amenity": "shower",
+    "fee": "no",
+    "wheelchair": "yes"
+   }
+  },
+  {
+   "type": "node",
+   "id": 4406883002,
+   "lat": 36.89819,
+   "lon": 27.245281,
+   "tags": {
+    "amenity": "shower",
+    "fee": "no",
+    "wheelchair": "yes"
+   }
+  },
+  {
+   "type": "node",
+   "id": 4406937089,
+   "lat": 36.8980318,
+   "lon": 27.2449006,
+   "tags": {
+    "amenity": "shower",
+    "fee": "no",
+    "wheelchair": "yes"
+   }
+  },
+  {
+   "type": "node",
+   "id": 4413476866,
+   "lat": 39.7411864,
+   "lon": 19.6497454,
+   "tags": {
+    "access": "yes",
+    "amenity": "shower",
+    "fee": "no",
+    "opening_hours": "24/7",
+    "wheelchair": "yes"
+   }
+  },
+  {
+   "type": "node",
+   "id": 4416202676,
+   "lat": 39.7442017,
+   "lon": 19.6476598,
+   "tags": {
+    "access": "yes",
+    "amenity": "shower",
+    "fee": "no"
+   }
+  },
+  {
+   "type": "node",
+   "id": 4416568089,
+   "lat": 35.4149549,
+   "lon": 24.6471172,
+   "tags": {
+    "access": "customers",
+    "amenity": "shower"
+   }
+  },
+  {
+   "type": "node",
+   "id": 4416587372,
+   "lat": 39.7432641,
+   "lon": 19.6484014,
+   "tags": {
+    "access": "yes",
+    "amenity": "shower",
+    "fee": "no",
+    "opening_hours": "24/7",
+    "wheelchair": "yes"
+   }
+  },
+  {
+   "type": "node",
+   "id": 4585884536,
+   "lat": 38.6694259,
+   "lon": 23.9238687,
+   "tags": {
+    "amenity": "shower",
+    "name": "Ντουζιέρες",
+    "name:el": "Ντουζιέρες",
+    "name:en": "Shower Tray"
+   }
+  },
+  {
+   "type": "node",
+   "id": 4708036240,
+   "lat": 38.0609048,
+   "lon": 21.3279916,
+   "tags": {
+    "access": "yes",
+    "amenity": "shower",
+    "fee": "no"
+   }
+  },
+  {
+   "type": "node",
+   "id": 4708454679,
+   "lat": 38.6717589,
+   "lon": 23.9182252,
+   "tags": {
+    "amenity": "shower"
+   }
+  },
+  {
+   "type": "node",
+   "id": 4849809050,
+   "lat": 35.4058214,
+   "lon": 24.7878157,
+   "tags": {
+    "amenity": "shower"
+   }
+  },
+  {
+   "type": "node",
+   "id": 4849809051,
+   "lat": 35.4060449,
+   "lon": 24.787249,
+   "tags": {
+    "amenity": "shower"
+   }
+  },
+  {
+   "type": "node",
+   "id": 4849809052,
+   "lat": 35.4061996,
+   "lon": 24.7871042,
+   "tags": {
+    "amenity": "shower"
+   }
+  },
+  {
+   "type": "node",
+   "id": 4849809053,
+   "lat": 35.4068003,
+   "lon": 24.7862902,
+   "tags": {
+    "amenity": "shower"
+   }
+  },
+  {
+   "type": "node",
+   "id": 4849809082,
+   "lat": 35.4069451,
+   "lon": 24.7858503,
+   "tags": {
+    "amenity": "shower"
+   }
+  },
+  {
+   "type": "node",
+   "id": 4849809111,
+   "lat": 35.407152,
+   "lon": 24.7853232,
+   "tags": {
+    "amenity": "shower"
+   }
+  },
+  {
+   "type": "node",
+   "id": 4850515482,
+   "lat": 35.4066582,
+   "lon": 24.7867203,
+   "tags": {
+    "amenity": "shower"
+   }
+  },
+  {
+   "type": "node",
+   "id": 4852017875,
+   "lat": 35.4106749,
+   "lon": 24.7825066,
+   "tags": {
+    "amenity": "shower"
+   }
+  },
+  {
+   "type": "node",
+   "id": 4852017876,
+   "lat": 35.4104811,
+   "lon": 24.7825311,
+   "tags": {
+    "amenity": "shower"
+   }
+  },
+  {
+   "type": "node",
+   "id": 4882355139,
+   "lat": 35.4065371,
+   "lon": 24.783845,
+   "tags": {
+    "amenity": "shower"
+   }
+  },
+  {
+   "type": "node",
+   "id": 4889726222,
+   "lat": 37.6453553,
+   "lon": 21.6228512,
+   "tags": {
+    "caravans": "yes",
+    "drinking_water": "yes",
+    "internet_access": "wlan",
+    "name": "Camping Diana",
+    "shower": "yes",
+    "tents": "yes",
+    "toilets": "yes",
+    "tourism": "camp_site"
+   }
+  },
+  {
+   "type": "node",
+   "id": 4938242655,
+   "lat": 37.9300297,
+   "lon": 23.5378634,
+   "tags": {
+    "amenity": "shower"
+   }
+  },
+  {
+   "type": "node",
+   "id": 4954877306,
+   "lat": 39.9784664,
+   "lon": 22.6510218,
+   "tags": {
+    "access": "yes",
+    "amenity": "shower",
+    "fee": "no",
+    "opening_hours": "sunrise-sunset",
+    "unisex": "yes",
+    "wheelchair": "yes"
+   }
+  },
+  {
+   "type": "node",
+   "id": 4954877307,
+   "lat": 39.9791488,
+   "lon": 22.6485796,
+   "tags": {
+    "access": "yes",
+    "amenity": "shower",
+    "fee": "no",
+    "opening_hours": "sunrise-sunset",
+    "unisex": "yes",
+    "wheelchair": "yes"
+   }
+  },
+  {
+   "type": "node",
+   "id": 4968773338,
+   "lat": 40.591852,
+   "lon": 23.7841921,
+   "tags": {
+    "amenity": "shower",
+    "location": "outdoor"
+   }
+  },
+  {
+   "type": "node",
+   "id": 5001830299,
+   "lat": 35.3380654,
+   "lon": 25.0696453,
+   "tags": {
+    "amenity": "shower",
+    "unisex": "yes"
+   }
+  },
+  {
+   "type": "node",
+   "id": 5020085525,
+   "lat": 35.3595701,
+   "lon": 23.5315944,
+   "tags": {
+    "amenity": "shower"
+   }
+  },
+  {
+   "type": "node",
+   "id": 5022367723,
+   "lat": 35.3548438,
+   "lon": 24.2881873,
+   "tags": {
+    "amenity": "shower"
+   }
+  },
+  {
+   "type": "node",
+   "id": 5022395623,
+   "lat": 35.3531827,
+   "lon": 24.3003883,
+   "tags": {
+    "amenity": "shower"
+   }
+  },
+  {
+   "type": "node",
+   "id": 5024263226,
+   "lat": 35.3547642,
+   "lon": 24.2858448,
+   "tags": {
+    "amenity": "shower"
+   }
+  },
+  {
+   "type": "node",
+   "id": 5039699528,
+   "lat": 35.5159829,
+   "lon": 24.0287447,
+   "tags": {
+    "addr:street": "Ακτή Μιαούλη",
+    "amenity": "shower",
+    "capacity": "2"
+   }
+  },
+  {
+   "type": "node",
+   "id": 5047548601,
+   "lat": 40.0879311,
+   "lon": 23.9775427,
+   "tags": {
+    "amenity": "shower"
+   }
+  },
+  {
+   "type": "node",
+   "id": 5065906805,
+   "lat": 40.0877571,
+   "lon": 23.7924523,
+   "tags": {
+    "amenity": "shower",
+    "location": "outdoor",
+    "unisex": "yes"
+   }
+  },
+  {
+   "type": "node",
+   "id": 5070152454,
+   "lat": 36.4543337,
+   "lon": 28.2225811,
+   "tags": {
+    "access": "yes",
+    "amenity": "shower",
+    "fee": "no",
+    "opening_hours": "24/7",
+    "supervised": "no"
+   }
+  },
+  {
+   "type": "node",
+   "id": 5070152455,
+   "lat": 36.454167,
+   "lon": 28.222769,
+   "tags": {
+    "access": "yes",
+    "amenity": "shower",
+    "fee": "no",
+    "opening_hours": "24/7",
+    "supervised": "no"
+   }
+  },
+  {
+   "type": "node",
+   "id": 5071546529,
+   "lat": 35.2654305,
+   "lon": 25.7222048,
+   "tags": {
+    "amenity": "shower"
+   }
+  },
+  {
+   "type": "node",
+   "id": 5073717074,
+   "lat": 37.4466867,
+   "lon": 24.9465337,
+   "tags": {
+    "amenity": "shower",
+    "check_date": "2026-03-22",
+    "fee": "no",
+    "hot_water": "no"
+   }
+  },
+  {
+   "type": "node",
+   "id": 5074995266,
+   "lat": 39.5366899,
+   "lon": 19.9171483,
+   "tags": {
+    "amenity": "shower",
+    "name": "Beach shower"
+   }
+  },
+  {
+   "type": "node",
+   "id": 5081651699,
+   "lat": 40.159413,
+   "lon": 23.895475,
+   "tags": {
+    "addr:city": "Άγιος Νικόλαος",
+    "addr:housenumber": "10",
+    "addr:municipality": "Σιθωνία",
+    "addr:postcode": "63078",
+    "addr:province": "Χαλκιδική",
+    "addr:region": "Κεντρική Μακεδονία",
+    "addr:street": "Ταχ. Θυρίδα (PO Box)",
+    "building": "yes",
+    "drinking_water": "yes",
+    "email": "info@aktioneirou.gr",
+    "internet_access": "wlan",
+    "name": "Ακτή ονείρου Camping-Bungalows",
+    "name:de": "Akti Onirou Camping-Bungalows",
+    "name:el": "Ακτή ονείρου Camping-Bungalows",
+    "name:en": "Akti Onirou Camping-Bungalows",
+    "phone": "+302375770910;+302375770910",
+    "power_supply": "yes",
+    "shower": "yes",
+    "toilets": "yes",
+    "tourism": "camp_site",
+    "website": "https://www.aktioneirou.gr/"
+   }
+  },
+  {
+   "type": "node",
+   "id": 5097617322,
+   "lat": 38.4280027,
+   "lon": 22.4544737,
+   "tags": {
+    "amenity": "shower"
+   }
+  },
+  {
+   "type": "node",
+   "id": 5109648522,
+   "lat": 40.3116992,
+   "lon": 23.6969486,
+   "tags": {
+    "amenity": "shower"
+   }
+  },
+  {
+   "type": "node",
+   "id": 5120310143,
+   "lat": 38.5638077,
+   "lon": 26.0794823,
+   "tags": {
+    "amenity": "shower"
+   }
+  },
+  {
+   "type": "node",
+   "id": 5150327143,
+   "lat": 38.0195025,
+   "lon": 24.0108056,
+   "tags": {
+    "amenity": "shower"
+   }
+  },
+  {
+   "type": "node",
+   "id": 5154923421,
+   "lat": 36.3099117,
+   "lon": 28.1935726,
+   "tags": {
+    "amenity": "shower"
+   }
+  },
+  {
+   "type": "node",
+   "id": 5160607982,
+   "lat": 36.4039632,
+   "lon": 28.2280105,
+   "tags": {
+    "amenity": "shower",
+    "level": "0"
+   }
+  },
+  {
+   "type": "node",
+   "id": 5160761664,
+   "lat": 36.4030942,
+   "lon": 28.2280762,
+   "tags": {
+    "amenity": "shower",
+    "level": "0"
+   }
+  },
+  {
+   "type": "node",
+   "id": 5181719641,
+   "lat": 36.044348,
+   "lon": 27.7610624,
+   "tags": {
+    "amenity": "shower"
+   }
+  },
+  {
+   "type": "node",
+   "id": 5246845825,
+   "lat": 39.3401441,
+   "lon": 20.2870874,
+   "tags": {
+    "amenity": "shower"
+   }
+  },
+  {
+   "type": "node",
+   "id": 5261527137,
+   "lat": 35.2370228,
+   "lon": 23.7202527,
+   "tags": {
+    "amenity": "shower",
+    "opening_hours": "24/7"
+   }
+  },
+  {
+   "type": "node",
+   "id": 5289167725,
+   "lat": 38.6030848,
+   "lon": 20.5502853,
+   "tags": {
+    "amenity": "shower"
+   }
+  },
+  {
+   "type": "node",
+   "id": 5289167727,
+   "lat": 38.1561543,
+   "lon": 21.3675015,
+   "tags": {
+    "amenity": "shower"
+   }
+  },
+  {
+   "type": "node",
+   "id": 5329840221,
+   "lat": 36.880302,
+   "lon": 27.1477897,
+   "tags": {
+    "amenity": "shower"
+   }
+  },
+  {
+   "type": "node",
+   "id": 5334805661,
+   "lat": 35.3362289,
+   "lon": 25.3572291,
+   "tags": {
+    "access": "customers",
+    "amenity": "shower",
+    "outdoor_area": "yes"
+   }
+  },
+  {
+   "type": "node",
+   "id": 5334811069,
+   "lat": 35.3369049,
+   "lon": 25.3566885,
+   "tags": {
+    "access": "customers",
+    "amenity": "shower",
+    "outdoor_area": "yes"
+   }
+  },
+  {
+   "type": "node",
+   "id": 5339737360,
+   "lat": 40.2673629,
+   "lon": 22.598173,
+   "tags": {
+    "amenity": "shower"
+   }
+  },
+  {
+   "type": "node",
+   "id": 5339737361,
+   "lat": 40.2698004,
+   "lon": 22.5990279,
+   "tags": {
+    "amenity": "shower"
+   }
+  },
+  {
+   "type": "node",
+   "id": 5339737362,
+   "lat": 40.2736518,
+   "lon": 22.6002065,
+   "tags": {
+    "amenity": "shower"
+   }
+  },
+  {
+   "type": "node",
+   "id": 5351752875,
+   "lat": 40.2409826,
+   "lon": 22.5883798,
+   "tags": {
+    "amenity": "shower",
+    "opening_hours": "24/7"
+   }
+  },
+  {
+   "type": "node",
+   "id": 5381046046,
+   "lat": 35.2319832,
+   "lon": 23.6793395,
+   "tags": {
+    "amenity": "shower"
+   }
+  },
+  {
+   "type": "node",
+   "id": 5499278940,
+   "lat": 37.27939,
+   "lon": 23.1225496,
+   "tags": {
+    "amenity": "shower"
+   }
+  },
+  {
+   "type": "node",
+   "id": 5553783021,
+   "lat": 39.0888522,
+   "lon": 23.0714394,
+   "tags": {
+    "amenity": "shower"
+   }
+  },
+  {
+   "type": "node",
+   "id": 5594711125,
+   "lat": 37.5180779,
+   "lon": 22.966619,
+   "tags": {
+    "amenity": "shower",
+    "name:en": "Public Shower"
+   }
+  },
+  {
+   "type": "node",
+   "id": 5594718424,
+   "lat": 37.5180976,
+   "lon": 22.9660924,
+   "tags": {
+    "amenity": "shower",
+    "name:en": "Public Shower"
+   }
+  },
+  {
+   "type": "node",
+   "id": 5594718425,
+   "lat": 37.5647647,
+   "lon": 22.7979871,
+   "tags": {
+    "amenity": "shower"
+   }
+  },
+  {
+   "type": "node",
+   "id": 5595159324,
+   "lat": 39.4566828,
+   "lon": 23.1194184,
+   "tags": {
+    "amenity": "shower",
+    "fee": "yes"
+   }
+  },
+  {
+   "type": "node",
+   "id": 5602523433,
+   "lat": 38.1156779,
+   "lon": 20.5997009,
+   "tags": {
+    "amenity": "shower"
+   }
+  },
+  {
+   "type": "node",
+   "id": 5636782981,
+   "lat": 36.8632215,
+   "lon": 27.1174259,
+   "tags": {
+    "amenity": "shower"
+   }
+  },
+  {
+   "type": "node",
+   "id": 5648418694,
+   "lat": 35.513911,
+   "lon": 23.9776525,
+   "tags": {
+    "amenity": "shower",
+    "fee": "no",
+    "supervised": "no"
+   }
+  },
+  {
+   "type": "node",
+   "id": 5648862177,
+   "lat": 36.6182975,
+   "lon": 27.1710337,
+   "tags": {
+    "amenity": "shower"
+   }
+  },
+  {
+   "type": "node",
+   "id": 5659563918,
+   "lat": 36.9062441,
+   "lon": 25.9793699,
+   "tags": {
+    "caravans": "no",
+    "drinking_water": "yes",
+    "name": "Aegali camping",
+    "power_supply": "yes",
+    "shower": "yes",
+    "tents": "yes",
+    "toilets": "yes",
+    "tourism": "camp_site",
+    "website": "https://www.aegialicamping.gr/"
+   }
+  },
+  {
+   "type": "node",
+   "id": 5722253022,
+   "lat": 40.8522963,
+   "lon": 24.7073198,
+   "tags": {
+    "amenity": "shower"
+   }
+  },
+  {
+   "type": "node",
+   "id": 5729918580,
+   "lat": 37.6637465,
+   "lon": 21.3277929,
+   "tags": {
+    "amenity": "shower"
+   }
+  },
+  {
+   "type": "node",
+   "id": 5749408042,
+   "lat": 36.765178,
+   "lon": 27.02032,
+   "tags": {
+    "amenity": "shower",
+    "fee": "no",
+    "supervised": "no"
+   }
+  },
+  {
+   "type": "node",
+   "id": 5749408043,
+   "lat": 36.7661642,
+   "lon": 27.0252809,
+   "tags": {
+    "amenity": "shower",
+    "fee": "no",
+    "supervised": "no"
+   }
+  },
+  {
+   "type": "node",
+   "id": 5749408044,
+   "lat": 36.7660297,
+   "lon": 27.0242463,
+   "tags": {
+    "amenity": "shower",
+    "fee": "no",
+    "supervised": "no"
+   }
+  },
+  {
+   "type": "node",
+   "id": 5749408045,
+   "lat": 36.7654847,
+   "lon": 27.0214281,
+   "tags": {
+    "amenity": "shower",
+    "fee": "no",
+    "supervised": "no"
+   }
+  },
+  {
+   "type": "node",
+   "id": 5752438201,
+   "lat": 38.67113,
+   "lon": 20.9532667,
+   "tags": {
+    "amenity": "shower"
+   }
+  },
+  {
+   "type": "node",
+   "id": 5752440747,
+   "lat": 38.6702979,
+   "lon": 20.9510416,
+   "tags": {
+    "amenity": "shower"
+   }
+  },
+  {
+   "type": "node",
+   "id": 5753624545,
+   "lat": 38.6695395,
+   "lon": 20.9496199,
+   "tags": {
+    "amenity": "shower"
+   }
+  },
+  {
+   "type": "node",
+   "id": 5763789311,
+   "lat": 35.4001206,
+   "lon": 25.0348082,
+   "tags": {
+    "amenity": "shower",
+    "hot_water": "no",
+    "location": "outdoor",
+    "shower": "outdoor"
+   }
+  },
+  {
+   "type": "node",
+   "id": 5767900986,
+   "lat": 38.8316335,
+   "lon": 20.6745757,
+   "tags": {
+    "access": "permissive",
+    "amenity": "shower",
+    "check_date": "2025-08-12",
+    "fee": "no",
+    "unisex": "yes",
+    "wheelchair": "no"
+   }
+  },
+  {
+   "type": "node",
+   "id": 5767917914,
+   "lat": 38.8498697,
+   "lon": 20.6966704,
+   "tags": {
+    "access": "yes",
+    "amenity": "shower",
+    "fee": "no",
+    "unisex": "yes",
+    "wheelchair": "limited"
+   }
+  },
+  {
+   "type": "node",
+   "id": 5776734957,
+   "lat": 37.0086823,
+   "lon": 25.2350597,
+   "tags": {
+    "amenity": "shower",
+    "check_date": "2025-09-11",
+    "fee": "no",
+    "hot_water": "no"
+   }
+  },
+  {
+   "type": "node",
+   "id": 5777631754,
+   "lat": 40.7804933,
+   "lon": 23.8252837,
+   "tags": {
+    "amenity": "shower"
+   }
+  },
+  {
+   "type": "node",
+   "id": 5780447464,
+   "lat": 38.6596505,
+   "lon": 23.0718061,
+   "tags": {
+    "contact:website": "https://www.neaodos.gr",
+    "distance": "144.05",
+    "highway": "services",
+    "int_name": "S.E.A. Atalantis",
+    "name": "Σ.Ε.Α. Αταλάντης",
+    "name:el": "Σ.Ε.Α. Αταλάντης",
+    "name:en": "Atalanti Rest Area",
+    "name:fr": "Aire d'Atalanti",
+    "opening_hours": "24/7",
+    "operator": "Νέα Οδός",
+    "shower": "yes",
+    "toilets": "yes"
+   }
+  },
+  {
+   "type": "node",
+   "id": 5841788743,
+   "lat": 37.5809054,
+   "lon": 22.7386822,
+   "tags": {
+    "amenity": "shower"
+   }
+  },
+  {
+   "type": "node",
+   "id": 5852955043,
+   "lat": 39.4130727,
+   "lon": 23.1664498,
+   "tags": {
+    "access": "yes",
+    "amenity": "shower",
+    "description": "Stranddusche",
+    "fee": "no",
+    "unisex": "yes",
+    "wheelchair": "no"
+   }
+  },
+  {
+   "type": "node",
+   "id": 5852955044,
+   "lat": 39.4133493,
+   "lon": 23.1663237,
+   "tags": {
+    "access": "yes",
+    "amenity": "shower",
+    "description": "Stranddusche",
+    "fee": "no",
+    "unisex": "yes",
+    "wheelchair": "no"
+   }
+  },
+  {
+   "type": "node",
+   "id": 5856806987,
+   "lat": 41.3496882,
+   "lon": 24.9901273,
+   "tags": {
+    "amenity": "shower",
+    "name": "Θερμά λουτρά",
+    "name:el": "Θερμά λουτρά",
+    "name:en": "Hot baths"
+   }
+  },
+  {
+   "type": "node",
+   "id": 5858341438,
+   "lat": 39.454762,
+   "lon": 23.1209555,
+   "tags": {
+    "amenity": "shower",
+    "fee": "yes"
+   }
+  },
+  {
+   "type": "node",
+   "id": 5866009342,
+   "lat": 39.4038962,
+   "lon": 23.1812234,
+   "tags": {
+    "access": "yes",
+    "amenity": "shower",
+    "description": "beach shower",
+    "fee": "no"
+   }
+  },
+  {
+   "type": "node",
+   "id": 5866298815,
+   "lat": 35.3376763,
+   "lon": 25.3617379,
+   "tags": {
+    "access": "customers",
+    "amenity": "shower",
+    "operator": "Allsun Hotel Zorbas Village"
+   }
+  },
+  {
+   "type": "node",
+   "id": 5875323662,
+   "lat": 40.0784438,
+   "lon": 23.981649,
+   "tags": {
+    "access": "customers",
+    "amenity": "shower"
+   }
+  },
+  {
+   "type": "node",
+   "id": 5875611501,
+   "lat": 40.0819252,
+   "lon": 23.9801708,
+   "tags": {
+    "access": "customers",
+    "amenity": "shower",
+    "fee": "no",
+    "operator": "Beach bar Paradise"
+   }
+  },
+  {
+   "type": "node",
+   "id": 5875611502,
+   "lat": 40.0816383,
+   "lon": 23.9802095,
+   "tags": {
+    "access": "customers",
+    "amenity": "shower",
+    "check_date": "2025-09-17",
+    "operator": "Blue Senses"
+   }
+  },
+  {
+   "type": "node",
+   "id": 5884457157,
+   "lat": 40.0996358,
+   "lon": 23.3072946,
+   "tags": {
+    "amenity": "shower"
+   }
+  },
+  {
+   "type": "node",
+   "id": 5884457176,
+   "lat": 40.0948261,
+   "lon": 23.3106268,
+   "tags": {
+    "amenity": "shower"
+   }
+  },
+  {
+   "type": "node",
+   "id": 5889650385,
+   "lat": 35.5137306,
+   "lon": 23.6334832,
+   "tags": {
+    "amenity": "shower",
+    "name:en": "Shower"
+   }
+  },
+  {
+   "type": "node",
+   "id": 5894606959,
+   "lat": 37.0982377,
+   "lon": 25.3756056,
+   "tags": {
+    "access": "yes",
+    "amenity": "shower",
+    "fee": "no"
+   }
+  },
+  {
+   "type": "node",
+   "id": 5900464187,
+   "lat": 39.7972346,
+   "lon": 19.8148392,
+   "tags": {
+    "access": "yes",
+    "amenity": "shower",
+    "fee": "no",
+    "source": "survey",
+    "unisex": "yes"
+   }
+  },
+  {
+   "type": "node",
+   "id": 5900464214,
+   "lat": 39.7960744,
+   "lon": 19.8156787,
+   "tags": {
+    "access": "customers",
+    "amenity": "shower",
+    "fee": "no",
+    "operator": "Club Suite Hotel Ionian Princess",
+    "source": "survey",
+    "unisex": "yes"
+   }
+  },
+  {
+   "type": "node",
+   "id": 5902766026,
+   "lat": 39.7982949,
+   "lon": 19.8168683,
+   "tags": {
+    "access": "yes",
+    "amenity": "shower",
+    "fee": "no",
+    "source": "survey",
+    "unisex": "yes"
+   }
+  },
+  {
+   "type": "node",
+   "id": 5904841156,
+   "lat": 39.8075666,
+   "lon": 19.8308922,
+   "tags": {
+    "access": "yes",
+    "amenity": "shower",
+    "fee": "no",
+    "source": "survey",
+    "unisex": "yes"
+   }
+  },
+  {
+   "type": "node",
+   "id": 5904902411,
+   "lat": 37.630673,
+   "lon": 25.1452154,
+   "tags": {
+    "amenity": "shower"
+   }
+  },
+  {
+   "type": "node",
+   "id": 5904902670,
+   "lat": 37.6474493,
+   "lon": 25.0583141,
+   "tags": {
+    "amenity": "shower"
+   }
+  },
+  {
+   "type": "node",
+   "id": 5909678547,
+   "lat": 39.9712723,
+   "lon": 23.3682807,
+   "tags": {
+    "amenity": "shower",
+    "fee": "no"
+   }
+  },
+  {
+   "type": "node",
+   "id": 5918141198,
+   "lat": 38.2624372,
+   "lon": 22.1038884,
+   "tags": {
+    "amenity": "shower",
+    "fee": "no"
+   }
+  },
+  {
+   "type": "node",
+   "id": 5918378184,
+   "lat": 38.2617331,
+   "lon": 22.1026897,
+   "tags": {
+    "amenity": "shower",
+    "fee": "no"
+   }
+  },
+  {
+   "type": "node",
+   "id": 5918390478,
+   "lat": 38.2621433,
+   "lon": 22.1034817,
+   "tags": {
+    "amenity": "shower",
+    "fee": "no"
+   }
+  },
+  {
+   "type": "node",
+   "id": 5920656233,
+   "lat": 36.3572919,
+   "lon": 25.476273,
+   "tags": {
+    "amenity": "shower",
+    "name": "Beach shower"
+   }
+  },
+  {
+   "type": "node",
+   "id": 5920656962,
+   "lat": 36.3576553,
+   "lon": 25.4767543,
+   "tags": {
+    "amenity": "shower",
+    "name": "Beach shower"
+   }
+  },
+  {
+   "type": "node",
+   "id": 5936957155,
+   "lat": 40.8855369,
+   "lon": 25.4905397,
+   "tags": {
+    "access": "yes",
+    "amenity": "shower",
+    "fee": "no"
+   }
+  },
+  {
+   "type": "node",
+   "id": 6026046487,
+   "lat": 35.5519019,
+   "lon": 24.1934353,
+   "tags": {
+    "amenity": "shower",
+    "name": "Σεϊταν Λιμάνι",
+    "name:el": "Σεϊταν Λιμάνι",
+    "name:en": "Seitan Limani"
+   }
+  },
+  {
+   "type": "node",
+   "id": 6029535609,
+   "lat": 36.2854785,
+   "lon": 28.1766735,
+   "tags": {
+    "amenity": "shower"
+   }
+  },
+  {
+   "type": "node",
+   "id": 6029535610,
+   "lat": 36.2859265,
+   "lon": 28.1769712,
+   "tags": {
+    "amenity": "shower"
+   }
+  },
+  {
+   "type": "node",
+   "id": 6029535611,
+   "lat": 36.2862913,
+   "lon": 28.1770749,
+   "tags": {
+    "amenity": "shower"
+   }
+  },
+  {
+   "type": "node",
+   "id": 6068664790,
+   "lat": 39.6344428,
+   "lon": 20.1708313,
+   "tags": {
+    "amenity": "shower"
+   }
+  },
+  {
+   "type": "node",
+   "id": 6139087648,
+   "lat": 37.749716,
+   "lon": 23.9045621,
+   "tags": {
+    "amenity": "shower"
+   }
+  },
+  {
+   "type": "node",
+   "id": 6173439456,
+   "lat": 39.3258276,
+   "lon": 22.9278389,
+   "tags": {
+    "amenity": "shower"
+   }
+  },
+  {
+   "type": "node",
+   "id": 6173439457,
+   "lat": 39.3253012,
+   "lon": 22.9274551,
+   "tags": {
+    "amenity": "shower"
+   }
+  },
+  {
+   "type": "node",
+   "id": 6173439458,
+   "lat": 39.3248466,
+   "lon": 22.9271905,
+   "tags": {
+    "amenity": "shower"
+   }
+  },
+  {
+   "type": "node",
+   "id": 6173439459,
+   "lat": 39.3241683,
+   "lon": 22.9267598,
+   "tags": {
+    "amenity": "shower"
+   }
+  },
+  {
+   "type": "node",
+   "id": 6241423424,
+   "lat": 36.4236156,
+   "lon": 28.1579408,
+   "tags": {
+    "amenity": "shower",
+    "fee": "no",
+    "supervised": "no"
+   }
+  },
+  {
+   "type": "node",
+   "id": 6381196731,
+   "lat": 36.4334351,
+   "lon": 28.2377132,
+   "tags": {
+    "access": "customers",
+    "amenity": "shower",
+    "hot_water": "yes",
+    "location": "indoor"
+   }
+  },
+  {
+   "type": "node",
+   "id": 6394364785,
+   "lat": 36.431315,
+   "lon": 28.2393904,
+   "tags": {
+    "access": "customers",
+    "amenity": "shower",
+    "hot_water": "yes",
+    "location": "indoor"
+   }
+  },
+  {
+   "type": "node",
+   "id": 6465540970,
+   "lat": 39.6348208,
+   "lon": 20.1701472,
+   "tags": {
+    "amenity": "shower"
+   }
+  },
+  {
+   "type": "node",
+   "id": 6465540971,
+   "lat": 39.6315826,
+   "lon": 20.1736996,
+   "tags": {
+    "amenity": "shower"
+   }
+  },
+  {
+   "type": "node",
+   "id": 6467640059,
+   "lat": 35.3048958,
+   "lon": 25.421155,
+   "tags": {
+    "access": "guests",
+    "amenity": "shower",
+    "covered": "no"
+   }
+  },
+  {
+   "type": "node",
+   "id": 6467645020,
+   "lat": 35.3029845,
+   "lon": 25.4233883,
+   "tags": {
+    "access": "guests",
+    "amenity": "shower",
+    "indoor": "no"
+   }
+  },
+  {
+   "type": "node",
+   "id": 6467645027,
+   "lat": 35.3035566,
+   "lon": 25.4226403,
+   "tags": {
+    "access": "guests",
+    "amenity": "shower",
+    "covered": "no"
+   }
+  },
+  {
+   "type": "node",
+   "id": 6476771695,
+   "lat": 39.6281562,
+   "lon": 20.1776396,
+   "tags": {
+    "amenity": "shower"
+   }
+  },
+  {
+   "type": "node",
+   "id": 6481329365,
+   "lat": 39.0260518,
+   "lon": 20.7153738,
+   "tags": {
+    "amenity": "shower"
+   }
+  },
+  {
+   "type": "node",
+   "id": 6481329366,
+   "lat": 39.026023,
+   "lon": 20.7153791,
+   "tags": {
+    "amenity": "shower"
+   }
+  },
+  {
+   "type": "node",
+   "id": 6481345039,
+   "lat": 39.0199072,
+   "lon": 20.7155789,
+   "tags": {
+    "amenity": "shower"
+   }
+  },
+  {
+   "type": "node",
+   "id": 6481347359,
+   "lat": 39.0171518,
+   "lon": 20.7155817,
+   "tags": {
+    "amenity": "shower"
+   }
+  },
+  {
+   "type": "node",
+   "id": 6481365598,
+   "lat": 39.0035526,
+   "lon": 20.71161,
+   "tags": {
+    "amenity": "shower"
+   }
+  },
+  {
+   "type": "node",
+   "id": 6481370108,
+   "lat": 39.0013135,
+   "lon": 20.7089557,
+   "tags": {
+    "amenity": "shower"
+   }
+  },
+  {
+   "type": "node",
+   "id": 6484383880,
+   "lat": 39.509856,
+   "lon": 20.2206027,
+   "tags": {
+    "access": "yes",
+    "amenity": "shower",
+    "fee": "no"
+   }
+  },
+  {
+   "type": "node",
+   "id": 6484410367,
+   "lat": 39.5105513,
+   "lon": 20.2200259,
+   "tags": {
+    "access": "yes",
+    "amenity": "shower",
+    "fee": "no"
+   }
+  },
+  {
+   "type": "node",
+   "id": 6484411184,
+   "lat": 39.511073,
+   "lon": 20.2195398,
+   "tags": {
+    "access": "yes",
+    "amenity": "shower",
+    "fee": "no"
+   }
+  },
+  {
+   "type": "node",
+   "id": 6484414003,
+   "lat": 39.5115237,
+   "lon": 20.2191288,
+   "tags": {
+    "access": "yes",
+    "amenity": "shower",
+    "fee": "no"
+   }
+  },
+  {
+   "type": "node",
+   "id": 6484417059,
+   "lat": 39.5135981,
+   "lon": 20.2163051,
+   "tags": {
+    "access": "yes",
+    "amenity": "shower",
+    "fee": "no"
+   }
+  },
+  {
+   "type": "node",
+   "id": 6484418572,
+   "lat": 39.5137898,
+   "lon": 20.2158974,
+   "tags": {
+    "access": "yes",
+    "amenity": "shower",
+    "fee": "no"
+   }
+  },
+  {
+   "type": "node",
+   "id": 6484421484,
+   "lat": 39.5143025,
+   "lon": 20.214506,
+   "tags": {
+    "access": "yes",
+    "amenity": "shower",
+    "fee": "no"
+   }
+  },
+  {
+   "type": "node",
+   "id": 6484424854,
+   "lat": 39.5151316,
+   "lon": 20.211085,
+   "tags": {
+    "access": "yes",
+    "amenity": "shower",
+    "fee": "no"
+   }
+  },
+  {
+   "type": "node",
+   "id": 6484438661,
+   "lat": 39.5190263,
+   "lon": 20.1870949,
+   "tags": {
+    "access": "yes",
+    "amenity": "shower",
+    "fee": "no"
+   }
+  },
+  {
+   "type": "node",
+   "id": 6492918245,
+   "lat": 39.088683,
+   "lon": 20.6608902,
+   "tags": {
+    "amenity": "shower"
+   }
+  },
+  {
+   "type": "node",
+   "id": 6525042858,
+   "lat": 35.205063,
+   "lon": 26.1090993,
+   "tags": {
+    "amenity": "shower"
+   }
+  },
+  {
+   "type": "node",
+   "id": 6525664809,
+   "lat": 39.2420574,
+   "lon": 20.478347,
+   "tags": {
+    "amenity": "shower"
+   }
+  },
+  {
+   "type": "node",
+   "id": 6536070949,
+   "lat": 39.014204,
+   "lon": 20.9154807,
+   "tags": {
+    "amenity": "shower"
+   }
+  },
+  {
+   "type": "node",
+   "id": 6564486878,
+   "lat": 35.177779,
+   "lon": 25.7094298,
+   "tags": {
+    "amenity": "shower",
+    "check_date": "2026-04-21",
+    "fee": "no",
+    "hot_water": "no"
+   }
+  },
+  {
+   "type": "node",
+   "id": 6564486879,
+   "lat": 35.1764088,
+   "lon": 25.7091428,
+   "tags": {
+    "amenity": "shower",
+    "check_date": "2026-04-21",
+    "fee": "no",
+    "hot_water": "no"
+   }
+  },
+  {
+   "type": "node",
+   "id": 6603665078,
+   "lat": 40.3185915,
+   "lon": 22.6272376,
+   "tags": {
+    "amenity": "shower",
+    "name": "Water"
+   }
+  },
+  {
+   "type": "node",
+   "id": 6605397271,
+   "lat": 38.9380411,
+   "lon": 23.0701803,
+   "tags": {
+    "access": "yes",
+    "amenity": "shower"
+   }
+  },
+  {
+   "type": "node",
+   "id": 6605397272,
+   "lat": 38.9381532,
+   "lon": 23.0687307,
+   "tags": {
+    "amenity": "shower"
+   }
+  },
+  {
+   "type": "node",
+   "id": 6619271685,
+   "lat": 38.9464217,
+   "lon": 20.7483284,
+   "tags": {
+    "amenity": "shower",
+    "fee": "no"
+   }
+  },
+  {
+   "type": "node",
+   "id": 6619271785,
+   "lat": 38.9477188,
+   "lon": 20.7513944,
+   "tags": {
+    "amenity": "shower",
+    "fee": "no"
+   }
+  },
+  {
+   "type": "node",
+   "id": 6627684627,
+   "lat": 39.3741642,
+   "lon": 23.2039518,
+   "tags": {
+    "amenity": "shower"
+   }
+  },
+  {
+   "type": "node",
+   "id": 6631387296,
+   "lat": 35.5160721,
+   "lon": 24.0327678,
+   "tags": {
+    "addr:housenumber": "5",
+    "addr:place": "Chania",
+    "addr:street": "Ερυθρού Σταυρού",
+    "balcony": "yes",
+    "fireplace": "yes",
+    "fridge": "yes",
+    "internet_access": "wlan",
+    "internet_access:ssid": "EVELYNS HOUSE",
+    "name": "Evelyn’s House",
+    "shower": "yes",
+    "stove": "yes",
+    "tourism": "guest_house",
+    "view": "sea",
+    "washing_machine": "yes",
+    "website": "http://evelyns-house-apartment-chania.chania-crete-hotels.com"
+   }
+  },
+  {
+   "type": "node",
+   "id": 6634231172,
+   "lat": 38.8338422,
+   "lon": 22.6531105,
+   "tags": {
+    "amenity": "shower"
+   }
+  },
+  {
+   "type": "node",
+   "id": 6634241899,
+   "lat": 38.8341465,
+   "lon": 22.6534937,
+   "tags": {
+    "amenity": "shower"
+   }
+  },
+  {
+   "type": "node",
+   "id": 6634244572,
+   "lat": 38.8339714,
+   "lon": 22.653276,
+   "tags": {
+    "amenity": "shower"
+   }
+  },
+  {
+   "type": "node",
+   "id": 6646935618,
+   "lat": 36.7292113,
+   "lon": 22.5540409,
+   "tags": {
+    "amenity": "shower",
+    "fee": "no",
+    "hot_water": "no",
+    "shower": "outdoor",
+    "supervised": "no",
+    "unisex": "yes"
+   }
+  },
+  {
+   "type": "node",
+   "id": 6650511946,
+   "lat": 36.7304589,
+   "lon": 22.5530684,
+   "tags": {
+    "amenity": "shower",
+    "fee": "no",
+    "hot_water": "yes",
+    "shower": "indoor",
+    "supervised": "interval"
+   }
+  },
+  {
+   "type": "node",
+   "id": 6650791650,
+   "lat": 36.7292162,
+   "lon": 22.5531735,
+   "tags": {
+    "amenity": "shower",
+    "fee": "no",
+    "hot_water": "yes",
+    "shower": "indoor",
+    "supervised": "interval"
+   }
+  },
+  {
+   "type": "node",
+   "id": 6653466536,
+   "lat": 40.7222777,
+   "lon": 21.7526245,
+   "tags": {
+    "access": "yes",
+    "amenity": "shower",
+    "fee": "no",
+    "hot_water": "no",
+    "supervised": "no",
+    "survey:date": "2025-08-15"
+   }
+  },
+  {
+   "type": "node",
+   "id": 6656648185,
+   "lat": 38.1604004,
+   "lon": 20.4136612,
+   "tags": {
+    "amenity": "shower",
+    "fee": "no"
+   }
+  },
+  {
+   "type": "node",
+   "id": 6657187811,
+   "lat": 36.7298196,
+   "lon": 22.5547404,
+   "tags": {
+    "amenity": "shower",
+    "fee": "no",
+    "hot_water": "yes",
+    "shower": "indoor",
+    "supervised": "interval"
+   }
+  },
+  {
+   "type": "node",
+   "id": 6657213509,
+   "lat": 40.8870182,
+   "lon": 25.4836842,
+   "tags": {
+    "amenity": "shower"
+   }
+  },
+  {
+   "type": "node",
+   "id": 6666101583,
+   "lat": 39.6835535,
+   "lon": 19.8417207,
+   "tags": {
+    "amenity": "shower",
+    "shower": "outdoor"
+   }
+  },
+  {
+   "type": "node",
+   "id": 6669927806,
+   "lat": 38.0717597,
+   "lon": 20.7994499,
+   "tags": {
+    "amenity": "shower",
+    "bottle": "yes",
+    "check_date": "2025-10-04",
+    "fee": "no"
+   }
+  },
+  {
+   "type": "node",
+   "id": 6681264901,
+   "lat": 39.4458215,
+   "lon": 20.0598089,
+   "tags": {
+    "amenity": "shower"
+   }
+  },
+  {
+   "type": "node",
+   "id": 6689028342,
+   "lat": 39.1055681,
+   "lon": 26.5632496,
+   "tags": {
+    "access": "yes",
+    "amenity": "shower"
+   }
+  },
+  {
+   "type": "node",
+   "id": 6690947301,
+   "lat": 40.8652466,
+   "lon": 24.3202248,
+   "tags": {
+    "amenity": "shower",
+    "fee": "no"
+   }
+  },
+  {
+   "type": "node",
+   "id": 6695578579,
+   "lat": 41.2855839,
+   "lon": 23.0154363,
+   "tags": {
+    "access": "yes",
+    "amenity": "shower",
+    "opening_hours": "10:00-20:00"
+   }
+  },
+  {
+   "type": "node",
+   "id": 6699055073,
+   "lat": 37.0202766,
+   "lon": 22.1431661,
+   "tags": {
+    "access": "permissive",
+    "amenity": "shower"
+   }
+  },
+  {
+   "type": "node",
+   "id": 6699360939,
+   "lat": 35.1982644,
+   "lon": 25.7125868,
+   "tags": {
+    "access": "yes",
+    "amenity": "shower",
+    "check_date": "2026-04-13",
+    "fee": "no",
+    "supervised": "no"
+   }
+  },
+  {
+   "type": "node",
+   "id": 6705173944,
+   "lat": 40.269479,
+   "lon": 23.4464178,
+   "tags": {
+    "amenity": "shower",
+    "fee": "no",
+    "hot_water": "no"
+   }
+  },
+  {
+   "type": "node",
+   "id": 6710828186,
+   "lat": 38.2607104,
+   "lon": 20.3767259,
+   "tags": {
+    "amenity": "shower",
+    "name:en": "Shower"
+   }
+  },
+  {
+   "type": "node",
+   "id": 6717792699,
+   "lat": 38.1616075,
+   "lon": 20.428131,
+   "tags": {
+    "amenity": "shower",
+    "name:en": "Shower"
+   }
+  },
+  {
+   "type": "node",
+   "id": 6721205457,
+   "lat": 40.8731094,
+   "lon": 24.3150106,
+   "tags": {
+    "amenity": "shower"
+   }
+  },
+  {
+   "type": "node",
+   "id": 6732035547,
+   "lat": 36.7296668,
+   "lon": 22.5551978,
+   "tags": {
+    "amenity": "shower",
+    "fee": "no",
+    "hot_water": "no",
+    "shower": "outdoor",
+    "supervised": "no",
+    "unisex": "yes"
+   }
+  },
+  {
+   "type": "node",
+   "id": 6732220885,
+   "lat": 39.0422687,
+   "lon": 21.1161317,
+   "tags": {
+    "amenity": "shower"
+   }
+  },
+  {
+   "type": "node",
+   "id": 6744261825,
+   "lat": 35.0302424,
+   "lon": 25.9114708,
+   "tags": {
+    "amenity": "shower",
+    "source": "bing;survey"
+   }
+  },
+  {
+   "type": "node",
+   "id": 6749938404,
+   "lat": 35.3366334,
+   "lon": 25.3523147,
+   "tags": {
+    "amenity": "shower"
+   }
+  },
+  {
+   "type": "node",
+   "id": 6749938405,
+   "lat": 35.3357625,
+   "lon": 25.3518333,
+   "tags": {
+    "amenity": "shower"
+   }
+  },
+  {
+   "type": "node",
+   "id": 6759208909,
+   "lat": 37.8651093,
+   "lon": 23.7412852,
+   "tags": {
+    "amenity": "shower"
+   }
+  },
+  {
+   "type": "node",
+   "id": 6759217437,
+   "lat": 37.8654883,
+   "lon": 23.7408507,
+   "tags": {
+    "amenity": "shower"
+   }
+  },
+  {
+   "type": "node",
+   "id": 6759221613,
+   "lat": 37.8667166,
+   "lon": 23.739065,
+   "tags": {
+    "amenity": "shower"
+   }
+  },
+  {
+   "type": "node",
+   "id": 6783489979,
+   "lat": 35.5192707,
+   "lon": 23.9107155,
+   "tags": {
+    "access": "yes",
+    "amenity": "shower",
+    "fee": "no"
+   }
+  },
+  {
+   "type": "node",
+   "id": 6783489980,
+   "lat": 35.5195163,
+   "lon": 23.8993818,
+   "tags": {
+    "access": "yes",
+    "amenity": "shower",
+    "fee": "no",
+    "supervised": "yes",
+    "wheelchair": "limited"
+   }
+  },
+  {
+   "type": "node",
+   "id": 6786364370,
+   "lat": 35.5189281,
+   "lon": 23.9127073,
+   "tags": {
+    "access": "yes",
+    "amenity": "shower",
+    "fee": "no"
+   }
+  },
+  {
+   "type": "node",
+   "id": 6787477584,
+   "lat": 35.3321193,
+   "lon": 25.3713316,
+   "tags": {
+    "access": "customers",
+    "amenity": "shower",
+    "unisex": "yes"
+   }
+  },
+  {
+   "type": "node",
+   "id": 6795655462,
+   "lat": 40.4660462,
+   "lon": 22.8554765,
+   "tags": {
+    "amenity": "shower",
+    "fee": "no"
+   }
+  },
+  {
+   "type": "node",
+   "id": 6815354875,
+   "lat": 40.9349267,
+   "lon": 24.3971612,
+   "tags": {
+    "amenity": "shower",
+    "fee": "no"
+   }
+  },
+  {
+   "type": "node",
+   "id": 6822105287,
+   "lat": 38.3001785,
+   "lon": 21.7719702,
+   "tags": {
+    "amenity": "shower"
+   }
+  },
+  {
+   "type": "node",
+   "id": 6822105288,
+   "lat": 38.2993611,
+   "lon": 21.7710726,
+   "tags": {
+    "amenity": "shower"
+   }
+  },
+  {
+   "type": "node",
+   "id": 6825301014,
+   "lat": 35.4161173,
+   "lon": 24.6465749,
+   "tags": {
+    "amenity": "shower"
+   }
+  },
+  {
+   "type": "node",
+   "id": 6827136847,
+   "lat": 35.4164222,
+   "lon": 24.6480744,
+   "tags": {
+    "amenity": "shower"
+   }
+  },
+  {
+   "type": "node",
+   "id": 6828680430,
+   "lat": 37.5369696,
+   "lon": 22.8231294,
+   "tags": {
+    "amenity": "restaurant",
+    "internet_access": "wlan",
+    "name": "Asimakopoulos",
+    "shower": "yes",
+    "toilets": "yes"
+   }
+  },
+  {
+   "type": "node",
+   "id": 6828723837,
+   "lat": 35.3531658,
+   "lon": 24.3006152,
+   "tags": {
+    "amenity": "shower"
+   }
+  },
+  {
+   "type": "node",
+   "id": 6830835407,
+   "lat": 35.4182514,
+   "lon": 24.648257,
+   "tags": {
+    "amenity": "shower"
+   }
+  },
+  {
+   "type": "node",
+   "id": 6830898910,
+   "lat": 35.4166887,
+   "lon": 24.6473697,
+   "tags": {
+    "access": "customers",
+    "amenity": "shower"
+   }
+  },
+  {
+   "type": "node",
+   "id": 6831714240,
+   "lat": 40.5084949,
+   "lon": 22.9221764,
+   "tags": {
+    "access": "yes",
+    "amenity": "shower",
+    "fee": "no"
+   }
+  },
+  {
+   "type": "node",
+   "id": 6858165271,
+   "lat": 35.4110126,
+   "lon": 24.7825304,
+   "tags": {
+    "amenity": "shower"
+   }
+  },
+  {
+   "type": "node",
+   "id": 6858185989,
+   "lat": 35.412714,
+   "lon": 24.7840327,
+   "tags": {
+    "amenity": "shower"
+   }
+  },
+  {
+   "type": "node",
+   "id": 6896538367,
+   "lat": 37.4444446,
+   "lon": 25.3305078,
+   "tags": {
+    "amenity": "shower"
+   }
+  },
+  {
+   "type": "node",
+   "id": 6928712183,
+   "lat": 36.8260063,
+   "lon": 22.279446,
+   "tags": {
+    "amenity": "shower"
+   }
+  },
+  {
+   "type": "node",
+   "id": 7082337872,
+   "lat": 40.1166985,
+   "lon": 22.5549141,
+   "tags": {
+    "caravans": "yes",
+    "drinking_water": "yes",
+    "fee": "yes",
+    "internet_access": "wlan",
+    "name": "Camping Sylvia",
+    "power_supply": "yes",
+    "sanitary_dump_station": "yes",
+    "shower": "yes",
+    "tents": "yes",
+    "toilets": "yes",
+    "tourism": "camp_site",
+    "website": "https://www.camping-sylvia.gr/"
+   }
+  },
+  {
+   "type": "node",
+   "id": 7141098361,
+   "lat": 37.7537087,
+   "lon": 21.3059583,
+   "tags": {
+    "access": "customers",
+    "amenity": "toilets",
+    "female": "yes",
+    "shower": "yes"
+   }
+  },
+  {
+   "type": "node",
+   "id": 7141098362,
+   "lat": 37.7538659,
+   "lon": 21.3058622,
+   "tags": {
+    "access": "customers",
+    "amenity": "toilets",
+    "men": "yes",
+    "shower": "yes"
+   }
+  },
+  {
+   "type": "node",
+   "id": 7160852889,
+   "lat": 37.765029,
+   "lon": 21.2990298,
+   "tags": {
+    "amenity": "toilets",
+    "shower": "yes"
+   }
+  },
+  {
+   "type": "node",
+   "id": 7160994416,
+   "lat": 37.5283546,
+   "lon": 22.8765678,
+   "tags": {
+    "amenity": "toilets",
+    "shower": "yes"
+   }
+  },
+  {
+   "type": "node",
+   "id": 7309004289,
+   "lat": 40.2269058,
+   "lon": 23.5872008,
+   "tags": {
+    "cabins": "yes",
+    "caravans": "yes",
+    "dog": "yes",
+    "email": "info@sunny-bay.gr",
+    "internet_access": "wlan",
+    "opening_hours": "Mar 1 - Oct 15",
+    "phone": "+30 2375 061350",
+    "shower": "yes",
+    "stars": "2",
+    "start_date": "1989",
+    "tents": "yes",
+    "toilets": "yes",
+    "tourism": "camp_site",
+    "website": "https://www.sunny-bay.gr/"
+   }
+  },
+  {
+   "type": "node",
+   "id": 7435104536,
+   "lat": 36.7041805,
+   "lon": 22.820476,
+   "tags": {
+    "amenity": "shower"
+   }
+  },
+  {
+   "type": "node",
+   "id": 7497278577,
+   "lat": 40.0119056,
+   "lon": 22.5936566,
+   "tags": {
+    "access": "customers",
+    "addr:city": "Paralia Panteleimonos",
+    "addr:postcode": "600 65",
+    "email": "campingheraklia@hmail.com",
+    "fax": "+30 23520 41714",
+    "internet_access": "wlan",
+    "name": "Heraklia Beach Camping & Apartments",
+    "phone": "+30 23520 41403",
+    "power_supply": "yes",
+    "shower": "yes",
+    "toilets": "yes",
+    "tourism": "camp_site",
+    "website": "https://www.heraklia.gr/"
+   }
+  },
+  {
+   "type": "node",
+   "id": 7499484632,
+   "lat": 38.6604008,
+   "lon": 23.0721527,
+   "tags": {
+    "contact:website": "https://www.neaodos.gr",
+    "distance": "144.25",
+    "highway": "services",
+    "int_name": "S.E.A. Atalantis",
+    "name": "Σ.Ε.Α. Αταλάντης",
+    "name:el": "Σ.Ε.Α. Αταλάντης",
+    "name:en": "Atalanti Rest Area",
+    "name:fr": "Aire d'Atalanti",
+    "opening_hours": "24/7",
+    "operator": "Νέα Οδός",
+    "shower": "yes",
+    "toilets": "yes"
+   }
+  },
+  {
+   "type": "node",
+   "id": 7648723185,
+   "lat": 39.2833161,
+   "lon": 20.4044966,
+   "tags": {
+    "amenity": "shower"
+   }
+  },
+  {
+   "type": "node",
+   "id": 7700405785,
+   "lat": 37.5632207,
+   "lon": 22.7994105,
+   "tags": {
+    "amenity": "shower"
+   }
+  },
+  {
+   "type": "node",
+   "id": 7724718438,
+   "lat": 38.2607698,
+   "lon": 22.1008941,
+   "tags": {
+    "amenity": "shower"
+   }
+  },
+  {
+   "type": "node",
+   "id": 7727009728,
+   "lat": 35.2017516,
+   "lon": 24.1345923,
+   "tags": {
+    "amenity": "shower"
+   }
+  },
+  {
+   "type": "node",
+   "id": 7731095778,
+   "lat": 35.5117199,
+   "lon": 23.990225,
+   "tags": {
+    "access": "yes",
+    "amenity": "shower"
+   }
+  },
+  {
+   "type": "node",
+   "id": 7754278021,
+   "lat": 39.3312888,
+   "lon": 26.1790356,
+   "tags": {
+    "amenity": "shower"
+   }
+  },
+  {
+   "type": "node",
+   "id": 7762415081,
+   "lat": 39.1938608,
+   "lon": 26.4904532,
+   "tags": {
+    "amenity": "shower"
+   }
+  },
+  {
+   "type": "node",
+   "id": 7801646588,
+   "lat": 35.190936,
+   "lon": 25.7218774,
+   "tags": {
+    "amenity": "shower"
+   }
+  },
+  {
+   "type": "node",
+   "id": 7815579285,
+   "lat": 37.84156,
+   "lon": 24.934672,
+   "tags": {
+    "amenity": "shower",
+    "survey:date": "2020-08-15"
+   }
+  },
+  {
+   "type": "node",
+   "id": 7817484385,
+   "lat": 37.8517719,
+   "lon": 24.938974,
+   "tags": {
+    "amenity": "shower",
+    "survey:date": "2020-08-16"
+   }
+  },
+  {
+   "type": "node",
+   "id": 7823341888,
+   "lat": 37.8340468,
+   "lon": 24.9437919,
+   "tags": {
+    "amenity": "shower",
+    "survey:date": "2020-08-18"
+   }
+  },
+  {
+   "type": "node",
+   "id": 7823341986,
+   "lat": 37.8374154,
+   "lon": 24.9405267,
+   "tags": {
+    "amenity": "shower",
+    "survey:date": "2020-08-18"
+   }
+  },
+  {
+   "type": "node",
+   "id": 7829845015,
+   "lat": 39.2876087,
+   "lon": 20.3398421,
+   "tags": {
+    "amenity": "shower"
+   }
+  },
+  {
+   "type": "node",
+   "id": 7834258526,
+   "lat": 38.3850375,
+   "lon": 21.8456055,
+   "tags": {
+    "amenity": "shower"
+   }
+  },
+  {
+   "type": "node",
+   "id": 7834298139,
+   "lat": 38.4059856,
+   "lon": 21.9332335,
+   "tags": {
+    "amenity": "shower"
+   }
+  },
+  {
+   "type": "node",
+   "id": 7835294400,
+   "lat": 38.4163279,
+   "lon": 21.3745936,
+   "tags": {
+    "amenity": "shower"
+   }
+  },
+  {
+   "type": "node",
+   "id": 7866530468,
+   "lat": 38.9380978,
+   "lon": 23.0714029,
+   "tags": {
+    "access": "yes",
+    "amenity": "shower",
+    "fee": "no"
+   }
+  },
+  {
+   "type": "node",
+   "id": 7881019316,
+   "lat": 40.0837896,
+   "lon": 23.9771796,
+   "tags": {
+    "access": "customers",
+    "amenity": "shower",
+    "fee": "no",
+    "hot_water": "no",
+    "supervised": "no",
+    "unisex": "yes"
+   }
+  },
+  {
+   "type": "node",
+   "id": 7881019343,
+   "lat": 40.0841763,
+   "lon": 23.978089,
+   "tags": {
+    "access": "customers",
+    "amenity": "shower",
+    "fee": "no",
+    "hot_water": "no",
+    "supervised": "no",
+    "unisex": "yes"
+   }
+  },
+  {
+   "type": "node",
+   "id": 7881033633,
+   "lat": 40.0843503,
+   "lon": 23.979318,
+   "tags": {
+    "access": "customers",
+    "amenity": "shower",
+    "fee": "no",
+    "hot_water": "no"
+   }
+  },
+  {
+   "type": "node",
+   "id": 7881649961,
+   "lat": 40.0837452,
+   "lon": 23.9774285,
+   "tags": {
+    "access": "customers",
+    "amenity": "shower",
+    "fee": "no",
+    "hot_water": "no",
+    "supervised": "no",
+    "unisex": "yes"
+   }
+  },
+  {
+   "type": "node",
+   "id": 7913689276,
+   "lat": 39.2897759,
+   "lon": 23.1434592,
+   "tags": {
+    "amenity": "shower",
+    "fee": "no"
+   }
+  },
+  {
+   "type": "node",
+   "id": 7924081962,
+   "lat": 40.3631554,
+   "lon": 23.8858467,
+   "tags": {
+    "amenity": "shower"
+   }
+  },
+  {
+   "type": "node",
+   "id": 7924081963,
+   "lat": 40.3630959,
+   "lon": 23.8858085,
+   "tags": {
+    "amenity": "shower"
+   }
+  },
+  {
+   "type": "node",
+   "id": 7935757059,
+   "lat": 40.3832708,
+   "lon": 23.9239277,
+   "tags": {
+    "amenity": "shower",
+    "fee": "no",
+    "hot_water": "no"
+   }
+  },
+  {
+   "type": "node",
+   "id": 7940058781,
+   "lat": 40.2695529,
+   "lon": 23.4460799,
+   "tags": {
+    "amenity": "shower",
+    "fee": "no",
+    "hot_water": "no"
+   }
+  },
+  {
+   "type": "node",
+   "id": 8011773120,
+   "lat": 37.7032537,
+   "lon": 26.6440741,
+   "tags": {
+    "amenity": "shower"
+   }
+  },
+  {
+   "type": "node",
+   "id": 8011773136,
+   "lat": 37.6933081,
+   "lon": 26.6310431,
+   "tags": {
+    "amenity": "shower"
+   }
+  },
+  {
+   "type": "node",
+   "id": 8047080599,
+   "lat": 35.33628,
+   "lon": 25.3040531,
+   "tags": {
+    "access": "customers",
+    "amenity": "shower"
+   }
+  },
+  {
+   "type": "node",
+   "id": 8069701286,
+   "lat": 34.9913843,
+   "lon": 25.4516389,
+   "tags": {
+    "amenity": "shower"
+   }
+  },
+  {
+   "type": "node",
+   "id": 8266904709,
+   "lat": 40.6083494,
+   "lon": 24.6075644,
+   "tags": {
+    "access": "private",
+    "amenity": "shower"
+   }
+  },
+  {
+   "type": "node",
+   "id": 8823994018,
+   "lat": 39.6732973,
+   "lon": 19.7294954,
+   "tags": {
+    "amenity": "shower"
+   }
+  },
+  {
+   "type": "node",
+   "id": 8823994117,
+   "lat": 39.6737759,
+   "lon": 19.7187344,
+   "tags": {
+    "amenity": "shower"
+   }
+  },
+  {
+   "type": "node",
+   "id": 8829206741,
+   "lat": 37.981745,
+   "lon": 22.9725912,
+   "tags": {
+    "amenity": "shower",
+    "fee": "no"
+   }
+  },
+  {
+   "type": "node",
+   "id": 8869393213,
+   "lat": 39.4532781,
+   "lon": 23.122154,
+   "tags": {
+    "amenity": "shower"
+   }
+  },
+  {
+   "type": "node",
+   "id": 8869408909,
+   "lat": 39.4539398,
+   "lon": 23.1214018,
+   "tags": {
+    "amenity": "shower"
+   }
+  },
+  {
+   "type": "node",
+   "id": 8869448022,
+   "lat": 39.4527609,
+   "lon": 23.1224669,
+   "tags": {
+    "amenity": "shower"
+   }
+  },
+  {
+   "type": "node",
+   "id": 8869449955,
+   "lat": 39.4516045,
+   "lon": 23.1238342,
+   "tags": {
+    "amenity": "shower"
+   }
+  },
+  {
+   "type": "node",
+   "id": 8869454012,
+   "lat": 39.453499,
+   "lon": 23.1217054,
+   "tags": {
+    "amenity": "shower"
+   }
+  },
+  {
+   "type": "node",
+   "id": 8893167840,
+   "lat": 39.7578645,
+   "lon": 19.6443583,
+   "tags": {
+    "access": "yes",
+    "amenity": "shower"
+   }
+  },
+  {
+   "type": "node",
+   "id": 8894160604,
+   "lat": 39.7561052,
+   "lon": 19.6435555,
+   "tags": {
+    "access": "yes",
+    "amenity": "shower"
+   }
+  },
+  {
+   "type": "node",
+   "id": 8913844967,
+   "lat": 37.6747144,
+   "lon": 24.3515572,
+   "tags": {
+    "access": "yes",
+    "amenity": "shower",
+    "operator": "Δήμος Κέας"
+   }
+  },
+  {
+   "type": "node",
+   "id": 8940644728,
+   "lat": 36.3742835,
+   "lon": 28.2328862,
+   "tags": {
+    "amenity": "shower"
+   }
+  },
+  {
+   "type": "node",
+   "id": 8940678094,
+   "lat": 36.3741933,
+   "lon": 28.2321315,
+   "tags": {
+    "amenity": "shower"
+   }
+  },
+  {
+   "type": "node",
+   "id": 8940685958,
+   "lat": 36.37276,
+   "lon": 28.2315932,
+   "tags": {
+    "amenity": "shower"
+   }
+  },
+  {
+   "type": "node",
+   "id": 8940697951,
+   "lat": 36.3744937,
+   "lon": 28.2331948,
+   "tags": {
+    "amenity": "shower"
+   }
+  },
+  {
+   "type": "node",
+   "id": 8945923743,
+   "lat": 36.1063253,
+   "lon": 27.736929,
+   "tags": {
+    "access": "yes",
+    "amenity": "shower",
+    "fee": "no"
+   }
+  },
+  {
+   "type": "node",
+   "id": 8946776234,
+   "lat": 36.3216709,
+   "lon": 28.2092221,
+   "tags": {
+    "amenity": "shower",
+    "fee": "no",
+    "wheelchair": "no"
+   }
+  },
+  {
+   "type": "node",
+   "id": 8946778722,
+   "lat": 36.3219496,
+   "lon": 28.2116552,
+   "tags": {
+    "amenity": "shower",
+    "fee": "no"
+   }
+  },
+  {
+   "type": "node",
+   "id": 8946779618,
+   "lat": 36.3213575,
+   "lon": 28.209589,
+   "tags": {
+    "amenity": "shower",
+    "fee": "no",
+    "wheelchair": "no"
+   }
+  },
+  {
+   "type": "node",
+   "id": 8954127767,
+   "lat": 38.1047374,
+   "lon": 23.9778147,
+   "tags": {
+    "access": "customers",
+    "amenity": "shower"
+   }
+  },
+  {
+   "type": "node",
+   "id": 8954127771,
+   "lat": 38.1039797,
+   "lon": 23.9801811,
+   "tags": {
+    "access": "customers",
+    "amenity": "shower"
+   }
+  },
+  {
+   "type": "node",
+   "id": 8979762317,
+   "lat": 35.5249657,
+   "lon": 23.8528827,
+   "tags": {
+    "amenity": "shower"
+   }
+  },
+  {
+   "type": "node",
+   "id": 8982376718,
+   "lat": 40.5106426,
+   "lon": 23.8271189,
+   "tags": {
+    "amenity": "shower",
+    "fee": "no"
+   }
+  },
+  {
+   "type": "node",
+   "id": 8982377120,
+   "lat": 40.5096035,
+   "lon": 23.8268371,
+   "tags": {
+    "amenity": "shower"
+   }
+  },
+  {
+   "type": "node",
+   "id": 8982377121,
+   "lat": 40.5092012,
+   "lon": 23.8267387,
+   "tags": {
+    "amenity": "shower"
+   }
+  },
+  {
+   "type": "node",
+   "id": 8985213318,
+   "lat": 36.9010115,
+   "lon": 27.2855055,
+   "tags": {
+    "amenity": "shower",
+    "name:de": "Dusche"
+   }
+  },
+  {
+   "type": "node",
+   "id": 8986064617,
+   "lat": 40.6252348,
+   "lon": 24.5775889,
+   "tags": {
+    "amenity": "shower"
+   }
+  },
+  {
+   "type": "node",
+   "id": 8992038417,
+   "lat": 40.9373242,
+   "lon": 25.3560106,
+   "tags": {
+    "amenity": "shower"
+   }
+  },
+  {
+   "type": "node",
+   "id": 8992519918,
+   "lat": 36.9023054,
+   "lon": 27.2852534,
+   "tags": {
+    "access": "customers",
+    "amenity": "shower",
+    "fee": "no"
+   }
+  },
+  {
+   "type": "node",
+   "id": 8995827517,
+   "lat": 40.8424955,
+   "lon": 25.8752665,
+   "tags": {
+    "amenity": "shower"
+   }
+  },
+  {
+   "type": "node",
+   "id": 9001579188,
+   "lat": 37.1094998,
+   "lon": 25.3731488,
+   "tags": {
+    "access": "yes",
+    "amenity": "shower",
+    "fee": "no",
+    "unisex": "yes"
+   }
+  },
+  {
+   "type": "node",
+   "id": 9003069218,
+   "lat": 36.7928701,
+   "lon": 27.1531415,
+   "tags": {
+    "amenity": "shower"
+   }
+  },
+  {
+   "type": "node",
+   "id": 9004446117,
+   "lat": 36.7606682,
+   "lon": 27.0071364,
+   "tags": {
+    "amenity": "shower"
+   }
+  },
+  {
+   "type": "node",
+   "id": 9004585917,
+   "lat": 36.7608389,
+   "lon": 27.0075296,
+   "tags": {
+    "amenity": "shower"
+   }
+  },
+  {
+   "type": "node",
+   "id": 9007759817,
+   "lat": 36.8580724,
+   "lon": 27.1065733,
+   "tags": {
+    "amenity": "shower",
+    "fee": "no"
+   }
+  },
+  {
+   "type": "node",
+   "id": 9010206617,
+   "lat": 36.9733294,
+   "lon": 27.0288704,
+   "tags": {
+    "amenity": "shower"
+   }
+  },
+  {
+   "type": "node",
+   "id": 9020208624,
+   "lat": 36.8511973,
+   "lon": 27.108156,
+   "tags": {
+    "amenity": "shower"
+   }
+  },
+  {
+   "type": "node",
+   "id": 9020208629,
+   "lat": 36.8524211,
+   "lon": 27.1070499,
+   "tags": {
+    "amenity": "shower"
+   }
+  },
+  {
+   "type": "node",
+   "id": 9047456096,
+   "lat": 40.6461606,
+   "lon": 24.7661782,
+   "tags": {
+    "amenity": "shower",
+    "hot_water": "no",
+    "location": "outdoor"
+   }
+  },
+  {
+   "type": "node",
+   "id": 9048743281,
+   "lat": 35.0973602,
+   "lon": 24.6563147,
+   "tags": {
+    "amenity": "shower"
+   }
+  },
+  {
+   "type": "node",
+   "id": 9090333291,
+   "lat": 37.3973792,
+   "lon": 24.8813344,
+   "tags": {
+    "amenity": "shower",
+    "name": "Foot shower"
+   }
+  },
+  {
+   "type": "node",
+   "id": 9090357455,
+   "lat": 37.3971292,
+   "lon": 24.8818664,
+   "tags": {
+    "amenity": "shower"
+   }
+  },
+  {
+   "type": "node",
+   "id": 9091399137,
+   "lat": 37.4454232,
+   "lon": 24.9002736,
+   "tags": {
+    "amenity": "shower"
+   }
+  },
+  {
+   "type": "node",
+   "id": 9093672867,
+   "lat": 40.038826,
+   "lon": 23.3582171,
+   "tags": {
+    "amenity": "shower"
+   }
+  },
+  {
+   "type": "node",
+   "id": 9097652526,
+   "lat": 37.3848619,
+   "lon": 24.8813629,
+   "tags": {
+    "amenity": "shower"
+   }
+  },
+  {
+   "type": "node",
+   "id": 9123812478,
+   "lat": 39.6489397,
+   "lon": 19.8480717,
+   "tags": {
+    "access": "customers",
+    "amenity": "shower",
+    "female": "yes",
+    "male": "yes",
+    "seamark:small_craft_facility:category": "showers",
+    "seamark:type": "small_craft_facility"
+   }
+  },
+  {
+   "type": "node",
+   "id": 9123812481,
+   "lat": 39.6490426,
+   "lon": 19.8481967,
+   "tags": {
+    "access": "customers",
+    "amenity": "shower",
+    "female": "yes",
+    "male": "yes",
+    "seamark:small_craft_facility:category": "showers",
+    "seamark:type": "small_craft_facility"
+   }
+  },
+  {
+   "type": "node",
+   "id": 9131987054,
+   "lat": 35.4165714,
+   "lon": 24.6846847,
+   "tags": {
+    "amenity": "shower",
+    "fee": "no"
+   }
+  },
+  {
+   "type": "node",
+   "id": 9133133555,
+   "lat": 35.4195049,
+   "lon": 24.687779,
+   "tags": {
+    "amenity": "shower"
+   }
+  },
+  {
+   "type": "node",
+   "id": 9143481453,
+   "lat": 37.3725752,
+   "lon": 21.6852433,
+   "tags": {
+    "amenity": "shower"
+   }
+  },
+  {
+   "type": "node",
+   "id": 9149448573,
+   "lat": 35.4192085,
+   "lon": 24.6868465,
+   "tags": {
+    "amenity": "shower",
+    "fee": "no"
+   }
+  },
+  {
+   "type": "node",
+   "id": 9186762170,
+   "lat": 38.2435064,
+   "lon": 24.0005426,
+   "tags": {
+    "amenity": "shower"
+   }
+  },
+  {
+   "type": "node",
+   "id": 9187025474,
+   "lat": 36.4236865,
+   "lon": 28.1543851,
+   "tags": {
+    "amenity": "shower",
+    "fee": "no",
+    "supervised": "no"
+   }
+  },
+  {
+   "type": "node",
+   "id": 9187047088,
+   "lat": 36.4237181,
+   "lon": 28.1549571,
+   "tags": {
+    "amenity": "shower",
+    "fee": "no",
+    "supervised": "no"
+   }
+  },
+  {
+   "type": "node",
+   "id": 9187305526,
+   "lat": 36.9081612,
+   "lon": 27.2647887,
+   "tags": {
+    "amenity": "shower"
+   }
+  },
+  {
+   "type": "node",
+   "id": 9269879517,
+   "lat": 36.5123442,
+   "lon": 23.0551619,
+   "tags": {
+    "amenity": "shower"
+   }
+  },
+  {
+   "type": "node",
+   "id": 9269879617,
+   "lat": 36.51187,
+   "lon": 23.0558459,
+   "tags": {
+    "amenity": "shower"
+   }
+  },
+  {
+   "type": "node",
+   "id": 9269879618,
+   "lat": 36.5106223,
+   "lon": 23.0575776,
+   "tags": {
+    "amenity": "shower"
+   }
+  },
+  {
+   "type": "node",
+   "id": 9269879717,
+   "lat": 36.5082626,
+   "lon": 23.0605839,
+   "tags": {
+    "amenity": "shower"
+   }
+  },
+  {
+   "type": "node",
+   "id": 9282711537,
+   "lat": 38.1729886,
+   "lon": 22.337078,
+   "tags": {
+    "access": "customers",
+    "amenity": "shower",
+    "fee": "no",
+    "hot_water": "yes",
+    "male": "yes"
+   }
+  },
+  {
+   "type": "node",
+   "id": 9282711538,
+   "lat": 38.1730459,
+   "lon": 22.3371486,
+   "tags": {
+    "access": "customers",
+    "amenity": "shower",
+    "fee": "no",
+    "hot_water": "yes",
+    "male": "yes"
+   }
+  },
+  {
+   "type": "node",
+   "id": 9282711611,
+   "lat": 39.0420527,
+   "lon": 21.1164844,
+   "tags": {
+    "amenity": "shower"
+   }
+  },
+  {
+   "type": "node",
+   "id": 9282711625,
+   "lat": 39.1472934,
+   "lon": 20.5724984,
+   "tags": {
+    "amenity": "shower"
+   }
+  },
+  {
+   "type": "node",
+   "id": 9301460458,
+   "lat": 39.4739768,
+   "lon": 20.2398077,
+   "tags": {
+    "access": "customers",
+    "amenity": "shower",
+    "male": "yes"
+   }
+  },
+  {
+   "type": "node",
+   "id": 9301460461,
+   "lat": 39.473984,
+   "lon": 20.2398716,
+   "tags": {
+    "access": "customers",
+    "amenity": "shower",
+    "female": "yes"
+   }
+  },
+  {
+   "type": "node",
+   "id": 9509035759,
+   "lat": 38.9237844,
+   "lon": 22.8853346,
+   "tags": {
+    "access": "yes",
+    "amenity": "shower",
+    "opening_hours": "24/7"
+   }
+  },
+  {
+   "type": "node",
+   "id": 9627710291,
+   "lat": 39.7948469,
+   "lon": 19.8098686,
+   "tags": {
+    "access": "customers",
+    "amenity": "shower",
+    "hot_water": "no",
+    "supervised": "yes"
+   }
+  },
+  {
+   "type": "node",
+   "id": 9631940256,
+   "lat": 38.3732717,
+   "lon": 22.6276166,
+   "tags": {
+    "amenity": "shower"
+   }
+  },
+  {
+   "type": "node",
+   "id": 9655326717,
+   "lat": 36.6477835,
+   "lon": 22.8830882,
+   "tags": {
+    "amenity": "shower"
+   }
+  },
+  {
+   "type": "node",
+   "id": 9655326817,
+   "lat": 36.6568778,
+   "lon": 22.8772928,
+   "tags": {
+    "amenity": "shower"
+   }
+  },
+  {
+   "type": "node",
+   "id": 9670662717,
+   "lat": 39.551096,
+   "lon": 19.8467736,
+   "tags": {
+    "amenity": "shower"
+   }
+  },
+  {
+   "type": "node",
+   "id": 9671617217,
+   "lat": 39.501597,
+   "lon": 19.8528576,
+   "tags": {
+    "amenity": "shower"
+   }
+  },
+  {
+   "type": "node",
+   "id": 9671622417,
+   "lat": 39.5019193,
+   "lon": 19.8529305,
+   "tags": {
+    "amenity": "shower"
+   }
+  },
+  {
+   "type": "node",
+   "id": 9677355917,
+   "lat": 39.7184879,
+   "lon": 19.6777452,
+   "tags": {
+    "amenity": "shower"
+   }
+  },
+  {
+   "type": "node",
+   "id": 9738968798,
+   "lat": 37.5571121,
+   "lon": 22.7176108,
+   "tags": {
+    "amenity": "shower"
+   }
+  },
+  {
+   "type": "node",
+   "id": 9741610662,
+   "lat": 39.3795274,
+   "lon": 26.2163972,
+   "tags": {
+    "access": "customers",
+    "amenity": "shower"
+   }
+  },
+  {
+   "type": "node",
+   "id": 9744107298,
+   "lat": 38.3395244,
+   "lon": 23.6791064,
+   "tags": {
+    "amenity": "shower"
+   }
+  },
+  {
+   "type": "node",
+   "id": 9773097025,
+   "lat": 38.3461275,
+   "lon": 21.7168459,
+   "tags": {
+    "amenity": "shower"
+   }
+  },
+  {
+   "type": "node",
+   "id": 9775559202,
+   "lat": 37.4550026,
+   "lon": 21.6394699,
+   "tags": {
+    "amenity": "shower"
+   }
+  },
+  {
+   "type": "node",
+   "id": 9782185918,
+   "lat": 36.3562932,
+   "lon": 25.47554,
+   "tags": {
+    "amenity": "shower",
+    "name:en": "beach schower",
+    "name:pl": "prysznic plażowy"
+   }
+  },
+  {
+   "type": "node",
+   "id": 9785307197,
+   "lat": 38.3503945,
+   "lon": 21.7025176,
+   "tags": {
+    "amenity": "shower"
+   }
+  },
+  {
+   "type": "node",
+   "id": 9789972605,
+   "lat": 38.5186592,
+   "lon": 21.6518211,
+   "tags": {
+    "amenity": "shower"
+   }
+  },
+  {
+   "type": "node",
+   "id": 9794112120,
+   "lat": 37.5255877,
+   "lon": 22.7307453,
+   "tags": {
+    "amenity": "shower"
+   }
+  },
+  {
+   "type": "node",
+   "id": 9794112121,
+   "lat": 37.5238226,
+   "lon": 22.7335461,
+   "tags": {
+    "amenity": "shower"
+   }
+  },
+  {
+   "type": "node",
+   "id": 9795205433,
+   "lat": 37.5268459,
+   "lon": 22.7309686,
+   "tags": {
+    "amenity": "shower"
+   }
+  },
+  {
+   "type": "node",
+   "id": 9795205434,
+   "lat": 37.5259128,
+   "lon": 22.7307581,
+   "tags": {
+    "amenity": "shower"
+   }
+  },
+  {
+   "type": "node",
+   "id": 9795205437,
+   "lat": 37.5266052,
+   "lon": 22.7309066,
+   "tags": {
+    "amenity": "shower"
+   }
+  },
+  {
+   "type": "node",
+   "id": 9795205440,
+   "lat": 37.52623,
+   "lon": 22.7308313,
+   "tags": {
+    "amenity": "shower"
+   }
+  },
+  {
+   "type": "node",
+   "id": 9797033368,
+   "lat": 35.2365849,
+   "lon": 23.5950702,
+   "tags": {
+    "amenity": "shower",
+    "fee": "no",
+    "location": "outdoor",
+    "supervised": "no",
+    "unisex": "yes",
+    "wheelchair": "no"
+   }
+  },
+  {
+   "type": "node",
+   "id": 9797673143,
+   "lat": 36.6872432,
+   "lon": 22.8277353,
+   "tags": {
+    "amenity": "shower"
+   }
+  },
+  {
+   "type": "node",
+   "id": 9799059471,
+   "lat": 36.7476053,
+   "lon": 22.8020983,
+   "tags": {
+    "amenity": "shower"
+   }
+  },
+  {
+   "type": "node",
+   "id": 9807171856,
+   "lat": 36.6870242,
+   "lon": 23.0561931,
+   "tags": {
+    "amenity": "shower"
+   }
+  },
+  {
+   "type": "node",
+   "id": 9819541035,
+   "lat": 38.364956,
+   "lon": 20.7162515,
+   "tags": {
+    "access": "yes",
+    "amenity": "shower",
+    "charge": "3 EUR",
+    "fee": "yes",
+    "payment:cash": "yes"
+   }
+  },
+  {
+   "type": "node",
+   "id": 9819541036,
+   "lat": 38.365561,
+   "lon": 20.7150999,
+   "tags": {
+    "internet_access": "yes",
+    "internet_access:fee": "no",
+    "name": "Easywash",
+    "self_service": "yes",
+    "shop": "laundry",
+    "shower": "yes"
+   }
+  },
+  {
+   "type": "node",
+   "id": 9822701881,
+   "lat": 36.2636495,
+   "lon": 23.076158,
+   "tags": {
+    "amenity": "shower"
+   }
+  },
+  {
+   "type": "node",
+   "id": 9825200081,
+   "lat": 36.1442233,
+   "lon": 23.0011718,
+   "tags": {
+    "amenity": "shower"
+   }
+  },
+  {
+   "type": "node",
+   "id": 9825200082,
+   "lat": 36.1435222,
+   "lon": 23.0012603,
+   "tags": {
+    "amenity": "shower"
+   }
+  },
+  {
+   "type": "node",
+   "id": 9833706510,
+   "lat": 37.4799751,
+   "lon": 21.6218072,
+   "tags": {
+    "amenity": "shower"
+   }
+  },
+  {
+   "type": "node",
+   "id": 9834160052,
+   "lat": 37.4780945,
+   "lon": 21.6233055,
+   "tags": {
+    "amenity": "shower"
+   }
+  },
+  {
+   "type": "node",
+   "id": 9834160054,
+   "lat": 37.4779701,
+   "lon": 21.6233326,
+   "tags": {
+    "amenity": "shower"
+   }
+  },
+  {
+   "type": "node",
+   "id": 9840487531,
+   "lat": 36.1674402,
+   "lon": 28.0966017,
+   "tags": {
+    "amenity": "shower"
+   }
+  },
+  {
+   "type": "node",
+   "id": 9840487536,
+   "lat": 36.1673711,
+   "lon": 28.095339,
+   "tags": {
+    "amenity": "shower"
+   }
+  },
+  {
+   "type": "node",
+   "id": 9840487537,
+   "lat": 36.1674285,
+   "lon": 28.095763,
+   "tags": {
+    "amenity": "shower"
+   }
+  },
+  {
+   "type": "node",
+   "id": 9840487539,
+   "lat": 36.1669521,
+   "lon": 28.0944467,
+   "tags": {
+    "amenity": "shower"
+   }
+  },
+  {
+   "type": "node",
+   "id": 9840487540,
+   "lat": 36.1674376,
+   "lon": 28.0971547,
+   "tags": {
+    "amenity": "shower"
+   }
+  },
+  {
+   "type": "node",
+   "id": 9840487543,
+   "lat": 36.1674429,
+   "lon": 28.0960626,
+   "tags": {
+    "amenity": "shower"
+   }
+  },
+  {
+   "type": "node",
+   "id": 9840487547,
+   "lat": 36.1674781,
+   "lon": 28.0964831,
+   "tags": {
+    "amenity": "shower"
+   }
+  },
+  {
+   "type": "node",
+   "id": 9840487561,
+   "lat": 36.1671669,
+   "lon": 28.094772,
+   "tags": {
+    "amenity": "shower"
+   }
+  },
+  {
+   "type": "node",
+   "id": 9840487565,
+   "lat": 36.1672826,
+   "lon": 28.0950437,
+   "tags": {
+    "amenity": "shower"
+   }
+  },
+  {
+   "type": "node",
+   "id": 9841141892,
+   "lat": 37.2987856,
+   "lon": 21.6951253,
+   "tags": {
+    "amenity": "shower"
+   }
+  },
+  {
+   "type": "node",
+   "id": 9841392968,
+   "lat": 37.2993327,
+   "lon": 21.6951304,
+   "tags": {
+    "amenity": "shower",
+    "survey:date": "2024-10-04"
+   }
+  },
+  {
+   "type": "node",
+   "id": 9843907127,
+   "lat": 36.3084268,
+   "lon": 28.1921096,
+   "tags": {
+    "amenity": "shower"
+   }
+  },
+  {
+   "type": "node",
+   "id": 9874059691,
+   "lat": 40.2400826,
+   "lon": 23.7263537,
+   "tags": {
+    "access": "customers",
+    "amenity": "shower",
+    "hot_water": "no"
+   }
+  },
+  {
+   "type": "node",
+   "id": 9874059699,
+   "lat": 40.240045,
+   "lon": 23.7263947,
+   "tags": {
+    "access": "customers",
+    "amenity": "shower",
+    "hot_water": "no"
+   }
+  },
+  {
+   "type": "node",
+   "id": 9879480659,
+   "lat": 38.103235,
+   "lon": 20.5755773,
+   "tags": {
+    "amenity": "shower",
+    "fee": "no",
+    "hot_water": "no",
+    "supervised": "no"
+   }
+  },
+  {
+   "type": "node",
+   "id": 9887664946,
+   "lat": 38.1521977,
+   "lon": 20.4838504,
+   "tags": {
+    "amenity": "shower",
+    "fee": "no",
+    "hot_water": "no",
+    "supervised": "no"
+   }
+  },
+  {
+   "type": "node",
+   "id": 9921137757,
+   "lat": 37.7279183,
+   "lon": 20.9898535,
+   "tags": {
+    "amenity": "shower",
+    "fee": "no",
+    "hot_water": "no",
+    "supervised": "no"
+   }
+  },
+  {
+   "type": "node",
+   "id": 9922741295,
+   "lat": 37.8160687,
+   "lon": 20.8739841,
+   "tags": {
+    "amenity": "shower",
+    "fee": "no",
+    "hot_water": "no"
+   }
+  },
+  {
+   "type": "node",
+   "id": 9927400800,
+   "lat": 35.0032152,
+   "lon": 25.8156376,
+   "tags": {
+    "amenity": "shower"
+   }
+  },
+  {
+   "type": "node",
+   "id": 9927400802,
+   "lat": 35.0036459,
+   "lon": 25.8162426,
+   "tags": {
+    "amenity": "shower"
+   }
+  },
+  {
+   "type": "node",
+   "id": 9929385115,
+   "lat": 36.7456784,
+   "lon": 21.905246,
+   "tags": {
+    "access": "yes",
+    "amenity": "shower",
+    "check_date": "2022-08-03",
+    "fee": "no",
+    "supervised": "no"
+   }
+  },
+  {
+   "type": "node",
+   "id": 9929937124,
+   "lat": 37.7323416,
+   "lon": 20.979046,
+   "tags": {
+    "amenity": "shower"
+   }
+  },
+  {
+   "type": "node",
+   "id": 9929937125,
+   "lat": 37.7322119,
+   "lon": 20.9793298,
+   "tags": {
+    "amenity": "shower"
+   }
+  },
+  {
+   "type": "node",
+   "id": 9932166950,
+   "lat": 37.8403734,
+   "lon": 20.7760989,
+   "tags": {
+    "amenity": "shower"
+   }
+  },
+  {
+   "type": "node",
+   "id": 9934145417,
+   "lat": 37.7350656,
+   "lon": 20.8938006,
+   "tags": {
+    "amenity": "shower",
+    "fee": "no",
+    "hot_water": "no",
+    "supervised": "no"
+   }
+  },
+  {
+   "type": "node",
+   "id": 9934215086,
+   "lat": 37.9255644,
+   "lon": 23.6908626,
+   "tags": {
+    "access": "yes",
+    "amenity": "shower"
+   }
+  },
+  {
+   "type": "node",
+   "id": 9934925258,
+   "lat": 36.2832607,
+   "lon": 28.1750768,
+   "tags": {
+    "amenity": "shower"
+   }
+  },
+  {
+   "type": "node",
+   "id": 9935572789,
+   "lat": 39.7942691,
+   "lon": 19.6979361,
+   "tags": {
+    "amenity": "shower"
+   }
+  },
+  {
+   "type": "node",
+   "id": 9941850593,
+   "lat": 39.4347014,
+   "lon": 20.0862151,
+   "tags": {
+    "amenity": "shower",
+    "fee": "no",
+    "location": "outdoor"
+   }
+  },
+  {
+   "type": "node",
+   "id": 9942728821,
+   "lat": 36.9886407,
+   "lon": 24.6765647,
+   "tags": {
+    "access": "yes",
+    "amenity": "shower"
+   }
+  },
+  {
+   "type": "node",
+   "id": 9944276808,
+   "lat": 36.9440764,
+   "lon": 24.7514619,
+   "tags": {
+    "access": "yes",
+    "amenity": "shower"
+   }
+  },
+  {
+   "type": "node",
+   "id": 9944327768,
+   "lat": 36.9389809,
+   "lon": 24.7446618,
+   "tags": {
+    "access": "yes",
+    "amenity": "shower"
+   }
+  },
+  {
+   "type": "node",
+   "id": 9944328797,
+   "lat": 36.9722084,
+   "lon": 24.7459827,
+   "tags": {
+    "access": "yes",
+    "amenity": "shower"
+   }
+  },
+  {
+   "type": "node",
+   "id": 9944330921,
+   "lat": 36.9888667,
+   "lon": 24.6770726,
+   "tags": {
+    "access": "yes",
+    "amenity": "shower"
+   }
+  },
+  {
+   "type": "node",
+   "id": 9944339122,
+   "lat": 36.9901834,
+   "lon": 24.6786032,
+   "tags": {
+    "access": "yes",
+    "amenity": "shower"
+   }
+  },
+  {
+   "type": "node",
+   "id": 9944344128,
+   "lat": 36.9895347,
+   "lon": 24.6780926,
+   "tags": {
+    "access": "yes",
+    "amenity": "shower"
+   }
+  },
+  {
+   "type": "node",
+   "id": 9945803547,
+   "lat": 37.6411193,
+   "lon": 23.1591344,
+   "tags": {
+    "access": "yes",
+    "amenity": "shower"
+   }
+  },
+  {
+   "type": "node",
+   "id": 9950532747,
+   "lat": 37.2118532,
+   "lon": 21.5942388,
+   "tags": {
+    "access": "yes",
+    "amenity": "shower"
+   }
+  },
+  {
+   "type": "node",
+   "id": 9966103708,
+   "lat": 35.3671096,
+   "lon": 24.4851089,
+   "tags": {
+    "access": "yes",
+    "amenity": "shower"
+   }
+  },
+  {
+   "type": "node",
+   "id": 9966103709,
+   "lat": 35.3666857,
+   "lon": 24.4867993,
+   "tags": {
+    "access": "yes",
+    "amenity": "shower"
+   }
+  },
+  {
+   "type": "node",
+   "id": 9968280153,
+   "lat": 35.3508758,
+   "lon": 24.3387188,
+   "tags": {
+    "access": "customers",
+    "amenity": "shower"
+   }
+  },
+  {
+   "type": "node",
+   "id": 9969827510,
+   "lat": 35.1852081,
+   "lon": 24.3999044,
+   "tags": {
+    "access": "yes",
+    "amenity": "shower"
+   }
+  },
+  {
+   "type": "node",
+   "id": 9969827511,
+   "lat": 35.1871229,
+   "lon": 24.3985754,
+   "tags": {
+    "access": "yes",
+    "amenity": "shower"
+   }
+  },
+  {
+   "type": "node",
+   "id": 9969827512,
+   "lat": 35.1865751,
+   "lon": 24.3988835,
+   "tags": {
+    "access": "yes",
+    "amenity": "shower"
+   }
+  },
+  {
+   "type": "node",
+   "id": 9969827513,
+   "lat": 35.1824464,
+   "lon": 24.4008106,
+   "tags": {
+    "access": "yes",
+    "amenity": "shower",
+    "fee": "no"
+   }
+  },
+  {
+   "type": "node",
+   "id": 9969827514,
+   "lat": 35.1808095,
+   "lon": 24.4011649,
+   "tags": {
+    "access": "yes",
+    "amenity": "shower"
+   }
+  },
+  {
+   "type": "node",
+   "id": 9969827515,
+   "lat": 35.1882674,
+   "lon": 24.3977457,
+   "tags": {
+    "access": "yes",
+    "amenity": "shower"
+   }
+  },
+  {
+   "type": "node",
+   "id": 9970593410,
+   "lat": 35.1855577,
+   "lon": 24.3993568,
+   "tags": {
+    "access": "yes",
+    "amenity": "shower"
+   }
+  },
+  {
+   "type": "node",
+   "id": 9970593412,
+   "lat": 35.185938,
+   "lon": 24.3991568,
+   "tags": {
+    "access": "yes",
+    "amenity": "shower"
+   }
+  },
+  {
+   "type": "node",
+   "id": 9976265585,
+   "lat": 37.7484176,
+   "lon": 23.9052817,
+   "tags": {
+    "amenity": "shower",
+    "name": "Shower"
+   }
+  },
+  {
+   "type": "node",
+   "id": 9977355320,
+   "lat": 35.3603052,
+   "lon": 24.4068791,
+   "tags": {
+    "access": "yes",
+    "amenity": "shower"
+   }
+  },
+  {
+   "type": "node",
+   "id": 9979391527,
+   "lat": 35.1501011,
+   "lon": 24.4920372,
+   "tags": {
+    "access": "yes",
+    "amenity": "shower"
+   }
+  },
+  {
+   "type": "node",
+   "id": 9979443804,
+   "lat": 35.1194434,
+   "lon": 24.5463859,
+   "tags": {
+    "access": "yes",
+    "amenity": "shower"
+   }
+  },
+  {
+   "type": "node",
+   "id": 9980218803,
+   "lat": 34.9938288,
+   "lon": 24.7500704,
+   "tags": {
+    "access": "yes",
+    "amenity": "shower"
+   }
+  },
+  {
+   "type": "node",
+   "id": 9983717420,
+   "lat": 35.0076391,
+   "lon": 24.7595277,
+   "tags": {
+    "access": "yes",
+    "amenity": "shower"
+   }
+  },
+  {
+   "type": "node",
+   "id": 9985930848,
+   "lat": 34.9927064,
+   "lon": 24.7484833,
+   "tags": {
+    "access": "yes",
+    "amenity": "shower"
+   }
+  },
+  {
+   "type": "node",
+   "id": 9987627131,
+   "lat": 35.1829629,
+   "lon": 24.3000932,
+   "tags": {
+    "amenity": "shower"
+   }
+  },
+  {
+   "type": "node",
+   "id": 9987627856,
+   "lat": 35.1875765,
+   "lon": 24.3152999,
+   "tags": {
+    "amenity": "shower"
+   }
+  },
+  {
+   "type": "node",
+   "id": 9987627858,
+   "lat": 35.1997869,
+   "lon": 24.0787189,
+   "tags": {
+    "amenity": "shower"
+   }
+  },
+  {
+   "type": "node",
+   "id": 9987632822,
+   "lat": 35.1871267,
+   "lon": 24.3143813,
+   "tags": {
+    "amenity": "shower"
+   }
+  },
+  {
+   "type": "node",
+   "id": 9994401992,
+   "lat": 40.8405265,
+   "lon": 24.3057224,
+   "tags": {
+    "amenity": "shower"
+   }
+  },
+  {
+   "type": "node",
+   "id": 10010461772,
+   "lat": 40.1529743,
+   "lon": 23.9172395,
+   "tags": {
+    "amenity": "shower"
+   }
+  },
+  {
+   "type": "node",
+   "id": 10010463797,
+   "lat": 40.1538642,
+   "lon": 23.915532,
+   "tags": {
+    "amenity": "shower"
+   }
+  },
+  {
+   "type": "node",
+   "id": 10010466441,
+   "lat": 40.1534797,
+   "lon": 23.9161613,
+   "tags": {
+    "amenity": "shower"
+   }
+  },
+  {
+   "type": "node",
+   "id": 10010482643,
+   "lat": 40.7628193,
+   "lon": 23.7717166,
+   "tags": {
+    "amenity": "shower"
+   }
+  },
+  {
+   "type": "node",
+   "id": 10017630971,
+   "lat": 37.9115538,
+   "lon": 22.8787572,
+   "tags": {
+    "access": "customers",
+    "amenity": "toilets",
+    "shower": "yes"
+   }
+  },
+  {
+   "type": "node",
+   "id": 10017630972,
+   "lat": 37.9116172,
+   "lon": 22.8786995,
+   "tags": {
+    "access": "customers",
+    "amenity": "toilets",
+    "shower": "yes"
+   }
+  },
+  {
+   "type": "node",
+   "id": 10027565940,
+   "lat": 35.1818796,
+   "lon": 25.7122317,
+   "tags": {
+    "access": "yes",
+    "amenity": "shower",
+    "fee": "no",
+    "unisex": "yes"
+   }
+  },
+  {
+   "type": "node",
+   "id": 10039599229,
+   "lat": 37.8590633,
+   "lon": 24.7838583,
+   "tags": {
+    "access": "yes",
+    "amenity": "shower",
+    "fee": "no",
+    "supervised": "no"
+   }
+  },
+  {
+   "type": "node",
+   "id": 10055905389,
+   "lat": 39.6721922,
+   "lon": 19.7039097,
+   "tags": {
+    "access": "yes",
+    "amenity": "shower"
+   }
+  },
+  {
+   "type": "node",
+   "id": 10056354734,
+   "lat": 39.672256,
+   "lon": 19.7033653,
+   "tags": {
+    "access": "yes",
+    "amenity": "shower"
+   }
+  },
+  {
+   "type": "node",
+   "id": 10058836203,
+   "lat": 38.2355933,
+   "lon": 22.0797801,
+   "tags": {
+    "amenity": "shower"
+   }
+  },
+  {
+   "type": "node",
+   "id": 10062990151,
+   "lat": 35.5547785,
+   "lon": 24.0874312,
+   "tags": {
+    "amenity": "shower",
+    "fee": "no",
+    "outdoor": "yes"
+   }
+  },
+  {
+   "type": "node",
+   "id": 10064185740,
+   "lat": 35.4989439,
+   "lon": 23.5792373,
+   "tags": {
+    "access": "yes",
+    "amenity": "shower",
+    "fee": "no",
+    "hot_water": "no",
+    "supervised": "no"
+   }
+  },
+  {
+   "type": "node",
+   "id": 10064185748,
+   "lat": 35.5132212,
+   "lon": 24.0054766,
+   "tags": {
+    "amenity": "shower",
+    "capacity": "1",
+    "outdoor": "yes"
+   }
+  },
+  {
+   "type": "node",
+   "id": 10064185749,
+   "lat": 35.5130389,
+   "lon": 24.0045255,
+   "tags": {
+    "amenity": "shower"
+   }
+  },
+  {
+   "type": "node",
+   "id": 10065779506,
+   "lat": 35.5055461,
+   "lon": 24.1754553,
+   "tags": {
+    "amenity": "shower",
+    "outdoor": "yes"
+   }
+  },
+  {
+   "type": "node",
+   "id": 10065779507,
+   "lat": 35.5047178,
+   "lon": 24.1740558,
+   "tags": {
+    "amenity": "shower",
+    "outdoor": "yes"
+   }
+  },
+  {
+   "type": "node",
+   "id": 10065779508,
+   "lat": 35.5044366,
+   "lon": 24.1739117,
+   "tags": {
+    "amenity": "shower",
+    "outdoor": "yes"
+   }
+  },
+  {
+   "type": "node",
+   "id": 10068303566,
+   "lat": 35.590756,
+   "lon": 24.0955241,
+   "tags": {
+    "amenity": "shower",
+    "outdoor": "yes"
+   }
+  },
+  {
+   "type": "node",
+   "id": 10068303567,
+   "lat": 35.5917043,
+   "lon": 24.0948958,
+   "tags": {
+    "amenity": "shower",
+    "outdoor": "yes"
+   }
+  },
+  {
+   "type": "node",
+   "id": 10076356547,
+   "lat": 35.0285945,
+   "lon": 24.7586917,
+   "tags": {
+    "access": "customers",
+    "amenity": "shower"
+   }
+  },
+  {
+   "type": "node",
+   "id": 10082168596,
+   "lat": 38.3372643,
+   "lon": 23.7644619,
+   "tags": {
+    "amenity": "shower"
+   }
+  },
+  {
+   "type": "node",
+   "id": 10082586917,
+   "lat": 36.9035788,
+   "lon": 27.2850141,
+   "tags": {
+    "amenity": "shower",
+    "fee": "no"
+   }
+  },
+  {
+   "type": "node",
+   "id": 10082587117,
+   "lat": 36.9059429,
+   "lon": 27.2846214,
+   "tags": {
+    "access": "customers",
+    "amenity": "shower",
+    "fee": "no"
+   }
+  },
+  {
+   "type": "node",
+   "id": 10092073750,
+   "lat": 39.1660962,
+   "lon": 22.8936167,
+   "tags": {
+    "amenity": "shower"
+   }
+  },
+  {
+   "type": "node",
+   "id": 10092073751,
+   "lat": 39.1661123,
+   "lon": 22.8936368,
+   "tags": {
+    "amenity": "shower"
+   }
+  },
+  {
+   "type": "node",
+   "id": 10107595280,
+   "lat": 37.0149628,
+   "lon": 26.96773,
+   "tags": {
+    "access": "yes",
+    "amenity": "shower"
+   }
+  },
+  {
+   "type": "node",
+   "id": 10108126668,
+   "lat": 36.9688404,
+   "lon": 26.9344897,
+   "tags": {
+    "access": "yes",
+    "amenity": "shower",
+    "fee": "no",
+    "supervised": "no"
+   }
+  },
+  {
+   "type": "node",
+   "id": 10123472640,
+   "lat": 39.6262928,
+   "lon": 19.9252599,
+   "tags": {
+    "amenity": "shower"
+   }
+  },
+  {
+   "type": "node",
+   "id": 10125375539,
+   "lat": 38.497461,
+   "lon": 23.422574,
+   "tags": {
+    "amenity": "shower",
+    "name": "Douche de plage"
+   }
+  },
+  {
+   "type": "node",
+   "id": 10125420328,
+   "lat": 36.9746165,
+   "lon": 26.9289701,
+   "tags": {
+    "amenity": "shower",
+    "fee": "no",
+    "supervised": "no",
+    "wheelchair": "no"
+   }
+  },
+  {
+   "type": "node",
+   "id": 10209826304,
+   "lat": 36.8055766,
+   "lon": 22.6760351,
+   "tags": {
+    "amenity": "shower",
+    "hot_water": "no",
+    "price": "0"
+   }
+  },
+  {
+   "type": "node",
+   "id": 10210227907,
+   "lat": 35.2485188,
+   "lon": 23.813432,
+   "tags": {
+    "access": "yes",
+    "amenity": "shower",
+    "fee": "no",
+    "hot_water": "no",
+    "supervised": "no",
+    "wheelchair": "limited"
+   }
+  },
+  {
+   "type": "node",
+   "id": 10210228158,
+   "lat": 35.2383244,
+   "lon": 23.6612352,
+   "tags": {
+    "access": "yes",
+    "amenity": "shower",
+    "fee": "no",
+    "hot_water": "no",
+    "opening_hours": "24/7",
+    "wheelchair": "limited"
+   }
+  },
+  {
+   "type": "node",
+   "id": 10211991169,
+   "lat": 38.9504851,
+   "lon": 20.755991,
+   "tags": {
+    "amenity": "shower"
+   }
+  },
+  {
+   "type": "node",
+   "id": 10212016723,
+   "lat": 38.9473332,
+   "lon": 20.7496534,
+   "tags": {
+    "access": "yes",
+    "amenity": "shower",
+    "fee": "no",
+    "hot_water": "no",
+    "opening_hours": "24/7",
+    "supervised": "no",
+    "wheelchair": "limited"
+   }
+  },
+  {
+   "type": "node",
+   "id": 10214452596,
+   "lat": 38.9469761,
+   "lon": 20.7491645,
+   "tags": {
+    "access": "yes",
+    "amenity": "shower",
+    "fee": "no",
+    "hot_water": "no",
+    "opening_hours": "24/7",
+    "supervised": "no",
+    "wheelchair": "limited"
+   }
+  },
+  {
+   "type": "node",
+   "id": 10214478073,
+   "lat": 38.9470619,
+   "lon": 20.7489182,
+   "tags": {
+    "access": "yes",
+    "amenity": "shower",
+    "fee": "no",
+    "hot_water": "no",
+    "opening_hours": "24/7",
+    "supervised": "no",
+    "wheelchair": "limited"
+   }
+  },
+  {
+   "type": "node",
+   "id": 10264703614,
+   "lat": 39.6107986,
+   "lon": 19.9282636,
+   "tags": {
+    "amenity": "shower"
+   }
+  },
+  {
+   "type": "node",
+   "id": 10281941689,
+   "lat": 38.349873,
+   "lon": 21.703547,
+   "tags": {
+    "amenity": "shower"
+   }
+  },
+  {
+   "type": "node",
+   "id": 10281950830,
+   "lat": 38.350353,
+   "lon": 21.7025995,
+   "tags": {
+    "amenity": "shower"
+   }
+  },
+  {
+   "type": "node",
+   "id": 10313417032,
+   "lat": 38.3335766,
+   "lon": 21.5809278,
+   "tags": {
+    "amenity": "shower"
+   }
+  },
+  {
+   "type": "node",
+   "id": 10782430317,
+   "lat": 37.4076603,
+   "lon": 22.7578072,
+   "tags": {
+    "amenity": "shower",
+    "fee": "no",
+    "hot_water": "no",
+    "supervised": "no"
+   }
+  },
+  {
+   "type": "node",
+   "id": 10815737698,
+   "lat": 36.9714296,
+   "lon": 22.9921206,
+   "tags": {
+    "amenity": "shower"
+   }
+  },
+  {
+   "type": "node",
+   "id": 10827303549,
+   "lat": 35.5144578,
+   "lon": 24.0073826,
+   "tags": {
+    "amenity": "shower",
+    "capacity": "2",
+    "fee": "no",
+    "outdoor": "yes"
+   }
+  },
+  {
+   "type": "node",
+   "id": 10827303599,
+   "lat": 35.5138336,
+   "lon": 24.0066576,
+   "tags": {
+    "amenity": "shower",
+    "capacity": "2",
+    "fee": "no",
+    "outdoor": "yes"
+   }
+  },
+  {
+   "type": "node",
+   "id": 10832091692,
+   "lat": 35.516111,
+   "lon": 24.0294925,
+   "tags": {
+    "amenity": "shower",
+    "capacity": "1"
+   }
+  },
+  {
+   "type": "node",
+   "id": 10886015985,
+   "lat": 37.013459,
+   "lon": 21.9954582,
+   "tags": {
+    "amenity": "shower"
+   }
+  },
+  {
+   "type": "node",
+   "id": 10907489066,
+   "lat": 40.0998882,
+   "lon": 23.7752417,
+   "tags": {
+    "amenity": "shower"
+   }
+  },
+  {
+   "type": "node",
+   "id": 10911546910,
+   "lat": 40.1885145,
+   "lon": 23.8007109,
+   "tags": {
+    "amenity": "shower"
+   }
+  },
+  {
+   "type": "node",
+   "id": 10926842238,
+   "lat": 38.6255613,
+   "lon": 20.6068836,
+   "tags": {
+    "access": "permit",
+    "amenity": "shower",
+    "check_date:opening_hours": "2026-05-02",
+    "fee": "yes",
+    "note": "Showers at supermarket",
+    "opening_hours:signed": "no"
+   }
+  },
+  {
+   "type": "node",
+   "id": 10994638200,
+   "lat": 38.1895829,
+   "lon": 24.0620073,
+   "tags": {
+    "amenity": "shower",
+    "hot_water": "no"
+   }
+  },
+  {
+   "type": "node",
+   "id": 10994638201,
+   "lat": 38.1901963,
+   "lon": 24.0629077,
+   "tags": {
+    "amenity": "shower",
+    "hot_water": "no"
+   }
+  },
+  {
+   "type": "node",
+   "id": 10994638202,
+   "lat": 38.1905896,
+   "lon": 24.0634356,
+   "tags": {
+    "amenity": "shower",
+    "hot_water": "no"
+   }
+  },
+  {
+   "type": "node",
+   "id": 10994638203,
+   "lat": 38.1909689,
+   "lon": 24.0639797,
+   "tags": {
+    "amenity": "shower",
+    "hot_water": "no"
+   }
+  },
+  {
+   "type": "node",
+   "id": 10994638204,
+   "lat": 38.191296,
+   "lon": 24.0653756,
+   "tags": {
+    "amenity": "shower",
+    "hot_water": "no"
+   }
+  },
+  {
+   "type": "node",
+   "id": 10996512563,
+   "lat": 35.592345,
+   "lon": 24.0950346,
+   "tags": {
+    "amenity": "shower",
+    "outdoor": "yes"
+   }
+  },
+  {
+   "type": "node",
+   "id": 11001044495,
+   "lat": 35.5175495,
+   "lon": 24.0244403,
+   "tags": {
+    "amenity": "shower",
+    "fee": "no"
+   }
+  },
+  {
+   "type": "node",
+   "id": 11006195402,
+   "lat": 37.7951516,
+   "lon": 26.688061,
+   "tags": {
+    "access": "yes",
+    "amenity": "shower",
+    "covered": "no",
+    "fee": "no",
+    "opening_hours": "24/7",
+    "supervised": "no"
+   }
+  },
+  {
+   "type": "node",
+   "id": 11014390569,
+   "lat": 36.6053894,
+   "lon": 24.9510313,
+   "tags": {
+    "amenity": "shower"
+   }
+  },
+  {
+   "type": "node",
+   "id": 11018368444,
+   "lat": 36.419906,
+   "lon": 28.1727728,
+   "tags": {
+    "access": "yes",
+    "amenity": "shower",
+    "fee": "no",
+    "location": "outdoor",
+    "unisex": "yes"
+   }
+  },
+  {
+   "type": "node",
+   "id": 11018603138,
+   "lat": 38.1911121,
+   "lon": 24.065734,
+   "tags": {
+    "amenity": "shower",
+    "hot_water": "no"
+   }
+  },
+  {
+   "type": "node",
+   "id": 11024389742,
+   "lat": 35.5145125,
+   "lon": 23.9884154,
+   "tags": {
+    "access": "yes",
+    "amenity": "shower",
+    "fee": "no"
+   }
+  },
+  {
+   "type": "node",
+   "id": 11024389748,
+   "lat": 35.5141792,
+   "lon": 23.9884266,
+   "tags": {
+    "access": "yes",
+    "amenity": "shower",
+    "fee": "no"
+   }
+  },
+  {
+   "type": "node",
+   "id": 11024389750,
+   "lat": 35.5124917,
+   "lon": 23.9892686,
+   "tags": {
+    "access": "yes",
+    "amenity": "shower",
+    "fee": "no"
+   }
+  },
+  {
+   "type": "node",
+   "id": 11024389751,
+   "lat": 35.5122001,
+   "lon": 23.9898975,
+   "tags": {
+    "access": "yes",
+    "amenity": "shower",
+    "fee": "no"
+   }
+  },
+  {
+   "type": "node",
+   "id": 11024389752,
+   "lat": 35.5119638,
+   "lon": 23.9900856,
+   "tags": {
+    "access": "yes",
+    "amenity": "shower",
+    "fee": "no"
+   }
+  },
+  {
+   "type": "node",
+   "id": 11041984175,
+   "lat": 38.3429025,
+   "lon": 20.5362063,
+   "tags": {
+    "amenity": "shower",
+    "fee": "no"
+   }
+  },
+  {
+   "type": "node",
+   "id": 11054647996,
+   "lat": 35.2963048,
+   "lon": 25.4852461,
+   "tags": {
+    "amenity": "shower",
+    "fee": "no"
+   }
+  },
+  {
+   "type": "node",
+   "id": 11056083943,
+   "lat": 35.2920655,
+   "lon": 25.4452093,
+   "tags": {
+    "amenity": "shower"
+   }
+  },
+  {
+   "type": "node",
+   "id": 11061128895,
+   "lat": 35.2921221,
+   "lon": 25.4478468,
+   "tags": {
+    "amenity": "shower"
+   }
+  },
+  {
+   "type": "node",
+   "id": 11066509286,
+   "lat": 39.1361013,
+   "lon": 23.6451975,
+   "tags": {
+    "amenity": "shower"
+   }
+  },
+  {
+   "type": "node",
+   "id": 11075086031,
+   "lat": 35.3648734,
+   "lon": 24.4626822,
+   "tags": {
+    "access": "yes",
+    "amenity": "shower",
+    "fee": "no",
+    "hot_water": "no",
+    "supervised": "no"
+   }
+  },
+  {
+   "type": "node",
+   "id": 11079293490,
+   "lat": 39.7135978,
+   "lon": 21.614382,
+   "tags": {
+    "amenity": "shower"
+   }
+  },
+  {
+   "type": "node",
+   "id": 11082785626,
+   "lat": 38.0456781,
+   "lon": 24.3248862,
+   "tags": {
+    "amenity": "shower"
+   }
+  },
+  {
+   "type": "node",
+   "id": 11087047406,
+   "lat": 35.407133,
+   "lon": 25.0185027,
+   "tags": {
+    "amenity": "shower",
+    "survey:date": "2023-08-03"
+   }
+  },
+  {
+   "type": "node",
+   "id": 11088911987,
+   "lat": 35.4731949,
+   "lon": 27.1127155,
+   "tags": {
+    "amenity": "shower",
+    "fee": "no"
+   }
+  },
+  {
+   "type": "node",
+   "id": 11089223506,
+   "lat": 35.405751,
+   "lon": 25.0181901,
+   "tags": {
+    "amenity": "shower",
+    "survey:date": "2023-08-04"
+   }
+  },
+  {
+   "type": "node",
+   "id": 11089242905,
+   "lat": 35.4054699,
+   "lon": 25.0182672,
+   "tags": {
+    "amenity": "shower",
+    "survey:date": "2023-08-04"
+   }
+  },
+  {
+   "type": "node",
+   "id": 11089243005,
+   "lat": 35.4044108,
+   "lon": 25.0190305,
+   "tags": {
+    "amenity": "shower",
+    "survey:date": "2023-08-04"
+   }
+  },
+  {
+   "type": "node",
+   "id": 11093991681,
+   "lat": 39.8731654,
+   "lon": 25.0608417,
+   "tags": {
+    "amenity": "shower"
+   }
+  },
+  {
+   "type": "node",
+   "id": 11100233941,
+   "lat": 35.4722667,
+   "lon": 27.1159384,
+   "tags": {
+    "access": "private",
+    "amenity": "shower"
+   }
+  },
+  {
+   "type": "node",
+   "id": 11102574824,
+   "lat": 38.3191904,
+   "lon": 26.1535825,
+   "tags": {
+    "amenity": "shower",
+    "check_date": "2023-08-09"
+   }
+  },
+  {
+   "type": "node",
+   "id": 11102676806,
+   "lat": 36.959045,
+   "lon": 25.5399168,
+   "tags": {
+    "access": "customers",
+    "amenity": "shower",
+    "hot_water": "no",
+    "supervised": "no"
+   }
+  },
+  {
+   "type": "node",
+   "id": 11102692350,
+   "lat": 35.463488,
+   "lon": 24.1584143,
+   "tags": {
+    "amenity": "shower"
+   }
+  },
+  {
+   "type": "node",
+   "id": 11107329599,
+   "lat": 35.2960153,
+   "lon": 25.4842065,
+   "tags": {
+    "access": "yes",
+    "amenity": "shower",
+    "fee": "no",
+    "hot_water": "no",
+    "opening_hours": "24/7",
+    "supervised": "no",
+    "wheelchair": "yes"
+   }
+  },
+  {
+   "type": "node",
+   "id": 11113798547,
+   "lat": 38.0735058,
+   "lon": 20.8001827,
+   "tags": {
+    "amenity": "shower"
+   }
+  },
+  {
+   "type": "node",
+   "id": 11113798548,
+   "lat": 38.0735274,
+   "lon": 20.8001891,
+   "tags": {
+    "amenity": "shower"
+   }
+  },
+  {
+   "type": "node",
+   "id": 11114351798,
+   "lat": 35.0412808,
+   "lon": 26.233591,
+   "tags": {
+    "amenity": "shower"
+   }
+  },
+  {
+   "type": "node",
+   "id": 11114404857,
+   "lat": 35.1836781,
+   "lon": 24.4004648,
+   "tags": {
+    "access": "yes",
+    "amenity": "shower",
+    "fee": "no"
+   }
+  },
+  {
+   "type": "node",
+   "id": 11114404888,
+   "lat": 35.1838928,
+   "lon": 24.4018593,
+   "tags": {
+    "access": "customers",
+    "amenity": "shower",
+    "fee": "no"
+   }
+  },
+  {
+   "type": "node",
+   "id": 11114404889,
+   "lat": 35.1847799,
+   "lon": 24.4019226,
+   "tags": {
+    "access": "customers",
+    "amenity": "shower",
+    "fee": "no"
+   }
+  },
+  {
+   "type": "node",
+   "id": 11114412180,
+   "lat": 35.172369,
+   "lon": 24.4010099,
+   "tags": {
+    "amenity": "shower"
+   }
+  },
+  {
+   "type": "node",
+   "id": 11131906416,
+   "lat": 36.8403163,
+   "lon": 27.0632591,
+   "tags": {
+    "access": "customers",
+    "amenity": "shower",
+    "fee": "no",
+    "hot_water": "no",
+    "supervised": "no",
+    "wheelchair": "no"
+   }
+  },
+  {
+   "type": "node",
+   "id": 11132828284,
+   "lat": 36.3698968,
+   "lon": 25.4810034,
+   "tags": {
+    "access": "yes",
+    "amenity": "shower"
+   }
+  },
+  {
+   "type": "node",
+   "id": 11139310106,
+   "lat": 35.5082423,
+   "lon": 27.2086756,
+   "tags": {
+    "amenity": "shower"
+   }
+  },
+  {
+   "type": "node",
+   "id": 11139328706,
+   "lat": 35.5103397,
+   "lon": 27.2058943,
+   "tags": {
+    "amenity": "shower"
+   }
+  },
+  {
+   "type": "node",
+   "id": 11146702537,
+   "lat": 40.4938063,
+   "lon": 25.6366457,
+   "tags": {
+    "access": "customers",
+    "amenity": "shower"
+   }
+  },
+  {
+   "type": "node",
+   "id": 11146702539,
+   "lat": 40.4934434,
+   "lon": 25.6375811,
+   "tags": {
+    "access": "customers",
+    "amenity": "shower"
+   }
+  },
+  {
+   "type": "node",
+   "id": 11147050920,
+   "lat": 40.5030672,
+   "lon": 25.6042258,
+   "tags": {
+    "amenity": "shower"
+   }
+  },
+  {
+   "type": "node",
+   "id": 11193060869,
+   "lat": 36.3750333,
+   "lon": 28.2355962,
+   "tags": {
+    "amenity": "shower"
+   }
+  },
+  {
+   "type": "node",
+   "id": 11195643029,
+   "lat": 39.292956,
+   "lon": 22.8777468,
+   "tags": {
+    "access": "yes",
+    "amenity": "shower",
+    "fee": "no",
+    "hot_water": "no",
+    "name": "*",
+    "opening_hours": "24/7",
+    "outdoor": "yes",
+    "supervised": "no",
+    "unisex": "yes",
+    "wheelchair": "no"
+   }
+  },
+  {
+   "type": "node",
+   "id": 11209559440,
+   "lat": 39.6838237,
+   "lon": 19.8417155,
+   "tags": {
+    "amenity": "shower"
+   }
+  },
+  {
+   "type": "node",
+   "id": 11209559441,
+   "lat": 39.6843186,
+   "lon": 19.8419452,
+   "tags": {
+    "amenity": "shower"
+   }
+  },
+  {
+   "type": "node",
+   "id": 11212284432,
+   "lat": 38.1607272,
+   "lon": 20.415914,
+   "tags": {
+    "amenity": "shower"
+   }
+  },
+  {
+   "type": "node",
+   "id": 11212357070,
+   "lat": 36.2008114,
+   "lon": 28.1424317,
+   "tags": {
+    "access": "yes",
+    "amenity": "shower",
+    "fee": "no"
+   }
+  },
+  {
+   "type": "node",
+   "id": 11217818237,
+   "lat": 36.6923274,
+   "lon": 22.3896444,
+   "tags": {
+    "amenity": "shower"
+   }
+  },
+  {
+   "type": "node",
+   "id": 11218260057,
+   "lat": 36.8461224,
+   "lon": 27.3225924,
+   "tags": {
+    "amenity": "shower"
+   }
+  },
+  {
+   "type": "node",
+   "id": 11222487538,
+   "lat": 36.5116675,
+   "lon": 23.0561336,
+   "tags": {
+    "amenity": "shower"
+   }
+  },
+  {
+   "type": "node",
+   "id": 11222519637,
+   "lat": 36.5117094,
+   "lon": 23.0560764,
+   "tags": {
+    "amenity": "shower"
+   }
+  },
+  {
+   "type": "node",
+   "id": 11222879337,
+   "lat": 36.5099213,
+   "lon": 23.0585175,
+   "tags": {
+    "amenity": "shower"
+   }
+  },
+  {
+   "type": "node",
+   "id": 11223296639,
+   "lat": 38.260201,
+   "lon": 20.6745422,
+   "tags": {
+    "amenity": "shower"
+   }
+  },
+  {
+   "type": "node",
+   "id": 11225363655,
+   "lat": 35.2072468,
+   "lon": 26.2690548,
+   "tags": {
+    "amenity": "shower"
+   }
+  },
+  {
+   "type": "node",
+   "id": 11225363663,
+   "lat": 35.2119448,
+   "lon": 26.2674713,
+   "tags": {
+    "amenity": "shower"
+   }
+  },
+  {
+   "type": "node",
+   "id": 11225363677,
+   "lat": 35.1518339,
+   "lon": 25.8620105,
+   "tags": {
+    "amenity": "shower"
+   }
+  },
+  {
+   "type": "node",
+   "id": 11225363694,
+   "lat": 35.1522619,
+   "lon": 25.8611449,
+   "tags": {
+    "amenity": "shower"
+   }
+  },
+  {
+   "type": "node",
+   "id": 11226578560,
+   "lat": 35.1706759,
+   "lon": 24.4203682,
+   "tags": {
+    "amenity": "shower",
+    "fee": "no"
+   }
+  },
+  {
+   "type": "node",
+   "id": 11226578561,
+   "lat": 35.1712082,
+   "lon": 24.4203271,
+   "tags": {
+    "amenity": "shower",
+    "fee": "no"
+   }
+  },
+  {
+   "type": "node",
+   "id": 11233012020,
+   "lat": 38.6855,
+   "lon": 20.6981326,
+   "tags": {
+    "access": "customers",
+    "amenity": "shower",
+    "hot_water": "yes",
+    "name": "Sail Ionan Showers"
+   }
+  },
+  {
+   "type": "node",
+   "id": 11236098240,
+   "lat": 37.9194839,
+   "lon": 23.69979,
+   "tags": {
+    "amenity": "shower"
+   }
+  },
+  {
+   "type": "node",
+   "id": 11240689355,
+   "lat": 40.3807628,
+   "lon": 23.9308564,
+   "tags": {
+    "amenity": "shower"
+   }
+  },
+  {
+   "type": "node",
+   "id": 11243534534,
+   "lat": 35.3290395,
+   "lon": 25.2506144,
+   "tags": {
+    "access": "private",
+    "amenity": "shower"
+   }
+  },
+  {
+   "type": "node",
+   "id": 11245680037,
+   "lat": 36.7935886,
+   "lon": 21.9595376,
+   "tags": {
+    "amenity": "shower"
+   }
+  },
+  {
+   "type": "node",
+   "id": 11254371717,
+   "lat": 38.6213888,
+   "lon": 20.9310917,
+   "tags": {
+    "amenity": "shower",
+    "charge": "3 EUR",
+    "check_date": "2023-10-11",
+    "fee": "yes",
+    "operator": "George Restaurant",
+    "payment:cash": "yes",
+    "payment:coins": "yes",
+    "supervised": "yes"
+   }
+  },
+  {
+   "type": "node",
+   "id": 11255883717,
+   "lat": 38.665171,
+   "lon": 20.7776146,
+   "tags": {
+    "amenity": "shower",
+    "charge": "3 EUR",
+    "check_date": "2023-10-12",
+    "fee": "yes",
+    "operator": "Karnagio",
+    "seamark:small_craft_facility:category": "showers"
+   }
+  },
+  {
+   "type": "node",
+   "id": 11260098940,
+   "lat": 35.0995508,
+   "lon": 26.2640235,
+   "tags": {
+    "amenity": "shower"
+   }
+  },
+  {
+   "type": "node",
+   "id": 11273098110,
+   "lat": 38.6238928,
+   "lon": 20.6813156,
+   "tags": {
+    "amenity": "shower",
+    "check_date": "2023-10-19",
+    "description": "Free for visitors of restaurant 12 Gods",
+    "fee": "no",
+    "operator": "12 Gods",
+    "seamark:small_craft_facility:category": "showers",
+    "seamark:type": "small_craft_facility"
+   }
+  },
+  {
+   "type": "node",
+   "id": 11281401569,
+   "lat": 37.4422075,
+   "lon": 24.9455483,
+   "tags": {
+    "amenity": "shower",
+    "name:de": "Hafenmeister, Duschen",
+    "name:en": "Harbour Master, Showers"
+   }
+  },
+  {
+   "type": "node",
+   "id": 11284372002,
+   "lat": 39.6169326,
+   "lon": 19.8380114,
+   "tags": {
+    "amenity": "shower"
+   }
+  },
+  {
+   "type": "node",
+   "id": 11304065902,
+   "lat": 39.3321212,
+   "lon": 22.9327828,
+   "tags": {
+    "amenity": "shower"
+   }
+  },
+  {
+   "type": "node",
+   "id": 11304073381,
+   "lat": 39.3529663,
+   "lon": 22.9565029,
+   "tags": {
+    "amenity": "shower"
+   }
+  },
+  {
+   "type": "node",
+   "id": 11368348373,
+   "lat": 35.4964456,
+   "lon": 24.0610212,
+   "tags": {
+    "amenity": "shower",
+    "fee": "no",
+    "hot_water": "no",
+    "supervised": "no",
+    "wheelchair": "limited"
+   }
+  },
+  {
+   "type": "node",
+   "id": 11405216210,
+   "lat": 40.5932401,
+   "lon": 23.7828138,
+   "tags": {
+    "amenity": "shower",
+    "hot_water": "no"
+   }
+  },
+  {
+   "type": "node",
+   "id": 11405216211,
+   "lat": 40.5932263,
+   "lon": 23.7828237,
+   "tags": {
+    "amenity": "shower",
+    "hot_water": "no"
+   }
+  },
+  {
+   "type": "node",
+   "id": 11429860460,
+   "lat": 35.012124,
+   "lon": 24.760488,
+   "tags": {
+    "access": "yes",
+    "amenity": "shower"
+   }
+  },
+  {
+   "type": "node",
+   "id": 11439269446,
+   "lat": 38.0122249,
+   "lon": 24.4227588,
+   "tags": {
+    "amenity": "shower",
+    "name": "Shower"
+   }
+  },
+  {
+   "type": "node",
+   "id": 11541129436,
+   "lat": 40.6639205,
+   "lon": 23.7150072,
+   "tags": {
+    "amenity": "shower"
+   }
+  },
+  {
+   "type": "node",
+   "id": 11841973165,
+   "lat": 36.3206326,
+   "lon": 28.2054776,
+   "tags": {
+    "amenity": "shower",
+    "fee": "no",
+    "hot_water": "no",
+    "supervised": "no"
+   }
+  },
+  {
+   "type": "node",
+   "id": 11873463080,
+   "lat": 35.2723744,
+   "lon": 23.5416647,
+   "tags": {
+    "access": "yes",
+    "amenity": "shower",
+    "fee": "no",
+    "hot_water": "no",
+    "supervised": "no"
+   }
+  },
+  {
+   "type": "node",
+   "id": 11886293366,
+   "lat": 38.4287977,
+   "lon": 22.4462707,
+   "tags": {
+    "amenity": "shower"
+   }
+  },
+  {
+   "type": "node",
+   "id": 11886303600,
+   "lat": 38.4291217,
+   "lon": 22.4299201,
+   "tags": {
+    "amenity": "shower"
+   }
+  },
+  {
+   "type": "node",
+   "id": 11886312349,
+   "lat": 38.4275107,
+   "lon": 22.4396919,
+   "tags": {
+    "amenity": "shower"
+   }
+  },
+  {
+   "type": "node",
+   "id": 11897176105,
+   "lat": 38.8104348,
+   "lon": 23.5166328,
+   "tags": {
+    "amenity": "shower"
+   }
+  },
+  {
+   "type": "node",
+   "id": 11897198969,
+   "lat": 38.7634097,
+   "lon": 23.5913323,
+   "tags": {
+    "amenity": "shower"
+   }
+  },
+  {
+   "type": "node",
+   "id": 11898403901,
+   "lat": 39.6745776,
+   "lon": 19.7079977,
+   "tags": {
+    "access": "yes",
+    "amenity": "shower",
+    "check_date": "2024-05-12",
+    "fee": "no"
+   }
+  },
+  {
+   "type": "node",
+   "id": 11898774772,
+   "lat": 39.6720889,
+   "lon": 19.7024711,
+   "tags": {
+    "access": "yes",
+    "amenity": "shower",
+    "check_date": "2024-05-12",
+    "fee": "no"
+   }
+  },
+  {
+   "type": "node",
+   "id": 11901845683,
+   "lat": 38.54629,
+   "lon": 24.0454325,
+   "tags": {
+    "caravans": "yes",
+    "drinking_water": "yes",
+    "internet_access": "wlan",
+    "internet_access:fee": "no",
+    "name": "Dragonera Cliffs",
+    "phone": "+30 697 205 8352",
+    "power_supply": "yes",
+    "sanitary_dump_station": "yes",
+    "shower": "yes",
+    "tents": "yes",
+    "toilets": "yes",
+    "tourism": "camp_site",
+    "website": "https://dragoneracliffs.gr"
+   }
+  },
+  {
+   "type": "node",
+   "id": 11903428422,
+   "lat": 37.7619678,
+   "lon": 20.9276799,
+   "tags": {
+    "amenity": "shower"
+   }
+  },
+  {
+   "type": "node",
+   "id": 11911839922,
+   "lat": 39.5937065,
+   "lon": 19.8209016,
+   "tags": {
+    "amenity": "shower",
+    "check_date": "2024-05-17"
+   }
+  },
+  {
+   "type": "node",
+   "id": 11955105000,
+   "lat": 38.1711562,
+   "lon": 22.2749537,
+   "tags": {
+    "amenity": "shower",
+    "check_date": "2024-06-04",
+    "fee": "no",
+    "hot_water": "no",
+    "source": "survey",
+    "supervised": "no",
+    "wheelchair": "limited"
+   }
+  },
+  {
+   "type": "node",
+   "id": 11956066006,
+   "lat": 38.3291804,
+   "lon": 21.8762755,
+   "tags": {
+    "amenity": "shower"
+   }
+  },
+  {
+   "type": "node",
+   "id": 11964308303,
+   "lat": 36.9859118,
+   "lon": 21.6526824,
+   "tags": {
+    "amenity": "shower"
+   }
+  },
+  {
+   "type": "node",
+   "id": 11973627794,
+   "lat": 38.198177,
+   "lon": 22.2010318,
+   "tags": {
+    "amenity": "shower"
+   }
+  },
+  {
+   "type": "node",
+   "id": 11975826872,
+   "lat": 37.7095076,
+   "lon": 20.986257,
+   "tags": {
+    "amenity": "shower",
+    "name": "Sand Saver Shower"
+   }
+  },
+  {
+   "type": "node",
+   "id": 11985667792,
+   "lat": 35.3697793,
+   "lon": 24.5185051,
+   "tags": {
+    "access": "customers",
+    "amenity": "shower"
+   }
+  },
+  {
+   "type": "node",
+   "id": 11991897608,
+   "lat": 35.0103273,
+   "lon": 25.835455,
+   "tags": {
+    "amenity": "shower"
+   }
+  },
+  {
+   "type": "node",
+   "id": 11991897609,
+   "lat": 35.0101007,
+   "lon": 25.8350181,
+   "tags": {
+    "amenity": "shower"
+   }
+  },
+  {
+   "type": "node",
+   "id": 12001026054,
+   "lat": 40.9153579,
+   "lon": 24.3790617,
+   "tags": {
+    "amenity": "shower"
+   }
+  },
+  {
+   "type": "node",
+   "id": 12006935070,
+   "lat": 39.3750443,
+   "lon": 26.2037657,
+   "tags": {
+    "amenity": "shower"
+   }
+  },
+  {
+   "type": "node",
+   "id": 12009385270,
+   "lat": 35.3353111,
+   "lon": 25.3514824,
+   "tags": {
+    "access": "customers",
+    "amenity": "shower"
+   }
+  },
+  {
+   "type": "node",
+   "id": 12033645949,
+   "lat": 39.876769,
+   "lon": 19.5776015,
+   "tags": {
+    "amenity": "shower"
+   }
+  },
+  {
+   "type": "node",
+   "id": 12033727355,
+   "lat": 37.6949195,
+   "lon": 24.0573309,
+   "tags": {
+    "amenity": "shower"
+   }
+  },
+  {
+   "type": "node",
+   "id": 12035915701,
+   "lat": 36.7551476,
+   "lon": 26.9919552,
+   "tags": {
+    "amenity": "shower",
+    "fee": "no",
+    "hot_water": "no",
+    "wheelchair": "no"
+   }
+  },
+  {
+   "type": "node",
+   "id": 12042092966,
+   "lat": 38.2786771,
+   "lon": 21.7452078,
+   "tags": {
+    "amenity": "shower"
+   }
+  },
+  {
+   "type": "node",
+   "id": 12042126589,
+   "lat": 38.2791499,
+   "lon": 21.7452455,
+   "tags": {
+    "amenity": "shower"
+   }
+  },
+  {
+   "type": "node",
+   "id": 12045535269,
+   "lat": 35.1920125,
+   "lon": 24.3648263,
+   "tags": {
+    "amenity": "shower"
+   }
+  },
+  {
+   "type": "node",
+   "id": 12045535369,
+   "lat": 35.1922846,
+   "lon": 24.3658556,
+   "tags": {
+    "amenity": "shower"
+   }
+  },
+  {
+   "type": "node",
+   "id": 12047153069,
+   "lat": 35.200774,
+   "lon": 24.0803583,
+   "tags": {
+    "amenity": "shower"
+   }
+  },
+  {
+   "type": "node",
+   "id": 12051647869,
+   "lat": 40.7877269,
+   "lon": 21.8337297,
+   "tags": {
+    "amenity": "shower"
+   }
+  },
+  {
+   "type": "node",
+   "id": 12059000472,
+   "lat": 36.6437977,
+   "lon": 23.0291771,
+   "tags": {
+    "amenity": "shower"
+   }
+  },
+  {
+   "type": "node",
+   "id": 12071975843,
+   "lat": 39.3944632,
+   "lon": 20.0225101,
+   "tags": {
+    "access": "yes",
+    "amenity": "shower"
+   }
+  },
+  {
+   "type": "node",
+   "id": 12083490979,
+   "lat": 37.54505,
+   "lon": 22.8215195,
+   "tags": {
+    "access": "yes",
+    "amenity": "shower",
+    "fee": "no"
+   }
+  },
+  {
+   "type": "node",
+   "id": 12085355169,
+   "lat": 38.6707932,
+   "lon": 20.5574004,
+   "tags": {
+    "access": "yes",
+    "amenity": "shower",
+    "charge": "1€ (works with any coin)",
+    "fee": "yes",
+    "hot_water": "no",
+    "wheelchair": "limited"
+   }
+  },
+  {
+   "type": "node",
+   "id": 12100612556,
+   "lat": 40.0356659,
+   "lon": 23.3597215,
+   "tags": {
+    "amenity": "shower"
+   }
+  },
+  {
+   "type": "node",
+   "id": 12100612577,
+   "lat": 40.0368788,
+   "lon": 23.3593387,
+   "tags": {
+    "amenity": "shower"
+   }
+  },
+  {
+   "type": "node",
+   "id": 12100616484,
+   "lat": 40.034327,
+   "lon": 23.3600166,
+   "tags": {
+    "amenity": "shower"
+   }
+  },
+  {
+   "type": "node",
+   "id": 12100623502,
+   "lat": 40.0337951,
+   "lon": 23.3601421,
+   "tags": {
+    "amenity": "shower"
+   }
+  },
+  {
+   "type": "node",
+   "id": 12101900171,
+   "lat": 37.5151863,
+   "lon": 22.85708,
+   "tags": {
+    "access": "yes",
+    "amenity": "shower"
+   }
+  },
+  {
+   "type": "node",
+   "id": 12101915063,
+   "lat": 37.5276577,
+   "lon": 22.8683803,
+   "tags": {
+    "access": "yes",
+    "amenity": "shower"
+   }
+  },
+  {
+   "type": "node",
+   "id": 12101944305,
+   "lat": 38.1794919,
+   "lon": 22.2351075,
+   "tags": {
+    "access": "yes",
+    "amenity": "shower"
+   }
+  },
+  {
+   "type": "node",
+   "id": 12101960783,
+   "lat": 37.4325234,
+   "lon": 21.6537035,
+   "tags": {
+    "amenity": "shower"
+   }
+  },
+  {
+   "type": "node",
+   "id": 12101970833,
+   "lat": 38.1622869,
+   "lon": 21.365586,
+   "tags": {
+    "amenity": "shower"
+   }
+  },
+  {
+   "type": "node",
+   "id": 12101989578,
+   "lat": 37.9823659,
+   "lon": 22.9709165,
+   "tags": {
+    "access": "yes",
+    "amenity": "shower",
+    "fee": "no"
+   }
+  },
+  {
+   "type": "node",
+   "id": 12101989579,
+   "lat": 37.4749211,
+   "lon": 22.7355171,
+   "tags": {
+    "access": "yes",
+    "amenity": "shower"
+   }
+  },
+  {
+   "type": "node",
+   "id": 12101989986,
+   "lat": 37.4767129,
+   "lon": 22.7327452,
+   "tags": {
+    "amenity": "shower"
+   }
+  },
+  {
+   "type": "node",
+   "id": 12116935985,
+   "lat": 38.3896786,
+   "lon": 23.8017416,
+   "tags": {
+    "amenity": "shower"
+   }
+  },
+  {
+   "type": "node",
+   "id": 12116954991,
+   "lat": 38.3950461,
+   "lon": 23.8644275,
+   "tags": {
+    "amenity": "shower",
+    "fee": "yes"
+   }
+  },
+  {
+   "type": "node",
+   "id": 12120630131,
+   "lat": 40.886638,
+   "lon": 25.4852436,
+   "tags": {
+    "amenity": "shower"
+   }
+  },
+  {
+   "type": "node",
+   "id": 12125107309,
+   "lat": 38.4790465,
+   "lon": 24.1878906,
+   "tags": {
+    "amenity": "shower"
+   }
+  },
+  {
+   "type": "node",
+   "id": 12125162032,
+   "lat": 38.5828806,
+   "lon": 24.1345102,
+   "tags": {
+    "amenity": "shower"
+   }
+  },
+  {
+   "type": "node",
+   "id": 12126153991,
+   "lat": 38.0119587,
+   "lon": 24.4100799,
+   "tags": {
+    "amenity": "shower",
+    "fee": "yes"
+   }
+  },
+  {
+   "type": "node",
+   "id": 12133987511,
+   "lat": 35.1743689,
+   "lon": 24.4157691,
+   "tags": {
+    "amenity": "shower",
+    "fee": "no"
+   }
+  },
+  {
+   "type": "node",
+   "id": 12141932448,
+   "lat": 36.8800806,
+   "lon": 27.144573,
+   "tags": {
+    "amenity": "shower"
+   }
+  },
+  {
+   "type": "node",
+   "id": 12141938827,
+   "lat": 36.8798056,
+   "lon": 27.1443004,
+   "tags": {
+    "amenity": "shower",
+    "fee": "no"
+   }
+  },
+  {
+   "type": "node",
+   "id": 12146875736,
+   "lat": 35.4184866,
+   "lon": 24.6857911,
+   "tags": {
+    "amenity": "shower",
+    "fee": "no"
+   }
+  },
+  {
+   "type": "node",
+   "id": 12146875737,
+   "lat": 35.4188254,
+   "lon": 24.6872261,
+   "tags": {
+    "amenity": "shower"
+   }
+  },
+  {
+   "type": "node",
+   "id": 12147655473,
+   "lat": 36.8897817,
+   "lon": 27.1834185,
+   "tags": {
+    "amenity": "shower"
+   }
+  },
+  {
+   "type": "node",
+   "id": 12147674473,
+   "lat": 36.8897643,
+   "lon": 27.1836132,
+   "tags": {
+    "amenity": "shower"
+   }
+  },
+  {
+   "type": "node",
+   "id": 12147689846,
+   "lat": 36.8897599,
+   "lon": 27.1837739,
+   "tags": {
+    "amenity": "shower"
+   }
+  },
+  {
+   "type": "node",
+   "id": 12168368597,
+   "lat": 36.8562785,
+   "lon": 27.1035794,
+   "tags": {
+    "amenity": "shower",
+    "fee": "no"
+   }
+  },
+  {
+   "type": "node",
+   "id": 12169891264,
+   "lat": 35.4919937,
+   "lon": 23.5810825,
+   "tags": {
+    "access": "yes",
+    "amenity": "shower",
+    "fee": "no",
+    "unisex": "no"
+   }
+  },
+  {
+   "type": "node",
+   "id": 12170633977,
+   "lat": 36.8538478,
+   "lon": 27.1022201,
+   "tags": {
+    "amenity": "shower",
+    "indoor": "yes",
+    "level": "-1"
+   }
+  },
+  {
+   "type": "node",
+   "id": 12171881782,
+   "lat": 35.5132231,
+   "lon": 23.6303888,
+   "tags": {
+    "access": "yes",
+    "amenity": "shower",
+    "fee": "no"
+   }
+  },
+  {
+   "type": "node",
+   "id": 12171881783,
+   "lat": 35.512727,
+   "lon": 23.6291577,
+   "tags": {
+    "access": "yes",
+    "amenity": "shower",
+    "fee": "no"
+   }
+  },
+  {
+   "type": "node",
+   "id": 12172302058,
+   "lat": 36.0609276,
+   "lon": 27.9881655,
+   "tags": {
+    "access": "customers",
+    "amenity": "shower"
+   }
+  },
+  {
+   "type": "node",
+   "id": 12186822548,
+   "lat": 36.0481639,
+   "lon": 27.9517035,
+   "tags": {
+    "amenity": "shower"
+   }
+  },
+  {
+   "type": "node",
+   "id": 12194088833,
+   "lat": 38.1599167,
+   "lon": 21.3661337,
+   "tags": {
+    "access": "yes",
+    "amenity": "shower",
+    "fee": "no"
+   }
+  },
+  {
+   "type": "node",
+   "id": 12196894821,
+   "lat": 40.8217762,
+   "lon": 25.9891967,
+   "tags": {
+    "amenity": "shower"
+   }
+  },
+  {
+   "type": "node",
+   "id": 12206717052,
+   "lat": 36.9974279,
+   "lon": 26.9353662,
+   "tags": {
+    "amenity": "shower"
+   }
+  },
+  {
+   "type": "node",
+   "id": 12206751388,
+   "lat": 36.996501,
+   "lon": 26.9345651,
+   "tags": {
+    "amenity": "shower"
+   }
+  },
+  {
+   "type": "node",
+   "id": 12206764562,
+   "lat": 36.9954121,
+   "lon": 26.9336479,
+   "tags": {
+    "amenity": "shower"
+   }
+  },
+  {
+   "type": "node",
+   "id": 12207251964,
+   "lat": 39.1380494,
+   "lon": 25.9209926,
+   "tags": {
+    "amenity": "shower"
+   }
+  },
+  {
+   "type": "node",
+   "id": 12207291516,
+   "lat": 39.1397376,
+   "lon": 25.9223109,
+   "tags": {
+    "amenity": "shower"
+   }
+  },
+  {
+   "type": "node",
+   "id": 12218213694,
+   "lat": 37.4242948,
+   "lon": 22.7672875,
+   "tags": {
+    "amenity": "shower"
+   }
+  },
+  {
+   "type": "node",
+   "id": 12218218543,
+   "lat": 37.4242977,
+   "lon": 22.7672515,
+   "tags": {
+    "amenity": "shower"
+   }
+  },
+  {
+   "type": "node",
+   "id": 12218233326,
+   "lat": 37.4261727,
+   "lon": 22.7630548,
+   "tags": {
+    "amenity": "shower"
+   }
+  },
+  {
+   "type": "node",
+   "id": 12222490053,
+   "lat": 36.7351824,
+   "lon": 26.9718348,
+   "tags": {
+    "amenity": "shower"
+   }
+  },
+  {
+   "type": "node",
+   "id": 12222532966,
+   "lat": 36.7442393,
+   "lon": 26.9718636,
+   "tags": {
+    "amenity": "shower"
+   }
+  },
+  {
+   "type": "node",
+   "id": 12222547046,
+   "lat": 36.7451478,
+   "lon": 26.9727628,
+   "tags": {
+    "amenity": "shower"
+   }
+  },
+  {
+   "type": "node",
+   "id": 12227837081,
+   "lat": 36.8893862,
+   "lon": 27.185938,
+   "tags": {
+    "amenity": "shower"
+   }
+  },
+  {
+   "type": "node",
+   "id": 12227846873,
+   "lat": 36.8892984,
+   "lon": 27.1880264,
+   "tags": {
+    "amenity": "shower"
+   }
+  },
+  {
+   "type": "node",
+   "id": 12227861517,
+   "lat": 36.8893653,
+   "lon": 27.1865133,
+   "tags": {
+    "amenity": "shower"
+   }
+  },
+  {
+   "type": "node",
+   "id": 12227861546,
+   "lat": 36.8897958,
+   "lon": 27.1846808,
+   "tags": {
+    "amenity": "shower"
+   }
+  },
+  {
+   "type": "node",
+   "id": 12227865688,
+   "lat": 36.889425,
+   "lon": 27.1855722,
+   "tags": {
+    "amenity": "shower"
+   }
+  },
+  {
+   "type": "node",
+   "id": 12227872225,
+   "lat": 36.8896622,
+   "lon": 27.185484,
+   "tags": {
+    "amenity": "shower"
+   }
+  },
+  {
+   "type": "node",
+   "id": 12229092817,
+   "lat": 37.9137568,
+   "lon": 23.7067452,
+   "tags": {
+    "access": "customers",
+    "addr:street": "Ποσειδώνος",
+    "amenity": "shower"
+   }
+  },
+  {
+   "type": "node",
+   "id": 12247804522,
+   "lat": 36.0691896,
+   "lon": 28.053658,
+   "tags": {
+    "amenity": "shower",
+    "fee": "no"
+   }
+  },
+  {
+   "type": "node",
+   "id": 12251235988,
+   "lat": 35.5540513,
+   "lon": 24.0872236,
+   "tags": {
+    "amenity": "shower",
+    "fee": "no"
+   }
+  },
+  {
+   "type": "node",
+   "id": 12251250562,
+   "lat": 35.3532681,
+   "lon": 24.2942099,
+   "tags": {
+    "amenity": "shower"
+   }
+  },
+  {
+   "type": "node",
+   "id": 12253659032,
+   "lat": 36.8169263,
+   "lon": 21.7064646,
+   "tags": {
+    "access": "yes",
+    "amenity": "shower",
+    "fee": "no",
+    "hot_water": "no",
+    "opening_hours": "24/7",
+    "supervised": "no",
+    "wheelchair": "no"
+   }
+  },
+  {
+   "type": "node",
+   "id": 12255753132,
+   "lat": 35.5240423,
+   "lon": 23.8475413,
+   "tags": {
+    "access": "customers",
+    "amenity": "shower"
+   }
+  },
+  {
+   "type": "node",
+   "id": 12266005917,
+   "lat": 35.0034702,
+   "lon": 25.5837681,
+   "tags": {
+    "access": "yes",
+    "amenity": "shower",
+    "fee": "no",
+    "hot_water": "no",
+    "supervised": "no",
+    "survey:date": "2024-10-19"
+   }
+  },
+  {
+   "type": "node",
+   "id": 12271752322,
+   "lat": 35.0034567,
+   "lon": 25.583312,
+   "tags": {
+    "amenity": "shower",
+    "fee": "no",
+    "survey:date": "2024-10-20"
+   }
+  },
+  {
+   "type": "node",
+   "id": 12271752326,
+   "lat": 35.00342,
+   "lon": 25.5847301,
+   "tags": {
+    "amenity": "shower",
+    "fee": "no",
+    "survey:date": "2024-10-20"
+   }
+  },
+  {
+   "type": "node",
+   "id": 12271752328,
+   "lat": 35.0034067,
+   "lon": 25.5849113,
+   "tags": {
+    "amenity": "shower",
+    "fee": "no",
+    "survey:date": "2024-10-20"
+   }
+  },
+  {
+   "type": "node",
+   "id": 12271752329,
+   "lat": 35.0033896,
+   "lon": 25.5851347,
+   "tags": {
+    "amenity": "shower",
+    "fee": "no",
+    "survey:date": "2024-10-20"
+   }
+  },
+  {
+   "type": "node",
+   "id": 12271752330,
+   "lat": 35.0033799,
+   "lon": 25.5852123,
+   "tags": {
+    "amenity": "shower",
+    "fee": "no",
+    "survey:date": "2024-10-20"
+   }
+  },
+  {
+   "type": "node",
+   "id": 12288062485,
+   "lat": 37.9675447,
+   "lon": 22.9725111,
+   "tags": {
+    "amenity": "shower"
+   }
+  },
+  {
+   "type": "node",
+   "id": 12288062486,
+   "lat": 37.9684007,
+   "lon": 22.972946,
+   "tags": {
+    "amenity": "shower"
+   }
+  },
+  {
+   "type": "node",
+   "id": 12288062487,
+   "lat": 37.968663,
+   "lon": 22.9730772,
+   "tags": {
+    "amenity": "shower"
+   }
+  },
+  {
+   "type": "node",
+   "id": 12288062489,
+   "lat": 37.9693052,
+   "lon": 22.9734094,
+   "tags": {
+    "amenity": "shower"
+   }
+  },
+  {
+   "type": "node",
+   "id": 12288062491,
+   "lat": 37.9698004,
+   "lon": 22.9736181,
+   "tags": {
+    "amenity": "shower"
+   }
+  },
+  {
+   "type": "node",
+   "id": 12288062492,
+   "lat": 37.9708676,
+   "lon": 22.9741489,
+   "tags": {
+    "amenity": "shower"
+   }
+  },
+  {
+   "type": "node",
+   "id": 12288062493,
+   "lat": 37.9663603,
+   "lon": 22.9718381,
+   "tags": {
+    "amenity": "shower"
+   }
+  },
+  {
+   "type": "node",
+   "id": 12288062495,
+   "lat": 37.9658729,
+   "lon": 22.9715238,
+   "tags": {
+    "amenity": "shower"
+   }
+  },
+  {
+   "type": "node",
+   "id": 12288062496,
+   "lat": 37.9654134,
+   "lon": 22.9712452,
+   "tags": {
+    "amenity": "shower"
+   }
+  },
+  {
+   "type": "node",
+   "id": 12288062497,
+   "lat": 37.964958,
+   "lon": 22.9709379,
+   "tags": {
+    "amenity": "shower"
+   }
+  },
+  {
+   "type": "node",
+   "id": 12288062498,
+   "lat": 37.9643659,
+   "lon": 22.9705645,
+   "tags": {
+    "amenity": "shower"
+   }
+  },
+  {
+   "type": "node",
+   "id": 12290334301,
+   "lat": 38.7516253,
+   "lon": 23.0358786,
+   "tags": {
+    "amenity": "shower"
+   }
+  },
+  {
+   "type": "node",
+   "id": 12290334401,
+   "lat": 38.7526868,
+   "lon": 23.0353989,
+   "tags": {
+    "amenity": "shower"
+   }
+  },
+  {
+   "type": "node",
+   "id": 12293515801,
+   "lat": 38.5003905,
+   "lon": 23.5350566,
+   "tags": {
+    "amenity": "shower"
+   }
+  },
+  {
+   "type": "node",
+   "id": 12294044901,
+   "lat": 38.4977159,
+   "lon": 23.5320418,
+   "tags": {
+    "amenity": "shower"
+   }
+  },
+  {
+   "type": "node",
+   "id": 12294048901,
+   "lat": 38.4984751,
+   "lon": 23.532943,
+   "tags": {
+    "amenity": "shower"
+   }
+  },
+  {
+   "type": "node",
+   "id": 12294059601,
+   "lat": 38.4964996,
+   "lon": 23.5304109,
+   "tags": {
+    "amenity": "shower"
+   }
+  },
+  {
+   "type": "node",
+   "id": 12297042401,
+   "lat": 38.3699583,
+   "lon": 23.6399176,
+   "tags": {
+    "amenity": "shower"
+   }
+  },
+  {
+   "type": "node",
+   "id": 12297044701,
+   "lat": 38.3690644,
+   "lon": 23.6399113,
+   "tags": {
+    "amenity": "shower"
+   }
+  },
+  {
+   "type": "node",
+   "id": 12297050701,
+   "lat": 38.3683536,
+   "lon": 23.6399337,
+   "tags": {
+    "amenity": "shower"
+   }
+  },
+  {
+   "type": "node",
+   "id": 12297054401,
+   "lat": 38.3671006,
+   "lon": 23.6400543,
+   "tags": {
+    "amenity": "shower"
+   }
+  },
+  {
+   "type": "node",
+   "id": 12299047001,
+   "lat": 37.0243396,
+   "lon": 22.1254389,
+   "tags": {
+    "amenity": "shower"
+   }
+  },
+  {
+   "type": "node",
+   "id": 12304287601,
+   "lat": 38.1189067,
+   "lon": 23.9927709,
+   "tags": {
+    "amenity": "shower"
+   }
+  },
+  {
+   "type": "node",
+   "id": 12304308353,
+   "lat": 36.8500993,
+   "lon": 22.2585165,
+   "tags": {
+    "access": "yes",
+    "amenity": "shower",
+    "fee": "no"
+   }
+  },
+  {
+   "type": "node",
+   "id": 12309263502,
+   "lat": 35.2373043,
+   "lon": 23.7190933,
+   "tags": {
+    "amenity": "shower"
+   }
+  },
+  {
+   "type": "node",
+   "id": 12334715401,
+   "lat": 38.3993978,
+   "lon": 23.7398796,
+   "tags": {
+    "amenity": "shower"
+   }
+  },
+  {
+   "type": "node",
+   "id": 12334735201,
+   "lat": 38.400715,
+   "lon": 23.7357086,
+   "tags": {
+    "amenity": "shower"
+   }
+  },
+  {
+   "type": "node",
+   "id": 12339444847,
+   "lat": 38.342562,
+   "lon": 21.7229071,
+   "tags": {
+    "access": "yes",
+    "amenity": "shower"
+   }
+  },
+  {
+   "type": "node",
+   "id": 12351889286,
+   "lat": 36.8172414,
+   "lon": 22.2941119,
+   "tags": {
+    "amenity": "shower",
+    "fee": "no"
+   }
+  },
+  {
+   "type": "node",
+   "id": 12351889287,
+   "lat": 36.8168653,
+   "lon": 22.2941074,
+   "tags": {
+    "amenity": "shower",
+    "fee": "no"
+   }
+  },
+  {
+   "type": "node",
+   "id": 12388801117,
+   "lat": 37.1609477,
+   "lon": 22.8970275,
+   "tags": {
+    "amenity": "shower",
+    "fee": "no"
+   }
+  },
+  {
+   "type": "node",
+   "id": 12466735058,
+   "lat": 39.1076831,
+   "lon": 26.5631276,
+   "tags": {
+    "access": "customers",
+    "amenity": "shower"
+   }
+  },
+  {
+   "type": "node",
+   "id": 12486529202,
+   "lat": 36.4822529,
+   "lon": 22.3995881,
+   "tags": {
+    "amenity": "shower"
+   }
+  },
+  {
+   "type": "node",
+   "id": 12527822349,
+   "lat": 38.176408,
+   "lon": 22.2458143,
+   "tags": {
+    "amenity": "shower",
+    "name": "Shower"
+   }
+  },
+  {
+   "type": "node",
+   "id": 12609348003,
+   "lat": 38.6736769,
+   "lon": 20.9685302,
+   "tags": {
+    "amenity": "shower"
+   }
+  },
+  {
+   "type": "node",
+   "id": 12609357101,
+   "lat": 38.6736776,
+   "lon": 20.9695004,
+   "tags": {
+    "amenity": "shower"
+   }
+  },
+  {
+   "type": "node",
+   "id": 12778138150,
+   "lat": 39.0950741,
+   "lon": 20.6376564,
+   "tags": {
+    "amenity": "shower"
+   }
+  },
+  {
+   "type": "node",
+   "id": 12778210426,
+   "lat": 39.0946858,
+   "lon": 20.6365085,
+   "tags": {
+    "amenity": "shower"
+   }
+  },
+  {
+   "type": "node",
+   "id": 12783393157,
+   "lat": 35.3038495,
+   "lon": 25.3949706,
+   "tags": {
+    "amenity": "shower"
+   }
+  },
+  {
+   "type": "node",
+   "id": 12783393158,
+   "lat": 35.3041845,
+   "lon": 25.3959137,
+   "tags": {
+    "amenity": "shower"
+   }
+  },
+  {
+   "type": "node",
+   "id": 12800519420,
+   "lat": 38.1567479,
+   "lon": 21.3670802,
+   "tags": {
+    "amenity": "shower"
+   }
+  },
+  {
+   "type": "node",
+   "id": 12800551545,
+   "lat": 38.1568474,
+   "lon": 21.3675609,
+   "tags": {
+    "amenity": "shower"
+   }
+  },
+  {
+   "type": "node",
+   "id": 12806384627,
+   "lat": 38.178574,
+   "lon": 22.2331964,
+   "tags": {
+    "amenity": "shower"
+   }
+  },
+  {
+   "type": "node",
+   "id": 12810033075,
+   "lat": 38.1955098,
+   "lon": 22.2035682,
+   "tags": {
+    "amenity": "shower"
+   }
+  },
+  {
+   "type": "node",
+   "id": 12810043833,
+   "lat": 38.196075,
+   "lon": 22.2028983,
+   "tags": {
+    "amenity": "shower"
+   }
+  },
+  {
+   "type": "node",
+   "id": 12811281115,
+   "lat": 39.1076183,
+   "lon": 26.563577,
+   "tags": {
+    "access": "customers",
+    "amenity": "shower"
+   }
+  },
+  {
+   "type": "node",
+   "id": 12812445843,
+   "lat": 39.1056204,
+   "lon": 26.0902401,
+   "tags": {
+    "access": "yes",
+    "amenity": "shower",
+    "fee": "no"
+   }
+  },
+  {
+   "type": "node",
+   "id": 12821118076,
+   "lat": 40.2668586,
+   "lon": 23.4492524,
+   "tags": {
+    "access": "customers",
+    "amenity": "shower",
+    "fee": "no",
+    "hot_water": "yes",
+    "opening_hours": "24/7",
+    "supervised": "no",
+    "wheelchair": "limited"
+   }
+  },
+  {
+   "type": "node",
+   "id": 12821118077,
+   "lat": 40.2663958,
+   "lon": 23.4510135,
+   "tags": {
+    "access": "customers",
+    "amenity": "shower",
+    "fee": "no",
+    "hot_water": "yes",
+    "opening_hours": "24/7",
+    "supervised": "no",
+    "wheelchair": "limited"
+   }
+  },
+  {
+   "type": "node",
+   "id": 12840498979,
+   "lat": 39.3296031,
+   "lon": 26.17758,
+   "tags": {
+    "access": "yes",
+    "amenity": "shower"
+   }
+  },
+  {
+   "type": "node",
+   "id": 12840515775,
+   "lat": 39.3295381,
+   "lon": 26.1775061,
+   "tags": {
+    "access": "yes",
+    "amenity": "shower"
+   }
+  },
+  {
+   "type": "node",
+   "id": 12851079091,
+   "lat": 40.4032944,
+   "lon": 23.8773344,
+   "tags": {
+    "amenity": "shower"
+   }
+  },
+  {
+   "type": "node",
+   "id": 12857898085,
+   "lat": 38.9530601,
+   "lon": 22.9632687,
+   "tags": {
+    "access": "permissive",
+    "amenity": "shower"
+   }
+  },
+  {
+   "type": "node",
+   "id": 12861879599,
+   "lat": 36.5085478,
+   "lon": 23.0602243,
+   "tags": {
+    "amenity": "shower"
+   }
+  },
+  {
+   "type": "node",
+   "id": 12906044675,
+   "lat": 40.5038981,
+   "lon": 22.9032003,
+   "tags": {
+    "amenity": "shower",
+    "fee": "no"
+   }
+  },
+  {
+   "type": "node",
+   "id": 12906060919,
+   "lat": 40.5039135,
+   "lon": 22.9032491,
+   "tags": {
+    "amenity": "shower",
+    "fee": "no"
+   }
+  },
+  {
+   "type": "node",
+   "id": 12906071248,
+   "lat": 40.5038721,
+   "lon": 22.9027175,
+   "tags": {
+    "amenity": "shower",
+    "fee": "no"
+   }
+  },
+  {
+   "type": "node",
+   "id": 12914371751,
+   "lat": 40.279962,
+   "lon": 22.6033259,
+   "tags": {
+    "amenity": "shower"
+   }
+  },
+  {
+   "type": "node",
+   "id": 12917293342,
+   "lat": 40.2773739,
+   "lon": 22.6019641,
+   "tags": {
+    "amenity": "shower"
+   }
+  },
+  {
+   "type": "node",
+   "id": 12919189399,
+   "lat": 40.4530514,
+   "lon": 22.5960417,
+   "tags": {
+    "amenity": "shower"
+   }
+  },
+  {
+   "type": "node",
+   "id": 12920811163,
+   "lat": 40.2575964,
+   "lon": 22.5944095,
+   "tags": {
+    "amenity": "shower"
+   }
+  },
+  {
+   "type": "node",
+   "id": 12920825656,
+   "lat": 40.2568753,
+   "lon": 22.5942038,
+   "tags": {
+    "amenity": "shower"
+   }
+  },
+  {
+   "type": "node",
+   "id": 12987063988,
+   "lat": 36.0474296,
+   "lon": 27.9585494,
+   "tags": {
+    "amenity": "shower"
+   }
+  },
+  {
+   "type": "node",
+   "id": 13009148785,
+   "lat": 38.4097089,
+   "lon": 26.1347925,
+   "tags": {
+    "amenity": "shower"
+   }
+  },
+  {
+   "type": "node",
+   "id": 13011422806,
+   "lat": 39.7571379,
+   "lon": 19.6439641,
+   "tags": {
+    "amenity": "shower"
+   }
+  },
+  {
+   "type": "node",
+   "id": 13031573525,
+   "lat": 35.3378444,
+   "lon": 25.3806128,
+   "tags": {
+    "amenity": "shower"
+   }
+  },
+  {
+   "type": "node",
+   "id": 13031654726,
+   "lat": 35.3389114,
+   "lon": 25.3756725,
+   "tags": {
+    "amenity": "shower"
+   }
+  },
+  {
+   "type": "node",
+   "id": 13031700632,
+   "lat": 35.3375012,
+   "lon": 25.3840158,
+   "tags": {
+    "amenity": "shower"
+   }
+  },
+  {
+   "type": "node",
+   "id": 13031747627,
+   "lat": 35.3375984,
+   "lon": 25.3849898,
+   "tags": {
+    "amenity": "shower"
+   }
+  },
+  {
+   "type": "node",
+   "id": 13031778651,
+   "lat": 35.3378354,
+   "lon": 25.3788816,
+   "tags": {
+    "amenity": "shower"
+   }
+  },
+  {
+   "type": "node",
+   "id": 13034415232,
+   "lat": 35.3363489,
+   "lon": 25.347335,
+   "tags": {
+    "amenity": "shower"
+   }
+  },
+  {
+   "type": "node",
+   "id": 13034628857,
+   "lat": 35.3370681,
+   "lon": 25.3582551,
+   "tags": {
+    "amenity": "shower"
+   }
+  },
+  {
+   "type": "node",
+   "id": 13035949201,
+   "lat": 35.0479961,
+   "lon": 24.7551311,
+   "tags": {
+    "amenity": "shower",
+    "name:de": "Dusche"
+   }
+  },
+  {
+   "type": "node",
+   "id": 13037926850,
+   "lat": 35.3377834,
+   "lon": 25.3614878,
+   "tags": {
+    "amenity": "shower"
+   }
+  },
+  {
+   "type": "node",
+   "id": 13037945279,
+   "lat": 35.3371064,
+   "lon": 25.3586682,
+   "tags": {
+    "amenity": "shower"
+   }
+  },
+  {
+   "type": "node",
+   "id": 13037967535,
+   "lat": 35.3386849,
+   "lon": 25.3647703,
+   "tags": {
+    "amenity": "shower"
+   }
+  },
+  {
+   "type": "node",
+   "id": 13041062789,
+   "lat": 35.3377565,
+   "lon": 25.380352,
+   "tags": {
+    "amenity": "shower"
+   }
+  },
+  {
+   "type": "node",
+   "id": 13041091943,
+   "lat": 35.3377299,
+   "lon": 25.3812918,
+   "tags": {
+    "amenity": "shower"
+   }
+  },
+  {
+   "type": "node",
+   "id": 13049504257,
+   "lat": 39.4355799,
+   "lon": 20.0134882,
+   "tags": {
+    "access": "yes",
+    "amenity": "shower"
+   }
+  },
+  {
+   "type": "node",
+   "id": 13049504259,
+   "lat": 39.4595709,
+   "lon": 19.9729122,
+   "tags": {
+    "access": "yes",
+    "amenity": "shower"
+   }
+  },
+  {
+   "type": "node",
+   "id": 13059556482,
+   "lat": 40.7572511,
+   "lon": 23.9116168,
+   "tags": {
+    "amenity": "shower"
+   }
+  },
+  {
+   "type": "node",
+   "id": 13059569905,
+   "lat": 40.7507736,
+   "lon": 23.9351065,
+   "tags": {
+    "amenity": "shower"
+   }
+  },
+  {
+   "type": "node",
+   "id": 13059570079,
+   "lat": 40.7538583,
+   "lon": 23.9209359,
+   "tags": {
+    "amenity": "shower"
+   }
+  },
+  {
+   "type": "node",
+   "id": 13059595057,
+   "lat": 40.7281895,
+   "lon": 24.0197757,
+   "tags": {
+    "amenity": "shower"
+   }
+  },
+  {
+   "type": "node",
+   "id": 13066243533,
+   "lat": 35.2482427,
+   "lon": 23.811106,
+   "tags": {
+    "access": "yes",
+    "amenity": "shower",
+    "fee": "no",
+    "hot_water": "no",
+    "opening_hours": "24/7"
+   }
+  },
+  {
+   "type": "node",
+   "id": 13066243534,
+   "lat": 35.2481656,
+   "lon": 23.8107092,
+   "tags": {
+    "access": "yes",
+    "amenity": "shower",
+    "fee": "no",
+    "hot_water": "no",
+    "opening_hours": "24/7"
+   }
+  },
+  {
+   "type": "node",
+   "id": 13070936477,
+   "lat": 38.0554445,
+   "lon": 23.9975854,
+   "tags": {
+    "amenity": "shower"
+   }
+  },
+  {
+   "type": "node",
+   "id": 13072249172,
+   "lat": 36.8671817,
+   "lon": 22.2482479,
+   "tags": {
+    "amenity": "shower"
+   }
+  },
+  {
+   "type": "node",
+   "id": 13072264607,
+   "lat": 38.712652,
+   "lon": 23.7529087,
+   "tags": {
+    "amenity": "shower"
+   }
+  },
+  {
+   "type": "node",
+   "id": 13072269841,
+   "lat": 36.6197005,
+   "lon": 22.4944493,
+   "tags": {
+    "amenity": "shower"
+   }
+  },
+  {
+   "type": "node",
+   "id": 13072282190,
+   "lat": 36.8055947,
+   "lon": 22.7283019,
+   "tags": {
+    "amenity": "shower"
+   }
+  },
+  {
+   "type": "node",
+   "id": 13072284414,
+   "lat": 37.3713817,
+   "lon": 22.7829259,
+   "tags": {
+    "amenity": "shower"
+   }
+  },
+  {
+   "type": "node",
+   "id": 13072751970,
+   "lat": 40.7224168,
+   "lon": 21.7517227,
+   "tags": {
+    "access": "yes",
+    "amenity": "shower",
+    "fee": "no",
+    "hot_water": "no",
+    "supervised": "no"
+   }
+  },
+  {
+   "type": "node",
+   "id": 13074277732,
+   "lat": 36.262908,
+   "lon": 23.0783396,
+   "tags": {
+    "amenity": "shower",
+    "fee": "no"
+   }
+  },
+  {
+   "type": "node",
+   "id": 13074339082,
+   "lat": 40.6191609,
+   "lon": 24.7620785,
+   "tags": {
+    "access": "yes",
+    "amenity": "shower",
+    "fee": "no",
+    "opening_hours": "24/7",
+    "supervised": "no"
+   }
+  },
+  {
+   "type": "node",
+   "id": 13081904892,
+   "lat": 40.7217004,
+   "lon": 23.7112611,
+   "tags": {
+    "amenity": "shower",
+    "fee": "no"
+   }
+  },
+  {
+   "type": "node",
+   "id": 13103541873,
+   "lat": 39.4311589,
+   "lon": 19.9350196,
+   "tags": {
+    "access": "yes",
+    "amenity": "shower",
+    "fee": "no"
+   }
+  },
+  {
+   "type": "node",
+   "id": 13103541888,
+   "lat": 39.4476001,
+   "lon": 19.8866594,
+   "tags": {
+    "access": "yes",
+    "amenity": "shower",
+    "fee": "no"
+   }
+  },
+  {
+   "type": "node",
+   "id": 13103874048,
+   "lat": 36.874471,
+   "lon": 27.1366414,
+   "tags": {
+    "access": "yes",
+    "amenity": "shower",
+    "fee": "no",
+    "supervised": "no"
+   }
+  },
+  {
+   "type": "node",
+   "id": 13105441488,
+   "lat": 40.0664792,
+   "lon": 22.5676693,
+   "tags": {
+    "amenity": "shower"
+   }
+  },
+  {
+   "type": "node",
+   "id": 13127968401,
+   "lat": 39.6270978,
+   "lon": 19.9249896,
+   "tags": {
+    "amenity": "shower"
+   }
+  },
+  {
+   "type": "node",
+   "id": 13131314253,
+   "lat": 39.1473637,
+   "lon": 23.3988606,
+   "tags": {
+    "amenity": "shower"
+   }
+  },
+  {
+   "type": "node",
+   "id": 13134362448,
+   "lat": 39.146577,
+   "lon": 23.3927428,
+   "tags": {
+    "amenity": "shower",
+    "fee": "no"
+   }
+  },
+  {
+   "type": "node",
+   "id": 13137471579,
+   "lat": 39.1462034,
+   "lon": 23.3980369,
+   "tags": {
+    "amenity": "shower"
+   }
+  },
+  {
+   "type": "node",
+   "id": 13146867597,
+   "lat": 38.1177473,
+   "lon": 20.6038797,
+   "tags": {
+    "access": "customers",
+    "amenity": "shower"
+   }
+  },
+  {
+   "type": "node",
+   "id": 13163688827,
+   "lat": 35.1923785,
+   "lon": 24.3666297,
+   "tags": {
+    "amenity": "shower"
+   }
+  },
+  {
+   "type": "node",
+   "id": 13175377049,
+   "lat": 35.2306332,
+   "lon": 23.6797544,
+   "tags": {
+    "access": "yes",
+    "amenity": "shower",
+    "fee": "no",
+    "hot_water": "no",
+    "opening_hours": "24/7",
+    "supervised": "no"
+   }
+  },
+  {
+   "type": "node",
+   "id": 13177197501,
+   "lat": 39.4615274,
+   "lon": 19.9669554,
+   "tags": {
+    "amenity": "shower"
+   }
+  },
+  {
+   "type": "node",
+   "id": 13180535578,
+   "lat": 38.4278273,
+   "lon": 22.431516,
+   "tags": {
+    "amenity": "shower"
+   }
+  },
+  {
+   "type": "node",
+   "id": 13180547816,
+   "lat": 38.4289556,
+   "lon": 22.4301567,
+   "tags": {
+    "amenity": "shower"
+   }
+  },
+  {
+   "type": "node",
+   "id": 13180564236,
+   "lat": 38.4281219,
+   "lon": 22.4312259,
+   "tags": {
+    "amenity": "shower"
+   }
+  },
+  {
+   "type": "node",
+   "id": 13180573630,
+   "lat": 38.4268682,
+   "lon": 22.4320936,
+   "tags": {
+    "amenity": "shower"
+   }
+  },
+  {
+   "type": "node",
+   "id": 13180578116,
+   "lat": 38.4267487,
+   "lon": 22.4321766,
+   "tags": {
+    "amenity": "shower"
+   }
+  },
+  {
+   "type": "node",
+   "id": 13183487101,
+   "lat": 39.4873283,
+   "lon": 19.9283941,
+   "tags": {
+    "amenity": "shower"
+   }
+  },
+  {
+   "type": "node",
+   "id": 13183531301,
+   "lat": 39.4863627,
+   "lon": 19.9286889,
+   "tags": {
+    "amenity": "shower"
+   }
+  },
+  {
+   "type": "node",
+   "id": 13183547101,
+   "lat": 39.4824609,
+   "lon": 19.9312379,
+   "tags": {
+    "amenity": "shower"
+   }
+  },
+  {
+   "type": "node",
+   "id": 13186002421,
+   "lat": 36.6283843,
+   "lon": 22.8781913,
+   "tags": {
+    "amenity": "shower",
+    "fee": "no",
+    "location": "outdoor"
+   }
+  },
+  {
+   "type": "node",
+   "id": 13233090801,
+   "lat": 39.8151121,
+   "lon": 19.8647676,
+   "tags": {
+    "amenity": "shower"
+   }
+  },
+  {
+   "type": "node",
+   "id": 13233303301,
+   "lat": 39.815149,
+   "lon": 19.8652402,
+   "tags": {
+    "amenity": "shower"
+   }
+  },
+  {
+   "type": "node",
+   "id": 13234489695,
+   "lat": 35.0034428,
+   "lon": 25.5843285,
+   "tags": {
+    "amenity": "shower",
+    "fee": "no"
+   }
+  },
+  {
+   "type": "node",
+   "id": 13234503301,
+   "lat": 39.4460176,
+   "lon": 20.0601158,
+   "tags": {
+    "amenity": "shower"
+   }
+  },
+  {
+   "type": "node",
+   "id": 13239111601,
+   "lat": 39.8155782,
+   "lon": 19.8611199,
+   "tags": {
+    "amenity": "shower"
+   }
+  },
+  {
+   "type": "node",
+   "id": 13256135925,
+   "lat": 35.0034681,
+   "lon": 25.5834572,
+   "tags": {
+    "amenity": "shower",
+    "fee": "no",
+    "survey:date": "2024-10-20"
+   }
+  },
+  {
+   "type": "node",
+   "id": 13265864298,
+   "lat": 40.7083852,
+   "lon": 24.5338127,
+   "tags": {
+    "amenity": "shower",
+    "fee": "no"
+   }
+  },
+  {
+   "type": "node",
+   "id": 13265875178,
+   "lat": 40.7103477,
+   "lon": 24.5335072,
+   "tags": {
+    "amenity": "shower"
+   }
+  },
+  {
+   "type": "node",
+   "id": 13272848918,
+   "lat": 39.672695,
+   "lon": 19.7068088,
+   "tags": {
+    "amenity": "shower",
+    "capacity": "1",
+    "outdoor": "yes"
+   }
+  },
+  {
+   "type": "node",
+   "id": 13316058800,
+   "lat": 36.7287894,
+   "lon": 23.0263148,
+   "tags": {
+    "amenity": "shower"
+   }
+  },
+  {
+   "type": "node",
+   "id": 13366376520,
+   "lat": 37.0954581,
+   "lon": 25.3747577,
+   "tags": {
+    "amenity": "shower"
+   }
+  },
+  {
+   "type": "node",
+   "id": 13464302201,
+   "lat": 37.8734139,
+   "lon": 21.1098848,
+   "tags": {
+    "amenity": "shower"
+   }
+  },
+  {
+   "type": "node",
+   "id": 13466740501,
+   "lat": 37.8476074,
+   "lon": 21.1074729,
+   "tags": {
+    "amenity": "shower"
+   }
+  },
+  {
+   "type": "node",
+   "id": 13466756401,
+   "lat": 37.8475481,
+   "lon": 21.1078148,
+   "tags": {
+    "amenity": "shower"
+   }
+  },
+  {
+   "type": "node",
+   "id": 13467343001,
+   "lat": 34.9315039,
+   "lon": 24.8024005,
+   "tags": {
+    "amenity": "shower"
+   }
+  },
+  {
+   "type": "node",
+   "id": 13584887495,
+   "lat": 40.783255,
+   "lon": 24.715022,
+   "tags": {
+    "amenity": "shower"
+   }
+  },
+  {
+   "type": "node",
+   "id": 13588952101,
+   "lat": 38.8740655,
+   "lon": 22.4567665,
+   "tags": {
+    "amenity": "shower"
+   }
+  },
+  {
+   "type": "node",
+   "id": 13655210242,
+   "lat": 37.119093,
+   "lon": 22.8973181,
+   "tags": {
+    "amenity": "shower"
+   }
+  },
+  {
+   "type": "node",
+   "id": 13706572687,
+   "lat": 36.094169,
+   "lon": 28.0865623,
+   "tags": {
+    "access": "yes",
+    "amenity": "shower",
+    "capacity": "2",
+    "fee": "no",
+    "hot_water": "no",
+    "outdoor": "yes",
+    "unisex": "yes"
+   }
+  },
+  {
+   "type": "node",
+   "id": 13706607915,
+   "lat": 36.095136,
+   "lon": 28.0855094,
+   "tags": {
+    "access": "yes",
+    "amenity": "shower",
+    "capacity": "2",
+    "fee": "no",
+    "hot_water": "no",
+    "outdoor": "yes",
+    "unisex": "yes"
+   }
+  },
+  {
+   "type": "node",
+   "id": 13706668646,
+   "lat": 36.0955067,
+   "lon": 28.0853181,
+   "tags": {
+    "access": "yes",
+    "amenity": "shower",
+    "capacity": "2",
+    "fee": "no",
+    "hot_water": "no",
+    "outdoor": "yes",
+    "unisex": "yes"
+   }
+  },
+  {
+   "type": "node",
+   "id": 13724716594,
+   "lat": 35.1252484,
+   "lon": 25.7438285,
+   "tags": {
+    "amenity": "shower",
+    "fee": "no",
+    "hot_water": "no"
+   }
+  },
+  {
+   "type": "node",
+   "id": 13724736291,
+   "lat": 35.1252941,
+   "lon": 25.7442346,
+   "tags": {
+    "amenity": "shower",
+    "fee": "no",
+    "hot_water": "no"
+   }
+  },
+  {
+   "type": "node",
+   "id": 13724938867,
+   "lat": 35.1255713,
+   "lon": 25.7460486,
+   "tags": {
+    "amenity": "shower",
+    "fee": "no",
+    "hot_water": "no"
+   }
+  },
+  {
+   "type": "node",
+   "id": 13724951108,
+   "lat": 35.1261618,
+   "lon": 25.7473409,
+   "tags": {
+    "amenity": "shower",
+    "fee": "no",
+    "hot_water": "no"
+   }
+  },
+  {
+   "type": "node",
+   "id": 13747727439,
+   "lat": 35.1773003,
+   "lon": 25.7092164,
+   "tags": {
+    "amenity": "shower",
+    "fee": "no",
+    "hot_water": "no"
+   }
+  },
+  {
+   "type": "node",
+   "id": 13747742612,
+   "lat": 35.1769147,
+   "lon": 25.7092503,
+   "tags": {
+    "amenity": "shower",
+    "fee": "no",
+    "hot_water": "no"
+   }
+  },
+  {
+   "type": "node",
+   "id": 13752679201,
+   "lat": 36.3355516,
+   "lon": 28.2071341,
+   "tags": {
+    "access": "yes",
+    "amenity": "shower"
+   }
+  },
+  {
+   "type": "node",
+   "id": 13794088201,
+   "lat": 39.1196656,
+   "lon": 26.4861888,
+   "tags": {
+    "amenity": "shower",
+    "heated": "yes",
+    "unisex": "yes"
+   }
+  },
+  {
+   "type": "node",
+   "id": 13798870971,
+   "lat": 39.4460626,
+   "lon": 20.2744798,
+   "tags": {
+    "capacity:caravans": "16",
+    "caravans": "yes",
+    "description": "Simple space for Campervans only. 2 toilets, 1 shower, greywater/freshwater/chemical toilets: yes",
+    "drinking_water": "yes",
+    "motorhome": "yes",
+    "name": "Camperstop Plataria Beach",
+    "power_supply": "yes",
+    "sanitary_dump_station": "yes",
+    "shower": "yes",
+    "tents": "no",
+    "toilets": "yes",
+    "tourism": "camp_site"
+   }
+  },
+  {
+   "type": "way",
+   "id": 30109133,
+   "center": {
+    "lat": 36.7281012,
+    "lon": 22.545805
+   },
+   "tags": {
+    "caravans": "yes",
+    "dog": "yes",
+    "drinking_water": "yes",
+    "internet_access": "wlan",
+    "internet_access:fee": "no",
+    "name": "Gythion Bay",
+    "payment:credit_cards": "yes",
+    "phone": "+30 2733022522",
+    "power_supply": "yes",
+    "sanitary_dump_station": "yes",
+    "shower": "yes",
+    "tents": "yes",
+    "toilets": "yes",
+    "tourism": "camp_site",
+    "website": "https://www.gythiocamping.gr"
+   }
+  },
+  {
+   "type": "way",
+   "id": 47218086,
+   "center": {
+    "lat": 35.5019351,
+    "lon": 23.7031574
+   },
+   "tags": {
+    "cabins": "yes",
+    "camp_site": "reception",
+    "caravans": "yes",
+    "drinking_water": "yes",
+    "email": "info@campingmithimna.gr",
+    "internet_access": "wlan",
+    "motorhome": "yes",
+    "name": "Camping Mithimna",
+    "phone": "+30 2822 031444",
+    "power_supply": "yes",
+    "shower": "yes",
+    "tents": "yes",
+    "toilets": "yes",
+    "tourism": "camp_site",
+    "website": "http://www.campingmithimna.gr/home.html"
+   }
+  },
+  {
+   "type": "way",
+   "id": 75641140,
+   "center": {
+    "lat": 36.9528798,
+    "lon": 21.6963846
+   },
+   "tags": {
+    "cabins": "yes",
+    "caravans": "yes",
+    "contact:facebook": "erodiosgr",
+    "drinking_water": "yes",
+    "internet_access": "wlan",
+    "internet_access:fee": "no",
+    "name": "Camping Erodios",
+    "phone": "+30 27230 23269",
+    "power_supply": "yes",
+    "sanitary_dump_station": "yes",
+    "shower": "yes",
+    "tents": "yes",
+    "toilets": "yes",
+    "tourism": "camp_site",
+    "website": "https://www.erodioss.gr/",
+    "wheelchair": "yes"
+   }
+  },
+  {
+   "type": "way",
+   "id": 129550462,
+   "center": {
+    "lat": 37.4971385,
+    "lon": 22.991231
+   },
+   "tags": {
+    "addr:city": "Iria",
+    "addr:postcode": "210 60",
+    "backcountry": "no",
+    "cabins": "yes",
+    "caravans": "yes",
+    "dog": "leashed",
+    "drinking_water": "yes",
+    "email": "info@iriabeachcamp.gr",
+    "fee": "yes",
+    "internet_access": "wlan",
+    "mobile": "+30 6974 115 106",
+    "name": "Iria Beach Camping",
+    "payment:credit_cards": "yes",
+    "phone": "+30 27520 94253",
+    "power_supply": "yes",
+    "reservation": "yes",
+    "shower": "yes",
+    "static_caravans": "yes",
+    "tents": "yes",
+    "toilets": "yes",
+    "tourism": "camp_site",
+    "website": "https://www.iriabeach.com/"
+   }
+  },
+  {
+   "type": "way",
+   "id": 129551977,
+   "center": {
+    "lat": 37.4972906,
+    "lon": 22.9910767
+   },
+   "tags": {
+    "amenity": "shower",
+    "building": "yes"
+   }
+  },
+  {
+   "type": "way",
+   "id": 168122011,
+   "center": {
+    "lat": 38.3607387,
+    "lon": 21.4163391
+   },
+   "tags": {
+    "amenity": "toilets",
+    "building": "yes",
+    "name": "Τουαλέτες & Ντους",
+    "shower": "yes"
+   }
+  },
+  {
+   "type": "way",
+   "id": 180336940,
+   "center": {
+    "lat": 37.5191649,
+    "lon": 22.9762236
+   },
+   "tags": {
+    "addr:city": "Nafplio",
+    "addr:postcode": "21060",
+    "addr:street": "Kandia",
+    "caravans": "yes",
+    "drinking_water": "no",
+    "email": "scalacamp@gmail.com",
+    "internet_access": "wlan",
+    "name": "Camping Scala",
+    "phone": "+30 2752 094366",
+    "power_supply": "yes",
+    "shower": "yes",
+    "start_date": "1972",
+    "tents": "yes",
+    "toilets": "yes",
+    "tourism": "camp_site",
+    "website": "http://www.scalacamping.gr"
+   }
+  },
+  {
+   "type": "way",
+   "id": 180337493,
+   "center": {
+    "lat": 36.8489083,
+    "lon": 22.2592619
+   },
+   "tags": {
+    "caravans": "yes",
+    "dog": "yes",
+    "drinking_water": "no",
+    "internet_access": "wlan",
+    "name": "Camping Kalogria",
+    "phone": "+30 2721077319",
+    "power_supply": "yes",
+    "shower": "yes",
+    "tents": "yes",
+    "toilets": "yes",
+    "toilets:wheelchair": "yes",
+    "tourism": "camp_site",
+    "website": "www.campingkalogria.gr",
+    "wheelchair": "yes"
+   }
+  },
+  {
+   "type": "way",
+   "id": 236142322,
+   "center": {
+    "lat": 39.7126097,
+    "lon": 21.6140763
+   },
+   "tags": {
+    "backcountry": "no",
+    "caravans": "yes",
+    "drinking_water": "yes",
+    "email": "tsourvaka@yahoo.gr",
+    "group_only": "no",
+    "name": "Vrachos",
+    "note": "TV Empfang über Schüssel kann problematisch sein. Auf nur wenigen Plätzen möglich.",
+    "phone": "+30 2432022293",
+    "power_supply": "yes",
+    "shower": "yes",
+    "tents": "yes",
+    "toilets": "yes",
+    "tourism": "camp_site",
+    "website": "https://www.campingkastraki.com/"
+   }
+  },
+  {
+   "type": "way",
+   "id": 239961728,
+   "center": {
+    "lat": 35.0999222,
+    "lon": 24.6945919
+   },
+   "tags": {
+    "caravans": "yes",
+    "drinking_water": "yes",
+    "name": "Camping No Problem",
+    "power_supply": "yes",
+    "sanitary_dump_station": "yes",
+    "shower": "yes",
+    "tents": "yes",
+    "toilets": "yes",
+    "tourism": "camp_site"
+   }
+  },
+  {
+   "type": "way",
+   "id": 265919886,
+   "center": {
+    "lat": 38.8515906,
+    "lon": 23.4519827
+   },
+   "tags": {
+    "addr:city": "Agia Anna",
+    "cabins": "yes",
+    "caravans": "yes",
+    "fee": "yes",
+    "name": "Oasis Village",
+    "phone": "+30 697 686 5037;+30 697 991 3316",
+    "shower": "yes",
+    "tents": "yes",
+    "toilets": "yes",
+    "tourism": "camp_site",
+    "website": "https://www.oasisvillage.gr/"
+   }
+  },
+  {
+   "type": "way",
+   "id": 302589143,
+   "center": {
+    "lat": 40.8462217,
+    "lon": 25.8540178
+   },
+   "tags": {
+    "addr:city": "Alexandroupoli",
+    "addr:postcode": "68100",
+    "caravans": "yes",
+    "drinking_water": "yes",
+    "name": "Alexandroupoli Municipal Camping",
+    "name:en": "Alexandroupoli Municipal Camping",
+    "phone": "+30 25510 28735",
+    "power_supply": "yes",
+    "sanitary_dump_station": "yes",
+    "shower": "yes",
+    "tents": "yes",
+    "toilets": "yes",
+    "tourism": "camp_site",
+    "website": "https://www.ditea.gr/"
+   }
+  },
+  {
+   "type": "way",
+   "id": 302595393,
+   "center": {
+    "lat": 40.4937721,
+    "lon": 25.6370299
+   },
+   "tags": {
+    "caravans": "yes",
+    "contact:facebook": "https://www.facebook.com/campingvarades/",
+    "drinking_water": "yes",
+    "email": "campingvarades3@gmail.com",
+    "fee": "yes",
+    "name": "Βαράδες",
+    "name:el": "Βαράδες",
+    "name:en": "Varades",
+    "phone": "+302551098424",
+    "power_supply": "yes",
+    "shower": "yes",
+    "tents": "yes",
+    "tourism": "camp_site"
+   }
+  },
+  {
+   "type": "way",
+   "id": 349642716,
+   "center": {
+    "lat": 35.2293362,
+    "lon": 23.9640363
+   },
+   "tags": {
+    "access": "yes",
+    "caravans": "yes",
+    "drinking_water": "yes",
+    "fee": "no",
+    "name": "Camping Agia Roumeli",
+    "power_supply": "yes",
+    "shower": "yes",
+    "tents": "yes",
+    "toilets": "yes",
+    "tourism": "camp_site"
+   }
+  },
+  {
+   "type": "way",
+   "id": 366983280,
+   "center": {
+    "lat": 37.5052838,
+    "lon": 22.9866485
+   },
+   "tags": {
+    "cabins": "yes",
+    "caravans": "yes",
+    "name": "Κάμπιγκ Ποσειδών",
+    "name:el": "Κάμπιγκ Ποσειδών",
+    "name:en": "Posidon",
+    "phone": "+30 2752 0 94091",
+    "shower": "yes",
+    "tents": "yes",
+    "toilets": "yes",
+    "tourism": "camp_site",
+    "website": "https://www.posidoncamping.gr"
+   }
+  },
+  {
+   "type": "way",
+   "id": 369336497,
+   "center": {
+    "lat": 38.6407852,
+    "lon": 20.6964628
+   },
+   "tags": {
+    "caravans": "yes",
+    "drinking_water": "yes",
+    "name": "Poros Beach",
+    "phone": "+30 2645 095 452",
+    "power_supply": "yes",
+    "sanitary_dump_station": "yes",
+    "shower": "yes",
+    "start_date": "1974",
+    "tents": "yes",
+    "toilets": "yes",
+    "tourism": "camp_site",
+    "website": "https://porosbeach.com.gr/room/camping/"
+   }
+  },
+  {
+   "type": "way",
+   "id": 401502441,
+   "center": {
+    "lat": 38.6103033,
+    "lon": 23.8603738
+   },
+   "tags": {
+    "alt_name": "Καταφύγιο Δίρφυος",
+    "beds": "50",
+    "building": "yes",
+    "ele": "1120",
+    "fee": "yes",
+    "int_name": "Michalis Nikolaou",
+    "name": "Καταφύγιο Μιχάλης Νικολάου",
+    "name:el": "Μιχάλης Νικολάου",
+    "name:en": "Mixalis Nikoloaou",
+    "operator": "ΕΟΣ Χαλκίδας",
+    "phone": "+30 2228025655",
+    "reservation": "required",
+    "short_name": "Μ. Νικολάου",
+    "shower": "yes",
+    "source": "www.eoschalkidas.gr",
+    "tourism": "alpine_hut",
+    "website": "https://eoschalkidas.gr/category/dirfys-mountaineering-refuge/",
+    "winter_room": "yes"
+   }
+  },
+  {
+   "type": "way",
+   "id": 430440163,
+   "center": {
+    "lat": 37.1496989,
+    "lon": 22.8928778
+   },
+   "tags": {
+    "caravans": "yes",
+    "dog": "leashed",
+    "drinking_water": "yes",
+    "email": "info@camping-semeli.gr",
+    "fee": "yes",
+    "internet_access:fee": "customers",
+    "name": "Camping Semeli",
+    "payment:cards": "yes",
+    "payment:cash": "yes",
+    "payment:credit_cards": "yes",
+    "payment:debit_cards": "yes",
+    "phone": "+30 2757022995",
+    "power_supply": "yes",
+    "sanitary_dump_station": "yes",
+    "shower": "yes",
+    "static_caravans": "yes",
+    "tents": "yes",
+    "toilets": "yes",
+    "toilets:wheelchair": "yes",
+    "tourism": "camp_site",
+    "website": "https://www.camping-semeli.gr/"
+   }
+  },
+  {
+   "type": "way",
+   "id": 435602056,
+   "center": {
+    "lat": 39.3795084,
+    "lon": 26.2163382
+   },
+   "tags": {
+    "amenity": "public_bath",
+    "bath:type": "hot_spring",
+    "building": "yes",
+    "name": "Ιαματικές πηγές Εφταλού",
+    "name:el": "Ιαματικές πηγές Εφταλού",
+    "name:en": "Hot springs of Eftalou",
+    "shower": "yes",
+    "unisex": "yes",
+    "wheelchair": "no"
+   }
+  },
+  {
+   "type": "way",
+   "id": 445157279,
+   "center": {
+    "lat": 38.4786761,
+    "lon": 22.4741077
+   },
+   "tags": {
+    "caravans": "yes",
+    "drinking_water": "yes",
+    "ele": "334",
+    "internet_access": "wlan",
+    "name": "Delphi Camping",
+    "phone": "+30 2265 082745",
+    "power_supply": "yes",
+    "shower": "yes",
+    "tents": "yes",
+    "toilets": "yes",
+    "tourism": "camp_site",
+    "website": "https://www.delphicamping.com/"
+   }
+  },
+  {
+   "type": "way",
+   "id": 510285012,
+   "center": {
+    "lat": 39.9855244,
+    "lon": 23.9864472
+   },
+   "tags": {
+    "access": "customers",
+    "amenity": "shower",
+    "building": "yes"
+   }
+  },
+  {
+   "type": "way",
+   "id": 513680068,
+   "center": {
+    "lat": 40.3827725,
+    "lon": 22.9270955
+   },
+   "tags": {
+    "addr:city": "Επανομή",
+    "addr:postcode": "57500",
+    "addr:street": "Ποταμός",
+    "caravans": "yes",
+    "description": "closes 1/10",
+    "drinking_water": "yes",
+    "internet_access": "wlan",
+    "name": "Ακτή Ρετζίκα",
+    "name:el": "Ακτή Ρετζίκα",
+    "name:en": "Akti Retzika",
+    "operator": "Soti Retzika",
+    "phone": "+30 23920 44786",
+    "power_supply": "yes",
+    "sanitary_dump_station": "yes",
+    "shower": "yes",
+    "tents": "no",
+    "toilets": "yes",
+    "tourism": "camp_site",
+    "website": "https://retzikas.gr"
+   }
+  },
+  {
+   "type": "way",
+   "id": 513916079,
+   "center": {
+    "lat": 38.4831185,
+    "lon": 22.4758176
+   },
+   "tags": {
+    "addr:postcode": "33054",
+    "caravans": "yes",
+    "drinking_water": "yes",
+    "ele": "473",
+    "email": "apollon4@otenet.gr",
+    "internet_access": "wlan",
+    "internet_access:fee": "no",
+    "name": "Apollon",
+    "operator": "Mr. N. Kontogiannis",
+    "phone": "+30 22650 82750",
+    "shower": "yes",
+    "tents": "yes",
+    "tourism": "camp_site",
+    "website": "https://apolloncamping.gr/",
+    "wheelchair": "yes"
+   }
+  },
+  {
+   "type": "way",
+   "id": 522928940,
+   "center": {
+    "lat": 35.3903572,
+    "lon": 25.0441017
+   },
+   "tags": {
+    "access": "key",
+    "amenity": "shower",
+    "location": "outdoor"
+   }
+  },
+  {
+   "type": "way",
+   "id": 550463533,
+   "center": {
+    "lat": 37.6475208,
+    "lon": 22.2686295
+   },
+   "tags": {
+    "alt_name": "Καταφύγιο Μαινάλου",
+    "alt_name:en": "Mainalon alpine hut",
+    "beds": "35",
+    "building": "yes",
+    "capacity": "50",
+    "contact:facebook": "https://www.facebook.com/groups/252972446617/about/",
+    "ele": "1600",
+    "fee": "yes",
+    "int_name": "Panos Alexopoulos",
+    "name": "Πάνος Αλεξόπουλος",
+    "operator": "ΕΟΣ Τρίπολης",
+    "payment:cash": "yes",
+    "reservation": "required",
+    "shower": "hot",
+    "tourism": "alpine_hut",
+    "website": "https://www.eostripolis.gr/index.php/sillogos/katafigio"
+   }
+  },
+  {
+   "type": "way",
+   "id": 569723311,
+   "center": {
+    "lat": 35.3545087,
+    "lon": 24.287007
+   },
+   "tags": {
+    "amenity": "shower",
+    "building": "yes"
+   }
+  },
+  {
+   "type": "way",
+   "id": 569723312,
+   "center": {
+    "lat": 35.3545443,
+    "lon": 24.2870099
+   },
+   "tags": {
+    "amenity": "shower",
+    "building": "yes"
+   }
+  },
+  {
+   "type": "way",
+   "id": 614206960,
+   "center": {
+    "lat": 38.2469058,
+    "lon": 22.1337338
+   },
+   "tags": {
+    "amenity": "shower",
+    "building": "yes"
+   }
+  },
+  {
+   "type": "way",
+   "id": 618349538,
+   "center": {
+    "lat": 40.969478,
+    "lon": 25.0134387
+   },
+   "tags": {
+    "caravans": "yes",
+    "drinking_water": "yes",
+    "email": "info@camping-natura.gr",
+    "name": "Natura",
+    "power_supply": "yes",
+    "sanitary_dump_station": "yes",
+    "shower": "yes",
+    "tents": "yes",
+    "toilets": "yes",
+    "tourism": "camp_site",
+    "website": "http://www.camping-natura.gr"
+   }
+  },
+  {
+   "type": "way",
+   "id": 643081878,
+   "center": {
+    "lat": 35.1844614,
+    "lon": 25.9049598
+   },
+   "tags": {
+    "natural": "beach",
+    "shower": "yes"
+   }
+  },
+  {
+   "type": "way",
+   "id": 690033930,
+   "center": {
+    "lat": 39.3401401,
+    "lon": 20.2878802
+   },
+   "tags": {
+    "amenity": "shower",
+    "building": "yes"
+   }
+  },
+  {
+   "type": "way",
+   "id": 693069710,
+   "center": {
+    "lat": 36.6895655,
+    "lon": 22.8318716
+   },
+   "tags": {
+    "access": "yes",
+    "amenity": "shower",
+    "building": "yes",
+    "fee": "no"
+   }
+  },
+  {
+   "type": "way",
+   "id": 738036577,
+   "center": {
+    "lat": 39.7131576,
+    "lon": 21.6147872
+   },
+   "tags": {
+    "access": "customers",
+    "amenity": "toilets",
+    "building": "yes",
+    "fee": "no",
+    "opening_hours": "24/7",
+    "panoramax": "b23ff692-2c57-43ab-ab45-48f6bb62f699",
+    "shower": "yes",
+    "toilets:handwashing": "yes",
+    "toilets:paper_supplied": "yes",
+    "toilets:position": "seated;urinal",
+    "wheelchair": "no"
+   }
+  },
+  {
+   "type": "way",
+   "id": 747334073,
+   "center": {
+    "lat": 37.1467677,
+    "lon": 22.893646
+   },
+   "tags": {
+    "access": "yes",
+    "amenity": "shower",
+    "building": "yes",
+    "fee": "no"
+   }
+  },
+  {
+   "type": "way",
+   "id": 763488917,
+   "center": {
+    "lat": 37.0214174,
+    "lon": 22.1435325
+   },
+   "tags": {
+    "caravans": "yes",
+    "drinking_water": "yes",
+    "name": "Fare",
+    "opening_hours": "Jan 1-Dec 31",
+    "phone": "+30 27210 29520",
+    "sanitary_dump_station": "customers",
+    "shower": "yes",
+    "tents": "yes",
+    "tourism": "camp_site"
+   }
+  },
+  {
+   "type": "way",
+   "id": 766775385,
+   "center": {
+    "lat": 37.4013233,
+    "lon": 22.7525118
+   },
+   "tags": {
+    "caravans": "yes",
+    "internet_access": "wlan",
+    "internet_access:fee": "yes",
+    "mobile": "+30 697 222 3189; +30 697 700 9351",
+    "name": "Thirea",
+    "phone": "+30 2755 051002",
+    "shower": "yes",
+    "tents": "yes",
+    "toilets": "yes",
+    "tourism": "camp_site",
+    "website": "https://www.campingthirea.com/"
+   }
+  },
+  {
+   "type": "way",
+   "id": 769727439,
+   "center": {
+    "lat": 37.719422,
+    "lon": 22.7418064
+   },
+   "tags": {
+    "name": "Camping Atreus",
+    "phone": "+30 27510 76221",
+    "shower": "yes",
+    "tents": "yes",
+    "toilets": "yes",
+    "tourism": "camp_site"
+   }
+  },
+  {
+   "type": "way",
+   "id": 770700919,
+   "center": {
+    "lat": 36.5604842,
+    "lon": 26.3535451
+   },
+   "tags": {
+    "bar": "yes",
+    "cabins": "no",
+    "caravans": "no",
+    "contact:phone": "+30 2243 061900;+30 698 319 9313",
+    "contact:website": "https://astypalaiacamping.gr",
+    "name": "κάμπινγκ Αστυπάλαια",
+    "name:el": "κάμπινγκ Αστυπάλαια",
+    "name:en": "Astypalaia Camping",
+    "opening_hours": "Jun-Sep",
+    "restaurant": "yes",
+    "shower": "yes",
+    "tents": "yes",
+    "toilets": "yes",
+    "tourism": "camp_site"
+   }
+  },
+  {
+   "type": "way",
+   "id": 1009095499,
+   "center": {
+    "lat": 38.1732799,
+    "lon": 22.3374573
+   },
+   "tags": {
+    "addr:city": "Ακράτα",
+    "addr:place": "Παραλία Ποροβίτσας",
+    "addr:postcode": "25006",
+    "contact:instagram": "https://www.instagram.com/explore/locations/33235649/akrata-beach-camping",
+    "email": "info@akrata-beach-camping.gr",
+    "facebook": "https://www.facebook.com/akrata.camping/",
+    "fee": "yes",
+    "internet_access": "wlan",
+    "name": "Akrata Beach",
+    "pet": "yes",
+    "phone": "+30 2696031988",
+    "shower": "yes",
+    "tourism": "camp_site",
+    "website": "https://www.akrata-beach-camping.gr"
+   }
+  },
+  {
+   "type": "way",
+   "id": 1074156438,
+   "center": {
+    "lat": 39.0833528,
+    "lon": 26.5749697
+   },
+   "tags": {
+    "amenity": "shower",
+    "building": "yes"
+   }
+  },
+  {
+   "type": "way",
+   "id": 1088255244,
+   "center": {
+    "lat": 40.2274745,
+    "lon": 23.5895012
+   },
+   "tags": {
+    "caravans": "yes",
+    "drinking_water": "yes",
+    "name": "Sunny Bay",
+    "power_supply": "yes",
+    "shower": "yes",
+    "tents": "yes",
+    "tourism": "camp_site"
+   }
+  },
+  {
+   "type": "way",
+   "id": 1117096097,
+   "center": {
+    "lat": 40.187277,
+    "lon": 22.5650374
+   },
+   "tags": {
+    "amenity": "toilets",
+    "building": "yes",
+    "shower": "yes"
+   }
+  },
+  {
+   "type": "way",
+   "id": 1141793453,
+   "center": {
+    "lat": 38.4234524,
+    "lon": 22.4600528
+   },
+   "tags": {
+    "access": "customers",
+    "amenity": "toilets",
+    "building": "yes",
+    "shower": "yes",
+    "toilets:disposal": "flush",
+    "unisex": "yes"
+   }
+  },
+  {
+   "type": "way",
+   "id": 1141793455,
+   "center": {
+    "lat": 38.4222897,
+    "lon": 22.4602707
+   },
+   "tags": {
+    "access": "customers",
+    "amenity": "toilets",
+    "building": "yes",
+    "shower": "yes",
+    "unisex": "yes"
+   }
+  },
+  {
+   "type": "way",
+   "id": 1175040751,
+   "center": {
+    "lat": 39.644412,
+    "lon": 19.9263812
+   },
+   "tags": {
+    "access": "permit",
+    "caravans": "no",
+    "group_only": "yes",
+    "name": "Προσκοπικές Κατασκηνώσεις",
+    "name:el": "Προσκοπικές Κατασκηνώσεις",
+    "name:en": "Scout Camps",
+    "name:es": "Campamentos Scouts",
+    "name:it": "Campi scout",
+    "openfire": "yes",
+    "sanitary_dump_station": "yes",
+    "shower": "yes",
+    "static_caravans": "no",
+    "tents": "yes",
+    "toilets": "yes",
+    "tourism": "camp_site"
+   }
+  },
+  {
+   "type": "way",
+   "id": 1180085045,
+   "center": {
+    "lat": 37.4053799,
+    "lon": 23.31491
+   },
+   "tags": {
+    "area": "yes",
+    "caravans": "yes",
+    "fee": "yes",
+    "internet_access": "wlan",
+    "lit": "yes",
+    "motor_vehicle": "yes",
+    "motorhome": "yes",
+    "name": "Hydras Wave",
+    "phone": "+30 2754 041095",
+    "picnic_table": "yes",
+    "power_supply": "yes",
+    "shower": "hot",
+    "tents": "yes",
+    "toilets": "yes",
+    "tourism": "camp_site",
+    "washing_machine": "yes",
+    "website": "https://www.hydraswave.gr/"
+   }
+  },
+  {
+   "type": "way",
+   "id": 1192572677,
+   "center": {
+    "lat": 37.694404,
+    "lon": 21.3487868
+   },
+   "tags": {
+    "building": "yes",
+    "building:levels": "2",
+    "shower": "yes",
+    "tourism": "chalet"
+   }
+  },
+  {
+   "type": "way",
+   "id": 1192572679,
+   "center": {
+    "lat": 37.6942765,
+    "lon": 21.3489577
+   },
+   "tags": {
+    "building": "house",
+    "building:levels": "2",
+    "shower": "yes",
+    "tourism": "chalet"
+   }
+  },
+  {
+   "type": "way",
+   "id": 1192572680,
+   "center": {
+    "lat": 37.6944812,
+    "lon": 21.3490162
+   },
+   "tags": {
+    "building": "house",
+    "building:levels": "2",
+    "shower": "yes",
+    "tourism": "chalet"
+   }
+  },
+  {
+   "type": "way",
+   "id": 1192572681,
+   "center": {
+    "lat": 37.6943707,
+    "lon": 21.3491361
+   },
+   "tags": {
+    "building": "yes",
+    "building:levels": "1",
+    "shower": "yes"
+   }
+  },
+  {
+   "type": "way",
+   "id": 1247590766,
+   "center": {
+    "lat": 38.0105906,
+    "lon": 23.8070589
+   },
+   "tags": {
+    "amenity": "cafe",
+    "building": "yes",
+    "shower": "yes"
+   }
+  },
+  {
+   "type": "way",
+   "id": 1306169383,
+   "center": {
+    "lat": 40.0466054,
+    "lon": 23.9841493
+   },
+   "tags": {
+    "area": "yes",
+    "capacity:tents": "30",
+    "caravans": "yes",
+    "email": "xanna75@gmail.com",
+    "fee": "yes",
+    "mobile": "+30 6972696138",
+    "name": "Κάμπινγκ ΠΙΤΣΩΝΗ",
+    "name:el": "Κάμπινγκ ΠΙΤΣΩΝΗ",
+    "name:en": "Camping Pitsoni",
+    "name:sr": "Камп Питсони",
+    "name:sr-Latn": "Kamp Pitsoni",
+    "phone": "+30 2375041686",
+    "power_supply": "yes",
+    "shower": "yes",
+    "tents": "yes",
+    "toilets": "yes",
+    "tourism": "camp_site",
+    "website": "https://www.camping-pitsoni.gr"
+   }
+  },
+  {
+   "type": "way",
+   "id": 1314931451,
+   "center": {
+    "lat": 36.8544051,
+    "lon": 27.1022911
+   },
+   "tags": {
+    "amenity": "shower",
+    "outdoor": "yes"
+   }
+  },
+  {
+   "type": "way",
+   "id": 1314931534,
+   "center": {
+    "lat": 36.855261,
+    "lon": 27.1007615
+   },
+   "tags": {
+    "amenity": "shower",
+    "fee": "no",
+    "outdoor": "yes"
+   }
+  },
+  {
+   "type": "way",
+   "id": 1314931535,
+   "center": {
+    "lat": 36.8558262,
+    "lon": 27.1019908
+   },
+   "tags": {
+    "amenity": "shower",
+    "fee": "no",
+    "outdoor": "yes"
+   }
+  },
+  {
+   "type": "way",
+   "id": 1314931542,
+   "center": {
+    "lat": 36.8550586,
+    "lon": 27.1002534
+   },
+   "tags": {
+    "amenity": "shower",
+    "outdoor": "yes"
+   }
+  },
+  {
+   "type": "way",
+   "id": 1327618649,
+   "center": {
+    "lat": 39.3785405,
+    "lon": 20.2826875
+   },
+   "tags": {
+    "capacity:persons": "100",
+    "caravans": "yes",
+    "contact:email": "campingsofas@gmail.com",
+    "contact:phone": "+30698 4972369;+3026650 91478",
+    "contact:website": "https://www.campingsofas.gr/",
+    "internet_access": "wlan",
+    "motorhome": "yes",
+    "name": "Camping Sofas",
+    "opening_hours": "Apr 15 - Oct 15",
+    "sanitary_dump_station": "yes",
+    "shower": "yes",
+    "start_date": "1981",
+    "tents": "yes",
+    "toilets": "yes",
+    "tourism": "camp_site"
+   }
+  },
+  {
+   "type": "way",
+   "id": 1380228093,
+   "center": {
+    "lat": 39.094869,
+    "lon": 20.6375076
+   },
+   "tags": {
+    "caravans": "yes",
+    "contact:email": "info@campingnissos.gr",
+    "contact:phone": "+30 26820 54482",
+    "contact:website": "https://campingnissos.gr/home/",
+    "kitchen": "yes",
+    "motorhome": "yes",
+    "name": "Nissos",
+    "name:en": "Nissos",
+    "opening_hours": "May 1-Sep 30",
+    "power_supply": "yes",
+    "shower": "yes",
+    "tents": "yes",
+    "toilets": "yes",
+    "tourism": "camp_site"
+   }
+  },
+  {
+   "type": "way",
+   "id": 1465676513,
+   "center": {
+    "lat": 40.721181,
+    "lon": 24.7504913
+   },
+   "tags": {
+    "bbq": "yes",
+    "caravans": "yes",
+    "contact:email": "info@goldenvillage.gr",
+    "contact:facebook": "https://www.facebook.com/goldenvillage.gr",
+    "contact:instagram": "https://www.instagram.com/golden_village.gr/?hl=el",
+    "contact:phone": "+30 2593 061 004",
+    "fee": "yes",
+    "name": "Golden Village",
+    "opening_hours": "May-Sep",
+    "shower": "yes",
+    "static_caravans": "yes",
+    "tents": "yes",
+    "toilets": "yes",
+    "tourism": "camp_site",
+    "washing_machine": "yes",
+    "website": "https://www.goldenvillage.gr/"
+   }
+  },
+  {
+   "type": "way",
+   "id": 1478508616,
+   "center": {
+    "lat": 36.9844682,
+    "lon": 22.9968036
+   },
+   "tags": {
+    "amenity": "shower",
+    "building": "cabin",
+    "fee": "no",
+    "hot_water": "no",
+    "supervised": "no"
+   }
+  }
+ ]
+}

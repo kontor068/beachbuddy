@@ -1,0 +1,5671 @@
+{
+  "generatedAt": "2026-07-22T20:46:36.008Z",
+  "thresholds": {
+    "highM": 80,
+    "mediumM": 150,
+    "lowM": 250
+  },
+  "showersTotal": 985,
+  "showersAttributed": 411,
+  "showersOrphaned": 574,
+  "beachesWithShower": 239,
+  "byTier": {
+    "high": 203,
+    "medium": 15,
+    "low": 21
+  },
+  "autoApplyHigh": 203,
+  "byRegion": {
+    "Crete": {
+      "high": 44,
+      "medium": 2,
+      "low": 2
+    },
+    "South Aegean": {
+      "high": 41,
+      "medium": 2,
+      "low": 3
+    },
+    "Ionian Islands": {
+      "high": 29,
+      "medium": 2,
+      "low": 6
+    },
+    "Peloponnese": {
+      "high": 25,
+      "medium": 1,
+      "low": 2
+    },
+    "Central Macedonia": {
+      "high": 11,
+      "medium": 3,
+      "low": 2
+    },
+    "Attica": {
+      "high": 12,
+      "medium": 1,
+      "low": 0
+    },
+    "West Greece": {
+      "high": 10,
+      "medium": 0,
+      "low": 1
+    },
+    "Epirus": {
+      "high": 7,
+      "medium": 2,
+      "low": 0
+    },
+    "East Macedonia and Thrace": {
+      "high": 8,
+      "medium": 1,
+      "low": 2
+    },
+    "Central Greece": {
+      "high": 6,
+      "medium": 1,
+      "low": 1
+    },
+    "North Aegean": {
+      "high": 5,
+      "medium": 0,
+      "low": 1
+    },
+    "Thessaly": {
+      "high": 5,
+      "medium": 0,
+      "low": 1
+    }
+  },
+  "verdicts": [
+    {
+      "beachId": 576,
+      "beach": "Σεϊτάν Λιμάνι",
+      "region": "Crete",
+      "tier": "high",
+      "showerCount": 1,
+      "nearestM": 1,
+      "evidence": [
+        {
+          "osmUrl": "https://www.openstreetmap.org/node/6026046487",
+          "kind": "shower-node",
+          "distanceMeters": 1,
+          "tier": "high",
+          "polyDistM": 0,
+          "name": "Σεϊταν Λιμάνι"
+        }
+      ]
+    },
+    {
+      "beachId": 1517,
+      "beach": "Παραλία Ξηροπήγαδου",
+      "region": "Peloponnese",
+      "tier": "high",
+      "showerCount": 1,
+      "nearestM": 4,
+      "evidence": [
+        {
+          "osmUrl": "https://www.openstreetmap.org/node/12101989986",
+          "kind": "shower-node",
+          "distanceMeters": 4,
+          "tier": "high",
+          "polyDistM": 0
+        }
+      ]
+    },
+    {
+      "beachId": 1644,
+      "beach": "Παραλία Φονέας",
+      "region": "Peloponnese",
+      "tier": "high",
+      "showerCount": 1,
+      "nearestM": 10,
+      "evidence": [
+        {
+          "osmUrl": "https://www.openstreetmap.org/node/13072249172",
+          "kind": "shower-node",
+          "distanceMeters": 10,
+          "tier": "high",
+          "polyDistM": 0
+        }
+      ]
+    },
+    {
+      "beachId": 1010,
+      "beach": "Παραλία Χαλικούνα",
+      "region": "Ionian Islands",
+      "tier": "high",
+      "showerCount": 1,
+      "nearestM": 12,
+      "evidence": [
+        {
+          "osmUrl": "https://www.openstreetmap.org/node/13103541888",
+          "kind": "shower-node",
+          "distanceMeters": 12,
+          "tier": "high",
+          "polyDistM": 13,
+          "fee": "no"
+        }
+      ]
+    },
+    {
+      "beachId": 2407,
+      "beach": "Παραλία Καλλιθέας (Oasis)",
+      "region": "South Aegean",
+      "tier": "high",
+      "showerCount": 1,
+      "nearestM": 13,
+      "evidence": [
+        {
+          "osmUrl": "https://www.openstreetmap.org/node/11193060869",
+          "kind": "shower-node",
+          "distanceMeters": 13,
+          "tier": "high",
+          "polyDistM": 0
+        }
+      ]
+    },
+    {
+      "beachId": 1488,
+      "beach": "Παραλία Κιβερίου",
+      "region": "Peloponnese",
+      "tier": "high",
+      "showerCount": 5,
+      "nearestM": 13,
+      "evidence": [
+        {
+          "osmUrl": "https://www.openstreetmap.org/node/9795205440",
+          "kind": "shower-node",
+          "distanceMeters": 13,
+          "tier": "high",
+          "polyDistM": 4
+        },
+        {
+          "osmUrl": "https://www.openstreetmap.org/node/9795205437",
+          "kind": "shower-node",
+          "distanceMeters": 32,
+          "tier": "high",
+          "polyDistM": 4
+        },
+        {
+          "osmUrl": "https://www.openstreetmap.org/node/9795205434",
+          "kind": "shower-node",
+          "distanceMeters": 47,
+          "tier": "high",
+          "polyDistM": 5
+        },
+        {
+          "osmUrl": "https://www.openstreetmap.org/node/9795205433",
+          "kind": "shower-node",
+          "distanceMeters": 59,
+          "tier": "high",
+          "polyDistM": 3
+        },
+        {
+          "osmUrl": "https://www.openstreetmap.org/node/9794112120",
+          "kind": "shower-node",
+          "distanceMeters": 83,
+          "tier": "high",
+          "polyDistM": 3
+        }
+      ]
+    },
+    {
+      "beachId": 2414,
+      "beach": "Παραλία Άντονι Κουίν",
+      "region": "South Aegean",
+      "tier": "high",
+      "showerCount": 3,
+      "nearestM": 14,
+      "evidence": [
+        {
+          "osmUrl": "https://www.openstreetmap.org/node/8946779618",
+          "kind": "shower-node",
+          "distanceMeters": 14,
+          "tier": "high",
+          "polyDistM": 0,
+          "fee": "no"
+        },
+        {
+          "osmUrl": "https://www.openstreetmap.org/node/8946776234",
+          "kind": "shower-node",
+          "distanceMeters": 34,
+          "tier": "high",
+          "polyDistM": 0,
+          "fee": "no"
+        },
+        {
+          "osmUrl": "https://www.openstreetmap.org/node/8946778722",
+          "kind": "shower-node",
+          "distanceMeters": 199,
+          "tier": "low",
+          "polyDistM": 178,
+          "fee": "no"
+        }
+      ]
+    },
+    {
+      "beachId": 570,
+      "beach": "Παραλία Ψηλός Βόλακας",
+      "region": "Crete",
+      "tier": "high",
+      "showerCount": 1,
+      "nearestM": 15,
+      "evidence": [
+        {
+          "osmUrl": "https://www.openstreetmap.org/node/10210228158",
+          "kind": "shower-node",
+          "distanceMeters": 15,
+          "tier": "high",
+          "polyDistM": 0,
+          "fee": "no"
+        }
+      ]
+    },
+    {
+      "beachId": 3050,
+      "beach": "ΠΔΕ Μακύνεια",
+      "region": "West Greece",
+      "tier": "high",
+      "showerCount": 1,
+      "nearestM": 16,
+      "evidence": [
+        {
+          "osmUrl": "https://www.openstreetmap.org/node/9773097025",
+          "kind": "shower-node",
+          "distanceMeters": 16,
+          "tier": "high"
+        }
+      ]
+    },
+    {
+      "beachId": 362,
+      "beach": "Παραλία Αγίου Γεωργίου Πελασγίας",
+      "region": "Central Greece",
+      "tier": "high",
+      "showerCount": 1,
+      "nearestM": 16,
+      "evidence": [
+        {
+          "osmUrl": "https://www.openstreetmap.org/node/9509035759",
+          "kind": "shower-node",
+          "distanceMeters": 16,
+          "tier": "high",
+          "polyDistM": 0
+        }
+      ]
+    },
+    {
+      "beachId": 2408,
+      "beach": "Παραλία Καλλιθέας (Tassos)",
+      "region": "South Aegean",
+      "tier": "high",
+      "showerCount": 3,
+      "nearestM": 17,
+      "evidence": [
+        {
+          "osmUrl": "https://www.openstreetmap.org/node/8940644728",
+          "kind": "shower-node",
+          "distanceMeters": 17,
+          "tier": "high",
+          "polyDistM": 4
+        },
+        {
+          "osmUrl": "https://www.openstreetmap.org/node/8940697951",
+          "kind": "shower-node",
+          "distanceMeters": 53,
+          "tier": "high",
+          "polyDistM": 39
+        },
+        {
+          "osmUrl": "https://www.openstreetmap.org/node/8940678094",
+          "kind": "shower-node",
+          "distanceMeters": 56,
+          "tier": "high",
+          "polyDistM": 9
+        }
+      ]
+    },
+    {
+      "beachId": 721,
+      "beach": "Άμμος Αγίου Νικολάου",
+      "region": "Crete",
+      "tier": "high",
+      "showerCount": 1,
+      "nearestM": 18,
+      "evidence": [
+        {
+          "osmUrl": "https://www.openstreetmap.org/node/1278885091",
+          "kind": "shower-node",
+          "distanceMeters": 18,
+          "tier": "high",
+          "polyDistM": 0,
+          "fee": "no"
+        }
+      ]
+    },
+    {
+      "beachId": 2112,
+      "beach": "Φάρος",
+      "region": "South Aegean",
+      "tier": "high",
+      "showerCount": 1,
+      "nearestM": 18,
+      "evidence": [
+        {
+          "osmUrl": "https://www.openstreetmap.org/node/9944276808",
+          "kind": "shower-node",
+          "distanceMeters": 18,
+          "tier": "high",
+          "polyDistM": 0
+        }
+      ]
+    },
+    {
+      "beachId": 688,
+      "beach": "Μικρό Αμμούδι",
+      "region": "Crete",
+      "tier": "high",
+      "showerCount": 2,
+      "nearestM": 19,
+      "evidence": [
+        {
+          "osmUrl": "https://www.openstreetmap.org/node/3366664102",
+          "kind": "shower-node",
+          "distanceMeters": 19,
+          "tier": "high",
+          "polyDistM": 0,
+          "fee": "no"
+        },
+        {
+          "osmUrl": "https://www.openstreetmap.org/node/11226578561",
+          "kind": "shower-node",
+          "distanceMeters": 203,
+          "tier": "low",
+          "polyDistM": 180,
+          "fee": "no"
+        }
+      ]
+    },
+    {
+      "beachId": 2677,
+      "beach": "Αλυκές (Βόλος)",
+      "region": "Thessaly",
+      "tier": "high",
+      "showerCount": 4,
+      "nearestM": 19,
+      "evidence": [
+        {
+          "osmUrl": "https://www.openstreetmap.org/node/6173439459",
+          "kind": "shower-node",
+          "distanceMeters": 19,
+          "tier": "high",
+          "polyDistM": 0
+        },
+        {
+          "osmUrl": "https://www.openstreetmap.org/node/6173439458",
+          "kind": "shower-node",
+          "distanceMeters": 88,
+          "tier": "high",
+          "polyDistM": 0
+        },
+        {
+          "osmUrl": "https://www.openstreetmap.org/node/6173439457",
+          "kind": "shower-node",
+          "distanceMeters": 142,
+          "tier": "high",
+          "polyDistM": 0
+        },
+        {
+          "osmUrl": "https://www.openstreetmap.org/node/6173439456",
+          "kind": "shower-node",
+          "distanceMeters": 209,
+          "tier": "high",
+          "polyDistM": 0
+        }
+      ]
+    },
+    {
+      "beachId": 796,
+      "beach": "Ψάθα",
+      "region": "East Macedonia and Thrace",
+      "tier": "high",
+      "showerCount": 1,
+      "nearestM": 19,
+      "evidence": [
+        {
+          "osmUrl": "https://www.openstreetmap.org/node/3650130240",
+          "kind": "shower-node",
+          "distanceMeters": 19,
+          "tier": "high",
+          "polyDistM": 0
+        }
+      ]
+    },
+    {
+      "beachId": 676,
+      "beach": "Βλυχί Νερό",
+      "region": "Crete",
+      "tier": "high",
+      "showerCount": 5,
+      "nearestM": 20,
+      "evidence": [
+        {
+          "osmUrl": "https://www.openstreetmap.org/node/4849809051",
+          "kind": "shower-node",
+          "distanceMeters": 20,
+          "tier": "high",
+          "polyDistM": 1
+        },
+        {
+          "osmUrl": "https://www.openstreetmap.org/node/4849809052",
+          "kind": "shower-node",
+          "distanceMeters": 20,
+          "tier": "high",
+          "polyDistM": 1
+        },
+        {
+          "osmUrl": "https://www.openstreetmap.org/node/4849809050",
+          "kind": "shower-node",
+          "distanceMeters": 62,
+          "tier": "high",
+          "polyDistM": 5
+        },
+        {
+          "osmUrl": "https://www.openstreetmap.org/node/4850515482",
+          "kind": "shower-node",
+          "distanceMeters": 74,
+          "tier": "high",
+          "polyDistM": 15
+        },
+        {
+          "osmUrl": "https://www.openstreetmap.org/node/4849809053",
+          "kind": "shower-node",
+          "distanceMeters": 115,
+          "tier": "medium",
+          "polyDistM": 57
+        }
+      ]
+    },
+    {
+      "beachId": 2107,
+      "beach": "Σεράλια",
+      "region": "South Aegean",
+      "tier": "high",
+      "showerCount": 1,
+      "nearestM": 20,
+      "evidence": [
+        {
+          "osmUrl": "https://www.openstreetmap.org/node/9944328797",
+          "kind": "shower-node",
+          "distanceMeters": 20,
+          "tier": "high"
+        }
+      ]
+    },
+    {
+      "beachId": 723,
+      "beach": "Αμμούδι",
+      "region": "Crete",
+      "tier": "high",
+      "showerCount": 1,
+      "nearestM": 21,
+      "evidence": [
+        {
+          "osmUrl": "https://www.openstreetmap.org/node/6699360939",
+          "kind": "shower-node",
+          "distanceMeters": 21,
+          "tier": "high",
+          "polyDistM": 0,
+          "fee": "no"
+        }
+      ]
+    },
+    {
+      "beachId": 554,
+      "beach": "Παραλία Κούμ Καπί (Kum Kapisi)",
+      "region": "Crete",
+      "tier": "high",
+      "showerCount": 2,
+      "nearestM": 21,
+      "evidence": [
+        {
+          "osmUrl": "https://www.openstreetmap.org/node/5039699528",
+          "kind": "shower-node",
+          "distanceMeters": 21,
+          "tier": "high",
+          "polyDistM": 0
+        },
+        {
+          "osmUrl": "https://www.openstreetmap.org/node/10832091692",
+          "kind": "shower-node",
+          "distanceMeters": 88,
+          "tier": "high",
+          "polyDistM": 0
+        }
+      ]
+    },
+    {
+      "beachId": 1580,
+      "beach": "Παραλία Κότρωνα",
+      "region": "Peloponnese",
+      "tier": "high",
+      "showerCount": 1,
+      "nearestM": 21,
+      "evidence": [
+        {
+          "osmUrl": "https://www.openstreetmap.org/node/13072269841",
+          "kind": "shower-node",
+          "distanceMeters": 21,
+          "tier": "high",
+          "polyDistM": 0
+        }
+      ]
+    },
+    {
+      "beachId": 675,
+      "beach": "Βαρκότοπος",
+      "region": "Crete",
+      "tier": "high",
+      "showerCount": 3,
+      "nearestM": 26,
+      "evidence": [
+        {
+          "osmUrl": "https://www.openstreetmap.org/node/4852017876",
+          "kind": "shower-node",
+          "distanceMeters": 26,
+          "tier": "high",
+          "polyDistM": 3
+        },
+        {
+          "osmUrl": "https://www.openstreetmap.org/node/4852017875",
+          "kind": "shower-node",
+          "distanceMeters": 28,
+          "tier": "high",
+          "polyDistM": 3
+        },
+        {
+          "osmUrl": "https://www.openstreetmap.org/node/6858165271",
+          "kind": "shower-node",
+          "distanceMeters": 54,
+          "tier": "high",
+          "polyDistM": 1
+        }
+      ]
+    },
+    {
+      "beachId": 2330,
+      "beach": "Παραλία Παράδεισος",
+      "region": "South Aegean",
+      "tier": "high",
+      "showerCount": 2,
+      "nearestM": 26,
+      "evidence": [
+        {
+          "osmUrl": "https://www.openstreetmap.org/node/9004585917",
+          "kind": "shower-node",
+          "distanceMeters": 26,
+          "tier": "high",
+          "polyDistM": 8
+        },
+        {
+          "osmUrl": "https://www.openstreetmap.org/node/9004446117",
+          "kind": "shower-node",
+          "distanceMeters": 58,
+          "tier": "high",
+          "polyDistM": 13
+        }
+      ]
+    },
+    {
+      "beachId": 3026,
+      "beach": "ΚΑΑΥ Άγιος Ανδρέας",
+      "region": "Attica",
+      "tier": "high",
+      "showerCount": 1,
+      "nearestM": 26,
+      "evidence": [
+        {
+          "osmUrl": "https://www.openstreetmap.org/node/13070936477",
+          "kind": "shower-node",
+          "distanceMeters": 26,
+          "tier": "high",
+          "polyDistM": 2
+        }
+      ]
+    },
+    {
+      "beachId": 930,
+      "beach": "Alipa beach",
+      "region": "Ionian Islands",
+      "tier": "high",
+      "showerCount": 2,
+      "nearestM": 26,
+      "evidence": [
+        {
+          "osmUrl": "https://www.openstreetmap.org/node/13272848918",
+          "kind": "shower-node",
+          "distanceMeters": 26,
+          "tier": "high",
+          "polyDistM": 0
+        },
+        {
+          "osmUrl": "https://www.openstreetmap.org/node/11898403901",
+          "kind": "shower-node",
+          "distanceMeters": 207,
+          "tier": "low",
+          "polyDistM": 163,
+          "fee": "no"
+        }
+      ]
+    },
+    {
+      "beachId": 1617,
+      "beach": "Καλογριά",
+      "region": "Peloponnese",
+      "tier": "high",
+      "showerCount": 3,
+      "nearestM": 27,
+      "evidence": [
+        {
+          "osmUrl": "https://www.openstreetmap.org/node/12304308353",
+          "kind": "shower-node",
+          "distanceMeters": 27,
+          "tier": "high",
+          "polyDistM": 1,
+          "fee": "no"
+        },
+        {
+          "osmUrl": "https://www.openstreetmap.org/node/3708234626",
+          "kind": "shower-node",
+          "distanceMeters": 37,
+          "tier": "high",
+          "polyDistM": 0,
+          "fee": "no"
+        },
+        {
+          "osmUrl": "https://www.openstreetmap.org/way/180337493",
+          "kind": "shower-tag",
+          "distanceMeters": 175,
+          "tier": "low",
+          "polyDistM": 144,
+          "name": "Camping Kalogria"
+        }
+      ]
+    },
+    {
+      "beachId": 1486,
+      "beach": "Παραλία Βαγιωνία",
+      "region": "Peloponnese",
+      "tier": "high",
+      "showerCount": 1,
+      "nearestM": 27,
+      "evidence": [
+        {
+          "osmUrl": "https://www.openstreetmap.org/node/9945803547",
+          "kind": "shower-node",
+          "distanceMeters": 27,
+          "tier": "high",
+          "polyDistM": 0
+        }
+      ]
+    },
+    {
+      "beachId": 2672,
+      "beach": "Συκίτσα (Σούρπη)",
+      "region": "Thessaly",
+      "tier": "high",
+      "showerCount": 2,
+      "nearestM": 27,
+      "evidence": [
+        {
+          "osmUrl": "https://www.openstreetmap.org/node/10092073750",
+          "kind": "shower-node",
+          "distanceMeters": 27,
+          "tier": "high",
+          "polyDistM": 2
+        },
+        {
+          "osmUrl": "https://www.openstreetmap.org/node/10092073751",
+          "kind": "shower-node",
+          "distanceMeters": 27,
+          "tier": "high",
+          "polyDistM": 2
+        }
+      ]
+    },
+    {
+      "beachId": 720,
+      "beach": "Αλμυρός",
+      "region": "Crete",
+      "tier": "high",
+      "showerCount": 4,
+      "nearestM": 29,
+      "evidence": [
+        {
+          "osmUrl": "https://www.openstreetmap.org/node/13747742612",
+          "kind": "shower-node",
+          "distanceMeters": 29,
+          "tier": "high",
+          "polyDistM": 1,
+          "fee": "no"
+        },
+        {
+          "osmUrl": "https://www.openstreetmap.org/node/6564486879",
+          "kind": "shower-node",
+          "distanceMeters": 48,
+          "tier": "high",
+          "polyDistM": 0,
+          "fee": "no"
+        },
+        {
+          "osmUrl": "https://www.openstreetmap.org/node/13747727439",
+          "kind": "shower-node",
+          "distanceMeters": 67,
+          "tier": "high",
+          "polyDistM": 0,
+          "fee": "no"
+        },
+        {
+          "osmUrl": "https://www.openstreetmap.org/node/6564486878",
+          "kind": "shower-node",
+          "distanceMeters": 116,
+          "tier": "high",
+          "polyDistM": 0,
+          "fee": "no"
+        }
+      ]
+    },
+    {
+      "beachId": 529,
+      "beach": "Βρύση",
+      "region": "Crete",
+      "tier": "high",
+      "showerCount": 1,
+      "nearestM": 32,
+      "evidence": [
+        {
+          "osmUrl": "https://www.openstreetmap.org/node/7727009728",
+          "kind": "shower-node",
+          "distanceMeters": 32,
+          "tier": "high",
+          "polyDistM": 1
+        }
+      ]
+    },
+    {
+      "beachId": 1418,
+      "beach": "Ψιλή Άμμος Μαραθοκάμπου",
+      "region": "North Aegean",
+      "tier": "high",
+      "showerCount": 1,
+      "nearestM": 32,
+      "evidence": [
+        {
+          "osmUrl": "https://www.openstreetmap.org/node/8011773120",
+          "kind": "shower-node",
+          "distanceMeters": 32,
+          "tier": "high",
+          "polyDistM": 0
+        }
+      ]
+    },
+    {
+      "beachId": 746,
+      "beach": "Κιτροπλατεία",
+      "region": "Crete",
+      "tier": "high",
+      "showerCount": 2,
+      "nearestM": 33,
+      "evidence": [
+        {
+          "osmUrl": "https://www.openstreetmap.org/node/3673431451",
+          "kind": "shower-node",
+          "distanceMeters": 33,
+          "tier": "high",
+          "polyDistM": 0,
+          "fee": "no"
+        },
+        {
+          "osmUrl": "https://www.openstreetmap.org/node/7801646588",
+          "kind": "shower-node",
+          "distanceMeters": 221,
+          "tier": "low",
+          "polyDistM": 177
+        }
+      ]
+    },
+    {
+      "beachId": 0,
+      "beach": "Παραλία Φλοίσβου",
+      "region": "Attica",
+      "tier": "high",
+      "showerCount": 1,
+      "nearestM": 33,
+      "evidence": [
+        {
+          "osmUrl": "https://www.openstreetmap.org/node/9934215086",
+          "kind": "shower-node",
+          "distanceMeters": 33,
+          "tier": "high",
+          "polyDistM": 0
+        }
+      ]
+    },
+    {
+      "beachId": 2630,
+      "beach": "Μεγάλη Μπανάνα",
+      "region": "Thessaly",
+      "tier": "high",
+      "showerCount": 1,
+      "nearestM": 33,
+      "evidence": [
+        {
+          "osmUrl": "https://www.openstreetmap.org/node/13134362448",
+          "kind": "shower-node",
+          "distanceMeters": 33,
+          "tier": "high",
+          "polyDistM": 3,
+          "fee": "no"
+        }
+      ]
+    },
+    {
+      "beachId": 2261,
+      "beach": "Παραλία Αργίνωντα",
+      "region": "South Aegean",
+      "tier": "high",
+      "showerCount": 1,
+      "nearestM": 36,
+      "evidence": [
+        {
+          "osmUrl": "https://www.openstreetmap.org/node/10107595280",
+          "kind": "shower-node",
+          "distanceMeters": 36,
+          "tier": "high",
+          "polyDistM": 0
+        }
+      ]
+    },
+    {
+      "beachId": 950,
+      "beach": "Paramonas",
+      "region": "Ionian Islands",
+      "tier": "high",
+      "showerCount": 2,
+      "nearestM": 36,
+      "evidence": [
+        {
+          "osmUrl": "https://www.openstreetmap.org/node/9671622417",
+          "kind": "shower-node",
+          "distanceMeters": 36,
+          "tier": "high",
+          "polyDistM": 0
+        },
+        {
+          "osmUrl": "https://www.openstreetmap.org/node/9671617217",
+          "kind": "shower-node",
+          "distanceMeters": 71,
+          "tier": "high",
+          "polyDistM": 0
+        }
+      ]
+    },
+    {
+      "beachId": 981,
+      "beach": "Παραλία Άγιος Σπυρίδωνας",
+      "region": "Ionian Islands",
+      "tier": "high",
+      "showerCount": 3,
+      "nearestM": 36,
+      "evidence": [
+        {
+          "osmUrl": "https://www.openstreetmap.org/node/10056354734",
+          "kind": "shower-node",
+          "distanceMeters": 36,
+          "tier": "high",
+          "polyDistM": 0
+        },
+        {
+          "osmUrl": "https://www.openstreetmap.org/node/11898774772",
+          "kind": "shower-node",
+          "distanceMeters": 62,
+          "tier": "high",
+          "polyDistM": 0,
+          "fee": "no"
+        },
+        {
+          "osmUrl": "https://www.openstreetmap.org/node/10055905389",
+          "kind": "shower-node",
+          "distanceMeters": 67,
+          "tier": "high",
+          "polyDistM": 0
+        }
+      ]
+    },
+    {
+      "beachId": 2702,
+      "beach": "Νταμούχαρη",
+      "region": "Thessaly",
+      "tier": "high",
+      "showerCount": 1,
+      "nearestM": 37,
+      "evidence": [
+        {
+          "osmUrl": "https://www.openstreetmap.org/node/5866009342",
+          "kind": "shower-node",
+          "distanceMeters": 37,
+          "tier": "high",
+          "polyDistM": 3,
+          "fee": "no"
+        }
+      ]
+    },
+    {
+      "beachId": 62,
+      "beach": "Κεντρική παραλία Σαρωνίδας",
+      "region": "Attica",
+      "tier": "high",
+      "showerCount": 2,
+      "nearestM": 38,
+      "evidence": [
+        {
+          "osmUrl": "https://www.openstreetmap.org/node/9976265585",
+          "kind": "shower-node",
+          "distanceMeters": 38,
+          "tier": "high",
+          "polyDistM": 0,
+          "name": "Shower"
+        },
+        {
+          "osmUrl": "https://www.openstreetmap.org/node/6139087648",
+          "kind": "shower-node",
+          "distanceMeters": 128,
+          "tier": "high",
+          "polyDistM": 0
+        }
+      ]
+    },
+    {
+      "beachId": 2566,
+      "beach": "Αρκούδι",
+      "region": "West Greece",
+      "tier": "high",
+      "showerCount": 2,
+      "nearestM": 38,
+      "evidence": [
+        {
+          "osmUrl": "https://www.openstreetmap.org/node/13466756401",
+          "kind": "shower-node",
+          "distanceMeters": 38,
+          "tier": "high",
+          "polyDistM": 0
+        },
+        {
+          "osmUrl": "https://www.openstreetmap.org/node/13466740501",
+          "kind": "shower-node",
+          "distanceMeters": 40,
+          "tier": "high",
+          "polyDistM": 0
+        }
+      ]
+    },
+    {
+      "beachId": 868,
+      "beach": "Κρυονέρι",
+      "region": "Epirus",
+      "tier": "high",
+      "showerCount": 1,
+      "nearestM": 38,
+      "evidence": [
+        {
+          "osmUrl": "https://www.openstreetmap.org/node/7648723185",
+          "kind": "shower-node",
+          "distanceMeters": 38,
+          "tier": "high",
+          "polyDistM": 0
+        }
+      ]
+    },
+    {
+      "beachId": 2404,
+      "beach": "Παραλία Στεγνά (Grande Blue)",
+      "region": "South Aegean",
+      "tier": "high",
+      "showerCount": 1,
+      "nearestM": 39,
+      "evidence": [
+        {
+          "osmUrl": "https://www.openstreetmap.org/node/11212357070",
+          "kind": "shower-node",
+          "distanceMeters": 39,
+          "tier": "high",
+          "polyDistM": 13,
+          "fee": "no"
+        }
+      ]
+    },
+    {
+      "beachId": 2173,
+      "beach": "Μικρή Κολυμπήθρα",
+      "region": "South Aegean",
+      "tier": "high",
+      "showerCount": 1,
+      "nearestM": 39,
+      "evidence": [
+        {
+          "osmUrl": "https://www.openstreetmap.org/node/5904902411",
+          "kind": "shower-node",
+          "distanceMeters": 39,
+          "tier": "high",
+          "polyDistM": 4
+        }
+      ]
+    },
+    {
+      "beachId": 1071,
+      "beach": "Παραλία Σκάλας",
+      "region": "Ionian Islands",
+      "tier": "high",
+      "showerCount": 2,
+      "nearestM": 39,
+      "evidence": [
+        {
+          "osmUrl": "https://www.openstreetmap.org/node/11113798548",
+          "kind": "shower-node",
+          "distanceMeters": 39,
+          "tier": "high",
+          "polyDistM": 7
+        },
+        {
+          "osmUrl": "https://www.openstreetmap.org/node/11113798547",
+          "kind": "shower-node",
+          "distanceMeters": 40,
+          "tier": "high",
+          "polyDistM": 7
+        }
+      ]
+    },
+    {
+      "beachId": 1595,
+      "beach": "Πύλα",
+      "region": "Peloponnese",
+      "tier": "high",
+      "showerCount": 1,
+      "nearestM": 40,
+      "evidence": [
+        {
+          "osmUrl": "https://www.openstreetmap.org/node/9655326717",
+          "kind": "shower-node",
+          "distanceMeters": 40,
+          "tier": "high",
+          "polyDistM": 0
+        }
+      ]
+    },
+    {
+      "beachId": 2331,
+      "beach": "Ψηλός Γκρεμός",
+      "region": "South Aegean",
+      "tier": "high",
+      "showerCount": 2,
+      "nearestM": 40,
+      "evidence": [
+        {
+          "osmUrl": "https://www.openstreetmap.org/node/5749408045",
+          "kind": "shower-node",
+          "distanceMeters": 40,
+          "tier": "high",
+          "polyDistM": 0,
+          "fee": "no"
+        },
+        {
+          "osmUrl": "https://www.openstreetmap.org/node/5749408042",
+          "kind": "shower-node",
+          "distanceMeters": 70,
+          "tier": "high",
+          "polyDistM": 0,
+          "fee": "no"
+        }
+      ]
+    },
+    {
+      "beachId": 2064,
+      "beach": "Μονόλιθος",
+      "region": "South Aegean",
+      "tier": "high",
+      "showerCount": 1,
+      "nearestM": 41,
+      "evidence": [
+        {
+          "osmUrl": "https://www.openstreetmap.org/node/4365148136",
+          "kind": "shower-node",
+          "distanceMeters": 41,
+          "tier": "high",
+          "polyDistM": 0,
+          "fee": "no"
+        }
+      ]
+    },
+    {
+      "beachId": 1080,
+      "beach": "Άγιος Θωμάς",
+      "region": "Ionian Islands",
+      "tier": "high",
+      "showerCount": 1,
+      "nearestM": 41,
+      "evidence": [
+        {
+          "osmUrl": "https://www.openstreetmap.org/node/5602523433",
+          "kind": "shower-node",
+          "distanceMeters": 41,
+          "tier": "high",
+          "polyDistM": 22
+        }
+      ]
+    },
+    {
+      "beachId": 26,
+      "beach": "Παραλία Ακρωτηρίου",
+      "region": "Attica",
+      "tier": "high",
+      "showerCount": 1,
+      "nearestM": 41,
+      "evidence": [
+        {
+          "osmUrl": "https://www.openstreetmap.org/node/10082168596",
+          "kind": "shower-node",
+          "distanceMeters": 41,
+          "tier": "high"
+        }
+      ]
+    },
+    {
+      "beachId": 2620,
+      "beach": "Μυστική",
+      "region": "Thessaly",
+      "tier": "high",
+      "showerCount": 2,
+      "nearestM": 41,
+      "evidence": [
+        {
+          "osmUrl": "https://www.openstreetmap.org/node/13137471579",
+          "kind": "shower-node",
+          "distanceMeters": 41,
+          "tier": "high",
+          "polyDistM": 0
+        },
+        {
+          "osmUrl": "https://www.openstreetmap.org/node/13131314253",
+          "kind": "shower-node",
+          "distanceMeters": 188,
+          "tier": "low",
+          "polyDistM": 90
+        }
+      ]
+    },
+    {
+      "beachId": 684,
+      "beach": "Κόρακας",
+      "region": "Crete",
+      "tier": "high",
+      "showerCount": 2,
+      "nearestM": 43,
+      "evidence": [
+        {
+          "osmUrl": "https://www.openstreetmap.org/node/9987627856",
+          "kind": "shower-node",
+          "distanceMeters": 43,
+          "tier": "high",
+          "polyDistM": 7
+        },
+        {
+          "osmUrl": "https://www.openstreetmap.org/node/9987632822",
+          "kind": "shower-node",
+          "distanceMeters": 73,
+          "tier": "high",
+          "polyDistM": 0
+        }
+      ]
+    },
+    {
+      "beachId": 2431,
+      "beach": "Παραλία Λαδικό",
+      "region": "South Aegean",
+      "tier": "high",
+      "showerCount": 1,
+      "nearestM": 43,
+      "evidence": [
+        {
+          "osmUrl": "https://www.openstreetmap.org/node/11841973165",
+          "kind": "shower-node",
+          "distanceMeters": 43,
+          "tier": "high",
+          "polyDistM": 2,
+          "fee": "no"
+        }
+      ]
+    },
+    {
+      "beachId": 2425,
+      "beach": "Παραλία Καταφύγιο",
+      "region": "South Aegean",
+      "tier": "high",
+      "showerCount": 7,
+      "nearestM": 43,
+      "evidence": [
+        {
+          "osmUrl": "https://www.openstreetmap.org/node/2380341060",
+          "kind": "shower-node",
+          "distanceMeters": 43,
+          "tier": "high",
+          "polyDistM": 0
+        },
+        {
+          "osmUrl": "https://www.openstreetmap.org/node/2380341049",
+          "kind": "shower-node",
+          "distanceMeters": 53,
+          "tier": "high",
+          "polyDistM": 0
+        },
+        {
+          "osmUrl": "https://www.openstreetmap.org/node/2380341066",
+          "kind": "shower-node",
+          "distanceMeters": 68,
+          "tier": "high",
+          "polyDistM": 0
+        },
+        {
+          "osmUrl": "https://www.openstreetmap.org/node/2365534382",
+          "kind": "shower-node",
+          "distanceMeters": 70,
+          "tier": "high",
+          "polyDistM": 0,
+          "fee": "no"
+        },
+        {
+          "osmUrl": "https://www.openstreetmap.org/node/2365534379",
+          "kind": "shower-node",
+          "distanceMeters": 116,
+          "tier": "high",
+          "polyDistM": 6
+        },
+        {
+          "osmUrl": "https://www.openstreetmap.org/node/13752679201",
+          "kind": "shower-node",
+          "distanceMeters": 122,
+          "tier": "high",
+          "polyDistM": 0
+        },
+        {
+          "osmUrl": "https://www.openstreetmap.org/node/2365517669",
+          "kind": "shower-node",
+          "distanceMeters": 170,
+          "tier": "high",
+          "polyDistM": 23
+        }
+      ]
+    },
+    {
+      "beachId": 1552,
+      "beach": "Βιανδίνη (Βούρκος)",
+      "region": "Peloponnese",
+      "tier": "high",
+      "showerCount": 1,
+      "nearestM": 43,
+      "evidence": [
+        {
+          "osmUrl": "https://www.openstreetmap.org/node/9799059471",
+          "kind": "shower-node",
+          "distanceMeters": 43,
+          "tier": "high",
+          "polyDistM": 3
+        }
+      ]
+    },
+    {
+      "beachId": 734,
+      "beach": "Βουρλιά",
+      "region": "Crete",
+      "tier": "high",
+      "showerCount": 1,
+      "nearestM": 44,
+      "evidence": [
+        {
+          "osmUrl": "https://www.openstreetmap.org/node/11114351798",
+          "kind": "shower-node",
+          "distanceMeters": 44,
+          "tier": "high",
+          "polyDistM": 0
+        }
+      ]
+    },
+    {
+      "beachId": 706,
+      "beach": "Σούδα",
+      "region": "Crete",
+      "tier": "high",
+      "showerCount": 3,
+      "nearestM": 45,
+      "evidence": [
+        {
+          "osmUrl": "https://www.openstreetmap.org/node/12045535369",
+          "kind": "shower-node",
+          "distanceMeters": 45,
+          "tier": "high",
+          "polyDistM": 0
+        },
+        {
+          "osmUrl": "https://www.openstreetmap.org/node/12045535269",
+          "kind": "shower-node",
+          "distanceMeters": 87,
+          "tier": "high",
+          "polyDistM": 0
+        },
+        {
+          "osmUrl": "https://www.openstreetmap.org/node/13163688827",
+          "kind": "shower-node",
+          "distanceMeters": 95,
+          "tier": "high",
+          "polyDistM": 0
+        }
+      ]
+    },
+    {
+      "beachId": 1637,
+      "beach": "Παραλία Μεθώνης",
+      "region": "Peloponnese",
+      "tier": "high",
+      "showerCount": 2,
+      "nearestM": 45,
+      "evidence": [
+        {
+          "osmUrl": "https://www.openstreetmap.org/node/12253659032",
+          "kind": "shower-node",
+          "distanceMeters": 45,
+          "tier": "high",
+          "polyDistM": 0,
+          "fee": "no"
+        },
+        {
+          "osmUrl": "https://www.openstreetmap.org/node/3721474433",
+          "kind": "shower-node",
+          "distanceMeters": 74,
+          "tier": "high",
+          "polyDistM": 0
+        }
+      ]
+    },
+    {
+      "beachId": 2311,
+      "beach": "Παραλία Αγίου Νικολάου",
+      "region": "South Aegean",
+      "tier": "high",
+      "showerCount": 1,
+      "nearestM": 46,
+      "evidence": [
+        {
+          "osmUrl": "https://www.openstreetmap.org/node/11088911987",
+          "kind": "shower-node",
+          "distanceMeters": 46,
+          "tier": "high",
+          "polyDistM": 2,
+          "fee": "no"
+        }
+      ]
+    },
+    {
+      "beachId": 1616,
+      "beach": "Καλαμάκι",
+      "region": "Peloponnese",
+      "tier": "high",
+      "showerCount": 1,
+      "nearestM": 46,
+      "evidence": [
+        {
+          "osmUrl": "https://www.openstreetmap.org/node/9929385115",
+          "kind": "shower-node",
+          "distanceMeters": 46,
+          "tier": "high",
+          "polyDistM": 1,
+          "fee": "no"
+        }
+      ]
+    },
+    {
+      "beachId": 1111,
+      "beach": "Μέγας Λάκκος",
+      "region": "Ionian Islands",
+      "tier": "high",
+      "showerCount": 1,
+      "nearestM": 46,
+      "evidence": [
+        {
+          "osmUrl": "https://www.openstreetmap.org/node/6717792699",
+          "kind": "shower-node",
+          "distanceMeters": 46,
+          "tier": "high",
+          "polyDistM": 11,
+          "name": "Shower"
+        }
+      ]
+    },
+    {
+      "beachId": 869,
+      "beach": "Κυανή Ακτή",
+      "region": "Epirus",
+      "tier": "high",
+      "showerCount": 4,
+      "nearestM": 46,
+      "evidence": [
+        {
+          "osmUrl": "https://www.openstreetmap.org/node/6619271685",
+          "kind": "shower-node",
+          "distanceMeters": 46,
+          "tier": "high",
+          "polyDistM": 0,
+          "fee": "no"
+        },
+        {
+          "osmUrl": "https://www.openstreetmap.org/node/10214478073",
+          "kind": "shower-node",
+          "distanceMeters": 117,
+          "tier": "high",
+          "polyDistM": 7,
+          "fee": "no"
+        },
+        {
+          "osmUrl": "https://www.openstreetmap.org/node/10214452596",
+          "kind": "shower-node",
+          "distanceMeters": 131,
+          "tier": "high",
+          "polyDistM": 0,
+          "fee": "no"
+        },
+        {
+          "osmUrl": "https://www.openstreetmap.org/node/10212016723",
+          "kind": "shower-node",
+          "distanceMeters": 187,
+          "tier": "high",
+          "polyDistM": 27,
+          "fee": "no"
+        }
+      ]
+    },
+    {
+      "beachId": 1546,
+      "beach": "Αμπελάκια",
+      "region": "Peloponnese",
+      "tier": "high",
+      "showerCount": 1,
+      "nearestM": 47,
+      "evidence": [
+        {
+          "osmUrl": "https://www.openstreetmap.org/node/12059000472",
+          "kind": "shower-node",
+          "distanceMeters": 47,
+          "tier": "high",
+          "polyDistM": 12
+        }
+      ]
+    },
+    {
+      "beachId": 1569,
+      "beach": "Μποζάς",
+      "region": "Peloponnese",
+      "tier": "high",
+      "showerCount": 1,
+      "nearestM": 47,
+      "evidence": [
+        {
+          "osmUrl": "https://www.openstreetmap.org/node/7435104536",
+          "kind": "shower-node",
+          "distanceMeters": 47,
+          "tier": "high",
+          "polyDistM": 0
+        }
+      ]
+    },
+    {
+      "beachId": 602,
+      "beach": "Kalathas",
+      "region": "Crete",
+      "tier": "high",
+      "showerCount": 2,
+      "nearestM": 48,
+      "evidence": [
+        {
+          "osmUrl": "https://www.openstreetmap.org/node/12251235988",
+          "kind": "shower-node",
+          "distanceMeters": 48,
+          "tier": "high",
+          "polyDistM": 0,
+          "fee": "no"
+        },
+        {
+          "osmUrl": "https://www.openstreetmap.org/node/10062990151",
+          "kind": "shower-node",
+          "distanceMeters": 49,
+          "tier": "high",
+          "polyDistM": 0,
+          "fee": "no"
+        }
+      ]
+    },
+    {
+      "beachId": 995,
+      "beach": "Παραλία Λιαπάδων",
+      "region": "Ionian Islands",
+      "tier": "high",
+      "showerCount": 1,
+      "nearestM": 49,
+      "evidence": [
+        {
+          "osmUrl": "https://www.openstreetmap.org/node/8823994018",
+          "kind": "shower-node",
+          "distanceMeters": 49,
+          "tier": "high",
+          "polyDistM": 0
+        }
+      ]
+    },
+    {
+      "beachId": 714,
+      "beach": "Livadi beach",
+      "region": "Crete",
+      "tier": "high",
+      "showerCount": 3,
+      "nearestM": 50,
+      "evidence": [
+        {
+          "osmUrl": "https://www.openstreetmap.org/node/4849809111",
+          "kind": "shower-node",
+          "distanceMeters": 50,
+          "tier": "high",
+          "polyDistM": 2
+        },
+        {
+          "osmUrl": "https://www.openstreetmap.org/node/4849809082",
+          "kind": "shower-node",
+          "distanceMeters": 97,
+          "tier": "high",
+          "polyDistM": 1
+        },
+        {
+          "osmUrl": "https://www.openstreetmap.org/node/4882355139",
+          "kind": "shower-node",
+          "distanceMeters": 161,
+          "tier": "low",
+          "polyDistM": 130
+        }
+      ]
+    },
+    {
+      "beachId": 2560,
+      "beach": "Παραλία Σιταραλώνων",
+      "region": "West Greece",
+      "tier": "high",
+      "showerCount": 1,
+      "nearestM": 50,
+      "evidence": [
+        {
+          "osmUrl": "https://www.openstreetmap.org/node/9789972605",
+          "kind": "shower-node",
+          "distanceMeters": 50,
+          "tier": "high",
+          "polyDistM": 0
+        }
+      ]
+    },
+    {
+      "beachId": 876,
+      "beach": "Σαρακήνικο",
+      "region": "Epirus",
+      "tier": "high",
+      "showerCount": 1,
+      "nearestM": 50,
+      "evidence": [
+        {
+          "osmUrl": "https://www.openstreetmap.org/node/7829845015",
+          "kind": "shower-node",
+          "distanceMeters": 50,
+          "tier": "high",
+          "polyDistM": 3
+        }
+      ]
+    },
+    {
+      "beachId": 795,
+      "beach": "Ραψάνη",
+      "region": "East Macedonia and Thrace",
+      "tier": "high",
+      "showerCount": 3,
+      "nearestM": 50,
+      "evidence": [
+        {
+          "osmUrl": "https://www.openstreetmap.org/node/6815354875",
+          "kind": "shower-node",
+          "distanceMeters": 50,
+          "tier": "high",
+          "polyDistM": 0,
+          "fee": "no"
+        },
+        {
+          "osmUrl": "https://www.openstreetmap.org/node/3521788590",
+          "kind": "shower-node",
+          "distanceMeters": 98,
+          "tier": "high",
+          "polyDistM": 0,
+          "fee": "no"
+        },
+        {
+          "osmUrl": "https://www.openstreetmap.org/node/3521788591",
+          "kind": "shower-node",
+          "distanceMeters": 113,
+          "tier": "high",
+          "polyDistM": 0,
+          "fee": "no"
+        }
+      ]
+    },
+    {
+      "beachId": 574,
+      "beach": "Πλατανιάς",
+      "region": "Crete",
+      "tier": "high",
+      "showerCount": 1,
+      "nearestM": 51,
+      "evidence": [
+        {
+          "osmUrl": "https://www.openstreetmap.org/node/6783489980",
+          "kind": "shower-node",
+          "distanceMeters": 51,
+          "tier": "high",
+          "polyDistM": 0,
+          "fee": "no"
+        }
+      ]
+    },
+    {
+      "beachId": 131,
+      "beach": "Διακόφτι",
+      "region": "Attica",
+      "tier": "high",
+      "showerCount": 2,
+      "nearestM": 51,
+      "evidence": [
+        {
+          "osmUrl": "https://www.openstreetmap.org/node/13074277732",
+          "kind": "shower-node",
+          "distanceMeters": 51,
+          "tier": "high",
+          "polyDistM": 0,
+          "fee": "no"
+        },
+        {
+          "osmUrl": "https://www.openstreetmap.org/node/9822701881",
+          "kind": "shower-node",
+          "distanceMeters": 194,
+          "tier": "high",
+          "polyDistM": 20
+        }
+      ]
+    },
+    {
+      "beachId": 3109,
+      "beach": "Καραβοστάσι (Πλύτρα)",
+      "region": "Peloponnese",
+      "tier": "high",
+      "showerCount": 1,
+      "nearestM": 51,
+      "evidence": [
+        {
+          "osmUrl": "https://www.openstreetmap.org/node/9797673143",
+          "kind": "shower-node",
+          "distanceMeters": 51,
+          "tier": "high",
+          "polyDistM": 0
+        }
+      ]
+    },
+    {
+      "beachId": 2183,
+      "beach": "Ρόχαρη",
+      "region": "South Aegean",
+      "tier": "high",
+      "showerCount": 1,
+      "nearestM": 53,
+      "evidence": [
+        {
+          "osmUrl": "https://www.openstreetmap.org/node/5904902670",
+          "kind": "shower-node",
+          "distanceMeters": 53,
+          "tier": "high",
+          "polyDistM": 0
+        }
+      ]
+    },
+    {
+      "beachId": 998,
+      "beach": "Παραλία Μπούκα",
+      "region": "Ionian Islands",
+      "tier": "high",
+      "showerCount": 1,
+      "nearestM": 53,
+      "evidence": [
+        {
+          "osmUrl": "https://www.openstreetmap.org/node/9941850593",
+          "kind": "shower-node",
+          "distanceMeters": 53,
+          "tier": "high",
+          "polyDistM": 6,
+          "fee": "no"
+        }
+      ]
+    },
+    {
+      "beachId": 1468,
+      "beach": "Τούρκικος Γιαλός",
+      "region": "North Aegean",
+      "tier": "high",
+      "showerCount": 1,
+      "nearestM": 53,
+      "evidence": [
+        {
+          "osmUrl": "https://www.openstreetmap.org/node/11093991681",
+          "kind": "shower-node",
+          "distanceMeters": 53,
+          "tier": "high",
+          "polyDistM": 0
+        }
+      ]
+    },
+    {
+      "beachId": 788,
+      "beach": "Μπάτης",
+      "region": "East Macedonia and Thrace",
+      "tier": "high",
+      "showerCount": 1,
+      "nearestM": 53,
+      "evidence": [
+        {
+          "osmUrl": "https://www.openstreetmap.org/node/12001026054",
+          "kind": "shower-node",
+          "distanceMeters": 53,
+          "tier": "high",
+          "polyDistM": 12
+        }
+      ]
+    },
+    {
+      "beachId": 534,
+      "beach": "Κριός",
+      "region": "Crete",
+      "tier": "high",
+      "showerCount": 1,
+      "nearestM": 56,
+      "evidence": [
+        {
+          "osmUrl": "https://www.openstreetmap.org/node/9797033368",
+          "kind": "shower-node",
+          "distanceMeters": 56,
+          "tier": "high",
+          "polyDistM": 0,
+          "fee": "no"
+        }
+      ]
+    },
+    {
+      "beachId": 170,
+      "beach": "Βρέλλος",
+      "region": "Attica",
+      "tier": "high",
+      "showerCount": 1,
+      "nearestM": 57,
+      "evidence": [
+        {
+          "osmUrl": "https://www.openstreetmap.org/node/5499278940",
+          "kind": "shower-node",
+          "distanceMeters": 57,
+          "tier": "high",
+          "polyDistM": 27
+        }
+      ]
+    },
+    {
+      "beachId": 1484,
+      "beach": "Παραλία Αρβανιτιά",
+      "region": "Peloponnese",
+      "tier": "high",
+      "showerCount": 2,
+      "nearestM": 57,
+      "evidence": [
+        {
+          "osmUrl": "https://www.openstreetmap.org/node/7700405785",
+          "kind": "shower-node",
+          "distanceMeters": 57,
+          "tier": "high",
+          "polyDistM": 16
+        },
+        {
+          "osmUrl": "https://www.openstreetmap.org/node/5594718425",
+          "kind": "shower-node",
+          "distanceMeters": 221,
+          "tier": "low",
+          "polyDistM": 157
+        }
+      ]
+    },
+    {
+      "beachId": 530,
+      "beach": "Γιαλισκάρι",
+      "region": "Crete",
+      "tier": "high",
+      "showerCount": 2,
+      "nearestM": 58,
+      "evidence": [
+        {
+          "osmUrl": "https://www.openstreetmap.org/node/5261527137",
+          "kind": "shower-node",
+          "distanceMeters": 58,
+          "tier": "high",
+          "polyDistM": 0
+        },
+        {
+          "osmUrl": "https://www.openstreetmap.org/node/12309263502",
+          "kind": "shower-node",
+          "distanceMeters": 83,
+          "tier": "high",
+          "polyDistM": 5
+        }
+      ]
+    },
+    {
+      "beachId": 739,
+      "beach": "Θόλος",
+      "region": "Crete",
+      "tier": "high",
+      "showerCount": 2,
+      "nearestM": 59,
+      "evidence": [
+        {
+          "osmUrl": "https://www.openstreetmap.org/node/11225363677",
+          "kind": "shower-node",
+          "distanceMeters": 59,
+          "tier": "high",
+          "polyDistM": 0
+        },
+        {
+          "osmUrl": "https://www.openstreetmap.org/node/11225363694",
+          "kind": "shower-node",
+          "distanceMeters": 119,
+          "tier": "high",
+          "polyDistM": 0
+        }
+      ]
+    },
+    {
+      "beachId": 1638,
+      "beach": "Παραλία Πανταζή",
+      "region": "Peloponnese",
+      "tier": "high",
+      "showerCount": 2,
+      "nearestM": 59,
+      "evidence": [
+        {
+          "osmUrl": "https://www.openstreetmap.org/node/12351889286",
+          "kind": "shower-node",
+          "distanceMeters": 59,
+          "tier": "high",
+          "polyDistM": 10,
+          "fee": "no"
+        },
+        {
+          "osmUrl": "https://www.openstreetmap.org/node/12351889287",
+          "kind": "shower-node",
+          "distanceMeters": 71,
+          "tier": "high",
+          "polyDistM": 1,
+          "fee": "no"
+        }
+      ]
+    },
+    {
+      "beachId": 2095,
+      "beach": "Αποκοφτό",
+      "region": "South Aegean",
+      "tier": "high",
+      "showerCount": 1,
+      "nearestM": 59,
+      "evidence": [
+        {
+          "osmUrl": "https://www.openstreetmap.org/node/9944327768",
+          "kind": "shower-node",
+          "distanceMeters": 59,
+          "tier": "high",
+          "polyDistM": 4
+        }
+      ]
+    },
+    {
+      "beachId": 31,
+      "beach": "Θέρετρο Αξιωματικών Ναυτικού",
+      "region": "Attica",
+      "tier": "high",
+      "showerCount": 6,
+      "nearestM": 59,
+      "evidence": [
+        {
+          "osmUrl": "https://www.openstreetmap.org/node/10994638202",
+          "kind": "shower-node",
+          "distanceMeters": 59,
+          "tier": "high",
+          "polyDistM": 1
+        },
+        {
+          "osmUrl": "https://www.openstreetmap.org/node/10994638203",
+          "kind": "shower-node",
+          "distanceMeters": 82,
+          "tier": "high",
+          "polyDistM": 13
+        },
+        {
+          "osmUrl": "https://www.openstreetmap.org/node/10994638201",
+          "kind": "shower-node",
+          "distanceMeters": 89,
+          "tier": "high",
+          "polyDistM": 0
+        },
+        {
+          "osmUrl": "https://www.openstreetmap.org/node/10994638204",
+          "kind": "shower-node",
+          "distanceMeters": 173,
+          "tier": "high",
+          "polyDistM": 0
+        },
+        {
+          "osmUrl": "https://www.openstreetmap.org/node/10994638200",
+          "kind": "shower-node",
+          "distanceMeters": 183,
+          "tier": "high",
+          "polyDistM": 6
+        },
+        {
+          "osmUrl": "https://www.openstreetmap.org/node/11018603138",
+          "kind": "shower-node",
+          "distanceMeters": 186,
+          "tier": "high",
+          "polyDistM": 0
+        }
+      ]
+    },
+    {
+      "beachId": 560,
+      "beach": "Παραλία Μελτεμάκι",
+      "region": "Crete",
+      "tier": "high",
+      "showerCount": 1,
+      "nearestM": 60,
+      "evidence": [
+        {
+          "osmUrl": "https://www.openstreetmap.org/node/11368348373",
+          "kind": "shower-node",
+          "distanceMeters": 60,
+          "tier": "high",
+          "polyDistM": 2,
+          "fee": "no"
+        }
+      ]
+    },
+    {
+      "beachId": 565,
+      "beach": "Παραλια Τραχηλος",
+      "region": "Crete",
+      "tier": "high",
+      "showerCount": 2,
+      "nearestM": 60,
+      "evidence": [
+        {
+          "osmUrl": "https://www.openstreetmap.org/node/12171881783",
+          "kind": "shower-node",
+          "distanceMeters": 60,
+          "tier": "high",
+          "polyDistM": 0,
+          "fee": "no"
+        },
+        {
+          "osmUrl": "https://www.openstreetmap.org/node/12171881782",
+          "kind": "shower-node",
+          "distanceMeters": 66,
+          "tier": "high",
+          "polyDistM": 0,
+          "fee": "no"
+        }
+      ]
+    },
+    {
+      "beachId": 2441,
+      "beach": "Φαληράκι",
+      "region": "South Aegean",
+      "tier": "high",
+      "showerCount": 6,
+      "nearestM": 61,
+      "evidence": [
+        {
+          "osmUrl": "https://www.openstreetmap.org/node/2365650244",
+          "kind": "shower-node",
+          "distanceMeters": 61,
+          "tier": "high",
+          "polyDistM": 6
+        },
+        {
+          "osmUrl": "https://www.openstreetmap.org/node/2380388402",
+          "kind": "shower-node",
+          "distanceMeters": 96,
+          "tier": "high",
+          "polyDistM": 0
+        },
+        {
+          "osmUrl": "https://www.openstreetmap.org/node/2380388389",
+          "kind": "shower-node",
+          "distanceMeters": 140,
+          "tier": "high",
+          "polyDistM": 0
+        },
+        {
+          "osmUrl": "https://www.openstreetmap.org/node/2380388385",
+          "kind": "shower-node",
+          "distanceMeters": 167,
+          "tier": "high",
+          "polyDistM": 0
+        },
+        {
+          "osmUrl": "https://www.openstreetmap.org/node/2384403848",
+          "kind": "shower-node",
+          "distanceMeters": 195,
+          "tier": "high",
+          "polyDistM": 0
+        },
+        {
+          "osmUrl": "https://www.openstreetmap.org/node/2384403876",
+          "kind": "shower-node",
+          "distanceMeters": 225,
+          "tier": "high",
+          "polyDistM": 0
+        }
+      ]
+    },
+    {
+      "beachId": 2136,
+      "beach": "Κίνι",
+      "region": "South Aegean",
+      "tier": "high",
+      "showerCount": 1,
+      "nearestM": 61,
+      "evidence": [
+        {
+          "osmUrl": "https://www.openstreetmap.org/node/9091399137",
+          "kind": "shower-node",
+          "distanceMeters": 61,
+          "tier": "high",
+          "polyDistM": 5
+        }
+      ]
+    },
+    {
+      "beachId": 752,
+      "beach": "Μαζιδά Άμμος",
+      "region": "Crete",
+      "tier": "high",
+      "showerCount": 1,
+      "nearestM": 62,
+      "evidence": [
+        {
+          "osmUrl": "https://www.openstreetmap.org/node/4345939063",
+          "kind": "shower-node",
+          "distanceMeters": 62,
+          "tier": "high",
+          "polyDistM": 2
+        }
+      ]
+    },
+    {
+      "beachId": 3106,
+      "beach": "Λιμνιώνας (Σάμος)",
+      "region": "North Aegean",
+      "tier": "high",
+      "showerCount": 1,
+      "nearestM": 62,
+      "evidence": [
+        {
+          "osmUrl": "https://www.openstreetmap.org/node/8011773136",
+          "kind": "shower-node",
+          "distanceMeters": 62,
+          "tier": "high",
+          "polyDistM": 4
+        }
+      ]
+    },
+    {
+      "beachId": 1129,
+      "beach": "Σπαρτιάς",
+      "region": "Ionian Islands",
+      "tier": "high",
+      "showerCount": 1,
+      "nearestM": 62,
+      "evidence": [
+        {
+          "osmUrl": "https://www.openstreetmap.org/node/9879480659",
+          "kind": "shower-node",
+          "distanceMeters": 62,
+          "tier": "high",
+          "polyDistM": 25,
+          "fee": "no"
+        }
+      ]
+    },
+    {
+      "beachId": 933,
+      "beach": "Black Rocks Beach",
+      "region": "Ionian Islands",
+      "tier": "high",
+      "showerCount": 1,
+      "nearestM": 62,
+      "evidence": [
+        {
+          "osmUrl": "https://www.openstreetmap.org/node/9670662717",
+          "kind": "shower-node",
+          "distanceMeters": 62,
+          "tier": "high",
+          "polyDistM": 31
+        }
+      ]
+    },
+    {
+      "beachId": 1124,
+      "beach": "Πετανι",
+      "region": "Ionian Islands",
+      "tier": "high",
+      "showerCount": 1,
+      "nearestM": 63,
+      "evidence": [
+        {
+          "osmUrl": "https://www.openstreetmap.org/node/6710828186",
+          "kind": "shower-node",
+          "distanceMeters": 63,
+          "tier": "high",
+          "polyDistM": 2,
+          "name": "Shower"
+        }
+      ]
+    },
+    {
+      "beachId": 639,
+      "beach": "Μάδε",
+      "region": "Crete",
+      "tier": "high",
+      "showerCount": 1,
+      "nearestM": 64,
+      "evidence": [
+        {
+          "osmUrl": "https://www.openstreetmap.org/node/5763789311",
+          "kind": "shower-node",
+          "distanceMeters": 64,
+          "tier": "high",
+          "polyDistM": 25,
+          "showerType": "outdoor"
+        }
+      ]
+    },
+    {
+      "beachId": 564,
+      "beach": "Παραλία του Μάλεμε",
+      "region": "Crete",
+      "tier": "high",
+      "showerCount": 1,
+      "nearestM": 64,
+      "evidence": [
+        {
+          "osmUrl": "https://www.openstreetmap.org/node/8979762317",
+          "kind": "shower-node",
+          "distanceMeters": 64,
+          "tier": "high"
+        }
+      ]
+    },
+    {
+      "beachId": 851,
+      "beach": "Σκάλα Καλλιράχης",
+      "region": "East Macedonia and Thrace",
+      "tier": "high",
+      "showerCount": 1,
+      "nearestM": 64,
+      "evidence": [
+        {
+          "osmUrl": "https://www.openstreetmap.org/node/13265875178",
+          "kind": "shower-node",
+          "distanceMeters": 64,
+          "tier": "high",
+          "polyDistM": 14
+        }
+      ]
+    },
+    {
+      "beachId": 673,
+      "beach": "Άγιος Γεώργιος",
+      "region": "Crete",
+      "tier": "high",
+      "showerCount": 1,
+      "nearestM": 65,
+      "evidence": [
+        {
+          "osmUrl": "https://www.openstreetmap.org/node/9048743281",
+          "kind": "shower-node",
+          "distanceMeters": 65,
+          "tier": "high",
+          "polyDistM": 4
+        }
+      ]
+    },
+    {
+      "beachId": 1088,
+      "beach": "Αντίσαμος",
+      "region": "Ionian Islands",
+      "tier": "high",
+      "showerCount": 1,
+      "nearestM": 65,
+      "evidence": [
+        {
+          "osmUrl": "https://www.openstreetmap.org/node/11223296639",
+          "kind": "shower-node",
+          "distanceMeters": 65,
+          "tier": "high",
+          "polyDistM": 5
+        }
+      ]
+    },
+    {
+      "beachId": 2335,
+      "beach": "Τιγκάκι",
+      "region": "South Aegean",
+      "tier": "high",
+      "showerCount": 7,
+      "nearestM": 66,
+      "evidence": [
+        {
+          "osmUrl": "https://www.openstreetmap.org/node/12147689846",
+          "kind": "shower-node",
+          "distanceMeters": 66,
+          "tier": "high",
+          "polyDistM": 0
+        },
+        {
+          "osmUrl": "https://www.openstreetmap.org/node/12147674473",
+          "kind": "shower-node",
+          "distanceMeters": 68,
+          "tier": "high",
+          "polyDistM": 0
+        },
+        {
+          "osmUrl": "https://www.openstreetmap.org/node/12147655473",
+          "kind": "shower-node",
+          "distanceMeters": 73,
+          "tier": "high",
+          "polyDistM": 0
+        },
+        {
+          "osmUrl": "https://www.openstreetmap.org/node/12227861546",
+          "kind": "shower-node",
+          "distanceMeters": 97,
+          "tier": "high",
+          "polyDistM": 0
+        },
+        {
+          "osmUrl": "https://www.openstreetmap.org/node/12227872225",
+          "kind": "shower-node",
+          "distanceMeters": 165,
+          "tier": "high",
+          "polyDistM": 0
+        },
+        {
+          "osmUrl": "https://www.openstreetmap.org/node/12227865688",
+          "kind": "shower-node",
+          "distanceMeters": 185,
+          "tier": "high",
+          "polyDistM": 0
+        },
+        {
+          "osmUrl": "https://www.openstreetmap.org/node/12227837081",
+          "kind": "shower-node",
+          "distanceMeters": 215,
+          "tier": "high",
+          "polyDistM": 0
+        }
+      ]
+    },
+    {
+      "beachId": 635,
+      "beach": "Αγία Πελαγία",
+      "region": "Crete",
+      "tier": "high",
+      "showerCount": 4,
+      "nearestM": 67,
+      "evidence": [
+        {
+          "osmUrl": "https://www.openstreetmap.org/node/11089223506",
+          "kind": "shower-node",
+          "distanceMeters": 67,
+          "tier": "high",
+          "polyDistM": 0
+        },
+        {
+          "osmUrl": "https://www.openstreetmap.org/node/11089242905",
+          "kind": "shower-node",
+          "distanceMeters": 89,
+          "tier": "high",
+          "polyDistM": 0
+        },
+        {
+          "osmUrl": "https://www.openstreetmap.org/node/11087047406",
+          "kind": "shower-node",
+          "distanceMeters": 106,
+          "tier": "high",
+          "polyDistM": 0
+        },
+        {
+          "osmUrl": "https://www.openstreetmap.org/node/11089243005",
+          "kind": "shower-node",
+          "distanceMeters": 201,
+          "tier": "high",
+          "polyDistM": 0
+        }
+      ]
+    },
+    {
+      "beachId": 1195,
+      "beach": "Άγιος Νικόλαος Βασιλικού",
+      "region": "Ionian Islands",
+      "tier": "high",
+      "showerCount": 4,
+      "nearestM": 67,
+      "evidence": [
+        {
+          "osmUrl": "https://www.openstreetmap.org/node/925429147",
+          "kind": "shower-node",
+          "distanceMeters": 67,
+          "tier": "high",
+          "polyDistM": 3
+        },
+        {
+          "osmUrl": "https://www.openstreetmap.org/node/2338148076",
+          "kind": "shower-node",
+          "distanceMeters": 97,
+          "tier": "high",
+          "polyDistM": 13
+        },
+        {
+          "osmUrl": "https://www.openstreetmap.org/node/9921137757",
+          "kind": "shower-node",
+          "distanceMeters": 99,
+          "tier": "high",
+          "polyDistM": 0,
+          "fee": "no"
+        },
+        {
+          "osmUrl": "https://www.openstreetmap.org/node/2351550937",
+          "kind": "shower-node",
+          "distanceMeters": 121,
+          "tier": "medium",
+          "polyDistM": 55
+        }
+      ]
+    },
+    {
+      "beachId": 844,
+      "beach": "Λιμανάκι",
+      "region": "East Macedonia and Thrace",
+      "tier": "high",
+      "showerCount": 1,
+      "nearestM": 67,
+      "evidence": [
+        {
+          "osmUrl": "https://www.openstreetmap.org/node/13584887495",
+          "kind": "shower-node",
+          "distanceMeters": 67,
+          "tier": "high",
+          "polyDistM": 0
+        }
+      ]
+    },
+    {
+      "beachId": 678,
+      "beach": "Δαμνόνι",
+      "region": "Crete",
+      "tier": "high",
+      "showerCount": 1,
+      "nearestM": 68,
+      "evidence": [
+        {
+          "osmUrl": "https://www.openstreetmap.org/node/12133987511",
+          "kind": "shower-node",
+          "distanceMeters": 68,
+          "tier": "high",
+          "polyDistM": 0,
+          "fee": "no"
+        }
+      ]
+    },
+    {
+      "beachId": 2443,
+      "beach": "Παραλία Λίνδου (Μεγάλη Παραλία)",
+      "region": "South Aegean",
+      "tier": "high",
+      "showerCount": 5,
+      "nearestM": 68,
+      "evidence": [
+        {
+          "osmUrl": "https://www.openstreetmap.org/node/1375293109",
+          "kind": "shower-node",
+          "distanceMeters": 68,
+          "tier": "high",
+          "polyDistM": 0
+        },
+        {
+          "osmUrl": "https://www.openstreetmap.org/node/13706607915",
+          "kind": "shower-node",
+          "distanceMeters": 71,
+          "tier": "high",
+          "polyDistM": 0,
+          "fee": "no"
+        },
+        {
+          "osmUrl": "https://www.openstreetmap.org/node/13706668646",
+          "kind": "shower-node",
+          "distanceMeters": 93,
+          "tier": "high",
+          "polyDistM": 0,
+          "fee": "no"
+        },
+        {
+          "osmUrl": "https://www.openstreetmap.org/node/1830811773",
+          "kind": "shower-node",
+          "distanceMeters": 118,
+          "tier": "high",
+          "polyDistM": 0,
+          "fee": "no"
+        },
+        {
+          "osmUrl": "https://www.openstreetmap.org/node/13706572687",
+          "kind": "shower-node",
+          "distanceMeters": 122,
+          "tier": "high",
+          "polyDistM": 3,
+          "fee": "no"
+        }
+      ]
+    },
+    {
+      "beachId": 983,
+      "beach": "Παραλία Αγίου Σπυρίδωνα",
+      "region": "Ionian Islands",
+      "tier": "high",
+      "showerCount": 2,
+      "nearestM": 68,
+      "evidence": [
+        {
+          "osmUrl": "https://www.openstreetmap.org/node/13233303301",
+          "kind": "shower-node",
+          "distanceMeters": 68,
+          "tier": "high",
+          "polyDistM": 44
+        },
+        {
+          "osmUrl": "https://www.openstreetmap.org/node/13233090801",
+          "kind": "shower-node",
+          "distanceMeters": 93,
+          "tier": "medium",
+          "polyDistM": 61
+        }
+      ]
+    },
+    {
+      "beachId": 521,
+      "beach": "Παραλία Νέας Μηχανιώνας",
+      "region": "Central Macedonia",
+      "tier": "high",
+      "showerCount": 1,
+      "nearestM": 68,
+      "evidence": [
+        {
+          "osmUrl": "https://www.openstreetmap.org/node/6795655462",
+          "kind": "shower-node",
+          "distanceMeters": 68,
+          "tier": "high",
+          "polyDistM": 3,
+          "fee": "no"
+        }
+      ]
+    },
+    {
+      "beachId": 733,
+      "beach": "Βούλισμα",
+      "region": "Crete",
+      "tier": "high",
+      "showerCount": 4,
+      "nearestM": 70,
+      "evidence": [
+        {
+          "osmUrl": "https://www.openstreetmap.org/node/13724736291",
+          "kind": "shower-node",
+          "distanceMeters": 70,
+          "tier": "high",
+          "polyDistM": 0,
+          "fee": "no"
+        },
+        {
+          "osmUrl": "https://www.openstreetmap.org/node/13724938867",
+          "kind": "shower-node",
+          "distanceMeters": 104,
+          "tier": "high",
+          "polyDistM": 0,
+          "fee": "no"
+        },
+        {
+          "osmUrl": "https://www.openstreetmap.org/node/13724716594",
+          "kind": "shower-node",
+          "distanceMeters": 106,
+          "tier": "high",
+          "polyDistM": 0,
+          "fee": "no"
+        },
+        {
+          "osmUrl": "https://www.openstreetmap.org/node/13724951108",
+          "kind": "shower-node",
+          "distanceMeters": 230,
+          "tier": "high",
+          "polyDistM": 17,
+          "fee": "no"
+        }
+      ]
+    },
+    {
+      "beachId": 689,
+      "beach": "Παλίγκρεμνος",
+      "region": "Crete",
+      "tier": "high",
+      "showerCount": 2,
+      "nearestM": 70,
+      "evidence": [
+        {
+          "osmUrl": "https://www.openstreetmap.org/node/9969827514",
+          "kind": "shower-node",
+          "distanceMeters": 70,
+          "tier": "high",
+          "polyDistM": 0
+        },
+        {
+          "osmUrl": "https://www.openstreetmap.org/node/9969827513",
+          "kind": "shower-node",
+          "distanceMeters": 189,
+          "tier": "low",
+          "polyDistM": 101,
+          "fee": "no"
+        }
+      ]
+    },
+    {
+      "beachId": 1126,
+      "beach": "Πλατύς Γιαλός",
+      "region": "Ionian Islands",
+      "tier": "high",
+      "showerCount": 1,
+      "nearestM": 71,
+      "evidence": [
+        {
+          "osmUrl": "https://www.openstreetmap.org/node/9887664946",
+          "kind": "shower-node",
+          "distanceMeters": 71,
+          "tier": "high",
+          "polyDistM": 1,
+          "fee": "no"
+        }
+      ]
+    },
+    {
+      "beachId": 3052,
+      "beach": "ΠΔΕ Πούντα Αιγιαλείας",
+      "region": "West Greece",
+      "tier": "high",
+      "showerCount": 1,
+      "nearestM": 71,
+      "evidence": [
+        {
+          "osmUrl": "https://www.openstreetmap.org/node/12806384627",
+          "kind": "shower-node",
+          "distanceMeters": 71,
+          "tier": "high",
+          "polyDistM": 7
+        }
+      ]
+    },
+    {
+      "beachId": 400,
+      "beach": "Παραλία Γερακινής",
+      "region": "Central Macedonia",
+      "tier": "high",
+      "showerCount": 2,
+      "nearestM": 71,
+      "evidence": [
+        {
+          "osmUrl": "https://www.openstreetmap.org/node/12821118077",
+          "kind": "shower-node",
+          "distanceMeters": 71,
+          "tier": "high",
+          "polyDistM": 9,
+          "fee": "no"
+        },
+        {
+          "osmUrl": "https://www.openstreetmap.org/node/12821118076",
+          "kind": "shower-node",
+          "distanceMeters": 164,
+          "tier": "high",
+          "polyDistM": 6,
+          "fee": "no"
+        }
+      ]
+    },
+    {
+      "beachId": 579,
+      "beach": "Σταυρός",
+      "region": "Crete",
+      "tier": "high",
+      "showerCount": 3,
+      "nearestM": 72,
+      "evidence": [
+        {
+          "osmUrl": "https://www.openstreetmap.org/node/10068303566",
+          "kind": "shower-node",
+          "distanceMeters": 72,
+          "tier": "high",
+          "polyDistM": 0
+        },
+        {
+          "osmUrl": "https://www.openstreetmap.org/node/10068303567",
+          "kind": "shower-node",
+          "distanceMeters": 75,
+          "tier": "high",
+          "polyDistM": 0
+        },
+        {
+          "osmUrl": "https://www.openstreetmap.org/node/10996512563",
+          "kind": "shower-node",
+          "distanceMeters": 118,
+          "tier": "high",
+          "polyDistM": 29
+        }
+      ]
+    },
+    {
+      "beachId": 1489,
+      "beach": "Παραλία Μύλων",
+      "region": "Peloponnese",
+      "tier": "high",
+      "showerCount": 1,
+      "nearestM": 72,
+      "evidence": [
+        {
+          "osmUrl": "https://www.openstreetmap.org/node/9738968798",
+          "kind": "shower-node",
+          "distanceMeters": 72,
+          "tier": "high",
+          "polyDistM": 1
+        }
+      ]
+    },
+    {
+      "beachId": 2513,
+      "beach": "Παραλία Πούντα",
+      "region": "West Greece",
+      "tier": "high",
+      "showerCount": 1,
+      "nearestM": 72,
+      "evidence": [
+        {
+          "osmUrl": "https://www.openstreetmap.org/node/12101944305",
+          "kind": "shower-node",
+          "distanceMeters": 72,
+          "tier": "high",
+          "polyDistM": 0
+        }
+      ]
+    },
+    {
+      "beachId": 361,
+      "beach": "Μικρή Σουβάλα",
+      "region": "Central Greece",
+      "tier": "high",
+      "showerCount": 2,
+      "nearestM": 72,
+      "evidence": [
+        {
+          "osmUrl": "https://www.openstreetmap.org/node/12290334401",
+          "kind": "shower-node",
+          "distanceMeters": 72,
+          "tier": "high",
+          "polyDistM": 6
+        },
+        {
+          "osmUrl": "https://www.openstreetmap.org/node/12290334301",
+          "kind": "shower-node",
+          "distanceMeters": 195,
+          "tier": "high",
+          "polyDistM": 3
+        }
+      ]
+    },
+    {
+      "beachId": 643,
+      "beach": "Ανάληψη",
+      "region": "Crete",
+      "tier": "high",
+      "showerCount": 3,
+      "nearestM": 75,
+      "evidence": [
+        {
+          "osmUrl": "https://www.openstreetmap.org/node/5866298815",
+          "kind": "shower-node",
+          "distanceMeters": 75,
+          "tier": "high",
+          "polyDistM": 0
+        },
+        {
+          "osmUrl": "https://www.openstreetmap.org/node/13037926850",
+          "kind": "shower-node",
+          "distanceMeters": 98,
+          "tier": "high",
+          "polyDistM": 2
+        },
+        {
+          "osmUrl": "https://www.openstreetmap.org/node/13037967535",
+          "kind": "shower-node",
+          "distanceMeters": 226,
+          "tier": "high",
+          "polyDistM": 2
+        }
+      ]
+    },
+    {
+      "beachId": 885,
+      "beach": "Παραλία Λυγιάς",
+      "region": "Epirus",
+      "tier": "high",
+      "showerCount": 1,
+      "nearestM": 75,
+      "evidence": [
+        {
+          "osmUrl": "https://www.openstreetmap.org/node/9282711625",
+          "kind": "shower-node",
+          "distanceMeters": 75,
+          "tier": "high",
+          "polyDistM": 2
+        }
+      ]
+    },
+    {
+      "beachId": 311,
+      "beach": "Χιλιαδού",
+      "region": "Central Greece",
+      "tier": "high",
+      "showerCount": 2,
+      "nearestM": 76,
+      "evidence": [
+        {
+          "osmUrl": "https://www.openstreetmap.org/node/4585884536",
+          "kind": "shower-node",
+          "distanceMeters": 76,
+          "tier": "high",
+          "polyDistM": 1,
+          "name": "Ντουζιέρες"
+        },
+        {
+          "osmUrl": "https://www.openstreetmap.org/node/4254518267",
+          "kind": "shower-node",
+          "distanceMeters": 201,
+          "tier": "high",
+          "polyDistM": 0,
+          "fee": "no"
+        }
+      ]
+    },
+    {
+      "beachId": 925,
+      "beach": "Παραλία Σαγιάδας",
+      "region": "Epirus",
+      "tier": "high",
+      "showerCount": 1,
+      "nearestM": 76,
+      "evidence": [
+        {
+          "osmUrl": "https://www.openstreetmap.org/node/6476771695",
+          "kind": "shower-node",
+          "distanceMeters": 76,
+          "tier": "high",
+          "polyDistM": 0
+        }
+      ]
+    },
+    {
+      "beachId": 626,
+      "beach": "Μάταλα",
+      "region": "Crete",
+      "tier": "high",
+      "showerCount": 2,
+      "nearestM": 78,
+      "evidence": [
+        {
+          "osmUrl": "https://www.openstreetmap.org/node/9980218803",
+          "kind": "shower-node",
+          "distanceMeters": 78,
+          "tier": "high",
+          "polyDistM": 0
+        },
+        {
+          "osmUrl": "https://www.openstreetmap.org/node/9985930848",
+          "kind": "shower-node",
+          "distanceMeters": 146,
+          "tier": "high",
+          "polyDistM": 7
+        }
+      ]
+    },
+    {
+      "beachId": 2527,
+      "beach": "Αλμυρή Θάλασσα",
+      "region": "West Greece",
+      "tier": "high",
+      "showerCount": 1,
+      "nearestM": 78,
+      "evidence": [
+        {
+          "osmUrl": "https://www.openstreetmap.org/node/7835294400",
+          "kind": "shower-node",
+          "distanceMeters": 78,
+          "tier": "high"
+        }
+      ]
+    },
+    {
+      "beachId": 1713,
+      "beach": "Μπατσί",
+      "region": "South Aegean",
+      "tier": "high",
+      "showerCount": 1,
+      "nearestM": 79,
+      "evidence": [
+        {
+          "osmUrl": "https://www.openstreetmap.org/node/10039599229",
+          "kind": "shower-node",
+          "distanceMeters": 79,
+          "tier": "high",
+          "polyDistM": 0,
+          "fee": "no"
+        }
+      ]
+    },
+    {
+      "beachId": 1495,
+      "beach": "Παραλία Τολού - Ψιλή Άμμος",
+      "region": "Peloponnese",
+      "tier": "high",
+      "showerCount": 1,
+      "nearestM": 80,
+      "evidence": [
+        {
+          "osmUrl": "https://www.openstreetmap.org/node/12101915063",
+          "kind": "shower-node",
+          "distanceMeters": 80,
+          "tier": "high",
+          "polyDistM": 2
+        }
+      ]
+    },
+    {
+      "beachId": 2556,
+      "beach": "Παραλία Ρίζας",
+      "region": "West Greece",
+      "tier": "high",
+      "showerCount": 3,
+      "nearestM": 80,
+      "evidence": [
+        {
+          "osmUrl": "https://www.openstreetmap.org/node/10281941689",
+          "kind": "shower-node",
+          "distanceMeters": 80,
+          "tier": "high",
+          "polyDistM": 0
+        },
+        {
+          "osmUrl": "https://www.openstreetmap.org/node/10281950830",
+          "kind": "shower-node",
+          "distanceMeters": 169,
+          "tier": "high",
+          "polyDistM": 0
+        },
+        {
+          "osmUrl": "https://www.openstreetmap.org/node/9785307197",
+          "kind": "shower-node",
+          "distanceMeters": 178,
+          "tier": "high",
+          "polyDistM": 0
+        }
+      ]
+    },
+    {
+      "beachId": 803,
+      "beach": "Άγιος Ιωάννης Λουκάς",
+      "region": "East Macedonia and Thrace",
+      "tier": "high",
+      "showerCount": 1,
+      "nearestM": 80,
+      "evidence": [
+        {
+          "osmUrl": "https://www.openstreetmap.org/node/13074339082",
+          "kind": "shower-node",
+          "distanceMeters": 80,
+          "tier": "high",
+          "polyDistM": 37,
+          "fee": "no"
+        }
+      ]
+    },
+    {
+      "beachId": 1589,
+      "beach": "Πλύτρα - Παχιά Άμμος",
+      "region": "Peloponnese",
+      "tier": "high",
+      "showerCount": 1,
+      "nearestM": 82,
+      "evidence": [
+        {
+          "osmUrl": "https://www.openstreetmap.org/way/693069710",
+          "kind": "shower-node",
+          "distanceMeters": 82,
+          "tier": "high",
+          "polyDistM": 7,
+          "fee": "no"
+        }
+      ]
+    },
+    {
+      "beachId": 1572,
+      "beach": "Οίτυλο",
+      "region": "Peloponnese",
+      "tier": "high",
+      "showerCount": 1,
+      "nearestM": 84,
+      "evidence": [
+        {
+          "osmUrl": "https://www.openstreetmap.org/node/11217818237",
+          "kind": "shower-node",
+          "distanceMeters": 84,
+          "tier": "high",
+          "polyDistM": 1
+        }
+      ]
+    },
+    {
+      "beachId": 1650,
+      "beach": "Στούπα",
+      "region": "Peloponnese",
+      "tier": "high",
+      "showerCount": 2,
+      "nearestM": 84,
+      "evidence": [
+        {
+          "osmUrl": "https://www.openstreetmap.org/node/3708234627",
+          "kind": "shower-node",
+          "distanceMeters": 84,
+          "tier": "high",
+          "polyDistM": 0,
+          "fee": "no"
+        },
+        {
+          "osmUrl": "https://www.openstreetmap.org/node/3708234825",
+          "kind": "shower-node",
+          "distanceMeters": 92,
+          "tier": "high",
+          "polyDistM": 0,
+          "fee": "no"
+        }
+      ]
+    },
+    {
+      "beachId": 2256,
+      "beach": "Πλατύς Γιαλός",
+      "region": "South Aegean",
+      "tier": "high",
+      "showerCount": 1,
+      "nearestM": 84,
+      "evidence": [
+        {
+          "osmUrl": "https://www.openstreetmap.org/node/10125420328",
+          "kind": "shower-node",
+          "distanceMeters": 84,
+          "tier": "high",
+          "polyDistM": 1,
+          "fee": "no"
+        }
+      ]
+    },
+    {
+      "beachId": 1543,
+      "beach": "Αγία Κυριακή",
+      "region": "Peloponnese",
+      "tier": "high",
+      "showerCount": 1,
+      "nearestM": 84,
+      "evidence": [
+        {
+          "osmUrl": "https://www.openstreetmap.org/way/1478508616",
+          "kind": "shower-node",
+          "distanceMeters": 84,
+          "tier": "high",
+          "polyDistM": 19,
+          "fee": "no"
+        }
+      ]
+    },
+    {
+      "beachId": 2522,
+      "beach": "Kitesurf Spot",
+      "region": "West Greece",
+      "tier": "high",
+      "showerCount": 1,
+      "nearestM": 84,
+      "evidence": [
+        {
+          "osmUrl": "https://www.openstreetmap.org/node/7834258526",
+          "kind": "shower-node",
+          "distanceMeters": 84,
+          "tier": "high",
+          "polyDistM": 26
+        }
+      ]
+    },
+    {
+      "beachId": 2437,
+      "beach": "Παραλία Φούρνοι",
+      "region": "South Aegean",
+      "tier": "high",
+      "showerCount": 1,
+      "nearestM": 86,
+      "evidence": [
+        {
+          "osmUrl": "https://www.openstreetmap.org/node/8945923743",
+          "kind": "shower-node",
+          "distanceMeters": 86,
+          "tier": "high",
+          "polyDistM": 1,
+          "fee": "no"
+        }
+      ]
+    },
+    {
+      "beachId": 1078,
+      "beach": "Ξι",
+      "region": "Ionian Islands",
+      "tier": "high",
+      "showerCount": 2,
+      "nearestM": 86,
+      "evidence": [
+        {
+          "osmUrl": "https://www.openstreetmap.org/node/6656648185",
+          "kind": "shower-node",
+          "distanceMeters": 86,
+          "tier": "high",
+          "polyDistM": 0,
+          "fee": "no"
+        },
+        {
+          "osmUrl": "https://www.openstreetmap.org/node/11212284432",
+          "kind": "shower-node",
+          "distanceMeters": 123,
+          "tier": "high",
+          "polyDistM": 6
+        }
+      ]
+    },
+    {
+      "beachId": 1323,
+      "beach": "Ακτή Τσαμάκια",
+      "region": "North Aegean",
+      "tier": "high",
+      "showerCount": 2,
+      "nearestM": 86,
+      "evidence": [
+        {
+          "osmUrl": "https://www.openstreetmap.org/node/12811281115",
+          "kind": "shower-node",
+          "distanceMeters": 86,
+          "tier": "high",
+          "polyDistM": 17
+        },
+        {
+          "osmUrl": "https://www.openstreetmap.org/node/12466735058",
+          "kind": "shower-node",
+          "distanceMeters": 121,
+          "tier": "medium",
+          "polyDistM": 54
+        }
+      ]
+    },
+    {
+      "beachId": 2125,
+      "beach": "Αγκαθωπές",
+      "region": "South Aegean",
+      "tier": "high",
+      "showerCount": 1,
+      "nearestM": 87,
+      "evidence": [
+        {
+          "osmUrl": "https://www.openstreetmap.org/node/9097652526",
+          "kind": "shower-node",
+          "distanceMeters": 87,
+          "tier": "high",
+          "polyDistM": 0
+        }
+      ]
+    },
+    {
+      "beachId": 979,
+      "beach": "Παραλία Άγιος Γόρδης",
+      "region": "Ionian Islands",
+      "tier": "high",
+      "showerCount": 2,
+      "nearestM": 87,
+      "evidence": [
+        {
+          "osmUrl": "https://www.openstreetmap.org/node/3025781848",
+          "kind": "shower-node",
+          "distanceMeters": 87,
+          "tier": "high",
+          "polyDistM": 0
+        },
+        {
+          "osmUrl": "https://www.openstreetmap.org/node/3025781849",
+          "kind": "shower-node",
+          "distanceMeters": 109,
+          "tier": "high",
+          "polyDistM": 3
+        }
+      ]
+    },
+    {
+      "beachId": 647,
+      "beach": "Ποταμός Μαλίας",
+      "region": "Crete",
+      "tier": "high",
+      "showerCount": 3,
+      "nearestM": 89,
+      "evidence": [
+        {
+          "osmUrl": "https://www.openstreetmap.org/node/3752787325",
+          "kind": "shower-node",
+          "distanceMeters": 89,
+          "tier": "high",
+          "polyDistM": 5,
+          "fee": "no"
+        },
+        {
+          "osmUrl": "https://www.openstreetmap.org/node/11054647996",
+          "kind": "shower-node",
+          "distanceMeters": 102,
+          "tier": "high",
+          "polyDistM": 0,
+          "fee": "no"
+        },
+        {
+          "osmUrl": "https://www.openstreetmap.org/node/11107329599",
+          "kind": "shower-node",
+          "distanceMeters": 197,
+          "tier": "low",
+          "polyDistM": 94,
+          "fee": "no"
+        }
+      ]
+    },
+    {
+      "beachId": 539,
+      "beach": "Μαράθι",
+      "region": "Crete",
+      "tier": "high",
+      "showerCount": 3,
+      "nearestM": 89,
+      "evidence": [
+        {
+          "osmUrl": "https://www.openstreetmap.org/node/10065779508",
+          "kind": "shower-node",
+          "distanceMeters": 89,
+          "tier": "high",
+          "polyDistM": 0
+        },
+        {
+          "osmUrl": "https://www.openstreetmap.org/node/10065779507",
+          "kind": "shower-node",
+          "distanceMeters": 100,
+          "tier": "high",
+          "polyDistM": 21
+        },
+        {
+          "osmUrl": "https://www.openstreetmap.org/node/10065779506",
+          "kind": "shower-node",
+          "distanceMeters": 248,
+          "tier": "low",
+          "polyDistM": 178
+        }
+      ]
+    },
+    {
+      "beachId": 577,
+      "beach": "Σούγια",
+      "region": "Crete",
+      "tier": "high",
+      "showerCount": 3,
+      "nearestM": 91,
+      "evidence": [
+        {
+          "osmUrl": "https://www.openstreetmap.org/node/13066243533",
+          "kind": "shower-node",
+          "distanceMeters": 91,
+          "tier": "high",
+          "polyDistM": 0,
+          "fee": "no"
+        },
+        {
+          "osmUrl": "https://www.openstreetmap.org/node/13066243534",
+          "kind": "shower-node",
+          "distanceMeters": 126,
+          "tier": "high",
+          "polyDistM": 0,
+          "fee": "no"
+        },
+        {
+          "osmUrl": "https://www.openstreetmap.org/node/10210227907",
+          "kind": "shower-node",
+          "distanceMeters": 132,
+          "tier": "high",
+          "polyDistM": 0,
+          "fee": "no"
+        }
+      ]
+    },
+    {
+      "beachId": 2424,
+      "beach": "Παραλία Καλαβάρδα",
+      "region": "South Aegean",
+      "tier": "high",
+      "showerCount": 3,
+      "nearestM": 91,
+      "evidence": [
+        {
+          "osmUrl": "https://www.openstreetmap.org/node/1400250626",
+          "kind": "shower-node",
+          "distanceMeters": 91,
+          "tier": "high",
+          "polyDistM": 0
+        },
+        {
+          "osmUrl": "https://www.openstreetmap.org/node/1400250632",
+          "kind": "shower-node",
+          "distanceMeters": 125,
+          "tier": "high",
+          "polyDistM": 0
+        },
+        {
+          "osmUrl": "https://www.openstreetmap.org/node/1400250630",
+          "kind": "shower-node",
+          "distanceMeters": 164,
+          "tier": "high",
+          "polyDistM": 0
+        }
+      ]
+    },
+    {
+      "beachId": 238,
+      "beach": "Κρεμάλα",
+      "region": "Central Greece",
+      "tier": "high",
+      "showerCount": 1,
+      "nearestM": 91,
+      "evidence": [
+        {
+          "osmUrl": "https://www.openstreetmap.org/node/12126153991",
+          "kind": "shower-node",
+          "distanceMeters": 91,
+          "tier": "high",
+          "polyDistM": 0,
+          "fee": "yes"
+        }
+      ]
+    },
+    {
+      "beachId": 696,
+      "beach": "Παραλία Κεφάλα",
+      "region": "Crete",
+      "tier": "high",
+      "showerCount": 1,
+      "nearestM": 93,
+      "evidence": [
+        {
+          "osmUrl": "https://www.openstreetmap.org/node/9979391527",
+          "kind": "shower-node",
+          "distanceMeters": 93,
+          "tier": "high",
+          "polyDistM": 0
+        }
+      ]
+    },
+    {
+      "beachId": 2503,
+      "beach": "Αμμόλοφος",
+      "region": "West Greece",
+      "tier": "high",
+      "showerCount": 1,
+      "nearestM": 93,
+      "evidence": [
+        {
+          "osmUrl": "https://www.openstreetmap.org/node/12101970833",
+          "kind": "shower-node",
+          "distanceMeters": 93,
+          "tier": "high",
+          "polyDistM": 0
+        }
+      ]
+    },
+    {
+      "beachId": 959,
+      "beach": "Αρίλλας",
+      "region": "Ionian Islands",
+      "tier": "high",
+      "showerCount": 2,
+      "nearestM": 93,
+      "evidence": [
+        {
+          "osmUrl": "https://www.openstreetmap.org/node/4416587372",
+          "kind": "shower-node",
+          "distanceMeters": 93,
+          "tier": "high",
+          "polyDistM": 2,
+          "fee": "no"
+        },
+        {
+          "osmUrl": "https://www.openstreetmap.org/node/4416202676",
+          "kind": "shower-node",
+          "distanceMeters": 118,
+          "tier": "high",
+          "polyDistM": 0,
+          "fee": "no"
+        }
+      ]
+    },
+    {
+      "beachId": 594,
+      "beach": "Chrysi Akti",
+      "region": "Crete",
+      "tier": "high",
+      "showerCount": 6,
+      "nearestM": 95,
+      "evidence": [
+        {
+          "osmUrl": "https://www.openstreetmap.org/node/11024389751",
+          "kind": "shower-node",
+          "distanceMeters": 95,
+          "tier": "high",
+          "polyDistM": 0,
+          "fee": "no"
+        },
+        {
+          "osmUrl": "https://www.openstreetmap.org/node/11024389750",
+          "kind": "shower-node",
+          "distanceMeters": 105,
+          "tier": "high",
+          "polyDistM": 0,
+          "fee": "no"
+        },
+        {
+          "osmUrl": "https://www.openstreetmap.org/node/11024389752",
+          "kind": "shower-node",
+          "distanceMeters": 117,
+          "tier": "high",
+          "polyDistM": 0,
+          "fee": "no"
+        },
+        {
+          "osmUrl": "https://www.openstreetmap.org/node/7731095778",
+          "kind": "shower-node",
+          "distanceMeters": 143,
+          "tier": "high",
+          "polyDistM": 0
+        },
+        {
+          "osmUrl": "https://www.openstreetmap.org/node/11024389748",
+          "kind": "shower-node",
+          "distanceMeters": 209,
+          "tier": "high",
+          "polyDistM": 0,
+          "fee": "no"
+        },
+        {
+          "osmUrl": "https://www.openstreetmap.org/node/11024389742",
+          "kind": "shower-node",
+          "distanceMeters": 235,
+          "tier": "high",
+          "polyDistM": 4,
+          "fee": "no"
+        }
+      ]
+    },
+    {
+      "beachId": 36,
+      "beach": "Πλαζ Ραφήνας",
+      "region": "Attica",
+      "tier": "high",
+      "showerCount": 1,
+      "nearestM": 95,
+      "evidence": [
+        {
+          "osmUrl": "https://www.openstreetmap.org/node/5150327143",
+          "kind": "shower-node",
+          "distanceMeters": 95,
+          "tier": "high",
+          "polyDistM": 0
+        }
+      ]
+    },
+    {
+      "beachId": 699,
+      "beach": "Περιστερές",
+      "region": "Crete",
+      "tier": "high",
+      "showerCount": 1,
+      "nearestM": 96,
+      "evidence": [
+        {
+          "osmUrl": "https://www.openstreetmap.org/node/9987627131",
+          "kind": "shower-node",
+          "distanceMeters": 96,
+          "tier": "high",
+          "polyDistM": 3
+        }
+      ]
+    },
+    {
+      "beachId": 821,
+      "beach": "Ποτός",
+      "region": "East Macedonia and Thrace",
+      "tier": "high",
+      "showerCount": 1,
+      "nearestM": 96,
+      "evidence": [
+        {
+          "osmUrl": "https://www.openstreetmap.org/node/8266904709",
+          "kind": "shower-node",
+          "distanceMeters": 96,
+          "tier": "high",
+          "polyDistM": 24
+        }
+      ]
+    },
+    {
+      "beachId": 544,
+      "beach": "Νέα Χώρα",
+      "region": "Crete",
+      "tier": "high",
+      "showerCount": 4,
+      "nearestM": 98,
+      "evidence": [
+        {
+          "osmUrl": "https://www.openstreetmap.org/node/10827303599",
+          "kind": "shower-node",
+          "distanceMeters": 98,
+          "tier": "high",
+          "polyDistM": 0,
+          "fee": "no"
+        },
+        {
+          "osmUrl": "https://www.openstreetmap.org/node/10064185748",
+          "kind": "shower-node",
+          "distanceMeters": 115,
+          "tier": "high",
+          "polyDistM": 3
+        },
+        {
+          "osmUrl": "https://www.openstreetmap.org/node/10827303549",
+          "kind": "shower-node",
+          "distanceMeters": 154,
+          "tier": "high",
+          "polyDistM": 0,
+          "fee": "no"
+        },
+        {
+          "osmUrl": "https://www.openstreetmap.org/node/10064185749",
+          "kind": "shower-node",
+          "distanceMeters": 171,
+          "tier": "high",
+          "polyDistM": 3
+        }
+      ]
+    },
+    {
+      "beachId": 2328,
+      "beach": "Μαρμάρι",
+      "region": "South Aegean",
+      "tier": "high",
+      "showerCount": 1,
+      "nearestM": 98,
+      "evidence": [
+        {
+          "osmUrl": "https://www.openstreetmap.org/node/5329840221",
+          "kind": "shower-node",
+          "distanceMeters": 98,
+          "tier": "high",
+          "polyDistM": 7
+        }
+      ]
+    },
+    {
+      "beachId": 3105,
+      "beach": "Σκάλα (Κεφαλονιά)",
+      "region": "Ionian Islands",
+      "tier": "high",
+      "showerCount": 1,
+      "nearestM": 98,
+      "evidence": [
+        {
+          "osmUrl": "https://www.openstreetmap.org/node/6669927806",
+          "kind": "shower-node",
+          "distanceMeters": 98,
+          "tier": "high",
+          "polyDistM": 8,
+          "fee": "no"
+        }
+      ]
+    },
+    {
+      "beachId": 205,
+      "beach": "Αλυκές",
+      "region": "Central Greece",
+      "tier": "high",
+      "showerCount": 3,
+      "nearestM": 98,
+      "evidence": [
+        {
+          "osmUrl": "https://www.openstreetmap.org/node/12294044901",
+          "kind": "shower-node",
+          "distanceMeters": 98,
+          "tier": "high",
+          "polyDistM": 7
+        },
+        {
+          "osmUrl": "https://www.openstreetmap.org/node/12294048901",
+          "kind": "shower-node",
+          "distanceMeters": 140,
+          "tier": "high",
+          "polyDistM": 4
+        },
+        {
+          "osmUrl": "https://www.openstreetmap.org/node/12294059601",
+          "kind": "shower-node",
+          "distanceMeters": 227,
+          "tier": "high",
+          "polyDistM": 6
+        }
+      ]
+    },
+    {
+      "beachId": 2101,
+      "beach": "Καμάρες",
+      "region": "South Aegean",
+      "tier": "high",
+      "showerCount": 4,
+      "nearestM": 99,
+      "evidence": [
+        {
+          "osmUrl": "https://www.openstreetmap.org/node/9944339122",
+          "kind": "shower-node",
+          "distanceMeters": 99,
+          "tier": "high",
+          "polyDistM": 8
+        },
+        {
+          "osmUrl": "https://www.openstreetmap.org/node/9944344128",
+          "kind": "shower-node",
+          "distanceMeters": 123,
+          "tier": "high",
+          "polyDistM": 0
+        },
+        {
+          "osmUrl": "https://www.openstreetmap.org/node/9944330921",
+          "kind": "shower-node",
+          "distanceMeters": 195,
+          "tier": "high",
+          "polyDistM": 0
+        },
+        {
+          "osmUrl": "https://www.openstreetmap.org/node/9942728821",
+          "kind": "shower-node",
+          "distanceMeters": 233,
+          "tier": "high",
+          "polyDistM": 3
+        }
+      ]
+    },
+    {
+      "beachId": 1113,
+      "beach": "Μύρτος",
+      "region": "Ionian Islands",
+      "tier": "high",
+      "showerCount": 1,
+      "nearestM": 99,
+      "evidence": [
+        {
+          "osmUrl": "https://www.openstreetmap.org/node/11041984175",
+          "kind": "shower-node",
+          "distanceMeters": 99,
+          "tier": "high",
+          "polyDistM": 0,
+          "fee": "no"
+        }
+      ]
+    },
+    {
+      "beachId": 2540,
+      "beach": "Παραθάλασσο",
+      "region": "West Greece",
+      "tier": "high",
+      "showerCount": 1,
+      "nearestM": 99,
+      "evidence": [
+        {
+          "osmUrl": "https://www.openstreetmap.org/node/7834298139",
+          "kind": "shower-node",
+          "distanceMeters": 99,
+          "tier": "high",
+          "polyDistM": 0
+        }
+      ]
+    },
+    {
+      "beachId": 518,
+      "beach": "Κυανή Ακτή",
+      "region": "Central Macedonia",
+      "tier": "high",
+      "showerCount": 1,
+      "nearestM": 99,
+      "evidence": [
+        {
+          "osmUrl": "https://www.openstreetmap.org/node/10010482643",
+          "kind": "shower-node",
+          "distanceMeters": 99,
+          "tier": "high",
+          "polyDistM": 9
+        }
+      ]
+    },
+    {
+      "beachId": 1825,
+      "beach": "Οτζιάς",
+      "region": "South Aegean",
+      "tier": "high",
+      "showerCount": 1,
+      "nearestM": 100,
+      "evidence": [
+        {
+          "osmUrl": "https://www.openstreetmap.org/node/8913844967",
+          "kind": "shower-node",
+          "distanceMeters": 100,
+          "tier": "high",
+          "polyDistM": 10
+        }
+      ]
+    },
+    {
+      "beachId": 1116,
+      "beach": "Παραλία Αγία Βαρβάρα",
+      "region": "Ionian Islands",
+      "tier": "high",
+      "showerCount": 2,
+      "nearestM": 100,
+      "evidence": [
+        {
+          "osmUrl": "https://www.openstreetmap.org/node/1407327329",
+          "kind": "shower-node",
+          "distanceMeters": 100,
+          "tier": "high",
+          "polyDistM": 34,
+          "fee": "no"
+        },
+        {
+          "osmUrl": "https://www.openstreetmap.org/node/1407327343",
+          "kind": "shower-node",
+          "distanceMeters": 171,
+          "tier": "high",
+          "polyDistM": 23,
+          "fee": "no"
+        }
+      ]
+    },
+    {
+      "beachId": 2463,
+      "beach": "Παραλία Καρδάμης",
+      "region": "South Aegean",
+      "tier": "high",
+      "showerCount": 1,
+      "nearestM": 103,
+      "evidence": [
+        {
+          "osmUrl": "https://www.openstreetmap.org/node/12172302058",
+          "kind": "shower-node",
+          "distanceMeters": 103,
+          "tier": "high",
+          "polyDistM": 6
+        }
+      ]
+    },
+    {
+      "beachId": 1703,
+      "beach": "Νειμποριό",
+      "region": "South Aegean",
+      "tier": "high",
+      "showerCount": 1,
+      "nearestM": 103,
+      "evidence": [
+        {
+          "osmUrl": "https://www.openstreetmap.org/node/7815579285",
+          "kind": "shower-node",
+          "distanceMeters": 103,
+          "tier": "high",
+          "polyDistM": 0
+        }
+      ]
+    },
+    {
+      "beachId": 794,
+      "beach": "Ρέμβη",
+      "region": "East Macedonia and Thrace",
+      "tier": "high",
+      "showerCount": 1,
+      "nearestM": 103,
+      "evidence": [
+        {
+          "osmUrl": "https://www.openstreetmap.org/node/6690947301",
+          "kind": "shower-node",
+          "distanceMeters": 103,
+          "tier": "high",
+          "polyDistM": 5,
+          "fee": "no"
+        }
+      ]
+    },
+    {
+      "beachId": 2438,
+      "beach": "Παραλία Χαράκι",
+      "region": "South Aegean",
+      "tier": "high",
+      "showerCount": 9,
+      "nearestM": 105,
+      "evidence": [
+        {
+          "osmUrl": "https://www.openstreetmap.org/node/9840487537",
+          "kind": "shower-node",
+          "distanceMeters": 105,
+          "tier": "high",
+          "polyDistM": 0
+        },
+        {
+          "osmUrl": "https://www.openstreetmap.org/node/9840487543",
+          "kind": "shower-node",
+          "distanceMeters": 108,
+          "tier": "high",
+          "polyDistM": 0
+        },
+        {
+          "osmUrl": "https://www.openstreetmap.org/node/9840487536",
+          "kind": "shower-node",
+          "distanceMeters": 108,
+          "tier": "high",
+          "polyDistM": 0
+        },
+        {
+          "osmUrl": "https://www.openstreetmap.org/node/9840487565",
+          "kind": "shower-node",
+          "distanceMeters": 114,
+          "tier": "high",
+          "polyDistM": 0
+        },
+        {
+          "osmUrl": "https://www.openstreetmap.org/node/9840487561",
+          "kind": "shower-node",
+          "distanceMeters": 123,
+          "tier": "high",
+          "polyDistM": 0
+        },
+        {
+          "osmUrl": "https://www.openstreetmap.org/node/9840487547",
+          "kind": "shower-node",
+          "distanceMeters": 124,
+          "tier": "high",
+          "polyDistM": 0
+        },
+        {
+          "osmUrl": "https://www.openstreetmap.org/node/9840487531",
+          "kind": "shower-node",
+          "distanceMeters": 125,
+          "tier": "high",
+          "polyDistM": 0
+        },
+        {
+          "osmUrl": "https://www.openstreetmap.org/node/9840487539",
+          "kind": "shower-node",
+          "distanceMeters": 136,
+          "tier": "high",
+          "polyDistM": 0
+        },
+        {
+          "osmUrl": "https://www.openstreetmap.org/node/9840487540",
+          "kind": "shower-node",
+          "distanceMeters": 158,
+          "tier": "high",
+          "polyDistM": 0
+        }
+      ]
+    },
+    {
+      "beachId": 1698,
+      "beach": "Γυάλια",
+      "region": "South Aegean",
+      "tier": "high",
+      "showerCount": 1,
+      "nearestM": 106,
+      "evidence": [
+        {
+          "osmUrl": "https://www.openstreetmap.org/node/7817484385",
+          "kind": "shower-node",
+          "distanceMeters": 106,
+          "tier": "high",
+          "polyDistM": 0
+        }
+      ]
+    },
+    {
+      "beachId": 10,
+      "beach": "Παραλία Γλυφάδας Ακτή Γ",
+      "region": "Attica",
+      "tier": "high",
+      "showerCount": 3,
+      "nearestM": 107,
+      "evidence": [
+        {
+          "osmUrl": "https://www.openstreetmap.org/node/6759217437",
+          "kind": "shower-node",
+          "distanceMeters": 107,
+          "tier": "high",
+          "polyDistM": 0
+        },
+        {
+          "osmUrl": "https://www.openstreetmap.org/node/6759208909",
+          "kind": "shower-node",
+          "distanceMeters": 110,
+          "tier": "high",
+          "polyDistM": 0
+        },
+        {
+          "osmUrl": "https://www.openstreetmap.org/node/6759221613",
+          "kind": "shower-node",
+          "distanceMeters": 244,
+          "tier": "high",
+          "polyDistM": 0
+        }
+      ]
+    },
+    {
+      "beachId": 692,
+      "beach": "Παραλία Δυνόνησος",
+      "region": "Crete",
+      "tier": "high",
+      "showerCount": 1,
+      "nearestM": 115,
+      "evidence": [
+        {
+          "osmUrl": "https://www.openstreetmap.org/node/3692047645",
+          "kind": "shower-node",
+          "distanceMeters": 115,
+          "tier": "high",
+          "polyDistM": 0
+        }
+      ]
+    },
+    {
+      "beachId": 386,
+      "beach": "Blue Dream",
+      "region": "Central Macedonia",
+      "tier": "high",
+      "showerCount": 1,
+      "nearestM": 115,
+      "evidence": [
+        {
+          "osmUrl": "https://www.openstreetmap.org/node/5884457176",
+          "kind": "shower-node",
+          "distanceMeters": 115,
+          "tier": "high",
+          "polyDistM": 0
+        }
+      ]
+    },
+    {
+      "beachId": 30,
+      "beach": "Μικρό Σέσι",
+      "region": "Attica",
+      "tier": "high",
+      "showerCount": 1,
+      "nearestM": 119,
+      "evidence": [
+        {
+          "osmUrl": "https://www.openstreetmap.org/node/9186762170",
+          "kind": "shower-node",
+          "distanceMeters": 119,
+          "tier": "high",
+          "polyDistM": 4
+        }
+      ]
+    },
+    {
+      "beachId": 936,
+      "beach": "Dassia Beach",
+      "region": "Ionian Islands",
+      "tier": "high",
+      "showerCount": 3,
+      "nearestM": 122,
+      "evidence": [
+        {
+          "osmUrl": "https://www.openstreetmap.org/node/6666101583",
+          "kind": "shower-node",
+          "distanceMeters": 122,
+          "tier": "high",
+          "polyDistM": 1,
+          "showerType": "outdoor"
+        },
+        {
+          "osmUrl": "https://www.openstreetmap.org/node/11209559440",
+          "kind": "shower-node",
+          "distanceMeters": 146,
+          "tier": "high",
+          "polyDistM": 10
+        },
+        {
+          "osmUrl": "https://www.openstreetmap.org/node/11209559441",
+          "kind": "shower-node",
+          "distanceMeters": 187,
+          "tier": "high",
+          "polyDistM": 7
+        }
+      ]
+    },
+    {
+      "beachId": 767,
+      "beach": "Σχίσμα",
+      "region": "Crete",
+      "tier": "high",
+      "showerCount": 1,
+      "nearestM": 129,
+      "evidence": [
+        {
+          "osmUrl": "https://www.openstreetmap.org/node/5071546529",
+          "kind": "shower-node",
+          "distanceMeters": 129,
+          "tier": "high",
+          "polyDistM": 16
+        }
+      ]
+    },
+    {
+      "beachId": 144,
+      "beach": "Καψάλι",
+      "region": "Attica",
+      "tier": "high",
+      "showerCount": 2,
+      "nearestM": 131,
+      "evidence": [
+        {
+          "osmUrl": "https://www.openstreetmap.org/node/9825200081",
+          "kind": "shower-node",
+          "distanceMeters": 131,
+          "tier": "high",
+          "polyDistM": 5
+        },
+        {
+          "osmUrl": "https://www.openstreetmap.org/node/9825200082",
+          "kind": "shower-node",
+          "distanceMeters": 174,
+          "tier": "high",
+          "polyDistM": 3
+        }
+      ]
+    },
+    {
+      "beachId": 3,
+      "beach": "Παραλία Έδεμ",
+      "region": "Attica",
+      "tier": "high",
+      "showerCount": 1,
+      "nearestM": 132,
+      "evidence": [
+        {
+          "osmUrl": "https://www.openstreetmap.org/node/11236098240",
+          "kind": "shower-node",
+          "distanceMeters": 132,
+          "tier": "high",
+          "polyDistM": 0
+        }
+      ]
+    },
+    {
+      "beachId": 2415,
+      "beach": "Παραλία Έλλη",
+      "region": "South Aegean",
+      "tier": "high",
+      "showerCount": 6,
+      "nearestM": 138,
+      "evidence": [
+        {
+          "osmUrl": "https://www.openstreetmap.org/node/1770373134",
+          "kind": "shower-node",
+          "distanceMeters": 138,
+          "tier": "high",
+          "polyDistM": 0,
+          "fee": "no"
+        },
+        {
+          "osmUrl": "https://www.openstreetmap.org/node/5070152454",
+          "kind": "shower-node",
+          "distanceMeters": 152,
+          "tier": "high",
+          "polyDistM": 0,
+          "fee": "no"
+        },
+        {
+          "osmUrl": "https://www.openstreetmap.org/node/1770373148",
+          "kind": "shower-node",
+          "distanceMeters": 156,
+          "tier": "high",
+          "polyDistM": 0,
+          "fee": "no"
+        },
+        {
+          "osmUrl": "https://www.openstreetmap.org/node/5070152455",
+          "kind": "shower-node",
+          "distanceMeters": 163,
+          "tier": "high",
+          "polyDistM": 0,
+          "fee": "no"
+        },
+        {
+          "osmUrl": "https://www.openstreetmap.org/node/1770373169",
+          "kind": "shower-node",
+          "distanceMeters": 179,
+          "tier": "high",
+          "polyDistM": 0,
+          "fee": "no"
+        },
+        {
+          "osmUrl": "https://www.openstreetmap.org/node/1770373121",
+          "kind": "shower-node",
+          "distanceMeters": 194,
+          "tier": "high",
+          "polyDistM": 0,
+          "fee": "no"
+        }
+      ]
+    },
+    {
+      "beachId": 1602,
+      "beach": "Χαρακιά",
+      "region": "Peloponnese",
+      "tier": "high",
+      "showerCount": 1,
+      "nearestM": 141,
+      "evidence": [
+        {
+          "osmUrl": "https://www.openstreetmap.org/node/9655326817",
+          "kind": "shower-node",
+          "distanceMeters": 141,
+          "tier": "high",
+          "polyDistM": 0
+        }
+      ]
+    },
+    {
+      "beachId": 954,
+      "beach": "Άγιος Στέφανος",
+      "region": "Ionian Islands",
+      "tier": "high",
+      "showerCount": 3,
+      "nearestM": 142,
+      "evidence": [
+        {
+          "osmUrl": "https://www.openstreetmap.org/node/8893167840",
+          "kind": "shower-node",
+          "distanceMeters": 142,
+          "tier": "high",
+          "polyDistM": 5
+        },
+        {
+          "osmUrl": "https://www.openstreetmap.org/node/13011422806",
+          "kind": "shower-node",
+          "distanceMeters": 150,
+          "tier": "high",
+          "polyDistM": 7
+        },
+        {
+          "osmUrl": "https://www.openstreetmap.org/node/8894160604",
+          "kind": "shower-node",
+          "distanceMeters": 233,
+          "tier": "high",
+          "polyDistM": 25
+        }
+      ]
+    },
+    {
+      "beachId": 873,
+      "beach": "Παραλία Αμμουδιά",
+      "region": "Epirus",
+      "tier": "high",
+      "showerCount": 4,
+      "nearestM": 144,
+      "evidence": [
+        {
+          "osmUrl": "https://www.openstreetmap.org/node/1448658040",
+          "kind": "shower-node",
+          "distanceMeters": 144,
+          "tier": "high",
+          "polyDistM": 5
+        },
+        {
+          "osmUrl": "https://www.openstreetmap.org/node/1448658055",
+          "kind": "shower-node",
+          "distanceMeters": 155,
+          "tier": "high",
+          "polyDistM": 10
+        },
+        {
+          "osmUrl": "https://www.openstreetmap.org/node/1448658057",
+          "kind": "shower-node",
+          "distanceMeters": 171,
+          "tier": "high",
+          "polyDistM": 7
+        },
+        {
+          "osmUrl": "https://www.openstreetmap.org/node/1448657884",
+          "kind": "shower-node",
+          "distanceMeters": 186,
+          "tier": "high",
+          "polyDistM": 3
+        }
+      ]
+    },
+    {
+      "beachId": 462,
+      "beach": "Παραλία Στρατώνι",
+      "region": "Central Macedonia",
+      "tier": "high",
+      "showerCount": 1,
+      "nearestM": 144,
+      "evidence": [
+        {
+          "osmUrl": "https://www.openstreetmap.org/node/8982376718",
+          "kind": "shower-node",
+          "distanceMeters": 144,
+          "tier": "high",
+          "polyDistM": 0,
+          "fee": "no"
+        }
+      ]
+    },
+    {
+      "beachId": 2265,
+      "beach": "Παραλία Καντούνι",
+      "region": "South Aegean",
+      "tier": "high",
+      "showerCount": 1,
+      "nearestM": 149,
+      "evidence": [
+        {
+          "osmUrl": "https://www.openstreetmap.org/node/10108126668",
+          "kind": "shower-node",
+          "distanceMeters": 149,
+          "tier": "high",
+          "polyDistM": 1,
+          "fee": "no"
+        }
+      ]
+    },
+    {
+      "beachId": 476,
+      "beach": "Παραλία Αρμενιστής",
+      "region": "Central Macedonia",
+      "tier": "high",
+      "showerCount": 3,
+      "nearestM": 151,
+      "evidence": [
+        {
+          "osmUrl": "https://www.openstreetmap.org/node/10010463797",
+          "kind": "shower-node",
+          "distanceMeters": 151,
+          "tier": "high",
+          "polyDistM": 9
+        },
+        {
+          "osmUrl": "https://www.openstreetmap.org/node/10010466441",
+          "kind": "shower-node",
+          "distanceMeters": 166,
+          "tier": "high",
+          "polyDistM": 0
+        },
+        {
+          "osmUrl": "https://www.openstreetmap.org/node/10010461772",
+          "kind": "shower-node",
+          "distanceMeters": 222,
+          "tier": "high",
+          "polyDistM": 0
+        }
+      ]
+    },
+    {
+      "beachId": 603,
+      "beach": "Kalyves",
+      "region": "Crete",
+      "tier": "high",
+      "showerCount": 1,
+      "nearestM": 152,
+      "evidence": [
+        {
+          "osmUrl": "https://www.openstreetmap.org/node/2958895885",
+          "kind": "shower-node",
+          "distanceMeters": 152,
+          "tier": "high",
+          "polyDistM": 2,
+          "showerType": "outdoor"
+        }
+      ]
+    },
+    {
+      "beachId": 519,
+      "beach": "Μηλιές",
+      "region": "Central Macedonia",
+      "tier": "high",
+      "showerCount": 1,
+      "nearestM": 154,
+      "evidence": [
+        {
+          "osmUrl": "https://www.openstreetmap.org/node/11541129436",
+          "kind": "shower-node",
+          "distanceMeters": 154,
+          "tier": "high",
+          "polyDistM": 0
+        }
+      ]
+    },
+    {
+      "beachId": 2423,
+      "beach": "Παραλία Καθαρά",
+      "region": "South Aegean",
+      "tier": "high",
+      "showerCount": 1,
+      "nearestM": 157,
+      "evidence": [
+        {
+          "osmUrl": "https://www.openstreetmap.org/node/2380388223",
+          "kind": "shower-node",
+          "distanceMeters": 157,
+          "tier": "high",
+          "polyDistM": 0
+        }
+      ]
+    },
+    {
+      "beachId": 1196,
+      "beach": "Τσιλιβί",
+      "region": "Ionian Islands",
+      "tier": "high",
+      "showerCount": 1,
+      "nearestM": 162,
+      "evidence": [
+        {
+          "osmUrl": "https://www.openstreetmap.org/node/9922741295",
+          "kind": "shower-node",
+          "distanceMeters": 162,
+          "tier": "high",
+          "polyDistM": 0,
+          "fee": "no"
+        }
+      ]
+    },
+    {
+      "beachId": 1487,
+      "beach": "Παραλία Κάντιας",
+      "region": "Peloponnese",
+      "tier": "high",
+      "showerCount": 2,
+      "nearestM": 170,
+      "evidence": [
+        {
+          "osmUrl": "https://www.openstreetmap.org/node/5594711125",
+          "kind": "shower-node",
+          "distanceMeters": 170,
+          "tier": "high",
+          "polyDistM": 0,
+          "name": "Public Shower"
+        },
+        {
+          "osmUrl": "https://www.openstreetmap.org/node/5594718424",
+          "kind": "shower-node",
+          "distanceMeters": 209,
+          "tier": "high",
+          "polyDistM": 0,
+          "name": "Public Shower"
+        }
+      ]
+    },
+    {
+      "beachId": 2334,
+      "beach": "Ταμ Ταμ",
+      "region": "South Aegean",
+      "tier": "high",
+      "showerCount": 2,
+      "nearestM": 173,
+      "evidence": [
+        {
+          "osmUrl": "https://www.openstreetmap.org/node/12168368597",
+          "kind": "shower-node",
+          "distanceMeters": 173,
+          "tier": "high",
+          "polyDistM": 0,
+          "fee": "no"
+        },
+        {
+          "osmUrl": "https://www.openstreetmap.org/node/9007759817",
+          "kind": "shower-node",
+          "distanceMeters": 177,
+          "tier": "high",
+          "polyDistM": 4,
+          "fee": "no"
+        }
+      ]
+    },
+    {
+      "beachId": 404,
+      "beach": "Kalamitsi",
+      "region": "Central Macedonia",
+      "tier": "high",
+      "showerCount": 2,
+      "nearestM": 183,
+      "evidence": [
+        {
+          "osmUrl": "https://www.openstreetmap.org/node/4341725246",
+          "kind": "shower-node",
+          "distanceMeters": 183,
+          "tier": "low",
+          "polyDistM": 88,
+          "fee": "no"
+        },
+        {
+          "osmUrl": "https://www.openstreetmap.org/node/3715704701",
+          "kind": "shower-node",
+          "distanceMeters": 212,
+          "tier": "high",
+          "polyDistM": 7
+        }
+      ]
+    },
+    {
+      "beachId": 1507,
+      "beach": "Ατσίγγανος",
+      "region": "Peloponnese",
+      "tier": "high",
+      "showerCount": 3,
+      "nearestM": 186,
+      "evidence": [
+        {
+          "osmUrl": "https://www.openstreetmap.org/node/12218218543",
+          "kind": "shower-node",
+          "distanceMeters": 186,
+          "tier": "high",
+          "polyDistM": 0
+        },
+        {
+          "osmUrl": "https://www.openstreetmap.org/node/12218213694",
+          "kind": "shower-node",
+          "distanceMeters": 189,
+          "tier": "high",
+          "polyDistM": 0
+        },
+        {
+          "osmUrl": "https://www.openstreetmap.org/node/12218233326",
+          "kind": "shower-node",
+          "distanceMeters": 242,
+          "tier": "high",
+          "polyDistM": 0
+        }
+      ]
+    },
+    {
+      "beachId": 1984,
+      "beach": "Άγιος Γεώργιος",
+      "region": "South Aegean",
+      "tier": "high",
+      "showerCount": 2,
+      "nearestM": 189,
+      "evidence": [
+        {
+          "osmUrl": "https://www.openstreetmap.org/node/13366376520",
+          "kind": "shower-node",
+          "distanceMeters": 189,
+          "tier": "high",
+          "polyDistM": 0
+        },
+        {
+          "osmUrl": "https://www.openstreetmap.org/node/5894606959",
+          "kind": "shower-node",
+          "distanceMeters": 192,
+          "tier": "high",
+          "polyDistM": 8,
+          "fee": "no"
+        }
+      ]
+    },
+    {
+      "beachId": 2320,
+      "beach": "Κόλπος Αγίου Στεφάνου",
+      "region": "South Aegean",
+      "tier": "high",
+      "showerCount": 1,
+      "nearestM": 190,
+      "evidence": [
+        {
+          "osmUrl": "https://www.openstreetmap.org/node/12035915701",
+          "kind": "shower-node",
+          "distanceMeters": 190,
+          "tier": "high",
+          "polyDistM": 29,
+          "fee": "no"
+        }
+      ]
+    },
+    {
+      "beachId": 235,
+      "beach": "Κορασίδα",
+      "region": "Central Greece",
+      "tier": "high",
+      "showerCount": 1,
+      "nearestM": 193,
+      "evidence": [
+        {
+          "osmUrl": "https://www.openstreetmap.org/node/12125107309",
+          "kind": "shower-node",
+          "distanceMeters": 193,
+          "tier": "high",
+          "polyDistM": 15
+        }
+      ]
+    },
+    {
+      "beachId": 3009,
+      "beach": "Νέα Ρόδα",
+      "region": "Central Macedonia",
+      "tier": "high",
+      "showerCount": 1,
+      "nearestM": 195,
+      "evidence": [
+        {
+          "osmUrl": "https://www.openstreetmap.org/node/7935757059",
+          "kind": "shower-node",
+          "distanceMeters": 195,
+          "tier": "high",
+          "polyDistM": 0,
+          "fee": "no"
+        }
+      ]
+    },
+    {
+      "beachId": 948,
+      "beach": "Moraitika Beach",
+      "region": "Ionian Islands",
+      "tier": "high",
+      "showerCount": 1,
+      "nearestM": 196,
+      "evidence": [
+        {
+          "osmUrl": "https://www.openstreetmap.org/node/13183531301",
+          "kind": "shower-node",
+          "distanceMeters": 196,
+          "tier": "high",
+          "polyDistM": 5
+        }
+      ]
+    },
+    {
+      "beachId": 1260,
+      "beach": "Καρφάς",
+      "region": "North Aegean",
+      "tier": "high",
+      "showerCount": 1,
+      "nearestM": 197,
+      "evidence": [
+        {
+          "osmUrl": "https://www.openstreetmap.org/node/11102574824",
+          "kind": "shower-node",
+          "distanceMeters": 197,
+          "tier": "high",
+          "polyDistM": 0
+        }
+      ]
+    },
+    {
+      "beachId": 442,
+      "beach": "Sani Hill",
+      "region": "Central Macedonia",
+      "tier": "high",
+      "showerCount": 1,
+      "nearestM": 198,
+      "evidence": [
+        {
+          "osmUrl": "https://www.openstreetmap.org/node/5884457157",
+          "kind": "shower-node",
+          "distanceMeters": 198,
+          "tier": "high",
+          "polyDistM": 1
+        }
+      ]
+    },
+    {
+      "beachId": 2446,
+      "beach": "Παραλία Πεύκοι",
+      "region": "South Aegean",
+      "tier": "high",
+      "showerCount": 1,
+      "nearestM": 201,
+      "evidence": [
+        {
+          "osmUrl": "https://www.openstreetmap.org/node/12247804522",
+          "kind": "shower-node",
+          "distanceMeters": 201,
+          "tier": "high",
+          "polyDistM": 10,
+          "fee": "no"
+        }
+      ]
+    },
+    {
+      "beachId": 1006,
+      "beach": "Παραλία Αγίου Γορδίου",
+      "region": "Ionian Islands",
+      "tier": "high",
+      "showerCount": 1,
+      "nearestM": 203,
+      "evidence": [
+        {
+          "osmUrl": "https://www.openstreetmap.org/node/3611402837",
+          "kind": "shower-node",
+          "distanceMeters": 203,
+          "tier": "high",
+          "polyDistM": 1
+        }
+      ]
+    },
+    {
+      "beachId": 2326,
+      "beach": "Μαλιμπού",
+      "region": "South Aegean",
+      "tier": "high",
+      "showerCount": 1,
+      "nearestM": 213,
+      "evidence": [
+        {
+          "osmUrl": "https://www.openstreetmap.org/node/9003069218",
+          "kind": "shower-node",
+          "distanceMeters": 213,
+          "tier": "high",
+          "polyDistM": 5
+        }
+      ]
+    },
+    {
+      "beachId": 899,
+      "beach": "Καραβοστάσι",
+      "region": "Epirus",
+      "tier": "high",
+      "showerCount": 2,
+      "nearestM": 217,
+      "evidence": [
+        {
+          "osmUrl": "https://www.openstreetmap.org/way/690033930",
+          "kind": "shower-node",
+          "distanceMeters": 217,
+          "tier": "high",
+          "polyDistM": 31
+        },
+        {
+          "osmUrl": "https://www.openstreetmap.org/node/5246845825",
+          "kind": "shower-node",
+          "distanceMeters": 221,
+          "tier": "high",
+          "polyDistM": 0
+        }
+      ]
+    },
+    {
+      "beachId": 693,
+      "beach": "Παραλία Επισκοπής",
+      "region": "Crete",
+      "tier": "high",
+      "showerCount": 1,
+      "nearestM": 231,
+      "evidence": [
+        {
+          "osmUrl": "https://www.openstreetmap.org/node/9968280153",
+          "kind": "shower-node",
+          "distanceMeters": 231,
+          "tier": "high",
+          "polyDistM": 0
+        }
+      ]
+    },
+    {
+      "beachId": 1717,
+      "beach": "Παραπόρτι",
+      "region": "South Aegean",
+      "tier": "high",
+      "showerCount": 2,
+      "nearestM": 232,
+      "evidence": [
+        {
+          "osmUrl": "https://www.openstreetmap.org/node/7823341888",
+          "kind": "shower-node",
+          "distanceMeters": 232,
+          "tier": "high",
+          "polyDistM": 14
+        },
+        {
+          "osmUrl": "https://www.openstreetmap.org/node/7823341986",
+          "kind": "shower-node",
+          "distanceMeters": 241,
+          "tier": "high",
+          "polyDistM": 7
+        }
+      ]
+    },
+    {
+      "beachId": 986,
+      "beach": "Παραλία Αχαράβης",
+      "region": "Ionian Islands",
+      "tier": "high",
+      "showerCount": 1,
+      "nearestM": 233,
+      "evidence": [
+        {
+          "osmUrl": "https://www.openstreetmap.org/node/9627710291",
+          "kind": "shower-node",
+          "distanceMeters": 233,
+          "tier": "high",
+          "polyDistM": 5
+        }
+      ]
+    },
+    {
+      "beachId": 1519,
+      "beach": "Πούλιθρα",
+      "region": "Peloponnese",
+      "tier": "high",
+      "showerCount": 1,
+      "nearestM": 235,
+      "evidence": [
+        {
+          "osmUrl": "https://www.openstreetmap.org/node/13655210242",
+          "kind": "shower-node",
+          "distanceMeters": 235,
+          "tier": "high",
+          "polyDistM": 7
+        }
+      ]
+    },
+    {
+      "beachId": 1183,
+      "beach": "Αλυκανάς",
+      "region": "Ionian Islands",
+      "tier": "high",
+      "showerCount": 1,
+      "nearestM": 236,
+      "evidence": [
+        {
+          "osmUrl": "https://www.openstreetmap.org/node/9932166950",
+          "kind": "shower-node",
+          "distanceMeters": 236,
+          "tier": "high",
+          "polyDistM": 8
+        }
+      ]
+    },
+    {
+      "beachId": 508,
+      "beach": "Παραλία Κατερίνης",
+      "region": "Central Macedonia",
+      "tier": "high",
+      "showerCount": 2,
+      "nearestM": 243,
+      "evidence": [
+        {
+          "osmUrl": "https://www.openstreetmap.org/node/5339737362",
+          "kind": "shower-node",
+          "distanceMeters": 243,
+          "tier": "high",
+          "polyDistM": 0
+        },
+        {
+          "osmUrl": "https://www.openstreetmap.org/node/12917293342",
+          "kind": "shower-node",
+          "distanceMeters": 244,
+          "tier": "high",
+          "polyDistM": 0
+        }
+      ]
+    },
+    {
+      "beachId": 2406,
+      "beach": "Παραλία Καλλιθέας (Nicolas)",
+      "region": "South Aegean",
+      "tier": "medium",
+      "showerCount": 1,
+      "nearestM": 83,
+      "evidence": [
+        {
+          "osmUrl": "https://www.openstreetmap.org/node/8940685958",
+          "kind": "shower-node",
+          "distanceMeters": 83,
+          "tier": "medium",
+          "polyDistM": 134
+        }
+      ]
+    },
+    {
+      "beachId": 922,
+      "beach": "Σοφάς",
+      "region": "Epirus",
+      "tier": "medium",
+      "showerCount": 1,
+      "nearestM": 87,
+      "evidence": [
+        {
+          "osmUrl": "https://www.openstreetmap.org/way/1327618649",
+          "kind": "shower-tag",
+          "distanceMeters": 87,
+          "tier": "medium",
+          "polyDistM": 59,
+          "name": "Camping Sofas"
+        }
+      ]
+    },
+    {
+      "beachId": 679,
+      "beach": "Καλυψώ",
+      "region": "Crete",
+      "tier": "medium",
+      "showerCount": 1,
+      "nearestM": 91,
+      "evidence": [
+        {
+          "osmUrl": "https://www.openstreetmap.org/node/11114412180",
+          "kind": "shower-node",
+          "distanceMeters": 91,
+          "tier": "medium",
+          "polyDistM": 86
+        }
+      ]
+    },
+    {
+      "beachId": 913,
+      "beach": "Παραλία Καλάμι",
+      "region": "Epirus",
+      "tier": "medium",
+      "showerCount": 2,
+      "nearestM": 91,
+      "evidence": [
+        {
+          "osmUrl": "https://www.openstreetmap.org/node/9301460461",
+          "kind": "shower-node",
+          "distanceMeters": 91,
+          "tier": "medium",
+          "polyDistM": 68
+        },
+        {
+          "osmUrl": "https://www.openstreetmap.org/node/9301460458",
+          "kind": "shower-node",
+          "distanceMeters": 92,
+          "tier": "medium",
+          "polyDistM": 69
+        }
+      ]
+    },
+    {
+      "beachId": 430,
+      "beach": "Oneiro",
+      "region": "Central Macedonia",
+      "tier": "medium",
+      "showerCount": 1,
+      "nearestM": 91,
+      "evidence": [
+        {
+          "osmUrl": "https://www.openstreetmap.org/node/5081651699",
+          "kind": "shower-tag",
+          "distanceMeters": 91,
+          "tier": "medium",
+          "polyDistM": 50,
+          "name": "Ακτή ονείρου Camping-Bungalows"
+        }
+      ]
+    },
+    {
+      "beachId": 477,
+      "beach": "Παραλία Ποσείδι",
+      "region": "Central Macedonia",
+      "tier": "medium",
+      "showerCount": 1,
+      "nearestM": 97,
+      "evidence": [
+        {
+          "osmUrl": "https://www.openstreetmap.org/node/5909678547",
+          "kind": "shower-node",
+          "distanceMeters": 97,
+          "tier": "medium",
+          "fee": "no"
+        }
+      ]
+    },
+    {
+      "beachId": 1497,
+      "beach": "Ίρια",
+      "region": "Peloponnese",
+      "tier": "medium",
+      "showerCount": 1,
+      "nearestM": 102,
+      "evidence": [
+        {
+          "osmUrl": "https://www.openstreetmap.org/way/366983280",
+          "kind": "shower-tag",
+          "distanceMeters": 102,
+          "tier": "medium",
+          "polyDistM": 63,
+          "name": "Κάμπιγκ Ποσειδών"
+        }
+      ]
+    },
+    {
+      "beachId": 1098,
+      "beach": "Καραβόμυλος",
+      "region": "Ionian Islands",
+      "tier": "medium",
+      "showerCount": 1,
+      "nearestM": 106,
+      "evidence": [
+        {
+          "osmUrl": "https://www.openstreetmap.org/node/26860001",
+          "kind": "shower-tag",
+          "distanceMeters": 106,
+          "tier": "medium",
+          "polyDistM": 45,
+          "name": "Camping Karavomilos Beach"
+        }
+      ]
+    },
+    {
+      "beachId": 686,
+      "beach": "Λίμνη",
+      "region": "Crete",
+      "tier": "medium",
+      "showerCount": 4,
+      "nearestM": 120,
+      "evidence": [
+        {
+          "osmUrl": "https://www.openstreetmap.org/node/12146875737",
+          "kind": "shower-node",
+          "distanceMeters": 120,
+          "tier": "medium",
+          "polyDistM": 67
+        },
+        {
+          "osmUrl": "https://www.openstreetmap.org/node/9133133555",
+          "kind": "shower-node",
+          "distanceMeters": 122,
+          "tier": "medium",
+          "polyDistM": 70
+        },
+        {
+          "osmUrl": "https://www.openstreetmap.org/node/9149448573",
+          "kind": "shower-node",
+          "distanceMeters": 167,
+          "tier": "low",
+          "polyDistM": 108,
+          "fee": "no"
+        },
+        {
+          "osmUrl": "https://www.openstreetmap.org/node/12146875736",
+          "kind": "shower-node",
+          "distanceMeters": 248,
+          "tier": "low",
+          "polyDistM": 202,
+          "fee": "no"
+        }
+      ]
+    },
+    {
+      "beachId": 2011,
+      "beach": "Πάνορμος",
+      "region": "South Aegean",
+      "tier": "medium",
+      "showerCount": 1,
+      "nearestM": 121,
+      "evidence": [
+        {
+          "osmUrl": "https://www.openstreetmap.org/node/11102676806",
+          "kind": "shower-node",
+          "distanceMeters": 121,
+          "tier": "medium",
+          "polyDistM": 93
+        }
+      ]
+    },
+    {
+      "beachId": 33,
+      "beach": "Παραλία Μαραθώνα",
+      "region": "Attica",
+      "tier": "medium",
+      "showerCount": 1,
+      "nearestM": 122,
+      "evidence": [
+        {
+          "osmUrl": "https://www.openstreetmap.org/node/12304287601",
+          "kind": "shower-node",
+          "distanceMeters": 122,
+          "tier": "medium"
+        }
+      ]
+    },
+    {
+      "beachId": 248,
+      "beach": "Λιμνιωνάκι",
+      "region": "Central Greece",
+      "tier": "medium",
+      "showerCount": 1,
+      "nearestM": 128,
+      "evidence": [
+        {
+          "osmUrl": "https://www.openstreetmap.org/node/13072264607",
+          "kind": "shower-node",
+          "distanceMeters": 128,
+          "tier": "medium",
+          "polyDistM": 102
+        }
+      ]
+    },
+    {
+      "beachId": 818,
+      "beach": "Παραδείσος",
+      "region": "East Macedonia and Thrace",
+      "tier": "medium",
+      "showerCount": 1,
+      "nearestM": 129,
+      "evidence": [
+        {
+          "osmUrl": "https://www.openstreetmap.org/node/9047456096",
+          "kind": "shower-node",
+          "distanceMeters": 129,
+          "tier": "medium",
+          "polyDistM": 44
+        }
+      ]
+    },
+    {
+      "beachId": 973,
+      "beach": "Μανδράκι",
+      "region": "Ionian Islands",
+      "tier": "medium",
+      "showerCount": 1,
+      "nearestM": 131,
+      "evidence": [
+        {
+          "osmUrl": "https://www.openstreetmap.org/node/1340038270",
+          "kind": "shower-node",
+          "distanceMeters": 131,
+          "tier": "medium",
+          "polyDistM": 108,
+          "fee": "no"
+        }
+      ]
+    },
+    {
+      "beachId": 392,
+      "beach": "Dimotiki Plaz 2",
+      "region": "Central Macedonia",
+      "tier": "medium",
+      "showerCount": 1,
+      "nearestM": 136,
+      "evidence": [
+        {
+          "osmUrl": "https://www.openstreetmap.org/node/12851079091",
+          "kind": "shower-node",
+          "distanceMeters": 136,
+          "tier": "medium",
+          "polyDistM": 39
+        }
+      ]
+    },
+    {
+      "beachId": 1634,
+      "beach": "Παραλία Καλαμάτας",
+      "region": "Peloponnese",
+      "tier": "low",
+      "showerCount": 1,
+      "nearestM": 152,
+      "evidence": [
+        {
+          "osmUrl": "https://www.openstreetmap.org/node/12299047001",
+          "kind": "shower-node",
+          "distanceMeters": 152,
+          "tier": "low",
+          "polyDistM": 65
+        }
+      ]
+    },
+    {
+      "beachId": 312,
+      "beach": "Χιλιαδού παραλία Γυμνιστών",
+      "region": "Central Greece",
+      "tier": "low",
+      "showerCount": 1,
+      "nearestM": 153,
+      "evidence": [
+        {
+          "osmUrl": "https://www.openstreetmap.org/node/4708454679",
+          "kind": "shower-node",
+          "distanceMeters": 153,
+          "tier": "low",
+          "polyDistM": 63
+        }
+      ]
+    },
+    {
+      "beachId": 512,
+      "beach": "Παραλία Αγγελοχωρίου",
+      "region": "Central Macedonia",
+      "tier": "low",
+      "showerCount": 1,
+      "nearestM": 153,
+      "evidence": [
+        {
+          "osmUrl": "https://www.openstreetmap.org/way/513680068",
+          "kind": "shower-tag",
+          "distanceMeters": 153,
+          "tier": "low",
+          "polyDistM": 112,
+          "name": "Ακτή Ρετζίκα"
+        }
+      ]
+    },
+    {
+      "beachId": 799,
+      "beach": "Παχυνάμμος",
+      "region": "East Macedonia and Thrace",
+      "tier": "low",
+      "showerCount": 1,
+      "nearestM": 164,
+      "evidence": [
+        {
+          "osmUrl": "https://www.openstreetmap.org/node/5936957155",
+          "kind": "shower-node",
+          "distanceMeters": 164,
+          "tier": "low",
+          "fee": "no"
+        }
+      ]
+    },
+    {
+      "beachId": 1166,
+      "beach": "Μικρός Γιαλός",
+      "region": "Ionian Islands",
+      "tier": "low",
+      "showerCount": 1,
+      "nearestM": 168,
+      "evidence": [
+        {
+          "osmUrl": "https://www.openstreetmap.org/way/369336497",
+          "kind": "shower-tag",
+          "distanceMeters": 168,
+          "tier": "low",
+          "polyDistM": 115,
+          "name": "Poros Beach"
+        }
+      ]
+    },
+    {
+      "beachId": 785,
+      "beach": "Παραλία Καβάλας",
+      "region": "East Macedonia and Thrace",
+      "tier": "low",
+      "showerCount": 1,
+      "nearestM": 178,
+      "evidence": [
+        {
+          "osmUrl": "https://www.openstreetmap.org/node/6721205457",
+          "kind": "shower-node",
+          "distanceMeters": 178,
+          "tier": "low"
+        }
+      ]
+    },
+    {
+      "beachId": 3033,
+      "beach": "Χερσόνησος Αγκισαράς",
+      "region": "Crete",
+      "tier": "low",
+      "showerCount": 3,
+      "nearestM": 180,
+      "evidence": [
+        {
+          "osmUrl": "https://www.openstreetmap.org/node/6749938404",
+          "kind": "shower-node",
+          "distanceMeters": 180,
+          "tier": "low"
+        },
+        {
+          "osmUrl": "https://www.openstreetmap.org/node/5334811069",
+          "kind": "shower-node",
+          "distanceMeters": 218,
+          "tier": "low"
+        },
+        {
+          "osmUrl": "https://www.openstreetmap.org/node/3703769604",
+          "kind": "shower-node",
+          "distanceMeters": 244,
+          "tier": "low"
+        }
+      ]
+    },
+    {
+      "beachId": 1146,
+      "beach": "Άγιος Ιωάννης",
+      "region": "Ionian Islands",
+      "tier": "low",
+      "showerCount": 1,
+      "nearestM": 184,
+      "evidence": [
+        {
+          "osmUrl": "https://www.openstreetmap.org/node/5767900986",
+          "kind": "shower-node",
+          "distanceMeters": 184,
+          "tier": "low",
+          "fee": "no"
+        }
+      ]
+    },
+    {
+      "beachId": 1991,
+      "beach": "Βίντζι",
+      "region": "South Aegean",
+      "tier": "low",
+      "showerCount": 1,
+      "nearestM": 186,
+      "evidence": [
+        {
+          "osmUrl": "https://www.openstreetmap.org/node/9001579188",
+          "kind": "shower-node",
+          "distanceMeters": 186,
+          "tier": "low",
+          "polyDistM": 165,
+          "fee": "no"
+        }
+      ]
+    },
+    {
+      "beachId": 1140,
+      "beach": "Δεσίμι",
+      "region": "Ionian Islands",
+      "tier": "low",
+      "showerCount": 1,
+      "nearestM": 186,
+      "evidence": [
+        {
+          "osmUrl": "https://www.openstreetmap.org/node/1421704277",
+          "kind": "shower-node",
+          "distanceMeters": 186,
+          "tier": "low",
+          "polyDistM": 42
+        }
+      ]
+    },
+    {
+      "beachId": 1354,
+      "beach": "Παραλία Γυμνιστών Ερεσού",
+      "region": "North Aegean",
+      "tier": "low",
+      "showerCount": 1,
+      "nearestM": 192,
+      "evidence": [
+        {
+          "osmUrl": "https://www.openstreetmap.org/node/12207251964",
+          "kind": "shower-node",
+          "distanceMeters": 192,
+          "tier": "low",
+          "polyDistM": 60
+        }
+      ]
+    },
+    {
+      "beachId": 1570,
+      "beach": "Μώλος",
+      "region": "Peloponnese",
+      "tier": "low",
+      "showerCount": 1,
+      "nearestM": 193,
+      "evidence": [
+        {
+          "osmUrl": "https://www.openstreetmap.org/node/10815737698",
+          "kind": "shower-node",
+          "distanceMeters": 193,
+          "tier": "low",
+          "polyDistM": 157
+        }
+      ]
+    },
+    {
+      "beachId": 1750,
+      "beach": "Λιβάδι",
+      "region": "South Aegean",
+      "tier": "low",
+      "showerCount": 5,
+      "nearestM": 198,
+      "evidence": [
+        {
+          "osmUrl": "https://www.openstreetmap.org/node/3761738080",
+          "kind": "shower-node",
+          "distanceMeters": 198,
+          "tier": "low",
+          "polyDistM": 131
+        },
+        {
+          "osmUrl": "https://www.openstreetmap.org/node/3761738067",
+          "kind": "shower-node",
+          "distanceMeters": 200,
+          "tier": "low",
+          "polyDistM": 132
+        },
+        {
+          "osmUrl": "https://www.openstreetmap.org/node/3761738063",
+          "kind": "shower-node",
+          "distanceMeters": 200,
+          "tier": "low",
+          "polyDistM": 133
+        },
+        {
+          "osmUrl": "https://www.openstreetmap.org/node/3761738075",
+          "kind": "shower-node",
+          "distanceMeters": 200,
+          "tier": "low",
+          "polyDistM": 133
+        },
+        {
+          "osmUrl": "https://www.openstreetmap.org/node/3761736923",
+          "kind": "shower-node",
+          "distanceMeters": 244,
+          "tier": "low",
+          "polyDistM": 176
+        }
+      ]
+    },
+    {
+      "beachId": 2579,
+      "beach": "Φάλαρι",
+      "region": "West Greece",
+      "tier": "low",
+      "showerCount": 1,
+      "nearestM": 202,
+      "evidence": [
+        {
+          "osmUrl": "https://www.openstreetmap.org/node/4708036240",
+          "kind": "shower-node",
+          "distanceMeters": 202,
+          "tier": "low",
+          "polyDistM": 42,
+          "fee": "no"
+        }
+      ]
+    },
+    {
+      "beachId": 963,
+      "beach": "Καλυβιώτης",
+      "region": "Ionian Islands",
+      "tier": "low",
+      "showerCount": 1,
+      "nearestM": 202,
+      "evidence": [
+        {
+          "osmUrl": "https://www.openstreetmap.org/node/13049504257",
+          "kind": "shower-node",
+          "distanceMeters": 202,
+          "tier": "low"
+        }
+      ]
+    },
+    {
+      "beachId": 677,
+      "beach": "Γεροπόταμος",
+      "region": "Crete",
+      "tier": "low",
+      "showerCount": 1,
+      "nearestM": 207,
+      "evidence": [
+        {
+          "osmUrl": "https://www.openstreetmap.org/node/4416568089",
+          "kind": "shower-node",
+          "distanceMeters": 207,
+          "tier": "low",
+          "polyDistM": 124
+        }
+      ]
+    },
+    {
+      "beachId": 1059,
+      "beach": "Μπραγκίνι",
+      "region": "Ionian Islands",
+      "tier": "low",
+      "showerCount": 1,
+      "nearestM": 222,
+      "evidence": [
+        {
+          "osmUrl": "https://www.openstreetmap.org/node/12033645949",
+          "kind": "shower-node",
+          "distanceMeters": 222,
+          "tier": "low"
+        }
+      ]
+    },
+    {
+      "beachId": 2700,
+      "beach": "Μυλοπόταμος",
+      "region": "Thessaly",
+      "tier": "low",
+      "showerCount": 1,
+      "nearestM": 224,
+      "evidence": [
+        {
+          "osmUrl": "https://www.openstreetmap.org/node/6627684627",
+          "kind": "shower-node",
+          "distanceMeters": 224,
+          "tier": "low",
+          "polyDistM": 204
+        }
+      ]
+    },
+    {
+      "beachId": 1171,
+      "beach": "Πόρτο Κάτσικι",
+      "region": "Ionian Islands",
+      "tier": "low",
+      "showerCount": 1,
+      "nearestM": 242,
+      "evidence": [
+        {
+          "osmUrl": "https://www.openstreetmap.org/node/5289167725",
+          "kind": "shower-node",
+          "distanceMeters": 242,
+          "tier": "low",
+          "polyDistM": 79
+        }
+      ]
+    },
+    {
+      "beachId": 443,
+      "beach": "Sarti",
+      "region": "Central Macedonia",
+      "tier": "low",
+      "showerCount": 1,
+      "nearestM": 242,
+      "evidence": [
+        {
+          "osmUrl": "https://www.openstreetmap.org/node/5047548601",
+          "kind": "shower-node",
+          "distanceMeters": 242,
+          "tier": "low",
+          "polyDistM": 128
+        }
+      ]
+    },
+    {
+      "beachId": 2412,
+      "beach": "Κόκκινα",
+      "region": "South Aegean",
+      "tier": "low",
+      "showerCount": 1,
+      "nearestM": 247,
+      "evidence": [
+        {
+          "osmUrl": "https://www.openstreetmap.org/node/2369344294",
+          "kind": "shower-node",
+          "distanceMeters": 247,
+          "tier": "low",
+          "polyDistM": 202
+        }
+      ]
+    }
+  ],
+  "orphansSample": [
+    {
+      "osmUrl": "https://www.openstreetmap.org/node/13467343001",
+      "name": null,
+      "nearestBeachM": 282
+    },
+    {
+      "osmUrl": "https://www.openstreetmap.org/node/1912857179",
+      "name": null,
+      "nearestBeachM": null
+    },
+    {
+      "osmUrl": "https://www.openstreetmap.org/node/8069701286",
+      "name": null,
+      "nearestBeachM": null
+    },
+    {
+      "osmUrl": "https://www.openstreetmap.org/node/9927400800",
+      "name": null,
+      "nearestBeachM": null
+    },
+    {
+      "osmUrl": "https://www.openstreetmap.org/node/12271752330",
+      "name": null,
+      "nearestBeachM": null
+    },
+    {
+      "osmUrl": "https://www.openstreetmap.org/node/12271752329",
+      "name": null,
+      "nearestBeachM": null
+    },
+    {
+      "osmUrl": "https://www.openstreetmap.org/node/12271752328",
+      "name": null,
+      "nearestBeachM": null
+    },
+    {
+      "osmUrl": "https://www.openstreetmap.org/node/12271752326",
+      "name": null,
+      "nearestBeachM": null
+    },
+    {
+      "osmUrl": "https://www.openstreetmap.org/node/13234489695",
+      "name": null,
+      "nearestBeachM": null
+    },
+    {
+      "osmUrl": "https://www.openstreetmap.org/node/12271752322",
+      "name": null,
+      "nearestBeachM": null
+    },
+    {
+      "osmUrl": "https://www.openstreetmap.org/node/13256135925",
+      "name": null,
+      "nearestBeachM": null
+    },
+    {
+      "osmUrl": "https://www.openstreetmap.org/node/12266005917",
+      "name": null,
+      "nearestBeachM": null
+    },
+    {
+      "osmUrl": "https://www.openstreetmap.org/node/9927400802",
+      "name": null,
+      "nearestBeachM": null
+    },
+    {
+      "osmUrl": "https://www.openstreetmap.org/node/9983717420",
+      "name": null,
+      "nearestBeachM": null
+    },
+    {
+      "osmUrl": "https://www.openstreetmap.org/node/11991897609",
+      "name": null,
+      "nearestBeachM": null
+    },
+    {
+      "osmUrl": "https://www.openstreetmap.org/node/11991897608",
+      "name": null,
+      "nearestBeachM": null
+    },
+    {
+      "osmUrl": "https://www.openstreetmap.org/node/11429860460",
+      "name": null,
+      "nearestBeachM": 315
+    },
+    {
+      "osmUrl": "https://www.openstreetmap.org/node/10076356547",
+      "name": null,
+      "nearestBeachM": null
+    },
+    {
+      "osmUrl": "https://www.openstreetmap.org/node/6744261825",
+      "name": null,
+      "nearestBeachM": null
+    },
+    {
+      "osmUrl": "https://www.openstreetmap.org/node/2419985505",
+      "name": null,
+      "nearestBeachM": 285
+    },
+    {
+      "osmUrl": "https://www.openstreetmap.org/node/13035949201",
+      "name": null,
+      "nearestBeachM": null
+    },
+    {
+      "osmUrl": "https://www.openstreetmap.org/node/2419956711",
+      "name": null,
+      "nearestBeachM": null
+    },
+    {
+      "osmUrl": "https://www.openstreetmap.org/node/11260098940",
+      "name": null,
+      "nearestBeachM": null
+    },
+    {
+      "osmUrl": "https://www.openstreetmap.org/way/239961728",
+      "name": "Camping No Problem",
+      "nearestBeachM": null
+    },
+    {
+      "osmUrl": "https://www.openstreetmap.org/node/9979443804",
+      "name": null,
+      "nearestBeachM": 282
+    },
+    {
+      "osmUrl": "https://www.openstreetmap.org/node/11226578560",
+      "name": null,
+      "nearestBeachM": 251
+    },
+    {
+      "osmUrl": "https://www.openstreetmap.org/node/10027565940",
+      "name": null,
+      "nearestBeachM": null
+    },
+    {
+      "osmUrl": "https://www.openstreetmap.org/node/11114404857",
+      "name": null,
+      "nearestBeachM": 322
+    },
+    {
+      "osmUrl": "https://www.openstreetmap.org/node/11114404888",
+      "name": null,
+      "nearestBeachM": 371
+    },
+    {
+      "osmUrl": "https://www.openstreetmap.org/way/643081878",
+      "name": null,
+      "nearestBeachM": null
+    },
+    {
+      "osmUrl": "https://www.openstreetmap.org/node/11114404889",
+      "name": null,
+      "nearestBeachM": 466
+    },
+    {
+      "osmUrl": "https://www.openstreetmap.org/node/9969827510",
+      "name": null,
+      "nearestBeachM": null
+    },
+    {
+      "osmUrl": "https://www.openstreetmap.org/node/9970593410",
+      "name": null,
+      "nearestBeachM": null
+    },
+    {
+      "osmUrl": "https://www.openstreetmap.org/node/9970593412",
+      "name": null,
+      "nearestBeachM": null
+    },
+    {
+      "osmUrl": "https://www.openstreetmap.org/node/9969827512",
+      "name": null,
+      "nearestBeachM": null
+    },
+    {
+      "osmUrl": "https://www.openstreetmap.org/node/9969827511",
+      "name": null,
+      "nearestBeachM": null
+    },
+    {
+      "osmUrl": "https://www.openstreetmap.org/node/9969827515",
+      "name": null,
+      "nearestBeachM": 428
+    },
+    {
+      "osmUrl": "https://www.openstreetmap.org/node/9987627858",
+      "name": null,
+      "nearestBeachM": null
+    },
+    {
+      "osmUrl": "https://www.openstreetmap.org/node/12047153069",
+      "name": null,
+      "nearestBeachM": null
+    },
+    {
+      "osmUrl": "https://www.openstreetmap.org/node/6525042858",
+      "name": null,
+      "nearestBeachM": null
+    }
+  ]
+}

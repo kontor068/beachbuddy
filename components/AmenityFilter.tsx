@@ -6,8 +6,9 @@ import {
   Trees, 
   Utensils, 
   Waves, 
-  ParkingCircle, 
-  CircleDot, 
+  ParkingCircle,
+  ShowerHead,
+  CircleDot,
   Mountain, 
   BadgeCheck,
   Search,
@@ -65,6 +66,7 @@ const filterIcons: Record<string, React.ReactNode> = {
   beachBar: <Waves className="h-5 w-5 shrink-0" />,
   sunbeds: <SunbedIcon className="h-5 w-5 shrink-0" />,
   parking: <ParkingCircle className="h-5 w-5 shrink-0" />,
+  shower: <ShowerHead className="h-5 w-5 shrink-0" />,
   sandy: <SandDotsIcon className="h-5 w-5 shrink-0" />,
   pebbles: <CircleDot className="h-5 w-5 shrink-0" />,
   quiet: <VolumeX className="h-5 w-5 shrink-0" />,
@@ -154,7 +156,7 @@ type FilterSectionTitleKey = 'quick' | 'amenities' | 'beachAndWater' | 'experien
 
 const filterGroupDefinitions: Array<{ id: string; titleKey: FilterSectionTitleKey; filters: FilterKey[] }> = [
   { id: 'quick', titleKey: 'quick', filters: ['familyFriendly', 'beachBar', 'quiet', 'easyAccess', 'disabledAccess'] },
-  { id: 'amenities', titleKey: 'amenities', filters: ['taverna', 'sunbeds', 'parking', 'naturalShade'] },
+  { id: 'amenities', titleKey: 'amenities', filters: ['taverna', 'sunbeds', 'parking', 'shower', 'naturalShade'] },
   { id: 'beachAndWater', titleKey: 'beachAndWater', filters: ['sandy', 'pebbles', 'sandy-pebbles', 'rocky', 'shallowWaters', 'deepWaters'] },
   { id: 'experience', titleKey: 'experience', filters: ['snorkeling', 'adventure', 'sunset', 'naturist'] },
 ];

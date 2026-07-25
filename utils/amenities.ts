@@ -15,6 +15,7 @@ export type AmenityChipKey =
   | 'cafeNearby'
   | 'snackCanteen'
   | 'parking'
+  | 'shower'
   | 'organizedFacilities'
   | 'noFacilities'
   | 'seasonalFacilities'
@@ -29,7 +30,7 @@ export interface AmenityChip {
 }
 
 export interface AmenityStatusRow {
-  key: Extract<AmenityChipKey, 'beachBar' | 'sunbeds' | 'foodNearby' | 'cafeNearby' | 'snackCanteen' | 'parking'>;
+  key: Extract<AmenityChipKey, 'beachBar' | 'sunbeds' | 'foodNearby' | 'cafeNearby' | 'snackCanteen' | 'parking' | 'shower'>;
   label: string;
   value: string;
   status: AmenityStatus;
@@ -44,6 +45,7 @@ const specificAmenityOrder: SpecificAmenityKey[] = [
   'cafeNearby',
   'snackCanteen',
   'parking',
+  'shower',
 ];
 
 const normalize = (value: string | undefined): string =>
@@ -64,6 +66,7 @@ const amenityLabels: Record<SpecificAmenityKey, LocalizedAmenityText> = {
   cafeNearby: { en: 'Café nearby', gr: 'Καφέ κοντά', fr: 'Café proche', de: 'Café in der Nähe', it: 'Caffè vicino' },
   snackCanteen: { en: 'Canteen', gr: 'Καντίνα', fr: 'Buvette', de: 'Imbiss', it: 'Chiosco' },
   parking: { en: 'Parking nearby', gr: 'Parking κοντά', fr: 'Parking proche', de: 'Parken in der Nähe', it: 'Parcheggio vicino' },
+  shower: { en: 'Shower', gr: 'Ντους', fr: 'Douche', de: 'Dusche', it: 'Doccia' },
 };
 
 const rowLabels: Record<SpecificAmenityKey, LocalizedAmenityText> = {
@@ -146,6 +149,8 @@ const itemMatches = (item: string, key: SpecificAmenityKey): boolean => {
       return amenityItemIncludesAny(item, SNACK_CANTEEN_AMENITY_TERMS);
     case 'parking':
       return /parking|παρκ|σταθμευσ/.test(text);
+    case 'shower':
+      return /ντουζ|ντους|shower|douche|dusche|doccia/.test(text);
     default:
       return false;
   }
@@ -207,6 +212,7 @@ const getTopLevelStatus = (beach: Beach, key: SpecificAmenityKey): AmenityStatus
     cafeNearby?: boolean;
     snackCanteen?: boolean;
     parking?: boolean;
+    shower?: boolean;
     seasonal?: boolean;
   };
 

@@ -210,6 +210,7 @@ const buildIslandsFromRawBeaches = (rawBeaches: RawBeach[]): Island[] => {
         sunbeds: hasSunbeds,
         restaurant: hasRestaurant,
         parking: hasParking,
+        shower: false, // no deterministic guess for showers — only high-confidence OSM matches set this
       },
       beachType,
       characteristics: { deepWaters: depth.deepWaters, shallowWaters: depth.shallowWaters },
