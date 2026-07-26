@@ -36,6 +36,21 @@ import { recordPageview } from './services/pageviewBeacon';
 import { loadAppReadyRegion, loadBeachDetailData, loadBeachRegionIndex, loadBeachSearchIndex, mergeBeachDetailData } from './services/beachDataLoader';
 import { fetchForecastData, fetchMarineForecastData, mergeMarineForecastData } from './services/weatherService';
 import { calculateSeaConditionScore, hasPoorSeaConditions } from './utils/seaConditions';
+import {
+  MEANINGFUL_WIND_TOP_PICK_BEAUFORT,
+  PROTECTED_FIRST_BEAUFORT,
+  MAX_TOP_RECOMMENDATION_BEAUFORT,
+  MIN_TOP_PICK_SEA_CONDITION_SCORE,
+  MIN_STRONG_SUITABLE_SEA_CONDITION_SCORE,
+  MIN_REMAINING_TOP_PICK_SCORE,
+  isWindProtectedRecommendation,
+  exposurePriority,
+  compareOptionalDistance,
+  compareTouristTopPickPriority,
+  getWindPriorityTopPickPool,
+  prioritizeProtectedRecommendations,
+  passesTopPickSeaGate,
+} from './services/topPickRanking';
 import { recordForecastSnapshots } from './services/forecastVerificationService';
 import { getBeachPhotoLookup } from './services/beachPhotos';
 import { scrollElementIntoView, scrollToPageTop } from './utils/scroll';
@@ -279,49 +294,13 @@ const seoCopy: Record<SupportedLanguage, { title: string; description: string; l
   },
 };
 
-const hasMainstreamFacilities = (beach: Beach): boolean => Boolean(
-  beach.metadata?.organized ??
-  (beach.amenities?.organized || beach.amenities?.beachBar || beach.amenities?.sunbeds || beach.amenities?.taverna || beach.amenities?.restaurant || beach.amenities?.parking)
-);
-
-const hasTopPickVisitorServices = (beach: Beach): boolean => {
-  const metadataAmenities = beach.metadata?.amenities?.join(' ').toLowerCase() || '';
-
-  return Boolean(
-    beach.metadata?.organized === true ||
-    beach.amenities?.organized ||
-    beach.amenities?.beachBar ||
-    beach.amenities?.sunbeds ||
-    beach.amenities?.taverna ||
-    beach.amenities?.restaurant ||
-    /beach bar|sunbed|ξαπλώστρ|ομπρέλ|καφέ|cafe|ταβέρν|taverna|restaurant|εστιατόρ/.test(metadataAmenities)
-  );
-};
-
-const hasTouristReadyTopPickProfile = (beach: Beach): boolean => {
-  if (!hasMainstreamTopPickAccess(beach)) return false;
-
-  return Boolean(
-    hasTopPickVisitorServices(beach) ||
-    beach.amenities?.parking ||
-    beach.environment?.familyFriendly
-  );
-};
-
-const isWindProtectedRecommendation = (item: Pick<SuitableBeach, 'isExposed' | 'exposureLevel' | 'canClaimWindProtection'>): boolean => {
-  return item.exposureLevel === 'protected' && item.canClaimWindProtection === true;
-};
-
-const MEANINGFUL_WIND_TOP_PICK_BEAUFORT = 3;
-const PROTECTED_FIRST_BEAUFORT = 5;
-const MAX_TOP_RECOMMENDATION_BEAUFORT = 6;
-const MIN_TOP_PICK_SEA_CONDITION_SCORE = 7;
-const MIN_STRONG_SUITABLE_SEA_CONDITION_SCORE = 5;
+// Top-pick gates/ordering + their thresholds moved VERBATIM to
+// services/topPickRanking.ts (2026-07-26) so the trip planner applies the
+// exact same rules as the podium instead of growing a divergent copy.
 const BEACH_DAY_START_MINUTES = 10 * 60;
 const BEACH_DAY_END_MINUTES = 18 * 60;
 const MAP_HOUR_SLIDER_START_HOUR = 8;
 const MAP_HOUR_SLIDER_END_HOUR = 21;
-const MIN_REMAINING_TOP_PICK_SCORE = 62;
 const DEFAULT_FORECAST_SLOT_MINUTES = 120;
 const INITIAL_BEACH_DATA_LOADER_DELAY_MS = 300;
 const DISTANCE_SORT_LOCATION_OPTIONS: PositionOptions = {
@@ -453,119 +432,6 @@ const StartupLocationPrompt: React.FC<{
       </div>
     </section>
   );
-};
-
-const exposurePriority = (item: Pick<SuitableBeach, 'isExposed' | 'exposureLevel'>): number => {
-  if (isWindProtectedRecommendation(item)) return 0;
-  if (item.exposureLevel === 'partial') return 1;
-  return 2;
-};
-
-const topPickProfilePriority = (item: SuitableBeach): number => {
-  return exposurePriority(item);
-};
-
-const topPickPopularityScore = (beach: Beach): number => {
-  return getBeachTouristRecognitionScore(beach);
-};
-
-const topPickAccessPriority = (beach: Beach): number => {
-  const accessType = beach.metadata?.access?.type;
-  if (hasDifficultTopPickAccess(beach)) return 5;
-  if (accessType === 'asphalt_road') return 0;
-  if (accessType === 'passable_dirt_road') return 1;
-  if (accessType === 'hiking_path_easy') return 2;
-  if (!accessType && beach.accessibility === Accessibility.EASY) return 0;
-  if (!accessType && beach.accessibility === Accessibility.MODERATE) return 1;
-  if (hasMainstreamTopPickAccess(beach)) return 3;
-  return 4;
-};
-
-const topPickAmenitiesScore = (beach: Beach): number => {
-  let score = 0;
-  if (hasMainstreamFacilities(beach)) score += 8;
-  if (hasTopPickVisitorServices(beach)) score += 6;
-  if (beach.amenities?.parking) score += 4;
-  if (beach.amenities?.naturalShade) score += 2;
-  if (beach.environment?.familyFriendly) score += 2;
-  return score;
-};
-
-const compareOptionalDistance = (a: SuitableBeach, b: SuitableBeach): number => {
-  const aDistance = typeof a.distance === 'number' && Number.isFinite(a.distance) ? a.distance : undefined;
-  const bDistance = typeof b.distance === 'number' && Number.isFinite(b.distance) ? b.distance : undefined;
-
-  if (aDistance === undefined || bDistance === undefined) return 0;
-  return aDistance - bDistance;
-};
-
-const compareTouristTopPickPriority = (a: SuitableBeach, b: SuitableBeach): number => {
-  const popularityDiff = topPickPopularityScore(b.beach) - topPickPopularityScore(a.beach);
-  if (Math.abs(popularityDiff) >= 1) return popularityDiff;
-
-  const accessDiff = topPickAccessPriority(a.beach) - topPickAccessPriority(b.beach);
-  if (accessDiff !== 0) return accessDiff;
-
-  const distanceDiff = compareOptionalDistance(a, b);
-  if (distanceDiff !== 0) return distanceDiff;
-
-  const amenitiesDiff = topPickAmenitiesScore(b.beach) - topPickAmenitiesScore(a.beach);
-  if (amenitiesDiff !== 0) return amenitiesDiff;
-
-  return 0;
-};
-
-const hasHardTopPickAccessBlocker = (beach: Beach): boolean => (
-  !hasMainstreamTopPickAccess(beach)
-);
-
-const isLessExposedTopPickCandidate = (item: SuitableBeach): boolean => {
-  const lessExposed = item.exposureLevel === 'protected' || item.exposureLevel === 'partial';
-  if (!lessExposed || hasHardTopPickAccessBlocker(item.beach)) return false;
-
-  return Boolean(
-    isWindProtectedRecommendation(item) ||
-    hasTopPickVisitorServices(item.beach) ||
-    hasTouristReadyTopPickProfile(item.beach) ||
-    topPickPopularityScore(item.beach) >= 82
-  );
-};
-
-const getWindPriorityTopPickPool = (items: SuitableBeach[], beaufort: number): SuitableBeach[] => {
-  if (beaufort < MEANINGFUL_WIND_TOP_PICK_BEAUFORT || items.length === 0) return items;
-
-  const lessExposed = items.filter(isLessExposedTopPickCandidate);
-  return lessExposed.length > 0 ? lessExposed : items;
-};
-
-const bestShelteredRecommendationGroup = (items: SuitableBeach[], beaufort: number): SuitableBeach[] => {
-  if (beaufort < MEANINGFUL_WIND_TOP_PICK_BEAUFORT || items.length === 0) return items;
-
-  const bestPriority = Math.min(...items.map(topPickProfilePriority));
-  return items.filter(item => topPickProfilePriority(item) === bestPriority);
-};
-
-const prioritizeProtectedRecommendations = (items: SuitableBeach[], beaufort: number): SuitableBeach[] => {
-  const candidates = bestShelteredRecommendationGroup(items, beaufort);
-  return [...candidates].sort((a, b) => {
-    const profileDiff = topPickProfilePriority(a) - topPickProfilePriority(b);
-    const exposureDiff = exposurePriority(a) - exposurePriority(b);
-    const scoreDiff = b.score - a.score;
-    const touristDiff = compareTouristTopPickPriority(a, b);
-
-    if (beaufort >= MEANINGFUL_WIND_TOP_PICK_BEAUFORT && profileDiff !== 0) return profileDiff;
-    if (beaufort >= PROTECTED_FIRST_BEAUFORT) {
-      if (exposureDiff !== 0) return exposureDiff;
-      return touristDiff || scoreDiff;
-    }
-    if (beaufort >= MEANINGFUL_WIND_TOP_PICK_BEAUFORT && exposureDiff !== 0 && Math.abs(scoreDiff) <= 12) {
-      return exposureDiff;
-    }
-    if (beaufort >= MEANINGFUL_WIND_TOP_PICK_BEAUFORT) {
-      return touristDiff || scoreDiff || exposureDiff;
-    }
-    return scoreDiff || exposureDiff;
-  });
 };
 
 type TimeAwareSuitableBeach = SuitableBeach & {
@@ -3867,14 +3733,8 @@ export const App: React.FC = () => {
     const waveHeightM = selectedForecast.marine?.waveHeightM;
     const candidates = recommendationSource.filter(item => {
       if (!isTrustedTopRecommendationCandidate(item, undefined, beaufort)) return false;
-
-      const itemWaveHeightM = item.waveHeightM ?? waveHeightM;
-      const seaScore = calculateSeaConditionScore(item.isExposed, windSpeedKmph, item.exposureLevel, itemWaveHeightM);
-      const hasGoodHourlySea = typeof item.hourlySeaScore !== 'number' || item.hourlySeaScore >= MIN_TOP_PICK_SEA_CONDITION_SCORE;
-
-      return seaScore >= MIN_TOP_PICK_SEA_CONDITION_SCORE &&
-        hasGoodHourlySea &&
-        !hasPoorSeaConditions(item.isExposed, windSpeedKmph, item.exposureLevel, itemWaveHeightM);
+      // One shared implementation with the trip planner (services/topPickRanking).
+      return passesTopPickSeaGate(item, windSpeedKmph, waveHeightM);
     }).map(item => applyRemainingTopPickWindow(
       item,
       selectedForecast.date,
@@ -5197,13 +5057,8 @@ export const App: React.FC = () => {
     if (typeof item.swimmingScore === 'number' && item.swimmingScore < 50) return false;
 
     const windSpeedKmph = selectedForecast ? selectedForecast.wind.speed * 3.6 : 0;
-    const itemWaveHeightM = item.waveHeightM ?? selectedForecast?.marine?.waveHeightM;
-    const seaScore = calculateSeaConditionScore(item.isExposed, windSpeedKmph, item.exposureLevel, itemWaveHeightM);
-    const hasGoodHourlySea = typeof item.hourlySeaScore !== 'number' || item.hourlySeaScore >= MIN_TOP_PICK_SEA_CONDITION_SCORE;
-
-    return seaScore >= MIN_TOP_PICK_SEA_CONDITION_SCORE &&
-      hasGoodHourlySea &&
-      !hasPoorSeaConditions(item.isExposed, windSpeedKmph, item.exposureLevel, itemWaveHeightM);
+    // One shared implementation with the podium and the trip planner.
+    return passesTopPickSeaGate(item, windSpeedKmph, selectedForecast?.marine?.waveHeightM);
   };
   const directoryTopRecommendationCandidatePool = [
     ...recommendedSuitableBeaches,

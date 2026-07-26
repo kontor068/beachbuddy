@@ -62,6 +62,7 @@ export default defineConfig(({ mode }) => {
                   'services/forecastVerificationService.ts',
                   'services/geospatialExposureService.ts',
                   'services/recommendationService.ts',
+                  'services/topPickRanking.ts',
                   'services/weatherService.ts',
                   'utils/access.ts',
                   'utils/amenities.ts',
