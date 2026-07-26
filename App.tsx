@@ -3932,6 +3932,7 @@ export const App: React.FC = () => {
       'taverna',
       'sunbeds',
       'parking',
+      'shower',
       'sandy-pebbles',
       'rocky',
       'adventure',

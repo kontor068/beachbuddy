@@ -18,6 +18,7 @@ import {
   Mountain,
   Navigation,
   ParkingCircle,
+  ShowerHead,
   Search,
   ShieldCheck,
   SlidersHorizontal,
@@ -362,6 +363,7 @@ const desktopAdvancedFilters: Array<{ key: FilterKey; icon: React.ReactNode }> =
   { key: 'naturalShade', icon: <Trees className="h-5 w-5" /> },
   { key: 'taverna', icon: <Utensils className="h-5 w-5" /> },
   { key: 'sunbeds', icon: <SunbedIcon className="h-5 w-5" /> },
+  { key: 'shower', icon: <ShowerHead className="h-5 w-5" /> },
   { key: 'sandy-pebbles', icon: <SandPebblesIcon className="h-5 w-5" /> },
   { key: 'rocky', icon: <Mountain className="h-5 w-5" /> },
   { key: 'adventure', icon: <MapPin className="h-5 w-5" /> },
@@ -1117,6 +1119,8 @@ const getTopBeachAmenityIcon = (key: AmenityChip['key']): React.ReactNode => {
       return <Utensils className="h-5 w-5" />;
     case 'parking':
       return <ParkingCircle className="h-5 w-5" />;
+    case 'shower':
+      return <ShowerHead className="h-5 w-5" />;
     case 'seasonalFacilities':
       return <CalendarDays className="h-5 w-5" />;
     case 'organizedFacilities':

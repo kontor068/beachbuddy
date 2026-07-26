@@ -2,7 +2,7 @@ import React, { useEffect, useMemo, useRef, useState } from 'react';
 import { Circle, MapContainer, TileLayer, Marker, Popup, Tooltip, ZoomControl, useMap } from 'react-leaflet';
 import L from 'leaflet';
 import 'leaflet/dist/leaflet.css';
-import { BadgeCheck, Footprints, Navigation, MapPin, Clock, Wind, X, Info, Utensils, Waves, Users, Tent, Ticket, Euro, AlertTriangle } from 'lucide-react';
+import { BadgeCheck, ShowerHead, Footprints, Navigation, MapPin, Clock, Wind, X, Info, Utensils, Waves, Users, Tent, Ticket, Euro, AlertTriangle } from 'lucide-react';
 import { localizedPopularityLabel, localizedPaidEntryLabel, localizedPaidEntryExplanation } from '../utils/localization';
 import { SuitableBeach, Beach, LanguageCode, ForecastItem } from '../types';
 import { trackEvent, buildBeachExposureParams } from '../services/analyticsService';
@@ -99,6 +99,8 @@ const hoverPreviewAmenityIcon = (chip: Pick<AmenityChip, 'key'>): React.ReactNod
       return <Utensils className="h-3 w-3 shrink-0" aria-hidden="true" />;
     case 'parking':
       return <MapPin className="h-3 w-3 shrink-0" aria-hidden="true" />;
+    case 'shower':
+      return <ShowerHead className="h-3 w-3 shrink-0" aria-hidden="true" />;
     case 'sunbeds':
       return <BadgeCheck className="h-3 w-3 shrink-0" aria-hidden="true" />;
     default:
