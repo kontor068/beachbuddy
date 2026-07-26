@@ -31,32 +31,47 @@ export interface NationalConditions {
 }
 
 // Ordered as displayed, roughly west → east then south, so the strip reads like
-// a map of the country. Coordinates are the regions' own centroids from
-// public/data/beaches/index.json — not hand-picked sea points.
+// a map of the country.
 //
-// COVERAGE over count: every sea basin is represented (Ionian, Thermaic/Halkidiki,
-// Pagasetic, Saronic/Attica, N. Aegean, Cyclades, Dodecanese, Cretan). That is
-// what makes the strip informative — sample only one basin and on a meltemi day
-// every chip says the same word. Mixed in are the regions our own counter shows
-// people actually search for (Lefkada, Lemnos, Halkidiki, Paros, Patmos).
+// THESE MUST BE OPEN WATER. An earlier version used each region's centroid from
+// public/data/beaches/index.json, which is catastrophically wrong and not
+// obviously so: a region's centroid is the MEAN OF ITS BEACH PINS, and beaches
+// ring an island, so their mean lands in the island's interior. Eleven of the
+// thirteen points sat on land — Kefalonia's on Mt Ainos at 769 m, Chania's at
+// 613 m in the White Mountains — and the page reported mountain-ridge wind as
+// an open-sea estimate under a live badge. Every point below was verified
+// against Open-Meteo's own `elevation` field, and readEssentials() drops any
+// reading that is not at sea level, so a bad coordinate goes blank rather than
+// quietly lying.
+//
+// COVERAGE over count: every sea basin is represented (Ionian, Thermaic,
+// Pagasetic, S. Evoikos, N. Aegean, Cyclades, Dodecanese, Cretan). That is what
+// makes the strip informative — sample only one basin and on a meltemi day every
+// chip says the same word. Mixed in are the regions our own counter shows people
+// actually search for (Lefkada, Lemnos, Halkidiki, Paros, Patmos).
 //
 // All of them ride in ONE request (Open-Meteo takes comma-joined coordinates), so
-// going from 5 points to 13 costs nothing extra.
+// thirteen points cost exactly what five did.
 const POINTS: ReadonlyArray<{ regionId: string; lat: number; lon: number }> = [
-  { regionId: 'ionian-islands-corfu', lat: 39.635, lon: 19.870 },
-  { regionId: 'ionian-islands-lefkada', lat: 38.737, lon: 20.659 },
-  { regionId: 'ionian-islands-kefalonia', lat: 38.206, lon: 20.569 },
-  { regionId: 'central-macedonia-halkidiki-mainland', lat: 40.203, lon: 23.726 },
-  { regionId: 'thessaly-magnesia-mainland---pelion', lat: 39.283, lon: 23.150 },
-  { regionId: 'attica-east-attica-mainland', lat: 37.908, lon: 23.956 },
-  { regionId: 'north-aegean-lemnos', lat: 39.900, lon: 25.215 },
-  { regionId: 'north-aegean-lesvos', lat: 39.147, lon: 26.246 },
-  { regionId: 'south-aegean-paros', lat: 37.071, lon: 25.213 },
-  { regionId: 'south-aegean-naxos', lat: 37.060, lon: 25.462 },
-  { regionId: 'south-aegean-patmos', lat: 37.334, lon: 26.561 },
-  { regionId: 'south-aegean-rhodes', lat: 36.184, lon: 28.046 },
-  { regionId: 'crete-crete-chania', lat: 35.383, lon: 23.912 },
+  { regionId: 'ionian-islands-corfu', lat: 39.62, lon: 19.60 },
+  { regionId: 'ionian-islands-lefkada', lat: 38.72, lon: 20.45 },
+  { regionId: 'ionian-islands-kefalonia', lat: 38.20, lon: 20.30 },
+  { regionId: 'central-macedonia-halkidiki-mainland', lat: 39.95, lon: 23.80 },
+  { regionId: 'thessaly-magnesia-mainland---pelion', lat: 39.35, lon: 23.40 },
+  { regionId: 'attica-east-attica-mainland', lat: 37.95, lon: 24.15 },
+  { regionId: 'north-aegean-lemnos', lat: 39.85, lon: 25.00 },
+  { regionId: 'north-aegean-lesvos', lat: 39.15, lon: 25.85 },
+  { regionId: 'south-aegean-paros', lat: 37.05, lon: 25.05 },
+  { regionId: 'south-aegean-naxos', lat: 36.95, lon: 25.65 },
+  { regionId: 'south-aegean-patmos', lat: 37.33, lon: 26.42 },
+  { regionId: 'south-aegean-rhodes', lat: 36.30, lon: 27.85 },
+  { regionId: 'crete-crete-chania', lat: 35.60, lon: 23.95 },
 ];
+
+/** Sea level, with a metre of slack for the model's own grid rounding. */
+const MAX_SAMPLE_ELEVATION_M = 1;
+/** Open-Meteo snaps to its grid, so the echoed coordinate is near, not equal. */
+const COORD_MATCH_TOLERANCE_DEG = 0.25;
 
 /** Display order for the landing strip — same list, one source of truth. */
 export const NATIONAL_SAMPLE_REGION_IDS: ReadonlyArray<string> = POINTS.map(p => p.regionId);
@@ -78,16 +93,38 @@ export const getNationalConditions = async (): Promise<NationalConditions | null
       const lats = POINTS.map(p => p.lat).join(',');
       const lons = POINTS.map(p => p.lon).join(',');
       const url = `https://api.open-meteo.com/v1/forecast?latitude=${lats}&longitude=${lons}&current=wind_speed_10m,wind_direction_10m&wind_speed_unit=kmh&timezone=Europe%2FAthens`;
-      const res = await fetch(url);
+      // Without a deadline a hung request leaves thirteen skeleton bars pulsing
+      // forever, because `status` never leaves 'loading'.
+      const res = await fetch(url, { signal: AbortSignal.timeout(6000) });
       if (!res.ok) throw new Error(`national conditions ${res.status}`);
       const json = await res.json();
       const arr = Array.isArray(json) ? json : [json];
 
       const regions: RegionConditionReading[] = [];
       arr.forEach((entry, i) => {
-        const point = POINTS[i];
         const kmh = entry?.current?.wind_speed_10m;
-        if (!point || typeof kmh !== 'number') return;
+        if (typeof kmh !== 'number') return;
+
+        // Match on the coordinates the API echoes back, NOT on array position.
+        // Index matching looks fine until Open-Meteo drops or reorders one entry,
+        // at which point every chip silently shows another region's wind — a
+        // failure that never looks like a failure. Position is only the hint.
+        const byIndex = POINTS[i];
+        const near = (p: typeof POINTS[number]) =>
+          typeof entry.latitude === 'number' && typeof entry.longitude === 'number' &&
+          Math.abs(entry.latitude - p.lat) <= COORD_MATCH_TOLERANCE_DEG &&
+          Math.abs(entry.longitude - p.lon) <= COORD_MATCH_TOLERANCE_DEG;
+        const point = byIndex && near(byIndex) ? byIndex : POINTS.find(near);
+        if (!point) return;
+
+        // Refuse anything that is not open water. This is the guard that would
+        // have caught the centroid bug on day one; a missing chip is honest,
+        // mountain-ridge wind labelled "open sea" is not.
+        if (typeof entry.elevation === 'number' && entry.elevation > MAX_SAMPLE_ELEVATION_M) {
+          console.warn(`National conditions: dropped ${point.regionId} — sample sits at ${Math.round(entry.elevation)}m, not at sea.`);
+          return;
+        }
+
         const bft = getBeaufortLevel(kmh);
         regions.push({
           regionId: point.regionId,

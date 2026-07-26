@@ -14,7 +14,17 @@ export interface HeroConditions {
   beaufort: number | null;
   regions: RegionConditionReading[];
   status: ConditionsStatus;
+  /**
+   * True only while the reading is genuinely recent. The service caches for 3h
+   * (and the service worker can hold it longer), so "live" must be earned by the
+   * timestamp — a three-hour-old number under a pulsing green dot is the kind of
+   * over-claim the forecast-staleness doctrine exists to prevent.
+   */
+  isFresh: boolean;
 }
+
+/** How recent a reading has to be before the UI may call it live. */
+const FRESH_MS = 60 * 60 * 1000;
 
 export const useNationalConditions = (): HeroConditions => {
   const [state, setState] = useState<HeroConditions>({
@@ -22,6 +32,7 @@ export const useNationalConditions = (): HeroConditions => {
     beaufort: null,
     regions: [],
     status: 'loading',
+    isFresh: false,
   });
 
   useEffect(() => {
@@ -32,7 +43,13 @@ export const useNationalConditions = (): HeroConditions => {
         setState(prev => ({ ...prev, status: 'unavailable' }));
         return;
       }
-      setState({ roughness: data.roughness, beaufort: data.beaufort, regions: data.regions, status: 'live' });
+      setState({
+        roughness: data.roughness,
+        beaufort: data.beaufort,
+        regions: data.regions,
+        status: 'live',
+        isFresh: Date.now() - data.sampledAt < FRESH_MS,
+      });
     });
     return () => { cancelled = true; };
   }, []);
