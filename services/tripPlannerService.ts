@@ -1,8 +1,10 @@
 import type { Beach, DailyForecast, LanguageCode, SuitableBeach, UserPreferences } from '../types';
 import type { ExposureLevel } from '../utils/windExposure';
 import type { GeospatialExposureProfileLookup } from './geospatialExposureService';
-import { calculateBeachScore, getSuitableBeaches, hasHourlyRainRisk } from './recommendationService';
+import { calculateBeachScore, filterBeachesByUserPreferences, getSuitableBeaches, hasHourlyRainRisk } from './recommendationService';
 import { compareBeachSignificance } from '../utils/beachSignificance';
+import { hasPracticalTopPickAccess } from '../utils/access';
+import { isNaturistBeach } from '../utils/naturistBeaches';
 import { getBeaufortLevel } from '../utils/weatherUtils';
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -66,10 +68,11 @@ const MIN_USABLE_SCORE = 35;
 //
 // So when nothing clears the bar we fall back to the best beach that is merely
 // CHOPPY, and label it as such. This never claims calm — the UI shows it as a
-// caution — and it never crosses the engine's own hard limits below, which stay
-// authoritative: at >= 6 Bft or > 1.2 m the answer remains "not a beach day".
+// caution — and it never crosses the engine's own hard limits, which stay
+// authoritative: the engine's 'avoid_swimming' verdict (effective Beaufort
+// >= 6 or effective wave > 1.2 m, computed on the SCORING side) remains an
+// absolute veto, so the answer there is still "not a beach day".
 const CAUTION_MIN_SWIMMING_SCORE = 30;
-const CAUTION_MAX_WAVE_M = 1.2;
 const CAUTION_MAX_BEAUFORT = 5;
 
 /** Whole-day wind at which we stop calling it a beach day at all. */
@@ -179,10 +182,30 @@ const toPick = (entry: SuitableBeach): TripPick => ({
   caution: false,
 });
 
+/** Exposure order for ranking: protected beats partial beats exposed; unknown last. */
+const exposureRank = (level?: ExposureLevel): number => {
+  if (level === 'protected') return 0;
+  if (level === 'partial') return 1;
+  if (level === 'exposed') return 2;
+  return 3;
+};
+
 /**
  * Best merely-CHOPPY beaches for a day, ranked. Used only when nothing clears the
  * normal suitability bar. Stops dead at the engine's own hard limits so this can
  * never talk someone into a genuinely rough sea.
+ *
+ * RANKING DOCTRINE (D12): every key below is a SCORING quantity. The displayed
+ * `waveHeightM` is the cove-guard DISPLAY value (display-only by doctrine,
+ * services/recommendationService.ts:1944) and is banned from both the filter
+ * and the sort — ranking on it would let a presentation transform drive a
+ * decision, and its 0.10 m display floor produces mass ties anyway. The old
+ * sort ranked on swimmingScore alone, which ties at 49 across an entire region
+ * at 5 Bft — so the pick was whichever beach came first in the JSON file.
+ *
+ * ACCESS IS A GATE HERE, not a tiebreak: on a 5 Bft day, "40 minutes of dirt
+ * road to a 30-metre cove" is worse advice than "the organised beach on the
+ * lee side has some chop but is fine".
  */
 const cautionRanking = (
   pool: Beach[],
@@ -193,6 +216,7 @@ const cautionRanking = (
   if (getBeaufortLevel((day.wind?.speed ?? 0) * 3.6) > CAUTION_MAX_BEAUFORT) return [];
 
   return pool
+    .filter(beach => hasPracticalTopPickAccess(beach))
     .map(beach => {
       const result = calculateBeachScore(beach, day, undefined, preferences, {
         weatherSource: 'island-fallback',
@@ -202,13 +226,26 @@ const cautionRanking = (
       return { beach, result };
     })
     .filter(({ result }) => {
-      // The engine's official "do not swim" override is absolute.
+      // The engine's official "do not swim" verdict is absolute — it already
+      // encodes the effective-wave and effective-Beaufort ceilings on the
+      // scoring side, where the caution tier must live.
       if (result.score === 0) return false;
+      if (result.swimmingComfort === 'avoid_swimming') return false;
       if ((result.swimmingScore ?? 0) < CAUTION_MIN_SWIMMING_SCORE) return false;
-      if (typeof result.waveHeightM === 'number' && result.waveHeightM > CAUTION_MAX_WAVE_M) return false;
       return true;
     })
-    .sort((a, b) => (b.result.swimmingScore ?? 0) - (a.result.swimmingScore ?? 0))
+    .sort((a, b) => (
+      // Geometry-earned refuge first: an enclosed cove the engine lets claim
+      // protection IS the answer on a blowing day.
+      Number(b.result.enclosedCove && b.result.canClaimWindProtection) -
+        Number(a.result.enclosedCove && a.result.canClaimWindProtection) ||
+      exposureRank(a.result.exposureLevel) - exposureRank(b.result.exposureLevel) ||
+      (b.result.hourlySeaScore ?? 0) - (a.result.hourlySeaScore ?? 0) ||
+      (b.result.swimmingScore ?? 0) - (a.result.swimmingScore ?? 0) ||
+      (a.result.modeledWaveHeightM ?? Number.POSITIVE_INFINITY) -
+        (b.result.modeledWaveHeightM ?? Number.POSITIVE_INFINITY) ||
+      a.beach.id - b.beach.id
+    ))
     .map(({ beach, result }) => ({
       beach,
       score: result.score,
@@ -239,7 +276,16 @@ export const planTrip = ({
   // Candidate pool by SIGNIFICANCE — see CANDIDATE_POOL_SIZE. The comparator
   // ends on beach id, so the pool (and everything downstream) is independent
   // of the order beaches sit in the region file.
-  const pool = [...beaches]
+  //
+  // Policy and preference filters apply HERE, once, so every tier downstream
+  // (suitable, caution refuge, repeats, alternatives) inherits them:
+  // - naturist beaches never surface in any recommendation (the same policy
+  //   App.tsx applies to the podium — the planner is the surface where the
+  //   visitor takes the answer as THE plan, so there is no opt-in here);
+  // - hard preference filters (e.g. Blue Flag) must hold on caution days too,
+  //   not just inside getSuitableBeaches.
+  const pool = filterBeachesByUserPreferences(beaches, preferences)
+    .filter(beach => !isNaturistBeach(beach))
     .sort(compareBeachSignificance)
     .slice(0, CANDIDATE_POOL_SIZE);
 
@@ -266,6 +312,9 @@ export const planTrip = ({
 
   const plans = new Map<number, TripDayPlan>();
   const usedBeachIds = new Set<number>();
+  // How many days each beach has been assigned — repeats round-robin over the
+  // least-used option instead of hammering one beach on every constrained day.
+  const assignedCount = new Map<number, number>();
   const pendingDays = new Set<number>();
 
   for (let dayIndex = 0; dayIndex < horizon; dayIndex++) {
@@ -357,9 +406,16 @@ export const planTrip = ({
 
     // Still nothing UNUSED is good enough — but a beach we already visited may
     // still be fine. Repeating beats sending someone nowhere, so fall back to
-    // the whole ranking for this day before giving up.
+    // the whole ranking for this day, LEAST-USED first so one beach cannot be
+    // the repeat answer for every constrained day of the trip.
     if (!best || !isUsable(best)) {
-      const anyUsable = rankedByDay[chosenDay].find(isUsable);
+      const anyUsable = [...rankedByDay[chosenDay]]
+        .filter(isUsable)
+        .sort((a, b) =>
+          (assignedCount.get(a.beach.id) ?? 0) - (assignedCount.get(b.beach.id) ?? 0) ||
+          b.score - a.score ||
+          a.beach.id - b.beach.id
+        )[0];
       if (anyUsable) {
         best = anyUsable;
         isRepeat = true;
@@ -383,13 +439,16 @@ export const planTrip = ({
     }
 
     if (!isRepeat) usedBeachIds.add(best.beach.id);
+    assignedCount.set(best.beach.id, (assignedCount.get(best.beach.id) ?? 0) + 1);
     plans.set(chosenDay, {
       dayIndex: chosenDay,
       date: day.date,
       status: 'beach',
       confidence,
-      pick: best,
+      // Provisional here; the real alternative is computed in a second pass
+      // below, once every day's pick is known (see D6a note there).
       alternative: alternativeList.find(entry => entry.beach.id !== best!.beach.id) ?? null,
+      pick: best,
       reason: null,
       isRepeat,
       isRefuge,
@@ -412,6 +471,21 @@ export const planTrip = ({
     }
   );
 
+  // Alternatives, second pass (D6a): the assignment loop runs in SCARCITY
+  // order, so a day served early would otherwise offer an "or X" that a later
+  // day then takes as its pick — the runner-up must be a beach that is usable
+  // this day AND assigned to no day of the trip.
+  for (const entry of ordered) {
+    if (entry.status !== 'beach' || !entry.pick) {
+      continue;
+    }
+    entry.alternative = rankedByDay[entry.dayIndex].find(candidate =>
+      candidate.beach.id !== entry.pick!.beach.id &&
+      !usedBeachIds.has(candidate.beach.id) &&
+      isUsable(candidate)
+    ) ?? null;
+  }
+
   // Backwards pass: on a blank day, point at the next day of the trip that does
   // have a beach ("the sea settles again on Saturday").
   let nextBeachDay: number | null = null;
@@ -425,7 +499,3 @@ export const planTrip = ({
 
   return ordered;
 };
-
-/** Days beyond the forecast horizon that the visitor asked about but we cannot answer. */
-export const unknownTripDays = (days: number, forecastLength: number): number =>
-  Math.max(0, days - Math.min(days, forecastLength));
