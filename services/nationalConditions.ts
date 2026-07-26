@@ -1,18 +1,23 @@
 import { getBeaufortLevel } from '../utils/weatherUtils';
 
-// A single, cached read of "the general weather of Greece" — it drives the
-// landing hero and the "seas today" panel (live conditions per sea area). ONE
-// Open-Meteo request covers every sample point (comma-joined coords, exactly the
-// pattern scripts/windSpreadNational.mjs already uses), cached for 3h because the
-// national picture changes slowly — so this costs ~1 call per session, honouring
-// the forecast-caching-safety work. The service worker also caches
-// api.open-meteo.com. On any failure we return null and everything falls back to
-// calm / "unavailable" — we never fabricate conditions.
+// One cached read of "how the sea is doing around Greece right now". It drives
+// the landing hero and the "today" strip.
+//
+// WHY THESE POINTS: they used to sit at sea-area centroids (Aegean, Ionian…),
+// which read as abstract — nobody says "let's go to the Cretan Sea". They now sit
+// on the REGIONS our own traffic shows people actually look for, so each reading
+// carries a place name a visitor recognises AND a page we can link to. Same one
+// request, same cache, strictly more useful.
+//
+// ONE Open-Meteo call covers every point (comma-joined coords — the pattern
+// scripts/windSpreadNational.mjs already uses), cached for 3h because the picture
+// changes slowly, so this costs ~1 call per session. The service worker also
+// caches api.open-meteo.com. On any failure we return null and every surface
+// falls back to calm / "unavailable" — we never fabricate conditions.
 
-export type SeaAreaKey = 'ionian' | 'saronic' | 'cretan' | 'aegean' | 'neAegean';
-
-export interface SeaAreaReading {
-  key: SeaAreaKey;
+export interface RegionConditionReading {
+  /** Region id — maps straight onto an Island, so the UI can name and link it. */
+  regionId: string;
   beaufort: number;
   roughness: number;
   dirDeg: number;
@@ -21,18 +26,40 @@ export interface SeaAreaReading {
 export interface NationalConditions {
   beaufort: number;   // representative (rounded average) Beaufort across Greece
   roughness: number;  // 0..1, for the hero sea state
-  areas: SeaAreaReading[];
+  regions: RegionConditionReading[];
   sampledAt: number;
 }
 
-// Representative offshore points, in west→east display order.
-const POINTS: ReadonlyArray<{ key: SeaAreaKey; lat: number; lon: number }> = [
-  { key: 'ionian', lat: 38.3, lon: 20.5 },
-  { key: 'saronic', lat: 37.6, lon: 23.5 },
-  { key: 'cretan', lat: 35.3, lon: 24.8 },
-  { key: 'aegean', lat: 37.0, lon: 25.3 },   // Cyclades — meltemi core
-  { key: 'neAegean', lat: 39.1, lon: 26.2 },
+// Ordered as displayed, roughly west → east then south, so the strip reads like
+// a map of the country. Coordinates are the regions' own centroids from
+// public/data/beaches/index.json — not hand-picked sea points.
+//
+// COVERAGE over count: every sea basin is represented (Ionian, Thermaic/Halkidiki,
+// Pagasetic, Saronic/Attica, N. Aegean, Cyclades, Dodecanese, Cretan). That is
+// what makes the strip informative — sample only one basin and on a meltemi day
+// every chip says the same word. Mixed in are the regions our own counter shows
+// people actually search for (Lefkada, Lemnos, Halkidiki, Paros, Patmos).
+//
+// All of them ride in ONE request (Open-Meteo takes comma-joined coordinates), so
+// going from 5 points to 13 costs nothing extra.
+const POINTS: ReadonlyArray<{ regionId: string; lat: number; lon: number }> = [
+  { regionId: 'ionian-islands-corfu', lat: 39.635, lon: 19.870 },
+  { regionId: 'ionian-islands-lefkada', lat: 38.737, lon: 20.659 },
+  { regionId: 'ionian-islands-kefalonia', lat: 38.206, lon: 20.569 },
+  { regionId: 'central-macedonia-halkidiki-mainland', lat: 40.203, lon: 23.726 },
+  { regionId: 'thessaly-magnesia-mainland---pelion', lat: 39.283, lon: 23.150 },
+  { regionId: 'attica-east-attica-mainland', lat: 37.908, lon: 23.956 },
+  { regionId: 'north-aegean-lemnos', lat: 39.900, lon: 25.215 },
+  { regionId: 'north-aegean-lesvos', lat: 39.147, lon: 26.246 },
+  { regionId: 'south-aegean-paros', lat: 37.071, lon: 25.213 },
+  { regionId: 'south-aegean-naxos', lat: 37.060, lon: 25.462 },
+  { regionId: 'south-aegean-patmos', lat: 37.334, lon: 26.561 },
+  { regionId: 'south-aegean-rhodes', lat: 36.184, lon: 28.046 },
+  { regionId: 'crete-crete-chania', lat: 35.383, lon: 23.912 },
 ];
+
+/** Display order for the landing strip — same list, one source of truth. */
+export const NATIONAL_SAMPLE_REGION_IDS: ReadonlyArray<string> = POINTS.map(p => p.regionId);
 
 const TTL_MS = 3 * 60 * 60 * 1000; // 3h
 
@@ -56,26 +83,26 @@ export const getNationalConditions = async (): Promise<NationalConditions | null
       const json = await res.json();
       const arr = Array.isArray(json) ? json : [json];
 
-      const areas: SeaAreaReading[] = [];
+      const regions: RegionConditionReading[] = [];
       arr.forEach((entry, i) => {
         const point = POINTS[i];
         const kmh = entry?.current?.wind_speed_10m;
         if (!point || typeof kmh !== 'number') return;
         const bft = getBeaufortLevel(kmh);
-        areas.push({
-          key: point.key,
+        regions.push({
+          regionId: point.regionId,
           beaufort: bft,
           roughness: roughnessFromBeaufort(bft),
           dirDeg: typeof entry?.current?.wind_direction_10m === 'number' ? entry.current.wind_direction_10m : 0,
         });
       });
-      if (areas.length === 0) throw new Error('national conditions: no readings');
+      if (regions.length === 0) throw new Error('national conditions: no readings');
 
-      const avg = areas.reduce((sum, a) => sum + a.beaufort, 0) / areas.length;
+      const avg = regions.reduce((sum, r) => sum + r.beaufort, 0) / regions.length;
       const data: NationalConditions = {
         beaufort: Math.round(avg),
         roughness: roughnessFromBeaufort(avg),
-        areas,
+        regions,
         sampledAt: Date.now(),
       };
       cache = { at: Date.now(), data };

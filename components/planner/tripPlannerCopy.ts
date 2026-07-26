@@ -20,6 +20,9 @@ export type TripPlannerCopy = {
   repeat: string;
   alternative: (name: string) => string;
   windUnit: string;
+  /** Shown instead of a calm claim when the pick came from the caution tier. */
+  cautionBadge: string;
+  cautionNote: string;
   reasons: {
     too_windy: string;
     storm: string;
@@ -45,6 +48,8 @@ export const tripPlannerCopy: Record<'en' | 'gr', TripPlannerCopy> = {
     repeat: 'ξανά',
     alternative: (name) => `ή ${name}`,
     windUnit: 'μποφόρ',
+    cautionBadge: 'με κύμα',
+    cautionNote: 'Οι μέρες «με κύμα» δεν είναι ήρεμες — είναι η καλύτερη επιλογή μιας δύσκολης μέρας. Θέλει άνεση στο κολύμπι.',
     reasons: {
       too_windy: 'Φυσάει δυνατά — καμία παραλία εδώ δεν είναι προστατευμένη.',
       storm: 'Θύελλα. Όχι μέρα για θάλασσα.',
@@ -68,6 +73,8 @@ export const tripPlannerCopy: Record<'en' | 'gr', TripPlannerCopy> = {
     repeat: 'again',
     alternative: (name) => `or ${name}`,
     windUnit: 'Beaufort',
+    cautionBadge: 'choppy',
+    cautionNote: 'A “choppy” day is not a calm one — it is the best of a hard day, and it wants a confident swimmer.',
     reasons: {
       too_windy: 'Blowing hard — nowhere here is sheltered.',
       storm: 'Storm. Not a beach day.',

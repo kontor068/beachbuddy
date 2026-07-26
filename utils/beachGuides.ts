@@ -70,6 +70,34 @@ export interface IslandGuideLink {
 }
 
 /**
+ * The national guides hub — the one page that collects every guide article.
+ * Emitted by the prerender in en + el only (GUIDES_HUB_PATH there), so de/fr/it
+ * readers get the English hub rather than a URL that was never written.
+ */
+export const GUIDES_HUB_LABEL: LocalizedLabel = {
+  en: 'All beach guides',
+  gr: 'Όλοι οι οδηγοί',
+  de: 'Alle Strandführer',
+  fr: 'Tous les guides',
+  it: 'Tutte le guide',
+};
+
+export const getGuidesHubPath = (language: LanguageCode): string =>
+  `${language === 'gr' ? '/el' : ''}/beach-guides/`;
+
+/**
+ * Where to actually point a link. Like the footer's FAQ link: the hub is a
+ * prerendered page, so under `vite dev` the relative path silently falls back to
+ * the SPA shell — open the live page instead. Prod and the bundled native app
+ * keep the relative path (works offline). `external` is true only in dev.
+ */
+export const getGuidesHubLink = (language: LanguageCode): { href: string; external: boolean } => {
+  const path = getGuidesHubPath(language);
+  const external = import.meta.env.DEV;
+  return { href: external ? `https://calmbeach.gr${path}` : path, external };
+};
+
+/**
  * The guide articles available for an island, as clickable links — only topics
  * that clear the ≥5-beach gate (so we never link to a page that was not
  * generated). `regionId` is the beach's region id (e.g. "south-aegean-milos").

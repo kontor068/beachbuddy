@@ -5,19 +5,18 @@ import { COOKIE_CONSENT_CHANGED_EVENT } from '../../services/legalConsent';
 import type { DirectorySearchSuggestion } from '../BeachSearcherHome';
 import { useNationalConditions } from '../../hooks/useNationalConditions';
 import { LandingHero } from './LandingHero';
-import { PopularRegionsRow } from './PopularRegionsRow';
-import { TodaySeasSection } from './TodaySeasSection';
+import { TodayRegionsSection } from './TodayRegionsSection';
 import { HowWeDecideSection } from './HowWeDecideSection';
 
 // The national landing shown to first-time / no-region visitors. It follows the
 // competitor's clean, sectioned philosophy but differentiates hard: it leads
 // with a decision for TODAY and our honesty, NOT directory size or vibe browsing.
 //
-// Page rhythm: real-photo hero (rotating with the time of day) → "the seas
-// today" (one live national read, broken down per sea area — our answer instead
-// of a competitor-style browse-by-region grid) → one dark contrast moment (the
-// trust manifesto) → footer. One national read backs the hero and the seas
-// panel, so it stays a single cached call.
+// Page rhythm: real-photo hero (rotating with the time of day) → "regions today"
+// (crawlable region links carrying today's live wind — our answer instead of a
+// competitor-style browse-by-region photo grid) → one dark contrast moment (the
+// trust manifesto) → footer. One national read backs the hero and the region
+// strip, so it stays a single cached call.
 
 interface LandingViewProps {
   language: LanguageCode;
@@ -75,8 +74,8 @@ export const LandingView: React.FC<LandingViewProps> = ({
   }, [language]);
 
   // One shared handler so "near me" is counted identically wherever it is offered
-  // (hero CTA and the seas-section CTA), with the origin preserved.
-  const handleNearMe = (source: 'hero' | 'seas') => {
+  // (hero CTA and the region-strip CTA), with the origin preserved.
+  const handleNearMe = (source: 'hero' | 'regions') => {
     trackEvent('landing_near_me_clicked', undefined, { source });
     onShowNearbyBeaches();
   };
@@ -97,22 +96,19 @@ export const LandingView: React.FC<LandingViewProps> = ({
         roughness={conditions.roughness}
       />
 
-      {/* Real <a href> navigation — the landing's only crawlable links, and the
-          only path for visitors who will neither type nor share their location. */}
-      <div className="mt-8 sm:mt-10">
-        <PopularRegionsRow
+      {/* Real <a href> navigation carrying today's live wind — the landing's only
+          crawlable links, and the only path for visitors who will neither type
+          nor share their location. */}
+      <div className="mt-10 sm:mt-14">
+        <TodayRegionsSection
           language={language}
           allIslands={allIslands}
-          onSelectIsland={onSelectIsland}
-        />
-      </div>
-
-      <div className="mt-12 sm:mt-16">
-        <TodaySeasSection
-          language={language}
-          areas={conditions.areas}
+          regions={conditions.regions}
           status={conditions.status}
-          onShowNearbyBeaches={() => handleNearMe('seas')}
+          onSelectIsland={onSelectIsland}
+          onShowNearbyBeaches={() => handleNearMe('regions')}
+          isFindingLocation={isFindingLocation}
+          locationError={locationError}
           onOpenIslandSelector={() => {
             trackEvent('landing_all_regions_clicked');
             onOpenIslandSelector();

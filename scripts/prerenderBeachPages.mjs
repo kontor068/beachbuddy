@@ -1349,16 +1349,29 @@ const getIslandGuides = (island, region, locale, excludeKey = null) => {
 // A chip-list "beach guides" block linking to the island's guide articles —
 // gives users a clickable way in and threads internal link equity to the guides
 // (they were sitemap-only before). Returns '' when the island has no guides.
+// Label for the chip that leads to the national guides hub — the one entry point
+// present on every page that renders this block, so no guide is more than two
+// clicks from anywhere on the site.
+const ALL_GUIDES_LABEL = { en: 'All beach guides →', gr: 'Όλοι οι οδηγοί →' };
+
 const renderIslandGuides = (island, region, locale, excludeKey, heading) => {
   const guides = getIslandGuides(island, region, locale, excludeKey);
-  if (guides.length === 0) return '';
   const items = guides.map(g =>
     `<li style="margin:0;"><a href="${escapeHtml(g.href)}" style="display:inline-block;border:1px solid #bae6fd;border-radius:999px;padding:7px 13px;background:white;color:#075985;text-decoration:none;font-weight:700;font-size:14px;">${escapeHtml(g.label)}</a></li>`
   ).join('');
+  // The hub link renders even for islands with no guides of their own — that is
+  // exactly the page where a reader has nowhere else to go. But the hub itself is
+  // en + el only, so /de//fr//it/ pages must not link to a URL that was never
+  // written (same rule as NATIONAL_GUIDE_LINKS).
+  const hubLabel = ALL_GUIDES_LABEL[locale.language] || ALL_GUIDES_LABEL.en;
+  const hubItem = BASE_LOCALE_IDS.has(locale.id)
+    ? `<li style="margin:0;"><a href="${escapeHtml(localizedPath(GUIDES_HUB_PATH, locale))}" style="display:inline-block;border:1px solid #0e7490;border-radius:999px;padding:7px 13px;background:#ecfeff;color:#0e7490;text-decoration:none;font-weight:800;font-size:14px;">${escapeHtml(hubLabel)}</a></li>`
+    : '';
+  if (guides.length === 0 && !hubItem) return '';
   return `
         <section style="margin:0 0 24px;">
           <h2 style="margin:0 0 10px;font-size:20px;line-height:1.2;color:#075985;">${escapeHtml(heading)}</h2>
-          <ul style="display:flex;flex-wrap:wrap;gap:8px;margin:0;padding:0;list-style:none;">${items}</ul>
+          <ul style="display:flex;flex-wrap:wrap;gap:8px;margin:0;padding:0;list-style:none;">${items}${hubItem}</ul>
         </section>`;
 };
 
@@ -1746,7 +1759,29 @@ const staticFallbackCopy = {
 
 const getStaticFallbackCopy = language => staticFallbackCopy[language] || staticFallbackCopy.en;
 
-const staticHomeFallback = (canonicalUrl, locale = prerenderLocales[0]) => {
+// The regions the landing puts on screen, so the crawler sees the same paths in
+// the raw HTML that the app renders after hydration. Before this the home page
+// linked to guides only, and the 271 region pages got no link from our
+// highest-authority page at all.
+//
+// MUST MIRROR the POINTS list in services/nationalConditions.ts.
+const HOME_REGION_IDS = [
+  'ionian-islands-corfu',
+  'ionian-islands-lefkada',
+  'ionian-islands-kefalonia',
+  'central-macedonia-halkidiki-mainland',
+  'thessaly-magnesia-mainland---pelion',
+  'attica-east-attica-mainland',
+  'north-aegean-lemnos',
+  'north-aegean-lesvos',
+  'south-aegean-paros',
+  'south-aegean-naxos',
+  'south-aegean-patmos',
+  'south-aegean-rhodes',
+  'crete-crete-chania',
+];
+
+const staticHomeFallback = (canonicalUrl, locale = prerenderLocales[0], regionLinks = []) => {
   const isGreek = locale.language === 'gr';
   const features = isGreek
     ? [
@@ -1768,6 +1803,7 @@ const staticHomeFallback = (canonicalUrl, locale = prerenderLocales[0]) => {
       label: landing.locales[locale.id].h1,
     }));
   const guidesHeading = isGreek ? 'Δημοφιλείς οδηγοί παραλιών' : 'Popular beach guides';
+  const regionsHeading = isGreek ? 'Περιοχές' : 'Regions';
 
   return `
     <div id="root">
@@ -1783,6 +1819,14 @@ const staticHomeFallback = (canonicalUrl, locale = prerenderLocales[0]) => {
           <h2 style="margin:0 0 10px;font-size:18px;color:#075985;">${escapeHtml(guidesHeading)}</h2>
           <ul style="display:flex;flex-wrap:wrap;gap:8px;margin:0;padding:0;list-style:none;">
             ${guideLinks.map(link => `<li><a href="${escapeHtml(link.href)}" style="display:inline-flex;border:1px solid #bae6fd;border-radius:999px;padding:8px 11px;background:white;color:#0e7490;text-decoration:none;font-weight:800;font-size:13px;">${escapeHtml(link.label)}</a></li>`).join('')}
+          </ul>
+        </nav>
+        ` : ''}
+        ${regionLinks.length > 0 ? `
+        <nav aria-label="${escapeHtml(regionsHeading)}" style="margin:0 0 24px;">
+          <h2 style="margin:0 0 10px;font-size:18px;color:#075985;">${escapeHtml(regionsHeading)}</h2>
+          <ul style="display:flex;flex-wrap:wrap;gap:8px;margin:0;padding:0;list-style:none;">
+            ${regionLinks.map(link => `<li><a href="${escapeHtml(link.href)}" style="display:inline-flex;border:1px solid #bae6fd;border-radius:999px;padding:8px 11px;background:white;color:#0e7490;text-decoration:none;font-weight:800;font-size:13px;">${escapeHtml(link.label)}</a></li>`).join('')}
           </ul>
         </nav>
         ` : ''}
@@ -2870,9 +2914,23 @@ const staticRegionFallback = (island, region, canonicalUrl, locale = prerenderLo
   `;
 };
 
+// Mirrors the `bg-slate-50 text-slate-900 font-sans` body class + index.css --font-sans,
+// the only stylesheet rules the fully-static pages actually depend on.
+const STATIC_PAGE_BASE_CSS = 'body{margin:0;background:#f8fafc;color:#0f172a;'
+  + 'font-family:ui-rounded,"SF Pro Rounded","Nunito","Inter",system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;'
+  + '-webkit-font-smoothing:antialiased}'
+  + 'img{max-width:100%;height:auto}';
+
 const stripClientScripts = html => html
   .replace(/\s*<link rel="modulepreload"[^>]*>\s*/gi, '')
-  .replace(/\s*<script\b(?=[^>]*\btype="module"|\btype='module')[^>]*>[\s\S]*?<\/script>\s*/gi, '');
+  .replace(/\s*<script\b(?=[^>]*\btype="module"|\btype='module')[^>]*>[\s\S]*?<\/script>\s*/gi, '')
+  // These pages never boot React, so nothing ever clears the fallback timer:
+  // without this the whole article stays display:none for 5s and then pops in.
+  .replace(/\s*<script\b[^>]*>(?:(?!<\/script>)[\s\S])*?__calmBeachFallbackTimer[\s\S]*?<\/script>\s*/gi, '\n    ')
+  .replace(/\s*<style\b[^>]*>(?:(?!<\/style>)[\s\S])*?show-static-fallback[\s\S]*?<\/style>\s*/gi, '\n    ')
+  // The static article markup is inline-styled; the only Tailwind it uses is the
+  // body class. Inline that instead of blocking paint on the whole app stylesheet.
+  .replace(/\s*<link rel="stylesheet"[^>]*href="\/assets\/[^"]*\.css"[^>]*>\s*/gi, `\n    <style>${STATIC_PAGE_BASE_CSS}</style>\n    `);
 
 const landingChromeCopy = {
   en: {
@@ -3194,7 +3252,168 @@ const buildSeoLandingPage = (baseHtml, landing, content, locale, imageUrl, dynam
   return stripClientScripts(htmlWithHead).replace(/<div id="root">\s*<\/div>/i, staticSeoLandingPage(content, locale, dynamicHtml));
 };
 
-const buildHomePage = (baseHtml, locale, imageUrl, emittedLocales = baseLocales) => {
+// --- Guides hub ----------------------------------------------------------------
+// The ~300 island×intent articles were only reachable from the region/beach page
+// they belong to — there was no single place a reader (or a crawler) could see
+// what the site actually publishes. This is that place: one static index, grouped
+// by topic, linking every guide that cleared the ≥MIN gate. en + el only, matching
+// the home page: de/fr/it guides exist only for LOCALIZED_REGIONS, so a national
+// hub in those locales would list mostly-missing pages.
+const GUIDES_HUB_PATH = '/beach-guides/';
+
+const guidesHubCopy = {
+  en: {
+    title: 'Greek Beach Guides — by Topic and Island | CalmBeach',
+    description: 'Every CalmBeach beach guide in one place: family, meltemi wind options, snorkeling, organized, secluded and sunset beaches, island by island.',
+    h1: 'Beach guides',
+    intro: 'Every guide we publish, grouped by what you are looking for and then by island. Each one lists the beaches that actually match, and links straight through to live wind and wave conditions.',
+    nationalHeading: 'Greece-wide guides',
+    islandsLabel: island => island,
+    empty: 'No guides published yet.',
+  },
+  gr: {
+    title: 'Οδηγοί Παραλιών — ανά Θέμα και Νησί | CalmBeach',
+    description: 'Όλοι οι οδηγοί παραλιών του CalmBeach σε ένα σημείο: οικογενειακές, με μελτέμι, για snorkeling, οργανωμένες, απομονωμένες και για ηλιοβασίλεμα, νησί προς νησί.',
+    h1: 'Οδηγοί παραλιών',
+    intro: 'Όλοι οι οδηγοί που δημοσιεύουμε, ομαδοποιημένοι πρώτα κατά θέμα και μετά κατά νησί. Ο καθένας δείχνει τις παραλίες που ταιριάζουν πραγματικά και οδηγεί κατευθείαν στις τρέχουσες συνθήκες ανέμου και κύματος.',
+    nationalHeading: 'Οδηγοί για όλη την Ελλάδα',
+    islandsLabel: island => island,
+    empty: 'Δεν έχουν δημοσιευτεί ακόμη οδηγοί.',
+  },
+};
+
+// Full topic headings for the hub — INTENT_NAV_LABELS are chip-sized fragments
+// ("Organized"), which read as nonsense as a standalone <h2>.
+const GUIDES_HUB_TOPIC_HEADINGS = {
+  family:     { en: 'Family beaches',              gr: 'Οικογενειακές παραλίες' },
+  sheltered:  { en: 'Sheltered from the meltemi',  gr: 'Υπήνεμες με μελτέμι' },
+  snorkeling: { en: 'Snorkeling beaches',          gr: 'Παραλίες για snorkeling' },
+  organized:  { en: 'Organized beaches',           gr: 'Οργανωμένες παραλίες' },
+  secluded:   { en: 'Secluded beaches',            gr: 'Απομονωμένες παραλίες' },
+  sunset:     { en: 'Sunset beaches',              gr: 'Παραλίες για ηλιοβασίλεμα' },
+};
+
+// islandIntentPages -> [{ key, heading, islands: [{ name, href }] }], in the
+// islandIntents display order, islands collated in the reader's alphabet.
+const groupGuidesByTopic = (islandIntentPages, locale) => {
+  const language = locale.language;
+  const collator = language === 'gr' ? 'el' : 'en';
+  return islandIntents
+    .map(intent => {
+      const islands = islandIntentPages
+        .filter(page => page.intent.key === intent.key)
+        .map(page => ({
+          name: displayName(page.island.name, page.region.id, language),
+          href: localizedPath(islandIntentPath(intent, page.region, page.island), locale),
+        }))
+        .sort((a, b) => a.name.localeCompare(b.name, collator));
+      return {
+        key: intent.key,
+        heading: GUIDES_HUB_TOPIC_HEADINGS[intent.key]?.[language]
+          || GUIDES_HUB_TOPIC_HEADINGS[intent.key]?.en
+          || INTENT_NAV_LABELS[intent.key]?.[language]
+          || intent.key,
+        islands,
+      };
+    })
+    .filter(topic => topic.islands.length > 0);
+};
+
+const staticGuidesHubPage = (topics, locale) => {
+  const copy = guidesHubCopy[locale.language] || guidesHubCopy.en;
+  const chrome = landingChromeCopy[locale.language] || landingChromeCopy.en;
+  const homeHref = localizedPath('/', locale);
+
+  const renderTopic = topic => `
+        <section style="margin:0 0 26px;border-top:1px solid #bae6fd;padding-top:16px;">
+          <h2 style="margin:0 0 10px;font-size:22px;line-height:1.2;color:#075985;">${escapeHtml(topic.heading)} <span style="font-weight:600;font-size:15px;color:#64748b;">(${topic.islands.length})</span></h2>
+          <ul style="display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:8px;margin:0;padding:0;list-style:none;">
+            ${topic.islands.map(island => `<li style="margin:0;"><a href="${escapeHtml(island.href)}" style="display:block;border:1px solid #bae6fd;border-radius:10px;padding:8px 11px;background:white;color:#0e7490;text-decoration:none;font-weight:700;font-size:14px;">${escapeHtml(island.name)}</a></li>`).join('')}
+          </ul>
+        </section>`;
+
+  const nationalLinks = NATIONAL_GUIDE_LINKS
+    .map(link => `<li style="margin:0;"><a href="${escapeHtml(localizedPath(link.path, locale))}" style="display:block;border:1px solid #bae6fd;border-radius:12px;padding:12px 14px;background:white;color:#0e7490;text-decoration:none;font-weight:800;">${escapeHtml(link.label[locale.language] || link.label.en)}</a></li>`)
+    .join('');
+
+  return `
+    <div id="root">
+      <main style="max-width:880px;margin:0 auto;padding:0 20px 56px;color:#0f172a;background:#f8fafc;">
+        <header style="display:flex;align-items:center;justify-content:space-between;gap:12px;padding:18px 0;">
+          <a href="${escapeHtml(homeHref)}" style="display:inline-flex;align-items:center;gap:10px;text-decoration:none;color:#0e7490;font-weight:800;font-size:18px;">
+            <img src="/calmbeach-mark.svg" alt="" width="32" height="32" style="display:block;" />
+            CalmBeach Greece
+          </a>
+          <a href="${escapeHtml(homeHref)}" style="display:inline-flex;align-items:center;border:1px solid #bae6fd;border-radius:999px;padding:8px 14px;background:white;color:#0e7490;text-decoration:none;font-weight:700;font-size:14px;">${escapeHtml(chrome.openApp)}</a>
+        </header>
+        <section style="padding:24px 0 20px;">
+          <h1 style="margin:0 0 14px;font-size:38px;line-height:1.08;">${escapeHtml(copy.h1)}</h1>
+          <p style="margin:0;font-size:18px;line-height:1.6;color:#334155;">${escapeHtml(copy.intro)}</p>
+        </section>
+        ${topics.length > 0 ? topics.map(renderTopic).join('') : `<p style="color:#475569;">${escapeHtml(copy.empty)}</p>`}
+        <section style="margin:28px 0 0;border-top:1px solid #bae6fd;padding-top:18px;">
+          <h2 style="margin:0 0 12px;font-size:22px;line-height:1.2;color:#075985;">${escapeHtml(copy.nationalHeading)}</h2>
+          <ul style="display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:10px;margin:0;padding:0;list-style:none;">${nationalLinks}</ul>
+        </section>
+        <p data-nosnippet="true" style="margin:24px 0 0;color:#64748b;font-size:13px;line-height:1.5;">${escapeHtml(chrome.disclaimer)}</p>
+      </main>
+    </div>
+  `;
+};
+
+const buildGuidesHubPage = (baseHtml, islandIntentPages, locale, imageUrl, emittedLocales) => {
+  const copy = guidesHubCopy[locale.language] || guidesHubCopy.en;
+  const canonicalUrl = canonicalUrlFor(GUIDES_HUB_PATH, locale);
+  const topics = groupGuidesByTopic(islandIntentPages, locale);
+
+  const jsonLd = [
+    {
+      '@context': 'https://schema.org',
+      '@type': 'CollectionPage',
+      name: copy.h1,
+      description: copy.description,
+      url: canonicalUrl,
+      image: imageUrl,
+      inLanguage: locale.htmlLang,
+      isPartOf: { '@type': 'WebSite', name: 'CalmBeach Greece', url: canonicalUrlFor('/', locale) },
+      // One ItemList per topic rather than ~300 flat entries, so the grouping the
+      // page actually shows is the grouping machines read.
+      hasPart: topics.map(topic => ({
+        '@type': 'ItemList',
+        name: topic.heading,
+        numberOfItems: topic.islands.length,
+        itemListElement: topic.islands.map((island, index) => ({
+          '@type': 'ListItem',
+          position: index + 1,
+          name: island.name,
+          url: `${siteUrl}${island.href}`,
+        })),
+      })),
+    },
+    breadcrumbJsonLd([
+      { name: 'CalmBeach Greece', url: homeUrlForLocale(locale) },
+      { name: copy.h1, url: canonicalUrl },
+    ]),
+  ];
+
+  const htmlWithHead = injectBeachHead(baseHtml, {
+    title: copy.title,
+    description: copy.description,
+    canonicalUrl,
+    imageUrl,
+    imageAlt: copy.h1,
+    htmlLang: locale.htmlLang,
+    ogLocale: locale.ogLocale,
+    alternateUrls: alternateUrlsFor(GUIDES_HUB_PATH, emittedLocales),
+    ogType: 'website',
+    jsonLd,
+  });
+
+  return stripClientScripts(htmlWithHead)
+    .replace(/<div id="root">\s*<\/div>/i, staticGuidesHubPage(topics, locale));
+};
+
+const buildHomePage = (baseHtml, locale, imageUrl, emittedLocales = baseLocales, regionLinks = []) => {
   const pathName = '/';
   const canonicalUrl = canonicalUrlFor(pathName, locale);
   const jsonLd = {
@@ -3221,7 +3440,7 @@ const buildHomePage = (baseHtml, locale, imageUrl, emittedLocales = baseLocales)
     jsonLd,
   });
 
-  return htmlWithHead.replace(/<div id="root">\s*<\/div>/i, staticHomeFallback(canonicalUrl, locale));
+  return htmlWithHead.replace(/<div id="root">\s*<\/div>/i, staticHomeFallback(canonicalUrl, locale, regionLinks));
 };
 
 const buildRegionPage = (baseHtml, island, region, imageUrl, locale = prerenderLocales[0], emittedLocales = baseLocales, sheltered = 0) => {
@@ -3495,11 +3714,25 @@ const main = async () => {
   // Home stays national (en + el). Adding /de//fr//it/ home pages would require
   // their guide links (en/el only) to resolve; keep the multilingual cluster
   // scoped to the pilot region instead.
+  // Resolved from the index alone (region.name carries the English label the slug
+  // is built from), so this needs none of the per-region app payloads and can run
+  // before that loop.
+  const homeRegions = HOME_REGION_IDS
+    .map(id => (beachIndex.regions || []).find(region => region.id === id))
+    .filter(Boolean);
+  if (homeRegions.length !== HOME_REGION_IDS.length) {
+    console.warn(`[home] ${HOME_REGION_IDS.length - homeRegions.length} home region id(s) not found in the beach index — check HOME_REGION_IDS.`);
+  }
+
   for (const locale of baseLocales) {
     const homeRoutePath = localizedPath('/', locale);
     const homeOutputDir = outputDirForRoute(homeRoutePath);
+    const regionLinks = homeRegions.map(region => ({
+      href: localizedPath(regionPath(region, null), locale),
+      label: displayName(region.name, region.id, locale.language),
+    }));
     await mkdir(homeOutputDir, { recursive: true });
-    await writeFile(path.join(homeOutputDir, 'index.html'), buildHomePage(baseHtml, locale, homeOgImageUrl, baseLocales), 'utf8');
+    await writeFile(path.join(homeOutputDir, 'index.html'), buildHomePage(baseHtml, locale, homeOgImageUrl, baseLocales, regionLinks), 'utf8');
     sitemapEntries.push(sitemapEntry(canonicalUrlFor('/', locale), homeSitemapImageUrl));
   }
 
@@ -3644,6 +3877,17 @@ const main = async () => {
     }
   }
   console.log(`Island intent guides: ${islandIntentPages.length} published (≥${ISLAND_INTENT_MIN} beaches), ${islandIntentBelowMin} island×intent combos skipped below threshold.`);
+
+  // The single place every guide is collected. Emitted after the guides so it can
+  // only ever link to pages that were actually written above.
+  for (const locale of baseLocales) {
+    const hubOutputDir = outputDirForRoute(localizedPath(GUIDES_HUB_PATH, locale));
+    await mkdir(hubOutputDir, { recursive: true });
+    await writeFile(path.join(hubOutputDir, 'index.html'), buildGuidesHubPage(baseHtml, islandIntentPages, locale, homeOgImageUrl, baseLocales), 'utf8');
+    sitemapEntries.push(sitemapEntry(canonicalUrlFor(GUIDES_HUB_PATH, locale), homeSitemapImageUrl));
+    pageCount += 1;
+  }
+  console.log(`Guides hub: ${GUIDES_HUB_PATH} emitted for ${baseLocales.map(l => l.id).join(', ')} (${islandIntentPages.length} guide links).`);
 
   // Regions whose sheltered guide is actually published under the new geospatial
   // metric. Regions NOT in this set get a 301 from any previously-indexed

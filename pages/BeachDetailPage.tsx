@@ -42,7 +42,7 @@ import { describeSimpleWindSuitability, describeWindExposure } from '../utils/wi
 import type { ExposureLevel } from '../utils/windExposure';
 import { getLocalWindNote } from '../utils/localWindNote';
 import { getBeachStory, type BeachStory } from '../data/beachStories';
-import { getIslandGuideLinks } from '../utils/beachGuides';
+import { getIslandGuideLinks, getGuidesHubLink, GUIDES_HUB_LABEL } from '../utils/beachGuides';
 import {
   AmenityStatus,
   getAmenityChips,
@@ -691,6 +691,7 @@ export const BeachDetailPage: React.FC<BeachDetailPageProps> = ({
   }, [beach.id, beach.regionId, beach.sourceBeachId, regionId]);
   const storyLocale: 'gr' | 'en' = language === 'gr' ? 'gr' : 'en';
   const guideLinks = useMemo(() => getIslandGuideLinks(allBeaches, regionId, language), [allBeaches, regionId, language]);
+  const guidesHubLink = useMemo(() => getGuidesHubLink(language), [language]);
   const selectedDate = dayForecast.date;
   const selectedDayPrefix = getSelectedDayPrefix(selectedDate, athensNow(), language);
   // Read-back: don't re-ask for feedback on the same beach + day we already have it for
@@ -2359,7 +2360,8 @@ export const BeachDetailPage: React.FC<BeachDetailPageProps> = ({
         </section>
         )}
 
-        {/* 9. Beach guides — links to the island's "best X beaches" articles */}
+        {/* 9. Beach guides — links to the island's "best X beaches" articles,
+            plus the hub that collects every guide the site publishes. */}
         {guideLinks.length > 0 && (
           <section className="space-y-3">
             <h3 className="flex items-center gap-2 px-1 font-heading text-lg font-bold text-slate-950">
@@ -2376,6 +2378,14 @@ export const BeachDetailPage: React.FC<BeachDetailPageProps> = ({
                   {guide.label}
                 </a>
               ))}
+              <a
+                href={guidesHubLink.href}
+                target={guidesHubLink.external ? '_blank' : undefined}
+                rel={guidesHubLink.external ? 'noopener noreferrer' : undefined}
+                className="inline-flex items-center rounded-full border border-teal-600 bg-teal-50 px-3.5 py-1.5 text-sm font-extrabold text-teal-700 hover:bg-teal-100"
+              >
+                {GUIDES_HUB_LABEL[language] || GUIDES_HUB_LABEL.en} →
+              </a>
             </div>
           </section>
         )}

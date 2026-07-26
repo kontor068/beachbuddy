@@ -1,6 +1,7 @@
 import type { Beach, DailyForecast, LanguageCode, SuitableBeach, UserPreferences } from '../types';
+import type { ExposureLevel } from '../utils/windExposure';
 import type { GeospatialExposureProfileLookup } from './geospatialExposureService';
-import { getSuitableBeaches, hasHourlyRainRisk } from './recommendationService';
+import { calculateBeachScore, getSuitableBeaches, hasHourlyRainRisk } from './recommendationService';
 import { getBeachPopularityRating } from '../utils/beachRating';
 import { getBeaufortLevel } from '../utils/weatherUtils';
 
@@ -38,6 +39,21 @@ const CANDIDATE_POOL_SIZE = 40;
 /** Below this a "best available" pick is not worth sending someone to. */
 const MIN_USABLE_SCORE = 35;
 
+// ── Caution tier ────────────────────────────────────────────────────────────
+// getSuitableBeaches only returns beaches at score >= 60 that are not
+// 'avoid_swimming'. That bar is right for "here is a good beach today", but on
+// a trip it produces blank days: the wave used in scoring is the REGIONAL one
+// (shelter does not reduce it there), so a fresh afternoon empties an entire
+// island even where a cove is calm. A blank day helps nobody planning a week.
+//
+// So when nothing clears the bar we fall back to the best beach that is merely
+// CHOPPY, and label it as such. This never claims calm — the UI shows it as a
+// caution — and it never crosses the engine's own hard limits below, which stay
+// authoritative: at >= 6 Bft or > 1.2 m the answer remains "not a beach day".
+const CAUTION_MIN_SWIMMING_SCORE = 30;
+const CAUTION_MAX_WAVE_M = 1.2;
+const CAUTION_MAX_BEAUFORT = 5;
+
 /** Whole-day wind at which we stop calling it a beach day at all. */
 const STORM_BEAUFORT = 8;
 
@@ -51,6 +67,19 @@ export type TripDayConfidence = 'firm' | 'provisional';
  */
 export type TripDayReason = 'storm' | 'rain' | 'too_windy' | 'no_match';
 
+/** What the planner hands the UI for one day. */
+export interface TripPick {
+  beach: Beach;
+  score: number;
+  waveHeightM?: number;
+  exposureLevel?: ExposureLevel;
+  /**
+   * True when this came from the caution tier — i.e. it did NOT clear the normal
+   * suitability bar and is choppy. The UI must never present these as calm.
+   */
+  caution: boolean;
+}
+
 export interface TripDayPlan {
   /** Index into the forecast array (0 = today). */
   dayIndex: number;
@@ -58,9 +87,9 @@ export interface TripDayPlan {
   status: TripDayStatus;
   confidence: TripDayConfidence;
   /** The assigned beach; null when status !== 'beach'. */
-  pick: SuitableBeach | null;
+  pick: TripPick | null;
   /** Runner-up for the same day, so the UI can offer an alternative. */
-  alternative: SuitableBeach | null;
+  alternative: TripPick | null;
   /** Set when status === 'no_beach_day'. */
   reason: TripDayReason | null;
   /**
@@ -110,6 +139,60 @@ const badWeatherReason = (day: DailyForecast): TripDayReason | null => {
 const WINDY_DAY_BEAUFORT = 5;
 
 /**
+ * Worth sending someone to. Caution-tier picks have already passed their own
+ * (stricter, wave/wind-based) gate, and the engine caps their score at 45, so
+ * the score floor would wrongly discard them.
+ */
+const isUsable = (pick: TripPick): boolean => pick.caution || pick.score >= MIN_USABLE_SCORE;
+
+const toPick = (entry: SuitableBeach): TripPick => ({
+  beach: entry.beach,
+  score: entry.score,
+  waveHeightM: entry.waveHeightM,
+  exposureLevel: entry.exposureLevel,
+  caution: false,
+});
+
+/**
+ * Best merely-CHOPPY beaches for a day, ranked. Used only when nothing clears the
+ * normal suitability bar. Stops dead at the engine's own hard limits so this can
+ * never talk someone into a genuinely rough sea.
+ */
+const cautionRanking = (
+  pool: Beach[],
+  day: DailyForecast,
+  preferences?: UserPreferences,
+  geospatialProfiles?: GeospatialExposureProfileLookup
+): TripPick[] => {
+  if (getBeaufortLevel((day.wind?.speed ?? 0) * 3.6) > CAUTION_MAX_BEAUFORT) return [];
+
+  return pool
+    .map(beach => {
+      const result = calculateBeachScore(beach, day, undefined, preferences, {
+        weatherSource: 'island-fallback',
+        hourlyForecast: day.hourly,
+        geospatialProfile: geospatialProfiles?.[beach.id],
+      });
+      return { beach, result };
+    })
+    .filter(({ result }) => {
+      // The engine's official "do not swim" override is absolute.
+      if (result.score === 0) return false;
+      if ((result.swimmingScore ?? 0) < CAUTION_MIN_SWIMMING_SCORE) return false;
+      if (typeof result.waveHeightM === 'number' && result.waveHeightM > CAUTION_MAX_WAVE_M) return false;
+      return true;
+    })
+    .sort((a, b) => (b.result.swimmingScore ?? 0) - (a.result.swimmingScore ?? 0))
+    .map(({ beach, result }) => ({
+      beach,
+      score: result.score,
+      waveHeightM: result.waveHeightM,
+      exposureLevel: result.exposureLevel,
+      caution: true,
+    }));
+};
+
+/**
  * Plans one beach per day for a stay of `days`, using each beach at most once so
  * the trip has variety. Returns one entry per requested day, in day order.
  *
@@ -132,8 +215,9 @@ export const planTrip = ({
     .sort((a, b) => getBeachPopularityRating(b) - getBeachPopularityRating(a))
     .slice(0, CANDIDATE_POOL_SIZE);
 
-  // Score every candidate for every day of the stay.
-  const rankedByDay: SuitableBeach[][] = [];
+  // Score every candidate for every day of the stay. Where the normal bar leaves
+  // a day empty, drop to the caution tier rather than returning a blank day.
+  const rankedByDay: TripPick[][] = [];
   for (let dayIndex = 0; dayIndex < horizon; dayIndex++) {
     const day = forecast[dayIndex];
     const scored = getSuitableBeaches(
@@ -146,7 +230,10 @@ export const planTrip = ({
       undefined,
       geospatialProfiles
     );
-    rankedByDay.push([...scored].sort((a, b) => b.score - a.score));
+    const ranked = [...scored].sort((a, b) => b.score - a.score).map(toPick);
+    rankedByDay.push(
+      ranked.length > 0 ? ranked : cautionRanking(pool, day, preferences, geospatialProfiles)
+    );
   }
 
   const plans = new Map<number, TripDayPlan>();
@@ -181,11 +268,11 @@ export const planTrip = ({
     let chosenDay = -1;
     let chosenUsable = Infinity;
     let chosenRegret = -Infinity;
-    let chosenList: SuitableBeach[] = [];
+    let chosenList: TripPick[] = [];
 
     for (const dayIndex of pendingDays) {
-      const available = rankedByDay[dayIndex].filter(entry => !usedBeachIds.has(entry.beachId));
-      const usableCount = available.filter(entry => entry.score >= MIN_USABLE_SCORE).length;
+      const available = rankedByDay[dayIndex].filter(entry => !usedBeachIds.has(entry.beach.id));
+      const usableCount = available.filter(isUsable).length;
       const best = available[0];
       const second = available[1];
       const regret = best ? best.score - (second?.score ?? 0) : Infinity;
@@ -213,15 +300,15 @@ export const planTrip = ({
     // Nothing UNUSED is good enough — but a beach we already visited may still be
     // fine. Repeating beats sending someone nowhere, so fall back to the whole
     // ranking for this day before giving up.
-    if (!best || best.score < MIN_USABLE_SCORE) {
-      const anyUsable = rankedByDay[chosenDay].find(entry => entry.score >= MIN_USABLE_SCORE);
+    if (!best || !isUsable(best)) {
+      const anyUsable = rankedByDay[chosenDay].find(isUsable);
       if (anyUsable) {
         best = anyUsable;
         isRepeat = true;
       }
     }
 
-    if (!best || best.score < MIN_USABLE_SCORE) {
+    if (!best || !isUsable(best)) {
       // Genuinely nothing works. If it is blowing, say so — "the meltemi leaves
       // nowhere sheltered here" is a useful answer; "no option" is not.
       const beaufort = getBeaufortLevel((day.wind?.speed ?? 0) * 3.6);
@@ -235,14 +322,14 @@ export const planTrip = ({
       continue;
     }
 
-    if (!isRepeat) usedBeachIds.add(best.beachId);
+    if (!isRepeat) usedBeachIds.add(best.beach.id);
     plans.set(chosenDay, {
       dayIndex: chosenDay,
       date: day.date,
       status: 'beach',
       confidence,
       pick: best,
-      alternative: chosenList.find(entry => entry.beachId !== best.beachId) ?? null,
+      alternative: chosenList.find(entry => entry.beach.id !== best!.beach.id) ?? null,
       reason: null,
       isRepeat,
       nextBeachDayIndex: null,

@@ -1680,7 +1680,7 @@ export const App: React.FC = () => {
   // (same mechanism as the region-mismatch gate) and surface the "unavailable" banner instead.
   // Better to show nothing than a stale "ήρεμα" on a meltemi day.
   const forecast = forecastMatchesRegion && !isStaleBlocked ? rawForecast : null;
-  const handleRegionSelected = (island: Island, source: 'selector' | 'nearest_location' = 'selector') => {
+  const handleRegionSelected = (island: Island, source: 'selector' | 'nearest_location' | 'landing' = 'selector') => {
     markValuePropSeen();
     trackEvent('region_changed', undefined, {
       locale: languageToLocale(language),
@@ -1689,6 +1689,22 @@ export const App: React.FC = () => {
       region_group: island.group || 'other',
       source,
     });
+
+    // Entering a region FROM THE LANDING means "show me this place", so it must
+    // land on the whole region. The region-change effect already clears
+    // selectedFilters, but `preferences` are persisted in localStorage and were
+    // not — so a pebbles/quiet toggle set once silently filtered every region a
+    // visitor opened afterwards, with no visible cause on the landing.
+    if (source === 'landing') {
+      setBeachSearchQuery('');
+      setSelectedFilters([]);
+      setPreferences(defaultPreferences);
+      hasUserSelectedSortRef.current = false;
+      setSortBy(defaultBeachListSort);
+      setMobileSuitableDistanceSort(false);
+      localStorage.setItem('userPreferences', JSON.stringify(defaultPreferences));
+    }
+
     detailRequestRef.current += 1;
     setDetailDataStatus('idle');
     setDetailBeach(null);
@@ -6242,7 +6258,7 @@ export const App: React.FC = () => {
           onShowNearbyBeaches={() => { void handleShowNearbyBeaches(); }}
           isFindingLocation={isFindingNearest}
           locationError={findNearestError}
-          onSelectIsland={handleRegionSelected}
+          onSelectIsland={island => handleRegionSelected(island, 'landing')}
           onOpenIslandSelector={handleOpenIslandSelector}
         />
       ) : (

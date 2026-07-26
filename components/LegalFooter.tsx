@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
-import { Cookie, FileText, LifeBuoy, Mail, ShieldCheck, SlidersHorizontal, X } from 'lucide-react';
+import { Compass, Cookie, FileText, LifeBuoy, Mail, ShieldCheck, SlidersHorizontal, X } from 'lucide-react';
 import { LanguageCode } from '../types';
+import { getGuidesHubLink } from '../utils/beachGuides';
 import { getLocalizedCopy } from '../utils/i18n';
 import { getLegalDoc, legalLastUpdated, LEGAL_OPERATOR, LegalKind } from '../utils/legalContent';
 import { LegalDocument } from './LegalDocument';
@@ -37,6 +38,7 @@ const copy = {
     contact: 'Contact',
     dataProtection: 'Data protection',
     tagline: 'Discover the best beach for today.',
+    guides: 'Beach guides',
   },
   gr: {
     terms: 'Όροι Χρήσης',
@@ -55,6 +57,7 @@ const copy = {
     contact: 'Επικοινωνία',
     dataProtection: 'Προσωπικά δεδομένα',
     tagline: 'Βρες την ιδανική σου παραλία στην Ελλάδα σήμερα',
+    guides: 'Οδηγοί παραλιών',
   },
 };
 
@@ -94,6 +97,9 @@ export const LegalFooter: React.FC<LegalFooterProps> = ({ language }) => {
   const faqPath = language === 'gr' ? '/el/faq/' : '/faq/';
   const faqExternal = import.meta.env.DEV;
   const faqHref = faqExternal ? `https://calmbeach.gr${faqPath}` : faqPath;
+  // Same story for the guides hub (and it falls back to the English hub for
+  // de/fr/it, where no localized hub is emitted).
+  const { href: guidesHref, external: guidesExternal } = getGuidesHubLink(language);
 
   const contactLinkClass =
     'group inline-flex items-center gap-2 text-sm font-medium text-slate-700 transition-colors hover:text-teal-700 focus:outline-none focus-visible:ring-2 focus-visible:ring-teal-500 rounded';
@@ -114,6 +120,15 @@ export const LegalFooter: React.FC<LegalFooterProps> = ({ language }) => {
                 <span className="font-heading text-base font-extrabold tracking-tight text-slate-900">Calm Beach</span>
               </div>
               <p className="mt-2 text-sm font-medium text-slate-600">{c.tagline}</p>
+              <a
+                href={guidesHref}
+                target={guidesExternal ? '_blank' : undefined}
+                rel={guidesExternal ? 'noopener noreferrer' : undefined}
+                className="mt-3 inline-flex items-center gap-2 rounded-full border border-teal-200 bg-teal-50 px-3.5 py-1.5 text-sm font-bold text-teal-700 transition-colors hover:border-teal-300 hover:bg-teal-100 focus:outline-none focus-visible:ring-2 focus-visible:ring-teal-500"
+              >
+                <Compass className="h-4 w-4 shrink-0" aria-hidden="true" />
+                {c.guides} →
+              </a>
               <p className="mt-4 flex items-start justify-center gap-2 text-xs leading-relaxed text-slate-500 md:justify-start">
                 <LifeBuoy className="mt-0.5 h-4 w-4 shrink-0 text-teal-600/80" aria-hidden="true" />
                 <span className="max-w-xs">{c.footerNote}</span>

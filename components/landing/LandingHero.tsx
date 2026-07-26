@@ -27,9 +27,20 @@ interface LandingHeroProps {
 // One quiet accent: the title's final word ("σήμερα"/"today") in brand teal.
 // Both authored titles deliberately end on that promise word, so a last-word
 // split is a controlled device, not string luck.
-const splitTitleAccent = (title: string): [string, string] => {
-  const i = title.lastIndexOf(' ');
-  return i === -1 ? [title, ''] : [title.slice(0, i), title.slice(i + 1)];
+// Colours one phrase inside the headline. The copy keeps ONE canonical title
+// string (so the sentence is never assembled from fragments) and names the
+// substring to accent; if that substring is ever edited out of the title, this
+// degrades to the plain headline rather than breaking it.
+const renderTitleAccent = (title: string, accent: string): React.ReactNode => {
+  const i = accent ? title.indexOf(accent) : -1;
+  if (i === -1) return title;
+  return (
+    <>
+      {title.slice(0, i)}
+      <span className="text-[#0284c7]">{accent}</span>
+      {title.slice(i + accent.length)}
+    </>
+  );
 };
 
 const riseDelay = (delayMs: number): React.CSSProperties => ({ animationDelay: `${delayMs}ms` });
@@ -75,7 +86,7 @@ export const LandingHero: React.FC<LandingHeroProps> = ({
   roughness,
 }) => {
   const c = getLocalizedCopy(language, landingCopy).hero;
-  const [titleLead, titleAccent] = splitTitleAccent(c.title);
+  const heroTitle = renderTitleAccent(c.title, c.titleAccent);
   // Greek day, not the viewer's UTC day, so everyone gets the same scene per day.
   const dateSeed = useMemo(() => athensDayKey(), []);
   const [photoOk, setPhotoOk] = useState(true);
@@ -129,7 +140,7 @@ export const LandingHero: React.FC<LandingHeroProps> = ({
           className="cb-hero-rise mx-auto mt-4 max-w-2xl text-balance text-4xl font-bold leading-[1.06] tracking-tight text-slate-950 sm:text-[3.4rem]"
           style={riseDelay(90)}
         >
-          {titleLead}{titleAccent ? <> <span className="text-[#007a83]">{titleAccent}</span></> : null}
+          {heroTitle}
         </h1>
 
         <p
@@ -175,15 +186,11 @@ export const LandingHero: React.FC<LandingHeroProps> = ({
           </button>
         </div>
 
-        {locationError ? (
+        {/* No "or browse below" hint: the region strip is directly underneath and
+            visibly self-explanatory, so the pill was just one more thing to read. */}
+        {locationError && (
           <p className="mx-auto mt-3.5 max-w-2xl text-sm font-semibold text-rose-600" role="alert">
             {locationError}
-          </p>
-        ) : (
-          <p className="cb-hero-rise mt-4" style={riseDelay(330)}>
-            <span className="inline-block rounded-full bg-white/75 px-3 py-1 text-sm font-semibold text-slate-700 shadow-sm ring-1 ring-white/60 backdrop-blur-sm">
-              {c.browseHint}
-            </span>
           </p>
         )}
       </div>

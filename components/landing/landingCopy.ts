@@ -13,6 +13,8 @@ export type LandingCopy = {
   hero: {
     kicker: string;
     title: string;
+    /** Substring of `title` shown in blue. Must appear verbatim in `title`. */
+    titleAccent: string;
     subtitle: string;
     searchPlaceholder: string;
     searchAria: string;
@@ -23,24 +25,19 @@ export type LandingCopy = {
     searchNoResults: string;
     nearMe: string;
     findingLocation: string;
-    browseHint: string;
   };
-  seas: {
+  today: {
     title: string;
     subtitle: string;
     live: string;
-    loading: string;
-    unit: string;
-    verdicts: { calm: string; mild: string; fresh: string; strong: string; rough: string };
-    areas: { ionian: string; saronic: string; cretan: string; aegean: string; neAegean: string };
+    verdicts: { calm: string; mild: string; choppy: string; strong: string; rough: string };
+    /** Spoken form for screen readers — the chip itself is compact by design. */
+    chipAria: (region: string, beaufort: number, verdict: string) => string;
     note: string;
     cta: string;
+    /** Geolocation can take several seconds; the button must say it is working. */
+    ctaPending: string;
     allRegions: string;
-    unavailable: string;
-  };
-  popular: {
-    label: string;
-    ariaLabel: string;
   };
   manifesto: {
     overline: string;
@@ -54,9 +51,15 @@ export const landingCopy: Record<'en' | 'gr', LandingCopy> = {
   gr: {
     hero: {
       kicker: 'Πριν πάρεις την πετσέτα',
-      title: 'Βρες την ιδανική σου παραλία στην Ελλάδα σήμερα',
+      // The positioning is carried by ENUMERATING real things, not by claiming
+      // anything about ourselves: no "not another catalogue" (defines us against
+      // rivals the visitor has never heard of), no "honestly" (you show honesty,
+      // you don't announce it). Conditions come last on purpose — the amenities
+      // say which beach you want, the conditions say whether it works today.
+      title: 'Ποια παραλία της Ελλάδας σου ταιριάζει σήμερα;',
+      titleAccent: 'Ελλάδας',
       subtitle:
-        'Όχι άλλος ένας κατάλογος. Σου δείχνουμε πού έχει ήρεμα νερά σήμερα — τίμια, με βάση τον άνεμο, το κύμα και το σχήμα της κάθε ακτής.',
+        'Ξαπλώστρες, ρηχά για τα παιδιά, ησυχία, σκιά — μαζί με τον άνεμο και το κύμα της ημέρας.',
       searchPlaceholder: 'Αναζήτησε παραλία ή περιοχή…',
       searchAria: 'Αναζήτηση παραλίας ή περιοχής',
       clearSearchAria: 'Καθαρισμός αναζήτησης',
@@ -66,41 +69,44 @@ export const landingCopy: Record<'en' | 'gr', LandingCopy> = {
       searchNoResults: 'Δεν βρέθηκε κοντινό αποτέλεσμα. Πάτα Enter για αναζήτηση.',
       nearMe: 'Κοντά μου',
       findingLocation: 'Εύρεση τοποθεσίας…',
-      browseHint: 'ή δες τις θάλασσες σήμερα',
     },
-    seas: {
-      title: 'Οι θάλασσες σήμερα',
-      subtitle: 'Ζωντανά, ανά θαλάσσια περιοχή — δες πού φυσάει και πού έχει ήρεμα, πριν διαλέξεις.',
+    // Names people actually use, not sea areas: nobody says "let's go to the
+    // Cretan Sea". The order is measured demand from our own counter, and the
+    // number next to each name is the thing a directory cannot copy.
+    today: {
+      title: 'Οι περιοχές σήμερα',
+      subtitle: 'Πόσο φυσάει τώρα, από το Ιόνιο ως τα Δωδεκάνησα. Πάτα μια περιοχή για να τη δεις παραλία-παραλία.',
       live: 'Ζωντανά',
-      loading: 'Διαβάζω τις σημερινές συνθήκες…',
-      unit: 'μποφόρ',
-      verdicts: { calm: 'ήρεμα', mild: 'ήπιο', fresh: 'ζωηρό', strong: 'έντονο', rough: 'φουρτούνα' },
-      areas: { ionian: 'Ιόνιο', saronic: 'Σαρωνικός', cretan: 'Κρητικό', aegean: 'Αιγαίο', neAegean: 'ΒΑ Αιγαίο' },
-      note: 'Εκτίμηση ανοιχτής θάλασσας — στις προστατευμένες ακτές είναι πιο ήρεμα.',
+      // 4 Bft was «ζωηρό» — wrong twice over: it sounds like a compliment, and in
+      // this codebase «ζωηρό» already means a lively ATMOSPHERE (beach bars).
+      // «Ανήσυχο» is the honest sea word and keeps the ladder all-adjectives.
+      verdicts: { calm: 'ήρεμα', mild: 'ήπιο', choppy: 'ανήσυχο', strong: 'έντονο', rough: 'φουρτούνα' },
+      chipAria: (region, beaufort, verdict) => `${region}: ${beaufort} μποφόρ, ${verdict}`,
+      note: 'Ο αριθμός είναι μποφόρ, εκτίμηση ανοιχτής θάλασσας — στις προστατευμένες ακτές κάθε περιοχής είναι πιο ήρεμα.',
       cta: 'Βρες προστατευμένη παραλία κοντά σου',
+      ctaPending: 'Βρίσκω πού είσαι…',
       allRegions: 'ή δες όλες τις περιοχές',
-      unavailable: 'Οι συνθήκες αλλάζουν κάθε μέρα — γι’ αυτό δεν σου δίνουμε απλώς μια λίστα. Δες τι έχει κοντά σου σήμερα.',
     },
-    popular: {
-      label: 'Δημοφιλείς αυτές τις μέρες',
-      ariaLabel: 'Δημοφιλείς περιοχές',
-    },
+    // "Calm" here is not a sea state — it is whatever makes the day work for THIS
+    // person. So the three points are the two halves of that (the place, which is
+    // fixed; the day, which is not) plus our limits. No "trust us" heading and no
+    // claiming honesty: point 03 demonstrates it instead.
     manifesto: {
-      overline: 'Γιατί να μας εμπιστευτείς',
+      overline: 'Τι σημαίνει «ήρεμα»',
       quote:
-        'Οι συνθήκες αλλάζουν κάθε μέρα. Γι’ αυτό δεν σου δίνουμε απλώς μια λίστα — σου λέμε πού έχει ήρεμα σήμερα, και πού όχι.',
+        'Για άλλον είναι ξαπλώστρα, ρηχά νερά και ένα ντουζ. Για άλλον μια άδεια αμμουδιά. Κοιτάμε και τα δύο: τι έχει η παραλία, και τι κάνει η θάλασσα σήμερα.',
       points: [
         {
-          title: 'Ζωντανή πρόγνωση, τίμια',
-          body: 'Πρόγνωση, όχι μέτρηση επί τόπου. Δείχνουμε εύρος κύματος, όχι ένα δήθεν σίγουρο νούμερο.',
+          title: 'Τι έχει η παραλία',
+          body: 'Ξαπλώστρες, ντουζ, σκιά, φαγητό, παρκινγκ, ρηχά νερά, πρόσβαση. Αυτά δεν αλλάζουν — τα ξέρουμε από πριν.',
         },
         {
-          title: 'Το σχήμα της ακτής μετράει',
-          body: 'Κοιτάμε πού χτυπάει ο άνεμος και πού προστατεύει η στεριά. Μια διάσημη παραλία δεν βγαίνει αυτόματα «καλύτερη».',
+          title: 'Τι κάνει η θάλασσα σήμερα',
+          body: 'Άνεμος και κύμα ανά ώρα, περασμένα μέσα από το σχήμα της κάθε ακτής. Γι’ αυτό μια διάσημη παραλία δεν βγαίνει αυτόματα καλύτερη.',
         },
         {
-          title: 'Σου λέμε και τι δεν ξέρουμε',
-          body: 'Φτάνοντας, έλεγξε πάντα με τα μάτια σου — σημαίες, ρεύματα, ναυαγοσώστη.',
+          title: 'Τι δεν ξέρουμε',
+          body: 'Ρεύματα, βυθό, τοπικές ριπές. Δείχνουμε πρόγνωση, όχι μέτρηση — γι’ αυτό δίνουμε εύρος κύματος. Φτάνοντας, κοίτα σημαίες και ναυαγοσώστη.',
         },
       ],
       more: 'Πώς δουλεύει το CalmBeach',
@@ -109,9 +115,10 @@ export const landingCopy: Record<'en' | 'gr', LandingCopy> = {
   en: {
     hero: {
       kicker: 'Before you grab your towel',
-      title: 'Find your ideal beach in Greece today',
+      title: 'Which beach in Greece suits you today?',
+      titleAccent: 'in Greece',
       subtitle:
-        'Not another beach list. We show you where the water is calm today — honestly, from the wind, the waves and the shape of each shore.',
+        'Sunbeds, shallow water for the kids, quiet, shade — alongside the day’s wind and waves.',
       searchPlaceholder: 'Search a beach or region…',
       searchAria: 'Search a beach or region',
       clearSearchAria: 'Clear search',
@@ -121,41 +128,34 @@ export const landingCopy: Record<'en' | 'gr', LandingCopy> = {
       searchNoResults: 'No close match found. Press Enter to search.',
       nearMe: 'Near me',
       findingLocation: 'Finding location…',
-      browseHint: 'or see the seas today',
     },
-    seas: {
-      title: 'The seas today',
-      subtitle: 'Live, by sea area — see where it is blowing and where it is calm, before you choose.',
+    today: {
+      title: 'Regions today',
+      subtitle: 'How hard it is blowing right now, from the Ionian to the Dodecanese. Tap a region to see it beach by beach.',
       live: 'Live',
-      loading: 'Reading today’s conditions…',
-      unit: 'Beaufort',
-      verdicts: { calm: 'calm', mild: 'mild', fresh: 'fresh', strong: 'strong', rough: 'rough' },
-      areas: { ionian: 'Ionian', saronic: 'Saronic', cretan: 'Cretan', aegean: 'Aegean', neAegean: 'NE Aegean' },
-      note: 'Open-sea estimate — sheltered shores are calmer.',
+      verdicts: { calm: 'calm', mild: 'mild', choppy: 'choppy', strong: 'strong', rough: 'rough' },
+      chipAria: (region, beaufort, verdict) => `${region}: ${beaufort} Beaufort, ${verdict}`,
+      note: 'The number is Beaufort, an open-sea estimate — the sheltered shores of each region are calmer.',
       cta: 'Find a sheltered beach near you',
+      ctaPending: 'Finding you…',
       allRegions: 'or see all regions',
-      unavailable: 'Conditions change every day — that is why we do not just hand you a list. See what is near you today.',
-    },
-    popular: {
-      label: 'Popular right now',
-      ariaLabel: 'Popular regions',
     },
     manifesto: {
-      overline: 'Why trust our read',
+      overline: 'What “calm” means here',
       quote:
-        'Conditions change every day. That is why we do not just hand you a list — we tell you where it is calm today, and where it is not.',
+        'For one person it is a sunbed, shallow water and a shower. For another, an empty stretch of sand. We look at both: what the beach has, and what the sea is doing today.',
       points: [
         {
-          title: 'A live forecast, shown honestly',
-          body: 'A forecast, not an on-the-spot measurement. We show a wave range, not a falsely exact number.',
+          title: 'What the beach has',
+          body: 'Sunbeds, showers, shade, food, parking, shallow water, access. These do not change — we know them in advance.',
         },
         {
-          title: 'The shape of the shore matters',
-          body: 'We look at where the wind hits and where the land shelters. A famous beach is not automatically “best”.',
+          title: 'What the sea is doing today',
+          body: 'Wind and waves by the hour, read through the shape of each shore. That is why a famous beach is not automatically the better one.',
         },
         {
-          title: 'We tell you what we do not know',
-          body: 'When you arrive, always check with your own eyes — flags, currents, lifeguards.',
+          title: 'What we do not know',
+          body: 'Currents, the seabed, local gusts. We show a forecast, not a measurement — which is why we give a wave range. When you arrive, check the flags and the lifeguard.',
         },
       ],
       more: 'How CalmBeach works',

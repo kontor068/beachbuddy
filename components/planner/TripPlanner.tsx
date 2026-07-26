@@ -6,7 +6,6 @@ import { getLocalizedCopy, languageToDateLocale } from '../../utils/i18n';
 import { getBeaufortLevel } from '../../utils/weatherUtils';
 import { trackEvent } from '../../services/analyticsService';
 import { planTrip, type TripDayPlan } from '../../services/tripPlannerService';
-import { calculateBeachScore } from '../../services/recommendationService';
 import { tripPlannerCopy } from './tripPlannerCopy';
 
 // "I'm here for N days — which beach on which day?"
@@ -44,23 +43,6 @@ export const TripPlanner: React.FC<TripPlannerProps> = ({
 
   const plan = useMemo(() => {
     if (!days) return [];
-    if (import.meta.env.DEV) {
-      // TEMP diagnostic — why does a day return zero suitable beaches?
-      for (let d = 0; d < Math.min(days, forecast.length); d++) {
-        const day = forecast[d];
-        const rows = beaches.slice(0, 3).map((beach: Beach) => {
-          const r = calculateBeachScore(beach, day, undefined, preferences, {
-            weatherSource: 'island-fallback',
-            hourlyForecast: day.hourly,
-            geospatialProfile: geospatialProfiles?.[beach.id],
-          });
-          return `${beach.name.en}: score=${Math.round(r.score)} swim=${Math.round(r.swimmingScore ?? -1)} comfort=${r.swimmingComfort} wave=${r.waveHeightM?.toFixed(2)}`;
-        });
-        const keyHours = (day.hourly || []).filter((h: any) => { const hr = new Date(h.dt * 1000).getHours(); return hr >= 10 && hr <= 18; });
-        const rainy = keyHours.filter((h: any) => (h.precipitationProbability ?? 0) >= 0.3);
-        console.log(`[why] day${d} keyHours=${keyHours.length} probGte30=${rainy.length} codes=${[...new Set(keyHours.map((h: any) => h.weather?.[0]?.main))].join(',')} | ${rows.join(' | ')}`);
-      }
-    }
     return planTrip({ beaches, forecast, days, language, preferences, geospatialProfiles });
   }, [beaches, days, forecast, geospatialProfiles, language, preferences]);
 
@@ -82,6 +64,7 @@ export const TripPlanner: React.FC<TripPlannerProps> = ({
 
   const beyond = days ? Math.max(0, days - forecast.length) : 0;
   const hasProvisional = plan.some(entry => entry.confidence === 'provisional');
+  const hasCaution = plan.some(entry => entry.pick?.caution);
 
   return (
     <section
@@ -150,6 +133,11 @@ export const TripPlanner: React.FC<TripPlannerProps> = ({
                             <Wind className="h-3 w-3" aria-hidden="true" />
                             {beaufort} {c.windUnit}
                           </span>
+                          {entry.pick.caution && (
+                            <span className="rounded-full bg-orange-50 px-1.5 py-0.5 text-[10px] font-bold text-orange-700 ring-1 ring-orange-100">
+                              {c.cautionBadge}
+                            </span>
+                          )}
                           {entry.isRepeat && <span className="text-slate-400">· {c.repeat}</span>}
                           {entry.confidence === 'provisional' && (
                             <span className="rounded-full bg-amber-50 px-1.5 py-0.5 text-[10px] font-bold text-amber-700 ring-1 ring-amber-100">
@@ -178,8 +166,10 @@ export const TripPlanner: React.FC<TripPlannerProps> = ({
           </ol>
         )}
 
-        {days && (hasProvisional || beyond > 0) && (
+        {days && (hasCaution || hasProvisional || beyond > 0) && (
           <p className="mt-2.5 text-[11px] font-medium leading-snug text-slate-400">
+            {/* The caution caveat leads: it is the one that affects safety. */}
+            {hasCaution && <span className="text-orange-700/80">{c.cautionNote} </span>}
             {hasProvisional && c.provisionalNote}
             {beyond > 0 && ` ${c.beyondHorizon(beyond)}`}
           </p>
