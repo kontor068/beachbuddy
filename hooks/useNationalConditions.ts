@@ -48,6 +48,11 @@ export const useNationalConditions = (): HeroConditions => {
         beaufort: data.beaufort,
         regions: data.regions,
         status: 'live',
+        // athens-clock-exempt: this is the AGE of a reading, not a time of day —
+        // both sides are absolute instants, so the device's timezone cannot skew
+        // the subtraction. athensNow() here would compare a wall-clock-shifted
+        // "now" against a real epoch timestamp and make freshness wrong by the
+        // visitor's UTC offset.
         isFresh: Date.now() - data.sampledAt < FRESH_MS,
       });
     });
