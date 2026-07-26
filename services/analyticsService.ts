@@ -28,6 +28,15 @@ export type AnalyticsEvent =
   | 'landing_near_me_clicked'
   | 'landing_region_clicked'
   | 'landing_all_regions_clicked'
+  | 'landing_contact_clicked'
+  // The story section, measured with two sentinels rather than one observer on
+  // the section itself: the section is taller than a phone viewport, so a
+  // ratio-based observer could never fire. `_viewed` (heading in view) is the
+  // denominator, `_read` (signature line in view) is an honest read-through.
+  | 'landing_story_viewed'
+  | 'landing_story_read'
+  | 'landing_feedback_submitted'
+  | 'landing_feedback_failed'
   // Multi-day trip planner (components/planner/). `days` tells us whether the
   // multi-day audience is real before we invest further in it.
   | 'trip_planned'
@@ -381,6 +390,53 @@ const sendFeedbackEmail = (payload: {
       console.warn('[Feedback] Email delivery failed.', error);
     }
   });
+};
+
+/**
+ * Free-text message from the landing story section, delivered over the same
+ * Telegram function as beach feedback (no new infrastructure, instant push).
+ *
+ * Deliberately NOT consent-gated: this is content the visitor chose to send us,
+ * not tracking. The analytics event that accompanies it is gated as usual.
+ *
+ * Resolves true only on a real 2xx, so the UI can fall back to the plain mail
+ * address instead of pretending the message went out.
+ */
+export const sendLandingMessage = async (payload: {
+  message: string;
+  replyTo?: string;
+  prompt?: string;
+  language?: string;
+  /** Honeypot: a visible endpoint is a spam target within days. */
+  company?: string;
+}): Promise<boolean> => {
+  if (typeof fetch === 'undefined') return false;
+
+  try {
+    const response = await fetch('/.netlify/functions/feedback-email', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        source: 'landing_story',
+        feedback: 'story_message',
+        message: payload.message,
+        replyTo: payload.replyTo || '',
+        prompt: payload.prompt || '',
+        company: payload.company || '',
+        timestamp: new Date().toISOString(),
+        context: {
+          language: payload.language,
+          pagePath: typeof window !== 'undefined' ? window.location.pathname : '',
+        },
+      }),
+    });
+    return response.ok;
+  } catch (error) {
+    if (import.meta.env.DEV) {
+      console.warn('[Feedback] Landing message delivery failed.', error);
+    }
+    return false;
+  }
 };
 
 export const getAnalyticsConsent = (): AnalyticsConsent | null => {

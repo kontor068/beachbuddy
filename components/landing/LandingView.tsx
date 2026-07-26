@@ -7,6 +7,7 @@ import { useNationalConditions } from '../../hooks/useNationalConditions';
 import { LandingHero } from './LandingHero';
 import { TodayRegionsSection } from './TodayRegionsSection';
 import { HowWeDecideSection } from './HowWeDecideSection';
+import { OurStorySection } from './OurStorySection';
 
 // The national landing shown to first-time / no-region visitors. It follows the
 // competitor's clean, sectioned philosophy but differentiates hard: it leads
@@ -105,6 +106,7 @@ export const LandingView: React.FC<LandingViewProps> = ({
           allIslands={allIslands}
           regions={conditions.regions}
           status={conditions.status}
+          isFresh={conditions.isFresh}
           onSelectIsland={onSelectIsland}
           onShowNearbyBeaches={() => handleNearMe('regions')}
           isFindingLocation={isFindingLocation}
@@ -118,6 +120,12 @@ export const LandingView: React.FC<LandingViewProps> = ({
 
       <div className="mt-14 sm:mt-20">
         <HowWeDecideSection language={language} />
+      </div>
+
+      {/* The human close: light and first-person right after the dark
+          institutional band, so the page ends on "help us" and not on caveats. */}
+      <div className="mt-14 sm:mt-20">
+        <OurStorySection language={language} />
       </div>
     </main>
   );

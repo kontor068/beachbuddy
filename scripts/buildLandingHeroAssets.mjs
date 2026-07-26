@@ -48,8 +48,10 @@ const SLOTS = [
   },
   {
     slot: 'afternoon',
-    file: 'IMG20230622115305.jpg',
-    desktopFocusY: 0.55,
+    // Previous source (IMG20230622115305.jpg) had a visibly tilted horizon —
+    // swapped for a level shot with the same vivid midday turquoise.
+    file: 'IMG20240628121114.jpg',
+    desktopFocusY: 0.42,
     mobileFocusX: 0.5,
   },
   {

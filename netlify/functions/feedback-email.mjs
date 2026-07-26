@@ -10,6 +10,15 @@ const clamp = (value, max = 180) => String(value ?? '')
   .trim()
   .slice(0, max);
 
+// Free-text from a human: keep line breaks (the structure IS the message), collapse
+// only runs of spaces and any paragraph gap longer than one blank line.
+const clampText = (value, max = 1_200) => String(value ?? '')
+  .replace(/\r\n/g, '\n')
+  .replace(/[ \t]+/g, ' ')
+  .replace(/\n{3,}/g, '\n\n')
+  .trim()
+  .slice(0, max);
+
 // Telegram HTML parse_mode only needs & < > escaped (unlike full HTML — do NOT escape quotes).
 const escapeTelegram = (value) => String(value ?? '')
   .replace(/&/g, '&amp;')
@@ -53,6 +62,8 @@ const VERDICTS = {
   had_waves: { label: 'Had waves', emoji: '🌊' },
   too_windy: { label: 'Too windy', emoji: '💨' },
   calmer: { label: 'Calmer than shown', emoji: '😎' },
+  // Free-text message from the landing story section (no beach attached).
+  story_message: { label: 'Landing message', emoji: '✉️' },
 };
 
 const formatVerdict = (value) => VERDICTS[value] || { label: clamp(value || 'Unknown feedback', 80), emoji: '📩' };
@@ -66,6 +77,10 @@ const normalizePayload = (body, event) => {
   return {
     source: clamp(feedback.source || context.source || 'unknown', 80),
     beachId: Number.isFinite(Number(feedback.beachId)) ? Number(feedback.beachId) : undefined,
+    // Free-text path: without these three the landing message arrives empty.
+    message: clampText(feedback.message, 1_200),
+    replyTo: clamp(feedback.replyTo, 160),
+    prompt: clamp(feedback.prompt, 60),
     feedback: clamp(feedback.feedback || feedback.verdict || 'unknown', 80),
     verdictLabel: verdict.label,
     verdictEmoji: verdict.emoji,
@@ -85,7 +100,10 @@ const normalizePayload = (body, event) => {
 };
 
 const fieldLines = (payload) => [
-  ['Beach', payload.beachName || (payload.beachId ? `#${payload.beachId}` : 'Unknown')],
+  // A landing message has no beach attached — an "Unknown" row would be noise.
+  ['Beach', payload.beachName || (payload.beachId ? `#${payload.beachId}` : '')],
+  ['Reply to', payload.replyTo],
+  ['Prompt', payload.prompt],
   ['Beach ID', payload.beachId ?? ''],
   ['Island/region', [payload.islandName, payload.regionId].filter(Boolean).join(' / ')],
   ['Date', payload.conditions.date],
@@ -103,7 +121,10 @@ const formatMessage = (payload) => {
   const rows = fieldLines(payload)
     .map(([label, value]) => `<b>${escapeTelegram(label)}:</b> ${escapeTelegram(value)}`)
     .join('\n');
-  return [header, '', rows].join('\n').slice(0, MAX_MESSAGE_LENGTH);
+  // The human's own words go above the metadata, as a block — inlining them into a
+  // "<b>Message:</b> …" row buries the only part worth reading on a phone.
+  const body = payload.message ? [escapeTelegram(payload.message), ''] : [];
+  return [header, '', ...body, rows].join('\n').slice(0, MAX_MESSAGE_LENGTH);
 };
 
 export const handler = async (event) => {
@@ -117,9 +138,21 @@ export const handler = async (event) => {
 
   let payload;
   try {
-    payload = normalizePayload(parseBody(event), event);
+    const body = parseBody(event);
+
+    // Honeypot. This endpoint is now reachable from a visible form, so it is a
+    // spam target; answer 202 rather than an error so bots learn nothing.
+    if (String(body?.company || '').trim()) {
+      return json(202, { ok: true, id: null });
+    }
+
+    payload = normalizePayload(body, event);
   } catch (error) {
     return json(error.statusCode || 400, { error: error.message || 'Invalid feedback payload.' });
+  }
+
+  if (payload.feedback === 'story_message' && !payload.message) {
+    return json(400, { error: 'Message is empty.' });
   }
 
   const config = getConfig();

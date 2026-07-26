@@ -6763,7 +6763,12 @@ export const App: React.FC = () => {
         language={language}
         activeTab={mobileTab}
         onTabChange={handleMobileTab}
-        visible={showBottomNav}
+        // Never over the landing. showBottomNav is driven by `!selectedIsland`,
+        // which is exactly the landing state — so a 64px bar was covering the
+        // bottom of every screen of the first impression, and two of its three
+        // tabs are dead there: «Καιρός» bounces straight back to home (no region
+        // to show weather for) and «Αποθηκευμένα» is empty for a new visitor.
+        visible={showBottomNav && !showLanding}
         showBuddy={ENABLE_BEACH_BUDDY_CHAT}
         showPlanner={ENABLE_PLANNER_PRO}
         favoritesCount={favorites.length}

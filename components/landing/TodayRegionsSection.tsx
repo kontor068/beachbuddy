@@ -39,6 +39,8 @@ interface TodayRegionsSectionProps {
   allIslands: Island[];
   regions: RegionConditionReading[];
   status: ConditionsStatus;
+  /** Gates the «Ζωντανά» badge — a cached 3h-old reading is not live. */
+  isFresh: boolean;
   onSelectIsland: (island: Island) => void;
   onShowNearbyBeaches: () => void;
   /** Geolocation is in flight — the CTA must show it, it can take seconds. */
@@ -51,13 +53,18 @@ type VerdictKey = 'calm' | 'mild' | 'choppy' | 'strong' | 'rough';
 const verdictKey = (bft: number): VerdictKey =>
   bft <= 2 ? 'calm' : bft <= 3 ? 'mild' : bft <= 4 ? 'choppy' : bft <= 5 ? 'strong' : 'rough';
 
-// One tint per verdict, so five chips scan as a spread rather than five labels.
+// One tint per level, so the whole strip scans as a gradient of the day rather
+// than thirteen labels to read one by one. Applied to the text itself — a row of
+// coloured badges next to a sentence would fight the sentence.
+// 700-weight throughout: emerald-600/teal-600 measured 3.7:1 on this frosted
+// card, under the 4.5:1 floor — and calm/mild are the two states that dominate a
+// Greek summer, so the failure would have been the common case.
 const VERDICT_TONE: Record<VerdictKey, string> = {
-  calm: 'text-emerald-700 bg-emerald-50 ring-emerald-200/70',
-  mild: 'text-teal-700 bg-teal-50 ring-teal-200/70',
-  choppy: 'text-amber-800 bg-amber-50 ring-amber-200/70',
-  strong: 'text-orange-800 bg-orange-50 ring-orange-200/70',
-  rough: 'text-rose-800 bg-rose-50 ring-rose-200/70',
+  calm: 'text-emerald-700',
+  mild: 'text-teal-700',
+  choppy: 'text-amber-700',
+  strong: 'text-orange-700',
+  rough: 'text-rose-700',
 };
 
 export const TodayRegionsSection: React.FC<TodayRegionsSectionProps> = ({
@@ -65,6 +72,7 @@ export const TodayRegionsSection: React.FC<TodayRegionsSectionProps> = ({
   allIslands,
   regions,
   status,
+  isFresh,
   onSelectIsland,
   onShowNearbyBeaches,
   isFindingLocation,
@@ -105,7 +113,7 @@ export const TodayRegionsSection: React.FC<TodayRegionsSectionProps> = ({
     <section className="mx-auto w-full max-w-6xl px-5" aria-label={c.title}>
       <div className="flex items-baseline gap-3">
         <h2 className="shrink-0 text-2xl font-bold tracking-tight text-slate-950 sm:text-3xl">{c.title}</h2>
-        {status === 'live' && (
+        {status === 'live' && isFresh && (
           <span className="inline-flex items-center gap-1.5 text-[11px] font-black uppercase tracking-wider text-[#007a83]">
             <span className="relative flex h-2 w-2" aria-hidden="true">
               <span className="absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75 motion-safe:animate-ping" />
@@ -118,37 +126,37 @@ export const TodayRegionsSection: React.FC<TodayRegionsSectionProps> = ({
       </div>
       <p className="mt-2 max-w-xl text-[15px] font-normal leading-relaxed text-slate-600">{c.subtitle}</p>
 
-      <div className="mt-5 flex flex-wrap gap-2 sm:mt-6 sm:gap-2.5">
+      {/* A grid, not a wrapping pill row: the conditions now read as a sentence
+          ("κυματάκι στα 4 μποφόρ") and a sentence needs its own line. Two columns
+          on a phone keeps all thirteen inside roughly one screen. */}
+      <div className="mt-5 grid grid-cols-2 gap-2 sm:mt-6 sm:grid-cols-3 sm:gap-2.5 lg:grid-cols-4">
         {islands.map(island => {
           const reading = regions.find(r => r.regionId === island.id);
           const vk = reading ? verdictKey(reading.beaufort) : null;
           const name = island.name[language];
+          const phrase = reading ? c.seaPhrase(reading.beaufort) : null;
 
           return (
             <a
               key={island.id}
               href={buildBeachRegionPath(island, language)}
               onClick={event => handleClick(event, island)}
-              aria-label={reading && vk ? c.chipAria(name, reading.beaufort, c.verdicts[vk]) : name}
-              className="group inline-flex min-h-11 items-center gap-2 rounded-full border border-slate-200 bg-white/80 py-1 pl-4 pr-1.5 shadow-sm shadow-sky-900/5 backdrop-blur-sm transition-colors hover:border-cyan-300 hover:bg-cyan-50/70 focus:outline-none focus-visible:ring-2 focus-visible:ring-cyan-700"
+              aria-label={phrase ? c.chipAria(name, phrase) : name}
+              className="group flex min-h-[3.25rem] flex-col justify-center rounded-2xl border border-slate-200 bg-white/80 px-3.5 py-2 shadow-sm shadow-sky-900/5 backdrop-blur-sm transition-colors hover:border-cyan-300 hover:bg-cyan-50/70 focus:outline-none focus-visible:ring-2 focus-visible:ring-cyan-700"
             >
-              <span className="text-[13px] font-extrabold text-slate-800 transition-colors group-hover:text-[#007a83] sm:text-sm">
+              <span className="truncate text-[13px] font-extrabold leading-tight text-slate-800 transition-colors group-hover:text-[#007a83] sm:text-sm">
                 {name}
               </span>
 
-              {reading && vk ? (
-                <span
-                  aria-hidden="true"
-                  className={`inline-flex items-center gap-1 rounded-full px-2 py-1 text-[11px] font-bold ring-1 ${VERDICT_TONE[vk]}`}
-                >
-                  <span className="tabular-nums">{reading.beaufort}</span>
-                  {c.verdicts[vk]}
+              {phrase && vk ? (
+                <span aria-hidden="true" className={`mt-0.5 text-[11px] font-bold leading-tight ${VERDICT_TONE[vk]} sm:text-xs`}>
+                  {phrase}
                 </span>
               ) : status === 'loading' ? (
-                <span className="h-[1.4rem] w-14 animate-pulse rounded-full bg-slate-200" aria-hidden="true" />
+                <span className="mt-1 h-3 w-24 animate-pulse rounded bg-slate-200" aria-hidden="true" />
               ) : (
                 <ArrowRight
-                  className="mr-1.5 h-3.5 w-3.5 text-slate-400 transition-transform group-hover:translate-x-0.5"
+                  className="mt-0.5 h-3.5 w-3.5 text-slate-400 transition-transform group-hover:translate-x-0.5"
                   aria-hidden="true"
                 />
               )}
@@ -157,9 +165,12 @@ export const TodayRegionsSection: React.FC<TodayRegionsSectionProps> = ({
         })}
       </div>
 
-      {/* Only claim an open-sea estimate when a number is actually on screen. */}
+      {/* Only claim an open-sea estimate when a number is actually on screen.
+          slate-500, not slate-400: at 400 this measured 2.57:1, and it is the
+          page's honesty statement — the one line that must never be the hardest
+          thing to read. */}
       {regions.length > 0 && (
-        <p className="mt-3.5 max-w-2xl text-xs font-medium leading-relaxed text-slate-400">{c.note}</p>
+        <p className="mt-3.5 max-w-2xl text-xs font-medium leading-relaxed text-slate-500">{c.note}</p>
       )}
 
       <div className="mt-6 flex flex-col items-center gap-3 text-center sm:flex-row sm:justify-center">
