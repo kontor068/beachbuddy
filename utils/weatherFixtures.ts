@@ -2,6 +2,16 @@ import { DailyForecast, ForecastItem, Island, WeatherData } from '../types';
 
 const LOCAL_FIXTURE_PARAM = 'bbWeatherFixture';
 
+/** Per-day override for multi-day scenarios (trip-planner testing needs a
+ *  rotating wind — a single repeated day can never exercise it). */
+export interface WeatherFixtureDay {
+  windDirectionDeg: number;
+  windSpeedMs: number;
+  windGustMs: number;
+  waveHeightM: number;
+  waveDirectionDeg: number;
+}
+
 export interface WeatherFixtureScenario {
   id: string;
   label: string;
@@ -11,7 +21,27 @@ export interface WeatherFixtureScenario {
   windGustMs: number;
   waveHeightM: number;
   waveDirectionDeg: number;
+  /** Optional per-day rotation; day N uses days[N], falling back to the base
+   *  fields above when absent. DEV/localhost fixtures only — never production. */
+  days?: WeatherFixtureDay[];
 }
+
+/** The trip's day-N conditions: the per-day override when present, else the base. */
+const resolveFixtureDay = (scenario: WeatherFixtureScenario, dayOffset: number): WeatherFixtureScenario => (
+  scenario.days?.[dayOffset] ? { ...scenario, ...scenario.days[dayOffset] } : scenario
+);
+
+// The rotation the planner exists for: two hard meltemi days, a lighter NE day,
+// a southerly flip, a SW day, then the meltemi returns. Exercises side-flipping,
+// the caution tier and provisional days in one URL.
+const MELTEMI_WEEK_DAYS: WeatherFixtureDay[] = [
+  { windDirectionDeg: 0, windSpeedMs: 9.5, windGustMs: 13.0, waveHeightM: 1.4, waveDirectionDeg: 0 },   // N 5 Bft
+  { windDirectionDeg: 0, windSpeedMs: 12.5, windGustMs: 17.0, waveHeightM: 2.0, waveDirectionDeg: 0 },  // N 6 Bft
+  { windDirectionDeg: 45, windSpeedMs: 6.5, windGustMs: 9.0, waveHeightM: 0.7, waveDirectionDeg: 45 },  // NE 4 Bft
+  { windDirectionDeg: 180, windSpeedMs: 4.5, windGustMs: 6.5, waveHeightM: 0.3, waveDirectionDeg: 180 },// S 3 Bft
+  { windDirectionDeg: 225, windSpeedMs: 6.5, windGustMs: 9.0, waveHeightM: 0.6, waveDirectionDeg: 225 },// SW 4 Bft
+  { windDirectionDeg: 0, windSpeedMs: 9.5, windGustMs: 13.0, waveHeightM: 1.4, waveDirectionDeg: 0 },   // N 5 Bft
+];
 
 const SCENARIOS: Record<string, WeatherFixtureScenario> = {
   Paros_N_3BFT: {
@@ -132,6 +162,22 @@ const SCENARIOS: Record<string, WeatherFixtureScenario> = {
     waveHeightM: 0.75,
     waveDirectionDeg: 0,
   },
+  // Trip-planner rotations: base fields = day 0, so non-planner surfaces (current
+  // conditions, header) stay coherent with the plan's first day.
+  Naxos_MELTEMI_WEEK: {
+    id: 'Naxos_MELTEMI_WEEK',
+    label: 'Naxos - rotating meltemi week (N5, N6, NE4, S3, SW4, N5)',
+    targetRegionId: 'south-aegean-naxos',
+    ...MELTEMI_WEEK_DAYS[0],
+    days: MELTEMI_WEEK_DAYS,
+  },
+  Halkidiki_MELTEMI_WEEK: {
+    id: 'Halkidiki_MELTEMI_WEEK',
+    label: 'Halkidiki - rotating meltemi week (N5, N6, NE4, S3, SW4, N5)',
+    targetRegionId: 'central-macedonia-halkidiki-mainland',
+    ...MELTEMI_WEEK_DAYS[0],
+    days: MELTEMI_WEEK_DAYS,
+  },
 };
 
 const isLocalHost = () => {
@@ -196,29 +242,30 @@ const createForecastItem = (date: Date, hour: number, scenario: WeatherFixtureSc
 };
 
 const createDailyForecast = (dayOffset: number, scenario: WeatherFixtureScenario): DailyForecast => {
+  const day = resolveFixtureDay(scenario, dayOffset);
   const date = new Date();
   date.setDate(date.getDate() + dayOffset);
   date.setHours(12, 0, 0, 0);
 
-  const hourly = [8, 10, 12, 14, 16, 18, 20].map(hour => createForecastItem(date, hour, scenario));
+  const hourly = [8, 10, 12, 14, 16, 18, 20].map(hour => createForecastItem(date, hour, day));
 
   return {
     date,
     wind: {
-      speed: scenario.windSpeedMs,
-      deg: scenario.windDirectionDeg,
-      gust: scenario.windGustMs,
+      speed: day.windSpeedMs,
+      deg: day.windDirectionDeg,
+      gust: day.windGustMs,
     },
     weather: { main: 'Clear', description: 'clear sky', icon: '01d' },
     temp_min: 22,
     temp_max: 26,
     hourly,
     marine: {
-      waveHeightM: scenario.waveHeightM,
-      waveDirectionDeg: scenario.waveDirectionDeg,
-      wavePeriodS: scenario.waveHeightM >= 1 ? 5 : 4,
-      swellWaveHeightM: getSwellHeight(scenario),
-      swellWaveDirectionDeg: scenario.waveDirectionDeg,
+      waveHeightM: day.waveHeightM,
+      waveDirectionDeg: day.waveDirectionDeg,
+      wavePeriodS: day.waveHeightM >= 1 ? 5 : 4,
+      swellWaveHeightM: getSwellHeight(day),
+      swellWaveDirectionDeg: day.waveDirectionDeg,
       seaSurfaceTemperatureC: 23,
       source: 'open-meteo-marine',
     },

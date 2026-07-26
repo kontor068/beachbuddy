@@ -30,6 +30,7 @@
     "db:query": "node --experimental-sqlite scripts/queryBeaches.mjs",
     "quality:critical": "node scripts/runCriticalQualityChecks.mjs",
     "quality:auto": "node scripts/runCriticalQualityChecks.mjs --auto --max-attempts=3",
+    "quality:planner": "node scripts/validatePlannerAgreement.mjs",
     "content:audit": "node scripts/auditStaticBeachContent.mjs",
     "seo:audit": "node scripts/auditSeoPrerender.mjs",
     "seo:prod:audit": "node scripts/auditProductionSeo.mjs",
