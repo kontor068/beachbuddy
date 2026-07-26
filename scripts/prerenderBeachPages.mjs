@@ -2,7 +2,7 @@ import { mkdir, readFile, readdir, writeFile } from 'node:fs/promises';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { amenityTextIncludesAny, SNACK_CANTEEN_AMENITY_TERMS } from '../utils/amenityMatching.js';
-import { localWindLabelFor, getRegionWindContext, localWindSectorsFor, LOCAL_WIND_ATOMS } from '../utils/localWindContext.mjs';
+import { localWindLabelFor, getRegionWindContext, localWindSectorsFor, LOCAL_WIND_ATOMS, LOCAL_WIND_LABEL } from '../utils/localWindContext.mjs';
 
 const scriptDir = path.dirname(fileURLToPath(import.meta.url));
 const projectRoot = path.resolve(scriptDir, '..');
@@ -929,6 +929,11 @@ const islandIntents = [
     // Vardaris). de/fr/it stay on "meltemi" — only Aegean regions are localized.
     copy: (islandName, count, regionId = '') => {
       const w = windWordsFor(regionId);
+      // de/fr/it used to hard-code "Meltemi" AND the Aegean lee ("south and
+      // west-facing bays"). Both are false in the Ionian — and Corfu, Zakynthos,
+      // Kefalonia and Lefkada are all in LOCALIZED_REGIONS, so those pages were
+      // actually shipping it. Name the real regime and drop the fixed lee arc.
+      const a = LOCAL_WIND_ATOMS[getRegionWindContext(regionId)];
       const prep = regionPrepGr(regionId, islandName);
       const enMain = `More Sheltered Beaches in ${islandName}`;
       const enWithTail = `${enMain} for ${w.en}`;
@@ -958,32 +963,32 @@ const islandIntents = [
         ],
       },
       de: {
-        title: `Strände auf ${islandName}, die oft besser beim Meltemi liegen | CalmBeach`,
-        description: `Finde Strände auf ${islandName}, die vom nördlichen Meltemi abgewandt sind, und prüfe Wind und Wellen, bevor du losfährst.`,
-        h1: `Strände auf ${islandName}, die oft besser beim Meltemi liegen`,
-        intro: `Wenn der Meltemi aus dem Norden weht, sind auf ${islandName} oft Buchten angenehmer, die von ihm abgewandt liegen. Diese ${count} Strände sind laut vorhandenen Ausrichtungsdaten von Nordwinden abgewandt – prüfe trotzdem die Bedingungen, bevor du losfährst.`,
+        title: `Strände auf ${islandName}, die oft besser beim ${a.word.de} liegen | CalmBeach`,
+        description: `Finde Strände auf ${islandName}, die ${w.de} abgewandt sind, und prüfe Wind und Wellen, bevor du losfährst.`,
+        h1: `Strände auf ${islandName}, die oft besser beim ${a.word.de} liegen`,
+        intro: `Wenn der ${a.word.de} weht, sind auf ${islandName} oft Buchten angenehmer, die von ihm abgewandt liegen. Diese ${count} Strände liegen laut Ausrichtungsdaten von ${a.dir.de}-Winden abgewandt – prüfe trotzdem die Bedingungen, bevor du losfährst.`,
         sections: [
-          { heading: `Welche Strände auf ${islandName} können beim Meltemi besser passen?`, body: `Die hier gelisteten, nach Süden und Westen ausgerichteten Buchten liegen abgewandt von Nordwinden und können beim Meltemi angenehmer sein. Die Bedingungen ändern sich örtlich, prüfe also Wind und Wellen, bevor du losfährst.` },
+          { heading: `Welche Strände auf ${islandName} können beim ${a.word.de} besser passen?`, body: `Die hier gelisteten Buchten liegen abgewandt von ${a.dir.de}-Winden und können beim ${a.word.de} angenehmer sein. Die Bedingungen ändern sich örtlich, prüfe also Wind und Wellen, bevor du losfährst.` },
           { heading: 'Ist das Meer an diesen Stränden immer ruhig?', body: 'Nein. Die Ausrichtung zeigt, wohin eine Küste blickt, keinen garantierten Schutz und keine niedrigen Wellen. An windigen Tagen folge den örtlichen Flaggen und prüfe Wind und Wellen live in der App.' },
         ],
       },
       fr: {
-        title: `Plages souvent plus confortables à ${islandName} par meltemi | CalmBeach`,
-        description: `Trouvez à ${islandName} des plages orientées à l'opposé du meltemi de nord, puis vérifiez le vent et les vagues avant d'y aller.`,
-        h1: `Plages à ${islandName} souvent plus confortables par meltemi`,
-        intro: `Quand le meltemi souffle du nord, les baies orientées à l'opposé peuvent être plus confortables à ${islandName}. Ces ${count} plages sont listées selon les données d'orientation disponibles — vérifiez quand même les conditions avant d'y aller.`,
+        title: `Plages souvent plus confortables à ${islandName} par ${a.word.fr} | CalmBeach`,
+        description: `Trouvez à ${islandName} des plages orientées à l'opposé ${w.fr}, puis vérifiez le vent et les vagues avant d'y aller.`,
+        h1: `Plages à ${islandName} souvent plus confortables par ${a.word.fr}`,
+        intro: `Quand le ${a.word.fr} souffle, les baies orientées à l'opposé peuvent être plus confortables à ${islandName}. Ces ${count} plages sont listées selon les données d'orientation disponibles — vérifiez quand même les conditions avant d'y aller.`,
         sections: [
-          { heading: `Quelles plages de ${islandName} peuvent mieux convenir par meltemi ?`, body: `Les baies orientées au sud et à l'ouest listées ici sont tournées à l'opposé des vents de nord et peuvent être plus confortables quand le meltemi souffle. Les conditions varient localement, vérifiez donc le vent et les vagues avant d'y aller.` },
+          { heading: `Quelles plages de ${islandName} peuvent mieux convenir par ${a.word.fr} ?`, body: `Les baies listées ici sont tournées à l'opposé des vents de ${a.dir.fr} et peuvent être plus confortables quand le ${a.word.fr} souffle. Les conditions varient localement, vérifiez donc le vent et les vagues avant d'y aller.` },
           { heading: 'La mer est-elle toujours calme sur ces plages ?', body: "Non. L'orientation indique vers où la côte est tournée, pas un abri garanti ni des vagues faibles. Les jours de vent fort, suivez les drapeaux locaux et vérifiez le vent et les vagues en direct dans l'application." },
         ],
       },
       it: {
-        title: `Spiagge a ${islandName} spesso migliori con meltemi | CalmBeach`,
-        description: `Trova a ${islandName} spiagge orientate lontano dal meltemi da nord, poi controlla vento e onde prima di andare.`,
-        h1: `Spiagge a ${islandName} spesso migliori con meltemi`,
-        intro: `Quando il meltemi soffia da nord, a ${islandName} possono essere più comode le insenature orientate dalla parte opposta. Queste ${count} spiagge sono elencate in base ai dati di orientamento disponibili — controlla comunque le condizioni prima di andare.`,
+        title: `Spiagge a ${islandName} spesso migliori con ${a.word.it} | CalmBeach`,
+        description: `Trova a ${islandName} spiagge orientate lontano ${w.it}, poi controlla vento e onde prima di andare.`,
+        h1: `Spiagge a ${islandName} spesso migliori con ${a.word.it}`,
+        intro: `Quando soffia il ${a.word.it}, a ${islandName} possono essere più comode le insenature orientate dalla parte opposta. Queste ${count} spiagge sono elencate in base ai dati di orientamento disponibili — controlla comunque le condizioni prima di andare.`,
         sections: [
-          { heading: `Quali spiagge di ${islandName} possono andare meglio con meltemi?`, body: `Le insenature esposte a sud e a ovest elencate qui sono orientate lontano dai venti di nord, quindi possono essere più comode quando soffia il meltemi. Le condizioni variano localmente, controlla vento e onde prima di andare.` },
+          { heading: `Quali spiagge di ${islandName} possono andare meglio con ${a.word.it}?`, body: `Le insenature elencate qui sono orientate lontano dai venti da ${a.dir.it}, quindi possono essere più comode quando soffia il ${a.word.it}. Le condizioni variano localmente, controlla vento e onde prima di andare.` },
           { heading: 'Il mare è sempre calmo in queste spiagge?', body: "No. L'orientamento indica verso dove guarda la costa, non un riparo garantito o onde basse. Nei giorni di vento forte segui le bandiere locali e controlla vento e onde in tempo reale nell'app." },
         ],
       },
@@ -1325,11 +1330,33 @@ const islandIntentPath = (intent, region, island) => `${intent.pathPrefix}/${enc
 // on region and guide pages (the page <h1>s are too long to use as nav labels).
 const INTENT_NAV_LABELS = {
   family:     { en: 'Family beaches',  gr: 'Οικογενειακές',     de: 'Familienstrände',  fr: 'Plages familiales',  it: 'Per famiglie' },
-  sheltered:  { en: 'Meltemi wind options', gr: 'Επιλογές με μελτέμι', de: 'Meltemi-Optionen', fr: 'Options meltemi', it: 'Opzioni meltemi' },
+  // `sheltered` is intentionally absent: its label names the region's actual wind
+  // regime and is built per-region by `intentNavLabel` below.
   snorkeling: { en: 'Snorkeling',      gr: 'Για snorkeling',    de: 'Schnorcheln',      fr: 'Snorkeling',         it: 'Snorkeling' },
   organized:  { en: 'Organized',       gr: 'Οργανωμένες',       de: 'Organisiert',      fr: 'Aménagées',          it: 'Attrezzate' },
   secluded:   { en: 'Secluded',        gr: 'Απομονωμένες',      de: 'Abgelegen',        fr: 'Isolées',            it: 'Isolate' },
   sunset:     { en: 'Sunset',          gr: 'Για ηλιοβασίλεμα',  de: 'Sonnenuntergang',  fr: 'Coucher de soleil',  it: 'Tramonto' },
+};
+
+// The meltemi is an AEGEAN wind. Labelling the Ionian / Ambracian / Thermaic
+// sheltered guides "meltemi options" was plain wrong — Arta, Ithaca, Corfu and
+// the rest run on the NW maistros, and their article bodies already say so
+// (windWordsFor). Only the nav labels were still hard-coded, so the chip
+// contradicted the page it linked to. Built from the same LOCAL_WIND_* tables.
+const shelteredNavLabel = (regionId, language) => {
+  // Greek needs the inflected form ("στον μαΐστρο"), not the nominative.
+  if (language === 'gr') return `Επιλογές ${localWindLabelFor(regionId).elIn}`;
+  const atoms = LOCAL_WIND_ATOMS[getRegionWindContext(regionId)];
+  const word = atoms.word[language] || atoms.word.en;
+  if (language === 'de') return `${word}-Optionen`;
+  if (language === 'fr') return `Options ${word}`;
+  if (language === 'it') return `Opzioni ${word}`;
+  return `${word.charAt(0).toUpperCase()}${word.slice(1)} options`;
+};
+
+const intentNavLabel = (intentKey, regionId, language) => {
+  if (intentKey === 'sheltered') return shelteredNavLabel(regionId, language);
+  return INTENT_NAV_LABELS[intentKey]?.[language] || INTENT_NAV_LABELS[intentKey]?.en || intentKey;
 };
 
 // The guide articles that were actually generated for this island (same ≥MIN
@@ -1342,7 +1369,7 @@ const getIslandGuides = (island, region, locale, excludeKey = null) => {
     .filter(intent => beaches.filter(b => Number.isInteger(b.id) && b.name && intent.match(b)).length >= ISLAND_INTENT_MIN)
     .map(intent => ({
       href: localizedPath(islandIntentPath(intent, region, island), locale),
-      label: INTENT_NAV_LABELS[intent.key]?.[locale.language] || INTENT_NAV_LABELS[intent.key]?.en || intent.key,
+      label: intentNavLabel(intent.key, region.id, locale.language),
     }));
 };
 
@@ -1381,14 +1408,21 @@ const renderIslandGuides = (island, region, locale, excludeKey, heading) => {
 // where those pages exist (en root + el); /de//fr//it would 404.
 const NATIONAL_GUIDE_LINKS = [
   { path: '/best-beaches-greece-today/', label: { en: 'Compare beach conditions', gr: 'Σύγκριση συνθηκών' } },
-  { path: '/sheltered-beaches-meltemi/', label: { en: 'Meltemi wind options', gr: 'Επιλογές με μελτέμι' } },
+  // The one national guide that is about a specific regional wind. It is correct
+  // about itself, but offering it on an Ionian or Thermaic beach page pushes a
+  // wind that never blows there — `aegeanOnly` keeps it where it applies.
+  { path: '/sheltered-beaches-meltemi/', label: { en: 'Meltemi wind options', gr: 'Επιλογές με μελτέμι' }, aegeanOnly: true },
   { path: '/family-beaches-greece/', label: { en: 'Family beaches', gr: 'Οικογενειακές' } },
   { path: '/accessible-beaches-greece/', label: { en: 'Accessible (Seatrac)', gr: 'Προσβάσιμες ΑμεΑ' } },
   { path: '/beach-camping-greece/', label: { en: 'Beach camping', gr: 'Κάμπινγκ σε παραλίες' } },
 ];
-const renderNationalGuides = (locale, heading) => {
+// `regionId` omitted (e.g. the national hub) keeps every link.
+const nationalGuideLinksFor = regionId =>
+  NATIONAL_GUIDE_LINKS.filter(g => !g.aegeanOnly || !regionId || getRegionWindContext(regionId) === 'aegean');
+
+const renderNationalGuides = (locale, heading, regionId) => {
   if (!BASE_LOCALE_IDS.has(locale.id)) return '';
-  const items = NATIONAL_GUIDE_LINKS.map(g =>
+  const items = nationalGuideLinksFor(regionId).map(g =>
     `<li style="margin:0;"><a href="${escapeHtml(localizedPath(g.path, locale))}" style="display:inline-block;border:1px solid #bae6fd;border-radius:999px;padding:7px 13px;background:white;color:#075985;text-decoration:none;font-weight:700;font-size:14px;">${escapeHtml(g.label[locale.language] || g.label.en)}</a></li>`
   ).join('');
   return `
@@ -2571,7 +2605,7 @@ const staticBeachFallback = (beach, island, region, canonicalUrl, locale = prere
           de: 'Strandführer für ganz Griechenland',
           fr: 'Guides plages dans toute la Grèce',
           it: 'Guide spiagge in tutta la Grecia',
-        }))}
+        }), region.id)}
         ${renderShelteredNearby(beach, island, region, language, locale)}
         ${renderNearbyBeaches(beach, island, region, language, locale)}
       </main>
@@ -3264,7 +3298,7 @@ const GUIDES_HUB_PATH = '/beach-guides/';
 const guidesHubCopy = {
   en: {
     title: 'Greek Beach Guides — by Topic and Island | CalmBeach',
-    description: 'Every CalmBeach beach guide in one place: family, meltemi wind options, snorkeling, organized, secluded and sunset beaches, island by island.',
+    description: 'Every CalmBeach beach guide in one place: family, wind-sheltered, snorkeling, organized, secluded and sunset beaches, island by island.',
     h1: 'Beach guides',
     intro: 'Every guide we publish, grouped by what you are looking for and then by island. Each one lists the beaches that actually match, and links straight through to live wind and wave conditions.',
     nationalHeading: 'Greece-wide guides',
@@ -3273,7 +3307,7 @@ const guidesHubCopy = {
   },
   gr: {
     title: 'Οδηγοί Παραλιών — ανά Θέμα και Νησί | CalmBeach',
-    description: 'Όλοι οι οδηγοί παραλιών του CalmBeach σε ένα σημείο: οικογενειακές, με μελτέμι, για snorkeling, οργανωμένες, απομονωμένες και για ηλιοβασίλεμα, νησί προς νησί.',
+    description: 'Όλοι οι οδηγοί παραλιών του CalmBeach σε ένα σημείο: οικογενειακές, υπήνεμες, για snorkeling, οργανωμένες, απομονωμένες και για ηλιοβασίλεμα, νησί προς νησί.',
     h1: 'Οδηγοί παραλιών',
     intro: 'Όλοι οι οδηγοί που δημοσιεύουμε, ομαδοποιημένοι πρώτα κατά θέμα και μετά κατά νησί. Ο καθένας δείχνει τις παραλίες που ταιριάζουν πραγματικά και οδηγεί κατευθείαν στις τρέχουσες συνθήκες ανέμου και κύματος.',
     nationalHeading: 'Οδηγοί για όλη την Ελλάδα',
@@ -3286,37 +3320,61 @@ const guidesHubCopy = {
 // ("Organized"), which read as nonsense as a standalone <h2>.
 const GUIDES_HUB_TOPIC_HEADINGS = {
   family:     { en: 'Family beaches',              gr: 'Οικογενειακές παραλίες' },
-  sheltered:  { en: 'Sheltered from the meltemi',  gr: 'Υπήνεμες με μελτέμι' },
   snorkeling: { en: 'Snorkeling beaches',          gr: 'Παραλίες για snorkeling' },
   organized:  { en: 'Organized beaches',           gr: 'Οργανωμένες παραλίες' },
   secluded:   { en: 'Secluded beaches',            gr: 'Απομονωμένες παραλίες' },
   sunset:     { en: 'Sunset beaches',              gr: 'Παραλίες για ηλιοβασίλεμα' },
 };
 
+// The sheltered guides are NOT one topic: a Cycladic island is sheltered from
+// the meltemi, an Ionian one from the maistros, the Thermaic gulf from the
+// afternoon sea breeze. Listing Arta and Ithaca under a "meltemi" heading told
+// the reader something false about a sea the meltemi doesn't reach, so the hub
+// splits this topic by wind regime. Aegean first (by far the largest set).
+const SHELTERED_REGIME_ORDER = ['aegean', 'ionian', 'thermaic'];
+const shelteredHubHeading = (windContext, language) => {
+  const label = LOCAL_WIND_LABEL[windContext];
+  return language === 'gr' ? `Υπήνεμες ${label.elIn}` : `Sheltered in ${label.en}`;
+};
+
 // islandIntentPages -> [{ key, heading, islands: [{ name, href }] }], in the
 // islandIntents display order, islands collated in the reader's alphabet.
+// `sheltered` expands into one group per wind regime present.
 const groupGuidesByTopic = (islandIntentPages, locale) => {
   const language = locale.language;
   const collator = language === 'gr' ? 'el' : 'en';
-  return islandIntents
-    .map(intent => {
-      const islands = islandIntentPages
-        .filter(page => page.intent.key === intent.key)
-        .map(page => ({
-          name: displayName(page.island.name, page.region.id, language),
-          href: localizedPath(islandIntentPath(intent, page.region, page.island), locale),
+  const toIsland = (page, intent) => ({
+    name: displayName(page.island.name, page.region.id, language),
+    href: localizedPath(islandIntentPath(intent, page.region, page.island), locale),
+  });
+  const byName = (a, b) => a.name.localeCompare(b.name, collator);
+
+  return islandIntents.flatMap(intent => {
+    const pages = islandIntentPages.filter(page => page.intent.key === intent.key);
+    if (pages.length === 0) return [];
+
+    if (intent.key === 'sheltered') {
+      return SHELTERED_REGIME_ORDER
+        .map(windContext => ({
+          key: `sheltered-${windContext}`,
+          heading: shelteredHubHeading(windContext, language),
+          islands: pages
+            .filter(page => getRegionWindContext(page.region.id) === windContext)
+            .map(page => toIsland(page, intent))
+            .sort(byName),
         }))
-        .sort((a, b) => a.name.localeCompare(b.name, collator));
-      return {
-        key: intent.key,
-        heading: GUIDES_HUB_TOPIC_HEADINGS[intent.key]?.[language]
-          || GUIDES_HUB_TOPIC_HEADINGS[intent.key]?.en
-          || INTENT_NAV_LABELS[intent.key]?.[language]
-          || intent.key,
-        islands,
-      };
-    })
-    .filter(topic => topic.islands.length > 0);
+        .filter(group => group.islands.length > 0);
+    }
+
+    return [{
+      key: intent.key,
+      heading: GUIDES_HUB_TOPIC_HEADINGS[intent.key]?.[language]
+        || GUIDES_HUB_TOPIC_HEADINGS[intent.key]?.en
+        || INTENT_NAV_LABELS[intent.key]?.[language]
+        || intent.key,
+      islands: pages.map(page => toIsland(page, intent)).sort(byName),
+    }];
+  });
 };
 
 const staticGuidesHubPage = (topics, locale) => {
