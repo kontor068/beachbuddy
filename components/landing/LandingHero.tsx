@@ -134,11 +134,12 @@ export const LandingHero: React.FC<LandingHeroProps> = ({
       </div>
 
       <div className="relative mx-auto max-w-3xl px-5 pb-56 pt-12 text-center sm:pb-72 sm:pt-20">
-        <p className="cb-hero-rise text-[15px] font-medium text-slate-500" style={riseDelay(0)}>{c.kicker}</p>
-
+        {/* No kicker line. It was a slogan every visitor saw and nobody needed,
+            and it pushed the region tiles — the page's actual conversion event —
+            further below the fold. */}
         <h1
-          className="cb-hero-rise mx-auto mt-4 max-w-2xl text-balance text-4xl font-bold leading-[1.06] tracking-tight text-slate-950 sm:text-[3.4rem]"
-          style={riseDelay(90)}
+          className="cb-hero-rise mx-auto max-w-2xl text-balance text-4xl font-bold leading-[1.06] tracking-tight text-slate-950 sm:text-[3.4rem]"
+          style={riseDelay(0)}
         >
           {heroTitle}
         </h1>

@@ -28,6 +28,10 @@ export type AnalyticsEvent =
   | 'landing_near_me_clicked'
   | 'landing_region_clicked'
   | 'landing_all_regions_clicked'
+  // The one link on the landing that leads to actual beach NAMES. Worth its own
+  // event: if nobody clicks it, the "the page never shows a beach" gap is not
+  // costing us what the redesign argument assumed.
+  | 'landing_compare_clicked'
   | 'landing_contact_clicked'
   // The story section, measured with two sentinels rather than one observer on
   // the section itself: the section is taller than a phone viewport, so a

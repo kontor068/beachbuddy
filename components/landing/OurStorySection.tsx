@@ -123,7 +123,7 @@ export const OurStorySection: React.FC<OurStorySectionProps> = ({ language }) =>
     }
   };
 
-  // The `id` is so the footer — or any "γράψε μου" link — can deep-link to the ask.
+  // The `id` is so the footer — or any "γράψε μας" link — can deep-link to the ask.
   return (
     <section id="epikoinonia" className="mx-auto w-full max-w-6xl px-5" aria-label={c.overline}>
       <div className="mx-auto max-w-2xl">

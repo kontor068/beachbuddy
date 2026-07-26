@@ -81,6 +81,13 @@ export const TodayRegionsSection: React.FC<TodayRegionsSectionProps> = ({
 }) => {
   const c = getLocalizedCopy(language, landingCopy).today;
 
+  // Mirrors HowWeDecideSection's FAQ handling: these are prerendered static
+  // pages that exist in prod but not under vite dev/preview, so open the live
+  // page in dev and keep a relative path in prod.
+  const comparePath = language === 'gr' ? '/el/best-beaches-greece-today/' : '/best-beaches-greece-today/';
+  const compareExternal = import.meta.env.DEV;
+  const compareHref = compareExternal ? `https://calmbeach.gr${comparePath}` : comparePath;
+
   const islands = useMemo(
     () =>
       NATIONAL_SAMPLE_REGION_IDS
@@ -127,7 +134,7 @@ export const TodayRegionsSection: React.FC<TodayRegionsSectionProps> = ({
       <p className="mt-2 max-w-xl text-[15px] font-normal leading-relaxed text-slate-600">{c.subtitle}</p>
 
       {/* A grid, not a wrapping pill row: the conditions now read as a sentence
-          ("κυματάκι στα 4 μποφόρ") and a sentence needs its own line. Two columns
+          ("κυματάκι, 4 μποφόρ") and a sentence needs its own line. Two columns
           on a phone keeps all thirteen inside roughly one screen. */}
       <div className="mt-5 grid grid-cols-2 gap-2 sm:mt-6 sm:grid-cols-3 sm:gap-2.5 lg:grid-cols-4">
         {islands.map(island => {
@@ -199,6 +206,25 @@ export const TodayRegionsSection: React.FC<TodayRegionsSectionProps> = ({
           {c.allRegions}
           <ArrowRight className="h-4 w-4" aria-hidden="true" />
         </button>
+      </div>
+
+      {/* The page asks "which beach suits you today?" and then never shows a
+          beach. This is the cheapest honest answer: a real link to the
+          prerendered national page, which already lists named beaches and is
+          crawlable. Labelled as comparison, NOT as today's picks — that page is
+          evergreen despite its URL, and claiming otherwise would be the exact
+          over-claim the rest of this section avoids. */}
+      <div className="mt-3 text-center">
+        <a
+          href={compareHref}
+          target={compareExternal ? '_blank' : undefined}
+          rel={compareExternal ? 'noopener noreferrer' : undefined}
+          onClick={() => trackEvent('landing_compare_clicked', undefined, { locale: language })}
+          className="group inline-flex items-center gap-1.5 rounded text-sm font-semibold text-slate-500 underline-offset-4 transition hover:text-[#007a83] hover:underline focus:outline-none focus-visible:ring-2 focus-visible:ring-cyan-700"
+        >
+          {c.compare}
+          <ArrowRight className="h-3.5 w-3.5 transition-transform group-hover:translate-x-0.5" aria-hidden="true" />
+        </a>
       </div>
 
       {/* A denied or failed permission must not fail silently — otherwise the

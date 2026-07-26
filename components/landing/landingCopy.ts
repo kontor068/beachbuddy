@@ -21,7 +21,6 @@ import type { LanguageCode } from '../../types';
 
 export type LandingCopy = {
   hero: {
-    kicker: string;
     title: string;
     /** Substring of `title` shown in blue. Must appear verbatim in `title`. */
     titleAccent: string;
@@ -52,12 +51,25 @@ export type LandingCopy = {
     /** Geolocation can take several seconds; the button must say it is working. */
     ctaPending: string;
     allRegions: string;
+    /**
+     * Link to the prerendered national comparison page. Labelled for what that
+     * page ACTUALLY is — an evergreen list of named beaches to compare — never
+     * "today's picks", which it does not carry despite its URL.
+     */
+    compare: string;
   };
   manifesto: {
     overline: string;
     quote: string;
     points: { title: string; body: string }[];
     more: string;
+    /**
+     * The ask, placed here rather than only at the foot of the story: this band
+     * has just admitted what we do not know, so inviting a correction is the
+     * natural next sentence — and it sits far higher up the page than the form
+     * it links to.
+     */
+    askLink: string;
   };
   story: {
     overline: string;
@@ -92,7 +104,6 @@ export type LandingCopy = {
 export const landingCopy: Record<LanguageCode, LandingCopy> = {
   gr: {
     hero: {
-      kicker: 'Πριν πάρεις την πετσέτα',
       // The positioning is carried by ENUMERATING real things, not by claiming
       // anything about ourselves: no "not another catalogue" (defines us against
       // rivals the visitor has never heard of), no "honestly" (you show honesty,
@@ -113,8 +124,11 @@ export const landingCopy: Record<LanguageCode, LandingCopy> = {
       clearSearchAria: 'Καθαρισμός αναζήτησης',
       searchRegionLabel: 'Περιοχή',
       searchBeachLabel: 'Παραλία',
-      searchLoading: 'Ψάχνω παραλίες…',
-      searchNoResults: 'Δεν βρέθηκε κοντινό αποτέλεσμα. Πάτα Enter για αναζήτηση.',
+      // Plural, like the rest of the page: a loader that says «Ψάχνω» is a second
+      // narrator nobody introduced.
+      searchLoading: 'Ψάχνουμε παραλίες…',
+      // «κοντινό αποτέλεσμα» is search-engine language; nobody says it out loud.
+      searchNoResults: 'Δεν βρέθηκε κάτι παρόμοιο. Πάτα Enter για αναζήτηση.',
       nearMe: 'Κοντά μου',
       findingLocation: 'Εύρεση τοποθεσίας…',
     },
@@ -133,17 +147,23 @@ export const landingCopy: Record<LanguageCode, LandingCopy> = {
       // is something to warn about.
       // «τώρα», never «σήμερα»: this is one instantaneous reading, and on a
       // meltemi day a calm 09:00 becomes 6 Bft by lunchtime.
+      // One comma-form for the whole ladder («κυματάκι, 4 μποφόρ»), not «στα 4
+      // μποφόρ» for some steps and a comma for others — the mixed construction
+      // read as two different sentences stitched together. «ήπιο κυματάκι» also
+      // doubled the diminutive; «λίγο» does that work without repeating it.
       seaPhrase: (bft) =>
         bft <= 2 ? 'ήρεμα τώρα'
-        : bft === 3 ? 'ήπιο κυματάκι στα 3 μποφόρ'
-        : bft === 4 ? 'κυματάκι στα 4 μποφόρ'
-        : bft === 5 ? 'κύμα στα 5 μποφόρ'
+        : bft === 3 ? 'λίγο κυματάκι, 3 μποφόρ'
+        : bft === 4 ? 'κυματάκι, 4 μποφόρ'
+        : bft === 5 ? 'κύμα, 5 μποφόρ'
         : `φουρτούνα, ${bft} μποφόρ`,
       chipAria: (region, phrase) => `${region}: ${phrase}`,
-      note: 'Εκτίμηση ανοιχτής θάλασσας — στις προστατευμένες ακτές κάθε περιοχής είναι πιο ήρεμα.',
+      // «Εκτίμηση ανοιχτής θάλασσας» is a caption on a chart, not a sentence.
+      note: 'Μιλάμε για την ανοιχτή θάλασσα — στις προστατευμένες ακτές κάθε περιοχής είναι πιο ήρεμα.',
       cta: 'Βρες προστατευμένη παραλία κοντά σου',
-      ctaPending: 'Βρίσκω πού είσαι…',
+      ctaPending: 'Ψάχνουμε πού είσαι…',
       allRegions: 'ή δες όλες τις περιοχές',
+      compare: 'Δες και σύγκρινε συγκεκριμένες παραλίες',
     },
     // "Calm" here is not a sea state — it is whatever makes the day work for THIS
     // person. So the three points are the two halves of that (the place, which is
@@ -151,30 +171,31 @@ export const landingCopy: Record<LanguageCode, LandingCopy> = {
     // claiming honesty: point 03 demonstrates it instead.
     manifesto: {
       overline: 'Τι σημαίνει «ήρεμα»',
-      // Says the claim OUTRIGHT before illustrating it. The previous version led
-      // with two dangling noun phrases and only then explained them with «δεν το
-      // εννοούν όλοι το ίδιο» — «το» pointing back at a word that lives in the
-      // overline, which is a leap the eye does not make. Sentence order now
-      // matches spoken Greek: statement → the two pictures → what we do about it.
-      // «Άλλος… άλλος…» is how a person actually draws this contrast; repeating
-      // «ήρεμα» from the overline costs one word and saves the reader the jump.
+      // A display quote gets scanned, not read — so it is TWO beats and nothing
+      // more: the claim, then three examples with the counter-intuitive one last
+      // (someone hunting waves to surf is the strongest proof that "calm" is
+      // personal). The old version ran 45 words and ended by restating what the
+      // numbered points beside it already say; the points now carry that.
       quote:
-        'Το «ήρεμα» δεν σημαίνει το ίδιο για όλους. Άλλος θέλει ξαπλώστρα, ρηχά νερά κι ένα ντουζ· άλλος μια αμμουδιά χωρίς κόσμο. Γι’ αυτό κοιτάμε και τα δύο: τι έχει η παραλία, και τι κάνει σήμερα η θάλασσα.',
+        'Το «ήρεμα» δεν είναι το ίδιο για όλους. Άλλος θέλει ρηχά νερά, άλλος άδεια αμμουδιά, άλλος κύμα για σερφ.',
       points: [
         {
-          title: 'Τι έχει η παραλία',
-          body: 'Ξαπλώστρες, ντουζ, σκιά, φαγητό, παρκινγκ, ρηχά νερά, πρόσβαση. Αυτά δεν αλλάζουν — τα ξέρουμε από πριν.',
+          title: 'Πώς το επαληθεύουμε',
+          body: 'Επίσημα μητρώα, δορυφόρος, και παραλίες που έχουμε πάει οι ίδιοι. Διορθώνουμε κάθε βδομάδα, και όταν δεν είμαστε σίγουροι δεν το γράφουμε — χειρότερο να υποσχεθούμε μια ξαπλώστρα που δεν υπάρχει, παρά να μην την αναφέρουμε καθόλου.',
         },
         {
-          title: 'Τι κάνει η θάλασσα σήμερα',
-          body: 'Άνεμος και κύμα ανά ώρα, περασμένα μέσα από το σχήμα της κάθε ακτής. Γι’ αυτό μια διάσημη παραλία δεν βγαίνει αυτόματα καλύτερη.',
+          title: 'Το σχήμα της ακτής',
+          // Active voice: «περασμένα μέσα από» is a participle nobody speaks —
+          // it also hid WHO does the work, which is the whole point of the card.
+          body: 'Παίρνουμε τον άνεμο και το κύμα ανά ώρα και τα περνάμε μέσα από το σχήμα της κάθε ακτής. Γι’ αυτό μια διάσημη παραλία δεν βγαίνει αυτόματα καλύτερη.',
         },
         {
           title: 'Τι δεν ξέρουμε (ακόμα)',
-          body: 'Ρεύματα, βυθό, τοπικές ριπές. Δείχνουμε πρόγνωση, όχι μέτρηση — γι’ αυτό δίνουμε εύρος κύματος. Φτάνοντας, κοίτα σημαίες και ναυαγοσώστη.',
+          body: 'Ρεύματα, βυθό, τοπικές ριπές. Δείχνουμε πρόγνωση, όχι μέτρηση — γι’ αυτό δίνουμε εύρος κύματος. Όταν φτάσεις, κοίτα τη σημαία και τον ναυαγοσώστη.',
         },
       ],
       more: 'Πώς δουλεύει το CalmBeach',
+      askLink: 'Ξέρεις κάτι που δεν ξέρουμε; Πες μας',
     },
     // The page's one warm, human moment. It lands right after the dark manifesto
     // on purpose: that band is the institutional voice (what we measure, where we
@@ -200,8 +221,8 @@ export const landingCopy: Record<LanguageCode, LandingCopy> = {
       // Plain autobiographical fact, not a slogan — and it earns the next line.
       title: 'Μεγαλώσαμε με τη θάλασσα δίπλα μας',
       paragraphs: [
-        'Είμαστε μια μικρή ομάδα με ένα κοινό: τη θάλασσα. Ο ένας γεννήθηκε σε νησί και δεν έφυγε ποτέ ουσιαστικά από εκεί. Ο άλλος μεγάλωσε αλλάζοντας νησιά, λόγω της δουλειάς των γονιών του — άλλο σχολείο, άλλο λιμάνι, άλλες παραλίες. Κάπου εκεί μάθαμε αυτό που ξέρει κάθε ντόπιος και δεν γράφεται σε κανέναν οδηγό: ποια παραλία δουλεύει όταν φυσάει, και ποια όχι.',
-        'Μας έχει τύχει και ως επισκέπτες: οδηγήσαμε μία ώρα για μια παραλία που είχαμε δει σε φωτογραφία και τη βρήκαμε με κύμα. Γι’ αυτό χαρτογραφούμε το σχήμα της κάθε ακτής — πού χτυπάει ο άνεμος, πού προστατεύει η στεριά — για όλη την Ελλάδα.',
+        'Είμαστε μια μικρή ομάδα με ένα κοινό: τη θάλασσα. Ο ένας γεννήθηκε σε νησί και ουσιαστικά δεν έφυγε ποτέ. Ο άλλος μεγάλωσε αλλάζοντας νησιά, λόγω της δουλειάς των γονιών του — άλλο σχολείο, άλλο λιμάνι, άλλες παραλίες. Κάπου εκεί μάθαμε αυτό που ξέρει κάθε ντόπιος και δεν γράφεται σε κανέναν οδηγό: ποια παραλία δουλεύει όταν φυσάει, και ποια όχι.',
+        'Το έχουμε πάθει κι εμείς: οδηγήσαμε μία ώρα για μια παραλία που είχαμε δει σε φωτογραφία, και τη βρήκαμε με κύμα. Γι’ αυτό χαρτογραφούμε το σχήμα της κάθε ακτής — πού χτυπάει ο άνεμος, πού προστατεύει η στεριά — για όλη την Ελλάδα.',
         'Κάθε βδομάδα μετακινούμε σημεία στον χάρτη, βγάζουμε ξαπλώστρες και καντίνες που δεν υπάρχουν πια, προσθέτουμε παραλίες που λείπουν. Καμία παραλία δεν πληρώνει για να βγει ψηλότερα — η σειρά βγαίνει από τον άνεμο και το σχήμα της ακτής, από τίποτε άλλο. Εκεί χρειαζόμαστε εσένα: την παραλία σου την ξέρεις καλύτερα από κάθε δορυφόρο.',
       ],
       pullQuote: 'Καμία φωτογραφία δεν σου λέει τι κάνει η θάλασσα σήμερα.',
@@ -215,8 +236,10 @@ export const landingCopy: Record<LanguageCode, LandingCopy> = {
       ],
       formPlaceholder: 'π.χ. «Στη Λιμνιώνα έφυγαν οι ξαπλώστρες» ή «το απόγευμα σε πιάνει ο αέρας στη δεξιά άκρη».',
       formEmailLabel: 'Email — μόνο αν θες απάντηση',
-      formEmailPlaceholder: 'to@email.sou',
-      formSending: 'Στέλνω…',
+      formEmailPlaceholder: 'name@example.com',
+      // «Στέλνω…» would be the app speaking in the singular while the whole page
+      // speaks as «εμείς»; the passive is what a Greek UI actually says here.
+      formSending: 'Στέλνεται…',
       formSuccess: 'Το λάβαμε — ευχαριστούμε. Τα διαβάζουμε ένα-ένα.',
       formError: 'Κάτι πήγε στραβά. Στείλ’ το μας καλύτερα εδώ:',
       askCta: 'Στείλ’ το μας',
@@ -226,7 +249,6 @@ export const landingCopy: Record<LanguageCode, LandingCopy> = {
   },
   en: {
     hero: {
-      kicker: 'Before you grab your towel',
       title: 'Which beach in Greece suits you today?',
       titleAccent: 'in Greece',
       subtitle: 'Calm doesn’t start at the beach. It starts the moment you know which one to pick.',
@@ -246,28 +268,29 @@ export const landingCopy: Record<LanguageCode, LandingCopy> = {
       live: 'Live',
       seaPhrase: (bft) =>
         bft <= 2 ? 'calm right now'
-        : bft === 3 ? 'light chop at 3 Beaufort'
-        : bft === 4 ? 'choppy at 4 Beaufort'
-        : bft === 5 ? 'waves at 5 Beaufort'
+        : bft === 3 ? 'light chop, 3 Beaufort'
+        : bft === 4 ? 'choppy, 4 Beaufort'
+        : bft === 5 ? 'waves, 5 Beaufort'
         : `rough, ${bft} Beaufort`,
       chipAria: (region, phrase) => `${region}: ${phrase}`,
-      note: 'An open-sea estimate — the sheltered shores of each region are calmer.',
+      note: 'We mean the open sea — the sheltered shores of each region are calmer.',
       cta: 'Find a sheltered beach near you',
       ctaPending: 'Finding you…',
       allRegions: 'or see all regions',
+      compare: 'See and compare specific beaches',
     },
     manifesto: {
       overline: 'What “calm” means here',
       quote:
-        '“Calm” does not mean the same thing to everyone. One person wants a sunbed, shallow water and a shower; another wants a stretch of sand with nobody on it. So we look at both: what the beach has, and what the sea is doing today.',
+        '“Calm” is not the same thing for everyone. One wants shallow water, one an empty beach, one waves to surf.',
       points: [
         {
-          title: 'What the beach has',
-          body: 'Sunbeds, showers, shade, food, parking, shallow water, access. These do not change — we know them in advance.',
+          title: 'How we check it',
+          body: 'Official registries, satellite, and beaches we have walked ourselves. We correct them every week, and when we are not sure we leave it out — a sunbed that is not there is worse than one we never mentioned.',
         },
         {
-          title: 'What the sea is doing today',
-          body: 'Wind and waves by the hour, read through the shape of each shore. That is why a famous beach is not automatically the better one.',
+          title: 'The shape of the coast',
+          body: 'We take the wind and the waves hour by hour and read them through the shape of each shore. That is why a famous beach is not automatically the better one.',
         },
         {
           title: 'What we do not know (yet)',
@@ -275,6 +298,7 @@ export const landingCopy: Record<LanguageCode, LandingCopy> = {
         },
       ],
       more: 'How CalmBeach works',
+      askLink: 'Know something we don’t? Tell us',
     },
     story: {
       overline: 'Who we are',
@@ -295,7 +319,7 @@ export const landingCopy: Record<LanguageCode, LandingCopy> = {
       ],
       formPlaceholder: 'e.g. “the sunbeds at Limnionas are gone” or “the wind hits the right-hand end after 3pm”.',
       formEmailLabel: 'Email — only if you want a reply',
-      formEmailPlaceholder: 'you@email.com',
+      formEmailPlaceholder: 'name@example.com',
       formSending: 'Sending…',
       formSuccess: 'Got it — thank you. We read every one.',
       formError: 'Something went wrong. Send it to us here instead:',
@@ -306,7 +330,6 @@ export const landingCopy: Record<LanguageCode, LandingCopy> = {
   },
   de: {
     hero: {
-      kicker: 'Bevor du das Handtuch einpackst',
       title: 'Welcher Strand in Griechenland passt heute zu dir?',
       titleAccent: 'in Griechenland',
       subtitle: 'Ruhe fängt nicht am Strand an. Sie fängt in dem Moment an, in dem du weißt, welcher der richtige ist.',
@@ -326,28 +349,31 @@ export const landingCopy: Record<LanguageCode, LandingCopy> = {
       live: 'Live',
       seaPhrase: (bft) =>
         bft <= 2 ? 'gerade ruhig'
-        : bft === 3 ? 'leichte Kräuselung bei 3 Beaufort'
-        : bft === 4 ? 'kabbelig bei 4 Beaufort'
-        : bft === 5 ? 'Wellen bei 5 Beaufort'
+        : bft === 3 ? 'leichte Kräuselung, 3 Beaufort'
+        : bft === 4 ? 'kabbelig, 4 Beaufort'
+        : bft === 5 ? 'Wellen, 5 Beaufort'
         : `stürmisch, ${bft} Beaufort`,
       chipAria: (region, phrase) => `${region}: ${phrase}`,
-      note: 'Eine Schätzung für die offene See — die geschützten Küsten jeder Region sind ruhiger.',
+      note: 'Wir meinen die offene See — die geschützten Küsten jeder Region sind ruhiger.',
       cta: 'Finde einen geschützten Strand in deiner Nähe',
-      ctaPending: 'Ich ermittle deinen Standort…',
+      // Never "Ich" in a German UI, and never a first-person singular anywhere on
+      // a page that speaks as "wir".
+      ctaPending: 'Dein Standort wird ermittelt…',
       allRegions: 'oder alle Regionen ansehen',
+      compare: 'Einzelne Strände ansehen und vergleichen',
     },
     manifesto: {
       overline: 'Was „ruhig“ hier bedeutet',
       quote:
-        '„Ruhig“ bedeutet nicht für alle dasselbe. Der eine will eine Liege, flaches Wasser und eine Dusche; der andere einen Streifen Sand, an dem niemand ist. Deshalb schauen wir auf beides: was der Strand hat, und was das Meer heute macht.',
+        '„Ruhig“ ist nicht für alle dasselbe. Der eine will flaches Wasser, der andere einen leeren Strand, der Nächste Wellen zum Surfen.',
       points: [
         {
-          title: 'Was der Strand hat',
-          body: 'Liegen, Duschen, Schatten, Essen, Parkplatz, flaches Wasser, Zugang. Das ändert sich nicht — das wissen wir vorher.',
+          title: 'Wie wir es prüfen',
+          body: 'Amtliche Register, Satellit und Strände, an denen wir selbst waren. Wir korrigieren wöchentlich, und im Zweifel lassen wir es weg — eine Liege zu versprechen, die es nicht gibt, ist schlimmer, als sie gar nicht zu erwähnen.',
         },
         {
-          title: 'Was das Meer heute macht',
-          body: 'Wind und Wellen stündlich, gelesen durch die Form jeder Küste. Deshalb ist ein berühmter Strand nicht automatisch der bessere.',
+          title: 'Die Form der Küste',
+          body: 'Wir nehmen Wind und Wellen Stunde für Stunde und lesen sie durch die Form jeder Küste. Deshalb ist ein berühmter Strand nicht automatisch der bessere.',
         },
         {
           title: 'Was wir (noch) nicht wissen',
@@ -355,6 +381,7 @@ export const landingCopy: Record<LanguageCode, LandingCopy> = {
         },
       ],
       more: 'Wie CalmBeach funktioniert',
+      askLink: 'Weißt du etwas, das wir nicht wissen? Sag es uns',
     },
     story: {
       overline: 'Wer wir sind',
@@ -362,7 +389,8 @@ export const landingCopy: Record<LanguageCode, LandingCopy> = {
       paragraphs: [
         'Wir sind ein kleines Team mit einer Gemeinsamkeit: dem Meer. Einer von uns ist auf einer Insel geboren und im Grunde nie weggegangen. Ein anderer ist von Insel zu Insel gezogen, wegen der Arbeit der Eltern — eine andere Schule, ein anderer Hafen, andere Strände. Irgendwo dabei haben wir gelernt, was jeder Einheimische weiß und in keinem Reiseführer steht: welcher Strand funktioniert, wenn es weht, und welcher nicht.',
         'Als Besucher hat es uns selbst erwischt: Wir fuhren eine Stunde zu einem Strand, den wir auf einem Foto gesehen hatten, und fanden ihn aufgewühlt vor. Deshalb kartieren wir die Form jeder Küste — wo der Wind auftrifft, wo das Land schützt — für ganz Griechenland.',
-        'Jede Woche verschieben wir Punkte auf der Karte, löschen Liegen und Kantinen, die es nicht mehr gibt, und ergänzen fehlende Strände. Kein Strand zahlt für eine bessere Platzierung — die Reihenfolge ergibt sich aus dem Wind und der Form der Küste, aus nichts anderem. Genau da brauchen wir dich: Du kennst deinen Strand besser als jeder Satellit.',
+        // "Kantine" is a works/school canteen — the Greek καντίνα is a beach kiosk.
+        'Jede Woche verschieben wir Punkte auf der Karte, löschen Liegen und Strandkioske, die es nicht mehr gibt, und ergänzen fehlende Strände. Kein Strand zahlt für eine bessere Platzierung — die Reihenfolge ergibt sich aus dem Wind und der Form der Küste, aus nichts anderem. Genau da brauchen wir dich: Du kennst deinen Strand besser als jeder Satellit.',
       ],
       pullQuote: 'Kein Foto sagt dir, was das Meer heute macht.',
       signature: 'Das CalmBeach-Team',
@@ -375,8 +403,8 @@ export const landingCopy: Record<LanguageCode, LandingCopy> = {
       ],
       formPlaceholder: 'z. B. „in Limnionas gibt es keine Liegen mehr“ oder „am Nachmittag erwischt dich der Wind am rechten Ende“.',
       formEmailLabel: 'E-Mail — nur wenn du eine Antwort möchtest',
-      formEmailPlaceholder: 'du@email.de',
-      formSending: 'Senden…',
+      formEmailPlaceholder: 'name@example.com',
+      formSending: 'Wird gesendet…',
       formSuccess: 'Angekommen — danke. Wir lesen jede einzelne.',
       formError: 'Etwas ist schiefgelaufen. Schick es uns besser hierhin:',
       askCta: 'Schick es uns',
@@ -386,7 +414,6 @@ export const landingCopy: Record<LanguageCode, LandingCopy> = {
   },
   fr: {
     hero: {
-      kicker: 'Avant de prendre votre serviette',
       title: 'Quelle plage de Grèce vous convient aujourd’hui ?',
       titleAccent: 'de Grèce',
       subtitle: 'Le calme ne commence pas sur la plage. Il commence au moment où vous savez laquelle choisir.',
@@ -396,7 +423,7 @@ export const landingCopy: Record<LanguageCode, LandingCopy> = {
       searchRegionLabel: 'Région',
       searchBeachLabel: 'Plage',
       searchLoading: 'Recherche des plages…',
-      searchNoResults: 'Aucun résultat proche. Appuyez sur Entrée pour lancer la recherche.',
+      searchNoResults: 'Aucun résultat similaire. Appuyez sur Entrée pour lancer la recherche.',
       nearMe: 'Près de moi',
       findingLocation: 'Localisation en cours…',
     },
@@ -406,28 +433,29 @@ export const landingCopy: Record<LanguageCode, LandingCopy> = {
       live: 'En direct',
       seaPhrase: (bft) =>
         bft <= 2 ? 'calme en ce moment'
-        : bft === 3 ? 'légère ride à 3 Beaufort'
-        : bft === 4 ? 'clapot à 4 Beaufort'
-        : bft === 5 ? 'vagues à 5 Beaufort'
+        : bft === 3 ? 'légère ride, 3 Beaufort'
+        : bft === 4 ? 'clapot, 4 Beaufort'
+        : bft === 5 ? 'vagues, 5 Beaufort'
         : `mer forte, ${bft} Beaufort`,
       chipAria: (region, phrase) => `${region} : ${phrase}`,
-      note: 'Estimation en mer ouverte — les côtes abritées de chaque région sont plus calmes.',
+      note: 'Nous parlons de la mer ouverte — les côtes abritées de chaque région sont plus calmes.',
       cta: 'Trouver une plage abritée près de vous',
       ctaPending: 'Localisation en cours…',
       allRegions: 'ou voir toutes les régions',
+      compare: 'Voir et comparer des plages précises',
     },
     manifesto: {
       overline: 'Ce que « calme » veut dire ici',
       quote:
-        '« Calme » ne veut pas dire la même chose pour tout le monde. L’un veut un transat, de l’eau peu profonde et une douche ; l’autre une étendue de sable où il n’y a personne. Nous regardons donc les deux : ce que la plage offre, et ce que la mer fait aujourd’hui.',
+        '« Calme » ne veut pas dire la même chose pour tout le monde. L’un veut de l’eau peu profonde, l’autre une plage vide, l’autre des vagues pour surfer.',
       points: [
         {
-          title: 'Ce que la plage offre',
-          body: 'Transats, douches, ombre, restauration, parking, eau peu profonde, accès. Cela ne change pas — nous le savons à l’avance.',
+          title: 'Comment nous le vérifions',
+          body: 'Registres officiels, satellite et plages où nous sommes allés nous-mêmes. Nous corrigeons chaque semaine et, en cas de doute, nous n’indiquons rien — promettre un transat qui n’existe pas est pire que de ne pas le mentionner du tout.',
         },
         {
-          title: 'Ce que la mer fait aujourd’hui',
-          body: 'Le vent et les vagues heure par heure, lus à travers la forme de chaque côte. C’est pourquoi une plage célèbre n’est pas automatiquement la meilleure.',
+          title: 'La forme de la côte',
+          body: 'Nous prenons le vent et les vagues heure par heure et nous les lisons à travers la forme de chaque côte. C’est pourquoi une plage célèbre n’est pas automatiquement la meilleure.',
         },
         {
           title: 'Ce que nous ne savons pas (encore)',
@@ -435,14 +463,16 @@ export const landingCopy: Record<LanguageCode, LandingCopy> = {
         },
       ],
       more: 'Comment fonctionne CalmBeach',
+      askLink: 'Vous savez quelque chose que nous ignorons ? Dites-le-nous',
     },
     story: {
       overline: 'Qui nous sommes',
       title: 'Nous avons grandi avec la mer à côté',
       paragraphs: [
         'Nous sommes une petite équipe avec un point commun : la mer. L’un de nous est né sur une île et n’en est jamais vraiment parti. Un autre a grandi en changeant d’île, à cause du travail de ses parents — une autre école, un autre port, d’autres plages. C’est là que nous avons appris ce que sait chaque habitant et qu’aucun guide n’imprime : quelle plage marche quand il vente, et laquelle non.',
-        'Cela nous est arrivé à nous aussi, en visiteurs : nous avons roulé une heure pour une plage vue en photo, et nous l’avons trouvée agitée. C’est pourquoi nous cartographions la forme de chaque côte — où le vent frappe, où la terre abrite — pour toute la Grèce.',
-        'Chaque semaine, nous déplaçons des points sur la carte, nous retirons les transats et les cantines qui n’existent plus, nous ajoutons les plages qui manquaient. Aucune plage ne paie pour être mieux classée — l’ordre vient du vent et de la forme de la côte, de rien d’autre. C’est là que nous avons besoin de vous : vous connaissez votre plage mieux que n’importe quel satellite.',
+        'Cela nous est arrivé aussi, en tant que visiteurs : nous avons roulé une heure pour une plage vue en photo, et nous l’avons trouvée agitée. C’est pourquoi nous cartographions la forme de chaque côte — où le vent frappe, où la terre abrite — pour toute la Grèce.',
+        // "cantine" is a school/works canteen in French — a beach καντίνα is a buvette.
+        'Chaque semaine, nous déplaçons des points sur la carte, nous retirons les transats et les buvettes qui n’existent plus, nous ajoutons les plages qui manquaient. Aucune plage ne paie pour être mieux classée — l’ordre vient du vent et de la forme de la côte, de rien d’autre. C’est là que nous avons besoin de vous : vous connaissez votre plage mieux que n’importe quel satellite.',
       ],
       pullQuote: 'Aucune photo ne vous dit ce que la mer fait aujourd’hui.',
       signature: 'L’équipe CalmBeach',
@@ -455,18 +485,17 @@ export const landingCopy: Record<LanguageCode, LandingCopy> = {
       ],
       formPlaceholder: 'ex. « il n’y a plus de transats à Limnionas » ou « l’après-midi, le vent prend le bout droit de la plage ».',
       formEmailLabel: 'E-mail — seulement si vous voulez une réponse',
-      formEmailPlaceholder: 'vous@email.fr',
-      formSending: 'Envoi…',
-      formSuccess: 'Bien reçu — merci. Nous lisons tout, un par un.',
-      formError: 'Quelque chose n’a pas fonctionné. Envoyez-le nous plutôt ici :',
-      askCta: 'Envoyer',
+      formEmailPlaceholder: 'name@example.com',
+      formSending: 'Envoi en cours…',
+      formSuccess: 'Bien reçu — merci. Nous les lisons un par un.',
+      formError: 'Quelque chose n’a pas fonctionné. Envoyez-le-nous plutôt ici :',
+      askCta: 'Envoyez-le-nous',
       mailSubject: 'Correction ou suggestion pour CalmBeach',
       mailFallback: 'ou écrivez-nous directement',
     },
   },
   it: {
     hero: {
-      kicker: 'Prima di prendere l’asciugamano',
       title: 'Quale spiaggia della Grecia fa per te oggi?',
       titleAccent: 'della Grecia',
       subtitle: 'La calma non inizia in spiaggia. Inizia nel momento in cui sai quale scegliere.',
@@ -475,10 +504,10 @@ export const landingCopy: Record<LanguageCode, LandingCopy> = {
       clearSearchAria: 'Cancella la ricerca',
       searchRegionLabel: 'Regione',
       searchBeachLabel: 'Spiaggia',
-      searchLoading: 'Cerco spiagge…',
+      searchLoading: 'Cerchiamo spiagge…',
       searchNoResults: 'Nessun risultato simile. Premi Invio per cercare.',
       nearMe: 'Vicino a me',
-      findingLocation: 'Individuo la posizione…',
+      findingLocation: 'Ricerca della posizione…',
     },
     today: {
       title: 'Le regioni oggi',
@@ -493,23 +522,24 @@ export const landingCopy: Record<LanguageCode, LandingCopy> = {
         : bft === 5 ? 'molto mosso, 5 Beaufort'
         : `agitato, ${bft} Beaufort`,
       chipAria: (region, phrase) => `${region}: ${phrase}`,
-      note: 'Stima al largo — le coste riparate di ogni regione sono più calme.',
+      note: 'Parliamo del mare aperto — le coste riparate di ogni regione sono più calme.',
       cta: 'Trova una spiaggia riparata vicino a te',
-      ctaPending: 'Sto individuando dove sei…',
+      ctaPending: 'Cerchiamo dove sei…',
       allRegions: 'oppure vedi tutte le regioni',
+      compare: 'Vedi e confronta spiagge specifiche',
     },
     manifesto: {
       overline: 'Cosa significa «calmo» qui',
       quote:
-        '«Calmo» non significa la stessa cosa per tutti. Uno vuole un lettino, acqua bassa e una doccia; un altro una distesa di sabbia dove non c’è nessuno. Per questo guardiamo entrambe le cose: cosa offre la spiaggia, e cosa fa il mare oggi.',
+        '«Calmo» non è lo stesso per tutti. Uno vuole acqua bassa, uno una spiaggia vuota, uno onde per fare surf.',
       points: [
         {
-          title: 'Cosa offre la spiaggia',
-          body: 'Lettini, docce, ombra, cibo, parcheggio, acqua bassa, accesso. Questo non cambia — lo sappiamo in anticipo.',
+          title: 'Come lo verifichiamo',
+          body: 'Registri ufficiali, satellite e spiagge che abbiamo visitato di persona. Correggiamo ogni settimana e, nel dubbio, non lo scriviamo — promettere un lettino che non c’è è peggio che non menzionarlo affatto.',
         },
         {
-          title: 'Cosa fa il mare oggi',
-          body: 'Vento e onde ora per ora, letti attraverso la forma di ogni costa. Per questo una spiaggia famosa non è automaticamente la migliore.',
+          title: 'La forma della costa',
+          body: 'Prendiamo vento e onde ora per ora e li leggiamo attraverso la forma di ogni costa. Per questo una spiaggia famosa non è automaticamente la migliore.',
         },
         {
           title: 'Cosa non sappiamo (ancora)',
@@ -517,18 +547,19 @@ export const landingCopy: Record<LanguageCode, LandingCopy> = {
         },
       ],
       more: 'Come funziona CalmBeach',
+      askLink: 'Sai qualcosa che non sappiamo? Diccelo',
     },
     story: {
       overline: 'Chi siamo',
       title: 'Siamo cresciuti con il mare accanto',
       paragraphs: [
-        'Siamo una piccola squadra con una cosa in comune: il mare. Uno di noi è nato su un’isola e in fondo non è mai andato via. Un altro è cresciuto cambiando isola, per il lavoro dei genitori — un’altra scuola, un altro porto, altre spiagge. È lì che abbiamo imparato quello che sa ogni abitante e che nessuna guida scrive: quale spiaggia funziona quando tira vento, e quale no.',
+        'Siamo un piccolo team con una cosa in comune: il mare. Uno di noi è nato su un’isola e in fondo non è mai andato via. Un altro è cresciuto cambiando isola, per il lavoro dei genitori — un’altra scuola, un altro porto, altre spiagge. È lì che abbiamo imparato quello che sa ogni abitante e che nessuna guida scrive: quale spiaggia funziona quando tira vento, e quale no.',
         'È capitato anche a noi, come visitatori: abbiamo guidato un’ora per una spiaggia vista in foto, e l’abbiamo trovata mossa. Per questo mappiamo la forma di ogni costa — dove batte il vento, dove ripara la terra — per tutta la Grecia.',
         'Ogni settimana spostiamo punti sulla mappa, togliamo lettini e chioschi che non ci sono più, aggiungiamo spiagge che mancavano. Nessuna spiaggia paga per stare più in alto — l’ordine viene dal vento e dalla forma della costa, da nient’altro. È lì che abbiamo bisogno di te: la tua spiaggia la conosci meglio di qualsiasi satellite.',
       ],
       pullQuote: 'Nessuna foto ti dice cosa fa il mare oggi.',
       signature: 'Il team di CalmBeach',
-      askTitle: 'Sai qualcosa che noi non sappiamo?',
+      askTitle: 'Sai qualcosa che non sappiamo?',
       askHint: 'Bastano due righe.',
       askPrompts: [
         { id: 'missing', label: 'Manca una spiaggia', seed: 'Manca una spiaggia: ' },
@@ -537,8 +568,8 @@ export const landingCopy: Record<LanguageCode, LandingCopy> = {
       ],
       formPlaceholder: 'es. «a Limnionas non ci sono più i lettini» o «nel pomeriggio il vento prende il lato destro».',
       formEmailLabel: 'Email — solo se vuoi una risposta',
-      formEmailPlaceholder: 'tu@email.it',
-      formSending: 'Invio…',
+      formEmailPlaceholder: 'name@example.com',
+      formSending: 'Invio in corso…',
       formSuccess: 'Ricevuto — grazie. Le leggiamo tutte, una per una.',
       formError: 'Qualcosa è andato storto. Mandacelo meglio qui:',
       askCta: 'Mandacelo',

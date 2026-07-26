@@ -47,19 +47,32 @@ export const HowWeDecideSection: React.FC<HowWeDecideSectionProps> = ({ language
             </a>
           </div>
 
-          <ol className="divide-y divide-white/10 border-t border-white/10 lg:border-t-0">
-            {c.points.map((point, index) => (
-              <li key={point.title} className="flex gap-5 py-5 lg:first:pt-0 lg:last:pb-0">
-                <span className="pt-0.5 font-mono text-sm text-teal-300/80" aria-hidden="true">
-                  0{index + 1}
-                </span>
-                <div className="min-w-0">
-                  <h3 className="text-base font-bold leading-tight text-white">{point.title}</h3>
-                  <p className="mt-1.5 text-sm font-normal leading-relaxed text-white/65">{point.body}</p>
-                </div>
-              </li>
-            ))}
-          </ol>
+          <div>
+            <ol className="divide-y divide-white/10 border-t border-white/10 lg:border-t-0">
+              {c.points.map((point, index) => (
+                <li key={point.title} className="flex gap-5 py-5 lg:first:pt-0">
+                  <span className="pt-0.5 font-mono text-sm text-teal-300/80" aria-hidden="true">
+                    0{index + 1}
+                  </span>
+                  <div className="min-w-0">
+                    <h3 className="text-base font-bold leading-tight text-white">{point.title}</h3>
+                    <p className="mt-1.5 text-sm font-normal leading-relaxed text-white/65">{point.body}</p>
+                  </div>
+                </li>
+              ))}
+            </ol>
+
+            {/* Follows straight on from "what we do not know". The form itself
+                lives two screens further down, where far fewer people reach — so
+                the invitation is made here and jumps them to it. */}
+            <a
+              href="#epikoinonia"
+              className="group mt-5 inline-flex items-center gap-2 rounded text-sm font-bold text-teal-300 underline-offset-4 transition hover:text-teal-200 hover:underline focus:outline-none focus-visible:ring-2 focus-visible:ring-teal-300"
+            >
+              {c.askLink}
+              <ArrowRight className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-0.5" aria-hidden="true" />
+            </a>
+          </div>
         </div>
       </div>
     </section>
