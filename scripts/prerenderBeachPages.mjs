@@ -3,6 +3,7 @@ import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { amenityTextIncludesAny, SNACK_CANTEEN_AMENITY_TERMS } from '../utils/amenityMatching.js';
 import { localWindLabelFor, getRegionWindContext, localWindSectorsFor, LOCAL_WIND_ATOMS, LOCAL_WIND_LABEL } from '../utils/localWindContext.mjs';
+import { STATIC_ARTICLE_CSS } from './staticArticleTheme.mjs';
 
 const scriptDir = path.dirname(fileURLToPath(import.meta.url));
 const projectRoot = path.resolve(scriptDir, '..');
@@ -1505,6 +1506,138 @@ const renderDefinitionRow = (term, description) => (
     : ''
 );
 
+// --- Article imagery -----------------------------------------------------------
+// Beach photos live outside the beach records, in a flat id -> [url] map. The
+// flat keying is safe: beach ids are globally unique (verified 2842 ids, 0
+// cross-region collisions), unlike the per-region keying beachStories needs.
+const beachPhotosById = await readJson(path.join(projectRoot, 'data', 'beachPhotosById.generated.json'));
+const beachPhotoBlocklist = new Set(
+  (await readJson(path.join(projectRoot, 'data', 'beachPhotoBlocklist.json'))).ids || [],
+);
+
+// Cards are ~230px wide, so requesting the 800px original for every one of them
+// would be the single heaviest thing on the page. Wikimedia's Special:Redirect
+// takes a width param, so ask for what we actually paint (2x for retina).
+const sizedPhotoUrl = (url, width) => (
+  /[?&]width=\d+/.test(url) ? url.replace(/([?&]width=)\d+/, `$1${width}`) : url
+);
+
+// CC BY / CC BY-SA REQUIRE author + licence + a link to the source file page.
+// The photo map stores only the URL, so join it to the generated credit block in
+// public/IMAGE_CREDITS.txt ("File: <name> | <author> | <licence> | <url>").
+// A photo we cannot attribute is simply not rendered — the licence is not
+// optional, and a blanket credits page does not satisfy CC BY on its own.
+const CREDIT_WAIVED = /(public\s*domain|^cc0|\bcc0\b)/i;
+
+// Same URL -> Commons file-title extraction as scripts/checkPhotoUrls.mjs.
+const commonsFileTitle = url => {
+  const redirect = url.match(/Special:Redirect\/file\/([^&]+)/);
+  if (redirect) return decodeURIComponent(redirect[1]);
+  if (/upload\.wikimedia\.org/.test(url)) {
+    const segs = url.split('?')[0].split('/');
+    return decodeURIComponent(/\/thumb\//.test(url) ? segs[segs.length - 2] : segs[segs.length - 1]);
+  }
+  return null;
+};
+
+const photoCreditsByFile = new Map(
+  (await readFile(path.join(projectRoot, 'public', 'IMAGE_CREDITS.txt'), 'utf8'))
+    .split('\n')
+    .map(line => line.match(/^File:\s*(.+?)\s*\|\s*(.+?)\s*\|\s*(.+?)\s*\|\s*(\S+)\s*$/))
+    .filter(Boolean)
+    .map(([, file, author, license, sourceUrl]) => [file, { author, license, sourceUrl }]),
+);
+
+const beachCardPhoto = beach => {
+  const id = String(beach?.id ?? '');
+  if (!id || beachPhotoBlocklist.has(id)) return null;
+  const urls = beachPhotosById[id];
+  const url = Array.isArray(urls) ? urls.find(Boolean) : null;
+  if (!url) return null;
+  const credit = photoCreditsByFile.get(commonsFileTitle(url) || '') || null;
+  // No credit record -> we cannot attribute it -> we do not publish it.
+  if (!credit) return null;
+  return {
+    src: sizedPhotoUrl(url, 400),
+    src2x: sizedPhotoUrl(url, 800),
+    credit,
+    creditRequired: !CREDIT_WAIVED.test(credit.license || ''),
+  };
+};
+
+// The region hero. resolveRegionOgImagePath only knows about .jpg/.webp because
+// og:image needs a universally-decodable format, but the build also emits .avif
+// derivatives — serve those first and let <picture> fall back.
+const heroSourcesFor = (imagePath, publicAssets) => {
+  const base = String(imagePath || '').replace(/\.(jpe?g|webp|avif)$/i, '');
+  const pick = ext => (publicAssets.has(`${base}.${ext}`) ? `${base}.${ext}` : null);
+  return { avif: pick('avif'), webp: pick('webp'), jpg: pick('jpg') || imagePath };
+};
+
+// Only 74 regions have a -bg photo, and everything else silently resolved to
+// defaultOgImagePath — i.e. Sarakiniko on Milos. That put a Milos cliff at the
+// top of the Halkidiki, Lemnos and Samos articles, which is exactly the kind of
+// "close enough" image this project refuses everywhere else. So: use the region
+// photo only when it really is the region's, otherwise promote one of the
+// article's OWN beach photos, and if there is neither, run the hero with no
+// photograph at all rather than a borrowed one.
+// Careful: Milos and Polyaigos map to defaultOgImagePath *deliberately* —
+// Sarakiniko IS their coastline. A bare `!== defaultOgImagePath` test would
+// strip the one island the default legitimately belongs to, so an explicit
+// override always counts as region-specific.
+const heroIsRegionSpecific = (imagePath, region, island) => (
+  imagePath !== defaultOgImagePath
+  || regionOgImageOverrides.get(region?.id) === imagePath
+  || regionOgImageOverrides.get(island?.id) === imagePath
+);
+
+const renderHeroPicture = (sources, alt) => {
+  if (!sources) return '';
+  if (sources.remote) {
+    return `<img class="cb-hero-img" src="${escapeHtml(sources.remote)}" alt="${escapeHtml(alt)}" referrerpolicy="no-referrer" width="1200" height="630" fetchpriority="high" decoding="async">`;
+  }
+  return `
+          <picture>
+            ${sources.avif ? `<source srcset="${escapeHtml(sources.avif)}" type="image/avif">` : ''}
+            ${sources.webp ? `<source srcset="${escapeHtml(sources.webp)}" type="image/webp">` : ''}
+            <img class="cb-hero-img" src="${escapeHtml(sources.jpg)}" alt="${escapeHtml(alt)}" width="1200" height="630" fetchpriority="high" decoding="async">
+          </picture>`;
+};
+
+// A hero drawn from the article's own beaches, used when the region has no
+// background photo of its own.
+const heroFromBeaches = beaches => {
+  for (const beach of beaches) {
+    const photo = beachCardPhoto(beach);
+    if (photo) return { remote: sizedPhotoUrl(photo.src, 1200), credit: photo.credit, beach };
+  }
+  return null;
+};
+
+// Honest, computed facts for the hero chips — counted from the very beaches the
+// page lists, so they can never drift from the content below them.
+const heroStatLabels = {
+  beaches:   { en: 'beaches', gr: 'παραλίες', de: 'Strände', fr: 'plages', it: 'spiagge' },
+  easyAcces: { en: 'easy access', gr: 'εύκολη πρόσβαση', de: 'leicht erreichbar', fr: 'accès facile', it: 'accesso facile' },
+  organized: { en: 'organized', gr: 'οργανωμένες', de: 'organisiert', fr: 'aménagées', it: 'attrezzate' },
+  withPhoto: { en: 'with photos', gr: 'με φωτογραφία', de: 'mit Fotos', fr: 'avec photos', it: 'con foto' },
+};
+
+const heroStatsFor = (beaches, language) => {
+  const stat = (value, key) => (value > 0
+    ? `<li class="cb-stat"><b>${value}</b><span>${escapeHtml(heroStatLabels[key][language] || heroStatLabels[key].en)}</span></li>`
+    : '');
+  const easy = beaches.filter(b => b.staticLabels?.accessType === 'EASY_WALK' || b.accessibility === 'easy').length;
+  const organized = beaches.filter(b => b.amenities?.organized === true).length;
+  const photos = beaches.filter(b => beachCardPhoto(b)).length;
+  return [
+    stat(beaches.length, 'beaches'),
+    stat(easy, 'easyAcces'),
+    stat(organized, 'organized'),
+    stat(photos, 'withPhoto'),
+  ].filter(Boolean).join('');
+};
+
 const renderBeachSummaryMeta = (beach, language = 'en') => {
   const labels = [
     readableBeachType(beach, language),
@@ -2948,12 +3081,9 @@ const staticRegionFallback = (island, region, canonicalUrl, locale = prerenderLo
   `;
 };
 
-// Mirrors the `bg-slate-50 text-slate-900 font-sans` body class + index.css --font-sans,
-// the only stylesheet rules the fully-static pages actually depend on.
-const STATIC_PAGE_BASE_CSS = 'body{margin:0;background:#f8fafc;color:#0f172a;'
-  + 'font-family:ui-rounded,"SF Pro Rounded","Nunito","Inter",system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;'
-  + '-webkit-font-smoothing:antialiased}'
-  + 'img{max-width:100%;height:auto}';
+// The fully-static pages carry their own small design system instead of the
+// 223 KB app stylesheet (see the stylesheet swap in stripClientScripts below).
+const STATIC_PAGE_BASE_CSS = STATIC_ARTICLE_CSS;
 
 const stripClientScripts = html => html
   .replace(/\s*<link rel="modulepreload"[^>]*>\s*/gi, '')
@@ -3577,57 +3707,160 @@ const buildRegionPage = (baseHtml, island, region, imageUrl, locale = prerenderL
   return htmlWithHead.replace(/<div id="root">\s*<\/div>/i, staticRegionFallback(island, region, canonicalUrl, locale, shelterCopy));
 };
 
-const staticIslandIntentFallback = (content, island, region, beaches, canonicalUrl, locale, intent) => {
+const articleChrome = {
+  en: { listHeading: 'The beaches', ctaLead: 'Wind and waves change every day. See live conditions for any of these beaches before you drive out.', ctaButton: 'Open the live map', photoNote: 'Photo credits', faqHeading: 'Good to know' },
+  gr: { listHeading: 'Οι παραλίες', ctaLead: 'Ο άνεμος και το κύμα αλλάζουν κάθε μέρα. Δες ζωντανά τις συνθήκες για όποια παραλία θέλεις πριν ξεκινήσεις.', ctaButton: 'Άνοιγμα ζωντανού χάρτη', photoNote: 'Πηγές φωτογραφιών', faqHeading: 'Καλό να ξέρεις' },
+  de: { listHeading: 'Die Strände', ctaLead: 'Wind und Wellen ändern sich täglich. Prüfe die Live-Bedingungen, bevor du losfährst.', ctaButton: 'Live-Karte öffnen', photoNote: 'Bildnachweise', faqHeading: 'Gut zu wissen' },
+  fr: { listHeading: 'Les plages', ctaLead: "Le vent et les vagues changent chaque jour. Vérifiez les conditions en direct avant de partir.", ctaButton: 'Ouvrir la carte en direct', photoNote: 'Crédits photo', faqHeading: 'Bon à savoir' },
+  it: { listHeading: 'Le spiagge', ctaLead: 'Vento e onde cambiano ogni giorno. Controlla le condizioni in diretta prima di partire.', ctaButton: 'Apri la mappa live', photoNote: 'Crediti fotografici', faqHeading: 'Da sapere' },
+};
+const getArticleChrome = language => articleChrome[language] || articleChrome.en;
+
+// One compact credit line per photo we actually rendered: author, licence and a
+// link to the Commons file page. Per-card captions would drown the design, but a
+// blanket "photos from Commons" note does NOT satisfy CC BY — this does.
+const renderPhotoCredits = (beaches, language, chrome, heroPhoto = null) => {
+  const row = (beach, credit) => {
+    const name = displayName(beach.name, `Beach ${beach.id}`, language);
+    const { author, license, sourceUrl } = credit;
+    return `<li>${escapeHtml(name)}: <a href="${escapeHtml(sourceUrl)}" rel="nofollow noopener" target="_blank">${escapeHtml(author)}</a>, ${escapeHtml(license)}</li>`;
+  };
+  // The hero counts too when it is a beach photo rather than a region background.
+  const heroRow = heroPhoto?.credit ? [row(heroPhoto.beach, heroPhoto.credit)] : [];
+  const rows = heroRow.concat(beaches
+    .map(beach => ({ beach, photo: beachCardPhoto(beach) }))
+    .filter(entry => entry.photo?.creditRequired)
+    .map(({ beach, photo }) => row(beach, photo.credit)));
+  if (rows.length === 0) return '';
+  return `
+          <details class="cb-credits">
+            <summary>${escapeHtml(chrome.photoNote)}</summary>
+            <ul>${rows.join('')}</ul>
+          </details>`;
+};
+
+// A card that leads with a photograph where we have one. Where we don't, a
+// tinted panel carrying the beach type — never an empty or broken frame.
+const renderBeachCard = (beach, island, region, locale) => {
+  const language = locale.language;
+  const beachName = displayName(beach.name, `Beach ${beach.id}`, language);
+  const blurb = intentBeachBlurbText(region, beach, language);
+  const photo = beachCardPhoto(beach);
+  const type = readableBeachType(beach, language);
+  const access = readableAccess(beach, language);
+  const isHard = beach.staticLabels?.accessType === 'BOAT_ONLY' || beach.accessibility === 'difficult';
+
+  // No photo: a tinted panel with a wave motif, so it reads as a deliberate
+  // placeholder rather than a failed image. The beach type is NOT repeated here
+  // — the tag directly below already carries it.
+  const figure = photo
+    ? `<figure class="cb-fig"><img src="${escapeHtml(photo.src)}" srcset="${escapeHtml(photo.src)} 1x, ${escapeHtml(photo.src2x)} 2x" alt="${escapeHtml(beachName)}" referrerpolicy="no-referrer" loading="lazy" decoding="async" width="400" height="300"></figure>`
+    : `<div class="cb-fig cb-fig-none" aria-hidden="true"><svg viewBox="0 0 120 40" preserveAspectRatio="none" focusable="false"><path d="M0 26c15 0 15-8 30-8s15 8 30 8 15-8 30-8 15 8 30 8v14H0z"/></svg></div>`;
+
+  const tags = [
+    type ? `<li class="cb-tag">${escapeHtml(type)}</li>` : '',
+    access ? `<li class="cb-tag${isHard ? ' cb-tag-warn' : ''}">${escapeHtml(access)}</li>` : '',
+  ].filter(Boolean).join('');
+
+  return `
+            <li class="cb-card">
+              ${figure}
+              <div class="cb-card-body">
+                <a class="cb-card-name" href="${escapeHtml(localizedPath(beachPath(region, island, beach), locale))}">${escapeHtml(beachName)}</a>
+                ${tags ? `<ul class="cb-tags">${tags}</ul>` : ''}
+                ${blurb ? `<p class="cb-blurb">${escapeHtml(blurb)}</p>` : ''}
+              </div>
+            </li>`;
+};
+
+const staticIslandIntentFallback = (content, island, region, beaches, canonicalUrl, locale, intent, hero) => {
   const language = locale.language;
   const copy = getStaticFallbackCopy(language);
+  const chrome = getArticleChrome(language);
   const islandName = displayName(island.name, region.id, language);
   const homeHref = homePathForLocale(locale);
   const regionHref = localizedPath(regionPath(region, island), locale);
-  const sep = '<span style="color:#94a3b8;"> › </span>';
-  const beachItems = beaches.map(beach => {
-    const beachName = displayName(beach.name, `Beach ${beach.id}`, language);
-    const blurb = intentBeachBlurbText(region, beach, language);
-    return `
-            <li style="margin:0;border:1px solid #bae6fd;border-radius:12px;background:white;">
-              <a href="${escapeHtml(localizedPath(beachPath(region, island, beach), locale))}" style="display:block;padding:10px 12px ${blurb ? '4px' : '10px'};color:#0f172a;text-decoration:none;">
-                <strong style="color:#0e7490;">${escapeHtml(beachName)}</strong>
-                ${renderBeachSummaryMeta(beach, language)}
-              </a>
-              ${blurb ? `<p style="margin:0;padding:0 12px 10px;color:#334155;font-size:14px;line-height:1.5;">${escapeHtml(blurb)}</p>` : ''}
-            </li>`;
-  }).join('');
+  const sep = '<span> › </span>';
+  const eyebrow = intentNavLabel(intent?.key, region.id, language);
+  const body = String(content.intro).split(/\n\n+/).map(p => p.trim()).filter(Boolean);
+  // The hero deck is the meta description, not the first intro paragraph: it is
+  // already written as a standalone one-line summary, so the hero and the
+  // article body never say the same sentence twice.
+  const deck = content.description;
+  const stats = heroStatsFor(beaches, language);
+  // Presentation-only reorder so the grid opens with photographs. This does NOT
+  // change which beaches the page lists — selection and the ISLAND_INTENT_CAP
+  // cut already happened upstream. (Worth knowing: that upstream sort is on
+  // popularityScore, which is a deterministic hash of the beach id, so there is
+  // no meaningful ranking being disturbed here.)
+  const ordered = [...beaches].sort((a, b) => (beachCardPhoto(b) ? 1 : 0) - (beachCardPhoto(a) ? 1 : 0));
+  const beachItems = ordered.map(beach => renderBeachCard(beach, island, region, locale)).join('');
+  // `hero` is either the region's own background, or a photo of a beach this
+  // article lists, or null — in which case the hero runs on its CSS gradient.
+  // Never another region's scenery passed off as this one's.
+  const heroAlt = hero?.beach
+    ? displayName(hero.beach.name, `Beach ${hero.beach.id}`, language)
+    : `${content.h1} — CalmBeach`;
+  const heroImage = renderHeroPicture(hero, heroAlt);
 
   return `
     <div id="root">
-      <main data-static-fallback style="max-width:840px;margin:0 auto;padding:32px 20px;font-family:system-ui,-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;color:#0f172a;background:#f8fafc;">
-        <p style="margin:0 0 8px;color:#0e7490;font-weight:700;">${escapeHtml(copy.brand)}</p>
-        <nav aria-label="breadcrumb" style="margin:0 0 14px;font-size:13px;font-weight:700;">
-          <a href="${escapeHtml(homeHref)}" style="color:#0e7490;text-decoration:none;">${escapeHtml(copy.home)}</a>${sep}<a href="${escapeHtml(regionHref)}" style="color:#0e7490;text-decoration:none;">${escapeHtml(copy.regionHeading(islandName))}</a>${sep}<span style="color:#475569;">${escapeHtml(content.h1)}</span>
-        </nav>
-        <h1 style="margin:0 0 12px;font-size:32px;line-height:1.1;">${escapeHtml(content.h1)}</h1>
-        ${String(content.intro).split(/\n\n+/).map(paragraph => `<p style="margin:0 0 16px;font-size:17px;line-height:1.6;color:#334155;">${escapeHtml(paragraph.trim())}</p>`).join('')}
-        ${beachItems ? `<ul style="display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:10px;margin:0 0 24px;padding:0;list-style:none;">${beachItems}</ul>` : ''}
-        <div style="display:grid;gap:16px;margin:0 0 8px;">
-          ${content.sections.map(section => `
-            <section style="border-top:1px solid #bae6fd;padding-top:16px;">
-              <h2 style="margin:0 0 8px;font-size:20px;line-height:1.2;color:#075985;">${escapeHtml(section.heading)}</h2>
-              <p style="margin:0;font-size:16px;line-height:1.58;color:#334155;">${escapeHtml(section.body)}</p>
-            </section>`).join('')}
+      <main data-static-fallback>
+        <div class="cb-wrap">
+          <div class="cb-bar">
+            <a class="cb-logo" href="${escapeHtml(homeHref)}"><img src="/calmbeach-mark.svg" alt="" width="30" height="30">${escapeHtml(copy.brand)}</a>
+            <a class="cb-openapp" href="${escapeHtml(regionHref)}">${escapeHtml(copy.regionHeading(islandName))}</a>
+          </div>
+
+          <header class="cb-hero">
+            ${heroImage}
+            <div class="cb-hero-body">
+              <nav class="cb-crumb" aria-label="breadcrumb">
+                <a href="${escapeHtml(homeHref)}">${escapeHtml(copy.home)}</a>${sep}<a href="${escapeHtml(regionHref)}">${escapeHtml(copy.regionHeading(islandName))}</a>
+              </nav>
+              ${eyebrow ? `<p class="cb-eyebrow">${escapeHtml(eyebrow)}</p>` : ''}
+              <h1 class="cb-h1">${escapeHtml(content.h1)}</h1>
+              ${deck ? `<p class="cb-hero-sub">${escapeHtml(deck)}</p>` : ''}
+              ${stats ? `<ul class="cb-stats">${stats}</ul>` : ''}
+            </div>
+          </header>
+
+          ${body.length > 0 ? `<div class="cb-prose">${body.map(p => `<p>${escapeHtml(p)}</p>`).join('')}</div>` : ''}
+
+          ${beachItems ? `
+          <div class="cb-rule"><h2>${escapeHtml(chrome.listHeading)}</h2></div>
+          <ul class="cb-grid">${beachItems}</ul>
+          ${renderPhotoCredits(ordered, language, chrome, hero?.beach ? hero : null)}` : ''}
+
+          <div class="cb-rule"><h2>${escapeHtml(chrome.faqHeading)}</h2></div>
+          <div class="cb-qa">
+            ${content.sections.map(section => `
+              <section class="cb-qa-item">
+                <h2>${escapeHtml(section.heading)}</h2>
+                <p>${escapeHtml(section.body)}</p>
+              </section>`).join('')}
+          </div>
+
+          <div class="cb-cta">
+            <p>${escapeHtml(chrome.ctaLead)}</p>
+            <a href="${escapeHtml(regionHref)}">${escapeHtml(chrome.ctaButton)} →</a>
+          </div>
+
+          ${renderIslandGuides(island, region, locale, intent?.key, pickLang(language, {
+            en: `More ${islandName} beach guides`,
+            gr: `Άλλοι οδηγοί παραλιών — ${islandName}`,
+            de: `Weitere ${islandName} Strandführer`,
+            fr: `Autres guides plages — ${islandName}`,
+            it: `Altre guide spiagge — ${islandName}`,
+          }))}
+          <p class="cb-note" data-nosnippet="true"><a href="${escapeHtml(canonicalUrl)}">${escapeHtml(copy.viewRegion(islandName))}</a></p>
         </div>
-        ${renderIslandGuides(island, region, locale, intent?.key, pickLang(language, {
-          en: `More ${islandName} beach guides`,
-          gr: `Άλλοι οδηγοί παραλιών — ${islandName}`,
-          de: `Weitere ${islandName} Strandführer`,
-          fr: `Autres guides plages — ${islandName}`,
-          it: `Altre guide spiagge — ${islandName}`,
-        }))}
-        <p data-nosnippet="true" style="margin:16px 0 0;"><a href="${escapeHtml(canonicalUrl)}" style="color:#0e7490;font-weight:700;">${escapeHtml(copy.viewRegion(islandName))}</a></p>
       </main>
     </div>
   `;
 };
 
-const buildIslandIntentPage = (baseHtml, intent, content, island, region, beaches, imageUrl, locale, emittedLocales = baseLocales) => {
+const buildIslandIntentPage = (baseHtml, intent, content, island, region, beaches, imageUrl, locale, emittedLocales = baseLocales, hero = null) => {
   const pathName = islandIntentPath(intent, region, island);
   const canonicalUrl = canonicalUrlFor(pathName, locale);
   const language = locale.language;
@@ -3674,7 +3907,7 @@ const buildIslandIntentPage = (baseHtml, intent, content, island, region, beache
     jsonLd,
   });
 
-  return stripClientScripts(htmlWithHead).replace(/<div id="root">\s*<\/div>/i, staticIslandIntentFallback(content, island, region, beaches, canonicalUrl, locale, intent));
+  return stripClientScripts(htmlWithHead).replace(/<div id="root">\s*<\/div>/i, staticIslandIntentFallback(content, island, region, beaches, canonicalUrl, locale, intent, hero));
 };
 
 const buildBeachPage = (baseHtml, island, beach, region, imageUrl, locale = prerenderLocales[0], emittedLocales = baseLocales) => {
@@ -3901,8 +4134,16 @@ const main = async () => {
 
   // Programmatic per-island intent guides (gated above by ISLAND_INTENT_MIN).
   for (const page of islandIntentPages) {
-    const intentOgImageUrl = toAbsolutePublicUrl(resolveRegionOgImagePath(page.region, page.island, publicAssets));
+    const intentHeroPath = resolveRegionOgImagePath(page.region, page.island, publicAssets);
+    const intentOgImageUrl = toAbsolutePublicUrl(intentHeroPath);
     const intentSitemapImageUrl = toSitemapImageUrl(intentOgImageUrl, publicAssets);
+    // og:image must stay .jpg for universal decoding, but the on-page hero can
+    // take the .avif/.webp derivatives the build already emits (74/74 parity).
+    // Where the region has no photo of its own, fall through to one of this
+    // article's beaches rather than showing another island's coastline.
+    const intentHero = heroIsRegionSpecific(intentHeroPath, page.region, page.island)
+      ? heroSourcesFor(intentHeroPath, publicAssets)
+      : heroFromBeaches(page.beaches);
     const pathName = islandIntentPath(page.intent, page.region, page.island);
     const emittedLocales = localesForRegion(page.region.id);
     const shelterGeo = page.intent.key === 'sheltered'
@@ -3929,7 +4170,7 @@ const main = async () => {
           : baseContent;
       const intentOutputDir = outputDirForRoute(localizedPath(pathName, locale));
       await mkdir(intentOutputDir, { recursive: true });
-      await writeFile(path.join(intentOutputDir, 'index.html'), buildIslandIntentPage(baseHtml, page.intent, content, page.island, page.region, page.beaches, intentOgImageUrl, locale, emittedLocales), 'utf8');
+      await writeFile(path.join(intentOutputDir, 'index.html'), buildIslandIntentPage(baseHtml, page.intent, content, page.island, page.region, page.beaches, intentOgImageUrl, locale, emittedLocales, intentHero), 'utf8');
       sitemapEntries.push(sitemapEntry(canonicalUrlFor(pathName, locale), intentSitemapImageUrl));
       islandIntentPageCount += 1;
     }
