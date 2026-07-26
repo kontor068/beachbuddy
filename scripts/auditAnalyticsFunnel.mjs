@@ -18,6 +18,7 @@ const sourceFiles = [
   'components/Forecast.tsx',
   'components/PrivacyConsentBanner.tsx',
   'components/AiBeachAdvisor.tsx',
+  'components/planner/TripPlanner.tsx',
   'services/analyticsService.ts',
 ];
 
@@ -68,6 +69,14 @@ const funnelSteps = [
     aliases: ['map_viewed', 'map_opened'],
   },
   {
+    // The trip planner's ONE metric: whether the multi-day audience is real,
+    // and (via metadata: region_id / beaufort / blank_days) whether it is real
+    // on the windy days the feature exists for.
+    id: 'trip_planner',
+    label: 'Trip planned (multi-day)',
+    aliases: ['trip_planned'],
+  },
+  {
     id: 'navigation',
     label: 'Navigation clicked',
     aliases: ['navigation_clicked', 'beach_navigated'],
@@ -81,7 +90,10 @@ const unique = values => [...new Set(values)].sort();
 const extractDeclaredEvents = analyticsSource => {
   const unionMatch = analyticsSource.match(/export type AnalyticsEvent\s*=([\s\S]*?);/);
   if (!unionMatch) return [];
-  return unique(Array.from(unionMatch[1].matchAll(/'([^']+)'/g)).map(match => match[1]));
+  // The union carries doc comments whose prose apostrophes (e.g. "the page's
+  // reach") desync the naive quote pairing below — strip comments first.
+  const unionBody = unionMatch[1].replace(/\/\/[^\n]*/g, '');
+  return unique(Array.from(unionBody.matchAll(/'([^']+)'/g)).map(match => match[1]));
 };
 
 const extractEmittedEvents = source => {

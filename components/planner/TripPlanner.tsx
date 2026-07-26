@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from 'react';
+import React, { useEffect, useMemo, useRef, useState } from 'react';
 import { CalendarRange, ChevronRight, Wind, X } from 'lucide-react';
 import type { Beach, DailyForecast, LanguageCode, UserPreferences } from '../../types';
 import type { GeospatialExposureProfileLookup } from '../../services/geospatialExposureService';
@@ -23,6 +23,8 @@ interface TripPlannerProps {
   beaches: Beach[];
   forecast: DailyForecast[];
   language: LanguageCode;
+  /** Region id for analytics only — never used in planning. */
+  regionId: string;
   preferences?: UserPreferences;
   geospatialProfiles?: GeospatialExposureProfileLookup;
   onBeachClick: (beach: Beach) => void;
@@ -34,6 +36,7 @@ export const TripPlanner: React.FC<TripPlannerProps> = ({
   beaches,
   forecast,
   language,
+  regionId,
   preferences,
   geospatialProfiles,
   onBeachClick,
@@ -45,6 +48,23 @@ export const TripPlanner: React.FC<TripPlannerProps> = ({
     if (!days) return [];
     return planTrip({ beaches, forecast, days, language, preferences, geospatialProfiles });
   }, [beaches, days, forecast, geospatialProfiles, language, preferences]);
+
+  // Fired AFTER the plan computes (not on the raw tap) so the event can carry
+  // blank_days — the honest measure of how often the feature answers "no beach
+  // day". region_id + beaufort tell us whether the multi-day audience is real
+  // on the windy days the feature exists for. The ref stops re-renders (fresh
+  // forecast, language switch) from double-counting one choice.
+  const trackedDaysRef = useRef<number | null>(null);
+  useEffect(() => {
+    if (!days || plan.length === 0 || trackedDaysRef.current === days) return;
+    trackedDaysRef.current = days;
+    trackEvent('trip_planned', undefined, {
+      days,
+      region_id: regionId,
+      beaufort: getBeaufortLevel((forecast[0]?.wind?.speed ?? 0) * 3.6),
+      blank_days: plan.filter(entry => entry.status === 'no_beach_day').length,
+    });
+  }, [days, forecast, plan, regionId]);
 
   if (forecast.length === 0 || beaches.length === 0) return null;
 
@@ -59,7 +79,12 @@ export const TripPlanner: React.FC<TripPlannerProps> = ({
 
   const choose = (value: number) => {
     setDays(value);
-    trackEvent('trip_planned', undefined, { days: value });
+  };
+
+  const clear = () => {
+    // Re-picking after an explicit close is a new intent — let it count again.
+    trackedDaysRef.current = null;
+    setDays(null);
   };
 
   const beyond = days ? Math.max(0, days - forecast.length) : 0;
@@ -94,7 +119,7 @@ export const TripPlanner: React.FC<TripPlannerProps> = ({
           {days && (
             <button
               type="button"
-              onClick={() => setDays(null)}
+              onClick={clear}
               className="ml-auto inline-flex min-h-9 cursor-pointer items-center gap-1.5 rounded-full px-2.5 text-[13px] font-bold text-slate-500 transition-colors hover:bg-slate-100 hover:text-slate-700 focus:outline-none focus-visible:ring-2 focus-visible:ring-cyan-700"
             >
               <X className="h-3.5 w-3.5" aria-hidden="true" />

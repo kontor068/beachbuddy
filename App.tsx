@@ -6273,6 +6273,7 @@ export const App: React.FC = () => {
             beaches={selectedIsland.beaches}
             forecast={forecast}
             language={language}
+            regionId={String(selectedIsland.id)}
             preferences={preferences}
             geospatialProfiles={geospatialExposureProfiles}
             onBeachClick={(beach) => openBeachDetails(beach, 'trip_planner')}
