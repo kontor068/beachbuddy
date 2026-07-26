@@ -528,7 +528,7 @@ export const canClaimProtectedFromWind = (
 const GEOMETRY_ENCLOSURE_BLOCKED_RATIO = 0.95;
 const GEOMETRY_ENCLOSURE_MAX_INTENSITY = 33;
 
-const hasGeometryEnclosedProtection = (
+export const hasGeometryEnclosedProtection = (
   profile: GeospatialExposureProfile | undefined,
   windSector: WindSector,
   suspectPin: boolean

@@ -438,7 +438,14 @@ export const beachMatchesUserPreferences = (beach: Beach, preferences?: UserPref
   if (preferences.easyAccess && !hasTrulyEasyAccess(beach)) return false;
   if (preferences.deepWater && !beach.characteristics?.deepWaters) return false;
   if (preferences.shallowWater && !beach.characteristics?.shallowWaters) return false;
-  if (preferences.surfing && !beach.activities?.surfing) return false;
+  // Surf is seasonal in Greece and sharply so: the Ionian/Peloponnese breaks run
+  // November–April, the Aegean ones are meltemi-driven and run May–September. A
+  // spot that is out of season today is not a surf beach today, so it is filtered
+  // out rather than offered with a caveat nobody reads.
+  if (preferences.surfing) {
+    if (!beach.activities?.surfing) return false;
+    if (beach.surfMonths?.length && !beach.surfMonths.includes(athensNow().getMonth() + 1)) return false;
+  }
   if (preferences.parking && !beach.amenities?.parking) return false;
 
   return true;
@@ -748,7 +755,9 @@ const facesAwayFromWind = (facingDeg: number | null | undefined, windDirectionDe
 // leeward — i.e. a quartering/cross-shore beach (canClaim=false) carried only by a
 // caution-grade score. Mirrors validateRecommendationScenarios.mjs. Only binds from
 // meaningful wind upward; light-wind days choose on other merits.
-const isFalseProtectedTopPick = <T extends {
+// Exported for the trip planner's safety gate — the planner must never name a
+// beach this predicate would keep off the podium.
+export const isFalseProtectedTopPick = <T extends {
   canClaimWindProtection?: boolean;
   swimmingComfort?: SwimmingComfort;
   windProfile?: WindProfile;
@@ -851,6 +860,34 @@ const hasTrustedTopPickStaticData = (beach: Beach): boolean => {
   return true;
 };
 
+/**
+ * The EVIDENCE half of the trust gate: is the wind/confidence data behind this
+ * item solid enough to back a shelter claim? Split out of
+ * isTrustedTopRecommendationCandidate so the trip planner can gate its
+ * SENTENCES on evidence without inheriting the editorial half
+ * (hasTrustedTopPickStaticData), which requires a mainstream commercial
+ * profile that an unknown sheltered cove structurally cannot have.
+ * Candidacy is gated by safety; the sentence is gated by evidence.
+ */
+export const hasTrustedWindEvidence = <T extends {
+  confidence?: RecommendationConfidence;
+  windProfile?: WindProfile;
+  windProfileSource?: WindProfileSource;
+}>(
+  item: T,
+  windBeaufort: number = MEANINGFUL_WIND_TOP_PICK_BEAUFORT
+): boolean => {
+  if (item.confidence?.level === 'low') return false;
+  if (item.windProfile?.confidence === 'low') return false;
+
+  // From meaningful wind upward, do not make a top recommendation from legacy/unknown wind exposure.
+  if (windBeaufort >= MEANINGFUL_WIND_TOP_PICK_BEAUFORT && item.windProfileSource === 'unknown') {
+    return false;
+  }
+
+  return true;
+};
+
 export const isTrustedTopRecommendationCandidate = <T extends {
   beachId?: number;
   beach?: Beach;
@@ -864,15 +901,7 @@ export const isTrustedTopRecommendationCandidate = <T extends {
 ): boolean => {
   const beach = getPriorityBeach(item, beachById);
   if (!beach || !hasTrustedTopPickStaticData(beach)) return false;
-  if (item.confidence?.level === 'low') return false;
-  if (item.windProfile?.confidence === 'low') return false;
-
-  // From meaningful wind upward, do not make a top recommendation from legacy/unknown wind exposure.
-  if (windBeaufort >= MEANINGFUL_WIND_TOP_PICK_BEAUFORT && item.windProfileSource === 'unknown') {
-    return false;
-  }
-
-  return true;
+  return hasTrustedWindEvidence(item, windBeaufort);
 };
 
 const visibleExposurePriority = (item: { exposureLevel?: ExposureLevel; canClaimWindProtection?: boolean }): number => {
