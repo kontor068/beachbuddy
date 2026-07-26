@@ -62,36 +62,10 @@ export type LandingCopy = {
   story: {
     overline: string;
     title: string;
-    /** One line under the title that frames the five voices below it. */
-    lede: string;
-    /**
-     * The team, one childhood memory each, and what we do about exactly that.
-     *
-     * THESE ARE THE PEOPLE WHO BUILD THE SITE — not visitor testimonials. That
-     * distinction is the whole licence for this block: presented as reviews from
-     * users these would be fabricated social proof, which is the most expensive
-     * possible lie to put on the trust section. So: `signature` says "the team",
-     * the overline says "who we are", and every name here must be an actual
-     * person on the team. Never mark this block up as Review/AggregateRating
-     * schema, and never add star ratings, dates or "verified" badges to it.
-     *
-     * SHAPE: each memory is one distinct way a beach day breaks (a stale
-     * recommendation, a photo, the wrong side of the island for that wind, water
-     * too deep for a small child, knowledge only a local has) and each `answer`
-     * is the one capability that addresses it. Read top to bottom they are a
-     * feature tour that never mentions a feature.
-     */
-    memories: {
-      id: string;
-      name: string;
-      /** Where they know this coast from. Two or three words, not a bio. */
-      from: string;
-      quote: string;
-      /** What CalmBeach does about that day. One or two sentences, no jargon. */
-      answer: string;
-    }[];
-    /** The bridge from the memories to the ask. Kept to one short paragraph. */
+    /** Short paragraphs — this is a note, not an About page. */
     paragraphs: string[];
+    /** Lifted out of paragraph 2 as the column's one visual anchor for skimmers. */
+    pullQuote: string;
     signature: string;
     askTitle: string;
     askHint: string;
@@ -206,11 +180,14 @@ export const landingCopy: Record<LanguageCode, LandingCopy> = {
     // on purpose: that band is the institutional voice (what we measure, where we
     // stop), this one is the people behind it.
     //
-    // Five short quotes replaced three paragraphs of "we": a remembered scene is
-    // read where an About paragraph is skipped, and each one lets the answer next
-    // to it be specific instead of a claim about ourselves. Every factual promise
-    // still lives here — the coastline geometry, the weekly corrections, the
-    // no-paid-ranking line — but attached to the failure it fixes.
+    // Kept to three short paragraphs — on a phone, and 88% of visitors are on
+    // one, an About essay is never read.
+    //
+    // VOICE: "εμείς", but a NAMED, specific we — a small team whose members have
+    // different reasons to know this coast, not a corporate plural. The rule that
+    // matters is concreteness: "μια ομάδα με αγάπη για τη θάλασσα" is what every
+    // site says, while "ο ένας γεννήθηκε σε νησί, ο άλλος άλλαζε νησί κάθε λίγα
+    // χρόνια" is a thing only these people can write.
     //
     // Do NOT add "the photos on this page are ours" (the hero shots are not the
     // team's own) and do not restore "we have been to plenty of these beaches"
@@ -220,49 +197,14 @@ export const landingCopy: Record<LanguageCode, LandingCopy> = {
     // paid placement ever enters the ranking, that line comes out first.
     story: {
       overline: 'Ποιοι είμαστε',
-      // Plain autobiographical fact, not a slogan — and it earns the quotes below.
+      // Plain autobiographical fact, not a slogan — and it earns the next line.
       title: 'Μεγαλώσαμε με τη θάλασσα δίπλα μας',
-      lede: 'Πέντε άνθρωποι φτιάχνουμε το CalmBeach. Ο καθένας κουβαλάει τη δική του χαλασμένη μέρα στην παραλία — από αυτές βγήκε το site.',
-      memories: [
-        {
-          id: 'nikos',
-          name: 'Νίκος',
-          from: 'γεννημένος στη Νάξο',
-          quote: 'Θυμάμαι τους γονείς μου να τσακώνονται στο αυτοκίνητο. Ο πατέρας μου είχε διαλέξει μια παραλία που ήταν υπέροχη το προηγούμενο καλοκαίρι — φτάσαμε, φύσαγε, και η μέρα είχε χαλάσει πριν καν κατεβούμε.',
-          answer: 'Η επιλογή δεν είναι θέμα μνήμης. Για κάθε περιοχή σου λέμε ποιες παραλίες δουλεύουν σήμερα, όχι ποιες ήταν καλές πέρσι.',
-        },
-        {
-          id: 'olga',
-          name: 'Όλγα',
-          from: 'Θεσσαλονίκη',
-          quote: 'Είχα δει τη φωτογραφία: λάδι η θάλασσα, τιρκουάζ. Οδηγήσαμε σαράντα λεπτά και όταν κατέβηκα το κύμα έσκαγε στα βράχια. Η φωτογραφία ήταν αληθινή — απλώς όχι εκείνη τη μέρα.',
-          answer: 'Κάθε φωτογραφία είναι μιας άλλης μέρας. Εμείς βάζουμε δίπλα σε κάθε παραλία τον άνεμο και το κύμα της σημερινής.',
-        },
-        {
-          id: 'petros',
-          name: 'Πέτρος',
-          from: 'Πήλιο',
-          quote: 'Θυμάμαι τη μητέρα μου να κρατάει την ομπρέλα με τα δύο χέρια και την άμμο να μπαίνει στα σάντουιτς. Δεν ήταν κακή παραλία. Ήταν η λάθος πλευρά του νησιού για εκείνον τον αέρα.',
-          answer: 'Αυτό είναι γεωμετρία, όχι τύχη. Ξέρουμε ποια ακτή είναι εκτεθειμένη στον βοριά και ποια προστατεύεται — και σου δείχνουμε την υπήνεμη.',
-        },
-        {
-          id: 'erato',
-          name: 'Ερατώ',
-          from: 'Λέσβος',
-          quote: 'Η μικρή μου αδερφή ήταν πέντε χρονών και τα νερά βάθαιναν απότομα, με κύμα από πάνω. Κολυμπούσαμε με τη σειρά, για να την κρατάει πάντα κάποιος. Κανείς δεν μας είχε πει ότι εκείνη η παραλία δεν ήταν για παιδιά.',
-          answer: 'Ρηχά νερά, κλειστός κόλπος, ήσυχη ακτή: το ξέρεις πριν φύγεις από το σπίτι, ως φίλτρο — όχι ως υπόσχεση.',
-        },
-        {
-          id: 'miltos',
-          name: 'Μίλτος',
-          from: 'πέντε νησιά, πέντε σχολεία',
-          quote: 'Μεγάλωσα αλλάζοντας νησιά, λόγω της δουλειάς των γονιών μου. Σε κάθε ένα υπήρχε πάντα ένας ντόπιος που ήξερε: «σήμερα όχι εκεί, φυσάει — πήγαινε από την άλλη μεριά». Αυτό δεν γράφεται σε κανέναν οδηγό.',
-          answer: 'Γι’ αυτό χαρτογραφήσαμε το σχήμα κάθε ακτής της Ελλάδας. Και καμία παραλία δεν πληρώνει για να βγει ψηλότερα: η σειρά βγαίνει από τον άνεμο και το σχήμα της ακτής, από τίποτε άλλο.',
-        },
-      ],
       paragraphs: [
-        'Κάθε βδομάδα μετακινούμε σημεία στον χάρτη, βγάζουμε ξαπλώστρες και καντίνες που δεν υπάρχουν πια, προσθέτουμε παραλίες που λείπουν. Εκεί χρειαζόμαστε εσένα: την παραλία σου την ξέρεις καλύτερα από κάθε δορυφόρο.',
+        'Είμαστε μια μικρή ομάδα με ένα κοινό: τη θάλασσα. Ο ένας γεννήθηκε σε νησί και δεν έφυγε ποτέ ουσιαστικά από εκεί. Ο άλλος μεγάλωσε αλλάζοντας νησιά, λόγω της δουλειάς των γονιών του — άλλο σχολείο, άλλο λιμάνι, άλλες παραλίες. Κάπου εκεί μάθαμε αυτό που ξέρει κάθε ντόπιος και δεν γράφεται σε κανέναν οδηγό: ποια παραλία δουλεύει όταν φυσάει, και ποια όχι.',
+        'Μας έχει τύχει και ως επισκέπτες: οδηγήσαμε μία ώρα για μια παραλία που είχαμε δει σε φωτογραφία και τη βρήκαμε με κύμα. Γι’ αυτό χαρτογραφούμε το σχήμα της κάθε ακτής — πού χτυπάει ο άνεμος, πού προστατεύει η στεριά — για όλη την Ελλάδα.',
+        'Κάθε βδομάδα μετακινούμε σημεία στον χάρτη, βγάζουμε ξαπλώστρες και καντίνες που δεν υπάρχουν πια, προσθέτουμε παραλίες που λείπουν. Καμία παραλία δεν πληρώνει για να βγει ψηλότερα — η σειρά βγαίνει από τον άνεμο και το σχήμα της ακτής, από τίποτε άλλο. Εκεί χρειαζόμαστε εσένα: την παραλία σου την ξέρεις καλύτερα από κάθε δορυφόρο.',
       ],
+      pullQuote: 'Καμία φωτογραφία δεν σου λέει τι κάνει η θάλασσα σήμερα.',
       signature: 'Η ομάδα του CalmBeach',
       askTitle: 'Ξέρεις κάτι που δεν ξέρουμε;',
       askHint: 'Δυο γραμμές αρκούν.',
@@ -337,47 +279,12 @@ export const landingCopy: Record<LanguageCode, LandingCopy> = {
     story: {
       overline: 'Who we are',
       title: 'We grew up with the sea next door',
-      lede: 'Five people build CalmBeach. Each of us carries their own ruined day at the beach — this site came out of those.',
-      memories: [
-        {
-          id: 'nikos',
-          name: 'Nikos',
-          from: 'born on Naxos',
-          quote: 'I remember my parents arguing in the car. My father had picked a beach that was wonderful the summer before — we arrived, it was blowing, and the day was ruined before we were out of the car.',
-          answer: 'Picking a beach should not be a memory test. For every region we tell you which ones work today, not which ones were good last year.',
-        },
-        {
-          id: 'olga',
-          name: 'Olga',
-          from: 'Thessaloniki',
-          quote: 'I had seen the photo: flat, turquoise water. We drove forty minutes, and when I got out the waves were breaking on the rocks. The photo was real — just not that day.',
-          answer: 'Every photo is from some other day. We put today’s wind and waves next to each beach instead.',
-        },
-        {
-          id: 'petros',
-          name: 'Petros',
-          from: 'Pelion',
-          quote: 'I remember my mother holding the umbrella down with both hands, and sand getting into the sandwiches. It was not a bad beach. It was the wrong side of the island for that wind.',
-          answer: 'That is geometry, not luck. We know which shore is exposed to a north wind and which one is sheltered — and we point you to the sheltered one.',
-        },
-        {
-          id: 'erato',
-          name: 'Erato',
-          from: 'Lesvos',
-          quote: 'My little sister was five, and the bottom dropped away steeply with waves on top of it. We swam in shifts so someone could always hold her. Nobody had told us that beach was not for children.',
-          answer: 'Shallow water, an enclosed bay, a quiet shore: you know before you leave the house, as a filter — not as a promise.',
-        },
-        {
-          id: 'miltos',
-          name: 'Miltos',
-          from: 'five islands, five schools',
-          quote: 'I grew up moving from island to island because of my parents’ work. On every one there was a local who knew: “not there today, it’s blowing — go round the other side.” That is in no guidebook.',
-          answer: 'So we mapped the shape of every shore in Greece. And no beach pays to rank higher: the order comes from the wind and the shape of the coast, nothing else.',
-        },
-      ],
       paragraphs: [
-        'Every week we move pins on the map, delete sunbeds and canteens that are gone, add beaches that were missing. That is where we need you: you know your beach better than any satellite.',
+        'We are a small team with one thing in common: the sea. One of us was born on an island and never really left it. Another grew up moving from island to island, following a parent’s work — a different school, a different port, different beaches. Somewhere in there we learned the thing every local knows and no guidebook prints: which beach works when the wind is up, and which one does not.',
+        'It has caught us out as visitors too: we drove an hour to a beach we had seen in a photo, and found it churning. So we map the shape of every shore — where the wind hits, where the land shelters — across the whole of Greece.',
+        'Every week we move pins on the map, delete sunbeds and canteens that are gone, add beaches that were missing. No beach pays to rank higher — the order comes from the wind and the shape of the coast, nothing else. That is where we need you: you know your beach better than any satellite.',
       ],
+      pullQuote: 'No photo tells you what the sea is doing today.',
       signature: 'The CalmBeach team',
       askTitle: 'Know something we don’t?',
       askHint: 'Two lines are enough.',
@@ -452,47 +359,12 @@ export const landingCopy: Record<LanguageCode, LandingCopy> = {
     story: {
       overline: 'Wer wir sind',
       title: 'Wir sind mit dem Meer vor der Tür aufgewachsen',
-      lede: 'Fünf Menschen bauen CalmBeach. Jeder von uns trägt seinen eigenen verdorbenen Strandtag mit sich — aus denen ist diese Seite entstanden.',
-      memories: [
-        {
-          id: 'nikos',
-          name: 'Nikos',
-          from: 'auf Naxos geboren',
-          quote: 'Ich erinnere mich, wie meine Eltern im Auto stritten. Mein Vater hatte einen Strand ausgesucht, der im Sommer davor herrlich gewesen war — wir kamen an, es wehte, und der Tag war hin, bevor wir ausgestiegen waren.',
-          answer: 'Einen Strand auszusuchen sollte keine Gedächtnisübung sein. Für jede Region sagen wir dir, welche heute funktionieren — nicht, welche letztes Jahr gut waren.',
-        },
-        {
-          id: 'olga',
-          name: 'Olga',
-          from: 'Thessaloniki',
-          quote: 'Ich hatte das Foto gesehen: spiegelglattes, türkises Wasser. Wir fuhren vierzig Minuten, und als ich ausstieg, brachen die Wellen an den Felsen. Das Foto war echt — nur nicht an diesem Tag.',
-          answer: 'Jedes Foto ist von einem anderen Tag. Wir stellen stattdessen den Wind und die Wellen von heute neben jeden Strand.',
-        },
-        {
-          id: 'petros',
-          name: 'Petros',
-          from: 'Pilion',
-          quote: 'Ich sehe noch meine Mutter, wie sie den Sonnenschirm mit beiden Händen festhält, und den Sand in den Sandwiches. Es war kein schlechter Strand. Es war die falsche Seite der Insel für diesen Wind.',
-          answer: 'Das ist Geometrie, kein Glück. Wir wissen, welche Küste dem Nordwind ausgesetzt ist und welche geschützt liegt — und zeigen dir die geschützte.',
-        },
-        {
-          id: 'erato',
-          name: 'Erato',
-          from: 'Lesbos',
-          quote: 'Meine kleine Schwester war fünf, und der Grund fiel steil ab, mit Wellen obendrauf. Wir schwammen abwechselnd, damit sie immer jemand halten konnte. Niemand hatte uns gesagt, dass dieser Strand nichts für Kinder ist.',
-          answer: 'Flaches Wasser, eine geschlossene Bucht, eine ruhige Küste: Du weißt es, bevor du das Haus verlässt — als Filter, nicht als Versprechen.',
-        },
-        {
-          id: 'miltos',
-          name: 'Miltos',
-          from: 'fünf Inseln, fünf Schulen',
-          quote: 'Ich bin von Insel zu Insel gezogen, wegen der Arbeit meiner Eltern. Auf jeder gab es einen Einheimischen, der es wusste: „heute nicht dorthin, es weht — fahr auf die andere Seite.“ Das steht in keinem Reiseführer.',
-          answer: 'Deshalb haben wir die Form jeder Küste Griechenlands kartiert. Und kein Strand zahlt für eine bessere Platzierung: die Reihenfolge ergibt sich aus dem Wind und der Form der Küste, aus nichts anderem.',
-        },
-      ],
       paragraphs: [
-        'Jede Woche verschieben wir Punkte auf der Karte, löschen Liegen und Kantinen, die es nicht mehr gibt, und ergänzen fehlende Strände. Genau da brauchen wir dich: Du kennst deinen Strand besser als jeder Satellit.',
+        'Wir sind ein kleines Team mit einer Gemeinsamkeit: dem Meer. Einer von uns ist auf einer Insel geboren und im Grunde nie weggegangen. Ein anderer ist von Insel zu Insel gezogen, wegen der Arbeit der Eltern — eine andere Schule, ein anderer Hafen, andere Strände. Irgendwo dabei haben wir gelernt, was jeder Einheimische weiß und in keinem Reiseführer steht: welcher Strand funktioniert, wenn es weht, und welcher nicht.',
+        'Als Besucher hat es uns selbst erwischt: Wir fuhren eine Stunde zu einem Strand, den wir auf einem Foto gesehen hatten, und fanden ihn aufgewühlt vor. Deshalb kartieren wir die Form jeder Küste — wo der Wind auftrifft, wo das Land schützt — für ganz Griechenland.',
+        'Jede Woche verschieben wir Punkte auf der Karte, löschen Liegen und Kantinen, die es nicht mehr gibt, und ergänzen fehlende Strände. Kein Strand zahlt für eine bessere Platzierung — die Reihenfolge ergibt sich aus dem Wind und der Form der Küste, aus nichts anderem. Genau da brauchen wir dich: Du kennst deinen Strand besser als jeder Satellit.',
       ],
+      pullQuote: 'Kein Foto sagt dir, was das Meer heute macht.',
       signature: 'Das CalmBeach-Team',
       askTitle: 'Weißt du etwas, das wir nicht wissen?',
       askHint: 'Zwei Zeilen genügen.',
@@ -567,47 +439,12 @@ export const landingCopy: Record<LanguageCode, LandingCopy> = {
     story: {
       overline: 'Qui nous sommes',
       title: 'Nous avons grandi avec la mer à côté',
-      lede: 'Nous sommes cinq à faire CalmBeach. Chacun porte sa propre journée de plage gâchée — ce site est né de celles-là.',
-      memories: [
-        {
-          id: 'nikos',
-          name: 'Nikos',
-          from: 'né à Naxos',
-          quote: 'Je me souviens de mes parents en train de se disputer dans la voiture. Mon père avait choisi une plage qui était magnifique l’été d’avant — nous sommes arrivés, il ventait, et la journée était fichue avant même que nous soyons sortis de la voiture.',
-          answer: 'Choisir une plage ne devrait pas être un exercice de mémoire. Pour chaque région, nous vous disons lesquelles marchent aujourd’hui — pas lesquelles étaient bien l’an dernier.',
-        },
-        {
-          id: 'olga',
-          name: 'Olga',
-          from: 'Thessalonique',
-          quote: 'J’avais vu la photo : une eau lisse, turquoise. Nous avons roulé quarante minutes, et en sortant de la voiture les vagues cassaient sur les rochers. La photo était vraie — simplement pas ce jour-là.',
-          answer: 'Chaque photo vient d’un autre jour. Nous mettons à la place le vent et les vagues du jour à côté de chaque plage.',
-        },
-        {
-          id: 'petros',
-          name: 'Petros',
-          from: 'Pélion',
-          quote: 'Je revois ma mère tenir le parasol à deux mains, et le sable dans les sandwichs. Ce n’était pas une mauvaise plage. C’était le mauvais côté de l’île pour ce vent-là.',
-          answer: 'C’est de la géométrie, pas de la chance. Nous savons quelle côte est exposée au vent du nord et laquelle est abritée — et nous vous indiquons celle qui est abritée.',
-        },
-        {
-          id: 'erato',
-          name: 'Erato',
-          from: 'Lesbos',
-          quote: 'Ma petite sœur avait cinq ans, et le fond descendait d’un coup, avec des vagues par-dessus. Nous nous baignions à tour de rôle pour que quelqu’un la tienne toujours. Personne ne nous avait dit que cette plage n’était pas pour les enfants.',
-          answer: 'Eau peu profonde, baie fermée, côte tranquille : vous le savez avant de partir, comme un filtre — pas comme une promesse.',
-        },
-        {
-          id: 'miltos',
-          name: 'Miltos',
-          from: 'cinq îles, cinq écoles',
-          quote: 'J’ai grandi en changeant d’île, à cause du travail de mes parents. Sur chacune, il y avait un habitant qui savait : « pas là aujourd’hui, il vente — passez de l’autre côté ». Cela n’est écrit dans aucun guide.',
-          answer: 'C’est pour cela que nous avons cartographié la forme de chaque côte de Grèce. Et aucune plage ne paie pour être mieux classée : l’ordre vient du vent et de la forme de la côte, de rien d’autre.',
-        },
-      ],
       paragraphs: [
-        'Chaque semaine, nous déplaçons des points sur la carte, nous retirons les transats et les cantines qui n’existent plus, nous ajoutons les plages qui manquaient. C’est là que nous avons besoin de vous : vous connaissez votre plage mieux que n’importe quel satellite.',
+        'Nous sommes une petite équipe avec un point commun : la mer. L’un de nous est né sur une île et n’en est jamais vraiment parti. Un autre a grandi en changeant d’île, à cause du travail de ses parents — une autre école, un autre port, d’autres plages. C’est là que nous avons appris ce que sait chaque habitant et qu’aucun guide n’imprime : quelle plage marche quand il vente, et laquelle non.',
+        'Cela nous est arrivé à nous aussi, en visiteurs : nous avons roulé une heure pour une plage vue en photo, et nous l’avons trouvée agitée. C’est pourquoi nous cartographions la forme de chaque côte — où le vent frappe, où la terre abrite — pour toute la Grèce.',
+        'Chaque semaine, nous déplaçons des points sur la carte, nous retirons les transats et les cantines qui n’existent plus, nous ajoutons les plages qui manquaient. Aucune plage ne paie pour être mieux classée — l’ordre vient du vent et de la forme de la côte, de rien d’autre. C’est là que nous avons besoin de vous : vous connaissez votre plage mieux que n’importe quel satellite.',
       ],
+      pullQuote: 'Aucune photo ne vous dit ce que la mer fait aujourd’hui.',
       signature: 'L’équipe CalmBeach',
       askTitle: 'Vous savez quelque chose que nous ignorons ?',
       askHint: 'Deux lignes suffisent.',
@@ -684,47 +521,12 @@ export const landingCopy: Record<LanguageCode, LandingCopy> = {
     story: {
       overline: 'Chi siamo',
       title: 'Siamo cresciuti con il mare accanto',
-      lede: 'Siamo cinque persone e facciamo CalmBeach. Ognuno si porta dietro la sua giornata di mare rovinata — da quelle è nato questo sito.',
-      memories: [
-        {
-          id: 'nikos',
-          name: 'Nikos',
-          from: 'nato a Naxos',
-          quote: 'Ricordo i miei genitori litigare in macchina. Mio padre aveva scelto una spiaggia che l’estate prima era meravigliosa — siamo arrivati, tirava vento, e la giornata era rovinata prima ancora che scendessimo.',
-          answer: 'Scegliere una spiaggia non dovrebbe essere un esercizio di memoria. Per ogni regione ti diciamo quali funzionano oggi — non quali andavano bene l’anno scorso.',
-        },
-        {
-          id: 'olga',
-          name: 'Olga',
-          from: 'Salonicco',
-          quote: 'Avevo visto la foto: acqua liscia, turchese. Abbiamo guidato quaranta minuti e quando sono scesa le onde si rompevano sugli scogli. La foto era vera — solo non di quel giorno.',
-          answer: 'Ogni foto è di un altro giorno. Noi accanto a ogni spiaggia mettiamo il vento e le onde di oggi.',
-        },
-        {
-          id: 'petros',
-          name: 'Petros',
-          from: 'Pelio',
-          quote: 'Rivedo mia madre tenere l’ombrellone con due mani, e la sabbia nei panini. Non era una brutta spiaggia. Era il lato sbagliato dell’isola per quel vento.',
-          answer: 'È geometria, non fortuna. Sappiamo quale costa è esposta al vento da nord e quale è riparata — e ti indichiamo quella riparata.',
-        },
-        {
-          id: 'erato',
-          name: 'Erato',
-          from: 'Lesbo',
-          quote: 'Mia sorella piccola aveva cinque anni, e il fondo scendeva di colpo, con le onde sopra. Facevamo il bagno a turno perché qualcuno la tenesse sempre. Nessuno ci aveva detto che quella spiaggia non era per bambini.',
-          answer: 'Acqua bassa, baia chiusa, costa tranquilla: lo sai prima di uscire di casa, come filtro — non come promessa.',
-        },
-        {
-          id: 'miltos',
-          name: 'Miltos',
-          from: 'cinque isole, cinque scuole',
-          quote: 'Cambiavo isola ogni pochi anni, per il lavoro dei miei genitori. Su ognuna c’era un abitante che sapeva: «oggi non là, tira vento — vai dall’altra parte». Questo non lo scrive nessuna guida.',
-          answer: 'Per questo abbiamo mappato la forma di ogni costa della Grecia. E nessuna spiaggia paga per stare più in alto: l’ordine viene dal vento e dalla forma della costa, da nient’altro.',
-        },
-      ],
       paragraphs: [
-        'Ogni settimana spostiamo punti sulla mappa, togliamo lettini e chioschi che non ci sono più, aggiungiamo spiagge che mancavano. È lì che abbiamo bisogno di te: la tua spiaggia la conosci meglio di qualsiasi satellite.',
+        'Siamo una piccola squadra con una cosa in comune: il mare. Uno di noi è nato su un’isola e in fondo non è mai andato via. Un altro è cresciuto cambiando isola, per il lavoro dei genitori — un’altra scuola, un altro porto, altre spiagge. È lì che abbiamo imparato quello che sa ogni abitante e che nessuna guida scrive: quale spiaggia funziona quando tira vento, e quale no.',
+        'È capitato anche a noi, come visitatori: abbiamo guidato un’ora per una spiaggia vista in foto, e l’abbiamo trovata mossa. Per questo mappiamo la forma di ogni costa — dove batte il vento, dove ripara la terra — per tutta la Grecia.',
+        'Ogni settimana spostiamo punti sulla mappa, togliamo lettini e chioschi che non ci sono più, aggiungiamo spiagge che mancavano. Nessuna spiaggia paga per stare più in alto — l’ordine viene dal vento e dalla forma della costa, da nient’altro. È lì che abbiamo bisogno di te: la tua spiaggia la conosci meglio di qualsiasi satellite.',
       ],
+      pullQuote: 'Nessuna foto ti dice cosa fa il mare oggi.',
       signature: 'Il team di CalmBeach',
       askTitle: 'Sai qualcosa che noi non sappiamo?',
       askHint: 'Bastano due righe.',

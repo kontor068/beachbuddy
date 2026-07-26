@@ -20,12 +20,6 @@ import { landingCopy } from './landingCopy';
 // that here would read as more of the same. Left-aligned beats centred: centred
 // prose reads like marketing, ragged-right reads like someone wrote it.
 //
-// THE FIVE QUOTES ARE THE TEAM, NOT VISITORS. Read as user testimonials they
-// would be fabricated social proof, so the framing has to stay unambiguous: the
-// overline says who we are, the block is signed by the team, and there are no
-// stars, dates or "verified" badges anywhere near it. Never emit Review or
-// AggregateRating structured data for this section.
-//
 // WHY A FORM AND NOT A mailto: 88% of visitors are on a phone, where a mailto:
 // either opens an unconfigured mail app or nothing at all — the worst possible
 // place to put the one thing we actually want back. An inline box that posts to
@@ -141,63 +135,31 @@ export const OurStorySection: React.FC<OurStorySectionProps> = ({ language }) =>
           {c.title}
         </h2>
 
-        <p className="mt-4 text-[17px] font-medium leading-relaxed text-slate-700 sm:text-lg">{c.lede}</p>
+        {/* The opening paragraph carries the hook, so it gets a lede's weight —
+            without it three equal paragraphs read as a block to skip. */}
+        <div className="mt-5 space-y-4">
+          {c.paragraphs.map((paragraph, index) => (
+            <React.Fragment key={paragraph.slice(0, 24)}>
+              <p
+                className={
+                  index === 0
+                    ? 'text-[17px] font-medium leading-relaxed text-slate-700 sm:text-lg'
+                    // 16px is the mobile floor for body prose: de-emphasis belongs
+                    // in the colour, not in a size people have to squint at.
+                    : 'text-base font-normal leading-relaxed text-slate-600'
+                }
+              >
+                {paragraph}
+              </p>
 
-        {/* Five remembered scenes, each paired with the one thing we do about it.
-            A scene gets read where a paragraph of "we" gets skipped, and it lets
-            the answer beside it be specific instead of a claim about ourselves.
-
-            figure/blockquote/figcaption, NOT divs: the attribution has to be
-            programmatically tied to the words, or a screen reader reads five
-            floating quotes and five floating names.
-
-            Two columns inside the narrow prose column (~320px each) rather than
-            breaking out to the page's full width — the manifesto directly above
-            is already a wide grid, and this section earns its contrast by staying
-            a letter. The last card spans both so the row never ends ragged. */}
-        <ul role="list" className="mt-7 grid gap-3.5 sm:grid-cols-2 sm:gap-4">
-          {c.memories.map((memory, index) => (
-            <li key={memory.id} className={index === c.memories.length - 1 ? 'sm:col-span-2' : undefined}>
-              <figure className="flex h-full flex-col rounded-3xl border border-slate-200/80 bg-white/75 p-5 shadow-sm shadow-sky-900/5 backdrop-blur-sm sm:p-6">
-                <blockquote className="text-[15px] font-medium leading-relaxed text-slate-700">
-                  {/* Ornament, not punctuation — hence aria-hidden and no closing
-                      mark. The copy carries its own «…» where it needs them. */}
-                  <span aria-hidden="true" className="mr-1 align-[-0.15em] font-serif text-2xl leading-none text-[#007a83]/35">“</span>
-                  {memory.quote}
+              {/* The column's one visual anchor — a skimmer who reads nothing
+                  else should still catch the sentence the product is built on. */}
+              {index === 1 && (
+                <blockquote className="border-l-2 border-[#007a83] py-1 pl-5 text-[17px] font-bold leading-snug text-slate-800 sm:text-xl">
+                  {c.pullQuote}
                 </blockquote>
-
-                {/* mb-4 + mt-auto on the answer: a minimum gap here, and every
-                    card's answer still sits on the same baseline as its neighbour
-                    however long the quote above it runs. */}
-                <figcaption className="mb-4 mt-4 flex items-center gap-2.5">
-                  <span
-                    aria-hidden="true"
-                    className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-[#007a83]/10 text-sm font-black text-[#007a83]"
-                  >
-                    {memory.name.slice(0, 1)}
-                  </span>
-                  <span className="min-w-0">
-                    <span className="block text-sm font-bold leading-tight text-slate-900">{memory.name}</span>
-                    <span className="block text-xs font-semibold leading-tight text-slate-500">{memory.from}</span>
-                  </span>
-                </figcaption>
-
-                <p className="mt-auto flex items-start gap-2 border-t border-slate-200/80 pt-3.5 text-[13px] font-semibold leading-snug text-[#007a83]">
-                  <Check className="mt-0.5 h-4 w-4 shrink-0" aria-hidden="true" />
-                  {memory.answer}
-                </p>
-              </figure>
-            </li>
-          ))}
-        </ul>
-
-        <div className="mt-7 space-y-4">
-          {c.paragraphs.map(paragraph => (
-            // 16px is the mobile floor for body prose: de-emphasis belongs in the
-            // colour, not in a size people have to squint at.
-            <p key={paragraph.slice(0, 24)} className="text-base font-normal leading-relaxed text-slate-600">
-              {paragraph}
-            </p>
+              )}
+            </React.Fragment>
           ))}
         </div>
 
