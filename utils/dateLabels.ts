@@ -1,16 +1,17 @@
 import { LanguageCode } from '../types';
+import { athensNow } from './athensTime';
 
 const normalizeLocalDate = (date: Date): Date =>
   new Date(date.getFullYear(), date.getMonth(), date.getDate());
 
-export const getSelectedDayOffset = (selectedDate?: Date, currentDate: Date = new Date()): number => {
+export const getSelectedDayOffset = (selectedDate?: Date, currentDate: Date = athensNow()): number => {
   if (!selectedDate) return 0;
   const selected = normalizeLocalDate(selectedDate);
   const current = normalizeLocalDate(currentDate);
   return Math.round((selected.getTime() - current.getTime()) / 86_400_000);
 };
 
-export const isSelectedDateToday = (selectedDate?: Date, currentDate: Date = new Date()): boolean =>
+export const isSelectedDateToday = (selectedDate?: Date, currentDate: Date = athensNow()): boolean =>
   getSelectedDayOffset(selectedDate, currentDate) === 0;
 
 export const formatSelectedHour = (selectedHour?: number): string | undefined => {
@@ -107,7 +108,7 @@ const capitalizeFirst = (value: string): string =>
 
 export const getSelectedDayLabel = (
   selectedDate?: Date,
-  currentDate: Date = new Date(),
+  currentDate: Date = athensNow(),
   language: LanguageCode = 'en'
 ): string => {
   const offset = getSelectedDayOffset(selectedDate, currentDate);
@@ -127,7 +128,7 @@ export const getSelectedDayLabel = (
 
 export const getSelectedDayPrefix = (
   selectedDate?: Date,
-  currentDate: Date = new Date(),
+  currentDate: Date = athensNow(),
   language: LanguageCode = 'en'
 ): string => {
   const offset = getSelectedDayOffset(selectedDate, currentDate);
@@ -147,13 +148,13 @@ export const getSelectedDayPrefix = (
 
 export const getSelectedDaySentencePrefix = (
   selectedDate?: Date,
-  currentDate: Date = new Date(),
+  currentDate: Date = athensNow(),
   language: LanguageCode = 'en'
 ): string => capitalizeFirst(getSelectedDayPrefix(selectedDate, currentDate, language));
 
 export const getSelectedDayAdjective = (
   selectedDate?: Date,
-  currentDate: Date = new Date(),
+  currentDate: Date = athensNow(),
   language: LanguageCode = 'en'
 ): string => {
   const offset = getSelectedDayOffset(selectedDate, currentDate);
@@ -225,8 +226,8 @@ export const formatDateAwareForecastLead = (
     totalBeachCount?: number;
   } = {}
 ): string => {
-  const prefix = getSelectedDayPrefix(selectedDate, new Date(), language);
-  const sentencePrefix = getSelectedDaySentencePrefix(selectedDate, new Date(), language);
+  const prefix = getSelectedDayPrefix(selectedDate, athensNow(), language);
+  const sentencePrefix = getSelectedDaySentencePrefix(selectedDate, athensNow(), language);
   const isToday = isSelectedDateToday(selectedDate);
 
   if (language === 'gr') {

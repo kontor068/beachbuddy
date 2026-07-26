@@ -66,6 +66,15 @@ const checks = [
     },
   },
   {
+    id: 'athens-clock',
+    title: 'Athens wall-clock guard',
+    description: 'Scans app code for a raw new Date()/Date.now() used as "now" instead of athensNow().',
+    protects: 'Prevents the viewer\'s own timezone from pointing them at the wrong forecast hour — every user must read the same Greek-time conditions.',
+    failureAction: 'Use athensNow() from utils/athensTime.ts, or mark the line "athens-clock-exempt: <reason>" when it is a real instant (age, duration, id).',
+    command: process.execPath,
+    args: ['scripts/validateAthensClock.mjs'],
+  },
+  {
     id: 'lint',
     title: 'TypeScript lint/typecheck',
     description: 'Runs TypeScript without emitting files.',

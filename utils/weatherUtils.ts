@@ -1,4 +1,5 @@
 import { WindDirection, WaveCondition, ForecastItem, DailyForecast, MarineForecast } from '../types';
+import { athensNow } from './athensTime';
 
 const maxNumber = (values: Array<number | undefined>): number | undefined => {
   const valid = values.filter((value): value is number => typeof value === 'number' && Number.isFinite(value));
@@ -37,11 +38,16 @@ const summarizeDailyMarine = (items: ForecastItem[]): MarineForecast | undefined
   };
 };
 
+const parseLocalDay = (dayString: string): Date => {
+  const [year, month, day] = dayString.split('-').map(Number);
+  return new Date(year, month - 1, day);
+};
+
 export const processForecastData = (forecastItems: ForecastItem[]): DailyForecast[] => {
   if (!forecastItems || forecastItems.length === 0) return [];
   // Never surface days that have already passed (e.g. cached hourly items that
   // still carry yesterday's hours when the app is re-opened just after midnight).
-  const todayString = new Date().toLocaleDateString('en-CA');
+  const todayString = athensNow().toLocaleDateString('en-CA');
   const dailyData: { [key: string]: { items: ForecastItem[], temps: number[] } } = {};
   forecastItems.forEach(item => {
     const dayString = new Date(item.dt * 1000).toLocaleDateString('en-CA');
@@ -56,7 +62,10 @@ export const processForecastData = (forecastItems: ForecastItem[]): DailyForecas
     const info = dailyData[dayString];
     const midday = info.items.reduce((prev, curr) => Math.abs(new Date(curr.dt * 1000).getHours() - 13) < Math.abs(new Date(prev.dt * 1000).getHours() - 13) ? curr : prev);
     return { 
-      date: new Date(dayString), 
+      // Local midnight, NOT `new Date('YYYY-MM-DD')` (which is UTC midnight). The rest of
+      // the app reads this date with local getters, so a UTC-parsed day lands on the
+      // previous calendar day for any viewer west of Greenwich and shifts every day label.
+      date: parseLocalDay(dayString),
       wind: midday.wind, 
       weather: midday.weather[0], 
       temp_max: info.temps.length > 0 ? Math.max(...info.temps) : 25, 
@@ -144,7 +153,7 @@ export const calculateDistance = (lat1: number, lon1: number, lat2: number, lon2
 };
 
 export const isWinterSeason = () => {
-    const now = new Date();
+    const now = athensNow();
     const month = now.getMonth();
     return (month === 9 && now.getDate() >= 15) || month > 9 || month < 2 || (month === 2 && now.getDate() <= 15);
 };

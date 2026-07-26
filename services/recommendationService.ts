@@ -38,6 +38,7 @@ import { beachSentenceName } from '../utils/beachCopy';
 import { getSearchVariants, isSearchMatch } from '../utils/searchNormalize';
 import { calculateSeaConditionScore } from '../utils/seaConditions';
 import { getSelectedDayPrefix, isSelectedDateToday } from '../utils/dateLabels';
+import { athensNow } from '../utils/athensTime';
 import { assessBeachWindExposure } from '../utils/windExposureEngine';
 import { summarizeLocalWindBehavior } from '../utils/windClimatology';
 import { getRegionWindContext, LOCAL_WIND_SECTORS } from '../utils/localWindContext.mjs';
@@ -268,7 +269,8 @@ const getRecentRainMm = (hourlyForecast?: ForecastItem[], fallback?: number): nu
   if (typeof fallback === 'number' && Number.isFinite(fallback)) return fallback;
   if (!hourlyForecast || hourlyForecast.length === 0) return undefined;
 
-  const now = Date.now();
+  // Forecast `dt` values carry Greek wall clock, so compare against the same clock.
+  const now = athensNow().getTime();
   const recentRain = hourlyForecast
     .filter(item => {
       const timestamp = item.dt * 1000;
@@ -1808,7 +1810,7 @@ export const calculateBeachScore = (
   if (officialWarningOverride) swimmingScore = 0;
   swimmingScore = clampScore(swimmingScore);
 
-  const crowdInfo = calculateCrowdLevel(beach, weather, new Date());
+  const crowdInfo = calculateCrowdLevel(beach, weather, athensNow());
   let experienceScore = 65;
   if (finalExposureLevel === 'protected') experienceScore += baseBeaufort >= MEANINGFUL_WIND_TOP_PICK_BEAUFORT ? 10 : 2;
   else if (finalExposureLevel === 'partial') experienceScore += baseBeaufort >= MEANINGFUL_WIND_TOP_PICK_BEAUFORT ? 4 : 1;
@@ -2060,7 +2062,7 @@ const generateLocalizedBeachExplanation = (
   const seaScore = calculateSeaConditionScore(exposureLevel !== 'protected', windSpeedKmph, exposureLevel, waveHeightM);
   const beachName = displayBeachName(beach.name, language);
   const selectedDate = 'date' in weather ? weather.date : undefined;
-  const day = getSelectedDayPrefix(selectedDate, new Date(), language);
+  const day = getSelectedDayPrefix(selectedDate, athensNow(), language);
   // Future-day forecast: condition copy (wind/sea/temperature) must read as future
   // ("θα είναι" / "will be"), not present, when the user is not viewing today.
   const future = !isSelectedDateToday(selectedDate);

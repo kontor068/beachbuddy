@@ -327,6 +327,70 @@ body {
   }
 }
 
+/* ===== Landing hero motion — WIND made visible, not moving waves =====
+   Our signature is wind (flowing streamlines, like a meteorological chart) and
+   slow-drifting cloud wisps. There are deliberately NO animated cartoon
+   wave-bands — that is the competitor's motif. Only the hero animates. RM-safe. */
+.cb-hero-rise {
+  animation: cb-hero-rise 0.7s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+@keyframes cb-hero-rise {
+  from { opacity: 0; transform: translateY(16px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* Dash cycle is 36px; offset animates in multiples of 36 for a seamless flow. */
+.cb-breeze-path {
+  stroke-dasharray: 10 26;
+  animation: cb-breeze-flow var(--cb-breeze-duration, 16s) linear infinite;
+}
+
+@keyframes cb-breeze-flow {
+  from { stroke-dashoffset: 0; }
+  to { stroke-dashoffset: -360; }
+}
+
+.cb-cloud {
+  animation: cb-cloud-drift var(--cb-cloud-duration, 52s) ease-in-out infinite;
+  will-change: transform;
+}
+
+@keyframes cb-cloud-drift {
+  0%, 100% { transform: translateX(-16px); }
+  50% { transform: translateX(18px); }
+}
+
+/* Shoreline wash + whitecap twinkles for the generative fallback scene. */
+.cb-wash {
+  animation: cb-wash var(--cb-wash-duration, 7s) ease-in-out infinite;
+  will-change: transform, opacity;
+}
+
+@keyframes cb-wash {
+  0%, 100% { transform: translateY(0); opacity: var(--cb-wash-o0, 0.7); }
+  50% { transform: translateY(var(--cb-wash-travel, -6px)); opacity: var(--cb-wash-o1, 0.95); }
+}
+
+.cb-twinkle {
+  animation: cb-twinkle var(--cb-twinkle-duration, 4s) ease-in-out infinite;
+}
+
+@keyframes cb-twinkle {
+  0%, 100% { opacity: 0.15; }
+  50% { opacity: 0.8; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .cb-hero-rise,
+  .cb-breeze-path,
+  .cb-cloud,
+  .cb-wash,
+  .cb-twinkle {
+    animation: none !important;
+  }
+}
+
 @keyframes shimmer {
   0% { background-position: -200% 0; }
   100% { background-position: 200% 0; }

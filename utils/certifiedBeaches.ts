@@ -14,24 +14,37 @@
  * or the detail page renders (the card already has `beach.id`, so nothing needs threading).
  */
 
+import type { LanguageCode } from '../types';
+
+/** A note translated per UI language. Provide as many locales as you can; the renderer
+ *  falls back gr -> en -> whatever is available, so a Greek-only note never breaks. */
+export type LocalizedNote = Partial<Record<LanguageCode, string>>;
+
 export interface BeachCertification {
   /**
    * When we verified it on the ground, ISO `YYYY-MM` (a full `YYYY-MM-DD` is fine too).
    * Time-stamps the claim and powers the "verified on site" line on the detail page.
    */
   visitedOn: string;
-  /** Optional one-line note about what we checked, shown on the detail page if present. */
-  note?: string;
+  /** Optional first-person note about what we found on site, shown on the detail page.
+   *  Localized so it renders in the visitor's chosen language. */
+  note?: LocalizedNote;
 }
 
 // id -> certification. Keep this tiny and evidence-backed: you were physically there.
 // Example (commented — replace with REAL visited beaches + real dates):
-//   [3001, { visitedOn: '2026-07', note: 'Ήρεμα νερά και σκιά όπως αναφέρεται.' }],
+//   [3001, { visitedOn: '2026-07', note: { gr: 'Ήρεμα νερά και σκιά όπως αναφέρεται.', en: 'Calm water and shade as described.' } }],
 export const CERTIFIED_BEACHES: ReadonlyMap<number, BeachCertification> = new Map<number, BeachCertification>([
   // Παραλία Άναξου (Λέσβος) — first visit, verified on site.
   [1352, {
     visitedOn: '2026-07-22',
-    note: 'Ήρεμα νερά, χωρίς ιδιαίτερο κόσμο, δωρεάν ξαπλώστρες σε ένα σημείο και ντουζ. Ο ορισμός του CalmBeach.',
+    note: {
+      gr: 'Ήρεμα νερά, χωρίς ιδιαίτερο κόσμο, δωρεάν ξαπλώστρες σε ένα σημείο και ντουζ. Ο ορισμός του CalmBeach.',
+      en: 'Calm water, not too crowded, free sunbeds in one spot and a shower. The very definition of CalmBeach.',
+      de: 'Ruhiges Wasser, nicht überfüllt, kostenlose Liegen an einer Stelle und eine Dusche. Die Definition von CalmBeach.',
+      it: 'Acqua calma, non troppo affollata, lettini gratuiti in un punto e una doccia. La definizione stessa di CalmBeach.',
+      fr: 'Eau calme, sans trop de monde, transats gratuits à un endroit et une douche. La définition même de CalmBeach.',
+    },
   }],
 ]);
 
@@ -44,3 +57,10 @@ export const getBeachCertification = (
   beachId: number | undefined | null,
 ): BeachCertification | undefined =>
   typeof beachId === 'number' ? CERTIFIED_BEACHES.get(beachId) : undefined;
+
+/** Pick the note in the visitor's language, falling back gr -> en -> first available. */
+export const localizeCertificationNote = (
+  note: LocalizedNote | undefined,
+  language: LanguageCode,
+): string | undefined =>
+  note ? (note[language] ?? note.gr ?? note.en ?? Object.values(note)[0]) : undefined;

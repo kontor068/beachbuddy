@@ -3,6 +3,7 @@ import React, { useState, useEffect } from 'react';
 import { RefreshCw, Wind, Thermometer, Clock, Droplets } from 'lucide-react';
 import { WeatherData, WindDirection, LanguageCode, WindUnit, DailyForecast } from '../types';
 import { getLocalizedCopy } from '../utils/i18n';
+import { athensNow } from '../utils/athensTime';
 
 interface WindInfoProps {
   weather: WeatherData | DailyForecast;
@@ -76,6 +77,8 @@ const Compass: React.FC<{ deg: number; language: LanguageCode }> = ({ deg, langu
 };
 
 const getRelativeTime = (date: Date, t: any): string => {
+  // athens-clock-exempt: "updated N minutes ago" is an elapsed duration between two real
+  // instants — shifting it would report the wrong age.
   const now = new Date();
   const seconds = Math.round((now.getTime() - date.getTime()) / 1000);
   const minutes = Math.round(seconds / 60);
@@ -122,7 +125,7 @@ export const WindInfo: React.FC<WindInfoProps> = ({ weather, windDirection, t, l
   const relativeTime = useRelativeTime(lastUpdated, t);
   const iconUrl = `https://openweathermap.org/img/wn/${weather.weather.icon}@2x.png`;
   const dayFormatter = new Intl.DateTimeFormat(t.locale, { weekday: 'long' });
-  const selectedDate = 'date' in weather ? weather.date : new Date();
+  const selectedDate = 'date' in weather ? weather.date : athensNow();
 
   return (
     <div className="relative overflow-hidden bg-gradient-to-br from-white/80 via-sky-50/40 to-cyan-50/30 dark:from-slate-900/80 dark:via-slate-900/60 dark:to-sky-950/40 backdrop-blur-md rounded-3xl p-4 sm:p-5 md:p-6 border border-white/50 dark:border-slate-800/50">

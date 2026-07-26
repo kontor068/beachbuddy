@@ -9,6 +9,7 @@ import { trackEvent, buildBeachExposureParams } from '../services/analyticsServi
 import { getBeachPhotoLookup } from '../services/beachPhotos';
 import { degToCompass, getBeaufortLevel } from '../utils/weatherUtils';
 import { getSelectedDayPrefix } from '../utils/dateLabels';
+import { athensNow } from '../utils/athensTime';
 import { getLocalizedCopy, languageToLocale } from '../utils/i18n';
 import { getBeachMapCoordinates } from '../utils/mapCoordinates';
 import { getConsistentVisibleMapExposureLevels, getVisibleMapExposureLevel, shouldShowWindExposureColors } from '../utils/mapExposure';
@@ -1639,7 +1640,7 @@ const BeachMap: React.FC<BeachMapProps> = ({
   const getMapExposureEvidence = (item: SuitableBeach): MapExposureEvidence => (
     hasSupportedMapEvidence(item) ? 'supported' : 'estimated'
   );
-  const selectedDayPrefix = getSelectedDayPrefix(selectedDate, new Date(), language);
+  const selectedDayPrefix = getSelectedDayPrefix(selectedDate, athensNow(), language);
   const exposureLabel = (exposureLevel?: string) => {
     const labels = {
       protected: {

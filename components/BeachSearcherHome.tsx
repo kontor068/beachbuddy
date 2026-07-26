@@ -3411,7 +3411,9 @@ export const BeachSearcherHome: React.FC<BeachSearcherHomeProps> = ({
                 }}
                 onKeyDown={handleSearchKeyDown}
                 placeholder={searchPlaceholder}
-                className="min-h-12 w-full rounded-[1.2rem] border border-slate-300 bg-white/92 px-5 pr-28 text-base font-medium text-slate-800 outline-none transition placeholder:text-slate-700 focus:border-cyan-600 focus:ring-2 focus:ring-cyan-600/20 sm:rounded-full"
+                className={`min-h-12 w-full rounded-[1.2rem] border border-slate-300 bg-white/92 pl-4 text-base font-medium text-slate-800 outline-none transition placeholder:text-slate-700 focus:border-cyan-600 focus:ring-2 focus:ring-cyan-600/20 sm:rounded-full sm:pl-5 [&::-webkit-search-cancel-button]:hidden [&::-webkit-search-decoration]:hidden ${
+                  searchQuery.trim().length > 0 ? 'pr-[6.5rem]' : 'pr-14'
+                }`}
               />
               {searchQuery.trim().length > 0 && (
                 <button

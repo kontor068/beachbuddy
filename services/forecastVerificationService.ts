@@ -1,4 +1,5 @@
 import { DailyForecast, SuitableBeach } from '../types';
+import { wallClockDayKey } from '../utils/athensTime';
 
 const FORECAST_SNAPSHOT_KEY = 'beach_buddy_forecast_snapshots';
 const MAX_SNAPSHOTS = 250;
@@ -46,7 +47,7 @@ export const recordForecastSnapshots = (
 ) => {
   if (!recommendations.length) return;
 
-  const dateKey = forecastDate.toISOString().slice(0, 10);
+  const dateKey = wallClockDayKey(forecastDate);
   const capturedAt = new Date().toISOString();
   const existing = readSnapshots();
   const nextById = new Map(existing.map(snapshot => [snapshot.id, snapshot]));

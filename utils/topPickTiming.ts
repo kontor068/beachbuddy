@@ -1,5 +1,6 @@
 import { LanguageCode } from '../types';
 import { isSelectedDateToday } from './dateLabels';
+import { athensNow } from './athensTime';
 
 export type TopPickTimingState = 'active' | 'upcoming' | 'expired' | 'unknown';
 
@@ -51,7 +52,7 @@ const getReferenceMinutes = (selectedDate: Date | undefined, now: Date): number 
 export const getTopPickTiming = (
   bestBeachTime: BestBeachTimeLike | undefined,
   selectedDate: Date | undefined,
-  now: Date = new Date()
+  now: Date = athensNow()
 ): TopPickTiming => {
   const startMinutes = parseTimeToMinutes(bestBeachTime?.bestStart);
   if (startMinutes === undefined) return { state: 'unknown' };
@@ -116,7 +117,7 @@ export const getTopPickTimingLabel = (
   bestBeachTime: BestBeachTimeLike | undefined,
   selectedDate: Date | undefined,
   language: LanguageCode,
-  now: Date = new Date()
+  now: Date = athensNow()
 ): string | undefined => {
   const timing = getTopPickTiming(bestBeachTime, selectedDate, now);
   if (!timing.startLabel || !timing.endLabel || timing.state === 'unknown') return undefined;

@@ -8,6 +8,7 @@ import { displayBeachName } from '../utils/localization';
 import { TodayScoreBadge } from './TodayScoreBadge';
 import { generateBeachExplanation } from '../utils/beachExplanation';
 import { getSelectedDayPrefix } from '../utils/dateLabels';
+import { athensNow } from '../utils/athensTime';
 import { getWaveCondition, getBeaufortLevel } from '../utils/weatherUtils';
 import { getBeachPhotoLookup } from '../services/beachPhotos';
 
@@ -127,7 +128,7 @@ const BeachOfTheDay: React.FC<BeachOfTheDayProps> = ({ topBeach, language, t, on
     warnings?.some(warning => warning.type === 'rough_sea' && warning.severity === 'critical') ||
     (typeof waveHeightM === 'number' && Number.isFinite(waveHeightM) && waveHeightM >= 1.2)
   );
-  const day = getSelectedDayPrefix(selectedDate, new Date(), language);
+  const day = getSelectedDayPrefix(selectedDate, athensNow(), language);
   const decisionRule = {
     en: `We rank ${day} by wind protection first, then sea comfort and practical visitor fit.`,
     gr: `Η επιλογή για ${day} βγαίνει πρώτα από προστασία στον άνεμο, μετά θάλασσα και πρακτικότητα.`,

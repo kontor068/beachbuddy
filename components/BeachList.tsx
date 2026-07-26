@@ -3,6 +3,7 @@ import { AlertTriangle } from 'lucide-react';
 import { Beach, LanguageCode, RecommendationConfidence, SimpleWindSuitability, SortOption, SwimmingComfort, Translation, WarningFlag, WindDirection } from '../types';
 import { BeachCard } from './BeachCard';
 import { getSelectedDayPrefix } from '../utils/dateLabels';
+import { athensNow } from '../utils/athensTime';
 import { ExposureLevel } from '../utils/windExposure';
 
 type BeachListBeach = Beach & {
@@ -50,7 +51,7 @@ interface BeachListProps {
 }
 
 const noMoreAlternativesMessage = (language: LanguageCode, selectedDate?: Date): string => {
-  const day = getSelectedDayPrefix(selectedDate, new Date(), language);
+  const day = getSelectedDayPrefix(selectedDate, athensNow(), language);
   const messages: Record<LanguageCode, string> = {
     en: `No more alternative beaches were found ${day}.`,
     gr: `Δεν βρέθηκαν περισσότερες εναλλακτικές παραλίες ${day}.`,
@@ -66,7 +67,7 @@ const noSwimmingMessage = (
   selectedDate?: Date,
   reason: 'rain' | 'conditions' = 'conditions'
 ): { title: string; body: string } => {
-  const day = getSelectedDayPrefix(selectedDate, new Date(), language);
+  const day = getSelectedDayPrefix(selectedDate, athensNow(), language);
   if (reason === 'rain') {
     const rainMessages: Record<LanguageCode, { title: string; body: string }> = {
       en: {

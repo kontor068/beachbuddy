@@ -21,6 +21,16 @@ export type AnalyticsEvent =
   | 'map_viewed'
   | 'map_marker_clicked'
   | 'beta_feedback_clicked'
+  // National landing (components/landing/). `landing_viewed` is the denominator
+  // for every drop-off question — without it the landing's reach is invisible,
+  // since a landing view and a region home are both view==='home'.
+  | 'landing_viewed'
+  | 'landing_near_me_clicked'
+  | 'landing_region_clicked'
+  | 'landing_all_regions_clicked'
+  // Multi-day trip planner (components/planner/). `days` tells us whether the
+  // multi-day audience is real before we invest further in it.
+  | 'trip_planned'
   | 'beach_viewed'
   | 'beach_navigated'
   | 'beach_favorited'

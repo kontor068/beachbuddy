@@ -2,6 +2,7 @@ import { LanguageCode, SwimmingComfort } from '../types';
 import { ExposureLevel } from './windExposure';
 import { getLocalizedCopy } from './i18n';
 import { getSelectedDayPrefix, getSelectedHourPrefix, isSelectedDateToday } from './dateLabels';
+import { athensNow } from './athensTime';
 
 // CalmBeach communicates a FINAL EXPERIENCE, not raw weather. Every beach resolves to one
 // of four plain-language tiers derived from the composite suitability score (which already
@@ -171,7 +172,7 @@ export const getExperienceTierLabel = (
   options: ExperienceTierLabelOptions = {}
 ): string => {
   const hour = getSelectedHourPrefix(options.selectedHour, language);
-  const day = hour ?? getSelectedDayPrefix(options.selectedDate, new Date(), language);
+  const day = hour ?? getSelectedDayPrefix(options.selectedDate, athensNow(), language);
   const isToday = isSelectedDateToday(options.selectedDate);
   const useCurrentPhrase = isToday && !hour;
   if (tier === 'skip' && typeof options.windBeaufort === 'number' && options.windBeaufort >= 7) {

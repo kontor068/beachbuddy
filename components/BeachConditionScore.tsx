@@ -4,6 +4,7 @@ import { ExposureLevel } from '../utils/windExposure';
 import { LanguageCode } from '../types';
 import { calculateSeaConditionScore, getSeaExposureLevel } from '../utils/seaConditions';
 import { getSelectedDayPrefix, getSelectedHourPrefix, isSelectedDateToday } from '../utils/dateLabels';
+import { athensNow } from '../utils/athensTime';
 import { getLocalizedCopy } from '../utils/i18n';
 import { getBeaufortLevel } from '../utils/weatherUtils';
 import { getBoatRideMotionLevel, type BoatRideMotionLevel } from '../utils/boatRideMotion';
@@ -353,7 +354,7 @@ export const BeachConditionScore: React.FC<BeachConditionScoreProps> = ({
     ? `${waveHeightM.toFixed(1)} m`
     : null;
   const hour = getSelectedHourPrefix(selectedHour, language);
-  const day = hour ?? getSelectedDayPrefix(selectedDate, new Date(), language);
+  const day = hour ?? getSelectedDayPrefix(selectedDate, athensNow(), language);
   const isToday = isSelectedDateToday(selectedDate);
   const useCurrentPhrase = isToday && !hour;
   const copy = getLocalizedCopy(language, conditionCopy);

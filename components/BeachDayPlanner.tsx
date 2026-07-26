@@ -2,6 +2,7 @@ import React from 'react';
 import { BeachDayPlan } from '../services/beachPlannerService';
 import { LanguageCode } from '../types';
 import { getSelectedDayPrefix } from '../utils/dateLabels';
+import { athensNow } from '../utils/athensTime';
 
 interface BeachDayPlannerProps {
   plan: BeachDayPlan;
@@ -11,7 +12,7 @@ interface BeachDayPlannerProps {
 }
 
 export const BeachDayPlanner: React.FC<BeachDayPlannerProps> = ({ plan, language = 'en', selectedDate }) => {
-  const day = getSelectedDayPrefix(selectedDate, new Date(), language);
+  const day = getSelectedDayPrefix(selectedDate, athensNow(), language);
   const summary = language === 'gr'
     ? `Το πλάνο βασίζεται στις προβλεπόμενες συνθήκες ανέμου και θερμοκρασίας για ${day}.`
     : plan.summary

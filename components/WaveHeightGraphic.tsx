@@ -3,6 +3,7 @@ import { Ship, Waves } from 'lucide-react';
 import { LanguageCode } from '../types';
 import { getLocalizedCopy, type LocalizedCopy } from '../utils/i18n';
 import { isSelectedDateToday } from '../utils/dateLabels';
+import { athensNow } from '../utils/athensTime';
 import { getBoatRideMotionLevel, getBoatRideMotionRank, type BoatRideMotionLevel } from '../utils/boatRideMotion';
 import type { ExposureLevel } from '../utils/windExposure';
 import {
@@ -1149,7 +1150,7 @@ export const WaveHeightGraphic: React.FC<WaveHeightGraphicProps> = ({
   const isToday = isSelectedDateToday(selectedDate);
   // Mark the hour the forecast is actually showing (the slider hour), falling back to the
   // real wall-clock hour only when no explicit hour is supplied and the day is today.
-  const markerHour = typeof selectedHour === 'number' ? selectedHour : (isToday ? new Date().getHours() : undefined);
+  const markerHour = typeof selectedHour === 'number' ? selectedHour : (isToday ? athensNow().getHours() : undefined);
   // Each bar already carries its hour's own effective wave height (same rule as the headline),
   // so the selected hour needs no special-casing — it is just highlighted via markerHour.
   const points = (hourly ?? [])

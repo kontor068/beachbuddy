@@ -1,6 +1,7 @@
 ﻿import React, { useEffect, useId, useState } from 'react';
 import { DailyForecast, WeatherData, ForecastItem } from '../types';
 import { degToCompass, getBeaufortLevel } from '../utils/weatherUtils';
+import { athensNow } from '../utils/athensTime';
 import { ArrowRight, CloudSun, Wind, Clock, ChevronDown } from 'lucide-react';
 import { trackEvent } from '../services/analyticsService';
 
@@ -75,10 +76,10 @@ const getForecastDayLabel = (
   return getRelativeForecastLabel(date, now, t) || weekdayFormatter.format(date);
 };
 
-const isTodayDisabledAfterEvening = (index: number, now: Date = new Date()): boolean =>
+const isTodayDisabledAfterEvening = (index: number, now: Date = athensNow()): boolean =>
   index === 0 && now.getHours() >= EVENING_TODAY_CUTOFF_HOUR;
 
-const getNextTodayDisabledStateDelay = (now: Date = new Date()): number => {
+const getNextTodayDisabledStateDelay = (now: Date = athensNow()): number => {
   const nextBoundary = new Date(now);
 
   if (now.getHours() < EVENING_TODAY_CUTOFF_HOUR) {
@@ -329,11 +330,11 @@ const Forecast: React.FC<ForecastProps> = ({
   const isHeroCompact = variant === 'heroCompact';
   const isHeader = variant === 'header';
   const isSummaryStrip = variant === 'summaryStrip';
-  const [currentTime, setCurrentTime] = useState(() => new Date());
+  const [currentTime, setCurrentTime] = useState(() => athensNow());
 
   useEffect(() => {
     const timeoutId = window.setTimeout(() => {
-      setCurrentTime(new Date());
+      setCurrentTime(athensNow());
     }, getNextTodayDisabledStateDelay(currentTime));
 
     return () => window.clearTimeout(timeoutId);

@@ -22,6 +22,7 @@ import { MapLoadBoundary } from './components/MapLoadBoundary';
 import { LegalFooter } from './components/LegalFooter';
 import { BeachSearcherHome, type DirectoryCategory } from './components/BeachSearcherHome';
 import { LandingView } from './components/landing/LandingView';
+import { TripPlanner } from './components/planner/TripPlanner';
 
 // Hooks & Utils
 import { useBeaches } from './hooks/useBeaches';
@@ -4093,8 +4094,11 @@ export const App: React.FC = () => {
     });
     // Consent-free first-party count for this in-app navigation (GA above is
     // consent-gated). `view` is a coarse page kind, never identifying.
-    recordPageview(view || 'page');
-  }, [analyticsBaseParams, detailBeach?.id, selectedIsland, view]);
+    // The national landing and a region home are BOTH view==='home', which made
+    // them indistinguishable in the traffic dashboard — tag the landing so its
+    // reach (and drop-off to a region) is actually measurable.
+    recordPageview(showLanding ? 'landing' : (view || 'page'));
+  }, [analyticsBaseParams, detailBeach?.id, selectedIsland, showLanding, view]);
 
   useEffect(() => {
     if (!weatherError || !selectedIsland) return;
@@ -6242,6 +6246,22 @@ export const App: React.FC = () => {
         />
       ) : (
       <>
+
+      {/* Multi-day planner — sits right under today's picks, where someone who
+          has just seen "today" naturally wonders about the rest of their stay.
+          Info-only regions have no ranking at all, so it stays out of those. */}
+      {selectedIsland && forecast && forecast.length > 0 && !isUnsafeWinter && !isInfoOnlyRegion && selectedIsland.beaches.length > 0 && (
+        <div className="relative z-20 pb-3 pt-1 sm:pb-4">
+          <TripPlanner
+            beaches={selectedIsland.beaches}
+            forecast={forecast}
+            language={language}
+            preferences={preferences}
+            geospatialProfiles={geospatialExposureProfiles}
+            onBeachClick={(beach) => openBeachDetails(beach, 'trip_planner')}
+          />
+        </div>
+      )}
 
       {showRecommendationPreviewSection && forecast?.[selectedDayIndex] && !isUnsafeWinter && !showHeaderForecast && recommendationSectionBeaches.length > 0 && !isInfoOnlyRegion && (
         <section className="relative z-20 px-3 pb-3 pt-1 sm:px-4 sm:pb-5 sm:pt-0" aria-label={recommendationModeTitle}>

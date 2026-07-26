@@ -16,6 +16,7 @@ import { hasBoatOnlyAccess, hasDirtRoadAccess } from '../utils/access';
 import { isCalmBeachCertified } from '../utils/certifiedBeaches';
 import { getBoatRideMotionLevel, type BoatRideMotionLevel } from '../utils/boatRideMotion';
 import { getSelectedDayPrefix, getSelectedDaySentencePrefix, getSelectedHourPrefix, isSelectedDateToday } from '../utils/dateLabels';
+import { athensNow } from '../utils/athensTime';
 import { getLocalizedCopy, languageToLocale } from '../utils/i18n';
 import { buildBeachDetailPath, buildBeachShareUrl } from '../utils/beachUrls';
 import {
@@ -746,7 +747,7 @@ const AmenityTags: React.FC<{ beach: Beach; language: LanguageCode }> = ({ beach
 };
 
 const ProtectedBeachMarker: React.FC<{ language: LanguageCode; selectedDate?: Date; enclosedCove?: boolean }> = ({ language, selectedDate, enclosedCove = false }) => {
-  const day = getSelectedDaySentencePrefix(selectedDate, new Date(), language);
+  const day = getSelectedDaySentencePrefix(selectedDate, athensNow(), language);
   const copy = getLocalizedCopy(language, cardCopy);
   // An enclosed cove (όρμος) reads green like a genuinely calm shore; the waves icon
   // and «Κλειστός όρμος» label carry its distinct identity, not a separate colour.
@@ -998,7 +999,7 @@ const MetadataTags: React.FC<{ beach: Beach; language: LanguageCode }> = ({ beac
 const warningLabel = (warning: WarningFlag, language: LanguageCode, selectedDate?: Date, selectedHour?: number): string => {
   const copy = getLocalizedCopy(language, cardCopy).warnings;
   const hour = getSelectedHourPrefix(selectedHour, language);
-  const day = hour ?? getSelectedDayPrefix(selectedDate, new Date(), language);
+  const day = hour ?? getSelectedDayPrefix(selectedDate, athensNow(), language);
   const isToday = isSelectedDateToday(selectedDate);
   const useCurrentPhrase = isToday && !hour;
   switch (warning.type) {
@@ -1057,8 +1058,8 @@ const warningToneClass = (warning: WarningFlag): string => {
 
 const compactLabels = (language: LanguageCode, selectedDate?: Date, selectedHour?: number) => {
   const hour = getSelectedHourPrefix(selectedHour, language);
-  const day = hour ?? getSelectedDayPrefix(selectedDate, new Date(), language);
-  const sentenceDay = hour ?? getSelectedDaySentencePrefix(selectedDate, new Date(), language);
+  const day = hour ?? getSelectedDayPrefix(selectedDate, athensNow(), language);
+  const sentenceDay = hour ?? getSelectedDaySentencePrefix(selectedDate, athensNow(), language);
   const isToday = isSelectedDateToday(selectedDate);
   const useCurrentPhrase = isToday && !hour;
   const copy = getLocalizedCopy(language, cardCopy).compact;

@@ -647,6 +647,11 @@ export interface Island {
   group: 'cyclades' | 'dodecanese' | 'sporades' | 'north_aegean' | 'crete' | 'ionian' | 'attica' | 'argosaronic' | 'euboea' | 'mainland_peloponnese' | 'mainland_central' | 'mainland_thessaly' | 'mainland_epirus' | 'mainland_macedonia' | 'mainland_thrace' | 'mainland_west_greece' | 'other';
   coordinates: { lat: number; lon: number; };
   beaches: Beach[];
+  // Total beaches in the region, taken from the region index. Present on lazily
+  // loaded "shell" islands (whose `beaches` array is still empty until the region
+  // is opened) so surfaces like the landing can show an accurate count without
+  // forcing every region's beach data to load up front.
+  beachCount?: number;
 }
 
 export interface WeatherData {

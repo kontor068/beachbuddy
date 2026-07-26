@@ -2,6 +2,7 @@ import { Accessibility, Beach, LanguageCode, WarningFlag, WaveCondition } from '
 import { hasBoatOnlyAccess, hasChallengingAccess, hasDirtRoadAccess, hasTrulyEasyAccess } from './access';
 import { hasExplicitBeachBarAmenityInList } from './amenityMatching.js';
 import { getSelectedDayPrefix, getSelectedDaySentencePrefix, isSelectedDateToday } from './dateLabels';
+import { athensNow } from './athensTime';
 import { ExposureLevel } from './windExposure';
 
 type BestBeachTime = {
@@ -296,10 +297,10 @@ const waveShortPhrase = (
 };
 
 const dayPrefix = (input: Pick<BeachCopyInput, 'language' | 'selectedDate'>): string =>
-  getSelectedDayPrefix(input.selectedDate, new Date(), input.language);
+  getSelectedDayPrefix(input.selectedDate, athensNow(), input.language);
 
 const sentenceDayPrefix = (input: Pick<BeachCopyInput, 'language' | 'selectedDate'>): string =>
-  getSelectedDaySentencePrefix(input.selectedDate, new Date(), input.language);
+  getSelectedDaySentencePrefix(input.selectedDate, athensNow(), input.language);
 
 // True when the user is viewing a forecast for a day other than today. Forecast
 // CONDITION copy (wave height, sea/wind state, temperature) must then read as

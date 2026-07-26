@@ -2,6 +2,7 @@
 import { WeatherData, ForecastItem, MarineForecast } from '../types';
 import { recordOpenMeteoCall, OpenMeteoEndpoint } from './analyticsService';
 import { activeForecastProvider } from './forecast';
+import { syncClockFromTrustedInstant } from '../utils/athensTime';
 
 // --- Freshness policy (safety-critical) --------------------------------------
 // A forecast is a prediction for each hour, so a recently fetched payload still
@@ -131,6 +132,12 @@ const fetchJson = async <T>(url: string, source: string): Promise<T> => {
     if (!response.ok) {
       throw new Error(`${source} fetch failed: ${response.status} ${response.statusText}`);
     }
+
+    // Free, trustworthy clock reference: `Date` is a CORS-safelisted response header, so
+    // every forecast response tells us the real UTC time. A device whose own clock is
+    // badly wrong would otherwise be pointed at the wrong forecast hour (see athensTime).
+    const serverDate = response.headers.get('date');
+    if (serverDate) syncClockFromTrustedInstant(Date.parse(serverDate));
 
     return await response.json() as T;
   } finally {

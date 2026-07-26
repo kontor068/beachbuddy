@@ -53,6 +53,18 @@
   [headers.values]
     Cache-Control = "public, max-age=0, must-revalidate"
 
+# Landing hero photos (avif/webp from scripts/buildLandingHeroAssets.mjs).
+# CAUTION: filenames are `<slot>-<crop>-<width>.<ext>` — NOT content-hashed. If
+# a source photo is ever swapped, re-running the script overwrites these same
+# filenames with different bytes, and this `immutable` header will keep any
+# CDN/browser serving the stale image for up to a year. Bump the filename
+# scheme (e.g. add a version suffix) in the script BEFORE swapping a source
+# photo, or drop `immutable` if that discipline can't be guaranteed.
+[[headers]]
+  for = "/landing/*"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"
+
 # Forecast edge proxy — enabled ONLY on deploy previews and branch deploys so it can
 # be smoke-tested before it ever touches production. Production stays on the direct
 # Open-Meteo path until you're satisfied. TO GO LIVE: add the same VITE_FORECAST_PROXY_BASE

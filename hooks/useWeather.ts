@@ -9,6 +9,7 @@ import {
   SOFT_STALE_LIMIT_MS,
 } from '../services/weatherService';
 import { processForecastData } from '../utils/weatherUtils'; // Assuming I move this helper or recreate it
+import { athensNow } from '../utils/athensTime';
 import { getLocalWeatherFixture } from '../utils/weatherFixtures';
 
 /**
@@ -47,15 +48,15 @@ interface BeachForecastCluster {
 
 const roundToCluster = (value: number, step: number): number => Math.round(value / step) * step;
 
-const shouldSkipTodayAfterEvening = (now: Date = new Date()): boolean =>
+const shouldSkipTodayAfterEvening = (now: Date = athensNow()): boolean =>
   now.getHours() >= EVENING_TODAY_CUTOFF_HOUR;
 
-const getDefaultDayIndex = (forecastLength?: number, now: Date = new Date()): number => {
+const getDefaultDayIndex = (forecastLength?: number, now: Date = athensNow()): number => {
   if (shouldSkipTodayAfterEvening(now) && (forecastLength || 0) > 1) return 1;
   return 0;
 };
 
-const clampSelectedDayIndex = (index: number, forecastLength?: number, now: Date = new Date()): number => {
+const clampSelectedDayIndex = (index: number, forecastLength?: number, now: Date = athensNow()): number => {
   const maxIndex = Math.max(0, (forecastLength || 1) - 1);
   const minIndex = getDefaultDayIndex(forecastLength, now);
   return Math.min(maxIndex, Math.max(minIndex, index));
@@ -68,7 +69,7 @@ const startOfLocalDay = (date: Date): number =>
 // midnight from still offering yesterday as a selectable day.
 const dropPastForecastDays = (
   forecast: DailyForecast[] | null,
-  now: Date = new Date(),
+  now: Date = athensNow(),
 ): DailyForecast[] | null => {
   if (!forecast || forecast.length === 0) return forecast;
   const todayStart = startOfLocalDay(now);
@@ -77,7 +78,7 @@ const dropPastForecastDays = (
   return trimmed;
 };
 
-const getNextDaySelectionBoundaryDelay = (now: Date = new Date()): number => {
+const getNextDaySelectionBoundaryDelay = (now: Date = athensNow()): number => {
   const nextBoundary = new Date(now);
 
   if (now.getHours() < EVENING_TODAY_CUTOFF_HOUR) {
@@ -198,6 +199,7 @@ export const useWeather = (selectedIsland: Island | undefined, language: Languag
   const [forecastFetchedAt, setForecastFetchedAt] = useState<number | null>(null);
   // Ticks every minute so a tab left open flips fresh→soft→stale even with no user action
   // and even if the day-boundary refetch fails.
+  // athens-clock-exempt: freshness is an age in real ms against fetchedAt, never a wall clock.
   const [freshnessNow, setFreshnessNow] = useState<number>(() => Date.now());
   const requestIdRef = useRef(0);
   const activeIslandIdRef = useRef<string | null>(null);
@@ -223,7 +225,7 @@ export const useWeather = (selectedIsland: Island | undefined, language: Languag
 
     const fixture = getLocalWeatherFixture(selectedIsland);
     if (fixture) {
-      const fixtureFetchedAt = Date.now();
+      const fixtureFetchedAt = Date.now(); // athens-clock-exempt: real fetch instant
       setWeather(fixture.weather);
       setForecast(fixture.forecast);
       setForecastIslandId(selectedIsland.id);
@@ -348,7 +350,7 @@ export const useWeather = (selectedIsland: Island | undefined, language: Languag
   // own — the hard cutoff must fire even when nothing triggers a re-render or a refetch.
   useEffect(() => {
     const intervalId = window.setInterval(() => {
-      setFreshnessNow(Date.now());
+      setFreshnessNow(Date.now()); // athens-clock-exempt: real instant for the age check
     }, FRESHNESS_REEVAL_INTERVAL_MS);
     return () => window.clearInterval(intervalId);
   }, []);
@@ -362,7 +364,7 @@ export const useWeather = (selectedIsland: Island | undefined, language: Languag
 
   useEffect(() => {
     const timeoutId = window.setTimeout(() => {
-      const now = new Date();
+      const now = athensNow();
       // Drop the day that just rolled into the past so it can no longer be
       // selected, then refetch to extend the window with a fresh trailing day.
       setForecast(currentForecast => dropPastForecastDays(currentForecast, now));
