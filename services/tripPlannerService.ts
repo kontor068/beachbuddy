@@ -2,11 +2,29 @@ import type { Beach, DailyForecast, LanguageCode, SuitableBeach, UserPreferences
 import type { ExposureLevel } from '../utils/windExposure';
 import type { GeospatialExposureProfileLookup } from './geospatialExposureService';
 import { calculateBeachScore, getSuitableBeaches, hasHourlyRainRisk } from './recommendationService';
-import { getBeachPopularityRating } from '../utils/beachRating';
+import { compareBeachSignificance } from '../utils/beachSignificance';
 import { getBeaufortLevel } from '../utils/weatherUtils';
 
 // ─────────────────────────────────────────────────────────────────────────────
 // TRIP PLANNER — "I'm here for N days: which beach on which day?"
+//
+// THE AXIS (product decision 2026-07-26): SIGNIFICANCE chooses WHICH beaches;
+// the WEATHER arranges them INTO days. A visitor with 3 days on Milos is
+// drowning in 42 options — the answer is the 3 beaches they would regret
+// missing, each on the day whose wind suits it. NOT "whatever scores highest
+// each day": that can produce three obscure beaches and never Sarakiniko,
+// which reproduces the overwhelm instead of solving it.
+//
+// Structure: the trip's ESSENTIALS are the N most significant beaches
+// (utils/beachSignificance.ts) that are usable on at least one day of the
+// trip. The weather only decides which essential goes on which day. When a
+// day supports NONE of the essentials (meltemi), a sheltered REFUGE outside
+// the list steps in for that day — explicitly, as the exception, never
+// displacing an essential from the selection.
+//
+// NESTING: the essentials are a prefix of one significance-sorted list, so
+// 3 days → {A,B,C} and 4 days → {A,B,C}+D. Day ASSIGNMENTS may shift with
+// the forecast; the SET must not look random across N.
 //
 // This is the one question only we can answer. It needs per-beach shelter
 // geometry (baked, 8 wind sectors) crossed with a multi-day forecast — Google
@@ -16,9 +34,8 @@ import { getBeaufortLevel } from '../utils/weatherUtils';
 //
 // WHY NOT DAY-BY-DAY GREEDY: picking each day's best in order burns beaches.
 // A cove that is lovely on Monday AND is the only sheltered option on Thursday
-// gets spent on Monday, leaving Thursday with nothing. So we assign by REGRET
-// (best minus next-best): the day that loses the most by being deferred is
-// served first, which naturally protects the days that have few options.
+// gets spent on Monday, leaving Thursday with nothing. So we assign by
+// scarcity: the day with the fewest usable essentials is served first.
 //
 // HONESTY (the doctrine in docs/methodology-wind-exposure-GR.md): a day-5 wind
 // direction is a guess. We still show it, but flagged 'provisional' — and a
@@ -30,9 +47,10 @@ import { getBeaufortLevel } from '../utils/weatherUtils';
 const FIRM_FORECAST_DAYS = 3;
 
 /**
- * How many beaches we score per day. Chosen by INTRINSIC quality, never by
- * today's conditions: shortlisting on today would drop precisely the beaches
- * that open up when the wind turns, which is the whole point of the feature.
+ * How many beaches we score per day. Chosen by SIGNIFICANCE (recognition +
+ * real review-count fame — utils/beachSignificance.ts), never by today's
+ * conditions: shortlisting on today would drop precisely the beaches that
+ * open up when the wind turns, which is the whole point of the feature.
  */
 const CANDIDATE_POOL_SIZE = 40;
 
@@ -105,6 +123,14 @@ export interface TripDayPlan {
    * rather than send someone nowhere, and let the UI say so.
    */
   isRepeat: boolean;
+  /**
+   * True when the pick is a weather REFUGE from outside the trip's essentials:
+   * none of the significant beaches worked this day, so a sheltered fallback
+   * stepped in. The UI must present it as the exception ("none of the big
+   * names work today — but this cove is closed to the wind"), never as a peer
+   * of the essentials.
+   */
+  isRefuge: boolean;
 }
 
 export interface PlanTripInput {
@@ -210,9 +236,11 @@ export const planTrip = ({
   const horizon = Math.max(0, Math.min(days, forecast.length));
   if (horizon === 0 || beaches.length === 0) return [];
 
-  // Candidate pool by intrinsic quality — see CANDIDATE_POOL_SIZE.
+  // Candidate pool by SIGNIFICANCE — see CANDIDATE_POOL_SIZE. The comparator
+  // ends on beach id, so the pool (and everything downstream) is independent
+  // of the order beaches sit in the region file.
   const pool = [...beaches]
-    .sort((a, b) => getBeachPopularityRating(b) - getBeachPopularityRating(a))
+    .sort(compareBeachSignificance)
     .slice(0, CANDIDATE_POOL_SIZE);
 
   // Score every candidate for every day of the stay. Where the normal bar leaves
@@ -249,14 +277,27 @@ export const planTrip = ({
       // Honest refusal beats a dressed-up bad day.
       plans.set(dayIndex, {
         dayIndex, date: day.date, status: 'no_beach_day', confidence,
-        pick: null, alternative: null, reason: weatherReason, isRepeat: false, nextBeachDayIndex: null,
+        pick: null, alternative: null, reason: weatherReason, isRepeat: false, isRefuge: false, nextBeachDayIndex: null,
       });
       continue;
     }
     pendingDays.add(dayIndex);
   }
 
-  // Scarcity-driven assignment: serve the most CONSTRAINED day first.
+  // THE ESSENTIALS (Structure A): the N most significant beaches usable on at
+  // least one day that actually needs a beach — one prefix of one significance-
+  // sorted list, so a 3-day and a 4-day trip agree on the first three (nesting).
+  // The pool is already significance-sorted; keep that order.
+  const eligibleEssentials = pool.filter(beach =>
+    Array.from(pendingDays).some(dayIndex =>
+      rankedByDay[dayIndex].some(entry => entry.beach.id === beach.id && isUsable(entry))
+    )
+  );
+  const essentialIds = new Set(eligibleEssentials.slice(0, pendingDays.size).map(beach => beach.id));
+
+  // Scarcity-driven assignment OVER THE ESSENTIALS: serve the most CONSTRAINED
+  // day first. The weather no longer chooses the beaches — it only decides
+  // which essential lands on which day.
   //
   // The obvious metric — regret, i.e. best minus next-best — is wrong here, and
   // a live Paros meltemi week proved it: a day where everything is mediocre has
@@ -271,7 +312,8 @@ export const planTrip = ({
     let chosenList: TripPick[] = [];
 
     for (const dayIndex of pendingDays) {
-      const available = rankedByDay[dayIndex].filter(entry => !usedBeachIds.has(entry.beach.id));
+      const available = rankedByDay[dayIndex].filter(entry =>
+        essentialIds.has(entry.beach.id) && !usedBeachIds.has(entry.beach.id));
       const usableCount = available.filter(isUsable).length;
       const best = available[0];
       const second = available[1];
@@ -296,15 +338,32 @@ export const planTrip = ({
     const confidence: TripDayConfidence = chosenDay < FIRM_FORECAST_DAYS ? 'firm' : 'provisional';
     let best = chosenList[0];
     let isRepeat = false;
+    let isRefuge = false;
+    let alternativeList = chosenList;
 
-    // Nothing UNUSED is good enough — but a beach we already visited may still be
-    // fine. Repeating beats sending someone nowhere, so fall back to the whole
-    // ranking for this day before giving up.
+    // None of the essentials works this day (meltemi): a sheltered REFUGE from
+    // outside the list steps in — the explicit exception of Structure B. It is
+    // reserved like any pick so two blank days don't both name the same cove.
+    if (!best || !isUsable(best)) {
+      const refugeList = rankedByDay[chosenDay].filter(entry =>
+        !essentialIds.has(entry.beach.id) && !usedBeachIds.has(entry.beach.id));
+      const refuge = refugeList.find(isUsable);
+      if (refuge) {
+        best = refuge;
+        isRefuge = true;
+        alternativeList = refugeList;
+      }
+    }
+
+    // Still nothing UNUSED is good enough — but a beach we already visited may
+    // still be fine. Repeating beats sending someone nowhere, so fall back to
+    // the whole ranking for this day before giving up.
     if (!best || !isUsable(best)) {
       const anyUsable = rankedByDay[chosenDay].find(isUsable);
       if (anyUsable) {
         best = anyUsable;
         isRepeat = true;
+        alternativeList = rankedByDay[chosenDay];
       }
     }
 
@@ -317,6 +376,7 @@ export const planTrip = ({
         pick: null, alternative: null,
         reason: beaufort >= WINDY_DAY_BEAUFORT ? 'too_windy' : 'no_match',
         isRepeat: false,
+        isRefuge: false,
         nextBeachDayIndex: null,
       });
       continue;
@@ -329,9 +389,10 @@ export const planTrip = ({
       status: 'beach',
       confidence,
       pick: best,
-      alternative: chosenList.find(entry => entry.beach.id !== best!.beach.id) ?? null,
+      alternative: alternativeList.find(entry => entry.beach.id !== best!.beach.id) ?? null,
       reason: null,
       isRepeat,
+      isRefuge,
       nextBeachDayIndex: null,
     });
   }
@@ -346,6 +407,7 @@ export const planTrip = ({
       alternative: null,
       reason: 'no_match' as TripDayReason,
       isRepeat: false,
+      isRefuge: false,
       nextBeachDayIndex: null,
     }
   );
