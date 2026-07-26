@@ -1,10 +1,30 @@
-import type { Beach, DailyForecast, LanguageCode, SuitableBeach, UserPreferences } from '../types';
+import type { Beach, DailyForecast, LanguageCode, SuitableBeach, UserPreferences, WindSector } from '../types';
 import type { ExposureLevel } from '../utils/windExposure';
 import type { GeospatialExposureProfileLookup } from './geospatialExposureService';
-import { calculateBeachScore, filterBeachesByUserPreferences, getSuitableBeaches, hasHourlyRainRisk } from './recommendationService';
+import {
+  calculateBeachScore,
+  filterBeachesByUserPreferences,
+  getSuitableBeaches,
+  hasHourlyRainRisk,
+  isFalseProtectedTopPick,
+  isTrustedTopRecommendationCandidate,
+  type BeachScore,
+} from './recommendationService';
+import {
+  MAX_TOP_RECOMMENDATION_BEAUFORT,
+  getWindPriorityTopPickPool,
+  passesTopPickSeaGate,
+  prioritizeProtectedRecommendations,
+} from './topPickRanking';
 import { compareBeachSignificance } from '../utils/beachSignificance';
 import { hasPracticalTopPickAccess } from '../utils/access';
 import { isNaturistBeach } from '../utils/naturistBeaches';
+import {
+  hasGeometryEnclosedProtection,
+  isEnclosedCoveGeometry,
+  resolveBeachWindProfile,
+  windSectorFromDegrees,
+} from '../utils/windExposureEngine';
 import { getBeaufortLevel } from '../utils/weatherUtils';
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -49,12 +69,21 @@ import { getBeaufortLevel } from '../utils/weatherUtils';
 const FIRM_FORECAST_DAYS = 3;
 
 /**
- * How many beaches we score per day. Chosen by SIGNIFICANCE (recognition +
+ * The significance arm of the pool. Chosen by SIGNIFICANCE (recognition +
  * real review-count fame — utils/beachSignificance.ts), never by today's
  * conditions: shortlisting on today would drop precisely the beaches that
  * open up when the wind turns, which is the whole point of the feature.
  */
-const CANDIDATE_POOL_SIZE = 40;
+export const SIGNIFICANCE_POOL_SIZE = 40;
+
+/**
+ * Hard ceiling on how many beaches we score per day — the performance
+ * envelope. Measured on the largest region (Halkidiki, 133 beaches): 72 × 6
+ * days in one shared scoring pass is ~144 ms on desktop, which is the budget
+ * a mid-range phone (4-6× slower) can still absorb behind a pending state.
+ * Whole-region scoring (275 ms desktop) is explicitly rejected.
+ */
+export const TRIP_POOL_SIZE = 72;
 
 /** Below this a "best available" pick is not worth sending someone to. */
 const MIN_USABLE_SCORE = 35;
@@ -145,12 +174,32 @@ export interface PlanTripInput {
   language: LanguageCode;
   preferences?: UserPreferences;
   geospatialProfiles?: GeospatialExposureProfileLookup;
+  /**
+   * The visitor's location, when granted. Not cosmetic: calculateBeachScore
+   * switches to a different weighting formula when a location is present, so
+   * omitting it here while the homepage passes it would score the same beach
+   * two different ways on the same day.
+   */
+  userLocation?: { lat: number; lon: number };
+  /**
+   * Whether the HOMEPAGE currently blanks today for rain (its bar is "every
+   * beach hour rainy"; ours is >50% of daytime hours). Passed in so day 0 can
+   * never say "rain, no beach" directly under three live recommendations.
+   * Days 1+ keep the >50% rule — the right bar for planning ahead.
+   */
+  todayRainBlocked?: boolean;
 }
 
-/** Storm-force wind or persistent daytime rain — nobody should be sent to a beach. */
-const badWeatherReason = (day: DailyForecast): TripDayReason | null => {
+/** Storm-force wind, wind above the podium's ceiling, or persistent daytime rain. */
+const badWeatherReason = (
+  day: DailyForecast,
+  options?: { isFirstDay?: boolean; todayRainBlocked?: boolean }
+): TripDayReason | null => {
   const beaufort = getBeaufortLevel((day.wind?.speed ?? 0) * 3.6);
   if (beaufort >= STORM_BEAUFORT) return 'storm';
+  // Above the podium's own ceiling the homepage shows NO picks — a planner
+  // naming a beach at 7 Bft would contradict the surface right above it.
+  if (beaufort > MAX_TOP_RECOMMENDATION_BEAUFORT) return 'too_windy';
 
   const hours = day.hourly || [];
   if (hours.length === 0) return null;
@@ -161,7 +210,12 @@ const badWeatherReason = (day: DailyForecast): TripDayReason | null => {
   });
   if (daytime.length === 0) return null;
   const rainy = daytime.filter(hasHourlyRainRisk).length;
-  return rainy / daytime.length > 0.5 ? 'rain' : null;
+  if (rainy / daytime.length > 0.5) {
+    // Today defers to the homepage's stricter verdict (see todayRainBlocked).
+    if (options?.isFirstDay && options.todayRainBlocked !== true) return null;
+    return 'rain';
+  }
+  return null;
 };
 
 /** Wind strong enough that "nothing scored" almost certainly means "nowhere is sheltered". */
@@ -210,21 +264,16 @@ const exposureRank = (level?: ExposureLevel): number => {
 const cautionRanking = (
   pool: Beach[],
   day: DailyForecast,
-  preferences?: UserPreferences,
-  geospatialProfiles?: GeospatialExposureProfileLookup
+  dayScores: Map<number, BeachScore>
 ): TripPick[] => {
-  if (getBeaufortLevel((day.wind?.speed ?? 0) * 3.6) > CAUTION_MAX_BEAUFORT) return [];
+  const windSpeedKmph = (day.wind?.speed ?? 0) * 3.6;
+  const beaufort = getBeaufortLevel(windSpeedKmph);
+  if (beaufort > CAUTION_MAX_BEAUFORT) return [];
 
   return pool
     .filter(beach => hasPracticalTopPickAccess(beach))
-    .map(beach => {
-      const result = calculateBeachScore(beach, day, undefined, preferences, {
-        weatherSource: 'island-fallback',
-        hourlyForecast: day.hourly,
-        geospatialProfile: geospatialProfiles?.[beach.id],
-      });
-      return { beach, result };
-    })
+    .map(beach => ({ beach, result: dayScores.get(beach.id) }))
+    .filter((entry): entry is { beach: Beach; result: BeachScore } => Boolean(entry.result))
     .filter(({ result }) => {
       // The engine's official "do not swim" verdict is absolute — it already
       // encodes the effective-wave and effective-Beaufort ceilings on the
@@ -232,6 +281,16 @@ const cautionRanking = (
       if (result.score === 0) return false;
       if (result.swimmingComfort === 'avoid_swimming') return false;
       if ((result.swimmingScore ?? 0) < CAUTION_MIN_SWIMMING_SCORE) return false;
+      // The podium's own safety gate, applied here too: a caution pick is a
+      // beach with a SAFE sea and a modest experience score — never a beach
+      // the homepage would refuse outright.
+      const isExposed = result.exposureLevel ? result.exposureLevel !== 'protected' : true;
+      if (!passesTopPickSeaGate(
+        { isExposed, exposureLevel: result.exposureLevel, waveHeightM: result.waveHeightM, hourlySeaScore: result.hourlySeaScore },
+        windSpeedKmph,
+        day.marine?.waveHeightM
+      )) return false;
+      if (isFalseProtectedTopPick(result, day.wind?.deg ?? 0, beaufort)) return false;
       return true;
     })
     .sort((a, b) => (
@@ -256,11 +315,112 @@ const cautionRanking = (
 };
 
 /**
+ * The candidate pool — HYBRID, capped at TRIP_POOL_SIZE. Exported so the
+ * safety net can assert its promise (an unrated sheltered cove CAN be in it).
+ *
+ * Policy and preference filters apply HERE, once, so every tier downstream
+ * (suitable, caution refuge, repeats, alternatives) inherits them:
+ * - naturist beaches never surface in any recommendation (the same policy
+ *   App.tsx applies to the podium — the planner is the surface where the
+ *   visitor takes the answer as THE plan, so there is no opt-in here);
+ * - hard preference filters (e.g. Blue Flag) must hold on caution days too,
+ *   not just inside getSuitableBeaches.
+ *
+ * Arms, in pool order (order matters — the essentials are a prefix scan):
+ *   A. SIGNIFICANCE — the top SIGNIFICANCE_POOL_SIZE by beachSignificance.
+ *   B. GENUINE ENCLOSED COVES — isEnclosedCoveGeometry (1-11 per region,
+ *      unconditional): the refuges the whole feature exists for; without this
+ *      arm an unrated cove can never surface, which defeats the premise.
+ *   C. TRIP-SECTOR SHELTER — beaches with geometry-earned protection on at
+ *      least one wind sector THIS trip will actually meet, ranked by sectors
+ *      covered, then tighter basin (fetch), then residual wind, filling up to
+ *      the cap. Uses the UNION of the trip's winds, never one day's — the
+ *      pool doctrine ("never shortlist on today") intact.
+ */
+export const buildTripPool = (
+  beaches: Beach[],
+  forecast: DailyForecast[],
+  days: number,
+  geospatialProfiles?: GeospatialExposureProfileLookup,
+  preferences?: UserPreferences
+): Beach[] => {
+  const horizon = Math.max(0, Math.min(days, forecast.length));
+  const eligible = filterBeachesByUserPreferences(beaches, preferences)
+    .filter(beach => !isNaturistBeach(beach));
+  // The comparator ends on beach id, so the pool (and everything downstream)
+  // is independent of the order beaches sit in the region file.
+  const bySignificance = [...eligible].sort(compareBeachSignificance);
+
+  const poolIds = new Set<number>();
+  const pool: Beach[] = [];
+  const add = (beach: Beach) => {
+    if (!poolIds.has(beach.id)) {
+      poolIds.add(beach.id);
+      pool.push(beach);
+    }
+  };
+
+  // Arm A — significance.
+  bySignificance.slice(0, SIGNIFICANCE_POOL_SIZE).forEach(add);
+
+  // Arm B — genuine enclosed coves, in significance order.
+  for (const beach of bySignificance) {
+    const { profile, source } = resolveBeachWindProfile(beach);
+    if (isEnclosedCoveGeometry(beach.id, geospatialProfiles?.[beach.id], profile, source)) {
+      add(beach);
+    }
+  }
+
+  // Arm C — sheltered on the winds of THIS trip, ranked, fills to the cap.
+  const tripSectors: WindSector[] = [];
+  for (let dayIndex = 0; dayIndex < horizon; dayIndex++) {
+    const sector = windSectorFromDegrees(forecast[dayIndex].wind?.deg ?? 0);
+    if (!tripSectors.includes(sector)) tripSectors.push(sector);
+  }
+  const armC: Array<{ beach: Beach; covered: number; maxFetchKm: number; maxIntensity: number }> = [];
+  for (const beach of bySignificance) {
+    if (poolIds.has(beach.id)) continue;
+    const geoProfile = geospatialProfiles?.[beach.id];
+    if (!geoProfile) continue;
+    const { profile } = resolveBeachWindProfile(beach);
+    let covered = 0;
+    let maxFetchKm = 0;
+    let maxIntensity = 0;
+    for (const sector of tripSectors) {
+      if (!hasGeometryEnclosedProtection(geoProfile, sector, profile.suspectPin)) continue;
+      if (profile.exposedToWindDirections?.includes(sector)) continue;
+      covered += 1;
+      maxFetchKm = Math.max(maxFetchKm, geoProfile.sectors?.[sector]?.fetchKm ?? 0);
+      maxIntensity = Math.max(maxIntensity, geoProfile.sectors?.[sector]?.intensity ?? 0);
+    }
+    if (covered > 0) armC.push({ beach, covered, maxFetchKm, maxIntensity });
+  }
+  armC.sort((a, b) =>
+    b.covered - a.covered ||
+    a.maxFetchKm - b.maxFetchKm ||
+    a.maxIntensity - b.maxIntensity ||
+    compareBeachSignificance(a.beach, b.beach)
+  );
+  for (const candidate of armC) {
+    if (pool.length >= TRIP_POOL_SIZE) break;
+    add(candidate.beach);
+  }
+
+  return pool;
+};
+
+/**
  * Plans one beach per day for a stay of `days`, using each beach at most once so
  * the trip has variety. Returns one entry per requested day, in day order.
  *
- * Scoring is delegated to getSuitableBeaches (the same engine the region view
- * uses) so a planned day and a browsed day can never disagree.
+ * RELIABILITY CONTRACT: candidates pass the SAME safety gate as the homepage
+ * podium (passesTopPickSeaGate + isFalseProtectedTopPick + the engine's
+ * avoid_swimming veto, shared via services/topPickRanking) — the planner can
+ * never name a beach the podium would refuse. The full editorial trust gate
+ * (isTrustedTopRecommendationCandidate) is deliberately a RANKING tier, not a
+ * gate: measured on Naxos N 4 Bft it passes 1 of 20 suitable beaches, so as a
+ * gate it would blank a meltemi week. Tier A (trusted) always ranks above
+ * Tier B (safe but less evidenced).
  */
 export const planTrip = ({
   beaches,
@@ -269,44 +429,75 @@ export const planTrip = ({
   language,
   preferences,
   geospatialProfiles,
+  userLocation,
+  todayRainBlocked,
 }: PlanTripInput): TripDayPlan[] => {
   const horizon = Math.max(0, Math.min(days, forecast.length));
   if (horizon === 0 || beaches.length === 0) return [];
 
-  // Candidate pool by SIGNIFICANCE — see CANDIDATE_POOL_SIZE. The comparator
-  // ends on beach id, so the pool (and everything downstream) is independent
-  // of the order beaches sit in the region file.
-  //
-  // Policy and preference filters apply HERE, once, so every tier downstream
-  // (suitable, caution refuge, repeats, alternatives) inherits them:
-  // - naturist beaches never surface in any recommendation (the same policy
-  //   App.tsx applies to the podium — the planner is the surface where the
-  //   visitor takes the answer as THE plan, so there is no opt-in here);
-  // - hard preference filters (e.g. Blue Flag) must hold on caution days too,
-  //   not just inside getSuitableBeaches.
-  const pool = filterBeachesByUserPreferences(beaches, preferences)
-    .filter(beach => !isNaturistBeach(beach))
-    .sort(compareBeachSignificance)
-    .slice(0, CANDIDATE_POOL_SIZE);
+  const pool = buildTripPool(beaches, forecast, days, geospatialProfiles, preferences);
+  if (pool.length === 0) return [];
 
-  // Score every candidate for every day of the stay. Where the normal bar leaves
-  // a day empty, drop to the caution tier rather than returning a blank day.
+  // Score every candidate for every day of the stay — ONE scoring pass per
+  // day, shared by the suitable tier and the caution tier (they used to run
+  // two independent passes that could disagree on the same beach). Where the
+  // normal bar leaves a day empty, drop to the caution tier rather than
+  // returning a blank day.
   const rankedByDay: TripPick[][] = [];
   for (let dayIndex = 0; dayIndex < horizon; dayIndex++) {
     const day = forecast[dayIndex];
+    const windSpeedKmph = (day.wind?.speed ?? 0) * 3.6;
+    const beaufort = getBeaufortLevel(windSpeedKmph);
+
+    const dayScores = new Map<number, BeachScore>();
+    for (const beach of pool) {
+      dayScores.set(beach.id, calculateBeachScore(beach, day, userLocation, preferences, {
+        weatherSource: 'island-fallback',
+        hourlyForecast: day.hourly,
+        geospatialProfile: geospatialProfiles?.[beach.id],
+      }));
+    }
+
     const scored = getSuitableBeaches(
       pool,
       day,
       language,
-      undefined,
+      userLocation,
       day.hourly,
       preferences,
       undefined,
-      geospatialProfiles
+      geospatialProfiles,
+      dayScores
     );
-    const ranked = [...scored].sort((a, b) => b.score - a.score).map(toPick);
+
+    // The podium's safety gate — shared implementation, not a copy.
+    const gated = scored.filter(item =>
+      item.swimmingComfort !== 'avoid_swimming' &&
+      passesTopPickSeaGate(item, windSpeedKmph, day.marine?.waveHeightM) &&
+      !isFalseProtectedTopPick(item, day.wind?.deg ?? 0, beaufort)
+    );
+
+    // Tier A/B: trusted candidates first, each tier ordered by the podium's
+    // own comparator. getWindPriorityTopPickPool FILTERS to the less-exposed
+    // subset — for the podium that is the point, but the planner needs the
+    // full ranked list (the essentials assignment must see every safe option),
+    // so the non-pooled remainder is appended, same ordering.
+    const orderTier = (items: SuitableBeach[]): SuitableBeach[] => {
+      const pooled = getWindPriorityTopPickPool(items, beaufort);
+      const pooledIds = new Set(pooled.map(item => item.beach.id));
+      const rest = items.filter(item => !pooledIds.has(item.beach.id));
+      return [
+        ...prioritizeProtectedRecommendations(pooled, beaufort),
+        ...prioritizeProtectedRecommendations(rest, beaufort),
+      ];
+    };
+    const tierA = gated.filter(item => isTrustedTopRecommendationCandidate(item, undefined, beaufort));
+    const tierAIds = new Set(tierA.map(item => item.beach.id));
+    const tierB = gated.filter(item => !tierAIds.has(item.beach.id));
+    const ranked = [...orderTier(tierA), ...orderTier(tierB)].map(toPick);
+
     rankedByDay.push(
-      ranked.length > 0 ? ranked : cautionRanking(pool, day, preferences, geospatialProfiles)
+      ranked.length > 0 ? ranked : cautionRanking(pool, day, dayScores)
     );
   }
 
@@ -321,7 +512,7 @@ export const planTrip = ({
     const day = forecast[dayIndex];
     const confidence: TripDayConfidence = dayIndex < FIRM_FORECAST_DAYS ? 'firm' : 'provisional';
 
-    const weatherReason = badWeatherReason(day);
+    const weatherReason = badWeatherReason(day, { isFirstDay: dayIndex === 0, todayRainBlocked });
     if (weatherReason) {
       // Honest refusal beats a dressed-up bad day.
       plans.set(dayIndex, {

@@ -53,17 +53,16 @@ const {
   calculateBeachScore,
   filterBeachesByUserPreferences,
   hasHourlyRainRisk,
+  isFalseProtectedTopPick,
 } = recommendationService;
-const { calculateSeaConditionScore, hasPoorSeaConditions } = require('../utils/seaConditions.ts');
+// The REAL thresholds and gate — imported, not mirrored, so the net can never
+// drift from what the podium actually applies.
+const {
+  MAX_TOP_RECOMMENDATION_BEAUFORT,
+  passesTopPickSeaGate,
+} = require('../services/topPickRanking.ts');
 const { getBeaufortLevel } = require('../utils/weatherUtils.ts');
 const { isNaturistBeach } = require('../utils/naturistBeaches.ts');
-
-// ─── Safety-gate thresholds ─────────────────────────────────────────────────
-// Until step 4 extracts services/topPickRanking.ts these mirror the private
-// constants in App.tsx:315-324. After the extraction, IMPORT them from
-// services/topPickRanking.ts instead — the mirror must not outlive step 4.
-const MIN_TOP_PICK_SEA_CONDITION_SCORE = 7;
-const MAX_TOP_RECOMMENDATION_BEAUFORT = 6;
 
 // ─── Scenarios: 6-day rotating winds ────────────────────────────────────────
 // Beaufort → m/s midpoints; waves matched to the wind day (open-water values —
@@ -192,12 +191,12 @@ const loadRegionBeaches = regionId => {
 };
 
 // ─── The homepage's safety gate, per beach per day ──────────────────────────
-// A pick outside this set is a beach the podium would refuse to show.
-// TODO(step 3/4): add !isFalseProtectedTopPick and import the thresholds from
-// services/topPickRanking.ts once exported.
+// A pick outside this set is a beach the podium would refuse to show. Uses the
+// SHARED passesTopPickSeaGate implementation plus isFalseProtectedTopPick.
 const passesSafetyGate = (beach, dayForecast, geospatialProfiles) => {
   const windSpeedKmph = dayForecast.wind.speed * 3.6;
-  if (getBeaufortLevel(windSpeedKmph) > MAX_TOP_RECOMMENDATION_BEAUFORT) return false;
+  const beaufort = getBeaufortLevel(windSpeedKmph);
+  if (beaufort > MAX_TOP_RECOMMENDATION_BEAUFORT) return false;
 
   const score = calculateBeachScore(beach, dayForecast, undefined, undefined, {
     weatherSource: 'island-fallback',
@@ -207,11 +206,14 @@ const passesSafetyGate = (beach, dayForecast, geospatialProfiles) => {
   if (score.swimmingComfort === 'avoid_swimming') return false;
 
   const isExposed = score.exposureLevel ? score.exposureLevel !== 'protected' : true;
-  const waveHeightM = score.waveHeightM ?? dayForecast.marine?.waveHeightM;
-  const seaScore = calculateSeaConditionScore(isExposed, windSpeedKmph, score.exposureLevel, waveHeightM);
-  if (seaScore < MIN_TOP_PICK_SEA_CONDITION_SCORE) return false;
-  if (typeof score.hourlySeaScore === 'number' && score.hourlySeaScore < MIN_TOP_PICK_SEA_CONDITION_SCORE) return false;
-  if (hasPoorSeaConditions(isExposed, windSpeedKmph, score.exposureLevel, waveHeightM)) return false;
+  const item = {
+    isExposed,
+    exposureLevel: score.exposureLevel,
+    waveHeightM: score.waveHeightM,
+    hourlySeaScore: score.hourlySeaScore,
+  };
+  if (!passesTopPickSeaGate(item, windSpeedKmph, dayForecast.marine?.waveHeightM)) return false;
+  if (isFalseProtectedTopPick(score, dayForecast.wind.deg, beaufort)) return false;
   return true;
 };
 
