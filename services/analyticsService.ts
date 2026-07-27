@@ -28,10 +28,6 @@ export type AnalyticsEvent =
   | 'landing_near_me_clicked'
   | 'landing_region_clicked'
   | 'landing_all_regions_clicked'
-  // The one link on the landing that leads to actual beach NAMES. Worth its own
-  // event: if nobody clicks it, the "the page never shows a beach" gap is not
-  // costing us what the redesign argument assumed.
-  | 'landing_compare_clicked'
   | 'landing_contact_clicked'
   // The story section, measured with two sentinels rather than one observer on
   // the section itself: the section is taller than a phone viewport, so a
@@ -42,8 +38,15 @@ export type AnalyticsEvent =
   | 'landing_feedback_submitted'
   | 'landing_feedback_failed'
   // Multi-day trip planner (components/planner/). `days` tells us whether the
-  // multi-day audience is real before we invest further in it.
+  // multi-day audience is real before we invest further in it, and `source`
+  // separates a plan opened by TYPING a stay length in the search box from one
+  // opened by tapping a day chip — two different audiences, one event.
   | 'trip_planned'
+  // A free-text search parsed as a trip sentence («θα μείνω Νάξο για 5 μέρες»).
+  // Fired for EVERY outcome, including the failures, because the only way to
+  // learn which sentences real visitors type — and which ones we cannot read —
+  // is to count them. `matched` carries the verdict.
+  | 'trip_query_parsed'
   | 'beach_viewed'
   | 'beach_navigated'
   | 'beach_favorited'
