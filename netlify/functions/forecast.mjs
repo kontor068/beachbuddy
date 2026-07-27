@@ -19,7 +19,7 @@
 // params with sanitised values are ever forwarded. Anything else → 400.
 // ─────────────────────────────────────────────────────────────────────────────
 
-import { getStore } from '@netlify/blobs';
+import { connectLambda, getStore } from '@netlify/blobs';
 import {
   recordCalls, recordRateLimited, formatCapacityAlert, utcDayKey, DEFAULT_THRESHOLDS,
 } from './lib/capacityAlarm.mjs';
@@ -148,6 +148,20 @@ function buildSafeQuery(params) {
 }
 
 export const handler = async (event) => {
+  // MUST run before any getStore() below. This is a classic Lambda-signature
+  // function, so the Blobs environment has to be wired from the event; without it
+  // getStore() throws, meterUpstream()'s bare catch swallows the throw, and the
+  // capacity counter silently records NOTHING — which is exactly what happened:
+  // on 2026-07-27 the `capacity` store was found completely empty in production
+  // despite a verified upstream miss minutes earlier, so the 5k/7k Telegram alarm
+  // had never been armed and the first warning of trouble would have been a live
+  // 429 from Open-Meteo. netlify/functions/pageview.mjs already carries this call
+  // and the comment explaining it; forecast.mjs was simply missing it.
+  //
+  // Guarded because metering must never break or slow a forecast (same rule as
+  // meterUpstream itself): if wiring fails we lose the counter, not the response.
+  try { connectLambda(event); } catch { /* metering is best-effort */ }
+
   if (event.httpMethod === 'OPTIONS') {
     return { statusCode: 204, headers: { Allow: 'GET, OPTIONS' }, body: '' };
   }
