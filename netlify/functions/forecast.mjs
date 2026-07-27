@@ -90,6 +90,8 @@ const ALLOWED_PARAMS = new Set([
 // hourly/current are comma-lists of field names; keep them to a safe charset.
 const SAFE_LIST = /^[a-z0-9_,]+$/;
 const SAFE_TOKEN = /^[a-z0-9_/+-]+$/i;
+const SAFE_COORDINATE = /^-?\d+(\.\d+)?$/;
+const MAX_COORDINATE_LIST_ITEMS = 32;
 
 const UPSTREAM_TIMEOUT_MS = 8000;
 const PREFIX = '/api/forecast/';
@@ -101,15 +103,31 @@ const json = (statusCode, body, extraHeaders = {}) => ({
 });
 
 /** Validate + rebuild the query string from scratch — nothing raw reaches upstream. */
+function parseCoordinateList(value, min, max) {
+  if (typeof value !== 'string') return null;
+  const parts = value.split(',');
+  if (parts.length === 0 || parts.length > MAX_COORDINATE_LIST_ITEMS) return null;
+
+  const values = [];
+  for (const rawPart of parts) {
+    const part = rawPart.trim();
+    if (!SAFE_COORDINATE.test(part)) return null;
+    const numeric = Number(part);
+    if (!Number.isFinite(numeric) || numeric < min || numeric > max) return null;
+    values.push(String(numeric));
+  }
+
+  return { value: values.join(','), count: values.length };
+}
+
 function buildSafeQuery(params) {
   const out = new URLSearchParams();
 
-  const lat = Number(params.latitude);
-  const lon = Number(params.longitude);
-  if (!Number.isFinite(lat) || lat < -90 || lat > 90) return null;
-  if (!Number.isFinite(lon) || lon < -180 || lon > 180) return null;
-  out.set('latitude', String(lat));
-  out.set('longitude', String(lon));
+  const lat = parseCoordinateList(params.latitude, -90, 90);
+  const lon = parseCoordinateList(params.longitude, -180, 180);
+  if (!lat || !lon || lat.count !== lon.count) return null;
+  out.set('latitude', lat.value);
+  out.set('longitude', lon.value);
 
   for (const [key, value] of Object.entries(params)) {
     if (key === 'latitude' || key === 'longitude') continue;

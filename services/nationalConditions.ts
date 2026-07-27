@@ -11,9 +11,10 @@ import { getBeaufortLevel } from '../utils/weatherUtils';
 //
 // ONE Open-Meteo call covers every point (comma-joined coords — the pattern
 // scripts/windSpreadNational.mjs already uses), cached for 3h because the picture
-// changes slowly, so this costs ~1 call per session. The service worker also
-// caches api.open-meteo.com. On any failure we return null and every surface
-// falls back to calm / "unavailable" — we never fabricate conditions.
+// changes slowly, so this costs ~1 call per session. When the forecast proxy flag
+// is enabled, this uses the same-origin edge proxy as the beach forecast
+// service. On any failure we return null and every surface falls back to calm /
+// "unavailable" — we never fabricate conditions.
 
 export interface RegionConditionReading {
   /** Region id — maps straight onto an Island, so the UI can name and link it. */
@@ -77,6 +78,9 @@ const COORD_MATCH_TOLERANCE_DEG = 0.25;
 export const NATIONAL_SAMPLE_REGION_IDS: ReadonlyArray<string> = POINTS.map(p => p.regionId);
 
 const TTL_MS = 3 * 60 * 60 * 1000; // 3h
+const FORECAST_HOST = 'https://api.open-meteo.com';
+const PROXY_BASE = (import.meta.env?.VITE_FORECAST_PROXY_BASE as string | undefined)?.replace(/\/$/, '');
+const forecastOrigin = () => (PROXY_BASE ? `${PROXY_BASE}/open-meteo` : FORECAST_HOST);
 
 export const roughnessFromBeaufort = (bft: number): number =>
   Math.max(0, Math.min(1, (bft - 1) / 6));
@@ -92,7 +96,7 @@ export const getNationalConditions = async (): Promise<NationalConditions | null
     try {
       const lats = POINTS.map(p => p.lat).join(',');
       const lons = POINTS.map(p => p.lon).join(',');
-      const url = `https://api.open-meteo.com/v1/forecast?latitude=${lats}&longitude=${lons}&current=wind_speed_10m,wind_direction_10m&wind_speed_unit=kmh&timezone=Europe%2FAthens`;
+      const url = `${forecastOrigin()}/v1/forecast?latitude=${lats}&longitude=${lons}&current=wind_speed_10m,wind_direction_10m&wind_speed_unit=kmh&timezone=Europe%2FAthens`;
       // Without a deadline a hung request leaves thirteen skeleton bars pulsing
       // forever, because `status` never leaves 'loading'.
       const res = await fetch(url, { signal: AbortSignal.timeout(6000) });

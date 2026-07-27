@@ -39,6 +39,9 @@ const cacheSignal = (headers) => {
 const forecastPath = (lat, lon) =>
   `/api/forecast/open-meteo/v1/forecast?latitude=${lat}&longitude=${lon}` +
   `&current=temperature_2m,wind_speed_10m,wind_direction_10m&wind_speed_unit=ms&timezone=auto`;
+const batchForecastPath = () =>
+  '/api/forecast/open-meteo/v1/forecast?latitude=39.62,38.72&longitude=19.60,20.45' +
+  '&current=wind_speed_10m,wind_direction_10m&wind_speed_unit=kmh&timezone=Europe%2FAthens';
 const marinePath = (lat, lon) =>
   `/api/forecast/open-meteo-marine/v1/marine?latitude=${lat}&longitude=${lon}` +
   `&hourly=wave_height&timezone=auto&forecast_days=2&cell_selection=sea`;
@@ -61,6 +64,14 @@ try {
   try { marineParsed = JSON.parse(m.text); } catch { /* handled below */ }
   ok(marineParsed && marineParsed.hourly && Array.isArray(marineParsed.hourly.time),
     'marine payload has hourly.time[]');
+
+  // 2b. National conditions use Open-Meteo's batch coordinate shape.
+  const batch = await get(batchForecastPath());
+  ok(batch.status === 200, 'batch forecast endpoint returns 200', `got ${batch.status}`);
+  let batchParsed = null;
+  try { batchParsed = JSON.parse(batch.text); } catch { /* handled below */ }
+  ok(Array.isArray(batchParsed) && batchParsed.length === 2,
+    'batch forecast payload has one entry per coordinate');
 
   // 3. Shared CDN cache: same URL twice → second should show a cache hit / age
   const c1 = await get(forecastPath(37.44, 25.33));
