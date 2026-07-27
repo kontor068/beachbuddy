@@ -61059,6 +61059,375 @@
               "checkedAt": "2026-06-17"
             }
           }
+        },
+        {
+          "id": 3160,
+          "name": "Γυαλί",
+          "lat": 40.40841,
+          "lon": 25.64479,
+          "metadata": {
+            "access": {
+              "type": "boat_only",
+              "label": "μόνο με βάρκα ή σκάφος",
+              "notes": "Οι οδηγοί αναφέρουν πρόσβαση με καραβάκι από την Καμαριώτισσα (κάτω από μία ώρα) ή με απαιτητική πεζοπορία. Χωρίς επιτόπου επιβεβαίωση."
+            },
+            "terrain": {
+              "types": [
+                "pebbles"
+              ],
+              "label": "λευκό βότσαλο"
+            },
+            "organized": false,
+            "shade": false,
+            "amenities": [],
+            "confidence": "low",
+            "language": "el",
+            "batch": "hidden_beach_discovery_samothraki_2026_07_27",
+            "needsVerification": true,
+            "activities": {
+              "surfing": false
+            },
+            "aliases": [
+              "Γιαλί"
+            ],
+            "sourceUrls": [
+              "https://www.insamothraki.com/beaches-of-samothrace/",
+              "http://www.wondergreece.gr/v1/el/Perioxes/Samothraki/Fysi/Paralies/4929-Gyali",
+              "https://www.openstreetmap.org/way/160205174"
+            ],
+            "sourceNotes": [
+              "Hidden-beach discovery (2026-07): Απομονωμένη παραλία της νοτιοανατολικής ακτής, ~3,5 χλμ ανατολικά του Βάτου, με λευκό βότσαλο και καθαρά νερά. Οι οδηγοί την κατατάσσουν στις παραλίες που προσεγγίζονται κυρίως με καραβάκι από την Καμαριώτισσα. Το όνομα ταυτοποιήθηκε από το ομώνυμο ρέμα που καταλήγει εκεί. Συντεταγμένες: OSM way 160205174 (ανώνυμο natural=beach polygon, 31μ από την ακτογραμμή)· όνομα από το OSM ρέμα «Γιαλί ρέμα» (way 160267595) 309μ μακριά. Slot κοντά στο #779 (Βάτος, 3494m). Πρόσβαση/χαρακτηριστικά από οδηγούς — ΔΕΝ έχουν επιβεβαιωθεί επιτόπου."
+            ],
+            "googleMapsNavigation": {
+              "status": "verified",
+              "mode": "coordinates",
+              "checkedAt": "2026-07-23",
+              "method": "guide-discovery-v1"
+            }
+          }
+        },
+        {
+          "id": 3161,
+          "name": "Θέρμα",
+          "lat": 40.50282,
+          "lon": 25.6005,
+          "metadata": {
+            "access": {
+              "type": "asphalt_road",
+              "label": "άσφαλτος μέχρι κοντά στην παραλία",
+              "notes": "Ασφαλτόδρομος από Καμαριώτισσα (~13 χλμ) μέχρι τον οικισμό Θέρμα· πάρκινγκ κοντά στην παραλία. Χωρίς επιτόπου επιβεβαίωση."
+            },
+            "terrain": {
+              "types": [
+                "pebbles"
+              ],
+              "label": "βότσαλα"
+            },
+            "organized": true,
+            "shade": true,
+            "amenities": [
+              "beach bar",
+              "ντουζ",
+              "αποδυτήρια"
+            ],
+            "confidence": "low",
+            "language": "el",
+            "batch": "hidden_beach_discovery_samothraki_2026_07_27",
+            "needsVerification": true,
+            "activities": {
+              "surfing": false
+            },
+            "aliases": [
+              "Λουτρά",
+              "Θερμά Λουτρά"
+            ],
+            "sourceUrls": [
+              "https://www.insamothraki.com/the-beaches-of-samothrace.html",
+              "https://www.travel.gr/experiences/oi-ammodeis-oi-apomonomenes-oi-agries/",
+              "https://www.openstreetmap.org/way/510452883"
+            ],
+            "sourceNotes": [
+              "Hidden-beach discovery (2026-07): Η παραλία του οικισμού Θέρμα/Λουτρά στη βόρεια ακτή, ~13 χλμ από το λιμάνι. Η μόνη πλήρως οργανωμένη μαζί με την Παχιά Άμμο: OSM δείχνει leisure=beach_resort 337μ, Saoki Beach Bar 323μ, ντουζιέρες και αποδυτήρια ~316μ, πάρκινγκ 202μ. Πρόσβαση με άσφαλτο. Το polygon ήταν ανώνυμο στο OSM, γι' αυτό δεν το έπιανε το named harvest. Συντεταγμένες: OSM way 510452883 (ανώνυμο natural=beach polygon, 13μ από την ακτογραμμή). Slot κοντά στο #780 (Παραλία Μακρυλιές, 11274m). Πρόσβαση/χαρακτηριστικά από οδηγούς — ΔΕΝ έχουν επιβεβαιωθεί επιτόπου."
+            ],
+            "googleMapsNavigation": {
+              "status": "verified",
+              "mode": "coordinates",
+              "checkedAt": "2026-07-23",
+              "method": "guide-discovery-v1"
+            }
+          }
+        },
+        {
+          "id": 3162,
+          "name": "Κατσαμπάς",
+          "lat": 40.50092,
+          "lon": 25.5139,
+          "metadata": {
+            "access": {
+              "type": "asphalt_road",
+              "label": "άσφαλτος μέχρι κοντά στην παραλία",
+              "notes": "Παραλιακός επαρχιακός δρόμος. Χωρίς επιτόπου επιβεβαίωση."
+            },
+            "terrain": {
+              "types": [
+                "pebbles",
+                "rocks"
+              ],
+              "label": "βότσαλα, πέτρες"
+            },
+            "organized": false,
+            "shade": false,
+            "amenities": [],
+            "confidence": "low",
+            "language": "el",
+            "batch": "hidden_beach_discovery_samothraki_2026_07_27",
+            "needsVerification": true,
+            "activities": {
+              "surfing": false
+            },
+            "sourceUrls": [
+              "https://www.insamothraki.com/beaches-of-samothrace/",
+              "https://www.insamothraki.com/the-beaches-of-samothrace.html"
+            ],
+            "sourceNotes": [
+              "Hidden-beach discovery (2026-07): Τμήμα της συνεχούς βοτσαλωτής βόρειας ακτής, ανάμεσα σε Καμαριώτισσα και Παλαιόπολη. Μη οργανωμένη, με πρόσβαση από τον παραλιακό δρόμο. Επιβεβαίωση εγγύτητας: εστιατόριο/ξενοδοχείο «Κύματα» 107μ, οικισμός Κατσαμπάς 245μ. Συντεταγμένες: snap του οικισμού Κατσαμπάς (OSM node 1806375354) στην OSM ακτογραμμή. Slot κοντά στο #780 (Παραλία Μακρυλιές, 8596m). Πρόσβαση/χαρακτηριστικά από οδηγούς — ΔΕΝ έχουν επιβεβαιωθεί επιτόπου."
+            ],
+            "googleMapsNavigation": {
+              "status": "verified",
+              "mode": "coordinates",
+              "checkedAt": "2026-07-23",
+              "method": "guide-discovery-v1"
+            }
+          }
+        },
+        {
+          "id": 3163,
+          "name": "Κάτω Καρυώτες",
+          "lat": 40.50932,
+          "lon": 25.57057,
+          "metadata": {
+            "access": {
+              "type": "asphalt_road",
+              "label": "άσφαλτος μέχρι κοντά στην παραλία",
+              "notes": "Επαρχιακός δρόμος Καμαριώτισσα–Θέρμα. Χωρίς επιτόπου επιβεβαίωση."
+            },
+            "terrain": {
+              "types": [
+                "pebbles",
+                "rocks"
+              ],
+              "label": "βότσαλα, πέτρες"
+            },
+            "organized": false,
+            "shade": false,
+            "amenities": [],
+            "confidence": "low",
+            "language": "el",
+            "batch": "hidden_beach_discovery_samothraki_2026_07_27",
+            "needsVerification": true,
+            "activities": {
+              "surfing": false
+            },
+            "aliases": [
+              "Καρυώτες"
+            ],
+            "sourceUrls": [
+              "https://www.insamothraki.com/beaches-of-samothrace/",
+              "https://www.insamothraki.com/the-beaches-of-samothrace.html"
+            ],
+            "sourceNotes": [
+              "Hidden-beach discovery (2026-07): Τμήμα της βόρειας ακτής ανάμεσα σε Παλαιόπολη και Θέρμα, μη οργανωμένο, με πρόσβαση από τον δρόμο Καμαριώτισσα–Θέρμα (375μ). Επιβεβαίωση εγγύτητας: παραθαλάσσιο εστιατόριο 53μ, καταλύματα 187μ, οικισμός Κάτω Καρυώτες 483μ. Συντεταγμένες: snap του οικισμού Κάτω Καρυώτες (OSM node 764948075) στην OSM ακτογραμμή. Slot κοντά στο #780 (Παραλία Μακρυλιές, 10540m). Πρόσβαση/χαρακτηριστικά από οδηγούς — ΔΕΝ έχουν επιβεβαιωθεί επιτόπου."
+            ],
+            "googleMapsNavigation": {
+              "status": "verified",
+              "mode": "coordinates",
+              "checkedAt": "2026-07-23",
+              "method": "guide-discovery-v1"
+            }
+          }
+        },
+        {
+          "id": 3164,
+          "name": "Κήπος",
+          "lat": 40.42391,
+          "lon": 25.69184,
+          "metadata": {
+            "access": {
+              "type": "difficult_dirt_road",
+              "label": "Δύσβατος χωματόδρομος",
+              "notes": "Χωματόδρομος στο ανατολικό άκρο του νησιού· οι οδηγοί τον περιγράφουν ως απαιτητικό και κατά καιρούς σε κακή κατάσταση. Υπάρχει πάρκινγκ στο τέλος. Χωρίς επιτόπου επιβεβαίωση."
+            },
+            "terrain": {
+              "types": [
+                "pebbles",
+                "rocks"
+              ],
+              "label": "σκούρο βότσαλο, πέτρες"
+            },
+            "organized": false,
+            "shade": false,
+            "amenities": [],
+            "confidence": "low",
+            "language": "el",
+            "batch": "hidden_beach_discovery_samothraki_2026_07_27",
+            "needsVerification": true,
+            "activities": {
+              "surfing": false
+            },
+            "aliases": [
+              "Κήποι",
+              "Παραλία Κήπου"
+            ],
+            "sourceUrls": [
+              "https://www.insamothraki.com/beaches-of-samothrace/",
+              "https://www.athinorama.gr/travel/destinations/ellada/thraki/samothraki/paralies",
+              "https://www.openstreetmap.org/way/160205175"
+            ],
+            "sourceNotes": [
+              "Hidden-beach discovery (2026-07): Η πιο απομακρυσμένη παραλία του νησιού, στο ανατολικό/νοτιοανατολικό άκρο, κάτω από το Άκρα Κήπος. Πάνω από ένα χιλιόμετρο σκούρο βότσαλο σε άγριο τοπίο· τελευταίο σημείο που φτάνει αυτοκίνητο (χωματόδρομος). Επιβεβαίωση: named OSM polygon «Παραλία Κήπου», τοποθεσία Κήπος 115μ, πάρκινγκ 94μ, ακρωτήριο Άκρα Κήπος 550μ. Συντεταγμένες: OSM way 160205175 «Παραλία Κήπου» (natural=shingle — γι' αυτό δεν την πιάνει το natural=beach harvest). Slot κοντά στο #779 (Βάτος, 7833m). Πρόσβαση/χαρακτηριστικά από οδηγούς — ΔΕΝ έχουν επιβεβαιωθεί επιτόπου."
+            ],
+            "googleMapsNavigation": {
+              "status": "verified",
+              "mode": "coordinates",
+              "checkedAt": "2026-07-23",
+              "method": "guide-discovery-v1"
+            }
+          }
+        },
+        {
+          "id": 3165,
+          "name": "Λάκκωμα",
+          "lat": 40.42073,
+          "lon": 25.52675,
+          "metadata": {
+            "access": {
+              "type": "asphalt_road",
+              "label": "άσφαλτος μέχρι κοντά στην παραλία",
+              "notes": "Ασφαλτόδρομος από Καμαριώτισσα προς Λάκκωμα/Παχιά Άμμο. Χωρίς επιτόπου επιβεβαίωση."
+            },
+            "terrain": {
+              "types": [
+                "pebbles"
+              ],
+              "label": "κροκάλες"
+            },
+            "organized": false,
+            "shade": false,
+            "amenities": [],
+            "confidence": "low",
+            "language": "el",
+            "batch": "hidden_beach_discovery_samothraki_2026_07_27",
+            "needsVerification": true,
+            "activities": {
+              "surfing": false
+            },
+            "sourceUrls": [
+              "https://www.athinorama.gr/travel/destinations/ellada/thraki/samothraki/paralies",
+              "https://www.insamothraki.com/the-beaches-of-samothrace.html"
+            ],
+            "sourceNotes": [
+              "Hidden-beach discovery (2026-07): Μεγάλη ήσυχη παραλία με κροκάλες στη νοτιοδυτική ακτή, δίπλα στις Μακρυλιές, ~8 χλμ από το λιμάνι. Οι οδηγοί τη δίνουν μαζί με τις Μακρυλιές ως «μερικώς οργανωμένες» και αναφέρουν καταδυτικό κέντρο στην περιοχή. Επιβεβαίωση εγγύτητας: ταβέρνα «Το Ακρογιάλι» 483μ. Συντεταγμένες: snap του οικισμού Λάκκωμα (OSM node 61738205) στην OSM ακτογραμμή. Slot κοντά στο #780 (Παραλία Μακρυλιές, 869m). Πρόσβαση/χαρακτηριστικά από οδηγούς — ΔΕΝ έχουν επιβεβαιωθεί επιτόπου."
+            ],
+            "googleMapsNavigation": {
+              "status": "verified",
+              "mode": "coordinates",
+              "checkedAt": "2026-07-23",
+              "method": "guide-discovery-v1"
+            }
+          }
+        },
+        {
+          "id": 3166,
+          "name": "Παλαιόπολη",
+          "lat": 40.50478,
+          "lon": 25.52599,
+          "metadata": {
+            "access": {
+              "type": "asphalt_road",
+              "label": "άσφαλτος μέχρι κοντά στην παραλία",
+              "notes": "Παραλιακός επαρχιακός δρόμος Καμαριώτισσα–Θέρμα. Χωρίς επιτόπου επιβεβαίωση."
+            },
+            "terrain": {
+              "types": [
+                "pebbles",
+                "rocks"
+              ],
+              "label": "βότσαλα, πέτρες"
+            },
+            "organized": false,
+            "shade": false,
+            "amenities": [],
+            "confidence": "low",
+            "language": "el",
+            "batch": "hidden_beach_discovery_samothraki_2026_07_27",
+            "needsVerification": true,
+            "activities": {
+              "surfing": false
+            },
+            "aliases": [
+              "Παλαιόπολις"
+            ],
+            "sourceUrls": [
+              "https://www.insamothraki.com/beaches-of-samothrace/",
+              "https://www.insamothraki.com/the-beaches-of-samothrace.html"
+            ],
+            "sourceNotes": [
+              "Hidden-beach discovery (2026-07): Μακριά μη οργανωμένη παραλία με βότσαλο στη βόρεια ακτή, ακριβώς κάτω από το Ιερό των Μεγάλων Θεών. Επιβεβαίωση εγγύτητας: οικισμός Παλαιόπολη 269μ, Αρχαιολογικό Μουσείο Σαμοθράκης / Ιερό των Μεγάλων Θεών ~285μ. Συντεταγμένες: snap του οικισμού Παλαιόπολη (OSM node 764948072) στην OSM ακτογραμμή. Slot κοντά στο #780 (Παραλία Μακρυλιές, 9051m). Πρόσβαση/χαρακτηριστικά από οδηγούς — ΔΕΝ έχουν επιβεβαιωθεί επιτόπου."
+            ],
+            "googleMapsNavigation": {
+              "status": "verified",
+              "mode": "coordinates",
+              "checkedAt": "2026-07-23",
+              "method": "guide-discovery-v1"
+            }
+          }
+        },
+        {
+          "id": 3167,
+          "name": "Φονιάς",
+          "lat": 40.49239,
+          "lon": 25.65786,
+          "metadata": {
+            "access": {
+              "type": "asphalt_road",
+              "label": "άσφαλτος μέχρι κοντά στην παραλία",
+              "notes": "Επαρχιακός δρόμος Καμαριώτισσα–Θέρμα–Φονιάς με πάρκινγκ και στάση λεωφορείου. Χωρίς επιτόπου επιβεβαίωση."
+            },
+            "terrain": {
+              "types": [
+                "pebbles",
+                "coarse_sand"
+              ],
+              "label": "βότσαλα, χοντρή άμμος"
+            },
+            "organized": false,
+            "shade": false,
+            "amenities": [],
+            "confidence": "low",
+            "language": "el",
+            "batch": "hidden_beach_discovery_samothraki_2026_07_27",
+            "needsVerification": true,
+            "activities": {
+              "surfing": false
+            },
+            "aliases": [
+              "Πύργος Φονιά"
+            ],
+            "sourceUrls": [
+              "https://www.insamothraki.com/the-beaches-of-samothrace.html",
+              "https://www.travel.gr/experiences/oi-ammodeis-oi-apomonomenes-oi-agries/",
+              "https://www.openstreetmap.org/way/1292846845"
+            ],
+            "sourceNotes": [
+              "Hidden-beach discovery (2026-07): Παραλία στη βορειοανατολική ακτή, στις εκβολές του ρέματος Φονιάς, ~18 χλμ από το λιμάνι. Τριπλή επιβεβαίωση από το OSM: μεσαιωνικός Πύργος Φονιά 64μ, ρέμα «Φονιάς» 151μ, οικισμός Φονιάς 329μ, «Πάρκινγκ Φονιά» 346μ και στάση λεωφορείου 319μ. Μη οργανωμένη. Συντεταγμένες: OSM way 1292846845 (ανώνυμο natural=beach polygon, 22μ από την ακτογραμμή). Slot κοντά στο #779 (Βάτος, 11474m). Πρόσβαση/χαρακτηριστικά από οδηγούς — ΔΕΝ έχουν επιβεβαιωθεί επιτόπου."
+            ],
+            "googleMapsNavigation": {
+              "status": "verified",
+              "mode": "coordinates",
+              "checkedAt": "2026-07-23",
+              "method": "guide-discovery-v1"
+            }
+          }
         }
       ]
     },

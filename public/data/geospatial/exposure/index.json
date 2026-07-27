@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "generatedAt": "2026-07-25T15:20:36.574Z",
+  "generatedAt": "2026-07-27T17:47:53.777Z",
   "purpose": "Offline directional geospatial exposure baseline for CalmBeach. Not user-facing proof of calm/protected conditions.",
   "source": {
     "landMask": {
@@ -41,8 +41,8 @@
   },
   "summary": {
     "regionCount": 110,
-    "beachCount": 2842,
-    "generatedProfiles": 2842,
+    "beachCount": 2850,
+    "generatedProfiles": 2850,
     "missingCoordinates": 0,
     "indexedLandPolygons": 15946,
     "regions": {
@@ -1392,49 +1392,49 @@
       },
       "east-macedonia-and-thrace-samothraki": {
         "regionName": "Samothraki",
-        "beachCount": 3,
-        "generatedProfiles": 3,
+        "beachCount": 11,
+        "generatedProfiles": 11,
         "missingCoordinates": 0,
         "sectors": {
           "N": {
-            "protected": 3,
+            "protected": 6,
             "partial": 0,
-            "exposed": 0
+            "exposed": 5
           },
           "NE": {
-            "protected": 3,
+            "protected": 6,
             "partial": 0,
-            "exposed": 0
+            "exposed": 5
           },
           "E": {
-            "protected": 2,
-            "partial": 0,
-            "exposed": 1
+            "protected": 5,
+            "partial": 4,
+            "exposed": 2
           },
           "SE": {
-            "protected": 0,
-            "partial": 1,
-            "exposed": 2
+            "protected": 4,
+            "partial": 2,
+            "exposed": 5
           },
           "S": {
-            "protected": 0,
+            "protected": 5,
             "partial": 0,
-            "exposed": 3
+            "exposed": 6
           },
           "SW": {
-            "protected": 0,
+            "protected": 5,
             "partial": 1,
-            "exposed": 2
+            "exposed": 5
           },
           "W": {
-            "protected": 1,
-            "partial": 1,
-            "exposed": 1
+            "protected": 4,
+            "partial": 4,
+            "exposed": 3
           },
           "NW": {
-            "protected": 3,
+            "protected": 6,
             "partial": 0,
-            "exposed": 0
+            "exposed": 5
           }
         }
       },

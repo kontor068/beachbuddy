@@ -1,0 +1,305 @@
+{
+  "scope": {
+    "region": "East Macedonia and Thrace",
+    "prefecture": "Evros",
+    "municipality": "Samothraki"
+  },
+  "existing": 3,
+  "osm": {
+    "total": 11,
+    "namedGaps": [],
+    "unnamedGaps": [
+      {
+        "type": "way",
+        "id": 153801577,
+        "name": null,
+        "lat": 40.3955918,
+        "lon": 25.5936036,
+        "nearestDistM": 1092,
+        "nearest": "Βάτος (#779)"
+      },
+      {
+        "type": "way",
+        "id": 156960010,
+        "name": null,
+        "lat": 40.3944506,
+        "lon": 25.5906917,
+        "nearestDistM": 883,
+        "nearest": "Παχιά Άμμος (#781)"
+      },
+      {
+        "type": "way",
+        "id": 160205174,
+        "name": null,
+        "lat": 40.4084121,
+        "lon": 25.6447879,
+        "nearestDistM": 3494,
+        "nearest": "Βάτος (#779)"
+      },
+      {
+        "type": "way",
+        "id": 510452883,
+        "name": null,
+        "lat": 40.5028235,
+        "lon": 25.6004987,
+        "nearestDistM": 11274,
+        "nearest": "Παραλία Μακρυλιές (#780)"
+      },
+      {
+        "type": "way",
+        "id": 659800052,
+        "name": null,
+        "lat": 40.400329,
+        "lon": 25.617461,
+        "nearestDistM": 1012,
+        "nearest": "Βάτος (#779)"
+      },
+      {
+        "type": "way",
+        "id": 659800054,
+        "name": null,
+        "lat": 40.399292,
+        "lon": 25.6138451,
+        "nearestDistM": 685,
+        "nearest": "Βάτος (#779)"
+      },
+      {
+        "type": "way",
+        "id": 659801973,
+        "name": null,
+        "lat": 40.3968274,
+        "lon": 25.562094,
+        "nearestDistM": 1554,
+        "nearest": "Παχιά Άμμος (#781)"
+      },
+      {
+        "type": "way",
+        "id": 1292846845,
+        "name": null,
+        "lat": 40.4923881,
+        "lon": 25.6578629,
+        "nearestDistM": 11474,
+        "nearest": "Βάτος (#779)"
+      }
+    ]
+  },
+  "triage": [
+    {
+      "nameGr": "Κήπος",
+      "locality": "Σαμοθράκη",
+      "sources": [
+        "https://www.insamothraki.com/beaches-of-samothrace/",
+        "https://www.athinorama.gr/travel/destinations/ellada/thraki/samothraki/paralies"
+      ],
+      "status": "NO_GEOCODE"
+    },
+    {
+      "nameGr": "Λάκκωμα",
+      "locality": "Σαμοθράκη",
+      "sources": [
+        "https://www.athinorama.gr/travel/destinations/ellada/thraki/samothraki/paralies"
+      ],
+      "status": "NO_GEOCODE"
+    },
+    {
+      "nameGr": "Παλαιόπολη",
+      "locality": "Σαμοθράκη",
+      "sources": [
+        "https://www.insamothraki.com/beaches-of-samothrace/"
+      ],
+      "coord": {
+        "lat": 40.47428,
+        "lon": 25.4715
+      },
+      "coordSrc": "nominatim:Παλαιόπολη, Σαμοθράκη",
+      "nearestDistM": 6830,
+      "nearest": "Παραλία Μακρυλιές (#780)",
+      "osmWithin250": 0,
+      "status": "NEW_OSM_INVISIBLE"
+    },
+    {
+      "nameGr": "Θέρμα",
+      "locality": "Σαμοθράκη",
+      "sources": [
+        "https://www.insamothraki.com/beaches-of-samothrace/"
+      ],
+      "coord": {
+        "lat": 40.47428,
+        "lon": 25.4715
+      },
+      "coordSrc": "nominatim:Θέρμα, Σαμοθράκη",
+      "nearestDistM": 6830,
+      "nearest": "Παραλία Μακρυλιές (#780)",
+      "osmWithin250": 0,
+      "status": "NEW_OSM_INVISIBLE"
+    },
+    {
+      "nameGr": "Καμαριώτισσα",
+      "locality": "Σαμοθράκη",
+      "sources": [
+        "https://www.insamothraki.com/beaches-of-samothrace/"
+      ],
+      "coord": {
+        "lat": 40.47428,
+        "lon": 25.4715
+      },
+      "coordSrc": "nominatim:Καμαριώτισσα, Σαμοθράκη",
+      "nearestDistM": 6830,
+      "nearest": "Παραλία Μακρυλιές (#780)",
+      "osmWithin250": 0,
+      "status": "NEW_OSM_INVISIBLE"
+    },
+    {
+      "nameGr": "Φονιάς",
+      "locality": "Σαμοθράκη",
+      "sources": [
+        "https://www.insamothraki.com/beaches-of-samothrace/"
+      ],
+      "status": "NO_GEOCODE"
+    },
+    {
+      "nameGr": "Αγία Παρασκευή",
+      "locality": "Σαμοθράκη",
+      "sources": [
+        "https://www.insamothraki.com/beaches-of-samothrace/"
+      ],
+      "status": "NO_GEOCODE"
+    },
+    {
+      "nameGr": "Κατσαμπάς",
+      "locality": "Σαμοθράκη",
+      "sources": [
+        "https://www.insamothraki.com/beaches-of-samothrace/"
+      ],
+      "coord": {
+        "lat": 40.47428,
+        "lon": 25.4715
+      },
+      "coordSrc": "nominatim:Κατσαμπάς, Σαμοθράκη",
+      "nearestDistM": 6830,
+      "nearest": "Παραλία Μακρυλιές (#780)",
+      "osmWithin250": 0,
+      "status": "NEW_OSM_INVISIBLE"
+    },
+    {
+      "nameGr": "Βασιλικός",
+      "locality": "Σαμοθράκη",
+      "sources": [
+        "https://www.insamothraki.com/beaches-of-samothrace/"
+      ],
+      "status": "NO_GEOCODE"
+    },
+    {
+      "nameGr": "Αλεβάντζα",
+      "locality": "Σαμοθράκη",
+      "sources": [
+        "https://www.insamothraki.com/beaches-of-samothrace/"
+      ],
+      "status": "NO_GEOCODE"
+    },
+    {
+      "nameGr": "Κάτω Καριώτες",
+      "locality": "Σαμοθράκη",
+      "sources": [
+        "https://www.insamothraki.com/beaches-of-samothrace/"
+      ],
+      "status": "NO_GEOCODE"
+    },
+    {
+      "nameGr": "Λιμνίδι",
+      "locality": "Σαμοθράκη",
+      "sources": [
+        "https://www.insamothraki.com/beaches-of-samothrace/"
+      ],
+      "status": "NO_GEOCODE"
+    },
+    {
+      "nameGr": "Αγκαλούδα",
+      "locality": "Σαμοθράκη",
+      "sources": [
+        "https://www.insamothraki.com/beaches-of-samothrace/"
+      ],
+      "status": "NO_GEOCODE"
+    },
+    {
+      "nameGr": "Καρκάνης",
+      "locality": "Σαμοθράκη",
+      "sources": [
+        "https://www.insamothraki.com/beaches-of-samothrace/"
+      ],
+      "status": "NO_GEOCODE"
+    },
+    {
+      "nameGr": "Κατάρτι",
+      "locality": "Σαμοθράκη",
+      "sources": [
+        "https://www.insamothraki.com/beaches-of-samothrace/"
+      ],
+      "status": "NO_GEOCODE"
+    },
+    {
+      "nameGr": "Αγγελάδα",
+      "locality": "Σαμοθράκη",
+      "sources": [
+        "https://www.insamothraki.com/beaches-of-samothrace/"
+      ],
+      "status": "NO_GEOCODE"
+    },
+    {
+      "nameGr": "Γυαλί",
+      "locality": "Σαμοθράκη",
+      "sources": [
+        "https://www.insamothraki.com/beaches-of-samothrace/"
+      ],
+      "status": "NO_GEOCODE"
+    },
+    {
+      "nameGr": "Βούρλια",
+      "locality": "Σαμοθράκη",
+      "sources": [
+        "https://www.insamothraki.com/beaches-of-samothrace/"
+      ],
+      "status": "NO_GEOCODE"
+    },
+    {
+      "nameGr": "Στρογγυλός",
+      "locality": "Σαμοθράκη",
+      "sources": [
+        "https://www.insamothraki.com/beaches-of-samothrace/"
+      ],
+      "status": "NO_GEOCODE"
+    },
+    {
+      "nameGr": "Μακρύγιαλος",
+      "locality": "Σαμοθράκη",
+      "sources": [
+        "https://www.insamothraki.com/beaches-of-samothrace/"
+      ],
+      "status": "NO_GEOCODE"
+    },
+    {
+      "nameGr": "Αρχόντισσα",
+      "locality": "Σαμοθράκη",
+      "sources": [
+        "https://www.insamothraki.com/beaches-of-samothrace/"
+      ],
+      "status": "NO_GEOCODE"
+    },
+    {
+      "nameGr": "Κρεμαστά Νερά",
+      "locality": "Σαμοθράκη",
+      "sources": [
+        "https://www.travel.gr/experiences/oi-ammodeis-oi-apomonomenes-oi-agries/"
+      ],
+      "status": "NO_GEOCODE"
+    },
+    {
+      "nameGr": "Ανθρωπόλιθοι",
+      "locality": "Σαμοθράκη",
+      "sources": [
+        "https://www.travel.gr/experiences/oi-ammodeis-oi-apomonomenes-oi-agries/"
+      ],
+      "status": "NO_GEOCODE"
+    }
+  ]
+}

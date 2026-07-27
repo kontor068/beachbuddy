@@ -1,0 +1,186 @@
+{
+  "batch": "hidden_beach_discovery_samothraki_2026_07_27",
+  "note": "Σαμοθράκη: το εθνικό OSM harvest έχει μόνο 3 named natural=beach στο νησί, οπότε το coverage-gap pipeline έβγαζε gap=0 ενώ λείπει σχεδόν όλο το νησί (ιδίως η βόρεια ακτή). Κάθε pin εδώ έχει ΔΥΟ σήματα: (α) OSM γεωμετρία (natural=beach / natural=shingle polygon ή snap σε OSM coastline) και (β) ανεξάρτητο τοπωνύμιο ή beachfront POI (ρέμα, πύργος, οικισμός, ταβέρνα, beach bar). Όλα confidence:low + needsVerification. Δεν μπήκαν: η Καμαριώτισσα (το pin έπεφτε πάνω στο λιμάνι) και 5 ανώνυμα OSM polygons της νότιας ακτής (Αγκαλούδα/Καρκάνης/Κατάρτι/Αγγελάδα/Βούρλια — δεν μπόρεσα να αντιστοιχίσω όνομα σε polygon).",
+  "beaches": [
+    {
+      "nameGr": "Θέρμα",
+      "aliases": ["Λουτρά", "Θερμά Λουτρά"],
+      "lat": 40.50282,
+      "lon": 25.6005,
+      "region": "East Macedonia and Thrace",
+      "prefecture": "Evros",
+      "municipality": "Samothraki",
+      "coordSrc": "OSM way 510452883 (ανώνυμο natural=beach polygon, 13μ από την ακτογραμμή)",
+      "sourceNote": "Η παραλία του οικισμού Θέρμα/Λουτρά στη βόρεια ακτή, ~13 χλμ από το λιμάνι. Η μόνη πλήρως οργανωμένη μαζί με την Παχιά Άμμο: OSM δείχνει leisure=beach_resort 337μ, Saoki Beach Bar 323μ, ντουζιέρες και αποδυτήρια ~316μ, πάρκινγκ 202μ. Πρόσβαση με άσφαλτο. Το polygon ήταν ανώνυμο στο OSM, γι' αυτό δεν το έπιανε το named harvest.",
+      "sourceUrls": [
+        "https://www.insamothraki.com/the-beaches-of-samothrace.html",
+        "https://www.travel.gr/experiences/oi-ammodeis-oi-apomonomenes-oi-agries/",
+        "https://www.openstreetmap.org/way/510452883"
+      ],
+      "metadata": {
+        "access": { "type": "asphalt_road", "label": "άσφαλτος μέχρι κοντά στην παραλία", "notes": "Ασφαλτόδρομος από Καμαριώτισσα (~13 χλμ) μέχρι τον οικισμό Θέρμα· πάρκινγκ κοντά στην παραλία. Χωρίς επιτόπου επιβεβαίωση." },
+        "terrain": { "types": ["pebbles"], "label": "βότσαλα" },
+        "organized": true,
+        "shade": true,
+        "amenities": ["beach bar", "ντουζ", "αποδυτήρια"]
+      }
+    },
+    {
+      "nameGr": "Φονιάς",
+      "aliases": ["Πύργος Φονιά"],
+      "lat": 40.49239,
+      "lon": 25.65786,
+      "region": "East Macedonia and Thrace",
+      "prefecture": "Evros",
+      "municipality": "Samothraki",
+      "coordSrc": "OSM way 1292846845 (ανώνυμο natural=beach polygon, 22μ από την ακτογραμμή)",
+      "sourceNote": "Παραλία στη βορειοανατολική ακτή, στις εκβολές του ρέματος Φονιάς, ~18 χλμ από το λιμάνι. Τριπλή επιβεβαίωση από το OSM: μεσαιωνικός Πύργος Φονιά 64μ, ρέμα «Φονιάς» 151μ, οικισμός Φονιάς 329μ, «Πάρκινγκ Φονιά» 346μ και στάση λεωφορείου 319μ. Μη οργανωμένη.",
+      "sourceUrls": [
+        "https://www.insamothraki.com/the-beaches-of-samothrace.html",
+        "https://www.travel.gr/experiences/oi-ammodeis-oi-apomonomenes-oi-agries/",
+        "https://www.openstreetmap.org/way/1292846845"
+      ],
+      "metadata": {
+        "access": { "type": "asphalt_road", "label": "άσφαλτος μέχρι κοντά στην παραλία", "notes": "Επαρχιακός δρόμος Καμαριώτισσα–Θέρμα–Φονιάς με πάρκινγκ και στάση λεωφορείου. Χωρίς επιτόπου επιβεβαίωση." },
+        "terrain": { "types": ["pebbles", "coarse_sand"], "label": "βότσαλα, χοντρή άμμος" },
+        "organized": false,
+        "shade": false,
+        "amenities": []
+      }
+    },
+    {
+      "nameGr": "Κήπος",
+      "aliases": ["Κήποι", "Παραλία Κήπου"],
+      "lat": 40.42391,
+      "lon": 25.69184,
+      "region": "East Macedonia and Thrace",
+      "prefecture": "Evros",
+      "municipality": "Samothraki",
+      "coordSrc": "OSM way 160205175 «Παραλία Κήπου» (natural=shingle — γι' αυτό δεν την πιάνει το natural=beach harvest)",
+      "sourceNote": "Η πιο απομακρυσμένη παραλία του νησιού, στο ανατολικό/νοτιοανατολικό άκρο, κάτω από το Άκρα Κήπος. Πάνω από ένα χιλιόμετρο σκούρο βότσαλο σε άγριο τοπίο· τελευταίο σημείο που φτάνει αυτοκίνητο (χωματόδρομος). Επιβεβαίωση: named OSM polygon «Παραλία Κήπου», τοποθεσία Κήπος 115μ, πάρκινγκ 94μ, ακρωτήριο Άκρα Κήπος 550μ.",
+      "sourceUrls": [
+        "https://www.insamothraki.com/beaches-of-samothrace/",
+        "https://www.athinorama.gr/travel/destinations/ellada/thraki/samothraki/paralies",
+        "https://www.openstreetmap.org/way/160205175"
+      ],
+      "metadata": {
+        "access": { "type": "difficult_dirt_road", "label": "Δύσβατος χωματόδρομος", "notes": "Χωματόδρομος στο ανατολικό άκρο του νησιού· οι οδηγοί τον περιγράφουν ως απαιτητικό και κατά καιρούς σε κακή κατάσταση. Υπάρχει πάρκινγκ στο τέλος. Χωρίς επιτόπου επιβεβαίωση." },
+        "terrain": { "types": ["pebbles", "rocks"], "label": "σκούρο βότσαλο, πέτρες" },
+        "organized": false,
+        "shade": false,
+        "amenities": []
+      }
+    },
+    {
+      "nameGr": "Γυαλί",
+      "aliases": ["Γιαλί"],
+      "lat": 40.40841,
+      "lon": 25.64479,
+      "region": "East Macedonia and Thrace",
+      "prefecture": "Evros",
+      "municipality": "Samothraki",
+      "coordSrc": "OSM way 160205174 (ανώνυμο natural=beach polygon, 31μ από την ακτογραμμή)· όνομα από το OSM ρέμα «Γιαλί ρέμα» (way 160267595) 309μ μακριά",
+      "sourceNote": "Απομονωμένη παραλία της νοτιοανατολικής ακτής, ~3,5 χλμ ανατολικά του Βάτου, με λευκό βότσαλο και καθαρά νερά. Οι οδηγοί την κατατάσσουν στις παραλίες που προσεγγίζονται κυρίως με καραβάκι από την Καμαριώτισσα. Το όνομα ταυτοποιήθηκε από το ομώνυμο ρέμα που καταλήγει εκεί.",
+      "sourceUrls": [
+        "https://www.insamothraki.com/beaches-of-samothrace/",
+        "http://www.wondergreece.gr/v1/el/Perioxes/Samothraki/Fysi/Paralies/4929-Gyali",
+        "https://www.openstreetmap.org/way/160205174"
+      ],
+      "metadata": {
+        "access": { "type": "boat_only", "label": "μόνο με βάρκα ή σκάφος", "notes": "Οι οδηγοί αναφέρουν πρόσβαση με καραβάκι από την Καμαριώτισσα (κάτω από μία ώρα) ή με απαιτητική πεζοπορία. Χωρίς επιτόπου επιβεβαίωση." },
+        "terrain": { "types": ["pebbles"], "label": "λευκό βότσαλο" },
+        "organized": false,
+        "shade": false,
+        "amenities": []
+      }
+    },
+    {
+      "nameGr": "Λάκκωμα",
+      "aliases": [],
+      "lat": 40.42073,
+      "lon": 25.52675,
+      "region": "East Macedonia and Thrace",
+      "prefecture": "Evros",
+      "municipality": "Samothraki",
+      "coordSrc": "snap του οικισμού Λάκκωμα (OSM node 61738205) στην OSM ακτογραμμή",
+      "sourceNote": "Μεγάλη ήσυχη παραλία με κροκάλες στη νοτιοδυτική ακτή, δίπλα στις Μακρυλιές, ~8 χλμ από το λιμάνι. Οι οδηγοί τη δίνουν μαζί με τις Μακρυλιές ως «μερικώς οργανωμένες» και αναφέρουν καταδυτικό κέντρο στην περιοχή. Επιβεβαίωση εγγύτητας: ταβέρνα «Το Ακρογιάλι» 483μ.",
+      "sourceUrls": [
+        "https://www.athinorama.gr/travel/destinations/ellada/thraki/samothraki/paralies",
+        "https://www.insamothraki.com/the-beaches-of-samothrace.html"
+      ],
+      "metadata": {
+        "access": { "type": "asphalt_road", "label": "άσφαλτος μέχρι κοντά στην παραλία", "notes": "Ασφαλτόδρομος από Καμαριώτισσα προς Λάκκωμα/Παχιά Άμμο. Χωρίς επιτόπου επιβεβαίωση." },
+        "terrain": { "types": ["pebbles"], "label": "κροκάλες" },
+        "organized": false,
+        "shade": false,
+        "amenities": []
+      }
+    },
+    {
+      "nameGr": "Παλαιόπολη",
+      "aliases": ["Παλαιόπολις"],
+      "lat": 40.50478,
+      "lon": 25.52599,
+      "region": "East Macedonia and Thrace",
+      "prefecture": "Evros",
+      "municipality": "Samothraki",
+      "coordSrc": "snap του οικισμού Παλαιόπολη (OSM node 764948072) στην OSM ακτογραμμή",
+      "sourceNote": "Μακριά μη οργανωμένη παραλία με βότσαλο στη βόρεια ακτή, ακριβώς κάτω από το Ιερό των Μεγάλων Θεών. Επιβεβαίωση εγγύτητας: οικισμός Παλαιόπολη 269μ, Αρχαιολογικό Μουσείο Σαμοθράκης / Ιερό των Μεγάλων Θεών ~285μ.",
+      "sourceUrls": [
+        "https://www.insamothraki.com/beaches-of-samothrace/",
+        "https://www.insamothraki.com/the-beaches-of-samothrace.html"
+      ],
+      "metadata": {
+        "access": { "type": "asphalt_road", "label": "άσφαλτος μέχρι κοντά στην παραλία", "notes": "Παραλιακός επαρχιακός δρόμος Καμαριώτισσα–Θέρμα. Χωρίς επιτόπου επιβεβαίωση." },
+        "terrain": { "types": ["pebbles", "rocks"], "label": "βότσαλα, πέτρες" },
+        "organized": false,
+        "shade": false,
+        "amenities": []
+      }
+    },
+    {
+      "nameGr": "Κατσαμπάς",
+      "aliases": [],
+      "lat": 40.50092,
+      "lon": 25.5139,
+      "region": "East Macedonia and Thrace",
+      "prefecture": "Evros",
+      "municipality": "Samothraki",
+      "coordSrc": "snap του οικισμού Κατσαμπάς (OSM node 1806375354) στην OSM ακτογραμμή",
+      "sourceNote": "Τμήμα της συνεχούς βοτσαλωτής βόρειας ακτής, ανάμεσα σε Καμαριώτισσα και Παλαιόπολη. Μη οργανωμένη, με πρόσβαση από τον παραλιακό δρόμο. Επιβεβαίωση εγγύτητας: εστιατόριο/ξενοδοχείο «Κύματα» 107μ, οικισμός Κατσαμπάς 245μ.",
+      "sourceUrls": [
+        "https://www.insamothraki.com/beaches-of-samothrace/",
+        "https://www.insamothraki.com/the-beaches-of-samothrace.html"
+      ],
+      "metadata": {
+        "access": { "type": "asphalt_road", "label": "άσφαλτος μέχρι κοντά στην παραλία", "notes": "Παραλιακός επαρχιακός δρόμος. Χωρίς επιτόπου επιβεβαίωση." },
+        "terrain": { "types": ["pebbles", "rocks"], "label": "βότσαλα, πέτρες" },
+        "organized": false,
+        "shade": false,
+        "amenities": []
+      }
+    },
+    {
+      "nameGr": "Κάτω Καρυώτες",
+      "aliases": ["Καρυώτες"],
+      "lat": 40.50932,
+      "lon": 25.57057,
+      "region": "East Macedonia and Thrace",
+      "prefecture": "Evros",
+      "municipality": "Samothraki",
+      "coordSrc": "snap του οικισμού Κάτω Καρυώτες (OSM node 764948075) στην OSM ακτογραμμή",
+      "sourceNote": "Τμήμα της βόρειας ακτής ανάμεσα σε Παλαιόπολη και Θέρμα, μη οργανωμένο, με πρόσβαση από τον δρόμο Καμαριώτισσα–Θέρμα (375μ). Επιβεβαίωση εγγύτητας: παραθαλάσσιο εστιατόριο 53μ, καταλύματα 187μ, οικισμός Κάτω Καρυώτες 483μ.",
+      "sourceUrls": [
+        "https://www.insamothraki.com/beaches-of-samothrace/",
+        "https://www.insamothraki.com/the-beaches-of-samothrace.html"
+      ],
+      "metadata": {
+        "access": { "type": "asphalt_road", "label": "άσφαλτος μέχρι κοντά στην παραλία", "notes": "Επαρχιακός δρόμος Καμαριώτισσα–Θέρμα. Χωρίς επιτόπου επιβεβαίωση." },
+        "terrain": { "types": ["pebbles", "rocks"], "label": "βότσαλα, πέτρες" },
+        "organized": false,
+        "shade": false,
+        "amenities": []
+      }
+    }
+  ]
+}

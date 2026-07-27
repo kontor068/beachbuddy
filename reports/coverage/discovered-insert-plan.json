@@ -1,137 +1,83 @@
 {
   "_meta": {
-    "batch": "hidden_beach_discovery_2026_07_pelion",
+    "batch": "hidden_beach_discovery_samothraki_2026_07_27",
     "aliases": 0,
-    "inserts": 14,
+    "inserts": 8,
     "skips": 0
   },
   "aliases": [],
   "inserts": [
     {
-      "name": "Τζάστενη",
-      "region": "Thessaly",
-      "municipality": "Magnesia (mainland - Pelion)",
-      "lat": 39.12803,
-      "lon": 23.16291,
-      "access": "hiking_path_easy",
-      "neighbor": "#2666 Δερμαριά (Πτελεός) (4046m)"
+      "name": "Θέρμα",
+      "region": "East Macedonia and Thrace",
+      "municipality": "Samothraki",
+      "lat": 40.50282,
+      "lon": 25.6005,
+      "access": "asphalt_road",
+      "neighbor": "#780 Παραλία Μακρυλιές (11274m)"
     },
     {
-      "name": "Πράσινη Άμμος",
-      "region": "Thessaly",
-      "municipality": "Magnesia (mainland - Pelion)",
-      "lat": 39.16499,
-      "lon": 23.06908,
-      "access": "hiking_path_difficult",
-      "neighbor": "#2667 Ιζγκούδ (Τρίκερι) (3237m)"
+      "name": "Φονιάς",
+      "region": "East Macedonia and Thrace",
+      "municipality": "Samothraki",
+      "lat": 40.49239,
+      "lon": 25.65786,
+      "access": "asphalt_road",
+      "neighbor": "#779 Βάτος (11474m)"
     },
     {
-      "name": "Αγία Βάσω",
-      "region": "Thessaly",
-      "municipality": "Magnesia (mainland - Pelion)",
-      "lat": 39.08744,
-      "lon": 23.11706,
+      "name": "Κήπος",
+      "region": "East Macedonia and Thrace",
+      "municipality": "Samothraki",
+      "lat": 40.42391,
+      "lon": 25.69184,
       "access": "difficult_dirt_road",
-      "neighbor": "#2667 Ιζγκούδ (Τρίκερι) (6467m)"
+      "neighbor": "#779 Βάτος (7833m)"
     },
     {
-      "name": "Αλογόπορος",
-      "region": "Thessaly",
-      "municipality": "Magnesia (mainland - Pelion)",
-      "lat": 39.14422,
-      "lon": 23.0817,
+      "name": "Γυαλί",
+      "region": "East Macedonia and Thrace",
+      "municipality": "Samothraki",
+      "lat": 40.40841,
+      "lon": 25.64479,
+      "access": "boat_only",
+      "neighbor": "#779 Βάτος (3494m)"
+    },
+    {
+      "name": "Λάκκωμα",
+      "region": "East Macedonia and Thrace",
+      "municipality": "Samothraki",
+      "lat": 40.42073,
+      "lon": 25.52675,
       "access": "asphalt_road",
-      "neighbor": "#2667 Ιζγκούδ (Τρίκερι) (987m)"
+      "neighbor": "#780 Παραλία Μακρυλιές (869m)"
     },
     {
-      "name": "Θεριάκοντας",
-      "region": "Thessaly",
-      "municipality": "Magnesia (mainland - Pelion)",
-      "lat": 39.14114,
-      "lon": 23.07445,
-      "access": "difficult_dirt_road",
-      "neighbor": "#2667 Ιζγκούδ (Τρίκερι) (1600m)"
-    },
-    {
-      "name": "Κατηγιώργης",
-      "region": "Thessaly",
-      "municipality": "Magnesia (mainland - Pelion)",
-      "lat": 39.17259,
-      "lon": 23.34299,
+      "name": "Παλαιόπολη",
+      "region": "East Macedonia and Thrace",
+      "municipality": "Samothraki",
+      "lat": 40.50478,
+      "lon": 25.52599,
       "access": "asphalt_road",
-      "neighbor": "#2680 Βλαχόρεμα (756m)"
+      "neighbor": "#780 Παραλία Μακρυλιές (9051m)"
     },
     {
-      "name": "Πλατανιάς",
-      "region": "Thessaly",
-      "municipality": "Magnesia (mainland - Pelion)",
-      "lat": 39.1399,
-      "lon": 23.26985,
+      "name": "Κατσαμπάς",
+      "region": "East Macedonia and Thrace",
+      "municipality": "Samothraki",
+      "lat": 40.50092,
+      "lon": 25.5139,
       "access": "asphalt_road",
-      "neighbor": "#2697 Μικρό (660m)"
+      "neighbor": "#780 Παραλία Μακρυλιές (8596m)"
     },
     {
-      "name": "Παλιουράκια",
-      "region": "Thessaly",
-      "municipality": "Magnesia (mainland - Pelion)",
-      "lat": 39.14756,
-      "lon": 23.31617,
-      "access": "hiking_path_easy",
-      "neighbor": "#2692 Λεπετούς (347m)"
-    },
-    {
-      "name": "Καμάρι Κεραμιδίου",
-      "region": "Thessaly",
-      "municipality": "Magnesia (mainland - Pelion)",
-      "lat": 39.57458,
-      "lon": 22.93502,
+      "name": "Κάτω Καρυώτες",
+      "region": "East Macedonia and Thrace",
+      "municipality": "Samothraki",
+      "lat": 40.50932,
+      "lon": 25.57057,
       "access": "asphalt_road",
-      "neighbor": "#3111 Άι Γιάννης (Κεραμίδι, Πήλιο) (1426m)"
-    },
-    {
-      "name": "Οβριός",
-      "region": "Thessaly",
-      "municipality": "Magnesia (mainland - Pelion)",
-      "lat": 39.50746,
-      "lon": 23.07965,
-      "access": "difficult_dirt_road",
-      "neighbor": "#2707 Παραλία Ελίτσα (4333m)"
-    },
-    {
-      "name": "Κάλα Νερά",
-      "region": "Thessaly",
-      "municipality": "Magnesia (mainland - Pelion)",
-      "lat": 39.305,
-      "lon": 23.1203,
-      "access": "asphalt_road",
-      "neighbor": "#2685 Καλλιφτέρη (4553m)"
-    },
-    {
-      "name": "Κάλαμος Πηλίου",
-      "region": "Thessaly",
-      "municipality": "Magnesia (mainland - Pelion)",
-      "lat": 39.22668,
-      "lon": 23.18263,
-      "access": "asphalt_road",
-      "neighbor": "#2682 Γούρνα (2211m)"
-    },
-    {
-      "name": "Μεγάλη Πάου",
-      "region": "Thessaly",
-      "municipality": "Magnesia (mainland - Pelion)",
-      "lat": 39.20311,
-      "lon": 23.19633,
-      "access": "asphalt_road",
-      "neighbor": "#2709 Παραλία Κορνέλια (1243m)"
-    },
-    {
-      "name": "Μικρή Πάου",
-      "region": "Thessaly",
-      "municipality": "Magnesia (mainland - Pelion)",
-      "lat": 39.20691,
-      "lon": 23.19329,
-      "access": "passable_dirt_road",
-      "neighbor": "#2709 Παραλία Κορνέλια (1734m)"
+      "neighbor": "#780 Παραλία Μακρυλιές (10540m)"
     }
   ],
   "skips": []
