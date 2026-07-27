@@ -83,7 +83,11 @@ export const tripPlannerCopy: Record<LanguageCode, TripPlannerCopy> = {
       cove_refuge: (windFrom) => `Κλειστός όρμος — ο αέρας ${windFrom} δεν μπαίνει.`,
       sheltered: (windFrom) => `Προστατευμένη ${windFrom} — πιο ήρεμη από την εκτεθειμένη πλευρά, αλλά με λίγο αέρα κι εδώ.`,
       partial_shelter: (windFrom) => `Μερική προστασία ${windFrom} — θα έχει κάποιο κύμα.`,
-      best_available: (windFrom, beaufort) => `Η πιο ήρεμη επιλογή για μέρα ${beaufort} μποφόρ ${windFrom} — αέρας και κύμα.`,
+      // Caution wording ONLY from 5 Bft up — 3-4 is a light/moderate breeze and
+      // "αέρας και κύμα" there read alarmist on a fine summer day.
+      best_available: (windFrom, beaufort) => (beaufort >= 5
+        ? `Η πιο ήρεμη επιλογή για μέρα ${beaufort} μποφόρ ${windFrom} — αέρας και κύμα.`
+        : `Η καλύτερη επιλογή για ${beaufort} μποφόρ ${windFrom}.`),
     },
     ifWindHolds: 'αν κρατήσει ο άνεμος από εκεί.',
     reasons: {
@@ -122,7 +126,9 @@ export const tripPlannerCopy: Record<LanguageCode, TripPlannerCopy> = {
       cove_refuge: (windFrom) => `A closed cove — the wind ${windFrom} does not get in.`,
       sheltered: (windFrom) => `Sheltered ${windFrom} — calmer than the exposed side, with a little wind even here.`,
       partial_shelter: (windFrom) => `Partial shelter ${windFrom} — expect some chop.`,
-      best_available: (windFrom, beaufort) => `The calmest option on a ${beaufort} Beaufort day ${windFrom} — wind and waves.`,
+      best_available: (windFrom, beaufort) => (beaufort >= 5
+        ? `The calmest option on a ${beaufort} Beaufort day ${windFrom} — wind and waves.`
+        : `The best option for ${beaufort} Beaufort ${windFrom}.`),
     },
     ifWindHolds: 'if the wind holds from that direction.',
     reasons: {
@@ -159,7 +165,9 @@ export const tripPlannerCopy: Record<LanguageCode, TripPlannerCopy> = {
       cove_refuge: (windFrom) => `Eine geschlossene Bucht — der Wind ${windFrom} kommt nicht hinein.`,
       sheltered: (windFrom) => `Geschützt vor Wind ${windFrom} — ruhiger als die exponierte Seite, mit etwas Wind auch hier.`,
       partial_shelter: (windFrom) => `Teilweise geschützt vor Wind ${windFrom} — mit etwas Welle ist zu rechnen.`,
-      best_available: (windFrom, beaufort) => `Die ruhigste Option an einem Tag mit ${beaufort} Beaufort ${windFrom} — Wind und Wellen.`,
+      best_available: (windFrom, beaufort) => (beaufort >= 5
+        ? `Die ruhigste Option an einem Tag mit ${beaufort} Beaufort ${windFrom} — Wind und Wellen.`
+        : `Die beste Wahl bei ${beaufort} Beaufort ${windFrom}.`),
     },
     ifWindHolds: 'falls der Wind aus dieser Richtung bleibt.',
     reasons: {
@@ -196,7 +204,9 @@ export const tripPlannerCopy: Record<LanguageCode, TripPlannerCopy> = {
       cove_refuge: (windFrom) => `Una cala chiusa — il vento ${windFrom} non entra.`,
       sheltered: (windFrom) => `Riparata dal vento ${windFrom} — più calma del lato esposto, con un po' di vento anche qui.`,
       partial_shelter: (windFrom) => `Riparo parziale dal vento ${windFrom} — aspettati un po' di onda.`,
-      best_available: (windFrom, beaufort) => `L'opzione più calma in una giornata di ${beaufort} Beaufort ${windFrom} — vento e onde.`,
+      best_available: (windFrom, beaufort) => (beaufort >= 5
+        ? `L'opzione più calma in una giornata di ${beaufort} Beaufort ${windFrom} — vento e onde.`
+        : `La scelta migliore con ${beaufort} Beaufort ${windFrom}.`),
     },
     ifWindHolds: 'se il vento tiene da quella direzione.',
     reasons: {
@@ -233,7 +243,9 @@ export const tripPlannerCopy: Record<LanguageCode, TripPlannerCopy> = {
       cove_refuge: (windFrom) => `Une crique fermée — le vent ${windFrom} n'y entre pas.`,
       sheltered: (windFrom) => `Abritée du vent ${windFrom} — plus calme que le côté exposé, avec un peu de vent ici aussi.`,
       partial_shelter: (windFrom) => `Abri partiel du vent ${windFrom} — attendez-vous à un peu de clapot.`,
-      best_available: (windFrom, beaufort) => `L'option la plus calme un jour de ${beaufort} Beaufort ${windFrom} — vent et vagues.`,
+      best_available: (windFrom, beaufort) => (beaufort >= 5
+        ? `L'option la plus calme un jour de ${beaufort} Beaufort ${windFrom} — vent et vagues.`
+        : `Le meilleur choix par ${beaufort} Beaufort ${windFrom}.`),
     },
     ifWindHolds: 'si le vent tient de cette direction.',
     reasons: {

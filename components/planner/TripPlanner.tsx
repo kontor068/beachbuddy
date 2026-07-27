@@ -126,7 +126,7 @@ export const TripPlanner: React.FC<TripPlannerProps> = ({
 
   const beyond = days ? Math.max(0, days - forecast.length) : 0;
   const hasProvisional = plan.some(entry => entry.confidence === 'provisional');
-  const hasCaution = plan.some(entry => entry.pick?.caution);
+  const hasCaution = plan.some(entry => entry.pick?.caution && entry.pick.windBeaufort >= 5);
   const hasRefuge = plan.some(entry => entry.isRefuge);
 
   return (
@@ -221,7 +221,11 @@ export const TripPlanner: React.FC<TripPlannerProps> = ({
                             {c.refugeBadge}
                           </span>
                         )}
-                        {entry.pick.caution && (
+                        {/* Caution wording only from 5 Bft up: the project rule
+                            is that 3-4 Bft is a light/moderate breeze and never
+                            earns it. Below that the why-line already states the
+                            wind, which is the honest signal without the alarm. */}
+                        {entry.pick.caution && entry.pick.windBeaufort >= 5 && (
                           <span className="rounded-full bg-orange-50 px-1.5 py-0.5 text-[10px] font-bold text-orange-700 ring-1 ring-orange-100">
                             {c.cautionBadge}
                           </span>

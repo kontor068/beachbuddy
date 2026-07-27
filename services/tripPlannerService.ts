@@ -276,7 +276,12 @@ const resolveWhyKey = (input: {
   enclosedCove: boolean;
 }): TripWhyKey => {
   if (input.caution) return 'best_available';
-  if (input.windBeaufort <= 2) return 'calm_everywhere';
+  // <= 3 Bft, not <= 2: the project rule is that 3-4 Bft is a light/moderate
+  // breeze and never earns caution wording (see the beach-card copy doctrine),
+  // and the homepage's own day summary already says "most beaches look
+  // suitable" at <= 3. Claiming shelter on a day nobody needs it read as
+  // over-dramatic on a 32 degree, 3 Bft July Monday.
+  if (input.windBeaufort <= 3) return 'calm_everywhere';
   if (!input.hasEvidence) return 'best_available';
   if (input.enclosedCove && input.canClaimWindProtection && input.exposureLevel === 'protected') return 'cove_refuge';
   if (input.exposureLevel === 'protected' && input.canClaimWindProtection) return 'sheltered';
