@@ -11,6 +11,7 @@ import { getSelectedDayPrefix } from '../utils/dateLabels';
 import { athensNow } from '../utils/athensTime';
 import { getWaveCondition, getBeaufortLevel } from '../utils/weatherUtils';
 import { getBeachPhotoLookup } from '../services/beachPhotos';
+import { BeachPhotoFallback } from './ShorelineThumbnail';
 
 interface BeachOfTheDayProps {
   topBeach: SuitableBeach;
@@ -157,8 +158,9 @@ const BeachOfTheDay: React.FC<BeachOfTheDayProps> = ({ topBeach, language, t, on
     <div
       className="relative overflow-hidden rounded-3xl border border-white/70 bg-white/84 shadow-lg shadow-cyan-900/5 backdrop-blur-xl dark:border-slate-800 dark:bg-slate-950/88"
     >
-      {heroPhoto && (
       <div className="relative h-40 overflow-hidden sm:h-56 md:h-64">
+        {heroPhoto ? (
+        <>
           <img
             src={heroPhoto}
             alt={beachDisplayName}
@@ -171,9 +173,17 @@ const BeachOfTheDay: React.FC<BeachOfTheDayProps> = ({ topBeach, language, t, on
             sizes="(min-width: 768px) 768px, 100vw"
             onError={() => setPhotoIndex((current) => current + 1)}
           />
-        <div className="absolute inset-0 bg-gradient-to-t from-slate-950/40 via-slate-950/5 to-white/10" />
+          <div className="absolute inset-0 bg-gradient-to-t from-slate-950/40 via-slate-950/5 to-white/10" />
+        </>
+        ) : (
+          <BeachPhotoFallback
+            beach={beach}
+            language={language}
+            beachName={beachDisplayName}
+            size="full"
+          />
+        )}
       </div>
-      )}
       <div className="relative z-10 p-3 sm:p-6 md:p-7">
         <div className="space-y-3 sm:space-y-4">
           <div className="space-y-1.5 sm:space-y-2">

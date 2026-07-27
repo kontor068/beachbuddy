@@ -5,6 +5,8 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
+    "build:shorelines": "node scripts/buildShorelineThumbs.mjs",
+    "quality:shorelines": "node scripts/validateShorelineShapes.mjs",
     "build:beach-data": "node scripts/buildBeachRegionData.mjs && node scripts/bakeLocalWindShelter.mjs && node scripts/splitBeachStories.mjs",
     "camping:harvest": "node scripts/harvestCampsitesOsm.mjs",
     "camping:link": "node scripts/linkCampsitesToBeaches.mjs match",
@@ -45,7 +47,7 @@
     "images:strips": "node scripts/optimizeStripImages.mjs",
     "images:region-strips": "node scripts/buildRegionStripPhotos.mjs",
     "images:source-region-strips": "node scripts/sourceRegionStripImages.mjs",
-    "build": "node scripts/checkBeachContract.mjs && node scripts/buildLegalPages.mjs && node scripts/splitBeachStories.mjs && node scripts/generateCuratedPhotoAvif.mjs && vite build && node scripts/stampServiceWorker.mjs && node scripts/prerenderBeachPages.mjs && node scripts/applyDeployContextGuards.mjs",
+    "build": "node scripts/checkBeachContract.mjs && node scripts/buildShorelineThumbs.mjs && node scripts/buildLegalPages.mjs && node scripts/splitBeachStories.mjs && node scripts/generateCuratedPhotoAvif.mjs && vite build && node scripts/stampServiceWorker.mjs && node scripts/prerenderBeachPages.mjs && node scripts/applyDeployContextGuards.mjs",
     "build:legal": "node scripts/buildLegalPages.mjs",
     "lint": "tsc --noEmit",
     "preview": "vite preview",

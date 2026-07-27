@@ -22,6 +22,15 @@ const checks = [
     args: ['scripts/validateCriticalBeachData.mjs'],
   },
   {
+    id: 'shoreline-shapes',
+    title: 'Shoreline thumbnails',
+    description: 'Checks the committed per-beach shoreline drawings still match the beach coordinates and coastline they were built from, and that every drawing is left-to-right with the beach sitting on its own waterline.',
+    protects: 'Prevents a corrected pin from leaving behind a confident-looking map of where the beach used to be.',
+    failureAction: 'Run: npm run build:shorelines, then commit the regenerated public/data/coastline/shape/*.json.',
+    command: process.execPath,
+    args: ['scripts/validateShorelineShapes.mjs'],
+  },
+  {
     id: 'wind-exposure',
     title: 'Wind exposure engine',
     description: 'Runs wind exposure validation scenarios for shelter, fetch, confidence, and protected/calm label behavior.',

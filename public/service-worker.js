@@ -117,8 +117,16 @@ self.addEventListener('fetch', event => {
   }
 
   // 3. Beach Dataset (Network First)
-  // Beach counts and attributes must update immediately after data rebuilds.
-  if (url.origin === self.location.origin && (url.pathname === '/greek_beaches.json' || url.pathname.startsWith('/data/beaches/'))) {
+  // Beach counts and attributes must update immediately after data rebuilds. The shoreline
+  // drawings live under /data/coastline/shape/ and are rebuilt from the same source, so they
+  // follow the same rule — a cached shoreline outliving a pin correction is exactly the
+  // staleness the build-time guard exists to prevent.
+  if (
+    url.origin === self.location.origin &&
+    (url.pathname === '/greek_beaches.json' ||
+      url.pathname.startsWith('/data/beaches/') ||
+      url.pathname.startsWith('/data/coastline/'))
+  ) {
     event.respondWith(
       fetch(event.request, { cache: 'no-store' })
         .then(networkResponse => {

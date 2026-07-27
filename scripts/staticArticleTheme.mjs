@@ -90,6 +90,10 @@ a:focus-visible,button:focus-visible{outline:3px solid var(--cb-brand);outline-o
 /* No photo yet: a calm tinted panel with a wave motif, never a broken frame. */
 .cb-fig-none{display:flex;align-items:flex-end;background:linear-gradient(160deg,#BFE3EE,#8FC9DC 60%,#E4D6BC)}
 .cb-fig-none svg{width:100%;height:52%;display:block;fill:rgba(255,255,255,.42)}
+/* No photo but we DO know the coast: the beach's own shoreline, inlined. The
+   drawing is 200x120 in a 4:3 frame, so it is cropped left/right (never top or
+   bottom) — xMidYMid keeps the pin, which sits dead centre, always in view. */
+.cb-fig-shore svg{display:block;width:100%;height:100%}
 .cb-card-body{padding:12px 13px 14px;display:flex;flex-direction:column;gap:6px;flex:1}
 .cb-card-name{font-size:16.5px;font-weight:800;letter-spacing:-.01em;color:var(--cb-brand-deep);text-decoration:none}
 .cb-card a.cb-card-name::after{content:"";position:absolute;inset:0}

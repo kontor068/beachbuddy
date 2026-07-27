@@ -82,6 +82,8 @@ const ENABLE_DAY_PLAN_SECTION = false;
 const BeachMap = React.lazy(() => import('../components/BeachMap'));
 
 import { getBeachPhotoLookup } from '../services/beachPhotos';
+import { BeachPhotoFallback, deriveShorelineFeatures, ShorelineThumbnail, useShorelineShape } from '../components/ShorelineThumbnail';
+import type { ShorelineShape } from '../services/shorelineShapeService';
 
 const getDetailBadgeScore = (score: number, seaScore: number, isExposed: boolean): number => {
   if (seaScore >= 8) return Math.max(score, 76);
@@ -89,36 +91,67 @@ const getDetailBadgeScore = (score: number, seaScore: number, isExposed: boolean
   return score;
 };
 
-const detailPhotoPlaceholderCopy: Record<LanguageCode, { title: string; body: string }> = {
+const shorelineCaptionCopy: Record<LanguageCode, { title: string; body: string }> = {
   en: {
-    title: 'Photo coming soon',
-    body: 'Until then, we show the key beach details.',
+    title: 'The shape of this shore',
+    body: 'Mapped from the coastline itself. The sea is at the top.',
   },
   gr: {
-    title: 'Φωτογραφία σύντομα',
-    body: 'Μέχρι τότε, δείχνουμε τα βασικά στοιχεία της παραλίας.',
+    title: 'Το σχήμα αυτής της ακτής',
+    body: 'Από τη χαρτογράφηση της ίδιας της ακτογραμμής. Η θάλασσα είναι προς τα πάνω.',
   },
   de: {
-    title: 'Foto folgt bald',
-    body: 'Bis dahin zeigen wir die wichtigsten Strandinfos.',
+    title: 'Die Form dieser Küste',
+    body: 'Aus der Küstenlinie selbst kartiert. Das Meer liegt oben.',
   },
   it: {
-    title: 'Foto in arrivo',
-    body: 'Nel frattempo mostriamo le informazioni essenziali.',
+    title: 'La forma di questa costa',
+    body: 'Mappata dalla linea di costa stessa. Il mare è in alto.',
   },
   fr: {
-    title: 'Photo bientôt disponible',
-    body: 'En attendant, nous affichons les informations clés.',
+    title: 'La forme de ce littoral',
+    body: 'Cartographiée depuis le littoral lui-même. La mer est en haut.',
   },
 };
 
-const BeachDetailPhotoPlaceholder: React.FC<{ beachName: string; language: LanguageCode }> = ({ beachName, language }) => {
-  const copy = detailPhotoPlaceholderCopy[language] || detailPhotoPlaceholderCopy.en;
+const BeachDetailShorelinePanel: React.FC<{
+  shape: ShorelineShape;
+  beach: Beach;
+  beachName: string;
+  language: LanguageCode;
+}> = ({ shape, beach, beachName, language }) => {
+  const copy = shorelineCaptionCopy[language] || shorelineCaptionCopy.en;
 
+  return (
+    <div className="relative aspect-[16/9] max-h-56 overflow-hidden rounded-[2rem] border border-cyan-100/80 bg-sky-100 shadow-sm shadow-sky-900/5">
+      <ShorelineThumbnail
+        shape={shape}
+        beachName={beachName}
+        language={language}
+        features={deriveShorelineFeatures(beach)}
+        seed={beach.id}
+        size="full"
+      />
+      <div className="absolute inset-x-4 bottom-4 rounded-2xl border border-cyan-100/90 bg-white/82 p-3 shadow-sm shadow-sky-900/10 backdrop-blur-md">
+        <p className="text-sm font-bold text-cyan-900">{copy.title}</p>
+        <p className="mt-1 text-xs font-semibold leading-snug text-slate-600">
+          {copy.body}
+        </p>
+      </div>
+    </div>
+  );
+};
+
+/**
+ * Shown only for the ~7% of beaches with neither a photo nor usable coastline geometry.
+ * It says nothing on purpose: the ask for a photo belongs to the contribution prompt right
+ * below it, phrased as an invitation, not as an apology stamped over every quiet beach.
+ */
+const BeachDetailPhotoPlaceholder: React.FC = () => {
   return (
     <div
       className="relative aspect-[16/9] max-h-56 overflow-hidden rounded-[2rem] border border-cyan-100/80 bg-gradient-to-br from-cyan-50 via-sky-50 to-teal-50 shadow-sm shadow-sky-900/5"
-      aria-label={`${copy.title}: ${beachName}`}
+      aria-hidden="true"
     >
       <div className="absolute -left-8 -top-10 h-32 w-32 rounded-full bg-cyan-200/40 blur-2xl" />
       <div className="absolute right-7 top-7 h-16 w-16 rounded-full border border-white/55 bg-white/34 shadow-inner shadow-white/40" />
@@ -134,13 +167,6 @@ const BeachDetailPhotoPlaceholder: React.FC<{ beachName: string; language: Langu
         <path d="M0 138 C90 132 150 133 230 137 C300 141 350 138 400 134 L400 160 L0 160 Z" fill="currentColor" />
       </svg>
       <div className="absolute inset-0 bg-gradient-to-t from-white/54 via-transparent to-white/12" />
-      <div className="absolute left-4 top-4 grid h-11 w-11 place-items-center rounded-2xl border border-cyan-100/90 bg-white/70 text-cyan-700 shadow-sm shadow-sky-900/10 backdrop-blur-md">
-        <Waves className="h-5 w-5" aria-hidden="true" />
-      </div>
-      <div className="absolute inset-x-4 bottom-4 rounded-2xl border border-cyan-100/90 bg-white/78 p-3 shadow-sm shadow-sky-900/10 backdrop-blur-md">
-        <p className="text-sm font-bold text-cyan-900">{copy.title}</p>
-        <p className="mt-1 text-xs font-semibold leading-snug text-slate-600">{copy.body}</p>
-      </div>
     </div>
   );
 };
@@ -851,6 +877,8 @@ export const BeachDetailPage: React.FC<BeachDetailPageProps> = ({
   const windSpeedKmh = weatherData.wind.speed * 3.6;
   const windDir = degToCompass(weatherData.wind.deg);
   const windDirectionLabel = t.windDirectionsAccusative?.[windDir as WindDirection] || t.windDirections[windDir as WindDirection] || windDir;
+  // Real shoreline geometry, drawn in the photo slot when this beach has no photo.
+  const shorelineShape = useShorelineShape(beach.regionId ?? regionId, beach.id);
   const geospatialExposure = geospatialExposureProfiles?.[beach.id];
   const scoreResult = calculateBeachScore(beach, weatherData, userLocation, preferences, {
     weatherSource: scoringWeatherSource,
@@ -1716,7 +1744,16 @@ export const BeachDetailPage: React.FC<BeachDetailPageProps> = ({
             </>
           ) : (
             <>
-              <BeachDetailPhotoPlaceholder beachName={beachDisplayName} language={language} />
+              {shorelineShape ? (
+                <BeachDetailShorelinePanel
+                  shape={shorelineShape}
+                  beach={beach}
+                  beachName={beachDisplayName}
+                  language={language}
+                />
+              ) : (
+                <BeachDetailPhotoPlaceholder />
+              )}
               <PhotoContributionPrompt
                 beachName={beachDisplayName}
                 language={language}
@@ -2312,8 +2349,8 @@ export const BeachDetailPage: React.FC<BeachDetailPageProps> = ({
                         className="w-full p-3 bg-white rounded-3xl border border-slate-100 flex items-center justify-between gap-3 text-left shadow-sm transition-colors hover:border-cyan-200 group"
                       >
                         <div className="flex min-w-0 items-center gap-3">
-                          {itemPhoto && (
-                            <div className="w-16 h-16 rounded-2xl overflow-hidden flex-shrink-0">
+                          <div className="relative w-16 h-16 rounded-2xl overflow-hidden flex-shrink-0">
+                            {itemPhoto ? (
                               <img
                                 src={itemPhoto}
                                 alt={displayBeachName(item.beach.name, language)}
@@ -2321,8 +2358,16 @@ export const BeachDetailPage: React.FC<BeachDetailPageProps> = ({
                                 referrerPolicy="no-referrer"
                                 loading="lazy"
                               />
-                            </div>
-                          )}
+                            ) : (
+                              <BeachPhotoFallback
+                                beach={item.beach}
+                                regionId={regionId}
+                                language={language}
+                                beachName={displayBeachName(item.beach.name, language)}
+                                crop="square"
+                              />
+                            )}
+                          </div>
                           <div className="min-w-0 space-y-1">
                             <h4 className="truncate font-bold text-slate-950">{displayBeachName(item.beach.name, language)}</h4>
                             <p className="text-xs font-bold text-slate-700">

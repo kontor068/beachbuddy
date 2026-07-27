@@ -3,10 +3,11 @@ import { Circle, MapContainer, TileLayer, Marker, Popup, Tooltip, ZoomControl, u
 import L from 'leaflet';
 import 'leaflet/dist/leaflet.css';
 import { BadgeCheck, ShowerHead, Footprints, Navigation, MapPin, Clock, Wind, X, Info, Utensils, Waves, Users, Tent, Ticket, Euro, AlertTriangle } from 'lucide-react';
-import { localizedPopularityLabel, localizedPaidEntryLabel, localizedPaidEntryExplanation } from '../utils/localization';
+import { displayBeachName, localizedPopularityLabel, localizedPaidEntryLabel, localizedPaidEntryExplanation } from '../utils/localization';
 import { SuitableBeach, Beach, LanguageCode, ForecastItem } from '../types';
 import { trackEvent, buildBeachExposureParams } from '../services/analyticsService';
 import { getBeachPhotoLookup } from '../services/beachPhotos';
+import { BeachPhotoFallback } from './ShorelineThumbnail';
 import { degToCompass, getBeaufortLevel } from '../utils/weatherUtils';
 import { getSelectedDayPrefix } from '../utils/dateLabels';
 import { athensNow } from '../utils/athensTime';
@@ -291,11 +292,10 @@ const BeachHoverPreviewCard: React.FC<{
   mapViewportRef: React.RefObject<HTMLDivElement>;
   language: LanguageCode;
   photoUrl: string | null;
-  photosSoonLabel: string;
   featureChips: HoverPreviewFeatureChip[];
   localWind?: { deg: number; speedKmh: number };
   windLabel?: string;
-}> = ({ item, position, mapViewportRef, language, photoUrl, photosSoonLabel, featureChips, localWind, windLabel }) => {
+}> = ({ item, position, mapViewportRef, language, photoUrl, featureChips, localWind, windLabel }) => {
   const viewportWidth = mapViewportRef.current?.clientWidth || HOVER_PREVIEW_WIDTH + 32;
   const viewportHeight = mapViewportRef.current?.clientHeight || HOVER_PREVIEW_HEIGHT + 32;
   const preferLeft = position.x + HOVER_PREVIEW_WIDTH + 18 > viewportWidth;
@@ -327,10 +327,13 @@ const BeachHoverPreviewCard: React.FC<{
               referrerPolicy="no-referrer"
             />
           ) : (
-            <div className="flex h-full w-full items-center justify-center gap-2 text-cyan-700">
-              <Waves className="h-5 w-5" aria-hidden="true" />
-              <span className="text-[11px] font-black">{photosSoonLabel}</span>
-            </div>
+            <BeachPhotoFallback
+              beach={item.beach}
+              regionId={item.beach.regionId}
+              language={language}
+              beachName={displayBeachName(item.beach.name, language)}
+              crop="band"
+            />
           )}
           <div className="absolute inset-0 bg-gradient-to-t from-slate-950/18 via-transparent to-white/8" aria-hidden="true" />
         </div>
@@ -1977,13 +1980,6 @@ const BeachMap: React.FC<BeachMapProps> = ({
   const hoveredBeach = hoveredBeachId !== null
     ? beaches.find(item => item.beachId === hoveredBeachId)
     : null;
-  const hoverPreviewCopy = getLocalizedCopy(language, {
-    en: { photosSoon: 'Photos soon' },
-    gr: { photosSoon: 'Photos soon' },
-    de: { photosSoon: 'Photos soon' },
-    it: { photosSoon: 'Photos soon' },
-    fr: { photosSoon: 'Photos soon' },
-  });
   const hoverPreviewPhotoUrl = useMemo(() => {
     if (!hoveredBeach) return null;
     const lookupIslandName = islandName || hoveredBeach.beach.location?.island || hoveredBeach.beach.location?.region;
@@ -2686,7 +2682,6 @@ const BeachMap: React.FC<BeachMapProps> = ({
             mapViewportRef={mapViewportRef}
             language={language}
             photoUrl={hoverPreviewPhotoUrl}
-            photosSoonLabel={hoverPreviewCopy.photosSoon}
             featureChips={hoverPreviewFeatureChips}
             localWind={hoverLocalWind}
             windLabel={hoverLocalWindLabel}

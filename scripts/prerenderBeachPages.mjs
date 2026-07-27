@@ -1,4 +1,5 @@
 import { mkdir, readFile, readdir, writeFile } from 'node:fs/promises';
+import { readFileSync } from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { amenityTextIncludesAny, SNACK_CANTEEN_AMENITY_TERMS } from '../utils/amenityMatching.js';
@@ -3739,6 +3740,320 @@ const renderPhotoCredits = (beaches, language, chrome, heroPhoto = null) => {
           </details>`;
 };
 
+// --- Shoreline thumbnails ------------------------------------------------------
+// A no-JS port of components/ShorelineThumbnail.tsx. Where a card has no
+// photograph we draw the beach's OWN coastline instead of the generic wave
+// panel: real geometry (public/data/coastline/shape/<region>.json, built by
+// scripts/buildShorelineThumbs.mjs) with the shore material and amenity marks
+// read off the same audited fields the card's chips use.
+//
+// This file is the static twin of the React component, so the two MUST stay in
+// step: same feature derivation, same symbols, same tiled texture, same phase
+// shift — a beach's drawing is identical in the app and on the guide page. If
+// you change one, change both. The only deliberate difference is byte-driven:
+// coordinates are rounded to 0.1 units (~0.15 px at the rendered card size),
+// because this markup is inlined into ~980 files rather than executed once.
+const SHORELINE_BOX = { width: 200, height: 120, pinX: 100, pinY: 78 };
+const shorelineShapeDir = path.join(publicDir, 'data', 'coastline', 'shape');
+
+// Read once per region and keep it: this script renders ~980 pages and would
+// otherwise re-parse the same JSON for every card. A missing file is the normal
+// state for a region with no shapes yet, so it is cached as null and stays quiet.
+const shorelineShapeCache = new Map();
+const shorelineShapesFor = regionId => {
+  if (!regionId) return null;
+  if (shorelineShapeCache.has(regionId)) return shorelineShapeCache.get(regionId);
+  let beaches = null;
+  try {
+    const payload = JSON.parse(readFileSync(path.join(shorelineShapeDir, `${regionId}.json`), 'utf8'));
+    beaches = payload?.beaches && typeof payload.beaches === 'object' ? payload.beaches : null;
+  } catch {
+    beaches = null;
+  }
+  shorelineShapeCache.set(regionId, beaches);
+  return beaches;
+};
+
+// Coverage is 92.9%, so "no shape" is a normal answer and callers must keep the
+// old placeholder. The strict shape test is also the injection guard: the points
+// string goes straight into an SVG attribute, so anything that is not
+// "x,y x,y …" is refused rather than escaped.
+const SHORELINE_POINTS_RE = /^-?\d+(?:\.\d+)?,-?\d+(?:\.\d+)?(?: -?\d+(?:\.\d+)?,-?\d+(?:\.\d+)?)+$/;
+const shorelineShapeFor = (regionId, beachId) => {
+  if (!Number.isInteger(beachId)) return null;
+  const raw = shorelineShapesFor(regionId)?.[String(beachId)];
+  const points = typeof raw?.s === 'string' ? raw.s.trim() : '';
+  if (!SHORELINE_POINTS_RE.test(points)) return null;
+  return { points };
+};
+
+// Port of materialFromLabel in ShorelineThumbnail.tsx.
+const shorelineMaterialFromLabel = value => {
+  const text = typeof value === 'string' ? value.toLowerCase() : '';
+  if (!text) return null;
+  if (text.includes('sand') || text.includes('αμμ')) return 'sand';
+  if (text.includes('pebble') || text.includes('shingle') || text.includes('βότσαλ') || text.includes('βοτσαλ')) {
+    return 'pebbles';
+  }
+  if (text.includes('rock') || text.includes('βραχ')) return 'rocks';
+  return null;
+};
+
+// Port of deriveShorelineFeatures. Every symbol maps to a field the pages
+// already state in words — nothing here is inferred. Access is drawn ONLY when
+// getting there is awkward: "easy road access" is frequently an unverified
+// default in the dataset, so an asphalt road (or an unknown access) earns no
+// mark at all.
+const shorelineFeaturesFor = beach => {
+  const terrainTypes = beach?.metadata?.terrain?.types;
+  const candidates = [
+    beach?.beachType,
+    beach?.staticLabels?.beachType,
+    ...(Array.isArray(terrainTypes) ? terrainTypes : []),
+  ];
+
+  let material = null;
+  for (const candidate of candidates) {
+    material = shorelineMaterialFromLabel(candidate);
+    if (material) break;
+  }
+
+  const depth = beach?.characteristics?.shallowWaters === true || beach?.waterDepth === 'shallow'
+    ? 'shallow'
+    : beach?.characteristics?.deepWaters === true || beach?.waterDepth === 'deep'
+      ? 'deep'
+      : null;
+
+  const accessType = beach?.staticLabels?.accessType ?? beach?.metadata?.access?.type;
+  const access = accessType === 'boat_only'
+    ? 'boat'
+    : accessType === 'passable_dirt_road' || accessType === 'difficult_dirt_road'
+      ? 'track'
+      : accessType === 'hiking_path_easy' || accessType === 'hiking_path_difficult'
+        ? 'path'
+        : null;
+
+  const amenities = beach?.amenities;
+  return {
+    material,
+    depth,
+    access,
+    sunbeds: amenities?.sunbeds === true || amenities?.organized === true,
+    eatery: amenities?.taverna === true || amenities?.beachBar === true || amenities?.restaurant === true,
+    trees: amenities?.naturalShade === true,
+  };
+};
+
+const shorelinePoints = serialized => serialized
+  .split(' ')
+  .map(pair => pair.split(',').map(Number))
+  .filter(point => Number.isFinite(point[0]) && Number.isFinite(point[1]));
+
+// The shoreline is built left-to-right, so the waterline height is a plain lookup.
+const makeShorelineYAt = points => x => {
+  if (points.length === 0) return SHORELINE_BOX.pinY;
+  if (x <= points[0][0]) return points[0][1];
+  for (let i = 1; i < points.length; i += 1) {
+    const [x1, y1] = points[i - 1];
+    const [x2, y2] = points[i];
+    if (x <= x2) {
+      if (x2 === x1) return y2;
+      return y1 + ((y2 - y1) * (x - x1)) / (x2 - x1);
+    }
+  }
+  return points[points.length - 1][1];
+};
+
+const SHORE_INK = '#8d7a55';
+const SHORE_INK_BUILT = '#6f6146';
+const SHORE_INK_TREE = '#6f8a62';
+const SHORE_INK_ROUTE = '#7a6a4a';
+
+// How far out to sea the depth contours sit — crowded against the shore reads as
+// "deep straight away", spread wide as "you can walk out a long way".
+const SHORE_CONTOURS = {
+  shallow: [-11, -23, -36],
+  medium: [-7, -15, -24],
+  deep: [-4, -8.5, -14],
+};
+
+// Coordinates: 0.1 units is ~0.15 px on a rendered card, so this is lossless to
+// the eye and drops ~2 bytes off every number in the drawing. "0.5" -> ".5" is
+// valid SVG and saves another byte a time over ~150 numbers per card.
+const trimZero = text => text.replace(/^(-?)0\./, '$1.');
+const svgNum = value => {
+  const rounded = Math.round(value * 10) / 10;
+  return Object.is(rounded, -0) ? '0' : trimZero(String(rounded));
+};
+// Opacities and stroke widths keep 2 decimals: the contour ramp is .32/.22/.12
+// and rounding it to one decimal would visibly flatten the depth ladder.
+const svgFine = value => trimZero(String(Math.round(value * 100) / 100));
+
+// Grains, shingle or rock, as a chart texture hugging the waterline: one tiled
+// pattern filled into one band, mirroring TEXTURE_TILES in the component. The
+// per-mark version this replaces emitted ~105 nodes per beach, which on a
+// 40-card guide page is 4,000 nodes of inline SVG.
+const SHORE_TEXTURE_TILES = {
+  sand: {
+    size: [7, 7],
+    depth: 11,
+    tile: `<circle cx="1.7" cy="2.1" r=".62" fill="${SHORE_INK}" opacity=".5"/>`
+      + `<circle cx="5.1" cy="5.3" r=".55" fill="${SHORE_INK}" opacity=".42"/>`
+      + `<circle cx="4.4" cy="1.2" r=".4" fill="${SHORE_INK}" opacity=".34"/>`,
+  },
+  pebbles: {
+    size: [10, 8],
+    depth: 11,
+    tile: `<ellipse cx="2.6" cy="2.4" rx="1.7" ry="1.2" fill="none" stroke="${SHORE_INK}" stroke-width=".55" opacity=".6"/>`
+      + `<ellipse cx="7.4" cy="5.7" rx="2" ry="1.35" fill="none" stroke="${SHORE_INK}" stroke-width=".55" opacity=".5"/>`,
+  },
+  rocks: {
+    size: [16, 12],
+    depth: 14,
+    tile: `<path d="M1.4 8.4 L4.4 2.6 L7.6 8.4 Z" fill="none" stroke="${SHORE_INK}" stroke-width=".62" stroke-linejoin="round" opacity=".62"/>`
+      + `<path d="M8.8 10.6 L11.6 5.4 L14.6 10.6 Z" fill="none" stroke="${SHORE_INK}" stroke-width=".62" stroke-linejoin="round" opacity=".5"/>`,
+  },
+};
+
+// The strip of land between the waterline and `depth` units inland. The polyline
+// is x-monotone, so walking it forward at y+2 and back at y+depth closes an
+// exact band with no geometry work.
+const shoreBandPolygon = (points, depth) => {
+  const seaward = points.map(([x, y]) => `${svgNum(x)},${svgNum(y + 2)}`);
+  const landward = [...points].reverse().map(([x, y]) => `${svgNum(x)},${svgNum(y + depth)}`);
+  return [...seaward, ...landward].join(' ');
+};
+
+// A row of sunbeds seen from the side: mattress plus raised backrest.
+const renderSunbedMark = (x, y, scale) => {
+  const beds = [0, 7.5, 15]
+    .map(offset => `<g transform="translate(${offset} 0)"><path d="M0 0 H5.4"/><path d="M0 0 L-1.9 -3.1"/><path d="M1.1 1.9 V0"/><path d="M4.6 1.9 V0"/></g>`)
+    .join('');
+  return `<g transform="translate(${svgNum(x)} ${svgNum(y)}) scale(${svgFine(scale)})" fill="none" stroke="${SHORE_INK_BUILT}" stroke-width="1.05" stroke-linecap="round" stroke-linejoin="round">${beds}</g>`;
+};
+
+// A shore taverna: pitched roof on posts, the way a chart marks a building.
+const renderEateryMark = (x, y, scale) => (
+  `<g transform="translate(${svgNum(x)} ${svgNum(y)}) scale(${svgFine(scale)})" fill="none" stroke="${SHORE_INK_BUILT}" stroke-width="1.15" stroke-linecap="round" stroke-linejoin="round">`
+  + '<path d="M-6.4 -2.2 L0 -7.4 L6.4 -2.2 Z"/><path d="M-4.6 -2.2 V2.4"/><path d="M4.6 -2.2 V2.4"/><path d="M-6.4 2.4 H6.4"/></g>'
+);
+
+// Tamarisks — the tree that actually shades a Greek beach.
+const renderTreeMark = (x, y, scale) => (
+  `<g transform="translate(${svgNum(x)} ${svgNum(y)}) scale(${svgFine(scale)})" stroke="${SHORE_INK_TREE}" stroke-linecap="round">`
+  + `<path d="M0 2.6 V-2.4" stroke-width="1.1" fill="none"/>`
+  + `<path d="M-4.8 -2.6 Q0 -8.4 4.8 -2.6 Z" stroke-width="1" fill="${SHORE_INK_TREE}" fill-opacity=".16"/></g>`
+);
+
+// How you get here, drawn only when it is not a plain road. The route arrives
+// from the bottom of the frame, which is inland; for a boat-only beach no route
+// is drawn at all — the absence is the message — and a boat sits offshore.
+const renderAccessMark = (kind, shoreY) => {
+  if (kind === 'boat') {
+    return `<g transform="translate(146 ${svgNum(Math.max(14, shoreY - 22))})">`
+      + `<path d="M-6.4 0 H6.4 L4.4 4 H-4.4 Z" fill="none" stroke="${SHORE_INK_ROUTE}" stroke-width="1.15" stroke-linejoin="round"/>`
+      + `<path d="M0 0 V-6.6" stroke="${SHORE_INK_ROUTE}" stroke-width="1.05" stroke-linecap="round"/>`
+      + `<path d="M0.9 -6.2 L4.6 -1.6 H0.9 Z" fill="${SHORE_INK_ROUTE}" fill-opacity=".22" stroke="${SHORE_INK_ROUTE}" stroke-width=".9" stroke-linejoin="round"/></g>`;
+  }
+  return `<path d="M100 128 C 90 116, 110 100, 100 ${(shoreY + 4).toFixed(1)}" fill="none" stroke="${SHORE_INK_ROUTE}"`
+    + ` stroke-width="${kind === 'track' ? '1.5' : '1.2'}" stroke-linecap="round" stroke-dasharray="${kind === 'track' ? '6 4' : '0.5 4'}" opacity=".72"/>`;
+};
+
+const shorelineAriaLabels = {
+  gr: beachName => `Σχεδιάγραμμα της ακτογραμμής στην παραλία ${beachName}`,
+  en: beachName => `Diagram of the shoreline at ${beachName}`,
+  fr: beachName => `Schéma du littoral à ${beachName}`,
+  de: beachName => `Schema der Küstenlinie bei ${beachName}`,
+  it: beachName => `Schema della costa a ${beachName}`,
+};
+
+// Amenity marks go on the land, well clear of the pin, and only where there is
+// enough dry room below the waterline for them to sit inside the frame.
+const shorelineAmenityMarks = (features, shoreYAt) => {
+  const wanted = [];
+  if (features.sunbeds) wanted.push('sunbeds');
+  if (features.eatery) wanted.push('eatery');
+  if (features.trees) wanted.push('trees');
+  if (wanted.length === 0) return [];
+
+  const slots = [62, 140, 30, 172];
+  const placed = [];
+  for (const kind of wanted) {
+    const slot = slots.find(candidate => {
+      if (placed.some(item => Math.abs(item.x - candidate) < 30)) return false;
+      const y = shoreYAt(candidate) + (kind === 'sunbeds' ? 15 : 19);
+      return y < SHORELINE_BOX.height - 5;
+    });
+    if (slot === undefined) continue;
+    placed.push({ kind, x: slot, y: shoreYAt(slot) + (kind === 'sunbeds' ? 15 : 19) });
+  }
+  return placed;
+};
+
+// Returns the card figure for a beach we have geometry for, or null so the
+// caller keeps the existing placeholder untouched.
+const renderShorelineFigure = (beach, region, beachName, language) => {
+  const shape = shorelineShapeFor(region?.id, beach?.id);
+  if (!shape) return null;
+
+  const { width, height, pinX, pinY } = SHORELINE_BOX;
+  const features = shorelineFeaturesFor(beach);
+  const points = shorelinePoints(shape.points);
+  const shoreYAt = makeShorelineYAt(points);
+  // Ids must be unique per page: ~30 of these cards share one document and a
+  // duplicate gradient id would silently repaint every later card. Beach ids are
+  // globally unique and a beach appears once per page, so they are the key.
+  const uid = `cbs${beach.id}`;
+  // The land polygon is the shoreline closed off along the bottom of the box.
+  const land = `${shape.points} ${width + 10},${height + 30} -10,${height + 30}`;
+  const markScale = 0.86;
+  const label = (shorelineAriaLabels[language] || shorelineAriaLabels.en)(beachName);
+
+  const contours = SHORE_CONTOURS[features.depth ?? 'medium']
+    .map((offset, index) => `<polyline points="${shape.points}" transform="translate(0,${offset})" stroke-width="${svgFine(1.6 - index * 0.2)}" opacity="${svgFine(0.32 - index * 0.1)}"/>`)
+    .join('');
+
+  // The texture tile is phase-shifted by the beach id so two cards side by side
+  // never tile in lockstep — the same trick, and the same seed, as the component.
+  const texture = SHORE_TEXTURE_TILES[features.material] || null;
+  const pattern = texture
+    ? `<pattern id="${uid}t" patternUnits="userSpaceOnUse" width="${texture.size[0]}" height="${texture.size[1]}" patternTransform="translate(${beach.id % 7} ${beach.id % 5})">${texture.tile}</pattern>`
+    : '';
+
+  const clipped = [
+    features.access && features.access !== 'boat' ? renderAccessMark(features.access, shoreYAt(pinX)) : '',
+    texture ? `<polygon points="${shoreBandPolygon(points, texture.depth)}" fill="url(#${uid}t)"/>` : '',
+    shorelineAmenityMarks(features, shoreYAt).map(mark => {
+      if (mark.kind === 'sunbeds') return renderSunbedMark(mark.x - 8, mark.y, markScale);
+      if (mark.kind === 'eatery') return renderEateryMark(mark.x, mark.y, markScale);
+      return renderTreeMark(mark.x - 5, mark.y, markScale) + renderTreeMark(mark.x + 5.5, mark.y + 1.4, markScale * 0.82);
+    }).join(''),
+  ].join('');
+
+  return '<div class="cb-fig cb-fig-shore">'
+    + `<svg viewBox="0 0 ${width} ${height}" preserveAspectRatio="xMidYMid slice" role="img" aria-label="${escapeHtml(label)}">`
+    + '<defs>'
+    + `<linearGradient id="${uid}s" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#6ebfda"/><stop offset="55%" stop-color="#9bd6e7"/><stop offset="100%" stop-color="#c9ecf4"/></linearGradient>`
+    + `<linearGradient id="${uid}l" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#f2e7cd"/><stop offset="55%" stop-color="#e6d8b8"/><stop offset="100%" stop-color="#d8ccab"/></linearGradient>`
+    + `<clipPath id="${uid}c"><polygon points="${land}"/></clipPath>`
+    + pattern
+    + '</defs>'
+    + `<rect x="0" y="0" width="${width}" height="${height}" fill="url(#${uid}s)"/>`
+    // Depth contours: the same shoreline stepped out to sea, the way a chart
+    // draws them. Their spacing is the water-depth field, not decoration.
+    + `<g fill="none" stroke="#ffffff" stroke-linecap="round" stroke-linejoin="round">${contours}</g>`
+    // Wet sand: a soft light band hugging the water line.
+    + `<polygon points="${land}" fill="#ffffff" opacity=".55" transform="translate(0,-2.5)"/>`
+    + `<polygon points="${land}" fill="url(#${uid}l)"/>`
+    + (features.access === 'boat' ? renderAccessMark('boat', shoreYAt(146)) : '')
+    + (clipped ? `<g clip-path="url(#${uid}c)">${clipped}</g>` : '')
+    + `<polyline points="${shape.points}" fill="none" stroke="#3f8ba3" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" opacity=".72"/>`
+    + `<circle cx="${pinX}" cy="${pinY}" r="7" fill="#ffffff" opacity=".9"/>`
+    + `<circle cx="${pinX}" cy="${pinY}" r="4.4" fill="#0e7490"/>`
+    + `<circle cx="${pinX}" cy="${pinY}" r="2.4" fill="#ffffff" opacity=".85"/>`
+    + '</svg></div>';
+};
+
 // A card that leads with a photograph where we have one. Where we don't, a
 // tinted panel carrying the beach type — never an empty or broken frame.
 const renderBeachCard = (beach, island, region, locale) => {
@@ -3750,12 +4065,15 @@ const renderBeachCard = (beach, island, region, locale) => {
   const access = readableAccess(beach, language);
   const isHard = beach.staticLabels?.accessType === 'BOAT_ONLY' || beach.accessibility === 'difficult';
 
-  // No photo: a tinted panel with a wave motif, so it reads as a deliberate
-  // placeholder rather than a failed image. The beach type is NOT repeated here
-  // — the tag directly below already carries it.
+  // No photo: draw the beach's own shoreline from the shipped coastline geometry
+  // — a real, specific picture instead of a stock panel, and no extra request
+  // because it is inlined. Coverage is 92.9%, so the wave-motif panel stays for
+  // beaches with no shape: a deliberate placeholder, never a failed image. The
+  // beach type is NOT repeated in either — the tag directly below carries it.
   const figure = photo
     ? `<figure class="cb-fig"><img src="${escapeHtml(photo.src)}" srcset="${escapeHtml(photo.src)} 1x, ${escapeHtml(photo.src2x)} 2x" alt="${escapeHtml(beachName)}" referrerpolicy="no-referrer" loading="lazy" decoding="async" width="400" height="300"></figure>`
-    : `<div class="cb-fig cb-fig-none" aria-hidden="true"><svg viewBox="0 0 120 40" preserveAspectRatio="none" focusable="false"><path d="M0 26c15 0 15-8 30-8s15 8 30 8 15-8 30-8 15 8 30 8v14H0z"/></svg></div>`;
+    : renderShorelineFigure(beach, region, beachName, language)
+      || `<div class="cb-fig cb-fig-none" aria-hidden="true"><svg viewBox="0 0 120 40" preserveAspectRatio="none" focusable="false"><path d="M0 26c15 0 15-8 30-8s15 8 30 8 15-8 30-8 15 8 30 8v14H0z"/></svg></div>`;
 
   const tags = [
     type ? `<li class="cb-tag">${escapeHtml(type)}</li>` : '',

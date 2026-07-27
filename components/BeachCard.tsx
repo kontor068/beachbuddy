@@ -34,6 +34,7 @@ import {
 } from '../utils/localization';
 import { AmenityChip, getAmenityChips } from '../utils/amenities';
 import { SandDotsIcon, SandPebblesIcon, SunbedIcon } from './BeachFeatureIcons';
+import { BeachPhotoFallback } from './ShorelineThumbnail';
 
 interface BeachCardProps {
   beach: Beach & { distance?: number };
@@ -670,45 +671,6 @@ export const AccessibilityInfo: React.FC<{ accessibility: Accessibility; t: Tran
     <div className={`inline-flex items-center text-sm font-medium px-3 py-1 rounded-full ${details.className}`}>
       {details.icon}
       <span>{details.text}</span>
-    </div>
-  );
-};
-
-const BeachLocationPlaceholder: React.FC<{
-  language: LanguageCode;
-  avoidTopLeft?: boolean;
-}> = ({ language, avoidTopLeft = false }) => {
-  const photoSoonLabels: Record<LanguageCode, string> = {
-    en: 'Photos soon',
-    gr: 'Φωτογραφίες σύντομα',
-    fr: 'Photos bientôt',
-    de: 'Fotos folgen',
-    it: 'Foto in arrivo',
-  };
-  const photoSoonLabel = photoSoonLabels[language];
-
-  return (
-    <div className="absolute inset-0 overflow-hidden bg-sky-100" aria-label={photoSoonLabel}>
-      <div className="absolute inset-0 bg-gradient-to-br from-cyan-50 via-sky-50 to-emerald-50" />
-      <div
-        className="absolute inset-0 opacity-70"
-        style={{
-          backgroundImage: 'linear-gradient(rgba(14,116,144,0.12) 1px, transparent 1px), linear-gradient(90deg, rgba(14,116,144,0.12) 1px, transparent 1px)',
-          backgroundSize: '34px 34px',
-        }}
-        aria-hidden="true"
-      />
-      <svg className="absolute inset-0 h-full w-full text-cyan-600/18" viewBox="0 0 400 180" preserveAspectRatio="none" aria-hidden="true">
-        <path d="M0 112 C55 98 89 123 142 110 C192 98 220 70 274 78 C322 85 347 116 400 102 L400 180 L0 180 Z" fill="currentColor" />
-        <path d="M36 44 C86 64 125 53 170 70 C214 86 251 118 335 100" fill="none" stroke="currentColor" strokeWidth="3" strokeDasharray="8 10" />
-        <path d="M-20 18 C55 40 105 22 160 38 C215 54 260 36 420 58" fill="none" stroke="currentColor" strokeWidth="2" opacity="0.55" />
-      </svg>
-      <div className="absolute inset-0 bg-gradient-to-t from-white/50 via-white/12 to-white/10" aria-hidden="true" />
-      <div className={`absolute ${avoidTopLeft ? 'left-3 top-12' : 'left-3 top-3 sm:left-4 sm:top-4'}`}>
-        <span className="inline-flex min-h-8 items-center rounded-full border border-cyan-100/90 bg-white/72 px-3 text-[11px] font-extrabold leading-none text-cyan-800 shadow-sm shadow-sky-900/10 backdrop-blur-md">
-          {photoSoonLabel}
-        </span>
-      </div>
     </div>
   );
 };
@@ -1664,7 +1626,12 @@ export const BeachCard: React.FC<BeachCardProps> = ({
               onError={() => setPhotoIndex((current) => current + 1)}
             />
           ) : (
-            <BeachLocationPlaceholder language={language} avoidTopLeft={recommendationRank !== undefined || hasBlueFlag2026 || hasAccessibleRamp} />
+            <BeachPhotoFallback
+              beach={beach}
+              regionId={detailRegionId}
+              language={language}
+              beachName={beachDisplayName}
+            />
           )}
           {cardPhoto && <div className="absolute inset-0 bg-gradient-to-t from-slate-950/24 via-transparent to-white/0" />}
 
@@ -1843,7 +1810,12 @@ export const BeachCard: React.FC<BeachCardProps> = ({
             onError={() => setPhotoIndex((current) => current + 1)}
           />
         ) : (
-          <BeachLocationPlaceholder language={language} avoidTopLeft={recommendationRank !== undefined || hasBlueFlag2026 || hasAccessibleRamp} />
+          <BeachPhotoFallback
+            beach={beach}
+            regionId={detailRegionId}
+            language={language}
+            beachName={beachDisplayName}
+          />
         )}
         {/* Dark overlay for readability when photo is present */}
         {cardPhoto && <div className="absolute inset-0 bg-gradient-to-t from-slate-950/24 via-transparent to-white/0" />}

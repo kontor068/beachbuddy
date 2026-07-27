@@ -39,6 +39,7 @@ import { displayBeachName, localizedAccessLabel, localizedPopularityLabel } from
 import { isInfoOnlyRegionId } from '../utils/infoOnlyRegions';
 import { getAmenityChips, type AmenityChip } from '../utils/amenities';
 import { getBeachPhotoLookup } from '../services/beachPhotos';
+import { BeachPhotoFallback } from './ShorelineThumbnail';
 import { getBeachTouristRecognitionScore } from '../utils/touristPriority';
 import { trackEvent, buildBeachExposureParams } from '../services/analyticsService';
 import { degToCompass, getBeaufortLevel } from '../utils/weatherUtils';
@@ -512,7 +513,6 @@ type HomeCopy = {
   beachMapAria: string;
   bestBeachesToday: string;
   popularDestinations: string;
-  photoSoon: string;
   islandTitle: (title: string) => string;
   beachCount: (count: number) => string;
   conditionsOverviewAria: string;
@@ -595,7 +595,6 @@ const homeCopy: Record<LanguageCode, HomeCopy> = {
     beachMapAria: 'Beach map',
     bestBeachesToday: 'Best beaches today',
     popularDestinations: 'Popular destinations',
-    photoSoon: 'Photo coming soon',
     islandTitle: (title) => title,
     beachCount: (count) => `${count} ${count === 1 ? 'beach' : 'beaches'}`,
     conditionsOverviewAria: 'Conditions overview',
@@ -676,7 +675,6 @@ const homeCopy: Record<LanguageCode, HomeCopy> = {
     beachMapAria: 'Χάρτης παραλιών',
     bestBeachesToday: 'Καταλληλότερες παραλίες σήμερα',
     popularDestinations: 'Δημοφιλείς προορισμοί',
-    photoSoon: 'Φωτογραφία σύντομα',
     islandTitle: (title) => `Νησί ${title}`,
     beachCount: (count) => `${count} ${count === 1 ? 'παραλία' : 'παραλίες'}`,
     conditionsOverviewAria: 'Σύνοψη συνθηκών',
@@ -757,7 +755,6 @@ const homeCopy: Record<LanguageCode, HomeCopy> = {
     beachMapAria: 'Carte des plages',
     bestBeachesToday: 'Meilleures plages aujourd’hui',
     popularDestinations: 'Destinations populaires',
-    photoSoon: 'Photo bientôt',
     islandTitle: (title) => `Île ${title}`,
     beachCount: (count) => `${count} ${count === 1 ? 'plage' : 'plages'}`,
     conditionsOverviewAria: 'Aperçu des conditions',
@@ -838,7 +835,6 @@ const homeCopy: Record<LanguageCode, HomeCopy> = {
     beachMapAria: 'Strandkarte',
     bestBeachesToday: 'Beste Strände heute',
     popularDestinations: 'Beliebte Ziele',
-    photoSoon: 'Foto folgt',
     islandTitle: (title) => `Insel ${title}`,
     beachCount: (count) => `${count} ${count === 1 ? 'Strand' : 'Strände'}`,
     conditionsOverviewAria: 'Bedingungsübersicht',
@@ -919,7 +915,6 @@ const homeCopy: Record<LanguageCode, HomeCopy> = {
     beachMapAria: 'Mappa spiagge',
     bestBeachesToday: 'Migliori spiagge oggi',
     popularDestinations: 'Destinazioni popolari',
-    photoSoon: 'Foto in arrivo',
     islandTitle: (title) => `Isola ${title}`,
     beachCount: (count) => `${count} ${count === 1 ? 'spiaggia' : 'spiagge'}`,
     conditionsOverviewAria: 'Panoramica condizioni',
@@ -1244,7 +1239,7 @@ const uniqueTopBeachHighlights = (
   return uniqueItems;
 };
 
-const BeachImageFallback: React.FC<{ label: string; background?: string }> = ({ label }) => (
+const BeachImageFallback: React.FC = () => (
   <div
     className="absolute inset-0 overflow-hidden bg-sky-100"
     aria-hidden="true"
@@ -1267,11 +1262,6 @@ const BeachImageFallback: React.FC<{ label: string; background?: string }> = ({ 
       <div className="grid h-11 w-11 place-items-center rounded-2xl border border-cyan-100/90 bg-white/70 text-cyan-700 shadow-sm shadow-sky-900/10 backdrop-blur-md">
         <Waves className="h-5 w-5" aria-hidden="true" />
       </div>
-    </div>
-    <div className="absolute inset-x-3 bottom-3 flex justify-center">
-      <span className="rounded-full border border-cyan-100/90 bg-white/76 px-3.5 py-2 text-[11px] font-bold leading-none text-cyan-800 shadow-sm shadow-sky-900/10 backdrop-blur-md">
-        {label}
-      </span>
     </div>
   </div>
 );
@@ -2635,7 +2625,6 @@ export const BeachSearcherHome: React.FC<BeachSearcherHomeProps> = ({
     });
     openNavigation(topBeachToday.beach);
   };
-  const topPhotoSoonLabel = copy.photoSoon;
   const weatherDate = selectedForecast?.date ? formatDirectoryDate(selectedForecast.date, language) : undefined;
   const absoluteWeatherDate = selectedForecast?.date
     ? new Intl.DateTimeFormat(languageToDateLocale(language), {
@@ -3687,30 +3676,15 @@ export const BeachSearcherHome: React.FC<BeachSearcherHomeProps> = ({
                     decoding="async"
                     referrerPolicy="no-referrer"
                   />
-                ) : (
-                  <>
-                    <div className="absolute inset-0 bg-gradient-to-br from-cyan-50 via-sky-50 to-emerald-50" />
-                    <div
-                      className="absolute inset-0 opacity-70"
-                      style={{
-                        backgroundImage: 'linear-gradient(rgba(14,116,144,0.12) 1px, transparent 1px), linear-gradient(90deg, rgba(14,116,144,0.12) 1px, transparent 1px)',
-                        backgroundSize: '34px 34px',
-                      }}
-                      aria-hidden="true"
-                    />
-                    <svg className="absolute inset-0 h-full w-full text-cyan-600/18" viewBox="0 0 400 220" preserveAspectRatio="none" aria-hidden="true">
-                      <path d="M0 132 C55 118 89 143 142 130 C192 118 220 90 274 98 C322 105 347 136 400 122 L400 220 L0 220 Z" fill="currentColor" />
-                      <path d="M36 54 C86 74 125 63 170 80 C214 96 251 128 335 110" fill="none" stroke="currentColor" strokeWidth="3" strokeDasharray="8 10" />
-                      <path d="M-20 24 C55 46 105 28 160 44 C215 60 260 42 420 64" fill="none" stroke="currentColor" strokeWidth="2" opacity="0.55" />
-                    </svg>
-                    <div className="absolute inset-0 bg-gradient-to-t from-white/50 via-white/12 to-white/10" aria-hidden="true" />
-                    <div className="absolute left-4 top-4">
-                      <span className="inline-flex min-h-8 items-center rounded-full border border-cyan-100/90 bg-white/76 px-3 text-[11px] font-extrabold leading-none text-cyan-800 shadow-sm shadow-sky-900/10 backdrop-blur-md">
-                        {topPhotoSoonLabel}
-                      </span>
-                    </div>
-                  </>
-                )}
+                ) : topBeachToday ? (
+                  <BeachPhotoFallback
+                    beach={topBeachToday.beach}
+                    regionId={selectedIsland?.id}
+                    language={language}
+                    beachName={topBeachName}
+                    size="full"
+                  />
+                ) : null}
               </div>
             </div>
           </section>
@@ -3831,7 +3805,7 @@ export const BeachSearcherHome: React.FC<BeachSearcherHomeProps> = ({
                       className="group w-[13rem] shrink-0 snap-start text-left focus:outline-none focus-visible:ring-2 focus-visible:ring-cyan-700 sm:w-[14rem]"
                     >
                       <div className="relative h-[18.2rem] overflow-hidden rounded-lg bg-sky-100 shadow-md shadow-slate-900/12 transition group-hover:-translate-y-0.5 group-hover:shadow-lg">
-                        <BeachImageFallback label={copy.photoSoon} />
+                        <BeachImageFallback />
                       </div>
                       <div className="mt-3 space-y-1 rounded-2xl border border-white/65 bg-white/72 px-3 py-2.5 shadow-sm shadow-slate-900/8 backdrop-blur-md">
                         <h3 className="truncate text-lg font-bold leading-tight text-[#007a83]">
