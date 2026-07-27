@@ -109,8 +109,15 @@ const Header: React.FC<HeaderProps> = ({
     };
   }, [isLanguageMenuOpen]);
 
+  // NOTE: no z-index on the outer <header>. It wraps the whole hero, map and
+  // today's picks (~1600px tall), so a z-index turned it into a stacking
+  // context that swallowed every FOLLOWING sibling section painted at a lower
+  // z: the trip planner strip and the "more sheltered options" section both
+  // rendered as blank bands — real layout, real text, hit-testable, zero
+  // pixels. The sticky bar below keeps its own z-50, which is what actually
+  // needs to float over the page while scrolling.
   return (
-    <header className="relative z-50">
+    <header className="relative">
       <div className="sticky top-0 z-50 border-b border-white/70 bg-white/82 text-slate-800 shadow-sm shadow-sky-900/5 backdrop-blur-xl">
         <div className="relative flex h-[60px] w-full items-center gap-2 px-4 sm:gap-3 sm:px-6 lg:h-[58px] lg:px-8">
           <button
