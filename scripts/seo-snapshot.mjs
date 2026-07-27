@@ -458,6 +458,36 @@ function curveCtrAt(curve, pos) {
   return null;
 }
 
+// Volume-adaptive analysis floors.
+//
+// The CTR-gap and cannibalisation detectors used to carry fixed floors (100
+// impressions for a query×page row, 30 per competing URL) sized for a much
+// bigger property. On this site they were silently DEAD: the 2026-07-27
+// snapshot reported "0 rows >= 100 impr" and 0 cannibalisation, while the data
+// held a clean 4-way self-competition on «παραλίες αργολιδασ» (four of our own
+// URLs at 15/12/12/9 impressions, all 0 clicks) and a region-hub page type
+// earning 0 clicks on 206 impressions. A detector that cannot fire is worse
+// than no detector — it reads as "checked, nothing found".
+//
+// So the floors scale with the property's own current-period impressions, and
+// the resulting numbers are recorded in meta.thresholds so a future reader can
+// see what the run actually required.
+const clamp = (v, lo, hi) => Math.min(hi, Math.max(lo, v));
+function analysisFloors(totalImpressions) {
+  const impressions = Number.isFinite(totalImpressions) ? totalImpressions : 0;
+  return {
+    // A query×page row worth judging on CTR: ~0.05% of site impressions.
+    ctrGapMinImpressions: clamp(Math.round(impressions * 0.0005), 20, 100),
+    // A page worth judging in aggregate: ~0.15% of site impressions.
+    pageCtrGapMinImpressions: clamp(Math.round(impressions * 0.0015), 50, 300),
+    // A query whose impressions are split across our own URLs: ~0.1%.
+    cannibalQueryMinImpressions: clamp(Math.round(impressions * 0.001), 10, 200),
+    // Per-URL floor stays small and fixed — the point is the SPLIT, not the
+    // size of each shard. Below 3 impressions a URL is crawl noise.
+    cannibalUrlMinImpressions: 3,
+  };
+}
+
 function computeStrikingDistance(raw, curve, cap) {
   const rows = raw.current?.query_page;
   if (!rows) return { error: 'missing current query+page data' };
@@ -490,9 +520,10 @@ function computeStrikingDistance(raw, curve, cap) {
   return out.slice(0, cap);
 }
 
-function computeCtrGaps(raw, curve, cap) {
+function computeCtrGaps(raw, curve, cap, floors) {
   const rows = raw.current?.query_page;
   if (!rows) return { error: 'missing current query+page data' };
+  const minImpressions = floors.ctrGapMinImpressions;
 
   let considered = 0;
   let hadCurve = 0;
@@ -500,7 +531,7 @@ function computeCtrGaps(raw, curve, cap) {
   const out = [];
   for (const row of rows) {
     const impressions = row.impressions || 0;
-    if (impressions < 100) continue;
+    if (impressions < minImpressions) continue;
     considered += 1;
     const position = row.position || 0;
     const expectedCtr = curveCtrAt(curve, Math.round(position)); // smoothed CTR at rounded position
@@ -522,9 +553,66 @@ function computeCtrGaps(raw, curve, cap) {
     });
   }
   // Diagnostic so an empty result is explainable (not silently "no gaps").
-  log(`  ctrGaps: ${considered} rows >=100 impr → ${hadCurve} had a curve value → ${belowThreshold} below 0.6× threshold`);
+  log(`  ctrGaps: ${considered} rows >=${minImpressions} impr → ${hadCurve} had a curve value → ${belowThreshold} below 0.6× threshold`);
   out.sort((a, b) => b._lost - a._lost);
   return out.slice(0, cap).map(({ _lost, ...rest }) => rest);
+}
+
+/**
+ * Page-level CTR gaps: the same "below the curve" test, but on a whole PAGE
+ * rather than one query×page row.
+ *
+ * A page can be invisible to the per-row test and still be the biggest loss on
+ * the site: the region hubs earned 0 clicks on 206 impressions spread over 66
+ * small query×page rows, none of which cleared any per-row floor. Aggregating
+ * first is what makes that legible. Position is impression-weighted, so a page
+ * that ranks 9th for its big query and 40th for a long tail is judged where its
+ * impressions actually are.
+ */
+function computePageCtrGaps(raw, curve, cap, floors) {
+  const rows = raw.current?.query_page;
+  if (!rows) return { error: 'missing current query+page data' };
+  const minImpressions = floors.pageCtrGapMinImpressions;
+
+  const byPage = new Map();
+  for (const row of rows) {
+    const page = row.keys?.[1];
+    if (!page) continue;
+    const impressions = row.impressions || 0;
+    const agg = byPage.get(page) || { impressions: 0, clicks: 0, weightedPos: 0, queries: 0 };
+    agg.impressions += impressions;
+    agg.clicks += row.clicks || 0;
+    agg.weightedPos += (row.position || 0) * impressions;
+    agg.queries += 1;
+    byPage.set(page, agg);
+  }
+
+  const out = [];
+  for (const [page, agg] of byPage) {
+    if (agg.impressions < minImpressions) continue;
+    const position = agg.impressions > 0 ? agg.weightedPos / agg.impressions : 0;
+    const expectedCtr = curveCtrAt(curve, Math.round(position));
+    if (expectedCtr == null || expectedCtr <= 0) continue;
+    const ctr = agg.clicks / agg.impressions;
+    if (ctr >= 0.6 * expectedCtr) continue;
+    const seg = parseUrl(page);
+    out.push({
+      page: toPath(page),
+      pageType: seg.pageType,
+      locale: seg.locale,
+      queries: agg.queries,
+      impressions: agg.impressions,
+      clicks: agg.clicks,
+      ctr: r3(ctr),
+      position: r3(position),
+      expectedCtr: r3(expectedCtr),
+      ctrRatio: expectedCtr ? r3(ctr / expectedCtr) : null,
+      lostClicks: r1(agg.impressions * (expectedCtr - ctr)),
+    });
+  }
+  log(`  pageCtrGaps: ${byPage.size} pages → ${out.length} below 0.6× the curve at >=${minImpressions} impr`);
+  out.sort((a, b) => b.lostClicks - a.lostClicks);
+  return out.slice(0, cap);
 }
 
 function computeZeroClick(raw, cap) {
@@ -550,9 +638,11 @@ function computeZeroClick(raw, cap) {
   return out.slice(0, cap);
 }
 
-function computeCannibalization(raw, cap) {
+function computeCannibalization(raw, cap, floors) {
   const rows = raw.current?.query_page;
   if (!rows) return { error: 'missing current query+page data' };
+  const urlMin = floors.cannibalUrlMinImpressions;
+  const queryMin = floors.cannibalQueryMinImpressions;
 
   const byQuery = new Map();
   for (const row of rows) {
@@ -565,8 +655,13 @@ function computeCannibalization(raw, cap) {
 
   const out = [];
   for (const [query, list] of byQuery) {
-    const competing = list.filter((row) => (row.impressions || 0) >= 30);
+    // Gate on the QUERY's total impressions, not on each shard: cannibalisation
+    // is precisely the case where no single URL is big — four of our own URLs
+    // at 15/12/12/9 impressions is the defect, and a per-URL floor of 30 hid it.
+    const competing = list.filter((row) => (row.impressions || 0) >= urlMin);
     if (competing.length < 2) continue;
+    const queryImpressions = competing.reduce((sum, row) => sum + (row.impressions || 0), 0);
+    if (queryImpressions < queryMin) continue;
     const urls = competing
       .map((row) => {
         const seg = parseUrl(row.keys?.[1]);
@@ -793,6 +888,7 @@ const CAPS_DEFAULT = {
   perAnalysis: 50,
   strikingDistance: 40,
   ctrGaps: 30,
+  pageCtrGaps: 25,
   zeroClick: 30,
   cannibalization: 20,
   risingDecaying: 20,
@@ -809,6 +905,7 @@ const CAPS_TIGHT = {
   perAnalysis: 30,
   strikingDistance: 30,
   ctrGaps: 20,
+  pageCtrGaps: 15,
   zeroClick: 20,
   cannibalization: 15,
   risingDecaying: 15,
@@ -869,6 +966,7 @@ function assemble(meta, parts, caps) {
     ctrCurve: parts.ctrCurve,
     strikingDistance: sliceIf(parts.strikingDistance, caps.strikingDistance),
     ctrGaps: sliceIf(parts.ctrGaps, caps.ctrGaps),
+    pageCtrGaps: sliceIf(parts.pageCtrGaps, caps.pageCtrGaps),
     zeroClick: sliceIf(parts.zeroClick, caps.zeroClick),
     cannibalization: sliceIf(parts.cannibalization, caps.cannibalization),
     risingDecaying: {
@@ -893,7 +991,7 @@ function line(metric) {
 }
 
 function buildDigest(snapshot) {
-  const { meta, totals, bySegment, localeCountryMatch, strikingDistance, ctrGaps, zeroClick, contentInventory, errors } = snapshot;
+  const { meta, totals, bySegment, localeCountryMatch, strikingDistance, ctrGaps, pageCtrGaps, zeroClick, contentInventory, errors } = snapshot;
   const out = [];
   out.push(`# SEO snapshot — ${isoDay(new Date())}`);
   out.push('');
@@ -965,6 +1063,9 @@ function buildDigest(snapshot) {
   out.push('');
   out.push('## Top CTR gaps');
   topRows(out, ctrGaps, (r) => `- \`${r.query}\` → ${r.page} · ctr ${r.ctr} vs exp ${r.expectedCtr} (ratio ${r.ctrRatio})`);
+  out.push('');
+  out.push('## Page-level CTR gaps (whole page below the curve)');
+  topRows(out, pageCtrGaps, (r) => `- ${r.page} · ${r.impressions} impr · ${r.clicks} clicks · ctr ${r.ctr} vs exp ${r.expectedCtr} · pos ${r.position} · ~${r.lostClicks} clicks lost`);
   out.push('');
   out.push('## Top zero-click pages');
   topRows(out, zeroClick, (r) => `- ${r.page} · ${r.impressions} impr · pos ${r.position}`);
@@ -1086,8 +1187,12 @@ async function main() {
 
   log('Computing analyses…');
   const curve = guard(errors, 'ctrCurve', () => computeCtrCurve(raw));
+  // Floors scale with this property's own volume — see analysisFloors().
+  const totalsForFloors = guard(errors, 'totals', () => computeTotals(raw));
+  const floors = analysisFloors(totalsForFloors?.current?.impressions);
+  log(`  thresholds: ctrGap>=${floors.ctrGapMinImpressions} impr, pageCtrGap>=${floors.pageCtrGapMinImpressions} impr, cannibal query>=${floors.cannibalQueryMinImpressions} impr (URL>=${floors.cannibalUrlMinImpressions})`);
   const parts = {
-    totals: guard(errors, 'totals', () => computeTotals(raw)),
+    totals: totalsForFloors,
     dailySeries: guard(errors, 'dailySeries', () => computeDailySeries(raw)),
     byLocale: guard(errors, 'bySegment.byLocale', () => buildSegmentList((row) => parseUrl(row.keys?.[0]).locale, raw)),
     byPageType: guard(errors, 'bySegment.byPageType', () => buildSegmentList((row) => parseUrl(row.keys?.[0]).pageType, raw)),
@@ -1097,9 +1202,10 @@ async function main() {
     localeCountryMatch: guard(errors, 'localeCountryMatch', () => computeLocaleCountryMatch(raw, CAPS_DEFAULT.localeMatchCountries)),
     ctrCurve: curve,
     strikingDistance: guard(errors, 'strikingDistance', () => computeStrikingDistance(raw, curve, CAPS_DEFAULT.strikingDistance)),
-    ctrGaps: guard(errors, 'ctrGaps', () => computeCtrGaps(raw, curve, CAPS_DEFAULT.ctrGaps)),
+    ctrGaps: guard(errors, 'ctrGaps', () => computeCtrGaps(raw, curve, CAPS_DEFAULT.ctrGaps, floors)),
+    pageCtrGaps: guard(errors, 'pageCtrGaps', () => computePageCtrGaps(raw, curve, CAPS_DEFAULT.pageCtrGaps, floors)),
     zeroClick: guard(errors, 'zeroClick', () => computeZeroClick(raw, CAPS_DEFAULT.zeroClick)),
-    cannibalization: guard(errors, 'cannibalization', () => computeCannibalization(raw, CAPS_DEFAULT.cannibalization)),
+    cannibalization: guard(errors, 'cannibalization', () => computeCannibalization(raw, CAPS_DEFAULT.cannibalization, floors)),
     risingDecaying: guard(errors, 'risingDecaying.query', () => computeRisingDecaying(raw, 'query', CAPS_DEFAULT.risingDecaying)),
     risingDecayingPages: guard(errors, 'risingDecaying.page', () => computeRisingDecaying(raw, 'page', CAPS_DEFAULT.risingDecaying)),
     newQueries: guard(errors, 'newQueries', () => computeNewQueries(raw, CAPS_DEFAULT.newQueries)),
@@ -1117,6 +1223,9 @@ async function main() {
     ctrCurveSampleMin: CTR_CURVE_SAMPLE_MIN,
     ctrCurveImpressionMin: CTR_CURVE_IMPR_MIN,
     ctrCurveTargetPos: curve?.targetPos ?? null,
+    // What this run actually required to flag something. Recorded because a
+    // detector with an unreachable floor reports "nothing found" either way.
+    thresholds: floors,
     jsonBytes: 0,
   };
 
