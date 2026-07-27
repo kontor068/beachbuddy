@@ -844,6 +844,14 @@ export const BeachDetailPage: React.FC<BeachDetailPageProps> = ({
       beaufort: getBeaufortLevel(windSpeedKmh),
       windDir,
       date: selectedDate ? wallClockDayKey(selectedDate) : undefined,
+      // The wave side of the record. Without what we CLAIMED the sea was, a "had waves" report
+      // can only ever calibrate the wind model. The hour matters because a 2 Bft morning and a
+      // 5 Bft afternoon are not the same day, and `live` separates someone standing in the water
+      // from someone reading about next Tuesday — opposite strengths of evidence.
+      hour: athensNow().getHours(),
+      seaStateWaveM: scoreResult.seaStateWaveM,
+      seaStatePeriodS: scoreResult.seaStatePeriodS,
+      live: selectedDayIsToday && selectedHour === undefined,
     });
     setFeedbackSubmitted(true);
   };
@@ -990,7 +998,14 @@ export const BeachDetailPage: React.FC<BeachDetailPageProps> = ({
     swellHeightM: weatherData.marine?.swellWaveHeightM,
     swellPeriodS: weatherData.marine?.swellWavePeriodS,
   }).exposed;
-  const seaConditionScore = calculateSeaConditionScore(isExposed, windSpeedKmh, exposureLevel, waveHeightM, directSwellHere);
+  const seaConditionScore = calculateSeaConditionScore(
+    isExposed,
+    windSpeedKmh,
+    exposureLevel,
+    scoreResult.seaStateWaveM ?? waveHeightM,
+    directSwellHere,
+    scoreResult.seaStatePeriodS
+  );
   const detailBadgeScore = getDetailBadgeScore(score, seaConditionScore, isExposed);
   const beaufortLevel = getBeaufortLevel(windSpeedKmh);
   const isBoatOnlyBeach = hasBoatOnlyAccess(beach);
@@ -1028,11 +1043,16 @@ export const BeachDetailPage: React.FC<BeachDetailPageProps> = ({
     // exposure override when present, else the scoring level.
     mapExposureLevel: mapExposureLevelOverride ?? exposureLevel,
     faces: beach.orientation?.faces ?? [],
+    // The geometry the map pin is coloured from. Without it the shelter test falls
+    // back to `orientation.faces`, which on almost every record is derived from the
+    // older Natural Earth mask and disagrees with the real coastline ~12% of the
+    // time on the cases that decide the sentence.
+    facingDeg: scoreResult.facingDeg ?? null,
     canClaimWindProtection,
     isExposedToTodayWind,
     seaConditionScore,
     isBoatAccess: isBoatOnlyBeach,
-  }), [beachDisplayName, language, selectedDayIsToday, weatherNowDataReady, windDir, beaufortLevel, displayWaveHeightM, isWaveEstimate, beach.protectedFrom, beach.orientation?.faces, canClaimWindProtection, isExposedToTodayWind, mapExposureLevelOverride, exposureLevel, seaConditionScore, isBoatOnlyBeach]);
+  }), [beachDisplayName, language, selectedDayIsToday, weatherNowDataReady, windDir, beaufortLevel, displayWaveHeightM, isWaveEstimate, beach.protectedFrom, beach.orientation?.faces, scoreResult.facingDeg, canClaimWindProtection, isExposedToTodayWind, mapExposureLevelOverride, exposureLevel, seaConditionScore, isBoatOnlyBeach]);
   const weatherNowToneClass = weatherNow.tone === 'calm'
     ? 'bg-emerald-50 text-emerald-700'
     : weatherNow.tone === 'choppy'

@@ -84,6 +84,52 @@ const sectorsOf = (dirs: WindDirection[]) => ({
   west: dirs.some(d => WESTERLY.includes(d) && !NORTHERLY.includes(d) && !SOUTHERLY.includes(d)),
 });
 
+/** Bearing each compass sector blows FROM, for the facing test below. */
+const DIR_DEG: Record<WindDirection, number> = {
+  [WindDirection.N]: 0,
+  [WindDirection.NE]: 45,
+  [WindDirection.E]: 90,
+  [WindDirection.SE]: 135,
+  [WindDirection.S]: 180,
+  [WindDirection.SW]: 225,
+  [WindDirection.W]: 270,
+  [WindDirection.NW]: 315,
+};
+
+/**
+ * Is this beach OPEN to a wind from `dir` — i.e. does it look out that way?
+ *
+ * A beach can never be sheltered from the side it faces, so this is the single
+ * gate both sentences below must pass before either may claim shelter. It used
+ * to live only inside shelterPhrase(), which is exactly how the two sentences
+ * drifted apart: the static line correctly dropped the facing sector while the
+ * live line still announced shelter against it. Measured before the fix: 3.313
+ * beach x wind pairs contradicted, of which 700 (688 beaches, 24% of the
+ * dataset) actually reached the user. Παραλία Άναξου (id 1352) is the very beach
+ * the comment on shelterPhrase says the exclusion was added for.
+ *
+ * `facingDeg` comes from the high-res geospatial profile — the same source the
+ * map pin colour already trusts — and wins when present. `faces` is the legacy
+ * fallback: on 2.792 of 2.842 records it is derived from the older, coarser
+ * Natural Earth mask at medium confidence, and on the cases that matter it
+ * agrees with the geometry only ~88% of the time. Either saying "open" is enough
+ * to suppress the claim, because under-claiming shelter is the safe direction.
+ */
+const facesInto = (
+  dir: WindDirection,
+  faces: WindDirection[] | undefined,
+  facingDeg: number | null | undefined,
+): boolean => {
+  if (typeof facingDeg === 'number' && Number.isFinite(facingDeg)) {
+    const delta = Math.abs(((facingDeg - DIR_DEG[dir] + 540) % 360) - 180);
+    if (delta < 45) return true;
+  }
+  if (!faces?.length) return false;
+  const f = sectorsOf(faces);
+  const d = sectorsOf([dir]);
+  return (['north', 'south', 'east', 'west'] as const).some(k => d[k] && f[k]);
+};
+
 const SECTOR_WORDS: Record<'north' | 'south' | 'east' | 'west', Record<Lang, string>> = {
   north: { en: 'northerly', gr: 'βόρειους', de: 'Nord-', fr: 'de nord', it: 'da nord' },
   south: { en: 'southerly', gr: 'νότιους', de: 'Süd-', fr: 'de sud', it: 'da sud' },
@@ -150,6 +196,13 @@ export interface WeatherNowInput {
   isWaveEstimate: boolean;
   protectedFrom: WindDirection[];
   faces: WindDirection[];
+  /**
+   * Shoreline bearing from the high-res geospatial profile (scoreResult.facingDeg),
+   * the same value the map pin colour is derived from. Preferred over `faces` for
+   * the "can this beach even claim shelter here" test — see facesInto(). Optional
+   * so callers without a profile still get the legacy `faces` behaviour.
+   */
+  facingDeg?: number | null;
   canClaimWindProtection: boolean;
   isExposedToTodayWind: boolean;
   /** The exposure level that colours the map pin the user sees (region-map aligned override
@@ -273,7 +326,17 @@ export const buildWeatherNowContent = (input: WeatherNowInput): WeatherNowConten
   // scoring engine for open sectors (see utils/mapExposure). Never claim shelter against
   // that: if the pin is red, drop the "sheltered" branch so the text matches the map.
   const exposedOnMap = input.mapExposureLevel ? input.mapExposureLevel === 'exposed' : input.isExposedToTodayWind;
-  const shelteredNow = !exposedOnMap && (input.canClaimWindProtection || (input.protectedFrom || []).includes(input.windDir));
+  // The raw protectedFrom fallback needs the SAME facing gate the static sentence
+  // applies, or the two lines contradict each other on the same screen. It matters
+  // because protectedFrom is largely derived from a crude bearing off the region
+  // centroid (getAutoProt), which happily "protects" a beach from a wind it looks
+  // straight into. canClaimWindProtection is left alone: that one comes from the
+  // curated/geometry profile and has already earned the claim.
+  const shelteredNow = !exposedOnMap && (
+    input.canClaimWindProtection ||
+    ((input.protectedFrom || []).includes(input.windDir) &&
+      !facesInto(input.windDir, input.faces, input.facingDeg))
+  );
   let liveSentence: string;
   // "now/τώρα/maintenant…" is only truthful for today. For a future day the same block
   // shows that day's forecast values, so the wording must be time-neutral (no "now").
