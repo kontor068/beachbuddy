@@ -871,21 +871,33 @@ const WESTERLY = ['West', 'Northwest', 'Southwest'];
 // the honesty guards accept via the "more"/"πιο" qualifier. de/fr/it titles stay
 // as authored in each intent's copy (honest, Milos pilot only).
 // { main } carries island + keyword; { tail } is the droppable qualifier.
+//
+// The count in `main` is a CTR lever, not decoration (Search Console 28d to
+// 2026-07-24): sunset earned 0.4% CTR and secluded 0.7% at pos ~10-11, against
+// our own measured 1.2% baseline for those positions — while snorkeling (3.0%)
+// and organized/family (2.0%) beat it. The losers promised a property
+// ("Facing West"); the winners promised something countable and concrete. So
+// only the underperformers get the count; the winners are left untouched.
+// The count is rebuild-fresh, so it never goes stale the way "σήμερα" would.
 const CATEGORY_TITLE = {
-  sheltered:  { en: { main: islandName => `More Sheltered Beaches in ${islandName}`, tail: 'for the Meltemi' }, gr: { main: islandName => `${islandName}: Πιο Απάνεμες Παραλίες`, tail: 'στο Μελτέμι' } },
+  sheltered:  { en: { main: (islandName, count) => `${count} More Sheltered Beaches in ${islandName}`, tail: 'for the Meltemi' }, gr: { main: (islandName, count) => `${islandName}: ${count} Πιο Απάνεμες Παραλίες`, tail: 'στο Μελτέμι' } },
   family:     { en: { main: islandName => `Family Beaches in ${islandName}`, tail: 'with Shallow Water' },      gr: { main: islandName => `${islandName}: Παραλίες για Οικογένειες`, tail: '& Παιδιά' } },
   snorkeling: { en: { main: islandName => `Best Snorkeling Beaches in ${islandName}`, tail: '' },               gr: { main: islandName => `${islandName}: Οι Καλύτερες Παραλίες για Snorkeling`, tail: '' } },
   organized:  { en: { main: islandName => `Organized Beaches in ${islandName}`, tail: 'with Sunbeds' },         gr: { main: islandName => `${islandName}: Οργανωμένες Παραλίες`, tail: 'με Ξαπλώστρες' } },
-  secluded:   { en: { main: islandName => `Secluded Beaches in ${islandName}`, tail: 'Away from Crowds' },      gr: { main: islandName => `${islandName}: Απομονωμένες Παραλίες`, tail: 'χωρίς Κόσμο' } },
-  sunset:     { en: { main: islandName => `Sunset Beaches in ${islandName}`, tail: 'Facing West' },             gr: { main: islandName => `${islandName}: Παραλίες για Ηλιοβασίλεμα`, tail: '(Δυτικές)' } },
+  // "Best sunset in {island}" is a literal query pattern in GSC, so EN reclaims
+  // the editorial "Best" (spec §3.1 allows it on sunset); GR sunset queries are
+  // bare "ηλιοβασίλεμα {νησί}", so GR spends the characters on the count instead.
+  secluded:   { en: { main: (islandName, count) => `${count} Secluded Beaches in ${islandName}`, tail: 'Away from Crowds' },     gr: { main: (islandName, count) => `${islandName}: ${count} Απομονωμένες Παραλίες`, tail: 'χωρίς Κόσμο' } },
+  sunset:     { en: { main: islandName => `Best Sunset Beaches in ${islandName}`, tail: count => `— ${count} Facing West` },     gr: { main: (islandName, count) => `${islandName}: ${count} Παραλίες για Ηλιοβασίλεμα`, tail: '(Δυτικές)' } },
 };
 // Same deterministic tiers as beach titles: T1 full → T2 drop brand → T3 drop
 // qualifier tail → T4 bare "{island}: {keyword}".
-const categoryTitleFor = (key, islandName, language) => {
+const categoryTitleFor = (key, islandName, language, count) => {
   const spec = CATEGORY_TITLE[key]?.[language];
   if (!spec) return null;
-  const main = spec.main(islandName);
-  const withTail = spec.tail ? `${main} ${spec.tail}` : main;
+  const main = spec.main(islandName, count);
+  const tail = typeof spec.tail === 'function' ? spec.tail(count) : spec.tail;
+  const withTail = tail ? `${main} ${tail}` : main;
   const max = language === 'gr' ? 58 : 60;
   const tiers = [`${withTail} | CalmBeach`, withTail, main];
   for (const tier of tiers) if (tier.length <= max) return tier;
@@ -937,10 +949,10 @@ const islandIntents = [
       // actually shipping it. Name the real regime and drop the fixed lee arc.
       const a = LOCAL_WIND_ATOMS[getRegionWindContext(regionId)];
       const prep = regionPrepGr(regionId, islandName);
-      const enMain = `More Sheltered Beaches in ${islandName}`;
+      const enMain = `${count} More Sheltered Beaches in ${islandName}`;
       const enWithTail = `${enMain} for ${w.en}`;
       const enTitle = pickUnderLimit([`${enWithTail} | CalmBeach`, enWithTail, enMain], 60);
-      const grMain = `${islandName}: Πιο Απάνεμες Παραλίες`;
+      const grMain = `${islandName}: ${count} Πιο Απάνεμες Παραλίες`;
       const grWithTail = `${grMain} ${w.elIn}`;
       const grTitle = pickUnderLimit([`${grWithTail} | CalmBeach`, grWithTail, grMain], 58);
       return {
@@ -1003,7 +1015,7 @@ const islandIntents = [
     match: beach => beach.environment?.familyFriendly === true,
     copy: (islandName, count) => ({
       en: {
-        title: categoryTitleFor('family', islandName, 'en'),
+        title: categoryTitleFor('family', islandName, 'en', count),
         description: categoryMetaFor('family', islandName, count, 'en'),
         h1: `Family beaches in ${islandName}`,
         intro: `Travelling with young children in ${islandName}? These ${count} family-friendly beaches tend to have shallower water and easier access. Check wind and waves in CalmBeach before you go.`,
@@ -1013,7 +1025,7 @@ const islandIntents = [
         ],
       },
       gr: {
-        title: categoryTitleFor('family', islandName, 'gr'),
+        title: categoryTitleFor('family', islandName, 'gr', count),
         description: categoryMetaFor('family', islandName, count, 'gr'),
         h1: `Παραλίες για παιδιά — ${islandName}`,
         intro: `Ταξιδεύεις με μικρά παιδιά; Αυτές οι ${count} οικογενειακές παραλίες εδώ (${islandName}) έχουν συνήθως ρηχά νερά και ευκολότερη πρόσβαση. Δες άνεμο και κύμα στο CalmBeach πριν πας.`,
@@ -1060,7 +1072,7 @@ const islandIntents = [
     match: beach => beach.activities?.snorkeling === true,
     copy: (islandName, count) => ({
       en: {
-        title: categoryTitleFor('snorkeling', islandName, 'en'),
+        title: categoryTitleFor('snorkeling', islandName, 'en', count),
         description: categoryMetaFor('snorkeling', islandName, count, 'en'),
         h1: `Snorkeling beaches in ${islandName}`,
         intro: `Want clear water and rocks to explore in ${islandName}? These ${count} beaches are good for snorkeling, usually with clearer water and a rocky or mixed seabed. Visibility is often better on low-wind days — check wind and waves in CalmBeach first.`,
@@ -1070,7 +1082,7 @@ const islandIntents = [
         ],
       },
       gr: {
-        title: categoryTitleFor('snorkeling', islandName, 'gr'),
+        title: categoryTitleFor('snorkeling', islandName, 'gr', count),
         description: categoryMetaFor('snorkeling', islandName, count, 'gr'),
         h1: `Παραλίες για snorkeling — ${islandName}`,
         intro: `Ψάχνεις καθαρά νερά και βράχια για εξερεύνηση; Αυτές οι ${count} παραλίες εδώ (${islandName}) είναι καλές για snorkeling, συνήθως με πιο καθαρά νερά και βραχώδη ή μικτό βυθό. Η ορατότητα είναι συχνά καλύτερη σε μέρες με λίγο αέρα — δες πρώτα άνεμο και κύμα στο CalmBeach.`,
@@ -1117,7 +1129,7 @@ const islandIntents = [
     match: beach => beach.amenities?.organized === true,
     copy: (islandName, count) => ({
       en: {
-        title: categoryTitleFor('organized', islandName, 'en'),
+        title: categoryTitleFor('organized', islandName, 'en', count),
         description: categoryMetaFor('organized', islandName, count, 'en'),
         h1: `Organized beaches in ${islandName}`,
         intro: `Prefer sunbeds, umbrellas and a beach bar in ${islandName}? These ${count} organized beaches usually have facilities and easier access. Check wind and waves in CalmBeach before you go.`,
@@ -1127,7 +1139,7 @@ const islandIntents = [
         ],
       },
       gr: {
-        title: categoryTitleFor('organized', islandName, 'gr'),
+        title: categoryTitleFor('organized', islandName, 'gr', count),
         description: categoryMetaFor('organized', islandName, count, 'gr'),
         h1: `Οργανωμένες παραλίες — ${islandName}`,
         intro: `Προτιμάς ξαπλώστρες, ομπρέλες και beach bar; Αυτές οι ${count} οργανωμένες παραλίες εδώ (${islandName}) έχουν συνήθως παροχές και ευκολότερη πρόσβαση. Δες άνεμο και κύμα στο CalmBeach πριν πας.`,
@@ -1174,7 +1186,7 @@ const islandIntents = [
     match: beach => beach.environment?.remote === true,
     copy: (islandName, count) => ({
       en: {
-        title: categoryTitleFor('secluded', islandName, 'en'),
+        title: categoryTitleFor('secluded', islandName, 'en', count),
         description: categoryMetaFor('secluded', islandName, count, 'en'),
         h1: `Secluded beaches in ${islandName}`,
         intro: `Looking to escape the crowds in ${islandName}? These ${count} remote beaches are quieter and harder to reach — often by dirt road, on foot or by boat. Bring water and shade, and check wind and waves in CalmBeach before you go.`,
@@ -1184,7 +1196,7 @@ const islandIntents = [
         ],
       },
       gr: {
-        title: categoryTitleFor('secluded', islandName, 'gr'),
+        title: categoryTitleFor('secluded', islandName, 'gr', count),
         description: categoryMetaFor('secluded', islandName, count, 'gr'),
         h1: `Απομονωμένες παραλίες — ${islandName}`,
         intro: `Θες να ξεφύγεις από τον κόσμο; Αυτές οι ${count} απομακρυσμένες παραλίες εδώ (${islandName}) είναι πιο ήσυχες και πιο δύσκολες στην πρόσβαση — συχνά με χωματόδρομο, με τα πόδια ή με σκάφος. Φέρε νερό και σκιά, και δες άνεμο και κύμα στο CalmBeach πριν πας.`,
@@ -1231,7 +1243,7 @@ const islandIntents = [
     match: beach => Array.isArray(beach.orientation?.faces) && WESTERLY.some(d => beach.orientation.faces.includes(d)),
     copy: (islandName, count) => ({
       en: {
-        title: categoryTitleFor('sunset', islandName, 'en'),
+        title: categoryTitleFor('sunset', islandName, 'en', count),
         description: categoryMetaFor('sunset', islandName, count, 'en'),
         h1: `Sunset beaches in ${islandName}`,
         intro: `Want to watch the sun go down over the sea in ${islandName}? These ${count} west-facing beaches look out toward the sunset. Time your visit for late afternoon — and check wind and waves in CalmBeach before you go.`,
@@ -1241,7 +1253,7 @@ const islandIntents = [
         ],
       },
       gr: {
-        title: categoryTitleFor('sunset', islandName, 'gr'),
+        title: categoryTitleFor('sunset', islandName, 'gr', count),
         description: categoryMetaFor('sunset', islandName, count, 'gr'),
         h1: `Παραλίες για ηλιοβασίλεμα — ${islandName}`,
         intro: `Θες να δεις τον ήλιο να δύει στη θάλασσα; Αυτές οι ${count} δυτικές παραλίες εδώ (${islandName}) κοιτούν προς το ηλιοβασίλεμα. Προγραμμάτισε την επίσκεψη αργά το απόγευμα — και δες άνεμο και κύμα στο CalmBeach πριν πας.`,
@@ -3009,6 +3021,14 @@ const fitIntentTitle = (title, language) => {
   if (typeof title !== 'string' || title.length <= max) return title;
   return title.endsWith(INTENT_TITLE_BRAND) ? title.slice(0, -INTENT_TITLE_BRAND.length) : title;
 };
+// Region-hub title: count first, then the wind moat as the tail.
+// The query behind these pages is the bare "{νησί} παραλίες" / "{island}
+// beaches" — a request for the LIST. The previous title led with the task
+// ("σύγκρινε προστασία από τον άνεμο" / "Compare Wind & Wave Shelter"), which
+// answers a question nobody asked at that moment: 206 impressions at pos ~10-12
+// earned exactly 0 clicks (GSC 28d to 2026-07-24), against a ~1.2% baseline for
+// those positions. Leading with "{total} παραλίες {gen}" answers the query
+// first; the shelter count keeps the differentiator without owning the title.
 const buildRegionShelterCopy = (regionId, nameEl, nameEn, total, sheltered, language) => {
   const w = windWordsFor(regionId);
   const numberless = sheltered < 2 || sheltered >= total;
@@ -3016,8 +3036,8 @@ const buildRegionShelterCopy = (regionId, nameEl, nameEn, total, sheltered, lang
     const gen = regionGenGr(regionId, nameEl);
     const prep = regionPrepGr(regionId, nameEl);
     const title = numberless
-      ? pickUnderLimit([`Παραλίες ${gen}: σύγκρινε προστασία από τον άνεμο | CalmBeach`, `Παραλίες ${gen}: σύγκρινε προστασία από τον άνεμο`, `Παραλίες ${gen}: προστασία από τον άνεμο`], 50)
-      : pickUnderLimit([`Παραλίες ${gen}: ${sheltered} προστατευμένες από τον άνεμο | CalmBeach`, `Παραλίες ${gen}: ${sheltered} προστατευμένες από τον άνεμο`, `Παραλίες ${gen}: ${sheltered} χωρίς αέρα`], 50);
+      ? pickUnderLimit([`${total} παραλίες ${gen}: σύγκρινε άνεμο & κύμα | CalmBeach`, `${total} παραλίες ${gen}: σύγκρινε άνεμο & κύμα`, `${total} παραλίες ${gen}: άνεμος & κύμα`], 58)
+      : pickUnderLimit([`${total} παραλίες ${gen} — οι ${sheltered} πιο υπήνεμες | CalmBeach`, `${total} παραλίες ${gen} — οι ${sheltered} πιο υπήνεμες`, `${total} παραλίες ${gen}: ${sheltered} πιο υπήνεμες`], 58);
     const description = numberless
       ? `${total} παραλίες ${prep}. Σύγκρινε προστασία ${w.elFrom} και ζωντανό άνεμο και κύμα πριν πας.`
       : `${total} παραλίες ${prep}. Οι ${sheltered} είναι προστατευμένες ${w.elFrom}. Δες ζωντανά άνεμο και κύμα πριν πας.`;
@@ -3029,8 +3049,8 @@ const buildRegionShelterCopy = (regionId, nameEl, nameEn, total, sheltered, lang
   }
   // en (+ de/fr/it region pages reuse the en shelter framing with localized copy below)
   const title = numberless
-    ? pickUnderLimit([`${nameEn} Beaches: Compare Wind & Wave Shelter | CalmBeach`, `${nameEn} Beaches: Compare Wind & Wave Shelter`, `${nameEn} Beaches: Wind & Wave Shelter`], 60)
-    : pickUnderLimit([`${nameEn} Beaches: ${sheltered} Sheltered from the Wind | CalmBeach`, `${nameEn} Beaches: ${sheltered} Sheltered from the Wind`, `${nameEn} Beaches: ${sheltered} Wind-Sheltered`], 60);
+    ? pickUnderLimit([`${total} Beaches in ${nameEn}: Compare Wind & Waves | CalmBeach`, `${total} Beaches in ${nameEn}: Compare Wind & Waves`, `${total} Beaches in ${nameEn}: Wind & Waves`], 60)
+    : pickUnderLimit([`${total} Beaches in ${nameEn} — ${sheltered} More Sheltered | CalmBeach`, `${total} Beaches in ${nameEn} — ${sheltered} More Sheltered`, `${total} Beaches in ${nameEn}: ${sheltered} More Sheltered`], 60);
   const description = numberless
     ? `${total} beaches in ${nameEn}. Compare each by shelter from ${w.en} and live wind & waves before you go.`
     : `${total} beaches in ${nameEn}, ${sheltered} sheltered from ${w.en}. See live wind & wave conditions for each before you go.`;
