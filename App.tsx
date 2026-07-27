@@ -72,6 +72,8 @@ import { hasBoatOnlyAccess, hasDifficultTopPickAccess, hasMainstreamTopPickAcces
 import { isNaturistBeach } from './utils/naturistBeaches';
 import { isSunsetFacingBeach } from './utils/beachOrientation';
 import { detectSearchIntentFilters } from './utils/searchIntent';
+import { parseTripQuery } from './utils/tripQueryParser';
+import { tripPlannerCopy } from './components/planner/tripPlannerCopy';
 import { getBeachPopularityRating } from './utils/beachRating';
 import { buildBeachDetailPath, buildBeachRegionPath, parseBeachDetailPath, parseBeachRegionPath, regionMatchesRouteParam } from './utils/beachUrls';
 import { describeSimpleWindSuitability } from './utils/windExposureCopy';
@@ -328,6 +330,10 @@ const DISTANCE_SORT_REFINEMENT_OPTIONS: PositionOptions = {
 // merged from the real regions nearest to the user, so the result reflects the
 // user's actual location rather than whichever region happens to be on screen.
 const NEAR_ME_REGION_ID = 'near-me';
+// Anchor for "search stated a stay length → land on the plan". Lives on the App
+// wrapper, not on the <section> inside TripPlanner: that one is keyed by region
+// id and remounts, so its element would vanish mid-scroll.
+const TRIP_PLANNER_SECTION_ID = 'trip-planner-section';
 // Consider regions whose centre lies within this radius of the user, capped to a
 // sensible number so we never load the whole country.
 const NEAR_ME_CANDIDATE_RADIUS_KM = 80;
@@ -1653,6 +1659,11 @@ export const App: React.FC = () => {
   const [isMobileAllBeachesPanelOpen, setIsMobileAllBeachesPanelOpen] = useState(false);
   const [isMobileWeatherPanelOpen, setIsMobileWeatherPanelOpen] = useState(false);
   const [highlightedMapBeachId, setHighlightedMapBeachId] = useState<number | undefined>(undefined);
+  // A stay length taken from the search box, handed to the planner once it can
+  // mount. Deliberately NOT a URL param: every history write here preserves
+  // window.location.search, so ?days= would stick to later region switches and
+  // re-open a plan nobody asked for on reload.
+  const [tripPlannerInitialDays, setTripPlannerInitialDays] = useState<number | null>(null);
   // A discrete "centre this beach's card" signal, fired ONLY when the user picks a beach
   // from search (not while swiping the carousel). The nonce lets the same beach be
   // re-focused on a repeat search; BeachSearcherHome centres the matching card below the map.
@@ -1767,6 +1778,16 @@ export const App: React.FC = () => {
   // Scrolling to the map at select-time would clamp to the (now shorter) page bottom — the
   // legal footer. Deferred to the effect that fires once deferredBeachSearchQuery settles.
   const pendingBeachMapScrollRef = useRef(false);
+  // Set when a SEARCH states a stay length («Νάξο 5 μέρες»). Opening the planner
+  // needs THREE async gates to resolve (region beaches, forecast, exposure
+  // geometry) and there is no single "ready" promise to await — so we stash the
+  // day count and let a level-triggered effect apply it the moment the planner
+  // actually becomes mountable. The region id is stashed alongside because that
+  // wait lasts seconds: a second search in the meantime must supersede the
+  // first cleanly, not apply its day count to a different island.
+  const pendingTripPlannerDaysRef = useRef<number | null>(null);
+  const pendingTripPlannerRegionIdRef = useRef<string | null>(null);
+  const pendingTripPlannerScrollRef = useRef(false);
   const trackedAppLoadedRef = useRef(false);
   const trackedPageViewRef = useRef<string | null>(null);
   const trackedWeatherFallbackRef = useRef<string | null>(null);
@@ -2538,6 +2559,17 @@ export const App: React.FC = () => {
     } else {
       setSelectedFilters([]);
     }
+    // A stated stay length belongs to ONE region. Landing anywhere else drops
+    // it — this is also what bounds the wait when a region's beaches never
+    // load (that gate has no error state of its own to fail on).
+    if (pendingTripPlannerRegionIdRef.current && pendingTripPlannerRegionIdRef.current !== selectedIsland?.id) {
+      pendingTripPlannerDaysRef.current = null;
+      pendingTripPlannerRegionIdRef.current = null;
+    }
+    // The open plan itself is per-region: the planner is keyed by region id and
+    // remounts, so a stale initialDays would silently re-open it elsewhere.
+    setTripPlannerInitialDays(null);
+    pendingTripPlannerScrollRef.current = false;
   }, [selectedIsland?.id]);
 
   useEffect(() => {
@@ -2969,9 +3001,15 @@ export const App: React.FC = () => {
     });
   };
 
-  const scrollToMapSection = () => {
+  /**
+   * Scroll a section to the top and KEEP it there while the page settles.
+   * Generalised from scrollToMapSection so the trip planner can reuse it —
+   * it sits even further down the page than the map, so it needs the same
+   * re-anchoring, and a plain double-rAF scroll is not enough. See the
+   * comment inside for why this polls instead of scrolling once.
+   */
+  const scrollToStableSection = (id: string, stickyTop = 0) => {
     if (typeof window === 'undefined') return;
-    const id = isDesktopViewport ? 'map-section-desktop' : 'map-section';
     // A cross-region search loads the new region's view asynchronously: the island strip and
     // hero images finish laying out AFTER we scroll — sometimes seconds later on a slow phone —
     // and the space ABOVE the sticky map shrinks while the card carousel BELOW grows, so the
@@ -2984,17 +3022,16 @@ export const App: React.FC = () => {
     // so we can't reliably distinguish "user scrolled" from "layout shifted" — and this only runs
     // for the brief settle window right after a search-select, when the user is waiting to land on
     // the map, not scrolling. Verified with a throttled (slow-image) mobile Playwright repro.
-    const STICKY_TOP = 8;      // the map-section's `sticky top-2` resting offset (0.5rem)
     const TOLERANCE = 6;
     const MAX_MS = 5000;       // give a slow region up to 5s to mount + settle
-    const STABLE_MS = 500;     // stop once the map has held the top this long
+    const STABLE_MS = 500;     // stop once the target has held the top this long
     const start = performance.now();
     let stableSince: number | null = null;
     const tick = () => {
       const nowMs = performance.now();
       const target = document.getElementById(id);
       if (target) {
-        const delta = target.getBoundingClientRect().top - STICKY_TOP;
+        const delta = target.getBoundingClientRect().top - stickyTop;
         if (Math.abs(delta) > TOLERANCE) {
           window.scrollBy(0, delta);
           stableSince = null;
@@ -3007,6 +3044,14 @@ export const App: React.FC = () => {
     };
     requestAnimationFrame(tick);
   };
+
+  const scrollToMapSection = () => {
+    // 8 = the map-section's `sticky top-2` resting offset (0.5rem).
+    scrollToStableSection(isDesktopViewport ? 'map-section-desktop' : 'map-section', 8);
+  };
+
+  /** The planner has no sticky offset — it should land flush at the top. */
+  const scrollToTripPlannerSection = () => scrollToStableSection(TRIP_PLANNER_SECTION_ID, 12);
 
   const closeMobileBottomPanels = () => {
     setIsMobileAllBeachesPanelOpen(false);
@@ -3879,6 +3924,53 @@ export const App: React.FC = () => {
   // Info-only regions (e.g. Milos): pages exist and beaches are browsable, but the
   // region page hides the interactive map and the today-recommendation ranking.
   const isInfoOnlyRegion = isInfoOnlyRegionId(selectedIsland?.id);
+  /**
+   * Everything that must be true for the trip planner to render. Named rather
+   * than inlined in the JSX because it is ALSO the readiness signal a search
+   * deep-link waits on — the two must never drift apart. Three of these gates
+   * are async and resolve independently after a region switch: the region's
+   * beaches, the forecast (nulled until forecastIslandId matches), and the
+   * exposure geometry.
+   */
+  const isTripPlannerMountable = Boolean(
+    ENABLE_TRIP_PLANNER &&
+    selectedIsland &&
+    selectedIsland.id !== NEAR_ME_REGION_ID &&
+    forecast &&
+    forecast.length > 0 &&
+    !isUnsafeWinter &&
+    !isInfoOnlyRegion &&
+    !isMapExposureLoading &&
+    selectedIsland.beaches.length > 0
+  );
+
+  // A search that stated a stay length («Νάξο 5 μέρες») opens the planner — but
+  // only once it can actually mount. This is LEVEL-triggered on the readiness
+  // expression itself, so it needs no timer and no polling: it simply re-runs on
+  // every render where a gate changes, and fires the frame they are all true.
+  // If a gate never resolves (a region JSON 404 leaves beaches empty forever)
+  // nothing happens and the ref is cleared by the region-change effect.
+  useEffect(() => {
+    const pendingDays = pendingTripPlannerDaysRef.current;
+    if (pendingDays == null || !selectedIsland) return;
+    // A second search while we were waiting supersedes the first cleanly.
+    if (pendingTripPlannerRegionIdRef.current !== selectedIsland.id) return;
+    if (!isTripPlannerMountable) return;
+    pendingTripPlannerDaysRef.current = null;
+    pendingTripPlannerRegionIdRef.current = null;
+    setTripPlannerInitialDays(pendingDays);
+    pendingTripPlannerScrollRef.current = true;
+  }, [isTripPlannerMountable, selectedIsland?.id]);
+
+  // Scroll only once the planner is really in the DOM — the element does not
+  // exist in the same tick that sets the state above.
+  useEffect(() => {
+    if (!pendingTripPlannerScrollRef.current || tripPlannerInitialDays == null) return;
+    if (typeof document === 'undefined' || !document.getElementById(TRIP_PLANNER_SECTION_ID)) return;
+    pendingTripPlannerScrollRef.current = false;
+    scrollToTripPlannerSection();
+  }, [tripPlannerInitialDays]);
+
   // Don't show the loading skeleton for the stale-block state — that never resolves. The
   // dedicated "conditions unavailable" banner (below) handles it instead.
   const isWaitingForForecast = Boolean(selectedIsland && !selectedForecast && !weatherError && !isUnsafeWinter && !isStaleBlocked);
@@ -4632,7 +4724,25 @@ export const App: React.FC = () => {
       return undefined;
     }
 
-    const regionSuggestions = getRegionSearchSuggestions(trimmedQuery);
+    // A trip sentence hides its place inside stopwords, so the plain matcher
+    // finds nothing. Parse it and suggest the place it named — labelled with the
+    // plan, so the dropdown answers the question that was actually asked. When
+    // the place is ambiguous («Ρόδο»), BOTH candidates are offered and nothing
+    // is chosen for them.
+    const tripParse = parseTripQuery(trimmedQuery, selectableIslands, language);
+    const tripRegions = tripParse.region ? [tripParse.region] : tripParse.ambiguousRegions;
+    const tripSuggestions: DirectorySearchSuggestion[] = tripParse.requestedDays === undefined ? [] :
+      tripRegions.slice(0, 3).map(island => ({
+        id: `region-${island.id}`,
+        type: 'region' as const,
+        label: island.name[language] || island.name.en,
+        subtitle: tripPlannerCopy[language].daysUnit(tripParse.requestedDays as number),
+        island,
+      }));
+
+    const regionSuggestions = tripSuggestions.length > 0
+      ? tripSuggestions
+      : getRegionSearchSuggestions(trimmedQuery);
     const currentRegionBeachSuggestions = selectedIsland
       ? getBeachSearchSuggestionsFromEntries(trimmedQuery, selectedIsland.beaches.map(beach => ({
           island: selectedIsland,
@@ -5494,6 +5604,12 @@ export const App: React.FC = () => {
   };
 
   const getRegionSearchSuggestions = (query: string): DirectorySearchSuggestion[] => (
+    // Three characters, not two. At two, greeklish transliteration makes common
+    // Greek particles score 92 against real region names — «θα»→tha vs Θάσος→
+    // thasos is a prefix hit, and «με» hits Μέθανα. So typing the first word of
+    // «θα μείνω Νάξο για 5 μέρες» used to surface Θάσος on the second keystroke.
+    // Beach suggestions keep the 2-char floor; only region names are affected.
+    query.trim().length < 3 ? [] :
     selectableIslands
       .map(island => ({
         island,
@@ -5575,9 +5691,83 @@ export const App: React.FC = () => {
     return loadAppReadyRegion(island.id);
   };
 
+  /**
+   * «θα μείνω Νάξο για 5 μέρες» → land on Naxos with the plan open at 5 days.
+   *
+   * Runs BEFORE the ordinary region match because the ordinary matcher cannot
+   * read a sentence at all: it scores the whole string and needs 90. Returns
+   * true when it handled the query.
+   */
+  const handleTripSentence = (rawQuery: string): boolean => {
+    const parsed = parseTripQuery(rawQuery, selectableIslands, language);
+    if (parsed.requestedDays === undefined) return false;
+
+    const target = parsed.region;
+    const report = (matched: string, plannerDays?: number) => {
+      trackEvent('trip_query_parsed', undefined, {
+        ...analyticsBaseParams,
+        matched,
+        requested_days: parsed.requestedDays,
+        planner_days: plannerDays,
+        region_id: target?.id,
+      });
+    };
+
+    // Ambiguous place («Ρόδο» is Rhodes AND Rodopi at the same score): refuse to
+    // guess. The suggestion dropdown already lists both — let them pick.
+    if (!target && parsed.ambiguousRegions.length >= 2) {
+      report('ambiguous');
+      return false;
+    }
+
+    // A duration with no place. On a region page that is a complete request —
+    // they are already somewhere. On the landing it is not, and we must not
+    // invent an island.
+    if (!target) {
+      if (!selectedIsland || showLanding) {
+        report('days_only');
+        return false;
+      }
+      pendingTripPlannerDaysRef.current = parsed.requestedDays;
+      pendingTripPlannerRegionIdRef.current = selectedIsland.id;
+      setBeachSearchQuery('');
+      report('days_only', parsed.requestedDays);
+      return true;
+    }
+
+    // Regions where the planner can never mount: navigate, but do not arm a
+    // wait that would never end.
+    const plannerImpossible = isInfoOnlyRegionId(target.id) || target.id === NEAR_ME_REGION_ID;
+    setBeachSearchQuery('');
+    if (!plannerImpossible) {
+      pendingTripPlannerDaysRef.current = parsed.requestedDays;
+      pendingTripPlannerRegionIdRef.current = target.id;
+    }
+    report(plannerImpossible ? 'region_days_unsupported' : 'region_days', plannerImpossible ? undefined : parsed.requestedDays);
+
+    if (target.id !== selectedIsland?.id) {
+      // NOT pendingRegionMapScrollRef: someone who said "5 days" asked for the
+      // plan, and the map scroll re-anchors every frame for up to 5 seconds —
+      // nothing else can win inside that window.
+      pendingRegionIntentFiltersRef.current = parsed.filters;
+      handleRegionSelected(target, 'selector');
+      closeMobileBottomPanels();
+    } else if (parsed.filters.length > 0) {
+      setSelectedFilters(prev => {
+        const next: FilterKey[] = prev.filter(item => item !== 'showAll');
+        for (const filter of parsed.filters) {
+          if (!next.includes(filter)) next.push(filter);
+        }
+        return next;
+      });
+    }
+    return true;
+  };
+
   const handleDirectorySearchSubmit = async () => {
     const trimmedQuery = beachSearchQuery.trim();
     if (trimmedQuery) markValuePropSeen();
+    if (handleTripSentence(trimmedQuery)) return;
     const regionMatch = findSearchRegionMatch(beachSearchQuery);
     let globalBeachMatch: GlobalBeachSearchMatch | null = null;
 
@@ -6143,11 +6333,11 @@ export const App: React.FC = () => {
           the plan visibly changes under the user a second later. The key resets
           the chosen day count on region switch — no silent recompute for a
           different island. */}
-      {ENABLE_TRIP_PLANNER && selectedIsland && selectedIsland.id !== NEAR_ME_REGION_ID && forecast && forecast.length > 0 && !isUnsafeWinter && !isInfoOnlyRegion && !isMapExposureLoading && selectedIsland.beaches.length > 0 && (
-        <div className="relative z-20 pb-3 pt-1 sm:pb-4">
-          {/* Fixed-height fallback: the strip sits between today's picks and the
-              recommendations, so a late chunk must not push content down. */}
-          <Suspense fallback={<div className="mx-auto w-full max-w-6xl px-3 sm:px-4"><div className="min-h-[4.5rem] rounded-2xl border border-cyan-200/80 bg-cyan-50/85" /></div>}>
+      {isTripPlannerMountable && selectedIsland && forecast && (
+        <div id={TRIP_PLANNER_SECTION_ID} className="relative z-20 pb-3 pt-1 sm:pb-4">
+          {/* Fixed-height fallback sized to the collapsed card, so a late chunk
+              does not push the recommendations below it down. */}
+          <Suspense fallback={<div className="mx-auto w-full max-w-6xl px-3 sm:px-4"><div className="min-h-[6.5rem] rounded-2xl border border-cyan-200/80 bg-cyan-50/85" /></div>}>
             <TripPlanner
               key={String(selectedIsland.id)}
               beaches={selectedIsland.beaches}
@@ -6158,6 +6348,7 @@ export const App: React.FC = () => {
               geospatialProfiles={geospatialExposureProfiles}
               todayRainBlocked={isRainBlockedBeachWindow}
               userLocation={userLocation}
+              initialDays={tripPlannerInitialDays ?? undefined}
               onBeachClick={(beach) => openBeachDetails(beach, 'trip_planner')}
             />
           </Suspense>
