@@ -618,6 +618,98 @@ const seoLandingPages = [
     },
   },
   {
+    // "beaches near me" / «παραλίες κοντά μου»: 52 distinct queries, 135
+    // impressions and 3 clicks in the 28d to 2026-07-24, landing on the bare
+    // home page at position 15-20 because nothing on the site targeted them.
+    // The app HAS the feature (cross-region "Κοντά μου"), so the honest page is
+    // one that explains it and hands you to it — a static page can never list
+    // "beaches near you", and this one never pretends to. The CTA carries
+    // ?near=1, which App.tsx consumes once and strips.
+    pathName: '/beaches-near-me/',
+    kind: 'info',
+    locales: {
+      en: {
+        title: 'Beaches Near Me in Greece — Wind & Waves | CalmBeach',
+        description: 'Find the beaches closest to you anywhere in Greece, each with its own wind, wave and exposure reading. Your position never leaves your device.',
+        h1: 'Beaches near me',
+        intro: 'Wherever you are in Greece, the beaches closest to you are rarely all in the same region — and on a windy day the nearest one is often the wrong one. CalmBeach finds the beaches physically nearest to you, ignoring administrative borders, and shows you how exposed each one is to the wind that is actually blowing.',
+        sections: [
+          {
+            heading: 'How it works',
+            body: 'Tap the button above and allow location access. CalmBeach gathers the beaches within roughly 40 km of you — crossing region and island boundaries, so a beach 12 km away in the next prefecture still counts — and lists them nearest first, each with its own wind, wave and exposure reading for the day. If there are too few beaches that close, the radius widens until the list is useful.',
+          },
+          {
+            heading: 'Nearest is not always best',
+            body: 'Two beaches ten minutes apart can have completely different days if one faces the wind and the other sits behind a headland. That is why the list is not only sorted by distance: each beach carries its own exposure reading, so you can trade five extra minutes of driving for a swim that is actually pleasant.',
+          },
+          {
+            heading: 'Your location stays on your device',
+            body: 'The nearest-beach calculation runs entirely in your browser, against beach data already downloaded to it. Your coordinates are never sent to us, never stored, and are explicitly blocked from analytics. Close the tab and nothing about where you were remains.',
+          },
+          {
+            heading: 'No location access? Start from a city',
+            body: 'If you would rather not share your position, pick the coast nearest to where you are staying and browse it directly — the same wind and wave information is on every beach page.',
+          },
+        ],
+        faq: [
+          { q: 'Do I have to allow location access?', a: 'Only if you want the automatic list. Without it you can pick any region or island manually and get exactly the same per-beach conditions.' },
+          { q: 'Does it work outside the big islands?', a: 'Yes. The search runs over the whole Greek coastline in CalmBeach, mainland included, and crosses region borders — it looks for the nearest beaches, not the nearest ones inside your current region.' },
+          { q: 'What if I am not in Greece?', a: 'The dataset covers Greek beaches only, so from abroad the result will not be meaningful. Browse by island or region instead and plan ahead.' },
+          { q: 'Why is the nearest beach not first in my list?', a: 'The list leads with distance but also carries each beach\'s exposure to the wind, so a slightly further beach that is out of the wind can be the better call on the day. Both numbers are shown, and the choice stays yours.' },
+          { q: 'How accurate is the distance?', a: 'It is straight-line distance from your device position, not driving distance, so a bay across a headland can be closer on the map than by road. Use it to shortlist, then check the route.' },
+        ],
+        links: [
+          { href: '/?near=1', label: 'Find beaches near me now' },
+          { href: '/beaches/athens-area/', label: 'Beaches near Athens' },
+          { href: '/beaches/thessaloniki-area/', label: 'Beaches near Thessaloniki' },
+          { href: '/beaches/heraklion/', label: 'Beaches near Heraklion' },
+          { href: '/beaches/achaia/', label: 'Beaches near Patras' },
+          { href: '/best-beaches-greece-today/', label: 'Compare Greek beaches by conditions' },
+        ],
+      },
+      el: {
+        title: 'Παραλίες Κοντά Μου — Άνεμος & Κύμα | CalmBeach',
+        description: 'Βρες τις πιο κοντινές σου παραλίες σε όλη την Ελλάδα, με άνεμο, κύμα και έκθεση για την καθεμιά. Η θέση σου δεν φεύγει από τη συσκευή σου.',
+        h1: 'Παραλίες κοντά μου',
+        intro: 'Οι πιο κοντινές σου παραλίες σπάνια ανήκουν όλες στον ίδιο νομό — και τη μέρα που φυσάει, η πιο κοντινή συχνά είναι η λάθος επιλογή. Το CalmBeach βρίσκει τις παραλίες που είναι όντως κοντά σου, αγνοώντας τα διοικητικά όρια, και δείχνει πόσο εκτεθειμένη είναι η καθεμιά στον άνεμο που φυσάει.',
+        sections: [
+          {
+            heading: 'Πώς δουλεύει',
+            body: 'Πάτα το κουμπί και δώσε πρόσβαση στην τοποθεσία. Το CalmBeach μαζεύει τις παραλίες σε ακτίνα περίπου 40 χλμ. — περνώντας όρια νομών και νησιών, ώστε μια παραλία 12 χλμ. μακριά στον διπλανό νομό να μετράει κανονικά — και τις δείχνει με τη σειρά απόστασης, με άνεμο, κύμα και έκθεση για την κάθε μία. Αν είναι πολύ λίγες τόσο κοντά, η ακτίνα ανοίγει μέχρι να βγει χρήσιμη λίστα.',
+          },
+          {
+            heading: 'Η πιο κοντινή δεν είναι πάντα η καλύτερη',
+            body: 'Δύο παραλίες δέκα λεπτά απόσταση μπορεί να έχουν εντελώς διαφορετική μέρα, αν η μία κοιτάει τον άνεμο και η άλλη κάθεται πίσω από ένα ακρωτήρι. Γι\' αυτό η λίστα δεν είναι μόνο κατά απόσταση: κάθε παραλία κουβαλάει τη δική της έκθεση, ώστε να μπορείς να ανταλλάξεις πέντε λεπτά δρόμο με ένα μπάνιο που αξίζει.',
+          },
+          {
+            heading: 'Η θέση σου μένει στη συσκευή σου',
+            body: 'Ο υπολογισμός γίνεται εξ ολοκλήρου στον browser σου, πάνω σε δεδομένα παραλιών που έχουν ήδη κατέβει. Οι συντεταγμένες σου δεν στέλνονται σε εμάς, δεν αποθηκεύονται πουθενά και είναι ρητά αποκλεισμένες από τα analytics. Κλείνεις την καρτέλα και δεν μένει τίποτα.',
+          },
+          {
+            heading: 'Χωρίς τοποθεσία; Ξεκίνα από μια πόλη',
+            body: 'Αν δεν θέλεις να μοιραστείς τη θέση σου, διάλεξε την ακτή που είναι πιο κοντά εκεί που μένεις — οι ίδιες πληροφορίες για άνεμο και κύμα υπάρχουν σε κάθε σελίδα παραλίας.',
+          },
+        ],
+        faq: [
+          { q: 'Πρέπει οπωσδήποτε να δώσω πρόσβαση στην τοποθεσία;', a: 'Μόνο αν θέλεις την αυτόματη λίστα. Χωρίς αυτήν διαλέγεις περιοχή ή νησί με το χέρι και βλέπεις ακριβώς τις ίδιες συνθήκες ανά παραλία.' },
+          { q: 'Δουλεύει και εκτός των μεγάλων νησιών;', a: 'Ναι. Η αναζήτηση τρέχει σε όλη την ελληνική ακτογραμμή που έχει το CalmBeach, ηπειρωτική Ελλάδα συμπεριλαμβανομένη, και περνάει τα όρια των περιοχών — ψάχνει τις πιο κοντινές παραλίες, όχι τις πιο κοντινές μέσα στην περιοχή που βλέπεις.' },
+          { q: 'Κι αν δεν είμαι στην Ελλάδα;', a: 'Τα δεδομένα καλύπτουν μόνο ελληνικές παραλίες, οπότε από το εξωτερικό το αποτέλεσμα δεν βγάζει νόημα. Δες με νησί ή περιοχή και σχεδίασε από πριν.' },
+          { q: 'Γιατί η πιο κοντινή παραλία δεν είναι πρώτη στη λίστα μου;', a: 'Η λίστα ξεκινά από την απόσταση, αλλά κουβαλάει και την έκθεση κάθε παραλίας στον άνεμο — έτσι μια λίγο πιο μακρινή που είναι πιο υπήνεμη μπορεί να βγαίνει καλύτερη επιλογή για τη μέρα. Φαίνονται και τα δύο· η απόφαση μένει δική σου.' },
+          { q: 'Πόσο ακριβής είναι η απόσταση;', a: 'Είναι ευθεία απόσταση από τη θέση της συσκευής, όχι απόσταση οδήγησης — ένας κόλπος πίσω από ακρωτήρι μπορεί να φαίνεται πιο κοντά στον χάρτη απ\' ό,τι είναι με το αυτοκίνητο. Χρησιμοποίησέ την για προεπιλογή και μετά δες τη διαδρομή.' },
+        ],
+        links: [
+          // Base paths only — the renderer localizes every href per locale.
+          { href: '/?near=1', label: 'Βρες παραλίες κοντά μου τώρα' },
+          { href: '/beaches/athens-area/', label: 'Παραλίες κοντά στην Αθήνα' },
+          { href: '/beaches/thessaloniki-area/', label: 'Παραλίες κοντά στη Θεσσαλονίκη' },
+          { href: '/beaches/heraklion/', label: 'Παραλίες κοντά στο Ηράκλειο' },
+          { href: '/beaches/achaia/', label: 'Παραλίες κοντά στην Πάτρα' },
+          { href: '/best-beaches-greece-today/', label: 'Σύγκριση παραλιών με συνθήκες' },
+        ],
+      },
+    },
+  },
+  {
     pathName: '/beach-camping-greece/',
     kind: 'beachList',
     category: 'camping',
@@ -969,10 +1061,10 @@ const islandIntents = [
       gr: {
         title: grTitle,
         description: truncateForMeta(`${count} πιο απάνεμες παραλίες ${prep}, προστατευμένες ${w.elFrom}. Δες live άνεμο & κύμα στο CalmBeach πριν πας.`, 155),
-        h1: `Παραλίες ${prep} που μένουν υπήνεμες ${w.elIn}`,
+        h1: `Παραλίες ${prep} που μένουν πιο υπήνεμες ${w.elIn}`,
         intro: `Όταν φυσά ${w.elNom}, πιο άνετες επιλογές ${prep} είναι συχνά οι κόλποι που προστατεύονται ${w.elFrom}. Αυτές οι ${count} παραλίες είναι υπήνεμες με βάση το γεωχωρικό μοντέλο έκθεσης — έλεγξε ζωντανά τις συνθήκες πριν πας.`,
         sections: [
-          { heading: `${islandName}: ποιες παραλίες μένουν υπήνεμες ${w.elIn};`, body: `Οι κόλποι της λίστας προστατεύονται ${w.elFrom} σύμφωνα με το μοντέλο έκθεσης, οπότε μπορεί να είναι πιο άνετοι όταν φυσά. Οι συνθήκες αλλάζουν τοπικά, γι' αυτό έλεγξε άνεμο και κύμα πριν πας.` },
+          { heading: `${islandName}: ποιες παραλίες μένουν πιο υπήνεμες ${w.elIn};`, body: `Οι κόλποι της λίστας προστατεύονται ${w.elFrom} σύμφωνα με το μοντέλο έκθεσης, οπότε μπορεί να είναι πιο άνετοι όταν φυσά. Οι συνθήκες αλλάζουν τοπικά, γι' αυτό έλεγξε άνεμο και κύμα πριν πας.` },
           { heading: 'Σημαίνει σίγουρα χαμηλό κύμα;', body: 'Όχι. Η προστασία δείχνει ποιες ακτές είναι υπήνεμες σε μια κατεύθυνση ανέμου, όχι εγγυημένη γαλήνη ή χαμηλό κύμα. Σε μέρες με δυνατό αέρα ακολούθησε τις τοπικές σημαίες και έλεγξε live άνεμο και κύμα στην εφαρμογή.' },
         ],
       },
@@ -3041,7 +3133,10 @@ const buildRegionShelterCopy = (regionId, nameEl, nameEn, total, sheltered, lang
     const description = numberless
       ? `${total} παραλίες ${prep}. Σύγκρινε προστασία ${w.elFrom} και ζωντανό άνεμο και κύμα πριν πας.`
       : `${total} παραλίες ${prep}. Οι ${sheltered} είναι προστατευμένες ${w.elFrom}. Δες ζωντανά άνεμο και κύμα πριν πας.`;
-    const h1 = `Ποιες παραλίες ${prep} μένουν υπήνεμες ${w.elIn};`;
+    // "πιο υπήνεμες" / "more sheltered", never the bare claim: the exposure model
+    // ranks coasts against a wind direction, it does not promise shelter. Same
+    // comparative the UI endorsement uses ("Πιο υπήνεμη επιλογή").
+    const h1 = `Ποιες παραλίες ${prep} μένουν πιο υπήνεμες ${w.elIn};`;
     const intro = numberless
       ? `Οι ${total} παραλίες ${prep} διαφέρουν πολύ στην προστασία ${w.elFrom}. Σύγκρινέ τες και δες ζωντανά άνεμο και κύμα πριν πας.`
       : `Από τις ${total} παραλίες ${prep}, οι ${sheltered} δεν είναι εκτεθειμένες ${w.elIn} — αυτές με τις καλύτερες πιθανότητες για μπάνιο μια μέρα με αέρα. Άνοιξε όποια θες για ζωντανό άνεμο και κύμα.`;
@@ -3054,7 +3149,7 @@ const buildRegionShelterCopy = (regionId, nameEl, nameEn, total, sheltered, lang
   const description = numberless
     ? `${total} beaches in ${nameEn}. Compare each by shelter from ${w.en} and live wind & waves before you go.`
     : `${total} beaches in ${nameEn}, ${sheltered} sheltered from ${w.en}. See live wind & wave conditions for each before you go.`;
-  const h1 = `Which ${nameEn} beaches are sheltered from the wind?`;
+  const h1 = `Which ${nameEn} beaches are more sheltered from the wind?`;
   const intro = numberless
     ? `The ${total} beaches in ${nameEn} vary widely in shelter from ${w.en}. Compare them and check live wind and waves before you go.`
     : `Of the ${total} beaches in ${nameEn}, ${sheltered} sit away from ${w.en} — the ones likeliest to stay swimmable on a windy day. Open any for live wind and waves before you go.`;
@@ -3449,7 +3544,7 @@ const GUIDES_HUB_PATH = '/beach-guides/';
 const guidesHubCopy = {
   en: {
     title: 'Greek Beach Guides — by Topic and Island | CalmBeach',
-    description: 'Every CalmBeach beach guide in one place: family, wind-sheltered, snorkeling, organized, secluded and sunset beaches, island by island.',
+    description: 'Every CalmBeach beach guide in one place: family, more sheltered, snorkeling, organized, secluded and sunset beaches, island by island.',
     h1: 'Beach guides',
     intro: 'Every guide we publish, grouped by what you are looking for and then by island. Each one lists the beaches that actually match, and links straight through to live wind and wave conditions.',
     nationalHeading: 'Greece-wide guides',
@@ -3674,15 +3769,18 @@ const buildRegionPage = (baseHtml, island, region, imageUrl, locale = prerenderL
       : `${nameEn}, Griechenland: ${total} Strände, ${sheltered} vor ${w.de} geschützt. Prüfe Wind und Wellen für jeden, bevor du losfährst.`,
     fr: numberless
       ? `${nameEn}, Grèce : ${total} plages. Comparez leur abri ${w.fr} et vérifiez le vent et les vagues avant d'y aller.`
-      : `${nameEn}, Grèce : ${total} plages, ${sheltered} abritées ${w.fr}. Vérifiez le vent et les vagues pour chacune avant d'y aller.`,
+      : `${nameEn}, Grèce : ${total} plages, ${sheltered} plutôt abritées ${w.fr}. Vérifiez le vent et les vagues pour chacune avant d'y aller.`,
     it: numberless
       ? `${nameEn}, Grecia: ${total} spiagge. Confronta il riparo ${w.it} e controlla vento e onde prima di andare.`
-      : `${nameEn}, Grecia: ${total} spiagge, ${sheltered} riparate ${w.it}. Controlla vento e onde per ciascuna prima di andare.`,
+      : `${nameEn}, Grecia: ${total} spiagge, ${sheltered} più riparate ${w.it}. Controlla vento e onde per ciascuna prima di andare.`,
   });
   const title = shelterCopy ? shelterCopy.title : pickLang(language, {
-    de: numberless ? `${nameEn}: Strände nach Windschutz | CalmBeach` : `${nameEn}: ${sheltered} windgeschützte Strände | CalmBeach`,
-    fr: numberless ? `${nameEn} : plages à l'abri du vent | CalmBeach` : `${nameEn} : ${sheltered} plages abritées du vent | CalmBeach`,
-    it: numberless ? `${nameEn}: spiagge riparate dal vento | CalmBeach` : `${nameEn}: ${sheltered} spiagge riparate dal vento | CalmBeach`,
+    // Same count-first shape as en/gr, and the shelter claim carries its
+    // comparative in each language (eher / plutôt / più) — the bare "sheltered
+    // beaches" form promises a state the exposure model never promises.
+    de: numberless ? `${total} Strände auf ${nameEn}: Wind & Wellen | CalmBeach` : `${total} Strände auf ${nameEn} — ${sheltered} eher windgeschützt | CalmBeach`,
+    fr: numberless ? `${total} plages à ${nameEn} : vent & vagues | CalmBeach` : `${total} plages à ${nameEn} — ${sheltered} plutôt abritées | CalmBeach`,
+    it: numberless ? `${total} spiagge a ${nameEn}: vento e onde | CalmBeach` : `${total} spiagge a ${nameEn} — ${sheltered} più riparate | CalmBeach`,
   });
   const regionPageName = `${islandName} beaches`;
   const pageJsonLd = {

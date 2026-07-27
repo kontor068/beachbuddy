@@ -2213,6 +2213,28 @@ export const App: React.FC = () => {
     }
   };
 
+  // The prerendered "/beaches-near-me/" landing page (built for the "beaches near
+  // me" / «παραλίες κοντά μου» queries, which used to land on the bare home page)
+  // links here with ?near=1 and nothing else. Consume it ONCE, and strip it from
+  // the URL before anything else can write history: every history write in this
+  // file preserves window.location.search, so a param left in place would
+  // re-trigger the geolocation prompt on later region switches — the same trap
+  // that kept ?days= out of the URL. Waits for allIslands: buildNearbyRegion has
+  // nothing to search before the dataset lands and would report "no beaches".
+  const nearMeParamHandledRef = useRef(false);
+  useEffect(() => {
+    if (nearMeParamHandledRef.current || typeof window === 'undefined') return;
+    if (allIslands.length === 0) return;
+    const params = new URLSearchParams(window.location.search);
+    if (params.get('near') !== '1') return;
+    nearMeParamHandledRef.current = true;
+    params.delete('near');
+    const query = params.toString();
+    window.history.replaceState({}, '', `${window.location.pathname}${query ? `?${query}` : ''}${window.location.hash}`);
+    void handleShowNearbyBeaches();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [allIslands.length]);
+
   // Falling back to the manual region picker (e.g. the startup "use my location"
   // prompt was declined or geolocation failed) should open it on a clean slate.
   // A failed *automatic* location attempt must not greet the visitor with a red

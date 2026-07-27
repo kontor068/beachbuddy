@@ -83,7 +83,11 @@ const safeCaveatPattern = /\b(?:safety|lifeguard|warning flags?|beach flags?|red
 const guaranteePattern = /\bguarantee(?:d)?\b|garantiert|garanti|garantito|εγγυη/i;
 const guaranteeCaveatPattern = /\b(?:not|no|never|without)\s+\w*\s*guarantee|kein(?:en|er)?\s+garant|pas\s+un\s+abri\s+garanti|non\s+un\s+riparo\s+garantito|όχι\s+εγγυη|δεν\s+.*εγγυη/i;
 const shelterClaimPattern = /\b(?:sheltered|wind-protected|protected from|fully protected)\b|windgeschützt|abritées?|riparate?|προστατευ|απάνεμ/i;
-const shelterQualifierPattern = /\b(?:usually|often|may|might|can|more|less|available|orientation|oriented|based on|not guaranteed|check|compare|before you go|conditions vary|depending|signal|data|less exposed|more comfortable)\b|προσανατολισ|μπορεί|συχν|διαθέσιμ|όχι\s+εγγυη|έλεγξε|σύγκρι|πριν\s+πας|με\s+βάση|δεδομέν|πιο/i;
+// de/fr/it comparatives belong here too: the pattern only knew English and
+// Greek qualifiers, so ANY German/French/Italian shelter wording was flagged no
+// matter how carefully it was hedged — 50-odd cluster region titles sat in the
+// warning with no wording that could ever clear it.
+const shelterQualifierPattern = /\b(?:usually|often|may|might|can|more|less|available|orientation|oriented|based on|not guaranteed|check|compare|before you go|conditions vary|depending|signal|data|less exposed|more comfortable)\b|\b(?:eher|meist|oft|kann|mehr|weniger|ausrichtung)\b|\b(?:plutôt|souvent|peut|plus|moins|orientation)\b|\b(?:più|meno|spesso|solitamente|può)\b|προσανατολισ|μπορεί|συχν|διαθέσιμ|όχι\s+εγγυη|έλεγξε|σύγκρι|πριν\s+πας|με\s+βάση|δεδομέν|πιο/i;
 
 const riskyClaimFindings = (text, hasCurrentConditionData) => {
   const value = String(text || '');
