@@ -5,7 +5,8 @@
 # Edge-cached forecast proxy (capacity fix — see reports/capacity/capacity-model.md).
 # Routes the client's ForecastProvider calls to the allow-list proxy function, which
 # sets CDN cache headers so one upstream Open-Meteo call serves all users per TTL.
-# Dormant until VITE_FORECAST_PROXY_BASE="/api/forecast" is set in build.environment.
+# Active in every context: VITE_FORECAST_PROXY_BASE is set below for production,
+# deploy previews and branch deploys alike.
 [[redirects]]
   from = "/api/forecast/*"
   to = "/.netlify/functions/forecast/:splat"
@@ -65,11 +66,30 @@
   [headers.values]
     Cache-Control = "public, max-age=31536000, immutable"
 
-# Forecast edge proxy — enabled ONLY on deploy previews and branch deploys so it can
-# be smoke-tested before it ever touches production. Production stays on the direct
-# Open-Meteo path until you're satisfied. TO GO LIVE: add the same VITE_FORECAST_PROXY_BASE
-# line under [context.production.environment] (or [build.environment]) and redeploy.
-# See reports/capacity/activation-runbook.md.
+# Forecast edge proxy — LIVE IN PRODUCTION since 2026-07-27 (Step 3 of
+# reports/capacity/activation-runbook.md).
+#
+# WHY IT WAS FLIPPED: Open-Meteo's free tier counts requests PER IP. With the direct
+# path, every visitor spent their OWN daily allowance — fine for one person on one
+# connection, but anyone sharing an IP (carrier-grade NAT on mobile, an office, a
+# hotel) pooled it, and once that pool hit ~10k the live site answered 429 and showed
+# «Δεν ήταν δυνατή η ανανέωση των δεδομένων καιρού» with no way for the visitor to
+# fix it. Observed on 2026-07-27 against production. Through the proxy the request
+# originates from Netlify, so no visitor can be rate-limited by their neighbours.
+#
+# WHAT PROTECTS THE SHARED QUOTA: the function sets Netlify-CDN-Cache-Control
+# s-maxage=1800, so the edge answers repeats and upstream load scales with DISTINCT
+# BEACHES rather than with visitors — the whole point of capacity-model.md. The
+# capacity alarm in the function (amber 5k / red 7k / any 429 → Telegram) is now the
+# thing to watch; it was previously metering preview traffic only.
+#
+# ROLLBACK IS ONE LINE: delete the VITE_FORECAST_PROXY_BASE line below and redeploy.
+# ForecastProvider falls straight back to calling Open-Meteo directly.
+[context.production.environment]
+  VITE_FORECAST_PROXY_BASE = "/api/forecast"
+
+# Previews and branch deploys have carried the proxy since before go-live, so a
+# preview keeps exercising the same path production now uses.
 [context.deploy-preview.environment]
   VITE_FORECAST_PROXY_BASE = "/api/forecast"
   # Non-production: disables GA (services/analyticsService.ts gate) and triggers the

@@ -36,7 +36,15 @@ and make sure `FEEDBACK_TELEGRAM_BOT_TOKEN` / `FEEDBACK_TELEGRAM_CHAT_ID` are se
 hit two slightly different coordinates → one 🟠 Telegram should arrive. Remove the
 override afterwards.
 
-## Step 3 — Go live in production
+## Step 3 — Go live in production ✅ DONE 2026-07-27
+
+Triggered by a live incident rather than a planned rollout: production was answering
+`429 Daily API request limit exceeded` from Open-Meteo, because the direct path spends
+the VISITOR's per-IP allowance and anyone sharing an IP pools it. Step 2 was run
+against the production function itself (`node scripts/smokeTestForecastProxy.mjs
+https://calmbeach.gr`) — 10/10, including a CDN cache hit on repeat and all four
+malicious requests rejected — since that function had been deployed all along and is
+byte-identical to the one a preview would build.
 
 Only after Step 2 is green. Add the proxy to the production context in `netlify.toml`:
 
