@@ -1,11 +1,12 @@
-import React, { useEffect, useMemo, useRef, useState } from 'react';
+import React, { useDeferredValue, useEffect, useMemo, useRef, useState } from 'react';
 import { CalendarRange, ChevronRight, Wind, X } from 'lucide-react';
 import type { Beach, DailyForecast, LanguageCode, UserPreferences } from '../../types';
 import type { GeospatialExposureProfileLookup } from '../../services/geospatialExposureService';
 import { getLocalizedCopy, languageToDateLocale } from '../../utils/i18n';
 import { getBeaufortLevel } from '../../utils/weatherUtils';
+import { windSectorFromDegrees } from '../../utils/windExposureEngine';
 import { trackEvent } from '../../services/analyticsService';
-import { planTrip, type TripDayPlan } from '../../services/tripPlannerService';
+import { planTrip, type TripDayPlan, type TripPick } from '../../services/tripPlannerService';
 import { tripPlannerCopy } from './tripPlannerCopy';
 
 // "I'm here for N days — which beach on which day?"
@@ -16,8 +17,11 @@ import { tripPlannerCopy } from './tripPlannerCopy';
 // day-count chips ARE the entry point, so it costs one tap, and the question
 // itself explains the feature.
 //
-// COST: planning scores 40 beaches per day, so it runs ONLY after the visitor
-// picks a day count — never on page load.
+// COST: planning scores up to 72 beaches per day, so it runs ONLY after the
+// visitor picks a day count — never on page load. The pick is deferred so the
+// tap paints immediately (chip + skeleton rows) before the scoring pass runs;
+// useDeferredValue does not move the work off the main thread, it only keeps
+// the tap responsive — the pool cap is what bounds the cost.
 
 interface TripPlannerProps {
   beaches: Beach[];
@@ -27,6 +31,9 @@ interface TripPlannerProps {
   regionId: string;
   preferences?: UserPreferences;
   geospatialProfiles?: GeospatialExposureProfileLookup;
+  /** The homepage's own rain verdict for today (see PlanTripInput). */
+  todayRainBlocked?: boolean;
+  userLocation?: { lat: number; lon: number };
   onBeachClick: (beach: Beach) => void;
 }
 
@@ -39,15 +46,28 @@ export const TripPlanner: React.FC<TripPlannerProps> = ({
   regionId,
   preferences,
   geospatialProfiles,
+  todayRainBlocked,
+  userLocation,
   onBeachClick,
 }) => {
   const c = getLocalizedCopy(language, tripPlannerCopy);
   const [days, setDays] = useState<number | null>(null);
+  const deferredDays = useDeferredValue(days);
+  const isPlanning = days !== null && deferredDays !== days;
 
   const plan = useMemo(() => {
-    if (!days) return [];
-    return planTrip({ beaches, forecast, days, language, preferences, geospatialProfiles });
-  }, [beaches, days, forecast, geospatialProfiles, language, preferences]);
+    if (!deferredDays) return [];
+    return planTrip({
+      beaches,
+      forecast,
+      days: deferredDays,
+      language,
+      preferences,
+      geospatialProfiles,
+      userLocation,
+      todayRainBlocked,
+    });
+  }, [beaches, deferredDays, forecast, geospatialProfiles, language, preferences, todayRainBlocked, userLocation]);
 
   // Fired AFTER the plan computes (not on the raw tap) so the event can carry
   // blank_days — the honest measure of how often the feature answers "no beach
@@ -77,6 +97,23 @@ export const TripPlanner: React.FC<TripPlannerProps> = ({
     new Intl.DateTimeFormat(languageToDateLocale(language), { weekday: 'long' })
       .format(new Date(forecast[dayIndex].date));
 
+  // The per-day "why this beach": the SERVICE decided the claim (whyKey,
+  // honesty-first); this only renders the localized sentence for it, with the
+  // provisional-day qualifier appended because a day-5 direction is a guess.
+  const whyLine = (entry: TripDayPlan, pick: TripPick): string => {
+    const windFrom = c.windFrom[pick.windSector ?? windSectorFromDegrees(forecast[entry.dayIndex]?.wind?.deg ?? 0)];
+    const base = pick.whyKey === 'calm_everywhere'
+      ? c.why.calm_everywhere
+      : pick.whyKey === 'cove_refuge'
+        ? c.why.cove_refuge(windFrom)
+        : pick.whyKey === 'sheltered'
+          ? c.why.sheltered(windFrom)
+          : pick.whyKey === 'partial_shelter'
+            ? c.why.partial_shelter(windFrom)
+            : c.why.best_available(windFrom, pick.windBeaufort);
+    return entry.confidence === 'provisional' ? `${base} — ${c.ifWindHolds}` : base;
+  };
+
   const choose = (value: number) => {
     setDays(value);
   };
@@ -90,6 +127,7 @@ export const TripPlanner: React.FC<TripPlannerProps> = ({
   const beyond = days ? Math.max(0, days - forecast.length) : 0;
   const hasProvisional = plan.some(entry => entry.confidence === 'provisional');
   const hasCaution = plan.some(entry => entry.pick?.caution);
+  const hasRefuge = plan.some(entry => entry.isRefuge);
 
   return (
     <section
@@ -128,74 +166,96 @@ export const TripPlanner: React.FC<TripPlannerProps> = ({
           )}
         </div>
 
-        {days && (
-          <ol className="mt-3 divide-y divide-slate-200/70 border-t border-slate-200/70">
-            {plan.map(entry => {
-              const beaufort = getBeaufortLevel((forecast[entry.dayIndex]?.wind?.speed ?? 0) * 3.6);
-
-              return (
-                <li key={entry.dayIndex} className="flex items-start gap-3 py-2.5">
-                  <span className="w-[4.5rem] shrink-0 pt-0.5 text-[13px] font-bold capitalize text-slate-500 sm:w-24">
-                    {dayLabel(entry)}
-                  </span>
-
-                  <div className="min-w-0 flex-1">
-                    {entry.status === 'beach' && entry.pick ? (
-                      <>
-                        <button
-                          type="button"
-                          onClick={() => onBeachClick(entry.pick!.beach)}
-                          className="group inline-flex max-w-full cursor-pointer items-center gap-1 text-left focus:outline-none focus-visible:ring-2 focus-visible:ring-cyan-700 rounded"
-                        >
-                          <span className="truncate text-[15px] font-extrabold leading-tight text-slate-950 group-hover:text-[#007a83]">
-                            {entry.pick.beach.name[language]}
-                          </span>
-                          <ChevronRight className="h-4 w-4 shrink-0 text-slate-400 transition-transform group-hover:translate-x-0.5" aria-hidden="true" />
-                        </button>
-
-                        <p className="mt-0.5 flex flex-wrap items-center gap-x-2 gap-y-0.5 text-xs font-semibold text-slate-500">
-                          <span className="inline-flex items-center gap-1">
-                            <Wind className="h-3 w-3" aria-hidden="true" />
-                            {beaufort} {c.windUnit}
-                          </span>
-                          {entry.pick.caution && (
-                            <span className="rounded-full bg-orange-50 px-1.5 py-0.5 text-[10px] font-bold text-orange-700 ring-1 ring-orange-100">
-                              {c.cautionBadge}
-                            </span>
-                          )}
-                          {entry.isRepeat && <span className="text-slate-400">· {c.repeat}</span>}
-                          {entry.confidence === 'provisional' && (
-                            <span className="rounded-full bg-amber-50 px-1.5 py-0.5 text-[10px] font-bold text-amber-700 ring-1 ring-amber-100">
-                              {c.provisional}
-                            </span>
-                          )}
-                          {entry.alternative && (
-                            <span className="truncate text-slate-400">
-                              {c.alternative(entry.alternative.beach.name[language])}
-                            </span>
-                          )}
-                        </p>
-                      </>
-                    ) : (
-                      <p className="text-[13px] font-semibold leading-snug text-slate-600">
-                        {entry.reason ? c.reasons[entry.reason] : c.reasons.no_match}
-                        {entry.nextBeachDayIndex !== null && (
-                          <span className="text-slate-400"> {c.seaSettles(weekdayOf(entry.nextBeachDayIndex))}</span>
-                        )}
-                      </p>
-                    )}
-                  </div>
-                </li>
-              );
-            })}
+        {/* Pending: skeleton rows, never a half plan. */}
+        {isPlanning && days && (
+          <ol className="mt-3 divide-y divide-slate-200/70 border-t border-slate-200/70" aria-busy="true">
+            {Array.from({ length: Math.min(days, forecast.length) }, (_, index) => (
+              <li key={index} className="flex items-start gap-3 py-2.5">
+                <span className="h-4 w-[4.5rem] shrink-0 animate-pulse rounded bg-slate-200/80 sm:w-24" />
+                <span className="h-4 w-40 animate-pulse rounded bg-slate-200/80" />
+              </li>
+            ))}
           </ol>
         )}
 
-        {days && (hasCaution || hasProvisional || beyond > 0) && (
+        {!isPlanning && days && (
+          <ol className="mt-3 divide-y divide-slate-200/70 border-t border-slate-200/70">
+            {plan.map(entry => (
+              <li key={entry.dayIndex} className="flex items-start gap-3 py-2.5">
+                <span className="w-[4.5rem] shrink-0 pt-0.5 text-[13px] font-bold capitalize text-slate-500 sm:w-24">
+                  {dayLabel(entry)}
+                </span>
+
+                <div className="min-w-0 flex-1">
+                  {entry.status === 'beach' && entry.pick ? (
+                    <>
+                      <button
+                        type="button"
+                        onClick={() => onBeachClick(entry.pick!.beach)}
+                        className="group inline-flex max-w-full cursor-pointer items-center gap-1 text-left focus:outline-none focus-visible:ring-2 focus-visible:ring-cyan-700 rounded"
+                      >
+                        <span className="truncate text-[15px] font-extrabold leading-tight text-slate-950 group-hover:text-[#007a83]">
+                          {entry.pick.beach.name[language]}
+                        </span>
+                        <ChevronRight className="h-4 w-4 shrink-0 text-slate-400 transition-transform group-hover:translate-x-0.5" aria-hidden="true" />
+                      </button>
+
+                      {/* The why-line: the one sentence that justifies the pick. */}
+                      <p className="mt-0.5 text-xs font-semibold leading-snug text-slate-600">
+                        {whyLine(entry, entry.pick)}
+                      </p>
+
+                      <p className="mt-0.5 flex flex-wrap items-center gap-x-2 gap-y-0.5 text-xs font-semibold text-slate-500">
+                        <span className="inline-flex items-center gap-1">
+                          <Wind className="h-3 w-3" aria-hidden="true" />
+                          {/* This beach's Beaufort — not the region's. */}
+                          {entry.pick.windBeaufort} {c.windUnit}
+                        </span>
+                        {entry.isRefuge && (
+                          <span className="rounded-full bg-cyan-50 px-1.5 py-0.5 text-[10px] font-bold text-cyan-800 ring-1 ring-cyan-100">
+                            {c.refugeBadge}
+                          </span>
+                        )}
+                        {entry.pick.caution && (
+                          <span className="rounded-full bg-orange-50 px-1.5 py-0.5 text-[10px] font-bold text-orange-700 ring-1 ring-orange-100">
+                            {c.cautionBadge}
+                          </span>
+                        )}
+                        {entry.isRepeat && <span className="text-slate-400">· {c.repeat}</span>}
+                        {entry.confidence === 'provisional' && (
+                          <span className="rounded-full bg-amber-50 px-1.5 py-0.5 text-[10px] font-bold text-amber-700 ring-1 ring-amber-100">
+                            {c.provisional}
+                          </span>
+                        )}
+                        {entry.alternative && (
+                          <span className="truncate text-slate-400">
+                            {c.alternative(entry.alternative.beach.name[language])}
+                          </span>
+                        )}
+                      </p>
+                    </>
+                  ) : (
+                    <p className="text-[13px] font-semibold leading-snug text-slate-600">
+                      {entry.reason ? c.reasons[entry.reason] : c.reasons.no_match}
+                      {entry.nextBeachDayIndex !== null && (
+                        <span className="text-slate-400"> {c.seaSettles(weekdayOf(entry.nextBeachDayIndex))}</span>
+                      )}
+                    </p>
+                  )}
+                </div>
+              </li>
+            ))}
+          </ol>
+        )}
+
+        {!isPlanning && days && (
           <p className="mt-2.5 text-[11px] font-medium leading-snug text-slate-400">
             {/* The caution caveat leads: it is the one that affects safety. */}
             {hasCaution && <span className="text-orange-700/80">{c.cautionNote} </span>}
-            {hasProvisional && c.provisionalNote}
+            {hasRefuge && <span>{c.refugeNote} </span>}
+            {hasProvisional && <span>{c.provisionalNote} </span>}
+            {/* Honesty over pretended stability: the plan follows the forecast. */}
+            {c.planUpdatesDaily}
             {beyond > 0 && ` ${c.beyondHorizon(beyond)}`}
           </p>
         )}
