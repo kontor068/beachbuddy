@@ -25,22 +25,27 @@ export type LandingCopy = {
     /** Substring of `title` shown in blue. Must appear verbatim in `title`. */
     titleAccent: string;
     subtitle: string;
+    /**
+     * FIRST of the two wordings the idle placeholder alternates between (see
+     * `searchPlaceholderAlt`). This one is the plain, always-true promise of the
+     * box — a visitor who reads nothing else still knows what to type here.
+     */
     searchPlaceholder: string;
+    /**
+     * SECOND wording, shown ~4s later, then back. The box also understands a
+     * whole sentence («Νάξο 5 μέρες»), and nothing else on the page says so:
+     * the placeholder vanishes the moment you type, so a single static wording
+     * has to choose between teaching the sentence and describing the plain
+     * search. Alternating is how it does both. Keep both SHORT — long strings
+     * truncate at 375px, where most of the traffic is.
+     */
+    searchPlaceholderAlt: string;
     searchAria: string;
     clearSearchAria: string;
     searchRegionLabel: string;
     searchBeachLabel: string;
     searchLoading: string;
     searchNoResults: string;
-    /**
-     * One tappable example that PREFILLS the box and submits it. The
-     * placeholder vanishes the moment you type, so it cannot teach a syntax —
-     * the chip is what actually shows that a sentence is allowed here. Same
-     * reasoning as story.askPrompts below.
-     */
-    searchExample: string;
-    /** What the chip actually types — the label without its «π.χ.» framing. */
-    searchExampleQuery: string;
     /** Shown when a stay length was understood but no place was named. */
     searchNeedsPlace: string;
     nearMe: string;
@@ -124,9 +129,12 @@ export const landingCopy: Record<LanguageCode, LandingCopy> = {
       // being made — it answers the actual «πού να πάμε σήμερα;», where the
       // indicative would describe a choice already settled.
       subtitle: 'Η ηρεμία δεν ξεκινάει στην παραλία. Ξεκινάει τη στιγμή που ξέρεις σε ποια να πας.',
+      searchPlaceholder: 'Αναζήτησε παραλία ή περιοχή…',
       // 32 chars: the full «…και πόσες μέρες θα μείνεις» is 44 and truncates at
-      // 375px, where 88% of the traffic is. The example chip carries the rest.
-      searchPlaceholder: 'Πες μου το μέρος και πόσες μέρες',
+      // 375px, where 88% of the traffic is.
+      searchPlaceholderAlt: 'Πες μου το μέρος και πόσες μέρες',
+      // Does NOT rotate: a screen reader must get one stable name for this
+      // field, so the aria-label names everything the box accepts at once.
       searchAria: 'Αναζήτηση παραλίας, περιοχής ή διαμονής σε μέρες',
       clearSearchAria: 'Καθαρισμός αναζήτησης',
       searchRegionLabel: 'Περιοχή',
@@ -136,8 +144,6 @@ export const landingCopy: Record<LanguageCode, LandingCopy> = {
       searchLoading: 'Ψάχνουμε παραλίες…',
       // «κοντινό αποτέλεσμα» is search-engine language; nobody says it out loud.
       searchNoResults: 'Δεν βρέθηκε κάτι παρόμοιο. Πάτα Enter για αναζήτηση.',
-      searchExample: 'π.χ. Νάξο 5 μέρες',
-      searchExampleQuery: 'Νάξο 5 μέρες',
       searchNeedsPlace: 'Πες μου και σε ποιο μέρος.',
       nearMe: 'Κοντά μου',
       findingLocation: 'Εύρεση τοποθεσίας…',
@@ -275,15 +281,14 @@ export const landingCopy: Record<LanguageCode, LandingCopy> = {
       title: 'Which beach in Greece suits you today?',
       titleAccent: 'in Greece',
       subtitle: 'Calm doesn’t start at the beach. It starts the moment you know which one to pick.',
-      searchPlaceholder: 'Tell me where and for how many days',
+      searchPlaceholder: 'Search a beach or region…',
+      searchPlaceholderAlt: 'Tell me where and for how many days',
       searchAria: 'Search a beach, a region, or a stay in days',
       clearSearchAria: 'Clear search',
       searchRegionLabel: 'Region',
       searchBeachLabel: 'Beach',
       searchLoading: 'Searching beaches…',
       searchNoResults: 'No close match found. Press Enter to search.',
-      searchExample: 'e.g. Naxos, 5 days',
-      searchExampleQuery: 'Naxos 5 days',
       searchNeedsPlace: 'Tell me the place as well.',
       nearMe: 'Near me',
       findingLocation: 'Finding location…',
@@ -362,15 +367,14 @@ export const landingCopy: Record<LanguageCode, LandingCopy> = {
       title: 'Welcher Strand in Griechenland passt heute zu dir?',
       titleAccent: 'in Griechenland',
       subtitle: 'Ruhe fängt nicht am Strand an. Sie fängt in dem Moment an, in dem du weißt, welcher der richtige ist.',
-      searchPlaceholder: 'Sag mir wohin und für wie viele Tage',
+      searchPlaceholder: 'Strand oder Region suchen…',
+      searchPlaceholderAlt: 'Sag mir wohin und für wie viele Tage',
       searchAria: 'Strand, Region oder Aufenthalt in Tagen suchen',
       clearSearchAria: 'Suche löschen',
       searchRegionLabel: 'Region',
       searchBeachLabel: 'Strand',
       searchLoading: 'Suche Strände…',
       searchNoResults: 'Kein passendes Ergebnis. Drücke Enter, um zu suchen.',
-      searchExample: 'z.B. Naxos, 5 Tage',
-      searchExampleQuery: 'Naxos 5 Tage',
       searchNeedsPlace: 'Sag mir auch den Ort.',
       nearMe: 'In meiner Nähe',
       findingLocation: 'Standort wird ermittelt…',
@@ -452,15 +456,14 @@ export const landingCopy: Record<LanguageCode, LandingCopy> = {
       title: 'Quelle plage de Grèce vous convient aujourd’hui ?',
       titleAccent: 'de Grèce',
       subtitle: 'Le calme ne commence pas sur la plage. Il commence au moment où vous savez laquelle choisir.',
-      searchPlaceholder: 'Dites-moi où et pour combien de jours',
+      searchPlaceholder: 'Chercher une plage ou une région…',
+      searchPlaceholderAlt: 'Dites-moi où et pour combien de jours',
       searchAria: 'Chercher une plage, une région ou un séjour en jours',
       clearSearchAria: 'Effacer la recherche',
       searchRegionLabel: 'Région',
       searchBeachLabel: 'Plage',
       searchLoading: 'Recherche des plages…',
       searchNoResults: 'Aucun résultat similaire. Appuyez sur Entrée pour lancer la recherche.',
-      searchExample: 'ex. Naxos, 5 jours',
-      searchExampleQuery: 'Naxos 5 jours',
       searchNeedsPlace: 'Dites-moi aussi le lieu.',
       nearMe: 'Près de moi',
       findingLocation: 'Localisation en cours…',
@@ -540,15 +543,14 @@ export const landingCopy: Record<LanguageCode, LandingCopy> = {
       title: 'Quale spiaggia della Grecia fa per te oggi?',
       titleAccent: 'della Grecia',
       subtitle: 'La calma non inizia in spiaggia. Inizia nel momento in cui sai quale scegliere.',
-      searchPlaceholder: 'Dimmi dove e per quanti giorni',
+      searchPlaceholder: 'Cerca una spiaggia o una regione…',
+      searchPlaceholderAlt: 'Dimmi dove e per quanti giorni',
       searchAria: 'Cerca una spiaggia, una zona o un soggiorno in giorni',
       clearSearchAria: 'Cancella la ricerca',
       searchRegionLabel: 'Regione',
       searchBeachLabel: 'Spiaggia',
       searchLoading: 'Cerchiamo spiagge…',
       searchNoResults: 'Nessun risultato simile. Premi Invio per cercare.',
-      searchExample: 'es. Naxos, 5 giorni',
-      searchExampleQuery: 'Naxos 5 giorni',
       searchNeedsPlace: 'Dimmi anche il posto.',
       nearMe: 'Vicino a me',
       findingLocation: 'Ricerca della posizione…',

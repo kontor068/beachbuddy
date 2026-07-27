@@ -17,9 +17,23 @@ export interface HomeSearchFieldLabels {
   noResults: string;
 }
 
+// One state per wording. Long enough to finish reading a Greek sentence, short
+// enough that the second wording is still on screen while the visitor decides.
+const PLACEHOLDER_ROTATE_MS = 4000;
+
 interface HomeSearchFieldProps {
   value: string;
   placeholder: string;
+  /**
+   * Optional SECOND wording. When it is given, the placeholder alternates
+   * between `placeholder` and this one every 4s — and only then. Callers that
+   * pass just `placeholder` get exactly the old, static behaviour.
+   *
+   * The rotation is deliberately confined to the placeholder: `labels.searchAria`
+   * never changes, so a screen reader announces one stable name for this field
+   * instead of a churning one. No aria-live either — this is a hint, not news.
+   */
+  placeholderAlt?: string;
   labels: HomeSearchFieldLabels;
   suggestions: DirectorySearchSuggestion[];
   isSuggesting: boolean;
@@ -32,6 +46,7 @@ interface HomeSearchFieldProps {
 export const HomeSearchField: React.FC<HomeSearchFieldProps> = ({
   value,
   placeholder,
+  placeholderAlt,
   labels,
   suggestions,
   isSuggesting,
@@ -42,6 +57,8 @@ export const HomeSearchField: React.FC<HomeSearchFieldProps> = ({
 }) => {
   const [isOpen, setIsOpen] = useState(false);
   const [activeIndex, setActiveIndex] = useState(-1);
+  const [isFocused, setIsFocused] = useState(false);
+  const [showAlt, setShowAlt] = useState(false);
   const containerRef = useRef<HTMLFormElement>(null);
   const listId = useId();
 
@@ -51,6 +68,29 @@ export const HomeSearchField: React.FC<HomeSearchFieldProps> = ({
   // while the field is empty ate ~56px of a narrow phone and clipped the
   // placeholder, so the right padding tracks what is actually rendered.
   const hasValue = value.trim().length > 0;
+
+  // The placeholder only ever moves while the field is IDLE — nothing typed and
+  // nobody in it. Swapping the wording under someone who is reading it, or
+  // behind a value they have already entered, would be moving the target.
+  // Pausing freezes the current wording rather than resetting it; the next
+  // interval starts fresh on blur, so nothing swaps the instant you leave.
+  //
+  // No cross-fade, for anyone: the text of ::placeholder cannot be tweened, and
+  // faking it with an overlay div would risk font/padding drift on a native
+  // control. An instant swap has nothing for prefers-reduced-motion to reduce,
+  // and it keeps BOTH wordings available to reduced-motion visitors — they are
+  // different information, not decoration.
+  const rotatesPlaceholder = Boolean(placeholderAlt) && !isFocused && value.length === 0;
+
+  useEffect(() => {
+    if (!rotatesPlaceholder) return undefined;
+    const timer = window.setInterval(() => setShowAlt(current => !current), PLACEHOLDER_ROTATE_MS);
+    // Cleared on unmount, on focus/typing, and on a language switch (the copy
+    // itself is a dependency), so no timer outlives the wording it was started for.
+    return () => window.clearInterval(timer);
+  }, [rotatesPlaceholder, placeholderAlt]);
+
+  const activePlaceholder = showAlt && placeholderAlt ? placeholderAlt : placeholder;
 
   useEffect(() => {
     if (!isOpen) return undefined;
@@ -123,10 +163,12 @@ export const HomeSearchField: React.FC<HomeSearchFieldProps> = ({
           setActiveIndex(-1);
         }}
         onFocus={() => {
+          setIsFocused(true);
           if (canShow) setIsOpen(true);
         }}
+        onBlur={() => setIsFocused(false)}
         onKeyDown={handleKeyDown}
-        placeholder={placeholder}
+        placeholder={activePlaceholder}
         className={`min-h-14 w-full rounded-2xl border border-white/70 bg-white/90 pl-4 text-base font-medium text-ellipsis text-slate-800 shadow-lg shadow-sky-900/10 outline-none ring-1 ring-white/50 backdrop-blur-md transition placeholder:text-[15px] placeholder:text-slate-500 max-[359px]:placeholder:text-[13px] focus:border-cyan-500 focus:ring-2 focus:ring-cyan-500/25 sm:min-h-16 sm:rounded-full sm:pl-5 sm:text-lg sm:placeholder:text-lg [&::-webkit-search-cancel-button]:hidden [&::-webkit-search-decoration]:hidden ${
           hasValue ? 'pr-[6.5rem] sm:pr-28' : 'pr-14 sm:pr-16'
         }`}

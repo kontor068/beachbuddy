@@ -5765,9 +5765,11 @@ export const App: React.FC = () => {
   };
 
   /**
-   * `queryOverride` exists for the landing's example chip, which sets the query
-   * and submits in the same tick: without it the handler would read the state
-   * from before setBeachSearchQuery committed — i.e. the empty string.
+   * `queryOverride` is for any caller that sets the query and submits in the
+   * same tick — without it the handler reads the state from before
+   * setBeachSearchQuery committed, i.e. the empty string. Nothing passes it
+   * today (the example chip that did was replaced by the rotating
+   * placeholder); it stays because that trap is easy to walk back into.
    */
   const handleDirectorySearchSubmit = async (queryOverride?: string) => {
     const trimmedQuery = (queryOverride ?? beachSearchQuery).trim();

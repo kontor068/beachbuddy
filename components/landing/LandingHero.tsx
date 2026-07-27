@@ -1,5 +1,5 @@
 import React, { useMemo, useState } from 'react';
-import { LocateFixed, Sparkles } from 'lucide-react';
+import { LocateFixed } from 'lucide-react';
 import type { LanguageCode } from '../../types';
 import { getLocalizedCopy } from '../../utils/i18n';
 import { landingCopy } from './landingCopy';
@@ -16,9 +16,7 @@ interface LandingHeroProps {
   suggestions: DirectorySearchSuggestion[];
   isSuggesting: boolean;
   onSearchChange: (value: string) => void;
-  /** The optional query is used by the example chip, which sets and submits in
-   *  one tick and so cannot rely on the search state having committed. */
-  onSearchSubmit: (query?: string) => void;
+  onSearchSubmit: () => void;
   onSuggestionSelect: (suggestion: DirectorySearchSuggestion) => void;
   onNearMe: () => void;
   isFindingLocation: boolean;
@@ -158,9 +156,14 @@ export const LandingHero: React.FC<LandingHeroProps> = ({
           style={riseDelay(250)}
         >
           <div className="min-w-0 flex-1">
+            {/* Two wordings, 4s apart, while the box sits untouched: the plain
+                promise first, then the sentence syntax nothing else on the page
+                teaches any more. It stops the moment the field is focused or
+                holds a value — see HomeSearchField. */}
             <HomeSearchField
               value={searchQuery}
               placeholder={c.searchPlaceholder}
+              placeholderAlt={c.searchPlaceholderAlt}
               labels={{
                 searchAria: c.searchAria,
                 clearSearchAria: c.clearSearchAria,
@@ -186,24 +189,6 @@ export const LandingHero: React.FC<LandingHeroProps> = ({
           >
             <LocateFixed className="h-5 w-5 shrink-0" aria-hidden="true" />
             <span className="truncate">{isFindingLocation ? c.findingLocation : c.nearMe}</span>
-          </button>
-        </div>
-
-        {/* The example is the only thing that actually teaches the syntax: the
-            placeholder disappears the moment you type, so nobody discovers from
-            it that a whole sentence is allowed. Tapping prefills AND submits —
-            a half-written box would just move the work back to the visitor. */}
-        <div className="cb-hero-rise mx-auto mt-3 flex max-w-2xl justify-center sm:justify-start" style={riseDelay(300)}>
-          <button
-            type="button"
-            onClick={() => {
-              onSearchChange(c.searchExampleQuery);
-              onSearchSubmit(c.searchExampleQuery);
-            }}
-            className="inline-flex min-h-11 cursor-pointer items-center gap-1.5 rounded-full border border-white/70 bg-white/70 px-3.5 text-[13px] font-bold text-slate-700 shadow-sm shadow-sky-900/5 backdrop-blur transition-colors duration-200 hover:border-cyan-300 hover:bg-white hover:text-[#0369a1] focus:outline-none focus-visible:ring-2 focus-visible:ring-cyan-700 focus-visible:ring-offset-2 motion-reduce:transition-none"
-          >
-            <Sparkles className="h-4 w-4 shrink-0 text-[#007a83]" aria-hidden="true" />
-            {c.searchExample}
           </button>
         </div>
 
