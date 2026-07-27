@@ -59,8 +59,10 @@ const {
 // drift from what the podium actually applies.
 const {
   MAX_TOP_RECOMMENDATION_BEAUFORT,
+  MIN_STRONG_SUITABLE_SEA_CONDITION_SCORE,
   passesTopPickSeaGate,
 } = require('../services/topPickRanking.ts');
+const { calculateSeaConditionScore } = require('../utils/seaConditions.ts');
 const { getBeaufortLevel } = require('../utils/weatherUtils.ts');
 const { isNaturistBeach } = require('../utils/naturistBeaches.ts');
 
@@ -190,31 +192,49 @@ const loadRegionBeaches = regionId => {
   return JSON.parse(readFileSync(dataPath, 'utf8')).island.beaches;
 };
 
-// ─── The homepage's safety gate, per beach per day ──────────────────────────
-// A pick outside this set is a beach the podium would refuse to show. Uses the
-// SHARED passesTopPickSeaGate implementation plus isFalseProtectedTopPick.
-const passesSafetyGate = (beach, dayForecast, geospatialProfiles) => {
+// ─── The homepage's gates, per beach per day ────────────────────────────────
+// The contract has TWO tiers, mirroring what the homepage itself does:
+//
+//   normal pick  -> must clear the podium's calm bar (passesTopPickSeaGate,
+//                   not avoid_swimming, not false-protected).
+//   caution pick -> allowed to FAIL that bar. When nothing is swimmable the
+//                   homepage does not go silent either: it falls back to the
+//                   least-exposed options (isNoIdealFallbackCandidate) under
+//                   an honest heading, and the planner renders these with the
+//                   "choppy" badge. Requiring the calm bar here blanked real
+//                   days (Naxos, 4 Bft north, 0.82 m wave -> every beach on
+//                   the island reads avoid_swimming).
+//
+// Both tiers still refuse the official do-not-swim override, wind-sport spots,
+// exposed shores and anything above the podium's Beaufort ceiling.
+const gateVerdict = (beach, dayForecast, geospatialProfiles) => {
   const windSpeedKmph = dayForecast.wind.speed * 3.6;
   const beaufort = getBeaufortLevel(windSpeedKmph);
-  if (beaufort > MAX_TOP_RECOMMENDATION_BEAUFORT) return false;
+  if (beaufort > MAX_TOP_RECOMMENDATION_BEAUFORT) return { calm: false, fallback: false };
 
   const score = calculateBeachScore(beach, dayForecast, undefined, undefined, {
     weatherSource: 'island-fallback',
     hourlyForecast: dayForecast.hourly,
     geospatialProfile: geospatialProfiles?.[beach.id],
   });
-  if (score.swimmingComfort === 'avoid_swimming') return false;
+  if (score.score === 0) return { calm: false, fallback: false };
+  if (isFalseProtectedTopPick(score, dayForecast.wind.deg, beaufort)) return { calm: false, fallback: false };
 
   const isExposed = score.exposureLevel ? score.exposureLevel !== 'protected' : true;
-  const item = {
-    isExposed,
-    exposureLevel: score.exposureLevel,
-    waveHeightM: score.waveHeightM,
-    hourlySeaScore: score.hourlySeaScore,
-  };
-  if (!passesTopPickSeaGate(item, windSpeedKmph, dayForecast.marine?.waveHeightM)) return false;
-  if (isFalseProtectedTopPick(score, dayForecast.wind.deg, beaufort)) return false;
-  return true;
+  const waveHeightM = score.waveHeightM ?? dayForecast.marine?.waveHeightM;
+  const item = { isExposed, exposureLevel: score.exposureLevel, waveHeightM, hourlySeaScore: score.hourlySeaScore };
+
+  const hasHardExclusion = score.warnings?.some(w =>
+    w.type === 'wind_sport_spot' || (w.type === 'exposed_to_wind' && score.exposureLevel === 'exposed'));
+  const seaScore = calculateSeaConditionScore(isExposed, windSpeedKmph, score.exposureLevel, waveHeightM);
+  const fallback = score.exposureLevel !== 'exposed'
+    && seaScore >= MIN_STRONG_SUITABLE_SEA_CONDITION_SCORE
+    && !hasHardExclusion;
+
+  const calm = score.swimmingComfort !== 'avoid_swimming'
+    && passesTopPickSeaGate(item, windSpeedKmph, dayForecast.marine?.waveHeightM);
+
+  return { calm, fallback };
 };
 
 // ─── Harness ────────────────────────────────────────────────────────────────
@@ -234,20 +254,23 @@ const runScenario = (scenarioId, scenario) => {
   const plan = planTrip({ beaches, forecast, days: forecast.length, language: 'gr', geospatialProfiles });
   const picks = plan.filter(entry => entry.status === 'beach' && entry.pick);
 
-  // 1. Podium agreement: every pick/alternative passes the day's safety gate.
+  // 1. Podium agreement, per tier: a normal pick must clear the calm bar; a
+  //    caution pick must at least clear the homepage's own fallback bar.
   {
     const violations = [];
     for (const entry of plan) {
       const day = forecast[entry.dayIndex];
       for (const [role, pick] of [['pick', entry.pick], ['alternative', entry.alternative]]) {
         if (!pick) continue;
-        if (!passesSafetyGate(pick.beach, day, geospatialProfiles)) {
-          violations.push(`day ${entry.dayIndex} ${role} ${beachLabel(pick.beach)}`);
+        const verdict = gateVerdict(pick.beach, day, geospatialProfiles);
+        const ok = pick.caution ? verdict.fallback : verdict.calm;
+        if (!ok) {
+          violations.push(`day ${entry.dayIndex} ${role} ${beachLabel(pick.beach)}${pick.caution ? ' [caution]' : ''}`);
         }
       }
     }
     check(scenarioId, 'podium-agreement', violations.length === 0,
-      `outside the safety gate: ${violations.join('; ')}`, { canary: true });
+      `outside the gate for its tier: ${violations.join('; ')}`, { canary: true });
   }
 
   // 2. Claims need evidence: shelter whyKeys require earned protection.

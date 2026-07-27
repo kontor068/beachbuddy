@@ -14,10 +14,12 @@ import {
 import { getVisibleMapExposureLevel } from '../utils/mapExposure';
 import {
   MAX_TOP_RECOMMENDATION_BEAUFORT,
+  MIN_STRONG_SUITABLE_SEA_CONDITION_SCORE,
   getWindPriorityTopPickPool,
   passesTopPickSeaGate,
   prioritizeProtectedRecommendations,
 } from './topPickRanking';
+import { calculateSeaConditionScore } from '../utils/seaConditions';
 import { compareBeachSignificance, hasSignificanceSignal } from '../utils/beachSignificance';
 import { hasPracticalTopPickAccess } from '../utils/access';
 import { isNaturistBeach } from '../utils/naturistBeaches';
@@ -390,21 +392,36 @@ const cautionRanking = (
     .map(beach => ({ beach, result: dayScores.get(beach.id) }))
     .filter((entry): entry is { beach: Beach; result: BeachScore } => Boolean(entry.result))
     .filter(({ result }) => {
-      // The engine's official "do not swim" verdict is absolute — it already
-      // encodes the effective-wave and effective-Beaufort ceilings on the
-      // scoring side, where the caution tier must live.
+      // The engine's official "do not swim" OVERRIDE (a critical official
+      // warning) zeroes the score. That one is absolute.
       if (result.score === 0) return false;
-      if (result.swimmingComfort === 'avoid_swimming') return false;
-      if ((result.swimmingScore ?? 0) < CAUTION_MIN_SWIMMING_SCORE) return false;
-      // The podium's own safety gate, applied here too: a caution pick is a
-      // beach with a SAFE sea and a modest experience score — never a beach
-      // the homepage would refuse outright.
+
+      // Everything else here mirrors the HOMEPAGE's own no-ideal fallback
+      // (isNoIdealFallbackCandidate in App.tsx): when nothing is swimmable the
+      // app does NOT go silent — it shows the least-exposed options under an
+      // honest heading. The planner must answer the same way, or it
+      // contradicts the page it sits on.
+      //
+      // Measured on the real forecast (Naxos, Tue 28 Jul, 4 Bft north, 0.82 m
+      // regional wave): the engine returns swimmingComfort='avoid_swimming'
+      // and swimmingScore=21 for ALL 39 pool beaches — even Kalantos, whose
+      // own cove wave is 0.10 m — because the scoring wave is the REGIONAL
+      // one. Requiring 'not avoid_swimming' therefore blanked a day the
+      // homepage happily fills, and the visitor was told "no beach worth it"
+      // on a day they can swim on the lee coast. So this tier drops that
+      // requirement exactly as the homepage fallback does, and leans on the
+      // sea-condition score plus the exposure and warning vetoes instead.
+      // The UI never calls these calm: they render with the «με κύμα» badge.
       const isExposed = result.exposureLevel ? result.exposureLevel !== 'protected' : true;
-      if (!passesTopPickSeaGate(
-        { isExposed, exposureLevel: result.exposureLevel, waveHeightM: result.waveHeightM, hourlySeaScore: result.hourlySeaScore },
-        windSpeedKmph,
-        day.marine?.waveHeightM
-      )) return false;
+      const waveHeightM = result.waveHeightM ?? day.marine?.waveHeightM;
+      const seaScore = calculateSeaConditionScore(isExposed, windSpeedKmph, result.exposureLevel, waveHeightM);
+      if (result.exposureLevel === 'exposed') return false;
+      if (seaScore < MIN_STRONG_SUITABLE_SEA_CONDITION_SCORE) return false;
+      const hasHardExclusion = result.warnings?.some(warning =>
+        warning.type === 'wind_sport_spot' ||
+        (warning.type === 'exposed_to_wind' && result.exposureLevel === 'exposed')
+      );
+      if (hasHardExclusion) return false;
       if (isFalseProtectedTopPick(result, day.wind?.deg ?? 0, beaufort)) return false;
       return true;
     })
