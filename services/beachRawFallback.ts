@@ -13,6 +13,17 @@ import {
   hasExplicitBeachBarAmenityInList,
 } from '../utils/amenityMatching.js';
 
+/**
+ * Keep in lockstep with popularityScoreFromReviews in
+ * scripts/buildBeachRegionData.mjs — if this fallback scores differently from
+ * the baked data, list order silently changes when the fallback kicks in.
+ * Log10 because review counts are wildly skewed: 10→25, 100→50, 1000→75, 10k→100.
+ */
+const popularityScoreFromReviews = (ratingCount?: number): number => {
+  if (typeof ratingCount !== 'number' || !Number.isFinite(ratingCount) || ratingCount <= 0) return 0;
+  return Math.max(0, Math.min(100, Math.round(Math.log10(ratingCount + 1) * 25)));
+};
+
 const metadataAccessToAccessibility = (type?: BeachAccessType): Accessibility => {
   switch (type) {
     case 'asphalt_road':
@@ -224,7 +235,10 @@ const buildIslandsFromRawBeaches = (rawBeaches: RawBeach[]): Island[] => {
         remote: metadata?.environment?.remote ?? remote,
         familyFriendly: metadata?.environment?.familyFriendly ?? familyFriendly,
       },
-      popularityScore: Math.floor(beachService.getDeterministicValue(rb.id, 'pop') * 100),
+      // Mirrors scripts/buildBeachRegionData.mjs exactly — this fallback must not
+      // rank differently from the baked data. Was `hash(id) * 100`; now the log
+      // scale of the real Google review count, 0 when we have none.
+      popularityScore: popularityScoreFromReviews(metadata?.popularity?.ratingCount),
       coordinates: { lat: rb.lat, lon: rb.lon },
       metadata,
     };

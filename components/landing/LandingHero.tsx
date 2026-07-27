@@ -120,7 +120,19 @@ export const LandingHero: React.FC<LandingHeroProps> = ({
           day. Landscape photos in a tall band with a horizon-centred crop and a
           short clean feather — earlier square/portrait photos in a short band
           read as "cut"/"glassy". Falls back to the generative daily beach. */}
-      <div className="pointer-events-none absolute inset-x-0 bottom-0 -z-10 h-72 overflow-hidden sm:h-96" aria-hidden="true">
+      {/* The bottom edge is feathered with a MASK, not a colour overlay like the
+          top one. The page background is a vertical gradient over the full
+          document height (index.css: #F0F9FF -> #E0F2FE at 40% -> #F0F9FF), so the
+          colour sitting under the hero's bottom edge depends on how long the page
+          is — any hardcoded colour would be visibly wrong at some viewport. The
+          top overlay gets away with #eff6fb only because it is near the very top
+          where the gradient has barely moved. A mask fades the image itself to
+          transparent, so whatever the background happens to be there shows
+          through exactly. */}
+      <div
+        className="pointer-events-none absolute inset-x-0 bottom-0 -z-10 h-72 overflow-hidden [-webkit-mask-image:linear-gradient(to_bottom,#000_0%,#000_62%,transparent_100%)] [mask-image:linear-gradient(to_bottom,#000_0%,#000_62%,transparent_100%)] sm:h-96"
+        aria-hidden="true"
+      >
         {photoOk ? (
           <LandingHeroPhoto
             slot={heroSlot}

@@ -564,6 +564,49 @@ body {
   pointer-events: none;
 }
 
+/* Surf-spot badge. Sits OUTSIDE the dot rather than recolouring it: the marker's
+   colour is the wind-exposure reading and must stay readable — a surf break is
+   frequently an exposed, amber/red marker, and that is the point. Only ever
+   drawn for the 10 spots at least two surf guides name, and only in season. */
+.beach-map-marker-surf {
+  position: relative;
+}
+
+/* The same badge, standing alone as the legend swatch — one definition, so the
+   legend can never drift from the marker it explains. */
+.beach-map-legend-surf {
+  position: relative;
+  display: inline-block;
+  width: 11px;
+  height: 11px;
+  flex-shrink: 0;
+}
+
+.beach-map-marker-surf::before,
+.beach-map-legend-surf::before {
+  content: "";
+  position: absolute;
+  width: 11px;
+  height: 11px;
+  border-radius: 999px;
+  background-color: #0f766e;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 12'%3E%3Cpath d='M1 7.5c1.2 0 1.2-1.4 2.5-1.4S4.7 7.5 6 7.5s1.2-1.4 2.5-1.4S9.7 7.5 11 7.5' fill='none' stroke='%23fff' stroke-width='1.5' stroke-linecap='round'/%3E%3C/svg%3E");
+  background-size: 9px 9px;
+  background-position: center;
+  background-repeat: no-repeat;
+  pointer-events: none;
+}
+
+.beach-map-marker-surf::before {
+  top: -7px;
+  right: -7px;
+  box-shadow: 0 0 0 1.5px #ffffff;
+}
+
+.beach-map-legend-surf::before {
+  inset: 0;
+}
+
 .beach-map-top-pick-marker-dot {
   position: relative;
   z-index: 1;

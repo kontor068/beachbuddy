@@ -11,9 +11,16 @@ import { getBeaufortLevel } from '../utils/weatherUtils';
 //
 // ONE Open-Meteo call covers every point (comma-joined coords — the pattern
 // scripts/windSpreadNational.mjs already uses), cached for 3h because the picture
-// changes slowly, so this costs ~1 call per session. The service worker also
-// caches api.open-meteo.com. On any failure we return null and every surface
-// falls back to calm / "unavailable" — we never fabricate conditions.
+// changes slowly, so this costs ~1 call per session.
+//
+// The in-memory cache below is the ONLY cache in front of this. The service
+// worker deliberately does NOT cache api.open-meteo.com — public/service-worker.js
+// fetches those hosts with `cache: 'no-store'` precisely so a stale forecast is
+// never served as if fresh. (An earlier version of this comment claimed the
+// opposite; it was wrong.)
+//
+// On any failure we return null and every surface falls back to calm /
+// "unavailable" — we never fabricate conditions.
 
 export interface RegionConditionReading {
   /** Region id — maps straight onto an Island, so the UI can name and link it. */

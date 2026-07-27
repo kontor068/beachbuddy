@@ -3,6 +3,7 @@ import { Circle, MapContainer, TileLayer, Marker, Popup, Tooltip, ZoomControl, u
 import L from 'leaflet';
 import 'leaflet/dist/leaflet.css';
 import { BadgeCheck, ShowerHead, Footprints, Navigation, MapPin, Clock, Wind, X, Info, Utensils, Waves, Users, Tent, Ticket, Euro, AlertTriangle } from 'lucide-react';
+import { isSurfSpotInSeason } from '../utils/surfSpots';
 import { displayBeachName, localizedPopularityLabel, localizedPaidEntryLabel, localizedPaidEntryExplanation } from '../utils/localization';
 import { SuitableBeach, Beach, LanguageCode, ForecastItem } from '../types';
 import { trackEvent, buildBeachExposureParams } from '../services/analyticsService';
@@ -816,15 +817,17 @@ const createBeachIcon = (
   item: Pick<SuitableBeach, 'score' | 'exposureLevel' | 'canClaimWindProtection' | 'simpleWindSuitability'>,
   showWindExposureColors = true,
   isTopPick = false,
-  isHighlighted = false
+  isHighlighted = false,
+  isSurfSpot = false
 ) => {
   const { colorClass, ringClass } = getRecommendationTone(item, showWindExposureColors);
   const topPickClass = isTopPick ? 'beach-map-top-pick-marker-dot' : '';
   const highlightedClass = isHighlighted ? 'beach-map-active-scroll-marker-dot' : '';
+  const surfClass = isSurfSpot ? 'beach-map-marker-surf' : '';
 
   return L.divIcon({
     className: 'custom-div-icon',
-    html: `<div class="beach-map-marker-dot ${topPickClass} ${highlightedClass} ${colorClass} w-4 h-4 rounded-full border-2 border-white shadow-lg ring-4 ${ringClass}"></div>`,
+    html: `<div class="beach-map-marker-dot ${topPickClass} ${highlightedClass} ${surfClass} ${colorClass} w-4 h-4 rounded-full border-2 border-white shadow-lg ring-4 ${ringClass}"></div>`,
     iconSize: [16, 16],
     iconAnchor: [8, 8],
     popupAnchor: [0, -10]
@@ -957,9 +960,11 @@ const createExposureIcon = (
   isTopPick = false,
   evidence: MapExposureEvidence = 'estimated',
   isHighlighted = false,
-  isEnclosedCove = false
+  isEnclosedCove = false,
+  isSurfSpot = false
 ) => {
   const topPickClass = isTopPick ? 'beach-map-top-pick-marker-dot' : '';
+  const surfClass = isSurfSpot ? 'beach-map-marker-surf' : '';
   const highlightedClass = isHighlighted ? 'beach-map-active-scroll-marker-dot' : '';
   const evidenceClass = evidence === 'supported'
     ? 'beach-map-marker-evidence-supported'
@@ -968,7 +973,7 @@ const createExposureIcon = (
   if (!showWindExposureColors) {
     return L.divIcon({
       className: 'custom-div-icon',
-      html: `<div class="beach-map-marker-dot ${topPickClass} ${highlightedClass} ${evidenceClass} bg-sky-500 w-4 h-4 rounded-full border-2 border-white shadow-lg ring-4 ring-sky-200"></div>`,
+      html: `<div class="beach-map-marker-dot ${topPickClass} ${highlightedClass} ${evidenceClass} ${surfClass} bg-sky-500 w-4 h-4 rounded-full border-2 border-white shadow-lg ring-4 ring-sky-200"></div>`,
       iconSize: [16, 16],
       iconAnchor: [8, 8],
       popupAnchor: [0, -10]
@@ -988,7 +993,7 @@ const createExposureIcon = (
 
   return L.divIcon({
     className: 'custom-div-icon',
-    html: `<div class="beach-map-marker-dot ${topPickClass} ${highlightedClass} ${evidenceClass} ${exposedClass} ${colorClass} w-4 h-4 rounded-full border-2 border-white shadow-lg ring-4 ${ringClass}">${exposedCore}</div>`,
+    html: `<div class="beach-map-marker-dot ${topPickClass} ${highlightedClass} ${evidenceClass} ${exposedClass} ${surfClass} ${colorClass} w-4 h-4 rounded-full border-2 border-white shadow-lg ring-4 ${ringClass}">${exposedCore}</div>`,
     iconSize: [16, 16],
     iconAnchor: [8, 8],
     popupAnchor: [0, -10]
@@ -2251,6 +2256,10 @@ const BeachMap: React.FC<BeachMapProps> = ({
   // green — from 5 Bft up. Below that a cove colours like any protected shore, so the
   // "calmer today" note would be a distinction without a difference.
   const showCoveLegendCue = currentWindColorGuideId === '5-6';
+  // The surf line only appears when a surf spot is actually on screen. There are
+  // 10 nationally, so on almost every map it would be an unexplained symbol
+  // taking up legend space — and an unexplained badge is worse than no badge.
+  const showSurfLegendCue = beaches.some(item => isSurfSpotInSeason(item.beach));
 
   const renderWindColorGuideRows = (variant: 'full' | 'preview') => {
     const isPreview = variant === 'preview';
@@ -2310,6 +2319,23 @@ const BeachMap: React.FC<BeachMapProps> = ({
                 role="img"
                 className={`relative h-2.5 w-2.5 shrink-0 rounded-full ring-1 ${windLegendDotClasses.green}`}
               />
+            </span>
+          </div>
+        )}
+        {showSurfLegendCue && (
+          <div className={`${isPreview ? 'text-[10px] sm:text-[11px]' : 'text-[11px]'} flex min-w-0 flex-wrap items-center gap-x-1.5 gap-y-1 font-semibold leading-snug text-slate-600 dark:text-slate-300`}>
+            <span className="inline-flex min-w-0 items-center gap-1.5">
+              <span className="beach-map-legend-surf" aria-hidden="true" />
+              {/* "known" and "in season", not "good today" — the wind reading is
+                  what the marker's colour says, and a surf break is often an
+                  exposed one. These two claims must not be confused. */}
+              <span className="min-w-0">{getLocalizedCopy(language, {
+                en: 'Known surf spot, in season',
+                gr: 'Γνωστό σημείο για σερφ, στην εποχή του',
+                fr: 'Spot de surf connu, en saison',
+                de: 'Bekannter Surfspot, in der Saison',
+                it: 'Spot da surf noto, in stagione',
+              })}</span>
             </span>
           </div>
         )}
@@ -2596,6 +2622,9 @@ const BeachMap: React.FC<BeachMapProps> = ({
             // zoom-based labels are faded out, so the active card is easy to find.
             const isLabelActive = isHighlightedMarker || hoveredBeachId === item.beachId;
             const labelOpacity = isLabelActive ? 1 : beachLabelOpacity;
+            // Same predicate the surf filter uses, so the badge and the filter can
+            // never disagree about what is a surf spot today.
+            const isSurfMarker = isSurfSpotInSeason(item.beach);
 
             return (
             <Marker
@@ -2603,8 +2632,8 @@ const BeachMap: React.FC<BeachMapProps> = ({
               position={[markerCoordinate.lat, markerCoordinate.lon]}
               zIndexOffset={isHighlightedMarker ? 1000 : isTopPickMarker ? 700 : 0}
               icon={mapMode === 'recommendation'
-                ? createBeachIcon(item, showRecommendationWindColors, isTopPickMarker, isHighlightedMarker)
-                : createExposureIcon(mapExposureLevel, showWindExposureColors, windBeaufort, isTopPickMarker, mapExposureEvidence, isHighlightedMarker, Boolean(item.enclosedCove))}
+                ? createBeachIcon(item, showRecommendationWindColors, isTopPickMarker, isHighlightedMarker, isSurfMarker)
+                : createExposureIcon(mapExposureLevel, showWindExposureColors, windBeaufort, isTopPickMarker, mapExposureEvidence, isHighlightedMarker, Boolean(item.enclosedCove), isSurfMarker)}
               eventHandlers={{
                 click: () => {
                   trackEvent('map_marker_clicked', item.beachId, {

@@ -12,6 +12,10 @@ export const QUICK_PREFERENCE_FILTERS = [
   'familyFriendly',
   'deepWater',
   'shallowWater',
+  // Last in the row on purpose: only ~10 beaches nationally qualify, and the chip
+  // is hidden outright where none is in season, so it must never push a
+  // universally-useful filter off the visible strip.
+  'surfing',
 ] as const satisfies readonly (keyof UserPreferences)[];
 
 export type QuickPreferenceFilter = (typeof QUICK_PREFERENCE_FILTERS)[number];
@@ -29,6 +33,7 @@ const compactPreferenceLabels: Record<LanguageCode, Partial<Record<keyof UserPre
     familyFriendly: 'Οικογένεια',
     deepWater: 'Βαθιά',
     shallowWater: 'Ρηχά',
+    surfing: 'Σερφ',
   },
   en: {
     blueFlag2026: 'Blue Flag',
@@ -42,6 +47,7 @@ const compactPreferenceLabels: Record<LanguageCode, Partial<Record<keyof UserPre
     familyFriendly: 'Family-friendly',
     deepWater: 'Deep water',
     shallowWater: 'Shallow water',
+    surfing: 'Surf',
   },
   fr: {
     blueFlag2026: 'Pavillon Bleu',
@@ -55,6 +61,7 @@ const compactPreferenceLabels: Record<LanguageCode, Partial<Record<keyof UserPre
     familyFriendly: 'Famille',
     deepWater: 'Eau profonde',
     shallowWater: 'Eau peu profonde',
+    surfing: 'Surf',
   },
   de: {
     blueFlag2026: 'Blaue Flagge',
@@ -68,6 +75,7 @@ const compactPreferenceLabels: Record<LanguageCode, Partial<Record<keyof UserPre
     familyFriendly: 'Familie',
     deepWater: 'Tiefes Wasser',
     shallowWater: 'Flaches Wasser',
+    surfing: 'Surfen',
   },
   it: {
     blueFlag2026: 'Bandiera Blu',
@@ -81,6 +89,7 @@ const compactPreferenceLabels: Record<LanguageCode, Partial<Record<keyof UserPre
     familyFriendly: 'Famiglia',
     deepWater: 'Acqua profonda',
     shallowWater: 'Acqua bassa',
+    surfing: 'Surf',
   },
 };
 

@@ -104,9 +104,6 @@ export const LandingView: React.FC<LandingViewProps> = ({
         <TodayRegionsSection
           language={language}
           allIslands={allIslands}
-          regions={conditions.regions}
-          status={conditions.status}
-          isFresh={conditions.isFresh}
           onSelectIsland={onSelectIsland}
           onShowNearbyBeaches={() => handleNearMe('regions')}
           isFindingLocation={isFindingLocation}

@@ -31,7 +31,51 @@ const freshnessFromAge = (fetchedAt: number | null, now: number): ForecastFreshn
   return 'stale';
 };
 
+/**
+ * Marine-only sample points for the two regions whose centroid sits too far
+ * inland for the wave model to resolve at all.
+ *
+ * The marine API returns NO wave data for these two — measured across all 110
+ * regions, they are the only failures, because openMeteoProvider already sends
+ * `cell_selection=sea`, which rescues the other 90 inland centroids. Without a
+ * point the app silently drops to the wind-based SMB estimate; that fallback is
+ * legitimate (docs/methodology-wind-exposure-GR.md presents it as «εκτιμώμενα
+ * κύματα»), but real data beats an estimate when it is one coordinate away.
+ *
+ * DELIBERATELY MARINE-ONLY. It does not touch `island.coordinates`, which
+ * buildBeachRegionData.mjs feeds to getAutoProt() to derive `protectedFrom` for
+ * all 2,842 beaches — moving that would rewrite the wind protection of the whole
+ * dataset. Wind and temperature keep using the region point exactly as before.
+ *
+ * Both verified against the marine API (24/24 hourly values); see
+ * reports/region-forecast-point-audit.md.
+ */
+const MARINE_POINT_OVERRIDES: Record<string, { lat: number; lon: number }> = {
+  'central-macedonia-thessaloniki-area': { lat: 40.45, lon: 22.90 }, // Thermaic Gulf
+  'west-greece-achaia-mainland': { lat: 38.28, lon: 21.70 },         // Gulf of Patras
+};
+
 const BEACH_FORECAST_CLUSTER_STEPS = [0.05, 0.08, 0.12];
+/**
+ * A TARGET, NOT A CAP — and deliberately so. Read buildBeachForecastClusters:
+ * the last step returns whatever it produced, so large regions exceed this and
+ * always have. Measured: Evia 34 clusters (68 Open-Meteo calls per region view),
+ * Halkidiki 28, Chania 20. 32 of 110 regions are over.
+ *
+ * DO NOT "fix" this by forcing the number down. Coarser grouping was measured
+ * too: at 0.5° Evia collapses to 7 clusters but a beach then takes its forecast
+ * from up to 31 km away, while the UI keeps stating the same confident figure.
+ * docs/methodology-wind-exposure-GR.md forbids exactly that — never claim calm
+ * without positive evidence for THIS shore — so weakening the evidence 4x to
+ * save calls is the one change that is not allowed here.
+ *
+ * The cost is affordable today: reports/capacity/capacity-model.md puts us at
+ * ~26% of the ~10k/day Open-Meteo ceiling with ~4x headroom. If that tightens,
+ * the fix is to batch these coordinates into ONE request (Open-Meteo accepts a
+ * comma-joined list), NOT to sample fewer places. Note that netlify/functions/
+ * forecast.mjs currently rejects coordinate lists (`Number("36.8,36.9")` → NaN),
+ * so that proxy has to learn them first.
+ */
 const MAX_BEACH_FORECAST_CLUSTERS = 6;
 // Per-beach cluster forecasts only refine scores; the map/list already render
 // immediately from the island forecast. Keep a short delay so we don't compete
@@ -246,11 +290,12 @@ export const useWeather = (selectedIsland: Island | undefined, language: Languag
 
     const lat = selectedIsland.coordinates.lat;
     const lon = selectedIsland.coordinates.lon;
+    const marinePoint = MARINE_POINT_OVERRIDES[selectedIsland.id] ?? { lat, lon };
 
     const [weatherResult, forecastResult, marineResult] = await Promise.allSettled([
       fetchWeatherData(lat, lon),
       fetchForecastData(lat, lon),
-      fetchMarineForecastData(lat, lon)
+      fetchMarineForecastData(marinePoint.lat, marinePoint.lon)
         .then(result => result.data)
         .catch(error => {
           console.warn('Marine forecast unavailable; using wind-based sea estimates.', error);

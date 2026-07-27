@@ -15,6 +15,7 @@ import {
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const rootDir = path.resolve(__dirname, '..');
 const sourcePath = path.join(rootDir, 'public', 'greek_beaches.json');
+const surfSpotsPath = path.join(rootDir, 'data', 'surfSpots.json');
 const outputDir = path.join(rootDir, 'public', 'data', 'beaches');
 const appOutputDir = path.join(outputDir, 'app');
 const appSummaryOutputDir = path.join(appOutputDir, 'summary');
@@ -117,6 +118,15 @@ const getDeterministicValue = (id, seed) => {
     hash &= hash;
   }
   return Math.abs(hash % 1000) / 1000;
+};
+
+// Review counts are wildly skewed (a handful of famous beaches have tens of
+// thousands, most have dozens), so a linear scale would collapse everything
+// below the icons into a single indistinguishable band. Log10 keeps the whole
+// range legible: 10 reviews→25, 100→50, 1000→75, 10000→100.
+const popularityScoreFromReviews = ratingCount => {
+  if (typeof ratingCount !== 'number' || !Number.isFinite(ratingCount) || ratingCount <= 0) return 0;
+  return Math.max(0, Math.min(100, Math.round(Math.log10(ratingCount + 1) * 25)));
 };
 
 const getAutoProt = (lat, lon, centerLat, centerLon) => {
@@ -493,7 +503,6 @@ const buildBeach = (rawBeach, island) => {
   const isDeepWater = getDeterministicValue(rawBeach.id, 'depth') > 0.5;
   const beachType = metadata ? metadataTerrainToBeachType(metadata.terrain.types) : (typeVal > 0.85 ? 'rocky' : (typeVal > 0.65 ? 'pebbles' : (typeVal > 0.45 ? 'sandy-pebbles' : 'sandy')));
   const snorkelingOverride = getMetadataActivityOverride(metadata, 'snorkeling');
-  const surfingOverride = getMetadataActivityOverride(metadata, 'surfing');
   const depth = metadata?.waterDepth?.type
     ? metadataWaterDepthToCharacteristics(metadata.waterDepth.type)
     : metadata ? metadataTerrainToDepth(metadata.terrain.types) : {
@@ -512,7 +521,15 @@ const buildBeach = (rawBeach, island) => {
     rating: (typeof metadata?.popularity?.rating === 'number' ? metadata.popularity.rating : 4.0),
     name: {
       en: englishName,
-      gr: getGreekDisplayBeachName(rawBeach.name),
+      // `nameGr` is an OPTIONAL Greek display name, recovered from OpenStreetMap's
+      // `name:el` by scripts/harvestGreekNamesOsm.mjs for the ~180 beaches whose
+      // source `name` is Latin ("Falasarna", "Achlada"). Those were unreachable by
+      // Greek search and read as broken on a Greek-first site.
+      //
+      // It deliberately overrides ONLY the Greek label. `englishName`, the slug and
+      // every prerendered URL still derive from `rawBeach.name`, so fixing a Greek
+      // name can never move a page or break a link.
+      gr: getGreekDisplayBeachName(rawBeach.nameGr || rawBeach.name),
       fr: rawBeach.name,
       de: rawBeach.name,
       it: rawBeach.name,
@@ -542,14 +559,37 @@ const buildBeach = (rawBeach, island) => {
     waterDepth: depth.waterDepth,
     activities: {
       snorkeling: snorkelingOverride ?? (metadata ? terrainSupportsSnorkeling(metadata.terrain.types) : getDeterministicValue(rawBeach.id, 'snorkeling') > 0.4),
-      surfing: surfingOverride ?? (getDeterministicValue(rawBeach.id, 'surfing') > 0.8),
+      // NOT a hash. This used to be `getDeterministicValue(id, 'surfing') > 0.8`,
+      // which flagged 543 beaches at random and caught 1 of the 9 real spots —
+      // the same fabricated-value bug as the old `4.0 + hash(id)` rating above.
+      // Now: named in data/surfSpots.json by an outside surf source, or false.
+      //
+      // The curated list is authoritative here and the metadata override is NOT
+      // consulted, unlike snorkeling above. The source carries 0 explicit `true`
+      // and 106 explicit `false`, and every one of those falses is boilerplate
+      // written by insertDiscoveredBeaches.mjs for newly added beaches — not a
+      // judgement that the beach has no waves. Letting it win silently dropped
+      // Kalo Nero, a spot two guides name.
+      surfing: SURF_SPOT_IDS.has(rawBeach.id),
     },
+    ...(SURF_SEASONS.has(rawBeach.id) ? { surfMonths: SURF_SEASONS.get(rawBeach.id) } : {}),
     environment: {
       quiet: metadata?.environment?.quiet ?? quiet,
       remote: metadata?.environment?.remote ?? remote,
       familyFriendly: metadata?.environment?.familyFriendly ?? familyFriendly,
     },
-    popularityScore: Math.floor(getDeterministicValue(rawBeach.id, 'pop') * 100),
+    // Measured, not invented. This was `hash(id) * 100` — the same fabricated-value
+    // bug as the old `4.0 + hash(id)` rating, and worse in effect: four sorts in
+    // prerenderBeachPages.mjs order the SEO pages by it, so "top beaches" lists
+    // were ranked by a hash of the id. utils/touristPriority.ts even documents the
+    // rule this broke ("popularityScore and rating are synthetic ... must never
+    // influence ranking").
+    //
+    // Now: Google Places review count, log-scaled (10 reviews→25, 100→50,
+    // 1000→75, 10k→100), which is what popularity actually means. Beaches with no
+    // Places data score 0 and sort last — we do not know they are popular, and
+    // guessing is what got us here.
+    popularityScore: popularityScoreFromReviews(reviewCount),
     ...(metadata?.popularity ? { popularity: metadata.popularity } : {}),
     ...(metadata?.nearbyCamping?.length ? { nearbyCamping: metadata.nearbyCamping } : {}),
     ...(metadata?.paidEntry ? { paidEntry: metadata.paidEntry } : {}),
@@ -559,7 +599,12 @@ const buildBeach = (rawBeach, island) => {
       region: rawBeach.region,
       island: rawBeach.prefecture,
     },
-    aliases: makeSearchAliases(rawBeach.name, rawBeach.prefecture, metadata?.aliases || []),
+    // The recovered Greek name rides along as a search alias too — a Greek visitor
+    // typing «Φαλάσαρνα» has to find the beach, not just see it spelled right.
+    aliases: makeSearchAliases(rawBeach.name, rawBeach.prefecture, [
+      ...(metadata?.aliases || []),
+      ...(rawBeach.nameGr ? [rawBeach.nameGr] : []),
+    ]),
     staticLabels: {
       beachType,
       accessType: metadata?.access?.type || 'unknown',
@@ -588,6 +633,10 @@ const buildSummaryBeach = beach => {
     characteristics: beach.characteristics,
     waterDepth: beach.waterDepth,
     activities: beach.activities,
+    // MUST ride along with activities.surfing. The summary tier is what the app
+    // actually loads, and without the months isSurfSpotInSeason falls back to
+    // "trust the flag" — which put November-only Ionian breaks in the July chip.
+    ...(beach.surfMonths ? { surfMonths: beach.surfMonths } : {}),
     environment: beach.environment,
     popularityScore: beach.popularityScore,
     coordinates: beach.coordinates,
@@ -634,6 +683,7 @@ const buildDetailBeach = beach => ({
   characteristics: beach.characteristics,
   waterDepth: beach.waterDepth,
   activities: beach.activities,
+  ...(beach.surfMonths ? { surfMonths: beach.surfMonths } : {}),
   environment: beach.environment,
   location: beach.location,
   ...(beach.mapCoordinates ? { mapCoordinates: beach.mapCoordinates } : {}),
@@ -702,6 +752,10 @@ const parseBeachPayload = beachData => {
           region,
           prefecture: pathParts[pathParts.length - 1] || pathParts[0] || 'Unknown',
           name,
+          // Optional Greek display name (scripts/harvestGreekNamesOsm.mjs). This
+          // allow-list is explicit, so a new source field is invisible to the rest
+          // of the build until it is named here.
+          ...(typeof item?.nameGr === 'string' && item.nameGr.trim() ? { nameGr: item.nameGr.trim() } : {}),
           lat,
           lon,
           ...(isBeachMetadata(item?.metadata) ? { metadata: item.metadata } : {}),
@@ -741,6 +795,23 @@ const dedupeExactBeaches = beaches => {
 
   return unique;
 };
+
+// Curated, externally-sourced surf spots. Only `type: 'surf'` sets the flag —
+// a windsurf spot needs a rig, so listing it as surf would send someone with a
+// board to the wrong beach. Seasons ride along so the filter can stop offering a
+// November break in July once it learns about months.
+const surfSpotsJson = JSON.parse(await fs.readFile(surfSpotsPath, 'utf8'));
+// TWO INDEPENDENT GUIDES MINIMUM. A single mention is worth recording but not
+// worth acting on: one blog naming a beach is how the fabricated 543 got there in
+// spirit, and sending someone with a board to a break only one site has heard of
+// is the same over-claim in a smaller package. 10 of the 31 clear this bar; the
+// other 21 stay in data/surfSpots.json for a future editorial pass.
+const CONFIDENT_SURF_SOURCES = 2;
+const confidentSurfSpots = surfSpotsJson.spots
+  .filter(s => s.type === 'surf' && (s.sources || 0) >= CONFIDENT_SURF_SOURCES);
+const SURF_SPOT_IDS = new Set(confidentSurfSpots.map(s => s.id));
+const SURF_SEASONS = new Map(confidentSurfSpots.map(s => [s.id, s.months]));
+console.log(`[surf] ${SURF_SPOT_IDS.size} confident spots (>= ${CONFIDENT_SURF_SOURCES} sources) of ${surfSpotsJson.spots.filter(s => s.type === 'surf').length} documented`);
 
 const sourceJson = JSON.parse(await fs.readFile(sourcePath, 'utf8'));
 const beaches = dedupeExactBeaches(parseBeachPayload(sourceJson).filter(beach => !shouldExcludeFromApp(beach)));

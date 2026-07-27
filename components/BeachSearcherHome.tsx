@@ -357,6 +357,7 @@ const filterIcons: Partial<Record<QuickPreferenceFilter, React.ReactNode>> = {
   familyFriendly: <Users className="h-5 w-5" />,
   deepWater: <Waves className="h-5 w-5" />,
   shallowWater: <Droplets className="h-5 w-5" />,
+  surfing: <Waves className="h-5 w-5" />,
 };
 
 const desktopAdvancedFilters: Array<{ key: FilterKey; icon: React.ReactNode }> = [
@@ -451,7 +452,13 @@ const beachMatchesAdvancedFilter = (beach: Beach, filter: FilterKey): boolean =>
     return beachMatchesPreferenceFilter(beach, 'quiet');
   }
   if (filter === 'surfing') {
-    return Boolean(beach.activities?.surfing);
+    // Route through the shared matcher, not a bare flag read: surf spots are
+    // seasonal and the season check lives there. Reading `activities.surfing`
+    // directly here quietly offered November-only Ionian breaks in August.
+    // Route through the shared matcher, not a bare flag read: surf spots are
+    // seasonal and the season check lives there. Reading `activities.surfing`
+    // directly here quietly offered November-only Ionian breaks in August.
+    return beachMatchesPreferenceFilter(beach, 'surfing');
   }
   if (filter === 'sandy-pebbles' || filter === 'rocky') {
     return beach.beachType === filter;

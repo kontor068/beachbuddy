@@ -17,6 +17,26 @@ import type { LanguageCode, WindSector } from '../../types';
 
 export type TripPlannerCopy = {
   prompt: string;
+  /**
+   * The collapsed hook's one-line promise. This is the whole feature in a
+   * sentence — a visitor who reads only this should understand that the plan
+   * moves the BEACH to fit the WIND, day by day. It states what we do, not how
+   * good we are at it.
+   */
+  valueProp: string;
+  /** Label above the day-count chips, so "2 3 4 5 6" is never a bare number row. */
+  daysQuestion: string;
+  /** "3 days" — the chosen length, shown as a pill in the expanded header. */
+  daysUnit: (n: number) => string;
+  /** Accessible name for a day-count chip (the visible label is just the digit). */
+  planForDays: (n: number) => string;
+  /** Accessible name for the beach button (the visible label is just the name). */
+  openBeach: (name: string) => string;
+  /**
+   * The blank day's headline, in the slot where a beach name would be, so the
+   * timeline scans at one rhythm. The REASON line underneath says why.
+   */
+  noBeachTitle: string;
   title: string;
   clear: string;
   today: string;
@@ -60,6 +80,12 @@ export type TripPlannerCopy = {
 export const tripPlannerCopy: Record<LanguageCode, TripPlannerCopy> = {
   gr: {
     prompt: 'Μένεις περισσότερες μέρες;',
+    valueProp: 'Κάθε μέρα, η παραλία που ταιριάζει στον άνεμο.',
+    daysQuestion: 'Πόσες μέρες;',
+    daysUnit: (n) => (n === 1 ? '1 μέρα' : `${n} μέρες`),
+    planForDays: (n) => (n === 1 ? 'Πλάνο για 1 μέρα' : `Πλάνο για ${n} μέρες`),
+    openBeach: (name) => `Άνοιγμα: ${name}`,
+    noBeachTitle: 'Χωρίς παραλία',
     title: 'Το πλάνο σου',
     clear: 'Κλείσιμο',
     today: 'Σήμερα',
@@ -103,6 +129,12 @@ export const tripPlannerCopy: Record<LanguageCode, TripPlannerCopy> = {
   },
   en: {
     prompt: 'Staying a few days?',
+    valueProp: 'Every day, the beach that fits the wind.',
+    daysQuestion: 'How many days?',
+    daysUnit: (n) => (n === 1 ? '1 day' : `${n} days`),
+    planForDays: (n) => (n === 1 ? 'Plan for 1 day' : `Plan for ${n} days`),
+    openBeach: (name) => `Open ${name}`,
+    noBeachTitle: 'No beach day',
     title: 'Your plan',
     clear: 'Close',
     today: 'Today',
@@ -142,6 +174,12 @@ export const tripPlannerCopy: Record<LanguageCode, TripPlannerCopy> = {
   },
   de: {
     prompt: 'Bleibst du mehrere Tage?',
+    valueProp: 'Jeden Tag der Strand, der zum Wind passt.',
+    daysQuestion: 'Wie viele Tage?',
+    daysUnit: (n) => (n === 1 ? '1 Tag' : `${n} Tage`),
+    planForDays: (n) => (n === 1 ? 'Plan für 1 Tag' : `Plan für ${n} Tage`),
+    openBeach: (name) => `${name} öffnen`,
+    noBeachTitle: 'Kein Strandtag',
     title: 'Dein Plan',
     clear: 'Schließen',
     today: 'Heute',
@@ -181,6 +219,12 @@ export const tripPlannerCopy: Record<LanguageCode, TripPlannerCopy> = {
   },
   it: {
     prompt: 'Ti fermi più giorni?',
+    valueProp: 'Ogni giorno, la spiaggia giusta per il vento.',
+    daysQuestion: 'Quanti giorni?',
+    daysUnit: (n) => (n === 1 ? '1 giorno' : `${n} giorni`),
+    planForDays: (n) => (n === 1 ? 'Piano per 1 giorno' : `Piano per ${n} giorni`),
+    openBeach: (name) => `Apri ${name}`,
+    noBeachTitle: 'Nessuna spiaggia',
     title: 'Il tuo piano',
     clear: 'Chiudi',
     today: 'Oggi',
@@ -220,6 +264,12 @@ export const tripPlannerCopy: Record<LanguageCode, TripPlannerCopy> = {
   },
   fr: {
     prompt: 'Vous restez plusieurs jours ?',
+    valueProp: 'Chaque jour, la plage qui convient au vent.',
+    daysQuestion: 'Combien de jours ?',
+    daysUnit: (n) => (n === 1 ? '1 jour' : `${n} jours`),
+    planForDays: (n) => (n === 1 ? 'Plan pour 1 jour' : `Plan pour ${n} jours`),
+    openBeach: (name) => `Ouvrir ${name}`,
+    noBeachTitle: 'Pas de plage',
     title: 'Votre plan',
     clear: 'Fermer',
     today: "Aujourd'hui",

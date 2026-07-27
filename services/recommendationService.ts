@@ -39,6 +39,7 @@ import { getSearchVariants, isSearchMatch } from '../utils/searchNormalize';
 import { calculateSeaConditionScore } from '../utils/seaConditions';
 import { getSelectedDayPrefix, isSelectedDateToday } from '../utils/dateLabels';
 import { athensNow } from '../utils/athensTime';
+import { isSurfSpotInSeason } from '../utils/surfSpots';
 import { assessBeachWindExposure } from '../utils/windExposureEngine';
 import { summarizeLocalWindBehavior } from '../utils/windClimatology';
 import { getRegionWindContext, LOCAL_WIND_SECTORS } from '../utils/localWindContext.mjs';
@@ -438,14 +439,9 @@ export const beachMatchesUserPreferences = (beach: Beach, preferences?: UserPref
   if (preferences.easyAccess && !hasTrulyEasyAccess(beach)) return false;
   if (preferences.deepWater && !beach.characteristics?.deepWaters) return false;
   if (preferences.shallowWater && !beach.characteristics?.shallowWaters) return false;
-  // Surf is seasonal in Greece and sharply so: the Ionian/Peloponnese breaks run
-  // November–April, the Aegean ones are meltemi-driven and run May–September. A
-  // spot that is out of season today is not a surf beach today, so it is filtered
-  // out rather than offered with a caveat nobody reads.
-  if (preferences.surfing) {
-    if (!beach.activities?.surfing) return false;
-    if (beach.surfMonths?.length && !beach.surfMonths.includes(athensNow().getMonth() + 1)) return false;
-  }
+  // Shared with the map marker via utils/surfSpots — see the note there on why
+  // this must not be re-implemented inline.
+  if (preferences.surfing && !isSurfSpotInSeason(beach)) return false;
   if (preferences.parking && !beach.amenities?.parking) return false;
 
   return true;

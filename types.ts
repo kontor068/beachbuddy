@@ -264,8 +264,20 @@ export interface Beach {
   waterDepth: WaterDepth;
   activities: {
     snorkeling: boolean;
+    /**
+     * Curated in data/surfSpots.json from named outside surf guides — never
+     * inferred. Was a hash of the beach id until 2026-07, which flagged 543
+     * beaches at random.
+     */
     surfing: boolean;
   };
+  /**
+   * Months (1-12) the surf break actually works, for beaches where
+   * `activities.surfing` is true. Greek surf splits hard by season: the western
+   * breaks are November–April, the Aegean ones are meltemi-driven summer. Without
+   * this a July search for surf returns winter-only spots.
+   */
+  surfMonths?: number[];
   environment: {
     quiet: boolean;
     remote: boolean;

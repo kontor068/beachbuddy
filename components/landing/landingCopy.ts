@@ -54,15 +54,6 @@ export type LandingCopy = {
   today: {
     title: string;
     subtitle: string;
-    live: string;
-    /**
-     * Full sentence about the sea, not a score. "2 ήρεμα" read as a rating
-     * slammed against a number; this says what the water is doing and carries
-     * the Beaufort as a qualifier the way a person would say it.
-     */
-    seaPhrase: (beaufort: number) => string;
-    chipAria: (region: string, phrase: string) => string;
-    note: string;
     cta: string;
     /** Geolocation can take several seconds; the button must say it is working. */
     ctaPending: string;
@@ -152,30 +143,11 @@ export const landingCopy: Record<LanguageCode, LandingCopy> = {
     // Cretan Sea". The order is measured demand from our own counter, and the
     // number next to each name is the thing a directory cannot copy.
     today: {
-      title: 'Οι περιοχές σήμερα',
+      title: 'Πού πάει ο κόσμος',
       // Not "από το Ιόνιο ως τα Δωδεκάνησα" — the sample also covers Crete, which
       // is south of both, plus three mainland regions.
-      subtitle: 'Πόσο φυσάει τώρα σε κάθε πέλαγος. Πάτα μια περιοχή για να τη δεις παραλία-παραλία.',
-      live: 'Ζωντανά',
-      // «κυματάκι» is the word this codebase already uses for chop (windExposure,
-      // CoveConditionsCard), so the landing speaks the same Greek as the app.
-      // A calm day needs no number — the number only earns its place once there
-      // is something to warn about.
-      // «τώρα», never «σήμερα»: this is one instantaneous reading, and on a
-      // meltemi day a calm 09:00 becomes 6 Bft by lunchtime.
-      // One comma-form for the whole ladder («κυματάκι, 4 μποφόρ»), not «στα 4
-      // μποφόρ» for some steps and a comma for others — the mixed construction
-      // read as two different sentences stitched together. «ήπιο κυματάκι» also
-      // doubled the diminutive; «λίγο» does that work without repeating it.
-      seaPhrase: (bft) =>
-        bft <= 2 ? 'ήρεμα τώρα'
-        : bft === 3 ? 'λίγο κυματάκι, 3 μποφόρ'
-        : bft === 4 ? 'κυματάκι, 4 μποφόρ'
-        : bft === 5 ? 'κύμα, 5 μποφόρ'
-        : `φουρτούνα, ${bft} μποφόρ`,
-      chipAria: (region, phrase) => `${region}: ${phrase}`,
+      subtitle: 'Οι περιοχές που ψάχνει περισσότερο ο κόσμος. Πάτα μία για να δεις τις παραλίες της μία-μία, με τον σημερινό άνεμο σε κάθε ακτή.',
       // «Εκτίμηση ανοιχτής θάλασσας» is a caption on a chart, not a sentence.
-      note: 'Μιλάμε για την ανοιχτή θάλασσα — στις προστατευμένες ακτές κάθε περιοχής είναι πιο ήρεμα.',
       cta: 'Βρες προστατευμένη παραλία κοντά σου',
       ctaPending: 'Ψάχνουμε πού είσαι…',
       allRegions: 'ή δες όλες τις περιοχές',
@@ -294,17 +266,8 @@ export const landingCopy: Record<LanguageCode, LandingCopy> = {
       findingLocation: 'Finding location…',
     },
     today: {
-      title: 'Regions today',
-      subtitle: 'How hard it is blowing right now, in every Greek sea. Tap a region to see it beach by beach.',
-      live: 'Live',
-      seaPhrase: (bft) =>
-        bft <= 2 ? 'calm right now'
-        : bft === 3 ? 'light chop, 3 Beaufort'
-        : bft === 4 ? 'choppy, 4 Beaufort'
-        : bft === 5 ? 'waves, 5 Beaufort'
-        : `rough, ${bft} Beaufort`,
-      chipAria: (region, phrase) => `${region}: ${phrase}`,
-      note: 'We mean the open sea — the sheltered shores of each region are calmer.',
+      title: 'Where people go',
+      subtitle: 'The regions people search for most. Tap one to see its beaches one by one, with today’s wind on each shore.',
       cta: 'Find a sheltered beach near you',
       ctaPending: 'Finding you…',
       allRegions: 'or see all regions',
@@ -380,17 +343,8 @@ export const landingCopy: Record<LanguageCode, LandingCopy> = {
       findingLocation: 'Standort wird ermittelt…',
     },
     today: {
-      title: 'Die Regionen heute',
-      subtitle: 'Wie stark es gerade in jedem griechischen Meer weht. Tippe auf eine Region, um sie Strand für Strand zu sehen.',
-      live: 'Live',
-      seaPhrase: (bft) =>
-        bft <= 2 ? 'gerade ruhig'
-        : bft === 3 ? 'leichte Kräuselung, 3 Beaufort'
-        : bft === 4 ? 'kabbelig, 4 Beaufort'
-        : bft === 5 ? 'Wellen, 5 Beaufort'
-        : `stürmisch, ${bft} Beaufort`,
-      chipAria: (region, phrase) => `${region}: ${phrase}`,
-      note: 'Wir meinen die offene See — die geschützten Küsten jeder Region sind ruhiger.',
+      title: 'Wohin die Leute fahren',
+      subtitle: 'Die Regionen, nach denen am meisten gesucht wird. Tippe auf eine, um sie Strand für Strand zu sehen — mit dem heutigen Wind an jeder Küste.',
       cta: 'Finde einen geschützten Strand in deiner Nähe',
       // Never "Ich" in a German UI, and never a first-person singular anywhere on
       // a page that speaks as "wir".
@@ -469,17 +423,8 @@ export const landingCopy: Record<LanguageCode, LandingCopy> = {
       findingLocation: 'Localisation en cours…',
     },
     today: {
-      title: 'Les régions aujourd’hui',
-      subtitle: 'La force du vent en ce moment, dans chaque mer grecque. Touchez une région pour la voir plage par plage.',
-      live: 'En direct',
-      seaPhrase: (bft) =>
-        bft <= 2 ? 'calme en ce moment'
-        : bft === 3 ? 'légère ride, 3 Beaufort'
-        : bft === 4 ? 'clapot, 4 Beaufort'
-        : bft === 5 ? 'vagues, 5 Beaufort'
-        : `mer forte, ${bft} Beaufort`,
-      chipAria: (region, phrase) => `${region} : ${phrase}`,
-      note: 'Nous parlons de la mer ouverte — les côtes abritées de chaque région sont plus calmes.',
+      title: 'Où vont les gens',
+      subtitle: 'Les régions les plus recherchées. Touchez-en une pour la voir plage par plage, avec le vent du jour sur chaque côte.',
       cta: 'Trouver une plage abritée près de vous',
       ctaPending: 'Localisation en cours…',
       allRegions: 'ou voir toutes les régions',
@@ -556,19 +501,10 @@ export const landingCopy: Record<LanguageCode, LandingCopy> = {
       findingLocation: 'Ricerca della posizione…',
     },
     today: {
-      title: 'Le regioni oggi',
-      subtitle: 'Quanto soffia adesso in ogni mare greco. Tocca una regione per vederla spiaggia per spiaggia.',
-      live: 'In diretta',
+      title: 'Dove va la gente',
+      subtitle: 'Le regioni più cercate. Toccane una per vederla spiaggia per spiaggia, con il vento di oggi su ogni costa.',
       // Italian has its own official sea-state ladder (calmo / poco mosso / mosso
       // / molto mosso / agitato) — use it rather than translating the English.
-      seaPhrase: (bft) =>
-        bft <= 2 ? 'calmo adesso'
-        : bft === 3 ? 'poco mosso, 3 Beaufort'
-        : bft === 4 ? 'mosso, 4 Beaufort'
-        : bft === 5 ? 'molto mosso, 5 Beaufort'
-        : `agitato, ${bft} Beaufort`,
-      chipAria: (region, phrase) => `${region}: ${phrase}`,
-      note: 'Parliamo del mare aperto — le coste riparate di ogni regione sono più calme.',
       cta: 'Trova una spiaggia riparata vicino a te',
       ctaPending: 'Cerchiamo dove sei…',
       allRegions: 'oppure vedi tutte le regioni',
