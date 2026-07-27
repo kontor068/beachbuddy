@@ -5764,11 +5764,16 @@ export const App: React.FC = () => {
     return true;
   };
 
-  const handleDirectorySearchSubmit = async () => {
-    const trimmedQuery = beachSearchQuery.trim();
+  /**
+   * `queryOverride` exists for the landing's example chip, which sets the query
+   * and submits in the same tick: without it the handler would read the state
+   * from before setBeachSearchQuery committed — i.e. the empty string.
+   */
+  const handleDirectorySearchSubmit = async (queryOverride?: string) => {
+    const trimmedQuery = (queryOverride ?? beachSearchQuery).trim();
     if (trimmedQuery) markValuePropSeen();
     if (handleTripSentence(trimmedQuery)) return;
-    const regionMatch = findSearchRegionMatch(beachSearchQuery);
+    const regionMatch = findSearchRegionMatch(trimmedQuery);
     let globalBeachMatch: GlobalBeachSearchMatch | null = null;
 
     if (!regionMatch && trimmedQuery.length >= 3) {

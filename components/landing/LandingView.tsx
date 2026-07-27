@@ -26,7 +26,7 @@ interface LandingViewProps {
   searchSuggestions: DirectorySearchSuggestion[];
   isSearchSuggesting: boolean;
   onSearchChange: (value: string) => void;
-  onSearchSubmit: () => void;
+  onSearchSubmit: (query?: string) => void;
   onSearchSuggestionSelect: (suggestion: DirectorySearchSuggestion) => void;
   onShowNearbyBeaches: () => void;
   isFindingLocation: boolean;

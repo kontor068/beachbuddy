@@ -32,6 +32,17 @@ export type LandingCopy = {
     searchBeachLabel: string;
     searchLoading: string;
     searchNoResults: string;
+    /**
+     * One tappable example that PREFILLS the box and submits it. The
+     * placeholder vanishes the moment you type, so it cannot teach a syntax —
+     * the chip is what actually shows that a sentence is allowed here. Same
+     * reasoning as story.askPrompts below.
+     */
+    searchExample: string;
+    /** What the chip actually types — the label without its «π.χ.» framing. */
+    searchExampleQuery: string;
+    /** Shown when a stay length was understood but no place was named. */
+    searchNeedsPlace: string;
     nearMe: string;
     findingLocation: string;
   };
@@ -51,12 +62,6 @@ export type LandingCopy = {
     /** Geolocation can take several seconds; the button must say it is working. */
     ctaPending: string;
     allRegions: string;
-    /**
-     * Link to the prerendered national comparison page. Labelled for what that
-     * page ACTUALLY is — an evergreen list of named beaches to compare — never
-     * "today's picks", which it does not carry despite its URL.
-     */
-    compare: string;
   };
   manifesto: {
     overline: string;
@@ -119,8 +124,10 @@ export const landingCopy: Record<LanguageCode, LandingCopy> = {
       // being made — it answers the actual «πού να πάμε σήμερα;», where the
       // indicative would describe a choice already settled.
       subtitle: 'Η ηρεμία δεν ξεκινάει στην παραλία. Ξεκινάει τη στιγμή που ξέρεις σε ποια να πας.',
-      searchPlaceholder: 'Αναζήτησε παραλία ή περιοχή…',
-      searchAria: 'Αναζήτηση παραλίας ή περιοχής',
+      // 32 chars: the full «…και πόσες μέρες θα μείνεις» is 44 and truncates at
+      // 375px, where 88% of the traffic is. The example chip carries the rest.
+      searchPlaceholder: 'Πες μου το μέρος και πόσες μέρες',
+      searchAria: 'Αναζήτηση παραλίας, περιοχής ή διαμονής σε μέρες',
       clearSearchAria: 'Καθαρισμός αναζήτησης',
       searchRegionLabel: 'Περιοχή',
       searchBeachLabel: 'Παραλία',
@@ -129,6 +136,9 @@ export const landingCopy: Record<LanguageCode, LandingCopy> = {
       searchLoading: 'Ψάχνουμε παραλίες…',
       // «κοντινό αποτέλεσμα» is search-engine language; nobody says it out loud.
       searchNoResults: 'Δεν βρέθηκε κάτι παρόμοιο. Πάτα Enter για αναζήτηση.',
+      searchExample: 'π.χ. Νάξο 5 μέρες',
+      searchExampleQuery: 'Νάξο 5 μέρες',
+      searchNeedsPlace: 'Πες μου και σε ποιο μέρος.',
       nearMe: 'Κοντά μου',
       findingLocation: 'Εύρεση τοποθεσίας…',
     },
@@ -163,7 +173,6 @@ export const landingCopy: Record<LanguageCode, LandingCopy> = {
       cta: 'Βρες προστατευμένη παραλία κοντά σου',
       ctaPending: 'Ψάχνουμε πού είσαι…',
       allRegions: 'ή δες όλες τις περιοχές',
-      compare: 'Δες και σύγκρινε συγκεκριμένες παραλίες',
     },
     // "Calm" here is not a sea state — it is whatever makes the day work for THIS
     // person. So the three points are the two halves of that (the place, which is
@@ -171,13 +180,23 @@ export const landingCopy: Record<LanguageCode, LandingCopy> = {
     // claiming honesty: point 03 demonstrates it instead.
     manifesto: {
       overline: 'Τι σημαίνει «ήρεμα»',
+      // SECOND PERSON, no grammatical gender. Greek «άλλος… άλλος…» defaults to
+      // masculine and quietly addresses half the readers; «μπορεί να θες» carries
+      // the same meaning with none of that, and matches the site's established
+      // 'εσύ' voice. Same fix in every locale (de/it keep du/tu, fr keeps vous).
+      //
+      // The surf example is BACKED: data/surfSpots.json carries 31 spots named by
+      // outside surf guides, with a seasonal filter, so "waves to surf" is a thing
+      // the product actually delivers. It was pulled for one revision while
+      // activities.surfing was still a hash of the beach id — do not restore that
+      // sentence if the curated list ever goes away.
       // A display quote gets scanned, not read — so it is TWO beats and nothing
       // more: the claim, then three examples with the counter-intuitive one last
       // (someone hunting waves to surf is the strongest proof that "calm" is
       // personal). The old version ran 45 words and ended by restating what the
       // numbered points beside it already say; the points now carry that.
       quote:
-        'Το «ήρεμα» δεν είναι το ίδιο για όλους. Άλλος θέλει ρηχά νερά, άλλος άδεια αμμουδιά, άλλος κύμα για σερφ.',
+        'Το «ήρεμα» δεν είναι το ίδιο για όλους. Μπορεί να θες ρηχά νερά, μπορεί μια άδεια αμμουδιά, μπορεί κύμα για σερφ.',
       points: [
         {
           title: 'Πώς το επαληθεύουμε',
@@ -192,6 +211,10 @@ export const landingCopy: Record<LanguageCode, LandingCopy> = {
         {
           title: 'Τι δεν ξέρουμε (ακόμα)',
           body: 'Ρεύματα, βυθό, τοπικές ριπές. Δείχνουμε πρόγνωση, όχι μέτρηση — γι’ αυτό δίνουμε εύρος κύματος. Όταν φτάσεις, κοίτα τη σημαία και τον ναυαγοσώστη.',
+        },
+        {
+          title: 'Αυτό που φτιάχνουμε τώρα',
+          body: 'Πλάνο για όλες τις μέρες που μένεις: ποια παραλία ποια μέρα, με βάση την πρόγνωση. Δουλεύει ήδη μέσα σε κάθε περιοχή, αλλά είναι σε εξέλιξη — θα το δεις να αλλάζει.',
         },
       ],
       more: 'Πώς δουλεύει το CalmBeach',
@@ -252,13 +275,16 @@ export const landingCopy: Record<LanguageCode, LandingCopy> = {
       title: 'Which beach in Greece suits you today?',
       titleAccent: 'in Greece',
       subtitle: 'Calm doesn’t start at the beach. It starts the moment you know which one to pick.',
-      searchPlaceholder: 'Search a beach or region…',
-      searchAria: 'Search a beach or region',
+      searchPlaceholder: 'Tell me where and for how many days',
+      searchAria: 'Search a beach, a region, or a stay in days',
       clearSearchAria: 'Clear search',
       searchRegionLabel: 'Region',
       searchBeachLabel: 'Beach',
       searchLoading: 'Searching beaches…',
       searchNoResults: 'No close match found. Press Enter to search.',
+      searchExample: 'e.g. Naxos, 5 days',
+      searchExampleQuery: 'Naxos 5 days',
+      searchNeedsPlace: 'Tell me the place as well.',
       nearMe: 'Near me',
       findingLocation: 'Finding location…',
     },
@@ -277,12 +303,11 @@ export const landingCopy: Record<LanguageCode, LandingCopy> = {
       cta: 'Find a sheltered beach near you',
       ctaPending: 'Finding you…',
       allRegions: 'or see all regions',
-      compare: 'See and compare specific beaches',
     },
     manifesto: {
       overline: 'What “calm” means here',
       quote:
-        '“Calm” is not the same thing for everyone. One wants shallow water, one an empty beach, one waves to surf.',
+        '“Calm” is not the same thing for everyone. You might want shallow water, or an empty beach, or waves to surf.',
       points: [
         {
           title: 'How we check it',
@@ -295,6 +320,10 @@ export const landingCopy: Record<LanguageCode, LandingCopy> = {
         {
           title: 'What we do not know (yet)',
           body: 'Currents, the seabed, local gusts. We show a forecast, not a measurement — which is why we give a wave range. When you arrive, check the flags and the lifeguard.',
+        },
+        {
+          title: 'What we are building now',
+          body: 'A plan for every day of your stay: which beach on which day, from the forecast. It already works inside each region, but it is a work in progress — you will see it change.',
         },
       ],
       more: 'How CalmBeach works',
@@ -333,13 +362,16 @@ export const landingCopy: Record<LanguageCode, LandingCopy> = {
       title: 'Welcher Strand in Griechenland passt heute zu dir?',
       titleAccent: 'in Griechenland',
       subtitle: 'Ruhe fängt nicht am Strand an. Sie fängt in dem Moment an, in dem du weißt, welcher der richtige ist.',
-      searchPlaceholder: 'Strand oder Region suchen…',
-      searchAria: 'Strand oder Region suchen',
+      searchPlaceholder: 'Sag mir wohin und für wie viele Tage',
+      searchAria: 'Strand, Region oder Aufenthalt in Tagen suchen',
       clearSearchAria: 'Suche löschen',
       searchRegionLabel: 'Region',
       searchBeachLabel: 'Strand',
       searchLoading: 'Suche Strände…',
       searchNoResults: 'Kein passendes Ergebnis. Drücke Enter, um zu suchen.',
+      searchExample: 'z.B. Naxos, 5 Tage',
+      searchExampleQuery: 'Naxos 5 Tage',
+      searchNeedsPlace: 'Sag mir auch den Ort.',
       nearMe: 'In meiner Nähe',
       findingLocation: 'Standort wird ermittelt…',
     },
@@ -360,12 +392,11 @@ export const landingCopy: Record<LanguageCode, LandingCopy> = {
       // a page that speaks as "wir".
       ctaPending: 'Dein Standort wird ermittelt…',
       allRegions: 'oder alle Regionen ansehen',
-      compare: 'Einzelne Strände ansehen und vergleichen',
     },
     manifesto: {
       overline: 'Was „ruhig“ hier bedeutet',
       quote:
-        '„Ruhig“ ist nicht für alle dasselbe. Der eine will flaches Wasser, der andere einen leeren Strand, der Nächste Wellen zum Surfen.',
+        '„Ruhig“ ist nicht für alle dasselbe. Vielleicht willst du flaches Wasser, vielleicht einen leeren Strand, vielleicht Wellen zum Surfen.',
       points: [
         {
           title: 'Wie wir es prüfen',
@@ -378,6 +409,10 @@ export const landingCopy: Record<LanguageCode, LandingCopy> = {
         {
           title: 'Was wir (noch) nicht wissen',
           body: 'Strömungen, den Grund, lokale Böen. Wir zeigen eine Vorhersage, keine Messung — deshalb geben wir eine Wellenspanne an. Achte vor Ort auf die Flaggen und den Rettungsschwimmer.',
+        },
+        {
+          title: 'Woran wir gerade arbeiten',
+          body: 'Ein Plan für jeden Tag deines Aufenthalts: welcher Strand an welchem Tag, aus der Vorhersage. In jeder Region funktioniert er schon, ist aber noch in Arbeit — du wirst ihn sich ändern sehen.',
         },
       ],
       more: 'Wie CalmBeach funktioniert',
@@ -417,13 +452,16 @@ export const landingCopy: Record<LanguageCode, LandingCopy> = {
       title: 'Quelle plage de Grèce vous convient aujourd’hui ?',
       titleAccent: 'de Grèce',
       subtitle: 'Le calme ne commence pas sur la plage. Il commence au moment où vous savez laquelle choisir.',
-      searchPlaceholder: 'Chercher une plage ou une région…',
-      searchAria: 'Chercher une plage ou une région',
+      searchPlaceholder: 'Dites-moi où et pour combien de jours',
+      searchAria: 'Chercher une plage, une région ou un séjour en jours',
       clearSearchAria: 'Effacer la recherche',
       searchRegionLabel: 'Région',
       searchBeachLabel: 'Plage',
       searchLoading: 'Recherche des plages…',
       searchNoResults: 'Aucun résultat similaire. Appuyez sur Entrée pour lancer la recherche.',
+      searchExample: 'ex. Naxos, 5 jours',
+      searchExampleQuery: 'Naxos 5 jours',
+      searchNeedsPlace: 'Dites-moi aussi le lieu.',
       nearMe: 'Près de moi',
       findingLocation: 'Localisation en cours…',
     },
@@ -442,12 +480,11 @@ export const landingCopy: Record<LanguageCode, LandingCopy> = {
       cta: 'Trouver une plage abritée près de vous',
       ctaPending: 'Localisation en cours…',
       allRegions: 'ou voir toutes les régions',
-      compare: 'Voir et comparer des plages précises',
     },
     manifesto: {
       overline: 'Ce que « calme » veut dire ici',
       quote:
-        '« Calme » ne veut pas dire la même chose pour tout le monde. L’un veut de l’eau peu profonde, l’autre une plage vide, l’autre des vagues pour surfer.',
+        '« Calme » ne veut pas dire la même chose pour tout le monde. Vous voulez peut-être de l’eau peu profonde, ou une plage déserte, ou des vagues pour surfer.',
       points: [
         {
           title: 'Comment nous le vérifions',
@@ -460,6 +497,10 @@ export const landingCopy: Record<LanguageCode, LandingCopy> = {
         {
           title: 'Ce que nous ne savons pas (encore)',
           body: 'Les courants, le fond, les rafales locales. Nous montrons une prévision, pas une mesure — d’où la fourchette de hauteur de vagues. Sur place, regardez les drapeaux et le maître-nageur.',
+        },
+        {
+          title: 'Ce que nous construisons en ce moment',
+          body: 'Un plan pour chaque jour de votre séjour : quelle plage quel jour, à partir des prévisions. Il fonctionne déjà dans chaque région, mais il est en cours de développement — vous le verrez évoluer.',
         },
       ],
       more: 'Comment fonctionne CalmBeach',
@@ -499,13 +540,16 @@ export const landingCopy: Record<LanguageCode, LandingCopy> = {
       title: 'Quale spiaggia della Grecia fa per te oggi?',
       titleAccent: 'della Grecia',
       subtitle: 'La calma non inizia in spiaggia. Inizia nel momento in cui sai quale scegliere.',
-      searchPlaceholder: 'Cerca una spiaggia o una regione…',
-      searchAria: 'Cerca una spiaggia o una regione',
+      searchPlaceholder: 'Dimmi dove e per quanti giorni',
+      searchAria: 'Cerca una spiaggia, una zona o un soggiorno in giorni',
       clearSearchAria: 'Cancella la ricerca',
       searchRegionLabel: 'Regione',
       searchBeachLabel: 'Spiaggia',
       searchLoading: 'Cerchiamo spiagge…',
       searchNoResults: 'Nessun risultato simile. Premi Invio per cercare.',
+      searchExample: 'es. Naxos, 5 giorni',
+      searchExampleQuery: 'Naxos 5 giorni',
+      searchNeedsPlace: 'Dimmi anche il posto.',
       nearMe: 'Vicino a me',
       findingLocation: 'Ricerca della posizione…',
     },
@@ -526,12 +570,11 @@ export const landingCopy: Record<LanguageCode, LandingCopy> = {
       cta: 'Trova una spiaggia riparata vicino a te',
       ctaPending: 'Cerchiamo dove sei…',
       allRegions: 'oppure vedi tutte le regioni',
-      compare: 'Vedi e confronta spiagge specifiche',
     },
     manifesto: {
       overline: 'Cosa significa «calmo» qui',
       quote:
-        '«Calmo» non è lo stesso per tutti. Uno vuole acqua bassa, uno una spiaggia vuota, uno onde per fare surf.',
+        '«Calmo» non è lo stesso per tutti. Forse vuoi acqua bassa, forse una spiaggia deserta, forse onde per fare surf.',
       points: [
         {
           title: 'Come lo verifichiamo',
@@ -544,6 +587,10 @@ export const landingCopy: Record<LanguageCode, LandingCopy> = {
         {
           title: 'Cosa non sappiamo (ancora)',
           body: 'Le correnti, il fondale, le raffiche locali. Mostriamo una previsione, non una misura — per questo diamo un intervallo di altezza delle onde. Sul posto, guarda le bandiere e il bagnino.',
+        },
+        {
+          title: 'Quello che stiamo costruendo ora',
+          body: 'Un piano per ogni giorno del tuo soggiorno: quale spiaggia in quale giorno, in base alle previsioni. Funziona già dentro ogni regione, ma è in lavorazione — lo vedrai cambiare.',
         },
       ],
       more: 'Come funziona CalmBeach',
