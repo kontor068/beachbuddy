@@ -18,7 +18,7 @@ import {
   passesTopPickSeaGate,
   prioritizeProtectedRecommendations,
 } from './topPickRanking';
-import { compareBeachSignificance } from '../utils/beachSignificance';
+import { compareBeachSignificance, hasSignificanceSignal } from '../utils/beachSignificance';
 import { hasPracticalTopPickAccess } from '../utils/access';
 import { isNaturistBeach } from '../utils/naturistBeaches';
 import {
@@ -655,16 +655,22 @@ export const planTrip = ({
     pendingDays.add(dayIndex);
   }
 
-  // THE ESSENTIALS (Structure A): the N most significant beaches usable on at
-  // least one day that actually needs a beach — one prefix of one significance-
-  // sorted list, so a 3-day and a 4-day trip agree on the first three (nesting).
-  // The pool is already significance-sorted; keep that order.
-  const eligibleEssentials = pool.filter(beach =>
-    Array.from(pendingDays).some(dayIndex =>
-      rankedByDay[dayIndex].some(entry => entry.beach.id === beach.id && isUsable(entry))
-    )
-  );
-  const essentialIds = new Set(eligibleEssentials.slice(0, pendingDays.size).map(beach => beach.id));
+  // THE ESSENTIALS (Structure A) are every beach that carries a real
+  // significance signal — curated recognition or an actual review base
+  // (utils/beachSignificance.ts). NOT "the top N", where N is the day count:
+  // that was measured to be far too brittle. On Naxos with a 2-day trip and 38
+  // suitable beaches, a west wind knocked out both of the two top-significance
+  // beaches and the planner immediately fell to a REFUGE — labelling a calm
+  // 3 Bft day as "nowhere big works, here is a sheltered cove", which is
+  // nonsense. With the signal-based set, the scarcity loop simply walks down
+  // the significance order to the next beach that works.
+  //
+  // Nesting still holds, and more strongly than before: the set no longer
+  // depends on N at all, so 3 days and 4 days agree by construction.
+  const significant = pool.filter(hasSignificanceSignal);
+  // Guard: in a region where nothing is rated or curated, everything would be
+  // a "refuge" and the exception would become the rule. Fall back to the pool.
+  const essentialIds = new Set((significant.length > 0 ? significant : pool).map(beach => beach.id));
 
   // Scarcity-driven assignment OVER THE ESSENTIALS: serve the most CONSTRAINED
   // day first. The weather no longer chooses the beaches — it only decides

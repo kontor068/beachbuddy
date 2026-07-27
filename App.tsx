@@ -1068,7 +1068,11 @@ const getGeneralConditionsHelper = (
       mild: () => `${sentenceDay} έχει ${beaufort} μποφόρ με ${windLabel} άνεμο. Οι περισσότερες παραλίες φαίνονται κατάλληλες για μπάνιο.`,
       caution: () => `${sentenceDay} έχει ${beaufort} μποφόρ με ${windLabel} άνεμο. Ο άνεμος αρχίζει να παίζει ρόλο, οπότε γενικά προτιμώνται ${favoredCoasts}.`,
       noIdeal: () => {
-        return `${sentenceDay} έχει ${beaufort} μποφόρ με ${windLabel} άνεμο. Οι περισσότερες παραλίες φαίνονται κατάλληλες για μπάνιο.`;
+        // The `if` guard here was lost in 3deb24f5 (2026-06-09), leaving a bare
+        // return that made every branch below dead code — so the Greek copy
+        // claimed "most beaches look suitable for swimming" at ANY wind, 7 Bft
+        // included, while English tiered correctly. Never drop the condition.
+        if (beaufort <= 3) return `${sentenceDay} έχει ${beaufort} μποφόρ με ${windLabel} άνεμο. Οι περισσότερες παραλίες φαίνονται κατάλληλες για μπάνιο.`;
         return beaufort <= 5
         ? `${sentenceDay} έχει ${beaufort} μποφόρ με ${windLabel} άνεμο. Ο άνεμος επηρεάζει την επιλογή, οπότε γενικά προτιμώνται ${favoredCoasts}.`
         : `${sentenceDay} έχει ${beaufort} μποφόρ με ${windLabel} άνεμο. Δεν υπάρχει καθαρή επιλογή για ήρεμο μπάνιο. Αν πας, γενικά προτιμώνται ${favoredCoasts}.`;
