@@ -4,7 +4,10 @@
   "beaches": [
     {
       "nameGr": "Θέρμα",
-      "aliases": ["Λουτρά", "Θερμά Λουτρά"],
+      "aliases": [
+        "Λουτρά",
+        "Θερμά Λουτρά"
+      ],
       "lat": 40.50282,
       "lon": 25.6005,
       "region": "East Macedonia and Thrace",
@@ -18,16 +21,31 @@
         "https://www.openstreetmap.org/way/510452883"
       ],
       "metadata": {
-        "access": { "type": "asphalt_road", "label": "άσφαλτος μέχρι κοντά στην παραλία", "notes": "Ασφαλτόδρομος από Καμαριώτισσα (~13 χλμ) μέχρι τον οικισμό Θέρμα· πάρκινγκ κοντά στην παραλία. Χωρίς επιτόπου επιβεβαίωση." },
-        "terrain": { "types": ["pebbles"], "label": "βότσαλα" },
+        "access": {
+          "type": "asphalt_road",
+          "label": "άσφαλτος μέχρι κοντά στην παραλία",
+          "notes": "Ασφαλτόδρομος από Καμαριώτισσα (~13 χλμ) μέχρι τον οικισμό Θέρμα· πάρκινγκ κοντά στην παραλία. Χωρίς επιτόπου επιβεβαίωση."
+        },
+        "terrain": {
+          "types": [
+            "pebbles"
+          ],
+          "label": "βότσαλα"
+        },
         "organized": true,
         "shade": true,
-        "amenities": ["beach bar", "ντουζ", "αποδυτήρια"]
+        "amenities": [
+          "beach bar",
+          "ντουζ",
+          "αποδυτήρια"
+        ]
       }
     },
     {
       "nameGr": "Φονιάς",
-      "aliases": ["Πύργος Φονιά"],
+      "aliases": [
+        "Πύργος Φονιά"
+      ],
       "lat": 40.49239,
       "lon": 25.65786,
       "region": "East Macedonia and Thrace",
@@ -41,8 +59,18 @@
         "https://www.openstreetmap.org/way/1292846845"
       ],
       "metadata": {
-        "access": { "type": "asphalt_road", "label": "άσφαλτος μέχρι κοντά στην παραλία", "notes": "Επαρχιακός δρόμος Καμαριώτισσα–Θέρμα–Φονιάς με πάρκινγκ και στάση λεωφορείου. Χωρίς επιτόπου επιβεβαίωση." },
-        "terrain": { "types": ["pebbles", "coarse_sand"], "label": "βότσαλα, χοντρή άμμος" },
+        "access": {
+          "type": "asphalt_road",
+          "label": "άσφαλτος μέχρι κοντά στην παραλία",
+          "notes": "Επαρχιακός δρόμος Καμαριώτισσα–Θέρμα–Φονιάς με πάρκινγκ και στάση λεωφορείου. Χωρίς επιτόπου επιβεβαίωση."
+        },
+        "terrain": {
+          "types": [
+            "pebbles",
+            "coarse_sand"
+          ],
+          "label": "βότσαλα, χοντρή άμμος"
+        },
         "organized": false,
         "shade": false,
         "amenities": []
@@ -50,7 +78,10 @@
     },
     {
       "nameGr": "Κήπος",
-      "aliases": ["Κήποι", "Παραλία Κήπου"],
+      "aliases": [
+        "Κήποι",
+        "Παραλία Κήπου"
+      ],
       "lat": 40.42391,
       "lon": 25.69184,
       "region": "East Macedonia and Thrace",
@@ -64,8 +95,18 @@
         "https://www.openstreetmap.org/way/160205175"
       ],
       "metadata": {
-        "access": { "type": "difficult_dirt_road", "label": "Δύσβατος χωματόδρομος", "notes": "Χωματόδρομος στο ανατολικό άκρο του νησιού· οι οδηγοί τον περιγράφουν ως απαιτητικό και κατά καιρούς σε κακή κατάσταση. Υπάρχει πάρκινγκ στο τέλος. Χωρίς επιτόπου επιβεβαίωση." },
-        "terrain": { "types": ["pebbles", "rocks"], "label": "σκούρο βότσαλο, πέτρες" },
+        "access": {
+          "type": "difficult_dirt_road",
+          "label": "Δύσβατος χωματόδρομος",
+          "notes": "Χωματόδρομος στο ανατολικό άκρο του νησιού· οι οδηγοί τον περιγράφουν ως απαιτητικό και κατά καιρούς σε κακή κατάσταση. Υπάρχει πάρκινγκ στο τέλος. Χωρίς επιτόπου επιβεβαίωση."
+        },
+        "terrain": {
+          "types": [
+            "pebbles"
+          ],
+          "label": "βότσαλα",
+          "notes": "Οι οδηγοί περιγράφουν τη βόρεια ακτή ως βοτσαλωτή/πετρώδη· το «rocks» αφαιρέθηκε γιατί παρήγαγε αστήρικτο ισχυρισμό «βαθιά νερά»."
+        },
         "organized": false,
         "shade": false,
         "amenities": []
@@ -73,7 +114,9 @@
     },
     {
       "nameGr": "Γυαλί",
-      "aliases": ["Γιαλί"],
+      "aliases": [
+        "Γιαλί"
+      ],
       "lat": 40.40841,
       "lon": 25.64479,
       "region": "East Macedonia and Thrace",
@@ -87,8 +130,17 @@
         "https://www.openstreetmap.org/way/160205174"
       ],
       "metadata": {
-        "access": { "type": "boat_only", "label": "μόνο με βάρκα ή σκάφος", "notes": "Οι οδηγοί αναφέρουν πρόσβαση με καραβάκι από την Καμαριώτισσα (κάτω από μία ώρα) ή με απαιτητική πεζοπορία. Χωρίς επιτόπου επιβεβαίωση." },
-        "terrain": { "types": ["pebbles"], "label": "λευκό βότσαλο" },
+        "access": {
+          "type": "boat_only",
+          "label": "μόνο με βάρκα ή σκάφος",
+          "notes": "Οι οδηγοί αναφέρουν πρόσβαση με καραβάκι από την Καμαριώτισσα (κάτω από μία ώρα) ή με απαιτητική πεζοπορία. Χωρίς επιτόπου επιβεβαίωση."
+        },
+        "terrain": {
+          "types": [
+            "pebbles"
+          ],
+          "label": "λευκό βότσαλο"
+        },
         "organized": false,
         "shade": false,
         "amenities": []
@@ -109,8 +161,17 @@
         "https://www.insamothraki.com/the-beaches-of-samothrace.html"
       ],
       "metadata": {
-        "access": { "type": "asphalt_road", "label": "άσφαλτος μέχρι κοντά στην παραλία", "notes": "Ασφαλτόδρομος από Καμαριώτισσα προς Λάκκωμα/Παχιά Άμμο. Χωρίς επιτόπου επιβεβαίωση." },
-        "terrain": { "types": ["pebbles"], "label": "κροκάλες" },
+        "access": {
+          "type": "asphalt_road",
+          "label": "άσφαλτος μέχρι κοντά στην παραλία",
+          "notes": "Ασφαλτόδρομος από Καμαριώτισσα προς Λάκκωμα/Παχιά Άμμο. Χωρίς επιτόπου επιβεβαίωση."
+        },
+        "terrain": {
+          "types": [
+            "pebbles"
+          ],
+          "label": "κροκάλες"
+        },
         "organized": false,
         "shade": false,
         "amenities": []
@@ -118,7 +179,9 @@
     },
     {
       "nameGr": "Παλαιόπολη",
-      "aliases": ["Παλαιόπολις"],
+      "aliases": [
+        "Παλαιόπολις"
+      ],
       "lat": 40.50478,
       "lon": 25.52599,
       "region": "East Macedonia and Thrace",
@@ -131,8 +194,18 @@
         "https://www.insamothraki.com/the-beaches-of-samothrace.html"
       ],
       "metadata": {
-        "access": { "type": "asphalt_road", "label": "άσφαλτος μέχρι κοντά στην παραλία", "notes": "Παραλιακός επαρχιακός δρόμος Καμαριώτισσα–Θέρμα. Χωρίς επιτόπου επιβεβαίωση." },
-        "terrain": { "types": ["pebbles", "rocks"], "label": "βότσαλα, πέτρες" },
+        "access": {
+          "type": "asphalt_road",
+          "label": "άσφαλτος μέχρι κοντά στην παραλία",
+          "notes": "Παραλιακός επαρχιακός δρόμος Καμαριώτισσα–Θέρμα. Χωρίς επιτόπου επιβεβαίωση."
+        },
+        "terrain": {
+          "types": [
+            "pebbles"
+          ],
+          "label": "βότσαλα",
+          "notes": "Οι οδηγοί περιγράφουν τη βόρεια ακτή ως βοτσαλωτή/πετρώδη· το «rocks» αφαιρέθηκε γιατί παρήγαγε αστήρικτο ισχυρισμό «βαθιά νερά»."
+        },
         "organized": false,
         "shade": false,
         "amenities": []
@@ -153,8 +226,18 @@
         "https://www.insamothraki.com/the-beaches-of-samothrace.html"
       ],
       "metadata": {
-        "access": { "type": "asphalt_road", "label": "άσφαλτος μέχρι κοντά στην παραλία", "notes": "Παραλιακός επαρχιακός δρόμος. Χωρίς επιτόπου επιβεβαίωση." },
-        "terrain": { "types": ["pebbles", "rocks"], "label": "βότσαλα, πέτρες" },
+        "access": {
+          "type": "asphalt_road",
+          "label": "άσφαλτος μέχρι κοντά στην παραλία",
+          "notes": "Παραλιακός επαρχιακός δρόμος. Χωρίς επιτόπου επιβεβαίωση."
+        },
+        "terrain": {
+          "types": [
+            "pebbles"
+          ],
+          "label": "βότσαλα",
+          "notes": "Οι οδηγοί περιγράφουν τη βόρεια ακτή ως βοτσαλωτή/πετρώδη· το «rocks» αφαιρέθηκε γιατί παρήγαγε αστήρικτο ισχυρισμό «βαθιά νερά»."
+        },
         "organized": false,
         "shade": false,
         "amenities": []
@@ -162,7 +245,9 @@
     },
     {
       "nameGr": "Κάτω Καρυώτες",
-      "aliases": ["Καρυώτες"],
+      "aliases": [
+        "Καρυώτες"
+      ],
       "lat": 40.50932,
       "lon": 25.57057,
       "region": "East Macedonia and Thrace",
@@ -175,8 +260,18 @@
         "https://www.insamothraki.com/the-beaches-of-samothrace.html"
       ],
       "metadata": {
-        "access": { "type": "asphalt_road", "label": "άσφαλτος μέχρι κοντά στην παραλία", "notes": "Επαρχιακός δρόμος Καμαριώτισσα–Θέρμα. Χωρίς επιτόπου επιβεβαίωση." },
-        "terrain": { "types": ["pebbles", "rocks"], "label": "βότσαλα, πέτρες" },
+        "access": {
+          "type": "asphalt_road",
+          "label": "άσφαλτος μέχρι κοντά στην παραλία",
+          "notes": "Επαρχιακός δρόμος Καμαριώτισσα–Θέρμα. Χωρίς επιτόπου επιβεβαίωση."
+        },
+        "terrain": {
+          "types": [
+            "pebbles"
+          ],
+          "label": "βότσαλα",
+          "notes": "Οι οδηγοί περιγράφουν τη βόρεια ακτή ως βοτσαλωτή/πετρώδη· το «rocks» αφαιρέθηκε γιατί παρήγαγε αστήρικτο ισχυρισμό «βαθιά νερά»."
+        },
         "organized": false,
         "shade": false,
         "amenities": []
