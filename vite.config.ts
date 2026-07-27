@@ -18,6 +18,25 @@ export default defineConfig(({ mode }) => {
         strictPort: true,
         host: '0.0.0.0',
         open: 'http://localhost:3000/',
+        // Local stand-in for the netlify.toml rewrite `/api/forecast/* → /.netlify/
+        // functions/forecast`. INERT unless VITE_FORECAST_PROXY_BASE is set (only then
+        // does openMeteoProvider.ts emit `/api/forecast/...` URLs at all).
+        //
+        // WHY IT EXISTS: Open-Meteo's free quota is counted PER IP (~10k/day). A day of
+        // dev browsing plus one national audit script exhausts it for this machine, and
+        // every forecast then 429s — which is what the useWeather fallback banner reports.
+        // Routing through the deployed function borrows Netlify's egress IP and its CDN
+        // cache, so local work keeps running on real data instead of a fixture.
+        //
+        // Must be a SAME-ORIGIN vite proxy, not an absolute VITE_FORECAST_PROXY_BASE:
+        // netlify/functions/forecast.mjs sends no CORS headers (deliberately — it must
+        // not be usable as an open relay from other origins).
+        proxy: {
+          '/api/forecast': {
+            target: env.VITE_FORECAST_PROXY_ORIGIN || 'https://calmbeach.gr',
+            changeOrigin: true,
+          },
+        },
       },
       plugins: [react(), tailwindcss()],
       build: {
