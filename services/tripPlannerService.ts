@@ -418,8 +418,8 @@ const cautionRanking = (
       // sea-condition score plus the exposure and warning vetoes instead.
       // The UI never calls these calm: they render with the «με κύμα» badge.
       const isExposed = result.exposureLevel ? result.exposureLevel !== 'protected' : true;
-      const waveHeightM = result.waveHeightM ?? day.marine?.waveHeightM;
-      const seaScore = calculateSeaConditionScore(isExposed, windSpeedKmph, result.exposureLevel, waveHeightM);
+      const waveHeightM = result.seaStateWaveM ?? result.waveHeightM ?? day.marine?.waveHeightM;
+      const seaScore = calculateSeaConditionScore(isExposed, windSpeedKmph, result.exposureLevel, waveHeightM, false, result.seaStatePeriodS ?? day.marine?.wavePeriodS);
       if (result.exposureLevel === 'exposed') return false;
       if (seaScore < MIN_STRONG_SUITABLE_SEA_CONDITION_SCORE) return false;
       const hasHardExclusion = result.warnings?.some(warning =>

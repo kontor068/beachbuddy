@@ -19,6 +19,7 @@ import type { ExposureLevel } from '../utils/windExposure';
 import { canOpenNavigation, getNavigationBadge, openNavigation } from '../utils/navigation';
 import { AmenityChip, getAmenityChips } from '../utils/amenities';
 import { translations } from '../translations';
+import { seaStateSeverityM, seaStateToneCeiling } from '../utils/waveCharacter';
 
 interface BeachMapProps {
   beaches: SuitableBeach[];
@@ -838,7 +839,11 @@ const getExposureMarkerTone = (
   exposureLevel?: string,
   showWindExposureColors = true,
   windBeaufort?: number,
-  isEnclosedCove = false
+  isEnclosedCove = false,
+  // Swell-equivalent sea state (m). Applied as a CEILING only — it can stop a pin being blue,
+  // never make a windy pin calmer. Without it the pin was decided by wind and exposure alone,
+  // so a beach with light wind and a real running sea was blue by construction.
+  seaStateM?: number
 ) => {
   const tones = {
     green: {
@@ -883,22 +888,43 @@ const getExposureMarkerTone = (
   // (0-2 Bft, plus protected/partial shores at 3 Bft where only open coasts feel
   // it) — from 4 Bft up even sheltered shores get visible chop.
   const isExposed = exposureLevel === 'exposed';
-  if (beaufort >= 7) return tones.red;
-  // Enclosed cove (όρμος) protected from the live wind: holds green (calm) only from
-  // 5 Bft, where a classic protected shore would drop to orange. Below 5 Bft it colours
-  // like any shore (blue/yellow) — the cove distinction only matters once the wind is
-  // strong. Matches the engine's green suitability colour. Open sectors of the same
-  // cove resolve 'exposed' and never reach this branch.
-  if (isEnclosedCove && isProtected && beaufort >= 5) return tones.green;
-  if (beaufort >= 5) return isExposed ? tones.red : tones.orange;
-  // At 4 Bft only genuinely exposed shores escalate to orange; protected and the
-  // uncertain "partial" middle get a yellow "mild chop" heads-up.
-  if (beaufort >= 4) return isExposed ? tones.orange : tones.yellow;
-  // At 3 Bft only genuinely exposed coasts feel a real chop (yellow); protected
-  // and the uncertain "partial" middle stay calm enough to read as blue — this
-  // keeps the "uncertain partial" from looking worse than a sheltered neighbour.
-  if (beaufort >= 3) return isExposed ? tones.yellow : tones.blue;
-  return tones.blue;
+  // Tone NAMES, never tone objects: an identity comparison keeps compiling and silently stops
+  // escalating the moment any branch returns a copy instead of the shared literal.
+  const CALMNESS = ['red', 'orange', 'yellow', 'green', 'blue'] as const;
+  const windToneName: (typeof CALMNESS)[number] = (() => {
+    if (beaufort >= 7) return 'red';
+    // Enclosed cove (όρμος) protected from the live wind: holds green (calm) only from
+    // 5 Bft, where a classic protected shore would drop to orange. Below 5 Bft it colours
+    // like any shore (blue/yellow) — the cove distinction only matters once the wind is
+    // strong. Matches the engine's green suitability colour. Open sectors of the same
+    // cove resolve 'exposed' and never reach this branch.
+    if (isEnclosedCove && isProtected && beaufort >= 5) return 'green';
+    if (beaufort >= 5) return isExposed ? 'red' : 'orange';
+    // At 4 Bft only genuinely exposed shores escalate to orange; protected and the
+    // uncertain "partial" middle get a yellow "mild chop" heads-up.
+    if (beaufort >= 4) return isExposed ? 'orange' : 'yellow';
+    // At 3 Bft only genuinely exposed coasts feel a real chop (yellow); protected
+    // and the uncertain "partial" middle stay calm enough to read as blue — this
+    // keeps the "uncertain partial" from looking worse than a sheltered neighbour.
+    if (beaufort >= 3) return isExposed ? 'yellow' : 'blue';
+    return 'blue';
+  })();
+
+  // A running sea sets a CEILING on how calm this pin may look. The wind ladder above cannot see
+  // a sea built by wind over the water, earlier in the day, or further down the fetch — which is
+  // why a light-wind day on an open shore was blue by construction. Ceiling only: it can never
+  // make a pin calmer, and it can never pull back an escalation the wind already made.
+  // An enclosed cove that is genuinely protected from the live wind is exempt. Its water stays flat
+  // while the open sea outside does not, which is the whole point of the όρμος rule — and the grid
+  // cell that reports the sea cannot resolve the cove, so letting that reading override an
+  // operator-verified morphology would be the marine model overruling the geometry.
+  const coveHoldsCalm = isEnclosedCove && isProtected && beaufort >= 5;
+  const seaToneName = coveHoldsCalm ? null : seaStateToneCeiling(seaStateM);
+  if (seaToneName && CALMNESS.indexOf(windToneName) > CALMNESS.indexOf(seaToneName)) {
+    return tones[seaToneName];
+  }
+
+  return tones[windToneName];
 };
 
 const windLegendDotClasses = {
@@ -961,7 +987,9 @@ const createExposureIcon = (
   evidence: MapExposureEvidence = 'estimated',
   isHighlighted = false,
   isEnclosedCove = false,
-  isSurfSpot = false
+  isSurfSpot = false,
+  /** Swell-equivalent sea state (m) — ceiling only, see getExposureMarkerTone. */
+  seaStateM?: number
 ) => {
   const topPickClass = isTopPick ? 'beach-map-top-pick-marker-dot' : '';
   const surfClass = isSurfSpot ? 'beach-map-marker-surf' : '';
@@ -980,7 +1008,7 @@ const createExposureIcon = (
     });
   }
 
-  const { colorClass, ringClass } = getExposureMarkerTone(exposureLevel, showWindExposureColors, windBeaufort, isEnclosedCove);
+  const { colorClass, ringClass } = getExposureMarkerTone(exposureLevel, showWindExposureColors, windBeaufort, isEnclosedCove, seaStateM);
   // Non-colour cue: "more exposed" markers get a hollow centre (donut), so the
   // less-/more-exposed split stays legible without relying on hue alone. Only applied at
   // 3-6 Bft, i.e. exactly where the colour actually splits the two groups (at 0-2 all are
@@ -2093,7 +2121,15 @@ const BeachMap: React.FC<BeachMapProps> = ({
     const exposureLevel = mapMode === 'wind'
       ? getMapExposureLevel(item)
       : visibleExposureLevel(item);
-    const exposureTone = getExposureMarkerTone(exposureLevel, showWindExposureColors, windBeaufort);
+    // Same sea ceiling as the marker itself: this badge is what the user sees when they tap that
+    // pin, so a yellow pin opening a blue badge would be the pin/word divergence all over again.
+    const exposureTone = getExposureMarkerTone(
+      exposureLevel,
+      showWindExposureColors,
+      windBeaufort,
+      Boolean(item.enclosedCove),
+      seaStateSeverityM(item.seaStateWaveM, item.seaStatePeriodS)
+    );
     const exposureReason = getMapExposureReason(exposureLevel);
     const badge = mapMode === 'recommendation' ? (
       <span className={`shrink-0 rounded-full px-2 py-1 text-[11px] font-black ${getRecommendationTone(item, showRecommendationWindColors).badgeClass}`}>
@@ -2633,7 +2669,7 @@ const BeachMap: React.FC<BeachMapProps> = ({
               zIndexOffset={isHighlightedMarker ? 1000 : isTopPickMarker ? 700 : 0}
               icon={mapMode === 'recommendation'
                 ? createBeachIcon(item, showRecommendationWindColors, isTopPickMarker, isHighlightedMarker, isSurfMarker)
-                : createExposureIcon(mapExposureLevel, showWindExposureColors, windBeaufort, isTopPickMarker, mapExposureEvidence, isHighlightedMarker, Boolean(item.enclosedCove), isSurfMarker)}
+                : createExposureIcon(mapExposureLevel, showWindExposureColors, windBeaufort, isTopPickMarker, mapExposureEvidence, isHighlightedMarker, Boolean(item.enclosedCove), isSurfMarker, seaStateSeverityM(item.seaStateWaveM, item.seaStatePeriodS))}
               eventHandlers={{
                 click: () => {
                   trackEvent('map_marker_clicked', item.beachId, {

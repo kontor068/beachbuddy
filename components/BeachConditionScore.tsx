@@ -3,6 +3,7 @@ import { Wind, Waves, Thermometer, ShieldCheck, ShieldAlert, Ship } from 'lucide
 import { ExposureLevel } from '../utils/windExposure';
 import { LanguageCode } from '../types';
 import { calculateSeaConditionScore, getSeaExposureLevel } from '../utils/seaConditions';
+import { seaStateSeverityM, SEA_STATE_AMBER_M, SEA_STATE_ROUGH_M } from '../utils/waveCharacter';
 import { getSelectedDayPrefix, getSelectedHourPrefix, isSelectedDateToday } from '../utils/dateLabels';
 import { athensNow } from '../utils/athensTime';
 import { getLocalizedCopy } from '../utils/i18n';
@@ -12,7 +13,16 @@ import { getBoatRideMotionLevel, type BoatRideMotionLevel } from '../utils/boatR
 interface BeachConditionScoreProps {
   isExposed: boolean;
   windSpeed: number; // km/h
+  /** Display height (m) — what the user is shown. */
   waveHeightM?: number;
+  /**
+   * Decision-grade sea state (m) and its period, from BeachScore.seaStateWaveM /
+   * seaStatePeriodS. `waveHeightM` above is rewritten by the cove guard, so the score, the
+   * headline tone and the sea-state word must be driven from these instead. Omitted → falls
+   * back to `waveHeightM`, i.e. exactly today's behaviour.
+   */
+  seaStateWaveM?: number;
+  seaStatePeriodS?: number;
   temperature?: number;
   compact?: boolean;
   exposureLevel?: ExposureLevel;
@@ -195,7 +205,7 @@ const conditionCopy: Record<LanguageCode, ConditionCopy> = {
 // not by this widget's sea-comfort score — which is why a beach could read red here while its
 // pin was yellow. Mirror the exact map bands so the headline conditions colour matches the pin:
 // calm→green, mild/moderate (the map's yellow/orange) → amber, rough (the map's red) → rose.
-const getConditionToneClasses = (level: ExposureLevel, beaufort: number, waveHeightM?: number) => {
+const getConditionToneClasses = (level: ExposureLevel, beaufort: number, seaStateM?: number) => {
   const isExposedBand = level === 'exposed';
   let band: 'calm' | 'amber' | 'rough';
   if (beaufort >= 7) band = 'rough';
@@ -206,9 +216,9 @@ const getConditionToneClasses = (level: ExposureLevel, beaufort: number, waveHei
 
   // A real measured wave (including low-wind swell) escalates the headline colour, so the pill can't
   // stay green while the panel text + wave glyph read choppy/rough. Mirrors the seaState/waveScale steps.
-  if (typeof waveHeightM === 'number' && Number.isFinite(waveHeightM)) {
-    if (waveHeightM >= 1.2) band = 'rough';
-    else if (waveHeightM >= 0.8 && band === 'calm') band = 'amber';
+  if (typeof seaStateM === 'number' && Number.isFinite(seaStateM)) {
+    if (seaStateM >= SEA_STATE_ROUGH_M) band = 'rough';
+    else if (seaStateM >= SEA_STATE_AMBER_M && band === 'calm') band = 'amber';
   }
 
   if (band === 'rough') {
@@ -265,6 +275,8 @@ export const BeachConditionScore: React.FC<BeachConditionScoreProps> = ({
   isExposed,
   windSpeed,
   waveHeightM,
+  seaStateWaveM,
+  seaStatePeriodS,
   temperature = 25, // Default if not provided
   compact = false,
   exposureLevel,
@@ -279,6 +291,11 @@ export const BeachConditionScore: React.FC<BeachConditionScoreProps> = ({
   const seaExposureLevel: ExposureLevel = rawSeaExposureLevel === 'protected' && !canClaimWindProtection
     ? 'partial'
     : rawSeaExposureLevel;
+
+  // One sea-state number for every judgement below, so the wave row's icon, the headline tone
+  // and the sea-state word cannot disagree with each other or with the shared scorer.
+  const decisionWaveM = seaStateWaveM ?? waveHeightM;
+  const severityM = seaStateSeverityM(decisionWaveM, seaStatePeriodS) ?? decisionWaveM;
 
   // Calculate individual scores (0-10). The main sea score should reflect swimming water comfort,
   // so protected beaches are not heavily penalized for general wind or cool air temperature.
@@ -321,13 +338,13 @@ export const BeachConditionScore: React.FC<BeachConditionScoreProps> = ({
     else waveScore = 9;
   }
 
-  if (typeof waveHeightM === 'number' && Number.isFinite(waveHeightM)) {
+  if (typeof severityM === 'number' && Number.isFinite(severityM)) {
     let measuredWaveScore = 10;
-    if (waveHeightM >= 1.5) measuredWaveScore = 1;
-    else if (waveHeightM >= 1.2) measuredWaveScore = 3;
-    else if (waveHeightM >= 0.8) measuredWaveScore = 5;
-    else if (waveHeightM >= 0.5) measuredWaveScore = 7;
-    else if (waveHeightM >= 0.3) measuredWaveScore = 9;
+    if (severityM >= 1.5) measuredWaveScore = 1;
+    else if (severityM >= 1.2) measuredWaveScore = 3;
+    else if (severityM >= 0.8) measuredWaveScore = 5;
+    else if (severityM >= 0.5) measuredWaveScore = 7;
+    else if (severityM >= 0.3) measuredWaveScore = 9;
 
     if (seaExposureLevel === 'protected') {
       waveScore = Math.min(waveScore, directSwell ? measuredWaveScore : Math.max(measuredWaveScore, 6));
@@ -346,10 +363,10 @@ export const BeachConditionScore: React.FC<BeachConditionScoreProps> = ({
   else tempScore = 8;
 
   // Sea score: protection and waves dominate; air temperature remains visible below as context.
-  const totalScore = calculateSeaConditionScore(seaExposureLevel !== 'protected', windSpeed, seaExposureLevel, waveHeightM, directSwell);
+  const totalScore = calculateSeaConditionScore(seaExposureLevel !== 'protected', windSpeed, seaExposureLevel, decisionWaveM, directSwell, seaStatePeriodS);
   const windBeaufort = getBeaufortLevel(windSpeed);
   // Headline colour follows the map pin's exposure band (not the raw sea score) so they agree.
-  const conditionTone = getConditionToneClasses(seaExposureLevel, windBeaufort, waveHeightM);
+  const conditionTone = getConditionToneClasses(seaExposureLevel, windBeaufort, severityM);
   const waveHeightLabel = typeof waveHeightM === 'number' && Number.isFinite(waveHeightM)
     ? `${waveHeightM.toFixed(1)} m`
     : null;
@@ -419,13 +436,13 @@ export const BeachConditionScore: React.FC<BeachConditionScoreProps> = ({
     // genuinely sheltered beach — it still gets real chop. Keep it honest (the shelter credit
     // lives in the suitability badge, not in the sea-state label).
     if (windBeaufort >= 5) {
-      if (typeof waveHeightM === 'number' && Number.isFinite(waveHeightM) && waveHeightM >= 1.2) return copy.roughSea;
+      if (typeof severityM === 'number' && Number.isFinite(severityM) && severityM >= SEA_STATE_ROUGH_M) return copy.roughSea;
       return copy.choppy;
     }
 
-    if (typeof waveHeightM === 'number' && Number.isFinite(waveHeightM)) {
-      if (waveHeightM >= 1.2) return copy.roughSea;
-      if (waveHeightM >= 0.8) return copy.choppy;
+    if (typeof severityM === 'number' && Number.isFinite(severityM)) {
+      if (severityM >= SEA_STATE_ROUGH_M) return copy.roughSea;
+      if (severityM >= SEA_STATE_AMBER_M) return copy.choppy;
       return copy.manageableSea;
     }
     return undefined;

@@ -175,15 +175,17 @@ export const prioritizeProtectedRecommendations = (items: SuitableBeach[], beauf
  * the podium refuses to show — and the planner must refuse to plan.
  */
 export const passesTopPickSeaGate = (
-  item: Pick<SuitableBeach, 'isExposed' | 'exposureLevel' | 'waveHeightM' | 'hourlySeaScore'>,
+  item: Pick<SuitableBeach, 'isExposed' | 'exposureLevel' | 'waveHeightM' | 'seaStateWaveM' | 'seaStatePeriodS' | 'hourlySeaScore'>,
   windSpeedKmph: number,
   fallbackWaveHeightM?: number
 ): boolean => {
-  const itemWaveHeightM = item.waveHeightM ?? fallbackWaveHeightM;
-  const seaScore = calculateSeaConditionScore(item.isExposed, windSpeedKmph, item.exposureLevel, itemWaveHeightM);
+  // Decision-grade sea state, not the cove-guard display value, and with the period so steep
+  // chop is not mistaken for the same height of long-period roll.
+  const itemWaveHeightM = item.seaStateWaveM ?? item.waveHeightM ?? fallbackWaveHeightM;
+  const seaScore = calculateSeaConditionScore(item.isExposed, windSpeedKmph, item.exposureLevel, itemWaveHeightM, false, item.seaStatePeriodS);
   const hasGoodHourlySea = typeof item.hourlySeaScore !== 'number' || item.hourlySeaScore >= MIN_TOP_PICK_SEA_CONDITION_SCORE;
 
   return seaScore >= MIN_TOP_PICK_SEA_CONDITION_SCORE &&
     hasGoodHourlySea &&
-    !hasPoorSeaConditions(item.isExposed, windSpeedKmph, item.exposureLevel, itemWaveHeightM);
+    !hasPoorSeaConditions(item.isExposed, windSpeedKmph, item.exposureLevel, itemWaveHeightM, item.seaStatePeriodS);
 };

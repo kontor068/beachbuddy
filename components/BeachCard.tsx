@@ -9,6 +9,7 @@ import { canOpenNavigation, getNavigationBadge, openNavigation } from '../utils/
 import { BeachConditionScore } from './BeachConditionScore';
 import { TodayScoreBadge } from './TodayScoreBadge';
 import { WaveHeightGraphic } from './WaveHeightGraphic';
+import { seaStateSeverityM, SEA_STATE_AMBER_M, SEA_STATE_ROUGH_M } from '../utils/waveCharacter';
 import { getBeachPhotoLookup } from '../services/beachPhotos';
 import { trackEvent, buildBeachExposureParams } from '../services/analyticsService';
 import { ExposureLevel } from '../utils/windExposure';
@@ -47,7 +48,12 @@ interface BeachCardProps {
   /** This beach's own scored wind (km/h, beach-cluster when available). Preferred over `windSpeed`
    *  so the card's Beaufort matches its same-wind wave value. */
   beachWindSpeedKmph?: number;
+  /** Display height (m) — the number shown to the user. */
   waveHeightM?: number;
+  /** Decision-grade sea state + period (BeachScore.seaStateWaveM / seaStatePeriodS). Everything
+   *  that decides a colour or a word reads these; `waveHeightM` is display only. */
+  seaStateWaveM?: number;
+  seaStatePeriodS?: number;
   temperature?: number;
   favorites: number[];
   onToggleFavorite: (id: number) => void;
@@ -1113,6 +1119,8 @@ export const BeachCard: React.FC<BeachCardProps> = ({
   windSpeed,
   beachWindSpeedKmph,
   waveHeightM,
+  seaStateWaveM,
+  seaStatePeriodS,
   temperature,
   favorites,
   onToggleFavorite,
@@ -1173,6 +1181,11 @@ export const BeachCard: React.FC<BeachCardProps> = ({
     ? beachWindSpeedKmph
     : windSpeed * 3.6;
   const windBeaufort = getBeaufortLevel(effectiveWindKmph);
+  // Swell-equivalent sea state: what every colour/word decision on this card compares against.
+  // The displayed metres stay `waveHeightM`; a 0.45 m 2.5 s chop and a 0.45 m 8 s roll are the
+  // same number to read and a different sea to swim in.
+  const cardSeaStateM = seaStateSeverityM(seaStateWaveM ?? waveHeightM, seaStatePeriodS)
+    ?? (seaStateWaveM ?? waveHeightM);
   const isFavorite = favorites.includes(beach.id);
   const labels = compactLabels(language, selectedDate, selectedHour);
   const localizedCardCopy = getLocalizedCopy(language, cardCopy);
@@ -1185,7 +1198,7 @@ export const BeachCard: React.FC<BeachCardProps> = ({
   });
   const noIdealSwimmingWindow = swimmingComfort === 'avoid_swimming' || Boolean(
     warnings.some(warning => warning.type === 'rough_sea' && warning.severity === 'critical') ||
-    (typeof waveHeightM === 'number' && Number.isFinite(waveHeightM) && waveHeightM >= 1.2)
+    (typeof cardSeaStateM === 'number' && Number.isFinite(cardSeaStateM) && cardSeaStateM >= SEA_STATE_ROUGH_M)
   );
   const favoriteLabel = localizedCardCopy.favorite;
   const unfavoriteLabel = localizedCardCopy.unfavorite;
@@ -1304,7 +1317,7 @@ export const BeachCard: React.FC<BeachCardProps> = ({
   const accessLabel = compactAccessLabel(language, accessibility, accessType, hasDirtRoadAccess(beach), rawAccessLabel);
   const roughSeaWarning = warnings.find(warning => warning.type === 'rough_sea');
   const isProtectedToday = exposureLevel === 'protected' && canClaimWindProtection;
-  const cautionWaterConditions = windBeaufort >= 5 || (typeof waveHeightM === 'number' && Number.isFinite(waveHeightM) && waveHeightM >= 0.8);
+  const cautionWaterConditions = windBeaufort >= 5 || (typeof cardSeaStateM === 'number' && Number.isFinite(cardSeaStateM) && cardSeaStateM >= SEA_STATE_AMBER_M);
   const isLessExposedToday = lessExposedToday ?? (isProtectedToday || isPartlyShelteredToday);
   const strongOpenBeachLabel = localizedCardCopy.exposedToWind;
   const displayStrongOpenBeachLabel = strongOpenBeachLabel;
@@ -1938,7 +1951,7 @@ export const BeachCard: React.FC<BeachCardProps> = ({
 
         {/* Condition Score */}
         <div className="mb-3">
-          <BeachConditionScore isExposed={isExposed} windSpeed={effectiveWindKmph} waveHeightM={waveHeightM} temperature={temperature} compact={true} exposureLevel={exposureLevel} language={language} selectedDate={selectedDate} selectedHour={selectedHour} canClaimWindProtection={canClaimWindProtection} boatAccess={isBoatOnlyBeach} directSwell={warnings.some(warning => warning.type === 'direct_swell')} />
+          <BeachConditionScore isExposed={isExposed} windSpeed={effectiveWindKmph} waveHeightM={waveHeightM} seaStateWaveM={seaStateWaveM} seaStatePeriodS={seaStatePeriodS} temperature={temperature} compact={true} exposureLevel={exposureLevel} language={language} selectedDate={selectedDate} selectedHour={selectedHour} canClaimWindProtection={canClaimWindProtection} boatAccess={isBoatOnlyBeach} directSwell={warnings.some(warning => warning.type === 'direct_swell')} />
         </div>
 
         {warnings.length > 0 && (

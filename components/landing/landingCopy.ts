@@ -121,9 +121,9 @@ export const landingCopy: Record<LanguageCode, LandingCopy> = {
       // indicative would describe a choice already settled.
       subtitle: 'Η ηρεμία δεν ξεκινάει στην παραλία. Ξεκινάει τη στιγμή που ξέρεις σε ποια να πας.',
       searchPlaceholder: 'Αναζήτησε παραλία ή περιοχή…',
-      // 32 chars: the full «…και πόσες μέρες θα μείνεις» is 44 and truncates at
-      // 375px, where 88% of the traffic is.
-      searchPlaceholderAlt: 'Πες μου το μέρος και πόσες μέρες',
+      // Keep this short: native input placeholders are one-line only and share
+      // mobile width with the submit button.
+      searchPlaceholderAlt: 'Πού και πόσες μέρες;',
       // Does NOT rotate: a screen reader must get one stable name for this
       // field, so the aria-label names everything the box accepts at once.
       searchAria: 'Αναζήτηση παραλίας, περιοχής ή διαμονής σε μέρες',
@@ -254,7 +254,7 @@ export const landingCopy: Record<LanguageCode, LandingCopy> = {
       titleAccent: 'in Greece',
       subtitle: 'Calm doesn’t start at the beach. It starts the moment you know which one to pick.',
       searchPlaceholder: 'Search a beach or region…',
-      searchPlaceholderAlt: 'Tell me where and for how many days',
+      searchPlaceholderAlt: 'Where and how many days?',
       searchAria: 'Search a beach, a region, or a stay in days',
       clearSearchAria: 'Clear search',
       searchRegionLabel: 'Region',
@@ -331,7 +331,7 @@ export const landingCopy: Record<LanguageCode, LandingCopy> = {
       titleAccent: 'in Griechenland',
       subtitle: 'Ruhe fängt nicht am Strand an. Sie fängt in dem Moment an, in dem du weißt, welcher der richtige ist.',
       searchPlaceholder: 'Strand oder Region suchen…',
-      searchPlaceholderAlt: 'Sag mir wohin und für wie viele Tage',
+      searchPlaceholderAlt: 'Wohin und wie viele Tage?',
       searchAria: 'Strand, Region oder Aufenthalt in Tagen suchen',
       clearSearchAria: 'Suche löschen',
       searchRegionLabel: 'Region',
@@ -411,7 +411,7 @@ export const landingCopy: Record<LanguageCode, LandingCopy> = {
       titleAccent: 'de Grèce',
       subtitle: 'Le calme ne commence pas sur la plage. Il commence au moment où vous savez laquelle choisir.',
       searchPlaceholder: 'Chercher une plage ou une région…',
-      searchPlaceholderAlt: 'Dites-moi où et pour combien de jours',
+      searchPlaceholderAlt: 'Où et combien de jours ?',
       searchAria: 'Chercher une plage, une région ou un séjour en jours',
       clearSearchAria: 'Effacer la recherche',
       searchRegionLabel: 'Région',
@@ -489,7 +489,7 @@ export const landingCopy: Record<LanguageCode, LandingCopy> = {
       titleAccent: 'della Grecia',
       subtitle: 'La calma non inizia in spiaggia. Inizia nel momento in cui sai quale scegliere.',
       searchPlaceholder: 'Cerca una spiaggia o una regione…',
-      searchPlaceholderAlt: 'Dimmi dove e per quanti giorni',
+      searchPlaceholderAlt: 'Dove e quanti giorni?',
       searchAria: 'Cerca una spiaggia, una zona o un soggiorno in giorni',
       clearSearchAria: 'Cancella la ricerca',
       searchRegionLabel: 'Regione',

@@ -47,6 +47,14 @@ const {
   getBeaufortLevel,
 } = require('../utils/weatherUtils.ts');
 const {
+  capLightWindMeasuredWaveM,
+} = require('../utils/waveModel.ts');
+const {
+  seaStateToneCeiling,
+  SEA_STATE_AMBER_M,
+  SEA_STATE_ROUGH_M,
+} = require('../utils/waveCharacter.ts');
+const {
   hasMainstreamTopPickAccess,
 } = require('../utils/access.ts');
 
@@ -209,6 +217,66 @@ const scenarios = {
     waveHeightM: 1.4,
     waveDirectionDeg: 180,
   },
+
+  // ── ≤2 Bft regime (added 2026-07-27) ────────────────────────────────────────
+  // Until now EVERY scenario here was 3/4/5 Bft, so the entire light-wind regime was
+  // untested — which is exactly how "calm wind, real waves" shipped. Field report:
+  // Σχινιάς (id 32, facing 173.5°, S sector 18.72 km fetch, `exposed`) read blue/ideal
+  // at 2 Bft while the sea was visibly running from the SSE, and again at 19:48 with
+  // almost no wind at all.
+  //
+  // The wind here is deliberately OFFSHORE (NNE onto a south-facing shore): the whole
+  // point is that local wind carries no information about this sea.
+  Schinias_S_2BFT_CHOP: {
+    targetRegionId: 'attica-east-attica-mainland',
+    windDirectionDeg: 20,
+    windSpeedMs: 2.8,          // 10.1 km/h → 2 Bft
+    windGustMs: 4.0,
+    waveHeightM: 0.45,
+    waveDirectionDeg: 155,     // SSE — straight down the 18.7 km S/SE corridor
+    wavePeriodS: 2.5,          // short-period chop: steep, breaking, ~1440 waves/hour
+    swellWaveHeightM: 0.2,
+    swellWavePeriodS: 2.5,
+  },
+  // Over-correction guard. Same wind, same geometry, genuinely flat sea. If this stops
+  // reading as an ideal light-wind day, the recalibration has gone too far and the app
+  // has lost the thing it exists to do.
+  Schinias_S_2BFT_CALM: {
+    targetRegionId: 'attica-east-attica-mainland',
+    windDirectionDeg: 20,
+    windSpeedMs: 2.8,
+    windGustMs: 4.0,
+    waveHeightM: 0.15,
+    waveDirectionDeg: 155,
+    wavePeriodS: 2.5,
+    swellWaveHeightM: 0.2,
+    swellWavePeriodS: 2.5,
+  },
+  // Steepness axis, isolated: IDENTICAL Hs and identical swell channel, only the total-sea
+  // period differs. 0.55 m at 2.5 s is steepness 0.056 — steep, continuously breaking.
+  // 0.55 m at 8.0 s is steepness 0.0055 — a gentle roll. Same number, different swim.
+  Milos_S_2BFT_CHOP: {
+    targetRegionId: 'south-aegean-milos',
+    windDirectionDeg: 20,
+    windSpeedMs: 2.8,
+    windGustMs: 4.0,
+    waveHeightM: 0.55,
+    waveDirectionDeg: 180,
+    wavePeriodS: 2.5,
+    swellWaveHeightM: 0.2,
+    swellWavePeriodS: 2.5,
+  },
+  Milos_S_2BFT_SWELL: {
+    targetRegionId: 'south-aegean-milos',
+    windDirectionDeg: 20,
+    windSpeedMs: 2.8,
+    windGustMs: 4.0,
+    waveHeightM: 0.55,
+    waveDirectionDeg: 180,
+    wavePeriodS: 8.0,
+    swellWaveHeightM: 0.2,
+    swellWavePeriodS: 8.0,
+  },
 };
 
 const MIN_TOP_PICK_SEA_CONDITION_SCORE = 7;
@@ -320,6 +388,20 @@ const isNoIdealFallbackCandidate = (item, windSpeedKmph, fallbackWaveHeightM) =>
 const toDateKey = date => date.toISOString().slice(0, 10);
 const getSwellHeight = waveHeightM => Number(Math.max(0.2, waveHeightM * 0.35).toFixed(2));
 
+// Marine block for a scenario. Period and swell height are overridable so a scenario can
+// isolate wave CHARACTER (steepness = Hs/L0, L0 = g·T²/2π) from wave HEIGHT: two scenarios
+// with the same Hs and different T describe genuinely different water.
+const createMarineBlock = scenario => ({
+  waveHeightM: scenario.waveHeightM,
+  waveDirectionDeg: scenario.waveDirectionDeg,
+  wavePeriodS: scenario.wavePeriodS ?? (scenario.waveHeightM >= 1 ? 5 : 4),
+  swellWaveHeightM: scenario.swellWaveHeightM ?? getSwellHeight(scenario.waveHeightM),
+  swellWaveDirectionDeg: scenario.waveDirectionDeg,
+  swellWavePeriodS: scenario.swellWavePeriodS,
+  seaSurfaceTemperatureC: 23,
+  source: 'open-meteo-marine',
+});
+
 const isUsableGeneratedProfile = profile => {
   const levels = windSectors.map(sector => profile.sectors?.[sector]?.level);
   if (levels.some(level => !level)) return false;
@@ -337,12 +419,16 @@ const loadGeospatialProfiles = regionId => {
   return Object.values(payload.profiles || {}).reduce((lookup, profile) => {
     if (!profile.beachId || !profile.sectors || !isUsableGeneratedProfile(profile)) return lookup;
 
+    // Must mirror normalizeProfiles in services/geospatialExposureService.ts field for field.
+    // A field the runtime reads and this harness drops is a scenario that passes for a beach the
+    // app scores differently — the suite would be validating a profile shape that never ships.
     lookup[profile.beachId] = {
       beachId: profile.beachId,
       facingDeg: profile.facingDeg ?? null,
       sectors: profile.sectors,
       confidence: profile.confidence,
       source: profile.confidence === 'high' ? 'high-res-coastline' : 'natural-earth-baseline',
+      marineSamplePoint: profile.marineSamplePoint,
     };
     return lookup;
   }, {});
@@ -382,15 +468,7 @@ const createForecastItem = (date, hour, scenario) => {
     rain: isRainy ? { '3h': 0.8 } : undefined,
     sys: { pod: 'd' },
     dt_txt: `${toDateKey(itemDate)} ${String(hour).padStart(2, '0')}:00:00`,
-    marine: {
-      waveHeightM: scenario.waveHeightM,
-      waveDirectionDeg: scenario.waveDirectionDeg,
-      wavePeriodS: scenario.waveHeightM >= 1 ? 5 : 4,
-      swellWaveHeightM: getSwellHeight(scenario.waveHeightM),
-      swellWaveDirectionDeg: scenario.waveDirectionDeg,
-      seaSurfaceTemperatureC: 23,
-      source: 'open-meteo-marine',
-    },
+    marine: createMarineBlock(scenario),
   };
 };
 
@@ -415,15 +493,7 @@ const createDailyForecast = scenario => {
     temp_min: 22,
     temp_max: 26,
     hourly,
-    marine: {
-      waveHeightM: scenario.waveHeightM,
-      waveDirectionDeg: scenario.waveDirectionDeg,
-      wavePeriodS: scenario.waveHeightM >= 1 ? 5 : 4,
-      swellWaveHeightM: getSwellHeight(scenario.waveHeightM),
-      swellWaveDirectionDeg: scenario.waveDirectionDeg,
-      seaSurfaceTemperatureC: 23,
-      source: 'open-meteo-marine',
-    },
+    marine: createMarineBlock(scenario),
   };
 };
 
@@ -445,6 +515,8 @@ const scoreAllBeaches = (beaches, forecast, geospatialProfiles) => beaches.map(b
     isExposed,
     exposureLevel: score.exposureLevel,
     waveHeightM: score.waveHeightM,
+    seaStateWaveM: score.seaStateWaveM,
+    seaStateSource: score.seaStateSource,
     warnings: score.warnings,
     confidence: score.confidence,
     swimmingComfort: score.swimmingComfort,
@@ -624,8 +696,10 @@ const buildScenarioResult = scenario => {
 
   return {
     beaufort,
+    windSpeedKmph,
     windDirection: degToCompass(forecast.wind.deg),
     waveHeightM,
+    wavePeriodS: forecast.marine?.wavePeriodS,
     topRecommendations,
     dailySuitable,
     recommendedSuitable,
@@ -882,6 +956,197 @@ Object.entries(results).forEach(([id, result]) => {
     }
   });
 });
+
+// ── Light-wind sea-state invariants (pre-registered 2026-07-27) ──────────────────
+// The defect: at ≤2 Bft the app answered "ideal" from the wind alone. Five gates in
+// series each independently forced that answer, so these assertions are written against
+// the OUTCOME (what the user is told) rather than any one gate, and must survive a
+// rewrite of any of them.
+const scoredById = (id, beachId) => results[id].allScored.find(item => item.beach.id === beachId);
+
+const seaScoreOf = (id, beachId) => {
+  const item = scoredById(id, beachId);
+  assert(item, `${id} should score beach ${beachId}.`);
+  const windSpeedKmph = results[id].windSpeedKmph;
+  return calculateSeaConditionScore(
+    item.isExposed,
+    windSpeedKmph,
+    item.exposureLevel,
+    item.seaStateWaveM ?? item.waveHeightM,
+    undefined,
+    results[id].wavePeriodS
+  );
+};
+
+// ── The light-wind cap may only ever RAISE the number (pre-registered 2026-07-27) ──
+// The directional rule exists so a real onshore sea is not capped away at light wind. An earlier
+// draft also had a branch that LOWERED the number when the sea appeared to arrive through land;
+// it was removed because it fired on 2846/2850 beaches over a median 153° window, its two
+// conditions both derived from the same facingDeg, and the flag meant to gate it was measured
+// against a coordinate the app never requests. Any future direction-aware branch must not be able
+// to reduce a measured sea: that is the one direction that can put someone in water we called flat.
+{
+  const MEASURED = 0.9;
+  const onshoreOpen = { onshore: 0.95, fetchKm: 18 };
+  const offshoreBlocked = { onshore: -0.9, fetchKm: 0.0 };
+  const baseline = capLightWindMeasuredWaveM(MEASURED, 2, undefined, undefined);
+
+  assert(
+    capLightWindMeasuredWaveM(MEASURED, 2, undefined, onshoreOpen) === MEASURED,
+    'Light-wind cap: an onshore sea through an open corridor must pass through uncapped.'
+  );
+  [
+    ['sea arriving through land', offshoreBlocked],
+    ['same, on an untrusted cell', { ...offshoreBlocked, cellTrusted: false }],
+    ['glancing arrival', { onshore: 0.1, fetchKm: 0.5 }],
+  ].forEach(([label, arrival]) => {
+    assert(
+      capLightWindMeasuredWaveM(MEASURED, 2, undefined, arrival) >= baseline,
+      `Light-wind cap: arrival geometry must never lower the measured sea below the direction-blind cap (${label}).`
+    );
+  });
+  assert(
+    capLightWindMeasuredWaveM(MEASURED, 3, undefined, offshoreBlocked) === MEASURED,
+    'Light-wind cap: above 2 Bft none of this applies and the measured value stands.'
+  );
+}
+
+// ── Light wind must never score a sea more kindly than a breeze would ──────────
+// The ≤2 Bft path uses its own ramp so an open shore is not marked down for wind that is not
+// blowing. Used alone that ramp was the MORE GENEROUS instrument for a big long-period sea:
+// an exposed shore under 1.2 m of groundswell in dead calm scored 4/10 by the general formula
+// (poor enough to be dropped from recommendations) and 5/10 by the ramp, which put it back.
+{
+  const bigSwellOnExposed = calculateSeaConditionScore(true, 8, 'exposed', 1.2, false, 8);
+  assert(
+    bigSwellOnExposed < 5,
+    `Light wind + 1.2 m groundswell on an exposed shore scored ${bigSwellOnExposed}/10 — it must stay below the recommendation gate. Dead calm air is not a reason to wave a big sea through.`
+  );
+  // Monotonic in the sea: a bigger sea can never score better, at any wind.
+  [3, 8, 11, 12, 20, 30].forEach(wind => {
+    ['protected', 'partial', 'exposed'].forEach(level => {
+      let previous = 11;
+      [0.1, 0.3, 0.5, 0.8, 1.0, 1.2, 1.5, 2.0].forEach(hs => {
+        const score = calculateSeaConditionScore(level !== 'protected', wind, level, hs, false, 4);
+        assert(
+          score <= previous,
+          `Sea score is not monotonic: ${level} at ${wind} km/h scored ${score}/10 for ${hs} m after ${previous}/10 for the smaller sea.`
+        );
+        previous = score;
+      });
+    });
+  });
+}
+
+// ── The 2/3 Bft seam must not be a cliff ────────────────────────────────────────
+// ≤2 Bft takes an extra sea ladder that 3 Bft does not, so the two regimes meet at 11 vs 12 km/h.
+// A draft where the ladder ignored the measured-wave floors opened a +5 gap there — a protected
+// shore under a steep 0.9 m sea read 3/10 at 11 km/h and 8/10 at 12. One extra km/h of wind must
+// never rewrite the day.
+//
+// Cases with no wave reading at all are excluded: those jump 8 → 5 across the seam and always have,
+// because the calm short-circuit simply stops applying. That is pre-existing behaviour, not this
+// ladder's, and pinning it here would be pinning someone else's bug.
+{
+  const MAX_SEAM_JUMP = 3;
+  let worst = 0;
+  let worstCase = null;
+  [0.1, 0.3, 0.45, 0.6, 0.8, 0.9, 1.0, 1.2, 1.5, 2.0].forEach(hs => {
+    [2.0, 2.5, 3.0, 4.0, 5.0, 8.0].forEach(periodS => {
+      ['protected', 'partial', 'exposed'].forEach(level => {
+        const isExposed = level !== 'protected';
+        const below = calculateSeaConditionScore(isExposed, 11, level, hs, false, periodS);
+        const above = calculateSeaConditionScore(isExposed, 12, level, hs, false, periodS);
+        if (Math.abs(above - below) > Math.abs(worst)) {
+          worst = above - below;
+          worstCase = `${level}, Hs ${hs} m, T ${periodS} s: ${below}/10 at 11 km/h -> ${above}/10 at 12 km/h`;
+        }
+      });
+    });
+  });
+  assert(
+    Math.abs(worst) <= MAX_SEAM_JUMP,
+    `Sea score jumps ${worst > 0 ? '+' : ''}${worst} points across the 2/3 Bft seam — ${worstCase}.`
+  );
+}
+
+const SCHINIAS = 32;
+// North-facing Αν. Αττικής shores (facing 0.4° / 342.9° / 349.7°) whose S sector has
+// fetchKm 0.00: a southerly sea physically cannot reach them. If these move, the
+// escalation is firing on the raw number instead of on the geometry.
+const EAST_ATTICA_SOUTH_SHELTERED = [25, 26, 27];
+// Μήλος: Παλαιοχώρι faces 179.7° into a 25 km southern fetch; Αχιβαδολίμνη faces 345.8°
+// with S fetch 0.00 and is one of the roadmap's pre-registered closed-bay controls.
+const PALAIOCHORI = 1915;
+const ACHIVADOLIMNI = 1903;
+
+// (1) The reported failure. An onshore short-period sea on a beach whose own geometry
+// calls that sector `exposed` must not read as an ideal light-wind day.
+assert(
+  seaScoreOf('Schinias_S_2BFT_CHOP', SCHINIAS) <= 7,
+  `Schinias_S_2BFT_CHOP: Σχινιάς scores ${seaScoreOf('Schinias_S_2BFT_CHOP', SCHINIAS)}/10 on a 0.45 m / 2.5 s onshore sea at 2 Bft — the light-wind gates are still answering from the wind alone.`
+);
+assert(
+  typeof scoredById('Schinias_S_2BFT_CHOP', SCHINIAS)?.seaStateWaveM === 'number',
+  'Schinias_S_2BFT_CHOP: BeachScore must expose seaStateWaveM as the decision-grade sea state (waveHeightM stays display-only).'
+);
+
+// (2) Over-correction guard. Flat sea, same wind, same geometry → still an ideal day.
+assert(
+  seaScoreOf('Schinias_S_2BFT_CALM', SCHINIAS) >= 8,
+  `Schinias_S_2BFT_CALM: Σχινιάς dropped to ${seaScoreOf('Schinias_S_2BFT_CALM', SCHINIAS)}/10 on a genuinely flat 0.15 m sea — the recalibration is over-firing and the app has stopped being able to say "go swimming".`
+);
+
+// (3) A sea a shore cannot receive must not cost it its place in the recommendations.
+//
+// KNOWN OPEN DEFECT, bounded here rather than fixed. The measured-wave floors in
+// calculateSeaConditionScore key off exposure to the WIND, not to the wave's own bearing. So a
+// north-facing shore under a light northerly counts as "exposed" — losing its floor — while being
+// completely shielded from a southerly sea, and is then charged for that sea. Σχινιάς, which the
+// sea is actually breaking on, is offshore of the same northerly and keeps its floor. The ordering
+// therefore inverts at light wind.
+//
+// Not fixed in this pass because the two available fixes both reintroduce something worse:
+// capping the height by geometry is the false-calm path removed above, and neutralising the wind
+// term at ≤2 Bft lets a 1.2 m groundswell back through the recommendation gate on an open shore.
+// The real fix is a wave-direction exposure axis, which needs its own measurement.
+//
+// What must hold meanwhile — and what this asserts — is that the harm stays bounded: a shore may
+// read lower than it deserves, but a sea it cannot receive must never remove it from the list.
+EAST_ATTICA_SOUTH_SHELTERED.forEach(beachId => {
+  const sheltered = seaScoreOf('Schinias_S_2BFT_CHOP', beachId);
+  assert(
+    sheltered >= MIN_STRONG_SUITABLE_SEA_CONDITION_SCORE,
+    `Schinias_S_2BFT_CHOP: beach ${beachId} (S fetch 0.00 km, shielded from this southerly sea) fell to ${sheltered}/10 and would be dropped from the recommendations by a sea that cannot reach it.`
+  );
+});
+
+// (4) Steepness axis. Identical Hs, identical swell channel, only the period differs.
+// This is an ORDERING, not a threshold: whatever the absolute scores, steep breaking chop
+// must never be scored as kindly as the same height of long-period roll.
+const choppyMilos = seaScoreOf('Milos_S_2BFT_CHOP', PALAIOCHORI);
+const swellyMilos = seaScoreOf('Milos_S_2BFT_SWELL', PALAIOCHORI);
+assert(
+  choppyMilos < swellyMilos,
+  `Milos 2 Bft: 0.55 m at 2.5 s scored ${choppyMilos}/10 and the SAME 0.55 m at 8.0 s scored ${swellyMilos}/10 — the model cannot tell steep breaking chop from a gentle roll.`
+);
+
+// (5) Closed-bay control (roadmap Mod-2). Same bounded-harm rule as (3): Αχιβαδολίμνη faces
+// 345.8° with 0.00 km of southern fetch, so a southerly sea cannot enter it. Until the
+// wave-direction exposure axis exists it will still be charged for one — but it must never be
+// charged enough to lose its place, and the two scenarios must stay ordered by steepness.
+{
+  const chop = seaScoreOf('Milos_S_2BFT_CHOP', ACHIVADOLIMNI);
+  const swell = seaScoreOf('Milos_S_2BFT_SWELL', ACHIVADOLIMNI);
+  assert(
+    chop >= MIN_STRONG_SUITABLE_SEA_CONDITION_SCORE && swell >= MIN_STRONG_SUITABLE_SEA_CONDITION_SCORE,
+    `Milos 2 Bft: Αχιβαδολίμνη (closed bay, S fetch 0.00) scored ${chop}/10 chop and ${swell}/10 swell — a southerly sea cannot enter this bay and must never cost it its place in the recommendations.`
+  );
+  assert(
+    chop <= swell,
+    `Milos 2 Bft: Αχιβαδολίμνη scored the steep 2.5 s sea (${chop}/10) more kindly than the 8 s roll of the same height (${swell}/10).`
+  );
+}
 
 console.log('App Recommendation Scenario Validation');
 Object.entries(results).forEach(([id, result]) => {

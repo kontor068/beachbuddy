@@ -92,7 +92,24 @@ export interface FeedbackData {
   timestamp: string;
   // Modeled conditions at feedback time, so an offline pass can later calibrate the
   // per-beach/sector model against what the visitor actually observed (roadmap #7).
-  conditions?: { exposureLevel?: string; beaufort?: number; windDir?: string; date?: string };
+  //
+  // The wave fields matter as much as the wind ones: without what we CLAIMED the sea was, a
+  // "had waves" report cannot calibrate a wave model, only a wind model. And without `live`
+  // every record is ambiguous — "I am standing here in it" and "I was reading about next
+  // Tuesday" are opposite kinds of evidence and were previously indistinguishable.
+  conditions?: {
+    exposureLevel?: string;
+    beaufort?: number;
+    windDir?: string;
+    date?: string;
+    /** Athens hour of the observation — a 2 Bft morning and a 5 Bft afternoon are not one day. */
+    hour?: number;
+    /** The sea state we claimed (m) and its period — what the report is evidence against. */
+    seaStateWaveM?: number;
+    seaStatePeriodS?: number;
+    /** True only when the user is looking at right now, not a remembered or future day. */
+    live?: boolean;
+  };
 }
 
 export interface FeedbackNotificationContext {

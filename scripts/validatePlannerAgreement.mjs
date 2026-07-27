@@ -221,12 +221,23 @@ const gateVerdict = (beach, dayForecast, geospatialProfiles) => {
   if (isFalseProtectedTopPick(score, dayForecast.wind.deg, beaufort)) return { calm: false, fallback: false };
 
   const isExposed = score.exposureLevel ? score.exposureLevel !== 'protected' : true;
-  const waveHeightM = score.waveHeightM ?? dayForecast.marine?.waveHeightM;
-  const item = { isExposed, exposureLevel: score.exposureLevel, waveHeightM, hourlySeaScore: score.hourlySeaScore };
+  // Decision value + period, mirroring the app. A reference built from the display height with no
+  // period compares the app against a model it no longer runs, so the guard would pass on a
+  // disagreement instead of catching one.
+  const waveHeightM = score.seaStateWaveM ?? score.waveHeightM ?? dayForecast.marine?.waveHeightM;
+  const wavePeriodS = score.seaStatePeriodS ?? dayForecast.marine?.wavePeriodS;
+  const item = {
+    isExposed,
+    exposureLevel: score.exposureLevel,
+    waveHeightM,
+    seaStateWaveM: score.seaStateWaveM,
+    seaStatePeriodS: score.seaStatePeriodS,
+    hourlySeaScore: score.hourlySeaScore,
+  };
 
   const hasHardExclusion = score.warnings?.some(w =>
     w.type === 'wind_sport_spot' || (w.type === 'exposed_to_wind' && score.exposureLevel === 'exposed'));
-  const seaScore = calculateSeaConditionScore(isExposed, windSpeedKmph, score.exposureLevel, waveHeightM);
+  const seaScore = calculateSeaConditionScore(isExposed, windSpeedKmph, score.exposureLevel, waveHeightM, false, wavePeriodS);
   const fallback = score.exposureLevel !== 'exposed'
     && seaScore >= MIN_STRONG_SUITABLE_SEA_CONDITION_SCORE
     && !hasHardExclusion;

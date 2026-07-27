@@ -58,7 +58,16 @@ export const assessSwellExposure = (
     if (facingDeg !== null && profile) {
       const onshore = Math.cos((directionDeg! - facingDeg) * Math.PI / 180);
       const nearestSector = SECTOR_ORDER[((Math.round(directionDeg! / 45) % 8) + 8) % 8];
-      const sectorOpen = (profile.sectors?.[nearestSector]?.blockedRayRatio ?? 1) < 0.6;
+      // Use the engine's own verdict for the sector, not a raw blockedRayRatio threshold.
+      // blockedRayRatio only means "the ray terminated on land inside the 25 km cap", which is
+      // true almost everywhere in the Aegean — geospatialExposureModel already knows this and
+      // applies an 8→12 km saturation ramp so distant land does not discount an open sector.
+      // This gate never got that fix, so it read a wide-open sector as closed whenever the far
+      // shore happened to sit inside the cap. Σχινιάς is the exact boundary case: its S sector
+      // is 18.7 km of open water, `exposed`, intensity 99.7 — and blockedRayRatio 0.60, so
+      // `0.60 < 0.60` was false and the beach could never be charged a southerly swell on its
+      // own most exposed side, while SwellRouterSection told the user it "stays flat".
+      const sectorOpen = (profile.sectors?.[nearestSector]?.level ?? 'protected') !== 'protected';
       exposed = onshore > 0.3 && sectorOpen;
     } else if (beachOrientationDeg !== null) {
       exposed = calculateWindExposure(beachOrientationDeg, directionDeg!).exposureLevel === 'exposed';

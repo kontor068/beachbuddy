@@ -223,7 +223,13 @@
           "intensity": 50.5
         }
       },
-      "confidence": "high"
+      "confidence": "high",
+      "marineSamplePoint": {
+        "lat": 36.1497,
+        "lon": 29.6501,
+        "bearingDeg": 90,
+        "distanceKm": 4.28
+      }
     },
     "2319": {
       "beachId": 2319,
@@ -294,7 +300,13 @@
           "intensity": 1.7
         }
       },
-      "confidence": "high"
+      "confidence": "high",
+      "marineSamplePoint": {
+        "lat": 36.1433,
+        "lon": 29.6412,
+        "bearingDeg": 115.8,
+        "distanceKm": 4.34
+      }
     }
   }
 }

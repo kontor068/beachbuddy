@@ -115,20 +115,61 @@ export const getWindChopWaveFloorM = (
   return Number(Math.min(cap, floor + gustBump).toFixed(2));
 };
 
+/** Where a measured sea is arriving from, relative to THIS beach's geometry. */
+export interface SeaArrivalGeometry {
+  /** cos(arrival direction − beach facing): +1 straight onshore, −1 straight offshore. */
+  onshore: number;
+  /** Open-water fetch (km) in the sector the sea arrives through. */
+  fetchKm: number;
+}
+
+/** Onshore component above which a sea genuinely reaches this shore (matches swellExposure). */
+const ARRIVAL_ONSHORE_MIN = 0.3;
+/** Fetch (km) above which the arrival sector is a real open-water corridor (matches coveWaveGuard). */
+const ARRIVAL_MIN_FETCH_KM = 2;
+
+// There was also a SHADOWING branch here — offshore bearing plus near-zero fetch capped the sea at
+// 0.20 m — and it is deliberately gone. Three measurements killed it:
+//
+//   • It fired on 2846/2850 beaches over a median 153° window, so it was a replacement for the
+//     light-wind cap, not the narrow correction it was written as.
+//   • Its "double lock" was one lock. `onshore < 0` means "pointing at the land behind the beach",
+//     which is exactly where ray-cast fetch is short — both conditions come from the same pin and
+//     the same facingDeg, so one wrong facing turns both at once. The codebase already has a name
+//     for that failure (`suspectPin`) and this code never consulted it.
+//   • The trust flag meant to gate it was computed for each beach's own sample point, while the
+//     app requests one marine point per CLUSTER — a median 5.4 km away — so 796 beaches with an
+//     untrustworthy cell carried no flag and would have been shadowed anyway.
+//
+// It only ever made the app less cautious, which is the one direction that can put someone in
+// water the app called flat. Nothing was reported broken that it fixed. Removed until there is a
+// trust signal measured against the coordinate the app actually requests.
+
 /**
  * Light-wind realism cap for the measured (grid) wave height.
  *
- * Open-Meteo's `wave_height` is the TOTAL significant height (wind sea + swell). In an enclosed sea
- * like the Aegean it over-states a calm day: at 1–2 Bft "λάδι" conditions the global model still
- * reports ~0.3–0.6 m of residual/model swell that does not actually reach the shore. Because the
- * displayed value is max(measured, wind-modeled) and the wind term is ~0 in light air, that surfaces
- * as a misleading "0.5 m wave at 1 Bft". This caps the measured value when the wind is light — unless
- * there is a genuine long-period groundswell, which is physically present even in calm wind.
+ * Open-Meteo's `wave_height` is the TOTAL significant height (wind sea + swell), read from a grid
+ * cell that is typically several km offshore and may not even be in the same body of water. At
+ * 1–2 Bft that cuts both ways, so this resolves the measured value against the beach's own geometry
+ * — WHERE the sea is coming from, not just how big the grid says it is:
+ *
+ *   • Arriving onshore through an open corridor → trust it in full. This is the Σχινιάς case
+ *     (2026-07-27): a 0.45 m SSE sea marching down a 15.6 km fetch onto a 173.5°-facing shore
+ *     while the local wind read 2 Bft. Local wind describes local wind; it says nothing about a
+ *     sea built by wind over the water, earlier in the day, or further down the fetch. Capping
+ *     that away was the app telling a swimmer standing in the surf that the sea was flat.
+ *
+ *   • Everything else — including a sea that appears to arrive through land, and every case with
+ *     no geometry — falls through to the original light-wind cap, unchanged. There is deliberately
+ *     no branch that caps HARDER than that (see the note above the constants).
+ *
+ * Genuine long-period groundswell is exempt before any of this: it reaches the coast in calm wind.
  */
 export const capLightWindMeasuredWaveM = (
   measuredWaveHeightM: number,
   beaufort: number,
-  swell?: { heightM?: number; periodS?: number }
+  swell?: { heightM?: number; periodS?: number },
+  arrival?: SeaArrivalGeometry
 ): number => {
   if (!Number.isFinite(measuredWaveHeightM) || measuredWaveHeightM <= 0) return measuredWaveHeightM;
   // A gentle breeze (≥3 Bft) can already build a real small sea — leave it to the rest of the model.
@@ -141,6 +182,20 @@ export const capLightWindMeasuredWaveM = (
     typeof swell?.periodS === 'number' && swell.periodS >= GROUND_SWELL_MIN_PERIOD_S &&
     typeof swell?.heightM === 'number' && swell.heightM >= 0.4;
   if (hasGenuineSwell) return measuredWaveHeightM;
+
+  // The one directional rule left, and it only ever moves the number UP: a sea arriving onshore
+  // through an open corridor is real regardless of the local wind, so the light-wind cap must not
+  // hide it. Its worst case is telling someone a calm beach has chop and they skip a good swim —
+  // survivable. There is deliberately no branch that lowers the number (see above).
+  if (
+    arrival &&
+    Number.isFinite(arrival.onshore) &&
+    Number.isFinite(arrival.fetchKm) &&
+    arrival.onshore > ARRIVAL_ONSHORE_MIN &&
+    arrival.fetchKm >= ARRIVAL_MIN_FETCH_KM
+  ) {
+    return measuredWaveHeightM;
+  }
 
   // 0–1 Bft: essentially flat; 2 Bft: a light ripple.
   const cap = beaufort <= 1 ? 0.3 : 0.4;

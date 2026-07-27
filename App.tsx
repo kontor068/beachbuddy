@@ -846,8 +846,8 @@ const isStrongWindSuitableCandidate = (
   windSpeedKmph: number,
   fallbackWaveHeightM?: number
 ): boolean => {
-  const itemWaveHeightM = item.waveHeightM ?? fallbackWaveHeightM;
-  const seaScore = calculateSeaConditionScore(item.isExposed, windSpeedKmph, item.exposureLevel, itemWaveHeightM);
+  const itemWaveHeightM = item.seaStateWaveM ?? item.waveHeightM ?? fallbackWaveHeightM;
+  const seaScore = calculateSeaConditionScore(item.isExposed, windSpeedKmph, item.exposureLevel, itemWaveHeightM, false, item.seaStatePeriodS);
   const hasBlockingWarning = item.warnings?.some(warning =>
     warning.severity === 'critical' ||
     warning.type === 'rough_sea' ||
@@ -858,7 +858,7 @@ const isStrongWindSuitableCandidate = (
   return item.score >= 60 &&
     item.swimmingComfort !== 'avoid_swimming' &&
     seaScore >= MIN_STRONG_SUITABLE_SEA_CONDITION_SCORE &&
-    !hasPoorSeaConditions(item.isExposed, windSpeedKmph, item.exposureLevel, itemWaveHeightM) &&
+    !hasPoorSeaConditions(item.isExposed, windSpeedKmph, item.exposureLevel, itemWaveHeightM, item.seaStatePeriodS) &&
     !hasBlockingWarning;
 };
 
@@ -867,8 +867,8 @@ const isNoIdealFallbackCandidate = (
   windSpeedKmph: number,
   fallbackWaveHeightM?: number
 ): boolean => {
-  const itemWaveHeightM = item.waveHeightM ?? fallbackWaveHeightM;
-  const seaScore = calculateSeaConditionScore(item.isExposed, windSpeedKmph, item.exposureLevel, itemWaveHeightM);
+  const itemWaveHeightM = item.seaStateWaveM ?? item.waveHeightM ?? fallbackWaveHeightM;
+  const seaScore = calculateSeaConditionScore(item.isExposed, windSpeedKmph, item.exposureLevel, itemWaveHeightM, false, item.seaStatePeriodS);
   const hasHardExclusion = item.warnings?.some(warning =>
     warning.type === 'wind_sport_spot' ||
     (warning.type === 'exposed_to_wind' && item.exposureLevel === 'exposed')
@@ -3582,8 +3582,17 @@ export const App: React.FC = () => {
           geospatialProfile: geospatialExposureProfiles?.[beach.id],
         });
         const isExposed = scoreResult.exposureLevel ? scoreResult.exposureLevel !== 'protected' : true;
-        const beachWaveHeightM = scoreResult.waveHeightM ?? selectedForecast.marine?.waveHeightM ?? waveHeightM;
-        return !hasPoorSeaConditions(isExposed, beachWindSpeedKmph, scoreResult.exposureLevel, beachWaveHeightM);
+        // Decision-grade sea state, not the display value: `waveHeightM` is rewritten by the cove
+        // guard, so filtering the recommendation list on it let a display-only number decide
+        // whether a beach appears at all.
+        const beachWaveHeightM = scoreResult.seaStateWaveM ?? selectedForecast.marine?.waveHeightM ?? waveHeightM;
+        return !hasPoorSeaConditions(
+          isExposed,
+          beachWindSpeedKmph,
+          scoreResult.exposureLevel,
+          beachWaveHeightM,
+          scoreResult.seaStatePeriodS ?? selectedForecast.marine?.wavePeriodS
+        );
       });
       beaches = weatherSuitableBeaches.length > 0 ? weatherSuitableBeaches : beaches;
     }
@@ -3693,6 +3702,8 @@ export const App: React.FC = () => {
         // and match the detail page. Marker colour still uses the island wind above.
         windSpeedKmph: scoreResult.windSpeedKmph,
         waveHeightM: scoreResult.waveHeightM,
+        seaStateWaveM: scoreResult.seaStateWaveM,
+        seaStatePeriodS: scoreResult.seaStatePeriodS,
         warnings: scoreResult.warnings,
         confidence: scoreResult.confidence,
         swimmingComfort: scoreResult.swimmingComfort,
@@ -4137,7 +4148,7 @@ export const App: React.FC = () => {
       );
       return item.score >= 70 &&
         !hasSeriousWarning &&
-        !hasPoorSeaConditions(item.isExposed, windSpeedKmph, item.exposureLevel, item.waveHeightM ?? waveHeightM);
+        !hasPoorSeaConditions(item.isExposed, windSpeedKmph, item.exposureLevel, item.seaStateWaveM ?? item.waveHeightM ?? waveHeightM, item.seaStatePeriodS);
     });
 
     const totalBeachCount = selectedIsland.beaches.length;
@@ -4177,8 +4188,8 @@ export const App: React.FC = () => {
     if (dailySuitableBeaches.length === 0) return true;
 
     const swimmableBeaches = dailySuitableBeaches.filter(item => {
-      const itemWaveHeightM = item.waveHeightM ?? waveHeightM;
-      const seaScore = calculateSeaConditionScore(item.isExposed, windSpeedKmph, item.exposureLevel, itemWaveHeightM);
+      const itemWaveHeightM = item.seaStateWaveM ?? item.waveHeightM ?? waveHeightM;
+      const seaScore = calculateSeaConditionScore(item.isExposed, windSpeedKmph, item.exposureLevel, itemWaveHeightM, false, item.seaStatePeriodS);
       const hasGoodHourlySea = typeof item.hourlySeaScore !== 'number' || item.hourlySeaScore >= MIN_TOP_PICK_SEA_CONDITION_SCORE;
       const hasSeriousWarning = item.warnings?.some(warning =>
         warning.severity === 'critical' ||
@@ -4189,7 +4200,7 @@ export const App: React.FC = () => {
       return seaScore >= MIN_TOP_PICK_SEA_CONDITION_SCORE &&
         hasGoodHourlySea &&
         !hasSeriousWarning &&
-        !hasPoorSeaConditions(item.isExposed, windSpeedKmph, item.exposureLevel, itemWaveHeightM);
+        !hasPoorSeaConditions(item.isExposed, windSpeedKmph, item.exposureLevel, itemWaveHeightM, item.seaStatePeriodS);
     });
 
     return swimmableBeaches.length === 0;
@@ -4484,6 +4495,8 @@ export const App: React.FC = () => {
       seaCalmClaimAllowed: item.seaCalmClaimAllowed,
       windSpeedKmph: item.windSpeedKmph,
       waveHeightM: item.waveHeightM,
+      seaStateWaveM: item.seaStateWaveM,
+      seaStatePeriodS: item.seaStatePeriodS,
       warnings: item.warnings,
       confidence: item.confidence,
       swimmingComfort: item.swimmingComfort,
@@ -4502,6 +4515,8 @@ export const App: React.FC = () => {
       seaCalmClaimAllowed: item.seaCalmClaimAllowed,
       windSpeedKmph: item.windSpeedKmph,
       waveHeightM: item.waveHeightM,
+      seaStateWaveM: item.seaStateWaveM,
+      seaStatePeriodS: item.seaStatePeriodS,
       warnings: item.warnings,
       confidence: item.confidence,
       swimmingComfort: item.swimmingComfort,
@@ -6416,6 +6431,8 @@ export const App: React.FC = () => {
                       selectedHour={selectedHourDt != null ? new Date(selectedHourDt * 1000).getHours() : undefined}
                       exposureLevel={r.exposureLevel}
                       waveHeightM={r.waveHeightM}
+                      seaStateWaveM={r.seaStateWaveM}
+                      seaStatePeriodS={r.seaStatePeriodS}
                       beachWindSpeedKmph={r.windSpeedKmph}
                       warnings={r.warnings}
                       confidence={r.confidence}
@@ -6669,6 +6686,8 @@ export const App: React.FC = () => {
                           selectedHour={selectedHourDt != null ? new Date(selectedHourDt * 1000).getHours() : undefined}
                           exposureLevel={r.exposureLevel}
                           waveHeightM={r.waveHeightM}
+                          seaStateWaveM={r.seaStateWaveM}
+                          seaStatePeriodS={r.seaStatePeriodS}
                           beachWindSpeedKmph={r.windSpeedKmph}
                           warnings={r.warnings}
                           confidence={r.confidence}

@@ -11,6 +11,7 @@ import {
 import { processForecastData } from '../utils/weatherUtils'; // Assuming I move this helper or recreate it
 import { athensNow } from '../utils/athensTime';
 import { getLocalWeatherFixture } from '../utils/weatherFixtures';
+import { loadGeospatialExposureProfiles, type GeospatialExposureProfileLookup } from '../services/geospatialExposureService';
 
 /**
  * Freshness of the forecast currently held in state, derived from its real fetch time.
@@ -191,14 +192,84 @@ const weatherFallbackMessage: Record<LanguageCode, string> = {
   it: 'Non è stato possibile aggiornare il meteo. Mostriamo una stima temporanea.',
 };
 
+/** Max pairwise spread. Beyond it the cluster's beaches face different water and one shared
+ *  point would misdescribe some of them. */
+const MARINE_SAMPLE_AGREEMENT_KM = 10;
+
+const distanceKm = (aLat: number, aLon: number, bLat: number, bLon: number): number => {
+  const toRad = (deg: number) => (deg * Math.PI) / 180;
+  const dLat = toRad(bLat - aLat);
+  const dLon = toRad(bLon - aLon);
+  const h = Math.sin(dLat / 2) ** 2 + Math.cos(toRad(aLat)) * Math.cos(toRad(bLat)) * Math.sin(dLon / 2) ** 2;
+  return 2 * 6371 * Math.asin(Math.sqrt(h));
+};
+
+/**
+ * Where to ask the wave model for this cluster.
+ *
+ * The cluster centroid sits on the coast, so `cell_selection=sea` walks to the nearest cell the
+ * model calls water — which on a ~9 km grid regularly lands across a headland in a different
+ * basin. (Measured at Σχινιάς: 11.0 km away, in the South Evoian Gulf, with the beach's own
+ * geometry reporting 0.52 km of fetch in that direction.) Each beach carries a point pushed
+ * offshore along its own open fetch, so we sample there instead.
+ *
+ * Only used when the cluster's beaches actually agree on which water they face — two sides of a
+ * cape belong to one geographic cluster but two different seas, and averaging their offshore
+ * points would put the request back on the land between them. When they disagree, or when the
+ * beaches are enclosed coves with no sample point at all, this falls back to today's centroid.
+ */
+const resolveClusterMarinePoint = (
+  cluster: BeachForecastCluster,
+  profiles: GeospatialExposureProfileLookup | undefined
+): { lat: number; lon: number } => {
+  const fallback = { lat: cluster.lat, lon: cluster.lon };
+  if (!profiles) return fallback;
+
+  const points = cluster.beachIds
+    .map(id => profiles[id]?.marineSamplePoint)
+    .filter((p): p is NonNullable<typeof p> => Boolean(p));
+  if (points.length === 0) return fallback;
+
+  // Every beach in the cluster must have a sample point, or the mean describes only the ones that
+  // do while being used for all of them.
+  if (points.length !== cluster.beachIds.length) return fallback;
+
+  // Pairwise spread, not distance-from-mean. Measuring from the mean lets two groups 20 km apart
+  // both sit 10 km from a midpoint that is dry land between them — exactly the case this exists to
+  // prevent, and 129 clusters nationally satisfy the weaker test.
+  for (let i = 0; i < points.length; i += 1) {
+    for (let j = i + 1; j < points.length; j += 1) {
+      if (distanceKm(points[i].lat, points[i].lon, points[j].lat, points[j].lon) > MARINE_SAMPLE_AGREEMENT_KM) {
+        return fallback;
+      }
+    }
+  }
+
+  return {
+    lat: points.reduce((sum, p) => sum + p.lat, 0) / points.length,
+    lon: points.reduce((sum, p) => sum + p.lon, 0) / points.length,
+  };
+};
+
 const fetchBeachForecastContexts = async (island: Island): Promise<Record<number, BeachForecastContext>> => {
   const clusters = buildBeachForecastClusters(island.beaches);
   if (clusters.length === 0) return {};
 
+  // Started, not awaited. The exposure JSON runs to ~236 KB for the biggest region and only the
+  // MARINE coordinate needs it, so awaiting it here would hold every wind request in the region
+  // behind one file on a cold cache. The forecast leg races it; only the marine leg waits.
+  const profilesPromise = loadGeospatialExposureProfiles(island.id).catch(() => undefined);
+
   const entries = await Promise.all(clusters.map(async cluster => {
     const [forecastResult, marineItems] = await Promise.all([
+      // Wind stays at the cluster centroid: it drives the safety-critical colours and the
+      // freshness clock, and a wind field does not change basin the way a wave field does.
       fetchForecastData(cluster.lat, cluster.lon),
-      fetchMarineForecastData(cluster.lat, cluster.lon)
+      profilesPromise
+        .then(profiles => {
+          const marinePoint = resolveClusterMarinePoint(cluster, profiles);
+          return fetchMarineForecastData(marinePoint.lat, marinePoint.lon);
+        })
         .then(result => result.data)
         .catch(error => {
           console.warn('Cluster marine forecast unavailable; using wind-based sea estimates.', error);

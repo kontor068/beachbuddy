@@ -169,7 +169,7 @@ export const HomeSearchField: React.FC<HomeSearchFieldProps> = ({
         onBlur={() => setIsFocused(false)}
         onKeyDown={handleKeyDown}
         placeholder={activePlaceholder}
-        className={`min-h-14 w-full rounded-2xl border border-white/70 bg-white/90 pl-4 text-base font-medium text-ellipsis text-slate-800 shadow-lg shadow-sky-900/10 outline-none ring-1 ring-white/50 backdrop-blur-md transition placeholder:text-[15px] placeholder:text-slate-500 max-[359px]:placeholder:text-[13px] focus:border-cyan-500 focus:ring-2 focus:ring-cyan-500/25 sm:min-h-16 sm:rounded-full sm:pl-5 sm:text-lg sm:placeholder:text-lg [&::-webkit-search-cancel-button]:hidden [&::-webkit-search-decoration]:hidden ${
+        className={`min-h-14 w-full rounded-2xl border border-white/70 bg-white/90 pl-4 text-base font-medium text-ellipsis text-slate-800 shadow-lg shadow-sky-900/10 outline-none ring-1 ring-white/50 backdrop-blur-md transition placeholder:text-[14px] placeholder:text-slate-500 max-[389px]:placeholder:text-[13px] focus:border-cyan-500 focus:ring-2 focus:ring-cyan-500/25 sm:min-h-16 sm:rounded-full sm:pl-5 sm:text-lg sm:placeholder:text-lg [&::-webkit-search-cancel-button]:hidden [&::-webkit-search-decoration]:hidden ${
           hasValue ? 'pr-[6.5rem] sm:pr-28' : 'pr-14 sm:pr-16'
         }`}
       />

@@ -16,6 +16,7 @@ type RawGeospatialExposureProfile = {
   facingDeg?: number | null;
   sectors: Record<WindSector, RawGeospatialSectorExposure>;
   confidence: DataConfidence;
+  marineSamplePoint?: { lat: number; lon: number; bearingDeg: number; distanceKm: number };
 };
 
 type RawGeospatialExposurePayload = {
@@ -66,6 +67,7 @@ const normalizeProfiles = (
       sectors: profile.sectors,
       confidence: profile.confidence,
       source: profile.confidence === 'high' ? 'high-res-coastline' : 'natural-earth-baseline',
+      marineSamplePoint: profile.marineSamplePoint,
     };
     return currentLookup;
   }, {});

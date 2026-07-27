@@ -568,6 +568,13 @@ export interface GeospatialExposureProfile {
   sectors: Record<WindSector, GeospatialExposureSector>;
   confidence: DataConfidence;
   source: GeospatialExposureSource;
+  /**
+   * Where to ask the wave model about this beach — a point pushed offshore along the beach's own
+   * open fetch (scripts/buildMarineSamplePoints.mjs). The pin itself is on the coast, so the
+   * marine grid's nearest sea cell can land in a different body of water entirely. Absent for
+   * enclosed coves, which have no open-water cell that describes their water.
+   */
+  marineSamplePoint?: { lat: number; lon: number; bearingDeg: number; distanceKm: number };
 }
 
 /**
@@ -610,7 +617,11 @@ export interface SuitableBeach {
   exposureLevel?: ExposureLevel;
   orientation?: number | null;
   marine?: MarineForecast;
+  /** Display height (m). Rewritten by the cove guard — never make a decision from it. */
   waveHeightM?: number;
+  /** Decision-grade sea state (m) + its period. See BeachScore.seaStateWaveM. */
+  seaStateWaveM?: number;
+  seaStatePeriodS?: number;
   /** Wind (km/h) this beach was scored with, so its card Beaufort matches its same-wind wave. */
   windSpeedKmph?: number;
   warnings?: WarningFlag[];

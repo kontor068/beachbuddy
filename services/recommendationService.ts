@@ -37,6 +37,7 @@ import { displayBeachName } from '../utils/localization';
 import { beachSentenceName } from '../utils/beachCopy';
 import { getSearchVariants, isSearchMatch } from '../utils/searchNormalize';
 import { calculateSeaConditionScore } from '../utils/seaConditions';
+import { seaStateSeverityM } from '../utils/waveCharacter';
 import { getSelectedDayPrefix, isSelectedDateToday } from '../utils/dateLabels';
 import { athensNow } from '../utils/athensTime';
 import { isSurfSpotInSeason } from '../utils/surfSpots';
@@ -48,9 +49,13 @@ import { hasDifficultTopPickAccess, hasMainstreamTopPickAccess, hasTrulyEasyAcce
 import { isSunsetFacingBeach } from '../utils/beachOrientation';
 import { isNaturistBeach } from '../utils/naturistBeaches';
 import { getBeachTouristRecognitionScore } from '../utils/touristPriority';
-import { getWindChopWaveFloorM, resolveEffectiveWaveHeightM, capLightWindMeasuredWaveM } from '../utils/waveModel';
+import { getWindChopWaveFloorM, resolveEffectiveWaveHeightM, capLightWindMeasuredWaveM, type SeaArrivalGeometry } from '../utils/waveModel';
 import { COVE_DISPLAY_FLOOR_M, resolveCoveAwareWaveHeightM } from '../utils/coveWaveGuard';
+import { interpolateSectorGeometry } from '../utils/windExposureModel';
 import { getBeachPopularityRating } from '../utils/beachRating';
+
+/** Where the decision-grade sea state came from — for calibration, not for UI. */
+export type SeaStateSource = 'measured' | 'measured-capped' | 'modeled';
 
 export interface BeachScore {
   beachId: number;
@@ -71,6 +76,15 @@ export interface BeachScore {
   /** Display/effective wave height (m), lifted above raw marine grid data when local wind,
    *  gusts, and fetch indicate wind chop that the grid can under-represent. */
   waveHeightM?: number;
+  /**
+   * The decision-grade sea state (m) — what every score, cap and comfort call inside
+   * calculateBeachScore already uses. `waveHeightM` above is DISPLAY ONLY (the cove guard
+   * rewrites it), so anything making a decision must read this instead.
+   */
+  seaStateWaveM?: number;
+  /** Total-sea period (s) behind seaStateWaveM — separates steep chop from a long roll. */
+  seaStatePeriodS?: number;
+  seaStateSource?: SeaStateSource;
   /** Damped wind/fetch modeled wave height (m), including the conservative wind-chop floor. */
   modeledWaveHeightM?: number;
   /** The wind speed (km/h) this score was computed from — beach-cluster wind when available.
@@ -127,6 +141,10 @@ export interface BeachRecommendation {
   /** Display/effective wave height (m), lifted above raw marine grid data when local wind,
    *  gusts, and fetch indicate wind chop that the grid can under-represent. */
   waveHeightM?: number;
+  /** Decision-grade sea state (m) — see BeachScore.seaStateWaveM. `waveHeightM` is display only. */
+  seaStateWaveM?: number;
+  /** Total-sea period (s) behind seaStateWaveM. */
+  seaStatePeriodS?: number;
   /** Damped wind/fetch modeled wave height (m), including the conservative wind-chop floor. */
   modeledWaveHeightM?: number;
   /** Wind speed (km/h) this recommendation was scored with (beach-cluster when available), so a
@@ -523,9 +541,31 @@ export interface HourlyWaveAssessment {
   isExposed: boolean;
   /** Display/scoring wave height (m): max(measured, max(SMB·damping, wind-chop floor)). */
   effectiveWaveHeightM: number;
+  /** Total-sea period (s) for this hour, when the marine grid reported one. */
+  wavePeriodS?: number;
   /** True when this hour had a live marine wave value (not purely wind-modeled). */
   hasMeasured: boolean;
 }
+
+/**
+ * Where a measured sea is arriving from, in this beach's own frame — the input that lets the
+ * light-wind cap tell "a real sea running onto this shore" from "a grid cell describing water
+ * behind it". Returns undefined when we lack the geometry to judge, in which case the cap falls
+ * back to its original direction-blind behaviour.
+ */
+const resolveSeaArrival = (
+  geospatialProfile: GeospatialExposureProfile | undefined,
+  facingDeg: number | null | undefined,
+  waveDirectionDeg: number | undefined
+): SeaArrivalGeometry | undefined => {
+  if (!geospatialProfile) return undefined;
+  if (typeof waveDirectionDeg !== 'number' || !Number.isFinite(waveDirectionDeg)) return undefined;
+  if (typeof facingDeg !== 'number' || !Number.isFinite(facingDeg)) return undefined;
+  return {
+    onshore: Math.cos(((waveDirectionDeg - facingDeg) * Math.PI) / 180),
+    fetchKm: interpolateSectorGeometry(geospatialProfile, waveDirectionDeg).fetchKm,
+  };
+};
 
 // Single source of truth for an hour's effective wave: directional exposure (so fetch tracks the
 // hour's own wind direction), fetch-limited SMB damped by exposure, the wind-chop floor, and the
@@ -562,7 +602,12 @@ const assessHourlyWave = (
   const measured = item.marine?.waveHeightM;
   const hasMeasured = typeof measured === 'number' && Number.isFinite(measured);
   const realisticMeasured = hasMeasured
-    ? capLightWindMeasuredWaveM(measured as number, beaufort, { heightM: item.marine?.swellWaveHeightM, periodS: item.marine?.swellWavePeriodS })
+    ? capLightWindMeasuredWaveM(
+      measured as number,
+      beaufort,
+      { heightM: item.marine?.swellWaveHeightM, periodS: item.marine?.swellWavePeriodS },
+      resolveSeaArrival(geospatialProfile, windAssessment.facingDeg, item.marine?.waveDirectionDeg)
+    )
     : measured;
   return {
     dt: item.dt,
@@ -571,6 +616,7 @@ const assessHourlyWave = (
     exposureLevel,
     isExposed: exposureLevel !== 'protected',
     effectiveWaveHeightM: resolveEffectiveWaveHeightM(realisticMeasured, modeledWaveHeightM),
+    wavePeriodS: item.marine?.wavePeriodS ?? item.marine?.swellWavePeriodS,
     hasMeasured,
   };
 };
@@ -600,7 +646,9 @@ const calculateHourlySeaScore = (
       assessment.isExposed,
       assessment.windSpeedKmh,
       assessment.exposureLevel,
-      assessment.effectiveWaveHeightM
+      assessment.effectiveWaveHeightM,
+      false,
+      assessment.wavePeriodS
     );
   });
 
@@ -1477,11 +1525,42 @@ export const calculateBeachScore = (
   // The raw Open-Meteo marine value stays in `marine.waveHeightM` for traceability, but
   // a low grid value must not make a windy exposed beach look flat calm — and, in the other
   // direction, the grid's over-reported swell must not make a 1 Bft "λάδι" day look choppy.
+  // Where this sea is arriving from, in THIS beach's frame. At light wind it decides whether the
+  // grid reading describes water the beach actually faces (trust it) or water behind it (cap it).
+  // The bearing is the wave's own direction, not the wind's — the whole point is that a sea can
+  // run onshore while the local wind does something else entirely.
+  const seaArrival = resolveSeaArrival(
+    options?.geospatialProfile,
+    windAssessment.facingDeg,
+    marine?.waveDirectionDeg
+  );
   const realisticMeasuredWaveHeightM = typeof measuredWaveHeightM === 'number'
-    ? capLightWindMeasuredWaveM(measuredWaveHeightM, baseBeaufort, { heightM: marine?.swellWaveHeightM, periodS: marine?.swellWavePeriodS })
+    ? capLightWindMeasuredWaveM(
+      measuredWaveHeightM,
+      baseBeaufort,
+      { heightM: marine?.swellWaveHeightM, periodS: marine?.swellWavePeriodS },
+      seaArrival
+    )
     : undefined;
   const effectiveWaveHeightM = resolveEffectiveWaveHeightM(realisticMeasuredWaveHeightM, modeledWaveHeightM);
   const waveRaisedByWind = measuredWaveHeightM !== undefined && effectiveWaveHeightM > measuredWaveHeightM + 0.05;
+
+  // ── The single decision-grade sea state ───────────────────────────────────────────────
+  // `waveHeightM` on the returned score is DISPLAY-ONLY by doctrine (the cove guard rewrites it),
+  // yet three consumers were reading it to make decisions. This is the value they should read:
+  // the one every score, cap and comfort call in this function already uses.
+  const seaStatePeriodS = typeof marine?.wavePeriodS === 'number' && Number.isFinite(marine.wavePeriodS)
+    ? marine.wavePeriodS
+    : typeof marine?.swellWavePeriodS === 'number' && Number.isFinite(marine.swellWavePeriodS)
+      ? marine.swellWavePeriodS
+      : undefined;
+  const seaStateSource: SeaStateSource = measuredWaveHeightM === undefined
+    ? 'modeled'
+    : effectiveWaveHeightM > (realisticMeasuredWaveHeightM ?? 0) + 0.005
+      ? 'modeled'
+      : realisticMeasuredWaveHeightM! < measuredWaveHeightM - 0.005
+        ? 'measured-capped'
+        : 'measured';
 
   // Long-period swell surge (roadmap #2): prefer the swell channel, else the wave
   // channel; period-gated so it is a strict no-op on short wind-sea.
@@ -1760,11 +1839,16 @@ export const calculateBeachScore = (
     windSpeedKmph,
     finalExposureLevel,
     effectiveWaveHeightM,
-    directSwell
+    directSwell,
+    seaStatePeriodS
   );
+  // Light-wind floor: on a calm day an open beach must not be marked down merely for being open.
+  // It reads the swell-equivalent height, not the raw one — otherwise it would lift a steep
+  // 0.45 m 2.5 s sea straight back up to "fine", which is the Σχινιάς failure re-entering
+  // through the back door one line after being fixed.
   if (
     baseBeaufort <= 3 &&
-    effectiveWaveHeightM <= 0.5
+    (seaStateSeverityM(effectiveWaveHeightM, seaStatePeriodS) ?? effectiveWaveHeightM) <= 0.5
   ) {
     const lightWindFloor = finalExposureLevel === 'protected' ? 9 : finalExposureLevel === 'partial' ? 8 : 7;
     seaScore = Math.max(seaScore, lightWindFloor);
@@ -2008,6 +2092,9 @@ export const calculateBeachScore = (
     orientation: beachOrientation,
     marine,
     waveHeightM: displayWaveHeightM,
+    seaStateWaveM: effectiveWaveHeightM,
+    seaStatePeriodS,
+    seaStateSource,
     modeledWaveHeightM,
     windSpeedKmph,
     warnings,
@@ -2084,7 +2171,14 @@ const generateLocalizedBeachExplanation = (
   const canClaimWindProtection = Boolean(recommendation?.canClaimWindProtection ?? windAssessment.canClaimProtected);
   const isProtectedForCopy = exposureLevel === 'protected' && canClaimWindProtection;
   const waveHeightM = recommendation?.waveHeightM ?? weather.marine?.waveHeightM;
-  const seaScore = calculateSeaConditionScore(exposureLevel !== 'protected', windSpeedKmph, exposureLevel, waveHeightM);
+  const seaScore = calculateSeaConditionScore(
+    exposureLevel !== 'protected',
+    windSpeedKmph,
+    exposureLevel,
+    recommendation?.seaStateWaveM ?? waveHeightM,
+    false,
+    recommendation?.seaStatePeriodS ?? weather.marine?.wavePeriodS
+  );
   const beachName = displayBeachName(beach.name, language);
   const selectedDate = 'date' in weather ? weather.date : undefined;
   const day = getSelectedDayPrefix(selectedDate, athensNow(), language);
@@ -2372,6 +2466,8 @@ export const getTopRecommendedBeaches = (
       orientation: scoreResult.orientation,
       marine: scoreResult.marine,
       waveHeightM: scoreResult.waveHeightM,
+      seaStateWaveM: scoreResult.seaStateWaveM,
+      seaStatePeriodS: scoreResult.seaStatePeriodS,
       windSpeedKmph: scoreResult.windSpeedKmph,
       warnings: scoreResult.warnings,
       confidence: scoreResult.confidence,
@@ -2398,8 +2494,9 @@ export const getTopRecommendedBeaches = (
     // Tier 0: drop false-protected cross-shore caution picks from meaningful wind upward.
     if (isFalseProtectedTopPick(item, windDirectionDeg, windBeaufort)) return false;
     const isExposed = item.exposureLevel ? item.exposureLevel !== 'protected' : true;
-    let seaScore = calculateSeaConditionScore(isExposed, windSpeedKmh, item.exposureLevel, item.waveHeightM);
-    if (windBeaufort <= 3 && (item.waveHeightM === undefined || item.waveHeightM <= 0.5)) {
+    const itemSeaStateM = item.seaStateWaveM ?? item.waveHeightM;
+    let seaScore = calculateSeaConditionScore(isExposed, windSpeedKmh, item.exposureLevel, itemSeaStateM, false, item.seaStatePeriodS);
+    if (windBeaufort <= 3 && ((seaStateSeverityM(itemSeaStateM, item.seaStatePeriodS) ?? itemSeaStateM) ?? 0) <= 0.5) {
       const lightWindFloor = item.exposureLevel === 'protected' ? 9 : item.exposureLevel === 'partial' ? 8 : 7;
       seaScore = Math.max(seaScore, lightWindFloor);
     }
@@ -2526,6 +2623,8 @@ export const getSuitableBeaches = (
         orientation: scoreResult.orientation,
         marine: scoreResult.marine,
         waveHeightM: scoreResult.waveHeightM,
+        seaStateWaveM: scoreResult.seaStateWaveM,
+        seaStatePeriodS: scoreResult.seaStatePeriodS,
         windSpeedKmph: scoreResult.windSpeedKmph,
         warnings: scoreResult.warnings,
         confidence: scoreResult.confidence,

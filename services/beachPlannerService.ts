@@ -333,7 +333,7 @@ export const generateBeachDayPlan = (
 
     const { exposureLevel, waveHeightM } = getPlannerSeaInputs(beach, item, context?.exposureLevel);
     const isExposed = exposureLevel !== 'protected';
-    const seaScore = calculateSeaConditionScore(isExposed, windSpeedKmh, exposureLevel, waveHeightM);
+    const seaScore = calculateSeaConditionScore(isExposed, windSpeedKmh, exposureLevel, waveHeightM, false, item.marine?.wavePeriodS);
     return seaScore >= MIN_GOOD_SEA_CONDITION_SCORE;
   };
 
