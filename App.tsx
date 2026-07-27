@@ -6143,7 +6143,7 @@ export const App: React.FC = () => {
         <div className="relative z-20 pb-3 pt-1 sm:pb-4">
           {/* Fixed-height fallback: the strip sits between today's picks and the
               recommendations, so a late chunk must not push content down. */}
-          <Suspense fallback={<div className="mx-auto w-full max-w-6xl px-3 sm:px-4"><div className="min-h-[4.5rem] rounded-2xl border border-white/70 bg-white/72" /></div>}>
+          <Suspense fallback={<div className="mx-auto w-full max-w-6xl px-3 sm:px-4"><div className="min-h-[4.5rem] rounded-2xl border border-cyan-200/80 bg-cyan-50/85" /></div>}>
             <TripPlanner
               key={String(selectedIsland.id)}
               beaches={selectedIsland.beaches}

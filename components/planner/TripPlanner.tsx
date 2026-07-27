@@ -135,11 +135,16 @@ export const TripPlanner: React.FC<TripPlannerProps> = ({
       aria-label={c.prompt}
       data-nosnippet="true"
     >
-      <div className="rounded-2xl border border-white/70 bg-white/72 px-4 py-3.5 shadow-sm shadow-sky-900/5 ring-1 ring-white/45 backdrop-blur-xl sm:px-5 sm:py-4">
+      {/* Cyan-accented, not white-on-white: collapsed, this is one quiet line
+          between vivid beach photos and the rest of the page — at bg-white/72
+          on a near-white background it was invisible in practice (2026-07-26).
+          Reuses the header timing badge's cyan tokens so it reads as part of
+          the same system rather than a new colour. */}
+      <div className="rounded-2xl border border-cyan-200/80 bg-cyan-50/85 px-4 py-3.5 shadow-sm shadow-sky-900/5 ring-1 ring-cyan-100/60 backdrop-blur-xl sm:px-5 sm:py-4">
         {/* Entry: the question and the day chips are the same control. */}
         <div className="flex flex-wrap items-center gap-x-3 gap-y-2">
-          <span className="inline-flex items-center gap-2 text-sm font-bold text-slate-800">
-            <CalendarRange className="h-4 w-4 shrink-0 text-[#007a83]" aria-hidden="true" />
+          <span className="inline-flex items-center gap-2 text-[15px] font-extrabold text-slate-900">
+            <CalendarRange className="h-5 w-5 shrink-0 text-[#007a83]" aria-hidden="true" />
             {days ? c.title : c.prompt}
           </span>
 
@@ -148,7 +153,7 @@ export const TripPlanner: React.FC<TripPlannerProps> = ({
               key={value}
               type="button"
               onClick={() => choose(value)}
-              className="inline-flex min-h-9 min-w-9 cursor-pointer items-center justify-center rounded-full border border-slate-200 bg-white px-3 text-[13px] font-bold text-slate-700 transition-colors hover:border-cyan-300 hover:bg-cyan-50 hover:text-[#007a83] focus:outline-none focus-visible:ring-2 focus-visible:ring-cyan-700"
+              className="inline-flex min-h-11 min-w-11 cursor-pointer items-center justify-center rounded-full border border-cyan-300 bg-white px-3.5 text-[15px] font-extrabold text-[#007a83] shadow-sm shadow-sky-900/5 transition-colors hover:border-cyan-500 hover:bg-[#007a83] hover:text-white focus:outline-none focus-visible:ring-2 focus-visible:ring-cyan-700"
             >
               {value}
             </button>
