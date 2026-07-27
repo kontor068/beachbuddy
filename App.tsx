@@ -22,7 +22,12 @@ import { MapLoadBoundary } from './components/MapLoadBoundary';
 import { LegalFooter } from './components/LegalFooter';
 import { BeachSearcherHome, type DirectoryCategory } from './components/BeachSearcherHome';
 import { LandingView } from './components/landing/LandingView';
-import { TripPlanner } from './components/planner/TripPlanner';
+// Lazy: the planner (and its scoring path) must not ride in the main bundle —
+// most visitors only want today, and with the flag off it would still ship.
+const TripPlanner = lazyWithChunkRecovery(
+  () => import('./components/planner/TripPlanner').then(module => ({ default: module.TripPlanner })),
+  'TripPlanner'
+);
 
 // Hooks & Utils
 import { useBeaches } from './hooks/useBeaches';
@@ -124,6 +129,11 @@ const UsageInsights = lazyWithChunkRecovery(
 const ENABLE_AI_ADVISOR = false;
 const ENABLE_BEACH_BUDDY_CHAT = false;
 const ENABLE_PLANNER_PRO = false;
+// Default ON. Kill without a code change: set VITE_ENABLE_TRIP_PLANNER=false
+// in the Netlify env and trigger a deploy (~2 min, no PR). There is no runtime
+// kill switch on a static build — a boot-time config fetch would cost a
+// request on every page load, which is not worth it for one strip.
+const ENABLE_TRIP_PLANNER = import.meta.env.VITE_ENABLE_TRIP_PLANNER?.trim() !== 'false';
 const ENABLE_USAGE_INSIGHTS = import.meta.env.DEV;
 const MOBILE_MAP_DAY_LIMIT = 5;
 
@@ -6121,18 +6131,32 @@ export const App: React.FC = () => {
 
       {/* Multi-day planner — sits right under today's picks, where someone who
           has just seen "today" naturally wonders about the rest of their stay.
-          Info-only regions have no ranking at all, so it stays out of those. */}
-      {selectedIsland && forecast && forecast.length > 0 && !isUnsafeWinter && !isInfoOnlyRegion && selectedIsland.beaches.length > 0 && (
+          Info-only regions have no ranking at all, so it stays out of those.
+          Near-me is excluded: there the area forecast is the GPS point while
+          every card reads its own home region — planning across 14 regions'
+          forecasts is a feature, not a guard. Geometry must be loaded first
+          (!isMapExposureLoading) or the pool's cove/shelter arms are empty and
+          the plan visibly changes under the user a second later. The key resets
+          the chosen day count on region switch — no silent recompute for a
+          different island. */}
+      {ENABLE_TRIP_PLANNER && selectedIsland && selectedIsland.id !== NEAR_ME_REGION_ID && forecast && forecast.length > 0 && !isUnsafeWinter && !isInfoOnlyRegion && !isMapExposureLoading && selectedIsland.beaches.length > 0 && (
         <div className="relative z-20 pb-3 pt-1 sm:pb-4">
-          <TripPlanner
-            beaches={selectedIsland.beaches}
-            forecast={forecast}
-            language={language}
-            regionId={String(selectedIsland.id)}
-            preferences={preferences}
-            geospatialProfiles={geospatialExposureProfiles}
-            onBeachClick={(beach) => openBeachDetails(beach, 'trip_planner')}
-          />
+          {/* Fixed-height fallback: the strip sits between today's picks and the
+              recommendations, so a late chunk must not push content down. */}
+          <Suspense fallback={<div className="mx-auto w-full max-w-6xl px-3 sm:px-4"><div className="min-h-[4.5rem] rounded-2xl border border-white/70 bg-white/72" /></div>}>
+            <TripPlanner
+              key={String(selectedIsland.id)}
+              beaches={selectedIsland.beaches}
+              forecast={forecast}
+              language={language}
+              regionId={String(selectedIsland.id)}
+              preferences={preferences}
+              geospatialProfiles={geospatialExposureProfiles}
+              todayRainBlocked={isRainBlockedBeachWindow}
+              userLocation={userLocation}
+              onBeachClick={(beach) => openBeachDetails(beach, 'trip_planner')}
+            />
+          </Suspense>
         </div>
       )}
 

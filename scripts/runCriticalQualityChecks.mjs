@@ -40,6 +40,15 @@ const checks = [
     args: ['scripts/validateRecommendationScenarios.mjs'],
   },
   {
+    id: 'planner-agreement',
+    title: 'Trip planner agreement',
+    description: 'Runs planTrip over real regions with 6-day rotating-wind forecasts: no pick outside the podium safety gate, no unbacked shelter claim, order-invariance, policy filters, Beaufort ceiling.',
+    protects: 'Prevents the trip planner from naming a beach the homepage refuses, claiming shelter without evidence, or picking by JSON file order.',
+    failureAction: 'Review tripPlannerService gates/ranking against services/topPickRanking and the assertions in scripts/validatePlannerAgreement.mjs.',
+    command: process.execPath,
+    args: ['scripts/validatePlannerAgreement.mjs', '--strict'],
+  },
+  {
     id: 'content-audit',
     title: 'Static content safety audit',
     description: 'Scans static copy and generated beach data for risky wording like guaranteed calm, protected, safe, ideal, or no-wave claims.',
