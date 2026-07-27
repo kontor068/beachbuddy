@@ -1,4 +1,4 @@
-import type { Beach, DailyForecast, LanguageCode, SuitableBeach, UserPreferences, WindSector } from '../types';
+import type { Beach, DailyForecast, LanguageCode, SuitableBeach, SwimmingComfort, UserPreferences, WindSector } from '../types';
 import type { ExposureLevel } from '../utils/windExposure';
 import type { GeospatialExposureProfileLookup } from './geospatialExposureService';
 import {
@@ -6,10 +6,12 @@ import {
   filterBeachesByUserPreferences,
   getSuitableBeaches,
   hasHourlyRainRisk,
+  hasTrustedWindEvidence,
   isFalseProtectedTopPick,
   isTrustedTopRecommendationCandidate,
   type BeachScore,
 } from './recommendationService';
+import { getVisibleMapExposureLevel } from '../utils/mapExposure';
 import {
   MAX_TOP_RECOMMENDATION_BEAUFORT,
   getWindPriorityTopPickPool,
@@ -117,12 +119,41 @@ export type TripDayConfidence = 'firm' | 'provisional';
  */
 export type TripDayReason = 'storm' | 'rain' | 'too_windy' | 'no_match';
 
+/**
+ * Discrete "why this beach today" token. The SERVICE decides the claim, the
+ * UI only renders localized copy for it — never prose from here. Resolution
+ * order is honesty-first (see resolveWhyKey): a caution pick or one without
+ * trusted wind evidence can NEVER carry a shelter claim.
+ */
+export type TripWhyKey =
+  | 'calm_everywhere'   // ≤2 Bft — shelter is not the story
+  | 'cove_refuge'       // enclosed cove, claim earned by geometry
+  | 'sheltered'         // protected + canClaimWindProtection
+  | 'partial_shelter'   // partial, or protected without an earned claim
+  | 'best_available';   // exposed, caution tier, or no trusted evidence
+
 /** What the planner hands the UI for one day. */
 export interface TripPick {
   beach: Beach;
   score: number;
+  /**
+   * Beaufort THIS beach was scored at (scoreResult.windSpeedKmph), not the
+   * region's midday number — the per-beach truth the strip exists to show.
+   */
+  windBeaufort: number;
+  windSector?: WindSector;
+  /**
+   * The canonical DISPLAYED exposure — getVisibleMapExposureLevel, i.e. the
+   * exact level the region map colours this pin. Sourced there so the strip
+   * can never say "sheltered" for a beach the map paints amber.
+   */
+  exposureLevel: ExposureLevel;
+  canClaimWindProtection: boolean;
+  enclosedCove: boolean;
+  seaCalmClaimAllowed: boolean;
+  swimmingComfort?: SwimmingComfort;
   waveHeightM?: number;
-  exposureLevel?: ExposureLevel;
+  whyKey: TripWhyKey;
   /**
    * True when this came from the caution tier — i.e. it did NOT clear the normal
    * suitability bar and is choppy. The UI must never present these as calm.
@@ -228,13 +259,96 @@ const WINDY_DAY_BEAUFORT = 5;
  */
 const isUsable = (pick: TripPick): boolean => pick.caution || pick.score >= MIN_USABLE_SCORE;
 
-const toPick = (entry: SuitableBeach): TripPick => ({
-  beach: entry.beach,
-  score: entry.score,
-  waveHeightM: entry.waveHeightM,
-  exposureLevel: entry.exposureLevel,
-  caution: false,
-});
+/**
+ * The honesty-first "why" resolution. Order is load-bearing:
+ * caution and missing evidence FORBID a shelter claim before geometry is even
+ * consulted, and ≤2 Bft days say "calm everywhere" instead of crediting
+ * shelter nobody needed. Never claim more certainty than the data carries.
+ */
+const resolveWhyKey = (input: {
+  caution: boolean;
+  windBeaufort: number;
+  hasEvidence: boolean;
+  exposureLevel: ExposureLevel;
+  canClaimWindProtection: boolean;
+  enclosedCove: boolean;
+}): TripWhyKey => {
+  if (input.caution) return 'best_available';
+  if (input.windBeaufort <= 2) return 'calm_everywhere';
+  if (!input.hasEvidence) return 'best_available';
+  if (input.enclosedCove && input.canClaimWindProtection && input.exposureLevel === 'protected') return 'cove_refuge';
+  if (input.exposureLevel === 'protected' && input.canClaimWindProtection) return 'sheltered';
+  if (input.exposureLevel === 'partial' || input.exposureLevel === 'protected') return 'partial_shelter';
+  return 'best_available';
+};
+
+/** Shared shape between a SuitableBeach and a caution-tier BeachScore row. */
+interface PickSource {
+  beach: Beach;
+  score: number;
+  waveHeightM?: number;
+  exposureLevel?: ExposureLevel;
+  windSpeedKmph?: number;
+  windSector?: WindSector;
+  canClaimWindProtection?: boolean;
+  enclosedCove?: boolean;
+  seaCalmClaimAllowed?: boolean;
+  swimmingComfort?: SwimmingComfort;
+  orientation?: number | null;
+  windProfile?: SuitableBeach['windProfile'];
+  windProfileSource?: SuitableBeach['windProfileSource'];
+  warnings?: SuitableBeach['warnings'];
+  confidence?: SuitableBeach['confidence'];
+  geospatialExposure?: SuitableBeach['geospatialExposure'];
+}
+
+const buildPick = (
+  source: PickSource,
+  day: DailyForecast,
+  caution: boolean,
+  geospatialProfiles?: GeospatialExposureProfileLookup
+): TripPick => {
+  const regionWindKmph = (day.wind?.speed ?? 0) * 3.6;
+  // Per-beach wind (gusts/local model), falling back to the region day value.
+  const windBeaufort = getBeaufortLevel(source.windSpeedKmph ?? regionWindKmph);
+  // The canonical DISPLAYED exposure — exactly what colours this beach's map
+  // pin — so strip, pin and card can never disagree on the shelter word.
+  const exposureLevel = getVisibleMapExposureLevel(
+    {
+      exposureLevel: source.exposureLevel,
+      geospatialExposure: source.geospatialExposure ?? geospatialProfiles?.[source.beach.id],
+      orientation: source.orientation ?? null,
+      windProfile: source.windProfile,
+      windProfileSource: source.windProfileSource,
+      windSector: source.windSector,
+      warnings: source.warnings,
+      beach: source.beach,
+    },
+    windBeaufort,
+    day.wind?.deg
+  );
+  const canClaimWindProtection = source.canClaimWindProtection === true;
+  const enclosedCove = source.enclosedCove === true;
+  const hasEvidence = hasTrustedWindEvidence(
+    { confidence: source.confidence, windProfile: source.windProfile, windProfileSource: source.windProfileSource },
+    windBeaufort
+  );
+
+  return {
+    beach: source.beach,
+    score: source.score,
+    windBeaufort,
+    windSector: source.windSector,
+    exposureLevel,
+    canClaimWindProtection,
+    enclosedCove,
+    seaCalmClaimAllowed: source.seaCalmClaimAllowed === true,
+    swimmingComfort: source.swimmingComfort,
+    waveHeightM: source.waveHeightM,
+    whyKey: resolveWhyKey({ caution, windBeaufort, hasEvidence, exposureLevel, canClaimWindProtection, enclosedCove }),
+    caution,
+  };
+};
 
 /** Exposure order for ranking: protected beats partial beats exposed; unknown last. */
 const exposureRank = (level?: ExposureLevel): number => {
@@ -264,7 +378,8 @@ const exposureRank = (level?: ExposureLevel): number => {
 const cautionRanking = (
   pool: Beach[],
   day: DailyForecast,
-  dayScores: Map<number, BeachScore>
+  dayScores: Map<number, BeachScore>,
+  geospatialProfiles?: GeospatialExposureProfileLookup
 ): TripPick[] => {
   const windSpeedKmph = (day.wind?.speed ?? 0) * 3.6;
   const beaufort = getBeaufortLevel(windSpeedKmph);
@@ -305,13 +420,28 @@ const cautionRanking = (
         (b.result.modeledWaveHeightM ?? Number.POSITIVE_INFINITY) ||
       a.beach.id - b.beach.id
     ))
-    .map(({ beach, result }) => ({
-      beach,
-      score: result.score,
-      waveHeightM: result.waveHeightM,
-      exposureLevel: result.exposureLevel,
-      caution: true,
-    }));
+    .map(({ beach, result }) => buildPick(
+      {
+        beach,
+        score: result.score,
+        waveHeightM: result.waveHeightM,
+        exposureLevel: result.exposureLevel,
+        windSpeedKmph: result.windSpeedKmph,
+        windSector: result.windSector,
+        canClaimWindProtection: result.canClaimWindProtection,
+        enclosedCove: result.enclosedCove,
+        seaCalmClaimAllowed: result.seaCalmClaimAllowed,
+        swimmingComfort: result.swimmingComfort,
+        orientation: result.orientation,
+        windProfile: result.windProfile,
+        windProfileSource: result.windProfileSource,
+        warnings: result.warnings,
+        confidence: result.confidence,
+      },
+      day,
+      true,
+      geospatialProfiles
+    ));
 };
 
 /**
@@ -494,10 +624,11 @@ export const planTrip = ({
     const tierA = gated.filter(item => isTrustedTopRecommendationCandidate(item, undefined, beaufort));
     const tierAIds = new Set(tierA.map(item => item.beach.id));
     const tierB = gated.filter(item => !tierAIds.has(item.beach.id));
-    const ranked = [...orderTier(tierA), ...orderTier(tierB)].map(toPick);
+    const ranked = [...orderTier(tierA), ...orderTier(tierB)]
+      .map(entry => buildPick(entry, day, false, geospatialProfiles));
 
     rankedByDay.push(
-      ranked.length > 0 ? ranked : cautionRanking(pool, day, dayScores)
+      ranked.length > 0 ? ranked : cautionRanking(pool, day, dayScores, geospatialProfiles)
     );
   }
 

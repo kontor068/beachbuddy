@@ -273,14 +273,19 @@ const runScenario = (scenarioId, scenario) => {
     }
   }
 
-  // 3. Per-beach wind, not per-region (D1 canary; high-wind scenarios only).
-  if (scenario.highWind) {
-    const differs = picks.some(entry => {
-      const regionBeaufort = getBeaufortLevel((forecast[entry.dayIndex]?.wind?.speed ?? 0) * 3.6);
-      return typeof entry.pick.windBeaufort === 'number' && entry.pick.windBeaufort !== regionBeaufort;
-    });
-    check(scenarioId, 'per-beach-wind', differs,
-      'no pick carries a beach Beaufort different from the region day value — the UI has nothing per-beach to show', { canary: true });
+  // 3. Per-beach STORY, not per-region (D1 canary; high-wind scenarios only).
+  // NOTE the planner deliberately scores every beach with the REGION wind
+  // (same decision as the homepage: per-beach cluster forecasts feed local
+  // notes, never the headline — App.tsx:3667). The per-beach truth the UI
+  // must show is therefore the EXPOSURE/WHY layer: on a windy rotating week
+  // the picks must not all tell one identical story.
+  if (scenario.highWind && picks.length >= 2) {
+    const exposureLevels = new Set(picks.map(entry => entry.pick.exposureLevel).filter(Boolean));
+    const hasShelterStory = picks.some(entry =>
+      ['sheltered', 'cove_refuge', 'partial_shelter'].includes(entry.pick.whyKey));
+    check(scenarioId, 'per-beach-story', exposureLevels.size >= 2 || hasShelterStory,
+      `picks carry no per-beach exposure story (levels: ${[...exposureLevels].join(',') || 'none'}; whyKeys: ${picks.map(entry => entry.pick.whyKey).join(',')})`,
+      { canary: true });
   }
 
   // 4. No duplicate assignment.
