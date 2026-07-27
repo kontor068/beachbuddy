@@ -40,6 +40,15 @@ const checks = [
     args: ['scripts/validateRecommendationScenarios.mjs'],
   },
   {
+    id: 'trip-query-parsing',
+    title: 'Trip query parsing',
+    description: 'Parses free-text trip sentences ("θα μείνω Νάξο για 5 μέρες") over the real region list: recall in 5 languages, precision against dates/quantities/beach names with numerals, a stopword sweep, order invariance, and every region resolving from its own name.',
+    protects: 'Prevents the search box from sending someone to the wrong island, inventing a day count from a date or a beach name, or matching a region on a stopword like «θα» (which scored 92 against Θάσος).',
+    failureAction: 'Review utils/tripQueryParser.ts token tables and score thresholds. Never lower a threshold to make one sentence work — add the token to the tables instead.',
+    command: process.execPath,
+    args: ['scripts/validateTripQueryParsing.mjs'],
+  },
+  {
     id: 'planner-agreement',
     title: 'Trip planner agreement',
     description: 'Runs planTrip over real regions with 6-day rotating-wind forecasts: no pick outside the podium safety gate, no unbacked shelter claim, order-invariance, policy filters, Beaufort ceiling.',
