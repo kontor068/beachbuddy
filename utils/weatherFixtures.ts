@@ -10,6 +10,13 @@ export interface WeatherFixtureDay {
   windGustMs: number;
   waveHeightM: number;
   waveDirectionDeg: number;
+  /**
+   * Optional per-hour wind (m/s). Every other fixture holds one speed from
+   * 08:00 to 20:00, which cannot exercise anything that depends on the wind
+   * CHANGING through the day — the planner's best-time window, the afternoon
+   * build escalation, the hour slider. Give this to test those.
+   */
+  hourlyWindMs?: (hour: number) => number;
 }
 
 export interface WeatherFixtureScenario {
@@ -24,6 +31,9 @@ export interface WeatherFixtureScenario {
   /** Optional per-day rotation; day N uses days[N], falling back to the base
    *  fields above when absent. DEV/localhost fixtures only — never production. */
   days?: WeatherFixtureDay[];
+  /** Base-level per-hour wind, and the merged value resolveFixtureDay produces
+   *  when the chosen day carries one. See WeatherFixtureDay.hourlyWindMs. */
+  hourlyWindMs?: (hour: number) => number;
 }
 
 /** The trip's day-N conditions: the per-day override when present, else the base. */
@@ -164,6 +174,27 @@ const SCENARIOS: Record<string, WeatherFixtureScenario> = {
   },
   // Trip-planner rotations: base fields = day 0, so non-planner surfaces (current
   // conditions, header) stay coherent with the plan's first day.
+  // Quiet morning, meltemi filling in after lunch — the only shape here where
+  // the HOUR of the visit matters, and the one that exercises the planner's
+  // best-time window ("better 10:00-14:00, it freshens after that").
+  Naxos_AFTERNOON_BUILD: {
+    id: 'Naxos_AFTERNOON_BUILD',
+    label: 'Naxos - calm morning, afternoon meltemi (best-time window)',
+    targetRegionId: 'south-aegean-naxos',
+    windDirectionDeg: 0,
+    windSpeedMs: 9.0,
+    windGustMs: 12.0,
+    waveHeightM: 0.5,
+    waveDirectionDeg: 0,
+    days: Array.from({ length: 6 }, () => ({
+      windDirectionDeg: 0,
+      windSpeedMs: 9.0,
+      windGustMs: 12.0,
+      waveHeightM: 0.5,
+      waveDirectionDeg: 0,
+      hourlyWindMs: (hour: number) => (hour <= 12 ? 3.2 : 9.0),
+    })),
+  },
   Naxos_MELTEMI_WEEK: {
     id: 'Naxos_MELTEMI_WEEK',
     label: 'Naxos - rotating meltemi week (N5, N6, NE4, S3, SW4, N5)',
@@ -220,10 +251,14 @@ const createForecastItem = (date: Date, hour: number, scenario: WeatherFixtureSc
     },
     weather: [{ id: 800, main: 'Clear', description: 'clear sky', icon: '01d' }],
     clouds: { all: 5 },
+    // Per-hour wind when the fixture defines a shape (WeatherFixtureDay
+    // .hourlyWindMs), flat otherwise — so a fixture can exercise anything that
+    // depends on the wind changing through the day (best-time window, the
+    // afternoon build, the hour slider).
     wind: {
-      speed: scenario.windSpeedMs,
+      speed: scenario.hourlyWindMs ? scenario.hourlyWindMs(hour) : scenario.windSpeedMs,
       deg: scenario.windDirectionDeg,
-      gust: scenario.windGustMs,
+      gust: (scenario.hourlyWindMs ? scenario.hourlyWindMs(hour) : scenario.windSpeedMs) * 1.35,
     },
     visibility: 10000,
     pop: 0,

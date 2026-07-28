@@ -3,6 +3,7 @@ import type { ExposureLevel } from '../utils/windExposure';
 import type { GeospatialExposureProfileLookup } from './geospatialExposureService';
 import {
   calculateBeachScore,
+  calculateBestBeachTime,
   filterBeachesByUserPreferences,
   getSuitableBeaches,
   hasHourlyRainRisk,
@@ -29,6 +30,7 @@ import {
   resolveBeachWindProfile,
   windSectorFromDegrees,
 } from '../utils/windExposureEngine';
+import { onshoreComponent } from '../utils/geospatialExposureModel';
 import { getBeaufortLevel } from '../utils/weatherUtils';
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -116,6 +118,13 @@ const CAUTION_MAX_BEAUFORT = MAX_TOP_RECOMMENDATION_BEAUFORT;
 /** Whole-day wind at which we stop calling it a beach day at all. */
 const STORM_BEAUFORT = 8;
 
+/**
+ * Above this onshore component the wind is blowing ONTO the beach and floats
+ * get pushed back to the sand, so there is nothing to warn about. Copied from
+ * the detail page's cove card so the two surfaces cannot disagree.
+ */
+const OFFSHORE_DRIFT_ONSHORE_MAX = 0.15;
+
 export type TripDayStatus = 'beach' | 'no_beach_day';
 export type TripDayConfidence = 'firm' | 'provisional';
 
@@ -161,6 +170,52 @@ export interface TripPick {
   swimmingComfort?: SwimmingComfort;
   waveHeightM?: number;
   whyKey: TripWhyKey;
+  /**
+   * The wind at this beach is NOT blowing onto the shore while it blows hard —
+   * i.e. the flat water we are sending someone to is flat because the wind
+   * comes over the land and pushes out to sea.
+   *
+   * WHY THIS IS ITS OWN FLAG (researched 2026-07-29). It is the one hazard a
+   * shelter recommendation actively creates. A cove earns "protected" precisely
+   * by having the land between it and the wind, so the residual surface flow
+   * runs offshore, and the water looks its most inviting exactly then. This is
+   * a named, standardised beach hazard, not our own theory: ISO 20712-2 and ILS
+   * LPS-14 give it a dedicated signal (the orange windsock) whose sole meaning
+   * is "offshore wind — no inflatables", and the RNLI's standing advice is that
+   * such a wind takes a float out faster than its occupant can paddle back.
+   * The physics agrees: search-and-rescue leeway coefficients put an undrogued
+   * inflatable at ~3% of wind speed (~0.36 m/s at 6 Bft) against a casual
+   * swimmer's 0.5-0.8 m/s — for a child, the float wins.
+   *
+   * The beach detail page has warned about this since the cove card shipped
+   * (components/CoveConditionsCard.tsx, onshore < 0.15 && >= 4 Bft). The
+   * planner did not, and the planner is the surface a visitor reads as THE
+   * plan — so it said "sheltered cove" and stopped there. Same condition, one
+   * Beaufort stricter, because the planner must not carry caution wording at
+   * 4 Bft (project copy doctrine).
+   */
+  offshoreDrift: boolean;
+  /**
+   * The useful window BEFORE the wind gets up, as clock strings ("10:00",
+   * "13:00"). Absent when there is nothing to say.
+   *
+   * Not a new mechanism: this is calculateBestBeachTime
+   * (services/recommendationService.ts), the same helper the beach detail page
+   * and the top picks already use. It walks the 10:00-18:00 window, finds the
+   * first hour the wind reaches 4 Bft, and steps back to the start of the calm
+   * run before it. The planner was ALREADY receiving it on every tier-A pick
+   * (getSuitableBeaches computes it onto SuitableBeach.bestBeachTime) and
+   * dropping it on the floor.
+   *
+   * Two honesty gates come free with that helper and are the reason we can
+   * state a time at all: it returns undefined when the day never rises to
+   * 4 Bft (no rise, nothing to claim), and it requires the calm run to be at
+   * least 2 hours long, so it never produces a one-hour "window" out of noise.
+   * A day that is windy from 10:00 also returns undefined — correctly, since
+   * there is no better hour to point at.
+   */
+  bestTimeStart?: string;
+  bestTimeEnd?: string;
   /**
    * True when this came from the caution tier — i.e. it did NOT clear the normal
    * suitability bar and is choppy. The UI must never present these as calm.
@@ -307,6 +362,14 @@ interface PickSource {
   seaCalmClaimAllowed?: boolean;
   swimmingComfort?: SwimmingComfort;
   orientation?: number | null;
+  /**
+   * The real shoreline normal from the scoring pass (BeachScore.facingDeg) —
+   * NOT `orientation`, which is the stored per-beach value. The detail page's
+   * cove card reads facingDeg for exactly this computation, so reading anything
+   * else here would let the two surfaces disagree about which way the wind
+   * blows at the same beach on the same day.
+   */
+  facingDeg?: number | null;
   windProfile?: SuitableBeach['windProfile'];
   windProfileSource?: SuitableBeach['windProfileSource'];
   warnings?: SuitableBeach['warnings'];
@@ -346,6 +409,25 @@ const buildPick = (
     windBeaufort
   );
 
+  // Offshore drift (see TripPick.offshoreDrift). Same two inputs and the same
+  // 0.15 onshore threshold the detail page's cove card uses; one Beaufort
+  // stricter because the planner may not sound cautionary at 4 Bft. Requires a
+  // real facing — with no shoreline normal we do not know which way the wind
+  // crosses this beach, and a safety line must never be guessed.
+  const facingDeg = source.facingDeg;
+  const onshore = typeof facingDeg === 'number' && Number.isFinite(facingDeg) && typeof day.wind?.deg === 'number'
+    ? onshoreComponent(day.wind.deg, facingDeg)
+    : undefined;
+  const offshoreDrift = windBeaufort >= 5
+    && onshore !== undefined
+    && onshore < OFFSHORE_DRIFT_ONSHORE_MAX;
+
+  // The useful window before the wind gets up (see TripPick.bestTimeStart).
+  // Computed here for BOTH tiers rather than read off the tier-A source: the
+  // caution tier never goes through getSuitableBeaches, and one call site means
+  // the two tiers can never disagree about the same beach on the same day.
+  const bestTime = calculateBestBeachTime(day.hourly ?? [], source.beach);
+
   return {
     beach: source.beach,
     score: source.score,
@@ -359,6 +441,9 @@ const buildPick = (
     waveHeightM: source.waveHeightM,
     whyKey: resolveWhyKey({ caution, windBeaufort, hasEvidence, exposureLevel, canClaimWindProtection, enclosedCove }),
     caution,
+    offshoreDrift,
+    bestTimeStart: bestTime?.bestStart,
+    bestTimeEnd: bestTime?.bestEnd,
   };
 };
 
@@ -474,6 +559,7 @@ const cautionRanking = (
         seaCalmClaimAllowed: result.seaCalmClaimAllowed,
         swimmingComfort: result.swimmingComfort,
         orientation: result.orientation,
+        facingDeg: result.facingDeg,
         windProfile: result.windProfile,
         windProfileSource: result.windProfileSource,
         warnings: result.warnings,
@@ -665,8 +751,16 @@ export const planTrip = ({
     const tierA = gated.filter(item => isTrustedTopRecommendationCandidate(item, undefined, beaufort));
     const tierAIds = new Set(tierA.map(item => item.beach.id));
     const tierB = gated.filter(item => !tierAIds.has(item.beach.id));
+    // facingDeg lives on the BeachScore, not on SuitableBeach, and the offshore
+    // read must use the same shoreline normal the scoring pass did — so it is
+    // taken from the shared dayScores rather than re-derived here.
     const ranked = [...orderTier(tierA), ...orderTier(tierB)]
-      .map(entry => buildPick(entry, day, false, geospatialProfiles));
+      .map(entry => buildPick(
+        { ...entry, facingDeg: dayScores.get(entry.beach.id)?.facingDeg ?? null },
+        day,
+        false,
+        geospatialProfiles
+      ));
 
     rankedByDay.push(
       ranked.length > 0 ? ranked : cautionRanking(pool, day, dayScores, geospatialProfiles)

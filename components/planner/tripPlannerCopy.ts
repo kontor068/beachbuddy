@@ -58,6 +58,26 @@ export type TripPlannerCopy = {
   refugeBadge: string;
   /** One-line footnote explaining what a refuge day is. */
   refugeNote: string;
+  /**
+   * The offshore-drift note (TripPick.offshoreDrift). The one hazard a shelter
+   * recommendation creates rather than avoids: the water is flat because the
+   * wind comes off the land, and it takes floats out with it. Wording follows
+   * the beach page's cove card and the international signal it mirrors (ISO
+   * 20712-2 / ILS LPS-14 orange windsock: "offshore wind — no inflatables").
+   * States the fact and the action; no alarm, no "danger".
+   */
+  offshoreDriftNote: string;
+  /**
+   * The useful window before the wind gets up (TripPick.bestTimeStart/End).
+   * Shown only when there IS one — calculateBestBeachTime returns nothing on a
+   * day that never rises to 4 Bft, and nothing on a day that is already windy
+   * at 10:00, because on neither is there a better hour to point at.
+   *
+   * Descriptive, never cautionary: it says the wind freshens, which is a fact
+   * about the wind, not a warning about the sea. That distinction is what lets
+   * this line exist below 5 Bft at all, where caution wording is forbidden.
+   */
+  bestTime: (start: string, end: string) => string;
   /** The plan follows the forecast — say so instead of pretending stability. */
   planUpdatesDaily: string;
   /** "from the north" etc. — adverbial, slots into the why sentences. */
@@ -103,6 +123,8 @@ export const tripPlannerCopy: Record<LanguageCode, TripPlannerCopy> = {
     cautionNote: 'Οι μέρες «με κύμα» δεν είναι ήρεμες — είναι η καλύτερη επιλογή μιας δύσκολης μέρας. Θέλει άνεση στο κολύμπι.',
     refugeBadge: 'απάγκιο',
     refugeNote: 'Όπου καμία από τις γνωστές παραλίες δεν κάνει με τον άνεμο της μέρας, προτείνεται ένα προστατευμένο απάγκιο εκτός λίστας.',
+    offshoreDriftNote: 'Στα απάγκια ο αέρας φυσάει από τη στεριά προς τα ανοιχτά: το νερό μένει ήρεμο, αλλά φουσκωτά, στρώματα και SUP παρασύρονται μακριά από την ακτή. Κράτα τα παιδιά κοντά.',
+    bestTime: (start, end) => `Καλύτερα ${start}–${end} — μετά φρεσκάρει ο αέρας.`,
     planUpdatesDaily: 'Το πλάνο ξαναϋπολογίζεται κάθε μέρα με τη νέα πρόγνωση — οι μακρινές μέρες μπορεί να αλλάξουν.',
     windFrom: {
       N: 'από βορρά', NE: 'από βορειοανατολικά', E: 'από ανατολικά', SE: 'από νοτιοανατολικά',
@@ -151,6 +173,8 @@ export const tripPlannerCopy: Record<LanguageCode, TripPlannerCopy> = {
     cautionNote: 'A “choppy” day is not a calm one — it is the best of a hard day, and it wants a confident swimmer.',
     refugeBadge: 'wind refuge',
     refugeNote: 'When none of the well-known beaches works with the day’s wind, a sheltered refuge from outside the list steps in.',
+    offshoreDriftNote: 'At a wind refuge the wind blows off the land: the water stays flat, but inflatables, airbeds and SUPs are carried away from shore. Keep children close in.',
+    bestTime: (start, end) => `Best ${start}–${end} — the wind freshens after that.`,
     planUpdatesDaily: 'The plan is recalculated every day with the fresh forecast — the later days can change.',
     windFrom: {
       N: 'from the north', NE: 'from the northeast', E: 'from the east', SE: 'from the southeast',
@@ -195,6 +219,8 @@ export const tripPlannerCopy: Record<LanguageCode, TripPlannerCopy> = {
     cautionNote: 'Ein „kabbeliger“ Tag ist kein ruhiger — er ist die beste Option eines schwierigen Tages und verlangt sicheres Schwimmen.',
     refugeBadge: 'Windschutz',
     refugeNote: 'Wenn keiner der bekannten Strände zum Wind des Tages passt, springt ein geschützter Platz außerhalb der Liste ein.',
+    offshoreDriftNote: 'Im Windschutz weht der Wind ablandig: Das Wasser bleibt flach, aber Luftmatratzen, Schwimmtiere und SUPs treiben vom Ufer weg. Halte Kinder nah bei dir.',
+    bestTime: (start, end) => `Am besten ${start}–${end} — danach frischt der Wind auf.`,
     planUpdatesDaily: 'Der Plan wird jeden Tag mit der frischen Vorhersage neu berechnet — die späteren Tage können sich ändern.',
     windFrom: {
       N: 'aus Norden', NE: 'aus Nordosten', E: 'aus Osten', SE: 'aus Südosten',
@@ -239,6 +265,8 @@ export const tripPlannerCopy: Record<LanguageCode, TripPlannerCopy> = {
     cautionNote: 'Un giorno «mosso» non è un giorno calmo — è la scelta migliore di una giornata difficile, e richiede sicurezza nel nuoto.',
     refugeBadge: 'riparo dal vento',
     refugeNote: 'Quando nessuna delle spiagge note funziona con il vento del giorno, entra un riparo protetto fuori lista.',
+    offshoreDriftNote: "Nei ripari il vento soffia da terra verso il largo: l'acqua resta calma, ma gonfiabili, materassini e SUP vengono portati via dalla riva. Tieni i bambini vicino.",
+    bestTime: (start, end) => `Meglio ${start}–${end} — dopo il vento rinforza.`,
     planUpdatesDaily: 'Il piano viene ricalcolato ogni giorno con la previsione aggiornata — i giorni più lontani possono cambiare.',
     windFrom: {
       N: 'da nord', NE: 'da nord-est', E: 'da est', SE: 'da sud-est',
@@ -283,6 +311,8 @@ export const tripPlannerCopy: Record<LanguageCode, TripPlannerCopy> = {
     cautionNote: "Une journée « agitée » n'est pas une journée calme — c'est la meilleure option d'une journée difficile, pour un nageur à l'aise.",
     refugeBadge: 'abri du vent',
     refugeNote: "Quand aucune des plages connues ne convient au vent du jour, un abri protégé hors liste prend le relais.",
+    offshoreDriftNote: "Dans un abri, le vent souffle de la terre vers le large : l'eau reste plate, mais bouées, matelas et paddles sont emportés au loin. Gardez les enfants près du bord.",
+    bestTime: (start, end) => `Mieux ${start}–${end} — le vent forcit ensuite.`,
     planUpdatesDaily: 'Le plan est recalculé chaque jour avec la prévision fraîche — les jours lointains peuvent changer.',
     windFrom: {
       N: 'du nord', NE: 'du nord-est', E: "de l'est", SE: 'du sud-est',

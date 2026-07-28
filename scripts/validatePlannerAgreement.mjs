@@ -72,6 +72,22 @@ const { isNaturistBeach } = require('../utils/naturistBeaches.ts');
 const D = (deg, ms, gust, wave) => ({
   windDirectionDeg: deg, windSpeedMs: ms, windGustMs: gust, waveHeightM: wave, waveDirectionDeg: deg,
 });
+
+/**
+ * A day whose wind CHANGES through the hours. Every other fixture here is flat
+ * — one wind speed repeated at 08:00 and at 18:00 — which is fine for the
+ * shelter assertions but makes the best-time window untestable: with no rise,
+ * calculateBestBeachTime correctly returns nothing, so a "window is backed"
+ * check over flat days passes without ever running. Measured: 0 of 18 picks
+ * across the three rotating-meltemi scenarios carried a window.
+ *
+ * `ms(hour)` is the real Aegean shape — quiet morning, meltemi filling in after
+ * lunch — which is exactly the case the feature exists for.
+ */
+const DH = (deg, msFn, wave) => ({
+  windDirectionDeg: deg, windSpeedMs: msFn(13), windGustMs: msFn(13) * 1.35,
+  waveHeightM: wave, waveDirectionDeg: deg, hourlyWindMs: msFn,
+});
 const MELTEMI_WEEK = [
   D(0, 9.5, 13.0, 1.4),   // N 5 Bft
   D(0, 12.5, 17.0, 2.0),  // N 6 Bft
@@ -116,6 +132,16 @@ const scenarios = {
     days: Array.from({ length: 6 }, () => D(0, 12.5, 17.0, 2.0)),
     highWind: true,
   },
+  // THE INTRADAY BUILD (added 2026-07-29 with the best-time window). Quiet
+  // morning, meltemi filling in after lunch — the only shape in this file where
+  // the hour of the visit actually matters, and therefore the only one that can
+  // exercise the window at all.
+  Naxos_AFTERNOON_BUILD: {
+    targetRegionId: 'south-aegean-naxos',
+    days: Array.from({ length: 6 }, () => DH(0, hour => (hour <= 12 ? 3.2 : 9.0), 0.5)),
+    highWind: false,
+    expectsBestTimeWindow: true,
+  },
 };
 
 // ─── Forecast construction (mirrors utils/weatherFixtures.ts shapes) ────────
@@ -130,7 +156,12 @@ const createForecastItem = (date, hour, day) => {
     main: { temp: hour < 10 || hour > 18 ? 23 : 26, temp_min: 22, temp_max: 26, pressure: 1014, sea_level: 1014, grnd_level: 1014, humidity: 58, temp_kf: 0 },
     weather: [{ id: 800, main: 'Clear', description: 'clear sky', icon: '01d' }],
     clouds: { all: 5 },
-    wind: { speed: day.windSpeedMs, deg: day.windDirectionDeg, gust: day.windGustMs },
+    // Per-hour wind when the fixture defines a shape (see DH); flat otherwise.
+    wind: {
+      speed: day.hourlyWindMs ? day.hourlyWindMs(hour) : day.windSpeedMs,
+      deg: day.windDirectionDeg,
+      gust: (day.hourlyWindMs ? day.hourlyWindMs(hour) : day.windSpeedMs) * 1.35,
+    },
     visibility: 10000,
     pop: 0,
     sys: { pod: 'd' },
@@ -362,6 +393,71 @@ const runScenario = (scenarioId, scenario) => {
       `naturist beaches surfaced: ${violations.join('; ')}`, { canary: true });
   }
 
+  // 9c. THE OFFSHORE-DRIFT LINE IS REACHABLE AND NEVER PREMATURE (29/07/2026).
+  //
+  // A shelter recommendation creates one hazard instead of avoiding it: the
+  // cove's water is flat BECAUSE the wind comes over the land, and an offshore
+  // wind carries floats out. ISO 20712-2 / ILS LPS-14 give that condition its
+  // own signal (the orange windsock, "no inflatables"); the beach page has
+  // warned about it since the cove card shipped, the planner did not until now.
+  //
+  // Two assertions, and the first one matters most: a safety line that quietly
+  // stops firing is worse than one that was never written, because the docs
+  // still claim it is there.
+  {
+    const beaufortOf = dayIndex => getBeaufortLevel((forecast[dayIndex].wind.speed ?? 0) * 3.6);
+    const premature = picks
+      .filter(entry => entry.pick.offshoreDrift && entry.pick.windBeaufort < 5)
+      .map(entry => `day ${entry.dayIndex} ${beachLabel(entry.pick.beach)} at ${entry.pick.windBeaufort} Bft`);
+    check(scenarioId, 'offshore-drift-never-below-5bft', premature.length === 0,
+      `drift note on a light-wind day: ${premature.join('; ')}`);
+
+    // Reachability, asserted only where it MUST fire: a sustained 6 Bft week
+    // whose picks are protected beaches is the definition of the case.
+    const strongDays = plan.filter(entry => entry.status === 'beach' && entry.pick && beaufortOf(entry.dayIndex) >= 6);
+    if (strongDays.length >= 3) {
+      const withNote = strongDays.filter(entry => entry.pick.offshoreDrift).length;
+      check(scenarioId, 'offshore-drift-reachable', withNote > 0,
+        `${strongDays.length} picks on 6+ Bft days and not one carries the drift note — the warning has stopped working`);
+    }
+  }
+
+  // 8c. The best-time window is a CLAIM about the day, so it must be backed.
+  {
+    const bad = [];
+    for (const entry of picks) {
+      const { bestTimeStart, bestTimeEnd } = entry.pick;
+      if (!bestTimeStart && !bestTimeEnd) continue;
+      const label = `day ${entry.dayIndex} ${beachLabel(entry.pick.beach)}`;
+      // Never half a window — a start with no end is not a claim, it is a bug.
+      if (!bestTimeStart || !bestTimeEnd) { bad.push(`${label}: half a window (${bestTimeStart}-${bestTimeEnd})`); continue; }
+      const toMinutes = value => {
+        const match = /^(\d{1,2}):(\d{2})$/.exec(value);
+        return match ? Number(match[1]) * 60 + Number(match[2]) : NaN;
+      };
+      const start = toMinutes(bestTimeStart);
+      const end = toMinutes(bestTimeEnd);
+      if (!Number.isFinite(start) || !Number.isFinite(end)) { bad.push(`${label}: unparseable ${bestTimeStart}-${bestTimeEnd}`); continue; }
+      // The helper's own contract: inside the 10:00-18:00 beach day, and at
+      // least two hours wide. A one-hour "best time" would be noise dressed up
+      // as advice.
+      if (start < 10 * 60 || end > 18 * 60) bad.push(`${label}: ${bestTimeStart}-${bestTimeEnd} outside the beach day`);
+      else if (end - start < 120) bad.push(`${label}: ${bestTimeStart}-${bestTimeEnd} is under 2h`);
+    }
+    check(scenarioId, 'best-time-window-is-backed', bad.length === 0,
+      `unbacked best-time windows: ${bad.join('; ')}`);
+
+    // Reachability. Without this the check above is DECORATION: every other
+    // fixture here holds one wind speed all day, so no window is ever produced
+    // and "no bad windows" passes vacuously. Asserted only on the scenario
+    // built to produce one.
+    if (scenario.expectsBestTimeWindow) {
+      const withWindow = picks.filter(entry => entry.pick.bestTimeStart).length;
+      check(scenarioId, 'best-time-window-reachable', withWindow > 0,
+        `${picks.length} picks on a morning-calm / afternoon-meltemi week and not one carries a window — the feature has stopped working`);
+    }
+  }
+
   // 9. Hard preference filters hold on every tier (D14 canary).
   {
     const preferences = { blueFlag2026: true };
@@ -426,6 +522,13 @@ if (reportMode) {
       confidence: entry.confidence,
       isRepeat: entry.isRepeat,
       pick: entry.pick ? entry.pick.beach.id : null,
+      // The safety-relevant flags travel with the decision. `pick` is a bare id,
+      // so anything read off `pick.<field>` in an ad-hoc measurement silently
+      // returns undefined — which is exactly how an offshore-drift count of
+      // "0" was believed for a while on 29/07 before the flag was measured
+      // against real TripPick objects instead.
+      pickOffshoreDrift: entry.pick ? Boolean(entry.pick.offshoreDrift) : null,
+      pickCaution: entry.pick ? Boolean(entry.pick.caution) : null,
       alternative: entry.alternative ? entry.alternative.beach.id : null,
     })),
   ]));

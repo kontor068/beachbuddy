@@ -2,6 +2,7 @@ import React, { useDeferredValue, useEffect, useMemo, useRef, useState } from 'r
 import {
   CalendarRange,
   ChevronRight,
+  Clock3,
   CloudLightning,
   CloudRain,
   Compass,
@@ -329,6 +330,10 @@ export const TripPlanner: React.FC<TripPlannerProps> = ({
   const hasProvisional = plan.some(entry => entry.confidence === 'provisional');
   const hasCaution = plan.some(entry => entry.pick?.caution && entry.pick.windBeaufort >= 5);
   const hasRefuge = plan.some(entry => entry.isRefuge);
+  // The offshore-drift note. Deliberately not per row: it is one physical fact
+  // about the days we sent someone to shelter, and repeating it under three
+  // rows would turn a safety line into wallpaper.
+  const hasOffshoreDrift = plan.some(entry => entry.pick?.offshoreDrift);
 
   // The day-count row. It is no longer the way IN — the plan is already on
   // screen — so it reads as an extension ("staying longer?") and sits under the
@@ -477,6 +482,19 @@ export const TripPlanner: React.FC<TripPlannerProps> = ({
                           {whyLine(entry, entry.pick)}
                         </p>
 
+                        {/* WHEN to go, on the days where the hour actually
+                            matters. A line rather than a badge: it is a
+                            sentence about the day, not a property of the beach,
+                            and the badge row below is already four pills wide
+                            on a hard day. Rendered only when the service found
+                            a real window — see TripPick.bestTimeStart. */}
+                        {entry.pick.bestTimeStart && entry.pick.bestTimeEnd && (
+                          <p className="mt-1 inline-flex items-center gap-1.5 text-[13px] font-bold leading-snug text-[#0369a1]">
+                            <Clock3 className="h-3.5 w-3.5 shrink-0" aria-hidden="true" />
+                            {c.bestTime(entry.pick.bestTimeStart, entry.pick.bestTimeEnd)}
+                          </p>
+                        )}
+
                         <div className="mt-1.5 flex flex-wrap items-center gap-1.5">
                           <span className={`${BADGE_BASE} bg-white/85 text-slate-700 ring-slate-200/90`}>
                             <Wind className="h-3 w-3 text-[#0284c7]" aria-hidden="true" />
@@ -557,6 +575,10 @@ export const TripPlanner: React.FC<TripPlannerProps> = ({
 
           {!isPlanning && days && plan.length > 0 && (
             <p className="mt-2.5 text-[12px] font-medium leading-relaxed text-slate-500">
+              {/* Offshore drift leads every other caveat: it is the only hazard
+                  this feature CREATES rather than avoids — we sent someone to
+                  flat water that is flat because the wind runs out to sea. */}
+              {hasOffshoreDrift && <span className="font-semibold text-orange-800">{c.offshoreDriftNote} </span>}
               {/* The caution caveat leads: it is the one that affects safety. */}
               {hasCaution && <span className="font-semibold text-orange-800">{c.cautionNote} </span>}
               {hasRefuge && <span>{c.refugeNote} </span>}
