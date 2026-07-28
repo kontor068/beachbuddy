@@ -7,7 +7,7 @@
 
 ## 2. Τι ξέρουμε ήδη ✅
 
-- ✅ **ΥΠΑΡΧΕΙ διαδικασία ελέγχου, και τρέχει αυτόματα.** *(Τα παλιά έγγραφα έλεγαν «καμία διαδικασία» — ήταν λάθος.)* `npm run quality:critical` → `scripts/runCriticalQualityChecks.mjs`, **12 έλεγχοι**:
+- ✅ **ΥΠΑΡΧΕΙ διαδικασία ελέγχου, και τρέχει αυτόματα.** *(Τα παλιά έγγραφα έλεγαν «καμία διαδικασία» — ήταν λάθος.)* `npm run quality:critical` → `scripts/runCriticalQualityChecks.mjs`, **13 έλεγχοι**:
 
   | # | Έλεγχος | Τι εγγυάται |
   |---|---|---|
@@ -22,7 +22,8 @@
   | 9 | athens-clock | απαγορεύει το ρολόι της συσκευής ως «τώρα» |
   | 10 | lint | `tsc --noEmit` |
   | 11 | build | πλήρες production build |
-  | 12 | seo:audit | prerender, sitemap, robots, canonicals, hreflang, structured data, budgets |
+  | 12 | **bundle-secrets** | το `vite.config.ts` δεν μπορεί να περάσει μυστικό στο bundle· σάρωση όλου του `dist/` για κλειδιά *(νέο 28/07)* |
+  | 13 | seo:audit | prerender, sitemap, robots, canonicals, hreflang, structured data, budgets |
 
 - ✅ **Τρέχει στο CI σε κάθε pull request και κάθε push στο main** — `.github/workflows/quality.yml`, με `CONTEXT=production`.
 - ✅ **Άλλα 9 εργαλεία ελέγχου εκτός πύλης** (report-only): `audit:beaches`, `audit:place-resolution`, `audit:wind-profile-evidence`, `validate:meltemi-matrix`, `validateWindExposureGroundTruth`, `validateGeospatialExposureProfiles`, `validateRegionMapStability`, `perf:audit`, `analytics:audit`.
@@ -32,24 +33,23 @@
 
 | # | Ερώτηση | Απάντηση |
 |---|---------|----------|
-| 1 | ~~Υπάρχουν automated tests;~~ | ✅ Ναι — 12 έλεγχοι στο CI |
+| 1 | ~~Υπάρχουν automated tests;~~ | ✅ Ναι — 13 έλεγχοι στο CI |
 | 2 | Έχεις δοκιμάσει σε iPhone Safari / Android Chrome σε πραγματικό δίκτυο νησιού; | ❓ |
 | 3 | Έχει αναφέρει χρήστης bug; Πού καταγράφηκε; | ❓ Βλ. 16 — έρχονται σε Telegram και δεν αποθηκεύονται πουθενά |
 
 ## 4. Ρίσκα / ανοιχτά θέματα
 
-- ⚠️ **Δεν υπάρχει test runner και ούτε ένα `*.test.ts` / `*.spec.ts` σε όλο το repo.** Το `@playwright/test` είναι εγκατεστημένο αλλά χρησιμοποιείται μόνο σαν βιβλιοθήκη scripting (screenshots, σταθερότητα χάρτη) — **δεν υπάρχει e2e σουίτα**. Ό,τι ελέγχεται, ελέγχεται από τα 12 scripts πάνω σε δεδομένα και build, όχι πάνω σε πραγματικό browser με χρήστη.
+- ⚠️ **Δεν υπάρχει test runner και ούτε ένα `*.test.ts` / `*.spec.ts` σε όλο το repo.** Το `@playwright/test` είναι εγκατεστημένο αλλά χρησιμοποιείται μόνο σαν βιβλιοθήκη scripting (screenshots, σταθερότητα χάρτη) — **δεν υπάρχει e2e σουίτα**. Ό,τι ελέγχεται, ελέγχεται από τα 13 scripts πάνω σε δεδομένα και build, όχι πάνω σε πραγματικό browser με χρήστη.
 - ⚠️ **Το «visual QA» δεν είναι visual regression.** Το `scripts/visualQa.mjs` βγάζει screenshots σε 2 αναλύσεις — **δεν συγκρίνει τίποτα με τίποτα** (μηδέν pixelmatch/snapshot). Αν χαλάσει η εμφάνιση, κανένας έλεγχος δεν κοκκινίζει. Επιπλέον ο φάκελος `reports/visual-qa/` είναι στο `.gitignore` (τα 29 που είναι στο git προϋπήρχαν του κανόνα).
 - ⚠️ **Κανένα error tracking για πραγματικούς χρήστες.** Το boundary κάνει `console.error` και τίποτα άλλο· δεν υπάρχει `window.onerror`, δεν φεύγει τίποτα προς τα έξω. **Ένα crash στο κινητό ενός τουρίστα δεν το μαθαίνεις ποτέ.**
-- ⚠️ **Αυτή τη στιγμή 5 από τους 12 ελέγχους δεν τρέχουν τοπικά** — λείπει το `typescript` από τα `node_modules`. Στο CI είναι εντάξει· στο μηχάνημά σου όχι.
 - 🟡 Το mobile ελέγχεται μόνο ως viewport 390px σε screenshot. Δεν υπάρχει δοκιμή σε αργό δίκτυο ή σε πραγματική συσκευή.
 
 ## 5. Επόμενα βήματα (πρόταση)
 
-1. **`npm install`** — να ξαναδουλέψει η πύλη τοπικά. 2 λεπτά, και σου επιστρέφει το δίχτυ.
-2. **Error tracking** (Sentry free tier αρκεί) συνδεδεμένο στο υπάρχον `RootErrorBoundary`. Είναι η μόνη κατηγορία σφάλματος που σήμερα είναι 100% αόρατη.
-3. Μία φορά: άνοιξε το site σε πραγματικό κινητό με 4G σε νησί και πέρνα 5 οθόνες. Το κοινό σου είναι ακριβώς εκεί.
+1. **Error tracking** (Sentry free tier αρκεί) συνδεδεμένο στο υπάρχον `RootErrorBoundary`. Είναι η μόνη κατηγορία σφάλματος που σήμερα είναι 100% αόρατη.
+2. Μία φορά: άνοιξε το site σε πραγματικό κινητό με 4G σε νησί και πέρνα 5 οθόνες. Το κοινό σου είναι ακριβώς εκεί.
 
 ## 6. Ιστορικό
 - 28/07/2026 — Δημιουργία εγγράφου
 - 28/07/2026 — Έλεγχος στον κώδικα: **ανατράπηκε το «δεν υπάρχει καμία διαδικασία ελέγχου»** — βρέθηκαν 12 έλεγχοι σε CI· ταυτόχρονα επιβεβαιώθηκε ότι δεν υπάρχει e2e σουίτα, ούτε visual regression, ούτε error tracking
+- 28/07/2026 — Προστέθηκε 13ος έλεγχος: `quality:bundle-secrets` (βλ. 15 · Security)

@@ -4,7 +4,19 @@ import react from '@vitejs/plugin-react';
 import tailwindcss from '@tailwindcss/vite';
 
 export default defineConfig(({ mode }) => {
-    const env = loadEnv(mode, '.', '');
+    // ONLY VITE_-prefixed variables, deliberately.
+    //
+    // This used to be loadEnv(mode, '.', '') — an empty prefix, which loads EVERY variable
+    // in the build environment, including server-only secrets. Combined with the `define`
+    // block that used to sit at the bottom of this file, any value of GEMINI_API_KEY set in
+    // the Netlify UI would have been written verbatim into the JavaScript every visitor
+    // downloads. Nothing leaked only because the variable happened to be empty.
+    //
+    // Keep the prefix. A secret that is never loaded here cannot be inlined by accident.
+    // If a build step genuinely needs a server-only value, read process.env inside that
+    // step — never through `env` and never through `define`.
+    // Guarded by: npm run quality:bundle-secrets (scripts/validateBundleSecrets.mjs).
+    const env = loadEnv(mode, '.', 'VITE_');
     const normalizeId = (id: string) => id.split(path.sep).join('/');
     const isProjectModule = (id: string) => !normalizeId(id).includes('/node_modules/');
     const isAnyProjectModule = (id: string, modules: string[]) => {
@@ -157,10 +169,16 @@ export default defineConfig(({ mode }) => {
           },
         },
       },
-      define: {
-        'process.env.API_KEY': JSON.stringify(env.GEMINI_API_KEY),
-        'process.env.GEMINI_API_KEY': JSON.stringify(env.GEMINI_API_KEY)
-      },
+      // NO `define` BLOCK HERE, ON PURPOSE.
+      //
+      // There was one, injecting process.env.API_KEY and process.env.GEMINI_API_KEY from an
+      // unprefixed GEMINI_API_KEY. Nothing in the app ever read either name (geminiService.ts
+      // reads import.meta.env.VITE_GEMINI_API_KEY), so it bought us nothing and would have
+      // published a real key the first time one was set in the Netlify build environment.
+      //
+      // `define` bypasses Vite's VITE_ safety prefix: whatever you put in it is substituted
+      // into the client bundle as a literal. If you ever need it, only for values that are
+      // already public.
       resolve: {
         alias: {
           '@': path.resolve(__dirname, '.'),

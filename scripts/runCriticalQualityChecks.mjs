@@ -129,6 +129,15 @@ const checks = [
     args: ['run', 'build'],
   },
   {
+    id: 'bundle-secrets',
+    title: 'Bundle secret guard',
+    description: 'Checks vite.config.ts still loads only VITE_-prefixed env vars and has no `define` block injecting environment values, then scans the built bundle for key-shaped literals (Google, OpenAI, GitHub, AWS, Slack, Telegram, PEM).',
+    protects: 'Prevents a server-side secret from being inlined into the JavaScript every visitor downloads. The config used to do exactly this: loadEnv with an empty prefix plus define(process.env.API_KEY) would have published GEMINI_API_KEY the first time it was set in Netlify. Nothing errors when this drifts — the key just ships.',
+    failureAction: "Restore loadEnv(mode, '.', 'VITE_') and remove the define block in vite.config.ts. If a key was found in dist/, revoke it first, then find what put it there.",
+    command: process.execPath,
+    args: ['scripts/validateBundleSecrets.mjs'],
+  },
+  {
     id: 'seo-audit',
     title: 'SEO prerender audit',
     description: 'Audits generated prerendered pages, sitemap, robots.txt, canonicals, hreflang links, structured data, internal links, image references, and SEO performance budgets.',
