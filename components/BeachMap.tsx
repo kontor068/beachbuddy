@@ -2663,7 +2663,12 @@ const BeachMap: React.FC<BeachMapProps> = ({
 
             return (
             <Marker
-              key={`${item.beachId}-${mapMode}-${mapExposureLevel}-${isTopPickMarker ? 'top' : 'base'}-${isHighlightedMarker ? 'active' : 'idle'}`}
+              // Deliberately excludes isTopPickMarker/isHighlightedMarker: those flip the
+              // instant a marker is hovered, and remounting the icon under a stationary
+              // cursor drops the native mouseover/mouseout the browser needs to ever fire
+              // mouseout again, sticking the hover card open. react-leaflet already applies
+              // icon changes via marker.setIcon() on prop update, so the visual still updates.
+              key={`${item.beachId}-${mapMode}-${mapExposureLevel}`}
               position={[markerCoordinate.lat, markerCoordinate.lon]}
               zIndexOffset={isHighlightedMarker ? 1000 : isTopPickMarker ? 700 : 0}
               icon={mapMode === 'recommendation'
