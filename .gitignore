@@ -28,7 +28,10 @@ __pycache__/
 # Local assistant/tooling caches and generated backups
 .cache/
 .tmp/
-.claude/
+# .claude/ is committed on purpose: it carries the calmbeach-team skill, which is
+# part of how this project is worked on. Only the machine-local bits stay ignored.
+.claude/settings.local.json
+.claude/scheduled_tasks.lock
 .continue/
 .codex/undo-*/
 migrated_prompt_history/
