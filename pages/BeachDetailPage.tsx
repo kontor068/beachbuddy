@@ -41,6 +41,7 @@ import { generateBeachExplanation as generateUiBeachExplanation } from '../utils
 import { describeSimpleWindSuitability, describeWindExposure } from '../utils/windExposureCopy';
 import type { ExposureLevel } from '../utils/windExposure';
 import { getLocalWindNote } from '../utils/localWindNote';
+import { WeatherDataAttribution } from '../components/WeatherDataAttribution';
 import { getBeachStory, type BeachStory } from '../data/beachStories';
 import { getIslandGuideLinks, getGuidesHubLink, GUIDES_HUB_LABEL } from '../utils/beachGuides';
 import {
@@ -1682,6 +1683,11 @@ export const BeachDetailPage: React.FC<BeachDetailPageProps> = ({
               <span>{localWindNote.text}</span>
             </p>
           )}
+          {/* This page bypasses the site footer entirely (App.tsx returns early for
+              view === 'detail', before <LegalFooter> renders — confirmed by reading the
+              render tree, not assumed), so it's the one surface needing its own copy of
+              the attribution the footer provides everywhere else. */}
+          <WeatherDataAttribution language={language} className="px-1 pt-1" />
         </section>
 
         {/* 1b. Swell-window router — surfaces only on genuine ground swell: warns when this

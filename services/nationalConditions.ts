@@ -86,7 +86,18 @@ export const NATIONAL_SAMPLE_REGION_IDS: ReadonlyArray<string> = POINTS.map(p =>
 const TTL_MS = 3 * 60 * 60 * 1000; // 3h
 const FORECAST_HOST = 'https://api.open-meteo.com';
 const PROXY_BASE = (import.meta.env?.VITE_FORECAST_PROXY_BASE as string | undefined)?.replace(/\/$/, '');
-const forecastOrigin = () => (PROXY_BASE ? `${PROXY_BASE}/open-meteo` : FORECAST_HOST);
+// Vite inlines this as a literal true/false per build command, and dead code behind it is
+// stripped from production output — unlike PROXY_BASE, it can't be "accidentally unset".
+const IS_DEV = import.meta.env?.DEV === true;
+// Same fail-closed rule as services/forecast/openMeteoProvider.ts: outside `vite dev`, an
+// unconfigured proxy must never fall back to calling Open-Meteo directly. The throw lands
+// inside the try/catch below, which already turns any fetch failure into `return null` —
+// the landing strip falls back to calm, exactly as it does for a network error.
+const forecastOrigin = () => {
+  if (PROXY_BASE) return `${PROXY_BASE}/open-meteo`;
+  if (IS_DEV) return FORECAST_HOST;
+  throw new Error('National conditions unavailable: VITE_FORECAST_PROXY_BASE is not configured outside Vite dev mode.');
+};
 
 export const roughnessFromBeaufort = (bft: number): number =>
   Math.max(0, Math.min(1, (bft - 1) / 6));

@@ -29,6 +29,36 @@ const UPSTREAMS = {
   'open-meteo-marine': { host: 'https://marine-api.open-meteo.com', paths: new Set(['/v1/marine']) },
 };
 
+// Marine model pin (see services/forecast/openMeteoProvider.ts for why). `models` is
+// deliberately NOT in ALLOWED_PARAMS below, so buildSafeQuery() can never carry a
+// client-supplied value through — this constant is the only way `models` ever reaches
+// the marine upstream. Injected unconditionally on the marine route only, after the
+// safe query is built, so it can't be overridden and never touches the weather route.
+const MARINE_MODEL = 'meteofrance_wave';
+
+// --- CORS for the mobile app only (see services/forecast/openMeteoProvider.ts) -------
+// The web app calls this same-origin (relative /api/forecast/...), which needs no CORS
+// headers at all. The Capacitor app calls it cross-origin, from its own webview origin —
+// https://localhost on Android, capacitor://localhost on iOS (capacitor.config.ts sets
+// no server.androidScheme/iosScheme override, so these are Capacitor's own defaults).
+// Exactly those two origins, nothing else — this is the same allow-list discipline as
+// ALLOWED_PARAMS below, applied to Origin instead of query params.
+const ALLOWED_ORIGINS = new Set(['https://localhost', 'capacitor://localhost']);
+
+/**
+ * CORS headers for one response. Only an approved Origin gets Access-Control-Allow-Origin
+ * (anyone else's browser/webview then refuses to expose the response to their JS, same as
+ * today). Vary: Origin is set on every response regardless, so the shared CDN cache never
+ * serves one Origin's cached response to another — Netlify's docs confirm the standard
+ * Vary header (Origin isn't on their restricted-header list) is factored into the CDN
+ * cache key, so this is safe with the existing Netlify-CDN-Cache-Control on the 200 path.
+ */
+const corsHeadersFor = (origin) => (
+  origin && ALLOWED_ORIGINS.has(origin)
+    ? { 'Access-Control-Allow-Origin': origin, Vary: 'Origin' }
+    : { Vary: 'Origin' }
+);
+
 // --- Capacity metering (see reports/capacity/capacity-model.md) --------------
 // This function is the choke point for REAL upstream calls (CDN-cached hits never
 // reach it), so it is the exact meter of our Open-Meteo usage. Everything here is
@@ -162,31 +192,48 @@ export const handler = async (event) => {
   // meterUpstream itself): if wiring fails we lose the counter, not the response.
   try { connectLambda(event); } catch { /* metering is best-effort */ }
 
+  // Netlify normalises event.headers keys to lowercase, but this is cheap insurance.
+  const origin = event.headers?.origin || event.headers?.Origin || null;
+  const cors = corsHeadersFor(origin);
+
   if (event.httpMethod === 'OPTIONS') {
-    return { statusCode: 204, headers: { Allow: 'GET, OPTIONS' }, body: '' };
+    // Not actually required for the app's plain GET (a "simple" CORS request, no
+    // preflight triggered), but this handler already existed — making it CORS-correct
+    // is the minimal completion, and Max-Age just avoids repeat preflights if a
+    // future header/webview quirk ever does trigger one.
+    return {
+      statusCode: 204,
+      headers: { Allow: 'GET, OPTIONS', 'Access-Control-Allow-Methods': 'GET, OPTIONS', 'Access-Control-Max-Age': '600', ...cors },
+      body: '',
+    };
   }
   if (event.httpMethod !== 'GET') {
-    return json(405, { error: 'Method not allowed.' });
+    return json(405, { error: 'Method not allowed.' }, cors);
   }
 
   // event.path is the original request path, e.g. /api/forecast/open-meteo/v1/forecast
   const path = event.path || '';
   const idx = path.indexOf(PREFIX);
-  if (idx === -1) return json(400, { error: 'Bad proxy path.' });
+  if (idx === -1) return json(400, { error: 'Bad proxy path.' }, cors);
 
   const rest = path.slice(idx + PREFIX.length); // e.g. "open-meteo/v1/forecast"
   const slash = rest.indexOf('/');
-  if (slash === -1) return json(400, { error: 'Missing upstream segment.' });
+  if (slash === -1) return json(400, { error: 'Missing upstream segment.' }, cors);
 
   const providerKey = rest.slice(0, slash);
   const upstreamPath = rest.slice(slash); // includes leading "/", e.g. "/v1/forecast"
 
   const upstream = UPSTREAMS[providerKey];
-  if (!upstream) return json(400, { error: 'Unknown forecast provider.' });
-  if (!upstream.paths.has(upstreamPath)) return json(400, { error: 'Disallowed upstream path.' });
+  if (!upstream) return json(400, { error: 'Unknown forecast provider.' }, cors);
+  if (!upstream.paths.has(upstreamPath)) return json(400, { error: 'Disallowed upstream path.' }, cors);
 
   const query = buildSafeQuery(event.queryStringParameters || {});
-  if (!query) return json(400, { error: 'Invalid or disallowed query parameters.' });
+  if (!query) return json(400, { error: 'Invalid or disallowed query parameters.' }, cors);
+
+  // Enforce the marine model pin server-side, unconditionally. `models` was already
+  // dropped by buildSafeQuery() if the client sent one (not in ALLOWED_PARAMS), so this
+  // is a plain set, never an override of anything a caller could have supplied.
+  if (providerKey === 'open-meteo-marine') query.set('models', MARINE_MODEL);
 
   const target = `${upstream.host}${upstreamPath}?${query.toString()}`;
 
@@ -202,7 +249,7 @@ export const handler = async (event) => {
       // 429 = we hit the Open-Meteo quota → the definitive capacity alarm.
       if (upstreamResponse.status === 429) await meterUpstream({ rateLimited: true });
       // Do NOT cache upstream failures — let clients retry / fall back to their cache.
-      return json(502, { error: `Upstream ${upstreamResponse.status}` });
+      return json(502, { error: `Upstream ${upstreamResponse.status}` }, cors);
     }
 
     // A real upstream success (this ran only because the CDN cache missed) → meter it.
@@ -217,13 +264,19 @@ export const handler = async (event) => {
         'Cache-Control': 'public, max-age=0, must-revalidate',
         // Netlify CDN serves this cached response to EVERY user for 30 min, then
         // serves stale for up to 1h more while it refreshes once in the background.
-        // This is what collapses N user-calls into ~1 upstream call per beach.
+        // This is what collapses N user-calls into ~1 upstream call per beach. Vary:
+        // Origin (in `cors`) keeps that shared cache correctly partitioned per Origin —
+        // confirmed against Netlify's own docs: standard Vary IS factored into their
+        // CDN cache key, Origin isn't on their restricted-header list, so an approved
+        // mobile origin's ACAO-bearing response is never served back to a different
+        // caller, and vice versa.
         'Netlify-CDN-Cache-Control': 'public, s-maxage=1800, stale-while-revalidate=3600',
+        ...cors,
       },
       body: payload,
     };
   } catch (error) {
-    return json(504, { error: 'Upstream timeout or network error.' });
+    return json(504, { error: 'Upstream timeout or network error.' }, cors);
   } finally {
     clearTimeout(timeout);
   }

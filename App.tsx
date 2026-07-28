@@ -3228,21 +3228,15 @@ export const App: React.FC = () => {
 
     const loadExactDetailForecast = async () => {
       try {
-        const [forecastResult, marineItems] = await Promise.all([
-          fetchForecastData(lat, lon),
-          fetchMarineForecastData(lat, lon)
-            .then(result => result.data)
-            .catch(error => {
-              console.warn('Detail marine forecast unavailable; using exact wind forecast with wind-based sea estimates.', {
-                beachId,
-                error,
-              });
-              return [];
-            }),
-        ]);
+        // Weather-only: the headline wind/wave/verdict all read from the AREA forecast
+        // (see BeachDetailPage.tsx), so an exact-coordinate MARINE fetch here has no
+        // consumer — it used to be fetched and merged in, but nothing ever read the
+        // result. This exact fetch exists solely to feed the local wind-difference note
+        // ("windier/calmer right here"), which only needs wind.
+        const forecastResult = await fetchForecastData(lat, lon);
         if (cancelled) return;
 
-        const detailForecast = processForecastData(mergeMarineForecastData(forecastResult.data, marineItems));
+        const detailForecast = processForecastData(forecastResult.data);
         setDetailExactForecastContext({
           forecast: detailForecast,
           source: 'beach-cluster',

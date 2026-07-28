@@ -6,6 +6,7 @@ import { getLocalizedCopy } from '../utils/i18n';
 import { getLegalDoc, legalLastUpdated, LEGAL_OPERATOR, LegalKind } from '../utils/legalContent';
 import { LegalDocument } from './LegalDocument';
 import { CookieSettings } from './CookieSettings';
+import { WeatherDataAttribution } from './WeatherDataAttribution';
 
 export type LegalModal = LegalKind;
 // A modal "view" is either a legal document OR the interactive cookie-settings tool.
@@ -28,7 +29,6 @@ const copy = {
     cookieSettings: 'Cookie settings',
     faq: 'FAQ',
     close: 'Close',
-    weatherData: 'Weather/marine data',
     accessData: 'Accessibility',
     blueFlag: 'Blue Flag 2026',
     footerNote:
@@ -47,7 +47,6 @@ const copy = {
     cookieSettings: 'Ρυθμίσεις Cookies',
     faq: 'Συχνές ερωτήσεις',
     close: 'Κλείσιμο',
-    weatherData: 'Καιρός/θάλασσα',
     accessData: 'Πρόσβαση ΑμεΑ',
     blueFlag: 'Γαλάζιες Σημαίες 2026',
     footerNote:
@@ -178,12 +177,7 @@ export const LegalFooter: React.FC<LegalFooterProps> = ({ language }) => {
           <div className="mt-10 flex flex-col items-center gap-3 border-t border-slate-200/80 pt-6 text-center text-xs text-slate-400 sm:flex-row sm:justify-between sm:text-left">
             <p>© 2026 Calm Beach · {LEGAL_OPERATOR.legalName}</p>
             <div className="flex flex-wrap items-center justify-center gap-x-3 gap-y-1.5 sm:justify-end">
-              <span className="flex items-center gap-1.5">
-                <span>{c.weatherData}:</span>
-                <a href="https://open-meteo.com/en/terms" target="_blank" rel="noopener noreferrer" className="font-semibold text-slate-600 underline-offset-4 transition-colors hover:text-teal-700 hover:underline">Open-Meteo</a>
-                <span className="text-slate-300" aria-hidden="true">/</span>
-                <a href="https://www.dwd.de/EN/ourservices/opendata/opendata.html" target="_blank" rel="noopener noreferrer" className="font-semibold text-slate-600 underline-offset-4 transition-colors hover:text-teal-700 hover:underline">DWD</a>
-              </span>
+              <WeatherDataAttribution language={language} />
               <span className="hidden text-slate-300 sm:inline" aria-hidden="true">·</span>
               <span className="flex items-center gap-1.5">
                 <span>{c.accessData}:</span>
