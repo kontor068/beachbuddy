@@ -45,6 +45,17 @@ const MARINE_HOURLY = [
   'sea_surface_temperature',
 ].join(',');
 
+// Pinned explicitly rather than left on Open-Meteo's default `best_match`: best_match
+// silently combines/swaps underlying marine models with no signal in the response (verified
+// against Open-Meteo's own source — a stale-run fallback exists with no field marking it), so
+// a beach's wave numbers could change for reasons entirely outside this app's control. Pinning
+// makes the model deterministic: if it goes stale/unavailable, fields come back null (the
+// existing optional-field handling in weatherService.ts / the wind-based fallback already
+// cover that) rather than the response silently switching to a different, unannounced model.
+// meteofrance_wave is currently what best_match already resolves to for Greek coordinates —
+// this pin does not change today's numbers, only removes the risk that they change silently.
+const MARINE_MODEL = 'models=meteofrance_wave';
+
 // `cell_selection=sea` is set on the MARINE request only, and deliberately not on the two forecast
 // requests below.
 //
@@ -98,6 +109,6 @@ export const openMeteoProvider: ForecastProvider = {
   },
 
   marineForecastUrl(lat, lon) {
-    return `${marineOrigin()}/v1/marine?latitude=${lat}&longitude=${lon}&hourly=${MARINE_HOURLY}&timezone=auto&forecast_days=6&${SEA_CELL}`;
+    return `${marineOrigin()}/v1/marine?latitude=${lat}&longitude=${lon}&hourly=${MARINE_HOURLY}&timezone=auto&forecast_days=6&${SEA_CELL}&${MARINE_MODEL}`;
   },
 };

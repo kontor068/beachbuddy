@@ -29,6 +29,13 @@ const UPSTREAMS = {
   'open-meteo-marine': { host: 'https://marine-api.open-meteo.com', paths: new Set(['/v1/marine']) },
 };
 
+// Marine model pin (see services/forecast/openMeteoProvider.ts for why). `models` is
+// deliberately NOT in ALLOWED_PARAMS below, so buildSafeQuery() can never carry a
+// client-supplied value through — this constant is the only way `models` ever reaches
+// the marine upstream. Injected unconditionally on the marine route only, after the
+// safe query is built, so it can't be overridden and never touches the weather route.
+const MARINE_MODEL = 'meteofrance_wave';
+
 // --- CORS for the mobile app only (see services/forecast/openMeteoProvider.ts) -------
 // The web app calls this same-origin (relative /api/forecast/...), which needs no CORS
 // headers at all. The Capacitor app calls it cross-origin, from its own webview origin —
@@ -222,6 +229,11 @@ export const handler = async (event) => {
 
   const query = buildSafeQuery(event.queryStringParameters || {});
   if (!query) return json(400, { error: 'Invalid or disallowed query parameters.' }, cors);
+
+  // Enforce the marine model pin server-side, unconditionally. `models` was already
+  // dropped by buildSafeQuery() if the client sent one (not in ALLOWED_PARAMS), so this
+  // is a plain set, never an override of anything a caller could have supplied.
+  if (providerKey === 'open-meteo-marine') query.set('models', MARINE_MODEL);
 
   const target = `${upstream.host}${upstreamPath}?${query.toString()}`;
 
