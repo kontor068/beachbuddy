@@ -3300,7 +3300,7 @@ export const BeachSearcherHome: React.FC<BeachSearcherHomeProps> = ({
             any entry point (homepage or a region page from search); never shown again to
             returning users, so the decision surface stays clean. */}
         {showLandingValueProp && (
-          <div className="mb-3 border-b border-slate-200/70 pb-3 sm:mb-4 sm:pb-4">
+          <div className="mb-3 hidden border-b border-slate-200/70 pb-3 sm:mb-4 sm:block sm:pb-4">
             <h1 className="text-xl font-extrabold leading-tight tracking-tight text-slate-950 sm:text-[1.7rem]">
               {copy.hero.title}
             </h1>
