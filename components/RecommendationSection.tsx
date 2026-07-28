@@ -27,6 +27,8 @@ interface RecommendationSectionProps {
   preferences: UserPreferences;
   onPreferenceFilterClear: (key: keyof UserPreferences) => void;
   onClearSearchAndFilters: () => void;
+  /** Same whole-of-Greece lookup as submitting the search box; offered from the empty state. */
+  onSearchAllRegions?: () => void;
   hasActiveSearchOrFilters: boolean;
   favorites: number[];
   onToggleFavorite: (beachId: number) => void;
@@ -67,6 +69,7 @@ export const RecommendationSection: React.FC<RecommendationSectionProps> = ({
   preferences,
   onPreferenceFilterClear,
   onClearSearchAndFilters,
+  onSearchAllRegions,
   hasActiveSearchOrFilters,
   favorites,
   onToggleFavorite,
@@ -161,6 +164,8 @@ export const RecommendationSection: React.FC<RecommendationSectionProps> = ({
           noSwimmingReason={noSwimmingReason}
           hasActiveSearchOrFilters={hasActiveSearchOrFilters}
           onClearSearchAndFilters={onClearSearchAndFilters}
+          searchQuery={searchQuery}
+          onSearchAllRegions={onSearchAllRegions}
           protectedSortNoResults={protectedSortNoResults}
           protectedSortEmptyCopy={protectedSortEmptyCopy}
           strongWindContext={strongWindContext}

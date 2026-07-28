@@ -799,6 +799,14 @@ export type Translation = {
     removeFilter: (label: string) => string;
     emptyTitle: string;
     emptyDescription: string;
+    // Empty state for a SEARCH that matched nothing, as opposed to filters that
+    // matched nothing. Most people who reach the empty list never touched a filter —
+    // they searched a beach that belongs to another region — so the generic
+    // "no beaches match these filters" was telling them to undo something they had
+    // not done. See docs/team/12-growth-analytics.md (diagnosed 2026-07-28).
+    emptySearchTitle: (query: string) => string;
+    emptySearchDescription: string;
+    searchAllRegions: string;
   };
   gettingLocation: string;
   locationErrorPermission: string;

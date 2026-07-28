@@ -316,6 +316,9 @@ const MAP_HOUR_SLIDER_START_HOUR = 8;
 const MAP_HOUR_SLIDER_END_HOUR = 21;
 const DEFAULT_FORECAST_SLOT_MINUTES = 120;
 const INITIAL_BEACH_DATA_LOADER_DELAY_MS = 300;
+// How long the result list must stay empty before we call it an empty result. Long enough
+// to sit out a word being typed, short enough that a genuine dead end is still recorded.
+const EMPTY_RESULTS_SETTLE_MS = 800;
 const DISTANCE_SORT_LOCATION_OPTIONS: PositionOptions = {
   enableHighAccuracy: false,
   timeout: 4500,
@@ -4256,26 +4259,47 @@ export const App: React.FC = () => {
       return;
     }
 
-    const queryLength = beachSearchQuery.trim().length;
+    // Measure the empty state the user SETTLED on, not every keystroke on the way to it.
+    //
+    // This used to read the immediate `beachSearchQuery` while `filteredBeaches` is computed
+    // from the DEFERRED one, with no debounce, and dedup on the query's LENGTH. Typing a
+    // six-letter beach that this region doesn't have therefore logged six separate "empty
+    // results". That is why 1.486 of these outnumbered the 1.201 debounced `search_used`
+    // events they should have been a subset of, and why the metric read as "a third of our
+    // users hit a dead end" when most were simply mid-word. Diagnosed 2026-07-28 —
+    // docs/team/12-growth-analytics.md. Any change here should keep all four properties:
+    // deferred query, debounce, no single characters, dedup on the text.
+    const query = deferredBeachSearchQuery.trim();
+    if (query.length === 1) return;
+
     const activeFilterCount = selectedFilters.filter(filter => filter !== 'showAll').length;
     const activePreferenceCount = Object.values(preferences).filter(Boolean).length;
     const trackingKey = [
       selectedIsland.id,
-      queryLength,
+      query,
       selectedFilters.join(','),
       Object.entries(preferences).filter(([, enabled]) => enabled).map(([key]) => key).join(','),
     ].join(':');
 
-    if (trackedEmptyResultsRef.current === trackingKey) return;
-    trackedEmptyResultsRef.current = trackingKey;
+    const timer = window.setTimeout(() => {
+      if (trackedEmptyResultsRef.current === trackingKey) return;
+      trackedEmptyResultsRef.current = trackingKey;
 
-    trackEvent('empty_results_shown', undefined, {
-      ...analyticsBaseParams,
-      search_length: queryLength,
-      active_filter_count: activeFilterCount,
-      active_preference_count: activePreferenceCount,
-    });
-  }, [analyticsBaseParams, beachesLoading, beachSearchQuery, filteredBeaches.length, hasActiveSearchOrFilters, preferences, selectedFilters, selectedIsland]);
+      trackEvent('empty_results_shown', undefined, {
+        ...analyticsBaseParams,
+        search_length: query.length,
+        active_filter_count: activeFilterCount,
+        active_preference_count: activePreferenceCount,
+        // The one parameter that makes this event readable on its own: whether the user
+        // searched, filtered, or both. The other three only answer that by cross-reference.
+        empty_reason: query.length > 0
+          ? (activeFilterCount + activePreferenceCount > 0 ? 'search_and_filters' : 'search')
+          : 'filters',
+      });
+    }, EMPTY_RESULTS_SETTLE_MS);
+
+    return () => window.clearTimeout(timer);
+  }, [analyticsBaseParams, beachesLoading, deferredBeachSearchQuery, filteredBeaches.length, hasActiveSearchOrFilters, preferences, selectedFilters, selectedIsland]);
 
   useEffect(() => {
     if (sortBy === 'recommended') {
@@ -6735,6 +6759,7 @@ export const App: React.FC = () => {
                   preferences={preferences}
                   onPreferenceFilterClear={handleTogglePreference}
                   onClearSearchAndFilters={handleClearSearchAndFilters}
+                  onSearchAllRegions={() => { void handleDirectorySearchSubmit(); }}
                   hasActiveSearchOrFilters={hasActiveSearchOrFilters}
                   severeWeatherNoSwimming={shouldShowNoSwimmingMessage}
                   noSwimmingReason={isRainBlockedBeachWindow ? 'rain' : 'conditions'}
