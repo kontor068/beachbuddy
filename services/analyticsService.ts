@@ -37,11 +37,18 @@ export type AnalyticsEvent =
   | 'landing_story_read'
   | 'landing_feedback_submitted'
   | 'landing_feedback_failed'
-  // Multi-day trip planner (components/planner/). `days` tells us whether the
-  // multi-day audience is real before we invest further in it, and `source`
-  // separates a plan opened by TYPING a stay length in the search box from one
-  // opened by tapping a day chip — two different audiences, one event.
+  // Multi-day trip planner (components/planner/). `days` tells us how long a
+  // stay we answered for, and `source` separates the three audiences —
+  // 'auto' (we planned the next 3 days unasked — an IMPRESSION), 'search_intent'
+  // (they typed «Νάξο 5 μέρες»), 'chip' (they changed the day count).
+  // NOTE since 28/07/2026: with auto-planning this fires for nearly everyone who
+  // scrolls to the card, so on its own it is a denominator, NOT evidence of
+  // interest. Read it against trip_plan_beach_opened.
   | 'trip_planned'
+  // The planner's real success metric: a visitor tapping a beach OUT of the
+  // plan. This is the one that says the multi-day answer was worth something —
+  // trip_planned stopped being able to say that when the plan became automatic.
+  | 'trip_plan_beach_opened'
   // A free-text search parsed as a trip sentence («θα μείνω Νάξο για 5 μέρες»).
   // Fired for EVERY outcome, including the failures, because the only way to
   // learn which sentences real visitors type — and which ones we cannot read —

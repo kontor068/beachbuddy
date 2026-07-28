@@ -8,7 +8,6 @@ import {
   Shield,
   Waves,
   Wind,
-  X,
 } from 'lucide-react';
 import type { Beach, DailyForecast, LanguageCode, UserPreferences } from '../../types';
 import type { GeospatialExposureProfileLookup } from '../../services/geospatialExposureService';
@@ -21,23 +20,35 @@ import { tripPlannerCopy } from './tripPlannerCopy';
 
 // "I'm here for N days — which beach on which day?"
 //
-// PLACEMENT: a single self-contained card directly under today's picks. Not the
+// PLACEMENT: a single self-contained card directly above today's picks. Not the
 // top of the page (most visitors only want today, and 88% are on a phone), and
 // not a separate tab (at ~1.6 pages per visit, nothing behind a tab gets found).
-// The day-count chips ARE the entry point, so it costs one tap.
 //
-// DISCOVERABILITY (2026-07-27): the previous collapsed state was one line of
-// text plus five bare digits, and visitors walked straight past the app's only
-// unique feature. Collapsed now leads with the PROMISE ("every day, the beach
-// that fits the wind") next to the chips that deliver it, so the card explains
-// itself before it is tapped. Still two short rows on desktop — it sits between
-// the beach cards and the recommendations and must not become the page.
+// ANSWER, DON'T ASK (2026-07-28). MEASURED: in 28 days of GA4, `trip_planned`
+// fired for 3 users out of ~280 — 1% — while `forecast_day_selected` reached 31.
+// So the multi-day APPETITE is real and it was the PACKAGING that failed: the
+// card asked "how many days?" and showed nothing until a chip was tapped, i.e.
+// it was a form standing between the visitor and the beaches they came for.
+// Every other surface on this site hands over an answer for free.
 //
-// COST: planning scores up to 72 beaches per day, so it runs ONLY after the
-// visitor picks a day count — never on page load. The pick is deferred so the
-// tap paints immediately (chip + skeleton rows) before the scoring pass runs;
-// useDeferredValue does not move the work off the main thread, it only keeps
-// the tap responsive — the pool cap is what bounds the cost.
+// So the card now PLANS THE NEXT 3 DAYS BY ITSELF and shows them. The chips
+// survive as a secondary "staying longer?" row UNDER the plan, for the minority
+// who want 4-6 days. Nothing is hidden behind a tap any more.
+//
+// COST: planning scores up to 72 beaches per day, so an auto-plan must not land
+// in the page's first paint. Two things bound it, and both are load-bearing:
+//   1. it starts only when the card is about to ENTER THE VIEWPORT (observer
+//      below), never on mount — a visitor who never scrolls there pays nothing;
+//   2. the default is 3 days, HALF the 6-day worst case the chips could reach.
+// The value is then deferred so the reveal paints skeleton rows first;
+// useDeferredValue does not move work off the main thread, it only keeps the
+// frame responsive — the pool cap is what bounds the cost.
+//
+// METRICS: `trip_planned` now fires for auto-plans too, so it is an IMPRESSION
+// count (the denominator) and no longer evidence of interest. The engagement
+// signal is `trip_plan_beach_opened` — the visitor tapping a beach out of the
+// plan — plus `trip_planned` with source='chip' for a day-count change. Judge
+// the change on those two, never on trip_planned alone.
 
 interface TripPlannerProps {
   beaches: Beach[];
@@ -59,6 +70,22 @@ interface TripPlannerProps {
 }
 
 const DAY_OPTIONS = [2, 3, 4, 5, 6];
+
+/**
+ * What the card plans when nobody has asked for anything. Three, not six: it is
+ * the horizon the forecast can still state plainly (FIRM_FORECAST_DAYS in
+ * services/tripPlannerService.ts is also 3), and it halves the scoring cost of
+ * a plan the visitor never requested.
+ */
+const AUTO_DAYS = 3;
+
+/**
+ * How early the plan starts computing, in px before the card reaches the
+ * viewport. Enough that the scoring pass is usually done by the time the card
+ * is actually looked at, small enough that a visitor who stops above it never
+ * pays for it.
+ */
+const PLAN_PREFETCH_MARGIN_PX = 300;
 
 /**
  * A stated stay length, brought inside what we can actually answer. The
@@ -110,15 +137,52 @@ export const TripPlanner: React.FC<TripPlannerProps> = ({
   onBeachClick,
 }) => {
   const c = getLocalizedCopy(language, tripPlannerCopy);
-  // Lazy initializer, NOT an effect: an effect would render once at null and
-  // then flip, replaying the entrance stagger and computing the plan twice.
-  const [days, setDays] = useState<number | null>(() => clampRequestedDays(initialDays, forecast.length));
+  // A day count the visitor ASKED for — a chip tap, or a stay length typed in
+  // the search box. `null` means nobody asked and the card plans AUTO_DAYS by
+  // itself. Lazy initializer, NOT an effect: an effect would render once at
+  // null and then flip, replaying the entrance stagger and planning twice.
+  const [chosenDays, setChosenDays] = useState<number | null>(
+    () => clampRequestedDays(initialDays, forecast.length)
+  );
+
+  // The auto-plan's trigger. It is deliberately NOT "on mount": the card sits
+  // below today's conditions, so on a phone it is usually off-screen at first
+  // paint, and a 72-beach pass there would compete with the content the visitor
+  // actually came for.
+  const sectionRef = useRef<HTMLElement | null>(null);
+  const [inView, setInView] = useState(false);
+  useEffect(() => {
+    if (inView) return;
+    const node = sectionRef.current;
+    if (!node) return;
+    // No IntersectionObserver (old Safari, jsdom): degrade to planning right
+    // away rather than showing a card that never fills in. The pool cap keeps
+    // that affordable, and it is the rarer path by far.
+    if (typeof IntersectionObserver === 'undefined') {
+      setInView(true);
+      return;
+    }
+    const observer = new IntersectionObserver(
+      entries => {
+        if (entries.some(entry => entry.isIntersecting)) setInView(true);
+      },
+      { rootMargin: `${PLAN_PREFETCH_MARGIN_PX}px` }
+    );
+    observer.observe(node);
+    return () => observer.disconnect();
+  }, [inView]);
+
+  // What we actually plan. A stated count always wins over the automatic one.
+  const autoDays = Math.min(AUTO_DAYS, forecast.length);
+  const days = chosenDays ?? (inView ? autoDays : null);
+  const isAutoPlan = chosenDays === null;
+
   // `null` as the initial deferred value is what keeps the cost contract above
-  // intact when `days` arrives pre-set: on mount `deferredDays` is null, the
-  // plan memo short-circuits, the skeleton rows paint, and the 72-beach pass
-  // runs in the background render — exactly what a chip tap produces. Without
-  // the second argument useDeferredValue does not defer on the first render
-  // and the whole scoring pass would land synchronously in the first commit.
+  // intact when `days` arrives pre-set (a typed stay length): on mount
+  // `deferredDays` is null, the plan memo short-circuits, the skeleton rows
+  // paint, and the 72-beach pass runs in the background render. Without the
+  // second argument useDeferredValue does not defer on the first render and the
+  // whole scoring pass would land synchronously in the first commit.
   const deferredDays = useDeferredValue(days, null);
   const isPlanning = days !== null && deferredDays !== days;
 
@@ -150,17 +214,21 @@ export const TripPlanner: React.FC<TripPlannerProps> = ({
     return () => cancelAnimationFrame(frame);
   }, [deferredDays, isPlanning]);
 
+  // Where this plan came from. Three genuinely different audiences, and after
+  // the auto-plan change they must never be read as one number:
+  //   'auto'          — we planned it unasked (an IMPRESSION, not interest)
+  //   'search_intent' — they typed a stay length in the search box
+  //   'chip'          — they changed the day count under the plan
+  const searchIntentRef = useRef(initialDays != null);
+  const planSource: 'auto' | 'search_intent' | 'chip' =
+    isAutoPlan ? 'auto' : (searchIntentRef.current ? 'search_intent' : 'chip');
+
   // Fired AFTER the plan computes (not on the raw tap) so the event can carry
   // blank_days — the honest measure of how often the feature answers "no beach
   // day". region_id + beaufort tell us whether the multi-day audience is real
   // on the windy days the feature exists for. The ref stops re-renders (fresh
   // forecast, language switch) from double-counting one choice.
   const trackedDaysRef = useRef<number | null>(null);
-  // A plan that opened because the visitor TYPED a stay length is a different
-  // audience from one that opened on a chip tap. Label it rather than suppress
-  // it: trip_planned is the only evidence this feature works, and search→plan
-  // is the funnel worth measuring. Flipped off the moment they touch a chip.
-  const autoOpenedRef = useRef(initialDays != null);
   useEffect(() => {
     if (!days || plan.length === 0 || trackedDaysRef.current === days) return;
     trackedDaysRef.current = days;
@@ -169,11 +237,35 @@ export const TripPlanner: React.FC<TripPlannerProps> = ({
       region_id: regionId,
       beaufort: getBeaufortLevel((forecast[0]?.wind?.speed ?? 0) * 3.6),
       blank_days: plan.filter(entry => entry.status === 'no_beach_day').length,
-      source: autoOpenedRef.current ? 'search_intent' : 'chip',
+      source: planSource,
     });
-  }, [days, forecast, plan, regionId]);
+  }, [days, forecast, plan, planSource, regionId]);
+
+  /**
+   * THE metric for whether this feature earns its place: a visitor taking a
+   * beach OUT of the plan. Since the plan now appears unasked, `trip_planned`
+   * counts everyone who scrolled past and proves nothing on its own.
+   */
+  const openPick = (entry: TripDayPlan, pick: TripPick) => {
+    trackEvent('trip_plan_beach_opened', undefined, {
+      days: days ?? 0,
+      day_index: entry.dayIndex,
+      region_id: regionId,
+      beach_id: pick.beach.id,
+      source: planSource,
+      is_refuge: entry.isRefuge,
+      caution: pick.caution,
+    });
+    onBeachClick(pick.beach);
+  };
 
   if (forecast.length === 0 || beaches.length === 0) return null;
+  // planTrip can legitimately come back empty — a preference filter (Blue Flag,
+  // say) can leave a region with no candidate pool at all. That used to be
+  // invisible because nothing ran until someone tapped; now that the plan is
+  // automatic, it would show every visitor a header and chips with nothing
+  // under them. Say nothing instead.
+  if (deferredDays !== null && !isPlanning && plan.length === 0) return null;
 
   const dayLabel = (plan_: TripDayPlan) => {
     if (plan_.dayIndex === 0) return c.today;
@@ -223,14 +315,9 @@ export const TripPlanner: React.FC<TripPlannerProps> = ({
   };
 
   const choose = (value: number) => {
-    autoOpenedRef.current = false;
-    setDays(value);
-  };
-
-  const clear = () => {
-    // Re-picking after an explicit close is a new intent — let it count again.
-    trackedDaysRef.current = null;
-    setDays(null);
+    // Touching a chip ends the "they typed it" provenance for good.
+    searchIntentRef.current = false;
+    setChosenDays(value);
   };
 
   // Measured against what the visitor ASKED for, not against the clamped value.
@@ -243,6 +330,10 @@ export const TripPlanner: React.FC<TripPlannerProps> = ({
   const hasCaution = plan.some(entry => entry.pick?.caution && entry.pick.windBeaufort >= 5);
   const hasRefuge = plan.some(entry => entry.isRefuge);
 
+  // The day-count row. It is no longer the way IN — the plan is already on
+  // screen — so it reads as an extension ("staying longer?") and sits under the
+  // timeline. The active chip tracks what is DISPLAYED, which on an auto-plan
+  // is AUTO_DAYS: highlighting nothing there would look like a broken control.
   const dayChips = (
     <div className="flex flex-wrap items-center gap-2">
       {DAY_OPTIONS.map(value => (
@@ -262,16 +353,17 @@ export const TripPlanner: React.FC<TripPlannerProps> = ({
 
   return (
     <section
+      ref={sectionRef}
       className="mx-auto w-full max-w-6xl px-3 sm:px-4"
-      aria-label={c.prompt}
+      aria-label={c.title}
       data-nosnippet="true"
     >
-      {/* Refined glass in the app's cyan, not white-on-white: collapsed, this
-          card sits between vivid beach photos and the rest of the page — at
-          bg-white/72 on a near-white background it was invisible in practice
-          (2026-07-26). The gradient + corner glow give it depth without a new
-          hue; deliberately NO orange anywhere structural, because orange is
-          this app's caution colour and must keep meaning only that. */}
+      {/* Refined glass in the app's cyan, not white-on-white: this card sits
+          between vivid beach photos and the rest of the page — at bg-white/72
+          on a near-white background it was invisible in practice (2026-07-26).
+          The gradient + corner glow give it depth without a new hue;
+          deliberately NO orange anywhere structural, because orange is this
+          app's caution colour and must keep meaning only that. */}
       <div className="relative overflow-hidden rounded-2xl border border-cyan-200/80 bg-gradient-to-br from-white/92 via-cyan-50/92 to-sky-100/80 px-4 py-4 shadow-sm shadow-sky-900/5 ring-1 ring-white/50 backdrop-blur-xl sm:px-5">
         <div
           aria-hidden="true"
@@ -279,50 +371,27 @@ export const TripPlanner: React.FC<TripPlannerProps> = ({
         />
 
         <div className="relative">
-          {/* ── Header: the promise on the left, the way in on the right ──── */}
-          <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between sm:gap-5">
-            <div className="flex min-w-0 items-start gap-3">
-              <span className="inline-flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-gradient-to-br from-[#0ea5e9] to-[#007a83] text-white shadow-sm shadow-cyan-900/25 ring-1 ring-white/40">
-                <CalendarRange className="h-5 w-5" aria-hidden="true" />
-              </span>
+          {/* ── Header: a statement, not a question. The old version asked "how
+              many days?" and 99% of visitors never answered it (GA, 28 days).
+              The heading now names what is already below it. ─────────────── */}
+          <div className="flex min-w-0 items-start gap-3">
+            <span className="inline-flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-gradient-to-br from-[#0ea5e9] to-[#007a83] text-white shadow-sm shadow-cyan-900/25 ring-1 ring-white/40">
+              <CalendarRange className="h-5 w-5" aria-hidden="true" />
+            </span>
 
-              <div className="min-w-0">
-                <h3 className="font-heading text-[16px] font-extrabold leading-tight text-slate-950 sm:text-[17px]">
-                  {days ? c.title : c.prompt}
-                </h3>
-                <p className="mt-0.5 flex items-start gap-1.5 text-[13px] font-semibold leading-snug text-slate-600">
-                  <Wind className="mt-[3px] h-3.5 w-3.5 shrink-0 text-[#0284c7]" aria-hidden="true" />
-                  <span>{c.valueProp}</span>
-                </p>
-              </div>
-            </div>
-
-            {/* The way in. Label above the chips at every breakpoint so five bare
-                digits are never on their own, and flex-wrap so the close button
-                drops to its own line rather than pushing a 375px card sideways. */}
-            <div className="sm:shrink-0">
-              <span className="mb-1.5 block text-[12px] font-bold leading-tight text-cyan-900">
-                {days === null ? c.daysQuestion : c.daysUnit(days)}
-              </span>
-              <div className="flex flex-wrap items-center gap-2">
-                {dayChips}
-                {days !== null && (
-                  <button
-                    type="button"
-                    onClick={clear}
-                    aria-label={c.clear}
-                    title={c.clear}
-                    className="inline-flex h-11 w-11 shrink-0 cursor-pointer items-center justify-center rounded-xl text-slate-600 transition-colors duration-200 hover:bg-white/80 hover:text-slate-900 focus:outline-none focus-visible:ring-2 focus-visible:ring-[#0369a1] focus-visible:ring-offset-2 focus-visible:ring-offset-white motion-reduce:transition-none"
-                  >
-                    <X className="h-4 w-4" aria-hidden="true" />
-                  </button>
-                )}
-              </div>
+            <div className="min-w-0">
+              <h3 className="font-heading text-[16px] font-extrabold leading-tight text-slate-950 sm:text-[17px]">
+                {days ? c.nextDaysTitle(days) : c.title}
+              </h3>
+              <p className="mt-0.5 flex items-start gap-1.5 text-[13px] font-semibold leading-snug text-slate-600">
+                <Wind className="mt-[3px] h-3.5 w-3.5 shrink-0 text-[#0284c7]" aria-hidden="true" />
+                <span>{c.valueProp}</span>
+              </p>
             </div>
           </div>
 
           {/* ── Pending: skeleton rows on the same rail, never a half plan ── */}
-          {isPlanning && days && (
+          {(isPlanning || !days) && (
             <ol
               className="relative mt-4 border-t border-cyan-200/60 pt-3"
               aria-busy="true"
@@ -332,7 +401,10 @@ export const TripPlanner: React.FC<TripPlannerProps> = ({
                 aria-hidden="true"
                 className="pointer-events-none absolute bottom-6 left-4 top-6 w-px bg-cyan-200/70"
               />
-              {Array.from({ length: Math.min(days, forecast.length) }, (_, index) => (
+              {/* `days` is null until the card nears the viewport, so the
+                  placeholder is sized on what we are ABOUT to plan — same row
+                  count, no jump when the real plan replaces it. */}
+              {Array.from({ length: Math.min(days ?? autoDays, forecast.length) }, (_, index) => (
                 <li key={index} className="relative py-2.5 pl-10">
                   <span className="absolute left-[12px] top-[1.05rem] h-2.5 w-2.5 rounded-full bg-slate-300 shadow-[0_0_0_4px_rgba(255,255,255,0.8)]" />
                   <span className="block h-3 w-16 animate-pulse rounded bg-slate-200/90" />
@@ -387,7 +459,7 @@ export const TripPlanner: React.FC<TripPlannerProps> = ({
                             and the whole width is the tap target. */}
                         <button
                           type="button"
-                          onClick={() => onBeachClick(entry.pick!.beach)}
+                          onClick={() => openPick(entry, entry.pick!)}
                           aria-label={c.openBeach(entry.pick.beach.name[language])}
                           className="group -mx-1 mt-1 flex min-h-11 w-full cursor-pointer items-center gap-1.5 rounded-lg px-1 text-left focus:outline-none focus-visible:ring-2 focus-visible:ring-[#0369a1] focus-visible:ring-offset-1 focus-visible:ring-offset-white"
                         >
@@ -473,8 +545,18 @@ export const TripPlanner: React.FC<TripPlannerProps> = ({
             </ol>
           )}
 
+          {/* ── Staying longer? The chips, demoted. They used to be the only way
+              in and gated the whole feature behind a tap; now they extend a plan
+              that is already visible, so they belong AFTER it — the minority who
+              want 5 or 6 days will look for them, and everyone else is already
+              served. Same 44px targets, same active state. ────────────────── */}
+          <div className="mt-3 flex flex-wrap items-center gap-x-3 gap-y-2 border-t border-cyan-200/60 pt-3">
+            <span className="text-[12px] font-bold leading-tight text-cyan-900">{c.stayingLonger}</span>
+            {dayChips}
+          </div>
+
           {!isPlanning && days && plan.length > 0 && (
-            <p className="mt-2 border-t border-cyan-200/50 pt-2.5 text-[12px] font-medium leading-relaxed text-slate-500">
+            <p className="mt-2.5 text-[12px] font-medium leading-relaxed text-slate-500">
               {/* The caution caveat leads: it is the one that affects safety. */}
               {hasCaution && <span className="font-semibold text-orange-800">{c.cautionNote} </span>}
               {hasRefuge && <span>{c.refugeNote} </span>}

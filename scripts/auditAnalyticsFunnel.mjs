@@ -69,12 +69,18 @@ const funnelSteps = [
     aliases: ['map_viewed', 'map_opened'],
   },
   {
-    // The trip planner's ONE metric: whether the multi-day audience is real,
-    // and (via metadata: region_id / beaufort / blank_days) whether it is real
-    // on the windy days the feature exists for.
+    // The trip planner's REACH. Since the plan became automatic (28/07/2026)
+    // this fires for nearly everyone who scrolls to the card, so it is the
+    // denominator of the step below — never read it as interest on its own.
     id: 'trip_planner',
-    label: 'Trip planned (multi-day)',
+    label: 'Trip plan shown (multi-day)',
     aliases: ['trip_planned'],
+  },
+  {
+    // The planner's ONE success metric: a beach taken OUT of the plan.
+    id: 'trip_plan_engagement',
+    label: 'Beach opened from the trip plan',
+    aliases: ['trip_plan_beach_opened'],
   },
   {
     id: 'navigation',
@@ -88,12 +94,16 @@ const readText = async relativePath => readFile(path.join(projectRoot, relativeP
 const unique = values => [...new Set(values)].sort();
 
 const extractDeclaredEvents = analyticsSource => {
-  const unionMatch = analyticsSource.match(/export type AnalyticsEvent\s*=([\s\S]*?);/);
+  // Comments come off BEFORE the union is located, not after. Both of the
+  // union's terminators — the closing `;` and the quote pairing — are fooled by
+  // ordinary prose: a semicolon inside a doc comment truncated the union at
+  // that line (measured 28/07/2026: 53 declared events silently became 30, and
+  // the audit then "failed" on events that were declared right there), and an
+  // apostrophe in "the page's reach" desyncs the quote scan.
+  const withoutComments = analyticsSource.replace(/\/\/[^\n]*/g, '');
+  const unionMatch = withoutComments.match(/export type AnalyticsEvent\s*=([\s\S]*?);/);
   if (!unionMatch) return [];
-  // The union carries doc comments whose prose apostrophes (e.g. "the page's
-  // reach") desync the naive quote pairing below — strip comments first.
-  const unionBody = unionMatch[1].replace(/\/\/[^\n]*/g, '');
-  return unique(Array.from(unionBody.matchAll(/'([^']+)'/g)).map(match => match[1]));
+  return unique(Array.from(unionMatch[1].matchAll(/'([^']+)'/g)).map(match => match[1]));
 };
 
 const extractEmittedEvents = source => {
