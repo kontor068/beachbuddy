@@ -11,9 +11,20 @@ import type { ForecastProvider } from './ForecastProvider';
 // EDGE-PROXY SWITCH (zero-cost, no code change):
 // Set VITE_FORECAST_PROXY_BASE (build-time env). When present, calls are routed
 // to `${base}/open-meteo/...` and `${base}/open-meteo-marine/...` instead of the
-// public Open-Meteo hosts. A future edge function (Netlify/Cloudflare Worker)
-// maps those two path prefixes back to the real hosts — letting us cache, add a
-// key, and control cost server-side without touching the app. Unset → direct.
+// public Open-Meteo hosts, letting us cache, add a key, and control cost
+// server-side without touching the app.
+//
+// UNSET, the behaviour depends on the build:
+//   - `vite dev` (import.meta.env.DEV === true): falls back to calling Open-Meteo's
+//     free hosts directly from the browser. Fine for local development — there is
+//     no paid key anywhere near this path, and it's the same free tier anyone can
+//     call from a browser tab.
+//   - every real build (production, deploy-preview, mobile/Capacitor): DEV is
+//     always false, so an unset proxy base throws instead of quietly calling the
+//     vendor. A commercial deployment must never fall back to an unauthenticated,
+//     non-commercial-licensed endpoint just because a config value went missing —
+//     that failure has to be loud (caught upstream, surfaced as "unavailable"),
+//     not a silent switch to a different provider tier.
 // ─────────────────────────────────────────────────────────────────────────────
 
 const FORECAST_HOST = 'https://api.open-meteo.com';
@@ -54,10 +65,26 @@ const SEA_CELL = 'cell_selection=sea';
 
 // Optional proxy base (e.g. "https://calmbeach.gr/api"). Read once at module load.
 const PROXY_BASE = (import.meta.env?.VITE_FORECAST_PROXY_BASE as string | undefined)?.replace(/\/$/, '');
+// Vite inlines this as a literal true/false per build command, and dead code behind it is
+// stripped from production output — unlike PROXY_BASE, it can't be "accidentally unset".
+const IS_DEV = import.meta.env?.DEV === true;
 
-/** Resolve the origin for a host: the proxy prefix when configured, else the real host. */
-const forecastOrigin = () => (PROXY_BASE ? `${PROXY_BASE}/open-meteo` : FORECAST_HOST);
-const marineOrigin = () => (PROXY_BASE ? `${PROXY_BASE}/open-meteo-marine` : MARINE_HOST);
+/**
+ * Resolve the origin for a host: the proxy prefix when configured, else — ONLY in
+ * `vite dev` — the real Open-Meteo host. Any other build with no proxy configured
+ * throws rather than falling back to a direct vendor call; the caller's existing
+ * cache/stale-fallback handling turns that into the app's normal "unavailable" state.
+ */
+const forecastOrigin = () => {
+  if (PROXY_BASE) return `${PROXY_BASE}/open-meteo`;
+  if (IS_DEV) return FORECAST_HOST;
+  throw new Error('Forecast unavailable: VITE_FORECAST_PROXY_BASE is not configured outside Vite dev mode.');
+};
+const marineOrigin = () => {
+  if (PROXY_BASE) return `${PROXY_BASE}/open-meteo-marine`;
+  if (IS_DEV) return MARINE_HOST;
+  throw new Error('Forecast unavailable: VITE_FORECAST_PROXY_BASE is not configured outside Vite dev mode.');
+};
 
 export const openMeteoProvider: ForecastProvider = {
   id: 'open-meteo',
