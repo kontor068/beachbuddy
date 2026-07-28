@@ -27,6 +27,38 @@ const shapeCache = new Map<string, Promise<ShorelineShapeLookup | undefined>>();
 
 const buildShapeUrl = (regionId: string) => `/data/coastline/shape/${regionId}.json`;
 
+type RawRegionIndex = { regions?: Record<string, number[]> };
+
+let regionIndexRequest: Promise<Record<number, string> | undefined> | null = null;
+
+/**
+ * Which region holds a given beach's geometry.
+ *
+ * Beach records carry no `regionId`, and several surfaces legitimately cannot supply one:
+ * "Κοντά μου" builds a synthetic region spanning many real ones, saved beaches span
+ * whatever the user kept, and the map hover has only a marker. Without this lookup those
+ * screens can never resolve their geometry and the drawing silently never appears.
+ *
+ * Fetched once, and only when a caller-supplied region did not already answer the question.
+ */
+export const loadShorelineRegionIndex = (): Promise<Record<number, string> | undefined> => {
+  if (regionIndexRequest) return regionIndexRequest;
+
+  regionIndexRequest = fetch('/data/coastline/shape/index.json')
+    .then(response => (response.ok ? response.json() : undefined))
+    .then((payload: RawRegionIndex | undefined) => {
+      if (!payload?.regions) return undefined;
+      const lookup: Record<number, string> = {};
+      for (const [regionId, beachIds] of Object.entries(payload.regions)) {
+        for (const beachId of beachIds) lookup[beachId] = regionId;
+      }
+      return lookup;
+    })
+    .catch(() => undefined);
+
+  return regionIndexRequest;
+};
+
 const normalize = (payload: RawPayload): ShorelineShapeLookup | undefined => {
   if (!payload?.beaches) return undefined;
 

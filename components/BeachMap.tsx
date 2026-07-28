@@ -331,7 +331,6 @@ const BeachHoverPreviewCard: React.FC<{
           ) : (
             <BeachPhotoFallback
               beach={item.beach}
-              regionId={item.beach.regionId}
               language={language}
               beachName={displayBeachName(item.beach.name, language)}
               crop="band"

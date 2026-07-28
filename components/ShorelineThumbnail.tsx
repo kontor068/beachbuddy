@@ -1,6 +1,7 @@
 import React, { useEffect, useMemo, useState } from 'react';
 import type { Beach, LanguageCode } from '../types';
 import {
+  loadShorelineRegionIndex,
   loadShorelineShapes,
   SHORELINE_BOX,
   type ShorelineShape,
@@ -102,8 +103,13 @@ export const deriveShorelineFeatures = (beach: Beach): ShorelineFeatures => {
 };
 
 /**
- * Resolves a beach's shoreline shape. Returns undefined while loading and for every beach
- * in a region that has no shape file yet, so callers must keep a neutral fallback.
+ * Resolves a beach's shoreline shape. Returns undefined while loading and for the ~6% of
+ * beaches with no usable geometry, so callers must keep a neutral fallback.
+ *
+ * `regionId` is only a shortcut. When it is missing or wrong — a synthetic "near-me"
+ * region, a saved list spanning several islands, a bare map marker — the national index
+ * resolves the beach's real region instead. Treating the caller's region as mandatory is
+ * what made the drawing vanish on exactly those screens.
  */
 export const useShorelineShape = (
   regionId: string | undefined,
@@ -112,15 +118,30 @@ export const useShorelineShape = (
   const [shape, setShape] = useState<ShorelineShape | undefined>(undefined);
 
   useEffect(() => {
-    if (!regionId || beachId === undefined || beachId === null) {
+    if (beachId === undefined || beachId === null) {
       setShape(undefined);
       return;
     }
 
     let active = true;
-    loadShorelineShapes(regionId).then(lookup => {
-      if (!active) return;
-      setShape(lookup?.[beachId]);
+
+    const resolve = async () => {
+      if (regionId) {
+        const lookup = await loadShorelineShapes(regionId);
+        const hit = lookup?.[beachId];
+        if (hit) return hit;
+      }
+
+      const index = await loadShorelineRegionIndex();
+      const homeRegionId = index?.[beachId];
+      if (!homeRegionId || homeRegionId === regionId) return undefined;
+
+      const lookup = await loadShorelineShapes(homeRegionId);
+      return lookup?.[beachId];
+    };
+
+    resolve().then(resolved => {
+      if (active) setShape(resolved);
     });
 
     return () => {

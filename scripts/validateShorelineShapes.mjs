@@ -122,6 +122,37 @@ function main() {
     }
   }
 
+  // The index is what lets "Κοντά μου", saved beaches and the map hover find geometry at
+  // all — those screens pass no usable region. A stale index makes the drawing vanish there
+  // and nowhere else, which is close to undetectable by eye.
+  const indexFile = path.join(SHAPE_DIR, 'index.json');
+  if (!fs.existsSync(indexFile)) {
+    errors.push('index.json missing — beaches outside a known region cannot resolve their shape. Run: npm run build:shorelines');
+  } else {
+    const shapeIndex = readJson(indexFile);
+    const indexed = new Map();
+    for (const [regionId, beachIds] of Object.entries(shapeIndex.regions ?? {})) {
+      for (const beachId of beachIds) indexed.set(String(beachId), regionId);
+    }
+
+    let missing = 0;
+    let mismatched = 0;
+    for (const region of index.regions) {
+      const shapePath = path.join(SHAPE_DIR, `${region.id}.json`);
+      if (!fs.existsSync(shapePath)) continue;
+      for (const id of Object.keys(readJson(shapePath).beaches ?? {})) {
+        const found = indexed.get(id);
+        if (!found) missing += 1;
+        else if (found !== region.id) mismatched += 1;
+        indexed.delete(id);
+      }
+    }
+
+    if (missing > 0) errors.push(`index.json is missing ${missing} drawn beach(es)`);
+    if (mismatched > 0) errors.push(`index.json points ${mismatched} beach(es) at the wrong region`);
+    if (indexed.size > 0) errors.push(`index.json lists ${indexed.size} beach(es) that have no shape`);
+  }
+
   console.log(`Shoreline shapes: ${shapesChecked} across ${regionsChecked} regions.`);
 
   if (errors.length > 0) {

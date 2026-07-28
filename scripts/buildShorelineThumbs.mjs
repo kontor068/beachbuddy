@@ -412,6 +412,34 @@ function buildRegion(regionId) {
   };
 }
 
+/**
+ * A beach knows its coordinates but not its region, and several surfaces show beaches from
+ * more than one region at once ("Κοντά μου", saved beaches) or from none in particular (the
+ * map hover). Without this index those surfaces can never find their geometry, so the
+ * drawing silently never appears — which is exactly what happened before it existed.
+ */
+function writeRegionIndex() {
+  const regions = {};
+  for (const file of fs.readdirSync(OUT_DIR)) {
+    if (!file.endsWith('.json') || file === 'index.json') continue;
+    const payload = readJson(path.join(OUT_DIR, file));
+    if (!payload?.region || !payload.beaches) continue;
+    regions[payload.region] = Object.keys(payload.beaches)
+      .map(Number)
+      .filter(Number.isFinite)
+      .sort((a, b) => a - b);
+  }
+
+  const indexPath = path.join(OUT_DIR, 'index.json');
+  fs.writeFileSync(indexPath, `${JSON.stringify({ v: 1, regions })}
+`, 'utf8');
+  const beachCount = Object.values(regions).reduce((total, ids) => total + ids.length, 0);
+  console.log(
+    `- index.json: ${beachCount} beaches across ${Object.keys(regions).length} regions ` +
+      `(${(fs.statSync(indexPath).size / 1024).toFixed(1)}KB)`
+  );
+}
+
 export { buildRegion };
 
 function main() {
@@ -440,6 +468,9 @@ function main() {
     const skipText = Object.entries(result.skips).map(([k, v]) => `${k}=${v}`).join(' ') || 'none';
     console.log(`- ${regionId}: ${result.drawn}/${result.total} (${pct}%) ${(result.bytes / 1024).toFixed(1)}KB  skips: ${skipText}`);
   }
+
+  // Always rebuilt from what is on disk, so a single-region run cannot truncate it.
+  writeRegionIndex();
 
   if (regionIds.length > 1) {
     console.log(`\nTotal: ${drawn}/${total} (${((drawn / total) * 100).toFixed(1)}%), ${(bytes / 1024).toFixed(1)}KB`);
