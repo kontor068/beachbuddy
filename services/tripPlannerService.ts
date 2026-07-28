@@ -106,7 +106,12 @@ const MIN_USABLE_SCORE = 35;
 // >= 6 or effective wave > 1.2 m, computed on the SCORING side) remains an
 // absolute veto, so the answer there is still "not a beach day".
 const CAUTION_MIN_SWIMMING_SCORE = 30;
-const CAUTION_MAX_BEAUFORT = 5;
+// The tier reaches exactly as far as the podium does, and not one Beaufort
+// further. It used to stop at 5 while MAX_TOP_RECOMMENDATION_BEAUFORT was 6,
+// which left a hole at exactly 6 Bft: the normal bar was the ONLY bar, so if
+// nothing cleared it the day came back blank — on the day the visitor needs a
+// sheltered answer most. Two numbers that must agree are now one number.
+const CAUTION_MAX_BEAUFORT = MAX_TOP_RECOMMENDATION_BEAUFORT;
 
 /** Whole-day wind at which we stop calling it a beach day at all. */
 const STORM_BEAUFORT = 8;
@@ -370,13 +375,27 @@ const exposureRank = (level?: ExposureLevel): number => {
  * normal suitability bar. Stops dead at the engine's own hard limits so this can
  * never talk someone into a genuinely rough sea.
  *
- * RANKING DOCTRINE (D12): every key below is a SCORING quantity. The displayed
- * `waveHeightM` is the cove-guard DISPLAY value (display-only by doctrine,
- * services/recommendationService.ts:1944) and is banned from both the filter
- * and the sort — ranking on it would let a presentation transform drive a
- * decision, and its 0.10 m display floor produces mass ties anyway. The old
- * sort ranked on swimmingScore alone, which ties at 49 across an entire region
- * at 5 Bft — so the pick was whichever beach came first in the JSON file.
+ * RANKING DOCTRINE (D12): every key in the SORT below is a scoring quantity.
+ * The displayed `waveHeightM` is the cove-guard DISPLAY value (display-only by
+ * doctrine) and stays banned from both filter and sort — ranking on it would
+ * let a presentation transform drive a decision, and its 0.10 m display floor
+ * produces mass ties anyway. The old sort ranked on swimmingScore alone, which
+ * ties at 49 across an entire region at 5 Bft — so the pick was whichever beach
+ * came first in the JSON file.
+ *
+ * MEASURED AND REJECTED 2026-07-28 — do not re-attempt without new evidence.
+ * The obvious next move here looks like feeding the tier the fetch-limited
+ * near-shore wave for a verified cove, instead of the island's open water. It
+ * was built and measured over 2.136 beach×day pairs (Naxos, Halkidiki, Corfu,
+ * Paros, Milos on a rotating meltemi week): the cove wave was available on 51
+ * of them and changed the verdict on ZERO. Not one beach was rescued.
+ *
+ * The reason is worth keeping: for these coves the wave is NOT the gate.
+ * Sea-condition scoring already discounts a protected beach, so all 51 cleared
+ * the bar on the open-water number anyway. What actually removes a cove from
+ * the normal tier is the engine's 'avoid_swimming' verdict (26 of the 51), and
+ * that is driven by WIND STRENGTH, not wave height. Changing it is a safety
+ * decision, not a bug fix — see docs/team/07-recommendation-algorithm.md.
  *
  * ACCESS IS A GATE HERE, not a tiebreak: on a 5 Bft day, "40 minutes of dirt
  * road to a 30-metre cove" is worse advice than "the organised beach on the

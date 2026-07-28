@@ -107,6 +107,15 @@ const scenarios = {
     // nothing, so the planner must answer "no beach day" too.
     highWind: true,
   },
+  // THE 6 BFT HOLE (added 2026-07-28). The podium's ceiling is 6, but the
+  // caution tier used to stop at 5 — so at exactly 6 Bft the normal bar was the
+  // only bar and a whole meltemi week could come back blank. This scenario sits
+  // squarely in that band and exists to keep the two limits equal for good.
+  Naxos_SUSTAINED_6BFT: {
+    targetRegionId: 'south-aegean-naxos',
+    days: Array.from({ length: 6 }, () => D(0, 12.5, 17.0, 2.0)),
+    highWind: true,
+  },
 };
 
 // ─── Forecast construction (mirrors utils/weatherFixtures.ts shapes) ────────
