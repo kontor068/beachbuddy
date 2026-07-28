@@ -1,8 +1,9 @@
 {
-  "version": "1.0",
+  "version": "1.1",
   "updated": { "gr": "Ιούλιος 2026", "en": "July 2026" },
   "history": [
-    { "version": "1.0", "date": "2026-07-06", "summary": "Αρχική δημοσίευση Όρων Χρήσης, Πολιτικής Απορρήτου και Πολιτικής Cookies." }
+    { "version": "1.0", "date": "2026-07-06", "summary": "Αρχική δημοσίευση Όρων Χρήσης, Πολιτικής Απορρήτου και Πολιτικής Cookies." },
+    { "version": "1.1", "date": "2026-07-28", "summary": "Προστέθηκε ενότητα για δεδομένα καιρού/θάλασσας (Open-Meteo, μοντέλο MFWAM της Météo-France) στους Όρους Χρήσης· διορθώθηκε ανακριβής αναφορά σε DWD στην Πολιτική Cookies." }
   ],
   "operator": {
     "legalName": "MARIS AND CO Ο.Ε.",
@@ -40,6 +41,7 @@
           { "p": "Το σύνολο του περιεχομένου του Ιστοτόπου ή/και της Εφαρμογής, συμπεριλαμβανομένων, χωρίς περιορισμό, κειμένων, ειδήσεων, γραφικών, φωτογραφιών, διαγραμμάτων, εικόνων, βίντεο, ήχων, λογισμικού, κώδικα, σημάτων (εμπορικών και υπηρεσιών), καθώς και της εν γένει εμφάνισης (look and feel) του Ιστοτόπου και της Εφαρμογής, αποτελεί αντικείμενο πνευματικής και βιομηχανικής ιδιοκτησίας της Εταιρείας, εκτός εάν ορίζεται διαφορετικά, και προστατεύεται από τις σχετικές διατάξεις του ελληνικού και ευρωπαϊκού δικαίου." },
           { "p": "Απαγορεύεται ρητά η αναπαραγωγή, αναδημοσίευση, αντιγραφή, αποθήκευση, πώληση, μετάδοση, διανομή, έκδοση, εκτέλεση, λήψη, μετάφραση και τροποποίηση οποιουδήποτε μέρους του Ιστοτόπου ή/και της Εφαρμογής, με οποιονδήποτε τρόπο, για εμπορικούς σκοπούς, χωρίς την προηγούμενη ρητή έγγραφη συναίνεση της Εταιρείας. Κατ' εξαίρεση, επιτρέπεται η αποθήκευση ή αντιγραφή επιμέρους τμημάτων του περιεχομένου σε απλό προσωπικό υπολογιστή ή κινητή συσκευή, αυστηρά για προσωπική χρήση και χωρίς πρόθεση εμπορικής εκμετάλλευσης, με υποχρεωτική αναφορά της πηγής προέλευσης, χωρίς αυτό να συνεπάγεται καθ' οιονδήποτε τρόπο παραχώρηση δικαιωμάτων πνευματικής ιδιοκτησίας." },
           { "p": "Τα προϊόντα, οι υπηρεσίες και τα σήματα τρίτων που τυχόν εμφανίζονται στον Ιστότοπο ή/και την Εφαρμογή αποτελούν πνευματική και βιομηχανική ιδιοκτησία των αντίστοιχων δικαιούχων, οι οποίοι φέρουν και τη σχετική ευθύνη." },
+          { "p": "Δεδομένα καιρού και θάλασσας. Οι προγνώσεις καιρού και θαλάσσιας κατάστασης που εμφανίζονται στην Πλατφόρμα παρέχονται μέσω της υπηρεσίας Open-Meteo (open-meteo.com), υπό άδεια Creative Commons Attribution 4.0 International (CC BY 4.0) — βλ. open-meteo.com/en/licence. Οι θαλάσσιες προγνώσεις (ύψος, κατεύθυνση και περίοδος κύματος, swell) βασίζονται συγκεκριμένα στο μοντέλο MFWAM της Météo-France, το οποίο η Open-Meteo λαμβάνει μέσω του προγράμματος Copernicus Marine Service της Ευρωπαϊκής Ένωσης. Τα δεδομένα αυτά αποτελούν έξοδο μετεωρολογικών/ωκεανογραφικών μοντέλων πρόβλεψης και ενδέχεται να διαφέρουν από τις πραγματικές τοπικές συνθήκες σε δεδομένη στιγμή. Η Εταιρεία επεξεργάζεται τα ανωτέρω δεδομένα και τα μετασχηματίζει σε δικές της εκτιμήσεις καταλληλότητας («Calm Score») και συστάσεις, οι οποίες δεν αποτελούν πρωτογενή μέτρηση ούτε εγγύηση ακρίβειας." },
           { "h": "6. Περιορισμοί χρήσης του Ιστοτόπου / της Εφαρμογής" },
           { "p": "Πλέον των λοιπών περιορισμών που ορίζονται στους παρόντες Όρους, ο Χρήστης συμφωνεί ότι:" },
           { "ul": [
@@ -95,6 +97,7 @@
           { "p": "The entire content of the Website and/or the App, including without limitation texts, news, graphics, photographs, diagrams, images, videos, sounds, software, code, marks (trademarks and service marks), as well as the overall look and feel of the Website and the App, is the intellectual and industrial property of the Company, unless otherwise stated, and is protected by the relevant provisions of Greek and European law." },
           { "p": "The reproduction, republication, copying, storage, sale, transmission, distribution, publication, performance, downloading, translation and modification of any part of the Website and/or the App, in any manner, for commercial purposes, without the prior express written consent of the Company, is expressly prohibited. By way of exception, the storage or copying of individual parts of the content on a personal computer or mobile device is permitted, strictly for personal use and without intent of commercial exploitation, with mandatory attribution of the source, without this implying in any way a grant of intellectual property rights." },
           { "p": "Third-party products, services and marks that may appear on the Website and/or the App are the intellectual and industrial property of their respective owners, who bear the relevant responsibility." },
+          { "p": "Weather and sea data. The weather and sea-condition forecasts shown in the Platform are provided through the Open-Meteo service (open-meteo.com), under a Creative Commons Attribution 4.0 International (CC BY 4.0) licence — see open-meteo.com/en/licence. Marine forecasts (wave height, direction and period, swell) are specifically based on Météo-France's MFWAM model, which Open-Meteo obtains through the European Union's Copernicus Marine Service programme. This data is the output of weather/ocean forecast models and may differ from actual local conditions at any given time. The Company processes this data and transforms it into its own suitability estimates («Calm Score») and recommendations, which are not a raw measurement nor a guarantee of accuracy." },
           { "h": "6. Restrictions on use of the Website / App" },
           { "p": "In addition to the other restrictions set out in these Terms, the User agrees that:" },
           { "ul": [
@@ -321,7 +324,7 @@
             ["_ga, _ga_<id>", "Google Analytics 4", "Διάκριση χρηστών/συνεδριών (συγκεντρωτικά στατιστικά)", "Έως 13 μήνες"],
             ["beach_buddy_analytics", "Calm Beach (τοπικά)", "Τοπικό αντίγραφο ανώνυμων συμβάντων, μόνο με συγκατάθεση", "Έως ανάκληση/εκκαθάριση"]
           ] } },
-          { "p": "Περιεχόμενο τρίτων (δεν εγκαθιστά cookie στο domain μας): πλακίδια χάρτη OpenStreetMap, API καιρού Open-Meteo/DWD (μόνο συντεταγμένες). Οι εξωτερικοί σύνδεσμοι πλοήγησης (Google Maps) ανοίγουν σε νέα καρτέλα και διέπονται από τις δικές τους πολιτικές." },
+          { "p": "Περιεχόμενο τρίτων (δεν εγκαθιστά cookie στο domain μας): πλακίδια χάρτη OpenStreetMap, API καιρού/θάλασσας Open-Meteo (μοντέλο MFWAM της Météo-France για τα θαλάσσια δεδομένα) — μόνο συντεταγμένες. Οι εξωτερικοί σύνδεσμοι πλοήγησης (Google Maps) ανοίγουν σε νέα καρτέλα και διέπονται από τις δικές τους πολιτικές." },
           { "h": "4. Πώς λαμβάνουμε τη συγκατάθεσή σας" },
           { "p": "Κατά την πρώτη επίσκεψη εμφανίζεται αναδυόμενο πλαίσιο (banner) που σας επιτρέπει να αποδεχθείτε ή να απορρίψετε τα μη απαραίτητα cookies. Τα μη απαραίτητα cookies δεν εγκαθίστανται πριν δώσετε ρητή, θετική συγκατάθεση (opt-in). Η απόρριψη είναι εξίσου εύκολη με την αποδοχή: από το ίδιο επίπεδο και με την ίδια εμφάνιση, μπορείτε είτε να αποδεχθείτε όλα, είτε να απορρίψετε όλα, είτε να επιλέξετε ανά κατηγορία." },
           { "p": "Δεν χρησιμοποιούμε προεπιλεγμένα τετραγωνίδια αποδοχής, παραπλανητική διατύπωση ή οπτική υπεροχή του κουμπιού αποδοχής έναντι της απόρριψης, σύμφωνα με τις Κατευθυντήριες Γραμμές 03/2022 του ΕΣΠΔ." },
@@ -375,7 +378,7 @@
             ["_ga, _ga_<id>", "Google Analytics 4", "Distinguish users/sessions (aggregate statistics)", "Up to 13 months"],
             ["beach_buddy_analytics", "Calm Beach (local)", "Local copy of anonymous events, only with consent", "Until withdrawal/clearing"]
           ] } },
-          { "p": "Third-party content (does not set a cookie on our domain): OpenStreetMap map tiles, Open-Meteo/DWD weather APIs (coordinates only). External navigation links (Google Maps) open in a new tab and are governed by their own policies." },
+          { "p": "Third-party content (does not set a cookie on our domain): OpenStreetMap map tiles, Open-Meteo weather/marine APIs (Météo-France's MFWAM model for marine data) — coordinates only. External navigation links (Google Maps) open in a new tab and are governed by their own policies." },
           { "h": "4. How we obtain your consent" },
           { "p": "On your first visit, a pop-up banner appears allowing you to accept or reject non-essential cookies. Non-essential cookies are not installed before you give explicit, positive consent (opt-in). Rejecting is as easy as accepting: from the same level and with the same appearance, you can accept all, reject all, or choose per category." },
           { "p": "We do not use pre-ticked acceptance boxes, misleading wording or visual prominence of the accept button over reject, in accordance with EDPB Guidelines 03/2022." },
