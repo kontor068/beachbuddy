@@ -3,7 +3,6 @@ import type { ExposureLevel } from '../utils/windExposure';
 import type { GeospatialExposureProfileLookup } from './geospatialExposureService';
 import {
   calculateBeachScore,
-  calculateBestBeachTime,
   filterBeachesByUserPreferences,
   getSuitableBeaches,
   hasHourlyRainRisk,
@@ -13,6 +12,7 @@ import {
   type BeachScore,
 } from './recommendationService';
 import { getVisibleMapExposureLevel } from '../utils/mapExposure';
+import { resolveDayWindWindow, type DayWindTrend } from '../utils/dayWindWindow';
 import {
   MAX_TOP_RECOMMENDATION_BEAUFORT,
   MIN_STRONG_SUITABLE_SEA_CONDITION_SCORE,
@@ -216,6 +216,8 @@ export interface TripPick {
    */
   bestTimeStart?: string;
   bestTimeEnd?: string;
+  /** `builds` = calm first, windier later. `eases` = windy first, calmer later. */
+  bestTimeTrend?: DayWindTrend;
   /**
    * True when this came from the caution tier — i.e. it did NOT clear the normal
    * suitability bar and is choppy. The UI must never present these as calm.
@@ -426,7 +428,7 @@ const buildPick = (
   // Computed here for BOTH tiers rather than read off the tier-A source: the
   // caution tier never goes through getSuitableBeaches, and one call site means
   // the two tiers can never disagree about the same beach on the same day.
-  const bestTime = calculateBestBeachTime(day.hourly ?? [], source.beach);
+  const bestTime = resolveDayWindWindow(day.hourly);
 
   return {
     beach: source.beach,
@@ -442,8 +444,9 @@ const buildPick = (
     whyKey: resolveWhyKey({ caution, windBeaufort, hasEvidence, exposureLevel, canClaimWindProtection, enclosedCove }),
     caution,
     offshoreDrift,
-    bestTimeStart: bestTime?.bestStart,
-    bestTimeEnd: bestTime?.bestEnd,
+    bestTimeStart: bestTime?.start,
+    bestTimeEnd: bestTime?.end,
+    bestTimeTrend: bestTime?.trend,
   };
 };
 

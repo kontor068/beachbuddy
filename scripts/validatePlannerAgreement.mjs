@@ -65,6 +65,7 @@ const {
 const { calculateSeaConditionScore } = require('../utils/seaConditions.ts');
 const { getBeaufortLevel } = require('../utils/weatherUtils.ts');
 const { isNaturistBeach } = require('../utils/naturistBeaches.ts');
+const { resolveDayWindWindow } = require('../utils/dayWindWindow.ts');
 
 // ─── Scenarios: 6-day rotating winds ────────────────────────────────────────
 // Beaufort → m/s midpoints; waves matched to the wind day (open-water values —
@@ -497,6 +498,43 @@ const checkCeiling = severeResult => {
     `beach named above ${MAX_TOP_RECOMMENDATION_BEAUFORT} Bft (the podium shows nothing there): ${badDays.join('; ')}`,
     { canary: true });
 };
+
+// ─── The day-wind-window helper, tested directly ────────────────────────────
+// The planner scenarios exercise only the "builds" shape. This block covers the
+// branches they cannot reach, and the ones where staying SILENT is the correct
+// answer — that half matters more, since a wrong hour is worse than no hour.
+{
+  const hoursFrom = beauforts => beauforts.map((bft, index) => {
+    const date = new Date();
+    date.setHours(10 + index, 0, 0, 0);
+    // Beaufort -> the MIDDLE of that band in m/s. Edge values (1.5 m/s is
+    // 5.4 km/h, right on the 1/2 boundary) round into the neighbouring band and
+    // silently flatten the shape under test.
+    const ms = [0.2, 0.8, 2.2, 4.3, 6.7, 9.3, 12.3, 15.5][bft] ?? 4.3;
+    return { dt: Math.floor(date.getTime() / 1000), wind: { speed: ms, deg: 0 } };
+  });
+  const cases = [
+    // [name, hourly beauforts 10:00.., expected]
+    ['builds: Corfu-shaped 1->3', [1, 1, 2, 2, 3, 3, 2, 2, 2], { trend: 'builds', start: '10:00' }],
+    ['eases: windy morning, calm evening', [5, 5, 5, 4, 3, 3, 3, 3, 3], { trend: 'eases' }],
+    ['silent: flat meltemi 5 all day', [5, 5, 5, 5, 5, 5, 5, 5, 5], null],
+    ['silent: 1 Bft spread is forecast noise', [5, 5, 6, 6, 6, 6, 6, 6, 5], null],
+    ['silent: calm run under 2h', [1, 3, 3, 3, 3, 3, 3, 3, 3], null],
+    ['silent: too few hours', [1, 3], null],
+  ];
+  const bad = [];
+  for (const [name, beauforts, expected] of cases) {
+    const got = resolveDayWindWindow(hoursFrom(beauforts));
+    if (expected === null) {
+      if (got) bad.push(`${name}: expected silence, got ${got.start}-${got.end} (${got.trend})`);
+      continue;
+    }
+    if (!got) { bad.push(`${name}: expected a window, got none`); continue; }
+    if (got.trend !== expected.trend) bad.push(`${name}: trend ${got.trend} != ${expected.trend}`);
+    if (expected.start && got.start !== expected.start) bad.push(`${name}: start ${got.start} != ${expected.start}`);
+  }
+  check('dayWindWindow', 'day-wind-window-branches', bad.length === 0, bad.join('; '));
+}
 
 // ─── Entry ──────────────────────────────────────────────────────────────────
 const args = new Set(process.argv.slice(2));

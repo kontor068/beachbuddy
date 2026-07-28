@@ -77,7 +77,12 @@ export type TripPlannerCopy = {
    * about the wind, not a warning about the sea. That distinction is what lets
    * this line exist below 5 Bft at all, where caution wording is forbidden.
    */
-  bestTime: (start: string, end: string) => string;
+  bestTime: {
+    /** Calm first, windier later: name the window that is still quiet. */
+    builds: (start: string, end: string) => string;
+    /** Windy first, calmer later: name when it settles instead. */
+    eases: (start: string) => string;
+  };
   /** The plan follows the forecast — say so instead of pretending stability. */
   planUpdatesDaily: string;
   /** "from the north" etc. — adverbial, slots into the why sentences. */
@@ -124,7 +129,10 @@ export const tripPlannerCopy: Record<LanguageCode, TripPlannerCopy> = {
     refugeBadge: 'απάγκιο',
     refugeNote: 'Όπου καμία από τις γνωστές παραλίες δεν κάνει με τον άνεμο της μέρας, προτείνεται ένα προστατευμένο απάγκιο εκτός λίστας.',
     offshoreDriftNote: 'Στα απάγκια ο αέρας φυσάει από τη στεριά προς τα ανοιχτά: το νερό μένει ήρεμο, αλλά φουσκωτά, στρώματα και SUP παρασύρονται μακριά από την ακτή. Κράτα τα παιδιά κοντά.',
-    bestTime: (start, end) => `Καλύτερα ${start}–${end} — μετά φρεσκάρει ο αέρας.`,
+    bestTime: {
+      builds: (start, end) => `Καλύτερα ${start}–${end} — μετά φρεσκάρει ο αέρας.`,
+      eases: (start) => `Καλύτερα από τις ${start} — ως τότε φυσάει πιο πολύ.`,
+    },
     planUpdatesDaily: 'Το πλάνο ξαναϋπολογίζεται κάθε μέρα με τη νέα πρόγνωση — οι μακρινές μέρες μπορεί να αλλάξουν.',
     windFrom: {
       N: 'από βορρά', NE: 'από βορειοανατολικά', E: 'από ανατολικά', SE: 'από νοτιοανατολικά',
@@ -174,7 +182,10 @@ export const tripPlannerCopy: Record<LanguageCode, TripPlannerCopy> = {
     refugeBadge: 'wind refuge',
     refugeNote: 'When none of the well-known beaches works with the day’s wind, a sheltered refuge from outside the list steps in.',
     offshoreDriftNote: 'At a wind refuge the wind blows off the land: the water stays flat, but inflatables, airbeds and SUPs are carried away from shore. Keep children close in.',
-    bestTime: (start, end) => `Best ${start}–${end} — the wind freshens after that.`,
+    bestTime: {
+      builds: (start, end) => `Best ${start}–${end} — the wind freshens after that.`,
+      eases: (start) => `Best from ${start} — it blows harder until then.`,
+    },
     planUpdatesDaily: 'The plan is recalculated every day with the fresh forecast — the later days can change.',
     windFrom: {
       N: 'from the north', NE: 'from the northeast', E: 'from the east', SE: 'from the southeast',
@@ -220,7 +231,10 @@ export const tripPlannerCopy: Record<LanguageCode, TripPlannerCopy> = {
     refugeBadge: 'Windschutz',
     refugeNote: 'Wenn keiner der bekannten Strände zum Wind des Tages passt, springt ein geschützter Platz außerhalb der Liste ein.',
     offshoreDriftNote: 'Im Windschutz weht der Wind ablandig: Das Wasser bleibt flach, aber Luftmatratzen, Schwimmtiere und SUPs treiben vom Ufer weg. Halte Kinder nah bei dir.',
-    bestTime: (start, end) => `Am besten ${start}–${end} — danach frischt der Wind auf.`,
+    bestTime: {
+      builds: (start, end) => `Am besten ${start}–${end} — danach frischt der Wind auf.`,
+      eases: (start) => `Am besten ab ${start} — bis dahin weht es stärker.`,
+    },
     planUpdatesDaily: 'Der Plan wird jeden Tag mit der frischen Vorhersage neu berechnet — die späteren Tage können sich ändern.',
     windFrom: {
       N: 'aus Norden', NE: 'aus Nordosten', E: 'aus Osten', SE: 'aus Südosten',
@@ -266,7 +280,10 @@ export const tripPlannerCopy: Record<LanguageCode, TripPlannerCopy> = {
     refugeBadge: 'riparo dal vento',
     refugeNote: 'Quando nessuna delle spiagge note funziona con il vento del giorno, entra un riparo protetto fuori lista.',
     offshoreDriftNote: "Nei ripari il vento soffia da terra verso il largo: l'acqua resta calma, ma gonfiabili, materassini e SUP vengono portati via dalla riva. Tieni i bambini vicino.",
-    bestTime: (start, end) => `Meglio ${start}–${end} — dopo il vento rinforza.`,
+    bestTime: {
+      builds: (start, end) => `Meglio ${start}–${end} — dopo il vento rinforza.`,
+      eases: (start) => `Meglio dalle ${start} — fino ad allora soffia di più.`,
+    },
     planUpdatesDaily: 'Il piano viene ricalcolato ogni giorno con la previsione aggiornata — i giorni più lontani possono cambiare.',
     windFrom: {
       N: 'da nord', NE: 'da nord-est', E: 'da est', SE: 'da sud-est',
@@ -312,7 +329,10 @@ export const tripPlannerCopy: Record<LanguageCode, TripPlannerCopy> = {
     refugeBadge: 'abri du vent',
     refugeNote: "Quand aucune des plages connues ne convient au vent du jour, un abri protégé hors liste prend le relais.",
     offshoreDriftNote: "Dans un abri, le vent souffle de la terre vers le large : l'eau reste plate, mais bouées, matelas et paddles sont emportés au loin. Gardez les enfants près du bord.",
-    bestTime: (start, end) => `Mieux ${start}–${end} — le vent forcit ensuite.`,
+    bestTime: {
+      builds: (start, end) => `Mieux ${start}–${end} — le vent forcit ensuite.`,
+      eases: (start) => `Mieux à partir de ${start} — il souffle plus fort avant.`,
+    },
     planUpdatesDaily: 'Le plan est recalculé chaque jour avec la prévision fraîche — les jours lointains peuvent changer.',
     windFrom: {
       N: 'du nord', NE: 'du nord-est', E: "de l'est", SE: 'du sud-est',

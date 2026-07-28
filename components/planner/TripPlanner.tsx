@@ -491,7 +491,9 @@ export const TripPlanner: React.FC<TripPlannerProps> = ({
                         {entry.pick.bestTimeStart && entry.pick.bestTimeEnd && (
                           <p className="mt-1 inline-flex items-center gap-1.5 text-[13px] font-bold leading-snug text-[#0369a1]">
                             <Clock3 className="h-3.5 w-3.5 shrink-0" aria-hidden="true" />
-                            {c.bestTime(entry.pick.bestTimeStart, entry.pick.bestTimeEnd)}
+                            {entry.pick.bestTimeTrend === 'eases'
+                              ? c.bestTime.eases(entry.pick.bestTimeStart)
+                              : c.bestTime.builds(entry.pick.bestTimeStart, entry.pick.bestTimeEnd)}
                           </p>
                         )}
 
