@@ -20,9 +20,15 @@ Then the numbered role docs, then `99-decision-log.md` for what's already been d
 why. Read before advising; a recommendation that contradicts a logged decision without
 noticing is worse than no recommendation.
 
+**`docs/team/` is gitignored on purpose — this repository is public.** The docs hold
+commercial positioning, legal history and a map of our own weak points, so they stay on disk
+like `docs/competitor-strategy.md` and `reports/snapshots/`. Two consequences: never suggest
+committing them or "backing them up with git", and never restate their commercial, legal or
+security contents inside a tracked file (code comments, README, `.claude/`). Git is not the
+backup here — a copy outside the repo is.
+
 **Keep the docs current.** When a fact is established, a decision taken, or a risk changes,
-update the relevant doc in the same session. They're committed alongside the code, so the
-project's state and its record move together. Nobody will go back and do it later.
+update the relevant doc in the same session. Nobody will go back and do it later.
 
 **Verify before claiming.** The code is the authority on how things work; the docs describe
 how things were last time someone wrote about them. Grep before asserting that something is

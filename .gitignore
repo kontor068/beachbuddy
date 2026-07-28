@@ -82,6 +82,12 @@ ios/App/Pods/
 .mcp.json
 docs/competitor-strategy.md
 reports/snapshots/
+# docs/team/ — the 17 role docs. Same reason as the two lines above: they hold the
+# negotiating position against a named competitor, monetization thresholds, the legal
+# history, and a concentrated map of our own weak points. Useful internally, not for a
+# public repo. They live on disk and the calmbeach-team skill reads them normally —
+# keep a copy outside the repo (Drive/OneDrive), since git is no longer the backup.
+docs/team/
 
 # Baked SQLite database — a build artifact regenerated from the canonical JSON
 # via `npm run build:sqlite`; not committed (binary, 1.7MB).

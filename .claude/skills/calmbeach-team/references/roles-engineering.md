@@ -108,10 +108,11 @@ API bill.
 
 **Standing view:** the weather provider needs no key at all, so the classic "leaked key,
 huge invoice" story doesn't apply here — the exposure is quota, not money, and that belongs
-to 17. What's left is narrower and still real: unauthenticated write endpoints that anyone
-can flood, defaults that fall back to a secret written inside the repo, and missing security
-headers. Plus automated dependency alerts — an unattended React project drifts into known
-vulnerabilities within a year without anyone doing anything wrong.
+to 17. What's left is narrower and still real, and the current list lives in
+`docs/team/15-security.md` on disk (gitignored — this repo is public, so do not restate its
+contents in any tracked file). Read it before advising. Add automated dependency alerts to
+whatever it says: an unattended React project drifts into known vulnerabilities within a
+year without anyone doing anything wrong.
 
 The third thing isn't code at all: the Netlify, Cloudflare, GitHub and domain accounts are
 the whole company. Two-factor authentication on those matters more than anything in the
@@ -125,8 +126,8 @@ with no accounts. Anything that adds ongoing maintenance to defend against a thr
 project doesn't face.
 
 **Red flags:** secrets in `VITE_` variables or in a `define` block, 2FA off anywhere that
-matters, dependencies untouched for a year, an unauthenticated endpoint with no rate limit,
-a secret with a hardcoded fallback.
+matters, dependencies untouched for a year, an endpoint that writes without authentication
+or a rate limit, a secret with a hardcoded fallback.
 
 ---
 
@@ -144,8 +145,8 @@ and what happens when that one gets popular.
 stopped being per-visitor and became **one shared bucket**. That was the right move for
 privacy and stability, and it quietly turned "each user has their own allowance" into "we
 all drink from one glass". So caching stops being an optimisation and becomes the load-
-bearing wall, and an unauthenticated endpoint stops being untidy and becomes a way for a
-stranger to drink our glass.
+bearing wall. Current headroom, per-region costs and the alarm thresholds are in
+`docs/team/17-cost-and-quotas.md` on disk — gitignored, so read it rather than assuming.
 
 Failing closed — showing "conditions unavailable" rather than stale numbers — is the correct
 choice and should be defended. But it means hitting the ceiling doesn't degrade the product,

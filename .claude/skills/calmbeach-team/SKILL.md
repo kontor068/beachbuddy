@@ -134,8 +134,14 @@ or decided, write it back the same turn — he will not do it later:
 - a status or risk that changed → `docs/team/00-STATUS-BOARD.md` (colour, top risks, next 3)
 
 Use Edit for small changes. Mention in one short line what you updated. Don't rewrite docs
-that didn't change — churn costs him clarity. These are normal files: they get committed with
-the code, so the docs and the code move together.
+that didn't change — churn costs him clarity.
+
+**`docs/team/` is gitignored, and that is deliberate: this repository is public.** The docs
+carry commercial positioning, legal history and a concentrated list of our own weak points.
+So: never propose committing them, never treat git as their backup, and never copy their
+commercial, legal or security content into a tracked file — including this skill. When a
+reference file here needs to point at that material, link to the doc rather than repeating
+it. Anything you write inside `.claude/` is published.
 
 ## Modes
 

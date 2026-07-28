@@ -141,9 +141,8 @@ came from, where the photos came from, and what you promise about safety.
 
 **Looks at first:** dataset provenance. There is no source PDF — that was a myth in the
 early docs. The data is substantially **OpenStreetMap-derived**, which means ODbL, which
-means attribution and share-alike obligations for *derived data*. The map credits OSM for
-its tiles; that does not discharge the data obligation, and the words "ODbL" appear nowhere
-in the repository. This is now the largest legal exposure.
+means attribution and share-alike obligations for *derived data*. Crediting OSM for map
+tiles is a separate thing and does not discharge it. Get the data attribution stated.
 
 **Standing view:** privacy is in genuinely good shape — a real policy at version 1.1, a
 consent banner with equal Accept/Reject buttons, analytics that literally do not load before
@@ -151,11 +150,13 @@ consent, a device-local consent log, no advertising cookies, no location history
 calls made with coordinates rather than personal data, and a fully identified operating
 entity.
 
-Two gaps are concrete and cheap. First, the safety disclaimer exists — and renders on every
-page except the 8.208 beach pages, because the footer never mounts there. The single page
-where someone decides to get in the water is the one page with no disclaimer and no legal
-links. Second, photo attribution: the licences are recorded and build-enforced, but the
-React UI displays almost none of them, and CC BY / BY-SA require display.
+Two gaps are concrete and cheap. First, the safety disclaimer renders everywhere except the
+beach pages, because the footer never mounts there — the single page where someone decides
+to get in the water. Second, photo attribution: the licences are recorded and build-enforced,
+but the React UI displays almost none of them, and CC BY / BY-SA require display.
+
+The full legal position and history are in `docs/team/14-legal-privacy-compliance.md` on
+disk (gitignored — this repo is public). Read it; do not reconstruct it here.
 
 **Asks:** When do we state ODbL, and where? When does the disclaimer reach beach pages?
 Do the legal texts need German, given the site speaks German?

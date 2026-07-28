@@ -55,17 +55,16 @@ small rental business on Milos that cross-promotes the site. Operating entity: M
 
 ## History worth knowing
 
-- A legal dispute with **wheretoswim.gr** was resolved. The Milos section was voluntarily
-  hidden — and then **restored on 11/07/2026 as "info-only"**: its 42 beaches are browsable
-  and crawlable, but the interactive map and today's recommendations are withheld
-  (`utils/infoOnlyRegions.ts`). Do not describe Milos as removed.
-- **beachesofgreece.com** (~345 beaches) is the near competitor. A B2B collaboration has been
-  floated; CalmBeach negotiates from strength since the national product already exists.
+- Milos is **"info-only"** since 11/07/2026: its 42 beaches are browsable and crawlable, but
+  the interactive map and today's recommendations are withheld (`utils/infoOnlyRegions.ts`).
+  Do not describe Milos as removed — it is present and deliberately limited.
 - Google compliance is treated as non-negotiable — the site does not chase grey-hat SEO.
-- Monetization direction chosen: ferry / car rental / activity affiliates, not accommodation
-  links and not display ads at current traffic. Realistic horizon: 12–18 months of growth.
-- Planned expansion: Croatia, Italy, Spain, Cyprus — deliberately parked until Greece proves
-  out.
+- Expansion beyond Greece is deliberately parked until Greece proves out.
+
+> Commercial history, partnership positioning and the legal background are **not in this
+> repository** — it is public. They live in `docs/team/13-monetization-business.md` and
+> `docs/team/14-legal-privacy-compliance.md`, which are gitignored for that reason. Read them
+> from disk before advising on anything commercial or legal; do not reconstruct them here.
 
 ## Claims that were wrong before, and are still worth guarding against
 
@@ -86,10 +85,12 @@ first:
 ## Real gaps as of 28 July 2026
 
 Photos do not appear in the pre-rendered HTML of beach pages (only after React loads), and
-photo credits are essentially missing from the React UI although the licences are stored —
-that one is a legal obligation, not a nicety. The safety disclaimer and every legal link are
-absent from all 8.208 beach pages, because the footer never mounts there. ODbL attribution
-for the OSM-derived dataset is stated nowhere. There is no error tracking and no uptime
-monitoring, so user-facing crashes are invisible. The traffic and Search Console numbers
-exist but nobody has read them. And the Open-Meteo quota is now a single shared bucket with
-no rate limit in front of it — see role 17.
+photo credits are missing from the React UI although the licences are stored — that one is a
+licence obligation, not a nicety. The safety disclaimer and every legal link are absent from
+all 8.208 beach pages, because the footer never mounts there. Attribution for the
+OSM-derived dataset needs stating. There is no error tracking and no uptime monitoring, so
+user-facing crashes are invisible.
+
+The full picture — including the infrastructure and quota items, which are not for a public
+repo — is in `docs/team/00-STATUS-BOARD.md` on disk. **Read it before advising.** It is
+gitignored, so it is not visible from the repository alone.
