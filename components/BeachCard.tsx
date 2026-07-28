@@ -1,6 +1,6 @@
 
 import React, { useEffect, useRef, useState } from 'react';
-import { AlertTriangle, ShowerHead, MapPin, Star, Share2, Heart, Navigation, Info, Waves, Utensils, Trees, CircleDot, CircleDotDashed, Mountain, Droplets, ArrowDown, BadgeCheck, Leaf, Shield, Users, Clock3, Flag, Footprints, Wind, Tent, Ticket, Euro, Medal, Camera, Accessibility as AccessibilityIcon } from 'lucide-react';
+import { AlertTriangle, ShowerHead, MapPin, Star, Share2, Heart, Navigation, Info, Waves, Utensils, Trees, CircleDot, CircleDotDashed, Mountain, Droplets, Thermometer, ArrowDown, BadgeCheck, Leaf, Shield, Users, Clock3, Flag, Footprints, Wind, Tent, Ticket, Euro, Medal, Camera, Accessibility as AccessibilityIcon } from 'lucide-react';
 import { Beach, Accessibility, LanguageCode, BeachType, CrowdLevel, WarningFlag, RecommendationConfidence, SwimmingComfort, WindSuitabilityColor, PaidEntryKind } from '../types';
 import { getBeaufortLevel } from '../utils/weatherUtils';
 import { Translation } from '../types';
@@ -125,6 +125,9 @@ type CardCopy = {
   certifiedA11y: string;
   dirtRoad: string;
   localExposureCheck: string;
+  /** Screen-reader-only clarifier for the compact temperature stat — the glyph alone
+   *  cannot say whether a number is air or water. */
+  airTemperature: string;
   moreOpenToWind: string;
   exposedToWind: string;
   favorite: string;
@@ -191,6 +194,7 @@ const cardCopy: Record<LanguageCode, CardCopy> = {
     certifiedA11y: 'CalmBeach Certified — we visited this beach and verified its details on site',
     dirtRoad: 'Dirt road',
     localExposureCheck: 'Check local shelter',
+    airTemperature: 'air temperature',
     moreOpenToWind: 'A bit exposed',
     exposedToWind: 'More exposed to wind',
     favorite: 'Add to favorites',
@@ -267,6 +271,7 @@ const cardCopy: Record<LanguageCode, CardCopy> = {
     certifiedA11y: 'CalmBeach Certified — το επισκεφθήκαμε κι επαληθεύσαμε επιτόπου τα χαρακτηριστικά του',
     dirtRoad: 'Χωματόδρομος',
     localExposureCheck: 'Έλεγχος τοπικής προστασίας',
+    airTemperature: 'θερμοκρασία αέρα',
     moreOpenToWind: 'Λίγο εκτεθειμένη στον άνεμο',
     exposedToWind: 'Πιο εκτεθειμένη στον άνεμο',
     favorite: 'Προσθήκη στα αγαπημένα',
@@ -343,6 +348,7 @@ const cardCopy: Record<LanguageCode, CardCopy> = {
     certifiedA11y: 'CalmBeach Certified — nous avons visité cette plage et vérifié ses caractéristiques sur place',
     dirtRoad: 'Piste',
     localExposureCheck: "Exposition locale à vérifier",
+    airTemperature: "température de l'air",
     moreOpenToWind: 'Plus ouverte au vent',
     exposedToWind: 'Exposée au vent',
     favorite: 'Ajouter aux favoris',
@@ -419,6 +425,7 @@ const cardCopy: Record<LanguageCode, CardCopy> = {
     certifiedA11y: 'CalmBeach Certified — wir waren vor Ort und haben die Angaben persönlich geprüft',
     dirtRoad: 'Schotterweg',
     localExposureCheck: 'Lokale Exposition prüfen',
+    airTemperature: 'Lufttemperatur',
     moreOpenToWind: 'Offener zum Wind',
     exposedToWind: 'Windexponiert',
     favorite: 'Zu Favoriten hinzufügen',
@@ -495,6 +502,7 @@ const cardCopy: Record<LanguageCode, CardCopy> = {
     certifiedA11y: 'CalmBeach Certified — abbiamo visitato la spiaggia e verificato le caratteristiche sul posto',
     dirtRoad: 'Strada sterrata',
     localExposureCheck: 'Verifica esposizione locale',
+    airTemperature: 'temperatura dell’aria',
     moreOpenToWind: 'Più aperta al vento',
     exposedToWind: 'Esposta al vento',
     favorite: 'Aggiungi ai preferiti',
@@ -1589,8 +1597,13 @@ export const BeachCard: React.FC<BeachCardProps> = ({
               )}
               {mobileTemperatureLabel && (
                 <span className={mobileConditionItemClass}>
-                  <Droplets className="h-3.5 w-3.5 shrink-0" aria-hidden="true" />
+                  {/* Thermometer, not Droplets: this is AIR temperature. A water-drop glyph
+                      next to "36°" reads as a sea temperature no Greek beach ever has, and
+                      water temperature is a real number we show elsewhere — so the wrong
+                      icon here was not vague, it was a claim. */}
+                  <Thermometer className="h-3.5 w-3.5 shrink-0" aria-hidden="true" />
                   <span className="min-w-0 truncate">{mobileTemperatureLabel}</span>
+                  <span className="sr-only">{localizedCardCopy.airTemperature}</span>
                 </span>
               )}
             </div>

@@ -4,6 +4,7 @@ import { RefreshCw, Wind, Thermometer, Clock, Droplets } from 'lucide-react';
 import { WeatherData, WindDirection, LanguageCode, WindUnit, DailyForecast } from '../types';
 import { getLocalizedCopy } from '../utils/i18n';
 import { athensNow } from '../utils/athensTime';
+import { WeatherIcon } from './WeatherIcon';
 
 interface WindInfoProps {
   weather: WeatherData | DailyForecast;
@@ -123,7 +124,6 @@ export const WindInfo: React.FC<WindInfoProps> = ({ weather, windDirection, t, l
   const windSpeedKmph = (weather.wind.speed * 3.6).toFixed(1);
   const windSpeedMph = (weather.wind.speed * 2.23694).toFixed(1);
   const relativeTime = useRelativeTime(lastUpdated, t);
-  const iconUrl = `https://openweathermap.org/img/wn/${weather.weather.icon}@2x.png`;
   const dayFormatter = new Intl.DateTimeFormat(t.locale, { weekday: 'long' });
   const selectedDate = 'date' in weather ? weather.date : athensNow();
 
@@ -209,7 +209,8 @@ export const WindInfo: React.FC<WindInfoProps> = ({ weather, windDirection, t, l
 
             {/* Condition */}
             <div className="bg-white/60 dark:bg-slate-800/40 backdrop-blur-sm p-4 rounded-2xl border border-sky-100/50 dark:border-slate-700/40 space-y-2">
-              <img src={iconUrl} alt={weather.weather.main} className="w-8 h-8 -ml-1" />
+              {/* Decorative: the "Condition: …" text right below already names the sky. */}
+              <WeatherIcon code={weather.weather.icon} className="w-8 h-8 -ml-1" />
               <div>
                 <span className="text-[10px] font-medium text-sky-400 dark:text-sky-500 tracking-normal">{t.conditionLabel || 'Condition'}</span>
                 <div className="text-sm font-heading font-semibold text-slate-800 dark:text-white capitalize">

@@ -4,6 +4,7 @@ import { degToCompass, getBeaufortLevel } from '../utils/weatherUtils';
 import { athensNow } from '../utils/athensTime';
 import { ArrowRight, CloudSun, Wind, Clock, ChevronDown } from 'lucide-react';
 import { trackEvent } from '../services/analyticsService';
+import { WeatherIcon } from './WeatherIcon';
 
 type DisplayForecast = (DailyForecast) | (WeatherData & { 
   date: Date, 
@@ -156,7 +157,6 @@ const ForecastCard: React.FC<{
   useWeekdayLabels?: boolean;
   stackedPills?: boolean;
 }> = ({ forecast, isSelected, onClick, isToday, t, index, currentTime, variant = 'stacked', disabled = false, useWeekdayLabels = false, stackedPills = false }) => {
-  const iconUrl = `https://openweathermap.org/img/wn/${forecast.weather.icon}@2x.png`;
   const dateFormatter = new Intl.DateTimeFormat(t.locale, { month: 'short', day: 'numeric' });
   const dayLabel = getForecastDayLabel(forecast.date, currentTime, t, useWeekdayLabels);
   
@@ -185,14 +185,7 @@ const ForecastCard: React.FC<{
           {dayLabel}
         </span>
         <span className="flex min-w-0 items-center justify-center gap-0.5 sm:gap-2">
-          <img
-            src={iconUrl}
-            alt={forecast.weather.description}
-            width={24}
-            height={24}
-            loading={index === 0 ? 'eager' : 'lazy'}
-            className="h-5 w-5 shrink-0 drop-shadow-sm sm:h-7 sm:w-7"
-          />
+          <WeatherIcon code={forecast.weather.icon} className="h-5 w-5 shrink-0 drop-shadow-sm sm:h-7 sm:w-7" />
           <span className="flex min-w-0 flex-col items-start leading-none">
             <span className={`hidden max-w-[3.8rem] truncate text-[11px] font-extrabold sm:block ${isSelected ? 'text-sky-700' : 'text-slate-700'}`}>
               {dayLabel}
@@ -227,12 +220,8 @@ const ForecastCard: React.FC<{
             : 'border-slate-200/75 bg-white/86 text-slate-700 shadow-sm shadow-slate-900/8 hover:border-sky-200 hover:bg-sky-50/70'
         }`}
       >
-        <img
-          src={iconUrl}
-          alt={forecast.weather.description}
-          width={28}
-          height={28}
-          loading={index === 0 ? 'eager' : 'lazy'}
+        <WeatherIcon
+          code={forecast.weather.icon}
           className={`shrink-0 drop-shadow-sm ${stackedPills ? 'h-6 w-6' : 'h-5 w-5 sm:h-7 sm:w-7'}`}
         />
         <span className={`flex min-w-0 max-w-full flex-col items-center leading-none ${stackedPills ? '' : 'sm:items-start'}`}>
@@ -278,7 +267,7 @@ const ForecastCard: React.FC<{
         </span>
 
         <div className="relative mb-0.5 sm:mb-1">
-          <img src={iconUrl} alt={forecast.weather.description} width={40} height={40} loading={index === 0 ? 'eager' : 'lazy'} className="h-6 w-6 drop-shadow-sm min-[390px]:h-7 min-[390px]:w-7 sm:h-7 sm:w-7 md:h-8 md:w-8" />
+          <WeatherIcon code={forecast.weather.icon} className="h-6 w-6 drop-shadow-sm min-[390px]:h-7 min-[390px]:w-7 sm:h-7 sm:w-7 md:h-8 md:w-8" />
         </div>
 
         <div className="mb-0.5 flex flex-col items-center gap-0 sm:mb-1">
@@ -408,7 +397,6 @@ const Forecast: React.FC<ForecastProps> = ({
             const beaufortLevel = getBeaufortLevel(forecast.wind.speed * 3.6);
             const isSelected = selectedDayIndex === index;
             const isDisabled = isTodayDisabledAfterEvening(index, currentTime);
-            const iconUrl = `https://openweathermap.org/img/wn/${forecast.weather.icon}@2x.png`;
             const dayLabel = getForecastDayLabel(forecast.date, currentTime, t, useWeekdayLabels);
             const buttonLabel = `${t.forecastFor} ${dayLabel}, ${dateFormatter.format(forecast.date)}: ${Math.round(forecast.temp_max)}°C, ${beaufortLevel} ${t.units.beaufort}`;
 
@@ -440,7 +428,7 @@ const Forecast: React.FC<ForecastProps> = ({
                   {dateFormatter.format(forecast.date)}
                 </span>
                 <div className="mt-0.5 flex items-center justify-center gap-0.5">
-                  <img src={iconUrl} alt={forecast.weather.description} width={24} height={24} loading={index === 0 ? 'eager' : 'lazy'} className="h-4 w-4 drop-shadow-sm" />
+                  <WeatherIcon code={forecast.weather.icon} className="h-4 w-4 drop-shadow-sm" />
                   <span className="font-heading text-[11px] font-bold leading-none text-slate-900 sm:text-xs">
                     {Math.round(forecast.temp_max)}°
                   </span>

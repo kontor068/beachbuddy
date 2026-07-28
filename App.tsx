@@ -12,6 +12,7 @@ import { UnsafeConditionsMessage } from './components/UnsafeConditionsMessage';
 import { PreferenceFilters } from './components/PreferenceFilters';
 import { BeachFilters } from './components/BeachFilters';
 import { WeatherSummary } from './components/WeatherSummary';
+import { WeatherIcon } from './components/WeatherIcon';
 import { RecommendationSection } from './components/RecommendationSection';
 import { BeachCard } from './components/BeachCard';
 import ErrorDisplay from './components/ErrorDisplay';
@@ -641,6 +642,11 @@ const adjustDailyForecastToHour = (
     wind: hourItem.wind,
     marine: getSelectedHourMarine(hourItem.marine, dailyForecast.marine),
     weather: hourItem.weather?.[0] ?? dailyForecast.weather,
+    // Temperature was the one field left on the daily value while wind, sea and sky all
+    // moved to the selected hour — so an 08:00 card showed the day's afternoon peak (a
+    // beach card reading "36°" at eight in the morning). Everything the user is looking
+    // at now describes the same moment.
+    temp_max: Number.isFinite(hourItem.main?.temp) ? hourItem.main.temp : dailyForecast.temp_max,
   };
 };
 
@@ -4038,7 +4044,6 @@ export const App: React.FC = () => {
             const dayLabel = getMobileMapDayLabel(day.date, language, t, topPickNow);
             const beaufort = getBeaufortLevel(day.wind.speed * 3.6);
             const isSelected = selectedDayIndex === index;
-            const weatherIconUrl = `https://openweathermap.org/img/wn/${day.weather.icon}@2x.png`;
             const buttonLabel = `${t.forecastFor} ${dayLabel}, ${dateFormatter.format(day.date)}: ${Math.round(day.temp_max)}°C, ${beaufort} ${t.units.beaufort}, ${day.weather.description}`;
 
             return (
@@ -4060,14 +4065,7 @@ export const App: React.FC = () => {
                   {dayLabel}
                 </span>
                 <span className="mt-0.5 flex max-w-full items-center justify-center gap-0.5 leading-none">
-                  <img
-                    src={weatherIconUrl}
-                    alt=""
-                    width={24}
-                    height={24}
-                    loading={index === 0 ? 'eager' : 'lazy'}
-                    className="h-5 w-5 shrink-0 drop-shadow-sm"
-                  />
+                  <WeatherIcon code={day.weather.icon} className="h-5 w-5 shrink-0 drop-shadow-sm" />
                   <span className="truncate text-[10px] font-black tabular-nums text-slate-900">
                     {beaufort} {t.units.beaufort}
                   </span>
@@ -4876,7 +4874,7 @@ export const App: React.FC = () => {
         selectedDate={selectedForecast?.date}
         selectedHour={selectedHourDt != null ? new Date(selectedHourDt * 1000).getHours() : undefined}
         windSpeed={selectedForecast?.wind.speed ?? forecast?.[selectedDayIndex]?.wind.speed}
-        temperature={forecast?.[selectedDayIndex]?.temp_max}
+        temperature={selectedForecast?.temp_max ?? forecast?.[selectedDayIndex]?.temp_max}
         islandName={selectedIsland?.name[language] ?? ''}
         regionId={isNearMeRegionActive ? undefined : selectedIsland?.id}
         otherIslandsCount={savedOtherIslandsCount}
@@ -6373,9 +6371,11 @@ export const App: React.FC = () => {
           different island. */}
       {isTripPlannerMountable && selectedIsland && forecast && (
         <div id={TRIP_PLANNER_SECTION_ID} className="relative z-20 pb-3 pt-1 sm:pb-4">
-          {/* Fixed-height fallback sized to the collapsed card, so a late chunk
-              does not push the recommendations below it down. */}
-          <Suspense fallback={<div className="mx-auto w-full max-w-6xl px-3 sm:px-4"><div className="min-h-[6.5rem] rounded-2xl border border-cyan-200/80 bg-cyan-50/85" /></div>}>
+          {/* Fixed-height fallback sized to the card as it now renders — header
+              + a 3-day plan + the day chips — so a late chunk does not push the
+              recommendations below it down. Raised from 6.5rem on 28/07/2026,
+              when the card stopped being collapsed-until-tapped. */}
+          <Suspense fallback={<div className="mx-auto w-full max-w-6xl px-3 sm:px-4"><div className="min-h-[21rem] rounded-2xl border border-cyan-200/80 bg-cyan-50/85 sm:min-h-[19rem]" /></div>}>
             <TripPlanner
               key={String(selectedIsland.id)}
               beaches={selectedIsland.beaches}
@@ -6410,7 +6410,7 @@ export const App: React.FC = () => {
                   <div key={r.beach.id}>
                     <BeachCard
                       beach={{...r.beach, distance: r.distance}} isExposed={r.isExposed} language={language} t={t}
-                      isCalm={r.seaCalmClaimAllowed === true} windSpeed={selectedForecast?.wind.speed ?? forecast[selectedDayIndex].wind.speed} temperature={forecast[selectedDayIndex].temp_max}
+                      isCalm={r.seaCalmClaimAllowed === true} windSpeed={selectedForecast?.wind.speed ?? forecast[selectedDayIndex].wind.speed} temperature={selectedForecast?.temp_max ?? forecast[selectedDayIndex].temp_max}
                       favorites={favorites} onToggleFavorite={handleToggleFavorite} islandName={selectedIsland!.name[language]}
                       regionId={selectedIsland?.id}
                       onClick={() => openBeachDetails(r.beach, 'recommendation_card')}
@@ -6659,7 +6659,7 @@ export const App: React.FC = () => {
                       <div key={r.beach.id}>
                         <BeachCard
                           beach={{...r.beach, distance: r.distance}} isExposed={r.isExposed} language={language} t={t}
-                          isCalm={r.seaCalmClaimAllowed === true} windSpeed={selectedForecast?.wind.speed ?? forecast[selectedDayIndex].wind.speed} temperature={forecast[selectedDayIndex].temp_max}
+                          isCalm={r.seaCalmClaimAllowed === true} windSpeed={selectedForecast?.wind.speed ?? forecast[selectedDayIndex].wind.speed} temperature={selectedForecast?.temp_max ?? forecast[selectedDayIndex].temp_max}
                           favorites={favorites} onToggleFavorite={handleToggleFavorite} islandName={selectedIsland!.name[language]}
                           regionId={selectedIsland?.id}
                           onClick={() => openBeachDetails(r.beach, 'recommendation_card')}
