@@ -29,12 +29,24 @@ const UPSTREAMS = {
   'open-meteo-marine': { host: 'https://marine-api.open-meteo.com', paths: new Set(['/v1/marine']) },
 };
 
-// Marine model pin (see services/forecast/openMeteoProvider.ts for why). `models` is
-// deliberately NOT in ALLOWED_PARAMS below, so buildSafeQuery() can never carry a
-// client-supplied value through — this constant is the only way `models` ever reaches
-// the marine upstream. Injected unconditionally on the marine route only, after the
-// safe query is built, so it can't be overridden and never touches the weather route.
-const MARINE_MODEL = 'meteofrance_wave';
+// Marine model pin (see services/forecast/openMeteoProvider.ts for the full reasoning and
+// the measurements behind it). `models` is deliberately NOT in ALLOWED_PARAMS below, so
+// buildSafeQuery() can never carry a client-supplied value through — this constant is the
+// only way `models` ever reaches the marine upstream. Injected unconditionally on the marine
+// route only, after the safe query is built, so it can't be overridden and never touches the
+// weather route.
+//
+// Both models are required: meteofrance_wave carries the wave/swell fields but returns no
+// sea_surface_temperature whatsoever, so pinning it alone silently removed the water-temperature
+// reading from every beach-detail page. meteofrance_currents supplies SST (the same values
+// best_match was already serving) and nothing else we request.
+//
+// NOTE for anyone changing this: asking Open-Meteo for more than one model renames every
+// field in the response to `<field>_<model>` (e.g. wave_height_meteofrance_wave). The parser
+// in services/weatherService.ts reads those suffixed names, falling back to the bare ones.
+// Going back to a single model here is therefore safe, but adding/renaming a model without
+// updating that parser is not.
+const MARINE_MODEL = 'meteofrance_wave,meteofrance_currents';
 
 // --- CORS for the mobile app only (see services/forecast/openMeteoProvider.ts) -------
 // The web app calls this same-origin (relative /api/forecast/...), which needs no CORS

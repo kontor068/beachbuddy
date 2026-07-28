@@ -350,17 +350,40 @@ export const fetchMarineForecastData = async (lat: number, lon: number): Promise
       throw new Error('Marine fetch failed: missing hourly data');
     }
 
+    // Open-Meteo renames every field to `<field>_<model>` as soon as MORE THAN ONE model is
+    // requested, and leaves it bare when exactly one is. We ask for two (waves from
+    // meteofrance_wave, sea temperature from meteofrance_currents — see openMeteoProvider.ts),
+    // so the suffixed name is the normal case and the bare name is the fallback.
+    //
+    // The fallback is load-bearing, not defensive decoration: the edge proxy caches marine
+    // responses with s-maxage=1800 + stale-while-revalidate=3600, so for up to ~1.5h after a
+    // deploy that changes the model list the CDN keeps serving the PREVIOUS shape. Without the
+    // bare-name fallback, every wave reading would read undefined for that whole window.
+    const series = (field: string, model: string): unknown[] | undefined =>
+      marineHourly[`${field}_${model}`] ?? marineHourly[field];
+
+    const waveHeight = series('wave_height', 'meteofrance_wave');
+    const waveDirection = series('wave_direction', 'meteofrance_wave');
+    const wavePeriod = series('wave_period', 'meteofrance_wave');
+    const swellHeight = series('swell_wave_height', 'meteofrance_wave');
+    const swellDirection = series('swell_wave_direction', 'meteofrance_wave');
+    const swellPeriod = series('swell_wave_period', 'meteofrance_wave');
+    // Only meteofrance_currents carries SST; the wave model's own column is all-null, so the
+    // bare-name fallback here resolves to that null column on pre-deploy cached responses —
+    // which is correct, and simply hides the water-temperature card until the cache turns over.
+    const seaTemperature = series('sea_surface_temperature', 'meteofrance_currents');
+
     return marineHourly.time
       .map((timeStr: string, index: number): MarineForecastItem => ({
         dt_txt: timeStr.replace('T', ' '),
         marine: {
-          waveHeightM: optionalNumber(marineHourly.wave_height?.[index]),
-          waveDirectionDeg: optionalNumber(marineHourly.wave_direction?.[index]),
-          wavePeriodS: optionalNumber(marineHourly.wave_period?.[index]),
-          swellWaveHeightM: optionalNumber(marineHourly.swell_wave_height?.[index]),
-          swellWaveDirectionDeg: optionalNumber(marineHourly.swell_wave_direction?.[index]),
-          swellWavePeriodS: optionalNumber(marineHourly.swell_wave_period?.[index]),
-          seaSurfaceTemperatureC: optionalNumber(marineHourly.sea_surface_temperature?.[index]),
+          waveHeightM: optionalNumber(waveHeight?.[index]),
+          waveDirectionDeg: optionalNumber(waveDirection?.[index]),
+          wavePeriodS: optionalNumber(wavePeriod?.[index]),
+          swellWaveHeightM: optionalNumber(swellHeight?.[index]),
+          swellWaveDirectionDeg: optionalNumber(swellDirection?.[index]),
+          swellWavePeriodS: optionalNumber(swellPeriod?.[index]),
+          seaSurfaceTemperatureC: optionalNumber(seaTemperature?.[index]),
           source: 'open-meteo-marine',
         },
       }))

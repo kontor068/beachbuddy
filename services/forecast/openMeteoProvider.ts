@@ -52,9 +52,18 @@ const MARINE_HOURLY = [
 // makes the model deterministic: if it goes stale/unavailable, fields come back null (the
 // existing optional-field handling in weatherService.ts / the wind-based fallback already
 // cover that) rather than the response silently switching to a different, unannounced model.
-// meteofrance_wave is currently what best_match already resolves to for Greek coordinates —
-// this pin does not change today's numbers, only removes the risk that they change silently.
-const MARINE_MODEL = 'models=meteofrance_wave';
+//
+// TWO models, because no single one carries everything we display:
+//   - meteofrance_wave     → the six wave/swell fields. Returns NO sea_surface_temperature
+//                            at all (measured: 0 of 24 hourly values, on Milos/Chania/Corfu/
+//                            Mykonos alike — it is a wave model, not an ocean model).
+//   - meteofrance_currents → sea_surface_temperature, and nothing else we ask for.
+// Pinning meteofrance_wave alone therefore silently deleted the «Νερό» water-temperature card
+// from every beach-detail page. meteofrance_currents is where best_match was already sourcing
+// SST from: its values matched best_match's to 0.0°C across a full day, so requesting it
+// explicitly restores exactly the number production already showed — no new provider, no
+// change to any displayed value, and waves stay deterministic.
+const MARINE_MODEL = 'models=meteofrance_wave,meteofrance_currents';
 
 // `cell_selection=sea` is set on the MARINE request only, and deliberately not on the two forecast
 // requests below.

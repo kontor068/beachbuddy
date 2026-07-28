@@ -40,6 +40,15 @@ const checks = [
     args: ['scripts/validateWindExposureEngine.mjs'],
   },
   {
+    id: 'marine-model-parsing',
+    title: 'Marine model/parser contract',
+    description: 'Checks the pinned Open-Meteo marine models agree between client and edge proxy, that every requested marine variable is parsed from a model that actually serves it, and that the bare-field fallback survives.',
+    protects: 'Prevents a marine field from silently reading undefined — how the water-temperature card vanished from every beach page when a wave-only model was pinned. Nothing throws when this drifts; the data just disappears.',
+    failureAction: 'Realign the MARINE_MODEL pins in services/forecast/openMeteoProvider.ts and netlify/functions/forecast.mjs with the series() lookups in services/weatherService.ts. Add --live to re-check which model serves which variable upstream.',
+    command: process.execPath,
+    args: ['scripts/validateMarineModelParsing.mjs'],
+  },
+  {
     id: 'recommendation-scenarios',
     title: 'Recommendation scenarios',
     description: 'Runs fixed weather scenarios for Milos, Paros, and Andros, including normal wind, rain, 4 Bft, and 5 Bft rough conditions.',
