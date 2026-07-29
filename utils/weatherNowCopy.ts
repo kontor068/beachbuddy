@@ -398,6 +398,33 @@ export const buildWeatherNowContent = (input: WeatherNowInput): WeatherNowConten
   }
   // "now/τώρα/maintenant…" is only truthful for today. For a future day the same block
   // shows that day's forecast values, so the wording must be time-neutral (no "now").
+  //
+  // SHELTER IS A FACT ABOUT THE WIND, NOT A PROMISE ABOUT THE WATER. This branch had no sea
+  // test at all — unlike the exposed branch below, which has carried `&& tone === 'calm'` all
+  // along — so it printed «εδώ είναι σχετικά προστατευμένα» directly above a 1,3 m wave meter
+  // and a swimmer drawn submerged to the neck (reported from Κολιτσανή, Ίος, 29/07/2026).
+  // The shelter claim itself was true: the shore IS in the lee of that wind. What was missing
+  // is that a sea can be running into a lee shore, and the sentence flatly denied it.
+  //
+  // So the branch keeps the shelter fact only while the page's own verdict agrees the water is
+  // calm; when the sea is running it still names the shelter — that is the useful part, it
+  // explains why this shore is the better choice today — and then says what the water is doing.
+  // Strictly a narrowing: no beach gains a calm claim it did not already have.
+  else if (shelteredNow && tone !== 'calm') {
+    const adjGr = GR_WIND_ADJ_ACC[input.windDir];
+    const adjEn = EN_WIND_ADJ[input.windDir];
+    liveSentence = isToday
+      ? { en: `The ${adjEn} wind of ${bft} Bft is off this shore, so it is the calmer side today — but there is still sea running in.`,
+        gr: `Ο ${adjGr} άνεμος ${bft} ${bftUnit} δεν χτυπά εδώ, οπότε είναι η πιο υπήνεμη πλευρά σήμερα — έχει όμως ακόμα κύμα.`,
+        de: `Der Wind von ${bft} Bft trifft diese Küste nicht, sie ist heute die ruhigere Seite — es läuft aber noch Welle ein.`,
+        fr: `Le vent de ${bft} Bft ne frappe pas cette côte, c'est le côté le plus abrité aujourd'hui — mais il reste de la houle.`,
+        it: `Il vento di ${bft} Bft non colpisce questa costa, oggi è il lato più riparato — ma c'è ancora onda.` }[lang]
+      : { en: `The ${adjEn} wind of ${bft} Bft is off this shore, so it is the calmer side — but there is still sea running in.`,
+        gr: `Ο ${adjGr} άνεμος ${bft} ${bftUnit} δεν χτυπά εδώ, οπότε είναι η πιο υπήνεμη πλευρά — έχει όμως ακόμα κύμα.`,
+        de: `Der Wind von ${bft} Bft trifft diese Küste nicht, sie ist die ruhigere Seite — es läuft aber noch Welle ein.`,
+        fr: `Le vent de ${bft} Bft ne frappe pas cette côte, c'est le côté le plus abrité — mais il reste de la houle.`,
+        it: `Il vento di ${bft} Bft non colpisce questa costa, è il lato più riparato — ma c'è ancora onda.` }[lang];
+  }
   else if (shelteredNow) {
     const adjGr = GR_WIND_ADJ_ACC[input.windDir];
     const adjEn = EN_WIND_ADJ[input.windDir];

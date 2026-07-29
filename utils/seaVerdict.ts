@@ -77,6 +77,11 @@ export const getWindSeverity = (
   const isProtected = exposureLevel === 'protected' || (canClaimWindProtection === true && exposureLevel !== 'exposed');
   const isExposedOrPartial = exposureLevel === 'exposed' || exposureLevel === 'partial';
 
+  // A near-gale is rough everywhere. Shelter is a real, measured fact about the wind, but it
+  // stops being a mitigation the user can act on at 7 Bft: the badge already hardens to
+  // «Ακατάλληλη σήμερα» there (utils/experienceTier.ts, the 7 Bft skip), so leaving a protected
+  // shore on 'moderate' printed «Πιο προστατευμένη, με κυματισμό» under it. Downward only.
+  if (bft >= 7) return 'rough';
   if (bft >= 6) return isProtected ? 'moderate' : 'rough';
   if (bft >= 5) return 'moderate';
   if (bft >= 4 && isExposedOrPartial) return 'moderate';
