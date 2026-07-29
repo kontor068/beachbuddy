@@ -110,14 +110,32 @@ const getBeachRegionId = (region, prefecture, fallbackId = 'unknown') => {
   return normalized || `unknown-${fallbackId}`;
 };
 
+/**
+ * A hash of the beach id, in [0,1). It was used as the fallback for records with
+ * no `metadata`, deciding organized / shade / taverna / parking / sunbeds /
+ * snorkeling / beachType / waterDepth.
+ *
+ * IT INVENTS FACTS. A beach with no metadata got a shore composition and a water
+ * depth derived from the digits of its id and nothing else. Both fields are
+ * user-visible, and `waterDepth` additionally becomes `familyFriendly`
+ * (line ~513), which recommends beaches to parents.
+ *
+ * Today the fallback is dead — every source record carries metadata — so this
+ * never fires. That is exactly why it is dangerous: one imported record without
+ * metadata (a new beach, a geocoded Seatrac seed) and the site would quietly
+ * start publishing fabricated amenities with nothing in the output to show it.
+ * The audit of 29/07/2026 measured what these fields are worth even when they
+ * ARE researched (waterDepth separates real seabeds with an effect size of only
+ * 0,627 against a 0,500 coin flip); a hashed value is worth exactly nothing.
+ *
+ * So it now throws instead of guessing. If this ever fires, the fix is to give
+ * the record metadata — not to relax the guard.
+ */
 const getDeterministicValue = (id, seed) => {
-  const str = `${id}-${seed}`;
-  let hash = 0;
-  for (let i = 0; i < str.length; i += 1) {
-    hash = ((hash << 5) - hash) + str.charCodeAt(i);
-    hash &= hash;
-  }
-  return Math.abs(hash % 1000) / 1000;
+  throw new Error(
+    `buildBeachRegionData: beach ${id} has no metadata, so "${seed}" would have been invented from a hash of its id. ` +
+    'Refusing to fabricate a user-visible fact. Add metadata for this beach (see docs/team/05) and re-run.'
+  );
 };
 
 // Review counts are wildly skewed (a handful of famous beaches have tens of
@@ -499,17 +517,28 @@ const buildBeach = (rawBeach, island) => {
   const reviewCount = metadata?.popularity?.ratingCount;
   const quiet = typeof reviewCount === 'number' && reviewCount < QUIET_REVIEW_THRESHOLD && !hasBar;
   const remote = access === 'DIFFICULT' || access === 'BOAT_ONLY';
-  const typeVal = getDeterministicValue(rawBeach.id, 'type');
-  const isDeepWater = getDeterministicValue(rawBeach.id, 'depth') > 0.5;
-  const beachType = metadata ? metadataTerrainToBeachType(metadata.terrain.types) : (typeVal > 0.85 ? 'rocky' : (typeVal > 0.65 ? 'pebbles' : (typeVal > 0.45 ? 'sandy-pebbles' : 'sandy')));
+  // These two used to be computed EAGERLY, above the ternaries that consume
+  // them — so the hash ran for every beach on every build, metadata or not, and
+  // only the ternary decided whether to use the result. Harmless while the
+  // function merely returned a number; fatal the moment it became a guard. Kept
+  // lazy so the fallback is reached only when it is genuinely the fallback.
+  const beachType = metadata
+    ? metadataTerrainToBeachType(metadata.terrain.types)
+    : (() => {
+      const typeVal = getDeterministicValue(rawBeach.id, 'type');
+      return typeVal > 0.85 ? 'rocky' : (typeVal > 0.65 ? 'pebbles' : (typeVal > 0.45 ? 'sandy-pebbles' : 'sandy'));
+    })();
   const snorkelingOverride = getMetadataActivityOverride(metadata, 'snorkeling');
   const depth = metadata?.waterDepth?.type
     ? metadataWaterDepthToCharacteristics(metadata.waterDepth.type)
-    : metadata ? metadataTerrainToDepth(metadata.terrain.types) : {
-      deepWaters: isDeepWater,
-      shallowWaters: !isDeepWater,
-      waterDepth: isDeepWater ? 'deep' : (getDeterministicValue(rawBeach.id, 'depth2') > 0.5 ? 'medium' : 'shallow'),
-    };
+    : metadata ? metadataTerrainToDepth(metadata.terrain.types) : (() => {
+      const isDeepWater = getDeterministicValue(rawBeach.id, 'depth') > 0.5;
+      return {
+        deepWaters: isDeepWater,
+        shallowWaters: !isDeepWater,
+        waterDepth: isDeepWater ? 'deep' : (getDeterministicValue(rawBeach.id, 'depth2') > 0.5 ? 'medium' : 'shallow'),
+      };
+    })();
   const familyFriendly = depth.shallowWaters && organized && !hardQuietAccessTypes.has(metadata?.access?.type);
 
   return {
