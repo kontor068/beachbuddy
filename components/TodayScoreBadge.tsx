@@ -15,7 +15,12 @@ interface TodayScoreBadgeProps {
   selectedDate?: Date;
   windBeaufort?: number;
   waveHeightM?: number;
+  /** Total-sea period (s) for the same reading — keeps the badge on the shared wave scale. */
+  wavePeriodS?: number;
   swimmingComfort?: SwimmingComfort;
+  /** 0–10 from calculateSeaConditionScore — the same figure the "weather now" chip reads, so the
+   *  badge can never sit a tier above the chip printed a few lines below it. */
+  seaConditionScore?: number;
   noIdealSwimmingWindow?: boolean;
   exposureLevel?: ExposureLevel;
   selectedHour?: number;
@@ -134,7 +139,9 @@ export const TodayScoreBadge: React.FC<TodayScoreBadgeProps> = ({
   selectedDate,
   windBeaufort,
   waveHeightM,
+  wavePeriodS,
   swimmingComfort,
+  seaConditionScore,
   noIdealSwimmingWindow,
   exposureLevel,
   selectedHour,
@@ -160,7 +167,9 @@ export const TodayScoreBadge: React.FC<TodayScoreBadgeProps> = ({
       score: clampScore(score),
       windBeaufort,
       waveHeightM,
+      wavePeriodS,
       swimmingComfort,
+      seaConditionScore,
       noIdealSwimmingWindow,
       exposureLevel,
     });

@@ -58,6 +58,15 @@ const checks = [
     args: ['scripts/validateRecommendationScenarios.mjs'],
   },
   {
+    id: 'verdict-consistency',
+    title: 'One sea verdict per page',
+    description: 'Sweeps 3.168 wind/wave/period/exposure/score combinations and checks the experience-tier badge, the "weather now" chip and the wave graphic never describe the same sea two different ways.',
+    protects: 'Prevents the beach page from printing "Excellent today" and "Calm right now" above an orange "Some chop" — three severity ladders that drifted apart and contradicted each other on 21% of the grid.',
+    failureAction: 'Fix the shared ladder in utils/seaVerdict.ts, or the surface that stopped reading it. Never relax a rule in the audit to make a combination pass.',
+    command: process.execPath,
+    args: ['scripts/validateVerdictConsistency.mjs'],
+  },
+  {
     id: 'trip-query-parsing',
     title: 'Trip query parsing',
     description: 'Parses free-text trip sentences ("θα μείνω Νάξο για 5 μέρες") over the real region list: recall in 5 languages, precision against dates/quantities/beach names with numerals, a stopword sweep, order invariance, and every region resolving from its own name.',

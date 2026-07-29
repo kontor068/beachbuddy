@@ -1,10 +1,19 @@
 import { LanguageCode } from '../types';
 import { getLocalizedCopy, type LocalizedCopy } from './i18n';
+import { getSeaStateSeverity } from './seaVerdict';
 
 // Translate a wave height (significant wave height, metres) into a calm→rough colour band,
-// a visual scale, and a localized headline. Bucket boundaries mirror the measured-wave
-// thresholds in utils/seaConditions.ts (>=1.5 / 1.2 / 0.8 / 0.5 / 0.3) so this visual never
-// contradicts the sea-comfort score shown elsewhere.
+// a visual scale, and a localized headline.
+//
+// The COLOUR BAND is not decided here any more: it comes from utils/seaVerdict, the single
+// ladder the badge, the "weather now" chip and the map pin all read. This file used to carry
+// its own boundary — amber from 0.50 m, while every other surface starts amber at 0.80 m —
+// and that one number produced every "Excellent today / Calm right now" sitting above an
+// orange "Some chop" (144 grid combinations, all of them between 0.50 and 0.79 m).
+//
+// The BODY REFERENCE buckets below are unrelated to that argument: they answer "how far up a
+// person does this water come", which is geometry, not a verdict, so they keep their own
+// finer steps (0.3 / 0.5 / 0.8 / 1.2 / 1.5 m).
 
 export type WaveBodyRef = 'flat' | 'ankle' | 'knee' | 'waist' | 'chest' | 'overhead';
 export type WaveBand = 'calm' | 'amber' | 'rough';
@@ -72,15 +81,19 @@ interface Bucket {
   bodyFraction: number;
 }
 
+/** 'moderate' is the shared vocabulary's middle step; this file has always called it 'amber'. */
+const bandFor = (m: number): WaveBand => {
+  const severity = getSeaStateSeverity(m);
+  return severity === 'rough' ? 'rough' : severity === 'moderate' ? 'amber' : 'calm';
+};
+
 const bucketFor = (m: number): Bucket => {
-  if (m >= 1.5) return { bodyRef: 'overhead', band: 'rough', bodyFraction: 0.95 };
-  if (m >= 1.2) return { bodyRef: 'chest', band: 'rough', bodyFraction: 0.72 };
-  if (m >= 0.8) return { bodyRef: 'waist', band: 'amber', bodyFraction: 0.5 };
-  // 0.5–0.79 m is a discount in the sea score (measuredWaveScore 7 -> amber dot), so the figure
-  // is amber here too — not a reassuring green that would clash with the panel beside it.
-  if (m >= 0.5) return { bodyRef: 'knee', band: 'amber', bodyFraction: 0.3 };
-  if (m >= 0.3) return { bodyRef: 'ankle', band: 'calm', bodyFraction: 0.14 };
-  return { bodyRef: 'flat', band: 'calm', bodyFraction: 0.05 };
+  if (m >= 1.5) return { bodyRef: 'overhead', band: bandFor(m), bodyFraction: 0.95 };
+  if (m >= 1.2) return { bodyRef: 'chest', band: bandFor(m), bodyFraction: 0.72 };
+  if (m >= 0.8) return { bodyRef: 'waist', band: bandFor(m), bodyFraction: 0.5 };
+  if (m >= 0.5) return { bodyRef: 'knee', band: bandFor(m), bodyFraction: 0.3 };
+  if (m >= 0.3) return { bodyRef: 'ankle', band: bandFor(m), bodyFraction: 0.14 };
+  return { bodyRef: 'flat', band: bandFor(m), bodyFraction: 0.05 };
 };
 
 export const ESTIMATE_LABEL: LocalizedCopy<string> = {

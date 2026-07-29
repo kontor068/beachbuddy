@@ -74,6 +74,9 @@ import { summarizeLocalWindBehavior } from '../utils/windClimatology';
 import { getRegionWindContext, LOCAL_WIND_SECTORS } from '../utils/localWindContext.mjs';
 import { buildWeatherNowContent } from '../utils/weatherNowCopy';
 import { beachSentenceName } from '../utils/beachCopy';
+import { getPhotoCredit } from '../utils/photoCredit';
+import { LegalFooter } from '../components/LegalFooter';
+import { translations } from '../translations';
 
 // Temporarily hidden: the "Σχέδιο ημέρας" (Plan your day) section isn't well
 // implemented yet — hiding it until we rework it. Flip back to true to re-enable.
@@ -1038,6 +1041,7 @@ export const BeachDetailPage: React.FC<BeachDetailPageProps> = ({
     windDir: windDir as WindDirection,
     beaufort: beaufortLevel,
     waveHeightM: displayWaveHeightM,
+    wavePeriodS: scoreResult.seaStatePeriodS,
     isWaveEstimate,
     protectedFrom: Array.isArray(beach.protectedFrom) ? beach.protectedFrom : [],
     // Keep the sentence honest against the pin the user sees: use the region-map-aligned
@@ -1067,6 +1071,25 @@ export const BeachDetailPage: React.FC<BeachDetailPageProps> = ({
   }, [beach.id, beach.name.en, beach.name.gr, islandName]);
   const realPhotos = photoLookup.source === 'exact' ? (photoLookup.detailPhotos || photoLookup.photos) : [];
   const photoAttribution = photoLookup.metadata?.requiresAttribution ? photoLookup.metadata : undefined;
+  // Shore composition ("Άμμος + Βότσαλα"), reusing the filter vocabulary so the word
+  // matches what the filters already say in all five languages. 'unknown' maps to an
+  // empty string there, which is the correct behaviour: no label rather than a guess.
+  const beachCompositionLabel = useMemo(() => {
+    const key = beach.beachType;
+    if (!key || key === 'unknown') return '';
+    const options = translations[language]?.filterOptions as Record<string, string> | undefined;
+    return options?.[key] || '';
+  }, [beach.beachType, language]);
+
+  // Fallback credit for every beach outside Milos — i.e. almost all of them. The
+  // `metadata` path above only ever resolves for Milos (services/beachImageService.ts
+  // returns undefined for any other island), so 958 photos under licences that
+  // REQUIRE naming the creator were rendering with nothing at all. Author + licence
+  // come from scripts/harvestPhotoAttribution.mjs (Wikimedia Commons API).
+  const photoCredit = useMemo(
+    () => (photoAttribution || !realPhotos.length ? null : getPhotoCredit(realPhotos[0], language, beach.id, 0)),
+    [photoAttribution, realPhotos, language, beach.id],
+  );
   const photoSuggestionUrl = useMemo(() => buildPhotoSuggestionUrl({
     beachId: beach.id,
     beachName: beachDisplayName,
@@ -1526,6 +1549,20 @@ export const BeachDetailPage: React.FC<BeachDetailPageProps> = ({
                 <p className="text-sm text-slate-700 font-semibold flex items-center gap-1.5">
                   <MapPin className="w-4 h-4 flex-shrink-0" />
                   <span className="truncate">{islandDisplayName}</span>
+                  {/* What you actually walk on. The dataset has had `beachType` on
+                      2.742 of 2.850 beaches all along, and the page used it only
+                      invisibly — to decide whether to suggest water shoes further
+                      down. So a visitor learned "bring water shoes" without ever
+                      being told the beach is pebbles. One word, no request, no cost.
+                      `waterDepth` is deliberately NOT shown next to it: it exists on
+                      every record but has never been checked for accuracy, and the
+                      house rule here is to under-claim. */}
+                  {beachCompositionLabel && (
+                    <>
+                      <span className="text-slate-300" aria-hidden="true">·</span>
+                      <span className="truncate font-medium text-slate-600">{beachCompositionLabel}</span>
+                    </>
+                  )}
                 </p>
               </div>
             </div>
@@ -1537,7 +1574,12 @@ export const BeachDetailPage: React.FC<BeachDetailPageProps> = ({
             language={language}
             selectedDate={selectedDate}
             windBeaufort={beaufortLevel}
-            waveHeightM={waveHeightM}
+            // The badge judges the SAME figure the wave graphic draws below it (cove-corrected
+            // where that applies). It used to read the raw scoring height, so in a cove the
+            // verdict word and the metres on screen came from two different seas.
+            waveHeightM={displayWaveHeightM}
+            wavePeriodS={scoreResult.seaStatePeriodS}
+            seaConditionScore={seaConditionScore}
             swimmingComfort={swimmingComfort}
             noIdealSwimmingWindow={swimWindowDisplay.tone === 'avoid'}
             exposureLevel={mapAlignedExposureLevel}
@@ -1548,24 +1590,11 @@ export const BeachDetailPage: React.FC<BeachDetailPageProps> = ({
           />
           )}
 
-          <div className="hidden md:flex items-center justify-end gap-3 pt-1">
-            <button
-              type="button"
-              onClick={() => onToggleFavorite(beach.id)}
-              aria-label={copy.favorite[language]}
-              className={`flex min-h-[48px] min-w-[48px] items-center justify-center rounded-2xl border transition-colors ${isFavorite ? 'border-red-100 bg-red-50 text-red-500' : 'border-slate-100 bg-slate-50 text-slate-700 hover:bg-slate-100'}`}
-            >
-              <Heart className={`w-5 h-5 ${isFavorite ? 'fill-current' : ''}`} />
-            </button>
-            <button
-              type="button"
-              onClick={handleShare}
-              aria-label={copy.share[language]}
-              className="flex min-h-[48px] min-w-[48px] items-center justify-center rounded-2xl border border-slate-100 bg-slate-50 text-slate-700 transition-colors hover:bg-slate-100"
-            >
-              <Share2 className="w-5 h-5" />
-            </button>
-          </div>
+          {/* The ♥ and share buttons that used to sit here were the SECOND copy on the
+              page: the sticky header carries them at every scroll position on desktop,
+              and the fixed bottom bar does the same on mobile. Three copies of the same
+              two controls, one of them in the middle of the answer. Removed — the
+              header pair is always reachable. */}
         </section>
 
         {showConditions && (<>
@@ -1617,6 +1646,7 @@ export const BeachDetailPage: React.FC<BeachDetailPageProps> = ({
           <WaveHeightGraphic
             variant="full"
             waveHeightM={displayWaveHeightM}
+            wavePeriodS={scoreResult.seaStatePeriodS}
             isEstimate={isWaveEstimate}
             estimateHeightM={coveWave.coveApplied ? coveWave.waveHeightM : scoreResult.modeledWaveHeightM}
             hourly={hourlyWave}
@@ -1746,6 +1776,18 @@ export const BeachDetailPage: React.FC<BeachDetailPageProps> = ({
                     className="underline decoration-slate-300 underline-offset-2"
                   >
                     {photoAttribution.attributionText}
+                  </a>
+                </p>
+              )}
+              {photoCredit && (
+                <p className="px-1 text-[11px] font-medium leading-snug text-slate-600">
+                  <a
+                    href={photoCredit.href}
+                    target="_blank"
+                    rel="noreferrer"
+                    className="underline decoration-slate-300 underline-offset-2 hover:text-slate-800"
+                  >
+                    {photoCredit.label}
                   </a>
                 </p>
               )}
@@ -2405,6 +2447,7 @@ export const BeachDetailPage: React.FC<BeachDetailPageProps> = ({
                               selectedDate={selectedDate}
                               windBeaufort={itemBeaufortLevel}
                               waveHeightM={itemWaveHeightM}
+                              wavePeriodS={item.seaStatePeriodS}
                               swimmingComfort={item.swimmingComfort}
                               noIdealSwimmingWindow={item.swimmingComfort === 'avoid_swimming'}
                               exposureLevel={item.exposureLevel}
@@ -2462,6 +2505,16 @@ export const BeachDetailPage: React.FC<BeachDetailPageProps> = ({
         )}
 
       </main>
+
+      {/* The page used to end right here, on a row of guide chips.
+          App.tsx returns early for view === 'detail', before its own <LegalFooter>
+          ever renders, so the ~8.200 beach pages — the exact screen where someone
+          decides whether to get in the water — carried no safety note, no Terms or
+          Privacy, and no way to contact us. Same component the rest of the site
+          uses, so the wording and the cookie controls stay in one place. */}
+      <div className="mt-10">
+        <LegalFooter language={language} />
+      </div>
 
       <div className="fixed inset-x-0 bottom-0 z-50 border-t border-slate-100 bg-white/95 px-3 py-3 pb-[calc(0.75rem+env(safe-area-inset-bottom))] shadow-[0_-8px_24px_rgba(15,23,42,0.08)] backdrop-blur md:hidden">
         <div className="mx-auto flex max-w-4xl items-center gap-2">

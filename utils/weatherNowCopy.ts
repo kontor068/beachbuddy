@@ -1,6 +1,7 @@
 import { WindDirection, LanguageCode } from '../types';
 import { beachSentenceName } from './beachCopy';
 import type { ExposureLevel } from './windExposure';
+import { getSeaSeverity } from './seaVerdict';
 
 /**
  * Copy generator for the visible "Weather & sea now" block on the beach detail
@@ -193,6 +194,8 @@ export interface WeatherNowInput {
   windDir: WindDirection;
   beaufort: number;
   waveHeightM?: number;
+  /** Total-sea period (s) for the same reading — puts this chip on the swell-equivalent scale. */
+  wavePeriodS?: number;
   isWaveEstimate: boolean;
   protectedFrom: WindDirection[];
   faces: WindDirection[];
@@ -298,26 +301,51 @@ export const buildWeatherNowContent = (input: WeatherNowInput): WeatherNowConten
     return { heading, verdict: '', tone: 'unknown', windLabel, windValue: '', waveLabel, waveValue: '', stableDescription, liveSentence: '', loadingLabel };
   }
 
-  // Verdict from the same sea-condition score the rest of the page uses. Strong wind
-  // (≥5 Bft) caps the claim: even a genuinely sheltered beach gets gusts and some surface
-  // chop then, so this chip must never read "Calm" while the experience verdict above
-  // reads "OK"/orange — the same ≥5 Bft honesty rule getSeaConditionDisplay applies.
+  // Verdict from the ONE sea severity (utils/seaVerdict) plus the sea-condition score.
+  //
+  // The score alone was not enough, and the gap was serious: calculateSeaConditionScore FLOORS a
+  // sheltered beach's wave term (waveScore >= 6 unless a direct swell is detected), which is right
+  // for scoring — an offshore grid cell must not bury a real cove — but it made the wave invisible
+  // to this WORDING. Over the condition grid that produced 663 combinations printing "Calm right
+  // now" beside an amber or rough wave figure, 126 of them above a 1,3–1,6 m sea.
+  //
+  // So the severity sets the floor (it is the same number the wave graphic below draws) and the
+  // score may only push the verdict further down, never lift it back up.
   const bft = Math.round(input.beaufort);
+  const seaSeverity = getSeaSeverity({
+    waveHeightM: input.waveHeightM,
+    wavePeriodS: input.wavePeriodS,
+    windBeaufort: bft,
+    exposureLevel: input.mapExposureLevel,
+    canClaimWindProtection: input.canClaimWindProtection,
+  });
   const tone: 'calm' | 'mixed' | 'choppy' =
-    bft >= 5
-      ? (input.seaConditionScore <= 4 ? 'choppy' : 'mixed')
-      : (input.canClaimWindProtection || input.seaConditionScore >= 7) ? 'calm'
-      : input.seaConditionScore <= 4 ? 'choppy'
-      : 'mixed';
+    seaSeverity === 'rough' ? 'choppy'
+      : seaSeverity === 'moderate'
+        ? (input.seaConditionScore <= 4 ? 'choppy' : 'mixed')
+        : (input.canClaimWindProtection || input.seaConditionScore >= 7) ? 'calm'
+        : input.seaConditionScore <= 4 ? 'choppy'
+        : 'mixed';
   const verdict = buildVerdict(tone, lang, isToday);
 
-  // Compact live stats.
+  // Compact live stats. Greek writes the Beaufort unit «Μπφ» — the same token the
+  // wind ConditionCard on this very page renders (translations.ts `beaufort`).
+  // Latin "Bft" next to a Greek «0 Μπφ» three lines below reads as two different
+  // scales, so the unit follows the language here.
   const letter = COMPASS_LETTER[input.windDir]?.[lang === 'gr' ? 'gr' : 'latin'] ?? '';
-  const windValue = `${letter} ${Math.round(input.beaufort)} Bft`.trim();
+  const bftUnit = lang === 'gr' ? 'Μπφ' : 'Bft';
+  const windValue = `${letter} ${Math.round(input.beaufort)} ${bftUnit}`.trim();
   const estWord = { en: 'est.', gr: 'εκτίμ.', de: 'geschätzt', fr: 'est.', it: 'stima' }[lang];
   const lowWord = { en: 'low', gr: 'χαμηλό', de: 'niedrig', fr: 'faibles', it: 'basse' }[lang];
-  const waveValue = (typeof input.waveHeightM === 'number' && Number.isFinite(input.waveHeightM) && input.waveHeightM > 0)
-    ? `~${input.waveHeightM.toFixed(1)} m${input.isWaveEstimate ? ` (${estWord})` : ''}`
+  // Greek writes heights «~0,3 μ.» — decimal comma, Greek unit — which is what the
+  // wave graphic three lines below already renders (WaveHeightGraphic
+  // formatWaveHeight). The chip used to print "~0.3 m" regardless of language, so
+  // the same measurement appeared twice on one screen in two notations.
+  const waveNumber = typeof input.waveHeightM === 'number' && Number.isFinite(input.waveHeightM)
+    ? input.waveHeightM.toFixed(1)
+    : null;
+  const waveValue = (waveNumber !== null && input.waveHeightM! > 0)
+    ? `~${lang === 'gr' ? `${waveNumber.replace('.', ',')} μ.` : `${waveNumber} m`}${input.isWaveEstimate ? ` (${estWord})` : ''}`
     : lowWord;
 
   // Live sentence: how the current wind meets this beach's shelter (volatile).
@@ -338,24 +366,82 @@ export const buildWeatherNowContent = (input: WeatherNowInput): WeatherNowConten
       !facesInto(input.windDir, input.faces, input.facingDeg))
   );
   let liveSentence: string;
+  // LIGHT-WIND FLOOR — must come before every branch below.
+  //
+  // None of the branches that follow looked at how hard the wind is actually
+  // blowing: they only asked whether this beach is open to its direction. So an
+  // exposed beach in a dead calm produced «Ο βορειοανατολικός άνεμος 0 Bft χτυπάει
+  // πιο άμεσα τώρα, οπότε περίμενε κάποιο κύμα» — printed directly under a green
+  // «Ήρεμα τώρα» chip built from the same forecast (seen 29/07/2026, Κανάλι του
+  // Έρωτα, Κέρκυρα). Orientation is a property of the coast; it says nothing at
+  // 0–2 Bft, where there is no wind to be exposed to.
+  //
+  // At ≤2 Bft we therefore describe the wind and nothing else. We deliberately do
+  // NOT say "the sea is calm" unless the sea-condition verdict agrees: light air
+  // with leftover ground swell is real, and the wave value is what would make that
+  // claim false. When they disagree we state both facts and explain neither — we
+  // cannot verify a swell origin from these inputs.
+  const LIGHT_WIND_BFT = 2;
+  if (bft <= LIGHT_WIND_BFT) {
+    const nowGr = isToday ? ' τώρα' : '';
+    liveSentence = tone === 'calm'
+      ? { en: `The wind is only ${bft} Bft${isToday ? ' right now' : ''} — next to no wind, and the water is calm.`,
+          gr: `Ο άνεμος είναι μόλις ${bft} ${bftUnit}${nowGr} — σχεδόν άπνοια, και το νερό είναι ήρεμο.`,
+          de: `Der Wind beträgt nur ${bft} Bft${isToday ? ' gerade' : ''} – so gut wie windstill, das Wasser ist ruhig.`,
+          fr: `Le vent n'est que de ${bft} Bft${isToday ? ' en ce moment' : ''} — quasiment pas de vent, et l'eau est calme.`,
+          it: `Il vento è solo di ${bft} Bft${isToday ? ' in questo momento' : ''} — quasi assenza di vento e acqua calma.` }[lang]
+      : { en: `The wind is only ${bft} Bft${isToday ? ' right now' : ''}, but there is still some wave in the water.`,
+          gr: `Ο άνεμος είναι μόλις ${bft} ${bftUnit}${nowGr}, αλλά υπάρχει ακόμη κύμα στο νερό.`,
+          de: `Der Wind beträgt nur ${bft} Bft${isToday ? ' gerade' : ''}, es steht aber noch Welle im Wasser.`,
+          fr: `Le vent n'est que de ${bft} Bft${isToday ? ' en ce moment' : ''}, mais il reste de la vague dans l'eau.`,
+          it: `Il vento è solo di ${bft} Bft${isToday ? ' in questo momento' : ''}, ma c'è ancora onda in acqua.` }[lang];
+  }
   // "now/τώρα/maintenant…" is only truthful for today. For a future day the same block
   // shows that day's forecast values, so the wording must be time-neutral (no "now").
-  if (shelteredNow) {
+  else if (shelteredNow) {
     const adjGr = GR_WIND_ADJ_ACC[input.windDir];
     const adjEn = EN_WIND_ADJ[input.windDir];
     liveSentence = isToday
-      ? { en: `With the ${adjEn} wind of ${bft} Bft blowing now, it is relatively sheltered here.`, gr: `Με ${adjGr} άνεμο ${bft} Bft που φυσάει τώρα, εδώ είναι σχετικά προστατευμένα.`, de: `Bei ${bft} Bft Wind ist es hier gerade relativ geschützt.`, fr: `Avec un vent de ${bft} Bft en ce moment, c'est relativement abrité ici.`, it: `Con vento di ${bft} Bft in questo momento, qui è relativamente riparato.` }[lang]
-      : { en: `With the ${adjEn} wind of ${bft} Bft, it is relatively sheltered here.`, gr: `Με ${adjGr} άνεμο ${bft} Bft, εδώ είναι σχετικά προστατευμένα.`, de: `Bei ${bft} Bft Wind ist es hier relativ geschützt.`, fr: `Avec un vent de ${bft} Bft, c'est relativement abrité ici.`, it: `Con vento di ${bft} Bft, qui è relativamente riparato.` }[lang];
+      ? { en: `With the ${adjEn} wind of ${bft} Bft blowing now, it is relatively sheltered here.`, gr: `Με ${adjGr} άνεμο ${bft} ${bftUnit} που φυσάει τώρα, εδώ είναι σχετικά προστατευμένα.`, de: `Bei ${bft} Bft Wind ist es hier gerade relativ geschützt.`, fr: `Avec un vent de ${bft} Bft en ce moment, c'est relativement abrité ici.`, it: `Con vento di ${bft} Bft in questo momento, qui è relativamente riparato.` }[lang]
+      : { en: `With the ${adjEn} wind of ${bft} Bft, it is relatively sheltered here.`, gr: `Με ${adjGr} άνεμο ${bft} ${bftUnit}, εδώ είναι σχετικά προστατευμένα.`, de: `Bei ${bft} Bft Wind ist es hier relativ geschützt.`, fr: `Avec un vent de ${bft} Bft, c'est relativement abrité ici.`, it: `Con vento di ${bft} Bft, qui è relativamente riparato.` }[lang];
+  }
+  // EXPOSED, BUT THE SEA VERDICT SAYS CALM.
+  //
+  // The light-wind floor above is not enough on its own: it fixes 0–2 Bft and the
+  // same contradiction walks straight back in at 3 Bft, where an exposed beach can
+  // still score `tone === 'calm'`. Being open to the wind is a fact about the
+  // coast; "expect some chop" is a prediction about the water, and the chip beside
+  // it is built from the sea-condition score. Only that score may promise chop.
+  // So we keep the orientation (it is useful — it says why this beach turns rough
+  // when the wind gets up) and drop the prediction the verdict contradicts.
+  else if ((input.isExposedToTodayWind || exposedOnMap) && tone === 'calm') {
+    const adjGr = GR_WIND_ADJ_NOM[input.windDir];
+    const adjEn = EN_WIND_ADJ[input.windDir];
+    const nowGr = isToday ? ' τώρα' : '';
+    liveSentence = { en: `The ${adjEn} wind of ${bft} Bft catches this shore more directly${isToday ? ' now' : ''}, but the water is still calm.`,
+      gr: `Ο ${adjGr} άνεμος ${bft} ${bftUnit} πιάνει πιο άμεσα αυτή την ακτή${nowGr}, όμως το νερό παραμένει ήρεμο.`,
+      de: `Der Wind von ${bft} Bft trifft diese Küste${isToday ? ' gerade' : ''} direkter, das Wasser bleibt aber ruhig.`,
+      fr: `Le vent de ${bft} Bft frappe cette côte plus directement${isToday ? ' en ce moment' : ''}, mais l'eau reste calme.`,
+      it: `Il vento di ${bft} Bft colpisce più direttamente questa costa${isToday ? ' ora' : ''}, ma l'acqua resta calma.` }[lang];
   } else if (input.isExposedToTodayWind || exposedOnMap) {
     const adjGr = GR_WIND_ADJ_NOM[input.windDir];
     const adjEn = EN_WIND_ADJ[input.windDir];
     liveSentence = isToday
-      ? { en: `The ${adjEn} wind of ${bft} Bft hits more directly now, so expect some chop.`, gr: `Ο ${adjGr} άνεμος ${bft} Bft χτυπάει πιο άμεσα τώρα, οπότε περίμενε κάποιο κύμα.`, de: `Der Wind von ${bft} Bft trifft gerade direkter – rechne mit etwas Welle.`, fr: `Le vent de ${bft} Bft frappe plus directement maintenant, attends-toi à un peu de clapot.`, it: `Il vento di ${bft} Bft colpisce più direttamente ora, aspettati un po' di moto ondoso.` }[lang]
-      : { en: `The ${adjEn} wind of ${bft} Bft hits more directly here, so expect some chop.`, gr: `Ο ${adjGr} άνεμος ${bft} Bft χτυπάει πιο άμεσα εδώ, οπότε περίμενε κάποιο κύμα.`, de: `Der Wind von ${bft} Bft trifft direkter – rechne mit etwas Welle.`, fr: `Le vent de ${bft} Bft frappe plus directement, attends-toi à un peu de clapot.`, it: `Il vento di ${bft} Bft colpisce più direttamente, aspettati un po' di moto ondoso.` }[lang];
+      ? { en: `The ${adjEn} wind of ${bft} Bft hits more directly now, so expect some chop.`, gr: `Ο ${adjGr} άνεμος ${bft} ${bftUnit} χτυπάει πιο άμεσα τώρα, οπότε περίμενε κάποιο κύμα.`, de: `Der Wind von ${bft} Bft trifft gerade direkter – rechne mit etwas Welle.`, fr: `Le vent de ${bft} Bft frappe plus directement maintenant, attends-toi à un peu de clapot.`, it: `Il vento di ${bft} Bft colpisce più direttamente ora, aspettati un po' di moto ondoso.` }[lang]
+      : { en: `The ${adjEn} wind of ${bft} Bft hits more directly here, so expect some chop.`, gr: `Ο ${adjGr} άνεμος ${bft} ${bftUnit} χτυπάει πιο άμεσα εδώ, οπότε περίμενε κάποιο κύμα.`, de: `Der Wind von ${bft} Bft trifft direkter – rechne mit etwas Welle.`, fr: `Le vent de ${bft} Bft frappe plus directement, attends-toi à un peu de clapot.`, it: `Il vento di ${bft} Bft colpisce più direttamente, aspettati un po' di moto ondoso.` }[lang];
   } else {
+    // The neutral fallback used to hard-code "moderate conditions" for every tone,
+    // so a beach the chip called «Ήρεμα» was described as merely moderate on the
+    // same line (4 of the 162 combinations the probe sweeps). The closing verdict
+    // now follows the same tone the chip is built from — one sea verdict per card.
+    const conditionsWord = {
+      calm:   { en: 'calm conditions', gr: 'ήρεμες συνθήκες', de: 'ruhige Bedingungen', fr: 'conditions calmes', it: 'condizioni calme' },
+      mixed:  { en: 'moderate conditions', gr: 'μέτριες συνθήκες', de: 'mäßige Bedingungen', fr: 'conditions modérées', it: 'condizioni moderate' },
+      choppy: { en: 'some chop about', gr: 'έχει κάποιο κύμα', de: 'etwas Welle', fr: 'un peu de clapot', it: 'un po\' di moto ondoso' },
+    }[tone][lang];
     liveSentence = isToday
-      ? { en: `The wind is ${bft} Bft right now — moderate conditions.`, gr: `Ο άνεμος τώρα είναι ${bft} Bft — μέτριες συνθήκες.`, de: `Der Wind beträgt gerade ${bft} Bft – mäßige Bedingungen.`, fr: `Le vent est de ${bft} Bft maintenant — conditions modérées.`, it: `Il vento è di ${bft} Bft ora — condizioni moderate.` }[lang]
-      : { en: `The wind is ${bft} Bft — moderate conditions.`, gr: `Ο άνεμος είναι ${bft} Bft — μέτριες συνθήκες.`, de: `Der Wind beträgt ${bft} Bft – mäßige Bedingungen.`, fr: `Le vent est de ${bft} Bft — conditions modérées.`, it: `Il vento è di ${bft} Bft — condizioni moderate.` }[lang];
+      ? { en: `The wind is ${bft} Bft right now — ${conditionsWord}.`, gr: `Ο άνεμος τώρα είναι ${bft} ${bftUnit} — ${conditionsWord}.`, de: `Der Wind beträgt gerade ${bft} Bft – ${conditionsWord}.`, fr: `Le vent est de ${bft} Bft maintenant — ${conditionsWord}.`, it: `Il vento è di ${bft} Bft ora — ${conditionsWord}.` }[lang]
+      : { en: `The wind is ${bft} Bft — ${conditionsWord}.`, gr: `Ο άνεμος είναι ${bft} ${bftUnit} — ${conditionsWord}.`, de: `Der Wind beträgt ${bft} Bft – ${conditionsWord}.`, fr: `Le vent est de ${bft} Bft — ${conditionsWord}.`, it: `Il vento è di ${bft} Bft — ${conditionsWord}.` }[lang];
   }
 
   return { heading, verdict, tone, windLabel, windValue, waveLabel, waveValue, stableDescription, liveSentence, loadingLabel };

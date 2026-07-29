@@ -6,6 +6,8 @@ import { isSelectedDateToday } from '../utils/dateLabels';
 import { athensNow } from '../utils/athensTime';
 import { getBoatRideMotionLevel, getBoatRideMotionRank, type BoatRideMotionLevel } from '../utils/boatRideMotion';
 import type { ExposureLevel } from '../utils/windExposure';
+import { getSeaSeverity, getSeaStateSeverity, getWindSeverity, type SeaSeverity } from '../utils/seaVerdict';
+import { seaStateSeverityM } from '../utils/waveCharacter';
 import {
   getWaveScale,
   getWaveBandClasses,
@@ -27,6 +29,9 @@ export interface HourlyWavePoint {
 interface WaveHeightGraphicProps {
   /** Measured per-day wave height (the page/card already-derived value). */
   waveHeightM?: number;
+  /** Total-sea period (s). Lets a short-period chop escalate on the same swell-equivalent
+   *  scale the badge and the map pin use, instead of this card judging raw metres alone. */
+  wavePeriodS?: number;
   /** True when there is no measured value — render an honest "estimate" treatment. */
   isEstimate?: boolean;
   /** Swim-hours (08–21) series for the selected day; the intraday strip is hidden if absent. */
@@ -326,81 +331,51 @@ const isVerifiedProtectedExposure = (
 const isLessExposedForSwimFeel = (exposureLevel?: ExposureLevel): boolean =>
   exposureLevel === 'protected' || exposureLevel === 'partial';
 
+// The wording follows the ONE severity from utils/seaVerdict, so this chip can no longer say
+// "Some chop" under a badge that says "Excellent". Exposure still chooses WHICH sentence is
+// used at a given severity — that is the useful part (it names the cause) — but it can never
+// pick a calmer severity than the sea and wind together earned.
 const getSwimmingFeel = (
   copy: SwimFeelCopy,
   scale: WaveScaleResult,
-  windBeaufort?: number,
+  severity: SeaSeverity,
+  windSeverity: SeaSeverity,
+  seaStateSeverity: SeaSeverity,
   exposureLevel?: ExposureLevel,
   canClaimWindProtection?: boolean
 ): string => {
   if (scale.isEstimate) return copy.estimate;
 
-  const beaufort = normalizeBeaufort(windBeaufort);
-  const isProtected = isVerifiedProtectedExposure(exposureLevel, canClaimWindProtection);
-  const isProtectedByExposure = exposureLevel === 'protected';
+  const isProtected = isVerifiedProtectedExposure(exposureLevel, canClaimWindProtection)
+    || exposureLevel === 'protected';
   const isLessExposed = isLessExposedForSwimFeel(exposureLevel);
   const isExposed = exposureLevel === 'exposed';
+  const windIsTheCause = windSeverity !== 'calm';
 
-  if (typeof beaufort === 'number') {
-    if (beaufort >= 6) {
-      return (isProtected || isProtectedByExposure) ? copy.protectedWindChop : copy.roughSwim;
-    }
-
-    if (beaufort >= 5) {
-      if (isProtected || isLessExposed) return scale.band === 'rough' ? copy.protectedWindChop : copy.protectedChop;
-      if (isExposed) return copy.exposedSea;
-      return copy.windChop;
-    }
-
-    if (beaufort >= 4 && (isExposed || exposureLevel === 'partial')) {
-      return scale.band === 'rough' ? copy.rough : copy.windChop;
-    }
+  if (severity === 'rough') {
+    // Shelter may soften the WORDING only when the roughness comes from the wind. A measured
+    // rough sea is not made milder by standing in the lee, and this branch used to claim it was.
+    return isProtected && seaStateSeverity !== 'rough' ? copy.protectedWindChop : copy.roughSwim;
   }
 
-  return copy[scale.band];
-};
-
-// One severity band per card: merges the wave band with wind/exposure exactly like the swim-feel
-// copy does. Headline colour, panel tint, scene palette and the swim-feel label all read from this,
-// so the number can never sit reassuring-green beside a red "difficult for swimming" chip.
-const getSeverityBand = (
-  scale: WaveScaleResult,
-  windBeaufort?: number,
-  exposureLevel?: ExposureLevel,
-  canClaimWindProtection?: boolean
-): WaveBand => {
-  const beaufort = normalizeBeaufort(windBeaufort);
-  const isProtected = isVerifiedProtectedExposure(exposureLevel, canClaimWindProtection);
-  const isProtectedByExposure = exposureLevel === 'protected';
-  const isLessExposed = isLessExposedForSwimFeel(exposureLevel);
-  const isExposedOrPartial = exposureLevel === 'exposed' || exposureLevel === 'partial';
-
-  if (typeof beaufort === 'number') {
-    if (beaufort >= 6) {
-      return (isProtected || isProtectedByExposure) ? 'amber' : 'rough';
-    }
-
-    if (beaufort >= 5) {
-      if (isProtected || isLessExposed) return 'amber';
-      return scale.band === 'rough' ? 'rough' : 'amber';
-    }
-
-    if (beaufort >= 4 && isExposedOrPartial && scale.band !== 'rough') {
-      return 'amber';
-    }
+  if (severity === 'moderate') {
+    if (!windIsTheCause) return copy.amber;
+    if (isLessExposed) return copy.protectedChop;
+    if (isExposed) return copy.exposedSea;
+    return copy.windChop;
   }
 
-  return scale.band;
+  return copy.calm;
 };
 
-const getSwimmingFeelLabelClass = (
-  scale: WaveScaleResult,
-  windBeaufort?: number,
-  exposureLevel?: ExposureLevel,
-  canClaimWindProtection?: boolean
-): string => scale.isEstimate
-  ? WAVE_ESTIMATE_CLASSES.label
-  : WAVE_BAND_CLASSES[getSeverityBand(scale, windBeaufort, exposureLevel, canClaimWindProtection)].label;
+// One severity band per card — and now the same one the badge and the "weather now" chip use.
+// Headline colour, panel tint, scene palette and the swim-feel label all read from this, so the
+// number can never sit reassuring-green beside a red "difficult for swimming" chip.
+const toWaveBand = (severity: SeaSeverity): WaveBand =>
+  severity === 'rough' ? 'rough' : severity === 'moderate' ? 'amber' : 'calm';
+
+const getSwimmingFeelLabelClass = (scale: WaveScaleResult, severity: SeaSeverity): string =>
+  scale.isEstimate ? WAVE_ESTIMATE_CLASSES.label : WAVE_BAND_CLASSES[toWaveBand(severity)].label;
 
 const getCompactWindSignalMinHeightM = (
   windBeaufort?: number,
@@ -1057,13 +1032,18 @@ const HourlyStrip: React.FC<{
   language: LanguageCode;
   copy: StripCopy;
   boatCopy?: BoatCopy | null;
-}> = ({ hourly, nowHour, language, copy, boatCopy }) => {
+  /** The day's sea period — colours each bar on the same swell-equivalent scale as the headline
+   *  above it, so a steep short-period day cannot show an amber figure over a row of green bars. */
+  wavePeriodS?: number;
+}> = ({ hourly, nowHour, language, copy, boatCopy, wavePeriodS }) => {
   return (
     <div className="flex items-end gap-[2px]" aria-hidden="true">
       {hourly.map((p) => {
         const isNow = typeof nowHour === 'number' && p.hour === nowHour;
         const boatLevel = boatCopy ? getBoatRideMotionLevel(p.waveHeightM) : null;
-        const barClass = boatLevel ? getBoatRideBandClasses(boatLevel).bar : getWaveBandClasses(p.waveHeightM).bar;
+        const barClass = boatLevel
+          ? getBoatRideBandClasses(boatLevel).bar
+          : getWaveBandClasses(seaStateSeverityM(p.waveHeightM, wavePeriodS) ?? p.waveHeightM).bar;
         const title = boatCopy && boatLevel
           ? boatCopy.hourTooltip(formatHour(p.hour), boatLevel, formatWaveHeight(p.waveHeightM, language))
           : copy.hourTooltip(formatHour(p.hour), formatWaveHeight(p.waveHeightM, language));
@@ -1101,6 +1081,7 @@ const computeTrend = (hourly: HourlyWavePoint[]): WaveTrendKey | null => {
 
 export const WaveHeightGraphic: React.FC<WaveHeightGraphicProps> = ({
   waveHeightM,
+  wavePeriodS,
   isEstimate,
   hourly,
   variant,
@@ -1143,7 +1124,21 @@ export const WaveHeightGraphic: React.FC<WaveHeightGraphicProps> = ({
   // The drawn waterline is ALWAYS the measured/estimated height — wind roughens texture and colour
   // severity (via severityBand + windTier inside the scene), it never fakes a taller sea.
   const visualWaveHeightM = getVisualWaveHeightM(scale, waveHeightM, estimateHeightM);
-  const severityBand = getSeverityBand(scale, windBeaufort, exposureLevel, canClaimWindProtection);
+  // The number this card DRAWS is the number every verdict on the page is judged from — that
+  // identity is what scripts/validateVerdictConsistency.mjs enforces.
+  const verdictWaveM = typeof waveHeightM === 'number' && Number.isFinite(waveHeightM)
+    ? waveHeightM
+    : estimateHeightM;
+  const seaOnlySeverity = getSeaStateSeverity(seaStateSeverityM(verdictWaveM, wavePeriodS));
+  const windOnlySeverity = getWindSeverity(windBeaufort, exposureLevel, canClaimWindProtection);
+  const seaSeverity = getSeaSeverity({
+    waveHeightM: verdictWaveM,
+    wavePeriodS,
+    windBeaufort,
+    exposureLevel,
+    canClaimWindProtection,
+  });
+  const severityBand = toWaveBand(seaSeverity);
   const boatTone = boatLevel ? getBoatRideBandClasses(boatLevel, scale.isEstimate) : null;
   const labelClass = boatTone ? boatTone.label : scale.isEstimate ? WAVE_ESTIMATE_CLASSES.label : WAVE_BAND_CLASSES[severityBand].label;
   const panelClass = boatTone ? boatTone.soft : scale.isEstimate ? WAVE_ESTIMATE_CLASSES.soft : WAVE_BAND_CLASSES[severityBand].soft;
@@ -1217,8 +1212,8 @@ export const WaveHeightGraphic: React.FC<WaveHeightGraphicProps> = ({
     .filter(Boolean)
     .map((part) => String(part).replace(/\.+$/, ''))
     .join('. ');
-  const swimmingFeel = getSwimmingFeel(swimFeelCopy, scale, windBeaufort, exposureLevel, canClaimWindProtection);
-  const swimmingFeelLabelClass = getSwimmingFeelLabelClass(scale, windBeaufort, exposureLevel, canClaimWindProtection);
+  const swimmingFeel = getSwimmingFeel(swimFeelCopy, scale, seaSeverity, windOnlySeverity, seaOnlySeverity, exposureLevel, canClaimWindProtection);
+  const swimmingFeelLabelClass = getSwimmingFeelLabelClass(scale, seaSeverity);
   // Small boats rock more — flag the transfer above 3 Bft (or a genuinely rough sea).
   const showBoatNote = Boolean(boatCopy) && ((typeof windBeaufort === 'number' && windBeaufort >= 4) || boatLevel === 'rough' || boatLevel === 'bumpy');
 
@@ -1271,7 +1266,7 @@ export const WaveHeightGraphic: React.FC<WaveHeightGraphicProps> = ({
               {boatCopy ? boatCopy[trendKey] : copy[trendKey]}
             </div>
           )}
-          <HourlyStrip hourly={points} nowHour={markerHour} language={language} copy={copy} boatCopy={boatCopy} />
+          <HourlyStrip hourly={points} nowHour={markerHour} language={language} copy={copy} boatCopy={boatCopy} wavePeriodS={wavePeriodS} />
         </div>
       )}
     </div>

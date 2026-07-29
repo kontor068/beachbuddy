@@ -3,6 +3,7 @@ import { ExposureLevel } from './windExposure';
 import { getLocalizedCopy } from './i18n';
 import { getSelectedDayPrefix, getSelectedHourPrefix, isSelectedDateToday } from './dateLabels';
 import { athensNow } from './athensTime';
+import { SEA_STATE_AMBER_M, SEA_STATE_ROUGH_M, seaStateSeverityM } from './waveCharacter';
 
 // CalmBeach communicates a FINAL EXPERIENCE, not raw weather. Every beach resolves to one
 // of four plain-language tiers derived from the composite suitability score (which already
@@ -20,10 +21,23 @@ export interface ExperienceTierInput {
    *  higher per-beach micro-reading that would keep a lee-side beach orange. */
   dayBeaufort?: number;
   waveHeightM?: number;
+  /** Total-sea period (s). Puts the wave ceiling on the same swell-equivalent scale as the
+   *  map pin and the wave graphic, so a short-period chop is not waved through on height alone. */
+  wavePeriodS?: number;
   swimmingComfort?: SwimmingComfort;
   noIdealSwimmingWindow?: boolean;
   /** Only used to split "fair" vs "skip" on a strong-wind (≥5 Bft) day. */
   exposureLevel?: ExposureLevel;
+  /**
+   * 0–10 from calculateSeaConditionScore — the same number the "weather now" chip is built from.
+   *
+   * The detail page already lifted the badge score when this was high (getDetailBadgeScore), but
+   * nothing carried it the other way, so the blue "Excellent today" badge could sit directly above
+   * an orange "A little chop right now" chip built from the same forecast. It happens where the
+   * composite score is strong but the sea score is not: a steep short-period chop on an open shore
+   * in dead air, which the light-wind ladder in seaConditions is specifically built to catch.
+   */
+  seaConditionScore?: number;
 }
 
 const clampScore = (score: number) => Math.max(0, Math.min(100, Math.round(score)));
@@ -40,7 +54,9 @@ export const getExperienceTier = (input: ExperienceTierInput): ExperienceTier =>
   const { windBeaufort, waveHeightM, swimmingComfort } = input;
   const score = clampScore(input.score);
   const bft = typeof windBeaufort === 'number' ? windBeaufort : 0;
-  const wave = typeof waveHeightM === 'number' && Number.isFinite(waveHeightM) ? waveHeightM : undefined;
+  // Swell-equivalent metres, so this ceiling reads the same sea the wave graphic draws and the
+  // map pin is coloured from. Without a period it is the raw height, exactly as before.
+  const wave = seaStateSeverityM(waveHeightM, input.wavePeriodS);
 
   // Red is reserved for a genuinely poor day: near-gale wind, a real rough sea, or a beach
   // that is simply wrong today. A strong breeze that only makes swimming choppy is NOT red on
@@ -77,9 +93,16 @@ export const getExperienceTier = (input: ExperienceTierInput): ExperienceTier =>
   else if (isProtected) ceiling = bft >= 5 ? 2 : 3;
   else if (input.exposureLevel === 'partial') ceiling = bft >= 5 ? 1 : bft >= 3 ? 2 : 3;
   else ceiling = bft >= 4 ? 1 : bft >= 3 ? 2 : 3;
-  if (wave !== undefined && wave >= 1.2) ceiling = 1;
-  else if (wave !== undefined && wave >= 0.8 && ceiling > 2) ceiling = 2;
+  if (wave !== undefined && wave >= SEA_STATE_ROUGH_M) ceiling = 1;
+  else if (wave !== undefined && wave >= SEA_STATE_AMBER_M && ceiling > 2) ceiling = 2;
   if (swimmingComfort === 'avoid_swimming') ceiling = 1;
+  // The sea verdict the chip prints is a ceiling here too. The boundaries are the chip's own:
+  // it can only say "calm" from 7 up, and says "choppy" at 4 and below (utils/weatherNowCopy).
+  const seaScore = input.seaConditionScore;
+  if (typeof seaScore === 'number' && Number.isFinite(seaScore)) {
+    if (seaScore <= 4) ceiling = 1;
+    else if (seaScore < 7 && ceiling > 2) ceiling = 2;
+  }
 
   const scoreTier: 1 | 2 | 3 = score >= 80 ? 3 : score >= 60 ? 2 : 1;
   const rank = Math.min(ceiling, scoreTier);
