@@ -45,7 +45,7 @@ require.extensions['.ts'] = (module, filename) => {
   module._compile(output, filename);
 };
 
-const { getExperienceTier } = require(path.join(root, 'utils/experienceTier.ts'));
+const { getExperienceTier, getExperienceTierLabel } = require(path.join(root, 'utils/experienceTier.ts'));
 const { buildWeatherNowContent } = require(path.join(root, 'utils/weatherNowCopy.ts'));
 const { calculateSeaConditionScore } = require(path.join(root, 'utils/seaConditions.ts'));
 const { getSeaSeverity, getSeaStateSeverity } = require(path.join(root, 'utils/seaVerdict.ts'));
@@ -115,11 +115,16 @@ const RULES = [
     // The condition below reproduces getSwimmingFeel's own rough branch verbatim
     // (components/WaveHeightGraphic.tsx:355-358): shelter softens the wording only when the
     // roughness comes from the WIND, never when the sea itself is rough.
-    check: ({ tier, severity, seaStateSeverity, exposureLevel, canClaimWindProtection }) => {
+    // Asserts on the LABEL the user reads, not the tier: a 'fair' beach in a running sea prints
+    // "Sheltered, but rough water", which agrees with the chip. Only the three endorsing words
+    // are forbidden there.
+    check: ({ tier, severity, seaStateSeverity, exposureLevel, canClaimWindProtection, beaufort }) => {
       const isProtected = exposureLevel === 'protected' || canClaimWindProtection === true;
       const chipRefusesTheWater = severity === 'rough' && !(isProtected && seaStateSeverity !== 'rough');
-      return chipRefusesTheWater && tier !== 'skip'
-        ? `badge "${tier}" above a swim chip that says the water is difficult`
+      if (!chipRefusesTheWater) return null;
+      const label = getExperienceTierLabel(tier, 'en', { windBeaufort: beaufort, seaIsRough: severity === 'rough' });
+      return /^(Excellent|Good|OK)/.test(label)
+        ? `badge "${label}" above a swim chip that says the water is difficult`
         : null;
     },
   },

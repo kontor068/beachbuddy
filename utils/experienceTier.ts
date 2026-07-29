@@ -96,8 +96,21 @@ export const getExperienceTier = (input: ExperienceTierInput): ExperienceTier =>
   // above the pin is the rule (a beach must never read better than its own pin) — reading
   // WORSE than a wind pin because the water is rough is the safe direction, and it is the only
   // way the badge can stop endorsing a day the same page refuses to swim in.
+  //
+  // BUT A ROUGH SEA IS ISLAND-WIDE, AND "NOT RECOMMENDED" IS PER BEACH. The first version of this
+  // fix returned 'skip' for any rough sea at any exposure. On a meltemi day that is EVERY beach on
+  // the island — one ~9 km marine cell serves all of them — so a shore genuinely in the lee got
+  // branded «Δεν συνιστάται σήμερα» beside the shore taking the wind head-on. That trades one
+  // uniform wrong badge for a worse one: it is the same non-answer, and it now libels the beach
+  // the user should actually go to. Reported 29/07/2026, same day, by the same person.
+  //
+  // So the sea alone reddens only the beaches the map itself paints red. A sheltered or partial
+  // shore in a running sea caps at 'fair' via the ceiling below — and its LABEL then says what is
+  // actually true, that the water is rough but the shore is out of the wind (see SEA_ROUGH_FAIR
+  // copy in getExperienceTierLabel). That agrees with the swim chip instead of contradicting it,
+  // which is what the original fix was for.
   const pinRedInStrongWind = input.exposureLevel !== 'protected' && input.exposureLevel !== 'partial';
-  if (bft >= 7 || roughSea || (bft >= 5 && pinRedInStrongWind && score < 25)) return 'skip';
+  if (bft >= 7 || (roughSea && pinRedInStrongWind) || (bft >= 5 && pinRedInStrongWind && score < 25)) return 'skip';
 
   // Condition ceiling: 3 excellent · 2 good · 1 OK. The wind ceiling MIRRORS the map's
   // wind-colour engine (getSimpleWindColor) so the verdict word can never sit a tier ABOVE
@@ -210,11 +223,37 @@ const severeSkipCopy: Record<LanguageCode, TierLabel> = {
   it: dayLabel('Non adatta oggi', (day) => `Non adatta ${day}`),
 };
 
+/**
+ * "OK today" is an endorsement of the day. It must never be the word above a swim chip that says
+ * the water is difficult — that pair is the contradiction reported from Ίος on 29/07/2026.
+ *
+ * But the beaches that land here are the ones the map paints yellow or orange in a running sea:
+ * genuinely out of the wind, with a sea that is rough anyway because it belongs to the whole
+ * island. For them the honest verdict is neither "OK" nor "not recommended" — it is that the
+ * shore is the sheltered one and the water is not for swimming. That is what a local says, and it
+ * agrees with the swim chip rather than arguing with it.
+ */
+// It states the WATER, and claims nothing about the shore. "Sheltered" was the first draft and it
+// overclaims: a PARTIAL beach reaches this branch too, including one the wind blows straight onto,
+// and the shelter line printed directly below already says which of the two this is.
+const seaRoughFairCopy: Record<LanguageCode, TierLabel> = {
+  en: dayLabel('Rough water today', (day) => `Rough water ${day}`),
+  gr: dayLabel('Έχει κύμα σήμερα', (day) => `Έχει κύμα ${day}`),
+  fr: dayLabel("Mer agitée aujourd'hui", (day) => `Mer agitée ${day}`),
+  de: dayLabel('Heute raue See', (day) => `Raue See ${day}`),
+  it: dayLabel('Mare mosso oggi', (day) => `Mare mosso ${day}`),
+};
+
 export interface ExperienceTierLabelOptions {
   selectedDate?: Date;
   selectedHour?: number;
   /** Lets the skip verdict harden to "Ακατάλληλη σήμερα" from 7 Bft up (near-gale). */
   windBeaufort?: number;
+  /**
+   * True when the shared sea verdict (utils/seaVerdict) reads 'rough'. Swaps the 'fair' word away
+   * from "OK today", which would otherwise sit above "Difficult for swimming".
+   */
+  seaIsRough?: boolean;
 }
 
 export const getExperienceTierLabel = (
@@ -228,6 +267,9 @@ export const getExperienceTierLabel = (
   const useCurrentPhrase = isToday && !hour;
   if (tier === 'skip' && typeof options.windBeaufort === 'number' && options.windBeaufort >= 7) {
     return getLocalizedCopy(language, severeSkipCopy)(day, useCurrentPhrase);
+  }
+  if (tier === 'fair' && options.seaIsRough === true) {
+    return getLocalizedCopy(language, seaRoughFairCopy)(day, useCurrentPhrase);
   }
   const copy = getLocalizedCopy(language, tierCopy);
   return copy[tier](day, useCurrentPhrase);

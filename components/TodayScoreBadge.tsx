@@ -5,6 +5,7 @@ import { getLocalizedCopy } from '../utils/i18n';
 import { ExposureLevel } from '../utils/windExposure';
 import { getBoatRideMotionLevel, type BoatRideMotionLevel } from '../utils/boatRideMotion';
 import { getExperienceTier, getExperienceTierLabel, experienceTierTone } from '../utils/experienceTier';
+import { getSeaSeverity } from '../utils/seaVerdict';
 
 type TodayScoreVariant = 'hero' | 'card';
 
@@ -174,7 +175,10 @@ export const TodayScoreBadge: React.FC<TodayScoreBadgeProps> = ({
       exposureLevel,
     });
     tone = experienceTierTone[tier];
-    label = getExperienceTierLabel(tier, language, { selectedDate, selectedHour, windBeaufort });
+    // The label must know the SHARED sea verdict, or 'fair' prints "OK today" above a swim chip
+    // that says the water is difficult — the pair reported from Ios on 29/07/2026.
+    const seaIsRough = getSeaSeverity({ waveHeightM, wavePeriodS, windBeaufort, exposureLevel }) === 'rough';
+    label = getExperienceTierLabel(tier, language, { selectedDate, selectedHour, windBeaufort, seaIsRough });
   }
 
   const BadgeIcon = boatAccess ? Ship : BarChart3;

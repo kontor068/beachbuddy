@@ -62,7 +62,7 @@ const read = async (browser, page1) => {
   return {
     ...page1,
     wave: waves.length ? waves[0] : null,
-    badge: (text.match(/(Excellent|Good|OK|Poor|Skip|Not ideal|Not recommended|Not suitable)[^\n]*at \d{1,2}:\d{2}/) || [])[0] ?? null,
+    badge: (text.match(/(Excellent|Good|OK|Poor|Skip|Not ideal|Not recommended|Not suitable|Rough water)[^\n]*at \d{1,2}:\d{2}[^\n]*/) || [])[0] ?? null,
     swimming: (text.match(/(Difficult for swimming|Fine for swimming|Great for swimming|Not for swimming|Hard work in the water)/) || [])[0] ?? null,
     sea: (text.match(/(Rough sea|Choppy|Calm sea|Some chop|Flat)/) || [])[0] ?? null,
     shelteredClaim: /relatively sheltered here/.test(text),
@@ -80,7 +80,7 @@ try {
   await browser.close();
 
   for (const r of results) {
-    console.log(`${r.name.padEnd(16)} ${String(r.wave).padEnd(5)} | ${r.lead}`);
+    console.log(`${r.name.padEnd(16)} ${String(r.wave).padEnd(5)} | ${String(r.badge).padEnd(30)} | ${r.lead}`);
   }
 
   // 1. A page must not praise the day at the top and refuse the water below.
@@ -95,6 +95,14 @@ try {
       failures.push(`${r.name}: claims shelter while printing "${r.sea}"`);
     }
   }
+  // 2b. An island-wide sea must not brand every beach the same. "Not recommended" is a per-beach
+  //     verdict; the sea is not. If the lee shores and the windward shores of one island carry the
+  //     identical badge, the badge is telling the user nothing.
+  const badges = new Set(results.map(r => r.badge));
+  if (badges.size === 1) {
+    failures.push(`every beach on the island carries the same badge: "${[...badges][0]}"`);
+  }
+
   // 3. The lee and the windward side of the SAME island must not read identically. The metre
   //    figure legitimately cannot differ (one marine cell per island), so the assertion is on the
   //    line that CAN: how the wind meets this shore and where it sits among its neighbours.
