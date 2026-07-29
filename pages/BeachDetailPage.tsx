@@ -33,6 +33,7 @@ import { AccessibleCalmNearbySection, type AccessibleCalmCove } from '../compone
 import { ConstraintFitSection, type ConstraintFit } from '../components/ConstraintFitSection';
 import { WaveHeightGraphic, type HourlyWavePoint } from '../components/WaveHeightGraphic';
 import { resolveCoveAwareWaveHeightM } from '../utils/coveWaveGuard';
+import { buildShoreIncidenceLine } from '../utils/shoreIncidenceCopy';
 import { CoveConditionsCard } from '../components/CoveConditionsCard';
 import { hasBoatOnlyAccess } from '../utils/access';
 import { getBeachCertification, localizeCertificationNote } from '../utils/certifiedBeaches';
@@ -613,6 +614,9 @@ interface BeachDetailPageProps {
    *  map (single island wind) so the detail map colours the pin identically instead
    *  of re-deriving a different colour from the per-beach cluster wind. */
   mapExposureLevelOverride?: ExposureLevel;
+  /** Map-pin levels for EVERY beach in the region — the same Map the pin colour reads, so the
+   *  "N beaches nearby are more sheltered" line can never contradict the colours on the map. */
+  mapExposureLevels?: Map<number, ExposureLevel>;
   /** The hour the global slider is showing (0-23), so the wave strip marks the right bar. */
   selectedHour?: number;
   /** SAFETY hard cutoff: the region forecast is >3 h old and could not be refreshed. When
@@ -698,6 +702,7 @@ export const BeachDetailPage: React.FC<BeachDetailPageProps> = ({
   geospatialExposureProfiles,
   weatherSource = 'island-fallback',
   mapExposureLevelOverride,
+  mapExposureLevels,
   selectedHour,
   conditionsUnavailable = false,
   lastForecastAt
@@ -1015,6 +1020,25 @@ export const BeachDetailPage: React.FC<BeachDetailPageProps> = ({
   );
   const detailBadgeScore = getDetailBadgeScore(score, seaConditionScore, isExposed);
   const beaufortLevel = getBeaufortLevel(windSpeedKmh);
+  // The line that differs between two beaches on the same island (see the conditions section
+  // below). It reuses coveWave.onshore — already computed for every beach from the same geometry
+  // the wave figure uses — and the region's MAP levels, so it can never contradict the pins.
+  const shoreIncidenceLine = useMemo(() => {
+    let levelCounts: { protected: number; partial: number; exposed: number } | undefined;
+    if (mapExposureLevels && mapExposureLevels.size > 1) {
+      const counts = { protected: 0, partial: 0, exposed: 0 };
+      for (const level of mapExposureLevels.values()) counts[level] += 1;
+      levelCounts = counts;
+    }
+    return buildShoreIncidenceLine({
+      onshore: coveWave.onshore,
+      mapExposureLevel: mapAlignedExposureLevel,
+      windDir: windDir as WindDirection,
+      beaufort: beaufortLevel,
+      levelCounts,
+      language,
+    });
+  }, [coveWave.onshore, mapAlignedExposureLevel, windDir, beaufortLevel, mapExposureLevels, language]);
   const isBoatOnlyBeach = hasBoatOnlyAccess(beach);
   const seaConditionDisplay = getSeaConditionDisplay(seaConditionScore, isExposedForCopy, language, selectedDate, canClaimWindProtectionForCopy, seaCalmClaimAllowed, beaufortLevel, displayWaveHeightM, selectedHour, isBoatOnlyBeach, enclosedCove);
   const boatRideConditionLabel = {
@@ -1643,9 +1667,17 @@ export const BeachDetailPage: React.FC<BeachDetailPageProps> = ({
           )}
         </section>
 
-        {/* Today's conditions — surfaced right under the verdict, led by the wave graphic. */}
+        {/* Today's conditions. The wave graphic used to lead this section, and on a meltemi day it
+            prints the SAME figure on every beach of the island (one ~9 km marine cell): 90,5% of
+            2.850 beaches nationally, and every beach in 25 of 95 regions. So the section now leads
+            with the one thing that genuinely differs between two shores at the same hour — how the
+            live wind meets this one, and where it sits among its neighbours. Words only, never
+            metres: see utils/shoreIncidenceCopy for why no arithmetic may go here. */}
         <section className="space-y-3" data-nosnippet="true">
           <h3 className="px-1 font-heading text-lg font-bold text-slate-950">{copy.conditions[language]}</h3>
+          {shoreIncidenceLine && (
+            <p className="px-1 text-sm leading-relaxed text-slate-700">{shoreIncidenceLine}</p>
+          )}
           <WaveHeightGraphic
             variant="full"
             waveHeightM={displayWaveHeightM}

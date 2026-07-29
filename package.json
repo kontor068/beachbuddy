@@ -59,7 +59,8 @@
     "preview": "vite preview",
     "native:assets": "node scripts/generateNativeIconSources.mjs && capacitor-assets generate --assetPath cap-assets",
     "cap:sync": "npm run build:mobile && cap sync",
-    "android:open": "cap open android"
+    "android:open": "cap open android",
+    "quality:page": "node scripts/validateBeachPageContradictions.mjs"
   },
   "dependencies": {
     "@capacitor/android": "^8.4.1",
