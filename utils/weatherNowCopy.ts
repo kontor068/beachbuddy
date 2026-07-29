@@ -411,7 +411,10 @@ export const buildWeatherNowContent = (input: WeatherNowInput): WeatherNowConten
   // explains why this shore is the better choice today — and then says what the water is doing.
   // Strictly a narrowing: no beach gains a calm claim it did not already have.
   else if (shelteredNow && tone !== 'calm') {
-    const adjGr = GR_WIND_ADJ_ACC[input.windDir];
+    // NOMINATIVE: the slot is «Ο ___ άνεμος», which agrees with άνεμος. The accusative table is
+    // for «Με ___ άνεμο» (the branch below). Shipped wrong in c464f2fb and caught the same day —
+    // it printed «Ο βόρειο άνεμος» on every sheltered beach with a running sea.
+    const adjGr = GR_WIND_ADJ_NOM[input.windDir];
     const adjEn = EN_WIND_ADJ[input.windDir];
     liveSentence = isToday
       ? { en: `The ${adjEn} wind of ${bft} Bft is off this shore, so it is the calmer side today — but there is still sea running in.`,

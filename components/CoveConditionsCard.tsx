@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Waves, Wind, Compass, ThumbsUp, ThumbsDown, CheckCircle2 } from 'lucide-react';
 import type { LanguageCode } from '../types';
 import { trackEvent } from '../services/analyticsService';
+import { getWindIncidence, getWindIncidenceWord } from '../utils/windIncidence';
 
 /**
  * "Νερό & Αέρας" — the two-dimensional conditions card. DISPLAY ONLY: it reads values the app
@@ -44,9 +45,9 @@ const T = {
     it: 'Il vento soffia da terra verso il largo: può trascinare gonfiabili, SUP e nuotatori — resta vicino alla riva.',
     fr: 'Le vent souffle de la terre vers le large : il peut emporter bouées, paddles et nageurs — restez près du rivage.',
   } as Copy,
-  onshore: { en: 'onshore', gr: 'κατάμουτρα', de: 'auflandig', it: 'di faccia', fr: 'de face' } as Copy,
-  cross: { en: 'cross-shore', gr: 'πλάγιος', de: 'seitlich', it: 'laterale', fr: 'de côté' } as Copy,
-  offshore: { en: 'offshore', gr: 'από τη στεριά', de: 'ablandig', it: 'da terra', fr: 'de terre' } as Copy,
+  // onshore / cross / offshore moved to utils/windIncidence — the beach page now prints the same
+  // classification above the wave graphic, and two copies of one ladder is how the eleven private
+  // ladders on this page came to exist.
   helpful: { en: 'Useful?', gr: 'Χρήσιμο;', de: 'Nützlich?', it: 'Utile?', fr: 'Utile ?' } as Copy,
   thanks: { en: 'Thanks!', gr: 'Ευχαριστούμε!', de: 'Danke!', it: 'Grazie!', fr: 'Merci !' } as Copy,
   toward: { en: 'toward', gr: 'προς', de: 'nach', it: 'verso', fr: 'vers' } as Copy,
@@ -82,7 +83,7 @@ export const CoveConditionsCard: React.FC<CoveConditionsCardProps> = ({
     });
   };
 
-  const windRel = onshore > 0.5 ? pick(T.onshore, language) : onshore >= 0.15 ? pick(T.cross, language) : pick(T.offshore, language);
+  const windRel = getWindIncidenceWord(getWindIncidence(onshore), language);
   const waterWord = waveHeightM < 0.3 ? pick(T.calmWater, language) : pick(T.mildWater, language);
 
   return (
