@@ -636,28 +636,28 @@ const WaveMeterScene: React.FC<{
   const plotBottomY = 104; // seabed / feet baseline
   const axisX = 32;
   const plotHeight = plotBottomY - plotTopY;
-  const personCx = 110;
-
   const axisMaxM = axisMaxForHeight(visualHeightM);
   const mToY = (m: number) => plotBottomY - (clamp(m, 0, axisMaxM) / axisMaxM) * plotHeight;
-
-  // Person drawn to the same axis: bigger seas → taller axis → a proportionally smaller person,
-  // exactly as in reality. Never taller than the plot.
-  const personHeightPx = Math.min(plotHeight * 0.94, (HUMAN_HEIGHT_M / axisMaxM) * plotHeight);
-  const headTopY = plotBottomY - personHeightPx;
-  const headR = personHeightPx * 0.082;
-  const headCy = headTopY + headR;
-  const shoulderY = headTopY + personHeightPx * 0.23;
-  const hipY = headTopY + personHeightPx * 0.53;
-  const shoulderHalf = personHeightPx * 0.12;
-  const hipHalf = personHeightPx * 0.075;
-  const limbW = clamp(personHeightPx * 0.07, 2.4, 8);
-  const legOffset = personHeightPx * 0.06; // slightly apart → a planted, standing stance
+  // The 1,75 m adult is no longer DRAWN (see surfaceY below), but it is still the ruler the
+  // "likely range" band is kept clear of, so the band never swallows the top of the plot.
+  const referenceHeightPx = Math.min(plotHeight * 0.94, (HUMAN_HEIGHT_M / axisMaxM) * plotHeight);
+  const referenceTopY = plotBottomY - referenceHeightPx;
 
   const trueWaterlineY = mToY(visualHeightM);
-  const neckY = headTopY + personHeightPx * 0.19;
-  const surfaceY = Math.max(trueWaterlineY, neckY); // fill never rises above the neck — head always shows
-  const capGap = surfaceY - trueWaterlineY; // how far we held the fill below the true reading
+  // THE PERSON IS GONE, AND NOT ONLY BECAUSE IT LOOKED ALARMING.
+  //
+  // The scene used to stand a to-scale 1,75 m figure on the seabed and fill the water up to the
+  // wave height, so at 1,3 m it drew someone submerged to the neck. That is a statement about
+  // DEPTH, and significant wave height is not depth: at a beach the swimmer picks their own depth,
+  // and a 1,3 m sea does not mean the water closes over you. The drawing was answering a question
+  // the number does not ask, and it answered it in the most frightening way available — reported
+  // 29/07/2026 as reading like a drowning.
+  //
+  // What stays is the honest instrument: the metre axis, a sea whose chop grows with the Beaufort,
+  // and one labelled reading line at the true height. Height is read against the scale, which is
+  // what the figure is: the size of the waves, not how deep you would be standing.
+  const surfaceY = trueWaterlineY;
+  const capGap = 0;
   const visualIntensity = Math.max(windTier, severityBand === 'rough' ? 4 : severityBand === 'amber' ? 2 : 0);
   // Amplitude drives how choppy the surface reads — it must clearly say "waves", so it climbs with
   // the sea state (a 6 Bft sea must never look like a calm level), and more crests appear as the
@@ -670,17 +670,6 @@ const WaveMeterScene: React.FC<{
   // A relaxed STANDING stance — arms hang down at the sides, feet planted on the seabed — so the
   // person clearly stands on the bottom and the water simply reaches them at the wave height (never
   // a swimming/floating pose, whatever the sea state).
-  const armPath = (side: -1 | 1): string => {
-    const sx = personCx + side * shoulderHalf * 0.82;
-    const sy = shoulderY + personHeightPx * 0.02;
-    const ex = personCx + side * shoulderHalf * 1.02;
-    const ey = shoulderY + personHeightPx * 0.2;
-    const hx = personCx + side * (hipHalf + limbW * 0.2);
-    const hy = hipY + personHeightPx * 0.05;
-    return `M${sx} ${sy} Q ${ex} ${ey} ${hx} ${hy}`;
-  };
-
-  const torsoPath = `M${personCx - shoulderHalf} ${shoulderY} C ${personCx - shoulderHalf} ${shoulderY + personHeightPx * 0.04} ${personCx - hipHalf * 1.2} ${hipY - personHeightPx * 0.05} ${personCx - hipHalf} ${hipY} L${personCx + hipHalf} ${hipY} C ${personCx + hipHalf * 1.2} ${hipY - personHeightPx * 0.05} ${personCx + shoulderHalf} ${shoulderY + personHeightPx * 0.04} ${personCx + shoulderHalf} ${shoulderY} Q ${personCx} ${shoulderY - personHeightPx * 0.06} ${personCx - shoulderHalf} ${shoulderY} Z`;
 
   const sceneId = React.useId().replace(/:/g, '');
   const skyGradientId = `wave-sky-${sceneId}`;
@@ -716,7 +705,7 @@ const WaveMeterScene: React.FC<{
   });
 
   const hasBand = typeof bandLowM === 'number' && typeof bandHighM === 'number' && bandHighM > bandLowM && !scale.isEstimate;
-  const bandTopY = hasBand ? Math.max(mToY(bandHighM as number), headTopY + personHeightPx * 0.06) : 0;
+  const bandTopY = hasBand ? Math.max(mToY(bandHighM as number), referenceTopY + referenceHeightPx * 0.06) : 0;
   const bandBotY = hasBand ? mToY(bandLowM as number) : 0;
 
   // The reading annotation must own the top zone: streaks never cross the crests or the reading line.
@@ -729,18 +718,6 @@ const WaveMeterScene: React.FC<{
     opacity: 0.16 + index * 0.07,
   })).filter((streak) => streak.y < Math.min(maxCrestY, trueWaterlineY) - 4);
 
-  const renderFigure = (groupProps: React.SVGProps<SVGGElement>) => (
-    <g fill="var(--cb-wave-swimmer-color)" stroke="var(--cb-wave-swimmer-color)" strokeLinecap="round" {...groupProps}>
-      <path d={`M${personCx - legOffset} ${hipY - personHeightPx * 0.02} V${plotBottomY}`} fill="none" strokeWidth={limbW} />
-      <path d={`M${personCx + legOffset} ${hipY - personHeightPx * 0.02} V${plotBottomY}`} fill="none" strokeWidth={limbW} />
-      <path d={`M${personCx - legOffset} ${plotBottomY} h${-limbW * 0.95}`} fill="none" strokeWidth={limbW * 0.82} />
-      <path d={`M${personCx + legOffset} ${plotBottomY} h${limbW * 0.95}`} fill="none" strokeWidth={limbW * 0.82} />
-      <path d={armPath(-1)} fill="none" strokeWidth={limbW * 0.82} />
-      <path d={armPath(1)} fill="none" strokeWidth={limbW * 0.82} />
-      <path d={torsoPath} stroke="none" />
-      <circle cx={personCx} cy={headCy} r={headR} stroke="none" />
-    </g>
-  );
 
   return (
     <svg viewBox="0 0 176 116" preserveAspectRatio="xMidYMid meet" aria-hidden="true" className="h-auto w-full drop-shadow-sm" style={sceneStyle}>
@@ -787,11 +764,7 @@ const WaveMeterScene: React.FC<{
         <path d={`M${axisX} ${plotTopY} V${plotBottomY}`} stroke="var(--cb-wave-guide-color)" strokeWidth="1.2" strokeLinecap="round" opacity="0.7" />
       </g>
 
-      {/* To-scale bather standing on the seabed — the full figure sits under the translucent water
-          so the submerged part reads as underwater. Static: feet planted, arms down. */}
-      {renderFigure({ opacity: 0.9 })}
-
-      {/* Choppy water fill (translucent, so the submerged body reads as underwater). */}
+      {/* Choppy water fill. */}
       <path
         d={waterPath}
         className="cb-wave-surface"
@@ -835,10 +808,6 @@ const WaveMeterScene: React.FC<{
         </g>
       )}
 
-      {/* The dry part of the figure emerges exactly where the local chop sits — head, neck and
-          shoulders stay one connected person instead of a detached dot in the foam. */}
-      <g clipPath={`url(#${aboveClipId})`}>{renderFigure({ opacity: 0.94 })}</g>
-
       {/* The reading: one labelled line at the TRUE height — the instrument needle of the scene.
           On very big seas it sits above the drawn surface and reads as an annotation. */}
       <g aria-hidden="true">
@@ -864,9 +833,6 @@ const WaveMeterScene: React.FC<{
           {readingLabel}
         </text>
       </g>
-
-      {/* Head rides ABOVE everything so it never disappears under a crest. */}
-      <circle cx={personCx} cy={headCy} r={headR} fill="var(--cb-wave-swimmer-color)" opacity="0.94" />
     </svg>
   );
 };
