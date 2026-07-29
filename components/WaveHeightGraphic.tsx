@@ -518,16 +518,14 @@ const getWaveVisualTier = (
   return 4;
 };
 
-const METER_BASE_MAX_M = 2.0; // calm/normal seas size against a 2 m ceiling
+const METER_BASE_MAX_M = 2.5; // the shore scene's standing axis — one scale for almost every day
 const METER_HARD_MAX_M = 3.0; // never treat a wave as taller than this, however wild the value
 const METER_TICK_STEP = 0.5;
 
-// Axis top for a given wave height: typical beach seas use a 2.0 m meter so mid-height waves remain
-// proportionate, then rough days step up in 0.5 m increments.
+// Axis top for a given wave height. Held at 2.5 m for virtually every Greek beach day so two
+// beaches can be compared by eye; only a genuinely huge sea pushes it to the 3 m ceiling.
 const axisMaxForHeight = (m: number): number =>
-  m <= METER_BASE_MAX_M
-    ? METER_BASE_MAX_M
-    : Math.min(METER_HARD_MAX_M, Math.ceil(m / METER_TICK_STEP) * METER_TICK_STEP);
+  m <= METER_BASE_MAX_M ? METER_BASE_MAX_M : METER_HARD_MAX_M;
 
 const axisTicks = (axisMaxM: number): number[] => {
   const ticks: number[] = [];
@@ -613,224 +611,290 @@ const getWaveSceneStyle = (scale: WaveScaleResult, bandOverride?: WaveBand): Rea
   } as React.CSSProperties;
 };
 
-const HUMAN_HEIGHT_M = 1.75; // canonical adult reference — the ruler the wave is measured against.
+const UMBRELLA_HEIGHT_M = 2.0; // a beach parasol — the ruler, standing on the SAND, never in the water.
 
-// Physically-scaled wave meter. A to-scale ~1.75 m person stands in the sea and the water reaches
-// them at the REAL wave height, so height is read as position (waterline on the body + metre axis) —
-// the most accurately-decoded channel — while the wave squiggle is only texture. The waterline, the
-// axis dot and the labelled reading line always sit at the MEASURED height; wind/sea state never
-// moves them, it only roughens the texture (chop amplitude, whitecaps, spray, drift speed) and the
-// colour severity. The fill is held at the neck at most so the head always shows (never a
-// "drowning" look); when the true height is above the drawn surface, the labelled reading line
-// carries the number honestly.
-const WaveMeterScene: React.FC<{
+const UMBRELLA_LABEL: LocalizedCopy<string> = {
+  en: '2 m',
+  gr: '2 μ.',
+  fr: '2 m',
+  de: '2 m',
+  it: '2 m',
+};
+
+// A SHORE IN CROSS-SECTION — the wave breaking at the size it really is.
+//
+// Wave height is a property of the SURFACE, not a depth, so the drawing is a shoreline seen from the
+// side: open sea on the left, a wave shoaling and breaking, dry sand on the right. The ruler is a
+// 2 m beach parasol planted on the SAND — it cannot imply how deep the water is, and everybody
+// knows how tall a parasol is, so the scale is read without a body in the picture.
+//
+// Four rules, each paid for by a failed attempt:
+//  1. NO PERSON. A to-scale figure standing in the sea filled the water to the wave height and drew
+//     someone submerged to the neck at 1,3 m — a statement about depth the number never makes. It
+//     read as a drowning (reported 29/07/2026).
+//  2. NO SEABED. Drawing the bottom shelving up put a hard diagonal across the frame and, worse,
+//     went back to depicting depth. Water simply fills everything below the still level; only the
+//     DRY sand is drawn, diving under the surface at the shoreline.
+//  3. AN ASYMMETRIC WAVE. A symmetric crest at this scale reads as a hill or a spike. A real
+//     breaker has a long low shoaling back, a late steep rise, a rounded crest and a lip pitching
+//     forward — that silhouette is what says "wave" at any height.
+//  4. A SPILLING MANE, NOT AN OUTLINE. White water sitting ON the crest and running down the face to
+//     the beach is what reads as "breaking"; a thin white outline just reads as "tall". Greek beach
+//     waves spill — no barrels, no spray everywhere. The target is an instrument, not a poster.
+//
+// One shape, one scale: everything is derived from `hPx` (the measured height in pixels), so the
+// same path grows continuously from a flat lick on the sand to a full breaker. Wind and sea state
+// never move the reading line — they only add chop, foam, spray and colour severity.
+const ShoreProfileScene: React.FC<{
   scale: WaveScaleResult;
   visualHeightM: number;
   windTier: WaveVisualTier;
   severityBand: WaveBand;
   readingLabel: string;
+  language: LanguageCode;
   bandLowM?: number;
   bandHighM?: number;
-}> = ({ scale, visualHeightM, windTier, severityBand, readingLabel, bandLowM, bandHighM }) => {
+}> = ({ scale, visualHeightM, windTier, severityBand, readingLabel, language, bandLowM, bandHighM }) => {
   const plotTopY = 12;
-  const plotBottomY = 104; // seabed / feet baseline
-  const axisX = 32;
-  const plotHeight = plotBottomY - plotTopY;
+  const swl = 94; // still-water level — the zero of the metre axis
+  const floorY = 124;
+  const axisX = 26;
+  const xL = 4;
+  const xR = 208;
+  const plotHeight = swl - plotTopY;
   const axisMaxM = axisMaxForHeight(visualHeightM);
-  const mToY = (m: number) => plotBottomY - (clamp(m, 0, axisMaxM) / axisMaxM) * plotHeight;
-  // The 1,75 m adult is no longer DRAWN (see surfaceY below), but it is still the ruler the
-  // "likely range" band is kept clear of, so the band never swallows the top of the plot.
-  const referenceHeightPx = Math.min(plotHeight * 0.94, (HUMAN_HEIGHT_M / axisMaxM) * plotHeight);
-  const referenceTopY = plotBottomY - referenceHeightPx;
+  const mToY = (m: number) => swl - (clamp(m, 0, axisMaxM) / axisMaxM) * plotHeight;
+  const formatTick = (m: number) => (language === 'gr' ? m.toFixed(1).replace('.', ',') : m.toFixed(1));
 
-  const trueWaterlineY = mToY(visualHeightM);
-  // THE PERSON IS GONE, AND NOT ONLY BECAUSE IT LOOKED ALARMING.
-  //
-  // The scene used to stand a to-scale 1,75 m figure on the seabed and fill the water up to the
-  // wave height, so at 1,3 m it drew someone submerged to the neck. That is a statement about
-  // DEPTH, and significant wave height is not depth: at a beach the swimmer picks their own depth,
-  // and a 1,3 m sea does not mean the water closes over you. The drawing was answering a question
-  // the number does not ask, and it answered it in the most frightening way available — reported
-  // 29/07/2026 as reading like a drowning.
-  //
-  // What stays is the honest instrument: the metre axis, a sea whose chop grows with the Beaufort,
-  // and one labelled reading line at the true height. Height is read against the scale, which is
-  // what the figure is: the size of the waves, not how deep you would be standing.
-  // A SURFACE-ONLY DRAWING WAS TRIED AND REVERTED (29/07/2026). Filling only the lower part of the
-  // plot and letting crests rise to the reading line is the physically right picture — a wave
-  // height is a property of the surface, not a depth — but at this aspect ratio a 1,4 m sea on a
-  // 2,0 m axis needs crests taller than the wavelength, and it renders as spikes, not water. It
-  // needs a proper design pass (wider plot, or a cropped sea-level detail), not a constant tweak.
-  const surfaceY = trueWaterlineY;
-  const capGap = 0;
+  const crestY = mToY(visualHeightM);
+  const hPx = swl - crestY;
+  const crestX = 110;
+  const shoreX = 152; // where the still waterline meets the sand
+
+  const sandYAt = (x: number): number => swl - clamp((x - shoreX) * 0.26, 0, 13);
+
   const visualIntensity = Math.max(windTier, severityBand === 'rough' ? 4 : severityBand === 'amber' ? 2 : 0);
-  // Amplitude drives how choppy the surface reads — it must clearly say "waves", so it climbs with
-  // the sea state (a 6 Bft sea must never look like a calm level), and more crests appear as the
-  // wind builds. It never moves the MEAN waterline, and it is capped by the local water depth so
-  // troughs cannot dig through the seabed on a shallow, wind-whipped day.
-  const depthPx = plotBottomY - surfaceY;
-  // The crests must REACH the reading line — that is what makes the number legible without a body
-  // to measure it against. Chop still grows with the Beaufort, but the height of the wave is now
-  // the distance from the mean surface up to the true reading, so the axis reads it directly.
-  const amplitude = clamp(Math.min(2 + visualIntensity * 4 + capGap * 0.35, depthPx * 0.72), 2, 18);
-  const nCrests = 2 + visualIntensity; // calm 2 → rough 6 wave crests across the width
-
-  // A relaxed STANDING stance — arms hang down at the sides, feet planted on the seabed — so the
-  // person clearly stands on the bottom and the water simply reaches them at the wave height (never
-  // a swimming/floating pose, whatever the sea state).
+  // Offshore chop: texture only. It rides around the still-water level and never touches the reading.
+  const chop = clamp(1 + visualIntensity * 0.8 + hPx * 0.06, 1.2, 6.5);
 
   const sceneId = React.useId().replace(/:/g, '');
-  const skyGradientId = `wave-sky-${sceneId}`;
-  const depthGradientId = `wave-depth-${sceneId}`;
-  const aboveClipId = `wave-above-${sceneId}`;
+  const skyGradientId = `shore-sky-${sceneId}`;
+  const waterGradientId = `shore-water-${sceneId}`;
+  const sandGradientId = `shore-sand-${sceneId}`;
   const sceneStyle = {
     ...getWaveSceneStyle(scale, severityBand),
     ...getSceneMotionStyle(visualIntensity),
   } as React.CSSProperties;
   const tickValues = axisTicks(axisMaxM);
 
-  const xL = 2;
-  const xR = 174;
-  // Build an irregular, choppy surface: a sine chain modulated by a second harmonic so it reads as
-  // real waves rather than one smooth swell. The chop rides above and below the mean waterline, so
-  // the sea genuinely looks rough at the level it reaches on the body.
-  const SAMPLES = 64;
-  const surfaceYAt = (i: number): number => {
-    const phase = (i / SAMPLES) * nCrests * Math.PI * 2;
-    const chop = 0.78 + 0.22 * Math.sin(phase * 1.9 + 0.7); // gentle irregularity → rounded, not spiky
-    return surfaceY - amplitude * Math.sin(phase) * chop;
-  };
-  const surfacePts = Array.from({ length: SAMPLES + 1 }, (_, i) => [xL + ((xR - xL) * i) / SAMPLES, surfaceYAt(i)] as const);
-  const surfaceLine = surfacePts.map(([x, y], i) => `${i === 0 ? 'M' : 'L'}${x.toFixed(1)} ${y.toFixed(1)}`).join(' ');
-  const waterPath = `${surfaceLine} L${xR} ${plotBottomY + 12} L${xL} ${plotBottomY + 12} Z`;
-  // Everything above the choppy surface — clips the "dry" part of the figure so head, neck and
-  // shoulders emerge exactly where the local sea sits, as one connected person.
-  const abovePath = `${surfaceLine} L${xR} ${plotTopY - 12} L${xL} ${plotTopY - 12} Z`;
-  // Whitecaps break on the wave crests once the sea builds — the signature "this is rough" cue.
-  const crestMarks = Array.from({ length: nCrests }, (_, k) => {
-    const frac = (0.25 + k) / nCrests;
-    return { x: xL + (xR - xL) * frac, y: surfaceYAt(frac * SAMPLES) };
-  });
+  // The sea surface, left to right. The back stays LOW until late (0.05 → 0.14 → 0.30 of the height
+  // over half the frame) and only then rears to a ROUNDED crest: that late rise, and the fact that
+  // the top is a curve rather than a point, is the whole difference between a wave and a spike.
+  const lipX = crestX + 19;
+  const lipY = crestY + hPx * 0.46;
+  const surfacePath = [
+    `M${xL} ${(swl + 1.5).toFixed(1)}`,
+    `C 12 ${(swl + 1.5 - chop).toFixed(1)}, 24 ${(swl + 1.5 + chop * 0.6).toFixed(1)}, 36 ${(swl + 0.4).toFixed(1)}`,
+    `C 48 ${(swl - hPx * 0.03 - chop * 0.6).toFixed(1)}, 62 ${(swl - hPx * 0.09).toFixed(1)}, 76 ${(swl - hPx * 0.22).toFixed(1)}`,
+    `C 88 ${(swl - hPx * 0.4).toFixed(1)}, 98 ${(swl - hPx * 0.72).toFixed(1)}, ${crestX - 8} ${(crestY + hPx * 0.06).toFixed(1)}`,
+    `C ${crestX - 4} ${crestY.toFixed(1)}, ${crestX + 4} ${crestY.toFixed(1)}, ${crestX + 9} ${(crestY + hPx * 0.05).toFixed(1)}`,
+    // The lip pitches forward, then the face falls back to the LEFT of it — that hollow is what a
+    // breaking wave looks like and what a hill never does.
+    `C ${crestX + 16} ${(crestY + hPx * 0.13).toFixed(1)}, ${lipX + 3} ${(crestY + hPx * 0.28).toFixed(1)}, ${lipX} ${lipY.toFixed(1)}`,
+    `C ${crestX + 14} ${(swl - hPx * 0.3).toFixed(1)}, ${crestX + 20} ${(swl - hPx * 0.08).toFixed(1)}, ${crestX + 33} ${(swl - hPx * 0.03).toFixed(1)}`,
+    `C ${crestX + 42} ${(swl + 0.6).toFixed(1)}, ${shoreX - 8} ${(swl + 1).toFixed(1)}, ${shoreX + 2} ${(swl + 0.5).toFixed(1)}`,
+  ].join(' ');
+  // Water fills everything below the surface, right across the frame; the sand is painted over its
+  // shoreward end. No vertical wall, no diagonal seabed, no depth claim.
+  const waterPath = `${surfacePath} L${xR} ${swl + 1} L${xR} ${floorY + 8} L${xL} ${floorY + 8} Z`;
+
+  // The break: a spilling mane of white water over the crest, running down the face and on to the
+  // beach. It only appears once there is a face to break down, so a glassy morning stays glassy.
+  const showBreak = hPx >= 10 || visualIntensity >= 2;
+  const breakPath = [
+    `M${crestX - 16} ${(crestY + hPx * 0.22).toFixed(1)}`,
+    `C ${crestX - 7} ${(crestY - hPx * 0.05).toFixed(1)}, ${crestX + 6} ${(crestY - hPx * 0.05).toFixed(1)}, ${crestX + 16} ${(crestY + hPx * 0.16).toFixed(1)}`,
+    `C ${lipX + 5} ${(crestY + hPx * 0.4).toFixed(1)}, ${crestX + 19} ${(swl - hPx * 0.3).toFixed(1)}, ${crestX + 29} ${(swl - hPx * 0.09).toFixed(1)}`,
+    `C ${crestX + 39} ${(swl + 0.4).toFixed(1)}, ${shoreX - 10} ${(swl + 0.8).toFixed(1)}, ${shoreX + 2} ${(swl + 1.4).toFixed(1)}`,
+    `C ${shoreX - 16} ${(swl + 3.8).toFixed(1)}, ${crestX + 32} ${(swl + 1.8).toFixed(1)}, ${crestX + 20} ${(swl - hPx * 0.22).toFixed(1)}`,
+    `C ${crestX + 13} ${(lipY - hPx * 0.04).toFixed(1)}, ${crestX + 6} ${(crestY + hPx * 0.34).toFixed(1)}, ${crestX - 4} ${(crestY + hPx * 0.32).toFixed(1)}`,
+    `C ${crestX - 10} ${(crestY + hPx * 0.33).toFixed(1)}, ${crestX - 15} ${(crestY + hPx * 0.28).toFixed(1)}, ${crestX - 16} ${(crestY + hPx * 0.22).toFixed(1)}`,
+    'Z',
+  ].join(' ');
+
+  // Swash: the thin sheet of water sliding up the sand. On a calm day this IS the whole event.
+  const runUpX = shoreX + clamp(hPx * 0.8, 6, 28);
+  const swashPath = [
+    `M${shoreX - 12} ${(swl + 2.2).toFixed(1)}`,
+    `C ${shoreX} ${(swl - 0.4).toFixed(1)}, ${(runUpX - 10).toFixed(1)} ${(sandYAt(runUpX - 10) - 0.8).toFixed(1)}, ${runUpX.toFixed(1)} ${(sandYAt(runUpX) - 0.4).toFixed(1)}`,
+    `C ${(runUpX - 12).toFixed(1)} ${(sandYAt(runUpX - 12) + 2.4).toFixed(1)}, ${shoreX} ${(swl + 3.2).toFixed(1)}, ${shoreX - 12} ${(swl + 4).toFixed(1)}`,
+    'Z',
+  ].join(' ');
+
+  // Dry sand only — it slides under the waterline on the left instead of ending in a wall.
+  const sandPath = [
+    `M${xR} ${sandYAt(xR).toFixed(1)}`,
+    `C 190 ${sandYAt(190).toFixed(1)}, 168 ${sandYAt(168).toFixed(1)}, ${shoreX} ${(swl + 0.5).toFixed(1)}`,
+    `C ${shoreX - 8} ${(swl + 5).toFixed(1)}, ${shoreX - 14} ${(swl + 16).toFixed(1)}, ${shoreX - 18} ${floorY + 8}`,
+    `L${xR} ${floorY + 8}`,
+    'Z',
+  ].join(' ');
+
+  // The parasol: the only object in the scene with a known real-world size, so it is drawn to the
+  // same metre scale as the wave. Its canopy width is schematic — a cross-section compresses
+  // distance along the shore, never height.
+  const umbrellaX = 181;
+  const umbrellaBaseY = sandYAt(umbrellaX);
+  const umbrellaTopY = umbrellaBaseY - (UMBRELLA_HEIGHT_M / axisMaxM) * plotHeight;
+  const canopyHalf = 19;
+  const canopyDrop = 12;
+  // A scalloped hem is the one detail that makes a parasol read as a parasol rather than a lamp.
+  const canopyHem = [-1, -0.333, 0.333, 1].map((f) => umbrellaX + canopyHalf * f);
 
   const hasBand = typeof bandLowM === 'number' && typeof bandHighM === 'number' && bandHighM > bandLowM && !scale.isEstimate;
-  const bandTopY = hasBand ? Math.max(mToY(bandHighM as number), referenceTopY + referenceHeightPx * 0.06) : 0;
+  const bandTopY = hasBand ? mToY(bandHighM as number) : 0;
   const bandBotY = hasBand ? mToY(bandLowM as number) : 0;
 
-  // The reading annotation must own the top zone: streaks never cross the crests or the reading line.
-  const maxCrestY = surfaceY - amplitude;
-  const readingLabelAbove = trueWaterlineY > plotTopY + 11;
+  const readingRightX = crestX - 10;
   const windStreaks = Array.from({ length: windTier }, (_, index) => ({
-    x1: 40 + index * 13,
-    x2: 68 + index * 15,
-    y: 22 + index * 6,
-    opacity: 0.16 + index * 0.07,
-  })).filter((streak) => streak.y < Math.min(maxCrestY, trueWaterlineY) - 4);
-
+    x1: 34 + index * 12,
+    x2: 60 + index * 13,
+    y: 19 + index * 5.5,
+    opacity: 0.15 + index * 0.07,
+  })).filter((streak) => streak.y < crestY - 6);
 
   return (
-    <svg viewBox="0 0 176 116" preserveAspectRatio="xMidYMid meet" aria-hidden="true" className="h-auto w-full drop-shadow-sm" style={sceneStyle}>
+    <svg viewBox="0 0 212 128" preserveAspectRatio="xMidYMid meet" aria-hidden="true" className="h-auto w-full drop-shadow-sm" style={sceneStyle}>
       <defs>
         <linearGradient id={skyGradientId} x1="0" x2="0" y1="0" y2="1">
           <stop offset="0%" stopColor="var(--cb-wave-sky)" stopOpacity="0.92" />
           <stop offset="100%" stopColor="#ffffff" stopOpacity="0.5" />
         </linearGradient>
-        <linearGradient id={depthGradientId} x1="0" x2="0" y1="0" y2="1">
-          <stop offset="0%" stopColor="var(--cb-wave-crest)" stopOpacity="0.72" />
-          <stop offset="55%" stopColor="var(--cb-wave-mid)" stopOpacity="0.62" />
-          <stop offset="100%" stopColor="var(--cb-wave-deep)" stopOpacity="0.6" />
+        <linearGradient id={waterGradientId} x1="0" x2="0" y1="0" y2="1">
+          <stop offset="0%" stopColor="var(--cb-wave-crest)" stopOpacity="0.85" />
+          <stop offset="60%" stopColor="var(--cb-wave-mid)" stopOpacity="0.72" />
+          <stop offset="100%" stopColor="var(--cb-wave-deep)" stopOpacity="0.62" />
         </linearGradient>
-        <clipPath id={aboveClipId}>
-          <path d={abovePath} />
-        </clipPath>
+        <linearGradient id={sandGradientId} x1="0" x2="0" y1="0" y2="1">
+          <stop offset="0%" stopColor="var(--cb-wave-sand)" stopOpacity="0.95" />
+          <stop offset="100%" stopColor="var(--cb-wave-sand)" stopOpacity="0.7" />
+        </linearGradient>
       </defs>
 
-      <rect x="2" y="2" width="172" height="112" rx="20" fill={`url(#${skyGradientId})`} />
+      <rect x="2" y="2" width="208" height="124" rx="20" fill={`url(#${skyGradientId})`} />
 
       {windStreaks.length > 0 && (
-        <g aria-hidden="true" className="cb-wave-highlight" stroke="var(--cb-wave-deep)" strokeLinecap="round">
+        <g className="cb-wave-highlight" stroke="var(--cb-wave-deep)" strokeLinecap="round">
           {windStreaks.map((streak, index) => (
-            <path key={index} d={`M${streak.x1} ${streak.y} H${streak.x2}`} strokeWidth={1.4 + index * 0.3} opacity={streak.opacity} />
+            <path key={index} d={`M${streak.x1} ${streak.y} H${streak.x2}`} strokeWidth={1.3 + index * 0.3} opacity={streak.opacity} />
           ))}
         </g>
       )}
 
       {/* Honest uncertainty band: a soft zone only — no hard edge that could be misread as the height. */}
       {hasBand && (
-        <rect aria-hidden="true" x={axisX} y={bandTopY} width={xR - axisX} height={Math.max(0, bandBotY - bandTopY)} fill="var(--cb-wave-deep)" opacity="0.09" />
+        <rect x={axisX} y={bandTopY} width={readingRightX - axisX} height={Math.max(0, bandBotY - bandTopY)} fill="var(--cb-wave-deep)" opacity="0.1" />
       )}
 
-      {/* Subtle metre axis — precision beside the relatable human ruler. */}
-      <g aria-hidden="true">
-        {tickValues.map((tick) => (
-          <g key={tick}>
-            <path d={`M${axisX - 4} ${mToY(tick)} H${axisX}`} stroke="var(--cb-wave-guide-color)" strokeWidth="1" opacity="0.6" />
-            <text x={axisX - 6} y={mToY(tick) + 3} textAnchor="end" fontSize="7.5" fontWeight="700" fill="var(--cb-wave-guide-color)">
-              {tick === 0 ? '0m' : tick.toFixed(1)}
-            </text>
-          </g>
-        ))}
-        <path d={`M${axisX} ${plotTopY} V${plotBottomY}`} stroke="var(--cb-wave-guide-color)" strokeWidth="1.2" strokeLinecap="round" opacity="0.7" />
-      </g>
+      <path d={waterPath} fill={`url(#${waterGradientId})`} fillOpacity={scale.isEstimate ? 0.55 : 1} />
 
-      {/* Choppy water fill. */}
       <path
-        d={waterPath}
-        className="cb-wave-surface"
-        fill={`url(#${depthGradientId})`}
-        fillOpacity={scale.isEstimate ? 0.5 : 0.82}
-      />
-
-      {/* Sand shelf the person stands on — drawn over the water's lower edge so it reads as sand,
-          not algae-tinted blue. */}
-      <path d={`M${xL} ${plotBottomY + 2} H${xR} L${xR} ${plotBottomY + 12} L${xL} ${plotBottomY + 12} Z`} fill="var(--cb-wave-sand)" opacity="0.75" />
-
-      {/* Surface line: foam on a measured sea, a sketchy dashed line on an estimate. */}
-      <path
-        d={surfaceLine}
+        d={surfacePath}
         fill="none"
-        className="cb-wave-foam"
         strokeLinecap="round"
         {...(scale.isEstimate
-          ? { stroke: 'var(--cb-wave-deep)', strokeWidth: 1.3, strokeDasharray: '4 3', opacity: 0.6 }
-          : { stroke: 'var(--cb-wave-foam-color)', strokeWidth: visualIntensity >= 4 ? 3 : visualIntensity >= 2 ? 2.4 : 1.8 })}
+          ? { stroke: 'var(--cb-wave-deep)', strokeWidth: 1.2, strokeDasharray: '4 3', opacity: 0.65 }
+          : { stroke: 'var(--cb-wave-foam-color)', strokeWidth: visualIntensity >= 4 ? 2.2 : visualIntensity >= 2 ? 1.8 : 1.4 })}
       />
 
-      {/* Whitecaps — a rounded foam cap sitting on each crest, the "rough sea" signature. */}
-      {visualIntensity >= 2 && crestMarks.map((c, i) => (
-        <path
-          key={i}
-          className="cb-wave-foam"
-          d={`M${(c.x - 7).toFixed(1)} ${(c.y + 2.5).toFixed(1)} Q ${(c.x - 4).toFixed(1)} ${(c.y - 2.5).toFixed(1)} ${c.x.toFixed(1)} ${(c.y - 1).toFixed(1)} Q ${(c.x + 4).toFixed(1)} ${(c.y - 3).toFixed(1)} ${(c.x + 7).toFixed(1)} ${(c.y + 2.5).toFixed(1)} Q ${c.x.toFixed(1)} ${(c.y + 1).toFixed(1)} ${(c.x - 7).toFixed(1)} ${(c.y + 2.5).toFixed(1)} Z`}
-          fill="var(--cb-wave-foam-color)"
-          stroke="none"
-          opacity={visualIntensity >= 4 ? 0.95 : 0.85}
-        />
-      ))}
+      {showBreak && !scale.isEstimate && (
+        <path d={breakPath} fill="var(--cb-wave-foam-color)" opacity={visualIntensity >= 4 ? 0.95 : 0.84} />
+      )}
 
-      {/* A little spray off the biggest crests in a strong sea. */}
-      {visualIntensity >= 4 && (
-        <g className="cb-wave-spray" fill="var(--cb-wave-foam-color)" opacity="0.78">
-          {crestMarks.slice(0, 3).map((c, i) => (
-            <circle key={i} cx={c.x + (i % 2 === 0 ? -3 : 4)} cy={c.y - 3.5} r={1.3} />
-          ))}
+      {visualIntensity >= 4 && !scale.isEstimate && (
+        <g className="cb-wave-spray" fill="var(--cb-wave-foam-color)" opacity="0.85">
+          <circle cx={lipX + 6} cy={crestY + hPx * 0.08} r="1.4" />
+          <circle cx={lipX + 11} cy={crestY + hPx * 0.24} r="1" />
+          <circle cx={crestX + 2} cy={crestY - 5} r="1.2" />
         </g>
       )}
 
-      {/* The reading: one labelled line at the TRUE height — the instrument needle of the scene.
-          On very big seas it sits above the drawn surface and reads as an annotation. */}
-      <g aria-hidden="true">
+      <path d={sandPath} fill={`url(#${sandGradientId})`} />
+
+      {/* The water's edge sliding up the sand — animated, because this is the part that actually moves. */}
+      <path className="cb-wave-foam" d={swashPath} fill="var(--cb-wave-foam-color)" opacity={scale.isEstimate ? 0.45 : 0.82} />
+
+      {/* The 2 m parasol: the ruler, on dry sand. */}
+      <g>
+        <path d={`M${umbrellaX} ${(umbrellaTopY + 3).toFixed(1)} V${umbrellaBaseY.toFixed(1)}`} stroke="var(--cb-wave-guide-color)" strokeWidth="1.8" strokeLinecap="round" opacity="0.8" />
         <path
-          d={`M${axisX} ${trueWaterlineY} H${xR}`}
+          d={[
+            `M${canopyHem[0].toFixed(1)} ${(umbrellaTopY + canopyDrop).toFixed(1)}`,
+            `C ${umbrellaX - canopyHalf * 0.72} ${(umbrellaTopY + canopyDrop * 0.3).toFixed(1)}, ${umbrellaX - canopyHalf * 0.32} ${(umbrellaTopY + 0.6).toFixed(1)}, ${umbrellaX} ${umbrellaTopY.toFixed(1)}`,
+            `C ${umbrellaX + canopyHalf * 0.32} ${(umbrellaTopY + 0.6).toFixed(1)}, ${umbrellaX + canopyHalf * 0.72} ${(umbrellaTopY + canopyDrop * 0.3).toFixed(1)}, ${canopyHem[3].toFixed(1)} ${(umbrellaTopY + canopyDrop).toFixed(1)}`,
+            // hem, right to left: three shallow scallops
+            `Q ${((canopyHem[3] + canopyHem[2]) / 2).toFixed(1)} ${(umbrellaTopY + canopyDrop - 3.2).toFixed(1)} ${canopyHem[2].toFixed(1)} ${(umbrellaTopY + canopyDrop - 1.6).toFixed(1)}`,
+            `Q ${umbrellaX} ${(umbrellaTopY + canopyDrop - 4.4).toFixed(1)} ${canopyHem[1].toFixed(1)} ${(umbrellaTopY + canopyDrop - 1.6).toFixed(1)}`,
+            `Q ${((canopyHem[1] + canopyHem[0]) / 2).toFixed(1)} ${(umbrellaTopY + canopyDrop - 3.2).toFixed(1)} ${canopyHem[0].toFixed(1)} ${(umbrellaTopY + canopyDrop).toFixed(1)}`,
+            'Z',
+          ].join(' ')}
+          fill="var(--cb-wave-guide-color)"
+          opacity="0.68"
+        />
+        <text
+          x={umbrellaX + 4}
+          y={((umbrellaTopY + canopyDrop + umbrellaBaseY) / 2).toFixed(1)}
+          textAnchor="start"
+          fontSize="6.8"
+          fontWeight="700"
+          fill="var(--cb-wave-guide-color)"
+          stroke="rgba(255,255,255,0.9)"
+          strokeWidth="2.2"
+          paintOrder="stroke"
+          opacity="0.95"
+        >
+          {getLocalizedCopy(language, UMBRELLA_LABEL)}
+        </text>
+      </g>
+
+      {/* Metre axis — zero sits on the still waterline, because that is where a wave height starts.
+          Labels carry a white halo so they stay legible over the water. */}
+      <g>
+        {tickValues.map((tick) => (
+          <g key={tick}>
+            <path d={`M${axisX - 3.5} ${mToY(tick)} H${axisX}`} stroke="var(--cb-wave-guide-color)" strokeWidth="1" opacity="0.65" />
+            <text
+              x={axisX - 5}
+              y={mToY(tick) + 2.5}
+              textAnchor="end"
+              fontSize="7"
+              fontWeight="700"
+              fill="var(--cb-wave-guide-color)"
+              stroke="rgba(255,255,255,0.92)"
+              strokeWidth="2.2"
+              paintOrder="stroke"
+            >
+              {tick === 0 ? '0' : formatTick(tick)}
+            </text>
+          </g>
+        ))}
+        <path d={`M${axisX} ${plotTopY} V${swl}`} stroke="var(--cb-wave-guide-color)" strokeWidth="1.1" strokeLinecap="round" opacity="0.7" />
+      </g>
+
+      {/* The reading: one labelled line at the crest height — the instrument needle of the scene. */}
+      <g>
+        <path
+          d={`M${axisX} ${crestY} H${readingRightX}`}
           stroke="var(--cb-wave-deep)"
           strokeWidth="1.3"
-          opacity="0.8"
+          opacity="0.85"
           {...(scale.isEstimate ? { strokeDasharray: '4 3' } : {})}
         />
-        <circle cx={axisX} cy={trueWaterlineY} r="3" fill="var(--cb-wave-deep)" stroke="white" strokeWidth="1.2" />
+        <circle cx={axisX} cy={crestY} r="3" fill="var(--cb-wave-deep)" stroke="white" strokeWidth="1.2" />
         <text
-          x={xR - 3}
-          y={readingLabelAbove ? trueWaterlineY - 3.5 : trueWaterlineY + 9}
-          textAnchor="end"
+          x={axisX + 5.5}
+          y={crestY - 3.5}
+          textAnchor="start"
           fontSize="7.5"
           fontWeight="800"
           fill="var(--cb-wave-deep)"
@@ -1198,10 +1262,12 @@ export const WaveHeightGraphic: React.FC<WaveHeightGraphicProps> = ({
       className={`overflow-hidden rounded-2xl border border-cyan-100/70 bg-white/92 p-3.5 shadow-sm shadow-sky-900/5 ring-1 ring-white/60 dark:border-slate-700 dark:bg-slate-800 sm:p-4 ${className ?? ''}`}
     >
       <div className="space-y-3">
-        <div className={`flex h-56 w-full items-center justify-center overflow-hidden rounded-[2rem] p-1.5 ring-1 ring-white/70 sm:h-64 ${panelClass} [&>svg]:h-full [&>svg]:w-full`}>
+        {/* The panel takes the scene's own aspect ratio (212×128) so the shore fills it at every
+            width instead of floating in a band of empty tint on narrow screens. */}
+        <div className={`flex w-full items-center justify-center overflow-hidden rounded-[2rem] p-1.5 ring-1 ring-white/70 ${boatAccess && boatLevel ? 'h-56 sm:h-64' : 'aspect-[53/32]'} ${panelClass} [&>svg]:h-full [&>svg]:w-full`}>
           {boatAccess && boatLevel
             ? <BoatScene scale={scale} level={boatLevel} windTier={windVisualTier} />
-            : <WaveMeterScene scale={scale} visualHeightM={visualWaveHeightM} windTier={windVisualTier} severityBand={severityBand} readingLabel={readingLabel} bandLowM={sceneRange?.lowM} bandHighM={sceneRange?.highM} />}
+            : <ShoreProfileScene scale={scale} visualHeightM={visualWaveHeightM} windTier={windVisualTier} severityBand={severityBand} readingLabel={readingLabel} language={language} bandLowM={sceneRange?.lowM} bandHighM={sceneRange?.highM} />}
         </div>
         {!boatCopy && (
           <div className="min-w-0 px-0.5">
