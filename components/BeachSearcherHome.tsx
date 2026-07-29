@@ -579,7 +579,7 @@ const homeCopy: Record<LanguageCode, HomeCopy> = {
   en: {
     greece: 'Greece',
     hero: {
-      title: 'Find your ideal beach in Greece today',
+      title: 'Find the best beach for today',
       subtitle: "Tailored to today's conditions and your beach preferences.",
       wind: 'Wind',
       waves: 'Waves',
@@ -659,7 +659,7 @@ const homeCopy: Record<LanguageCode, HomeCopy> = {
   gr: {
     greece: 'Ελλάδα',
     hero: {
-      title: 'Βρες την ιδανική σου παραλία στην Ελλάδα σήμερα',
+      title: 'Βρες την καλύτερη παραλία για σήμερα',
       subtitle: 'Προσαρμοσμένη στις σημερινές συνθήκες και στις προτιμήσεις σου για παραλία.',
       wind: 'Άνεμος',
       waves: 'Κύμα',
@@ -739,7 +739,7 @@ const homeCopy: Record<LanguageCode, HomeCopy> = {
   fr: {
     greece: 'Grèce',
     hero: {
-      title: 'Trouvez votre plage idéale en Grèce aujourd’hui',
+      title: 'Trouvez la meilleure plage pour aujourd’hui',
       subtitle: 'Adaptée aux conditions du jour et à vos préférences de plage.',
       wind: 'Vent',
       waves: 'Vagues',
@@ -819,7 +819,7 @@ const homeCopy: Record<LanguageCode, HomeCopy> = {
   de: {
     greece: 'Griechenland',
     hero: {
-      title: 'Finde heute deinen idealen Strand in Griechenland',
+      title: 'Finde heute den besten Strand für dich',
       subtitle: 'Abgestimmt auf die heutigen Bedingungen und deine Strandvorlieben.',
       wind: 'Wind',
       waves: 'Wellen',
@@ -899,7 +899,7 @@ const homeCopy: Record<LanguageCode, HomeCopy> = {
   it: {
     greece: 'Grecia',
     hero: {
-      title: 'Trova la tua spiaggia ideale in Grecia oggi',
+      title: 'Trova la spiaggia migliore per oggi',
       subtitle: 'Su misura per le condizioni di oggi e le tue preferenze di spiaggia.',
       wind: 'Vento',
       waves: 'Onde',
@@ -3717,7 +3717,7 @@ export const BeachSearcherHome: React.FC<BeachSearcherHomeProps> = ({
                 className="beach-card-carousel no-scrollbar flex cursor-grab snap-x snap-mandatory items-stretch gap-6 overflow-x-auto overscroll-x-contain pb-3 select-none active:cursor-grabbing data-[dragging=true]:cursor-grabbing data-[dragging=true]:snap-none sm:pb-5 lg:snap-none lg:px-5"
               >
                 {topRecommendationBeachCards.map(({ beach, score, context }, index) => (
-                  <div key={beach.id} data-suitable-beach-id={beach.id} {...beachCardHoverProps(beach.id)} className={getMapLinkedCardClassName(beach.id, 'flex h-[24rem] w-[17rem] shrink-0 snap-start sm:h-[25rem] sm:w-[20rem]')}>
+                  <div key={beach.id} data-suitable-beach-id={beach.id} {...beachCardHoverProps(beach.id)} className={getMapLinkedCardClassName(beach.id, `flex ${isNearMeRegion ? 'h-fit' : 'h-[24rem] sm:h-[25rem]'} w-[17rem] shrink-0 snap-start sm:w-[20rem]`)}>
                     {renderBeachDecisionCard(beach as BeachCardContext, {
                       score,
                       context,
@@ -3766,7 +3766,7 @@ export const BeachSearcherHome: React.FC<BeachSearcherHomeProps> = ({
                   ? undefined
                   : weatherBeachCardRankStart + index;
                 return (
-                <div key={beach.id} data-suitable-beach-id={beach.id} {...beachCardHoverProps(beach.id)} className={getMapLinkedCardClassName(beach.id, 'flex h-[24rem] w-[17rem] shrink-0 snap-start sm:h-[25rem] sm:w-[20rem]')}>
+                <div key={beach.id} data-suitable-beach-id={beach.id} {...beachCardHoverProps(beach.id)} className={getMapLinkedCardClassName(beach.id, `flex ${isNearMeRegion ? 'h-fit' : 'h-[24rem] sm:h-[25rem]'} w-[17rem] shrink-0 snap-start sm:w-[20rem]`)}>
                   {renderBeachDecisionCard(beach as BeachCardContext, {
                     score,
                     context,
@@ -3903,7 +3903,7 @@ export const BeachSearcherHome: React.FC<BeachSearcherHomeProps> = ({
                 className="beach-card-carousel no-scrollbar flex cursor-grab snap-x snap-mandatory items-stretch gap-6 overflow-x-auto overscroll-x-contain pb-3 select-none active:cursor-grabbing data-[dragging=true]:cursor-grabbing data-[dragging=true]:snap-none sm:pb-5 lg:snap-none"
               >
                 {directoryDisplayBeachCards.map(beach => (
-                  <div key={beach.id} data-directory-beach-id={beach.id} {...beachCardHoverProps(beach.id)} className={getMapLinkedCardClassName(beach.id, 'flex h-[24rem] w-[17rem] shrink-0 snap-start sm:h-[25rem] sm:w-[20rem]')}>
+                  <div key={beach.id} data-directory-beach-id={beach.id} {...beachCardHoverProps(beach.id)} className={getMapLinkedCardClassName(beach.id, `flex ${isNearMeRegion ? 'h-fit' : 'h-[24rem] sm:h-[25rem]'} w-[17rem] shrink-0 snap-start sm:w-[20rem]`)}>
                     {renderBeachDecisionCard(beach, { alignExposureToMap: true, windExposureMode: 'simple' })}
                   </div>
                 ))}
@@ -4010,7 +4010,7 @@ export const BeachSearcherHome: React.FC<BeachSearcherHomeProps> = ({
                       className="beach-card-carousel no-scrollbar flex cursor-grab snap-x snap-mandatory items-stretch gap-6 overflow-x-auto overscroll-x-contain pb-3 select-none active:cursor-grabbing data-[dragging=true]:cursor-grabbing data-[dragging=true]:snap-none sm:pb-5 lg:snap-none"
                     >
                       {directoryDisplayBeachCards.map(beach => (
-                        <div key={beach.id} data-directory-beach-id={beach.id} {...beachCardHoverProps(beach.id)} className={getMapLinkedCardClassName(beach.id, 'flex h-[24rem] w-[17rem] shrink-0 snap-start sm:h-[25rem] sm:w-[20rem]')}>
+                        <div key={beach.id} data-directory-beach-id={beach.id} {...beachCardHoverProps(beach.id)} className={getMapLinkedCardClassName(beach.id, `flex ${isNearMeRegion ? 'h-fit' : 'h-[24rem] sm:h-[25rem]'} w-[17rem] shrink-0 snap-start sm:w-[20rem]`)}>
                           {renderBeachDecisionCard(beach, { alignExposureToMap: !isDirectorySuitableView, windExposureMode: 'simple' })}
                         </div>
                       ))}

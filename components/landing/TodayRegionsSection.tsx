@@ -107,13 +107,13 @@ export const TodayRegionsSection: React.FC<TodayRegionsSectionProps> = ({
               key={island.id}
               href={buildBeachRegionPath(island, language)}
               onClick={event => handleClick(event, island)}
-              className="group relative flex min-h-[3.25rem] items-center gap-0.5 overflow-hidden rounded-2xl border border-white/70 bg-white/70 pl-3.5 pr-1.5 shadow-sm shadow-sky-900/5 ring-1 ring-white/50 backdrop-blur-sm transition-all duration-200 hover:-translate-y-0.5 hover:border-cyan-200 hover:bg-white hover:shadow-md hover:shadow-sky-900/10 focus:outline-none focus-visible:ring-2 focus-visible:ring-cyan-700 motion-reduce:hover:translate-y-0 sm:gap-2 sm:pl-4 sm:pr-2"
+              className="group relative flex min-h-[3.25rem] items-center gap-0.5 overflow-hidden rounded-2xl border border-white/70 bg-white/70 px-3.5 py-2 shadow-sm shadow-sky-900/5 ring-1 ring-white/50 backdrop-blur-sm transition-all duration-200 hover:-translate-y-0.5 hover:border-cyan-200 hover:bg-white hover:shadow-md hover:shadow-sky-900/10 focus:outline-none focus-visible:ring-2 focus-visible:ring-cyan-700 motion-reduce:hover:translate-y-0 sm:gap-2 sm:px-4"
             >
               <span
                 aria-hidden="true"
                 className="absolute inset-y-0 left-0 w-0.5 origin-top scale-y-0 bg-[#007a83] transition-transform duration-200 group-hover:scale-y-100"
               />
-              <span className="min-w-0 flex-1 truncate text-sm font-bold leading-tight tracking-tight text-slate-800 transition-colors group-hover:text-[#007a83]">
+              <span className="min-w-0 flex-1 whitespace-normal break-words text-sm font-bold leading-snug tracking-tight text-slate-800 transition-colors group-hover:text-[#007a83]">
                 {name}
               </span>
               {/* The place's own coastline, drawn from our geometry. Kept faint so

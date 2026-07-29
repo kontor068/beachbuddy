@@ -100,7 +100,7 @@ export const LandingView: React.FC<LandingViewProps> = ({
       {/* Real <a href> navigation carrying today's live wind — the landing's only
           crawlable links, and the only path for visitors who will neither type
           nor share their location. */}
-      <div className="mt-10 sm:mt-14">
+      <div className="mt-5 sm:mt-14">
         <TodayRegionsSection
           language={language}
           allIslands={allIslands}

@@ -146,7 +146,7 @@ export const landingCopy: Record<LanguageCode, LandingCopy> = {
       title: 'Πού πάει ο κόσμος',
       // Not "από το Ιόνιο ως τα Δωδεκάνησα" — the sample also covers Crete, which
       // is south of both, plus three mainland regions.
-      subtitle: 'Οι περιοχές που ψάχνει περισσότερο ο κόσμος. Πάτα μία για να δεις τις παραλίες της μία-μία, με τον σημερινό άνεμο σε κάθε ακτή.',
+      subtitle: 'Μερικές από τις περιοχές που αναζητά περισσότερο ο κόσμος. Διάλεξε μία για να δεις όλες τις παραλίες και τις σημερινές συνθήκες.',
       // «Εκτίμηση ανοιχτής θάλασσας» is a caption on a chart, not a sentence.
       cta: 'Βρες προστατευμένη παραλία κοντά σου',
       ctaPending: 'Ψάχνουμε πού είσαι…',
@@ -267,7 +267,7 @@ export const landingCopy: Record<LanguageCode, LandingCopy> = {
     },
     today: {
       title: 'Where people go',
-      subtitle: 'The regions people search for most. Tap one to see its beaches one by one, with today’s wind on each shore.',
+      subtitle: 'Some of the regions people search for most. Choose one to see all its beaches and today’s conditions.',
       cta: 'Find a sheltered beach near you',
       ctaPending: 'Finding you…',
       allRegions: 'or see all regions',
@@ -344,7 +344,7 @@ export const landingCopy: Record<LanguageCode, LandingCopy> = {
     },
     today: {
       title: 'Wohin die Leute fahren',
-      subtitle: 'Die Regionen, nach denen am meisten gesucht wird. Tippe auf eine, um sie Strand für Strand zu sehen — mit dem heutigen Wind an jeder Küste.',
+      subtitle: 'Einige der meistgesuchten Regionen. Wähle eine aus, um alle Strände und die heutigen Bedingungen zu sehen.',
       cta: 'Finde einen geschützten Strand in deiner Nähe',
       // Never "Ich" in a German UI, and never a first-person singular anywhere on
       // a page that speaks as "wir".
@@ -424,7 +424,7 @@ export const landingCopy: Record<LanguageCode, LandingCopy> = {
     },
     today: {
       title: 'Où vont les gens',
-      subtitle: 'Les régions les plus recherchées. Touchez-en une pour la voir plage par plage, avec le vent du jour sur chaque côte.',
+      subtitle: 'Quelques-unes des régions les plus recherchées. Choisissez-en une pour voir toutes ses plages et les conditions du jour.',
       cta: 'Trouver une plage abritée près de vous',
       ctaPending: 'Localisation en cours…',
       allRegions: 'ou voir toutes les régions',
@@ -502,7 +502,7 @@ export const landingCopy: Record<LanguageCode, LandingCopy> = {
     },
     today: {
       title: 'Dove va la gente',
-      subtitle: 'Le regioni più cercate. Toccane una per vederla spiaggia per spiaggia, con il vento di oggi su ogni costa.',
+      subtitle: 'Alcune delle regioni più cercate. Scegline una per vedere tutte le spiagge e le condizioni di oggi.',
       // Italian has its own official sea-state ladder (calmo / poco mosso / mosso
       // / molto mosso / agitato) — use it rather than translating the English.
       cta: 'Trova una spiaggia riparata vicino a te',

@@ -1411,9 +1411,9 @@ export const BeachCard: React.FC<BeachCardProps> = ({
     icon: <Footprints className="h-3.5 w-3.5 shrink-0" />,
   };
   const featureChips = [accessFeatureChip, ...(stableFeatureSlots.filter(Boolean) as CompactFeatureChip[])].slice(0, 6);
-  const featureChipBase = `grid min-h-8 sm:min-h-7 w-full min-w-0 grid-cols-[1rem_minmax(0,1fr)] items-center gap-1.5 overflow-hidden rounded-full border border-sky-100/70 bg-white/68 px-2 py-1 text-xs font-semibold leading-tight text-slate-600 dark:border-slate-800 dark:bg-slate-900 dark:text-slate-300`;
+  const featureChipBase = `grid min-h-8 sm:min-h-7 w-full min-w-0 grid-cols-[1rem_minmax(0,1fr)] items-center gap-1.5 rounded-full border border-sky-100/70 bg-white/68 px-2 py-1 text-xs font-semibold leading-tight text-slate-600 dark:border-slate-800 dark:bg-slate-900 dark:text-slate-300`;
   const featureChipIconClass = 'flex h-4 w-4 shrink-0 items-center justify-center justify-self-center';
-  const featureChipLabelClass = 'min-w-0 truncate text-left leading-tight';
+  const featureChipLabelClass = 'min-w-0 whitespace-normal break-words text-left leading-tight';
   const showMobileProtectionChip = forceHideWindChip
     ? false
     : simpleWindChipOnly
@@ -1548,7 +1548,7 @@ export const BeachCard: React.FC<BeachCardProps> = ({
             {/* Fixed mobile slot mirrors the desktop feature set, including a third row
                 when the beach has 5-6 compact chips. */}
             {featureChips.length > 0 ? (
-              <div className="grid h-[6.75rem] min-w-0 grid-cols-2 auto-rows-min content-start gap-1.5 overflow-hidden">
+              <div className="grid min-h-[6.75rem] min-w-0 grid-cols-2 auto-rows-min content-start gap-1.5">
                 {featureChips.map(chip => (
                   <span key={chip.key} className={featureChipBase}>
                     <span className={featureChipIconClass}>{chip.icon}</span>
@@ -1692,7 +1692,7 @@ export const BeachCard: React.FC<BeachCardProps> = ({
           )}
 
           {featureChips.length > 0 && (
-            <div className="hidden h-[5.875rem] grid-cols-2 auto-rows-min content-start gap-1.5 sm:grid">
+            <div className="hidden min-h-[5.875rem] grid-cols-2 auto-rows-min content-start gap-1.5 sm:grid">
               {featureChips.map(chip => (
                 <span key={chip.key} className={featureChipBase}>
                   <span className={featureChipIconClass}>{chip.icon}</span>
