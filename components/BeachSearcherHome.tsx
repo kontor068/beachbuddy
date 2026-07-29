@@ -138,7 +138,6 @@ interface BeachSearcherHomeProps {
   protectedSortLabel?: string;
   currentBeaufort?: number;
   mapForecastTimeLabel?: string;
-  islandBackground?: string;
   mapDayStrip?: React.ReactNode;
   mapPreview?: React.ReactNode;
   topRecommendationCards?: SuitableBeach[];
@@ -1590,7 +1589,6 @@ export const BeachSearcherHome: React.FC<BeachSearcherHomeProps> = ({
   protectedSortLabel,
   currentBeaufort,
   mapForecastTimeLabel,
-  islandBackground,
   mapDayStrip,
   mapPreview,
   topRecommendationCards,
@@ -1668,7 +1666,6 @@ export const BeachSearcherHome: React.FC<BeachSearcherHomeProps> = ({
   const [isSearchSuggestionsOpen, setIsSearchSuggestionsOpen] = useState(false);
   const [activeSearchSuggestionIndex, setActiveSearchSuggestionIndex] = useState(-1);
   const activePlaceName = selectedIsland?.name[language] || copy.greece;
-  const heroBackground = getImageSet(islandBackground);
   const regionBeaches = selectedIsland?.beaches || [];
   // Info-only regions (e.g. Milos): show a plain browsable beach list, but no
   // today-recommendation ranking (podium carousel / top-choice hero / rank medals).
@@ -2690,20 +2687,17 @@ export const BeachSearcherHome: React.FC<BeachSearcherHomeProps> = ({
   // also fills the otherwise-empty space at the bottom of the card.
   const inlineForecastInSidebar = isWeatherPanelMode || !isMobileViewport;
 
-  // Pilot island "context strip": a slim hero band above the map that adds sense of
-  // place + a live data hook without stealing above-the-fold space from the map and
-  // results. Gated to CONTEXT_STRIP_PILOT_ISLAND_IDS and to islands that actually have
-  // a curated hero photo.
-  const islandStripPhoto = selectedIsland
-    ? getIslandStripPhoto(selectedIsland.id)
-    : undefined;
-  const showIslandContextStrip = Boolean(selectedIsland && islandStripPhoto);
-  // Follow the selected day (today/tomorrow/…) instead of hardcoding "today", since the
-  // beach count reflects the selected day's conditions, not necessarily today's.
-  const contextStripDayPrefix = getSelectedDayPrefix(selectedDate, athensNow(), language);
+  // Region title (replaced the photo hero band, 29/07). The photo was decoration that never
+  // earned its place: it showed one beach captioned with the island's name, it cost a licence
+  // credit on every region, and in 83 of 108 regions nobody had verified it was even the right
+  // place. What the visitor actually needs on landing from Google is one word — where am I.
+  // That belongs above the search box, as the page title, in our own type.
   // Breadcrumb-style eyebrow: region (e.g. "Κυκλάδες") is more useful than a generic
   // country label; fall back to country when the group has no mapping.
   const contextStripEyebrow = getIslandGroupLabel(selectedIsland?.group, language) ?? copy.greece;
+  // Follow the selected day (today/tomorrow/…) instead of hardcoding "today", since the
+  // beach count reflects the selected day's conditions, not necessarily today's.
+  const contextStripDayPrefix = getSelectedDayPrefix(selectedDate, athensNow(), language);
   // Hour-by-hour wind for the selected day, so the summary can flag an intra-day
   // shift (calm→windy or a veering wind that flips the sheltered coast) instead
   // of freezing on one snapshot. getHours() returns the Greek wall-clock hour
@@ -2775,54 +2769,29 @@ export const BeachSearcherHome: React.FC<BeachSearcherHomeProps> = ({
             : { en: 'less-than-ideal conditions', gr: 'όχι ιδανικές συνθήκες', de: 'nicht ideale Bedingungen', it: 'condizioni non ideali', fr: 'conditions pas idéales' };
     return `${name} · ${getLocalizedCopy(language, condition)} ${contextStripDayPrefix}`;
   })();
-  const islandContextStrip = showIslandContextStrip && islandStripPhoto && selectedIsland ? (
-    <div className="relative mb-1.5 overflow-hidden rounded-[1.35rem] border border-sky-100/80 shadow-sm shadow-sky-900/10 ring-1 ring-white/45 sm:mb-4">
-      <img
-        src={islandStripPhoto.src}
-        alt={islandStripPhoto.alt}
-        width={islandStripPhoto.width}
-        height={islandStripPhoto.height}
-        loading="eager"
-        decoding="async"
-        fetchPriority="high"
-        className="absolute inset-0 h-full w-full object-cover object-center"
-        style={islandStripPhoto.objectPosition ? { objectPosition: islandStripPhoto.objectPosition } : undefined}
-      />
-      <div
-        className="absolute inset-0 bg-gradient-to-r from-slate-950/75 via-slate-950/45 to-slate-900/10"
-        aria-hidden="true"
-      />
-      <div className="relative flex min-h-[5.75rem] flex-col justify-end px-4 py-3 sm:min-h-[6.5rem] sm:px-5 sm:py-4">
-        <div className="min-w-0">
-          <p className="flex items-center gap-1.5 text-[0.7rem] font-bold uppercase tracking-[0.12em] text-white/85">
-            <MapPin className="h-3.5 w-3.5" aria-hidden="true" />
-            {contextStripEyebrow}
-          </p>
-          <h2 className="mt-0.5 text-2xl font-extrabold leading-tight text-white drop-shadow-sm sm:text-[1.7rem]">
-            {selectedIsland.name[language]}
-          </h2>
-          {searchedBeachStripText && (
-            <p className="mt-0.5 truncate text-sm font-semibold text-white/90">
-              {searchedBeachStripText}
-            </p>
-          )}
-        </div>
-      </div>
-      {islandStripPhoto.attributionRequired && (
-        <span className="absolute bottom-1.5 right-2.5 text-[0.6rem] font-medium leading-none text-white/70">
-          {islandStripPhoto.sourceUrl ? (
-            <a
-              href={islandStripPhoto.sourceUrl}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="transition-colors hover:text-white"
-            >
-              {[islandStripPhoto.author, islandStripPhoto.license].filter(Boolean).join(' / ')}
-            </a>
-          ) : (
-            [islandStripPhoto.author, islandStripPhoto.license].filter(Boolean).join(' / ')
-          )}
-        </span>
+  // Where am I — the page title, in our own type, above the search box.
+  //
+  // This replaced a full-width photo band (29/07). Losing the photo loses nothing we were
+  // entitled to: it was a licensed third-party image, credited in the corner, showing one
+  // beach under the island's name, and in most regions unverified as even the right place.
+  // Losing it gains the two things that band was costing — vertical space above the fold on
+  // a 390px phone, and a first paint that does not wait on an image decode.
+  //
+  // <h1> deliberately: on a region page the region IS the page. The landing value-prop above
+  // the search box steps down to a <p> so there is exactly one.
+  const regionTitleBlock = selectedIsland ? (
+    <div className="mb-3 px-1 text-center sm:mb-4">
+      <p className="flex items-center justify-center gap-1.5 text-[0.66rem] font-bold uppercase tracking-[0.18em] text-slate-500">
+        <MapPin className="h-3 w-3 shrink-0 text-[#007a83]/70" aria-hidden="true" />
+        <span className="min-w-0 truncate">{contextStripEyebrow}</span>
+      </p>
+      <h1 className="mt-0.5 font-heading text-[2rem] font-extrabold leading-[1.05] tracking-tight text-[#007a83] sm:text-[2.6rem]">
+        {selectedIsland.name[language]}
+      </h1>
+      {searchedBeachStripText && (
+        <p className="mx-auto mt-1.5 max-w-md truncate text-sm font-semibold text-slate-600">
+          {searchedBeachStripText}
+        </p>
       )}
     </div>
   ) : null;
@@ -3284,16 +3253,13 @@ export const BeachSearcherHome: React.FC<BeachSearcherHomeProps> = ({
 
   return (
     <section className="relative isolate bg-sky-50 text-slate-950" aria-label={copy.beachSearchAria} data-nosnippet="true">
-      <div
-        className="pointer-events-none fixed inset-0 -z-10 bg-sky-100 bg-cover bg-center"
-        style={heroBackground ? { backgroundImage: heroBackground } : undefined}
-        aria-hidden="true"
-      >
-        <div className="absolute inset-0 bg-white/30" />
-        <div className="absolute inset-0 bg-gradient-to-r from-white/24 via-transparent to-white/12" />
-      </div>
+      {/* Plain brand-blue field. Was a full-bleed island photo behind two white scrims;
+          it only ever rendered for the 2 regions that had no hero strip, and the region
+          title now carries the sense of place on its own. */}
+      <div className="pointer-events-none fixed inset-0 -z-10 bg-sky-100" aria-hidden="true" />
 
       <div className="relative mx-auto max-w-[110rem] px-4 pb-1 pt-2 sm:px-5 sm:pb-2 sm:pt-6 lg:px-6">
+        {regionTitleBlock}
         <section className="relative z-[120] mx-auto w-full max-w-[110rem] overflow-visible rounded-[1.5rem] border border-white/60 bg-white/76 p-3 pb-1 shadow-xl shadow-slate-950/14 ring-1 ring-white/35 backdrop-blur-xl sm:p-4 sm:pb-2">
         {/* Value proposition: tells a first-time visitor in one glance that CalmBeach ranks
             beaches by today's conditions — not a directory. Shown once to genuine newcomers on
@@ -3301,9 +3267,11 @@ export const BeachSearcherHome: React.FC<BeachSearcherHomeProps> = ({
             returning users, so the decision surface stays clean. */}
         {showLandingValueProp && (
           <div className="mb-3 hidden border-b border-slate-200/70 pb-3 sm:mb-4 sm:block sm:pb-4">
-            <h1 className="text-xl font-extrabold leading-tight tracking-tight text-slate-950 sm:text-[1.7rem]">
+            {/* Was an <h1>; stepped down to <p> when the region title above the search box
+                became the page heading. Same look, one heading. */}
+            <p className="text-xl font-extrabold leading-tight tracking-tight text-slate-950 sm:text-[1.7rem]">
               {copy.hero.title}
-            </h1>
+            </p>
             <p className="mt-1.5 max-w-xl text-sm font-semibold leading-snug text-slate-600 sm:text-[15px]">
               {copy.hero.subtitle}
             </p>
@@ -3575,7 +3543,6 @@ export const BeachSearcherHome: React.FC<BeachSearcherHomeProps> = ({
             className="mt-4 border-t border-slate-200/80 pt-4"
             aria-label={copy.beachMapAria}
           >
-            {islandContextStrip}
             <div className="lg:grid lg:grid-cols-3 lg:items-stretch lg:gap-4">
               <div
                 id="map-section-desktop"
@@ -3705,7 +3672,6 @@ export const BeachSearcherHome: React.FC<BeachSearcherHomeProps> = ({
         <div className="mx-auto max-w-[110rem] px-4 pb-4 pt-0.5 sm:px-5 sm:pb-5 sm:pt-2 lg:px-6">
           {selectedIsland && mapPreview && isMobileViewport && (
             <>
-              {islandContextStrip}
               <section
                 id="map-section"
                 className="sticky top-2 z-30 mb-1.5 space-y-1.5 sm:mb-4 sm:space-y-2"

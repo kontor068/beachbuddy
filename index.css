@@ -490,29 +490,63 @@ body {
   }
 }
 
-/* "Reset view" home button next to the Leaflet zoom controls. Hidden until the
-   user has panned/zoomed far from the default view (see BeachMap HomeControl),
-   so it never sits there permanently. */
-.leaflet-control-home-wrap {
-  display: none;
-}
-.leaflet-control-home-wrap.leaflet-control-home--visible {
-  display: block;
-}
-/* Center the icon within the same square hit-area the +/- buttons use. */
-.leaflet-control-home {
-  display: flex !important;
+/* Satellite switch and "reset view" home button live inside Leaflet's own zoom bar
+   (see BeachMap attachToZoomBar), so they inherit its borders, radius and hover and
+   read as one control column rather than detached boxes. All they need here is the
+   icon centred in the same square hit-area the +/- buttons use. */
+/* `.leaflet-bar a` is a class+type selector, so every rule here has to out-specify
+   it — a bare `.leaflet-control-bar-button` silently loses and the button keeps
+   Leaflet's `display: block`. */
+.leaflet-bar a.leaflet-control-bar-button {
+  display: flex;
   align-items: center;
   justify-content: center;
 }
-.leaflet-control-home svg {
+.leaflet-control-bar-button svg {
   width: 16px;
   height: 16px;
 }
 @media (pointer: coarse) {
-  .leaflet-control-home svg {
+  .leaflet-control-bar-button svg {
     width: 22px;
     height: 22px;
+  }
+}
+
+/* The home button is hidden until the user has panned/zoomed far from the default
+   view, so it never sits there permanently. While hidden it is still the bar's
+   :last-child, so hand the rounded bottom edge to the button above it. */
+.leaflet-bar a.leaflet-control-home {
+  display: none;
+}
+.leaflet-bar.leaflet-control-home--visible a.leaflet-control-home {
+  display: flex;
+}
+.leaflet-control-zoom:not(.leaflet-control-home--visible).leaflet-control-has-basemap a.leaflet-control-basemap,
+.leaflet-control-zoom:not(.leaflet-control-home--visible):not(.leaflet-control-has-basemap) a.leaflet-control-zoom-out {
+  border-bottom: none;
+  border-bottom-left-radius: 4px;
+  border-bottom-right-radius: 4px;
+}
+/* Leaflet drops the bar's corner radius to 2px on touch builds — match it, or the
+   bottom corners stop lining up with the top ones. */
+.leaflet-touch .leaflet-control-zoom:not(.leaflet-control-home--visible).leaflet-control-has-basemap a.leaflet-control-basemap,
+.leaflet-touch .leaflet-control-zoom:not(.leaflet-control-home--visible):not(.leaflet-control-has-basemap) a.leaflet-control-zoom-out {
+  border-bottom-left-radius: 2px;
+  border-bottom-right-radius: 2px;
+}
+
+/* Aerial imagery tone. Esri's World Imagery renders open sea nearly black; the SVG filter
+   in components/BeachMap.tsx (AerialToneFilter) lifts dark tones per channel so the water
+   reads as sea rather than void, while the shoreline keeps its own colour. Applied to the
+   tile pane only — never to the markers, labels or the exposure ribbon drawn over it. */
+.leaflet-tile-pane .calmbeach-aerial {
+  filter: url(#calmbeach-aerial-tone);
+}
+/* Anyone who asked the OS for less colour gets the imagery untouched. */
+@media (prefers-contrast: more), (forced-colors: active) {
+  .leaflet-tile-pane .calmbeach-aerial {
+    filter: none;
   }
 }
 

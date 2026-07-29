@@ -63,6 +63,12 @@ reports/photo-coverage/qa-img/
 reports/photo-coverage/qa-focus/
 reports/visual-qa/
 reports/tmp-*/
+# Raw EMODnet bathymetry transects: 25 MB of third-party floats, 1.000 samples
+# per beach, re-fetchable by re-running scripts/auditWaterDepth.mjs (~25 min).
+# The findings live in the report JSON next to it, which IS tracked — the same
+# split as reports/terrain/, whose cache is only 131 KB and so was kept.
+reports/water-depth/emodnet-profile-cache.json
+reports/water-depth/run-national.log
 OUT.txt
 
 # Capacitor / native app store packaging

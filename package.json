@@ -20,6 +20,7 @@
     "audit:cyclades-map-evidence": "node scripts/auditCycladesMapEvidence.mjs",
     "audit:cyclades-google-places": "node scripts/auditCycladesGooglePlaces.mjs",
     "audit:place-resolution": "node scripts/auditPlaceResolution.mjs",
+    "audit:water-depth": "node scripts/auditWaterDepth.mjs",
     "audit:wind-profile-evidence": "node scripts/auditWindProfileEvidence.mjs",
     "validate:meltemi-matrix": "node scripts/validateMeltemiMatrix.mjs",
     "calibrate:feedback": "node scripts/calibrateFromFeedback.mjs",

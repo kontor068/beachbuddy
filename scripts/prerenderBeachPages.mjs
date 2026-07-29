@@ -1110,9 +1110,20 @@ const islandIntents = [
         title: categoryTitleFor('family', islandName, 'en', count),
         description: categoryMetaFor('family', islandName, count, 'en'),
         h1: `Family beaches in ${islandName}`,
-        intro: `Travelling with young children in ${islandName}? These ${count} family-friendly beaches tend to have shallower water and easier access. Check wind and waves in CalmBeach before you go.`,
+        // The intro used to assert that these beaches "tend to have shallower
+        // water" — a property, stated as known. It is not known. Measured on
+        // 29/07/2026 against EMODnet bathymetry (scripts/auditWaterDepth.mjs),
+        // our `waterDepth` label separates real seabeds with a common-language
+        // effect size of 0,607, where 0,500 is a coin flip. Real, but weak.
+        // So the copy now names the three criteria the list is actually built
+        // from — organised, not hard to reach, recorded as shallow — instead of
+        // promising the water. This is specificity, not hedging: no "we are not
+        // sure" badge, which the project has ruled out. Titles and meta keep the
+        // shallow-water phrasing, because that is the search intent and the page
+        // body is where the basis belongs.
+        intro: `Travelling with young children in ${islandName}? We picked these ${count} beaches because they are organised, not hard to reach, and recorded as shallow. How quickly the water deepens varies from beach to beach, so check wind and waves in CalmBeach before you go.`,
         sections: [
-          { heading: `Which beaches in ${islandName} are family-friendly?`, body: 'The beaches listed here are marked family-friendly, usually with shallower water and easier access. For small children, still check wind and waves before you go.' },
+          { heading: `Which beaches in ${islandName} are family-friendly?`, body: 'Every beach on this list meets three criteria: it is organised, it has no difficult access, and our data records its water as shallow. How fast the seabed drops away underfoot is not something any map can guarantee — for small children, pick a calm, sheltered day as well.' },
           { heading: 'How do I compare sea conditions?', body: 'CalmBeach checks wind, waves and exposure, so you can compare less exposed beaches and more comfortable visiting times.' },
         ],
       },
@@ -1120,9 +1131,9 @@ const islandIntents = [
         title: categoryTitleFor('family', islandName, 'gr', count),
         description: categoryMetaFor('family', islandName, count, 'gr'),
         h1: `Παραλίες για παιδιά — ${islandName}`,
-        intro: `Ταξιδεύεις με μικρά παιδιά; Αυτές οι ${count} οικογενειακές παραλίες εδώ (${islandName}) έχουν συνήθως ρηχά νερά και ευκολότερη πρόσβαση. Δες άνεμο και κύμα στο CalmBeach πριν πας.`,
+        intro: `Ταξιδεύεις με μικρά παιδιά; Διαλέξαμε αυτές τις ${count} παραλίες (${islandName}) επειδή είναι οργανωμένες, χωρίς δύσκολη πρόσβαση, και στα δεδομένα μας καταγράφονται ως ρηχές. Το πόσο γρήγορα βαθαίνει το νερό αλλάζει από παραλία σε παραλία — δες άνεμο και κύμα στο CalmBeach πριν πας.`,
         sections: [
-          { heading: `${islandName}: ποιες παραλίες είναι καλές για οικογένειες;`, body: 'Οι παραλίες της λίστας είναι σημειωμένες ως οικογενειακές, συνήθως με ρηχότερα νερά και ευκολότερη πρόσβαση. Για μικρά παιδιά, διάλεξε πιο ήρεμη και υπήνεμη μέρα.' },
+          { heading: `${islandName}: ποιες παραλίες είναι καλές για οικογένειες;`, body: 'Κάθε παραλία της λίστας πληροί τρία κριτήρια: είναι οργανωμένη, δεν έχει δύσκολη πρόσβαση, και στα δεδομένα μας καταγράφεται ως ρηχή. Το πόσο απότομα βαθαίνει ο βυθός δεν το εγγυάται κανένας χάρτης — για μικρά παιδιά, διάλεξε και ήρεμη, υπήνεμη μέρα.' },
           { heading: 'Πώς ξέρω ότι η θάλασσα θα είναι αρκετά ήρεμη;', body: 'Το CalmBeach ελέγχει άνεμο, κύμα και έκθεση για τη μέρα, ώστε να διαλέξεις πιο υπήνεμη παραλία ή πιο ήρεμη ώρα.' },
         ],
       },
@@ -1130,9 +1141,9 @@ const islandIntents = [
         title: `Familienfreundliche Strände auf ${islandName} | CalmBeach`,
         description: `Familienfreundliche Strände auf ${islandName} mit flacherem Wasser und einfacherem Zugang. Prüfe Wind und Wellen, bevor du losfährst.`,
         h1: `Familienstrände auf ${islandName}`,
-        intro: `Unterwegs mit kleinen Kindern auf ${islandName}? Diese ${count} familienfreundlichen Strände haben meist flacheres Wasser und einfacheren Zugang. Prüfe Wind und Wellen in CalmBeach, bevor du losfährst.`,
+        intro: `Unterwegs mit kleinen Kindern auf ${islandName}? Wir haben diese ${count} Strände ausgewählt, weil sie organisiert und gut erreichbar sind und in unseren Daten als flach verzeichnet stehen. Wie schnell das Wasser tiefer wird, ist von Strand zu Strand verschieden — prüfe Wind und Wellen in CalmBeach, bevor du losfährst.`,
         sections: [
-          { heading: `Welche Strände auf ${islandName} sind familienfreundlich?`, body: 'Die hier gelisteten Strände sind als familienfreundlich markiert, meist mit flacherem Wasser und einfacherem Zugang. Prüfe für kleine Kinder trotzdem Wind und Wellen.' },
+          { heading: `Welche Strände auf ${islandName} sind familienfreundlich?`, body: 'Jeder Strand dieser Liste erfüllt drei Kriterien: organisiert, ohne schwierigen Zugang, und in unseren Daten als flaches Wasser verzeichnet. Wie steil der Grund abfällt, kann keine Karte garantieren — wähle für kleine Kinder zusätzlich einen ruhigen, windgeschützten Tag.' },
           { heading: 'Wie vergleiche ich die Meeresbedingungen?', body: 'CalmBeach prüft Wind, Wellen und Lage, sodass du weniger exponierte Strände und angenehmere Besuchszeiten vergleichen kannst.' },
         ],
       },
@@ -1140,9 +1151,9 @@ const islandIntents = [
         title: `Plages familiales à ${islandName} à l'eau peu profonde | CalmBeach`,
         description: `Plages adaptées aux familles à ${islandName}, avec eau généralement peu profonde et accès plus facile. Vérifiez le vent et les vagues avant d'y aller.`,
         h1: `Plages familiales à ${islandName}`,
-        intro: `Vous voyagez avec de jeunes enfants à ${islandName} ? Ces ${count} plages familiales ont généralement une eau peu profonde et un accès plus facile. Vérifiez le vent et les vagues dans CalmBeach avant d'y aller.`,
+        intro: `Vous voyagez avec de jeunes enfants à ${islandName} ? Nous avons retenu ces ${count} plages parce qu'elles sont aménagées, faciles d'accès, et enregistrées comme peu profondes dans nos données. La vitesse à laquelle l'eau devient profonde varie d'une plage à l'autre — vérifiez le vent et les vagues dans CalmBeach avant d'y aller.`,
         sections: [
-          { heading: `Quelles plages de ${islandName} conviennent aux familles ?`, body: "Les plages listées ici sont marquées comme familiales, généralement avec une eau moins profonde et un accès plus facile. Pour les jeunes enfants, vérifiez quand même le vent et les vagues." },
+          { heading: `Quelles plages de ${islandName} conviennent aux familles ?`, body: "Chaque plage de cette liste remplit trois critères : elle est aménagée, son accès n'est pas difficile, et nos données l'enregistrent comme peu profonde. Aucune carte ne peut garantir la pente du fond — pour les jeunes enfants, choisissez aussi une journée calme et abritée." },
           { heading: 'Comment comparer les conditions de mer ?', body: "CalmBeach vérifie le vent, les vagues et l'exposition pour comparer les plages moins exposées et les moments plus confortables." },
         ],
       },
@@ -1150,9 +1161,9 @@ const islandIntents = [
         title: `Spiagge per famiglie a ${islandName} con acqua bassa | CalmBeach`,
         description: `Spiagge adatte alle famiglie a ${islandName}, con acqua bassa e accesso più facile. Controlla vento e onde prima di andare.`,
         h1: `Spiagge per famiglie a ${islandName}`,
-        intro: `Viaggi con bambini piccoli a ${islandName}? Queste ${count} spiagge per famiglie hanno di solito acqua bassa e un accesso più facile. Controlla vento e onde in CalmBeach prima di andare.`,
+        intro: `Viaggi con bambini piccoli a ${islandName}? Abbiamo scelto queste ${count} spiagge perché sono attrezzate, facili da raggiungere e registrate come basse nei nostri dati. Quanto rapidamente l'acqua diventa profonda cambia da spiaggia a spiaggia — controlla vento e onde in CalmBeach prima di andare.`,
         sections: [
-          { heading: `Quali spiagge di ${islandName} sono adatte alle famiglie?`, body: 'Le spiagge elencate qui sono indicate come adatte alle famiglie, di solito con acqua più bassa e accesso più facile. Per i bambini piccoli, controlla comunque vento e onde.' },
+          { heading: `Quali spiagge di ${islandName} sono adatte alle famiglie?`, body: 'Ogni spiaggia di questo elenco soddisfa tre criteri: è attrezzata, non ha accesso difficile, e nei nostri dati risulta con acqua bassa. Nessuna mappa può garantire quanto ripido sia il fondale — per i bambini piccoli scegli anche una giornata calma e riparata.' },
           { heading: 'Come confronto le condizioni del mare?', body: 'CalmBeach controlla vento, onde ed esposizione, così puoi confrontare spiagge meno esposte e orari più comodi.' },
         ],
       },

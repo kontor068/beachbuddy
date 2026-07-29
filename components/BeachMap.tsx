@@ -48,6 +48,16 @@ interface BeachMapProps {
   selectedDate?: Date;
   compact?: boolean;
   preview?: boolean;
+  /**
+   * Whether to offer the street/satellite switch.
+   *
+   * Defaults to `!preview`, which was the only rule until 29/07 — and it hid the switch on
+   * the one map that most needs it. The region map is flagged `preview` (it is embedded, not
+   * a route) yet it is the big map a visitor actually reads, so the aerial view never
+   * appeared there. Now the caller says so outright instead of it being inferred from a flag
+   * that means something else.
+   */
+  showBasemapToggle?: boolean;
   enableScrollWheelZoom?: boolean;
   isExposureLoading?: boolean;
   topBeachId?: number;
@@ -433,20 +443,57 @@ const RecenterMap = ({ center, zoom }: { center: [number, number]; zoom: number 
   return null;
 };
 
+// Extra buttons live *inside* Leaflet's own zoom bar rather than as separate
+// controls, so +/- and everything below them read as one rounded column instead
+// of a stack of detached boxes. Leaflet's `.leaflet-bar` styling (borders, radius,
+// hover, the 44px touch target we set in index.css) then applies for free.
+const attachToZoomBar = (
+  map: L.Map,
+  build: (bar: HTMLElement) => () => void,
+): (() => void) => {
+  let frame = 0;
+  let attempts = 0;
+  let detach: (() => void) | null = null;
+
+  const attach = () => {
+    const bar = map.getContainer().querySelector<HTMLElement>('.leaflet-control-zoom');
+    if (!bar) {
+      // The zoom control mounts in its own effect; retry for a few frames in case
+      // ours ran first, then give up quietly rather than throwing.
+      if (attempts++ < 30) frame = requestAnimationFrame(attach);
+      return;
+    }
+    detach = build(bar);
+  };
+  attach();
+
+  return () => {
+    if (frame) cancelAnimationFrame(frame);
+    detach?.();
+  };
+};
+
+const makeBarButton = (className: string, title: string, iconSvg: string): HTMLAnchorElement => {
+  const link = L.DomUtil.create('a', `leaflet-control-bar-button ${className}`) as HTMLAnchorElement;
+  link.href = '#';
+  link.title = title;
+  link.setAttribute('role', 'button');
+  link.setAttribute('aria-label', title);
+  link.innerHTML = iconSvg;
+  return link;
+};
+
 // Small "home" button that snaps the map back to its default center/zoom for the
-// place after the user has panned or zoomed far away. Sits next to the +/- zoom
-// buttons as a native Leaflet control so it shares their styling and stacking.
+// place after the user has panned or zoomed far away.
 const HOME_ICON_SVG = '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>';
 
 const HomeControl = ({
   center,
   zoom,
-  position,
   title,
 }: {
   center: [number, number];
   zoom: number;
-  position: L.ControlPosition;
   title: string;
 }) => {
   const map = useMap();
@@ -455,52 +502,154 @@ const HomeControl = ({
   targetRef.current = { center, zoom };
 
   useEffect(() => {
-    let container: HTMLDivElement | null = null;
+    return attachToZoomBar(map, (bar) => {
+      const link = makeBarButton('leaflet-control-home', title, HOME_ICON_SVG);
+      bar.appendChild(link);
 
-    // Only worth offering the button once the user has strayed far enough that the
-    // home point (their location, or the region default) has scrolled off the
-    // viewport. A small negative pad means it appears just before the point fully
-    // leaves the screen. Kept pan-based so it never shows just from the zoom level.
-    const isFarFromHome = () => {
-      const { center: home } = targetRef.current;
-      const homePoint = L.latLng(home[0], home[1]);
-      return !map.getBounds().pad(-0.15).contains(homePoint);
-    };
+      // Only worth offering the button once the user has strayed far enough that the
+      // home point (their location, or the region default) has scrolled off the
+      // viewport. A small negative pad means it appears just before the point fully
+      // leaves the screen. Kept pan-based so it never shows just from the zoom level.
+      const isFarFromHome = () => {
+        const { center: home } = targetRef.current;
+        const homePoint = L.latLng(home[0], home[1]);
+        return !map.getBounds().pad(-0.15).contains(homePoint);
+      };
 
-    const updateVisibility = () => {
-      if (!container) return;
-      container.classList.toggle('leaflet-control-home--visible', isFarFromHome());
-    };
+      const updateVisibility = () => {
+        // The class sits on the shared bar so the button above the home button can
+        // take over the rounded bottom corner while it is hidden.
+        bar.classList.toggle('leaflet-control-home--visible', isFarFromHome());
+      };
 
-    const HomeControlClass = L.Control.extend({
-      onAdd() {
-        container = L.DomUtil.create('div', 'leaflet-bar leaflet-control leaflet-control-home-wrap') as HTMLDivElement;
-        const link = L.DomUtil.create('a', 'leaflet-control-home', container) as HTMLAnchorElement;
-        link.href = '#';
-        link.title = title;
-        link.setAttribute('role', 'button');
-        link.setAttribute('aria-label', title);
-        link.innerHTML = HOME_ICON_SVG;
-        L.DomEvent.disableClickPropagation(container);
-        L.DomEvent.on(link, 'click', (event: Event) => {
-          L.DomEvent.preventDefault(event);
-          L.DomEvent.stopPropagation(event);
-          const { center: resetCenter, zoom: resetZoom } = targetRef.current;
-          map.setView(resetCenter, resetZoom, { animate: true });
-        });
-        updateVisibility();
-        return container;
-      },
+      L.DomEvent.on(link, 'click', (event: Event) => {
+        L.DomEvent.preventDefault(event);
+        L.DomEvent.stopPropagation(event);
+        const { center: resetCenter, zoom: resetZoom } = targetRef.current;
+        map.setView(resetCenter, resetZoom, { animate: true });
+      });
+      updateVisibility();
+      map.on('move zoom moveend zoomend', updateVisibility);
+
+      return () => {
+        map.off('move zoom moveend zoomend', updateVisibility);
+        bar.classList.remove('leaflet-control-home--visible');
+        link.remove();
+      };
     });
-    const control = new HomeControlClass({ position });
-    control.addTo(map);
-    map.on('move zoom moveend zoomend', updateVisibility);
-    return () => {
-      map.off('move zoom moveend zoomend', updateVisibility);
-      control.remove();
-      container = null;
-    };
-  }, [map, position, title]);
+  }, [map, title]);
+
+  return null;
+};
+
+// Satellite / plain-map switch, docked in the same bar as +/- and the home button.
+// Esri's World Imagery is used for the aerial view: no API key, no quota to manage
+// and no cost — the same "free, no backend" constraint the rest of the site runs on.
+// Its labels come as a separate transparent overlay, so place names stay readable
+// over the imagery instead of the map turning into an unlabelled photo.
+type BasemapId = 'map' | 'satellite';
+const BASEMAP_STORAGE_KEY = 'calmbeach.basemap';
+
+/**
+ * Lifts the aerial imagery's near-black deep water toward a natural sea blue.
+ *
+ * Esri's World Imagery renders open sea almost black — measured on the Corfu map at
+ * RGB(17,36,49). On a beach site that reads as "void" rather than "deep", and it is the one
+ * colour our visitors have an opinion about.
+ *
+ * Two passes, because one is not enough:
+ *
+ * 1. `feColorMatrix` separates water from land using the only property that reliably tells
+ *    them apart in aerial imagery — how far blue leads red. Sea has B far above R; sand,
+ *    rock and roofs have R at or above B. Feeding a negative red coefficient into the blue
+ *    and green rows therefore *amplifies* the sea and leaves land almost untouched, which a
+ *    brightness or gamma pass cannot do at any strength. Green borrows from blue too, so
+ *    shallow water lands on turquoise rather than navy.
+ * 2. Per-channel gamma (exponent < 1) then lifts what is still dark, hardest on blue and
+ *    barely at all on red, so the water opens up while the shoreline keeps its warmth.
+ *
+ * Tuned by measuring, not by eye: the water-blue pixels of the region map went
+ * RGB(17,36,49) → RGB(20,51,83) with gamma alone → the current values with both passes.
+ * If you retune, measure the same way rather than trusting a screenshot on one display.
+ *
+ * Rendered inside the map so `filter: url(#...)` resolves in the same document.
+ */
+const AERIAL_FILTER_ID = 'calmbeach-aerial-tone';
+
+const AerialToneFilter = () => (
+  <svg aria-hidden="true" focusable="false" width="0" height="0" style={{ position: 'absolute' }}>
+    <defs>
+      <filter id={AERIAL_FILTER_ID} colorInterpolationFilters="sRGB">
+        <feColorMatrix
+          type="matrix"
+          values="
+            1.00  0.00  0.00  0 0
+           -0.28  1.00  0.34  0 0
+           -0.50  0.00  1.58  0 0
+            0     0     0     1 0"
+        />
+        <feComponentTransfer>
+          <feFuncR type="gamma" exponent="0.92" />
+          <feFuncG type="gamma" exponent="0.74" />
+          <feFuncB type="gamma" exponent="0.60" />
+        </feComponentTransfer>
+      </filter>
+    </defs>
+  </svg>
+);
+const SATELLITE_TILE_URL = 'https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}';
+const SATELLITE_LABELS_URL = 'https://server.arcgisonline.com/ArcGIS/rest/services/Reference/World_Boundaries_and_Places/MapServer/tile/{z}/{y}/{x}';
+
+const SATELLITE_ICON_SVG = '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M3 12h18"/><path d="M12 3a15 15 0 0 1 0 18a15 15 0 0 1 0-18z"/></svg>';
+const MAP_ICON_SVG = '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14.5 4.5 9.5 2 3 4.8v16.4l6.5-2.8 5 2.5 6.5-2.8V1.7z"/><path d="M9.5 2v16.6"/><path d="M14.5 4.9V21.5"/></svg>';
+
+const BasemapControl = ({
+  basemap,
+  onToggle,
+  title,
+}: {
+  basemap: 'map' | 'satellite';
+  onToggle: () => void;
+  title: string;
+}) => {
+  const map = useMap();
+  const stateRef = useRef({ basemap, onToggle, title });
+  stateRef.current = { basemap, onToggle, title };
+
+  useEffect(() => {
+    return attachToZoomBar(map, (bar) => {
+      const initial = stateRef.current;
+      const link = makeBarButton(
+        'leaflet-control-basemap',
+        initial.title,
+        initial.basemap === 'satellite' ? MAP_ICON_SVG : SATELLITE_ICON_SVG,
+      );
+      link.dataset.basemapButton = 'true';
+      bar.appendChild(link);
+      // Marks which button owns the bar's rounded bottom edge while the home
+      // button is hidden — the small preview maps have no basemap button at all.
+      bar.classList.add('leaflet-control-has-basemap');
+      L.DomEvent.on(link, 'click', (event: Event) => {
+        L.DomEvent.preventDefault(event);
+        L.DomEvent.stopPropagation(event);
+        stateRef.current.onToggle();
+      });
+      return () => {
+        bar.classList.remove('leaflet-control-has-basemap');
+        link.remove();
+      };
+    });
+  }, [map]);
+
+  // Icon and label follow the *next* view the button switches to.
+  useEffect(() => {
+    const link = map.getContainer().querySelector<HTMLAnchorElement>('[data-basemap-button]');
+    if (!link) return;
+    link.innerHTML = basemap === 'satellite' ? MAP_ICON_SVG : SATELLITE_ICON_SVG;
+    link.title = title;
+    link.setAttribute('aria-label', title);
+    link.setAttribute('aria-pressed', basemap === 'satellite' ? 'true' : 'false');
+  }, [map, basemap, title]);
 
   return null;
 };
@@ -1478,6 +1627,7 @@ const BeachMap: React.FC<BeachMapProps> = ({
   selectedDate,
   compact = false,
   preview = false,
+  showBasemapToggle,
   enableScrollWheelZoom = false,
   isExposureLoading = false,
   topBeachId,
@@ -1498,6 +1648,17 @@ const BeachMap: React.FC<BeachMapProps> = ({
   // Camping layer: ON by default (per-island counts are small, so it's discoverable, not
   // cluttered); the bottom-left button hides the tent pins for a clean beach-finding map.
   const [showCamping, setShowCamping] = useState(true);
+  // Plain street map vs satellite imagery. Remembered across visits because it's a
+  // personal viewing preference, not part of the recommendation. Read lazily and
+  // defensively: this component is also rendered during the static prerender.
+  const [basemap, setBasemap] = useState<BasemapId>(() => {
+    if (typeof window === 'undefined') return 'map';
+    try {
+      return window.localStorage.getItem(BASEMAP_STORAGE_KEY) === 'satellite' ? 'satellite' : 'map';
+    } catch {
+      return 'map';
+    }
+  });
   const [selectedBeachId, setSelectedBeachId] = useState<number | null>(null);
   const [hoveredBeachId, setHoveredBeachId] = useState<number | null>(null);
   const [hoverPreviewPosition, setHoverPreviewPosition] = useState<HoverPreviewPosition | null>(null);
@@ -1736,6 +1897,8 @@ const BeachMap: React.FC<BeachMapProps> = ({
     youAreHere: { en: 'You are here', gr: 'Είστε εδώ', de: 'Sie sind hier', it: 'Sei qui', fr: 'Vous êtes ici' },
     resetView: { en: 'Reset view', gr: 'Επαναφορά θέασης', de: 'Ansicht zurücksetzen', it: 'Ripristina vista', fr: 'Réinitialiser la vue' },
     centerOnMe: { en: 'Center on my location', gr: 'Κέντραρε στη θέση μου', de: 'Auf meinen Standort zentrieren', it: 'Centra sulla mia posizione', fr: 'Centrer sur ma position' },
+    showSatelliteView: { en: 'Satellite view', gr: 'Δορυφορική προβολή', de: 'Satellitenansicht', it: 'Vista satellitare', fr: 'Vue satellite' },
+    showMapView: { en: 'Map view', gr: 'Προβολή χάρτη', de: 'Kartenansicht', it: 'Vista mappa', fr: 'Vue carte' },
     campingToggle: { en: 'Camping', gr: 'Camping', de: 'Camping', it: 'Campeggi', fr: 'Camping' },
     bestTime: { en: 'Best Time', gr: 'Καλύτερη ώρα', de: 'Beste Zeit', it: 'Ora migliore', fr: 'Meilleur moment' },
     view: { en: 'View', gr: 'Προβολή', de: 'Ansehen', it: 'Vedi', fr: 'Voir' },
@@ -1942,6 +2105,19 @@ const BeachMap: React.FC<BeachMapProps> = ({
   const homeCenter: [number, number] = userLocation ? [userLocation.lat, userLocation.lon] : center;
   const homeZoom = userLocation ? 13 : zoom;
   const homeTitle = (userLocation ? mapCopy.centerOnMe : mapCopy.resetView)[language];
+  const basemapTitle = (basemap === 'satellite' ? mapCopy.showMapView : mapCopy.showSatelliteView)[language];
+  const toggleBasemap = () => {
+    setBasemap((current) => {
+      const next: BasemapId = current === 'satellite' ? 'map' : 'satellite';
+      try {
+        window.localStorage.setItem(BASEMAP_STORAGE_KEY, next);
+      } catch {
+        // Private mode / storage disabled: the choice just doesn't persist.
+      }
+      trackEvent('map_basemap_toggle', undefined, { basemap: next });
+      return next;
+    });
+  };
 
   const viewportGuardrails = useMemo(() => {
     const fallbackCenter = { lat: center[0], lon: center[1] };
@@ -2572,25 +2748,36 @@ const BeachMap: React.FC<BeachMapProps> = ({
           className="w-full h-full z-0"
           style={{ height: '100%', width: '100%' }}
         >
-          {/* Zoom (+/-) with a "reset view" home button directly beneath it. Leaflet
-              stacks same-corner controls bottom-first at bottom corners and top-first
-              at top corners, so the add order is flipped per corner to keep the home
-              button under the zoom buttons in both. */}
-          {preview || compact ? (
+          {/* One control column: Leaflet's +/- bar, with the satellite switch and the
+              "reset view" home button appended into that same bar (see attachToZoomBar)
+              so they share its border and rounding instead of floating as loose boxes.
+              The home button is last because it only appears once you've panned away —
+              anything under it would jump. */}
+          <ZoomControl position={preview || compact ? 'topright' : 'bottomright'} />
+          {(showBasemapToggle ?? !preview) && (
+            <BasemapControl basemap={basemap} onToggle={toggleBasemap} title={basemapTitle} />
+          )}
+          <HomeControl center={homeCenter} zoom={homeZoom} title={homeTitle} />
+          {basemap === 'satellite' ? (
             <>
-              <ZoomControl position="topright" />
-              <HomeControl center={homeCenter} zoom={homeZoom} position="topright" title={homeTitle} />
+              <AerialToneFilter />
+              <TileLayer
+                key="satellite"
+                url={SATELLITE_TILE_URL}
+                className="calmbeach-aerial"
+                maxZoom={19}
+                zIndex={1}
+                eventHandlers={{ load: () => setTilesReady(true) }}
+              />
+              <TileLayer key="satellite-labels" url={SATELLITE_LABELS_URL} maxZoom={19} zIndex={2} />
             </>
           ) : (
-            <>
-              <HomeControl center={homeCenter} zoom={homeZoom} position="bottomright" title={homeTitle} />
-              <ZoomControl position="bottomright" />
-            </>
+            <TileLayer
+              key="street"
+              url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+              eventHandlers={{ load: () => setTilesReady(true) }}
+            />
           )}
-          <TileLayer
-            url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-            eventHandlers={{ load: () => setTilesReady(true) }}
-          />
 
           <MapAutoResize />
           <RecenterMap center={center} zoom={zoom} />
@@ -2734,14 +2921,25 @@ const BeachMap: React.FC<BeachMapProps> = ({
             Leaflet
           </a>
           <span> | © </span>
-          <a
-            href="https://www.openstreetmap.org/copyright"
-            target="_blank"
-            rel="noreferrer"
-            className="hover:underline"
-          >
-            OpenStreetMap contributors
-          </a>
+          {basemap === 'satellite' ? (
+            <a
+              href="https://www.esri.com/en-us/legal/terms/full-master-agreement"
+              target="_blank"
+              rel="noreferrer"
+              className="hover:underline"
+            >
+              Esri, Maxar, Earthstar Geographics
+            </a>
+          ) : (
+            <a
+              href="https://www.openstreetmap.org/copyright"
+              target="_blank"
+              rel="noreferrer"
+              className="hover:underline"
+            >
+              OpenStreetMap contributors
+            </a>
+          )}
         </div>
 
         {hoveredBeach && hoverPreviewPosition && (

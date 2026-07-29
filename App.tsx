@@ -63,7 +63,6 @@ import { scrollElementIntoView, scrollToPageTop } from './utils/scroll';
 import { getInitialLanguage, getLocalizedCopy, languageToLocale, saveLanguagePreference, type SupportedLanguage } from './utils/i18n';
 import { lazyWithChunkRecovery } from './utils/chunkLoadRecovery';
 import { buildBetaFeedbackUrl } from './utils/betaFeedback';
-import { islandHasContextStrip } from './utils/islandContextStrip';
 import { QUICK_PREFERENCE_FILTERS } from './utils/preferenceFilterLabels';
 import { canOpenNavigation, openNavigation } from './utils/navigation';
 import { displayBeachName, localizedBeachLabel } from './utils/localization';
@@ -4906,13 +4905,6 @@ export const App: React.FC = () => {
     );
   }
 
-  const selectedIslandKey = selectedIsland?.name.en?.toLowerCase().replace(/[^a-z]/g, '') || '';
-  // Islands that show the homepage context strip suppress the full-bleed island
-  // background so the same island photo is not rendered twice (strip + backdrop).
-  const islandBackground = islandHasContextStrip(selectedIsland?.id)
-    ? undefined
-    : ISLAND_BACKGROUND_IMAGES[selectedIslandKey];
-  const islandBackgroundCss = getBackgroundImageCss(islandBackground);
   const showHeaderForecast = Boolean(forecast?.[selectedDayIndex] && !isUnsafeWinter);
   const shouldRenderUsageInsights = ENABLE_USAGE_INSIGHTS && shouldLoadInsights;
   const shouldRenderMainShell = !showHeaderForecast
@@ -4954,15 +4946,6 @@ export const App: React.FC = () => {
     })
     : undefined;
   const showRecommendationPreviewSection = showStrongManageableSection || showNoIdealFallbackSection;
-  const showWindContextSummaryPanel = Boolean(
-    showHeaderForecast &&
-    forecast?.[selectedDayIndex] &&
-    !isUnsafeWinter &&
-    !showRecommendationPreviewSection &&
-    showDecisionRecommendations &&
-    !isRainBlockedBeachWindow &&
-    currentBeaufort >= MEANINGFUL_WIND_TOP_PICK_BEAUFORT
-  );
   const recommendationSectionBeaches = showNoIdealFallbackSection
     ? noIdealFallbackBeaches
     : showStrongManageableSection
@@ -6064,6 +6047,7 @@ export const App: React.FC = () => {
           compactPreviewHeightClassName="h-[13.5rem] sm:h-[26rem] lg:h-[32rem]"
           compact
           preview
+          showBasemapToggle
         />
       </Suspense>
     </MapLoadBoundary>
@@ -6072,8 +6056,7 @@ export const App: React.FC = () => {
   return (
     <div className="relative min-h-screen transition-colors duration-500">
       <div
-        className={`atmosphere ${islandBackgroundCss ? 'cyclades-atmosphere' : ''}`}
-        style={islandBackgroundCss ? ({ '--cyclades-bg': islandBackgroundCss } as React.CSSProperties) : undefined}
+        className="atmosphere"
       />
 
       {activeWeatherFixtureScenario && (
@@ -6134,7 +6117,6 @@ export const App: React.FC = () => {
               protectedSortLabel={protectedSortLabel}
               currentBeaufort={currentBeaufort}
               mapForecastTimeLabel={mapForecastTimeLabel}
-              islandBackground={islandBackground}
               mapDayStrip={mobileMapDayStrip}
               mapPreview={directoryMapPreview}
               topRecommendationCards={directoryTopRecommendationCards}
@@ -6469,19 +6451,6 @@ export const App: React.FC = () => {
         </section>
       )}
 
-      {isDesktopViewport && showWindContextSummaryPanel && !isInfoOnlyRegion && (
-        <section className="relative z-20 px-3 pb-3 pt-1 sm:px-4 sm:pb-5 sm:pt-0" aria-label={recommendationModeTitle}>
-          <div className="mx-auto max-w-3xl rounded-[1.35rem] border border-white/70 bg-white/72 px-4 py-4 text-center shadow-sm shadow-sky-900/5 ring-1 ring-white/45 backdrop-blur-xl sm:px-5 sm:py-5">
-            <h2 className="font-heading text-lg font-extrabold leading-tight text-slate-950 sm:text-2xl">
-              {recommendationModeTitle}
-            </h2>
-            <p className="mx-auto mt-1.5 max-w-2xl text-sm font-medium leading-relaxed text-slate-600">
-              {recommendationGeneralHelper}
-            </p>
-          </div>
-        </section>
-      )}
-
       {selectedIsland && !isUnsafeWinter && isDesktopViewport && !showHeaderForecast && !isInfoOnlyRegion && (
         <section id="map-section-desktop" className="relative z-20 hidden px-3 pb-3 pt-1 sm:block sm:px-4 sm:pb-5 sm:pt-0">
           <div className="mx-auto max-w-6xl">
@@ -6522,6 +6491,7 @@ export const App: React.FC = () => {
                     enableScrollWheelZoom={isDesktopViewport}
                     isExposureLoading={isMapExposureLoading}
                     preview
+                    showBasemapToggle
                   />
                 </Suspense>
               </MapLoadBoundary>
