@@ -1,6 +1,6 @@
 import React from 'react';
 import { Ship, Waves } from 'lucide-react';
-import { LanguageCode } from '../types';
+import { LanguageCode, WindSuitabilityColor } from '../types';
 import { getLocalizedCopy, type LocalizedCopy } from '../utils/i18n';
 import { isSelectedDateToday } from '../utils/dateLabels';
 import { athensNow } from '../utils/athensTime';
@@ -20,6 +20,7 @@ import {
   type WaveBand,
   type WaveScaleResult,
 } from '../utils/waveScale';
+import { WIND_SUITABILITY_TONE_CLASSES } from '../utils/suitabilityTone';
 
 export interface HourlyWavePoint {
   hour: number; // 0-23 local
@@ -52,6 +53,8 @@ interface WaveHeightGraphicProps {
   exposureLevel?: ExposureLevel;
   /** True only when the current profile can honestly claim wind protection. */
   canClaimWindProtection?: boolean;
+  /** Keeps the compact card glyph aligned with the same tone used by the map marker. */
+  suitabilityColor?: WindSuitabilityColor;
   className?: string;
 }
 
@@ -477,8 +480,10 @@ const getBlueWaterFillClass = (scale: WaveScaleResult): string => {
   return 'text-teal-500 dark:text-teal-400';
 };
 
-const getCompactWaveFillClass = (scale: WaveScaleResult): string => (
-  scale.isEstimate ? WAVE_ESTIMATE_CLASSES.fill : WAVE_BAND_CLASSES[scale.band].fill
+const getCompactWaveFillClass = (scale: WaveScaleResult, suitabilityColor?: WindSuitabilityColor): string => (
+  suitabilityColor
+    ? WIND_SUITABILITY_TONE_CLASSES[suitabilityColor].wave
+    : scale.isEstimate ? WAVE_ESTIMATE_CLASSES.fill : WAVE_BAND_CLASSES[scale.band].fill
 );
 
 const getBoatRideBandClasses = (level: BoatRideMotionLevel, isEstimate?: boolean) => {
@@ -1064,14 +1069,14 @@ const BoatScene: React.FC<{
 };
 
 // Tiny card glyph: a blue wavelet whose height encodes the band.
-const CompactGlyph: React.FC<{ scale: WaveScaleResult; className?: string }> = ({ scale, className }) => {
+const CompactGlyph: React.FC<{ scale: WaveScaleResult; suitabilityColor?: WindSuitabilityColor; className?: string }> = ({ scale, suitabilityColor, className }) => {
   const h = Math.max(4, Math.min(14, scale.bodyFraction * 14));
   const top = 18 - h;
   return (
     <svg viewBox="0 0 28 20" className={className ?? 'h-3.5 w-4 shrink-0'} aria-hidden="true">
       <path
         d={`M2 18 L2 ${top} C 8 ${top - 2} 11 ${top + 2} 14 ${top} C 18 ${top - 2} 22 ${top + 1} 26 ${top} L26 18 Z`}
-        className={`fill-current ${getCompactWaveFillClass(scale)}`}
+        className={`fill-current ${getCompactWaveFillClass(scale, suitabilityColor)}`}
         fillOpacity={scale.isEstimate ? 0.5 : 0.9}
       />
     </svg>
@@ -1167,6 +1172,7 @@ export const WaveHeightGraphic: React.FC<WaveHeightGraphicProps> = ({
   windBeaufort,
   exposureLevel,
   canClaimWindProtection,
+  suitabilityColor,
   className,
 }) => {
   const scale = getWaveScale(waveHeightM, language, { isEstimate, estimateHeightM });
@@ -1190,7 +1196,7 @@ export const WaveHeightGraphic: React.FC<WaveHeightGraphicProps> = ({
     );
     return boatLevel
       ? <CompactBoatGlyph level={boatLevel} className={className} />
-      : <CompactGlyph scale={compactScale} className={className} />;
+      : <CompactGlyph scale={compactScale} suitabilityColor={suitabilityColor} className={className} />;
   }
 
   const copy = getLocalizedCopy(language, COPY);

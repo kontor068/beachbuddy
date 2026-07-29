@@ -6412,7 +6412,7 @@ export const App: React.FC = () => {
                   {recommendationGeneralHelper}
                 </p>
               </div>
-              <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3 sm:gap-6">
+              <div className="grid auto-rows-[24rem] grid-cols-1 gap-4 sm:auto-rows-auto sm:grid-cols-2 md:grid-cols-3 sm:gap-6">
                 {recommendationSectionBeaches.map((r, i) => (
                   <div key={r.beach.id}>
                     <BeachCard
@@ -6649,7 +6649,7 @@ export const App: React.FC = () => {
                         {recommendationGeneralHelper}
                       </p>
                     </div>
-                    <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3 sm:gap-6">
+                    <div className="grid auto-rows-[24rem] grid-cols-1 gap-4 sm:auto-rows-auto sm:grid-cols-2 md:grid-cols-3 sm:gap-6">
                     {recommendationSectionBeaches.map((r, i) => (
                       <div key={r.beach.id}>
                         <BeachCard

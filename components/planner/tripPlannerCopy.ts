@@ -73,7 +73,7 @@ export type TripPlannerCopy = {
    * day that never rises to 4 Bft, and nothing on a day that is already windy
    * at 10:00, because on neither is there a better hour to point at.
    *
-   * Descriptive, never cautionary: it says the wind freshens, which is a fact
+   * Descriptive, never cautionary: it says the wind gets stronger, which is a fact
    * about the wind, not a warning about the sea. That distinction is what lets
    * this line exist below 5 Bft at all, where caution wording is forbidden.
    */
@@ -130,7 +130,7 @@ export const tripPlannerCopy: Record<LanguageCode, TripPlannerCopy> = {
     refugeNote: 'Όπου καμία από τις γνωστές παραλίες δεν κάνει με τον άνεμο της μέρας, προτείνεται ένα προστατευμένο απάγκιο εκτός λίστας.',
     offshoreDriftNote: 'Στα απάγκια ο αέρας φυσάει από τη στεριά προς τα ανοιχτά: το νερό μένει ήρεμο, αλλά φουσκωτά, στρώματα και SUP παρασύρονται μακριά από την ακτή. Κράτα τα παιδιά κοντά.',
     bestTime: {
-      builds: (start, end) => `Καλύτερα ${start}–${end} — μετά φρεσκάρει ο αέρας.`,
+      builds: (start, end) => `Καλύτερα ${start}–${end} — μετά δυναμώνει ο άνεμος.`,
       eases: (start) => `Καλύτερα από τις ${start} — ως τότε φυσάει πιο πολύ.`,
     },
     planUpdatesDaily: 'Το πλάνο ξαναϋπολογίζεται κάθε μέρα με τη νέα πρόγνωση — οι μακρινές μέρες μπορεί να αλλάξουν.',

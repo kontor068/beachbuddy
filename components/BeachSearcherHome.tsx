@@ -1669,6 +1669,7 @@ export const BeachSearcherHome: React.FC<BeachSearcherHomeProps> = ({
   const [isSearchSuggestionsOpen, setIsSearchSuggestionsOpen] = useState(false);
   const [activeSearchSuggestionIndex, setActiveSearchSuggestionIndex] = useState(-1);
   const activePlaceName = selectedIsland?.name[language] || copy.greece;
+  const isNearMeRegion = selectedIsland?.id === 'near-me';
   const regionBeaches = selectedIsland?.beaches || [];
   // Info-only regions (e.g. Milos): show a plain browsable beach list, but no
   // today-recommendation ranking (podium carousel / top-choice hero / rank medals).
@@ -2793,7 +2794,7 @@ export const BeachSearcherHome: React.FC<BeachSearcherHomeProps> = ({
   //
   // <h1> deliberately: on a region page the region IS the page. The landing value-prop above
   // the search box steps down to a <p> so there is exactly one.
-  const regionTitleBlock = selectedIsland ? (
+  const regionTitleBlock = selectedIsland && !isNearMeRegion ? (
     <div className="mb-3 px-1 text-center sm:mb-4">
       <p className="flex items-center justify-center gap-1.5 text-[0.66rem] font-bold uppercase tracking-[0.18em] text-slate-500">
         <MapPin className="h-3 w-3 shrink-0 text-[#007a83]/70" aria-hidden="true" />
@@ -3716,7 +3717,7 @@ export const BeachSearcherHome: React.FC<BeachSearcherHomeProps> = ({
                 className="beach-card-carousel no-scrollbar flex cursor-grab snap-x snap-mandatory items-stretch gap-6 overflow-x-auto overscroll-x-contain pb-3 select-none active:cursor-grabbing data-[dragging=true]:cursor-grabbing data-[dragging=true]:snap-none sm:pb-5 lg:snap-none lg:px-5"
               >
                 {topRecommendationBeachCards.map(({ beach, score, context }, index) => (
-                  <div key={beach.id} data-suitable-beach-id={beach.id} {...beachCardHoverProps(beach.id)} className={getMapLinkedCardClassName(beach.id, 'flex h-[24rem] w-[17rem] shrink-0 snap-start sm:h-[27rem] sm:w-[20rem]')}>
+                  <div key={beach.id} data-suitable-beach-id={beach.id} {...beachCardHoverProps(beach.id)} className={getMapLinkedCardClassName(beach.id, 'flex h-[24rem] w-[17rem] shrink-0 snap-start sm:h-[25rem] sm:w-[20rem]')}>
                     {renderBeachDecisionCard(beach as BeachCardContext, {
                       score,
                       context,
@@ -3765,7 +3766,7 @@ export const BeachSearcherHome: React.FC<BeachSearcherHomeProps> = ({
                   ? undefined
                   : weatherBeachCardRankStart + index;
                 return (
-                <div key={beach.id} data-suitable-beach-id={beach.id} {...beachCardHoverProps(beach.id)} className={getMapLinkedCardClassName(beach.id, 'flex h-[24rem] w-[17rem] shrink-0 snap-start sm:h-[27rem] sm:w-[20rem]')}>
+                <div key={beach.id} data-suitable-beach-id={beach.id} {...beachCardHoverProps(beach.id)} className={getMapLinkedCardClassName(beach.id, 'flex h-[24rem] w-[17rem] shrink-0 snap-start sm:h-[25rem] sm:w-[20rem]')}>
                   {renderBeachDecisionCard(beach as BeachCardContext, {
                     score,
                     context,
@@ -3902,7 +3903,7 @@ export const BeachSearcherHome: React.FC<BeachSearcherHomeProps> = ({
                 className="beach-card-carousel no-scrollbar flex cursor-grab snap-x snap-mandatory items-stretch gap-6 overflow-x-auto overscroll-x-contain pb-3 select-none active:cursor-grabbing data-[dragging=true]:cursor-grabbing data-[dragging=true]:snap-none sm:pb-5 lg:snap-none"
               >
                 {directoryDisplayBeachCards.map(beach => (
-                  <div key={beach.id} data-directory-beach-id={beach.id} {...beachCardHoverProps(beach.id)} className={getMapLinkedCardClassName(beach.id, 'flex h-[24rem] w-[17rem] shrink-0 snap-start sm:h-[27rem] sm:w-[20rem]')}>
+                  <div key={beach.id} data-directory-beach-id={beach.id} {...beachCardHoverProps(beach.id)} className={getMapLinkedCardClassName(beach.id, 'flex h-[24rem] w-[17rem] shrink-0 snap-start sm:h-[25rem] sm:w-[20rem]')}>
                     {renderBeachDecisionCard(beach, { alignExposureToMap: true, windExposureMode: 'simple' })}
                   </div>
                 ))}
@@ -4009,7 +4010,7 @@ export const BeachSearcherHome: React.FC<BeachSearcherHomeProps> = ({
                       className="beach-card-carousel no-scrollbar flex cursor-grab snap-x snap-mandatory items-stretch gap-6 overflow-x-auto overscroll-x-contain pb-3 select-none active:cursor-grabbing data-[dragging=true]:cursor-grabbing data-[dragging=true]:snap-none sm:pb-5 lg:snap-none"
                     >
                       {directoryDisplayBeachCards.map(beach => (
-                        <div key={beach.id} data-directory-beach-id={beach.id} {...beachCardHoverProps(beach.id)} className={getMapLinkedCardClassName(beach.id, 'flex h-[24rem] w-[17rem] shrink-0 snap-start sm:h-[27rem] sm:w-[20rem]')}>
+                        <div key={beach.id} data-directory-beach-id={beach.id} {...beachCardHoverProps(beach.id)} className={getMapLinkedCardClassName(beach.id, 'flex h-[24rem] w-[17rem] shrink-0 snap-start sm:h-[25rem] sm:w-[20rem]')}>
                           {renderBeachDecisionCard(beach, { alignExposureToMap: !isDirectorySuitableView, windExposureMode: 'simple' })}
                         </div>
                       ))}

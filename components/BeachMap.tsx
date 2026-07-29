@@ -20,6 +20,7 @@ import { canOpenNavigation, getNavigationBadge, openNavigation } from '../utils/
 import { AmenityChip, getAmenityChips } from '../utils/amenities';
 import { translations } from '../translations';
 import { seaStateSeverityM, seaStateToneCeiling } from '../utils/waveCharacter';
+import { WIND_SUITABILITY_TONE_CLASSES } from '../utils/suitabilityTone';
 
 interface BeachMapProps {
   beaches: SuitableBeach[];
@@ -883,34 +884,11 @@ const getRecommendationTone = (
   const exposureLevel = visibleExposureLevel(item);
 
   if (showWindExposureColors && item.simpleWindSuitability) {
-    if (item.simpleWindSuitability.suitabilityColor === 'green') {
-      return {
-        colorClass: 'bg-emerald-500',
-        ringClass: 'ring-emerald-200',
-        badgeClass: 'bg-emerald-100 text-emerald-700',
-      };
-    }
-
-    if (item.simpleWindSuitability.suitabilityColor === 'yellow') {
-      return {
-        colorClass: 'bg-yellow-400',
-        ringClass: 'ring-yellow-200',
-        badgeClass: 'bg-yellow-100 text-yellow-700',
-      };
-    }
-
-    if (item.simpleWindSuitability.suitabilityColor === 'orange') {
-      return {
-        colorClass: 'bg-orange-500',
-        ringClass: 'ring-orange-200',
-        badgeClass: 'bg-orange-100 text-orange-700',
-      };
-    }
-
+    const tone = WIND_SUITABILITY_TONE_CLASSES[item.simpleWindSuitability.suitabilityColor];
     return {
-      colorClass: 'bg-rose-600',
-      ringClass: 'ring-rose-300',
-      badgeClass: 'bg-rose-100 text-rose-700',
+      colorClass: tone.marker,
+      ringClass: tone.ring,
+      badgeClass: tone.badge,
     };
   }
 

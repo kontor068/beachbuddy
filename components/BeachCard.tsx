@@ -1,6 +1,6 @@
 
 import React, { useEffect, useRef, useState } from 'react';
-import { AlertTriangle, ShowerHead, MapPin, Star, Share2, Heart, Navigation, Info, Waves, Utensils, Trees, CircleDot, CircleDotDashed, Mountain, Droplets, Thermometer, ArrowDown, BadgeCheck, Leaf, Shield, Users, Clock3, Flag, Footprints, Wind, Tent, Ticket, Euro, Medal, Camera, Accessibility as AccessibilityIcon } from 'lucide-react';
+import { AlertTriangle, ShowerHead, MapPin, Star, Share2, Heart, Navigation, Info, Waves, Utensils, Trees, CircleDot, CircleDotDashed, Mountain, Droplets, ArrowDown, BadgeCheck, Leaf, Shield, Users, Clock3, Flag, Footprints, Wind, Tent, Ticket, Euro, Medal, Camera, Accessibility as AccessibilityIcon } from 'lucide-react';
 import { Beach, Accessibility, LanguageCode, BeachType, CrowdLevel, WarningFlag, RecommendationConfidence, SwimmingComfort, WindSuitabilityColor, PaidEntryKind } from '../types';
 import { getBeaufortLevel } from '../utils/weatherUtils';
 import { Translation } from '../types';
@@ -8,15 +8,12 @@ import { Translation } from '../types';
 import { canOpenNavigation, getNavigationBadge, openNavigation } from '../utils/navigation';
 import { BeachConditionScore } from './BeachConditionScore';
 import { TodayScoreBadge } from './TodayScoreBadge';
-import { WaveHeightGraphic } from './WaveHeightGraphic';
 import { seaStateSeverityM, SEA_STATE_AMBER_M, SEA_STATE_ROUGH_M } from '../utils/waveCharacter';
-import { getSeaSeverity, type SeaSeverity } from '../utils/seaVerdict';
 import { getBeachPhotoLookup } from '../services/beachPhotos';
 import { trackEvent, buildBeachExposureParams } from '../services/analyticsService';
 import { ExposureLevel } from '../utils/windExposure';
 import { hasBoatOnlyAccess, hasDirtRoadAccess } from '../utils/access';
 import { isCalmBeachCertified } from '../utils/certifiedBeaches';
-import { getBoatRideMotionLevel, type BoatRideMotionLevel } from '../utils/boatRideMotion';
 import { getSelectedDayPrefix, getSelectedDaySentencePrefix, getSelectedHourPrefix, isSelectedDateToday } from '../utils/dateLabels';
 import { athensNow } from '../utils/athensTime';
 import { getLocalizedCopy, languageToLocale } from '../utils/i18n';
@@ -182,45 +179,6 @@ type CardCopy = {
   amenities: Record<AmenityChip['key'], string>;
 };
 
-type SeaRowCopy = {
-  title: string;
-  lowWaves: string;
-  mildMovement: string;
-  mildChop: string;
-  someChop: string;
-  roughSea: string;
-  forecast: (height: string) => string;
-  unavailable: string;
-};
-
-const seaRowCopy: Record<LanguageCode, SeaRowCopy> = {
-  en: {
-    title: 'Sea today', lowWaves: 'Low waves', mildMovement: 'Mild movement', mildChop: 'Mild chop',
-    someChop: 'Some chop', roughSea: 'Rough sea · use caution',
-    forecast: (height) => `${height} forecast`, unavailable: 'Wave forecast unavailable',
-  },
-  gr: {
-    title: 'Θάλασσα τώρα', lowWaves: 'Χαμηλό κύμα', mildMovement: 'Ήπια κίνηση', mildChop: 'Ήπιος κυματισμός',
-    someChop: 'Κυματισμός', roughSea: 'Έντονος κυματισμός · με προσοχή',
-    forecast: (height) => `Πρόγνωση ${height}`, unavailable: 'Δεν υπάρχει πρόγνωση κύματος',
-  },
-  fr: {
-    title: 'Mer aujourd’hui', lowWaves: 'Vagues faibles', mildMovement: 'Léger mouvement', mildChop: 'Léger clapot',
-    someChop: 'Un peu de clapot', roughSea: 'Mer agitée · prudence',
-    forecast: (height) => `Prévision ${height}`, unavailable: 'Prévision de vagues indisponible',
-  },
-  de: {
-    title: 'Meer heute', lowWaves: 'Niedrige Wellen', mildMovement: 'Leichte Bewegung', mildChop: 'Leichtes Kabbelwasser',
-    someChop: 'Etwas Kabbelwasser', roughSea: 'Raue See · Vorsicht',
-    forecast: (height) => `Prognose ${height}`, unavailable: 'Keine Wellenprognose verfügbar',
-  },
-  it: {
-    title: 'Mare oggi', lowWaves: 'Onde basse', mildMovement: 'Moto leggero', mildChop: 'Leggero mosso',
-    someChop: 'Un po’ mosso', roughSea: 'Mare mosso · prudenza',
-    forecast: (height) => `Previsione ${height}`, unavailable: 'Previsione onde non disponibile',
-  },
-};
-
 const cardCopy: Record<LanguageCode, CardCopy> = {
   en: {
     shelteredChip: (sentenceDay) => `${sentenceDay}: better sheltered`,
@@ -344,7 +302,7 @@ const cardCopy: Record<LanguageCode, CardCopy> = {
       familyFriendly: 'Για παιδιά',
       shallowWaters: 'Ρηχά νερά',
       shallowWatersCaution: 'Ρηχά νερά',
-      easyAccess: 'Εύκολη πρόσβαση',
+      easyAccess: 'Εύκολα',
       facilities: 'Παροχές',
       noFacilities: 'Χωρίς παροχές',
       naturalShade: 'Φυσική σκιά',
@@ -353,12 +311,12 @@ const cardCopy: Record<LanguageCode, CardCopy> = {
       visitorRating: 'Βαθμολογία επισκεπτών',
     },
     access: {
-      asphaltRoad: 'Εύκολη πρόσβαση',
+      asphaltRoad: 'Εύκολα',
       dirtRoad: 'Χώμα',
       difficultDirtRoad: 'Κακός δρόμος',
       difficultRoad: 'Δύσκολη πρόσβαση',
       pathAccess: 'Μονοπάτι',
-      hardPath: 'Δύσκολο μονοπάτι',
+      hardPath: 'Δύσκολα',
       boatOnly: 'Με σκάφος',
       moderateAccess: 'Μέτρια πρόσβαση',
     },
@@ -1056,18 +1014,6 @@ const waveWarningLabel = (warning: WarningFlag, waveHeightM: number | undefined,
   return warningLabel(warning, language, selectedDate, selectedHour);
 };
 
-const boatRideShortLabel = (level: BoatRideMotionLevel, language: LanguageCode): string => {
-  const copy = {
-    en: { smooth: 'Ideal conditions', light: 'A little motion', bumpy: 'Bumpy ride', rough: 'Very bumpy' },
-    gr: { smooth: 'Ιδανικές συνθήκες', light: 'Λίγο κούνημα', bumpy: 'Κουνάει αρκετά', rough: 'Πολύ κούνημα' },
-    fr: { smooth: 'Conditions idéales', light: 'Un peu de mouvement', bumpy: 'Trajet agité', rough: 'Très agité' },
-    de: { smooth: 'Ideale Bedingungen', light: 'Etwas Bewegung', bumpy: 'Unruhige Fahrt', rough: 'Sehr unruhig' },
-    it: { smooth: 'Condizioni ideali', light: 'Un po’ di movimento', bumpy: 'Tragitto mosso', rough: 'Molto mosso' },
-  }[language];
-
-  return copy[level];
-};
-
 const warningToneClass = (warning: WarningFlag): string => {
   if (warning.severity === 'critical') return 'border-rose-200 bg-rose-50 text-rose-700 dark:border-rose-900/40 dark:bg-rose-950/20 dark:text-rose-300';
   if (warning.severity === 'warning') return 'border-amber-200 bg-amber-50 text-amber-700 dark:border-amber-900/40 dark:bg-amber-950/20 dark:text-amber-300';
@@ -1465,7 +1411,9 @@ export const BeachCard: React.FC<BeachCardProps> = ({
     icon: <Footprints className="h-3.5 w-3.5 shrink-0" />,
   };
   const featureChips = [accessFeatureChip, ...(stableFeatureSlots.filter(Boolean) as CompactFeatureChip[])].slice(0, 6);
-  const featureChipBase = `inline-flex ${isCompact ? 'min-h-8 lg:min-h-7' : 'min-h-8'} w-full min-w-0 items-center justify-center gap-1.5 overflow-hidden rounded-full border border-sky-100/70 bg-white/68 px-2 py-1 text-xs font-semibold leading-tight text-slate-600 dark:border-slate-800 dark:bg-slate-900 dark:text-slate-300`;
+  const featureChipBase = `grid min-h-8 sm:min-h-7 w-full min-w-0 grid-cols-[1rem_minmax(0,1fr)] items-center gap-1.5 overflow-hidden rounded-full border border-sky-100/70 bg-white/68 px-2 py-1 text-xs font-semibold leading-tight text-slate-600 dark:border-slate-800 dark:bg-slate-900 dark:text-slate-300`;
+  const featureChipIconClass = 'flex h-4 w-4 shrink-0 items-center justify-center justify-self-center';
+  const featureChipLabelClass = 'min-w-0 truncate text-left leading-tight';
   const showMobileProtectionChip = forceHideWindChip
     ? false
     : simpleWindChipOnly
@@ -1475,7 +1423,6 @@ export const BeachCard: React.FC<BeachCardProps> = ({
   // so the beach reads its own status at a glance. On mobile it takes the wind-chip
   // slot in the header (which is hidden on phones for the score body below).
   const showForcedTodayScoreBadge = forceTodayScoreBadge && showTodayScoreBadge && todayScore !== undefined;
-  const hasMobileDecisionBody = Boolean(topPickTimeLabel);
   // Curated "top pick" podium treatment — a teal frame + ranked medal so the
   // highlighted set reads as one group, distinct from the generic suitable list.
   // #1 keeps the strongest (filled) emphasis; #2/#3 are teal-outlined (emphasis,
@@ -1503,40 +1450,6 @@ export const BeachCard: React.FC<BeachCardProps> = ({
   const mobilePodiumPillClass = recommendationRank === 1
     ? 'inline-flex min-h-8 items-center gap-1 rounded-full bg-[#007a83] px-2 py-1 text-xs font-extrabold text-white ring-1 ring-[#007a83]/30'
     : 'inline-flex min-h-8 items-center gap-1 rounded-full bg-white px-2 py-1 text-xs font-extrabold text-[#007a83] ring-1 ring-[#007a83]/45';
-  const mobileWindLabel = `${windBeaufort} Bft`;
-  const boatRideLevel = isBoatOnlyBeach ? getBoatRideMotionLevel(waveHeightM, windBeaufort) : null;
-  const seaRow = getLocalizedCopy(language, seaRowCopy);
-  const hasWaveForecast = typeof waveHeightM === 'number' && Number.isFinite(waveHeightM);
-  const mobileSeaSeverity: SeaSeverity = getSeaSeverity({
-    waveHeightM: seaStateWaveM ?? waveHeightM,
-    wavePeriodS: seaStatePeriodS,
-    windBeaufort,
-    exposureLevel,
-    canClaimWindProtection,
-  });
-  const mobileSeaLabel = (() => {
-    if (boatRideLevel) return boatRideShortLabel(boatRideLevel, language);
-    if (!hasWaveForecast) return seaRow.unavailable;
-    if (mobileSeaSeverity === 'rough') return seaRow.roughSea;
-    if (mobileSeaSeverity === 'moderate') return seaRow.someChop;
-    if ((waveHeightM as number) < 0.3) return seaRow.lowWaves;
-    if ((waveHeightM as number) < 0.5) return seaRow.mildMovement;
-    return seaRow.mildChop;
-  })();
-  const mobileSeaDetail = hasWaveForecast
-    ? seaRow.forecast(language === 'gr' ? `~${waveHeightM!.toFixed(1).replace('.', ',')} μ.` : `~${waveHeightM!.toFixed(1)} m`)
-    : undefined;
-  const mobileSeaTone = !hasWaveForecast
-    ? 'border-slate-200/80 bg-slate-50/80 text-slate-700 dark:border-slate-700 dark:bg-slate-900 dark:text-slate-300'
-    : mobileSeaSeverity === 'rough'
-      ? 'border-rose-200/90 bg-rose-50/80 text-rose-800 dark:border-rose-900/50 dark:bg-rose-950/25 dark:text-rose-200'
-      : mobileSeaSeverity === 'moderate'
-        ? 'border-amber-200/90 bg-amber-50/80 text-amber-900 dark:border-amber-900/50 dark:bg-amber-950/25 dark:text-amber-200'
-        : 'border-cyan-200/80 bg-cyan-50/75 text-cyan-900 dark:border-cyan-900/50 dark:bg-cyan-950/25 dark:text-cyan-200';
-  const mobileTemperatureLabel = typeof temperature === 'number' && Number.isFinite(temperature)
-    ? `${Math.round(temperature)}°`
-    : undefined;
-  const mobileConditionItemClass = 'inline-flex min-w-0 w-full items-center justify-center gap-1 overflow-hidden rounded-lg px-1';
   if (variant === 'decision' || variant === 'default') {
     return (
       <div
@@ -1544,7 +1457,7 @@ export const BeachCard: React.FC<BeachCardProps> = ({
         data-nosnippet="true"
         className={`group relative beach-card flex h-full w-full cursor-pointer flex-col overflow-hidden transition-transform duration-300 hover:-translate-y-0.5 active:scale-[0.995]${isPodium ? ' border-2 border-[#007a83]/45' : ''}`}
       >
-        <div className={`border-b px-3.5 py-3 sm:hidden ${isPodium
+        <div className={`order-2 flex min-h-0 flex-1 flex-col overflow-hidden border-b px-3.5 py-3 sm:hidden ${isPodium
           ? 'border-[#007a83]/15 bg-[#007a83]/[0.05] dark:border-[#007a83]/30 dark:bg-[#007a83]/15'
           : 'border-sky-100/70 bg-white/90 dark:border-slate-800 dark:bg-slate-900/90'}`}>
           <div className={`grid min-w-0 items-start gap-2.5 ${isPodium ? 'grid-cols-[auto_minmax(0,1fr)_2.75rem]' : 'grid-cols-[2.75rem_minmax(0,1fr)_2.75rem]'}`}>
@@ -1577,8 +1490,7 @@ export const BeachCard: React.FC<BeachCardProps> = ({
                   {showHeaderProtectedMarker && <ProtectedBeachMarker language={language} selectedDate={selectedDate} enclosedCove={enclosedCove && isProtectedToday} />}
                 </div>
               )}
-              {(hasBlueFlag2026 || (cardPhoto && !isPhotoCueDismissed)) && (
-                <div className="mt-1 flex min-w-0 flex-wrap items-center justify-center gap-x-2 gap-y-0.5 text-[11px] font-bold leading-tight text-cyan-800/90">
+              <div className="mt-1 flex h-4 min-w-0 flex-nowrap items-center justify-center gap-x-2 overflow-hidden text-[11px] font-bold leading-tight text-cyan-800/90">
                   {hasBlueFlag2026 && (
                     <span className="inline-flex min-w-0 items-center gap-1.5">
                       <Flag className="h-3.5 w-3.5 shrink-0" aria-hidden="true" />
@@ -1591,8 +1503,7 @@ export const BeachCard: React.FC<BeachCardProps> = ({
                       <span className="min-w-0 truncate">{localizedCardCopy.photoBelow}</span>
                     </span>
                   )}
-                </div>
-              )}
+              </div>
             </div>
 
             <button
@@ -1634,58 +1545,19 @@ export const BeachCard: React.FC<BeachCardProps> = ({
               </span>
             ) : null}
 
-            {/* Lead with the swimmer-facing sea verdict. Forecast metres are supporting evidence,
-                while wind and air temperature stay as secondary practical details. */}
-            <div className="space-y-1.5">
-              <div className={`flex min-w-0 items-center gap-2 rounded-xl border px-2.5 py-2 ${mobileSeaTone}`}>
-                <WaveHeightGraphic
-                  variant="compact"
-                  waveHeightM={waveHeightM}
-                  wavePeriodS={seaStatePeriodS}
-                  language={language}
-                  boatAccess={isBoatOnlyBeach}
-                  windBeaufort={windBeaufort}
-                  exposureLevel={exposureLevel}
-                  canClaimWindProtection={canClaimWindProtection}
-                  className="h-5 w-6 shrink-0"
-                />
-                <span className="min-w-0 flex-1">
-                  <span className="block text-[10px] font-bold leading-none opacity-70">{seaRow.title}</span>
-                  <span className="mt-0.5 block truncate text-xs font-extrabold leading-tight">{mobileSeaLabel}</span>
-                </span>
-                {mobileSeaDetail && <span className="shrink-0 text-[10px] font-bold leading-tight opacity-75">{mobileSeaDetail}</span>}
-              </div>
-              <div className="grid min-w-0 grid-cols-2 items-center gap-1 overflow-hidden rounded-xl border border-slate-100 bg-slate-50/60 px-2 py-1.5 text-[11px] font-bold leading-none text-slate-700 dark:border-slate-800 dark:bg-slate-900 dark:text-slate-300">
-                <span className={mobileConditionItemClass}>
-                  <Wind className="h-3.5 w-3.5 shrink-0" aria-hidden="true" />
-                  <span className="min-w-0 truncate">{mobileWindLabel}</span>
-                </span>
-                {mobileTemperatureLabel ? (
-                  <span className={mobileConditionItemClass}>
-                    <Thermometer className="h-3.5 w-3.5 shrink-0" aria-hidden="true" />
-                    <span className="min-w-0 truncate">{mobileTemperatureLabel}</span>
-                    <span className="sr-only">{localizedCardCopy.airTemperature}</span>
-                  </span>
-                ) : <span aria-hidden="true" />}
-              </div>
-            </div>
-
-            {/* Fixed 2-row slot so every card reserves the same height regardless of
-                how many feature chips a beach has — keeps the carousel cards uniform. */}
+            {/* Fixed mobile slot mirrors the desktop feature set, including a third row
+                when the beach has 5-6 compact chips. */}
             {featureChips.length > 0 ? (
-              <div className="grid min-h-[4.875rem] min-w-0 grid-cols-2 auto-rows-min content-start gap-1.5 overflow-hidden">
-                {featureChips.slice(0, 4).map(chip => (
-                  <span
-                    key={chip.key}
-                    className="inline-flex min-h-9 w-full min-w-0 items-center justify-center gap-1.5 overflow-hidden rounded-xl border border-cyan-100 bg-cyan-50/70 px-2 py-1 text-xs font-semibold leading-tight text-cyan-800"
-                  >
-                    {chip.icon}
-                    <span className="min-w-0 line-clamp-2 text-center leading-tight">{chip.label}</span>
+              <div className="grid h-[6.75rem] min-w-0 grid-cols-2 auto-rows-min content-start gap-1.5 overflow-hidden">
+                {featureChips.map(chip => (
+                  <span key={chip.key} className={featureChipBase}>
+                    <span className={featureChipIconClass}>{chip.icon}</span>
+                    <span className={featureChipLabelClass}>{chip.label}</span>
                   </span>
                 ))}
               </div>
             ) : !showMobileProtectionChip ? (
-              <div className="grid min-h-[4.875rem] content-start overflow-hidden">
+              <div className="grid h-[6.75rem] content-start overflow-hidden">
                 <span className="inline-flex min-h-9 w-full min-w-0 items-center justify-start gap-1.5 overflow-hidden rounded-xl border border-slate-200/70 bg-slate-50/70 px-2.5 py-1.5 text-xs font-semibold leading-tight text-slate-600">
                   <Info className="h-3.5 w-3.5 shrink-0" />
                   <span className="min-w-0 line-clamp-2 leading-tight">{localizedCardCopy.localExposureCheck}</span>
@@ -1698,7 +1570,7 @@ export const BeachCard: React.FC<BeachCardProps> = ({
 
         <div
           ref={cardPhotoAreaRef}
-          className={`relative aspect-[16/9] max-h-44 sm:flex-none sm:aspect-[16/9] sm:min-h-36 sm:max-h-44 ${isCompact ? 'lg:min-h-28 lg:max-h-32' : ''} overflow-hidden bg-sky-50`}
+          className={`relative order-1 h-28 shrink-0 overflow-hidden bg-sky-50 sm:order-none sm:h-auto sm:flex-none sm:aspect-[16/9] sm:min-h-36 sm:max-h-44 ${isCompact ? 'lg:min-h-28 lg:max-h-32' : ''}`}
         >
           {cardPhoto ? (
             <img
@@ -1758,7 +1630,7 @@ export const BeachCard: React.FC<BeachCardProps> = ({
           </button>
         </div>
 
-        <div className={`${hasMobileDecisionBody ? 'flex' : 'hidden sm:flex'} flex-col sm:flex-1 ${isCompact ? 'gap-3 p-3 sm:p-[1.05rem] lg:gap-2 lg:p-3' : 'gap-3 p-3 sm:p-[1.05rem]'}`}>
+        <div className={`hidden flex-col sm:flex sm:flex-1 ${isCompact ? 'gap-3 p-3 sm:p-[1.05rem] lg:gap-2 lg:p-3' : 'gap-3 p-3 sm:p-[1.05rem]'}`}>
           <div className={`${isCompact ? 'space-y-1 lg:space-y-0.5' : 'space-y-1'} hidden sm:block`}>
             <h3 className="line-clamp-1 font-heading text-lg font-extrabold leading-[1.12] text-slate-950 transition-colors group-hover:text-primary dark:text-white">
               {beachDisplayName}
@@ -1820,11 +1692,11 @@ export const BeachCard: React.FC<BeachCardProps> = ({
           )}
 
           {featureChips.length > 0 && (
-            <div className={`hidden ${isCompact ? 'h-[6.625rem] lg:h-[5.875rem]' : 'h-[6.625rem]'} grid-cols-2 auto-rows-min content-start gap-1.5 sm:grid`}>
+            <div className="hidden h-[5.875rem] grid-cols-2 auto-rows-min content-start gap-1.5 sm:grid">
               {featureChips.map(chip => (
                 <span key={chip.key} className={featureChipBase}>
-                  {chip.icon}
-                  <span className="min-w-0 text-center leading-tight">{chip.label}</span>
+                  <span className={featureChipIconClass}>{chip.icon}</span>
+                  <span className={featureChipLabelClass}>{chip.label}</span>
                 </span>
               ))}
             </div>
@@ -1832,13 +1704,13 @@ export const BeachCard: React.FC<BeachCardProps> = ({
 
         </div>
 
-        <div className={`mt-auto flex items-center gap-2 border-t border-sky-50 bg-white/74 pt-3 ${isCompact ? 'px-3.5 pb-3.5 lg:px-3 lg:pb-3' : 'px-3.5 pb-3.5 sm:px-4 sm:pb-4'} dark:border-slate-800 dark:bg-slate-900/60`}>
+        <div className={`order-3 mt-auto flex items-center gap-2 border-t border-sky-50 bg-white/74 pt-3 sm:order-none sm:pt-2 ${isCompact ? 'px-3.5 pb-3.5 sm:px-3 sm:pb-3' : 'px-3.5 pb-3.5 sm:px-4 sm:pb-3'} dark:border-slate-800 dark:bg-slate-900/60`}>
           {detailHref ? (
             <a
               href={detailHref}
               onClick={handleDetailLinkClick}
               data-nosnippet="true"
-              className={`inline-flex ${isCompact ? 'min-h-11 lg:min-h-10' : 'min-h-11'} flex-1 items-center justify-center gap-2 rounded-xl bg-cyan-600 px-4 py-2 text-sm font-heading font-bold text-white shadow-sm shadow-cyan-600/20 transition-colors hover:bg-cyan-700 focus:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 cursor-pointer`}
+              className="inline-flex min-h-11 flex-1 items-center justify-center gap-2 rounded-xl bg-cyan-600 px-4 py-2 text-sm font-heading font-bold text-white shadow-sm shadow-cyan-600/20 transition-colors hover:bg-cyan-700 focus:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 sm:min-h-10 cursor-pointer"
             >
               <Info className="h-4 w-4" />
               <span>{t.learnMore}</span>
@@ -1848,7 +1720,7 @@ export const BeachCard: React.FC<BeachCardProps> = ({
             <button
               onClick={(e) => { e.stopPropagation(); onClick?.(); }}
               data-nosnippet="true"
-              className={`inline-flex ${isCompact ? 'min-h-11 lg:min-h-10' : 'min-h-11'} flex-1 items-center justify-center gap-2 rounded-xl bg-cyan-600 px-4 py-2 text-sm font-heading font-bold text-white shadow-sm shadow-cyan-600/20 transition-colors hover:bg-cyan-700 focus:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 cursor-pointer`}
+              className="inline-flex min-h-11 flex-1 items-center justify-center gap-2 rounded-xl bg-cyan-600 px-4 py-2 text-sm font-heading font-bold text-white shadow-sm shadow-cyan-600/20 transition-colors hover:bg-cyan-700 focus:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 sm:min-h-10 cursor-pointer"
             >
               <Info className="h-4 w-4" />
               <span>{t.learnMore}</span>
@@ -1857,7 +1729,7 @@ export const BeachCard: React.FC<BeachCardProps> = ({
           {canNavigate && (
             <button
               onClick={handleNavigationClick}
-              className={`grid ${isCompact ? 'h-11 w-11 lg:h-10 lg:w-10' : 'h-11 w-11'} place-items-center rounded-xl bg-sky-50 text-primary transition-colors hover:bg-sky-100 focus:outline-none focus-visible:ring-2 focus-visible:ring-primary dark:bg-sky-900/20 dark:hover:bg-sky-900/40 cursor-pointer`}
+              className="grid h-11 w-11 place-items-center rounded-xl bg-sky-50 text-primary transition-colors hover:bg-sky-100 focus:outline-none focus-visible:ring-2 focus-visible:ring-primary sm:h-10 sm:w-10 dark:bg-sky-900/20 dark:hover:bg-sky-900/40 cursor-pointer"
               title={navButtonTitle}
               aria-label={t.navigateToLabel(beachDisplayName)}
             >
@@ -1867,7 +1739,7 @@ export const BeachCard: React.FC<BeachCardProps> = ({
           {navigator.share && (
             <button
               onClick={handleShare}
-              className={`grid ${isCompact ? 'h-11 w-11 lg:h-10 lg:w-10' : 'h-11 w-11'} place-items-center rounded-xl bg-slate-50 text-slate-600 transition-colors hover:text-primary focus:outline-none focus-visible:ring-2 focus-visible:ring-primary dark:bg-slate-800 cursor-pointer`}
+              className="grid h-11 w-11 place-items-center rounded-xl bg-slate-50 text-slate-600 transition-colors hover:text-primary focus:outline-none focus-visible:ring-2 focus-visible:ring-primary sm:h-10 sm:w-10 dark:bg-slate-800 cursor-pointer"
               aria-label={shareLabel}
             >
               <Share2 className="h-4 w-4" />
