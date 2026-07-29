@@ -2077,14 +2077,37 @@ export const calculateBeachScore = (
   // the same onshore component the guard itself uses, mirrored: fire only when the live wind
   // is offshore or grazing. No facing → no claim (keep the honest larger number).
   //
-  // The SMB in a fully-enclosed 0-fetch corner reads ~0.00 m; clamp it UP to the display
-  // floor (the sea is never perfectly flat) rather than abandoning the cap there.
-  const coveDisplayCandidateM = Math.max(coveWave.smbWaveHeightM, COVE_DISPLAY_FLOOR_M);
+  // THE FLOOR HERE IS THE APP'S OWN CHOP FLOOR, NOT A COSMETIC 0,10.
+  //
+  // An offshore wind over a 0-fetch sector gives SMB ~0,00, so this used to print exactly the
+  // 0,10 m display floor: on Ίος at 5 Bft that was Αλμυρός, Κλήμα, Πέπα, Τρυπητή and both Τρεις
+  // Κλησιές — six beaches reading "~0,1 μ." while the sea around the island ran at 1,28 m.
+  // COVE_DISPLAY_FLOOR_M was only ever meant to stop a bare "0.00" from looking broken; used as
+  // the floor of a real display value it invents flat calm, which is the one direction that can
+  // put someone in water the app called flat. Reported 29/07/2026.
+  //
+  // `modeledWaveHeightM` is the honest floor: max(SMB x exposure damping, getWindChopWaveFloorM),
+  // i.e. the chop the app already says you can feel in shelter at this Beaufort — 0,45 m for a
+  // protected shore at 5 Bft. It is also already one of the two terms inside effectiveWaveHeightM,
+  // so this branch still only ever LOWERS the number, never raises it.
+  const coveDisplayCandidateM = Math.max(
+    coveWave.smbWaveHeightM,
+    modeledWaveHeightM,
+    COVE_DISPLAY_FLOOR_M,
+  );
   const windIsOffshoreForCove = typeof coveWave.onshore === 'number'
     && Number.isFinite(coveWave.onshore)
     && coveWave.onshore <= COVE_ONSHORE_MIN;
+  // The SAME floor applies to the certified cove path. Its fetch-limited SMB is measured (34/43
+  // rough-side + 60/60 calm-side dense re-scans) and it legitimately reads very low in a 50 m
+  // pocket — but "~0,1 μ." on screen is not read as "a small sea", it is read as "flat", and the
+  // app's own wind-chop model says a sheltered shore feels 0,45 m at 5 Bft. Two calibrated numbers
+  // disagreed and the display took the lower one. It now takes the one that cannot be mistaken for
+  // no waves at all; the cove still reads far calmer than the 1,28 m open sea, which is the whole
+  // point of the guard.
+  const coveDisplayM = Math.max(coveWave.waveHeightM, modeledWaveHeightM);
   const displayWaveHeightM = coveWave.coveApplied
-    ? coveWave.waveHeightM
+    ? Math.min(coveDisplayM, effectiveWaveHeightM)
     : windAssessment.enclosedCove && windIsOffshoreForCove && !swell.hasSwell && coveDisplayCandidateM < effectiveWaveHeightM
       ? coveDisplayCandidateM
       : effectiveWaveHeightM;

@@ -656,6 +656,11 @@ const WaveMeterScene: React.FC<{
   // What stays is the honest instrument: the metre axis, a sea whose chop grows with the Beaufort,
   // and one labelled reading line at the true height. Height is read against the scale, which is
   // what the figure is: the size of the waves, not how deep you would be standing.
+  // A SURFACE-ONLY DRAWING WAS TRIED AND REVERTED (29/07/2026). Filling only the lower part of the
+  // plot and letting crests rise to the reading line is the physically right picture — a wave
+  // height is a property of the surface, not a depth — but at this aspect ratio a 1,4 m sea on a
+  // 2,0 m axis needs crests taller than the wavelength, and it renders as spikes, not water. It
+  // needs a proper design pass (wider plot, or a cropped sea-level detail), not a constant tweak.
   const surfaceY = trueWaterlineY;
   const capGap = 0;
   const visualIntensity = Math.max(windTier, severityBand === 'rough' ? 4 : severityBand === 'amber' ? 2 : 0);
@@ -664,6 +669,9 @@ const WaveMeterScene: React.FC<{
   // wind builds. It never moves the MEAN waterline, and it is capped by the local water depth so
   // troughs cannot dig through the seabed on a shallow, wind-whipped day.
   const depthPx = plotBottomY - surfaceY;
+  // The crests must REACH the reading line — that is what makes the number legible without a body
+  // to measure it against. Chop still grows with the Beaufort, but the height of the wave is now
+  // the distance from the mean surface up to the true reading, so the axis reads it directly.
   const amplitude = clamp(Math.min(2 + visualIntensity * 4 + capGap * 0.35, depthPx * 0.72), 2, 18);
   const nCrests = 2 + visualIntensity; // calm 2 → rough 6 wave crests across the width
 
