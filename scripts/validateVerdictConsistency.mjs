@@ -48,7 +48,8 @@ require.extensions['.ts'] = (module, filename) => {
 const { getExperienceTier } = require(path.join(root, 'utils/experienceTier.ts'));
 const { buildWeatherNowContent } = require(path.join(root, 'utils/weatherNowCopy.ts'));
 const { calculateSeaConditionScore } = require(path.join(root, 'utils/seaConditions.ts'));
-const { getSeaSeverity } = require(path.join(root, 'utils/seaVerdict.ts'));
+const { getSeaSeverity, getSeaStateSeverity } = require(path.join(root, 'utils/seaVerdict.ts'));
+const { seaStateSeverityM } = require(path.join(root, 'utils/waveCharacter.ts'));
 const { WindDirection } = require(path.join(root, 'types.ts'));
 
 const BEAUFORTS = [0, 1, 2, 3, 4, 5, 6, 7];
@@ -97,6 +98,30 @@ const RULES = [
       severity === 'rough' && (tier === 'excellent' || tier === 'good')
         ? `badge "${tier}" over a rough sea`
         : null,
+  },
+  {
+    id: 'badge-endorses-a-day-the-swim-chip-refuses',
+    // THE FIFTH LADDER. The four rules above compare the badge and the "weather now" chip; the
+    // swim-feel chip inside the wave graphic was never in this grid, and it is the one that
+    // prints "Difficult for swimming" / «Δύσκολη για μπάνιο» right under the metre figure.
+    //
+    // Reported from Ίος 29/07/2026: "OK at 11:00" at the top of the page, "Difficult for
+    // swimming" a few centimetres below it, on the same 1,28 m sea. Two causes, both silent
+    // here: getExperienceTier called a sea rough only from 1,5 m while every other surface uses
+    // SEA_STATE_ROUGH_M (1,2), and it read the HEIGHT while the chip reads the shared sea-OR-wind
+    // verdict. Measured over a 4.800-combination grid before the fix: 1.854 combinations (38,6%)
+    // showed Excellent/Good/OK above a sea the shared ladder called rough.
+    //
+    // The condition below reproduces getSwimmingFeel's own rough branch verbatim
+    // (components/WaveHeightGraphic.tsx:355-358): shelter softens the wording only when the
+    // roughness comes from the WIND, never when the sea itself is rough.
+    check: ({ tier, severity, seaStateSeverity, exposureLevel, canClaimWindProtection }) => {
+      const isProtected = exposureLevel === 'protected' || canClaimWindProtection === true;
+      const chipRefusesTheWater = severity === 'rough' && !(isProtected && seaStateSeverity !== 'rough');
+      return chipRefusesTheWater && tier !== 'skip'
+        ? `badge "${tier}" above a swim chip that says the water is difficult`
+        : null;
+    },
   },
 ];
 
@@ -151,7 +176,8 @@ for (const beaufort of BEAUFORTS) {
               waveHeightM, wavePeriodS, windBeaufort: beaufort, exposureLevel, canClaimWindProtection,
             });
 
-            const row = { beaufort, waveHeightM, wavePeriodS, exposureLevel, canClaimWindProtection, score, tier, tone, severity };
+            const seaStateSeverity = getSeaStateSeverity(seaStateSeverityM(waveHeightM, wavePeriodS));
+            const row = { beaufort, waveHeightM, wavePeriodS, exposureLevel, canClaimWindProtection, score, tier, tone, severity, seaStateSeverity };
             for (const rule of RULES) {
               const reason = rule.check(row);
               if (reason) failures.push({ rule: rule.id, reason, row });

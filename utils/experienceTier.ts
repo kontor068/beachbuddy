@@ -4,6 +4,7 @@ import { getLocalizedCopy } from './i18n';
 import { getSelectedDayPrefix, getSelectedHourPrefix, isSelectedDateToday } from './dateLabels';
 import { athensNow } from './athensTime';
 import { SEA_STATE_AMBER_M, SEA_STATE_ROUGH_M, seaStateSeverityM } from './waveCharacter';
+import { getSeaSeverity } from './seaVerdict';
 
 // CalmBeach communicates a FINAL EXPERIENCE, not raw weather. Every beach resolves to one
 // of four plain-language tiers derived from the composite suitability score (which already
@@ -61,15 +62,42 @@ export const getExperienceTier = (input: ExperienceTierInput): ExperienceTier =>
   // Red is reserved for a genuinely poor day: near-gale wind, a real rough sea, or a beach
   // that is simply wrong today. A strong breeze that only makes swimming choppy is NOT red on
   // its own — it caps the tier at "OK" below, so a 6 Bft afternoon reads amber, not a wall of red.
-  const roughSea = wave !== undefined && wave >= 1.5;
+  //
+  // THE SEA USES THE SHARED BOUNDARY, NOT A PRIVATE ONE. This read 1.5 m while every other
+  // surface on the page calls a sea rough at SEA_STATE_ROUGH_M (1.2). The 0.3 m gap was a
+  // silent contradiction band: the swim chip in WaveHeightGraphic prints "Difficult for
+  // swimming" from 1.2 m (via utils/seaVerdict), so between 1.2 and 1.5 the badge said "OK
+  // today" directly above it. Measured over the 4.800-combination condition grid before this
+  // change: 1.854 combinations (38,6%) printed Excellent/Good/OK above a sea the shared ladder
+  // called rough — reported from Ίος, 29/07/2026 ("OK at 11:00" over "Difficult for swimming").
+  //
+  // And it is the SHARED verdict, not the height alone. The swim chip escalates on
+  // getSeaSeverity — sea OR wind, whichever is worse — so reading only the height left a
+  // second contradiction band: at 6 Bft on an open shore the wind half alone says rough, the
+  // chip prints "Difficult for swimming", and a 0,9 m sea kept the badge on "OK". A verified
+  // lee shore is exempt by construction (getWindSeverity tops a protected shore out at
+  // 'moderate' whatever the wind), so this reddens exposed and partial shores in a 6 Bft blow
+  // and leaves the sheltered ones — which is the differentiation, not a wall of red.
+  const roughSea = getSeaSeverity({
+    waveHeightM,
+    wavePeriodS: input.wavePeriodS,
+    windBeaufort: input.windBeaufort,
+    exposureLevel: input.exposureLevel,
+  }) === 'rough';
   // Red ("skip") tracks the map's wind-colour guide: it only appears from 5 Bft up, and —
   // like the pin — only for beaches the map paints RED there. At 5–6 Bft the pin is red
   // solely for EXPOSED beaches (getSimpleWindColor: partial → orange, protected → yellow),
   // so a partial/protected beach must never read a red "Δεν συνιστάται" under an orange or
   // yellow pin — it caps at "OK" via the ceiling below instead. A near-gale (7 Bft+) is
   // always skip, whatever the shelter.
+  //
+  // A ROUGH SEA IS ITS OWN REASON, INDEPENDENT OF THE PIN. The pin is a WIND colour; a shore
+  // can be in the lee of the wind and still have a sea running into it. Keeping the verdict
+  // above the pin is the rule (a beach must never read better than its own pin) — reading
+  // WORSE than a wind pin because the water is rough is the safe direction, and it is the only
+  // way the badge can stop endorsing a day the same page refuses to swim in.
   const pinRedInStrongWind = input.exposureLevel !== 'protected' && input.exposureLevel !== 'partial';
-  if (bft >= 7 || (bft >= 5 && pinRedInStrongWind && (roughSea || score < 25))) return 'skip';
+  if (bft >= 7 || roughSea || (bft >= 5 && pinRedInStrongWind && score < 25)) return 'skip';
 
   // Condition ceiling: 3 excellent · 2 good · 1 OK. The wind ceiling MIRRORS the map's
   // wind-colour engine (getSimpleWindColor) so the verdict word can never sit a tier ABOVE
