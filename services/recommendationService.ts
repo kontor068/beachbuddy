@@ -1229,7 +1229,7 @@ export const calculateBestBeachTime = (hourlyForecast: ForecastItem[], beach?: B
   };
 };
 
-const getBeachSearchFilterValues = (beach: Beach, language: LanguageCode): string[] => {
+export const getBeachSearchFilterValues = (beach: Beach, language: LanguageCode): string[] => {
   const genericValues = [
     'paralia',
     'παραλία',

@@ -63,7 +63,8 @@ import { getIslandDestinationPhoto, getIslandStripPhoto } from '../data/destinat
 import { getIslandGroupLabel } from '../utils/islandRegionLabels';
 import { buildIslandDaySummary } from '../utils/islandDaySummary';
 import { CuratedPhotoImage } from './photos';
-import { beachMatchesUserPreferences } from '../services/recommendationService';
+import { beachMatchesUserPreferences, getBeachSearchFilterValues } from '../services/recommendationService';
+import { isSearchMatch } from '../utils/searchNormalize';
 import { assessBeachWindExposure } from '../utils/windExposureEngine';
 import { describeSimpleWindSuitability } from '../utils/windExposureCopy';
 
@@ -1933,16 +1934,14 @@ export const BeachSearcherHome: React.FC<BeachSearcherHomeProps> = ({
   const weatherBeachCards = useMemo(() => {
     if (!selectedIsland) return [];
     if (suitableBeachCards && suitableBeachCards.length > 0) {
-      const locale = language === 'gr' ? 'el-GR' : undefined;
       const normalizedSearchQuery = normalizeBeachSearchQuery(searchQuery, selectedIsland, language);
       const activeAdvancedFilters = activeFilters.filter(filter => filter !== 'showAll');
       const matchesCurrentFilters = (beach: Beach) => {
-        const matchesSearch = normalizedSearchQuery.length === 0 || [
-          displayBeachName(beach.name, language),
-          beach.name.gr,
-          beach.name.en,
-          ...(beach.aliases || []),
-        ].some(value => value.toLocaleLowerCase(locale).includes(normalizedSearchQuery));
+        // isSearchMatch, not naive substring: the typed name is often accent-/spelling-
+        // variant («Γυαλός» vs the dataset's «Γιαλος»), and the results list already
+        // matches through the same tolerant matcher — the two must agree.
+        const matchesSearch = normalizedSearchQuery.length === 0 ||
+          isSearchMatch(normalizedSearchQuery, getBeachSearchFilterValues(beach, language));
 
         if (!matchesSearch) return false;
 
@@ -1977,6 +1976,17 @@ export const BeachSearcherHome: React.FC<BeachSearcherHomeProps> = ({
         score: Math.max(0, Math.min(100, Math.round(item.score))),
         context: item,
       }));
+    }
+
+    // A live name search must never fall through to the island's popular list: right after a
+    // cross-region search jump the suitable cards aren't computed yet, so the carousel briefly
+    // showed the island's 8 famous beaches (on Kefalonia: Myrtos first) — and the map-follow
+    // effect then panned to that first card instead of the searched beach.
+    const normalizedSearchQuery = normalizeBeachSearchQuery(searchQuery, selectedIsland, language);
+    if (normalizedSearchQuery.length > 0) {
+      return selectedIsland.beaches
+        .filter(beach => isSearchMatch(normalizedSearchQuery, getBeachSearchFilterValues(beach, language)))
+        .map(beach => ({ beach, score: undefined, context: undefined }));
     }
 
     return popularBeachCards.map(beach => ({ beach, score: undefined, context: undefined }));
