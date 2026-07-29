@@ -36,6 +36,7 @@
     "quality:auto": "node scripts/runCriticalQualityChecks.mjs --auto --max-attempts=3",
     "quality:planner": "node scripts/validatePlannerAgreement.mjs",
     "quality:verdicts": "node scripts/validateVerdictConsistency.mjs",
+    "quality:wave-display": "node scripts/validateWaveDisplayAgreement.mjs",
     "quality:marine-models": "node scripts/validateMarineModelParsing.mjs",
     "content:audit": "node scripts/auditStaticBeachContent.mjs",
     "seo:audit": "node scripts/auditSeoPrerender.mjs",

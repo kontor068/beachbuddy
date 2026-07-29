@@ -50,7 +50,7 @@ import { isSunsetFacingBeach } from '../utils/beachOrientation';
 import { isNaturistBeach } from '../utils/naturistBeaches';
 import { getBeachTouristRecognitionScore } from '../utils/touristPriority';
 import { getWindChopWaveFloorM, resolveEffectiveWaveHeightM, capLightWindMeasuredWaveM, type SeaArrivalGeometry } from '../utils/waveModel';
-import { COVE_DISPLAY_FLOOR_M, resolveCoveAwareWaveHeightM } from '../utils/coveWaveGuard';
+import { COVE_DISPLAY_FLOOR_M, COVE_ONSHORE_MIN, resolveCoveAwareWaveHeightM } from '../utils/coveWaveGuard';
 import { interpolateSectorGeometry } from '../utils/windExposureModel';
 import { getBeachPopularityRating } from '../utils/beachRating';
 
@@ -2063,15 +2063,29 @@ export const calculateBeachScore = (
   // Offshore extension: the guard's onshore gate exists because ANY beach's offshore
   // sectors read blocked/0-fetch while a real sea remains. A verified enclosed-cove
   // MORPHOLOGY (isEnclosedCoveGeometry) with no swell present is the stronger statement:
-  // an offshore wind inside a closed cove leaves near-flat water the cove-blind grid
+  // an OFFSHORE wind inside a closed cove leaves near-flat water the cove-blind grid
   // cannot see, so the SMB cap applies to the display there too. It never raises the
   // number and never fires while swell is present.
+  //
+  // OFFSHORE IS A CONDITION, NOT A DESCRIPTION. Written without the wind-direction gate,
+  // this branch fired on every cove-shaped beach in ANY wind, including a wind blowing
+  // straight down the mouth: measured 2026-07-29 over the national geometry at 5 Bft,
+  // 694 beach x wind-direction cases where the page printed the fetch-limited SMB (as low
+  // as 0.10 m) beside its own 'exposed' level and a 1.2 m sea state — Αγία Θεοδότη, Ίος
+  // being the reported one (0.5 m shown, 1.28 m sea, wind dead into the bay). A cove mouth
+  // taking the wind head-on is the one place this cap must NOT apply, so it is now gated on
+  // the same onshore component the guard itself uses, mirrored: fire only when the live wind
+  // is offshore or grazing. No facing → no claim (keep the honest larger number).
+  //
   // The SMB in a fully-enclosed 0-fetch corner reads ~0.00 m; clamp it UP to the display
   // floor (the sea is never perfectly flat) rather than abandoning the cap there.
   const coveDisplayCandidateM = Math.max(coveWave.smbWaveHeightM, COVE_DISPLAY_FLOOR_M);
+  const windIsOffshoreForCove = typeof coveWave.onshore === 'number'
+    && Number.isFinite(coveWave.onshore)
+    && coveWave.onshore <= COVE_ONSHORE_MIN;
   const displayWaveHeightM = coveWave.coveApplied
     ? coveWave.waveHeightM
-    : windAssessment.enclosedCove && !swell.hasSwell && coveDisplayCandidateM < effectiveWaveHeightM
+    : windAssessment.enclosedCove && windIsOffshoreForCove && !swell.hasSwell && coveDisplayCandidateM < effectiveWaveHeightM
       ? coveDisplayCandidateM
       : effectiveWaveHeightM;
 

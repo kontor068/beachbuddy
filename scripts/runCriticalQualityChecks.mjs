@@ -67,6 +67,15 @@ const checks = [
     args: ['scripts/validateVerdictConsistency.mjs'],
   },
   {
+    id: 'wave-display-agreement',
+    title: 'Displayed wave vs decided sea',
+    description: 'Runs every beach with committed geometry against all 8 wind sectors at 5 Bft and checks the metre figure the page prints (BeachScore.waveHeightM) never falls below the sea state it scores on (seaStateWaveM) while the wind blows onto that shore — outside the one validated cove guard.',
+    protects: 'Prevents a false calm: "Εκτεθειμένη / Choppy" printed beside a swimmable-looking number. The enclosed-cove display override used to fire in ANY wind, so 545 beach x wind cases showed as little as 0,10 m over a 1,2 m sea — Αγία Θεοδότη (Ίος) read ~0,5 m with the meltemi straight into the bay while sheltered Βάλμας, on the same marine grid cell, read ~1,3 m.',
+    failureAction: 'Fix the display override in services/recommendationService.ts. Never widen utils/coveWaveGuard to make a case pass — the guard is certified only for a blocked shore with < 2 km of fetch.',
+    command: process.execPath,
+    args: ['scripts/validateWaveDisplayAgreement.mjs'],
+  },
+  {
     id: 'trip-query-parsing',
     title: 'Trip query parsing',
     description: 'Parses free-text trip sentences ("θα μείνω Νάξο για 5 μέρες") over the real region list: recall in 5 languages, precision against dates/quantities/beach names with numerals, a stopword sweep, order invariance, and every region resolving from its own name.',
