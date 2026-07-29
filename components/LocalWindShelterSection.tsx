@@ -75,13 +75,19 @@ export const LocalWindShelterSection: React.FC<LocalWindShelterSectionProps> = (
       </h3>
 
       <div className="space-y-3 rounded-2xl border border-slate-200/70 bg-white/60 px-4 py-3.5">
-        <p className="text-sm leading-relaxed text-slate-600">{pick(copy.intro, language)}</p>
-
+        {/* THIS beach first, the wind lesson after. `intro` is a definition of the local
+            summer wind — the same three lines on every beach of the region — and it used to
+            open the section, so the one sentence that is about the beach you are looking at
+            sat underneath a paragraph you had already read on the previous beach. The
+            definition still belongs here (it is what makes "μελτέμι" mean something to a
+            visitor), just as the footnote it is. */}
         {thisExposure && (
           <p className={`rounded-xl border px-3 py-2 text-sm font-semibold leading-relaxed ${SELF_TONE[thisExposure].badge} ${SELF_TONE[thisExposure].text}`}>
             {beachSubject(beachName, language, isBoatAccess)} {isBoatAccess && language === 'gr' ? copy.statusBoatGr[thisExposure] : pick(copy.status[thisExposure], language)}
           </p>
         )}
+
+        <p className={`leading-relaxed ${thisExposure ? 'text-xs text-slate-500' : 'text-sm text-slate-600'}`}>{pick(copy.intro, language)}</p>
 
         {shelteredCoves.length > 0 && (
           <div className="space-y-1.5">

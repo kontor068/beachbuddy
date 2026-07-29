@@ -10,6 +10,7 @@ import { BeachConditionScore } from './BeachConditionScore';
 import { TodayScoreBadge } from './TodayScoreBadge';
 import { WaveHeightGraphic } from './WaveHeightGraphic';
 import { seaStateSeverityM, SEA_STATE_AMBER_M, SEA_STATE_ROUGH_M } from '../utils/waveCharacter';
+import { getSeaSeverity, type SeaSeverity } from '../utils/seaVerdict';
 import { getBeachPhotoLookup } from '../services/beachPhotos';
 import { trackEvent, buildBeachExposureParams } from '../services/analyticsService';
 import { ExposureLevel } from '../utils/windExposure';
@@ -179,6 +180,45 @@ type CardCopy = {
     moderateAccess: string;
   };
   amenities: Record<AmenityChip['key'], string>;
+};
+
+type SeaRowCopy = {
+  title: string;
+  lowWaves: string;
+  mildMovement: string;
+  mildChop: string;
+  someChop: string;
+  roughSea: string;
+  forecast: (height: string) => string;
+  unavailable: string;
+};
+
+const seaRowCopy: Record<LanguageCode, SeaRowCopy> = {
+  en: {
+    title: 'Sea today', lowWaves: 'Low waves', mildMovement: 'Mild movement', mildChop: 'Mild chop',
+    someChop: 'Some chop', roughSea: 'Rough sea · use caution',
+    forecast: (height) => `${height} forecast`, unavailable: 'Wave forecast unavailable',
+  },
+  gr: {
+    title: 'Θάλασσα τώρα', lowWaves: 'Χαμηλό κύμα', mildMovement: 'Ήπια κίνηση', mildChop: 'Ήπιος κυματισμός',
+    someChop: 'Κυματισμός', roughSea: 'Έντονος κυματισμός · με προσοχή',
+    forecast: (height) => `Πρόγνωση ${height}`, unavailable: 'Δεν υπάρχει πρόγνωση κύματος',
+  },
+  fr: {
+    title: 'Mer aujourd’hui', lowWaves: 'Vagues faibles', mildMovement: 'Léger mouvement', mildChop: 'Léger clapot',
+    someChop: 'Un peu de clapot', roughSea: 'Mer agitée · prudence',
+    forecast: (height) => `Prévision ${height}`, unavailable: 'Prévision de vagues indisponible',
+  },
+  de: {
+    title: 'Meer heute', lowWaves: 'Niedrige Wellen', mildMovement: 'Leichte Bewegung', mildChop: 'Leichtes Kabbelwasser',
+    someChop: 'Etwas Kabbelwasser', roughSea: 'Raue See · Vorsicht',
+    forecast: (height) => `Prognose ${height}`, unavailable: 'Keine Wellenprognose verfügbar',
+  },
+  it: {
+    title: 'Mare oggi', lowWaves: 'Onde basse', mildMovement: 'Moto leggero', mildChop: 'Leggero mosso',
+    someChop: 'Un po’ mosso', roughSea: 'Mare mosso · prudenza',
+    forecast: (height) => `Previsione ${height}`, unavailable: 'Previsione onde non disponibile',
+  },
 };
 
 const cardCopy: Record<LanguageCode, CardCopy> = {
@@ -1465,15 +1505,37 @@ export const BeachCard: React.FC<BeachCardProps> = ({
     : 'inline-flex min-h-8 items-center gap-1 rounded-full bg-white px-2 py-1 text-xs font-extrabold text-[#007a83] ring-1 ring-[#007a83]/45';
   const mobileWindLabel = `${windBeaufort} Bft`;
   const boatRideLevel = isBoatOnlyBeach ? getBoatRideMotionLevel(waveHeightM, windBeaufort) : null;
-  const mobileWaveLabel = boatRideLevel
-    ? boatRideShortLabel(boatRideLevel, language)
-    : typeof waveHeightM === 'number' && Number.isFinite(waveHeightM)
-      ? `${waveHeightM.toFixed(1)} m`
-      : undefined;
+  const seaRow = getLocalizedCopy(language, seaRowCopy);
+  const hasWaveForecast = typeof waveHeightM === 'number' && Number.isFinite(waveHeightM);
+  const mobileSeaSeverity: SeaSeverity = getSeaSeverity({
+    waveHeightM: seaStateWaveM ?? waveHeightM,
+    wavePeriodS: seaStatePeriodS,
+    windBeaufort,
+    exposureLevel,
+    canClaimWindProtection,
+  });
+  const mobileSeaLabel = (() => {
+    if (boatRideLevel) return boatRideShortLabel(boatRideLevel, language);
+    if (!hasWaveForecast) return seaRow.unavailable;
+    if (mobileSeaSeverity === 'rough') return seaRow.roughSea;
+    if (mobileSeaSeverity === 'moderate') return seaRow.someChop;
+    if ((waveHeightM as number) < 0.3) return seaRow.lowWaves;
+    if ((waveHeightM as number) < 0.5) return seaRow.mildMovement;
+    return seaRow.mildChop;
+  })();
+  const mobileSeaDetail = hasWaveForecast
+    ? seaRow.forecast(language === 'gr' ? `~${waveHeightM!.toFixed(1).replace('.', ',')} μ.` : `~${waveHeightM!.toFixed(1)} m`)
+    : undefined;
+  const mobileSeaTone = !hasWaveForecast
+    ? 'border-slate-200/80 bg-slate-50/80 text-slate-700 dark:border-slate-700 dark:bg-slate-900 dark:text-slate-300'
+    : mobileSeaSeverity === 'rough'
+      ? 'border-rose-200/90 bg-rose-50/80 text-rose-800 dark:border-rose-900/50 dark:bg-rose-950/25 dark:text-rose-200'
+      : mobileSeaSeverity === 'moderate'
+        ? 'border-amber-200/90 bg-amber-50/80 text-amber-900 dark:border-amber-900/50 dark:bg-amber-950/25 dark:text-amber-200'
+        : 'border-cyan-200/80 bg-cyan-50/75 text-cyan-900 dark:border-cyan-900/50 dark:bg-cyan-950/25 dark:text-cyan-200';
   const mobileTemperatureLabel = typeof temperature === 'number' && Number.isFinite(temperature)
     ? `${Math.round(temperature)}°`
     : undefined;
-  const mobileConditionCount = 1 + (mobileWaveLabel ? 1 : 0) + (mobileTemperatureLabel ? 1 : 0);
   const mobileConditionItemClass = 'inline-flex min-w-0 w-full items-center justify-center gap-1 overflow-hidden rounded-lg px-1';
   if (variant === 'decision' || variant === 'default') {
     return (
@@ -1572,41 +1634,40 @@ export const BeachCard: React.FC<BeachCardProps> = ({
               </span>
             ) : null}
 
-            {/* Today's conditions row — wind / wave (with the band-coloured wave glyph) /
-                temperature, surfaced near the top of the card. */}
-            <div
-              className="grid min-w-0 items-center gap-1 overflow-hidden rounded-xl border border-slate-100 bg-slate-50/60 px-2 py-1.5 text-[11px] font-bold leading-none text-slate-700 dark:border-slate-800 dark:bg-slate-900 dark:text-slate-300"
-              style={{ gridTemplateColumns: `repeat(${mobileConditionCount}, minmax(max-content, 1fr))` }}
-            >
-              <span className={mobileConditionItemClass}>
-                <Wind className="h-3.5 w-3.5 shrink-0" aria-hidden="true" />
-                <span className="min-w-0 truncate">{mobileWindLabel}</span>
-              </span>
-              {mobileWaveLabel && (
-                <span className={mobileConditionItemClass}>
-                  <WaveHeightGraphic
-                    variant="compact"
-                    waveHeightM={waveHeightM}
-                    language={language}
-                    boatAccess={isBoatOnlyBeach}
-                    windBeaufort={windBeaufort}
-                    exposureLevel={exposureLevel}
-                    canClaimWindProtection={canClaimWindProtection}
-                  />
-                  <span className="min-w-0 truncate">{mobileWaveLabel}</span>
+            {/* Lead with the swimmer-facing sea verdict. Forecast metres are supporting evidence,
+                while wind and air temperature stay as secondary practical details. */}
+            <div className="space-y-1.5">
+              <div className={`flex min-w-0 items-center gap-2 rounded-xl border px-2.5 py-2 ${mobileSeaTone}`}>
+                <WaveHeightGraphic
+                  variant="compact"
+                  waveHeightM={waveHeightM}
+                  wavePeriodS={seaStatePeriodS}
+                  language={language}
+                  boatAccess={isBoatOnlyBeach}
+                  windBeaufort={windBeaufort}
+                  exposureLevel={exposureLevel}
+                  canClaimWindProtection={canClaimWindProtection}
+                  className="h-5 w-6 shrink-0"
+                />
+                <span className="min-w-0 flex-1">
+                  <span className="block text-[10px] font-bold leading-none opacity-70">{seaRow.title}</span>
+                  <span className="mt-0.5 block truncate text-xs font-extrabold leading-tight">{mobileSeaLabel}</span>
                 </span>
-              )}
-              {mobileTemperatureLabel && (
+                {mobileSeaDetail && <span className="shrink-0 text-[10px] font-bold leading-tight opacity-75">{mobileSeaDetail}</span>}
+              </div>
+              <div className="grid min-w-0 grid-cols-2 items-center gap-1 overflow-hidden rounded-xl border border-slate-100 bg-slate-50/60 px-2 py-1.5 text-[11px] font-bold leading-none text-slate-700 dark:border-slate-800 dark:bg-slate-900 dark:text-slate-300">
                 <span className={mobileConditionItemClass}>
-                  {/* Thermometer, not Droplets: this is AIR temperature. A water-drop glyph
-                      next to "36°" reads as a sea temperature no Greek beach ever has, and
-                      water temperature is a real number we show elsewhere — so the wrong
-                      icon here was not vague, it was a claim. */}
-                  <Thermometer className="h-3.5 w-3.5 shrink-0" aria-hidden="true" />
-                  <span className="min-w-0 truncate">{mobileTemperatureLabel}</span>
-                  <span className="sr-only">{localizedCardCopy.airTemperature}</span>
+                  <Wind className="h-3.5 w-3.5 shrink-0" aria-hidden="true" />
+                  <span className="min-w-0 truncate">{mobileWindLabel}</span>
                 </span>
-              )}
+                {mobileTemperatureLabel ? (
+                  <span className={mobileConditionItemClass}>
+                    <Thermometer className="h-3.5 w-3.5 shrink-0" aria-hidden="true" />
+                    <span className="min-w-0 truncate">{mobileTemperatureLabel}</span>
+                    <span className="sr-only">{localizedCardCopy.airTemperature}</span>
+                  </span>
+                ) : <span aria-hidden="true" />}
+              </div>
             </div>
 
             {/* Fixed 2-row slot so every card reserves the same height regardless of

@@ -40,6 +40,13 @@ export interface ShoreIncidenceInput {
   /** Map-pin levels for every beach in the region, from the same Map the pin colour reads. */
   levelCounts?: { protected: number; partial: number; exposed: number };
   language: LanguageCode;
+  /**
+   * The "weather now" card directly above this line already said how the wind meets this
+   * shore (WeatherNowContent.statesShoreIncidence). Drop the incidence sentence when it did:
+   * the two are the same fact in different words, two lines apart, and the reader pays for
+   * both. The neighbour comparison below is unaffected — it is the part that adds something.
+   */
+  suppressIncidence?: boolean;
 }
 
 /**
@@ -144,7 +151,7 @@ export const buildShoreIncidenceLine = (input: ShoreIncidenceInput): string | nu
 
   const parts: string[] = [];
 
-  if (typeof onshore === 'number' && Number.isFinite(onshore)) {
+  if (typeof onshore === 'number' && Number.isFinite(onshore) && !input.suppressIncidence) {
     const incidence = getWindIncidence(onshore);
     // HARD CONTRADICTION WITH THE PIN — say nothing. A shore the map paints red cannot be told
     // the wind blows off the land, and a shore it paints green cannot be told the wind is on it.

@@ -231,6 +231,19 @@ export interface WeatherNowContent {
   stableDescription: string;
   /** Volatile (live wind vs. shelter) → caller wraps in data-nosnippet. */
   liveSentence: string;
+  /**
+   * True when `liveSentence` already tells the reader HOW the current wind meets this
+   * shore ("δεν χτυπά εδώ" / "πιάνει πιο άμεσα αυτή την ακτή" / "προστατευμένα").
+   *
+   * The conditions section below this card opens with the same fact, from
+   * utils/shoreIncidenceCopy — so on a 5 Bft page the reader met one sentence, then a
+   * near-identical one two lines later («Ο βόρειος άνεμος 5 Μπφ δεν χτυπά εδώ…» followed
+   * by «Ο βόρειος άνεμος 5 Μπφ φυσάει από τη στεριά προς τη θάλασσα εδώ.»). The caller
+   * passes this flag down so the second one is dropped and only the neighbour comparison —
+   * which is genuinely new — survives. False for the light-wind and neutral branches,
+   * which say nothing about orientation, so there the shore line still earns its place.
+   */
+  statesShoreIncidence: boolean;
   loadingLabel: string;
 }
 
@@ -290,15 +303,19 @@ export const buildWeatherNowContent = (input: WeatherNowInput): WeatherNowConten
     const lead = isBoatAccess
       ? { en: `${beachName} ${clause}.`, gr: `Το ${beachName} ${clause}.`, de: `${beachName} ${clause}.`, fr: `${beachName} ${clause}.`, it: `${beachName} ${clause}.` }[lang]
       : { en: `${beachSentenceName(beachName, 'en')} beach ${clause}.`, gr: `Η παραλία ${beachSentenceName(beachName, 'gr')} ${clause}.`, de: `Der Strand ${beachName} ${clause}.`, fr: `La plage ${beachName} ${clause}.`, it: `La spiaggia ${beachName} ${clause}.` }[lang];
-    const tail = { en: ' Wind and waves shift through the day, so check the live figures below.', gr: ' Ο άνεμος και το κύμα αλλάζουν μέσα στη μέρα, γι\' αυτό δες τις ζωντανές τιμές πιο κάτω.', de: ' Wind und Wellen ändern sich im Tagesverlauf – sieh dir die Live-Werte unten an.', fr: ' Le vent et les vagues changent au cours de la journée, consultez les valeurs en direct ci-dessous.', it: ' Vento e onde cambiano durante il giorno, controlla i valori in tempo reale qui sotto.' }[lang];
-    stableDescription = lead + tail;
+    // No tail. It used to close with «Ο άνεμος και το κύμα αλλάζουν μέσα στη μέρα, γι' αυτό
+    // δες τις ζωντανές τιμές πιο κάτω.» — the same 88 characters on all ~2.850 beaches × 5
+    // languages, telling the reader to scroll to numbers that are already two lines below.
+    // It carried no information about any beach, and as identical boilerplate it diluted the
+    // one part of this block that IS unique per page.
+    stableDescription = lead;
   } else {
     stableDescription = { en: `Conditions at ${beachName} depend on the wind direction — check the live wind and wave below.`, gr: `Οι συνθήκες στην ${beachName} εξαρτώνται από την κατεύθυνση του ανέμου — δες ζωντανά τον άνεμο και το κύμα πιο κάτω.`, de: `Die Bedingungen an ${beachName} hängen von der Windrichtung ab – sieh dir Wind und Wellen live unten an.`, fr: `Les conditions à ${beachName} dépendent de la direction du vent — voir le vent et les vagues en direct ci-dessous.`, it: `Le condizioni a ${beachName} dipendono dalla direzione del vento — controlla vento e onde in tempo reale qui sotto.` }[lang];
   }
 
   // Not loaded yet: return stable copy only, no numbers, no verdict.
   if (!dataReady) {
-    return { heading, verdict: '', tone: 'unknown', windLabel, windValue: '', waveLabel, waveValue: '', stableDescription, liveSentence: '', loadingLabel };
+    return { heading, verdict: '', tone: 'unknown', windLabel, windValue: '', waveLabel, waveValue: '', stableDescription, liveSentence: '', statesShoreIncidence: false, loadingLabel };
   }
 
   // Verdict from the ONE sea severity (utils/seaVerdict) plus the sea-condition score.
@@ -366,6 +383,10 @@ export const buildWeatherNowContent = (input: WeatherNowInput): WeatherNowConten
       !facesInto(input.windDir, input.faces, input.facingDeg))
   );
   let liveSentence: string;
+  // Every branch below names how the wind meets this shore EXCEPT the light-wind floor and
+  // the neutral fallback; those two clear the flag so the conditions section keeps its own
+  // orientation sentence (see WeatherNowContent.statesShoreIncidence).
+  let statesShoreIncidence = true;
   // LIGHT-WIND FLOOR — must come before every branch below.
   //
   // None of the branches that follow looked at how hard the wind is actually
@@ -383,6 +404,7 @@ export const buildWeatherNowContent = (input: WeatherNowInput): WeatherNowConten
   // cannot verify a swell origin from these inputs.
   const LIGHT_WIND_BFT = 2;
   if (bft <= LIGHT_WIND_BFT) {
+    statesShoreIncidence = false;
     const nowGr = isToday ? ' τώρα' : '';
     liveSentence = tone === 'calm'
       ? { en: `The wind is only ${bft} Bft${isToday ? ' right now' : ''} — next to no wind, and the water is calm.`,
@@ -460,6 +482,7 @@ export const buildWeatherNowContent = (input: WeatherNowInput): WeatherNowConten
       ? { en: `The ${adjEn} wind of ${bft} Bft hits more directly now, so expect some chop.`, gr: `Ο ${adjGr} άνεμος ${bft} ${bftUnit} χτυπάει πιο άμεσα τώρα, οπότε περίμενε κάποιο κύμα.`, de: `Der Wind von ${bft} Bft trifft gerade direkter – rechne mit etwas Welle.`, fr: `Le vent de ${bft} Bft frappe plus directement maintenant, attends-toi à un peu de clapot.`, it: `Il vento di ${bft} Bft colpisce più direttamente ora, aspettati un po' di moto ondoso.` }[lang]
       : { en: `The ${adjEn} wind of ${bft} Bft hits more directly here, so expect some chop.`, gr: `Ο ${adjGr} άνεμος ${bft} ${bftUnit} χτυπάει πιο άμεσα εδώ, οπότε περίμενε κάποιο κύμα.`, de: `Der Wind von ${bft} Bft trifft direkter – rechne mit etwas Welle.`, fr: `Le vent de ${bft} Bft frappe plus directement, attends-toi à un peu de clapot.`, it: `Il vento di ${bft} Bft colpisce più direttamente, aspettati un po' di moto ondoso.` }[lang];
   } else {
+    statesShoreIncidence = false;
     // The neutral fallback used to hard-code "moderate conditions" for every tone,
     // so a beach the chip called «Ήρεμα» was described as merely moderate on the
     // same line (4 of the 162 combinations the probe sweeps). The closing verdict
@@ -474,5 +497,5 @@ export const buildWeatherNowContent = (input: WeatherNowInput): WeatherNowConten
       : { en: `The wind is ${bft} Bft — ${conditionsWord}.`, gr: `Ο άνεμος είναι ${bft} ${bftUnit} — ${conditionsWord}.`, de: `Der Wind beträgt ${bft} Bft – ${conditionsWord}.`, fr: `Le vent est de ${bft} Bft — ${conditionsWord}.`, it: `Il vento è di ${bft} Bft — ${conditionsWord}.` }[lang];
   }
 
-  return { heading, verdict, tone, windLabel, windValue, waveLabel, waveValue, stableDescription, liveSentence, loadingLabel };
+  return { heading, verdict, tone, windLabel, windValue, waveLabel, waveValue, stableDescription, liveSentence, statesShoreIncidence, loadingLabel };
 };

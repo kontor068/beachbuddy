@@ -68,6 +68,8 @@ type StripCopy = {
   selectedHour: (hour: string) => string;
   hourTooltip: (hour: string, height: string) => string;
   rangeSummary: (min: string, max: string) => string;
+  referenceLabel: (percent: string) => string;
+  depthNote: string;
 };
 
 const COPY: LocalizedCopy<StripCopy> = {
@@ -82,6 +84,8 @@ const COPY: LocalizedCopy<StripCopy> = {
     selectedHour: (hour) => `shown hour ${hour}`,
     hourTooltip: (hour, height) => `${hour}: ${height} waves`,
     rangeSummary: (min, max) => `Wave range ${min} to ${max}`,
+    referenceLabel: (percent) => `About ${percent}% of a 1.7 m adult reference height`,
+    depthNote: 'forecast span, not water depth',
   },
   gr: {
     title: 'Τι κύμα να περιμένεις',
@@ -94,6 +98,8 @@ const COPY: LocalizedCopy<StripCopy> = {
     selectedHour: (hour) => `ώρα που βλέπεις ${hour}`,
     hourTooltip: (hour, height) => `${hour}: κύμα ${height}`,
     rangeSummary: (min, max) => `Εύρος κύματος ${min} έως ${max}`,
+    referenceLabel: (percent) => `Περίπου ${percent}% του ύψους ενήλικα 1,7 μ.`,
+    depthNote: 'εύρος πρόγνωσης, όχι βάθος νερού',
   },
   fr: {
     title: 'Vagues attendues',
@@ -106,6 +112,8 @@ const COPY: LocalizedCopy<StripCopy> = {
     selectedHour: (hour) => `heure affichée ${hour}`,
     hourTooltip: (hour, height) => `${hour} : vagues ${height}`,
     rangeSummary: (min, max) => `Vagues de ${min} à ${max}`,
+    referenceLabel: (percent) => `Environ ${percent}% d'une référence adulte de 1,7 m`,
+    depthNote: 'plage prévue, pas profondeur d’eau',
   },
   de: {
     title: 'Zu erwartende Wellen',
@@ -118,6 +126,8 @@ const COPY: LocalizedCopy<StripCopy> = {
     selectedHour: (hour) => `angezeigte Stunde ${hour}`,
     hourTooltip: (hour, height) => `${hour}: ${height} Wellen`,
     rangeSummary: (min, max) => `Wellenbereich ${min} bis ${max}`,
+    referenceLabel: (percent) => `Etwa ${percent}% einer 1,7-m-Erwachsenenreferenz`,
+    depthNote: 'Prognosespanne, keine Wassertiefe',
   },
   it: {
     title: 'Onde previste',
@@ -130,6 +140,8 @@ const COPY: LocalizedCopy<StripCopy> = {
     selectedHour: (hour) => `ora mostrata ${hour}`,
     hourTooltip: (hour, height) => `${hour}: onde ${height}`,
     rangeSummary: (min, max) => `Onde da ${min} a ${max}`,
+    referenceLabel: (percent) => `Circa ${percent}% dell'altezza adulta di riferimento (1,7 m)`,
+    depthNote: 'intervallo previsto, non profondità dell’acqua',
   },
 };
 
@@ -401,6 +413,7 @@ const getCompactWaveSignalScale = (
   scale: WaveScaleResult,
   language: LanguageCode,
   waveHeightM?: number,
+  wavePeriodS?: number,
   estimateHeightM?: number,
   windBeaufort?: number,
   exposureLevel?: ExposureLevel,
@@ -409,8 +422,11 @@ const getCompactWaveSignalScale = (
   const minSignalHeightM = getCompactWindSignalMinHeightM(windBeaufort, exposureLevel, canClaimWindProtection);
   if (typeof minSignalHeightM !== 'number') return scale;
 
+  // The small glyph is a condition signal, not a literal ruler. Short-period chop should look
+  // more active than a long, gentle roll with the same forecast height; the text beside it keeps
+  // the raw forecast metres as evidence.
   const visibleHeightM = typeof waveHeightM === 'number' && Number.isFinite(waveHeightM)
-    ? waveHeightM
+    ? seaStateSeverityM(waveHeightM, wavePeriodS) ?? waveHeightM
     : typeof estimateHeightM === 'number' && Number.isFinite(estimateHeightM)
       ? estimateHeightM
       : undefined;
@@ -437,6 +453,10 @@ const getSceneMotionStyle = (intensity: number): React.CSSProperties => {
     '--cb-wave-drift': `${(2 + t * 1.25).toFixed(2)}px`,
   } as React.CSSProperties;
 };
+
+// Dry-land comparison only. It helps a visitor read the scale without implying that forecast
+// wave height is the depth of water around a standing swimmer.
+const ADULT_REFERENCE_HEIGHT_M = 1.7;
 
 const formatWaveHeight = (m: number, language: LanguageCode): string => {
   const value = m.toFixed(1);
@@ -611,25 +631,14 @@ const getWaveSceneStyle = (scale: WaveScaleResult, bandOverride?: WaveBand): Rea
   } as React.CSSProperties;
 };
 
-const UMBRELLA_HEIGHT_M = 2.0; // a beach parasol — the ruler, standing on the SAND, never in the water.
-
-const UMBRELLA_LABEL: LocalizedCopy<string> = {
-  en: '2 m',
-  gr: '2 μ.',
-  fr: '2 m',
-  de: '2 m',
-  it: '2 m',
-};
-
 // A SHORE IN CROSS-SECTION — the wave breaking at the size it really is.
 //
 // Wave height is a property of the SURFACE, not a depth, so the drawing is a shoreline seen from the
-// side: open sea on the left, a wave shoaling and breaking, dry sand on the right. The ruler is a
-// 2 m beach parasol planted on the SAND — it cannot imply how deep the water is, and everybody
-// knows how tall a parasol is, so the scale is read without a body in the picture.
+// side: open sea on the left, a wave shoaling and breaking, dry sand on the right. A small adult
+// outline sits on the dry sand as a scale reference only; it is never placed in the water.
 //
-// Four rules, each paid for by a failed attempt:
-//  1. NO PERSON. A to-scale figure standing in the sea filled the water to the wave height and drew
+// Five rules, each paid for by a failed attempt:
+//  1. NO PERSON IN THE SEA. A to-scale figure standing in the sea filled the water to the wave height and drew
 //     someone submerged to the neck at 1,3 m — a statement about depth the number never makes. It
 //     read as a drowning (reported 29/07/2026).
 //  2. NO SEABED. Drawing the bottom shelving up put a hard diagonal across the frame and, worse,
@@ -638,13 +647,15 @@ const UMBRELLA_LABEL: LocalizedCopy<string> = {
 //  3. AN ASYMMETRIC WAVE. A symmetric crest at this scale reads as a hill or a spike. A real
 //     breaker has a long low shoaling back, a late steep rise, a rounded crest and a lip pitching
 //     forward — that silhouette is what says "wave" at any height.
-//  4. A SPILLING MANE, NOT AN OUTLINE. White water sitting ON the crest and running down the face to
+//  4. DRY-LAND REFERENCE ONLY. A neutral adult outline may help visitors read the scale, but it must
+//     stay outside the water and carry no claim about standing depth.
+//  5. A SPILLING MANE, NOT AN OUTLINE. White water sitting ON the crest and running down the face to
 //     the beach is what reads as "breaking"; a thin white outline just reads as "tall". Greek beach
 //     waves spill — no barrels, no spray everywhere. The target is an instrument, not a poster.
 //
-// One shape, one scale: everything is derived from `hPx` (the measured height in pixels), so the
-// same path grows continuously from a flat lick on the sand to a full breaker. Wind and sea state
-// never move the reading line — they only add chop, foam, spray and colour severity.
+// One shape, one scale: the crest is derived from half the reported crest-to-trough span, so the
+// same path grows continuously without turning the forecast into an apparent vertical wall.
+// Wind and sea state never move the reading line — they only add chop, foam, spray and colour severity.
 const ShoreProfileScene: React.FC<{
   scale: WaveScaleResult;
   visualHeightM: number;
@@ -666,8 +677,13 @@ const ShoreProfileScene: React.FC<{
   const mToY = (m: number) => swl - (clamp(m, 0, axisMaxM) / axisMaxM) * plotHeight;
   const formatTick = (m: number) => (language === 'gr' ? m.toFixed(1).replace('.', ',') : m.toFixed(1));
 
-  const crestY = mToY(visualHeightM);
+  // Marine forecast wave height is a crest-to-trough span. Drawing all of it above the mean
+  // surface makes a 1.4 m forecast look like a 1.4 m wall. The illustrated crest rises by half;
+  // the bracket below preserves the full reported value.
+  const crestRiseM = visualHeightM / 2;
+  const crestY = mToY(crestRiseM);
   const hPx = swl - crestY;
+  const troughY = Math.min(floorY - 2, swl + hPx);
   const crestX = 110;
   const shoreX = 152; // where the still waterline meets the sand
 
@@ -702,7 +718,7 @@ const ShoreProfileScene: React.FC<{
     // breaking wave looks like and what a hill never does.
     `C ${crestX + 16} ${(crestY + hPx * 0.13).toFixed(1)}, ${lipX + 3} ${(crestY + hPx * 0.28).toFixed(1)}, ${lipX} ${lipY.toFixed(1)}`,
     `C ${crestX + 14} ${(swl - hPx * 0.3).toFixed(1)}, ${crestX + 20} ${(swl - hPx * 0.08).toFixed(1)}, ${crestX + 33} ${(swl - hPx * 0.03).toFixed(1)}`,
-    `C ${crestX + 42} ${(swl + 0.6).toFixed(1)}, ${shoreX - 8} ${(swl + 1).toFixed(1)}, ${shoreX + 2} ${(swl + 0.5).toFixed(1)}`,
+    `C ${crestX + 42} ${(troughY - hPx * 0.18).toFixed(1)}, ${shoreX - 8} ${(swl + hPx * 0.28).toFixed(1)}, ${shoreX + 2} ${(swl + 0.5).toFixed(1)}`,
   ].join(' ');
   // Water fills everything below the surface, right across the frame; the sand is painted over its
   // shoreward end. No vertical wall, no diagonal seabed, no depth claim.
@@ -731,31 +747,61 @@ const ShoreProfileScene: React.FC<{
     'Z',
   ].join(' ');
 
-  // Dry sand only — it slides under the waterline on the left instead of ending in a wall.
+  // Dry sand only. Keep the shore profile shallow and entirely on the landward side; drawing a
+  // deep diagonal here makes the illustration look like a sudden drop-off or a seabed section.
   const sandPath = [
     `M${xR} ${sandYAt(xR).toFixed(1)}`,
     `C 190 ${sandYAt(190).toFixed(1)}, 168 ${sandYAt(168).toFixed(1)}, ${shoreX} ${(swl + 0.5).toFixed(1)}`,
-    `C ${shoreX - 8} ${(swl + 5).toFixed(1)}, ${shoreX - 14} ${(swl + 16).toFixed(1)}, ${shoreX - 18} ${floorY + 8}`,
     `L${xR} ${floorY + 8}`,
     'Z',
   ].join(' ');
 
-  // The parasol: the only object in the scene with a known real-world size, so it is drawn to the
-  // same metre scale as the wave. Its canopy width is schematic — a cross-section compresses
-  // distance along the shore, never height.
-  const umbrellaX = 181;
-  const umbrellaBaseY = sandYAt(umbrellaX);
-  const umbrellaTopY = umbrellaBaseY - (UMBRELLA_HEIGHT_M / axisMaxM) * plotHeight;
-  const canopyHalf = 19;
-  const canopyDrop = 12;
-  // A scalloped hem is the one detail that makes a parasol read as a parasol rather than a lamp.
-  const canopyHem = [-1, -0.333, 0.333, 1].map((f) => umbrellaX + canopyHalf * f);
-
   const hasBand = typeof bandLowM === 'number' && typeof bandHighM === 'number' && bandHighM > bandLowM && !scale.isEstimate;
-  const bandTopY = hasBand ? mToY(bandHighM as number) : 0;
-  const bandBotY = hasBand ? mToY(bandLowM as number) : 0;
+  const bandTopY = hasBand ? mToY((bandHighM as number) / 2) : 0;
+  const bandBotY = hasBand ? mToY((bandLowM as number) / 2) : 0;
 
   const readingRightX = crestX - 10;
+  const bracketX = 139;
+  const personX = 184;
+  const personBaseY = sandYAt(personX);
+  const personTopY = personBaseY - (ADULT_REFERENCE_HEIGHT_M / axisMaxM) * plotHeight;
+  const personHipY = personBaseY - (0.9 / axisMaxM) * plotHeight;
+  const personHeightPx = personBaseY - personTopY;
+  const personHeadR = clamp(personHeightPx * 0.058, 2.6, 3.4);
+  const personHeadCy = personTopY + personHeadR + 0.6;
+  const personShoulderY = personTopY + personHeightPx * 0.2;
+  const personChestY = personTopY + personHeightPx * 0.34;
+  const personWaistY = personTopY + personHeightPx * 0.48;
+  const personPelvisY = personTopY + personHeightPx * 0.58;
+  const personKneeY = personTopY + personHeightPx * 0.79;
+  const personFootY = personBaseY - 0.5;
+  const personShoulderW = clamp(personHeightPx * 0.17, 7.4, 9.2);
+  const personWaistW = clamp(personHeightPx * 0.11, 4.8, 6.2);
+  const personHipW = clamp(personHeightPx * 0.13, 5.8, 7.2);
+  const personTorsoPath = [
+    `M${(personX - personShoulderW / 2).toFixed(1)} ${personShoulderY.toFixed(1)}`,
+    `Q${personX.toFixed(1)} ${(personShoulderY - 2).toFixed(1)} ${(personX + personShoulderW / 2).toFixed(1)} ${personShoulderY.toFixed(1)}`,
+    `C${(personX + personWaistW / 2).toFixed(1)} ${personChestY.toFixed(1)}, ${(personX + personWaistW / 2).toFixed(1)} ${personWaistY.toFixed(1)}, ${(personX + personHipW / 2).toFixed(1)} ${personPelvisY.toFixed(1)}`,
+    `L${(personX - personHipW / 2).toFixed(1)} ${personPelvisY.toFixed(1)}`,
+    `C${(personX - personWaistW / 2).toFixed(1)} ${personWaistY.toFixed(1)}, ${(personX - personWaistW / 2).toFixed(1)} ${personChestY.toFixed(1)}, ${(personX - personShoulderW / 2).toFixed(1)} ${personShoulderY.toFixed(1)}`,
+    'Z',
+  ].join(' ');
+  const personArmsPath = [
+    `M${(personX - personShoulderW / 2 + 0.5).toFixed(1)} ${(personShoulderY + 1.2).toFixed(1)}`,
+    `C${(personX - personShoulderW * 0.72).toFixed(1)} ${(personChestY + 1).toFixed(1)}, ${(personX - personShoulderW * 0.66).toFixed(1)} ${(personWaistY + 1).toFixed(1)}, ${(personX - personHipW * 0.58).toFixed(1)} ${(personPelvisY - 1).toFixed(1)}`,
+    `M${(personX + personShoulderW / 2 - 0.5).toFixed(1)} ${(personShoulderY + 1.2).toFixed(1)}`,
+    `C${(personX + personShoulderW * 0.72).toFixed(1)} ${(personChestY + 1).toFixed(1)}, ${(personX + personShoulderW * 0.66).toFixed(1)} ${(personWaistY + 1).toFixed(1)}, ${(personX + personHipW * 0.58).toFixed(1)} ${(personPelvisY - 1).toFixed(1)}`,
+  ].join(' ');
+  const personLegsPath = [
+    `M${(personX - personHipW * 0.25).toFixed(1)} ${(personPelvisY - 0.2).toFixed(1)}`,
+    `C${(personX - personHipW * 0.48).toFixed(1)} ${personKneeY.toFixed(1)}, ${(personX - personHipW * 0.48).toFixed(1)} ${(personFootY - 4).toFixed(1)}, ${(personX - personHipW * 0.68).toFixed(1)} ${personFootY.toFixed(1)}`,
+    `M${(personX + personHipW * 0.25).toFixed(1)} ${(personPelvisY - 0.2).toFixed(1)}`,
+    `C${(personX + personHipW * 0.48).toFixed(1)} ${personKneeY.toFixed(1)}, ${(personX + personHipW * 0.48).toFixed(1)} ${(personFootY - 4).toFixed(1)}, ${(personX + personHipW * 0.68).toFixed(1)} ${personFootY.toFixed(1)}`,
+  ].join(' ');
+  const personFeetPath = [
+    `M${(personX - personHipW * 0.86).toFixed(1)} ${personFootY.toFixed(1)} H${(personX - personHipW * 0.22).toFixed(1)}`,
+    `M${(personX + personHipW * 0.22).toFixed(1)} ${personFootY.toFixed(1)} H${(personX + personHipW * 0.86).toFixed(1)}`,
+  ].join(' ');
   const windStreaks = Array.from({ length: windTier }, (_, index) => ({
     x1: 34 + index * 12,
     x2: 60 + index * 13,
@@ -824,37 +870,27 @@ const ShoreProfileScene: React.FC<{
       {/* The water's edge sliding up the sand — animated, because this is the part that actually moves. */}
       <path className="cb-wave-foam" d={swashPath} fill="var(--cb-wave-foam-color)" opacity={scale.isEstimate ? 0.45 : 0.82} />
 
-      {/* The 2 m parasol: the ruler, on dry sand. */}
-      <g>
-        <path d={`M${umbrellaX} ${(umbrellaTopY + 3).toFixed(1)} V${umbrellaBaseY.toFixed(1)}`} stroke="var(--cb-wave-guide-color)" strokeWidth="1.8" strokeLinecap="round" opacity="0.8" />
-        <path
-          d={[
-            `M${canopyHem[0].toFixed(1)} ${(umbrellaTopY + canopyDrop).toFixed(1)}`,
-            `C ${umbrellaX - canopyHalf * 0.72} ${(umbrellaTopY + canopyDrop * 0.3).toFixed(1)}, ${umbrellaX - canopyHalf * 0.32} ${(umbrellaTopY + 0.6).toFixed(1)}, ${umbrellaX} ${umbrellaTopY.toFixed(1)}`,
-            `C ${umbrellaX + canopyHalf * 0.32} ${(umbrellaTopY + 0.6).toFixed(1)}, ${umbrellaX + canopyHalf * 0.72} ${(umbrellaTopY + canopyDrop * 0.3).toFixed(1)}, ${canopyHem[3].toFixed(1)} ${(umbrellaTopY + canopyDrop).toFixed(1)}`,
-            // hem, right to left: three shallow scallops
-            `Q ${((canopyHem[3] + canopyHem[2]) / 2).toFixed(1)} ${(umbrellaTopY + canopyDrop - 3.2).toFixed(1)} ${canopyHem[2].toFixed(1)} ${(umbrellaTopY + canopyDrop - 1.6).toFixed(1)}`,
-            `Q ${umbrellaX} ${(umbrellaTopY + canopyDrop - 4.4).toFixed(1)} ${canopyHem[1].toFixed(1)} ${(umbrellaTopY + canopyDrop - 1.6).toFixed(1)}`,
-            `Q ${((canopyHem[1] + canopyHem[0]) / 2).toFixed(1)} ${(umbrellaTopY + canopyDrop - 3.2).toFixed(1)} ${canopyHem[0].toFixed(1)} ${(umbrellaTopY + canopyDrop).toFixed(1)}`,
-            'Z',
-          ].join(' ')}
-          fill="var(--cb-wave-guide-color)"
-          opacity="0.68"
-        />
-        <text
-          x={umbrellaX + 4}
-          y={((umbrellaTopY + canopyDrop + umbrellaBaseY) / 2).toFixed(1)}
-          textAnchor="start"
-          fontSize="6.8"
-          fontWeight="700"
-          fill="var(--cb-wave-guide-color)"
-          stroke="rgba(255,255,255,0.9)"
-          strokeWidth="2.2"
-          paintOrder="stroke"
-          opacity="0.95"
-        >
-          {getLocalizedCopy(language, UMBRELLA_LABEL)}
-        </text>
+      {/* Full crest-to-trough bracket. This is the reported wave span, not a water-depth ruler. */}
+      {!scale.isEstimate && hPx >= 6 && (
+        <g stroke="var(--cb-wave-guide-color)" fill="none" opacity="0.72">
+          <path d={`M${bracketX} ${crestY.toFixed(1)} V${troughY.toFixed(1)}`} strokeWidth="1" strokeDasharray="2 2" />
+          <path d={`M${bracketX - 2.5} ${crestY.toFixed(1)} H${bracketX + 2.5} M${bracketX - 2.5} ${troughY.toFixed(1)} H${bracketX + 2.5}`} strokeWidth="1.1" strokeLinecap="round" />
+          <text x={bracketX + 4} y={((crestY + troughY) / 2 + 2).toFixed(1)} fill="var(--cb-wave-guide-color)" stroke="rgba(255,255,255,0.9)" strokeWidth="2" paintOrder="stroke" fontSize="5.7" fontWeight="800">
+            {readingLabel}
+          </text>
+        </g>
+      )}
+
+      {/* Dry-land adult reference. Built from height ratios so the body stays proportional at every scale. */}
+      <g stroke="var(--cb-wave-guide-color)" strokeLinecap="round" strokeLinejoin="round" opacity="0.7">
+        <circle cx={personX} cy={personHeadCy.toFixed(1)} r={personHeadR.toFixed(1)} fill="var(--cb-wave-guide-color)" stroke="none" />
+        <path d={personTorsoPath} fill="var(--cb-wave-guide-color)" stroke="none" />
+        <path d={personArmsPath} fill="none" strokeWidth="2" />
+        <path d={personLegsPath} fill="none" strokeWidth="2.25" />
+        <path d={personFeetPath} fill="none" strokeWidth="1.6" />
+        <path d={`M${personX - 7} ${personHipY.toFixed(1)} H${personX + 7}`} fill="none" strokeWidth="0.8" strokeDasharray="1.5 1.5" />
+        <text x={personX + 9} y={personTopY + 5} fill="var(--cb-wave-guide-color)" stroke="rgba(255,255,255,0.9)" strokeWidth="1.6" paintOrder="stroke" fontSize="4.8" fontWeight="800">1.7 m</text>
+        <text x={personX + 9} y={personHipY + 1.5} fill="var(--cb-wave-guide-color)" stroke="rgba(255,255,255,0.9)" strokeWidth="1.4" paintOrder="stroke" fontSize="4.4" fontWeight="700">0.9 m</text>
       </g>
 
       {/* Metre axis — zero sits on the still waterline, because that is where a wave height starts.
@@ -1146,6 +1182,7 @@ export const WaveHeightGraphic: React.FC<WaveHeightGraphicProps> = ({
       scale,
       language,
       waveHeightM,
+      wavePeriodS,
       estimateHeightM,
       windBeaufort,
       exposureLevel,
@@ -1229,6 +1266,9 @@ export const WaveHeightGraphic: React.FC<WaveHeightGraphicProps> = ({
   const waveRangeLabel = !boatCopy && waveRange && waveRange.highM - waveRange.lowM >= 0.2
     ? formatWaveRange(waveRange.lowM, waveRange.highM, language)
     : null;
+  const referenceLabel = !boatCopy && !scale.isEstimate && typeof headlineHeightM === 'number'
+    ? copy.referenceLabel(String(Math.round((headlineHeightM / ADULT_REFERENCE_HEIGHT_M) * 100)))
+    : null;
   const showSetsNote = !boatCopy && !scale.isEstimate && typeof headlineHeightM === 'number' && hasNotableSets(headlineHeightM);
   const sceneRange = !boatLevel && !scale.isEstimate && visualWaveHeightM >= 0.4 ? getWaveRangeM(visualWaveHeightM) : null;
   // In-scene annotation for the reading line — a screenshot of the scene alone stays honest.
@@ -1242,6 +1282,7 @@ export const WaveHeightGraphic: React.FC<WaveHeightGraphicProps> = ({
   const ariaLabel = [
     ariaRoot,
     waveRangeLabel ? `${copy.bandLabel} ${waveRangeLabel}` : null,
+    referenceLabel ? `${referenceLabel}. ${copy.depthNote}` : null,
     showSetsNote ? copy.setsNote : null,
     hourlyRange,
     trendKey ? (boatCopy ? boatCopy[trendKey] : copy[trendKey]) : null,
@@ -1278,6 +1319,11 @@ export const WaveHeightGraphic: React.FC<WaveHeightGraphicProps> = ({
                 <span className="text-[11px] font-semibold text-slate-500 dark:text-slate-400">{copy.bandLabel} {waveRangeLabel}</span>
               )}
             </div>
+            {referenceLabel && (
+              <div className="mt-1 text-[10px] font-semibold leading-snug text-slate-500 dark:text-slate-400">
+                {referenceLabel} · {copy.depthNote}
+              </div>
+            )}
             <div className="mt-2 inline-flex max-w-full flex-wrap items-center gap-x-1.5 gap-y-0.5 rounded-full border border-slate-100 bg-white/70 px-2.5 py-1 text-[11px] font-bold leading-tight text-slate-500 shadow-sm shadow-sky-900/5 dark:border-slate-700 dark:bg-slate-900/30 dark:text-slate-400">
               <span>{swimFeelCopy.label}</span>
               <span className={swimmingFeelLabelClass}>{swimmingFeel}</span>

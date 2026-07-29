@@ -128,16 +128,21 @@ const BeachDetailShorelinePanel: React.FC<{
   const copy = shorelineCaptionCopy[language] || shorelineCaptionCopy.en;
 
   return (
-    <div className="relative aspect-[16/9] max-h-56 overflow-hidden rounded-[2rem] border border-cyan-100/80 bg-sky-100 shadow-sm shadow-sky-900/5">
-      <ShorelineThumbnail
-        shape={shape}
-        beachName={beachName}
-        language={language}
-        features={deriveShorelineFeatures(beach)}
-        seed={beach.id}
-        size="full"
-      />
-      <div className="absolute inset-x-4 bottom-4 rounded-2xl border border-cyan-100/90 bg-white/82 p-3 shadow-sm shadow-sky-900/10 backdrop-blur-md">
+    <div className="overflow-hidden rounded-[2rem] border border-cyan-100/80 bg-sky-100 shadow-sm shadow-sky-900/5">
+      {/* w-full is load-bearing: aspect-[16/9] plus max-h-56 with no explicit width lets the
+          browser shrink the WIDTH (not just clamp height) once max-h-56 caps it below the
+          16:9-for-full-width value, carving a blank strip beside the drawing. */}
+      <div className="relative aspect-[16/9] max-h-56 w-full">
+        <ShorelineThumbnail
+          shape={shape}
+          beachName={beachName}
+          language={language}
+          features={deriveShorelineFeatures(beach)}
+          seed={beach.id}
+          size="full"
+        />
+      </div>
+      <div className="border-t border-cyan-100/80 bg-white/90 p-3">
         <p className="text-sm font-bold text-cyan-900">{copy.title}</p>
         <p className="mt-1 text-xs font-semibold leading-snug text-slate-600">
           {copy.body}
@@ -1020,25 +1025,6 @@ export const BeachDetailPage: React.FC<BeachDetailPageProps> = ({
   );
   const detailBadgeScore = getDetailBadgeScore(score, seaConditionScore, isExposed);
   const beaufortLevel = getBeaufortLevel(windSpeedKmh);
-  // The line that differs between two beaches on the same island (see the conditions section
-  // below). It reuses coveWave.onshore — already computed for every beach from the same geometry
-  // the wave figure uses — and the region's MAP levels, so it can never contradict the pins.
-  const shoreIncidenceLine = useMemo(() => {
-    let levelCounts: { protected: number; partial: number; exposed: number } | undefined;
-    if (mapExposureLevels && mapExposureLevels.size > 1) {
-      const counts = { protected: 0, partial: 0, exposed: 0 };
-      for (const level of mapExposureLevels.values()) counts[level] += 1;
-      levelCounts = counts;
-    }
-    return buildShoreIncidenceLine({
-      onshore: coveWave.onshore,
-      mapExposureLevel: mapAlignedExposureLevel,
-      windDir: windDir as WindDirection,
-      beaufort: beaufortLevel,
-      levelCounts,
-      language,
-    });
-  }, [coveWave.onshore, mapAlignedExposureLevel, windDir, beaufortLevel, mapExposureLevels, language]);
   const isBoatOnlyBeach = hasBoatOnlyAccess(beach);
   const seaConditionDisplay = getSeaConditionDisplay(seaConditionScore, isExposedForCopy, language, selectedDate, canClaimWindProtectionForCopy, seaCalmClaimAllowed, beaufortLevel, displayWaveHeightM, selectedHour, isBoatOnlyBeach, enclosedCove);
   const boatRideConditionLabel = {
@@ -1090,6 +1076,31 @@ export const BeachDetailPage: React.FC<BeachDetailPageProps> = ({
     : weatherNow.tone === 'choppy'
       ? 'bg-orange-50 text-orange-700'
       : 'bg-amber-50 text-amber-700';
+
+  // The line that differs between two beaches on the same island (see the conditions section
+  // below). It reuses coveWave.onshore — already computed for every beach from the same geometry
+  // the wave figure uses — and the region's MAP levels, so it can never contradict the pins.
+  //
+  // Built AFTER weatherNow on purpose: the card above states the same wind-vs-shore fact in
+  // almost the same words at ≥4 Bft, so we hand it `suppressIncidence` and keep only the
+  // neighbour comparison here. (Ordering matters — this used to sit above buildWeatherNowContent.)
+  const shoreIncidenceLine = useMemo(() => {
+    let levelCounts: { protected: number; partial: number; exposed: number } | undefined;
+    if (mapExposureLevels && mapExposureLevels.size > 1) {
+      const counts = { protected: 0, partial: 0, exposed: 0 };
+      for (const level of mapExposureLevels.values()) counts[level] += 1;
+      levelCounts = counts;
+    }
+    return buildShoreIncidenceLine({
+      onshore: coveWave.onshore,
+      mapExposureLevel: mapAlignedExposureLevel,
+      windDir: windDir as WindDirection,
+      beaufort: beaufortLevel,
+      levelCounts,
+      language,
+      suppressIncidence: weatherNow.statesShoreIncidence,
+    });
+  }, [coveWave.onshore, mapAlignedExposureLevel, windDir, beaufortLevel, mapExposureLevels, language, weatherNow.statesShoreIncidence]);
 
   // Show only curated beach-specific photos. Region/island fallbacks are hidden
   // because a wrong landmark damages trust more than a polished placeholder.
@@ -1636,12 +1647,21 @@ export const BeachDetailPage: React.FC<BeachDetailPageProps> = ({
             answer includes live values we must not put in structured data. */}
         <section className="space-y-3 rounded-[2rem] border border-sky-100 bg-white/90 p-4 shadow-sm shadow-sky-900/5 sm:p-5">
           <h2 className="font-heading text-xl font-bold leading-tight text-slate-950">{weatherNow.heading}</h2>
-          <p className="text-sm leading-relaxed text-slate-700">{weatherNow.stableDescription}</p>
+          {/* ANSWER FIRST, BACKGROUND LAST. This card used to open with the orientation
+              paragraph, so the reader met five lines of prose before the first number —
+              on a page whose whole job is "can I swim here today". The live figures and
+              the verdict now come straight after the heading, one sentence explains them,
+              and the always-true orientation line (the crawlable, per-beach-unique part —
+              it must stay in the DOM for the "καιρός {beach}" intent) closes the card in
+              smaller type as the background it is. */}
           {weatherNow.tone === 'unknown' ? (
-            <div className="flex items-center gap-2 rounded-2xl border border-slate-100 bg-slate-50 px-4 py-3 text-sm font-semibold text-slate-500">
-              <span className="h-2 w-2 animate-pulse rounded-full bg-slate-300" aria-hidden="true" />
-              {weatherNow.loadingLabel}
-            </div>
+            <>
+              <p className="text-sm leading-relaxed text-slate-700">{weatherNow.stableDescription}</p>
+              <div className="flex items-center gap-2 rounded-2xl border border-slate-100 bg-slate-50 px-4 py-3 text-sm font-semibold text-slate-500">
+                <span className="h-2 w-2 animate-pulse rounded-full bg-slate-300" aria-hidden="true" />
+                {weatherNow.loadingLabel}
+              </div>
+            </>
           ) : (
             <div className="space-y-3">
               <div className="flex flex-wrap items-center gap-2">
@@ -1663,6 +1683,7 @@ export const BeachDetailPage: React.FC<BeachDetailPageProps> = ({
               </div>
               {/* Live sentence names the current wind/Bft → volatile, nosnippet. */}
               <p data-nosnippet="true" className="text-sm leading-relaxed text-slate-700">{weatherNow.liveSentence}</p>
+              <p className="text-xs leading-relaxed text-slate-500">{weatherNow.stableDescription}</p>
             </div>
           )}
         </section>
