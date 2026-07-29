@@ -20,6 +20,9 @@ export type AnalyticsEvent =
   | 'forecast_expanded'
   | 'map_viewed'
   | 'map_marker_clicked'
+  // Street map vs satellite imagery. Tells us whether the aerial view is a niche
+  // toggle or the one people actually want to land on.
+  | 'map_basemap_toggle'
   | 'beta_feedback_clicked'
   // National landing (components/landing/). `landing_viewed` is the denominator
   // for every drop-off question — without it the landing's reach is invisible,
