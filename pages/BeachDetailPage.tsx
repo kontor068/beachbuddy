@@ -26,7 +26,7 @@ import { TodayScoreBadge } from '../components/TodayScoreBadge';
 import { LocalWindShelterSection, type LocalWindShelteredCove } from '../components/LocalWindShelterSection';
 import { GettingThereSection } from '../components/GettingThereSection';
 import { SwellRouterSection, type SwellShelteredCove } from '../components/SwellRouterSection';
-import { assessSwellExposure } from '../utils/swellExposure';
+import { assessSwellExposure, SWELL_MIN_HEIGHT_M } from '../utils/swellExposure';
 import { SwitchBeachCard } from '../components/SwitchBeachCard';
 import { assessBeachWindExposure } from '../utils/windExposureEngine';
 import { AccessibleCalmNearbySection, type AccessibleCalmCove } from '../components/AccessibleCalmNearbySection';
@@ -920,7 +920,10 @@ export const BeachDetailPage: React.FC<BeachDetailPageProps> = ({
   // (they still use scoreResult.waveHeightM below). swellPresent mirrors assessSwellExposure's
   // hasSwell (presence, not the geometric 'exposed' flag which is structurally false for a blocked
   // cove and would reopen the wrap-in false-calm).
-  const swellPresent = (weatherData.marine?.swellWaveHeightM ?? 0) >= 0.5
+  // Read the threshold from assessSwellExposure's own constant, never a literal: this page and
+  // calculateBeachScore each run their own copy of the guard, and the day the two swell gates
+  // disagree the card and its detail page print different wave numbers for the same beach.
+  const swellPresent = (weatherData.marine?.swellWaveHeightM ?? 0) >= SWELL_MIN_HEIGHT_M
     && typeof weatherData.marine?.swellWaveDirectionDeg === 'number';
   const coveWave = resolveCoveAwareWaveHeightM({
     geospatialProfile: geospatialExposure,
@@ -958,7 +961,7 @@ export const BeachDetailPage: React.FC<BeachDetailPageProps> = ({
       let waveM = point.effectiveWaveHeightM;
       const item = hourItems.get(point.hour);
       if (item && geospatialExposure) {
-        const hourSwellPresent = (item.marine?.swellWaveHeightM ?? 0) >= 0.5
+        const hourSwellPresent = (item.marine?.swellWaveHeightM ?? 0) >= SWELL_MIN_HEIGHT_M
           && typeof item.marine?.swellWaveDirectionDeg === 'number';
         const hourCove = resolveCoveAwareWaveHeightM({
           geospatialProfile: geospatialExposure,
