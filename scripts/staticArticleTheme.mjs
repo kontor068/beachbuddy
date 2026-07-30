@@ -101,6 +101,9 @@ a:focus-visible,button:focus-visible{outline:3px solid var(--cb-brand);outline-o
 .cb-tags{display:flex;flex-wrap:wrap;gap:5px;margin:0;padding:0;list-style:none}
 .cb-tag{font-size:11.5px;font-weight:700;padding:3px 8px;border-radius:999px;background:var(--cb-wash);color:var(--cb-brand-deep);border:1px solid #CDEAF2}
 .cb-tag-warn{background:var(--cb-sand);color:var(--cb-accent);border-color:var(--cb-sand-line)}
+/* The wind tag is the one fact on the card that no other beach list carries, so
+   it reads in the brand colour rather than as another neutral grey pill. */
+.cb-tag-wind{background:var(--cb-brand);color:#fff;border-color:var(--cb-brand)}
 .cb-blurb{margin:0;font-size:14px;line-height:1.55;color:var(--cb-ink-soft)}
 
 /* ---- Editorial Q&A ---- */
@@ -121,6 +124,16 @@ a:focus-visible,button:focus-visible{outline:3px solid var(--cb-brand);outline-o
 .cb-chip:hover{background:var(--cb-wash);border-color:var(--cb-brand)}
 .cb-chip-lead{background:var(--cb-wash);border-color:var(--cb-brand);color:var(--cb-brand);font-weight:800}
 .cb-note{margin:26px 0 0;padding:0 0 40px;color:var(--cb-muted);font-size:13px;line-height:1.55}
+
+/* ---- Why the list is in this order ---- */
+.cb-order-note{margin:0 0 16px;font-size:14.5px;line-height:1.6;color:var(--cb-ink-soft);border-left:3px solid var(--cb-brand);padding-left:12px}
+
+/* ---- Safety + legal strip. Quiet by design: it must be findable, not loud. ---- */
+.cb-legal{margin:0;padding:18px 0 44px;border-top:1px solid var(--cb-line);color:var(--cb-muted);font-size:13px;line-height:1.6}
+.cb-legal p{margin:0 0 10px}
+.cb-legal ul{display:flex;flex-wrap:wrap;gap:6px 16px;margin:0;padding:0;list-style:none}
+.cb-legal a{color:var(--cb-muted);text-decoration:underline;text-underline-offset:3px}
+.cb-legal a:hover{color:var(--cb-brand)}
 
 @media (max-width:640px){
   .cb-prose p:first-child::first-letter{font-size:2.6em}

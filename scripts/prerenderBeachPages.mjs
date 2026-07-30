@@ -952,6 +952,17 @@ const seoLandingPages = [
 // page): sheltered = oriented away from the northerly Meltemi; family = the
 // curated family-friendly flag.
 const ISLAND_INTENT_MIN = 5;
+// Snorkeling drops to 3. It is by a distance the highest-yield guide family we
+// publish — Search Console, 28 days to 2026-07-27: 290 clicks from 95 URLs
+// (3.05 per page) against 0.22 for a beach page — and the flat ≥5 gate was
+// keeping Paros and Santorini out over a single beach. Three verified
+// rocky-seabed beaches is still a real list; two is not, so this stops at 3.
+// The selection signal behind it was audited on 2026-07-30: of the 743 beaches
+// flagged `activities.snorkeling`, 731 (98.4%) carry rocks/large_stones in
+// their terrain — this is a derived data field, not the `surfing` hash that
+// once invented 543 spots.
+const ISLAND_INTENT_MIN_BY_KEY = { snorkeling: 3 };
+const intentMinFor = key => ISLAND_INTENT_MIN_BY_KEY[key] ?? ISLAND_INTENT_MIN;
 const ISLAND_INTENT_CAP = 40;
 const NORTHERLY = ['North', 'Northeast', 'Northwest'];
 const WESTERLY = ['West', 'Northwest', 'Southwest'];
@@ -1191,7 +1202,11 @@ const islandIntents = [
         intro: `Ψάχνεις καθαρά νερά και βράχια για εξερεύνηση; Αυτές οι ${count} παραλίες εδώ (${islandName}) είναι καλές για snorkeling, συνήθως με πιο καθαρά νερά και βραχώδη ή μικτό βυθό. Η ορατότητα είναι συχνά καλύτερη σε μέρες με λίγο αέρα — δες πρώτα άνεμο και κύμα στο CalmBeach.`,
         sections: [
           { heading: `${islandName}: ποιες παραλίες είναι καλές για snorkeling;`, body: 'Οι παραλίες της λίστας έχουν πιο βραχώδη βυθό και καθαρότερα νερά, όπου είναι πιο πιθανό να δεις ψάρια και υποθαλάσσια ζωή. Οι συνθήκες αλλάζουν, γι\' αυτό έλεγξε την πρόγνωση πριν πας.' },
-          { heading: 'Πότε είναι ασφαλέστερο το snorkeling;', body: 'Κάνε snorkeling κοντά στην ακτή σε ήρεμες μέρες και απόφυγε δυνατό αέρα, κύμα ή ρεύματα. Έλεγξε live άνεμο και κύμα στην εφαρμογή και ακολούθησε τυχόν τοπικές σημαίες.' },
+          // Was "Πότε είναι ασφαλέστερο το snorkeling;" — our own honesty guard
+          // flags an unqualified safety claim, and it was right to: we cannot
+          // rank days by safety. The question now asks what to watch for, which
+          // is what the answer actually delivers.
+          { heading: 'Τι να προσέχω όταν κάνω snorkeling;', body: 'Κάνε snorkeling κοντά στην ακτή σε ήρεμες μέρες και απόφυγε δυνατό αέρα, κύμα ή ρεύματα. Έλεγξε live άνεμο και κύμα στην εφαρμογή και ακολούθησε τυχόν τοπικές σημαίες.' },
         ],
       },
       de: {
@@ -1483,7 +1498,7 @@ const getIslandGuides = (island, region, locale, excludeKey = null) => {
   const beaches = Array.isArray(island.beaches) ? island.beaches : [];
   return islandIntents
     .filter(intent => intent.key !== excludeKey)
-    .filter(intent => beaches.filter(b => Number.isInteger(b.id) && b.name && intent.match(b)).length >= ISLAND_INTENT_MIN)
+    .filter(intent => beaches.filter(b => Number.isInteger(b.id) && b.name && intent.match(b)).length >= intentMinFor(intent.key))
     .map(intent => ({
       href: localizedPath(islandIntentPath(intent, region, island), locale),
       label: intentNavLabel(intent.key, region.id, locale.language),
@@ -2064,6 +2079,109 @@ const HOME_REGION_IDS = [
   'crete-crete-chania',
 ];
 
+// ── Static legal footer ──────────────────────────────────────────────────────
+// The React <LegalFooter> (components/LegalFooter.tsx, mounted once in App.tsx)
+// opens Terms/Privacy/Cookies as MODALS, so before this existed the crawled HTML
+// of all ~9.500 pages contained no <footer>, no safety disclaimer and zero links
+// to /terms/, /privacy/ or /cookies/ — everything appeared only after hydration.
+// Verified 30/07/2026 across five page types: `<footer` = 0, legal hrefs = 0.
+//
+// This emits the same three things as static markup INSIDE #root, so it is part
+// of what Google indexes and what a visitor sees before the JS lands. Living
+// inside #root matters: React wipes the container on mount, so the client footer
+// replaces this one instead of rendering a second copy underneath it.
+//
+// It also carries the ODbL notice for the beach dataset, which is a derivative of
+// OpenStreetMap and was credited nowhere in the product.
+const FOOTER_COPY = {
+  en: {
+    note: 'Calm Beach is an informational beach guide. Always check local conditions, warning flags, lifeguards and official advice before swimming.',
+    legal: 'Legal',
+    terms: 'Terms of Use',
+    privacy: 'Privacy Policy',
+    cookies: 'Cookie Policy',
+    faq: 'FAQ',
+    guides: 'Beach guides',
+    data: 'Beach data derived from OpenStreetMap, © OpenStreetMap contributors, available under the Open Database License (ODbL). Weather and marine forecasts by Open-Meteo (CC BY 4.0).',
+  },
+  gr: {
+    note: 'Το Calm Beach είναι οδηγός πληροφόρησης. Πριν κολυμπήσεις, έλεγχε πάντα τις τοπικές συνθήκες, τις σημαίες, τους ναυαγοσώστες και τις επίσημες οδηγίες.',
+    legal: 'Νομικά',
+    terms: 'Όροι Χρήσης',
+    privacy: 'Πολιτική Απορρήτου',
+    cookies: 'Πολιτική Cookies',
+    faq: 'Συχνές ερωτήσεις',
+    guides: 'Οδηγοί παραλιών',
+    data: 'Τα δεδομένα παραλιών προέρχονται από το OpenStreetMap, © συνεισφέροντες OpenStreetMap, με άδεια Open Database License (ODbL). Οι προγνώσεις καιρού και θάλασσας από το Open-Meteo (CC BY 4.0).',
+  },
+  de: {
+    note: 'Calm Beach ist ein informativer Strandführer. Prüfe vor dem Schwimmen immer die örtlichen Bedingungen, Warnflaggen, Rettungsschwimmer und offiziellen Hinweise.',
+    legal: 'Rechtliches',
+    terms: 'Nutzungsbedingungen',
+    privacy: 'Datenschutzerklärung',
+    cookies: 'Cookie-Richtlinie',
+    faq: 'FAQ',
+    guides: 'Strandführer',
+    data: 'Stranddaten abgeleitet aus OpenStreetMap, © OpenStreetMap-Mitwirkende, verfügbar unter der Open Database License (ODbL). Wetter- und Seegangsvorhersagen von Open-Meteo (CC BY 4.0).',
+  },
+  fr: {
+    note: "Calm Beach est un guide de plages à titre informatif. Vérifiez toujours les conditions locales, les drapeaux, les sauveteurs et les consignes officielles avant de nager.",
+    legal: 'Mentions légales',
+    terms: "Conditions d'utilisation",
+    privacy: 'Politique de confidentialité',
+    cookies: 'Politique de cookies',
+    faq: 'FAQ',
+    guides: 'Guides des plages',
+    data: 'Données de plages dérivées d’OpenStreetMap, © les contributeurs OpenStreetMap, disponibles sous Open Database License (ODbL). Prévisions météo et marines par Open-Meteo (CC BY 4.0).',
+  },
+  it: {
+    note: 'Calm Beach è una guida informativa alle spiagge. Prima di nuotare controlla sempre le condizioni locali, le bandiere di avvertimento, i bagnini e le indicazioni ufficiali.',
+    legal: 'Note legali',
+    terms: 'Termini di utilizzo',
+    privacy: 'Informativa sulla privacy',
+    cookies: 'Politica sui cookie',
+    faq: 'FAQ',
+    guides: 'Guide alle spiagge',
+    data: 'Dati delle spiagge derivati da OpenStreetMap, © contributori OpenStreetMap, disponibili con licenza Open Database License (ODbL). Previsioni meteo e marine di Open-Meteo (CC BY 4.0).',
+  },
+};
+
+const staticLegalFooter = (locale = prerenderLocales[0]) => {
+  const c = FOOTER_COPY[locale.language] || FOOTER_COPY.en;
+  // Legal documents are single bilingual pages at the root; the FAQ and the guides
+  // hub are the only two that exist per locale (en + el only — de/fr/it fall back
+  // to English, exactly like getGuidesHubLink does in the app).
+  const localePrefix = locale.language === 'gr' ? '/el' : '';
+  const link = (href, label) =>
+    `<li style="margin:0;"><a href="${escapeHtml(href)}" style="color:#0e7490;text-decoration:none;font-weight:600;">${escapeHtml(label)}</a></li>`;
+
+  return `
+      <footer style="margin:32px 0 0;border-top:1px solid #e2e8f0;padding:20px 0 0;font-size:13px;line-height:1.6;color:#475569;">
+        <p style="margin:0 0 12px;">${escapeHtml(c.note)}</p>
+        <nav aria-label="${escapeHtml(c.legal)}">
+          <ul style="display:flex;flex-wrap:wrap;gap:8px 16px;margin:0 0 12px;padding:0;list-style:none;">
+            ${link('/terms/', c.terms)}
+            ${link('/privacy/', c.privacy)}
+            ${link('/cookies/', c.cookies)}
+            ${link(`${localePrefix}/faq/`, c.faq)}
+            ${link(`${localePrefix}/beach-guides/`, c.guides)}
+          </ul>
+        </nav>
+        <p style="margin:0 0 6px;font-size:12px;color:#64748b;">${escapeHtml(c.data)}</p>
+        <p style="margin:0;font-size:12px;color:#94a3b8;">© 2026 Calm Beach</p>
+      </footer>`;
+};
+
+// Drop the static footer into a finished page. Every static builder emits exactly
+// one </main> inside #root, and the app shell (dist/index.html) has none, so the
+// first match is always the right seam. String.replace with a string pattern
+// replaces the first occurrence only — that is the intent here.
+//
+// NOT applied to island-intent guide pages: those already carry
+// renderArticleLegalStrip(), which says something different per intent. Applying
+// both gave them two <footer> elements (caught in the build output, 30/07).
+const withStaticFooter = (html, locale) => html.replace('</main>', `</main>${staticLegalFooter(locale)}`);
+
 const staticHomeFallback = (canonicalUrl, locale = prerenderLocales[0], regionLinks = []) => {
   const isGreek = locale.language === 'gr';
   const features = isGreek
@@ -2629,18 +2747,30 @@ const BEACH_META_CTA = {
   long: {
     en: 'Check live wind, waves and weather before you go — map, access and nearby beaches.',
     gr: 'Δες live άνεμο, κύμα και καιρό πριν πας — χάρτης, πρόσβαση και κοντινές παραλίες.',
+    de: 'Prüfe Wind, Wellen und Wetter live, bevor du losfährst — Karte, Zufahrt und Strände in der Nähe.',
+    fr: 'Vérifiez le vent, les vagues et la météo en direct avant de partir — carte, accès et plages voisines.',
+    it: 'Controlla vento, onde e meteo in diretta prima di partire — mappa, accesso e spiagge vicine.',
   },
   short: {
     en: 'Check live wind, waves and weather before you go.',
     gr: 'Δες live άνεμο, κύμα και καιρό πριν πας.',
+    de: 'Prüfe Wind, Wellen und Wetter live, bevor du losfährst.',
+    fr: 'Vérifiez le vent, les vagues et la météo en direct avant de partir.',
+    it: 'Controlla vento, onde e meteo in diretta prima di partire.',
   },
   tiny: {
     en: 'Check live weather, wind & waves.',
     gr: 'Δες live καιρό, άνεμο & κύμα.',
+    de: 'Wetter, Wind & Wellen live prüfen.',
+    fr: 'Météo, vent et vagues en direct.',
+    it: 'Meteo, vento e onde in diretta.',
   },
   story: {
     en: 'Check live weather, wind & waves.',
     gr: 'Δες live καιρό, άνεμο & κύμα.',
+    de: 'Wetter, Wind & Wellen live prüfen.',
+    fr: 'Météo, vent et vagues en direct.',
+    it: 'Meteo, vento e onde in diretta.',
   },
 };
 
@@ -2649,38 +2779,65 @@ const BEACH_META_CTA = {
 // Shelter uses "often more / συχνά πιο" so it passes the honesty guards and the
 // audit (it is a comparative, orientation-based claim, not a state promise).
 const BEACH_TYPE_TRAIT = {
-  sandy:           { en: 'Sandy beach',            gr: 'Αμμώδης παραλία' },
-  pebbles:         { en: 'Pebble beach',           gr: 'Παραλία με βότσαλο' },
-  'sandy-pebbles': { en: 'Sand & pebble beach',    gr: 'Παραλία με άμμο & βότσαλο' },
-  rocky:           { en: 'Rocky beach',            gr: 'Βραχώδης παραλία' },
+  sandy:           { en: 'Sandy beach',            gr: 'Αμμώδης παραλία',            de: 'Sandstrand',              fr: 'Plage de sable',            it: 'Spiaggia di sabbia' },
+  pebbles:         { en: 'Pebble beach',           gr: 'Παραλία με βότσαλο',         de: 'Kiesstrand',              fr: 'Plage de galets',           it: 'Spiaggia di ciottoli' },
+  'sandy-pebbles': { en: 'Sand & pebble beach',    gr: 'Παραλία με άμμο & βότσαλο',  de: 'Sand- und Kiesstrand',    fr: 'Plage de sable et galets',  it: 'Spiaggia di sabbia e ciottoli' },
+  rocky:           { en: 'Rocky beach',            gr: 'Βραχώδης παραλία',           de: 'Felsstrand',              fr: 'Plage rocheuse',            it: 'Spiaggia rocciosa' },
 };
+// The traits that go in the snippet, in all five languages. This used to be
+// en/gr only, and de/fr/it fell through to a template that said the same
+// sentence on every page with only the name changed. Search Console, 28 days to
+// 2026-07-27, is unusually clean about what that cost: Italian beach pages sit
+// at average position **9.5 — the same as Greek (9.5)** — and earn **1.37% CTR
+// against Greek 2.63%**. Same rank, half the clicks. Position does not explain
+// it; the snippet does. (French looks fine at 2.51% but that is 6 clicks — noise,
+// not evidence.)
+//
+// Wording note for the shelter trait: fr/it must carry a hedge ("souvent/plus",
+// "spesso/più") or our own audit flags them, and it is right to — orientation is
+// a tendency, not a promise.
+const TRAIT_PHRASES = {
+  organisedWithSunbeds: { en: 'organised with sunbeds', gr: 'οργανωμένη με ξαπλώστρες', de: 'organisiert mit Liegen', fr: 'aménagée avec transats', it: 'attrezzata con lettini' },
+  organised:            { en: 'organised',              gr: 'οργανωμένη',                de: 'organisiert',            fr: 'aménagée',               it: 'attrezzata' },
+  sunbeds:              { en: 'with sunbeds',           gr: 'με ξαπλώστρες',             de: 'mit Liegen',             fr: 'avec transats',          it: 'con lettini' },
+  parking:              { en: 'with parking',           gr: 'με πάρκινγκ',               de: 'mit Parkplatz',          fr: 'avec parking',           it: 'con parcheggio' },
+  food:                 { en: 'with food nearby',       gr: 'με φαγητό κοντά',           de: 'mit Essen in der Nähe',  fr: 'restauration à proximité', it: 'con ristoro vicino' },
+  family:               { en: 'family-friendly',        gr: 'οικογενειακή',              de: 'familienfreundlich',     fr: 'familiale',              it: 'adatta alle famiglie' },
+  snorkeling:           { en: 'good for snorkeling',    gr: 'καλή για snorkeling',       de: 'gut zum Schnorcheln',    fr: 'bien pour le snorkeling', it: 'buona per lo snorkeling' },
+  northerly:            { en: 'often more sheltered in northerly winds', gr: 'συχνά πιο απάνεμη σε βόρειους ανέμους', de: 'bei Nordwind oft ruhiger gelegen', fr: 'souvent plus abritée par vent du nord', it: 'spesso più riparata con venti da nord' },
+};
+const traitPhrase = (key, language) => TRAIT_PHRASES[key][language] || TRAIT_PHRASES[key].en;
+
 const beachTraitSentence = (beach, language) => {
-  const lang = language === 'gr' ? 'gr' : 'en';
+  const lang = TRAIT_PHRASES.organised[language] ? language : 'en';
   const typePhrase = BEACH_TYPE_TRAIT[beach?.beachType]?.[lang];
   const features = [];
   const organized = beach.amenities?.organized === true;
   const sunbeds = beach.amenities?.sunbeds === true;
-  if (organized && sunbeds) features.push(lang === 'en' ? 'organised with sunbeds' : 'οργανωμένη με ξαπλώστρες');
-  else if (organized) features.push(lang === 'en' ? 'organised' : 'οργανωμένη');
-  else if (sunbeds) features.push(lang === 'en' ? 'with sunbeds' : 'με ξαπλώστρες');
-  if (beach.amenities?.parking === true) features.push(lang === 'en' ? 'with parking' : 'με πάρκινγκ');
-  if (beach.amenities?.restaurant === true || beach.amenities?.taverna === true) features.push(lang === 'en' ? 'with food nearby' : 'με φαγητό κοντά');
-  if (beach.environment?.familyFriendly === true) features.push(lang === 'en' ? 'family-friendly' : 'οικογενειακή');
-  if (beach.activities?.snorkeling === true) features.push(lang === 'en' ? 'good for snorkeling' : 'καλή για snorkeling');
+  if (organized && sunbeds) features.push(traitPhrase('organisedWithSunbeds', lang));
+  else if (organized) features.push(traitPhrase('organised', lang));
+  else if (sunbeds) features.push(traitPhrase('sunbeds', lang));
+  if (beach.amenities?.parking === true) features.push(traitPhrase('parking', lang));
+  if (beach.amenities?.restaurant === true || beach.amenities?.taverna === true) features.push(traitPhrase('food', lang));
+  if (beach.environment?.familyFriendly === true) features.push(traitPhrase('family', lang));
+  if (beach.activities?.snorkeling === true) features.push(traitPhrase('snorkeling', lang));
   if (Array.isArray(beach.protectedFrom) && NORTHERLY.some(d => beach.protectedFrom.includes(d))) {
-    features.push(lang === 'en' ? 'often more sheltered in northerly winds' : 'συχνά πιο απάνεμη σε βόρειους ανέμους');
+    features.push(traitPhrase('northerly', lang));
   }
   const parts = [typePhrase, ...features.slice(0, 3)].filter(Boolean);
   if (parts.length === 0) return '';
   return `${parts.join(', ')}.`;
 };
 
-// Programmatic beach meta template (en/gr): "{Label}, {island}: {traits} {CTA}".
-// de/fr/it keep the existing localized practical-info template (Milos pilot).
+// Programmatic beach meta template, all five languages:
+// "{Label}, {island}: {traits} {CTA}". de/fr/it used to bail out here and fall
+// back to `beachDescriptionFor`, a fixed sentence that carried no information
+// about the beach — "Spiaggia X, Santorini (Grecia). Controlla vento, onde,
+// meteo ed esposizione della spiaggia prima di andare." on every single Italian
+// page. The Greek page for the same beach opened with what the place is actually
+// like. That gap is the best explanation we have for identical rank (9.5) and
+// half the CTR (1.37% vs 2.63%).
 const beachTraitMetaDescription = (beach, beachName, islandName, language) => {
-  if (language !== 'en' && language !== 'gr') {
-    return beachDescriptionFor(beach, beachName, islandName, language);
-  }
   const label = localizedBeachLabel(beachName, language);
   const traits = beachTraitSentence(beach, language);
   const head = `${label}, ${islandName}: `;
@@ -2805,6 +2962,41 @@ const beachImageAltFor = (beachName, islandName, language) => {
   });
 };
 
+// The beach page was the only page category shipping ZERO <img> in its HTML —
+// measured across all 8.210 of them (10 §4). Google was given 18.504 impressions
+// worth of beach pages with no picture to put next to the result, and the pages
+// convert at 2,8% CTR from position 8,9, below our own curve.
+//
+// Note what this image is and is not: React replaces #root on mount, so a
+// visitor with JavaScript sees it for a moment and then sees the app. Its real
+// audience is the crawler and the reader whose JS has not arrived yet — which is
+// exactly who decides whether a thumbnail appears in the search result. Hence
+// lazy/async: it must never compete with the app for bandwidth.
+//
+// The credit line is not decoration. 958 of our photos are under licences that
+// require attribution (risk #2), so a photo without its author does not ship.
+// `beachCardPhoto` already refuses to return anything it cannot attribute.
+const renderBeachPhotoFigure = (beach, beachName, islandName, language) => {
+  const photo = beachCardPhoto(beach);
+  if (!photo) return '';
+  const alt = pickLang(language, {
+    en: `${beachName} beach, ${islandName}, Greece`,
+    gr: `Παραλία ${beachName}, ${islandName}`,
+    de: `Strand ${beachName}, ${islandName}, Griechenland`,
+    fr: `Plage ${beachName}, ${islandName}, Grèce`,
+    it: `Spiaggia ${beachName}, ${islandName}, Grecia`,
+  });
+  const { author, license, sourceUrl } = photo.credit;
+  const creditLine = photo.creditRequired
+    ? `<figcaption style="margin:6px 0 0;font-size:12px;color:#64748b;">${escapeHtml(beachName)} — <a href="${escapeHtml(sourceUrl)}" rel="nofollow noopener" target="_blank" style="color:#64748b;">${escapeHtml(author)}</a>, ${escapeHtml(license)}</figcaption>`
+    : '';
+  return `
+        <figure style="margin:0 0 20px;">
+          <img src="${escapeHtml(photo.src2x)}" srcset="${escapeHtml(photo.src)} 400w, ${escapeHtml(photo.src2x)} 800w" sizes="(max-width:760px) 100vw, 720px" alt="${escapeHtml(alt)}" referrerpolicy="no-referrer" loading="lazy" decoding="async" width="800" height="600" style="width:100%;height:auto;aspect-ratio:4/3;object-fit:cover;border-radius:12px;display:block;">
+          ${creditLine}
+        </figure>`;
+};
+
 const staticBeachFallback = (beach, island, region, canonicalUrl, locale = prerenderLocales[0]) => {
   const language = locale.language;
   const copy = getStaticFallbackCopy(language);
@@ -2829,6 +3021,7 @@ const staticBeachFallback = (beach, island, region, canonicalUrl, locale = prere
         <p style="margin:0 0 8px;color:#0e7490;font-weight:700;">${escapeHtml(copy.brand)}</p>
         ${renderBeachBreadcrumb(region, island, beachName, language, locale)}
         <h1 style="margin:0 0 12px;font-size:32px;line-height:1.1;">${escapeHtml(beachH1For(beachName, islandName, language))}</h1>
+        ${renderBeachPhotoFigure(beach, beachName, islandName, language)}
         <p style="margin:0 0 20px;font-size:17px;line-height:1.55;color:#334155;">${escapeHtml(description)}</p>
         ${renderBeachStory(region, beach, language)}
         <dl style="display:grid;grid-template-columns:max-content 1fr;gap:8px 14px;margin:0 0 20px;">
@@ -3469,15 +3662,21 @@ const renderLandingDynamic = (landing, locale, dynamic) => {
 
 const landingAlternateUrls = landing => {
   const supported = prerenderLocales.filter(locale => landing.locales[locale.id]);
+  // x-default has to point at a page that EXISTS. This used to hard-code the Greek
+  // locale for every landing, including the 5 that are English-only — so they
+  // advertised /el/<slug>/ URLs that were never emitted. Google discards an entire
+  // hreflang set when one entry is broken, which took the valid entries with it.
+  // Prefer Greek when there is a Greek version, otherwise the first locale we built.
+  const defaultLocale = supported.find(locale => locale.id === xDefaultLocale.id) || supported[0];
   return [
     ...supported.map(locale => ({
       hreflang: locale.hreflang,
       href: canonicalUrlFor(landing.pathName, locale),
     })),
-    {
+    ...(defaultLocale ? [{
       hreflang: 'x-default',
-      href: canonicalUrlFor(landing.pathName, xDefaultLocale),
-    },
+      href: canonicalUrlFor(landing.pathName, defaultLocale),
+    }] : []),
   ];
 };
 
@@ -3846,6 +4045,64 @@ const articleChrome = {
 };
 const getArticleChrome = language => articleChrome[language] || articleChrome.en;
 
+// --- Safety + legal strip on the guide pages ---------------------------------
+// These articles carried no disclaimer and no legal link at all, while the beach
+// pages have had both since 29/07. Snorkeling made that indefensible: it is the
+// one topic we publish where the reader gets into deep water off rocks partly
+// because we pointed them there. Terms/Privacy/Cookies exist at the root only
+// (no /el/terms/), so those stay root-relative on purpose; the FAQ is localized.
+// Wording avoids the word "safe" in every language — the honesty guard treats an
+// unqualified safety claim as a defect, and it is right to.
+const ARTICLE_SAFETY_NOTE = {
+  en: {
+    generic: 'Wind, waves and facilities change. Everything here is indicative and does not replace what you see when you arrive, lifeguard instructions or the beach flags.',
+    snorkeling: 'Everything here is indicative and does not replace what you see when you arrive, lifeguard instructions or the beach flags. Snorkel at your own risk: avoid going in alone over rocks when there is swell, and stay close to shore.',
+    legalLabel: 'Terms', privacyLabel: 'Privacy', cookiesLabel: 'Cookies', faqLabel: 'How CalmBeach works',
+  },
+  gr: {
+    generic: 'Ο άνεμος, το κύμα και οι παροχές αλλάζουν. Ό,τι γράφεται εδώ είναι ενδεικτικό και δεν αντικαθιστά αυτό που βλέπεις όταν φτάνεις, τις οδηγίες του ναυαγοσώστη ή τις σημαίες της παραλίας.',
+    snorkeling: 'Ό,τι γράφεται εδώ είναι ενδεικτικό και δεν αντικαθιστά αυτό που βλέπεις όταν φτάνεις, τις οδηγίες του ναυαγοσώστη ή τις σημαίες της παραλίας. Το snorkeling γίνεται με δική σου ευθύνη: μην μπαίνεις μόνος πάνω από βράχια όταν έχει κύμα και μένε κοντά στην ακτή.',
+    legalLabel: 'Όροι χρήσης', privacyLabel: 'Απόρρητο', cookiesLabel: 'Cookies', faqLabel: 'Πώς δουλεύει το CalmBeach',
+  },
+  de: {
+    generic: 'Wind, Wellen und Ausstattung ändern sich. Alles hier ist unverbindlich und ersetzt weder den eigenen Eindruck vor Ort noch Anweisungen der Rettungsschwimmer oder die Strandflaggen.',
+    snorkeling: 'Alles hier ist unverbindlich und ersetzt weder den eigenen Eindruck vor Ort noch Anweisungen der Rettungsschwimmer oder die Strandflaggen. Schnorcheln auf eigene Verantwortung: nicht allein über Felsen bei Welle, und in Ufernähe bleiben.',
+    legalLabel: 'Nutzungsbedingungen', privacyLabel: 'Datenschutz', cookiesLabel: 'Cookies', faqLabel: 'So funktioniert CalmBeach',
+  },
+  fr: {
+    generic: "Le vent, les vagues et les équipements changent. Tout ceci est indicatif et ne remplace ni ce que vous voyez sur place, ni les consignes des maîtres-nageurs, ni les drapeaux de plage.",
+    snorkeling: "Tout ceci est indicatif et ne remplace ni ce que vous voyez sur place, ni les consignes des maîtres-nageurs, ni les drapeaux de plage. Le snorkeling se pratique sous votre responsabilité : évitez d'y aller seul au-dessus des rochers par houle, et restez près du bord.",
+    legalLabel: "Conditions d'utilisation", privacyLabel: 'Confidentialité', cookiesLabel: 'Cookies', faqLabel: 'Comment fonctionne CalmBeach',
+  },
+  it: {
+    generic: 'Vento, onde e servizi cambiano. Tutto qui è indicativo e non sostituisce ciò che vedi sul posto, le indicazioni dei bagnini o le bandiere della spiaggia.',
+    snorkeling: "Tutto qui è indicativo e non sostituisce ciò che vedi sul posto, le indicazioni dei bagnini o le bandiere della spiaggia. Lo snorkeling è sotto la tua responsabilità: evita di entrare da solo sopra gli scogli con onda e resta vicino a riva.",
+    legalLabel: 'Termini di utilizzo', privacyLabel: 'Privacy', cookiesLabel: 'Cookie', faqLabel: 'Come funziona CalmBeach',
+  },
+};
+
+const renderArticleLegalStrip = (intentKey, locale) => {
+  const copy = ARTICLE_SAFETY_NOTE[locale.language] || ARTICLE_SAFETY_NOTE.en;
+  const note = intentKey === 'snorkeling' ? copy.snorkeling : copy.generic;
+  const links = [
+    { href: localizedPath('/faq/', locale), label: copy.faqLabel },
+    { href: '/terms/', label: copy.legalLabel },
+    { href: '/privacy/', label: copy.privacyLabel },
+    { href: '/cookies/', label: copy.cookiesLabel },
+  ];
+  // Guide articles get their own strip (tuned per intent — snorkeling says something
+  // different) and are therefore the ONE page type that does not go through
+  // withStaticFooter, so the source/licence line has to be repeated here or those
+  // 997 pages would be the only ones shipping without the ODbL notice.
+  const dataNote = (FOOTER_COPY[locale.language] || FOOTER_COPY.en).data;
+  return `
+          <footer class="cb-legal" data-nosnippet="true">
+            <p>${escapeHtml(note)}</p>
+            <ul>${links.map(link => `<li><a href="${escapeHtml(link.href)}">${escapeHtml(link.label)}</a></li>`).join('')}</ul>
+            <p>${escapeHtml(dataNote)}</p>
+          </footer>`;
+};
+
 // One compact credit line per photo we actually rendered: author, licence and a
 // link to the Commons file page. Per-card captions would drown the design, but a
 // blanket "photos from Commons" note does NOT satisfy CC BY — this does.
@@ -4183,9 +4440,134 @@ const renderShorelineFigure = (beach, region, beachName, language) => {
     + '</svg></div>';
 };
 
+// --- Ordering the list, and saying why ---------------------------------------
+// A guide that promises "the best beaches for X" and then lists them in an
+// order nobody can explain is the kind of page Google's own scaled-content
+// policy is written about. Every signal below is a real field on the beach —
+// terrain, orientation, Places review count — never a hash, never a guess.
+
+const beachTerrainTypes = beach => beach.terrain?.types || beach.metadata?.terrain?.types || [];
+
+// What a snorkeler is actually looking for: rock to hold life and hide fish.
+// `rocks` outranks `large_stones`; pebbles alone are a weaker but real signal.
+const snorkelSeabedScore = beach => {
+  const types = beachTerrainTypes(beach);
+  if (types.includes('rocks')) return 3;
+  if (types.includes('large_stones')) return 2;
+  if (types.includes('pebbles')) return 1;
+  return 0;
+};
+
+// Facing away from all three northerly quadrants is the single most useful
+// static fact we hold for a Greek summer: the Meltemi blows from the north.
+const isShelteredFromNortherlies = beach =>
+  NORTHERLY.every(direction => (beach.protectedFrom || []).includes(direction));
+
+// How many wind directions the beach's own geometry turns its back on. Broader
+// shelter means the water is more often flat, and flat water is what makes a
+// seabed visible at all.
+const shelterBreadth = beach => (beach.protectedFrom || []).length;
+
+const rankIntentBeaches = (beaches, intentKey) => {
+  const intentScore = beach => {
+    if (intentKey === 'snorkeling') return snorkelSeabedScore(beach) * 10 + shelterBreadth(beach);
+    if (intentKey === 'sheltered') return shelterBreadth(beach);
+    return 0;
+  };
+  return [...beaches].sort((a, b) =>
+    intentScore(b) - intentScore(a)
+    // Real popularity: a log-scaled Google Places review count, 0 when we have
+    // no Places data at all (so "we don't know" sorts last, it does not bluff).
+    || (b.popularityScore ?? 0) - (a.popularityScore ?? 0)
+    // Photographs last, as a tiebreak between otherwise equal beaches — never
+    // as a reason to outrank a better-matching one.
+    || (beachCardPhoto(b) ? 1 : 0) - (beachCardPhoto(a) ? 1 : 0)
+    || (a.id ?? 0) - (b.id ?? 0));
+};
+
+// One line under the list heading telling the reader what the order means.
+// Wording is deliberately hedged ("more often", "tends to") — it must pass the
+// same honesty guard as every other static sentence on the site.
+const orderRationale = (intentKey, language) => {
+  if (intentKey === 'snorkeling') return pickLang(language, {
+    en: 'The order is not random: rockier seabeds first, and among those the ones whose orientation leaves them less exposed — that is where the water tends to stay clearest. Check conditions before you go.',
+    gr: 'Η σειρά δεν είναι τυχαία: πρώτα οι πιο βραχώδεις, και ανάμεσά τους όσες, με βάση τον προσανατολισμό τους, μένουν λιγότερο εκτεθειμένες — εκεί το νερό μένει πιο διάφανο. Έλεγξε τις συνθήκες πριν πας.',
+    de: 'Die Reihenfolge ist nicht zufällig: zuerst die felsigeren, davon die nach Ausrichtung weniger exponierten — dort bleibt das Wasser meist klarer. Prüfe die Bedingungen, bevor du losfährst.',
+    fr: "L'ordre n'est pas aléatoire : d'abord les fonds les plus rocheux, et parmi eux les moins exposés selon leur orientation — c'est là que l'eau reste la plus claire. Vérifiez les conditions avant de partir.",
+    it: "L'ordine non è casuale: prima i fondali più rocciosi e, tra questi, i meno esposti secondo l'orientamento — lì l'acqua resta più limpida. Controlla le condizioni prima di andare.",
+  });
+  return null;
+};
+
+// Shown only where the seabed is the reason the beach ranks where it does —
+// rock or large stones. Pebbles and sand say nothing a snorkeler can use, and
+// the beach-type tag next to it already carries them.
+const snorkelSeabedTag = (beach, language) => {
+  const score = snorkelSeabedScore(beach);
+  if (score < 2) return null;
+  const rocky = score === 3;
+  return pickLang(language, {
+    en: rocky ? 'Rocky seabed' : 'Stony seabed',
+    gr: rocky ? 'Βραχώδης βυθός' : 'Πετρώδης βυθός',
+    de: rocky ? 'Felsiger Grund' : 'Steiniger Grund',
+    fr: rocky ? 'Fond rocheux' : 'Fond de galets',
+    it: rocky ? 'Fondale roccioso' : 'Fondale sassoso',
+  });
+};
+
+// A card tag for the one thing no other beach list in Greece carries. Shown
+// only when the geometry turns its back on all three northerly directions —
+// the same rule the sheltered guides use, not a softer one.
+const windShelterTag = (beach, language) => {
+  if (!isShelteredFromNortherlies(beach)) return null;
+  return pickLang(language, {
+    en: 'More sheltered from northerlies',
+    gr: 'Πιο υπήνεμη στα βόρεια',
+    de: 'Nordwind: eher geschützter',
+    fr: 'Plus abritée des vents du nord',
+    it: 'Più riparata dai venti del nord',
+  });
+};
+
+// The section that makes a snorkeling guide worth reading twice: when the
+// Meltemi is up, WHICH of these specific beaches still face away from it, by
+// name. Different sentence on every island because it is computed from that
+// island's beaches — not a template with the island name swapped in. Phrased
+// as a question so it belongs in the visible Q&A and in the FAQPage markup.
+const withSnorkelingWindSection = (content, beaches, language) => {
+  const sheltered = beaches.filter(isShelteredFromNortherlies);
+  if (sheltered.length === 0) return content;
+  const names = sheltered.slice(0, 3).map(beach => displayName(beach.name, `Beach ${beach.id}`, language));
+  const list = names.join(', ');
+  const more = sheltered.length - names.length;
+  const section = pickLang(language, {
+    en: {
+      heading: 'Where do I snorkel when the north wind blows?',
+      body: `${sheltered.length} of the beaches listed here face away from all three northerly directions, based on their orientation: ${list}${more > 0 ? ` and ${more} more on this page` : ''}. That usually means less chop and better visibility while the Meltemi is up — orientation is a strong hint, not a promise, so check wind and waves before you go.`,
+    },
+    gr: {
+      heading: 'Πού κάνω snorkeling όταν φυσάει βόρειος;',
+      body: `${sheltered.length} από τις παραλίες αυτής της σελίδας γυρίζουν την πλάτη και στις τρεις βόρειες κατευθύνσεις, με βάση τον προσανατολισμό τους: ${list}${more > 0 ? ` και ${more} ακόμη πιο κάτω` : ''}. Αυτό συνήθως σημαίνει λιγότερο κυματάκι και καλύτερη ορατότητα όσο κρατάει το μελτέμι — ο προσανατολισμός είναι ισχυρή ένδειξη, όχι υπόσχεση, οπότε έλεγξε άνεμο και κύμα πριν πας.`,
+    },
+    de: {
+      heading: 'Wohin zum Schnorcheln bei Nordwind?',
+      body: `${sheltered.length} der hier gelisteten Strände liegen nach ihrer Ausrichtung von allen drei Nordrichtungen abgewandt: ${list}${more > 0 ? ` und ${more} weitere auf dieser Seite` : ''}. Das bedeutet meist weniger Kabbelwasser und bessere Sicht, solange der Meltemi weht — die Ausrichtung ist ein starker Hinweis, keine Zusage: prüfe Wind und Wellen, bevor du losfährst.`,
+    },
+    fr: {
+      heading: 'Où faire du snorkeling quand le vent du nord souffle ?',
+      body: `${sheltered.length} des plages listées ici tournent le dos aux trois directions nord, selon leur orientation : ${list}${more > 0 ? ` et ${more} autres sur cette page` : ''}. Cela signifie généralement moins de clapot et une meilleure visibilité pendant le Meltemi — l'orientation est un indice fort, pas une promesse : vérifiez le vent et les vagues avant de partir.`,
+    },
+    it: {
+      heading: 'Dove fare snorkeling quando soffia il vento del nord?',
+      body: `${sheltered.length} delle spiagge elencate qui, per orientamento, danno le spalle a tutte e tre le direzioni nord: ${list}${more > 0 ? ` e altre ${more} in questa pagina` : ''}. Di solito significa meno increspature e visibilità migliore mentre soffia il Meltemi — l'orientamento è un indizio forte, non una promessa: controlla vento e onde prima di andare.`,
+    },
+  });
+  return { ...content, sections: [section, ...content.sections] };
+};
+
 // A card that leads with a photograph where we have one. Where we don't, a
 // tinted panel carrying the beach type — never an empty or broken frame.
-const renderBeachCard = (beach, island, region, locale) => {
+const renderBeachCard = (beach, island, region, locale, intentKey = null) => {
   const language = locale.language;
   const beachName = displayName(beach.name, `Beach ${beach.id}`, language);
   const blurb = intentBeachBlurbText(region, beach, language);
@@ -4204,9 +4586,19 @@ const renderBeachCard = (beach, island, region, locale) => {
     : renderShorelineFigure(beach, region, beachName, language)
       || `<div class="cb-fig cb-fig-none" aria-hidden="true"><svg viewBox="0 0 120 40" preserveAspectRatio="none" focusable="false"><path d="M0 26c15 0 15-8 30-8s15 8 30 8 15-8 30-8 15 8 30 8v14H0z"/></svg></div>`;
 
+  // The wind tag is skipped on the sheltered guide, where every beach on the
+  // page carries it and it would degrade into wallpaper.
+  const windTag = intentKey === 'sheltered' ? null : windShelterTag(beach, language);
+  // The seabed tag exists to make the stated order verifiable. Without it the
+  // page claimed "rockier seabeds first" while its top card read "Pebbles" —
+  // the beach TYPE is what the coast is made of, the terrain list is what is
+  // under the water, and only the second one is the reason it is ranked here.
+  const seabedTag = intentKey === 'snorkeling' ? snorkelSeabedTag(beach, language) : null;
   const tags = [
     type ? `<li class="cb-tag">${escapeHtml(type)}</li>` : '',
+    seabedTag ? `<li class="cb-tag cb-tag-seabed">${escapeHtml(seabedTag)}</li>` : '',
     access ? `<li class="cb-tag${isHard ? ' cb-tag-warn' : ''}">${escapeHtml(access)}</li>` : '',
+    windTag ? `<li class="cb-tag cb-tag-wind">${escapeHtml(windTag)}</li>` : '',
   ].filter(Boolean).join('');
 
   return `
@@ -4235,13 +4627,17 @@ const staticIslandIntentFallback = (content, island, region, beaches, canonicalU
   // article body never say the same sentence twice.
   const deck = content.description;
   const stats = heroStatsFor(beaches, language);
-  // Presentation-only reorder so the grid opens with photographs. This does NOT
-  // change which beaches the page lists — selection and the ISLAND_INTENT_CAP
-  // cut already happened upstream. (Worth knowing: that upstream sort is on
-  // popularityScore, which is a deterministic hash of the beach id, so there is
-  // no meaningful ranking being disturbed here.)
-  const ordered = [...beaches].sort((a, b) => (beachCardPhoto(b) ? 1 : 0) - (beachCardPhoto(a) ? 1 : 0));
-  const beachItems = ordered.map(beach => renderBeachCard(beach, island, region, locale)).join('');
+  // Ordering. The comment that used to sit here said the upstream sort was "a
+  // deterministic hash of the beach id, so there is no meaningful ranking being
+  // disturbed" — and on that basis reordered the whole grid to put photographs
+  // first. That justification expired: `popularityScore` was fixed to a
+  // log-scaled Google Places review count (buildBeachRegionData.mjs:145), so the
+  // upstream order IS meaningful now, and photo-first was silently overwriting
+  // it. A page titled "the best beaches for snorkeling" owes the reader a real
+  // reason for the order. Photo presence survives only as the last tiebreak.
+  const ordered = rankIntentBeaches(beaches, intent?.key);
+  const beachItems = ordered.map(beach => renderBeachCard(beach, island, region, locale, intent?.key)).join('');
+  const rationale = orderRationale(intent?.key, language);
   // `hero` is either the region's own background, or a photo of a beach this
   // article lists, or null — in which case the hero runs on its CSS gradient.
   // Never another region's scenery passed off as this one's.
@@ -4276,6 +4672,7 @@ const staticIslandIntentFallback = (content, island, region, beaches, canonicalU
 
           ${beachItems ? `
           <div class="cb-rule"><h2>${escapeHtml(chrome.listHeading)}</h2></div>
+          ${rationale ? `<p class="cb-order-note">${escapeHtml(rationale)}</p>` : ''}
           <ul class="cb-grid">${beachItems}</ul>
           ${renderPhotoCredits(ordered, language, chrome, hero?.beach ? hero : null)}` : ''}
 
@@ -4301,6 +4698,7 @@ const staticIslandIntentFallback = (content, island, region, beaches, canonicalU
             it: `Altre guide spiagge — ${islandName}`,
           }))}
           <p class="cb-note" data-nosnippet="true"><a href="${escapeHtml(canonicalUrl)}">${escapeHtml(copy.viewRegion(islandName))}</a></p>
+          ${renderArticleLegalStrip(intent?.key, locale)}
         </div>
       </main>
     </div>
@@ -4470,7 +4868,7 @@ const main = async () => {
       label: displayName(region.name, region.id, locale.language),
     }));
     await mkdir(homeOutputDir, { recursive: true });
-    await writeFile(path.join(homeOutputDir, 'index.html'), buildHomePage(baseHtml, locale, homeOgImageUrl, baseLocales, regionLinks), 'utf8');
+    await writeFile(path.join(homeOutputDir, 'index.html'), withStaticFooter(buildHomePage(baseHtml, locale, homeOgImageUrl, baseLocales, regionLinks), locale), 'utf8');
     sitemapEntries.push(sitemapEntry(canonicalUrlFor('/', locale), homeSitemapImageUrl));
   }
 
@@ -4534,9 +4932,10 @@ const main = async () => {
         .slice(0, ISLAND_INTENT_CAP);
       // Proportional gate for 'sheltered': a small island where >=25% of beaches are
       // sheltered is useful, not a failure (e.g. Santorini 4/13).
+      const minForIntent = intentMinFor(intent.key);
       const passes = intent.key === 'sheltered'
-        ? (matchedAll.length >= ISLAND_INTENT_MIN || (validBeaches.length > 0 && matchedAll.length / validBeaches.length >= 0.25))
-        : matches.length >= ISLAND_INTENT_MIN;
+        ? (matchedAll.length >= minForIntent || (validBeaches.length > 0 && matchedAll.length / validBeaches.length >= 0.25))
+        : matches.length >= minForIntent;
       if (passes && matches.length > 0) {
         islandIntentPages.push({ intent, region, island, beaches: matches, shelteredCount: intent.key === 'sheltered' ? matchedAll.length : matches.length });
       } else if (matches.length > 0) {
@@ -4573,7 +4972,7 @@ const main = async () => {
 
       const landingOutputDir = outputDirForRoute(localizedPath(landing.pathName, locale));
       await mkdir(landingOutputDir, { recursive: true });
-      await writeFile(path.join(landingOutputDir, 'index.html'), buildSeoLandingPage(baseHtml, landing, content, locale, homeOgImageUrl, dynamic), 'utf8');
+      await writeFile(path.join(landingOutputDir, 'index.html'), withStaticFooter(buildSeoLandingPage(baseHtml, landing, content, locale, homeOgImageUrl, dynamic), locale), 'utf8');
       sitemapEntries.push(sitemapEntry(canonicalUrlFor(landing.pathName, locale), homeSitemapImageUrl));
       landingPageCount += 1;
     }
@@ -4610,11 +5009,18 @@ const main = async () => {
       const shelteredIntro = page.intent.key === 'sheltered'
         ? buildShelteredGeometryIntro(page.region.id, shelterGeo, locale.language)
         : null;
-      const content = familyOverride
+      const contentBase = familyOverride
         ? { ...baseContent, h1: familyOverride.h1, intro: familyOverride.intro }
         : shelteredIntro
           ? { ...baseContent, intro: shelteredIntro }
           : baseContent;
+      // Snorkeling guides open their Q&A with a paragraph that is computed from
+      // THIS island's beaches — which of them face away from the Meltemi, by
+      // name. It is the one thing on the page a template could not have written,
+      // and the reason a three-beach guide is still worth publishing.
+      const content = page.intent.key === 'snorkeling'
+        ? withSnorkelingWindSection(contentBase, page.beaches, locale.language)
+        : contentBase;
       const intentOutputDir = outputDirForRoute(localizedPath(pathName, locale));
       await mkdir(intentOutputDir, { recursive: true });
       await writeFile(path.join(intentOutputDir, 'index.html'), buildIslandIntentPage(baseHtml, page.intent, content, page.island, page.region, page.beaches, intentOgImageUrl, locale, emittedLocales, intentHero), 'utf8');
@@ -4622,14 +5028,15 @@ const main = async () => {
       islandIntentPageCount += 1;
     }
   }
-  console.log(`Island intent guides: ${islandIntentPages.length} published (≥${ISLAND_INTENT_MIN} beaches), ${islandIntentBelowMin} island×intent combos skipped below threshold.`);
+  const intentThresholdNote = [`≥${ISLAND_INTENT_MIN} beaches`, ...Object.entries(ISLAND_INTENT_MIN_BY_KEY).map(([key, min]) => `${key} ≥${min}`)].join(', ');
+  console.log(`Island intent guides: ${islandIntentPages.length} published (${intentThresholdNote}), ${islandIntentBelowMin} island×intent combos skipped below threshold.`);
 
   // The single place every guide is collected. Emitted after the guides so it can
   // only ever link to pages that were actually written above.
   for (const locale of baseLocales) {
     const hubOutputDir = outputDirForRoute(localizedPath(GUIDES_HUB_PATH, locale));
     await mkdir(hubOutputDir, { recursive: true });
-    await writeFile(path.join(hubOutputDir, 'index.html'), buildGuidesHubPage(baseHtml, islandIntentPages, locale, homeOgImageUrl, baseLocales), 'utf8');
+    await writeFile(path.join(hubOutputDir, 'index.html'), withStaticFooter(buildGuidesHubPage(baseHtml, islandIntentPages, locale, homeOgImageUrl, baseLocales), locale), 'utf8');
     sitemapEntries.push(sitemapEntry(canonicalUrlFor(GUIDES_HUB_PATH, locale), homeSitemapImageUrl));
     pageCount += 1;
   }
@@ -4686,7 +5093,7 @@ const main = async () => {
       const localizedRegionPath = localizedPath(currentRegionPath, locale);
       const regionOutputDir = outputDirForRoute(localizedRegionPath);
       await mkdir(regionOutputDir, { recursive: true });
-      await writeFile(path.join(regionOutputDir, 'index.html'), buildRegionPage(baseHtml, island, region, regionOgImageUrl, locale, emittedLocales, regionShelteredCount), 'utf8');
+      await writeFile(path.join(regionOutputDir, 'index.html'), withStaticFooter(buildRegionPage(baseHtml, island, region, regionOgImageUrl, locale, emittedLocales, regionShelteredCount), locale), 'utf8');
       sitemapEntries.push(sitemapEntry(canonicalUrlFor(currentRegionPath, locale), regionSitemapImageUrl, regionLastmod));
       regionPageCount += 1;
     }
@@ -4704,7 +5111,7 @@ const main = async () => {
         const localizedRoutePath = localizedPath(routePath, locale);
         const outputDir = outputDirForRoute(localizedRoutePath);
         await mkdir(outputDir, { recursive: true });
-        await writeFile(path.join(outputDir, 'index.html'), buildBeachPage(baseHtml, island, beach, region, regionOgImageUrl, locale, emittedLocales), 'utf8');
+        await writeFile(path.join(outputDir, 'index.html'), withStaticFooter(buildBeachPage(baseHtml, island, beach, region, regionOgImageUrl, locale, emittedLocales), locale), 'utf8');
         sitemapEntries.push(sitemapEntry(canonicalUrlFor(routePath, locale), regionSitemapImageUrl, regionLastmod));
         pageCount += 1;
       }

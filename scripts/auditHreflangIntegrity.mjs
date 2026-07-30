@@ -73,8 +73,13 @@ const incompleteSets = []; // { page, ownCount, targetUrl, targetCount }
 
 for (const [selfUrl, { file, alts }] of pages) {
   const xDefault = alts.get('x-default');
+  // x-default only means anything inside an hreflang cluster: it names which page
+  // to serve when no language matches. A page that advertises no alternates at all
+  // (the single-URL bilingual legal pages from buildLegalPages.mjs) has no cluster
+  // and needs none — flagging those was three phantom failures out of eight.
+  const hasCluster = [...alts.keys()].some(hreflang => hreflang !== 'x-default');
   if (!xDefault) {
-    brokenXDefault.push({ page: selfUrl, reason: 'missing' });
+    if (hasCluster) brokenXDefault.push({ page: selfUrl, reason: 'missing' });
   } else {
     const target = urlToDistFile(xDefault);
     if (!target || !fs.existsSync(target)) brokenXDefault.push({ page: selfUrl, reason: `target missing: ${xDefault}` });
