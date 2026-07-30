@@ -192,6 +192,22 @@ self.addEventListener('fetch', event => {
     return;
   }
 
+  // Cross-origin requests are handed back to the browser untouched.
+  //
+  // Everything not matched above — map tiles from tile.openstreetmap.org and
+  // server.arcgisonline.com, beach photos from commons.wikimedia.org and friends —
+  // used to fall into the default branch below, which fetch()es them and caches
+  // nothing. That gained us exactly nothing and cost us something real: a fetch()
+  // issued from inside a service worker counts as **connect-src**, not img-src, no
+  // matter that the result is painted as an image. So the CSP shipped on 30/07/2026
+  // reported every single tile as a violation — 128 distinct signatures in one
+  // afternoon, all of them `connect-src` with `service-worker.js` as the document.
+  //
+  // Returning without calling respondWith() lets the browser make the request
+  // itself, where it is correctly attributed to img-src. No behaviour changes for
+  // the visitor; these responses were never cached and never will be.
+  if (url.origin !== self.location.origin) return;
+
   // Default: Network First, falling back to cache, then a network error.
   event.respondWith(
     fetch(event.request).catch(() => matchCache(event.request).then(cached => cached || Response.error()))

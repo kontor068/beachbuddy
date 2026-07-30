@@ -130,6 +130,13 @@ const normalize = (body) => {
       line: 0,
       stack: '',
       disposition: clamp(csp.disposition || 'enforce', 20),
+      // One CSP problem is one ORIGIN being refused for one directive, not one URL.
+      // The first version signed on the full blocked URL, so every map tile was a
+      // brand-new "distinct error": 128 signatures in an afternoon, the 25/day
+      // budget gone by the evening, and a real crash that day would have been
+      // silently dropped. The message still shows the exact URL — only the identity
+      // is coarser.
+      groupKey: `${originOf(blocked)}|${directive}`,
     };
   }
 
@@ -143,10 +150,25 @@ const normalize = (body) => {
   };
 };
 
+/** Scheme+host of a URL, for grouping. Falls back to the raw value for the
+ *  keywords CSP uses instead of a URL ("inline", "eval", "data"). */
+const originOf = (value) => {
+  try {
+    return new URL(value).origin;
+  } catch {
+    return clamp(value, 60) || 'unknown';
+  }
+};
+
 /** What makes two reports "the same problem". Line included so two failures in one
  *  file stay distinct; the page URL deliberately is NOT, or the same bug on 300
- *  beach pages would read as 300 bugs. */
-const signatureOf = (report) => `${report.kind}|${report.message}|${report.source}|${report.line}`
+ *  beach pages would read as 300 bugs. CSP reports carry their own coarser
+ *  groupKey — see normalize(). */
+const signatureOf = (report) => (
+  report.groupKey
+    ? `${report.kind}|${report.groupKey}`
+    : `${report.kind}|${report.message}|${report.source}|${report.line}`
+)
   .toLowerCase()
   .replace(/[^a-z0-9|.:_/-]+/g, '')
   .slice(0, 180);
