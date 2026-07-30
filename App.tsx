@@ -4086,6 +4086,34 @@ export const App: React.FC = () => {
     trackEvent('app_loaded', undefined, analyticsBaseParams);
   }, [analyticsBaseParams, selectedIsland]);
 
+  // Outbound-click measurement — one delegated listener for every link that takes a
+  // visitor off calmbeach.gr (photo credits, weather-provider attribution, legal-doc
+  // references, and any future accommodation/affiliate link), so nothing needs its
+  // own trackEvent call at the link site. `navigation_clicked` (Google/Apple Maps)
+  // fires separately via window.open(), not a real <a>, so there is no double count.
+  useEffect(() => {
+    if (typeof document === 'undefined') return undefined;
+    const handleOutboundClick = (event: MouseEvent) => {
+      const target = event.target as HTMLElement | null;
+      const anchor = target?.closest('a[href]') as HTMLAnchorElement | null;
+      if (!anchor) return;
+      let url: URL;
+      try {
+        url = new URL(anchor.href, window.location.href);
+      } catch {
+        return;
+      }
+      if (url.origin === window.location.origin) return;
+      trackEvent('outbound_link_clicked', undefined, {
+        domain: url.hostname,
+        path: window.location.pathname,
+        link_text: (anchor.textContent || '').trim().slice(0, 60),
+      });
+    };
+    document.addEventListener('click', handleOutboundClick, true);
+    return () => document.removeEventListener('click', handleOutboundClick, true);
+  }, []);
+
   useEffect(() => {
     if (!selectedIsland) return;
     const pagePath = typeof window !== 'undefined'

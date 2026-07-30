@@ -28,6 +28,25 @@ For anything countable — how many beaches have a photo, how many have `family:
 many `/de/` routes exist — **write the three-line script and run it.** A real number ends an
 argument that opinions would drag out for a week.
 
+**Five of these already exist as repeatable npm scripts — run them instead of guessing or
+writing a new throwaway.** `npm run quality:numbers` runs all five in sequence (the last four
+need a fresh `dist/`, so `npm run build` first if it's stale):
+
+| Command | What it produces |
+|---|---|
+| `npm run quality:data-coverage` | per-field fill-rate % across the whole beach dataset — `reports/data-quality/field-coverage.json` |
+| `npm run quality:photo-coverage` | national photo coverage % + the highest-importance beaches still missing one — `reports/photo-coverage/importance-gaps.json` |
+| `npm run quality:hreflang-build` | hreflang integrity across every built page: broken targets, broken/missing x-default, non-mutual pairs, incomplete sets — `reports/seo/hreflang-integrity.json` |
+| `npm run quality:jsonld-coverage` | JSON-LD presence + breakdown by `@type` across every built page — `reports/seo/jsonld-coverage.json` |
+| `npm run quality:orphan-pages` | sitemap URLs with zero incoming internal links — `reports/seo/orphan-pages.json` |
+
+These are narrower than `seo:audit` (which spot-checks ~7 sample pages) — these five walk
+*every* built page. `quality:photo-coverage` chains `auditBeachPhotoPresence.mjs` (per-beach
+has-photo, mirrors `services/beachPhotos.ts`'s real lookup order — **check the by-id branch
+if this script and the docs ever disagree again**, it was silently missing until 30/07/2026
+and undercounted coverage by ~1,000 beaches) into `auditPhotoImportanceGaps.mjs` (joins that
+against `popularityScore` and the touristic-tier region list).
+
 ## On the live site
 
 | What | URL |

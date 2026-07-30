@@ -83,11 +83,15 @@ keystore.properties
 ios/App/Pods/
 
 # Internal, non-shippable, or sensitive-in-a-public-repo files
-# (repo is public — keep competitive strategy, GSC analytics data and the
-# machine-specific MCP config out of git so they never get pushed by accident)
+# (repo is public — keep competitive strategy and the machine-specific MCP
+# config out of git so they never get pushed by accident)
 .mcp.json
 docs/competitor-strategy.md
-reports/snapshots/
+# reports/snapshots/ and data/analytics/ WERE gitignored for the same reason —
+# un-ignored 30/07/2026 on purpose: that made them the single point of failure
+# ("lives on one laptop, no copy anywhere", see docs/team/12-growth-analytics.md
+# risk #1). Search Console/GA numbers are not competitively sensitive the way
+# docs/team/ is; tracking them is the fix, not a new leak.
 # docs/team/ — the 17 role docs. Same reason as the two lines above: they hold the
 # negotiating position against a named competitor, monetization thresholds, the legal
 # history, and a concentrated map of our own weak points. Useful internally, not for a

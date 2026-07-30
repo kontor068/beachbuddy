@@ -12,6 +12,14 @@ export type AnalyticsEvent =
   | 'empty_results_shown'
   | 'beach_detail_opened'
   | 'navigation_clicked'
+  // Any click on a link that takes the visitor OFF calmbeach.gr — photo credit
+  // sources, weather-provider attribution, legal-document external refs, and
+  // (once they exist) accommodation/affiliate links. A document-level delegated
+  // listener fires this for every outbound <a>, so a future affiliate link is
+  // measured automatically without wiring a new trackEvent call at the link
+  // site. Deliberately separate from `navigation_clicked` (Google/Apple Maps),
+  // which fires via window.open(), not a real <a> — no double-counting.
+  | 'outbound_link_clicked'
   | 'favorite_clicked'
   | 'share_clicked'
   | 'recommendation_feedback_positive'

@@ -22,7 +22,10 @@ const rootDir = path.resolve(__dirname, '..');
 const appDir = path.join(rootDir, 'public', 'data', 'beaches', 'app');
 const photosSrc = path.join(rootDir, 'services', 'beachPhotos.ts');
 const milosImagesPath = path.join(rootDir, 'src', 'data', 'beachImages.milos.json');
+const byIdPath = path.join(rootDir, 'data', 'beachPhotosById.generated.json');
 const outDir = path.join(rootDir, 'reports', 'photo-coverage');
+
+const BEACH_PHOTOS_BY_ID = JSON.parse(fs.readFileSync(byIdPath, 'utf8'));
 
 // ---------------------------------------------------------------------------
 // 1. Pull the photo data tables straight out of services/beachPhotos.ts so the
@@ -183,7 +186,14 @@ const isMilosIsland = (island) => {
 };
 
 // Mirror of getBeachPhotoLookup → returns { has: bool, source: string }.
+// BEACH_PHOTOS_BY_ID is checked FIRST in services/beachPhotos.ts (GPS-verified,
+// keyed by beachId — see scripts/harvestGeoPhotos.mjs) and must be checked first
+// here too: this branch was missing until 30/07/2026, which made this script
+// undercount coverage by ~1,000 beaches (reported 12% has-photo vs the real ~50%).
 const lookup = (gr, en, beachId, islandName) => {
+  const byId = BEACH_PHOTOS_BY_ID[String(beachId)];
+  if (byId && byId.length) return { has: true, source: 'by-id:geo-verified' };
+
   const atticaKey = aliasKey(ATTICA_AREA_ALIASES, islandName);
   if (atticaKey) {
     const t = ATTICA_BEACH_PHOTOS_BY_AREA[atticaKey];
