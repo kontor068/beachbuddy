@@ -2,6 +2,24 @@
 // never imports back from here, so there is no module cycle across Vite chunks.
 import { recordAction } from './pageviewBeacon';
 
+// ─────────────────────────────────────────────────────────────────────────────
+// THE SUCCESS METRIC — `navigation_clicked`.
+//
+// Decided 30/07/2026. Of the 40 events below, this is the ONE that means the site
+// did its job: the visitor picked a beach and opened directions to drive there.
+// Everything else measures interest — this measures a decision. The stated goal is
+// "the No.1 site for where to swim in Greece today", and a swim starts with
+// someone actually going.
+//
+// Until this was written down, none of the 40 events was marked as a conversion in
+// GA4, so every product change (planner, filters, a new feature) was judged by eye.
+// `beach_detail_opened` was the obvious alternative and was rejected: it is far
+// more frequent and also means "opened it and left".
+//
+// ⚠️ The GA4 side is a setting, not code — mark `navigation_clicked` as a key event
+// in the GA4 UI. This comment exists so the choice is not silently re-litigated,
+// and so nobody renames or removes the event without knowing what it carries.
+// ─────────────────────────────────────────────────────────────────────────────
 export type AnalyticsEvent =
   | 'app_loaded'
   | 'page_view'
@@ -14,6 +32,7 @@ export type AnalyticsEvent =
   | 'filters_cleared'
   | 'empty_results_shown'
   | 'beach_detail_opened'
+  // THE conversion. See the block above before changing, renaming or removing it.
   | 'navigation_clicked'
   // Any click on a link that takes the visitor OFF calmbeach.gr — photo credit
   // sources, weather-provider attribution, legal-document external refs, and

@@ -184,4 +184,9 @@
   VITE_GA_MEASUREMENT_ID = "G-Q0QWSEQN4R"
   SECRETS_SCAN_SMART_DETECTION_ENABLED = "true"
   SECRETS_SCAN_SMART_DETECTION_OMIT_VALUES = "AIzaSyDOCAbC123dEf456GhI789jKl012-MnO,AIza...."
-  SECRETS_SCAN_OMIT_PATHS = "node_modules/@firebase/**"
+  # The former "node_modules/@firebase/**" exclusion is gone with the package: it
+  # blinded the secret scanner to a whole subtree by PATH rather than by value,
+  # which is the weakest kind of exemption. firebase was never imported by
+  # anything and never reached the bundle — removing the dependency removed the
+  # reason for the blind spot too. Do not reintroduce a path-based omission here
+  # without a specific, documented reason.
