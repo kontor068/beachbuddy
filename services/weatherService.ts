@@ -2,6 +2,7 @@
 import { WeatherData, ForecastItem, MarineForecast } from '../types';
 import { recordOpenMeteoCall, OpenMeteoEndpoint } from './analyticsService';
 import { activeForecastProvider } from './forecast';
+import type { ForecastPoint } from './forecast/ForecastProvider';
 import { syncClockFromTrustedInstant } from '../utils/athensTime';
 
 // --- Freshness policy (safety-critical) --------------------------------------
@@ -290,12 +291,18 @@ export const fetchForecastData = async (lat: number, lon: number): Promise<Fetch
 
   return withCache<ForecastItem[]>(cacheKey, 'hourly', 'hourly-forecast', { lat, lon, url: API_URL }, async () => {
     const data = await fetchJson<any>(API_URL, 'hourly-forecast');
-    const hourly = data.hourly;
-    if (!hourly?.time || !Array.isArray(hourly.time)) {
-      throw new Error('Forecast fetch failed: missing hourly data');
-    }
+    return parseHourlyForecast(data?.hourly);
+  });
+};
 
-    return hourly.time.map((timeStr: string, index: number): ForecastItem => {
+/** Shape one Open-Meteo `hourly` block into our ForecastItem[]. Shared by the
+ *  single-point fetcher and the batch one — one parser, one set of quirks. */
+const parseHourlyForecast = (hourly: any): ForecastItem[] => {
+  if (!hourly?.time || !Array.isArray(hourly.time)) {
+    throw new Error('Forecast fetch failed: missing hourly data');
+  }
+
+  return hourly.time.map((timeStr: string, index: number): ForecastItem => {
       const date = new Date(timeStr);
       const isDay = date.getHours() > 6 && date.getHours() < 20;
 
@@ -329,7 +336,6 @@ export const fetchForecastData = async (lat: number, lon: number): Promise<Fetch
         sys: { pod: isDay ? 'd' : 'n' },
         uvIndex: optionalNumber(hourly.uv_index?.[index]),
       };
-    });
   });
 };
 
@@ -344,7 +350,13 @@ export const fetchMarineForecastData = async (lat: number, lon: number): Promise
 
   return withCache<MarineForecastItem[]>(cacheKey, 'marine', 'marine-forecast', { lat, lon, url: API_URL }, async () => {
     const data = await fetchJson<any>(API_URL, 'marine-forecast');
-    const marineHourly = data.hourly;
+    return parseMarineHourly(data?.hourly);
+  });
+};
+
+/** Shape one Open-Meteo Marine `hourly` block into our MarineForecastItem[]. */
+const parseMarineHourly = (marineHourly: any): MarineForecastItem[] => {
+  {
 
     if (!marineHourly?.time || !Array.isArray(marineHourly.time)) {
       throw new Error('Marine fetch failed: missing hourly data');
@@ -395,8 +407,198 @@ export const fetchMarineForecastData = async (lat: number, lon: number): Promise
         item.marine.swellWaveDirectionDeg !== undefined ||
         item.marine.seaSurfaceTemperatureC !== undefined
       ));
-  });
+  }
 };
+
+// ── Multi-point fetching ─────────────────────────────────────────────────────
+//
+// WHY: a region view used to fire one request per cluster (Evia: 34 clusters × 2
+// endpoints = 68 requests, plus 3 for the region itself). Open-Meteo's binding
+// ceiling is ~600 requests/MINUTE, so nine simultaneous Evia visitors crossed it
+// while the daily bucket was a quarter full — which is exactly the 429 we took on
+// 29/07/2026. Batched, the same 34 clusters cost 2 requests per endpoint.
+//
+// Nothing about the DATA changes: same coordinates, same values, same per-point
+// cache entries and the same 60-min TTL / 3-hour cutoff. We are not sampling fewer
+// places — hooks/useWeather.ts explains at length why that is forbidden.
+
+/** Mirrors MAX_COORDINATE_LIST_ITEMS in netlify/functions/forecast.mjs. Going over
+ *  it makes the proxy answer 400, so the two numbers must stay equal. */
+const BATCH_MAX_POINTS = 32;
+/**
+ * How far the echoed coordinate may sit from the requested one before we stop
+ * believing the response describes our point at all.
+ *
+ * This is a SANITY check, not the matching rule, and the difference matters.
+ * Open-Meteo snaps to its own model grid: asking for 24.42 returns 24.5, and 23.60
+ * returns 23.625 — measured, not assumed. That snap (up to ~0.08°) is LARGER than
+ * the gap between two of our clusters (BEACH_FORECAST_CLUSTER_STEPS starts at
+ * 0.05°), so coordinate-matching cannot tell neighbouring clusters apart the way
+ * nationalConditions.ts can with its 13 far-apart region points. Order is the only
+ * reliable identity here; this bound only catches a response that is wrong by
+ * kilometres rather than by grid rounding.
+ *
+ * Marine gets a much looser bound on purpose. `cell_selection=sea` does not round
+ * to the nearest cell — it walks to the nearest cell that is actually WATER, and a
+ * beach at the head of a closed bay can be pulled a long way out: asking marine for
+ * 38.50 on the Evian gulf returned 38.708, i.e. 0.21° away, which the wind bound
+ * would have rejected. That displacement is the feature working, not a fault, so
+ * the marine check only exists to catch a grossly reordered response.
+ */
+const COORD_SANITY_TOLERANCE_DEG = { forecast: 0.2, marine: 1.0 } as const;
+
+/** Stable key for a point, at the same 3-decimal precision as the cache keys. */
+export const forecastPointKey = (lat: number, lon: number): string =>
+  `${lat.toFixed(3)},${lon.toFixed(3)}`;
+
+const chunk = <T>(items: T[], size: number): T[][] => {
+  const out: T[][] = [];
+  for (let i = 0; i < items.length; i += size) out.push(items.slice(i, i + size));
+  return out;
+};
+
+/**
+ * Fetch many points with as few requests as possible, reusing the per-point cache.
+ *
+ * Points already fresh in cache cost nothing. The rest are split into groups of 32,
+ * one request each. Every point that comes back is written to the SAME cache key a
+ * single-point fetch would have used, so a later `fetchForecastData(lat, lon)` for
+ * one of these clusters is a cache hit rather than a new call.
+ *
+ * A failed group falls back to each point's own cached copy while it is inside the
+ * 3-hour cutoff, exactly like the single-point path. Points with nothing usable are
+ * simply absent from the returned map — the caller treats a missing cluster the same
+ * way it already treats a failed one.
+ */
+const fetchPointsBatched = async <T>(
+  points: ForecastPoint[],
+  options: {
+    cachePrefix: 'forecast' | 'marine';
+    endpoint: OpenMeteoEndpoint;
+    source: string;
+    buildUrl: (batch: ForecastPoint[]) => string;
+    parse: (entry: any) => T;
+  },
+): Promise<Map<string, FetchResult<T>>> => {
+  const results = new Map<string, FetchResult<T>>();
+  if (!points.length) return results;
+
+  // Two clusters can round to the same key; ask for each coordinate once.
+  const unique = new Map<string, ForecastPoint>();
+  for (const point of points) {
+    const key = forecastPointKey(point.lat, point.lon);
+    if (!unique.has(key)) unique.set(key, point);
+  }
+
+  const cacheKeyOf = (point: ForecastPoint) =>
+    `${options.cachePrefix}_${point.lat.toFixed(3)}_${point.lon.toFixed(3)}`;
+
+  const missing: ForecastPoint[] = [];
+  for (const [key, point] of unique) {
+    const fresh = getFreshEntry<T>(cacheKeyOf(point));
+    if (fresh) results.set(key, { data: fresh.data, fetchedAt: fresh.timestamp });
+    else missing.push(point);
+  }
+  if (!missing.length) return results;
+
+  await Promise.all(chunk(missing, BATCH_MAX_POINTS).map(async batch => {
+    const url = options.buildUrl(batch);
+    try {
+      const json = await fetchJson<any>(url, options.source);
+      // One point in, object out; many points in, array out.
+      const entries: any[] = Array.isArray(json) ? json : [json];
+
+      // Results come back in request order, one per coordinate. If that is not what
+      // arrived, we do not try to guess which entry belongs to which cluster — with
+      // clusters 0.05° apart and grid snapping up to 0.08°, a guess would silently
+      // hand a beach its neighbour's wind. Drop the group; those beaches keep the
+      // island forecast, which is honest.
+      if (entries.length !== batch.length) {
+        console.warn('[weather] Batched response length mismatch; group discarded', {
+          source: options.source,
+          requested: batch.length,
+          received: entries.length,
+        });
+        return;
+      }
+
+      const fetchedAt = Date.now();
+
+      batch.forEach((point, index) => {
+        const entry = entries[index];
+        const tolerance = COORD_SANITY_TOLERANCE_DEG[options.cachePrefix];
+        const echoedFar =
+          typeof entry?.latitude === 'number' && typeof entry?.longitude === 'number' &&
+          (Math.abs(entry.latitude - point.lat) > tolerance ||
+            Math.abs(entry.longitude - point.lon) > tolerance);
+        if (!entry || echoedFar) {
+          console.warn('[weather] Batched entry does not match its point; skipped', {
+            source: options.source,
+            asked: forecastPointKey(point.lat, point.lon),
+            got: entry ? forecastPointKey(entry.latitude, entry.longitude) : 'none',
+          });
+          return;
+        }
+
+        try {
+          const data = options.parse(entry?.hourly);
+          saveToCache(cacheKeyOf(point), data, fetchedAt);
+          results.set(forecastPointKey(point.lat, point.lon), { data, fetchedAt });
+          // Counted per POINT, not per request: the provider's own limits are what
+          // this number is compared against, and it almost certainly charges each
+          // coordinate. Counting one per request would make us look 32× safer than
+          // we are — the same optimism the server-side meter used to have.
+          recordOpenMeteoCall(options.endpoint);
+        } catch {
+          // One unparseable point must not discard the other 31.
+        }
+      });
+    } catch (error) {
+      console.warn('[weather] Batched Open-Meteo request failed', {
+        source: options.source,
+        points: batch.length,
+        url,
+        error: describeError(error),
+      });
+
+      for (const point of batch) {
+        const stale = getStaleFallbackEntry<T>(cacheKeyOf(point));
+        if (stale) {
+          results.set(forecastPointKey(point.lat, point.lon), {
+            data: stale.data,
+            fetchedAt: stale.timestamp,
+          });
+        }
+      }
+    }
+  }));
+
+  return results;
+};
+
+/** Hourly wind/weather for many points. Key the result with `forecastPointKey`. */
+export const fetchForecastDataBatch = (
+  points: ForecastPoint[],
+): Promise<Map<string, FetchResult<ForecastItem[]>>> =>
+  fetchPointsBatched<ForecastItem[]>(points, {
+    cachePrefix: 'forecast',
+    endpoint: 'hourly',
+    source: 'hourly-forecast-batch',
+    buildUrl: batch => activeForecastProvider.hourlyForecastUrlBatch(batch),
+    parse: parseHourlyForecast,
+  });
+
+/** Marine (wave/swell/SST) for many points. Key the result with `forecastPointKey`. */
+export const fetchMarineForecastDataBatch = (
+  points: ForecastPoint[],
+): Promise<Map<string, FetchResult<MarineForecastItem[]>>> =>
+  fetchPointsBatched<MarineForecastItem[]>(points, {
+    cachePrefix: 'marine',
+    endpoint: 'marine',
+    source: 'marine-forecast-batch',
+    buildUrl: batch => activeForecastProvider.marineForecastUrlBatch(batch),
+    parse: parseMarineHourly,
+  });
 
 export const mergeMarineForecastData = (
   forecastItems: ForecastItem[],

@@ -22,6 +22,8 @@ export const utcDayKey = (date) => date.toISOString().slice(0, 10);
 const freshState = (dayKey) => ({
   day: dayKey,
   count: 0,
+  /** Of `count`, how much was refused with a 429 rather than served. */
+  rateLimited: 0,
   alertedAmber: false,
   alertedRed: false,
   alerted429: false,
@@ -54,9 +56,20 @@ export function recordCalls(prev, dayKey, increment, thresholds = DEFAULT_THRESH
 /**
  * Mark that upstream returned 429 (rate limited). Fires once per day.
  * Returns { next, fire }.
+ *
+ * `increment` is the number of points that call carried, so a refusal still moves
+ * the counter. It used to only raise a flag, which made the alarm unanswerable:
+ * the message could not say WHERE we were when the wall arrived, and no endpoint
+ * read the blob afterwards either. On 29/07/2026 that produced a "quota exhausted"
+ * alert while the daily bucket sat at roughly a quarter — the number would have
+ * said so immediately. Also tracked separately in `rateLimited`, because a refused
+ * call and a served call are not the same event even though both cost us.
  */
-export function recordRateLimited(prev, dayKey) {
+export function recordRateLimited(prev, dayKey, increment = 1) {
   const next = stateForDay(prev, dayKey);
+  const points = Math.max(1, increment | 0);
+  next.count += points;
+  next.rateLimited = (next.rateLimited || 0) + points;
   if (next.alerted429) return { next, fire: false };
   next.alerted429 = true;
   return { next, fire: true };
@@ -65,10 +78,19 @@ export function recordRateLimited(prev, dayKey) {
 /** Telegram message body for a threshold/429 alarm. */
 export function formatCapacityAlert(level, count, thresholds = DEFAULT_THRESHOLDS) {
   if (level === 'rate_limited') {
-    return '🚨 <b>CalmBeach capacity: Open-Meteo RATE LIMITED (429)</b>\n' +
-      'Upstream refused a forecast call — the free quota is exhausted. Forecasts may be ' +
-      'failing for users. The edge proxy is already collapsing calls; if this repeats, ' +
-      'reduce refresh cadence or move to a keyed/commercial forecast plan.';
+    // Deliberately no longer says "the free quota is exhausted". That was our own
+    // wording, not the provider's, and on 29/07/2026 it was wrong: Open-Meteo also
+    // enforces per-minute (~600) and per-hour (~5,000) limits, so a burst refuses
+    // calls with the daily bucket barely touched. The count now travels with the
+    // message so the first question — how close were we? — is already answered.
+    const share = Math.round((count / 10000) * 100);
+    return '🚨 <b>CalmBeach capacity: Open-Meteo refused a call (429)</b>\n' +
+      `Today's counted points so far: <b>${count}</b> (~${share}% of the ~10,000/day free cap).\n` +
+      (share < 50
+        ? 'Well under the DAILY cap, so this is almost certainly the per-minute (~600) or ' +
+          'per-hour (~5,000) limit — a burst, not exhaustion. Look at what spiked.'
+        : 'Close to the daily cap as well — this may be real exhaustion.') +
+      '\nForecasts may be failing for some users right now.';
   }
   const emoji = level === 'red' ? '🔴' : '🟠';
   const limit = level === 'red' ? thresholds.red : thresholds.amber;

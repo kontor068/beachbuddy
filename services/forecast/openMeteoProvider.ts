@@ -120,4 +120,25 @@ export const openMeteoProvider: ForecastProvider = {
   marineForecastUrl(lat, lon) {
     return `${marineOrigin()}/v1/marine?latitude=${lat}&longitude=${lon}&hourly=${MARINE_HOURLY}&timezone=auto&forecast_days=6&${SEA_CELL}&${MARINE_MODEL}`;
   },
+
+  // Multi-point variants. Open-Meteo takes comma-joined coordinate lists and answers
+  // with an ARRAY of the same objects, in request order — but we never trust that
+  // order (see weatherService.matchPointIndex). The edge proxy accepts up to 32 pairs
+  // per call: netlify/functions/forecast.mjs MAX_COORDINATE_LIST_ITEMS.
+  //
+  // `timezone=auto` is deliberately NOT used here. With a list, "auto" resolves per
+  // point, so two clusters 40 km apart could come back on different time bases and
+  // the hourly arrays would no longer line up with each other. Every Greek coast is
+  // Europe/Athens; pinning it keeps one clock across the whole batch.
+  hourlyForecastUrlBatch(points) {
+    const lats = points.map(p => p.lat).join(',');
+    const lons = points.map(p => p.lon).join(',');
+    return `${forecastOrigin()}/v1/forecast?latitude=${lats}&longitude=${lons}&hourly=temperature_2m,weather_code,wind_speed_10m,wind_direction_10m,wind_gusts_10m,pressure_msl,uv_index,precipitation_probability&wind_speed_unit=ms&timezone=Europe%2FAthens`;
+  },
+
+  marineForecastUrlBatch(points) {
+    const lats = points.map(p => p.lat).join(',');
+    const lons = points.map(p => p.lon).join(',');
+    return `${marineOrigin()}/v1/marine?latitude=${lats}&longitude=${lons}&hourly=${MARINE_HOURLY}&timezone=Europe%2FAthens&forecast_days=6&${SEA_CELL}&${MARINE_MODEL}`;
+  },
 };

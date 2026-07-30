@@ -4,6 +4,9 @@ import {
   fetchWeatherData,
   fetchForecastData,
   fetchMarineForecastData,
+  fetchForecastDataBatch,
+  fetchMarineForecastDataBatch,
+  forecastPointKey,
   mergeMarineForecastData,
   FRESH_TTL_MS,
   SOFT_STALE_LIMIT_MS,
@@ -70,12 +73,19 @@ const BEACH_FORECAST_CLUSTER_STEPS = [0.05, 0.08, 0.12];
  * without positive evidence for THIS shore — so weakening the evidence 4x to
  * save calls is the one change that is not allowed here.
  *
- * The cost is affordable today: reports/capacity/capacity-model.md puts us at
- * ~26% of the ~10k/day Open-Meteo ceiling with ~4x headroom. If that tightens,
- * the fix is to batch these coordinates into ONE request (Open-Meteo accepts a
- * comma-joined list), NOT to sample fewer places. Note that netlify/functions/
- * forecast.mjs currently rejects coordinate lists (`Number("36.8,36.9")` → NaN),
- * so that proxy has to learn them first.
+ * The cost is now paid the right way: as of 30/07/2026 these coordinates go out
+ * BATCHED — up to 32 points per request (fetchForecastDataBatch), so Evia's 34
+ * clusters cost 2 requests per endpoint instead of 34. That was always the stated
+ * fix here, and the blocker named in this comment is gone: the proxy learned
+ * coordinate lists (netlify/functions/forecast.mjs, parseCoordinateList).
+ *
+ * Why it mattered more than the daily budget suggested: the ceiling that actually
+ * binds is ~600 requests/MINUTE, not ~10k/day. At 71 requests per Evia view, nine
+ * simultaneous visitors crossed it — which is the 429 of 29/07/2026, taken with
+ * the daily bucket at ~26%.
+ *
+ * The rule that has not changed: if capacity ever tightens again, batch harder or
+ * cache longer — do NOT sample fewer places.
  */
 const MAX_BEACH_FORECAST_CLUSTERS = 6;
 // Per-beach cluster forecasts only refine scores; the map/list already render
@@ -260,23 +270,42 @@ const fetchBeachForecastContexts = async (island: Island): Promise<Record<number
   // behind one file on a cold cache. The forecast leg races it; only the marine leg waits.
   const profilesPromise = loadGeospatialExposureProfiles(island.id).catch(() => undefined);
 
-  const entries = await Promise.all(clusters.map(async cluster => {
-    const [forecastResult, marineItems] = await Promise.all([
-      // Wind stays at the cluster centroid: it drives the safety-critical colours and the
-      // freshness clock, and a wind field does not change basin the way a wave field does.
-      fetchForecastData(cluster.lat, cluster.lon),
-      profilesPromise
-        .then(profiles => {
-          const marinePoint = resolveClusterMarinePoint(cluster, profiles);
-          return fetchMarineForecastData(marinePoint.lat, marinePoint.lon);
-        })
-        .then(result => result.data)
-        .catch(error => {
-          console.warn('Cluster marine forecast unavailable; using wind-based sea estimates.', error);
-          return [];
-        }),
-    ]);
-    const forecast = processForecastData(mergeMarineForecastData(forecastResult.data, marineItems));
+  // ONE request per 32 clusters instead of one per cluster. Evia's 34 clusters used to
+  // cost 68 requests in a burst; they now cost 4. The coordinates are identical — this
+  // is purely about how many HTTP requests carry them, because Open-Meteo's binding
+  // limit is ~600 requests per MINUTE and that is what we were crossing.
+  //
+  // Wind stays at the cluster centroid: it drives the safety-critical colours and the
+  // freshness clock, and a wind field does not change basin the way a wave field does.
+  const windPromise = fetchForecastDataBatch(
+    clusters.map(cluster => ({ lat: cluster.lat, lon: cluster.lon }))
+  );
+
+  const marinePromise = profilesPromise
+    .then(async profiles => {
+      const marinePoints = clusters.map(cluster => resolveClusterMarinePoint(cluster, profiles));
+      return { marinePoints, byPoint: await fetchMarineForecastDataBatch(marinePoints) };
+    })
+    .catch(error => {
+      console.warn('Cluster marine forecast unavailable; using wind-based sea estimates.', error);
+      return { marinePoints: [], byPoint: new Map() };
+    });
+
+  const [windByPoint, marine] = await Promise.all([windPromise, marinePromise]);
+
+  // A cluster whose wind is missing is simply left out, and its beaches keep the island
+  // forecast they were already rendered with. Before batching, one failed cluster
+  // rejected the whole Promise.all and every OTHER cluster's refinement was lost too.
+  const entries = clusters.flatMap((cluster, index) => {
+    const wind = windByPoint.get(forecastPointKey(cluster.lat, cluster.lon));
+    if (!wind) return [];
+
+    const marinePoint = marine.marinePoints[index];
+    const marineItems = marinePoint
+      ? marine.byPoint.get(forecastPointKey(marinePoint.lat, marinePoint.lon))?.data ?? []
+      : [];
+
+    const forecast = processForecastData(mergeMarineForecastData(wind.data, marineItems));
     return cluster.beachIds.map(beachId => [
       beachId,
       {
@@ -285,12 +314,12 @@ const fetchBeachForecastContexts = async (island: Island): Promise<Record<number
         clusterKey: cluster.key,
         // Wind drives the safety-critical colours, so the cluster's freshness follows
         // its hourly-forecast fetch time (marine is supplementary).
-        fetchedAt: forecastResult.fetchedAt,
+        fetchedAt: wind.fetchedAt,
       },
     ] as const);
-  }));
+  });
 
-  return Object.fromEntries(entries.flat());
+  return Object.fromEntries(entries);
 };
 
 export const useWeather = (selectedIsland: Island | undefined, language: LanguageCode) => {

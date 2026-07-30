@@ -28,4 +28,21 @@ export interface ForecastProvider {
   hourlyForecastUrl(lat: number, lon: number): string;
   /** Marine endpoint (wave/swell height, direction, period, SST). */
   marineForecastUrl(lat: number, lon: number): string;
+  /**
+   * Same two endpoints, for MANY points in one request.
+   *
+   * This exists because the per-minute rate limit — not the daily one — is what
+   * actually bites: a single Evia region view fired ~71 separate requests, so nine
+   * simultaneous visitors were enough to cross Open-Meteo's ~600/min ceiling while
+   * the daily bucket sat at a quarter full. Same coordinates, same data, one
+   * request. See hooks/useWeather.ts for why we do NOT solve this by sampling
+   * fewer places instead.
+   */
+  hourlyForecastUrlBatch(points: ForecastPoint[]): string;
+  marineForecastUrlBatch(points: ForecastPoint[]): string;
+}
+
+export interface ForecastPoint {
+  lat: number;
+  lon: number;
 }

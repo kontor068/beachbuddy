@@ -96,8 +96,18 @@ const sendTelegram = async (text) => {
   } catch { /* alarm delivery is best-effort */ }
 };
 
-/** Meter one real upstream call (rateLimited=true records a 429 instead). Never throws. */
-const meterUpstream = async ({ rateLimited }) => {
+/**
+ * Meter one real upstream call (rateLimited=true records a 429 instead). Never throws.
+ *
+ * `points` is how many coordinates that single request carried, and charging it is
+ * the whole point. We used to add 1 per request no matter what, while the landing
+ * page's national strip sends 13 coordinates in one call and a batched region view
+ * sends up to 32. The counter was therefore optimistic by up to 32×, which is
+ * exactly the wrong direction for a number whose only job is to warn us early.
+ * The provider's limits are what this is compared against, and it prices work, not
+ * HTTP requests.
+ */
+const meterUpstream = async ({ rateLimited, points = 1 }) => {
   try {
     const store = getStore(CAPACITY_STORE);
     const prev = await store.get(CAPACITY_KEY, { type: 'json' });
@@ -107,11 +117,11 @@ const meterUpstream = async ({ rateLimited }) => {
     let alert = null;
     let state;
     if (rateLimited) {
-      const r = recordRateLimited(prev, dayKey);
+      const r = recordRateLimited(prev, dayKey, points);
       state = r.next;
-      if (r.fire) alert = formatCapacityAlert('rate_limited', 0, th);
+      if (r.fire) alert = formatCapacityAlert('rate_limited', state.count, th);
     } else {
-      const r = recordCalls(prev, dayKey, 1, th);
+      const r = recordCalls(prev, dayKey, points, th);
       state = r.next;
       if (r.crossed) alert = formatCapacityAlert(r.crossed, state.count, th);
     }
@@ -121,6 +131,49 @@ const meterUpstream = async ({ rateLimited }) => {
   } catch {
     // Metering/alarm failures must never affect the forecast response.
   }
+};
+
+// ── Per-IP burst net ─────────────────────────────────────────────────────────
+//
+// LAST line of defence, not the first. The first is that the app now batches its
+// coordinates: a region view fell from ~71 requests to a handful, which is what
+// actually keeps us under Open-Meteo's ~600/minute ceiling.
+//
+// The order matters, and getting it backwards would have been the bug. Before
+// batching, a perfectly legitimate Evia visitor fired ~71 requests in one burst —
+// any limit tight enough to stop abuse would have blocked that real visitor and
+// blanked their map. With batching in place a heavy view costs a handful of
+// requests, so a limit can sit far above normal use and still catch a script.
+//
+// Held in module scope, so it lives as long as the warm container and is per
+// container, not global. Best-effort by design: a distributed flood walks past it,
+// and the answer to that is a Cloudflare rule, not more code here.
+const RATE_LIMIT_WINDOW_MS = 60_000;
+const RATE_LIMIT_MAX_REQUESTS = 60; // ~10 heavy region views a minute from one IP
+const recentByIp = new Map();
+
+const clientIp = (event) => (
+  event.headers?.['x-nf-client-connection-ip'] ||
+  event.headers?.['x-forwarded-for'] ||
+  ''
+).split(',')[0].trim();
+
+const isRateLimited = (event) => {
+  const ip = clientIp(event);
+  if (!ip) return false;
+
+  const now = Date.now();
+  const hits = (recentByIp.get(ip) || []).filter(at => now - at < RATE_LIMIT_WINDOW_MS);
+  hits.push(now);
+  recentByIp.set(ip, hits);
+
+  if (recentByIp.size > 1000) {
+    for (const [key, times] of recentByIp) {
+      if (!times.some(at => now - at < RATE_LIMIT_WINDOW_MS)) recentByIp.delete(key);
+    }
+  }
+
+  return hits.length > RATE_LIMIT_MAX_REQUESTS;
 };
 
 // Only these params are forwarded. Values are re-validated below, never passed raw.
@@ -223,6 +276,16 @@ export const handler = async (event) => {
     return json(405, { error: 'Method not allowed.' }, cors);
   }
 
+  // Refuse before touching upstream: the point is to protect the shared quota, so a
+  // blocked request must not cost an Open-Meteo call. Retry-After is honest about
+  // the window rather than leaving a client to hammer.
+  if (isRateLimited(event)) {
+    return json(429, { error: 'Too many forecast requests. Try again shortly.' }, {
+      ...cors,
+      'Retry-After': '60',
+    });
+  }
+
   // event.path is the original request path, e.g. /api/forecast/open-meteo/v1/forecast
   const path = event.path || '';
   const idx = path.indexOf(PREFIX);
@@ -242,6 +305,10 @@ export const handler = async (event) => {
   const query = buildSafeQuery(event.queryStringParameters || {});
   if (!query) return json(400, { error: 'Invalid or disallowed query parameters.' }, cors);
 
+  // How many coordinates this one request carries. buildSafeQuery has already
+  // validated the list and guaranteed latitude/longitude have equal length.
+  const pointCount = (query.get('latitude') || '').split(',').length;
+
   // Enforce the marine model pin server-side, unconditionally. `models` was already
   // dropped by buildSafeQuery() if the client sent one (not in ALLOWED_PARAMS), so this
   // is a plain set, never an override of anything a caller could have supplied.
@@ -258,14 +325,14 @@ export const handler = async (event) => {
     });
 
     if (!upstreamResponse.ok) {
-      // 429 = we hit the Open-Meteo quota → the definitive capacity alarm.
-      if (upstreamResponse.status === 429) await meterUpstream({ rateLimited: true });
+      // 429 = upstream refused us → the definitive capacity alarm.
+      if (upstreamResponse.status === 429) await meterUpstream({ rateLimited: true, points: pointCount });
       // Do NOT cache upstream failures — let clients retry / fall back to their cache.
       return json(502, { error: `Upstream ${upstreamResponse.status}` }, cors);
     }
 
     // A real upstream success (this ran only because the CDN cache missed) → meter it.
-    await meterUpstream({ rateLimited: false });
+    await meterUpstream({ rateLimited: false, points: pointCount });
 
     const payload = await upstreamResponse.text(); // pass through verbatim (already JSON)
     return {
