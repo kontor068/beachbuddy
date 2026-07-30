@@ -450,8 +450,8 @@ const page = (data) => {
   .chip.on{background:rgba(34,211,238,.14);border-color:rgba(34,211,238,.5);color:#a5f3fc}
   #optout.on{background:rgba(251,113,133,.14);border-color:rgba(251,113,133,.5);color:#fda4af}
 
-  .kpis{display:grid;grid-template-columns:repeat(6,1fr);gap:10px;margin-bottom:16px}
-  @media(max-width:1000px){.kpis{grid-template-columns:repeat(3,1fr)}}
+  .kpis{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:16px}
+  @media(max-width:900px){.kpis{grid-template-columns:repeat(3,1fr)}}
   @media(max-width:560px){.kpis{grid-template-columns:repeat(2,1fr)}}
   .kpi{position:relative;overflow:hidden;background:var(--panel);border:1px solid var(--line);
     border-radius:14px;padding:12px 13px 10px;backdrop-filter:blur(6px)}
@@ -605,6 +605,7 @@ const page = (data) => {
 
 <div class="kpis">
   ${kpi('Τώρα στο site', `<span id="liveNum">${num(live.length)}</span>`, `<span id="liveCountries">${new Set(live.map((l) => l.cc)).size}</span> χώρες αυτή τη στιγμή`, '', 'hot')}
+  ${kpi('Συσκευές/συνδέσεις σήμερα', num(today.unique), 'ακριβής μέτρηση — ένα κλειδί ανά επισκέπτη', sparkline(uniqSeries, '#22d3ee'))}
   ${kpi(
     '≈ Άτομα σήμερα',
     todayBand.lo === todayBand.hi ? num(todayBand.mid) : `~${num(todayBand.mid)}`,
@@ -614,7 +615,8 @@ const page = (data) => {
     sparkline(uniqSeries, '#f0abfc')
   )}
   ${kpi('Προβολές σήμερα', num(today.hits), `${today.unique ? (today.hits / today.unique).toFixed(1) : '—'} ανά επισκέπτη`, sparkline(hitsSeries, '#22d3ee'))}
-  ${kpi('Νέοι σήμερα', num(today.newV), `${retPct}% επιστρέφοντες στο παράθυρο`, sparkline(newSeries, '#34d399'))}
+  ${kpi('Νέοι σήμερα', num(today.newV), `${num(today.retV)} επιστρέφοντες σήμερα`, sparkline(newSeries, '#34d399'))}
+  ${kpi('Επιστρέφοντες', `${retPct}%`, `στις ${rows.length} μέρες του παραθύρου`, '')}
   ${kpi('Μέσος χρόνος', avgDwell ? dur(avgDwell) : '—', `${bouncePct}% έφυγαν από 1 σελίδα`, '')}
   ${kpi('Άνοιξαν παραλία', `${beachPct}%`, navPeople ? `${num(navPeople)} ζήτησαν οδηγίες` : `${num(navActions)} κλικ «Οδηγίες»`, '', 'act')}
 </div>
