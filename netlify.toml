@@ -33,6 +33,14 @@
   to = "/.netlify/functions/feedback-export"
   status = 200
 
+# Crash reports from the browser AND Content-Security-Policy violation reports.
+# One sink for both: they are the same kind of event (the browser refused to do
+# something) and want the same handling. Sends to Telegram, deduplicated per day.
+[[redirects]]
+  from = "/api/client-error"
+  to = "/.netlify/functions/client-error"
+  status = 200
+
 [[redirects]]
   from = "/beaches/:region/:beach"
   to = "/beaches/:region/:beach/"
@@ -59,9 +67,32 @@
 #                           needs it; omitting the header entirely would also work,
 #                           but then a future third-party script could ask for it.
 #
-# Content-Security-Policy is deliberately NOT here. It is the valuable one, but it
-# needs the map tiles, GA4 and the forecast proxy enumerated first, and a wrong CSP
-# takes the site down silently for visitors while looking fine to us. Separate job.
+# The Content-Security-Policy is REPORT-ONLY on purpose, and must stay that way
+# until the reports have been silent for a few days.
+#
+# A CSP is the one header that can take the site down without anything looking
+# wrong to us: miss a single origin and the map, the photos or the analytics stop
+# working for visitors while every page still returns 200. So it ships listening
+# first — violations go to /api/client-error and land in Telegram alongside crash
+# reports. Only after real traffic produces silence does this become
+# `Content-Security-Policy`. Flip the header name, change nothing else.
+#
+# Sources were enumerated from the code on 30/07/2026, not guessed:
+#   script-src   googletagmanager (GA4, injected in analyticsService.ts)
+#   img-src      https: — beach photos come from commons.wikimedia.org (which 302s
+#                to upload.wikimedia.org), live.staticflickr.com, images.pexels.com,
+#                images.unsplash.com and cdn.pixabay.com, plus map tiles from
+#                {a,b,c}.tile.openstreetmap.org and server.arcgisonline.com. A named
+#                list would be six entries that silently break an image the first
+#                time a photo is added from somewhere new; images are also the least
+#                dangerous thing to allow broadly.
+#   connect-src  GA4 collection endpoints, plus the Open-Meteo hosts which are only
+#                reached directly under `vite dev` (production goes through
+#                same-origin /api/forecast).
+#   'unsafe-inline' for styles is UNAVOIDABLE: prerenderBeachPages.mjs emits 138
+#                inline style="" attributes (97 land on a single beach page) and
+#                index.html carries an inline <style>. Hashes cannot cover
+#                attributes. Script inline is the small bootstrap in index.html.
 [[headers]]
   for = "/*"
   [headers.values]
@@ -70,6 +101,7 @@
     Referrer-Policy = "strict-origin-when-cross-origin"
     Strict-Transport-Security = "max-age=31536000"
     Permissions-Policy = "geolocation=(self), camera=(), microphone=(), payment=()"
+    Content-Security-Policy-Report-Only = "default-src 'self'; script-src 'self' 'unsafe-inline' https://www.googletagmanager.com; style-src 'self' 'unsafe-inline'; img-src 'self' data: https:; connect-src 'self' https://*.google-analytics.com https://*.analytics.google.com https://api.open-meteo.com https://marine-api.open-meteo.com; font-src 'self'; object-src 'none'; base-uri 'self'; form-action 'self'; frame-ancestors 'self'; report-uri /api/client-error"
 
 # Content-hashed build assets (Vite emits everything under /assets/ with a hash
 # in the filename, so each URL is immutable). Cache them for a year so the

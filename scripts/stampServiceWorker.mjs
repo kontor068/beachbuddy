@@ -6,10 +6,17 @@
 // Injecting a unique build id (commit SHA on Netlify, else build time) changes the
 // SW bytes every deploy, so the browser installs the new SW, it skipWaiting/claims,
 // and the app's controllerchange handler reloads the tab into the fresh build.
+//
+// The same id is also stamped into dist/index.html as <meta name="cb-build">, which
+// is what crash reports carry (services/errorReporter.ts). Without it, "the site is
+// broken" arrives with no way to tell whether it started with the last deploy — the
+// first question anyone asks. This runs BEFORE prerenderBeachPages.mjs, which builds
+// every one of the ~9.500 pages from this same index.html, so they all inherit it.
 import { readFile, writeFile } from 'node:fs/promises';
 import path from 'node:path';
 
 const swPath = path.join('dist', 'service-worker.js');
+const indexPath = path.join('dist', 'index.html');
 const buildId = (process.env.COMMIT_REF || process.env.BUILD_ID || `local-${Date.now()}`)
   .toString()
   .slice(0, 16)
@@ -32,4 +39,20 @@ try {
   // Never fail the deploy over the stamp; the app still works, it just won't
   // auto-reload open tabs for this build.
   console.warn(`[stamp-sw] skipped (${error?.message || error})`);
+}
+
+try {
+  const html = await readFile(indexPath, 'utf8');
+  const meta = `<meta name="cb-build" content="${buildId}" />`;
+  // Replace an existing stamp rather than accumulating one per run — this script is
+  // idempotent on a dist/ that was not cleaned.
+  const next = /<meta name="cb-build"[^>]*>/.test(html)
+    ? html.replace(/<meta name="cb-build"[^>]*>/, meta)
+    : html.replace(/<head>/i, `<head>\n    ${meta}`);
+
+  await writeFile(indexPath, next, 'utf8');
+  console.log(`[stamp-sw] stamped ${indexPath} with <meta name="cb-build" content="${buildId}">`);
+} catch (error) {
+  // A missing build id costs us context in a crash report, never a working page.
+  console.warn(`[stamp-sw] index.html build stamp skipped (${error?.message || error})`);
 }

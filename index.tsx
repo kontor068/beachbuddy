@@ -8,6 +8,7 @@ import { initializeAnalytics } from './services/analyticsService';
 import { recordPageview } from './services/pageviewBeacon';
 import { initializeNativeApp } from './utils/nativeBootstrap';
 import { isChunkLoadError, recoverFromChunkLoadError, registerChunkLoadErrorHandler } from './utils/chunkLoadRecovery';
+import { installGlobalErrorReporting, reportClientError } from './services/errorReporter';
 
 declare global {
   interface Window {
@@ -40,8 +41,14 @@ class RootErrorBoundary extends React.Component<RootErrorBoundaryProps, RootErro
   componentDidCatch(error: Error, info: React.ErrorInfo) {
     console.error('RootErrorBoundary', error, info);
     if (isChunkLoadError(error)) {
+      // A stale chunk after a deploy is expected and self-healing — the recovery
+      // reloads into the new build. Reporting it would fill the channel with an
+      // event that means "we shipped", not "we broke".
       void recoverFromChunkLoadError(error, 'RootErrorBoundary');
+      return;
     }
+    // Everything that reaches here blanked the page for a real visitor.
+    reportClientError(error, { source: 'RootErrorBoundary' });
   }
 
   private handleReset = () => {
@@ -102,6 +109,9 @@ root.render(
   </React.StrictMode>
 );
 
+// Before anything else that can throw: the boundary only sees errors inside the
+// React tree, and plenty of what breaks a page happens outside it.
+installGlobalErrorReporting();
 initializeAnalytics();
 // First-party, consent-free real-visitor count for the initial load. SPA navigations
 // are counted from App.tsx's page-view effect. See services/pageviewBeacon.ts.
