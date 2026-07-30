@@ -81,13 +81,40 @@ const bestTodayClaimPattern = /\b(?:best)\b[\s\S]{0,32}\b(?:today|today's|today�
 const unsafeAbsolutePattern = /\bsafe(?:st)?\b/i;
 const safeCaveatPattern = /\b(?:safety|lifeguard|warning flags?|beach flags?|red flags?|yellow flags?|avoid|caution|does not replace|do not replace|not replace|follow)\b/i;
 const guaranteePattern = /\bguarantee(?:d)?\b|garantiert|garanti|garantito|εγγυη/i;
-const guaranteeCaveatPattern = /\b(?:not|no|never|without)\s+\w*\s*guarantee|kein(?:en|er)?\s+garant|pas\s+un\s+abri\s+garanti|non\s+un\s+riparo\s+garantito|όχι\s+εγγυη|δεν\s+.*εγγυη/i;
+// The negations here were transliterated from English and only ever matched the
+// exact German/French/Italian sentences that existed when they were written. The
+// family guides say the same thing with the negative attached to the NOUN, not
+// the verb — "kein**e Karte** garantieren", "**Aucune** carte ne peut garantir",
+// "**Nessuna** mappa può garantire" — and every one of those honest denials was
+// reported as a guarantee. Same failure as the x-default `continue`: a check
+// whose noise buries the findings that are real. The negator is now allowed to
+// sit up to a few words away from the verb, which is how these languages work.
+// One shape for every language: a negator, then up to four words of anything,
+// then the guarantee verb. Two traps this had to survive, both found by testing
+// it instead of reading it: the old English branch allowed exactly ONE word in
+// between, so "no map can guarantee" was reported as a guarantee; and `\w` does
+// not match an accented letter without the `u` flag, so "Nessuna mappa **può**
+// garantire" broke on the ò. The gap is `\S+`, not `\w+`, for that reason.
+const guaranteeCaveatPattern = /(?:\b(?:not|no|never|without|none|nothing)\b|kein\w*|aucune?|nessun[ao]?|\bnon\b|\bpas\b|όχι|δεν|καμί|κανέν)(?:\s+\S+){0,4}\s+(?:guarantee\w*|garanti\w*|εγγυη\w*)/i;
 const shelterClaimPattern = /\b(?:sheltered|wind-protected|protected from|fully protected)\b|windgeschützt|abritées?|riparate?|προστατευ|απάνεμ/i;
 // de/fr/it comparatives belong here too: the pattern only knew English and
 // Greek qualifiers, so ANY German/French/Italian shelter wording was flagged no
 // matter how carefully it was hedged — 50-odd cluster region titles sat in the
 // warning with no wording that could ever clear it.
-const shelterQualifierPattern = /\b(?:usually|often|may|might|can|more|less|available|orientation|oriented|based on|not guaranteed|check|compare|before you go|conditions vary|depending|signal|data|less exposed|more comfortable)\b|\b(?:eher|meist|oft|kann|mehr|weniger|ausrichtung)\b|\b(?:plutôt|souvent|peut|plus|moins|orientation)\b|\b(?:più|meno|spesso|solitamente|può)\b|προσανατολισ|μπορεί|συχν|διαθέσιμ|όχι\s+εγγυη|έλεγξε|σύγκρι|πριν\s+πας|με\s+βάση|δεδομέν|πιο/i;
+// The Italian group carried the SAME accent defect as guaranteeCaveatPattern,
+// found the same way — by testing it: `\bpiù\b` can never match, because `ù` is
+// not a word character without the `u` flag, so the trailing boundary fails
+// after it. Same for `può`. Every Italian region page said "44 **più** riparate
+// dal meltemi" — correctly hedged — and was reported as an unqualified shelter
+// claim anyway. Those two alternatives now carry no trailing boundary.
+const shelterQualifierPattern = /\b(?:usually|often|may|might|can|more|less|available|orientation|oriented|based on|not guaranteed|check|compare|before you go|conditions vary|depending|signal|data|less exposed|more comfortable)\b|\b(?:eher|meist|oft|kann|mehr|weniger|ausrichtung)\b|\b(?:plutôt|souvent|peut|plus|moins|orientation)\b|\b(?:meno|spesso|solitamente)\b|\b(?:più|può)|προσανατολισ|μπορεί|συχν|διαθέσιμ|όχι\s+εγγυη|έλεγξε|σύγκρι|πριν\s+πας|με\s+βάση|δεδομέν|πιο/i;
+
+// "Προστατευόμενη περιοχή Natura 2000" is a nature reserve, not a claim that the
+// beach is out of the wind — but `shelterClaimPattern` sees «προστατευ» and
+// cannot tell the two apart. Same word, unrelated meaning; the beaches that
+// happen to sit inside protected areas were being flagged for a promise nobody
+// made. Narrow on purpose: it exempts the conservation sense only.
+const conservationSensePattern = /προστατευόμεν\w*\s+(?:περιοχ|θαλάσσι|φυσικ)|natura\s*2000|protected\s+area|nature\s+reserve|réserve\s+naturelle|schutzgebiet|area\s+protetta/i;
 
 const riskyClaimFindings = (text, hasCurrentConditionData) => {
   const value = String(text || '');
@@ -109,7 +136,7 @@ const riskyClaimFindings = (text, hasCurrentConditionData) => {
   if (guaranteePattern.test(value) && !guaranteeCaveatPattern.test(value)) {
     findings.push('guarantee wording');
   }
-  if (!hasCurrentConditionData && shelterClaimPattern.test(value) && !shelterQualifierPattern.test(value)) {
+  if (!hasCurrentConditionData && shelterClaimPattern.test(value) && !shelterQualifierPattern.test(value) && !conservationSensePattern.test(value)) {
     findings.push('unqualified sheltered/protected wording');
   }
   return Array.from(new Set(findings));

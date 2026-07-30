@@ -587,7 +587,17 @@ const buildBeach = (rawBeach, island) => {
     },
     waterDepth: depth.waterDepth,
     activities: {
-      snorkeling: snorkelingOverride ?? (metadata ? terrainSupportsSnorkeling(metadata.terrain.types) : getDeterministicValue(rawBeach.id, 'snorkeling') > 0.4),
+      // No terrain on record used to mean `getDeterministicValue(id,'snorkeling')
+      // > 0.4` — a hash, i.e. a coin weighted 60/40 deciding whether we tell a
+      // visitor there is something to see under the water. It is the exact bug
+      // that put 543 invented surf spots on the site, left armed in the sibling
+      // line. It happened to be dormant on 2026-07-30 (every beach carries
+      // terrain, and 731 of the 743 flagged really are rocky), but any beach
+      // added without terrain metadata would have inherited the coin flip — and
+      // the snorkeling guides are now the highest-traffic pages we publish, so
+      // the blast radius had grown, not shrunk. No terrain on record now means
+      // `false`: we do not know, and we do not guess.
+      snorkeling: snorkelingOverride ?? (metadata ? terrainSupportsSnorkeling(metadata.terrain.types) : false),
       // NOT a hash. This used to be `getDeterministicValue(id, 'surfing') > 0.8`,
       // which flagged 543 beaches at random and caught 1 of the 9 real spots —
       // the same fabricated-value bug as the old `4.0 + hash(id)` rating above.
