@@ -4,7 +4,7 @@ import {
   Clock, Sun, Sunset, Backpack,
   Navigation, Share2, Heart, ChevronRight, ThumbsUp, ThumbsDown, CheckCircle2,
   Camera, ExternalLink, Accessibility, AlertTriangle, Tent, Ticket, Euro, ScrollText, Compass, Ship, BadgeCheck,
-  CloudRain
+  CloudRain, XCircle
 } from 'lucide-react';
 import {
   Beach, LanguageCode, Translation, WindDirection,
@@ -17,6 +17,7 @@ import {
   generateBeachExplanation as generateServiceBeachExplanation,
   calculateBeachScore,
   computeHourlyEffectiveWaves,
+  getWeatherGustKmph,
   type BeachWeatherById
 } from '../services/recommendationService';
 import { degToCompass, calculateDistance, getBeaufortLevel, getWaveCondition } from '../utils/weatherUtils';
@@ -42,6 +43,7 @@ import { generateBeachExplanation as generateUiBeachExplanation } from '../utils
 import { describeSimpleWindSuitability, describeWindExposure } from '../utils/windExposureCopy';
 import type { ExposureLevel } from '../utils/windExposure';
 import { getLocalWindNote } from '../utils/localWindNote';
+import { getTowelComfort } from '../utils/towelComfort';
 import { WeatherDataAttribution } from '../components/WeatherDataAttribution';
 import { getBeachStory, type BeachStory } from '../data/beachStories';
 import { getIslandGuideLinks, getGuidesHubLink, GUIDES_HUB_LABEL } from '../utils/beachGuides';
@@ -1025,6 +1027,8 @@ export const BeachDetailPage: React.FC<BeachDetailPageProps> = ({
   );
   const detailBadgeScore = getDetailBadgeScore(score, seaConditionScore, isExposed);
   const beaufortLevel = getBeaufortLevel(windSpeedKmh);
+  const gustKmph = getWeatherGustKmph(weatherData, scoringHourlyForecast);
+  const towelComfort = getTowelComfort(windSpeedKmh, gustKmph, beach.beachType, language);
   const isBoatOnlyBeach = hasBoatOnlyAccess(beach);
   const seaConditionDisplay = getSeaConditionDisplay(seaConditionScore, isExposedForCopy, language, selectedDate, canClaimWindProtectionForCopy, seaCalmClaimAllowed, beaufortLevel, displayWaveHeightM, selectedHour, isBoatOnlyBeach, enclosedCove);
   const boatRideConditionLabel = {
@@ -1757,6 +1761,22 @@ export const BeachDetailPage: React.FC<BeachDetailPageProps> = ({
               subValue={copy.airTemp[language]}
             />
           </div>
+          {/* "Towel Comfort" — same wind numbers as the card above, said the way a tourist
+              actually thinks about a beach day. Display only, no new signal. */}
+          <p className={`flex items-center gap-2 rounded-xl px-3 py-2 text-sm font-semibold ${
+            towelComfort.tone === 'difficult'
+              ? 'bg-rose-50/70 text-rose-800'
+              : towelComfort.tone === 'breezy'
+                ? 'bg-amber-50/70 text-amber-800'
+                : 'bg-emerald-50/70 text-emerald-800'
+          }`}>
+            {towelComfort.tone === 'difficult'
+              ? <XCircle className="h-4 w-4 shrink-0" aria-hidden="true" />
+              : towelComfort.tone === 'breezy'
+                ? <AlertTriangle className="h-4 w-4 shrink-0" aria-hidden="true" />
+                : <CheckCircle2 className="h-4 w-4 shrink-0" aria-hidden="true" />}
+            <span>{towelComfort.text}</span>
+          </p>
           {localWindNote && (
             <p className={`flex items-center gap-2 rounded-xl px-3 py-2 text-sm font-semibold ${
               localWindNote.tone === 'windier'

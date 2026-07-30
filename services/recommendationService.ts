@@ -225,7 +225,7 @@ const getWeatherTemp = (weather: WeatherData | DailyForecast): number => {
   return 25;
 };
 
-const getWeatherGustKmph = (
+export const getWeatherGustKmph = (
   weather: WeatherData | DailyForecast,
   hourlyForecast?: ForecastItem[]
 ): number | undefined => {
