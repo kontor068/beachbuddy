@@ -27,6 +27,12 @@
   to = "/.netlify/functions/traffic-stats"
   status = 200
 
+# Durable condition-feedback export (for scripts/calibrateFromFeedback.mjs). Gated by FEEDBACK_EXPORT_KEY.
+[[redirects]]
+  from = "/api/feedback-export"
+  to = "/.netlify/functions/feedback-export"
+  status = 200
+
 [[redirects]]
   from = "/beaches/:region/:beach"
   to = "/beaches/:region/:beach/"
@@ -36,6 +42,34 @@
   from = "/beaches/:region"
   to = "/beaches/:region/"
   status = 301
+
+# Baseline security headers on every response. Until 30/07/2026 the site sent
+# none at all. These five are the no-risk set — they change nothing about how the
+# page works, they only close off ways OTHER sites can abuse ours:
+#   X-Frame-Options       — nobody can iframe us and overlay their own buttons
+#   X-Content-Type-Options— stops a browser from "sniffing" a file into a script
+#   Referrer-Policy       — outbound links (Google Maps, Commons) stop leaking the
+#                           full URL of the beach page the visitor came from
+#   Strict-Transport-Security — HTTPS only. Deliberately WITHOUT includeSubDomains
+#                           and preload: both are effectively irreversible, and DNS
+#                           is on Cloudflare where a future subdomain may not have
+#                           a certificate on day one.
+#   Permissions-Policy    — hands back camera/mic/payment, which we never use.
+#                           geolocation is listed as (self) ON PURPOSE — "Κοντά μου"
+#                           needs it; omitting the header entirely would also work,
+#                           but then a future third-party script could ask for it.
+#
+# Content-Security-Policy is deliberately NOT here. It is the valuable one, but it
+# needs the map tiles, GA4 and the forecast proxy enumerated first, and a wrong CSP
+# takes the site down silently for visitors while looking fine to us. Separate job.
+[[headers]]
+  for = "/*"
+  [headers.values]
+    X-Frame-Options = "SAMEORIGIN"
+    X-Content-Type-Options = "nosniff"
+    Referrer-Policy = "strict-origin-when-cross-origin"
+    Strict-Transport-Security = "max-age=31536000"
+    Permissions-Policy = "geolocation=(self), camera=(), microphone=(), payment=()"
 
 # Content-hashed build assets (Vite emits everything under /assets/ with a hash
 # in the filename, so each URL is immutable). Cache them for a year so the

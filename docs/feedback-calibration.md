@@ -14,10 +14,27 @@ The beach detail page asks "How accurate was our forecast?" with four structured
   conditions, but we DO ask again on a different day (more calibration data), and
 - emits a GA4 `condition_feedback` event carrying the verdict **paired with the modeled
   conditions at that moment**: `{ verdict, exposureLevel, beaufort, windDir, date }`, and
-- posts the same structured feedback to the Netlify `feedback-email` function. That function
-  sends an email via Resend using server-only env vars (`FEEDBACK_RESEND_API_KEY` or
-  `RESEND_API_KEY`, `FEEDBACK_EMAIL_FROM`, `FEEDBACK_EMAIL_TO`). The temporary default recipient
-  is the operator Gmail inbox until a company inbox is configured.
+- posts the same structured feedback to the Netlify `feedback-email` function
+  (`netlify/functions/feedback-email.mjs`). That function pushes it to a Telegram chat as an
+  instant notification (`FEEDBACK_TELEGRAM_BOT_TOKEN` / `FEEDBACK_TELEGRAM_CHAT_ID` — despite
+  the filename, there is no email delivery in this function).
+
+## Durable storage (live, shipped 30/07/2026)
+Telegram alone is push-only and ephemeral — clearing the chat loses every report ever made,
+and step 1 below had nothing to read. So every **beach-attached** verdict (skips the
+landing-page free-text message, which has no beach to calibrate) is also written to
+**Netlify Blobs**, store `feedback-log`, key `f/<day>/<uuid>`, shape
+`{ beachId, feedback, timestamp, conditions }` — exactly what step 2 consumes. This is
+best-effort and never blocks the Telegram push or the visitor-facing response.
+
+Read it back with the export endpoint (`netlify/functions/feedback-export.mjs`, gated by
+`FEEDBACK_EXPORT_KEY` — set it in the Netlify env, unset ⇒ 403):
+
+```
+curl "https://calmbeach.gr/api/feedback-export?key=YOUR_KEY" -o .tmp/feedback-export.json
+```
+
+Optional `&since=YYYY-MM-DD` limits to records from that UTC day onward.
 
 That pairing is the whole point: it lets us compare what the model SAID against what a visitor
 OBSERVED, per beach and per wind sector.
@@ -33,8 +50,9 @@ evidence-gated, below). The cross-device, model-level calibration is the offline
 Steps 1-3 are now executable via **`scripts/calibrateFromFeedback.mjs`** (it does the aggregation +
 emits conservative, human-reviewable proposals; step 3's edits and step 4 stay manual):
 
-1. Export the `condition_feedback` events from GA4 (BigQuery export or the GA UI) to a JSON array,
-   or collect the local `FEEDBACK_KEY` records during testing.
+1. Pull the durable export above (`curl .../api/feedback-export?key=...`), or collect the local
+   `FEEDBACK_KEY` records during testing. (GA4/BigQuery export still works as a cross-check but
+   is no longer the primary source now that Blobs holds every record.)
 2. `node scripts/calibrateFromFeedback.mjs --input <export.json>` — aggregates per `(beachId, windDir
    sector)` and prints/writes proposals. Try `--demo` to see the output shape on synthetic data.
    It applies the conservative thresholds (≥3 samples, ≥50% negative → UNDER-warn; softening needs

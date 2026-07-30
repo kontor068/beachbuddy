@@ -145,6 +145,16 @@ const checks = [
     failureAction: 'Fix the build error. Existing large chunk warnings are advisory unless Vite exits non-zero.',
     command: npmBin,
     args: ['run', 'build'],
+    // Build as production ON PURPOSE. The last step of `npm run build` is
+    // applyDeployContextGuards.mjs, which on any non-production CONTEXT stamps
+    // noindex into every page and rewrites robots.txt to `Disallow: /`. The very
+    // next check in this gate — the SEO prerender audit — then fails on exactly
+    // that, so the gate could never go green anywhere except a Netlify
+    // production build. It reported 8 phantom failures on every local run until
+    // 30/07/2026 and people learned to ignore it, which is worse than not having
+    // the check. Safe: `dist/` is gitignored and Netlify builds its own copy, so
+    // an index-able local dist is never published.
+    env: { CONTEXT: 'production' },
   },
   {
     id: 'bundle-secrets',
@@ -201,6 +211,7 @@ const runCheck = check => {
     encoding: 'utf8',
     maxBuffer: 1024 * 1024 * 20,
     shell: process.platform === 'win32' && check.command.endsWith('.cmd'),
+    env: check.env ? { ...process.env, ...check.env } : process.env,
   });
 
   const exitCode = typeof result.status === 'number' ? result.status : 1;
