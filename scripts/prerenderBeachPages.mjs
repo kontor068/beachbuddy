@@ -1745,6 +1745,27 @@ const heroFromBeaches = beaches => {
   return null;
 };
 
+/**
+ * The share/preview image for ONE beach: its own photo when we have one.
+ *
+ * Every beach page used to advertise the regional background instead, and for the
+ * 36 regions with no `-bg` asset that resolved to defaultOgImagePath — so a beach
+ * in Achaia offered a cliff on Milos to Facebook, WhatsApp, Google Discover and the
+ * sitemap's <image:loc>. The picture a link preview shows is most of the reason
+ * anyone taps it, and ours was of somewhere else entirely.
+ *
+ * 1200px because that is what the social crawlers want; the same photo is already
+ * on the page at 400/800 (renderBeachPhotoFigure), so this adds no new source and
+ * no new licence question — beachCardPhoto has already refused anything we cannot
+ * attribute. Regions keep the regional background: a region page is about the
+ * region, and picking one of its beaches to represent it would be a choice we
+ * cannot defend.
+ */
+const beachOgImage = beach => {
+  const photo = beachCardPhoto(beach);
+  return photo ? sizedPhotoUrl(photo.src, 1200) : null;
+};
+
 // Honest, computed facts for the hero chips — counted from the very beaches the
 // page lists, so they can never drift from the content below them.
 const heroStatLabels = {
@@ -5107,11 +5128,24 @@ const main = async () => {
         redirects.push(`${legacyPath.replace(/\/$/, '')} ${routePath} 301`);
       }
 
+      // This beach's own photo when it has one, otherwise the regional background.
+      //
+      // og:image only — the SITEMAP keeps the local image on purpose. Image sitemaps
+      // are a claim about images the site hosts, and Google will not index images on
+      // a domain we cannot verify in Search Console. We do not own
+      // commons.wikimedia.org, so listing 1.025 Wikimedia URLs there would be a claim
+      // we cannot back and would never pay off. The SEO audit refuses off-host
+      // sitemap images for exactly this reason and caught the first attempt.
+      //
+      // og:image has no such rule: Facebook, WhatsApp and Slack fetch whatever URL
+      // they are given, which is where the beach photo actually earns the tap.
+      const beachOgUrl = beachOgImage(beach) || regionOgImageUrl;
+
       for (const locale of emittedLocales) {
         const localizedRoutePath = localizedPath(routePath, locale);
         const outputDir = outputDirForRoute(localizedRoutePath);
         await mkdir(outputDir, { recursive: true });
-        await writeFile(path.join(outputDir, 'index.html'), withStaticFooter(buildBeachPage(baseHtml, island, beach, region, regionOgImageUrl, locale, emittedLocales), locale), 'utf8');
+        await writeFile(path.join(outputDir, 'index.html'), withStaticFooter(buildBeachPage(baseHtml, island, beach, region, beachOgUrl, locale, emittedLocales), locale), 'utf8');
         sitemapEntries.push(sitemapEntry(canonicalUrlFor(routePath, locale), regionSitemapImageUrl, regionLastmod));
         pageCount += 1;
       }
