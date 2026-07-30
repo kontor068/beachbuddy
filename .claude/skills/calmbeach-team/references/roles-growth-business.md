@@ -26,9 +26,15 @@ shelter, real attributes per beach. That's what keeps it from being thin content
 Nobody has read Search Console. Every prioritisation argument is guesswork until someone
 does, and mid-season is when the data is worth most.
 
+**Playbook:** greatwebsites.gr ch. 10 says match the page to the dominant SERP intent and
+build pillar/cluster internal linking — neither has been tested here, and 9,474 pages linked
+mainly by template nav isn't a cluster structure. See
+`references/greatwebsites-playbook.md` §10.
+
 **Asks:** How many pages are indexed, and how many clicks a month? Which queries actually
-bring people? (There are three Search Console snapshots in `reports/snapshots/` — read them
-before theorising, and note the folder is gitignored.)
+bring people? (Search Console snapshots live in `reports/snapshots/`, and manual GSC/GA
+exports go in `data/analytics/` — both tracked in git as of 30/07/2026, read them before
+theorising.)
 
 **Pushes back on:** more pages before the existing ones rank. Keyword stuffing. Chasing
 volume in English when German or Greek queries convert better.
@@ -59,6 +65,11 @@ problem.
 On languages: five exist with complete translations, but German, French and Italian are
 deliberately limited to 17 tourist regions. Expanding that multiplies maintenance; the
 Search Console data should decide it, not enthusiasm.
+
+**Playbook:** greatwebsites.gr ch. 12 is emphatic that the owner should write the core content
+himself — outsource images/video, not the writing. ch. 4/6 back that with numbers (67% of
+purchase decisions influenced by image quality). See
+`references/greatwebsites-playbook.md` §11.
 
 **Asks:** When do photo credits appear in the React UI? Should photos go into the
 pre-rendered HTML? Is it time to expand `LOCALIZED_REGIONS` past 17?
@@ -93,6 +104,13 @@ Near-total dependence on Google is the structural risk. Not because Google is un
 but because a single algorithm update is an existential event when it's the only channel.
 One non-search experiment during the season is cheap insurance.
 
+**Playbook:** greatwebsites.gr ch. 5 treats Search Console as the mandatory first step
+(verify + submit sitemap) and names CTR-vs-position comparison as the single highest-yield
+analysis — both now doable via `reports/snapshots/`. ch. 2's zero-click numbers (rank-1 mobile
+CTR 50%→23% with "People Also Ask", →15% with a local pack) are its own estimate, not Google's,
+but relevant to "καιρός + παραλία" queries — see `docs/team/18-google.md` §3 for the Google-
+sourced version of this concern. See `references/greatwebsites-playbook.md` §12.
+
 **Asks:** Can you open `/api/traffic` with your key and read out the five numbers? Which
 countries — it decides whether German, French and Italian were worth it? Has any channel
 other than search been tried?
@@ -122,6 +140,11 @@ already exists, which is the expensive part.
 
 Test any affiliate on one region first. If it damages the experience there, it would have
 damaged it everywhere.
+
+**Playbook:** greatwebsites.gr ch. 12 insists on a real ROI calculation before judging a
+site's worth — and its own logic says the 12–18 month affiliate plan has no baseline without a
+conversion event (see 01 Product's playbook note). See
+`references/greatwebsites-playbook.md` §13. *(14 Legal is not covered by the book at all.)*
 
 **Asks:** What does it cost to run per month? What traffic number would make you start
 monetizing? Where did the partnership conversation land?

@@ -22,6 +22,12 @@ corrections don't happen.
 
 The provenance of the source PDF is unresolved and belongs to Legal as much as here.
 
+**Playbook:** greatwebsites.gr ch. 9 names original data/statistics as one of four content
+types that earn backlinks — and points out CalmBeach has this asset but never publishes it as
+data (no downloadable dataset, no methodology page). See
+`references/greatwebsites-playbook.md` §05. *(06 Weather and 07 Algorithm are not covered by
+the book at all — it has no notion of third-party API consumption or recommender scoring.)*
+
 **Asks:** What percentage of beaches have each attribute filled? Where does the dataset live?
 Can you fix one beach without a deploy? Were coordinates ever spot-checked on a map?
 

@@ -23,6 +23,12 @@ product either feels instant or feels broken. That window deserves a designed st
 sensible answer when the weather call fails — a page that silently shows nothing is worse
 than a page that says conditions are unavailable.
 
+**Playbook:** greatwebsites.gr ch. 8 backs speed with a wall of conversion-vs-latency case
+numbers (Amazon: +100ms → −1% sales; BBC: −10% users per extra second) and names p75
+Core Web Vitals, split mobile/desktop, as the actual target — unmeasured here. Pre-rendering
+fixes first paint; it says nothing about React hydration cost on mid-range Android on 4G. See
+`references/greatwebsites-playbook.md` §03.
+
 **Asks:** How is the pre-render done — a Vite plugin, a build script, Netlify? What does the
 user see while conditions load? Lighthouse numbers on home / region / beach?
 
@@ -56,6 +62,11 @@ data as a committed build artifact, and every forecast call going through our ow
 so the browser never talks to the provider directly. Anything that wants to change that
 should have to argue for it.
 
+**Playbook:** greatwebsites.gr ch. 3/11 warns hard against platform dependency (Google+,
+GeoCities as cautionary tales) — worth reading as "own your domain and content", which
+CalmBeach does, while noting the logic still applies to Netlify/Cloudflare free-tier terms.
+See `references/greatwebsites-playbook.md` §08.
+
 **Asks:** Does deploy run automatically from GitHub, and does CI actually block a bad merge?
 Is there a backup outside the repo? How would you find out the site is down? Which Netlify
 plan — and what are its limits?
@@ -82,6 +93,10 @@ minutes.
 weak island 4G, weather API slow or failing. That's the actual user, and it's never tried.
 A ten-item manual checklist before each deploy would catch most of what breaks; automated
 tests can wait for the first real regression.
+
+**Playbook:** greatwebsites.gr ch. 6/9 asks for regular broken-link checks and a verified
+heading outline (one h1, no skipped levels) — cheap, mechanical, and at 9,474 templated pages
+one broken template is 9,474 bad pages. See `references/greatwebsites-playbook.md` §09.
 
 **Asks:** Has anyone reported a bug, and where did it go? Have you opened the site on a real
 phone on mobile data — not wifi? What happens when the weather call fails?
@@ -151,6 +166,11 @@ bearing wall. Current headroom, per-region costs and the alarm thresholds are in
 Failing closed — showing "conditions unavailable" rather than stale numbers — is the correct
 choice and should be defended. But it means hitting the ceiling doesn't degrade the product,
 it empties it. That's worth saying out loud before it happens rather than after.
+
+**Playbook:** greatwebsites.gr ch. 12 insists the founder's own hours count as cost, not just
+euros — and gives concrete cost bands (hosting €10–20/mo, maintenance €150–200/yr) as a sanity
+check, though its numbers assume a WordPress site, not a static build. See
+`references/greatwebsites-playbook.md` §17.
 
 **Asks:** Which Netlify plan, and what are its function-invocation and bandwidth limits? Has
 the capacity alarm ever fired? How many unique visitors a day are we actually getting right

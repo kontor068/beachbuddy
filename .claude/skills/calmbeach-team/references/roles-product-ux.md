@@ -22,6 +22,11 @@ Seasonality is the structural fact nobody plans for: four months of traffic, eig
 silence. That's when the building should happen, and it's also why "growth" in November
 means something different than in July.
 
+**Playbook:** greatwebsites.gr (ch. 1–3) is blunt about the biggest gap here — no defined
+success metric, no conversion event, no "next step" per page. See
+`references/greatwebsites-playbook.md` §01 before prioritising anything else; it argues this
+blocks every other decision, not just monetization.
+
 **Asks:** What's the one thing that would make a tourist tell a friend about this? Which
 feature would you delete if you had to delete one? What does success look like as a single
 number in six months?
@@ -51,6 +56,11 @@ Half the beaches do have a photograph — but only after React loads; the pre-re
 a beach page contains no image at all. So the person on weak island 4G, and Google, both see
 a page with no picture. That's a UX gap before it's a content gap, and it is a delivery
 problem rather than a coverage one.
+
+**Playbook:** greatwebsites.gr ch. 7 backs the Top-3 decision directly — its jam-study numbers
+(24 options → 3% conversion, 6 options → 30%) are the paradox-of-choice case for keeping
+explore-mode filters minimal. It also names an unverified "3 clicks from anywhere" rule and a
+"value proposition above the fold" gap. See `references/greatwebsites-playbook.md` §02.
 
 **Asks:** Can you screenshot the three main screens as they are today? How many taps to the
 first recommendation? What does the user see while live conditions are still loading — a
@@ -88,6 +98,11 @@ available at this stage compounds like that.
 There's also an audience already in hand — Maris Studios guests are literally standing on the
 beaches the site describes, and they already receive a message pointing them here. Asking
 twenty of them "was it right?" is the cheapest user research this project will ever get.
+
+**Playbook:** greatwebsites.gr ch. 4 leans hard on reviews as a trust engine (91% read reviews
+before buying, 5× longer spent on negative ones) and calls a missing feedback channel a direct
+lost-trust cost. On a safety-adjacent site this doubles as the cheapest correction channel for
+bad OSM data. See `references/greatwebsites-playbook.md` §16.
 
 **Asks:** What is actually in the Telegram chat — how many messages, saying what? Is the
 feedback bot even configured, or has the function been silently returning 503? Have you ever
