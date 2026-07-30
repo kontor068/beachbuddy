@@ -1,5 +1,8 @@
+// The consent-free, first-party action counter. One-way import: pageviewBeacon
+// never imports back from here, so there is no module cycle across Vite chunks.
+import { recordAction } from './pageviewBeacon';
 
-export type AnalyticsEvent = 
+export type AnalyticsEvent =
   | 'app_loaded'
   | 'page_view'
   | 'language_changed'
@@ -521,6 +524,13 @@ export const trackEvent = (
   beachId?: number | string, 
   metadata?: any
 ) => {
+  // First-party mirror of the handful of events that mean "this visitor did the
+  // thing" (navigate, share, favourite, outbound). It runs BEFORE the consent gate
+  // on purpose: it stores no cookie and no personal data (see pageviewBeacon.ts),
+  // and it is the only way conversions from the consent-declining / ad-blocking
+  // half of our traffic ever become visible. Unknown events are ignored there.
+  recordAction(event);
+
   if (!canTrackAnalytics()) return;
 
   const safeMetadata = sanitizeAnalyticsMetadata(metadata);

@@ -96,8 +96,8 @@ const CHANNEL_LABEL = {
   'social-other': '💬 Άλλο social', email: '✉️ Email', referral: '🔗 Άλλο site',
 };
 const ACTION_LABEL = {
-  nav: '🧭 Πλοήγηση σε παραλία', share: '🔗 Κοινοποίηση', fav: '⭐ Αγαπημένο',
-  out: '↗️ Εξωτερικός σύνδεσμος', search: '🔎 Αναζήτηση', filter: '🎚️ Φίλτρο',
+  nav: '🧭 Πλοήγηση', share: '🔗 Κοινοποίηση', fav: '⭐ Αγαπημένο',
+  out: '↗️ Εξωτ. σύνδεσμος', search: '🔎 Αναζήτηση', filter: '🎚️ Φίλτρο',
 };
 const LANG_LABEL = {
   el: '🇬🇷 Ελληνικά', en: '🇬🇧 Αγγλικά', de: '🇩🇪 Γερμανικά', fr: '🇫🇷 Γαλλικά',
@@ -728,6 +728,7 @@ ${funnelPanel(totals.funnel, totals.actions, sumUnique)}
   <span class="tag exact">ακριβές</span> Μοναδικοί επισκέπτες ανά μέρα και «σελίδες ≥2» — μετρώνται χωρίς race, ένας επισκέπτης = ένα κλειδί.
   <span class="tag best">κατά προσέγγιση</span> Προβολές, χώρες, συσκευές, χρόνος: γράφονται με read-modify-write, άρα σε ταυτόχρονες επισκέψεις χάνεται καμιά — υποεκτιμούν ελαφρώς, ποτέ δεν φουσκώνουν.
   <span class="tag est">εκτίμηση</span> «≈ Άτομα»: το κάτω άκρο είναι όσοι πιάστηκαν με ετικέτα νέος/επιστρέφων, το πάνω οι μοναδικές συσκευές/συνδέσεις (το ίδιο κινητό με αλλαγμένη IP μετριέται 2 φορές). Δείχνουμε και τα δύο άκρα.<br>
+  «Νέοι» + «Επιστρ.» μπορεί να μη βγάζουν το σύνολο των μοναδικών: όποιος έχει μπλοκαρισμένη αποθήκευση στον browser δεν μπορεί να πει αν ξαναήρθε, και δεν τον χρεώνουμε σε καμία από τις δύο στήλες.
   Ο «χρόνος» μετράει μόνο όσο η καρτέλα είναι <b>ορατή</b> και σταματά μετά από 5 λεπτά σιωπής — δεν φουσκώνει από ξεχασμένες καρτέλες. «Bounce» = επισκέπτες που είδαν μία μόνο σελίδα.
   Ο χάρτης δείχνει την πόλη που δίνει το δίκτυο· όπου δεν υπάρχει πόλη, βάζουμε το κέντρο της χώρας και το σχεδιάζουμε <b>κούφιο</b>.
   Καμία IP, κανένα cookie, κανένα προσωπικό δεδομένο δεν αποθηκεύεται — μόνο ένα μη-αναστρέψιμο ημερήσιο hash. Η σελίδα ανανεώνεται μόνη της κάθε 20 δευτ.
@@ -1091,8 +1092,15 @@ export const handler = async (event) => {
     }
 
     const startDay = counted[0];
-    // Today is always in the window even if nobody has landed yet today.
-    const allDays = counted.includes(todayKey) ? counted : counted.concat(todayKey);
+    // Every day from the first counted one to today — INCLUDING days with nobody on
+    // them. A zero after counting started is a real zero and belongs on the chart;
+    // only the days before the counter existed are omitted (that is the whole point
+    // of deriving startDay from the store instead of subtracting 30 from today).
+    const allDays = [];
+    const lastMs = Date.parse(`${todayKey}T00:00:00Z`);
+    for (let t = Date.parse(`${startDay}T00:00:00Z`); t <= lastMs && allDays.length < 400; t += 86400000) {
+      allDays.push(utcDayKey(new Date(t)));
+    }
     const requested = Number(params.days);
     const limit = Math.min(90, Math.max(1, Number.isFinite(requested) && requested > 0 ? requested : 90));
     const windowDays = allDays.slice(-limit).reverse(); // newest first
