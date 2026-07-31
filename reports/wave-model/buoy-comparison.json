@@ -1,0 +1,663 @@
+{
+  "generatedAt": "2026-07-31T12:26:16.038744+00:00",
+  "window_days": 120,
+  "gates": {
+    "max_negative_bias_pct": -10.0,
+    "rmse_must_not_exceed_current": true,
+    "strong_wind_beaufort": 5,
+    "max_underestimate_m_strong_wind": 0.4
+  },
+  "per_buoy": [
+    {
+      "buoy": "HERAKLION",
+      "sea": "Κρητικό",
+      "lat": 35.4342,
+      "lon": 25.0792,
+      "observed_hours": 4496,
+      "window": [
+        "2022-09-01T00:00",
+        "2024-10-29T06:00"
+      ],
+      "models": {
+        "meteofrance_wave": {
+          "overall": {
+            "n": 4496,
+            "mean_observed_m": 0.684,
+            "mean_model_m": 0.582,
+            "bias_m": -0.102,
+            "bias_pct": -14.9,
+            "rmse_m": 0.21,
+            "mae_m": 0.141
+          },
+          "strong_wind": {
+            "n": 83,
+            "mean_observed_m": 1.724,
+            "mean_model_m": 1.312,
+            "bias_m": -0.413,
+            "bias_pct": -23.9,
+            "rmse_m": 0.53,
+            "mae_m": 0.427
+          }
+        },
+        "ewam": {
+          "overall": {
+            "n": 4496,
+            "mean_observed_m": 0.684,
+            "mean_model_m": 0.714,
+            "bias_m": 0.03,
+            "bias_pct": 4.4,
+            "rmse_m": 0.171,
+            "mae_m": 0.121
+          },
+          "strong_wind": {
+            "n": 83,
+            "mean_observed_m": 1.724,
+            "mean_model_m": 1.984,
+            "bias_m": 0.26,
+            "bias_pct": 15.1,
+            "rmse_m": 0.443,
+            "mae_m": 0.357
+          }
+        }
+      }
+    },
+    {
+      "buoy": "61277",
+      "sea": "Κρητικό",
+      "lat": 35.7263,
+      "lon": 25.1307,
+      "observed_hours": 4538,
+      "window": [
+        "2022-09-01T00:00",
+        "2024-11-21T21:00"
+      ],
+      "models": {
+        "meteofrance_wave": {
+          "overall": {
+            "n": 4538,
+            "mean_observed_m": 0.893,
+            "mean_model_m": 0.877,
+            "bias_m": -0.016,
+            "bias_pct": -1.8,
+            "rmse_m": 0.186,
+            "mae_m": 0.133
+          },
+          "strong_wind": {
+            "n": 1028,
+            "mean_observed_m": 1.605,
+            "mean_model_m": 1.527,
+            "bias_m": -0.078,
+            "bias_pct": -4.8,
+            "rmse_m": 0.27,
+            "mae_m": 0.2
+          }
+        },
+        "ewam": {
+          "overall": {
+            "n": 4538,
+            "mean_observed_m": 0.893,
+            "mean_model_m": 0.917,
+            "bias_m": 0.023,
+            "bias_pct": 2.6,
+            "rmse_m": 0.185,
+            "mae_m": 0.137
+          },
+          "strong_wind": {
+            "n": 1028,
+            "mean_observed_m": 1.605,
+            "mean_model_m": 1.668,
+            "bias_m": 0.063,
+            "bias_pct": 3.9,
+            "rmse_m": 0.261,
+            "mae_m": 0.198
+          }
+        }
+      }
+    },
+    {
+      "buoy": "ATHOS",
+      "sea": "Β. Αιγαίο",
+      "lat": 39.975,
+      "lon": 24.7294,
+      "observed_hours": 689,
+      "window": [
+        "2022-09-01T00:00",
+        "2022-11-26T09:00"
+      ],
+      "models": {
+        "meteofrance_wave": {
+          "overall": {
+            "n": 689,
+            "mean_observed_m": 0.822,
+            "mean_model_m": 0.682,
+            "bias_m": -0.141,
+            "bias_pct": -17.1,
+            "rmse_m": 0.25,
+            "mae_m": 0.185
+          },
+          "strong_wind": {
+            "n": 212,
+            "mean_observed_m": 1.463,
+            "mean_model_m": 1.281,
+            "bias_m": -0.182,
+            "bias_pct": -12.4,
+            "rmse_m": 0.326,
+            "mae_m": 0.254
+          }
+        },
+        "ewam": {
+          "overall": {
+            "n": 689,
+            "mean_observed_m": 0.822,
+            "mean_model_m": 0.667,
+            "bias_m": -0.155,
+            "bias_pct": -18.9,
+            "rmse_m": 0.251,
+            "mae_m": 0.192
+          },
+          "strong_wind": {
+            "n": 212,
+            "mean_observed_m": 1.463,
+            "mean_model_m": 1.309,
+            "bias_m": -0.154,
+            "bias_pct": -10.6,
+            "rmse_m": 0.307,
+            "mae_m": 0.245
+          }
+        }
+      }
+    }
+  ],
+  "overall": {
+    "meteofrance_wave": {
+      "n": 9723,
+      "mean_observed_m": 0.792,
+      "mean_model_m": 0.727,
+      "bias_m": -0.065,
+      "bias_pct": -8.2,
+      "rmse_m": 0.203,
+      "mae_m": 0.14
+    },
+    "ewam": {
+      "n": 9723,
+      "mean_observed_m": 0.792,
+      "mean_model_m": 0.805,
+      "bias_m": 0.014,
+      "bias_pct": 1.7,
+      "rmse_m": 0.184,
+      "mae_m": 0.133
+    }
+  },
+  "dangerous_underestimates": [
+    {
+      "model": "meteofrance_wave",
+      "buoy": "HERAKLION",
+      "hour": "2022-09-06T09:00",
+      "observed_m": 2.85,
+      "model_m": 2.36,
+      "shortfall_m": 0.49,
+      "beaufort": 5
+    },
+    {
+      "model": "meteofrance_wave",
+      "buoy": "HERAKLION",
+      "hour": "2022-10-02T09:00",
+      "observed_m": 1.59,
+      "model_m": 0.86,
+      "shortfall_m": 0.73,
+      "beaufort": 5
+    },
+    {
+      "model": "meteofrance_wave",
+      "buoy": "HERAKLION",
+      "hour": "2022-10-02T12:00",
+      "observed_m": 1.91,
+      "model_m": 1.04,
+      "shortfall_m": 0.87,
+      "beaufort": 5
+    },
+    {
+      "model": "meteofrance_wave",
+      "buoy": "HERAKLION",
+      "hour": "2022-10-16T00:00",
+      "observed_m": 3.0,
+      "model_m": 2.26,
+      "shortfall_m": 0.74,
+      "beaufort": 5
+    },
+    {
+      "model": "meteofrance_wave",
+      "buoy": "HERAKLION",
+      "hour": "2022-12-10T21:00",
+      "observed_m": 1.12,
+      "model_m": 0.46,
+      "shortfall_m": 0.66,
+      "beaufort": 5
+    },
+    {
+      "model": "meteofrance_wave",
+      "buoy": "HERAKLION",
+      "hour": "2023-02-05T00:00",
+      "observed_m": 1.66,
+      "model_m": 1.16,
+      "shortfall_m": 0.5,
+      "beaufort": 5
+    },
+    {
+      "model": "meteofrance_wave",
+      "buoy": "HERAKLION",
+      "hour": "2023-02-05T03:00",
+      "observed_m": 1.88,
+      "model_m": 1.26,
+      "shortfall_m": 0.62,
+      "beaufort": 5
+    },
+    {
+      "model": "meteofrance_wave",
+      "buoy": "HERAKLION",
+      "hour": "2023-02-05T15:00",
+      "observed_m": 3.46,
+      "model_m": 1.72,
+      "shortfall_m": 1.74,
+      "beaufort": 5
+    },
+    {
+      "model": "meteofrance_wave",
+      "buoy": "HERAKLION",
+      "hour": "2023-02-06T00:00",
+      "observed_m": 4.91,
+      "model_m": 3.14,
+      "shortfall_m": 1.77,
+      "beaufort": 5
+    },
+    {
+      "model": "meteofrance_wave",
+      "buoy": "HERAKLION",
+      "hour": "2023-02-06T03:00",
+      "observed_m": 3.95,
+      "model_m": 3.4,
+      "shortfall_m": 0.55,
+      "beaufort": 5
+    },
+    {
+      "model": "meteofrance_wave",
+      "buoy": "HERAKLION",
+      "hour": "2023-02-06T06:00",
+      "observed_m": 4.34,
+      "model_m": 3.36,
+      "shortfall_m": 0.98,
+      "beaufort": 5
+    },
+    {
+      "model": "meteofrance_wave",
+      "buoy": "HERAKLION",
+      "hour": "2023-02-06T12:00",
+      "observed_m": 3.84,
+      "model_m": 3.18,
+      "shortfall_m": 0.66,
+      "beaufort": 5
+    },
+    {
+      "model": "meteofrance_wave",
+      "buoy": "HERAKLION",
+      "hour": "2023-02-26T12:00",
+      "observed_m": 1.06,
+      "model_m": 0.58,
+      "shortfall_m": 0.48,
+      "beaufort": 5
+    },
+    {
+      "model": "meteofrance_wave",
+      "buoy": "HERAKLION",
+      "hour": "2023-02-27T06:00",
+      "observed_m": 1.19,
+      "model_m": 0.7,
+      "shortfall_m": 0.49,
+      "beaufort": 5
+    },
+    {
+      "model": "meteofrance_wave",
+      "buoy": "HERAKLION",
+      "hour": "2023-02-27T09:00",
+      "observed_m": 1.58,
+      "model_m": 0.84,
+      "shortfall_m": 0.74,
+      "beaufort": 6
+    },
+    {
+      "model": "meteofrance_wave",
+      "buoy": "HERAKLION",
+      "hour": "2023-02-27T12:00",
+      "observed_m": 1.41,
+      "model_m": 0.76,
+      "shortfall_m": 0.65,
+      "beaufort": 5
+    },
+    {
+      "model": "meteofrance_wave",
+      "buoy": "HERAKLION",
+      "hour": "2023-02-28T18:00",
+      "observed_m": 1.12,
+      "model_m": 0.62,
+      "shortfall_m": 0.5,
+      "beaufort": 5
+    },
+    {
+      "model": "meteofrance_wave",
+      "buoy": "HERAKLION",
+      "hour": "2023-03-13T12:00",
+      "observed_m": 2.85,
+      "model_m": 2.22,
+      "shortfall_m": 0.63,
+      "beaufort": 5
+    },
+    {
+      "model": "meteofrance_wave",
+      "buoy": "HERAKLION",
+      "hour": "2023-03-13T15:00",
+      "observed_m": 2.94,
+      "model_m": 2.32,
+      "shortfall_m": 0.62,
+      "beaufort": 5
+    },
+    {
+      "model": "meteofrance_wave",
+      "buoy": "HERAKLION",
+      "hour": "2023-03-18T00:00",
+      "observed_m": 2.7,
+      "model_m": 2.26,
+      "shortfall_m": 0.44,
+      "beaufort": 5
+    },
+    {
+      "model": "meteofrance_wave",
+      "buoy": "HERAKLION",
+      "hour": "2023-03-28T09:00",
+      "observed_m": 1.67,
+      "model_m": 1.12,
+      "shortfall_m": 0.55,
+      "beaufort": 5
+    },
+    {
+      "model": "meteofrance_wave",
+      "buoy": "HERAKLION",
+      "hour": "2023-03-28T15:00",
+      "observed_m": 2.06,
+      "model_m": 1.54,
+      "shortfall_m": 0.52,
+      "beaufort": 5
+    },
+    {
+      "model": "meteofrance_wave",
+      "buoy": "HERAKLION",
+      "hour": "2023-03-29T00:00",
+      "observed_m": 2.72,
+      "model_m": 1.74,
+      "shortfall_m": 0.98,
+      "beaufort": 5
+    },
+    {
+      "model": "meteofrance_wave",
+      "buoy": "HERAKLION",
+      "hour": "2023-03-29T03:00",
+      "observed_m": 2.36,
+      "model_m": 1.7,
+      "shortfall_m": 0.66,
+      "beaufort": 5
+    },
+    {
+      "model": "meteofrance_wave",
+      "buoy": "HERAKLION",
+      "hour": "2023-03-29T06:00",
+      "observed_m": 2.57,
+      "model_m": 1.9,
+      "shortfall_m": 0.67,
+      "beaufort": 5
+    },
+    {
+      "model": "meteofrance_wave",
+      "buoy": "HERAKLION",
+      "hour": "2023-03-29T09:00",
+      "observed_m": 2.53,
+      "model_m": 2.06,
+      "shortfall_m": 0.47,
+      "beaufort": 5
+    },
+    {
+      "model": "meteofrance_wave",
+      "buoy": "HERAKLION",
+      "hour": "2023-04-15T03:00",
+      "observed_m": 0.83,
+      "model_m": 0.42,
+      "shortfall_m": 0.41,
+      "beaufort": 5
+    },
+    {
+      "model": "meteofrance_wave",
+      "buoy": "HERAKLION",
+      "hour": "2023-06-17T03:00",
+      "observed_m": 1.35,
+      "model_m": 0.92,
+      "shortfall_m": 0.43,
+      "beaufort": 5
+    },
+    {
+      "model": "meteofrance_wave",
+      "buoy": "HERAKLION",
+      "hour": "2023-06-17T09:00",
+      "observed_m": 1.5,
+      "model_m": 0.84,
+      "shortfall_m": 0.66,
+      "beaufort": 5
+    },
+    {
+      "model": "meteofrance_wave",
+      "buoy": "HERAKLION",
+      "hour": "2023-06-17T15:00",
+      "observed_m": 2.03,
+      "model_m": 1.1,
+      "shortfall_m": 0.93,
+      "beaufort": 5
+    },
+    {
+      "model": "meteofrance_wave",
+      "buoy": "HERAKLION",
+      "hour": "2023-06-17T18:00",
+      "observed_m": 1.66,
+      "model_m": 1.16,
+      "shortfall_m": 0.5,
+      "beaufort": 5
+    },
+    {
+      "model": "meteofrance_wave",
+      "buoy": "HERAKLION",
+      "hour": "2023-06-17T21:00",
+      "observed_m": 1.52,
+      "model_m": 1.1,
+      "shortfall_m": 0.42,
+      "beaufort": 5
+    },
+    {
+      "model": "meteofrance_wave",
+      "buoy": "HERAKLION",
+      "hour": "2024-04-20T09:00",
+      "observed_m": 2.13,
+      "model_m": 1.3,
+      "shortfall_m": 0.83,
+      "beaufort": 5
+    },
+    {
+      "model": "meteofrance_wave",
+      "buoy": "HERAKLION",
+      "hour": "2024-05-03T21:00",
+      "observed_m": 1.76,
+      "model_m": 1.32,
+      "shortfall_m": 0.44,
+      "beaufort": 5
+    },
+    {
+      "model": "meteofrance_wave",
+      "buoy": "HERAKLION",
+      "hour": "2024-05-04T00:00",
+      "observed_m": 2.04,
+      "model_m": 1.5,
+      "shortfall_m": 0.54,
+      "beaufort": 5
+    },
+    {
+      "model": "meteofrance_wave",
+      "buoy": "HERAKLION",
+      "hour": "2024-05-04T18:00",
+      "observed_m": 1.94,
+      "model_m": 1.46,
+      "shortfall_m": 0.48,
+      "beaufort": 5
+    },
+    {
+      "model": "meteofrance_wave",
+      "buoy": "HERAKLION",
+      "hour": "2024-05-23T00:00",
+      "observed_m": 1.5,
+      "model_m": 0.92,
+      "shortfall_m": 0.58,
+      "beaufort": 5
+    },
+    {
+      "model": "meteofrance_wave",
+      "buoy": "HERAKLION",
+      "hour": "2024-05-23T03:00",
+      "observed_m": 1.73,
+      "model_m": 0.96,
+      "shortfall_m": 0.77,
+      "beaufort": 5
+    },
+    {
+      "model": "meteofrance_wave",
+      "buoy": "HERAKLION",
+      "hour": "2024-09-29T21:00",
+      "observed_m": 1.66,
+      "model_m": 1.16,
+      "shortfall_m": 0.5,
+      "beaufort": 5
+    },
+    {
+      "model": "ewam",
+      "buoy": "HERAKLION",
+      "hour": "2023-02-06T12:00",
+      "observed_m": 3.84,
+      "model_m": 3.42,
+      "shortfall_m": 0.42,
+      "beaufort": 5
+    },
+    {
+      "model": "ewam",
+      "buoy": "HERAKLION",
+      "hour": "2023-02-27T09:00",
+      "observed_m": 1.58,
+      "model_m": 1.0,
+      "shortfall_m": 0.58,
+      "beaufort": 6
+    },
+    {
+      "model": "meteofrance_wave",
+      "buoy": "61277",
+      "hour": "2022-09-03T06:00",
+      "observed_m": 1.25,
+      "model_m": 0.8,
+      "shortfall_m": 0.45,
+      "beaufort": 5
+    },
+    {
+      "model": "meteofrance_wave",
+      "buoy": "61277",
+      "hour": "2022-09-03T09:00",
+      "observed_m": 1.41,
+      "model_m": 0.78,
+      "shortfall_m": 0.63,
+      "beaufort": 5
+    },
+    {
+      "model": "meteofrance_wave",
+      "buoy": "61277",
+      "hour": "2022-09-11T06:00",
+      "observed_m": 1.48,
+      "model_m": 1.02,
+      "shortfall_m": 0.46,
+      "beaufort": 5
+    },
+    {
+      "model": "meteofrance_wave",
+      "buoy": "61277",
+      "hour": "2022-10-02T09:00",
+      "observed_m": 2.11,
+      "model_m": 1.42,
+      "shortfall_m": 0.69,
+      "beaufort": 6
+    },
+    {
+      "model": "meteofrance_wave",
+      "buoy": "61277",
+      "hour": "2022-10-02T12:00",
+      "observed_m": 1.88,
+      "model_m": 1.42,
+      "shortfall_m": 0.46,
+      "beaufort": 5
+    },
+    {
+      "model": "meteofrance_wave",
+      "buoy": "61277",
+      "hour": "2022-11-20T18:00",
+      "observed_m": 1.17,
+      "model_m": 0.68,
+      "shortfall_m": 0.49,
+      "beaufort": 5
+    },
+    {
+      "model": "meteofrance_wave",
+      "buoy": "61277",
+      "hour": "2022-12-10T21:00",
+      "observed_m": 1.72,
+      "model_m": 1.04,
+      "shortfall_m": 0.68,
+      "beaufort": 6
+    },
+    {
+      "model": "meteofrance_wave",
+      "buoy": "61277",
+      "hour": "2022-12-11T18:00",
+      "observed_m": 1.8,
+      "model_m": 1.2,
+      "shortfall_m": 0.6,
+      "beaufort": 5
+    },
+    {
+      "model": "meteofrance_wave",
+      "buoy": "61277",
+      "hour": "2022-12-12T00:00",
+      "observed_m": 1.72,
+      "model_m": 1.22,
+      "shortfall_m": 0.5,
+      "beaufort": 5
+    }
+  ],
+  "verdict": {
+    "passed": true,
+    "reasons": [],
+    "gates": {
+      "bias_not_below_-10pct": {
+        "pass": true,
+        "value_pct": 1.7
+      },
+      "rmse_not_worse_than_current": {
+        "pass": true,
+        "ewam_rmse_m": 0.184,
+        "current_rmse_m": 0.203
+      },
+      "fewer_dangerous_underestimates_than_current": {
+        "pass": true,
+        "ewam_incidents": 62,
+        "current_model_incidents": 204
+      }
+    }
+  }
+}

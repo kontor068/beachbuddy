@@ -4,6 +4,7 @@ import { recordOpenMeteoCall, OpenMeteoEndpoint } from './analyticsService';
 import { activeForecastProvider } from './forecast';
 import type { ForecastPoint } from './forecast/ForecastProvider';
 import { syncClockFromTrustedInstant } from '../utils/athensTime';
+import { parseMarineHourly } from '../utils/marineForecastParsing';
 
 // --- Freshness policy (safety-critical) --------------------------------------
 // A forecast is a prediction for each hour, so a recently fetched payload still
@@ -354,61 +355,10 @@ export const fetchMarineForecastData = async (lat: number, lon: number): Promise
   });
 };
 
-/** Shape one Open-Meteo Marine `hourly` block into our MarineForecastItem[]. */
-const parseMarineHourly = (marineHourly: any): MarineForecastItem[] => {
-  {
+// The per-hour model choice lives in utils/marineForecastParsing — decision-grade logic that
+// decides the number behind every sea verdict, kept importable without this module's network
+// and analytics dependencies so a build gate can exercise it directly.
 
-    if (!marineHourly?.time || !Array.isArray(marineHourly.time)) {
-      throw new Error('Marine fetch failed: missing hourly data');
-    }
-
-    // Open-Meteo renames every field to `<field>_<model>` as soon as MORE THAN ONE model is
-    // requested, and leaves it bare when exactly one is. We ask for two (waves from
-    // meteofrance_wave, sea temperature from meteofrance_currents — see openMeteoProvider.ts),
-    // so the suffixed name is the normal case and the bare name is the fallback.
-    //
-    // The fallback is load-bearing, not defensive decoration: the edge proxy caches marine
-    // responses with s-maxage=1800 + stale-while-revalidate=3600, so for up to ~1.5h after a
-    // deploy that changes the model list the CDN keeps serving the PREVIOUS shape. Without the
-    // bare-name fallback, every wave reading would read undefined for that whole window.
-    const series = (field: string, model: string): unknown[] | undefined =>
-      marineHourly[`${field}_${model}`] ?? marineHourly[field];
-
-    const waveHeight = series('wave_height', 'meteofrance_wave');
-    const waveDirection = series('wave_direction', 'meteofrance_wave');
-    const wavePeriod = series('wave_period', 'meteofrance_wave');
-    const swellHeight = series('swell_wave_height', 'meteofrance_wave');
-    const swellDirection = series('swell_wave_direction', 'meteofrance_wave');
-    const swellPeriod = series('swell_wave_period', 'meteofrance_wave');
-    // Only meteofrance_currents carries SST; the wave model's own column is all-null, so the
-    // bare-name fallback here resolves to that null column on pre-deploy cached responses —
-    // which is correct, and simply hides the water-temperature card until the cache turns over.
-    const seaTemperature = series('sea_surface_temperature', 'meteofrance_currents');
-
-    return marineHourly.time
-      .map((timeStr: string, index: number): MarineForecastItem => ({
-        dt_txt: timeStr.replace('T', ' '),
-        marine: {
-          waveHeightM: optionalNumber(waveHeight?.[index]),
-          waveDirectionDeg: optionalNumber(waveDirection?.[index]),
-          wavePeriodS: optionalNumber(wavePeriod?.[index]),
-          swellWaveHeightM: optionalNumber(swellHeight?.[index]),
-          swellWaveDirectionDeg: optionalNumber(swellDirection?.[index]),
-          swellWavePeriodS: optionalNumber(swellPeriod?.[index]),
-          seaSurfaceTemperatureC: optionalNumber(seaTemperature?.[index]),
-          source: 'open-meteo-marine',
-        },
-      }))
-      .filter((item: MarineForecastItem) => (
-        item.marine.waveHeightM !== undefined ||
-        item.marine.waveDirectionDeg !== undefined ||
-        item.marine.wavePeriodS !== undefined ||
-        item.marine.swellWaveHeightM !== undefined ||
-        item.marine.swellWaveDirectionDeg !== undefined ||
-        item.marine.seaSurfaceTemperatureC !== undefined
-      ));
-  }
-};
 
 // ── Multi-point fetching ─────────────────────────────────────────────────────
 //

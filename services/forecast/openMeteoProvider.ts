@@ -63,7 +63,37 @@ const MARINE_HOURLY = [
 // SST from: its values matched best_match's to 0.0°C across a full day, so requesting it
 // explicitly restores exactly the number production already showed — no new provider, no
 // change to any displayed value, and waves stay deterministic.
-const MARINE_MODEL = 'models=meteofrance_wave,meteofrance_currents';
+// THREE models, and `ewam` is the one that decides the wave (2026-07-31):
+//   - ewam (DWD)            → 0.05° (~5 km). PREFERRED for wave/swell wherever it returns a value.
+//   - meteofrance_wave      → 0.08° (~8 km), global, 7 days. Fallback: days 4-6, and the basins
+//                             ewam's grid cannot resolve (measured: Σαρωνικός, Ευβοϊκός).
+//   - meteofrance_currents  → sea_surface_temperature only. Unchanged.
+//
+// Measured against REAL Greek buoys (Copernicus In Situ, 9,723 QC-good hourly observations at
+// Ηράκλειο + 61277 + Άθως, 2022-09 → 2024-12 — scripts/auditWaveModelAgainstBuoys.py):
+//
+//                        bias vs buoy      RMSE      dangerous underestimates (>0.4 m at >=5 Bft)
+//   meteofrance_wave     -0.07 m (-8.2%)   0.203 m   204
+//   ewam                 +0.01 m (+1.7%)   0.184 m    62
+//
+// The model this app shipped for a year UNDER-reads the sea at every buoy, and by up to -23.9%
+// in strong wind at Ηράκλειο. That inverts the assumption the previous design rested on:
+// meteofrance_wave was treated as the conservative choice, and it is in fact the optimistic one.
+//
+// The defect that started this: at 0.08° a Greek island is 1-2 grid cells, so the model cannot
+// tell the windward shore from the lee. Measured over 496 meltemi cases (10 islands x 5 days,
+// N +/-40 deg, >=4 Bft), the N-vs-S coast difference was 0.05 m for meteofrance_wave (identical
+// in 290 of them) against 1.11 m for ewam, with the correct sign 496/496. In the app's own
+// thresholds that flipped the verdict on 92% of lee-shore hours.
+//
+// Not a calibration difference: over 15 open-water points >25 km from any land (1,022 hours) the
+// two agree to -0.5%. The coastal gap is purely resolution.
+//
+// SAFETY NET, unchanged and load-bearing: resolveEffectiveWaveHeightM still takes the LARGER of
+// the measurement and this app's own fetch-limited SMB + wind-chop floor, so no model — however
+// well it scores against a buoy — can print flat water over a shore our own physics says is
+// choppy. That floor is computed without reference to any of these three models.
+const MARINE_MODEL = 'models=ewam,meteofrance_wave,meteofrance_currents';
 
 // `cell_selection=sea` is set on the MARINE request only, and deliberately not on the two forecast
 // requests below.

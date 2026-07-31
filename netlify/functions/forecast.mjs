@@ -36,17 +36,29 @@ const UPSTREAMS = {
 // route only, after the safe query is built, so it can't be overridden and never touches the
 // weather route.
 //
-// Both models are required: meteofrance_wave carries the wave/swell fields but returns no
-// sea_surface_temperature whatsoever, so pinning it alone silently removed the water-temperature
-// reading from every beach-detail page. meteofrance_currents supplies SST (the same values
-// best_match was already serving) and nothing else we request.
+// All three are required:
+//   ewam (DWD, 0.05°)     — the preferred wave source from 2026-07-31. Measured against 9,723
+//                           QC-good hourly observations from three Greek buoys it beats
+//                           meteofrance_wave on bias (+1.7% vs -8.2%) and RMSE (0.184 vs 0.203),
+//                           with a third of its dangerous underestimates (62 vs 204).
+//   meteofrance_wave      — fallback: ewam runs ~82 h ahead, so days 4-6 need this, as do the
+//                           inner-gulf cells ewam's grid does not resolve.
+//   meteofrance_currents  — sea_surface_temperature only. Pinning the wave model alone once
+//                           silently removed the water-temperature reading from every
+//                           beach-detail page; this model is the only one that carries it.
+//
+// THIS CONSTANT IS THE ONE THAT SHIPS. The client has its own copy in
+// services/forecast/openMeteoProvider.ts, but production traffic goes through this proxy and
+// this value overwrites whatever the client asked for — so changing only the client changes
+// nothing for users. scripts/validateMarineModelParsing.mjs fails the build when the two
+// disagree, which is exactly how this line was caught on 2026-07-31.
 //
 // NOTE for anyone changing this: asking Open-Meteo for more than one model renames every
 // field in the response to `<field>_<model>` (e.g. wave_height_meteofrance_wave). The parser
 // in services/weatherService.ts reads those suffixed names, falling back to the bare ones.
 // Going back to a single model here is therefore safe, but adding/renaming a model without
 // updating that parser is not.
-const MARINE_MODEL = 'meteofrance_wave,meteofrance_currents';
+const MARINE_MODEL = 'ewam,meteofrance_wave,meteofrance_currents';
 
 // --- CORS for the mobile app only (see services/forecast/openMeteoProvider.ts) -------
 // The web app calls this same-origin (relative /api/forecast/...), which needs no CORS
@@ -190,6 +202,40 @@ const MAX_COORDINATE_LIST_ITEMS = 32;
 
 const UPSTREAM_TIMEOUT_MS = 8000;
 const PREFIX = '/api/forecast/';
+
+/**
+ * How long the shared CDN may serve one upstream answer. Split by route on 2026-07-31,
+ * because the two carry data with completely different shelf lives:
+ *
+ *   wind/weather — 30 min. Unchanged, and it must stay short: this is the safety-critical
+ *                  feed. hooks/useWeather derives forecast freshness from the HOURLY
+ *                  forecast's fetch time (useWeather.ts, setForecastFetchedAt) and blanks
+ *                  colours/verdicts past 3 h, so a long cache here would age that clock.
+ *
+ *   marine       — 3 h. Both pinned wave models publish a new run every 12 HOURS
+ *                  (Open-Meteo's own model table, verified 2026-07-31 for ewam and
+ *                  meteofrance_wave alike). Re-asking every 30 min fetched the identical
+ *                  numbers ~24 times per run: it bought nothing and was charged in full.
+ *
+ * Safe because marine freshness drives nothing: the cluster path says so in as many words
+ * ("Wind drives the safety-critical colours, so the cluster's freshness follows its
+ * hourly-forecast fetch time (marine is supplementary)"), and the region path sets
+ * forecastFetchedAt from the hourly result, never the marine one. Verified before shipping.
+ *
+ * This is what pays for the third wave model. Per point per day, marine weight:
+ *   2 models @ 30 min  →  48 refreshes x 1.4  =  67
+ *   3 models @ 30 min  →  48 refreshes x 2.1  = 101
+ *   3 models @ 3 h     →   8 refreshes x 2.1  =  17     ← 4x cheaper than before the change
+ *
+ * stale-while-revalidate stays at 1 h on both, so a user never waits on a refresh.
+ */
+const CDN_MAX_AGE_S = { weather: 1800, marine: 10800 };
+const CDN_STALE_WHILE_REVALIDATE_S = 3600;
+
+const cdnCacheControl = (providerKey) => {
+  const maxAge = providerKey === 'open-meteo-marine' ? CDN_MAX_AGE_S.marine : CDN_MAX_AGE_S.weather;
+  return `public, s-maxage=${maxAge}, stale-while-revalidate=${CDN_STALE_WHILE_REVALIDATE_S}`;
+};
 
 const json = (statusCode, body, extraHeaders = {}) => ({
   statusCode,
@@ -341,15 +387,14 @@ export const handler = async (event) => {
         'Content-Type': 'application/json',
         // Browser revalidates cheaply; the shared win is at the CDN layer below.
         'Cache-Control': 'public, max-age=0, must-revalidate',
-        // Netlify CDN serves this cached response to EVERY user for 30 min, then
-        // serves stale for up to 1h more while it refreshes once in the background.
-        // This is what collapses N user-calls into ~1 upstream call per beach. Vary:
-        // Origin (in `cors`) keeps that shared cache correctly partitioned per Origin —
-        // confirmed against Netlify's own docs: standard Vary IS factored into their
-        // CDN cache key, Origin isn't on their restricted-header list, so an approved
-        // mobile origin's ACAO-bearing response is never served back to a different
-        // caller, and vice versa.
-        'Netlify-CDN-Cache-Control': 'public, s-maxage=1800, stale-while-revalidate=3600',
+        // Netlify CDN serves this cached response to EVERY user, then serves stale while it
+        // refreshes once in the background. This is what collapses N user-calls into ~1
+        // upstream call per point. Vary: Origin (in `cors`) keeps that shared cache correctly
+        // partitioned per Origin — confirmed against Netlify's own docs: standard Vary IS
+        // factored into their CDN cache key, Origin isn't on their restricted-header list, so
+        // an approved mobile origin's ACAO-bearing response is never served back to a
+        // different caller, and vice versa.
+        'Netlify-CDN-Cache-Control': cdnCacheControl(providerKey),
         ...cors,
       },
       body: payload,

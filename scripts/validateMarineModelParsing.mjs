@@ -10,13 +10,17 @@
  *   one model   -> hourly.wave_height
  *   two+ models -> hourly.wave_height_meteofrance_wave        (every field suffixed)
  *
- * so services/weatherService.ts must read the suffixed names. Nothing throws when this drifts:
- * a lookup that misses just yields undefined, the fields drop out, and the app quietly renders
- * a beach with no waves or no water temperature. That is exactly how the water-temperature card
- * disappeared nationwide when meteofrance_wave was pinned alone — it carries no
- * sea_surface_temperature at all, and no test noticed.
+ * so utils/marineForecastParsing.ts must read the suffixed names. Nothing throws when this
+ * drifts: a lookup that misses just yields undefined, the fields drop out, and the app quietly
+ * renders a beach with no waves or no water temperature. That is exactly how the
+ * water-temperature card disappeared nationwide when meteofrance_wave was pinned alone — it
+ * carries no sea_surface_temperature at all, and no test noticed.
  *
- * This guard fails the build when the three files stop agreeing.
+ * This guard fails the build when the three files stop agreeing — and since 2026-07-31 it also
+ * RUNS the parser (section 5), because the static half cannot see which of the two wave models
+ * actually reaches the user. On that date the pin was updated in the client but not in the
+ * proxy, which would have shipped the old model to every visitor while every other check
+ * stayed green; section 1 caught it.
  *
  * Run `node scripts/validateMarineModelParsing.mjs --live` to additionally re-verify the
  * upstream assumption (which model actually serves which variable) against Open-Meteo. That
@@ -32,7 +36,7 @@ const read = (rel) => readFileSync(path.join(rootDir, rel), 'utf8');
 
 const PROVIDER = 'services/forecast/openMeteoProvider.ts';
 const PROXY = 'netlify/functions/forecast.mjs';
-const PARSER = 'services/weatherService.ts';
+const PARSER = 'utils/marineForecastParsing.ts';
 
 // The variable that regressed. Called out by name so re-pinning a wave-only model — which
 // would drop it again — fails loudly here instead of silently in production.
@@ -160,6 +164,100 @@ if (process.argv.includes('--live') && failures.length === 0) {
     if (failures.length === 0) console.log('Live upstream check: every parsed field returned data.');
   } catch (error) {
     console.warn(`Live check skipped (network error): ${error?.message || error}`);
+  }
+}
+
+// --- 5. BEHAVIOUR, not just shape: which model actually wins, hour by hour ----------------
+//
+// Everything above is static analysis. It proves both wave models are parsed from pinned
+// names — it cannot see WHICH one reaches the user, and that is the whole point of the
+// 2026-07-31 change: ewam (0.05°) where it reports, meteofrance_wave (0.08°) after it runs
+// out. Measured against Greek buoys, meteofrance_wave under-reads the sea by 8.2% overall
+// and up to 23.9% in strong wind, so silently falling back to it everywhere would undo the
+// change while every static check stayed green.
+//
+// This is the lesson that cost a rewrite earlier the same day: a gate that does not exercise
+// the wiring is decorative. Sabotage it by flipping the preference in parseMarineHourly and
+// this section fails; the four above do not.
+{
+  const { readFileSync: read } = await import('node:fs');
+  const { createRequire } = await import('node:module');
+  const ts = (await import('typescript')).default;
+  const req = createRequire(import.meta.url);
+
+  req.extensions['.ts'] = (module, filename) => {
+    // Same stub scripts/validateRecommendationScenarios.mjs uses: analyticsService pulls in
+    // browser-only globals and Node resolves it ahead of this hook, which breaks the require
+    // chain before weatherService is reached.
+    if (filename.endsWith(`${path.sep}services${path.sep}analyticsService.ts`)) {
+      module._compile(
+        'exports.recordOpenMeteoCall = function () {};\n' +
+        'exports.getNegativeFeedbackCount = function () { return 0; };\n',
+        filename,
+      );
+      return;
+    }
+    module._compile(ts.transpileModule(read(filename, 'utf8'), {
+      compilerOptions: {
+        module: ts.ModuleKind.CommonJS,
+        target: ts.ScriptTarget.ES2020,
+        esModuleInterop: true,
+      },
+      fileName: filename,
+    }).outputText, filename);
+  };
+
+  let parseMarineHourly;
+  try {
+    ({ parseMarineHourly } = req(path.join(rootDir, 'utils/marineForecastParsing.ts')));
+  } catch (error) {
+    fail(`${PARSER}: could not load parseMarineHourly for the behaviour check — ${error.message}`);
+  }
+
+  if (typeof parseMarineHourly === 'function') {
+    // Hour 0-1: both models report. Hour 2: ewam has run out (its horizon is ~82 h).
+    const hourly = {
+      time: ['2026-07-31T00:00', '2026-07-31T01:00', '2026-07-31T02:00'],
+      wave_height_ewam: [0.55, 0.60, null],
+      wave_period_ewam: [4.1, 4.2, null],
+      wave_direction_ewam: [10, 12, null],
+      swell_wave_height_ewam: [0.2, 0.2, null],
+      swell_wave_period_ewam: [8, 8, null],
+      swell_wave_direction_ewam: [20, 20, null],
+      wave_height_meteofrance_wave: [1.9, 1.9, 1.4],
+      wave_period_meteofrance_wave: [7.7, 7.7, 6.5],
+      wave_direction_meteofrance_wave: [200, 200, 210],
+      swell_wave_height_meteofrance_wave: [1.1, 1.1, 0.9],
+      swell_wave_period_meteofrance_wave: [9, 9, 9],
+      swell_wave_direction_meteofrance_wave: [210, 210, 210],
+      sea_surface_temperature_meteofrance_currents: [25.5, 25.5, 25.5],
+    };
+    const rows = parseMarineHourly(hourly);
+
+    if (rows.length !== 3) {
+      fail(`${PARSER}: behaviour check expected 3 rows, got ${rows.length}.`);
+    } else {
+      if (rows[0].marine.waveHeightM !== 0.55 || rows[0].marine.waveModel !== 'ewam') {
+        fail(`${PARSER}: hour 0 should take ewam (0.55 m) — got ${rows[0].marine.waveHeightM} m ` +
+             `from '${rows[0].marine.waveModel}'. The preferred wave model is not reaching users.`);
+      }
+      if (rows[2].marine.waveHeightM !== 1.4 || rows[2].marine.waveModel !== 'meteofrance_wave') {
+        fail(`${PARSER}: hour 2 (past ewam's horizon) should fall back to meteofrance_wave ` +
+             `(1.4 m) — got ${rows[2].marine.waveHeightM} m from '${rows[2].marine.waveModel}'. ` +
+             `Days 4-6 and the basins ewam cannot resolve would come back empty.`);
+      }
+      // The failure this specifically forbids: a height from one model beside a period from
+      // the other. utils/waveCharacter turns (height, period) into one severity, so a mixed
+      // pair invents a sea neither model reported.
+      if (rows[0].marine.wavePeriodS !== 4.1 || rows[2].marine.wavePeriodS !== 6.5) {
+        fail(`${PARSER}: height and period came from different models ` +
+             `(hour 0 period ${rows[0].marine.wavePeriodS}, hour 2 period ${rows[2].marine.wavePeriodS}).`);
+      }
+      if (rows[0].marine.seaSurfaceTemperatureC !== 25.5) {
+        fail(`${PARSER}: sea temperature lost — it comes from meteofrance_currents and must ` +
+             `survive whichever wave model wins the hour.`);
+      }
+    }
   }
 }
 
