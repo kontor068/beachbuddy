@@ -12,7 +12,7 @@ const averageNumber = (values: Array<number | undefined>): number | undefined =>
   return valid.reduce((sum, value) => sum + value, 0) / valid.length;
 };
 
-const summarizeDailyMarine = (items: ForecastItem[]): MarineForecast | undefined => {
+export const summarizeDailyMarine = (items: ForecastItem[]): MarineForecast | undefined => {
   const marineItems = items
     .map(item => item.marine)
     .filter((marine): marine is MarineForecast => Boolean(marine));
@@ -36,6 +36,61 @@ const summarizeDailyMarine = (items: ForecastItem[]): MarineForecast | undefined
     seaSurfaceTemperatureC: averageNumber(marineItems.map(item => item.seaSurfaceTemperatureC)),
     source: 'open-meteo-marine',
   };
+};
+
+/**
+ * Give one day's forecast a different SEA, and nothing else.
+ *
+ * A beach's wave comes from its own shore (utils/marineSamplePoints) while its wind, temperature
+ * and weather keep coming from the region — the wind field does not change basin the way a wave
+ * field does around a headland, and the Beaufort figure, the exposure colour and the freshness
+ * clock all hang off it. So this returns the SAME `wind`, `weather` and temperatures by
+ * reference, on purpose: scripts/validateBeachMarineResolution.mjs asserts identity, not deep
+ * equality, because a copy that happens to match today is a copy that can drift tomorrow.
+ *
+ * Why the hourly array has to be rebuilt and not just the daily summary: App's
+ * getSelectedHourMarine deliberately refuses to fall back to the daily figure for wave fields
+ * (the daily value is the day's MAX, which would make a calm afternoon look choppy), and the
+ * hour slider is never idle. A day-level swap alone would be discarded on every render.
+ *
+ * An hour the beach series does not cover keeps the region's WATER TEMPERATURE and loses its
+ * wave — the same split getSelectedHourMarine makes. Keeping the region's wave there would be
+ * the original defect in miniature; dropping it lets the beach's own fetch-limited SMB estimate
+ * stand, which is the documented, honest fallback.
+ *
+ * Returns the base object unchanged when there is nothing to swap, so a beach with no sea data
+ * of its own is byte-identical to today.
+ */
+export const applyMarineToDailyForecast = (
+  base: DailyForecast,
+  beachMarineItems: ReadonlyArray<{ dt_txt: string; marine?: MarineForecast }>
+): DailyForecast => {
+  if (!beachMarineItems.length || !base.hourly?.length) return base;
+
+  const marineByTime = new Map(beachMarineItems.map(item => [item.dt_txt, item.marine]));
+  let swappedAny = false;
+
+  const hourly = base.hourly.map(item => {
+    const beachMarine = marineByTime.get(item.dt_txt);
+    if (beachMarine) {
+      swappedAny = true;
+      return { ...item, marine: beachMarine };
+    }
+    if (!item.marine) return item;
+    // Uncovered hour: keep the water temperature (a regional quantity), drop the region's wave.
+    swappedAny = true;
+    return {
+      ...item,
+      marine: {
+        seaSurfaceTemperatureC: item.marine.seaSurfaceTemperatureC,
+        source: item.marine.source,
+      } as MarineForecast,
+    };
+  });
+
+  if (!swappedAny) return base;
+
+  return { ...base, hourly, marine: summarizeDailyMarine(hourly) };
 };
 
 const parseLocalDay = (dayString: string): Date => {

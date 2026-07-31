@@ -5,6 +5,7 @@ import { activeForecastProvider } from './forecast';
 import type { ForecastPoint } from './forecast/ForecastProvider';
 import { syncClockFromTrustedInstant } from '../utils/athensTime';
 import { parseMarineHourly } from '../utils/marineForecastParsing';
+import { marinePointKey } from '../utils/marineSamplePoints';
 
 // --- Freshness policy (safety-critical) --------------------------------------
 // A forecast is a prediction for each hour, so a recently fetched payload still
@@ -82,11 +83,21 @@ const getStaleFallbackEntry = <T>(key: string): CacheEntry<T> | null => {
   return Date.now() - entry.timestamp > SOFT_STALE_LIMIT_MS ? null : entry;
 };
 
-const saveToCache = <T>(key: string, data: T, timestamp: number) => {
+/**
+ * `persist: false` keeps an entry in memory for this page only.
+ *
+ * One marine point is ~35 KB of JSON (144 hours). Since 01/08/2026 a region view asks for one
+ * point PER BEACH, so Evia alone would write ~4 MB — and the quota handler below reacts to
+ * overflow by deleting EVERY weather key there is, which would turn the next region view cold
+ * and walk us back toward the 429 of 29/07. Per-beach seas therefore live in memory, where they
+ * cost a re-fetch on reload (2-5 batched requests) instead of the whole cache.
+ */
+const saveToCache = <T>(key: string, data: T, timestamp: number, persist: boolean = true) => {
   const entry: CacheEntry<T> = { timestamp, data };
   memoryCache.set(key, entry);
 
   try {
+    if (!persist) return;
     if (typeof localStorage === 'undefined') return;
     localStorage.setItem(key, JSON.stringify(entry));
   } catch (error) {
@@ -397,9 +408,14 @@ const BATCH_MAX_POINTS = 32;
  */
 const COORD_SANITY_TOLERANCE_DEG = { forecast: 0.2, marine: 1.0 } as const;
 
-/** Stable key for a point, at the same 3-decimal precision as the cache keys. */
-export const forecastPointKey = (lat: number, lon: number): string =>
-  `${lat.toFixed(3)},${lon.toFixed(3)}`;
+/**
+ * Stable key for a point, at the same 3-decimal precision as the cache keys.
+ *
+ * Re-exported, not re-declared. utils/marineSamplePoints decides which coordinates are distinct
+ * and this module decides which response belongs to which coordinate; the day those two use
+ * different rules, a beach silently reads another beach's water. One definition, two users.
+ */
+export const forecastPointKey = marinePointKey;
 
 const chunk = <T>(items: T[], size: number): T[][] => {
   const out: T[][] = [];
@@ -428,6 +444,8 @@ const fetchPointsBatched = async <T>(
     source: string;
     buildUrl: (batch: ForecastPoint[]) => string;
     parse: (entry: any) => T;
+    /** Default true. See saveToCache — per-beach seas stay in memory. */
+    persist?: boolean;
   },
 ): Promise<Map<string, FetchResult<T>>> => {
   const results = new Map<string, FetchResult<T>>();
@@ -492,7 +510,7 @@ const fetchPointsBatched = async <T>(
 
         try {
           const data = options.parse(entry?.hourly);
-          saveToCache(cacheKeyOf(point), data, fetchedAt);
+          saveToCache(cacheKeyOf(point), data, fetchedAt, options.persist !== false);
           results.set(forecastPointKey(point.lat, point.lon), { data, fetchedAt });
           // Counted per POINT, not per request: the provider's own limits are what
           // this number is compared against, and it almost certainly charges each
@@ -538,9 +556,16 @@ export const fetchForecastDataBatch = (
     parse: parseHourlyForecast,
   });
 
-/** Marine (wave/swell/SST) for many points. Key the result with `forecastPointKey`. */
+/**
+ * Marine (wave/swell/SST) for many points. Key the result with `forecastPointKey`.
+ *
+ * `persist: false` for the per-beach sweep — see saveToCache. The REGION point keeps its
+ * localStorage entry (it is fetched through this same call, so pass persist only when the batch
+ * is the per-beach one).
+ */
 export const fetchMarineForecastDataBatch = (
   points: ForecastPoint[],
+  options?: { persist?: boolean },
 ): Promise<Map<string, FetchResult<MarineForecastItem[]>>> =>
   fetchPointsBatched<MarineForecastItem[]>(points, {
     cachePrefix: 'marine',
@@ -548,6 +573,7 @@ export const fetchMarineForecastDataBatch = (
     source: 'marine-forecast-batch',
     buildUrl: batch => activeForecastProvider.marineForecastUrlBatch(batch),
     parse: parseMarineHourly,
+    persist: options?.persist,
   });
 
 export const mergeMarineForecastData = (

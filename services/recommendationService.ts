@@ -58,6 +58,17 @@ import { getBeachPopularityRating } from '../utils/beachRating';
 /** Where the decision-grade sea state came from — for calibration, not for UI. */
 export type SeaStateSource = 'measured' | 'measured-capped' | 'modeled';
 
+/**
+ * WHICH WATER the measurement describes — for auditing, not for UI.
+ *
+ * `own-shore` means the wave came from this beach's own offshore sample point
+ * (utils/marineSamplePoints); `region` means it fell back to the area cell because the beach has
+ * no geometry of its own (295 of 2.850 on 01/08/2026). Never surface this as a confidence badge:
+ * a permanent "we are less sure here" label reads as "we do not know", and the beach's own SMB
+ * floor already protects the number either way.
+ */
+export type SeaStatePointSource = 'own-shore' | 'region';
+
 export interface BeachScore {
   beachId: number;
   score: number;
@@ -86,6 +97,8 @@ export interface BeachScore {
   /** Total-sea period (s) behind seaStateWaveM — separates steep chop from a long roll. */
   seaStatePeriodS?: number;
   seaStateSource?: SeaStateSource;
+  /** Which water the measurement describes — this beach's own shore, or the region cell. */
+  seaStatePointSource?: SeaStatePointSource;
   /** Damped wind/fetch modeled wave height (m), including the conservative wind-chop floor. */
   modeledWaveHeightM?: number;
   /** The wind speed (km/h) this score was computed from — beach-cluster wind when available.
