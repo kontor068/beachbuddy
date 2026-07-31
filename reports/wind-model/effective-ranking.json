@@ -1,0 +1,391 @@
+{
+  "question": "Does max(grid, our geometry) rank two coasts better or worse than the bare grid?",
+  "judge": "cmems_mod_med_wav_anfc_4.2km_PT1H-i",
+  "limitation": "The judge is a 4.2 km grid; our geometry describes 200 m coves. This test can prove \"does no harm\" strongly. It cannot prove \"how much it helps\", and a failure of the help gate means the judge cannot see it - not that it is not there.",
+  "windows": [
+    {
+      "window": {
+        "start": "2024-07-01",
+        "end": "2024-09-01"
+      },
+      "gates": {
+        "min_judge_contrast_m": 0.3,
+        "max_harm_ratio": 0.02,
+        "min_help_ratio": 0.1,
+        "min_false_calm_rescue_ratio": 0.5,
+        "min_hours_per_bucket": 300
+      },
+      "sample": {
+        "hours_considered": 13049,
+        "hours_with_judge_contrast": 10130,
+        "mean_judge_contrast_m": 0.466,
+        "islands": 21
+      },
+      "buckets": {
+        "grid_ranks_correctly": 6832,
+        "grid_ranks_wrongly": 3298,
+        "false_calm_hours": 1228
+      },
+      "results": {
+        "our_geometry_breaks_a_correct_ranking": {
+          "pass": false,
+          "ratio": 0.0359,
+          "n": 6832,
+          "threshold": 0.02,
+          "direction": "lower is better",
+          "breakdown": {
+            "flattened_to_a_tie": 86,
+            "named_the_wrong_coast": 159
+          }
+        },
+        "our_geometry_fixes_a_wrong_ranking": {
+          "pass": true,
+          "ratio": 0.1834,
+          "n": 3298,
+          "threshold": 0.1,
+          "direction": "higher is better"
+        },
+        "our_geometry_rescues_a_false_calm": {
+          "pass": true,
+          "ratio": 0.5204,
+          "n": 1228,
+          "threshold": 0.5,
+          "direction": "higher is better"
+        },
+        "the_judge_sees_a_real_difference": {
+          "pass": true,
+          "mean_contrast_m": 0.466,
+          "threshold_m": 0.3
+        },
+        "enough_hours_to_answer": {
+          "pass": true,
+          "grid_correct": 6832,
+          "grid_wrong": 3298,
+          "threshold": 300
+        }
+      },
+      "verdict": {
+        "geometry_does_no_harm": false,
+        "geometry_measurably_helps": true,
+        "geometry_earns_its_place_on_safety": true
+      },
+      "per_island": [
+        {
+          "island": "Kea",
+          "n": 611,
+          "harm": 85,
+          "help": 15
+        },
+        {
+          "island": "Skopelos",
+          "n": 145,
+          "harm": 44,
+          "help": 3
+        },
+        {
+          "island": "Kythnos",
+          "n": 501,
+          "harm": 32,
+          "help": 0
+        },
+        {
+          "island": "Tilos",
+          "n": 175,
+          "harm": 23,
+          "help": 0
+        },
+        {
+          "island": "Paros",
+          "n": 893,
+          "harm": 22,
+          "help": 48
+        },
+        {
+          "island": "Amorgos",
+          "n": 1233,
+          "harm": 13,
+          "help": 0
+        },
+        {
+          "island": "Ios",
+          "n": 499,
+          "harm": 8,
+          "help": 19
+        },
+        {
+          "island": "Santorini",
+          "n": 460,
+          "harm": 8,
+          "help": 286
+        },
+        {
+          "island": "Naxos",
+          "n": 569,
+          "harm": 5,
+          "help": 22
+        },
+        {
+          "island": "Alonissos",
+          "n": 59,
+          "harm": 4,
+          "help": 0
+        },
+        {
+          "island": "Antiparos",
+          "n": 881,
+          "harm": 1,
+          "help": 11
+        },
+        {
+          "island": "Samos",
+          "n": 61,
+          "harm": 0,
+          "help": 0
+        },
+        {
+          "island": "Milos",
+          "n": 786,
+          "harm": 0,
+          "help": 55
+        },
+        {
+          "island": "Lemnos",
+          "n": 163,
+          "harm": 0,
+          "help": 0
+        },
+        {
+          "island": "Tinos",
+          "n": 1130,
+          "harm": 0,
+          "help": 0
+        },
+        {
+          "island": "Kos",
+          "n": 609,
+          "harm": 0,
+          "help": 143
+        },
+        {
+          "island": "Skyros",
+          "n": 494,
+          "harm": 0,
+          "help": 0
+        },
+        {
+          "island": "Kalymnos",
+          "n": 231,
+          "harm": 0,
+          "help": 3
+        },
+        {
+          "island": "Ikaria",
+          "n": 592,
+          "harm": 0,
+          "help": 0
+        },
+        {
+          "island": "Samothraki",
+          "n": 38,
+          "harm": 0,
+          "help": 0
+        }
+      ]
+    },
+    {
+      "window": {
+        "start": "2025-07-01",
+        "end": "2025-09-01"
+      },
+      "gates": {
+        "min_judge_contrast_m": 0.3,
+        "max_harm_ratio": 0.02,
+        "min_help_ratio": 0.1,
+        "min_false_calm_rescue_ratio": 0.5,
+        "min_hours_per_bucket": 300
+      },
+      "sample": {
+        "hours_considered": 11053,
+        "hours_with_judge_contrast": 8960,
+        "mean_judge_contrast_m": 0.525,
+        "islands": 22
+      },
+      "buckets": {
+        "grid_ranks_correctly": 6230,
+        "grid_ranks_wrongly": 2730,
+        "false_calm_hours": 1131
+      },
+      "results": {
+        "our_geometry_breaks_a_correct_ranking": {
+          "pass": false,
+          "ratio": 0.0215,
+          "n": 6230,
+          "threshold": 0.02,
+          "direction": "lower is better",
+          "breakdown": {
+            "flattened_to_a_tie": 42,
+            "named_the_wrong_coast": 92
+          }
+        },
+        "our_geometry_fixes_a_wrong_ranking": {
+          "pass": true,
+          "ratio": 0.1249,
+          "n": 2730,
+          "threshold": 0.1,
+          "direction": "higher is better"
+        },
+        "our_geometry_rescues_a_false_calm": {
+          "pass": false,
+          "ratio": 0.4058,
+          "n": 1131,
+          "threshold": 0.5,
+          "direction": "higher is better"
+        },
+        "the_judge_sees_a_real_difference": {
+          "pass": true,
+          "mean_contrast_m": 0.525,
+          "threshold_m": 0.3
+        },
+        "enough_hours_to_answer": {
+          "pass": true,
+          "grid_correct": 6230,
+          "grid_wrong": 2730,
+          "threshold": 300
+        }
+      },
+      "verdict": {
+        "geometry_does_no_harm": false,
+        "geometry_measurably_helps": true,
+        "geometry_earns_its_place_on_safety": false
+      },
+      "per_island": [
+        {
+          "island": "Skopelos",
+          "n": 294,
+          "harm": 46,
+          "help": 4
+        },
+        {
+          "island": "Amorgos",
+          "n": 966,
+          "harm": 16,
+          "help": 0
+        },
+        {
+          "island": "Ios",
+          "n": 416,
+          "harm": 12,
+          "help": 35
+        },
+        {
+          "island": "Kea",
+          "n": 590,
+          "harm": 12,
+          "help": 6
+        },
+        {
+          "island": "Paros",
+          "n": 689,
+          "harm": 11,
+          "help": 17
+        },
+        {
+          "island": "Tilos",
+          "n": 121,
+          "harm": 8,
+          "help": 0
+        },
+        {
+          "island": "Kythnos",
+          "n": 482,
+          "harm": 7,
+          "help": 0
+        },
+        {
+          "island": "Aegina",
+          "n": 7,
+          "harm": 7,
+          "help": 0
+        },
+        {
+          "island": "Kalymnos",
+          "n": 248,
+          "harm": 6,
+          "help": 0
+        },
+        {
+          "island": "Alonissos",
+          "n": 78,
+          "harm": 4,
+          "help": 0
+        },
+        {
+          "island": "Skyros",
+          "n": 522,
+          "harm": 4,
+          "help": 0
+        },
+        {
+          "island": "Milos",
+          "n": 646,
+          "harm": 1,
+          "help": 19
+        },
+        {
+          "island": "Samos",
+          "n": 46,
+          "harm": 0,
+          "help": 3
+        },
+        {
+          "island": "Lemnos",
+          "n": 282,
+          "harm": 0,
+          "help": 0
+        },
+        {
+          "island": "Tinos",
+          "n": 965,
+          "harm": 0,
+          "help": 4
+        },
+        {
+          "island": "Naxos",
+          "n": 557,
+          "harm": 0,
+          "help": 24
+        },
+        {
+          "island": "Kos",
+          "n": 455,
+          "harm": 0,
+          "help": 92
+        },
+        {
+          "island": "Ikaria",
+          "n": 395,
+          "harm": 0,
+          "help": 0
+        },
+        {
+          "island": "Santorini",
+          "n": 326,
+          "harm": 0,
+          "help": 122
+        },
+        {
+          "island": "Antiparos",
+          "n": 718,
+          "harm": 0,
+          "help": 14
+        },
+        {
+          "island": "Samothraki",
+          "n": 157,
+          "harm": 0,
+          "help": 1
+        }
+      ]
+    }
+  ]
+}

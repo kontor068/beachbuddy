@@ -355,6 +355,18 @@ const summarise = (resolved: Resolved, rows: Row[]) => {
   let gridWrong = 0;
   let harm = 0;      // πλέγμα σωστό → δικό μας λάθος
   let help = 0;      // πλέγμα λάθος → δικό μας σωστό
+
+  // ΔΙΑΓΝΩΣΤΙΚΟ, ΟΧΙ ΠΥΛΗ. Δεν αλλάζει ούτε τον ορισμό της ζημιάς ούτε το
+  // κατώφλι — και τα δύο μένουν όπως δεσμεύτηκαν στο 2aaa5797, μετά το
+  // αποτέλεσμα όπως και πριν. Απαντά μόνο στο ΤΙ ΕΙΔΟΥΣ αστοχία είναι:
+  //   ισοπαλία → η δική μας τιμή βγήκε ΙΔΙΑ στις δύο ακτές, δηλαδή χάθηκε η
+  //              πληροφορία (το πάτωμα ριπής ισοπέδωσε τη διαφορά)
+  //   αντιστροφή → είπαμε ότι η ΑΛΛΗ ακτή είναι η ήρεμη· αυτό είναι λάθος
+  //              απάντηση, όχι απουσία απάντησης
+  // Οι δύο έχουν πολύ διαφορετικό κόστος για τον χρήστη και η πύλη τις μετράει
+  // μαζί. Το ξεχώρισμα λέγεται εδώ, δεν κρύβεται στην ετυμηγορία.
+  let harmTies = 0;
+  let harmInversions = 0;
   let falseCalm = 0;
   let falseCalmRescued = 0;
 
@@ -411,7 +423,11 @@ const summarise = (resolved: Resolved, rows: Row[]) => {
 
     if (gridRight) {
       gridCorrect++;
-      if (!oursRight) { harm++; island.harm++; }
+      if (!oursRight) {
+        harm++;
+        island.harm++;
+        if (oursSign === 0) harmTies++; else harmInversions++;
+      }
     } else {
       gridWrong++;
       if (oursRight) { help++; island.help++; }
@@ -458,6 +474,11 @@ const summarise = (resolved: Resolved, rows: Row[]) => {
       our_geometry_breaks_a_correct_ranking: {
         pass: gateB, ratio: Number(harmRatio.toFixed(4)), n: gridCorrect,
         threshold: GATES.max_harm_ratio, direction: 'lower is better',
+        // Διαγνωστικό, δεν συμμετέχει στο pass/fail (βλ. σχόλιο στη summarise).
+        breakdown: {
+          flattened_to_a_tie: harmTies,
+          named_the_wrong_coast: harmInversions,
+        },
       },
       our_geometry_fixes_a_wrong_ranking: {
         pass: gateC, ratio: Number(helpRatio.toFixed(4)), n: gridWrong,
