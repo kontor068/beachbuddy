@@ -4,7 +4,7 @@ import {
   Clock, Sun, Sunset, Backpack,
   Navigation, Share2, Heart, ChevronRight, ThumbsUp, ThumbsDown, CheckCircle2,
   Camera, ExternalLink, Accessibility, AlertTriangle, Tent, Ticket, Euro, ScrollText, Compass, Ship, BadgeCheck,
-  CloudRain, XCircle
+  CloudRain, XCircle, Car, Umbrella
 } from 'lucide-react';
 import {
   Beach, LanguageCode, Translation, WindDirection,
@@ -24,8 +24,10 @@ import { degToCompass, calculateDistance, getBeaufortLevel, getWaveCondition } f
 import { trackEvent, storeConditionFeedback, getFeedback, ConditionFeedbackVerdict, buildBeachExposureParams } from '../services/analyticsService';
 import { calculateSeaConditionScore } from '../utils/seaConditions';
 import { TodayScoreBadge } from '../components/TodayScoreBadge';
+import { BeachAnswerHero, type PracticalTile } from '../components/BeachAnswerHero';
+import { getBeachClimate, describeClimateComparison, type ClimateComparison } from '../data/beachClimate';
 import { LocalWindShelterSection, type LocalWindShelteredCove } from '../components/LocalWindShelterSection';
-import { GettingThereSection } from '../components/GettingThereSection';
+import { GettingThereSection, accessKindShortLabel, classifyAccessKind, ACCESS_KIND_ICON } from '../components/GettingThereSection';
 import { SwellRouterSection, type SwellShelteredCove } from '../components/SwellRouterSection';
 import { assessSwellExposure, SWELL_MIN_HEIGHT_M } from '../utils/swellExposure';
 import { SwitchBeachCard } from '../components/SwitchBeachCard';
@@ -731,6 +733,16 @@ export const BeachDetailPage: React.FC<BeachDetailPageProps> = ({
     getBeachStory(beach, regionId).then(story => { if (!cancelled) setBeachStory(story); });
     return () => { cancelled = true; };
   }, [beach.id, beach.regionId, beach.sourceBeachId, regionId]);
+  // Copernicus monthly climatology for THIS beach — the "is today unusual?" line in the
+  // answer hero. Lazy per region (~3,4 KB), same loader shape as the story above, and
+  // null until it lands so the hero simply renders without the line rather than shifting.
+  const [beachClimate, setBeachClimate] = useState<Awaited<ReturnType<typeof getBeachClimate>>>(null);
+  useEffect(() => {
+    let cancelled = false;
+    setBeachClimate(null);
+    getBeachClimate(beach.id, beach.regionId ?? regionId).then(c => { if (!cancelled) setBeachClimate(c); });
+    return () => { cancelled = true; };
+  }, [beach.id, beach.regionId, regionId]);
   const storyLocale: 'gr' | 'en' = language === 'gr' ? 'gr' : 'en';
   const guideLinks = useMemo(() => getIslandGuideLinks(allBeaches, regionId, language), [allBeaches, regionId, language]);
   const guidesHubLink = useMemo(() => getGuidesHubLink(language), [language]);
@@ -756,8 +768,18 @@ export const BeachDetailPage: React.FC<BeachDetailPageProps> = ({
     feedbackText: { en: 'Your feedback helps us improve our recommendations for everyone.', gr: 'Η γνώμη σου μας βοηθά να βελτιώνουμε τις προτάσεις για όλους.', de: 'Dein Feedback hilft uns, die Empfehlungen für alle zu verbessern.', it: 'Il tuo feedback ci aiuta a migliorare i consigli per tutti.', fr: 'Votre avis nous aide a ameliorer les recommandations pour tous.' },
     nearby: { en: 'Nearby Recommendations', gr: 'Κοντινές προτάσεις', de: 'Empfehlungen in der Nahe', it: 'Consigli nelle vicinanze', fr: 'Recommandations proches' },
     decisionSummary: { en: selectedDayIsToday ? 'Today summary' : `Summary ${selectedDayPrefix}`, gr: `Σύνοψη για ${selectedDayPrefix}`, de: 'Kurzfassung', it: 'Riepilogo', fr: 'Resume' },
-    conditions: { en: `Conditions ${selectedDayPrefix}`, gr: `Συνθήκες ${selectedDayPrefix}`, de: 'Bedingungen', it: 'Condizioni', fr: 'Conditions' },
+    /* Was "Συνθήκες σήμερα" — a heading so general it could have introduced any of the
+       twenty blocks below it. What actually follows is one specific thing: the wave
+       drawing. Naming the picture instead of the category tells the reader in one word
+       whether to stop here. The day prefix goes too: the hero already says "τώρα", and
+       the graphic follows the hour slider. */
+    conditions: { en: 'Swell right now', gr: 'Κυματισμός τώρα', de: 'Wellengang jetzt', it: 'Onde adesso', fr: 'Houle maintenant' },
     beachStoryHeading: { en: 'About this beach', gr: 'Πληροφορίες', de: 'Über diesen Strand', it: 'Informazioni', fr: 'À propos' },
+    // The two section breaks that give the scroll a shape. Kept as plain labels rather
+    // than headings: they organise, they do not introduce a new topic, and an extra <h2>
+    // in the outline would compete with the ones that carry real search intent.
+    sectionBeach: { en: 'The beach', gr: 'Η παραλία', de: 'Der Strand', it: 'La spiaggia', fr: 'La plage' },
+    sectionNearby: { en: 'Nearby', gr: 'Κοντά εδώ', de: 'In der Nähe', it: 'Nei dintorni', fr: 'À proximité' },
     conditionsUnavailableTitle: { en: 'Conditions are not available right now', gr: 'Οι συνθήκες δεν είναι διαθέσιμες τώρα', de: 'Die Bedingungen sind derzeit nicht verfügbar', it: 'Le condizioni non sono disponibili al momento', fr: 'Les conditions ne sont pas disponibles pour le moment' },
     conditionsUnavailableBody: { en: 'We could not refresh the forecast, so wind and sea conditions are hidden to avoid an out-of-date reading. Beach info below is still accurate.', gr: 'Δεν μπορέσαμε να ανανεώσουμε την πρόγνωση, γι’ αυτό κρύβουμε άνεμο και θάλασσα ώστε να μη δώσουμε παρωχημένη εικόνα. Οι πληροφορίες της παραλίας παρακάτω ισχύουν.', de: 'Wir konnten die Vorhersage nicht aktualisieren, daher sind Wind- und Seebedingungen ausgeblendet. Die Strandinfos unten bleiben gültig.', it: 'Non siamo riusciti ad aggiornare la previsione, quindi vento e mare sono nascosti. Le info sulla spiaggia restano valide.', fr: 'Nous n’avons pas pu actualiser la prévision ; le vent et la mer sont masqués. Les infos plage ci-dessous restent valables.' },
     lastForecastAt: { en: (time: string) => `Last forecast: ${time}`, gr: (time: string) => `Τελευταία πρόγνωση: ${time}`, de: (time: string) => `Letzte Vorhersage: ${time}`, it: (time: string) => `Ultima previsione: ${time}`, fr: (time: string) => `Dernière prévision : ${time}` },
@@ -1009,6 +1031,18 @@ export const BeachDetailPage: React.FC<BeachDetailPageProps> = ({
         ? { en: 'mild', gr: 'μέτριο', de: 'mild', it: 'tiepida', fr: 'tempérée' }[language]
         : { en: 'ideal', gr: 'ιδανικό', de: 'ideal', it: 'ideale', fr: 'idéale' }[language]
     : undefined;
+  // "Calmer than a normal July here." Deliberately fed the UNCORRECTED wave height:
+  // the climatology is an open-water 4,2 km cell, so comparing a cove-corrected figure
+  // against it would print a false compliment on every enclosed bay, every day.
+  const climateComparison: ClimateComparison | null = useMemo(
+    () => describeClimateComparison(beachClimate, {
+      openWaterWaveHeightM: waveHeightM ?? measuredWaveHeightM,
+      seaTemperatureC,
+      date: selectedDate,
+      language,
+    }),
+    [beachClimate, waveHeightM, measuredWaveHeightM, seaTemperatureC, selectedDate, language],
+  );
   // R1: mirror the ranking's direct-swell detection so the DISPLAYED sea sub-score drops the
   // protected/partial wave floor exactly when the ranking does — otherwise a west-facing cove on
   // real ground swell shows an optimistic sea score while being correctly down-ranked.
@@ -1028,7 +1062,7 @@ export const BeachDetailPage: React.FC<BeachDetailPageProps> = ({
   const detailBadgeScore = getDetailBadgeScore(score, seaConditionScore, isExposed);
   const beaufortLevel = getBeaufortLevel(windSpeedKmh);
   const gustKmph = getWeatherGustKmph(weatherData, scoringHourlyForecast);
-  const towelComfort = getTowelComfort(windSpeedKmh, gustKmph, beach.beachType, language);
+  const towelComfort = getTowelComfort(windSpeedKmh, gustKmph, beach.beachType, language, mapAlignedExposureLevel);
   const isBoatOnlyBeach = hasBoatOnlyAccess(beach);
   const seaConditionDisplay = getSeaConditionDisplay(seaConditionScore, isExposedForCopy, language, selectedDate, canClaimWindProtectionForCopy, seaCalmClaimAllowed, beaufortLevel, displayWaveHeightM, selectedHour, isBoatOnlyBeach, enclosedCove);
   const boatRideConditionLabel = {
@@ -1254,6 +1288,102 @@ export const BeachDetailPage: React.FC<BeachDetailPageProps> = ({
     hasPebblesOrRocks && { en: 'Water shoes', gr: 'Παπούτσια θαλάσσης', de: 'Badeschuhe', it: 'Scarpe da scoglio', fr: 'Chaussures d eau' }[language],
   ].filter((item): item is string => Boolean(item));
   const whatToBringTitle = { en: 'What to bring', gr: 'Τι να φέρεις', de: 'Was mitnehmen', it: 'Cosa portare', fr: 'Quoi apporter' }[language];
+  /* Tile-sized forms of the same list. "Παπούτσια θαλάσσης" and "Ομπρέλα ή σκίαση" are
+     right in their own card but cannot fit a quarter-width tile without breaking, and a
+     broken word is never acceptable — so the tile gets one noun. Same order, same gates:
+     these are shortenings, not a second opinion about what to pack. */
+  const whatToBringShort = [
+    foodConfirmedAbsent && { en: 'Water', gr: 'Νερό', de: 'Wasser', it: 'Acqua', fr: 'Eau' }[language],
+    shadeConfirmedAbsent && { en: 'Umbrella', gr: 'Ομπρέλα', de: 'Schirm', it: 'Ombrellone', fr: 'Parasol' }[language],
+    shadeConfirmedAbsent && { en: 'Sunscreen', gr: 'Αντηλιακό', de: 'Sonnencreme', it: 'Crema', fr: 'Crème' }[language],
+    hasPebblesOrRocks && { en: 'Sea shoes', gr: 'Παπούτσια', de: 'Badeschuhe', it: 'Scarpette', fr: 'Chaussures' }[language],
+  ].filter((item): item is string => Boolean(item));
+
+  /**
+   * The practical half of the answer hero: road → facilities → entry → what to pack.
+   *
+   * Every one of these four facts already existed on the page, but two to four screens
+   * down, in four separate cards of the same weight as everything else. A visitor
+   * choosing an afternoon needs them at the same moment as the wave height, not after
+   * scrolling past the photo, the story and the UV strip.
+   *
+   * WE NEVER PRINT "ΑΓΝΩΣΤΟ" IN A TILE. A tile is a statement, and a small grey box
+   * reading "Άγνωστο" under the heading "Παροχές" is read as "this beach has nothing" —
+   * the opposite of what it means. When we do not know, the tile is simply absent; the
+   * row shrinks. Silence cannot be misread; a hedge can.
+   */
+  const practicalTiles = useMemo(() => {
+    const tiles: PracticalTile[] = [];
+    const accessShort = accessKindShortLabel(beach, language);
+    const accessKind = classifyAccessKind(beach);
+    if (accessKind && accessShort) {
+      tiles.push({
+        key: 'access',
+        icon: ACCESS_KIND_ICON[accessKind],
+        label: { en: 'Road', gr: 'Δρόμος', de: 'Weg', it: 'Strada', fr: 'Route' }[language],
+        value: accessShort,
+        hint: beach.amenities?.parking === true
+          ? { en: 'parking', gr: 'πάρκινγκ', de: 'Parkplatz', it: 'parcheggio', fr: 'parking' }[language]
+          : null,
+        // Only the kinds that change what car you need, or whether you can drive at all.
+        tone: accessKind === 'dirt' || accessKind === 'hard' || accessKind === 'boat'
+          ? 'warn'
+          : accessKind === 'car' ? 'good' : 'neutral',
+      });
+    }
+
+    /* The summary chip already computed for the amenities section decides WHICH state we
+       are in (organised / none / seasonal / unknown), so the tile and the section below
+       can never disagree. But the chip's own wording is written for a full-width pill
+       ("Χωρίς οργανωμένες παροχές") and a quarter-width tile fits about ten Greek
+       characters per line — so the tile gets its own two-word form. Shortening the label
+       is the fix; breaking the word is not. */
+    const facilitiesKey = summaryAmenityChips[0]?.key;
+    // 'unknownFacilities' is deliberately NOT in this map: no entry → no tile. That is the
+    // whole point — "Άγνωστο" under "Παροχές" would be read as "there is nothing here".
+    const FACILITIES_SHORT: Record<string, Record<LanguageCode, string>> = {
+      organizedFacilities: { en: 'Organised', gr: 'Οργανωμένη', de: 'Organisiert', it: 'Attrezzata', fr: 'Aménagée' },
+      noFacilities: { en: 'None', gr: 'Καμία', de: 'Keine', it: 'Nessuno', fr: 'Aucun' },
+      seasonalFacilities: { en: 'Seasonal', gr: 'Εποχικές', de: 'Saisonal', it: 'Stagionali', fr: 'Saisonnier' },
+    };
+    const facilitiesValue = facilitiesKey ? FACILITIES_SHORT[facilitiesKey]?.[language] : undefined;
+    if (facilitiesValue) {
+      tiles.push({
+        key: 'facilities',
+        icon: facilitiesKey === 'organizedFacilities' ? Umbrella : Waves,
+        label: { en: 'Facilities', gr: 'Παροχές', de: 'Angebot', it: 'Servizi', fr: 'Services' }[language],
+        value: facilitiesValue,
+        hint: null,
+        tone: facilitiesKey === 'organizedFacilities' ? 'good' : 'neutral',
+      });
+    }
+
+    tiles.push({
+      key: 'entry',
+      icon: paidEntry ? Ticket : CheckCircle2,
+      label: { en: 'Entry', gr: 'Είσοδος', de: 'Eintritt', it: 'Ingresso', fr: 'Entrée' }[language],
+      value: paidEntry
+        ? localizedPaidEntryLabel(paidEntry.kind, language)
+        : { en: 'Free', gr: 'Ελεύθερη', de: 'Frei', it: 'Libero', fr: 'Libre' }[language],
+      hint: paidEntry?.priceText ?? null,
+      tone: paidEntry ? 'warn' : 'good',
+    });
+
+    tiles.push({
+      key: 'bring',
+      icon: whatToBringShort.length > 0 ? Backpack : CheckCircle2,
+      label: { en: 'Bring', gr: 'Πάρε μαζί', de: 'Mitnehmen', it: 'Porta', fr: 'À prendre' }[language],
+      // Two nouns is what a quarter-width tile reads at a glance; the full sentences stay
+      // in the "what to bring" card below, so nothing is lost by trimming here.
+      value: whatToBringShort.length > 0
+        ? whatToBringShort.slice(0, 2).join(', ')
+        : { en: 'Nothing extra', gr: 'Τίποτα έξτρα', de: 'Nichts extra', it: 'Niente', fr: 'Rien' }[language],
+      hint: whatToBringShort.length > 2 ? `+${whatToBringShort.length - 2}` : null,
+      tone: whatToBringShort.length > 0 ? 'warn' : 'good',
+    });
+
+    return tiles;
+  }, [beach, language, summaryAmenityChips, paidEntry, whatToBringShort]);
 
   const seatracAccess = getSeatracAccess(beach);
   const showAccessibilitySection = hasSeatracInfo(beach);
@@ -1577,122 +1707,106 @@ export const BeachDetailPage: React.FC<BeachDetailPageProps> = ({
           </section>
         )}
 
-        {/* 1. Decision summary */}
-        <section className="space-y-4 rounded-[2rem] border border-white/75 bg-white/88 p-4 shadow-sm shadow-sky-900/5 ring-1 ring-white/45 backdrop-blur-sm sm:p-5" data-nosnippet="true">
-          <div className="space-y-2">
-            <p className="text-[11px] font-bold text-cyan-700 tracking-normal">
-              {copy.decisionSummary[language]}
-            </p>
-            <div className="flex items-start justify-between gap-3">
-              <div className="min-w-0 space-y-1">
-                <h2 className="font-heading text-3xl font-bold leading-[1.12] text-slate-950 sm:text-4xl">
-                  {beachDisplayName}
-                </h2>
-                <p className="text-sm text-slate-700 font-semibold flex items-center gap-1.5">
-                  <MapPin className="w-4 h-4 flex-shrink-0" />
-                  <span className="truncate">{islandDisplayName}</span>
-                  {/* What you actually walk on. The dataset has had `beachType` on
-                      2.742 of 2.850 beaches all along, and the page used it only
-                      invisibly — to decide whether to suggest water shoes further
-                      down. So a visitor learned "bring water shoes" without ever
-                      being told the beach is pebbles. One word, no request, no cost.
-                      `waterDepth` is deliberately NOT shown next to it: it exists on
-                      every record but has never been checked for accuracy, and the
-                      house rule here is to under-claim. */}
-                  {beachCompositionLabel && (
-                    <>
-                      <span className="text-slate-300" aria-hidden="true">·</span>
-                      <span className="truncate font-medium text-slate-600">{beachCompositionLabel}</span>
-                    </>
-                  )}
-                </p>
-              </div>
-            </div>
+        {/* 1. THE ANSWER — the whole beach day on one screen, weather AND practicalities.
+            What it replaced: a "Decision summary" card that repeated the beach name
+            (already the sticky header's <h1>) and carried a small verdict pill, followed
+            by a "Weather now" card that stated the wind again as a chip, followed by four
+            equal-weight metric cards that stated it a third time in different units —
+            while road, facilities, entry and what-to-pack sat two to four screens further
+            down in four more cards of exactly the same weight.
+            Now: location → ONE verdict → 4 weather tiles → 4 practical tiles → how today
+            compares with a normal month here (the Copernicus line no competitor can print).
+            `waterDepth` is still deliberately absent: it exists on all 2.850 records but
+            has never been accuracy-checked, and the house rule is to under-claim. */}
+        <BeachAnswerHero
+          islandName={islandDisplayName}
+          compositionLabel={beachCompositionLabel}
+          verdict={showConditions && weatherNow.tone !== 'unknown' ? weatherNow.verdict : null}
+          tone={weatherNow.tone === 'choppy' ? 'rough' : weatherNow.tone === 'mixed' ? 'moderate' : 'calm'}
+          bestTimeLabel={showConditions ? (displayedBestTimeLabel || null) : null}
+          /* The instrument gets the SHORT compass form ("ΒΑ"); the long adjective
+             ("βορειοανατολικό") broke across two lines inside a quarter-width tile and
+             read as a typo. The long form still appears on the km/h line below. */
+          wind={showConditions ? {
+            beaufort: beaufortLevel,
+            speedKmh: windSpeedKmh,
+            directionLabel: t.windDirectionsShort?.[windDir as WindDirection] || windDirectionLabel,
+            longDirectionLabel: windDirectionLabel,
+          } : null}
+          airTempC={showConditions ? displayTemp : null}
+          sea={showConditions ? { heightM: displayWaveHeightM ?? null, label: seaConditionDisplay.value } : null}
+          water={showConditions && typeof seaTemperatureC === 'number' && waterTempDescriptor
+            ? {
+                celsius: seaTemperatureC,
+                descriptor: waterTempDescriptor,
+                tone: seaTemperatureC < 21 ? 'rough' : seaTemperatureC <= 24 ? 'moderate' : 'calm',
+              }
+            : null}
+          sunsetTime={showConditions ? sunsetTime : null}
+          sunsetOverSea={sunsetSea.everOverSea}
+          climateNote={showConditions ? climateComparison : null}
+          /* The practical half. Not gated on `showConditions`: when the forecast fails we
+             hide wind and waves, but the road is still a dirt road and the beach still has
+             no shade — those are the facts that stay true and useful on a bad-data day. */
+          practical={practicalTiles}
+          language={language}
+        />
+
+        {/* The tiered experience badge used to sit on the verdict row saying "Ιδανική στις
+            20:00" right next to "Ήρεμα τώρα" — two pills, one meaning (reported 31/07).
+            It earns its place only when it says something the verdict cannot: a boat-ride
+            judgement, or a day with no good swimming window at all. Otherwise it is
+            silent. `forceShow` is deliberately gone — that flag was what made it print on
+            days it had nothing to add. */}
+        {showConditions && (isBoatOnlyBeach || swimWindowDisplay.tone === 'avoid') && (
+          <div className="px-1">
+            <TodayScoreBadge
+              score={detailBadgeScore}
+              language={language}
+              selectedDate={selectedDate}
+              windBeaufort={beaufortLevel}
+              // The badge judges the SAME figure the wave graphic draws below it (cove-corrected
+              // where that applies). It used to read the raw scoring height, so in a cove the
+              // verdict word and the metres on screen came from two different seas.
+              waveHeightM={displayWaveHeightM}
+              wavePeriodS={scoreResult.seaStatePeriodS}
+              seaConditionScore={seaConditionScore}
+              swimmingComfort={swimmingComfort}
+              noIdealSwimmingWindow={swimWindowDisplay.tone === 'avoid'}
+              exposureLevel={mapAlignedExposureLevel}
+              canClaimWindProtection={canClaimWindProtectionForCopy}
+              selectedHour={selectedHour}
+              boatAccess={isBoatOnlyBeach}
+            />
           </div>
-
-          {showConditions && (
-          <TodayScoreBadge
-            score={detailBadgeScore}
-            language={language}
-            selectedDate={selectedDate}
-            windBeaufort={beaufortLevel}
-            // The badge judges the SAME figure the wave graphic draws below it (cove-corrected
-            // where that applies). It used to read the raw scoring height, so in a cove the
-            // verdict word and the metres on screen came from two different seas.
-            waveHeightM={displayWaveHeightM}
-            wavePeriodS={scoreResult.seaStatePeriodS}
-            seaConditionScore={seaConditionScore}
-            swimmingComfort={swimmingComfort}
-            noIdealSwimmingWindow={swimWindowDisplay.tone === 'avoid'}
-            exposureLevel={mapAlignedExposureLevel}
-            canClaimWindProtection={canClaimWindProtectionForCopy}
-            selectedHour={selectedHour}
-            boatAccess={isBoatOnlyBeach}
-            forceShow
-          />
-          )}
-
-          {/* The ♥ and share buttons that used to sit here were the SECOND copy on the
-              page: the sticky header carries them at every scroll position on desktop,
-              and the fixed bottom bar does the same on mobile. Three copies of the same
-              two controls, one of them in the middle of the answer. Removed — the
-              header pair is always reachable. */}
-        </section>
+        )}
 
         {showConditions && (<>
-        {/* Weather & sea now — targets the "καιρός/weather {beach}" intent. The
-            <h2>, the orientation description and the verdict pill are stable or
-            no more volatile than the "τώρα" in the heading, so they stay crawlable
-            (snippet-eligible — the verdict is the CTR hook). Only the raw numbers
-            (wind Bft, wave m) and the live sentence carry data-nosnippet, so
-            Google never freezes a stale value into a SERP snippet. Client-only:
-            this never enters the static prerendered HTML, so "now/live" wording
-            stays out of what the SEO honesty guards scan. No JSON-LD — the honest
-            answer includes live values we must not put in structured data. */}
-        <section className="space-y-3 rounded-[2rem] border border-sky-100 bg-white/90 p-4 shadow-sm shadow-sky-900/5 sm:p-5">
-          <h2 className="font-heading text-xl font-bold leading-tight text-slate-950">{weatherNow.heading}</h2>
-          {/* ANSWER FIRST, BACKGROUND LAST. This card used to open with the orientation
-              paragraph, so the reader met five lines of prose before the first number —
-              on a page whose whole job is "can I swim here today". The live figures and
-              the verdict now come straight after the heading, one sentence explains them,
-              and the always-true orientation line (the crawlable, per-beach-unique part —
-              it must stay in the DOM for the "καιρός {beach}" intent) closes the card in
-              smaller type as the background it is. */}
-          {weatherNow.tone === 'unknown' ? (
-            <>
-              <p className="text-sm leading-relaxed text-slate-700">{weatherNow.stableDescription}</p>
-              <div className="flex items-center gap-2 rounded-2xl border border-slate-100 bg-slate-50 px-4 py-3 text-sm font-semibold text-slate-500">
-                <span className="h-2 w-2 animate-pulse rounded-full bg-slate-300" aria-hidden="true" />
-                {weatherNow.loadingLabel}
-              </div>
-            </>
-          ) : (
-            <div className="space-y-3">
-              <div className="flex flex-wrap items-center gap-2">
-                {/* Verdict is the CTR hook and no more volatile than the "τώρα" in
-                    the <h2> — kept crawlable/snippet-eligible for the same reason. */}
-                <span className={`inline-flex items-center rounded-full px-3 py-1 text-sm font-bold ${weatherNowToneClass}`}>
-                  {weatherNow.verdict}
-                </span>
-                {/* Only the raw numbers carry data-nosnippet, so Google never
-                    freezes a stale "5 Bft" / "~0.9 m" into a SERP snippet. */}
-                <span data-nosnippet="true" className="inline-flex items-center gap-1.5 rounded-full border border-sky-100 bg-sky-50 px-3 py-1 text-sm font-semibold text-sky-900">
-                  <Wind className="h-4 w-4" aria-hidden="true" />
-                  <span className="sr-only">{weatherNow.windLabel}: </span>{weatherNow.windValue}
-                </span>
-                <span data-nosnippet="true" className="inline-flex items-center gap-1.5 rounded-full border border-sky-100 bg-sky-50 px-3 py-1 text-sm font-semibold text-sky-900">
-                  <Waves className="h-4 w-4" aria-hidden="true" />
-                  <span className="sr-only">{weatherNow.waveLabel}: </span>{weatherNow.waveValue}
-                </span>
-              </div>
-              {/* Live sentence names the current wind/Bft → volatile, nosnippet. */}
-              <p data-nosnippet="true" className="text-sm leading-relaxed text-slate-700">{weatherNow.liveSentence}</p>
-              <p className="text-xs leading-relaxed text-slate-500">{weatherNow.stableDescription}</p>
-            </div>
-          )}
-        </section>
+        {/* ===== REMOVED 31/07/2026: the whole "Καιρός στην παραλία {X} τώρα" card. =====
+            It carried three things and the hero now says all three, higher and shorter:
+            the verdict pill, a live sentence ("Με βορειοανατολικό άνεμο 3 Μπφ που φυσάει
+            τώρα, εδώ είναι σχετικά προστατευμένα") and the orientation line ("βλέπει νότια
+            και προστατεύεται από βόρειους και ανατολικούς ανέμους"). Between them and the
+            hero's verdict + "3 Μπφ ΒΑ" tile, the same fact was stated three times before
+            the reader reached a single picture.
 
-        {/* Today's conditions. The wave graphic used to lead this section, and on a meltemi day it
+            THE SEO ARGUMENT FOR KEEPING IT WAS WRONG, AND THIS IS WHY IT IS WRITTEN DOWN.
+            The old comment here claimed the <h2> and the orientation line "must stay in the
+            DOM for the καιρός {beach} intent". They never were in it. Measured in the built
+            output before removing anything (dist/el/beaches/chania/604-kedrodasos/index.html):
+            "Καιρός στην παραλία" → 0 hits, "προστατεύεται" → 0 hits. The card is rendered
+            client-side only, so Googlebot's indexed HTML never contained a word of it. What
+            actually carries that intent is the <title> — "Παραλία Κεδρόδασος, Χανιά — Καιρός,
+            Άνεμος & Κύμα" — which is untouched. Lesson, same as ODbL and the photos: a claim
+            about what is on a page is worth nothing until someone greps the built file.
+
+            The orientation fact itself is NOT lost — utils/shoreIncidenceCopy still prints
+            the part that adds information (where this shore sits among its neighbours) at
+            the top of the conditions section, immediately below. */}
+
+        {/* Today's conditions — now the FIRST thing after the answer, as it should be: a
+            picture of the sea beats a paragraph about it.
+            The wave graphic used to lead this section, and on a meltemi day it
             prints the SAME figure on every beach of the island (one ~9 km marine cell): 90,5% of
             2.850 beaches nationally, and every beach in 25 of 95 regions. So the section now leads
             with the one thing that genuinely differs between two shores at the same hour — how the
@@ -1733,34 +1847,25 @@ export const BeachDetailPage: React.FC<BeachDetailPageProps> = ({
               language={language}
             />
           )}
-          <div className={`grid grid-cols-2 gap-2.5 ${typeof seaTemperatureC === 'number' ? 'md:grid-cols-4' : 'md:grid-cols-3'}`}>
-            <ConditionCard
-              icon={<Wind className="w-5 h-5 text-blue-500" />}
-              label={copy.windShort[language]}
-              value={`${windSpeedKmh.toFixed(0)} km/h · ${windDirectionLabel}`}
-              subValue={`${beaufortLevel} ${t.units.beaufort}`}
-            />
-            <ConditionCard
-              icon={isBoatOnlyBeach ? <Ship className="w-5 h-5 text-cyan-500" /> : <Waves className="w-5 h-5 text-cyan-500" />}
-              label={isBoatOnlyBeach ? boatRideConditionLabel : copy.sea[language]}
-              value={seaConditionDisplay.value}
-              subValue={seaConditionDisplay.subValue}
-            />
-            {typeof seaTemperatureC === 'number' && (
+          {/* The four ConditionCards that used to sit here (wind / sea / water / air) are
+              now the four instruments inside the answer hero at the top of the page. They
+              were a fourth statement of numbers already given twice above them, in a third
+              set of units, at the same visual weight as everything else — the single
+              biggest reason the page read as a wall of equal cards. The one figure they
+              carried that the hero has no room for is the sea-state qualifier, which now
+              rides under the wave graphic that actually draws it.
+              For boat-only beaches the sea line is about the RIDE, not the swim, so it
+              keeps its own row here rather than being flattened into a wave height. */}
+          {isBoatOnlyBeach && (
+            <div className="grid grid-cols-1 gap-2.5">
               <ConditionCard
-                icon={<Droplets className="w-5 h-5 text-sky-500" />}
-                label={copy.waterTemp[language]}
-                value={`~${seaTemperatureC.toFixed(0)}°C`}
-                subValue={waterTempDescriptor}
+                icon={<Ship className="w-5 h-5 text-cyan-500" />}
+                label={boatRideConditionLabel}
+                value={seaConditionDisplay.value}
+                subValue={seaConditionDisplay.subValue}
               />
-            )}
-            <ConditionCard
-              icon={<Thermometer className="w-5 h-5 text-orange-500" />}
-              label={copy.temperatureShort[language]}
-              value={`${displayTemp.toFixed(0)}°C`}
-              subValue={copy.airTemp[language]}
-            />
-          </div>
+            </div>
+          )}
           {/* "Towel Comfort" — same wind numbers as the card above, said the way a tourist
               actually thinks about a beach day. Display only, no new signal. */}
           <p className={`flex items-center gap-2 rounded-xl px-3 py-2 text-sm font-semibold ${
@@ -1825,6 +1930,14 @@ export const BeachDetailPage: React.FC<BeachDetailPageProps> = ({
         {/* 1d. Constraint-fit today — kids / snorkeling / sunset, only when it genuinely fits. */}
         <ConstraintFitSection language={language} fits={constraintFits} />
         </>)}
+
+        {/* ---- Section break: today's conditions end, the beach itself begins. ----
+            Twenty cards in a row, all the same white, the same radius and the same
+            shadow, is why this page read as a wall: nothing told the eye where one
+            subject stopped and the next started, so a visitor who wanted "is there
+            shade?" had to scan every block. Two hairline rules with a word on them
+            cost nothing and give the scroll a shape: ANSWER → THE BEACH → NEARBY. */}
+        <SectionBreak label={copy.sectionBeach[language]} />
 
         {/* 2. Photo Gallery */}
         <section className="space-y-3">
@@ -1941,16 +2054,12 @@ export const BeachDetailPage: React.FC<BeachDetailPageProps> = ({
           </section>
         )}
 
-        {/* 4b. Sun & light — sunset always, peak UV only when actionable (≥6). Hidden with
-            conditions since peak UV is forecast-derived (stale). */}
-        {showConditions && (sunsetTime || (typeof peakUvIndex === 'number' && peakUvIndex >= 6)) && (
+        {/* 4b. Sun & light — peak UV only, and only when actionable (≥6). The sunset time
+            that used to lead this strip is now the fourth instrument in the answer hero,
+            so printing it again here was the same duplication the wind chips had. Hidden
+            with conditions since peak UV is forecast-derived (stale). */}
+        {showConditions && typeof peakUvIndex === 'number' && peakUvIndex >= 6 && (
           <section className="flex flex-wrap items-center gap-x-5 gap-y-2 rounded-2xl border border-amber-100/70 bg-amber-50/45 px-4 py-3" data-nosnippet="true">
-            {sunsetTime && (
-              <span className="inline-flex items-center gap-2 text-sm font-bold text-slate-800">
-                <Sun className="h-4 w-4 shrink-0 text-amber-500" aria-hidden="true" />
-                {{ en: 'Sunset', gr: 'Δύση', de: 'Sonnenuntergang', it: 'Tramonto', fr: 'Coucher' }[language]} {sunsetTime}
-              </span>
-            )}
             {typeof peakUvIndex === 'number' && peakUvIndex >= 6 && (
               <span className="inline-flex items-center gap-2 text-sm font-bold text-amber-900">
                 <span className="grid h-5 min-w-5 place-items-center rounded-full bg-amber-400 px-1.5 text-[11px] font-extrabold text-white tabular-nums">
@@ -2151,24 +2260,12 @@ export const BeachDetailPage: React.FC<BeachDetailPageProps> = ({
           </section>
         )}
 
-        {/* 7a. What to bring — derived from amenity gaps */}
-        {whatToBringItems.length > 0 && (
-          <section className="flex items-start gap-3 rounded-[1.75rem] border border-amber-100/80 bg-amber-50/70 p-4 shadow-sm shadow-amber-900/5">
-            <div className="rounded-2xl bg-amber-400 p-2.5 text-white shadow-sm">
-              <Backpack className="h-5 w-5" />
-            </div>
-            <div className="min-w-0">
-              <h3 className="font-bold text-amber-950">{whatToBringTitle}</h3>
-              <div className="mt-2 flex flex-wrap gap-2">
-                {whatToBringItems.map((item) => (
-                  <span key={item} className="inline-flex min-h-8 items-center rounded-full border border-amber-200 bg-white/80 px-3 text-xs font-bold text-amber-900">
-                    {item}
-                  </span>
-                ))}
-              </div>
-            </div>
-          </section>
-        )}
+        {/* 7a. REMOVED 31/07/2026 — "Τι να φέρεις" is now the fourth practical tile in the
+            answer hero, where a visitor sees it while deciding rather than four screens
+            after deciding. Keeping the card as well would have been the same duplication
+            the whole pass exists to remove: same list, same gates, twice on one page.
+            The list itself is unchanged (whatToBringItems still drives the tile via its
+            tile-sized twin whatToBringShort) — only the second printing is gone. */}
 
         {/* 7a-2. Camping nearby (organized campsites within ~2.5 km, from OSM) */}
         {nearbyCampsites.length > 0 && (
@@ -2422,6 +2519,9 @@ export const BeachDetailPage: React.FC<BeachDetailPageProps> = ({
         </section>
         )}
 
+        {/* ---- Section break: this beach ends, the alternatives begin. ---- */}
+        <SectionBreak label={copy.sectionNearby[language]} />
+
         {/* 8. Nearby Beaches */}
         {/* Day-plan sequencer — morning → midday shade & food → sunset.
             Temporarily hidden via ENABLE_DAY_PLAN_SECTION until reworked. */}
@@ -2625,6 +2725,19 @@ export const BeachDetailPage: React.FC<BeachDetailPageProps> = ({
     </div>
   );
 };
+
+/**
+ * A hairline rule with a word sitting on it. Purely a rhythm device: it separates the
+ * three things this page is (today's answer / the beach itself / where else to go)
+ * so the reader can skip a whole zone instead of scanning every card in it.
+ * Deliberately NOT a heading — see copy.sectionBeach for why the outline stays clean.
+ */
+const SectionBreak: React.FC<{ label: string }> = ({ label }) => (
+  <div className="flex items-center gap-3 pt-2" aria-hidden="true">
+    <span className="text-[11px] font-black uppercase tracking-[0.14em] text-slate-400">{label}</span>
+    <span className="h-px flex-1 bg-gradient-to-r from-slate-200 to-transparent" />
+  </div>
+);
 
 interface ConditionCardProps {
   icon: React.ReactNode;

@@ -381,12 +381,38 @@ body {
   50% { opacity: 0.8; }
 }
 
+/* ===== Answer-hero instrument glyphs (components/ConditionGlyphs.tsx) =====
+   Same signature as the landing hero: wind is the thing that moves. The stream
+   duration is set per-glyph from the actual Beaufort reading, so the speed on
+   screen is a statement about the number next to it, not decoration. */
+.cb-glyph-stream {
+  stroke-dasharray: 9 13;
+  animation: cb-glyph-stream var(--cb-glyph-stream-duration, 3s) linear infinite;
+}
+
+@keyframes cb-glyph-stream {
+  from { stroke-dashoffset: 44; }
+  to { stroke-dashoffset: 0; }
+}
+
+.cb-glyph-glow {
+  animation: cb-glyph-glow 5.5s ease-in-out infinite;
+  transform-origin: center;
+}
+
+@keyframes cb-glyph-glow {
+  0%, 100% { opacity: 0.9; }
+  50% { opacity: 0.65; }
+}
+
 @media (prefers-reduced-motion: reduce) {
   .cb-hero-rise,
   .cb-breeze-path,
   .cb-cloud,
   .cb-wash,
-  .cb-twinkle {
+  .cb-twinkle,
+  .cb-glyph-stream,
+  .cb-glyph-glow {
     animation: none !important;
   }
 }

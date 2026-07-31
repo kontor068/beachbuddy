@@ -15,12 +15,12 @@ import { hasBoatOnlyAccess, hasChallengingAccess, hasDirtRoadAccess } from '../u
  * which is exactly why a summariser can't answer this and we can.
  */
 
-type AccessKind = 'boat' | 'hard' | 'dirt' | 'walk' | 'car' | 'carUnverified';
+export type AccessKind = 'boat' | 'hard' | 'dirt' | 'walk' | 'car' | 'carUnverified';
 
 type Copy = Record<LanguageCode, string>;
 const pick = (copy: Copy, language: LanguageCode): string => copy[language] ?? copy.en;
 
-const classify = (beach: Beach): AccessKind | null => {
+export const classifyAccessKind = (beach: Beach): AccessKind | null => {
   const accessType = beach.metadata?.access?.type;
   if (hasBoatOnlyAccess(beach)) return 'boat';
   if (hasChallengingAccess(beach)) return 'hard';
@@ -45,7 +45,7 @@ const KIND_TONE: Record<AccessKind, string> = {
   carUnverified: 'border-slate-200 bg-slate-50/70 text-slate-800',
 };
 
-const KIND_ICON: Record<AccessKind, React.ComponentType<{ className?: string }>> = {
+export const ACCESS_KIND_ICON: Record<AccessKind, React.ComponentType<{ className?: string }>> = {
   boat: Ship,
   hard: MountainSnow,
   dirt: Car,
@@ -130,7 +130,7 @@ interface GettingThereSectionProps {
 }
 
 export const GettingThereSection: React.FC<GettingThereSectionProps> = ({ beach, language }) => {
-  const kind = classify(beach);
+  const kind = classifyAccessKind(beach);
   const hasParking = beach.amenities?.parking === true;
 
   // Nothing trustworthy to say (unknown access, no parking) → render nothing. We deliberately do
@@ -138,7 +138,7 @@ export const GettingThereSection: React.FC<GettingThereSectionProps> = ({ beach,
   // verbose / internal maintenance text (e.g. "Επανέλεγχος 2026-05-25 ...") that isn't for users.
   if (!kind && !hasParking) return null;
 
-  const Icon = kind ? KIND_ICON[kind] : Car;
+  const Icon = kind ? ACCESS_KIND_ICON[kind] : Car;
 
   return (
     <section className="space-y-3" data-nosnippet="true">
@@ -162,4 +162,24 @@ export const GettingThereSection: React.FC<GettingThereSectionProps> = ({ beach,
       )}
     </section>
   );
+};
+
+/**
+ * Two-word version of the access label, for the answer hero's practical tile.
+ * The full sentence ("Τα τελευταία χιλιόμετρα είναι χωμάτινα — αργά και προσεκτικά…")
+ * still lives in the section above; a quarter-width tile can only carry the verdict,
+ * and a truncated verdict is worse than a short one.
+ */
+export const ACCESS_KIND_SHORT: Record<AccessKind, Copy> = {
+  boat: { en: 'Boat only', gr: 'Μόνο σκάφος', de: 'Nur Boot', it: 'Solo barca', fr: 'Bateau' },
+  hard: { en: 'Difficult', gr: 'Δύσβατη', de: 'Schwierig', it: 'Difficile', fr: 'Difficile' },
+  dirt: { en: 'Dirt road', gr: 'Χωμάτινος', de: 'Schotter', it: 'Sterrata', fr: 'Piste' },
+  walk: { en: 'On foot', gr: 'Με τα πόδια', de: 'Zu Fuß', it: 'A piedi', fr: 'À pied' },
+  car: { en: 'By car', gr: 'Με αυτοκίνητο', de: 'Mit dem Auto', it: 'In auto', fr: 'En voiture' },
+  carUnverified: { en: 'Likely easy', gr: 'Μάλλον εύκολη', de: 'Wohl leicht', it: 'Facile', fr: 'Sans doute facile' },
+};
+
+export const accessKindShortLabel = (beach: Beach, language: LanguageCode): string | null => {
+  const kind = classifyAccessKind(beach);
+  return kind ? pick(ACCESS_KIND_SHORT[kind], language) : null;
 };

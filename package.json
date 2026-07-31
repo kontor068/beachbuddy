@@ -7,7 +7,7 @@
     "dev": "vite",
     "build:shorelines": "node scripts/buildShorelineThumbs.mjs",
     "quality:shorelines": "node scripts/validateShorelineShapes.mjs",
-    "build:beach-data": "node scripts/buildBeachRegionData.mjs && node scripts/bakeLocalWindShelter.mjs && node scripts/splitBeachStories.mjs",
+    "build:beach-data": "node scripts/buildBeachRegionData.mjs && node scripts/bakeLocalWindShelter.mjs && node scripts/splitBeachStories.mjs && node scripts/splitBeachClimate.mjs",
     "camping:harvest": "node scripts/harvestCampsitesOsm.mjs",
     "camping:link": "node scripts/linkCampsitesToBeaches.mjs match",
     "camping:apply": "node scripts/linkCampsitesToBeaches.mjs apply",
@@ -57,9 +57,9 @@
     "images:strips": "node scripts/optimizeStripImages.mjs",
     "images:region-strips": "node scripts/buildRegionStripPhotos.mjs",
     "images:source-region-strips": "node scripts/sourceRegionStripImages.mjs",
-    "build": "node scripts/checkBeachContract.mjs && node scripts/buildShorelineThumbs.mjs && node scripts/buildLegalPages.mjs && node scripts/splitBeachStories.mjs && node scripts/generateCuratedPhotoAvif.mjs && vite build && node scripts/stampServiceWorker.mjs && node scripts/prerenderBeachPages.mjs && node scripts/applyDeployContextGuards.mjs",
+    "build": "node scripts/checkBeachContract.mjs && node scripts/buildShorelineThumbs.mjs && node scripts/buildLegalPages.mjs && node scripts/splitBeachStories.mjs && node scripts/splitBeachClimate.mjs && node scripts/generateCuratedPhotoAvif.mjs && vite build && node scripts/stampServiceWorker.mjs && node scripts/prerenderBeachPages.mjs && node scripts/applyDeployContextGuards.mjs",
     "release": "node scripts/dailyRelease.mjs",
-    "build:mobile": "node scripts/checkBeachContract.mjs && node scripts/buildShorelineThumbs.mjs && node scripts/buildLegalPages.mjs && node scripts/splitBeachStories.mjs && node scripts/generateCuratedPhotoAvif.mjs && vite build --mode mobile && node scripts/stampServiceWorker.mjs",
+    "build:mobile": "node scripts/checkBeachContract.mjs && node scripts/buildShorelineThumbs.mjs && node scripts/buildLegalPages.mjs && node scripts/splitBeachStories.mjs && node scripts/splitBeachClimate.mjs && node scripts/generateCuratedPhotoAvif.mjs && vite build --mode mobile && node scripts/stampServiceWorker.mjs",
     "build:legal": "node scripts/buildLegalPages.mjs",
     "lint": "tsc --noEmit",
     "preview": "vite preview",
@@ -72,7 +72,8 @@
     "quality:hreflang-build": "node scripts/auditHreflangIntegrity.mjs",
     "quality:jsonld-coverage": "node scripts/auditJsonLdCoverage.mjs",
     "quality:orphan-pages": "node scripts/auditOrphanPages.mjs",
-    "quality:numbers": "npm run quality:data-coverage && npm run quality:photo-coverage && npm run quality:hreflang-build && npm run quality:jsonld-coverage && npm run quality:orphan-pages"
+    "quality:numbers": "npm run quality:data-coverage && npm run quality:photo-coverage && npm run quality:hreflang-build && npm run quality:jsonld-coverage && npm run quality:orphan-pages",
+    "build:climate": "node scripts/splitBeachClimate.mjs"
   },
   "dependencies": {
     "@capacitor/android": "^8.4.1",
