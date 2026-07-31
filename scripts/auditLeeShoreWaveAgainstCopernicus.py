@@ -57,7 +57,10 @@ from copernicusCommon import (  # noqa: E402
 DATASET_ID = "cmems_mod_med_wav_anfc_4.2km_PT1H-i"
 OPEN_METEO_MODELS = ["ewam", "meteofrance_wave"]
 REPORT_PATH = "reports/wave-model/lee-shore-copernicus.json"
-HOURS_CACHE = "reports/wave-model/lee-shore-hours.json"
+# ΜΕ ΤΟ ΠΑΡΑΘΥΡΟ ΣΤΟ ΟΝΟΜΑ. Χωρίς αυτό, η εκτέλεση του 2024 θα έσβηνε τις ώρες του 2025 —
+# δηλαδή ακριβώς το δείγμα με το οποίο πρέπει να συγκριθεί.
+HOURS_DIR = "reports/wave-model"
+HOURS_CACHE_FMT = "reports/wave-model/lee-shore-hours-{start}.json"
 
 # Προσήνεμη = κοιτάει βοριά· υπήνεμη = κοιτάει νότο. Τα παράθυρα είναι στενά επίτηδες: μια
 # παραλία στις 270° (δυτική) δεν είναι ούτε προσήνεμη ούτε υπήνεμη στο μελτέμι και θα
@@ -692,15 +695,20 @@ def main():
                         help="δείξε ποια νησιά/παραλίες θα μετρηθούν και σταμάτα")
     # Ξανακρίνει τις ΙΔΙΕΣ ώρες με τις τωρινές πύλες, χωρίς δίκτυο και χωρίς διαπιστευτήρια.
     # Υπάρχει επειδή αυτό που αλλάζει σε αυτό το τεστ είναι τα κριτήρια, όχι τα δεδομένα.
-    parser.add_argument("--replay", action="store_true",
-                        help=f"ξανακρίνε τις αποθηκευμένες ώρες από {HOURS_CACHE}")
+    parser.add_argument("--replay", nargs="?", const="", metavar="YYYY-MM-DD",
+                        help="ξανακρίνε αποθηκευμένες ώρες· χωρίς τιμή παίρνει το νεότερο αρχείο")
     args = parser.parse_args()
 
-    if args.replay:
-        path = ROOT / HOURS_CACHE
+    if args.replay is not None:
+        if args.replay:
+            path = ROOT / HOURS_CACHE_FMT.format(start=args.replay)
+        else:
+            found = sorted((ROOT / HOURS_DIR).glob("lee-shore-hours-*.json"))
+            path = found[-1] if found else ROOT / "missing"
         if not path.exists():
-            log(f"Δεν υπάρχει {HOURS_CACHE} — τρέξε μία φορά κανονικά πρώτα.")
+            log("Δεν υπάρχουν αποθηκευμένες ώρες — τρέξε μία φορά κανονικά πρώτα.")
             return 1
+        log(f"Πηγή: {path.name}")
         cached = json.loads(path.read_text(encoding="utf-8"))
         window = cached["window"]
         log(f"--replay: {len(cached['rows'])} ώρες, παράθυρο {window['start']} → {window['end']}, "
@@ -833,7 +841,7 @@ def main():
     # φορά· χωρίς αυτό το αρχείο, κάθε επόμενη αλλαγή κριτηρίου ζητάει πάλι 25 λεπτά
     # κατέβασμα και τον κωδικό Copernicus, που είναι ακριβώς ο λόγος που ο κωδικός
     # κυκλοφόρησε σε καθαρό κείμενο δύο φορές.
-    cache = write_report(HOURS_CACHE, {
+    cache = write_report(HOURS_CACHE_FMT.format(start=start_s), {
         "window": {"start": start_s, "end": end_s},
         "judge_dataset": DATASET_ID,
         "columns": ["island_index", "hour", "cop_windward", "cop_leeward",
