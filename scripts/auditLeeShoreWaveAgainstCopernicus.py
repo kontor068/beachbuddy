@@ -26,9 +26,18 @@
 
 ΧΡΗΣΗ
   set CMEMS_USER=...  και  set CMEMS_PASS=...   (ή `copernicusmarine login` μία φορά)
-  python scripts/auditLeeShoreWaveAgainstCopernicus.py [--start 2025-07-01] [--days 31]
+  python scripts/auditLeeShoreWaveAgainstCopernicus.py [--start 2025-07-01] [--days 62]
+                                                       [--islands 99]
+  --dry-run   ποια νησιά θα μετρηθούν, χωρίς κατέβασμα και χωρίς διαπιστευτήρια
+  --replay    ξανακρίνει τις αποθηκευμένες ώρες με τις τωρινές πύλες, offline
 
 ΕΞΟΔΟΣ  reports/wave-model/lee-shore-copernicus.json  + ετυμηγορία στην οθόνη.
+        reports/wave-model/lee-shore-hours.json       οι ωμές ώρες, για --replay.
+
+ΤΟ --replay ΕΙΝΑΙ Ο ΚΑΝΟΝΑΣ, ΟΧΙ Η ΕΞΑΙΡΕΣΗ: σε αυτό το τεστ αλλάζουν τα κριτήρια, όχι τα
+δεδομένα. Η πύλη Β έχει ήδη ξαναγραφτεί μία φορά. Κάθε φορά που ξαναγράφεται, το σωστό είναι
+να ξανακριθούν οι ΙΔΙΕΣ ώρες — και όχι να ξανακατέβουν, που θα σήμαινε 25 λεπτά και άλλη μια
+περιφορά του κωδικού Copernicus.
 """
 
 import argparse
@@ -41,11 +50,14 @@ import urllib.request
 from datetime import datetime, timedelta, timezone
 
 from copernicusCommon import (  # noqa: E402
-    GREECE_BBOX, SeaCellIndex, beaufort, haversine_km, load_beaches, open_dataset, write_report,
+    GREECE_BBOX, ROOT, SeaCellIndex, beaufort, haversine_km, load_beaches, open_dataset,
+    write_report,
 )
 
 DATASET_ID = "cmems_mod_med_wav_anfc_4.2km_PT1H-i"
 OPEN_METEO_MODELS = ["ewam", "meteofrance_wave"]
+REPORT_PATH = "reports/wave-model/lee-shore-copernicus.json"
+HOURS_CACHE = "reports/wave-model/lee-shore-hours.json"
 
 # Προσήνεμη = κοιτάει βοριά· υπήνεμη = κοιτάει νότο. Τα παράθυρα είναι στενά επίτηδες: μια
 # παραλία στις 270° (δυτική) δεν είναι ούτε προσήνεμη ούτε υπήνεμη στο μελτέμι και θα
@@ -75,6 +87,17 @@ PAIR_MAX_KM = 30.0
 MIN_ISLAND_NS_SPAN_KM = 10.0
 MAX_ISLAND_NS_SPAN_KM = 30.0
 
+# ΠΟΤΕ ΜΕΤΡΑΕΙ Η ΦΟΡΑ. Κάτω από αυτό το όριο ο κριτής δεν βλέπει ουσιαστική διαφορά ακτών,
+# οπότε το πρόσημο είναι θόρυβος: μια ώρα με διαφορά 3 εκατοστά γυρίζει από τη μία πλευρά
+# στην άλλη για λόγους που δεν έχουν σχέση με τη σκιά του νησιού, και το ίδιο θα έκανε
+# οποιοδήποτε μοντέλο, σωστό ή λάθος. Η πύλη Β κοιτάει ΜΟΝΟ τις ώρες όπου υπάρχει κάτι να
+# βρεθεί σωστά.
+#
+# 0,20 μ. είναι κάτω από το κατώφλι όπου η εφαρμογή αρχίζει να γράφει «προσοχή» (0,80 μ.),
+# άρα δεν διαλέγει «εύκολες» ώρες — διαλέγει ώρες με μετρήσιμο φαινόμενο. Το ποσοστό των
+# ωρών που περνούν το φίλτρο τυπώνεται πάντα, ώστε να φαίνεται πόσο κόπηκε.
+CLEAR_CONTRAST_M = 0.20
+
 # ── ΟΙ ΠΥΛΕΣ — ΓΡΑΜΜΕΝΕΣ ΠΡΙΝ ΤΡΕΞΕΙ ΤΟ SCRIPT ──────────────────────────────────────────
 #
 # Δεν χαλαρώνουν αφού δει κανείς το αποτέλεσμα. Στην προηγούμενη μέτρηση μια πύλη άλλαξε
@@ -84,8 +107,26 @@ GATES = {
     #    που έτρεχε πριν έδινε 0,05 μ. — δηλαδή έλεγε ότι οι δύο ακτές του ίδιου νησιού
     #    έχουν το ίδιο κύμα. Αν το Copernicus πει το ίδιο, η αλλαγή ήταν λάθος.
     "min_copernicus_contrast_m": 0.30,
-    # Β. Και με σωστή φορά — η υπήνεμη πιο ήρεμη από την προσήνεμη.
-    "min_correct_sign_ratio": 0.90,
+    # Β. ΑΝΑΔΙΑΤΥΠΩΘΗΚΕ 31/07/2026 ΜΕΤΑ ΤΗ ΜΕΤΡΗΣΗ ΤΩΝ 11.053 ΩΡΩΝ — και επειδή αυτό είναι
+    #    ακριβώς η κίνηση που μπορεί να κρύψει ψάξιμο για το επιθυμητό αποτέλεσμα, γράφεται
+    #    εδώ ολόκληρο το σκεπτικό, και το κατώφλι ΔΕΝ πέφτει.
+    #
+    #    Η ΠΡΟΗΓΟΥΜΕΝΗ ΜΟΡΦΗ: `min_correct_sign_ratio: 0.90`, υπολογισμένη πάνω στη φορά
+    #    ΤΟΥ ΚΡΙΤΗ. Μέτρησε 83,7% και έπεσε. Το πρόβλημα δεν ήταν το νούμερο, ήταν το
+    #    υποκείμενο: η φορά του κριτή δεν λέει τίποτα για το `ewam`. Ρωτούσε «συμβαίνει το
+    #    φαινόμενο σε 9 στις 10 ώρες;» — δηλαδή έλεγχε τη ΘΑΛΑΣΣΑ και την ανάλυση του
+    #    πλέγματος, όχι το μοντέλο μας. Καμία αλλαγή μοντέλου δεν θα μπορούσε να την
+    #    περάσει ή να την κόψει. Το 90% είχε γραφτεί ως υπόθεση πριν υπάρξει μέτρηση, ότι
+    #    η υπήνεμη σκιά είναι σχεδόν καθολική· η μέτρηση είπε ισχυρή αλλά όχι καθολική.
+    #
+    #    Η ΝΕΑ ΜΟΡΦΗ ρωτάει αυτό που έπρεπε εξαρχής: στις ώρες που ο κριτής βλέπει ΚΑΘΑΡΗ
+    #    διαφορά ακτών, βάζει το `ewam` την ήρεμη πλευρά εκεί που τη βάζει κι εκείνος;
+    #
+    #    ΤΙ ΔΕΝ ΑΛΛΑΞΕ: το κατώφλι μένει 0,90, αριθμό προς αριθμό. Άλλαξε ΤΟ ΥΠΟΚΕΙΜΕΝΟ
+    #    (μοντέλο αντί για φύση), όχι η αυστηρότητα. Και η πύλη μπορεί κάλλιστα να πέσει:
+    #    η συνολική φορά του `ewam` μετρήθηκε 73,8% σε ΟΛΕΣ τις ώρες. Αν δεν ανεβαίνει
+    #    πάνω από 90% εκεί που η διαφορά είναι πραγματική, το `ewam` δεν βγαίνει.
+    "min_model_sign_agreement_on_clear_hours": 0.90,
     # Γ. Η ΕΠΙΚΙΝΔΥΝΗ ΚΑΤΕΥΘΥΝΣΗ. Στις υπήνεμες ακτές το ewam δεν επιτρέπεται να λέει
     #    «ήρεμα» εκεί που ο ανεξάρτητος κριτής βλέπει κύμα. Δύο όρια: το μέσο σφάλμα και
     #    η ουρά, γιατί ένας καλός μέσος όρος κρύβει άνετα λίγες επικίνδυνες ώρες.
@@ -333,6 +374,193 @@ def rmse(pairs):
     return math.sqrt(sum((a - b) ** 2 for a, b in pairs) / len(pairs)) if pairs else None
 
 
+# Θέσεις στη γραμμή. Οι γραμμές αποθηκεύονται και ξαναδιαβάζονται από το --replay, οπότε η
+# σειρά είναι συμβόλαιο: μη μπει στήλη στη μέση, μόνο στο τέλος.
+ROW_ISLAND, ROW_HOUR = 0, 1
+MODEL_COLUMNS = {"copernicus": (2, 3), "ewam": (4, 5), "meteofrance_wave": (6, 7)}
+
+
+def summarise(islands_meta, rows):
+    """
+    Όλα τα στατιστικά και όλες οι πύλες, ΑΠΟΚΛΕΙΣΤΙΚΑ από τις γραμμές.
+
+    Είναι ο ίδιος κώδικας για τη ζωντανή εκτέλεση και για το --replay. Αυτό δεν είναι
+    κομψότητα: η πύλη Β έχει ήδη ξαναγραφτεί μία φορά, θα ξαναγραφτεί πιθανώς κι άλλη, και
+    μια δεύτερη υλοποίηση «για το replay» θα σήμαινε ότι κάποια στιγμή οι δύο θα έλεγαν
+    διαφορετικά πράγματα για τα ίδια δεδομένα, χωρίς να το πάρει κανείς είδηση.
+    """
+    def mean(values):
+        return sum(values) / len(values) if values else None
+
+    contrast = {name: [] for name in MODEL_COLUMNS}
+    correct_sign = {name: [0, 0] for name in MODEL_COLUMNS}
+    lee_error = {m: [] for m in OPEN_METEO_MODELS}
+    lee_rmse_pairs = {m: [] for m in OPEN_METEO_MODELS}
+    # ΠΥΛΗ Β: μόνο ώρες όπου ο κριτής βλέπει καθαρή διαφορά ακτών. [συμφωνίες, σύνολο]
+    clear_agree = {m: [0, 0] for m in OPEN_METEO_MODELS}
+    clear_hours = 0
+    per_island_acc = {i: {"contrast": {n: [] for n in MODEL_COLUMNS},
+                          "lee_error": {m: [] for m in OPEN_METEO_MODELS},
+                          "clear_agree": {m: [0, 0] for m in OPEN_METEO_MODELS}}
+                      for i in range(len(islands_meta))}
+
+    for row in rows:
+        idx = row[ROW_ISLAND]
+        acc = per_island_acc[idx]
+        judge_w, judge_l = row[MODEL_COLUMNS["copernicus"][0]], row[MODEL_COLUMNS["copernicus"][1]]
+        judge_delta = judge_w - judge_l
+        is_clear = abs(judge_delta) >= CLEAR_CONTRAST_M
+        if is_clear:
+            clear_hours += 1
+
+        for name, (cw, cl) in MODEL_COLUMNS.items():
+            w, l = row[cw], row[cl]
+            if w is None or l is None:
+                continue
+            delta = w - l
+            contrast[name].append(delta)
+            acc["contrast"][name].append(delta)
+            correct_sign[name][1] += 1
+            if delta > 0:
+                correct_sign[name][0] += 1
+            # Η συμφωνία φοράς μετριέται ΜΟΝΟ στις καθαρές ώρες και ΜΟΝΟ για τα δικά μας
+            # μοντέλα — ο κριτής δεν μπορεί να «συμφωνήσει με τον εαυτό του».
+            if is_clear and name in clear_agree:
+                clear_agree[name][1] += 1
+                acc["clear_agree"][name][1] += 1
+                if (delta > 0) == (judge_delta > 0):
+                    clear_agree[name][0] += 1
+                    acc["clear_agree"][name][0] += 1
+
+        for model in OPEN_METEO_MODELS:
+            pred = row[MODEL_COLUMNS[model][1]]
+            if pred is None:
+                continue
+            lee_error[model].append(pred - judge_l)
+            lee_rmse_pairs[model].append((pred, judge_l))
+            acc["lee_error"][model].append(pred - judge_l)
+
+    per_island = []
+    for idx, meta in enumerate(islands_meta):
+        acc = per_island_acc[idx]
+        entry = dict(meta)
+        entry["models"] = {}
+        for name in MODEL_COLUMNS:
+            deltas = acc["contrast"][name]
+            entry["models"][name] = {
+                "n": len(deltas),
+                "mean_contrast_m": round(mean(deltas), 3) if deltas else None,
+            }
+        for model in OPEN_METEO_MODELS:
+            errs = acc["lee_error"][model]
+            if errs:
+                entry["models"][model]["lee_vs_copernicus_mean_m"] = round(mean(errs), 3)
+            hits, total = acc["clear_agree"][model]
+            if total:
+                entry["models"][model]["clear_hour_sign_agreement"] = round(hits / total, 3)
+                entry["models"][model]["clear_hours"] = total
+        per_island.append(entry)
+
+    cop_contrast = mean(contrast["copernicus"])
+    agree_hits, agree_total = clear_agree["ewam"]
+    agree_ratio = agree_hits / agree_total if agree_total else 0.0
+    lee_mean_ewam = mean(lee_error["ewam"])
+    severe = [e for e in lee_error["ewam"] if e < -GATES["severe_underestimate_m"]]
+    severe_ratio = len(severe) / len(lee_error["ewam"]) if lee_error["ewam"] else 1.0
+    rmse_ewam = rmse(lee_rmse_pairs["ewam"])
+    rmse_prev = rmse(lee_rmse_pairs["meteofrance_wave"])
+
+    gate_a = cop_contrast is not None and cop_contrast >= GATES["min_copernicus_contrast_m"]
+    gate_b = agree_total > 0 and agree_ratio >= GATES["min_model_sign_agreement_on_clear_hours"]
+    gate_c = (lee_mean_ewam is not None
+              and lee_mean_ewam > -GATES["max_lee_mean_underestimate_m"]
+              and severe_ratio <= GATES["max_severe_underestimate_ratio"])
+    gate_d = (rmse_ewam is not None and rmse_prev is not None and rmse_ewam < rmse_prev)
+
+    mf_hits, mf_total = clear_agree["meteofrance_wave"]
+    summary = {
+        "mean_lee_shore_contrast_m": {k: round(mean(v), 3) for k, v in contrast.items() if v},
+        "lee_shore_error_vs_copernicus_m": {k: round(mean(v), 3) for k, v in lee_error.items() if v},
+        "lee_shore_rmse_vs_copernicus_m": {
+            "ewam": round(rmse_ewam, 3) if rmse_ewam else None,
+            "meteofrance_wave": round(rmse_prev, 3) if rmse_prev else None},
+        "clear_hours": {"threshold_m": CLEAR_CONTRAST_M, "n": clear_hours, "of": len(rows),
+                        "share": round(clear_hours / len(rows), 3) if rows else None},
+        "clear_hour_sign_agreement": {
+            "ewam": round(agree_ratio, 3) if agree_total else None,
+            "meteofrance_wave": round(mf_hits / mf_total, 3) if mf_total else None},
+        # ΔΙΑΓΝΩΣΤΙΚΟ, ΟΧΙ ΠΥΛΗ. Είναι η παλιά πύλη Β, που μετρούσε τη φύση αντί για το
+        # μοντέλο. Μένει τυπωμένη ώστε οι δύο εκτελέσεις να συγκρίνονται, αλλά δεν κρίνει.
+        "diagnostic_own_sign_ratio": {
+            k: round(v[0] / v[1], 3) for k, v in correct_sign.items() if v[1]},
+    }
+
+    verdict = {
+        "passed": bool(gate_a and gate_b and gate_c and gate_d),
+        "gates": {
+            "copernicus_sees_a_real_lee_shore_difference": {
+                "pass": gate_a, "mean_contrast_m": round(cop_contrast, 3) if cop_contrast else None,
+                "threshold_m": GATES["min_copernicus_contrast_m"]},
+            "ewam_picks_the_calm_coast_when_the_judge_sees_one": {
+                "pass": gate_b, "ratio": round(agree_ratio, 3), "n": agree_total,
+                "threshold": GATES["min_model_sign_agreement_on_clear_hours"],
+                "previous_model_ratio": round(mf_hits / mf_total, 3) if mf_total else None},
+            "ewam_does_not_under_read_the_lee_shore": {
+                "pass": gate_c,
+                "mean_error_m": round(lee_mean_ewam, 3) if lee_mean_ewam is not None else None,
+                "severe_ratio": round(severe_ratio, 4),
+                "severe_incidents": len(severe), "n": len(lee_error["ewam"])},
+            "ewam_closer_to_the_judge_than_the_model_it_replaced": {
+                "pass": gate_d,
+                "ewam_rmse_m": round(rmse_ewam, 3) if rmse_ewam else None,
+                "previous_rmse_m": round(rmse_prev, 3) if rmse_prev else None},
+        },
+    }
+    return per_island, summary, verdict
+
+
+def emit(per_island, summary, verdict, start_s, end_s):
+    """Γράφει την αναφορά και τυπώνει την ετυμηγορία. Κοινό για ζωντανή εκτέλεση και replay."""
+    out = write_report(REPORT_PATH, {
+        "generatedAt": datetime.now(timezone.utc).isoformat(),
+        "window": {"start": start_s, "end": end_s},
+        "judge_dataset": DATASET_ID,
+        "gates": GATES,
+        "per_island": per_island,
+        "summary": summary,
+        "verdict": verdict,
+    })
+
+    log("═" * 76)
+    log("ΔΙΑΦΟΡΑ ΠΡΟΣΗΝΕΜΗΣ ↔ ΥΠΗΝΕΜΗΣ ΑΚΤΗΣ, σε μελτέμι:")
+    for name, value in summary["mean_lee_shore_contrast_m"].items():
+        own = summary["diagnostic_own_sign_ratio"].get(name)
+        log(f"  {name:17} {value:+.2f} μ   (φορά {100*own:.0f}% — διαγνωστικό, όχι πύλη)")
+    log("")
+    clear = summary["clear_hours"]
+    log(f"ΩΡΕΣ ΜΕ ΚΑΘΑΡΗ ΔΙΑΦΟΡΑ ΑΚΤΩΝ (κριτής ≥ {clear['threshold_m']} μ.): "
+        f"{clear['n']} από {clear['of']} ({100*clear['share']:.0f}%)")
+    for model, ratio in summary["clear_hour_sign_agreement"].items():
+        if ratio is not None:
+            log(f"  {model:17} διαλέγει τη σωστή πλευρά {100*ratio:.1f}%")
+    log("")
+    log("ΥΠΗΝΕΜΗ ΑΚΤΗ — απόκλιση από τον ανεξάρτητο κριτή (4,2 χλμ.):")
+    for model in OPEN_METEO_MODELS:
+        value = summary["lee_shore_error_vs_copernicus_m"].get(model)
+        if value is not None:
+            log(f"  {model:17} {value:+.2f} μ   "
+                f"RMSE {summary['lee_shore_rmse_vs_copernicus_m'][model]:.2f} μ")
+    log("")
+    for key, gate in verdict["gates"].items():
+        log(f"  {'✓' if gate['pass'] else '✗'} {key}")
+    log("")
+    log("ΕΤΥΜΗΓΟΡΙΑ: " + ("ΕΠΙΒΕΒΑΙΩΝΕΤΑΙ — η αλλαγή σε ewam στέκει σε ανεξάρτητη πηγή."
+                          if verdict["passed"] else
+                          "ΔΕΝ ΕΠΙΒΕΒΑΙΩΝΕΤΑΙ — δες ποια πύλη έπεσε πριν μείνει σε παραγωγή."))
+    log(f"Αναφορά: {out.relative_to(out.parents[2])}")
+    return 0 if verdict["passed"] else 1
+
+
 def main():
     parser = argparse.ArgumentParser()
     parser.add_argument("--start", default="2025-07-01", help="YYYY-MM-DD")
@@ -343,7 +571,23 @@ def main():
     # να ανακαλύψει μετά ότι μετρούσε λάθος νησιά. Δεν χρειάζεται διαπιστευτήρια Copernicus.
     parser.add_argument("--dry-run", action="store_true",
                         help="δείξε ποια νησιά/παραλίες θα μετρηθούν και σταμάτα")
+    # Ξανακρίνει τις ΙΔΙΕΣ ώρες με τις τωρινές πύλες, χωρίς δίκτυο και χωρίς διαπιστευτήρια.
+    # Υπάρχει επειδή αυτό που αλλάζει σε αυτό το τεστ είναι τα κριτήρια, όχι τα δεδομένα.
+    parser.add_argument("--replay", action="store_true",
+                        help=f"ξανακρίνε τις αποθηκευμένες ώρες από {HOURS_CACHE}")
     args = parser.parse_args()
+
+    if args.replay:
+        path = ROOT / HOURS_CACHE
+        if not path.exists():
+            log(f"Δεν υπάρχει {HOURS_CACHE} — τρέξε μία φορά κανονικά πρώτα.")
+            return 1
+        cached = json.loads(path.read_text(encoding="utf-8"))
+        window = cached["window"]
+        log(f"--replay: {len(cached['rows'])} ώρες, παράθυρο {window['start']} → {window['end']}, "
+            f"χωρίς κατέβασμα\n")
+        return emit(*summarise(cached["islands"], cached["rows"]),
+                    window["start"], window["end"])
 
     start_dt = datetime.fromisoformat(args.start).replace(tzinfo=timezone.utc)
     end_dt = start_dt + timedelta(days=args.days)
@@ -393,12 +637,11 @@ def main():
     judge, judge_cells = copernicus_series(dataset, index, all_points, start_dt, end_dt)
     log(f"  {sum(len(v) for v in judge.values())} ωριαίες τιμές κριτή\n")
 
-    # Στατιστικά που συλλέγονται σε όλα τα νησιά.
-    contrast = {"copernicus": [], "ewam": [], "meteofrance_wave": []}
-    correct_sign = {"copernicus": [0, 0], "ewam": [0, 0], "meteofrance_wave": [0, 0]}
-    lee_error = {"ewam": [], "meteofrance_wave": []}   # (μοντέλο − κριτής) στην υπήνεμη
-    lee_rmse_pairs = {"ewam": [], "meteofrance_wave": []}
-    per_island = []
+    # ΜΙΑ ΠΗΓΗ ΑΛΗΘΕΙΑΣ. Ο βρόχος κατεβάζει και παράγει ΓΡΑΜΜΕΣ· κάθε στατιστικό και κάθε
+    # πύλη βγαίνει μετά, στο summarise(), από τις γραμμές. Έτσι το --replay δεν είναι δεύτερη
+    # υλοποίηση που μπορεί σιωπηλά να αποκλίνει από τη ζωντανή — είναι ο ίδιος ακριβώς
+    # κώδικας πάνω σε αποθηκευμένες γραμμές.
+    islands_meta, raw_rows = [], []
 
     for pair in pairs:
         island = pair["island"]
@@ -439,148 +682,49 @@ def main():
                     log(f"     ! {side}/{model}: {exc.__class__.__name__}")
                     om[(side, model)] = {}
 
-        entry = {"island": island, "separation_km": pair["separation_km"],
-                 "meltemi_hours": len(meltemi), "cells": cells,
-                 "windward_beach": pair["windward"]["name"],
-                 "leeward_beach": pair["leeward"]["name"], "models": {}}
+        index = len(islands_meta)
+        islands_meta.append({
+            "island": island, "separation_km": pair["separation_km"],
+            "meltemi_hours": len(meltemi), "cells": cells,
+            "windward_beach": pair["windward"]["name"],
+            "leeward_beach": pair["leeward"]["name"],
+        })
 
-        sources = {
-            "copernicus": {"windward": cop["windward"], "leeward": cop["leeward"]},
-            "ewam": {"windward": om[("windward", "ewam")], "leeward": om[("leeward", "ewam")]},
-            "meteofrance_wave": {"windward": om[("windward", "meteofrance_wave")],
-                                 "leeward": om[("leeward", "meteofrance_wave")]},
-        }
+        # Μία γραμμή ανά ώρα μελτεμιού που ο κριτής μπορεί να κρίνει. Οι τιμές των μοντέλων
+        # μπαίνουν όπως είναι, μαζί με τα κενά τους — το φιλτράρισμα γίνεται στο summarise(),
+        # ώστε η αποθηκευμένη γραμμή να μένει ωμή και να αντέχει αλλαγή πύλης.
+        before = len(raw_rows)
+        for hour in sorted(meltemi):
+            cw, cl = cop["windward"].get(hour), cop["leeward"].get(hour)
+            if cw is None or cl is None:
+                continue
+            raw_rows.append([
+                index, hour, cw, cl,
+                om[("windward", "ewam")].get(hour), om[("leeward", "ewam")].get(hour),
+                om[("windward", "meteofrance_wave")].get(hour),
+                om[("leeward", "meteofrance_wave")].get(hour),
+            ])
+        log(f"     {len(raw_rows) - before} ώρες κρίσιμες\n")
 
-        for name, side_series in sources.items():
-            deltas = []
-            for hour in meltemi:
-                w = side_series["windward"].get(hour)
-                l = side_series["leeward"].get(hour)
-                if w is None or l is None:
-                    continue
-                deltas.append(w - l)
-                correct_sign[name][1] += 1
-                if w > l:
-                    correct_sign[name][0] += 1
-            contrast[name].extend(deltas)
-            entry["models"][name] = {
-                "n": len(deltas),
-                "mean_contrast_m": round(sum(deltas) / len(deltas), 3) if deltas else None,
-            }
-            mean = entry["models"][name]["mean_contrast_m"]
-            log(f"     {name:17} n={len(deltas):4}  διαφορά ακτών {mean if mean is not None else '—'} μ")
-
-        # Η ίδια η επικίνδυνη σύγκριση: υπήνεμη ακτή, μοντέλο έναντι κριτή.
-        for model in OPEN_METEO_MODELS:
-            errs, prs = [], []
-            for hour in meltemi:
-                # ΟΧΙ `judge` εδώ: αυτό το όνομα κρατά το λεξικό ΟΛΩΝ των σημείων που
-                # κατέβηκε μία φορά παραπάνω. Η επανάχρησή του για μία τιμή το έσβηνε στην
-                # πρώτη επανάληψη και το δεύτερο νησί έσκαγε με 'float' has no attribute
-                # 'get' — αφού είχε ήδη κατέβει όλο το ακριβό κομμάτι.
-                judged_m = cop["leeward"].get(hour)
-                pred = sources[model]["leeward"].get(hour)
-                if judged_m is None or pred is None:
-                    continue
-                errs.append(pred - judged_m)
-                prs.append((pred, judged_m))
-            lee_error[model].extend(errs)
-            lee_rmse_pairs[model].extend(prs)
-            if errs:
-                mean_err = sum(errs) / len(errs)
-                entry["models"][model]["lee_vs_copernicus_mean_m"] = round(mean_err, 3)
-                log(f"     {model:17} υπήνεμη vs κριτής: {mean_err:+.2f} μ  RMSE {rmse(prs):.2f} μ")
-
-        per_island.append(entry)
-        log("")
-
-    if not per_island:
+    if not raw_rows:
         log("Κανένα νησί δεν παρήγαγε συγκρίσιμα δεδομένα.")
         return 1
 
-    def mean(values):
-        return sum(values) / len(values) if values else None
-
-    cop_contrast = mean(contrast["copernicus"])
-    sign_hits, sign_total = correct_sign["copernicus"]
-    sign_ratio = sign_hits / sign_total if sign_total else 0.0
-    lee_mean_ewam = mean(lee_error["ewam"])
-    severe = [e for e in lee_error["ewam"] if e < -GATES["severe_underestimate_m"]]
-    severe_ratio = len(severe) / len(lee_error["ewam"]) if lee_error["ewam"] else 1.0
-    rmse_ewam = rmse(lee_rmse_pairs["ewam"])
-    rmse_prev = rmse(lee_rmse_pairs["meteofrance_wave"])
-
-    gate_a = cop_contrast is not None and cop_contrast >= GATES["min_copernicus_contrast_m"]
-    gate_b = sign_ratio >= GATES["min_correct_sign_ratio"]
-    gate_c = (lee_mean_ewam is not None
-              and lee_mean_ewam > -GATES["max_lee_mean_underestimate_m"]
-              and severe_ratio <= GATES["max_severe_underestimate_ratio"])
-    gate_d = (rmse_ewam is not None and rmse_prev is not None and rmse_ewam < rmse_prev)
-
-    verdict = {
-        "passed": bool(gate_a and gate_b and gate_c and gate_d),
-        "gates": {
-            "copernicus_sees_a_real_lee_shore_difference": {
-                "pass": gate_a, "mean_contrast_m": round(cop_contrast, 3) if cop_contrast else None,
-                "threshold_m": GATES["min_copernicus_contrast_m"]},
-            "difference_has_the_right_sign": {
-                "pass": gate_b, "ratio": round(sign_ratio, 3),
-                "threshold": GATES["min_correct_sign_ratio"], "n": sign_total},
-            "ewam_does_not_under_read_the_lee_shore": {
-                "pass": gate_c,
-                "mean_error_m": round(lee_mean_ewam, 3) if lee_mean_ewam is not None else None,
-                "severe_ratio": round(severe_ratio, 4),
-                "severe_incidents": len(severe), "n": len(lee_error["ewam"])},
-            "ewam_closer_to_the_judge_than_the_model_it_replaced": {
-                "pass": gate_d,
-                "ewam_rmse_m": round(rmse_ewam, 3) if rmse_ewam else None,
-                "previous_rmse_m": round(rmse_prev, 3) if rmse_prev else None},
-        },
-    }
-
-    out = write_report("reports/wave-model/lee-shore-copernicus.json", {
-        "generatedAt": datetime.now(timezone.utc).isoformat(),
+    # Οι ωμές γραμμές γράφονται ΠΡΙΝ κριθεί οτιδήποτε. Η πύλη Β έχει ήδη ξαναγραφτεί μία
+    # φορά· χωρίς αυτό το αρχείο, κάθε επόμενη αλλαγή κριτηρίου ζητάει πάλι 25 λεπτά
+    # κατέβασμα και τον κωδικό Copernicus, που είναι ακριβώς ο λόγος που ο κωδικός
+    # κυκλοφόρησε σε καθαρό κείμενο δύο φορές.
+    cache = write_report(HOURS_CACHE, {
         "window": {"start": start_s, "end": end_s},
         "judge_dataset": DATASET_ID,
-        "gates": GATES,
-        "per_island": per_island,
-        "summary": {
-            "mean_lee_shore_contrast_m": {
-                k: round(mean(v), 3) for k, v in contrast.items() if v},
-            "correct_sign_ratio": {
-                k: round(v[0] / v[1], 3) for k, v in correct_sign.items() if v[1]},
-            "lee_shore_error_vs_copernicus_m": {
-                k: round(mean(v), 3) for k, v in lee_error.items() if v},
-            "lee_shore_rmse_vs_copernicus_m": {
-                "ewam": round(rmse_ewam, 3) if rmse_ewam else None,
-                "meteofrance_wave": round(rmse_prev, 3) if rmse_prev else None},
-        },
-        "verdict": verdict,
-    })
+        "columns": ["island_index", "hour", "cop_windward", "cop_leeward",
+                    "ewam_windward", "ewam_leeward", "mf_windward", "mf_leeward"],
+        "islands": islands_meta,
+        "rows": raw_rows,
+    }, compact=True)
+    log(f"Ωμές ώρες: {len(raw_rows)} → {cache.name}  (ξανακρίνονται με --replay, χωρίς κωδικό)\n")
 
-    log("═" * 76)
-    log("ΔΙΑΦΟΡΑ ΠΡΟΣΗΝΕΜΗΣ ↔ ΥΠΗΝΕΜΗΣ ΑΚΤΗΣ, σε μελτέμι:")
-    for name in ("copernicus", "ewam", "meteofrance_wave"):
-        m = mean(contrast[name])
-        if m is not None:
-            hits, total = correct_sign[name]
-            log(f"  {name:17} {m:+.2f} μ   σωστή φορά {100*hits/total:.0f}%  (n={total})")
-    log("")
-    log("ΥΠΗΝΕΜΗ ΑΚΤΗ — απόκλιση από τον ανεξάρτητο κριτή (4,2 χλμ.):")
-    for model in OPEN_METEO_MODELS:
-        m = mean(lee_error[model])
-        if m is not None:
-            log(f"  {model:17} {m:+.2f} μ   RMSE "
-                f"{rmse(lee_rmse_pairs[model]):.2f} μ  (n={len(lee_error[model])})")
-    log("")
-    for key, gate in verdict["gates"].items():
-        log(f"  {'✓' if gate['pass'] else '✗'} {key}")
-    log("")
-    log("ΕΤΥΜΗΓΟΡΙΑ: " + ("ΕΠΙΒΕΒΑΙΩΝΕΤΑΙ — η αλλαγή σε ewam στέκει σε ανεξάρτητη πηγή."
-                          if verdict["passed"] else
-                          "ΔΕΝ ΕΠΙΒΕΒΑΙΩΝΕΤΑΙ — δες ποια πύλη έπεσε πριν μείνει σε παραγωγή."))
-    log(f"Αναφορά: {out.relative_to(out.parents[2])}")
-    return 0 if verdict["passed"] else 1
+    return emit(*summarise(islands_meta, raw_rows), start_s, end_s)
 
 
 if __name__ == "__main__":
