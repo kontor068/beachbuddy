@@ -245,6 +245,18 @@ export const handler = async (event) => {
     const repeats = (prev?.count || 0) + 1;
     await store.setJSON(key, { count: repeats, message: report.message, lastSeen: new Date().toISOString() });
 
+    // A report-only CSP violation blocked NOTHING — by definition. It is a note
+    // that the policy would have interfered if it were enforced, which is useful
+    // when you go looking and worthless as a push notification at 9am. It is still
+    // recorded above, so `netlify blobs:list client-errors` shows every origin and
+    // how often, which is how the policy gets finished.
+    //
+    // Enforced violations DO reach Telegram: at that point something on the page
+    // really was refused and a visitor really did lose it.
+    if (report.kind === 'csp' && report.disposition !== 'enforce') {
+      return { statusCode: 204, headers: { 'Cache-Control': 'no-store' }, body: '' };
+    }
+
     if (repeats === 1) {
       // A day-level counter of DISTINCT signatures, so a pathological page that
       // manufactures unique messages cannot turn the channel into a firehose.

@@ -26,7 +26,7 @@ import { LandingView } from './components/landing/LandingView';
 // Lazy: the planner (and its scoring path) must not ride in the main bundle —
 // most visitors only want today, and with the flag off it would still ship.
 const TripPlanner = lazyWithChunkRecovery(
-  () => import('./components/planner/TripPlanner').then(module => ({ default: module.TripPlanner })),
+  () => import('./components/planner/TripPlanner').then(pickLazyExport('TripPlanner', 'TripPlanner')),
   'TripPlanner'
 );
 
@@ -61,7 +61,7 @@ import { recordForecastSnapshots } from './services/forecastVerificationService'
 import { getBeachPhotoLookup } from './services/beachPhotos';
 import { scrollElementIntoView, scrollToPageTop } from './utils/scroll';
 import { getInitialLanguage, getLocalizedCopy, languageToLocale, saveLanguagePreference, type SupportedLanguage } from './utils/i18n';
-import { lazyWithChunkRecovery } from './utils/chunkLoadRecovery';
+import { lazyWithChunkRecovery, pickLazyExport } from './utils/chunkLoadRecovery';
 import { buildBetaFeedbackUrl } from './utils/betaFeedback';
 import { QUICK_PREFERENCE_FILTERS } from './utils/preferenceFilterLabels';
 import { canOpenNavigation, openNavigation } from './utils/navigation';
@@ -102,29 +102,29 @@ const BeachMap = lazyWithChunkRecovery(() => import('./components/BeachMap'), 'B
 
 // Keep detail page lazy; it is outside the first beach-decision screen.
 const BeachDetailPage = lazyWithChunkRecovery(
-  () => import('./pages/BeachDetailPage').then(module => ({ default: module.BeachDetailPage })),
+  () => import('./pages/BeachDetailPage').then(pickLazyExport('BeachDetailPage', 'BeachDetailPage')),
   'BeachDetailPage'
 );
 
 const FilterModal = lazyWithChunkRecovery(() => import('./components/FilterModal'), 'FilterModal');
 const CombinedFilter = lazyWithChunkRecovery(
-  () => import('./components/AmenityFilter').then(module => ({ default: module.CombinedFilter })),
+  () => import('./components/AmenityFilter').then(pickLazyExport('CombinedFilter', 'CombinedFilter')),
   'AmenityFilter'
 );
 const ChatbotModal = lazyWithChunkRecovery(
-  () => import('./components/ChatbotModal').then(module => ({ default: module.ChatbotModal })),
+  () => import('./components/ChatbotModal').then(pickLazyExport('ChatbotModal', 'ChatbotModal')),
   'ChatbotModal'
 );
 const IslandSelectorModal = lazyWithChunkRecovery(
-  () => import('./components/IslandSelectorModal').then(module => ({ default: module.IslandSelectorModal })),
+  () => import('./components/IslandSelectorModal').then(pickLazyExport('IslandSelectorModal', 'IslandSelectorModal')),
   'IslandSelectorModal'
 );
 const AiBeachAdvisor = lazyWithChunkRecovery(
-  () => import('./components/AiBeachAdvisor').then(module => ({ default: module.AiBeachAdvisor })),
+  () => import('./components/AiBeachAdvisor').then(pickLazyExport('AiBeachAdvisor', 'AiBeachAdvisor')),
   'AiBeachAdvisor'
 );
 const UsageInsights = lazyWithChunkRecovery(
-  () => import('./components/UsageInsights').then(module => ({ default: module.UsageInsights })),
+  () => import('./components/UsageInsights').then(pickLazyExport('UsageInsights', 'UsageInsights')),
   'UsageInsights'
 );
 

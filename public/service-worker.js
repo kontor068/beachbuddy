@@ -97,6 +97,27 @@ self.addEventListener('fetch', event => {
     return;
   }
 
+  // 2c. EVERY other cross-origin request is handed back to the browser untouched.
+  //
+  // This has to sit here — above the asset branches — and the first attempt at it
+  // (30/07/2026) did not, which is why it only half-worked. Branch 5 below matches
+  // on `url.pathname` ending in .png/.jpg/.webp WITHOUT checking the origin, so map
+  // tiles from tile.openstreetmap.org and beach photos from upload.wikimedia.org
+  // and live.staticflickr.com went on being fetched by the worker even after the
+  // default branch stopped doing it. The reports kept arriving and named exactly
+  // those hosts.
+  //
+  // Why it matters: a fetch() issued from inside a service worker counts as
+  // **connect-src**, not img-src, however the result is painted. `img-src https:`
+  // could never apply to them.
+  //
+  // Returning without calling respondWith() lets the browser make the request
+  // itself, where it is attributed to img-src correctly. Nothing changes for the
+  // visitor: cross-origin photos were being written into the cache by branch 5 but
+  // are re-fetched constantly anyway (Wikimedia sets its own cache headers, which
+  // the browser honours better than we did).
+  if (url.origin !== self.location.origin) return;
+
   // 2b. Same-origin forecast proxy (network only)
   // When the app routes forecasts through our own edge proxy (/api/forecast/*,
   // enabled via VITE_FORECAST_PROXY_BASE) the request is same-origin, so the
@@ -191,22 +212,6 @@ self.addEventListener('fetch', event => {
     );
     return;
   }
-
-  // Cross-origin requests are handed back to the browser untouched.
-  //
-  // Everything not matched above — map tiles from tile.openstreetmap.org and
-  // server.arcgisonline.com, beach photos from commons.wikimedia.org and friends —
-  // used to fall into the default branch below, which fetch()es them and caches
-  // nothing. That gained us exactly nothing and cost us something real: a fetch()
-  // issued from inside a service worker counts as **connect-src**, not img-src, no
-  // matter that the result is painted as an image. So the CSP shipped on 30/07/2026
-  // reported every single tile as a violation — 128 distinct signatures in one
-  // afternoon, all of them `connect-src` with `service-worker.js` as the document.
-  //
-  // Returning without calling respondWith() lets the browser make the request
-  // itself, where it is correctly attributed to img-src. No behaviour changes for
-  // the visitor; these responses were never cached and never will be.
-  if (url.origin !== self.location.origin) return;
 
   // Default: Network First, falling back to cache, then a network error.
   event.respondWith(
