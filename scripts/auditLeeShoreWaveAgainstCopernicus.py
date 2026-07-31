@@ -136,7 +136,33 @@ GATES = {
     # Δ. Και η συγκριτική: το ewam πρέπει να πέφτει πιο κοντά στον κριτή απ' ό,τι το
     #    μοντέλο που αντικατέστησε, ΣΤΙΣ ΥΠΗΝΕΜΕΣ ΑΚΤΕΣ — εκεί που έγινε η αλλαγή.
     "ewam_rmse_must_beat_previous_on_lee": True,
+    # ── ΠΥΛΕΣ Ε ΚΑΙ ΣΤ: ΔΕΥΤΕΡΗ, ΔΙΑΦΟΡΕΤΙΚΗ ΕΡΩΤΗΣΗ ───────────────────────────────────
+    #
+    # Οι Α-Δ κρίνουν «αντικαθιστούμε το μοντέλο συθέμελα;». Απαντήθηκε ΟΧΙ δύο φορές και
+    # μένει όχι· δεν χαλαρώνει καμία τους και δεν αφαιρείται καμία τους.
+    #
+    # Αυτές οι δύο κρίνουν ΑΛΛΟ πράγμα, που προέκυψε από τη μέτρηση των 11.053 ωρών: το
+    # `ewam` πέφτει σωστά 99,8% όταν ΤΟ ΙΔΙΟ δηλώνει διαφορά ακτών ≥0,6 μ., και 46% όταν
+    # δηλώνει <0,2 μ. Δηλαδή ξέρει πότε ξέρει. Η υπόθεση όμως γεννήθηκε από τις ίδιες ώρες
+    # που θα την έκριναν, οπότε ΔΕΝ είναι τεκμήριο — κρίνεται σε ΑΛΛΟ ΠΑΡΑΘΥΡΟ (2024).
+    #
+    # Ε. Το 0,95 βγαίνει από την απαίτηση του προϊόντος, ΟΧΙ από το 99,8% που μετρήθηκε:
+    #    αν πούμε σε κάποιον «αυτή είναι η απάνεμη πλευρά σήμερα», ένα λάθος στα 20 είναι
+    #    το χειρότερο που αντέχει ένας ισχυρισμός άνεσης. (Η ασφάλεια —«μη μπεις σε αυτό
+    #    το νερό»— δεν κρίνεται εδώ· την κρατά η πύλη Γ, πάνω σε ΟΛΕΣ τις ώρες.) Κατώφλι
+    #    πάνω από 0,95 θα ήταν κόρωμα στον θόρυβο μιας χρονιάς· κάτω από 0,95 δεν στηρίζει
+    #    τον ισχυρισμό.
+    "min_agreement_on_confident_gap": 0.95,
+    # ΣΤ. Κάλυψη. Ένας κανόνας που ισχύει στο 2% των ωρών δεν αγοράζει τίποτα και απλώς
+    #     προσθέτει έναν κλάδο στον κώδικα. Στο 2025 η ζώνη ≥0,6 μ. έπιασε 25% των ωρών
+    #     μελτεμιού· κάτω από 15% ο κανόνας δεν αξίζει να υπάρχει.
+    "min_confident_gap_coverage": 0.15,
 }
+
+# Πόσο μεγάλη πρέπει να είναι η διαφορά που ΔΗΛΩΝΕΙ το μοντέλο για να τη λάβουμε υπόψη.
+# 0,60 μ. είναι το κάτω άκρο της ζώνης όπου το 2025 μετρήθηκε 99,7% — γράφεται εδώ ως
+# υπόθεση προς έλεγχο σε άλλη χρονιά, όχι ως συμπέρασμα.
+CONFIDENT_GAP_M = 0.60
 
 UA = {"User-Agent": "calmbeach-leeshore-audit/1.0 (+https://calmbeach.gr)"}
 
@@ -535,8 +561,43 @@ def summarise(islands_meta, rows):
         "sign_agreement_by_predicted_gap": sign_agreement_by_gap(rows),
     }
 
+    # ── ΠΥΛΕΣ Ε/ΣΤ: ο κανόνας «εμπιστεύσου το μόνο όταν δηλώνει μεγάλη διαφορά» ──────────
+    conf_hits = conf_total = ewam_rows = 0
+    ew_w_col, ew_l_col = MODEL_COLUMNS["ewam"]
+    for row in rows:
+        w, l = row[ew_w_col], row[ew_l_col]
+        if w is None or l is None:
+            continue
+        ewam_rows += 1
+        if abs(w - l) < CONFIDENT_GAP_M:
+            continue
+        conf_total += 1
+        if ((w - l) > 0) == ((row[2] - row[3]) > 0):
+            conf_hits += 1
+    conf_ratio = conf_hits / conf_total if conf_total else 0.0
+    conf_coverage = conf_total / ewam_rows if ewam_rows else 0.0
+
+    gate_e = conf_total > 0 and conf_ratio >= GATES["min_agreement_on_confident_gap"]
+    gate_f = conf_coverage >= GATES["min_confident_gap_coverage"]
+
     verdict = {
         "passed": bool(gate_a and gate_b and gate_c and gate_d),
+        # ΔΕΥΤΕΡΗ ΕΤΥΜΗΓΟΡΙΑ, ΞΕΧΩΡΙΣΤΗ. Δεν ακυρώνει και δεν παρακάμπτει την πρώτη: η
+        # πρώτη λέει «όχι σε σκέτη αντικατάσταση» και μένει όχι. Αυτή απαντά στο αν
+        # μπορούμε να εμπιστευτούμε τη φορά ΟΤΑΝ το μοντέλο δηλώνει μεγάλη διαφορά. Οι
+        # Α, Γ, Δ μετράνε και για τις δύο — αν πέσουν, δεν στέκει τίποτα.
+        "confident_gap_rule": {
+            "passed": bool(gate_a and gate_c and gate_d and gate_e and gate_f),
+            "threshold_m": CONFIDENT_GAP_M,
+            "gates": {
+                "ewam_is_right_when_it_claims_a_big_gap": {
+                    "pass": gate_e, "ratio": round(conf_ratio, 4), "n": conf_total,
+                    "threshold": GATES["min_agreement_on_confident_gap"]},
+                "the_rule_covers_enough_hours_to_be_worth_it": {
+                    "pass": gate_f, "coverage": round(conf_coverage, 3),
+                    "threshold": GATES["min_confident_gap_coverage"]},
+            },
+        },
         "gates": {
             "copernicus_sees_a_real_lee_shore_difference": {
                 "pass": gate_a, "mean_contrast_m": round(cop_contrast, 3) if cop_contrast else None,
@@ -601,14 +662,22 @@ def emit(per_island, summary, verdict, start_s, end_s):
             log(f"  {model:17} {value:+.2f} μ   "
                 f"RMSE {summary['lee_shore_rmse_vs_copernicus_m'][model]:.2f} μ")
     log("")
+    log("ΕΡΩΤΗΜΑ 1 — αντικαθιστούμε το μοντέλο συθέμελα;")
     for key, gate in verdict["gates"].items():
         log(f"  {'✓' if gate['pass'] else '✗'} {key}")
+    log("  ΕΤΥΜΗΓΟΡΙΑ: " + ("ΕΠΙΒΕΒΑΙΩΝΕΤΑΙ — η αλλαγή σε ewam στέκει σε ανεξάρτητη πηγή."
+                            if verdict["passed"] else
+                            "ΔΕΝ ΕΠΙΒΕΒΑΙΩΝΕΤΑΙ — το ewam δεν μπαίνει ως σκέτη αντικατάσταση."))
+    rule = verdict["confident_gap_rule"]
     log("")
-    log("ΕΤΥΜΗΓΟΡΙΑ: " + ("ΕΠΙΒΕΒΑΙΩΝΕΤΑΙ — η αλλαγή σε ewam στέκει σε ανεξάρτητη πηγή."
-                          if verdict["passed"] else
-                          "ΔΕΝ ΕΠΙΒΕΒΑΙΩΝΕΤΑΙ — δες ποια πύλη έπεσε πριν μείνει σε παραγωγή."))
-    log(f"Αναφορά: {out.relative_to(out.parents[2])}")
-    return 0 if verdict["passed"] else 1
+    log(f"ΕΡΩΤΗΜΑ 2 — εμπιστευόμαστε τη φορά όταν το ewam δηλώνει ≥{rule['threshold_m']} μ. διαφορά;")
+    for key, gate in rule["gates"].items():
+        log(f"  {'✓' if gate['pass'] else '✗'} {key}")
+    log("  ΕΤΥΜΗΓΟΡΙΑ: " + ("ΕΠΙΒΕΒΑΙΩΝΕΤΑΙ — ο κανόνας υψηλής βεβαιότητας στέκει."
+                            if rule["passed"] else
+                            "ΔΕΝ ΕΠΙΒΕΒΑΙΩΝΕΤΑΙ."))
+    log(f"\nΑναφορά: {out.relative_to(out.parents[2])}")
+    return 0 if (verdict["passed"] or rule["passed"]) else 1
 
 
 def main():

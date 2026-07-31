@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-07-31T17:41:56.334802+00:00",
+  "generatedAt": "2026-07-31T17:56:00.868639+00:00",
   "window": {
     "start": "2025-07-01",
     "end": "2025-09-01"
@@ -11,7 +11,9 @@
     "max_lee_mean_underestimate_m": 0.25,
     "severe_underestimate_m": 0.5,
     "max_severe_underestimate_ratio": 0.05,
-    "ewam_rmse_must_beat_previous_on_lee": true
+    "ewam_rmse_must_beat_previous_on_lee": true,
+    "min_agreement_on_confident_gap": 0.95,
+    "min_confident_gap_coverage": 0.15
   },
   "per_island": [
     {
@@ -963,6 +965,23 @@
   },
   "verdict": {
     "passed": false,
+    "confident_gap_rule": {
+      "passed": true,
+      "threshold_m": 0.6,
+      "gates": {
+        "ewam_is_right_when_it_claims_a_big_gap": {
+          "pass": true,
+          "ratio": 0.9982,
+          "n": 2815,
+          "threshold": 0.95
+        },
+        "the_rule_covers_enough_hours_to_be_worth_it": {
+          "pass": true,
+          "coverage": 0.255,
+          "threshold": 0.15
+        }
+      }
+    },
     "gates": {
       "copernicus_sees_a_real_lee_shore_difference": {
         "pass": true,
