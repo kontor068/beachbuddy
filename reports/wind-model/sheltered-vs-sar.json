@@ -1,0 +1,421 @@
+{
+  "generatedAt": "2026-07-31T16:04:23.070237+00:00",
+  "window": [
+    "2026-06-01",
+    "2026-07-31"
+  ],
+  "gap_threshold_ms": 1.5,
+  "samples": 80,
+  "beaches": 11,
+  "summary": {
+    "mean_delta_ms": 2.6,
+    "median_delta_ms": 2.5,
+    "p90_delta_ms": 5.91,
+    "gap_incidents": 52,
+    "gap_ratio": 0.65,
+    "beaufort_underread": 62
+  },
+  "worst": [
+    {
+      "beach": "Παραλία Κινέτας",
+      "island": "West Attica (mainland)",
+      "day": "2026-06-30",
+      "sar_ms": 10.9,
+      "model_ms": 2.3,
+      "delta_ms": 8.6,
+      "model_bft": 2,
+      "sar_bft": 6
+    },
+    {
+      "beach": "Παραλία Φρεαττύδος",
+      "island": "Piraeus area",
+      "day": "2026-06-05",
+      "sar_ms": 9.2,
+      "model_ms": 0.8,
+      "delta_ms": 8.3,
+      "model_bft": 1,
+      "sar_bft": 5
+    },
+    {
+      "beach": "Παραλία Φρεαττύδος",
+      "island": "Piraeus area",
+      "day": "2026-06-11",
+      "sar_ms": 8.0,
+      "model_ms": 0.5,
+      "delta_ms": 7.5,
+      "model_bft": 1,
+      "sar_bft": 5
+    },
+    {
+      "beach": "Αίγινα Αγ. Βασίλειος",
+      "island": "Aegina",
+      "day": "2026-06-05",
+      "sar_ms": 7.0,
+      "model_ms": 0.5,
+      "delta_ms": 6.5,
+      "model_bft": 1,
+      "sar_bft": 4
+    },
+    {
+      "beach": "Στενό Αυλάκι",
+      "island": "Kythira",
+      "day": "2026-06-16",
+      "sar_ms": 9.1,
+      "model_ms": 2.7,
+      "delta_ms": 6.4,
+      "model_bft": 2,
+      "sar_bft": 5
+    },
+    {
+      "beach": "Βρουλέα",
+      "island": "Kythira",
+      "day": "2026-06-16",
+      "sar_ms": 9.1,
+      "model_ms": 2.7,
+      "delta_ms": 6.4,
+      "model_bft": 2,
+      "sar_bft": 5
+    },
+    {
+      "beach": "Παραλία Φρεαττύδος",
+      "island": "Piraeus area",
+      "day": "2026-07-30",
+      "sar_ms": 10.1,
+      "model_ms": 3.7,
+      "delta_ms": 6.4,
+      "model_bft": 3,
+      "sar_bft": 5
+    },
+    {
+      "beach": "Παραλία Σουνίου",
+      "island": "East Attica (mainland)",
+      "day": "2026-07-06",
+      "sar_ms": 8.5,
+      "model_ms": 2.5,
+      "delta_ms": 6.0,
+      "model_bft": 2,
+      "sar_bft": 5
+    },
+    {
+      "beach": "Παραλία Κινέτας",
+      "island": "West Attica (mainland)",
+      "day": "2026-06-29",
+      "sar_ms": 9.3,
+      "model_ms": 3.4,
+      "delta_ms": 5.9,
+      "model_bft": 3,
+      "sar_bft": 5
+    },
+    {
+      "beach": "Παραλία Σουνίου",
+      "island": "East Attica (mainland)",
+      "day": "2026-07-30",
+      "sar_ms": 13.5,
+      "model_ms": 7.8,
+      "delta_ms": 5.7,
+      "model_bft": 5,
+      "sar_bft": 6
+    },
+    {
+      "beach": "Παραλία Σουνίου",
+      "island": "East Attica (mainland)",
+      "day": "2026-06-23",
+      "sar_ms": 8.4,
+      "model_ms": 3.5,
+      "delta_ms": 4.9,
+      "model_bft": 3,
+      "sar_bft": 5
+    },
+    {
+      "beach": "Στενό Αυλάκι",
+      "island": "Kythira",
+      "day": "2026-06-05",
+      "sar_ms": 5.1,
+      "model_ms": 0.5,
+      "delta_ms": 4.6,
+      "model_bft": 1,
+      "sar_bft": 3
+    },
+    {
+      "beach": "Βρουλέα",
+      "island": "Kythira",
+      "day": "2026-06-05",
+      "sar_ms": 5.1,
+      "model_ms": 0.5,
+      "delta_ms": 4.6,
+      "model_bft": 1,
+      "sar_bft": 3
+    },
+    {
+      "beach": "Παραλία Φρεαττύδος",
+      "island": "Piraeus area",
+      "day": "2026-06-29",
+      "sar_ms": 7.4,
+      "model_ms": 2.8,
+      "delta_ms": 4.6,
+      "model_bft": 2,
+      "sar_bft": 4
+    },
+    {
+      "beach": "Παραλία Σουνίου",
+      "island": "East Attica (mainland)",
+      "day": "2026-07-31",
+      "sar_ms": 13.1,
+      "model_ms": 8.6,
+      "delta_ms": 4.5,
+      "model_bft": 5,
+      "sar_bft": 6
+    },
+    {
+      "beach": "Στενό Αυλάκι",
+      "island": "Kythira",
+      "day": "2026-06-29",
+      "sar_ms": 6.4,
+      "model_ms": 1.9,
+      "delta_ms": 4.5,
+      "model_bft": 2,
+      "sar_bft": 4
+    },
+    {
+      "beach": "Βρουλέα",
+      "island": "Kythira",
+      "day": "2026-06-29",
+      "sar_ms": 6.4,
+      "model_ms": 1.9,
+      "delta_ms": 4.5,
+      "model_bft": 2,
+      "sar_bft": 4
+    },
+    {
+      "beach": "Παραλία Αγίου Νικολάου",
+      "island": "Salamina",
+      "day": "2026-06-29",
+      "sar_ms": 8.3,
+      "model_ms": 3.8,
+      "delta_ms": 4.5,
+      "model_bft": 3,
+      "sar_bft": 5
+    },
+    {
+      "beach": "Παραλία Σουνίου",
+      "island": "East Attica (mainland)",
+      "day": "2026-06-25",
+      "sar_ms": 7.3,
+      "model_ms": 2.9,
+      "delta_ms": 4.4,
+      "model_bft": 2,
+      "sar_bft": 4
+    },
+    {
+      "beach": "Παραλία Σουνίου",
+      "island": "East Attica (mainland)",
+      "day": "2026-07-18",
+      "sar_ms": 7.8,
+      "model_ms": 3.5,
+      "delta_ms": 4.3,
+      "model_bft": 3,
+      "sar_bft": 5
+    },
+    {
+      "beach": "Αίγινα Αγ. Βασίλειος",
+      "island": "Aegina",
+      "day": "2026-07-18",
+      "sar_ms": 5.7,
+      "model_ms": 1.5,
+      "delta_ms": 4.2,
+      "model_bft": 2,
+      "sar_bft": 4
+    },
+    {
+      "beach": "Παραλία Σουνίου",
+      "island": "East Attica (mainland)",
+      "day": "2026-06-05",
+      "sar_ms": 5.1,
+      "model_ms": 0.9,
+      "delta_ms": 4.2,
+      "model_bft": 1,
+      "sar_bft": 3
+    },
+    {
+      "beach": "Παραλία Φρεαττύδος",
+      "island": "Piraeus area",
+      "day": "2026-07-18",
+      "sar_ms": 4.8,
+      "model_ms": 0.6,
+      "delta_ms": 4.2,
+      "model_bft": 1,
+      "sar_bft": 3
+    },
+    {
+      "beach": "Άγιος Αντώνιος",
+      "island": "Evia",
+      "day": "2026-07-25",
+      "sar_ms": 6.1,
+      "model_ms": 1.9,
+      "delta_ms": 4.2,
+      "model_bft": 2,
+      "sar_bft": 4
+    },
+    {
+      "beach": "Κλειδί",
+      "island": "Aegina",
+      "day": "2026-06-05",
+      "sar_ms": 4.5,
+      "model_ms": 0.5,
+      "delta_ms": 4.0,
+      "model_bft": 1,
+      "sar_bft": 3
+    },
+    {
+      "beach": "Παραλία Φρεαττύδος",
+      "island": "Piraeus area",
+      "day": "2026-06-23",
+      "sar_ms": 4.5,
+      "model_ms": 0.6,
+      "delta_ms": 3.9,
+      "model_bft": 1,
+      "sar_bft": 3
+    },
+    {
+      "beach": "Παραλία Φρεαττύδος",
+      "island": "Piraeus area",
+      "day": "2026-06-12",
+      "sar_ms": 7.5,
+      "model_ms": 3.6,
+      "delta_ms": 3.9,
+      "model_bft": 3,
+      "sar_bft": 4
+    },
+    {
+      "beach": "Καλαμίτσι",
+      "island": "Evia",
+      "day": "2026-06-24",
+      "sar_ms": 7.1,
+      "model_ms": 3.2,
+      "delta_ms": 3.9,
+      "model_bft": 3,
+      "sar_bft": 4
+    },
+    {
+      "beach": "Παραλία Σουνίου",
+      "island": "East Attica (mainland)",
+      "day": "2026-06-12",
+      "sar_ms": 6.5,
+      "model_ms": 2.7,
+      "delta_ms": 3.8,
+      "model_bft": 2,
+      "sar_bft": 4
+    },
+    {
+      "beach": "Παραλία Κινέτας",
+      "island": "West Attica (mainland)",
+      "day": "2026-07-30",
+      "sar_ms": 7.9,
+      "model_ms": 4.3,
+      "delta_ms": 3.6,
+      "model_bft": 3,
+      "sar_bft": 5
+    },
+    {
+      "beach": "Αίγινα Αγ. Βασίλειος",
+      "island": "Aegina",
+      "day": "2026-06-05",
+      "sar_ms": 3.9,
+      "model_ms": 0.5,
+      "delta_ms": 3.5,
+      "model_bft": 1,
+      "sar_bft": 3
+    },
+    {
+      "beach": "Αίγινα Αγ. Βασίλειος",
+      "island": "Aegina",
+      "day": "2026-07-06",
+      "sar_ms": 4.7,
+      "model_ms": 1.4,
+      "delta_ms": 3.4,
+      "model_bft": 1,
+      "sar_bft": 3
+    },
+    {
+      "beach": "Παραλία Σουνίου",
+      "island": "East Attica (mainland)",
+      "day": "2026-06-29",
+      "sar_ms": 6.2,
+      "model_ms": 3.0,
+      "delta_ms": 3.2,
+      "model_bft": 2,
+      "sar_bft": 4
+    },
+    {
+      "beach": "Παραλία Φρεαττύδος",
+      "island": "Piraeus area",
+      "day": "2026-07-06",
+      "sar_ms": 4.0,
+      "model_ms": 1.0,
+      "delta_ms": 3.1,
+      "model_bft": 1,
+      "sar_bft": 3
+    },
+    {
+      "beach": "Παραλία Κινέτας",
+      "island": "West Attica (mainland)",
+      "day": "2026-06-05",
+      "sar_ms": 3.0,
+      "model_ms": 0.0,
+      "delta_ms": 3.0,
+      "model_bft": 0,
+      "sar_bft": 2
+    },
+    {
+      "beach": "Καλαμίτσι",
+      "island": "Evia",
+      "day": "2026-07-30",
+      "sar_ms": 12.7,
+      "model_ms": 9.8,
+      "delta_ms": 2.9,
+      "model_bft": 5,
+      "sar_bft": 6
+    },
+    {
+      "beach": "Παραλία Σουνίου",
+      "island": "East Attica (mainland)",
+      "day": "2026-06-05",
+      "sar_ms": 3.7,
+      "model_ms": 0.9,
+      "delta_ms": 2.8,
+      "model_bft": 1,
+      "sar_bft": 3
+    },
+    {
+      "beach": "Παραλία Σουνίου",
+      "island": "East Attica (mainland)",
+      "day": "2026-07-19",
+      "sar_ms": 3.5,
+      "model_ms": 0.9,
+      "delta_ms": 2.6,
+      "model_bft": 1,
+      "sar_bft": 3
+    },
+    {
+      "beach": "Κλειδί",
+      "island": "Aegina",
+      "day": "2026-06-29",
+      "sar_ms": 6.9,
+      "model_ms": 4.3,
+      "delta_ms": 2.6,
+      "model_bft": 3,
+      "sar_bft": 4
+    },
+    {
+      "beach": "Αίγινα Αγ. Βασίλειος",
+      "island": "Aegina",
+      "day": "2026-06-23",
+      "sar_ms": 4.5,
+      "model_ms": 2.0,
+      "delta_ms": 2.5,
+      "model_bft": 2,
+      "sar_bft": 3
+    }
+  ],
+  "limits": "SAR passes 1-2x/day where the satellite happened to look, so this is a sample, never a forecast source. A positive mean delta means the model under-reads the wind at south-facing (leeward) beaches."
+}
