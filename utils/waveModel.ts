@@ -90,20 +90,22 @@ export const resolveEffectiveWaveHeightM = (
  * it was checking; the lesson is written into scripts/validateWaveClimatology.mjs
  * and it applies here.
  *
- * ⚠️ THIS MIRRORS ONE CALL SITE, NOT FOUR. The same computation is written out by
- * hand in three other places and they are NOT identical:
+ * It used to be written out by hand in four places that were NOT identical — most
+ * sharply App.tsx, which skipped the light-wind cap entirely and so ranked a
+ * beach's best remaining hours against a sea the page never showed. Measured over
+ * 38.180 beach-hours before it was touched: 2,0-2,4% of hours disagreed, by up to
+ * 1,34 m, swapping which coast was calmer 100 times. Every live call site now
+ * comes through here, so that cannot drift back in silently.
  *
- *   services/recommendationService.ts:~597  — same, minus the intermediate rounding
- *   services/beachPlannerService.ts:~172    — caps the measured value WITHOUT sea arrival
- *   App.tsx:~729                            — does not apply the light-wind cap at all
- *
- * Those differences are real and they change numbers: on a 1 Bft day with
- * over-reported grid swell, the top-pick hour scoring in App.tsx can see a
- * choppier sea than the beach page shows for the same hour. They are left alone
- * deliberately — unifying them silently would move production behaviour under
- * cover of a refactor, and each one deserves its own measurement first. Whoever
- * takes that on: this function is the shape to converge on, because it is the one
- * that has been measured.
+ * ⚠️ One copy still exists, in services/beachPlannerService.ts. It is DEAD CODE:
+ * `generateBeachDayPlan` has no caller, `components/BeachDayPlanner.tsx` is
+ * mounted nowhere, and neither appears in the built bundle — verified, not
+ * assumed. The live planner is services/tripPlannerService.ts, which does thread
+ * geospatial profiles through (`planTrip`, ~line 717) and scores through
+ * calculateBeachScore, i.e. through this function. If that dead planner is ever
+ * revived, it must be given a geospatialProfile first: without one it cannot
+ * compute seaArrival, and seaArrival only ever moves the number UP, so it would
+ * cap harder than the page and show a calmer sea for the same hour.
  */
 export const resolveDisplayWaveHeightM = ({
   exposureLevel,

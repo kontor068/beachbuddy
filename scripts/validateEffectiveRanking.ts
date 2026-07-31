@@ -81,6 +81,60 @@ const GATES = {
   min_hours_per_bucket: 300,
 } as const;
 
+// ─────────────────────────────────────────────────────────────────────────────
+// ΔΕΥΤΕΡΟ ΕΡΩΤΗΜΑ, ΞΕΧΩΡΙΣΤΕΣ ΠΥΛΕΣ — Η ΥΠΟΘΕΣΗ ΠΟΥ ΓΕΝΝΗΣΕ Η ΠΡΩΤΗ ΜΕΤΡΗΣΗ
+//
+// Η ζημιά στην κατάταξη ζει σε ώρες με ≤2 Μποφόρ ΤΟΠΙΚΑ. Εκεί το light-wind cap
+// (`capLightWindMeasuredWaveM`) σφίγγει το μετρημένο ύψος στα 0,3-0,4 μ. Η εξαίρεση
+// «γνήσιου groundswell» ζητά περίοδο ≥7 δευτ.· στη Σκόπελο μετρήθηκε διάμεσος
+// **4,4 δευτ.** και 99-100% κάτω από 7 — δηλαδή δεν ενεργοποιείται ΠΟΤΕ. Αποτέλεσμα
+// που είδαμε με τα μάτια μας: πλέγμα 1,72 μ. → δική μας τιμή 0,40 μ., με τον κριτή
+// στα 0,79 μ.
+//
+// Η ΥΠΟΘΕΣΗ: το cap δεν επιτρέπεται να κόβει τιμή που το ΙΔΙΟ ΤΟ ΠΡΟΪΟΝ θα έλεγε
+// «έχει κύμα». Το κατώφλι δεν βγαίνει από τα δεδομένα — είναι το `SEA_STATE_AMBER_M`
+// του `utils/seaVerdict.ts`: **0,8 μ.**, εκεί που η εφαρμογή σταματά να λέει «ήρεμα».
+// Είναι επίσης ακριβώς το διπλάσιο του μεγαλύτερου cap (0,4): μια «διόρθωση
+// ρεαλισμού» που κόβει ένα νούμερο στη μέση δεν είναι διόρθωση, είναι αντικατάσταση
+// της μέτρησης με την εικασία μας.
+//
+// ΤΙΜΙΟ: αυτές οι πύλες ΔΕΝ γράφτηκαν πριν κατέβουν τα δεδομένα — τα δεδομένα ήταν
+// ήδη εδώ όταν γεννήθηκε η υπόθεση. Ξέρω ότι η ΠΛΗΡΗΣ αφαίρεση του cap διορθώνει
+// 14% (2024) και 29% (2025) της ζημιάς. ΔΕΝ ξέρω τι κάνει η στοχευμένη εξαίρεση στα
+// 0,8 μ., ούτε το κόστος της σε ψευδείς συναγερμούς — αυτά μετριούνται τώρα πρώτη
+// φορά. Και τα δύο παράθυρα συμμετείχαν στη γέννηση της υπόθεσης, άρα κανένα δεν
+// είναι πραγματικά ανεξάρτητο· αν η αλλαγή περάσει, θέλει τρίτο καλοκαίρι πριν
+// θεωρηθεί επιβεβαιωμένη.
+// ─────────────────────────────────────────────────────────────────────────────
+
+const CAP_EXEMPTION_M = 0.80;   // = SEA_STATE_AMBER_M, utils/seaVerdict.ts
+const CAP_EXEMPTION_MAX_BFT = 2; // το cap ούτως ή άλλως δεν παίζει πάνω από αυτό
+
+const EXEMPTION_GATES = {
+  // Α. ΚΕΡΔΟΣ. Ένας ακόμη κλάδος μέσα στην πιο κρίσιμη για την ασφάλεια συνάρτηση
+  //    της εφαρμογής πρέπει να κερδίσει τη θέση του. Αν διορθώνει λιγότερο από το
+  //    ένα πέμπτο των γνωστών λαθών κατάταξης, δεν αξίζει να υπάρχει.
+  min_harm_fixed_ratio: 0.20,
+
+  // Β. ΚΟΣΤΟΣ — ψευδής συναγερμός. Στις ώρες που η εξαίρεση σηκώνει την τιμή, ο
+  //    κριτής πρέπει να βλέπει πραγματική θάλασσα (≥0,5 μ.) στο 80%. Γιατί 0,80 και
+  //    όχι 0,95 όπως ο κανόνας των 0,6 μ.: εκείνος είναι ισχυρισμός ΑΝΕΣΗΣ («αυτή
+  //    είναι η ήρεμη πλευρά») και το λάθος του στέλνει κόσμο σε κύμα. Αυτός εδώ
+  //    είναι ισχυρισμός ΠΡΟΣΟΧΗΣ και το λάθος του στερεί μια καλή παραλία —
+  //    φθηνότερο σφάλμα, αλλά όχι κορώνα-γράμματα.
+  min_real_sea_on_raised_hours: 0.80,
+
+  // Γ. ΑΣΦΑΛΕΙΑ. Η εξαίρεση αφαιρεί ένα cap, άρα ΜΟΝΟ ανεβάζει. Καμία ώρα δεν
+  //    επιτρέπεται να πέσει. Δεν είναι στατιστική πύλη — είναι απόλυτη: 0 ή αποτυχία.
+  max_hours_lowered: 0,
+
+  // Δ. Κάλυψη. Κάτω από αυτό η απάντηση είναι «δεν φτάνουν τα δεδομένα».
+  min_affected_hours: 200,
+} as const;
+
+/** Ο κριτής πρέπει να βλέπει τουλάχιστον τόσο για να μη λέγεται ψευδής συναγερμός. */
+const REAL_SEA_M = 0.50;
+
 // Ώρες όπου ο κριτής βλέπει σχεδόν ίδια θάλασσα και στις δύο ακτές δεν έχουν
 // σωστή απάντηση να δώσουν — δεν μετράνε ούτε υπέρ ούτε κατά. Ξεχωριστό από την
 // πύλη Α: εκείνη κρίνει το δείγμα συνολικά, αυτό φιλτράρει ώρα-ώρα.
@@ -419,6 +473,28 @@ const summarise = (resolved: Resolved, rows: Row[]) => {
   let capChangesTheNumber = 0;
   let capChangesTheRanking = 0;
   let maxCapGapM = 0;
+
+  // Θα ήταν σωστή η κατάταξη ΧΩΡΙΣ το light-wind cap; Απαντά στο αν το cap είναι
+  // η αιτία της ζημιάς ή απλώς παρών όταν συμβαίνει. Διαγνωστικό — καμία πύλη.
+  let harmFixedByRemovingTheCap = 0;
+  let harmWithLightLocalWind = 0;
+
+  // Η στοχευμένη εξαίρεση στα 0,8 μ. — κέρδος, κόστος και ασφάλεια.
+  let exemptionAffectedHours = 0;
+  let exemptionRaisedBeachHours = 0;
+  let exemptionRaisedWithRealSea = 0;
+  let exemptionLoweredBeachHours = 0;
+  let exemptionFixedHarm = 0;
+  let exemptionBrokeAGoodRanking = 0;
+
+  /** Η υποψήφια τιμή: ίδια με σήμερα, εκτός αν το πλέγμα δίνει ≥0,8 μ. σε ≤2 Μπφ. */
+  const withExemption = (side: { effective: number; uncapped: number; grid: number | null; beaufort: number }) => (
+    typeof side.grid === 'number'
+      && side.grid >= CAP_EXEMPTION_M
+      && side.beaufort <= CAP_EXEMPTION_MAX_BFT
+      ? side.uncapped
+      : side.effective
+  );
   let falseCalm = 0;
   let falseCalmRescued = 0;
 
@@ -474,9 +550,21 @@ const summarise = (resolved: Resolved, rows: Row[]) => {
       capChangesTheRanking++;
     }
 
+    // ── Η υποψήφια εξαίρεση, μετρημένη στις ίδιες ώρες ──────────────────────
+    const wEx = withExemption(w);
+    const lEx = withExemption(l);
+    for (const [side, ex, cop] of [[w, wEx, copW], [l, lEx, copL]] as const) {
+      if (ex === side.effective) continue;
+      exemptionRaisedBeachHours++;
+      if (ex < side.effective) exemptionLoweredBeachHours++;
+      else if (cop >= REAL_SEA_M) exemptionRaisedWithRealSea++;
+    }
+    if (wEx !== w.effective || lEx !== l.effective) exemptionAffectedHours++;
+
     const judgeSign = Math.sign(judgeDiff);
     const gridSign = Math.sign(wGrid - lGrid);
     const oursSign = Math.sign(w.effective - l.effective);
+    const exSign = Math.sign(wEx - lEx);
 
     const gridRight = gridSign === judgeSign;
     const oursRight = oursSign === judgeSign;
@@ -490,6 +578,9 @@ const summarise = (resolved: Resolved, rows: Row[]) => {
         harm++;
         island.harm++;
         if (oursSign === 0) harmTies++; else harmInversions++;
+        if (Math.sign(w.uncapped - l.uncapped) === judgeSign) harmFixedByRemovingTheCap++;
+        if (Math.min(w.beaufort, l.beaufort) <= 2) harmWithLightLocalWind++;
+        if (exSign === judgeSign) exemptionFixedHarm++;
         if (explainIsland && pair.island === explainIsland && explanations.length < 400) {
           explanations.push({
             hour,
@@ -501,6 +592,10 @@ const summarise = (resolved: Resolved, rows: Row[]) => {
             beaufort: { windward: w.beaufort, leeward: l.beaufort },
           });
         }
+      } else if (exSign !== judgeSign) {
+        // Ήταν σωστό ΚΑΙ με το σημερινό cap, και το χαλάει η εξαίρεση. Το κόστος
+        // της αλλαγής σε κατάταξη — ξεχωριστό από το κόστος σε ψευδή συναγερμό.
+        exemptionBrokeAGoodRanking++;
       }
     } else {
       gridWrong++;
@@ -552,6 +647,9 @@ const summarise = (resolved: Resolved, rows: Row[]) => {
         breakdown: {
           flattened_to_a_tie: harmTies,
           named_the_wrong_coast: harmInversions,
+          // Πού ΖΕΙ η ζημιά και τι θα την έλυνε — το ίχνος, μετρημένο.
+          with_light_local_wind_2bft_or_less: harmWithLightLocalWind,
+          would_be_correct_without_the_light_wind_cap: harmFixedByRemovingTheCap,
         },
       },
       our_geometry_fixes_a_wrong_ranking: {
@@ -570,6 +668,41 @@ const summarise = (resolved: Resolved, rows: Row[]) => {
         pass: gateE, grid_correct: gridCorrect, grid_wrong: gridWrong,
         threshold: GATES.min_hours_per_bucket,
       },
+    },
+    // ΔΕΥΤΕΡΟ ΕΡΩΤΗΜΑ: αξίζει η εξαίρεση του light-wind cap στα 0,8 μ.;
+    // Ξεχωριστές πύλες, ξεχωριστή ετυμηγορία — δεν ακυρώνει και δεν παρακάμπτει
+    // την πρώτη.
+    cap_exemption_at_0_8m: {
+      gates: EXEMPTION_GATES,
+      threshold_m: CAP_EXEMPTION_M,
+      affected_pair_hours: exemptionAffectedHours,
+      results: {
+        it_fixes_rankings_we_get_wrong_today: {
+          pass: harm > 0 && (exemptionFixedHarm / harm) >= EXEMPTION_GATES.min_harm_fixed_ratio,
+          ratio: harm ? Number((exemptionFixedHarm / harm).toFixed(4)) : 0,
+          fixed: exemptionFixedHarm, of_harm: harm,
+          threshold: EXEMPTION_GATES.min_harm_fixed_ratio,
+        },
+        the_sea_it_reveals_is_really_there: {
+          pass: exemptionRaisedBeachHours > 0
+            && (exemptionRaisedWithRealSea / exemptionRaisedBeachHours) >= EXEMPTION_GATES.min_real_sea_on_raised_hours,
+          ratio: exemptionRaisedBeachHours
+            ? Number((exemptionRaisedWithRealSea / exemptionRaisedBeachHours).toFixed(4)) : 0,
+          n: exemptionRaisedBeachHours,
+          threshold: EXEMPTION_GATES.min_real_sea_on_raised_hours,
+        },
+        it_never_lowers_a_value: {
+          pass: exemptionLoweredBeachHours === EXEMPTION_GATES.max_hours_lowered,
+          lowered: exemptionLoweredBeachHours,
+        },
+        enough_affected_hours: {
+          pass: exemptionAffectedHours >= EXEMPTION_GATES.min_affected_hours,
+          n: exemptionAffectedHours, threshold: EXEMPTION_GATES.min_affected_hours,
+        },
+      },
+      // Το κόστος σε κατάταξη, δίπλα στο κέρδος — όχι κρυμμένο.
+      breaks_a_ranking_that_is_right_today: exemptionBrokeAGoodRanking,
+      net_rankings: exemptionFixedHarm - exemptionBrokeAGoodRanking,
     },
     // Πόσο κοστίζει στην πράξη το ότι το App.tsx:729 δεν εφαρμόζει light-wind cap.
     // Διαγνωστικό, εκτός πυλών — απαντά στο «αξίζει να ενοποιηθεί;».
