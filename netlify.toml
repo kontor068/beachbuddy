@@ -1,6 +1,20 @@
 [build]
   command = "npm run build"
   publish = "dist"
+  # ΦΡΕΝΟ ΚΟΣΤΟΥΣ (30/07/2026). Το Netlify Personal δίνει 1.000 credits/μήνα και κάθε
+  # production deploy κοστίζει 15. Τα ~100 push στο `main` του Ιουλίου = ~1.500 credits,
+  # δηλαδή το πακέτο τελείωνε στα δύο τρίτα του μήνα.
+  #
+  # Αυτή η εντολή τρέχει ΠΡΙΝ το build και το ακυρώνει όταν δεν χρειάζεται:
+  #   · οτιδήποτε δεν είναι production (deploy preview, branch deploy) → ποτέ build
+  #   · commits που αγγίζουν μόνο docs/, reports/, .github/ ή *.md → ποτέ build
+  # Σε κάθε αμφιβολία χτίζει. Βλ. scripts/netlifyShouldSkipBuild.mjs.
+  #
+  # ΠΡΟΣΟΧΗ: αυτό ΔΕΝ αντικαθιστά τη ρύθμιση του dashboard. Το «Branch deploys: None»
+  # και το «Deploy previews: off» (Site configuration → Build & deploy → Branches)
+  # σταματάνε το deploy πριν καν ξεκινήσει build container — αυτό εδώ είναι το
+  # δεύτερο, version-controlled δίχτυ που επιβιώνει αν κάποιος αλλάξει το dashboard.
+  ignore = "node scripts/netlifyShouldSkipBuild.mjs"
 
 # Edge-cached forecast proxy (capacity fix — see reports/capacity/capacity-model.md).
 # Routes the client's ForecastProvider calls to the allow-list proxy function, which
