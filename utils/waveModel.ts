@@ -76,6 +76,84 @@ export const resolveEffectiveWaveHeightM = (
 };
 
 /**
+ * The wave height the beach page actually prints, end to end.
+ *
+ * This is the composite the whole product rests on: `max(what the grid reported,
+ * what this beach's own geometry says the wind can build here)`. It is the reason
+ * a 4,2 km marine cell cannot print flat water over a shore our own physics says
+ * is choppy — and, until now, nothing had ever measured whether that max() helps
+ * the ranking a visitor sees, hurts it, or does nothing.
+ *
+ * It exists as a function so that an offline validator can call THE SAME CODE the
+ * beach page runs, rather than a copy of it. Gate 18 of this project once passed
+ * green against deliberately sabotaged code because the check re-implemented what
+ * it was checking; the lesson is written into scripts/validateWaveClimatology.mjs
+ * and it applies here.
+ *
+ * ⚠️ THIS MIRRORS ONE CALL SITE, NOT FOUR. The same computation is written out by
+ * hand in three other places and they are NOT identical:
+ *
+ *   services/recommendationService.ts:~597  — same, minus the intermediate rounding
+ *   services/beachPlannerService.ts:~172    — caps the measured value WITHOUT sea arrival
+ *   App.tsx:~729                            — does not apply the light-wind cap at all
+ *
+ * Those differences are real and they change numbers: on a 1 Bft day with
+ * over-reported grid swell, the top-pick hour scoring in App.tsx can see a
+ * choppier sea than the beach page shows for the same hour. They are left alone
+ * deliberately — unifying them silently would move production behaviour under
+ * cover of a refactor, and each one deserves its own measurement first. Whoever
+ * takes that on: this function is the shape to converge on, because it is the one
+ * that has been measured.
+ */
+export const resolveDisplayWaveHeightM = ({
+  exposureLevel,
+  modeledWaveHeightM,
+  beaufort,
+  windSpeedKmh,
+  gustKmph,
+  measuredWaveHeightM,
+  swell,
+  seaArrival,
+}: {
+  exposureLevel: WaveExposureLevel;
+  /** `WindExposureAssessment.modeledWaveHeightM` — open-water SMB, before damping. */
+  modeledWaveHeightM: number;
+  beaufort: number;
+  windSpeedKmh: number;
+  gustKmph?: number;
+  /** The raw grid reading, or undefined when marine data is missing. */
+  measuredWaveHeightM?: number;
+  swell?: { heightM?: number; periodS?: number };
+  seaArrival?: SeaArrivalGeometry;
+}): {
+  effectiveWaveHeightM: number;
+  modeledWaveHeightM: number;
+  /** The grid reading after the light-wind cap — callers need it to tell an
+   *  honest "measured" apart from a "measured-capped" sea-state source. */
+  realisticMeasuredWaveHeightM: number | undefined;
+} => {
+  // SMB gives open-water Hs, so damp it toward the shore by exposure: sheltered and
+  // cross-shore beaches see far less of it than a coast facing the fetch head-on.
+  const damping = exposureLevel === 'protected' ? 0.5 : exposureLevel === 'partial' ? 0.75 : 1;
+  const fetchModeledWaveHeightM = Number((modeledWaveHeightM * damping).toFixed(2));
+  const windChopFloorM = getWindChopWaveFloorM(exposureLevel, beaufort, windSpeedKmh, gustKmph);
+  const modeled = Number(Math.max(fetchModeledWaveHeightM, windChopFloorM).toFixed(2));
+
+  const measured = typeof measuredWaveHeightM === 'number' && Number.isFinite(measuredWaveHeightM)
+    ? measuredWaveHeightM
+    : undefined;
+  const realisticMeasured = typeof measured === 'number'
+    ? capLightWindMeasuredWaveM(measured, beaufort, swell, seaArrival)
+    : undefined;
+
+  return {
+    effectiveWaveHeightM: resolveEffectiveWaveHeightM(realisticMeasured, modeled),
+    modeledWaveHeightM: modeled,
+    realisticMeasuredWaveHeightM: realisticMeasured,
+  };
+};
+
+/**
  * Conservative lower bound for wind chop that can be felt near shore even when
  * the area marine grid reports a low wave height. It is intentionally coarse:
  * enough to avoid false "flat sea" claims on windy days, while still letting

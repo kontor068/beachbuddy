@@ -49,7 +49,7 @@ import { hasDifficultTopPickAccess, hasMainstreamTopPickAccess, hasTrulyEasyAcce
 import { isSunsetFacingBeach } from '../utils/beachOrientation';
 import { isNaturistBeach } from '../utils/naturistBeaches';
 import { getBeachTouristRecognitionScore } from '../utils/touristPriority';
-import { getWindChopWaveFloorM, resolveEffectiveWaveHeightM, capLightWindMeasuredWaveM, type SeaArrivalGeometry } from '../utils/waveModel';
+import { getWindChopWaveFloorM, resolveEffectiveWaveHeightM, capLightWindMeasuredWaveM, resolveDisplayWaveHeightM, type SeaArrivalGeometry } from '../utils/waveModel';
 import { COVE_DISPLAY_FLOOR_M, COVE_ONSHORE_MIN, resolveCoveAwareWaveHeightM } from '../utils/coveWaveGuard';
 import { interpolateSectorGeometry } from '../utils/windExposureModel';
 import { getBeachPopularityRating } from '../utils/beachRating';
@@ -1516,10 +1516,6 @@ export const calculateBeachScore = (
   // so a beach that is exposed in strong wind cannot float on a high score just
   // because no buoy reported. SMB gives open-water Hs, so we damp it toward the
   // shore by exposure (sheltered/cross-shore beaches see far less of it).
-  const modeledWaveDamping = finalExposureLevel === 'protected' ? 0.5 : finalExposureLevel === 'partial' ? 0.75 : 1;
-  const fetchModeledWaveHeightM = Number((windAssessment.modeledWaveHeightM * modeledWaveDamping).toFixed(2));
-  const windChopFloorM = getWindChopWaveFloorM(finalExposureLevel, baseBeaufort, windSpeedKmph, gustKmph);
-  const modeledWaveHeightM = Number(Math.max(fetchModeledWaveHeightM, windChopFloorM).toFixed(2));
   const measuredWaveHeightM = typeof waveHeightM === 'number' && Number.isFinite(waveHeightM) ? waveHeightM : undefined;
   // Numeric scoring and display use the effective beach-level wave/chop value.
   // The raw Open-Meteo marine value stays in `marine.waveHeightM` for traceability, but
@@ -1534,15 +1530,18 @@ export const calculateBeachScore = (
     windAssessment.facingDeg,
     marine?.waveDirectionDeg
   );
-  const realisticMeasuredWaveHeightM = typeof measuredWaveHeightM === 'number'
-    ? capLightWindMeasuredWaveM(
-      measuredWaveHeightM,
-      baseBeaufort,
-      { heightM: marine?.swellWaveHeightM, periodS: marine?.swellWavePeriodS },
-      seaArrival
-    )
-    : undefined;
-  const effectiveWaveHeightM = resolveEffectiveWaveHeightM(realisticMeasuredWaveHeightM, modeledWaveHeightM);
+  // One function, called by the beach page and by scripts/validateEffectiveRanking.ts.
+  // The validator measures THIS code, not a copy of it — see utils/waveModel.ts.
+  const { effectiveWaveHeightM, modeledWaveHeightM, realisticMeasuredWaveHeightM } = resolveDisplayWaveHeightM({
+    exposureLevel: finalExposureLevel,
+    modeledWaveHeightM: windAssessment.modeledWaveHeightM,
+    beaufort: baseBeaufort,
+    windSpeedKmh: windSpeedKmph,
+    gustKmph,
+    measuredWaveHeightM,
+    swell: { heightM: marine?.swellWaveHeightM, periodS: marine?.swellWavePeriodS },
+    seaArrival,
+  });
   const waveRaisedByWind = measuredWaveHeightM !== undefined && effectiveWaveHeightM > measuredWaveHeightM + 0.05;
 
   // ── The single decision-grade sea state ───────────────────────────────────────────────
