@@ -50,6 +50,7 @@ import { isSunsetFacingBeach } from '../utils/beachOrientation';
 import { isNaturistBeach } from '../utils/naturistBeaches';
 import { getBeachTouristRecognitionScore } from '../utils/touristPriority';
 import { getWindChopWaveFloorM, resolveEffectiveWaveHeightM, capLightWindMeasuredWaveM, resolveDisplayWaveHeightM, type SeaArrivalGeometry } from '../utils/waveModel';
+import { resolveSeaArrival } from '../utils/seaArrival';
 import { COVE_DISPLAY_FLOOR_M, COVE_ONSHORE_MIN, resolveCoveAwareWaveHeightM } from '../utils/coveWaveGuard';
 import { interpolateSectorGeometry } from '../utils/windExposureModel';
 import { getBeachPopularityRating } from '../utils/beachRating';
@@ -546,26 +547,6 @@ export interface HourlyWaveAssessment {
   /** True when this hour had a live marine wave value (not purely wind-modeled). */
   hasMeasured: boolean;
 }
-
-/**
- * Where a measured sea is arriving from, in this beach's own frame — the input that lets the
- * light-wind cap tell "a real sea running onto this shore" from "a grid cell describing water
- * behind it". Returns undefined when we lack the geometry to judge, in which case the cap falls
- * back to its original direction-blind behaviour.
- */
-const resolveSeaArrival = (
-  geospatialProfile: GeospatialExposureProfile | undefined,
-  facingDeg: number | null | undefined,
-  waveDirectionDeg: number | undefined
-): SeaArrivalGeometry | undefined => {
-  if (!geospatialProfile) return undefined;
-  if (typeof waveDirectionDeg !== 'number' || !Number.isFinite(waveDirectionDeg)) return undefined;
-  if (typeof facingDeg !== 'number' || !Number.isFinite(facingDeg)) return undefined;
-  return {
-    onshore: Math.cos(((waveDirectionDeg - facingDeg) * Math.PI) / 180),
-    fetchKm: interpolateSectorGeometry(geospatialProfile, waveDirectionDeg).fetchKm,
-  };
-};
 
 // Single source of truth for an hour's effective wave: directional exposure (so fetch tracks the
 // hour's own wind direction), fetch-limited SMB damped by exposure, the wind-chop floor, and the

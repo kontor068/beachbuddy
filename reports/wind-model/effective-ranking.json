@@ -29,13 +29,13 @@
       "results": {
         "our_geometry_breaks_a_correct_ranking": {
           "pass": false,
-          "ratio": 0.0359,
+          "ratio": 0.0351,
           "n": 6832,
           "threshold": 0.02,
           "direction": "lower is better",
           "breakdown": {
-            "flattened_to_a_tie": 86,
-            "named_the_wrong_coast": 159
+            "flattened_to_a_tie": 83,
+            "named_the_wrong_coast": 157
           }
         },
         "our_geometry_fixes_a_wrong_ranking": {
@@ -66,9 +66,9 @@
       },
       "app_tsx_divergence": {
         "beach_hours": 20260,
-        "cap_changes_the_number": 408,
-        "cap_changes_the_number_ratio": 0.0201,
-        "cap_changes_which_coast_is_calmer": 47,
+        "cap_changes_the_number": 392,
+        "cap_changes_the_number_ratio": 0.0193,
+        "cap_changes_which_coast_is_calmer": 42,
         "largest_gap_m": 0.66
       },
       "verdict": {
@@ -86,7 +86,7 @@
         {
           "island": "Skopelos",
           "n": 145,
-          "harm": 44,
+          "harm": 39,
           "help": 3
         },
         {
@@ -225,13 +225,13 @@
       "results": {
         "our_geometry_breaks_a_correct_ranking": {
           "pass": false,
-          "ratio": 0.0215,
+          "ratio": 0.0204,
           "n": 6230,
           "threshold": 0.02,
           "direction": "lower is better",
           "breakdown": {
-            "flattened_to_a_tie": 42,
-            "named_the_wrong_coast": 92
+            "flattened_to_a_tie": 40,
+            "named_the_wrong_coast": 87
           }
         },
         "our_geometry_fixes_a_wrong_ranking": {
@@ -262,9 +262,9 @@
       },
       "app_tsx_divergence": {
         "beach_hours": 17920,
-        "cap_changes_the_number": 431,
-        "cap_changes_the_number_ratio": 0.0241,
-        "cap_changes_which_coast_is_calmer": 53,
+        "cap_changes_the_number": 401,
+        "cap_changes_the_number_ratio": 0.0224,
+        "cap_changes_which_coast_is_calmer": 46,
         "largest_gap_m": 1.34
       },
       "verdict": {
@@ -276,7 +276,7 @@
         {
           "island": "Skopelos",
           "n": 294,
-          "harm": 46,
+          "harm": 39,
           "help": 4
         },
         {

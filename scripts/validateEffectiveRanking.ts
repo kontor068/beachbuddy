@@ -35,6 +35,7 @@ import path from 'node:path';
 
 import { assessBeachWindExposure } from '../utils/windExposureEngine';
 import { resolveDisplayWaveHeightM } from '../utils/waveModel';
+import { resolveSeaArrival } from '../utils/seaArrival';
 import { getBeaufortLevel, degToCompass } from '../utils/weatherUtils';
 import type { Beach, GeospatialExposureProfile } from '../types';
 
@@ -339,9 +340,17 @@ const evaluateBeach = (
     gustKmph: gustKmh ?? undefined,
     measuredWaveHeightM: waveM ?? undefined,
     swell: { heightM: swellM ?? undefined, periodS: swellPeriodS ?? undefined },
-    // seaArrival σκόπιμα undefined: εξαρτάται από το geospatialProfile ΚΑΙ από τη
-    // ζωντανή κατεύθυνση κύματος με τον ίδιο τρόπο και στις δύο ακτές του ζεύγους,
-    // άρα δεν αλλάζει το ΠΡΟΣΗΜΟ της σύγκρισης που είναι το αντικείμενο εδώ.
+    // ΔΙΟΡΘΩΘΗΚΕ. Η πρώτη εκτέλεση περνούσε εδώ `undefined` με το σκεπτικό ότι το
+    // sea arrival «επιδρά ίδια στις δύο ακτές, άρα δεν αλλάζει το πρόσημο». Αυτό
+    // ήταν ΛΑΘΟΣ: το sea arrival βγαίνει από το facing και τη γεωμετρία της ΚΑΘΕ
+    // παραλίας, που είναι διαφορετικά ανά ακτή — είναι ακριβώς η ποσότητα που
+    // ξεχωρίζει τις δύο πλευρές. Χωρίς αυτό ο κριτής έτρεχε light-wind cap πιο
+    // επιθετικό από την παραγωγή και χρέωνε στη γεωμετρία ζημιά που δεν κάνει.
+    //
+    // ΤΙ ΔΕΝ ΑΛΛΑΞΕ: κανένα κατώφλι. Οι πύλες μένουν αριθμό προς αριθμό όπως
+    // δεσμεύτηκαν στο 2aaa5797. Άλλαξε ΤΟ ΥΠΟΚΕΙΜΕΝΟ της μέτρησης — μετράμε
+    // επιτέλους την παραγωγή — όχι η αυστηρότητα.
+    seaArrival: resolveSeaArrival(profile, assessment.facingDeg, waveDeg ?? undefined),
   });
 
   // Η ΠΑΡΑΛΛΑΓΗ ΤΟΥ App.tsx:729 — για να μετρηθεί η ασυμφωνία, όχι να εικαστεί.
@@ -363,7 +372,26 @@ const evaluateBeach = (
   };
 };
 
+// --explain <νησί>: μαζεύει τις ώρες όπου η γεωμετρία μας χάλασε σωστή κατάταξη
+// σε ΕΝΑ ζεύγος, με τα νούμερα δίπλα-δίπλα. Χωρίς αυτό, το «η Σκόπελος χαλάει 30%»
+// είναι ποσοστό χωρίς αιτία, και δεν διορθώνεται ποσοστό.
+const explainIsland = (() => {
+  const i = process.argv.indexOf('--explain');
+  return i >= 0 ? process.argv[i + 1] : undefined;
+})();
+
+type Explanation = {
+  hour: string;
+  judge: { windward: number; leeward: number };
+  grid: { windward: number | null; leeward: number | null };
+  ours: { windward: number; leeward: number };
+  exposure: { windward: string; leeward: string };
+  windKmh: { windward: number; leeward: number };
+  beaufort: { windward: number; leeward: number };
+};
+
 const summarise = (resolved: Resolved, rows: Row[]) => {
+  const explanations: Explanation[] = [];
   let hoursConsidered = 0;
   let hoursWithJudgeContrast = 0;
   let judgeContrastSum = 0;
@@ -462,6 +490,17 @@ const summarise = (resolved: Resolved, rows: Row[]) => {
         harm++;
         island.harm++;
         if (oursSign === 0) harmTies++; else harmInversions++;
+        if (explainIsland && pair.island === explainIsland && explanations.length < 400) {
+          explanations.push({
+            hour,
+            judge: { windward: copW, leeward: copL },
+            grid: { windward: wGrid, leeward: lGrid },
+            ours: { windward: w.effective, leeward: l.effective },
+            exposure: { windward: w.exposure, leeward: l.exposure },
+            windKmh: { windward: wWind, leeward: lWind },
+            beaufort: { windward: w.beaufort, leeward: l.beaufort },
+          });
+        }
       }
     } else {
       gridWrong++;
@@ -553,6 +592,7 @@ const summarise = (resolved: Resolved, rows: Row[]) => {
     per_island: [...perIsland.entries()]
       .map(([island, v]) => ({ island, ...v }))
       .sort((a, b) => b.harm - a.harm),
+    ...(explainIsland ? { explain: { island: explainIsland, harm_hours: explanations } } : {}),
   };
 };
 
@@ -591,7 +631,11 @@ const main = async () => {
   const dryRun = argv.includes('--dry-run');
   const replayIdx = argv.indexOf('--replay');
   const replay = replayIdx >= 0;
-  const replayWindow = replay ? argv[replayIdx + 1] : undefined;
+  // Το επόμενο όρισμα είναι παράθυρο ΜΟΝΟ αν δεν είναι άλλη σημαία. Χωρίς αυτό,
+  // `--replay --explain Skopelos` διάβαζε το «--explain» ως ημερομηνία, δεν
+  // ταίριαζε κανένα παράθυρο, και το τεστ τερμάτιζε με μηδέν δεδομένα.
+  const nextArg = replay ? argv[replayIdx + 1] : undefined;
+  const replayWindow = nextArg && !nextArg.startsWith('--') ? nextArg : undefined;
 
   const windowFiles = fs.readdirSync(WAVE_DIR)
     .filter((f) => /^lee-shore-hours-\d{4}-\d{2}-\d{2}\.json$/.test(f))
@@ -702,6 +746,16 @@ const main = async () => {
 
   log('');
   log(`→ ${path.relative(ROOT, outPath)}`);
+
+  // Μηδέν παράθυρα δεν είναι επιτυχία. Το `reports.some()` σε άδειο πίνακα
+  // επιστρέφει false, οπότε μια κακογραμμένη σημαία τύπωνε «δεν βλάπτει» χωρίς
+  // να έχει κρίνει ούτε μία ώρα. Ένα τεστ που δεν έτρεξε πρέπει να ουρλιάζει.
+  if (!reports.length) {
+    log('');
+    log('ΣΦΑΛΜΑ: δεν κρίθηκε κανένα παράθυρο. Αυτό ΔΕΝ είναι «πέρασε» — έλεγξε τα ορίσματα.');
+    process.exitCode = 1;
+    return;
+  }
 
   const anyHarm = reports.some((r) => !r.verdict.geometry_does_no_harm);
   log('');
