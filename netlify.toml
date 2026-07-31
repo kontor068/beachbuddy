@@ -47,6 +47,14 @@
   to = "/.netlify/functions/feedback-export"
   status = 200
 
+# What an uptime monitor should watch. NOT the homepage: that is a static file on
+# a CDN and keeps returning 200 long after the functions behind the product have
+# stopped. Unauthenticated on purpose — a monitor cannot log in.
+[[redirects]]
+  from = "/api/health"
+  to = "/.netlify/functions/health"
+  status = 200
+
 # Crash reports from the browser AND Content-Security-Policy violation reports.
 # One sink for both: they are the same kind of event (the browser refused to do
 # something) and want the same handling. Sends to Telegram, deduplicated per day.
