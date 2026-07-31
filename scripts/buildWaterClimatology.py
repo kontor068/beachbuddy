@@ -48,10 +48,15 @@ OUT_PATH = "data/waterClimatology.generated.json"
 
 SEASON_MONTHS = (4, 5, 6, 7, 8, 9, 10, 11)
 
-# Τα ίδια κατώφλια με την κάρτα «Νερό» της εφαρμογής (utils/waterTemperature). Αν
-# αποκλίνουν, ο οδηγός θα λέει «ιδανικό» για μήνα που η σελίδα βάφει «μέτριο».
+# Τα κατώφλια της κάρτας «Νερό» — pages/BeachDetailPage.tsx. Αντιγράφονται εδώ και τα
+# επαληθεύει η πύλη scripts/validateWaterClimatology.mjs.
+#
+# ΠΡΟΣΟΧΗ ΣΤΟ ΑΝΟΙΧΤΟ ΑΚΡΟ: η εφαρμογή λέει «μέτριο» για `<= 24` και «ιδανικό» μόνο για
+# `> 24`. Η πρώτη έκδοση εδώ έγραφε `>= 24` και στα 24,0 ακριβώς ο οδηγός θα έλεγε
+# «ιδανικό» για μήνα που η σελίδα της παραλίας βάφει «μέτριο». Ένα κατώφλι δεν είναι
+# «περίπου το ίδιο» — είναι το σημείο όπου αλλάζει η λέξη που διαβάζει ο χρήστης.
 WATER_COLD_BELOW_C = 21.0
-WATER_IDEAL_AT_C = 24.0
+WATER_IDEAL_ABOVE_C = 24.0
 
 MIN_SAMPLES_PER_MONTH = 40
 
@@ -133,10 +138,10 @@ def summarise_temperature(samples):
             "medianC": round(median, 1),
             "p10C": round(float(np.percentile(arr, 10)), 1),
             "p90C": round(float(np.percentile(arr, 90)), 1),
-            "idealPct": round(100 * float((arr >= WATER_IDEAL_AT_C).mean())),
+            "idealPct": round(100 * float((arr > WATER_IDEAL_ABOVE_C).mean())),
             "coldPct": round(100 * float((arr < WATER_COLD_BELOW_C).mean())),
             "tier": ("cold" if median < WATER_COLD_BELOW_C
-                     else "ideal" if median >= WATER_IDEAL_AT_C else "moderate"),
+                     else "ideal" if median > WATER_IDEAL_ABOVE_C else "moderate"),
         }
     return out
 
@@ -235,7 +240,7 @@ def main():
                         "years": [args.clarity_from_year, args.to_year],
                         "variables": list(CLARITY_VARIABLES), "status": "data-only, no UI"},
         },
-        "thresholds": {"coldBelowC": WATER_COLD_BELOW_C, "idealAtC": WATER_IDEAL_AT_C},
+        "thresholds": {"coldBelowC": WATER_COLD_BELOW_C, "idealAboveC": WATER_IDEAL_ABOVE_C},
         "limits": (
             "Clarity means how far you can see through the water (suspended particles). It is "
             "NOT a hygiene or bathing-water-quality statement and must never be presented as "

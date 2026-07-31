@@ -94,6 +94,15 @@ const checks = [
     args: ['scripts/validateWaveClimatology.mjs'],
   },
   {
+    id: 'water-climatology',
+    title: 'Guide water temperature vs the beach page',
+    description: 'Checks the cold/mild/ideal thresholds AND their open ends agree across three copies — pages/BeachDetailPage.tsx, the Python that builds the data, and utils/waterSeasonProfile.mjs — that the guide uses the same five-language words the beach page prints, and that the prerender passes beach IDs and the WATER file rather than the wave one.',
+    protects: 'Prevents a guide saying the sea is "ideal" in a month whose own beach page calls it "mild". The page treats 24.0 C as mild and only above 24 as ideal; the first Python copy used >= and misclassified 164 months with nothing throwing. It also blocks the wave/water file mix-up, which differs by one letter and would make the paragraph vanish silently, and stops a monthly average being dressed up as something measured at the shoreline.',
+    failureAction: 'Realign the thresholds in scripts/buildWaterClimatology.py and utils/waterSeasonProfile.mjs with pages/BeachDetailPage.tsx, or fix the prerender call site. Regenerate the data file rather than widening a range in the gate.',
+    command: process.execPath,
+    args: ['scripts/validateWaterClimatology.mjs'],
+  },
+  {
     id: 'trip-query-parsing',
     title: 'Trip query parsing',
     description: 'Parses free-text trip sentences ("θα μείνω Νάξο για 5 μέρες") over the real region list: recall in 5 languages, precision against dates/quantities/beach names with numerals, a stopword sweep, order invariance, and every region resolving from its own name.',

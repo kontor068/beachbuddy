@@ -33,7 +33,7 @@
     "build:sqlite": "node --experimental-sqlite scripts/buildBeachSqlite.mjs",
     "db:query": "node --experimental-sqlite scripts/queryBeaches.mjs",
     "quality:critical": "node scripts/runCriticalQualityChecks.mjs",
-    "quality:climatology": "node scripts/validateWaveClimatology.mjs",
+    "quality:climatology": "node scripts/validateWaveClimatology.mjs && node scripts/validateWaterClimatology.mjs",
     "data:wave-climatology": "python scripts/buildWaveClimatology.py",
     "data:water-climatology": "python scripts/buildWaterClimatology.py",
     "audit:lee-shore": "python scripts/auditLeeShoreWaveAgainstCopernicus.py",

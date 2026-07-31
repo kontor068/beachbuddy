@@ -5,6 +5,7 @@ import { fileURLToPath } from 'node:url';
 import { amenityTextIncludesAny, SNACK_CANTEEN_AMENITY_TERMS } from '../utils/amenityMatching.js';
 import { localWindLabelFor, getRegionWindContext, localWindSectorsFor, LOCAL_WIND_ATOMS, LOCAL_WIND_LABEL } from '../utils/localWindContext.mjs';
 import { withSeaSeasonSection } from '../utils/seaSeasonProfile.mjs';
+import { withWaterSeasonSection } from '../utils/waterSeasonProfile.mjs';
 import { STATIC_ARTICLE_CSS } from './staticArticleTheme.mjs';
 
 const scriptDir = path.dirname(fileURLToPath(import.meta.url));
@@ -1660,6 +1661,15 @@ const waveClimatology = await readJson(
 ).catch(() => null);
 if (!waveClimatology) {
   console.warn('  (no waveClimatology.generated.json — guides will omit the season section)');
+}
+// Water temperature per beach, per month (scripts/buildWaterClimatology.py). Optional for the
+// same reason as the wave file: it needs a Copernicus account to produce, and a clone or a
+// CI box has neither. Missing file simply drops that one paragraph.
+const waterClimatology = await readJson(
+  path.join(projectRoot, 'data', 'waterClimatology.generated.json'),
+).catch(() => null);
+if (!waterClimatology) {
+  console.warn('  (no waterClimatology.generated.json — guides will omit the water section)');
 }
 
 // Cards are ~230px wide, so requesting the 800px original for every one of them
@@ -5064,12 +5074,22 @@ const main = async () => {
       // ("when should I come?"), and this is the only place on the site that answers it.
       // It also makes each of these pages carry a number no template could have written,
       // which is what separates a guide from a doorway page.
-      const content = withSeaSeasonSection(
+      const beachIds = page.beaches.map(beach => beach.id);
+      const withSea = withSeaSeasonSection(
         withIntentSection,
-        page.beaches.map(beach => beach.id),
+        beachIds,
         waveClimatology,
         locale.language,
         page.region.id,
+      );
+      // "How warm is the water, month by month?" — the other half of "when should I come?".
+      // Wave answers whether the sea is workable; temperature answers whether it is inviting,
+      // and it carries the counter-intuitive fact that in much of Greece October beats June.
+      const content = withWaterSeasonSection(
+        withSea,
+        beachIds,
+        waterClimatology,
+        locale.language,
       );
       const intentOutputDir = outputDirForRoute(localizedPath(pathName, locale));
       await mkdir(intentOutputDir, { recursive: true });

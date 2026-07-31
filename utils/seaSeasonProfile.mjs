@@ -38,9 +38,9 @@ export const REQUIRED_MONTHS = [6, 7, 8, 9];
  * του. Ιούνιος-Σεπτέμβριος είναι το διάστημα όπου η απάντηση αλλάζει ανά νησί και
  * μεταφράζεται σε πραγματική απόφαση («έλα Σεπτέμβρη αντί Αύγουστο»).
  */
-const PEAK_SEASON = [6, 7, 8, 9];
+export const PEAK_SEASON = [6, 7, 8, 9];
 
-const median = (values) => {
+export const median = (values) => {
   if (!values.length) return null;
   const sorted = [...values].sort((a, b) => a - b);
   const mid = Math.floor(sorted.length / 2);
@@ -116,7 +116,7 @@ const MONTH_NAMES = {
   it: [, 'gennaio', 'febbraio', 'marzo', 'aprile', 'maggio', 'giugno', 'luglio', 'agosto', 'settembre', 'ottobre', 'novembre', 'dicembre'],
 };
 
-const monthName = (month, language) => (MONTH_NAMES[language] || MONTH_NAMES.en)[month];
+export const monthName = (month, language) => (MONTH_NAMES[language] || MONTH_NAMES.en)[month];
 
 /**
  * Δεκαδικός με το σημείο που χρησιμοποιεί η γλώσσα, πάντα δύο ψηφία.
@@ -126,7 +126,7 @@ const monthName = (month, language) => (MONTH_NAMES[language] || MONTH_NAMES.en)
  * `Number(1.0).toFixed(2)` περασμένο από Number() ξαναγίνεται «1» — «τυπικά 1 μ.» δίπλα σε
  * «0,88 μ.» μοιάζει με στρογγυλοποίηση που δεν κάναμε.
  */
-const decimal = (value, language, digits = 2) => {
+export const decimal = (value, language, digits = 2) => {
   const text = Number(value).toFixed(digits);
   return language === 'en' ? text : text.replace('.', ',');
 };
