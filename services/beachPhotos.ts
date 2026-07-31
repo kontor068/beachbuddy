@@ -107,16 +107,12 @@ const BEACH_PHOTOS: Record<string, string[]> = {
   'Βουλιαγμένη': ATTICA_LAKE_VOULIAGMENI_PHOTOS,
 
   // ==================== CRETE ====================
-  'Μπάλος': [wm('Balos Beach.jpg'), wm('Bay of Balos, Crete 001.jpg')],
-  'Balos': [wm('Balos Beach.jpg')],
   'Ελαφονήσι': [wm('Elafonissi.jpg')],
   'Elafonissi': [wm('Elafonissi.jpg')],
   'Μάταλα': [wm('Matala beach cliff Crete Greece.jpg')],
   'Matala': [wm('Matala beach cliff Crete Greece.jpg')],
   'Πρέβελη': [wm('Preveli Palm Beach 01.JPG')],
   'Preveli': [wm('Preveli Palm Beach 01.JPG')],
-  'Βάι': [wm('Vai R06.jpg')],
-  'Vai': [wm('Vai R06.jpg')],
   'Σεϊτάν Λιμάνια': [wm('Chania - Seitan Limania.jpg')],
   'Φαλάσαρνα': [wm('Greece Crete Chania FalasarnaBeach Aerial Summer ISymeonidis-4-S.jpg')],
   'Falassarna': [wm('Greece Crete Chania FalasarnaBeach Aerial Summer ISymeonidis-4-S.jpg')],
@@ -133,9 +129,6 @@ const BEACH_PHOTOS: Record<string, string[]> = {
   // --- Santorini ---
   'Περίσσα': [wm('Beach - Perissa - Santorini - Greece - 04.jpg')],
   'Perissa': [wm('Perissa Beach, Santorini on June 7, 2009.jpg')],
-  'Καμάρι': [wm('Kamari Beach, Santorini, Greece - panoramio (3).jpg')],
-  'Kamari': [wm('Boat at Kamari beach, Santorini, Greece.jpg')],
-  'Κόκκινη Παραλία': [wm('Red Beach, Santorini.jpg'), wm('Red Beach in Santorini.jpg')],
   'Red Beach': [wm('Red Beach, Santorini.jpg'), wm('Red Beach, Santorini, 226476.jpg')],
   'Περίβολος': [wm('Perivolos (Santorini).jpg'), wm('Perivolos beach, Santorini (1335681187).jpg')],
   'White Beach': [wm('AspriParalia.jpg')],
@@ -144,15 +137,9 @@ const BEACH_PHOTOS: Record<string, string[]> = {
   'Σούπερ Παράδεισος': [wm('Super Paradise Beach, Mykonos, Greece.jpg')],
   'Super Paradise': [wm('Super Paradise Beach, Mykonos, Greece.jpg')],
   'Paradise Beach': [wm('Cyclades Mykonos Paradise Plage 23062013 - panoramio.jpg')],
-  'Ελιά': [wm('Elias Beach on Mykonos.JPG')],
-  'Elia': [wm('Elias Beach on Mykonos.JPG')],
-  'Πλατύς Γιαλός': [wm('Mykonos Platis Gialos Luftbild 03.jpg')],
   'Όρνος': [wm('GR-mykonos-ornos-beach.jpg')],
   'Ornos': [wm('GR-mykonos-ornos-beach.jpg')],
-  'Άγιος Στέφανος': [wm('Agios Stefanos beach Mykonos.jpg')],
-  'Φτελιά': [wm('Ftelia Bay, Mykonos, 060363.jpg')],
   'Ψαρρού': [wm('Mykonos Beach Strand (24005199291).jpg')],
-  'Πάνορμος': [wm('Mykonos 3160.jpg')],
   'Παράγκα': [wm('III Mykonos, Greece (2).jpg')],
 
   // --- Paros ---
@@ -160,24 +147,16 @@ const BEACH_PHOTOS: Record<string, string[]> = {
   'Kolymbithres': [wm('Paros Kolymbithres1 tango7174.jpg')],
   'Πιπέρι': [wm('GR-paros-naoussa-piperi-strand.jpg')],
   'Φάραγγας': [wm('Cyclades Paros Faragas Beach - panoramio.jpg')],
-  'Μώλος': [wm('Cyclades Paros Molos Beach Vue Naxos - panoramio.jpg')],
   'Σάντα Μαρία': [wm('Paros Beach.jpg')],
   'Λογαράς': [wm('GR-paros-piso-livada-beach.jpg')],
 
   // --- Naxos ---
-  'Αγία Άννα': [wm('Beach Agia Anna, Naxos, 060762.jpg')],
-  'Agia Anna': [wm('Beach Agia Anna, Naxos, 060762.jpg')],
   'Άγιος Προκόπιος': [wm('Agios Prokopios beach, Naxos, Greece.jpg'), wm('Agios Prokopios Beach at sunset, Naxos, Greece julesvernex2.jpg')],
   'Agios Prokopios': [wm('Agios Prokopios beach, Naxos, Greece.jpg'), wm('Agios Prokopios Beach at sunset, Naxos, Greece julesvernex2.jpg')],
-  'Πλάκα': [wm('Sunset from Plaka beach, Naxos island, Greece - panoramio.jpg')],
-  'Plaka': [wm('Sunset from Plaka beach, Naxos island, Greece - panoramio.jpg')],
   'Μικρή Βίγλα': [wm('Naxos Mikri Vigla 2025-06-25 1368 beach 01.jpg'), wm('Vigla Beach, Naxos isl.jpg')],
   'Mikri Vigla': [wm('Naxos Mikri Vigla 2025-06-25 1368 beach 01.jpg')],
-  'Άγιος Γεώργιος': [wm('City beach Agios Georgios, Naxos, 11H2322.jpg')],
 
   // --- Milos ---
-  'Σαρακίνικο': [wm('Sarakiniko Beach on Milos Island, Greece with a view of the Aegean Sea.jpg'), wm('Aerial view of Sarakiniko Beach on Milos Island, Greece.jpg')],
-  'Sarakiniko': [wm('Sarakiniko Beach on Milos Island, Greece with a view of the Aegean Sea.jpg'), wm('Sarakiniko Beach on the island of Milos, Greece.jpg')],
   'Φυριπλάκα': [wm('Aerial view of Paralia Firiplaka on Milos Island, Greece.jpg')],
   'Firiplaka': [wm('Aerial view of Paralia Firiplaka on Milos Island, Greece.jpg')],
   'Fyriplaka': [wm('Aerial view of Paralia Firiplaka on Milos Island, Greece.jpg')],
@@ -192,19 +171,11 @@ const BEACH_PHOTOS: Record<string, string[]> = {
   'Μαγγανάρι': [wm('Ios island, Cyclades, Greece beach view 2007.jpg')],
 
   // --- Folegandros ---
-  'Λιβαδάκι': [wm('Paralia Livadaki Beach, Folegandros, Greece.jpg')],
-  'Αγκάλη': [wm('Angali beach, Folegandros, 15M6560.jpg')],
-  'Κάτεργο': [wm('Cyclades Folegandros Katergo Plage - panoramio.jpg')],
-  'Λιβάδι': [wm('Livadi Beach near camping, Folegandros, 153365.jpg')],
-  'Άγιος Νικόλαος': [wm('St Nicolaos beach, Folegandros.jpeg')],
 
   // --- Tinos ---
   'Κολυμπήθρα': [wm('Agios Romanos beach, Tinos, Greece julesvernex2.jpg')],
   'Άγιος Ρωμανός': [wm('Agios Romanos beach, Tinos, Greece julesvernex2.jpg')],
-  'Άγιος Σώστης': [wm('Top-down view of skerry near the beach, Agios Sostis, Tinos, Greece julesvernex2.jpg')],
-  'Άγιος Φωκάς': [wm('Wave, Agios Fokas beach, Tinos, Greece julesvernex2.jpg')],
   'Όρμος Υστερνίων': [wm('Shallow waters, Isternion Beach, Tinos, Greece julesvernex2.jpg')],
-  'Παχιά άμμος': [wm('Beach bar with lifeguard tower in the background, Megali Ammos Beach, Tinos, Greece julesvernex2.jpg')],
   'Άγιος Ιωάννης Πόρτο': [wm('Yellow buoys, Agios Ioannis Beach, Tinos, Greece julesvernex2.jpg')],
 
   // --- Andros ---
@@ -219,24 +190,18 @@ const BEACH_PHOTOS: Record<string, string[]> = {
   'Νικουριά': [wm('Panagia beach in Nikouria island, 18M2105.jpg'), wm('Great beach on the Nikouria island, 18M2127.jpg')],
 
   // --- Serifos ---
-  'Λιβαδάκια': [wm('A@a livadakia beach serifos greece - panoramio.jpg'), wm('Livadakia Beach Serifos (209164677).jpeg')],
   'Γάνεμα': [wm('A@a Ganema beach 1 Serifos Greece - panoramio.jpg'), wm('Ganema serifos.jpg')],
   'Καλό Αμπέλι': [wm('Kalo Ampeli beach, Serifos island, Greece - panoramio.jpg')],
   'Αυλόμωνας': [wm('A@a avlomonas beach serifos greece - panoramio.jpg')],
   'Μέγα Λιβάδι': [wm('A@a Mega Livadi 1 Serifos Greece - panoramio.jpg')],
 
   // --- Sifnos ---
-  'Βαθύ': [wm('Beach in Vathy on Sifnos, 153617.jpg'), wm('Beach in Vathy on Sifnos, 153621.jpg')],
-  'Φάρος': [wm('Faros Sifnos Cyclades.jpg')],
-  'Καμάρες': [wm('Kamares from Ag. Marina, Sifnos, 15M6920.jpg')],
   'Πλατύς Γιαλός Σίφνος': [wm('Cyclades Sifnos Platis Gialos 09092014 - panoramio.jpg')],
 
   // --- Syros ---
   'Μέγας Γυαλός': [wm('Megas Gyalos Syros 1.jpg'), wm('Megas Gyalos Syros 2.jpg')],
   'Αγαθοπές': [wm('Agathopes beach Syros 1.jpg'), wm('Agathopes beach Syros 2.jpg')],
   'Γαλησσάς': [wm('View of Galisas beach in Syros.jpg')],
-  'Δελφίνι': [wm('Delfini beach Syros 1.jpg'), wm('Delfini beach Syros 3.jpg')],
-  'Φοίνικας': [wm('Foinikas beach Syros 4.jpg')],
 
   // --- Kea ---
   'Κούνδουρος': [wm('Kea (Tzia) beach.jpg')],
@@ -273,13 +238,10 @@ const BEACH_PHOTOS: Record<string, string[]> = {
   'Αντονί Κουίν': [wm('Anthony-Quinn-Bay1.jpg')],
   'Anthony Quinn': [wm('Anthony-Quinn-Bay1.jpg')],
   'Παραλία Άντονι Κουίν': [wm('Anthony Qeen bay 1 - panoramio.jpg'), wm('Anthony-Quinn-Bay1.jpg')],
-  'Πρασονήσι': [wm('Peninsula of Prasonisi and Prasonisi Kite Beach. Rhodes, Greece.jpg')],
-  'Prasonisi': [wm('Peninsula of Prasonisi and Prasonisi Kite Beach. Rhodes, Greece.jpg')],
   'Παραλία Αφάντου': [wm('Afantou beach, Rhodes.jpg')],
   'Afantou': [wm('Afantou beach, Rhodes.jpg')],
   'Παραλία Αγάθη': [wm('Agathe Beach, Rhodos Mai 2016.JPG')],
   'Agathi': [wm('Agathe Beach, Rhodos Mai 2016.JPG')],
-  'Παραλία Αλυκή': [wm('Alykì beach.jpg')],
   'Κόλπος Αγίου Παύλου': [wm('Bay of St. Paul.jpg')],
   'Παραλία Χαράκι': [wm('Charaki Rhodes Greece M.jpg')],
   'Charaki': [wm('Charaki Rhodes Greece M.jpg')],
@@ -329,7 +291,6 @@ const BEACH_PHOTOS: Record<string, string[]> = {
 
   // ==================== EVIA / LAKONIA / ASTYPALAIA (geo/title-verified) ====================
   'Παραλία Πευκί': [wm('Evia Pefki Banner.jpg')],
-  'Πορί': [wm('Monemvasia - panoramio (11).jpg')],
   'Κούνουπες': [wm('Kounoupas.jpg')],
 
   // ==================== MACEDONIA mainland (Thessaloniki/Pieria, geo-verified) ====================

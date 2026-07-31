@@ -1,0 +1,2017 @@
+{
+  "generatedFrom": "services/beachPhotos.ts BEACH_PHOTOS",
+  "rule": "a key whose name matches beaches on more than one island cannot identify the beach its photo depicts",
+  "totals": {
+    "keys": 137,
+    "ambiguous": 0,
+    "unique": 97,
+    "dead": 40,
+    "beachesCurrentlyServedByThisTable": 25,
+    "beachesCurrentlyShownAWrongPhoto": 0
+  },
+  "ambiguous": [],
+  "unique": [
+    {
+      "key": "Ελαφονήσι",
+      "matchCount": 1,
+      "islands": [
+        "Χανιά"
+      ],
+      "beaches": [
+        {
+          "id": 595,
+          "nameGr": "Ελαφονήσι",
+          "island": "Χανιά",
+          "regionFile": "crete-crete-chania"
+        }
+      ],
+      "servedByThisTable": []
+    },
+    {
+      "key": "Μάταλα",
+      "matchCount": 1,
+      "islands": [
+        "Ηράκλειο"
+      ],
+      "beaches": [
+        {
+          "id": 626,
+          "nameGr": "Μάταλα",
+          "island": "Ηράκλειο",
+          "regionFile": "crete-crete-heraklion"
+        }
+      ],
+      "servedByThisTable": []
+    },
+    {
+      "key": "Matala",
+      "matchCount": 1,
+      "islands": [
+        "Ηράκλειο"
+      ],
+      "beaches": [
+        {
+          "id": 626,
+          "nameGr": "Μάταλα",
+          "island": "Ηράκλειο",
+          "regionFile": "crete-crete-heraklion"
+        }
+      ],
+      "servedByThisTable": []
+    },
+    {
+      "key": "Πρέβελη",
+      "matchCount": 1,
+      "islands": [
+        "Ρέθυμνο"
+      ],
+      "beaches": [
+        {
+          "id": 704,
+          "nameGr": "Πρέβελη",
+          "island": "Ρέθυμνο",
+          "regionFile": "crete-crete-rethymno"
+        }
+      ],
+      "servedByThisTable": []
+    },
+    {
+      "key": "Preveli",
+      "matchCount": 1,
+      "islands": [
+        "Ρέθυμνο"
+      ],
+      "beaches": [
+        {
+          "id": 704,
+          "nameGr": "Πρέβελη",
+          "island": "Ρέθυμνο",
+          "regionFile": "crete-crete-rethymno"
+        }
+      ],
+      "servedByThisTable": []
+    },
+    {
+      "key": "Φαλάσαρνα",
+      "matchCount": 1,
+      "islands": [
+        "Χανιά"
+      ],
+      "beaches": [
+        {
+          "id": 596,
+          "nameGr": "Φαλάσαρνα",
+          "island": "Χανιά",
+          "regionFile": "crete-crete-chania"
+        }
+      ],
+      "servedByThisTable": []
+    },
+    {
+      "key": "Πλακιάς",
+      "matchCount": 1,
+      "islands": [
+        "Ρέθυμνο"
+      ],
+      "beaches": [
+        {
+          "id": 700,
+          "nameGr": "Πλακιάς",
+          "island": "Ρέθυμνο",
+          "regionFile": "crete-crete-rethymno"
+        }
+      ],
+      "servedByThisTable": []
+    },
+    {
+      "key": "Plakias",
+      "matchCount": 1,
+      "islands": [
+        "Ρέθυμνο"
+      ],
+      "beaches": [
+        {
+          "id": 700,
+          "nameGr": "Πλακιάς",
+          "island": "Ρέθυμνο",
+          "regionFile": "crete-crete-rethymno"
+        }
+      ],
+      "servedByThisTable": []
+    },
+    {
+      "key": "Αγία Γαλήνη",
+      "matchCount": 1,
+      "islands": [
+        "Ρέθυμνο"
+      ],
+      "beaches": [
+        {
+          "id": 3019,
+          "nameGr": "Αγία Γαλήνη",
+          "island": "Ρέθυμνο",
+          "regionFile": "crete-crete-rethymno"
+        }
+      ],
+      "servedByThisTable": []
+    },
+    {
+      "key": "Τριόπετρα",
+      "matchCount": 1,
+      "islands": [
+        "Ρέθυμνο"
+      ],
+      "beaches": [
+        {
+          "id": 710,
+          "nameGr": "Τριόπετρα",
+          "island": "Ρέθυμνο",
+          "regionFile": "crete-crete-rethymno"
+        }
+      ],
+      "servedByThisTable": []
+    },
+    {
+      "key": "Περίσσα",
+      "matchCount": 1,
+      "islands": [
+        "Σαντορίνη"
+      ],
+      "beaches": [
+        {
+          "id": 2068,
+          "nameGr": "Περίσσα",
+          "island": "Σαντορίνη",
+          "regionFile": "south-aegean-santorini"
+        }
+      ],
+      "servedByThisTable": []
+    },
+    {
+      "key": "Perissa",
+      "matchCount": 1,
+      "islands": [
+        "Σαντορίνη"
+      ],
+      "beaches": [
+        {
+          "id": 2068,
+          "nameGr": "Περίσσα",
+          "island": "Σαντορίνη",
+          "regionFile": "south-aegean-santorini"
+        }
+      ],
+      "servedByThisTable": []
+    },
+    {
+      "key": "Περίβολος",
+      "matchCount": 1,
+      "islands": [
+        "Σαντορίνη"
+      ],
+      "beaches": [
+        {
+          "id": 2067,
+          "nameGr": "Περίβολος",
+          "island": "Σαντορίνη",
+          "regionFile": "south-aegean-santorini"
+        }
+      ],
+      "servedByThisTable": []
+    },
+    {
+      "key": "Super Paradise",
+      "matchCount": 1,
+      "islands": [
+        "Μύκονος"
+      ],
+      "beaches": [
+        {
+          "id": 1980,
+          "nameGr": "Super Paradise",
+          "island": "Μύκονος",
+          "regionFile": "south-aegean-mykonos"
+        }
+      ],
+      "servedByThisTable": []
+    },
+    {
+      "key": "Όρνος",
+      "matchCount": 1,
+      "islands": [
+        "Μύκονος"
+      ],
+      "beaches": [
+        {
+          "id": 1964,
+          "nameGr": "Ορνός",
+          "island": "Μύκονος",
+          "regionFile": "south-aegean-mykonos"
+        }
+      ],
+      "servedByThisTable": []
+    },
+    {
+      "key": "Ornos",
+      "matchCount": 1,
+      "islands": [
+        "Μύκονος"
+      ],
+      "beaches": [
+        {
+          "id": 1964,
+          "nameGr": "Ορνός",
+          "island": "Μύκονος",
+          "regionFile": "south-aegean-mykonos"
+        }
+      ],
+      "servedByThisTable": []
+    },
+    {
+      "key": "Ψαρρού",
+      "matchCount": 1,
+      "islands": [
+        "Μύκονος"
+      ],
+      "beaches": [
+        {
+          "id": 1979,
+          "nameGr": "Ψαρρού",
+          "island": "Μύκονος",
+          "regionFile": "south-aegean-mykonos"
+        }
+      ],
+      "servedByThisTable": []
+    },
+    {
+      "key": "Παράγκα",
+      "matchCount": 1,
+      "islands": [
+        "Μύκονος"
+      ],
+      "beaches": [
+        {
+          "id": 1966,
+          "nameGr": "Παράγκα",
+          "island": "Μύκονος",
+          "regionFile": "south-aegean-mykonos"
+        }
+      ],
+      "servedByThisTable": []
+    },
+    {
+      "key": "Κολυμπήθρες",
+      "matchCount": 1,
+      "islands": [
+        "Πάρος"
+      ],
+      "beaches": [
+        {
+          "id": 2030,
+          "nameGr": "Κολυμπήθρες",
+          "island": "Πάρος",
+          "regionFile": "south-aegean-paros"
+        }
+      ],
+      "servedByThisTable": []
+    },
+    {
+      "key": "Πιπέρι",
+      "matchCount": 1,
+      "islands": [
+        "Πάρος"
+      ],
+      "beaches": [
+        {
+          "id": 2048,
+          "nameGr": "Πιπέρι",
+          "island": "Πάρος",
+          "regionFile": "south-aegean-paros"
+        }
+      ],
+      "servedByThisTable": []
+    },
+    {
+      "key": "Φάραγγας",
+      "matchCount": 1,
+      "islands": [
+        "Πάρος"
+      ],
+      "beaches": [
+        {
+          "id": 2055,
+          "nameGr": "Φάραγγας",
+          "island": "Πάρος",
+          "regionFile": "south-aegean-paros"
+        }
+      ],
+      "servedByThisTable": []
+    },
+    {
+      "key": "Σάντα Μαρία",
+      "matchCount": 1,
+      "islands": [
+        "Πάρος"
+      ],
+      "beaches": [
+        {
+          "id": 2051,
+          "nameGr": "Σάντα Μαρία",
+          "island": "Πάρος",
+          "regionFile": "south-aegean-paros"
+        }
+      ],
+      "servedByThisTable": []
+    },
+    {
+      "key": "Λογαράς",
+      "matchCount": 1,
+      "islands": [
+        "Πάρος"
+      ],
+      "beaches": [
+        {
+          "id": 2035,
+          "nameGr": "Λογαράς",
+          "island": "Πάρος",
+          "regionFile": "south-aegean-paros"
+        }
+      ],
+      "servedByThisTable": []
+    },
+    {
+      "key": "Άγιος Προκόπιος",
+      "matchCount": 1,
+      "islands": [
+        "Νάξος"
+      ],
+      "beaches": [
+        {
+          "id": 1985,
+          "nameGr": "Άγιος Προκόπιος",
+          "island": "Νάξος",
+          "regionFile": "south-aegean-naxos"
+        }
+      ],
+      "servedByThisTable": []
+    },
+    {
+      "key": "Agios Prokopios",
+      "matchCount": 1,
+      "islands": [
+        "Νάξος"
+      ],
+      "beaches": [
+        {
+          "id": 1985,
+          "nameGr": "Άγιος Προκόπιος",
+          "island": "Νάξος",
+          "regionFile": "south-aegean-naxos"
+        }
+      ],
+      "servedByThisTable": []
+    },
+    {
+      "key": "Μικρή Βίγλα",
+      "matchCount": 1,
+      "islands": [
+        "Νάξος"
+      ],
+      "beaches": [
+        {
+          "id": 2006,
+          "nameGr": "Μικρή Βίγλα",
+          "island": "Νάξος",
+          "regionFile": "south-aegean-naxos"
+        }
+      ],
+      "servedByThisTable": []
+    },
+    {
+      "key": "Mikri Vigla",
+      "matchCount": 1,
+      "islands": [
+        "Νάξος"
+      ],
+      "beaches": [
+        {
+          "id": 2006,
+          "nameGr": "Μικρή Βίγλα",
+          "island": "Νάξος",
+          "regionFile": "south-aegean-naxos"
+        }
+      ],
+      "servedByThisTable": []
+    },
+    {
+      "key": "Φυριπλάκα",
+      "matchCount": 1,
+      "islands": [
+        "Μήλος"
+      ],
+      "beaches": [
+        {
+          "id": 1927,
+          "nameGr": "Φυριπλάκα",
+          "island": "Μήλος",
+          "regionFile": "south-aegean-milos"
+        }
+      ],
+      "servedByThisTable": []
+    },
+    {
+      "key": "Fyriplaka",
+      "matchCount": 1,
+      "islands": [
+        "Μήλος"
+      ],
+      "beaches": [
+        {
+          "id": 1927,
+          "nameGr": "Φυριπλάκα",
+          "island": "Μήλος",
+          "regionFile": "south-aegean-milos"
+        }
+      ],
+      "servedByThisTable": []
+    },
+    {
+      "key": "Παπάφραγκας",
+      "matchCount": 1,
+      "islands": [
+        "Μήλος"
+      ],
+      "beaches": [
+        {
+          "id": 1916,
+          "nameGr": "Παπάφραγκας",
+          "island": "Μήλος",
+          "regionFile": "south-aegean-milos"
+        }
+      ],
+      "servedByThisTable": []
+    },
+    {
+      "key": "Τσιγκράδο",
+      "matchCount": 1,
+      "islands": [
+        "Μήλος"
+      ],
+      "beaches": [
+        {
+          "id": 1925,
+          "nameGr": "Τσιγκράδο",
+          "island": "Μήλος",
+          "regionFile": "south-aegean-milos"
+        }
+      ],
+      "servedByThisTable": []
+    },
+    {
+      "key": "Μυλοπότας",
+      "matchCount": 1,
+      "islands": [
+        "Ίος"
+      ],
+      "beaches": [
+        {
+          "id": 1780,
+          "nameGr": "Μυλοπότας",
+          "island": "Ίος",
+          "regionFile": "south-aegean-ios"
+        }
+      ],
+      "servedByThisTable": []
+    },
+    {
+      "key": "Mylopotas",
+      "matchCount": 1,
+      "islands": [
+        "Ίος"
+      ],
+      "beaches": [
+        {
+          "id": 1780,
+          "nameGr": "Μυλοπότας",
+          "island": "Ίος",
+          "regionFile": "south-aegean-ios"
+        }
+      ],
+      "servedByThisTable": []
+    },
+    {
+      "key": "Μαγγανάρι",
+      "matchCount": 1,
+      "islands": [
+        "Ίος"
+      ],
+      "beaches": [
+        {
+          "id": 1778,
+          "nameGr": "Μαγγανάρι",
+          "island": "Ίος",
+          "regionFile": "south-aegean-ios"
+        }
+      ],
+      "servedByThisTable": []
+    },
+    {
+      "key": "Κολυμπήθρα",
+      "matchCount": 1,
+      "islands": [
+        "Τήνος"
+      ],
+      "beaches": [
+        {
+          "id": 2166,
+          "nameGr": "Κολυμπήθρα",
+          "island": "Τήνος",
+          "regionFile": "south-aegean-tinos"
+        }
+      ],
+      "servedByThisTable": []
+    },
+    {
+      "key": "Άγιος Ρωμανός",
+      "matchCount": 1,
+      "islands": [
+        "Τήνος"
+      ],
+      "beaches": [
+        {
+          "id": 2153,
+          "nameGr": "Άγιος Ρωμανός",
+          "island": "Τήνος",
+          "regionFile": "south-aegean-tinos"
+        }
+      ],
+      "servedByThisTable": []
+    },
+    {
+      "key": "Όρμος Υστερνίων",
+      "matchCount": 1,
+      "islands": [
+        "Τήνος"
+      ],
+      "beaches": [
+        {
+          "id": 2174,
+          "nameGr": "Όρμος Υστερνίων",
+          "island": "Τήνος",
+          "regionFile": "south-aegean-tinos"
+        }
+      ],
+      "servedByThisTable": []
+    },
+    {
+      "key": "Άγιος Ιωάννης Πόρτο",
+      "matchCount": 1,
+      "islands": [
+        "Τήνος"
+      ],
+      "beaches": [
+        {
+          "id": 2151,
+          "nameGr": "Άγιος Ιωάννης Πόρτο",
+          "island": "Τήνος",
+          "regionFile": "south-aegean-tinos"
+        }
+      ],
+      "servedByThisTable": []
+    },
+    {
+      "key": "Βιτάλι",
+      "matchCount": 1,
+      "islands": [
+        "Άνδρος"
+      ],
+      "beaches": [
+        {
+          "id": 1693,
+          "nameGr": "Βιτάλι",
+          "island": "Άνδρος",
+          "regionFile": "south-aegean-andros"
+        }
+      ],
+      "servedByThisTable": []
+    },
+    {
+      "key": "Της γριας το πήδημα",
+      "matchCount": 1,
+      "islands": [
+        "Άνδρος"
+      ],
+      "beaches": [
+        {
+          "id": 1725,
+          "nameGr": "Της γριας το πήδημα",
+          "island": "Άνδρος",
+          "regionFile": "south-aegean-andros"
+        }
+      ],
+      "servedByThisTable": []
+    },
+    {
+      "key": "Κυπρί",
+      "matchCount": 1,
+      "islands": [
+        "Άνδρος"
+      ],
+      "beaches": [
+        {
+          "id": 1705,
+          "nameGr": "Κυπρί",
+          "island": "Άνδρος",
+          "regionFile": "south-aegean-andros"
+        }
+      ],
+      "servedByThisTable": []
+    },
+    {
+      "key": "Μπατσί",
+      "matchCount": 1,
+      "islands": [
+        "Άνδρος"
+      ],
+      "beaches": [
+        {
+          "id": 1713,
+          "nameGr": "Μπατσί",
+          "island": "Άνδρος",
+          "regionFile": "south-aegean-andros"
+        }
+      ],
+      "servedByThisTable": []
+    },
+    {
+      "key": "Νικουριά",
+      "matchCount": 1,
+      "islands": [
+        "Αμοργός"
+      ],
+      "beaches": [
+        {
+          "id": 1665,
+          "nameGr": "Νικουριά",
+          "island": "Αμοργός",
+          "regionFile": "south-aegean-amorgos"
+        }
+      ],
+      "servedByThisTable": []
+    },
+    {
+      "key": "Γάνεμα",
+      "matchCount": 1,
+      "islands": [
+        "Σέριφος"
+      ],
+      "beaches": [
+        {
+          "id": 2078,
+          "nameGr": "Γάνεμα",
+          "island": "Σέριφος",
+          "regionFile": "south-aegean-serifos"
+        }
+      ],
+      "servedByThisTable": []
+    },
+    {
+      "key": "Καλό Αμπέλι",
+      "matchCount": 1,
+      "islands": [
+        "Σέριφος"
+      ],
+      "beaches": [
+        {
+          "id": 2080,
+          "nameGr": "Καλό Αμπέλι",
+          "island": "Σέριφος",
+          "regionFile": "south-aegean-serifos"
+        }
+      ],
+      "servedByThisTable": []
+    },
+    {
+      "key": "Αυλόμωνας",
+      "matchCount": 1,
+      "islands": [
+        "Σέριφος"
+      ],
+      "beaches": [
+        {
+          "id": 2074,
+          "nameGr": "Αυλόμωνας",
+          "island": "Σέριφος",
+          "regionFile": "south-aegean-serifos"
+        }
+      ],
+      "servedByThisTable": []
+    },
+    {
+      "key": "Μέγα Λιβάδι",
+      "matchCount": 1,
+      "islands": [
+        "Σέριφος"
+      ],
+      "beaches": [
+        {
+          "id": 2089,
+          "nameGr": "Μέγα Λιβάδι",
+          "island": "Σέριφος",
+          "regionFile": "south-aegean-serifos"
+        }
+      ],
+      "servedByThisTable": []
+    },
+    {
+      "key": "Κούνδουρος",
+      "matchCount": 1,
+      "islands": [
+        "Κέα"
+      ],
+      "beaches": [
+        {
+          "id": 1815,
+          "nameGr": "Κούνδουρος",
+          "island": "Κέα",
+          "regionFile": "south-aegean-kea"
+        }
+      ],
+      "servedByThisTable": []
+    },
+    {
+      "key": "Ρούκουνας",
+      "matchCount": 1,
+      "islands": [
+        "Ανάφη"
+      ],
+      "beaches": [
+        {
+          "id": 1684,
+          "nameGr": "Ρούκουνας",
+          "island": "Ανάφη",
+          "regionFile": "south-aegean-anafi"
+        }
+      ],
+      "servedByThisTable": []
+    },
+    {
+      "key": "Κλεισίδι",
+      "matchCount": 1,
+      "islands": [
+        "Ανάφη"
+      ],
+      "beaches": [
+        {
+          "id": 1677,
+          "nameGr": "Κλεισίδι",
+          "island": "Ανάφη",
+          "regionFile": "south-aegean-anafi"
+        }
+      ],
+      "servedByThisTable": []
+    },
+    {
+      "key": "Ναυάγιο",
+      "matchCount": 1,
+      "islands": [
+        "Ζάκυνθος"
+      ],
+      "beaches": [
+        {
+          "id": 1208,
+          "nameGr": "Ναυάγιο",
+          "island": "Ζάκυνθος",
+          "regionFile": "ionian-islands-zakynthos"
+        }
+      ],
+      "servedByThisTable": []
+    },
+    {
+      "key": "Navagio",
+      "matchCount": 1,
+      "islands": [
+        "Ζάκυνθος"
+      ],
+      "beaches": [
+        {
+          "id": 1208,
+          "nameGr": "Ναυάγιο",
+          "island": "Ζάκυνθος",
+          "regionFile": "ionian-islands-zakynthos"
+        }
+      ],
+      "servedByThisTable": []
+    },
+    {
+      "key": "Μύρτος",
+      "matchCount": 1,
+      "islands": [
+        "Κεφαλονιά"
+      ],
+      "beaches": [
+        {
+          "id": 1113,
+          "nameGr": "Μύρτος",
+          "island": "Κεφαλονιά",
+          "regionFile": "ionian-islands-kefalonia"
+        }
+      ],
+      "servedByThisTable": []
+    },
+    {
+      "key": "Myrtos",
+      "matchCount": 1,
+      "islands": [
+        "Κεφαλονιά"
+      ],
+      "beaches": [
+        {
+          "id": 1113,
+          "nameGr": "Μύρτος",
+          "island": "Κεφαλονιά",
+          "regionFile": "ionian-islands-kefalonia"
+        }
+      ],
+      "servedByThisTable": []
+    },
+    {
+      "key": "Αντίσαμος",
+      "matchCount": 1,
+      "islands": [
+        "Κεφαλονιά"
+      ],
+      "beaches": [
+        {
+          "id": 1088,
+          "nameGr": "Αντίσαμος",
+          "island": "Κεφαλονιά",
+          "regionFile": "ionian-islands-kefalonia"
+        }
+      ],
+      "servedByThisTable": []
+    },
+    {
+      "key": "Antisamos",
+      "matchCount": 1,
+      "islands": [
+        "Κεφαλονιά"
+      ],
+      "beaches": [
+        {
+          "id": 1088,
+          "nameGr": "Αντίσαμος",
+          "island": "Κεφαλονιά",
+          "regionFile": "ionian-islands-kefalonia"
+        }
+      ],
+      "servedByThisTable": []
+    },
+    {
+      "key": "Πετανι",
+      "matchCount": 1,
+      "islands": [
+        "Κεφαλονιά"
+      ],
+      "beaches": [
+        {
+          "id": 1124,
+          "nameGr": "Πετανι",
+          "island": "Κεφαλονιά",
+          "regionFile": "ionian-islands-kefalonia"
+        }
+      ],
+      "servedByThisTable": []
+    },
+    {
+      "key": "Πόρτο Κατσίκι",
+      "matchCount": 1,
+      "islands": [
+        "Λευκάδα"
+      ],
+      "beaches": [
+        {
+          "id": 1171,
+          "nameGr": "Πόρτο Κάτσικι",
+          "island": "Λευκάδα",
+          "regionFile": "ionian-islands-lefkada"
+        }
+      ],
+      "servedByThisTable": []
+    },
+    {
+      "key": "Porto Katsiki",
+      "matchCount": 1,
+      "islands": [
+        "Λευκάδα"
+      ],
+      "beaches": [
+        {
+          "id": 1171,
+          "nameGr": "Πόρτο Κάτσικι",
+          "island": "Λευκάδα",
+          "regionFile": "ionian-islands-lefkada"
+        }
+      ],
+      "servedByThisTable": []
+    },
+    {
+      "key": "Παλαιοκαστρίτσα",
+      "matchCount": 1,
+      "islands": [
+        "Κέρκυρα"
+      ],
+      "beaches": [
+        {
+          "id": 3014,
+          "nameGr": "Παλαιοκαστρίτσα",
+          "island": "Κέρκυρα",
+          "regionFile": "ionian-islands-corfu"
+        }
+      ],
+      "servedByThisTable": []
+    },
+    {
+      "key": "Πόρτο Τιμόνι",
+      "matchCount": 1,
+      "islands": [
+        "Κέρκυρα"
+      ],
+      "beaches": [
+        {
+          "id": 1013,
+          "nameGr": "Πόρτο Τιμόνι",
+          "island": "Κέρκυρα",
+          "regionFile": "ionian-islands-corfu"
+        }
+      ],
+      "servedByThisTable": []
+    },
+    {
+      "key": "Τσαμπίκα",
+      "matchCount": 1,
+      "islands": [
+        "Ρόδος"
+      ],
+      "beaches": [
+        {
+          "id": 2440,
+          "nameGr": "Τσαμπίκα",
+          "island": "Ρόδος",
+          "regionFile": "south-aegean-rhodes"
+        }
+      ],
+      "servedByThisTable": [
+        {
+          "id": 2440,
+          "nameGr": "Τσαμπίκα",
+          "island": "Ρόδος"
+        }
+      ]
+    },
+    {
+      "key": "Παραλία Άντονι Κουίν",
+      "matchCount": 1,
+      "islands": [
+        "Ρόδος"
+      ],
+      "beaches": [
+        {
+          "id": 2414,
+          "nameGr": "Παραλία Άντονι Κουίν",
+          "island": "Ρόδος",
+          "regionFile": "south-aegean-rhodes"
+        }
+      ],
+      "servedByThisTable": [
+        {
+          "id": 2414,
+          "nameGr": "Παραλία Άντονι Κουίν",
+          "island": "Ρόδος"
+        }
+      ]
+    },
+    {
+      "key": "Παραλία Αφάντου",
+      "matchCount": 1,
+      "islands": [
+        "Ρόδος"
+      ],
+      "beaches": [
+        {
+          "id": 2419,
+          "nameGr": "Παραλία Αφάντου",
+          "island": "Ρόδος",
+          "regionFile": "south-aegean-rhodes"
+        }
+      ],
+      "servedByThisTable": [
+        {
+          "id": 2419,
+          "nameGr": "Παραλία Αφάντου",
+          "island": "Ρόδος"
+        }
+      ]
+    },
+    {
+      "key": "Παραλία Αγάθη",
+      "matchCount": 1,
+      "islands": [
+        "Ρόδος"
+      ],
+      "beaches": [
+        {
+          "id": 2416,
+          "nameGr": "Παραλία Αγάθη",
+          "island": "Ρόδος",
+          "regionFile": "south-aegean-rhodes"
+        }
+      ],
+      "servedByThisTable": [
+        {
+          "id": 2416,
+          "nameGr": "Παραλία Αγάθη",
+          "island": "Ρόδος"
+        }
+      ]
+    },
+    {
+      "key": "Κόλπος Αγίου Παύλου",
+      "matchCount": 1,
+      "islands": [
+        "Ρόδος"
+      ],
+      "beaches": [
+        {
+          "id": 2445,
+          "nameGr": "Κόλπος Αγίου Παύλου",
+          "island": "Ρόδος",
+          "regionFile": "south-aegean-rhodes"
+        }
+      ],
+      "servedByThisTable": [
+        {
+          "id": 2445,
+          "nameGr": "Κόλπος Αγίου Παύλου",
+          "island": "Ρόδος"
+        }
+      ]
+    },
+    {
+      "key": "Παραλία Χαράκι",
+      "matchCount": 1,
+      "islands": [
+        "Ρόδος"
+      ],
+      "beaches": [
+        {
+          "id": 2438,
+          "nameGr": "Παραλία Χαράκι",
+          "island": "Ρόδος",
+          "regionFile": "south-aegean-rhodes"
+        }
+      ],
+      "servedByThisTable": [
+        {
+          "id": 2438,
+          "nameGr": "Παραλία Χαράκι",
+          "island": "Ρόδος"
+        }
+      ]
+    },
+    {
+      "key": "Παραλία Κολύμπια",
+      "matchCount": 1,
+      "islands": [
+        "Ρόδος"
+      ],
+      "beaches": [
+        {
+          "id": 2426,
+          "nameGr": "Παραλία Κολύμπια",
+          "island": "Ρόδος",
+          "regionFile": "south-aegean-rhodes"
+        }
+      ],
+      "servedByThisTable": [
+        {
+          "id": 2426,
+          "nameGr": "Παραλία Κολύμπια",
+          "island": "Ρόδος"
+        }
+      ]
+    },
+    {
+      "key": "Παραλία Λίνδου (Μεγάλη Παραλία)",
+      "matchCount": 1,
+      "islands": [
+        "Ρόδος"
+      ],
+      "beaches": [
+        {
+          "id": 2443,
+          "nameGr": "Παραλία Λίνδου (Μεγάλη Παραλία)",
+          "island": "Ρόδος",
+          "regionFile": "south-aegean-rhodes"
+        }
+      ],
+      "servedByThisTable": [
+        {
+          "id": 2443,
+          "nameGr": "Παραλία Λίνδου (Μεγάλη Παραλία)",
+          "island": "Ρόδος"
+        }
+      ]
+    },
+    {
+      "key": "Παραλία Παλλάς",
+      "matchCount": 1,
+      "islands": [
+        "Ρόδος"
+      ],
+      "beaches": [
+        {
+          "id": 2444,
+          "nameGr": "Παραλία Παλλάς",
+          "island": "Ρόδος",
+          "regionFile": "south-aegean-rhodes"
+        }
+      ],
+      "servedByThisTable": [
+        {
+          "id": 2444,
+          "nameGr": "Παραλία Παλλάς",
+          "island": "Ρόδος"
+        }
+      ]
+    },
+    {
+      "key": "Παραλία Ζέφυρος",
+      "matchCount": 1,
+      "islands": [
+        "Ρόδος"
+      ],
+      "beaches": [
+        {
+          "id": 2421,
+          "nameGr": "Παραλία Ζέφυρος",
+          "island": "Ρόδος",
+          "regionFile": "south-aegean-rhodes"
+        }
+      ],
+      "servedByThisTable": [
+        {
+          "id": 2421,
+          "nameGr": "Παραλία Ζέφυρος",
+          "island": "Ρόδος"
+        }
+      ]
+    },
+    {
+      "key": "Παραλία Ιξιάς",
+      "matchCount": 1,
+      "islands": [
+        "Ρόδος"
+      ],
+      "beaches": [
+        {
+          "id": 2422,
+          "nameGr": "Παραλία Ιξιάς",
+          "island": "Ρόδος",
+          "regionFile": "south-aegean-rhodes"
+        }
+      ],
+      "servedByThisTable": [
+        {
+          "id": 2422,
+          "nameGr": "Παραλία Ιξιάς",
+          "island": "Ρόδος"
+        }
+      ]
+    },
+    {
+      "key": "Παραλία Μαστιχάρι (Νέπτουν)",
+      "matchCount": 1,
+      "islands": [
+        "Κως"
+      ],
+      "beaches": [
+        {
+          "id": 2329,
+          "nameGr": "Παραλία Μαστιχάρι (Νέπτουν)",
+          "island": "Κως",
+          "regionFile": "south-aegean-kos"
+        }
+      ],
+      "servedByThisTable": [
+        {
+          "id": 2329,
+          "nameGr": "Παραλία Μαστιχάρι (Νέπτουν)",
+          "island": "Κως"
+        }
+      ]
+    },
+    {
+      "key": "Παραλία Παράδεισος",
+      "matchCount": 1,
+      "islands": [
+        "Κως"
+      ],
+      "beaches": [
+        {
+          "id": 2330,
+          "nameGr": "Παραλία Παράδεισος",
+          "island": "Κως",
+          "regionFile": "south-aegean-kos"
+        }
+      ],
+      "servedByThisTable": [
+        {
+          "id": 2330,
+          "nameGr": "Παραλία Παράδεισος",
+          "island": "Κως"
+        }
+      ]
+    },
+    {
+      "key": "Τιγκάκι",
+      "matchCount": 1,
+      "islands": [
+        "Κως"
+      ],
+      "beaches": [
+        {
+          "id": 2335,
+          "nameGr": "Τιγκάκι",
+          "island": "Κως",
+          "regionFile": "south-aegean-kos"
+        }
+      ],
+      "servedByThisTable": [
+        {
+          "id": 2335,
+          "nameGr": "Τιγκάκι",
+          "island": "Κως"
+        }
+      ]
+    },
+    {
+      "key": "Tigkaki",
+      "matchCount": 1,
+      "islands": [
+        "Κως"
+      ],
+      "beaches": [
+        {
+          "id": 2335,
+          "nameGr": "Τιγκάκι",
+          "island": "Κως",
+          "regionFile": "south-aegean-kos"
+        }
+      ],
+      "servedByThisTable": [
+        {
+          "id": 2335,
+          "nameGr": "Τιγκάκι",
+          "island": "Κως"
+        }
+      ]
+    },
+    {
+      "key": "Cavo Paradiso",
+      "matchCount": 1,
+      "islands": [
+        "Κως"
+      ],
+      "beaches": [
+        {
+          "id": 2345,
+          "nameGr": "Cavo Paradiso",
+          "island": "Κως",
+          "regionFile": "south-aegean-kos"
+        }
+      ],
+      "servedByThisTable": [
+        {
+          "id": 2345,
+          "nameGr": "Cavo Paradiso",
+          "island": "Κως"
+        }
+      ]
+    },
+    {
+      "key": "Απέλλα",
+      "matchCount": 1,
+      "islands": [
+        "Κάρπαθος"
+      ],
+      "beaches": [
+        {
+          "id": 2275,
+          "nameGr": "Απέλλα",
+          "island": "Κάρπαθος",
+          "regionFile": "south-aegean-karpathos"
+        }
+      ],
+      "servedByThisTable": []
+    },
+    {
+      "key": "Apella",
+      "matchCount": 1,
+      "islands": [
+        "Κάρπαθος"
+      ],
+      "beaches": [
+        {
+          "id": 2275,
+          "nameGr": "Απέλλα",
+          "island": "Κάρπαθος",
+          "regionFile": "south-aegean-karpathos"
+        }
+      ],
+      "servedByThisTable": []
+    },
+    {
+      "key": "Αχάτα",
+      "matchCount": 1,
+      "islands": [
+        "Κάρπαθος"
+      ],
+      "beaches": [
+        {
+          "id": 2272,
+          "nameGr": "Αχάτα",
+          "island": "Κάρπαθος",
+          "regionFile": "south-aegean-karpathos"
+        }
+      ],
+      "servedByThisTable": []
+    },
+    {
+      "key": "Achata",
+      "matchCount": 1,
+      "islands": [
+        "Κάρπαθος"
+      ],
+      "beaches": [
+        {
+          "id": 2272,
+          "nameGr": "Αχάτα",
+          "island": "Κάρπαθος",
+          "regionFile": "south-aegean-karpathos"
+        }
+      ],
+      "servedByThisTable": []
+    },
+    {
+      "key": "Παραλία Διακοφτης",
+      "matchCount": 1,
+      "islands": [
+        "Κάρπαθος"
+      ],
+      "beaches": [
+        {
+          "id": 2314,
+          "nameGr": "Παραλία Διακοφτης",
+          "island": "Κάρπαθος",
+          "regionFile": "south-aegean-karpathos"
+        }
+      ],
+      "servedByThisTable": []
+    },
+    {
+      "key": "Κυρά Παναγιά",
+      "matchCount": 1,
+      "islands": [
+        "Κάρπαθος"
+      ],
+      "beaches": [
+        {
+          "id": 2308,
+          "nameGr": "Κυρά Παναγιά",
+          "island": "Κάρπαθος",
+          "regionFile": "south-aegean-karpathos"
+        }
+      ],
+      "servedByThisTable": []
+    },
+    {
+      "key": "Kyra Panagia",
+      "matchCount": 1,
+      "islands": [
+        "Κάρπαθος"
+      ],
+      "beaches": [
+        {
+          "id": 2308,
+          "nameGr": "Κυρά Παναγιά",
+          "island": "Κάρπαθος",
+          "regionFile": "south-aegean-karpathos"
+        }
+      ],
+      "servedByThisTable": []
+    },
+    {
+      "key": "Kavourotrypes",
+      "matchCount": 1,
+      "islands": [
+        "Χαλκιδική"
+      ],
+      "beaches": [
+        {
+          "id": 409,
+          "nameGr": "Kavourotrypes",
+          "island": "Χαλκιδική",
+          "regionFile": "central-macedonia-halkidiki-mainland"
+        }
+      ],
+      "servedByThisTable": []
+    },
+    {
+      "key": "Βοϊδοκοιλιά",
+      "matchCount": 1,
+      "islands": [
+        "Μεσσηνία"
+      ],
+      "beaches": [
+        {
+          "id": 1608,
+          "nameGr": "Βοϊδοκοιλιά",
+          "island": "Μεσσηνία",
+          "regionFile": "peloponnese-messinia-mainland"
+        }
+      ],
+      "servedByThisTable": [
+        {
+          "id": 1608,
+          "nameGr": "Βοϊδοκοιλιά",
+          "island": "Μεσσηνία"
+        }
+      ]
+    },
+    {
+      "key": "Ρωμανός",
+      "matchCount": 1,
+      "islands": [
+        "Μεσσηνία"
+      ],
+      "beaches": [
+        {
+          "id": 1648,
+          "nameGr": "Ρωμανός",
+          "island": "Μεσσηνία",
+          "regionFile": "peloponnese-messinia-mainland"
+        }
+      ],
+      "servedByThisTable": [
+        {
+          "id": 1648,
+          "nameGr": "Ρωμανός",
+          "island": "Μεσσηνία"
+        }
+      ]
+    },
+    {
+      "key": "Romanos",
+      "matchCount": 1,
+      "islands": [
+        "Μεσσηνία"
+      ],
+      "beaches": [
+        {
+          "id": 1648,
+          "nameGr": "Ρωμανός",
+          "island": "Μεσσηνία",
+          "regionFile": "peloponnese-messinia-mainland"
+        }
+      ],
+      "servedByThisTable": [
+        {
+          "id": 1648,
+          "nameGr": "Ρωμανός",
+          "island": "Μεσσηνία"
+        }
+      ]
+    },
+    {
+      "key": "Παραλία Ριτσά",
+      "matchCount": 1,
+      "islands": [
+        "Μεσσηνία"
+      ],
+      "beaches": [
+        {
+          "id": 1639,
+          "nameGr": "Παραλία Ριτσά",
+          "island": "Μεσσηνία",
+          "regionFile": "peloponnese-messinia-mainland"
+        }
+      ],
+      "servedByThisTable": [
+        {
+          "id": 1639,
+          "nameGr": "Παραλία Ριτσά",
+          "island": "Μεσσηνία"
+        }
+      ]
+    },
+    {
+      "key": "Στούπα",
+      "matchCount": 1,
+      "islands": [
+        "Μεσσηνία"
+      ],
+      "beaches": [
+        {
+          "id": 1650,
+          "nameGr": "Στούπα",
+          "island": "Μεσσηνία",
+          "regionFile": "peloponnese-messinia-mainland"
+        }
+      ],
+      "servedByThisTable": [
+        {
+          "id": 1650,
+          "nameGr": "Στούπα",
+          "island": "Μεσσηνία"
+        }
+      ]
+    },
+    {
+      "key": "Stoupa",
+      "matchCount": 1,
+      "islands": [
+        "Μεσσηνία"
+      ],
+      "beaches": [
+        {
+          "id": 1650,
+          "nameGr": "Στούπα",
+          "island": "Μεσσηνία",
+          "regionFile": "peloponnese-messinia-mainland"
+        }
+      ],
+      "servedByThisTable": [
+        {
+          "id": 1650,
+          "nameGr": "Στούπα",
+          "island": "Μεσσηνία"
+        }
+      ]
+    },
+    {
+      "key": "Πλάκα (Ζαγορά)",
+      "matchCount": 1,
+      "islands": [
+        "Μαγνησία (Πήλιο)"
+      ],
+      "beaches": [
+        {
+          "id": 2716,
+          "nameGr": "Πλάκα (Ζαγορά)",
+          "island": "Μαγνησία (Πήλιο)",
+          "regionFile": "thessaly-magnesia-mainland---pelion"
+        }
+      ],
+      "servedByThisTable": [
+        {
+          "id": 2716,
+          "nameGr": "Πλάκα (Ζαγορά)",
+          "island": "Μαγνησία (Πήλιο)"
+        }
+      ]
+    },
+    {
+      "key": "Παραλία Πευκί",
+      "matchCount": 1,
+      "islands": [
+        "Εύβοια"
+      ],
+      "beaches": [
+        {
+          "id": 276,
+          "nameGr": "Παραλία Πευκί",
+          "island": "Εύβοια",
+          "regionFile": "central-greece-evia"
+        }
+      ],
+      "servedByThisTable": [
+        {
+          "id": 276,
+          "nameGr": "Παραλία Πευκί",
+          "island": "Εύβοια"
+        }
+      ]
+    },
+    {
+      "key": "Κούνουπες",
+      "matchCount": 1,
+      "islands": [
+        "Αστυπάλαια"
+      ],
+      "beaches": [
+        {
+          "id": 2237,
+          "nameGr": "Κούνουπες",
+          "island": "Αστυπάλαια",
+          "regionFile": "south-aegean-astypalaia"
+        }
+      ],
+      "servedByThisTable": [
+        {
+          "id": 2237,
+          "nameGr": "Κούνουπες",
+          "island": "Αστυπάλαια"
+        }
+      ]
+    },
+    {
+      "key": "Παραλία Νέων Βρασνών",
+      "matchCount": 1,
+      "islands": [
+        "Περιοχή Θεσσαλονίκης"
+      ],
+      "beaches": [
+        {
+          "id": 522,
+          "nameGr": "Παραλία Νέων Βρασνών",
+          "island": "Περιοχή Θεσσαλονίκης",
+          "regionFile": "central-macedonia-thessaloniki-area"
+        }
+      ],
+      "servedByThisTable": [
+        {
+          "id": 522,
+          "nameGr": "Παραλία Νέων Βρασνών",
+          "island": "Περιοχή Θεσσαλονίκης"
+        }
+      ]
+    },
+    {
+      "key": "ΚΑΑΥ Ασπροβάλτας",
+      "matchCount": 1,
+      "islands": [
+        "Περιοχή Θεσσαλονίκης"
+      ],
+      "beaches": [
+        {
+          "id": 516,
+          "nameGr": "ΚΑΑΥ Ασπροβάλτας",
+          "island": "Περιοχή Θεσσαλονίκης",
+          "regionFile": "central-macedonia-thessaloniki-area"
+        }
+      ],
+      "servedByThisTable": [
+        {
+          "id": 516,
+          "nameGr": "ΚΑΑΥ Ασπροβάλτας",
+          "island": "Περιοχή Θεσσαλονίκης"
+        }
+      ]
+    },
+    {
+      "key": "Παραλία Κατερίνης",
+      "matchCount": 1,
+      "islands": [
+        "Πιερία"
+      ],
+      "beaches": [
+        {
+          "id": 508,
+          "nameGr": "Παραλία Κατερίνης",
+          "island": "Πιερία",
+          "regionFile": "central-macedonia-pieria-mainland"
+        }
+      ],
+      "servedByThisTable": [
+        {
+          "id": 508,
+          "nameGr": "Παραλία Κατερίνης",
+          "island": "Πιερία"
+        }
+      ]
+    }
+  ],
+  "dead": [
+    {
+      "key": "Voula Beach",
+      "matchCount": 0,
+      "islands": [],
+      "beaches": [],
+      "servedByThisTable": []
+    },
+    {
+      "key": "Βούλα",
+      "matchCount": 0,
+      "islands": [],
+      "beaches": [],
+      "servedByThisTable": []
+    },
+    {
+      "key": "Βουλιαγμένη",
+      "matchCount": 0,
+      "islands": [],
+      "beaches": [],
+      "servedByThisTable": []
+    },
+    {
+      "key": "Elafonissi",
+      "matchCount": 0,
+      "islands": [],
+      "beaches": [],
+      "servedByThisTable": []
+    },
+    {
+      "key": "Σεϊτάν Λιμάνια",
+      "matchCount": 0,
+      "islands": [],
+      "beaches": [],
+      "servedByThisTable": []
+    },
+    {
+      "key": "Falassarna",
+      "matchCount": 0,
+      "islands": [],
+      "beaches": [],
+      "servedByThisTable": []
+    },
+    {
+      "key": "Γεωργιούπολη",
+      "matchCount": 0,
+      "islands": [],
+      "beaches": [],
+      "servedByThisTable": []
+    },
+    {
+      "key": "Μπαλί",
+      "matchCount": 0,
+      "islands": [],
+      "beaches": [],
+      "servedByThisTable": []
+    },
+    {
+      "key": "Bali",
+      "matchCount": 0,
+      "islands": [],
+      "beaches": [],
+      "servedByThisTable": []
+    },
+    {
+      "key": "Ξερόκαμπος",
+      "matchCount": 0,
+      "islands": [],
+      "beaches": [],
+      "servedByThisTable": []
+    },
+    {
+      "key": "Red Beach",
+      "matchCount": 0,
+      "islands": [],
+      "beaches": [],
+      "servedByThisTable": []
+    },
+    {
+      "key": "White Beach",
+      "matchCount": 0,
+      "islands": [],
+      "beaches": [],
+      "servedByThisTable": []
+    },
+    {
+      "key": "Σούπερ Παράδεισος",
+      "matchCount": 0,
+      "islands": [],
+      "beaches": [],
+      "servedByThisTable": []
+    },
+    {
+      "key": "Paradise Beach",
+      "matchCount": 0,
+      "islands": [],
+      "beaches": [],
+      "servedByThisTable": []
+    },
+    {
+      "key": "Kolymbithres",
+      "matchCount": 0,
+      "islands": [],
+      "beaches": [],
+      "servedByThisTable": []
+    },
+    {
+      "key": "Firiplaka",
+      "matchCount": 0,
+      "islands": [],
+      "beaches": [],
+      "servedByThisTable": []
+    },
+    {
+      "key": "Papafragas",
+      "matchCount": 0,
+      "islands": [],
+      "beaches": [],
+      "servedByThisTable": []
+    },
+    {
+      "key": "Tsigrado",
+      "matchCount": 0,
+      "islands": [],
+      "beaches": [],
+      "servedByThisTable": []
+    },
+    {
+      "key": "Αγία Άννα Αμοργός",
+      "matchCount": 0,
+      "islands": [],
+      "beaches": [],
+      "servedByThisTable": []
+    },
+    {
+      "key": "Καλοταρίτισσα",
+      "matchCount": 0,
+      "islands": [],
+      "beaches": [],
+      "servedByThisTable": []
+    },
+    {
+      "key": "Πλατύς Γιαλός Σίφνος",
+      "matchCount": 0,
+      "islands": [],
+      "beaches": [],
+      "servedByThisTable": []
+    },
+    {
+      "key": "Μέγας Γυαλός",
+      "matchCount": 0,
+      "islands": [],
+      "beaches": [],
+      "servedByThisTable": []
+    },
+    {
+      "key": "Αγαθοπές",
+      "matchCount": 0,
+      "islands": [],
+      "beaches": [],
+      "servedByThisTable": []
+    },
+    {
+      "key": "Γαλησσάς",
+      "matchCount": 0,
+      "islands": [],
+      "beaches": [],
+      "servedByThisTable": []
+    },
+    {
+      "key": "Xi Beach",
+      "matchCount": 0,
+      "islands": [],
+      "beaches": [],
+      "servedByThisTable": []
+    },
+    {
+      "key": "Paleokastritsa",
+      "matchCount": 0,
+      "islands": [],
+      "beaches": [],
+      "servedByThisTable": []
+    },
+    {
+      "key": "Tsambika",
+      "matchCount": 0,
+      "islands": [],
+      "beaches": [],
+      "servedByThisTable": []
+    },
+    {
+      "key": "Λίνδος",
+      "matchCount": 0,
+      "islands": [],
+      "beaches": [],
+      "servedByThisTable": []
+    },
+    {
+      "key": "Lindos",
+      "matchCount": 0,
+      "islands": [],
+      "beaches": [],
+      "servedByThisTable": []
+    },
+    {
+      "key": "Αντονί Κουίν",
+      "matchCount": 0,
+      "islands": [],
+      "beaches": [],
+      "servedByThisTable": []
+    },
+    {
+      "key": "Anthony Quinn",
+      "matchCount": 0,
+      "islands": [],
+      "beaches": [],
+      "servedByThisTable": []
+    },
+    {
+      "key": "Afantou",
+      "matchCount": 0,
+      "islands": [],
+      "beaches": [],
+      "servedByThisTable": []
+    },
+    {
+      "key": "Agathi",
+      "matchCount": 0,
+      "islands": [],
+      "beaches": [],
+      "servedByThisTable": []
+    },
+    {
+      "key": "Charaki",
+      "matchCount": 0,
+      "islands": [],
+      "beaches": [],
+      "servedByThisTable": []
+    },
+    {
+      "key": "Κολύμπια",
+      "matchCount": 0,
+      "islands": [],
+      "beaches": [],
+      "servedByThisTable": []
+    },
+    {
+      "key": "Καβουρότρυπες",
+      "matchCount": 0,
+      "islands": [],
+      "beaches": [],
+      "servedByThisTable": []
+    },
+    {
+      "key": "Voidokilia",
+      "matchCount": 0,
+      "islands": [],
+      "beaches": [],
+      "servedByThisTable": []
+    },
+    {
+      "key": "Σιμός",
+      "matchCount": 0,
+      "islands": [],
+      "beaches": [],
+      "servedByThisTable": []
+    },
+    {
+      "key": "Simos",
+      "matchCount": 0,
+      "islands": [],
+      "beaches": [],
+      "servedByThisTable": []
+    },
+    {
+      "key": "Ελαφόνησος",
+      "matchCount": 0,
+      "islands": [],
+      "beaches": [],
+      "servedByThisTable": []
+    }
+  ]
+}

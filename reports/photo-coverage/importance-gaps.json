@@ -1,8 +1,8 @@
 {
-  "generatedAt": "2026-07-30T14:52:44.123Z",
+  "generatedAt": "2026-07-31T19:07:16.782Z",
   "total": 2850,
-  "missingTotal": 1458,
-  "missingPercent": 51.2,
+  "missingTotal": 1497,
+  "missingPercent": 52.5,
   "touristicTierRegions": {
     "total": 809,
     "missing": 329
@@ -33,6 +33,19 @@
       "popularityScore": 97,
       "tier": "crowded",
       "touristic": true
+    },
+    {
+      "regionFile": "south-aegean-rhodes",
+      "island": "Ρόδος",
+      "id": 2457,
+      "nameGr": "Πρασονήσι",
+      "nameEn": "Prasonisi",
+      "hasPhoto": false,
+      "photoSource": "",
+      "regionId": "south-aegean-rhodes",
+      "popularityScore": 97,
+      "tier": "crowded",
+      "touristic": false
     },
     {
       "regionFile": "ionian-islands-zakynthos",
@@ -373,6 +386,19 @@
       "touristic": false
     },
     {
+      "regionFile": "epirus-preveza-mainland",
+      "island": "Πρέβεζα",
+      "id": 876,
+      "nameGr": "Σαρακήνικο",
+      "nameEn": "Sarakiniko",
+      "hasPhoto": false,
+      "photoSource": "",
+      "regionId": "epirus-preveza-mainland",
+      "popularityScore": 80,
+      "tier": "crowded",
+      "touristic": false
+    },
+    {
       "regionFile": "thessaly-skiathos",
       "island": "Σκιάθος",
       "id": 2646,
@@ -498,32 +524,6 @@
       "hasPhoto": false,
       "photoSource": "",
       "regionId": "ionian-islands-kefalonia",
-      "popularityScore": 78,
-      "tier": "popular",
-      "touristic": true
-    },
-    {
-      "regionFile": "ionian-islands-lefkada",
-      "island": "Λευκάδα",
-      "id": 1166,
-      "nameGr": "Μικρός Γιαλός",
-      "nameEn": "Mikros Gialos",
-      "hasPhoto": false,
-      "photoSource": "",
-      "regionId": "ionian-islands-lefkada",
-      "popularityScore": 78,
-      "tier": "popular",
-      "touristic": true
-    },
-    {
-      "regionFile": "crete-crete-chania",
-      "island": "Χανιά",
-      "id": 554,
-      "nameGr": "Παραλία Κούμ Καπί (Kum Kapisi)",
-      "nameEn": "Paralia Koum Kapi (Kum Kapisi)",
-      "hasPhoto": false,
-      "photoSource": "",
-      "regionId": "crete-crete-chania",
       "popularityScore": 78,
       "tier": "popular",
       "touristic": true
