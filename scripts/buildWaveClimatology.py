@@ -217,7 +217,6 @@ def build_hourly(beaches, from_year, to_year):
     cell_of_beach, unique_cells, unresolved = map_beaches_to_cells(index, beaches)
     if not unique_cells:
         return None, unresolved
-    args = argparse.Namespace(from_year=from_year, to_year=to_year)
 
     lat_values = np.array([c[0] for c in unique_cells])
     lon_values = np.array([c[1] for c in unique_cells])
@@ -234,7 +233,7 @@ def build_hourly(beaches, from_year, to_year):
     rough = np.zeros((n_cells, n_months), dtype="int32")
     total = np.zeros((n_cells, n_months), dtype="int32")
 
-    for year in range(args.from_year, args.to_year + 1):
+    for year in range(from_year, to_year + 1):
         log(f"── {year}")
         window = dataset[["VHM0", "VTM02"]].sel(
             time=slice(f"{year}-{SEASON_MONTHS[0]:02d}-01", f"{year}-{SEASON_MONTHS[-1]:02d}-31"),
