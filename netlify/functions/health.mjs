@@ -40,7 +40,12 @@ const checkBlobs = async (event) => {
     await store.get('__health__');
     return { ok: true };
   } catch (err) {
-    return { ok: false, error: String(err?.message ?? err).slice(0, 200) };
+    // A short, stable reason — not the raw message. This endpoint has to be
+    // reachable unauthenticated for a monitor to use it, so it reports THAT the
+    // store is unreachable, not the internals of how it failed. The full error
+    // goes to the function log, where it needs a Netlify login to read.
+    console.error('[health] blobs check failed:', err);
+    return { ok: false, reason: 'store-unreachable' };
   }
 };
 
@@ -52,7 +57,11 @@ const checkUpstream = async () => {
     const res = await fetch(UPSTREAM_PROBE, { signal: controller.signal });
     return { ok: res.ok, status: res.status, ms: Date.now() - started };
   } catch (err) {
-    return { ok: false, error: String(err?.name ?? err).slice(0, 100), ms: Date.now() - started };
+    return {
+      ok: false,
+      reason: err?.name === 'AbortError' ? 'timeout' : 'unreachable',
+      ms: Date.now() - started,
+    };
   } finally {
     clearTimeout(timer);
   }
