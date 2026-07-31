@@ -380,6 +380,41 @@ ROW_ISLAND, ROW_HOUR = 0, 1
 MODEL_COLUMNS = {"copernicus": (2, 3), "ewam": (4, 5), "meteofrance_wave": (6, 7)}
 
 
+# Ζώνες για το `sign_agreement_by_predicted_gap`. Το πάνω άκρο είναι ανοιχτό.
+PREDICTED_GAP_BANDS = [(0.0, 0.2), (0.2, 0.4), (0.4, 0.6), (0.6, 1.0), (1.0, None)]
+
+
+def sign_agreement_by_gap(rows):
+    """
+    Πόσο συχνά πέφτει σωστά η ΦΟΡΑ κάθε μοντέλου, ανά μέγεθος διαφοράς που δηλώνει ΤΟ ΙΔΙΟ.
+
+    Η διαφορά από την πύλη Β είναι η προϋπόθεση, και είναι όλη η ουσία: η πύλη ρωτάει
+    «όταν ο κριτής βλέπει διαφορά, τη βρίσκει το μοντέλο;». Εδώ ρωτάμε «όταν το μοντέλο
+    ΔΗΛΩΝΕΙ διαφορά τόση, πόσο συχνά έχει δίκιο;». Μόνο το δεύτερο μπορεί να χρησιμοποιηθεί
+    σε παραγωγή, γιατί εκεί δεν υπάρχει κριτής να ρωτηθεί — υπάρχει μόνο η πρόβλεψή μας.
+    """
+    out = {}
+    for model in OPEN_METEO_MODELS:
+        mw, ml = MODEL_COLUMNS[model]
+        bands = []
+        for low, high in PREDICTED_GAP_BANDS:
+            hits = total = 0
+            for row in rows:
+                w, l = row[mw], row[ml]
+                if w is None or l is None:
+                    continue
+                gap = abs(w - l)
+                if gap < low or (high is not None and gap >= high):
+                    continue
+                total += 1
+                if ((w - l) > 0) == ((row[2] - row[3]) > 0):
+                    hits += 1
+            bands.append({"from_m": low, "to_m": high, "n": total,
+                          "agreement": round(hits / total, 3) if total else None})
+        out[model] = bands
+    return out
+
+
 def summarise(islands_meta, rows):
     """
     Όλα τα στατιστικά και όλες οι πύλες, ΑΠΟΚΛΕΙΣΤΙΚΑ από τις γραμμές.
@@ -493,6 +528,11 @@ def summarise(islands_meta, rows):
         # μοντέλο. Μένει τυπωμένη ώστε οι δύο εκτελέσεις να συγκρίνονται, αλλά δεν κρίνει.
         "diagnostic_own_sign_ratio": {
             k: round(v[0] / v[1], 3) for k, v in correct_sign.items() if v[1]},
+        # ΔΙΑΓΝΩΣΤΙΚΟ, ΟΧΙ ΠΥΛΗ — αλλά το πιο χρήσιμο του αρχείου. Η συμφωνία φοράς
+        # ΑΝΑ ΜΕΓΕΘΟΣ ΔΙΑΦΟΡΑΣ ΠΟΥ ΔΗΛΩΝΕΙ ΤΟ ΙΔΙΟ ΤΟ ΜΟΝΤΕΛΟ. Η προϋπόθεση είναι η
+        # ουσία: την ώρα που τρέχει το site δεν υπάρχει κριτής, υπάρχει μόνο η δική μας
+        # πρόβλεψη — άρα μόνο ένας πίνακας με αυτή την προϋπόθεση είναι αξιοποιήσιμος.
+        "sign_agreement_by_predicted_gap": sign_agreement_by_gap(rows),
     }
 
     verdict = {
@@ -543,6 +583,16 @@ def emit(per_island, summary, verdict, start_s, end_s):
     for model, ratio in summary["clear_hour_sign_agreement"].items():
         if ratio is not None:
             log(f"  {model:17} διαλέγει τη σωστή πλευρά {100*ratio:.1f}%")
+    log("")
+    log("ΟΤΑΝ ΤΟ ΙΔΙΟ ΤΟ ΜΟΝΤΕΛΟ ΔΗΛΩΝΕΙ ΔΙΑΦΟΡΑ ΤΟΣΗ, ΠΟΣΟ ΣΥΧΝΑ ΕΧΕΙ ΔΙΚΙΟ ΓΙΑ ΤΗΝ ΠΛΕΥΡΑ:")
+    for model, bands in summary["sign_agreement_by_predicted_gap"].items():
+        parts = []
+        for band in bands:
+            if not band["n"]:
+                continue
+            edge = f"{band['from_m']:.1f}-{band['to_m']:.1f}" if band["to_m"] else f"{band['from_m']:.1f}+"
+            parts.append(f"{edge}μ {100*band['agreement']:.0f}% (n={band['n']})")
+        log(f"  {model:17} " + " · ".join(parts))
     log("")
     log("ΥΠΗΝΕΜΗ ΑΚΤΗ — απόκλιση από τον ανεξάρτητο κριτή (4,2 χλμ.):")
     for model in OPEN_METEO_MODELS:
