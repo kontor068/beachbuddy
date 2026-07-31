@@ -35,7 +35,9 @@
           "direction": "lower is better",
           "breakdown": {
             "flattened_to_a_tie": 83,
-            "named_the_wrong_coast": 157
+            "named_the_wrong_coast": 157,
+            "with_light_local_wind_2bft_or_less": 46,
+            "would_be_correct_without_the_light_wind_cap": 33
           }
         },
         "our_geometry_fixes_a_wrong_ranking": {
@@ -63,6 +65,42 @@
           "grid_wrong": 3298,
           "threshold": 300
         }
+      },
+      "cap_exemption_at_0_8m": {
+        "gates": {
+          "min_harm_fixed_ratio": 0.2,
+          "min_real_sea_on_raised_hours": 0.8,
+          "max_hours_lowered": 0,
+          "min_affected_hours": 200
+        },
+        "threshold_m": 0.8,
+        "affected_pair_hours": 19,
+        "results": {
+          "it_fixes_rankings_we_get_wrong_today": {
+            "pass": false,
+            "ratio": 0.025,
+            "fixed": 6,
+            "of_harm": 240,
+            "threshold": 0.2
+          },
+          "the_sea_it_reveals_is_really_there": {
+            "pass": false,
+            "ratio": 0.3636,
+            "n": 22,
+            "threshold": 0.8
+          },
+          "it_never_lowers_a_value": {
+            "pass": true,
+            "lowered": 0
+          },
+          "enough_affected_hours": {
+            "pass": false,
+            "n": 19,
+            "threshold": 200
+          }
+        },
+        "breaks_a_ranking_that_is_right_today": 0,
+        "net_rankings": 6
       },
       "app_tsx_divergence": {
         "beach_hours": 20260,
@@ -231,7 +269,9 @@
           "direction": "lower is better",
           "breakdown": {
             "flattened_to_a_tie": 40,
-            "named_the_wrong_coast": 87
+            "named_the_wrong_coast": 87,
+            "with_light_local_wind_2bft_or_less": 53,
+            "would_be_correct_without_the_light_wind_cap": 37
           }
         },
         "our_geometry_fixes_a_wrong_ranking": {
@@ -259,6 +299,42 @@
           "grid_wrong": 2730,
           "threshold": 300
         }
+      },
+      "cap_exemption_at_0_8m": {
+        "gates": {
+          "min_harm_fixed_ratio": 0.2,
+          "min_real_sea_on_raised_hours": 0.8,
+          "max_hours_lowered": 0,
+          "min_affected_hours": 200
+        },
+        "threshold_m": 0.8,
+        "affected_pair_hours": 44,
+        "results": {
+          "it_fixes_rankings_we_get_wrong_today": {
+            "pass": true,
+            "ratio": 0.2047,
+            "fixed": 26,
+            "of_harm": 127,
+            "threshold": 0.2
+          },
+          "the_sea_it_reveals_is_really_there": {
+            "pass": true,
+            "ratio": 0.8696,
+            "n": 46,
+            "threshold": 0.8
+          },
+          "it_never_lowers_a_value": {
+            "pass": true,
+            "lowered": 0
+          },
+          "enough_affected_hours": {
+            "pass": false,
+            "n": 44,
+            "threshold": 200
+          }
+        },
+        "breaks_a_ranking_that_is_right_today": 0,
+        "net_rankings": 26
       },
       "app_tsx_divergence": {
         "beach_hours": 17920,

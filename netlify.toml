@@ -123,7 +123,21 @@
     Referrer-Policy = "strict-origin-when-cross-origin"
     Strict-Transport-Security = "max-age=31536000"
     Permissions-Policy = "geolocation=(self), camera=(), microphone=(), payment=()"
-    Content-Security-Policy-Report-Only = "default-src 'self'; script-src 'self' 'unsafe-inline' https://www.googletagmanager.com; style-src 'self' 'unsafe-inline'; img-src 'self' data: https:; connect-src 'self' https://*.google-analytics.com https://*.analytics.google.com https://api.open-meteo.com https://marine-api.open-meteo.com; font-src 'self'; object-src 'none'; base-uri 'self'; form-action 'self'; frame-ancestors 'self'; report-uri /api/client-error"
+#
+# ENFORCING since 31/07/2026. It sat in Report-Only because nobody could say what
+# would break; that is now measured rather than assumed — `npm run quality:csp-coverage`
+# scans the BUILT artifact, not the source. 1.337 external origins in dist/, 1.310
+# covered, and the 27 that are not are every one an <a href> (camping sites inside the
+# beach data, a Creative Commons licence URL) — CSP governs loads, not links. Checked
+# separately: no absolute-URL fetch() anywhere in the bundle, so nothing reaches a host
+# outside connect-src at runtime.
+#
+# `report-uri` stays deliberately. Enforcing does not stop reporting, so anything the
+# artifact scan could not see — a URL assembled at runtime — still arrives in Telegram
+# via /api/client-error instead of failing silently.
+#
+# ROLLBACK IS ONE WORD: put `-Report-Only` back on the header name and redeploy.
+    Content-Security-Policy = "default-src 'self'; script-src 'self' 'unsafe-inline' https://www.googletagmanager.com; style-src 'self' 'unsafe-inline'; img-src 'self' data: https:; connect-src 'self' https://*.google-analytics.com https://*.analytics.google.com https://api.open-meteo.com https://marine-api.open-meteo.com; font-src 'self'; object-src 'none'; base-uri 'self'; form-action 'self'; frame-ancestors 'self'; report-uri /api/client-error"
 
 # Content-hashed build assets (Vite emits everything under /assets/ with a hash
 # in the filename, so each URL is immutable). Cache them for a year so the
