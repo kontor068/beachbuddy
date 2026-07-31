@@ -8,6 +8,26 @@
  */
 export const AFTERNOON_BUILD_MIN_PEAK_BFT = 4;   // the afternoon peak must reach genuinely windy
 export const AFTERNOON_BUILD_MIN_DELTA_BFT = 2;  // and be clearly above the midday sample (a real build)
+/**
+ * Above this peak a ONE-step build already counts.
+ *
+ * The +2 rule alone was far too tight to catch the pattern it was written for. Measured
+ * 2026-07-31 over Open-Meteo hourly wind at 30 Greek coastal points × 7 days, restricted to
+ * days whose 10:00–18:00 peak reaches ≥4 Bft (117 region-days):
+ *
+ *   peak +1 Bft above the 13:00 headline   17 (15%)
+ *   peak +2 Bft — all the old gate caught    1 (1%)
+ *   exactly +1, therefore MISSED            16 (14%)
+ *
+ * A 4 → 5 Bft afternoon is not a rounding detail: 5 Bft is where every colour and verdict rule
+ * in the app switches band, and it is the difference between a swim and a wasted drive. Held to
+ * peak ≥5 so a 3 → 4 day (ordinary summer breeze) still does not fire.
+ *
+ * The same measurement killed the other half of the idea: intra-day wind DIRECTION is stable
+ * exactly on the days that decide anything (swing ≥45°: 2%, ≥90%: 0% on those 117 days), so
+ * there is no per-hour re-evaluation of exposure to add here.
+ */
+export const AFTERNOON_BUILD_STRONG_PEAK_BFT = 5;
 
 export interface AfternoonBuild {
   peakBeaufort: number;
@@ -26,6 +46,9 @@ export const evaluateAfternoonBuild = (afternoonBeauforts: number[], middayBeauf
   if (afternoonBeauforts.length === 0) return { peakBeaufort: middayBeaufort, buildBeaufort: 0, buildsRough: false };
   const peakBeaufort = Math.max(...afternoonBeauforts);
   const buildBeaufort = peakBeaufort - middayBeaufort;
-  const buildsRough = peakBeaufort >= AFTERNOON_BUILD_MIN_PEAK_BFT && buildBeaufort >= AFTERNOON_BUILD_MIN_DELTA_BFT;
+  const buildsRough = peakBeaufort >= AFTERNOON_BUILD_MIN_PEAK_BFT && (
+    buildBeaufort >= AFTERNOON_BUILD_MIN_DELTA_BFT ||
+    (peakBeaufort >= AFTERNOON_BUILD_STRONG_PEAK_BFT && buildBeaufort >= 1)
+  );
   return { peakBeaufort, buildBeaufort, buildsRough };
 };

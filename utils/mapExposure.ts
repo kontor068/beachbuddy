@@ -178,23 +178,50 @@ const hasReliableExplicitMorphology = (
   return false;
 };
 
-const hasStableGeospatialProtection = (
-  item: MapExposureItem,
+// Same two numbers the scoring engine uses to let geometry EARN a protected claim
+// (utils/windExposureEngine.hasGeometryEnclosedProtection): near-total land blockage plus low
+// residual wind energy. They live in both files because the two must agree — see
+// isStableProtectedSector below for why that stopped being optional.
+const GEOMETRY_PROTECTION_BLOCKED_RATIO = 0.95;
+const GEOMETRY_PROTECTION_MAX_INTENSITY = 33;
+
+/**
+ * Whether the geometry is strong enough to call this sector protected on its own.
+ *
+ * The map used to paint a pin protected off the RAW sector level, while the engine additionally
+ * required blockage ≥0.95 and intensity <33 before a geospatial-backfill beach could claim
+ * shelter — otherwise its profile stays `semi_sheltered` and the level falls to 'partial'.
+ * Measured 2026-07-31 across the shipped profiles: 459 of 22,800 beach × sector combinations
+ * (2.0%) were geometry-'protected' without passing the strict test, i.e. a green pin over a card
+ * that said "partial shelter". Concentrated in Halkidiki (26), Corfu (23), Chania (21), Kos and
+ * Rhodes (16 each), Zakynthos (15).
+ *
+ * The deliberate map-vs-engine asymmetry documented further down is the OTHER direction (pin one
+ * band REDDER than the card, 207 cases) — that one is intended and stays. This one never was.
+ *
+ * A missing `intensity` counts as NOT stable, matching the engine exactly (24 sectors nationally).
+ * Under-claiming shelter is cheap; painting a pin green off geometry that cannot support it is the
+ * expensive error.
+ */
+const isStableProtectedSector = (
+  geospatialExposure: MapExposureItem['geospatialExposure'],
   sector?: WindSector
 ): boolean => {
   if (!sector) return false;
-  const sectorExposure = item.geospatialExposure?.sectors?.[sector];
-  const confidence = item.geospatialExposure?.confidence;
+  const sectorExposure = geospatialExposure?.sectors?.[sector];
+  const confidence = geospatialExposure?.confidence;
   if (!sectorExposure || sectorExposure.level !== 'protected') return false;
   if (confidence !== 'high' && confidence !== 'medium') return false;
 
-  const isFullyLandBlocked = sectorExposure.blockedRayRatio >= 0.95;
-  const isBelowProtectedThreshold = typeof sectorExposure.intensity === 'number'
-    ? sectorExposure.intensity < 33
-    : true;
-
-  return isFullyLandBlocked && isBelowProtectedThreshold;
+  return sectorExposure.blockedRayRatio >= GEOMETRY_PROTECTION_BLOCKED_RATIO
+    && typeof sectorExposure.intensity === 'number'
+    && sectorExposure.intensity < GEOMETRY_PROTECTION_MAX_INTENSITY;
 };
+
+const hasStableGeospatialProtection = (
+  item: MapExposureItem,
+  sector?: WindSector
+): boolean => isStableProtectedSector(item.geospatialExposure, sector);
 
 const hasCuratedSegmentProtectionSupport = (
   item: MapExposureItem,
@@ -278,6 +305,9 @@ export const getVisibleMapExposureLevel = (
     calculateWindExposure(item.windProfile.beachFacingDirection, windDirectionDeg).exposureLevel === 'exposed';
   if (
     geospatialExposure === 'protected' &&
+    // Raw sector level is not enough to paint a pin green — the engine would score this
+    // 'partial'. See isStableProtectedSector.
+    isStableProtectedSector(item.geospatialExposure, sector) &&
     item.windProfile?.confidence === 'low' &&
     !authoredAngularExposed &&
     !(item.windProfile.knownWindSportSpot && (windBeaufort ?? 0) >= 4) &&
@@ -336,7 +366,14 @@ export const getVisibleMapExposureLevel = (
   // short-fetch open onshore sector the pin can read one band redder than the card —
   // the conservative direction, kept until a Solution-B-style false-positive pass
   // justifies lowering the scoring threshold.
-  if (geospatialExposure === 'exposed' || geospatialExposure === 'protected') return geospatialExposure;
+  if (geospatialExposure === 'exposed') return geospatialExposure;
+  // A geometry-'protected' sector only paints the pin protected when it passes the same strict
+  // test the scoring engine applies; otherwise the pin says exactly what the card says.
+  if (geospatialExposure === 'protected') {
+    return isStableProtectedSector(item.geospatialExposure, sector)
+      ? 'protected'
+      : (fallbackProfileExposure || 'partial');
+  }
   if (geospatialExposure === 'partial') return fallbackProfileExposure || 'partial';
   if (fallbackProfileExposure) return fallbackProfileExposure;
   if (directionalFallbackExposure === 'exposed' || directionalFallbackExposure === 'protected') {

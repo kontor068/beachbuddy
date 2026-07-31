@@ -19,8 +19,8 @@ import type { ExposureLevel } from '../utils/windExposure';
 import { canOpenNavigation, getNavigationBadge, openNavigation } from '../utils/navigation';
 import { AmenityChip, getAmenityChips } from '../utils/amenities';
 import { translations } from '../translations';
-import { seaStateSeverityM, seaStateToneCeiling } from '../utils/waveCharacter';
-import { WIND_SUITABILITY_TONE_CLASSES } from '../utils/suitabilityTone';
+import { seaStateSeverityM } from '../utils/waveCharacter';
+import { WIND_SUITABILITY_TONE_CLASSES, resolveConditionTone } from '../utils/suitabilityTone';
 
 interface BeachMapProps {
   beaches: SuitableBeach[];
@@ -1006,51 +1006,17 @@ const getExposureMarkerTone = (
 
   if (!showWindExposureColors) return tones.blue;
 
-  const beaufort = typeof windBeaufort === 'number' ? windBeaufort : 0;
-  const isProtected = exposureLevel === 'protected';
-
-  // Each exposure column climbs cleanly through the four tones as wind builds, so
-  // the same colour never repeats down a column. Blue means genuinely calm
-  // (0-2 Bft, plus protected/partial shores at 3 Bft where only open coasts feel
-  // it) — from 4 Bft up even sheltered shores get visible chop.
-  const isExposed = exposureLevel === 'exposed';
-  // Tone NAMES, never tone objects: an identity comparison keeps compiling and silently stops
-  // escalating the moment any branch returns a copy instead of the shared literal.
-  const CALMNESS = ['red', 'orange', 'yellow', 'green', 'blue'] as const;
-  const windToneName: (typeof CALMNESS)[number] = (() => {
-    if (beaufort >= 7) return 'red';
-    // Enclosed cove (όρμος) protected from the live wind: holds green (calm) only from
-    // 5 Bft, where a classic protected shore would drop to orange. Below 5 Bft it colours
-    // like any shore (blue/yellow) — the cove distinction only matters once the wind is
-    // strong. Matches the engine's green suitability colour. Open sectors of the same
-    // cove resolve 'exposed' and never reach this branch.
-    if (isEnclosedCove && isProtected && beaufort >= 5) return 'green';
-    if (beaufort >= 5) return isExposed ? 'red' : 'orange';
-    // At 4 Bft only genuinely exposed shores escalate to orange; protected and the
-    // uncertain "partial" middle get a yellow "mild chop" heads-up.
-    if (beaufort >= 4) return isExposed ? 'orange' : 'yellow';
-    // At 3 Bft only genuinely exposed coasts feel a real chop (yellow); protected
-    // and the uncertain "partial" middle stay calm enough to read as blue — this
-    // keeps the "uncertain partial" from looking worse than a sheltered neighbour.
-    if (beaufort >= 3) return isExposed ? 'yellow' : 'blue';
-    return 'blue';
-  })();
-
-  // A running sea sets a CEILING on how calm this pin may look. The wind ladder above cannot see
-  // a sea built by wind over the water, earlier in the day, or further down the fetch — which is
-  // why a light-wind day on an open shore was blue by construction. Ceiling only: it can never
-  // make a pin calmer, and it can never pull back an escalation the wind already made.
-  // An enclosed cove that is genuinely protected from the live wind is exempt. Its water stays flat
-  // while the open sea outside does not, which is the whole point of the όρμος rule — and the grid
-  // cell that reports the sea cannot resolve the cove, so letting that reading override an
-  // operator-verified morphology would be the marine model overruling the geometry.
-  const coveHoldsCalm = isEnclosedCove && isProtected && beaufort >= 5;
-  const seaToneName = coveHoldsCalm ? null : seaStateToneCeiling(seaStateM);
-  if (seaToneName && CALMNESS.indexOf(windToneName) > CALMNESS.indexOf(seaToneName)) {
-    return tones[seaToneName];
-  }
-
-  return tones[windToneName];
+  // The ladder itself — wind tone, cove rule and the running-sea ceiling — lives in
+  // utils/suitabilityTone. It is deliberately NOT written here any more: this function and
+  // the card/list chip (utils/windExposureEngine.getSimpleWindColor) were two separate
+  // ladders that disagreed on 38% of the condition grid, always with the card claiming
+  // calmer water than this pin. Both now read the same function, so they cannot drift again.
+  return tones[resolveConditionTone({
+    exposureLevel,
+    beaufort: typeof windBeaufort === 'number' ? windBeaufort : 0,
+    isEnclosedCove,
+    seaStateM,
+  })];
 };
 
 const windLegendDotClasses = {

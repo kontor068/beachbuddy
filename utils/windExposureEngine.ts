@@ -16,6 +16,7 @@ import { calculateWindExposure, estimateBeachOrientation, ExposureLevel } from '
 import { resolveWindExposure } from './windExposureModel';
 import { getWindProfileOverride } from './windProfileOverrides';
 import { CURATED_ENCLOSED_COVE_IDS, CURATED_NON_COVE_IDS } from './enclosedCoves';
+import { resolveConditionTone, toWindSuitabilityColor } from './suitabilityTone';
 
 export interface BeachWindExposureInput {
   beach: Beach;
@@ -296,33 +297,51 @@ const getSimpleWindConfidence = (
   return 'low';
 };
 
+// The ladder lives in utils/suitabilityTone, shared with the region map pin. It used to be
+// written out here as a separate 4-tone ladder that never looked at the sea, and the two
+// disagreed on 38% of the condition grid — ALWAYS with this chip claiming calmer water than
+// the pin beside it (measured 2026-07-31). Two classes dominated: any shore at 0–3 Bft with a
+// ≥0.8 m sea still running (the day after a meltemi) was green here and amber on the map, and
+// every protected shore at 4 Bft was green here whatever the sea.
+//
+// The sea state is NOT known at this point in the pipeline — the effective/blended wave is
+// resolved later, in calculateBeachScore. So this produces the wind-only tone, and the scoring
+// layer re-derives the colour through applySeaStateToWindSuitability below with the exact same
+// number the map reads (`seaStateWaveM`). Anything rendering this object without going through
+// the scoring layer gets the honest wind-only colour, never a false calm.
 const getSimpleWindColor = (
   exposureLevel: ExposureLevel,
   beaufort: number,
   enclosedCove = false
-): SimpleWindSuitability['suitabilityColor'] => {
-  if (beaufort >= 7) return 'red';
-  if (beaufort <= 2) return 'green';
+): SimpleWindSuitability['suitabilityColor'] => toWindSuitabilityColor(
+  resolveConditionTone({ exposureLevel, beaufort, isEnclosedCove: enclosedCove })
+);
 
-  // An enclosed cove (όρμος, ≥5/8 land-blocked sectors) protected from the LIVE wind
-  // keeps its water flat even as the wind builds, so from 5 Bft it holds GREEN where a
-  // classic protected shore drops to yellow (operator-verified at Άγιος Ερμογένης at 5
-  // Bft). Below 5 Bft it is NOT special-cased — it colours exactly like any protected
-  // shore (green at 3-4), because the cove distinction only means something once the
-  // wind is strong enough to threaten a swim; flagging it on a calm day just confuses.
-  // 7 Bft+ stays red (near-gale is never endorsed) and the cove's open sectors never
-  // reach here (gated to 'protected' by the caller).
-  if (enclosedCove && beaufort >= 5) return 'green';
-
-  if (beaufort >= 5) {
-    if (exposureLevel === 'protected') return 'yellow';
-    if (exposureLevel === 'partial') return 'orange';
-    return 'red';
-  }
-
-  if (exposureLevel === 'protected') return 'green';
-  if (exposureLevel === 'partial') return 'yellow';
-  return beaufort >= 4 ? 'orange' : 'yellow';
+/**
+ * Re-derives the chip colour once the decision-grade sea state is known, so the card, the list
+ * dot and the map pin all state the same conditions.
+ *
+ * Reads `exposureStatus` and `windBeaufort` straight off the suitability object rather than
+ * taking them again as arguments — those are the exact values the wind-only colour was built
+ * from, so the two cannot be fed different inputs by a careless call site.
+ *
+ * @param seaStateM swell-equivalent sea state (utils/waveCharacter.seaStateSeverityM of
+ *                  `seaStateWaveM` + `seaStatePeriodS`), NOT the raw measured height.
+ */
+export const applySeaStateToWindSuitability = (
+  suitability: SimpleWindSuitability,
+  seaStateM: number | undefined,
+  enclosedCove: boolean
+): SimpleWindSuitability => {
+  const suitabilityColor = toWindSuitabilityColor(resolveConditionTone({
+    exposureLevel: suitability.exposureStatus,
+    beaufort: suitability.windBeaufort,
+    isEnclosedCove: enclosedCove,
+    seaStateM,
+  }));
+  return suitabilityColor === suitability.suitabilityColor
+    ? suitability
+    : { ...suitability, suitabilityColor };
 };
 
 const getSimpleExposureStatus = (

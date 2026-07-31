@@ -41,7 +41,7 @@ import { seaStateSeverityM } from '../utils/waveCharacter';
 import { getSelectedDayPrefix, isSelectedDateToday } from '../utils/dateLabels';
 import { athensNow } from '../utils/athensTime';
 import { isSurfSpotInSeason } from '../utils/surfSpots';
-import { assessBeachWindExposure } from '../utils/windExposureEngine';
+import { assessBeachWindExposure, applySeaStateToWindSuitability } from '../utils/windExposureEngine';
 import { summarizeLocalWindBehavior } from '../utils/windClimatology';
 import { getRegionWindContext, LOCAL_WIND_SECTORS } from '../utils/localWindContext.mjs';
 import { describeSimpleWindSuitability, describeWindExposure } from '../utils/windExposureCopy';
@@ -2112,6 +2112,19 @@ export const calculateBeachScore = (
       ? coveDisplayCandidateM
       : effectiveWaveHeightM;
 
+  // The card/list chip states the same conditions as the map pin, from the same number.
+  // The engine could only build a wind-only colour (the blended sea state does not exist yet
+  // at that point), and for a long time nothing ever completed it — so the chip was green while
+  // the pin beside it was amber on 38% of the condition grid, always in the optimistic
+  // direction. `seaStateWaveM` + `seaStatePeriodS` is exactly what BeachMap feeds its own
+  // ceiling (components/BeachMap.tsx passes seaStateSeverityM(item.seaStateWaveM,
+  // item.seaStatePeriodS)), so the two now cannot describe different water.
+  const simpleWindSuitability = applySeaStateToWindSuitability(
+    windAssessment.simpleWindSuitability,
+    seaStateSeverityM(effectiveWaveHeightM, seaStatePeriodS),
+    windAssessment.enclosedCove,
+  );
+
   return {
     beachId: beach.id,
     score: finalSuitabilityScore,
@@ -2148,7 +2161,7 @@ export const calculateBeachScore = (
     enclosedCove: windAssessment.enclosedCove,
     seaCalmClaimAllowed: windAssessment.seaCalmClaimAllowed,
     facingDeg: windAssessment.facingDeg,
-    simpleWindSuitability: windAssessment.simpleWindSuitability,
+    simpleWindSuitability,
   };
 };
 

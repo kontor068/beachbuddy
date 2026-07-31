@@ -213,10 +213,14 @@ const windSectorKeys: WindSector[] = ['N', 'NE', 'E', 'SE', 'S', 'SW', 'W', 'NW'
 
 const geospatialProfile = (
   beachId: number,
-  overrides: Partial<Record<WindSector, ExposureLevel>>
+  overrides: Partial<Record<WindSector, ExposureLevel>>,
+  // Defaults to the old Natural Earth baseline confidence. Production no longer ships any of
+  // these: all 2,850 generated profiles are 'high' (measured 2026-07-31), which matters because
+  // geometry may only paint a pin protected from a high/medium-confidence mask.
+  confidence: GeospatialExposureProfile['confidence'] = 'low'
 ): GeospatialExposureProfile => ({
   beachId,
-  confidence: 'low',
+  confidence,
   source: 'natural-earth-baseline',
   sectors: windSectorKeys.reduce<GeospatialExposureProfile['sectors']>((sectors, sector) => {
     const level = overrides[sector] || 'partial';
@@ -224,6 +228,12 @@ const geospatialProfile = (
       level,
       fetchKm: level === 'protected' ? 1 : level === 'exposed' ? 25 : 5,
       blockedRayRatio: level === 'protected' ? 1 : level === 'exposed' ? 0 : 0.5,
+      // Every generated profile carries `intensity` (24 of 22,800 shipped sectors do not), and
+      // both the map and the scoring engine now require it before geometry alone may claim
+      // shelter — a sector with no intensity reading cannot prove low residual wind energy.
+      // The three values are exactly the per-level fallbacks utils/windExposureModel uses when
+      // intensity is absent, so no exposure level or score in this suite moves because of them.
+      intensity: level === 'protected' ? 15 : level === 'exposed' ? 70 : 45,
     };
     return sectors;
   }, {} as GeospatialExposureProfile['sectors']),
@@ -1203,7 +1213,13 @@ const geospatialProtectedMapLevel = visibleMapExposureDecision(
   genericUnknown,
   unknownAssessment,
   northFiveBeaufort,
-  geospatialProfile(genericUnknown.id, { N: 'protected' })
+  // High confidence on purpose — this asserts the SHIPPED configuration. Geometry may only
+  // paint a protected pin from a high/medium-confidence mask that is also near-totally
+  // land-blocked with low residual wind energy, which is the same bar the scoring engine sets
+  // before it will call the same sector protected. Before 2026-07-31 the map took the raw
+  // sector level with neither test, so 459 of 22,800 beach×sector combinations (2.0%) showed a
+  // protected pin over a card that said "partial shelter".
+  geospatialProfile(genericUnknown.id, { N: 'protected' }, 'high')
 );
 const geospatialExposedMapLevel = visibleMapExposureDecision(
   genericUnknown,
@@ -1275,9 +1291,19 @@ const unknownFieldProfileIds = allProfileBeaches
 
 assert(openScore < 60, 'Generic 5 Bft: open + high fetch should score low.');
 assert(shelteredScore > openScore, 'Generic 5 Bft: sheltered + low fetch should score higher.');
-assert(shelteredNorthThreeAssessment.simpleWindSuitability.suitabilityColor === 'green', 'Simple wind layer: protected 3 Bft should be green.');
+// Was 'green'. Same unification: the card palette gained the map's 'blue' tone, and blue is what
+// "genuinely calm" now means (0-2 Bft, plus protected/partial shores at 3 Bft). 'green' is
+// reserved for the narrower claim the map always used it for — sheltered WHILE it blows, i.e. a
+// verified enclosed cove holding flat water at 5 Bft. A 3 Bft sheltered shore is the first, not
+// the second.
+assert(shelteredNorthThreeAssessment.simpleWindSuitability.suitabilityColor === 'blue', 'Simple wind layer: protected 3 Bft should read as calm (blue).');
 assert(shelteredNorthThreeAssessment.simpleWindSuitability.explanationKey === 'protected_from_wind', 'Simple wind layer: protected 3 Bft should explain wind protection.');
-assert(shelteredNorthFiveAssessment.simpleWindSuitability.suitabilityColor === 'yellow', 'Simple wind layer: protected 5 Bft should be yellow, not perfect.');
+// Was 'yellow'. The card chip and the region map pin were two separate colour ladders that
+// disagreed on 38% of the condition grid, always with the chip claiming calmer water; they now
+// share utils/suitabilityTone.resolveConditionTone, and the map's (more considered, sea-aware)
+// ladder is the survivor — it puts a protected shore at 5 Bft on orange. The intent this
+// assertion was written to protect ("not perfect") is unchanged and now held one step stricter.
+assert(shelteredNorthFiveAssessment.simpleWindSuitability.suitabilityColor === 'orange', 'Simple wind layer: protected 5 Bft should be orange, not perfect.');
 assert(openNorthThreeAssessment.simpleWindSuitability.suitabilityColor === 'yellow', 'Simple wind layer: open/exposed 3 Bft should be yellow.');
 assert(openNorthFiveAssessment.simpleWindSuitability.suitabilityColor === 'red', 'Simple wind layer: open/exposed 5 Bft should be red.');
 assert(legacyNorthProtectedNorthAssessment.simpleWindSuitability.exposureStatus === 'partial', 'Simple wind layer: legacy protectedFrom fallback should classify offshore north wind as partial, not verified protected.');
@@ -1285,7 +1311,15 @@ assert(legacyNorthProtectedNorthAssessment.simpleWindSuitability.confidence === 
 assert(legacyNorthProtectedNorthAssessment.simpleWindSuitability.suitabilityColor === 'orange', 'Simple wind layer: legacy protectedFrom fallback at 5 Bft should be orange because it is only partial.');
 assert(legacyNorthProtectedSouthAssessment.simpleWindSuitability.exposureStatus === 'exposed', 'Simple wind layer: legacy protectedFrom fallback should classify opposite south wind as exposed.');
 assert(legacyNorthProtectedSouthAssessment.simpleWindSuitability.suitabilityColor === 'red', 'Simple wind layer: exposed south 5 Bft should be red.');
-assert(unknownThreeAssessment.simpleWindSuitability.suitabilityColor === 'yellow', 'Simple wind layer: unknown orientation with 3 Bft should stay manageable/yellow.');
+// Was 'yellow', and this is the ONE place the unified ladder is LESS cautious than the old chip.
+// The region map has always painted an uncertain 'partial' shore blue at 3 Bft, with a written
+// reason: at a gentle breeze only genuinely open coasts feel a real chop, and colouring the
+// uncertain middle amber makes it look worse than a sheltered neighbour it may well equal. The
+// chip disagreed only because it was a separate ladder. Two things carry the uncertainty instead
+// of the colour, and both still fire here: `confidence` on this same object, and the
+// low_confidence warning plus score cap in the engine. A real running sea is also no longer
+// invisible to this chip — the sea-state ceiling would take it off blue.
+assert(unknownThreeAssessment.simpleWindSuitability.suitabilityColor === 'blue', 'Simple wind layer: unknown orientation with 3 Bft should read as calm (blue), with uncertainty carried by confidence, not colour.');
 assert(!unknownAssessment.canClaimProtected, 'Generic 5 Bft: unknown windProfile must not invent protection.');
 assert(unknownAssessment.confidenceReasons.includes('local wind exposure profile missing'), 'Generic 5 Bft: unknown windProfile must reduce confidence.');
 assert(!unknownThreeAssessment.canClaimProtected, 'Generic 3 Bft: unknown windProfile must not invent protection.');

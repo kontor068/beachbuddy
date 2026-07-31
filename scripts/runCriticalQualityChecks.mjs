@@ -76,6 +76,15 @@ const checks = [
     args: ['scripts/validateWaveDisplayAgreement.mjs'],
   },
   {
+    id: 'condition-tone-agreement',
+    title: 'One condition colour per beach',
+    description: 'Sweeps 1.476 exposure/Beaufort/cove/wave/period combinations through both colour resolvers — the region map pin and the card-list chip — and then drives calculateBeachScore end to end to prove the scoring layer still feeds the sea state in.',
+    protects: 'Prevents the card saying green while the pin beside it says orange for the same beach at the same moment. The chip was a second, older colour ladder that never read the sea at all: it disagreed with the pin on 38% of the grid, always in the optimistic direction — every shore at 0-3 Bft under a >=0,8 m sea still running (the day after a meltemi) and every protected shore at 4 Bft. It also held an enclosed cove GREEN from 5 Bft, so 1.010 beach x wind-direction combinations showed a green dot over the app\'s own avoid_swimming verdict.',
+    failureAction: 'Fix utils/suitabilityTone.resolveConditionTone or whichever surface stopped reading it. Never relax a rule here to make a case pass — two independent ladders is exactly how this started.',
+    command: process.execPath,
+    args: ['scripts/validateConditionToneAgreement.mjs'],
+  },
+  {
     id: 'trip-query-parsing',
     title: 'Trip query parsing',
     description: 'Parses free-text trip sentences ("θα μείνω Νάξο για 5 μέρες") over the real region list: recall in 5 languages, precision against dates/quantities/beach names with numerals, a stopword sweep, order invariance, and every region resolving from its own name.',

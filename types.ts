@@ -53,9 +53,17 @@ export type SeabedSlope = 'shallow_gradual' | 'moderate' | 'steep' | 'unknown';
 export type WaterEntry = 'easy' | 'moderate' | 'difficult' | 'rocks_only' | 'unknown';
 export type WaterQualityRiskAfterRain = 'low' | 'medium' | 'high';
 export type SwimmingComfort = 'excellent' | 'good' | 'caution' | 'avoid_swimming';
-/** 'cyan' is the enclosed-cove (όρμος) tier: one step calmer than 'green', shown only
- *  when the cove is genuinely protected from the live wind at 3-6 Bft. */
-export type WindSuitabilityColor = 'green' | 'yellow' | 'orange' | 'red';
+/**
+ * Condition tones, roughest → calmest. Identical to the region map's marker palette on purpose:
+ * both come from utils/suitabilityTone.resolveConditionTone, so a card and the pin for the same
+ * beach cannot state different conditions.
+ *
+ * 'blue' means genuinely calm (0–2 Bft, plus protected/partial shores at 3 Bft). 'green' is the
+ * reserved "sheltered while it blows" tone — a verified enclosed cove holding flat water at 5 Bft.
+ * They used to be collapsed into one card colour, which is how an uncertain 'partial' shore at
+ * 3 Bft ended up looking exactly like a verified protected one.
+ */
+export type WindSuitabilityColor = 'blue' | 'green' | 'yellow' | 'orange' | 'red';
 export type WindSuitabilityExplanationKey =
   | 'generally_calm'
   | 'protected_from_wind'
@@ -151,6 +159,13 @@ export interface MarineForecast {
   swellWaveDirectionDeg?: number;
   swellWavePeriodS?: number;
   seaSurfaceTemperatureC?: number;
+  /**
+   * Which wave model these six values came from. `ewam` (0.05°) is preferred wherever it
+   * reports; `meteofrance_wave` (0.08°) covers days 4-6 and the basins ewam's grid cannot
+   * resolve. Traceability only — nothing scores, colours or ranks off this field. The height,
+   * direction and period always come from the SAME model, never mixed.
+   */
+  waveModel?: 'ewam' | 'meteofrance_wave';
   source?: 'open-meteo-marine';
 }
 

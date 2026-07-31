@@ -1353,6 +1353,9 @@ export const BeachCard: React.FC<BeachCardProps> = ({
   // high-value signal the card exists to surface, so only that case renders the marker.
   const showHeaderProtectedMarker = enclosedCove && isProtectedToday;
   const windSuitabilityChipTone: Record<WindSuitabilityColor, string> = {
+    // 'blue' = genuinely calm; 'green' = sheltered while it blows (a cove holding flat water).
+    // Both read as "fine", which is why they shared a colour until 2026-07-31.
+    blue: 'border-sky-200/80 bg-sky-50/72 text-sky-700 dark:border-sky-900/50 dark:bg-sky-950/30 dark:text-sky-300',
     green: 'border-emerald-200/80 bg-emerald-50/72 text-emerald-700 dark:border-emerald-900/50 dark:bg-emerald-950/30 dark:text-emerald-300',
     yellow: 'border-yellow-200/90 bg-yellow-50/78 text-yellow-800 dark:border-yellow-900/50 dark:bg-yellow-950/30 dark:text-yellow-300',
     orange: 'border-orange-200/90 bg-orange-50/78 text-orange-800 dark:border-orange-900/50 dark:bg-orange-950/30 dark:text-orange-300',
