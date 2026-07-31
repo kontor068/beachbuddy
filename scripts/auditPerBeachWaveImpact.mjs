@@ -89,6 +89,20 @@ const regionFilter = args.find(a => a.startsWith('--regions='))?.slice('--region
 const exposureDir = path.join(root, 'public/data/geospatial/exposure');
 const beachDir = path.join(root, 'public/data/beaches/app');
 const reportDir = path.join(root, 'reports/quality');
+/**
+ * Completed regions, so a second pass only fetches the gaps.
+ *
+ * Open-Meteo's binding limits are per minute AND per hour, and a full sweep is ~2.700 point-calls.
+ * Two sweeps inside an hour therefore fail no matter how gently the second one is paced — which is
+ * what happened here: the third run of the day took sustained 429s through a 40 s backoff and
+ * landed at 88,4% coverage, under its own 90% floor. Throttling harder does not fix an hourly
+ * bucket; not asking twice for the same region does.
+ *
+ * Region RESULTS are cached, not raw hourly series: the series would be ~90 MB, and caching the
+ * scored rows keeps a resumed run honest — it never re-scores old data against new code, because
+ * `codeStamp` invalidates the whole cache whenever the scoring path changes.
+ */
+const cachePath = path.join(root, '.tmp/per-beach-wave-impact-cache.json');
 
 /** Day 0 — the figure the page opens on. Pinned, not chosen per run. */
 const DAY_INDEX = 0;
@@ -273,7 +287,7 @@ const measureRegion = async (region) => {
 
 /** A region counts as answered when every own-shore beach in it came back with a sea. */
 const regionComplete = (result) =>
-  !result?.skipped && (result.rows ?? []).every(row => !row.noData);
+  Boolean(result) && !result.skipped && (result.rows ?? []).every(row => !row.noData);
 
 const runPool = async (items, worker) => {
   const out = [];
@@ -304,8 +318,36 @@ const runPool = async (items, worker) => {
   return out;
 };
 
-console.log(`\n── Live: fetching ${regions.length} regions ─────────────────────────────`);
-const results = (await runPool(regions, measureRegion)).filter(Boolean);
+// A resumed run must not mix seas from different forecast cycles or scores from different code.
+// The stamp covers both: the scoring modules' bytes, and the day the sea was fetched for.
+const codeStamp = [
+  'services/recommendationService.ts',
+  'utils/waveModel.ts',
+  'utils/weatherUtils.ts',
+  'utils/marineSamplePoints.ts',
+].map(file => readFileSync(path.join(root, file), 'utf8').length).join('-')
+  + '@' + new Date().toISOString().slice(0, 10);
+
+let cache = {};
+try {
+  const loaded = JSON.parse(readFileSync(cachePath, 'utf8'));
+  if (loaded.codeStamp === codeStamp) cache = loaded.regions ?? {};
+  else console.log('  Cache discarded: scoring code or forecast day changed since it was written.');
+} catch { /* first run */ }
+
+const cachedIds = regions.filter(region => regionComplete(cache[region.regionId])).map(r => r.regionId);
+const toFetch = regions.filter(region => !regionComplete(cache[region.regionId]));
+
+console.log(`\n── Live: ${cachedIds.length} regions resumed from cache, fetching ${toFetch.length} ──────────`);
+const fetched = (await runPool(toFetch, measureRegion)).filter(Boolean);
+
+for (const result of fetched) {
+  if (result?.regionId) cache[result.regionId] = result;
+}
+mkdirSync(path.dirname(cachePath), { recursive: true });
+writeFileSync(cachePath, JSON.stringify({ codeStamp, regions: cache }));
+
+const results = regions.map(region => cache[region.regionId]).filter(Boolean);
 
 const totals = {
   measured: 0, noData: 0, skippedRegions: 0,

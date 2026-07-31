@@ -76,6 +76,15 @@ const checks = [
     args: ['scripts/validateWaveDisplayAgreement.mjs'],
   },
   {
+    id: 'beach-marine-resolution',
+    title: 'Every beach asks about its own shore',
+    description: 'Resolves the marine sample point for all 2.850 beaches over the committed geometry and checks four things: beaches whose facing differs by more than 90° and whose sample points lie more than 5 km apart never share one request; no requested coordinate is invented (only a committed marineSamplePoint or the region point); the count of beaches with no geometry of their own has not grown past 295; and the per-beach forecast object changes ONLY its marine block, leaving wind, weather and temperature identical by reference. It also proves the wiring exists at all — that useWeather resolves the points and App applies them.',
+    protects: 'Prevents a beach being told about someone else\'s sea. Until 01/08/2026 every beach was scored from one region cell — 40 beaches on Lemnos, 129 on Evia, one number — so Γομάτι (faces NE) and Κάσπακας (faces W), 11 km apart on opposite coasts, both printed 1,3 m while ewam read 1,80 and 1,20 at their own shores. The rule about object identity is the other half: it stops this quietly becoming a per-beach WIND change, which would move the Beaufort figure, the exposure colour and the freshness clock without anyone deciding to.',
+    failureAction: 'Wire the resolver back up, or fix the geometry that regressed. Never make it pass by grouping beaches onto shared points or by widening OPPOSING_DISTANCE_KM — both are ways of restoring the defect. The gate asserts about the REQUEST, never the printed number: a rule on the number would fire falsely against the wind-chop floor in utils/waveModel, which does not move.',
+    command: process.execPath,
+    args: ['scripts/validateBeachMarineResolution.mjs'],
+  },
+  {
     id: 'condition-tone-agreement',
     title: 'One condition colour per beach',
     description: 'Sweeps 1.476 exposure/Beaufort/cove/wave/period combinations through both colour resolvers — the region map pin and the card-list chip — and then drives calculateBeachScore end to end to prove the scoring layer still feeds the sea state in.',
