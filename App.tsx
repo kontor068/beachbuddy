@@ -35,7 +35,7 @@ import { useBeaches } from './hooks/useBeaches';
 import { useWeather } from './hooks/useWeather';
 import { useLocation } from './hooks/useLocation';
 import { translations } from './translations';
-import { degToCompass, getBeaufortLevel, isWinterSeason, processForecastData } from './utils/weatherUtils';
+import { degToCompass, getBeaufortLevel, isWinterSeason, processForecastData, applyMarineToDailyForecast } from './utils/weatherUtils';
 import { getRegionWindContext, LOCAL_WIND_LABEL } from './utils/localWindContext.mjs';
 import { trackEvent, trackPageView, buildBeachExposureParams } from './services/analyticsService';
 import { recordPageview } from './services/pageviewBeacon';
@@ -532,6 +532,9 @@ const interpolateMarineForecast = (
     source: loMarine?.source ?? hiMarine?.source,
   };
 };
+
+/** Stable empty map, so a region mismatch does not hand consumers a new object every render. */
+const EMPTY_BEACH_FORECAST_MAP: Record<number, DailyForecast> = {};
 
 const getSelectedHourMarine = (
   hourMarine: MarineForecast | undefined,
@@ -1570,7 +1573,7 @@ export const App: React.FC = () => {
     [allIslands],
   );
   const isNearMeRegionActive = selectedIsland?.id === NEAR_ME_REGION_ID;
-  const { weather, forecast: rawForecast, forecastIslandId, beachForecasts, loading: weatherLoading, error: weatherError, selectedDayIndex, setSelectedDayIndex, loadWeatherData, lastUpdated, forecastFreshness, isStaleBlocked } = useWeather(selectedIsland, language);
+  const { weather, forecast: rawForecast, forecastIslandId, beachForecasts, beachMarine, loading: weatherLoading, error: weatherError, selectedDayIndex, setSelectedDayIndex, loadWeatherData, lastUpdated, forecastFreshness, isStaleBlocked } = useWeather(selectedIsland, language);
   // On a region switch `selectedIsland` updates synchronously, but the new region's
   // forecast only lands in an effect after paint. Until the loaded forecast actually
   // belongs to the selected region, treat it as absent everywhere downstream — so the
@@ -3488,6 +3491,60 @@ export const App: React.FC = () => {
     return out;
   }, [isNearMeRegionActive, selectedIsland, nearMeRegionForecasts, selectedDayIndex, selectedHourDt, mapHourSlots]);
 
+  // Each beach's own sea, laid over the region's day. THIS is what stopped Γομάτι (faces NE) and
+  // Κάσπακας (faces W) — 11 km apart on opposite Lemnos coasts — from both printing 1,3 m while
+  // ewam said 1,80 and 1,20 at their own shores.
+  //
+  // Only the marine block changes; the wind, the temperature and the weather stay the region's,
+  // by reference (see utils/weatherUtils.applyMarineToDailyForecast). The expensive half — one
+  // rebuilt hourly array plus a re-summarised day per beach — is done HERE, once per region load,
+  // so the hour slider below only pays for adjustDailyForecastToHour.
+  //
+  // Skipped in "Κοντά μου": there the per-beach base is each beach's OWN home-region forecast
+  // (nearMeBeachForecastById), which useWeather's region-scoped seas do not describe. Those
+  // beaches keep reading their home region's cell, exactly as before.
+  const beachMarineDayById = useMemo<Record<number, DailyForecast>>(() => {
+    if (!baseDailyForecast || !selectedIsland || isNearMeRegionActive) return {};
+    if (!beachMarine || beachMarine.islandId !== selectedIsland.id) return {};
+
+    const out: Record<number, DailyForecast> = {};
+    selectedIsland.beaches.forEach(beach => {
+      const key = beachMarine.keyByBeachId.get(beach.id);
+      // No key, or the region key: this beach has no geometry of its own and keeps the area sea.
+      if (!key || key === beachMarine.regionKey) return;
+      const items = beachMarine.itemsByKey.get(key);
+      if (!items?.length) return;
+      const swapped = applyMarineToDailyForecast(baseDailyForecast, items);
+      if (swapped !== baseDailyForecast) out[beach.id] = swapped;
+    });
+    return out;
+  }, [baseDailyForecast, selectedIsland, isNearMeRegionActive, beachMarine]);
+
+  // The same map, swapped to the slider hour the way selectedForecast is. Separate memo so a
+  // scrub does not re-run the hourly rebuild above — only the hour pick.
+  const beachAreaForecastById = useMemo<Record<number, DailyForecast>>(() => {
+    const ids = Object.keys(beachMarineDayById);
+    if (ids.length === 0) return {};
+    if (selectedHourDt == null) return beachMarineDayById;
+    const out: Record<number, DailyForecast> = {};
+    for (const id of ids) {
+      out[Number(id)] = adjustDailyForecastToHour(beachMarineDayById[Number(id)], selectedHourDt, mapHourSlots);
+    }
+    return out;
+  }, [beachMarineDayById, selectedHourDt, mapHourSlots]);
+
+  // Deferred twin, for the heavy scoring pass — same reason deferredSelectedForecast exists.
+  // Region-guarded the same way: a map built for the previous region must never score this one's
+  // beaches, so it is dropped whenever its region no longer matches.
+  const beachAreaForecastSignature = useMemo(
+    () => ({ byId: beachAreaForecastById, regionId: selectedIsland?.id }),
+    [beachAreaForecastById, selectedIsland?.id]
+  );
+  const deferredBeachAreaSignature = React.useDeferredValue(beachAreaForecastSignature);
+  const deferredBeachAreaForecastById = deferredBeachAreaSignature.regionId === selectedIsland?.id
+    ? deferredBeachAreaSignature.byId
+    : EMPTY_BEACH_FORECAST_MAP;
+
   // Score every beach ONCE per render with the location-aware inputs, then share
   // the result. Previously getFilteredBeachResults, suitableBeaches and
   // mapSuitableBeaches each re-ran calculateBeachScore (the ~500-line hot path)
@@ -3504,7 +3561,12 @@ export const App: React.FC = () => {
       // page. For a normal island that AREA forecast is the island's; in "Κοντά μου" it is the
       // beach's OWN home-region forecast (nearMeBeachForecastById), so a beach reads identically
       // whether browsed on its island or in the near-me list, and never off the user's GPS point.
-      const beachAreaForecast = nearMeBeachForecastById[beach.id] ?? deferredSelectedForecast;
+      // The SEA is the beach's own (deferredBeachAreaForecastById); the wind, temperature and
+      // weather inside that object are still the area's, by reference. Order matters: near-me
+      // wins because there the whole area forecast belongs to another region.
+      const beachAreaForecast = nearMeBeachForecastById[beach.id]
+        ?? deferredBeachAreaForecastById[beach.id]
+        ?? deferredSelectedForecast;
       scores.set(beach.id, calculateBeachScore(beach, beachAreaForecast, userLocation, preferences, {
         weatherSource: 'island-fallback',
         hourlyForecast: beachAreaForecast.hourly,
@@ -3512,7 +3574,7 @@ export const App: React.FC = () => {
       }));
     });
     return scores;
-  }, [selectedIsland, deferredSelectedForecast, nearMeBeachForecastById, userLocation, preferences, geospatialExposureProfiles]);
+  }, [selectedIsland, deferredSelectedForecast, deferredBeachAreaForecastById, nearMeBeachForecastById, userLocation, preferences, geospatialExposureProfiles]);
   // Localized "time window" label for the selected slider hour (e.g. "στις 15:00–18:00"),
   // shown in the suitable-beach header so it reflects the moment, not just "today".
   const selectedHourPrefix = useMemo(() => {
@@ -3588,9 +3650,13 @@ export const App: React.FC = () => {
       const waveHeightM = selectedForecast.marine?.waveHeightM;
       const beachWindSpeedKmph = selectedForecast.wind.speed * 3.6;
       const weatherSuitableBeaches = beaches.filter(beach => {
-        const scoreResult = beachScoreById.get(beach.id) ?? calculateBeachScore(beach, selectedForecast, userLocation, preferences, {
+        // Same sea the score above used. Before 01/08/2026 this fallback re-scored from the AREA
+        // forecast, so on the frames where beachScoreById had not caught up the recommendation
+        // filter judged a beach on the region's wave and the card beside it showed the beach's.
+        const filterForecast = beachAreaForecastById[beach.id] ?? selectedForecast;
+        const scoreResult = beachScoreById.get(beach.id) ?? calculateBeachScore(beach, filterForecast, userLocation, preferences, {
           weatherSource: 'island-fallback',
-          hourlyForecast: selectedForecast.hourly,
+          hourlyForecast: filterForecast.hourly,
           geospatialProfile: geospatialExposureProfiles?.[beach.id],
         });
         const isExposed = scoreResult.exposureLevel ? scoreResult.exposureLevel !== 'protected' : true;
@@ -3612,7 +3678,7 @@ export const App: React.FC = () => {
       const result = getFilteredBeaches(beaches, filters, deferredBeachSearchQuery, effectiveSortBy, windDirection, selectedForecast, userLocation, preferences);
     return result;
     }
-  ), [beachScoreById, deferredBeachSearchQuery, geospatialExposureProfiles, getFilteredBeaches, preferences, selectedForecast, selectedIsland, userLocation]);
+  ), [beachScoreById, beachAreaForecastById, deferredBeachSearchQuery, geospatialExposureProfiles, getFilteredBeaches, preferences, selectedForecast, selectedIsland, userLocation]);
 
   const filteredBeaches = useMemo(() => (
     getFilteredBeachResults(selectedFilters, sortBy)
@@ -3665,13 +3731,16 @@ export const App: React.FC = () => {
         };
       }
 
-      // Score from the AREA forecast — the same one the map arrow/colour and the card headline
-      // use — so a beach reads ONE consistent wind/wave/verdict everywhere, available immediately
-      // with no flip to a per-beach cluster value on load. Use the urgent selectedForecast (not
-      // the deferred beachScoreById) so the score never lags behind a region/hour change. In
-      // "Κοντά μου" the AREA forecast is the beach's OWN home-region one so it matches the beach's
-      // home-island view (see nearMeBeachForecastById); a normal island falls back to selectedForecast.
-      const beachAreaForecast = nearMeBeachForecastById[beach.id] ?? selectedForecast;
+      // WIND from the AREA forecast — the same one the map arrow and the card headline use, so a
+      // beach reads ONE consistent wind/verdict everywhere, available immediately with no flip on
+      // load. SEA from the beach's own shore since 01/08/2026 (beachAreaForecastById): the wave is
+      // the one quantity that genuinely differs between two sides of a cape, and it arrives in the
+      // same state commit as the forecast, so there is still nothing to flip. Urgent, not
+      // deferred, so the figure never lags a region/hour change. In "Κοντά μου" the beach's OWN
+      // home-region forecast wins outright (see nearMeBeachForecastById).
+      const beachAreaForecast = nearMeBeachForecastById[beach.id]
+        ?? beachAreaForecastById[beach.id]
+        ?? selectedForecast;
 
       const scoreResult = calculateBeachScore(beach, beachAreaForecast, userLocation, preferences, {
         weatherSource: 'island-fallback',
@@ -3728,7 +3797,7 @@ export const App: React.FC = () => {
         geospatialExposure,
       };
     });
-  }, [geospatialExposureProfiles, language, nearMeBeachForecastById, preferences, selectedForecast, selectedIsland, userLocation]);
+  }, [geospatialExposureProfiles, language, nearMeBeachForecastById, beachAreaForecastById, preferences, selectedForecast, selectedIsland, userLocation]);
 
   // mapSuitableBeaches drives BOTH the map (keep every beach, incl. naturist) and, when
   // reused as a recommendation fallback source, the directory/top-pick lists. This variant
@@ -3843,12 +3912,17 @@ export const App: React.FC = () => {
       item,
       selectedForecast.date,
       topPickNow,
-      selectedBeachForecasts[item.beach.id]?.hourly || selectedForecast.hourly
+      // The beach's OWN sea first. These hours rank WHEN to go, and until 01/08/2026 they ranked
+      // on the cluster's wave while the chip beside them printed the region's — two different seas
+      // describing one beach. The cluster stays as the fallback for beaches with no geometry.
+      beachAreaForecastById[item.beach.id]?.hourly
+        || selectedBeachForecasts[item.beach.id]?.hourly
+        || selectedForecast.hourly
     ));
     const topPickPool = getWindPriorityTopPickPool(candidates, beaufort);
     const protectedPriority = prioritizeProtectedRecommendations(topPickPool, beaufort);
     return prioritizeDynamicTopPickWindows(protectedPriority, selectedForecast.date, topPickNow);
-  }, [selectedForecast, dailySuitableBeaches, hasActivePreferenceFilters, selectedBeachForecasts, suitableBeaches, topPickNow]);
+  }, [selectedForecast, dailySuitableBeaches, hasActivePreferenceFilters, selectedBeachForecasts, beachAreaForecastById, suitableBeaches, topPickNow]);
   const topRecommendedSuitableBeaches = useMemo(() => {
     // Day-to-day variety: on calm days, rotate #2/#3 among beaches that are genuinely
     // equally-good today (keeps #1 fixed, never surfaces a harder-to-reach or worse
@@ -4381,12 +4455,17 @@ export const App: React.FC = () => {
       item,
       selectedForecast.date,
       topPickNow,
-      selectedBeachForecasts[item.beach.id]?.hourly || selectedForecast.hourly
+      // The beach's OWN sea first. These hours rank WHEN to go, and until 01/08/2026 they ranked
+      // on the cluster's wave while the chip beside them printed the region's — two different seas
+      // describing one beach. The cluster stays as the fallback for beaches with no geometry.
+      beachAreaForecastById[item.beach.id]?.hourly
+        || selectedBeachForecasts[item.beach.id]?.hourly
+        || selectedForecast.hourly
     ));
     const candidates = getWindPriorityTopPickPool(timeAwareItems, currentBeaufort);
     const protectedPriority = prioritizeProtectedRecommendations(candidates, currentBeaufort);
     return prioritizeDynamicTopPickWindows(protectedPriority, selectedForecast.date, topPickNow);
-  }, [currentBeaufort, dailySuitableBeaches, isStrongRecommendationMode, recommendableMapSuitableBeaches, recommendedSuitableBeaches, selectedBeachForecasts, selectedForecast, topPickNow]);
+  }, [currentBeaufort, dailySuitableBeaches, isStrongRecommendationMode, recommendableMapSuitableBeaches, recommendedSuitableBeaches, selectedBeachForecasts, beachAreaForecastById, selectedForecast, topPickNow]);
   const noIdealFallbackCandidates = useMemo(() => {
     if (!hasNoSwimmableBeachesToday || !isStrongRecommendationMode || !selectedForecast) return [];
 
@@ -4406,11 +4485,16 @@ export const App: React.FC = () => {
       item,
       selectedForecast.date,
       topPickNow,
-      selectedBeachForecasts[item.beach.id]?.hourly || selectedForecast.hourly
+      // The beach's OWN sea first. These hours rank WHEN to go, and until 01/08/2026 they ranked
+      // on the cluster's wave while the chip beside them printed the region's — two different seas
+      // describing one beach. The cluster stays as the fallback for beaches with no geometry.
+      beachAreaForecastById[item.beach.id]?.hourly
+        || selectedBeachForecasts[item.beach.id]?.hourly
+        || selectedForecast.hourly
     ));
     const protectedPriority = prioritizeProtectedRecommendations(timeAwareItems, currentBeaufort);
     return prioritizeDynamicTopPickWindows(protectedPriority, selectedForecast.date, topPickNow);
-  }, [currentBeaufort, hasNoSwimmableBeachesToday, isStrongRecommendationMode, recommendableMapSuitableBeaches, selectedBeachForecasts, selectedForecast, topPickNow]);
+  }, [currentBeaufort, hasNoSwimmableBeachesToday, isStrongRecommendationMode, recommendableMapSuitableBeaches, selectedBeachForecasts, beachAreaForecastById, selectedForecast, topPickNow]);
   const windPreviewCandidates = useMemo(() => {
     if (!isStrongRecommendationMode || !selectedForecast) return [];
     if (strongSuitableCandidates.length > 0) return strongSuitableCandidates;
@@ -4433,12 +4517,17 @@ export const App: React.FC = () => {
       item,
       selectedForecast.date,
       topPickNow,
-      selectedBeachForecasts[item.beach.id]?.hourly || selectedForecast.hourly
+      // The beach's OWN sea first. These hours rank WHEN to go, and until 01/08/2026 they ranked
+      // on the cluster's wave while the chip beside them printed the region's — two different seas
+      // describing one beach. The cluster stays as the fallback for beaches with no geometry.
+      beachAreaForecastById[item.beach.id]?.hourly
+        || selectedBeachForecasts[item.beach.id]?.hourly
+        || selectedForecast.hourly
     ));
     const candidates = getWindPriorityTopPickPool(timeAwareItems, currentBeaufort);
     const protectedPriority = prioritizeProtectedRecommendations(candidates, currentBeaufort);
     return prioritizeDynamicTopPickWindows(protectedPriority, selectedForecast.date, topPickNow);
-  }, [currentBeaufort, dailySuitableBeaches, isStrongRecommendationMode, recommendableMapSuitableBeaches, recommendedSuitableBeaches, selectedBeachForecasts, selectedForecast, strongSuitableCandidates, topPickNow]);
+  }, [currentBeaufort, dailySuitableBeaches, isStrongRecommendationMode, recommendableMapSuitableBeaches, recommendedSuitableBeaches, selectedBeachForecasts, beachAreaForecastById, selectedForecast, strongSuitableCandidates, topPickNow]);
   const strongManageableBeaches = useMemo(() => (
     windPreviewCandidates.slice(0, getTopRecommendationDisplayLimit(windPreviewCandidates.length))
   ), [windPreviewCandidates]);
@@ -4895,7 +4984,14 @@ export const App: React.FC = () => {
     // In "Κοντά μου" the card/map score this beach from its OWN home-region forecast
     // (nearMeBeachForecastById); the detail must use the SAME one or the card and the detail
     // would disagree — so prefer it here too, falling back to the near-me area forecast.
-    const detailForecast = (isNearMeRegionActive ? nearMeBeachForecastById[detailBeach.id] : undefined) ?? selectedForecast ?? detailForecastDay;
+    // The detail page scores from whatever lands here, so the beach's own sea has to arrive
+    // through the SAME object the card was scored from — otherwise the page and the card that
+    // linked to it print two different wave heights for one beach, which is precisely what
+    // scripts/validateWaveDisplayAgreement.mjs exists to catch.
+    const detailForecast = (isNearMeRegionActive ? nearMeBeachForecastById[detailBeach.id] : undefined)
+      ?? beachAreaForecastById[detailBeach.id]
+      ?? selectedForecast
+      ?? detailForecastDay;
 
     return (
       <div>

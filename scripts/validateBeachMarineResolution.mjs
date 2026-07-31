@@ -121,6 +121,17 @@ if (!/resolveBeachMarinePoints/.test(useWeatherSource)) {
   );
 }
 
+// Fetching the seas is not the same as showing them. The first version of this gate checked only
+// the line above and went green while every beach on screen still printed the region's wave —
+// the data was arriving and being dropped, which is exactly the defect it was written for.
+const appSource = readFileSync(path.join(root, 'App.tsx'), 'utf8');
+if (!/applyMarineToDailyForecast/.test(appSource)) {
+  failures.push(
+    'RULE 0 — App.tsx never calls applyMarineToDailyForecast, so the per-beach seas useWeather '
+    + 'fetches are not reaching the score, the pin colour or the printed figure.'
+  );
+}
+
 const weatherServiceSource = readFileSync(path.join(root, 'services/weatherService.ts'), 'utf8');
 // One definition of the point key, or the resolver decides which points are distinct while the
 // fetch layer maps responses back by a different rule — and a beach reads another beach's water.

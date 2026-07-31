@@ -40,6 +40,13 @@ import ts from 'typescript';
 const require = createRequire(import.meta.url);
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 
+// services/weatherService.ts arms its request timeout with window.setTimeout. Node has the timer
+// but not the object, so point `window` at the global scope rather than fork the fetch path — a
+// measurement that runs different networking code from the app measures the wrong thing.
+// localStorage stays undefined on purpose: saveToCache already guards on it, so this run is
+// memory-only and cannot leave a cache behind that a later run would silently read.
+if (typeof globalThis.window === 'undefined') globalThis.window = globalThis;
+
 require.extensions['.ts'] = (module, filename) => {
   // The analytics module counts real user calls; a measurement script is not a user.
   if (filename.endsWith(`${path.sep}services${path.sep}analyticsService.ts`)) {
@@ -59,7 +66,11 @@ require.extensions['.ts'] = (module, filename) => {
       jsx: ts.JsxEmit.React,
     },
     fileName: filename,
-  }).outputText.replace(/import\.meta/g, '({env:{DEV:false}})');
+    // DEV:true, unlike the gates. services/forecast/openMeteoProvider.ts refuses to build a URL
+    // outside Vite dev unless VITE_FORECAST_PROXY_BASE is set, and routing a measurement through
+    // our own edge proxy would read its 30-minute cache instead of the model. A script is not a
+    // visitor: it asks Open-Meteo directly, exactly as `vite dev` does.
+  }).outputText.replace(/import\.meta/g, '({env:{DEV:true}})');
   module._compile(output, filename);
 };
 
@@ -67,7 +78,7 @@ const { resolveBeachMarinePoints, marinePointKey, marinePointDistanceKm } =
   require(path.join(root, 'utils/marineSamplePoints.ts'));
 const { calculateBeachScore, getSuitableBeaches } = require(path.join(root, 'services/recommendationService.ts'));
 const { processForecastData, applyMarineToDailyForecast } = require(path.join(root, 'utils/weatherUtils.ts'));
-const { seaStateSeverityM } = require(path.join(root, 'utils/waveCharacter.ts'));
+const { seaStateSeverityM, SEA_STATE_AMBER_M, SEA_STATE_ROUGH_M } = require(path.join(root, 'utils/waveCharacter.ts'));
 const { fetchForecastDataBatch, fetchMarineForecastDataBatch, mergeMarineForecastData } =
   require(path.join(root, 'services/weatherService.ts'));
 
@@ -81,8 +92,25 @@ const reportDir = path.join(root, 'reports/quality');
 
 /** Day 0 — the figure the page opens on. Pinned, not chosen per run. */
 const DAY_INDEX = 0;
-/** How many regions fetch at once. The binding Open-Meteo limit is ~600 requests/MINUTE. */
-const CONCURRENCY = 4;
+/**
+ * Sequential, with a pause between regions and a retry ladder.
+ *
+ * The first attempt at this ran four regions at a time and took 429 Too Many Requests across most
+ * of the country: 287 of 2.555 beaches came back with a sea, and the run reported confident
+ * percentages over the 11% that answered. The binding Open-Meteo limit is ~600 requests per
+ * MINUTE, and a burst of ~150 batched marine calls plus 110 hourly ones crosses it easily.
+ *
+ * A partial sweep is not a small version of the answer, it is a biased one — the regions that
+ * fail are whichever happened to be in flight when the bucket emptied. So this is deliberately
+ * slower than it could be, and it refuses to publish below MIN_COVERAGE.
+ */
+const CONCURRENCY = 1;
+const REGION_DELAY_MS = 1200;
+const RETRY_BACKOFF_MS = [5000, 15000, 40000];
+/** Below this share of own-shore beaches carrying a sea, the run is not an answer. */
+const MIN_COVERAGE = 0.9;
+
+const sleep = (ms) => new Promise(resolve => setTimeout(resolve, ms));
 
 const percentile = (values, p) => {
   if (!values.length) return 0;
@@ -156,7 +184,20 @@ if (!LIVE) {
 // ─────────────────────────────────────────────────────────────────────────────
 // LIVE HALF — score every beach twice from the same wind, at the same hours.
 // ─────────────────────────────────────────────────────────────────────────────
-const band = (waveM, periodS) => seaStateSeverityM(waveM, periodS) ?? 'none';
+/**
+ * The three bands the user actually sees: green pin, amber pin, red pin — and the chip word
+ * beside them. seaStateSeverityM returns swell-equivalent METRES, not a label, so the boundaries
+ * come from the module that owns them (utils/waveCharacter) rather than from two numbers copied
+ * into this script, which is how a threshold drifts in one place and not the other.
+ */
+const BAND_ORDER = { unknown: -1, calm: 0, amber: 1, rough: 2 };
+const band = (waveM, periodS) => {
+  const severity = seaStateSeverityM(waveM, periodS);
+  if (typeof severity !== 'number') return 'unknown';
+  if (severity >= SEA_STATE_ROUGH_M) return 'rough';
+  if (severity >= SEA_STATE_AMBER_M) return 'amber';
+  return 'calm';
+};
 
 const measureRegion = async (region) => {
   const resolution = resolveBeachMarinePoints(region.beaches, region.profiles, region.regionPoint);
@@ -230,18 +271,33 @@ const measureRegion = async (region) => {
   };
 };
 
+/** A region counts as answered when every own-shore beach in it came back with a sea. */
+const regionComplete = (result) =>
+  !result?.skipped && (result.rows ?? []).every(row => !row.noData);
+
 const runPool = async (items, worker) => {
   const out = [];
   let cursor = 0;
   await Promise.all(Array.from({ length: CONCURRENCY }, async () => {
     while (cursor < items.length) {
       const index = cursor++;
-      try {
-        out[index] = await worker(items[index]);
-      } catch (error) {
-        out[index] = { regionId: items[index].regionId, skipped: error.message };
+      const item = items[index];
+
+      // Points already fetched stay in weatherService's memory cache, so a retry only re-asks for
+      // what is actually missing. That makes backing off cheap and makes giving up unnecessary.
+      for (let attempt = 0; attempt <= RETRY_BACKOFF_MS.length; attempt += 1) {
+        try {
+          out[index] = await worker(item);
+        } catch (error) {
+          out[index] = { regionId: item.regionId, skipped: error.message };
+        }
+        if (regionComplete(out[index]) || attempt === RETRY_BACKOFF_MS.length) break;
+        process.stderr.write(`\r  ${item.regionId}: incomplete, backing off ${RETRY_BACKOFF_MS[attempt] / 1000}s…            `);
+        await sleep(RETRY_BACKOFF_MS[attempt]);
       }
-      process.stderr.write(`\r  fetched ${out.filter(Boolean).length}/${items.length} regions`);
+
+      process.stderr.write(`\r  fetched ${out.filter(Boolean).length}/${items.length} regions                              `);
+      await sleep(REGION_DELAY_MS);
     }
   }));
   process.stderr.write('\n');
@@ -258,7 +314,6 @@ const totals = {
   exposureChanged: 0, comfortChanged: 0,
   top3Changed: 0, regionsRanked: 0,
 };
-const bandOrder = { none: 0, calm: 1, moderate: 2, choppy: 3, rough: 4 };
 const worstCalmer = [];
 
 for (const result of results) {
@@ -285,7 +340,7 @@ for (const result of results) {
     }
     if (row.bandBefore !== row.bandAfter) {
       totals.bandChanged += 1;
-      const moved = (bandOrder[row.bandAfter] ?? 0) - (bandOrder[row.bandBefore] ?? 0);
+      const moved = BAND_ORDER[row.bandAfter] - BAND_ORDER[row.bandBefore];
       if (moved < 0) totals.bandCalmer += 1; else totals.bandRougher += 1;
     }
     if (row.exposureBefore !== row.exposureAfter) totals.exposureChanged += 1;
@@ -296,8 +351,11 @@ for (const result of results) {
 worstCalmer.sort((a, b) => a.delta - b.delta);
 const absDeltas = totals.deltas.map(Math.abs);
 
+const coverage = totals.measured / Math.max(1, totals.measured + totals.noData);
+
 console.log('\n── What changes on screen ──────────────────────────────────────────');
 console.log(`${totals.measured} beaches measured on their own shore (${totals.noData} had no sea data, ${totals.skippedRegions} regions skipped).`);
+console.log(`  Coverage ${(coverage * 100).toFixed(1)}% (floor ${(MIN_COVERAGE * 100).toFixed(0)}%).`);
 console.log(`  Sea state moved on ${totals.seaChanged} (${(100 * totals.seaChanged / Math.max(1, totals.measured)).toFixed(1)}%): `
   + `${totals.rougher} rougher, ${totals.calmer} CALMER.`);
 console.log(`  |Δ| median ${percentile(absDeltas, 0.5).toFixed(2)} m, p90 ${percentile(absDeltas, 0.9).toFixed(2)} m, max ${Math.max(0, ...absDeltas).toFixed(2)} m.`);
@@ -342,6 +400,8 @@ writeFileSync(reportPath, JSON.stringify({
     marineRequestsBefore: offline.requestsBefore,
     marineRequestsAfter: offline.requestsAfter,
   },
+  complete: coverage >= MIN_COVERAGE,
+  coverage: Number(coverage.toFixed(4)),
   live: totals,
   worstCalmer: worstCalmer.slice(0, 25),
   perRegion: results.map(r => ({
@@ -353,3 +413,14 @@ writeFileSync(reportPath, JSON.stringify({
   })),
 }, null, 2));
 console.log(`\nWritten: ${path.relative(root, reportPath)}`);
+
+if (coverage < MIN_COVERAGE) {
+  console.error(
+    `\nTHIS RUN IS NOT AN ANSWER. Only ${(coverage * 100).toFixed(1)}% of own-shore beaches came back `
+    + `with a sea (floor ${(MIN_COVERAGE * 100).toFixed(0)}%). The regions that fail are whichever `
+    + 'happened to be in flight when the rate limit hit, so the percentages above are biased, not '
+    + 'merely noisy. Re-run — the points already fetched are cached in memory for this process '
+    + 'only, so a fresh run pays for them again; raise the backoff rather than the concurrency.'
+  );
+  process.exit(1);
+}
