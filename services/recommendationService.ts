@@ -594,28 +594,27 @@ const assessHourlyWave = (
     geospatialProfile,
   });
   const exposureLevel = windAssessment.exposureLevel;
-  const modeledWaveDamping = exposureLevel === 'protected' ? 0.5 : exposureLevel === 'partial' ? 0.75 : 1;
-  const modeledWaveHeightM = Number(Math.max(
-    windAssessment.modeledWaveHeightM * modeledWaveDamping,
-    getWindChopWaveFloorM(exposureLevel, beaufort, windSpeedKmh, gustKmph)
-  ).toFixed(2));
   const measured = item.marine?.waveHeightM;
   const hasMeasured = typeof measured === 'number' && Number.isFinite(measured);
-  const realisticMeasured = hasMeasured
-    ? capLightWindMeasuredWaveM(
-      measured as number,
-      beaufort,
-      { heightM: item.marine?.swellWaveHeightM, periodS: item.marine?.swellWavePeriodS },
-      resolveSeaArrival(geospatialProfile, windAssessment.facingDeg, item.marine?.waveDirectionDeg)
-    )
-    : measured;
+  // Same function as the beach page — this used to be the same arithmetic written
+  // out again, differing only in when it rounded.
+  const { effectiveWaveHeightM } = resolveDisplayWaveHeightM({
+    exposureLevel,
+    modeledWaveHeightM: windAssessment.modeledWaveHeightM,
+    beaufort,
+    windSpeedKmh,
+    gustKmph,
+    measuredWaveHeightM: measured,
+    swell: { heightM: item.marine?.swellWaveHeightM, periodS: item.marine?.swellWavePeriodS },
+    seaArrival: resolveSeaArrival(geospatialProfile, windAssessment.facingDeg, item.marine?.waveDirectionDeg),
+  });
   return {
     dt: item.dt,
     hour: new Date(item.dt * 1000).getHours(),
     windSpeedKmh,
     exposureLevel,
     isExposed: exposureLevel !== 'protected',
-    effectiveWaveHeightM: resolveEffectiveWaveHeightM(realisticMeasured, modeledWaveHeightM),
+    effectiveWaveHeightM,
     wavePeriodS: item.marine?.wavePeriodS ?? item.marine?.swellWavePeriodS,
     hasMeasured,
   };

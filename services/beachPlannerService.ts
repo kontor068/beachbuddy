@@ -4,7 +4,7 @@ import { degToCompass, getBeaufortLevel } from '../utils/weatherUtils';
 import { calculateSeaConditionScore } from '../utils/seaConditions';
 import type { ExposureLevel } from '../utils/windExposure';
 import { assessBeachWindExposure } from '../utils/windExposureEngine';
-import { getWindChopWaveFloorM, resolveEffectiveWaveHeightM, capLightWindMeasuredWaveM } from '../utils/waveModel';
+import { resolveDisplayWaveHeightM } from '../utils/waveModel';
 
 export interface BeachDayPlan {
   beachId: number;
@@ -169,20 +169,27 @@ const getPlannerSeaInputs = (
     seaSurfaceTemperature: item.marine?.seaSurfaceTemperatureC,
   });
   const exposureLevel = assessment.exposureLevel || fallbackExposureLevel || 'exposed';
-  const modeledWaveDamping = exposureLevel === 'protected' ? 0.5 : exposureLevel === 'partial' ? 0.75 : 1;
-  const modeledWaveHeightM = Number(Math.max(
-    assessment.modeledWaveHeightM * modeledWaveDamping,
-    getWindChopWaveFloorM(exposureLevel, beaufort, windSpeedKmh, getForecastGustKmh(item))
-  ).toFixed(2));
 
-  const measured = getFiniteNumber(item.marine?.waveHeightM);
-  const realisticMeasured = typeof measured === 'number'
-    ? capLightWindMeasuredWaveM(measured, beaufort, { heightM: item.marine?.swellWaveHeightM, periodS: item.marine?.swellWavePeriodS })
-    : measured;
-  return {
+  // Same function as the beach page, so the planner cannot drift from it by an
+  // edit nobody notices. ⚠️ One input IS still missing and it is not a rounding
+  // detail: `seaArrival` needs a geospatialProfile, and this function never
+  // receives one — see the assessBeachWindExposure call above, which runs the
+  // planner's whole exposure read without geometry. Sea arrival only ever moves
+  // the number UP, so without it the planner caps HARDER than the page: it can
+  // show a calmer sea for the same hour. That is the direction that matters, so
+  // it is written here rather than left to be discovered. Threading the profile
+  // through planTrip is the fix, and it is a change of its own.
+  const { effectiveWaveHeightM } = resolveDisplayWaveHeightM({
     exposureLevel,
-    waveHeightM: resolveEffectiveWaveHeightM(realisticMeasured, modeledWaveHeightM),
-  };
+    modeledWaveHeightM: assessment.modeledWaveHeightM,
+    beaufort,
+    windSpeedKmh,
+    gustKmph: getForecastGustKmh(item),
+    measuredWaveHeightM: getFiniteNumber(item.marine?.waveHeightM),
+    swell: { heightM: item.marine?.swellWaveHeightM, periodS: item.marine?.swellWavePeriodS },
+  });
+
+  return { exposureLevel, waveHeightM: effectiveWaveHeightM };
 };
 
 const getMaxForecastWaveHeight = (

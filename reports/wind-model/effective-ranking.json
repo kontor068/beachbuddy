@@ -64,6 +64,13 @@
           "threshold": 300
         }
       },
+      "app_tsx_divergence": {
+        "beach_hours": 20260,
+        "cap_changes_the_number": 408,
+        "cap_changes_the_number_ratio": 0.0201,
+        "cap_changes_which_coast_is_calmer": 47,
+        "largest_gap_m": 0.66
+      },
       "verdict": {
         "geometry_does_no_harm": false,
         "geometry_measurably_helps": true,
@@ -252,6 +259,13 @@
           "grid_wrong": 2730,
           "threshold": 300
         }
+      },
+      "app_tsx_divergence": {
+        "beach_hours": 17920,
+        "cap_changes_the_number": 431,
+        "cap_changes_the_number_ratio": 0.0241,
+        "cap_changes_which_coast_is_calmer": 53,
+        "largest_gap_m": 1.34
       },
       "verdict": {
         "geometry_does_no_harm": false,

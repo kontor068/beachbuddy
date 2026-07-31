@@ -331,7 +331,7 @@ const evaluateBeach = (
     wavePeriodSeconds: wavePeriodS ?? undefined,
     swellHeightMeters: swellM ?? undefined,
   });
-  const { effectiveWaveHeightM } = resolveDisplayWaveHeightM({
+  const { effectiveWaveHeightM, modeledWaveHeightM } = resolveDisplayWaveHeightM({
     exposureLevel: assessment.exposureLevel,
     modeledWaveHeightM: assessment.modeledWaveHeightM,
     beaufort,
@@ -343,7 +343,24 @@ const evaluateBeach = (
     // ζωντανή κατεύθυνση κύματος με τον ίδιο τρόπο και στις δύο ακτές του ζεύγους,
     // άρα δεν αλλάζει το ΠΡΟΣΗΜΟ της σύγκρισης που είναι το αντικείμενο εδώ.
   });
-  return { effective: effectiveWaveHeightM, grid: waveM, exposure: assessment.exposureLevel };
+
+  // Η ΠΑΡΑΛΛΑΓΗ ΤΟΥ App.tsx:729 — για να μετρηθεί η ασυμφωνία, όχι να εικαστεί.
+  // Εκεί το μετρημένο ύψος πάει κατευθείαν στο max() χωρίς να περάσει από το
+  // light-wind cap. Το cap μόνο ΚΑΤΕΒΑΖΕΙ, άρα η παραλλαγή χωρίς αυτό είναι
+  // ακριβώς max(ωμό μετρημένο, μοντέλο). Όπου οι δύο τιμές διαφέρουν, η
+  // βαθμολογία ώρας του top-3 και η σελίδα παραλίας περιγράφουν ΤΗΝ ΙΔΙΑ ΩΡΑ
+  // με διαφορετικό νούμερο.
+  const uncapped = typeof waveM === 'number' && Number.isFinite(waveM)
+    ? Number(Math.max(waveM, modeledWaveHeightM).toFixed(2))
+    : modeledWaveHeightM;
+
+  return {
+    effective: effectiveWaveHeightM,
+    uncapped,
+    grid: waveM,
+    exposure: assessment.exposureLevel,
+    beaufort,
+  };
 };
 
 const summarise = (resolved: Resolved, rows: Row[]) => {
@@ -367,6 +384,13 @@ const summarise = (resolved: Resolved, rows: Row[]) => {
   // μαζί. Το ξεχώρισμα λέγεται εδώ, δεν κρύβεται στην ετυμηγορία.
   let harmTies = 0;
   let harmInversions = 0;
+
+  // Πόσο μεγάλη είναι στην πράξη η ασυμφωνία του App.tsx:729 (χωρίς light-wind cap)
+  // με τη σελίδα παραλίας. Διαγνωστικό — καμία πύλη δεν κρέμεται από αυτό.
+  let beachesEvaluated = 0;
+  let capChangesTheNumber = 0;
+  let capChangesTheRanking = 0;
+  let maxCapGapM = 0;
   let falseCalm = 0;
   let falseCalmRescued = 0;
 
@@ -410,6 +434,17 @@ const summarise = (resolved: Resolved, rows: Row[]) => {
       row[COL.l_wave_deg] as number | null, row[COL.l_wave_s] as number | null,
       row[COL.l_swell_m] as number | null, row[COL.l_swell_s] as number | null,
     );
+
+    beachesEvaluated += 2;
+    for (const side of [w, l]) {
+      if (side.effective !== side.uncapped) {
+        capChangesTheNumber++;
+        maxCapGapM = Math.max(maxCapGapM, Math.abs(side.uncapped - side.effective));
+      }
+    }
+    if (Math.sign(w.effective - l.effective) !== Math.sign(w.uncapped - l.uncapped)) {
+      capChangesTheRanking++;
+    }
 
     const judgeSign = Math.sign(judgeDiff);
     const gridSign = Math.sign(wGrid - lGrid);
@@ -496,6 +531,16 @@ const summarise = (resolved: Resolved, rows: Row[]) => {
         pass: gateE, grid_correct: gridCorrect, grid_wrong: gridWrong,
         threshold: GATES.min_hours_per_bucket,
       },
+    },
+    // Πόσο κοστίζει στην πράξη το ότι το App.tsx:729 δεν εφαρμόζει light-wind cap.
+    // Διαγνωστικό, εκτός πυλών — απαντά στο «αξίζει να ενοποιηθεί;».
+    app_tsx_divergence: {
+      beach_hours: beachesEvaluated,
+      cap_changes_the_number: capChangesTheNumber,
+      cap_changes_the_number_ratio: beachesEvaluated
+        ? Number((capChangesTheNumber / beachesEvaluated).toFixed(4)) : 0,
+      cap_changes_which_coast_is_calmer: capChangesTheRanking,
+      largest_gap_m: Number(maxCapGapM.toFixed(2)),
     },
     // Η ΜΟΝΗ ΠΟΥ ΣΤΕΛΝΕΙ ΚΩΔΙΚΑ ΠΙΣΩ ΕΙΝΑΙ Η Β. Βλ. το ΟΡΙΟ στην κορυφή:
     // ο κριτής των 4,2 χλμ. δεν μπορεί να δει όρμο 200 μ., άρα αποτυχία της Γ
