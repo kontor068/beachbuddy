@@ -15,6 +15,8 @@ import { processForecastData } from '../utils/weatherUtils'; // Assuming I move 
 import { athensNow } from '../utils/athensTime';
 import { getLocalWeatherFixture } from '../utils/weatherFixtures';
 import { loadGeospatialExposureProfiles, type GeospatialExposureProfileLookup } from '../services/geospatialExposureService';
+import { resolveBeachMarinePoints, marinePointKey, type MarinePoint } from '../utils/marineSamplePoints';
+import type { MarineForecastItem } from '../services/weatherService';
 
 /**
  * Freshness of the forecast currently held in state, derived from its real fetch time.
@@ -100,6 +102,37 @@ interface BeachForecastCluster {
   lon: number;
   beachIds: number[];
 }
+
+/**
+ * The sea each beach reads, keyed so App can hand every beach its own wave.
+ *
+ * Raw hourly items rather than finished forecasts on purpose: the day and the slider hour are
+ * App's to choose, and building 133 DailyForecast[] arrays here would rebuild them on every
+ * region load whether or not anyone looked at them.
+ */
+export interface BeachMarineContext {
+  /** Marine hourly items per point key (utils/marineSamplePoints.marinePointKey). */
+  itemsByKey: Map<string, MarineForecastItem[]>;
+  /** beachId → point key. Beaches with no geometry of their own map to `regionKey`. */
+  keyByBeachId: Map<number, string>;
+  regionKey: string;
+  /** The region this belongs to, so a caller cannot apply one region's seas to another's beaches. */
+  islandId: string;
+}
+
+/**
+ * How long first paint may wait for the region's geometry before giving up on per-beach seas.
+ *
+ * The exposure JSON runs to ~236 KB for the largest region, and the marine coordinates cannot be
+ * chosen without it. App already blocks the map on this same file (isMapExposureLoading) and
+ * starts loading it on region change, and geospatialExposureService caches it per region id, so
+ * on the normal path this promise is already settled or nearly so and the wait is zero.
+ *
+ * On a cold, slow connection we would rather paint the region's sea than an empty page — so this
+ * caps the wait, and the background pass below re-tries without a limit. That is the one case
+ * where the figure changes after load, and it is bounded to slow first visits.
+ */
+const PER_BEACH_MARINE_PROFILE_TIMEOUT_MS = 2500;
 
 const roundToCluster = (value: number, step: number): number => Math.round(value / step) * step;
 
@@ -261,6 +294,72 @@ const resolveClusterMarinePoint = (
   };
 };
 
+/**
+ * Ask the wave model about every beach's OWN shore, in one batched sweep.
+ *
+ * Until 01/08/2026 every beach in a region was scored from the region's single sea point — 40
+ * beaches on Lemnos, 129 on Evia, one number. Γομάτι (faces NE) and Κάσπακας (faces W), 11 km
+ * apart on opposite coasts, both printed 1,3 m while ewam said 1,80 and 1,20 at their own shores.
+ * The per-cluster marine leg below existed, but nothing ever read a wave out of it.
+ *
+ * WIND IS NOT TOUCHED. It stays the region's, at the region's point, and so do temperature,
+ * weather and the freshness clock — a wind field does not change basin the way a wave field does
+ * around a headland, and the Beaufort figure drives the safety-critical colours.
+ * scripts/validateBeachMarineResolution.mjs asserts that separation by object identity.
+ *
+ * Memory-only (`persist: false`): one marine point is ~35 KB, so Evia's would write ~4 MB and
+ * trip the quota handler in weatherService, which empties EVERY weather cache key when it fires.
+ * A reload costs 2-5 batched requests instead of the whole cache.
+ */
+const loadBeachMarine = async (
+  island: Island,
+  regionPoint: MarinePoint,
+  options: { timeoutMs?: number } = {}
+): Promise<BeachMarineContext | null> => {
+  try {
+    const profilesPromise = loadGeospatialExposureProfiles(island.id).catch(() => undefined);
+
+    let profiles: GeospatialExposureProfileLookup | undefined;
+    if (options.timeoutMs) {
+      let timer: number | undefined;
+      const timeout = new Promise<undefined>(resolve => {
+        timer = window.setTimeout(() => resolve(undefined), options.timeoutMs);
+      });
+      profiles = await Promise.race([profilesPromise, timeout]);
+      if (timer !== undefined) window.clearTimeout(timer);
+    } else {
+      profiles = await profilesPromise;
+    }
+    if (!profiles) return null;
+
+    const resolution = resolveBeachMarinePoints(island.beaches, profiles, regionPoint);
+    // The region point is already fetched by loadWeatherData's own marine leg, which persists it.
+    // Asking for it again here would either duplicate the request or demote that cache entry to
+    // memory-only, so it is excluded and beaches without geometry read it through `regionKey`.
+    const ownShorePoints = resolution.points.filter(
+      point => marinePointKey(point.lat, point.lon) !== resolution.regionKey
+    );
+    if (ownShorePoints.length === 0) return null;
+
+    const byPoint = await fetchMarineForecastDataBatch(ownShorePoints, { persist: false });
+    const itemsByKey = new Map<string, MarineForecastItem[]>();
+    for (const [key, result] of byPoint) {
+      if (result.data.length > 0) itemsByKey.set(key, result.data);
+    }
+    if (itemsByKey.size === 0) return null;
+
+    return {
+      itemsByKey,
+      keyByBeachId: resolution.keyByBeachId,
+      regionKey: resolution.regionKey,
+      islandId: island.id,
+    };
+  } catch (error) {
+    console.warn('Per-beach sea unavailable; beaches read the region cell.', error);
+    return null;
+  }
+};
+
 const fetchBeachForecastContexts = async (island: Island): Promise<Record<number, BeachForecastContext>> => {
   const clusters = buildBeachForecastClusters(island.beaches);
   if (clusters.length === 0) return {};
@@ -333,6 +432,9 @@ export const useWeather = (selectedIsland: Island | undefined, language: Languag
   // forecast as absent until it actually matches the selected region.
   const [forecastIslandId, setForecastIslandId] = useState<string | null>(null);
   const [beachForecasts, setBeachForecasts] = useState<Record<number, BeachForecastContext>>({});
+  // Each beach's own sea. Lands in the SAME state commit as `forecast` on the normal path, so the
+  // first wave figure the page paints is already the beach's own — no flip from the region value.
+  const [beachMarine, setBeachMarine] = useState<BeachMarineContext | null>(null);
   const [beachForecastsLoading, setBeachForecastsLoading] = useState(false);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -359,6 +461,7 @@ export const useWeather = (selectedIsland: Island | undefined, language: Languag
       setForecast(null);
       setForecastIslandId(null);
       setForecastFetchedAt(null);
+      setBeachMarine(null);
       setSelectedDayIndex(getDefaultDayIndex());
     }
 
@@ -392,7 +495,11 @@ export const useWeather = (selectedIsland: Island | undefined, language: Languag
     const lon = selectedIsland.coordinates.lon;
     const marinePoint = MARINE_POINT_OVERRIDES[selectedIsland.id] ?? { lat, lon };
 
-    const [weatherResult, forecastResult, marineResult] = await Promise.allSettled([
+    // The per-beach sea rides along here rather than in the background pass below, so the first
+    // wave figure painted is already each beach's own. It runs CONCURRENTLY with the three legs
+    // that were always here and resolves against a timeout, so it can delay first paint by at
+    // most PER_BEACH_MARINE_PROFILE_TIMEOUT_MS and normally by nothing at all.
+    const [weatherResult, forecastResult, marineResult, beachMarineResult] = await Promise.allSettled([
       fetchWeatherData(lat, lon),
       fetchForecastData(lat, lon),
       fetchMarineForecastData(marinePoint.lat, marinePoint.lon)
@@ -401,9 +508,16 @@ export const useWeather = (selectedIsland: Island | undefined, language: Languag
           console.warn('Marine forecast unavailable; using wind-based sea estimates.', error);
           return [];
         }),
+      loadBeachMarine(selectedIsland, marinePoint, { timeoutMs: PER_BEACH_MARINE_PROFILE_TIMEOUT_MS }),
     ]);
 
     if (requestIdRef.current !== requestId) return;
+
+    // Set before the forecast below, so React commits both in one render and the wave figure is
+    // never painted from the region cell first. A null here is not a failure: the region's own
+    // sea still applies and every beach keeps its SMB floor.
+    const perBeachSea = beachMarineResult.status === 'fulfilled' ? beachMarineResult.value : null;
+    setBeachMarine(perBeachSea);
 
     const failures: string[] = [];
 
@@ -455,6 +569,19 @@ export const useWeather = (selectedIsland: Island | undefined, language: Languag
     setError(null);
 
     const islandForBackgroundForecasts = selectedIsland;
+
+    // Only when the urgent attempt gave up on the geometry timeout. Without this a slow first
+    // visit would keep the region's sea for the whole session; with it the beach's own figure
+    // arrives a beat late, which is the one case where the number changes after load.
+    if (!perBeachSea) {
+      scheduleBackgroundTask(() => {
+        void loadBeachMarine(islandForBackgroundForecasts, marinePoint).then(late => {
+          if (requestIdRef.current !== requestId || !late) return;
+          setBeachMarine(late);
+        });
+      });
+    }
+
     setBeachForecastsLoading(true);
     scheduleBackgroundTask(() => {
       fetchBeachForecastContexts(islandForBackgroundForecasts)
@@ -482,6 +609,7 @@ export const useWeather = (selectedIsland: Island | undefined, language: Languag
       setForecastIslandId(null);
       setForecastFetchedAt(null);
       setBeachForecasts({});
+      setBeachMarine(null);
       setBeachForecastsLoading(false);
       setLoading(false);
     }
@@ -532,6 +660,10 @@ export const useWeather = (selectedIsland: Island | undefined, language: Languag
     forecast,
     forecastIslandId,
     beachForecasts,
+    // Each beach's own sea, for callers that build per-beach forecasts (App.beachMarineDayById).
+    // Gate this on `forecastIslandId` the same way the forecast is: it carries its own islandId
+    // so one region's seas can never be applied to another region's beaches.
+    beachMarine,
     beachForecastsLoading,
     loading,
     error,
