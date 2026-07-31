@@ -43,6 +43,7 @@
     "quality:verdicts": "node scripts/validateVerdictConsistency.mjs",
     "quality:wave-display": "node scripts/validateWaveDisplayAgreement.mjs",
     "quality:marine-models": "node scripts/validateMarineModelParsing.mjs",
+    "quality:marine-resolution": "node scripts/validateBeachMarineResolution.mjs",
     "content:audit": "node scripts/auditStaticBeachContent.mjs",
     "seo:audit": "node scripts/auditSeoPrerender.mjs",
     "seo:prod:audit": "node scripts/auditProductionSeo.mjs",
