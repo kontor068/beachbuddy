@@ -1,0 +1,206 @@
+{
+  "generatedAt": "2026-07-31T15:52:58.596575+00:00",
+  "window": {
+    "start": "2025-07-15",
+    "end": "2025-08-05"
+  },
+  "judge_dataset": "cmems_mod_med_wav_anfc_4.2km_PT1H-i",
+  "gates": {
+    "min_copernicus_contrast_m": 0.3,
+    "min_correct_sign_ratio": 0.9,
+    "max_lee_mean_underestimate_m": 0.25,
+    "severe_underestimate_m": 0.5,
+    "max_severe_underestimate_ratio": 0.05,
+    "ewam_rmse_must_beat_previous_on_lee": true
+  },
+  "per_island": [
+    {
+      "island": "Crete (Chania)",
+      "separation_km": 26.9,
+      "meltemi_hours": 45,
+      "cells": {
+        "windward": {
+          "lat": 35.5625,
+          "lon": 23.666667938232422,
+          "distance_km": 7.1
+        },
+        "leeward": {
+          "lat": 35.22916793823242,
+          "lon": 23.541667938232422,
+          "distance_km": 4.8
+        }
+      },
+      "windward_beach": "Μαύρος Μώλος",
+      "leeward_beach": "Κεδρόδασος",
+      "models": {
+        "copernicus": {
+          "n": 45,
+          "mean_contrast_m": -0.082
+        },
+        "ewam": {
+          "n": 45,
+          "mean_contrast_m": -0.135,
+          "lee_vs_copernicus_mean_m": 0.359
+        },
+        "meteofrance_wave": {
+          "n": 45,
+          "mean_contrast_m": -0.047,
+          "lee_vs_copernicus_mean_m": 0.303
+        }
+      }
+    },
+    {
+      "island": "Crete (Lasithi)",
+      "separation_km": 22.0,
+      "meltemi_hours": 87,
+      "cells": {
+        "windward": {
+          "lat": 35.27083206176758,
+          "lon": 26.08333396911621,
+          "distance_km": 5.7
+        },
+        "leeward": {
+          "lat": 34.97916793823242,
+          "lon": 26.000001907348633,
+          "distance_km": 6.0
+        }
+      },
+      "windward_beach": "Trachilias Beach",
+      "leeward_beach": "Διασκάρι",
+      "models": {
+        "copernicus": {
+          "n": 87,
+          "mean_contrast_m": 0.891
+        },
+        "ewam": {
+          "n": 87,
+          "mean_contrast_m": 0.851,
+          "lee_vs_copernicus_mean_m": -0.096
+        },
+        "meteofrance_wave": {
+          "n": 87,
+          "mean_contrast_m": 0.518,
+          "lee_vs_copernicus_mean_m": 0.091
+        }
+      }
+    },
+    {
+      "island": "Lesvos",
+      "separation_km": 26.0,
+      "meltemi_hours": 100,
+      "cells": {
+        "windward": {
+          "lat": 39.27083206176758,
+          "lon": 26.45833396911621,
+          "distance_km": 3.8
+        },
+        "leeward": {
+          "lat": 38.97916793823242,
+          "lon": 26.58333396911621,
+          "distance_km": 5.4
+        }
+      },
+      "windward_beach": "Πυραμιές",
+      "leeward_beach": "Μπάκερος",
+      "models": {
+        "copernicus": {
+          "n": 100,
+          "mean_contrast_m": -0.191
+        },
+        "ewam": {
+          "n": 100,
+          "mean_contrast_m": -0.128,
+          "lee_vs_copernicus_mean_m": -0.106
+        },
+        "meteofrance_wave": {
+          "n": 100,
+          "mean_contrast_m": -0.16,
+          "lee_vs_copernicus_mean_m": 0.158
+        }
+      }
+    },
+    {
+      "island": "Crete (Rethymno)",
+      "separation_km": 21.8,
+      "meltemi_hours": 132,
+      "cells": {
+        "windward": {
+          "lat": 35.39583206176758,
+          "lon": 24.33333396911621,
+          "distance_km": 5.0
+        },
+        "leeward": {
+          "lat": 35.14583206176758,
+          "lon": 24.416667938232422,
+          "distance_km": 2.3
+        }
+      },
+      "windward_beach": "Παραλία Επισκοπής",
+      "leeward_beach": "Σχοινάρια",
+      "models": {
+        "copernicus": {
+          "n": 132,
+          "mean_contrast_m": 0.268
+        },
+        "ewam": {
+          "n": 132,
+          "mean_contrast_m": 0.063,
+          "lee_vs_copernicus_mean_m": 0.032
+        },
+        "meteofrance_wave": {
+          "n": 132,
+          "mean_contrast_m": 0.01,
+          "lee_vs_copernicus_mean_m": 0.178
+        }
+      }
+    }
+  ],
+  "summary": {
+    "mean_lee_shore_contrast_m": {
+      "copernicus": 0.247,
+      "ewam": 0.174,
+      "meteofrance_wave": 0.078
+    },
+    "correct_sign_ratio": {
+      "copernicus": 0.577,
+      "ewam": 0.522,
+      "meteofrance_wave": 0.47
+    },
+    "lee_shore_error_vs_copernicus_m": {
+      "ewam": 0.004,
+      "meteofrance_wave": 0.167
+    },
+    "lee_shore_rmse_vs_copernicus_m": {
+      "ewam": 0.212,
+      "meteofrance_wave": 0.203
+    }
+  },
+  "verdict": {
+    "passed": false,
+    "gates": {
+      "copernicus_sees_a_real_lee_shore_difference": {
+        "pass": false,
+        "mean_contrast_m": 0.247,
+        "threshold_m": 0.3
+      },
+      "difference_has_the_right_sign": {
+        "pass": false,
+        "ratio": 0.577,
+        "threshold": 0.9,
+        "n": 364
+      },
+      "ewam_does_not_under_read_the_lee_shore": {
+        "pass": true,
+        "mean_error_m": 0.004,
+        "severe_ratio": 0.0,
+        "severe_incidents": 0,
+        "n": 364
+      },
+      "ewam_closer_to_the_judge_than_the_model_it_replaced": {
+        "pass": false,
+        "ewam_rmse_m": 0.212,
+        "previous_rmse_m": 0.203
+      }
+    }
+  }
+}
