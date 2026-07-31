@@ -399,12 +399,16 @@ def main():
         for model in OPEN_METEO_MODELS:
             errs, prs = [], []
             for hour in meltemi:
-                judge = cop["leeward"].get(hour)
+                # ΟΧΙ `judge` εδώ: αυτό το όνομα κρατά το λεξικό ΟΛΩΝ των σημείων που
+                # κατέβηκε μία φορά παραπάνω. Η επανάχρησή του για μία τιμή το έσβηνε στην
+                # πρώτη επανάληψη και το δεύτερο νησί έσκαγε με 'float' has no attribute
+                # 'get' — αφού είχε ήδη κατέβει όλο το ακριβό κομμάτι.
+                judged_m = cop["leeward"].get(hour)
                 pred = sources[model]["leeward"].get(hour)
-                if judge is None or pred is None:
+                if judged_m is None or pred is None:
                     continue
-                errs.append(pred - judge)
-                prs.append((pred, judge))
+                errs.append(pred - judged_m)
+                prs.append((pred, judged_m))
             lee_error[model].extend(errs)
             lee_rmse_pairs[model].extend(prs)
             if errs:
