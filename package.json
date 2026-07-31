@@ -70,6 +70,7 @@
     "quality:data-coverage": "node scripts/auditDataFieldCoverage.mjs",
     "quality:photo-coverage": "node scripts/auditBeachPhotoPresence.mjs && node scripts/auditPhotoImportanceGaps.mjs && node scripts/auditNameCollisionPhotos.mjs",
     "backup:private": "node scripts/backupPrivateDocs.mjs",
+    "validate:effective-ranking": "node scripts/validateEffectiveRanking.mjs",
     "quality:hreflang-build": "node scripts/auditHreflangIntegrity.mjs",
     "quality:jsonld-coverage": "node scripts/auditJsonLdCoverage.mjs",
     "quality:orphan-pages": "node scripts/auditOrphanPages.mjs",
