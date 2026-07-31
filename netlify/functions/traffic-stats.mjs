@@ -386,9 +386,16 @@ const page = (data) => {
   // The map layers travel to the client as data so the live overlay can be redrawn
   // every few seconds without a page reload — and so a visitor who comes back is
   // never drawn twice (green wins over red by construction).
+  // Greek names only for the countries that actually appear, so the payload does
+  // not carry a whole atlas the page will never use.
+  const seenCodes = new Set([...live, ...todayPoints, ...earlierPoints].map((p) => p.cc));
+  const names = {};
+  for (const cc of seenCodes) names[cc] = COUNTRY_NAMES_EL[cc] || (cc && cc !== '??' ? cc : 'Άγνωστη');
+
   const payload = JSON.stringify({
     live,
     pulse,
+    names,
     nowMin,
     today: todayPoints,
     earlier: earlierPoints,
@@ -465,6 +472,16 @@ const page = (data) => {
   .kpi.act{border-color:rgba(251,191,36,.28)}
   .kpi.act .v{color:var(--am)}
 
+  /* Two views, because they answer different questions: the map view is "who is
+     out there right now", the stats view is "how is the site doing". */
+  .tabs{display:flex;gap:6px;margin:0 0 14px;border-bottom:1px solid var(--line);padding-bottom:0}
+  .tab{appearance:none;border:0;background:none;color:var(--mut);cursor:pointer;
+    font:650 13.5px system-ui,sans-serif;padding:9px 15px 11px;border-bottom:2px solid transparent;
+    margin-bottom:-1px;border-radius:8px 8px 0 0;transition:color .15s,border-color .15s}
+  .tab:hover{color:var(--txt)}
+  .tab.on{color:#a5f3fc;border-bottom-color:var(--cy);background:rgba(34,211,238,.07)}
+  .tab:focus-visible{outline:2px solid var(--cy);outline-offset:2px}
+
   .panel{background:var(--panel);border:1px solid var(--line);border-radius:16px;padding:16px 16px 14px;margin-bottom:14px}
   .panel h2{display:flex;align-items:baseline;gap:8px;font-size:11.5px;letter-spacing:.07em;text-transform:uppercase;
     color:var(--mut);margin:0 0 12px;font-weight:700}
@@ -521,6 +538,42 @@ const page = (data) => {
   .zooms button{border:1px solid var(--line);background:rgba(6,11,22,.72);color:var(--mut);
     border-radius:8px;padding:5px 10px;font:600 11.5px system-ui,sans-serif;cursor:pointer;backdrop-filter:blur(4px)}
   .zooms button.on{color:#a5f3fc;border-color:rgba(34,211,238,.5);background:rgba(34,211,238,.14)}
+  .zooms button:focus-visible{outline:2px solid var(--cy);outline-offset:2px}
+
+  /* Map view: the stage spans the full page and can go true full-screen. */
+  #mapStage{padding-bottom:16px}
+  #mapStage:fullscreen{background:var(--bg);padding:18px;overflow:auto;border-radius:0}
+  #mapStage:fullscreen .mapwrap{height:calc(100vh - 230px)}
+  #mapStage:fullscreen svg.map{width:100%;height:100%}
+  .fsbtn{position:absolute;top:10px;left:10px;z-index:2;border:1px solid var(--line);
+    background:rgba(6,11,22,.72);color:var(--mut);border-radius:8px;padding:5px 10px;
+    font:600 11.5px system-ui,sans-serif;cursor:pointer;backdrop-filter:blur(4px)}
+  .fsbtn:hover{color:#a5f3fc;border-color:rgba(34,211,238,.5)}
+  .fsbtn:focus-visible{outline:2px solid var(--cy);outline-offset:2px}
+  .fslabel{margin-left:5px}
+  /* On a phone the label would slide under the zoom presets — keep just the glyph. */
+  @media(max-width:640px){.fslabel{display:none}.fsbtn{padding:5px 8px}}
+
+  /* Who is inside, laid out under a full-width map instead of beside it. */
+  .whosgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:0 22px}
+  @media(max-width:860px){.whosgrid{grid-template-columns:repeat(2,1fr)}}
+  @media(max-width:560px){.whosgrid{grid-template-columns:1fr}}
+
+  /* Composition of everyone currently drawn on the map. */
+  .compo{display:flex;height:30px;border-radius:9px;overflow:hidden;background:rgba(148,163,184,.10);margin-bottom:10px}
+  .compo i{display:flex;align-items:center;justify-content:center;font:700 11.5px var(--mono);
+    color:#06121f;min-width:0;transition:flex-grow .35s ease}
+  .compokey{display:flex;flex-wrap:wrap;gap:16px;font-size:12.5px;color:var(--mut)}
+  .compokey b{color:var(--txt);font-family:var(--mono)}
+  .compokey i{display:inline-block;width:9px;height:9px;border-radius:50%;margin-right:6px;vertical-align:-1px}
+
+  /* Country/city rows that carry their own new-vs-returning split. */
+  ul.split{list-style:none;margin:0;padding:0}
+  ul.split li{display:grid;grid-template-columns:1fr 96px 44px;align-items:center;gap:9px;padding:5px 0;font-size:13px}
+  ul.split .sl{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  ul.split .sb{display:flex;height:8px;border-radius:4px;overflow:hidden;background:rgba(148,163,184,.12)}
+  ul.split .sb i{display:block;height:100%}
+  ul.split .sn{text-align:right;font:600 12.5px var(--mono);font-variant-numeric:tabular-nums}
 
   .livecols{display:grid;grid-template-columns:1.6fr 1fr;gap:14px;align-items:start}
   @media(max-width:860px){.livecols{grid-template-columns:1fr}}
@@ -657,8 +710,14 @@ const page = (data) => {
   ${kpi('Άνοιξαν παραλία', `${beachPct}%`, navPeople ? `${num(navPeople)} ζήτησαν οδηγίες` : `${num(navActions)} κλικ «Οδηγίες»`, '', 'act')}
 </div>
 
-<section class="panel">
-  <h2>Ο κόσμος αυτή τη στιγμή<em>πάτα ένα πλακίδιο για να το κρύψεις από τον χάρτη</em></h2>
+<nav class="tabs" role="tablist">
+  <button type="button" class="tab on" data-tab="map" role="tab" aria-selected="true">🌍 Χάρτης</button>
+  <button type="button" class="tab" data-tab="stats" role="tab" aria-selected="false">📊 Στατιστικά</button>
+</nav>
+
+<div id="tabMap" role="tabpanel">
+<section class="panel" id="mapStage">
+  <h2>Ο κόσμος αυτή τη στιγμή<em>πάτα ένα πλακίδιο για να κρύψεις αυτούς τους ανθρώπους — φεύγουν και από τα στατιστικά πιο κάτω</em></h2>
   <div class="legend">
     <button type="button" class="lg on" data-layer="live" style="--c:#34d399">
       <span class="lgoff">κρυφό</span>
@@ -685,9 +744,10 @@ const page = (data) => {
       <span class="lgs" id="lgOldSub">πριν από σήμερα</span>
     </button>
   </div>
-  <div class="livecols">
+  <div>
     <div>
       <div class="mapwrap">
+        <button type="button" class="fsbtn" id="fsBtn" title="Πλήρης οθόνη" aria-label="Πλήρης οθόνη">⛶<span class="fslabel" id="fsLabel">Πλήρης οθόνη</span></button>
         <div class="zooms">
           <button data-vb="0 0 ${WORLD_W} ${WORLD_H}" class="on">Κόσμος</button>
           <button data-vb="440 40 210 120">Ευρώπη</button>
@@ -713,20 +773,38 @@ const page = (data) => {
         γκρι = ο browser τους μπλοκάρει την αποθήκευση, δεν ξέρουμε αν είναι νέοι ή παλιοί</span>
       </div>
     </div>
-    <div>
-      <h2 style="margin-bottom:8px">Ποιοι είναι μέσα<em>τελευταία ${LIVE_MINUTES} λεπτά</em></h2>
-      <ul class="whos" id="whos"></ul>
-    </div>
   </div>
 </section>
 
-${funnelPanel(totals.funnel, totals.actions, sumUnique)}
+<section class="panel">
+  <h2>Ποιοι είναι μέσα αυτή τη στιγμή<em>τελευταία ${LIVE_MINUTES} λεπτά</em></h2>
+  <ul class="whos whosgrid" id="whos"></ul>
+</section>
+
+<section class="panel">
+  <h2>Στατιστικά αυτών που φαίνονται στον χάρτη<em id="cohortScope">—</em></h2>
+  <div class="compo" id="compo"></div>
+  <div class="compokey" id="compoKey"></div>
+  <div class="grid3" style="margin-top:16px">
+    <div><h2>Χώρες</h2><ul class="split" id="cohortCountries"></ul></div>
+    <div><h2>Πόλεις</h2><ul class="split" id="cohortCities"></ul></div>
+    <div><h2>Συσκευές</h2><ul class="split" id="cohortDevices"></ul></div>
+  </div>
+  <p class="note">Κάθε μπάρα σπάει σε <b style="color:#34d399">μέσα τώρα</b> ·
+  <b style="color:#fbbf24">νέους</b> · <b style="color:#f472b6">παλιούς</b> ·
+  <b style="color:#94a3b8">άγνωστους</b>. Μετράνε άνθρωποι, όχι κουκκίδες — σε μια πόλη μπορεί να πέφτουν πολλοί.</p>
+</section>
 
 <section class="panel">
   <h2>Παλμός τελευταίας ώρας<em>μοναδικοί ενεργοί ανά λεπτό</em></h2>
   <div class="pulse" id="pulse"></div>
   <div class="pulseax"><span>−60 λ.</span><span>−30 λ.</span><span>τώρα</span></div>
 </section>
+</div>
+
+<div id="tabStats" role="tabpanel" hidden>
+
+${funnelPanel(totals.funnel, totals.actions, sumUnique)}
 
 <section class="panel">
   <h2>Ημερήσια πορεία<em>από την πρώτη μέρα μέτρησης — καμία μέρα χωρίς μέτρηση δεν εμφανίζεται</em></h2>
@@ -785,6 +863,7 @@ ${funnelPanel(totals.funnel, totals.actions, sumUnique)}
     })()}
   </ul>
 </section>
+</div>
 
 <footer class="meth">
   <b>Πώς διαβάζονται οι αριθμοί.</b>
@@ -810,9 +889,11 @@ ${funnelPanel(totals.funnel, totals.actions, sumUnique)}
   // Which layers the board has switched on. Toggling is view-only: nothing is
   // recounted, so the numbers on the cells never move when you hide a layer.
   var show = { live: true, new: true, ret: true, old: true };
-  // hash → 'new' | 'ret' | 'unk', rebuilt on every render from today's map data.
-  // Lets the "who is inside" list say new-or-returning without a second lookup.
+  // hash → 'new' | 'ret' | 'unk' and hash → device, rebuilt on every render from
+  // today's map data. Lets the live records — which carry neither — be described
+  // as new-or-returning and by device without a second round trip.
   var kindOf = {};
+  var devOf = {};
 
   function px(lon){ return (lon + 180) / 360 * D.w; }
   function py(lat){ return (D.latTop - lat) / 360 * D.w; }
@@ -919,6 +1000,116 @@ ${funnelPanel(totals.funnel, totals.actions, sumUnique)}
       .join('');
   }
 
+  // ── statistics for exactly the people drawn on the map ─────────────────────
+  // Not the window rollup: this counts the dots that are actually on screen, so
+  // hiding a layer removes those people from the tables below too. That is what
+  // "the visitors you can see" has to mean for the numbers to be trusted.
+
+  var STATE_COLOR = { live: '#34d399', new: '#fbbf24', ret: '#f472b6', unk: '#94a3b8' };
+  var STATE_NAME = { live: 'μέσα τώρα', new: 'νέοι', ret: 'παλιοί', unk: 'άγνωστοι' };
+  var DEVICE_NAME = { mobile: '📱 Κινητό', desktop: '💻 Υπολογιστής', tablet: '📱 Tablet' };
+
+  /** Every visitor currently rendered, tagged with the state that drew them. */
+  function visible() {
+    var s = split();
+    var out = [];
+    var push = function (arr, state) {
+      arr.forEach(function (p) {
+        out.push({
+          state: state,
+          cc: p.cc,
+          city: p.city,
+          name: p.name || D.names[p.cc] || p.cc,
+          dev: p.d || devOf[p.h] || '',
+        });
+      });
+    };
+    if (show.live) {
+      s.live.forEach(function (l) {
+        out.push({ state: 'live', cc: l.cc, city: l.city, name: l.name, dev: devOf[l.h] || '' });
+      });
+    }
+    if (show.new) push(s.fresh, 'new');
+    if (show.ret) {
+      push(s.back.filter(function (p) { return p.k === 'ret'; }), 'ret');
+      push(s.back.filter(function (p) { return p.k === 'unk'; }), 'unk');
+    }
+    if (show.old) {
+      // Earlier days keep their own new/returning label rather than collapsing
+      // into one grey "old" bucket — that split is the whole question.
+      ['new', 'ret', 'unk'].forEach(function (k) {
+        push(s.old.filter(function (p) { return p.k === k; }), k === 'unk' ? 'unk' : k);
+      });
+    }
+    return out;
+  }
+
+  /** Group by a key and count each state inside it, biggest group first. */
+  function tally(rows, keyFn, labelFn) {
+    var m = {};
+    rows.forEach(function (r) {
+      var k = keyFn(r);
+      if (k === '' || k == null) return;
+      if (!m[k]) m[k] = { label: labelFn(r, k), n: 0, live: 0, new: 0, ret: 0, unk: 0 };
+      m[k].n++;
+      m[k][r.state]++;
+    });
+    return Object.keys(m).map(function (k) { return m[k]; }).sort(function (a, b) { return b.n - a.n; });
+  }
+
+  function splitRows(box, groups, limit) {
+    if (!groups.length) { box.innerHTML = '<li class="dim">Κανείς ορατός</li>'; return; }
+    var max = groups[0].n;
+    box.innerHTML = groups.slice(0, limit).map(function (g) {
+      var seg = ['live', 'new', 'ret', 'unk'].map(function (s) {
+        return g[s] ? '<i style="width:' + ((g[s] / g.n) * 100).toFixed(1) + '%;background:' + STATE_COLOR[s] + '" title="' + g[s] + ' ' + STATE_NAME[s] + '"></i>' : '';
+      }).join('');
+      return '<li><span class="sl">' + esc(g.label) + '</span>' +
+        '<span class="sb" style="width:' + Math.max(18, (g.n / max) * 100).toFixed(1) + '%">' + seg + '</span>' +
+        '<span class="sn">' + g.n.toLocaleString('el-GR') + '</span></li>';
+    }).join('');
+  }
+
+  function renderCohort() {
+    var rows = visible();
+    var total = rows.length;
+    var counts = { live: 0, new: 0, ret: 0, unk: 0 };
+    rows.forEach(function (r) { counts[r.state]++; });
+
+    var scope = [];
+    if (show.live) scope.push('μέσα τώρα');
+    if (show.new) scope.push('νέοι');
+    if (show.ret) scope.push('παλιοί');
+    if (show.old) scope.push('προηγούμενες μέρες');
+    document.getElementById('cohortScope').textContent =
+      total + (total === 1 ? ' άνθρωπος' : ' άνθρωποι') + ' · ' +
+      (scope.length === 4 ? 'όλα όσα δείχνει ο χάρτης' : scope.join(' + ') || 'τίποτα επιλεγμένο');
+
+    var bar = document.getElementById('compo');
+    bar.innerHTML = total
+      ? ['live', 'new', 'ret', 'unk'].map(function (s) {
+          if (!counts[s]) return '';
+          var pct = (counts[s] / total) * 100;
+          return '<i style="flex:' + counts[s] + ';background:' + STATE_COLOR[s] + '" title="' +
+            counts[s] + ' ' + STATE_NAME[s] + '">' + (pct >= 9 ? Math.round(pct) + '%' : '') + '</i>';
+        }).join('')
+      : '';
+    document.getElementById('compoKey').innerHTML = total
+      ? ['live', 'new', 'ret', 'unk'].filter(function (s) { return counts[s]; }).map(function (s) {
+          return '<span><i style="background:' + STATE_COLOR[s] + '"></i>' + STATE_NAME[s] +
+            ' <b>' + counts[s].toLocaleString('el-GR') + '</b></span>';
+        }).join('')
+      : '<span class="dim">Δεν φαίνεται κανείς — άναψε ξανά ένα πλακίδιο.</span>';
+
+    splitRows(document.getElementById('cohortCountries'),
+      tally(rows, function (r) { return r.cc; }, function (r) { return r.cc + ' · ' + r.name; }), 12);
+    splitRows(document.getElementById('cohortCities'),
+      tally(rows, function (r) { return r.city; },
+        function (r, k) { return k.replace(/_/g, ' ') + ' (' + r.cc + ')'; }), 12);
+    splitRows(document.getElementById('cohortDevices'),
+      tally(rows, function (r) { return r.dev; }, function (r, k) { return DEVICE_NAME[k] || k; }), 5);
+  }
+
   function renderPulse() {
     var box = document.getElementById('pulse');
     var max = 1;
@@ -952,7 +1143,8 @@ ${funnelPanel(totals.funnel, totals.actions, sumUnique)}
     // count is lower — several visitors from one city merge into one dot.)
     var s = split();
     kindOf = {};
-    D.today.forEach(function (p) { kindOf[p.h] = p.k; });
+    devOf = {};
+    D.today.forEach(function (p) { kindOf[p.h] = p.k; devOf[p.h] = p.d; });
     var liveNew = D.live.filter(function (l) { return kindOf[l.h] === 'new'; }).length;
     var liveRet = D.live.filter(function (l) { return kindOf[l.h] === 'ret'; }).length;
     // Anyone whose browser blocks storage stays in their own bucket rather than
@@ -972,7 +1164,7 @@ ${funnelPanel(totals.funnel, totals.actions, sumUnique)}
       : 'είχαν ξανάρθει';
     document.getElementById('lgOldSub').textContent = 'πριν από σήμερα, σε ' + D.mapDays + ' μέρες';
 
-    renderMap(); renderWho(); renderPulse();
+    renderMap(); renderWho(); renderPulse(); renderCohort();
   }
 
   function set(id, v) {
@@ -987,7 +1179,43 @@ ${funnelPanel(totals.funnel, totals.actions, sumUnique)}
       cell.className = 'lg ' + (show[key] ? 'on' : 'off');
       cell.setAttribute('aria-pressed', String(show[key]));
       renderMap();
+      renderCohort(); // the tables below describe the dots, so they move together
     });
+  });
+
+  // Tabs. The map view is the default — it answers "what is happening right now",
+  // which is the reason to open this page at all. The choice is remembered.
+  var TAB_KEY = 'cb_traffic_tab';
+  function showTab(name) {
+    document.getElementById('tabMap').hidden = name !== 'map';
+    document.getElementById('tabStats').hidden = name !== 'stats';
+    Array.prototype.forEach.call(document.querySelectorAll('.tab'), function (t) {
+      var on = t.dataset.tab === name;
+      t.className = 'tab' + (on ? ' on' : '');
+      t.setAttribute('aria-selected', String(on));
+    });
+    try { localStorage.setItem(TAB_KEY, name); } catch (e) {}
+  }
+  Array.prototype.forEach.call(document.querySelectorAll('.tab'), function (t) {
+    t.addEventListener('click', function () { showTab(t.dataset.tab); });
+  });
+  var savedTab = 'map';
+  try { savedTab = localStorage.getItem(TAB_KEY) === 'stats' ? 'stats' : 'map'; } catch (e) {}
+  showTab(savedTab);
+
+  // True full screen for the map stage — board and map together, so the numbers
+  // stay readable instead of leaving a pretty but unlabelled globe.
+  var stage = document.getElementById('mapStage');
+  var fsBtn = document.getElementById('fsBtn');
+  if (!stage.requestFullscreen) fsBtn.hidden = true;
+  fsBtn.addEventListener('click', function () {
+    if (document.fullscreenElement) document.exitFullscreen();
+    else stage.requestFullscreen().catch(function () {});
+  });
+  document.addEventListener('fullscreenchange', function () {
+    // Only the label — replacing the button's whole text would drop the glyph the
+    // phone layout relies on.
+    document.getElementById('fsLabel').textContent = document.fullscreenElement ? 'Έξοδος' : 'Πλήρης οθόνη';
   });
 
   // Zoom presets. Dot radii are recomputed against the new viewBox so a zoomed-in
@@ -1014,6 +1242,7 @@ ${funnelPanel(totals.funnel, totals.actions, sumUnique)}
         if (!j) return;
         D.live = j.live; D.pulse = j.pulse; D.nowMin = j.nowMin;
         if (j.today) D.today = j.today;
+        if (j.names) for (var c in j.names) D.names[c] = j.names[c];
         renderAll();
       })
       .catch(function () {});
@@ -1119,7 +1348,7 @@ const readDayPoints = async (store, day) => {
   const out = [];
   for (const key of await listKeys(store, `geo/${day}/`)) {
     const rest = key.slice(`geo/${day}/`.length);
-    const [hash, cc, lat, lon, city, , kind, approx] = rest.split('~');
+    const [hash, cc, lat, lon, city, device, kind, approx] = rest.split('~');
     if (seen.has(hash)) continue;
     seen.add(hash);
     if (lat === '' || lat === undefined) continue;
@@ -1132,6 +1361,7 @@ const readDayPoints = async (store, day) => {
       // 'new' first ever visit, 'ret' been here before, 'unknown' storage blocked.
       // The map keeps the three apart instead of quietly filing unknown as returning.
       k: kind === 'new' ? 'new' : kind === 'ret' ? 'ret' : 'unk',
+      d: device || '',
       approx: approx === 'a',
     });
   }
@@ -1220,10 +1450,16 @@ export const handler = async (event) => {
       // Sweep stale presence keys here too — this runs far more often than a full load.
       await mapLimit(presence.stale.slice(0, 120), 8, (k) => store.delete(k).catch(() => {}));
       const todayPoints = await readDayPoints(store, todayKey);
+      // Names travel with the refresh too: a country that only turns up after the
+      // page loaded would otherwise be labelled with its bare two-letter code.
+      const names = {};
+      for (const p of [...presence.live, ...todayPoints]) {
+        names[p.cc] = COUNTRY_NAMES_EL[p.cc] || (p.cc && p.cc !== '??' ? p.cc : 'Άγνωστη');
+      }
       return {
         statusCode: 200,
         headers: { 'Content-Type': 'application/json', 'Cache-Control': 'no-store' },
-        body: JSON.stringify({ live: presence.live, pulse: presence.pulse, nowMin, today: todayPoints }),
+        body: JSON.stringify({ live: presence.live, pulse: presence.pulse, nowMin, today: todayPoints, names }),
       };
     }
 
