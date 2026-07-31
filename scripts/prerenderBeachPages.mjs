@@ -4,6 +4,7 @@ import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { amenityTextIncludesAny, SNACK_CANTEEN_AMENITY_TERMS } from '../utils/amenityMatching.js';
 import { localWindLabelFor, getRegionWindContext, localWindSectorsFor, LOCAL_WIND_ATOMS, LOCAL_WIND_LABEL } from '../utils/localWindContext.mjs';
+import { withSeaSeasonSection } from '../utils/seaSeasonProfile.mjs';
 import { STATIC_ARTICLE_CSS } from './staticArticleTheme.mjs';
 
 const scriptDir = path.dirname(fileURLToPath(import.meta.url));
@@ -1645,6 +1646,21 @@ const beachPhotosById = await readJson(path.join(projectRoot, 'data', 'beachPhot
 const beachPhotoBlocklist = new Set(
   (await readJson(path.join(projectRoot, 'data', 'beachPhotoBlocklist.json'))).ids || [],
 );
+
+// Wave climatology (scripts/buildWaveClimatology.py) — how often the sea in front of each
+// beach is actually calm, month by month, from 10 years of Copernicus reanalysis.
+//
+// OPTIONAL ON PURPOSE. The file is produced by a Python script that needs a Copernicus
+// account, so a fresh clone, a CI box and Netlify's builder will not have it. Missing file
+// means the guides simply omit that one section — it must never break a build that has
+// nothing to do with it. `withSeaSeasonSection` returns the content untouched when the
+// climatology is null, so there is exactly one behaviour to reason about.
+const waveClimatology = await readJson(
+  path.join(projectRoot, 'data', 'waveClimatology.generated.json'),
+).catch(() => null);
+if (!waveClimatology) {
+  console.warn('  (no waveClimatology.generated.json — guides will omit the season section)');
+}
 
 // Cards are ~230px wide, so requesting the 800px original for every one of them
 // would be the single heaviest thing on the page. Wikimedia's Special:Redirect
@@ -5039,9 +5055,22 @@ const main = async () => {
       // THIS island's beaches — which of them face away from the Meltemi, by
       // name. It is the one thing on the page a template could not have written,
       // and the reason a three-beach guide is still worth publishing.
-      const content = page.intent.key === 'snorkeling'
+      const withIntentSection = page.intent.key === 'snorkeling'
         ? withSnorkelingWindSection(contentBase, page.beaches, locale.language)
         : contentBase;
+      // "When is the sea calmest here?" — real per-month percentages from 10 years of
+      // Copernicus reanalysis, appended to EVERY intent guide, not just the wind ones.
+      // A family guide and a snorkeling guide get the same question from the same visitor
+      // ("when should I come?"), and this is the only place on the site that answers it.
+      // It also makes each of these pages carry a number no template could have written,
+      // which is what separates a guide from a doorway page.
+      const content = withSeaSeasonSection(
+        withIntentSection,
+        page.beaches.map(beach => beach.id),
+        waveClimatology,
+        locale.language,
+        page.region.id,
+      );
       const intentOutputDir = outputDirForRoute(localizedPath(pathName, locale));
       await mkdir(intentOutputDir, { recursive: true });
       await writeFile(path.join(intentOutputDir, 'index.html'), buildIslandIntentPage(baseHtml, page.intent, content, page.island, page.region, page.beaches, intentOgImageUrl, locale, emittedLocales, intentHero), 'utf8');
