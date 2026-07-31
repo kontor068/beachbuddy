@@ -392,6 +392,7 @@ const page = (data) => {
     nowMin,
     today: todayPoints,
     earlier: earlierPoints,
+    mapDays: data.mapDays,
     latTop: WORLD_LAT_TOP,
     w: WORLD_W,
     h: WORLD_H,
@@ -476,8 +477,12 @@ const page = (data) => {
   .land{fill:#12203a;stroke:#22406b;stroke-width:.5;vector-effect:non-scaling-stroke}
   .grat{stroke:rgba(34,211,238,.07);stroke-width:.5;vector-effect:non-scaling-stroke;fill:none}
   .pt{transition:opacity .3s}
-  .pt-old{fill:#38bdf8;fill-opacity:.32;stroke:#38bdf8;stroke-opacity:.5;stroke-width:.6;vector-effect:non-scaling-stroke}
-  .pt-today{fill:#fb7185;fill-opacity:.55;stroke:#fda4af;stroke-width:.7;vector-effect:non-scaling-stroke}
+  /* Four states, four colours, each with its own count in the board above the map:
+     online now / new today / returning today / earlier days. */
+  .pt-old{fill:#38bdf8;fill-opacity:.30;stroke:#38bdf8;stroke-opacity:.45;stroke-width:.6;vector-effect:non-scaling-stroke}
+  .pt-new{fill:#fbbf24;fill-opacity:.72;stroke:#fde68a;stroke-width:.7;vector-effect:non-scaling-stroke}
+  .pt-ret{fill:#f472b6;fill-opacity:.72;stroke:#fbcfe8;stroke-width:.7;vector-effect:non-scaling-stroke}
+  .pt-unk{fill:#94a3b8;fill-opacity:.6;stroke:#cbd5e1;stroke-width:.7;vector-effect:non-scaling-stroke}
   .pt-live{fill:#34d399;fill-opacity:.92;stroke:#ecfdf5;stroke-width:.7;vector-effect:non-scaling-stroke}
   .pt-approx{fill-opacity:.10;stroke-dasharray:2 1.6}
   /* --z is the current zoom factor (viewBox width / world width): the halo has to
@@ -486,6 +491,30 @@ const page = (data) => {
   .halo{fill:none;stroke:#34d399;stroke-width:1;vector-effect:non-scaling-stroke;opacity:.7;animation:ping 2.6s ease-out infinite}
   @keyframes ping{0%{r:calc(var(--z) * 3px);opacity:.75}75%,100%{r:calc(var(--z) * 14px);opacity:0}}
   @media(prefers-reduced-motion:reduce){.halo{animation:none;opacity:.25}}
+  /* The map's own board. Four big, tappable cells that both EXPLAIN the colours and
+     switch each layer off — the legend is the control, so there is nothing to learn. */
+  .legend{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:12px}
+  @media(max-width:700px){.legend{grid-template-columns:repeat(2,1fr)}}
+  .lg{position:relative;text-align:left;cursor:pointer;padding:11px 12px 10px;border-radius:13px;
+    border:1px solid var(--line);background:var(--panel);color:var(--txt);font:inherit;
+    display:block;transition:border-color .18s,background .18s,opacity .18s}
+  .lg:hover{border-color:color-mix(in oklab,var(--c) 55%,transparent)}
+  .lg.on{border-color:color-mix(in oklab,var(--c) 50%,transparent);
+    background:linear-gradient(180deg,color-mix(in oklab,var(--c) 16%,transparent),transparent)}
+  .lg.off{opacity:.38}
+  .lg.off .lgdot{background:transparent;box-shadow:inset 0 0 0 2px var(--c)}
+  .lgdot{display:inline-block;width:11px;height:11px;border-radius:50%;background:var(--c);
+    margin-right:7px;vertical-align:-1px}
+  /* NOT called "pulse": that class belongs to the live-pulse chart, whose
+     display:flex/height:56px would silently stretch this dot into a tall pill. */
+  .lgdot.beating{animation:beat 2s infinite}
+  .lgk{font-size:11.5px;font-weight:650;letter-spacing:.02em;color:var(--mut)}
+  .lgv{display:block;font:650 30px/1.1 var(--mono);letter-spacing:-.02em;margin-top:4px;
+    font-variant-numeric:tabular-nums;color:var(--c)}
+  .lgs{display:block;font-size:11.5px;color:var(--mut);margin-top:3px;min-height:16px}
+  .lgoff{position:absolute;top:9px;right:11px;font:600 9.5px var(--mono);color:var(--mut);
+    text-transform:uppercase;letter-spacing:.05em;opacity:0}
+  .lg.off .lgoff{opacity:1}
   .maplegend{display:flex;flex-wrap:wrap;gap:14px;font-size:12px;color:var(--mut);margin-top:11px;align-items:center}
   .maplegend i{display:inline-block;width:9px;height:9px;border-radius:50%;margin-right:6px;vertical-align:-1px}
   .zooms{position:absolute;top:10px;right:10px;display:flex;gap:6px;z-index:2}
@@ -501,8 +530,15 @@ const page = (data) => {
   .whos .cc{flex:0 0 auto;font:700 10px var(--mono);letter-spacing:.04em;color:#a5f3fc;
     background:rgba(34,211,238,.12);border:1px solid rgba(34,211,238,.25);border-radius:5px;padding:2px 5px}
   .whos .who{flex:1;min-width:0}
-  .whos .who b{display:block;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-  .whos .who span{color:var(--mut);font-size:11.5px}
+  /* Direct child only: the new/returning chip lives INSIDE this line, and an
+     unscoped selector made it display:block and stretch across the whole row. */
+  .whos .who > b{display:block;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .whos .who > span{color:var(--mut);font-size:11.5px}
+  .whos .knew,.whos .kret{display:inline-block;font:700 9.5px var(--mono);font-style:normal;
+    letter-spacing:.04em;text-transform:uppercase;padding:1px 5px;border-radius:5px;
+    vertical-align:1px;margin-left:2px}
+  .whos .knew{background:rgba(251,191,36,.16);color:#fbbf24}
+  .whos .kret{background:rgba(244,114,182,.15);color:#f472b6}
   .whos .ago{font:600 11px var(--mono);color:var(--gr);white-space:nowrap}
   .whos .ago.cold{color:var(--mut)}
 
@@ -622,7 +658,33 @@ const page = (data) => {
 </div>
 
 <section class="panel">
-  <h2>Από πού μπαίνουν<em>πράσινο = online τώρα · κόκκινο = ήρθαν σήμερα κι έφυγαν · μπλε = προηγούμενες μέρες</em></h2>
+  <h2>Ο κόσμος αυτή τη στιγμή<em>πάτα ένα πλακίδιο για να το κρύψεις από τον χάρτη</em></h2>
+  <div class="legend">
+    <button type="button" class="lg on" data-layer="live" style="--c:#34d399">
+      <span class="lgoff">κρυφό</span>
+      <span class="lgk"><span class="lgdot beating"></span>ΜΕΣΑ ΤΩΡΑ</span>
+      <span class="lgv" id="lgLive">0</span>
+      <span class="lgs" id="lgLiveSub">—</span>
+    </button>
+    <button type="button" class="lg on" data-layer="new" style="--c:#fbbf24">
+      <span class="lgoff">κρυφό</span>
+      <span class="lgk"><span class="lgdot"></span>ΝΕΟΙ ΠΟΥ ΕΦΥΓΑΝ</span>
+      <span class="lgv" id="lgNew">0</span>
+      <span class="lgs">πρώτη τους φορά στο site</span>
+    </button>
+    <button type="button" class="lg on" data-layer="ret" style="--c:#f472b6">
+      <span class="lgoff">κρυφό</span>
+      <span class="lgk"><span class="lgdot"></span>ΠΑΛΙΟΙ ΠΟΥ ΕΦΥΓΑΝ</span>
+      <span class="lgv" id="lgRet">0</span>
+      <span class="lgs" id="lgRetSub">είχαν ξανάρθει</span>
+    </button>
+    <button type="button" class="lg on" data-layer="old" style="--c:#38bdf8">
+      <span class="lgoff">κρυφό</span>
+      <span class="lgk"><span class="lgdot"></span>ΠΡΟΗΓΟΥΜΕΝΕΣ ΜΕΡΕΣ</span>
+      <span class="lgv" id="lgOld">0</span>
+      <span class="lgs" id="lgOldSub">πριν από σήμερα</span>
+    </button>
+  </div>
   <div class="livecols">
     <div>
       <div class="mapwrap">
@@ -641,15 +703,14 @@ const page = (data) => {
           </g>
           <path class="land" d="${WORLD_PATH}"/>
           <g id="layerOld"></g>
-          <g id="layerToday"></g>
+          <g id="layerRet"></g>
+          <g id="layerNew"></g>
           <g id="layerLive"></g>
         </svg>
       </div>
       <div class="maplegend">
-        <span><i style="background:#34d399"></i>Online τώρα</span>
-        <span><i style="background:#fb7185"></i>Σήμερα, έφυγαν</span>
-        <span><i style="background:#38bdf8;opacity:.5"></i>Προηγούμενες μέρες</span>
-        <span class="dim">Κούφιος κύκλος = ξέρουμε μόνο τη χώρα, όχι την πόλη</span>
+        <span class="dim">Κούφιος κύκλος = ξέρουμε μόνο τη χώρα, όχι την πόλη ·
+        γκρι = ο browser τους μπλοκάρει την αποθήκευση, δεν ξέρουμε αν είναι νέοι ή παλιοί</span>
       </div>
     </div>
     <div>
@@ -742,9 +803,16 @@ ${funnelPanel(totals.funnel, totals.actions, sumUnique)}
 (function () {
   var D = JSON.parse(document.getElementById('pl').textContent);
   var map = document.getElementById('map');
-  var LO = document.getElementById('layerOld'), LT = document.getElementById('layerToday'), LL = document.getElementById('layerLive');
+  var LO = document.getElementById('layerOld'), LR = document.getElementById('layerRet'),
+      LN = document.getElementById('layerNew'), LL = document.getElementById('layerLive');
   var NS = 'http://www.w3.org/2000/svg';
   var zoom = 1; // viewBox width / world width — dots must not grow when we zoom in
+  // Which layers the board has switched on. Toggling is view-only: nothing is
+  // recounted, so the numbers on the cells never move when you hide a layer.
+  var show = { live: true, new: true, ret: true, old: true };
+  // hash → 'new' | 'ret' | 'unk', rebuilt on every render from today's map data.
+  // Lets the "who is inside" list say new-or-returning without a second lookup.
+  var kindOf = {};
 
   function px(lon){ return (lon + 180) / 360 * D.w; }
   function py(lat){ return (D.latTop - lat) / 360 * D.w; }
@@ -764,8 +832,14 @@ ${funnelPanel(totals.funnel, totals.actions, sumUnique)}
     return Object.keys(m).map(function (k) { return m[k]; });
   }
 
-  function draw(layer, points, cls, halo) {
+  function draw(layer, points, cls, halo, on) {
     while (layer.firstChild) layer.removeChild(layer.firstChild);
+    if (on === false) return;
+    drawInto(layer, points, cls, halo);
+  }
+
+  /** Append a set of dots to a layer without clearing what is already there. */
+  function drawInto(layer, points, cls, halo) {
     cluster(points).forEach(function (c) {
       var r = (2 + Math.min(7, Math.sqrt(c.n) * 1.7)) * zoom;
       var x = px(c.lon), y = py(c.lat);
@@ -786,13 +860,39 @@ ${funnelPanel(totals.funnel, totals.actions, sumUnique)}
     });
   }
 
-  function renderMap() {
+  /**
+   * Split today's visitors into the three states the board names. Green wins by
+   * construction: anyone currently online is never ALSO drawn as "left", so the
+   * four counts add up to the people we saw and nobody is double-drawn.
+   */
+  function split() {
     var liveKeys = {};
     D.live.forEach(function (l) { liveKeys[l.h] = 1; });
-    draw(LO, D.earlier, 'pt-old', false);
-    // Green wins: anyone currently online is never also drawn as "left".
-    draw(LT, D.today.filter(function (p) { return !liveKeys[p.h]; }), 'pt-today', false);
-    draw(LL, D.live, 'pt-live', true);
+    var gone = D.today.filter(function (p) { return !liveKeys[p.h]; });
+    return {
+      live: D.live,
+      liveKeys: liveKeys,
+      fresh: gone.filter(function (p) { return p.k === 'new'; }),
+      // 'unk' = the browser blocks storage, so we genuinely cannot tell new from
+      // returning. It rides in this layer but is drawn grey and counted separately,
+      // rather than being silently filed as a returning visitor.
+      back: gone.filter(function (p) { return p.k !== 'new'; }),
+      unknown: gone.filter(function (p) { return p.k === 'unk'; }).length,
+      old: D.earlier,
+    };
+  }
+
+  function renderMap() {
+    var s = split();
+    draw(LO, s.old, 'pt-old', false, show.old);
+    draw(LR, s.back.filter(function (p) { return p.k === 'ret'; }), 'pt-ret', false, show.ret);
+    // Unknown-kind visitors share the layer but keep their own colour.
+    if (show.ret) {
+      var unk = s.back.filter(function (p) { return p.k === 'unk'; });
+      if (unk.length) drawInto(LR, unk, 'pt-unk');
+    }
+    draw(LN, s.fresh, 'pt-new', false, show.new);
+    draw(LL, s.live, 'pt-live', true, show.live);
   }
 
   function renderWho() {
@@ -808,9 +908,12 @@ ${funnelPanel(totals.funnel, totals.actions, sumUnique)}
         // City when we have one, country otherwise — never both the flag and the
         // country name, which used to read as "us ΗΠΑ".
         var where = city || l.name || l.cc;
+        // New or returning, joined from today's map data by the same daily hash.
+        var k = kindOf[l.h];
+        var tag = k === 'new' ? '<i class="knew">νέος</i>' : k === 'ret' ? '<i class="kret">ξαναήρθε</i>' : '';
         var sub = (city ? l.name + ' · ' : '') + (l.section || '—');
         return '<li><span class="cc">' + esc(l.cc) + '</span>' +
-          '<span class="who"><b>' + esc(where) + '</b><span>' + esc(sub) + '</span></span>' +
+          '<span class="who"><b>' + esc(where) + ' ' + tag + '</b><span>' + esc(sub) + '</span></span>' +
           '<span class="ago' + (ago > 1 ? ' cold' : '') + '">' + (ago <= 0 ? 'τώρα' : ago + 'λ') + '</span></li>';
       })
       .join('');
@@ -838,13 +941,54 @@ ${funnelPanel(totals.funnel, totals.actions, sumUnique)}
   }
 
   function renderAll() {
-    document.getElementById('liveNum').textContent = D.live.length.toLocaleString('el-GR');
-    document.getElementById('liveBadge').textContent = D.live.length.toLocaleString('el-GR') + ' τώρα στο site';
+    var n = D.live.length.toLocaleString('el-GR');
+    document.getElementById('liveNum').textContent = n;
+    document.getElementById('liveBadge').textContent = n + ' τώρα στο site';
     var cc = {};
     D.live.forEach(function (l) { cc[l.cc] = 1; });
     document.getElementById('liveCountries').textContent = Object.keys(cc).length;
+
+    // The board: each cell states how many PEOPLE its layer stands for. (The dot
+    // count is lower — several visitors from one city merge into one dot.)
+    var s = split();
+    kindOf = {};
+    D.today.forEach(function (p) { kindOf[p.h] = p.k; });
+    var liveNew = D.live.filter(function (l) { return kindOf[l.h] === 'new'; }).length;
+    var liveRet = D.live.filter(function (l) { return kindOf[l.h] === 'ret'; }).length;
+    // Anyone whose browser blocks storage stays in their own bucket rather than
+    // being counted as a returning visitor we never actually recognised.
+    var liveUnk = D.live.length - liveNew - liveRet;
+
+    set('lgLive', s.live.length);
+    set('lgNew', s.fresh.length);
+    set('lgRet', s.back.length);
+    set('lgOld', s.old.length);
+    document.getElementById('lgLiveSub').textContent = s.live.length
+      ? liveNew + (liveNew === 1 ? ' νέος' : ' νέοι') + ' · ' + liveRet + ' ξαναήρθαν' +
+        (liveUnk ? ' · ' + liveUnk + ' άγνωστο' : '')
+      : 'κανείς αυτή τη στιγμή';
+    document.getElementById('lgRetSub').textContent = s.unknown
+      ? 'είχαν ξανάρθει — ' + s.unknown + ' χωρίς ένδειξη'
+      : 'είχαν ξανάρθει';
+    document.getElementById('lgOldSub').textContent = 'πριν από σήμερα, σε ' + D.mapDays + ' μέρες';
+
     renderMap(); renderWho(); renderPulse();
   }
+
+  function set(id, v) {
+    document.getElementById(id).textContent = Number(v).toLocaleString('el-GR');
+  }
+
+  // The board doubles as the layer switch: tap a cell, that colour leaves the map.
+  Array.prototype.forEach.call(document.querySelectorAll('.lg'), function (cell) {
+    cell.addEventListener('click', function () {
+      var key = cell.dataset.layer;
+      show[key] = !show[key];
+      cell.className = 'lg ' + (show[key] ? 'on' : 'off');
+      cell.setAttribute('aria-pressed', String(show[key]));
+      renderMap();
+    });
+  });
 
   // Zoom presets. Dot radii are recomputed against the new viewBox so a zoomed-in
   // map shows the same visual dot size, not a screenful of blobs.
@@ -975,7 +1119,7 @@ const readDayPoints = async (store, day) => {
   const out = [];
   for (const key of await listKeys(store, `geo/${day}/`)) {
     const rest = key.slice(`geo/${day}/`.length);
-    const [hash, cc, lat, lon, city, , , approx] = rest.split('~');
+    const [hash, cc, lat, lon, city, , kind, approx] = rest.split('~');
     if (seen.has(hash)) continue;
     seen.add(hash);
     if (lat === '' || lat === undefined) continue;
@@ -985,6 +1129,9 @@ const readDayPoints = async (store, day) => {
       lat: Number(lat),
       lon: Number(lon),
       city: city || '',
+      // 'new' first ever visit, 'ret' been here before, 'unknown' storage blocked.
+      // The map keeps the three apart instead of quietly filing unknown as returning.
+      k: kind === 'new' ? 'new' : kind === 'ret' ? 'ret' : 'unk',
       approx: approx === 'a',
     });
   }
@@ -1088,7 +1235,7 @@ export const handler = async (event) => {
         headers: { 'Content-Type': 'text/html; charset=utf-8', 'Cache-Control': 'no-store' },
         body: page({
           rows: [], totals: {}, days: 0, startDay: todayKey,
-          live: presence.live, pulse: presence.pulse, todayPoints: [], earlierPoints: [], nowMin,
+          live: presence.live, pulse: presence.pulse, todayPoints: [], earlierPoints: [], mapDays: 0, nowMin,
         }).replace(/KEYPLACEHOLDER/g, encodeURIComponent(given)),
       };
     }
@@ -1201,6 +1348,7 @@ export const handler = async (event) => {
         pulse: presence.pulse,
         todayPoints,
         earlierPoints,
+        mapDays: Math.max(0, mapDays.length - 1),
         nowMin,
       }).replace(/KEYPLACEHOLDER/g, encodeURIComponent(given)),
     };
