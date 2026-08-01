@@ -604,25 +604,11 @@ body {
   outline-offset: 3px;
 }
 
-/* "More exposed" wind markers carry a hollow centre (donut) as a non-colour cue, so the
-   less-/more-exposed split reads without relying on hue alone. The same core element is
-   reused by the legend swatches, which is why it sizes off the parent (%). */
-.beach-map-marker-exposed {
-  position: relative;
-}
-
-.beach-map-marker-exposed-core {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  width: 34%;
-  height: 34%;
-  transform: translate(-50%, -50%);
-  border-radius: 999px;
-  background: #ffffff;
-  box-shadow: 0 0 0 1px rgba(15, 23, 42, 0.22);
-  pointer-events: none;
-}
+/* The hollow-centre ("donut") marker cue lived here until 01/08/2026 and is gone on purpose.
+   It marked exposed shores with a shape so the split survived without hue — but two orange
+   pins, one holed and one not, read as two severities when they are the same reading. Deleted
+   with its markup rather than left dangling; see components/BeachMap.tsx createExposureIcon for
+   what any replacement has to do better. */
 
 /* Surf-spot badge. Sits OUTSIDE the dot rather than recolouring it: the marker's
    colour is the wind-exposure reading and must stay readable — a surf break is

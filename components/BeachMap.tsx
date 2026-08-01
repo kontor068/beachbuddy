@@ -1101,19 +1101,22 @@ const createExposureIcon = (
   }
 
   const { colorClass, ringClass } = getExposureMarkerTone(exposureLevel, showWindExposureColors, windBeaufort, isEnclosedCove, seaStateM);
-  // Non-colour cue: "more exposed" markers get a hollow centre (donut), so the
-  // less-/more-exposed split stays legible without relying on hue alone. Only applied at
-  // 3-6 Bft, i.e. exactly where the colour actually splits the two groups (at 0-2 all are
-  // calm-blue and at 7+ all are red, so a shape split there would over-signal). Mirrored
-  // in the legend swatches via the same `beach-map-marker-exposed-core` element.
-  const beaufort = typeof windBeaufort === 'number' ? windBeaufort : 0;
-  const isMoreExposed = exposureLevel === 'exposed' && beaufort >= 3 && beaufort < 7;
-  const exposedClass = isMoreExposed ? 'beach-map-marker-exposed' : '';
-  const exposedCore = isMoreExposed ? '<span class="beach-map-marker-exposed-core"></span>' : '';
-
+  // REMOVED 01/08/2026: the hollow-centre ("donut") cue on exposed markers.
+  //
+  // It was a non-colour cue — the shape carried the exposed/not-exposed split so it stayed
+  // legible without relying on hue. In practice it did the opposite. Reported the day it
+  // shipped, by the person who built the site: two orange pins, one with a little circle and
+  // one without, read as two different severities. They are not — the colour is the whole
+  // verdict, and the same orange arrives with or without the shape (at 5-6 Bft the wind ladder
+  // paints sheltered shores orange too; at 4 Bft a 1,2 m sea caps them down). A cue that makes
+  // people ask "is the one with the circle worse?" costs more than the hue-independence it buys.
+  //
+  // Read this before adding it back: the accessibility need is real and unmet. If it returns it
+  // must distinguish things the colour does NOT already say, and it must be legible without a
+  // legend entry — because the legend entry was tried here too and did not rescue it.
   return L.divIcon({
     className: 'custom-div-icon',
-    html: `<div class="beach-map-marker-dot ${topPickClass} ${highlightedClass} ${evidenceClass} ${exposedClass} ${surfClass} ${colorClass} w-4 h-4 rounded-full border-2 border-white shadow-lg ring-4 ${ringClass}">${exposedCore}</div>`,
+    html: `<div class="beach-map-marker-dot ${topPickClass} ${highlightedClass} ${evidenceClass} ${surfClass} ${colorClass} w-4 h-4 rounded-full border-2 border-white shadow-lg ring-4 ${ringClass}"></div>`,
     iconSize: [16, 16],
     iconAnchor: [8, 8],
     popupAnchor: [0, -10]
@@ -2401,12 +2404,6 @@ const BeachMap: React.FC<BeachMapProps> = ({
     ? currentWindColorGuideRows
     : windColorGuideCopy.rows.slice(0, 1);
   const showGroupedExposureLegend = showWindExposureStatusLabels && currentWindColorGuideId !== '7-10';
-  // The hollow-centre (donut) shape cue on the "more exposed" swatch only reads as a
-  // distinction where the two groups actually differ in colour (3-6 Bft). At 0-2 both are
-  // calm-blue, so the shape would imply a split that isn't there. Mirrors createExposureIcon.
-  const showExposedShapeCue = currentWindColorGuideId === '3'
-    || currentWindColorGuideId === '4'
-    || currentWindColorGuideId === '5-6';
   // The enclosed-cove legend line only earns its place where the cove actually paints
   // green — from 5 Bft up. Below that a cove colours like any protected shore, so the
   // "calmer today" note would be a distinction without a difference.
@@ -2447,12 +2444,8 @@ const BeachMap: React.FC<BeachMapProps> = ({
                         aria-label={segment.colorLabel}
                         title={segment.colorLabel}
                         role="img"
-                        className={`relative h-2.5 w-2.5 shrink-0 rounded-full ring-1 ${windLegendDotClasses[segment.dot]}`}
-                      >
-                        {row.segments.length > 1 && index === row.segments.length - 1 && (
-                          <span className="beach-map-marker-exposed-core" aria-hidden="true" />
-                        )}
-                      </span>
+                        className={`h-2.5 w-2.5 shrink-0 rounded-full ring-1 ${windLegendDotClasses[segment.dot]}`}
+                      />
                     )}
                   </span>
                 </React.Fragment>
@@ -2460,39 +2453,6 @@ const BeachMap: React.FC<BeachMapProps> = ({
             </span>
           </div>
         ))}
-        {/* What the hollow centre MEANS — reported 01/08/2026: "I have orange pins with a hole and
-            orange pins without one, and nothing explains them."
-
-            The shape marks exactly one thing: exposureLevel === 'exposed' at 3-6 Bft (createIcon,
-            ~line 1110). It is a NON-COLOUR cue, not a severity step — two orange pins are the same
-            conditions whichever way they are drawn, and saying "the more exposed beaches" (the
-            first attempt at this line) implied a ranking that does not exist.
-
-            Why the same colour arrives both ways, which is what makes it confusing: at 5-6 Bft the
-            wind ladder paints protected and partial shores orange too (resolveWindTone), and at any
-            wind a sea of 1.2 m+ caps a sheltered beach down to orange (seaStateToneCeiling). So the
-            no-hole reason changes with the Beaufort row, and the line deliberately does NOT try to
-            name it — it would be wrong on half the rows. Gated on the same flag that draws the
-            shape, so the line can never appear without the shape or the shape without the line. */}
-        {showExposedShapeCue && (
-          <div className={`${isPreview ? 'text-[10px] sm:text-[11px]' : 'text-[11px]'} flex min-w-0 flex-wrap items-center gap-x-1.5 gap-y-1 font-semibold leading-snug text-slate-600 dark:text-slate-300`}>
-            <span className="inline-flex min-w-0 items-center gap-1">
-              <span
-                aria-hidden="true"
-                className="relative h-2.5 w-2.5 shrink-0 rounded-full bg-slate-400 ring-1 ring-slate-500 dark:bg-slate-500 dark:ring-slate-400"
-              >
-                <span className="beach-map-marker-exposed-core" />
-              </span>
-              <span className="min-w-0">{getLocalizedCopy(language, {
-                en: 'Hollow centre = open to today’s wind. Same colour = same conditions either way.',
-                gr: 'Τρύπα στη μέση = ανοιχτή στον σημερινό άνεμο. Ίδιο χρώμα = ίδιες συνθήκες, με ή χωρίς τρύπα.',
-                fr: 'Centre creux = exposée au vent du jour. Même couleur = mêmes conditions, trou ou pas.',
-                de: 'Hohler Kern = offen für den heutigen Wind. Gleiche Farbe = gleiche Bedingungen, mit oder ohne.',
-                it: 'Centro vuoto = esposta al vento di oggi. Stesso colore = stesse condizioni, con o senza foro.',
-              })}</span>
-            </span>
-          </div>
-        )}
         {showCoveLegendCue && (
           <div className={`${isPreview ? 'text-[10px] sm:text-[11px]' : 'text-[11px]'} flex min-w-0 flex-wrap items-center gap-x-1.5 gap-y-1 font-semibold leading-snug text-slate-600 dark:text-slate-300`}>
             <span className="inline-flex min-w-0 items-center gap-1">
@@ -2584,9 +2544,7 @@ const BeachMap: React.FC<BeachMapProps> = ({
                     <span className="text-slate-600 dark:text-slate-300">{groupedExposureLabel('protected')}</span>
                   </div>
                   <div className="flex items-center gap-2">
-                    <div className={`relative h-3 w-3 rounded-full ring-2 ${exposedTone.colorClass} ${exposedTone.ringClass}`}>
-                      {showExposedShapeCue && <span className="beach-map-marker-exposed-core" aria-hidden="true" />}
-                    </div>
+                    <div className={`h-3 w-3 rounded-full ring-2 ${exposedTone.colorClass} ${exposedTone.ringClass}`}></div>
                     <span className="text-slate-600 dark:text-slate-300">{groupedExposureLabel('exposed')}</span>
                   </div>
                 </div>
@@ -2630,9 +2588,7 @@ const BeachMap: React.FC<BeachMapProps> = ({
                 <span className="whitespace-nowrap">{groupedExposureLabel('protected')}</span>
               </div>
               <div className={`flex min-w-0 items-center justify-center gap-1 rounded-full px-1.5 py-1 text-[9px] font-bold leading-none ${exposedTone.bgClass} ${exposedTone.textClass}`}>
-                <span className={`relative h-2.5 w-2.5 shrink-0 rounded-full ring-1 ${exposedTone.colorClass} ${exposedTone.ringClass}`}>
-                  {showExposedShapeCue && <span className="beach-map-marker-exposed-core" aria-hidden="true" />}
-                </span>
+                <span className={`h-2.5 w-2.5 shrink-0 rounded-full ring-1 ${exposedTone.colorClass} ${exposedTone.ringClass}`} />
                 <span className="whitespace-nowrap">{groupedExposureLabel('exposed')}</span>
               </div>
             </div>
