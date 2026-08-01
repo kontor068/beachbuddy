@@ -2,6 +2,7 @@ import { WindDirection, LanguageCode } from '../types';
 import { beachSentenceName } from './beachCopy';
 import type { ExposureLevel } from './windExposure';
 import { getSeaSeverity } from './seaVerdict';
+import { seaStateSeverityM } from './waveCharacter';
 
 /**
  * Copy generator for the visible "Weather & sea now" block on the beach detail
@@ -189,6 +190,16 @@ export interface WeatherNowInput {
   beachName: string;
   language: Lang;
   isToday: boolean;
+  /**
+   * WHEN the verdict is about, already worded: "τώρα", "στις 08:00", "αύριο στις 14:00".
+   *
+   * `isToday` alone is not enough and produced a real lie: the hour slider defaults to a
+   * daylight hour, so someone opening a beach at 22:00 was shown 08:00's conditions under
+   * the words "Ήρεμα ΤΩΡΑ". The day was indeed today; the hour was fourteen hours away.
+   * When this is supplied it replaces the automatic "now", so the verdict can never claim
+   * to describe the present while displaying some other hour. Empty string = no suffix.
+   */
+  momentLabel?: string | null;
   /** false while live data is still loading — the caller shows a skeleton, no numbers. */
   dataReady: boolean;
   windDir: WindDirection;
@@ -273,8 +284,16 @@ const buildHeading = (beachName: string, lang: Lang, isToday: boolean, isBoatAcc
   }
 };
 
-const buildVerdict = (tone: 'calm' | 'mixed' | 'choppy', lang: Lang, isToday: boolean): string => {
-  const now = isToday ? ` ${nowWord(lang)}` : '';
+const buildVerdict = (
+  tone: 'calm' | 'mixed' | 'choppy',
+  lang: Lang,
+  isToday: boolean,
+  momentLabel?: string | null,
+): string => {
+  // An explicit moment always wins over the day flag — that is the whole point of it.
+  const now = momentLabel !== undefined && momentLabel !== null
+    ? (momentLabel ? ` ${momentLabel}` : '')
+    : (isToday ? ` ${nowWord(lang)}` : '');
   const map = {
     calm:   { en: 'Calm', gr: 'Ήρεμα', de: 'Ruhig', fr: 'Calme', it: 'Calmo' },
     mixed:  { en: 'A little chop', gr: 'Λίγο κύμα', de: 'Etwas Welle', fr: 'Un peu de clapot', it: 'Un po\' mosso' },
@@ -336,14 +355,33 @@ export const buildWeatherNowContent = (input: WeatherNowInput): WeatherNowConten
     exposureLevel: input.mapExposureLevel,
     canClaimWindProtection: input.canClaimWindProtection,
   });
+  // THE SCORE IS NOT A WAVE MEASUREMENT, AND ONLY A MEASUREMENT MAY PROMISE A WAVE.
+  //
+  // calculateSeaConditionScore opens an exposed beach at protectionScore 2 — a constant, true
+  // of that coast in every weather there has ever been — and blends it 1.4/3.8. At 3 Bft the
+  // wind and wave terms land on 4–6, so the whole score sits at 4 whatever the sea is doing.
+  // The branch below then read 4 as "choppy" and printed «Έχει κύμα» over a 0,1 m sea. Measured
+  // over the light-wind grid: EVERY exposed beach at 3 Bft said «Έχει κύμα», from 0,1 m to
+  // 0,4 m identically — 48/48 combinations (reported from Corfu, 01/08/2026, 3 Bft / 0,3 m).
+  // The same defect at 0–2 Bft was already patched once in the liveSentence below; it walked
+  // back in one Beaufort higher because the chip reads the score, not the wave.
+  //
+  // So when the sea verdict says calm, the score may still darken the wording — a sheltered
+  // cove under a rising wind is real — but only as far as the measured sea can carry. Below
+  // 0,3 m there is no wave to describe (the same floor at which seaConditions stops counting
+  // the measurement at all), and «Έχει κύμα» is the word this page also gives a 1,0 m sea:
+  // a 0,4 m ripple does not get to borrow it.
+  const NO_WAVE_TO_DESCRIBE_M = 0.3;
+  const measuredSeaM = seaStateSeverityM(input.waveHeightM, input.wavePeriodS);
+  const hasNoMeasuredWave = measuredSeaM === undefined || measuredSeaM < NO_WAVE_TO_DESCRIBE_M;
   const tone: 'calm' | 'mixed' | 'choppy' =
     seaSeverity === 'rough' ? 'choppy'
       : seaSeverity === 'moderate'
         ? (input.seaConditionScore <= 4 ? 'choppy' : 'mixed')
         : (input.canClaimWindProtection || input.seaConditionScore >= 7) ? 'calm'
-        : input.seaConditionScore <= 4 ? 'choppy'
+        : hasNoMeasuredWave ? 'calm'
         : 'mixed';
-  const verdict = buildVerdict(tone, lang, isToday);
+  const verdict = buildVerdict(tone, lang, isToday, input.momentLabel);
 
   // Compact live stats. Greek writes the Beaufort unit «Μπφ» — the same token the
   // wind ConditionCard on this very page renders (translations.ts `beaufort`).

@@ -27,20 +27,17 @@ import { WindGlyph, SeaGlyph, WaterTempGlyph, SunsetGlyph, type GlyphTone } from
 
 type HeroTone = 'calm' | 'moderate' | 'rough';
 
-const TONE_SKIN: Record<HeroTone, { shell: string; verdict: string; halo: string }> = {
+const TONE_SKIN: Record<HeroTone, { shell: string; halo: string }> = {
   calm: {
     shell: 'from-teal-50 via-sky-50 to-white border-teal-100',
-    verdict: 'bg-teal-600 text-white shadow-teal-900/15',
     halo: 'bg-teal-200/35',
   },
   moderate: {
     shell: 'from-amber-50 via-orange-50/60 to-white border-amber-100',
-    verdict: 'bg-amber-500 text-white shadow-amber-900/15',
     halo: 'bg-amber-200/35',
   },
   rough: {
     shell: 'from-rose-50 via-orange-50/50 to-white border-rose-100',
-    verdict: 'bg-rose-600 text-white shadow-rose-900/15',
     halo: 'bg-rose-200/35',
   },
 };
@@ -167,8 +164,8 @@ export interface PracticalTile {
 export interface BeachAnswerHeroProps {
   islandName: string;
   compositionLabel?: string | null;
-  /** The shared verdict word — same source as the map pin and the region card. */
-  verdict: string | null;
+  /** Colours the card shell and halo. Same sea verdict the map pin reads — it is no longer
+   *  also spelled out in a pill here, only shown (see the note on the location row below). */
   tone: HeroTone;
   bestTimeLabel?: string | null;
   /**
@@ -334,7 +331,6 @@ const AmenityPanel: React.FC<{
 export const BeachAnswerHero: React.FC<BeachAnswerHeroProps> = ({
   islandName,
   compositionLabel,
-  verdict,
   tone,
   bestTimeLabel,
   explanation,
@@ -418,30 +414,23 @@ export const BeachAnswerHero: React.FC<BeachAnswerHeroProps> = ({
           )}
         </p>
 
-        {/* ONE verdict. It is the page's CTR hook and the only place the judgement is
-            stated, so it stays crawlable (no data-nosnippet) — no more volatile than the
-            "τώρα" in the weather card's <h2>, which Google has always been allowed to read.
-            The tiered "Ιδανική στις 20:00" badge that used to sit beside it is gone: two
-            pills saying the same thing, one screen apart, is exactly what this card exists
-            to eliminate. The hours are still answered — in the "best time" section below,
-            where they belong to a different question. */}
-        {verdict && (
+        {/* NO VERDICT PILL. It used to lead the card with «Λίγο κύμα στις 15:00» in a big
+            coloured badge — and that was one judgement too many: the tiles right below it
+            already state the wind, the wave and the hours in numbers, and the shell colour
+            already carries the same tone. A pill that re-says in words what the card then
+            says in figures reads as a second, competing answer (reported 01/08/2026).
+            The judgement is not lost — the tone still colours this card, the map pin and
+            the region cards, all from the one sea verdict in utils/seaVerdict. */}
+        {bestTimeLabel && (
           <div className="flex flex-wrap items-center gap-2.5">
             <span
-              className={`inline-flex items-center rounded-2xl px-4 py-2 font-heading text-lg font-black leading-none shadow-sm sm:text-xl ${skin.verdict}`}
+              className="inline-flex items-center gap-1.5 rounded-2xl bg-white/80 px-3 py-2 text-sm font-bold text-slate-800 shadow-sm ring-1 ring-white/70"
+              data-nosnippet="true"
             >
-              {verdict}
+              <Clock className="h-4 w-4 shrink-0 text-slate-500" aria-hidden="true" />
+              <span className="text-slate-500">{BEST_TIME_LABEL[language] ?? BEST_TIME_LABEL.en}</span>
+              <span>{bestTimeLabel}</span>
             </span>
-            {bestTimeLabel && (
-              <span
-                className="inline-flex items-center gap-1.5 rounded-2xl bg-white/80 px-3 py-2 text-sm font-bold text-slate-800 shadow-sm ring-1 ring-white/70"
-                data-nosnippet="true"
-              >
-                <Clock className="h-4 w-4 shrink-0 text-slate-500" aria-hidden="true" />
-                <span className="text-slate-500">{BEST_TIME_LABEL[language] ?? BEST_TIME_LABEL.en}</span>
-                <span>{bestTimeLabel}</span>
-              </span>
-            )}
           </div>
         )}
 

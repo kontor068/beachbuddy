@@ -276,7 +276,18 @@ export const getVisibleMapExposureLevel = (
   windBeaufort?: number,
   windDirectionDeg?: number
 ): ExposureLevel => {
-  const sector = item.windSector ?? getWindSectorFromDegrees(windDirectionDeg);
+  // THE DIRECTION THAT WAS PASSED IN WINS. Until 01/08/2026 this read
+  // `item.windSector ?? getWindSectorFromDegrees(windDirectionDeg)`, and because App.tsx always
+  // pre-filled windSector from the region assessment, the `??` made the second half dead code:
+  // every caller could hand this function a beach's own wind direction and be silently ignored.
+  // The geometry lookup below — the main signal — then answered a question about a different wind
+  // than the one the caller asked about. Two callers were affected: the map, which since the same
+  // day feeds each beach its cluster wind (perBeachMapWind), and the trip planner, which passes a
+  // FUTURE day's direction while windSector still described today.
+  //
+  // windSector stays as the fallback for callers that genuinely have a sector and no degrees
+  // (see scripts/dumpRegionExposureEngine.ts), so nothing loses its exposure for lack of an input.
+  const sector = getWindSectorFromDegrees(windDirectionDeg) ?? item.windSector;
   const canUseWindProfile = canUseMapWindProfile(item.windProfile, item.windProfileSource);
   // A curated suspectPin means "geometry from this pin is not trusted" (notch/
   // tombolo pins) — the map must not colour from it in ANY branch below; only
@@ -389,14 +400,39 @@ export const getVisibleMapExposureLevel = (
   return 'partial';
 };
 
+/**
+ * The wind AT a beach, when we have it. Keyed by beach id.
+ *
+ * Added 01/08/2026. Until then every beach in a region was coloured from one wind measured at the
+ * region's geometric centre, which in a large region is inland or on the opposite coast. Measured
+ * live: 1.532 of 2.850 beaches (53,8%) sit in a different cell of the weather model than that
+ * centre, and on 02/08 Evia's centre read 1 Bft while its own shores ran 1–6 Bft. Fifty beaches
+ * were being painted "Ιδανική" over 5–6 Bft — see scripts/validateColourAgainstRealWind.mjs,
+ * which fails red on the region wind and passes clean on this one.
+ *
+ * Optional on purpose: the cluster forecast can be missing (first paint, a region with no
+ * geometry, a failed fetch), and a beach with no local reading falls back to the region wind —
+ * exactly as before. No beach is ever left uncoloured because of this.
+ */
+export interface BeachWindReading {
+  beaufort: number;
+  directionDeg: number;
+}
+
 export const getConsistentVisibleMapExposureLevels = (
   items: MapExposureItem[],
   windBeaufort?: number,
-  windDirectionDeg?: number
+  windDirectionDeg?: number,
+  perBeachWind?: Map<number, BeachWindReading>
 ): Map<number, ExposureLevel> => {
   const levels = new Map<number, ExposureLevel>();
   items.forEach(item => {
-    levels.set(item.beach.id, getVisibleMapExposureLevel(item, windBeaufort, windDirectionDeg));
+    const local = perBeachWind?.get(item.beach.id);
+    levels.set(item.beach.id, getVisibleMapExposureLevel(
+      item,
+      local?.beaufort ?? windBeaufort,
+      local?.directionDeg ?? windDirectionDeg
+    ));
   });
 
   if (items.length < 2) return levels;
@@ -421,14 +457,26 @@ export const getConsistentVisibleMapExposureLevels = (
   const sector = getWindSectorFromDegrees(windDirectionDeg);
   const beaufort = windBeaufort ?? 0;
 
+  // The pass below decides which beaches on one front may overrule the others. It used to ask
+  // every question with the REGION wind while the colours it was correcting had already been
+  // resolved per beach — a region answer rewriting a per-beach one. Each item is now asked about
+  // its own wind, falling back to the region when it has none, so the pass can only harmonise
+  // neighbours and never smuggle the region wind back into a colour.
+  const sectorOf = (item: MapExposureItem): WindSector | undefined => (
+    getWindSectorFromDegrees(perBeachWind?.get(item.beach.id)?.directionDeg) ?? sector
+  );
+  const beaufortOf = (item: MapExposureItem): number => (
+    perBeachWind?.get(item.beach.id)?.beaufort ?? beaufort
+  );
+
   for (let i = 0; i < items.length; i += 1) {
     for (let j = i + 1; j < items.length; j += 1) {
       const a = items[i];
       const b = items[j];
       if (!areLikelySameBeachFront(a, b)) continue;
 
-      const aLocked = hasReliableExplicitMorphology(a, sector, beaufort);
-      const bLocked = hasReliableExplicitMorphology(b, sector, beaufort);
+      const aLocked = hasReliableExplicitMorphology(a, sectorOf(a), beaufortOf(a));
+      const bLocked = hasReliableExplicitMorphology(b, sectorOf(b), beaufortOf(b));
       if (aLocked && bLocked && levels.get(a.beach.id) !== levels.get(b.beach.id)) continue;
 
       union(a.beach.id, b.beach.id);
@@ -453,17 +501,17 @@ export const getConsistentVisibleMapExposureLevels = (
     if (uniqueLevels.size <= 1) return;
 
     const lockedLevels = group
-      .filter(item => hasReliableExplicitMorphology(item, sector, beaufort))
+      .filter(item => hasReliableExplicitMorphology(item, sectorOf(item), beaufortOf(item)))
       .map(item => levels.get(item.beach.id))
       .filter((level): level is ExposureLevel => Boolean(level));
     const uniqueLockedLevels = new Set(lockedLevels);
 
     const hasProtectedSegmentSupport = group.some(item => (
       levels.get(item.beach.id) === 'protected' &&
-      hasStableGeospatialProtection(item, sector)
+      hasStableGeospatialProtection(item, sectorOf(item))
     ));
     const hasLockedNonProtectedLevel = group.some(item => (
-      hasReliableExplicitMorphology(item, sector, beaufort) &&
+      hasReliableExplicitMorphology(item, sectorOf(item), beaufortOf(item)) &&
       levels.get(item.beach.id) !== 'protected'
     ));
 
@@ -474,15 +522,15 @@ export const getConsistentVisibleMapExposureLevels = (
       : getMoreConservativeExposure(currentLevels);
 
     group.forEach(item => {
-      if (uniqueLockedLevels.size > 1 && hasReliableExplicitMorphology(item, sector, beaufort)) return;
+      if (uniqueLockedLevels.size > 1 && hasReliableExplicitMorphology(item, sectorOf(item), beaufortOf(item))) return;
       if (
         targetLevel === 'protected' &&
         levels.get(item.beach.id) !== 'protected' &&
         (
-          hasReliableExplicitMorphology(item, sector, beaufort) ||
+          hasReliableExplicitMorphology(item, sectorOf(item), beaufortOf(item)) ||
           (
-            !hasStableGeospatialProtection(item, sector) &&
-            !hasCuratedSegmentProtectionSupport(item, group, sector)
+            !hasStableGeospatialProtection(item, sectorOf(item)) &&
+            !hasCuratedSegmentProtectionSupport(item, group, sectorOf(item))
           )
         )
       ) {
@@ -490,7 +538,7 @@ export const getConsistentVisibleMapExposureLevels = (
       }
       if (
         targetLevel !== 'protected' &&
-        hasStableGeospatialProtection(item, sector)
+        hasStableGeospatialProtection(item, sectorOf(item))
       ) return;
       levels.set(item.beach.id, targetLevel);
     });

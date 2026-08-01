@@ -37,7 +37,7 @@ import { displayBeachName } from '../utils/localization';
 import { beachSentenceName } from '../utils/beachCopy';
 import { getSearchVariants, isSearchMatch } from '../utils/searchNormalize';
 import { calculateSeaConditionScore } from '../utils/seaConditions';
-import { seaStateSeverityM } from '../utils/waveCharacter';
+import { seaStateSeverityM, shoreSeaStateM } from '../utils/waveCharacter';
 import { getSelectedDayPrefix, isSelectedDateToday } from '../utils/dateLabels';
 import { athensNow } from '../utils/athensTime';
 import { isSurfSpotInSeason } from '../utils/surfSpots';
@@ -375,13 +375,14 @@ const getEffectiveBeaufortForComfort = (
   return Math.max(0, Math.min(12, effective));
 };
 
-const swimmingComfortFromScore = (
+/** Harshest → mildest. Shelter relief below is counted in these steps. */
+const SWIMMING_COMFORT_ORDER: readonly SwimmingComfort[] = ['avoid_swimming', 'caution', 'good', 'excellent'];
+
+const swimmingComfortForWave = (
   swimmingScore: number,
   effectiveBeaufort: number,
-  waveHeightM?: number,
-  officialOverride?: boolean
+  waveHeightM?: number
 ): SwimmingComfort => {
-  if (officialOverride) return 'avoid_swimming';
   if (effectiveBeaufort >= 6 || (typeof waveHeightM === 'number' && waveHeightM > 1.2) || swimmingScore < 45) {
     return 'avoid_swimming';
   }
@@ -392,6 +393,39 @@ const swimmingComfortFromScore = (
     return 'excellent';
   }
   return 'good';
+};
+
+/**
+ * THE SWIM ADVICE READS THE SAME WATER THE PIN IS COLOURED FROM (01/08/2026).
+ *
+ * `effectiveWaveHeightM` is dominated by a marine grid point a median of 10 km offshore, so this
+ * function was refusing swims at sheltered coves on the strength of the open sea outside them.
+ * utils/suitabilityTone now damps that reading toward the shore before it colours a pin; if this
+ * verdict kept reading the raw height, the two would disagree and we would be back to the defect
+ * Miltos closed on 31/07 — a pin and a word describing different seas, one screen apart.
+ *
+ * So: compute both, take the milder, and cap the relief at ONE step for the same reason the
+ * colour caps it — the shore-damping factors have not been validated against live grid data, and
+ * a two-step lift could carry a genuinely dangerous sea from «μην κολυμπήσεις» to «καλή».
+ * Wind and score are unaffected: shelter has never been allowed to soften those, and does not now.
+ */
+const swimmingComfortFromScore = (
+  swimmingScore: number,
+  effectiveBeaufort: number,
+  waveHeightM?: number,
+  officialOverride?: boolean,
+  shoreWaveHeightM?: number
+): SwimmingComfort => {
+  if (officialOverride) return 'avoid_swimming';
+  const openWater = swimmingComfortForWave(swimmingScore, effectiveBeaufort, waveHeightM);
+  if (typeof shoreWaveHeightM !== 'number' || !Number.isFinite(shoreWaveHeightM)) return openWater;
+
+  const shore = swimmingComfortForWave(swimmingScore, effectiveBeaufort, shoreWaveHeightM);
+  const step = Math.min(
+    SWIMMING_COMFORT_ORDER.indexOf(shore),
+    SWIMMING_COMFORT_ORDER.indexOf(openWater) + 1
+  );
+  return SWIMMING_COMFORT_ORDER[step] ?? openWater;
 };
 
 const hasActivePreferences = (preferences?: UserPreferences): boolean => (
@@ -2017,7 +2051,13 @@ export const calculateBeachScore = (
     finalScore = Math.min(finalScore, windAssessment.finalScoreCap);
   }
 
-  let swimmingComfort = swimmingComfortFromScore(swimmingScore, effectiveBeaufort, effectiveWaveHeightM, officialWarningOverride);
+  let swimmingComfort = swimmingComfortFromScore(
+    swimmingScore,
+    effectiveBeaufort,
+    effectiveWaveHeightM,
+    officialWarningOverride,
+    shoreSeaStateM(effectiveWaveHeightM, finalExposureLevel)
+  );
   // Roadmap #4: a strong afternoon build never leaves a 'good'/'excellent' headline.
   if (afternoonBuild.buildsRough && (swimmingComfort === 'good' || swimmingComfort === 'excellent')) {
     swimmingComfort = 'caution';

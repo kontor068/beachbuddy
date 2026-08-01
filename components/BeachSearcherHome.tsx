@@ -52,7 +52,7 @@ import { getBeachFilterDirectoryTitle } from '../utils/filterSummary';
 import { canOpenNavigation, getNavigationBadge, openNavigation } from '../utils/navigation';
 import { getSelectedDayOffset, getSelectedDayPrefix, getSelectedDaySentencePrefix } from '../utils/dateLabels';
 import { athensNow, toAthensWallClock } from '../utils/athensTime';
-import { getConsistentVisibleMapExposureLevels } from '../utils/mapExposure';
+import { getConsistentVisibleMapExposureLevels, type BeachWindReading } from '../utils/mapExposure';
 import { hasBoatOnlyAccess, isAdventureBeach } from '../utils/access';
 import { isSunsetFacingBeach } from '../utils/beachOrientation';
 import { isNaturistBeach } from '../utils/naturistBeaches';
@@ -161,6 +161,16 @@ interface BeachSearcherHomeProps {
   forecastDays?: DailyForecast[];
   selectedDayIndex?: number;
   selectedForecast?: DailyForecast;
+  /**
+   * The wind at each beach's own shore — the same per-beach reading the map's pins are coloured
+   * from (App.perBeachMapWind). Optional: a beach with no local reading falls back to the region
+   * wind, exactly as before.
+   *
+   * Without it the card and the pin describe different winds. From 01/08/2026 the map moved to
+   * per-beach wind and this did not, so a card could read «Υπήνεμη» beside a red pin for the
+   * same beach on the same screen.
+   */
+  perBeachMapWind?: Map<number, BeachWindReading>;
   /** Local (Greek) wall-clock hour, 0–23, the map's hour slider is currently on, so the island strip headline tracks the scrubbed hour. */
   mapSelectedHour?: number;
   selectedDate?: Date;
@@ -1608,6 +1618,7 @@ export const BeachSearcherHome: React.FC<BeachSearcherHomeProps> = ({
   forecastDays,
   selectedDayIndex,
   selectedForecast,
+  perBeachMapWind,
   forecastFreshness = 'fresh',
   mapSelectedHour,
   selectedDate,
@@ -2166,9 +2177,10 @@ export const BeachSearcherHome: React.FC<BeachSearcherHomeProps> = ({
     getConsistentVisibleMapExposureLevels(
       beachWeatherContexts || [],
       selectedForecast ? getBeaufortLevel(selectedForecast.wind.speed * 3.6) : undefined,
-      selectedForecast?.wind.deg
+      selectedForecast?.wind.deg,
+      perBeachMapWind
     )
-  ), [beachWeatherContexts, selectedForecast]);
+  ), [beachWeatherContexts, selectedForecast, perBeachMapWind]);
   // Each filter chip shows the honest per-attribute island total (fed by App.tsx's
   // count memos), independent of wind / active filters / suitable-vs-all view. We
   // deliberately do NOT recompute over the wind-filtered `suitableBeachCards` here:
@@ -3717,7 +3729,7 @@ export const BeachSearcherHome: React.FC<BeachSearcherHomeProps> = ({
                 className="beach-card-carousel no-scrollbar flex cursor-grab snap-x snap-mandatory items-stretch gap-6 overflow-x-auto overscroll-x-contain pb-3 select-none active:cursor-grabbing data-[dragging=true]:cursor-grabbing data-[dragging=true]:snap-none sm:pb-5 lg:snap-none lg:px-5"
               >
                 {topRecommendationBeachCards.map(({ beach, score, context }, index) => (
-                  <div key={beach.id} data-suitable-beach-id={beach.id} {...beachCardHoverProps(beach.id)} className={getMapLinkedCardClassName(beach.id, `flex ${isNearMeRegion ? 'h-fit' : 'h-[24rem] sm:h-[25rem]'} w-[17rem] shrink-0 snap-start sm:w-[20rem]`)}>
+                  <div key={beach.id} data-suitable-beach-id={beach.id} {...beachCardHoverProps(beach.id)} className={getMapLinkedCardClassName(beach.id, `flex min-h-[24rem] w-[17rem] shrink-0 snap-start sm:min-h-[25rem] sm:w-[20rem]`)}>
                     {renderBeachDecisionCard(beach as BeachCardContext, {
                       score,
                       context,
@@ -3766,7 +3778,7 @@ export const BeachSearcherHome: React.FC<BeachSearcherHomeProps> = ({
                   ? undefined
                   : weatherBeachCardRankStart + index;
                 return (
-                <div key={beach.id} data-suitable-beach-id={beach.id} {...beachCardHoverProps(beach.id)} className={getMapLinkedCardClassName(beach.id, `flex ${isNearMeRegion ? 'h-fit' : 'h-[24rem] sm:h-[25rem]'} w-[17rem] shrink-0 snap-start sm:w-[20rem]`)}>
+                <div key={beach.id} data-suitable-beach-id={beach.id} {...beachCardHoverProps(beach.id)} className={getMapLinkedCardClassName(beach.id, `flex min-h-[24rem] w-[17rem] shrink-0 snap-start sm:min-h-[25rem] sm:w-[20rem]`)}>
                   {renderBeachDecisionCard(beach as BeachCardContext, {
                     score,
                     context,
@@ -3903,7 +3915,7 @@ export const BeachSearcherHome: React.FC<BeachSearcherHomeProps> = ({
                 className="beach-card-carousel no-scrollbar flex cursor-grab snap-x snap-mandatory items-stretch gap-6 overflow-x-auto overscroll-x-contain pb-3 select-none active:cursor-grabbing data-[dragging=true]:cursor-grabbing data-[dragging=true]:snap-none sm:pb-5 lg:snap-none"
               >
                 {directoryDisplayBeachCards.map(beach => (
-                  <div key={beach.id} data-directory-beach-id={beach.id} {...beachCardHoverProps(beach.id)} className={getMapLinkedCardClassName(beach.id, `flex ${isNearMeRegion ? 'h-fit' : 'h-[24rem] sm:h-[25rem]'} w-[17rem] shrink-0 snap-start sm:w-[20rem]`)}>
+                  <div key={beach.id} data-directory-beach-id={beach.id} {...beachCardHoverProps(beach.id)} className={getMapLinkedCardClassName(beach.id, `flex min-h-[24rem] w-[17rem] shrink-0 snap-start sm:min-h-[25rem] sm:w-[20rem]`)}>
                     {renderBeachDecisionCard(beach, { alignExposureToMap: true, windExposureMode: 'simple' })}
                   </div>
                 ))}
@@ -4010,7 +4022,7 @@ export const BeachSearcherHome: React.FC<BeachSearcherHomeProps> = ({
                       className="beach-card-carousel no-scrollbar flex cursor-grab snap-x snap-mandatory items-stretch gap-6 overflow-x-auto overscroll-x-contain pb-3 select-none active:cursor-grabbing data-[dragging=true]:cursor-grabbing data-[dragging=true]:snap-none sm:pb-5 lg:snap-none"
                     >
                       {directoryDisplayBeachCards.map(beach => (
-                        <div key={beach.id} data-directory-beach-id={beach.id} {...beachCardHoverProps(beach.id)} className={getMapLinkedCardClassName(beach.id, `flex ${isNearMeRegion ? 'h-fit' : 'h-[24rem] sm:h-[25rem]'} w-[17rem] shrink-0 snap-start sm:w-[20rem]`)}>
+                        <div key={beach.id} data-directory-beach-id={beach.id} {...beachCardHoverProps(beach.id)} className={getMapLinkedCardClassName(beach.id, `flex min-h-[24rem] w-[17rem] shrink-0 snap-start sm:min-h-[25rem] sm:w-[20rem]`)}>
                           {renderBeachDecisionCard(beach, { alignExposureToMap: !isDirectorySuitableView, windExposureMode: 'simple' })}
                         </div>
                       ))}

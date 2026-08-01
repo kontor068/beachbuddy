@@ -16,6 +16,7 @@ import { athensNow } from '../utils/athensTime';
 import { getLocalWeatherFixture } from '../utils/weatherFixtures';
 import { loadGeospatialExposureProfiles, type GeospatialExposureProfileLookup } from '../services/geospatialExposureService';
 import { resolveBeachMarinePoints, marinePointKey, type MarinePoint } from '../utils/marineSamplePoints';
+import { buildBeachForecastClusters, MAX_BEACH_FORECAST_CLUSTERS, type BeachForecastCluster } from '../utils/beachForecastClusters';
 import type { MarineForecastItem } from '../services/weatherService';
 
 /**
@@ -61,47 +62,13 @@ const MARINE_POINT_OVERRIDES: Record<string, { lat: number; lon: number }> = {
   'west-greece-achaia-mainland': { lat: 38.28, lon: 21.70 },         // Gulf of Patras
 };
 
-const BEACH_FORECAST_CLUSTER_STEPS = [0.05, 0.08, 0.12];
-/**
- * A TARGET, NOT A CAP — and deliberately so. Read buildBeachForecastClusters:
- * the last step returns whatever it produced, so large regions exceed this and
- * always have. Measured: Evia 34 clusters (68 Open-Meteo calls per region view),
- * Halkidiki 28, Chania 20. 32 of 110 regions are over.
- *
- * DO NOT "fix" this by forcing the number down. Coarser grouping was measured
- * too: at 0.5° Evia collapses to 7 clusters but a beach then takes its forecast
- * from up to 31 km away, while the UI keeps stating the same confident figure.
- * docs/methodology-wind-exposure-GR.md forbids exactly that — never claim calm
- * without positive evidence for THIS shore — so weakening the evidence 4x to
- * save calls is the one change that is not allowed here.
- *
- * The cost is now paid the right way: as of 30/07/2026 these coordinates go out
- * BATCHED — up to 32 points per request (fetchForecastDataBatch), so Evia's 34
- * clusters cost 2 requests per endpoint instead of 34. That was always the stated
- * fix here, and the blocker named in this comment is gone: the proxy learned
- * coordinate lists (netlify/functions/forecast.mjs, parseCoordinateList).
- *
- * Why it mattered more than the daily budget suggested: the ceiling that actually
- * binds is ~600 requests/MINUTE, not ~10k/day. At 71 requests per Evia view, nine
- * simultaneous visitors crossed it — which is the 429 of 29/07/2026, taken with
- * the daily bucket at ~26%.
- *
- * The rule that has not changed: if capacity ever tightens again, batch harder or
- * cache longer — do NOT sample fewer places.
- */
-const MAX_BEACH_FORECAST_CLUSTERS = 6;
+// Cluster grouping (steps, target, centroid rule) moved to utils/beachForecastClusters.ts
+// so an offline gate can run THE shipped code instead of a copy of it.
 // Per-beach cluster forecasts only refine scores; the map/list already render
 // immediately from the island forecast. Keep a short delay so we don't compete
 // with first paint, but land the refinement quickly instead of seconds later.
 const BEACH_FORECAST_BACKGROUND_DELAY_MS = 1500;
 const EVENING_TODAY_CUTOFF_HOUR = 21;
-
-interface BeachForecastCluster {
-  key: string;
-  lat: number;
-  lon: number;
-  beachIds: number[];
-}
 
 /**
  * The sea each beach reads, keyed so App can hand every beach its own wave.
@@ -133,8 +100,6 @@ export interface BeachMarineContext {
  * where the figure changes after load, and it is bounded to slow first visits.
  */
 const PER_BEACH_MARINE_PROFILE_TIMEOUT_MS = 2500;
-
-const roundToCluster = (value: number, step: number): number => Math.round(value / step) * step;
 
 const shouldSkipTodayAfterEvening = (now: Date = athensNow()): boolean =>
   now.getHours() >= EVENING_TODAY_CUTOFF_HOUR;
@@ -177,34 +142,6 @@ const getNextDaySelectionBoundaryDelay = (now: Date = athensNow()): number => {
   }
 
   return Math.max(1000, nextBoundary.getTime() - now.getTime() + 1000);
-};
-
-const buildBeachForecastClusters = (beaches: Beach[]): BeachForecastCluster[] => {
-  for (const step of BEACH_FORECAST_CLUSTER_STEPS) {
-    const grouped = new Map<string, Beach[]>();
-
-    beaches.forEach(beach => {
-      const lat = roundToCluster(beach.coordinates.lat, step);
-      const lon = roundToCluster(beach.coordinates.lon, step);
-      const key = `${lat.toFixed(3)}_${lon.toFixed(3)}`;
-      grouped.set(key, [...(grouped.get(key) || []), beach]);
-    });
-
-    if (grouped.size <= MAX_BEACH_FORECAST_CLUSTERS || step === BEACH_FORECAST_CLUSTER_STEPS[BEACH_FORECAST_CLUSTER_STEPS.length - 1]) {
-      return Array.from(grouped.entries()).map(([key, clusterBeaches]) => {
-        const lat = clusterBeaches.reduce((sum, beach) => sum + beach.coordinates.lat, 0) / clusterBeaches.length;
-        const lon = clusterBeaches.reduce((sum, beach) => sum + beach.coordinates.lon, 0) / clusterBeaches.length;
-        return {
-          key,
-          lat,
-          lon,
-          beachIds: clusterBeaches.map(beach => beach.id),
-        };
-      });
-    }
-  }
-
-  return [];
 };
 
 const scheduleBackgroundTask = (task: () => void) => {
@@ -582,20 +519,30 @@ export const useWeather = (selectedIsland: Island | undefined, language: Languag
       });
     }
 
+    // THESE ARE NOT A REFINEMENT ANY MORE — THEY ARE THE COLOUR (01/08/2026).
+    //
+    // This used to be deferred by BEACH_FORECAST_BACKGROUND_DELAY_MS with the note "per-beach
+    // cluster forecasts only refine scores; the map/list already render immediately from the
+    // island forecast". That stopped being true when each pin started resolving from its own
+    // wind: arriving late now means the map paints one set of colours and repaints another a
+    // second and a half later, in front of the user. That repaint is exactly why per-beach wind
+    // was abandoned on 01/07 (commit 4eaaa120, "kill card↔detail flip").
+    //
+    // So they go out with everything else. The region forecast still renders first and still
+    // colours anything a cluster does not cover, so nothing waits on this — but on a normal load
+    // the first colours the user sees are already the right ones.
     setBeachForecastsLoading(true);
-    scheduleBackgroundTask(() => {
-      fetchBeachForecastContexts(islandForBackgroundForecasts)
-        .then(localBeachForecasts => {
-          if (requestIdRef.current !== requestId) return;
-          setBeachForecasts(localBeachForecasts);
-          setBeachForecastsLoading(false);
-        })
-        .catch(error => {
-          if (requestIdRef.current !== requestId) return;
-          console.warn('Beach-area forecasts unavailable; falling back to island forecast.', error);
-          setBeachForecastsLoading(false);
-        });
-    });
+    fetchBeachForecastContexts(islandForBackgroundForecasts)
+      .then(localBeachForecasts => {
+        if (requestIdRef.current !== requestId) return;
+        setBeachForecasts(localBeachForecasts);
+        setBeachForecastsLoading(false);
+      })
+      .catch(error => {
+        if (requestIdRef.current !== requestId) return;
+        console.warn('Beach-area forecasts unavailable; falling back to island forecast.', error);
+        setBeachForecastsLoading(false);
+      });
   }, [selectedIsland, language]);
 
   useEffect(() => {

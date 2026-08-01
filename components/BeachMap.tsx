@@ -20,7 +20,7 @@ import { canOpenNavigation, getNavigationBadge, openNavigation } from '../utils/
 import { AmenityChip, getAmenityChips } from '../utils/amenities';
 import { translations } from '../translations';
 import { seaStateSeverityM } from '../utils/waveCharacter';
-import { WIND_SUITABILITY_TONE_CLASSES, resolveConditionTone } from '../utils/suitabilityTone';
+import { WIND_SUITABILITY_TONE_CLASSES, resolveConditionTone, CALMNESS_ORDER, type CalmnessTone } from '../utils/suitabilityTone';
 
 interface BeachMapProps {
   beaches: SuitableBeach[];
@@ -1062,12 +1062,42 @@ const windSliderTones: Record<WindLegendDot, {
   },
 };
 
-const getWindSliderTone = (beaufort?: number): typeof windSliderTones[WindLegendDot] => {
-  if (typeof beaufort !== 'number') return windSliderTones.blue;
-  if (beaufort >= 7) return windSliderTones.red;
-  if (beaufort >= 5) return windSliderTones.orange;
-  if (beaufort >= 3) return windSliderTones.yellow;
-  return windSliderTones.blue;
+/**
+ * THE SLIDER AND THE LEGEND ARE BOTH COLOURED BY THE PINS (01/08/2026).
+ *
+ * The slider used to run `beaufort >= 7 red / >= 5 orange / >= 3 yellow / else blue` — a third
+ * independent scale beside the two that utils/suitabilityTone was created to merge. It read
+ * only the wind, so it could not see the sea or the shape of any coast: on a day with a 1,4 m
+ * swell and 4 Bft it showed a calm yellow thumb above a map of red pins, and the two things
+ * the user compares side by side disagreed. The legend had the same defect for the same reason.
+ *
+ * Miltos settled it: the slider, the legend and the beaches may never show different colours.
+ * Both now read this one tally, built from the tones of the beaches actually on the map through
+ * the same resolveConditionTone every pin uses.
+ *
+ * `dominant` breaks ties toward the ROUGHER tone — an hour that is half calm and half rough is
+ * not advertised as calm. CALMNESS_ORDER runs roughest → calmest, so scanning it in order does
+ * that without a second comparison.
+ */
+interface MapToneTally {
+  counts: Map<CalmnessTone, number>;
+  dominant: CalmnessTone | undefined;
+  total: number;
+}
+
+const tallyMapTones = (tones: CalmnessTone[]): MapToneTally => {
+  const counts = new Map<CalmnessTone, number>();
+  for (const t of tones) counts.set(t, (counts.get(t) ?? 0) + 1);
+  let dominant: CalmnessTone | undefined;
+  let bestCount = -1;
+  for (const tone of CALMNESS_ORDER) {
+    const c = counts.get(tone) ?? 0;
+    if (c > bestCount) {
+      bestCount = c;
+      dominant = tone;
+    }
+  }
+  return { counts, dominant: tones.length ? dominant : undefined, total: tones.length };
 };
 
 // Custom marker icons based on exposure
@@ -1636,12 +1666,8 @@ const BeachMap: React.FC<BeachMapProps> = ({
   const sliderDisplayBeaufort = sliderDisplayHourItem
     ? getBeaufortLevel(sliderDisplayHourItem.wind.speed * 3.6)
     : undefined;
-  const sliderTone = getWindSliderTone(sliderDisplayBeaufort);
-  const sliderThumbStyle: React.CSSProperties & Record<string, string> = {
-    '--beach-map-hour-slider-thumb': sliderTone.color,
-    '--beach-map-hour-slider-shadow': sliderTone.shadow,
-    '--beach-map-hour-slider-focus': sliderTone.focus,
-  };
+  // sliderTone is derived further down, once the per-beach exposure levels the pins use exist —
+  // it must be the same tone as the pins, so it cannot be computed before them.
   const commitSliderIndex = (index: number) => {
     const clampedIndex = Math.min(sliderMaxIndex, Math.max(0, index));
     setSmoothSliderIndex(clampedIndex);
@@ -1785,6 +1811,42 @@ const BeachMap: React.FC<BeachMapProps> = ({
   const getMapExposureEvidence = (item: SuitableBeach): MapExposureEvidence => (
     hasSupportedMapEvidence(item) ? 'supported' : 'estimated'
   );
+
+  /**
+   * The Beaufort AT this beach, falling back to the region's when there is no local reading.
+   *
+   * Until 01/08/2026 every pin, the legend and the slider were coloured from `windBeaufort` — one
+   * figure measured at the region centre. Live on 02/08 that centre read 1 Bft for Evia while its
+   * own shores ran 1–6 Bft, and fifty beaches nationally were painted «Ιδανική» over 5–6 Bft.
+   * `beachLocalWinds` was already arriving from the cluster forecasts and being used only for the
+   * hover card. Guarded by scripts/validateColourAgainstRealWind.mjs.
+   */
+  const beachBeaufort = (item: SuitableBeach): number | undefined => {
+    const local = beachLocalWinds?.[item.beach.id];
+    return typeof local?.speedKmh === 'number' ? getBeaufortLevel(local.speedKmh) : windBeaufort;
+  };
+
+  // ONE tally, read by both the slider thumb and the legend — see tallyMapTones above. The sea
+  // state is the one loaded for the selected hour; while the user is mid-drag the wind is the
+  // scrubbed hour's and the sea is the loaded one, which is the same approximation the pins
+  // themselves show until the drag is committed.
+  const mapToneTally = tallyMapTones(
+    beaches.map((item) => resolveConditionTone({
+      exposureLevel: mapMode === 'recommendation' ? getMapExposureLevel(item) : visibleExposureLevel(item),
+      // Same per-beach wind the pin itself uses (beachBeaufort). While the user drags, the
+      // scrubbed hour's region Beaufort stands in — the pins show that same approximation until
+      // the drag is committed, so the two never disagree on screen.
+      beaufort: beachBeaufort(item) ?? sliderDisplayBeaufort ?? 0,
+      isEnclosedCove: Boolean(item.enclosedCove),
+      seaStateM: seaStateSeverityM(item.seaStateWaveM, item.seaStatePeriodS),
+    }))
+  );
+  const sliderTone = windSliderTones[mapToneTally.dominant ?? 'blue'];
+  const sliderThumbStyle: React.CSSProperties & Record<string, string> = {
+    '--beach-map-hour-slider-thumb': sliderTone.color,
+    '--beach-map-hour-slider-shadow': sliderTone.shadow,
+    '--beach-map-hour-slider-focus': sliderTone.focus,
+  };
   const selectedDayPrefix = getSelectedDayPrefix(selectedDate, athensNow(), language);
   const exposureLabel = (exposureLevel?: string) => {
     const labels = {
@@ -1951,63 +2013,61 @@ const BeachMap: React.FC<BeachMapProps> = ({
     if (exposureLevel === 'exposed') return exposureInsightCopy.exposed(wind);
     return exposureInsightCopy.partial(wind);
   };
+  /**
+   * THE LEGEND COUNTS THE PINS. IT DOES NOT DESCRIBE RULES.
+   *
+   * It used to be five hard-coded rows keyed by Beaufort ("4 Bft — Good / Fair"), of which
+   * exactly one was shown, chosen from the wind alone. Two things were wrong with that:
+   *
+   *   1. It was BLIND TO THE SEA. The swatches called getExposureMarkerTone without the
+   *      `isEnclosedCove` and `seaStateM` arguments that every real pin passes, so a legend row
+   *      could not physically show a colour the sea had caused. Measured against the real ladder:
+   *      at 3 Bft the possible pin colours are blue/yellow/orange/RED and at 4 Bft they are
+   *      yellow/orange/RED — and the legend mentioned red in neither. It was wrong on two of its
+   *      three everyday rows.
+   *   2. Its premise had expired. Keying the guide to Beaufort assumes the wind decides the
+   *      colour; since the sea-state ceiling landed (01/08) it does not.
+   *
+   * Miltos ruled that the legend and the pins may never disagree. The way to guarantee that is
+   * not to write better rules — it is to stop describing and start MEASURING: the rows below are
+   * generated from the tones of the beaches actually on the map, through the same
+   * resolveConditionTone the pins use. A colour with no beaches does not appear; a colour with
+   * beaches cannot be omitted. As a bonus it answers a better question than the old table did —
+   * not "what would 4 Bft mean" but "how many choices do I have right now".
+   */
   const windColorGuideCopy = getLocalizedCopy<{
-    rows: Array<{
-      id: string;
-      range: string;
-      segments: Array<{
-        label: string;
-        dot: WindLegendDot;
-        colorLabel: string;
-        /** Render a danger triangle instead of the colour dot (near-gale "unsuitable" row). */
-        alert?: boolean;
-      }>;
-    }>;
+    /** One word per tone. Keys are CalmnessTone — every tone the ladder can emit needs one. */
+    toneLabel: Record<WindLegendDot, string>;
+    /** Spoken colour name; aria-label/title only, never rendered as text. */
+    colorName: Record<WindLegendDot, string>;
+    /** Replaces the counted rows at >=7 Bft, where the wind alone makes every pin red. */
+    severeLabel: string;
+    severeColorName: string;
   }>(language, {
     en: {
-      rows: [
-        { id: '0-2', range: '0-2 Bft', segments: [{ label: 'Excellent', dot: 'blue', colorLabel: 'blue' }] },
-        { id: '3', range: '3 Bft', segments: [{ label: 'Excellent', dot: 'blue', colorLabel: 'blue' }, { label: 'Good', dot: 'yellow', colorLabel: 'yellow' }] },
-        { id: '4', range: '4 Bft', segments: [{ label: 'Good', dot: 'yellow', colorLabel: 'yellow' }, { label: 'Fair', dot: 'orange', colorLabel: 'orange' }] },
-        { id: '5-6', range: '5-6 Bft', segments: [{ label: 'Fair', dot: 'orange', colorLabel: 'orange' }, { label: 'Difficult', dot: 'red', colorLabel: 'red' }] },
-        { id: '7-10', range: '7-10 Bft', segments: [{ label: 'Unsuitable', dot: 'red', colorLabel: 'danger', alert: true }] },
-      ],
+      toneLabel: { blue: 'Excellent', green: 'Enclosed bay, calmer', yellow: 'Good', orange: 'Fair', red: 'Difficult' },
+      colorName: { blue: 'blue', green: 'green', yellow: 'yellow', orange: 'orange', red: 'red' },
+      severeLabel: 'Unsuitable', severeColorName: 'danger',
     },
     gr: {
-      rows: [
-        { id: '0-2', range: '0-2 Μποφόρ', segments: [{ label: 'Ιδανική', dot: 'blue', colorLabel: 'μπλε' }] },
-        { id: '3', range: '3 Μποφόρ', segments: [{ label: 'Ιδανική', dot: 'blue', colorLabel: 'μπλε' }, { label: 'Καλή', dot: 'yellow', colorLabel: 'κίτρινο' }] },
-        { id: '4', range: '4 Μποφόρ', segments: [{ label: 'Καλή', dot: 'yellow', colorLabel: 'κίτρινο' }, { label: 'Μέτρια', dot: 'orange', colorLabel: 'πορτοκαλί' }] },
-        { id: '5-6', range: '5-6 Μποφόρ', segments: [{ label: 'Μέτρια', dot: 'orange', colorLabel: 'πορτοκαλί' }, { label: 'Δύσκολη', dot: 'red', colorLabel: 'κόκκινο' }] },
-        { id: '7-10', range: '7-10 Μποφόρ', segments: [{ label: 'Ακατάλληλη', dot: 'red', colorLabel: 'κίνδυνος', alert: true }] },
-      ],
+      toneLabel: { blue: 'Ιδανική', green: 'Κλειστός όρμος, πιο ήρεμος', yellow: 'Καλή', orange: 'Μέτρια', red: 'Δύσκολη' },
+      colorName: { blue: 'μπλε', green: 'πράσινο', yellow: 'κίτρινο', orange: 'πορτοκαλί', red: 'κόκκινο' },
+      severeLabel: 'Ακατάλληλη', severeColorName: 'κίνδυνος',
     },
     fr: {
-      rows: [
-        { id: '0-2', range: '0-2 Bft', segments: [{ label: 'Idéale', dot: 'blue', colorLabel: 'bleu' }] },
-        { id: '3', range: '3 Bft', segments: [{ label: 'Idéale', dot: 'blue', colorLabel: 'bleu' }, { label: 'Bonne', dot: 'yellow', colorLabel: 'jaune' }] },
-        { id: '4', range: '4 Bft', segments: [{ label: 'Bonne', dot: 'yellow', colorLabel: 'jaune' }, { label: 'Correcte', dot: 'orange', colorLabel: 'orange' }] },
-        { id: '5-6', range: '5-6 Bft', segments: [{ label: 'Correcte', dot: 'orange', colorLabel: 'orange' }, { label: 'Difficile', dot: 'red', colorLabel: 'rouge' }] },
-        { id: '7-10', range: '7-10 Bft', segments: [{ label: 'Déconseillée', dot: 'red', colorLabel: 'danger', alert: true }] },
-      ],
+      toneLabel: { blue: 'Idéale', green: 'Baie fermée, plus calme', yellow: 'Bonne', orange: 'Correcte', red: 'Difficile' },
+      colorName: { blue: 'bleu', green: 'vert', yellow: 'jaune', orange: 'orange', red: 'rouge' },
+      severeLabel: 'Déconseillée', severeColorName: 'danger',
     },
     de: {
-      rows: [
-        { id: '0-2', range: '0-2 Bft', segments: [{ label: 'Ideal', dot: 'blue', colorLabel: 'blau' }] },
-        { id: '3', range: '3 Bft', segments: [{ label: 'Ideal', dot: 'blue', colorLabel: 'blau' }, { label: 'Gut', dot: 'yellow', colorLabel: 'gelb' }] },
-        { id: '4', range: '4 Bft', segments: [{ label: 'Gut', dot: 'yellow', colorLabel: 'gelb' }, { label: 'Mäßig', dot: 'orange', colorLabel: 'orange' }] },
-        { id: '5-6', range: '5-6 Bft', segments: [{ label: 'Mäßig', dot: 'orange', colorLabel: 'orange' }, { label: 'Schwierig', dot: 'red', colorLabel: 'rot' }] },
-        { id: '7-10', range: '7-10 Bft', segments: [{ label: 'Ungeeignet', dot: 'red', colorLabel: 'danger', alert: true }] },
-      ],
+      toneLabel: { blue: 'Ideal', green: 'Geschlossene Bucht, ruhiger', yellow: 'Gut', orange: 'Mäßig', red: 'Schwierig' },
+      colorName: { blue: 'blau', green: 'grün', yellow: 'gelb', orange: 'orange', red: 'rot' },
+      severeLabel: 'Ungeeignet', severeColorName: 'danger',
     },
     it: {
-      rows: [
-        { id: '0-2', range: '0-2 Bft', segments: [{ label: 'Ideale', dot: 'blue', colorLabel: 'blu' }] },
-        { id: '3', range: '3 Bft', segments: [{ label: 'Ideale', dot: 'blue', colorLabel: 'blu' }, { label: 'Buona', dot: 'yellow', colorLabel: 'giallo' }] },
-        { id: '4', range: '4 Bft', segments: [{ label: 'Buona', dot: 'yellow', colorLabel: 'giallo' }, { label: 'Discreta', dot: 'orange', colorLabel: 'arancione' }] },
-        { id: '5-6', range: '5-6 Bft', segments: [{ label: 'Discreta', dot: 'orange', colorLabel: 'arancione' }, { label: 'Difficile', dot: 'red', colorLabel: 'rosso' }] },
-        { id: '7-10', range: '7-10 Bft', segments: [{ label: 'Non adatta', dot: 'red', colorLabel: 'danger', alert: true }] },
-      ],
+      toneLabel: { blue: 'Ideale', green: 'Baia chiusa, più calma', yellow: 'Buona', orange: 'Discreta', red: 'Difficile' },
+      colorName: { blue: 'blu', green: 'verde', yellow: 'giallo', orange: 'arancione', red: 'rosso' },
+      severeLabel: 'Non adatta', severeColorName: 'danger',
     },
   });
 
@@ -2385,29 +2445,31 @@ const BeachMap: React.FC<BeachMapProps> = ({
     );
   };
 
-  // Legend key swatches follow the same Beaufort bands as the markers.
-  const protectedTone = getExposureMarkerTone('protected', showWindExposureColors, windBeaufort);
-  const exposedTone = getExposureMarkerTone('exposed', showWindExposureColors, windBeaufort);
-  const currentWindColorGuideId = typeof windBeaufort === 'number'
-    ? windBeaufort >= 7
-      ? '7-10'
-      : windBeaufort >= 5
-        ? '5-6'
-        : windBeaufort >= 4
-          ? '4'
-          : windBeaufort >= 3
-            ? '3'
-            : '0-2'
-    : '0-2';
-  const currentWindColorGuideRows = windColorGuideCopy.rows.filter(row => row.id === currentWindColorGuideId);
-  const visibleWindColorGuideRows = currentWindColorGuideRows.length > 0
-    ? currentWindColorGuideRows
-    : windColorGuideCopy.rows.slice(0, 1);
-  const showGroupedExposureLegend = showWindExposureStatusLabels && currentWindColorGuideId !== '7-10';
-  // The enclosed-cove legend line only earns its place where the cove actually paints
-  // green — from 5 Bft up. Below that a cove colours like any protected shore, so the
-  // "calmer today" note would be a distinction without a difference.
-  const showCoveLegendCue = currentWindColorGuideId === '5-6';
+  // The two grouped swatches ("more sheltered" / "more exposed") used to call
+  // getExposureMarkerTone with NO sea argument, so they could print a colour the map did not
+  // contain. They now carry the median sea of the beaches in each group — the colour those
+  // beaches are actually wearing right now.
+  const medianSeaOfGroup = (wanted: 'protected' | 'exposed'): number | undefined => {
+    const seas = beaches
+      .filter(item => (mapMode === 'recommendation' ? getMapExposureLevel(item) : visibleExposureLevel(item)) === wanted)
+      .map(item => seaStateSeverityM(item.seaStateWaveM, item.seaStatePeriodS))
+      .filter((v): v is number => typeof v === 'number' && Number.isFinite(v))
+      .sort((a, b) => a - b);
+    return seas.length ? seas[Math.floor(seas.length / 2)] : undefined;
+  };
+  const protectedTone = getExposureMarkerTone('protected', showWindExposureColors, windBeaufort, false, medianSeaOfGroup('protected'));
+  const exposedTone = getExposureMarkerTone('exposed', showWindExposureColors, windBeaufort, false, medianSeaOfGroup('exposed'));
+
+  const isSevereWind = typeof windBeaufort === 'number' && windBeaufort >= 7;
+  /**
+   * One row per colour that is ACTUALLY on the map, roughest first, each with its count. A colour
+   * nobody is wearing does not appear; a colour somebody is wearing cannot be left out. This is
+   * what makes the legend structurally unable to contradict the pins — see tallyMapTones.
+   */
+  const visibleWindColorGuideRows = CALMNESS_ORDER
+    .map(tone => ({ tone, count: mapToneTally.counts.get(tone) ?? 0 }))
+    .filter(row => row.count > 0);
+  const showGroupedExposureLegend = showWindExposureStatusLabels && !isSevereWind;
   // The surf line only appears when a surf spot is actually on screen. There are
   // 10 nationally, so on almost every map it would be an unexplained symbol
   // taking up legend space — and an unexplained badge is worse than no badge.
@@ -2420,56 +2482,37 @@ const BeachMap: React.FC<BeachMapProps> = ({
       <div
         className={`${isPreview ? 'grid gap-1 sm:grid-cols-2' : 'grid gap-1 rounded-lg bg-slate-50/80 p-2 dark:bg-slate-800/60'}`}
       >
-        {visibleWindColorGuideRows.map(row => (
-          <div
-            key={row.id}
-            className={`${isPreview ? 'text-[10px] sm:text-[11px]' : 'text-[11px]'} flex min-w-0 flex-wrap items-center gap-x-1.5 gap-y-1 font-semibold leading-snug text-slate-600 dark:text-slate-300`}
-          >
-            <span className="shrink-0 font-extrabold text-slate-700 dark:text-slate-200">{row.range}</span>
-            <span className="shrink-0 text-slate-600">-</span>
-            <span className="inline-flex min-w-0 flex-wrap items-center gap-x-1.5 gap-y-1">
-              {row.segments.map((segment, index) => (
-                <React.Fragment key={`${row.id}-${segment.label}-${segment.dot}`}>
-                  {index > 0 && <span className="shrink-0 text-slate-600">/</span>}
-                  <span className="inline-flex min-w-0 items-center gap-1">
-                    <span className="min-w-0">{segment.label}</span>
-                    {segment.alert ? (
-                      <AlertTriangle
-                        aria-label={segment.colorLabel}
-                        role="img"
-                        className="h-3.5 w-3.5 shrink-0 fill-rose-600 text-white"
-                      />
-                    ) : (
-                      <span
-                        aria-label={segment.colorLabel}
-                        title={segment.colorLabel}
-                        role="img"
-                        className={`h-2.5 w-2.5 shrink-0 rounded-full ring-1 ${windLegendDotClasses[segment.dot]}`}
-                      />
-                    )}
-                  </span>
-                </React.Fragment>
-              ))}
-            </span>
-          </div>
-        ))}
-        {showCoveLegendCue && (
+        {isSevereWind ? (
           <div className={`${isPreview ? 'text-[10px] sm:text-[11px]' : 'text-[11px]'} flex min-w-0 flex-wrap items-center gap-x-1.5 gap-y-1 font-semibold leading-snug text-slate-600 dark:text-slate-300`}>
             <span className="inline-flex min-w-0 items-center gap-1">
-              <span className="min-w-0">{getLocalizedCopy(language, {
-                en: 'Enclosed bay, calmer today',
-                gr: 'Κλειστός όρμος, πιο ήρεμος σήμερα',
-                fr: 'Baie fermée, plus calme aujourd’hui',
-                de: 'Geschlossene Bucht, heute ruhiger',
-                it: 'Baia chiusa, più calma oggi',
-              })}</span>
-              <span
+              <span className="min-w-0">{windColorGuideCopy.severeLabel}</span>
+              <AlertTriangle
+                aria-label={windColorGuideCopy.severeColorName}
                 role="img"
-                className={`relative h-2.5 w-2.5 shrink-0 rounded-full ring-1 ${windLegendDotClasses.green}`}
+                className="h-3.5 w-3.5 shrink-0 fill-rose-600 text-white"
               />
             </span>
           </div>
-        )}
+        ) : visibleWindColorGuideRows.map(row => (
+          <div
+            key={row.tone}
+            className={`${isPreview ? 'text-[10px] sm:text-[11px]' : 'text-[11px]'} flex min-w-0 flex-wrap items-center gap-x-1.5 gap-y-1 font-semibold leading-snug text-slate-600 dark:text-slate-300`}
+          >
+            <span className="inline-flex min-w-0 items-center gap-1">
+              <span
+                aria-label={windColorGuideCopy.colorName[row.tone]}
+                title={windColorGuideCopy.colorName[row.tone]}
+                role="img"
+                className={`h-2.5 w-2.5 shrink-0 rounded-full ring-1 ${windLegendDotClasses[row.tone]}`}
+              />
+              <span className="min-w-0">{windColorGuideCopy.toneLabel[row.tone]}</span>
+              <span className="shrink-0 font-extrabold text-slate-700 dark:text-slate-200">{row.count}</span>
+            </span>
+          </div>
+        ))}
+        {/* The enclosed-cove line used to live here as a separate cue. It is now simply the
+            'green' row above, counted like every other colour — one place, one count, and it
+            appears exactly when a green pin is on the map rather than on a Beaufort guess. */}
         {showSurfLegendCue && (
           <div className={`${isPreview ? 'text-[10px] sm:text-[11px]' : 'text-[11px]'} flex min-w-0 flex-wrap items-center gap-x-1.5 gap-y-1 font-semibold leading-snug text-slate-600 dark:text-slate-300`}>
             <span className="inline-flex min-w-0 items-center gap-1.5">
@@ -2793,7 +2836,7 @@ const BeachMap: React.FC<BeachMapProps> = ({
               zIndexOffset={isHighlightedMarker ? 1000 : isTopPickMarker ? 700 : 0}
               icon={mapMode === 'recommendation'
                 ? createBeachIcon(item, showRecommendationWindColors, isTopPickMarker, isHighlightedMarker, isSurfMarker)
-                : createExposureIcon(mapExposureLevel, showWindExposureColors, windBeaufort, isTopPickMarker, mapExposureEvidence, isHighlightedMarker, Boolean(item.enclosedCove), isSurfMarker, seaStateSeverityM(item.seaStateWaveM, item.seaStatePeriodS))}
+                : createExposureIcon(mapExposureLevel, showWindExposureColors, beachBeaufort(item), isTopPickMarker, mapExposureEvidence, isHighlightedMarker, Boolean(item.enclosedCove), isSurfMarker, seaStateSeverityM(item.seaStateWaveM, item.seaStatePeriodS))}
               eventHandlers={{
                 click: () => {
                   trackEvent('map_marker_clicked', item.beachId, {

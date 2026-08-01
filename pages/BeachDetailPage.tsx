@@ -619,9 +619,19 @@ interface BeachDetailPageProps {
   geospatialExposureProfiles?: Record<number, GeospatialExposureProfile>;
   weatherSource?: WeatherSource;
   /** Authoritative map-marker exposure level for this beach, taken from the region
-   *  map (single island wind) so the detail map colours the pin identically instead
-   *  of re-deriving a different colour from the per-beach cluster wind. */
+   *  map so the detail map colours the pin identically instead of re-deriving it here. */
   mapExposureLevelOverride?: ExposureLevel;
+  /**
+   * The wind at this beach's own shore — the SAME cluster reading the region map colours its
+   * pin from (App.mapBeachLocalWinds).
+   *
+   * The level override above pins the exposure LEVEL, but getExposureMarkerTone also keys on
+   * Beaufort, so the detail map needs the same Beaufort or the same beach renders in two
+   * different colours on two screens. That divergence was the whole reason the override exists;
+   * when the region map moved to per-beach wind on 01/08/2026 and this map did not, it came
+   * back from the other side.
+   */
+  mapWind?: { deg: number; speedKmh: number };
   /** The hour the global slider is showing (0-23), so the wave strip marks the right bar. */
   selectedHour?: number;
   /** SAFETY hard cutoff: the region forecast is >3 h old and could not be refreshed. When
@@ -704,6 +714,7 @@ export const BeachDetailPage: React.FC<BeachDetailPageProps> = ({
   regionId,
   detailDataStatus = 'idle',
   beachWeatherById,
+  mapWind,
   geospatialExposureProfiles,
   weatherSource = 'island-fallback',
   mapExposureLevelOverride,
@@ -1736,14 +1747,17 @@ export const BeachDetailPage: React.FC<BeachDetailPageProps> = ({
             equal-weight metric cards that stated it a third time in different units —
             while road, facilities, entry and what-to-pack sat two to four screens further
             down in four more cards of exactly the same weight.
-            Now: location → ONE verdict → 4 weather tiles → 4 practical tiles → how today
-            compares with a normal month here (the Copernicus line no competitor can print).
+            Now: location → 4 weather tiles → 4 practical tiles → how today compares with a
+            normal month here (the Copernicus line no competitor can print).
+            The verdict pill that used to open the card is gone (01/08/2026): it stated in
+            words the same judgement the tiles state in numbers directly beneath it, and the
+            two read as two answers. The verdict itself still drives `tone` below, which is
+            what colours this card — shown, not spelled out.
             `waterDepth` is still deliberately absent: it exists on all 2.850 records but
             has never been accuracy-checked, and the house rule is to under-claim. */}
         <BeachAnswerHero
           islandName={islandDisplayName}
           compositionLabel={beachCompositionLabel}
-          verdict={showConditions && weatherNow.tone !== 'unknown' ? weatherNow.verdict : null}
           tone={weatherNow.tone === 'choppy' ? 'rough' : weatherNow.tone === 'mixed' ? 'moderate' : 'calm'}
           bestTimeLabel={showConditions ? (displayedBestTimeLabel || null) : null}
           /* The instrument gets the SHORT compass form ("ΒΑ"); the long adjective
@@ -2401,24 +2415,39 @@ export const BeachDetailPage: React.FC<BeachDetailPageProps> = ({
                     seaCalmClaimAllowed,
                     geospatialExposure,
                     beach,
-                    bestBeachTime: bestTime
+                    bestBeachTime: bestTime,
+                    // THE SEA. Without these three the marker gets seaStateM === undefined, so
+                    // the running-sea ceiling in resolveConditionTone never fires here while it
+                    // does on the region map — the same beach renders one colour outside and
+                    // another inside, on every beach whose sea is at or above SEA_STATE_AMBER_M.
+                    // Reported 01/08/2026 ("άλλα μέσα, άλλα έξω, σε πολλές"), which is exactly
+                    // the shape this predicts: not all beaches, only the ones the sea capped.
+                    // enclosedCove rides along because it is the one sanctioned exemption from
+                    // that ceiling (utils/suitabilityTone.coveHoldsCalmWater).
+                    seaStateWaveM: scoreResult.seaStateWaveM,
+                    seaStatePeriodS: scoreResult.seaStatePeriodS,
+                    enclosedCove
                   }]}
                   userLocation={userLocation}
                   campsites={nearbyCampsites.map((c) => ({ id: c.id, name: c.name, lat: c.coordinates.lat, lon: c.coordinates.lon }))}
                   center={[beach.coordinates.lat, beach.coordinates.lon]}
                   zoom={14}
-                  // Colour the pin from the ISLAND/selected-day wind (dayForecast), the
-                  // same basis the region map and the exposure-level override use — NOT the
-                  // per-beach cluster wind (weatherData), which drives the score/headline but
-                  // would tone the pin off a different Beaufort. The override pins the exposure
-                  // LEVEL, but getExposureMarkerTone also keys on Beaufort, so a cluster wind
-                  // one band lower (e.g. 2 Bft vs the island's 3) rendered the same beach blue
-                  // in the detail map while the region map showed it yellow.
+                  // Colour the pin from THE SAME WIND THE REGION MAP USES — this beach's own
+                  // cluster reading (mapWind) when we have it, the region wind otherwise.
+                  //
+                  // The rule has never changed: this pin and the region map's pin must be the
+                  // same colour. What "the same" points at did. Until 01/08/2026 the region map
+                  // coloured every beach from the island wind, so passing dayForecast here was
+                  // correct. That day the region map moved to per-beach cluster wind and this
+                  // map did not follow, which reopened the exact divergence the override exists
+                  // to prevent — the level was pinned, but getExposureMarkerTone also keys on
+                  // Beaufort, so one band of difference repainted the same beach.
+                  //
                   // When conditions are stale-blocked, keep the location map but drop the wind so
                   // the pin renders neutral (no stale colour) — matches the region map's behaviour.
-                  windSpeed={showConditions ? dayForecast.wind.speed : undefined}
-                  windDirection={showConditions ? degToCompass(dayForecast.wind.deg) : undefined}
-                  windDirectionDeg={showConditions ? dayForecast.wind.deg : undefined}
+                  windSpeed={showConditions ? (mapWind ? mapWind.speedKmh / 3.6 : dayForecast.wind.speed) : undefined}
+                  windDirection={showConditions ? degToCompass(mapWind?.deg ?? dayForecast.wind.deg) : undefined}
+                  windDirectionDeg={showConditions ? (mapWind?.deg ?? dayForecast.wind.deg) : undefined}
                   language={language}
                   islandName={islandName}
                   selectedDate={selectedDate}

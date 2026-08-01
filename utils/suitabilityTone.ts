@@ -1,6 +1,6 @@
 import type { WindSuitabilityColor } from '../types';
 import type { ExposureLevel } from './windExposure';
-import { seaStateToneCeiling } from './waveCharacter';
+import { seaStateToneCeiling, shoreSeaStateM, type SeaToneCeiling } from './waveCharacter';
 
 /** Shared visual tokens for the map marker and the compact card wave glyph. */
 export const WIND_SUITABILITY_TONE_CLASSES: Record<WindSuitabilityColor, {
@@ -148,14 +148,70 @@ export const resolveWindTone = (
  * reporting the sea cannot resolve a 50 m pocket, and letting it overrule an operator-verified
  * morphology would be the marine model overruling the geometry.
  */
+/**
+ * Sea-state ceilings, roughest → mildest. Relief below is counted in THESE rungs, not in
+ * CALMNESS_ORDER: 'green' is reserved for the verified-cove case and must never become
+ * reachable as a side effect of a wave being small.
+ *
+ * `null` — no ceiling at all — is deliberately NOT a rung. Once the open water is running, the
+ * shelter correction may soften how bad we call it; it may not delete the fact. The first
+ * version of this let a 0,85 m sea outside a sheltered shore land on 'yellow', damp to 0,42 m,
+ * and come out with NO ceiling — a blue "calm" pin over a running sea, in 92 of 1.476 grid
+ * combinations. scripts/validateConditionToneAgreement caught it. Damping is an estimate and
+ * swell wraps into lee shores; 'yellow' ("there is sea about") is the floor that estimate earns.
+ */
+const CEILING_ORDER: readonly Exclude<SeaToneCeiling, null>[] = ['red', 'orange', 'yellow'];
+const MILDEST_RUNG = CEILING_ORDER.length - 1;
+const ceilingRung = (c: SeaToneCeiling): number => (c === null ? MILDEST_RUNG : CEILING_ORDER.indexOf(c));
+
+/**
+ * How many rungs shelter may lift the sea ceiling. ONE, deliberately.
+ *
+ * The shore-damping factors are the app's own (utils/waveModel), but they have never been
+ * validated against a live grid reading — only against our fetch model. If they overstate how
+ * much a headland actually removes, an uncapped lift would take a genuinely dangerous sea from
+ * red all the way to no-ceiling-at-all, and the wind ladder alone would paint it calm. One rung
+ * keeps the correction useful (red → orange is exactly the "sheltered side of the island on a
+ * meltemi day" case) while making a two-step false-calm structurally impossible.
+ */
+export const MAX_SHELTER_CEILING_RELIEF = 1;
+
+/**
+ * A running sea sets a CEILING on how calm a surface may look. The wind ladder above cannot
+ * see a sea built by wind over the water, earlier in the day, or further down the fetch —
+ * which is why a light-wind day on an open shore was calm by construction.
+ *
+ * Ceiling only: it can never make something look calmer, and never pulls back an escalation
+ * the wind already made. A cove that genuinely holds calm water is exempt — the grid cell
+ * reporting the sea cannot resolve a 50 m pocket, and letting it overrule an operator-verified
+ * morphology would be the marine model overruling the geometry.
+ *
+ * SHELTER NOW REACHES THE CEILING TOO (01/08/2026). `seaStateM` arrives from a marine sample
+ * point a median of 10 km offshore, so applying the ceiling to it raw asked "how rough is the
+ * open sea out there" and painted the answer onto the shore. Above SEA_STATE_ROUGH_M that made
+ * exposure irrelevant: a deeply sheltered cove and an open coast took the same red from the same
+ * offshore number, and the geometry stopped mattering on exactly the days it matters most.
+ * The ceiling is now computed from BOTH the open-water reading and the shore-damped one
+ * (utils/waveCharacter.shoreSeaStateM), and the milder of the two wins — capped at one rung.
+ */
 export const capToneBySeaState = (
   windTone: CalmnessTone,
   seaStateM: number | undefined,
-  exempt = false
+  exempt = false,
+  exposureLevel?: ExposureLevel | string
 ): CalmnessTone => {
   if (exempt) return windTone;
-  const ceiling = seaStateToneCeiling(seaStateM);
-  if (!ceiling) return windTone;
+  const openWaterCeiling = seaStateToneCeiling(seaStateM);
+  if (!openWaterCeiling) return windTone;
+
+  const shoreCeiling = seaStateToneCeiling(shoreSeaStateM(seaStateM, exposureLevel));
+  const rung = Math.min(
+    MILDEST_RUNG,
+    ceilingRung(shoreCeiling),
+    ceilingRung(openWaterCeiling) + MAX_SHELTER_CEILING_RELIEF
+  );
+  const ceiling = CEILING_ORDER[rung];
+
   return CALMNESS_ORDER.indexOf(windTone) > CALMNESS_ORDER.indexOf(ceiling) ? ceiling : windTone;
 };
 
@@ -179,7 +235,8 @@ export const resolveConditionTone = ({
 }): CalmnessTone => capToneBySeaState(
   resolveWindTone(exposureLevel, beaufort, isEnclosedCove),
   seaStateM,
-  coveHoldsCalmWater(isEnclosedCove, exposureLevel === 'protected', beaufort)
+  coveHoldsCalmWater(isEnclosedCove, exposureLevel === 'protected', beaufort),
+  exposureLevel
 );
 
 /**

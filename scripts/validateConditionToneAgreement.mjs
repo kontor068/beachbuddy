@@ -156,7 +156,11 @@ for (const failure of failures) {
   byRule.get(failure.rule).push(failure);
 }
 
-console.log(`Grid: ${combinations} condition combinations · ${RULES.length} rules\n`);
+// RULES covers the grid sweep; the wiring rule and the slider rule are asserted after it, so the
+// headline counts all of them — a gate that under-reports its own coverage invites the assumption
+// that something is checked when it is not.
+const NON_GRID_RULES = 4;
+console.log(`Grid: ${combinations} condition combinations · ${RULES.length + NON_GRID_RULES} rules\n`);
 
 for (const rule of RULES) {
   const hits = byRule.get(rule.id) ?? [];
@@ -265,6 +269,191 @@ for (const testCase of WIRING_CASES) {
 const wiringFailures = failures.filter(failure => failure.rule === 'scoring-layer-feeds-the-sea-state');
 console.log(`${wiringFailures.length === 0 ? 'OK  ' : 'FAIL'} scoring-layer-feeds-the-sea-state: ${wiringFailures.length}`);
 for (const hit of wiringFailures) console.log(`       ${hit.reason} (seaStateWaveM=${hit.row.seaStateWaveM})`);
+
+// ─────────────────────────────────────────────────────────────────────────────
+// RULE 5 — neither the hour slider nor the legend has a colour ladder of its own.
+//
+// Both sit on the same screen as the pins and are compared at a glance, and both had the same
+// defect:
+//
+//   • the slider thumb carried a private `getWindSliderTone` — `beaufort >= 7 red / >= 5 orange
+//     / >= 3 yellow / else blue` — reading the wind and nothing else;
+//   • the legend was five hard-coded rows keyed by Beaufort whose swatches called
+//     getExposureMarkerTone WITHOUT the sea argument, so it could not print a colour the sea had
+//     caused. Measured against the real ladder it was wrong on two of its three everyday rows:
+//     red is reachable at both 3 and 4 Bft and the legend mentioned it at neither.
+//
+// Miltos ruled on 01/08/2026 that the slider, the legend and the beaches may never show
+// different colours. Both now read one tally (`mapToneTally`) built from resolveConditionTone.
+//
+// SOURCE checks, not grid checks: the defect is structural — a second ladder existing at all —
+// so the assertion is that no private ladder has grown back and that both surfaces read the
+// shared tally. The one grid check at the end covers the other half: every colour the ladder can
+// emit must have a word in all five languages, or a pin appears the legend cannot explain.
+// ─────────────────────────────────────────────────────────────────────────────
+const mapSource = readFileSync(path.join(root, 'components/BeachMap.tsx'), 'utf8');
+
+if (/const\s+getWindSliderTone\s*=/.test(mapSource)) {
+  failures.push({
+    rule: 'slider-has-no-ladder-of-its-own',
+    reason: 'components/BeachMap.tsx has re-grown getWindSliderTone — a private beaufort→colour '
+      + 'ladder for the slider thumb. The thumb must come from resolveConditionTone like the pins.',
+    row: {},
+  });
+}
+if (!/sliderTone\s*=\s*windSliderTones\[/.test(mapSource) || !/mapToneTally/.test(mapSource)) {
+  failures.push({
+    rule: 'slider-has-no-ladder-of-its-own',
+    reason: 'components/BeachMap.tsx no longer derives the slider thumb from the pins\' own tones '
+      + '(expected mapToneTally → windSliderTones). The slider can drift from the map again.',
+    row: {},
+  });
+}
+{
+  // The tone it aggregates must be the shared resolver, fed the same inputs the pins get.
+  const crowd = mapSource.match(/const\s+mapToneTally\s*=[\s\S]{0,900}?\n\s*\);/);
+  const body = crowd ? crowd[0] : '';
+  for (const needle of ['resolveConditionTone', 'exposureLevel', 'seaStateM', 'isEnclosedCove']) {
+    if (!body.includes(needle)) {
+      failures.push({
+        rule: 'slider-has-no-ladder-of-its-own',
+        reason: `the map tone tally is computed without "${needle}" — it is no longer the same `
+          + 'judgement the pins make, so the thumb, the legend and the map can disagree.',
+        row: {},
+      });
+    }
+  }
+}
+
+// The legend must COUNT the pins, not describe Beaufort bands.
+if (/\brange:\s*['"`]\s*\d/.test(mapSource) || /windColorGuideCopy\.rows\b/.test(mapSource)) {
+  failures.push({
+    rule: 'slider-has-no-ladder-of-its-own',
+    reason: 'the map legend has re-grown hard-coded Beaufort rows (range: "4 Bft" / '
+      + 'windColorGuideCopy.rows). It must be generated from mapToneTally, so it cannot describe '
+      + 'a colour the map does not contain — or omit one it does.',
+    row: {},
+  });
+}
+if (!/visibleWindColorGuideRows\s*=\s*CALMNESS_ORDER/.test(mapSource)) {
+  failures.push({
+    rule: 'slider-has-no-ladder-of-its-own',
+    reason: 'the legend rows are no longer derived from CALMNESS_ORDER over mapToneTally.counts — '
+      + 'the legend and the pins can drift apart again.',
+    row: {},
+  });
+}
+{
+  // The swatches must never again be resolved without the sea, which was the original defect.
+  const swatch = mapSource.match(/const\s+protectedTone\s*=\s*getExposureMarkerTone\([^;]*;/);
+  if (!swatch || !/medianSeaOfGroup/.test(swatch[0])) {
+    failures.push({
+      rule: 'slider-has-no-ladder-of-its-own',
+      reason: 'the grouped legend swatches call getExposureMarkerTone without a sea state again. '
+        + 'They must pass the group\'s real sea (medianSeaOfGroup), or they can show a colour no '
+        + 'pin on the map is wearing.',
+      row: {},
+    });
+  }
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// RULE 5b — the detail map is fed everything the colour depends on.
+//
+// The beach page builds its own one-element `beaches` array for the small map. Every field the
+// colour reads has to be in it, and a MISSING field is silent: resolveConditionTone just sees
+// `undefined` and skips that input. On 01/08/2026 the array omitted seaStateWaveM,
+// seaStatePeriodS and enclosedCove, so the running-sea ceiling never fired on the detail map
+// while it did on the region map — the same beach showed one colour outside and another inside,
+// on every beach whose sea was at or above the amber threshold ("άλλα μέσα, άλλα έξω, σε
+// πολλές"). No grid check could catch it: the resolver was correct, it was being starved.
+// ─────────────────────────────────────────────────────────────────────────────
+{
+  const detailSource = readFileSync(path.join(root, 'pages/BeachDetailPage.tsx'), 'utf8');
+  const literal = detailSource.match(/<BeachMap[\s\S]{0,200}?beaches=\{\[\{[\s\S]*?\}\]\}/);
+  const body = literal ? literal[0] : '';
+  if (!body) {
+    failures.push({
+      rule: 'detail-map-gets-the-same-inputs',
+      reason: 'could not find the detail map\'s inline beaches array in pages/BeachDetailPage.tsx — '
+        + 'if it moved, move this check with it rather than deleting it.',
+      row: {},
+    });
+  } else {
+    // Every input resolveConditionTone reads, plus the wind that keys the tone band.
+    for (const field of ['seaStateWaveM', 'seaStatePeriodS', 'enclosedCove', 'exposureLevel']) {
+      if (!body.includes(field)) {
+        failures.push({
+          rule: 'detail-map-gets-the-same-inputs',
+          reason: `the detail map's beach object omits "${field}" — the colour silently drops that `
+            + 'input and can differ from the region map for the same beach.',
+          row: {},
+        });
+      }
+    }
+  }
+  // Not just "the word appears somewhere" — the wind props the marker is toned from must
+  // actually read mapWind. A first version of this rule only grepped for the identifier and a
+  // sabotage run that stripped the prop still passed, because the JSX kept mentioning it.
+  if (!/windSpeed=\{[^}]*mapWind/.test(detailSource)
+    || !/windDirectionDeg=\{[^}]*mapWind/.test(detailSource)) {
+    failures.push({
+      rule: 'detail-map-gets-the-same-inputs',
+      reason: 'the detail map\'s windSpeed/windDirectionDeg are no longer resolved from mapWind — '
+        + 'it is back on the region wind while the region map uses per-beach wind, so the same '
+        + 'beach can be one colour outside and another inside.',
+      row: {},
+    });
+  }
+}
+
+const detailFailures = failures.filter(failure => failure.rule === 'detail-map-gets-the-same-inputs');
+console.log(`${detailFailures.length === 0 ? 'OK  ' : 'FAIL'} detail-map-gets-the-same-inputs: ${detailFailures.length}`);
+for (const hit of detailFailures) console.log(`       ${hit.reason}`);
+
+const sliderFailures = failures.filter(failure => failure.rule === 'slider-has-no-ladder-of-its-own');
+console.log(`${sliderFailures.length === 0 ? 'OK  ' : 'FAIL'} slider-has-no-ladder-of-its-own: ${sliderFailures.length}`);
+for (const hit of sliderFailures) console.log(`       ${hit.reason}`);
+
+// ─────────────────────────────────────────────────────────────────────────────
+// RULE 6 — every colour the ladder can emit has a legend word, in all five languages.
+//
+// The legend now renders one row per tone PRESENT on the map. That guarantees it never invents a
+// colour — but not that it can name one. A tone with no entry in `toneLabel` would render an
+// empty row beside a coloured dot: a pin the legend cannot explain. This drives the real ladder
+// over the condition grid, collects every tone it actually produces, and checks each has a word
+// in en/gr/de/fr/it.
+// ─────────────────────────────────────────────────────────────────────────────
+const LANGS = ['en', 'gr', 'fr', 'de', 'it'];
+const emittedTones = new Set();
+for (const exposureStatus of ['protected', 'partial', 'exposed']) {
+  for (const beaufort of [0, 1, 2, 3, 4, 5, 6, 7, 8]) {
+    for (const seaStateM of [undefined, 0.2, 0.5, 0.79, 0.9, 1.19, 1.3, 1.6, 2.6, 4]) {
+      for (const enclosedCove of [false, true]) {
+        emittedTones.add(resolveConditionTone({ exposureLevel: exposureStatus, beaufort, isEnclosedCove: enclosedCove, seaStateM }));
+      }
+    }
+  }
+}
+for (const tone of emittedTones) {
+  for (const lang of LANGS) {
+    // Match the per-language toneLabel object and look for this tone key inside it.
+    const block = mapSource.match(new RegExp(`${lang}:\\s*\\{\\s*toneLabel:\\s*\\{([^}]*)\\}`));
+    const body = block ? block[1] : '';
+    if (!new RegExp(`\\b${tone}\\s*:\\s*['"\`][^'"\`]+['"\`]`).test(body)) {
+      failures.push({
+        rule: 'every-pin-colour-has-a-legend-word',
+        reason: `the ladder can paint a "${tone}" pin, but the legend has no ${lang} word for it — `
+          + 'that pin would appear with a coloured dot and no explanation.',
+        row: {},
+      });
+    }
+  }
+}
+
+const legendWordFailures = failures.filter(failure => failure.rule === 'every-pin-colour-has-a-legend-word');
+console.log(`${legendWordFailures.length === 0 ? 'OK  ' : 'FAIL'} every-pin-colour-has-a-legend-word: ${legendWordFailures.length}`);
+for (const hit of legendWordFailures) console.log(`       ${hit.reason}`);
 
 if (failures.length > 0) {
   console.error('\nFAILED: the map pin and the card chip do not describe the same conditions.');

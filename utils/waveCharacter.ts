@@ -134,3 +134,69 @@ export const seaStateToneCeiling = (seaStateM: number | undefined): SeaToneCeili
   if (seaStateM >= SEA_STATE_AMBER_M) return 'yellow';
   return null;
 };
+
+/**
+ * THE SEA THAT REACHES THE SHORE, not the sea ten kilometres out.
+ *
+ * Measured 01/08/2026 over the committed geometry: the marine sample point each beach asks about
+ * sits a MEDIAN OF 10 km offshore (2.427 of 2.555 beaches beyond 5 km, max 10 km — the pushed-out
+ * point exists so an inland cell never answers for a coast). So `measuredWaveHeightM` is, by
+ * construction, an open-water height. utils/waveModel damps our OWN fetch model toward the shore
+ * by exposure (protected ×0.5, partial ×0.75) for exactly this reason — but that damping is
+ * applied before a `max()` against the undamped grid reading, so on any day with a real sea the
+ * grid wins and the damping never reaches the screen.
+ *
+ * The consequence was the whole point of this app quietly switching off: above SEA_STATE_ROUGH_M
+ * the colour ceiling is absolute, so a deeply sheltered cove and an open west-facing coast got the
+ * same red pin from the same offshore number. The geometry — the one thing no competitor has —
+ * stopped mattering on precisely the days it matters most. And we had already admitted the number
+ * was not theirs: 501 beaches (19,6%) carry the «Κύμα ανοιχτά» label saying so, while that same
+ * number coloured their pin.
+ *
+ * The 0.5 factor is NOT new physics invented here. It is the identical damping utils/waveModel
+ * already applies to the fetch model, now also applied to the grid reading so both legs describe
+ * the same water.
+ *
+ * ⚠️ ONLY 'protected' GETS THE DISCOUNT. 'partial' DOES NOT — and that asymmetry is the whole
+ * design, not an oversight to be tidied up later.
+ *
+ * The first version of this shipped `partial: 0.75`, mirroring waveModel. That quietly introduced
+ * a THREE-way distinction into a ladder that had only ever been two-way: resolveWindTone
+ * (utils/suitabilityTone) tests `isExposed` and nothing else, so 'protected' and 'partial' have
+ * always produced identical colours at every Beaufort. The 0.75 made them differ — and it did so
+ * on exactly the distinction we cannot support:
+ *
+ *   • scripts/validateWindExposureGroundTruth.mjs holds 128 hand-authored cases. 120 of them are
+ *     BINARY claims ("not protected" / "not exposed"). ZERO of the 128 assert 'partial'.
+ *   • Recall over open onshore sectors (n=2.787): exposed 100%, partial 0%, protected 0%.
+ *   • All 4 exact 'protected' labels that fail do so because the engine answers 'partial' — among
+ *     them Πλάκα and Άγιος Προκόπιος on Naxos, i.e. it under-calls known shelters.
+ *   • 'partial' is the code's terminal fallback (utils/mapExposure.ts) and the structural ceiling
+ *     for the ~91-95% of beaches with no authored profile (utils/windExposureEngine.ts).
+ *   • It has no physical boundary: of 4.725 partial sectors, 1.818 have under 2 km of fetch
+ *     (physically ≈ protected) and 95 have 15 km or more (physically ≈ exposed).
+ *   • `confidence` reads 'high' on 2.850/2.850 profiles, so it distinguishes nothing.
+ *
+ * "Partial" is, in practice, "we do not know". Discounting a wave on the strength of not knowing
+ * is exactly the false calm the house rule forbids. So the discount is reserved for shores that
+ * earned it: 'protected' here has already passed the map's strict isStableProtectedSector gate,
+ * which demotes 459 sectors (3,9%) to partial before this function ever sees them.
+ *
+ * ⚠️ Callers must treat this as an input to a DECISION (colour, swim advice), never as the number
+ * to print. The displayed height stays the honest open-water reading with its own label; changing
+ * what we print is a separate decision that has not been taken.
+ */
+export const SHORE_DAMPING_BY_EXPOSURE = { protected: 0.5, partial: 1, exposed: 1 } as const;
+
+export const shoreSeaStateM = (
+  openWaterSeaStateM: number | undefined,
+  exposureLevel: string | undefined
+): number | undefined => {
+  if (typeof openWaterSeaStateM !== 'number' || !Number.isFinite(openWaterSeaStateM)) return undefined;
+  const damping = exposureLevel === 'protected'
+    ? SHORE_DAMPING_BY_EXPOSURE.protected
+    : exposureLevel === 'partial'
+      ? SHORE_DAMPING_BY_EXPOSURE.partial
+      : SHORE_DAMPING_BY_EXPOSURE.exposed;
+  return Number((openWaterSeaStateM * damping).toFixed(2));
+};

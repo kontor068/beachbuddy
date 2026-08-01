@@ -89,7 +89,7 @@ import { getTopPickTiming, getTopPickTimingLabel, topPickTimingPriority } from '
 import { rotateEquivalentTopPicks } from './utils/topPickVariety';
 import { getActiveWeatherFixtureScenario } from './utils/weatherFixtures';
 import { getBeachTouristRecognitionScore } from './utils/touristPriority';
-import { getConsistentVisibleMapExposureLevels } from './utils/mapExposure';
+import { getConsistentVisibleMapExposureLevels, type BeachWindReading } from './utils/mapExposure';
 import type { ExposureLevel } from './utils/windExposure';
 import { getRegionWindVariationNote, type RegionBeachWindSample } from './utils/regionWindVariation';
 import { loadGeospatialExposureProfiles, type GeospatialExposureProfileLookup } from './services/geospatialExposureService';
@@ -3811,10 +3811,13 @@ export const App: React.FC = () => {
         geospatialProfile: geospatialExposure,
       });
 
-      // Map MARKER COLOUR uses the single area-level wind (the one the compass
-      // shows), not the per-beach cluster wind — so on a "SW" day every beach is
-      // coloured for that SW wind and the map agrees with the arrow, instead of
-      // each coast using its own slightly different local wind direction.
+      // The area-level assessment. It still supplies the beach's PROFILE (facing, source,
+      // warnings) and the exposureLevel the card reads. What it no longer decides alone is the
+      // map marker: since 01/08/2026 the marker's Beaufort comes from the beach's own cluster
+      // (perBeachMapWind) and, since the evening of the same day, so does the wind DIRECTION —
+      // getVisibleMapExposureLevel now derives the geometry sector from the direction it is
+      // handed instead of the windSector filled in here. Measured on live national weather:
+      // 452 of 8.550 beach-hours change colour, none of them a calm pin over a real blow.
       const islandWindAssessment = assessBeachWindExposure({
         beach,
         geospatialProfile: geospatialExposure,
@@ -3834,9 +3837,9 @@ export const App: React.FC = () => {
         beach,
         isExposed: mapExposureLevel ? mapExposureLevel !== 'protected' : true,
         exposureLevel: mapExposureLevel,
-        // Marker-colour inputs all come from the island-level assessment so the
-        // map re-derivation (getVisibleMapExposureLevel reads windSector) also
-        // uses the single island wind, not the per-beach cluster sector.
+        // The beach's PROFILE — geometry, facing, provenance — from the area assessment. The
+        // wind that is applied to it is chosen at the call site: getVisibleMapExposureLevel takes
+        // the direction it is given and only falls back to this windSector when it is given none.
         orientation: islandWindAssessment.windProfile.beachFacingDirection ?? null,
         windProfile: islandWindAssessment.windProfile,
         windProfileSource: islandWindAssessment.source,
@@ -4001,14 +4004,45 @@ export const App: React.FC = () => {
   }, [recommendedSuitableBeaches, selectedForecast, selectedIsland]);
   const currentBeaufort = selectedForecast ? getBeaufortLevel(selectedForecast.wind.speed * 3.6) : 0;
   const isSevereWindNoTopRecommendationDay = currentBeaufort > MAX_TOP_RECOMMENDATION_BEAUFORT;
-  // The canonical map-marker exposure level per beach, exactly as the region map
-  // colours it (single island wind + neighbour consistency pass). Threaded into the
-  // detail map so a beach's pin is the same colour there instead of being re-derived
-  // from the per-beach cluster wind, which can land on a different colour.
+  /**
+   * EACH BEACH IS COLOURED FROM THE WIND AT ITS OWN SHORE (01/08/2026).
+   *
+   * This used to pass `currentBeaufort` — one wind, measured at the region's geometric centre —
+   * for every beach on the map. In a large region that centre is inland or on the far coast:
+   * 1.532 of 2.850 beaches (53,8%) sit in a different cell of the weather model than it, Evia's
+   * furthest beach is 102 km away, and on 02/08 the centre read 1 Bft while Evia's own shores ran
+   * 1–6 Bft. Fifty beaches were painted «Ιδανική» over 5–6 Bft.
+   *
+   * The local readings were already being fetched and thrown away — `mapBeachLocalWinds` comes
+   * from the same cluster forecasts that until now only fed the hover card and the "a bit windier
+   * here" note. No new requests; we simply stop discarding what we already pay for.
+   *
+   * A beach with no local reading (first paint, no geometry, failed fetch) falls back to the
+   * region wind exactly as before — nothing is ever left uncoloured.
+   *
+   * Guarded by scripts/validateColourAgainstRealWind.mjs (`npm run quality:truth`), which fetches
+   * the real forecast and fails if any calm pin sits over a shore blowing 5 Bft or more. It fails
+   * red on the region wind and passes clean on this one.
+   */
+  const perBeachMapWind = useMemo<Map<number, BeachWindReading>>(() => {
+    const map = new Map<number, BeachWindReading>();
+    Object.entries(mapBeachLocalWinds).forEach(([beachId, wind]) => {
+      map.set(Number(beachId), {
+        beaufort: getBeaufortLevel(wind.speedKmh),
+        directionDeg: wind.deg,
+      });
+    });
+    return map;
+  }, [mapBeachLocalWinds]);
   const canonicalMapExposureLevels = useMemo<Map<number, ExposureLevel>>(() => {
     if (!selectedForecast) return new Map();
-    return getConsistentVisibleMapExposureLevels(mapSuitableBeaches, currentBeaufort, selectedForecast.wind.deg);
-  }, [mapSuitableBeaches, currentBeaufort, selectedForecast]);
+    return getConsistentVisibleMapExposureLevels(
+      mapSuitableBeaches,
+      currentBeaufort,
+      selectedForecast.wind.deg,
+      perBeachMapWind
+    );
+  }, [mapSuitableBeaches, currentBeaufort, selectedForecast, perBeachMapWind]);
   const desktopMapVisibleBeachIdSet = useMemo(() => (
     desktopMapVisibleBeachIds ? new Set(desktopMapVisibleBeachIds) : null
   ), [desktopMapVisibleBeachIds]);
@@ -4895,10 +4929,15 @@ export const App: React.FC = () => {
   }, [selectedIsland, forecast, selectedDayIndex, homeCopy.beaches, language, t]);
   const mapAlignedVisibleProtectedDirectorySource = useMemo(() => {
     if (!selectedForecast || currentBeaufort < MEANINGFUL_WIND_TOP_PICK_BEAUFORT) return [];
+    // perBeachMapWind is what makes this list actually "map-aligned". Without it the name was a
+    // lie from 01/08/2026: the map's pins moved to per-beach wind and this list stayed on the
+    // region figure, so a beach could be listed as protected while its pin was not — the exact
+    // divergence this list exists to avoid.
     const visibleExposureLevels = getConsistentVisibleMapExposureLevels(
       recommendableFilteredMapSuitableBeaches,
       currentBeaufort,
-      selectedForecast.wind.deg
+      selectedForecast.wind.deg,
+      perBeachMapWind
     );
 
     return recommendableFilteredMapSuitableBeaches
@@ -5073,6 +5112,9 @@ export const App: React.FC = () => {
             geospatialExposureProfiles={geospatialExposureProfiles}
             weatherSource="island-fallback"
             mapExposureLevelOverride={canonicalMapExposureLevels.get(detailBeach.id)}
+            // The same per-beach reading the region map's pin is coloured from, so the two
+            // screens cannot show this beach in two different colours.
+            mapWind={mapBeachLocalWinds[detailBeach.id]}
             conditionsUnavailable={isStaleBlocked}
             lastForecastAt={lastUpdated}
           />
@@ -5548,10 +5590,13 @@ export const App: React.FC = () => {
     const matchingSuitableBeaches = mapSuitableBeaches.filter(item => filteredBeachIds.has(item.beach.id));
     if (matchingSuitableBeaches.length === 0) return 0;
 
+    // Same wind the pins use — a filter count that disagrees with the map it describes is worse
+    // than no count at all.
     const visibleExposureLevels = getConsistentVisibleMapExposureLevels(
       matchingSuitableBeaches,
       currentBeaufort,
-      selectedForecast.wind.deg
+      selectedForecast.wind.deg,
+      perBeachMapWind
     );
     const protectedCandidates = matchingSuitableBeaches.filter(item => (
       visibleExposureLevels.get(item.beach.id) === 'protected'
@@ -6313,6 +6358,9 @@ export const App: React.FC = () => {
               isSearchSuggesting={isDirectorySearchSuggesting}
               protectedSortLabel={protectedSortLabel}
               currentBeaufort={currentBeaufort}
+              // Same per-beach wind the map's pins use, so a card and the pin beside it can
+              // never describe different winds for the same beach.
+              perBeachMapWind={perBeachMapWind}
               mapForecastTimeLabel={mapForecastTimeLabel}
               mapDayStrip={mobileMapDayStrip}
               mapPreview={directoryMapPreview}

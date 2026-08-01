@@ -264,9 +264,16 @@ if (regionFallbackTotal > REGION_FALLBACK_BASELINE) {
 // RULE 4 — nothing but the marine block changes.
 //
 // The per-beach forecast is the region forecast with its sea swapped. If it ever swaps the WIND
-// too, this change quietly becomes a per-beach wind change: the Beaufort, the exposure colour and
-// the freshness clock all move, and none of that was measured or asked for. Identity equality is
-// the assertion, not deep equality — a copy that happens to match today is a copy that can drift.
+// too, the Beaufort, the exposure colour and the freshness clock all move as a side effect of a
+// change about the SEA. Identity equality is the assertion, not deep equality — a copy that
+// happens to match today is a copy that can drift.
+//
+// ⚠️ UPDATED 01/08/2026. This rule used to read "and none of that was measured or asked for".
+// Per-beach WIND has since been measured, asked for and shipped — but through its own path (the
+// cluster forecasts of hooks/useWeather → App.perBeachMapWind → the map colour), guarded by its
+// own gate, scripts/validateColourAgainstRealWind.mjs. This rule is unchanged and still needed:
+// the two must stay separate. A wind that arrives by riding along inside the marine merge is a
+// wind nobody chose and no gate is watching.
 // ─────────────────────────────────────────────────────────────────────────────
 let applyMarineToDailyForecast;
 try {
