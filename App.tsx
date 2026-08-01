@@ -32,7 +32,7 @@ const TripPlanner = lazyWithChunkRecovery(
 
 // Hooks & Utils
 import { useBeaches } from './hooks/useBeaches';
-import { useWeather } from './hooks/useWeather';
+import { useWeather, type BeachMarineContext } from './hooks/useWeather';
 import { useLocation } from './hooks/useLocation';
 import { translations } from './translations';
 import { degToCompass, getBeaufortLevel, isWinterSeason, processForecastData, applyMarineToDailyForecast } from './utils/weatherUtils';
@@ -40,7 +40,8 @@ import { getRegionWindContext, LOCAL_WIND_LABEL } from './utils/localWindContext
 import { trackEvent, trackPageView, buildBeachExposureParams } from './services/analyticsService';
 import { recordPageview } from './services/pageviewBeacon';
 import { loadAppReadyRegion, loadBeachDetailData, loadBeachRegionIndex, loadBeachSearchIndex, mergeBeachDetailData } from './services/beachDataLoader';
-import { fetchForecastData, fetchMarineForecastData, mergeMarineForecastData } from './services/weatherService';
+import { fetchForecastData, fetchMarineForecastData, fetchMarineForecastDataBatch, mergeMarineForecastData, type MarineForecastItem } from './services/weatherService';
+import { resolveBeachMarinePoints, marinePointKey } from './utils/marineSamplePoints';
 import { calculateSeaConditionScore, hasPoorSeaConditions } from './utils/seaConditions';
 import {
   MEANINGFUL_WIND_TOP_PICK_BEAUFORT,
@@ -3439,6 +3440,61 @@ export const App: React.FC = () => {
   // (≤14, Open-Meteo-cached). Every consumer falls back to the existing area forecast, so a
   // normal island — where beach.regionId === selectedIsland.id — is a byte-for-byte no-op.
   const [nearMeRegionForecasts, setNearMeRegionForecasts] = useState<Record<string, DailyForecast[]>>({});
+  /**
+   * Each near-me beach's OWN sea, the same way a normal region gets it (useWeather.beachMarine).
+   *
+   * It cannot ride along in useWeather because the base forecast differs per beach here — every
+   * near-me beach hangs off its HOME region's day, not one area day. But the hard part is already
+   * done above: the near-me branch of the geospatial loader merges each contributing region's
+   * profiles keyed by the SYNTHETIC beach id, so `marineSamplePoint` is in hand and only the fetch
+   * is missing.
+   *
+   * A beach with no sample point of its own keeps its home region's cell, unchanged — its key maps
+   * to `regionKey`, which is deliberately never applied here.
+   */
+  const [nearMeBeachMarine, setNearMeBeachMarine] = useState<BeachMarineContext | null>(null);
+
+  useEffect(() => {
+    if (!isNearMeRegionActive || !selectedIsland || !geospatialExposureProfiles) {
+      setNearMeBeachMarine(current => (current === null ? current : null));
+      return;
+    }
+    let cancelled = false;
+    const resolution = resolveBeachMarinePoints(
+      selectedIsland.beaches,
+      geospatialExposureProfiles,
+      selectedIsland.coordinates
+    );
+    const ownShorePoints = resolution.points.filter(
+      point => marinePointKey(point.lat, point.lon) !== resolution.regionKey
+    );
+    if (ownShorePoints.length === 0) {
+      setNearMeBeachMarine(null);
+      return;
+    }
+    // persist:false for the same reason as the region sweep — ~35 KB a point, and the quota
+    // handler in weatherService empties every weather cache key when it trips.
+    fetchMarineForecastDataBatch(ownShorePoints, { persist: false })
+      .then(byPoint => {
+        if (cancelled) return;
+        const itemsByKey = new Map<string, MarineForecastItem[]>();
+        for (const [key, result] of byPoint) {
+          if (result.data.length > 0) itemsByKey.set(key, result.data);
+        }
+        setNearMeBeachMarine(itemsByKey.size === 0 ? null : {
+          itemsByKey,
+          keyByBeachId: resolution.keyByBeachId,
+          regionKey: resolution.regionKey,
+          islandId: selectedIsland.id,
+        });
+      })
+      .catch(error => {
+        if (cancelled) return;
+        console.warn('Near-me per-beach sea unavailable; those beaches read their home region cell.', error);
+        setNearMeBeachMarine(null);
+      });
+    return () => { cancelled = true; };
+  }, [isNearMeRegionActive, selectedIsland, geospatialExposureProfiles]);
 
   useEffect(() => {
     if (!isNearMeRegionActive || !selectedIsland) {
@@ -3486,10 +3542,17 @@ export const App: React.FC = () => {
       const days = beach.regionId ? nearMeRegionForecasts[beach.regionId] : undefined;
       const day = days?.[selectedDayIndex];
       if (!day) return;
-      out[beach.id] = selectedHourDt == null ? day : adjustDailyForecastToHour(day, selectedHourDt, mapHourSlots);
+      // The beach's own sea over its own home-region day. Wind, weather and temperature stay the
+      // home region's, by reference — same separation as a normal region (applyMarineToDailyForecast).
+      const key = nearMeBeachMarine?.keyByBeachId.get(beach.id);
+      const ownSea = key && key !== nearMeBeachMarine?.regionKey
+        ? nearMeBeachMarine?.itemsByKey.get(key)
+        : undefined;
+      const withSea = ownSea?.length ? applyMarineToDailyForecast(day, ownSea) : day;
+      out[beach.id] = selectedHourDt == null ? withSea : adjustDailyForecastToHour(withSea, selectedHourDt, mapHourSlots);
     });
     return out;
-  }, [isNearMeRegionActive, selectedIsland, nearMeRegionForecasts, selectedDayIndex, selectedHourDt, mapHourSlots]);
+  }, [isNearMeRegionActive, selectedIsland, nearMeRegionForecasts, nearMeBeachMarine, selectedDayIndex, selectedHourDt, mapHourSlots]);
 
   // Each beach's own sea, laid over the region's day. THIS is what stopped Γομάτι (faces NE) and
   // Κάσπακας (faces W) — 11 km apart on opposite Lemnos coasts — from both printing 1,3 m while
@@ -6510,7 +6573,17 @@ export const App: React.FC = () => {
           the plan visibly changes under the user a second later. The key resets
           the chosen day count on region switch — no silent recompute for a
           different island. */}
-      {isTripPlannerMountable && selectedIsland && forecast && (
+      {/* NOT while a full-screen mobile panel is open. «Καιρός» and «Όλες οι παραλίες»
+          render as `fixed inset-0 z-[1200]` overlays from inside BeachSearcherHome, while
+          this planner is a `z-20` block in the page flow — and it was still showing
+          THROUGH them (reported 31/07: tapping «Καιρός» gave the forecast with "Οι
+          επόμενες 3 μέρες" sitting on top of it). Same family as the header
+          stacking-context trap: a `fixed` element only outranks the page when nothing up
+          its ancestor chain has created a stacking context of its own, and chasing that
+          is a losing game. Unmounting is unambiguous — a panel means "show me this one
+          thing", so everything else genuinely should be gone. */}
+      {isTripPlannerMountable && selectedIsland && forecast
+        && !isMobileWeatherPanelOpen && !isMobileAllBeachesPanelOpen && (
         <div id={TRIP_PLANNER_SECTION_ID} className="relative z-20 pb-3 pt-1 sm:pb-4">
           {/* Fixed-height fallback sized to the card as it now renders — header
               + a 3-day plan + the day chips — so a late chunk does not push the
