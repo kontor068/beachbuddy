@@ -1256,7 +1256,9 @@ export const WaveHeightGraphic: React.FC<WaveHeightGraphicProps> = ({
         formatWaveHeight(Math.max(...points.map((p) => p.waveHeightM)), language)
       )
     : null;
-  const titleLabel = boatCopy ? boatCopy.title : copy.title;
+  // (No titleLabel: the card's own title was removed on 31/07/2026 — see the note further down
+  // where the headline block used to be. COPY.title / BOAT_COPY.title are kept only because the
+  // aria-label and the boat card's tooltips still read from the same objects.)
   const headlineLabel = boatMotionLabel ?? scale.label;
   const selectedBoatHourNote = boatCopy && boatLevel && typeof selectedHour === 'number'
     ? boatCopy.selectedHour(formatHour(selectedHour))
@@ -1316,21 +1318,16 @@ export const WaveHeightGraphic: React.FC<WaveHeightGraphicProps> = ({
             ? <BoatScene scale={scale} level={boatLevel} windTier={windVisualTier} />
             : <ShoreProfileScene scale={scale} visualHeightM={visualWaveHeightM} windTier={windVisualTier} severityBand={severityBand} readingLabel={readingLabel} language={language} bandLowM={sceneRange?.lowM} bandHighM={sceneRange?.highM} />}
         </div>
+        {/* REMOVED 31/07/2026: the title ("Τι κύμα να περιμένεις"), the repeated headline
+            number, the band range and the "~21% ύψους ενήλικα / εύρος πρόγνωσης, όχι βάθος
+            νερού" note. All four restated the same wave height the answer hero's ΚΥΜΑ tile
+            already gives — this block just said it a second time in more words, right
+            under a drawing whose whole job is to show it without words. What survives
+            below is the swim-feel chip: it is the one thing this block adds that the tile
+            does not (how the wave actually feels to swim in, not just its height). */}
         {!boatCopy && (
           <div className="min-w-0 px-0.5">
-            <div className="text-[11px] font-bold leading-tight text-slate-500 dark:text-slate-400">{titleLabel}</div>
-            <div className="mt-1 flex flex-wrap items-baseline gap-x-2 gap-y-0.5">
-              <span className={`font-heading text-[1.35rem] font-bold leading-none sm:text-2xl ${labelClass}`}>{headlineLabel}</span>
-              {waveRangeLabel && (
-                <span className="text-[11px] font-semibold text-slate-500 dark:text-slate-400">{copy.bandLabel} {waveRangeLabel}</span>
-              )}
-            </div>
-            {referenceLabel && (
-              <div className="mt-1 text-[10px] font-semibold leading-snug text-slate-500 dark:text-slate-400">
-                {referenceLabel} · {copy.depthNote}
-              </div>
-            )}
-            <div className="mt-2 inline-flex max-w-full flex-wrap items-center gap-x-1.5 gap-y-0.5 rounded-full border border-slate-100 bg-white/70 px-2.5 py-1 text-[11px] font-bold leading-tight text-slate-500 shadow-sm shadow-sky-900/5 dark:border-slate-700 dark:bg-slate-900/30 dark:text-slate-400">
+            <div className="inline-flex max-w-full flex-wrap items-center gap-x-1.5 gap-y-0.5 rounded-full border border-slate-100 bg-white/70 px-2.5 py-1 text-[11px] font-bold leading-tight text-slate-500 shadow-sm shadow-sky-900/5 dark:border-slate-700 dark:bg-slate-900/30 dark:text-slate-400">
               <span>{swimFeelCopy.label}</span>
               <span className={swimmingFeelLabelClass}>{swimmingFeel}</span>
             </div>

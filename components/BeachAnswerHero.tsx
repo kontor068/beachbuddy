@@ -1,5 +1,5 @@
 import React from 'react';
-import { MapPin, Clock } from 'lucide-react';
+import { MapPin, Clock, Check, X, CalendarClock } from 'lucide-react';
 import type { LanguageCode } from '../types';
 import { WindGlyph, SeaGlyph, WaterTempGlyph, SunsetGlyph, type GlyphTone } from './ConditionGlyphs';
 
@@ -70,12 +70,23 @@ const AIR_TEMP_LABEL: Record<LanguageCode, string> = {
   fr: 'air',
 };
 
-const READ_LABELS: Record<LanguageCode, { wind: string; sea: string; water: string; sunset: string }> = {
-  en: { wind: 'Wind', sea: 'Waves', water: 'Water', sunset: 'Sunset' },
-  gr: { wind: 'Άνεμος', sea: 'Κύμα', water: 'Νερό', sunset: 'Δύση' },
-  de: { wind: 'Wind', sea: 'Wellen', water: 'Wasser', sunset: 'Sonne' },
-  it: { wind: 'Vento', sea: 'Onde', water: 'Acqua', sunset: 'Tramonto' },
-  fr: { wind: 'Vent', sea: 'Vagues', water: 'Eau', sunset: 'Coucher' },
+// `seaOpen` is the SAME instrument as `sea`, labelled for where the number was actually taken.
+//
+// The live marine value is a grid cell 9–18 km offshore, not the water in front of the beach.
+// Measured nationally 01/08/2026 (2.553 beaches, 15:00): the wave travels AWAY from the shore on
+// 1.148 of them (45%) and parallel on 352 (13,8%) — 501 beaches (19,6%) were showing a >= 0,8 m
+// figure that never reaches them. Reported as «Βραυρώνα 2,0 m orange vs Ραφήνα 1,3 m red».
+//
+// The number itself does NOT move (99-decision-log 29/07: a downward cap on a lee shore was
+// measured and rejected). Only the word above it changes, and only when the figure really is the
+// area grid — see `isOpenWater`, which the cove guard flips off because there the number is our
+// own near-shore SMB estimate and «offshore» would be a fresh lie.
+const READ_LABELS: Record<LanguageCode, { wind: string; sea: string; seaOpen: string; water: string; sunset: string }> = {
+  en: { wind: 'Wind', sea: 'Waves', seaOpen: 'Waves offshore', water: 'Water', sunset: 'Sunset' },
+  gr: { wind: 'Άνεμος', sea: 'Κύμα', seaOpen: 'Κύμα ανοιχτά', water: 'Νερό', sunset: 'Δύση' },
+  de: { wind: 'Wind', sea: 'Wellen', seaOpen: 'Wellen draußen', water: 'Wasser', sunset: 'Sonne' },
+  it: { wind: 'Vento', sea: 'Onde', seaOpen: 'Onde al largo', water: 'Acqua', sunset: 'Tramonto' },
+  fr: { wind: 'Vent', sea: 'Vagues', seaOpen: 'Vagues au large', water: 'Eau', sunset: 'Coucher' },
 };
 
 interface ReadingProps {
@@ -117,7 +128,7 @@ const TILE_HINT = 'text-[9px] min-[380px]:text-[10px] font-semibold leading-[1.2
 const Reading: React.FC<ReadingProps> = ({ glyph, label, value, hint }) => (
   <div data-tilefit="reading" className={`${TILE_BOX} bg-white/75 ring-white/60`}>
     <div className="h-6 w-9">{glyph}</div>
-    <p className="text-[9px] font-bold uppercase tracking-wide text-slate-500">{label}</p>
+    <p className="text-[9px] font-bold tracking-wide text-slate-500">{label}</p>
     <p className={`${TILE_TEXT} text-[14px] min-[380px]:text-[15px] font-black leading-tight text-slate-900 tabular-nums`}>{value}</p>
     {hint && <p className={`${TILE_TEXT} ${TILE_HINT} line-clamp-2`}>{hint}</p>}
   </div>
@@ -151,7 +162,16 @@ export interface BeachAnswerHeroProps {
   } | null;
   /** Air temperature — the footnote line, not an instrument. */
   airTempC?: number | null;
-  sea: { heightM: number | null; label: string } | null;
+  sea: {
+    heightM: number | null;
+    label: string;
+    /**
+     * True when `heightM` is the live marine grid reading (open water, 9–18 km out); false when it
+     * is our own near-shore figure — the cove-guard SMB estimate or the modelled fallback, both of
+     * which describe THIS shore. Drives the label only; the number is identical either way.
+     */
+    isOpenWater: boolean;
+  } | null;
   water: { celsius: number; descriptor: string; tone: HeroTone } | null;
   sunsetTime?: string | null;
   /**
@@ -171,6 +191,15 @@ export interface BeachAnswerHeroProps {
    * Built by the page so this component never touches the beach record.
    */
   practical?: PracticalTile[];
+  /**
+   * The facilities list, with its tick / cross / seasonal marks — the one practical fact
+   * that is a LIST, not a single value, so it gets a full-width panel instead of being
+   * flattened into a quarter-width tile reading "Οργανωμένη". Moved up here whole; the
+   * old two-column section further down the page was deleted, not duplicated.
+   */
+  amenities?: { key: string; label: string; value: string; status: 'yes' | 'seasonal' | 'no' | 'unknown' | 'limited' }[];
+  amenitiesTitle?: string;
+  amenitiesNote?: string | null;
   language: LanguageCode;
 }
 
@@ -193,11 +222,80 @@ const Practical: React.FC<{ tile: PracticalTile }> = ({ tile }) => {
           tile.tone === 'warn' ? 'text-amber-600' : tile.tone === 'good' ? 'text-emerald-600' : 'text-slate-500'
         }`}
       />
-      <p className="text-[9px] font-bold uppercase tracking-wide text-slate-500">{tile.label}</p>
-      <p className={`${TILE_TEXT} line-clamp-2 text-[11px] min-[380px]:text-[12px] font-black leading-[1.2] text-slate-900`}>
+      <p className="text-[9px] font-bold tracking-wide text-slate-500">{tile.label}</p>
+      {/* Three lines, not two: the "bring" tile may legitimately carry three short nouns
+          ("Νερό, Αντηλιακό, Παπούτσια θαλάσσης") and they must ALL be visible — the tile
+          is not clickable, so anything clamped away is simply lost to the reader. */}
+      <p className={`${TILE_TEXT} line-clamp-3 text-[11px] min-[380px]:text-[12px] font-black leading-[1.2] text-slate-900`}>
         {tile.value}
       </p>
       {tile.hint && <p className={`${TILE_TEXT} ${TILE_HINT} line-clamp-1`}>{tile.hint}</p>}
+    </div>
+  );
+};
+
+/**
+ * Facilities, as a list with marks. This is the one practical fact that is plural, so
+ * squeezing it into a quarter-width tile ("Οργανωμένη") threw away exactly what a visitor
+ * wants to know — IS there a beach bar, ARE there sunbeds. Full width, two columns, one
+ * glyph per row: tick = yes, calendar = seasonal/limited, cross = confirmed absent.
+ *
+ * Rows whose status is 'unknown' are dropped, not shown greyed: the same rule as the
+ * missing tile. "Άγνωστο" next to "Ξαπλώστρες" is read as "there are none".
+ */
+const AmenityPanel: React.FC<{
+  rows: NonNullable<BeachAnswerHeroProps['amenities']>;
+  title?: string;
+  note?: string | null;
+}> = ({ rows, title, note }) => {
+  const known = rows.filter((r) => r.status !== 'unknown');
+  if (!known.length) return null;
+  return (
+    <div className="space-y-2">
+      {title && <p className="px-1 text-[9px] font-bold tracking-wide text-slate-500">{title}</p>}
+      {/* Same grid, same gap, same rounding as the tile rows above — so on desktop each
+          facility sits in its own column, flush with the tile over it, instead of floating
+          inside one wide box with its own indent (reported 31/07). Two columns on a phone,
+          because "Ταβέρνες κοντά" cannot fit a quarter of 430 px without breaking, and a
+          broken word is the one thing these tiles never do. */}
+      <ul className="grid grid-cols-2 gap-2 sm:grid-cols-4">
+        {known.map((row) => {
+          const yes = row.status === 'yes';
+          const partial = row.status === 'seasonal' || row.status === 'limited';
+          const Glyph = yes ? Check : partial ? CalendarClock : X;
+          return (
+            <li
+              key={row.key}
+              className={`flex min-w-0 items-center gap-2 rounded-2xl px-2.5 py-2.5 shadow-sm shadow-sky-900/5 ring-1 ${
+                yes
+                  ? 'bg-emerald-50/70 ring-emerald-100/80'
+                  : partial
+                    ? 'bg-amber-50/70 ring-amber-100'
+                    : 'bg-white/60 ring-white/60'
+              }`}
+            >
+              <span
+                className={`grid h-4 w-4 shrink-0 place-items-center rounded-full ${
+                  yes ? 'bg-emerald-500 text-white' : partial ? 'bg-amber-400 text-white' : 'bg-slate-200 text-slate-500'
+                }`}
+              >
+                <Glyph className="h-3 w-3" strokeWidth={3} />
+              </span>
+              <span className="min-w-0 flex-1">
+                <span
+                  className={`block ${TILE_TEXT} line-clamp-2 text-[11px] min-[380px]:text-[12px] font-bold leading-[1.2] ${
+                    yes ? 'text-slate-900' : partial ? 'text-slate-800' : 'text-slate-400 line-through'
+                  }`}
+                >
+                  {row.label}
+                </span>
+                {partial && <span className="block text-[10px] font-semibold text-amber-700">{row.value}</span>}
+              </span>
+            </li>
+          );
+        })}
+      </ul>
+      {note && <p className="px-1 text-[10px] font-semibold leading-snug text-slate-500">{note}</p>}
     </div>
   );
 };
@@ -216,6 +314,9 @@ export const BeachAnswerHero: React.FC<BeachAnswerHeroProps> = ({
   sunsetOverSea,
   climateNote,
   practical = [],
+  amenities = [],
+  amenitiesTitle,
+  amenitiesNote,
   language,
 }) => {
   const skin = TONE_SKIN[tone];
@@ -234,7 +335,7 @@ export const BeachAnswerHero: React.FC<BeachAnswerHeroProps> = ({
   if (sea) {
     readings.push({
       glyph: <SeaGlyph heightM={sea.heightM} tone={glyphTone} className="h-full w-full" />,
-      label: labels.sea,
+      label: sea.isOpenWater ? labels.seaOpen : labels.sea,
       value:
         typeof sea.heightM === 'number'
           ? `${sea.heightM.toFixed(1).replace('.', language === 'gr' ? ',' : '.')} ${language === 'gr' ? 'μ.' : 'm'}`
@@ -327,13 +428,15 @@ export const BeachAnswerHero: React.FC<BeachAnswerHeroProps> = ({
 
         {practical.length > 0 && (
           <div
-            className={`grid gap-2 ${practical.length === 4 ? 'grid-cols-4' : practical.length === 3 ? 'grid-cols-3' : 'grid-cols-2'}`}
+            className={`grid gap-2 ${practical.length >= 4 ? 'grid-cols-4' : practical.length === 3 ? 'grid-cols-3' : 'grid-cols-2'}`}
           >
             {practical.map((tile) => (
               <Practical key={tile.key} tile={tile} />
             ))}
           </div>
         )}
+
+        <AmenityPanel rows={amenities} title={amenitiesTitle} note={amenitiesNote} />
 
         {/* km/h and air temperature stay available but stop competing with the four
             instruments. Air temperature is explicitly labelled: an unlabelled degree

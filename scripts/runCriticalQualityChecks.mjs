@@ -76,6 +76,15 @@ const checks = [
     args: ['scripts/validateWaveDisplayAgreement.mjs'],
   },
   {
+    id: 'open-water-label',
+    title: 'The wave figure names the water it came from',
+    description: 'Runs every beach with committed geometry against all 8 wind sectors through the real utils/coveWaveGuard, and checks the reading is labelled «Κύμα ανοιχτά» only where the number really is the area grid — never where the guard swapped in our own near-shore SMB. Also checks seaOpen exists, is non-empty and differs from sea in all five languages, that the component still chooses between them, and that BeachDetailPage still derives isOpenWater from isWaveEstimate.',
+    protects: 'Prevents the page presenting an offshore grid reading as the water in front of the beach. Measured nationally 01/08/2026 (2.553 beaches, ewam, 15:00): the wave travels away from the shore on 1.148 of them (45%) and parallel on 352 (13,8%) — 501 beaches (19,6%) showed a >= 0,8 m figure that never reaches them. Reported as «Βραυρώνα 2,0 m orange beside Ραφήνα 1,3 m red», where the colour was right and only the number was mislabelled.',
+    failureAction: 'Restore the label derivation in components/BeachAnswerHero.tsx and pages/BeachDetailPage.tsx. Never make it pass by moving the NUMBER — a downward cap on a lee shore was measured and rejected (docs/team/99-decision-log.md, 29/07/2026). Only the word above it may change.',
+    command: process.execPath,
+    args: ['scripts/validateOpenWaterLabel.mjs'],
+  },
+  {
     id: 'beach-marine-resolution',
     title: 'Every beach asks about its own shore',
     description: 'Resolves the marine sample point for all 2.850 beaches over the committed geometry and checks four things: beaches whose facing differs by more than 90° and whose sample points lie more than 5 km apart never share one request; no requested coordinate is invented (only a committed marineSamplePoint or the region point); the count of beaches with no geometry of their own has not grown past 295; and the per-beach forecast object changes ONLY its marine block, leaving wind, weather and temperature identical by reference. It also proves the wiring exists at all — that useWeather resolves the points and App applies them.',

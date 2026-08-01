@@ -42,6 +42,7 @@
     "quality:planner": "node scripts/validatePlannerAgreement.mjs",
     "quality:verdicts": "node scripts/validateVerdictConsistency.mjs",
     "quality:wave-display": "node scripts/validateWaveDisplayAgreement.mjs",
+    "quality:open-water-label": "node scripts/validateOpenWaterLabel.mjs",
     "quality:marine-models": "node scripts/validateMarineModelParsing.mjs",
     "quality:marine-resolution": "node scripts/validateBeachMarineResolution.mjs",
     "content:audit": "node scripts/auditStaticBeachContent.mjs",

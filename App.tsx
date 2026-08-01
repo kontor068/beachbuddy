@@ -5073,7 +5073,6 @@ export const App: React.FC = () => {
             geospatialExposureProfiles={geospatialExposureProfiles}
             weatherSource="island-fallback"
             mapExposureLevelOverride={canonicalMapExposureLevels.get(detailBeach.id)}
-            mapExposureLevels={canonicalMapExposureLevels}
             conditionsUnavailable={isStaleBlocked}
             lastForecastAt={lastUpdated}
           />

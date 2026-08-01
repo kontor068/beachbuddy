@@ -24,10 +24,14 @@ import { getWindIncidence, type WindIncidence } from './windIncidence';
  *     than the headline it was meant to explain.
  * Both are logged in docs/team/99-decision-log.md. Do not propose a third without new data.
  *
- * So this module makes the DIFFERENCE VISIBLE IN WORDS instead. It states two things the app
+ * So this module makes the DIFFERENCE VISIBLE IN WORDS instead. It states the one thing the app
  * genuinely knows per beach and has verified nationally (128 ground-truth cases): how the live
- * wind meets this shoreline, and where this shore sits among its neighbours today. Neither is a
- * wave height, and by gate 16 neither may ever contain a metre token.
+ * wind meets this shoreline. That is not a wave height, and it may never contain a metre token.
+ *
+ * It used to state a second thing — where this shore sits among its neighbours — and that
+ * sentence was removed on 29/07/2026 (see the note at buildShoreIncidenceLine). The input it
+ * needed, `levelCounts`, was left behind and kept being computed and passed for nothing; it was
+ * removed on 01/08/2026 along with the caller's dead accumulator.
  */
 
 export interface ShoreIncidenceInput {
@@ -37,14 +41,12 @@ export interface ShoreIncidenceInput {
   mapExposureLevel?: ExposureLevel;
   windDir: WindDirection;
   beaufort: number;
-  /** Map-pin levels for every beach in the region, from the same Map the pin colour reads. */
-  levelCounts?: { protected: number; partial: number; exposed: number };
   language: LanguageCode;
   /**
    * The "weather now" card directly above this line already said how the wind meets this
    * shore (WeatherNowContent.statesShoreIncidence). Drop the incidence sentence when it did:
    * the two are the same fact in different words, two lines apart, and the reader pays for
-   * both. The neighbour comparison below is unaffected — it is the part that adds something.
+   * both. Since the neighbour comparison was removed, this suppresses the WHOLE line.
    */
   suppressIncidence?: boolean;
 }
@@ -112,32 +114,6 @@ const INCIDENCE_SENTENCE: Record<WindIncidence, LocalizedCopy<IncidenceSentence>
   },
 };
 
-type NeighbourSentence = (calmer: number, rougher: number, total: number) => string;
-
-const NEIGHBOURS: Record<ExposureLevel, LocalizedCopy<NeighbourSentence>> = {
-  exposed: {
-    gr: (c, _r, t) => `Στην περιοχή, ${c} από τις ${t} παραλίες είναι σήμερα πιο υπήνεμες από αυτή.`,
-    en: (c, _r, t) => `In this area, ${c} of the ${t} beaches sit more sheltered than this one today.`,
-    de: (c, _r, t) => `In dieser Gegend liegen heute ${c} von ${t} Stränden geschützter als dieser.`,
-    fr: (c, _r, t) => `Dans cette zone, ${c} des ${t} plages sont aujourd'hui plus abritées que celle-ci.`,
-    it: (c, _r, t) => `In questa zona, ${c} delle ${t} spiagge sono oggi più riparate di questa.`,
-  },
-  partial: {
-    gr: (c, r) => `Στην περιοχή, ${c} παραλίες είναι πιο υπήνεμες και ${r} πιο εκτεθειμένες σήμερα.`,
-    en: (c, r) => `In this area, ${c} beaches sit more sheltered and ${r} more exposed today.`,
-    de: (c, r) => `In dieser Gegend liegen heute ${c} Strände geschützter und ${r} offener.`,
-    fr: (c, r) => `Dans cette zone, ${c} plages sont plus abritées et ${r} plus exposées aujourd'hui.`,
-    it: (c, r) => `In questa zona, oggi ${c} spiagge sono più riparate e ${r} più esposte.`,
-  },
-  protected: {
-    gr: (_c, r, t) => `Στην περιοχή, ${r} από τις ${t} παραλίες είναι σήμερα πιο εκτεθειμένες από αυτή.`,
-    en: (_c, r, t) => `In this area, ${r} of the ${t} beaches sit more exposed than this one today.`,
-    de: (_c, r, t) => `In dieser Gegend liegen heute ${r} von ${t} Stränden offener als dieser.`,
-    fr: (_c, r, t) => `Dans cette zone, ${r} des ${t} plages sont aujourd'hui plus exposées que celle-ci.`,
-    it: (_c, r, t) => `In questa zona, ${r} delle ${t} spiagge sono oggi più esposte di questa.`,
-  },
-};
-
 /**
  * Returns the sentence(s) to print above the wave graphic, or null when nothing may be said.
  *
@@ -146,7 +122,7 @@ const NEIGHBOURS: Record<ExposureLevel, LocalizedCopy<NeighbourSentence>> = {
  * the geometry agrees with it.
  */
 export const buildShoreIncidenceLine = (input: ShoreIncidenceInput): string | null => {
-  const { onshore, mapExposureLevel, beaufort, levelCounts, language } = input;
+  const { onshore, mapExposureLevel, beaufort, language } = input;
   if (!Number.isFinite(beaufort) || beaufort < SHORE_LINE_MIN_BEAUFORT) return null;
 
   const parts: string[] = [];
@@ -165,25 +141,8 @@ export const buildShoreIncidenceLine = (input: ShoreIncidenceInput): string | nu
     }
   }
 
-  // Where this shore sits among its neighbours. Suppressed when the region has fewer than two
-  // distinct pin levels (16 of 110 regions at a N 5 Bft — a comparison with nothing to compare),
-  // and the beach's own bucket is excluded from both counts so no superlative is constructible.
-  if (levelCounts && mapExposureLevel) {
-    const total = levelCounts.protected + levelCounts.partial + levelCounts.exposed;
-    const distinct = [levelCounts.protected, levelCounts.partial, levelCounts.exposed].filter(n => n > 0).length;
-    if (total >= 2 && distinct >= 2) {
-      const calmer = mapExposureLevel === 'exposed'
-        ? levelCounts.protected + levelCounts.partial
-        : mapExposureLevel === 'partial' ? levelCounts.protected : 0;
-      const rougher = mapExposureLevel === 'protected'
-        ? levelCounts.partial + levelCounts.exposed
-        : mapExposureLevel === 'partial' ? levelCounts.exposed : 0;
-      const needed = mapExposureLevel === 'exposed' ? calmer : mapExposureLevel === 'protected' ? rougher : calmer + rougher;
-      if (needed > 0) {
-        parts.push(getLocalizedCopy(language, NEIGHBOURS[mapExposureLevel])(calmer, rougher, total));
-      }
-    }
-  }
+  // The "where this shore sits among its neighbours" sentence was removed on purpose: a count of
+  // how many other beaches are more/less exposed told the reader nothing about this beach today.
 
   return parts.length > 0 ? parts.join(' ') : null;
 };
