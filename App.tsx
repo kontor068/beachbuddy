@@ -5153,10 +5153,18 @@ export const App: React.FC = () => {
     // through the SAME object the card was scored from — otherwise the page and the card that
     // linked to it print two different wave heights for one beach, which is precisely what
     // scripts/validateWaveDisplayAgreement.mjs exists to catch.
-    const detailForecast = (isNearMeRegionActive ? nearMeBeachForecastById[detailBeach.id] : undefined)
-      ?? beachAreaForecastById[detailBeach.id]
-      ?? selectedForecast
-      ?? detailForecastDay;
+    // …and the same for the WIND since 02/08/2026. The page used to print the region's Beaufort
+    // under the beach's own name: reported from Γιαλισκάρι (Χανιά) at 08:00, where the page said
+    // «2 Μπφ — σχεδόν άπνοια» while its own shore blew 4 Bft and its pin was correctly yellow.
+    // Its neighbours 11 km west were on 3. The swap is the same one the cards use, so the page
+    // and the card that linked to it cannot print two different winds for one beach either.
+    const detailForecast = withBeachOwnWind(
+      detailBeach.id,
+      (isNearMeRegionActive ? nearMeBeachForecastById[detailBeach.id] : undefined)
+        ?? beachAreaForecastById[detailBeach.id]
+        ?? selectedForecast
+        ?? detailForecastDay
+    );
 
     return (
       <div>

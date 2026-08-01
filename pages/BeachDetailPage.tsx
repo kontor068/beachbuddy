@@ -949,10 +949,12 @@ export const BeachDetailPage: React.FC<BeachDetailPageProps> = ({
   const canNavigate = canOpenNavigation(beach);
 
   // 1. Calculate Conditions & Scores
-  // The per-beach cluster forecast is kept ONLY for the "a bit windier/calmer right here"
-  // note (see localWindNote below). The headline wind, wave and verdict all read from the
-  // AREA (island) forecast so the detail page shows the SAME figure as the card — one
-  // consistent number, immediately, instead of a per-beach value that contradicts the list.
+  // The headline wind, wave and verdict all read from `dayForecast` — which App now hands over
+  // carrying THIS beach's own sea (since 01/08/2026) and its own wind (since 02/08). The page
+  // and the card that linked to it therefore still show one consistent figure; what changed is
+  // whose weather that figure describes. Before, the page printed the region centre's Beaufort
+  // under the beach's name: Γιαλισκάρι (Χανιά) read «2 Μπφ — σχεδόν άπνοια» at 08:00 while its
+  // own shore blew 4 Bft and its map pin was correctly yellow.
   const beachSpecificWeatherData = beachWeatherById?.[beach.id];
   const weatherData = dayForecast;
   const scoringHourlyForecast = hourlyForecast;
@@ -1109,8 +1111,14 @@ export const BeachDetailPage: React.FC<BeachDetailPageProps> = ({
     it: 'Tragitto',
     fr: 'Trajet',
   }[language];
-  // Compare the beach-specific cluster forecast with the area-wide forecast only
-  // when they genuinely differ — "a bit windier/calmer right here".
+  // "A bit windier/calmer right here" — and since 02/08/2026 this goes quiet by construction on
+  // any beach with a cluster reading, because `dayForecast` now CARRIES that reading: the two
+  // sides of the comparison are the same number, so getLocalWindNote returns nothing. That is
+  // the right outcome, not an accident. The note existed to explain a headline that belonged to
+  // the region; a headline that already belongs to the beach has nothing left to explain, and a
+  // line saying "windier here" under a figure that is already the windier one would just read as
+  // a contradiction. Beaches with no cluster of their own keep the region wind and, as before,
+  // have nothing to compare either.
   const localWindNote = getLocalWindNote(dayForecast.wind.speed, beachSpecificWeatherData?.wind.speed, language);
   const aiExplanation = generateServiceBeachExplanation(beach, weatherData, score, userLocation, language, geospatialExposure);
   const waveCondition = getWaveCondition(isExposed, windSpeedKmh);

@@ -467,6 +467,15 @@ if (scoringCalls === 0) {
     + 'least one card is back on the region Beaufort while the map beside it stays per-beach.'
   );
 }
+// The beach PAGE is fed from its own place in App, not through calculateBeachScore, so it needs
+// its own rule. It is the surface where the miss was reported: «2 Μπφ — σχεδόν άπνοια» printed
+// under Γιαλισκάρι at 08:00 while its own shore blew 4 Bft and its pin was correctly yellow.
+if (!/const detailForecast = withBeachOwnWind\(/.test(appSourceForWind)) {
+  failures.push(
+    'RULE 5 — the beach detail page is back on the region wind. Its headline Beaufort, its live '
+    + 'sentence and its verdict all hang off that one object, and the map pin beside it does not.'
+  );
+}
 if (!/isNearMeRegionActive \? EMPTY_BEACH_FORECAST_MAP : hourAdjustedBeachForecasts/.test(appSourceForWind)) {
   failures.push(
     'RULE 5 — the wind swap no longer stands down in "Κοντά μου", where each beach is scored from '
