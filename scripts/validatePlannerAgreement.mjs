@@ -548,6 +548,66 @@ for (const [scenarioId, scenario] of Object.entries(scenarios)) {
 checkPoolPremise();
 checkCeiling(scenarioResults.Naxos_SEVERE_7BFT);
 
+// ─────────────────────────────────────────────────────────────────────────────
+// PER-BEACH WIND (02/08/2026). The planner is the surface where one wind per region costs the
+// most: it does not colour a beach, it tells someone which beach to spend a day of their holiday
+// on. Three rules, in the order they can break.
+//
+//   1. Handed nothing, it must plan EXACTLY as it did before. Every region whose clusters have
+//      not loaded, and every caller that does not have them, takes this path.
+//   2. Handed a reading that says one beach is blown out while the region reads calm, that beach
+//      must lose ground. If the plan is identical, the lookup is being ignored.
+//   3. App and the TripPlanner component must actually hand it over.
+// ─────────────────────────────────────────────────────────────────────────────
+{
+  const scenarioId = 'per-beach-wind';
+  const scenario = scenarios.Corfu_W_4BFT;
+  const beaches = loadRegionBeaches(scenario.targetRegionId);
+  const geospatialProfiles = loadGeospatialProfiles(scenario.targetRegionId);
+  const forecast = scenario.days.map((day, index) => createDailyForecast(index, day));
+  const planOf = (beachForecastDaysById) => planTrip({
+    beaches, forecast, days: forecast.length, language: 'gr', geospatialProfiles, beachForecastDaysById,
+  });
+  const signatureOf = (plan) => JSON.stringify(plan.map(entry => [
+    entry.dayIndex, entry.status, entry.pick?.beach?.id ?? null, entry.alternative?.beach?.id ?? null,
+  ]));
+
+  const baseline = planOf(undefined);
+  check(scenarioId, 'region-wind-fallback-unchanged',
+    signatureOf(baseline) === signatureOf(planOf({})),
+    'an EMPTY per-beach lookup changed the plan. Regions whose clusters have not loaded must plan '
+    + 'exactly as they did before, or the fallback is a second, untested planner.');
+
+  // Blow out every beach the baseline actually picked, and nothing else.
+  const pickedIds = [...new Set(baseline.flatMap(entry => (
+    [entry.pick?.beach?.id, entry.alternative?.beach?.id].filter(id => typeof id === 'number')
+  )))];
+  const gale = { speed: 22, deg: 20 };
+  const blownOut = Object.fromEntries(pickedIds.map(id => [id, forecast.map(day => ({
+    ...day,
+    wind: gale,
+    hourly: (day.hourly ?? []).map(item => ({ ...item, wind: gale })),
+  }))]));
+  const stormed = planOf(blownOut);
+  const survivors = stormed.flatMap(entry => (
+    [entry.pick?.beach?.id, entry.alternative?.beach?.id].filter(id => typeof id === 'number')
+  )).filter(id => pickedIds.includes(id));
+
+  check(scenarioId, 'per-beach-wind-is-read',
+    pickedIds.length > 0 && survivors.length < pickedIds.length,
+    `${pickedIds.length} beach(es) were told their own shore blows 8 Bft and ${survivors.length} `
+    + 'were still planned. The lookup is being ignored, so the planner is back on the region wind.');
+
+  const appSource = readFileSync(path.join(root, 'App.tsx'), 'utf8');
+  const plannerSource = readFileSync(path.join(root, 'components/planner/TripPlanner.tsx'), 'utf8');
+  check(scenarioId, 'wired-from-app',
+    /beachForecastDaysById=\{beachForecastDaysById\}/.test(appSource)
+    && /beachForecastDaysById,/.test(plannerSource),
+    'App or TripPlanner stopped passing the per-beach forecasts. The planner silently falls back '
+    + 'to the region wind, which is the defect, not a safe default.');
+}
+
+
 if (reportMode) {
   // Deterministic dump for byte-diffing around refactors: no dates, no scores
   // that could legitimately drift — just the decisions.

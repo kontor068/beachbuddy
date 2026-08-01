@@ -31,7 +31,7 @@ import {
   windSectorFromDegrees,
 } from '../utils/windExposureEngine';
 import { onshoreComponent } from '../utils/geospatialExposureModel';
-import { getBeaufortLevel } from '../utils/weatherUtils';
+import { getBeaufortLevel, applyBeachWindToDailyForecast } from '../utils/weatherUtils';
 
 // ─────────────────────────────────────────────────────────────────────────────
 // TRIP PLANNER — "I'm here for N days: which beach on which day?"
@@ -283,6 +283,22 @@ export interface PlanTripInput {
    * Days 1+ keep the >50% rule — the right bar for planning ahead.
    */
   todayRainBlocked?: boolean;
+  /**
+   * EACH BEACH'S OWN MULTI-DAY FORECAST, keyed by beach id and indexed the same way as
+   * `forecast` — the cluster forecasts App already holds (02/08/2026).
+   *
+   * Without it the planner plans a whole stay from ONE wind per region, measured at its
+   * geometric centre. Measured nationally over 8.550 beach-hours that number is at least a
+   * Beaufort away from the beach's own shore 35,9% of the time, and it decides more here than
+   * anywhere else: the planner does not just colour a beach, it tells someone which beach to
+   * spend a day of their holiday on.
+   *
+   * Optional, and only the WIND is taken from it (utils/weatherUtils.applyBeachWindToDailyForecast)
+   * — the sea, temperature and weather stay whatever `forecast` carries. A missing beach, a
+   * missing day or an absent lookup falls back to the region day exactly as before, which is
+   * what keeps the planner working on a region whose clusters have not loaded.
+   */
+  beachForecastDaysById?: Record<number, DailyForecast[]>;
 }
 
 /** Storm-force wind, wind above the podium's ceiling, or persistent daytime rain. */
@@ -691,6 +707,7 @@ export const planTrip = ({
   geospatialProfiles,
   userLocation,
   todayRainBlocked,
+  beachForecastDaysById,
 }: PlanTripInput): TripDayPlan[] => {
   const horizon = Math.max(0, Math.min(days, forecast.length));
   if (horizon === 0 || beaches.length === 0) return [];
@@ -709,11 +726,33 @@ export const planTrip = ({
     const windSpeedKmph = (day.wind?.speed ?? 0) * 3.6;
     const beaufort = getBeaufortLevel(windSpeedKmph);
 
-    const dayScores = new Map<number, BeachScore>();
+    // This day, once per beach, with that beach's own wind in it. Only the wind moves; the sea,
+    // the temperature and the weather stay the region day's, by reference (RULE 4/5 of
+    // scripts/validateBeachMarineResolution). A beach with no cluster reading for this day gets
+    // the region day object back untouched, so it plans exactly as it did before.
+    const beachDayById = new Map<number, DailyForecast>();
+    const perBeachWind = new Map<number, { beaufort: number; directionDeg: number }>();
     for (const beach of pool) {
-      dayScores.set(beach.id, calculateBeachScore(beach, day, userLocation, preferences, {
+      const beachDay = applyBeachWindToDailyForecast(day, beachForecastDaysById?.[beach.id]?.[dayIndex]);
+      beachDayById.set(beach.id, beachDay);
+      if (beachDay !== day) {
+        perBeachWind.set(beach.id, {
+          beaufort: getBeaufortLevel((beachDay.wind?.speed ?? 0) * 3.6),
+          directionDeg: beachDay.wind?.deg ?? day.wind?.deg ?? 0,
+        });
+      }
+    }
+    const dayFor = (beachId: number): DailyForecast => beachDayById.get(beachId) ?? day;
+    const windKmphFor = (beachId: number): number => (dayFor(beachId).wind?.speed ?? 0) * 3.6;
+
+    const dayScores = new Map<number, BeachScore>();
+    const beachWeatherById: Record<number, DailyForecast> = {};
+    for (const beach of pool) {
+      const beachDay = dayFor(beach.id);
+      beachWeatherById[beach.id] = beachDay;
+      dayScores.set(beach.id, calculateBeachScore(beach, beachDay, userLocation, preferences, {
         weatherSource: 'island-fallback',
-        hourlyForecast: day.hourly,
+        hourlyForecast: beachDay.hourly,
         geospatialProfile: geospatialProfiles?.[beach.id],
       }));
     }
@@ -725,16 +764,23 @@ export const planTrip = ({
       userLocation,
       day.hourly,
       preferences,
-      undefined,
+      beachWeatherById,
       geospatialProfiles,
       dayScores
     );
 
-    // The podium's safety gate — shared implementation, not a copy.
+    // The podium's safety gate — shared implementation, not a copy. Judged with the wind on THAT
+    // beach's shore: the sea gate and the false-shelter gate both compare a wind against this
+    // beach's own geometry, so handing them the region's number is how a beach that is genuinely
+    // blown out stays plannable, and a calm one gets dropped for weather elsewhere.
     const gated = scored.filter(item =>
       item.swimmingComfort !== 'avoid_swimming' &&
-      passesTopPickSeaGate(item, windSpeedKmph, day.marine?.waveHeightM) &&
-      !isFalseProtectedTopPick(item, day.wind?.deg ?? 0, beaufort)
+      passesTopPickSeaGate(item, windKmphFor(item.beach.id), dayFor(item.beach.id).marine?.waveHeightM) &&
+      !isFalseProtectedTopPick(
+        item,
+        dayFor(item.beach.id).wind?.deg ?? 0,
+        getBeaufortLevel(windKmphFor(item.beach.id))
+      )
     );
 
     // Tier A/B: trusted candidates first, each tier ordered by the podium's
@@ -743,15 +789,19 @@ export const planTrip = ({
     // full ranked list (the essentials assignment must see every safe option),
     // so the non-pooled remainder is appended, same ordering.
     const orderTier = (items: SuitableBeach[]): SuitableBeach[] => {
-      const pooled = getWindPriorityTopPickPool(items, beaufort);
+      const pooled = getWindPriorityTopPickPool(items, beaufort, perBeachWind);
       const pooledIds = new Set(pooled.map(item => item.beach.id));
       const rest = items.filter(item => !pooledIds.has(item.beach.id));
       return [
-        ...prioritizeProtectedRecommendations(pooled, beaufort),
-        ...prioritizeProtectedRecommendations(rest, beaufort),
+        ...prioritizeProtectedRecommendations(pooled, beaufort, perBeachWind),
+        ...prioritizeProtectedRecommendations(rest, beaufort, perBeachWind),
       ];
     };
-    const tierA = gated.filter(item => isTrustedTopRecommendationCandidate(item, undefined, beaufort));
+    const tierA = gated.filter(item => isTrustedTopRecommendationCandidate(
+      item,
+      undefined,
+      getBeaufortLevel(windKmphFor(item.beach.id))
+    ));
     const tierAIds = new Set(tierA.map(item => item.beach.id));
     const tierB = gated.filter(item => !tierAIds.has(item.beach.id));
     // facingDeg lives on the BeachScore, not on SuitableBeach, and the offshore

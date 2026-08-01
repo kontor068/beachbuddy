@@ -62,6 +62,8 @@ interface TripPlannerProps {
   /** The homepage's own rain verdict for today (see PlanTripInput). */
   todayRainBlocked?: boolean;
   userLocation?: { lat: number; lon: number };
+  /** Each beach's own multi-day forecast (see PlanTripInput.beachForecastDaysById). */
+  beachForecastDaysById?: Record<number, DailyForecast[]>;
   /**
    * A stay length the visitor STATED in the search box («Νάξο 5 μέρες»).
    * Never a default — absent means the strip opens collapsed, as always.
@@ -134,6 +136,7 @@ export const TripPlanner: React.FC<TripPlannerProps> = ({
   geospatialProfiles,
   todayRainBlocked,
   userLocation,
+  beachForecastDaysById,
   initialDays,
   onBeachClick,
 }) => {
@@ -198,8 +201,9 @@ export const TripPlanner: React.FC<TripPlannerProps> = ({
       geospatialProfiles,
       userLocation,
       todayRainBlocked,
+      beachForecastDaysById,
     });
-  }, [beaches, deferredDays, forecast, geospatialProfiles, language, preferences, todayRainBlocked, userLocation]);
+  }, [beaches, deferredDays, forecast, geospatialProfiles, language, preferences, todayRainBlocked, userLocation, beachForecastDaysById]);
 
   // Entrance: rows mount at opacity-0/translate-y and flip on the next frame, so
   // the stagger is pure transform+opacity with no keyframes and no library. Held

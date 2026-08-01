@@ -536,6 +536,7 @@ const interpolateMarineForecast = (
 
 /** Stable empty map, so a region mismatch does not hand consumers a new object every render. */
 const EMPTY_BEACH_FORECAST_MAP: Record<number, DailyForecast> = {};
+const EMPTY_BEACH_FORECAST_DAYS_MAP: Record<number, DailyForecast[]> = {};
 
 const getSelectedHourMarine = (
   hourMarine: MarineForecast | undefined,
@@ -3339,6 +3340,22 @@ export const App: React.FC = () => {
   const withBeachOwnWind = React.useCallback((beachId: number, forecast: DailyForecast): DailyForecast => (
     applyBeachWindToDailyForecast(forecast, beachWindSourceById[beachId])
   ), [beachWindSourceById]);
+  /**
+   * The same cluster readings as a MULTI-DAY lookup, for the trip planner.
+   *
+   * Everything above works on one selected day; the planner works on the whole stay, so it needs
+   * each beach's own forecast ARRAY, indexed the same way as the region's. Same near-me rule and
+   * the same optionality: a region whose clusters have not loaded hands over nothing and the
+   * planner reads the region wind exactly as it always did.
+   */
+  const beachForecastDaysById = useMemo<Record<number, DailyForecast[]>>(() => {
+    if (isNearMeRegionActive) return EMPTY_BEACH_FORECAST_DAYS_MAP;
+    const byId: Record<number, DailyForecast[]> = {};
+    Object.entries(beachForecasts).forEach(([beachId, context]) => {
+      if (context?.forecast?.length) byId[Number(beachId)] = context.forecast;
+    });
+    return byId;
+  }, [isNearMeRegionActive, beachForecasts]);
 
   const detailBeachWeatherById = useMemo<BeachWeatherById>(() => {
     const beachId = detailBeach?.id;
@@ -6726,6 +6743,7 @@ export const App: React.FC = () => {
               preferences={preferences}
               geospatialProfiles={geospatialExposureProfiles}
               todayRainBlocked={isRainBlockedBeachWindow}
+              beachForecastDaysById={beachForecastDaysById}
               userLocation={userLocation}
               initialDays={tripPlannerInitialDays ?? undefined}
               onBeachClick={(beach) => openBeachDetails(beach, 'trip_planner')}
