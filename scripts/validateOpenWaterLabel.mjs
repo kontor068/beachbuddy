@@ -1,5 +1,5 @@
 /**
- * ΠΥΛΗ 20 — ο αριθμός κύματος λέει ποιανού νερού είναι.
+ * ΠΥΛΗ 20 — ο αριθμός κύματος λέει ποιανού νερού είναι, ΚΑΙ η κάρτα εξηγεί γιατί.
  *
  * WHY THIS EXISTS
  * ---------------
@@ -25,6 +25,13 @@
  *  C. WIRING. `BeachDetailPage` still derives `isOpenWater` from `isWaveEstimate`. If someone
  *     hardcodes it to `true`, checks A and B both stay green while every cove beach starts
  *     claiming offshore. That is the exact failure this gate is for.
+ *  D. THE CARD EXPLAINS ITSELF. An honest label is not enough: an orange 2,0 m beach beside a
+ *     red 1,3 m one still reads as arbitrary without the reason. Checks that the hero still
+ *     receives `weatherNow.liveSentence` and that the wind tile still carries SHELTER_LABEL
+ *     («στη σκιά» / «πλάγια» / «κατάμουτρα»), with three DISTINCT words per language.
+ *     This one is not hypothetical — it already broke: the card stopped rendering the sentence
+ *     on 31/07 while `statesShoreIncidence` went on suppressing the second copy below, so both
+ *     explanations vanished at once and every gate stayed green.
  *
  * Pure computation — no network.
  * Run: node scripts/validateOpenWaterLabel.mjs
@@ -164,8 +171,60 @@ if (!/isOpenWater:\s*!isWaveEstimate\b/.test(detailSource)) {
   );
 }
 
+// ── D. THE CARD MUST EXPLAIN ITSELF ─────────────────────────────────────────────────────────
+// Labelling the number honestly is not enough on its own. Without the reason beside it, an
+// orange 2,0 m beach next to a red 1,3 m one still reads as arbitrary — which is exactly what
+// the user reported on 01/08. Worse, this had already broken silently: weatherNowCopy builds
+// `liveSentence` in five languages, the card stopped rendering it on 31/07, and the flag it
+// ships with (statesShoreIncidence) kept suppressing the second copy further down the page —
+// so BOTH explanations disappeared at once and no gate noticed.
+if (!/explanation=\{[^}]*weatherNow\.liveSentence/.test(detailSource)) {
+  failures.push(
+    'pages/BeachDetailPage.tsx: the hero no longer receives weatherNow.liveSentence. That sentence '
+    + 'is the ONLY thing on the card explaining why this beach reads better or worse than another '
+    + 'with a different wave figure — and dropping it also silences the shore-incidence line below, '
+    + 'because statesShoreIncidence assumes the card said it.'
+  );
+}
+if (!/shelterLabel:/.test(detailSource) || !/SHELTER_LABEL\[language\]/.test(detailSource)) {
+  failures.push(
+    'pages/BeachDetailPage.tsx: the wind tile no longer gets shelterLabel from SHELTER_LABEL. '
+    + 'The tile falls back to a bare compass point, which says nothing about why the pin is that colour.'
+  );
+}
+const shelterBlock = heroSource.match(/export const SHELTER_LABEL[\s\S]*?\n};/);
+if (!shelterBlock) {
+  failures.push('components/BeachAnswerHero.tsx: SHELTER_LABEL block not found.');
+} else {
+  for (const lang of LANGUAGES) {
+    const row = shelterBlock[0].match(new RegExp(`\\b${lang}:\\s*\\{([^}]*)\\}`));
+    if (!row) {
+      failures.push(`SHELTER_LABEL: language "${lang}" is missing.`);
+      continue;
+    }
+    const words = ['protected', 'partial', 'exposed'].map(k => {
+      const m = row[1].match(new RegExp(`\\b${k}:\\s*'([^']*)'`));
+      return m ? m[1].trim() : '';
+    });
+    if (words.some(w => !w)) {
+      failures.push(`SHELTER_LABEL.${lang}: one of protected/partial/exposed is missing or empty.`);
+    } else if (new Set(words).size !== 3) {
+      failures.push(
+        `SHELTER_LABEL.${lang}: two exposure levels share a word (${words.join(' / ')}) — `
+        + `a sheltered and a wind-facing beach would read identically in ${lang}.`
+      );
+    }
+  }
+  if (!/wind\.shelterLabel\s*\?\s*`\$\{wind\.directionLabel\}\s*·\s*\$\{wind\.shelterLabel\}`/.test(heroSource)) {
+    failures.push('components/BeachAnswerHero.tsx: the wind tile no longer renders shelterLabel beside the compass point.');
+  }
+  if (!/\{explanation\s*&&/.test(heroSource)) {
+    failures.push('components/BeachAnswerHero.tsx: the explanation sentence is no longer rendered.');
+  }
+}
+
 // ── REPORT ──────────────────────────────────────────────────────────────────────────────────
-console.log(`Cases: ${casesChecked} (open water ${openWaterCases} · near-shore/cove ${coveCases}) · languages ${LANGUAGES.length}`);
+console.log(`Cases: ${casesChecked} (open water ${openWaterCases} · near-shore/cove ${coveCases}) · languages ${LANGUAGES.length} · explanation + shelter wiring checked`);
 
 if (failures.length > 0) {
   console.error(`\nFAILED: ${failures.length} problem(s) with the open-water label.\n`);

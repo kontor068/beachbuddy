@@ -89,6 +89,25 @@ const READ_LABELS: Record<LanguageCode, { wind: string; sea: string; seaOpen: st
   fr: { wind: 'Vent', sea: 'Vagues', seaOpen: 'Vagues au large', water: 'Eau', sunset: 'Coucher' },
 };
 
+/**
+ * How this shore sits in today's wind, in the fewest words that still mean something to a
+ * swimmer. Deliberately everyday language, not the scoring vocabulary: «στη σκιά» and
+ * «κατάμουτρα» need no glossary, «Προστατευμένη / Εκτεθειμένη» reads like a category.
+ *
+ * Wired from the MAP-ALIGNED exposure level, so this line and the pin colour are the same
+ * fact — that is the whole point. A reader comparing an orange 2,0 m beach with a red 1,3 m
+ * one can see the reason without opening anything.
+ *
+ * Kept in step with INCIDENCE_WORD in utils/windIncidence.ts (de/fr/it reuse its wording).
+ */
+export const SHELTER_LABEL: Record<LanguageCode, { protected: string; partial: string; exposed: string }> = {
+  en: { protected: 'sheltered', partial: 'side-on', exposed: 'head-on' },
+  gr: { protected: 'στη σκιά', partial: 'πλάγια', exposed: 'κατάμουτρα' },
+  de: { protected: 'geschützt', partial: 'seitlich', exposed: 'frontal' },
+  it: { protected: 'riparata', partial: 'di lato', exposed: 'di faccia' },
+  fr: { protected: 'abrité', partial: 'de côté', exposed: 'de face' },
+};
+
 interface ReadingProps {
   glyph: React.ReactNode;
   label: string;
@@ -152,11 +171,23 @@ export interface BeachAnswerHeroProps {
   verdict: string | null;
   tone: HeroTone;
   bestTimeLabel?: string | null;
+  /**
+   * One sentence saying how the live wind meets THIS shore, and therefore why the verdict
+   * and the wave figure read the way they do. Source: WeatherNowContent.liveSentence — do
+   * not compose a new one here; that copy is the measured, five-language, gate-swept text.
+   */
+  explanation?: string | null;
   wind: {
     beaufort: number;
     speedKmh: number;
     /** Short compass form ("ΒΑ") — the instrument tile is only a quarter-width. */
     directionLabel: string;
+    /**
+     * How this shore sits in the live wind — «στη σκιά» / «πλάγια» / «κατάμουτρα». This is
+     * the SAME fact the map pin is coloured from (the map-aligned exposure level), so the
+     * tile can explain the colour instead of merely repeating the compass point.
+     */
+    shelterLabel?: string | null;
     /** Long adjective ("βορειοανατολικό") for the footnote line. */
     longDirectionLabel?: string;
   } | null;
@@ -306,6 +337,7 @@ export const BeachAnswerHero: React.FC<BeachAnswerHeroProps> = ({
   verdict,
   tone,
   bestTimeLabel,
+  explanation,
   wind,
   airTempC,
   sea,
@@ -329,7 +361,10 @@ export const BeachAnswerHero: React.FC<BeachAnswerHeroProps> = ({
       glyph: <WindGlyph beaufort={wind.beaufort} tone={glyphTone} className="h-full w-full" />,
       label: labels.wind,
       value: `${wind.beaufort} ${language === 'gr' ? 'Μπφ' : 'Bft'}`,
-      hint: wind.directionLabel,
+      // «Β» alone is a compass point; «Β · στη σκιά» is the reason for the colour. The
+      // shelter half is what lets a reader see at a glance why a 2,0 m beach can beat a
+      // 1,3 m one — it is the map-aligned exposure level, the same input the pin uses.
+      hint: wind.shelterLabel ? `${wind.directionLabel} · ${wind.shelterLabel}` : wind.directionLabel,
     });
   }
   if (sea) {
@@ -424,6 +459,26 @@ export const BeachAnswerHero: React.FC<BeachAnswerHeroProps> = ({
               <Reading key={r.label} {...r} />
             ))}
           </div>
+        )}
+
+        {/* WHY THIS BEACH READS THE WAY IT DOES — the sentence that makes the instruments
+            make sense together.
+
+            Without it the card is four numbers and a colour, and the reader has no way to
+            reconcile them: Βραυρώνα prints 2,0 m and is ORANGE while Πλαζ Ραφήνας prints
+            1,3 m and is RED, because the meltemi goes straight into one and misses the
+            other — but nothing on screen said so. Reported 01/08/2026: «δεν καταλαβαίνει
+            κάποιος γιατί η μία παραλία είναι καλύτερη».
+
+            The sentence itself is NOT new — utils/weatherNowCopy has built it in five
+            languages all along (and the gates sweep it). It stopped being rendered when this
+            card replaced the old "weather now" block on 31/07, and the flag it ships with
+            (statesShoreIncidence) went on silencing the SECOND copy of the same fact further
+            down the page, so the explanation vanished from both places at once. */}
+        {explanation && (
+          <p className="px-1 text-sm font-medium leading-relaxed text-slate-700" data-nosnippet="true">
+            {explanation}
+          </p>
         )}
 
         {practical.length > 0 && (

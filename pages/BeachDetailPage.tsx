@@ -24,7 +24,7 @@ import { degToCompass, calculateDistance, getBeaufortLevel, getWaveCondition } f
 import { trackEvent, storeConditionFeedback, getFeedback, ConditionFeedbackVerdict, buildBeachExposureParams } from '../services/analyticsService';
 import { calculateSeaConditionScore } from '../utils/seaConditions';
 import { TodayScoreBadge } from '../components/TodayScoreBadge';
-import { BeachAnswerHero, type PracticalTile } from '../components/BeachAnswerHero';
+import { BeachAnswerHero, SHELTER_LABEL, type PracticalTile } from '../components/BeachAnswerHero';
 import { getBeachClimate, describeClimateComparison, type ClimateComparison } from '../data/beachClimate';
 import { LocalWindShelterSection, type LocalWindShelteredCove } from '../components/LocalWindShelterSection';
 import { GettingThereSection, accessKindShortLabel, classifyAccessKind, ACCESS_KIND_ICON } from '../components/GettingThereSection';
@@ -1749,11 +1749,20 @@ export const BeachDetailPage: React.FC<BeachDetailPageProps> = ({
           /* The instrument gets the SHORT compass form ("ΒΑ"); the long adjective
              ("βορειοανατολικό") broke across two lines inside a quarter-width tile and
              read as a typo. The long form still appears on the km/h line below. */
+          /* The one sentence that makes the four instruments agree with each other. It is
+             weatherNowCopy's own text — this card dropped it on 31/07 and nothing else picked
+             it up, which is why an orange 2,0 m beach beside a red 1,3 m one looked arbitrary. */
+          explanation={showConditions && weatherNow.tone !== 'unknown' ? weatherNow.liveSentence : null}
           wind={showConditions ? {
             beaufort: beaufortLevel,
             speedKmh: windSpeedKmh,
             directionLabel: t.windDirectionsShort?.[windDir as WindDirection] || windDirectionLabel,
             longDirectionLabel: windDirectionLabel,
+            /* Only from ≥3 Bft: below that "sheltered" is a fact about a wind that is not
+               blowing, and the light-wind floor in weatherNowCopy makes the same call. */
+            shelterLabel: beaufortLevel >= 3
+              ? (SHELTER_LABEL[language] ?? SHELTER_LABEL.en)[mapAlignedExposureLevel]
+              : null,
           } : null}
           airTempC={showConditions ? displayTemp : null}
           sea={showConditions
