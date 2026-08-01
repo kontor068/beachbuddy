@@ -1,0 +1,133 @@
+{
+  "thresholds": {
+    "PROTECTED_FIRST_BEAUFORT": 5,
+    "MEANINGFUL_WIND_TOP_PICK_BEAUFORT": 3
+  },
+  "hours": [
+    "T08:00",
+    "T11:00",
+    "T17:00"
+  ],
+  "tally": {
+    "beachHours": 2931,
+    "boatBeachHours": 69,
+    "hideUnfair": 0,
+    "hideUnsafe": 0,
+    "podiumUnfair": 0,
+    "podiumUnsafe": 71,
+    "trustedUnfair": 542,
+    "trustedUnsafe": 264,
+    "sortFilterOffWhileWindy": 257
+  },
+  "perRegion": [
+    {
+      "id": "central-macedonia-halkidiki-mainland",
+      "beaches": 133,
+      "boat": 9,
+      "hideUnfair": 0,
+      "hideUnsafe": 0,
+      "podiumUnfair": 0,
+      "podiumUnsafe": 0
+    },
+    {
+      "id": "central-greece-evia",
+      "beaches": 129,
+      "boat": 3,
+      "hideUnfair": 0,
+      "hideUnsafe": 0,
+      "podiumUnfair": 0,
+      "podiumUnsafe": 8
+    },
+    {
+      "id": "ionian-islands-corfu",
+      "beaches": 105,
+      "boat": 24,
+      "hideUnfair": 0,
+      "hideUnsafe": 0,
+      "podiumUnfair": 0,
+      "podiumUnsafe": 0
+    },
+    {
+      "id": "crete-crete-chania",
+      "beaches": 89,
+      "boat": 0,
+      "hideUnfair": 0,
+      "hideUnsafe": 0,
+      "podiumUnfair": 0,
+      "podiumUnsafe": 5
+    },
+    {
+      "id": "ionian-islands-kefalonia",
+      "beaches": 77,
+      "boat": 18,
+      "hideUnfair": 0,
+      "hideUnsafe": 0,
+      "podiumUnfair": 0,
+      "podiumUnsafe": 0
+    },
+    {
+      "id": "thessaly-magnesia-mainland---pelion",
+      "beaches": 70,
+      "boat": 0,
+      "hideUnfair": 0,
+      "hideUnsafe": 0,
+      "podiumUnfair": 0,
+      "podiumUnsafe": 0
+    },
+    {
+      "id": "peloponnese-lakonia-mainland",
+      "beaches": 69,
+      "boat": 0,
+      "hideUnfair": 0,
+      "hideUnsafe": 0,
+      "podiumUnfair": 0,
+      "podiumUnsafe": 0
+    },
+    {
+      "id": "crete-crete-lasithi",
+      "beaches": 63,
+      "boat": 9,
+      "hideUnfair": 0,
+      "hideUnsafe": 0,
+      "podiumUnfair": 0,
+      "podiumUnsafe": 30
+    },
+    {
+      "id": "north-aegean-lesvos",
+      "beaches": 62,
+      "boat": 3,
+      "hideUnfair": 0,
+      "hideUnsafe": 0,
+      "podiumUnfair": 0,
+      "podiumUnsafe": 0
+    },
+    {
+      "id": "south-aegean-rhodes",
+      "beaches": 62,
+      "boat": 3,
+      "hideUnfair": 0,
+      "hideUnsafe": 0,
+      "podiumUnfair": 0,
+      "podiumUnsafe": 22
+    },
+    {
+      "id": "attica-east-attica-mainland",
+      "beaches": 60,
+      "boat": 0,
+      "hideUnfair": 0,
+      "hideUnsafe": 0,
+      "podiumUnfair": 0,
+      "podiumUnsafe": 6
+    },
+    {
+      "id": "east-macedonia-and-thrace-thasos",
+      "beaches": 58,
+      "boat": 0,
+      "hideUnfair": 0,
+      "hideUnsafe": 0,
+      "podiumUnfair": 0,
+      "podiumUnsafe": 0
+    }
+  ],
+  "boatUnsafeExamples": []
+}

@@ -1924,12 +1924,19 @@ export const BeachSearcherHome: React.FC<BeachSearcherHomeProps> = ({
     // beach (e.g. Κλεφτικό) would otherwise rank high here and show as "top pick #1" at strong
     // wind — exactly what we promised never to do. Drop boat-only beaches at ≥5 Bft (kept when
     // the user is actively searching, so they stay findable by name), mirroring the App-level
-    // `shouldHideBoatAccessBeaches` filter that this fallback path bypasses.
-    const hideBoatOnly = typeof currentBeaufort === 'number'
-      && currentBeaufort >= PROTECTED_FIRST_BEAUFORT
-      && searchQuery.trim().length === 0;
+    // boat-access filter that this fallback path bypasses.
+    //
+    // 02/08/2026: the 5 Bft is the wind on the beach's OWN shore where we have it, exactly like
+    // the App-level filter. A beach with no local reading keeps the region's number.
+    const canHideBoatOnly = searchQuery.trim().length === 0;
+    const isBoatOnlyBlownOut = (beach: Beach): boolean => {
+      if (!hasBoatOnlyAccess(beach)) return false;
+      const localBeaufort = perBeachMapWind?.get(beach.id)?.beaufort;
+      const beaufort = typeof localBeaufort === 'number' ? localBeaufort : currentBeaufort;
+      return typeof beaufort === 'number' && beaufort >= PROTECTED_FIRST_BEAUFORT;
+    };
     return [...selectedIsland.beaches]
-      .filter(beach => !(hideBoatOnly && hasBoatOnlyAccess(beach)))
+      .filter(beach => !(canHideBoatOnly && isBoatOnlyBlownOut(beach)))
       .sort((a, b) => {
         const aPhoto = getBeachPhotoLookup(a.name.gr, a.name.en, a.id, 1, selectedIsland.name[language]).source === 'exact';
         const bPhoto = getBeachPhotoLookup(b.name.gr, b.name.en, b.id, 1, selectedIsland.name[language]).source === 'exact';
@@ -1942,7 +1949,7 @@ export const BeachSearcherHome: React.FC<BeachSearcherHomeProps> = ({
         return (a.name.en || '').localeCompare(b.name.en || '');
       })
       .slice(0, 8);
-  }, [currentBeaufort, language, searchQuery, selectedIsland]);
+  }, [currentBeaufort, language, searchQuery, selectedIsland, perBeachMapWind]);
   const weatherBeachCards = useMemo(() => {
     if (!selectedIsland) return [];
     if (suitableBeachCards && suitableBeachCards.length > 0) {

@@ -45,6 +45,7 @@
     "quality:open-water-label": "node scripts/validateOpenWaterLabel.mjs",
     "quality:marine-models": "node scripts/validateMarineModelParsing.mjs",
     "quality:marine-resolution": "node scripts/validateBeachMarineResolution.mjs",
+    "quality:per-beach-wind": "node scripts/validatePerBeachWindGates.mjs",
     "quality:truth": "node scripts/validateColourAgainstRealWind.mjs",
     "quality:truth:national": "node scripts/validateColourAgainstRealWind.mjs --national",
     "content:audit": "node scripts/auditStaticBeachContent.mjs",

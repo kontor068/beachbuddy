@@ -94,6 +94,15 @@ const checks = [
     args: ['scripts/validateBeachMarineResolution.mjs'],
   },
   {
+    id: 'per-beach-wind-gates',
+    title: 'Every wind gate asks the beach\'s own shore',
+    description: 'Reads every call site that decides something about ONE beach — hide the boat-only beaches, demand wind evidence, put shelter before score, switch the list filter on — and fails if any of them is back on the single wind measured at the region\'s geometric centre. Then drives the real ranking functions with fixtures: a calm shore must not be demoted by a region that blows, a shore that blows must be demoted by a region that reads calm, and a pool with no per-beach readings at all must rank exactly as it did before.',
+    protects: 'Prevents the region number deciding what a person is shown. Measured nationally 02/08/2026 over 8.550 beach-hours: the centre\'s wind is a Beaufort or more away from the beach\'s own shore 35,9% of the time and 1.171 of 2.850 beaches landed on the wrong side of a threshold at least once — 889 beach-hours thrown out of the recommendations though their own water was calm, 574 kept with no evidence while it blew, 150 able to reach #1 over 5 Bft of their own water, and two boat-only beaches on Karpathos still offered while 5 Bft blew where the boat sails. The region-wind fallback is guarded just as hard: it is what ranks the trip planner, the prerender and every beach whose cluster fetch has not landed yet.',
+    failureAction: 'Pass the beach\'s own wind at the call site the gate names (App.beaufortAtBeach / perBeachMapWind). Never make it pass by deleting a rule — and never make the ranking functions REQUIRE the per-beach map, because the surfaces that do not have one must keep working.',
+    command: process.execPath,
+    args: ['scripts/validatePerBeachWindGates.mjs'],
+  },
+  {
     id: 'condition-tone-agreement',
     title: 'One condition colour per beach',
     description: 'Sweeps 1.476 exposure/Beaufort/cove/wave/period combinations through both colour resolvers — the region map pin and the card-list chip — and then drives calculateBeachScore end to end to prove the scoring layer still feeds the sea state in.',

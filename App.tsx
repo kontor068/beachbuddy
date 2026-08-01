@@ -3699,6 +3699,66 @@ export const App: React.FC = () => {
     setSortBy(defaultBeachListSort);
   }, [defaultBeachListSort, sortBy]);
 
+  const currentBeaufort = selectedForecast ? getBeaufortLevel(selectedForecast.wind.speed * 3.6) : 0;
+  /**
+   * EACH BEACH READS THE WIND AT ITS OWN SHORE (01/08/2026 for the colours, 02/08 for the
+   * decisions below).
+   *
+   * This used to pass `currentBeaufort` — one wind, measured at the region's geometric centre —
+   * for every beach on the map. In a large region that centre is inland or on the far coast:
+   * 1.532 of 2.850 beaches (53,8%) sit in a different cell of the weather model than it, Evia's
+   * furthest beach is 102 km away, and on 02/08 the centre read 1 Bft while Evia's own shores ran
+   * 1–6 Bft. Fifty beaches were painted «Ιδανική» over 5–6 Bft.
+   *
+   * The local readings were already being fetched and thrown away — `mapBeachLocalWinds` comes
+   * from the same cluster forecasts that until now only fed the hover card and the "a bit windier
+   * here" note. No new requests; we simply stop discarding what we already pay for.
+   *
+   * A beach with no local reading (first paint, no geometry, failed fetch) falls back to the
+   * region wind exactly as before — nothing is ever left uncoloured or unranked.
+   *
+   * Guarded by scripts/validateColourAgainstRealWind.mjs (`npm run quality:truth`), which fetches
+   * the real forecast and fails if any calm pin sits over a shore blowing 5 Bft or more. It fails
+   * red on the region wind and passes clean on this one.
+   *
+   * Declared here, above the filtering and ranking memos: since 02/08 they read it too, so it
+   * must exist before the first of them runs.
+   */
+  const perBeachMapWind = useMemo<Map<number, BeachWindReading>>(() => {
+    const map = new Map<number, BeachWindReading>();
+    Object.entries(mapBeachLocalWinds).forEach(([beachId, wind]) => {
+      map.set(Number(beachId), {
+        beaufort: getBeaufortLevel(wind.speedKmh),
+        directionDeg: wind.deg,
+      });
+    });
+    return map;
+  }, [mapBeachLocalWinds]);
+  /**
+   * The wind on one beach's shore. Every gate that used to compare the region's Beaufort with a
+   * threshold — hide the boat-only beaches, demand wind evidence, put shelter before score —
+   * asks this instead. Measured nationally on 02/08: the region number is a Beaufort or more
+   * away from the beach's own shore in 35,9% of beach-hours, and 1.171 distinct beaches crossed
+   * a threshold they should not have.
+   */
+  const beaufortAtBeach = React.useCallback((item: { beach?: { id: number }; beachId?: number }): number => {
+    const id = item.beach?.id ?? item.beachId;
+    const own = typeof id === 'number' ? perBeachMapWind.get(id)?.beaufort : undefined;
+    return typeof own === 'number' && Number.isFinite(own) ? own : currentBeaufort;
+  }, [perBeachMapWind, currentBeaufort]);
+  /**
+   * The strongest wind actually blowing on this region's shores. Used only where a decision is
+   * region-wide by nature (the "is it windy enough to filter at all?" switch below); anything
+   * that concerns a single beach uses beaufortAtBeach instead.
+   */
+  const windiestShoreBeaufort = useMemo(() => {
+    let strongest = currentBeaufort;
+    perBeachMapWind.forEach(wind => {
+      if (wind.beaufort > strongest) strongest = wind.beaufort;
+    });
+    return strongest;
+  }, [perBeachMapWind, currentBeaufort]);
+
   const getFilteredBeachResults = useMemo(() => (
     (filters: FilterKey[], nextSortBy: SortOption): Beach[] => {
     if (!selectedIsland) return [];
@@ -3707,7 +3767,13 @@ export const App: React.FC = () => {
     let beaches = filterBeachesByUserPreferences(selectedIsland.beaches, preferences);
     const windDirection = selectedForecast ? degToCompass(selectedForecast.wind.deg) : WindDirection.N;
     const selectedBeaufort = selectedForecast ? getBeaufortLevel(selectedForecast.wind.speed * 3.6) : 0;
-      const effectiveSortBy = (hasBeachSearchQuery && nextSortBy === 'recommended') || (selectedBeaufort < 4 && nextSortBy === 'recommended') ? 'all' : nextSortBy;
+    // Below 4 Bft the "recommended" filter switches itself off — on a calm day there is nothing
+    // to filter for. That question is about the region as a whole, so it stays region-level; what
+    // changed on 02/08/2026 is which number answers it. The centre's wind said "calm, show
+    // everything" while some of the same region's shores blew 4+ in 360 of 8.550 measured
+    // beach-hours, and those beaches were listed as if the wind were not there.
+    const gatingBeaufort = Math.max(selectedBeaufort, windiestShoreBeaufort);
+    const effectiveSortBy = (hasBeachSearchQuery && nextSortBy === 'recommended') || (gatingBeaufort < 4 && nextSortBy === 'recommended') ? 'all' : nextSortBy;
 
     if (!hasBeachSearchQuery && selectedForecast && effectiveSortBy === 'recommended') {
       const waveHeightM = selectedForecast.marine?.waveHeightM;
@@ -3741,7 +3807,7 @@ export const App: React.FC = () => {
       const result = getFilteredBeaches(beaches, filters, deferredBeachSearchQuery, effectiveSortBy, windDirection, selectedForecast, userLocation, preferences);
     return result;
     }
-  ), [beachScoreById, beachAreaForecastById, deferredBeachSearchQuery, geospatialExposureProfiles, getFilteredBeaches, preferences, selectedForecast, selectedIsland, userLocation]);
+  ), [beachScoreById, beachAreaForecastById, deferredBeachSearchQuery, geospatialExposureProfiles, getFilteredBeaches, preferences, selectedForecast, selectedIsland, userLocation, windiestShoreBeaufort]);
 
   const filteredBeaches = useMemo(() => (
     getFilteredBeachResults(selectedFilters, sortBy)
@@ -3971,7 +4037,7 @@ export const App: React.FC = () => {
     const beaufort = getBeaufortLevel(windSpeedKmph);
     const waveHeightM = selectedForecast.marine?.waveHeightM;
     const candidates = recommendationSource.filter(item => {
-      if (!isTrustedTopRecommendationCandidate(item, undefined, beaufort)) return false;
+      if (!isTrustedTopRecommendationCandidate(item, undefined, beaufortAtBeach(item))) return false;
       // One shared implementation with the trip planner (services/topPickRanking).
       return passesTopPickSeaGate(item, windSpeedKmph, waveHeightM);
     }).map(item => applyRemainingTopPickWindow(
@@ -3985,10 +4051,10 @@ export const App: React.FC = () => {
         || selectedBeachForecasts[item.beach.id]?.hourly
         || selectedForecast.hourly
     ));
-    const topPickPool = getWindPriorityTopPickPool(candidates, beaufort);
-    const protectedPriority = prioritizeProtectedRecommendations(topPickPool, beaufort);
+    const topPickPool = getWindPriorityTopPickPool(candidates, beaufort, perBeachMapWind);
+    const protectedPriority = prioritizeProtectedRecommendations(topPickPool, beaufort, perBeachMapWind);
     return prioritizeDynamicTopPickWindows(protectedPriority, selectedForecast.date, topPickNow);
-  }, [selectedForecast, dailySuitableBeaches, hasActivePreferenceFilters, selectedBeachForecasts, beachAreaForecastById, suitableBeaches, topPickNow]);
+  }, [selectedForecast, dailySuitableBeaches, hasActivePreferenceFilters, selectedBeachForecasts, beachAreaForecastById, suitableBeaches, topPickNow, beaufortAtBeach, perBeachMapWind]);
   const topRecommendedSuitableBeaches = useMemo(() => {
     // Day-to-day variety: on calm days, rotate #2/#3 among beaches that are genuinely
     // equally-good today (keeps #1 fixed, never surfaces a harder-to-reach or worse
@@ -4002,38 +4068,9 @@ export const App: React.FC = () => {
     });
     return varied.slice(0, getTopRecommendationDisplayLimit(varied.length));
   }, [recommendedSuitableBeaches, selectedForecast, selectedIsland]);
-  const currentBeaufort = selectedForecast ? getBeaufortLevel(selectedForecast.wind.speed * 3.6) : 0;
   const isSevereWindNoTopRecommendationDay = currentBeaufort > MAX_TOP_RECOMMENDATION_BEAUFORT;
-  /**
-   * EACH BEACH IS COLOURED FROM THE WIND AT ITS OWN SHORE (01/08/2026).
-   *
-   * This used to pass `currentBeaufort` — one wind, measured at the region's geometric centre —
-   * for every beach on the map. In a large region that centre is inland or on the far coast:
-   * 1.532 of 2.850 beaches (53,8%) sit in a different cell of the weather model than it, Evia's
-   * furthest beach is 102 km away, and on 02/08 the centre read 1 Bft while Evia's own shores ran
-   * 1–6 Bft. Fifty beaches were painted «Ιδανική» over 5–6 Bft.
-   *
-   * The local readings were already being fetched and thrown away — `mapBeachLocalWinds` comes
-   * from the same cluster forecasts that until now only fed the hover card and the "a bit windier
-   * here" note. No new requests; we simply stop discarding what we already pay for.
-   *
-   * A beach with no local reading (first paint, no geometry, failed fetch) falls back to the
-   * region wind exactly as before — nothing is ever left uncoloured.
-   *
-   * Guarded by scripts/validateColourAgainstRealWind.mjs (`npm run quality:truth`), which fetches
-   * the real forecast and fails if any calm pin sits over a shore blowing 5 Bft or more. It fails
-   * red on the region wind and passes clean on this one.
-   */
-  const perBeachMapWind = useMemo<Map<number, BeachWindReading>>(() => {
-    const map = new Map<number, BeachWindReading>();
-    Object.entries(mapBeachLocalWinds).forEach(([beachId, wind]) => {
-      map.set(Number(beachId), {
-        beaufort: getBeaufortLevel(wind.speedKmh),
-        directionDeg: wind.deg,
-      });
-    });
-    return map;
-  }, [mapBeachLocalWinds]);
+  // Colours come from each beach's own shore: perBeachMapWind, declared above the filtering
+  // memos that now read it too.
   const canonicalMapExposureLevels = useMemo<Map<number, ExposureLevel>>(() => {
     if (!selectedForecast) return new Map();
     return getConsistentVisibleMapExposureLevels(
@@ -4542,7 +4579,7 @@ export const App: React.FC = () => {
     const waveHeightM = selectedForecast.marine?.waveHeightM;
 
     [...recommendedSuitableBeaches, ...rankedFallback].forEach(item => {
-      if (!isTrustedTopRecommendationCandidate(item, undefined, currentBeaufort)) return;
+      if (!isTrustedTopRecommendationCandidate(item, undefined, beaufortAtBeach(item))) return;
       if (!rankedById.has(item.beach.id) && isStrongWindSuitableCandidate(item, windSpeedKmph, waveHeightM)) {
         rankedById.set(item.beach.id, item);
       }
@@ -4559,10 +4596,10 @@ export const App: React.FC = () => {
         || selectedBeachForecasts[item.beach.id]?.hourly
         || selectedForecast.hourly
     ));
-    const candidates = getWindPriorityTopPickPool(timeAwareItems, currentBeaufort);
-    const protectedPriority = prioritizeProtectedRecommendations(candidates, currentBeaufort);
+    const candidates = getWindPriorityTopPickPool(timeAwareItems, currentBeaufort, perBeachMapWind);
+    const protectedPriority = prioritizeProtectedRecommendations(candidates, currentBeaufort, perBeachMapWind);
     return prioritizeDynamicTopPickWindows(protectedPriority, selectedForecast.date, topPickNow);
-  }, [currentBeaufort, dailySuitableBeaches, isStrongRecommendationMode, recommendableMapSuitableBeaches, recommendedSuitableBeaches, selectedBeachForecasts, beachAreaForecastById, selectedForecast, topPickNow]);
+  }, [currentBeaufort, dailySuitableBeaches, isStrongRecommendationMode, recommendableMapSuitableBeaches, recommendedSuitableBeaches, selectedBeachForecasts, beachAreaForecastById, selectedForecast, topPickNow, beaufortAtBeach, perBeachMapWind]);
   const noIdealFallbackCandidates = useMemo(() => {
     if (!hasNoSwimmableBeachesToday || !isStrongRecommendationMode || !selectedForecast) return [];
 
@@ -4570,7 +4607,7 @@ export const App: React.FC = () => {
     const waveHeightM = selectedForecast.marine?.waveHeightM;
     const rankedFallback = [...recommendableMapSuitableBeaches]
       .filter(item => (
-        isTrustedTopRecommendationCandidate(item, undefined, currentBeaufort) &&
+        isTrustedTopRecommendationCandidate(item, undefined, beaufortAtBeach(item)) &&
         isNoIdealFallbackCandidate(item, windSpeedKmph, waveHeightM)
       ))
       .sort((a, b) => {
@@ -4589,9 +4626,9 @@ export const App: React.FC = () => {
         || selectedBeachForecasts[item.beach.id]?.hourly
         || selectedForecast.hourly
     ));
-    const protectedPriority = prioritizeProtectedRecommendations(timeAwareItems, currentBeaufort);
+    const protectedPriority = prioritizeProtectedRecommendations(timeAwareItems, currentBeaufort, perBeachMapWind);
     return prioritizeDynamicTopPickWindows(protectedPriority, selectedForecast.date, topPickNow);
-  }, [currentBeaufort, hasNoSwimmableBeachesToday, isStrongRecommendationMode, recommendableMapSuitableBeaches, selectedBeachForecasts, beachAreaForecastById, selectedForecast, topPickNow]);
+  }, [currentBeaufort, hasNoSwimmableBeachesToday, isStrongRecommendationMode, recommendableMapSuitableBeaches, selectedBeachForecasts, beachAreaForecastById, selectedForecast, topPickNow, beaufortAtBeach, perBeachMapWind]);
   const windPreviewCandidates = useMemo(() => {
     if (!isStrongRecommendationMode || !selectedForecast) return [];
     if (strongSuitableCandidates.length > 0) return strongSuitableCandidates;
@@ -4604,7 +4641,7 @@ export const App: React.FC = () => {
     const rankedById = new Map<number, SuitableBeach>();
 
     fallbackSource.forEach(item => {
-      if (!isTrustedTopRecommendationCandidate(item, undefined, currentBeaufort)) return;
+      if (!isTrustedTopRecommendationCandidate(item, undefined, beaufortAtBeach(item))) return;
       if (!rankedById.has(item.beach.id)) {
         rankedById.set(item.beach.id, item);
       }
@@ -4621,10 +4658,10 @@ export const App: React.FC = () => {
         || selectedBeachForecasts[item.beach.id]?.hourly
         || selectedForecast.hourly
     ));
-    const candidates = getWindPriorityTopPickPool(timeAwareItems, currentBeaufort);
-    const protectedPriority = prioritizeProtectedRecommendations(candidates, currentBeaufort);
+    const candidates = getWindPriorityTopPickPool(timeAwareItems, currentBeaufort, perBeachMapWind);
+    const protectedPriority = prioritizeProtectedRecommendations(candidates, currentBeaufort, perBeachMapWind);
     return prioritizeDynamicTopPickWindows(protectedPriority, selectedForecast.date, topPickNow);
-  }, [currentBeaufort, dailySuitableBeaches, isStrongRecommendationMode, recommendableMapSuitableBeaches, recommendedSuitableBeaches, selectedBeachForecasts, beachAreaForecastById, selectedForecast, strongSuitableCandidates, topPickNow]);
+  }, [currentBeaufort, dailySuitableBeaches, isStrongRecommendationMode, recommendableMapSuitableBeaches, recommendedSuitableBeaches, selectedBeachForecasts, beachAreaForecastById, selectedForecast, strongSuitableCandidates, topPickNow, beaufortAtBeach, perBeachMapWind]);
   const strongManageableBeaches = useMemo(() => (
     windPreviewCandidates.slice(0, getTopRecommendationDisplayLimit(windPreviewCandidates.length))
   ), [windPreviewCandidates]);
@@ -4948,13 +4985,13 @@ export const App: React.FC = () => {
   }, [currentBeaufort, recommendableFilteredMapSuitableBeaches, selectedForecast]);
   const mapAlignedProtectedDirectorySource = useMemo(() => {
     const trustedCandidates = mapAlignedVisibleProtectedDirectorySource.filter(item => (
-      isTrustedTopRecommendationCandidate(item, undefined, currentBeaufort)
+      isTrustedTopRecommendationCandidate(item, undefined, beaufortAtBeach(item))
     ));
 
     if (trustedCandidates.length === 0) return [];
 
     return trustedCandidates;
-  }, [currentBeaufort, mapAlignedVisibleProtectedDirectorySource]);
+  }, [beaufortAtBeach, mapAlignedVisibleProtectedDirectorySource]);
   const mapAlignedLessExposedDirectorySource = useMemo(() => {
     if (!selectedForecast || !isStrongRecommendationMode) return [];
 
@@ -5388,10 +5425,12 @@ export const App: React.FC = () => {
     ? mapAlignedProtectedDirectorySource
     : prioritizeProtectedRecommendations(
     getWindPriorityTopPickPool(
-      recommendableMapSuitableBeaches.filter(item => isTrustedTopRecommendationCandidate(item, undefined, currentBeaufort)),
-      currentBeaufort
+      recommendableMapSuitableBeaches.filter(item => isTrustedTopRecommendationCandidate(item, undefined, beaufortAtBeach(item))),
+      currentBeaufort,
+      perBeachMapWind
     ),
-    currentBeaufort
+    currentBeaufort,
+    perBeachMapWind
   );
   const shouldSuppressDirectoryTopBeachFallback = Boolean(
     currentBeaufort >= MEANINGFUL_WIND_TOP_PICK_BEAUFORT &&
@@ -5450,7 +5489,7 @@ export const App: React.FC = () => {
     ));
   })();
   const isDirectoryTopRecommendationCandidate = (item: SuitableBeach): boolean => {
-    if (!isTrustedTopRecommendationCandidate(item, undefined, currentBeaufort)) return false;
+    if (!isTrustedTopRecommendationCandidate(item, undefined, beaufortAtBeach(item))) return false;
     if (item.swimmingComfort === 'avoid_swimming') return false;
     if (item.warnings?.some(warning => warning.type === 'official_warning' && warning.severity === 'critical')) return false;
     if (typeof item.swimmingScore === 'number' && item.swimmingScore < 50) return false;
@@ -5541,9 +5580,16 @@ export const App: React.FC = () => {
   // so it must not appear in the recommended/explore or "Κοντά μου" lists with such
   // weather. We drop boat-access beaches here only; they stay on the map and remain
   // findable by an explicit name search (kept whenever the user is actually searching).
-  const shouldHideBoatAccessBeaches = currentBeaufort >= PROTECTED_FIRST_BEAUFORT && beachSearchQuery.trim().length === 0;
-  const recommendableDirectorySuitableBeachCards = shouldHideBoatAccessBeaches
-    ? directorySuitableBeachCards.filter(item => !hasBoatOnlyAccess(item.beach))
+  //
+  // 02/08/2026: the 5 Bft is now read at the beach's own shore, not at the region's centre.
+  // Whether the boat sails is decided by the water it sails on: a region reading 3 Bft while
+  // Alimounda's own shore blows 5 used to keep the beach on offer (measured, Karpathos), and a
+  // region reading 5 while a beach's bay lies at 2 used to remove a perfectly reachable beach.
+  const isBoatAccessHideActive = beachSearchQuery.trim().length === 0;
+  const recommendableDirectorySuitableBeachCards = isBoatAccessHideActive
+    ? directorySuitableBeachCards.filter(item => !(
+      hasBoatOnlyAccess(item.beach) && beaufortAtBeach(item) >= PROTECTED_FIRST_BEAUFORT
+    ))
     : directorySuitableBeachCards;
   // Guarantee a distance on every suitable card when the user's location is
   // known (some source pipelines, e.g. calm-wind days, don't carry it), so the

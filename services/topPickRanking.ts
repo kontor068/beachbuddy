@@ -17,6 +17,53 @@ import { calculateSeaConditionScore, hasPoorSeaConditions } from '../utils/seaCo
 
 export const MEANINGFUL_WIND_TOP_PICK_BEAUFORT = 3;
 export const PROTECTED_FIRST_BEAUFORT = 5;
+/**
+ * THE WIND AT EACH BEACH'S OWN SHORE (02/08/2026), keyed by beach id — App.perBeachMapWind,
+ * built from the same cluster forecasts that already colour the map.
+ *
+ * Every function below used to take ONE Beaufort for a whole region, measured at its
+ * geometric centre. Measured nationally on 02/08 over 8.550 beach-hours: that number is at
+ * least one Beaufort away from the beach's own shore 35,9% of the time, and 1.171 distinct
+ * beaches landed on the wrong side of a gate at least once. On the podium specifically, 150
+ * beach-hours could reach #1 while their own water blew 5 Bft or more, and 47 were pushed
+ * down for a wind that was not blowing there (all in Heraklion).
+ *
+ * Optional on purpose: a surface with no per-beach readings — the trip planner, the
+ * prerender, the first paint before the cluster fetch lands — passes nothing and every beach
+ * reads the region wind exactly as it did before. Nothing is ever left unranked.
+ */
+export type PerBeachWindLookup = ReadonlyMap<number, { beaufort: number }>;
+
+type BeachIdentified = { beach?: { id: number }; beachId?: number };
+
+/** The wind on THIS beach's shore, or the region's when it has no reading of its own. */
+export const beachOwnBeaufort = (
+  item: BeachIdentified,
+  regionBeaufort: number,
+  perBeachWind?: PerBeachWindLookup
+): number => {
+  const id = item.beach?.id ?? item.beachId;
+  const own = typeof id === 'number' ? perBeachWind?.get(id)?.beaufort : undefined;
+  return typeof own === 'number' && Number.isFinite(own) ? own : regionBeaufort;
+};
+
+/**
+ * The strongest wind actually blowing on any shore in this pool. It replaces the region wind
+ * as the branch selector below, which keeps the comparator a single-scalar decision (a sort
+ * comparator that switched rules per pair would not be transitive). The per-beach part is
+ * carried by the RANKS, not by the branch: see prioritizeProtectedRecommendations.
+ */
+const strongestBeaufortInPool = (
+  items: readonly BeachIdentified[],
+  regionBeaufort: number,
+  perBeachWind?: PerBeachWindLookup
+): number => {
+  if (!perBeachWind || items.length === 0) return regionBeaufort;
+  return items.reduce(
+    (strongest, item) => Math.max(strongest, beachOwnBeaufort(item, regionBeaufort, perBeachWind)),
+    0
+  );
+};
 export const MAX_TOP_RECOMMENDATION_BEAUFORT = 6;
 export const MIN_TOP_PICK_SEA_CONDITION_SCORE = 7;
 export const MIN_STRONG_SUITABLE_SEA_CONDITION_SCORE = 5;
@@ -131,37 +178,73 @@ export const isLessExposedTopPickCandidate = (item: SuitableBeach): boolean => {
   );
 };
 
-export const getWindPriorityTopPickPool = (items: SuitableBeach[], beaufort: number): SuitableBeach[] => {
-  if (beaufort < MEANINGFUL_WIND_TOP_PICK_BEAUFORT || items.length === 0) return items;
+export const getWindPriorityTopPickPool = (
+  items: SuitableBeach[],
+  beaufort: number,
+  perBeachWind?: PerBeachWindLookup
+): SuitableBeach[] => {
+  const poolBeaufort = strongestBeaufortInPool(items, beaufort, perBeachWind);
+  if (poolBeaufort < MEANINGFUL_WIND_TOP_PICK_BEAUFORT || items.length === 0) return items;
 
-  const lessExposed = items.filter(isLessExposedTopPickCandidate);
+  // A beach whose own shore is calm is not asked to prove it is sheltered — there is nothing
+  // to be sheltered from there today, whatever the rest of the region is doing.
+  const lessExposed = items.filter(item => (
+    beachOwnBeaufort(item, beaufort, perBeachWind) < MEANINGFUL_WIND_TOP_PICK_BEAUFORT ||
+    isLessExposedTopPickCandidate(item)
+  ));
   return lessExposed.length > 0 ? lessExposed : items;
 };
 
-export const bestShelteredRecommendationGroup = (items: SuitableBeach[], beaufort: number): SuitableBeach[] => {
-  if (beaufort < MEANINGFUL_WIND_TOP_PICK_BEAUFORT || items.length === 0) return items;
+export const bestShelteredRecommendationGroup = (
+  items: SuitableBeach[],
+  beaufort: number,
+  perBeachWind?: PerBeachWindLookup
+): SuitableBeach[] => {
+  const poolBeaufort = strongestBeaufortInPool(items, beaufort, perBeachWind);
+  if (poolBeaufort < MEANINGFUL_WIND_TOP_PICK_BEAUFORT || items.length === 0) return items;
 
   const bestPriority = Math.min(...items.map(topPickProfilePriority));
-  return items.filter(item => topPickProfilePriority(item) === bestPriority);
+  return items.filter(item => (
+    beachOwnBeaufort(item, beaufort, perBeachWind) < MEANINGFUL_WIND_TOP_PICK_BEAUFORT ||
+    topPickProfilePriority(item) === bestPriority
+  ));
 };
 
-export const prioritizeProtectedRecommendations = (items: SuitableBeach[], beaufort: number): SuitableBeach[] => {
-  const candidates = bestShelteredRecommendationGroup(items, beaufort);
+export const prioritizeProtectedRecommendations = (
+  items: SuitableBeach[],
+  beaufort: number,
+  perBeachWind?: PerBeachWindLookup
+): SuitableBeach[] => {
+  const candidates = bestShelteredRecommendationGroup(items, beaufort, perBeachWind);
+  const poolBeaufort = strongestBeaufortInPool(candidates, beaufort, perBeachWind);
+  // Wind-aware ranks. When the pool is windy somewhere, a beach whose OWN shore is calm is
+  // ranked as if it had the pool's best shelter — it is neither rewarded for geometry it does
+  // not need today nor punished for exposure to a wind that is not reaching it. Below
+  // meaningful wind everywhere, the ranks are the plain ones, so calm days are untouched.
+  const poolIsWindy = poolBeaufort >= MEANINGFUL_WIND_TOP_PICK_BEAUFORT;
+  const bestProfile = candidates.length > 0 ? Math.min(...candidates.map(topPickProfilePriority)) : 0;
+  const bestExposure = candidates.length > 0 ? Math.min(...candidates.map(exposurePriority)) : 0;
+  const feelsWind = (item: SuitableBeach): boolean => (
+    !poolIsWindy || beachOwnBeaufort(item, beaufort, perBeachWind) >= MEANINGFUL_WIND_TOP_PICK_BEAUFORT
+  );
+  const profileRank = (item: SuitableBeach): number => (feelsWind(item) ? topPickProfilePriority(item) : bestProfile);
+  const exposureRank = (item: SuitableBeach): number => (feelsWind(item) ? exposurePriority(item) : bestExposure);
+
   return [...candidates].sort((a, b) => {
-    const profileDiff = topPickProfilePriority(a) - topPickProfilePriority(b);
-    const exposureDiff = exposurePriority(a) - exposurePriority(b);
+    const profileDiff = profileRank(a) - profileRank(b);
+    const exposureDiff = exposureRank(a) - exposureRank(b);
     const scoreDiff = b.score - a.score;
     const touristDiff = compareTouristTopPickPriority(a, b);
 
-    if (beaufort >= MEANINGFUL_WIND_TOP_PICK_BEAUFORT && profileDiff !== 0) return profileDiff;
-    if (beaufort >= PROTECTED_FIRST_BEAUFORT) {
+    if (poolBeaufort >= MEANINGFUL_WIND_TOP_PICK_BEAUFORT && profileDiff !== 0) return profileDiff;
+    if (poolBeaufort >= PROTECTED_FIRST_BEAUFORT) {
       if (exposureDiff !== 0) return exposureDiff;
       return touristDiff || scoreDiff;
     }
-    if (beaufort >= MEANINGFUL_WIND_TOP_PICK_BEAUFORT && exposureDiff !== 0 && Math.abs(scoreDiff) <= 12) {
+    if (poolBeaufort >= MEANINGFUL_WIND_TOP_PICK_BEAUFORT && exposureDiff !== 0 && Math.abs(scoreDiff) <= 12) {
       return exposureDiff;
     }
-    if (beaufort >= MEANINGFUL_WIND_TOP_PICK_BEAUFORT) {
+    if (poolBeaufort >= MEANINGFUL_WIND_TOP_PICK_BEAUFORT) {
       return touristDiff || scoreDiff || exposureDiff;
     }
     return scoreDiff || exposureDiff;

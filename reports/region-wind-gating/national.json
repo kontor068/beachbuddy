@@ -1,0 +1,1033 @@
+{
+  "thresholds": {
+    "PROTECTED_FIRST_BEAUFORT": 5,
+    "MEANINGFUL_WIND_TOP_PICK_BEAUFORT": 3
+  },
+  "hours": [
+    "T08:00",
+    "T11:00",
+    "T17:00"
+  ],
+  "tally": {
+    "beachHours": 8550,
+    "boatBeachHours": 336,
+    "hideUnfair": 0,
+    "hideUnsafe": 2,
+    "podiumUnfair": 47,
+    "podiumUnsafe": 150,
+    "trustedUnfair": 889,
+    "trustedUnsafe": 574,
+    "sortFilterOffWhileWindy": 360,
+    "gap1": 3073,
+    "gap2": 543,
+    "regionCalmBeachBlowing": 59
+  },
+  "perRegion": [
+    {
+      "id": "attica-aegina",
+      "beaches": 17,
+      "boat": 0,
+      "hideUnfair": 0,
+      "hideUnsafe": 0,
+      "podiumUnfair": 0,
+      "podiumUnsafe": 0
+    },
+    {
+      "id": "attica-agistri",
+      "beaches": 6,
+      "boat": 0,
+      "hideUnfair": 0,
+      "hideUnsafe": 0,
+      "podiumUnfair": 0,
+      "podiumUnsafe": 0
+    },
+    {
+      "id": "attica-athens-area-mainland",
+      "beaches": 26,
+      "boat": 3,
+      "hideUnfair": 0,
+      "hideUnsafe": 0,
+      "podiumUnfair": 0,
+      "podiumUnsafe": 0
+    },
+    {
+      "id": "attica-east-attica-mainland",
+      "beaches": 60,
+      "boat": 0,
+      "hideUnfair": 0,
+      "hideUnsafe": 0,
+      "podiumUnfair": 0,
+      "podiumUnsafe": 6
+    },
+    {
+      "id": "attica-hydra",
+      "beaches": 8,
+      "boat": 6,
+      "hideUnfair": 0,
+      "hideUnsafe": 0,
+      "podiumUnfair": 0,
+      "podiumUnsafe": 0
+    },
+    {
+      "id": "attica-kythira",
+      "beaches": 42,
+      "boat": 0,
+      "hideUnfair": 0,
+      "hideUnsafe": 0,
+      "podiumUnfair": 0,
+      "podiumUnsafe": 0
+    },
+    {
+      "id": "attica-methana",
+      "beaches": 4,
+      "boat": 0,
+      "hideUnfair": 0,
+      "hideUnsafe": 0,
+      "podiumUnfair": 0,
+      "podiumUnsafe": 0
+    },
+    {
+      "id": "attica-piraeus-area",
+      "beaches": 5,
+      "boat": 0,
+      "hideUnfair": 0,
+      "hideUnsafe": 0,
+      "podiumUnfair": 0,
+      "podiumUnsafe": 0
+    },
+    {
+      "id": "attica-poros",
+      "beaches": 11,
+      "boat": 0,
+      "hideUnfair": 0,
+      "hideUnsafe": 0,
+      "podiumUnfair": 0,
+      "podiumUnsafe": 0
+    },
+    {
+      "id": "attica-salamina",
+      "beaches": 10,
+      "boat": 0,
+      "hideUnfair": 0,
+      "hideUnsafe": 0,
+      "podiumUnfair": 0,
+      "podiumUnsafe": 0
+    },
+    {
+      "id": "attica-spetses",
+      "beaches": 12,
+      "boat": 3,
+      "hideUnfair": 0,
+      "hideUnsafe": 0,
+      "podiumUnfair": 0,
+      "podiumUnsafe": 0
+    },
+    {
+      "id": "attica-west-attica-mainland",
+      "beaches": 6,
+      "boat": 0,
+      "hideUnfair": 0,
+      "hideUnsafe": 0,
+      "podiumUnfair": 0,
+      "podiumUnsafe": 0
+    },
+    {
+      "id": "central-greece-evia",
+      "beaches": 129,
+      "boat": 3,
+      "hideUnfair": 0,
+      "hideUnsafe": 0,
+      "podiumUnfair": 0,
+      "podiumUnsafe": 8
+    },
+    {
+      "id": "central-greece-fokida-mainland",
+      "beaches": 21,
+      "boat": 0,
+      "hideUnfair": 0,
+      "hideUnsafe": 0,
+      "podiumUnfair": 0,
+      "podiumUnsafe": 0
+    },
+    {
+      "id": "central-greece-fthiotida-mainland",
+      "beaches": 18,
+      "boat": 0,
+      "hideUnfair": 0,
+      "hideUnsafe": 0,
+      "podiumUnfair": 0,
+      "podiumUnsafe": 0
+    },
+    {
+      "id": "central-greece-skyros",
+      "beaches": 21,
+      "boat": 3,
+      "hideUnfair": 0,
+      "hideUnsafe": 0,
+      "podiumUnfair": 0,
+      "podiumUnsafe": 0
+    },
+    {
+      "id": "central-greece-viotia-mainland",
+      "beaches": 8,
+      "boat": 0,
+      "hideUnfair": 0,
+      "hideUnsafe": 0,
+      "podiumUnfair": 0,
+      "podiumUnsafe": 0
+    },
+    {
+      "id": "central-macedonia-halkidiki-mainland",
+      "beaches": 133,
+      "boat": 9,
+      "hideUnfair": 0,
+      "hideUnsafe": 0,
+      "podiumUnfair": 0,
+      "podiumUnsafe": 0
+    },
+    {
+      "id": "central-macedonia-pieria-mainland",
+      "beaches": 9,
+      "boat": 0,
+      "hideUnfair": 0,
+      "hideUnsafe": 0,
+      "podiumUnfair": 0,
+      "podiumUnsafe": 0
+    },
+    {
+      "id": "central-macedonia-thessaloniki-area",
+      "beaches": 16,
+      "boat": 0,
+      "hideUnfair": 0,
+      "hideUnsafe": 0,
+      "podiumUnfair": 0,
+      "podiumUnsafe": 0
+    },
+    {
+      "id": "crete-crete-chania",
+      "beaches": 89,
+      "boat": 0,
+      "hideUnfair": 0,
+      "hideUnsafe": 0,
+      "podiumUnfair": 0,
+      "podiumUnsafe": 5
+    },
+    {
+      "id": "crete-crete-heraklion",
+      "beaches": 53,
+      "boat": 0,
+      "hideUnfair": 0,
+      "hideUnsafe": 0,
+      "podiumUnfair": 47,
+      "podiumUnsafe": 0
+    },
+    {
+      "id": "crete-crete-lasithi",
+      "beaches": 63,
+      "boat": 9,
+      "hideUnfair": 0,
+      "hideUnsafe": 0,
+      "podiumUnfair": 0,
+      "podiumUnsafe": 30
+    },
+    {
+      "id": "crete-crete-rethymno",
+      "beaches": 47,
+      "boat": 0,
+      "hideUnfair": 0,
+      "hideUnsafe": 0,
+      "podiumUnfair": 0,
+      "podiumUnsafe": 0
+    },
+    {
+      "id": "crete-gavdos",
+      "beaches": 9,
+      "boat": 0,
+      "hideUnfair": 0,
+      "hideUnsafe": 0,
+      "podiumUnfair": 0,
+      "podiumUnsafe": 0
+    },
+    {
+      "id": "east-macedonia-and-thrace-evros-mainland",
+      "beaches": 5,
+      "boat": 0,
+      "hideUnfair": 0,
+      "hideUnsafe": 0,
+      "podiumUnfair": 0,
+      "podiumUnsafe": 0
+    },
+    {
+      "id": "east-macedonia-and-thrace-kavala-mainland",
+      "beaches": 19,
+      "boat": 0,
+      "hideUnfair": 0,
+      "hideUnsafe": 0,
+      "podiumUnfair": 0,
+      "podiumUnsafe": 0
+    },
+    {
+      "id": "east-macedonia-and-thrace-rodopi-mainland",
+      "beaches": 6,
+      "boat": 0,
+      "hideUnfair": 0,
+      "hideUnsafe": 0,
+      "podiumUnfair": 0,
+      "podiumUnsafe": 0
+    },
+    {
+      "id": "east-macedonia-and-thrace-samothraki",
+      "beaches": 11,
+      "boat": 3,
+      "hideUnfair": 0,
+      "hideUnsafe": 0,
+      "podiumUnfair": 0,
+      "podiumUnsafe": 0
+    },
+    {
+      "id": "east-macedonia-and-thrace-thasos",
+      "beaches": 58,
+      "boat": 0,
+      "hideUnfair": 0,
+      "hideUnsafe": 0,
+      "podiumUnfair": 0,
+      "podiumUnsafe": 0
+    },
+    {
+      "id": "east-macedonia-and-thrace-xanthi-mainland",
+      "beaches": 3,
+      "boat": 0,
+      "hideUnfair": 0,
+      "hideUnsafe": 0,
+      "podiumUnfair": 0,
+      "podiumUnsafe": 0
+    },
+    {
+      "id": "epirus-arta-mainland",
+      "beaches": 2,
+      "boat": 0,
+      "hideUnfair": 0,
+      "hideUnsafe": 0,
+      "podiumUnfair": 0,
+      "podiumUnsafe": 0
+    },
+    {
+      "id": "epirus-preveza-mainland",
+      "beaches": 26,
+      "boat": 0,
+      "hideUnfair": 0,
+      "hideUnsafe": 0,
+      "podiumUnfair": 0,
+      "podiumUnsafe": 0
+    },
+    {
+      "id": "epirus-thesprotia-mainland",
+      "beaches": 39,
+      "boat": 9,
+      "hideUnfair": 0,
+      "hideUnsafe": 0,
+      "podiumUnfair": 0,
+      "podiumUnsafe": 0
+    },
+    {
+      "id": "ionian-islands-antipaxos",
+      "beaches": 14,
+      "boat": 39,
+      "hideUnfair": 0,
+      "hideUnsafe": 0,
+      "podiumUnfair": 0,
+      "podiumUnsafe": 0
+    },
+    {
+      "id": "ionian-islands-corfu",
+      "beaches": 105,
+      "boat": 24,
+      "hideUnfair": 0,
+      "hideUnsafe": 0,
+      "podiumUnfair": 0,
+      "podiumUnsafe": 0
+    },
+    {
+      "id": "ionian-islands-erikoussa",
+      "beaches": 2,
+      "boat": 0,
+      "hideUnfair": 0,
+      "hideUnsafe": 0,
+      "podiumUnfair": 0,
+      "podiumUnsafe": 0
+    },
+    {
+      "id": "ionian-islands-ithaca",
+      "beaches": 25,
+      "boat": 12,
+      "hideUnfair": 0,
+      "hideUnsafe": 0,
+      "podiumUnfair": 0,
+      "podiumUnsafe": 0
+    },
+    {
+      "id": "ionian-islands-kefalonia",
+      "beaches": 77,
+      "boat": 18,
+      "hideUnfair": 0,
+      "hideUnsafe": 0,
+      "podiumUnfair": 0,
+      "podiumUnsafe": 0
+    },
+    {
+      "id": "ionian-islands-lefkada",
+      "beaches": 33,
+      "boat": 9,
+      "hideUnfair": 0,
+      "hideUnsafe": 0,
+      "podiumUnfair": 0,
+      "podiumUnsafe": 0
+    },
+    {
+      "id": "ionian-islands-mathraki",
+      "beaches": 1,
+      "boat": 0,
+      "hideUnfair": 0,
+      "hideUnsafe": 0,
+      "podiumUnfair": 0,
+      "podiumUnsafe": 0
+    },
+    {
+      "id": "ionian-islands-meganisi",
+      "beaches": 8,
+      "boat": 0,
+      "hideUnfair": 0,
+      "hideUnsafe": 0,
+      "podiumUnfair": 0,
+      "podiumUnsafe": 0
+    },
+    {
+      "id": "ionian-islands-othonoi",
+      "beaches": 3,
+      "boat": 3,
+      "hideUnfair": 0,
+      "hideUnsafe": 0,
+      "podiumUnfair": 0,
+      "podiumUnsafe": 0
+    },
+    {
+      "id": "ionian-islands-paxos",
+      "beaches": 25,
+      "boat": 3,
+      "hideUnfair": 0,
+      "hideUnsafe": 0,
+      "podiumUnfair": 0,
+      "podiumUnsafe": 0
+    },
+    {
+      "id": "ionian-islands-zakynthos",
+      "beaches": 39,
+      "boat": 15,
+      "hideUnfair": 0,
+      "hideUnsafe": 0,
+      "podiumUnfair": 0,
+      "podiumUnsafe": 0
+    },
+    {
+      "id": "north-aegean-agios-efstratios",
+      "beaches": 12,
+      "boat": 3,
+      "hideUnfair": 0,
+      "hideUnsafe": 0,
+      "podiumUnfair": 0,
+      "podiumUnsafe": 0
+    },
+    {
+      "id": "north-aegean-chios",
+      "beaches": 36,
+      "boat": 0,
+      "hideUnfair": 0,
+      "hideUnsafe": 0,
+      "podiumUnfair": 0,
+      "podiumUnsafe": 0
+    },
+    {
+      "id": "north-aegean-fournoi",
+      "beaches": 7,
+      "boat": 0,
+      "hideUnfair": 0,
+      "hideUnsafe": 0,
+      "podiumUnfair": 0,
+      "podiumUnsafe": 0
+    },
+    {
+      "id": "north-aegean-ikaria",
+      "beaches": 19,
+      "boat": 0,
+      "hideUnfair": 0,
+      "hideUnsafe": 0,
+      "podiumUnfair": 0,
+      "podiumUnsafe": 0
+    },
+    {
+      "id": "north-aegean-lemnos",
+      "beaches": 40,
+      "boat": 0,
+      "hideUnfair": 0,
+      "hideUnsafe": 0,
+      "podiumUnfair": 0,
+      "podiumUnsafe": 0
+    },
+    {
+      "id": "north-aegean-lesvos",
+      "beaches": 62,
+      "boat": 3,
+      "hideUnfair": 0,
+      "hideUnsafe": 0,
+      "podiumUnfair": 0,
+      "podiumUnsafe": 0
+    },
+    {
+      "id": "north-aegean-oinousses",
+      "beaches": 8,
+      "boat": 0,
+      "hideUnfair": 0,
+      "hideUnsafe": 0,
+      "podiumUnfair": 0,
+      "podiumUnsafe": 0
+    },
+    {
+      "id": "north-aegean-psara",
+      "beaches": 6,
+      "boat": 3,
+      "hideUnfair": 0,
+      "hideUnsafe": 0,
+      "podiumUnfair": 0,
+      "podiumUnsafe": 0
+    },
+    {
+      "id": "north-aegean-samos",
+      "beaches": 44,
+      "boat": 3,
+      "hideUnfair": 0,
+      "hideUnsafe": 0,
+      "podiumUnfair": 0,
+      "podiumUnsafe": 0
+    },
+    {
+      "id": "peloponnese-argolida-mainland",
+      "beaches": 34,
+      "boat": 0,
+      "hideUnfair": 0,
+      "hideUnsafe": 0,
+      "podiumUnfair": 0,
+      "podiumUnsafe": 0
+    },
+    {
+      "id": "peloponnese-arkadia-mainland",
+      "beaches": 17,
+      "boat": 0,
+      "hideUnfair": 0,
+      "hideUnsafe": 0,
+      "podiumUnfair": 0,
+      "podiumUnsafe": 0
+    },
+    {
+      "id": "peloponnese-korinthia-mainland",
+      "beaches": 25,
+      "boat": 0,
+      "hideUnfair": 0,
+      "hideUnsafe": 0,
+      "podiumUnfair": 0,
+      "podiumUnsafe": 0
+    },
+    {
+      "id": "peloponnese-lakonia-mainland",
+      "beaches": 69,
+      "boat": 0,
+      "hideUnfair": 0,
+      "hideUnsafe": 0,
+      "podiumUnfair": 0,
+      "podiumUnsafe": 0
+    },
+    {
+      "id": "peloponnese-messinia-mainland",
+      "beaches": 57,
+      "boat": 6,
+      "hideUnfair": 0,
+      "hideUnsafe": 0,
+      "podiumUnfair": 0,
+      "podiumUnsafe": 0
+    },
+    {
+      "id": "south-aegean-agathonisi",
+      "beaches": 5,
+      "boat": 0,
+      "hideUnfair": 0,
+      "hideUnsafe": 0,
+      "podiumUnfair": 0,
+      "podiumUnsafe": 0
+    },
+    {
+      "id": "south-aegean-amorgos",
+      "beaches": 15,
+      "boat": 3,
+      "hideUnfair": 0,
+      "hideUnsafe": 0,
+      "podiumUnfair": 0,
+      "podiumUnsafe": 0
+    },
+    {
+      "id": "south-aegean-anafi",
+      "beaches": 15,
+      "boat": 0,
+      "hideUnfair": 0,
+      "hideUnsafe": 0,
+      "podiumUnfair": 0,
+      "podiumUnsafe": 0
+    },
+    {
+      "id": "south-aegean-andros",
+      "beaches": 41,
+      "boat": 3,
+      "hideUnfair": 0,
+      "hideUnsafe": 0,
+      "podiumUnfair": 0,
+      "podiumUnsafe": 21
+    },
+    {
+      "id": "south-aegean-antiparos",
+      "beaches": 12,
+      "boat": 6,
+      "hideUnfair": 0,
+      "hideUnsafe": 0,
+      "podiumUnfair": 0,
+      "podiumUnsafe": 0
+    },
+    {
+      "id": "south-aegean-arki",
+      "beaches": 2,
+      "boat": 0,
+      "hideUnfair": 0,
+      "hideUnsafe": 0,
+      "podiumUnfair": 0,
+      "podiumUnsafe": 0
+    },
+    {
+      "id": "south-aegean-astypalaia",
+      "beaches": 22,
+      "boat": 6,
+      "hideUnfair": 0,
+      "hideUnsafe": 0,
+      "podiumUnfair": 0,
+      "podiumUnsafe": 0
+    },
+    {
+      "id": "south-aegean-donousa",
+      "beaches": 4,
+      "boat": 0,
+      "hideUnfair": 0,
+      "hideUnsafe": 0,
+      "podiumUnfair": 0,
+      "podiumUnsafe": 0
+    },
+    {
+      "id": "south-aegean-folegandros",
+      "beaches": 16,
+      "boat": 0,
+      "hideUnfair": 0,
+      "hideUnsafe": 0,
+      "podiumUnfair": 0,
+      "podiumUnsafe": 0
+    },
+    {
+      "id": "south-aegean-halki",
+      "beaches": 2,
+      "boat": 0,
+      "hideUnfair": 0,
+      "hideUnsafe": 0,
+      "podiumUnfair": 0,
+      "podiumUnsafe": 0
+    },
+    {
+      "id": "south-aegean-ios",
+      "beaches": 40,
+      "boat": 9,
+      "hideUnfair": 0,
+      "hideUnsafe": 0,
+      "podiumUnfair": 0,
+      "podiumUnsafe": 0
+    },
+    {
+      "id": "south-aegean-iraklia",
+      "beaches": 2,
+      "boat": 0,
+      "hideUnfair": 0,
+      "hideUnsafe": 0,
+      "podiumUnfair": 0,
+      "podiumUnsafe": 0
+    },
+    {
+      "id": "south-aegean-kalymnos",
+      "beaches": 20,
+      "boat": 9,
+      "hideUnfair": 0,
+      "hideUnsafe": 0,
+      "podiumUnfair": 0,
+      "podiumUnsafe": 0
+    },
+    {
+      "id": "south-aegean-karpathos",
+      "beaches": 45,
+      "boat": 12,
+      "hideUnfair": 0,
+      "hideUnsafe": 2,
+      "podiumUnfair": 0,
+      "podiumUnsafe": 29
+    },
+    {
+      "id": "south-aegean-kasos",
+      "beaches": 5,
+      "boat": 0,
+      "hideUnfair": 0,
+      "hideUnsafe": 0,
+      "podiumUnfair": 0,
+      "podiumUnsafe": 0
+    },
+    {
+      "id": "south-aegean-kastellorizo",
+      "beaches": 3,
+      "boat": 3,
+      "hideUnfair": 0,
+      "hideUnsafe": 0,
+      "podiumUnfair": 0,
+      "podiumUnsafe": 0
+    },
+    {
+      "id": "south-aegean-kea",
+      "beaches": 34,
+      "boat": 6,
+      "hideUnfair": 0,
+      "hideUnsafe": 0,
+      "podiumUnfair": 0,
+      "podiumUnsafe": 0
+    },
+    {
+      "id": "south-aegean-kimolos",
+      "beaches": 17,
+      "boat": 0,
+      "hideUnfair": 0,
+      "hideUnsafe": 0,
+      "podiumUnfair": 0,
+      "podiumUnsafe": 0
+    },
+    {
+      "id": "south-aegean-kos",
+      "beaches": 38,
+      "boat": 0,
+      "hideUnfair": 0,
+      "hideUnsafe": 0,
+      "podiumUnfair": 0,
+      "podiumUnsafe": 0
+    },
+    {
+      "id": "south-aegean-koufonisia",
+      "beaches": 19,
+      "boat": 15,
+      "hideUnfair": 0,
+      "hideUnsafe": 0,
+      "podiumUnfair": 0,
+      "podiumUnsafe": 0
+    },
+    {
+      "id": "south-aegean-kythnos",
+      "beaches": 40,
+      "boat": 9,
+      "hideUnfair": 0,
+      "hideUnsafe": 0,
+      "podiumUnfair": 0,
+      "podiumUnsafe": 0
+    },
+    {
+      "id": "south-aegean-leros",
+      "beaches": 10,
+      "boat": 0,
+      "hideUnfair": 0,
+      "hideUnsafe": 0,
+      "podiumUnfair": 0,
+      "podiumUnsafe": 0
+    },
+    {
+      "id": "south-aegean-lipsi",
+      "beaches": 18,
+      "boat": 3,
+      "hideUnfair": 0,
+      "hideUnsafe": 0,
+      "podiumUnfair": 0,
+      "podiumUnsafe": 0
+    },
+    {
+      "id": "south-aegean-marathi",
+      "beaches": 2,
+      "boat": 6,
+      "hideUnfair": 0,
+      "hideUnsafe": 0,
+      "podiumUnfair": 0,
+      "podiumUnsafe": 0
+    },
+    {
+      "id": "south-aegean-milos",
+      "beaches": 42,
+      "boat": 6,
+      "hideUnfair": 0,
+      "hideUnsafe": 0,
+      "podiumUnfair": 0,
+      "podiumUnsafe": 0
+    },
+    {
+      "id": "south-aegean-mykonos",
+      "beaches": 39,
+      "boat": 0,
+      "hideUnfair": 0,
+      "hideUnsafe": 0,
+      "podiumUnfair": 0,
+      "podiumUnsafe": 3
+    },
+    {
+      "id": "south-aegean-naxos",
+      "beaches": 39,
+      "boat": 3,
+      "hideUnfair": 0,
+      "hideUnsafe": 0,
+      "podiumUnfair": 0,
+      "podiumUnsafe": 0
+    },
+    {
+      "id": "south-aegean-nisyros",
+      "beaches": 2,
+      "boat": 0,
+      "hideUnfair": 0,
+      "hideUnsafe": 0,
+      "podiumUnfair": 0,
+      "podiumUnsafe": 0
+    },
+    {
+      "id": "south-aegean-paros",
+      "beaches": 37,
+      "boat": 0,
+      "hideUnfair": 0,
+      "hideUnsafe": 0,
+      "podiumUnfair": 0,
+      "podiumUnsafe": 0
+    },
+    {
+      "id": "south-aegean-patmos",
+      "beaches": 16,
+      "boat": 0,
+      "hideUnfair": 0,
+      "hideUnsafe": 0,
+      "podiumUnfair": 0,
+      "podiumUnsafe": 0
+    },
+    {
+      "id": "south-aegean-polyaigos",
+      "beaches": 4,
+      "boat": 12,
+      "hideUnfair": 0,
+      "hideUnsafe": 0,
+      "podiumUnfair": 0,
+      "podiumUnsafe": 0
+    },
+    {
+      "id": "south-aegean-pserimos",
+      "beaches": 3,
+      "boat": 0,
+      "hideUnfair": 0,
+      "hideUnsafe": 0,
+      "podiumUnfair": 0,
+      "podiumUnsafe": 0
+    },
+    {
+      "id": "south-aegean-rhodes",
+      "beaches": 62,
+      "boat": 3,
+      "hideUnfair": 0,
+      "hideUnsafe": 0,
+      "podiumUnfair": 0,
+      "podiumUnsafe": 22
+    },
+    {
+      "id": "south-aegean-santorini",
+      "beaches": 13,
+      "boat": 3,
+      "hideUnfair": 0,
+      "hideUnsafe": 0,
+      "podiumUnfair": 0,
+      "podiumUnsafe": 0
+    },
+    {
+      "id": "south-aegean-schinoussa",
+      "beaches": 8,
+      "boat": 0,
+      "hideUnfair": 0,
+      "hideUnsafe": 0,
+      "podiumUnfair": 0,
+      "podiumUnsafe": 0
+    },
+    {
+      "id": "south-aegean-serifos",
+      "beaches": 25,
+      "boat": 3,
+      "hideUnfair": 0,
+      "hideUnsafe": 0,
+      "podiumUnfair": 0,
+      "podiumUnsafe": 0
+    },
+    {
+      "id": "south-aegean-sifnos",
+      "beaches": 20,
+      "boat": 6,
+      "hideUnfair": 0,
+      "hideUnsafe": 0,
+      "podiumUnfair": 0,
+      "podiumUnsafe": 0
+    },
+    {
+      "id": "south-aegean-sikinos",
+      "beaches": 5,
+      "boat": 0,
+      "hideUnfair": 0,
+      "hideUnsafe": 0,
+      "podiumUnfair": 0,
+      "podiumUnsafe": 0
+    },
+    {
+      "id": "south-aegean-symi",
+      "beaches": 9,
+      "boat": 6,
+      "hideUnfair": 0,
+      "hideUnsafe": 0,
+      "podiumUnfair": 0,
+      "podiumUnsafe": 0
+    },
+    {
+      "id": "south-aegean-syros",
+      "beaches": 24,
+      "boat": 0,
+      "hideUnfair": 0,
+      "hideUnsafe": 0,
+      "podiumUnfair": 0,
+      "podiumUnsafe": 0
+    },
+    {
+      "id": "south-aegean-telendos",
+      "beaches": 5,
+      "boat": 0,
+      "hideUnfair": 0,
+      "hideUnsafe": 0,
+      "podiumUnfair": 0,
+      "podiumUnsafe": 0
+    },
+    {
+      "id": "south-aegean-tilos",
+      "beaches": 12,
+      "boat": 0,
+      "hideUnfair": 0,
+      "hideUnsafe": 0,
+      "podiumUnfair": 0,
+      "podiumUnsafe": 0
+    },
+    {
+      "id": "south-aegean-tinos",
+      "beaches": 40,
+      "boat": 0,
+      "hideUnfair": 0,
+      "hideUnsafe": 0,
+      "podiumUnfair": 0,
+      "podiumUnsafe": 26
+    },
+    {
+      "id": "thessaly-alonissos",
+      "beaches": 39,
+      "boat": 0,
+      "hideUnfair": 0,
+      "hideUnsafe": 0,
+      "podiumUnfair": 0,
+      "podiumUnsafe": 0
+    },
+    {
+      "id": "thessaly-larissa-coast-agia---kissavos",
+      "beaches": 9,
+      "boat": 0,
+      "hideUnfair": 0,
+      "hideUnsafe": 0,
+      "podiumUnfair": 0,
+      "podiumUnsafe": 0
+    },
+    {
+      "id": "thessaly-magnesia-mainland---pelion",
+      "beaches": 70,
+      "boat": 0,
+      "hideUnfair": 0,
+      "hideUnsafe": 0,
+      "podiumUnfair": 0,
+      "podiumUnsafe": 0
+    },
+    {
+      "id": "thessaly-skiathos",
+      "beaches": 33,
+      "boat": 12,
+      "hideUnfair": 0,
+      "hideUnsafe": 0,
+      "podiumUnfair": 0,
+      "podiumUnsafe": 0
+    },
+    {
+      "id": "thessaly-skopelos",
+      "beaches": 22,
+      "boat": 3,
+      "hideUnfair": 0,
+      "hideUnsafe": 0,
+      "podiumUnfair": 0,
+      "podiumUnsafe": 0
+    },
+    {
+      "id": "west-greece-achaia-mainland",
+      "beaches": 19,
+      "boat": 0,
+      "hideUnfair": 0,
+      "hideUnsafe": 0,
+      "podiumUnfair": 0,
+      "podiumUnsafe": 0
+    },
+    {
+      "id": "west-greece-aetolia-acarnania-mainland",
+      "beaches": 50,
+      "boat": 0,
+      "hideUnfair": 0,
+      "hideUnsafe": 0,
+      "podiumUnfair": 0,
+      "podiumUnsafe": 0
+    },
+    {
+      "id": "west-greece-ileia-mainland",
+      "beaches": 16,
+      "boat": 0,
+      "hideUnfair": 0,
+      "hideUnsafe": 0,
+      "podiumUnfair": 0,
+      "podiumUnsafe": 0
+    }
+  ],
+  "boatUnsafeExamples": [
+    {
+      "region": "south-aegean-karpathos",
+      "beach": "Αλιμούντα",
+      "when": "2026-08-03T11:00",
+      "regionBft": 4,
+      "localBft": 5
+    },
+    {
+      "region": "south-aegean-karpathos",
+      "beach": "Παλάτια",
+      "when": "2026-08-03T11:00",
+      "regionBft": 4,
+      "localBft": 5
+    }
+  ]
+}
