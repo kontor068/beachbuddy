@@ -1083,63 +1083,63 @@ const getGeneralConditionsHelper = (
   const wind = windLabel.toLocaleLowerCase();
   const copy = getLocalizedCopy(language, {
     en: {
-      mild: () => `${sentenceDay} has ${beaufort} Beaufort ${wind} wind. Most beaches look suitable for swimming.`,
-      caution: () => `${sentenceDay} has ${beaufort} Beaufort ${wind} wind. Wind starts to matter, so ${favoredCoasts} are generally favored.`,
+      mild: () => `${sentenceDay} has a ${wind} wind. Most beaches look suitable for swimming.`,
+      caution: () => `${sentenceDay} has a ${wind} wind. Wind starts to matter, so ${favoredCoasts} are generally favored.`,
       noIdeal: () => {
-        if (beaufort <= 3) return `${sentenceDay} has ${beaufort} Beaufort ${wind} wind. Most beaches look suitable for swimming.`;
+        if (beaufort <= 3) return `${sentenceDay} has a ${wind} wind. Most beaches look suitable for swimming.`;
         return beaufort <= 5
-          ? `${sentenceDay} has ${beaufort} Beaufort ${wind} wind. Wind affects the beach choice, so ${favoredCoasts} are generally favored.`
-          : `${sentenceDay} has ${beaufort} Beaufort ${wind} wind. There is no clearly calm swimming pick. If you go, ${favoredCoasts} are generally favored.`;
+          ? `${sentenceDay} has a ${wind} wind. Wind affects the beach choice, so ${favoredCoasts} are generally favored.`
+          : `${sentenceDay} has a ${wind} wind. There is no clearly calm swimming pick. If you go, ${favoredCoasts} are generally favored.`;
       },
-      default: () => `${sentenceDay} has ${beaufort} Beaufort ${wind} wind. In these conditions, ${favoredCoasts} are generally favored.`,
+      default: () => `${sentenceDay} has a ${wind} wind. In these conditions, ${favoredCoasts} are generally favored.`,
     },
     gr: {
-      mild: () => `${sentenceDay} έχει ${beaufort} μποφόρ με ${windLabel} άνεμο. Οι περισσότερες παραλίες φαίνονται κατάλληλες για μπάνιο.`,
-      caution: () => `${sentenceDay} έχει ${beaufort} μποφόρ με ${windLabel} άνεμο. Ο άνεμος αρχίζει να παίζει ρόλο, οπότε γενικά προτιμώνται ${favoredCoasts}.`,
+      mild: () => `${sentenceDay} έχει ${windLabel} άνεμο. Οι περισσότερες παραλίες φαίνονται κατάλληλες για μπάνιο.`,
+      caution: () => `${sentenceDay} έχει ${windLabel} άνεμο. Ο άνεμος αρχίζει να παίζει ρόλο, οπότε γενικά προτιμώνται ${favoredCoasts}.`,
       noIdeal: () => {
         // The `if` guard here was lost in 3deb24f5 (2026-06-09), leaving a bare
         // return that made every branch below dead code — so the Greek copy
         // claimed "most beaches look suitable for swimming" at ANY wind, 7 Bft
         // included, while English tiered correctly. Never drop the condition.
-        if (beaufort <= 3) return `${sentenceDay} έχει ${beaufort} μποφόρ με ${windLabel} άνεμο. Οι περισσότερες παραλίες φαίνονται κατάλληλες για μπάνιο.`;
+        if (beaufort <= 3) return `${sentenceDay} έχει ${windLabel} άνεμο. Οι περισσότερες παραλίες φαίνονται κατάλληλες για μπάνιο.`;
         return beaufort <= 5
-        ? `${sentenceDay} έχει ${beaufort} μποφόρ με ${windLabel} άνεμο. Ο άνεμος επηρεάζει την επιλογή, οπότε γενικά προτιμώνται ${favoredCoasts}.`
-        : `${sentenceDay} έχει ${beaufort} μποφόρ με ${windLabel} άνεμο. Δεν υπάρχει καθαρή επιλογή για ήρεμο μπάνιο. Αν πας, γενικά προτιμώνται ${favoredCoasts}.`;
+        ? `${sentenceDay} έχει ${windLabel} άνεμο. Ο άνεμος επηρεάζει την επιλογή, οπότε γενικά προτιμώνται ${favoredCoasts}.`
+        : `${sentenceDay} έχει ${windLabel} άνεμο. Δεν υπάρχει καθαρή επιλογή για ήρεμο μπάνιο. Αν πας, γενικά προτιμώνται ${favoredCoasts}.`;
       },
-      default: () => `${sentenceDay} έχει ${beaufort} μποφόρ με ${windLabel} άνεμο. Σε αυτές τις συνθήκες γενικά προτιμώνται ${favoredCoasts}.`,
+      default: () => `${sentenceDay} έχει ${windLabel} άνεμο. Σε αυτές τις συνθήκες γενικά προτιμώνται ${favoredCoasts}.`,
     },
     fr: {
-      mild: () => `${sentenceDay} : ${beaufort} Beaufort avec vent ${wind}. La plupart des plages semblent adaptées à la baignade.`,
-      caution: () => `${sentenceDay} : ${beaufort} Beaufort avec vent ${wind}. Le vent compte davantage, donc ${favoredCoasts} sont favorisées.`,
+      mild: () => `${sentenceDay} : vent ${wind}. La plupart des plages semblent adaptées à la baignade.`,
+      caution: () => `${sentenceDay} : vent ${wind}. Le vent compte davantage, donc ${favoredCoasts} sont favorisées.`,
       noIdeal: () => {
-        if (beaufort <= 3) return `${sentenceDay} : ${beaufort} Beaufort avec vent ${wind}. La plupart des plages semblent adaptées à la baignade.`;
+        if (beaufort <= 3) return `${sentenceDay} : vent ${wind}. La plupart des plages semblent adaptées à la baignade.`;
         return beaufort <= 5
-          ? `${sentenceDay} : ${beaufort} Beaufort avec vent ${wind}. Le vent influence le choix, donc ${favoredCoasts} sont favorisées.`
-          : `${sentenceDay} : ${beaufort} Beaufort avec vent ${wind}. Aucun choix clairement calme. Si vous y allez, privilégiez ${favoredCoasts}.`;
+          ? `${sentenceDay} : vent ${wind}. Le vent influence le choix, donc ${favoredCoasts} sont favorisées.`
+          : `${sentenceDay} : vent ${wind}. Aucun choix clairement calme. Si vous y allez, privilégiez ${favoredCoasts}.`;
       },
-      default: () => `${sentenceDay} : ${beaufort} Beaufort avec vent ${wind}. Dans ces conditions, ${favoredCoasts} sont favorisées.`,
+      default: () => `${sentenceDay} : vent ${wind}. Dans ces conditions, ${favoredCoasts} sont favorisées.`,
     },
     de: {
-      mild: () => `${sentenceDay}: ${beaufort} Bft mit ${wind} Wind. Die meisten Strände wirken zum Schwimmen geeignet.`,
-      caution: () => `${sentenceDay}: ${beaufort} Bft mit ${wind} Wind. Wind spielt stärker mit, daher sind ${favoredCoasts} meist besser.`,
+      mild: () => `${sentenceDay}: ${wind} Wind. Die meisten Strände wirken zum Schwimmen geeignet.`,
+      caution: () => `${sentenceDay}: ${wind} Wind. Wind spielt stärker mit, daher sind ${favoredCoasts} meist besser.`,
       noIdeal: () => {
-        if (beaufort <= 3) return `${sentenceDay}: ${beaufort} Bft mit ${wind} Wind. Die meisten Strände wirken zum Schwimmen geeignet.`;
+        if (beaufort <= 3) return `${sentenceDay}: ${wind} Wind. Die meisten Strände wirken zum Schwimmen geeignet.`;
         return beaufort <= 5
-          ? `${sentenceDay}: ${beaufort} Bft mit ${wind} Wind. Der Wind beeinflusst die Wahl, daher sind ${favoredCoasts} meist besser.`
-          : `${sentenceDay}: ${beaufort} Bft mit ${wind} Wind. Es gibt keine klar ruhige Badeoption. Wenn du gehst, sind ${favoredCoasts} meist besser.`;
+          ? `${sentenceDay}: ${wind} Wind. Der Wind beeinflusst die Wahl, daher sind ${favoredCoasts} meist besser.`
+          : `${sentenceDay}: ${wind} Wind. Es gibt keine klar ruhige Badeoption. Wenn du gehst, sind ${favoredCoasts} meist besser.`;
       },
-      default: () => `${sentenceDay}: ${beaufort} Bft mit ${wind} Wind. Unter diesen Bedingungen sind ${favoredCoasts} meist besser.`,
+      default: () => `${sentenceDay}: ${wind} Wind. Unter diesen Bedingungen sind ${favoredCoasts} meist besser.`,
     },
     it: {
-      mild: () => `${sentenceDay}: ${beaufort} Beaufort con vento ${wind}. La maggior parte delle spiagge sembra adatta al bagno.`,
-      caution: () => `${sentenceDay}: ${beaufort} Beaufort con vento ${wind}. Il vento conta di più, quindi ${favoredCoasts} sono favorite.`,
+      mild: () => `${sentenceDay}: vento ${wind}. La maggior parte delle spiagge sembra adatta al bagno.`,
+      caution: () => `${sentenceDay}: vento ${wind}. Il vento conta di più, quindi ${favoredCoasts} sono favorite.`,
       noIdeal: () => {
-        if (beaufort <= 3) return `${sentenceDay}: ${beaufort} Beaufort con vento ${wind}. La maggior parte delle spiagge sembra adatta al bagno.`;
+        if (beaufort <= 3) return `${sentenceDay}: vento ${wind}. La maggior parte delle spiagge sembra adatta al bagno.`;
         return beaufort <= 5
-          ? `${sentenceDay}: ${beaufort} Beaufort con vento ${wind}. Il vento influenza la scelta, quindi ${favoredCoasts} sono favorite.`
-          : `${sentenceDay}: ${beaufort} Beaufort con vento ${wind}. Non c'è una scelta chiaramente calma. Se vai, preferisci ${favoredCoasts}.`;
+          ? `${sentenceDay}: vento ${wind}. Il vento influenza la scelta, quindi ${favoredCoasts} sono favorite.`
+          : `${sentenceDay}: vento ${wind}. Non c'è una scelta chiaramente calma. Se vai, preferisci ${favoredCoasts}.`;
       },
-      default: () => `${sentenceDay}: ${beaufort} Beaufort con vento ${wind}. In queste condizioni, ${favoredCoasts} sono favorite.`,
+      default: () => `${sentenceDay}: vento ${wind}. In queste condizioni, ${favoredCoasts} sono favorite.`,
     },
   });
 
@@ -1458,12 +1458,18 @@ export const App: React.FC = () => {
       it: 'Oggi quasi tutte le spiagge sono ottime per il bagno',
       fr: 'Aujourd’hui presque toutes les plages sont parfaites pour se baigner',
     },
+    // The Beaufort figure left these two badges on 02/08/2026; the parameter stays only so the
+    // call sites do not have to change. It was the region centre's wind printed as a fact about
+    // every beach on the page — the same single number the map widget stopped showing. The CLAIM
+    // is unchanged: these render only on a light-wind day, and that tier is still decided from
+    // the region figure, which is a defensible answer to "is it calm around here". Printing the
+    // number next to «όλες οι παραλίες» was not.
     lightWindDayTitle: {
-      en: (beaufort: number) => `${beaufort} Beaufort. All beaches are suitable!`,
-      gr: (beaufort: number) => `${beaufort} μποφόρ. Όλες οι παραλίες είναι κατάλληλες!`,
-      de: (beaufort: number) => `${beaufort} Bft heute. Alle Strände sind geeignet.`,
-      it: (beaufort: number) => `${beaufort} Bft oggi. Tutte le spiagge sono adatte.`,
-      fr: (beaufort: number) => `${beaufort} Bft aujourd’hui. Toutes les plages conviennent.`,
+      en: (_beaufort: number) => 'Light wind. All beaches are suitable!',
+      gr: (_beaufort: number) => 'Ήπιος άνεμος. Όλες οι παραλίες είναι κατάλληλες!',
+      de: (_beaufort: number) => 'Leichter Wind. Alle Strände sind geeignet.',
+      it: (_beaufort: number) => 'Vento leggero. Tutte le spiagge sono adatte.',
+      fr: (_beaufort: number) => 'Vent faible. Toutes les plages conviennent.',
     },
     calmAllAroundDescription: {
       en: 'Today the weather is mild, so all beaches look suitable for swimming.',
@@ -1480,11 +1486,11 @@ export const App: React.FC = () => {
       fr: 'Choisis celle que tu préfères selon le sable, l’ombre, l’accès ou l’ambiance.',
     },
     calmWindBadge: {
-      en: (beaufort: number) => `${beaufort} Beaufort`,
-      gr: (beaufort: number) => `${beaufort} μποφόρ`,
-      de: (beaufort: number) => `${beaufort} Bft Wind`,
-      it: (beaufort: number) => `${beaufort} Bft vento`,
-      fr: (beaufort: number) => `${beaufort} Bft vent`,
+      en: (_beaufort: number) => 'Light wind',
+      gr: (_beaufort: number) => 'Ήπιος άνεμος',
+      de: (_beaufort: number) => 'Leichter Wind',
+      it: (_beaufort: number) => 'Vento leggero',
+      fr: (_beaufort: number) => 'Vent faible',
     },
     calmSeaBadge: {
       en: (waveHeight?: number) => waveHeight === undefined ? 'Calm sea' : `${waveHeight.toFixed(1)} m waves`,

@@ -1307,6 +1307,8 @@ interface WindDirectionGraphicProps {
   windDirectionDeg?: number;
   windSpeedKmh?: number;
   windBeaufort?: number;
+  /** Beaufort actually measured on the shores in view — replaces the single region figure. */
+  shoreBeaufortRange?: { min: number; max: number };
   language: LanguageCode;
   compact?: boolean;
   preview?: boolean;
@@ -1492,6 +1494,7 @@ const WindDirectionGraphic: React.FC<WindDirectionGraphicProps> = ({
   windDirectionDeg,
   windSpeedKmh,
   windBeaufort,
+  shoreBeaufortRange,
   language,
   compact = false,
   preview = false,
@@ -1510,7 +1513,9 @@ const WindDirectionGraphic: React.FC<WindDirectionGraphicProps> = ({
   const fromLabel = directionShortLabels[language]?.[fromDirection] || fromDirection;
   const toLabel = directionShortLabels[language]?.[toDirection] || toDirection;
   const compass = compassLetters[language] || compassLetters.en;
-  const tone = getWindTone(windBeaufort);
+  // The ring follows the strongest shore on screen, not the region point — otherwise a calm
+  // ring would frame a range that ends in 6.
+  const tone = getWindTone(shoreBeaufortRange?.max ?? windBeaufort);
   const positionClass = compact || preview
     ? 'left-3 top-3'
     : 'left-3 top-[3.75rem] sm:left-4 sm:top-4';
@@ -1520,37 +1525,64 @@ const WindDirectionGraphic: React.FC<WindDirectionGraphicProps> = ({
       fromTo: `${fromLabel} to ${toLabel}`,
       from: `From ${fromLabel}`,
       beaufortUnit: 'Bft',
+      onShores: 'on the shores',
     },
     gr: {
       title: 'Φορά ανέμου',
       fromTo: `Από ${fromLabel} προς ${toLabel}`,
       from: `Από ${fromLabel}`,
       beaufortUnit: 'μποφ.',
+      onShores: 'στις ακτές',
     },
     fr: {
       title: 'Flux du vent',
       fromTo: `${fromLabel} vers ${toLabel}`,
       from: `Depuis ${fromLabel}`,
       beaufortUnit: 'Bft',
+      onShores: 'sur les côtes',
     },
     de: {
       title: 'Windverlauf',
       fromTo: `${fromLabel} nach ${toLabel}`,
       from: `Von ${fromLabel}`,
       beaufortUnit: 'Bft',
+      onShores: 'an den Küsten',
     },
     it: {
       title: 'Flusso del vento',
       fromTo: `Da ${fromLabel} verso ${toLabel}`,
       from: `Da ${fromLabel}`,
       beaufortUnit: 'Bft',
+      onShores: 'sulle coste',
     },
   });
   const title = copy.title;
   const fromTo = copy.fromTo;
-  const speed = windSpeedKmh !== undefined
-    ? `${windBeaufort ?? '-'} ${copy.beaufortUnit} · ${Math.round(windSpeedKmh)} km/h`
-    : copy.from;
+  /**
+   * THE SINGLE REGION NUMBER LEAVES THE SCREEN (02/08/2026).
+   *
+   * This line used to read «2 μποφ. · 10 km/h» — one wind, measured at the region's geometric
+   * centre, printed in the largest type on the map while every pin beside it had been coloured
+   * from its own shore since 01/08. Reported twice in one day: Χανιά showed «2 μποφ.» with red
+   * pins along the north coast, and Γιαλισκάρι's pin was yellow at 08:00 over 4 Bft while the
+   * widget said 2. Both times the pins were right and this number was the confusion.
+   *
+   * It is replaced, not deleted. The DIRECTION is a genuinely regional fact — it is what explains
+   * which side of an island is sheltered — so it stays. The SPEED becomes the range actually
+   * measured on the shores in view: «2–5 μποφ. στις ακτές». One number for a coastline was never
+   * true; the range is, and it is the sentence that makes a mixed map read as correct rather than
+   * broken. With no per-beach readings (first paint, no geometry, a failed fetch) it falls back
+   * to exactly what it printed before.
+   */
+  const shoreLabel = shoreBeaufortRange
+    ? (shoreBeaufortRange.min === shoreBeaufortRange.max
+      ? `${shoreBeaufortRange.min} ${copy.beaufortUnit} ${copy.onShores}`
+      : `${shoreBeaufortRange.min}–${shoreBeaufortRange.max} ${copy.beaufortUnit} ${copy.onShores}`)
+    : undefined;
+  const speed = shoreLabel
+    ?? (windSpeedKmh !== undefined
+      ? `${windBeaufort ?? '-'} ${copy.beaufortUnit} · ${Math.round(windSpeedKmh)} km/h`
+      : copy.from);
 
   return (
     <div className={`pointer-events-none absolute z-[1000] ${positionClass}`}>
@@ -1825,6 +1857,30 @@ const BeachMap: React.FC<BeachMapProps> = ({
     const local = beachLocalWinds?.[item.beach.id];
     return typeof local?.speedKmh === 'number' ? getBeaufortLevel(local.speedKmh) : windBeaufort;
   };
+
+  /**
+   * The spread of wind actually blowing on the shores currently drawn — what the compass widget
+   * prints instead of the region's single figure.
+   *
+   * Deliberately over the beaches ON SCREEN, so the sentence describes what the reader is looking
+   * at: filter to one island and the range narrows with it. Needs at least three readings before
+   * it will claim anything about "the shores"; below that the widget keeps the old wording, which
+   * is honest about being one point.
+   */
+  const shoreBeaufortRange = React.useMemo(() => {
+    let min = Number.POSITIVE_INFINITY;
+    let max = Number.NEGATIVE_INFINITY;
+    let counted = 0;
+    beaches.forEach(item => {
+      const local = beachLocalWinds?.[item.beach.id];
+      if (typeof local?.speedKmh !== 'number' || !Number.isFinite(local.speedKmh)) return;
+      const bft = getBeaufortLevel(local.speedKmh);
+      if (bft < min) min = bft;
+      if (bft > max) max = bft;
+      counted += 1;
+    });
+    return counted >= 3 ? { min, max } : undefined;
+  }, [beaches, beachLocalWinds]);
 
   // ONE tally, read by both the slider thumb and the legend — see tallyMapTones above. The sea
   // state is the one loaded for the selected hour; while the user is mid-drag the wind is the
@@ -2945,6 +3001,7 @@ const BeachMap: React.FC<BeachMapProps> = ({
           windDirectionDeg={mapWindDirectionDeg}
           windSpeedKmh={windSpeedKmh}
           windBeaufort={windBeaufort}
+          shoreBeaufortRange={shoreBeaufortRange}
           language={language}
           compact={compact}
           preview={preview}
@@ -3023,7 +3080,12 @@ const BeachMap: React.FC<BeachMapProps> = ({
             />
           </div>
           <span className="shrink-0 text-[11px] font-extrabold tabular-nums text-[#007a83]">
-            {formatSliderHour(activeHourItem.dt)} · {getBeaufortLevel(activeHourItem.wind.speed * 3.6)} {beaufortUnitLabel}
+            {/* The hour, and only the hour. This used to append the region's Beaufort for that
+                hour — the same single figure the widget above stopped printing on 02/08/2026, and
+                the same contradiction with the pins. The thumb is already coloured from the pins'
+                own tally (sliderTone), so the severity is on screen without a number that belongs
+                to nowhere in particular. */}
+            {formatSliderHour(activeHourItem.dt)}
           </span>
           <p className="hidden basis-full text-[11px] font-bold leading-snug text-slate-700 sm:block dark:text-slate-600">
             {hourSliderHelper[language]}

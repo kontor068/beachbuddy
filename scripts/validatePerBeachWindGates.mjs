@@ -211,6 +211,62 @@ if (!normalized(appSource).includes('const gatingBeaufort = Math.max(selectedBea
 });
 
 // ---------------------------------------------------------------------------
+// THE SINGLE REGION NUMBER IS OFF THE SCREEN (02/08/2026).
+//
+// The last item. Every layer underneath had moved to per-beach readings, and the biggest number
+// on the map was still the wind at the region's geometric centre — so a correct map read as a
+// broken one twice in one day: Χανιά showing «2 μποφ.» over red northern pins, and Γιαλισκάρι's
+// pin yellow at 08:00 over 4 Bft while the widget said 2. The pins were right both times.
+//
+// What replaced it is a range measured on the shores in view, not a deletion: the wind DIRECTION
+// stays, because that is a genuinely regional fact and it is what explains which side of an
+// island is sheltered.
+// ---------------------------------------------------------------------------
+
+const mapSource = read('components/BeachMap.tsx');
+
+if (!/const shoreBeaufortRange = React\.useMemo/.test(mapSource)) {
+  fail(
+    'components/BeachMap.tsx: the shore range is gone',
+    'The compass widget falls back to the region centre\'s single Beaufort, which is the figure that made a correct map look broken.'
+  );
+}
+if (!/\$\{shoreBeaufortRange\.min\}–\$\{shoreBeaufortRange\.max\} \$\{copy\.beaufortUnit\} \$\{copy\.onShores\}/.test(mapSource)) {
+  fail(
+    'components/BeachMap.tsx: the widget no longer prints the range',
+    'One number for a whole coastline was never true. The range is, and it is what makes a mixed map read as correct.'
+  );
+}
+// Presence is not wiring. The two rules above are satisfied by a range that is computed, printed
+// into a string, and then never reached — which is exactly what a one-word sabotage produced and
+// this gate waved through on the first attempt. So assert the ORDER too: the shore range is what
+// the widget shows, and the region figure is only what it falls back to.
+if (!/const speed = shoreLabel\s*\n\s*\?\?\s*\(windSpeedKmh !== undefined/.test(mapSource)) {
+  fail(
+    'components/BeachMap.tsx: the shore range is computed but not shown',
+    'The widget must print the range and fall back to the region figure only when there are too few readings — not the other way round, and not with the range stranded in a dead branch.'
+  );
+}
+if (/formatSliderHour\(activeHourItem\.dt\)\}\s*·\s*\{getBeaufortLevel/.test(mapSource)) {
+  fail(
+    'components/BeachMap.tsx: the hour slider prints the region Beaufort again',
+    'The thumb is already coloured from the pins\' own tally, so the severity is on screen without a number that belongs to nowhere in particular.'
+  );
+}
+if (/\$\{sentenceDay\}[^`]*\$\{beaufort\}/.test(appSource)) {
+  fail(
+    'App.tsx: the general conditions sentence states the region Beaufort again',
+    'It sits above the recommendations and reads as a fact about every beach below it. The tier decision may still use the figure; the sentence may not print it.'
+  );
+}
+if (/(lightWindDayTitle|calmWindBadge)[\s\S]{0,400}?\$\{beaufort\}/.test(appSource)) {
+  fail(
+    'App.tsx: a calm-day badge states the region Beaufort again',
+    'These render beside «όλες οι παραλίες είναι κατάλληλες» — the one place a region-wide number is least entitled to speak for every beach.'
+  );
+}
+
+// ---------------------------------------------------------------------------
 // BEHAVIOUR — drive the real ranking functions.
 // ---------------------------------------------------------------------------
 
@@ -360,4 +416,4 @@ if (failures.length > 0) {
   process.exit(1);
 }
 
-console.log(`PASSED: every wind gate asks the beach's own shore — 5 wiring rules, 9 behaviour checks, ${thresholds}.`);
+console.log(`PASSED: every wind gate asks the beach's own shore — 10 wiring rules, 9 behaviour checks, ${thresholds}.`);
