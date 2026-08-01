@@ -50,6 +50,7 @@ const { buildWeatherNowContent } = require(path.join(root, 'utils/weatherNowCopy
 const { calculateSeaConditionScore } = require(path.join(root, 'utils/seaConditions.ts'));
 const { getSeaSeverity, getSeaStateSeverity } = require(path.join(root, 'utils/seaVerdict.ts'));
 const { seaStateSeverityM } = require(path.join(root, 'utils/waveCharacter.ts'));
+const { resolveConditionTone } = require(path.join(root, 'utils/suitabilityTone.ts'));
 const { WindDirection } = require(path.join(root, 'types.ts'));
 
 const BEAUFORTS = [0, 1, 2, 3, 4, 5, 6, 7];
@@ -128,6 +129,26 @@ const RULES = [
         : null;
     },
   },
+  {
+    id: 'red-pin-under-a-word-that-is-not-skip',
+    // THE SIXTH LADDER, and the one that was missing entirely: the DOT versus the WORD.
+    //
+    // Rules 1-5 all compare text with text. Nothing compared the verdict with the colour the map
+    // actually paints, so the two could drift a whole tier apart in silence — and they had.
+    // Measured 01/08/2026 over a 60-combination sample: 26 printed «Μέτρια σήμερα» under a RED
+    // pin. Part of that was pre-existing (an exposed shore at 5-6 Bft only skipped when its score
+    // also fell below 25), part was introduced the same day when a rough sea was finally allowed
+    // to redden a pin.
+    //
+    // Direction matters: a red pin MUST carry 'skip'. The reverse is deliberately not asserted —
+    // a beach may read 'skip' for reasons the colour ladder does not model (an official warning,
+    // a swim advisory), and refusing to recommend something we painted amber is the safe way to
+    // be wrong.
+    check: ({ pinTone, tier }) =>
+      pinTone === 'red' && tier !== 'skip'
+        ? `map pin is RED but the verdict is "${tier}" — the word sits a tier above its own dot`
+        : null,
+  },
 ];
 
 const failures = [];
@@ -182,7 +203,14 @@ for (const beaufort of BEAUFORTS) {
             });
 
             const seaStateSeverity = getSeaStateSeverity(seaStateSeverityM(waveHeightM, wavePeriodS));
-            const row = { beaufort, waveHeightM, wavePeriodS, exposureLevel, canClaimWindProtection, score, tier, tone, severity, seaStateSeverity };
+            // The pin's own colour, from the shared ladder — so rule 6 can compare the dot on the
+            // map with the word printed beside it instead of trusting they were kept in step.
+            const pinTone = resolveConditionTone({
+              exposureLevel,
+              beaufort,
+              seaStateM: seaStateSeverityM(waveHeightM, wavePeriodS),
+            });
+            const row = { beaufort, waveHeightM, wavePeriodS, exposureLevel, canClaimWindProtection, score, tier, tone, severity, seaStateSeverity, pinTone };
             for (const rule of RULES) {
               const reason = rule.check(row);
               if (reason) failures.push({ rule: rule.id, reason, row });

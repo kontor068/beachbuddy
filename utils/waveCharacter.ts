@@ -101,7 +101,7 @@ export const seaStateSeverityM = (
 export const isShortPeriodSea = (periodS: number | undefined): boolean =>
   typeof periodS === 'number' && Number.isFinite(periodS) && periodS > 0 && periodS < 4;
 
-export type SeaToneCeiling = 'yellow' | 'orange' | null;
+export type SeaToneCeiling = 'yellow' | 'orange' | 'red' | null;
 
 /**
  * The calmest tone a running sea permits, or null when the sea has nothing to say.
@@ -111,10 +111,26 @@ export type SeaToneCeiling = 'yellow' | 'orange' | null;
  * if there is exactly one place that turns a sea state into a colour. It is a CEILING: callers
  * apply it only when their own wind-derived tone is calmer, so it can never make a pin look better
  * than the wind already said, and never pull back an escalation the wind already made.
+ *
+ * ROUGH SEA IS RED, SINCE 01/08/2026. It used to stop at 'orange', which meant the sea could
+ * NEVER make a beach red — not at 2 m, not at 5 m. Red was, in practice, a wind-only colour.
+ * That produced the contradiction the user finally pinned down: Βραυρώνα 1,9 m ORANGE beside
+ * Πλαζ Ραφήνας 1,3 m RED, i.e. the bigger sea reading as the better beach.
+ *
+ * The threshold is not a new number. `swimmingComfortFromScore`
+ * (services/recommendationService.ts) has always returned `avoid_swimming` above
+ * SEA_STATE_ROUGH_M regardless of wind — so the app was simultaneously telling people "better
+ * not to swim" and painting the beach amber, which reads as "fine, go". Miltos settled what the
+ * colour is FOR on 01/08: it answers «πού να πάω για μπάνιο σήμερα». A beach we refuse to let
+ * people swim at cannot be anything but red.
+ *
+ * Measured before the change, over the national geometry with the live 01/08 seas at 5 Bft:
+ * 421 of 2.553 beaches (16,5%) move to red, across 37 of 110 regions — on a meltemi day, which
+ * is close to the worst case. The other 83,5% are unaffected.
  */
 export const seaStateToneCeiling = (seaStateM: number | undefined): SeaToneCeiling => {
   if (typeof seaStateM !== 'number' || !Number.isFinite(seaStateM)) return null;
-  if (seaStateM >= SEA_STATE_ROUGH_M) return 'orange';
+  if (seaStateM >= SEA_STATE_ROUGH_M) return 'red';
   if (seaStateM >= SEA_STATE_AMBER_M) return 'yellow';
   return null;
 };

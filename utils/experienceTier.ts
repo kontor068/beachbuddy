@@ -4,7 +4,6 @@ import { getLocalizedCopy } from './i18n';
 import { getSelectedDayPrefix, getSelectedHourPrefix, isSelectedDateToday } from './dateLabels';
 import { athensNow } from './athensTime';
 import { SEA_STATE_AMBER_M, SEA_STATE_ROUGH_M, seaStateSeverityM } from './waveCharacter';
-import { getSeaSeverity } from './seaVerdict';
 
 // CalmBeach communicates a FINAL EXPERIENCE, not raw weather. Every beach resolves to one
 // of four plain-language tiers derived from the composite suitability score (which already
@@ -71,19 +70,11 @@ export const getExperienceTier = (input: ExperienceTierInput): ExperienceTier =>
   // change: 1.854 combinations (38,6%) printed Excellent/Good/OK above a sea the shared ladder
   // called rough — reported from Ίος, 29/07/2026 ("OK at 11:00" over "Difficult for swimming").
   //
-  // And it is the SHARED verdict, not the height alone. The swim chip escalates on
-  // getSeaSeverity — sea OR wind, whichever is worse — so reading only the height left a
-  // second contradiction band: at 6 Bft on an open shore the wind half alone says rough, the
-  // chip prints "Difficult for swimming", and a 0,9 m sea kept the badge on "OK". A verified
-  // lee shore is exempt by construction (getWindSeverity tops a protected shore out at
-  // 'moderate' whatever the wind), so this reddens exposed and partial shores in a 6 Bft blow
-  // and leaves the sheltered ones — which is the differentiation, not a wall of red.
-  const roughSea = getSeaSeverity({
-    waveHeightM,
-    wavePeriodS: input.wavePeriodS,
-    windBeaufort: input.windBeaufort,
-    exposureLevel: input.exposureLevel,
-  }) === 'rough';
+  // The wind half of that shared verdict is now covered by the `bft >= 5 && pinRedInStrongWind`
+  // clause below, which is the pin's own rule rather than a second reading of the same idea —
+  // so the getSeaSeverity call that used to stand here was removed on 01/08/2026 rather than
+  // left computing a value nothing reads.
+  //
   // Red ("skip") tracks the map's wind-colour guide: it only appears from 5 Bft up, and —
   // like the pin — only for beaches the map paints RED there. At 5–6 Bft the pin is red
   // solely for EXPOSED beaches (getSimpleWindColor: partial → orange, protected → yellow),
@@ -97,20 +88,26 @@ export const getExperienceTier = (input: ExperienceTierInput): ExperienceTier =>
   // WORSE than a wind pin because the water is rough is the safe direction, and it is the only
   // way the badge can stop endorsing a day the same page refuses to swim in.
   //
-  // BUT A ROUGH SEA IS ISLAND-WIDE, AND "NOT RECOMMENDED" IS PER BEACH. The first version of this
-  // fix returned 'skip' for any rough sea at any exposure. On a meltemi day that is EVERY beach on
-  // the island — one ~9 km marine cell serves all of them — so a shore genuinely in the lee got
-  // branded «Δεν συνιστάται σήμερα» beside the shore taking the wind head-on. That trades one
-  // uniform wrong badge for a worse one: it is the same non-answer, and it now libels the beach
-  // the user should actually go to. Reported 29/07/2026, same day, by the same person.
+  // "ROUGH SEA IS ISLAND-WIDE" WAS TRUE UNTIL 01/08/2026, AND IS NOT ANY MORE.
   //
-  // So the sea alone reddens only the beaches the map itself paints red. A sheltered or partial
-  // shore in a running sea caps at 'fair' via the ceiling below — and its LABEL then says what is
-  // actually true, that the water is rough but the shore is out of the wind (see SEA_ROUGH_FAIR
-  // copy in getExperienceTierLabel). That agrees with the swim chip instead of contradicting it,
-  // which is what the original fix was for.
+  // The 29/07 version deliberately let only the WIND redden a beach: a rough sea came from one
+  // ~9 km marine cell shared by every beach on the island, so treating it as per-beach branded a
+  // genuinely sheltered shore «Δεν συνιστάται» beside the one taking the meltemi head-on.
+  //
+  // Two things changed. Every beach now asks about its OWN sea (per-beach marineSamplePoint,
+  // gate `beach-marine-resolution`), so a rough reading is no longer a fact about the island.
+  // And Miltos settled what the colour is FOR on 01/08: it answers «πού να πάω για μπάνιο
+  // σήμερα». That makes the old compromise untenable — it produced Βραυρώνα 1,9 m amber beside
+  // Πλαζ Ραφήνας 1,3 m red, i.e. the rougher sea reading as the better beach.
+  //
+  // THIS CONDITION IS NOW THE PIN, RESTATED. `seaStateToneCeiling` reddens at SEA_STATE_ROUGH_M,
+  // so the verdict must too, or the word sits a whole tier above its own dot — measured before
+  // this change: 26 of 60 sampled (exposure × Bft × wave) combinations printed «Μέτρια σήμερα»
+  // under a RED pin, and no existing gate could see it. Keep these two in lockstep; if the pin
+  // ladder in utils/suitabilityTone moves, this moves with it.
   const pinRedInStrongWind = input.exposureLevel !== 'protected' && input.exposureLevel !== 'partial';
-  if (bft >= 7 || (roughSea && pinRedInStrongWind) || (bft >= 5 && pinRedInStrongWind && score < 25)) return 'skip';
+  const seaRedensPin = wave !== undefined && wave >= SEA_STATE_ROUGH_M;
+  if (bft >= 7 || seaRedensPin || (bft >= 5 && pinRedInStrongWind)) return 'skip';
 
   // Condition ceiling: 3 excellent · 2 good · 1 OK. The wind ceiling MIRRORS the map's
   // wind-colour engine (getSimpleWindColor) so the verdict word can never sit a tier ABOVE
