@@ -94,6 +94,15 @@ const checks = [
     args: ['scripts/validateBeachMarineResolution.mjs'],
   },
   {
+    id: 'swell-origin-copy',
+    title: 'The card says where the sea came from',
+    description: 'Drives the beach page\'s live sentence in all five languages over a measured light-wind/running-sea reading and checks it names the direction the swell arrived from — then checks it stays completely silent on ordinary short-period chop, on a swell too small to matter, on a swell that is only part of the sea, and when no direction is known. Also checks the origin phrase itself is a whole per-language string («από τα βόρεια», «de l\'est») and that the beach page still hands the swell channel over.',
+    protects: 'Prevents a correct page reading like a broken one. Reported from Ταυρωνίτης (Χανιά) 02/08/2026: 2 Bft on the compass over a 1,6 m sea, with no explanation anywhere on the page — measured the same hour, the local wind was making 0,16 m of its own and 1,26 m at 5,7 s was arriving from the north. The existing swell section could not help: it only opens above 7 s, a bar an ordinary Aegean swell never clears. The silence rules matter as much as the sentence — inventing a cause for ordinary wind chop would be worse than the silence it replaced. It also holds the Greek phrase away from the masculine wind adjective, which had already shipped as «από τα Βόρειος» in the swell section.',
+    failureAction: 'Restore the wiring or the clause the gate names. Never widen a threshold to make a case speak — the sentence is only allowed where the marine reading carries it, and it must never change a score, a colour or a verdict.',
+    command: process.execPath,
+    args: ['scripts/validateSwellOriginCopy.mjs'],
+  },
+  {
     id: 'per-beach-wind-gates',
     title: 'Every wind gate asks the beach\'s own shore',
     description: 'Reads every call site that decides something about ONE beach — hide the boat-only beaches, demand wind evidence, put shelter before score, switch the list filter on — and fails if any of them is back on the single wind measured at the region\'s geometric centre. Then drives the real ranking functions with fixtures: a calm shore must not be demoted by a region that blows, a shore that blows must be demoted by a region that reads calm, and a pool with no per-beach readings at all must rank exactly as it did before.',

@@ -2,7 +2,7 @@ import { WindDirection, LanguageCode } from '../types';
 import { beachSentenceName } from './beachCopy';
 import type { ExposureLevel } from './windExposure';
 import { getSeaSeverity } from './seaVerdict';
-import { seaStateSeverityM } from './waveCharacter';
+import { seaStateSeverityM, SEA_REFERENCE_PERIOD_S } from './waveCharacter';
 
 /**
  * Copy generator for the visible "Weather & sea now" block on the beach detail
@@ -63,6 +63,77 @@ const GR_WIND_ADJ_NOM: Record<WindDirection, string> = {
   [WindDirection.SW]: 'νοτιοδυτικός',
   [WindDirection.W]: 'δυτικός',
   [WindDirection.NW]: 'βορειοδυτικός',
+};
+
+/**
+ * "From the north" as a COMPLETE phrase, per language — a wave's origin, not a wind adjective.
+ *
+ * Built whole because the preposition and the article do not survive a shared slot. Greek needs
+ * «από τα βόρεια» (neuter plural), not the masculine «Βόρειος» of the wind tables — the beach
+ * page was already printing «από τα Βόρειος» wherever it reused them. French takes «du nord» but
+ * «de l'est». A single word plus a template cannot get both right.
+ */
+const DIRECTION_FROM: Record<Lang, Record<WindDirection, string>> = {
+  en: {
+    [WindDirection.N]: 'from the north',
+    [WindDirection.NE]: 'from the north-east',
+    [WindDirection.E]: 'from the east',
+    [WindDirection.SE]: 'from the south-east',
+    [WindDirection.S]: 'from the south',
+    [WindDirection.SW]: 'from the south-west',
+    [WindDirection.W]: 'from the west',
+    [WindDirection.NW]: 'from the north-west',
+  },
+  gr: {
+    [WindDirection.N]: 'από τα βόρεια',
+    [WindDirection.NE]: 'από τα βορειοανατολικά',
+    [WindDirection.E]: 'από τα ανατολικά',
+    [WindDirection.SE]: 'από τα νοτιοανατολικά',
+    [WindDirection.S]: 'από τα νότια',
+    [WindDirection.SW]: 'από τα νοτιοδυτικά',
+    [WindDirection.W]: 'από τα δυτικά',
+    [WindDirection.NW]: 'από τα βορειοδυτικά',
+  },
+  de: {
+    [WindDirection.N]: 'aus Norden',
+    [WindDirection.NE]: 'aus Nordosten',
+    [WindDirection.E]: 'aus Osten',
+    [WindDirection.SE]: 'aus Südosten',
+    [WindDirection.S]: 'aus Süden',
+    [WindDirection.SW]: 'aus Südwesten',
+    [WindDirection.W]: 'aus Westen',
+    [WindDirection.NW]: 'aus Nordwesten',
+  },
+  fr: {
+    [WindDirection.N]: 'du nord',
+    [WindDirection.NE]: 'du nord-est',
+    [WindDirection.E]: "de l'est",
+    [WindDirection.SE]: 'du sud-est',
+    [WindDirection.S]: 'du sud',
+    [WindDirection.SW]: 'du sud-ouest',
+    [WindDirection.W]: "de l'ouest",
+    [WindDirection.NW]: 'du nord-ouest',
+  },
+  it: {
+    [WindDirection.N]: 'da nord',
+    [WindDirection.NE]: 'da nord-est',
+    [WindDirection.E]: 'da est',
+    [WindDirection.SE]: 'da sud-est',
+    [WindDirection.S]: 'da sud',
+    [WindDirection.SW]: 'da sud-ovest',
+    [WindDirection.W]: 'da ovest',
+    [WindDirection.NW]: 'da nord-ovest',
+  },
+};
+
+/** The compass point a bearing arrives FROM, worded for `language`. */
+export const directionFromPhrase = (degrees: number, language: LanguageCode): string => {
+  const index = ((Math.round(degrees / 45) % 8) + 8) % 8;
+  const direction = ([
+    WindDirection.N, WindDirection.NE, WindDirection.E, WindDirection.SE,
+    WindDirection.S, WindDirection.SW, WindDirection.W, WindDirection.NW,
+  ] as const)[index];
+  return (DIRECTION_FROM[language] ?? DIRECTION_FROM.en)[direction];
 };
 
 // English "-erly" wind adjective (e.g. "a northerly wind").
@@ -226,6 +297,33 @@ export interface WeatherNowInput {
   mapExposureLevel?: ExposureLevel;
   /** 0–10, higher = calmer (from calculateSeaConditionScore). */
   seaConditionScore: number;
+  /**
+   * THE SWELL CHANNEL of the same marine reading — where the wave came from when the wind
+   * here cannot explain it.
+   *
+   * Two branches below print "there is still wave in the water" and then stop, because the
+   * inputs could not tell chop from swell. Reported from Ταυρωνίτης (Χανιά) 02/08/2026: «2 Μπφ
+   * και 1,6 μ. — στέκει;». It does. Measured at that beach the same hour: local wind 14–18 km/h
+   * making 0,16–0,22 m of its own, and 1,26 m at 5,7 s arriving from the north — 95% of the sea
+   * was made by weather that is not there any more, or never was.
+   *
+   * Naming it is display only. It changes no score, no colour and no verdict; the sentence just
+   * stops presenting a travelling sea as if the visible wind were behind it.
+   *
+   * Deliberately NOT the same gate as utils/swellExposure.meaningful (≥ 7 s), which guards a
+   * whole cove-router section for Atlantic ground swell. That bar is far above an ordinary
+   * Aegean swell — Ταυρωνίτης at 5,7 s clears none of it — which is exactly why the page had
+   * nothing to say there.
+   */
+  swellHeightM?: number;
+  swellPeriodS?: number;
+  swellDirectionDeg?: number;
+  /**
+   * Total sea height (m) from the SAME marine block, for the share test. Kept separate from
+   * `waveHeightM` because that one is the DISPLAY value, which the cove guard may have rewritten
+   * downward — comparing the swell against a rewritten total would overstate its share.
+   */
+  seaTotalHeightM?: number;
   /** Boat-only spots (e.g. Kleftiko) aren't "beaches" — refer to them by bare name, no "beach" noun. */
   isBoatAccess?: boolean;
 }
@@ -259,6 +357,47 @@ export interface WeatherNowContent {
 }
 
 const nowWord = (lang: Lang) => ({ en: 'right now', gr: 'τώρα', de: 'jetzt', fr: 'maintenant', it: 'ora' }[lang]);
+
+const finiteOrUndefined = (value: number | undefined): number | undefined => (
+  typeof value === 'number' && Number.isFinite(value) ? value : undefined
+);
+
+/**
+ * One second above the ordinary Aegean wind-sea period the app's height thresholds were
+ * calibrated against (utils/waveCharacter.SEA_REFERENCE_PERIOD_S). Tied to that constant rather
+ * than picked, so if the calibration ever moves this moves with it.
+ */
+const SWELL_ORIGIN_MIN_PERIOD_S = SEA_REFERENCE_PERIOD_S + 1;
+/** Below this the wave is not worth a sentence, whatever made it. */
+const SWELL_ORIGIN_MIN_HEIGHT_M = 0.4;
+/** The swell has to BE the sea, not a component of it, before we hand it the whole height. */
+const SWELL_ORIGIN_MIN_SHARE = 0.6;
+
+/**
+ * The trailing clause that says where a wave came from — empty unless the marine reading really
+ * supports it. Three gates, all of which must hold: a period clearly above local wind chop, a
+ * height worth mentioning, and a swell channel that carries most of the sea. Anything less and
+ * we say nothing, which is what the page did before.
+ */
+const swellOriginSentence = (input: WeatherNowInput, lang: Lang): string => {
+  const heightM = finiteOrUndefined(input.swellHeightM);
+  const periodS = finiteOrUndefined(input.swellPeriodS);
+  const directionDeg = finiteOrUndefined(input.swellDirectionDeg);
+  if (heightM === undefined || periodS === undefined || directionDeg === undefined) return '';
+  if (heightM < SWELL_ORIGIN_MIN_HEIGHT_M || periodS < SWELL_ORIGIN_MIN_PERIOD_S) return '';
+
+  const totalM = finiteOrUndefined(input.seaTotalHeightM) ?? finiteOrUndefined(input.waveHeightM);
+  if (totalM !== undefined && totalM > 0 && heightM / totalM < SWELL_ORIGIN_MIN_SHARE) return '';
+
+  const from = directionFromPhrase(directionDeg, lang);
+  return {
+    en: ` That wave comes ${from} — it travelled here; today's wind did not make it.`,
+    gr: ` Το κύμα έρχεται ${from} — ταξίδεψε ως εδώ, δεν το φτιάχνει ο σημερινός αέρας.`,
+    de: ` Diese Welle kommt ${from} — sie ist von weit her gelaufen, der heutige Wind hat sie nicht gemacht.`,
+    fr: ` Cette vague vient ${from} — elle a voyagé jusqu'ici, ce n'est pas le vent du jour qui l'a faite.`,
+    it: ` Quell'onda arriva ${from} — ha viaggiato fin qui, non l'ha fatta il vento di oggi.`,
+  }[lang];
+};
 
 const buildHeading = (beachName: string, lang: Lang, isToday: boolean, isBoatAccess: boolean): string => {
   const now = isToday ? ` ${nowWord(lang)}` : '';
@@ -438,8 +577,10 @@ export const buildWeatherNowContent = (input: WeatherNowInput): WeatherNowConten
   // At ≤2 Bft we therefore describe the wind and nothing else. We deliberately do
   // NOT say "the sea is calm" unless the sea-condition verdict agrees: light air
   // with leftover ground swell is real, and the wave value is what would make that
-  // claim false. When they disagree we state both facts and explain neither — we
-  // cannot verify a swell origin from these inputs.
+  // claim false. When they disagree we state both facts — and, since 02/08/2026, we
+  // can explain the second one: the marine block carries the swell channel, so when
+  // it accounts for the sea we name the direction it arrived from. See
+  // swellOriginSentence; it stays silent whenever the reading does not support it.
   const LIGHT_WIND_BFT = 2;
   if (bft <= LIGHT_WIND_BFT) {
     statesShoreIncidence = false;
@@ -454,7 +595,8 @@ export const buildWeatherNowContent = (input: WeatherNowInput): WeatherNowConten
           gr: `Ο άνεμος είναι μόλις ${bft} ${bftUnit}${nowGr}, αλλά υπάρχει ακόμη κύμα στο νερό.`,
           de: `Der Wind beträgt nur ${bft} Bft${isToday ? ' gerade' : ''}, es steht aber noch Welle im Wasser.`,
           fr: `Le vent n'est que de ${bft} Bft${isToday ? ' en ce moment' : ''}, mais il reste de la vague dans l'eau.`,
-          it: `Il vento è solo di ${bft} Bft${isToday ? ' in questo momento' : ''}, ma c'è ancora onda in acqua.` }[lang];
+          it: `Il vento è solo di ${bft} Bft${isToday ? ' in questo momento' : ''}, ma c'è ancora onda in acqua.` }[lang]
+        + swellOriginSentence(input, lang);
   }
   // "now/τώρα/maintenant…" is only truthful for today. For a future day the same block
   // shows that day's forecast values, so the wording must be time-neutral (no "now").
@@ -487,6 +629,9 @@ export const buildWeatherNowContent = (input: WeatherNowInput): WeatherNowConten
         de: `Der Wind von ${bft} Bft trifft diese Küste nicht, sie ist die ruhigere Seite — es läuft aber noch Welle ein.`,
         fr: `Le vent de ${bft} Bft ne frappe pas cette côte, c'est le côté le plus abrité — mais il reste de la houle.`,
         it: `Il vento di ${bft} Bft non colpisce questa costa, è il lato più riparato — ma c'è ancora onda.` }[lang];
+    // Same gap as the light-wind floor, one branch down: this shore is in the lee and a sea is
+    // still running into it. That sea came from somewhere; when the reading says where, say it.
+    liveSentence += swellOriginSentence(input, lang);
   }
   else if (shelteredNow) {
     const adjGr = GR_WIND_ADJ_ACC[input.windDir];

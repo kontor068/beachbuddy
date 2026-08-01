@@ -76,7 +76,7 @@ import { getBoatRideMotionLevel } from '../utils/boatRideMotion';
 import { getRainSwimAdvisory } from '../utils/rainAdvisory';
 import { summarizeLocalWindBehavior } from '../utils/windClimatology';
 import { getRegionWindContext, LOCAL_WIND_SECTORS } from '../utils/localWindContext.mjs';
-import { buildWeatherNowContent } from '../utils/weatherNowCopy';
+import { buildWeatherNowContent, directionFromPhrase } from '../utils/weatherNowCopy';
 import { beachSentenceName } from '../utils/beachCopy';
 import { getPhotoCredit } from '../utils/photoCredit';
 import { LegalFooter } from '../components/LegalFooter';
@@ -1146,7 +1146,14 @@ export const BeachDetailPage: React.FC<BeachDetailPageProps> = ({
     isExposedToTodayWind,
     seaConditionScore,
     isBoatAccess: isBoatOnlyBeach,
-  }), [beachDisplayName, language, selectedDayIsToday, weatherNowDataReady, windDir, beaufortLevel, displayWaveHeightM, isWaveEstimate, beach.protectedFrom, beach.orientation?.faces, scoreResult.facingDeg, canClaimWindProtection, isExposedToTodayWind, mapExposureLevelOverride, exposureLevel, seaConditionScore, isBoatOnlyBeach]);
+    // Where the sea came from, when the wind here cannot account for it. The total goes in
+    // separately from displayWaveHeightM above: that one is the display value the cove guard may
+    // have rewritten, and the share test has to run against the raw reading.
+    swellHeightM: weatherData.marine?.swellWaveHeightM,
+    swellPeriodS: weatherData.marine?.swellWavePeriodS,
+    swellDirectionDeg: weatherData.marine?.swellWaveDirectionDeg,
+    seaTotalHeightM: weatherData.marine?.waveHeightM,
+  }), [beachDisplayName, language, selectedDayIsToday, weatherNowDataReady, windDir, beaufortLevel, displayWaveHeightM, isWaveEstimate, beach.protectedFrom, beach.orientation?.faces, scoreResult.facingDeg, canClaimWindProtection, isExposedToTodayWind, mapExposureLevelOverride, exposureLevel, seaConditionScore, isBoatOnlyBeach, weatherData.marine?.swellWaveHeightM, weatherData.marine?.swellWavePeriodS, weatherData.marine?.swellWaveDirectionDeg, weatherData.marine?.waveHeightM]);
   const weatherNowToneClass = weatherNow.tone === 'calm'
     ? 'bg-emerald-50 text-emerald-700'
     : weatherNow.tone === 'choppy'
@@ -1479,8 +1486,10 @@ export const BeachDetailPage: React.FC<BeachDetailPageProps> = ({
     swellHeightM: weatherData.marine?.swellWaveHeightM,
     swellPeriodS: weatherData.marine?.swellWavePeriodS,
   });
+  // The whole origin phrase, not a compass word: t.windDirections holds the masculine adjective
+  // that agrees with «άνεμος», so the old lookup printed «από τα Βόρειος» here.
   const swellFromLabel = thisSwell.directionDeg !== undefined
-    ? (t.windDirections[degToCompass(thisSwell.directionDeg) as WindDirection] || degToCompass(thisSwell.directionDeg))
+    ? directionFromPhrase(thisSwell.directionDeg, language)
     : '';
   const swellShelteredCoves = useMemo<SwellShelteredCove[]>(() => {
     if (!thisSwell.meaningful) return [];

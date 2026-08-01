@@ -38,7 +38,13 @@ const TITLE_SHELTERED: Copy = {
   fr: 'Abritée de la houle',
 };
 
-const bodyExposed = (beachName: string, h: string, p: number, dir: string, calmWind: boolean, language: LanguageCode): string => {
+/**
+ * `from` is the COMPLETE origin phrase («από τα βόρεια», "from the north", "de l'est"), built by
+ * utils/weatherNowCopy.directionFromPhrase — not a bare compass word. It used to be
+ * `t.windDirections[...]` dropped into «από τα ${dir}», which printed «από τα Βόρειος»: the wind
+ * tables hold a masculine adjective for «άνεμος», and no template can decline it into a direction.
+ */
+const bodyExposed = (beachName: string, h: string, p: number, from: string, calmWind: boolean, language: LanguageCode): string => {
   const calm = {
     en: calmWind ? 'The wind is calm, but ' : '',
     gr: calmWind ? 'Ο άνεμος είναι ήσυχος, αλλά ' : '',
@@ -47,20 +53,20 @@ const bodyExposed = (beachName: string, h: string, p: number, dir: string, calmW
     fr: calmWind ? 'Le vent est calme, mais ' : '',
   }[language];
   return {
-    en: `${calm}a ~${h} m, ${p}s ground swell is rolling in from the ${dir}. This cove faces it — expect breaking sets despite the light wind.`,
-    gr: `${calm}φτάνει εδαφικός κυματισμός ~${h} m, ${p}s από τα ${dir}. Αυτός ο όρμος είναι εκτεθειμένος — περίμενε «σπασίματα» παρά τον ελαφρύ αέρα.`,
-    de: `${calm}eine ~${h} m, ${p}s Grunddünung kommt aus ${dir}. Diese Bucht ist ihr zugewandt — trotz wenig Wind sind Brecher zu erwarten.`,
-    it: `${calm}arriva un'onda lunga di ~${h} m, ${p}s da ${dir}. Questa cala le è esposta — aspettati frangenti nonostante il vento leggero.`,
-    fr: `${calm}une houle de fond de ~${h} m, ${p}s arrive du ${dir}. Cette crique y est exposée — attendez-vous à des déferlantes malgré le vent faible.`,
+    en: `${calm}a ~${h} m, ${p}s ground swell is rolling in ${from}. This cove faces it — expect breaking sets despite the light wind.`,
+    gr: `${calm}φτάνει εδαφικός κυματισμός ~${h} m, ${p}s ${from}. Αυτός ο όρμος είναι εκτεθειμένος — περίμενε «σπασίματα» παρά τον ελαφρύ αέρα.`,
+    de: `${calm}eine ~${h} m, ${p}s Grunddünung kommt ${from}. Diese Bucht ist ihr zugewandt — trotz wenig Wind sind Brecher zu erwarten.`,
+    it: `${calm}arriva un'onda lunga di ~${h} m, ${p}s ${from}. Questa cala le è esposta — aspettati frangenti nonostante il vento leggero.`,
+    fr: `${calm}une houle de fond de ~${h} m, ${p}s arrive ${from}. Cette crique y est exposée — attendez-vous à des déferlantes malgré le vent faible.`,
   }[language];
 };
 
-const bodySheltered = (beachName: string, h: string, p: number, dir: string, language: LanguageCode): string => ({
-  en: `There's a ~${h} m, ${p}s ground swell from the ${dir} today, but this cove faces away from it — it stays flat. A good pick today.`,
-  gr: `Σήμερα έχει εδαφικό κυματισμό ~${h} m, ${p}s από τα ${dir}, αλλά αυτός ο όρμος είναι στραμμένος αλλιώς — μένει επίπεδος. Καλή επιλογή σήμερα.`,
-  de: `Heute läuft eine ~${h} m, ${p}s Grunddünung aus ${dir}, doch diese Bucht ist abgewandt — sie bleibt flach. Heute eine gute Wahl.`,
-  it: `Oggi c'è un'onda lunga di ~${h} m, ${p}s da ${dir}, ma questa cala è rivolta altrove — resta piatta. Buona scelta oggi.`,
-  fr: `Il y a aujourd'hui une houle de ~${h} m, ${p}s du ${dir}, mais cette crique est orientée à l'écart — elle reste plate. Bon choix aujourd'hui.`,
+const bodySheltered = (beachName: string, h: string, p: number, from: string, language: LanguageCode): string => ({
+  en: `There's a ~${h} m, ${p}s ground swell ${from} today, but this cove faces away from it — it stays flat. A good pick today.`,
+  gr: `Σήμερα έχει εδαφικό κυματισμό ~${h} m, ${p}s ${from}, αλλά αυτός ο όρμος είναι στραμμένος αλλιώς — μένει επίπεδος. Καλή επιλογή σήμερα.`,
+  de: `Heute läuft eine ~${h} m, ${p}s Grunddünung ${from}, doch diese Bucht ist abgewandt — sie bleibt flach. Heute eine gute Wahl.`,
+  it: `Oggi c'è un'onda lunga di ~${h} m, ${p}s ${from}, ma questa cala è rivolta altrove — resta piatta. Buona scelta oggi.`,
+  fr: `Il y a aujourd'hui une houle de ~${h} m, ${p}s ${from}, mais cette crique est orientée à l'écart — elle reste plate. Bon choix aujourd'hui.`,
 }[language]);
 
 const SHELTERED_LIST_TITLE: Copy = {
