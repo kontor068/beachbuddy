@@ -2460,12 +2460,20 @@ const BeachMap: React.FC<BeachMapProps> = ({
             </span>
           </div>
         ))}
-        {/* What the hollow centre MEANS. The shape exists so the less-/more-exposed split reads
-            without relying on hue (index.css .beach-map-marker-exposed-core), which is the whole
-            point of a non-colour cue — and until 01/08/2026 the legend drew it on the worse
-            segment of every two-colour row and never said what it was. An unexplained symbol is
-            the same problem as no symbol. Gated on the same flag that draws it, so the line can
-            never appear without the shape or the shape without the line. */}
+        {/* What the hollow centre MEANS — reported 01/08/2026: "I have orange pins with a hole and
+            orange pins without one, and nothing explains them."
+
+            The shape marks exactly one thing: exposureLevel === 'exposed' at 3-6 Bft (createIcon,
+            ~line 1110). It is a NON-COLOUR cue, not a severity step — two orange pins are the same
+            conditions whichever way they are drawn, and saying "the more exposed beaches" (the
+            first attempt at this line) implied a ranking that does not exist.
+
+            Why the same colour arrives both ways, which is what makes it confusing: at 5-6 Bft the
+            wind ladder paints protected and partial shores orange too (resolveWindTone), and at any
+            wind a sea of 1.2 m+ caps a sheltered beach down to orange (seaStateToneCeiling). So the
+            no-hole reason changes with the Beaufort row, and the line deliberately does NOT try to
+            name it — it would be wrong on half the rows. Gated on the same flag that draws the
+            shape, so the line can never appear without the shape or the shape without the line. */}
         {showExposedShapeCue && (
           <div className={`${isPreview ? 'text-[10px] sm:text-[11px]' : 'text-[11px]'} flex min-w-0 flex-wrap items-center gap-x-1.5 gap-y-1 font-semibold leading-snug text-slate-600 dark:text-slate-300`}>
             <span className="inline-flex min-w-0 items-center gap-1">
@@ -2476,11 +2484,11 @@ const BeachMap: React.FC<BeachMapProps> = ({
                 <span className="beach-map-marker-exposed-core" />
               </span>
               <span className="min-w-0">{getLocalizedCopy(language, {
-                en: 'Hollow centre = the more exposed beaches',
-                gr: 'Τρύπα στη μέση = οι πιο εκτεθειμένες παραλίες',
-                fr: 'Centre creux = les plages les plus exposées',
-                de: 'Hohler Kern = die stärker exponierten Strände',
-                it: 'Centro vuoto = le spiagge più esposte',
+                en: 'Hollow centre = open to today’s wind. Same colour = same conditions either way.',
+                gr: 'Τρύπα στη μέση = ανοιχτή στον σημερινό άνεμο. Ίδιο χρώμα = ίδιες συνθήκες, με ή χωρίς τρύπα.',
+                fr: 'Centre creux = exposée au vent du jour. Même couleur = mêmes conditions, trou ou pas.',
+                de: 'Hohler Kern = offen für den heutigen Wind. Gleiche Farbe = gleiche Bedingungen, mit oder ohne.',
+                it: 'Centro vuoto = esposta al vento di oggi. Stesso colore = stesse condizioni, con o senza foro.',
               })}</span>
             </span>
           </div>
