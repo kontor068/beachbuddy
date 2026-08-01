@@ -37,6 +37,7 @@ import type { Beach, DailyForecast, FilterKey, Island, LanguageCode, SortOption,
 import { getLocalizedCopy, languageToDateLocale, languageToLocale, type SupportedLanguage } from '../utils/i18n';
 import { displayBeachName, localizedAccessLabel, localizedPopularityLabel } from '../utils/localization';
 import { isInfoOnlyRegionId } from '../utils/infoOnlyRegions';
+import type { CalmnessTone } from '../utils/suitabilityTone';
 import { getAmenityChips, type AmenityChip } from '../utils/amenities';
 import { getBeachPhotoLookup } from '../services/beachPhotos';
 import { BeachPhotoFallback } from './ShorelineThumbnail';
@@ -148,6 +149,9 @@ interface BeachSearcherHomeProps {
   suitableBeachTotalCount?: number;
   /** Localized time-window prefix from the map slider (e.g. "στις 15:00–18:00") used in the suitable/best-beaches headers. */
   suitableTimePrefix?: string;
+  /** Colour picked on the map legend, if any. Retitles the list so the heading names the same
+   *  thing the cards contain («Δύσκολες παραλίες στις 17:00»). */
+  activeToneFilter?: CalmnessTone | null;
   onActiveSuitableBeachChange?: (beachId: number | undefined, options?: { resumeFollow?: boolean }) => void;
   /** Discrete signal (nonce-keyed) to centre a specific beach's card in the carousel below the
    *  mobile map — fired when the user picks a beach from search, so they land on map + card. */
@@ -1355,6 +1359,64 @@ const getAllBeachesLabel = (language: LanguageCode, selectedDate?: Date, timePre
   });
 };
 
+/**
+ * Heading for the list while a colour is picked on the map legend — «Δύσκολες παραλίες στις 17:00».
+ *
+ * Deliberately NOT reused from the legend's own `toneLabel` in BeachMap: that is a singular
+ * adjective describing one beach («Δύσκολη»), and a heading needs the plural noun phrase. Sharing
+ * one string would produce broken Greek in one place or the other. What must stay in step is the
+ * COVERAGE — every tone the ladder can paint needs an entry here in all five languages, which
+ * scripts/validateConditionToneAgreement.mjs checks the same way it checks the legend words.
+ */
+const getToneFilterLabel = (
+  tone: CalmnessTone,
+  language: LanguageCode,
+  selectedDate?: Date,
+  timePrefix?: string,
+): string => {
+  const day = timePrefix ?? getSelectedDayPrefix(selectedDate, athensNow(), language);
+
+  const headings = getLocalizedCopy<Record<CalmnessTone, string>>(language, {
+    en: {
+      red: `Difficult beaches ${day}`,
+      orange: `Fair beaches ${day}`,
+      yellow: `Good beaches ${day}`,
+      blue: `Excellent beaches ${day}`,
+      green: `Enclosed bays ${day}`,
+    },
+    gr: {
+      red: `Δύσκολες παραλίες ${day}`,
+      orange: `Μέτριες παραλίες ${day}`,
+      yellow: `Καλές παραλίες ${day}`,
+      blue: `Ιδανικές παραλίες ${day}`,
+      green: `Κλειστοί όρμοι ${day}`,
+    },
+    fr: {
+      red: `Plages difficiles ${day}`,
+      orange: `Plages correctes ${day}`,
+      yellow: `Bonnes plages ${day}`,
+      blue: `Plages idéales ${day}`,
+      green: `Baies fermées ${day}`,
+    },
+    de: {
+      red: `Schwierige Strände ${day}`,
+      orange: `Mäßige Strände ${day}`,
+      yellow: `Gute Strände ${day}`,
+      blue: `Ideale Strände ${day}`,
+      green: `Geschlossene Buchten ${day}`,
+    },
+    it: {
+      red: `Spiagge difficili ${day}`,
+      orange: `Spiagge discrete ${day}`,
+      yellow: `Buone spiagge ${day}`,
+      blue: `Spiagge ideali ${day}`,
+      green: `Baie chiuse ${day}`,
+    },
+  });
+
+  return headings[tone];
+};
+
 // Per-beach intra-day exposure shift for the selected-beach strip line. Runs the
 // real wind-exposure engine hour by hour (using the beach's geospatial profile),
 // so it catches BOTH the wind strengthening and the wind veering to a direction
@@ -1608,6 +1670,7 @@ export const BeachSearcherHome: React.FC<BeachSearcherHomeProps> = ({
   suitableBeachCards,
   suitableBeachTotalCount,
   suitableTimePrefix,
+  activeToneFilter = null,
   onActiveSuitableBeachChange,
   directorySearchCardFocus,
   showSuitableBeachSection = true,
@@ -2029,13 +2092,18 @@ export const BeachSearcherHome: React.FC<BeachSearcherHomeProps> = ({
   const hasTopRecommendationView = selectedIsland !== null && topRecommendationBeachCards.length > 0;
   const topRecommendationsLabel = getTopRecommendationsLabel(language, selectedDate, topRecommendationBeachCards.length, suitableTimePrefix, currentBeaufort);
   const isCalmAllSuitableDay = typeof currentBeaufort === 'number' && currentBeaufort <= 2;
-  const suitableSectionLabel = infoOnly
-    ? allBeachesLabel
-    : hasTopRecommendationView
-      ? getRemainingSuitableLabel(language, selectedDate, suitableTimePrefix)
-      : isCalmAllSuitableDay
-        ? allBeachesLabel
-        : bestBeachesLabel;
+  const suitableSectionLabel = activeToneFilter
+    // The user picked a colour on the map: the list IS that colour, so the heading says so and
+    // every other framing (best / all-suitable / the-rest) steps aside. Otherwise the page would
+    // show «Καταλληλότερες παραλίες» above a list of the roughest beaches on the island.
+    ? getToneFilterLabel(activeToneFilter, language, selectedDate, suitableTimePrefix)
+    : infoOnly
+      ? allBeachesLabel
+      : hasTopRecommendationView
+        ? getRemainingSuitableLabel(language, selectedDate, suitableTimePrefix)
+        : isCalmAllSuitableDay
+          ? allBeachesLabel
+          : bestBeachesLabel;
   const weatherBeachCardRankStart = topBeachToday ? 2 : 1;
   const suitableBeachDisplayCount = typeof suitableBeachTotalCount === 'number'
     ? suitableBeachTotalCount
@@ -3780,8 +3848,11 @@ export const BeachSearcherHome: React.FC<BeachSearcherHomeProps> = ({
                 // not the day's ranking — so a beach must NOT wear a "No 1" medal just because
                 // the filter left only a few. Drop the rank/podium then (mirrors how App hides
                 // the top-recommendations carousel when hasActiveSearchOrFilters).
+                // A colour picked on the map legend is the same situation, and worse: a silver
+                // medal on the second-roughest beach of the day reads as «η 2η καλύτερη», which
+                // is the opposite of what the heading above it says.
                 const hasActiveDirectoryFilters = (activeFilterCount ?? 0) > 0;
-                const cardRank = isNameSearchActive || hasTopRecommendationView || hasActiveDirectoryFilters || infoOnly
+                const cardRank = isNameSearchActive || hasTopRecommendationView || hasActiveDirectoryFilters || infoOnly || activeToneFilter
                   ? undefined
                   : weatherBeachCardRankStart + index;
                 return (

@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useMemo, useRef, Suspense } from 'react';
+import React, { useState, useEffect, useCallback, useMemo, useRef, Suspense } from 'react';
 import { Accessibility, Beach, DailyForecast, ForecastItem, Island, LanguageCode, FilterKey, SortOption, UserPreferences, SuitableBeach, Translation, WindDirection, type BeachForecastContext, type GeospatialExposureProfile, type MarineForecast } from './types';
 import { beachMatchesUserPreferences, calculateBeachScore, calculateBestBeachTime, getSuitableBeaches, filterBeachesByUserPreferences, getTopRecommendationDisplayLimit, hasHourlyRainRisk, isTrustedTopRecommendationCandidate, type BeachScore, type BeachWeatherById, type BestBeachTime } from './services/recommendationService';
 import type { Chat } from '@google/genai';
@@ -91,6 +91,7 @@ import { getActiveWeatherFixtureScenario } from './utils/weatherFixtures';
 import { getBeachTouristRecognitionScore } from './utils/touristPriority';
 import { getConsistentVisibleMapExposureLevels, type BeachWindReading } from './utils/mapExposure';
 import type { ExposureLevel } from './utils/windExposure';
+import type { CalmnessTone } from './utils/suitabilityTone';
 import { getRegionWindVariationNote, type RegionBeachWindSample } from './utils/regionWindVariation';
 import { loadGeospatialExposureProfiles, type GeospatialExposureProfileLookup } from './services/geospatialExposureService';
 import { assessBeachWindExposure } from './utils/windExposureEngine';
@@ -4061,8 +4062,48 @@ export const App: React.FC = () => {
   // during a name search (the map still opens centred on the match via mapFitBoundsBeaches).
   // Amenity/preference filters still narrow the pins as before.
   const directoryMapPinBeaches = isBeachNameSearchActive ? mapSuitableBeaches : filteredMapSuitableBeaches;
+
+  /**
+   * The map legend doubles as a filter: tapping «Δύσκολη 8» leaves those 8 beaches on the map and
+   * in the cards below, and hides the rest.
+   *
+   * The colours are NOT recomputed here. BeachMap reports the tone it painted each pin with
+   * (onBeachTonesChange) and this only looks the beach up in that table — the legend, the pins and
+   * the cards are therefore incapable of disagreeing about which beach is which colour, which is
+   * the same rule that governs the legend counts themselves (see BeachMap: tallyMapTones).
+   */
+  const [mapToneFilter, setMapToneFilter] = useState<CalmnessTone | null>(null);
+  const [mapBeachTones, setMapBeachTones] = useState<Record<number, CalmnessTone>>({});
+  // Another region means another set of beaches and another tally; carrying the filter across
+  // could land the user on an empty list with no visible cause.
+  useEffect(() => {
+    setMapToneFilter(null);
+  }, [selectedIsland?.id]);
+  const isMapToneMatch = useCallback((beachId: number) => (
+    !mapToneFilter || mapBeachTones[beachId] === mapToneFilter
+  ), [mapToneFilter, mapBeachTones]);
+  /** For the scored card sources, whose items wrap the beach ({ beach, score, … }). */
+  const applyMapToneFilter = useCallback(<T extends { beach: { id: number } }>(list: T[]): T[] => (
+    mapToneFilter ? list.filter(item => isMapToneMatch(item.beach.id)) : list
+  ), [mapToneFilter, isMapToneMatch]);
+  /** For the "all beaches" source, which is a flat Beach[]. */
+  const applyMapToneFilterFlat = useCallback(<T extends { id: number }>(list: T[]): T[] => (
+    mapToneFilter ? list.filter(item => isMapToneMatch(item.id)) : list
+  ), [mapToneFilter, isMapToneMatch]);
+  /**
+   * Picking a colour has to move the map, not just thin it out.
+   *
+   * Measured on Evia (02/08): filtering to «Δύσκολη 35» left the viewport exactly where it was —
+   * over a stretch of coast that happened to hold none of the 35 — so the user pressed a button
+   * that said "35 beaches" and got an empty map. Re-fitting to the filtered set is the whole
+   * point of the press.
+   */
+  const toneFittedMapBeaches = mapToneFilter ? applyMapToneFilter(mapFitBoundsBeaches) : mapFitBoundsBeaches;
   const mapFitBoundsKey = useMemo(() => {
     if (!selectedIsland) return undefined;
+    // The tone belongs in the key in BOTH branches: without it the fit effect sees the same key
+    // and never re-runs, which is exactly the empty map above.
+    if (mapToneFilter) return `${selectedIsland.id}:tone:${mapToneFilter}`;
     if (!isBeachNameSearchActive) return String(selectedIsland.id);
     // Re-fit whenever the matched set changes (incl. a different single match), so
     // searching a beach pans/centres onto it instead of staying on the island view.
@@ -4071,7 +4112,7 @@ export const App: React.FC = () => {
       .sort((a, b) => a - b)
       .join('-');
     return `${selectedIsland.id}:q:${matchSignature}`;
-  }, [selectedIsland, isBeachNameSearchActive, filteredMapSuitableBeaches]);
+  }, [selectedIsland, isBeachNameSearchActive, filteredMapSuitableBeaches, mapToneFilter]);
   const isProtectedSortOnly = useMemo(() => {
     return sortBy === 'protected' &&
       beachSearchQuery.trim().length === 0 &&
@@ -5570,6 +5611,12 @@ export const App: React.FC = () => {
     showDecisionRecommendations &&
     !hasActiveSearchOrFilters &&
     !isCalmAllSuitable &&
+    // A colour picked on the legend must leave ONE list under ONE heading («Δύσκολες παραλίες
+    // στις 17:00»). The podium is a cross-colour ranking with its own «Top 3» heading, so with a
+    // filter on it would put a second, contradicting title above the same beaches. Standing it
+    // down also releases its beaches back into the list below (which normally excludes them),
+    // so nothing the user asked to see goes missing.
+    !mapToneFilter &&
     directoryTopRecommendationLimit > 0
   );
   const directoryTopRecommendationCards = (() => {
@@ -5672,10 +5719,19 @@ export const App: React.FC = () => {
       (typeof b.distance === 'number' ? b.distance : Infinity)
     ));
   })();
-  const directorySuitableBeachTotalCount = directoryHomeSuitableBeachCards.length;
-  const shouldShowDirectorySuitableSection = shouldShowDirectoryTopRecommendations
-    ? !shouldShowAllBeachesBelowTopRecommendations && directoryHomeSuitableBeachCards.length > 0
-    : !(calmAllAroundSummary?.isEveryBeachSuitable ?? false);
+  // Everything the directory renders passes through the legend filter, so picking a colour on the
+  // map empties the cards of every other colour instead of leaving the two views disagreeing.
+  const toneFilteredTopRecommendationCards = applyMapToneFilter(directoryTopRecommendationCards);
+  const toneFilteredHomeSuitableBeachCards = applyMapToneFilter(directoryHomeSuitableBeachCards);
+  const toneFilteredAllSourceBeaches = applyMapToneFilterFlat(directoryAllSourceBeaches);
+  const directorySuitableBeachTotalCount = toneFilteredHomeSuitableBeachCards.length;
+  const shouldShowDirectorySuitableSection = mapToneFilter
+    // With a colour picked, that list IS the answer — show it whenever it has anything in it,
+    // including on a calm day where the section would normally collapse into "all of them".
+    ? toneFilteredHomeSuitableBeachCards.length > 0
+    : shouldShowDirectoryTopRecommendations
+      ? !shouldShowAllBeachesBelowTopRecommendations && directoryHomeSuitableBeachCards.length > 0
+      : !(calmAllAroundSummary?.isEveryBeachSuitable ?? false);
   const getMobileFilterModalResultCount = (filters: FilterKey[], nextSortBy: SortOption): number => {
     const normalizedFilters = filters.filter(filter => filter !== 'restaurant');
 
@@ -6383,10 +6439,15 @@ export const App: React.FC = () => {
           highlightedBeachId={highlightedMapBeachId}
           followHighlightedBeach={!isDirectoryMapFollowPaused}
           fitBoundsToBeaches
-          fitBoundsBeaches={mapFitBoundsBeaches}
+          fitBoundsBeaches={toneFittedMapBeaches}
           fitBoundsKey={mapFitBoundsKey}
           guardrailBeaches={mapSuitableBeaches}
           onUserInteraction={handleDirectoryMapUserInteraction}
+          // Legend-as-filter: the map hides the pins itself, and reports the colour of every
+          // beach so the cards below can hide exactly the same ones.
+          toneFilter={mapToneFilter}
+          onToneFilterChange={setMapToneFilter}
+          onBeachTonesChange={setMapBeachTones}
           enableScrollWheelZoom={isDesktopViewport}
           isExposureLoading={isMapExposureLoading}
           compactPreviewHeightClassName="h-[13.5rem] sm:h-[26rem] lg:h-[32rem]"
@@ -6467,18 +6528,22 @@ export const App: React.FC = () => {
               mapForecastTimeLabel={mapForecastTimeLabel}
               mapDayStrip={mobileMapDayStrip}
               mapPreview={directoryMapPreview}
-              topRecommendationCards={directoryTopRecommendationCards}
-              suitableBeachCards={directoryHomeSuitableBeachCards}
+              topRecommendationCards={toneFilteredTopRecommendationCards}
+              suitableBeachCards={toneFilteredHomeSuitableBeachCards}
               suitableBeachTotalCount={directorySuitableBeachTotalCount}
               suitableTimePrefix={selectedHourPrefix}
+              activeToneFilter={mapToneFilter}
               onActiveSuitableBeachChange={handleActiveDirectoryBeachChange}
               directorySearchCardFocus={directorySearchCardFocus}
               showSuitableBeachSection={shouldShowDirectorySuitableSection}
-              allBeachCards={directoryAllSourceBeaches}
+              allBeachCards={toneFilteredAllSourceBeaches}
               beachWeatherContexts={mapSuitableBeaches}
-              topBeachToday={directoryTopRecommendationCards.length > 0 ? null : displayedDirectoryTopBeach}
-              topBeachDescription={directoryTopRecommendationCards.length > 0 || !displayedDirectoryTopBeach ? '' : directoryTopDescription}
-              topBeachTimingLabel={directoryTopRecommendationCards.length > 0 ? undefined : directoryTopTimingLabel}
+              // The "beach of the day" hero is a pick across ALL colours, so it stands down while
+              // the user has narrowed the map to one of them — otherwise a red-filtered list would
+              // still be crowned by a blue beach.
+              topBeachToday={mapToneFilter || toneFilteredTopRecommendationCards.length > 0 ? null : displayedDirectoryTopBeach}
+              topBeachDescription={mapToneFilter || toneFilteredTopRecommendationCards.length > 0 || !displayedDirectoryTopBeach ? '' : directoryTopDescription}
+              topBeachTimingLabel={mapToneFilter || toneFilteredTopRecommendationCards.length > 0 ? undefined : directoryTopTimingLabel}
               forecastDays={forecast || undefined}
               selectedDayIndex={selectedDayIndex}
               selectedForecast={selectedForecast}

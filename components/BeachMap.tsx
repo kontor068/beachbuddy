@@ -2,7 +2,7 @@ import React, { useEffect, useMemo, useRef, useState } from 'react';
 import { Circle, MapContainer, TileLayer, Marker, Popup, Tooltip, ZoomControl, useMap } from 'react-leaflet';
 import L from 'leaflet';
 import 'leaflet/dist/leaflet.css';
-import { BadgeCheck, ShowerHead, Footprints, Navigation, MapPin, Clock, Wind, X, Info, Utensils, Waves, Users, Tent, Ticket, Euro, AlertTriangle } from 'lucide-react';
+import { BadgeCheck, ShowerHead, Footprints, Navigation, MapPin, Clock, Wind, X, Info, Utensils, Waves, Users, Tent, Ticket, Euro, AlertTriangle, ChevronRight } from 'lucide-react';
 import { isSurfSpotInSeason } from '../utils/surfSpots';
 import { displayBeachName, localizedPopularityLabel, localizedPaidEntryLabel, localizedPaidEntryExplanation } from '../utils/localization';
 import { SuitableBeach, Beach, LanguageCode, ForecastItem } from '../types';
@@ -84,6 +84,14 @@ interface BeachMapProps {
   /** Accepted for caller compatibility (region coastline id). The pre-redesign map does not
    *  render a coastline ribbon, so this is intentionally unused. */
   regionId?: string;
+  /** Legend filter: when set, only the pins wearing this colour are drawn. The legend keeps
+   *  showing EVERY colour with its full count, so the user can always switch or clear. */
+  toneFilter?: CalmnessTone | null;
+  /** Turns the legend rows into buttons. Tapping the active row clears the filter. */
+  onToneFilterChange?: (tone: CalmnessTone | null) => void;
+  /** The colour each beach on this map is wearing, reported so the cards below can be
+   *  filtered by the exact same tally the pins and the legend are built from. */
+  onBeachTonesChange?: (tones: Record<number, CalmnessTone>) => void;
 }
 
 const visibleExposureLevel = (
@@ -1027,6 +1035,15 @@ const windLegendDotClasses = {
   red: 'bg-rose-600 ring-rose-300',
 } as const;
 
+/** Selected-state skin for a legend row used as a filter button — the row's own colour, softened. */
+const windLegendActiveClasses = {
+  green: 'border-emerald-400 bg-emerald-50 dark:border-emerald-400 dark:bg-emerald-500/15',
+  blue: 'border-sky-400 bg-sky-50 dark:border-sky-400 dark:bg-sky-500/15',
+  yellow: 'border-yellow-400 bg-yellow-50 dark:border-yellow-400 dark:bg-yellow-500/15',
+  orange: 'border-orange-400 bg-orange-50 dark:border-orange-400 dark:bg-orange-500/15',
+  red: 'border-rose-500 bg-rose-50 dark:border-rose-400 dark:bg-rose-500/15',
+} as const;
+
 type WindLegendDot = keyof typeof windLegendDotClasses;
 type MapExposureEvidence = 'supported' | 'estimated';
 
@@ -1650,7 +1667,10 @@ const BeachMap: React.FC<BeachMapProps> = ({
   compactPreviewHeightClassName,
   islandName,
   campsites,
-  exposureLevelOverrides
+  exposureLevelOverrides,
+  toneFilter = null,
+  onToneFilterChange,
+  onBeachTonesChange
 }) => {
   const mapViewportRef = useRef<HTMLDivElement>(null);
   const [mapMode, setMapMode] = useState<'recommendation' | 'wind'>('wind');
@@ -1886,17 +1906,46 @@ const BeachMap: React.FC<BeachMapProps> = ({
   // state is the one loaded for the selected hour; while the user is mid-drag the wind is the
   // scrubbed hour's and the sea is the loaded one, which is the same approximation the pins
   // themselves show until the drag is committed.
-  const mapToneTally = tallyMapTones(
-    beaches.map((item) => resolveConditionTone({
-      exposureLevel: mapMode === 'recommendation' ? getMapExposureLevel(item) : visibleExposureLevel(item),
-      // Same per-beach wind the pin itself uses (beachBeaufort). While the user drags, the
-      // scrubbed hour's region Beaufort stands in — the pins show that same approximation until
-      // the drag is committed, so the two never disagree on screen.
-      beaufort: beachBeaufort(item) ?? sliderDisplayBeaufort ?? 0,
-      isEnclosedCove: Boolean(item.enclosedCove),
-      seaStateM: seaStateSeverityM(item.seaStateWaveM, item.seaStatePeriodS),
-    }))
-  );
+  /**
+   * The colour ONE beach is wearing on this map. Extracted so the pins, the legend counts, the
+   * legend's filter and the cards below all read the same single expression — the legend was
+   * built to be structurally unable to contradict the pins, and a filter derived from a second
+   * copy of this ladder would have reintroduced exactly that.
+   */
+  const beachConditionTone = (item: SuitableBeach): CalmnessTone => resolveConditionTone({
+    exposureLevel: mapMode === 'recommendation' ? getMapExposureLevel(item) : visibleExposureLevel(item),
+    // Same per-beach wind the pin itself uses (beachBeaufort). While the user drags, the
+    // scrubbed hour's region Beaufort stands in — the pins show that same approximation until
+    // the drag is committed, so the two never disagree on screen.
+    beaufort: beachBeaufort(item) ?? sliderDisplayBeaufort ?? 0,
+    isEnclosedCove: Boolean(item.enclosedCove),
+    seaStateM: seaStateSeverityM(item.seaStateWaveM, item.seaStatePeriodS),
+  });
+
+  // Deliberately over EVERY beach on the map, never the filtered subset: picking «Δύσκολη»
+  // must not collapse the legend to a single row the user cannot escape from.
+  const beachTonesById = beaches.map(item => ({ beachId: item.beachId, tone: beachConditionTone(item) }));
+  const mapToneTally = tallyMapTones(beachTonesById.map(entry => entry.tone));
+
+  // Report the tally upward so the cards below the map can hide the same beaches the pins hide.
+  // Keyed on a signature rather than the object, which is rebuilt on every render.
+  const beachTonesSignature = beachTonesById.map(entry => `${entry.beachId}:${entry.tone}`).join(',');
+  const beachTonesRef = useRef(beachTonesById);
+  beachTonesRef.current = beachTonesById;
+  useEffect(() => {
+    if (!onBeachTonesChange) return;
+    const record: Record<number, CalmnessTone> = {};
+    beachTonesRef.current.forEach(entry => { record[entry.beachId] = entry.tone; });
+    onBeachTonesChange(record);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [beachTonesSignature, onBeachTonesChange]);
+
+  // A tone the map no longer contains would leave an empty map with no way back, so an
+  // orphaned filter is simply ignored.
+  const activeToneFilter = toneFilter && (mapToneTally.counts.get(toneFilter) ?? 0) > 0 ? toneFilter : null;
+  const markerBeaches = activeToneFilter
+    ? beaches.filter(item => beachConditionTone(item) === activeToneFilter)
+    : beaches;
   const sliderTone = windSliderTones[mapToneTally.dominant ?? 'blue'];
   const sliderThumbStyle: React.CSSProperties & Record<string, string> = {
     '--beach-map-hour-slider-thumb': sliderTone.color,
@@ -2094,6 +2143,12 @@ const BeachMap: React.FC<BeachMapProps> = ({
   const windColorGuideCopy = getLocalizedCopy<{
     /** One word per tone. Keys are CalmnessTone — every tone the ladder can emit needs one. */
     toneLabel: Record<WindLegendDot, string>;
+    /**
+     * What separates this colour from the one above it, in one short line. Deliberately says
+     * "wind OR sea": since the sea-state ceiling landed (01/08) a beach can be orange on a light
+     * wind day, and a meaning written as a Beaufort band would be the old, wrong legend again.
+     */
+    toneMeaning: Record<WindLegendDot, string>;
     /** Spoken colour name; aria-label/title only, never rendered as text. */
     colorName: Record<WindLegendDot, string>;
     /** Replaces the counted rows at >=7 Bft, where the wind alone makes every pin red. */
@@ -2102,26 +2157,61 @@ const BeachMap: React.FC<BeachMapProps> = ({
   }>(language, {
     en: {
       toneLabel: { blue: 'Excellent', green: 'Enclosed bay, calmer', yellow: 'Good', orange: 'Fair', red: 'Difficult' },
+      toneMeaning: {
+        blue: 'Light wind, flat water',
+        green: 'The bay itself blocks the wind and the swell',
+        yellow: 'A little breeze or ripple, swimming stays easy',
+        orange: 'Noticeable wind or waves — fine for a dip, not for a long swim',
+        red: 'Strong wind or big waves — pick another shore today',
+      },
       colorName: { blue: 'blue', green: 'green', yellow: 'yellow', orange: 'orange', red: 'red' },
       severeLabel: 'Unsuitable', severeColorName: 'danger',
     },
     gr: {
       toneLabel: { blue: 'Ιδανική', green: 'Κλειστός όρμος, πιο ήρεμος', yellow: 'Καλή', orange: 'Μέτρια', red: 'Δύσκολη' },
+      toneMeaning: {
+        blue: 'Λίγος αέρας, ήρεμο νερό',
+        green: 'Ο ίδιος ο όρμος κόβει τον αέρα και το κύμα',
+        yellow: 'Λίγο αεράκι ή κυματάκι, κολυμπάς άνετα',
+        orange: 'Αισθητός αέρας ή κύμα — για μια βουτιά ναι, για ώρες όχι',
+        red: 'Δυνατός αέρας ή μεγάλο κύμα — διάλεξε άλλη ακτή σήμερα',
+      },
       colorName: { blue: 'μπλε', green: 'πράσινο', yellow: 'κίτρινο', orange: 'πορτοκαλί', red: 'κόκκινο' },
       severeLabel: 'Ακατάλληλη', severeColorName: 'κίνδυνος',
     },
     fr: {
       toneLabel: { blue: 'Idéale', green: 'Baie fermée, plus calme', yellow: 'Bonne', orange: 'Correcte', red: 'Difficile' },
+      toneMeaning: {
+        blue: 'Peu de vent, eau plate',
+        green: 'La baie elle-même coupe le vent et la houle',
+        yellow: 'Un peu de brise ou de clapot, on nage tranquillement',
+        orange: 'Vent ou vagues sensibles — pour une baignade courte',
+        red: 'Vent fort ou grosses vagues — choisissez une autre côte',
+      },
       colorName: { blue: 'bleu', green: 'vert', yellow: 'jaune', orange: 'orange', red: 'rouge' },
       severeLabel: 'Déconseillée', severeColorName: 'danger',
     },
     de: {
       toneLabel: { blue: 'Ideal', green: 'Geschlossene Bucht, ruhiger', yellow: 'Gut', orange: 'Mäßig', red: 'Schwierig' },
+      toneMeaning: {
+        blue: 'Wenig Wind, ruhiges Wasser',
+        green: 'Die Bucht selbst bricht Wind und Welle',
+        yellow: 'Etwas Brise oder Kräuselwellen, Schwimmen bleibt leicht',
+        orange: 'Spürbarer Wind oder Wellen — für ein kurzes Bad',
+        red: 'Starker Wind oder hohe Wellen — heute lieber eine andere Küste',
+      },
       colorName: { blue: 'blau', green: 'grün', yellow: 'gelb', orange: 'orange', red: 'rot' },
       severeLabel: 'Ungeeignet', severeColorName: 'danger',
     },
     it: {
       toneLabel: { blue: 'Ideale', green: 'Baia chiusa, più calma', yellow: 'Buona', orange: 'Discreta', red: 'Difficile' },
+      toneMeaning: {
+        blue: 'Poco vento, acqua piatta',
+        green: 'È la baia stessa a fermare vento e onde',
+        yellow: 'Un po\' di brezza o increspature, si nuota bene',
+        orange: 'Vento o onde percettibili — per un bagno breve',
+        red: 'Vento forte o onde alte — meglio un\'altra costa oggi',
+      },
       colorName: { blue: 'blu', green: 'verde', yellow: 'giallo', orange: 'arancione', red: 'rosso' },
       severeLabel: 'Non adatta', severeColorName: 'danger',
     },
@@ -2531,6 +2621,18 @@ const BeachMap: React.FC<BeachMapProps> = ({
   // taking up legend space — and an unexplained badge is worse than no badge.
   const showSurfLegendCue = beaches.some(item => isSurfSpotInSeason(item.beach));
 
+  // Tapping a row shows only those beaches — on the map AND in the cards below, which is why the
+  // rows are only interactive when the parent actually wired the filter up. On the detail map,
+  // where there is nothing to filter, they stay plain text.
+  const isToneFilterEnabled = Boolean(onToneFilterChange) && !isSevereWind;
+  const toneFilterCopy = getLocalizedCopy<{ showOnly: string; showAll: string; hint: string }>(language, {
+    en: { showOnly: 'Show only these', showAll: 'Show all beaches', hint: 'Tap a colour to see only those beaches' },
+    gr: { showOnly: 'Δείξε μόνο αυτές', showAll: 'Δείξε όλες τις παραλίες', hint: 'Πάτα ένα χρώμα για να δεις μόνο αυτές τις παραλίες' },
+    fr: { showOnly: 'Afficher uniquement celles-ci', showAll: 'Afficher toutes les plages', hint: 'Touchez une couleur pour ne voir que ces plages' },
+    de: { showOnly: 'Nur diese anzeigen', showAll: 'Alle Strände anzeigen', hint: 'Tippe eine Farbe an, um nur diese Strände zu sehen' },
+    it: { showOnly: 'Mostra solo queste', showAll: 'Mostra tutte le spiagge', hint: 'Tocca un colore per vedere solo quelle spiagge' },
+  });
+
   const renderWindColorGuideRows = (variant: 'full' | 'preview') => {
     const isPreview = variant === 'preview';
 
@@ -2549,23 +2651,55 @@ const BeachMap: React.FC<BeachMapProps> = ({
               />
             </span>
           </div>
-        ) : visibleWindColorGuideRows.map(row => (
-          <div
-            key={row.tone}
-            className={`${isPreview ? 'text-[10px] sm:text-[11px]' : 'text-[11px]'} flex min-w-0 flex-wrap items-center gap-x-1.5 gap-y-1 font-semibold leading-snug text-slate-600 dark:text-slate-300`}
-          >
-            <span className="inline-flex min-w-0 items-center gap-1">
-              <span
-                aria-label={windColorGuideCopy.colorName[row.tone]}
-                title={windColorGuideCopy.colorName[row.tone]}
-                role="img"
-                className={`h-2.5 w-2.5 shrink-0 rounded-full ring-1 ${windLegendDotClasses[row.tone]}`}
-              />
-              <span className="min-w-0">{windColorGuideCopy.toneLabel[row.tone]}</span>
-              <span className="shrink-0 font-extrabold text-slate-700 dark:text-slate-200">{row.count}</span>
-            </span>
-          </div>
-        ))}
+        ) : visibleWindColorGuideRows.map(row => {
+          const isActive = activeToneFilter === row.tone;
+          const body = (
+            <>
+              <span className="flex min-w-0 items-center gap-1.5">
+                <span
+                  aria-label={windColorGuideCopy.colorName[row.tone]}
+                  title={windColorGuideCopy.colorName[row.tone]}
+                  role="img"
+                  className={`h-2.5 w-2.5 shrink-0 rounded-full ring-1 ${windLegendDotClasses[row.tone]}`}
+                />
+                <span className="min-w-0 truncate">{windColorGuideCopy.toneLabel[row.tone]}</span>
+                <span className="shrink-0 font-extrabold text-slate-700 dark:text-slate-200">{row.count}</span>
+                {isToneFilterEnabled && (
+                  isActive
+                    ? <X aria-hidden="true" className="ml-auto h-3 w-3 shrink-0 text-slate-500" />
+                    : <ChevronRight aria-hidden="true" className="ml-auto h-3 w-3 shrink-0 text-slate-400" />
+                )}
+              </span>
+              {/* The one line that separates this colour from the one above it. Without it the
+                  reader sees five words and no way to tell «Μέτρια» from «Καλή». */}
+              <span className="mt-0.5 block text-left text-[10px] font-medium leading-snug text-slate-500 dark:text-slate-400">
+                {windColorGuideCopy.toneMeaning[row.tone]}
+              </span>
+            </>
+          );
+          const textClasses = `${isPreview ? 'text-[10px] sm:text-[11px]' : 'text-[11px]'} min-w-0 font-semibold leading-snug text-slate-600 dark:text-slate-300`;
+
+          if (!isToneFilterEnabled) {
+            return <div key={row.tone} className={textClasses}>{body}</div>;
+          }
+
+          return (
+            <button
+              key={row.tone}
+              type="button"
+              aria-pressed={isActive}
+              aria-label={`${windColorGuideCopy.toneLabel[row.tone]} (${row.count}) — ${isActive ? toneFilterCopy.showAll : toneFilterCopy.showOnly}`}
+              onClick={() => onToneFilterChange?.(isActive ? null : row.tone)}
+              className={`${textClasses} w-full cursor-pointer rounded-lg border px-2 py-1.5 text-left transition hover:border-slate-400 hover:bg-white hover:shadow-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sky-400 dark:hover:bg-slate-800 ${
+                isActive
+                  ? `${windLegendActiveClasses[row.tone]} shadow-sm`
+                  : 'border-slate-200 bg-white/70 dark:border-slate-700 dark:bg-slate-900/40'
+              }`}
+            >
+              {body}
+            </button>
+          );
+        })}
         {/* The enclosed-cove line used to live here as a separate cue. It is now simply the
             'green' row above, counted like every other colour — one place, one count, and it
             appears exactly when a green pin is on the map rather than on a Beaufort guess. */}
@@ -2596,6 +2730,22 @@ const BeachMap: React.FC<BeachMapProps> = ({
     return (
       <div className={`${isPreview ? 'max-w-full space-y-1.5' : 'space-y-2 border-t border-slate-200 pt-2 dark:border-slate-700'}`}>
         {renderWindColorGuideRows(variant)}
+        {isToneFilterEnabled && (
+          activeToneFilter ? (
+            <button
+              type="button"
+              onClick={() => onToneFilterChange?.(null)}
+              className="inline-flex min-h-8 w-full cursor-pointer items-center justify-center gap-1 rounded-lg bg-slate-900 px-2 text-[10px] font-black text-white transition hover:bg-slate-700"
+            >
+              <X aria-hidden="true" className="h-3 w-3" />
+              {toneFilterCopy.showAll}
+            </button>
+          ) : (
+            <p className="text-center text-[10px] font-semibold leading-snug text-slate-500 dark:text-slate-400">
+              {toneFilterCopy.hint}
+            </p>
+          )
+        )}
       </div>
     );
   };
@@ -2830,7 +2980,9 @@ const BeachMap: React.FC<BeachMapProps> = ({
             highlightedBeachId={highlightedBeachId}
             enabled={followHighlightedBeach}
           />
-          <VisibleBeachTracker beaches={beaches} center={center} onVisibleBeachIdsChange={onVisibleBeachIdsChange} />
+          {/* markerBeaches, not beaches: "what is in view" has to mean what the user can SEE, or
+              a legend filter would leave the desktop viewport list holding hidden pins. */}
+          <VisibleBeachTracker beaches={markerBeaches} center={center} onVisibleBeachIdsChange={onVisibleBeachIdsChange} />
           <MapUserInteractionTracker onUserInteraction={onUserInteraction} />
           <ZoomLabelController threshold={labelZoomThreshold} onLabelOpacityChange={setBeachLabelOpacity} />
 
@@ -2862,7 +3014,7 @@ const BeachMap: React.FC<BeachMapProps> = ({
           ))}
 
           {/* Beach Markers */}
-          {shouldRenderBeachMarkers && beaches.map((item) => {
+          {shouldRenderBeachMarkers && markerBeaches.map((item) => {
             const activeHighlightBeachId = typeof highlightedBeachId === 'number'
               ? highlightedBeachId
               : hoveredBeachId ?? undefined;

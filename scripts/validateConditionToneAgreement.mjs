@@ -311,8 +311,23 @@ if (!/sliderTone\s*=\s*windSliderTones\[/.test(mapSource) || !/mapToneTally/.tes
 }
 {
   // The tone it aggregates must be the shared resolver, fed the same inputs the pins get.
-  const crowd = mapSource.match(/const\s+mapToneTally\s*=[\s\S]{0,900}?\n\s*\);/);
+  //
+  // 02/08/2026: the ladder moved out of the tally expression into `beachConditionTone`, because
+  // the legend rows became filter buttons and the same per-beach tone is now needed in four
+  // places (pins, counts, the filter, and the tone table reported to the cards). The rule is
+  // unchanged — it just follows the expression to where it lives. If beachConditionTone is gone,
+  // the tally expression itself must carry the inputs, which is what the fallback checks.
+  const resolver = mapSource.match(/const\s+beachConditionTone\s*=[\s\S]{0,900}?\n\s*\}\);/);
+  const crowd = resolver || mapSource.match(/const\s+mapToneTally\s*=[\s\S]{0,900}?\n\s*\);/);
   const body = crowd ? crowd[0] : '';
+  if (resolver && !/tallyMapTones\([^)]*beachConditionTone|beachTonesById[\s\S]{0,400}?tallyMapTones/.test(mapSource)) {
+    failures.push({
+      rule: 'slider-has-no-ladder-of-its-own',
+      reason: 'beachConditionTone exists but the tally no longer reads it — the legend counts and '
+        + 'the pins are being coloured by two different expressions again.',
+      row: {},
+    });
+  }
   for (const needle of ['resolveConditionTone', 'exposureLevel', 'seaStateM', 'isEnclosedCove']) {
     if (!body.includes(needle)) {
       failures.push({
@@ -447,6 +462,42 @@ for (const tone of emittedTones) {
           + 'that pin would appear with a coloured dot and no explanation.',
         row: {},
       });
+    }
+  }
+}
+
+// The legend rows double as a filter (02/08/2026): picking one retitles the list below the map
+// («Δύσκολες παραλίες στις 17:00»). That heading is a separate string from the legend word — the
+// legend needs a singular adjective and the heading a plural noun phrase, and forcing one string
+// to be both produces broken Greek. What CAN'T differ is the coverage: a tone the ladder paints
+// but the heading cannot name would leave the user filtered into a list with no title.
+{
+  const homeSource = readFileSync(path.join(root, 'components/BeachSearcherHome.tsx'), 'utf8');
+  const headings = homeSource.match(/const\s+getToneFilterLabel\s*=[\s\S]*?\n\s*return headings\[tone\];/);
+  const body = headings ? headings[0] : '';
+  if (!body) {
+    failures.push({
+      rule: 'every-pin-colour-has-a-legend-word',
+      reason: 'getToneFilterLabel is gone from components/BeachSearcherHome.tsx — the list below the '
+        + 'map can no longer name the colour the user filtered by. If it moved, move this check too.',
+      row: {},
+    });
+  } else {
+    for (const tone of emittedTones) {
+      for (const lang of LANGS) {
+        // Non-greedy up to the block's own closing brace: these values are template literals
+        // carrying ${day}, so a [^}] scan would stop inside the first interpolation.
+        const block = body.match(new RegExp(`\\n\\s*${lang}:\\s*\\{([\\s\\S]*?)\\n\\s*\\},`));
+        const langBody = block ? block[1] : '';
+        if (!new RegExp(`\\b${tone}\\s*:\\s*['"\`][^'"\`]*['"\`]`).test(langBody)) {
+          failures.push({
+            rule: 'every-pin-colour-has-a-legend-word',
+            reason: `the ladder can paint a "${tone}" pin and the legend can filter by it, but there `
+              + `is no ${lang} heading for that list — the cards would sit under an empty title.`,
+            row: {},
+          });
+        }
+      }
     }
   }
 }
