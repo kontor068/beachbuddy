@@ -119,12 +119,37 @@ const DAY_INDEX = 0;
  * slower than it could be, and it refuses to publish below MIN_COVERAGE.
  */
 const CONCURRENCY = 1;
-const REGION_DELAY_MS = 1200;
-const RETRY_BACKOFF_MS = [5000, 15000, 40000];
+const REGION_DELAY_MS = 250;
+const RETRY_BACKOFF_MS = [20000, 45000, 90000];
 /** Below this share of own-shore beaches carrying a sea, the run is not an answer. */
 const MIN_COVERAGE = 0.9;
 
 const sleep = (ms) => new Promise(resolve => setTimeout(resolve, ms));
+
+/**
+ * Open-Meteo counts POINTS, not requests: one batched call carrying 32 coordinates spends 32 of
+ * the ~600 per minute. A fixed pause between regions cannot express that — Halkidiki costs 133
+ * points and Mathraki costs 2, and pacing them identically either crawls or bursts.
+ *
+ * So the throttle is a sliding window over points actually requested. 450/min leaves headroom for
+ * the wind leg and for whatever the browser on this machine is doing. Measured the hard way: three
+ * runs paced by region hit sustained 429s and produced 88,4%, then 64,9%, then 64,3% coverage —
+ * all under this script's own 90% floor, all discarded.
+ */
+const POINTS_PER_MINUTE = 450;
+const pointWindow = [];
+const paceForPoints = async (count) => {
+  for (;;) {
+    const cutoff = performance.now() - 60_000;
+    while (pointWindow.length && pointWindow[0].at < cutoff) pointWindow.shift();
+    const spent = pointWindow.reduce((sum, entry) => sum + entry.count, 0);
+    if (spent + count <= POINTS_PER_MINUTE) break;
+    const waitMs = Math.max(1000, pointWindow[0].at + 60_000 - performance.now());
+    process.stderr.write(`\r  rate limit: ${spent} points in the last minute, waiting ${Math.ceil(waitMs / 1000)}s…        `);
+    await sleep(waitMs);
+  }
+  pointWindow.push({ at: performance.now(), count });
+};
 
 const percentile = (values, p) => {
   if (!values.length) return 0;
@@ -215,6 +240,10 @@ const band = (waveM, periodS) => {
 
 const measureRegion = async (region) => {
   const resolution = resolveBeachMarinePoints(region.beaches, region.profiles, region.regionPoint);
+
+  // +1 for the region's wind point. Charged before the call, not after, so a large region waits
+  // for room rather than discovering it was over the line from a 429.
+  await paceForPoints(resolution.points.length + 1);
 
   const [windByPoint, marineByPoint] = await Promise.all([
     fetchForecastDataBatch([region.regionPoint]),
