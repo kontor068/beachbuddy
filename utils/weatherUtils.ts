@@ -41,12 +41,15 @@ export const summarizeDailyMarine = (items: ForecastItem[]): MarineForecast | un
 /**
  * Give one day's forecast a different SEA, and nothing else.
  *
- * A beach's wave comes from its own shore (utils/marineSamplePoints) while its wind, temperature
- * and weather keep coming from the region — the wind field does not change basin the way a wave
- * field does around a headland, and the Beaufort figure, the exposure colour and the freshness
- * clock all hang off it. So this returns the SAME `wind`, `weather` and temperatures by
- * reference, on purpose: scripts/validateBeachMarineResolution.mjs asserts identity, not deep
- * equality, because a copy that happens to match today is a copy that can drift tomorrow.
+ * A beach's wave comes from its own shore (utils/marineSamplePoints); this function leaves the
+ * wind, temperature and weather exactly as they were, BY REFERENCE, on purpose.
+ * scripts/validateBeachMarineResolution.mjs asserts identity, not deep equality, because a copy
+ * that happens to match today is a copy that can drift tomorrow.
+ *
+ * The wind does move per beach too, since 02/08/2026 — but through its own deliberate function
+ * below (applyBeachWindToDailyForecast), fed by the cluster forecasts and guarded by its own
+ * gate. The two stay separate exactly as RULE 4 of that validator demands: a wind that arrives
+ * by riding along inside a change about the SEA is a wind nobody chose.
  *
  * Why the hourly array has to be rebuilt and not just the daily summary: App's
  * getSelectedHourMarine deliberately refuses to fall back to the daily figure for wave fields
@@ -91,6 +94,50 @@ export const applyMarineToDailyForecast = (
   if (!swappedAny) return base;
 
   return { ...base, hourly, marine: summarizeDailyMarine(hourly) };
+};
+
+/**
+ * Give one day's forecast a different WIND, and nothing else.
+ *
+ * The twin of the function above, and deliberately NOT part of it. Until 02/08/2026 every beach
+ * on a region's page printed one Beaufort figure, measured at the region's geometric centre:
+ * 1.532 of 2.850 beaches (53,8%) sit in a different cell of the weather model than that point,
+ * and measured nationally over 8.550 beach-hours it is at least one Beaufort away from the
+ * beach's own shore 35,9% of the time. The map had already moved to each beach's own reading;
+ * the card beside it had not, so «2 Μπφ» could belong to a shore 40 km away.
+ *
+ * `windSource` is that beach's cluster forecast, already adjusted to the same hour as `base`.
+ * Both levels are swapped — the day headline and every hour the beach series covers — because a
+ * forecast object holding the beach's wind on top and the region's underneath is the exact
+ * "same object, two winds" trap that produced a card and a map disagreeing about one beach.
+ *
+ * Everything else, including the whole marine block, is returned by reference. An hour the beach
+ * series does not cover keeps the region's wind: a missing reading must never read as calm.
+ * Returns the base object unchanged when there is nothing to swap, so a beach with no cluster of
+ * its own — no geometry, a failed fetch, the first paint — is byte-identical to before.
+ */
+export const applyBeachWindToDailyForecast = (
+  base: DailyForecast,
+  windSource: Pick<DailyForecast, 'wind' | 'hourly'> | undefined
+): DailyForecast => {
+  const beachWind = windSource?.wind;
+  if (!beachWind || typeof beachWind.speed !== 'number' || !Number.isFinite(beachWind.speed)) return base;
+  if (beachWind === base.wind) return base;
+
+  const windByTime = new Map<string, ForecastItem['wind']>();
+  (windSource?.hourly ?? []).forEach(item => {
+    const wind = item?.wind;
+    if (wind && typeof wind.speed === 'number' && Number.isFinite(wind.speed)) {
+      windByTime.set(item.dt_txt, wind);
+    }
+  });
+
+  const hourly = base.hourly?.map(item => {
+    const ownWind = windByTime.get(item.dt_txt);
+    return ownWind && ownWind !== item.wind ? { ...item, wind: ownWind } : item;
+  });
+
+  return { ...base, wind: beachWind, hourly: hourly ?? base.hourly };
 };
 
 const parseLocalDay = (dayString: string): Date => {

@@ -35,7 +35,7 @@ import { useBeaches } from './hooks/useBeaches';
 import { useWeather, type BeachMarineContext } from './hooks/useWeather';
 import { useLocation } from './hooks/useLocation';
 import { translations } from './translations';
-import { degToCompass, getBeaufortLevel, isWinterSeason, processForecastData, applyMarineToDailyForecast } from './utils/weatherUtils';
+import { degToCompass, getBeaufortLevel, isWinterSeason, processForecastData, applyMarineToDailyForecast, applyBeachWindToDailyForecast } from './utils/weatherUtils';
 import { getRegionWindContext, LOCAL_WIND_LABEL } from './utils/localWindContext.mjs';
 import { trackEvent, trackPageView, buildBeachExposureParams } from './services/analyticsService';
 import { recordPageview } from './services/pageviewBeacon';
@@ -3316,6 +3316,30 @@ export const App: React.FC = () => {
     return adjusted;
   }, [selectedBeachForecasts, deferredSelectedHourDt]);
 
+  /**
+   * EACH BEACH IS SCORED AND PRINTED WITH THE WIND AT ITS OWN SHORE (02/08/2026).
+   *
+   * The last place the single region number survived. The map moved to per-beach readings on
+   * 01/08 and the gates that hide and rank beaches on 02/08, but the CARD still printed one
+   * Beaufort for every beach on the page — measured nationally over 8.550 beach-hours, at least
+   * one Beaufort away from the beach's own shore 35,9% of the time. Reported as «στα Χανιά η
+   * πυξίδα λέει 2 Μπφ και οι πάνω παραλίες είναι κατακόκκινες»: both were true at once, from two
+   * different winds.
+   *
+   * The swap is deliberately its own step (utils/weatherUtils.applyBeachWindToDailyForecast) and
+   * never rides along inside the marine merge — see RULE 4 of validateBeachMarineResolution.
+   *
+   * Skipped in "Κοντά μου": there each beach is already scored from its OWN home region's
+   * forecast, and these clusters belong to the synthetic GPS region, not to those regions.
+   */
+  const beachWindSourceById = useMemo<BeachWeatherById>(() => (
+    isNearMeRegionActive ? EMPTY_BEACH_FORECAST_MAP : hourAdjustedBeachForecasts
+  ), [isNearMeRegionActive, hourAdjustedBeachForecasts]);
+  /** One beach's forecast with its own wind in it — unchanged when it has no cluster reading. */
+  const withBeachOwnWind = React.useCallback((beachId: number, forecast: DailyForecast): DailyForecast => (
+    applyBeachWindToDailyForecast(forecast, beachWindSourceById[beachId])
+  ), [beachWindSourceById]);
+
   const detailBeachWeatherById = useMemo<BeachWeatherById>(() => {
     const beachId = detailBeach?.id;
     if (beachId == null) return hourAdjustedBeachForecasts;
@@ -3624,20 +3648,22 @@ export const App: React.FC = () => {
       // page. For a normal island that AREA forecast is the island's; in "Κοντά μου" it is the
       // beach's OWN home-region forecast (nearMeBeachForecastById), so a beach reads identically
       // whether browsed on its island or in the near-me list, and never off the user's GPS point.
-      // The SEA is the beach's own (deferredBeachAreaForecastById); the wind, temperature and
-      // weather inside that object are still the area's, by reference. Order matters: near-me
-      // wins because there the whole area forecast belongs to another region.
+      // The SEA is the beach's own (deferredBeachAreaForecastById), and since 02/08/2026 so is
+      // the WIND (withBeachOwnWind) — temperature and weather stay the area's, by reference.
+      // Order matters: near-me wins because there the whole area forecast belongs to another
+      // region, and the wind swap is skipped there for the same reason.
       const beachAreaForecast = nearMeBeachForecastById[beach.id]
         ?? deferredBeachAreaForecastById[beach.id]
         ?? deferredSelectedForecast;
-      scores.set(beach.id, calculateBeachScore(beach, beachAreaForecast, userLocation, preferences, {
+      const beachOwnForecast = withBeachOwnWind(beach.id, beachAreaForecast);
+      scores.set(beach.id, calculateBeachScore(beach, beachOwnForecast, userLocation, preferences, {
         weatherSource: 'island-fallback',
-        hourlyForecast: beachAreaForecast.hourly,
+        hourlyForecast: beachOwnForecast.hourly,
         geospatialProfile: geospatialExposureProfiles?.[beach.id],
       }));
     });
     return scores;
-  }, [selectedIsland, deferredSelectedForecast, deferredBeachAreaForecastById, nearMeBeachForecastById, userLocation, preferences, geospatialExposureProfiles]);
+  }, [selectedIsland, deferredSelectedForecast, deferredBeachAreaForecastById, nearMeBeachForecastById, userLocation, preferences, geospatialExposureProfiles, withBeachOwnWind]);
   // Localized "time window" label for the selected slider hour (e.g. "στις 15:00–18:00"),
   // shown in the suitable-beach header so it reflects the moment, not just "today".
   const selectedHourPrefix = useMemo(() => {
@@ -3779,10 +3805,11 @@ export const App: React.FC = () => {
       const waveHeightM = selectedForecast.marine?.waveHeightM;
       const beachWindSpeedKmph = selectedForecast.wind.speed * 3.6;
       const weatherSuitableBeaches = beaches.filter(beach => {
-        // Same sea the score above used. Before 01/08/2026 this fallback re-scored from the AREA
-        // forecast, so on the frames where beachScoreById had not caught up the recommendation
-        // filter judged a beach on the region's wave and the card beside it showed the beach's.
-        const filterForecast = beachAreaForecastById[beach.id] ?? selectedForecast;
+        // Same sea AND same wind the score above used. Before 01/08/2026 this fallback re-scored
+        // from the AREA forecast, so on the frames where beachScoreById had not caught up the
+        // recommendation filter judged a beach on the region's wave and the card beside it showed
+        // the beach's. The wind half of that split closed on 02/08.
+        const filterForecast = withBeachOwnWind(beach.id, beachAreaForecastById[beach.id] ?? selectedForecast);
         const scoreResult = beachScoreById.get(beach.id) ?? calculateBeachScore(beach, filterForecast, userLocation, preferences, {
           weatherSource: 'island-fallback',
           hourlyForecast: filterForecast.hourly,
@@ -3807,7 +3834,7 @@ export const App: React.FC = () => {
       const result = getFilteredBeaches(beaches, filters, deferredBeachSearchQuery, effectiveSortBy, windDirection, selectedForecast, userLocation, preferences);
     return result;
     }
-  ), [beachScoreById, beachAreaForecastById, deferredBeachSearchQuery, geospatialExposureProfiles, getFilteredBeaches, preferences, selectedForecast, selectedIsland, userLocation, windiestShoreBeaufort]);
+  ), [beachScoreById, beachAreaForecastById, deferredBeachSearchQuery, geospatialExposureProfiles, getFilteredBeaches, preferences, selectedForecast, selectedIsland, userLocation, windiestShoreBeaufort, withBeachOwnWind]);
 
   const filteredBeaches = useMemo(() => (
     getFilteredBeachResults(selectedFilters, sortBy)
@@ -3860,38 +3887,37 @@ export const App: React.FC = () => {
         };
       }
 
-      // WIND from the AREA forecast — the same one the map arrow and the card headline use, so a
-      // beach reads ONE consistent wind/verdict everywhere, available immediately with no flip on
-      // load. SEA from the beach's own shore since 01/08/2026 (beachAreaForecastById): the wave is
-      // the one quantity that genuinely differs between two sides of a cape, and it arrives in the
-      // same state commit as the forecast, so there is still nothing to flip. Urgent, not
-      // deferred, so the figure never lags a region/hour change. In "Κοντά μου" the beach's OWN
-      // home-region forecast wins outright (see nearMeBeachForecastById).
+      // SEA from the beach's own shore since 01/08/2026 (beachAreaForecastById) and WIND from its
+      // own shore since 02/08 (withBeachOwnWind) — so the card's Beaufort, its verdict and the pin
+      // beside it all read the same weather, the beach's. Urgent, not deferred, so the figure
+      // never lags a region/hour change. Temperature and weather stay the area's. In "Κοντά μου"
+      // the beach's OWN home-region forecast wins outright and the wind swap stands down (see
+      // nearMeBeachForecastById / beachWindSourceById).
       const beachAreaForecast = nearMeBeachForecastById[beach.id]
         ?? beachAreaForecastById[beach.id]
         ?? selectedForecast;
+      const beachOwnForecast = withBeachOwnWind(beach.id, beachAreaForecast);
 
-      const scoreResult = calculateBeachScore(beach, beachAreaForecast, userLocation, preferences, {
+      const scoreResult = calculateBeachScore(beach, beachOwnForecast, userLocation, preferences, {
         weatherSource: 'island-fallback',
-        hourlyForecast: beachAreaForecast.hourly,
+        hourlyForecast: beachOwnForecast.hourly,
         geospatialProfile: geospatialExposure,
       });
 
-      // The area-level assessment. It still supplies the beach's PROFILE (facing, source,
-      // warnings) and the exposureLevel the card reads. What it no longer decides alone is the
-      // map marker: since 01/08/2026 the marker's Beaufort comes from the beach's own cluster
-      // (perBeachMapWind) and, since the evening of the same day, so does the wind DIRECTION —
-      // getVisibleMapExposureLevel now derives the geometry sector from the direction it is
-      // handed instead of the windSector filled in here. Measured on live national weather:
-      // 452 of 8.550 beach-hours change colour, none of them a calm pin over a real blow.
+      // The exposure assessment behind the CARD. It supplies the beach's profile (facing, source,
+      // warnings) and the exposureLevel the card reads — and since 02/08/2026 it is fed the
+      // beach's own wind, the same reading the map marker has used since 01/08 (perBeachMapWind).
+      // Feeding it the region wind while the card printed the beach's Beaufort would have left the
+      // card's word and its number describing two different winds — the very split this whole
+      // change exists to close.
       const islandWindAssessment = assessBeachWindExposure({
         beach,
         geospatialProfile: geospatialExposure,
-        windDirectionDeg: beachAreaForecast.wind.deg,
-        windDirection: degToCompass(beachAreaForecast.wind.deg),
-        windSpeedKmh: beachAreaForecast.wind.speed * 3.6,
-        beaufort: getBeaufortLevel(beachAreaForecast.wind.speed * 3.6),
-        waveHeightMeters: beachAreaForecast.marine?.waveHeightM,
+        windDirectionDeg: beachOwnForecast.wind.deg,
+        windDirection: degToCompass(beachOwnForecast.wind.deg),
+        windSpeedKmh: beachOwnForecast.wind.speed * 3.6,
+        beaufort: getBeaufortLevel(beachOwnForecast.wind.speed * 3.6),
+        waveHeightMeters: beachOwnForecast.marine?.waveHeightM,
       });
       const mapExposureLevel = islandWindAssessment.exposureLevel;
 
@@ -3929,7 +3955,7 @@ export const App: React.FC = () => {
         geospatialExposure,
       };
     });
-  }, [geospatialExposureProfiles, language, nearMeBeachForecastById, beachAreaForecastById, preferences, selectedForecast, selectedIsland, userLocation]);
+  }, [geospatialExposureProfiles, language, nearMeBeachForecastById, beachAreaForecastById, preferences, selectedForecast, selectedIsland, userLocation, withBeachOwnWind]);
 
   // mapSuitableBeaches drives BOTH the map (keep every beach, incl. naturist) and, when
   // reused as a recommendation fallback source, the directory/top-pick lists. This variant

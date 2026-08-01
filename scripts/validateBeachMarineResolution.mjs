@@ -348,6 +348,133 @@ if (typeof applyMarineToDailyForecast !== 'function') {
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
+// RULE 5 — and the WIND swap is the mirror image: it changes the wind at both levels and
+// touches nothing else.
+//
+// The twin of RULE 4, added 02/08/2026 when the card stopped printing one Beaufort per region.
+// RULE 4 says a change about the sea may not move the wind; this one says a change about the
+// wind may not move the sea — otherwise the two paths quietly merge again and the wave figure
+// starts drifting behind a change nobody made about water.
+//
+// Three things it holds beyond that separation, each of which was a real failure mode in the
+// marine version: the daily headline and the hours must move TOGETHER (an object holding the
+// beach's wind on top and the region's underneath is how a card and a map came to disagree
+// about one beach); an hour the beach series does not cover keeps the region's wind, because a
+// missing reading must never read as calm; and with no cluster at all the base object comes
+// back untouched, which is what keeps every beach with no geometry, a failed fetch or a first
+// paint scored exactly as before.
+// ─────────────────────────────────────────────────────────────────────────────
+let applyBeachWindToDailyForecast;
+try {
+  ({ applyBeachWindToDailyForecast } = require(path.join(root, 'utils/weatherUtils.ts')));
+} catch (error) {
+  failures.push(`RULE 5 — could not load utils/weatherUtils.ts: ${error.message}`);
+}
+
+if (typeof applyBeachWindToDailyForecast !== 'function') {
+  failures.push(
+    'RULE 5 — utils/weatherUtils.ts does not export applyBeachWindToDailyForecast. The card is '
+    + 'back on one wind per region, and the map beside it is not.'
+  );
+} else {
+  const regionWind = { speed: 4, deg: 20 };
+  const hourly = [0, 1, 2].map(index => ({
+    dt: 1_700_000_000 + index * 3600,
+    dt_txt: `2026-08-02 0${8 + index}:00:00`,
+    wind: regionWind,
+    main: { temp: 28 },
+    marine: { waveHeightM: 1.2, wavePeriodS: 4.5, source: 'open-meteo-marine' },
+  }));
+  const base = {
+    date: new Date('2026-08-02T08:00:00Z'),
+    temp_max: 31,
+    temp_min: 23,
+    weather: { main: 'Clear', description: 'clear sky', icon: '01d' },
+    wind: regionWind,
+    marine: { waveHeightM: 1.2, wavePeriodS: 4.5, source: 'open-meteo-marine' },
+    hourly,
+  };
+  // A cluster that covers only the first two of the three hours.
+  const beachWind = { speed: 13, deg: 340 };
+  const windSource = {
+    wind: beachWind,
+    hourly: hourly.slice(0, 2).map(item => ({ ...item, wind: beachWind })),
+  };
+
+  const withWind = applyBeachWindToDailyForecast(base, windSource);
+
+  if (withWind === base) {
+    failures.push('RULE 5 — applyBeachWindToDailyForecast returned the base object; the wind was never swapped.');
+  }
+  if (withWind.wind !== beachWind) {
+    failures.push("RULE 5 — the day headline still carries the region wind, so the card prints someone else's Beaufort.");
+  }
+  if (withWind.marine !== base.marine) {
+    failures.push('RULE 5 — the wind swap replaced the MARINE block. The sea has its own path (RULE 4); the two must stay separate.');
+  }
+  if (withWind.weather !== base.weather) {
+    failures.push('RULE 5 — the wind swap replaced the WEATHER object.');
+  }
+  if (withWind.temp_max !== base.temp_max || withWind.temp_min !== base.temp_min) {
+    failures.push('RULE 5 — the wind swap changed the temperature.');
+  }
+  if (!withWind.hourly || withWind.hourly.length !== base.hourly.length) {
+    failures.push('RULE 5 — the wind swap dropped or padded hours.');
+  } else {
+    [0, 1].forEach(index => {
+      if (withWind.hourly[index].wind !== beachWind) {
+        failures.push(`RULE 5 — hourly[${index}].wind kept the region wind while the headline moved. One object, two winds.`);
+      }
+      if (withWind.hourly[index].marine !== base.hourly[index].marine) {
+        failures.push(`RULE 5 — hourly[${index}].marine was replaced by a change about the WIND.`);
+      }
+    });
+    if (withWind.hourly[2].wind !== regionWind) {
+      failures.push(
+        'RULE 5 — an hour the beach series does not cover lost the region wind. A missing reading '
+        + 'must fall back, never read as calm.'
+      );
+    }
+  }
+
+  if (applyBeachWindToDailyForecast(base, undefined) !== base) {
+    failures.push('RULE 5 — with no cluster forecast the base object was not returned untouched. That fallback ranks every beach whose fetch has not landed.');
+  }
+  if (applyBeachWindToDailyForecast(base, { wind: undefined, hourly: [] }) !== base) {
+    failures.push('RULE 5 — a cluster with no wind still produced a new object.');
+  }
+  if (applyBeachWindToDailyForecast(base, { wind: { speed: Number.NaN, deg: 10 }, hourly: [] }) !== base) {
+    failures.push('RULE 5 — a non-finite wind speed was accepted. It would print as 0 Bft: a false calm.');
+  }
+}
+
+// RULE 5b — and App has to actually use it EVERYWHERE the card's figure is born.
+//
+// Counted, not merely present. A name check passes while the wiring is cut: App scores beaches
+// in three places with identical-looking lines, so "does the file contain the call" stayed true
+// with one of them reverted. Caught by sabotaging it. Every calculateBeachScore in App must be
+// handed a forecast that went through the wind swap first.
+const appSourceForWind = readFileSync(path.join(root, 'App.tsx'), 'utf8');
+const countOf = (pattern) => (appSourceForWind.match(pattern) ?? []).length;
+const scoringCalls = countOf(/calculateBeachScore\(beach,/g);
+const windSwaps = countOf(/withBeachOwnWind\(beach\.id,/g);
+
+if (scoringCalls === 0) {
+  failures.push('RULE 5 — App.tsx no longer scores beaches here. If that moved, move this rule with it.');
+} else if (windSwaps < scoringCalls) {
+  failures.push(
+    `RULE 5 — ${scoringCalls} scoring call(s) in App.tsx but only ${windSwaps} wind swap(s). At `
+    + 'least one card is back on the region Beaufort while the map beside it stays per-beach.'
+  );
+}
+if (!/isNearMeRegionActive \? EMPTY_BEACH_FORECAST_MAP : hourAdjustedBeachForecasts/.test(appSourceForWind)) {
+  failures.push(
+    'RULE 5 — the wind swap no longer stands down in "Κοντά μου", where each beach is scored from '
+    + 'its own home region and these clusters belong to the synthetic GPS region instead.'
+  );
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
 console.log(
   `Beach marine resolution: ${regionsChecked} regions, ${beachesChecked} beaches, `
   + `${distinctPointsTotal} distinct sea points, ${opposingPairsChecked} opposing pairs checked.`
