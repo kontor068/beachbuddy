@@ -1,10 +1,10 @@
 {
-  "generatedAt": "2026-06-26T01:50:20.990Z",
+  "generatedAt": "2026-08-02T14:44:41.348Z",
   "scope": "national",
-  "source": "OpenStreetMap Overpass (natural=beach | leisure/tourism=beach_resort)",
-  "uniqueOsmElements": 7665,
-  "namedCandidates": 3096,
-  "dedupedCandidates": 3046,
+  "source": "OpenStreetMap Overpass (natural=beach | named natural=shingle | leisure/tourism=beach_resort)",
+  "uniqueOsmElements": 7703,
+  "namedCandidates": 3115,
+  "dedupedCandidates": 3065,
   "candidates": [
     {
       "id": "way/1424276477",
@@ -372,8 +372,8 @@
         "achla"
       ],
       "coordinates": {
-        "lat": 37.8938294,
-        "lon": 24.9512388
+        "lat": 37.8938197,
+        "lon": 24.9513041
       },
       "tags": {
         "access": "yes",
@@ -507,7 +507,8 @@
       },
       "tags": {
         "name": "Acquasanta Beach",
-        "natural": "beach"
+        "natural": "beach",
+        "surface": "sand"
       },
       "sourceName": "OpenStreetMap Overpass",
       "sourceUrl": "https://www.openstreetmap.org/way/519447917"
@@ -3686,7 +3687,8 @@
         "name": "Άγιος Ρωμανός",
         "name:el": "Άγιος Ρωμανός",
         "natural": "beach",
-        "source": "bing"
+        "source": "bing",
+        "surface": "sand"
       },
       "sourceName": "OpenStreetMap Overpass",
       "sourceUrl": "https://www.openstreetmap.org/way/265931887"
@@ -4482,20 +4484,24 @@
     },
     {
       "id": "way/220709738",
-      "name": "Agriolivadi",
-      "displayName": "Agriolivadi",
-      "normalizedName": "agriolivadi",
+      "name": "Αγριολιυάδι",
+      "displayName": "Agrioliyadi",
+      "normalizedName": "αγριολιυαδι",
       "nameKeys": [
-        "agriolivadi"
+        "αγριολιυαδι",
+        "agrioliyadi"
       ],
       "coordinates": {
         "lat": 37.342222,
         "lon": 26.5564935
       },
       "tags": {
+        "int_name": "Agriolivadi",
+        "name": "Αγριολιυάδι",
         "name:en": "Agriolivadi",
         "name:es": "Agriolivadi",
-        "natural": "beach"
+        "natural": "beach",
+        "surface": "sand"
       },
       "sourceName": "OpenStreetMap Overpass",
       "sourceUrl": "https://www.openstreetmap.org/way/220709738"
@@ -4787,7 +4793,7 @@
       ],
       "coordinates": {
         "lat": 40.1766652,
-        "lon": 23.7145419
+        "lon": 23.7145485
       },
       "tags": {
         "name": "Ακτή Καλογριάς",
@@ -5252,7 +5258,6 @@
         "name": "Αλμυρός",
         "name:en": "Almiros",
         "natural": "beach",
-        "surface": "sand",
         "type": "multipolygon",
         "wikidata": "Q53632172"
       },
@@ -5789,8 +5794,8 @@
         "ammolofoi agiou paylou melissa"
       ],
       "coordinates": {
-        "lat": 35.10259,
-        "lon": 24.5605524
+        "lat": 35.1028502,
+        "lon": 24.5608125
       },
       "tags": {
         "name": "Αμμόλοφοι Αγίου Παύλου (Μέλισσα)",
@@ -5812,8 +5817,8 @@
         "ammolofous"
       ],
       "coordinates": {
-        "lat": 35.1071243,
-        "lon": 24.5584714
+        "lat": 35.1070841,
+        "lon": 24.5589211
       },
       "tags": {
         "name": "Αμμόλοφους",
@@ -6039,7 +6044,8 @@
       },
       "tags": {
         "name:en": "Ammoudara Beach",
-        "natural": "beach"
+        "natural": "beach",
+        "surface": "sand"
       },
       "sourceName": "OpenStreetMap Overpass",
       "sourceUrl": "https://www.openstreetmap.org/way/376172189"
@@ -6108,6 +6114,28 @@
       },
       "sourceName": "OpenStreetMap Overpass",
       "sourceUrl": "https://www.openstreetmap.org/way/465394828"
+    },
+    {
+      "id": "way/362757120",
+      "name": "Αμμουδιά",
+      "displayName": "Ammoudia",
+      "normalizedName": "αμμουδια",
+      "nameKeys": [
+        "αμμουδια",
+        "ammoudia"
+      ],
+      "coordinates": {
+        "lat": 38.4091846,
+        "lon": 21.2531686
+      },
+      "tags": {
+        "access": "yes",
+        "name": "Αμμουδιά",
+        "natural": "shingle",
+        "surface": "sand"
+      },
+      "sourceName": "OpenStreetMap Overpass",
+      "sourceUrl": "https://www.openstreetmap.org/way/362757120"
     },
     {
       "id": "way/443466494",
@@ -8998,7 +9026,7 @@
       "sourceUrl": "https://www.openstreetmap.org/relation/454576"
     },
     {
-      "id": "node/9915156685",
+      "id": "way/1545373090",
       "name": "Beach Tokmakia",
       "displayName": "Beach Tokmakia",
       "normalizedName": "tokmakia",
@@ -9006,15 +9034,15 @@
         "tokmakia"
       ],
       "coordinates": {
-        "lat": 39.3193301,
-        "lon": 26.409269
+        "lat": 39.3185157,
+        "lon": 26.4096142
       },
       "tags": {
         "name": "Beach Tokmakia",
         "natural": "beach"
       },
       "sourceName": "OpenStreetMap Overpass",
-      "sourceUrl": "https://www.openstreetmap.org/node/9915156685"
+      "sourceUrl": "https://www.openstreetmap.org/way/1545373090"
     },
     {
       "id": "way/510595236",
@@ -9439,6 +9467,29 @@
       "sourceUrl": "https://www.openstreetmap.org/way/1416418352"
     },
     {
+      "id": "node/14013883942",
+      "name": "Casa Mersedes",
+      "displayName": "Casa Mersedes",
+      "normalizedName": "casa mersedes",
+      "nameKeys": [
+        "casa mersedes"
+      ],
+      "coordinates": {
+        "lat": 39.9825872,
+        "lon": 23.6461508
+      },
+      "tags": {
+        "amenity": "bar",
+        "contact:instagram": "casa.mersedes",
+        "description": "Beach, pool, lounge & restaurant",
+        "leisure": "beach_resort",
+        "name": "Casa Mersedes",
+        "website": "https://www.casamersedes.com/"
+      },
+      "sourceName": "OpenStreetMap Overpass",
+      "sourceUrl": "https://www.openstreetmap.org/node/14013883942"
+    },
+    {
       "id": "way/229418702",
       "name": "Castello beach",
       "displayName": "Castello beach",
@@ -9447,8 +9498,8 @@
         "castello"
       ],
       "coordinates": {
-        "lat": 40.1248238,
-        "lon": 23.7644496
+        "lat": 40.1247779,
+        "lon": 23.7644536
       },
       "tags": {
         "access": "yes",
@@ -9864,8 +9915,8 @@
         "chelatros"
       ],
       "coordinates": {
-        "lat": 35.3475531,
-        "lon": 26.8717926
+        "lat": 35.3475369,
+        "lon": 26.8717481
       },
       "tags": {
         "int_name": "Helatros",
@@ -11226,6 +11277,7 @@
         "name:el": "Δημοτική Πλαζ 1",
         "name:en": "Ierissos Municipal 1",
         "natural": "beach",
+        "surface": "sand",
         "wikidata": "Q53629758"
       },
       "sourceName": "OpenStreetMap Overpass",
@@ -11249,6 +11301,7 @@
         "name:el": "Δημοτική Πλαζ 2",
         "name:en": "Ierissos Municipal 2",
         "natural": "beach",
+        "surface": "sand",
         "wikidata": "Q53629746"
       },
       "sourceName": "OpenStreetMap Overpass",
@@ -11273,6 +11326,7 @@
         "name:el": "Δημοτική Πλαζ 3",
         "name:en": "Ierissos Municipal 3",
         "natural": "beach",
+        "surface": "sand",
         "wikidata": "Q53629741"
       },
       "sourceName": "OpenStreetMap Overpass",
@@ -11866,8 +11920,8 @@
         "empros dialiskar"
       ],
       "coordinates": {
-        "lat": 37.5517954,
-        "lon": 25.1204269
+        "lat": 37.5518501,
+        "lon": 25.1204775
       },
       "tags": {
         "access": "yes",
@@ -14424,6 +14478,26 @@
       "sourceUrl": "https://www.openstreetmap.org/way/499298073"
     },
     {
+      "id": "way/345727382",
+      "name": "Giali beach",
+      "displayName": "Giali beach",
+      "normalizedName": "giali",
+      "nameKeys": [
+        "giali"
+      ],
+      "coordinates": {
+        "lat": 39.6140762,
+        "lon": 19.7688307
+      },
+      "tags": {
+        "name:en": "Giali beach",
+        "name:it": "Spiaggia Gyali",
+        "natural": "beach"
+      },
+      "sourceName": "OpenStreetMap Overpass",
+      "sourceUrl": "https://www.openstreetmap.org/way/345727382"
+    },
+    {
       "id": "way/128467420",
       "name": "Γιαλισκάρι",
       "displayName": "Gialiskari",
@@ -14737,7 +14811,6 @@
         "name:en": "Glossa Beach (nudist)",
         "name:ru": "пляж Глосса (нудист.)",
         "natural": "beach",
-        "nudism": "yes",
         "surface": "sand"
       },
       "sourceName": "OpenStreetMap Overpass",
@@ -15561,7 +15634,7 @@
       ],
       "coordinates": {
         "lat": 36.8430966,
-        "lon": 22.2580449
+        "lon": 22.2580446
       },
       "tags": {
         "name:en": "Halikoura Beach",
@@ -17385,6 +17458,27 @@
       "sourceUrl": "https://www.openstreetmap.org/way/496694775"
     },
     {
+      "id": "node/10803858168",
+      "name": "Kaliva Residence",
+      "displayName": "Kaliva Residence",
+      "normalizedName": "kaliva residence",
+      "nameKeys": [
+        "kaliva residence"
+      ],
+      "coordinates": {
+        "lat": 37.7384666,
+        "lon": 20.9056808
+      },
+      "tags": {
+        "name": "Kaliva Residence",
+        "natural": "beach",
+        "note": "Kaliva Residence",
+        "surface": "gravel"
+      },
+      "sourceName": "OpenStreetMap Overpass",
+      "sourceUrl": "https://www.openstreetmap.org/node/10803858168"
+    },
+    {
       "id": "way/1434391382",
       "name": "Καλλιφτέρη",
       "displayName": "Kallifteri",
@@ -17478,8 +17572,8 @@
         "kalo ampeli"
       ],
       "coordinates": {
-        "lat": 37.1236198,
-        "lon": 24.4954753
+        "lat": 37.1236102,
+        "lon": 24.49546
       },
       "tags": {
         "name": "Καλό Αμπέλι",
@@ -22616,7 +22710,8 @@
         "name:el": "Κολοκύθα",
         "name:en": "Kolokitha",
         "name:fr": "Kolokýtha",
-        "natural": "beach"
+        "natural": "beach",
+        "surface": "sand"
       },
       "sourceName": "OpenStreetMap Overpass",
       "sourceUrl": "https://www.openstreetmap.org/way/132324825"
@@ -23315,8 +23410,7 @@
       },
       "tags": {
         "name": "Κουμπάρες",
-        "natural": "beach",
-        "surface": "sand"
+        "natural": "beach"
       },
       "sourceName": "OpenStreetMap Overpass",
       "sourceUrl": "https://www.openstreetmap.org/way/495440371"
@@ -23621,25 +23715,6 @@
       },
       "sourceName": "OpenStreetMap Overpass",
       "sourceUrl": "https://www.openstreetmap.org/way/1212185709"
-    },
-    {
-      "id": "way/167043956",
-      "name": "Koutsouri Beach",
-      "displayName": "Koutsouri Beach",
-      "normalizedName": "koutsouri",
-      "nameKeys": [
-        "koutsouri"
-      ],
-      "coordinates": {
-        "lat": 39.1296677,
-        "lon": 23.4554392
-      },
-      "tags": {
-        "name:en": "Koutsouri Beach",
-        "natural": "beach"
-      },
-      "sourceName": "OpenStreetMap Overpass",
-      "sourceUrl": "https://www.openstreetmap.org/way/167043956"
     },
     {
       "id": "way/901874045",
@@ -25330,7 +25405,7 @@
       ],
       "coordinates": {
         "lat": 35.1552099,
-        "lon": 25.8592813
+        "lon": 25.8592442
       },
       "tags": {
         "name": "Legamenis Beach",
@@ -25446,26 +25521,6 @@
       },
       "sourceName": "OpenStreetMap Overpass",
       "sourceUrl": "https://www.openstreetmap.org/way/295333254"
-    },
-    {
-      "id": "way/502641681",
-      "name": "Λεντού",
-      "displayName": "Lentoy",
-      "normalizedName": "λεντου",
-      "nameKeys": [
-        "λεντου",
-        "lentoy"
-      ],
-      "coordinates": {
-        "lat": 37.2974841,
-        "lon": 26.7638691
-      },
-      "tags": {
-        "name": "Λεντού",
-        "natural": "beach"
-      },
-      "sourceName": "OpenStreetMap Overpass",
-      "sourceUrl": "https://www.openstreetmap.org/way/502641681"
     },
     {
       "id": "relation/7009976",
@@ -25854,6 +25909,47 @@
       "sourceUrl": "https://www.openstreetmap.org/node/1313136360"
     },
     {
+      "id": "node/14056200360",
+      "name": "Λιασίκι",
+      "displayName": "Liasiki",
+      "normalizedName": "λιασικι",
+      "nameKeys": [
+        "λιασικι",
+        "liasiki"
+      ],
+      "coordinates": {
+        "lat": 38.9084958,
+        "lon": 22.8376082
+      },
+      "tags": {
+        "fixme": "turn to area",
+        "name": "Λιασίκι",
+        "natural": "beach"
+      },
+      "sourceName": "OpenStreetMap Overpass",
+      "sourceUrl": "https://www.openstreetmap.org/node/14056200360"
+    },
+    {
+      "id": "way/502641681",
+      "name": "Λιεντού",
+      "displayName": "Lientoy",
+      "normalizedName": "λιεντου",
+      "nameKeys": [
+        "λιεντου",
+        "lientoy"
+      ],
+      "coordinates": {
+        "lat": 37.2974841,
+        "lon": 26.7638691
+      },
+      "tags": {
+        "name": "Λιεντού",
+        "natural": "beach"
+      },
+      "sourceName": "OpenStreetMap Overpass",
+      "sourceUrl": "https://www.openstreetmap.org/way/502641681"
+    },
+    {
       "id": "way/207351944",
       "name": "Λίγκρες",
       "displayName": "Ligkres",
@@ -26057,7 +26153,8 @@
         "name": "Λιμάνι",
         "name:el": "Λιμάνι",
         "name:en": "Limani",
-        "natural": "beach"
+        "natural": "beach",
+        "surface": "sand"
       },
       "sourceName": "OpenStreetMap Overpass",
       "sourceUrl": "https://www.openstreetmap.org/way/361446635"
@@ -29160,6 +29257,26 @@
       "sourceUrl": "https://www.openstreetmap.org/way/492399238"
     },
     {
+      "id": "way/512906901",
+      "name": "Marathounda Bay",
+      "displayName": "Marathounda Bay",
+      "normalizedName": "marathounda bay",
+      "nameKeys": [
+        "marathounda bay"
+      ],
+      "coordinates": {
+        "lat": 36.5665703,
+        "lon": 27.8618621
+      },
+      "tags": {
+        "name": "Marathounda Bay",
+        "natural": "beach",
+        "surface": "sand"
+      },
+      "sourceName": "OpenStreetMap Overpass",
+      "sourceUrl": "https://www.openstreetmap.org/way/512906901"
+    },
+    {
       "id": "way/708208484",
       "name": "Mare",
       "displayName": "Mare",
@@ -29742,6 +29859,30 @@
       },
       "sourceName": "OpenStreetMap Overpass",
       "sourceUrl": "https://www.openstreetmap.org/way/228362657"
+    },
+    {
+      "id": "relation/17857173",
+      "name": "Μαύρα Βόλια",
+      "displayName": "Mayra Volia",
+      "normalizedName": "μαυρα βολια",
+      "nameKeys": [
+        "μαυρα βολια",
+        "mayra volia"
+      ],
+      "coordinates": {
+        "lat": 38.1820121,
+        "lon": 26.0266036
+      },
+      "tags": {
+        "description": "Black volcanic shingle beach; possibly formed from the eruption of Santorini.",
+        "name": "Μαύρα Βόλια",
+        "name:el": "Μαύρα Βόλια",
+        "name:en": "Mavra Volia",
+        "natural": "shingle",
+        "type": "multipolygon"
+      },
+      "sourceName": "OpenStreetMap Overpass",
+      "sourceUrl": "https://www.openstreetmap.org/relation/17857173"
     },
     {
       "id": "way/166227818",
@@ -31168,6 +31309,31 @@
       "sourceUrl": "https://www.openstreetmap.org/way/167043661"
     },
     {
+      "id": "way/366818147",
+      "name": "Μικρή Μυλοκοπή",
+      "displayName": "Mikri Mylokopi",
+      "normalizedName": "μικρη μυλοκοπη",
+      "nameKeys": [
+        "μικρη μυλοκοπη",
+        "mikri mylokopi"
+      ],
+      "coordinates": {
+        "lat": 38.0600607,
+        "lon": 22.9158769
+      },
+      "tags": {
+        "lifeguard": "no",
+        "name": "Μικρή Μυλοκοπή",
+        "natural": "beach",
+        "note": "Πρόσβαση πεζοπορικά ή από θαλάσσης",
+        "source": "bing",
+        "supervised": "no",
+        "surface": "pebblestone"
+      },
+      "sourceName": "OpenStreetMap Overpass",
+      "sourceUrl": "https://www.openstreetmap.org/way/366818147"
+    },
+    {
       "id": "way/1457452287",
       "name": "Μικρή παραλία",
       "displayName": "Mikri paralia",
@@ -31274,7 +31440,8 @@
         "name:de": "Klein Triopetra (Strand)",
         "name:el": "Μικρή Τριόπετρα",
         "name:en": "Mikri Triopetra Beach",
-        "natural": "beach"
+        "natural": "beach",
+        "surface": "fine_gravel"
       },
       "sourceName": "OpenStreetMap Overpass",
       "sourceUrl": "https://www.openstreetmap.org/way/176296868"
@@ -32643,7 +32810,8 @@
         "name": "Μουσιού",
         "name:el": "Μουσιού",
         "name:en": "Mousiou",
-        "natural": "beach"
+        "natural": "beach",
+        "surface": "sand"
       },
       "sourceName": "OpenStreetMap Overpass",
       "sourceUrl": "https://www.openstreetmap.org/way/361446683"
@@ -33222,6 +33390,27 @@
       "sourceUrl": "https://www.openstreetmap.org/way/885440824"
     },
     {
+      "id": "way/128664274",
+      "name": "Μυλοκοπή",
+      "displayName": "Mylokopi",
+      "normalizedName": "μυλοκοπη",
+      "nameKeys": [
+        "μυλοκοπη",
+        "mylokopi"
+      ],
+      "coordinates": {
+        "lat": 38.0564246,
+        "lon": 22.9109276
+      },
+      "tags": {
+        "name": "Μυλοκοπή",
+        "natural": "beach",
+        "surface": "sand"
+      },
+      "sourceName": "OpenStreetMap Overpass",
+      "sourceUrl": "https://www.openstreetmap.org/way/128664274"
+    },
+    {
       "id": "way/109410874",
       "name": "Μυλοπόταμος",
       "displayName": "Mylopotamos",
@@ -33643,16 +33832,14 @@
         "int_name": "Navagio",
         "lifeguard": "no",
         "name": "Ναυάγιο",
-        "name:de": "Navagio-Strand",
         "name:el": "Ναυάγιο",
-        "name:en": "Navagio beach",
         "natural": "beach",
         "source": "https://www.e-nomothesia.gr/kat-naytilia-nausiploia/kya-7190-2023.html",
         "supervised": "no",
         "surface": "sand",
         "type": "multipolygon",
         "wikidata": "Q2460851",
-        "wikipedia": "en:Navagio Beach"
+        "wikipedia": "en:Navagio"
       },
       "sourceName": "OpenStreetMap Overpass",
       "sourceUrl": "https://www.openstreetmap.org/relation/543875"
@@ -33715,13 +33902,24 @@
         "navtikos omilos parou"
       ],
       "coordinates": {
-        "lat": 37.0937947,
-        "lon": 25.1554945
+        "lat": 37.0935425,
+        "lon": 25.1559048
       },
       "tags": {
         "amenity": "cafe",
+        "check_date": "2026-07-26",
+        "internet_access": "wlan",
+        "internet_access:fee": "customers",
+        "internet_access:ssid": "Omilos Parou Restaurant WiFi",
         "leisure": "beach_resort",
-        "name": "Ναυτικός όμιλος Πάρου"
+        "name": "Ναυτικός όμιλος Πάρου",
+        "opening_hours": "09:00-21:00",
+        "outdoor_seating": "yes",
+        "payment:cash": "yes",
+        "payment:credit_cards": "yes",
+        "payment:debit_cards": "yes",
+        "phone": "+30 2284 026706",
+        "wheelchair": "yes"
       },
       "sourceName": "OpenStreetMap Overpass",
       "sourceUrl": "https://www.openstreetmap.org/node/5072875829"
@@ -34217,6 +34415,26 @@
       "sourceUrl": "https://www.openstreetmap.org/way/363577114"
     },
     {
+      "id": "node/14060151953",
+      "name": "nimos beach",
+      "displayName": "nimos beach",
+      "normalizedName": "nimos",
+      "nameKeys": [
+        "nimos"
+      ],
+      "coordinates": {
+        "lat": 36.6581357,
+        "lon": 27.856218
+      },
+      "tags": {
+        "name": "nimos beach",
+        "name:el": "Νιμος",
+        "natural": "beach"
+      },
+      "sourceName": "OpenStreetMap Overpass",
+      "sourceUrl": "https://www.openstreetmap.org/node/14060151953"
+    },
+    {
       "id": "way/500993641",
       "name": "Νιψιάς",
       "displayName": "Nipsias",
@@ -34625,26 +34843,6 @@
       },
       "sourceName": "OpenStreetMap Overpass",
       "sourceUrl": "https://www.openstreetmap.org/node/6798824885"
-    },
-    {
-      "id": "node/10089767072",
-      "name": "Nude Swimming Area",
-      "displayName": "Nude Swimming Area",
-      "normalizedName": "nude swimming area",
-      "nameKeys": [
-        "nude swimming area"
-      ],
-      "coordinates": {
-        "lat": 36.6224439,
-        "lon": 27.8379742
-      },
-      "tags": {
-        "name": "Nude Swimming Area",
-        "natural": "beach",
-        "nudism": "yes"
-      },
-      "sourceName": "OpenStreetMap Overpass",
-      "sourceUrl": "https://www.openstreetmap.org/node/10089767072"
     },
     {
       "id": "node/13124733029",
@@ -35685,6 +35883,7 @@
       "tags": {
         "name": "Παλιοσταφίδα",
         "natural": "beach",
+        "surface": "sand",
         "wikidata": "Q53630997"
       },
       "sourceName": "OpenStreetMap Overpass",
@@ -36369,6 +36568,25 @@
       "sourceUrl": "https://www.openstreetmap.org/way/181123968"
     },
     {
+      "id": "way/441870160",
+      "name": "Papu",
+      "displayName": "Papu",
+      "normalizedName": "papu",
+      "nameKeys": [
+        "papu"
+      ],
+      "coordinates": {
+        "lat": 40.7744913,
+        "lon": 24.5956635
+      },
+      "tags": {
+        "name:en": "Papu",
+        "natural": "beach"
+      },
+      "sourceName": "OpenStreetMap Overpass",
+      "sourceUrl": "https://www.openstreetmap.org/way/441870160"
+    },
+    {
       "id": "way/258890972",
       "name": "Παρ. ΄Αμπελος",
       "displayName": "Par. ΄Ampelos",
@@ -36866,6 +37084,29 @@
       },
       "sourceName": "OpenStreetMap Overpass",
       "sourceUrl": "https://www.openstreetmap.org/way/1283190357"
+    },
+    {
+      "id": "way/1539779530",
+      "name": "Παραλία \"Βαθύς Γιαλός\"",
+      "displayName": "Paralia \"Vathys Gialos\"",
+      "normalizedName": "βαθυς γιαλος",
+      "nameKeys": [
+        "βαθυς γιαλος",
+        "vathys gialos"
+      ],
+      "coordinates": {
+        "lat": 36.5533698,
+        "lon": 27.869326
+      },
+      "tags": {
+        "lifeguard": "no",
+        "name": "Παραλία \"Βαθύς Γιαλός\"",
+        "natural": "beach",
+        "supervised": "no",
+        "surface": "sand"
+      },
+      "sourceName": "OpenStreetMap Overpass",
+      "sourceUrl": "https://www.openstreetmap.org/way/1539779530"
     },
     {
       "id": "relation/15936058",
@@ -37869,8 +38110,8 @@
         "agiou georgiou"
       ],
       "coordinates": {
-        "lat": 36.5981935,
-        "lon": 27.8712838
+        "lat": 36.5978447,
+        "lon": 27.8712041
       },
       "tags": {
         "int_name": "St. Georgios beach",
@@ -37957,8 +38198,8 @@
         "agiou ioanni"
       ],
       "coordinates": {
-        "lat": 40.1919432,
-        "lon": 23.69349
+        "lat": 40.1919442,
+        "lon": 23.6933007
       },
       "tags": {
         "name": "Παραλία Αγίου Ιωάννη",
@@ -38237,6 +38478,29 @@
       },
       "sourceName": "OpenStreetMap Overpass",
       "sourceUrl": "https://www.openstreetmap.org/way/380646398"
+    },
+    {
+      "id": "relation/533716",
+      "name": "Παραλία Αγίου Θεολόγου",
+      "displayName": "Paralia Agiou Theologou",
+      "normalizedName": "αγιου θεολογου",
+      "nameKeys": [
+        "αγιου θεολογου",
+        "agiou theologou"
+      ],
+      "coordinates": {
+        "lat": 37.3261054,
+        "lon": 26.5435025
+      },
+      "tags": {
+        "name": "Παραλία Αγίου Θεολόγου",
+        "name:el": "Παραλία Αγίου Θεολόγου",
+        "name:en": "Saint Theologos Beach",
+        "natural": "beach",
+        "type": "multipolygon"
+      },
+      "sourceName": "OpenStreetMap Overpass",
+      "sourceUrl": "https://www.openstreetmap.org/relation/533716"
     },
     {
       "id": "node/2407941530",
@@ -38612,7 +38876,8 @@
         "name:el": "Παραλία Αλυκές",
         "name:en": "Alikes beach",
         "name:mk": "Солена плажа",
-        "natural": "beach"
+        "natural": "beach",
+        "surface": "sand"
       },
       "sourceName": "OpenStreetMap Overpass",
       "sourceUrl": "https://www.openstreetmap.org/way/366089686"
@@ -38647,7 +38912,7 @@
         "alyki"
       ],
       "coordinates": {
-        "lat": 36.9967359,
+        "lat": 36.9966925,
         "lon": 25.1357293
       },
       "tags": {
@@ -39014,8 +39279,8 @@
         "anthemou"
       ],
       "coordinates": {
-        "lat": 40.1463182,
-        "lon": 23.7333349
+        "lat": 40.1463064,
+        "lon": 23.733357
       },
       "tags": {
         "name": "Παραλία Ανθέμου",
@@ -39957,6 +40222,27 @@
       "sourceUrl": "https://www.openstreetmap.org/way/1108039000"
     },
     {
+      "id": "way/167043956",
+      "name": "Παραλία Διαμάντι",
+      "displayName": "Paralia Diamanti",
+      "normalizedName": "διαμαντι",
+      "nameKeys": [
+        "διαμαντι",
+        "diamanti"
+      ],
+      "coordinates": {
+        "lat": 39.1296677,
+        "lon": 23.4554392
+      },
+      "tags": {
+        "name": "Παραλία Διαμάντι",
+        "name:en": "Diamanti Beach",
+        "natural": "beach"
+      },
+      "sourceName": "OpenStreetMap Overpass",
+      "sourceUrl": "https://www.openstreetmap.org/way/167043956"
+    },
+    {
       "id": "way/590778786",
       "name": "Παραλία Διασκάρι",
       "displayName": "Paralia Diaskari",
@@ -40543,6 +40829,30 @@
       },
       "sourceName": "OpenStreetMap Overpass",
       "sourceUrl": "https://www.openstreetmap.org/relation/3004547"
+    },
+    {
+      "id": "way/1539779152",
+      "name": "Παραλία Φανερωμένη",
+      "displayName": "Paralia Faneromeni",
+      "normalizedName": "φανερωμενη",
+      "nameKeys": [
+        "φανερωμενη",
+        "faneromeni"
+      ],
+      "coordinates": {
+        "lat": 36.5454561,
+        "lon": 27.8610542
+      },
+      "tags": {
+        "alt_name": "Faneromeni Beach",
+        "lifeguard": "no",
+        "name": "Παραλία Φανερωμένη",
+        "natural": "beach",
+        "supervised": "no",
+        "surface": "paved"
+      },
+      "sourceName": "OpenStreetMap Overpass",
+      "sourceUrl": "https://www.openstreetmap.org/way/1539779152"
     },
     {
       "id": "way/544674285",
@@ -41791,8 +42101,8 @@
         "groikos"
       ],
       "coordinates": {
-        "lat": 37.303148,
-        "lon": 26.5617227
+        "lat": 37.3031357,
+        "lon": 26.5617223
       },
       "tags": {
         "name": "Παραλία Γροίκος",
@@ -43873,6 +44183,31 @@
       "sourceUrl": "https://www.openstreetmap.org/way/283545950"
     },
     {
+      "id": "way/160205175",
+      "name": "Παραλία Κήπου",
+      "displayName": "Paralia Kipou",
+      "normalizedName": "κηπου",
+      "nameKeys": [
+        "κηπου",
+        "kipou"
+      ],
+      "coordinates": {
+        "lat": 40.4239132,
+        "lon": 25.6918363
+      },
+      "tags": {
+        "lifeguard": "no",
+        "name": "Παραλία Κήπου",
+        "name:el": "Παραλία Κήπου",
+        "name:en": "Kipos Beach",
+        "natural": "shingle",
+        "supervised": "no",
+        "surface": "pebblestone"
+      },
+      "sourceName": "OpenStreetMap Overpass",
+      "sourceUrl": "https://www.openstreetmap.org/way/160205175"
+    },
+    {
       "id": "node/747841712",
       "name": "Παραλία Κιβερίου",
       "displayName": "Paralia Kiveriou",
@@ -45148,8 +45483,8 @@
         "lethra"
       ],
       "coordinates": {
-        "lat": 36.4375696,
-        "lon": 27.3878363
+        "lat": 36.4374666,
+        "lon": 27.3880535
       },
       "tags": {
         "name": "Paralia Lethra",
@@ -47122,27 +47457,6 @@
       "sourceUrl": "https://www.openstreetmap.org/way/124979376"
     },
     {
-      "id": "way/128664274",
-      "name": "Παραλία Μυλοκοπή",
-      "displayName": "Paralia Mylokopi",
-      "normalizedName": "μυλοκοπη",
-      "nameKeys": [
-        "μυλοκοπη",
-        "mylokopi"
-      ],
-      "coordinates": {
-        "lat": 38.0564246,
-        "lon": 22.9109276
-      },
-      "tags": {
-        "name": "Παραλία Μυλοκοπή",
-        "natural": "beach",
-        "surface": "sand"
-      },
-      "sourceName": "OpenStreetMap Overpass",
-      "sourceUrl": "https://www.openstreetmap.org/way/128664274"
-    },
-    {
       "id": "way/814938796",
       "name": "Παραλία Μύλων",
       "displayName": "Paralia Mylon",
@@ -47394,8 +47708,8 @@
         "nikitis"
       ],
       "coordinates": {
-        "lat": 40.2142777,
-        "lon": 23.6684267
+        "lat": 40.2150351,
+        "lon": 23.6670937
       },
       "tags": {
         "name": "Παραλία Νικήτης",
@@ -47417,8 +47731,8 @@
         "nikitis"
       ],
       "coordinates": {
-        "lat": 40.2068217,
-        "lon": 23.6754606
+        "lat": 40.2075473,
+        "lon": 23.6742571
       },
       "tags": {
         "name": "Παραλία Νικήτης",
@@ -47730,6 +48044,30 @@
       "sourceUrl": "https://www.openstreetmap.org/way/1038669391"
     },
     {
+      "id": "way/1539772537",
+      "name": "Παραλία Πανορμίτη",
+      "displayName": "Paralia Panormiti",
+      "normalizedName": "πανορμιτη",
+      "nameKeys": [
+        "πανορμιτη",
+        "panormiti"
+      ],
+      "coordinates": {
+        "lat": 36.5487601,
+        "lon": 27.8418936
+      },
+      "tags": {
+        "alt_name": "Panormitis Plajı",
+        "lifeguard": "no",
+        "name": "Παραλία Πανορμίτη",
+        "natural": "beach",
+        "supervised": "no",
+        "surface": "sand"
+      },
+      "sourceName": "OpenStreetMap Overpass",
+      "sourceUrl": "https://www.openstreetmap.org/way/1539772537"
+    },
+    {
       "id": "way/293081016",
       "name": "Παραλία Πανόρμου Σκοπέλου",
       "displayName": "Paralia Panormou Skopelou",
@@ -48015,6 +48353,7 @@
         "lon": 26.5615163
       },
       "tags": {
+        "name": "Παραλία Πέτρας",
         "name:el": "Παραλία Πέτρας",
         "name:en": "Petra Beach",
         "natural": "beach"
@@ -49802,8 +50141,8 @@
         "spathion"
       ],
       "coordinates": {
-        "lat": 40.170237,
-        "lon": 23.7208495
+        "lat": 40.1702226,
+        "lon": 23.7208804
       },
       "tags": {
         "name": "Παραλία Σπαθιών",
@@ -50282,6 +50621,29 @@
       },
       "sourceName": "OpenStreetMap Overpass",
       "sourceUrl": "https://www.openstreetmap.org/node/13939173092"
+    },
+    {
+      "id": "way/1533088989",
+      "name": "Παραλία Τημενίου",
+      "displayName": "Paralia Timeniou",
+      "normalizedName": "τημενιου",
+      "nameKeys": [
+        "τημενιου",
+        "timeniou"
+      ],
+      "coordinates": {
+        "lat": 37.5791299,
+        "lon": 22.7355015
+      },
+      "tags": {
+        "name": "Παραλία Τημενίου",
+        "name:el": "Παραλία Τημενίου",
+        "name:en": "Timenio beach",
+        "natural": "beach",
+        "surface": "pebblestone"
+      },
+      "sourceName": "OpenStreetMap Overpass",
+      "sourceUrl": "https://www.openstreetmap.org/way/1533088989"
     },
     {
       "id": "node/7613249258",
@@ -54216,7 +54578,8 @@
         "name:de": "Ierissos Strand",
         "name:el": "Πλαζ Ιερισσός",
         "name:en": "Ierissos Beach",
-        "natural": "beach"
+        "natural": "beach",
+        "surface": "sand"
       },
       "sourceName": "OpenStreetMap Overpass",
       "sourceUrl": "https://www.openstreetmap.org/way/363019709"
@@ -56088,8 +56451,8 @@
         "proti ammoudia"
       ],
       "coordinates": {
-        "lat": 40.5857021,
-        "lon": 23.7969498
+        "lat": 40.5859926,
+        "lon": 23.7965137
       },
       "tags": {
         "name": "Πρώτη Αμμουδιά",
@@ -57213,6 +57576,25 @@
       "sourceUrl": "https://www.openstreetmap.org/way/1037349299"
     },
     {
+      "id": "node/13955327565",
+      "name": "RENI Beach Bar",
+      "displayName": "RENI Beach Bar",
+      "normalizedName": "reni bar",
+      "nameKeys": [
+        "reni bar"
+      ],
+      "coordinates": {
+        "lat": 36.164042,
+        "lon": 28.0894881
+      },
+      "tags": {
+        "leisure": "beach_resort",
+        "name": "RENI Beach Bar"
+      },
+      "sourceName": "OpenStreetMap Overpass",
+      "sourceUrl": "https://www.openstreetmap.org/node/13955327565"
+    },
+    {
       "id": "way/114578894",
       "name": "Ρηχά νερά",
       "displayName": "Richa nera",
@@ -57766,25 +58148,6 @@
       },
       "sourceName": "OpenStreetMap Overpass",
       "sourceUrl": "https://www.openstreetmap.org/way/435644813"
-    },
-    {
-      "id": "node/11193254926",
-      "name": "Saint Theologos Beach",
-      "displayName": "Saint Theologos Beach",
-      "normalizedName": "saint theologos",
-      "nameKeys": [
-        "saint theologos"
-      ],
-      "coordinates": {
-        "lat": 37.3261046,
-        "lon": 26.5433868
-      },
-      "tags": {
-        "name": "Saint Theologos Beach",
-        "natural": "beach"
-      },
-      "sourceName": "OpenStreetMap Overpass",
-      "sourceUrl": "https://www.openstreetmap.org/node/11193254926"
     },
     {
       "id": "way/228351194",
@@ -58782,6 +59145,28 @@
       "sourceUrl": "https://www.openstreetmap.org/way/323852514"
     },
     {
+      "id": "way/1367292368",
+      "name": "Shanti Beach Bar",
+      "displayName": "Shanti Beach Bar",
+      "normalizedName": "shanti bar",
+      "nameKeys": [
+        "shanti bar"
+      ],
+      "coordinates": {
+        "lat": 40.7649615,
+        "lon": 23.8994925
+      },
+      "tags": {
+        "addr:city": "Paralia Ofryniou",
+        "addr:postcode": "64008",
+        "addr:street": "Ofrynio Beach",
+        "leisure": "beach_resort",
+        "name": "Shanti Beach Bar"
+      },
+      "sourceName": "OpenStreetMap Overpass",
+      "sourceUrl": "https://www.openstreetmap.org/way/1367292368"
+    },
+    {
       "id": "way/270597148",
       "name": "Σι Μου Σι",
       "displayName": "Si Mou Si",
@@ -59484,6 +59869,27 @@
       },
       "sourceName": "OpenStreetMap Overpass",
       "sourceUrl": "https://www.openstreetmap.org/way/496777277"
+    },
+    {
+      "id": "node/14006084826",
+      "name": "Skokkini Beach",
+      "displayName": "Skokkini Beach",
+      "normalizedName": "skokkini",
+      "nameKeys": [
+        "skokkini"
+      ],
+      "coordinates": {
+        "lat": 36.4309276,
+        "lon": 27.3913191
+      },
+      "tags": {
+        "lifeguard": "no",
+        "name": "Skokkini Beach",
+        "natural": "beach",
+        "supervised": "no"
+      },
+      "sourceName": "OpenStreetMap Overpass",
+      "sourceUrl": "https://www.openstreetmap.org/node/14006084826"
     },
     {
       "id": "way/345204513",
@@ -60813,8 +61219,8 @@
         "stoypa"
       ],
       "coordinates": {
-        "lat": 36.8452679,
-        "lon": 22.258818
+        "lat": 36.8452399,
+        "lon": 22.258812
       },
       "tags": {
         "alt_name": "Παραλία Στούπας",
@@ -61903,7 +62309,7 @@
         "tis grias to pidima"
       ],
       "coordinates": {
-        "lat": 37.7828236,
+        "lat": 37.7827776,
         "lon": 24.9579306
       },
       "tags": {
@@ -64030,6 +64436,26 @@
       "sourceUrl": "https://www.openstreetmap.org/way/409106843"
     },
     {
+      "id": "way/1446848567",
+      "name": "Βαρδάρι",
+      "displayName": "Vardari",
+      "normalizedName": "βαρδαρι",
+      "nameKeys": [
+        "βαρδαρι",
+        "vardari"
+      ],
+      "coordinates": {
+        "lat": 37.9768368,
+        "lon": 23.3232941
+      },
+      "tags": {
+        "name": "Βαρδάρι",
+        "natural": "beach"
+      },
+      "sourceName": "OpenStreetMap Overpass",
+      "sourceUrl": "https://www.openstreetmap.org/way/1446848567"
+    },
+    {
       "id": "relation/4052264",
       "name": "Βάρδια",
       "displayName": "Vardia",
@@ -65385,15 +65811,12 @@
       },
       "tags": {
         "access": "yes",
-        "lifeguard": "no",
         "name": "Βοϊδοκοιλιά",
         "name:el": "Βοϊδοκοιλιά",
         "name:en": "Voidokilia beach",
         "name:ru": "пляж Воидокиля",
         "natural": "beach",
-        "supervised": "no",
-        "surface": "sand",
-        "wikidata": "Q890802"
+        "surface": "sand"
       },
       "sourceName": "OpenStreetMap Overpass",
       "sourceUrl": "https://www.openstreetmap.org/way/376699923"
@@ -66025,7 +66448,8 @@
       "tags": {
         "name:el": "Βρινιώτης",
         "name:en": "Vriniotis Beach",
-        "natural": "beach"
+        "natural": "beach",
+        "website": "https://www.pheia.com/beach/"
       },
       "sourceName": "OpenStreetMap Overpass",
       "sourceUrl": "https://www.openstreetmap.org/node/9982904115"
@@ -66528,6 +66952,27 @@
       },
       "sourceName": "OpenStreetMap Overpass",
       "sourceUrl": "https://www.openstreetmap.org/way/239652298"
+    },
+    {
+      "id": "node/2640982591",
+      "name": "Wiggi Beach",
+      "displayName": "Wiggi Beach",
+      "normalizedName": "wiggi",
+      "nameKeys": [
+        "wiggi"
+      ],
+      "coordinates": {
+        "lat": 40.1071395,
+        "lon": 23.9970734
+      },
+      "tags": {
+        "name": "Wiggi Beach",
+        "name:de": "Wiggi Beach",
+        "name:en": "Wiggi Beach",
+        "natural": "beach"
+      },
+      "sourceName": "OpenStreetMap Overpass",
+      "sourceUrl": "https://www.openstreetmap.org/node/2640982591"
     },
     {
       "id": "way/62170301",

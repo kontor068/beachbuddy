@@ -1,0 +1,69 @@
+{
+  "_meta": {
+    "generatedAt": "2026-08-02",
+    "source": "national-gap-report (harvest with the natural=shingle fix) + independent web verification",
+    "count": 4,
+    "note": "18 candidates were classified likely_missing nationally. 9 carried business tags (leisure=beach_resort on a bar, hotel or gorge) and were dropped without further work; two of those, Rusty Cannon and Salty Wave, are paid sections of Schinias, which we already carry. Of the 9 that looked like genuine beaches, 4 are confirmed by sources independent of OSM and are listed here. The other 5 are in `deferred` with the reason each one failed.",
+    "deferred": [
+      "Αμμουδαριά (Andros) — unchanged from the 26/06 decision: Andros is a fully-curated windProfile island and scripts/windExposureValidation.ts asserts 41/41 override coverage, so a new beach there needs a hand-authored windProfile first. Still deferred.",
+      "Παραλία \"Βαθύς Γιαλός\" (Symi) — OSM only. symitop.gr's Symi beach guide names 12 beaches and this is not among them, and no independent source describes it. Not inserted.",
+      "nimos beach (Symi) — OSM only. Nimos is an uninhabited islet and a declared wildlife sanctuary north of Symi; sources confirm the islet has secluded beaches but none names this one, and it is reachable only by private boat. Not inserted.",
+      "Παραλία Γτμνιστών Αμμόλοφοι (Epanomi) — OSM only; absent from allovergreece's national naturist-beach guide. Note for whoever revisits it: the OSM name is misspelled («Γτμνιστών» for «Γυμνιστών»), which defeats utils/naturistBeaches.NATURIST_NAME_PATTERN — inserting it verbatim would let a naturist beach be recommended as an ordinary one. Fix the name AND add the id to CURATED_NATURIST_IDS.",
+      "Παραλία Γυμνιστών Αγίου Νικολάου (Epanomi) — OSM only; absent from allovergreece's national naturist-beach guide. Not inserted."
+    ]
+  },
+  "beaches": [
+    {
+      "nameGr": "Βαρδάρι",
+      "displayName": "Vardari",
+      "lat": 37.9768368,
+      "lon": 23.3232941,
+      "region": "Attica",
+      "prefecture": "West Attica",
+      "municipality": "West Attica (mainland)",
+      "osmUrl": "https://www.openstreetmap.org/way/1446848567",
+      "nearestOursM": 7318,
+      "surface": "pebbles",
+      "verifyReason": "Six independent Greek outlets plus the state map portal describe Βαρδάρης/Βαρδάρι as an unorganised pebble-and-rock swimming beach at Megara, West Attica, below the old national road, with car access and parking, about 30 minutes from central Athens (enikos.gr, star.gr, skai.gr, thetoc.gr, exploringgreece.tv, e-megara.gr, govmap.gr). Our nearest beach is Παραλία Κινέτας 7,3 km away, so this is a genuine hole in the Megara coast rather than an alias."
+    },
+    {
+      "nameGr": "Μαραθούντα",
+      "displayName": "Marathounda",
+      "lat": 36.5665703,
+      "lon": 27.8618621,
+      "region": "South Aegean",
+      "prefecture": "Dodecanese",
+      "municipality": "Symi",
+      "osmUrl": "https://www.openstreetmap.org/way/512906901",
+      "nearestOursM": 1761,
+      "surface": "pebbles",
+      "verifyReason": "Named as a Symi beach by the Municipality of Symi's own site, symitop.gr's beach guide (reached by car in 35 min or by taxi-boat), allovergreece and getgreece: a pebbly, wind-protected bay on the south-east coast near Panormitis, partly organised, with a taverna, and served by the Panormitis bus. Our nearest is Νανού 1,8 km away — a separate bay, boat-access only."
+    },
+    {
+      "nameGr": "Παραλία Πανορμίτη",
+      "displayName": "Panormitis",
+      "lat": 36.5487601,
+      "lon": 27.8418936,
+      "region": "South Aegean",
+      "prefecture": "Dodecanese",
+      "municipality": "Symi",
+      "osmUrl": "https://www.openstreetmap.org/way/1539772537",
+      "nearestOursM": 4050,
+      "surface": "sand",
+      "verifyReason": "symitop.gr's Symi beach guide lists PANORMITIS as one of the island's twelve beaches, reachable by car in 30-40 minutes or by boat in 45; Symi beach guides describe swimming there with a bakery, taverna and coffee shop beside the Archangel Michael monastery. OSM tags it natural=beach, surface=sand, supervised=no. Our nearest is Νανού 4,1 km away."
+    },
+    {
+      "nameGr": "Λιασίκι",
+      "displayName": "Liasiki",
+      "lat": 38.9084958,
+      "lon": 22.8376082,
+      "region": "Central Greece",
+      "prefecture": "Fthiotida",
+      "municipality": "Fthiotida (mainland)",
+      "osmUrl": "https://www.openstreetmap.org/node/14056200360",
+      "nearestOursM": 4451,
+      "surface": null,
+      "verifyReason": "Greek Wikipedia carries a dedicated article (Λιασίκι Φθιώτιδας): a coastal settlement and beach on the western shore of Gardiki Bay in the Municipality of Stylida, 24 km west of Stylida, part of the Pelasgia local community, with Πελασγία beach to the north-east and Αχλάδιες to the south-west. Our nearest is Παραλία Αγίου Γεωργίου Πελασγίας 4,5 km away. Caveat carried forward: the OSM feature is a node tagged fixme=turn to area, so the pin is a point estimate of a beach whose extent is unmapped."
+    }
+  ]
+}
