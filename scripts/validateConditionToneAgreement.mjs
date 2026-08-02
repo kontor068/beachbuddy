@@ -217,7 +217,7 @@ for (const failure of failures) {
 // RULES covers the grid sweep; the wiring rule and the slider rule are asserted after it, so the
 // headline counts all of them — a gate that under-reports its own coverage invites the assumption
 // that something is checked when it is not.
-const NON_GRID_RULES = 5;
+const NON_GRID_RULES = 6;
 console.log(`Grid: ${combinations} condition combinations · ${RULES.length + NON_GRID_RULES} rules\n`);
 
 for (const rule of RULES) {
@@ -617,6 +617,41 @@ for (const tone of emittedTones) {
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
+// RULE 7b — a collapsed legend must keep a way out.
+//
+// Miltos, 02/08/2026: with a colour picked, the other three rows are two lines each of advice
+// about colours he has just rejected, and they push the beach cards below the fold. So the legend
+// now shows ONLY the picked row.
+//
+// That turns the «Δείξε όλες τις παραλίες» button from a convenience into the ONLY way back: the
+// rows a user would otherwise tap are no longer on screen. Delete it — or make it render only
+// when no filter is active, which is how such buttons are usually written — and the map is a trap
+// with one colour on it and no exit. The two changes are one feature and this gate holds them
+// together.
+// ─────────────────────────────────────────────────────────────────────────────
+{
+  const mapSource = readFileSync(path.join(root, 'components/BeachMap.tsx'), 'utf8');
+  const fail = reason => failures.push({ rule: 'a-collapsed-legend-has-a-way-out', reason, row: {} });
+
+  const collapses = /\.filter\(row => !activeToneFilter \|\| row\.tone === activeToneFilter\)/.test(mapSource);
+  // The button must be reachable exactly WHILE a filter is on — `activeToneFilter ? (button)`.
+  const hasExit = /activeToneFilter \? \(\s*<button/.test(mapSource)
+    && /onClick=\{\(\) => onToneFilterChange\?\.\(null\)\}/.test(mapSource)
+    && /toneFilterCopy\.showAll/.test(mapSource);
+
+  if (collapses && !hasExit) {
+    fail('The legend hides every unpicked colour but the «show all» button that clears the filter '
+      + 'is gone or no longer renders while a filter is active. The user would be left on a map '
+      + 'showing one colour with no way back to the others.');
+  }
+  if (!collapses && hasExit) {
+    fail('The legend no longer collapses to the picked row. Not a bug on its own — but the row '
+      + 'filter was removed without removing this note, so update the gate deliberately rather '
+      + 'than leaving it describing behaviour the code does not have.');
+  }
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
 // RULE 8 — the filters describe the COLOUR GROUP, not the region.
 //
 // Miltos, 02/08/2026: «όταν επιλέγω ομάδα παραλιών, στα φίλτρα να μη μου εμφανίζεις
@@ -724,6 +759,10 @@ for (const hit of listRuleFailures) console.log(`       ${hit.reason}`);
 const legendWordFailures = failures.filter(failure => failure.rule === 'every-pin-colour-has-a-legend-word');
 console.log(`${legendWordFailures.length === 0 ? 'OK  ' : 'FAIL'} every-pin-colour-has-a-legend-word: ${legendWordFailures.length}`);
 for (const hit of legendWordFailures) console.log(`       ${hit.reason}`);
+
+const legendExitFailures = failures.filter(failure => failure.rule === 'a-collapsed-legend-has-a-way-out');
+console.log(`${legendExitFailures.length === 0 ? 'OK  ' : 'FAIL'} a-collapsed-legend-has-a-way-out: ${legendExitFailures.length}`);
+for (const hit of legendExitFailures) console.log(`       ${hit.reason}`);
 
 if (failures.length > 0) {
   console.error('\nFAILED: the map pin and the card chip do not describe the same conditions.');

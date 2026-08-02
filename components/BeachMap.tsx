@@ -1995,8 +1995,11 @@ const BeachMap: React.FC<BeachMapProps> = ({
     offshoreFlatWater: beachOffshoreFlatWater(item),
   });
 
-  // Deliberately over EVERY beach on the map, never the filtered subset: picking «Δύσκολη»
-  // must not collapse the legend to a single row the user cannot escape from.
+  // Deliberately over EVERY beach on the map, never the filtered subset. The legend DOES collapse
+  // to the picked row while a filter is on (see visibleWindColorGuideRows), but that is a display
+  // choice made with an explicit way back. This tally must stay complete underneath it: computed
+  // over the filtered set instead, every other colour would fall to zero, and the four rows would
+  // come back empty — or not at all — when the filter cleared.
   //
   // `beachTonesById` stays COMPLETE — it is what onBeachTonesChange reports, and the "all
   // beaches" list needs a colour for beaches the directory never lists. Only the TALLY drops
@@ -2708,9 +2711,22 @@ const BeachMap: React.FC<BeachMapProps> = ({
    */
   // Calmest first (LEGEND_TONE_ORDER), NOT CALMNESS_ORDER — that one is the severity scale the
   // sea-state ceiling and the dominant-tone scan depend on, and it runs the other way.
+  //
+  // WITH A FILTER ON, THE OTHER ROWS GO AWAY (02/08/2026). Each row is two lines — the colour with
+  // its count, and the sentence that separates «Μέτρια» from «Καλή» — so four colours cost eight
+  // lines of vertical space directly above the beach cards. Miltos: after picking a colour, that
+  // space is spent explaining three colours he has just said he does not want, and it pushes the
+  // cards far enough down that the horizontal strip he is trying to scroll is off-screen.
+  //
+  // This is the collapse the tally above is written to survive, not to cause: `mapToneTally` still
+  // counts EVERY beach, so the hidden rows keep their real numbers and all four come back intact
+  // the moment the filter clears. And the way back is not the hidden rows — it is the explicit
+  // «Δείξε όλες τις παραλίες» button in renderWindColorGuidePanel, which only exists while a
+  // filter is active. Hiding rows would be a trap without it; that button is what makes it safe.
   const visibleWindColorGuideRows = LEGEND_TONE_ORDER
     .map(tone => ({ tone, count: mapToneTally.counts.get(tone) ?? 0 }))
-    .filter(row => row.count > 0);
+    .filter(row => row.count > 0)
+    .filter(row => !activeToneFilter || row.tone === activeToneFilter);
   const showGroupedExposureLegend = showWindExposureStatusLabels && !isSevereWind;
   // The surf line only appears when a surf spot is actually on screen. There are
   // 10 nationally, so on almost every map it would be an unexplained symbol
