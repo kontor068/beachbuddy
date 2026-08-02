@@ -131,6 +131,69 @@ const bump = (obj, key, by = 1) => {
   obj[key] = (obj[key] || 0) + by;
 };
 
+// ── Abuse guards ─────────────────────────────────────────────────────────────
+// This endpoint had NEITHER of the two guards feedback-email.mjs already uses for
+// the exact same reason (unauthenticated, same-origin-only by design, but reachable
+// by anyone who reads the bundle). Found 02/08/2026 when the counter reported 6.937
+// unique visitors / 1.008 new for a day GA4 measured at 82 total users — a scripted
+// flood (or a JS-executing crawler hitting every page) can trivially rack up
+// "unique" hashes since uniqueness is only ip+UA+day, and UA is attacker-controlled.
+//
+//   1. Origin/Referer must be ours (same allow-list as feedback-email.mjs). The real
+//      client always sends one of these on its POST (sendBeacon/fetch), so this only
+//      turns away direct scripted hits and third-party pages embedding the beacon.
+//   2. A per-IP burst limit held in module scope, same mechanism as feedback-email.mjs
+//      and forecast.mjs. Generous (this endpoint is legitimately hit far more per
+//      visitor than feedback) so a busy shared IP (café wifi, mobile CGNAT) is not
+//      mistaken for a flood.
+// Neither is real auth — a distributed flood with forged headers still slips through;
+// that needs a Cloudflare rule (see docs/team, anti-scraping posture).
+
+const ALLOWED_HOSTS = new Set(['calmbeach.gr', 'www.calmbeach.gr', 'localhost', '127.0.0.1']);
+
+const hostOf = (value) => {
+  if (!value) return '';
+  try {
+    return new URL(value).hostname.toLowerCase();
+  } catch {
+    return '';
+  }
+};
+
+// Deploy previews and branch deploys live on *.netlify.app and must keep working.
+const isOwnHost = (host) => Boolean(host) && (ALLOWED_HOSTS.has(host) || host.endsWith('.netlify.app'));
+
+const isTrustedOrigin = (headers) => {
+  const origin = headers.origin || headers.Origin || '';
+  const referer = headers.referer || headers.Referer || '';
+  if (origin) return isOwnHost(hostOf(origin));
+  if (referer) return isOwnHost(hostOf(referer));
+  return false;
+};
+
+const RATE_LIMIT_WINDOW_MS = 60_000;
+const RATE_LIMIT_MAX = 120; // one real visitor needs ~1-10/min; leaves headroom for shared IPs
+const recentByIp = new Map();
+
+const isRateLimited = (headers) => {
+  const ip = clientIp(headers);
+  if (!ip || ip === 'unknown') return false;
+
+  const now = Date.now();
+  const hits = (recentByIp.get(ip) || []).filter((at) => now - at < RATE_LIMIT_WINDOW_MS);
+  hits.push(now);
+  recentByIp.set(ip, hits);
+
+  // Keep the map from growing without bound across a long-lived container.
+  if (recentByIp.size > 500) {
+    for (const [key, times] of recentByIp) {
+      if (!times.some((at) => now - at < RATE_LIMIT_WINDOW_MS)) recentByIp.delete(key);
+    }
+  }
+
+  return hits.length > RATE_LIMIT_MAX;
+};
+
 /**
  * Keep a counting dictionary bounded. Page paths are the only high-cardinality
  * dimension we keep, and a rollup blob that grows forever would eventually cost
@@ -248,7 +311,9 @@ export const handler = async (event) => {
     body: '',
   };
 
-  if (event.httpMethod !== 'POST' && event.httpMethod !== 'GET') return noContent;
+  // GET was accepted historically but the client only ever POSTs (sendBeacon/fetch);
+  // GET just left an unauthenticated pixel anyone could embed to inflate the count.
+  if (event.httpMethod !== 'POST') return noContent;
 
   try {
     // Classic Lambda-signature functions must wire the Blobs environment from the
@@ -258,6 +323,12 @@ export const handler = async (event) => {
 
     const headers = event.headers || {};
     const userAgent = headers['user-agent'] || '';
+
+    // Silently drop anything that isn't our own page pinging us, or that is bursting
+    // from one IP. "Silently" on purpose: a 403 would tell a script exactly which
+    // header it's missing, a 204 (like every accepted hit) gives it nothing to probe.
+    if (!isTrustedOrigin(headers)) return noContent;
+    if (isRateLimited(headers)) return noContent;
 
     // Drop bots and empty-UA junk without touching storage. Every real browser also
     // sends Accept-Language; most scrapers/scripts that fake a browser UA do not —

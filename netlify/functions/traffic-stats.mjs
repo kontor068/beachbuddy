@@ -10,7 +10,9 @@
 //          &days=30            window (default: everything since counting began)
 //          &format=json        raw data
 //          &format=live        just the live layer (what the page auto-refreshes)
-//          &reset=YYYY-MM-DD   wipe one contaminated day
+//          &purge=YYYY-MM-DD&cc=US   remove ONE COUNTRY's visitors from one day
+//                                    (preview by default; add &confirm=1 to delete)
+//          &reset=YYYY-MM-DD   wipe one contaminated day, all of it
 //
 // Set TRAFFIC_STATS_KEY in the Netlify env to enable it (unset ⇒ 403, never open).
 //
@@ -1419,10 +1421,122 @@ export const handler = async (event) => {
     const nowMin = Math.floor(now.getTime() / 60000);
     const todayKey = utcDayKey(now);
 
+    // Admin: remove ONE COUNTRY's visitors from one day, instead of wiping the day.
+    // Written 02/08/2026 after a bot flood filed ~4.000 fake "unique visitors" under
+    // US on 01/08 (the counter said 6.937 uniques; GA4 said 82 real users the same
+    // day). `reset` below would have thrown away that day's real visitors too.
+    //
+    // WHY THIS CAN BE EXACT: the map key carries the country, city, device and
+    // new/returning flag in the key itself (`geo/<day>/<hash>~cc~lat~lon~city~…`),
+    // so we can find exactly which visitor blobs to delete and subtract exactly the
+    // right amount from those four breakdowns in the day rollup.
+    //
+    // WHAT IT CANNOT FIX, and the report says so out loud: pageviews (`hits`), the
+    // referrer/channel/browser/OS/language/viewport breakdowns and dwell are stored
+    // only as day-level sums with nothing tying a count back to a visitor. Those
+    // stay inflated for the purged day. The unique count, the map and the four
+    // breakdowns above become correct.
+    //
+    // Safe by default: without `&confirm=1` this only REPORTS what it would remove.
+    //   /api/traffic?key=…&purge=2026-08-01&cc=US            → preview
+    //   /api/traffic?key=…&purge=2026-08-01&cc=US&confirm=1  → actually delete
+    if (params.purge) {
+      const day = /^\d{4}-\d{2}-\d{2}$/.test(params.purge) ? params.purge : null;
+      if (!day) {
+        return { statusCode: 400, headers: { 'Content-Type': 'text/plain; charset=utf-8' }, body: 'purge must be YYYY-MM-DD' };
+      }
+      const wanted = new Set(
+        String(params.cc || '')
+          .split(',')
+          .map((c) => c.trim().toUpperCase())
+          .filter(Boolean)
+      );
+      if (!wanted.size) {
+        return {
+          statusCode: 400,
+          headers: { 'Content-Type': 'text/plain; charset=utf-8' },
+          body: 'Λείπει το &cc= (π.χ. &cc=US ή &cc=US,CA). Χωρίς αυτό δεν σβήνω τίποτα.',
+        };
+      }
+
+      // One pass over the day's map keys: decide who goes, and remember exactly what
+      // each of them contributed to the breakdowns we can correct.
+      const geoKeys = await listKeys(store, `geo/${day}/`);
+      const doomed = new Map(); // hash → { cc, city, device, kind, keys: [] }
+      for (const key of geoKeys) {
+        const rest = key.slice(`geo/${day}/`.length);
+        const [hash, cc, , , city, device, kind] = rest.split('~');
+        if (!wanted.has(String(cc || '').toUpperCase())) continue;
+        const prev = doomed.get(hash);
+        if (prev) {
+          prev.keys.push(key);
+          continue;
+        }
+        doomed.set(hash, { cc, city: city || '', device: device || '', kind, keys: [key] });
+      }
+
+      const totalUnique = (await listKeys(store, `d/${day}/`)).length;
+      const summary =
+        `Ημέρα ${day} · χώρες ${[...wanted].join(', ')}\n` +
+        `Θα αφαιρεθούν ${doomed.size} από ${totalUnique} μοναδικούς επισκέπτες` +
+        ` (μένουν ${totalUnique - doomed.size}).\n`;
+
+      if (params.confirm !== '1') {
+        return {
+          statusCode: 200,
+          headers: { 'Content-Type': 'text/plain; charset=utf-8', 'Cache-Control': 'no-store' },
+          body:
+            `ΠΡΟΕΠΙΣΚΟΠΗΣΗ — δεν σβήστηκε τίποτα.\n\n${summary}\n` +
+            `Για να γίνει στ' αλήθεια, ξαναφόρτωσε με &confirm=1 στο τέλος.\n` +
+            `Δεν διορθώνονται: προβολές σελίδων, πηγές, browser, γλώσσα, χρόνος — μένουν φουσκωμένα γι' αυτή τη μέρα.`,
+        };
+      }
+
+      let deleted = 0;
+      for (const [hash, info] of doomed) {
+        for (const k of info.keys) {
+          await store.delete(k);
+          deleted += 1;
+        }
+        await store.delete(`d/${day}/${hash}`);
+        deleted += 1;
+      }
+
+      // Subtract exactly what the purged visitors added to the breakdowns that the
+      // map key lets us attribute. Never let a counter go negative — a stored total
+      // can predate a metric, and a negative would render as a nonsense bar.
+      const drop = (obj, k, by = 1) => {
+        if (!obj || !k || !obj[k]) return;
+        obj[k] = Math.max(0, obj[k] - by);
+        if (!obj[k]) delete obj[k];
+      };
+      const totals = (await store.get(`totals/${day}`, { type: 'json' })) || null;
+      if (totals) {
+        for (const info of doomed.values()) {
+          drop(totals.countries, info.cc);
+          if (info.city) drop(totals.cities, `${info.cc}/${info.city}`);
+          drop(totals.devices, info.device);
+          drop(totals.kinds, info.kind === 'new' ? 'new' : info.kind === 'ret' ? 'ret' : 'unknown');
+        }
+        totals.purged = (totals.purged || 0) + doomed.size;
+        await store.setJSON(`totals/${day}`, totals);
+      }
+
+      return {
+        statusCode: 200,
+        headers: { 'Content-Type': 'text/plain; charset=utf-8', 'Cache-Control': 'no-store' },
+        body:
+          `ΕΓΙΝΕ.\n\n${summary}` +
+          `Διαγράφηκαν ${deleted} εγγραφές. Διορθώθηκαν: μοναδικοί, χάρτης, χώρες, πόλεις, συσκευές, νέοι/παλιοί.\n` +
+          `ΔΕΝ διορθώθηκαν (δεν αποθηκεύονται ανά επισκέπτη): προβολές σελίδων, πηγές, κανάλι, browser, λειτουργικό, γλώσσα, οθόνη, χρόνος.`,
+      };
+    }
+
     // Admin: wipe one day's data (operator use only — key-gated). Used to clear a
     // contaminated day (e.g. launch-day test traffic) so counting restarts clean.
     // Since visitor hashes are irreversible we cannot delete selectively, so this
     // removes the WHOLE day; real visitors after the reset are counted fresh.
+    // Prefer `&purge=` above when only one country is contaminated.
     if (params.reset) {
       const day = /^\d{4}-\d{2}-\d{2}$/.test(params.reset) ? params.reset : null;
       if (!day) {
